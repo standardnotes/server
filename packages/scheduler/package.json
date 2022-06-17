@@ -16,8 +16,9 @@
     "lint": "eslint . --ext .ts",
     "pretest": "yarn lint && yarn build",
     "test": "jest --coverage",
-    "worker": "yarn dist/bin/worker.js",
-    "verify:jobs": "yarn dist/bin/verify.js",
+    "worker": "yarn node dist/bin/worker.js",
+    "verify:jobs": "yarn node dist/bin/verify.js",
+    "setup:env": "cp .env.sample .env",
     "typeorm": "typeorm-ts-node-commonjs"
   },
   "dependencies": {

@@ -15,6 +15,7 @@
     "test": "yarn workspaces foreach -pt --parallel --jobs 10 --verbose run test",
     "clean": "yarn workspaces foreach -pt --parallel --jobs 10 --verbose run clean",
     "build:all": "yarn workspaces foreach -pt --verbose run build",
+    "setup:env": "yarn workspaces foreach -pt --verbose run setup:env",
     "build:scheduler": "yarn workspaces foreach -pt --verbose -R --from @standardnotes/scheduler-server run build",
     "start:scheduler": "yarn workspaces foreach -pt --verbose -R --from @standardnotes/scheduler-server run worker"
   },

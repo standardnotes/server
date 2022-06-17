@@ -6,6 +6,7 @@ node_modules
 dist
 coverage
 .env
+newrelic_agent.log
 
 **/.pnp.*
 **/.yarn/*
