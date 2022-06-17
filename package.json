@@ -10,6 +10,13 @@
   "engines": {
     "node": ">=16.0.0 <17.0.0"
   },
+  "scripts": {
+    "lint": "yarn workspaces foreach -pt --parallel --jobs 10 --verbose run lint",
+    "test": "yarn workspaces foreach -pt --parallel --jobs 10 --verbose run test",
+    "clean": "yarn workspaces foreach -pt --parallel --jobs 10 --verbose run clean",
+    "build:all": "yarn workspaces foreach -pt --verbose run build",
+    "build:scheduler": "yarn workspaces foreach -pt --verbose -R --from @standardnotes/scheduler-server run build"
+  },
   "devDependencies": {
     "@commitlint/cli": "^17.0.2",
     "@commitlint/config-conventional": "^17.0.2",

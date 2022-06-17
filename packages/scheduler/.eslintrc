@@ -1,0 +1,5 @@
+{
+  "extends": [
+    "../../node_modules/@standardnotes/config/src/.eslintrc"
+  ]
+}

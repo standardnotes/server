@@ -1,0 +1,59 @@
+{
+  "name": "@standardnotes/scheduler-server",
+  "version": "1.0.0",
+  "engines": {
+    "node": ">=16.0.0 <17.0.0"
+  },
+  "description": "Scheduler Server",
+  "main": "dist/src/index.js",
+  "typings": "dist/src/index.d.ts",
+  "author": "Karol Sójko <karol@standardnotes.com>",
+  "license": "AGPL-3.0-or-later",
+  "scripts": {
+    "clean": "rm -fr dist",
+    "prebuild": "yarn clean",
+    "build": "tsc --rootDir ./",
+    "lint": "eslint . --ext .ts",
+    "pretest": "yarn lint && yarn build",
+    "test": "jest --coverage",
+    "worker": "node dist/bin/worker.js",
+    "verify:jobs": "node dist/bin/verify.js",
+    "typeorm": "typeorm-ts-node-commonjs"
+  },
+  "dependencies": {
+    "@newrelic/native-metrics": "7.0.2",
+    "@newrelic/winston-enricher": "^2.1.0",
+    "@standardnotes/domain-events": "^2.32.0",
+    "@standardnotes/domain-events-infra": "^1.5.0",
+    "@standardnotes/scheduler": "^1.1.0",
+    "@standardnotes/time": "^1.7.0",
+    "dotenv": "8.2.0",
+    "inversify": "5.0.5",
+    "ioredis": "4.19.4",
+    "mysql2": "^2.3.3",
+    "newrelic": "8.6.0",
+    "reflect-metadata": "0.1.13",
+    "typeorm": "^0.3.6",
+    "winston": "3.3.3"
+  },
+  "devDependencies": {
+    "@standardnotes/config": "^2.4.3",
+    "@types/ioredis": "^4.19.3",
+    "@types/jest": "^27.5.0",
+    "@types/newrelic": "^7.0.2",
+    "eslint": "^8.14.0",
+    "jest": "^28.0.3",
+    "ts-jest": "^28.0.1",
+    "ts-node": "^10.7.0"
+  },
+  "jest": {
+    "preset": "../../node_modules/@standardnotes/config/src/jest.json",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      "/Bootstrap/"
+    ],
+    "setupFilesAfterEnv": [
+      "<rootDir>/test-setup.ts"
+    ]
+  }
+}
