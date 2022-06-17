@@ -1298,19 +1298,14 @@ __metadata:
     "@standardnotes/domain-events-infra": ^1.5.0
     "@standardnotes/scheduler": ^1.1.0
     "@standardnotes/time": ^1.7.0
-    "@types/ioredis": ^4.19.3
-    "@types/jest": ^27.5.0
+    "@types/ioredis": ^4.28.10
     "@types/newrelic": ^7.0.2
     dotenv: 8.2.0
-    eslint: ^8.14.0
     inversify: 5.0.5
-    ioredis: 4.19.4
-    jest: ^28.0.3
+    ioredis: ^4.28.3
     mysql2: ^2.3.3
     newrelic: 8.6.0
     reflect-metadata: 0.1.13
-    ts-jest: ^28.0.1
-    ts-node: ^10.7.0
     typeorm: ^0.3.6
     winston: 3.3.3
   languageName: unknown
@@ -1332,10 +1327,15 @@ __metadata:
     "@commitlint/cli": ^17.0.2
     "@commitlint/config-conventional": ^17.0.2
     "@standardnotes/config": ^2.4.3
+    "@types/jest": ^28.1.1
+    "@types/node": ^18.0.0
     "@typescript-eslint/eslint-plugin": ^5.20.0
     "@typescript-eslint/parser": ^5.20.0
     eslint: ^8.17.0
+    jest: ^28.1.1
     prettier: ^2.6.2
+    ts-jest: ^28.0.5
+    ts-node: ^10.8.1
     typescript: ^4.7.3
   languageName: unknown
   linkType: soft
@@ -1436,7 +1436,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/ioredis@npm:^4.19.3":
+"@types/ioredis@npm:^4.28.10":
   version: 4.28.10
   resolution: "@types/ioredis@npm:4.28.10"
   dependencies:
@@ -1470,13 +1470,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/jest@npm:^27.5.0":
-  version: 27.5.2
-  resolution: "@types/jest@npm:27.5.2"
+"@types/jest@npm:^28.1.1":
+  version: 28.1.1
+  resolution: "@types/jest@npm:28.1.1"
   dependencies:
     jest-matcher-utils: ^27.0.0
     pretty-format: ^27.0.0
-  checksum: 7e11c6826aa429ad990dc262e4e4b54aa36573287fddf15773e4137f07d11d3105f0dd9f1baff73252160a057df23f5529bb83b1bf83cd3f45f9460a5ca5c22e
+  checksum: 0a8b045a7b660372decc807c390d3f99a2b12bb1659a1cd593afe04557f4b7c235b0576a5e35b1577710d20e42759d3d8755eb8bed6edc8733f47007e75a5509
   languageName: node
   linkType: hard
 
@@ -1508,7 +1508,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:>=12, @types/node@npm:>=12.12.47, @types/node@npm:>=13.7.0":
+"@types/node@npm:*, @types/node@npm:>=12, @types/node@npm:>=12.12.47, @types/node@npm:>=13.7.0, @types/node@npm:^18.0.0":
   version: 18.0.0
   resolution: "@types/node@npm:18.0.0"
   checksum: aab2b325727a2599f6d25ebe0dedf58c40fb66a51ce4ca9c0226ceb70fcda2d3afccdca29db5942eb48b158ee8585a274a1e3750c718bbd5399d7f41d62dfdcc
@@ -2808,7 +2808,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:^8.14.0, eslint@npm:^8.17.0":
+"eslint@npm:^8.17.0":
   version: 8.17.0
   resolution: "eslint@npm:8.17.0"
   dependencies:
@@ -3519,25 +3519,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ioredis@npm:4.19.4":
-  version: 4.19.4
-  resolution: "ioredis@npm:4.19.4"
-  dependencies:
-    cluster-key-slot: ^1.1.0
-    debug: ^4.1.1
-    denque: ^1.1.0
-    lodash.defaults: ^4.2.0
-    lodash.flatten: ^4.4.0
-    p-map: ^2.1.0
-    redis-commands: 1.6.0
-    redis-errors: ^1.2.0
-    redis-parser: ^3.0.0
-    standard-as-callback: ^2.0.1
-  checksum: 1fb4b1d7e47d3074f2fdae3afd478c0de37b160fd16db433dda7d91e3c90888024e6071eeff5cc2ab8c21b7e0f05de0c09dd64a99da487ffaba65496c38198ae
-  languageName: node
-  linkType: hard
-
-"ioredis@npm:^4.28.5":
+"ioredis@npm:^4.28.3, ioredis@npm:^4.28.5":
   version: 4.28.5
   resolution: "ioredis@npm:4.28.5"
   dependencies:
@@ -4184,7 +4166,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jest@npm:^28.0.3":
+"jest@npm:^28.1.1":
   version: 28.1.1
   resolution: "jest@npm:28.1.1"
   dependencies:
@@ -5456,13 +5438,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"redis-commands@npm:1.6.0":
-  version: 1.6.0
-  resolution: "redis-commands@npm:1.6.0"
-  checksum: f35e1998a7a69c09924fe8f6dbac382401bd5494af2d2f650e05a69de45128f0f41a475bcf3ea30359ac8c50bf59f2922d3e44b5760550ba4ebf90de628afca6
-  languageName: node
-  linkType: hard
-
 "redis-commands@npm:1.7.0":
   version: 1.7.0
   resolution: "redis-commands@npm:1.7.0"
@@ -5887,7 +5862,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"standard-as-callback@npm:^2.0.1, standard-as-callback@npm:^2.1.0":
+"standard-as-callback@npm:^2.1.0":
   version: 2.1.0
   resolution: "standard-as-callback@npm:2.1.0"
   checksum: 88bec83ee220687c72d94fd86a98d5272c91d37ec64b66d830dbc0d79b62bfa6e47f53b71646011835fc9ce7fae62739545d13124262b53be4fbb3e2ebad551c
@@ -6141,7 +6116,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-jest@npm:^28.0.1":
+"ts-jest@npm:^28.0.5":
   version: 28.0.5
   resolution: "ts-jest@npm:28.0.5"
   dependencies:
@@ -6171,7 +6146,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-node@npm:^10.7.0, ts-node@npm:^10.8.0":
+"ts-node@npm:^10.8.0, ts-node@npm:^10.8.1":
   version: 10.8.1
   resolution: "ts-node@npm:10.8.1"
   dependencies:

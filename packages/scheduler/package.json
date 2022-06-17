@@ -16,8 +16,8 @@
     "lint": "eslint . --ext .ts",
     "pretest": "yarn lint && yarn build",
     "test": "jest --coverage",
-    "worker": "node dist/bin/worker.js",
-    "verify:jobs": "node dist/bin/verify.js",
+    "worker": "yarn dist/bin/worker.js",
+    "verify:jobs": "yarn dist/bin/verify.js",
     "typeorm": "typeorm-ts-node-commonjs"
   },
   "dependencies": {
@@ -29,7 +29,7 @@
     "@standardnotes/time": "^1.7.0",
     "dotenv": "8.2.0",
     "inversify": "5.0.5",
-    "ioredis": "4.19.4",
+    "ioredis": "^4.28.3",
     "mysql2": "^2.3.3",
     "newrelic": "8.6.0",
     "reflect-metadata": "0.1.13",
@@ -38,13 +38,8 @@
   },
   "devDependencies": {
     "@standardnotes/config": "^2.4.3",
-    "@types/ioredis": "^4.19.3",
-    "@types/jest": "^27.5.0",
-    "@types/newrelic": "^7.0.2",
-    "eslint": "^8.14.0",
-    "jest": "^28.0.3",
-    "ts-jest": "^28.0.1",
-    "ts-node": "^10.7.0"
+    "@types/ioredis": "^4.28.10",
+    "@types/newrelic": "^7.0.2"
   },
   "jest": {
     "preset": "../../node_modules/@standardnotes/config/src/jest.json",
