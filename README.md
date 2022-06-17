@@ -1,0 +1,2 @@
+# server
+Server applications monorepo
