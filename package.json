@@ -1,0 +1,24 @@
+{
+  "name": "@standardnotes/server-monorepo",
+  "private": true,
+  "author": "Standard Notes",
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ]
+  },
+  "engines": {
+    "node": ">=16.0.0 <17.0.0"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^17.0.2",
+    "@commitlint/config-conventional": "^17.0.2",
+    "@standardnotes/config": "^2.4.3",
+    "@typescript-eslint/eslint-plugin": "^5.20.0",
+    "@typescript-eslint/parser": "^5.20.0",
+    "eslint": "^8.17.0",
+    "prettier": "^2.6.2",
+    "typescript": "^4.7.3"
+  },
+  "packageManager": "yarn@3.2.1"
+}
