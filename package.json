@@ -17,11 +17,15 @@
     "build:all": "yarn workspaces foreach -pt --verbose run build",
     "setup:env": "yarn workspaces foreach -pt --verbose run setup:env",
     "build:scheduler": "yarn workspaces foreach -pt --verbose -R --from @standardnotes/scheduler-server run build",
-    "start:scheduler": "yarn workspaces foreach -pt --verbose -R --from @standardnotes/scheduler-server run worker"
+    "start:scheduler": "yarn workspaces foreach -pt --verbose -R --from @standardnotes/scheduler-server run worker",
+    "release:beta": "lerna version --conventional-prerelease --conventional-commits --yes -m \"chore(release): publish\""
   },
   "devDependencies": {
     "@commitlint/cli": "^17.0.2",
     "@commitlint/config-conventional": "^17.0.2",
+    "@lerna-lite/cli": "^1.5.1",
+    "@lerna-lite/list": "^1.5.1",
+    "@lerna-lite/run": "^1.5.1",
     "@standardnotes/config": "^2.4.3",
     "@types/jest": "^28.1.1",
     "@types/node": "^18.0.0",
