@@ -12,7 +12,7 @@ export class MySQLPredicateRepository implements PredicateRepositoryInterface {
     private ormRepository: Repository<Predicate>,
   ) {}
 
-  save(predicate: Predicate): Promise<Predicate> {
+  async save(predicate: Predicate): Promise<Predicate> {
     return this.ormRepository.save(predicate)
   }
 
