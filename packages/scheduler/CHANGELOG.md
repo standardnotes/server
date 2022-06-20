@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0-alpha.1](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.1.0-alpha.0...@standardnotes/scheduler-server@1.1.0-alpha.1) (2022-06-20)
+
+### Bug Fixes
+
+* remove pure lockfile flag from yarn installs ([586cded](https://github.com/standardnotes/server/commit/586cdedf13332677520d891392c65368f5dc2f1b))
+
 # 1.1.0-alpha.0 (2022-06-20)
 
 ### Bug Fixes
