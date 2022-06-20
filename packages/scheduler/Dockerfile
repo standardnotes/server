@@ -18,7 +18,7 @@ USER scheduler
 
 COPY --chown=$UID:$GID package.json yarn.lock /var/www/
 
-RUN yarn install --pure-lockfile
+RUN yarn install
 
 COPY --chown=$UID:$GID . /var/www
 
