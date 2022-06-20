@@ -5,11 +5,11 @@ import 'newrelic'
 import { Logger } from 'winston'
 import * as dayjs from 'dayjs'
 import * as utc from 'dayjs/plugin/utc'
+import { TimerInterface } from '@standardnotes/time'
 
 import { ContainerConfigLoader } from '../src/Bootstrap/Container'
 import TYPES from '../src/Bootstrap/Types'
 import { Env } from '../src/Bootstrap/Env'
-import { TimerInterface } from '@standardnotes/time'
 import { VerifyPredicates } from '../src/Domain/UseCase/VerifyPredicates/VerifyPredicates'
 
 const verifyJobs = async (timestamp: number, verifyPredicates: VerifyPredicates): Promise<void> => {
