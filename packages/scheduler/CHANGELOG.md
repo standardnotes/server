@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0-alpha.3](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.1.0-alpha.2...@standardnotes/scheduler-server@1.1.0-alpha.3) (2022-06-20)
+
+### Bug Fixes
+
+* add default value for db migrations path ([1c4c609](https://github.com/standardnotes/server/commit/1c4c609865f834f09106e934c85350a9ea276b6d))
+
 # [1.1.0-alpha.2](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.1.0-alpha.1...@standardnotes/scheduler-server@1.1.0-alpha.2) (2022-06-20)
 
 ### Bug Fixes
