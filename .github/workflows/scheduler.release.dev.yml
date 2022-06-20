@@ -13,9 +13,6 @@ on:
 
 jobs:
   test:
-    defaults:
-      run:
-        working-directory: packages/scheduler
     runs-on: ubuntu-latest
 
     steps:
@@ -24,7 +21,7 @@ jobs:
       with:
         node-version: '16.x'
     - run: yarn install
-    - run: yarn test
+    - run: yarn test:scheduler
 
   publish-aws-ecr:
     needs: test
