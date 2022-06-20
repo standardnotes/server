@@ -26,14 +26,10 @@ jobs:
   publish-aws-ecr:
     needs: test
 
-    defaults:
-      run:
-        working-directory: packages/scheduler
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v3
-    - run: cp .env.sample .env
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
@@ -50,7 +46,7 @@ jobs:
         ECR_REPOSITORY: scheduler-worker
         IMAGE_TAG: ${{ github.sha }}
       run: |
-        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        docker build -f Dockerfile.scheduler -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:dev
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:dev
@@ -58,14 +54,10 @@ jobs:
   publish-docker-hub:
     needs: test
 
-    defaults:
-      run:
-        working-directory: packages/scheduler
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v3
-    - run: cp .env.sample .env
     - name: Publish to Registry
       env:
         DOCKER_BUILDKIT: 1
@@ -75,14 +67,12 @@ jobs:
         name: standardnotes/scheduler
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
+        dockerfile: Dockerfile.scheduler
         tags: "dev,${{ github.sha }}"
 
   deploy-worker:
     needs: publish-aws-ecr
 
-    defaults:
-      run:
-        working-directory: packages/scheduler
     runs-on: ubuntu-latest
 
     steps:
@@ -116,9 +106,6 @@ jobs:
   newrelic:
     needs: [ deploy-worker ]
 
-    defaults:
-      run:
-        working-directory: packages/scheduler
     runs-on: ubuntu-latest
 
     steps:
@@ -135,9 +122,6 @@ jobs:
   notify_discord:
     needs: [ deploy-worker ]
 
-    defaults:
-      run:
-        working-directory: packages/scheduler
     runs-on: ubuntu-latest
 
     steps:

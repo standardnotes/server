@@ -16,13 +16,12 @@ RUN chown -R $UID:$GID .
 
 USER scheduler
 
-COPY --chown=$UID:$GID package.json yarn.lock /var/www/
+COPY --chown=$UID:$GID packages/scheduler/package.json .yarnrc.yml /var/www/
+COPY --chown=$UID:$GID .yarn /var/www/.yarn
+COPY --chown=$UID:$GID packages/scheduler/dist /var/www/dist
+COPY --chown=$UID:$GID packages/scheduler/docker /var/www/docker
 
 RUN yarn install
-
-COPY --chown=$UID:$GID . /var/www
-
-RUN yarn build
 
 ENTRYPOINT [ "docker/entrypoint.sh" ]
 
