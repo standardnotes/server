@@ -39,6 +39,10 @@ jobs:
     - name: Login to Amazon ECR
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
+    - name: Install dependencies locally
+      run: yarn install
+    - name: Build application locally
+      run: yarn build:scheduler
     - name: Build, tag, and push image to Amazon ECR
       id: build-image
       env:
@@ -58,6 +62,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - name: Install dependencies locally
+      run: yarn install
+    - name: Build application locally
+      run: yarn build:scheduler
     - name: Publish to Registry
       env:
         DOCKER_BUILDKIT: 1
