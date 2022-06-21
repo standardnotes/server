@@ -1,8 +1,4 @@
 {
   "extends": "./tsconfig.json",
-  "exclude": [
-    "node_modules",
-    "dist",
-    "data"
-  ]
+  "exclude": ["dist", "test-setup.ts"]
 }

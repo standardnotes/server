@@ -1,0 +1,56 @@
+{
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "plugins": ["@typescript-eslint", "prettier"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier"
+  ],
+  "rules": {
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        "vars": "all",
+        "args": "after-used",
+        "ignoreRestSiblings": false,
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_"
+      }
+    ],
+    "@typescript-eslint/no-explicit-any": ["error", { "ignoreRestArgs": true }],
+    "@typescript-eslint/no-floating-promises": ["error"],
+    "block-scoped-var": "error",
+    "comma-dangle": ["error", "always-multiline"],
+    "curly": ["error", "all"],
+    "no-confusing-arrow": "error",
+    "no-inline-comments": "warn",
+    "no-invalid-this": "error",
+    "no-return-assign": "warn",
+    "no-constructor-return": "error",
+    "no-duplicate-imports": "error",
+    "no-self-compare": "error",
+    "no-console": ["error", { "allow": ["warn", "error"] }],
+    "no-unmodified-loop-condition": "error",
+    "no-unused-private-class-members": "error",
+    "object-curly-spacing": ["error", "always"],
+    "quotes": ["error", "single", { "avoidEscape": true }],
+    "semi": ["error", "never"],
+    "prettier/prettier": [
+      "error",
+      {
+        "singleQuote": true,
+        "trailingComma": "all",
+        "printWidth": 120,
+        "semi": false
+      },
+      {
+        "usePrettierrc": false
+      }
+    ]
+  }
+}
