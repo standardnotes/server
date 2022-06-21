@@ -30,6 +30,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - name: Build locally
+      run: yarn build:scheduler
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
@@ -58,6 +60,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - name: Build locally
+      run: yarn build:scheduler
     - name: Login to Docker Hub
       uses: docker/login-action@v2
       with:
