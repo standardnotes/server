@@ -6,7 +6,7 @@ COMMAND=$1 && shift 1
 case "$COMMAND" in
   'start-worker' )
     echo "Starting Worker..."
-    yarn worker
+    yarn workspace @standardnotes/scheduler-server worker
     ;;
 
   'verify-jobs' )
