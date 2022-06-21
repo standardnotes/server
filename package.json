@@ -12,6 +12,7 @@
   },
   "scripts": {
     "lint": "yarn workspaces foreach -pt --parallel --jobs 10 --verbose run lint",
+    "lint:scheduler": "yarn workspace @standardnotes/scheduler-server lint",
     "test": "yarn workspaces foreach -pt --parallel --jobs 10 --verbose run test",
     "test:scheduler": "yarn workspace @standardnotes/scheduler-server test",
     "clean": "yarn workspaces foreach -pt --parallel --jobs 10 --verbose run clean",

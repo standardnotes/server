@@ -32,8 +32,6 @@ jobs:
         with:
           node-version: '16.x'
 
-      - run: yarn install --immutable
-
       - name: Bump Prod Version
         if: ${{ github.ref == 'refs/heads/main' }}
         run: yarn release:prod

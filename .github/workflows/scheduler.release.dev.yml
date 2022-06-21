@@ -1,7 +1,7 @@
 name: Scheduler Server Dev
 
 concurrency:
-  group: dev_environment
+  group: scheduler_dev_environment
   cancel-in-progress: true
 
 on:
@@ -20,6 +20,7 @@ jobs:
     - uses: actions/setup-node@v1
       with:
         node-version: '16.x'
+    - run: yarn lint:scheduler
     - run: yarn test:scheduler
 
   publish-aws-ecr:
@@ -58,7 +59,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build image
-      run: yarn docker build @standardnotes/scheduler-server -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+      run: yarn docker build @standardnotes/scheduler-server -t standardnotes/scheduler
     - name: Publish to Registry (dev tag)
       uses: manusa/actions-publish-docker@v1.1.2
       with:
