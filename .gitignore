@@ -8,11 +8,11 @@ coverage
 .env
 newrelic_agent.log
 
-**/.pnp.*
-**/.yarn/*
+.yarn/*
+!.yarn/cache
 !.yarn/patches
 !.yarn/plugins
 !.yarn/releases
+!.yarn/unplugged
 !.yarn/sdks
 !.yarn/versions
-!.yarn/cache
