@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0-alpha.4](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.1.0-alpha.3...@standardnotes/scheduler-server@1.1.0-alpha.4) (2022-06-21)
+
+### Bug Fixes
+
+* docker image building ([c205ebb](https://github.com/standardnotes/server/commit/c205ebb7101705572d8be96173b02870893a2630))
+* jest setup ([1a8670c](https://github.com/standardnotes/server/commit/1a8670cdaa8e9aec3b7e6e179dfeef30d7922f3a))
+* linter setup ([c62ff8f](https://github.com/standardnotes/server/commit/c62ff8f5c99f894dcd6a6ee93b3cd4671f6c594f))
+* typescript setup ([6e1e6fa](https://github.com/standardnotes/server/commit/6e1e6fa2916cac01fe6147803c84fb29c2e3b2f1))
+
 # [1.1.0-alpha.3](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.1.0-alpha.2...@standardnotes/scheduler-server@1.1.0-alpha.3) (2022-06-20)
 
 ### Bug Fixes
