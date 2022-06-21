@@ -1,5 +1,5 @@
 import * as winston from 'winston'
-import * as IORedis from 'ioredis'
+import Redis from 'ioredis'
 import * as AWS from 'aws-sdk'
 import { Container } from 'inversify'
 import {
@@ -53,9 +53,9 @@ export class ContainerConfigLoader {
     const isRedisInClusterMode = redisUrl.indexOf(',') > 0
     let redis
     if (isRedisInClusterMode) {
-      redis = new IORedis.Cluster(redisUrl.split(','))
+      redis = new Redis.Cluster(redisUrl.split(','))
     } else {
-      redis = new IORedis(redisUrl)
+      redis = new Redis(redisUrl)
     }
 
     container.bind(TYPES.Redis).toConstantValue(redis)

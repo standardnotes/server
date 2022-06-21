@@ -24,13 +24,16 @@
   "dependencies": {
     "@newrelic/native-metrics": "7.0.2",
     "@newrelic/winston-enricher": "^2.1.0",
+    "@standardnotes/common": "^1.23.0",
     "@standardnotes/domain-events": "^2.32.0",
     "@standardnotes/domain-events-infra": "^1.5.0",
     "@standardnotes/scheduler": "^1.1.0",
     "@standardnotes/time": "^1.7.0",
+    "aws-sdk": "^2.1158.0",
+    "dayjs": "^1.11.3",
     "dotenv": "8.2.0",
     "inversify": "5.0.5",
-    "ioredis": "^4.28.3",
+    "ioredis": "^5.0.6",
     "mysql2": "^2.3.3",
     "newrelic": "8.6.0",
     "reflect-metadata": "0.1.13",
@@ -38,12 +41,11 @@
     "winston": "3.3.3"
   },
   "devDependencies": {
-    "@standardnotes/config": "^2.4.3",
     "@types/ioredis": "^4.28.10",
     "@types/newrelic": "^7.0.2"
   },
   "jest": {
-    "preset": "../../node_modules/@standardnotes/config/src/jest.json",
+    "preset": "../../.yarn/unplugged/@standardnotes-config-npm-2.4.3-f16699e480/node_modules/@standardnotes/config/src/jest.json",
     "coveragePathIgnorePatterns": [
       "/node_modules/",
       "/Bootstrap/"
