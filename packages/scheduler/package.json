@@ -15,7 +15,7 @@
     "build": "tsc --rootDir ./",
     "lint": "eslint . --ext .ts",
     "pretest": "yarn lint && yarn build",
-    "test": "jest --coverage",
+    "test": "jest --collect-coverage --config=./jest.config.js --runInBand",
     "worker": "yarn node dist/bin/worker.js",
     "verify:jobs": "yarn node dist/bin/verify.js",
     "setup:env": "cp .env.sample .env",
@@ -42,7 +42,11 @@
   },
   "devDependencies": {
     "@types/ioredis": "^4.28.10",
-    "@types/newrelic": "^7.0.2"
+    "@types/jest": "^28.1.2",
+    "@types/newrelic": "^7.0.2",
+    "@types/node": "^18.0.0",
+    "jest": "^28.1.1",
+    "ts-jest": "^28.0.5"
   },
   "jest": {
     "preset": "../../.yarn/unplugged/@standardnotes-config-npm-2.4.3-f16699e480/node_modules/@standardnotes/config/src/jest.json",

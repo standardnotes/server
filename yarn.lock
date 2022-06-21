@@ -1749,15 +1749,19 @@ __metadata:
     "@standardnotes/scheduler": ^1.1.0
     "@standardnotes/time": ^1.7.0
     "@types/ioredis": ^4.28.10
+    "@types/jest": ^28.1.2
     "@types/newrelic": ^7.0.2
+    "@types/node": ^18.0.0
     aws-sdk: ^2.1158.0
     dayjs: ^1.11.3
     dotenv: 8.2.0
     inversify: 5.0.5
     ioredis: ^5.0.6
+    jest: ^28.1.1
     mysql2: ^2.3.3
     newrelic: 8.6.0
     reflect-metadata: ^0.1.13
+    ts-jest: ^28.0.5
     typeorm: ^0.3.6
     winston: 3.3.3
   languageName: unknown
@@ -1782,14 +1786,10 @@ __metadata:
     "@lerna-lite/list": ^1.5.1
     "@lerna-lite/run": ^1.5.1
     "@standardnotes/config": ^2.4.3
-    "@types/jest": ^28.1.2
-    "@types/node": ^18.0.0
     "@typescript-eslint/eslint-plugin": ^5.20.0
     "@typescript-eslint/parser": ^5.20.0
     eslint: ^8.17.0
-    jest: ^28.1.1
     prettier: ^2.6.2
-    ts-jest: ^28.0.5
     ts-node: ^10.8.1
     typescript: ^4.7.4
   languageName: unknown

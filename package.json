@@ -13,12 +13,12 @@
   "scripts": {
     "lint": "yarn workspaces foreach -pt --parallel --jobs 10 --verbose run lint",
     "test": "yarn workspaces foreach -pt --parallel --jobs 10 --verbose run test",
-    "test:scheduler": "yarn workspaces foreach -pt --verbose -R --from @standardnotes/scheduler-server run test",
+    "test:scheduler": "yarn workspace @standardnotes/scheduler-server test",
     "clean": "yarn workspaces foreach -pt --parallel --jobs 10 --verbose run clean",
     "build:all": "yarn workspaces foreach -pt --verbose run build",
     "setup:env": "yarn workspaces foreach -pt --verbose run setup:env",
-    "build:scheduler": "yarn workspaces foreach -pt --verbose -R --from @standardnotes/scheduler-server run build",
-    "start:scheduler": "yarn workspaces foreach -pt --verbose -R --from @standardnotes/scheduler-server run worker",
+    "build:scheduler": "yarn workspace @standardnotes/scheduler-server build",
+    "start:scheduler": "yarn workspace @standardnotes/scheduler-server worker",
     "release:beta": "lerna version --conventional-prerelease --conventional-commits --yes -m \"chore(release): publish\""
   },
   "devDependencies": {
@@ -28,14 +28,10 @@
     "@lerna-lite/list": "^1.5.1",
     "@lerna-lite/run": "^1.5.1",
     "@standardnotes/config": "^2.4.3",
-    "@types/jest": "^28.1.2",
-    "@types/node": "^18.0.0",
     "@typescript-eslint/eslint-plugin": "^5.20.0",
     "@typescript-eslint/parser": "^5.20.0",
     "eslint": "^8.17.0",
-    "jest": "^28.1.1",
     "prettier": "^2.6.2",
-    "ts-jest": "^28.0.5",
     "ts-node": "^10.8.1",
     "typescript": "^4.7.4"
   },
