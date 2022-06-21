@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0-alpha.5](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.1.0-alpha.4...@standardnotes/scheduler-server@1.1.0-alpha.5) (2022-06-21)
+
+### Bug Fixes
+
+* dockerfile entrypoint and cmd ([263dc8a](https://github.com/standardnotes/server/commit/263dc8a98dd42377c1a6dccf24e6b004eee1893f))
+
 # [1.1.0-alpha.4](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.1.0-alpha.3...@standardnotes/scheduler-server@1.1.0-alpha.4) (2022-06-21)
 
 ### Bug Fixes
