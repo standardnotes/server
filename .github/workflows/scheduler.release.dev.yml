@@ -20,7 +20,6 @@ jobs:
     - uses: actions/setup-node@v1
       with:
         node-version: '16.x'
-    - run: yarn install
     - run: yarn test:scheduler
 
   publish-aws-ecr:
@@ -39,10 +38,6 @@ jobs:
     - name: Login to Amazon ECR
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
-    - name: Install dependencies locally
-      run: yarn install
-    - name: Build application locally
-      run: yarn build:scheduler
     - name: Build, tag, and push image to Amazon ECR
       id: build-image
       env:
@@ -50,7 +45,7 @@ jobs:
         ECR_REPOSITORY: scheduler-worker
         IMAGE_TAG: ${{ github.sha }}
       run: |
-        docker build -f Dockerfile.scheduler -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        yarn docker build @standardnotes/scheduler-server -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:dev
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:dev
@@ -62,21 +57,22 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Install dependencies locally
-      run: yarn install
-    - name: Build application locally
-      run: yarn build:scheduler
-    - name: Publish to Registry
-      env:
-        DOCKER_BUILDKIT: 1
-        COMPOSE_DOCKER_CLI_BUILD: 1
-      uses: elgohr/Publish-Docker-Github-Action@master
+    - name: Build image
+      run: yarn docker build @standardnotes/scheduler-server -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+    - name: Publish to Registry (dev tag)
+      uses: manusa/actions-publish-docker@v1.1.2
       with:
         name: standardnotes/scheduler
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
-        dockerfile: Dockerfile.scheduler
-        tags: "dev,${{ github.sha }}"
+        tag: "dev"
+    - name: Publish to Registry (sha tag)
+      uses: manusa/actions-publish-docker@v1.1.2
+      with:
+        name: standardnotes/scheduler
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+        tag: "${{ github.sha }}"
 
   deploy-worker:
     needs: publish-aws-ecr

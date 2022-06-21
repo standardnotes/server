@@ -1757,7 +1757,7 @@ __metadata:
     ioredis: ^5.0.6
     mysql2: ^2.3.3
     newrelic: 8.6.0
-    reflect-metadata: 0.1.13
+    reflect-metadata: ^0.1.13
     typeorm: ^0.3.6
     winston: 3.3.3
   languageName: unknown
@@ -7151,7 +7151,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"reflect-metadata@npm:0.1.13, reflect-metadata@npm:^0.1.13":
+"reflect-metadata@npm:^0.1.13":
   version: 0.1.13
   resolution: "reflect-metadata@npm:0.1.13"
   checksum: 798d379a7b6f6455501145419505c97dd11cbc23857a386add2b9ef15963ccf15a48d9d15507afe01d4cd74116df8a213247200bac00320bd7c11ddeaa5e8fb4
