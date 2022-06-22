@@ -1,0 +1,170 @@
+name: Files Server Dev
+
+concurrency:
+  group: files_dev_environment
+  cancel-in-progress: true
+
+on:
+  push:
+    tags:
+      - '@standardnotes/files-server@[0-9]*.[0-9]*.[0-9]*-alpha.[0-9]*'
+      - '@standardnotes/files-server@[0-9]*.[0-9]*.[0-9]*-beta.[0-9]*'
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-node@v1
+      with:
+        node-version: '16.x'
+    - run: yarn lint:files
+    - run: yarn test:files
+
+  publish-aws-ecr:
+    needs: test
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - run: cp .env.sample .env
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+    - name: Build, tag, and push image to Amazon ECR
+      id: build-image
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        ECR_REPOSITORY: files
+        IMAGE_TAG: ${{ github.sha }}
+      run: |
+        yarn docker build @standardnotes/files -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+        docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:dev
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:dev
+
+  publish-docker-hub:
+    needs: test
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - run: cp .env.sample .env
+    - name: Publish to Registry
+      uses: elgohr/Publish-Docker-Github-Action@master
+      with:
+        name: standardnotes/files
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+        tags: "dev,${{ github.sha }}"
+
+  deploy-web:
+    needs: publish-aws-ecr
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
+    - name: Download task definition
+      run: |
+        aws ecs describe-task-definition --task-definition files-dev --query taskDefinition > task-definition.json
+    - name: Fill in the new version in the Amazon ECS task definition
+      run: |
+        jq '(.containerDefinitions[] | select(.name=="files-dev") | .environment[] | select(.name=="VERSION")).value = "${{ github.sha }}"' task-definition.json > tmp.json && mv tmp.json task-definition.json
+    - name: Fill in the new image ID in the Amazon ECS task definition
+      id: task-def
+      uses: aws-actions/amazon-ecs-render-task-definition@v1
+      with:
+        task-definition: task-definition.json
+        container-name: files-dev
+        image: ${{ secrets.AWS_ECR_REGISTRY }}/files:${{ github.sha }}
+    - name: Deploy Amazon ECS task definition
+      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+      with:
+        task-definition: ${{ steps.task-def.outputs.task-definition }}
+        service: files-dev
+        cluster: dev
+        wait-for-service-stability: true
+
+  deploy-worker:
+    needs: publish-aws-ecr
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
+    - name: Download task definition
+      run: |
+        aws ecs describe-task-definition --task-definition files-worker-dev --query taskDefinition > task-definition.json
+    - name: Fill in the new version in the Amazon ECS task definition
+      run: |
+        jq '(.containerDefinitions[] | select(.name=="files-worker-dev") | .environment[] | select(.name=="VERSION")).value = "${{ github.sha }}"' task-definition.json > tmp.json && mv tmp.json task-definition.json
+    - name: Fill in the new image ID in the Amazon ECS task definition
+      id: task-def
+      uses: aws-actions/amazon-ecs-render-task-definition@v1
+      with:
+        task-definition: task-definition.json
+        container-name: files-worker-dev
+        image: ${{ secrets.AWS_ECR_REGISTRY }}/files:${{ github.sha }}
+    - name: Deploy Amazon ECS task definition
+      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+      with:
+        task-definition: ${{ steps.task-def.outputs.task-definition }}
+        service: files-worker-dev
+        cluster: dev
+        wait-for-service-stability: true
+
+  newrelic:
+    needs: [ deploy-web, deploy-worker ]
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create New Relic deployment marker for Web
+        uses: newrelic/deployment-marker-action@v1
+        with:
+          accountId: ${{ secrets.NEW_RELIC_ACCOUNT_ID }}
+          apiKey: ${{ secrets.NEW_RELIC_API_KEY }}
+          applicationId: ${{ secrets.NEW_RELIC_APPLICATION_ID_FILES_WEB_DEV }}
+          revision: "${{ github.sha }}"
+          description: "Automated Deployment via Github Actions"
+          user: "${{ github.actor }}"
+      - name: Create New Relic deployment marker for Worker
+        uses: newrelic/deployment-marker-action@v1
+        with:
+          accountId: ${{ secrets.NEW_RELIC_ACCOUNT_ID }}
+          apiKey: ${{ secrets.NEW_RELIC_API_KEY }}
+          applicationId: ${{ secrets.NEW_RELIC_APPLICATION_ID_FILES_WORKER_DEV }}
+          revision: "${{ github.sha }}"
+          description: "Automated Deployment via Github Actions"
+          user: "${{ github.actor }}"
+
+  notify_discord:
+    needs: [ deploy-web, deploy-worker ]
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Run Discord Webhook
+      uses: johnnyhuy/actions-discord-git-webhook@main
+      with:
+        webhook_url: ${{ secrets.DISCORD_WEBHOOK_URL }}

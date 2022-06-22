@@ -15,3 +15,6 @@ newrelic_agent.log
 !.yarn/unplugged
 !.yarn/sdks
 !.yarn/versions
+
+packages/files/uploads/*
+!packages/files/uploads/.gitkeep
