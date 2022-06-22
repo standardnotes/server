@@ -6,42 +6,42 @@ COMMAND=$1 && shift 1
 case "$COMMAND" in
   'start-local' )
     echo "Starting Web..."
-    yarn start:local
+    yarn workspace @standardnotes/auth-server start:local
     ;;
 
   'start-web' )
     echo "Starting Web..."
-    yarn start
+    yarn workspace @standardnotes/auth-server start
     ;;
 
   'start-worker' )
     echo "Starting Worker..."
-    yarn worker
+    yarn workspace @standardnotes/auth-server worker
     ;;
 
   'email-daily-backup' )
     echo "Starting Email Daily Backup..."
-    yarn daily-backup:email
+    yarn workspace @standardnotes/auth-server daily-backup:email
     ;;
 
   'email-weekly-backup' )
     echo "Starting Email Weekly Backup..."
-    yarn weekly-backup:email
+    yarn workspace @standardnotes/auth-server weekly-backup:email
     ;;
 
   'dropbox-daily-backup' )
     echo "Starting Dropbox Daily Backup..."
-    yarn daily-backup:dropbox
+    yarn workspace @standardnotes/auth-server daily-backup:dropbox
     ;;
 
   'google-drive-daily-backup' )
     echo "Starting Google Drive Daily Backup..."
-    yarn daily-backup:google_drive
+    yarn workspace @standardnotes/auth-server daily-backup:google_drive
     ;;
 
   'one-drive-daily-backup' )
     echo "Starting One Drive Daily Backup..."
-    yarn daily-backup:one_drive
+    yarn workspace @standardnotes/auth-server daily-backup:one_drive
     ;;
 
    * )
