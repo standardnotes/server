@@ -1,4 +1,4 @@
-FROM node:16.13.1-alpine AS builder
+FROM node:16.15.1-alpine AS builder
 
 # Install dependencies for building native libraries
 RUN apk add --update git openssh-client python3 alpine-sdk
@@ -10,7 +10,7 @@ COPY manifests ./
 
 RUN yarn install --immutable
 
-FROM node:16.13.1-alpine
+FROM node:16.15.1-alpine
 
 WORKDIR /workspace
 
