@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0-alpha.6](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.1.0-alpha.5...@standardnotes/scheduler-server@1.1.0-alpha.6) (2022-06-22)
+
+### Bug Fixes
+
+* build the app before packagin into a Docker image ([e8d1362](https://github.com/standardnotes/server/commit/e8d13627f807e71bd3777595137a6f1ecd43c5ed))
+
 # [1.1.0-alpha.5](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.1.0-alpha.4...@standardnotes/scheduler-server@1.1.0-alpha.5) (2022-06-21)
 
 ### Bug Fixes
