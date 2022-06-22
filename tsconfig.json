@@ -27,6 +27,9 @@
     },
     {
       "path": "./packages/auth"
+    },
+    {
+      "path": "./packages/syncing-server"
     }
   ]
 }
