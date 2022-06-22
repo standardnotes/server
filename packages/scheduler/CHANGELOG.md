@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0-alpha.7](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.1.0-alpha.6...@standardnotes/scheduler-server@1.1.0-alpha.7) (2022-06-22)
+
+### Bug Fixes
+
+* update node version to latest lts ([2a1b9a6](https://github.com/standardnotes/server/commit/2a1b9a66797b046565b63183cb17e4b335de492f))
+
 # [1.1.0-alpha.6](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.1.0-alpha.5...@standardnotes/scheduler-server@1.1.0-alpha.6) (2022-06-22)
 
 ### Bug Fixes
