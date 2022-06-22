@@ -1,0 +1,86 @@
+import * as bcrypt from 'bcryptjs'
+import { inject, injectable } from 'inversify'
+import TYPES from '../../../Bootstrap/Types'
+import { AuthResponseFactoryResolverInterface } from '../../Auth/AuthResponseFactoryResolverInterface'
+
+import { User } from '../../User/User'
+import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'
+import { ChangeCredentialsDTO } from './ChangeCredentialsDTO'
+import { ChangeCredentialsResponse } from './ChangeCredentialsResponse'
+import { UseCaseInterface } from '../UseCaseInterface'
+import { DomainEventFactoryInterface } from '../../Event/DomainEventFactoryInterface'
+import { DomainEventPublisherInterface, UserEmailChangedEvent } from '@standardnotes/domain-events'
+import { TimerInterface } from '@standardnotes/time'
+
+@injectable()
+export class ChangeCredentials implements UseCaseInterface {
+  constructor(
+    @inject(TYPES.UserRepository) private userRepository: UserRepositoryInterface,
+    @inject(TYPES.AuthResponseFactoryResolver)
+    private authResponseFactoryResolver: AuthResponseFactoryResolverInterface,
+    @inject(TYPES.DomainEventPublisher) private domainEventPublisher: DomainEventPublisherInterface,
+    @inject(TYPES.DomainEventFactory) private domainEventFactory: DomainEventFactoryInterface,
+    @inject(TYPES.Timer) private timer: TimerInterface,
+  ) {}
+
+  async execute(dto: ChangeCredentialsDTO): Promise<ChangeCredentialsResponse> {
+    if (!(await bcrypt.compare(dto.currentPassword, dto.user.encryptedPassword))) {
+      return {
+        success: false,
+        errorMessage: 'The current password you entered is incorrect. Please try again.',
+      }
+    }
+
+    dto.user.encryptedPassword = await bcrypt.hash(dto.newPassword, User.PASSWORD_HASH_COST)
+
+    let userEmailChangedEvent: UserEmailChangedEvent | undefined = undefined
+    if (dto.newEmail !== undefined) {
+      const existingUser = await this.userRepository.findOneByEmail(dto.newEmail)
+      if (existingUser !== null) {
+        return {
+          success: false,
+          errorMessage: 'The email you entered is already taken. Please try again.',
+        }
+      }
+
+      userEmailChangedEvent = this.domainEventFactory.createUserEmailChangedEvent(
+        dto.user.uuid,
+        dto.user.email,
+        dto.newEmail,
+      )
+
+      dto.user.email = dto.newEmail
+    }
+
+    dto.user.pwNonce = dto.pwNonce
+    if (dto.protocolVersion) {
+      dto.user.version = dto.protocolVersion
+    }
+    if (dto.kpCreated) {
+      dto.user.kpCreated = dto.kpCreated
+    }
+    if (dto.kpOrigination) {
+      dto.user.kpOrigination = dto.kpOrigination
+    }
+    dto.user.updatedAt = this.timer.getUTCDate()
+
+    const updatedUser = await this.userRepository.save(dto.user)
+
+    if (userEmailChangedEvent !== undefined) {
+      await this.domainEventPublisher.publish(userEmailChangedEvent)
+    }
+
+    const authResponseFactory = this.authResponseFactoryResolver.resolveAuthResponseFactoryVersion(dto.apiVersion)
+
+    return {
+      success: true,
+      authResponse: await authResponseFactory.createResponse({
+        user: updatedUser,
+        apiVersion: dto.apiVersion,
+        userAgent: dto.updatedWithUserAgent,
+        ephemeralSession: false,
+        readonlyAccess: false,
+      }),
+    }
+  }
+}

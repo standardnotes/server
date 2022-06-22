@@ -118,7 +118,7 @@ jobs:
         with:
           accountId: ${{ secrets.NEW_RELIC_ACCOUNT_ID }}
           apiKey: ${{ secrets.NEW_RELIC_API_KEY }}
-          applicationId: ${{ secrets.NEW_RELIC_APPLICATION_ID_WORKER_DEV }}
+          applicationId: ${{ secrets.NEW_RELIC_APPLICATION_ID_SCHEDULER_WORKER_DEV }}
           revision: "${{ github.sha }}"
           description: "Automated Deployment via Github Actions"
           user: "${{ github.actor }}"

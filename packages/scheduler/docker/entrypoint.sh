@@ -11,7 +11,7 @@ case "$COMMAND" in
 
   'verify-jobs' )
     echo "Starting jobs verification..."
-    yarn verify:jobs
+    yarn workspace @standardnotes/scheduler-server verify:jobs
     ;;
 
    * )
