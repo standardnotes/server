@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0-alpha.5](https://github.com/standardnotes/auth/compare/@standardnotes/auth-server@1.1.0-alpha.4...@standardnotes/auth-server@1.1.0-alpha.5) (2022-06-22)
+
+### Bug Fixes
+
+* make DISABLE_USER_REGISTRATION env var optional ([3110c20](https://github.com/standardnotes/auth/commit/3110c20596b52da8a43551432cfef94e68046385))
+
 # [1.1.0-alpha.4](https://github.com/standardnotes/auth/compare/@standardnotes/auth-server@1.1.0-alpha.3...@standardnotes/auth-server@1.1.0-alpha.4) (2022-06-22)
 
 **Note:** Version bump only for package @standardnotes/auth-server
