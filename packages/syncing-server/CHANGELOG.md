@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0-alpha.8](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.1.0-alpha.7...@standardnotes/syncing-server@1.1.0-alpha.8) (2022-06-23)
+
+### Bug Fixes
+
+* add missing curl to docker image for healthcheck purposes ([7efb48d](https://github.com/standardnotes/syncing-server-js/commit/7efb48dd2a6066c29601d34bfcbfe6231f644c50))
+
 # [1.1.0-alpha.7](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.1.0-alpha.6...@standardnotes/syncing-server@1.1.0-alpha.7) (2022-06-23)
 
 **Note:** Version bump only for package @standardnotes/syncing-server

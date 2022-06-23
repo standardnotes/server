@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0-alpha.14](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.1.0-alpha.13...@standardnotes/scheduler-server@1.1.0-alpha.14) (2022-06-23)
+
+### Bug Fixes
+
+* add missing curl to docker image for healthcheck purposes ([7efb48d](https://github.com/standardnotes/server/commit/7efb48dd2a6066c29601d34bfcbfe6231f644c50))
+
 # [1.1.0-alpha.13](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.1.0-alpha.12...@standardnotes/scheduler-server@1.1.0-alpha.13) (2022-06-22)
 
 **Note:** Version bump only for package @standardnotes/scheduler-server
