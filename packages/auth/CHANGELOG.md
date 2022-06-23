@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0-alpha.6](https://github.com/standardnotes/auth/compare/@standardnotes/auth-server@1.1.0-alpha.5...@standardnotes/auth-server@1.1.0-alpha.6) (2022-06-23)
+
+### Bug Fixes
+
+* add missing curl to docker image for healthcheck purposes ([7efb48d](https://github.com/standardnotes/auth/commit/7efb48dd2a6066c29601d34bfcbfe6231f644c50))
+
 # [1.1.0-alpha.5](https://github.com/standardnotes/auth/compare/@standardnotes/auth-server@1.1.0-alpha.4...@standardnotes/auth-server@1.1.0-alpha.5) (2022-06-22)
 
 ### Bug Fixes
