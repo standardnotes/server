@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0-alpha.4](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.1.0-alpha.3...@standardnotes/syncing-server@1.1.0-alpha.4) (2022-06-23)
+
+### Features
+
+* add api-gateway package ([57c3b9c](https://github.com/standardnotes/syncing-server-js/commit/57c3b9c29e5b16449c864e59dbc1fd11689125f9))
+
 # [1.1.0-alpha.3](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.1.0-alpha.2...@standardnotes/syncing-server@1.1.0-alpha.3) (2022-06-22)
 
 **Note:** Version bump only for package @standardnotes/syncing-server
