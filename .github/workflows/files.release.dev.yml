@@ -163,14 +163,3 @@ jobs:
           revision: "${{ github.sha }}"
           description: "Automated Deployment via Github Actions"
           user: "${{ github.actor }}"
-
-  notify_discord:
-    needs: [ deploy-web, deploy-worker ]
-
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Run Discord Webhook
-      uses: johnnyhuy/actions-discord-git-webhook@main
-      with:
-        webhook_url: ${{ secrets.DISCORD_WEBHOOK_URL }}
