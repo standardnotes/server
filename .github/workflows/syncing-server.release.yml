@@ -185,25 +185,7 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
-      - name: DEV - Create New Relic deployment marker for Web
-        uses: newrelic/deployment-marker-action@v1
-        with:
-          accountId: ${{ secrets.NEW_RELIC_ACCOUNT_ID }}
-          apiKey: ${{ secrets.NEW_RELIC_API_KEY }}
-          applicationId: ${{ secrets.NEW_RELIC_APPLICATION_ID_SYNCING_SERVER_WEB_DEV }}
-          revision: "${{ github.sha }}"
-          description: "Automated Deployment via Github Actions"
-          user: "${{ github.actor }}"
-      - name: DEV - Create New Relic deployment marker for Worker
-        uses: newrelic/deployment-marker-action@v1
-        with:
-          accountId: ${{ secrets.NEW_RELIC_ACCOUNT_ID }}
-          apiKey: ${{ secrets.NEW_RELIC_API_KEY }}
-          applicationId: ${{ secrets.NEW_RELIC_APPLICATION_ID_SYNCING_SERVER_WORKER_DEV }}
-          revision: "${{ github.sha }}"
-          description: "Automated Deployment via Github Actions"
-          user: "${{ github.actor }}"
-      - name: PROD - Create New Relic deployment marker for Web
+      - name: Create New Relic deployment marker for Web
         uses: newrelic/deployment-marker-action@v1
         with:
           accountId: ${{ secrets.NEW_RELIC_ACCOUNT_ID }}
@@ -212,7 +194,7 @@ jobs:
           revision: "${{ github.sha }}"
           description: "Automated Deployment via Github Actions"
           user: "${{ github.actor }}"
-      - name: PROD - Create New Relic deployment marker for Worker
+      - name: Create New Relic deployment marker for Worker
         uses: newrelic/deployment-marker-action@v1
         with:
           accountId: ${{ secrets.NEW_RELIC_ACCOUNT_ID }}
