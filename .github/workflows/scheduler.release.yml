@@ -92,7 +92,7 @@ jobs:
       run: |
         jq '(.containerDefinitions[] | select(.name=="scheduler-worker-dev") | .environment[] | select(.name=="VERSION")).value = "${{ github.sha }}"' task-definition.json > tmp.json && mv tmp.json task-definition.json
     - name: DEV - Fill in the new image ID in the Amazon ECS task definition
-      id: task-def
+      id: task-def-dev
       uses: aws-actions/amazon-ecs-render-task-definition@v1
       with:
         task-definition: task-definition.json
@@ -101,7 +101,7 @@ jobs:
     - name: DEV - Deploy Amazon ECS task definition
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
       with:
-        task-definition: ${{ steps.task-def.outputs.task-definition }}
+        task-definition: ${{ steps.task-def-dev.outputs.task-definition }}
         service: scheduler-worker-dev
         cluster: dev
         wait-for-service-stability: true
@@ -112,7 +112,7 @@ jobs:
       run: |
         jq '(.containerDefinitions[] | select(.name=="scheduler-worker-prod") | .environment[] | select(.name=="VERSION")).value = "${{ github.sha }}"' task-definition.json > tmp.json && mv tmp.json task-definition.json
     - name: PROD - Fill in the new image ID in the Amazon ECS task definition
-      id: task-def
+      id: task-def-prod
       uses: aws-actions/amazon-ecs-render-task-definition@v1
       with:
         task-definition: task-definition.json
@@ -121,7 +121,7 @@ jobs:
     - name: PROD - Deploy Amazon ECS task definition
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
       with:
-        task-definition: ${{ steps.task-def.outputs.task-definition }}
+        task-definition: ${{ steps.task-def-prod.outputs.task-definition }}
         service: scheduler-worker-prod
         cluster: prod
         wait-for-service-stability: true

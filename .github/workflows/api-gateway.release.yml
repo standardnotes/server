@@ -1,14 +1,13 @@
-name: Api Gateway Dev
+name: Api Gateway
 
 concurrency:
-  group: api_gateway_dev_environment
+  group: api_gateway
   cancel-in-progress: true
 
 on:
   push:
     tags:
-      - '@standardnotes/api-gateway@[0-9]*.[0-9]*.[0-9]*-alpha.[0-9]*'
-      - '@standardnotes/api-gateway@[0-9]*.[0-9]*.[0-9]*-beta.[0-9]*'
+      - '*standardnotes/api-gateway*'
   workflow_dispatch:
 
 jobs:
@@ -49,8 +48,8 @@ jobs:
       run: |
         yarn docker build @standardnotes/api-gateway -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-        docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:dev
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY:dev
+        docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:latest
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
 
   publish-docker-hub:
     needs: test
@@ -70,8 +69,8 @@ jobs:
       run: |
         yarn docker build @standardnotes/api-gateway -t standardnotes/api-gateway:${{ github.sha }}
         docker push standardnotes/api-gateway:${{ github.sha }}
-        docker tag standardnotes/api-gateway:${{ github.sha }} standardnotes/api-gateway:dev
-        docker push standardnotes/api-gateway:dev
+        docker tag standardnotes/api-gateway:${{ github.sha }} standardnotes/api-gateway:latest
+        docker push standardnotes/api-gateway:latest
 
   deploy-web:
     needs: publish-aws-ecr
@@ -85,25 +84,45 @@ jobs:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: us-east-1
-    - name: Download task definition
+    - name: DEV - Download task definition
       run: |
         aws ecs describe-task-definition --task-definition api-gateway-dev --query taskDefinition > task-definition.json
-    - name: Fill in the new version in the Amazon ECS task definition
+    - name: DEV - Fill in the new version in the Amazon ECS task definition
       run: |
         jq '(.containerDefinitions[] | select(.name=="api-gateway-dev") | .environment[] | select(.name=="VERSION")).value = "${{ github.sha }}"' task-definition.json > tmp.json && mv tmp.json task-definition.json
-    - name: Fill in the new image ID in the Amazon ECS task definition
-      id: task-def
+    - name: DEV - Fill in the new image ID in the Amazon ECS task definition
+      id: task-def-dev
       uses: aws-actions/amazon-ecs-render-task-definition@v1
       with:
         task-definition: task-definition.json
         container-name: api-gateway-dev
         image: ${{ secrets.AWS_ECR_REGISTRY }}/api-gateway:${{ github.sha }}
-    - name: Deploy Amazon ECS task definition
+    - name: DEV - Deploy Amazon ECS task definition
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
       with:
-        task-definition: ${{ steps.task-def.outputs.task-definition }}
+        task-definition: ${{ steps.task-def-dev.outputs.task-definition }}
         service: api-gateway-dev
         cluster: dev
+        wait-for-service-stability: true
+    - name: PROD - Download task definition
+      run: |
+        aws ecs describe-task-definition --task-definition api-gateway-prod --query taskDefinition > task-definition.json
+    - name: PROD - Fill in the new version in the Amazon ECS task definition
+      run: |
+        jq '(.containerDefinitions[] | select(.name=="api-gateway-prod") | .environment[] | select(.name=="VERSION")).value = "${{ github.sha }}"' task-definition.json > tmp.json && mv tmp.json task-definition.json
+    - name: PROD - Fill in the new image ID in the Amazon ECS task definition
+      id: task-def-prod
+      uses: aws-actions/amazon-ecs-render-task-definition@v1
+      with:
+        task-definition: task-definition.json
+        container-name: api-gateway-prod
+        image: ${{ secrets.AWS_ECR_REGISTRY }}/api-gateway:${{ github.sha }}
+    - name: PROD - Deploy Amazon ECS task definition
+      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+      with:
+        task-definition: ${{ steps.task-def-prod.outputs.task-definition }}
+        service: api-gateway-prod
+        cluster: prod
         wait-for-service-stability: true
 
   newrelic:
@@ -116,7 +135,7 @@ jobs:
         with:
           accountId: ${{ secrets.NEW_RELIC_ACCOUNT_ID }}
           apiKey: ${{ secrets.NEW_RELIC_API_KEY }}
-          applicationId: ${{ secrets.NEW_RELIC_APPLICATION_ID_API_GATEWAY_WEB_DEV }}
+          applicationId: ${{ secrets.NEW_RELIC_APPLICATION_ID_API_GATEWAY_WEB_PROD }}
           revision: "${{ github.sha }}"
           description: "Automated Deployment via Github Actions"
           user: "${{ github.actor }}"
