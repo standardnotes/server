@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0-alpha.6](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.1.0-alpha.5...@standardnotes/syncing-server@1.1.0-alpha.6) (2022-06-23)
+
+### Bug Fixes
+
+* upgrade time lib for syncing-server ([6c87d36](https://github.com/standardnotes/syncing-server-js/commit/6c87d3614dfb77f6d1cb02d3d4c1884f2164693f))
+
 # [1.1.0-alpha.5](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.1.0-alpha.4...@standardnotes/syncing-server@1.1.0-alpha.5) (2022-06-23)
 
 **Note:** Version bump only for package @standardnotes/syncing-server
