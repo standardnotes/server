@@ -20,6 +20,7 @@ jobs:
     - uses: actions/setup-node@v1
       with:
         node-version: '16.x'
+    - run: yarn install --immutable
     - run: yarn lint:syncing-server
     - run: yarn test:syncing-server
 
