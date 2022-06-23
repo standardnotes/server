@@ -2261,7 +2261,7 @@ __metadata:
     "@standardnotes/payloads": ^1.5.1
     "@standardnotes/responses": ^1.6.15
     "@standardnotes/settings": 1.14.3
-    "@standardnotes/time": ^1.7.0
+    "@standardnotes/time": ^1.7.1
     "@types/cors": ^2.8.9
     "@types/dotenv": ^8.2.0
     "@types/express": ^4.17.9
@@ -2308,6 +2308,17 @@ __metadata:
     microtime: ^3.0.0
     reflect-metadata: ^0.1.13
   checksum: 51b168d8a5fd8fada78e95654c5349fe2d86e240ee08d9b9270559fd0d34050220ce0d4188559c8816ecd5f281f6c5a1355d939778814a60aee84cfd9bd61570
+  languageName: node
+  linkType: hard
+
+"@standardnotes/time@npm:^1.7.1":
+  version: 1.7.1
+  resolution: "@standardnotes/time@npm:1.7.1"
+  dependencies:
+    dayjs: ^1.10.8
+    microtime: ^3.1.0
+    reflect-metadata: ^0.1.13
+  checksum: ccb9c4af73d2c77d5b1cfea480930e3a30e87fb426eee3c60eb0ce0f259fa5c1f9b1b29fdc52c72d321821791e3bdc141e4af0bfc668662863012743332c5407
   languageName: node
   linkType: hard
 
@@ -7589,7 +7600,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"microtime@npm:^3.0.0":
+"microtime@npm:^3.0.0, microtime@npm:^3.1.0":
   version: 3.1.0
   resolution: "microtime@npm:3.1.0"
   dependencies:

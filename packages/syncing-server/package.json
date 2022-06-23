@@ -32,7 +32,7 @@
     "@standardnotes/payloads": "^1.5.1",
     "@standardnotes/responses": "^1.6.15",
     "@standardnotes/settings": "1.14.3",
-    "@standardnotes/time": "^1.7.0",
+    "@standardnotes/time": "^1.7.1",
     "aws-sdk": "^2.1159.0",
     "axios": "0.24.0",
     "cors": "2.8.5",

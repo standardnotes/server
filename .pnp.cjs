@@ -3019,7 +3019,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@standardnotes/payloads", "npm:1.5.1"],\
             ["@standardnotes/responses", "npm:1.6.36"],\
             ["@standardnotes/settings", "npm:1.14.3"],\
-            ["@standardnotes/time", "npm:1.7.0"],\
+            ["@standardnotes/time", "npm:1.7.1"],\
             ["@types/cors", "npm:2.8.12"],\
             ["@types/dotenv", "npm:8.2.0"],\
             ["@types/express", "npm:4.17.13"],\
@@ -3064,6 +3064,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@standardnotes-time-npm-1.7.0-fa2b65b191-51b168d8a5.zip/node_modules/@standardnotes/time/",\
           "packageDependencies": [\
             ["@standardnotes/time", "npm:1.7.0"],\
+            ["dayjs", "npm:1.11.3"],\
+            ["microtime", "npm:3.1.0"],\
+            ["reflect-metadata", "npm:0.1.13"]\
+          ],\
+          "linkType": "HARD"\
+        }],\
+        ["npm:1.7.1", {\
+          "packageLocation": "./.yarn/cache/@standardnotes-time-npm-1.7.1-e6859705d5-ccb9c4af73.zip/node_modules/@standardnotes/time/",\
+          "packageDependencies": [\
+            ["@standardnotes/time", "npm:1.7.1"],\
             ["dayjs", "npm:1.11.3"],\
             ["microtime", "npm:3.1.0"],\
             ["reflect-metadata", "npm:0.1.13"]\
