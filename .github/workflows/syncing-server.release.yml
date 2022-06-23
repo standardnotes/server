@@ -89,7 +89,7 @@ jobs:
     - name: DEV - Download task definition
       run: |
         aws ecs describe-task-definition --task-definition syncing-server-js-dev --query taskDefinition > task-definition.json
-    - name: Fill in the new version in the Amazon ECS task definition
+    - name: DEV - Fill in the new version in the Amazon ECS task definition
       run: |
         jq '(.containerDefinitions[] | select(.name=="syncing-server-js-dev") | .environment[] | select(.name=="VERSION")).value = "${{ github.sha }}"' task-definition.json > tmp.json && mv tmp.json task-definition.json
     - name: DEV - Fill in the new image ID in the Amazon ECS task definition
@@ -109,7 +109,7 @@ jobs:
     - name: PROD - Download task definition
       run: |
         aws ecs describe-task-definition --task-definition syncing-server-js-prod --query taskDefinition > task-definition.json
-    - name: Fill in the new version in the Amazon ECS task definition
+    - name: PROD - Fill in the new version in the Amazon ECS task definition
       run: |
         jq '(.containerDefinitions[] | select(.name=="syncing-server-js-prod") | .environment[] | select(.name=="VERSION")).value = "${{ github.sha }}"' task-definition.json > tmp.json && mv tmp.json task-definition.json
     - name: PROD - Fill in the new image ID in the Amazon ECS task definition
@@ -142,7 +142,7 @@ jobs:
     - name: DEV - Download task definition
       run: |
         aws ecs describe-task-definition --task-definition syncing-server-js-worker-dev --query taskDefinition > task-definition.json
-    - name: Fill in the new version in the Amazon ECS task definition
+    - name: DEV - Fill in the new version in the Amazon ECS task definition
       run: |
         jq '(.containerDefinitions[] | select(.name=="syncing-server-js-worker-dev") | .environment[] | select(.name=="VERSION")).value = "${{ github.sha }}"' task-definition.json > tmp.json && mv tmp.json task-definition.json
     - name: DEV - Fill in the new image ID in the Amazon ECS task definition
@@ -162,7 +162,7 @@ jobs:
     - name: PROD - Download task definition
       run: |
         aws ecs describe-task-definition --task-definition syncing-server-js-worker-prod --query taskDefinition > task-definition.json
-    - name: Fill in the new version in the Amazon ECS task definition
+    - name: PROD - Fill in the new version in the Amazon ECS task definition
       run: |
         jq '(.containerDefinitions[] | select(.name=="syncing-server-js-worker-prod") | .environment[] | select(.name=="VERSION")).value = "${{ github.sha }}"' task-definition.json > tmp.json && mv tmp.json task-definition.json
     - name: PROD - Fill in the new image ID in the Amazon ECS task definition
