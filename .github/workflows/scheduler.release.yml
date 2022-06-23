@@ -88,7 +88,7 @@ jobs:
     - name: DEV - Download task definition
       run: |
         aws ecs describe-task-definition --task-definition scheduler-worker-dev --query taskDefinition > task-definition.json
-    - name: Fill in the new version in the Amazon ECS task definition
+    - name: DEV - Fill in the new version in the Amazon ECS task definition
       run: |
         jq '(.containerDefinitions[] | select(.name=="scheduler-worker-dev") | .environment[] | select(.name=="VERSION")).value = "${{ github.sha }}"' task-definition.json > tmp.json && mv tmp.json task-definition.json
     - name: DEV - Fill in the new image ID in the Amazon ECS task definition
@@ -108,7 +108,7 @@ jobs:
     - name: PROD - Download task definition
       run: |
         aws ecs describe-task-definition --task-definition scheduler-worker-prod --query taskDefinition > task-definition.json
-    - name: Fill in the new version in the Amazon ECS task definition
+    - name: PROD - Fill in the new version in the Amazon ECS task definition
       run: |
         jq '(.containerDefinitions[] | select(.name=="scheduler-worker-prod") | .environment[] | select(.name=="VERSION")).value = "${{ github.sha }}"' task-definition.json > tmp.json && mv tmp.json task-definition.json
     - name: PROD - Fill in the new image ID in the Amazon ECS task definition
