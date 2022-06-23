@@ -38,7 +38,7 @@
     "start:files": "yarn workspace @standardnotes/files-server start",
     "start:files-worker": "yarn workspace @standardnotes/files-server worker",
     "start:api-gateway": "yarn workspace @standardnotes/api-gateway start",
-    "release:beta": "lerna version --conventional-prerelease --conventional-commits --yes -m \"chore(release): publish\""
+    "release:prod": "lerna version --conventional-commits --yes -m \"chore(release): publish new version\""
   },
   "devDependencies": {
     "@commitlint/cli": "^17.0.2",

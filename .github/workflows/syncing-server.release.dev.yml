@@ -1,14 +1,13 @@
-name: Syncing Server Dev
+name: Syncing Server
 
 concurrency:
-  group: syncing_server_dev_environment
+  group: syncing_server
   cancel-in-progress: true
 
 on:
   push:
     tags:
-      - '@standardnotes/syncing-server@[0-9]*.[0-9]*.[0-9]*-alpha.[0-9]*'
-      - '@standardnotes/syncing-server@[0-9]*.[0-9]*.[0-9]*-beta.[0-9]*'
+      - '*standardnotes/syncing-server*'
   workflow_dispatch:
 
 jobs:
@@ -51,8 +50,8 @@ jobs:
       run: |
         yarn docker build @standardnotes/syncing-server -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-        docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:dev
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY:dev
+        docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:latest
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
 
   publish-docker-hub:
     needs: test
@@ -72,8 +71,8 @@ jobs:
       run: |
         yarn docker build @standardnotes/syncing-server -t standardnotes/syncing-server-js:${{ github.sha }}
         docker push standardnotes/syncing-server-js:${{ github.sha }}
-        docker tag standardnotes/syncing-server-js:${{ github.sha }} standardnotes/syncing-server-js:dev
-        docker push standardnotes/syncing-server-js:dev
+        docker tag standardnotes/syncing-server-js:${{ github.sha }} standardnotes/syncing-server-js:latest
+        docker push standardnotes/syncing-server-js:latest
 
   deploy-web:
     needs: publish-aws-ecr
@@ -87,25 +86,45 @@ jobs:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: us-east-1
-    - name: Download task definition
+    - name: DEV - Download task definition
       run: |
         aws ecs describe-task-definition --task-definition syncing-server-js-dev --query taskDefinition > task-definition.json
     - name: Fill in the new version in the Amazon ECS task definition
       run: |
         jq '(.containerDefinitions[] | select(.name=="syncing-server-js-dev") | .environment[] | select(.name=="VERSION")).value = "${{ github.sha }}"' task-definition.json > tmp.json && mv tmp.json task-definition.json
-    - name: Fill in the new image ID in the Amazon ECS task definition
+    - name: DEV - Fill in the new image ID in the Amazon ECS task definition
       id: task-def
       uses: aws-actions/amazon-ecs-render-task-definition@v1
       with:
         task-definition: task-definition.json
         container-name: syncing-server-js-dev
         image: ${{ secrets.AWS_ECR_REGISTRY }}/syncing-server-js:${{ github.sha }}
-    - name: Deploy Amazon ECS task definition
+    - name: DEV - Deploy Amazon ECS task definition
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
       with:
         task-definition: ${{ steps.task-def.outputs.task-definition }}
         service: syncing-server-js-dev
         cluster: dev
+        wait-for-service-stability: true
+    - name: PROD - Download task definition
+      run: |
+        aws ecs describe-task-definition --task-definition syncing-server-js-prod --query taskDefinition > task-definition.json
+    - name: Fill in the new version in the Amazon ECS task definition
+      run: |
+        jq '(.containerDefinitions[] | select(.name=="syncing-server-js-prod") | .environment[] | select(.name=="VERSION")).value = "${{ github.sha }}"' task-definition.json > tmp.json && mv tmp.json task-definition.json
+    - name: PROD - Fill in the new image ID in the Amazon ECS task definition
+      id: task-def
+      uses: aws-actions/amazon-ecs-render-task-definition@v1
+      with:
+        task-definition: task-definition.json
+        container-name: syncing-server-js-prod
+        image: ${{ secrets.AWS_ECR_REGISTRY }}/syncing-server-js:${{ github.sha }}
+    - name: PROD - Deploy Amazon ECS task definition
+      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+      with:
+        task-definition: ${{ steps.task-def.outputs.task-definition }}
+        service: syncing-server-js-prod
+        cluster: prod
         wait-for-service-stability: true
 
   deploy-worker:
@@ -120,25 +139,45 @@ jobs:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: us-east-1
-    - name: Download task definition
+    - name: DEV - Download task definition
       run: |
         aws ecs describe-task-definition --task-definition syncing-server-js-worker-dev --query taskDefinition > task-definition.json
     - name: Fill in the new version in the Amazon ECS task definition
       run: |
         jq '(.containerDefinitions[] | select(.name=="syncing-server-js-worker-dev") | .environment[] | select(.name=="VERSION")).value = "${{ github.sha }}"' task-definition.json > tmp.json && mv tmp.json task-definition.json
-    - name: Fill in the new image ID in the Amazon ECS task definition
+    - name: DEV - Fill in the new image ID in the Amazon ECS task definition
       id: task-def
       uses: aws-actions/amazon-ecs-render-task-definition@v1
       with:
         task-definition: task-definition.json
         container-name: syncing-server-js-worker-dev
         image: ${{ secrets.AWS_ECR_REGISTRY }}/syncing-server-js:${{ github.sha }}
-    - name: Deploy Amazon ECS task definition
+    - name: DEV - Deploy Amazon ECS task definition
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
       with:
         task-definition: ${{ steps.task-def.outputs.task-definition }}
         service: syncing-server-js-worker-dev
         cluster: dev
+        wait-for-service-stability: true
+    - name: PROD - Download task definition
+      run: |
+        aws ecs describe-task-definition --task-definition syncing-server-js-worker-prod --query taskDefinition > task-definition.json
+    - name: Fill in the new version in the Amazon ECS task definition
+      run: |
+        jq '(.containerDefinitions[] | select(.name=="syncing-server-js-worker-prod") | .environment[] | select(.name=="VERSION")).value = "${{ github.sha }}"' task-definition.json > tmp.json && mv tmp.json task-definition.json
+    - name: PROD - Fill in the new image ID in the Amazon ECS task definition
+      id: task-def
+      uses: aws-actions/amazon-ecs-render-task-definition@v1
+      with:
+        task-definition: task-definition.json
+        container-name: syncing-server-js-worker-prod
+        image: ${{ secrets.AWS_ECR_REGISTRY }}/syncing-server-js:${{ github.sha }}
+    - name: PROD - Deploy Amazon ECS task definition
+      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+      with:
+        task-definition: ${{ steps.task-def.outputs.task-definition }}
+        service: syncing-server-js-worker-prod
+        cluster: prod
         wait-for-service-stability: true
 
   newrelic:
@@ -146,7 +185,7 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
-      - name: Create New Relic deployment marker for Web
+      - name: DEV - Create New Relic deployment marker for Web
         uses: newrelic/deployment-marker-action@v1
         with:
           accountId: ${{ secrets.NEW_RELIC_ACCOUNT_ID }}
@@ -155,12 +194,30 @@ jobs:
           revision: "${{ github.sha }}"
           description: "Automated Deployment via Github Actions"
           user: "${{ github.actor }}"
-      - name: Create New Relic deployment marker for Worker
+      - name: DEV - Create New Relic deployment marker for Worker
         uses: newrelic/deployment-marker-action@v1
         with:
           accountId: ${{ secrets.NEW_RELIC_ACCOUNT_ID }}
           apiKey: ${{ secrets.NEW_RELIC_API_KEY }}
           applicationId: ${{ secrets.NEW_RELIC_APPLICATION_ID_SYNCING_SERVER_WORKER_DEV }}
+          revision: "${{ github.sha }}"
+          description: "Automated Deployment via Github Actions"
+          user: "${{ github.actor }}"
+      - name: PROD - Create New Relic deployment marker for Web
+        uses: newrelic/deployment-marker-action@v1
+        with:
+          accountId: ${{ secrets.NEW_RELIC_ACCOUNT_ID }}
+          apiKey: ${{ secrets.NEW_RELIC_API_KEY }}
+          applicationId: ${{ secrets.NEW_RELIC_APPLICATION_ID_SYNCING_SERVER_WEB_PROD }}
+          revision: "${{ github.sha }}"
+          description: "Automated Deployment via Github Actions"
+          user: "${{ github.actor }}"
+      - name: PROD - Create New Relic deployment marker for Worker
+        uses: newrelic/deployment-marker-action@v1
+        with:
+          accountId: ${{ secrets.NEW_RELIC_ACCOUNT_ID }}
+          apiKey: ${{ secrets.NEW_RELIC_API_KEY }}
+          applicationId: ${{ secrets.NEW_RELIC_APPLICATION_ID_SYNCING_SERVER_WORKER_PROD }}
           revision: "${{ github.sha }}"
           description: "Automated Deployment via Github Actions"
           user: "${{ github.actor }}"

@@ -2,7 +2,7 @@ name: Version Bump
 
 on:
   push:
-    branches: [ develop, main ]
+    branches: [ main ]
 
 jobs:
   bump:
@@ -35,10 +35,5 @@ jobs:
       - name: Install locally
         run: yarn install --immutable
 
-      - name: Bump Prod Version
-        if: ${{ github.ref == 'refs/heads/main' }}
+      - name: Bump Version
         run: yarn release:prod
-
-      - name: Bump Beta Version
-        if: ${{ github.ref == 'refs/heads/develop' }}
-        run: yarn release:beta
