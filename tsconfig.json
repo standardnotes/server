@@ -33,6 +33,9 @@
     },
     {
       "path": "./packages/files"
+    },
+    {
+      "path": "./packages/api-gateway"
     }
   ]
 }

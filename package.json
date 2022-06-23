@@ -16,6 +16,7 @@
     "lint:scheduler": "yarn workspace @standardnotes/scheduler-server lint",
     "lint:syncing-server": "yarn workspace @standardnotes/syncing-server lint",
     "lint:files": "yarn workspace @standardnotes/files-server lint",
+    "lint:api-gateway": "yarn workspace @standardnotes/api-gateway lint",
     "test": "yarn workspaces foreach -p -j 10 --verbose run test",
     "test:auth": "yarn workspace @standardnotes/auth-server test",
     "test:scheduler": "yarn workspace @standardnotes/scheduler-server test",
@@ -28,6 +29,7 @@
     "build:scheduler": "yarn workspace @standardnotes/scheduler-server build",
     "build:syncing-server": "yarn workspace @standardnotes/syncing-server build",
     "build:files": "yarn workspace @standardnotes/files-server build",
+    "build:api-gateway": "yarn workspace @standardnotes/api-gateway build",
     "start:auth": "yarn workspace @standardnotes/auth-server start",
     "start:auth-worker": "yarn workspace @standardnotes/auth-server worker",
     "start:scheduler": "yarn workspace @standardnotes/scheduler-server worker",
@@ -35,6 +37,7 @@
     "start:syncing-server-worker": "yarn workspace @standardnotes/syncing-server worker",
     "start:files": "yarn workspace @standardnotes/files-server start",
     "start:files-worker": "yarn workspace @standardnotes/files-server worker",
+    "start:api-gateway": "yarn workspace @standardnotes/api-gateway start",
     "release:beta": "lerna version --conventional-prerelease --conventional-commits --yes -m \"chore(release): publish\""
   },
   "devDependencies": {

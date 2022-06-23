@@ -1836,12 +1836,54 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@standardnotes/analytics@npm:^1.6.0":
+"@standardnotes/analytics@npm:^1.4.0, @standardnotes/analytics@npm:^1.6.0":
   version: 1.6.0
   resolution: "@standardnotes/analytics@npm:1.6.0"
   checksum: 6a5e86152673ce9ddce43c52b5f699a1b3ba5141e58a944bda8eaa88fc2f4169df27239f82633226752bf3f10f9804f426721b9c919d10fbfbb51f952430eb1f
   languageName: node
   linkType: hard
+
+"@standardnotes/api-gateway@workspace:packages/api-gateway":
+  version: 0.0.0-use.local
+  resolution: "@standardnotes/api-gateway@workspace:packages/api-gateway"
+  dependencies:
+    "@newrelic/native-metrics": 7.0.2
+    "@newrelic/winston-enricher": ^2.1.0
+    "@sentry/node": ^6.16.1
+    "@standardnotes/analytics": ^1.4.0
+    "@standardnotes/auth": 3.19.2
+    "@standardnotes/domain-events": 2.29.0
+    "@standardnotes/domain-events-infra": 1.4.127
+    "@standardnotes/time": ^1.7.0
+    "@types/cors": ^2.8.9
+    "@types/express": ^4.17.11
+    "@types/ioredis": ^4.28.10
+    "@types/jest": ^28.1.3
+    "@types/jsonwebtoken": ^8.5.0
+    "@types/newrelic": ^7.0.1
+    "@types/prettyjson": ^0.0.29
+    "@typescript-eslint/eslint-plugin": ^5.29.0
+    aws-sdk: ^2.1160.0
+    axios: 0.24.0
+    cors: 2.8.5
+    dotenv: 8.2.0
+    eslint: ^8.14.0
+    eslint-plugin-prettier: ^4.0.0
+    express: 4.17.1
+    helmet: 4.4.1
+    inversify: ^6.0.1
+    inversify-express-utils: ^6.4.3
+    ioredis: ^5.0.6
+    jest: ^28.1.1
+    jsonwebtoken: 8.5.1
+    newrelic: 8.6.0
+    nodemon: ^2.0.16
+    prettyjson: 1.2.1
+    reflect-metadata: 0.1.13
+    ts-jest: ^28.0.1
+    winston: 3.3.3
+  languageName: unknown
+  linkType: soft
 
 "@standardnotes/api@npm:^1.1.13":
   version: 1.1.13
@@ -1916,6 +1958,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@standardnotes/auth@npm:3.19.2":
+  version: 3.19.2
+  resolution: "@standardnotes/auth@npm:3.19.2"
+  dependencies:
+    "@standardnotes/common": ^1.22.0
+    jsonwebtoken: ^8.5.1
+  checksum: 2e4b37b3034ca561e42525313c5ddf66249d27da4c423738241fb3f59f8ea990eafb60b113e648fa6904c171e3c86e93abffb7e72a52bb17b0eb6c9025427678
+  languageName: node
+  linkType: hard
+
 "@standardnotes/auth@npm:^3.18.9, @standardnotes/auth@npm:^3.19.2, @standardnotes/auth@npm:^3.19.3":
   version: 3.19.3
   resolution: "@standardnotes/auth@npm:3.19.3"
@@ -1943,6 +1995,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@standardnotes/domain-events-infra@npm:1.4.127":
+  version: 1.4.127
+  resolution: "@standardnotes/domain-events-infra@npm:1.4.127"
+  dependencies:
+    "@standardnotes/domain-events": ^2.29.0
+    aws-sdk: ^2.1082.0
+    ioredis: ^4.28.5
+    newrelic: ^8.8.0
+    reflect-metadata: ^0.1.13
+    sqs-consumer: ^5.6.0
+    winston: ^3.6.0
+  checksum: 54e37c296ff3b44adc8d425f89fd56eb42d435dded6b04a952ff77ebb867022585bb472635f488863c9f9b6493a04592593f7a0f2bfa1d86bb9354ba341d350f
+  languageName: node
+  linkType: hard
+
 "@standardnotes/domain-events-infra@npm:^1.4.135, @standardnotes/domain-events-infra@npm:^1.4.93, @standardnotes/domain-events-infra@npm:^1.5.0, @standardnotes/domain-events-infra@npm:^1.5.2":
   version: 1.5.2
   resolution: "@standardnotes/domain-events-infra@npm:1.5.2"
@@ -1958,7 +2025,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@standardnotes/domain-events@npm:^2.27.6, @standardnotes/domain-events@npm:^2.31.1, @standardnotes/domain-events@npm:^2.32.0, @standardnotes/domain-events@npm:^2.32.2":
+"@standardnotes/domain-events@npm:2.29.0":
+  version: 2.29.0
+  resolution: "@standardnotes/domain-events@npm:2.29.0"
+  dependencies:
+    "@standardnotes/auth": ^3.19.2
+    "@standardnotes/features": ^1.44.6
+  checksum: 1b68999e2a7a6a26a9ecd27638cbb878bd4abb987a1a3b254136af0bec5619d4f5f99ede1b27cf93561fd6d6453f645310b5decfe468c8dd644363caed48aeb9
+  languageName: node
+  linkType: hard
+
+"@standardnotes/domain-events@npm:^2.27.6, @standardnotes/domain-events@npm:^2.29.0, @standardnotes/domain-events@npm:^2.31.1, @standardnotes/domain-events@npm:^2.32.0, @standardnotes/domain-events@npm:^2.32.2":
   version: 2.32.2
   resolution: "@standardnotes/domain-events@npm:2.32.2"
   dependencies:
@@ -1980,7 +2057,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@standardnotes/features@npm:^1.36.3, @standardnotes/features@npm:^1.45.2, @standardnotes/features@npm:^1.45.5":
+"@standardnotes/features@npm:^1.36.3, @standardnotes/features@npm:^1.44.6, @standardnotes/features@npm:^1.45.2, @standardnotes/features@npm:^1.45.5":
   version: 1.45.5
   resolution: "@standardnotes/features@npm:1.45.5"
   dependencies:
@@ -3213,6 +3290,23 @@ __metadata:
     uuid: 8.0.0
     xml2js: 0.4.19
   checksum: f89d3a34830d5391e124070bda2740f512c0cc4658b8fd558114c2b9731871619a1c7ab02e21d884229b718aa535e18292e4b0c81cea6e3b0dc19f5ff0459728
+  languageName: node
+  linkType: hard
+
+"aws-sdk@npm:^2.1160.0":
+  version: 2.1160.0
+  resolution: "aws-sdk@npm:2.1160.0"
+  dependencies:
+    buffer: 4.9.2
+    events: 1.1.1
+    ieee754: 1.1.13
+    jmespath: 0.16.0
+    querystring: 0.2.0
+    sax: 1.2.1
+    url: 0.10.3
+    uuid: 8.0.0
+    xml2js: 0.4.19
+  checksum: b95647d4de6d07fc7b62ef409d1dd4a915f3711163a4da4057a3451d62b56818f4ea3d7970c2735af376c44a97d603190f2d85c2a11911eb6f97334ad0ace4a7
   languageName: node
   linkType: hard
 
@@ -5693,6 +5787,13 @@ __metadata:
   version: 4.3.1
   resolution: "helmet@npm:4.3.1"
   checksum: 47f59d8b9935eec24dadc5ce83bb7c149fc72f9355d3655babf0518740326b97fb83dc5f566cdcaf97753988003973848eb336ad3c784803a13e5056bca92bf7
+  languageName: node
+  linkType: hard
+
+"helmet@npm:4.4.1":
+  version: 4.4.1
+  resolution: "helmet@npm:4.4.1"
+  checksum: cfe385e185e1ef6e4cd2ade4c54e160b05dd0454f270a663c528a8666402cbcad14e0ff0df09567fa62b0b4ac3371bbd1c8a253f6e7af37656a22339fe98c869
   languageName: node
   linkType: hard
 

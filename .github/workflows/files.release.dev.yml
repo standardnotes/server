@@ -46,7 +46,7 @@ jobs:
         ECR_REPOSITORY: files
         IMAGE_TAG: ${{ github.sha }}
       run: |
-        yarn docker build @standardnotes/files -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+        yarn docker build @standardnotes/files-server -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:dev
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:dev
