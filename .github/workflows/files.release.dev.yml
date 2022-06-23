@@ -62,13 +62,17 @@ jobs:
     - uses: actions/checkout@v3
     - name: Build locally
       run: yarn build:files
-    - name: Publish to Registry
-      uses: elgohr/Publish-Docker-Github-Action@v4
+    - name: Login to Docker Hub
+      uses: docker/login-action@v2
       with:
-        name: standardnotes/files
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
-        tags: "dev,${{ github.sha }}"
+    - name: Build, tag, and push image to Docker Hub
+      run: |
+        yarn docker build @standardnotes/files-server -t standardnotes/files:${{ github.sha }}
+        docker push standardnotes/files:${{ github.sha }}
+        docker tag standardnotes/files:${{ github.sha }} standardnotes/files:dev
+        docker push standardnotes/files:dev
 
   deploy-web:
     needs: publish-aws-ecr
