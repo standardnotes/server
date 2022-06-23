@@ -1,14 +1,13 @@
-name: Scheduler Server Dev
+name: Scheduler Server
 
 concurrency:
-  group: scheduler_dev_environment
+  group: scheduler
   cancel-in-progress: true
 
 on:
   push:
     tags:
-      - '@standardnotes/scheduler-server@[0-9]*.[0-9]*.[0-9]*-alpha.[0-9]*'
-      - '@standardnotes/scheduler-server@[0-9]*.[0-9]*.[0-9]*-beta.[0-9]*'
+      - '*standardnotes/scheduler-server*'
   workflow_dispatch:
 
 jobs:
@@ -50,8 +49,8 @@ jobs:
       run: |
         yarn docker build @standardnotes/scheduler-server -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-        docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:dev
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY:dev
+        docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:latest
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
 
   publish-docker-hub:
     needs: test
@@ -71,8 +70,8 @@ jobs:
       run: |
         yarn docker build @standardnotes/scheduler-server -t standardnotes/scheduler:${{ github.sha }}
         docker push standardnotes/scheduler:${{ github.sha }}
-        docker tag standardnotes/scheduler:${{ github.sha }} standardnotes/scheduler:dev
-        docker push standardnotes/scheduler:dev
+        docker tag standardnotes/scheduler:${{ github.sha }} standardnotes/scheduler:latest
+        docker push standardnotes/scheduler:latest
 
   deploy-worker:
     needs: publish-aws-ecr
@@ -86,25 +85,45 @@ jobs:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: us-east-1
-    - name: Download task definition
+    - name: DEV - Download task definition
       run: |
         aws ecs describe-task-definition --task-definition scheduler-worker-dev --query taskDefinition > task-definition.json
     - name: Fill in the new version in the Amazon ECS task definition
       run: |
         jq '(.containerDefinitions[] | select(.name=="scheduler-worker-dev") | .environment[] | select(.name=="VERSION")).value = "${{ github.sha }}"' task-definition.json > tmp.json && mv tmp.json task-definition.json
-    - name: Fill in the new image ID in the Amazon ECS task definition
+    - name: DEV - Fill in the new image ID in the Amazon ECS task definition
       id: task-def
       uses: aws-actions/amazon-ecs-render-task-definition@v1
       with:
         task-definition: task-definition.json
         container-name: scheduler-worker-dev
         image: ${{ secrets.AWS_ECR_REGISTRY }}/scheduler-worker:${{ github.sha }}
-    - name: Deploy Amazon ECS task definition
+    - name: DEV - Deploy Amazon ECS task definition
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
       with:
         task-definition: ${{ steps.task-def.outputs.task-definition }}
         service: scheduler-worker-dev
         cluster: dev
+        wait-for-service-stability: true
+    - name: PROD - Download task definition
+      run: |
+        aws ecs describe-task-definition --task-definition scheduler-worker-prod --query taskDefinition > task-definition.json
+    - name: Fill in the new version in the Amazon ECS task definition
+      run: |
+        jq '(.containerDefinitions[] | select(.name=="scheduler-worker-prod") | .environment[] | select(.name=="VERSION")).value = "${{ github.sha }}"' task-definition.json > tmp.json && mv tmp.json task-definition.json
+    - name: PROD - Fill in the new image ID in the Amazon ECS task definition
+      id: task-def
+      uses: aws-actions/amazon-ecs-render-task-definition@v1
+      with:
+        task-definition: task-definition.json
+        container-name: scheduler-worker-prod
+        image: ${{ secrets.AWS_ECR_REGISTRY }}/scheduler-worker:${{ github.sha }}
+    - name: PROD - Deploy Amazon ECS task definition
+      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+      with:
+        task-definition: ${{ steps.task-def.outputs.task-definition }}
+        service: scheduler-worker-prod
+        cluster: prod
         wait-for-service-stability: true
 
   newrelic:
@@ -118,7 +137,7 @@ jobs:
         with:
           accountId: ${{ secrets.NEW_RELIC_ACCOUNT_ID }}
           apiKey: ${{ secrets.NEW_RELIC_API_KEY }}
-          applicationId: ${{ secrets.NEW_RELIC_APPLICATION_ID_SCHEDULER_WORKER_DEV }}
+          applicationId: ${{ secrets.NEW_RELIC_APPLICATION_ID_SCHEDULER_WORKER_PROD }}
           revision: "${{ github.sha }}"
           description: "Automated Deployment via Github Actions"
           user: "${{ github.actor }}"
