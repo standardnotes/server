@@ -1,7 +1,7 @@
 FROM node:16.15.1-alpine AS builder
 
 # Install dependencies for building native libraries
-RUN apk add --update git openssh-client python3 alpine-sdk
+RUN apk add --update git openssh-client curl python3 alpine-sdk
 
 WORKDIR /workspace
 
