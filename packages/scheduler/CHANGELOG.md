@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.4](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.1.3...@standardnotes/scheduler-server@1.1.4) (2022-06-24)
+
+### Bug Fixes
+
+* newrelic deps and setup db and cache for local development purposes ([ff09ae0](https://github.com/standardnotes/server/commit/ff09ae0a47747eaf7977ce5d3937ad385101eaeb))
+
 ## [1.1.3](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.1.2...@standardnotes/scheduler-server@1.1.3) (2022-06-23)
 
 ### Bug Fixes
