@@ -15,11 +15,11 @@
     "prebuild": "yarn clean",
     "build": "tsc --rootDir ./",
     "lint": "eslint . --ext .ts",
+    "setup:env": "cp .env.sample .env",
     "start": "yarn node dist/bin/server.js",
     "report": "yarn node dist/bin/report.js"
   },
   "dependencies": {
-    "@newrelic/native-metrics": "7.0.2",
     "@newrelic/winston-enricher": "^2.1.0",
     "@sentry/node": "^6.16.1",
     "@standardnotes/analytics": "^1.4.0",
@@ -37,7 +37,7 @@
     "inversify-express-utils": "^6.4.3",
     "ioredis": "^5.0.6",
     "jsonwebtoken": "8.5.1",
-    "newrelic": "8.6.0",
+    "newrelic": "^8.14.1",
     "prettyjson": "1.2.1",
     "reflect-metadata": "0.1.13",
     "winston": "3.3.3"
@@ -48,7 +48,7 @@
     "@types/ioredis": "^4.28.10",
     "@types/jest": "^28.1.3",
     "@types/jsonwebtoken": "^8.5.0",
-    "@types/newrelic": "^7.0.1",
+    "@types/newrelic": "^7.0.3",
     "@types/prettyjson": "^0.0.29",
     "@typescript-eslint/eslint-plugin": "^5.29.0",
     "eslint": "^8.14.0",

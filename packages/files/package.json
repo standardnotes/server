@@ -14,6 +14,7 @@
   "license": "AGPL-3.0-or-later",
   "scripts": {
     "clean": "rm -fr dist",
+    "setup:env": "cp .env.sample .env",
     "prebuild": "yarn clean",
     "build": "tsc --rootDir ./",
     "lint": "eslint . --ext .ts",
@@ -23,7 +24,6 @@
     "worker": "yarn node dist/bin/worker.js"
   },
   "dependencies": {
-    "@newrelic/native-metrics": "7.0.2",
     "@sentry/node": "^6.16.1",
     "@standardnotes/auth": "^3.18.9",
     "@standardnotes/common": "^1.19.4",
@@ -44,7 +44,7 @@
     "inversify-express-utils": "^6.4.3",
     "ioredis": "^5.0.6",
     "jsonwebtoken": "^8.5.1",
-    "newrelic": "^7.3.1",
+    "newrelic": "^8.14.1",
     "nodemon": "^2.0.15",
     "prettyjson": "^1.2.1",
     "reflect-metadata": "^0.1.13",
@@ -59,7 +59,7 @@
     "@types/ioredis": "^4.28.10",
     "@types/jest": "^28.1.3",
     "@types/jsonwebtoken": "^8.5.0",
-    "@types/newrelic": "^7.0.1",
+    "@types/newrelic": "^7.0.3",
     "@types/prettyjson": "^0.0.29",
     "@types/uuid": "^8.3.0",
     "@typescript-eslint/eslint-plugin": "^5.29.0",

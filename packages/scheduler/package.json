@@ -22,7 +22,6 @@
     "typeorm": "typeorm-ts-node-commonjs"
   },
   "dependencies": {
-    "@newrelic/native-metrics": "7.0.2",
     "@newrelic/winston-enricher": "^2.1.0",
     "@standardnotes/common": "^1.23.0",
     "@standardnotes/domain-events": "^2.32.0",
@@ -35,7 +34,7 @@
     "inversify": "5.0.5",
     "ioredis": "^5.0.6",
     "mysql2": "^2.3.3",
-    "newrelic": "8.6.0",
+    "newrelic": "^8.14.1",
     "reflect-metadata": "^0.1.13",
     "typeorm": "^0.3.6",
     "winston": "3.3.3"
@@ -43,7 +42,7 @@
   "devDependencies": {
     "@types/ioredis": "^4.28.10",
     "@types/jest": "^28.1.2",
-    "@types/newrelic": "^7.0.2",
+    "@types/newrelic": "^7.0.3",
     "@types/node": "^18.0.0",
     "@typescript-eslint/eslint-plugin": "^5.29.0",
     "eslint-plugin-prettier": "^4.0.0",
