@@ -99,7 +99,10 @@ export class AuthMiddleware extends BaseMiddleware {
         response.setHeader('content-type', (error as AxiosError).response?.headers['content-type'] as string)
       }
 
-      const errorCode = (error as AxiosError).isAxiosError ? +((error as AxiosError).code as string) : 500
+      const errorCode =
+        (error as AxiosError).isAxiosError && !isNaN(+((error as AxiosError).code as string))
+          ? +((error as AxiosError).code as string)
+          : 500
 
       response.status(errorCode).send(errorMessage)
 
