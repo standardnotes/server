@@ -11,6 +11,7 @@ import TYPES from '../Bootstrap/Types'
 import { GetSetting } from '../Domain/UseCase/GetSetting/GetSetting'
 import { GetUserFeatures } from '../Domain/UseCase/GetUserFeatures/GetUserFeatures'
 import { MuteFailedBackupsEmails } from '../Domain/UseCase/MuteFailedBackupsEmails/MuteFailedBackupsEmails'
+import { MuteMarketingEmails } from '../Domain/UseCase/MuteMarketingEmails/MuteMarketingEmails'
 import { MuteSignInEmails } from '../Domain/UseCase/MuteSignInEmails/MuteSignInEmails'
 
 @controller('/internal')
@@ -20,6 +21,7 @@ export class InternalController extends BaseHttpController {
     @inject(TYPES.GetSetting) private doGetSetting: GetSetting,
     @inject(TYPES.MuteFailedBackupsEmails) private doMuteFailedBackupsEmails: MuteFailedBackupsEmails,
     @inject(TYPES.MuteSignInEmails) private doMuteSignInEmails: MuteSignInEmails,
+    @inject(TYPES.MuteMarketingEmails) private doMuteMarketingEmails: MuteMarketingEmails,
   ) {
     super()
   }
@@ -71,6 +73,20 @@ export class InternalController extends BaseHttpController {
   async muteSignInEmails(request: Request): Promise<results.JsonResult> {
     const { settingUuid } = request.params
     const result = await this.doMuteSignInEmails.execute({
+      settingUuid,
+    })
+
+    if (result.success) {
+      return this.json({ message: result.message })
+    }
+
+    return this.json({ message: result.message }, 404)
+  }
+
+  @httpGet('/settings/marketing-emails/:settingUuid/mute')
+  async muteMarketingEmails(request: Request): Promise<results.JsonResult> {
+    const { settingUuid } = request.params
+    const result = await this.doMuteMarketingEmails.execute({
       settingUuid,
     })
 

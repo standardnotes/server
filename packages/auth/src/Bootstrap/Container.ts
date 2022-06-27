@@ -190,6 +190,7 @@ import { GetUserAnalyticsId } from '../Domain/UseCase/GetUserAnalyticsId/GetUser
 import { AuthController } from '../Controller/AuthController'
 import { VerifyPredicate } from '../Domain/UseCase/VerifyPredicate/VerifyPredicate'
 import { PredicateVerificationRequestedEventHandler } from '../Domain/Handler/PredicateVerificationRequestedEventHandler'
+import { MuteMarketingEmails } from '../Domain/UseCase/MuteMarketingEmails/MuteMarketingEmails'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicWinstonEnricher = require('@newrelic/winston-enricher')
@@ -409,6 +410,7 @@ export class ContainerConfigLoader {
       .to(CreateOfflineSubscriptionToken)
     container.bind<MuteFailedBackupsEmails>(TYPES.MuteFailedBackupsEmails).to(MuteFailedBackupsEmails)
     container.bind<MuteSignInEmails>(TYPES.MuteSignInEmails).to(MuteSignInEmails)
+    container.bind<MuteMarketingEmails>(TYPES.MuteMarketingEmails).to(MuteMarketingEmails)
     container.bind<CreateValetToken>(TYPES.CreateValetToken).to(CreateValetToken)
     container.bind<CreateListedAccount>(TYPES.CreateListedAccount).to(CreateListedAccount)
     container.bind<InviteToSharedSubscription>(TYPES.InviteToSharedSubscription).to(InviteToSharedSubscription)

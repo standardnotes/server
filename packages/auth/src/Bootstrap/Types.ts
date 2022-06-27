@@ -113,6 +113,7 @@ const TYPES = {
   AuthenticateOfflineSubscriptionToken: Symbol.for('AuthenticateOfflineSubscriptionToken'),
   MuteFailedBackupsEmails: Symbol.for('MuteFailedBackupsEmails'),
   MuteSignInEmails: Symbol.for('MuteSignInEmails'),
+  MuteMarketingEmails: Symbol.for('MuteMarketingEmails'),
   CreateValetToken: Symbol.for('CreateValetToken'),
   CreateListedAccount: Symbol.for('CreateListedAccount'),
   InviteToSharedSubscription: Symbol.for('InviteToSharedSubscription'),
