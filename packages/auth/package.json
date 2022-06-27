@@ -26,7 +26,8 @@
     "daily-backup:one_drive": "yarn node dist/bin/backup.js one_drive daily",
     "weekly-backup:email": "yarn node dist/bin/backup.js email weekly",
     "email-campaign": "yarn node dist/bin/email.js",
-    "typeorm": "typeorm-ts-node-commonjs"
+    "typeorm": "typeorm-ts-node-commonjs",
+    "upgrade:snjs": "yarn ncu -u '@standardnotes/*'"
   },
   "dependencies": {
     "@newrelic/winston-enricher": "^2.1.0",
@@ -81,6 +82,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "jest": "^28.1.1",
     "nodemon": "^2.0.16",
+    "npm-check-updates": "^14.1.1",
     "ts-jest": "^28.0.1"
   }
 }

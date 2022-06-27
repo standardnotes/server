@@ -19,7 +19,8 @@
     "worker": "yarn node dist/bin/worker.js",
     "verify:jobs": "yarn node dist/bin/verify.js",
     "setup:env": "cp .env.sample .env",
-    "typeorm": "typeorm-ts-node-commonjs"
+    "typeorm": "typeorm-ts-node-commonjs",
+    "upgrade:snjs": "yarn ncu -u '@standardnotes/*'"
   },
   "dependencies": {
     "@newrelic/winston-enricher": "^2.1.0",
@@ -48,6 +49,7 @@
     "@typescript-eslint/eslint-plugin": "^5.29.0",
     "eslint-plugin-prettier": "^4.0.0",
     "jest": "^28.1.1",
+    "npm-check-updates": "^14.1.1",
     "ts-jest": "^28.0.5"
   }
 }

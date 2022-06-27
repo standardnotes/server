@@ -21,7 +21,8 @@
     "pretest": "yarn lint && yarn build",
     "test": "jest --coverage --config=./jest.config.js --maxWorkers=50%",
     "start": "yarn node dist/bin/server.js",
-    "worker": "yarn node dist/bin/worker.js"
+    "worker": "yarn node dist/bin/worker.js",
+    "upgrade:snjs": "yarn ncu -u '@standardnotes/*'"
   },
   "dependencies": {
     "@sentry/node": "^7.3.0",
@@ -67,6 +68,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "jest": "^28.1.1",
     "nodemon": "^2.0.16",
+    "npm-check-updates": "^14.1.1",
     "ts-jest": "^28.0.1",
     "uuid": "^8.3.2"
   }

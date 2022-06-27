@@ -39,7 +39,8 @@
     "start:files-worker": "yarn workspace @standardnotes/files-server worker",
     "start:api-gateway": "yarn workspace @standardnotes/api-gateway start",
     "release:prod": "lerna version --conventional-graduate --conventional-commits --yes -m \"chore(release): publish new version\"",
-    "postversion": "./scripts/push-tags-one-by-one.sh"
+    "postversion": "./scripts/push-tags-one-by-one.sh",
+    "upgrade:snjs": "yarn workspaces foreach --verbose run upgrade:snjs"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.0.2",
@@ -53,6 +54,8 @@
     "@typescript-eslint/parser": "^5.29.0",
     "eslint": "^8.17.0",
     "eslint-config-prettier": "^8.5.0",
+    "ini": "^3.0.0",
+    "npm-check-updates": "^14.1.1",
     "prettier": "^2.7.1",
     "ts-node": "^10.8.1",
     "typescript": "^4.7.4"
