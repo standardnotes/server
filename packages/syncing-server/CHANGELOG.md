@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.5](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.1.4...@standardnotes/syncing-server@1.1.5) (2022-06-27)
+
+### Bug Fixes
+
+* upgrade sentry node sdk ([b6db194](https://github.com/standardnotes/syncing-server-js/commit/b6db194a22ff1d0afe96c291d545b408c0a5c373))
+
 ## [1.1.4](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.1.3...@standardnotes/syncing-server@1.1.4) (2022-06-24)
 
 ### Bug Fixes
