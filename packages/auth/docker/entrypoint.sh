@@ -44,6 +44,12 @@ case "$COMMAND" in
     yarn workspace @standardnotes/auth-server daily-backup:one_drive
     ;;
 
+  'email-campaign' )
+    echo "Starting Email Campaign Sending..."
+    MESSAGE_IDENTIFIER=$1 && shift 1
+    yarn workspace @standardnotes/auth-server email-campaign $MESSAGE_IDENTIFIER
+    ;;
+
    * )
     echo "Unknown command"
     ;;

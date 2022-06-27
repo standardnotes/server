@@ -25,6 +25,7 @@
     "daily-backup:google_drive": "yarn node dist/bin/backup.js google_drive daily",
     "daily-backup:one_drive": "yarn node dist/bin/backup.js one_drive daily",
     "weekly-backup:email": "yarn node dist/bin/backup.js email weekly",
+    "email-campaign": "yarn node dist/bin/email.js",
     "typeorm": "typeorm-ts-node-commonjs"
   },
   "dependencies": {

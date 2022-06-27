@@ -107,6 +107,12 @@ void container.load().then((container) => {
 
   logger.info(`Starting email campaign for email ${emailMessageIdentifier} ...`)
 
+  if (!emailMessageIdentifier) {
+    logger.error('No email message identifier passed as argument. Skipped sending.')
+
+    process.exit(1)
+  }
+
   const userRepository: UserRepositoryInterface = container.get(TYPES.UserRepository)
   const settingService: SettingServiceInterface = container.get(TYPES.SettingService)
   const userSubscriptionRepository: UserSubscriptionRepositoryInterface = container.get(
