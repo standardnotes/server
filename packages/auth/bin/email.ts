@@ -41,7 +41,7 @@ const sendEmailCampaign = async (
         new Stream.Transform({
           objectMode: true,
           transform: async (rawUserData, _encoding, callback) => {
-            const emailsMutedSetting = await settingService.findSettingWithDecryptedValue({
+            let emailsMutedSetting = await settingService.findSettingWithDecryptedValue({
               userUuid: rawUserData.user_uuid,
               settingName: SettingName.MuteMarketingEmails,
             })
@@ -49,7 +49,7 @@ const sendEmailCampaign = async (
             if (emailsMutedSetting === null) {
               const user = (await userRepository.findOneByUuid(rawUserData.user_uuid)) as User
 
-              await settingService.createOrReplace({
+              const { setting } = await settingService.createOrReplace({
                 user,
                 props: {
                   name: SettingName.MuteMarketingEmails,
@@ -58,9 +58,10 @@ const sendEmailCampaign = async (
                   sensitive: false,
                 },
               })
+              emailsMutedSetting = setting
             }
 
-            if (emailsMutedSetting?.value === MuteMarketingEmailsOption.Muted) {
+            if (emailsMutedSetting.value === MuteMarketingEmailsOption.Muted) {
               callback()
 
               return
@@ -83,6 +84,7 @@ const sendEmailCampaign = async (
                 context: {
                   activeSubscription,
                   subscriptionPlanName,
+                  muteEmailsSettingUuid: emailsMutedSetting.uuid,
                 },
               }),
             )
