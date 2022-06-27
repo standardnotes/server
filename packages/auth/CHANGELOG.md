@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.7](https://github.com/standardnotes/auth/compare/@standardnotes/auth-server@1.1.6...@standardnotes/auth-server@1.1.7) (2022-06-27)
+
+### Bug Fixes
+
+* add sending out email campaigns ([bf14ec0](https://github.com/standardnotes/auth/commit/bf14ec05f92d893e7c74a4f29ef7e426bee9d768))
+
 ## [1.1.6](https://github.com/standardnotes/auth/compare/@standardnotes/auth-server@1.1.5...@standardnotes/auth-server@1.1.6) (2022-06-27)
 
 **Note:** Version bump only for package @standardnotes/auth-server
