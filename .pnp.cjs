@@ -2526,7 +2526,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@standardnotes/common", "npm:1.23.1"],\
             ["@standardnotes/domain-events", "npm:2.32.4"],\
             ["@standardnotes/domain-events-infra", "npm:1.5.2"],\
-            ["@standardnotes/features", "npm:1.45.5"],\
+            ["@standardnotes/features", "npm:1.46.0"],\
             ["@standardnotes/responses", "npm:1.6.36"],\
             ["@standardnotes/scheduler", "npm:1.1.1"],\
             ["@standardnotes/settings", "npm:1.15.0"],\
@@ -2698,6 +2698,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@standardnotes-features-npm-1.45.6-6f88b4fd2a-572780d6e2.zip/node_modules/@standardnotes/features/",\
           "packageDependencies": [\
             ["@standardnotes/features", "npm:1.45.6"],\
+            ["@standardnotes/auth", "npm:3.19.4"],\
+            ["@standardnotes/common", "npm:1.23.1"]\
+          ],\
+          "linkType": "HARD"\
+        }],\
+        ["npm:1.46.0", {\
+          "packageLocation": "./.yarn/cache/@standardnotes-features-npm-1.46.0-32e559e3b6-0653b9b425.zip/node_modules/@standardnotes/features/",\
+          "packageDependencies": [\
+            ["@standardnotes/features", "npm:1.46.0"],\
             ["@standardnotes/auth", "npm:3.19.4"],\
             ["@standardnotes/common", "npm:1.23.1"]\
           ],\

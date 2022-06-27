@@ -38,7 +38,7 @@
     "@standardnotes/common": "^1.23.1",
     "@standardnotes/domain-events": "^2.32.4",
     "@standardnotes/domain-events-infra": "^1.4.135",
-    "@standardnotes/features": "^1.45.2",
+    "@standardnotes/features": "^1.46.0",
     "@standardnotes/responses": "^1.6.15",
     "@standardnotes/scheduler": "^1.1.1",
     "@standardnotes/settings": "^1.15.0",
