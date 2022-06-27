@@ -1824,7 +1824,7 @@ __metadata:
     "@standardnotes/common": ^1.23.1
     "@standardnotes/domain-events": ^2.32.4
     "@standardnotes/domain-events-infra": ^1.4.135
-    "@standardnotes/features": ^1.45.2
+    "@standardnotes/features": ^1.46.0
     "@standardnotes/responses": ^1.6.15
     "@standardnotes/scheduler": ^1.1.1
     "@standardnotes/settings": ^1.15.0
@@ -2009,7 +2009,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@standardnotes/features@npm:^1.36.3, @standardnotes/features@npm:^1.44.6, @standardnotes/features@npm:^1.45.2, @standardnotes/features@npm:^1.45.5":
+"@standardnotes/features@npm:^1.36.3, @standardnotes/features@npm:^1.44.6, @standardnotes/features@npm:^1.45.5":
   version: 1.45.5
   resolution: "@standardnotes/features@npm:1.45.5"
   dependencies:
@@ -2026,6 +2026,16 @@ __metadata:
     "@standardnotes/auth": ^3.19.4
     "@standardnotes/common": ^1.23.1
   checksum: 572780d6e24efa664f316f6cf56c01907e00263db6204fee17f7ce9e43fa376411f373863dda59f8fb039250a224b7f8637fbd0bcbd7241112e061accbc05360
+  languageName: node
+  linkType: hard
+
+"@standardnotes/features@npm:^1.46.0":
+  version: 1.46.0
+  resolution: "@standardnotes/features@npm:1.46.0"
+  dependencies:
+    "@standardnotes/auth": ^3.19.4
+    "@standardnotes/common": ^1.23.1
+  checksum: 0653b9b425e86cf0f2e6a80fb68316c841aaf7feb23ca39131e3d09546735d199879532ef9e89f424000b916dd5ac2d7e6ea0e60ac755712ef37c3fecdf48d94
   languageName: node
   linkType: hard
 
