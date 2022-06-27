@@ -49,4 +49,14 @@ export class ActionsController extends BaseHttpController {
       request.body,
     )
   }
+
+  @httpGet('/marketing-emails/mute/:settingUuid')
+  async muteMarketingEmails(request: Request, response: Response): Promise<void> {
+    await this.httpService.callAuthServer(
+      request,
+      response,
+      `internal/settings/marketing-emails/${request.params.settingUuid}/mute`,
+      request.body,
+    )
+  }
 }
