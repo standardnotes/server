@@ -41,7 +41,7 @@ export class JobDoneInterpreter implements JobDoneInterpreterInterface {
         return
       case JobName.ENCOURAGE_SUBSCRIPTION_PURCHASING:
         if (job.userIdentifierType === 'email') {
-          await this.requestSubscriptionPurchaseEncouragementEmail(job.userIdentifier)
+          await this.requestSubscriptionPurchaseEncouragementEmail(job)
         }
         return
       case JobName.EXIT_INTERVIEW:
@@ -56,25 +56,33 @@ export class JobDoneInterpreter implements JobDoneInterpreterInterface {
 
   private async requestEmailBackupEncouragementEmail(userEmail: string): Promise<void> {
     await this.domainEventPublisher.publish(
-      this.domainEventFactory.createEmailMessageRequestedEvent(
+      this.domainEventFactory.createEmailMessageRequestedEvent({
         userEmail,
-        EmailMessageIdentifier.ENCOURAGE_EMAIL_BACKUPS,
-      ),
+        messageIdentifier: EmailMessageIdentifier.ENCOURAGE_EMAIL_BACKUPS,
+        context: {},
+      }),
     )
   }
 
-  private async requestSubscriptionPurchaseEncouragementEmail(userEmail: string): Promise<void> {
+  private async requestSubscriptionPurchaseEncouragementEmail(job: Job): Promise<void> {
     await this.domainEventPublisher.publish(
-      this.domainEventFactory.createEmailMessageRequestedEvent(
-        userEmail,
-        EmailMessageIdentifier.ENCOURAGE_SUBSCRIPTION_PURCHASING,
-      ),
+      this.domainEventFactory.createEmailMessageRequestedEvent({
+        userEmail: job.userIdentifier,
+        messageIdentifier: EmailMessageIdentifier.ENCOURAGE_SUBSCRIPTION_PURCHASING,
+        context: {
+          userRegisteredAt: job.createdAt,
+        },
+      }),
     )
   }
 
   private async requestExitInterviewEmail(userEmail: string): Promise<void> {
     await this.domainEventPublisher.publish(
-      this.domainEventFactory.createEmailMessageRequestedEvent(userEmail, EmailMessageIdentifier.EXIT_INTERVIEW),
+      this.domainEventFactory.createEmailMessageRequestedEvent({
+        userEmail,
+        messageIdentifier: EmailMessageIdentifier.EXIT_INTERVIEW,
+        context: {},
+      }),
     )
   }
 

@@ -21,7 +21,13 @@ describe('DomainEventFactory', () => {
 
   it('should create a EMAIL_MESSAGE_REQUESTED event', () => {
     expect(
-      createFactory().createEmailMessageRequestedEvent('test@test.te', EmailMessageIdentifier.ENCOURAGE_EMAIL_BACKUPS),
+      createFactory().createEmailMessageRequestedEvent({
+        userEmail: 'test@test.te',
+        messageIdentifier: EmailMessageIdentifier.ENCOURAGE_EMAIL_BACKUPS,
+        context: {
+          foo: 'bar',
+        },
+      }),
     ).toEqual({
       createdAt: expect.any(Date),
       meta: {
@@ -34,6 +40,9 @@ describe('DomainEventFactory', () => {
       payload: {
         messageIdentifier: 'ENCOURAGE_EMAIL_BACKUPS',
         userEmail: 'test@test.te',
+        context: {
+          foo: 'bar',
+        },
       },
       type: 'EMAIL_MESSAGE_REQUESTED',
     })

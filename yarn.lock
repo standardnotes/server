@@ -1946,7 +1946,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@standardnotes/domain-events@npm:^2.27.6, @standardnotes/domain-events@npm:^2.29.0, @standardnotes/domain-events@npm:^2.31.1, @standardnotes/domain-events@npm:^2.32.0, @standardnotes/domain-events@npm:^2.32.2":
+"@standardnotes/domain-events@npm:^2.27.6, @standardnotes/domain-events@npm:^2.29.0, @standardnotes/domain-events@npm:^2.31.1, @standardnotes/domain-events@npm:^2.32.2":
   version: 2.32.2
   resolution: "@standardnotes/domain-events@npm:2.32.2"
   dependencies:
@@ -1954,6 +1954,17 @@ __metadata:
     "@standardnotes/features": ^1.45.5
     "@standardnotes/scheduler": ^1.1.1
   checksum: 54da5fc88539b1cfa44963234d9e6e3cfbf63e20a221edcdc2e0f1d0cbb29803f03c84ddd5d14a19b2827d1b3d6c47cd3ad39a2e02d5773c5bfbebd17883aac1
+  languageName: node
+  linkType: hard
+
+"@standardnotes/domain-events@npm:^2.32.3":
+  version: 2.32.3
+  resolution: "@standardnotes/domain-events@npm:2.32.3"
+  dependencies:
+    "@standardnotes/auth": ^3.19.3
+    "@standardnotes/features": ^1.45.5
+    "@standardnotes/scheduler": ^1.1.1
+  checksum: ea6151d1376cbb99ffb9ff7bcc70c6e7e426c00176283ea29e8befc7719c0d67ca26f262239c8ac06147fc5d4546110cb7ee0995fd78c6ac353e6f43791554ac
   languageName: node
   linkType: hard
 
@@ -2067,7 +2078,7 @@ __metadata:
     "@newrelic/winston-enricher": ^2.1.0
     "@sentry/node": ^7.3.0
     "@standardnotes/common": ^1.23.0
-    "@standardnotes/domain-events": ^2.32.0
+    "@standardnotes/domain-events": ^2.32.3
     "@standardnotes/domain-events-infra": ^1.5.0
     "@standardnotes/scheduler": ^1.1.0
     "@standardnotes/time": ^1.7.0

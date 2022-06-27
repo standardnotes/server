@@ -67,10 +67,11 @@ describe('JobDoneInterpreter', () => {
 
     await createInterpreter().interpret('1-2-3')
 
-    expect(domainEventFactory.createEmailMessageRequestedEvent).toHaveBeenCalledWith(
-      'test@test.te',
-      'ENCOURAGE_EMAIL_BACKUPS',
-    )
+    expect(domainEventFactory.createEmailMessageRequestedEvent).toHaveBeenCalledWith({
+      context: {},
+      messageIdentifier: 'ENCOURAGE_EMAIL_BACKUPS',
+      userEmail: 'test@test.te',
+    })
     expect(domainEventPublisher.publish).toHaveBeenCalled()
   })
 
@@ -110,6 +111,7 @@ describe('JobDoneInterpreter', () => {
       name: JobName.ENCOURAGE_SUBSCRIPTION_PURCHASING,
       userIdentifier: 'test@test.te',
       userIdentifierType: 'email',
+      createdAt: 123,
     } as jest.Mocked<Job>)
     predicateRepository.findByJobUuid = jest
       .fn()
@@ -119,10 +121,11 @@ describe('JobDoneInterpreter', () => {
 
     await createInterpreter().interpret('1-2-3')
 
-    expect(domainEventFactory.createEmailMessageRequestedEvent).toHaveBeenCalledWith(
-      'test@test.te',
-      'ENCOURAGE_SUBSCRIPTION_PURCHASING',
-    )
+    expect(domainEventFactory.createEmailMessageRequestedEvent).toHaveBeenCalledWith({
+      context: { userRegisteredAt: 123 },
+      messageIdentifier: 'ENCOURAGE_SUBSCRIPTION_PURCHASING',
+      userEmail: 'test@test.te',
+    })
     expect(domainEventPublisher.publish).toHaveBeenCalled()
   })
 
@@ -148,7 +151,11 @@ describe('JobDoneInterpreter', () => {
 
     await createInterpreter().interpret('1-2-3')
 
-    expect(domainEventFactory.createEmailMessageRequestedEvent).toHaveBeenCalledWith('test@test.te', 'EXIT_INTERVIEW')
+    expect(domainEventFactory.createEmailMessageRequestedEvent).toHaveBeenCalledWith({
+      context: {},
+      messageIdentifier: 'EXIT_INTERVIEW',
+      userEmail: 'test@test.te',
+    })
     expect(domainEventPublisher.publish).toHaveBeenCalled()
   })
 

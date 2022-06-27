@@ -2600,6 +2600,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@standardnotes/scheduler", "npm:1.1.1"]\
           ],\
           "linkType": "HARD"\
+        }],\
+        ["npm:2.32.3", {\
+          "packageLocation": "./.yarn/cache/@standardnotes-domain-events-npm-2.32.3-d2cd9a7c7f-ea6151d137.zip/node_modules/@standardnotes/domain-events/",\
+          "packageDependencies": [\
+            ["@standardnotes/domain-events", "npm:2.32.3"],\
+            ["@standardnotes/auth", "npm:3.19.3"],\
+            ["@standardnotes/features", "npm:1.45.5"],\
+            ["@standardnotes/scheduler", "npm:1.1.1"]\
+          ],\
+          "linkType": "HARD"\
         }]\
       ]],\
       ["@standardnotes/domain-events-infra", [\
@@ -2760,7 +2770,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@newrelic/winston-enricher", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:2.1.2"],\
             ["@sentry/node", "npm:7.3.0"],\
             ["@standardnotes/common", "npm:1.23.0"],\
-            ["@standardnotes/domain-events", "npm:2.32.2"],\
+            ["@standardnotes/domain-events", "npm:2.32.3"],\
             ["@standardnotes/domain-events-infra", "npm:1.5.2"],\
             ["@standardnotes/scheduler", "npm:1.1.1"],\
             ["@standardnotes/time", "npm:1.7.0"],\

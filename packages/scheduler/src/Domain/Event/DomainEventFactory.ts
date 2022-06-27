@@ -16,24 +16,22 @@ import { DomainEventFactoryInterface } from './DomainEventFactoryInterface'
 export class DomainEventFactory implements DomainEventFactoryInterface {
   constructor(@inject(TYPES.Timer) private timer: TimerInterface) {}
 
-  createEmailMessageRequestedEvent(
-    userEmail: string,
-    messageIdentifier: EmailMessageIdentifier,
-  ): EmailMessageRequestedEvent {
+  createEmailMessageRequestedEvent(dto: {
+    userEmail: string
+    messageIdentifier: EmailMessageIdentifier
+    context: Record<string, unknown>
+  }): EmailMessageRequestedEvent {
     return {
       type: 'EMAIL_MESSAGE_REQUESTED',
       createdAt: this.timer.getUTCDate(),
       meta: {
         correlation: {
-          userIdentifier: userEmail,
+          userIdentifier: dto.userEmail,
           userIdentifierType: 'email',
         },
         origin: DomainEventService.Scheduler,
       },
-      payload: {
-        messageIdentifier,
-        userEmail,
-      },
+      payload: dto,
     }
   }
 

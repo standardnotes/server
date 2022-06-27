@@ -6,8 +6,9 @@ import { Predicate } from '../Predicate/Predicate'
 
 export interface DomainEventFactoryInterface {
   createPredicateVerificationRequestedEvent(job: Job, predicate: Predicate): PredicateVerificationRequestedEvent
-  createEmailMessageRequestedEvent(
-    userEmail: string,
-    messageIdentifier: EmailMessageIdentifier,
-  ): EmailMessageRequestedEvent
+  createEmailMessageRequestedEvent(dto: {
+    userEmail: string
+    messageIdentifier: EmailMessageIdentifier
+    context: Record<string, unknown>
+  }): EmailMessageRequestedEvent
 }
