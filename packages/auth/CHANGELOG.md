@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/standardnotes/auth/compare/@standardnotes/auth-server@1.2.1...@standardnotes/auth-server@1.3.0) (2022-06-27)
+
+### Features
+
+* add endpoint for muting marketing emails ([6d7de4a](https://github.com/standardnotes/auth/commit/6d7de4a8daaf7569b8f2e031854e8baaff64a469))
+
 ## [1.2.1](https://github.com/standardnotes/auth/compare/@standardnotes/auth-server@1.2.0...@standardnotes/auth-server@1.2.1) (2022-06-27)
 
 ### Bug Fixes
