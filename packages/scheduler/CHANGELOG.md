@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.1](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.2.0...@standardnotes/scheduler-server@1.2.1) (2022-06-27)
+
+### Bug Fixes
+
+* change subscription encouragement scheduled from 14 to 30 days ([e12c9c4](https://github.com/standardnotes/server/commit/e12c9c47a73efa5e5af15144e653195455f90591))
+
 # [1.2.0](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.1.5...@standardnotes/scheduler-server@1.2.0) (2022-06-27)
 
 ### Features
