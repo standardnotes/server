@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.1](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.2.0...@standardnotes/api-gateway@1.2.1) (2022-06-27)
+
+### Bug Fixes
+
+* issue with NaN error code responses ([2cb470b](https://github.com/standardnotes/api-gateway/commit/2cb470b99edc2fac8d5c38e4eb16201e55fe8753))
+
 # [1.2.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.1.6...@standardnotes/api-gateway@1.2.0) (2022-06-27)
 
 ### Features
