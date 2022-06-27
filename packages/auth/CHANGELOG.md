@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/standardnotes/auth/compare/@standardnotes/auth-server@1.1.7...@standardnotes/auth-server@1.2.0) (2022-06-27)
+
+### Features
+
+* add docker commands to start sending emails ([210a314](https://github.com/standardnotes/auth/commit/210a314c8199e47e5b6a113bd60401c16bb95291))
+
 ## [1.1.7](https://github.com/standardnotes/auth/compare/@standardnotes/auth-server@1.1.6...@standardnotes/auth-server@1.1.7) (2022-06-27)
 
 ### Bug Fixes
