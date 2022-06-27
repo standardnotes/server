@@ -26,7 +26,8 @@
     "daily-backup:one_drive": "yarn node dist/bin/backup.js one_drive daily",
     "weekly-backup:email": "yarn node dist/bin/backup.js email weekly",
     "email-campaign": "yarn node dist/bin/email.js",
-    "typeorm": "typeorm-ts-node-commonjs"
+    "typeorm": "typeorm-ts-node-commonjs",
+    "upgrade:snjs": "ncu -u '@standardnotes/*'"
   },
   "dependencies": {
     "@newrelic/winston-enricher": "^2.1.0",
