@@ -2179,6 +2179,7 @@ __metadata:
     "@typescript-eslint/parser": ^5.29.0
     eslint: ^8.17.0
     eslint-config-prettier: ^8.5.0
+    ini: ^3.0.0
     newrelic: ^8.14.1
     npm-check-updates: ^14.1.1
     prettier: ^2.7.1
@@ -6130,6 +6131,13 @@ __metadata:
   version: 1.3.8
   resolution: "ini@npm:1.3.8"
   checksum: dfd98b0ca3a4fc1e323e38a6c8eb8936e31a97a918d3b377649ea15bdb15d481207a0dda1021efbd86b464cae29a0d33c1d7dcaf6c5672bee17fa849bc50a1b3
+  languageName: node
+  linkType: hard
+
+"ini@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "ini@npm:3.0.0"
+  checksum: e92b6b0835ac369e58c677e7faa8db6019ac667d7404887978fb86b181d658e50f1742ecbba7d81eb5ff917b3ae4d63a48e1ef3a9f8a0527bd7605fe1a9995d4
   languageName: node
   linkType: hard
 

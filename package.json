@@ -54,6 +54,7 @@
     "@typescript-eslint/parser": "^5.29.0",
     "eslint": "^8.17.0",
     "eslint-config-prettier": "^8.5.0",
+    "ini": "^3.0.0",
     "npm-check-updates": "^14.1.1",
     "prettier": "^2.7.1",
     "ts-node": "^10.8.1",

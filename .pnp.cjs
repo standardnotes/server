@@ -70,6 +70,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@typescript-eslint/parser", "virtual:8859b278716fedf3e7458b5628625f7e35678c418626878559a0b816445001b7e24c55546f4677ba4c20b521aa0cf52cc33ac07deff171e383ada6eeab69933f#npm:5.29.0"],\
             ["eslint", "npm:8.18.0"],\
             ["eslint-config-prettier", "virtual:8859b278716fedf3e7458b5628625f7e35678c418626878559a0b816445001b7e24c55546f4677ba4c20b521aa0cf52cc33ac07deff171e383ada6eeab69933f#npm:8.5.0"],\
+            ["ini", "npm:3.0.0"],\
             ["newrelic", "npm:8.14.1"],\
             ["npm-check-updates", "npm:14.1.1"],\
             ["prettier", "npm:2.7.1"],\
@@ -2861,6 +2862,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@typescript-eslint/parser", "virtual:8859b278716fedf3e7458b5628625f7e35678c418626878559a0b816445001b7e24c55546f4677ba4c20b521aa0cf52cc33ac07deff171e383ada6eeab69933f#npm:5.29.0"],\
             ["eslint", "npm:8.18.0"],\
             ["eslint-config-prettier", "virtual:8859b278716fedf3e7458b5628625f7e35678c418626878559a0b816445001b7e24c55546f4677ba4c20b521aa0cf52cc33ac07deff171e383ada6eeab69933f#npm:8.5.0"],\
+            ["ini", "npm:3.0.0"],\
             ["newrelic", "npm:8.14.1"],\
             ["npm-check-updates", "npm:14.1.1"],\
             ["prettier", "npm:2.7.1"],\
@@ -7641,6 +7643,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/ini-npm-2.0.0-28f7426761-e7aadc5fb2.zip/node_modules/ini/",\
           "packageDependencies": [\
             ["ini", "npm:2.0.0"]\
+          ],\
+          "linkType": "HARD"\
+        }],\
+        ["npm:3.0.0", {\
+          "packageLocation": "./.yarn/cache/ini-npm-3.0.0-c2af955701-e92b6b0835.zip/node_modules/ini/",\
+          "packageDependencies": [\
+            ["ini", "npm:3.0.0"]\
           ],\
           "linkType": "HARD"\
         }]\
