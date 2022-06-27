@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.1](https://github.com/standardnotes/auth/compare/@standardnotes/auth-server@1.2.0...@standardnotes/auth-server@1.2.1) (2022-06-27)
+
+### Bug Fixes
+
+* add setting uuid to email requests ([214684e](https://github.com/standardnotes/auth/commit/214684eae733675b7cefa522202e53d9556e5279))
+
 # [1.2.0](https://github.com/standardnotes/auth/compare/@standardnotes/auth-server@1.1.7...@standardnotes/auth-server@1.2.0) (2022-06-27)
 
 ### Features

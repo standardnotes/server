@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.1.6...@standardnotes/api-gateway@1.2.0) (2022-06-27)
+
+### Features
+
+* add endpoint to mute marketing emails ([fa2a8da](https://github.com/standardnotes/api-gateway/commit/fa2a8da17bc6588021172adbbc4ecae5bd35f33a))
+
 ## [1.1.6](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.1.5...@standardnotes/api-gateway@1.1.6) (2022-06-27)
 
 **Note:** Version bump only for package @standardnotes/api-gateway
