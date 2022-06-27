@@ -1820,13 +1820,13 @@ __metadata:
     "@standardnotes/analytics": ^1.6.0
     "@standardnotes/api": ^1.1.13
     "@standardnotes/auth": ^3.19.2
-    "@standardnotes/common": ^1.23.0
-    "@standardnotes/domain-events": ^2.31.1
+    "@standardnotes/common": ^1.23.1
+    "@standardnotes/domain-events": ^2.32.4
     "@standardnotes/domain-events-infra": ^1.4.135
     "@standardnotes/features": ^1.45.2
     "@standardnotes/responses": ^1.6.15
     "@standardnotes/scheduler": ^1.1.1
-    "@standardnotes/settings": ^1.14.2
+    "@standardnotes/settings": ^1.15.0
     "@standardnotes/sncrypto-common": ^1.8.1
     "@standardnotes/sncrypto-node": ^1.8.1
     "@standardnotes/time": ^1.6.8
@@ -1889,10 +1889,27 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@standardnotes/auth@npm:^3.19.4":
+  version: 3.19.4
+  resolution: "@standardnotes/auth@npm:3.19.4"
+  dependencies:
+    "@standardnotes/common": ^1.23.1
+    jsonwebtoken: ^8.5.1
+  checksum: 84ac9e669ee393a8ac04c49729cd732280ab7ad9c6ad780e1f8cc7e02bdd1d15b8446d84134e775d805e6fa04e9500d9e62d7f857e6b1f5bb36f10a0c31640ff
+  languageName: node
+  linkType: hard
+
 "@standardnotes/common@npm:^1.19.1, @standardnotes/common@npm:^1.19.4, @standardnotes/common@npm:^1.22.0, @standardnotes/common@npm:^1.23.0":
   version: 1.23.0
   resolution: "@standardnotes/common@npm:1.23.0"
   checksum: 9c51bf76e7b9b28862e355aa66d0af6658e9baf9701c986d6f3b17d382b90e8da03350a4ab72b10cd16b16f1e739b8200991b3561719456972f3ce273dac3986
+  languageName: node
+  linkType: hard
+
+"@standardnotes/common@npm:^1.23.1":
+  version: 1.23.1
+  resolution: "@standardnotes/common@npm:1.23.1"
+  checksum: f498f4c469f7b9cdfc08b7648077832a2a214d844f012d02d73c2c418fab221af3302570cc6b1957b5ed481b55237f95bc24fc5c231162bfcdf8730333d38405
   languageName: node
   linkType: hard
 
@@ -1946,7 +1963,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@standardnotes/domain-events@npm:^2.27.6, @standardnotes/domain-events@npm:^2.29.0, @standardnotes/domain-events@npm:^2.31.1, @standardnotes/domain-events@npm:^2.32.2":
+"@standardnotes/domain-events@npm:^2.27.6, @standardnotes/domain-events@npm:^2.29.0, @standardnotes/domain-events@npm:^2.32.2":
   version: 2.32.2
   resolution: "@standardnotes/domain-events@npm:2.32.2"
   dependencies:
@@ -1968,6 +1985,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@standardnotes/domain-events@npm:^2.32.4":
+  version: 2.32.4
+  resolution: "@standardnotes/domain-events@npm:2.32.4"
+  dependencies:
+    "@standardnotes/auth": ^3.19.4
+    "@standardnotes/features": ^1.45.6
+    "@standardnotes/scheduler": ^1.1.2
+  checksum: 9f8a1637aa63d04f2c60e1a4c75e5fc5f4013f4a5e39b9cd55d56a894220cee47390e8b37422b4c128db05d231ab371e8a1caa4e1af3395bf04319697dae7303
+  languageName: node
+  linkType: hard
+
 "@standardnotes/encryption@npm:^1.8.19":
   version: 1.8.19
   resolution: "@standardnotes/encryption@npm:1.8.19"
@@ -1986,6 +2014,16 @@ __metadata:
     "@standardnotes/auth": ^3.19.3
     "@standardnotes/common": ^1.23.0
   checksum: b5914d06b07f99cdf8657c59754a80172417d69547e10e312630099f994880c4ff9b54f3a0e1cbb6e8a236e12c387f4faf5788fc847d9303d93e013f29c8bdcf
+  languageName: node
+  linkType: hard
+
+"@standardnotes/features@npm:^1.45.6":
+  version: 1.45.6
+  resolution: "@standardnotes/features@npm:1.45.6"
+  dependencies:
+    "@standardnotes/auth": ^3.19.4
+    "@standardnotes/common": ^1.23.1
+  checksum: 572780d6e24efa664f316f6cf56c01907e00263db6204fee17f7ce9e43fa376411f373863dda59f8fb039250a224b7f8637fbd0bcbd7241112e061accbc05360
   languageName: node
   linkType: hard
 
@@ -2112,6 +2150,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@standardnotes/scheduler@npm:^1.1.2":
+  version: 1.1.2
+  resolution: "@standardnotes/scheduler@npm:1.1.2"
+  dependencies:
+    "@standardnotes/common": ^1.23.1
+  checksum: 68642a08741aeb4936e4a69e43e2b85e5cbfa3ce60006d292cee517d33093edaf35a6a7af61343d85ab3474d6e980a073a2779f6e0b1f11805ab06a407b15ce7
+  languageName: node
+  linkType: hard
+
 "@standardnotes/server-monorepo@workspace:.":
   version: 0.0.0-use.local
   resolution: "@standardnotes/server-monorepo@workspace:."
@@ -2148,10 +2195,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@standardnotes/settings@npm:1.14.3, @standardnotes/settings@npm:^1.14.2":
+"@standardnotes/settings@npm:1.14.3":
   version: 1.14.3
   resolution: "@standardnotes/settings@npm:1.14.3"
   checksum: 60fbb2ca856083b1afdf3a93cfb2729151c8a4a34f02564a8a814a7caad9982285303ad79ffb1da7643046061a6efe39410e57e8e4703a8963be8dc0ffabeaa6
+  languageName: node
+  linkType: hard
+
+"@standardnotes/settings@npm:^1.15.0":
+  version: 1.15.0
+  resolution: "@standardnotes/settings@npm:1.15.0"
+  checksum: 4397d453a1a0cd5554012a5bf5ee2025c102ffc6d742841eecd2ab9cd46b0fbfe78da61b401451646274887d92801cafcef4c283bbfc6074b4d152103e15f861
   languageName: node
   linkType: hard
 

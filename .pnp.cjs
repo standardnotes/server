@@ -2499,6 +2499,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["jsonwebtoken", "npm:8.5.1"]\
           ],\
           "linkType": "HARD"\
+        }],\
+        ["npm:3.19.4", {\
+          "packageLocation": "./.yarn/cache/@standardnotes-auth-npm-3.19.4-29b35c1352-84ac9e669e.zip/node_modules/@standardnotes/auth/",\
+          "packageDependencies": [\
+            ["@standardnotes/auth", "npm:3.19.4"],\
+            ["@standardnotes/common", "npm:1.23.1"],\
+            ["jsonwebtoken", "npm:8.5.1"]\
+          ],\
+          "linkType": "HARD"\
         }]\
       ]],\
       ["@standardnotes/auth-server", [\
@@ -2511,13 +2520,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@standardnotes/analytics", "npm:1.6.0"],\
             ["@standardnotes/api", "npm:1.1.13"],\
             ["@standardnotes/auth", "npm:3.19.3"],\
-            ["@standardnotes/common", "npm:1.23.0"],\
-            ["@standardnotes/domain-events", "npm:2.32.2"],\
+            ["@standardnotes/common", "npm:1.23.1"],\
+            ["@standardnotes/domain-events", "npm:2.32.4"],\
             ["@standardnotes/domain-events-infra", "npm:1.5.2"],\
             ["@standardnotes/features", "npm:1.45.5"],\
             ["@standardnotes/responses", "npm:1.6.36"],\
             ["@standardnotes/scheduler", "npm:1.1.1"],\
-            ["@standardnotes/settings", "npm:1.14.3"],\
+            ["@standardnotes/settings", "npm:1.15.0"],\
             ["@standardnotes/sncrypto-common", "npm:1.9.0"],\
             ["@standardnotes/sncrypto-node", "npm:1.8.3"],\
             ["@standardnotes/time", "npm:1.7.0"],\
@@ -2568,6 +2577,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@standardnotes/common", "npm:1.23.0"]\
           ],\
           "linkType": "HARD"\
+        }],\
+        ["npm:1.23.1", {\
+          "packageLocation": "./.yarn/cache/@standardnotes-common-npm-1.23.1-ed73dbb679-f498f4c469.zip/node_modules/@standardnotes/common/",\
+          "packageDependencies": [\
+            ["@standardnotes/common", "npm:1.23.1"]\
+          ],\
+          "linkType": "HARD"\
         }]\
       ]],\
       ["@standardnotes/config", [\
@@ -2608,6 +2624,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@standardnotes/auth", "npm:3.19.3"],\
             ["@standardnotes/features", "npm:1.45.5"],\
             ["@standardnotes/scheduler", "npm:1.1.1"]\
+          ],\
+          "linkType": "HARD"\
+        }],\
+        ["npm:2.32.4", {\
+          "packageLocation": "./.yarn/cache/@standardnotes-domain-events-npm-2.32.4-0b0cc85196-9f8a1637aa.zip/node_modules/@standardnotes/domain-events/",\
+          "packageDependencies": [\
+            ["@standardnotes/domain-events", "npm:2.32.4"],\
+            ["@standardnotes/auth", "npm:3.19.4"],\
+            ["@standardnotes/features", "npm:1.45.6"],\
+            ["@standardnotes/scheduler", "npm:1.1.2"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -2661,6 +2687,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@standardnotes/features", "npm:1.45.5"],\
             ["@standardnotes/auth", "npm:3.19.3"],\
             ["@standardnotes/common", "npm:1.23.0"]\
+          ],\
+          "linkType": "HARD"\
+        }],\
+        ["npm:1.45.6", {\
+          "packageLocation": "./.yarn/cache/@standardnotes-features-npm-1.45.6-6f88b4fd2a-572780d6e2.zip/node_modules/@standardnotes/features/",\
+          "packageDependencies": [\
+            ["@standardnotes/features", "npm:1.45.6"],\
+            ["@standardnotes/auth", "npm:3.19.4"],\
+            ["@standardnotes/common", "npm:1.23.1"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -2760,6 +2795,14 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@standardnotes/common", "npm:1.23.0"]\
           ],\
           "linkType": "HARD"\
+        }],\
+        ["npm:1.1.2", {\
+          "packageLocation": "./.yarn/cache/@standardnotes-scheduler-npm-1.1.2-78f89314fb-68642a0874.zip/node_modules/@standardnotes/scheduler/",\
+          "packageDependencies": [\
+            ["@standardnotes/scheduler", "npm:1.1.2"],\
+            ["@standardnotes/common", "npm:1.23.1"]\
+          ],\
+          "linkType": "HARD"\
         }]\
       ]],\
       ["@standardnotes/scheduler-server", [\
@@ -2840,6 +2883,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@standardnotes-settings-npm-1.14.3-6f557bd9ab-60fbb2ca85.zip/node_modules/@standardnotes/settings/",\
           "packageDependencies": [\
             ["@standardnotes/settings", "npm:1.14.3"]\
+          ],\
+          "linkType": "HARD"\
+        }],\
+        ["npm:1.15.0", {\
+          "packageLocation": "./.yarn/cache/@standardnotes-settings-npm-1.15.0-bfec86ee49-4397d453a1.zip/node_modules/@standardnotes/settings/",\
+          "packageDependencies": [\
+            ["@standardnotes/settings", "npm:1.15.0"]\
           ],\
           "linkType": "HARD"\
         }]\

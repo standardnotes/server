@@ -1,6 +1,6 @@
 import 'reflect-metadata'
 
-import { RoleName } from '@standardnotes/common'
+import { EmailMessageIdentifier, RoleName } from '@standardnotes/common'
 import { PredicateName, PredicateAuthority, PredicateVerificationResult } from '@standardnotes/scheduler'
 import { TimerInterface } from '@standardnotes/time'
 
@@ -16,6 +16,35 @@ describe('DomainEventFactory', () => {
     timer = {} as jest.Mocked<TimerInterface>
     timer.getTimestampInMicroseconds = jest.fn().mockReturnValue(1)
     timer.getUTCDate = jest.fn().mockReturnValue(new Date(1))
+  })
+
+  it('should create a EMAIL_MESSAGE_REQUESTED event', () => {
+    expect(
+      createFactory().createEmailMessageRequestedEvent({
+        userEmail: 'test@test.te',
+        messageIdentifier: EmailMessageIdentifier.ENCOURAGE_EMAIL_BACKUPS,
+        context: {
+          foo: 'bar',
+        },
+      }),
+    ).toEqual({
+      createdAt: expect.any(Date),
+      meta: {
+        correlation: {
+          userIdentifier: 'test@test.te',
+          userIdentifierType: 'email',
+        },
+        origin: 'auth',
+      },
+      payload: {
+        messageIdentifier: 'ENCOURAGE_EMAIL_BACKUPS',
+        userEmail: 'test@test.te',
+        context: {
+          foo: 'bar',
+        },
+      },
+      type: 'EMAIL_MESSAGE_REQUESTED',
+    })
   })
 
   it('should create a PREDICATE_VERIFIED event', () => {

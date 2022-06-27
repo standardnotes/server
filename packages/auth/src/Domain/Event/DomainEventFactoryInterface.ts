@@ -1,4 +1,4 @@
-import { Uuid, RoleName } from '@standardnotes/common'
+import { Uuid, RoleName, EmailMessageIdentifier } from '@standardnotes/common'
 import { Predicate, PredicateVerificationResult } from '@standardnotes/scheduler'
 import {
   AccountDeletionRequestedEvent,
@@ -14,10 +14,16 @@ import {
   SharedSubscriptionInvitationCreatedEvent,
   SharedSubscriptionInvitationCanceledEvent,
   PredicateVerifiedEvent,
+  EmailMessageRequestedEvent,
 } from '@standardnotes/domain-events'
 import { InviteeIdentifierType } from '../SharedSubscription/InviteeIdentifierType'
 
 export interface DomainEventFactoryInterface {
+  createEmailMessageRequestedEvent(dto: {
+    userEmail: string
+    messageIdentifier: EmailMessageIdentifier
+    context: Record<string, unknown>
+  }): EmailMessageRequestedEvent
   createUserSignedInEvent(dto: {
     userUuid: string
     userEmail: string

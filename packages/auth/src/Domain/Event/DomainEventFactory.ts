@@ -1,4 +1,4 @@
-import { RoleName, Uuid } from '@standardnotes/common'
+import { EmailMessageIdentifier, RoleName, Uuid } from '@standardnotes/common'
 import {
   AccountDeletionRequestedEvent,
   UserEmailChangedEvent,
@@ -14,6 +14,7 @@ import {
   SharedSubscriptionInvitationCanceledEvent,
   PredicateVerifiedEvent,
   DomainEventService,
+  EmailMessageRequestedEvent,
 } from '@standardnotes/domain-events'
 import { Predicate, PredicateVerificationResult } from '@standardnotes/scheduler'
 import { TimerInterface } from '@standardnotes/time'
@@ -25,6 +26,25 @@ import { DomainEventFactoryInterface } from './DomainEventFactoryInterface'
 @injectable()
 export class DomainEventFactory implements DomainEventFactoryInterface {
   constructor(@inject(TYPES.Timer) private timer: TimerInterface) {}
+
+  createEmailMessageRequestedEvent(dto: {
+    userEmail: string
+    messageIdentifier: EmailMessageIdentifier
+    context: Record<string, unknown>
+  }): EmailMessageRequestedEvent {
+    return {
+      type: 'EMAIL_MESSAGE_REQUESTED',
+      createdAt: this.timer.getUTCDate(),
+      meta: {
+        correlation: {
+          userIdentifier: dto.userEmail,
+          userIdentifierType: 'email',
+        },
+        origin: DomainEventService.Auth,
+      },
+      payload: dto,
+    }
+  }
 
   createPredicateVerifiedEvent(dto: {
     userUuid: Uuid

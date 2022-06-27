@@ -1,5 +1,10 @@
 import { PermissionName } from '@standardnotes/features'
-import { LogSessionUserAgentOption, MuteSignInEmailsOption, SettingName } from '@standardnotes/settings'
+import {
+  LogSessionUserAgentOption,
+  MuteMarketingEmailsOption,
+  MuteSignInEmailsOption,
+  SettingName,
+} from '@standardnotes/settings'
 import { injectable } from 'inversify'
 
 import { EncryptionVersion } from '../Encryption/EncryptionVersion'
@@ -14,6 +19,7 @@ export class SettingsAssociationService implements SettingsAssociationServiceInt
     SettingName.MuteFailedBackupsEmails,
     SettingName.MuteFailedCloudBackupsEmails,
     SettingName.MuteSignInEmails,
+    SettingName.MuteMarketingEmails,
     SettingName.DropboxBackupFrequency,
     SettingName.GoogleDriveBackupFrequency,
     SettingName.OneDriveBackupFrequency,
@@ -28,6 +34,7 @@ export class SettingsAssociationService implements SettingsAssociationServiceInt
     SettingName.MuteFailedBackupsEmails,
     SettingName.MuteFailedCloudBackupsEmails,
     SettingName.MuteSignInEmails,
+    SettingName.MuteMarketingEmails,
     SettingName.ListedAuthorSecrets,
     SettingName.LogSessionUserAgent,
   ]
@@ -45,6 +52,14 @@ export class SettingsAssociationService implements SettingsAssociationServiceInt
         sensitive: false,
         serverEncryptionVersion: EncryptionVersion.Unencrypted,
         value: MuteSignInEmailsOption.NotMuted,
+      },
+    ],
+    [
+      SettingName.MuteMarketingEmails,
+      {
+        sensitive: false,
+        serverEncryptionVersion: EncryptionVersion.Unencrypted,
+        value: MuteMarketingEmailsOption.NotMuted,
       },
     ],
     [
