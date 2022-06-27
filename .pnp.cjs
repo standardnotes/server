@@ -63,6 +63,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@lerna-lite/cli", "npm:1.5.1"],\
             ["@lerna-lite/list", "npm:1.5.1"],\
             ["@lerna-lite/run", "npm:1.5.1"],\
+            ["@sentry/node", "npm:7.3.0"],\
             ["@types/jest", "npm:28.1.3"],\
             ["@types/newrelic", "npm:7.0.3"],\
             ["@types/node", "npm:18.0.0"],\
@@ -2305,52 +2306,39 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@sentry/core", [\
-        ["npm:6.19.7", {\
-          "packageLocation": "./.yarn/cache/@sentry-core-npm-6.19.7-4cbb62d040-d212e8ef07.zip/node_modules/@sentry/core/",\
+        ["npm:7.3.0", {\
+          "packageLocation": "./.yarn/cache/@sentry-core-npm-7.3.0-8e7d2a21e6-1768568404.zip/node_modules/@sentry/core/",\
           "packageDependencies": [\
-            ["@sentry/core", "npm:6.19.7"],\
-            ["@sentry/hub", "npm:6.19.7"],\
-            ["@sentry/minimal", "npm:6.19.7"],\
-            ["@sentry/types", "npm:6.19.7"],\
-            ["@sentry/utils", "npm:6.19.7"],\
+            ["@sentry/core", "npm:7.3.0"],\
+            ["@sentry/hub", "npm:7.3.0"],\
+            ["@sentry/types", "npm:7.3.0"],\
+            ["@sentry/utils", "npm:7.3.0"],\
             ["tslib", "npm:1.14.1"]\
           ],\
           "linkType": "HARD"\
         }]\
       ]],\
       ["@sentry/hub", [\
-        ["npm:6.19.7", {\
-          "packageLocation": "./.yarn/cache/@sentry-hub-npm-6.19.7-6469362c23-10bb1c5cba.zip/node_modules/@sentry/hub/",\
+        ["npm:7.3.0", {\
+          "packageLocation": "./.yarn/cache/@sentry-hub-npm-7.3.0-b5d4219eb3-a052a7c940.zip/node_modules/@sentry/hub/",\
           "packageDependencies": [\
-            ["@sentry/hub", "npm:6.19.7"],\
-            ["@sentry/types", "npm:6.19.7"],\
-            ["@sentry/utils", "npm:6.19.7"],\
-            ["tslib", "npm:1.14.1"]\
-          ],\
-          "linkType": "HARD"\
-        }]\
-      ]],\
-      ["@sentry/minimal", [\
-        ["npm:6.19.7", {\
-          "packageLocation": "./.yarn/cache/@sentry-minimal-npm-6.19.7-7527a9814c-9153ac426e.zip/node_modules/@sentry/minimal/",\
-          "packageDependencies": [\
-            ["@sentry/minimal", "npm:6.19.7"],\
-            ["@sentry/hub", "npm:6.19.7"],\
-            ["@sentry/types", "npm:6.19.7"],\
+            ["@sentry/hub", "npm:7.3.0"],\
+            ["@sentry/types", "npm:7.3.0"],\
+            ["@sentry/utils", "npm:7.3.0"],\
             ["tslib", "npm:1.14.1"]\
           ],\
           "linkType": "HARD"\
         }]\
       ]],\
       ["@sentry/node", [\
-        ["npm:6.19.7", {\
-          "packageLocation": "./.yarn/cache/@sentry-node-npm-6.19.7-edcd5da482-2293b0d1d1.zip/node_modules/@sentry/node/",\
+        ["npm:7.3.0", {\
+          "packageLocation": "./.yarn/cache/@sentry-node-npm-7.3.0-ae73eb5bb5-a92c2d2d1b.zip/node_modules/@sentry/node/",\
           "packageDependencies": [\
-            ["@sentry/node", "npm:6.19.7"],\
-            ["@sentry/core", "npm:6.19.7"],\
-            ["@sentry/hub", "npm:6.19.7"],\
-            ["@sentry/types", "npm:6.19.7"],\
-            ["@sentry/utils", "npm:6.19.7"],\
+            ["@sentry/node", "npm:7.3.0"],\
+            ["@sentry/core", "npm:7.3.0"],\
+            ["@sentry/hub", "npm:7.3.0"],\
+            ["@sentry/types", "npm:7.3.0"],\
+            ["@sentry/utils", "npm:7.3.0"],\
             ["cookie", "npm:0.4.2"],\
             ["https-proxy-agent", "npm:5.0.1"],\
             ["lru_map", "npm:0.3.3"],\
@@ -2360,20 +2348,20 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@sentry/types", [\
-        ["npm:6.19.7", {\
-          "packageLocation": "./.yarn/cache/@sentry-types-npm-6.19.7-f75535a9f4-f46ef74a33.zip/node_modules/@sentry/types/",\
+        ["npm:7.3.0", {\
+          "packageLocation": "./.yarn/cache/@sentry-types-npm-7.3.0-4a455bc29c-3ddbc3c7eb.zip/node_modules/@sentry/types/",\
           "packageDependencies": [\
-            ["@sentry/types", "npm:6.19.7"]\
+            ["@sentry/types", "npm:7.3.0"]\
           ],\
           "linkType": "HARD"\
         }]\
       ]],\
       ["@sentry/utils", [\
-        ["npm:6.19.7", {\
-          "packageLocation": "./.yarn/cache/@sentry-utils-npm-6.19.7-d61c6c8632-a000223b9c.zip/node_modules/@sentry/utils/",\
+        ["npm:7.3.0", {\
+          "packageLocation": "./.yarn/cache/@sentry-utils-npm-7.3.0-a4b6fc94f0-2696b1bfad.zip/node_modules/@sentry/utils/",\
           "packageDependencies": [\
-            ["@sentry/utils", "npm:6.19.7"],\
-            ["@sentry/types", "npm:6.19.7"],\
+            ["@sentry/utils", "npm:7.3.0"],\
+            ["@sentry/types", "npm:7.3.0"],\
             ["tslib", "npm:1.14.1"]\
           ],\
           "linkType": "HARD"\
@@ -2456,7 +2444,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["@standardnotes/api-gateway", "workspace:packages/api-gateway"],\
             ["@newrelic/winston-enricher", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:2.1.2"],\
-            ["@sentry/node", "npm:6.19.7"],\
+            ["@sentry/node", "npm:7.3.0"],\
             ["@standardnotes/analytics", "npm:1.6.0"],\
             ["@standardnotes/auth", "npm:3.19.2"],\
             ["@standardnotes/domain-events", "npm:2.29.0"],\
@@ -2519,7 +2507,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["@standardnotes/auth-server", "workspace:packages/auth"],\
             ["@newrelic/winston-enricher", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:2.1.2"],\
-            ["@sentry/node", "npm:6.19.7"],\
+            ["@sentry/node", "npm:7.3.0"],\
             ["@standardnotes/analytics", "npm:1.6.0"],\
             ["@standardnotes/api", "npm:1.1.13"],\
             ["@standardnotes/auth", "npm:3.19.3"],\
@@ -2672,7 +2660,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./packages/files/",\
           "packageDependencies": [\
             ["@standardnotes/files-server", "workspace:packages/files"],\
-            ["@sentry/node", "npm:6.19.7"],\
+            ["@sentry/node", "npm:7.3.0"],\
             ["@standardnotes/auth", "npm:3.19.3"],\
             ["@standardnotes/common", "npm:1.23.0"],\
             ["@standardnotes/config", "npm:2.0.1"],\
@@ -2770,6 +2758,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["@standardnotes/scheduler-server", "workspace:packages/scheduler"],\
             ["@newrelic/winston-enricher", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:2.1.2"],\
+            ["@sentry/node", "npm:7.3.0"],\
             ["@standardnotes/common", "npm:1.23.0"],\
             ["@standardnotes/domain-events", "npm:2.32.2"],\
             ["@standardnotes/domain-events-infra", "npm:1.5.2"],\
@@ -2807,6 +2796,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@lerna-lite/cli", "npm:1.5.1"],\
             ["@lerna-lite/list", "npm:1.5.1"],\
             ["@lerna-lite/run", "npm:1.5.1"],\
+            ["@sentry/node", "npm:7.3.0"],\
             ["@types/jest", "npm:28.1.3"],\
             ["@types/newrelic", "npm:7.0.3"],\
             ["@types/node", "npm:18.0.0"],\
@@ -2869,7 +2859,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["@standardnotes/syncing-server", "workspace:packages/syncing-server"],\
             ["@newrelic/winston-enricher", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:2.1.2"],\
-            ["@sentry/node", "npm:6.19.7"],\
+            ["@sentry/node", "npm:7.3.0"],\
             ["@standardnotes/analytics", "npm:1.6.0"],\
             ["@standardnotes/auth", "npm:3.19.3"],\
             ["@standardnotes/common", "npm:1.23.0"],\

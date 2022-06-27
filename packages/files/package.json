@@ -24,7 +24,7 @@
     "worker": "yarn node dist/bin/worker.js"
   },
   "dependencies": {
-    "@sentry/node": "^6.16.1",
+    "@sentry/node": "^7.3.0",
     "@standardnotes/auth": "^3.18.9",
     "@standardnotes/common": "^1.19.4",
     "@standardnotes/domain-events": "^2.27.6",

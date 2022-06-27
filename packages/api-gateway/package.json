@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@newrelic/winston-enricher": "^2.1.0",
-    "@sentry/node": "^6.16.1",
+    "@sentry/node": "^7.3.0",
     "@standardnotes/analytics": "^1.4.0",
     "@standardnotes/auth": "3.19.2",
     "@standardnotes/domain-events": "2.29.0",

@@ -1654,71 +1654,59 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/core@npm:6.19.7":
-  version: 6.19.7
-  resolution: "@sentry/core@npm:6.19.7"
+"@sentry/core@npm:7.3.0":
+  version: 7.3.0
+  resolution: "@sentry/core@npm:7.3.0"
   dependencies:
-    "@sentry/hub": 6.19.7
-    "@sentry/minimal": 6.19.7
-    "@sentry/types": 6.19.7
-    "@sentry/utils": 6.19.7
+    "@sentry/hub": 7.3.0
+    "@sentry/types": 7.3.0
+    "@sentry/utils": 7.3.0
     tslib: ^1.9.3
-  checksum: d212e8ef07114549de4a93b81f8bfa217ca1550ca7a5eeaa611e5629faef78ff72663ce561ffa2cff48f3dc556745ef65177044f9965cdd3cbccf617cf3bf675
+  checksum: 176856840462c881c9a2ea30c5af209b64516201e5d7978e3960473fead6fc10547c556185e3636a2eade6856b293d190212825f9e8ff6fe4331fcdb0f6c213a
   languageName: node
   linkType: hard
 
-"@sentry/hub@npm:6.19.7":
-  version: 6.19.7
-  resolution: "@sentry/hub@npm:6.19.7"
+"@sentry/hub@npm:7.3.0":
+  version: 7.3.0
+  resolution: "@sentry/hub@npm:7.3.0"
   dependencies:
-    "@sentry/types": 6.19.7
-    "@sentry/utils": 6.19.7
+    "@sentry/types": 7.3.0
+    "@sentry/utils": 7.3.0
     tslib: ^1.9.3
-  checksum: 10bb1c5cba1b0f1e27a3dd0a186c22f94aeaf11c4662890ab07b2774f46f46af78d61e3ba71d76edc750a7b45af86edd032f35efecdb4efa2eaf551080ccdcb1
+  checksum: a052a7c940e1f6af16ca2c61f1e184eaf0d7874598ec4eae3a28c8b5ea6a19cf3b89106768aaeea19deb9816bdd316ec0218764c2e66cc92a87e2e404d6e0dd6
   languageName: node
   linkType: hard
 
-"@sentry/minimal@npm:6.19.7":
-  version: 6.19.7
-  resolution: "@sentry/minimal@npm:6.19.7"
+"@sentry/node@npm:^7.3.0":
+  version: 7.3.0
+  resolution: "@sentry/node@npm:7.3.0"
   dependencies:
-    "@sentry/hub": 6.19.7
-    "@sentry/types": 6.19.7
-    tslib: ^1.9.3
-  checksum: 9153ac426ee056fc34c5be898f83d74ec08f559d69f544c5944ec05e584b62ed356b92d1a9b08993a7022ad42b5661c3d72881221adc19bee5fc1af3ad3864a8
-  languageName: node
-  linkType: hard
-
-"@sentry/node@npm:^6.16.1":
-  version: 6.19.7
-  resolution: "@sentry/node@npm:6.19.7"
-  dependencies:
-    "@sentry/core": 6.19.7
-    "@sentry/hub": 6.19.7
-    "@sentry/types": 6.19.7
-    "@sentry/utils": 6.19.7
+    "@sentry/core": 7.3.0
+    "@sentry/hub": 7.3.0
+    "@sentry/types": 7.3.0
+    "@sentry/utils": 7.3.0
     cookie: ^0.4.1
     https-proxy-agent: ^5.0.0
     lru_map: ^0.3.3
     tslib: ^1.9.3
-  checksum: 2293b0d1d1f9fac3a451eb94f820bc27721c8edddd1f373064666ddd6272f0a4c70dbe58c6c4b3d3ccaf4578aab8f466d71ee69f6f6ff93521bbb02dfe829ce5
+  checksum: a92c2d2d1b05136b3c04f39cb87bf459519619c7e4f548f4e2a34145e868edd1ccdd505bcf5d3ff56872ea994530c263deb7ce4c498e9f4e39111c5fcacd342f
   languageName: node
   linkType: hard
 
-"@sentry/types@npm:6.19.7":
-  version: 6.19.7
-  resolution: "@sentry/types@npm:6.19.7"
-  checksum: f46ef74a33376ad6ea9b128115515c58eb9369d89293c60aa67abca26b5d5d519aa4d0a736db56ae0d75ffd816643d62187018298523cbc2e6c2fb3a6b2a9035
+"@sentry/types@npm:7.3.0":
+  version: 7.3.0
+  resolution: "@sentry/types@npm:7.3.0"
+  checksum: 3ddbc3c7ebf2caad2d97a4c7a25f14791f642f7baadfa3c02857e433c0377ca7e6df4d3fc7e197717f2d6f8fca876178d01c827b5c1b42adba92115c62e18daf
   languageName: node
   linkType: hard
 
-"@sentry/utils@npm:6.19.7":
-  version: 6.19.7
-  resolution: "@sentry/utils@npm:6.19.7"
+"@sentry/utils@npm:7.3.0":
+  version: 7.3.0
+  resolution: "@sentry/utils@npm:7.3.0"
   dependencies:
-    "@sentry/types": 6.19.7
+    "@sentry/types": 7.3.0
     tslib: ^1.9.3
-  checksum: a000223b9c646c64e3565e79cace1eeb75114342b768367c4dddd646476c215eb1bddfb70c63f05e2352d3bce2d7d415344e4757a001605d0e01ac74da5dd306
+  checksum: 2696b1bfad1ad2e8e2aa7dd822fb0546d680b06aa302c3a8e8c8da0577fb9938da094f3eda589b2a1c216e1c84a81a5119b30136fd013de9c3a4513aece55d05
   languageName: node
   linkType: hard
 
@@ -1773,7 +1761,7 @@ __metadata:
   resolution: "@standardnotes/api-gateway@workspace:packages/api-gateway"
   dependencies:
     "@newrelic/winston-enricher": ^2.1.0
-    "@sentry/node": ^6.16.1
+    "@sentry/node": ^7.3.0
     "@standardnotes/analytics": ^1.4.0
     "@standardnotes/auth": 3.19.2
     "@standardnotes/domain-events": 2.29.0
@@ -1828,7 +1816,7 @@ __metadata:
   resolution: "@standardnotes/auth-server@workspace:packages/auth"
   dependencies:
     "@newrelic/winston-enricher": ^2.1.0
-    "@sentry/node": ^6.16.1
+    "@sentry/node": ^7.3.0
     "@standardnotes/analytics": ^1.6.0
     "@standardnotes/api": ^1.1.13
     "@standardnotes/auth": ^3.19.2
@@ -1994,7 +1982,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@standardnotes/files-server@workspace:packages/files"
   dependencies:
-    "@sentry/node": ^6.16.1
+    "@sentry/node": ^7.3.0
     "@standardnotes/auth": ^3.18.9
     "@standardnotes/common": ^1.19.4
     "@standardnotes/config": 2.0.1
@@ -2077,6 +2065,7 @@ __metadata:
   resolution: "@standardnotes/scheduler-server@workspace:packages/scheduler"
   dependencies:
     "@newrelic/winston-enricher": ^2.1.0
+    "@sentry/node": ^7.3.0
     "@standardnotes/common": ^1.23.0
     "@standardnotes/domain-events": ^2.32.0
     "@standardnotes/domain-events-infra": ^1.5.0
@@ -2121,6 +2110,7 @@ __metadata:
     "@lerna-lite/cli": ^1.5.1
     "@lerna-lite/list": ^1.5.1
     "@lerna-lite/run": ^1.5.1
+    "@sentry/node": ^7.3.0
     "@types/jest": ^28.1.3
     "@types/newrelic": ^7.0.3
     "@types/node": ^18.0.0
@@ -2175,7 +2165,7 @@ __metadata:
   resolution: "@standardnotes/syncing-server@workspace:packages/syncing-server"
   dependencies:
     "@newrelic/winston-enricher": ^2.1.0
-    "@sentry/node": ^6.16.1
+    "@sentry/node": ^7.3.0
     "@standardnotes/analytics": ^1.6.0
     "@standardnotes/auth": ^3.19.2
     "@standardnotes/common": ^1.22.0
