@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.1.5...@standardnotes/scheduler-server@1.2.0) (2022-06-27)
+
+### Features
+
+* add context for requesting email message ([8d4280f](https://github.com/standardnotes/server/commit/8d4280f4ca57151198880620cc9504aba720f2f3))
+
 ## [1.1.5](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.1.4...@standardnotes/scheduler-server@1.1.5) (2022-06-27)
 
 ### Bug Fixes
