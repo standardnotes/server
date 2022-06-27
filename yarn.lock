@@ -1790,7 +1790,7 @@ __metadata:
     jsonwebtoken: 8.5.1
     newrelic: ^8.14.1
     nodemon: ^2.0.16
-    npm-check-updates: "*"
+    npm-check-updates: ^14.1.1
     prettyjson: 1.2.1
     reflect-metadata: 0.1.13
     ts-jest: ^28.0.1
@@ -1859,7 +1859,7 @@ __metadata:
     mysql2: ^2.3.3
     newrelic: ^8.14.1
     nodemon: ^2.0.16
-    npm-check-updates: "*"
+    npm-check-updates: ^14.1.1
     otplib: 12.0.1
     prettyjson: 1.2.1
     reflect-metadata: 0.1.13
@@ -2069,7 +2069,7 @@ __metadata:
     jsonwebtoken: ^8.5.1
     newrelic: ^8.14.1
     nodemon: ^2.0.16
-    npm-check-updates: "*"
+    npm-check-updates: ^14.1.1
     prettyjson: ^1.2.1
     reflect-metadata: ^0.1.13
     ts-jest: ^28.0.1
@@ -2137,7 +2137,7 @@ __metadata:
     jest: ^28.1.1
     mysql2: ^2.3.3
     newrelic: ^8.14.1
-    npm-check-updates: "*"
+    npm-check-updates: ^14.1.1
     reflect-metadata: ^0.1.13
     ts-jest: ^28.0.5
     typeorm: ^0.3.6
@@ -2273,7 +2273,7 @@ __metadata:
     mysql2: ^2.3.3
     newrelic: ^8.14.1
     nodemon: 2.0.7
-    npm-check-updates: "*"
+    npm-check-updates: ^14.1.1
     prettyjson: 1.2.1
     reflect-metadata: 0.1.13
     ts-jest: ^28.0.1
@@ -8209,7 +8209,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"npm-check-updates@npm:*, npm-check-updates@npm:^14.1.1":
+"npm-check-updates@npm:^14.1.1":
   version: 14.1.1
   resolution: "npm-check-updates@npm:14.1.1"
   dependencies:

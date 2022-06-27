@@ -82,7 +82,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "jest": "^28.1.1",
     "nodemon": "^2.0.16",
-    "npm-check-updates": "*",
+    "npm-check-updates": "^14.1.1",
     "ts-jest": "^28.0.1"
   }
 }
