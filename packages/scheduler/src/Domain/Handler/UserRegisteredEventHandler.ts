@@ -49,7 +49,7 @@ export class UserRegisteredEventHandler implements DomainEventHandlerInterface {
   private async scheduleEncourageSubscriptionPurchasing(event: UserRegisteredEvent): Promise<void> {
     const job = new Job()
     job.name = JobName.ENCOURAGE_SUBSCRIPTION_PURCHASING
-    job.scheduledAt = this.timer.convertDateToMicroseconds(this.timer.getUTCDateNDaysAhead(14))
+    job.scheduledAt = this.timer.convertDateToMicroseconds(this.timer.getUTCDateNDaysAhead(30))
     job.createdAt = this.timer.getTimestampInMicroseconds()
     job.status = JobStatus.Pending
     job.userIdentifier = event.payload.email
