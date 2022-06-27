@@ -2474,6 +2474,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["jsonwebtoken", "npm:8.5.1"],\
             ["newrelic", "npm:8.14.1"],\
             ["nodemon", "npm:2.0.16"],\
+            ["npm-check-updates", "npm:14.1.1"],\
             ["prettyjson", "npm:1.2.1"],\
             ["reflect-metadata", "npm:0.1.13"],\
             ["ts-jest", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:28.0.5"],\
@@ -2559,6 +2560,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["mysql2", "npm:2.3.3"],\
             ["newrelic", "npm:8.14.1"],\
             ["nodemon", "npm:2.0.16"],\
+            ["npm-check-updates", "npm:14.1.1"],\
             ["otplib", "npm:12.0.1"],\
             ["prettyjson", "npm:1.2.1"],\
             ["reflect-metadata", "npm:0.1.13"],\
@@ -2742,6 +2744,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["jsonwebtoken", "npm:8.5.1"],\
             ["newrelic", "npm:8.14.1"],\
             ["nodemon", "npm:2.0.16"],\
+            ["npm-check-updates", "npm:14.1.1"],\
             ["prettyjson", "npm:1.2.5"],\
             ["reflect-metadata", "npm:0.1.13"],\
             ["ts-jest", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:28.0.5"],\
@@ -2832,6 +2835,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["jest", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:28.1.1"],\
             ["mysql2", "npm:2.3.3"],\
             ["newrelic", "npm:8.14.1"],\
+            ["npm-check-updates", "npm:14.1.1"],\
             ["reflect-metadata", "npm:0.1.13"],\
             ["ts-jest", "virtual:16bfd8597041deb71e4581ea0755edd4dcd1b09b8ab14bfbbf5e4d5ca6b5d47ed7fbe2a25cdf57fcbb8e092c30b6beb93d2e7533f9e31c5dc62f7f0e487d1e4b#npm:28.0.5"],\
             ["typeorm", "virtual:31b5a94a105c89c9294c3d524a7f8929fe63ee5a2efadf21951ca4c0cfd2ecf02e8f4ef5a066bbda091f1e3a56e57c6749069a080618c96b22e51131a330fc4a#npm:0.3.6"],\
@@ -2959,6 +2963,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["mysql2", "npm:2.3.3"],\
             ["newrelic", "npm:8.14.1"],\
             ["nodemon", "npm:2.0.7"],\
+            ["npm-check-updates", "npm:14.1.1"],\
             ["prettyjson", "npm:1.2.1"],\
             ["reflect-metadata", "npm:0.1.13"],\
             ["ts-jest", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:28.0.5"],\

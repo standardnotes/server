@@ -20,7 +20,7 @@
     "test": "jest --coverage --config=./jest.config.js --maxWorkers=50%",
     "start": "yarn node dist/bin/server.js",
     "worker": "yarn node dist/bin/worker.js",
-    "upgrade:snjs": "ncu -u '@standardnotes/*'"
+    "upgrade:snjs": "yarn ncu -u '@standardnotes/*'"
   },
   "dependencies": {
     "@newrelic/winston-enricher": "^2.1.0",
@@ -70,6 +70,7 @@
     "eslint": "^8.14.0",
     "eslint-plugin-prettier": "^4.0.0",
     "jest": "^28.1.1",
+    "npm-check-updates": "*",
     "ts-jest": "^28.0.1"
   }
 }
