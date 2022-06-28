@@ -19,6 +19,7 @@ describe('InternalController', () => {
   let muteMarketingEmails: MuteMarketingEmails
 
   let request: express.Request
+  let response: express.Response
   let user: User
 
   const createController = () =>
@@ -48,6 +49,11 @@ describe('InternalController', () => {
       body: {},
       params: {},
     } as jest.Mocked<express.Request>
+
+    response = {} as jest.Mocked<express.Response>
+    response.setHeader = jest.fn()
+    response.status = jest.fn().mockReturnThis()
+    response.send = jest.fn()
   })
 
   it('should get user features', async () => {
@@ -170,26 +176,27 @@ describe('InternalController', () => {
   it('should mute marketing emails user setting', async () => {
     request.params.settingUuid = '1-2-3'
 
-    muteMarketingEmails.execute = jest.fn().mockReturnValue({ success: true })
+    muteMarketingEmails.execute = jest.fn().mockReturnValue({ success: true, message: 'foobar' })
 
-    const httpResponse = <results.JsonResult>await createController().muteMarketingEmails(request)
-    const result = await httpResponse.executeAsync()
+    await createController().muteMarketingEmails(request, response)
 
     expect(muteMarketingEmails.execute).toHaveBeenCalledWith({ settingUuid: '1-2-3' })
 
-    expect(result.statusCode).toEqual(200)
+    expect(response.setHeader).toHaveBeenCalledWith('content-type', 'text/html')
+    expect(response.send).toHaveBeenCalledWith('foobar')
   })
 
   it('should not mute marketing emails user setting if it does not exist', async () => {
     request.params.settingUuid = '1-2-3'
 
-    muteMarketingEmails.execute = jest.fn().mockReturnValue({ success: false })
+    muteMarketingEmails.execute = jest.fn().mockReturnValue({ success: false, message: 'foobar' })
 
-    const httpResponse = <results.JsonResult>await createController().muteMarketingEmails(request)
-    const result = await httpResponse.executeAsync()
+    await createController().muteMarketingEmails(request, response)
 
     expect(muteMarketingEmails.execute).toHaveBeenCalledWith({ settingUuid: '1-2-3' })
 
-    expect(result.statusCode).toEqual(404)
+    expect(response.setHeader).toHaveBeenCalledWith('content-type', 'text/html')
+    expect(response.status).toHaveBeenCalledWith(404)
+    expect(response.send).toHaveBeenCalledWith('foobar')
   })
 })

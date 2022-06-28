@@ -1,4 +1,4 @@
-import { Request } from 'express'
+import { Request, Response } from 'express'
 import { inject } from 'inversify'
 import {
   BaseHttpController,
@@ -84,16 +84,20 @@ export class InternalController extends BaseHttpController {
   }
 
   @httpGet('/settings/marketing-emails/:settingUuid/mute')
-  async muteMarketingEmails(request: Request): Promise<results.JsonResult> {
+  async muteMarketingEmails(request: Request, response: Response): Promise<void> {
     const { settingUuid } = request.params
     const result = await this.doMuteMarketingEmails.execute({
       settingUuid,
     })
 
+    response.setHeader('content-type', 'text/html')
+
     if (result.success) {
-      return this.json({ message: result.message })
+      response.send(result.message)
+
+      return
     }
 
-    return this.json({ message: result.message }, 404)
+    response.status(404).send(result.message)
   }
 }
