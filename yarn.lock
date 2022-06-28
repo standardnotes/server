@@ -1749,7 +1749,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@standardnotes/analytics@npm:^1.4.0, @standardnotes/analytics@npm:^1.6.0":
+"@standardnotes/analytics@npm:^1.6.0":
   version: 1.6.0
   resolution: "@standardnotes/analytics@npm:1.6.0"
   checksum: 6a5e86152673ce9ddce43c52b5f699a1b3ba5141e58a944bda8eaa88fc2f4169df27239f82633226752bf3f10f9804f426721b9c919d10fbfbb51f952430eb1f
@@ -1762,11 +1762,11 @@ __metadata:
   dependencies:
     "@newrelic/winston-enricher": ^2.1.0
     "@sentry/node": ^7.3.0
-    "@standardnotes/analytics": ^1.4.0
-    "@standardnotes/auth": 3.19.2
-    "@standardnotes/domain-events": 2.29.0
-    "@standardnotes/domain-events-infra": 1.4.127
-    "@standardnotes/time": ^1.7.0
+    "@standardnotes/analytics": ^1.6.0
+    "@standardnotes/auth": 3.19.4
+    "@standardnotes/domain-events": 2.32.5
+    "@standardnotes/domain-events-infra": 1.5.5
+    "@standardnotes/time": ^1.7.1
     "@types/cors": ^2.8.9
     "@types/express": ^4.17.11
     "@types/ioredis": ^4.28.10
@@ -1798,17 +1798,17 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@standardnotes/api@npm:^1.1.13":
-  version: 1.1.13
-  resolution: "@standardnotes/api@npm:1.1.13"
+"@standardnotes/api@npm:^1.1.18":
+  version: 1.1.18
+  resolution: "@standardnotes/api@npm:1.1.18"
   dependencies:
-    "@standardnotes/auth": ^3.19.3
-    "@standardnotes/common": ^1.23.0
-    "@standardnotes/encryption": ^1.8.19
-    "@standardnotes/responses": ^1.6.36
-    "@standardnotes/services": ^1.13.19
-    "@standardnotes/utils": ^1.6.11
-  checksum: 2ff21e04bbeb7e638772b75a72d426120b6136312a53b39dc33ff55cb722fbebad5756f94d79a0fe63f6f3d2f74bbe032c694ee6d7d1eaea86324e3e8c436876
+    "@standardnotes/auth": ^3.19.4
+    "@standardnotes/common": ^1.23.1
+    "@standardnotes/encryption": ^1.8.22
+    "@standardnotes/responses": ^1.6.38
+    "@standardnotes/services": ^1.13.22
+    "@standardnotes/utils": ^1.6.12
+  checksum: 0a58ba25ce3d80d3dbd88b3deb53306a6f5f9350f0a71f1f5c939b432442bc41a3a425686cee33e35e94a00faf17f2bab3d23b304abb45c5d0d93c1f1ff3174a
   languageName: node
   linkType: hard
 
@@ -1819,18 +1819,18 @@ __metadata:
     "@newrelic/winston-enricher": ^2.1.0
     "@sentry/node": ^7.3.0
     "@standardnotes/analytics": ^1.6.0
-    "@standardnotes/api": ^1.1.13
-    "@standardnotes/auth": ^3.19.2
+    "@standardnotes/api": ^1.1.18
+    "@standardnotes/auth": ^3.19.4
     "@standardnotes/common": ^1.23.1
-    "@standardnotes/domain-events": ^2.32.4
-    "@standardnotes/domain-events-infra": ^1.4.135
+    "@standardnotes/domain-events": ^2.32.5
+    "@standardnotes/domain-events-infra": ^1.5.5
     "@standardnotes/features": ^1.46.0
-    "@standardnotes/responses": ^1.6.15
-    "@standardnotes/scheduler": ^1.1.1
+    "@standardnotes/responses": ^1.6.38
+    "@standardnotes/scheduler": ^1.1.2
     "@standardnotes/settings": ^1.15.0
-    "@standardnotes/sncrypto-common": ^1.8.1
-    "@standardnotes/sncrypto-node": ^1.8.1
-    "@standardnotes/time": ^1.6.8
+    "@standardnotes/sncrypto-common": ^1.9.0
+    "@standardnotes/sncrypto-node": ^1.8.3
+    "@standardnotes/time": ^1.7.1
     "@types/bcryptjs": ^2.4.2
     "@types/cors": ^2.8.9
     "@types/express": ^4.17.11
@@ -1871,27 +1871,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@standardnotes/auth@npm:3.19.2":
-  version: 3.19.2
-  resolution: "@standardnotes/auth@npm:3.19.2"
-  dependencies:
-    "@standardnotes/common": ^1.22.0
-    jsonwebtoken: ^8.5.1
-  checksum: 2e4b37b3034ca561e42525313c5ddf66249d27da4c423738241fb3f59f8ea990eafb60b113e648fa6904c171e3c86e93abffb7e72a52bb17b0eb6c9025427678
-  languageName: node
-  linkType: hard
-
-"@standardnotes/auth@npm:^3.18.9, @standardnotes/auth@npm:^3.19.2, @standardnotes/auth@npm:^3.19.3":
-  version: 3.19.3
-  resolution: "@standardnotes/auth@npm:3.19.3"
-  dependencies:
-    "@standardnotes/common": ^1.23.0
-    jsonwebtoken: ^8.5.1
-  checksum: 7e421b5eafddb0b9616328d6ce07b21b4bab97824a23efda72fdc97438f81eb63f765f0514517f0e4ba36c9b3b40d49cdf515d3562af0bea6caf31c3646547c7
-  languageName: node
-  linkType: hard
-
-"@standardnotes/auth@npm:^3.19.4":
+"@standardnotes/auth@npm:3.19.4, @standardnotes/auth@npm:^3.19.4":
   version: 3.19.4
   resolution: "@standardnotes/auth@npm:3.19.4"
   dependencies:
@@ -1901,7 +1881,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@standardnotes/common@npm:^1.19.1, @standardnotes/common@npm:^1.19.4, @standardnotes/common@npm:^1.22.0, @standardnotes/common@npm:^1.23.0":
+"@standardnotes/auth@npm:^3.19.3":
+  version: 3.19.3
+  resolution: "@standardnotes/auth@npm:3.19.3"
+  dependencies:
+    "@standardnotes/common": ^1.23.0
+    jsonwebtoken: ^8.5.1
+  checksum: 7e421b5eafddb0b9616328d6ce07b21b4bab97824a23efda72fdc97438f81eb63f765f0514517f0e4ba36c9b3b40d49cdf515d3562af0bea6caf31c3646547c7
+  languageName: node
+  linkType: hard
+
+"@standardnotes/common@npm:^1.19.1, @standardnotes/common@npm:^1.23.0":
   version: 1.23.0
   resolution: "@standardnotes/common@npm:1.23.0"
   checksum: 9c51bf76e7b9b28862e355aa66d0af6658e9baf9701c986d6f3b17d382b90e8da03350a4ab72b10cd16b16f1e739b8200991b3561719456972f3ce273dac3986
@@ -1915,117 +1905,63 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@standardnotes/config@npm:2.0.1":
-  version: 2.0.1
-  resolution: "@standardnotes/config@npm:2.0.1"
+"@standardnotes/config@npm:2.4.3":
+  version: 2.4.3
+  resolution: "@standardnotes/config@npm:2.4.3"
   dependencies:
-    "@typescript-eslint/eslint-plugin": ^4.14.0
-    "@typescript-eslint/parser": ^4.14.0
-  checksum: 5284e034f267019257163af30c8603d13af3213eeb0575e789b49ba08390a01a72d559387120320a77e17a18dd3ab0454d0f5cebefb05a43b14ebfc00c7ec342
+    "@typescript-eslint/eslint-plugin": ^5.12.1
+    "@typescript-eslint/parser": ^5.12.1
+    eslint-config-prettier: ^8.5.0
+    eslint-plugin-prettier: ^4.0.0
+    prettier: ^2.6.2
+  checksum: b57b49242ac5ad31db96600b5ac1e28f2e2f71179578f5d35b8f1c07a68fdebba51fdaed7d648f7aaed7db3ca83570a70b973ffe81bcfdd38513808a4cbac405
   languageName: node
   linkType: hard
 
-"@standardnotes/domain-events-infra@npm:1.4.127":
-  version: 1.4.127
-  resolution: "@standardnotes/domain-events-infra@npm:1.4.127"
+"@standardnotes/domain-events-infra@npm:1.5.5, @standardnotes/domain-events-infra@npm:^1.5.5":
+  version: 1.5.5
+  resolution: "@standardnotes/domain-events-infra@npm:1.5.5"
   dependencies:
-    "@standardnotes/domain-events": ^2.29.0
+    "@standardnotes/domain-events": ^2.32.5
     aws-sdk: ^2.1082.0
     ioredis: ^4.28.5
     newrelic: ^8.8.0
     reflect-metadata: ^0.1.13
     sqs-consumer: ^5.6.0
     winston: ^3.6.0
-  checksum: 54e37c296ff3b44adc8d425f89fd56eb42d435dded6b04a952ff77ebb867022585bb472635f488863c9f9b6493a04592593f7a0f2bfa1d86bb9354ba341d350f
+  checksum: 02d721c66114effe13c9e25df3fc1cf2b8c9a92c1161d36176a5fcf299484b70a423932da3c253e7e7a9b08fdfbf6c2e4dc5c69b139edc0c683c7d792945648b
   languageName: node
   linkType: hard
 
-"@standardnotes/domain-events-infra@npm:^1.4.135, @standardnotes/domain-events-infra@npm:^1.4.93, @standardnotes/domain-events-infra@npm:^1.5.0, @standardnotes/domain-events-infra@npm:^1.5.2":
-  version: 1.5.2
-  resolution: "@standardnotes/domain-events-infra@npm:1.5.2"
-  dependencies:
-    "@standardnotes/domain-events": ^2.32.2
-    aws-sdk: ^2.1082.0
-    ioredis: ^4.28.5
-    newrelic: ^8.8.0
-    reflect-metadata: ^0.1.13
-    sqs-consumer: ^5.6.0
-    winston: ^3.6.0
-  checksum: b027dfd3293a5b40c4ed265c3b88700734935d91d1780fb89501908e230ddd39fe416951ad2ca2d2341ec24a44b9d8caa6ce962a4dadc50f40895639aba1c7a7
-  languageName: node
-  linkType: hard
-
-"@standardnotes/domain-events@npm:2.29.0":
-  version: 2.29.0
-  resolution: "@standardnotes/domain-events@npm:2.29.0"
-  dependencies:
-    "@standardnotes/auth": ^3.19.2
-    "@standardnotes/features": ^1.44.6
-  checksum: 1b68999e2a7a6a26a9ecd27638cbb878bd4abb987a1a3b254136af0bec5619d4f5f99ede1b27cf93561fd6d6453f645310b5decfe468c8dd644363caed48aeb9
-  languageName: node
-  linkType: hard
-
-"@standardnotes/domain-events@npm:^2.27.6, @standardnotes/domain-events@npm:^2.29.0, @standardnotes/domain-events@npm:^2.32.2":
-  version: 2.32.2
-  resolution: "@standardnotes/domain-events@npm:2.32.2"
-  dependencies:
-    "@standardnotes/auth": ^3.19.3
-    "@standardnotes/features": ^1.45.5
-    "@standardnotes/scheduler": ^1.1.1
-  checksum: 54da5fc88539b1cfa44963234d9e6e3cfbf63e20a221edcdc2e0f1d0cbb29803f03c84ddd5d14a19b2827d1b3d6c47cd3ad39a2e02d5773c5bfbebd17883aac1
-  languageName: node
-  linkType: hard
-
-"@standardnotes/domain-events@npm:^2.32.3":
-  version: 2.32.3
-  resolution: "@standardnotes/domain-events@npm:2.32.3"
-  dependencies:
-    "@standardnotes/auth": ^3.19.3
-    "@standardnotes/features": ^1.45.5
-    "@standardnotes/scheduler": ^1.1.1
-  checksum: ea6151d1376cbb99ffb9ff7bcc70c6e7e426c00176283ea29e8befc7719c0d67ca26f262239c8ac06147fc5d4546110cb7ee0995fd78c6ac353e6f43791554ac
-  languageName: node
-  linkType: hard
-
-"@standardnotes/domain-events@npm:^2.32.4":
-  version: 2.32.4
-  resolution: "@standardnotes/domain-events@npm:2.32.4"
+"@standardnotes/domain-events@npm:2.32.5, @standardnotes/domain-events@npm:^2.32.5":
+  version: 2.32.5
+  resolution: "@standardnotes/domain-events@npm:2.32.5"
   dependencies:
     "@standardnotes/auth": ^3.19.4
-    "@standardnotes/features": ^1.45.6
+    "@standardnotes/features": ^1.46.0
     "@standardnotes/scheduler": ^1.1.2
-  checksum: 9f8a1637aa63d04f2c60e1a4c75e5fc5f4013f4a5e39b9cd55d56a894220cee47390e8b37422b4c128db05d231ab371e8a1caa4e1af3395bf04319697dae7303
+  checksum: 95532b9fdf89ea45363f67c1f9dd2d7c8eff762854f709cd5034400263385692d52103afc8538ed074145754534d3e69b19b68ae325654ab6bba74111e7e05df
   languageName: node
   linkType: hard
 
-"@standardnotes/encryption@npm:^1.8.19":
-  version: 1.8.19
-  resolution: "@standardnotes/encryption@npm:1.8.19"
+"@standardnotes/encryption@npm:^1.8.22":
+  version: 1.8.22
+  resolution: "@standardnotes/encryption@npm:1.8.22"
   dependencies:
-    "@standardnotes/models": ^1.11.10
-    "@standardnotes/responses": ^1.6.36
-    "@standardnotes/services": ^1.13.19
-  checksum: f663a6b9a21a77cb415fc82daea5b616655df40ddc926686c073d9596580dd2bec7e1f150dfafde3653b6797fa29696ed33725762e506badabd8fe4d997f05a8
+    "@standardnotes/models": ^1.11.12
+    "@standardnotes/responses": ^1.6.38
+    "@standardnotes/services": ^1.13.22
+  checksum: 7a571c4b257b7469054b37930b4157fa786b81558d0d7887fc5db0527c7eb5acd1d7ecdb90509d50652440017e708eb87d8820cf0df52b3c7a8628940d0e0e72
   languageName: node
   linkType: hard
 
-"@standardnotes/features@npm:^1.36.3, @standardnotes/features@npm:^1.44.6, @standardnotes/features@npm:^1.45.5":
+"@standardnotes/features@npm:^1.36.3":
   version: 1.45.5
   resolution: "@standardnotes/features@npm:1.45.5"
   dependencies:
     "@standardnotes/auth": ^3.19.3
     "@standardnotes/common": ^1.23.0
   checksum: b5914d06b07f99cdf8657c59754a80172417d69547e10e312630099f994880c4ff9b54f3a0e1cbb6e8a236e12c387f4faf5788fc847d9303d93e013f29c8bdcf
-  languageName: node
-  linkType: hard
-
-"@standardnotes/features@npm:^1.45.6":
-  version: 1.45.6
-  resolution: "@standardnotes/features@npm:1.45.6"
-  dependencies:
-    "@standardnotes/auth": ^3.19.4
-    "@standardnotes/common": ^1.23.1
-  checksum: 572780d6e24efa664f316f6cf56c01907e00263db6204fee17f7ce9e43fa376411f373863dda59f8fb039250a224b7f8637fbd0bcbd7241112e061accbc05360
   languageName: node
   linkType: hard
 
@@ -2044,14 +1980,14 @@ __metadata:
   resolution: "@standardnotes/files-server@workspace:packages/files"
   dependencies:
     "@sentry/node": ^7.3.0
-    "@standardnotes/auth": ^3.18.9
-    "@standardnotes/common": ^1.19.4
-    "@standardnotes/config": 2.0.1
-    "@standardnotes/domain-events": ^2.27.6
-    "@standardnotes/domain-events-infra": ^1.4.93
-    "@standardnotes/sncrypto-common": ^1.3.0
-    "@standardnotes/sncrypto-node": ^1.3.0
-    "@standardnotes/time": ^1.4.5
+    "@standardnotes/auth": ^3.19.4
+    "@standardnotes/common": ^1.23.1
+    "@standardnotes/config": 2.4.3
+    "@standardnotes/domain-events": ^2.32.5
+    "@standardnotes/domain-events-infra": ^1.5.5
+    "@standardnotes/sncrypto-common": ^1.9.0
+    "@standardnotes/sncrypto-node": ^1.8.3
+    "@standardnotes/time": ^1.7.1
     "@types/connect-busboy": ^1.0.0
     "@types/cors": ^2.8.9
     "@types/express": ^4.17.11
@@ -2089,14 +2025,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@standardnotes/models@npm:^1.11.10":
-  version: 1.11.10
-  resolution: "@standardnotes/models@npm:1.11.10"
+"@standardnotes/models@npm:^1.11.12":
+  version: 1.11.12
+  resolution: "@standardnotes/models@npm:1.11.12"
   dependencies:
-    "@standardnotes/features": ^1.45.5
-    "@standardnotes/responses": ^1.6.36
-    "@standardnotes/utils": ^1.6.11
-  checksum: d69fd3940e96a37d655af94c940d6c0197a514ad15b36b42f95edf122873dd6cfc1428137c5aecbbb12ae603ceaf7c7ebd879c92c106f4a28aa8f3adf0528c7d
+    "@standardnotes/features": ^1.46.0
+    "@standardnotes/responses": ^1.6.38
+    "@standardnotes/utils": ^1.6.12
+  checksum: 636897db975e59989da86bcf2a6f32a4f8e24c45e41f9f9ee7c6960e47f3d04bcc9b74aadb9c4b488d98b61aca284699ed8b2a857d588493300358c62d69e580
   languageName: node
   linkType: hard
 
@@ -2111,14 +2047,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@standardnotes/responses@npm:^1.6.15, @standardnotes/responses@npm:^1.6.36":
-  version: 1.6.36
-  resolution: "@standardnotes/responses@npm:1.6.36"
+"@standardnotes/responses@npm:^1.6.38":
+  version: 1.6.38
+  resolution: "@standardnotes/responses@npm:1.6.38"
   dependencies:
-    "@standardnotes/auth": ^3.19.3
-    "@standardnotes/common": ^1.23.0
-    "@standardnotes/features": ^1.45.5
-  checksum: bb78a2cefadacf48010ce1ed45a1035b67e48acaf2ec746dbe9ff6d8c23340705a4cf66aee90728b233bdc41acf1e0cf89660cbfb03090c86075ed8ccfe78830
+    "@standardnotes/auth": ^3.19.4
+    "@standardnotes/common": ^1.23.1
+    "@standardnotes/features": ^1.46.0
+  checksum: 016a2f294d5dbad12ab04344cfcb2775da5c1ccfd2d0ce4762db298ce929db528a1dd7b7f2ed295ef1237e37f72e9f6dfd747a3ef1c5ea229a84034bf99b05c3
   languageName: node
   linkType: hard
 
@@ -2128,11 +2064,11 @@ __metadata:
   dependencies:
     "@newrelic/winston-enricher": ^2.1.0
     "@sentry/node": ^7.3.0
-    "@standardnotes/common": ^1.23.0
-    "@standardnotes/domain-events": ^2.32.3
-    "@standardnotes/domain-events-infra": ^1.5.0
-    "@standardnotes/scheduler": ^1.1.0
-    "@standardnotes/time": ^1.7.0
+    "@standardnotes/common": ^1.23.1
+    "@standardnotes/domain-events": ^2.32.5
+    "@standardnotes/domain-events-infra": ^1.5.5
+    "@standardnotes/scheduler": ^1.1.2
+    "@standardnotes/time": ^1.7.1
     "@types/ioredis": ^4.28.10
     "@types/jest": ^28.1.2
     "@types/newrelic": ^7.0.3
@@ -2154,15 +2090,6 @@ __metadata:
     winston: 3.3.3
   languageName: unknown
   linkType: soft
-
-"@standardnotes/scheduler@npm:^1.1.0, @standardnotes/scheduler@npm:^1.1.1":
-  version: 1.1.1
-  resolution: "@standardnotes/scheduler@npm:1.1.1"
-  dependencies:
-    "@standardnotes/common": ^1.23.0
-  checksum: 483beec5cefe31ef9b2b7c28c559eed82d8b2e99cf7cd8c0cd5db43969da92be063b4f486943ae1695b875a671db7ce12d2c1be3d7d80a068600a6b39b07b276
-  languageName: node
-  linkType: hard
 
 "@standardnotes/scheduler@npm:^1.1.2":
   version: 1.1.2
@@ -2198,41 +2125,34 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@standardnotes/services@npm:^1.13.19":
-  version: 1.13.19
-  resolution: "@standardnotes/services@npm:1.13.19"
+"@standardnotes/services@npm:^1.13.22":
+  version: 1.13.22
+  resolution: "@standardnotes/services@npm:1.13.22"
   dependencies:
-    "@standardnotes/auth": ^3.19.3
-    "@standardnotes/common": ^1.23.0
-    "@standardnotes/models": ^1.11.10
-    "@standardnotes/responses": ^1.6.36
-    "@standardnotes/utils": ^1.6.11
-  checksum: c4c239c5e8c717e00ad30bf1f5845024336755c26dcd0600a917cc037ef86caef551c92994d1c5f56f4a0623d1bc0050b174fa15388a034ccbc7dce8dabc71e4
+    "@standardnotes/auth": ^3.19.4
+    "@standardnotes/common": ^1.23.1
+    "@standardnotes/models": ^1.11.12
+    "@standardnotes/responses": ^1.6.38
+    "@standardnotes/utils": ^1.6.12
+  checksum: e84f4e43d49c42b1f99b4e54380f1539ca3ff3451290b7f290fc1e480f2207f8567035015f8788c7b9f961f88eb81b43a4cca591328390dbd0622c9e4891063b
   languageName: node
   linkType: hard
 
-"@standardnotes/settings@npm:1.14.3":
-  version: 1.14.3
-  resolution: "@standardnotes/settings@npm:1.14.3"
-  checksum: 60fbb2ca856083b1afdf3a93cfb2729151c8a4a34f02564a8a814a7caad9982285303ad79ffb1da7643046061a6efe39410e57e8e4703a8963be8dc0ffabeaa6
-  languageName: node
-  linkType: hard
-
-"@standardnotes/settings@npm:^1.15.0":
+"@standardnotes/settings@npm:1.15.0, @standardnotes/settings@npm:^1.15.0":
   version: 1.15.0
   resolution: "@standardnotes/settings@npm:1.15.0"
   checksum: 4397d453a1a0cd5554012a5bf5ee2025c102ffc6d742841eecd2ab9cd46b0fbfe78da61b401451646274887d92801cafcef4c283bbfc6074b4d152103e15f861
   languageName: node
   linkType: hard
 
-"@standardnotes/sncrypto-common@npm:^1.3.0, @standardnotes/sncrypto-common@npm:^1.8.1, @standardnotes/sncrypto-common@npm:^1.9.0":
+"@standardnotes/sncrypto-common@npm:^1.9.0":
   version: 1.9.0
   resolution: "@standardnotes/sncrypto-common@npm:1.9.0"
   checksum: 42252d71984b52756dff44ec3721961858e9f4227ca6555c0d60551852cb5f0a938b2b4969177c23c85d34e7f182369393f8b795afc65cff65b1c30b139f8f68
   languageName: node
   linkType: hard
 
-"@standardnotes/sncrypto-node@npm:^1.3.0, @standardnotes/sncrypto-node@npm:^1.8.1":
+"@standardnotes/sncrypto-node@npm:^1.8.3":
   version: 1.8.3
   resolution: "@standardnotes/sncrypto-node@npm:1.8.3"
   dependencies:
@@ -2248,13 +2168,13 @@ __metadata:
     "@newrelic/winston-enricher": ^2.1.0
     "@sentry/node": ^7.3.0
     "@standardnotes/analytics": ^1.6.0
-    "@standardnotes/auth": ^3.19.2
-    "@standardnotes/common": ^1.22.0
-    "@standardnotes/domain-events": ^2.32.2
-    "@standardnotes/domain-events-infra": ^1.5.2
+    "@standardnotes/auth": ^3.19.4
+    "@standardnotes/common": ^1.23.1
+    "@standardnotes/domain-events": ^2.32.5
+    "@standardnotes/domain-events-infra": ^1.5.5
     "@standardnotes/payloads": ^1.5.1
-    "@standardnotes/responses": ^1.6.15
-    "@standardnotes/settings": 1.14.3
+    "@standardnotes/responses": ^1.6.38
+    "@standardnotes/settings": 1.15.0
     "@standardnotes/time": ^1.7.1
     "@types/cors": ^2.8.9
     "@types/dotenv": ^8.2.0
@@ -2295,17 +2215,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@standardnotes/time@npm:^1.4.5, @standardnotes/time@npm:^1.6.8, @standardnotes/time@npm:^1.7.0":
-  version: 1.7.0
-  resolution: "@standardnotes/time@npm:1.7.0"
-  dependencies:
-    dayjs: ^1.10.8
-    microtime: ^3.0.0
-    reflect-metadata: ^0.1.13
-  checksum: 51b168d8a5fd8fada78e95654c5349fe2d86e240ee08d9b9270559fd0d34050220ce0d4188559c8816ecd5f281f6c5a1355d939778814a60aee84cfd9bd61570
-  languageName: node
-  linkType: hard
-
 "@standardnotes/time@npm:^1.7.1":
   version: 1.7.1
   resolution: "@standardnotes/time@npm:1.7.1"
@@ -2317,7 +2226,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@standardnotes/utils@npm:^1.4.6, @standardnotes/utils@npm:^1.6.11":
+"@standardnotes/utils@npm:^1.4.6":
   version: 1.6.11
   resolution: "@standardnotes/utils@npm:1.6.11"
   dependencies:
@@ -2325,6 +2234,17 @@ __metadata:
     dompurify: ^2.3.6
     lodash: ^4.17.21
   checksum: c50999c0b0e1c6b81bf7217e516cf163496d6e541b45b6e064c3a42c72698173f1a3f7117f7ed484d1234f99ea2d44e1a7129864d6d1caf8a9595b0151219701
+  languageName: node
+  linkType: hard
+
+"@standardnotes/utils@npm:^1.6.12":
+  version: 1.6.12
+  resolution: "@standardnotes/utils@npm:1.6.12"
+  dependencies:
+    "@standardnotes/common": ^1.23.1
+    dompurify: ^2.3.6
+    lodash: ^4.17.21
+  checksum: e177b1fa518ca2c0bcc5602d2a83d37946461bc4c3d8daa329d7290d61dec9bcfd5b9c1593582672598b0696d994f7ce42b9ca16f82a485fd45cb221411bd4e8
   languageName: node
   linkType: hard
 
@@ -2577,7 +2497,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/json-schema@npm:^7.0.7, @types/json-schema@npm:^7.0.9":
+"@types/json-schema@npm:^7.0.9":
   version: 7.0.11
   resolution: "@types/json-schema@npm:7.0.11"
   checksum: 527bddfe62db9012fccd7627794bd4c71beb77601861055d87e3ee464f2217c85fca7a4b56ae677478367bbd248dbde13553312b7d4dbc702a2f2bbf60c4018d
@@ -2751,25 +2671,26 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/eslint-plugin@npm:^4.14.0":
-  version: 4.33.0
-  resolution: "@typescript-eslint/eslint-plugin@npm:4.33.0"
+"@typescript-eslint/eslint-plugin@npm:^5.12.1":
+  version: 5.30.0
+  resolution: "@typescript-eslint/eslint-plugin@npm:5.30.0"
   dependencies:
-    "@typescript-eslint/experimental-utils": 4.33.0
-    "@typescript-eslint/scope-manager": 4.33.0
-    debug: ^4.3.1
+    "@typescript-eslint/scope-manager": 5.30.0
+    "@typescript-eslint/type-utils": 5.30.0
+    "@typescript-eslint/utils": 5.30.0
+    debug: ^4.3.4
     functional-red-black-tree: ^1.0.1
-    ignore: ^5.1.8
-    regexpp: ^3.1.0
-    semver: ^7.3.5
+    ignore: ^5.2.0
+    regexpp: ^3.2.0
+    semver: ^7.3.7
     tsutils: ^3.21.0
   peerDependencies:
-    "@typescript-eslint/parser": ^4.0.0
-    eslint: ^5.0.0 || ^6.0.0 || ^7.0.0
+    "@typescript-eslint/parser": ^5.0.0
+    eslint: ^6.0.0 || ^7.0.0 || ^8.0.0
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: d74855d0a5ffe0b2f362ec02fcd9301d39a53fb4155b9bd0cb15a0a31d065143129ebf98df9d86af4b6f74de1d423a4c0d8c0095520844068117453afda5bc4f
+  checksum: f2fe96082c69f2871439303947d6dfcd8c142e8ddcc3d1ea52cc30046f4b64280a02aec1a0d2f8344034bc7ed4fb09eecf4764df93ece467cc284225d8adaa14
   languageName: node
   linkType: hard
 
@@ -2796,36 +2717,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/experimental-utils@npm:4.33.0":
-  version: 4.33.0
-  resolution: "@typescript-eslint/experimental-utils@npm:4.33.0"
+"@typescript-eslint/parser@npm:^5.12.1":
+  version: 5.30.0
+  resolution: "@typescript-eslint/parser@npm:5.30.0"
   dependencies:
-    "@types/json-schema": ^7.0.7
-    "@typescript-eslint/scope-manager": 4.33.0
-    "@typescript-eslint/types": 4.33.0
-    "@typescript-eslint/typescript-estree": 4.33.0
-    eslint-scope: ^5.1.1
-    eslint-utils: ^3.0.0
+    "@typescript-eslint/scope-manager": 5.30.0
+    "@typescript-eslint/types": 5.30.0
+    "@typescript-eslint/typescript-estree": 5.30.0
+    debug: ^4.3.4
   peerDependencies:
-    eslint: "*"
-  checksum: f859800ada0884f92db6856f24efcb1d073ac9883ddc2b1aa9339f392215487895bed8447ebce3741e8141bb32e545244abef62b73193ba9a8a0527c523aabae
-  languageName: node
-  linkType: hard
-
-"@typescript-eslint/parser@npm:^4.14.0":
-  version: 4.33.0
-  resolution: "@typescript-eslint/parser@npm:4.33.0"
-  dependencies:
-    "@typescript-eslint/scope-manager": 4.33.0
-    "@typescript-eslint/types": 4.33.0
-    "@typescript-eslint/typescript-estree": 4.33.0
-    debug: ^4.3.1
-  peerDependencies:
-    eslint: ^5.0.0 || ^6.0.0 || ^7.0.0
+    eslint: ^6.0.0 || ^7.0.0 || ^8.0.0
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 102457eae1acd516211098fea081c8a2ed728522bbda7f5a557b6ef23d88970514f9a0f6285d53fca134d3d4d7d17822b5d5e12438d5918df4d1f89cc9e67d57
+  checksum: 7067ba4edea702137de3d5c866f2e4a22032bfa82556351eb8cc1088ef45cdd747cbf2a73d3904583303899de2983ef41050f3a5b5d648a2f88e687318bb6738
   languageName: node
   linkType: hard
 
@@ -2846,16 +2751,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/scope-manager@npm:4.33.0":
-  version: 4.33.0
-  resolution: "@typescript-eslint/scope-manager@npm:4.33.0"
-  dependencies:
-    "@typescript-eslint/types": 4.33.0
-    "@typescript-eslint/visitor-keys": 4.33.0
-  checksum: 9a25fb7ba7c725ea7227a24d315b0f6aacbad002e2549a049edf723c1d3615c22f5c301f0d7d615b377f2cdf2f3519d97e79af0c459de6ef8d2aaf0906dff13e
-  languageName: node
-  linkType: hard
-
 "@typescript-eslint/scope-manager@npm:5.29.0":
   version: 5.29.0
   resolution: "@typescript-eslint/scope-manager@npm:5.29.0"
@@ -2863,6 +2758,16 @@ __metadata:
     "@typescript-eslint/types": 5.29.0
     "@typescript-eslint/visitor-keys": 5.29.0
   checksum: 540642bef9c55fd7692af98dfb42ab99eeb82553f42ab2a3c4e132e02b5ba492da1c6bf1ca6b02b900a678fc74399ad6c564c0ca20d91032090b6cbcb01a5bde
+  languageName: node
+  linkType: hard
+
+"@typescript-eslint/scope-manager@npm:5.30.0":
+  version: 5.30.0
+  resolution: "@typescript-eslint/scope-manager@npm:5.30.0"
+  dependencies:
+    "@typescript-eslint/types": 5.30.0
+    "@typescript-eslint/visitor-keys": 5.30.0
+  checksum: 51246d0f6c497ad98fcfb02a9da92e855cd5916cf6ea117b1f8a511e4f62d1eae28f2c7278dfe29cc823c36f3b1fe87ff56681654b68faac5dfd1b897c3c58da
   languageName: node
   linkType: hard
 
@@ -2882,10 +2787,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/types@npm:4.33.0":
-  version: 4.33.0
-  resolution: "@typescript-eslint/types@npm:4.33.0"
-  checksum: 3baae1ca35872421b4eb60f5d3f3f32dc1d513f2ae0a67dee28c7d159fd7a43ed0d11a8a5a0f0c2d38507ffa036fc7c511cb0f18a5e8ac524b3ebde77390ec53
+"@typescript-eslint/type-utils@npm:5.30.0":
+  version: 5.30.0
+  resolution: "@typescript-eslint/type-utils@npm:5.30.0"
+  dependencies:
+    "@typescript-eslint/utils": 5.30.0
+    debug: ^4.3.4
+    tsutils: ^3.21.0
+  peerDependencies:
+    eslint: "*"
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+  checksum: 6185117638ca2111b8c10fe156f7de51847f784140906ba518198d056608c7eb812248d033ac0d0b46f73647dc1202f02d9aab626ee013d273fc03df11d1f6e9
   languageName: node
   linkType: hard
 
@@ -2896,21 +2810,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/typescript-estree@npm:4.33.0":
-  version: 4.33.0
-  resolution: "@typescript-eslint/typescript-estree@npm:4.33.0"
-  dependencies:
-    "@typescript-eslint/types": 4.33.0
-    "@typescript-eslint/visitor-keys": 4.33.0
-    debug: ^4.3.1
-    globby: ^11.0.3
-    is-glob: ^4.0.1
-    semver: ^7.3.5
-    tsutils: ^3.21.0
-  peerDependenciesMeta:
-    typescript:
-      optional: true
-  checksum: 2566984390c76bd95f43240057215c068c69769e406e27aba41e9f21fd300074d6772e4983fa58fe61e80eb5550af1548d2e31e80550d92ba1d051bb00fe6f5c
+"@typescript-eslint/types@npm:5.30.0":
+  version: 5.30.0
+  resolution: "@typescript-eslint/types@npm:5.30.0"
+  checksum: f83a506880d78419283a86e8aeb6c744b1d1a7fc3a366625125805daf0f9a7640a778537113b8865a4cdd985dcde53066820ea044a750126bc8b478eb93d4d12
   languageName: node
   linkType: hard
 
@@ -2932,6 +2835,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@typescript-eslint/typescript-estree@npm:5.30.0":
+  version: 5.30.0
+  resolution: "@typescript-eslint/typescript-estree@npm:5.30.0"
+  dependencies:
+    "@typescript-eslint/types": 5.30.0
+    "@typescript-eslint/visitor-keys": 5.30.0
+    debug: ^4.3.4
+    globby: ^11.1.0
+    is-glob: ^4.0.3
+    semver: ^7.3.7
+    tsutils: ^3.21.0
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+  checksum: cf8caea435c4346fae9c81635864efa17ea106e3dea5cd226c096145958ff6e7918e40cdb2af06526ca43d44717eb088869f1c1db51a52aa9f72b6bf65e11db2
+  languageName: node
+  linkType: hard
+
 "@typescript-eslint/utils@npm:5.29.0":
   version: 5.29.0
   resolution: "@typescript-eslint/utils@npm:5.29.0"
@@ -2948,13 +2869,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/visitor-keys@npm:4.33.0":
-  version: 4.33.0
-  resolution: "@typescript-eslint/visitor-keys@npm:4.33.0"
+"@typescript-eslint/utils@npm:5.30.0":
+  version: 5.30.0
+  resolution: "@typescript-eslint/utils@npm:5.30.0"
   dependencies:
-    "@typescript-eslint/types": 4.33.0
-    eslint-visitor-keys: ^2.0.0
-  checksum: 59953e474ad4610c1aa23b2b1a964445e2c6201521da6367752f37939d854352bbfced5c04ea539274065e012b1337ba3ffa49c2647a240a4e87155378ba9873
+    "@types/json-schema": ^7.0.9
+    "@typescript-eslint/scope-manager": 5.30.0
+    "@typescript-eslint/types": 5.30.0
+    "@typescript-eslint/typescript-estree": 5.30.0
+    eslint-scope: ^5.1.1
+    eslint-utils: ^3.0.0
+  peerDependencies:
+    eslint: ^6.0.0 || ^7.0.0 || ^8.0.0
+  checksum: 176eda46292398c0fe069d96f51d0083a9b978d4c6e2ca92f10e9ebad83910d67754bcb2c1667cf4c40e06c112558ff1ad973d6f82719cfe4de7c72f89a3df29
   languageName: node
   linkType: hard
 
@@ -2965,6 +2892,16 @@ __metadata:
     "@typescript-eslint/types": 5.29.0
     eslint-visitor-keys: ^3.3.0
   checksum: 15f228ad9ffaf0e42cc6b2ee4e5095c1e89c4c2dc46a65d19ca0e2296d88c08a1192039d942bd9600b1496176749f6322d636dd307602dbab90404a9501b4d6e
+  languageName: node
+  linkType: hard
+
+"@typescript-eslint/visitor-keys@npm:5.30.0":
+  version: 5.30.0
+  resolution: "@typescript-eslint/visitor-keys@npm:5.30.0"
+  dependencies:
+    "@typescript-eslint/types": 5.30.0
+    eslint-visitor-keys: ^3.3.0
+  checksum: bf2219cbb910d284e2f224aaa701932287b25fe99312f9abf6406a8f52a3a0b852c96276cd740ae3071b2561b253a6cfa30b0b8ab1d199e08f9550402f8fbf1f
   languageName: node
   linkType: hard
 
@@ -5724,7 +5661,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"globby@npm:^11.0.3, globby@npm:^11.0.4, globby@npm:^11.1.0":
+"globby@npm:^11.0.4, globby@npm:^11.1.0":
   version: 11.1.0
   resolution: "globby@npm:11.1.0"
   dependencies:
@@ -6042,7 +5979,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ignore@npm:^5.1.8, ignore@npm:^5.2.0":
+"ignore@npm:^5.2.0":
   version: 5.2.0
   resolution: "ignore@npm:5.2.0"
   checksum: 6b1f926792d614f64c6c83da3a1f9c83f6196c2839aa41e1e32dd7b8d174cef2e329d75caabb62cb61ce9dc432f75e67d07d122a037312db7caa73166a1bdb77
@@ -7666,7 +7603,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"microtime@npm:^3.0.0, microtime@npm:^3.1.0":
+"microtime@npm:^3.1.0":
   version: 3.1.0
   resolution: "microtime@npm:3.1.0"
   dependencies:
@@ -8887,7 +8824,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:^2.7.1":
+"prettier@npm:^2.6.2, prettier@npm:^2.7.1":
   version: 2.7.1
   resolution: "prettier@npm:2.7.1"
   bin:
@@ -9362,7 +9299,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"regexpp@npm:^3.1.0, regexpp@npm:^3.2.0":
+"regexpp@npm:^3.2.0":
   version: 3.2.0
   resolution: "regexpp@npm:3.2.0"
   checksum: a78dc5c7158ad9ddcfe01aa9144f46e192ddbfa7b263895a70a5c6c73edd9ce85faf7c0430e59ac38839e1734e275b9c3de5c57ee3ab6edc0e0b1bdebefccef8

@@ -7,7 +7,11 @@ import { Logger } from 'winston'
 import { ContainerConfigLoader } from '../src/Bootstrap/Container'
 import TYPES from '../src/Bootstrap/Types'
 import { Env } from '../src/Bootstrap/Env'
-import { DomainEventPublisherInterface, DailyAnalyticsReportGeneratedEvent } from '@standardnotes/domain-events'
+import {
+  DomainEventPublisherInterface,
+  DailyAnalyticsReportGeneratedEvent,
+  DomainEventService,
+} from '@standardnotes/domain-events'
 import { AnalyticsActivity, AnalyticsStoreInterface, Period, StatisticsStoreInterface } from '@standardnotes/analytics'
 
 const requestReport = async (
@@ -23,6 +27,7 @@ const requestReport = async (
         userIdentifier: '',
         userIdentifierType: 'uuid',
       },
+      origin: DomainEventService.ApiGateway,
     },
     payload: {
       applicationStatistics: await statisticsStore.getYesterdayApplicationUsage(),
