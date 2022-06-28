@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.2](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.3.1...@standardnotes/api-gateway@1.3.2) (2022-06-28)
+
+### Bug Fixes
+
+* checking for html content-type ([4a430b2](https://github.com/standardnotes/api-gateway/commit/4a430b2701733358d14da64a5eaa4e03620033e0))
+
 ## [1.3.1](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.3.0...@standardnotes/api-gateway@1.3.1) (2022-06-28)
 
 ### Bug Fixes
