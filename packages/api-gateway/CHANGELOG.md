@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.1](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.3.0...@standardnotes/api-gateway@1.3.1) (2022-06-28)
+
+### Bug Fixes
+
+* add origin meta property to daily analytics event ([376a59c](https://github.com/standardnotes/api-gateway/commit/376a59c1827411164a536157fc591a15e0a5b0b2))
+
 # [1.3.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.2.2...@standardnotes/api-gateway@1.3.0) (2022-06-28)
 
 ### Features
