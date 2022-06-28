@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.3](https://github.com/standardnotes/auth/compare/@standardnotes/auth-server@1.3.2...@standardnotes/auth-server@1.3.3) (2022-06-28)
+
+### Bug Fixes
+
+* change response type to html for muting marketing emails ([ba373eb](https://github.com/standardnotes/auth/commit/ba373ebc6b3038f7de2fab40f0429a655dbe2499))
+
 ## [1.3.2](https://github.com/standardnotes/auth/compare/@standardnotes/auth-server@1.3.1...@standardnotes/auth-server@1.3.2) (2022-06-27)
 
 **Note:** Version bump only for package @standardnotes/auth-server
