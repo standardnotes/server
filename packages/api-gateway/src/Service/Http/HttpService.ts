@@ -162,6 +162,12 @@ export class HttpService implements HttpServiceInterface {
 
     this.applyResponseHeaders(serviceResponse, response)
 
+    if (this.responseShouldNotBeDecorated(serviceResponse)) {
+      response.status(serviceResponse.status).send(serviceResponse.data)
+
+      return
+    }
+
     response.status(serviceResponse.status).send({
       meta: {
         auth: {
@@ -211,6 +217,10 @@ export class HttpService implements HttpServiceInterface {
     }
 
     return payload
+  }
+
+  private responseShouldNotBeDecorated(serviceResponse: AxiosResponse): boolean {
+    return serviceResponse.headers['content-type'].toLowerCase().includes('text/html')
   }
 
   private applyResponseHeaders(serviceResponse: AxiosResponse, response: Response): void {
