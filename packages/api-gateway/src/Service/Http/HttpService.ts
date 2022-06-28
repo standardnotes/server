@@ -220,7 +220,10 @@ export class HttpService implements HttpServiceInterface {
   }
 
   private responseShouldNotBeDecorated(serviceResponse: AxiosResponse): boolean {
-    return serviceResponse.headers['content-type'].toLowerCase().includes('text/html')
+    return (
+      serviceResponse.headers['content-type'] !== undefined &&
+      serviceResponse.headers['content-type'].toLowerCase().includes('text/html')
+    )
   }
 
   private applyResponseHeaders(serviceResponse: AxiosResponse, response: Response): void {
