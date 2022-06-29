@@ -57,7 +57,7 @@ const sendEmailCampaign = async (
                 props: {
                   name: SettingName.MuteMarketingEmails,
                   unencryptedValue: MuteMarketingEmailsOption.NotMuted,
-                  serverEncryptionVersion: EncryptionVersion.Default,
+                  serverEncryptionVersion: EncryptionVersion.Unencrypted,
                   sensitive: false,
                 },
               })
