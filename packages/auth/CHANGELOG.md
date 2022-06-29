@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.6](https://github.com/standardnotes/auth/compare/@standardnotes/auth-server@1.3.5...@standardnotes/auth-server@1.3.6) (2022-06-29)
+
+### Bug Fixes
+
+* mute marketing value encryption version setting ([1d4bce7](https://github.com/standardnotes/auth/commit/1d4bce73098e77076b8d78b575582452e8a5f94d))
+
 ## [1.3.5](https://github.com/standardnotes/auth/compare/@standardnotes/auth-server@1.3.4...@standardnotes/auth-server@1.3.5) (2022-06-29)
 
 ### Bug Fixes
