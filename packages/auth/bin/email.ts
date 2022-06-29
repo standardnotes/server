@@ -42,55 +42,59 @@ const sendEmailCampaign = async (
         new Stream.Transform({
           objectMode: true,
           transform: async (rawUserData, _encoding, callback) => {
-            logger.info(`Processing ${emailMessageIdentifier} email campaign for user ${rawUserData.user_uuid}`)
+            try {
+              logger.info(`Processing ${emailMessageIdentifier} email campaign for user ${rawUserData.user_uuid}`)
 
-            let emailsMutedSetting = await settingService.findSettingWithDecryptedValue({
-              userUuid: rawUserData.user_uuid,
-              settingName: SettingName.MuteMarketingEmails,
-            })
+              let emailsMutedSetting = await settingService.findSettingWithDecryptedValue({
+                userUuid: rawUserData.user_uuid,
+                settingName: SettingName.MuteMarketingEmails,
+              })
 
-            if (emailsMutedSetting !== null) {
-              callback()
+              if (emailsMutedSetting !== null) {
+                callback()
 
-              return
-            }
+                return
+              }
 
-            const user = (await userRepository.findOneByUuid(rawUserData.user_uuid)) as User
+              const user = (await userRepository.findOneByUuid(rawUserData.user_uuid)) as User
 
-            const { setting } = await settingService.createOrReplace({
-              user,
-              props: {
-                name: SettingName.MuteMarketingEmails,
-                unencryptedValue: MuteMarketingEmailsOption.NotMuted,
-                serverEncryptionVersion: EncryptionVersion.Unencrypted,
-                sensitive: false,
-              },
-            })
-            emailsMutedSetting = setting
-
-            let activeSubscription = false
-            let subscriptionPlanName = null
-
-            const userSubscription = await userSubscriptionRepository.findOneByUserUuid(rawUserData.user_uuid)
-            if (userSubscription !== null) {
-              activeSubscription =
-                !userSubscription.cancelled && userSubscription.endsAt > timer.getTimestampInMicroseconds()
-              subscriptionPlanName = userSubscription.planName
-            }
-
-            await domainEventPublisher.publish(
-              domainEventFactory.createEmailMessageRequestedEvent({
-                userEmail: rawUserData.user_email,
-                messageIdentifier: emailMessageIdentifier as EmailMessageIdentifier,
-                context: {
-                  activeSubscription,
-                  subscriptionPlanName,
-                  muteEmailsSettingUuid: emailsMutedSetting.uuid,
+              const { setting } = await settingService.createOrReplace({
+                user,
+                props: {
+                  name: SettingName.MuteMarketingEmails,
+                  unencryptedValue: MuteMarketingEmailsOption.NotMuted,
+                  serverEncryptionVersion: EncryptionVersion.Unencrypted,
+                  sensitive: false,
                 },
-              }),
-            )
+              })
+              emailsMutedSetting = setting
 
-            callback()
+              let activeSubscription = false
+              let subscriptionPlanName = null
+
+              const userSubscription = await userSubscriptionRepository.findOneByUserUuid(rawUserData.user_uuid)
+              if (userSubscription !== null) {
+                activeSubscription =
+                  !userSubscription.cancelled && userSubscription.endsAt > timer.getTimestampInMicroseconds()
+                subscriptionPlanName = userSubscription.planName
+              }
+
+              await domainEventPublisher.publish(
+                domainEventFactory.createEmailMessageRequestedEvent({
+                  userEmail: rawUserData.user_email,
+                  messageIdentifier: emailMessageIdentifier as EmailMessageIdentifier,
+                  context: {
+                    activeSubscription,
+                    subscriptionPlanName,
+                    muteEmailsSettingUuid: emailsMutedSetting.uuid,
+                  },
+                }),
+              )
+
+              callback()
+            } catch (error) {
+              logger.error(`Could not process user ${rawUserData.user_uuid}: ${(error as Error).message}`)
+            }
           },
         }),
       )
