@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.9](https://github.com/standardnotes/auth/compare/@standardnotes/auth-server@1.3.8...@standardnotes/auth-server@1.3.9) (2022-06-29)
+
+### Bug Fixes
+
+* wrap processing email campaigns into try-catch ([997ffc0](https://github.com/standardnotes/auth/commit/997ffc02a35244f8d8536e5ee07e91228a708e71))
+
 ## [1.3.8](https://github.com/standardnotes/auth/compare/@standardnotes/auth-server@1.3.7...@standardnotes/auth-server@1.3.8) (2022-06-29)
 
 ### Bug Fixes
