@@ -32,6 +32,7 @@ const sendEmailCampaign = async (
   timer: TimerInterface,
   domainEventFactory: DomainEventFactoryInterface,
   domainEventPublisher: DomainEventPublisherInterface,
+  logger: Logger,
 ): Promise<void> => {
   const stream = await userRepository.streamAll()
 
@@ -41,6 +42,8 @@ const sendEmailCampaign = async (
         new Stream.Transform({
           objectMode: true,
           transform: async (rawUserData, _encoding, callback) => {
+            logger.info(`Processing ${emailMessageIdentifier} email campaign for user ${rawUserData.user_uuid}`)
+
             let emailsMutedSetting = await settingService.findSettingWithDecryptedValue({
               userUuid: rawUserData.user_uuid,
               settingName: SettingName.MuteMarketingEmails,
@@ -132,6 +135,7 @@ void container.load().then((container) => {
       timer,
       domainEventFactory,
       domainEventPublisher,
+      logger,
     ),
   )
     .then(() => {
