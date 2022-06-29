@@ -34,6 +34,7 @@ describe('MuteMarketingEmails', () => {
 
     expect(settingRepository.save).toHaveBeenCalledWith({
       value: 'muted',
+      serverEncryptionVersion: 0,
     })
   })
 })

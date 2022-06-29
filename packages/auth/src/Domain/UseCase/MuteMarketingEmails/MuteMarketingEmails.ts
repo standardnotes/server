@@ -1,6 +1,7 @@
 import { MuteMarketingEmailsOption, SettingName } from '@standardnotes/settings'
 import { inject, injectable } from 'inversify'
 import TYPES from '../../../Bootstrap/Types'
+import { EncryptionVersion } from '../../Encryption/EncryptionVersion'
 import { SettingRepositoryInterface } from '../../Setting/SettingRepositoryInterface'
 import { UseCaseInterface } from '../UseCaseInterface'
 import { MuteMarketingEmailsDTO } from './MuteMarketingEmailsDTO'
@@ -23,6 +24,7 @@ export class MuteMarketingEmails implements UseCaseInterface {
     }
 
     setting.value = MuteMarketingEmailsOption.Muted
+    setting.serverEncryptionVersion = EncryptionVersion.Unencrypted
 
     await this.settingRepository.save(setting)
 
