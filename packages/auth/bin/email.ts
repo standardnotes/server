@@ -49,26 +49,24 @@ const sendEmailCampaign = async (
               settingName: SettingName.MuteMarketingEmails,
             })
 
-            if (emailsMutedSetting === null) {
-              const user = (await userRepository.findOneByUuid(rawUserData.user_uuid)) as User
-
-              const { setting } = await settingService.createOrReplace({
-                user,
-                props: {
-                  name: SettingName.MuteMarketingEmails,
-                  unencryptedValue: MuteMarketingEmailsOption.NotMuted,
-                  serverEncryptionVersion: EncryptionVersion.Unencrypted,
-                  sensitive: false,
-                },
-              })
-              emailsMutedSetting = setting
-            }
-
-            if (emailsMutedSetting.value === MuteMarketingEmailsOption.Muted) {
+            if (emailsMutedSetting !== null) {
               callback()
 
               return
             }
+
+            const user = (await userRepository.findOneByUuid(rawUserData.user_uuid)) as User
+
+            const { setting } = await settingService.createOrReplace({
+              user,
+              props: {
+                name: SettingName.MuteMarketingEmails,
+                unencryptedValue: MuteMarketingEmailsOption.NotMuted,
+                serverEncryptionVersion: EncryptionVersion.Unencrypted,
+                sensitive: false,
+              },
+            })
+            emailsMutedSetting = setting
 
             let activeSubscription = false
             let subscriptionPlanName = null
