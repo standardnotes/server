@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.8](https://github.com/standardnotes/auth/compare/@standardnotes/auth-server@1.3.7...@standardnotes/auth-server@1.3.8) (2022-06-29)
+
+### Bug Fixes
+
+* temporarily send email campaings only for users without the mute_marketing_emails setting ([57694bd](https://github.com/standardnotes/auth/commit/57694bdc1412b91c48d07e264584bd3aab1d941b))
+
 ## [1.3.7](https://github.com/standardnotes/auth/compare/@standardnotes/auth-server@1.3.6...@standardnotes/auth-server@1.3.7) (2022-06-29)
 
 ### Bug Fixes
