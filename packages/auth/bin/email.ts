@@ -43,8 +43,6 @@ const sendEmailCampaign = async (
           objectMode: true,
           transform: async (rawUserData, _encoding, callback) => {
             try {
-              logger.info(`Processing ${emailMessageIdentifier} email campaign for user ${rawUserData.user_uuid}`)
-
               let emailsMutedSetting = await settingService.findSettingWithDecryptedValue({
                 userUuid: rawUserData.user_uuid,
                 settingName: SettingName.MuteMarketingEmails,
@@ -90,11 +88,11 @@ const sendEmailCampaign = async (
                   },
                 }),
               )
-
-              callback()
             } catch (error) {
               logger.error(`Could not process user ${rawUserData.user_uuid}: ${(error as Error).message}`)
             }
+
+            callback()
           },
         }),
       )
