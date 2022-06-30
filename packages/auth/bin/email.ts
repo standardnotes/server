@@ -18,8 +18,6 @@ import { UserSubscriptionRepositoryInterface } from '../src/Domain/Subscription/
 import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
 import { MuteMarketingEmailsOption, SettingName } from '@standardnotes/settings'
 import { EmailMessageIdentifier } from '@standardnotes/common'
-import { User } from '../src/Domain/User/User'
-import { EncryptionVersion } from '../src/Domain/Encryption/EncryptionVersion'
 import { TimerInterface } from '@standardnotes/time'
 
 const inputArgs = process.argv.slice(2)
@@ -43,29 +41,16 @@ const sendEmailCampaign = async (
           objectMode: true,
           transform: async (rawUserData, _encoding, callback) => {
             try {
-              let emailsMutedSetting = await settingService.findSettingWithDecryptedValue({
+              const emailsMutedSetting = await settingService.findSettingWithDecryptedValue({
                 userUuid: rawUserData.user_uuid,
                 settingName: SettingName.MuteMarketingEmails,
               })
 
-              if (emailsMutedSetting !== null) {
+              if (emailsMutedSetting === null || emailsMutedSetting.value === MuteMarketingEmailsOption.Muted) {
                 callback()
 
                 return
               }
-
-              const user = (await userRepository.findOneByUuid(rawUserData.user_uuid)) as User
-
-              const { setting } = await settingService.createOrReplace({
-                user,
-                props: {
-                  name: SettingName.MuteMarketingEmails,
-                  unencryptedValue: MuteMarketingEmailsOption.NotMuted,
-                  serverEncryptionVersion: EncryptionVersion.Unencrypted,
-                  sensitive: false,
-                },
-              })
-              emailsMutedSetting = setting
 
               let activeSubscription = false
               let subscriptionPlanName = null
