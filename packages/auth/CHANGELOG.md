@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.10](https://github.com/standardnotes/auth/compare/@standardnotes/auth-server@1.3.9...@standardnotes/auth-server@1.3.10) (2022-06-30)
+
+### Bug Fixes
+
+* adjust callback in processing email campaigns ([26f8b75](https://github.com/standardnotes/auth/commit/26f8b75bede4d9bf05940f1d56ca85aa55ff3788))
+
 ## [1.3.9](https://github.com/standardnotes/auth/compare/@standardnotes/auth-server@1.3.8...@standardnotes/auth-server@1.3.9) (2022-06-29)
 
 ### Bug Fixes
