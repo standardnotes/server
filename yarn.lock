@@ -1764,8 +1764,8 @@ __metadata:
     "@sentry/node": ^7.3.0
     "@standardnotes/analytics": ^1.6.0
     "@standardnotes/auth": 3.19.4
-    "@standardnotes/domain-events": 2.32.5
-    "@standardnotes/domain-events-infra": 1.5.5
+    "@standardnotes/domain-events": 2.32.6
+    "@standardnotes/domain-events-infra": 1.5.6
     "@standardnotes/time": ^1.7.1
     "@types/cors": ^2.8.9
     "@types/express": ^4.17.11
@@ -1798,17 +1798,17 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@standardnotes/api@npm:^1.1.18":
-  version: 1.1.18
-  resolution: "@standardnotes/api@npm:1.1.18"
+"@standardnotes/api@npm:^1.1.19":
+  version: 1.1.19
+  resolution: "@standardnotes/api@npm:1.1.19"
   dependencies:
     "@standardnotes/auth": ^3.19.4
     "@standardnotes/common": ^1.23.1
-    "@standardnotes/encryption": ^1.8.22
-    "@standardnotes/responses": ^1.6.38
-    "@standardnotes/services": ^1.13.22
+    "@standardnotes/encryption": ^1.8.23
+    "@standardnotes/responses": ^1.6.39
+    "@standardnotes/services": ^1.13.23
     "@standardnotes/utils": ^1.6.12
-  checksum: 0a58ba25ce3d80d3dbd88b3deb53306a6f5f9350f0a71f1f5c939b432442bc41a3a425686cee33e35e94a00faf17f2bab3d23b304abb45c5d0d93c1f1ff3174a
+  checksum: cca168245a80d333ca6433799a7cbe4a233956cace92b9e9ec45b3f67e4e907ef4f08a9573008bdf2b11a09100dc0381cff820ee5bea384407c2107c494913ba
   languageName: node
   linkType: hard
 
@@ -1819,13 +1819,13 @@ __metadata:
     "@newrelic/winston-enricher": ^2.1.0
     "@sentry/node": ^7.3.0
     "@standardnotes/analytics": ^1.6.0
-    "@standardnotes/api": ^1.1.18
+    "@standardnotes/api": ^1.1.19
     "@standardnotes/auth": ^3.19.4
     "@standardnotes/common": ^1.23.1
-    "@standardnotes/domain-events": ^2.32.5
-    "@standardnotes/domain-events-infra": ^1.5.5
-    "@standardnotes/features": ^1.46.0
-    "@standardnotes/responses": ^1.6.38
+    "@standardnotes/domain-events": ^2.32.6
+    "@standardnotes/domain-events-infra": ^1.5.6
+    "@standardnotes/features": ^1.47.0
+    "@standardnotes/responses": ^1.6.39
     "@standardnotes/scheduler": ^1.1.2
     "@standardnotes/settings": ^1.15.0
     "@standardnotes/sncrypto-common": ^1.9.0
@@ -1918,40 +1918,40 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@standardnotes/domain-events-infra@npm:1.5.5, @standardnotes/domain-events-infra@npm:^1.5.5":
-  version: 1.5.5
-  resolution: "@standardnotes/domain-events-infra@npm:1.5.5"
+"@standardnotes/domain-events-infra@npm:1.5.6, @standardnotes/domain-events-infra@npm:^1.5.6":
+  version: 1.5.6
+  resolution: "@standardnotes/domain-events-infra@npm:1.5.6"
   dependencies:
-    "@standardnotes/domain-events": ^2.32.5
+    "@standardnotes/domain-events": ^2.32.6
     aws-sdk: ^2.1082.0
     ioredis: ^4.28.5
     newrelic: ^8.8.0
     reflect-metadata: ^0.1.13
     sqs-consumer: ^5.6.0
     winston: ^3.6.0
-  checksum: 02d721c66114effe13c9e25df3fc1cf2b8c9a92c1161d36176a5fcf299484b70a423932da3c253e7e7a9b08fdfbf6c2e4dc5c69b139edc0c683c7d792945648b
+  checksum: 1497c315cd8d37842015990eeab05bec7e0b1193f26bd0fa3b0982a811d23a4e3cbcaa4702018249d781adddd191ceac3efc47f5f8566d91fff7c020de2ca04f
   languageName: node
   linkType: hard
 
-"@standardnotes/domain-events@npm:2.32.5, @standardnotes/domain-events@npm:^2.32.5":
-  version: 2.32.5
-  resolution: "@standardnotes/domain-events@npm:2.32.5"
+"@standardnotes/domain-events@npm:2.32.6, @standardnotes/domain-events@npm:^2.32.6":
+  version: 2.32.6
+  resolution: "@standardnotes/domain-events@npm:2.32.6"
   dependencies:
     "@standardnotes/auth": ^3.19.4
-    "@standardnotes/features": ^1.46.0
+    "@standardnotes/features": ^1.47.0
     "@standardnotes/scheduler": ^1.1.2
-  checksum: 95532b9fdf89ea45363f67c1f9dd2d7c8eff762854f709cd5034400263385692d52103afc8538ed074145754534d3e69b19b68ae325654ab6bba74111e7e05df
+  checksum: 1c5852e776618d1505a0fc8e9f0166bf1459c0c05db67223092f41659ef1e5a83156a2886d717f74e57fa776cc20299538641adf4277e3d93567a25ef636253a
   languageName: node
   linkType: hard
 
-"@standardnotes/encryption@npm:^1.8.22":
-  version: 1.8.22
-  resolution: "@standardnotes/encryption@npm:1.8.22"
+"@standardnotes/encryption@npm:^1.8.23":
+  version: 1.8.23
+  resolution: "@standardnotes/encryption@npm:1.8.23"
   dependencies:
-    "@standardnotes/models": ^1.11.12
-    "@standardnotes/responses": ^1.6.38
-    "@standardnotes/services": ^1.13.22
-  checksum: 7a571c4b257b7469054b37930b4157fa786b81558d0d7887fc5db0527c7eb5acd1d7ecdb90509d50652440017e708eb87d8820cf0df52b3c7a8628940d0e0e72
+    "@standardnotes/models": ^1.11.13
+    "@standardnotes/responses": ^1.6.39
+    "@standardnotes/services": ^1.13.23
+  checksum: b86df01dc7d76eb170bd5d7cbe17b04d4c77ff657fda19cfc66a4e72d143016407ffc1434063e19d7f80a7a953df113a60712cba4a22be4a7ab7f125311a77e5
   languageName: node
   linkType: hard
 
@@ -1965,13 +1965,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@standardnotes/features@npm:^1.46.0":
-  version: 1.46.0
-  resolution: "@standardnotes/features@npm:1.46.0"
+"@standardnotes/features@npm:^1.47.0":
+  version: 1.47.0
+  resolution: "@standardnotes/features@npm:1.47.0"
   dependencies:
     "@standardnotes/auth": ^3.19.4
     "@standardnotes/common": ^1.23.1
-  checksum: 0653b9b425e86cf0f2e6a80fb68316c841aaf7feb23ca39131e3d09546735d199879532ef9e89f424000b916dd5ac2d7e6ea0e60ac755712ef37c3fecdf48d94
+  checksum: bd0ddd6017867e7c905dfdbac4875889713b3f10e79a2e702cc76c3f5db4c9a5ac1a2418e54358aaee4f4404e4d62b208faa755c61bc2eb3e5a2a17777dfbdd0
   languageName: node
   linkType: hard
 
@@ -1983,8 +1983,8 @@ __metadata:
     "@standardnotes/auth": ^3.19.4
     "@standardnotes/common": ^1.23.1
     "@standardnotes/config": 2.4.3
-    "@standardnotes/domain-events": ^2.32.5
-    "@standardnotes/domain-events-infra": ^1.5.5
+    "@standardnotes/domain-events": ^2.32.6
+    "@standardnotes/domain-events-infra": ^1.5.6
     "@standardnotes/sncrypto-common": ^1.9.0
     "@standardnotes/sncrypto-node": ^1.8.3
     "@standardnotes/time": ^1.7.1
@@ -2025,14 +2025,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@standardnotes/models@npm:^1.11.12":
-  version: 1.11.12
-  resolution: "@standardnotes/models@npm:1.11.12"
+"@standardnotes/models@npm:^1.11.13":
+  version: 1.11.13
+  resolution: "@standardnotes/models@npm:1.11.13"
   dependencies:
-    "@standardnotes/features": ^1.46.0
-    "@standardnotes/responses": ^1.6.38
+    "@standardnotes/features": ^1.47.0
+    "@standardnotes/responses": ^1.6.39
     "@standardnotes/utils": ^1.6.12
-  checksum: 636897db975e59989da86bcf2a6f32a4f8e24c45e41f9f9ee7c6960e47f3d04bcc9b74aadb9c4b488d98b61aca284699ed8b2a857d588493300358c62d69e580
+  checksum: 063f4382b8559f23a81db0a3aab7eca023c926f2069182f364da6dbfb0d312c300bc9dd29a1d389ba5fa1e7c04d8375c625bfc4eb073cad938511493e2976b5a
   languageName: node
   linkType: hard
 
@@ -2047,14 +2047,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@standardnotes/responses@npm:^1.6.38":
-  version: 1.6.38
-  resolution: "@standardnotes/responses@npm:1.6.38"
+"@standardnotes/responses@npm:^1.6.39":
+  version: 1.6.39
+  resolution: "@standardnotes/responses@npm:1.6.39"
   dependencies:
     "@standardnotes/auth": ^3.19.4
     "@standardnotes/common": ^1.23.1
-    "@standardnotes/features": ^1.46.0
-  checksum: 016a2f294d5dbad12ab04344cfcb2775da5c1ccfd2d0ce4762db298ce929db528a1dd7b7f2ed295ef1237e37f72e9f6dfd747a3ef1c5ea229a84034bf99b05c3
+    "@standardnotes/features": ^1.47.0
+  checksum: 0ea1d4d5b88f51e6b1b0b6d1ba3b0226f53969ed2be2985b4d2e42914a2ba29121be950f9fccfc590778a7765dcb729eeea75f10cf35237e15d46e4413b83672
   languageName: node
   linkType: hard
 
@@ -2065,8 +2065,8 @@ __metadata:
     "@newrelic/winston-enricher": ^2.1.0
     "@sentry/node": ^7.3.0
     "@standardnotes/common": ^1.23.1
-    "@standardnotes/domain-events": ^2.32.5
-    "@standardnotes/domain-events-infra": ^1.5.5
+    "@standardnotes/domain-events": ^2.32.6
+    "@standardnotes/domain-events-infra": ^1.5.6
     "@standardnotes/scheduler": ^1.1.2
     "@standardnotes/time": ^1.7.1
     "@types/ioredis": ^4.28.10
@@ -2125,16 +2125,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@standardnotes/services@npm:^1.13.22":
-  version: 1.13.22
-  resolution: "@standardnotes/services@npm:1.13.22"
+"@standardnotes/services@npm:^1.13.23":
+  version: 1.13.23
+  resolution: "@standardnotes/services@npm:1.13.23"
   dependencies:
     "@standardnotes/auth": ^3.19.4
     "@standardnotes/common": ^1.23.1
-    "@standardnotes/models": ^1.11.12
-    "@standardnotes/responses": ^1.6.38
+    "@standardnotes/models": ^1.11.13
+    "@standardnotes/responses": ^1.6.39
     "@standardnotes/utils": ^1.6.12
-  checksum: e84f4e43d49c42b1f99b4e54380f1539ca3ff3451290b7f290fc1e480f2207f8567035015f8788c7b9f961f88eb81b43a4cca591328390dbd0622c9e4891063b
+  checksum: 7e67af13c4eb845c6bcbbac46897b94fe4754a728dba04605ccfbd96da49a0b305299fd3db9778a29488c5b29cf1ac4db08c28844e3ed95a2a872595376e1dc6
   languageName: node
   linkType: hard
 
@@ -2170,10 +2170,10 @@ __metadata:
     "@standardnotes/analytics": ^1.6.0
     "@standardnotes/auth": ^3.19.4
     "@standardnotes/common": ^1.23.1
-    "@standardnotes/domain-events": ^2.32.5
-    "@standardnotes/domain-events-infra": ^1.5.5
+    "@standardnotes/domain-events": ^2.32.6
+    "@standardnotes/domain-events-infra": ^1.5.6
     "@standardnotes/payloads": ^1.5.1
-    "@standardnotes/responses": ^1.6.38
+    "@standardnotes/responses": ^1.6.39
     "@standardnotes/settings": 1.15.0
     "@standardnotes/time": ^1.7.1
     "@types/cors": ^2.8.9
