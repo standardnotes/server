@@ -65,6 +65,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "reference": "workspace:packages/settings"\
       },\
       {\
+        "name": "@standardnotes/sncrypto-node",\
+        "reference": "workspace:packages/sncrypto-node"\
+      },\
+      {\
         "name": "@standardnotes/syncing-server",\
         "reference": "workspace:packages/syncing-server"\
       },\
@@ -88,6 +92,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ["@standardnotes/security", ["workspace:packages/security"]],\
       ["@standardnotes/server-monorepo", ["workspace:."]],\
       ["@standardnotes/settings", ["workspace:packages/settings"]],\
+      ["@standardnotes/sncrypto-node", ["workspace:packages/sncrypto-node"]],\
       ["@standardnotes/syncing-server", ["workspace:packages/syncing-server"]],\
       ["@standardnotes/time", ["workspace:packages/time"]]\
     ],\
@@ -2759,7 +2764,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@standardnotes/security", "workspace:packages/security"],\
             ["@standardnotes/settings", "workspace:packages/settings"],\
             ["@standardnotes/sncrypto-common", "npm:1.9.0"],\
-            ["@standardnotes/sncrypto-node", "npm:1.8.3"],\
+            ["@standardnotes/sncrypto-node", "workspace:packages/sncrypto-node"],\
             ["@standardnotes/time", "workspace:packages/time"],\
             ["@types/bcryptjs", "npm:2.4.2"],\
             ["@types/cors", "npm:2.8.12"],\
@@ -2914,7 +2919,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@standardnotes/domain-events-infra", "workspace:packages/domain-events-infra"],\
             ["@standardnotes/security", "workspace:packages/security"],\
             ["@standardnotes/sncrypto-common", "npm:1.9.0"],\
-            ["@standardnotes/sncrypto-node", "npm:1.8.3"],\
+            ["@standardnotes/sncrypto-node", "workspace:packages/sncrypto-node"],\
             ["@standardnotes/time", "workspace:packages/time"],\
             ["@types/connect-busboy", "npm:1.0.0"],\
             ["@types/cors", "npm:2.8.12"],\
@@ -3126,13 +3131,22 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@standardnotes/sncrypto-node", [\
-        ["npm:1.8.3", {\
-          "packageLocation": "./.yarn/cache/@standardnotes-sncrypto-node-npm-1.8.3-5d28cdd37d-b3c866bfba.zip/node_modules/@standardnotes/sncrypto-node/",\
+        ["workspace:packages/sncrypto-node", {\
+          "packageLocation": "./packages/sncrypto-node/",\
           "packageDependencies": [\
-            ["@standardnotes/sncrypto-node", "npm:1.8.3"],\
-            ["@standardnotes/sncrypto-common", "npm:1.9.0"]\
+            ["@standardnotes/sncrypto-node", "workspace:packages/sncrypto-node"],\
+            ["@standardnotes/sncrypto-common", "npm:1.9.0"],\
+            ["@types/jest", "npm:28.1.4"],\
+            ["@types/node", "npm:18.0.3"],\
+            ["@typescript-eslint/eslint-plugin", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:5.30.5"],\
+            ["eslint-plugin-prettier", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:4.2.1"],\
+            ["jest", "virtual:e1128e9ebb31076ea8e955c00397fd108ee8bf0fb2df3b2a603c510b7014a507cfa360bccf848efc1ec8c431656aa94c5ad08bcec32950bdf1278d01cd890e4f#npm:28.1.2"],\
+            ["reflect-metadata", "npm:0.1.13"],\
+            ["regenerator-runtime", "npm:0.13.9"],\
+            ["ts-jest", "virtual:e1128e9ebb31076ea8e955c00397fd108ee8bf0fb2df3b2a603c510b7014a507cfa360bccf848efc1ec8c431656aa94c5ad08bcec32950bdf1278d01cd890e4f#npm:28.0.5"],\
+            ["ts-loader", "virtual:251b55e6186f136d0456117ba65ba163d1a38b49e5d09875aa42c66c71e5a9085f9a3cc24c7aae5da7499c53d95e6948b9284db4d7d1f035f288826df740c6bf#npm:9.3.1"]\
           ],\
-          "linkType": "HARD"\
+          "linkType": "SOFT"\
         }]\
       ]],\
       ["@standardnotes/syncing-server", [\
@@ -6333,6 +6347,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["end-of-stream", "npm:1.4.4"],\
             ["once", "npm:1.4.0"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["enhanced-resolve", [\
+        ["npm:5.10.0", {\
+          "packageLocation": "./.yarn/cache/enhanced-resolve-npm-5.10.0-7941304306-0bb9830704.zip/node_modules/enhanced-resolve/",\
+          "packageDependencies": [\
+            ["enhanced-resolve", "npm:5.10.0"],\
+            ["graceful-fs", "npm:4.2.10"],\
+            ["tapable", "npm:2.2.1"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -12178,6 +12203,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["regenerator-runtime", [\
+        ["npm:0.13.9", {\
+          "packageLocation": "./.yarn/cache/regenerator-runtime-npm-0.13.9-6d02340eec-65ed455fe5.zip/node_modules/regenerator-runtime/",\
+          "packageDependencies": [\
+            ["regenerator-runtime", "npm:0.13.9"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["regexpp", [\
         ["npm:3.2.0", {\
           "packageLocation": "./.yarn/cache/regexpp-npm-3.2.0-2513f32cfc-a78dc5c715.zip/node_modules/regexpp/",\
@@ -13124,6 +13158,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["tapable", [\
+        ["npm:2.2.1", {\
+          "packageLocation": "./.yarn/cache/tapable-npm-2.2.1-8cf5ff3039-3b7a1b4d86.zip/node_modules/tapable/",\
+          "packageDependencies": [\
+            ["tapable", "npm:2.2.1"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["tar", [\
         ["npm:6.1.11", {\
           "packageLocation": "./.yarn/cache/tar-npm-6.1.11-e6ac3cba9c-a04c07bb9e.zip/node_modules/tar/",\
@@ -13487,6 +13530,36 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             "esbuild",\
             "jest",\
             "typescript"\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["ts-loader", [\
+        ["npm:9.3.1", {\
+          "packageLocation": "./.yarn/cache/ts-loader-npm-9.3.1-634433ef6a-462a8ac315.zip/node_modules/ts-loader/",\
+          "packageDependencies": [\
+            ["ts-loader", "npm:9.3.1"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
+        ["virtual:251b55e6186f136d0456117ba65ba163d1a38b49e5d09875aa42c66c71e5a9085f9a3cc24c7aae5da7499c53d95e6948b9284db4d7d1f035f288826df740c6bf#npm:9.3.1", {\
+          "packageLocation": "./.yarn/__virtual__/ts-loader-virtual-2eeaee133b/0/cache/ts-loader-npm-9.3.1-634433ef6a-462a8ac315.zip/node_modules/ts-loader/",\
+          "packageDependencies": [\
+            ["ts-loader", "virtual:251b55e6186f136d0456117ba65ba163d1a38b49e5d09875aa42c66c71e5a9085f9a3cc24c7aae5da7499c53d95e6948b9284db4d7d1f035f288826df740c6bf#npm:9.3.1"],\
+            ["@types/typescript", null],\
+            ["@types/webpack", null],\
+            ["chalk", "npm:4.1.2"],\
+            ["enhanced-resolve", "npm:5.10.0"],\
+            ["micromatch", "npm:4.0.5"],\
+            ["semver", "npm:7.3.7"],\
+            ["typescript", null],\
+            ["webpack", null]\
+          ],\
+          "packagePeers": [\
+            "@types/typescript",\
+            "@types/webpack",\
+            "typescript",\
+            "webpack"\
           ],\
           "linkType": "HARD"\
         }]\

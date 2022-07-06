@@ -32,7 +32,7 @@
     "@standardnotes/domain-events-infra": "workspace:*",
     "@standardnotes/security": "workspace:*",
     "@standardnotes/sncrypto-common": "^1.9.0",
-    "@standardnotes/sncrypto-node": "^1.8.3",
+    "@standardnotes/sncrypto-node": "workspace:*",
     "@standardnotes/time": "workspace:*",
     "aws-sdk": "^2.1158.0",
     "connect-busboy": "^1.0.0",
