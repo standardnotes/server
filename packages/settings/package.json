@@ -1,0 +1,34 @@
+{
+  "name": "@standardnotes/settings",
+  "version": "1.16.0",
+  "engines": {
+    "node": ">=16.0.0 <17.0.0"
+  },
+  "description": "Settings SDK for Standard Notes projects",
+  "main": "dist/src/index.js",
+  "author": "Standard Notes",
+  "types": "dist/src/index.d.ts",
+  "files": [
+    "dist/src/**/*.js",
+    "dist/src/**/*.d.ts"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "AGPL-3.0-or-later",
+  "scripts": {
+    "clean": "rm -fr dist",
+    "prestart": "yarn clean",
+    "start": "tsc -p tsconfig.json --watch",
+    "prebuild": "yarn clean",
+    "build": "tsc -p tsconfig.json",
+    "lint": "eslint . --ext .ts"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.30.0",
+    "eslint-plugin-prettier": "^4.2.1"
+  },
+  "dependencies": {
+    "reflect-metadata": "^0.1.13"
+  }
+}

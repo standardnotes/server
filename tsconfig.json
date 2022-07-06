@@ -53,6 +53,9 @@
       "path": "./packages/security"
     },
     {
+      "path": "./packages/settings"
+    },
+    {
       "path": "./packages/syncing-server"
     },
     {

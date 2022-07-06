@@ -61,6 +61,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "reference": "workspace:packages/security"\
       },\
       {\
+        "name": "@standardnotes/settings",\
+        "reference": "workspace:packages/settings"\
+      },\
+      {\
         "name": "@standardnotes/syncing-server",\
         "reference": "workspace:packages/syncing-server"\
       },\
@@ -83,6 +87,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ["@standardnotes/scheduler-server", ["workspace:packages/scheduler"]],\
       ["@standardnotes/security", ["workspace:packages/security"]],\
       ["@standardnotes/server-monorepo", ["workspace:."]],\
+      ["@standardnotes/settings", ["workspace:packages/settings"]],\
       ["@standardnotes/syncing-server", ["workspace:packages/syncing-server"]],\
       ["@standardnotes/time", ["workspace:packages/time"]]\
     ],\
@@ -2752,7 +2757,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@standardnotes/predicates", "workspace:packages/predicates"],\
             ["@standardnotes/responses", "npm:1.6.39"],\
             ["@standardnotes/security", "workspace:packages/security"],\
-            ["@standardnotes/settings", "npm:1.15.0"],\
+            ["@standardnotes/settings", "workspace:packages/settings"],\
             ["@standardnotes/sncrypto-common", "npm:1.9.0"],\
             ["@standardnotes/sncrypto-node", "npm:1.8.3"],\
             ["@standardnotes/time", "workspace:packages/time"],\
@@ -3100,12 +3105,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@standardnotes/settings", [\
-        ["npm:1.15.0", {\
-          "packageLocation": "./.yarn/cache/@standardnotes-settings-npm-1.15.0-bfec86ee49-4397d453a1.zip/node_modules/@standardnotes/settings/",\
+        ["workspace:packages/settings", {\
+          "packageLocation": "./packages/settings/",\
           "packageDependencies": [\
-            ["@standardnotes/settings", "npm:1.15.0"]\
+            ["@standardnotes/settings", "workspace:packages/settings"],\
+            ["@typescript-eslint/eslint-plugin", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:5.30.5"],\
+            ["eslint-plugin-prettier", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:4.2.1"],\
+            ["reflect-metadata", "npm:0.1.13"]\
           ],\
-          "linkType": "HARD"\
+          "linkType": "SOFT"\
         }]\
       ]],\
       ["@standardnotes/sncrypto-common", [\
@@ -3141,7 +3149,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@standardnotes/payloads", "npm:1.5.1"],\
             ["@standardnotes/responses", "npm:1.6.39"],\
             ["@standardnotes/security", "workspace:packages/security"],\
-            ["@standardnotes/settings", "npm:1.15.0"],\
+            ["@standardnotes/settings", "workspace:packages/settings"],\
             ["@standardnotes/time", "workspace:packages/time"],\
             ["@types/cors", "npm:2.8.12"],\
             ["@types/dotenv", "npm:8.2.0"],\

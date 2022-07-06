@@ -2025,7 +2025,7 @@ __metadata:
     "@standardnotes/predicates": "workspace:*"
     "@standardnotes/responses": ^1.6.39
     "@standardnotes/security": "workspace:*"
-    "@standardnotes/settings": ^1.15.0
+    "@standardnotes/settings": "workspace:*"
     "@standardnotes/sncrypto-common": ^1.9.0
     "@standardnotes/sncrypto-node": ^1.8.3
     "@standardnotes/time": "workspace:*"
@@ -2358,12 +2358,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@standardnotes/settings@npm:1.15.0, @standardnotes/settings@npm:^1.15.0":
-  version: 1.15.0
-  resolution: "@standardnotes/settings@npm:1.15.0"
-  checksum: 4397d453a1a0cd5554012a5bf5ee2025c102ffc6d742841eecd2ab9cd46b0fbfe78da61b401451646274887d92801cafcef4c283bbfc6074b4d152103e15f861
-  languageName: node
-  linkType: hard
+"@standardnotes/settings@workspace:*, @standardnotes/settings@workspace:packages/settings":
+  version: 0.0.0-use.local
+  resolution: "@standardnotes/settings@workspace:packages/settings"
+  dependencies:
+    "@typescript-eslint/eslint-plugin": ^5.30.0
+    eslint-plugin-prettier: ^4.2.1
+    reflect-metadata: ^0.1.13
+  languageName: unknown
+  linkType: soft
 
 "@standardnotes/sncrypto-common@npm:^1.9.0":
   version: 1.9.0
@@ -2394,7 +2397,7 @@ __metadata:
     "@standardnotes/payloads": ^1.5.1
     "@standardnotes/responses": ^1.6.39
     "@standardnotes/security": "workspace:*"
-    "@standardnotes/settings": 1.15.0
+    "@standardnotes/settings": "workspace:*"
     "@standardnotes/time": "workspace:*"
     "@types/cors": ^2.8.9
     "@types/dotenv": ^8.2.0
