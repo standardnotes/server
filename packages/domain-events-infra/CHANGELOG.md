@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.7.0 (2022-07-06)
+
+### Features
+
+* add domain-event-infra package ([808d18e](https://github.com/standardnotes/server/commit/808d18e7cd499afe9040e4306b1e3e351fb244bd))
+
 ## [1.5.8](https://github.com/standardnotes/snjs/compare/@standardnotes/domain-events-infra@1.5.7...@standardnotes/domain-events-infra@1.5.8) (2022-07-05)
 
 **Note:** Version bump only for package @standardnotes/domain-events-infra
