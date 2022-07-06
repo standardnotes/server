@@ -34,7 +34,7 @@
     "@standardnotes/responses": "^1.6.39",
     "@standardnotes/security": "workspace:*",
     "@standardnotes/settings": "1.15.0",
-    "@standardnotes/time": "^1.7.1",
+    "@standardnotes/time": "workspace:*",
     "aws-sdk": "^2.1159.0",
     "axios": "0.24.0",
     "cors": "2.8.5",

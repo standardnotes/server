@@ -30,7 +30,7 @@
     "@standardnotes/domain-events": "workspace:*",
     "@standardnotes/domain-events-infra": "workspace:*",
     "@standardnotes/predicates": "workspace:*",
-    "@standardnotes/time": "^1.7.1",
+    "@standardnotes/time": "workspace:*",
     "aws-sdk": "^2.1158.0",
     "dayjs": "^1.11.3",
     "dotenv": "8.2.0",

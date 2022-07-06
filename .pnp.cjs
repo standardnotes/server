@@ -59,6 +59,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       {\
         "name": "@standardnotes/syncing-server",\
         "reference": "workspace:packages/syncing-server"\
+      },\
+      {\
+        "name": "@standardnotes/time",\
+        "reference": "workspace:packages/time"\
       }\
     ],\
     "enableTopLevelFallback": true,\
@@ -74,7 +78,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ["@standardnotes/scheduler-server", ["workspace:packages/scheduler"]],\
       ["@standardnotes/security", ["workspace:packages/security"]],\
       ["@standardnotes/server-monorepo", ["workspace:."]],\
-      ["@standardnotes/syncing-server", ["workspace:packages/syncing-server"]]\
+      ["@standardnotes/syncing-server", ["workspace:packages/syncing-server"]],\
+      ["@standardnotes/time", ["workspace:packages/time"]]\
     ],\
     "fallbackPool": [\
     ],\
@@ -2682,7 +2687,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@standardnotes/domain-events", "workspace:packages/domain-events"],\
             ["@standardnotes/domain-events-infra", "workspace:packages/domain-events-infra"],\
             ["@standardnotes/security", "workspace:packages/security"],\
-            ["@standardnotes/time", "npm:1.7.1"],\
+            ["@standardnotes/time", "workspace:packages/time"],\
             ["@types/cors", "npm:2.8.12"],\
             ["@types/express", "npm:4.17.13"],\
             ["@types/ioredis", "npm:4.28.10"],\
@@ -2745,7 +2750,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@standardnotes/settings", "npm:1.15.0"],\
             ["@standardnotes/sncrypto-common", "npm:1.9.0"],\
             ["@standardnotes/sncrypto-node", "npm:1.8.3"],\
-            ["@standardnotes/time", "npm:1.7.1"],\
+            ["@standardnotes/time", "workspace:packages/time"],\
             ["@types/bcryptjs", "npm:2.4.2"],\
             ["@types/cors", "npm:2.8.12"],\
             ["@types/express", "npm:4.17.13"],\
@@ -2893,7 +2898,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@standardnotes/security", "workspace:packages/security"],\
             ["@standardnotes/sncrypto-common", "npm:1.9.0"],\
             ["@standardnotes/sncrypto-node", "npm:1.8.3"],\
-            ["@standardnotes/time", "npm:1.7.1"],\
+            ["@standardnotes/time", "workspace:packages/time"],\
             ["@types/connect-busboy", "npm:1.0.0"],\
             ["@types/cors", "npm:2.8.12"],\
             ["@types/express", "npm:4.17.13"],\
@@ -2998,7 +3003,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@standardnotes/domain-events", "workspace:packages/domain-events"],\
             ["@standardnotes/domain-events-infra", "workspace:packages/domain-events-infra"],\
             ["@standardnotes/predicates", "workspace:packages/predicates"],\
-            ["@standardnotes/time", "npm:1.7.1"],\
+            ["@standardnotes/time", "workspace:packages/time"],\
             ["@types/ioredis", "npm:4.28.10"],\
             ["@types/jest", "npm:28.1.4"],\
             ["@types/newrelic", "npm:7.0.3"],\
@@ -3125,7 +3130,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@standardnotes/responses", "npm:1.6.39"],\
             ["@standardnotes/security", "workspace:packages/security"],\
             ["@standardnotes/settings", "npm:1.15.0"],\
-            ["@standardnotes/time", "npm:1.7.1"],\
+            ["@standardnotes/time", "workspace:packages/time"],\
             ["@types/cors", "npm:2.8.12"],\
             ["@types/dotenv", "npm:8.2.0"],\
             ["@types/express", "npm:4.17.13"],\
@@ -3167,15 +3172,21 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@standardnotes/time", [\
-        ["npm:1.7.1", {\
-          "packageLocation": "./.yarn/cache/@standardnotes-time-npm-1.7.1-e6859705d5-ccb9c4af73.zip/node_modules/@standardnotes/time/",\
+        ["workspace:packages/time", {\
+          "packageLocation": "./packages/time/",\
           "packageDependencies": [\
-            ["@standardnotes/time", "npm:1.7.1"],\
+            ["@standardnotes/time", "workspace:packages/time"],\
+            ["@types/jest", "npm:27.5.2"],\
+            ["@types/microtime", "npm:2.1.0"],\
+            ["@typescript-eslint/eslint-plugin", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:5.30.5"],\
             ["dayjs", "npm:1.11.3"],\
+            ["eslint-plugin-prettier", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:4.2.1"],\
+            ["jest", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:27.5.1"],\
             ["microtime", "npm:3.1.0"],\
-            ["reflect-metadata", "npm:0.1.13"]\
+            ["reflect-metadata", "npm:0.1.13"],\
+            ["ts-jest", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:27.1.5"]\
           ],\
-          "linkType": "HARD"\
+          "linkType": "SOFT"\
         }]\
       ]],\
       ["@standardnotes/utils", [\
@@ -3506,6 +3517,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@types-long-npm-4.0.2-e7bdc00dd4-d16cde7240.zip/node_modules/@types/long/",\
           "packageDependencies": [\
             ["@types/long", "npm:4.0.2"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@types/microtime", [\
+        ["npm:2.1.0", {\
+          "packageLocation": "./.yarn/cache/@types-microtime-npm-2.1.0-111ed89518-6c23131fe4.zip/node_modules/@types/microtime/",\
+          "packageDependencies": [\
+            ["@types/microtime", "npm:2.1.0"]\
           ],\
           "linkType": "HARD"\
         }]\

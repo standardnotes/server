@@ -45,7 +45,7 @@
     "@standardnotes/settings": "^1.15.0",
     "@standardnotes/sncrypto-common": "^1.9.0",
     "@standardnotes/sncrypto-node": "^1.8.3",
-    "@standardnotes/time": "^1.7.1",
+    "@standardnotes/time": "workspace:*",
     "aws-sdk": "^2.1159.0",
     "axios": "0.24.0",
     "bcryptjs": "2.4.3",

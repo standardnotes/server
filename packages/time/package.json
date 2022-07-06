@@ -1,0 +1,39 @@
+{
+  "name": "@standardnotes/time",
+  "version": "1.8.0",
+  "engines": {
+    "node": ">=16.0.0 <17.0.0"
+  },
+  "description": "Utilities for time processing and calculation",
+  "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
+  "files": [
+    "dist/src/**/*.js",
+    "dist/src/**/*.d.ts"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": "Standard Notes",
+  "license": "AGPL-3.0-or-later",
+  "scripts": {
+    "clean": "rm -fr dist",
+    "prebuild": "yarn clean",
+    "build": "tsc -p tsconfig.json",
+    "lint": "eslint . --ext .ts",
+    "test:unit": "jest spec --coverage"
+  },
+  "dependencies": {
+    "dayjs": "^1.10.8",
+    "microtime": "^3.1.0",
+    "reflect-metadata": "^0.1.13"
+  },
+  "devDependencies": {
+    "@types/jest": "^27.4.1",
+    "@types/microtime": "^2.1.0",
+    "@typescript-eslint/eslint-plugin": "^5.30.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "jest": "^27.5.1",
+    "ts-jest": "^27.1.3"
+  }
+}

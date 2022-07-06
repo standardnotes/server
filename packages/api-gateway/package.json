@@ -28,7 +28,7 @@
     "@standardnotes/domain-events": "workspace:*",
     "@standardnotes/domain-events-infra": "workspace:*",
     "@standardnotes/security": "workspace:*",
-    "@standardnotes/time": "^1.7.1",
+    "@standardnotes/time": "workspace:*",
     "aws-sdk": "^2.1160.0",
     "axios": "0.24.0",
     "cors": "2.8.5",
