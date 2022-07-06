@@ -41,6 +41,9 @@
       "path": "./packages/files"
     },
     {
+      "path": "./packages/predicates"
+    },
+    {
       "path": "./packages/scheduler"
     },
     {

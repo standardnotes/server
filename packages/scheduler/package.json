@@ -29,7 +29,7 @@
     "@standardnotes/common": "^1.23.1",
     "@standardnotes/domain-events": "workspace:*",
     "@standardnotes/domain-events-infra": "workspace:*",
-    "@standardnotes/scheduler": "^1.1.2",
+    "@standardnotes/predicates": "workspace:*",
     "@standardnotes/time": "^1.7.1",
     "aws-sdk": "^2.1158.0",
     "dayjs": "^1.11.3",

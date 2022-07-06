@@ -45,6 +45,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "reference": "workspace:packages/files"\
       },\
       {\
+        "name": "@standardnotes/predicates",\
+        "reference": "workspace:packages/predicates"\
+      },\
+      {\
         "name": "@standardnotes/scheduler-server",\
         "reference": "workspace:packages/scheduler"\
       },\
@@ -62,6 +66,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ["@standardnotes/domain-events", ["workspace:packages/domain-events"]],\
       ["@standardnotes/domain-events-infra", ["workspace:packages/domain-events-infra"]],\
       ["@standardnotes/files-server", ["workspace:packages/files"]],\
+      ["@standardnotes/predicates", ["workspace:packages/predicates"]],\
       ["@standardnotes/scheduler-server", ["workspace:packages/scheduler"]],\
       ["@standardnotes/server-monorepo", ["workspace:."]],\
       ["@standardnotes/syncing-server", ["workspace:packages/syncing-server"]]\
@@ -2730,8 +2735,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@standardnotes/domain-events", "workspace:packages/domain-events"],\
             ["@standardnotes/domain-events-infra", "workspace:packages/domain-events-infra"],\
             ["@standardnotes/features", "npm:1.50.0"],\
+            ["@standardnotes/predicates", "workspace:packages/predicates"],\
             ["@standardnotes/responses", "npm:1.6.39"],\
-            ["@standardnotes/scheduler", "npm:1.1.2"],\
             ["@standardnotes/settings", "npm:1.15.0"],\
             ["@standardnotes/sncrypto-common", "npm:1.9.0"],\
             ["@standardnotes/sncrypto-node", "npm:1.8.3"],\
@@ -2808,7 +2813,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@standardnotes/auth", "npm:3.19.4"],\
             ["@standardnotes/common", "npm:1.23.1"],\
             ["@standardnotes/features", "npm:1.50.0"],\
-            ["@standardnotes/scheduler", "npm:1.1.2"],\
+            ["@standardnotes/predicates", "workspace:packages/predicates"],\
             ["@types/jest", "npm:28.1.4"],\
             ["@typescript-eslint/eslint-plugin", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:5.30.5"],\
             ["eslint-plugin-prettier", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:4.2.1"],\
@@ -2949,6 +2954,22 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["@standardnotes/predicates", [\
+        ["workspace:packages/predicates", {\
+          "packageLocation": "./packages/predicates/",\
+          "packageDependencies": [\
+            ["@standardnotes/predicates", "workspace:packages/predicates"],\
+            ["@standardnotes/common", "npm:1.23.1"],\
+            ["@types/jest", "npm:27.5.2"],\
+            ["@typescript-eslint/eslint-plugin", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:5.30.5"],\
+            ["eslint-plugin-prettier", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:4.2.1"],\
+            ["jest", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:27.5.1"],\
+            ["reflect-metadata", "npm:0.1.13"],\
+            ["ts-jest", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:27.1.5"]\
+          ],\
+          "linkType": "SOFT"\
+        }]\
+      ]],\
       ["@standardnotes/responses", [\
         ["npm:1.6.39", {\
           "packageLocation": "./.yarn/cache/@standardnotes-responses-npm-1.6.39-395f4c2d65-0ea1d4d5b8.zip/node_modules/@standardnotes/responses/",\
@@ -2957,16 +2978,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@standardnotes/auth", "npm:3.19.4"],\
             ["@standardnotes/common", "npm:1.23.1"],\
             ["@standardnotes/features", "npm:1.50.0"]\
-          ],\
-          "linkType": "HARD"\
-        }]\
-      ]],\
-      ["@standardnotes/scheduler", [\
-        ["npm:1.1.2", {\
-          "packageLocation": "./.yarn/cache/@standardnotes-scheduler-npm-1.1.2-78f89314fb-68642a0874.zip/node_modules/@standardnotes/scheduler/",\
-          "packageDependencies": [\
-            ["@standardnotes/scheduler", "npm:1.1.2"],\
-            ["@standardnotes/common", "npm:1.23.1"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -2981,7 +2992,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@standardnotes/common", "npm:1.23.1"],\
             ["@standardnotes/domain-events", "workspace:packages/domain-events"],\
             ["@standardnotes/domain-events-infra", "workspace:packages/domain-events-infra"],\
-            ["@standardnotes/scheduler", "npm:1.1.2"],\
+            ["@standardnotes/predicates", "workspace:packages/predicates"],\
             ["@standardnotes/time", "npm:1.7.1"],\
             ["@types/ioredis", "npm:4.28.10"],\
             ["@types/jest", "npm:28.1.4"],\
