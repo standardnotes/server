@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.7.0](https://github.com/standardnotes/auth/compare/@standardnotes/auth-server@1.6.0...@standardnotes/auth-server@1.7.0) (2022-07-06)
+
+### Features
+
+* add time package ([565e890](https://github.com/standardnotes/auth/commit/565e890973b1d96544bb750fdd700d58f8dad088))
+
 # [1.6.0](https://github.com/standardnotes/auth/compare/@standardnotes/auth-server@1.5.1...@standardnotes/auth-server@1.6.0) (2022-07-06)
 
 ### Bug Fixes

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.6.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.5.0...@standardnotes/api-gateway@1.6.0) (2022-07-06)
+
+### Features
+
+* add time package ([565e890](https://github.com/standardnotes/api-gateway/commit/565e890973b1d96544bb750fdd700d58f8dad088))
+
 # [1.5.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.4.2...@standardnotes/api-gateway@1.5.0) (2022-07-06)
 
 ### Bug Fixes

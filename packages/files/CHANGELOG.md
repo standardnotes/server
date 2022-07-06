@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.2.0...@standardnotes/files-server@1.3.0) (2022-07-06)
+
+### Features
+
+* add time package ([565e890](https://github.com/standardnotes/files/commit/565e890973b1d96544bb750fdd700d58f8dad088))
+
 # [1.2.0](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.1.14...@standardnotes/files-server@1.2.0) (2022-07-06)
 
 ### Bug Fixes

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.9.0 (2022-07-06)
+
+### Features
+
+* add time package ([565e890](https://github.com/standardnotes/server/commit/565e890973b1d96544bb750fdd700d58f8dad088))
+
 ## [1.7.2](https://github.com/standardnotes/snjs/compare/@standardnotes/time@1.7.1...@standardnotes/time@1.7.2) (2022-07-04)
 
 **Note:** Version bump only for package @standardnotes/time
