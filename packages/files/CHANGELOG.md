@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.1.14...@standardnotes/files-server@1.2.0) (2022-07-06)
+
+### Bug Fixes
+
+* deps to @standarnotes/security ([699164e](https://github.com/standardnotes/files/commit/699164eba553cd07fb50f7a06ae8991028167603))
+
+### Features
+
+* add security package ([d86928f](https://github.com/standardnotes/files/commit/d86928f1b4b5feda8c330ed8ee0bf9de0fc12ae7))
+
 ## [1.1.14](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.1.13...@standardnotes/files-server@1.1.14) (2022-07-06)
 
 **Note:** Version bump only for package @standardnotes/files-server

@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.38.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.37.1...@standardnotes/domain-events@2.38.0) (2022-07-06)
+
+### Bug Fixes
+
+* deps to @standarnotes/security ([699164e](https://github.com/standardnotes/server/commit/699164eba553cd07fb50f7a06ae8991028167603))
+
+### Features
+
+* add security package ([d86928f](https://github.com/standardnotes/server/commit/d86928f1b4b5feda8c330ed8ee0bf9de0fc12ae7))
+
 ## [2.37.1](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.37.0...@standardnotes/domain-events@2.37.1) (2022-07-06)
 
 ### Bug Fixes

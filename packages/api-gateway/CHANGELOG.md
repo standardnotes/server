@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.5.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.4.2...@standardnotes/api-gateway@1.5.0) (2022-07-06)
+
+### Bug Fixes
+
+* deps to @standarnotes/security ([699164e](https://github.com/standardnotes/api-gateway/commit/699164eba553cd07fb50f7a06ae8991028167603))
+
+### Features
+
+* add security package ([d86928f](https://github.com/standardnotes/api-gateway/commit/d86928f1b4b5feda8c330ed8ee0bf9de0fc12ae7))
+
 ## [1.4.2](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.4.1...@standardnotes/api-gateway@1.4.2) (2022-07-06)
 
 **Note:** Version bump only for package @standardnotes/api-gateway
