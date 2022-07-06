@@ -24,10 +24,10 @@
     "test:unit": "jest spec --coverage --passWithNoTests"
   },
   "dependencies": {
-    "@standardnotes/security": "workspace:*",
     "@standardnotes/common": "^1.23.1",
     "@standardnotes/features": "^1.47.0",
     "@standardnotes/predicates": "workspace:*",
+    "@standardnotes/security": "workspace:*",
     "reflect-metadata": "^0.1.13"
   },
   "devDependencies": {

@@ -27,10 +27,10 @@
   },
   "dependencies": {
     "@sentry/node": "^7.3.0",
-    "@standardnotes/security": "workspace:*",
     "@standardnotes/common": "^1.23.1",
     "@standardnotes/domain-events": "workspace:*",
     "@standardnotes/domain-events-infra": "workspace:*",
+    "@standardnotes/security": "workspace:*",
     "@standardnotes/sncrypto-common": "^1.9.0",
     "@standardnotes/sncrypto-node": "^1.8.3",
     "@standardnotes/time": "^1.7.1",
