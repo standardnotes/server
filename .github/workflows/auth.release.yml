@@ -16,9 +16,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - uses: actions/setup-node@v1
+    - name: Set up Node
+      uses: actions/setup-node@v3
       with:
-        node-version: '16.x'
+        registry-url: 'https://registry.npmjs.org'
+        node-version-file: '.nvmrc'
+    - run: yarn build
     - run: yarn lint:auth
     - run: yarn test:auth
 

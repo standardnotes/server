@@ -1954,8 +1954,8 @@ __metadata:
     "@sentry/node": ^7.3.0
     "@standardnotes/analytics": ^1.6.0
     "@standardnotes/auth": 3.19.4
-    "@standardnotes/domain-events": 2.32.6
-    "@standardnotes/domain-events-infra": 1.5.6
+    "@standardnotes/domain-events": "workspace:*"
+    "@standardnotes/domain-events-infra": "workspace:*"
     "@standardnotes/time": ^1.7.1
     "@types/cors": ^2.8.9
     "@types/express": ^4.17.11
@@ -2012,8 +2012,8 @@ __metadata:
     "@standardnotes/api": ^1.1.19
     "@standardnotes/auth": ^3.19.4
     "@standardnotes/common": ^1.23.1
-    "@standardnotes/domain-events": ^2.32.6
-    "@standardnotes/domain-events-infra": ^1.5.6
+    "@standardnotes/domain-events": "workspace:*"
+    "@standardnotes/domain-events-infra": "workspace:*"
     "@standardnotes/features": ^1.47.0
     "@standardnotes/responses": ^1.6.39
     "@standardnotes/scheduler": ^1.1.2
@@ -2091,7 +2091,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@standardnotes/domain-events-infra@^1.5.6, @standardnotes/domain-events-infra@workspace:packages/domain-events-infra":
+"@standardnotes/domain-events-infra@workspace:*, @standardnotes/domain-events-infra@workspace:packages/domain-events-infra":
   version: 0.0.0-use.local
   resolution: "@standardnotes/domain-events-infra@workspace:packages/domain-events-infra"
   dependencies:
@@ -2112,22 +2112,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@standardnotes/domain-events-infra@npm:1.5.6":
-  version: 1.5.6
-  resolution: "@standardnotes/domain-events-infra@npm:1.5.6"
-  dependencies:
-    "@standardnotes/domain-events": ^2.32.6
-    aws-sdk: ^2.1082.0
-    ioredis: ^4.28.5
-    newrelic: ^8.8.0
-    reflect-metadata: ^0.1.13
-    sqs-consumer: ^5.6.0
-    winston: ^3.6.0
-  checksum: 1497c315cd8d37842015990eeab05bec7e0b1193f26bd0fa3b0982a811d23a4e3cbcaa4702018249d781adddd191ceac3efc47f5f8566d91fff7c020de2ca04f
-  languageName: node
-  linkType: hard
-
-"@standardnotes/domain-events@^2.32.6, @standardnotes/domain-events@workspace:*, @standardnotes/domain-events@workspace:packages/domain-events":
+"@standardnotes/domain-events@workspace:*, @standardnotes/domain-events@workspace:packages/domain-events":
   version: 0.0.0-use.local
   resolution: "@standardnotes/domain-events@workspace:packages/domain-events"
   dependencies:
@@ -2143,17 +2128,6 @@ __metadata:
     ts-jest: ^28.0.5
   languageName: unknown
   linkType: soft
-
-"@standardnotes/domain-events@npm:2.32.6":
-  version: 2.32.6
-  resolution: "@standardnotes/domain-events@npm:2.32.6"
-  dependencies:
-    "@standardnotes/auth": ^3.19.4
-    "@standardnotes/features": ^1.47.0
-    "@standardnotes/scheduler": ^1.1.2
-  checksum: 1c5852e776618d1505a0fc8e9f0166bf1459c0c05db67223092f41659ef1e5a83156a2886d717f74e57fa776cc20299538641adf4277e3d93567a25ef636253a
-  languageName: node
-  linkType: hard
 
 "@standardnotes/encryption@npm:^1.8.23":
   version: 1.12.0
@@ -2189,8 +2163,8 @@ __metadata:
     "@standardnotes/auth": ^3.19.4
     "@standardnotes/common": ^1.23.1
     "@standardnotes/config": 2.4.3
-    "@standardnotes/domain-events": ^2.32.6
-    "@standardnotes/domain-events-infra": ^1.5.6
+    "@standardnotes/domain-events": "workspace:*"
+    "@standardnotes/domain-events-infra": "workspace:*"
     "@standardnotes/sncrypto-common": ^1.9.0
     "@standardnotes/sncrypto-node": ^1.8.3
     "@standardnotes/time": ^1.7.1
@@ -2274,8 +2248,8 @@ __metadata:
     "@newrelic/winston-enricher": ^2.1.0
     "@sentry/node": ^7.3.0
     "@standardnotes/common": ^1.23.1
-    "@standardnotes/domain-events": ^2.32.6
-    "@standardnotes/domain-events-infra": ^1.5.6
+    "@standardnotes/domain-events": "workspace:*"
+    "@standardnotes/domain-events-infra": "workspace:*"
     "@standardnotes/scheduler": ^1.1.2
     "@standardnotes/time": ^1.7.1
     "@types/ioredis": ^4.28.10
@@ -2380,8 +2354,8 @@ __metadata:
     "@standardnotes/analytics": ^1.6.0
     "@standardnotes/auth": ^3.19.4
     "@standardnotes/common": ^1.23.1
-    "@standardnotes/domain-events": ^2.32.6
-    "@standardnotes/domain-events-infra": ^1.5.6
+    "@standardnotes/domain-events": "workspace:*"
+    "@standardnotes/domain-events-infra": "workspace:*"
     "@standardnotes/payloads": ^1.5.1
     "@standardnotes/responses": ^1.6.39
     "@standardnotes/settings": 1.15.0

@@ -2657,8 +2657,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@sentry/node", "npm:7.5.0"],\
             ["@standardnotes/analytics", "npm:1.6.0"],\
             ["@standardnotes/auth", "npm:3.19.4"],\
-            ["@standardnotes/domain-events", "npm:2.32.6"],\
-            ["@standardnotes/domain-events-infra", "npm:1.5.6"],\
+            ["@standardnotes/domain-events", "workspace:packages/domain-events"],\
+            ["@standardnotes/domain-events-infra", "workspace:packages/domain-events-infra"],\
             ["@standardnotes/time", "npm:1.7.1"],\
             ["@types/cors", "npm:2.8.12"],\
             ["@types/express", "npm:4.17.13"],\
@@ -2788,16 +2788,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@standardnotes/domain-events", [\
-        ["npm:2.32.6", {\
-          "packageLocation": "./.yarn/cache/@standardnotes-domain-events-npm-2.32.6-62ab814dfe-1c5852e776.zip/node_modules/@standardnotes/domain-events/",\
-          "packageDependencies": [\
-            ["@standardnotes/domain-events", "npm:2.32.6"],\
-            ["@standardnotes/auth", "npm:3.19.4"],\
-            ["@standardnotes/features", "npm:1.50.0"],\
-            ["@standardnotes/scheduler", "npm:1.1.2"]\
-          ],\
-          "linkType": "HARD"\
-        }],\
         ["workspace:packages/domain-events", {\
           "packageLocation": "./packages/domain-events/",\
           "packageDependencies": [\
@@ -2817,20 +2807,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@standardnotes/domain-events-infra", [\
-        ["npm:1.5.6", {\
-          "packageLocation": "./.yarn/cache/@standardnotes-domain-events-infra-npm-1.5.6-ebdfd48886-1497c315cd.zip/node_modules/@standardnotes/domain-events-infra/",\
-          "packageDependencies": [\
-            ["@standardnotes/domain-events-infra", "npm:1.5.6"],\
-            ["@standardnotes/domain-events", "workspace:packages/domain-events"],\
-            ["aws-sdk", "npm:2.1168.0"],\
-            ["ioredis", "npm:4.28.5"],\
-            ["newrelic", "npm:8.14.1"],\
-            ["reflect-metadata", "npm:0.1.13"],\
-            ["sqs-consumer", "virtual:ebdfd488865d9456b18fff44ee649dc6347aa1b7d6150f1584eca9a2699e53fdbc0fae568c1c65b07129863008ee252ab418fa625ad58e598be972f3eed3b8b9#npm:5.7.0"],\
-            ["winston", "npm:3.8.1"]\
-          ],\
-          "linkType": "HARD"\
-        }],\
         ["workspace:packages/domain-events-infra", {\
           "packageLocation": "./packages/domain-events-infra/",\
           "packageDependencies": [\
@@ -2846,7 +2822,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["jest", "virtual:685a6222c3349423674bb7f0684ba34e2ab20912010f352e04dcf707a156e13183fc382e2417cb37a60f3e7b52fd0178c53181674890e1773eb83e190dc13378#npm:27.5.1"],\
             ["newrelic", "npm:8.14.1"],\
             ["reflect-metadata", "npm:0.1.13"],\
-            ["sqs-consumer", "virtual:ebdfd488865d9456b18fff44ee649dc6347aa1b7d6150f1584eca9a2699e53fdbc0fae568c1c65b07129863008ee252ab418fa625ad58e598be972f3eed3b8b9#npm:5.7.0"],\
+            ["sqs-consumer", "virtual:685a6222c3349423674bb7f0684ba34e2ab20912010f352e04dcf707a156e13183fc382e2417cb37a60f3e7b52fd0178c53181674890e1773eb83e190dc13378#npm:5.7.0"],\
             ["ts-jest", "virtual:685a6222c3349423674bb7f0684ba34e2ab20912010f352e04dcf707a156e13183fc382e2417cb37a60f3e7b52fd0178c53181674890e1773eb83e190dc13378#npm:27.1.5"],\
             ["winston", "npm:3.8.1"]\
           ],\
@@ -12805,10 +12781,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],\
           "linkType": "SOFT"\
         }],\
-        ["virtual:ebdfd488865d9456b18fff44ee649dc6347aa1b7d6150f1584eca9a2699e53fdbc0fae568c1c65b07129863008ee252ab418fa625ad58e598be972f3eed3b8b9#npm:5.7.0", {\
-          "packageLocation": "./.yarn/__virtual__/sqs-consumer-virtual-f46338421f/0/cache/sqs-consumer-npm-5.7.0-09231a3791-d1eb00cbc5.zip/node_modules/sqs-consumer/",\
+        ["virtual:685a6222c3349423674bb7f0684ba34e2ab20912010f352e04dcf707a156e13183fc382e2417cb37a60f3e7b52fd0178c53181674890e1773eb83e190dc13378#npm:5.7.0", {\
+          "packageLocation": "./.yarn/__virtual__/sqs-consumer-virtual-860118dc53/0/cache/sqs-consumer-npm-5.7.0-09231a3791-d1eb00cbc5.zip/node_modules/sqs-consumer/",\
           "packageDependencies": [\
-            ["sqs-consumer", "virtual:ebdfd488865d9456b18fff44ee649dc6347aa1b7d6150f1584eca9a2699e53fdbc0fae568c1c65b07129863008ee252ab418fa625ad58e598be972f3eed3b8b9#npm:5.7.0"],\
+            ["sqs-consumer", "virtual:685a6222c3349423674bb7f0684ba34e2ab20912010f352e04dcf707a156e13183fc382e2417cb37a60f3e7b52fd0178c53181674890e1773eb83e190dc13378#npm:5.7.0"],\
             ["@types/aws-sdk", null],\
             ["aws-sdk", "npm:2.1168.0"],\
             ["debug", "virtual:b86a9fb34323a98c6519528ed55faa0d9b44ca8879307c0b29aa384bde47ff59a7d0c9051b31246f14521dfb71ba3c5d6d0b35c29fffc17bf875aa6ad977d9e8#npm:4.3.4"]\
