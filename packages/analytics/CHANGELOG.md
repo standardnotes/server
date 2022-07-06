@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.8.0 (2022-07-06)
+
+### Features
+
+* add analytics package ([14e4ca7](https://github.com/standardnotes/server/commit/14e4ca70b438dd3eaaa404bc0ca31d22a62b45be))
+
 ## [1.6.1](https://github.com/standardnotes/snjs/compare/@standardnotes/analytics@1.6.0...@standardnotes/analytics@1.6.1) (2022-07-04)
 
 ### Bug Fixes

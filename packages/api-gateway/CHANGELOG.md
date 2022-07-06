@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.3.5...@standardnotes/api-gateway@1.4.0) (2022-07-06)
+
+### Features
+
+* add analytics package ([14e4ca7](https://github.com/standardnotes/api-gateway/commit/14e4ca70b438dd3eaaa404bc0ca31d22a62b45be))
+
 ## [1.3.5](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.3.4...@standardnotes/api-gateway@1.3.5) (2022-07-06)
 
 ### Bug Fixes

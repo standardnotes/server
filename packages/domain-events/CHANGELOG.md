@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.36.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.35.0...@standardnotes/domain-events@2.36.0) (2022-07-06)
+
+### Features
+
+* add analytics package ([14e4ca7](https://github.com/standardnotes/server/commit/14e4ca70b438dd3eaaa404bc0ca31d22a62b45be))
+
 # 2.35.0 (2022-07-06)
 
 ### Features

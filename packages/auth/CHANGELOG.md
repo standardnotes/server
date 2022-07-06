@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/standardnotes/auth/compare/@standardnotes/auth-server@1.3.14...@standardnotes/auth-server@1.4.0) (2022-07-06)
+
+### Features
+
+* add analytics package ([14e4ca7](https://github.com/standardnotes/auth/commit/14e4ca70b438dd3eaaa404bc0ca31d22a62b45be))
+
 ## [1.3.14](https://github.com/standardnotes/auth/compare/@standardnotes/auth-server@1.3.13...@standardnotes/auth-server@1.3.14) (2022-07-06)
 
 ### Bug Fixes
