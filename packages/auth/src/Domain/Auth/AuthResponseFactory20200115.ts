@@ -2,7 +2,7 @@ import {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   SessionTokenData,
   TokenEncoderInterface,
-} from '@standardnotes/auth'
+} from '@standardnotes/security'
 import { Uuid } from '@standardnotes/common'
 import { SessionBody } from '@standardnotes/responses'
 import { inject, injectable } from 'inversify'

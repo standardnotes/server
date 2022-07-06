@@ -14,7 +14,7 @@ import { AuthenticateOfflineSubscriptionToken } from '../Domain/UseCase/Authenti
 import { CreateOfflineSubscriptionToken } from '../Domain/UseCase/CreateOfflineSubscriptionToken/CreateOfflineSubscriptionToken'
 import { GetUserOfflineSubscription } from '../Domain/UseCase/GetUserOfflineSubscription/GetUserOfflineSubscription'
 import { Logger } from 'winston'
-import { OfflineUserTokenData, TokenEncoderInterface } from '@standardnotes/auth'
+import { OfflineUserTokenData, TokenEncoderInterface } from '@standardnotes/security'
 
 @controller('/offline')
 export class OfflineController extends BaseHttpController {

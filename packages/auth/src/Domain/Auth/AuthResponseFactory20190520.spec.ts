@@ -1,4 +1,4 @@
-import { SessionTokenData, TokenEncoderInterface } from '@standardnotes/auth'
+import { SessionTokenData, TokenEncoderInterface } from '@standardnotes/security'
 import 'reflect-metadata'
 import { Logger } from 'winston'
 

@@ -1,6 +1,6 @@
 import { DomainEventHandlerInterface, ExtensionKeyGrantedEvent } from '@standardnotes/domain-events'
 import { SettingName } from '@standardnotes/settings'
-import { OfflineFeaturesTokenData } from '@standardnotes/auth'
+import { OfflineFeaturesTokenData } from '@standardnotes/security'
 import { ContentDecoderInterface } from '@standardnotes/common'
 import { inject, injectable } from 'inversify'
 import { Logger } from 'winston'

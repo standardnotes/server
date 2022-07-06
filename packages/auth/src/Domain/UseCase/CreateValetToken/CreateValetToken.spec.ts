@@ -1,6 +1,6 @@
 import 'reflect-metadata'
 
-import { TokenEncoderInterface, ValetTokenData } from '@standardnotes/auth'
+import { TokenEncoderInterface, ValetTokenData } from '@standardnotes/security'
 import { CreateValetToken } from './CreateValetToken'
 import { TimerInterface } from '@standardnotes/time'
 import { UserSubscription } from '../../Subscription/UserSubscription'

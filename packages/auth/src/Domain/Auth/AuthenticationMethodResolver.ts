@@ -1,4 +1,4 @@
-import { SessionTokenData, TokenDecoderInterface } from '@standardnotes/auth'
+import { SessionTokenData, TokenDecoderInterface } from '@standardnotes/security'
 import { inject, injectable } from 'inversify'
 import TYPES from '../../Bootstrap/Types'
 import { SessionServiceInterface } from '../Session/SessionServiceInterface'

@@ -12,7 +12,7 @@ import { UseCaseInterface } from './UseCaseInterface'
 import { VerifyMFADTO } from './VerifyMFADTO'
 import { VerifyMFAResponse } from './VerifyMFAResponse'
 import { SettingServiceInterface } from '../Setting/SettingServiceInterface'
-import { SelectorInterface } from '@standardnotes/auth'
+import { SelectorInterface } from '@standardnotes/security'
 import { LockRepositoryInterface } from '../User/LockRepositoryInterface'
 
 @injectable()

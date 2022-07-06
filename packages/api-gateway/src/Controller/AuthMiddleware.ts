@@ -1,4 +1,4 @@
-import { CrossServiceTokenData } from '@standardnotes/auth'
+import { CrossServiceTokenData } from '@standardnotes/security'
 import { TimerInterface } from '@standardnotes/time'
 import { NextFunction, Request, Response } from 'express'
 import { inject, injectable } from 'inversify'

@@ -1,7 +1,7 @@
 import { inject, injectable } from 'inversify'
 import { SubscriptionName } from '@standardnotes/common'
 import { TimerInterface } from '@standardnotes/time'
-import { TokenEncoderInterface, ValetTokenData } from '@standardnotes/auth'
+import { TokenEncoderInterface, ValetTokenData } from '@standardnotes/security'
 import { CreateValetTokenPayload, CreateValetTokenResponseData } from '@standardnotes/responses'
 import { SubscriptionSettingName } from '@standardnotes/settings'
 

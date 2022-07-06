@@ -25,7 +25,7 @@
     "@newrelic/winston-enricher": "^2.1.0",
     "@sentry/node": "^7.3.0",
     "@standardnotes/analytics": "workspace:*",
-    "@standardnotes/auth": "3.19.4",
+    "@standardnotes/security": "workspace:*",
     "@standardnotes/domain-events": "workspace:*",
     "@standardnotes/domain-events-infra": "workspace:*",
     "@standardnotes/time": "^1.7.1",

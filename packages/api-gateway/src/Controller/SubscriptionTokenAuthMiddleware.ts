@@ -1,4 +1,4 @@
-import { OfflineUserTokenData, CrossServiceTokenData } from '@standardnotes/auth'
+import { OfflineUserTokenData, CrossServiceTokenData } from '@standardnotes/security'
 import { NextFunction, Request, Response } from 'express'
 import { inject, injectable } from 'inversify'
 import { BaseMiddleware } from 'inversify-express-utils'

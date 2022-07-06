@@ -24,7 +24,7 @@
     "test:unit": "jest spec --coverage --passWithNoTests"
   },
   "dependencies": {
-    "@standardnotes/auth": "^3.19.4",
+    "@standardnotes/security": "workspace:*",
     "@standardnotes/common": "^1.23.1",
     "@standardnotes/features": "^1.47.0",
     "@standardnotes/predicates": "workspace:*",

@@ -7,7 +7,7 @@ import { VerifyMFA } from './VerifyMFA'
 import { Setting } from '../Setting/Setting'
 import { SettingServiceInterface } from '../Setting/SettingServiceInterface'
 import { SettingName } from '@standardnotes/settings'
-import { SelectorInterface } from '@standardnotes/auth'
+import { SelectorInterface } from '@standardnotes/security'
 import { LockRepositoryInterface } from '../User/LockRepositoryInterface'
 
 describe('VerifyMFA', () => {

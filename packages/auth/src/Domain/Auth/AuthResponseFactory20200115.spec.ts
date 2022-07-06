@@ -1,6 +1,6 @@
 import 'reflect-metadata'
 
-import { SessionTokenData, TokenEncoderInterface } from '@standardnotes/auth'
+import { SessionTokenData, TokenEncoderInterface } from '@standardnotes/security'
 import { SessionBody } from '@standardnotes/responses'
 import { Logger } from 'winston'
 

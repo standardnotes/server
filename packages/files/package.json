@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "@sentry/node": "^7.3.0",
-    "@standardnotes/auth": "^3.19.4",
+    "@standardnotes/security": "workspace:*",
     "@standardnotes/common": "^1.23.1",
     "@standardnotes/domain-events": "workspace:*",
     "@standardnotes/domain-events-infra": "workspace:*",

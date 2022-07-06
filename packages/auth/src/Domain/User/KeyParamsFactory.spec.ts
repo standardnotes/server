@@ -1,6 +1,6 @@
 import 'reflect-metadata'
 
-import { SelectorInterface } from '@standardnotes/auth'
+import { SelectorInterface } from '@standardnotes/security'
 import { ProtocolVersion } from '@standardnotes/common'
 
 import { KeyParamsFactory } from './KeyParamsFactory'

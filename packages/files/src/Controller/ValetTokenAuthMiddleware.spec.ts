@@ -3,7 +3,7 @@ import 'reflect-metadata'
 import { ValetTokenAuthMiddleware } from './ValetTokenAuthMiddleware'
 import { NextFunction, Request, Response } from 'express'
 import { Logger } from 'winston'
-import { TokenDecoderInterface, ValetTokenData } from '@standardnotes/auth'
+import { TokenDecoderInterface, ValetTokenData } from '@standardnotes/security'
 
 describe('ValetTokenAuthMiddleware', () => {
   let tokenDecoder: TokenDecoderInterface<ValetTokenData>

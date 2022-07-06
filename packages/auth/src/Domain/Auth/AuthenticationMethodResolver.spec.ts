@@ -1,6 +1,6 @@
 import 'reflect-metadata'
 
-import { SessionTokenData, TokenDecoderInterface } from '@standardnotes/auth'
+import { SessionTokenData, TokenDecoderInterface } from '@standardnotes/security'
 
 import { RevokedSession } from '../Session/RevokedSession'
 import { Session } from '../Session/Session'

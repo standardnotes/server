@@ -10,7 +10,7 @@ import { GetActiveSessionsForUser } from '../Domain/UseCase/GetActiveSessionsFor
 import { AuthenticateRequest } from '../Domain/UseCase/AuthenticateRequest'
 import { User } from '../Domain/User/User'
 import { Role } from '../Domain/Role/Role'
-import { CrossServiceTokenData, TokenEncoderInterface } from '@standardnotes/auth'
+import { CrossServiceTokenData, TokenEncoderInterface } from '@standardnotes/security'
 import { GetUserAnalyticsId } from '../Domain/UseCase/GetUserAnalyticsId/GetUserAnalyticsId'
 
 describe('SessionsController', () => {

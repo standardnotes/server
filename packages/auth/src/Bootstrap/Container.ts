@@ -143,7 +143,7 @@ import {
   TokenEncoder,
   TokenEncoderInterface,
   ValetTokenData,
-} from '@standardnotes/auth'
+} from '@standardnotes/security'
 import { FileUploadedEventHandler } from '../Domain/Handler/FileUploadedEventHandler'
 import { CreateValetToken } from '../Domain/UseCase/CreateValetToken/CreateValetToken'
 import { CreateListedAccount } from '../Domain/UseCase/CreateListedAccount/CreateListedAccount'

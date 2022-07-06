@@ -1,4 +1,4 @@
-import { OfflineUserTokenData, TokenDecoderInterface } from '@standardnotes/auth'
+import { OfflineUserTokenData, TokenDecoderInterface } from '@standardnotes/security'
 import { NextFunction, Request, Response } from 'express'
 import { inject, injectable } from 'inversify'
 import { BaseMiddleware } from 'inversify-express-utils'

@@ -12,7 +12,7 @@ import { ProjectorInterface } from '../Projection/ProjectorInterface'
 import { Role } from '../Domain/Role/Role'
 import { SettingServiceInterface } from '../Domain/Setting/SettingServiceInterface'
 import { Setting } from '../Domain/Setting/Setting'
-import { CrossServiceTokenData, TokenEncoderInterface } from '@standardnotes/auth'
+import { CrossServiceTokenData, TokenEncoderInterface } from '@standardnotes/security'
 import { GetUserAnalyticsId } from '../Domain/UseCase/GetUserAnalyticsId/GetUserAnalyticsId'
 
 describe('SubscriptionTokensController', () => {

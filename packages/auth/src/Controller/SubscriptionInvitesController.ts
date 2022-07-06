@@ -1,4 +1,4 @@
-import { Role } from '@standardnotes/auth'
+import { Role } from '@standardnotes/security'
 import { Request, Response } from 'express'
 import { inject } from 'inversify'
 import {

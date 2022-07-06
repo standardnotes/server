@@ -3,7 +3,7 @@ import 'reflect-metadata'
 import { ApiGatewayAuthMiddleware } from './ApiGatewayAuthMiddleware'
 import { NextFunction, Request, Response } from 'express'
 import { Logger } from 'winston'
-import { CrossServiceTokenData, TokenDecoderInterface } from '@standardnotes/auth'
+import { CrossServiceTokenData, TokenDecoderInterface } from '@standardnotes/security'
 import { RoleName } from '@standardnotes/common'
 
 describe('ApiGatewayAuthMiddleware', () => {

@@ -16,7 +16,7 @@ import { Role } from '../Domain/Role/Role'
 import { User } from '../Domain/User/User'
 import { ProjectorInterface } from '../Projection/ProjectorInterface'
 import { SessionProjector } from '../Projection/SessionProjector'
-import { CrossServiceTokenData, TokenEncoderInterface } from '@standardnotes/auth'
+import { CrossServiceTokenData, TokenEncoderInterface } from '@standardnotes/security'
 import { RoleName } from '@standardnotes/common'
 import { GetUserAnalyticsId } from '../Domain/UseCase/GetUserAnalyticsId/GetUserAnalyticsId'
 

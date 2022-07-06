@@ -47,6 +47,9 @@
       "path": "./packages/scheduler"
     },
     {
+      "path": "./packages/security"
+    },
+    {
       "path": "./packages/syncing-server"
     }
   ]

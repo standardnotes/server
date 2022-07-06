@@ -6,7 +6,7 @@ import { inject, injectable } from 'inversify'
 import TYPES from '../../Bootstrap/Types'
 import { KeyParamsFactoryInterface } from './KeyParamsFactoryInterface'
 import { User } from './User'
-import { SelectorInterface } from '@standardnotes/auth'
+import { SelectorInterface } from '@standardnotes/security'
 
 @injectable()
 export class KeyParamsFactory implements KeyParamsFactoryInterface {

@@ -1,4 +1,4 @@
-import { OfflineFeaturesTokenData } from '@standardnotes/auth'
+import { OfflineFeaturesTokenData } from '@standardnotes/security'
 import { DomainEventHandlerInterface, SubscriptionSyncRequestedEvent } from '@standardnotes/domain-events'
 import { inject, injectable } from 'inversify'
 import { Logger } from 'winston'

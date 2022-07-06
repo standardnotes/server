@@ -1,4 +1,4 @@
-import { SessionTokenData, TokenEncoderInterface } from '@standardnotes/auth'
+import { SessionTokenData, TokenEncoderInterface } from '@standardnotes/security'
 import { Uuid } from '@standardnotes/common'
 import * as crypto from 'crypto'
 

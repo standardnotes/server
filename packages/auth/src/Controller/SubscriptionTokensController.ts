@@ -1,4 +1,4 @@
-import { CrossServiceTokenData, TokenEncoderInterface } from '@standardnotes/auth'
+import { CrossServiceTokenData, TokenEncoderInterface } from '@standardnotes/security'
 import { ErrorTag, RoleName } from '@standardnotes/common'
 import { SettingName } from '@standardnotes/settings'
 import { Request, Response } from 'express'
