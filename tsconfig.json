@@ -32,6 +32,9 @@
       "path": "./packages/auth"
     },
     {
+      "path": "./packages/common"
+    },
+    {
       "path": "./packages/domain-events"
     },
     {

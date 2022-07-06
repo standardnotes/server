@@ -1,11 +1,12 @@
 {
-  "name": "@standardnotes/domain-events",
-  "version": "2.38.0",
+  "name": "@standardnotes/common",
+  "version": "1.24.0",
   "engines": {
     "node": ">=16.0.0 <17.0.0"
   },
-  "description": "Domain Events SDK used in SN projects",
+  "description": "Common types and utilities for Standard Notes projects",
   "main": "dist/src/index.js",
+  "author": "Standard Notes",
   "types": "dist/src/index.d.ts",
   "files": [
     "dist/src/**/*.js",
@@ -14,27 +15,25 @@
   "publishConfig": {
     "access": "public"
   },
-  "author": "Standard Notes",
   "license": "AGPL-3.0-or-later",
   "scripts": {
     "clean": "rm -fr dist",
+    "prestart": "yarn clean",
+    "start": "tsc -p tsconfig.json --watch",
     "prebuild": "yarn clean",
     "build": "tsc -p tsconfig.json",
     "lint": "eslint . --ext .ts",
-    "test:unit": "jest spec --coverage --passWithNoTests"
-  },
-  "dependencies": {
-    "@standardnotes/common": "workspace:*",
-    "@standardnotes/features": "^1.47.0",
-    "@standardnotes/predicates": "workspace:*",
-    "@standardnotes/security": "workspace:*",
-    "reflect-metadata": "^0.1.13"
+    "test:unit": "jest spec --coverage"
   },
   "devDependencies": {
-    "@types/jest": "^28.1.4",
+    "@types/jest": "^27.4.1",
+    "@types/node": "^18.0.0",
     "@typescript-eslint/eslint-plugin": "^5.30.0",
     "eslint-plugin-prettier": "^4.2.1",
-    "jest": "^28.1.2",
-    "ts-jest": "^28.0.5"
+    "jest": "^27.5.1",
+    "ts-jest": "^27.1.3"
+  },
+  "dependencies": {
+    "reflect-metadata": "^0.1.13"
   }
 }

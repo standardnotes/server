@@ -2018,7 +2018,7 @@ __metadata:
     "@sentry/node": ^7.3.0
     "@standardnotes/analytics": "workspace:*"
     "@standardnotes/api": ^1.1.19
-    "@standardnotes/common": ^1.23.1
+    "@standardnotes/common": "workspace:*"
     "@standardnotes/domain-events": "workspace:*"
     "@standardnotes/domain-events-infra": "workspace:*"
     "@standardnotes/features": ^1.47.0
@@ -2079,12 +2079,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@standardnotes/common@npm:^1.19.1, @standardnotes/common@npm:^1.23.1":
-  version: 1.23.1
-  resolution: "@standardnotes/common@npm:1.23.1"
-  checksum: f498f4c469f7b9cdfc08b7648077832a2a214d844f012d02d73c2c418fab221af3302570cc6b1957b5ed481b55237f95bc24fc5c231162bfcdf8730333d38405
-  languageName: node
-  linkType: hard
+"@standardnotes/common@^1.19.1, @standardnotes/common@^1.23.1, @standardnotes/common@workspace:*, @standardnotes/common@workspace:packages/common":
+  version: 0.0.0-use.local
+  resolution: "@standardnotes/common@workspace:packages/common"
+  dependencies:
+    "@types/jest": ^27.4.1
+    "@types/node": ^18.0.0
+    "@typescript-eslint/eslint-plugin": ^5.30.0
+    eslint-plugin-prettier: ^4.2.1
+    jest: ^27.5.1
+    reflect-metadata: ^0.1.13
+    ts-jest: ^27.1.3
+  languageName: unknown
+  linkType: soft
 
 "@standardnotes/config@npm:2.4.3":
   version: 2.4.3
@@ -2124,7 +2131,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@standardnotes/domain-events@workspace:packages/domain-events"
   dependencies:
-    "@standardnotes/common": ^1.23.1
+    "@standardnotes/common": "workspace:*"
     "@standardnotes/features": ^1.47.0
     "@standardnotes/predicates": "workspace:*"
     "@standardnotes/security": "workspace:*"
@@ -2168,7 +2175,7 @@ __metadata:
   resolution: "@standardnotes/files-server@workspace:packages/files"
   dependencies:
     "@sentry/node": ^7.3.0
-    "@standardnotes/common": ^1.23.1
+    "@standardnotes/common": "workspace:*"
     "@standardnotes/config": 2.4.3
     "@standardnotes/domain-events": "workspace:*"
     "@standardnotes/domain-events-infra": "workspace:*"
@@ -2242,7 +2249,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@standardnotes/predicates@workspace:packages/predicates"
   dependencies:
-    "@standardnotes/common": ^1.23.1
+    "@standardnotes/common": "workspace:*"
     "@types/jest": ^27.4.1
     "@typescript-eslint/eslint-plugin": ^5.30.0
     eslint-plugin-prettier: ^4.2.1
@@ -2269,7 +2276,7 @@ __metadata:
   dependencies:
     "@newrelic/winston-enricher": ^2.1.0
     "@sentry/node": ^7.3.0
-    "@standardnotes/common": ^1.23.1
+    "@standardnotes/common": "workspace:*"
     "@standardnotes/domain-events": "workspace:*"
     "@standardnotes/domain-events-infra": "workspace:*"
     "@standardnotes/predicates": "workspace:*"
@@ -2300,7 +2307,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@standardnotes/security@workspace:packages/security"
   dependencies:
-    "@standardnotes/common": ^1.23.1
+    "@standardnotes/common": "workspace:*"
     "@types/jest": ^27.4.1
     "@types/jsonwebtoken": ^8.5.8
     "@typescript-eslint/eslint-plugin": ^5.30.0
@@ -2381,7 +2388,7 @@ __metadata:
     "@newrelic/winston-enricher": ^2.1.0
     "@sentry/node": ^7.3.0
     "@standardnotes/analytics": "workspace:*"
-    "@standardnotes/common": ^1.23.1
+    "@standardnotes/common": "workspace:*"
     "@standardnotes/domain-events": "workspace:*"
     "@standardnotes/domain-events-infra": "workspace:*"
     "@standardnotes/payloads": ^1.5.1
