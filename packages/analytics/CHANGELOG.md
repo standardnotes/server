@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.8.1](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.8.0...@standardnotes/analytics@1.8.1) (2022-07-06)
+
+### Bug Fixes
+
+* files included in distributable packages ([97ba31f](https://github.com/standardnotes/server/commit/97ba31f345fc95df0c15a348f0461fb9e5bcb923))
+
 # 1.8.0 (2022-07-06)
 
 ### Features
