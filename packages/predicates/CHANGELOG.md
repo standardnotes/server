@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.1.0 (2022-07-06)
+
+### Features
+
+* add predicates package ([ed62ed5](https://github.com/standardnotes/server/commit/ed62ed516f5cf8784975f41680366bf0518ce491))
+
 ## [1.1.3](https://github.com/standardnotes/snjs/compare/@standardnotes/scheduler@1.1.2...@standardnotes/scheduler@1.1.3) (2022-07-04)
 
 ### Bug Fixes

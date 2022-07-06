@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.5.0](https://github.com/standardnotes/auth/compare/@standardnotes/auth-server@1.4.0...@standardnotes/auth-server@1.5.0) (2022-07-06)
+
+### Bug Fixes
+
+* scheduler to predicates imports ([1b35cf7](https://github.com/standardnotes/auth/commit/1b35cf7a392fbe6c4b49889f92ffab6ddd7bb181))
+
+### Features
+
+* add predicates package ([ed62ed5](https://github.com/standardnotes/auth/commit/ed62ed516f5cf8784975f41680366bf0518ce491))
+
 # [1.4.0](https://github.com/standardnotes/auth/compare/@standardnotes/auth-server@1.3.14...@standardnotes/auth-server@1.4.0) (2022-07-06)
 
 ### Features

@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.37.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.36.0...@standardnotes/domain-events@2.37.0) (2022-07-06)
+
+### Bug Fixes
+
+* scheduler to predicates imports ([1b35cf7](https://github.com/standardnotes/server/commit/1b35cf7a392fbe6c4b49889f92ffab6ddd7bb181))
+
+### Features
+
+* add predicates package ([ed62ed5](https://github.com/standardnotes/server/commit/ed62ed516f5cf8784975f41680366bf0518ce491))
+
 # [2.36.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.35.0...@standardnotes/domain-events@2.36.0) (2022-07-06)
 
 ### Features
