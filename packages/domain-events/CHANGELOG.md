@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 2.35.0 (2022-07-06)
+
+### Features
+
+* add domain-events package ([8a47c4b](https://github.com/standardnotes/server/commit/8a47c4bb41bd22a8b563c118222e79b40f28a233))
+
 # [2.33.0](https://github.com/standardnotes/snjs/compare/@standardnotes/domain-events@2.32.7...@standardnotes/domain-events@2.33.0) (2022-07-05)
 
 ### Features

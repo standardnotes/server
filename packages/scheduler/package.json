@@ -1,6 +1,6 @@
 {
   "name": "@standardnotes/scheduler-server",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "engines": {
     "node": ">=16.0.0 <17.0.0"
   },
@@ -27,7 +27,7 @@
     "@newrelic/winston-enricher": "^2.1.0",
     "@sentry/node": "^7.3.0",
     "@standardnotes/common": "^1.23.1",
-    "@standardnotes/domain-events": "^2.32.6",
+    "@standardnotes/domain-events": "^2.35.0",
     "@standardnotes/domain-events-infra": "^1.5.6",
     "@standardnotes/scheduler": "^1.1.2",
     "@standardnotes/time": "^1.7.1",
