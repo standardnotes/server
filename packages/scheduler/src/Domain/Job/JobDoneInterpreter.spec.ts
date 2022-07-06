@@ -1,5 +1,5 @@
 import { DomainEventPublisherInterface, EmailMessageRequestedEvent } from '@standardnotes/domain-events'
-import { PredicateName } from '@standardnotes/scheduler'
+import { PredicateName } from '@standardnotes/predicates'
 import 'reflect-metadata'
 import { DomainEventFactoryInterface } from '../Event/DomainEventFactoryInterface'
 import { Predicate } from '../Predicate/Predicate'

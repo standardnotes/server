@@ -1,7 +1,7 @@
 import 'reflect-metadata'
 
 import { EmailMessageIdentifier, RoleName } from '@standardnotes/common'
-import { PredicateName, PredicateAuthority, PredicateVerificationResult } from '@standardnotes/scheduler'
+import { PredicateName, PredicateAuthority, PredicateVerificationResult } from '@standardnotes/predicates'
 import { TimerInterface } from '@standardnotes/time'
 
 import { DomainEventFactory } from './DomainEventFactory'

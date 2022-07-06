@@ -1,6 +1,6 @@
 import 'reflect-metadata'
 
-import { PredicateName, PredicateVerificationResult, PredicateAuthority } from '@standardnotes/scheduler'
+import { PredicateName, PredicateVerificationResult, PredicateAuthority } from '@standardnotes/predicates'
 
 import { Setting } from '../../Setting/Setting'
 import { SettingRepositoryInterface } from '../../Setting/SettingRepositoryInterface'

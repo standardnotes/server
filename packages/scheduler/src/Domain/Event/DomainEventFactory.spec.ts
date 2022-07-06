@@ -4,7 +4,7 @@ import { EmailMessageIdentifier } from '@standardnotes/common'
 import { TimerInterface } from '@standardnotes/time'
 
 import { DomainEventFactory } from './DomainEventFactory'
-import { PredicateAuthority, PredicateName } from '@standardnotes/scheduler'
+import { PredicateAuthority, PredicateName } from '@standardnotes/predicates'
 import { Job } from '../Job/Job'
 import { Predicate } from '../Predicate/Predicate'
 

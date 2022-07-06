@@ -1,5 +1,5 @@
 /* istanbul ignore file */
-import { PredicateAuthority, PredicateName } from '@standardnotes/scheduler'
+import { PredicateAuthority, PredicateName } from '@standardnotes/predicates'
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
 
 import { Job } from '../Job/Job'

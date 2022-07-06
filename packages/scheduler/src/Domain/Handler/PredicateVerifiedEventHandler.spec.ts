@@ -1,5 +1,5 @@
 import { PredicateVerifiedEvent } from '@standardnotes/domain-events'
-import { PredicateAuthority, PredicateName, PredicateVerificationResult } from '@standardnotes/scheduler'
+import { PredicateAuthority, PredicateName, PredicateVerificationResult } from '@standardnotes/predicates'
 import 'reflect-metadata'
 import { Logger } from 'winston'
 import { UpdatePredicateStatus } from '../UseCase/UpdatePredicateStatus/UpdatePredicateStatus'

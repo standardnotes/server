@@ -1,4 +1,4 @@
-import { Predicate } from '@standardnotes/scheduler'
+import { Predicate } from '@standardnotes/predicates'
 
 export interface PredicateVerificationRequestedEventPayload {
   predicate: Predicate

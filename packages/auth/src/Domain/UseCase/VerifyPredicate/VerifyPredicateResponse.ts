@@ -1,4 +1,4 @@
-import { PredicateVerificationResult } from '@standardnotes/scheduler'
+import { PredicateVerificationResult } from '@standardnotes/predicates'
 
 export type VerifyPredicateResponse = {
   predicateVerificationResult: PredicateVerificationResult

@@ -7,7 +7,7 @@ import {
   PredicateVerificationRequestedEventPayload,
   PredicateVerifiedEvent,
 } from '@standardnotes/domain-events'
-import { Predicate, PredicateVerificationResult } from '@standardnotes/scheduler'
+import { Predicate, PredicateVerificationResult } from '@standardnotes/predicates'
 import { Logger } from 'winston'
 
 import { DomainEventFactoryInterface } from '../Event/DomainEventFactoryInterface'

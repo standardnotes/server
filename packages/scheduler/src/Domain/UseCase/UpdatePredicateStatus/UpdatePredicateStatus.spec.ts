@@ -1,4 +1,4 @@
-import { PredicateAuthority, PredicateName, PredicateVerificationResult } from '@standardnotes/scheduler'
+import { PredicateAuthority, PredicateName, PredicateVerificationResult } from '@standardnotes/predicates'
 import 'reflect-metadata'
 
 import { JobDoneInterpreterInterface } from '../../Job/JobDoneInterpreterInterface'

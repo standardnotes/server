@@ -4,7 +4,7 @@ import {
   EmailMessageRequestedEvent,
   PredicateVerificationRequestedEvent,
 } from '@standardnotes/domain-events'
-import { PredicateAuthority } from '@standardnotes/scheduler'
+import { PredicateAuthority } from '@standardnotes/predicates'
 import { TimerInterface } from '@standardnotes/time'
 import { inject, injectable } from 'inversify'
 import TYPES from '../../Bootstrap/Types'

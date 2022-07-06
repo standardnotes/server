@@ -1,5 +1,5 @@
 import { DomainEventHandlerInterface, UserRegisteredEvent } from '@standardnotes/domain-events'
-import { PredicateAuthority, PredicateName } from '@standardnotes/scheduler'
+import { PredicateAuthority, PredicateName } from '@standardnotes/predicates'
 import { TimerInterface } from '@standardnotes/time'
 import { inject, injectable } from 'inversify'
 

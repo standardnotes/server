@@ -1,5 +1,5 @@
 import { Uuid, RoleName, EmailMessageIdentifier } from '@standardnotes/common'
-import { Predicate, PredicateVerificationResult } from '@standardnotes/scheduler'
+import { Predicate, PredicateVerificationResult } from '@standardnotes/predicates'
 import {
   AccountDeletionRequestedEvent,
   CloudBackupRequestedEvent,

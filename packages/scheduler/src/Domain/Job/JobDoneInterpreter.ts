@@ -1,6 +1,6 @@
 import { EmailMessageIdentifier } from '@standardnotes/common'
 import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
-import { PredicateName } from '@standardnotes/scheduler'
+import { PredicateName } from '@standardnotes/predicates'
 import { inject, injectable } from 'inversify'
 
 import TYPES from '../../Bootstrap/Types'

@@ -1,5 +1,5 @@
 import { Uuid } from '@standardnotes/common'
-import { PredicateName, PredicateVerificationResult } from '@standardnotes/scheduler'
+import { PredicateName, PredicateVerificationResult } from '@standardnotes/predicates'
 import { EmailBackupFrequency, SettingName } from '@standardnotes/settings'
 import { inject, injectable } from 'inversify'
 

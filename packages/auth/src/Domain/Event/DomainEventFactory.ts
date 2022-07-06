@@ -16,7 +16,7 @@ import {
   DomainEventService,
   EmailMessageRequestedEvent,
 } from '@standardnotes/domain-events'
-import { Predicate, PredicateVerificationResult } from '@standardnotes/scheduler'
+import { Predicate, PredicateVerificationResult } from '@standardnotes/predicates'
 import { TimerInterface } from '@standardnotes/time'
 import { inject, injectable } from 'inversify'
 import TYPES from '../../Bootstrap/Types'
