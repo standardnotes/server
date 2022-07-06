@@ -1939,12 +1939,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@standardnotes/analytics@npm:^1.6.0":
-  version: 1.6.0
-  resolution: "@standardnotes/analytics@npm:1.6.0"
-  checksum: 6a5e86152673ce9ddce43c52b5f699a1b3ba5141e58a944bda8eaa88fc2f4169df27239f82633226752bf3f10f9804f426721b9c919d10fbfbb51f952430eb1f
-  languageName: node
-  linkType: hard
+"@standardnotes/analytics@workspace:*, @standardnotes/analytics@workspace:packages/analytics":
+  version: 0.0.0-use.local
+  resolution: "@standardnotes/analytics@workspace:packages/analytics"
+  dependencies:
+    "@types/ioredis": ^4.28.8
+    "@types/jest": ^27.4.1
+    "@typescript-eslint/eslint-plugin": ^5.30.0
+    eslint-plugin-prettier: ^4.2.1
+    ioredis: ^4.28.5
+    jest: ^27.5.1
+    reflect-metadata: ^0.1.13
+    ts-jest: ^27.1.3
+  languageName: unknown
+  linkType: soft
 
 "@standardnotes/api-gateway@workspace:packages/api-gateway":
   version: 0.0.0-use.local
@@ -1952,7 +1960,7 @@ __metadata:
   dependencies:
     "@newrelic/winston-enricher": ^2.1.0
     "@sentry/node": ^7.3.0
-    "@standardnotes/analytics": ^1.6.0
+    "@standardnotes/analytics": "workspace:*"
     "@standardnotes/auth": 3.19.4
     "@standardnotes/domain-events": "workspace:*"
     "@standardnotes/domain-events-infra": "workspace:*"
@@ -2008,7 +2016,7 @@ __metadata:
   dependencies:
     "@newrelic/winston-enricher": ^2.1.0
     "@sentry/node": ^7.3.0
-    "@standardnotes/analytics": ^1.6.0
+    "@standardnotes/analytics": "workspace:*"
     "@standardnotes/api": ^1.1.19
     "@standardnotes/auth": ^3.19.4
     "@standardnotes/common": ^1.23.1
@@ -2351,7 +2359,7 @@ __metadata:
   dependencies:
     "@newrelic/winston-enricher": ^2.1.0
     "@sentry/node": ^7.3.0
-    "@standardnotes/analytics": ^1.6.0
+    "@standardnotes/analytics": "workspace:*"
     "@standardnotes/auth": ^3.19.4
     "@standardnotes/common": ^1.23.1
     "@standardnotes/domain-events": "workspace:*"

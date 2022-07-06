@@ -23,7 +23,10 @@
   "exclude": ["**/*.spec.ts", "dist", "test-setup.ts"],
   "references": [
     {
-      "path": "./packages/scheduler"
+      "path": "./packages/analytics"
+    },
+    {
+      "path": "./packages/api-gateway"
     },
     {
       "path": "./packages/auth"
@@ -35,13 +38,13 @@
       "path": "./packages/domain-events-infra"
     },
     {
-      "path": "./packages/syncing-server"
-    },
-    {
       "path": "./packages/files"
     },
     {
-      "path": "./packages/api-gateway"
+      "path": "./packages/scheduler"
+    },
+    {
+      "path": "./packages/syncing-server"
     }
   ]
 }
