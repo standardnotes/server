@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.5.0](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.4.0...@standardnotes/files-server@1.5.0) (2022-07-06)
+
+### Features
+
+* add sncryptio-node package ([60e8974](https://github.com/standardnotes/files/commit/60e8974580d498e7edf80813c32268a8bf7eda39))
+
 # [1.4.0](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.3.0...@standardnotes/files-server@1.4.0) (2022-07-06)
 
 ### Features

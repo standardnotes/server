@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.10.0](https://github.com/standardnotes/auth/compare/@standardnotes/auth-server@1.9.0...@standardnotes/auth-server@1.10.0) (2022-07-06)
+
+### Features
+
+* add sncryptio-node package ([60e8974](https://github.com/standardnotes/auth/commit/60e8974580d498e7edf80813c32268a8bf7eda39))
+
 # [1.9.0](https://github.com/standardnotes/auth/compare/@standardnotes/auth-server@1.8.0...@standardnotes/auth-server@1.9.0) (2022-07-06)
 
 ### Features

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.10.0 (2022-07-06)
+
+### Features
+
+* add sncryptio-node package ([60e8974](https://github.com/standardnotes/server/commit/60e8974580d498e7edf80813c32268a8bf7eda39))
+
 ## [1.8.4](https://github.com/standardnotes/snjs/compare/@standardnotes/sncrypto-node@1.8.3...@standardnotes/sncrypto-node@1.8.4) (2022-07-04)
 
 ### Bug Fixes
