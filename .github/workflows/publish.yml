@@ -5,7 +5,7 @@ on:
     branches: [ main ]
 
 jobs:
-  bump:
+  release_and_publish:
     if: contains(github.event.head_commit.message, 'chore(release)') == false
     runs-on: ubuntu-latest
     steps:
