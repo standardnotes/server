@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# 1.17.0 (2022-07-06)
+
+### Features
+
+* add settings package ([e7e34f3](https://github.com/standardnotes/server/commit/e7e34f3e16eb865f083b7b49b2f8f83fd8af8de0))
+
 ## [1.15.1](https://github.com/standardnotes/snjs/compare/@standardnotes/settings@1.15.0...@standardnotes/settings@1.15.1) (2022-07-04)
 
 ### Bug Fixes

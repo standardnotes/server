@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.9.0](https://github.com/standardnotes/auth/compare/@standardnotes/auth-server@1.8.0...@standardnotes/auth-server@1.9.0) (2022-07-06)
+
+### Features
+
+* add settings package ([e7e34f3](https://github.com/standardnotes/auth/commit/e7e34f3e16eb865f083b7b49b2f8f83fd8af8de0))
+
 # [1.8.0](https://github.com/standardnotes/auth/compare/@standardnotes/auth-server@1.7.0...@standardnotes/auth-server@1.8.0) (2022-07-06)
 
 ### Features
