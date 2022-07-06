@@ -34,9 +34,6 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
           node-version-file: '.nvmrc'
 
-      - name: Install locally
-        run: yarn install --immutable
-
       - name: Build packages
         run: yarn build
 

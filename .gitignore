@@ -1,7 +1,6 @@
 .eslintcache
 .DS_Store
 .idea
-node_modules
 dist
 coverage
 .env
