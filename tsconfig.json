@@ -29,6 +29,9 @@
       "path": "./packages/auth"
     },
     {
+      "path": "./packages/domain-events"
+    },
+    {
       "path": "./packages/syncing-server"
     },
     {
