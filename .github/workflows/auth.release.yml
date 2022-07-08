@@ -102,7 +102,7 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
     - name: Publish Docker image as stable
       run: |
-        docker tag standardnotes/auth:${{ github.sha }} standardnotes/auth:latest
+        yarn docker build @standardnotes/auth-server -t standardnotes/auth:latest
         docker push standardnotes/auth:latest
 
   deploy-web:

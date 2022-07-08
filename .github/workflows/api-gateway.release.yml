@@ -99,7 +99,7 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
     - name: Publish Docker image as stable
       run: |
-        docker tag standardnotes/api-gateway:${{ github.sha }} standardnotes/api-gateway:latest
+        yarn docker build @standardnotes/api-gateway -t standardnotes/api-gateway:latest
         docker push standardnotes/api-gateway:latest
 
   deploy-web:

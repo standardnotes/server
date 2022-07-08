@@ -102,7 +102,7 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
     - name: Build, tag, and push image to Docker Hub
       run: |
-        docker tag standardnotes/syncing-server-js:${{ github.sha }} standardnotes/syncing-server-js:latest
+        yarn docker build @standardnotes/syncing-server -t standardnotes/syncing-server-js:latest
         docker push standardnotes/syncing-server-js:latest
 
   deploy-web:
