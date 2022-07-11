@@ -63,18 +63,22 @@ export class EmailBackupRequestedEventHandler implements DomainEventHandlerInter
 
       this.logger.debug(`Data backed up into: ${backupFileName}`)
 
-      if (backupFileName.length !== 0) {
-        this.logger.debug('Publishing EMAIL_BACKUP_ATTACHMENT_CREATED event')
+      if (backupFileName.length === 0) {
+        this.logger.error(`Could not create a backup file for user ${event.payload.userUuid}`)
 
-        await this.domainEventPublisher.publish(
-          this.domainEventFactory.createEmailBackupAttachmentCreatedEvent({
-            backupFileName,
-            backupFileIndex: bundleIndex++,
-            backupFilesTotal: itemUuidBundles.length,
-            email: authParams.identifier as string,
-          }),
-        )
+        return
       }
+
+      this.logger.debug('Publishing EMAIL_BACKUP_ATTACHMENT_CREATED event')
+
+      await this.domainEventPublisher.publish(
+        this.domainEventFactory.createEmailBackupAttachmentCreatedEvent({
+          backupFileName,
+          backupFileIndex: bundleIndex++,
+          backupFilesTotal: itemUuidBundles.length,
+          email: authParams.identifier as string,
+        }),
+      )
     }
   }
 }

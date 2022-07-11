@@ -72,6 +72,7 @@ describe('EmailBackupRequestedEventHandler', () => {
     logger = {} as jest.Mocked<Logger>
     logger.debug = jest.fn()
     logger.warn = jest.fn()
+    logger.error = jest.fn()
   })
 
   it('should inform that backup attachment for email was created', async () => {
