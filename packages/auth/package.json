@@ -8,7 +8,6 @@
   "description": "Auth Server",
   "main": "dist/src/index.js",
   "typings": "dist/src/index.d.ts",
-  "repository": "git@github.com:standardnotes/auth.git",
   "author": "Karol Sójko <karolsojko@standardnotes.com>",
   "license": "AGPL-3.0-or-later",
   "scripts": {

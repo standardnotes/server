@@ -45,6 +45,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "reference": "workspace:packages/domain-events-infra"\
       },\
       {\
+        "name": "@standardnotes/event-store",\
+        "reference": "workspace:packages/event-store"\
+      },\
+      {\
         "name": "@standardnotes/files-server",\
         "reference": "workspace:packages/files"\
       },\
@@ -86,6 +90,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ["@standardnotes/common", ["workspace:packages/common"]],\
       ["@standardnotes/domain-events", ["workspace:packages/domain-events"]],\
       ["@standardnotes/domain-events-infra", ["workspace:packages/domain-events-infra"]],\
+      ["@standardnotes/event-store", ["workspace:packages/event-store"]],\
       ["@standardnotes/files-server", ["workspace:packages/files"]],\
       ["@standardnotes/predicates", ["workspace:packages/predicates"]],\
       ["@standardnotes/scheduler-server", ["workspace:packages/scheduler"]],\
@@ -2895,6 +2900,36 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["@standardnotes/event-store", [\
+        ["workspace:packages/event-store", {\
+          "packageLocation": "./packages/event-store/",\
+          "packageDependencies": [\
+            ["@standardnotes/event-store", "workspace:packages/event-store"],\
+            ["@standardnotes/domain-events", "workspace:packages/domain-events"],\
+            ["@standardnotes/domain-events-infra", "workspace:packages/domain-events-infra"],\
+            ["@standardnotes/time", "workspace:packages/time"],\
+            ["@types/ioredis", "npm:4.28.10"],\
+            ["@types/jest", "npm:28.1.4"],\
+            ["@types/newrelic", "npm:7.0.3"],\
+            ["@types/nodemailer", "npm:6.4.4"],\
+            ["@typescript-eslint/eslint-plugin", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:5.30.5"],\
+            ["aws-sdk", "npm:2.1168.0"],\
+            ["dotenv", "npm:8.2.0"],\
+            ["eslint", "npm:8.19.0"],\
+            ["eslint-plugin-prettier", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:4.2.1"],\
+            ["inversify", "npm:6.0.1"],\
+            ["ioredis", "npm:5.1.0"],\
+            ["jest", "virtual:e1128e9ebb31076ea8e955c00397fd108ee8bf0fb2df3b2a603c510b7014a507cfa360bccf848efc1ec8c431656aa94c5ad08bcec32950bdf1278d01cd890e4f#npm:28.1.2"],\
+            ["mysql2", "npm:2.3.3"],\
+            ["newrelic", "npm:8.14.1"],\
+            ["reflect-metadata", "npm:0.1.13"],\
+            ["ts-jest", "virtual:e1128e9ebb31076ea8e955c00397fd108ee8bf0fb2df3b2a603c510b7014a507cfa360bccf848efc1ec8c431656aa94c5ad08bcec32950bdf1278d01cd890e4f#npm:28.0.5"],\
+            ["typeorm", "virtual:31b5a94a105c89c9294c3d524a7f8929fe63ee5a2efadf21951ca4c0cfd2ecf02e8f4ef5a066bbda091f1e3a56e57c6749069a080618c96b22e51131a330fc4a#npm:0.3.7"],\
+            ["winston", "npm:3.3.3"]\
+          ],\
+          "linkType": "SOFT"\
+        }]\
+      ]],\
       ["@standardnotes/features", [\
         ["npm:1.50.0", {\
           "packageLocation": "./.yarn/cache/@standardnotes-features-npm-1.50.0-dd65714983-b61b50695b.zip/node_modules/@standardnotes/features/",\
@@ -3604,6 +3639,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         ["npm:18.0.3", {\
           "packageLocation": "./.yarn/cache/@types-node-npm-18.0.3-c2cbe1f26e-5dec59fbbc.zip/node_modules/@types/node/",\
           "packageDependencies": [\
+            ["@types/node", "npm:18.0.3"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@types/nodemailer", [\
+        ["npm:6.4.4", {\
+          "packageLocation": "./.yarn/cache/@types-nodemailer-npm-6.4.4-c5c500abe2-16ed1bad2c.zip/node_modules/@types/nodemailer/",\
+          "packageDependencies": [\
+            ["@types/nodemailer", "npm:6.4.4"],\
             ["@types/node", "npm:18.0.3"]\
           ],\
           "linkType": "HARD"\
