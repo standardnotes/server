@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.39.1](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.39.0...@standardnotes/domain-events@2.39.1) (2022-07-11)
+
+### Bug Fixes
+
+* remove unused MailBackupAttachmentTooBigEvent ([b4fae4b](https://github.com/standardnotes/server/commit/b4fae4b800fdef9bcfb28d8f332c5c0bbf576833))
+
 # [2.39.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.38.0...@standardnotes/domain-events@2.39.0) (2022-07-06)
 
 ### Features

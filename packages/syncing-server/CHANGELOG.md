@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.6.1](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.6.0...@standardnotes/syncing-server@1.6.1) (2022-07-11)
+
+### Bug Fixes
+
+* remove unused MailBackupAttachmentTooBigEvent ([b4fae4b](https://github.com/standardnotes/syncing-server-js/commit/b4fae4b800fdef9bcfb28d8f332c5c0bbf576833))
+
 # [1.6.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.5.0...@standardnotes/syncing-server@1.6.0) (2022-07-06)
 
 ### Features
