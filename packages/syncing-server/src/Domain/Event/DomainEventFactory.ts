@@ -6,7 +6,6 @@ import {
   EmailBackupAttachmentCreatedEvent,
   GoogleDriveBackupFailedEvent,
   ItemsSyncedEvent,
-  MailBackupAttachmentTooBigEvent,
   OneDriveBackupFailedEvent,
   UserRegisteredEvent,
 } from '@standardnotes/domain-events'
@@ -88,26 +87,6 @@ export class DomainEventFactory implements DomainEventFactoryInterface {
         muteCloudEmailsSettingUuid,
         email,
       },
-    }
-  }
-
-  createMailBackupAttachmentTooBigEvent(dto: {
-    allowedSize: string
-    attachmentSize: string
-    muteEmailsSettingUuid: string
-    email: string
-  }): MailBackupAttachmentTooBigEvent {
-    return {
-      type: 'MAIL_BACKUP_ATTACHMENT_TOO_BIG',
-      createdAt: this.timer.getUTCDate(),
-      meta: {
-        correlation: {
-          userIdentifier: dto.email,
-          userIdentifierType: 'email',
-        },
-        origin: DomainEventService.SyncingServer,
-      },
-      payload: dto,
     }
   }
 

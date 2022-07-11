@@ -5,7 +5,6 @@ import {
   EmailBackupAttachmentCreatedEvent,
   GoogleDriveBackupFailedEvent,
   ItemsSyncedEvent,
-  MailBackupAttachmentTooBigEvent,
   OneDriveBackupFailedEvent,
   UserRegisteredEvent,
 } from '@standardnotes/domain-events'
@@ -15,12 +14,6 @@ export interface DomainEventFactoryInterface {
   createDropboxBackupFailedEvent(muteCloudEmailsSettingUuid: string, email: string): DropboxBackupFailedEvent
   createGoogleDriveBackupFailedEvent(muteCloudEmailsSettingUuid: string, email: string): GoogleDriveBackupFailedEvent
   createOneDriveBackupFailedEvent(muteCloudEmailsSettingUuid: string, email: string): OneDriveBackupFailedEvent
-  createMailBackupAttachmentTooBigEvent(dto: {
-    allowedSize: string
-    attachmentSize: string
-    muteEmailsSettingUuid: string
-    email: string
-  }): MailBackupAttachmentTooBigEvent
   createItemsSyncedEvent(dto: {
     userUuid: string
     extensionUrl: string

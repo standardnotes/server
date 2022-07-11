@@ -4,7 +4,6 @@ import {
   DomainEventPublisherInterface,
   EmailBackupRequestedEvent,
   EmailBackupAttachmentCreatedEvent,
-  MailBackupAttachmentTooBigEvent,
 } from '@standardnotes/domain-events'
 import { Logger } from 'winston'
 import { AuthHttpServiceInterface } from '../Auth/AuthHttpServiceInterface'
@@ -66,9 +65,6 @@ describe('EmailBackupRequestedEventHandler', () => {
     domainEventFactory.createEmailBackupAttachmentCreatedEvent = jest
       .fn()
       .mockReturnValue({} as jest.Mocked<EmailBackupAttachmentCreatedEvent>)
-    domainEventFactory.createMailBackupAttachmentTooBigEvent = jest
-      .fn()
-      .mockReturnValue({} as jest.Mocked<MailBackupAttachmentTooBigEvent>)
 
     itemTransferCalculator = {} as jest.Mocked<ItemTransferCalculatorInterface>
     itemTransferCalculator.computeItemUuidBundlesToFetch = jest.fn().mockReturnValue([['1-2-3']])

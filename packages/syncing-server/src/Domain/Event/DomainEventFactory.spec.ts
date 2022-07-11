@@ -118,33 +118,6 @@ describe('DomainEventFactory', () => {
     })
   })
 
-  it('should create a MAIL_BACKUP_ATTACHMENT_TOO_BIG event', () => {
-    expect(
-      createFactory().createMailBackupAttachmentTooBigEvent({
-        allowedSize: '1000',
-        attachmentSize: '1500',
-        muteEmailsSettingUuid: '1-2-3',
-        email: 'test@test.com',
-      }),
-    ).toEqual({
-      createdAt: expect.any(Date),
-      meta: {
-        correlation: {
-          userIdentifier: 'test@test.com',
-          userIdentifierType: 'email',
-        },
-        origin: 'syncing-server',
-      },
-      payload: {
-        email: 'test@test.com',
-        muteEmailsSettingUuid: '1-2-3',
-        allowedSize: '1000',
-        attachmentSize: '1500',
-      },
-      type: 'MAIL_BACKUP_ATTACHMENT_TOO_BIG',
-    })
-  })
-
   it('should create a EMAIL_ARCHIVE_EXTENSION_SYNCED event', () => {
     expect(createFactory().createEmailArchiveExtensionSyncedEvent('1-2-3', '2-3-4')).toEqual({
       createdAt: expect.any(Date),
