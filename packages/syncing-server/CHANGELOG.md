@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.6.2](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.6.1...@standardnotes/syncing-server@1.6.2) (2022-07-11)
+
+### Bug Fixes
+
+* log errors on not being able to create a backup file ([fc5cea1](https://github.com/standardnotes/syncing-server-js/commit/fc5cea11b5401f83a0f8cf2b386abbff90bd18d7))
+
 ## [1.6.1](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.6.0...@standardnotes/syncing-server@1.6.1) (2022-07-11)
 
 ### Bug Fixes

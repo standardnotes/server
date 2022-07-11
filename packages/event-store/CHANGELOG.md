@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.4](https://github.com/standardnotes/server/compare/@standardnotes/event-store@1.1.3...@standardnotes/event-store@1.1.4) (2022-07-11)
+
+### Bug Fixes
+
+* add email backup tracing events ([239d4ce](https://github.com/standardnotes/server/commit/239d4ce4eca6a0c5dc0e1346829572a7240569cc))
+
 ## [1.1.3](https://github.com/standardnotes/server/compare/@standardnotes/event-store@1.1.2...@standardnotes/event-store@1.1.3) (2022-07-11)
 
 ### Bug Fixes
