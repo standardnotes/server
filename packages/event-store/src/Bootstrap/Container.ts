@@ -48,6 +48,9 @@ export class ContainerConfigLoader {
     container.bind(TYPES.SQS_AWS_REGION).toConstantValue(env.get('SQS_AWS_REGION'))
     container.bind(TYPES.SQS_QUEUE_URL).toConstantValue(env.get('SQS_QUEUE_URL'))
 
+    // ORM
+    container.bind<Repository<Event>>(TYPES.ORMEventRepository).toConstantValue(AppDataSource.getRepository(Event))
+
     // Handlers
     container.bind<EventHandler>(TYPES.EventHandler).to(EventHandler)
 
@@ -71,9 +74,6 @@ export class ContainerConfigLoader {
       ['USER_SIGNED_IN', container.get(TYPES.EventHandler)],
       ['SHARED_SUBSCRIPTION_INVITATION_CREATED', container.get(TYPES.EventHandler)],
     ])
-
-    // ORM
-    container.bind<Repository<Event>>(TYPES.ORMEventRepository).toConstantValue(AppDataSource.getRepository(Event))
 
     container
       .bind<DomainEventMessageHandlerInterface>(TYPES.DomainEventMessageHandler)
