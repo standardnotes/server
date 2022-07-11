@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.1](https://github.com/standardnotes/server/compare/@standardnotes/event-store@1.1.0...@standardnotes/event-store@1.1.1) (2022-07-11)
+
+### Bug Fixes
+
+* optional migrations path ([3fc11c5](https://github.com/standardnotes/server/commit/3fc11c538111348723a92f838297ebd821566eb4))
+
 # 1.1.0 (2022-07-11)
 
 ### Features
