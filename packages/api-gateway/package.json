@@ -40,7 +40,7 @@
     "ioredis": "^5.0.6",
     "jsonwebtoken": "8.5.1",
     "newrelic": "^8.14.1",
-    "prettyjson": "1.2.1",
+    "prettyjson": "1.2.5",
     "reflect-metadata": "0.1.13",
     "winston": "3.3.3"
   },
