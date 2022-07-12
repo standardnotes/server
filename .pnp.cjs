@@ -2088,7 +2088,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/newrelic", "npm:7.0.3"],\
             ["@types/winston", null],\
             ["newrelic", "npm:8.14.1"],\
-            ["winston", "npm:3.3.3"]\
+            ["winston", "npm:3.8.1"]\
           ],\
           "packagePeers": [\
             "@types/newrelic",\
@@ -2735,7 +2735,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["prettyjson", "npm:1.2.5"],\
             ["reflect-metadata", "npm:0.1.13"],\
             ["ts-jest", "virtual:e1128e9ebb31076ea8e955c00397fd108ee8bf0fb2df3b2a603c510b7014a507cfa360bccf848efc1ec8c431656aa94c5ad08bcec32950bdf1278d01cd890e4f#npm:28.0.5"],\
-            ["winston", "npm:3.3.3"]\
+            ["winston", "npm:3.8.1"]\
           ],\
           "linkType": "SOFT"\
         }]\
@@ -2807,7 +2807,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["typeorm", "virtual:31b5a94a105c89c9294c3d524a7f8929fe63ee5a2efadf21951ca4c0cfd2ecf02e8f4ef5a066bbda091f1e3a56e57c6749069a080618c96b22e51131a330fc4a#npm:0.3.7"],\
             ["ua-parser-js", "npm:1.0.2"],\
             ["uuid", "npm:8.3.2"],\
-            ["winston", "npm:3.3.3"]\
+            ["winston", "npm:3.8.1"]\
           ],\
           "linkType": "SOFT"\
         }]\
@@ -2925,7 +2925,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["reflect-metadata", "npm:0.1.13"],\
             ["ts-jest", "virtual:e1128e9ebb31076ea8e955c00397fd108ee8bf0fb2df3b2a603c510b7014a507cfa360bccf848efc1ec8c431656aa94c5ad08bcec32950bdf1278d01cd890e4f#npm:28.0.5"],\
             ["typeorm", "virtual:31b5a94a105c89c9294c3d524a7f8929fe63ee5a2efadf21951ca4c0cfd2ecf02e8f4ef5a066bbda091f1e3a56e57c6749069a080618c96b22e51131a330fc4a#npm:0.3.7"],\
-            ["winston", "npm:3.3.3"]\
+            ["winston", "npm:3.8.1"]\
           ],\
           "linkType": "SOFT"\
         }]\
@@ -3079,7 +3079,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["reflect-metadata", "npm:0.1.13"],\
             ["ts-jest", "virtual:e1128e9ebb31076ea8e955c00397fd108ee8bf0fb2df3b2a603c510b7014a507cfa360bccf848efc1ec8c431656aa94c5ad08bcec32950bdf1278d01cd890e4f#npm:28.0.5"],\
             ["typeorm", "virtual:31b5a94a105c89c9294c3d524a7f8929fe63ee5a2efadf21951ca4c0cfd2ecf02e8f4ef5a066bbda091f1e3a56e57c6749069a080618c96b22e51131a330fc4a#npm:0.3.7"],\
-            ["winston", "npm:3.3.3"]\
+            ["winston", "npm:3.8.1"]\
           ],\
           "linkType": "SOFT"\
         }]\
@@ -3235,7 +3235,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["typeorm", "virtual:31b5a94a105c89c9294c3d524a7f8929fe63ee5a2efadf21951ca4c0cfd2ecf02e8f4ef5a066bbda091f1e3a56e57c6749069a080618c96b22e51131a330fc4a#npm:0.3.7"],\
             ["ua-parser-js", "npm:1.0.2"],\
             ["uuid", "npm:8.3.2"],\
-            ["winston", "npm:3.3.3"]\
+            ["winston", "npm:3.8.1"]\
           ],\
           "linkType": "SOFT"\
         }]\
@@ -14395,22 +14395,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["winston", [\
-        ["npm:3.3.3", {\
-          "packageLocation": "./.yarn/cache/winston-npm-3.3.3-3fa4527b42-89a0a8db4e.zip/node_modules/winston/",\
-          "packageDependencies": [\
-            ["winston", "npm:3.3.3"],\
-            ["@dabh/diagnostics", "npm:2.0.3"],\
-            ["async", "npm:3.2.4"],\
-            ["is-stream", "npm:2.0.1"],\
-            ["logform", "npm:2.4.2"],\
-            ["one-time", "npm:1.0.0"],\
-            ["readable-stream", "npm:3.6.0"],\
-            ["stack-trace", "npm:0.0.10"],\
-            ["triple-beam", "npm:1.3.0"],\
-            ["winston-transport", "npm:4.5.0"]\
-          ],\
-          "linkType": "HARD"\
-        }],\
         ["npm:3.8.1", {\
           "packageLocation": "./.yarn/cache/winston-npm-3.8.1-b9bfc92cf2-14637222a4.zip/node_modules/winston/",\
           "packageDependencies": [\

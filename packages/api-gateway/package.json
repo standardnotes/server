@@ -42,7 +42,7 @@
     "newrelic": "^8.14.1",
     "prettyjson": "^1.2.5",
     "reflect-metadata": "0.1.13",
-    "winston": "3.3.3"
+    "winston": "^3.8.1"
   },
   "devDependencies": {
     "@types/cors": "^2.8.9",

@@ -42,6 +42,6 @@
     "newrelic": "^8.14.1",
     "reflect-metadata": "0.1.13",
     "typeorm": "^0.3.6",
-    "winston": "3.3.3"
+    "winston": "^3.8.1"
   }
 }
