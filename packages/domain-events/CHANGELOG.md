@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.41.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.40.0...@standardnotes/domain-events@2.41.0) (2022-07-12)
+
+### Features
+
+* **domain-events:** add discount withdraw requested event ([a091e8d](https://github.com/standardnotes/server/commit/a091e8d2bf8f6ccaea995841f602205b95180181))
+
 # [2.40.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.39.1...@standardnotes/domain-events@2.40.0) (2022-07-12)
 
 ### Features
