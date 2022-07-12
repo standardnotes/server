@@ -1989,7 +1989,7 @@ __metadata:
     newrelic: ^8.14.1
     nodemon: ^2.0.16
     npm-check-updates: ^14.1.1
-    prettyjson: 1.2.1
+    prettyjson: ^1.2.5
     reflect-metadata: 0.1.13
     ts-jest: ^28.0.1
     winston: 3.3.3
@@ -2059,7 +2059,7 @@ __metadata:
     nodemon: ^2.0.16
     npm-check-updates: ^14.1.1
     otplib: 12.0.1
-    prettyjson: 1.2.1
+    prettyjson: ^1.2.5
     reflect-metadata: 0.1.13
     ts-jest: ^28.0.1
     typeorm: ^0.3.6
@@ -2239,7 +2239,7 @@ __metadata:
     newrelic: ^8.14.1
     nodemon: ^2.0.16
     npm-check-updates: ^14.1.1
-    prettyjson: ^1.2.1
+    prettyjson: ^1.2.5
     reflect-metadata: ^0.1.13
     ts-jest: ^28.0.1
     ts-node: ^10.4.0
@@ -2464,7 +2464,7 @@ __metadata:
     newrelic: ^8.14.1
     nodemon: 2.0.7
     npm-check-updates: ^14.1.1
-    prettyjson: 1.2.1
+    prettyjson: ^1.2.5
     reflect-metadata: 0.1.13
     ts-jest: ^28.0.1
     typeorm: ^0.3.6
@@ -4180,7 +4180,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"colors@npm:1.4.0, colors@npm:^1.1.2":
+"colors@npm:1.4.0":
   version: 1.4.0
   resolution: "colors@npm:1.4.0"
   checksum: 98aa2c2418ad87dedf25d781be69dc5fc5908e279d9d30c34d8b702e586a0474605b3a189511482b9d5ed0d20c867515d22749537f7bc546256c6014f3ebdcec
@@ -9678,19 +9678,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettyjson@npm:1.2.1":
-  version: 1.2.1
-  resolution: "prettyjson@npm:1.2.1"
-  dependencies:
-    colors: ^1.1.2
-    minimist: ^1.2.0
-  bin:
-    prettyjson: ./bin/prettyjson
-  checksum: 4786cf7cb74ddc2293eaf67587a5f21cee6aa6111a53c0b8ec8d5b77fe5d006b6ca09d2c72d52467772c86130fa95c1acfd3bfab0da0a854b8977ff7db04ebf2
-  languageName: node
-  linkType: hard
-
-"prettyjson@npm:^1.2.1":
+"prettyjson@npm:^1.2.5":
   version: 1.2.5
   resolution: "prettyjson@npm:1.2.5"
   dependencies:

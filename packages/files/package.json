@@ -48,7 +48,7 @@
     "jsonwebtoken": "^8.5.1",
     "newrelic": "^8.14.1",
     "nodemon": "^2.0.15",
-    "prettyjson": "^1.2.1",
+    "prettyjson": "^1.2.5",
     "reflect-metadata": "^0.1.13",
     "ts-node": "^10.4.0",
     "winston": "^3.3.3"

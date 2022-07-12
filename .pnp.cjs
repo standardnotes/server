@@ -2732,7 +2732,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["newrelic", "npm:8.14.1"],\
             ["nodemon", "npm:2.0.19"],\
             ["npm-check-updates", "npm:14.1.1"],\
-            ["prettyjson", "npm:1.2.1"],\
+            ["prettyjson", "npm:1.2.5"],\
             ["reflect-metadata", "npm:0.1.13"],\
             ["ts-jest", "virtual:e1128e9ebb31076ea8e955c00397fd108ee8bf0fb2df3b2a603c510b7014a507cfa360bccf848efc1ec8c431656aa94c5ad08bcec32950bdf1278d01cd890e4f#npm:28.0.5"],\
             ["winston", "npm:3.3.3"]\
@@ -2801,7 +2801,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["nodemon", "npm:2.0.19"],\
             ["npm-check-updates", "npm:14.1.1"],\
             ["otplib", "npm:12.0.1"],\
-            ["prettyjson", "npm:1.2.1"],\
+            ["prettyjson", "npm:1.2.5"],\
             ["reflect-metadata", "npm:0.1.13"],\
             ["ts-jest", "virtual:e1128e9ebb31076ea8e955c00397fd108ee8bf0fb2df3b2a603c510b7014a507cfa360bccf848efc1ec8c431656aa94c5ad08bcec32950bdf1278d01cd890e4f#npm:28.0.5"],\
             ["typeorm", "virtual:31b5a94a105c89c9294c3d524a7f8929fe63ee5a2efadf21951ca4c0cfd2ecf02e8f4ef5a066bbda091f1e3a56e57c6749069a080618c96b22e51131a330fc4a#npm:0.3.7"],\
@@ -3229,7 +3229,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["newrelic", "npm:8.14.1"],\
             ["nodemon", "npm:2.0.7"],\
             ["npm-check-updates", "npm:14.1.1"],\
-            ["prettyjson", "npm:1.2.1"],\
+            ["prettyjson", "npm:1.2.5"],\
             ["reflect-metadata", "npm:0.1.13"],\
             ["ts-jest", "virtual:e1128e9ebb31076ea8e955c00397fd108ee8bf0fb2df3b2a603c510b7014a507cfa360bccf848efc1ec8c431656aa94c5ad08bcec32950bdf1278d01cd890e4f#npm:28.0.5"],\
             ["typeorm", "virtual:31b5a94a105c89c9294c3d524a7f8929fe63ee5a2efadf21951ca4c0cfd2ecf02e8f4ef5a066bbda091f1e3a56e57c6749069a080618c96b22e51131a330fc4a#npm:0.3.7"],\
@@ -11701,15 +11701,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["prettyjson", [\
-        ["npm:1.2.1", {\
-          "packageLocation": "./.yarn/cache/prettyjson-npm-1.2.1-045c44c3b6-4786cf7cb7.zip/node_modules/prettyjson/",\
-          "packageDependencies": [\
-            ["prettyjson", "npm:1.2.1"],\
-            ["colors", "npm:1.4.0"],\
-            ["minimist", "npm:1.2.6"]\
-          ],\
-          "linkType": "HARD"\
-        }],\
         ["npm:1.2.5", {\
           "packageLocation": "./.yarn/cache/prettyjson-npm-1.2.5-a72b7bf823-e36e8ae4f7.zip/node_modules/prettyjson/",\
           "packageDependencies": [\
