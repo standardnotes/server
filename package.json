@@ -51,7 +51,7 @@
     "@lerna-lite/cli": "^1.5.1",
     "@lerna-lite/list": "^1.5.1",
     "@lerna-lite/run": "^1.5.1",
-    "@types/jest": "^28.1.3",
+    "@types/jest": "^28.1.4",
     "@types/newrelic": "^7.0.3",
     "@types/node": "^18.0.0",
     "@typescript-eslint/parser": "^5.29.0",
