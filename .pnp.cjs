@@ -2714,7 +2714,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/jest", "npm:28.1.4"],\
             ["@types/jsonwebtoken", "npm:8.5.8"],\
             ["@types/newrelic", "npm:7.0.3"],\
-            ["@types/prettyjson", "npm:0.0.29"],\
+            ["@types/prettyjson", "npm:0.0.30"],\
             ["@typescript-eslint/eslint-plugin", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:5.30.5"],\
             ["aws-sdk", "npm:2.1168.0"],\
             ["axios", "npm:0.24.0"],\
@@ -2778,7 +2778,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/jest", "npm:28.1.4"],\
             ["@types/newrelic", "npm:7.0.3"],\
             ["@types/otplib", "npm:10.0.0"],\
-            ["@types/prettyjson", "npm:0.0.29"],\
+            ["@types/prettyjson", "npm:0.0.30"],\
             ["@types/ua-parser-js", "npm:0.7.36"],\
             ["@types/uuid", "npm:8.3.4"],\
             ["@typescript-eslint/eslint-plugin", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:5.30.5"],\
@@ -2963,7 +2963,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/jest", "npm:28.1.4"],\
             ["@types/jsonwebtoken", "npm:8.5.8"],\
             ["@types/newrelic", "npm:7.0.3"],\
-            ["@types/prettyjson", "npm:0.0.29"],\
+            ["@types/prettyjson", "npm:0.0.30"],\
             ["@types/uuid", "npm:8.3.4"],\
             ["@typescript-eslint/eslint-plugin", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:5.30.5"],\
             ["aws-sdk", "npm:2.1168.0"],\
@@ -3208,7 +3208,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/jest", "npm:28.1.4"],\
             ["@types/jsonwebtoken", "npm:8.5.8"],\
             ["@types/newrelic", "npm:7.0.3"],\
-            ["@types/prettyjson", "npm:0.0.29"],\
+            ["@types/prettyjson", "npm:0.0.30"],\
             ["@types/ua-parser-js", "npm:0.7.36"],\
             ["@types/uuid", "npm:8.3.4"],\
             ["@typescript-eslint/eslint-plugin", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:5.30.5"],\
@@ -3692,10 +3692,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@types/prettyjson", [\
-        ["npm:0.0.29", {\
-          "packageLocation": "./.yarn/cache/@types-prettyjson-npm-0.0.29-26ae573a83-9ff6cb225d.zip/node_modules/@types/prettyjson/",\
+        ["npm:0.0.30", {\
+          "packageLocation": "./.yarn/cache/@types-prettyjson-npm-0.0.30-6b15ac9c9f-bc012fe807.zip/node_modules/@types/prettyjson/",\
           "packageDependencies": [\
-            ["@types/prettyjson", "npm:0.0.29"]\
+            ["@types/prettyjson", "npm:0.0.30"]\
           ],\
           "linkType": "HARD"\
         }]\
