@@ -1976,7 +1976,7 @@ __metadata:
     aws-sdk: ^2.1160.0
     axios: 0.24.0
     cors: 2.8.5
-    dotenv: 8.2.0
+    dotenv: ^16.0.1
     eslint: ^8.14.0
     eslint-plugin-prettier: ^4.0.0
     express: 4.17.1
@@ -2046,7 +2046,7 @@ __metadata:
     cors: 2.8.5
     crypto-random-string: 3.3.0
     dayjs: ^1.11.3
-    dotenv: 8.2.0
+    dotenv: ^16.0.1
     eslint: ^8.14.0
     eslint-plugin-prettier: ^4.0.0
     express: 4.17.1
@@ -2172,7 +2172,7 @@ __metadata:
     "@types/nodemailer": ^6.4.1
     "@typescript-eslint/eslint-plugin": ^5.30.5
     aws-sdk: ^2.1159.0
-    dotenv: 8.2.0
+    dotenv: ^16.0.1
     eslint: ^8.14.0
     eslint-plugin-prettier: ^4.2.1
     inversify: ^6.0.1
@@ -2225,7 +2225,7 @@ __metadata:
     connect-busboy: ^1.0.0
     cors: ^2.8.5
     dayjs: ^1.11.3
-    dotenv: ^8.2.0
+    dotenv: ^16.0.1
     eslint: ^8.14.0
     eslint-plugin-prettier: ^4.0.0
     express: ^4.17.1
@@ -2316,7 +2316,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": ^5.29.0
     aws-sdk: ^2.1158.0
     dayjs: ^1.11.3
-    dotenv: 8.2.0
+    dotenv: ^16.0.1
     eslint-plugin-prettier: ^4.0.0
     inversify: 5.0.5
     ioredis: ^5.0.6
@@ -2450,7 +2450,7 @@ __metadata:
     aws-sdk: ^2.1159.0
     axios: 0.24.0
     cors: 2.8.5
-    dotenv: 8.2.0
+    dotenv: ^16.0.1
     eslint: ^8.14.0
     eslint-plugin-prettier: ^4.0.0
     express: 4.17.1
@@ -4873,20 +4873,6 @@ __metadata:
   version: 16.0.1
   resolution: "dotenv@npm:16.0.1"
   checksum: f459ffce07b977b7f15d8cc4ee69cdff77d4dd8c5dc8c85d2d485ee84655352c2415f9dd09d42b5b5985ced3be186130871b34e2f3e2569ebc72fbc2e8096792
-  languageName: node
-  linkType: hard
-
-"dotenv@npm:8.2.0":
-  version: 8.2.0
-  resolution: "dotenv@npm:8.2.0"
-  checksum: ad4c8e0df3e24b4811c8e93377d048a10a9b213dcd9f062483b4a2d3168f08f10ec9c618c23f5639060d230ccdb174c08761479e9baa29610aa978e1ee66df76
-  languageName: node
-  linkType: hard
-
-"dotenv@npm:^8.2.0":
-  version: 8.6.0
-  resolution: "dotenv@npm:8.6.0"
-  checksum: 38e902c80b0666ab59e9310a3d24ed237029a7ce34d976796349765ac96b8d769f6df19090f1f471b77a25ca391971efde8a1ea63bb83111bd8bec8e5cc9b2cd
   languageName: node
   linkType: hard
 

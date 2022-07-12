@@ -2719,7 +2719,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["aws-sdk", "npm:2.1168.0"],\
             ["axios", "npm:0.24.0"],\
             ["cors", "npm:2.8.5"],\
-            ["dotenv", "npm:8.2.0"],\
+            ["dotenv", "npm:16.0.1"],\
             ["eslint", "npm:8.19.0"],\
             ["eslint-plugin-prettier", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:4.2.1"],\
             ["express", "npm:4.17.1"],\
@@ -2788,7 +2788,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["cors", "npm:2.8.5"],\
             ["crypto-random-string", "npm:3.3.0"],\
             ["dayjs", "npm:1.11.3"],\
-            ["dotenv", "npm:8.2.0"],\
+            ["dotenv", "npm:16.0.1"],\
             ["eslint", "npm:8.19.0"],\
             ["eslint-plugin-prettier", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:4.2.1"],\
             ["express", "npm:4.17.1"],\
@@ -2914,7 +2914,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/nodemailer", "npm:6.4.4"],\
             ["@typescript-eslint/eslint-plugin", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:5.30.5"],\
             ["aws-sdk", "npm:2.1168.0"],\
-            ["dotenv", "npm:8.2.0"],\
+            ["dotenv", "npm:16.0.1"],\
             ["eslint", "npm:8.19.0"],\
             ["eslint-plugin-prettier", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:4.2.1"],\
             ["inversify", "npm:6.0.1"],\
@@ -2970,7 +2970,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["connect-busboy", "npm:1.0.0"],\
             ["cors", "npm:2.8.5"],\
             ["dayjs", "npm:1.11.3"],\
-            ["dotenv", "npm:8.6.0"],\
+            ["dotenv", "npm:16.0.1"],\
             ["eslint", "npm:8.19.0"],\
             ["eslint-plugin-prettier", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:4.2.1"],\
             ["express", "npm:4.18.1"],\
@@ -3068,7 +3068,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@typescript-eslint/eslint-plugin", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:5.30.5"],\
             ["aws-sdk", "npm:2.1168.0"],\
             ["dayjs", "npm:1.11.3"],\
-            ["dotenv", "npm:8.2.0"],\
+            ["dotenv", "npm:16.0.1"],\
             ["eslint-plugin-prettier", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:4.2.1"],\
             ["inversify", "npm:5.0.5"],\
             ["ioredis", "npm:5.1.0"],\
@@ -3215,7 +3215,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["aws-sdk", "npm:2.1168.0"],\
             ["axios", "npm:0.24.0"],\
             ["cors", "npm:2.8.5"],\
-            ["dotenv", "npm:8.2.0"],\
+            ["dotenv", "npm:16.0.1"],\
             ["eslint", "npm:8.19.0"],\
             ["eslint-plugin-prettier", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:4.2.1"],\
             ["express", "npm:4.17.1"],\
@@ -6269,20 +6269,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/dotenv-npm-16.0.1-d99e72bb95-f459ffce07.zip/node_modules/dotenv/",\
           "packageDependencies": [\
             ["dotenv", "npm:16.0.1"]\
-          ],\
-          "linkType": "HARD"\
-        }],\
-        ["npm:8.2.0", {\
-          "packageLocation": "./.yarn/cache/dotenv-npm-8.2.0-6b21df4d37-ad4c8e0df3.zip/node_modules/dotenv/",\
-          "packageDependencies": [\
-            ["dotenv", "npm:8.2.0"]\
-          ],\
-          "linkType": "HARD"\
-        }],\
-        ["npm:8.6.0", {\
-          "packageLocation": "./.yarn/cache/dotenv-npm-8.6.0-2ce3e9f7bb-38e902c80b.zip/node_modules/dotenv/",\
-          "packageDependencies": [\
-            ["dotenv", "npm:8.6.0"]\
           ],\
           "linkType": "HARD"\
         }]\

@@ -33,7 +33,7 @@
     "@standardnotes/time": "workspace:*",
     "aws-sdk": "^2.1158.0",
     "dayjs": "^1.11.3",
-    "dotenv": "8.2.0",
+    "dotenv": "^16.0.1",
     "inversify": "5.0.5",
     "ioredis": "^5.0.6",
     "mysql2": "^2.3.3",
