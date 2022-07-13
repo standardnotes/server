@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.27.0](https://github.com/standardnotes/server/compare/@standardnotes/common@1.26.0...@standardnotes/common@1.27.0) (2022-07-13)
+
+### Features
+
+* **common:** add student discount approved identifier ([2de4362](https://github.com/standardnotes/server/commit/2de4362f8e7b07d5b3544a5ce26d7f744002928a))
+
 # [1.26.0](https://github.com/standardnotes/server/compare/@standardnotes/common@1.25.1...@standardnotes/common@1.26.0) (2022-07-13)
 
 ### Features
