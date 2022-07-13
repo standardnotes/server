@@ -46,7 +46,7 @@
     "@standardnotes/sncrypto-node": "workspace:*",
     "@standardnotes/time": "workspace:*",
     "aws-sdk": "^2.1159.0",
-    "axios": "0.24.0",
+    "axios": "^0.27.2",
     "bcryptjs": "2.4.3",
     "cors": "2.8.5",
     "crypto-random-string": "3.3.0",
