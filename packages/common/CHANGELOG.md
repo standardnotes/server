@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.28.0](https://github.com/standardnotes/server/compare/@standardnotes/common@1.27.0...@standardnotes/common@1.28.0) (2022-07-13)
+
+### Features
+
+* **common:** add account reset email identifier ([a3359e8](https://github.com/standardnotes/server/commit/a3359e8c770b6b919ca740838aa321a2d552d181))
+
 # [1.27.0](https://github.com/standardnotes/server/compare/@standardnotes/common@1.26.0...@standardnotes/common@1.27.0) (2022-07-13)
 
 ### Features
