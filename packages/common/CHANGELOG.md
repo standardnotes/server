@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.26.0](https://github.com/standardnotes/server/compare/@standardnotes/common@1.25.1...@standardnotes/common@1.26.0) (2022-07-13)
+
+### Features
+
+* **common:** add student discount identifier ([36bb98e](https://github.com/standardnotes/server/commit/36bb98e2af3d677a1096f3732ee8c346b9202ba7))
+
 ## [1.25.1](https://github.com/standardnotes/server/compare/@standardnotes/common@1.25.0...@standardnotes/common@1.25.1) (2022-07-12)
 
 **Note:** Version bump only for package @standardnotes/common
