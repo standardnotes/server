@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.44.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.43.1...@standardnotes/domain-events@2.44.0) (2022-07-13)
+
+### Features
+
+* **domain-events:** add account reset requested event ([4900b21](https://github.com/standardnotes/server/commit/4900b210471de87c77ebba66565520d63a707704))
+
 ## [2.43.1](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.43.0...@standardnotes/domain-events@2.43.1) (2022-07-13)
 
 **Note:** Version bump only for package @standardnotes/domain-events
