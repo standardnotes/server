@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.42.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.41.1...@standardnotes/domain-events@2.42.0) (2022-07-13)
+
+### Features
+
+* add student discount requested event ([24c0368](https://github.com/standardnotes/server/commit/24c036836ea1de55f2ddc2fcf97418ff0699d0a5))
+
 ## [2.41.1](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.41.0...@standardnotes/domain-events@2.41.1) (2022-07-12)
 
 **Note:** Version bump only for package @standardnotes/domain-events

@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.7.11](https://github.com/standardnotes/server/compare/@standardnotes/domain-events-infra@1.7.10...@standardnotes/domain-events-infra@1.7.11) (2022-07-13)
+
+**Note:** Version bump only for package @standardnotes/domain-events-infra
+
 ## [1.7.10](https://github.com/standardnotes/server/compare/@standardnotes/domain-events-infra@1.7.9...@standardnotes/domain-events-infra@1.7.10) (2022-07-12)
 
 **Note:** Version bump only for package @standardnotes/domain-events-infra
