@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.45.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.44.2...@standardnotes/domain-events@2.45.0) (2022-07-14)
+
+### Features
+
+* **domain-events:** add payment failed event ([4384ba2](https://github.com/standardnotes/server/commit/4384ba2f4773ec7289cc206dcc23b0d2c3138487))
+
 ## [2.44.2](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.44.1...@standardnotes/domain-events@2.44.2) (2022-07-14)
 
 **Note:** Version bump only for package @standardnotes/domain-events
