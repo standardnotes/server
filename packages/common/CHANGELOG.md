@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.29.0](https://github.com/standardnotes/server/compare/@standardnotes/common@1.28.0...@standardnotes/common@1.29.0) (2022-07-14)
+
+### Bug Fixes
+
+* **common:** duplicate reset identifier ([dc55bd1](https://github.com/standardnotes/server/commit/dc55bd1fb9a109d9588af9f8d7c1bb27c2ee7059))
+
+### Features
+
+* **common:** add message identifiers from payment emails ([f7c04bc](https://github.com/standardnotes/server/commit/f7c04bc35f99ad76912c6dec93164303276f6926))
+
 # [1.28.0](https://github.com/standardnotes/server/compare/@standardnotes/common@1.27.0...@standardnotes/common@1.28.0) (2022-07-13)
 
 ### Features
