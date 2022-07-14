@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.48.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.47.0...@standardnotes/domain-events@2.48.0) (2022-07-14)
+
+### Features
+
+* **domain-events:** add subscription rate adjusted event ([54f769c](https://github.com/standardnotes/server/commit/54f769c6db5f8c5d18c276b3dc075613a4ff276d))
+
 # [2.47.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.46.0...@standardnotes/domain-events@2.47.0) (2022-07-14)
 
 ### Features
