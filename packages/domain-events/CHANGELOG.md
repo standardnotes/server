@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.48.1](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.48.0...@standardnotes/domain-events@2.48.1) (2022-07-14)
+
+### Bug Fixes
+
+* **domain-events:** rate and adjustment formatted ([4184843](https://github.com/standardnotes/server/commit/4184843e1d31e16b88eb54ccc1471b8f1c02271c))
+
 # [2.48.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.47.0...@standardnotes/domain-events@2.48.0) (2022-07-14)
 
 ### Features
