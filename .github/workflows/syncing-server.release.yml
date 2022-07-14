@@ -117,40 +117,20 @@ jobs:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: us-east-1
-    - name: DEV - Download task definition
-      run: |
-        aws ecs describe-task-definition --task-definition syncing-server-js-dev --query taskDefinition > task-definition.json
-    - name: DEV - Fill in the new version in the Amazon ECS task definition
-      run: |
-        jq '(.containerDefinitions[] | select(.name=="syncing-server-js-dev") | .environment[] | select(.name=="VERSION")).value = "${{ github.sha }}"' task-definition.json > tmp.json && mv tmp.json task-definition.json
-    - name: DEV - Fill in the new image ID in the Amazon ECS task definition
-      id: task-def-dev
-      uses: aws-actions/amazon-ecs-render-task-definition@v1
-      with:
-        task-definition: task-definition.json
-        container-name: syncing-server-js-dev
-        image: ${{ secrets.AWS_ECR_REGISTRY }}/syncing-server-js:${{ github.sha }}
-    - name: DEV - Deploy Amazon ECS task definition
-      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-      with:
-        task-definition: ${{ steps.task-def-dev.outputs.task-definition }}
-        service: syncing-server-js-dev
-        cluster: dev
-        wait-for-service-stability: true
-    - name: PROD - Download task definition
+    - name: Download task definition
       run: |
         aws ecs describe-task-definition --task-definition syncing-server-js-prod --query taskDefinition > task-definition.json
-    - name: PROD - Fill in the new version in the Amazon ECS task definition
+    - name: Fill in the new version in the Amazon ECS task definition
       run: |
         jq '(.containerDefinitions[] | select(.name=="syncing-server-js-prod") | .environment[] | select(.name=="VERSION")).value = "${{ github.sha }}"' task-definition.json > tmp.json && mv tmp.json task-definition.json
-    - name: PROD - Fill in the new image ID in the Amazon ECS task definition
+    - name: Fill in the new image ID in the Amazon ECS task definition
       id: task-def-prod
       uses: aws-actions/amazon-ecs-render-task-definition@v1
       with:
         task-definition: task-definition.json
         container-name: syncing-server-js-prod
         image: ${{ secrets.AWS_ECR_REGISTRY }}/syncing-server-js:${{ github.sha }}
-    - name: PROD - Deploy Amazon ECS task definition
+    - name: Deploy Amazon ECS task definition
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
       with:
         task-definition: ${{ steps.task-def-prod.outputs.task-definition }}
@@ -170,40 +150,20 @@ jobs:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: us-east-1
-    - name: DEV - Download task definition
-      run: |
-        aws ecs describe-task-definition --task-definition syncing-server-js-worker-dev --query taskDefinition > task-definition.json
-    - name: DEV - Fill in the new version in the Amazon ECS task definition
-      run: |
-        jq '(.containerDefinitions[] | select(.name=="syncing-server-js-worker-dev") | .environment[] | select(.name=="VERSION")).value = "${{ github.sha }}"' task-definition.json > tmp.json && mv tmp.json task-definition.json
-    - name: DEV - Fill in the new image ID in the Amazon ECS task definition
-      id: task-def-dev
-      uses: aws-actions/amazon-ecs-render-task-definition@v1
-      with:
-        task-definition: task-definition.json
-        container-name: syncing-server-js-worker-dev
-        image: ${{ secrets.AWS_ECR_REGISTRY }}/syncing-server-js:${{ github.sha }}
-    - name: DEV - Deploy Amazon ECS task definition
-      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-      with:
-        task-definition: ${{ steps.task-def-dev.outputs.task-definition }}
-        service: syncing-server-js-worker-dev
-        cluster: dev
-        wait-for-service-stability: true
-    - name: PROD - Download task definition
+    - name: Download task definition
       run: |
         aws ecs describe-task-definition --task-definition syncing-server-js-worker-prod --query taskDefinition > task-definition.json
-    - name: PROD - Fill in the new version in the Amazon ECS task definition
+    - name: Fill in the new version in the Amazon ECS task definition
       run: |
         jq '(.containerDefinitions[] | select(.name=="syncing-server-js-worker-prod") | .environment[] | select(.name=="VERSION")).value = "${{ github.sha }}"' task-definition.json > tmp.json && mv tmp.json task-definition.json
-    - name: PROD - Fill in the new image ID in the Amazon ECS task definition
+    - name: Fill in the new image ID in the Amazon ECS task definition
       id: task-def-prod
       uses: aws-actions/amazon-ecs-render-task-definition@v1
       with:
         task-definition: task-definition.json
         container-name: syncing-server-js-worker-prod
         image: ${{ secrets.AWS_ECR_REGISTRY }}/syncing-server-js:${{ github.sha }}
-    - name: PROD - Deploy Amazon ECS task definition
+    - name: Deploy Amazon ECS task definition
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
       with:
         task-definition: ${{ steps.task-def-prod.outputs.task-definition }}
