@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.47.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.46.0...@standardnotes/domain-events@2.47.0) (2022-07-14)
+
+### Features
+
+* **domain-events:** add refund processed event ([0134553](https://github.com/standardnotes/server/commit/0134553cbb1a78eaa7c10d018a580506c981bde5))
+
 # [2.46.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.45.0...@standardnotes/domain-events@2.46.0) (2022-07-14)
 
 ### Features
