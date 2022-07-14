@@ -1,5 +1,5 @@
 export interface SubscriptionRateAdjustedEventPayload {
   userEmail: string
-  newRate: number
-  refundAmountInDollars: number
+  newRateFormatted: string
+  refundAmountInDollarsFormatted: string
 }
