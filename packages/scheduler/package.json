@@ -35,7 +35,7 @@
     "dayjs": "^1.11.3",
     "dotenv": "^16.0.1",
     "inversify": "5.0.5",
-    "ioredis": "^5.0.6",
+    "ioredis": "^5.2.0",
     "mysql2": "^2.3.3",
     "newrelic": "^8.14.1",
     "reflect-metadata": "^0.1.13",
