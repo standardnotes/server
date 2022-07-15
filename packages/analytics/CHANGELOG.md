@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.8.3](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.8.2...@standardnotes/analytics@1.8.3) (2022-07-15)
+
+### Bug Fixes
+
+* **analytics:** change send_command to bitop function ([7fd97fa](https://github.com/standardnotes/server/commit/7fd97fa1940b6aab6b235a1ae2cb6ed2aa6ae917))
+
 ## [1.8.2](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.8.1...@standardnotes/analytics@1.8.2) (2022-07-12)
 
 **Note:** Version bump only for package @standardnotes/analytics
