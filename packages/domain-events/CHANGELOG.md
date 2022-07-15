@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.50.1](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.50.0...@standardnotes/domain-events@2.50.1) (2022-07-15)
+
+### Bug Fixes
+
+* **domain-events:** add invoice numver to event payload ([e232913](https://github.com/standardnotes/server/commit/e23291359f704b3d7d9ed23e3f951c35992ec760))
+
 # [2.50.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.49.0...@standardnotes/domain-events@2.50.0) (2022-07-15)
 
 ### Features
