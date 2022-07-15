@@ -1,7 +1,7 @@
 import * as crypto from 'crypto'
 import * as winston from 'winston'
 import * as dayjs from 'dayjs'
-import cryptoRandomString from 'crypto-random-string'
+import * as cryptoRandomString from 'crypto-random-string'
 import { UAParser } from 'ua-parser-js'
 import { inject, injectable } from 'inversify'
 import { v4 as uuidv4 } from 'uuid'
