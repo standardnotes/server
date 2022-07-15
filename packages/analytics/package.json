@@ -30,7 +30,7 @@
     "@types/jest": "^28.1.4",
     "@typescript-eslint/eslint-plugin": "^5.30.0",
     "eslint-plugin-prettier": "^4.2.1",
-    "ioredis": "^4.28.5",
+    "ioredis": "^5.2.0",
     "jest": "^28.1.2",
     "ts-jest": "^28.0.5"
   },
