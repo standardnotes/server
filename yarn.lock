@@ -1860,7 +1860,7 @@ __metadata:
     axios: ^0.27.2
     bcryptjs: 2.4.3
     cors: 2.8.5
-    crypto-random-string: 3.3.0
+    crypto-random-string: ^5.0.0
     dayjs: ^1.11.3
     dotenv: ^16.0.1
     eslint: ^8.14.0
@@ -4305,15 +4305,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"crypto-random-string@npm:3.3.0":
-  version: 3.3.0
-  resolution: "crypto-random-string@npm:3.3.0"
-  dependencies:
-    type-fest: ^0.8.1
-  checksum: deff9866311a3a17ffd26ecdcebbbe9e1e12cf2fca5dd6e89993c9a03342d6da83f9f82cb0bfd7b31265d45eea710f376bc2af37bf3b053ef0cade920b8b04ba
-  languageName: node
-  linkType: hard
-
 "crypto-random-string@npm:^2.0.0":
   version: 2.0.0
   resolution: "crypto-random-string@npm:2.0.0"
@@ -4327,6 +4318,15 @@ __metadata:
   dependencies:
     type-fest: ^1.0.1
   checksum: 91f148f27bcc8582798f0fb3e75a09d9174557f39c3c40a89dd1bd70fb5a14a02548245aa26fa7d663c426ac5026f4729841231c84f9e30e8c8ece5e38656741
+  languageName: node
+  linkType: hard
+
+"crypto-random-string@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "crypto-random-string@npm:5.0.0"
+  dependencies:
+    type-fest: ^2.12.2
+  checksum: 42c8ad00764e865c7c8975b82b21d3a5b482ceaf141f04d76afa5537c718705b1c2c28082c69e71dba10a6a161bcd4b778e49ec2dbf031bc16dba361d7d2c9c6
   languageName: node
   linkType: hard
 
@@ -10530,7 +10530,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"type-fest@npm:^2.13.0":
+"type-fest@npm:^2.12.2, type-fest@npm:^2.13.0":
   version: 2.16.0
   resolution: "type-fest@npm:2.16.0"
   checksum: 897fc5f6833de5ade5c4841d034bdfb6aaa168f24f725354ad13320b2a463b9df03a7a664b836b4c3bc7d9f92b22a25c26fe24668a35caf3b7a9ea5fcb847b8d

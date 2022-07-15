@@ -49,7 +49,7 @@
     "axios": "^0.27.2",
     "bcryptjs": "2.4.3",
     "cors": "2.8.5",
-    "crypto-random-string": "3.3.0",
+    "crypto-random-string": "^5.0.0",
     "dayjs": "^1.11.3",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
