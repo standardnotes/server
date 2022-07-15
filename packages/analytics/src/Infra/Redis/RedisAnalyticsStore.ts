@@ -59,8 +59,7 @@ export class RedisAnalyticsStore implements AnalyticsStoreInterface {
 
     const diffKey = `bitmap:action:${activity}:timespan:${initialPeriodKey}-${subsequentPeriodKey}`
 
-    await this.redisClient.send_command(
-      'BITOP',
+    await this.redisClient.bitop(
       'AND',
       diffKey,
       `bitmap:action:${activity}:timespan:${initialPeriodKey}`,

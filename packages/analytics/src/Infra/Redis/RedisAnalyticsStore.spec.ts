@@ -23,7 +23,7 @@ describe('RedisAnalyticsStore', () => {
     redisClient.incr = jest.fn()
     redisClient.setbit = jest.fn()
     redisClient.getbit = jest.fn().mockReturnValue(1)
-    redisClient.send_command = jest.fn()
+    redisClient.bitop = jest.fn()
 
     periodKeyGenerator = {} as jest.Mocked<PeriodKeyGeneratorInterface>
     periodKeyGenerator.getPeriodKey = jest.fn().mockReturnValue('period-key')
@@ -50,8 +50,7 @@ describe('RedisAnalyticsStore', () => {
       ),
     ).toEqual(70)
 
-    expect(redisClient.send_command).toHaveBeenCalledWith(
-      'BITOP',
+    expect(redisClient.bitop).toHaveBeenCalledWith(
       'AND',
       'bitmap:action:editing-items:timespan:period-key-period-key',
       'bitmap:action:editing-items:timespan:period-key',
