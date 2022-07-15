@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.11.25](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.11.24...@standardnotes/auth-server@1.11.25) (2022-07-15)
+
+### Reverts
+
+* Revert "chore(deps): upgrade crypto-random-string" ([f25fa4b](https://github.com/standardnotes/server/commit/f25fa4ba1c1af6a51a48b08f17572fcf4be2e98a))
+
 ## [1.11.24](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.11.23...@standardnotes/auth-server@1.11.24) (2022-07-15)
 
 **Note:** Version bump only for package @standardnotes/auth-server
