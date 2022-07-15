@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.50.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.49.0...@standardnotes/domain-events@2.50.0) (2022-07-15)
+
+### Features
+
+* **domain-events:** add invoice generated event ([a42ff65](https://github.com/standardnotes/server/commit/a42ff6523f03b69b0645a04c8ceae1ae83151977))
+
 # [2.49.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.48.1...@standardnotes/domain-events@2.49.0) (2022-07-14)
 
 ### Features
