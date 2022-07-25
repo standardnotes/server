@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.7.0](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.6.0...@standardnotes/scheduler-server@1.7.0) (2022-07-25)
+
+### Features
+
+* **scheduler:** add creating discount apply/withdraw events ([7168435](https://github.com/standardnotes/server/commit/71684350e94053d884ae907e5d3deba4bc027f1b))
+* **scheduler:** add publishing discount apply/withdraw events ([48af9e7](https://github.com/standardnotes/server/commit/48af9e7c1cfb582389af83e15977b930bf067f8d))
+
 # [1.6.0](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.5.23...@standardnotes/scheduler-server@1.6.0) (2022-07-22)
 
 ### Features
