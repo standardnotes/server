@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.8.1](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.8.0...@standardnotes/scheduler-server@1.8.1) (2022-07-25)
+
+### Bug Fixes
+
+* **scheduler:** checking for predicates fullfillment on applying discount ([6374248](https://github.com/standardnotes/server/commit/637424813278b7dd81969e1783cbc38d1a916cab))
+
 # [1.8.0](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.7.0...@standardnotes/scheduler-server@1.8.0) (2022-07-25)
 
 ### Features
