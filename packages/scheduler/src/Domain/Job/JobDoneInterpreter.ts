@@ -49,6 +49,16 @@ export class JobDoneInterpreter implements JobDoneInterpreterInterface {
           await this.requestExitInterviewEmail(job.userIdentifier)
         }
         return
+      case JobName.APPLY_SUBSCRIPTION_DISCOUNT:
+        if (job.userIdentifierType === 'email') {
+          await this.requestDiscountApply(job.userIdentifier)
+        }
+        return
+      case JobName.WITHDRAW_SUBSCRIPTION_DISCOUNT:
+        if (job.userIdentifierType === 'email') {
+          await this.requestDiscountWithdraw(job.userIdentifier)
+        }
+        return
       default:
         return
     }
@@ -82,6 +92,24 @@ export class JobDoneInterpreter implements JobDoneInterpreterInterface {
         userEmail,
         messageIdentifier: EmailMessageIdentifier.EXIT_INTERVIEW,
         context: {},
+      }),
+    )
+  }
+
+  private async requestDiscountApply(userEmail: string): Promise<void> {
+    await this.domainEventPublisher.publish(
+      this.domainEventFactory.createDiscountApplyRequestedEvent({
+        userEmail,
+        discountCode: 'econ-10',
+      }),
+    )
+  }
+
+  private async requestDiscountWithdraw(userEmail: string): Promise<void> {
+    await this.domainEventPublisher.publish(
+      this.domainEventFactory.createDiscountWithdrawRequestedEvent({
+        userEmail,
+        discountCode: 'econ-10',
       }),
     )
   }

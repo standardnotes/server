@@ -1,4 +1,9 @@
-import { DomainEventPublisherInterface, EmailMessageRequestedEvent } from '@standardnotes/domain-events'
+import {
+  DiscountApplyRequestedEvent,
+  DiscountWithdrawRequestedEvent,
+  DomainEventPublisherInterface,
+  EmailMessageRequestedEvent,
+} from '@standardnotes/domain-events'
 import { PredicateName } from '@standardnotes/predicates'
 import 'reflect-metadata'
 import { DomainEventFactoryInterface } from '../Event/DomainEventFactoryInterface'
@@ -35,6 +40,12 @@ describe('JobDoneInterpreter', () => {
     domainEventFactory.createEmailMessageRequestedEvent = jest
       .fn()
       .mockReturnValue({} as jest.Mocked<EmailMessageRequestedEvent>)
+    domainEventFactory.createDiscountApplyRequestedEvent = jest
+      .fn()
+      .mockReturnValue({} as jest.Mocked<DiscountApplyRequestedEvent>)
+    domainEventFactory.createDiscountWithdrawRequestedEvent = jest
+      .fn()
+      .mockReturnValue({} as jest.Mocked<DiscountWithdrawRequestedEvent>)
 
     domainEventPublisher = {} as jest.Mocked<DomainEventPublisherInterface>
     domainEventPublisher.publish = jest.fn()
@@ -169,6 +180,64 @@ describe('JobDoneInterpreter', () => {
     await createInterpreter().interpret('1-2-3')
 
     expect(domainEventFactory.createEmailMessageRequestedEvent).not.toHaveBeenCalled()
+    expect(domainEventPublisher.publish).not.toHaveBeenCalled()
+  })
+
+  it('should request discount apply', async () => {
+    jobRepository.findOneByUuid = jest.fn().mockReturnValue({
+      name: JobName.APPLY_SUBSCRIPTION_DISCOUNT,
+      userIdentifier: 'test@test.te',
+      userIdentifierType: 'email',
+    } as jest.Mocked<Job>)
+
+    await createInterpreter().interpret('1-2-3')
+
+    expect(domainEventFactory.createDiscountApplyRequestedEvent).toHaveBeenCalledWith({
+      userEmail: 'test@test.te',
+      discountCode: 'econ-10',
+    })
+    expect(domainEventPublisher.publish).toHaveBeenCalled()
+  })
+
+  it('should not request discount apply if email is missing', async () => {
+    jobRepository.findOneByUuid = jest.fn().mockReturnValue({
+      name: JobName.APPLY_SUBSCRIPTION_DISCOUNT,
+      userIdentifier: '2-3-4',
+      userIdentifierType: 'uuid',
+    } as jest.Mocked<Job>)
+
+    await createInterpreter().interpret('1-2-3')
+
+    expect(domainEventFactory.createDiscountApplyRequestedEvent).not.toHaveBeenCalled()
+    expect(domainEventPublisher.publish).not.toHaveBeenCalled()
+  })
+
+  it('should request discount withdraw', async () => {
+    jobRepository.findOneByUuid = jest.fn().mockReturnValue({
+      name: JobName.WITHDRAW_SUBSCRIPTION_DISCOUNT,
+      userIdentifier: 'test@test.te',
+      userIdentifierType: 'email',
+    } as jest.Mocked<Job>)
+
+    await createInterpreter().interpret('1-2-3')
+
+    expect(domainEventFactory.createDiscountWithdrawRequestedEvent).toHaveBeenCalledWith({
+      userEmail: 'test@test.te',
+      discountCode: 'econ-10',
+    })
+    expect(domainEventPublisher.publish).toHaveBeenCalled()
+  })
+
+  it('should not request discount withdraw if email is missing', async () => {
+    jobRepository.findOneByUuid = jest.fn().mockReturnValue({
+      name: JobName.WITHDRAW_SUBSCRIPTION_DISCOUNT,
+      userIdentifier: '2-3-4',
+      userIdentifierType: 'uuid',
+    } as jest.Mocked<Job>)
+
+    await createInterpreter().interpret('1-2-3')
+
+    expect(domainEventFactory.createDiscountWithdrawRequestedEvent).not.toHaveBeenCalled()
     expect(domainEventPublisher.publish).not.toHaveBeenCalled()
   })
 
