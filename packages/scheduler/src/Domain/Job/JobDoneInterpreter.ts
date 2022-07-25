@@ -2,6 +2,7 @@ import { EmailMessageIdentifier } from '@standardnotes/common'
 import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
 import { PredicateName } from '@standardnotes/predicates'
 import { inject, injectable } from 'inversify'
+import { Logger } from 'winston'
 
 import TYPES from '../../Bootstrap/Types'
 import { DomainEventFactoryInterface } from '../Event/DomainEventFactoryInterface'
@@ -20,6 +21,7 @@ export class JobDoneInterpreter implements JobDoneInterpreterInterface {
     @inject(TYPES.PredicateRepository) private predicateRepository: PredicateRepositoryInterface,
     @inject(TYPES.DomainEventFactory) private domainEventFactory: DomainEventFactoryInterface,
     @inject(TYPES.DomainEventPublisher) private domainEventPublisher: DomainEventPublisherInterface,
+    @inject(TYPES.Logger) private logger: Logger,
   ) {}
 
   async interpret(jobUuid: string): Promise<void> {
@@ -29,14 +31,18 @@ export class JobDoneInterpreter implements JobDoneInterpreterInterface {
       return
     }
 
+    this.logger.info(`[${jobUuid}]${job.name}: Interpreting job as done.`)
+
     if (!(await this.predicatesAreFulfilled(job))) {
+      this.logger.info(`[${jobUuid}]${job.name}: predicates are not fulfilled.`)
+
       return
     }
 
     switch (job.name) {
       case JobName.ENCOURAGE_EMAIL_BACKUPS:
         if (job.userIdentifierType === 'email') {
-          await this.requestEmailBackupEncouragementEmail(job.userIdentifier)
+          await this.requestEmailBackupEncouragementEmail(job)
         }
         return
       case JobName.ENCOURAGE_SUBSCRIPTION_PURCHASING:
@@ -46,28 +52,32 @@ export class JobDoneInterpreter implements JobDoneInterpreterInterface {
         return
       case JobName.EXIT_INTERVIEW:
         if (job.userIdentifierType === 'email') {
-          await this.requestExitInterviewEmail(job.userIdentifier)
+          await this.requestExitInterviewEmail(job)
         }
         return
       case JobName.APPLY_SUBSCRIPTION_DISCOUNT:
         if (job.userIdentifierType === 'email' && job.userIdentifier.includes('@standardnotes.com')) {
-          await this.requestDiscountApply(job.userIdentifier)
+          await this.requestDiscountApply(job)
         }
         return
       case JobName.WITHDRAW_SUBSCRIPTION_DISCOUNT:
         if (job.userIdentifierType === 'email' && job.userIdentifier.includes('@standardnotes.com')) {
-          await this.requestDiscountWithdraw(job.userIdentifier)
+          await this.requestDiscountWithdraw(job)
         }
         return
       default:
+        this.logger.warn(`[${jobUuid}]${job.name}: job is not interpretable.`)
+
         return
     }
   }
 
-  private async requestEmailBackupEncouragementEmail(userEmail: string): Promise<void> {
+  private async requestEmailBackupEncouragementEmail(job: Job): Promise<void> {
+    this.logger.info(`[${job.uuid}]${job.name}: requesting email backup encouragement email.`)
+
     await this.domainEventPublisher.publish(
       this.domainEventFactory.createEmailMessageRequestedEvent({
-        userEmail,
+        userEmail: job.userIdentifier,
         messageIdentifier: EmailMessageIdentifier.ENCOURAGE_EMAIL_BACKUPS,
         context: {},
       }),
@@ -75,6 +85,8 @@ export class JobDoneInterpreter implements JobDoneInterpreterInterface {
   }
 
   private async requestSubscriptionPurchaseEncouragementEmail(job: Job): Promise<void> {
+    this.logger.info(`[${job.uuid}]${job.name}: requesting subscription purchase encouragement email.`)
+
     await this.domainEventPublisher.publish(
       this.domainEventFactory.createEmailMessageRequestedEvent({
         userEmail: job.userIdentifier,
@@ -86,29 +98,35 @@ export class JobDoneInterpreter implements JobDoneInterpreterInterface {
     )
   }
 
-  private async requestExitInterviewEmail(userEmail: string): Promise<void> {
+  private async requestExitInterviewEmail(job: Job): Promise<void> {
+    this.logger.info(`[${job.uuid}]${job.name}: requesting exit interview email.`)
+
     await this.domainEventPublisher.publish(
       this.domainEventFactory.createEmailMessageRequestedEvent({
-        userEmail,
+        userEmail: job.userIdentifier,
         messageIdentifier: EmailMessageIdentifier.EXIT_INTERVIEW,
         context: {},
       }),
     )
   }
 
-  private async requestDiscountApply(userEmail: string): Promise<void> {
+  private async requestDiscountApply(job: Job): Promise<void> {
+    this.logger.info(`[${job.uuid}]${job.name}: requesting discount applying.`)
+
     await this.domainEventPublisher.publish(
       this.domainEventFactory.createDiscountApplyRequestedEvent({
-        userEmail,
+        userEmail: job.userIdentifier,
         discountCode: 'econ-10',
       }),
     )
   }
 
-  private async requestDiscountWithdraw(userEmail: string): Promise<void> {
+  private async requestDiscountWithdraw(job: Job): Promise<void> {
+    this.logger.info(`[${job.uuid}]${job.name}: requesting discount withdraw.`)
+
     await this.domainEventPublisher.publish(
       this.domainEventFactory.createDiscountWithdrawRequestedEvent({
-        userEmail,
+        userEmail: job.userIdentifier,
         discountCode: 'econ-10',
       }),
     )

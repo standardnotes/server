@@ -6,6 +6,7 @@ import {
 } from '@standardnotes/domain-events'
 import { PredicateName } from '@standardnotes/predicates'
 import 'reflect-metadata'
+import { Logger } from 'winston'
 import { DomainEventFactoryInterface } from '../Event/DomainEventFactoryInterface'
 import { Predicate } from '../Predicate/Predicate'
 import { PredicateRepositoryInterface } from '../Predicate/PredicateRepositoryInterface'
@@ -23,9 +24,10 @@ describe('JobDoneInterpreter', () => {
   let domainEventFactory: DomainEventFactoryInterface
   let domainEventPublisher: DomainEventPublisherInterface
   let job: Job
+  let logger: Logger
 
   const createInterpreter = () =>
-    new JobDoneInterpreter(jobRepository, predicateRepository, domainEventFactory, domainEventPublisher)
+    new JobDoneInterpreter(jobRepository, predicateRepository, domainEventFactory, domainEventPublisher, logger)
 
   beforeEach(() => {
     job = {} as jest.Mocked<Job>
@@ -49,6 +51,10 @@ describe('JobDoneInterpreter', () => {
 
     domainEventPublisher = {} as jest.Mocked<DomainEventPublisherInterface>
     domainEventPublisher.publish = jest.fn()
+
+    logger = {} as jest.Mocked<Logger>
+    logger.info = jest.fn()
+    logger.warn = jest.fn()
   })
 
   it('should do nothing if job is not found', async () => {
