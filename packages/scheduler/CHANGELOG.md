@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.9.0](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.8.2...@standardnotes/scheduler-server@1.9.0) (2022-07-25)
+
+### Features
+
+* **scheduler:** add job interpreting logs ([bf12687](https://github.com/standardnotes/server/commit/bf12687f63738a6eac46ab1778826de5d076e4ab))
+
 ## [1.8.2](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.8.1...@standardnotes/scheduler-server@1.8.2) (2022-07-25)
 
 **Note:** Version bump only for package @standardnotes/scheduler-server
