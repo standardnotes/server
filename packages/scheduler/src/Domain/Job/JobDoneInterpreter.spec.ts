@@ -189,6 +189,11 @@ describe('JobDoneInterpreter', () => {
       userIdentifier: 'test@standardnotes.com',
       userIdentifierType: 'email',
     } as jest.Mocked<Job>)
+    predicateRepository.findByJobUuid = jest
+      .fn()
+      .mockReturnValue([
+        { name: PredicateName.SubscriptionPurchased, status: PredicateStatus.Denied } as jest.Mocked<Predicate>,
+      ])
 
     await createInterpreter().interpret('1-2-3')
 

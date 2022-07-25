@@ -124,6 +124,7 @@ export class JobDoneInterpreter implements JobDoneInterpreterInterface {
           PredicateStatus.Denied
         )
       case JobName.ENCOURAGE_SUBSCRIPTION_PURCHASING:
+      case JobName.APPLY_SUBSCRIPTION_DISCOUNT:
         return (
           predicates.find((predicate) => predicate.name === PredicateName.SubscriptionPurchased)?.status ===
           PredicateStatus.Denied
