@@ -3,6 +3,7 @@ import {
   DomainEventPublisherInterface,
   PredicateVerificationRequestedEvent,
 } from '@standardnotes/domain-events'
+import { PredicateVerificationResult } from '@standardnotes/predicates'
 import { inject, injectable } from 'inversify'
 import { Logger } from 'winston'
 
@@ -28,7 +29,13 @@ export class PredicateVerificationRequestedEventHandler implements DomainEventHa
     if (event.meta.correlation.userIdentifierType === 'email') {
       const user = await this.userRepository.findOneByEmail(event.meta.correlation.userIdentifier)
       if (user === null) {
-        this.logger.warn(`Could not find user ${event.meta.correlation.userIdentifier} for predicate verification`)
+        await this.domainEventPublisher.publish(
+          this.domainEventFactory.createPredicateVerifiedEvent({
+            predicate: event.payload.predicate,
+            predicateVerificationResult: PredicateVerificationResult.CouldNotBeDetermined,
+            userUuid,
+          }),
+        )
 
         return
       }

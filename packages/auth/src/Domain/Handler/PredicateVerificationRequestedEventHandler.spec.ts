@@ -96,7 +96,7 @@ describe('PredicateVerificationRequestedEventHandler', () => {
     expect(domainEventPublisher.publish).toHaveBeenCalled()
   })
 
-  it('should not verify a predicate if user is missing', async () => {
+  it('should mark a predicate verification with undetermined result if user is missing', async () => {
     event.meta = {
       correlation: {
         userIdentifier: 'test@test.te',
@@ -110,6 +110,6 @@ describe('PredicateVerificationRequestedEventHandler', () => {
     await createHandler().handle(event)
 
     expect(verifyPredicate.execute).not.toHaveBeenCalled()
-    expect(domainEventPublisher.publish).not.toHaveBeenCalled()
+    expect(domainEventPublisher.publish).toHaveBeenCalled()
   })
 })
