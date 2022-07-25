@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.11.31](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.11.30...@standardnotes/auth-server@1.11.31) (2022-07-25)
+
+### Bug Fixes
+
+* **auth:** marking predicate verification result if user is not existing ([40996f9](https://github.com/standardnotes/server/commit/40996f9d485686f92ee57fe6337102d94378b39b))
+
 ## [1.11.30](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.11.29...@standardnotes/auth-server@1.11.30) (2022-07-25)
 
 **Note:** Version bump only for package @standardnotes/auth-server
