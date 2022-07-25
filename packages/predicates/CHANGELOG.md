@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/standardnotes/server/compare/@standardnotes/predicates@1.2.6...@standardnotes/predicates@1.3.0) (2022-07-25)
+
+### Features
+
+* **predicates:** add could-not-be-determined predicate verification result ([6642641](https://github.com/standardnotes/server/commit/6642641c1161986a1c1186698f6b8151ce3aee87))
+
 ## [1.2.6](https://github.com/standardnotes/server/compare/@standardnotes/predicates@1.2.5...@standardnotes/predicates@1.2.6) (2022-07-14)
 
 **Note:** Version bump only for package @standardnotes/predicates
