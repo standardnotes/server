@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.8.0](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.7.0...@standardnotes/scheduler-server@1.8.0) (2022-07-25)
+
+### Features
+
+* **scheduler:** add feature flag behind applying and withdrawing discounts ([0a5b956](https://github.com/standardnotes/server/commit/0a5b956cb9586d353ac68c79e8473d74f8d9796a))
+
 # [1.7.0](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.6.0...@standardnotes/scheduler-server@1.7.0) (2022-07-25)
 
 ### Features
