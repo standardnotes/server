@@ -1,5 +1,7 @@
 import { EmailMessageIdentifier } from '@standardnotes/common'
 import {
+  DiscountApplyRequestedEvent,
+  DiscountWithdrawRequestedEvent,
   DomainEventService,
   EmailMessageRequestedEvent,
   PredicateVerificationRequestedEvent,
@@ -15,6 +17,39 @@ import { DomainEventFactoryInterface } from './DomainEventFactoryInterface'
 @injectable()
 export class DomainEventFactory implements DomainEventFactoryInterface {
   constructor(@inject(TYPES.Timer) private timer: TimerInterface) {}
+
+  createDiscountApplyRequestedEvent(dto: { userEmail: string; discountCode: string }): DiscountApplyRequestedEvent {
+    return {
+      type: 'DISCOUNT_APPLY_REQUESTED',
+      createdAt: this.timer.getUTCDate(),
+      meta: {
+        correlation: {
+          userIdentifier: dto.userEmail,
+          userIdentifierType: 'email',
+        },
+        origin: DomainEventService.Scheduler,
+      },
+      payload: dto,
+    }
+  }
+
+  createDiscountWithdrawRequestedEvent(dto: {
+    userEmail: string
+    discountCode: string
+  }): DiscountWithdrawRequestedEvent {
+    return {
+      type: 'DISCOUNT_WITHDRAW_REQUESTED',
+      createdAt: this.timer.getUTCDate(),
+      meta: {
+        correlation: {
+          userIdentifier: dto.userEmail,
+          userIdentifierType: 'email',
+        },
+        origin: DomainEventService.Scheduler,
+      },
+      payload: dto,
+    }
+  }
 
   createEmailMessageRequestedEvent(dto: {
     userEmail: string

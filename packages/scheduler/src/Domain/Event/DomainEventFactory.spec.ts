@@ -19,6 +19,52 @@ describe('DomainEventFactory', () => {
     timer.getUTCDate = jest.fn().mockReturnValue(new Date(1))
   })
 
+  it('should create a DISCOUNT_APPLY_REQUESTED event', () => {
+    expect(
+      createFactory().createDiscountApplyRequestedEvent({
+        userEmail: 'test@test.te',
+        discountCode: 'off-10',
+      }),
+    ).toEqual({
+      createdAt: expect.any(Date),
+      meta: {
+        correlation: {
+          userIdentifier: 'test@test.te',
+          userIdentifierType: 'email',
+        },
+        origin: 'scheduler',
+      },
+      payload: {
+        userEmail: 'test@test.te',
+        discountCode: 'off-10',
+      },
+      type: 'DISCOUNT_APPLY_REQUESTED',
+    })
+  })
+
+  it('should create a DISCOUNT_WITHDRAW_REQUESTED event', () => {
+    expect(
+      createFactory().createDiscountWithdrawRequestedEvent({
+        userEmail: 'test@test.te',
+        discountCode: 'off-10',
+      }),
+    ).toEqual({
+      createdAt: expect.any(Date),
+      meta: {
+        correlation: {
+          userIdentifier: 'test@test.te',
+          userIdentifierType: 'email',
+        },
+        origin: 'scheduler',
+      },
+      payload: {
+        userEmail: 'test@test.te',
+        discountCode: 'off-10',
+      },
+      type: 'DISCOUNT_WITHDRAW_REQUESTED',
+    })
+  })
+
   it('should create a EMAIL_MESSAGE_REQUESTED event', () => {
     expect(
       createFactory().createEmailMessageRequestedEvent({
