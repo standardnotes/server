@@ -186,17 +186,30 @@ describe('JobDoneInterpreter', () => {
   it('should request discount apply', async () => {
     jobRepository.findOneByUuid = jest.fn().mockReturnValue({
       name: JobName.APPLY_SUBSCRIPTION_DISCOUNT,
-      userIdentifier: 'test@test.te',
+      userIdentifier: 'test@standardnotes.com',
       userIdentifierType: 'email',
     } as jest.Mocked<Job>)
 
     await createInterpreter().interpret('1-2-3')
 
     expect(domainEventFactory.createDiscountApplyRequestedEvent).toHaveBeenCalledWith({
-      userEmail: 'test@test.te',
+      userEmail: 'test@standardnotes.com',
       discountCode: 'econ-10',
     })
     expect(domainEventPublisher.publish).toHaveBeenCalled()
+  })
+
+  it('should not request discount apply if email is not internal', async () => {
+    jobRepository.findOneByUuid = jest.fn().mockReturnValue({
+      name: JobName.APPLY_SUBSCRIPTION_DISCOUNT,
+      userIdentifier: 'test@test.com',
+      userIdentifierType: 'email',
+    } as jest.Mocked<Job>)
+
+    await createInterpreter().interpret('1-2-3')
+
+    expect(domainEventFactory.createDiscountApplyRequestedEvent).not.toHaveBeenCalled()
+    expect(domainEventPublisher.publish).not.toHaveBeenCalled()
   })
 
   it('should not request discount apply if email is missing', async () => {
@@ -215,17 +228,30 @@ describe('JobDoneInterpreter', () => {
   it('should request discount withdraw', async () => {
     jobRepository.findOneByUuid = jest.fn().mockReturnValue({
       name: JobName.WITHDRAW_SUBSCRIPTION_DISCOUNT,
-      userIdentifier: 'test@test.te',
+      userIdentifier: 'test@standardnotes.com',
       userIdentifierType: 'email',
     } as jest.Mocked<Job>)
 
     await createInterpreter().interpret('1-2-3')
 
     expect(domainEventFactory.createDiscountWithdrawRequestedEvent).toHaveBeenCalledWith({
-      userEmail: 'test@test.te',
+      userEmail: 'test@standardnotes.com',
       discountCode: 'econ-10',
     })
     expect(domainEventPublisher.publish).toHaveBeenCalled()
+  })
+
+  it('should not request discount withdraw if email is not internal', async () => {
+    jobRepository.findOneByUuid = jest.fn().mockReturnValue({
+      name: JobName.WITHDRAW_SUBSCRIPTION_DISCOUNT,
+      userIdentifier: 'test@test.com',
+      userIdentifierType: 'email',
+    } as jest.Mocked<Job>)
+
+    await createInterpreter().interpret('1-2-3')
+
+    expect(domainEventFactory.createDiscountWithdrawRequestedEvent).not.toHaveBeenCalled()
+    expect(domainEventPublisher.publish).not.toHaveBeenCalled()
   })
 
   it('should not request discount withdraw if email is missing', async () => {
