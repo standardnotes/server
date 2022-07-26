@@ -205,7 +205,7 @@ describe('JobDoneInterpreter', () => {
 
     expect(domainEventFactory.createDiscountApplyRequestedEvent).toHaveBeenCalledWith({
       userEmail: 'test@standardnotes.com',
-      discountCode: 'econ-10',
+      discountCode: 'limited-10',
     })
     expect(domainEventPublisher.publish).toHaveBeenCalled()
   })
@@ -247,7 +247,7 @@ describe('JobDoneInterpreter', () => {
 
     expect(domainEventFactory.createDiscountWithdrawRequestedEvent).toHaveBeenCalledWith({
       userEmail: 'test@standardnotes.com',
-      discountCode: 'econ-10',
+      discountCode: 'limited-10',
     })
     expect(domainEventPublisher.publish).toHaveBeenCalled()
   })
