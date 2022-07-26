@@ -3,4 +3,5 @@ export enum AnalyticsActivity {
   Login = 'login',
   EmailUnbackedUpData = 'email-unbacked-up-data',
   EmailBackup = 'email-backup',
+  LimitedDiscountOfferPurchased = 'limited-discount-offer-purchased',
 }
