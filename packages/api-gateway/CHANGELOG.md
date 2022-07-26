@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.7.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.6.30...@standardnotes/api-gateway@1.7.0) (2022-07-26)
+
+### Features
+
+* **api-gateway:** add limited discount offer purchased to analytics report ([d203ce1](https://github.com/standardnotes/api-gateway/commit/d203ce188af4f775e01bc1752d4c6d84fc5f1675))
+
 ## [1.6.30](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.6.29...@standardnotes/api-gateway@1.6.30) (2022-07-26)
 
 **Note:** Version bump only for package @standardnotes/api-gateway
