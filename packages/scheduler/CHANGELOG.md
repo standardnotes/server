@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.9.1](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.9.0...@standardnotes/scheduler-server@1.9.1) (2022-07-26)
+
+### Bug Fixes
+
+* **scheduler:** eliminate read/write concurrency hazzard while updating predicate status ([4ab0d24](https://github.com/standardnotes/server/commit/4ab0d24d24b62babf5d0e36fbcb3a6364abb71bc))
+
 # [1.9.0](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.8.2...@standardnotes/scheduler-server@1.9.0) (2022-07-25)
 
 ### Features
