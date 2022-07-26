@@ -7,4 +7,5 @@ export interface SubscriptionPurchasedEventPayload {
   subscriptionExpiresAt: number
   timestamp: number
   offline: boolean
+  discountCode: string | null
 }
