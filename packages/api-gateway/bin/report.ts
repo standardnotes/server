@@ -46,6 +46,14 @@ const requestReport = async (
             Period.Yesterday,
           ),
         },
+        {
+          name: AnalyticsActivity.LimitedDiscountOfferPurchased,
+          retention: 0,
+          totalCount: await analyticsStore.calculateActivityTotalCount(
+            AnalyticsActivity.LimitedDiscountOfferPurchased,
+            Period.Yesterday,
+          ),
+        },
       ],
     },
   }
