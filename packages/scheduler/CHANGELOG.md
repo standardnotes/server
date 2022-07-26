@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.9.2](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.9.1...@standardnotes/scheduler-server@1.9.2) (2022-07-26)
+
+### Bug Fixes
+
+* **scheduler:** change the discount code to an absolute discount ([1fa94ef](https://github.com/standardnotes/server/commit/1fa94efa02f169ee25d11e9403ab3368b696cc33))
+
 ## [1.9.1](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.9.0...@standardnotes/scheduler-server@1.9.1) (2022-07-26)
 
 ### Bug Fixes
