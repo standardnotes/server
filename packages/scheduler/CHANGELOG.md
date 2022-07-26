@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.10.0](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.9.2...@standardnotes/scheduler-server@1.10.0) (2022-07-26)
+
+### Features
+
+* **scheduler:** enable discount applying and withdraw for everyone ([04bf414](https://github.com/standardnotes/server/commit/04bf414de41ecba255b068fd8e72bc569ace9ed1))
+
 ## [1.9.2](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.9.1...@standardnotes/scheduler-server@1.9.2) (2022-07-26)
 
 ### Bug Fixes

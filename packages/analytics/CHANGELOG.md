@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.9.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.8.3...@standardnotes/analytics@1.9.0) (2022-07-26)
+
+### Features
+
+* **analytics:** add limited discount offer purchased activity ([13201e7](https://github.com/standardnotes/server/commit/13201e7a9ec875796f527b2c500cf631345c36dd))
+
 ## [1.8.3](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.8.2...@standardnotes/analytics@1.8.3) (2022-07-15)
 
 ### Bug Fixes

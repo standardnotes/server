@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.12.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.11.31...@standardnotes/auth-server@1.12.0) (2022-07-26)
+
+### Features
+
+* **auth:** add analytics for purchased subscription with a limited discount offer ([e936ac4](https://github.com/standardnotes/server/commit/e936ac4ce18fa43e47a50462c44f63a9ba1c1aa4))
+
 ## [1.11.31](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.11.30...@standardnotes/auth-server@1.11.31) (2022-07-25)
 
 ### Bug Fixes

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.51.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.50.2...@standardnotes/domain-events@2.51.0) (2022-07-26)
+
+### Features
+
+* **domain-events:** add discount code to subscription purchased event ([28e1c65](https://github.com/standardnotes/server/commit/28e1c656312ae9a7c4afec1aa65bb104f788b8b6))
+
 ## [2.50.2](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.50.1...@standardnotes/domain-events@2.50.2) (2022-07-25)
 
 **Note:** Version bump only for package @standardnotes/domain-events
