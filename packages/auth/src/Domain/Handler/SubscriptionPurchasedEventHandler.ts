@@ -13,6 +13,7 @@ import { OfflineUserSubscription } from '../Subscription/OfflineUserSubscription
 import { OfflineUserSubscriptionRepositoryInterface } from '../Subscription/OfflineUserSubscriptionRepositoryInterface'
 import { UserSubscriptionType } from '../Subscription/UserSubscriptionType'
 import { SubscriptionSettingServiceInterface } from '../Setting/SubscriptionSettingServiceInterface'
+import { AnalyticsActivity, AnalyticsStoreInterface, Period } from '@standardnotes/analytics'
 
 @injectable()
 export class SubscriptionPurchasedEventHandler implements DomainEventHandlerInterface {
@@ -23,6 +24,7 @@ export class SubscriptionPurchasedEventHandler implements DomainEventHandlerInte
     private offlineUserSubscriptionRepository: OfflineUserSubscriptionRepositoryInterface,
     @inject(TYPES.RoleService) private roleService: RoleServiceInterface,
     @inject(TYPES.SubscriptionSettingService) private subscriptionSettingService: SubscriptionSettingServiceInterface,
+    @inject(TYPES.AnalyticsStore) private analyticsStore: AnalyticsStoreInterface,
     @inject(TYPES.Logger) private logger: Logger,
   ) {}
 
@@ -62,6 +64,16 @@ export class SubscriptionPurchasedEventHandler implements DomainEventHandlerInte
       userSubscription,
       event.payload.subscriptionName,
     )
+
+    const limitedDiscountPurchased = event.payload.discountCode === 'limited-10'
+    if (limitedDiscountPurchased) {
+      const analyticsEntity = await user.analyticsEntity
+      if (analyticsEntity) {
+        await this.analyticsStore.markActivity([AnalyticsActivity.LimitedDiscountOfferPurchased], analyticsEntity.id, [
+          Period.Today,
+        ])
+      }
+    }
   }
 
   private async addUserRole(user: User, subscriptionName: SubscriptionName): Promise<void> {

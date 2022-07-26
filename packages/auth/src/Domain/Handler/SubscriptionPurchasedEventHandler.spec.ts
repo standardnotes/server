@@ -16,6 +16,8 @@ import { OfflineUserSubscriptionRepositoryInterface } from '../Subscription/Offl
 import { OfflineUserSubscription } from '../Subscription/OfflineUserSubscription'
 import { SubscriptionSettingServiceInterface } from '../Setting/SubscriptionSettingServiceInterface'
 import { UserSubscriptionType } from '../Subscription/UserSubscriptionType'
+import { AnalyticsStoreInterface, Period } from '@standardnotes/analytics'
+import { AnalyticsEntity } from '../Analytics/AnalyticsEntity'
 
 describe('SubscriptionPurchasedEventHandler', () => {
   let userRepository: UserRepositoryInterface
@@ -29,6 +31,7 @@ describe('SubscriptionPurchasedEventHandler', () => {
   let event: SubscriptionPurchasedEvent
   let subscriptionExpiresAt: number
   let subscriptionSettingService: SubscriptionSettingServiceInterface
+  let analyticsStore: AnalyticsStoreInterface
   let timestamp: number
 
   const createHandler = () =>
@@ -38,6 +41,7 @@ describe('SubscriptionPurchasedEventHandler', () => {
       offlineUserSubscriptionRepository,
       roleService,
       subscriptionSettingService,
+      analyticsStore,
       logger,
     )
 
@@ -83,10 +87,14 @@ describe('SubscriptionPurchasedEventHandler', () => {
       subscriptionExpiresAt,
       timestamp: dayjs.utc().valueOf(),
       offline: false,
+      discountCode: null,
     }
 
     subscriptionSettingService = {} as jest.Mocked<SubscriptionSettingServiceInterface>
     subscriptionSettingService.applyDefaultSubscriptionSettingsForSubscription = jest.fn()
+
+    analyticsStore = {} as jest.Mocked<AnalyticsStoreInterface>
+    analyticsStore.markActivity = jest.fn()
 
     logger = {} as jest.Mocked<Logger>
     logger.info = jest.fn()
@@ -132,6 +140,28 @@ describe('SubscriptionPurchasedEventHandler', () => {
       updatedAt: expect.any(Number),
       cancelled: false,
     })
+  })
+
+  it('should update analytics on limited discount offer purchasing', async () => {
+    const analyticsEntity = { id: 3 } as jest.Mocked<AnalyticsEntity>
+
+    user = {
+      uuid: '123',
+      email: 'test@test.com',
+      roles: Promise.resolve([
+        {
+          name: RoleName.CoreUser,
+        },
+      ]),
+      analyticsEntity: Promise.resolve(analyticsEntity),
+    } as jest.Mocked<User>
+    userRepository.findOneByEmail = jest.fn().mockReturnValue(user)
+
+    event.payload.discountCode = 'limited-10'
+
+    await createHandler().handle(event)
+
+    expect(analyticsStore.markActivity).toHaveBeenCalledWith(['limited-discount-offer-purchased'], 3, [Period.Today])
   })
 
   it('should create an offline subscription', async () => {
