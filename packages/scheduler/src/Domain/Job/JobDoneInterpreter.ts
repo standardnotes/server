@@ -56,12 +56,12 @@ export class JobDoneInterpreter implements JobDoneInterpreterInterface {
         }
         return
       case JobName.APPLY_SUBSCRIPTION_DISCOUNT:
-        if (job.userIdentifierType === 'email' && job.userIdentifier.includes('@standardnotes.com')) {
+        if (job.userIdentifierType === 'email') {
           await this.requestDiscountApply(job)
         }
         return
       case JobName.WITHDRAW_SUBSCRIPTION_DISCOUNT:
-        if (job.userIdentifierType === 'email' && job.userIdentifier.includes('@standardnotes.com')) {
+        if (job.userIdentifierType === 'email') {
           await this.requestDiscountWithdraw(job)
         }
         return
