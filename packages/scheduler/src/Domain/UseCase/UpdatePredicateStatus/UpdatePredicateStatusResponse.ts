@@ -1,6 +1,3 @@
-export type UpdatePredicateStatusResponse =
-  | {
-      success: true
-      allPredicatesChecked: boolean
-    }
-  | { success: false }
+export type UpdatePredicateStatusResponse = {
+  success: boolean
+}
