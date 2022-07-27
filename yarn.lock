@@ -1789,7 +1789,7 @@ __metadata:
     eslint: ^8.14.0
     eslint-plugin-prettier: ^4.0.0
     express: ^4.18.1
-    helmet: 4.4.1
+    helmet: ^5.1.1
     inversify: ^6.0.1
     inversify-express-utils: ^6.4.3
     ioredis: ^5.2.0
@@ -2039,7 +2039,7 @@ __metadata:
     eslint-plugin-prettier: ^4.0.0
     express: ^4.18.1
     express-winston: ^4.0.5
-    helmet: ^4.3.1
+    helmet: ^5.1.1
     inversify: ^6.0.1
     inversify-express-utils: ^6.4.3
     ioredis: ^5.2.0
@@ -2263,7 +2263,7 @@ __metadata:
     eslint: ^8.14.0
     eslint-plugin-prettier: ^4.0.0
     express: ^4.18.1
-    helmet: 4.3.1
+    helmet: ^5.1.1
     inversify: ^6.0.1
     inversify-express-utils: ^6.4.3
     ioredis: ^5.2.0
@@ -5610,24 +5610,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"helmet@npm:4.3.1":
-  version: 4.3.1
-  resolution: "helmet@npm:4.3.1"
-  checksum: 47f59d8b9935eec24dadc5ce83bb7c149fc72f9355d3655babf0518740326b97fb83dc5f566cdcaf97753988003973848eb336ad3c784803a13e5056bca92bf7
-  languageName: node
-  linkType: hard
-
-"helmet@npm:4.4.1":
-  version: 4.4.1
-  resolution: "helmet@npm:4.4.1"
-  checksum: cfe385e185e1ef6e4cd2ade4c54e160b05dd0454f270a663c528a8666402cbcad14e0ff0df09567fa62b0b4ac3371bbd1c8a253f6e7af37656a22339fe98c869
-  languageName: node
-  linkType: hard
-
-"helmet@npm:^4.3.1":
-  version: 4.6.0
-  resolution: "helmet@npm:4.6.0"
-  checksum: 139ad678d1cab207b043c206f50f6744eff2ef1f463e4626d36718b45b337485c77d10260ef9d89d292fa678da5153d86b08172b3b365cc8e680241015ed3a49
+"helmet@npm:^5.1.1":
+  version: 5.1.1
+  resolution: "helmet@npm:5.1.1"
+  checksum: b72ba26cc431804ad3b8ecdc18db95409a492cbb7a7e825efc27fc502b9433fec39fc083f2aad4fe7ed1a89a4287560b59f4435f9689eebbae6a2b61a1ec1b7d
   languageName: node
   linkType: hard
 

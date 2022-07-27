@@ -8,7 +8,7 @@ import * as busboy from 'connect-busboy'
 import '../src/Controller/HealthCheckController'
 import '../src/Controller/FilesController'
 
-import * as helmet from 'helmet'
+import helmet from 'helmet'
 import * as cors from 'cors'
 import { urlencoded, json, raw, Request, Response, NextFunction, RequestHandler, ErrorRequestHandler } from 'express'
 import * as winston from 'winston'

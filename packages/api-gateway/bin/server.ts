@@ -23,7 +23,7 @@ import '../src/Controller/v1/SubscriptionInvitesController'
 import '../src/Controller/v2/PaymentsControllerV2'
 import '../src/Controller/v2/ActionsControllerV2'
 
-import * as helmet from 'helmet'
+import helmet from 'helmet'
 import * as cors from 'cors'
 import { text, json, Request, Response, NextFunction, RequestHandler, ErrorRequestHandler } from 'express'
 import * as winston from 'winston'
