@@ -1797,7 +1797,7 @@ __metadata:
     jsonwebtoken: 8.5.1
     newrelic: ^8.14.1
     nodemon: ^2.0.19
-    npm-check-updates: ^15.3.3
+    npm-check-updates: ^16.0.1
     prettyjson: ^1.2.5
     reflect-metadata: 0.1.13
     ts-jest: ^28.0.5
@@ -1866,7 +1866,7 @@ __metadata:
     mysql2: ^2.3.3
     newrelic: ^8.14.1
     nodemon: ^2.0.19
-    npm-check-updates: ^15.3.3
+    npm-check-updates: ^16.0.1
     otplib: 12.0.1
     prettyjson: ^1.2.5
     reflect-metadata: 0.1.13
@@ -2047,7 +2047,7 @@ __metadata:
     jsonwebtoken: ^8.5.1
     newrelic: ^8.14.1
     nodemon: ^2.0.19
-    npm-check-updates: ^15.3.3
+    npm-check-updates: ^16.0.1
     prettyjson: ^1.2.5
     reflect-metadata: ^0.1.13
     ts-jest: ^28.0.5
@@ -2132,7 +2132,7 @@ __metadata:
     jest: ^28.1.2
     mysql2: ^2.3.3
     newrelic: ^8.14.1
-    npm-check-updates: ^15.3.3
+    npm-check-updates: ^16.0.1
     reflect-metadata: ^0.1.13
     ts-jest: ^28.0.5
     typeorm: ^0.3.6
@@ -2174,7 +2174,7 @@ __metadata:
     eslint-config-prettier: ^8.5.0
     ini: ^3.0.0
     newrelic: ^8.14.1
-    npm-check-updates: ^15.3.3
+    npm-check-updates: ^16.0.1
     prettier: ^2.7.1
     ts-node: ^10.8.1
     typescript: ^4.7.4
@@ -2272,7 +2272,7 @@ __metadata:
     mysql2: ^2.3.3
     newrelic: ^8.14.1
     nodemon: ^2.0.19
-    npm-check-updates: ^15.3.3
+    npm-check-updates: ^16.0.1
     prettyjson: ^1.2.5
     reflect-metadata: 0.1.13
     ts-jest: ^28.0.5
@@ -7838,9 +7838,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"npm-check-updates@npm:^15.3.3":
-  version: 15.3.3
-  resolution: "npm-check-updates@npm:15.3.3"
+"npm-check-updates@npm:^16.0.1":
+  version: 16.0.1
+  resolution: "npm-check-updates@npm:16.0.1"
   dependencies:
     chalk: ^5.0.1
     cli-table: ^0.3.11
@@ -7872,7 +7872,7 @@ __metadata:
   bin:
     ncu: build/src/bin/cli.js
     npm-check-updates: build/src/bin/cli.js
-  checksum: 3ee33fe369961d9548cdfde50085540e432a45a1166df4c1e6bacd5c25d36761efd156f6f358d1a51dd10db09d030106f87edec4d4a16637e35c09549a919cd5
+  checksum: 1e747421f3d34055183037335437db91cd300448dccaad305925499719d4d34e6c1adfa3ce35a178f209106a40dcd57da088d9125dab2bd125ae54f5ae1c131c
   languageName: node
   linkType: hard
 

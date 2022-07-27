@@ -122,7 +122,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["eslint-config-prettier", "virtual:8859b278716fedf3e7458b5628625f7e35678c418626878559a0b816445001b7e24c55546f4677ba4c20b521aa0cf52cc33ac07deff171e383ada6eeab69933f#npm:8.5.0"],\
             ["ini", "npm:3.0.0"],\
             ["newrelic", "npm:8.14.1"],\
-            ["npm-check-updates", "npm:15.3.3"],\
+            ["npm-check-updates", "npm:16.0.1"],\
             ["prettier", "npm:2.7.1"],\
             ["ts-node", "virtual:c0eab07e71af57f5501e97e7ca7a2a4f4965035bd2455ad124a8b09fa55780657c55fe3df41019fa6c2c44487c897668c842a0939e380b3c1f13b3756d128543#npm:10.8.2"],\
             ["typescript", "patch:typescript@npm%3A4.7.4#~builtin<compat/typescript>::version=4.7.4&hash=7ad353"]\
@@ -2538,7 +2538,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["jsonwebtoken", "npm:8.5.1"],\
             ["newrelic", "npm:8.14.1"],\
             ["nodemon", "npm:2.0.19"],\
-            ["npm-check-updates", "npm:15.3.3"],\
+            ["npm-check-updates", "npm:16.0.1"],\
             ["prettyjson", "npm:1.2.5"],\
             ["reflect-metadata", "npm:0.1.13"],\
             ["ts-jest", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:28.0.5"],\
@@ -2606,7 +2606,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["mysql2", "npm:2.3.3"],\
             ["newrelic", "npm:8.14.1"],\
             ["nodemon", "npm:2.0.19"],\
-            ["npm-check-updates", "npm:15.3.3"],\
+            ["npm-check-updates", "npm:16.0.1"],\
             ["otplib", "npm:12.0.1"],\
             ["prettyjson", "npm:1.2.5"],\
             ["reflect-metadata", "npm:0.1.13"],\
@@ -2790,7 +2790,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["jsonwebtoken", "npm:8.5.1"],\
             ["newrelic", "npm:8.14.1"],\
             ["nodemon", "npm:2.0.19"],\
-            ["npm-check-updates", "npm:15.3.3"],\
+            ["npm-check-updates", "npm:16.0.1"],\
             ["prettyjson", "npm:1.2.5"],\
             ["reflect-metadata", "npm:0.1.13"],\
             ["ts-jest", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:28.0.5"],\
@@ -2882,7 +2882,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["jest", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:28.1.2"],\
             ["mysql2", "npm:2.3.3"],\
             ["newrelic", "npm:8.14.1"],\
-            ["npm-check-updates", "npm:15.3.3"],\
+            ["npm-check-updates", "npm:16.0.1"],\
             ["reflect-metadata", "npm:0.1.13"],\
             ["ts-jest", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:28.0.5"],\
             ["typeorm", "virtual:31b5a94a105c89c9294c3d524a7f8929fe63ee5a2efadf21951ca4c0cfd2ecf02e8f4ef5a066bbda091f1e3a56e57c6749069a080618c96b22e51131a330fc4a#npm:0.3.7"],\
@@ -2928,7 +2928,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["eslint-config-prettier", "virtual:8859b278716fedf3e7458b5628625f7e35678c418626878559a0b816445001b7e24c55546f4677ba4c20b521aa0cf52cc33ac07deff171e383ada6eeab69933f#npm:8.5.0"],\
             ["ini", "npm:3.0.0"],\
             ["newrelic", "npm:8.14.1"],\
-            ["npm-check-updates", "npm:15.3.3"],\
+            ["npm-check-updates", "npm:16.0.1"],\
             ["prettier", "npm:2.7.1"],\
             ["ts-node", "virtual:c0eab07e71af57f5501e97e7ca7a2a4f4965035bd2455ad124a8b09fa55780657c55fe3df41019fa6c2c44487c897668c842a0939e380b3c1f13b3756d128543#npm:10.8.2"],\
             ["typescript", "patch:typescript@npm%3A4.7.4#~builtin<compat/typescript>::version=4.7.4&hash=7ad353"]\
@@ -3035,7 +3035,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["mysql2", "npm:2.3.3"],\
             ["newrelic", "npm:8.14.1"],\
             ["nodemon", "npm:2.0.19"],\
-            ["npm-check-updates", "npm:15.3.3"],\
+            ["npm-check-updates", "npm:16.0.1"],\
             ["prettyjson", "npm:1.2.5"],\
             ["reflect-metadata", "npm:0.1.13"],\
             ["ts-jest", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:28.0.5"],\
@@ -9776,10 +9776,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["npm-check-updates", [\
-        ["npm:15.3.3", {\
-          "packageLocation": "./.yarn/cache/npm-check-updates-npm-15.3.3-146d2ff74b-3ee33fe369.zip/node_modules/npm-check-updates/",\
+        ["npm:16.0.1", {\
+          "packageLocation": "./.yarn/cache/npm-check-updates-npm-16.0.1-fd143fcd27-1e747421f3.zip/node_modules/npm-check-updates/",\
           "packageDependencies": [\
-            ["npm-check-updates", "npm:15.3.3"],\
+            ["npm-check-updates", "npm:16.0.1"],\
             ["chalk", "npm:5.0.1"],\
             ["cli-table", "npm:0.3.11"],\
             ["commander", "npm:9.3.0"],\
