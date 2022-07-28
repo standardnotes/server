@@ -24,7 +24,7 @@
     "upgrade:snjs": "yarn ncu -u '@standardnotes/*'"
   },
   "dependencies": {
-    "@newrelic/winston-enricher": "^2.1.0",
+    "@newrelic/winston-enricher": "^4.0.0",
     "@sentry/node": "^7.3.0",
     "@standardnotes/common": "workspace:*",
     "@standardnotes/domain-events": "workspace:*",
