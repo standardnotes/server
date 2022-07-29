@@ -34,7 +34,7 @@
     "aws-sdk": "^2.1158.0",
     "dayjs": "^1.11.3",
     "dotenv": "^16.0.1",
-    "inversify": "5.0.5",
+    "inversify": "^6.0.1",
     "ioredis": "^5.2.0",
     "mysql2": "^2.3.3",
     "newrelic": "^8.14.1",

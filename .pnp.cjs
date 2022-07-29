@@ -2877,7 +2877,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["dayjs", "npm:1.11.3"],\
             ["dotenv", "npm:16.0.1"],\
             ["eslint-plugin-prettier", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:4.2.1"],\
-            ["inversify", "npm:5.0.5"],\
+            ["inversify", "npm:6.0.1"],\
             ["ioredis", "npm:5.2.0"],\
             ["jest", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:28.1.2"],\
             ["mysql2", "npm:2.3.3"],\
@@ -7564,13 +7564,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["inversify", [\
-        ["npm:5.0.5", {\
-          "packageLocation": "./.yarn/cache/inversify-npm-5.0.5-4d1f1420a9-a4bf1a6a62.zip/node_modules/inversify/",\
-          "packageDependencies": [\
-            ["inversify", "npm:5.0.5"]\
-          ],\
-          "linkType": "HARD"\
-        }],\
         ["npm:6.0.1", {\
           "packageLocation": "./.yarn/cache/inversify-npm-6.0.1-39ef6784da-b6c9b56ef7.zip/node_modules/inversify/",\
           "packageDependencies": [\
