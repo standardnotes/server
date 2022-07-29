@@ -1260,13 +1260,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@newrelic/winston-enricher@npm:^2.1.0":
-  version: 2.1.2
-  resolution: "@newrelic/winston-enricher@npm:2.1.2"
+"@newrelic/winston-enricher@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "@newrelic/winston-enricher@npm:4.0.0"
   peerDependencies:
-    newrelic: ">=6.2.0"
-    winston: ^3.0.0
-  checksum: d001c131665470be698912accf3782b1b2871f5f2f0711527d423b47e967912ebe873da99f3cdfb0d367c62ac90aab87f448ac5ce89bae9a91a36d049b024003
+    newrelic: ">=8.13.0"
+  checksum: f737e7d9528b69ab771d0dd7d2262400291de60791767e09d477f700f1221df734a3f6a13b8907b909b4c190ccf20d4d3380d691f378422e789a2b448ab4fc7c
   languageName: node
   linkType: hard
 
@@ -1767,7 +1766,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@standardnotes/api-gateway@workspace:packages/api-gateway"
   dependencies:
-    "@newrelic/winston-enricher": ^2.1.0
+    "@newrelic/winston-enricher": ^4.0.0
     "@sentry/node": ^7.3.0
     "@standardnotes/analytics": "workspace:*"
     "@standardnotes/domain-events": "workspace:*"
@@ -1823,7 +1822,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@standardnotes/auth-server@workspace:packages/auth"
   dependencies:
-    "@newrelic/winston-enricher": ^2.1.0
+    "@newrelic/winston-enricher": ^4.0.0
     "@sentry/node": ^7.3.0
     "@standardnotes/analytics": "workspace:*"
     "@standardnotes/api": ^1.1.19
@@ -2111,7 +2110,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@standardnotes/scheduler-server@workspace:packages/scheduler"
   dependencies:
-    "@newrelic/winston-enricher": ^2.1.0
+    "@newrelic/winston-enricher": ^4.0.0
     "@sentry/node": ^7.3.0
     "@standardnotes/common": "workspace:*"
     "@standardnotes/domain-events": "workspace:*"
@@ -2233,7 +2232,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@standardnotes/syncing-server@workspace:packages/syncing-server"
   dependencies:
-    "@newrelic/winston-enricher": ^2.1.0
+    "@newrelic/winston-enricher": ^4.0.0
     "@sentry/node": ^7.3.0
     "@standardnotes/analytics": "workspace:*"
     "@standardnotes/common": "workspace:*"

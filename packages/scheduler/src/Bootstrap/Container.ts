@@ -62,7 +62,7 @@ export class ContainerConfigLoader {
 
     const winstonFormatters = [winston.format.splat(), winston.format.json()]
     if (env.get('NEW_RELIC_ENABLED', true) === 'true') {
-      winstonFormatters.push(newrelicWinstonEnricher())
+      winstonFormatters.push(newrelicWinstonEnricher(winston))
     }
 
     const logger = winston.createLogger({

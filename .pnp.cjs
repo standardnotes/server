@@ -1868,27 +1868,23 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@newrelic/winston-enricher", [\
-        ["npm:2.1.2", {\
-          "packageLocation": "./.yarn/cache/@newrelic-winston-enricher-npm-2.1.2-732878a1b2-d001c13166.zip/node_modules/@newrelic/winston-enricher/",\
+        ["npm:4.0.0", {\
+          "packageLocation": "./.yarn/cache/@newrelic-winston-enricher-npm-4.0.0-ebaf2d0d28-f737e7d952.zip/node_modules/@newrelic/winston-enricher/",\
           "packageDependencies": [\
-            ["@newrelic/winston-enricher", "npm:2.1.2"]\
+            ["@newrelic/winston-enricher", "npm:4.0.0"]\
           ],\
           "linkType": "SOFT"\
         }],\
-        ["virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:2.1.2", {\
-          "packageLocation": "./.yarn/__virtual__/@newrelic-winston-enricher-virtual-193127fbcd/0/cache/@newrelic-winston-enricher-npm-2.1.2-732878a1b2-d001c13166.zip/node_modules/@newrelic/winston-enricher/",\
+        ["virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:4.0.0", {\
+          "packageLocation": "./.yarn/__virtual__/@newrelic-winston-enricher-virtual-766a341e22/0/cache/@newrelic-winston-enricher-npm-4.0.0-ebaf2d0d28-f737e7d952.zip/node_modules/@newrelic/winston-enricher/",\
           "packageDependencies": [\
-            ["@newrelic/winston-enricher", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:2.1.2"],\
+            ["@newrelic/winston-enricher", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:4.0.0"],\
             ["@types/newrelic", "npm:7.0.3"],\
-            ["@types/winston", null],\
-            ["newrelic", "npm:8.14.1"],\
-            ["winston", "npm:3.8.1"]\
+            ["newrelic", "npm:8.14.1"]\
           ],\
           "packagePeers": [\
             "@types/newrelic",\
-            "@types/winston",\
-            "newrelic",\
-            "winston"\
+            "newrelic"\
           ],\
           "linkType": "HARD"\
         }]\
@@ -2508,7 +2504,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./packages/api-gateway/",\
           "packageDependencies": [\
             ["@standardnotes/api-gateway", "workspace:packages/api-gateway"],\
-            ["@newrelic/winston-enricher", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:2.1.2"],\
+            ["@newrelic/winston-enricher", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:4.0.0"],\
             ["@sentry/node", "npm:7.5.0"],\
             ["@standardnotes/analytics", "workspace:packages/analytics"],\
             ["@standardnotes/domain-events", "workspace:packages/domain-events"],\
@@ -2563,7 +2559,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./packages/auth/",\
           "packageDependencies": [\
             ["@standardnotes/auth-server", "workspace:packages/auth"],\
-            ["@newrelic/winston-enricher", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:2.1.2"],\
+            ["@newrelic/winston-enricher", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:4.0.0"],\
             ["@sentry/node", "npm:7.5.0"],\
             ["@standardnotes/analytics", "workspace:packages/analytics"],\
             ["@standardnotes/api", "npm:1.1.19"],\
@@ -2861,7 +2857,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./packages/scheduler/",\
           "packageDependencies": [\
             ["@standardnotes/scheduler-server", "workspace:packages/scheduler"],\
-            ["@newrelic/winston-enricher", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:2.1.2"],\
+            ["@newrelic/winston-enricher", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:4.0.0"],\
             ["@sentry/node", "npm:7.5.0"],\
             ["@standardnotes/common", "workspace:packages/common"],\
             ["@standardnotes/domain-events", "workspace:packages/domain-events"],\
@@ -2996,7 +2992,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./packages/syncing-server/",\
           "packageDependencies": [\
             ["@standardnotes/syncing-server", "workspace:packages/syncing-server"],\
-            ["@newrelic/winston-enricher", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:2.1.2"],\
+            ["@newrelic/winston-enricher", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:4.0.0"],\
             ["@sentry/node", "npm:7.5.0"],\
             ["@standardnotes/analytics", "workspace:packages/analytics"],\
             ["@standardnotes/common", "workspace:packages/common"],\
