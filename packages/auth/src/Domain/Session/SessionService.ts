@@ -1,7 +1,6 @@
 import * as crypto from 'crypto'
 import * as winston from 'winston'
 import * as dayjs from 'dayjs'
-import * as cryptoRandomString from 'crypto-random-string'
 import { UAParser } from 'ua-parser-js'
 import { inject, injectable } from 'inversify'
 import { v4 as uuidv4 } from 'uuid'
@@ -20,6 +19,7 @@ import { SettingServiceInterface } from '../Setting/SettingServiceInterface'
 import { LogSessionUserAgentOption, SettingName } from '@standardnotes/settings'
 import { SessionBody } from '@standardnotes/responses'
 import { Uuid } from '@standardnotes/common'
+import { CryptoNode } from '@standardnotes/sncrypto-node'
 
 @injectable()
 export class SessionService implements SessionServiceInterface {
@@ -35,6 +35,7 @@ export class SessionService implements SessionServiceInterface {
     @inject(TYPES.ACCESS_TOKEN_AGE) private accessTokenAge: number,
     @inject(TYPES.REFRESH_TOKEN_AGE) private refreshTokenAge: number,
     @inject(TYPES.SettingService) private settingService: SettingServiceInterface,
+    @inject(TYPES.CryptoNode) private cryptoNode: CryptoNode,
   ) {}
 
   async createNewSessionForUser(dto: {
@@ -263,8 +264,8 @@ export class SessionService implements SessionServiceInterface {
   }
 
   private async createTokens(session: Session): Promise<SessionBody> {
-    const accessToken = cryptoRandomString({ length: 16, type: 'url-safe' })
-    const refreshToken = cryptoRandomString({ length: 16, type: 'url-safe' })
+    const accessToken = this.cryptoNode.base64URLEncode(await this.cryptoNode.generateRandomKey(48))
+    const refreshToken = this.cryptoNode.base64URLEncode(await this.cryptoNode.generateRandomKey(48))
 
     const hashedAccessToken = crypto.createHash('sha256').update(accessToken).digest('hex')
     const hashedRefreshToken = crypto.createHash('sha256').update(refreshToken).digest('hex')

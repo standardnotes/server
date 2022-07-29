@@ -13,6 +13,7 @@ import { RevokedSession } from './RevokedSession'
 import { SettingServiceInterface } from '../Setting/SettingServiceInterface'
 import { LogSessionUserAgentOption } from '@standardnotes/settings'
 import { Setting } from '../Setting/Setting'
+import { CryptoNode } from '@standardnotes/sncrypto-node'
 
 describe('SessionService', () => {
   let sessionRepository: SessionRepositoryInterface
@@ -25,6 +26,7 @@ describe('SessionService', () => {
   let deviceDetector: UAParser
   let timer: TimerInterface
   let logger: winston.Logger
+  let cryptoNode: CryptoNode
 
   const createService = () =>
     new SessionService(
@@ -37,6 +39,7 @@ describe('SessionService', () => {
       123,
       234,
       settingService,
+      cryptoNode,
     )
 
   beforeEach(() => {
@@ -96,6 +99,10 @@ describe('SessionService', () => {
     logger.warn = jest.fn()
     logger.error = jest.fn()
     logger.debug = jest.fn()
+
+    cryptoNode = {} as jest.Mocked<CryptoNode>
+    cryptoNode.generateRandomKey = jest.fn().mockReturnValue('foo bar')
+    cryptoNode.base64URLEncode = jest.fn().mockReturnValue('foobar')
   })
 
   it('should mark a revoked session as received', async () => {

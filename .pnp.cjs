@@ -2589,7 +2589,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["axios", "npm:0.27.2"],\
             ["bcryptjs", "npm:2.4.3"],\
             ["cors", "npm:2.8.5"],\
-            ["crypto-random-string", "npm:3.3.0"],\
             ["dayjs", "npm:1.11.3"],\
             ["dotenv", "npm:16.0.1"],\
             ["eslint", "npm:8.19.0"],\
@@ -5509,14 +5508,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["crypto-random-string", [\
-        ["npm:3.3.0", {\
-          "packageLocation": "./.yarn/cache/crypto-random-string-npm-3.3.0-4f73472f10-deff986631.zip/node_modules/crypto-random-string/",\
-          "packageDependencies": [\
-            ["crypto-random-string", "npm:3.3.0"],\
-            ["type-fest", "npm:0.8.1"]\
-          ],\
-          "linkType": "HARD"\
-        }],\
         ["npm:4.0.0", {\
           "packageLocation": "./.yarn/cache/crypto-random-string-npm-4.0.0-b9f0f76168-91f148f27b.zip/node_modules/crypto-random-string/",\
           "packageDependencies": [\
