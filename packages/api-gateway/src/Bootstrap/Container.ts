@@ -24,7 +24,7 @@ import { CrossServiceTokenCacheInterface } from '../Service/Cache/CrossServiceTo
 import { RedisCrossServiceTokenCache } from '../Infra/Redis/RedisCrossServiceTokenCache'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const newrelicWinstonEnricher = require('@newrelic/winston-enricher')
+const newrelicFormatter = require('@newrelic/winston-enricher')
 
 export class ContainerConfigLoader {
   async load(): Promise<Container> {
@@ -33,9 +33,10 @@ export class ContainerConfigLoader {
 
     const container = new Container()
 
+    const newrelicWinstonFormatter = newrelicFormatter(winston)
     const winstonFormatters = [winston.format.splat(), winston.format.json()]
     if (env.get('NEW_RELIC_ENABLED', true) === 'true') {
-      winstonFormatters.push(newrelicWinstonEnricher(winston))
+      winstonFormatters.push(newrelicWinstonFormatter())
     }
 
     const logger = winston.createLogger({

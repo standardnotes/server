@@ -193,7 +193,7 @@ import { PredicateVerificationRequestedEventHandler } from '../Domain/Handler/Pr
 import { MuteMarketingEmails } from '../Domain/UseCase/MuteMarketingEmails/MuteMarketingEmails'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const newrelicWinstonEnricher = require('@newrelic/winston-enricher')
+const newrelicFormatter = require('@newrelic/winston-enricher')
 
 export class ContainerConfigLoader {
   async load(): Promise<Container> {
@@ -215,9 +215,10 @@ export class ContainerConfigLoader {
 
     container.bind(TYPES.Redis).toConstantValue(redis)
 
+    const newrelicWinstonFormatter = newrelicFormatter(winston)
     const winstonFormatters = [winston.format.splat(), winston.format.json()]
     if (env.get('NEW_RELIC_ENABLED', true) === 'true') {
-      winstonFormatters.push(newrelicWinstonEnricher(winston))
+      winstonFormatters.push(newrelicWinstonFormatter())
     }
 
     const logger = winston.createLogger({
