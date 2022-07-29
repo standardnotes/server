@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.13.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.12.2...@standardnotes/auth-server@1.13.0) (2022-07-29)
+
+### Features
+
+* **auth:** remove crypto-random-string in favour of @standardnotes/sncrypto-node ([35f931a](https://github.com/standardnotes/server/commit/35f931a708c7fead65fd40a9b4214a223831a5dc))
+
 ## [1.12.2](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.12.1...@standardnotes/auth-server@1.12.2) (2022-07-29)
 
 **Note:** Version bump only for package @standardnotes/auth-server
