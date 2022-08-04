@@ -39,7 +39,7 @@
     "inversify-express-utils": "^6.4.3",
     "ioredis": "^5.2.0",
     "jsonwebtoken": "8.5.1",
-    "newrelic": "^8.14.1",
+    "newrelic": "^9.0.0",
     "prettyjson": "^1.2.5",
     "reflect-metadata": "0.1.13",
     "winston": "^3.8.1"
