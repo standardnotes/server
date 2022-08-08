@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.9.1](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.9.0...@standardnotes/api-gateway@1.9.1) (2022-08-08)
+
+### Bug Fixes
+
+* **api-gateway:** add general activity to calculating activity retention ([12e3a76](https://github.com/standardnotes/api-gateway/commit/12e3a768dd365198340ab4e2cd463e9392344e38))
+
 # [1.9.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.8.0...@standardnotes/api-gateway@1.9.0) (2022-08-08)
 
 ### Features
