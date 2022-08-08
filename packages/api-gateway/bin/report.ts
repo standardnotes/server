@@ -55,6 +55,16 @@ const requestReport = async (
           ),
         },
       ],
+      activityStatisticsOverTime: [
+        {
+          name: AnalyticsActivity.GeneralActivity,
+          period: Period.Last30Days,
+          counts: await analyticsStore.calculateActivityChangesTotalCount(
+            AnalyticsActivity.GeneralActivity,
+            Period.Last30Days,
+          ),
+        },
+      ],
     },
   }
 
