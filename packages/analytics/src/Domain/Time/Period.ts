@@ -7,4 +7,5 @@ export enum Period {
   WeekBeforeLastWeek,
   ThisMonth,
   LastMonth,
+  Last30Days,
 }

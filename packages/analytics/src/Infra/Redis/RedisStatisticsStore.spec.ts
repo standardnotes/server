@@ -21,7 +21,6 @@ describe('RedisStatisticsStore', () => {
     redisClient.incr = jest.fn()
     redisClient.setbit = jest.fn()
     redisClient.getbit = jest.fn().mockReturnValue(1)
-    redisClient.send_command = jest.fn()
 
     periodKeyGenerator = {} as jest.Mocked<PeriodKeyGeneratorInterface>
     periodKeyGenerator.getPeriodKey = jest.fn().mockReturnValue('period-key')

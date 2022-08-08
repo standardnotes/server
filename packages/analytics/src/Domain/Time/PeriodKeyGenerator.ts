@@ -2,6 +2,21 @@ import { Period } from './Period'
 import { PeriodKeyGeneratorInterface } from './PeriodKeyGeneratorInterface'
 
 export class PeriodKeyGenerator implements PeriodKeyGeneratorInterface {
+  getDiscretePeriodKeys(period: Period): string[] {
+    const periodKeys = []
+
+    switch (period) {
+      case Period.Last30Days:
+        for (let i = 1; i <= 30; i++) {
+          periodKeys.unshift(this.getDailyKey(this.getDateNDaysBefore(i)))
+        }
+
+        return periodKeys
+      default:
+        throw new Error(`Unsuporrted period: ${period}`)
+    }
+  }
+
   getPeriodKey(period: Period): string {
     switch (period) {
       case Period.Today:
@@ -61,11 +76,15 @@ export class PeriodKeyGenerator implements PeriodKeyGeneratorInterface {
     return date.getDate().toString()
   }
 
-  private getYesterdayDate(): Date {
-    const yesterday = new Date()
-    yesterday.setDate(new Date().getDate() - 1)
+  private getDateNDaysBefore(n: number) {
+    const date = new Date()
+    date.setDate(new Date().getDate() - n)
 
-    return yesterday
+    return date
+  }
+
+  private getYesterdayDate(): Date {
+    return this.getDateNDaysBefore(1)
   }
 
   private getDayBeforeYesterdayDate(): Date {

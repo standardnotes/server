@@ -29,6 +29,35 @@ describe('RedisAnalyticsStore', () => {
     periodKeyGenerator.getPeriodKey = jest.fn().mockReturnValue('period-key')
   })
 
+  it('should calculate total count changes of activities', async () => {
+    periodKeyGenerator.getDiscretePeriodKeys = jest.fn().mockReturnValue(['2022-4-24', '2022-4-25', '2022-4-26'])
+
+    redisClient.bitcount = jest.fn().mockReturnValueOnce(70).mockReturnValueOnce(71).mockReturnValueOnce(72)
+
+    expect(
+      await createStore().calculateActivityChangesTotalCount(AnalyticsActivity.EditingItems, Period.Last30Days),
+    ).toEqual([70, 71, 72])
+
+    expect(redisClient.bitcount).toHaveBeenNthCalledWith(1, 'bitmap:action:editing-items:timespan:2022-4-24')
+    expect(redisClient.bitcount).toHaveBeenNthCalledWith(2, 'bitmap:action:editing-items:timespan:2022-4-25')
+    expect(redisClient.bitcount).toHaveBeenNthCalledWith(3, 'bitmap:action:editing-items:timespan:2022-4-26')
+  })
+
+  it('should throw error on calculating total count changes of activities on unsupported period', async () => {
+    periodKeyGenerator.getDiscretePeriodKeys = jest.fn().mockReturnValue(['2022-4-24', '2022-4-25', '2022-4-26'])
+
+    redisClient.bitcount = jest.fn().mockReturnValueOnce(70).mockReturnValueOnce(71).mockReturnValueOnce(72)
+
+    let caughtError = null
+    try {
+      await createStore().calculateActivityChangesTotalCount(AnalyticsActivity.EditingItems, Period.LastWeek)
+    } catch (error) {
+      caughtError = error
+    }
+
+    expect(caughtError).not.toBeNull()
+  })
+
   it('should calculate total count of activities', async () => {
     redisClient.bitcount = jest.fn().mockReturnValue(70)
 
