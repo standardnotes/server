@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.8.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.7.4...@standardnotes/api-gateway@1.8.0) (2022-08-08)
+
+### Features
+
+* **api-gateway:** add marking server interaction as general activity in analytics ([a36764f](https://github.com/standardnotes/api-gateway/commit/a36764f1b058bed014b815fa2818370849053b18))
+
 ## [1.7.4](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.7.3...@standardnotes/api-gateway@1.7.4) (2022-07-29)
 
 **Note:** Version bump only for package @standardnotes/api-gateway

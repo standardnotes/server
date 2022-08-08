@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.10.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.9.0...@standardnotes/analytics@1.10.0) (2022-08-08)
+
+### Features
+
+* **api-gateway:** add marking server interaction as general activity in analytics ([a36764f](https://github.com/standardnotes/server/commit/a36764f1b058bed014b815fa2818370849053b18))
+
 # [1.9.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.8.3...@standardnotes/analytics@1.9.0) (2022-07-26)
 
 ### Features
