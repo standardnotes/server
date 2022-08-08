@@ -8,7 +8,10 @@ import { AnalyticsStoreInterface } from '../../Domain/Analytics/AnalyticsStoreIn
 export class RedisAnalyticsStore implements AnalyticsStoreInterface {
   constructor(private periodKeyGenerator: PeriodKeyGeneratorInterface, private redisClient: IORedis.Redis) {}
 
-  async calculateActivityChangesTotalCount(activity: AnalyticsActivity, period: Period): Promise<number[]> {
+  async calculateActivityChangesTotalCount(
+    activity: AnalyticsActivity,
+    period: Period,
+  ): Promise<Array<{ periodKey: string; totalCount: number }>> {
     if (period !== Period.Last30Days) {
       throw new Error(`Unsuporrted period: ${period}`)
     }
@@ -16,7 +19,10 @@ export class RedisAnalyticsStore implements AnalyticsStoreInterface {
     const periodKeys = this.periodKeyGenerator.getDiscretePeriodKeys(Period.Last30Days)
     const counts = []
     for (const periodKey of periodKeys) {
-      counts.push(await this.redisClient.bitcount(`bitmap:action:${activity}:timespan:${periodKey}`))
+      counts.push({
+        periodKey,
+        totalCount: await this.redisClient.bitcount(`bitmap:action:${activity}:timespan:${periodKey}`),
+      })
     }
 
     return counts

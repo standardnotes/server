@@ -36,7 +36,20 @@ describe('RedisAnalyticsStore', () => {
 
     expect(
       await createStore().calculateActivityChangesTotalCount(AnalyticsActivity.EditingItems, Period.Last30Days),
-    ).toEqual([70, 71, 72])
+    ).toEqual([
+      {
+        periodKey: '2022-4-24',
+        totalCount: 70,
+      },
+      {
+        periodKey: '2022-4-25',
+        totalCount: 71,
+      },
+      {
+        periodKey: '2022-4-26',
+        totalCount: 72,
+      },
+    ])
 
     expect(redisClient.bitcount).toHaveBeenNthCalledWith(1, 'bitmap:action:editing-items:timespan:2022-4-24')
     expect(redisClient.bitcount).toHaveBeenNthCalledWith(2, 'bitmap:action:editing-items:timespan:2022-4-25')

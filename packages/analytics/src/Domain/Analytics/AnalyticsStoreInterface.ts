@@ -7,5 +7,8 @@ export interface AnalyticsStoreInterface {
   wasActivityDone(activity: AnalyticsActivity, analyticsId: number, period: Period): Promise<boolean>
   calculateActivityRetention(activity: AnalyticsActivity, firstPeriod: Period, secondPeriod: Period): Promise<number>
   calculateActivityTotalCount(activity: AnalyticsActivity, period: Period): Promise<number>
-  calculateActivityChangesTotalCount(activity: AnalyticsActivity, period: Period): Promise<number[]>
+  calculateActivityChangesTotalCount(
+    activity: AnalyticsActivity,
+    period: Period,
+  ): Promise<Array<{ periodKey: string; totalCount: number }>>
 }
