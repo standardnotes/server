@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.52.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.51.0...@standardnotes/domain-events@2.52.0) (2022-08-08)
+
+### Features
+
+* **api-gateway:** add analytics over time to daily report event ([845f08b](https://github.com/standardnotes/server/commit/845f08b060beda5dea69e16fbda132150de7d5f2))
+
 # [2.51.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.50.2...@standardnotes/domain-events@2.51.0) (2022-07-26)
 
 ### Features

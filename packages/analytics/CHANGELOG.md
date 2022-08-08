@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.11.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.10.0...@standardnotes/analytics@1.11.0) (2022-08-08)
+
+### Bug Fixes
+
+* **analytics:** format of changes over time to total count ([31c849c](https://github.com/standardnotes/server/commit/31c849cc2d13bc97690da1cbec3d1868ddb733dc))
+
+### Features
+
+* **analytics:** add calculating analytics over time ([977757d](https://github.com/standardnotes/server/commit/977757d346ba94794cc090f13d4dfdf489eb9d3a))
+
 # [1.10.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.9.0...@standardnotes/analytics@1.10.0) (2022-08-08)
 
 ### Features

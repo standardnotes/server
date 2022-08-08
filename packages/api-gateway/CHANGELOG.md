@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.9.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.8.0...@standardnotes/api-gateway@1.9.0) (2022-08-08)
+
+### Features
+
+* **api-gateway:** add analytics over time to daily report event ([845f08b](https://github.com/standardnotes/api-gateway/commit/845f08b060beda5dea69e16fbda132150de7d5f2))
+
 # [1.8.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.7.4...@standardnotes/api-gateway@1.8.0) (2022-08-08)
 
 ### Features
