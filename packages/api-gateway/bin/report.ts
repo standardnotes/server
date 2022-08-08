@@ -54,6 +54,18 @@ const requestReport = async (
             Period.Yesterday,
           ),
         },
+        {
+          name: AnalyticsActivity.GeneralActivity,
+          retention: await analyticsStore.calculateActivityRetention(
+            AnalyticsActivity.GeneralActivity,
+            Period.DayBeforeYesterday,
+            Period.Yesterday,
+          ),
+          totalCount: await analyticsStore.calculateActivityTotalCount(
+            AnalyticsActivity.GeneralActivity,
+            Period.Yesterday,
+          ),
+        },
       ],
       activityStatisticsOverTime: [
         {
