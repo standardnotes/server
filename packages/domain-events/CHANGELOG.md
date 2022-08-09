@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.53.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.52.0...@standardnotes/domain-events@2.53.0) (2022-08-09)
+
+### Features
+
+* add total count of analytics over time ([0b9524e](https://github.com/standardnotes/server/commit/0b9524eb26c39aabe8ad0f9cdbb3aaca63a65b0e))
+
 # [2.52.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.51.0...@standardnotes/domain-events@2.52.0) (2022-08-08)
 
 ### Features
