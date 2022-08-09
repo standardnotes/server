@@ -14,22 +14,15 @@ export class RedisAnalyticsStore implements AnalyticsStoreInterface {
     }
 
     const periodKeys = this.periodKeyGenerator.getDiscretePeriodKeys(Period.Last30Days)
-    let previousPeriodKey = periodKeys[0]
-    let intersectionPeriodKey = null
-    for (let i = 0; i < periodKeys.length - 1; i++) {
-      intersectionPeriodKey = `${periodKeys[0]}-iteration-${i}`
+    await this.redisClient.bitop(
+      'AND',
+      `bitmap:action:${activity}:timespan:${periodKeys[0]}-${periodKeys[periodKeys.length - 1]}`,
+      ...periodKeys.map((p) => `bitmap:action:${activity}:timespan:${p}`),
+    )
 
-      await this.redisClient.bitop(
-        'AND',
-        `bitmap:action:${activity}:timespan:${intersectionPeriodKey}`,
-        `bitmap:action:${activity}:timespan:${previousPeriodKey}`,
-        `bitmap:action:${activity}:timespan:${periodKeys[i + 1]}`,
-      )
-
-      previousPeriodKey = intersectionPeriodKey
-    }
-
-    return this.redisClient.bitcount(`bitmap:action:${activity}:timespan:${intersectionPeriodKey}`)
+    return this.redisClient.bitcount(
+      `bitmap:action:${activity}:timespan:${periodKeys[0]}-${periodKeys[periodKeys.length - 1]}`,
+    )
   }
 
   async calculateActivityChangesTotalCount(

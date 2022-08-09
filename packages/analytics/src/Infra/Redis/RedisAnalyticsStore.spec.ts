@@ -36,22 +36,16 @@ describe('RedisAnalyticsStore', () => {
 
     await createStore().calculateActivityTotalCountOverTime(AnalyticsActivity.EditingItems, Period.Last30Days)
 
-    expect(redisClient.bitop).toHaveBeenCalledTimes(2)
+    expect(redisClient.bitop).toHaveBeenCalledTimes(1)
     expect(redisClient.bitop).toHaveBeenNthCalledWith(
       1,
       'AND',
-      'bitmap:action:editing-items:timespan:2022-4-24-iteration-0',
+      'bitmap:action:editing-items:timespan:2022-4-24-2022-4-26',
       'bitmap:action:editing-items:timespan:2022-4-24',
       'bitmap:action:editing-items:timespan:2022-4-25',
-    )
-    expect(redisClient.bitop).toHaveBeenNthCalledWith(
-      2,
-      'AND',
-      'bitmap:action:editing-items:timespan:2022-4-24-iteration-1',
-      'bitmap:action:editing-items:timespan:2022-4-24-iteration-0',
       'bitmap:action:editing-items:timespan:2022-4-26',
     )
-    expect(redisClient.bitcount).toHaveBeenCalledWith('bitmap:action:editing-items:timespan:2022-4-24-iteration-1')
+    expect(redisClient.bitcount).toHaveBeenCalledWith('bitmap:action:editing-items:timespan:2022-4-24-2022-4-26')
   })
 
   it('should calculate total count changes of activities', async () => {
