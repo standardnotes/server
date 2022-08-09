@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.12.2](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.12.1...@standardnotes/analytics@1.12.2) (2022-08-09)
+
+### Bug Fixes
+
+* **analytics:** replace AND to OR operation on bitop ([572ea3f](https://github.com/standardnotes/server/commit/572ea3febe136518a33154937cf39347adf040ff))
+
 ## [1.12.1](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.12.0...@standardnotes/analytics@1.12.1) (2022-08-09)
 
 ### Bug Fixes
