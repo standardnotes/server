@@ -18,6 +18,7 @@ import { SubscriptionSettingServiceInterface } from '../Setting/SubscriptionSett
 import { UserSubscriptionType } from '../Subscription/UserSubscriptionType'
 import { AnalyticsStoreInterface, Period } from '@standardnotes/analytics'
 import { AnalyticsEntity } from '../Analytics/AnalyticsEntity'
+import { GetUserAnalyticsId } from '../UseCase/GetUserAnalyticsId/GetUserAnalyticsId'
 
 describe('SubscriptionPurchasedEventHandler', () => {
   let userRepository: UserRepositoryInterface
@@ -31,6 +32,7 @@ describe('SubscriptionPurchasedEventHandler', () => {
   let event: SubscriptionPurchasedEvent
   let subscriptionExpiresAt: number
   let subscriptionSettingService: SubscriptionSettingServiceInterface
+  let getUserAnalyticsId: GetUserAnalyticsId
   let analyticsStore: AnalyticsStoreInterface
   let timestamp: number
 
@@ -41,6 +43,7 @@ describe('SubscriptionPurchasedEventHandler', () => {
       offlineUserSubscriptionRepository,
       roleService,
       subscriptionSettingService,
+      getUserAnalyticsId,
       analyticsStore,
       logger,
     )
@@ -92,6 +95,9 @@ describe('SubscriptionPurchasedEventHandler', () => {
 
     subscriptionSettingService = {} as jest.Mocked<SubscriptionSettingServiceInterface>
     subscriptionSettingService.applyDefaultSubscriptionSettingsForSubscription = jest.fn()
+
+    getUserAnalyticsId = {} as jest.Mocked<GetUserAnalyticsId>
+    getUserAnalyticsId.execute = jest.fn().mockReturnValue({ analyticsId: 3 })
 
     analyticsStore = {} as jest.Mocked<AnalyticsStoreInterface>
     analyticsStore.markActivity = jest.fn()
