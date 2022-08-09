@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.15.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.14.0...@standardnotes/auth-server@1.15.0) (2022-08-09)
+
+### Features
+
+* **auth:** add subscription events to analytics ([24e439f](https://github.com/standardnotes/server/commit/24e439f017df23d0158940848c10e0b3398720b2))
+
 # [1.14.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.13.6...@standardnotes/auth-server@1.14.0) (2022-08-09)
 
 ### Features

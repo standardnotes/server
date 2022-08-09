@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.14.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.13.0...@standardnotes/analytics@1.14.0) (2022-08-09)
+
+### Features
+
+* **auth:** add subscription events to analytics ([24e439f](https://github.com/standardnotes/server/commit/24e439f017df23d0158940848c10e0b3398720b2))
+
 # [1.13.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.12.2...@standardnotes/analytics@1.13.0) (2022-08-09)
 
 ### Features
