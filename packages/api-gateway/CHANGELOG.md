@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.10.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.9.1...@standardnotes/api-gateway@1.10.0) (2022-08-09)
+
+### Features
+
+* **api-gateway:** add editing items count over time ([b9225cd](https://github.com/standardnotes/api-gateway/commit/b9225cd9b6496301da2d8edc44c2a9861e03406b))
+
 ## [1.9.1](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.9.0...@standardnotes/api-gateway@1.9.1) (2022-08-08)
 
 ### Bug Fixes
