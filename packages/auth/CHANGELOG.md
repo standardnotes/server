@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.14.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.13.6...@standardnotes/auth-server@1.14.0) (2022-08-09)
+
+### Features
+
+* **auth:** track registration in analytics ([f25195b](https://github.com/standardnotes/server/commit/f25195b2c156fa03ca5806ef568c4195da7b688a))
+
 ## [1.13.6](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.13.5...@standardnotes/auth-server@1.13.6) (2022-08-09)
 
 **Note:** Version bump only for package @standardnotes/auth-server

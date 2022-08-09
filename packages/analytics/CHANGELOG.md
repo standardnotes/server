@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.13.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.12.2...@standardnotes/analytics@1.13.0) (2022-08-09)
+
+### Features
+
+* **auth:** track registration in analytics ([f25195b](https://github.com/standardnotes/server/commit/f25195b2c156fa03ca5806ef568c4195da7b688a))
+
 ## [1.12.2](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.12.1...@standardnotes/analytics@1.12.2) (2022-08-09)
 
 ### Bug Fixes
