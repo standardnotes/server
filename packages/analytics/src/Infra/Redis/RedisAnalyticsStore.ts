@@ -15,7 +15,7 @@ export class RedisAnalyticsStore implements AnalyticsStoreInterface {
 
     const periodKeys = this.periodKeyGenerator.getDiscretePeriodKeys(Period.Last30Days)
     await this.redisClient.bitop(
-      'AND',
+      'OR',
       `bitmap:action:${activity}:timespan:${periodKeys[0]}-${periodKeys[periodKeys.length - 1]}`,
       ...periodKeys.map((p) => `bitmap:action:${activity}:timespan:${p}`),
     )

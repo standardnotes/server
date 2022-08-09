@@ -39,7 +39,7 @@ describe('RedisAnalyticsStore', () => {
     expect(redisClient.bitop).toHaveBeenCalledTimes(1)
     expect(redisClient.bitop).toHaveBeenNthCalledWith(
       1,
-      'AND',
+      'OR',
       'bitmap:action:editing-items:timespan:2022-4-24-2022-4-26',
       'bitmap:action:editing-items:timespan:2022-4-24',
       'bitmap:action:editing-items:timespan:2022-4-25',
