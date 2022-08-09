@@ -19,6 +19,7 @@ export interface DailyAnalyticsReportGeneratedEventPayload {
       periodKey: string
       totalCount: number
     }>
+    totalCount: number
   }>
   outOfSyncIncidents: number
 }

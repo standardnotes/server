@@ -75,11 +75,19 @@ const requestReport = async (
             AnalyticsActivity.GeneralActivity,
             Period.Last30Days,
           ),
+          totalCount: await analyticsStore.calculateActivityTotalCountOverTime(
+            AnalyticsActivity.GeneralActivity,
+            Period.Last30Days,
+          ),
         },
         {
           name: AnalyticsActivity.EditingItems,
           period: Period.Last30Days,
           counts: await analyticsStore.calculateActivityChangesTotalCount(
+            AnalyticsActivity.EditingItems,
+            Period.Last30Days,
+          ),
+          totalCount: await analyticsStore.calculateActivityTotalCountOverTime(
             AnalyticsActivity.EditingItems,
             Period.Last30Days,
           ),

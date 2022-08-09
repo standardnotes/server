@@ -11,4 +11,5 @@ export interface AnalyticsStoreInterface {
     activity: AnalyticsActivity,
     period: Period,
   ): Promise<Array<{ periodKey: string; totalCount: number }>>
+  calculateActivityTotalCountOverTime(activity: AnalyticsActivity, period: Period): Promise<number>
 }
