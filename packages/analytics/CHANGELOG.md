@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.12.1](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.12.0...@standardnotes/analytics@1.12.1) (2022-08-09)
+
+### Bug Fixes
+
+* **analytics:** bitop over analytics time ([0ffec66](https://github.com/standardnotes/server/commit/0ffec66bea480fe9cec55415d90b608fddc26a84))
+
 # [1.12.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.11.0...@standardnotes/analytics@1.12.0) (2022-08-09)
 
 ### Features
