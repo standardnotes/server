@@ -29,6 +29,11 @@ case "$COMMAND" in
     yarn workspace @standardnotes/auth-server weekly-backup:email
     ;;
 
+  'email-backup' )
+    echo "Starting Email Backup For Single User..."
+    yarn workspace @standardnotes/auth-server user-email-backup
+    ;;
+
   'dropbox-daily-backup' )
     echo "Starting Dropbox Daily Backup..."
     yarn workspace @standardnotes/auth-server daily-backup:dropbox

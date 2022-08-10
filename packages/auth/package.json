@@ -21,6 +21,7 @@
     "start": "yarn node dist/bin/server.js",
     "worker": "yarn node dist/bin/worker.js",
     "daily-backup:email": "yarn node dist/bin/backup.js email daily",
+    "user-email-backup": "yarn node dist/bin/user_email_backup.js",
     "daily-backup:dropbox": "yarn node dist/bin/backup.js dropbox daily",
     "daily-backup:google_drive": "yarn node dist/bin/backup.js google_drive daily",
     "daily-backup:one_drive": "yarn node dist/bin/backup.js one_drive daily",
