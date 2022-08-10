@@ -92,6 +92,42 @@ const requestReport = async (
             Period.Last30Days,
           ),
         },
+        {
+          name: AnalyticsActivity.SubscriptionPurchased,
+          period: Period.Last30Days,
+          counts: await analyticsStore.calculateActivityChangesTotalCount(
+            AnalyticsActivity.SubscriptionPurchased,
+            Period.Last30Days,
+          ),
+          totalCount: await analyticsStore.calculateActivityTotalCountOverTime(
+            AnalyticsActivity.SubscriptionPurchased,
+            Period.Last30Days,
+          ),
+        },
+        {
+          name: AnalyticsActivity.Register,
+          period: Period.Last30Days,
+          counts: await analyticsStore.calculateActivityChangesTotalCount(
+            AnalyticsActivity.Register,
+            Period.Last30Days,
+          ),
+          totalCount: await analyticsStore.calculateActivityTotalCountOverTime(
+            AnalyticsActivity.Register,
+            Period.Last30Days,
+          ),
+        },
+        {
+          name: AnalyticsActivity.SubscriptionRenewed,
+          period: Period.Last30Days,
+          counts: await analyticsStore.calculateActivityChangesTotalCount(
+            AnalyticsActivity.SubscriptionRenewed,
+            Period.Last30Days,
+          ),
+          totalCount: await analyticsStore.calculateActivityTotalCountOverTime(
+            AnalyticsActivity.SubscriptionRenewed,
+            Period.Last30Days,
+          ),
+        },
       ],
     },
   }
