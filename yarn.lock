@@ -1219,44 +1219,42 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@newrelic/aws-sdk@npm:^4.1.1":
-  version: 4.1.2
-  resolution: "@newrelic/aws-sdk@npm:4.1.2"
-  dependencies:
-    semver: ^7.3.5
+"@newrelic/aws-sdk@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "@newrelic/aws-sdk@npm:5.0.0"
   peerDependencies:
-    newrelic: ">=6.11.0"
-  checksum: 610f6353a750f84ee98cb5b1a147afa1d22105ca7f5e43be5f4db21552e84b2b822a1d939eb1b0d550d9011de85f62d3196cdc68a8f0cb214c80912afcab0d6d
+    newrelic: ">=8.7.0"
+  checksum: b467b7306f38a50673ff810a5b727d36c05d3ecf7df662757a26d8aa7140db09ebbfed1728b5a202ef97873445d19c3c555e11a415f4cd8cd93a7517c4737149
   languageName: node
   linkType: hard
 
-"@newrelic/koa@npm:^6.1.1":
-  version: 6.1.2
-  resolution: "@newrelic/koa@npm:6.1.2"
+"@newrelic/koa@npm:^7.0.0":
+  version: 7.0.0
+  resolution: "@newrelic/koa@npm:7.0.0"
   peerDependencies:
     newrelic: ">=6.11.0"
-  checksum: e269d37b13168a0233b2b01cbba9f2f45325484825ce3f09bcc4d18d53704e60af69d51be62c87d8182f60fc054dbb68bb44870b93e3a2c25a77b982d10ba483
+  checksum: 13fb2bf0df11081213a1cce09df292dab5f3b1919b786efd76500d6faff373ea02e195dbf55e4236d1d4bab33a38cc747bb1f5aa2a6086d506ec4520505f601c
   languageName: node
   linkType: hard
 
-"@newrelic/native-metrics@npm:^8.0.0":
-  version: 8.0.0
-  resolution: "@newrelic/native-metrics@npm:8.0.0"
+"@newrelic/native-metrics@npm:^9.0.0":
+  version: 9.0.0
+  resolution: "@newrelic/native-metrics@npm:9.0.0"
   dependencies:
     https-proxy-agent: ^5.0.0
-    nan: ^2.15.0
+    nan: ^2.16.0
     node-gyp: latest
     semver: ^5.5.1
-  checksum: a7867753ba680bc8e873d1b25decf6bbadb7e7cd8946119e4c2e16535d5c8485ba4d20c23f34e611e282270fbc5004a6ad964494cbeab02d5b9f518311e244d0
+  checksum: 94e73055417a360f257c50af25a09378b038572feba630c96027f746243ccfb7fdf16f69ab9448983d41a1dc11c3ff6407094db208aa1751d972d7335676b74c
   languageName: node
   linkType: hard
 
-"@newrelic/superagent@npm:^5.1.0":
-  version: 5.1.1
-  resolution: "@newrelic/superagent@npm:5.1.1"
+"@newrelic/superagent@npm:^6.0.0":
+  version: 6.0.0
+  resolution: "@newrelic/superagent@npm:6.0.0"
   peerDependencies:
     newrelic: ">=6.11.0"
-  checksum: b43f7b9bb6732d5cfe1623bea95466d97ce1d19a61fcd470ddf8bb36420c2b9f8f314ddb7a696efdbd6e140ac0dc4f31e93b3f778d3dc755577981f8bd1192bf
+  checksum: d9e9b20d753cc9902d096a76ce5d10916d491e98455b2f8485a6502713fa1214fd763c21db9f034c3be63fdfeaac97801bdd9b87e04e0e2e19a1a788dc4f0841
   languageName: node
   linkType: hard
 
@@ -1794,7 +1792,7 @@ __metadata:
     ioredis: ^5.2.0
     jest: ^28.1.2
     jsonwebtoken: 8.5.1
-    newrelic: ^8.14.1
+    newrelic: ^9.0.0
     nodemon: ^2.0.19
     npm-check-updates: ^16.0.1
     prettyjson: ^1.2.5
@@ -1862,7 +1860,7 @@ __metadata:
     ioredis: ^5.2.0
     jest: ^28.1.2
     mysql2: ^2.3.3
-    newrelic: ^8.14.1
+    newrelic: ^9.0.0
     nodemon: ^2.0.19
     npm-check-updates: ^16.0.1
     otplib: 12.0.1
@@ -1926,7 +1924,7 @@ __metadata:
     eslint-plugin-prettier: ^4.2.1
     ioredis: ^5.2.0
     jest: ^28.1.2
-    newrelic: ^8.8.0
+    newrelic: ^9.0.0
     reflect-metadata: ^0.1.13
     sqs-consumer: ^5.6.0
     ts-jest: ^28.0.5
@@ -1986,7 +1984,7 @@ __metadata:
     ioredis: ^5.2.0
     jest: ^28.1.2
     mysql2: ^2.3.3
-    newrelic: ^8.14.1
+    newrelic: ^9.0.0
     reflect-metadata: 0.1.13
     ts-jest: ^28.0.5
     typeorm: ^0.3.6
@@ -2043,7 +2041,7 @@ __metadata:
     ioredis: ^5.2.0
     jest: ^28.1.2
     jsonwebtoken: ^8.5.1
-    newrelic: ^8.14.1
+    newrelic: ^9.0.0
     nodemon: ^2.0.19
     npm-check-updates: ^16.0.1
     prettyjson: ^1.2.5
@@ -2129,7 +2127,7 @@ __metadata:
     ioredis: ^5.2.0
     jest: ^28.1.2
     mysql2: ^2.3.3
-    newrelic: ^8.14.1
+    newrelic: ^9.0.0
     npm-check-updates: ^16.0.1
     reflect-metadata: ^0.1.13
     ts-jest: ^28.0.5
@@ -2171,7 +2169,7 @@ __metadata:
     eslint: ^8.17.0
     eslint-config-prettier: ^8.5.0
     ini: ^3.0.0
-    newrelic: ^8.14.1
+    newrelic: ^9.0.0
     npm-check-updates: ^16.0.1
     prettier: ^2.7.1
     ts-node: ^10.8.1
@@ -2268,7 +2266,7 @@ __metadata:
     jest: ^28.1.2
     jsonwebtoken: 8.5.1
     mysql2: ^2.3.3
-    newrelic: ^8.14.1
+    newrelic: ^9.0.0
     nodemon: ^2.0.19
     npm-check-updates: ^16.0.1
     prettyjson: ^1.2.5
@@ -7580,7 +7578,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nan@npm:^2.15.0":
+"nan@npm:^2.16.0":
   version: 2.16.0
   resolution: "nan@npm:2.16.0"
   dependencies:
@@ -7610,16 +7608,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"newrelic@npm:^8.14.1, newrelic@npm:^8.8.0":
-  version: 8.14.1
-  resolution: "newrelic@npm:8.14.1"
+"newrelic@npm:^9.0.0":
+  version: 9.0.0
+  resolution: "newrelic@npm:9.0.0"
   dependencies:
     "@grpc/grpc-js": ^1.5.5
     "@grpc/proto-loader": ^0.6.13
-    "@newrelic/aws-sdk": ^4.1.1
-    "@newrelic/koa": ^6.1.1
-    "@newrelic/native-metrics": ^8.0.0
-    "@newrelic/superagent": ^5.1.0
+    "@newrelic/aws-sdk": ^5.0.0
+    "@newrelic/koa": ^7.0.0
+    "@newrelic/native-metrics": ^9.0.0
+    "@newrelic/superagent": ^6.0.0
     "@tyriar/fibonacci-heap": ^2.0.7
     async: ^3.2.3
     concat-stream: ^2.0.0
@@ -7633,7 +7631,7 @@ __metadata:
       optional: true
   bin:
     newrelic-naming-rules: bin/test-naming-rules.js
-  checksum: cd12bb2ac9e96f07a1ca415ede4caed909a3f14fc9a202667e1a8c0a7ec1dda9a0ebb6dee87335c7d243c0ba5bece2fed1742d308a0d659017068f3f7429666a
+  checksum: e92af072fd53f324e8e77196b5c35eb1a1b6a3aaf8f21fc4cad9c575f40a16aaf59eb985f6bc4f60bc8322be4bfc0002ddb441aea77938169dec245d2d46ee21
   languageName: node
   linkType: hard
 

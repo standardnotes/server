@@ -237,8 +237,8 @@ function download(target, cb) {
       return cb(new Error('Failed to download ' + url + ': code ' + res.statusCode))
     }
 
-    var unzip = zlib.createGunzip()
-    var buffers = []
+    const unzip = zlib.createGunzip()
+    const buffers = []
     let size = 0
     res.pipe(unzip).on('data', function onResData(data) {
       buffers.push(data)

@@ -121,7 +121,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["eslint", "npm:8.19.0"],\
             ["eslint-config-prettier", "virtual:8859b278716fedf3e7458b5628625f7e35678c418626878559a0b816445001b7e24c55546f4677ba4c20b521aa0cf52cc33ac07deff171e383ada6eeab69933f#npm:8.5.0"],\
             ["ini", "npm:3.0.0"],\
-            ["newrelic", "npm:8.14.1"],\
+            ["newrelic", "npm:9.0.0"],\
             ["npm-check-updates", "npm:16.0.1"],\
             ["prettier", "npm:2.7.1"],\
             ["ts-node", "virtual:c0eab07e71af57f5501e97e7ca7a2a4f4965035bd2455ad124a8b09fa55780657c55fe3df41019fa6c2c44487c897668c842a0939e380b3c1f13b3756d128543#npm:10.8.2"],\
@@ -1788,20 +1788,19 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@newrelic/aws-sdk", [\
-        ["npm:4.1.2", {\
-          "packageLocation": "./.yarn/cache/@newrelic-aws-sdk-npm-4.1.2-9930120a02-610f6353a7.zip/node_modules/@newrelic/aws-sdk/",\
+        ["npm:5.0.0", {\
+          "packageLocation": "./.yarn/cache/@newrelic-aws-sdk-npm-5.0.0-7d9d10d58f-b467b7306f.zip/node_modules/@newrelic/aws-sdk/",\
           "packageDependencies": [\
-            ["@newrelic/aws-sdk", "npm:4.1.2"]\
+            ["@newrelic/aws-sdk", "npm:5.0.0"]\
           ],\
           "linkType": "SOFT"\
         }],\
-        ["virtual:b659d4d19ce37732618223b586685dc7b27d11c52dca80d8411fdda38a4e6a7967776a5d7bdcce0be779cd6a41e2d84f8bbd3d3b5c06ce5ae40ad814517dfcfb#npm:4.1.2", {\
-          "packageLocation": "./.yarn/__virtual__/@newrelic-aws-sdk-virtual-a259cc13ec/0/cache/@newrelic-aws-sdk-npm-4.1.2-9930120a02-610f6353a7.zip/node_modules/@newrelic/aws-sdk/",\
+        ["virtual:65e8703d5df08d5ff3f7296fcb759f276254ee430ae6f3cc1f03da392ff63066a3c6c59591c38f36f19d3e877285287a834b5c55e22d764dc2cb0938f7128707#npm:5.0.0", {\
+          "packageLocation": "./.yarn/__virtual__/@newrelic-aws-sdk-virtual-e9040e4121/0/cache/@newrelic-aws-sdk-npm-5.0.0-7d9d10d58f-b467b7306f.zip/node_modules/@newrelic/aws-sdk/",\
           "packageDependencies": [\
-            ["@newrelic/aws-sdk", "virtual:b659d4d19ce37732618223b586685dc7b27d11c52dca80d8411fdda38a4e6a7967776a5d7bdcce0be779cd6a41e2d84f8bbd3d3b5c06ce5ae40ad814517dfcfb#npm:4.1.2"],\
+            ["@newrelic/aws-sdk", "virtual:65e8703d5df08d5ff3f7296fcb759f276254ee430ae6f3cc1f03da392ff63066a3c6c59591c38f36f19d3e877285287a834b5c55e22d764dc2cb0938f7128707#npm:5.0.0"],\
             ["@types/newrelic", null],\
-            ["newrelic", "npm:8.14.1"],\
-            ["semver", "npm:7.3.7"]\
+            ["newrelic", "npm:9.0.0"]\
           ],\
           "packagePeers": [\
             "@types/newrelic",\
@@ -1811,19 +1810,19 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@newrelic/koa", [\
-        ["npm:6.1.2", {\
-          "packageLocation": "./.yarn/cache/@newrelic-koa-npm-6.1.2-df0f7c71b5-e269d37b13.zip/node_modules/@newrelic/koa/",\
+        ["npm:7.0.0", {\
+          "packageLocation": "./.yarn/cache/@newrelic-koa-npm-7.0.0-903c251b9f-13fb2bf0df.zip/node_modules/@newrelic/koa/",\
           "packageDependencies": [\
-            ["@newrelic/koa", "npm:6.1.2"]\
+            ["@newrelic/koa", "npm:7.0.0"]\
           ],\
           "linkType": "SOFT"\
         }],\
-        ["virtual:b659d4d19ce37732618223b586685dc7b27d11c52dca80d8411fdda38a4e6a7967776a5d7bdcce0be779cd6a41e2d84f8bbd3d3b5c06ce5ae40ad814517dfcfb#npm:6.1.2", {\
-          "packageLocation": "./.yarn/__virtual__/@newrelic-koa-virtual-2df93240b5/0/cache/@newrelic-koa-npm-6.1.2-df0f7c71b5-e269d37b13.zip/node_modules/@newrelic/koa/",\
+        ["virtual:65e8703d5df08d5ff3f7296fcb759f276254ee430ae6f3cc1f03da392ff63066a3c6c59591c38f36f19d3e877285287a834b5c55e22d764dc2cb0938f7128707#npm:7.0.0", {\
+          "packageLocation": "./.yarn/__virtual__/@newrelic-koa-virtual-d6376894e6/0/cache/@newrelic-koa-npm-7.0.0-903c251b9f-13fb2bf0df.zip/node_modules/@newrelic/koa/",\
           "packageDependencies": [\
-            ["@newrelic/koa", "virtual:b659d4d19ce37732618223b586685dc7b27d11c52dca80d8411fdda38a4e6a7967776a5d7bdcce0be779cd6a41e2d84f8bbd3d3b5c06ce5ae40ad814517dfcfb#npm:6.1.2"],\
+            ["@newrelic/koa", "virtual:65e8703d5df08d5ff3f7296fcb759f276254ee430ae6f3cc1f03da392ff63066a3c6c59591c38f36f19d3e877285287a834b5c55e22d764dc2cb0938f7128707#npm:7.0.0"],\
             ["@types/newrelic", null],\
-            ["newrelic", "npm:8.14.1"]\
+            ["newrelic", "npm:9.0.0"]\
           ],\
           "packagePeers": [\
             "@types/newrelic",\
@@ -1833,10 +1832,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@newrelic/native-metrics", [\
-        ["npm:8.0.0", {\
-          "packageLocation": "./.yarn/unplugged/@newrelic-native-metrics-npm-8.0.0-c254393d6e/node_modules/@newrelic/native-metrics/",\
+        ["npm:9.0.0", {\
+          "packageLocation": "./.yarn/unplugged/@newrelic-native-metrics-npm-9.0.0-590d2e713a/node_modules/@newrelic/native-metrics/",\
           "packageDependencies": [\
-            ["@newrelic/native-metrics", "npm:8.0.0"],\
+            ["@newrelic/native-metrics", "npm:9.0.0"],\
             ["https-proxy-agent", "npm:5.0.1"],\
             ["nan", "npm:2.16.0"],\
             ["node-gyp", "npm:9.0.0"],\
@@ -1846,19 +1845,19 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@newrelic/superagent", [\
-        ["npm:5.1.1", {\
-          "packageLocation": "./.yarn/cache/@newrelic-superagent-npm-5.1.1-0d3c1fccf8-b43f7b9bb6.zip/node_modules/@newrelic/superagent/",\
+        ["npm:6.0.0", {\
+          "packageLocation": "./.yarn/cache/@newrelic-superagent-npm-6.0.0-db8b77d0f3-d9e9b20d75.zip/node_modules/@newrelic/superagent/",\
           "packageDependencies": [\
-            ["@newrelic/superagent", "npm:5.1.1"]\
+            ["@newrelic/superagent", "npm:6.0.0"]\
           ],\
           "linkType": "SOFT"\
         }],\
-        ["virtual:b659d4d19ce37732618223b586685dc7b27d11c52dca80d8411fdda38a4e6a7967776a5d7bdcce0be779cd6a41e2d84f8bbd3d3b5c06ce5ae40ad814517dfcfb#npm:5.1.1", {\
-          "packageLocation": "./.yarn/__virtual__/@newrelic-superagent-virtual-d7de4099d8/0/cache/@newrelic-superagent-npm-5.1.1-0d3c1fccf8-b43f7b9bb6.zip/node_modules/@newrelic/superagent/",\
+        ["virtual:65e8703d5df08d5ff3f7296fcb759f276254ee430ae6f3cc1f03da392ff63066a3c6c59591c38f36f19d3e877285287a834b5c55e22d764dc2cb0938f7128707#npm:6.0.0", {\
+          "packageLocation": "./.yarn/__virtual__/@newrelic-superagent-virtual-c2a5d7b8a8/0/cache/@newrelic-superagent-npm-6.0.0-db8b77d0f3-d9e9b20d75.zip/node_modules/@newrelic/superagent/",\
           "packageDependencies": [\
-            ["@newrelic/superagent", "virtual:b659d4d19ce37732618223b586685dc7b27d11c52dca80d8411fdda38a4e6a7967776a5d7bdcce0be779cd6a41e2d84f8bbd3d3b5c06ce5ae40ad814517dfcfb#npm:5.1.1"],\
+            ["@newrelic/superagent", "virtual:65e8703d5df08d5ff3f7296fcb759f276254ee430ae6f3cc1f03da392ff63066a3c6c59591c38f36f19d3e877285287a834b5c55e22d764dc2cb0938f7128707#npm:6.0.0"],\
             ["@types/newrelic", null],\
-            ["newrelic", "npm:8.14.1"]\
+            ["newrelic", "npm:9.0.0"]\
           ],\
           "packagePeers": [\
             "@types/newrelic",\
@@ -1880,7 +1879,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["@newrelic/winston-enricher", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:4.0.0"],\
             ["@types/newrelic", "npm:7.0.3"],\
-            ["newrelic", "npm:8.14.1"]\
+            ["newrelic", "npm:9.0.0"]\
           ],\
           "packagePeers": [\
             "@types/newrelic",\
@@ -2532,7 +2531,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["ioredis", "npm:5.2.0"],\
             ["jest", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:28.1.2"],\
             ["jsonwebtoken", "npm:8.5.1"],\
-            ["newrelic", "npm:8.14.1"],\
+            ["newrelic", "npm:9.0.0"],\
             ["nodemon", "npm:2.0.19"],\
             ["npm-check-updates", "npm:16.0.1"],\
             ["prettyjson", "npm:1.2.5"],\
@@ -2599,7 +2598,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["ioredis", "npm:5.2.0"],\
             ["jest", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:28.1.2"],\
             ["mysql2", "npm:2.3.3"],\
-            ["newrelic", "npm:8.14.1"],\
+            ["newrelic", "npm:9.0.0"],\
             ["nodemon", "npm:2.0.19"],\
             ["npm-check-updates", "npm:16.0.1"],\
             ["otplib", "npm:12.0.1"],\
@@ -2677,7 +2676,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["eslint-plugin-prettier", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:4.2.1"],\
             ["ioredis", "npm:5.2.0"],\
             ["jest", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:28.1.2"],\
-            ["newrelic", "npm:8.14.1"],\
+            ["newrelic", "npm:9.0.0"],\
             ["reflect-metadata", "npm:0.1.13"],\
             ["sqs-consumer", "virtual:685a6222c3349423674bb7f0684ba34e2ab20912010f352e04dcf707a156e13183fc382e2417cb37a60f3e7b52fd0178c53181674890e1773eb83e190dc13378#npm:5.7.0"],\
             ["ts-jest", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:28.0.5"],\
@@ -2723,7 +2722,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["ioredis", "npm:5.2.0"],\
             ["jest", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:28.1.2"],\
             ["mysql2", "npm:2.3.3"],\
-            ["newrelic", "npm:8.14.1"],\
+            ["newrelic", "npm:9.0.0"],\
             ["reflect-metadata", "npm:0.1.13"],\
             ["ts-jest", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:28.0.5"],\
             ["typeorm", "virtual:31b5a94a105c89c9294c3d524a7f8929fe63ee5a2efadf21951ca4c0cfd2ecf02e8f4ef5a066bbda091f1e3a56e57c6749069a080618c96b22e51131a330fc4a#npm:0.3.7"],\
@@ -2783,7 +2782,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["ioredis", "npm:5.2.0"],\
             ["jest", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:28.1.2"],\
             ["jsonwebtoken", "npm:8.5.1"],\
-            ["newrelic", "npm:8.14.1"],\
+            ["newrelic", "npm:9.0.0"],\
             ["nodemon", "npm:2.0.19"],\
             ["npm-check-updates", "npm:16.0.1"],\
             ["prettyjson", "npm:1.2.5"],\
@@ -2876,7 +2875,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["ioredis", "npm:5.2.0"],\
             ["jest", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:28.1.2"],\
             ["mysql2", "npm:2.3.3"],\
-            ["newrelic", "npm:8.14.1"],\
+            ["newrelic", "npm:9.0.0"],\
             ["npm-check-updates", "npm:16.0.1"],\
             ["reflect-metadata", "npm:0.1.13"],\
             ["ts-jest", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:28.0.5"],\
@@ -2922,7 +2921,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["eslint", "npm:8.19.0"],\
             ["eslint-config-prettier", "virtual:8859b278716fedf3e7458b5628625f7e35678c418626878559a0b816445001b7e24c55546f4677ba4c20b521aa0cf52cc33ac07deff171e383ada6eeab69933f#npm:8.5.0"],\
             ["ini", "npm:3.0.0"],\
-            ["newrelic", "npm:8.14.1"],\
+            ["newrelic", "npm:9.0.0"],\
             ["npm-check-updates", "npm:16.0.1"],\
             ["prettier", "npm:2.7.1"],\
             ["ts-node", "virtual:c0eab07e71af57f5501e97e7ca7a2a4f4965035bd2455ad124a8b09fa55780657c55fe3df41019fa6c2c44487c897668c842a0939e380b3c1f13b3756d128543#npm:10.8.2"],\
@@ -3028,7 +3027,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["jest", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:28.1.2"],\
             ["jsonwebtoken", "npm:8.5.1"],\
             ["mysql2", "npm:2.3.3"],\
-            ["newrelic", "npm:8.14.1"],\
+            ["newrelic", "npm:9.0.0"],\
             ["nodemon", "npm:2.0.19"],\
             ["npm-check-updates", "npm:16.0.1"],\
             ["prettyjson", "npm:1.2.5"],\
@@ -9540,16 +9539,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["newrelic", [\
-        ["npm:8.14.1", {\
-          "packageLocation": "./.yarn/cache/newrelic-npm-8.14.1-b659d4d19c-cd12bb2ac9.zip/node_modules/newrelic/",\
+        ["npm:9.0.0", {\
+          "packageLocation": "./.yarn/cache/newrelic-npm-9.0.0-65e8703d5d-e92af072fd.zip/node_modules/newrelic/",\
           "packageDependencies": [\
-            ["newrelic", "npm:8.14.1"],\
+            ["newrelic", "npm:9.0.0"],\
             ["@grpc/grpc-js", "npm:1.6.7"],\
             ["@grpc/proto-loader", "npm:0.6.13"],\
-            ["@newrelic/aws-sdk", "virtual:b659d4d19ce37732618223b586685dc7b27d11c52dca80d8411fdda38a4e6a7967776a5d7bdcce0be779cd6a41e2d84f8bbd3d3b5c06ce5ae40ad814517dfcfb#npm:4.1.2"],\
-            ["@newrelic/koa", "virtual:b659d4d19ce37732618223b586685dc7b27d11c52dca80d8411fdda38a4e6a7967776a5d7bdcce0be779cd6a41e2d84f8bbd3d3b5c06ce5ae40ad814517dfcfb#npm:6.1.2"],\
-            ["@newrelic/native-metrics", "npm:8.0.0"],\
-            ["@newrelic/superagent", "virtual:b659d4d19ce37732618223b586685dc7b27d11c52dca80d8411fdda38a4e6a7967776a5d7bdcce0be779cd6a41e2d84f8bbd3d3b5c06ce5ae40ad814517dfcfb#npm:5.1.1"],\
+            ["@newrelic/aws-sdk", "virtual:65e8703d5df08d5ff3f7296fcb759f276254ee430ae6f3cc1f03da392ff63066a3c6c59591c38f36f19d3e877285287a834b5c55e22d764dc2cb0938f7128707#npm:5.0.0"],\
+            ["@newrelic/koa", "virtual:65e8703d5df08d5ff3f7296fcb759f276254ee430ae6f3cc1f03da392ff63066a3c6c59591c38f36f19d3e877285287a834b5c55e22d764dc2cb0938f7128707#npm:7.0.0"],\
+            ["@newrelic/native-metrics", "npm:9.0.0"],\
+            ["@newrelic/superagent", "virtual:65e8703d5df08d5ff3f7296fcb759f276254ee430ae6f3cc1f03da392ff63066a3c6c59591c38f36f19d3e877285287a834b5c55e22d764dc2cb0938f7128707#npm:6.0.0"],\
             ["@tyriar/fibonacci-heap", "npm:2.0.9"],\
             ["async", "npm:3.2.4"],\
             ["concat-stream", "npm:2.0.0"],\

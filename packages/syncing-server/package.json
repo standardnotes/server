@@ -46,7 +46,7 @@
     "ioredis": "^5.2.0",
     "jsonwebtoken": "8.5.1",
     "mysql2": "^2.3.3",
-    "newrelic": "^8.14.1",
+    "newrelic": "^9.0.0",
     "nodemon": "^2.0.19",
     "prettyjson": "^1.2.5",
     "reflect-metadata": "0.1.13",

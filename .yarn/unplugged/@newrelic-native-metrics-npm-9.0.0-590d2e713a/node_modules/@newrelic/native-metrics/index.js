@@ -5,20 +5,36 @@
 
 'use strict'
 
-var EventEmitter = require('events').EventEmitter
-var util = require('util')
-var preBuild = require('./lib/pre-build')
-var natives = preBuild.load('native_metrics')
+const EventEmitter = require('events').EventEmitter
+const util = require('util')
+const preBuild = require('./lib/pre-build')
+const natives = preBuild.load('native_metrics')
+const semver = require('semver')
 
-var DEFAULT_TIMEOUT = 15 * 1000 // 15 seconds
-var GC_TYPE_NAMES = {
-  1: 'Scavenge',
-  2: 'MarkSweepCompact',
-  4: 'IncrementalMarking',
-  8: 'ProcessWeakCallbacks',
+const DEFAULT_TIMEOUT = 15 * 1000 // 15 seconds
+let GC_TYPE_NAMES = null
 
-  3: 'All', // Node v4 and earlier only have Scavenge and MarkSweepCompact.
-  15: 'All'
+// In Node 18(v8 10) the GCType enum added `MinorMarkCompact`
+// we have to update our mapping to properly account for this
+if (semver.satisfies(process.version, '>=18')) {
+  GC_TYPE_NAMES = {
+    1: 'Scavenge',
+    2: 'MinorMarkCompact',
+    4: 'MarkSweepCompact',
+    8: 'IncrementalMarking',
+    16: 'ProcessWeakCallbacks',
+    31: 'All'
+  }
+} else {
+  GC_TYPE_NAMES = {
+    1: 'Scavenge',
+    2: 'MarkSweepCompact',
+    4: 'IncrementalMarking',
+    8: 'ProcessWeakCallbacks',
+
+    3: 'All', // Node v4 and earlier only have Scavenge and MarkSweepCompact.
+    15: 'All'
+  }
 }
 
 /**
@@ -135,11 +151,11 @@ NativeMetricEmitter.prototype.getLoopMetrics = function getLoopMetrics() {
  *  information on the GC events that happened.
  */
 NativeMetricEmitter.prototype.getGCMetrics = function getGCMetrics() {
-  var gcMetrics = this._gcBinder.read()
-  var results = Object.create(null)
-  for (var typeId in gcMetrics) {
+  const gcMetrics = this._gcBinder.read()
+  const results = Object.create(null)
+  for (const typeId in gcMetrics) {
     if (gcMetrics.hasOwnProperty(typeId) && gcMetrics[typeId].count > 0) {
-      var typeName = GC_TYPE_NAMES[String(typeId)]
+      const typeName = GC_TYPE_NAMES[String(typeId)]
       results[typeName] = {
         typeId: parseInt(typeId, 10),
         type: typeName,
@@ -151,7 +167,7 @@ NativeMetricEmitter.prototype.getGCMetrics = function getGCMetrics() {
   return results
 }
 
-var emitter = null
+let emitter = null
 
 /**
  * Retrieves the {@link NativeMetricEmitter} singleton instance.

@@ -66,6 +66,6 @@
   "packageManager": "yarn@3.2.1",
   "dependencies": {
     "@sentry/node": "^7.3.0",
-    "newrelic": "^8.14.1"
+    "newrelic": "^9.0.0"
   }
 }

@@ -57,7 +57,7 @@
     "inversify-express-utils": "^6.4.3",
     "ioredis": "^5.2.0",
     "mysql2": "^2.3.3",
-    "newrelic": "^8.14.1",
+    "newrelic": "^9.0.0",
     "otplib": "12.0.1",
     "prettyjson": "^1.2.5",
     "reflect-metadata": "0.1.13",

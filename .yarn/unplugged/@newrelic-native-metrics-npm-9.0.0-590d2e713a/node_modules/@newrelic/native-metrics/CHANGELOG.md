@@ -1,3 +1,17 @@
+### v9.0.0 (2022-08-01)
+
+* **BREAKING** Removed support for Node 12.
+
+  The minimum supported version is now Node v14. For further information on our support policy, see: https://docs.newrelic.com/docs/agents/nodejs-agent/getting-started/compatibility-requirements-nodejs-agent.
+
+* Added support for Node 18.
+
+* Fixed GC binder to properly record Garbage Collection metrics in Node 18.
+
+* Resolved several dev-dependency audit warnings.
+
+* Bumped minimum `nan` version to ^2.16.0.
+
 ### v8.0.0 (2022-03-22)
 
 * **BREAKING** Removed RUSageMeter.  This was used to get resource usage statistics via `libuv`. It is no longer needed since Node.js version 12 has support via `process.cpuUsage`.
