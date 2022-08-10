@@ -31,7 +31,8 @@ case "$COMMAND" in
 
   'email-backup' )
     echo "Starting Email Backup For Single User..."
-    yarn workspace @standardnotes/auth-server user-email-backup
+    EMAIL=$1 && shift 1
+    yarn workspace @standardnotes/auth-server user-email-backup $EMAIL
     ;;
 
   'dropbox-daily-backup' )
