@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.30](https://github.com/standardnotes/server/compare/@standardnotes/event-store@1.1.29...@standardnotes/event-store@1.1.30) (2022-08-10)
+
+**Note:** Version bump only for package @standardnotes/event-store
+
 ## [1.1.29](https://github.com/standardnotes/server/compare/@standardnotes/event-store@1.1.28...@standardnotes/event-store@1.1.29) (2022-08-09)
 
 **Note:** Version bump only for package @standardnotes/event-store
