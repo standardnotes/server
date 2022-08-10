@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.16.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.16.0...@standardnotes/auth-server@1.16.1) (2022-08-10)
+
+### Bug Fixes
+
+* **auth:** docker entrypoing command for single user backup ([f67be9d](https://github.com/standardnotes/server/commit/f67be9d3ba56f67ad63cb067c6304766de3f3b69))
+
 # [1.16.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.15.0...@standardnotes/auth-server@1.16.0) (2022-08-10)
 
 ### Features
