@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.12.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.11.5...@standardnotes/api-gateway@1.12.0) (2022-08-10)
+
+### Features
+
+* **api-gateway:** add publishing subscription purchased, renewed and registration analytics ([dea5fd7](https://github.com/standardnotes/api-gateway/commit/dea5fd717d222d96bcbbd16a8d84a84ed20144a8))
+
 ## [1.11.5](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.11.4...@standardnotes/api-gateway@1.11.5) (2022-08-10)
 
 **Note:** Version bump only for package @standardnotes/api-gateway
