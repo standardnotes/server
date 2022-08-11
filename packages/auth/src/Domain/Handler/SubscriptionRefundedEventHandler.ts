@@ -8,6 +8,8 @@ import { RoleServiceInterface } from '../Role/RoleServiceInterface'
 import { UserRepositoryInterface } from '../User/UserRepositoryInterface'
 import { UserSubscriptionRepositoryInterface } from '../Subscription/UserSubscriptionRepositoryInterface'
 import { OfflineUserSubscriptionRepositoryInterface } from '../Subscription/OfflineUserSubscriptionRepositoryInterface'
+import { AnalyticsActivity, AnalyticsStoreInterface, Period } from '@standardnotes/analytics'
+import { GetUserAnalyticsId } from '../UseCase/GetUserAnalyticsId/GetUserAnalyticsId'
 
 @injectable()
 export class SubscriptionRefundedEventHandler implements DomainEventHandlerInterface {
@@ -17,6 +19,8 @@ export class SubscriptionRefundedEventHandler implements DomainEventHandlerInter
     @inject(TYPES.OfflineUserSubscriptionRepository)
     private offlineUserSubscriptionRepository: OfflineUserSubscriptionRepositoryInterface,
     @inject(TYPES.RoleService) private roleService: RoleServiceInterface,
+    @inject(TYPES.GetUserAnalyticsId) private getUserAnalyticsId: GetUserAnalyticsId,
+    @inject(TYPES.AnalyticsStore) private analyticsStore: AnalyticsStoreInterface,
     @inject(TYPES.Logger) private logger: Logger,
   ) {}
 
@@ -36,6 +40,13 @@ export class SubscriptionRefundedEventHandler implements DomainEventHandlerInter
 
     await this.updateSubscriptionEndsAt(event.payload.subscriptionId, event.payload.timestamp)
     await this.removeRoleFromSubscriptionUsers(event.payload.subscriptionId, event.payload.subscriptionName)
+
+    const { analyticsId } = await this.getUserAnalyticsId.execute({ userUuid: user.uuid })
+    await this.analyticsStore.markActivity([AnalyticsActivity.SubscriptionRefunded], analyticsId, [
+      Period.Today,
+      Period.ThisWeek,
+      Period.ThisMonth,
+    ])
   }
 
   private async removeRoleFromSubscriptionUsers(

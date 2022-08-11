@@ -8,17 +8,41 @@ import * as dayjs from 'dayjs'
 import { SubscriptionCancelledEventHandler } from './SubscriptionCancelledEventHandler'
 import { UserSubscriptionRepositoryInterface } from '../Subscription/UserSubscriptionRepositoryInterface'
 import { OfflineUserSubscriptionRepositoryInterface } from '../Subscription/OfflineUserSubscriptionRepositoryInterface'
+import { AnalyticsStoreInterface } from '@standardnotes/analytics'
+import { GetUserAnalyticsId } from '../UseCase/GetUserAnalyticsId/GetUserAnalyticsId'
+import { UserRepositoryInterface } from '../User/UserRepositoryInterface'
+import { User } from '../User/User'
 
 describe('SubscriptionCancelledEventHandler', () => {
   let userSubscriptionRepository: UserSubscriptionRepositoryInterface
   let offlineUserSubscriptionRepository: OfflineUserSubscriptionRepositoryInterface
   let event: SubscriptionCancelledEvent
+  let userRepository: UserRepositoryInterface
+  let getUserAnalyticsId: GetUserAnalyticsId
+  let analyticsStore: AnalyticsStoreInterface
   let timestamp: number
 
   const createHandler = () =>
-    new SubscriptionCancelledEventHandler(userSubscriptionRepository, offlineUserSubscriptionRepository)
+    new SubscriptionCancelledEventHandler(
+      userSubscriptionRepository,
+      offlineUserSubscriptionRepository,
+      userRepository,
+      getUserAnalyticsId,
+      analyticsStore,
+    )
 
   beforeEach(() => {
+    const user = { uuid: '1-2-3' } as jest.Mocked<User>
+
+    userRepository = {} as jest.Mocked<UserRepositoryInterface>
+    userRepository.findOneByEmail = jest.fn().mockReturnValue(user)
+
+    getUserAnalyticsId = {} as jest.Mocked<GetUserAnalyticsId>
+    getUserAnalyticsId.execute = jest.fn().mockReturnValue({ analyticsId: 3 })
+
+    analyticsStore = {} as jest.Mocked<AnalyticsStoreInterface>
+    analyticsStore.markActivity = jest.fn()
+
     userSubscriptionRepository = {} as jest.Mocked<UserSubscriptionRepositoryInterface>
     userSubscriptionRepository.updateCancelled = jest.fn()
 
@@ -42,6 +66,16 @@ describe('SubscriptionCancelledEventHandler', () => {
     await createHandler().handle(event)
 
     expect(userSubscriptionRepository.updateCancelled).toHaveBeenCalledWith(1, true, timestamp)
+    expect(analyticsStore.markActivity).toHaveBeenCalled()
+  })
+
+  it('should update subscription cancelled - user not found', async () => {
+    userRepository.findOneByEmail = jest.fn().mockReturnValue(null)
+
+    await createHandler().handle(event)
+
+    expect(userSubscriptionRepository.updateCancelled).toHaveBeenCalledWith(1, true, timestamp)
+    expect(analyticsStore.markActivity).not.toHaveBeenCalled()
   })
 
   it('should update offline subscription cancelled', async () => {

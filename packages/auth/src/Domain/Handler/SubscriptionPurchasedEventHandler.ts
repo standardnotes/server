@@ -68,7 +68,11 @@ export class SubscriptionPurchasedEventHandler implements DomainEventHandlerInte
     )
 
     const { analyticsId } = await this.getUserAnalyticsId.execute({ userUuid: user.uuid })
-    await this.analyticsStore.markActivity([AnalyticsActivity.SubscriptionPurchased], analyticsId, [Period.Today])
+    await this.analyticsStore.markActivity([AnalyticsActivity.SubscriptionPurchased], analyticsId, [
+      Period.Today,
+      Period.ThisWeek,
+      Period.ThisMonth,
+    ])
 
     const limitedDiscountPurchased = event.payload.discountCode === 'limited-10'
     if (limitedDiscountPurchased) {

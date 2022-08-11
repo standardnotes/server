@@ -128,6 +128,42 @@ const requestReport = async (
             Period.Last30Days,
           ),
         },
+        {
+          name: AnalyticsActivity.DeleteAccount,
+          period: Period.Last30Days,
+          counts: await analyticsStore.calculateActivityChangesTotalCount(
+            AnalyticsActivity.DeleteAccount,
+            Period.Last30Days,
+          ),
+          totalCount: await analyticsStore.calculateActivityTotalCountOverTime(
+            AnalyticsActivity.DeleteAccount,
+            Period.Last30Days,
+          ),
+        },
+        {
+          name: AnalyticsActivity.SubscriptionCancelled,
+          period: Period.Last30Days,
+          counts: await analyticsStore.calculateActivityChangesTotalCount(
+            AnalyticsActivity.SubscriptionCancelled,
+            Period.Last30Days,
+          ),
+          totalCount: await analyticsStore.calculateActivityTotalCountOverTime(
+            AnalyticsActivity.SubscriptionCancelled,
+            Period.Last30Days,
+          ),
+        },
+        {
+          name: AnalyticsActivity.SubscriptionRefunded,
+          period: Period.Last30Days,
+          counts: await analyticsStore.calculateActivityChangesTotalCount(
+            AnalyticsActivity.SubscriptionRefunded,
+            Period.Last30Days,
+          ),
+          totalCount: await analyticsStore.calculateActivityTotalCountOverTime(
+            AnalyticsActivity.SubscriptionRefunded,
+            Period.Last30Days,
+          ),
+        },
       ],
     },
   }

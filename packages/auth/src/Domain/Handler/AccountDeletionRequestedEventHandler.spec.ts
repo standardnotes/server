@@ -11,6 +11,8 @@ import { SessionRepositoryInterface } from '../Session/SessionRepositoryInterfac
 import { User } from '../User/User'
 import { UserRepositoryInterface } from '../User/UserRepositoryInterface'
 import { AccountDeletionRequestedEventHandler } from './AccountDeletionRequestedEventHandler'
+import { GetUserAnalyticsId } from '../UseCase/GetUserAnalyticsId/GetUserAnalyticsId'
+import { AnalyticsStoreInterface } from '@standardnotes/analytics'
 
 describe('AccountDeletionRequestedEventHandler', () => {
   let userRepository: UserRepositoryInterface
@@ -23,6 +25,8 @@ describe('AccountDeletionRequestedEventHandler', () => {
   let revokedSession: RevokedSession
   let user: User
   let event: AccountDeletionRequestedEvent
+  let getUserAnalyticsId: GetUserAnalyticsId
+  let analyticsStore: AnalyticsStoreInterface
 
   const createHandler = () =>
     new AccountDeletionRequestedEventHandler(
@@ -30,6 +34,8 @@ describe('AccountDeletionRequestedEventHandler', () => {
       sessionRepository,
       ephemeralSessionRepository,
       revokedSessionRepository,
+      getUserAnalyticsId,
+      analyticsStore,
       logger,
     )
 
@@ -71,6 +77,12 @@ describe('AccountDeletionRequestedEventHandler', () => {
       userUuid: '1-2-3',
       regularSubscriptionUuid: '2-3-4',
     }
+
+    getUserAnalyticsId = {} as jest.Mocked<GetUserAnalyticsId>
+    getUserAnalyticsId.execute = jest.fn().mockReturnValue({ analyticsId: 3 })
+
+    analyticsStore = {} as jest.Mocked<AnalyticsStoreInterface>
+    analyticsStore.markActivity = jest.fn()
 
     logger = {} as jest.Mocked<Logger>
     logger.info = jest.fn()

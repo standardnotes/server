@@ -61,7 +61,11 @@ export class SubscriptionRenewedEventHandler implements DomainEventHandlerInterf
     await this.addRoleToSubscriptionUsers(event.payload.subscriptionId, event.payload.subscriptionName)
 
     const { analyticsId } = await this.getUserAnalyticsId.execute({ userUuid: user.uuid })
-    await this.analyticsStore.markActivity([AnalyticsActivity.SubscriptionRenewed], analyticsId, [Period.Today])
+    await this.analyticsStore.markActivity([AnalyticsActivity.SubscriptionRenewed], analyticsId, [
+      Period.Today,
+      Period.ThisWeek,
+      Period.ThisMonth,
+    ])
   }
 
   private async addRoleToSubscriptionUsers(subscriptionId: number, subscriptionName: SubscriptionName): Promise<void> {

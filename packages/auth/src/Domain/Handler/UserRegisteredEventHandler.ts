@@ -25,7 +25,11 @@ export class UserRegisteredEventHandler implements DomainEventHandlerInterface {
     }
 
     const { analyticsId } = await this.getUserAnalyticsId.execute({ userUuid: event.payload.userUuid })
-    await this.analyticsStore.markActivity([AnalyticsActivity.Register], analyticsId, [Period.Today])
+    await this.analyticsStore.markActivity([AnalyticsActivity.Register], analyticsId, [
+      Period.Today,
+      Period.ThisWeek,
+      Period.ThisMonth,
+    ])
 
     await this.httpClient.request({
       method: 'POST',
