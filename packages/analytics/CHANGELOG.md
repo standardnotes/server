@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.15.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.14.0...@standardnotes/analytics@1.15.0) (2022-08-11)
+
+### Features
+
+* add analytics for subscription cancelling, refunding and account deletion ([1607638](https://github.com/standardnotes/server/commit/16076382bae74552a35901bb5474e2c2c2d96f43))
+
 # [1.14.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.13.0...@standardnotes/analytics@1.14.0) (2022-08-09)
 
 ### Features

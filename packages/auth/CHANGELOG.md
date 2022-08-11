@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.17.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.16.2...@standardnotes/auth-server@1.17.0) (2022-08-11)
+
+### Features
+
+* add analytics for subscription cancelling, refunding and account deletion ([1607638](https://github.com/standardnotes/server/commit/16076382bae74552a35901bb5474e2c2c2d96f43))
+
 ## [1.16.2](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.16.1...@standardnotes/auth-server@1.16.2) (2022-08-10)
 
 **Note:** Version bump only for package @standardnotes/auth-server
