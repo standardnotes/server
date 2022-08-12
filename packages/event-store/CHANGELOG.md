@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.31](https://github.com/standardnotes/server/compare/@standardnotes/event-store@1.1.30...@standardnotes/event-store@1.1.31) (2022-08-12)
+
+### Bug Fixes
+
+* **event-store:** add listening to offline subscription token created events ([1ba5ba5](https://github.com/standardnotes/server/commit/1ba5ba5ff6f7afe5c8e2e929555042a01f2465ac))
+
 ## [1.1.30](https://github.com/standardnotes/server/compare/@standardnotes/event-store@1.1.29...@standardnotes/event-store@1.1.30) (2022-08-10)
 
 **Note:** Version bump only for package @standardnotes/event-store
