@@ -7,15 +7,18 @@ import { UserRepositoryInterface } from '../Domain/User/UserRepositoryInterface'
 import * as express from 'express'
 import { DeleteSetting } from '../Domain/UseCase/DeleteSetting/DeleteSetting'
 import { CreateSubscriptionToken } from '../Domain/UseCase/CreateSubscriptionToken/CreateSubscriptionToken'
+import { CreateOfflineSubscriptionToken } from '../Domain/UseCase/CreateOfflineSubscriptionToken/CreateOfflineSubscriptionToken'
 
 describe('AdminController', () => {
   let deleteSetting: DeleteSetting
   let userRepository: UserRepositoryInterface
   let createSubscriptionToken: CreateSubscriptionToken
+  let createOfflineSubscriptionToken: CreateOfflineSubscriptionToken
   let request: express.Request
   let user: User
 
-  const createController = () => new AdminController(deleteSetting, userRepository, createSubscriptionToken)
+  const createController = () =>
+    new AdminController(deleteSetting, userRepository, createSubscriptionToken, createOfflineSubscriptionToken)
 
   beforeEach(() => {
     user = {} as jest.Mocked<User>
@@ -30,6 +33,14 @@ describe('AdminController', () => {
     createSubscriptionToken = {} as jest.Mocked<CreateSubscriptionToken>
     createSubscriptionToken.execute = jest.fn().mockReturnValue({
       subscriptionToken: {
+        token: '123-sub-token',
+      },
+    })
+
+    createOfflineSubscriptionToken = {} as jest.Mocked<CreateOfflineSubscriptionToken>
+    createOfflineSubscriptionToken.execute = jest.fn().mockReturnValue({
+      success: true,
+      offlineSubscriptionToken: {
         token: '123-sub-token',
       },
     })
@@ -123,6 +134,31 @@ describe('AdminController', () => {
 
     expect(result.statusCode).toBe(200)
     expect(await result.content.readAsStringAsync()).toEqual('{"token":"123-sub-token"}')
+  })
+
+  it("should return a new offline subscription token for the user's email", async () => {
+    request.params.email = 'test@test.te'
+
+    const httpResponse = await createController().createOfflineToken(request)
+    const result = await httpResponse.executeAsync()
+
+    expect(httpResponse).toBeInstanceOf(results.JsonResult)
+
+    expect(result.statusCode).toBe(200)
+    expect(await result.content.readAsStringAsync()).toEqual('{"token":"123-sub-token"}')
+  })
+
+  it('should not return a new offline subscription token if the workflow fails', async () => {
+    request.params.email = 'test@test.te'
+
+    createOfflineSubscriptionToken.execute = jest.fn().mockReturnValue({ success: false })
+
+    const httpResponse = await createController().createOfflineToken(request)
+    const result = await httpResponse.executeAsync()
+
+    expect(httpResponse).toBeInstanceOf(results.BadRequestResult)
+
+    expect(result.statusCode).toBe(400)
   })
 
   it('should not delete email backup setting if value is null', async () => {

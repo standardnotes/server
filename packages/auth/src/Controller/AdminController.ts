@@ -11,6 +11,7 @@ import {
   results,
 } from 'inversify-express-utils'
 import TYPES from '../Bootstrap/Types'
+import { CreateOfflineSubscriptionToken } from '../Domain/UseCase/CreateOfflineSubscriptionToken/CreateOfflineSubscriptionToken'
 import { CreateSubscriptionToken } from '../Domain/UseCase/CreateSubscriptionToken/CreateSubscriptionToken'
 import { DeleteSetting } from '../Domain/UseCase/DeleteSetting/DeleteSetting'
 import { UserRepositoryInterface } from '../Domain/User/UserRepositoryInterface'
@@ -21,6 +22,8 @@ export class AdminController extends BaseHttpController {
     @inject(TYPES.DeleteSetting) private doDeleteSetting: DeleteSetting,
     @inject(TYPES.UserRepository) private userRepository: UserRepositoryInterface,
     @inject(TYPES.CreateSubscriptionToken) private createSubscriptionToken: CreateSubscriptionToken,
+    @inject(TYPES.CreateOfflineSubscriptionToken)
+    private createOfflineSubscriptionToken: CreateOfflineSubscriptionToken,
   ) {
     super()
   }
@@ -87,6 +90,22 @@ export class AdminController extends BaseHttpController {
 
     return this.json({
       token: result.subscriptionToken.token,
+    })
+  }
+
+  @httpPost('/users/:email/offline-subscription-token')
+  async createOfflineToken(request: Request): Promise<results.JsonResult | results.BadRequestResult> {
+    const { email } = request.params
+    const result = await this.createOfflineSubscriptionToken.execute({
+      userEmail: email,
+    })
+
+    if (!result.success) {
+      return this.badRequest()
+    }
+
+    return this.json({
+      token: result.offlineSubscriptionToken.token,
     })
   }
 
