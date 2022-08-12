@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.18.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.17.0...@standardnotes/auth-server@1.18.0) (2022-08-12)
+
+### Features
+
+* **auth:** add endpoint for generating offline subscription tokens for admin panel ([c61b615](https://github.com/standardnotes/server/commit/c61b615da6e1d4556e60e73d7414a80e8b331fca))
+
 # [1.17.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.16.2...@standardnotes/auth-server@1.17.0) (2022-08-11)
 
 ### Features
