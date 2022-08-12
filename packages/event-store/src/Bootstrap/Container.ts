@@ -75,6 +75,7 @@ export class ContainerConfigLoader {
       ['SHARED_SUBSCRIPTION_INVITATION_CREATED', container.get(TYPES.EventHandler)],
       ['EMAIL_BACKUP_ATTACHMENT_CREATED', container.get(TYPES.EventHandler)],
       ['EMAIL_BACKUP_REQUESTED', container.get(TYPES.EventHandler)],
+      ['OFFLINE_SUBSCRIPTION_TOKEN_CREATED', container.get(TYPES.EventHandler)],
     ])
 
     container
