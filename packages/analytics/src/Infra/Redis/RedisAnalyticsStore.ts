@@ -22,6 +22,11 @@ export class RedisAnalyticsStore implements AnalyticsStoreInterface {
       ...periodKeys.map((p) => `bitmap:action:${activity}:timespan:${p}`),
     )
 
+    await this.redisClient.expire(
+      `bitmap:action:${activity}:timespan:${periodKeys[0]}-${periodKeys[periodKeys.length - 1]}`,
+      3600,
+    )
+
     return this.redisClient.bitcount(
       `bitmap:action:${activity}:timespan:${periodKeys[0]}-${periodKeys[periodKeys.length - 1]}`,
     )
@@ -106,6 +111,8 @@ export class RedisAnalyticsStore implements AnalyticsStoreInterface {
       `bitmap:action:${activity}:timespan:${initialPeriodKey}`,
       `bitmap:action:${activity}:timespan:${subsequentPeriodKey}`,
     )
+
+    await this.redisClient.expire(diffKey, 3600)
 
     const retainedTotalInActivity = await this.redisClient.bitcount(diffKey)
 
