@@ -19,6 +19,64 @@ const requestReport = async (
   statisticsStore: StatisticsStoreInterface,
   domainEventPublisher: DomainEventPublisherInterface,
 ): Promise<void> => {
+  const analyticsOverTime = []
+
+  const thirtyDaysAnalyticsNames = [
+    AnalyticsActivity.GeneralActivity,
+    AnalyticsActivity.EditingItems,
+    AnalyticsActivity.SubscriptionPurchased,
+    AnalyticsActivity.Register,
+    AnalyticsActivity.SubscriptionRenewed,
+    AnalyticsActivity.DeleteAccount,
+    AnalyticsActivity.SubscriptionCancelled,
+    AnalyticsActivity.SubscriptionRefunded,
+  ]
+
+  for (const analyticsName of thirtyDaysAnalyticsNames) {
+    analyticsOverTime.push({
+      name: analyticsName,
+      period: Period.Last30Days,
+      counts: await analyticsStore.calculateActivityChangesTotalCount(analyticsName, Period.Last30Days),
+      totalCount: await analyticsStore.calculateActivityTotalCountOverTime(analyticsName, Period.Last30Days),
+    })
+  }
+
+  const quarterlyAnalyticsNames = [
+    AnalyticsActivity.Register,
+    AnalyticsActivity.SubscriptionPurchased,
+    AnalyticsActivity.SubscriptionRenewed,
+  ]
+
+  for (const analyticsName of quarterlyAnalyticsNames) {
+    for (const period of [Period.Q1ThisYear, Period.Q2ThisYear, Period.Q3ThisYear, Period.Q4ThisYear]) {
+      analyticsOverTime.push({
+        name: analyticsName,
+        period: period,
+        counts: await analyticsStore.calculateActivityChangesTotalCount(analyticsName, period),
+        totalCount: await analyticsStore.calculateActivityTotalCountOverTime(analyticsName, period),
+      })
+    }
+  }
+
+  const yesterdayActivityStatistics = []
+  const yesterdayActivityNames = [
+    AnalyticsActivity.EditingItems,
+    AnalyticsActivity.LimitedDiscountOfferPurchased,
+    AnalyticsActivity.GeneralActivity,
+  ]
+
+  for (const activityName of yesterdayActivityNames) {
+    yesterdayActivityStatistics.push({
+      name: activityName,
+      retention: await analyticsStore.calculateActivityRetention(
+        activityName,
+        Period.DayBeforeYesterday,
+        Period.Yesterday,
+      ),
+      totalCount: await analyticsStore.calculateActivityTotalCount(activityName, Period.Yesterday),
+    })
+  }
+
   const event: DailyAnalyticsReportGeneratedEvent = {
     type: 'DAILY_ANALYTICS_REPORT_GENERATED',
     createdAt: new Date(),
@@ -33,138 +91,8 @@ const requestReport = async (
       applicationStatistics: await statisticsStore.getYesterdayApplicationUsage(),
       snjsStatistics: await statisticsStore.getYesterdaySNJSUsage(),
       outOfSyncIncidents: await statisticsStore.getYesterdayOutOfSyncIncidents(),
-      activityStatistics: [
-        {
-          name: AnalyticsActivity.EditingItems,
-          retention: await analyticsStore.calculateActivityRetention(
-            AnalyticsActivity.EditingItems,
-            Period.DayBeforeYesterday,
-            Period.Yesterday,
-          ),
-          totalCount: await analyticsStore.calculateActivityTotalCount(
-            AnalyticsActivity.EditingItems,
-            Period.Yesterday,
-          ),
-        },
-        {
-          name: AnalyticsActivity.LimitedDiscountOfferPurchased,
-          retention: 0,
-          totalCount: await analyticsStore.calculateActivityTotalCount(
-            AnalyticsActivity.LimitedDiscountOfferPurchased,
-            Period.Yesterday,
-          ),
-        },
-        {
-          name: AnalyticsActivity.GeneralActivity,
-          retention: await analyticsStore.calculateActivityRetention(
-            AnalyticsActivity.GeneralActivity,
-            Period.DayBeforeYesterday,
-            Period.Yesterday,
-          ),
-          totalCount: await analyticsStore.calculateActivityTotalCount(
-            AnalyticsActivity.GeneralActivity,
-            Period.Yesterday,
-          ),
-        },
-      ],
-      activityStatisticsOverTime: [
-        {
-          name: AnalyticsActivity.GeneralActivity,
-          period: Period.Last30Days,
-          counts: await analyticsStore.calculateActivityChangesTotalCount(
-            AnalyticsActivity.GeneralActivity,
-            Period.Last30Days,
-          ),
-          totalCount: await analyticsStore.calculateActivityTotalCountOverTime(
-            AnalyticsActivity.GeneralActivity,
-            Period.Last30Days,
-          ),
-        },
-        {
-          name: AnalyticsActivity.EditingItems,
-          period: Period.Last30Days,
-          counts: await analyticsStore.calculateActivityChangesTotalCount(
-            AnalyticsActivity.EditingItems,
-            Period.Last30Days,
-          ),
-          totalCount: await analyticsStore.calculateActivityTotalCountOverTime(
-            AnalyticsActivity.EditingItems,
-            Period.Last30Days,
-          ),
-        },
-        {
-          name: AnalyticsActivity.SubscriptionPurchased,
-          period: Period.Last30Days,
-          counts: await analyticsStore.calculateActivityChangesTotalCount(
-            AnalyticsActivity.SubscriptionPurchased,
-            Period.Last30Days,
-          ),
-          totalCount: await analyticsStore.calculateActivityTotalCountOverTime(
-            AnalyticsActivity.SubscriptionPurchased,
-            Period.Last30Days,
-          ),
-        },
-        {
-          name: AnalyticsActivity.Register,
-          period: Period.Last30Days,
-          counts: await analyticsStore.calculateActivityChangesTotalCount(
-            AnalyticsActivity.Register,
-            Period.Last30Days,
-          ),
-          totalCount: await analyticsStore.calculateActivityTotalCountOverTime(
-            AnalyticsActivity.Register,
-            Period.Last30Days,
-          ),
-        },
-        {
-          name: AnalyticsActivity.SubscriptionRenewed,
-          period: Period.Last30Days,
-          counts: await analyticsStore.calculateActivityChangesTotalCount(
-            AnalyticsActivity.SubscriptionRenewed,
-            Period.Last30Days,
-          ),
-          totalCount: await analyticsStore.calculateActivityTotalCountOverTime(
-            AnalyticsActivity.SubscriptionRenewed,
-            Period.Last30Days,
-          ),
-        },
-        {
-          name: AnalyticsActivity.DeleteAccount,
-          period: Period.Last30Days,
-          counts: await analyticsStore.calculateActivityChangesTotalCount(
-            AnalyticsActivity.DeleteAccount,
-            Period.Last30Days,
-          ),
-          totalCount: await analyticsStore.calculateActivityTotalCountOverTime(
-            AnalyticsActivity.DeleteAccount,
-            Period.Last30Days,
-          ),
-        },
-        {
-          name: AnalyticsActivity.SubscriptionCancelled,
-          period: Period.Last30Days,
-          counts: await analyticsStore.calculateActivityChangesTotalCount(
-            AnalyticsActivity.SubscriptionCancelled,
-            Period.Last30Days,
-          ),
-          totalCount: await analyticsStore.calculateActivityTotalCountOverTime(
-            AnalyticsActivity.SubscriptionCancelled,
-            Period.Last30Days,
-          ),
-        },
-        {
-          name: AnalyticsActivity.SubscriptionRefunded,
-          period: Period.Last30Days,
-          counts: await analyticsStore.calculateActivityChangesTotalCount(
-            AnalyticsActivity.SubscriptionRefunded,
-            Period.Last30Days,
-          ),
-          totalCount: await analyticsStore.calculateActivityTotalCountOverTime(
-            AnalyticsActivity.SubscriptionRefunded,
-            Period.Last30Days,
-          ),
-        },
-      ],
+      activityStatistics: yesterdayActivityStatistics,
+      activityStatisticsOverTime: analyticsOverTime,
     },
   }
 

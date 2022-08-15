@@ -31,7 +31,9 @@ export class RedisAnalyticsStore implements AnalyticsStoreInterface {
     activity: AnalyticsActivity,
     period: Period,
   ): Promise<Array<{ periodKey: string; totalCount: number }>> {
-    if (period !== Period.Last30Days) {
+    if (
+      ![Period.Last30Days, Period.Q1ThisYear, Period.Q2ThisYear, Period.Q3ThisYear, Period.Q4ThisYear].includes(period)
+    ) {
       throw new Error(`Unsuporrted period: ${period}`)
     }
 
