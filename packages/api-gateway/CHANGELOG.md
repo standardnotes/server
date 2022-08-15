@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.14.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.13.1...@standardnotes/api-gateway@1.14.0) (2022-08-15)
+
+### Features
+
+* **api-gateway:** add quarterly analytics ([67378e4](https://github.com/standardnotes/api-gateway/commit/67378e4535ef2760cfe3fe27256ffe117ee11a71))
+
 ## [1.13.1](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.13.0...@standardnotes/api-gateway@1.13.1) (2022-08-15)
 
 **Note:** Version bump only for package @standardnotes/api-gateway

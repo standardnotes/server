@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.17.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.16.0...@standardnotes/analytics@1.17.0) (2022-08-15)
+
+### Features
+
+* **api-gateway:** add quarterly analytics ([67378e4](https://github.com/standardnotes/server/commit/67378e4535ef2760cfe3fe27256ffe117ee11a71))
+
 # [1.16.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.15.0...@standardnotes/analytics@1.16.0) (2022-08-15)
 
 ### Features
