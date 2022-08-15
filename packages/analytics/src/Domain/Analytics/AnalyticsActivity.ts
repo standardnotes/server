@@ -11,4 +11,5 @@ export enum AnalyticsActivity {
   EmailUnbackedUpData = 'email-unbacked-up-data',
   EmailBackup = 'email-backup',
   LimitedDiscountOfferPurchased = 'limited-discount-offer-purchased',
+  PaymentFailed = 'payment-failed',
 }
