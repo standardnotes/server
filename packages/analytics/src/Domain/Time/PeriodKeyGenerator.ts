@@ -12,6 +12,14 @@ export class PeriodKeyGenerator implements PeriodKeyGeneratorInterface {
         }
 
         return periodKeys
+      case Period.Q1ThisYear:
+        return this.generateMonthlyKeysRange(0, 3)
+      case Period.Q2ThisYear:
+        return this.generateMonthlyKeysRange(3, 6)
+      case Period.Q3ThisYear:
+        return this.generateMonthlyKeysRange(6, 9)
+      case Period.Q4ThisYear:
+        return this.generateMonthlyKeysRange(9, 12)
       default:
         throw new Error(`Unsuporrted period: ${period}`)
     }
@@ -114,5 +122,17 @@ export class PeriodKeyGenerator implements PeriodKeyGeneratorInterface {
     yesterday.setDate(new Date().getDate() - 14)
 
     return yesterday
+  }
+
+  private generateMonthlyKeysRange(startingMonthIndex: number, endingMonthIndex: number): string[] {
+    const today = new Date()
+    const keys = []
+    for (let i = startingMonthIndex; i < endingMonthIndex; i++) {
+      today.setMonth(i)
+      today.setDate(1)
+      keys.push(this.getMonthlyKey(today))
+    }
+
+    return keys
   }
 }

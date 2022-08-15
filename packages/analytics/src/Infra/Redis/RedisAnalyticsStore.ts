@@ -9,7 +9,9 @@ export class RedisAnalyticsStore implements AnalyticsStoreInterface {
   constructor(private periodKeyGenerator: PeriodKeyGeneratorInterface, private redisClient: IORedis.Redis) {}
 
   async calculateActivityTotalCountOverTime(activity: AnalyticsActivity, period: Period): Promise<number> {
-    if (period !== Period.Last30Days) {
+    if (
+      ![Period.Last30Days, Period.Q1ThisYear, Period.Q2ThisYear, Period.Q3ThisYear, Period.Q4ThisYear].includes(period)
+    ) {
       throw new Error(`Unsuporrted period: ${period}`)
     }
 

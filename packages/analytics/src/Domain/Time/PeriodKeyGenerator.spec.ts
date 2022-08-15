@@ -48,6 +48,22 @@ describe('PeriodKeyGenerator', () => {
     ])
   })
 
+  it('should generate period keys for Q1', () => {
+    expect(createGenerator().getDiscretePeriodKeys(Period.Q1ThisYear)).toEqual(['2022-1', '2022-2', '2022-3'])
+  })
+
+  it('should generate period keys for Q2', () => {
+    expect(createGenerator().getDiscretePeriodKeys(Period.Q2ThisYear)).toEqual(['2022-4', '2022-5', '2022-6'])
+  })
+
+  it('should generate period keys for Q3', () => {
+    expect(createGenerator().getDiscretePeriodKeys(Period.Q3ThisYear)).toEqual(['2022-7', '2022-8', '2022-9'])
+  })
+
+  it('should generate period keys for Q4', () => {
+    expect(createGenerator().getDiscretePeriodKeys(Period.Q4ThisYear)).toEqual(['2022-10', '2022-11', '2022-12'])
+  })
+
   it('should generate a period key for today', () => {
     expect(createGenerator().getPeriodKey(Period.Today)).toEqual('2022-5-24')
   })

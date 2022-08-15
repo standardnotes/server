@@ -48,6 +48,17 @@ describe('RedisAnalyticsStore', () => {
     expect(redisClient.bitcount).toHaveBeenCalledWith('bitmap:action:editing-items:timespan:2022-4-24-2022-4-26')
   })
 
+  it('should not calculate total count over time of activities if period is unsupported', async () => {
+    let caughtError = null
+    try {
+      await createStore().calculateActivityTotalCountOverTime(AnalyticsActivity.EditingItems, Period.LastWeek)
+    } catch (error) {
+      caughtError = error
+    }
+
+    expect(caughtError).not.toBeNull()
+  })
+
   it('should calculate total count changes of activities', async () => {
     periodKeyGenerator.getDiscretePeriodKeys = jest.fn().mockReturnValue(['2022-4-24', '2022-4-25', '2022-4-26'])
 
