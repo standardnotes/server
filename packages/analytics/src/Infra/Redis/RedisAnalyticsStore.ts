@@ -15,7 +15,7 @@ export class RedisAnalyticsStore implements AnalyticsStoreInterface {
       throw new Error(`Unsuporrted period: ${period}`)
     }
 
-    const periodKeys = this.periodKeyGenerator.getDiscretePeriodKeys(Period.Last30Days)
+    const periodKeys = this.periodKeyGenerator.getDiscretePeriodKeys(period)
     await this.redisClient.bitop(
       'OR',
       `bitmap:action:${activity}:timespan:${periodKeys[0]}-${periodKeys[periodKeys.length - 1]}`,
@@ -42,7 +42,7 @@ export class RedisAnalyticsStore implements AnalyticsStoreInterface {
       throw new Error(`Unsuporrted period: ${period}`)
     }
 
-    const periodKeys = this.periodKeyGenerator.getDiscretePeriodKeys(Period.Last30Days)
+    const periodKeys = this.periodKeyGenerator.getDiscretePeriodKeys(period)
     const counts = []
     for (const periodKey of periodKeys) {
       counts.push({
