@@ -192,6 +192,7 @@ import { VerifyPredicate } from '../Domain/UseCase/VerifyPredicate/VerifyPredica
 import { PredicateVerificationRequestedEventHandler } from '../Domain/Handler/PredicateVerificationRequestedEventHandler'
 import { MuteMarketingEmails } from '../Domain/UseCase/MuteMarketingEmails/MuteMarketingEmails'
 import { PaymentFailedEventHandler } from '../Domain/Handler/PaymentFailedEventHandler'
+import { PaymentSuccessEventHandler } from '../Domain/Handler/PaymentSuccessEventHandler'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -480,6 +481,7 @@ export class ContainerConfigLoader {
       .bind<PredicateVerificationRequestedEventHandler>(TYPES.PredicateVerificationRequestedEventHandler)
       .to(PredicateVerificationRequestedEventHandler)
     container.bind<PaymentFailedEventHandler>(TYPES.PaymentFailedEventHandler).to(PaymentFailedEventHandler)
+    container.bind<PaymentSuccessEventHandler>(TYPES.PaymentSuccessEventHandler).to(PaymentSuccessEventHandler)
 
     // Services
     container.bind<UAParser>(TYPES.DeviceDetector).toConstantValue(new UAParser())
@@ -579,6 +581,7 @@ export class ContainerConfigLoader {
       ['SHARED_SUBSCRIPTION_INVITATION_CREATED', container.get(TYPES.SharedSubscriptionInvitationCreatedEventHandler)],
       ['PREDICATE_VERIFICATION_REQUESTED', container.get(TYPES.PredicateVerificationRequestedEventHandler)],
       ['PAYMENT_FAILED', container.get(TYPES.PaymentFailedEventHandler)],
+      ['PAYMENT_SUCCESS', container.get(TYPES.PaymentSuccessEventHandler)],
     ])
 
     if (env.get('SQS_QUEUE_URL', true)) {

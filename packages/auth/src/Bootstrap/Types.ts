@@ -144,6 +144,7 @@ const TYPES = {
   SharedSubscriptionInvitationCreatedEventHandler: Symbol.for('SharedSubscriptionInvitationCreatedEventHandler'),
   PredicateVerificationRequestedEventHandler: Symbol.for('PredicateVerificationRequestedEventHandler'),
   PaymentFailedEventHandler: Symbol.for('PaymentFailedEventHandler'),
+  PaymentSuccessEventHandler: Symbol.for('PaymentSuccessEventHandler'),
   // Services
   DeviceDetector: Symbol.for('DeviceDetector'),
   SessionService: Symbol.for('SessionService'),
