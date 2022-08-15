@@ -63,6 +63,7 @@ const requestReport = async (
     AnalyticsActivity.EditingItems,
     AnalyticsActivity.LimitedDiscountOfferPurchased,
     AnalyticsActivity.GeneralActivity,
+    AnalyticsActivity.PaymentFailed,
   ]
 
   for (const activityName of yesterdayActivityNames) {
