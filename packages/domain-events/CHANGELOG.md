@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.54.1](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.54.0...@standardnotes/domain-events@2.54.1) (2022-08-15)
+
+### Bug Fixes
+
+* **domain-events:** missing exports ([2fb904d](https://github.com/standardnotes/server/commit/2fb904d2cbff040ba9a6b2b323eab1591309b174))
+
 # [2.54.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.53.0...@standardnotes/domain-events@2.54.0) (2022-08-15)
 
 ### Features

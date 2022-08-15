@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.18.1](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.18.0...@standardnotes/analytics@1.18.1) (2022-08-15)
+
+### Bug Fixes
+
+* **analytics:** add payment success activity ([9307893](https://github.com/standardnotes/server/commit/930789316c2eec8227f26e75d4917796168f2d08))
+
 # [1.18.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.17.2...@standardnotes/analytics@1.18.0) (2022-08-15)
 
 ### Features

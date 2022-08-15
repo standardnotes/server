@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.33](https://github.com/standardnotes/server/compare/@standardnotes/event-store@1.1.32...@standardnotes/event-store@1.1.33) (2022-08-15)
+
+### Bug Fixes
+
+* **event-store:** add payment events handling ([3477c81](https://github.com/standardnotes/server/commit/3477c81d37e6cb92e76d59b1128daac702a4a7ae))
+
 ## [1.1.32](https://github.com/standardnotes/server/compare/@standardnotes/event-store@1.1.31...@standardnotes/event-store@1.1.32) (2022-08-15)
 
 **Note:** Version bump only for package @standardnotes/event-store

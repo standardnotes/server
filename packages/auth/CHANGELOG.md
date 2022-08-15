@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.20.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.19.1...@standardnotes/auth-server@1.20.0) (2022-08-15)
+
+### Features
+
+* **auth:** add payment success event handler ([01a08ea](https://github.com/standardnotes/server/commit/01a08eae582e070ec844f5e05f34260447b7d4c6))
+
 ## [1.19.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.19.0...@standardnotes/auth-server@1.19.1) (2022-08-15)
 
 **Note:** Version bump only for package @standardnotes/auth-server
