@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.18.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.17.2...@standardnotes/analytics@1.18.0) (2022-08-15)
+
+### Features
+
+* **auth:** add payment failed event handler ([58c5b58](https://github.com/standardnotes/server/commit/58c5b586a904cf1fd179cc28783a6ae7da688063))
+
 ## [1.17.2](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.17.1...@standardnotes/analytics@1.17.2) (2022-08-15)
 
 ### Bug Fixes
