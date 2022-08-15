@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.17.1](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.17.0...@standardnotes/analytics@1.17.1) (2022-08-15)
+
+### Bug Fixes
+
+* **analytics:** expire bitop keys ([269eef7](https://github.com/standardnotes/server/commit/269eef7ef31343390c6909350bf1bfede94c24b3))
+
 # [1.17.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.16.0...@standardnotes/analytics@1.17.0) (2022-08-15)
 
 ### Features
