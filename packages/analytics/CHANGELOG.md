@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.16.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.15.0...@standardnotes/analytics@1.16.0) (2022-08-15)
+
+### Features
+
+* **analytics:** add calculating quarterly stats ([32c8333](https://github.com/standardnotes/server/commit/32c8333564dea742b28ccc6f09e5fa33dd1f7af2))
+
 # [1.15.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.14.0...@standardnotes/analytics@1.15.0) (2022-08-11)
 
 ### Features
