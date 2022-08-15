@@ -76,6 +76,8 @@ export class ContainerConfigLoader {
       ['EMAIL_BACKUP_ATTACHMENT_CREATED', container.get(TYPES.EventHandler)],
       ['EMAIL_BACKUP_REQUESTED', container.get(TYPES.EventHandler)],
       ['OFFLINE_SUBSCRIPTION_TOKEN_CREATED', container.get(TYPES.EventHandler)],
+      ['PAYMENT_FAILED', container.get(TYPES.EventHandler)],
+      ['PAYMENT_SUCCESS', container.get(TYPES.EventHandler)],
     ])
 
     container
