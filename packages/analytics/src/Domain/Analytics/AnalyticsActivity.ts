@@ -12,4 +12,5 @@ export enum AnalyticsActivity {
   EmailBackup = 'email-backup',
   LimitedDiscountOfferPurchased = 'limited-discount-offer-purchased',
   PaymentFailed = 'payment-failed',
+  PaymentSuccess = 'payment-success',
 }
