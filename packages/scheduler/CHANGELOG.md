@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.10](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.10.9...@standardnotes/scheduler-server@1.10.10) (2022-08-17)
+
+### Bug Fixes
+
+* **scheduler:** change discount from 10% to 20% on a limited time offer ([4b3de26](https://github.com/standardnotes/server/commit/4b3de264efc4fffb2603181c158cddb25c4ed4a9))
+
 ## [1.10.9](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.10.8...@standardnotes/scheduler-server@1.10.9) (2022-08-15)
 
 **Note:** Version bump only for package @standardnotes/scheduler-server

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.20.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.20.0...@standardnotes/auth-server@1.20.1) (2022-08-17)
+
+### Bug Fixes
+
+* **scheduler:** change discount from 10% to 20% on a limited time offer ([4b3de26](https://github.com/standardnotes/server/commit/4b3de264efc4fffb2603181c158cddb25c4ed4a9))
+
 # [1.20.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.19.1...@standardnotes/auth-server@1.20.0) (2022-08-15)
 
 ### Features
