@@ -116,7 +116,7 @@ export class JobDoneInterpreter implements JobDoneInterpreterInterface {
     await this.domainEventPublisher.publish(
       this.domainEventFactory.createDiscountApplyRequestedEvent({
         userEmail: job.userIdentifier,
-        discountCode: 'limited-10',
+        discountCode: 'limited-20',
       }),
     )
   }
@@ -127,7 +127,7 @@ export class JobDoneInterpreter implements JobDoneInterpreterInterface {
     await this.domainEventPublisher.publish(
       this.domainEventFactory.createDiscountWithdrawRequestedEvent({
         userEmail: job.userIdentifier,
-        discountCode: 'limited-10',
+        discountCode: 'limited-20',
       }),
     )
   }
