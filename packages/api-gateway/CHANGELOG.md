@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.15.3](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.15.2...@standardnotes/api-gateway@1.15.3) (2022-08-22)
+
+### Bug Fixes
+
+* **api-gateway:** add error logs on missing connection id for websockets ([f7def38](https://github.com/standardnotes/api-gateway/commit/f7def38e20f87ae24ebc736a41bc7cac53b0c61f))
+
 ## [1.15.2](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.15.1...@standardnotes/api-gateway@1.15.2) (2022-08-15)
 
 ### Bug Fixes
