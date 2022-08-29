@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.21.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.20.1...@standardnotes/auth-server@1.21.0) (2022-08-29)
+
+### Features
+
+* **auth:** retain user agent, api version and received at on revoked sessions ([dc88e24](https://github.com/standardnotes/server/commit/dc88e2413b3be254b265d2874174eaac39d628ee))
+
 ## [1.20.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.20.0...@standardnotes/auth-server@1.20.1) (2022-08-17)
 
 ### Bug Fixes
