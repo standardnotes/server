@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.11](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.10.10...@standardnotes/scheduler-server@1.10.11) (2022-08-29)
+
+### Bug Fixes
+
+* **scheduler:** change logs severity to reduce noise ([dbe55d8](https://github.com/standardnotes/server/commit/dbe55d89ec33a4c69cae350793bc4c5dd6589a2b))
+
 ## [1.10.10](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.10.9...@standardnotes/scheduler-server@1.10.10) (2022-08-17)
 
 ### Bug Fixes
