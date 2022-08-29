@@ -36,4 +36,25 @@ export class RevokedSession {
   )
   @JoinColumn({ name: 'user_uuid', referencedColumnName: 'uuid' })
   declare user: Promise<User>
+
+  @Column({
+    name: 'received_at',
+    type: 'datetime',
+    nullable: true,
+  })
+  declare receivedAt: Date
+
+  @Column({
+    name: 'user_agent',
+    type: 'text',
+    nullable: true,
+  })
+  declare userAgent: string | null
+
+  @Column({
+    name: 'api_version',
+    length: 255,
+    nullable: true,
+  })
+  declare apiVersion: string
 }

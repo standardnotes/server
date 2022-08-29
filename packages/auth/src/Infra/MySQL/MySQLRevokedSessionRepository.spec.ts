@@ -1,6 +1,6 @@
 import 'reflect-metadata'
 
-import { Repository, SelectQueryBuilder } from 'typeorm'
+import { Repository, SelectQueryBuilder, UpdateQueryBuilder } from 'typeorm'
 
 import { RevokedSession } from '../../Domain/Session/RevokedSession'
 
@@ -9,12 +9,14 @@ import { MySQLRevokedSessionRepository } from './MySQLRevokedSessionRepository'
 describe('MySQLRevokedSessionRepository', () => {
   let ormRepository: Repository<RevokedSession>
   let queryBuilder: SelectQueryBuilder<RevokedSession>
+  let updateQueryBuilder: UpdateQueryBuilder<RevokedSession>
   let session: RevokedSession
 
   const createRepository = () => new MySQLRevokedSessionRepository(ormRepository)
 
   beforeEach(() => {
     queryBuilder = {} as jest.Mocked<SelectQueryBuilder<RevokedSession>>
+    updateQueryBuilder = {} as jest.Mocked<UpdateQueryBuilder<RevokedSession>>
 
     session = {} as jest.Mocked<RevokedSession>
 
@@ -34,6 +36,24 @@ describe('MySQLRevokedSessionRepository', () => {
     await createRepository().remove(session)
 
     expect(ormRepository.remove).toHaveBeenCalledWith(session)
+  })
+
+  it('should clear user agent data on all user sessions', async () => {
+    ormRepository.createQueryBuilder = jest.fn().mockImplementation(() => updateQueryBuilder)
+
+    updateQueryBuilder.update = jest.fn().mockReturnThis()
+    updateQueryBuilder.set = jest.fn().mockReturnThis()
+    updateQueryBuilder.where = jest.fn().mockReturnThis()
+    updateQueryBuilder.execute = jest.fn()
+
+    await createRepository().clearUserAgentByUserUuid('1-2-3')
+
+    expect(updateQueryBuilder.update).toHaveBeenCalled()
+    expect(updateQueryBuilder.set).toHaveBeenCalledWith({
+      userAgent: null,
+    })
+    expect(updateQueryBuilder.where).toHaveBeenCalledWith('user_uuid = :userUuid', { userUuid: '1-2-3' })
+    expect(updateQueryBuilder.execute).toHaveBeenCalled()
   })
 
   it('should find one session by id', async () => {

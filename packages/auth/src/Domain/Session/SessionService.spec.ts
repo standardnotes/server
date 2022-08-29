@@ -2,6 +2,7 @@ import 'reflect-metadata'
 import * as winston from 'winston'
 import { TimerInterface } from '@standardnotes/time'
 
+import { ApiVersion } from '../Api/ApiVersion'
 import { Session } from './Session'
 import { SessionRepositoryInterface } from './SessionRepositoryInterface'
 import { SessionService } from './SessionService'
@@ -47,6 +48,7 @@ describe('SessionService', () => {
     session.uuid = '2e1e43'
     session.userUuid = '1-2-3'
     session.userAgent = 'Chrome'
+    session.apiVersion = ApiVersion.v20200115
     session.hashedAccessToken = '4e07408562bedb8b60ce05c1decfe3ad16b72230967de01f640b7e4729b49fce'
     session.hashedRefreshToken = '4e07408562bedb8b60ce05c1decfe3ad16b72230967de01f640b7e4729b49fce'
 
@@ -80,6 +82,7 @@ describe('SessionService', () => {
 
     timer = {} as jest.Mocked<TimerInterface>
     timer.convertStringDateToMilliseconds = jest.fn().mockReturnValue(123)
+    timer.getUTCDate = jest.fn().mockReturnValue(new Date(1))
 
     deviceDetector = {} as jest.Mocked<UAParser>
     deviceDetector.setUA = jest.fn().mockReturnThis()
@@ -111,6 +114,7 @@ describe('SessionService', () => {
     expect(revokedSessionRepository.save).toHaveBeenCalledWith({
       uuid: '2e1e43',
       received: true,
+      receivedAt: new Date(1),
     })
   })
 
@@ -476,6 +480,8 @@ describe('SessionService', () => {
     expect(revokedSessionRepository.save).toHaveBeenCalledWith({
       uuid: '2e1e43',
       userUuid: '1-2-3',
+      userAgent: 'Chrome',
+      apiVersion: '20200115',
       createdAt: expect.any(Date),
     })
   })

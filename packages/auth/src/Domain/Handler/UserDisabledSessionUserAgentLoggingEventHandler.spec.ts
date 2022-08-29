@@ -4,16 +4,22 @@ import { UserDisabledSessionUserAgentLoggingEvent } from '@standardnotes/domain-
 import { SessionRepositoryInterface } from '../Session/SessionRepositoryInterface'
 
 import { UserDisabledSessionUserAgentLoggingEventHandler } from './UserDisabledSessionUserAgentLoggingEventHandler'
+import { RevokedSessionRepositoryInterface } from '../Session/RevokedSessionRepositoryInterface'
 
 describe('UserDisabledSessionUserAgentLoggingEventHandler', () => {
   let sessionRepository: SessionRepositoryInterface
+  let revokedSessionRepository: RevokedSessionRepositoryInterface
   let event: UserDisabledSessionUserAgentLoggingEvent
 
-  const createHandler = () => new UserDisabledSessionUserAgentLoggingEventHandler(sessionRepository)
+  const createHandler = () =>
+    new UserDisabledSessionUserAgentLoggingEventHandler(sessionRepository, revokedSessionRepository)
 
   beforeEach(() => {
     sessionRepository = {} as jest.Mocked<SessionRepositoryInterface>
     sessionRepository.clearUserAgentByUserUuid = jest.fn()
+
+    revokedSessionRepository = {} as jest.Mocked<RevokedSessionRepositoryInterface>
+    revokedSessionRepository.clearUserAgentByUserUuid = jest.fn()
 
     event = {} as jest.Mocked<UserDisabledSessionUserAgentLoggingEvent>
     event.payload = {
@@ -26,5 +32,6 @@ describe('UserDisabledSessionUserAgentLoggingEventHandler', () => {
     await createHandler().handle(event)
 
     expect(sessionRepository.clearUserAgentByUserUuid).toHaveBeenCalledWith('1-2-3')
+    expect(revokedSessionRepository.clearUserAgentByUserUuid).toHaveBeenCalledWith('1-2-3')
   })
 })

@@ -20,6 +20,17 @@ export class MySQLRevokedSessionRepository implements RevokedSessionRepositoryIn
     return this.ormRepository.remove(revokedSession)
   }
 
+  async clearUserAgentByUserUuid(userUuid: string): Promise<void> {
+    await this.ormRepository
+      .createQueryBuilder('revoked_session')
+      .update()
+      .set({
+        userAgent: null,
+      })
+      .where('user_uuid = :userUuid', { userUuid })
+      .execute()
+  }
+
   async findAllByUserUuid(userUuid: string): Promise<RevokedSession[]> {
     return this.ormRepository
       .createQueryBuilder('revoked_session')

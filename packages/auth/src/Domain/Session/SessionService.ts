@@ -203,6 +203,7 @@ export class SessionService implements SessionServiceInterface {
 
   async markRevokedSessionAsReceived(revokedSession: RevokedSession): Promise<RevokedSession> {
     revokedSession.received = true
+    revokedSession.receivedAt = this.timer.getUTCDate()
 
     return this.revokedSessionRepository.save(revokedSession)
   }
@@ -224,7 +225,9 @@ export class SessionService implements SessionServiceInterface {
     const revokedSession = new RevokedSession()
     revokedSession.uuid = session.uuid
     revokedSession.userUuid = session.userUuid
-    revokedSession.createdAt = dayjs.utc().toDate()
+    revokedSession.createdAt = this.timer.getUTCDate()
+    revokedSession.apiVersion = session.apiVersion
+    revokedSession.userAgent = session.userAgent
 
     return this.revokedSessionRepository.save(revokedSession)
   }
@@ -246,8 +249,8 @@ export class SessionService implements SessionServiceInterface {
     }
     session.userUuid = dto.user.uuid
     session.apiVersion = dto.apiVersion
-    session.createdAt = dayjs.utc().toDate()
-    session.updatedAt = dayjs.utc().toDate()
+    session.createdAt = this.timer.getUTCDate()
+    session.updatedAt = this.timer.getUTCDate()
     session.readonlyAccess = dto.readonlyAccess
 
     return session
