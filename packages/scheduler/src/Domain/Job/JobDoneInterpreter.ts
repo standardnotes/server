@@ -31,10 +31,10 @@ export class JobDoneInterpreter implements JobDoneInterpreterInterface {
       return
     }
 
-    this.logger.info(`[${jobUuid}]${job.name}: Interpreting job as done.`)
+    this.logger.debug(`[${jobUuid}]${job.name}: Interpreting job as done.`)
 
     if (!(await this.predicatesAreFulfilled(job))) {
-      this.logger.info(`[${jobUuid}]${job.name}: predicates are not fulfilled.`)
+      this.logger.debug(`[${jobUuid}]${job.name}: predicates are not fulfilled.`)
 
       return
     }
@@ -73,7 +73,7 @@ export class JobDoneInterpreter implements JobDoneInterpreterInterface {
   }
 
   private async requestEmailBackupEncouragementEmail(job: Job): Promise<void> {
-    this.logger.info(`[${job.uuid}]${job.name}: requesting email backup encouragement email.`)
+    this.logger.debug(`[${job.uuid}]${job.name}: requesting email backup encouragement email.`)
 
     await this.domainEventPublisher.publish(
       this.domainEventFactory.createEmailMessageRequestedEvent({
@@ -85,7 +85,7 @@ export class JobDoneInterpreter implements JobDoneInterpreterInterface {
   }
 
   private async requestSubscriptionPurchaseEncouragementEmail(job: Job): Promise<void> {
-    this.logger.info(`[${job.uuid}]${job.name}: requesting subscription purchase encouragement email.`)
+    this.logger.debug(`[${job.uuid}]${job.name}: requesting subscription purchase encouragement email.`)
 
     await this.domainEventPublisher.publish(
       this.domainEventFactory.createEmailMessageRequestedEvent({
@@ -99,7 +99,7 @@ export class JobDoneInterpreter implements JobDoneInterpreterInterface {
   }
 
   private async requestExitInterviewEmail(job: Job): Promise<void> {
-    this.logger.info(`[${job.uuid}]${job.name}: requesting exit interview email.`)
+    this.logger.debug(`[${job.uuid}]${job.name}: requesting exit interview email.`)
 
     await this.domainEventPublisher.publish(
       this.domainEventFactory.createEmailMessageRequestedEvent({
@@ -111,7 +111,7 @@ export class JobDoneInterpreter implements JobDoneInterpreterInterface {
   }
 
   private async requestDiscountApply(job: Job): Promise<void> {
-    this.logger.info(`[${job.uuid}]${job.name}: requesting discount applying.`)
+    this.logger.debug(`[${job.uuid}]${job.name}: requesting discount applying.`)
 
     await this.domainEventPublisher.publish(
       this.domainEventFactory.createDiscountApplyRequestedEvent({
@@ -122,7 +122,7 @@ export class JobDoneInterpreter implements JobDoneInterpreterInterface {
   }
 
   private async requestDiscountWithdraw(job: Job): Promise<void> {
-    this.logger.info(`[${job.uuid}]${job.name}: requesting discount withdraw.`)
+    this.logger.debug(`[${job.uuid}]${job.name}: requesting discount withdraw.`)
 
     await this.domainEventPublisher.publish(
       this.domainEventFactory.createDiscountWithdrawRequestedEvent({

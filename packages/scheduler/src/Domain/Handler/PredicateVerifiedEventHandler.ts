@@ -13,7 +13,7 @@ export class PredicateVerifiedEventHandler implements DomainEventHandlerInterfac
   ) {}
 
   async handle(event: PredicateVerifiedEvent): Promise<void> {
-    this.logger.info(
+    this.logger.debug(
       `Updating predicate ${event.payload.predicate.name} for job ${event.payload.predicate.jobUuid} with status ${event.payload.predicateVerificationResult}`,
     )
 

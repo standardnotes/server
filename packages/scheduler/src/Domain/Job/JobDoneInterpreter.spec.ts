@@ -54,6 +54,7 @@ describe('JobDoneInterpreter', () => {
 
     logger = {} as jest.Mocked<Logger>
     logger.info = jest.fn()
+    logger.debug = jest.fn()
     logger.warn = jest.fn()
   })
 

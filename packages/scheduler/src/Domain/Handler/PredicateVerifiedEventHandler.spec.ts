@@ -18,7 +18,7 @@ describe('PredicateVerifiedEventHandler', () => {
     updatePredicateStatus.execute = jest.fn()
 
     logger = {} as jest.Mocked<Logger>
-    logger.info = jest.fn()
+    logger.debug = jest.fn()
 
     event = {} as jest.Mocked<PredicateVerifiedEvent>
     event.payload = {
