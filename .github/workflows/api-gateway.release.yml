@@ -60,6 +60,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - name: Set up Node
+      uses: actions/setup-node@v3
+      with:
+        registry-url: 'https://registry.npmjs.org'
+        node-version-file: '.nvmrc'
     - name: Build locally
       run: yarn build
     - name: Configure AWS credentials
@@ -90,6 +95,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - name: Set up Node
+      uses: actions/setup-node@v3
+      with:
+        registry-url: 'https://registry.npmjs.org'
+        node-version-file: '.nvmrc'
     - name: Build locally
       run: yarn build
     - name: Login to Docker Hub
