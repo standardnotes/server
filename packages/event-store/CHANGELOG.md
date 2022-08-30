@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/standardnotes/server/compare/@standardnotes/event-store@1.1.33...@standardnotes/event-store@1.2.0) (2022-08-30)
+
+### Features
+
+* **event-store:** add account claim events subscription ([dd6bec8](https://github.com/standardnotes/server/commit/dd6bec8a0c957b87ccf4d1fb0636fa3f56a4525e))
+
 ## [1.1.33](https://github.com/standardnotes/server/compare/@standardnotes/event-store@1.1.32...@standardnotes/event-store@1.1.33) (2022-08-15)
 
 ### Bug Fixes
