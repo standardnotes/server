@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.14](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.10.13...@standardnotes/scheduler-server@1.10.14) (2022-08-30)
+
+### Bug Fixes
+
+* **scheduler:** linter issues ([648eb89](https://github.com/standardnotes/server/commit/648eb89c7c7b95cfb6235e38180958c3d332825d))
+
 ## [1.10.13](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.10.12...@standardnotes/scheduler-server@1.10.13) (2022-08-30)
 
 ### Bug Fixes
