@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.13](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.10.12...@standardnotes/scheduler-server@1.10.13) (2022-08-30)
+
+### Bug Fixes
+
+* **scheduler:** skip sending exit survery when a subscription is replaced ([35373db](https://github.com/standardnotes/server/commit/35373db1d3d25ae5878ef7f7cfc8594a6623da8a))
+
 ## [1.10.12](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.10.11...@standardnotes/scheduler-server@1.10.12) (2022-08-30)
 
 **Note:** Version bump only for package @standardnotes/scheduler-server
