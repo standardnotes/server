@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.54.2](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.54.1...@standardnotes/domain-events@2.54.2) (2022-08-30)
+
+### Bug Fixes
+
+* **domain-events:** add replaced boolean to subscription canceled event ([932ef93](https://github.com/standardnotes/server/commit/932ef933fce71aabdddca33da4eec6ce8fe686ef))
+
 ## [2.54.1](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.54.0...@standardnotes/domain-events@2.54.1) (2022-08-15)
 
 ### Bug Fixes
