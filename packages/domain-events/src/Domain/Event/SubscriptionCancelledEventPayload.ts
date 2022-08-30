@@ -6,4 +6,5 @@ export interface SubscriptionCancelledEventPayload {
   subscriptionName: SubscriptionName
   timestamp: number
   offline: boolean
+  replaced: boolean
 }
