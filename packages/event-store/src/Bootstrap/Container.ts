@@ -78,6 +78,7 @@ export class ContainerConfigLoader {
       ['OFFLINE_SUBSCRIPTION_TOKEN_CREATED', container.get(TYPES.EventHandler)],
       ['PAYMENT_FAILED', container.get(TYPES.EventHandler)],
       ['PAYMENT_SUCCESS', container.get(TYPES.EventHandler)],
+      ['ACCOUNT_CLAIM_REQUESTED', container.get(TYPES.EventHandler)],
     ])
 
     container
