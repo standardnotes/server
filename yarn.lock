@@ -2122,6 +2122,7 @@ __metadata:
     aws-sdk: ^2.1158.0
     dayjs: ^1.11.3
     dotenv: ^16.0.1
+    eslint: ^8.14.0
     eslint-plugin-prettier: ^4.0.0
     inversify: ^6.0.1
     ioredis: ^5.2.0
