@@ -16,7 +16,9 @@ export class SubscriptionCancelledEventHandler implements DomainEventHandlerInte
   ) {}
 
   async handle(event: SubscriptionCancelledEvent): Promise<void> {
-    await this.scheduleExitInterview(event)
+    if (!event.payload.replaced) {
+      await this.scheduleExitInterview(event)
+    }
   }
 
   private async scheduleExitInterview(event: SubscriptionCancelledEvent): Promise<void> {

@@ -24,7 +24,7 @@ describe('SubscriptionCancelledEventHandler', () => {
   })
 
   it('should schedule a job to do an exit interview', async () => {
-    await createHandler().handle({ payload: { userEmail: 'test@test.te' } } as jest.Mocked<SubscriptionCancelledEvent>)
+    await createHandler().handle({ payload: { userEmail: 'test@test.te', replaced: false } } as jest.Mocked<SubscriptionCancelledEvent>)
 
     expect(jobRepository.save).toHaveBeenNthCalledWith(1, {
       createdAt: 1,
@@ -34,5 +34,11 @@ describe('SubscriptionCancelledEventHandler', () => {
       userIdentifier: 'test@test.te',
       userIdentifierType: 'email',
     })
+  })
+
+  it('should not schedule a job to do an exit interview if the subscription is replaced', async () => {
+    await createHandler().handle({ payload: { userEmail: 'test@test.te', replaced: true } } as jest.Mocked<SubscriptionCancelledEvent>)
+
+    expect(jobRepository.save).not.toHaveBeenCalled()
   })
 })
