@@ -1,4 +1,5 @@
 export enum DomainEventService {
+  AdminPanel = 'admin-panel',
   Auth = 'auth',
   SyncingServer = 'syncing-server',
   Payments = 'payments',
