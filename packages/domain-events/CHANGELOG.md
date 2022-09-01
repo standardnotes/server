@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.55.1](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.55.0...@standardnotes/domain-events@2.55.1) (2022-09-01)
+
+### Bug Fixes
+
+* **domain-events:** add admin-panel as event source option ([41c5127](https://github.com/standardnotes/server/commit/41c512798d932859b5d46c6e62fccb89fa288891))
+
 # [2.55.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.54.2...@standardnotes/domain-events@2.55.0) (2022-09-01)
 
 ### Features
