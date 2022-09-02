@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/standardnotes/server/compare/@standardnotes/event-store@1.2.3...@standardnotes/event-store@1.3.0) (2022-09-02)
+
+### Features
+
+* **event-store:** add listening to subscription reverts ([ef1e2bb](https://github.com/standardnotes/server/commit/ef1e2bb5edb6df191d22a676e365aed3511b3960))
+
 ## [1.2.3](https://github.com/standardnotes/server/compare/@standardnotes/event-store@1.2.2...@standardnotes/event-store@1.2.3) (2022-09-01)
 
 **Note:** Version bump only for package @standardnotes/event-store
