@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.21.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.20.0...@standardnotes/analytics@1.21.0) (2022-09-05)
+
+### Features
+
+* **auth:** add measuring subscription length ([fa10827](https://github.com/standardnotes/server/commit/fa108274430d8dff1016ddcba5bbcb2778eb781b))
+
 # [1.20.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.19.0...@standardnotes/analytics@1.20.0) (2022-09-05)
 
 ### Features

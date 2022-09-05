@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.23.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.22.1...@standardnotes/auth-server@1.23.0) (2022-09-05)
+
+### Features
+
+* **auth:** add measuring subscription length ([fa10827](https://github.com/standardnotes/server/commit/fa108274430d8dff1016ddcba5bbcb2778eb781b))
+
 ## [1.22.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.22.0...@standardnotes/auth-server@1.22.1) (2022-09-05)
 
 ### Bug Fixes
