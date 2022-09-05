@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.22.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.22.0...@standardnotes/auth-server@1.22.1) (2022-09-05)
+
+### Bug Fixes
+
+* **auth:** StatisticsStore binding ([34315c9](https://github.com/standardnotes/server/commit/34315c91d7428bbe8297e50972aa7823e2a983b2))
+
 # [1.22.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.21.5...@standardnotes/auth-server@1.22.0) (2022-09-05)
 
 ### Features
