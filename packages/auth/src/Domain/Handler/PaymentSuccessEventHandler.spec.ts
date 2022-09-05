@@ -1,7 +1,7 @@
 import 'reflect-metadata'
 
 import { PaymentSuccessEvent } from '@standardnotes/domain-events'
-import { AnalyticsStoreInterface } from '@standardnotes/analytics'
+import { AnalyticsStoreInterface, StatisticsStoreInterface } from '@standardnotes/analytics'
 
 import { PaymentSuccessEventHandler } from './PaymentSuccessEventHandler'
 import { UserRepositoryInterface } from '../User/UserRepositoryInterface'
@@ -14,8 +14,10 @@ describe('PaymentSuccessEventHandler', () => {
   let user: User
   let getUserAnalyticsId: GetUserAnalyticsId
   let analyticsStore: AnalyticsStoreInterface
+  let statisticsStore: StatisticsStoreInterface
 
-  const createHandler = () => new PaymentSuccessEventHandler(userRepository, getUserAnalyticsId, analyticsStore)
+  const createHandler = () =>
+    new PaymentSuccessEventHandler(userRepository, getUserAnalyticsId, analyticsStore, statisticsStore)
 
   beforeEach(() => {
     user = {} as jest.Mocked<User>
@@ -29,9 +31,13 @@ describe('PaymentSuccessEventHandler', () => {
     analyticsStore = {} as jest.Mocked<AnalyticsStoreInterface>
     analyticsStore.markActivity = jest.fn()
 
+    statisticsStore = {} as jest.Mocked<StatisticsStoreInterface>
+    statisticsStore.incrementMeasure = jest.fn()
+
     event = {} as jest.Mocked<PaymentSuccessEvent>
     event.payload = {
       userEmail: 'test@test.com',
+      amount: 12.45,
     }
   })
 
@@ -39,6 +45,7 @@ describe('PaymentSuccessEventHandler', () => {
     await createHandler().handle(event)
 
     expect(analyticsStore.markActivity).toHaveBeenCalled()
+    expect(statisticsStore.incrementMeasure).toHaveBeenCalled()
   })
 
   it('should not mark payment failed for analytics if user is not found', async () => {

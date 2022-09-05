@@ -9,7 +9,13 @@ import {
 } from '@standardnotes/domain-events'
 import { TimerInterface, Timer } from '@standardnotes/time'
 import { UAParser } from 'ua-parser-js'
-import { AnalyticsStoreInterface, PeriodKeyGenerator, RedisAnalyticsStore } from '@standardnotes/analytics'
+import {
+  AnalyticsStoreInterface,
+  PeriodKeyGenerator,
+  RedisAnalyticsStore,
+  RedisStatisticsStore,
+  StatisticsStoreInterface,
+} from '@standardnotes/analytics'
 
 import { Env } from './Env'
 import TYPES from './Types'
@@ -542,9 +548,13 @@ export class ContainerConfigLoader {
       .bind<SelectorInterface<boolean>>(TYPES.BooleanSelector)
       .toConstantValue(new DeterministicSelector<boolean>())
     container.bind<UserSubscriptionServiceInterface>(TYPES.UserSubscriptionService).to(UserSubscriptionService)
+    const periodKeyGenerator = new PeriodKeyGenerator()
     container
       .bind<AnalyticsStoreInterface>(TYPES.AnalyticsStore)
-      .toConstantValue(new RedisAnalyticsStore(new PeriodKeyGenerator(), container.get(TYPES.Redis)))
+      .toConstantValue(new RedisAnalyticsStore(periodKeyGenerator, container.get(TYPES.Redis)))
+    container
+      .bind<StatisticsStoreInterface>(TYPES.StatisticsStore)
+      .toConstantValue(new RedisStatisticsStore(periodKeyGenerator, container.get(TYPES.Redis)))
 
     if (env.get('SNS_TOPIC_ARN', true)) {
       container

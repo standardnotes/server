@@ -21,7 +21,7 @@
     "prebuild": "yarn clean",
     "build": "tsc -p tsconfig.json",
     "lint": "eslint . --ext .ts",
-    "test:unit": "jest spec"
+    "test": "jest spec"
   },
   "dependencies": {
     "@standardnotes/sncrypto-common": "^1.9.0",

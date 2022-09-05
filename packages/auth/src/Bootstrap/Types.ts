@@ -186,6 +186,7 @@ const TYPES = {
   BooleanSelector: Symbol.for('BooleanSelector'),
   UserSubscriptionService: Symbol.for('UserSubscriptionService'),
   AnalyticsStore: Symbol.for('AnalyticsStore'),
+  StatisticsStore: Symbol.for('AnalyticsStore'),
 }
 
 export default TYPES

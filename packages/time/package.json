@@ -21,7 +21,7 @@
     "prebuild": "yarn clean",
     "build": "tsc -p tsconfig.json",
     "lint": "eslint . --ext .ts",
-    "test:unit": "jest spec --coverage"
+    "test": "jest spec --coverage"
   },
   "dependencies": {
     "dayjs": "^1.10.8",

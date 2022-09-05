@@ -59,6 +59,7 @@ describe('SubscriptionCancelledEventHandler', () => {
       subscriptionName: SubscriptionName.ProPlan,
       timestamp,
       offline: false,
+      replaced: false,
     }
   })
 
