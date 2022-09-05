@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.19.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.18.1...@standardnotes/analytics@1.19.0) (2022-09-05)
+
+### Features
+
+* **analytics:** add statistics measurements tracking ([a36cb92](https://github.com/standardnotes/server/commit/a36cb925ff3bd8396a53f58c3e954549e904d694))
+
 ## [1.18.1](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.18.0...@standardnotes/analytics@1.18.1) (2022-08-15)
 
 ### Bug Fixes
