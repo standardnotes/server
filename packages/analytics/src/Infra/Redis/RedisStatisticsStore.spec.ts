@@ -1,5 +1,6 @@
 import * as IORedis from 'ioredis'
-import { PeriodKeyGeneratorInterface } from '../../Domain'
+import { Period, PeriodKeyGeneratorInterface } from '../../Domain'
+import { StatisticsMeasure } from '../../Domain/Statistics/StatisticsMeasure'
 
 import { RedisStatisticsStore } from './RedisStatisticsStore'
 
@@ -13,6 +14,7 @@ describe('RedisStatisticsStore', () => {
   beforeEach(() => {
     pipeline = {} as jest.Mocked<IORedis.Pipeline>
     pipeline.incr = jest.fn()
+    pipeline.incrby = jest.fn()
     pipeline.setbit = jest.fn()
     pipeline.exec = jest.fn()
 
@@ -87,5 +89,31 @@ describe('RedisStatisticsStore', () => {
 
     expect(pipeline.incr).toHaveBeenCalled()
     expect(pipeline.exec).toHaveBeenCalled()
+  })
+
+  it('should increment measure by a value', async () => {
+    await createStore().incrementMeasure(StatisticsMeasure.PaymentSuccess, 2, [Period.Today, Period.ThisMonth])
+
+    expect(pipeline.incr).toHaveBeenCalledTimes(2)
+    expect(pipeline.incrby).toHaveBeenCalledTimes(2)
+    expect(pipeline.exec).toHaveBeenCalled()
+  })
+
+  it('should count a measurement average', async () => {
+    redisClient.get = jest.fn().mockReturnValueOnce('5').mockReturnValueOnce('2')
+
+    expect(await createStore().getMeasureAverage(StatisticsMeasure.PaymentSuccess, Period.Today)).toEqual(2 / 5)
+  })
+
+  it('should count a measurement average - 0 increments', async () => {
+    redisClient.get = jest.fn().mockReturnValueOnce(null).mockReturnValueOnce(null)
+
+    expect(await createStore().getMeasureAverage(StatisticsMeasure.PaymentSuccess, Period.Today)).toEqual(0)
+  })
+
+  it('should count a measurement average - 0 total value', async () => {
+    redisClient.get = jest.fn().mockReturnValueOnce(5).mockReturnValueOnce(null)
+
+    expect(await createStore().getMeasureAverage(StatisticsMeasure.PaymentSuccess, Period.Today)).toEqual(0)
   })
 })
