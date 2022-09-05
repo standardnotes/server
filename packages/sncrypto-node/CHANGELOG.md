@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.11.0](https://github.com/standardnotes/server/compare/@standardnotes/sncrypto-node@1.10.1...@standardnotes/sncrypto-node@1.11.0) (2022-09-05)
+
+### Features
+
+* **auth:** add keeping stats on payments ([0c176b7](https://github.com/standardnotes/server/commit/0c176b70f8281e1e490224b9c7ab85f272a3d4e9))
+
 ## [1.10.1](https://github.com/standardnotes/server/compare/@standardnotes/sncrypto-node@1.10.0...@standardnotes/sncrypto-node@1.10.1) (2022-07-12)
 
 **Note:** Version bump only for package @standardnotes/sncrypto-node

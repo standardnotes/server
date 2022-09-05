@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.20.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.19.0...@standardnotes/analytics@1.20.0) (2022-09-05)
+
+### Features
+
+* **auth:** add keeping stats on payments ([0c176b7](https://github.com/standardnotes/server/commit/0c176b70f8281e1e490224b9c7ab85f272a3d4e9))
+
 # [1.19.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.18.1...@standardnotes/analytics@1.19.0) (2022-09-05)
 
 ### Features
