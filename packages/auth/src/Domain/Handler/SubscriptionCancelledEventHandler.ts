@@ -1,12 +1,19 @@
 import { DomainEventHandlerInterface, SubscriptionCancelledEvent } from '@standardnotes/domain-events'
 import { inject, injectable } from 'inversify'
+import {
+  AnalyticsActivity,
+  AnalyticsStoreInterface,
+  Period,
+  StatisticsMeasure,
+  StatisticsStoreInterface,
+} from '@standardnotes/analytics'
 
 import TYPES from '../../Bootstrap/Types'
 import { UserSubscriptionRepositoryInterface } from '../Subscription/UserSubscriptionRepositoryInterface'
 import { OfflineUserSubscriptionRepositoryInterface } from '../Subscription/OfflineUserSubscriptionRepositoryInterface'
 import { UserRepositoryInterface } from '../User/UserRepositoryInterface'
 import { GetUserAnalyticsId } from '../UseCase/GetUserAnalyticsId/GetUserAnalyticsId'
-import { AnalyticsActivity, AnalyticsStoreInterface, Period } from '@standardnotes/analytics'
+import { UserSubscription } from '../Subscription/UserSubscription'
 
 @injectable()
 export class SubscriptionCancelledEventHandler implements DomainEventHandlerInterface {
@@ -17,6 +24,7 @@ export class SubscriptionCancelledEventHandler implements DomainEventHandlerInte
     @inject(TYPES.UserRepository) private userRepository: UserRepositoryInterface,
     @inject(TYPES.GetUserAnalyticsId) private getUserAnalyticsId: GetUserAnalyticsId,
     @inject(TYPES.AnalyticsStore) private analyticsStore: AnalyticsStoreInterface,
+    @inject(TYPES.StatisticsStore) private statisticsStore: StatisticsStoreInterface,
   ) {}
   async handle(event: SubscriptionCancelledEvent): Promise<void> {
     if (event.payload.offline) {
@@ -35,6 +43,17 @@ export class SubscriptionCancelledEventHandler implements DomainEventHandlerInte
         Period.ThisWeek,
         Period.ThisMonth,
       ])
+
+      const subscriptions = await this.userSubscriptionRepository.findBySubscriptionId(event.payload.subscriptionId)
+      if (subscriptions.length !== 0) {
+        const lastSubscription = subscriptions.shift()
+        const subscriptionLength = event.payload.timestamp - (lastSubscription as UserSubscription).createdAt
+        await this.statisticsStore.incrementMeasure(StatisticsMeasure.SubscriptionLength, subscriptionLength, [
+          Period.Today,
+          Period.ThisWeek,
+          Period.ThisMonth,
+        ])
+      }
     }
   }
 

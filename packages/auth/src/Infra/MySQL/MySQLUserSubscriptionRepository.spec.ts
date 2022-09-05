@@ -157,6 +157,7 @@ describe('MySQLUserSubscriptionRepository', () => {
     ormRepository.createQueryBuilder = jest.fn().mockImplementation(() => selectQueryBuilder)
 
     selectQueryBuilder.where = jest.fn().mockReturnThis()
+    selectQueryBuilder.orderBy = jest.fn().mockReturnThis()
     selectQueryBuilder.getMany = jest.fn().mockReturnValue([subscription])
 
     const result = await createRepository().findBySubscriptionId(123)
@@ -164,6 +165,7 @@ describe('MySQLUserSubscriptionRepository', () => {
     expect(selectQueryBuilder.where).toHaveBeenCalledWith('subscription_id = :subscriptionId', {
       subscriptionId: 123,
     })
+    expect(selectQueryBuilder.orderBy).toHaveBeenCalledWith('created_at', 'DESC')
     expect(selectQueryBuilder.getMany).toHaveBeenCalled()
     expect(result).toEqual([subscription])
   })

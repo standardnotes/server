@@ -8,10 +8,11 @@ import * as dayjs from 'dayjs'
 import { SubscriptionCancelledEventHandler } from './SubscriptionCancelledEventHandler'
 import { UserSubscriptionRepositoryInterface } from '../Subscription/UserSubscriptionRepositoryInterface'
 import { OfflineUserSubscriptionRepositoryInterface } from '../Subscription/OfflineUserSubscriptionRepositoryInterface'
-import { AnalyticsStoreInterface } from '@standardnotes/analytics'
+import { AnalyticsStoreInterface, Period, StatisticsMeasure, StatisticsStoreInterface } from '@standardnotes/analytics'
 import { GetUserAnalyticsId } from '../UseCase/GetUserAnalyticsId/GetUserAnalyticsId'
 import { UserRepositoryInterface } from '../User/UserRepositoryInterface'
 import { User } from '../User/User'
+import { UserSubscription } from '../Subscription/UserSubscription'
 
 describe('SubscriptionCancelledEventHandler', () => {
   let userSubscriptionRepository: UserSubscriptionRepositoryInterface
@@ -20,6 +21,7 @@ describe('SubscriptionCancelledEventHandler', () => {
   let userRepository: UserRepositoryInterface
   let getUserAnalyticsId: GetUserAnalyticsId
   let analyticsStore: AnalyticsStoreInterface
+  let statisticsStore: StatisticsStoreInterface
   let timestamp: number
 
   const createHandler = () =>
@@ -29,6 +31,7 @@ describe('SubscriptionCancelledEventHandler', () => {
       userRepository,
       getUserAnalyticsId,
       analyticsStore,
+      statisticsStore,
     )
 
   beforeEach(() => {
@@ -43,8 +46,16 @@ describe('SubscriptionCancelledEventHandler', () => {
     analyticsStore = {} as jest.Mocked<AnalyticsStoreInterface>
     analyticsStore.markActivity = jest.fn()
 
+    statisticsStore = {} as jest.Mocked<StatisticsStoreInterface>
+    statisticsStore.incrementMeasure = jest.fn()
+
+    const userSubscription = {
+      createdAt: 1642395451515000,
+    } as jest.Mocked<UserSubscription>
+
     userSubscriptionRepository = {} as jest.Mocked<UserSubscriptionRepositoryInterface>
     userSubscriptionRepository.updateCancelled = jest.fn()
+    userSubscriptionRepository.findBySubscriptionId = jest.fn().mockReturnValue([userSubscription])
 
     offlineUserSubscriptionRepository = {} as jest.Mocked<OfflineUserSubscriptionRepositoryInterface>
     offlineUserSubscriptionRepository.updateCancelled = jest.fn()
@@ -64,10 +75,16 @@ describe('SubscriptionCancelledEventHandler', () => {
   })
 
   it('should update subscription cancelled', async () => {
+    event.payload.timestamp = 1642395451516000
     await createHandler().handle(event)
 
-    expect(userSubscriptionRepository.updateCancelled).toHaveBeenCalledWith(1, true, timestamp)
+    expect(userSubscriptionRepository.updateCancelled).toHaveBeenCalledWith(1, true, 1642395451516000)
     expect(analyticsStore.markActivity).toHaveBeenCalled()
+    expect(statisticsStore.incrementMeasure).toHaveBeenCalledWith(StatisticsMeasure.SubscriptionLength, 1000, [
+      Period.Today,
+      Period.ThisWeek,
+      Period.ThisMonth,
+    ])
   })
 
   it('should update subscription cancelled - user not found', async () => {

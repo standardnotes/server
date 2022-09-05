@@ -44,6 +44,7 @@ export class MySQLUserSubscriptionRepository implements UserSubscriptionReposito
       .where('subscription_id = :subscriptionId', {
         subscriptionId,
       })
+      .orderBy('created_at', 'DESC')
       .getMany()
   }
 
