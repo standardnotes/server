@@ -21,7 +21,7 @@
   "license": "AGPL-3.0-or-later",
   "devDependencies": {
     "@types/ioredis": "^4.28.10",
-    "@types/jest": "^28.1.4",
+    "@types/jest": "^29.0.0",
     "@types/newrelic": "^7.0.3",
     "@types/nodemailer": "^6.4.1",
     "@typescript-eslint/eslint-plugin": "^5.30.5",
