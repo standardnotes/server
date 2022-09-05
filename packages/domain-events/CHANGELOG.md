@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.56.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.55.1...@standardnotes/domain-events@2.56.0) (2022-09-05)
+
+### Features
+
+* **domain-events:** add amount of dollars to payment success event ([9c2d51d](https://github.com/standardnotes/server/commit/9c2d51d718516b550c23637b00a3edead0749425))
+
 ## [2.55.1](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.55.0...@standardnotes/domain-events@2.55.1) (2022-09-01)
 
 ### Bug Fixes
