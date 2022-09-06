@@ -71,6 +71,6 @@
     "nodemon": "^2.0.19",
     "npm-check-updates": "^16.0.1",
     "ts-jest": "^28.0.5",
-    "uuid": "^8.3.2"
+    "uuid": "^9.0.0"
   }
 }
