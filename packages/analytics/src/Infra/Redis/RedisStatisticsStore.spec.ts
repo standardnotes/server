@@ -1,4 +1,5 @@
 import * as IORedis from 'ioredis'
+
 import { Period, PeriodKeyGeneratorInterface } from '../../Domain'
 import { StatisticsMeasure } from '../../Domain/Statistics/StatisticsMeasure'
 
@@ -14,7 +15,7 @@ describe('RedisStatisticsStore', () => {
   beforeEach(() => {
     pipeline = {} as jest.Mocked<IORedis.Pipeline>
     pipeline.incr = jest.fn()
-    pipeline.incrby = jest.fn()
+    pipeline.incrbyfloat = jest.fn()
     pipeline.setbit = jest.fn()
     pipeline.exec = jest.fn()
 
@@ -95,7 +96,7 @@ describe('RedisStatisticsStore', () => {
     await createStore().incrementMeasure(StatisticsMeasure.PaymentSuccess, 2, [Period.Today, Period.ThisMonth])
 
     expect(pipeline.incr).toHaveBeenCalledTimes(2)
-    expect(pipeline.incrby).toHaveBeenCalledTimes(2)
+    expect(pipeline.incrbyfloat).toHaveBeenCalledTimes(2)
     expect(pipeline.exec).toHaveBeenCalled()
   })
 

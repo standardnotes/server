@@ -24,7 +24,7 @@ export class RedisStatisticsStore implements StatisticsStoreInterface {
     const pipeline = this.redisClient.pipeline()
 
     for (const period of periods) {
-      pipeline.incrby(`count:measure:${measure}:timespan:${this.periodKeyGenerator.getPeriodKey(period)}`, value)
+      pipeline.incrbyfloat(`count:measure:${measure}:timespan:${this.periodKeyGenerator.getPeriodKey(period)}`, value)
       pipeline.incr(`count:increments:${measure}:timespan:${this.periodKeyGenerator.getPeriodKey(period)}`)
     }
 
