@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.11.0](https://github.com/standardnotes/server/compare/@standardnotes/time@1.10.0...@standardnotes/time@1.11.0) (2022-09-06)
+
+### Features
+
+* **time:** add converting microseconds to time structure ([db8333a](https://github.com/standardnotes/server/commit/db8333a858ba0fa6750116967355d26e72b8c16d))
+
 # [1.10.0](https://github.com/standardnotes/server/compare/@standardnotes/time@1.9.1...@standardnotes/time@1.10.0) (2022-09-05)
 
 ### Features
