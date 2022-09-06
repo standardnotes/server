@@ -63,7 +63,7 @@
     "reflect-metadata": "0.1.13",
     "typeorm": "^0.3.6",
     "ua-parser-js": "1.0.2",
-    "uuid": "8.3.2",
+    "uuid": "^9.0.0",
     "winston": "^3.8.1"
   },
   "devDependencies": {
