@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.59.1](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.59.0...@standardnotes/domain-events@2.59.1) (2022-09-06)
+
+### Bug Fixes
+
+* **api-gateway:** include period key in statistics measures ([d149f46](https://github.com/standardnotes/server/commit/d149f46cf6456201dd8690977f64ed32a75f3459))
+* **api-gateway:** period types on analytics report ([f94c8fc](https://github.com/standardnotes/server/commit/f94c8fc26e684a07101cc5282ebb9cda3c8c6961))
+
 # [2.59.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.58.0...@standardnotes/domain-events@2.59.0) (2022-09-06)
 
 ### Features
