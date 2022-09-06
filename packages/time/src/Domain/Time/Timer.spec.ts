@@ -108,4 +108,13 @@ describe('Timer', () => {
   it('should format date', () => {
     expect(createTimer().formatDate(new Date('2021-03-29T08:00:05.233123Z'), 'YYYY-MM-DD')).toEqual('2021-03-29')
   })
+
+  it('should convert microseconds to time structure', () => {
+    expect(createTimer().convertMicrosecondsToTimeStructure(1821050982073)).toEqual({
+      days: 21,
+      hours: 1,
+      minutes: 50,
+      seconds: 50,
+    })
+  })
 })

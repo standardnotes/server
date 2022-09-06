@@ -1,3 +1,5 @@
+import { TimeStructure } from './TimeStructure'
+
 export interface TimerInterface {
   getTimestampInMicroseconds(): number
   getTimestampInSeconds(): number
@@ -17,6 +19,7 @@ export interface TimerInterface {
   convertMicrosecondsToSeconds(microseconds: number): number
   convertMicrosecondsToStringDate(microseconds: number): string
   convertMicrosecondsToDate(microseconds: number): Date
+  convertMicrosecondsToTimeStructure(microseconds: number): TimeStructure
   formatDate(date: Date, format: string): string
   dateWasNDaysAgo(date: Date): number
 }

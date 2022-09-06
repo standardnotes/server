@@ -3,10 +3,31 @@ import * as utc from 'dayjs/plugin/utc'
 import * as microtime from 'microtime'
 import { Time } from './Time'
 import { TimerInterface } from './TimerInterface'
+import { TimeStructure } from './TimeStructure'
 
 export class Timer implements TimerInterface {
   constructor() {
     dayjs.extend(utc)
+  }
+
+  convertMicrosecondsToTimeStructure(microseconds: number): TimeStructure {
+    const days = Math.floor(microseconds / Time.MicrosecondsInADay)
+
+    const hoursLeftOver = microseconds % Time.MicrosecondsInADay
+    const hours = Math.floor(hoursLeftOver / Time.MicrosecondsInAnHour)
+
+    const minutesLeftOver = microseconds % Time.MicrosecondsInAnHour
+    const minutes = Math.floor(minutesLeftOver / Time.MicrosecondsInAMinute)
+
+    const secondsLeftOver = microseconds % Time.MicrosecondsInAMinute
+    const seconds = Math.floor(secondsLeftOver / Time.MicrosecondsInASecond)
+
+    return {
+      days,
+      hours,
+      minutes,
+      seconds,
+    }
   }
 
   formatDate(date: Date, format: string): string {
