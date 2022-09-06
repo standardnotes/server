@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.24.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.23.2...@standardnotes/auth-server@1.24.0) (2022-09-06)
+
+### Features
+
+* **auth:** add statistics for refunds and account deletions ([d7ae2f0](https://github.com/standardnotes/server/commit/d7ae2f06255b19eb5d3403a4989610390064754e))
+
 ## [1.23.2](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.23.1...@standardnotes/auth-server@1.23.2) (2022-09-06)
 
 ### Bug Fixes

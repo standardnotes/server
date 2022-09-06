@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.58.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.57.0...@standardnotes/domain-events@2.58.0) (2022-09-06)
+
+### Features
+
+* **auth:** add statistics for refunds and account deletions ([d7ae2f0](https://github.com/standardnotes/server/commit/d7ae2f06255b19eb5d3403a4989610390064754e))
+
 # [2.57.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.56.0...@standardnotes/domain-events@2.57.0) (2022-09-05)
 
 ### Features
