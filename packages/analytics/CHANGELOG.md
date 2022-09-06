@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.21.1](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.21.0...@standardnotes/analytics@1.21.1) (2022-09-06)
+
+### Bug Fixes
+
+* **analytics:** increment by float instead of integer on measures ([cb81f81](https://github.com/standardnotes/server/commit/cb81f819ba30a45f27ec344480b5ef22e5a0a50d))
+
 # [1.21.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.20.0...@standardnotes/analytics@1.21.0) (2022-09-05)
 
 ### Features
