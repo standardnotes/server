@@ -1,4 +1,6 @@
 export enum StatisticsMeasure {
-  PaymentSuccess = 'payment-success',
+  Income = 'income',
   SubscriptionLength = 'subscription-length',
+  RegistrationLength = 'registration-length',
+  Refunds = 'refunds',
 }

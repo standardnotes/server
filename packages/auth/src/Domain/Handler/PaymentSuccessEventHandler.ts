@@ -34,7 +34,7 @@ export class PaymentSuccessEventHandler implements DomainEventHandlerInterface {
       Period.ThisMonth,
     ])
 
-    await this.statisticsStore.incrementMeasure(StatisticsMeasure.PaymentSuccess, event.payload.amount, [
+    await this.statisticsStore.incrementMeasure(StatisticsMeasure.Income, event.payload.amount, [
       Period.Today,
       Period.ThisWeek,
       Period.ThisMonth,
