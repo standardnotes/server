@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.23.2](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.23.1...@standardnotes/auth-server@1.23.2) (2022-09-06)
+
+### Bug Fixes
+
+* **auth:** add debug logs for subscription canceling ([2ca430f](https://github.com/standardnotes/server/commit/2ca430f40ce6a8d56aafa27e9c2d0b0dd561c650))
+
 ## [1.23.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.23.0...@standardnotes/auth-server@1.23.1) (2022-09-06)
 
 **Note:** Version bump only for package @standardnotes/auth-server
