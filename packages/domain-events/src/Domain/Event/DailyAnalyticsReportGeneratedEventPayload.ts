@@ -12,6 +12,11 @@ export interface DailyAnalyticsReportGeneratedEventPayload {
     retention: number
     totalCount: number
   }>
+  statisticMeasures: Array<{
+    name: string
+    totalValue: number
+    average: number
+  }>
   activityStatisticsOverTime: Array<{
     name: string
     period: number

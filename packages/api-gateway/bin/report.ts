@@ -12,7 +12,13 @@ import {
   DailyAnalyticsReportGeneratedEvent,
   DomainEventService,
 } from '@standardnotes/domain-events'
-import { AnalyticsActivity, AnalyticsStoreInterface, Period, StatisticsStoreInterface } from '@standardnotes/analytics'
+import {
+  AnalyticsActivity,
+  AnalyticsStoreInterface,
+  Period,
+  StatisticsMeasure,
+  StatisticsStoreInterface,
+} from '@standardnotes/analytics'
 
 const requestReport = async (
   analyticsStore: AnalyticsStoreInterface,
@@ -60,7 +66,6 @@ const requestReport = async (
 
   const yesterdayActivityStatistics = []
   const yesterdayActivityNames = [
-    AnalyticsActivity.EditingItems,
     AnalyticsActivity.LimitedDiscountOfferPurchased,
     AnalyticsActivity.GeneralActivity,
     AnalyticsActivity.PaymentFailed,
@@ -79,6 +84,23 @@ const requestReport = async (
     })
   }
 
+  const statisticMeasureNames = [
+    StatisticsMeasure.Income,
+    StatisticsMeasure.Refunds,
+    StatisticsMeasure.RegistrationLength,
+    StatisticsMeasure.SubscriptionLength,
+  ]
+  const statisticMeasures = []
+  for (const statisticMeasureName of statisticMeasureNames) {
+    for (const period of [Period.Yesterday, Period.ThisMonth]) {
+      statisticMeasures.push({
+        name: statisticMeasureName,
+        totalValue: await statisticsStore.getMeasureTotal(statisticMeasureName, period),
+        average: await statisticsStore.getMeasureAverage(statisticMeasureName, period),
+      })
+    }
+  }
+
   const event: DailyAnalyticsReportGeneratedEvent = {
     type: 'DAILY_ANALYTICS_REPORT_GENERATED',
     createdAt: new Date(),
@@ -95,6 +117,7 @@ const requestReport = async (
       outOfSyncIncidents: await statisticsStore.getYesterdayOutOfSyncIncidents(),
       activityStatistics: yesterdayActivityStatistics,
       activityStatisticsOverTime: analyticsOverTime,
+      statisticMeasures,
     },
   }
 
