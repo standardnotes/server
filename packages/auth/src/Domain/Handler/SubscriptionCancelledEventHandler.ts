@@ -14,6 +14,7 @@ import { OfflineUserSubscriptionRepositoryInterface } from '../Subscription/Offl
 import { UserRepositoryInterface } from '../User/UserRepositoryInterface'
 import { GetUserAnalyticsId } from '../UseCase/GetUserAnalyticsId/GetUserAnalyticsId'
 import { UserSubscription } from '../Subscription/UserSubscription'
+import { Logger } from 'winston'
 
 @injectable()
 export class SubscriptionCancelledEventHandler implements DomainEventHandlerInterface {
@@ -25,6 +26,7 @@ export class SubscriptionCancelledEventHandler implements DomainEventHandlerInte
     @inject(TYPES.GetUserAnalyticsId) private getUserAnalyticsId: GetUserAnalyticsId,
     @inject(TYPES.AnalyticsStore) private analyticsStore: AnalyticsStoreInterface,
     @inject(TYPES.StatisticsStore) private statisticsStore: StatisticsStoreInterface,
+    @inject(TYPES.Logger) private logger: Logger,
   ) {}
   async handle(event: SubscriptionCancelledEvent): Promise<void> {
     if (event.payload.offline) {
@@ -46,8 +48,11 @@ export class SubscriptionCancelledEventHandler implements DomainEventHandlerInte
 
       const subscriptions = await this.userSubscriptionRepository.findBySubscriptionId(event.payload.subscriptionId)
       if (subscriptions.length !== 0) {
-        const lastSubscription = subscriptions.shift()
-        const subscriptionLength = event.payload.timestamp - (lastSubscription as UserSubscription).createdAt
+        const lastSubscription = subscriptions.shift() as UserSubscription
+        const subscriptionLength = event.payload.timestamp - lastSubscription.createdAt
+        this.logger.info(
+          `Canceling subscription ${lastSubscription.uuid} - lasted for ${subscriptionLength} microseconds`,
+        )
         await this.statisticsStore.incrementMeasure(StatisticsMeasure.SubscriptionLength, subscriptionLength, [
           Period.Today,
           Period.ThisWeek,
