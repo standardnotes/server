@@ -16,7 +16,7 @@ export interface DailyAnalyticsReportGeneratedEventPayload {
     name: string
     totalValue: number
     average: number
-    periodKey: string
+    period: number
   }>
   activityStatisticsOverTime: Array<{
     name: string
