@@ -95,6 +95,7 @@ const requestReport = async (
     for (const period of [Period.Yesterday, Period.ThisMonth]) {
       statisticMeasures.push({
         name: statisticMeasureName,
+        periodKey: period,
         totalValue: await statisticsStore.getMeasureTotal(statisticMeasureName, period),
         average: await statisticsStore.getMeasureAverage(statisticMeasureName, period),
       })
