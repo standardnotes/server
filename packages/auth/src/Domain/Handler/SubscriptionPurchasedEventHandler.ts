@@ -13,8 +13,15 @@ import { OfflineUserSubscription } from '../Subscription/OfflineUserSubscription
 import { OfflineUserSubscriptionRepositoryInterface } from '../Subscription/OfflineUserSubscriptionRepositoryInterface'
 import { UserSubscriptionType } from '../Subscription/UserSubscriptionType'
 import { SubscriptionSettingServiceInterface } from '../Setting/SubscriptionSettingServiceInterface'
-import { AnalyticsActivity, AnalyticsStoreInterface, Period } from '@standardnotes/analytics'
+import {
+  AnalyticsActivity,
+  AnalyticsStoreInterface,
+  Period,
+  StatisticsMeasure,
+  StatisticsStoreInterface,
+} from '@standardnotes/analytics'
 import { GetUserAnalyticsId } from '../UseCase/GetUserAnalyticsId/GetUserAnalyticsId'
+import { TimerInterface } from '@standardnotes/time'
 
 @injectable()
 export class SubscriptionPurchasedEventHandler implements DomainEventHandlerInterface {
@@ -27,6 +34,8 @@ export class SubscriptionPurchasedEventHandler implements DomainEventHandlerInte
     @inject(TYPES.SubscriptionSettingService) private subscriptionSettingService: SubscriptionSettingServiceInterface,
     @inject(TYPES.GetUserAnalyticsId) private getUserAnalyticsId: GetUserAnalyticsId,
     @inject(TYPES.AnalyticsStore) private analyticsStore: AnalyticsStoreInterface,
+    @inject(TYPES.StatisticsStore) private statisticsStore: StatisticsStoreInterface,
+    @inject(TYPES.Timer) private timer: TimerInterface,
     @inject(TYPES.Logger) private logger: Logger,
   ) {}
 
@@ -51,6 +60,8 @@ export class SubscriptionPurchasedEventHandler implements DomainEventHandlerInte
       this.logger.warn(`Could not find user with email: ${event.payload.userEmail}`)
       return
     }
+
+    const previousSubscriptionCount = await this.userSubscriptionRepository.countByUserUuid(user.uuid)
 
     const userSubscription = await this.createSubscription(
       event.payload.subscriptionId,
@@ -79,6 +90,14 @@ export class SubscriptionPurchasedEventHandler implements DomainEventHandlerInte
       await this.analyticsStore.markActivity([AnalyticsActivity.LimitedDiscountOfferPurchased], analyticsId, [
         Period.Today,
       ])
+    }
+
+    if (previousSubscriptionCount === 0) {
+      await this.statisticsStore.incrementMeasure(
+        StatisticsMeasure.RegistrationToSubscriptionTime,
+        event.payload.timestamp - this.timer.convertDateToMicroseconds(user.createdAt),
+        [Period.Today, Period.ThisWeek, Period.ThisMonth],
+      )
     }
   }
 

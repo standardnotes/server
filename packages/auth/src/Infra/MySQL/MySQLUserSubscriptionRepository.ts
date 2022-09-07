@@ -14,6 +14,15 @@ export class MySQLUserSubscriptionRepository implements UserSubscriptionReposito
     private ormRepository: Repository<UserSubscription>,
   ) {}
 
+  async countByUserUuid(userUuid: Uuid): Promise<number> {
+    return await this.ormRepository
+      .createQueryBuilder()
+      .where('user_uuid = :user_uuid', {
+        user_uuid: userUuid,
+      })
+      .getCount()
+  }
+
   async save(subscription: UserSubscription): Promise<UserSubscription> {
     return this.ormRepository.save(subscription)
   }

@@ -16,9 +16,10 @@ import { OfflineUserSubscriptionRepositoryInterface } from '../Subscription/Offl
 import { OfflineUserSubscription } from '../Subscription/OfflineUserSubscription'
 import { SubscriptionSettingServiceInterface } from '../Setting/SubscriptionSettingServiceInterface'
 import { UserSubscriptionType } from '../Subscription/UserSubscriptionType'
-import { AnalyticsStoreInterface, Period } from '@standardnotes/analytics'
+import { AnalyticsStoreInterface, Period, StatisticsStoreInterface } from '@standardnotes/analytics'
 import { AnalyticsEntity } from '../Analytics/AnalyticsEntity'
 import { GetUserAnalyticsId } from '../UseCase/GetUserAnalyticsId/GetUserAnalyticsId'
+import { TimerInterface } from '@standardnotes/time'
 
 describe('SubscriptionPurchasedEventHandler', () => {
   let userRepository: UserRepositoryInterface
@@ -35,6 +36,8 @@ describe('SubscriptionPurchasedEventHandler', () => {
   let getUserAnalyticsId: GetUserAnalyticsId
   let analyticsStore: AnalyticsStoreInterface
   let timestamp: number
+  let statisticsStore: StatisticsStoreInterface
+  let timer: TimerInterface
 
   const createHandler = () =>
     new SubscriptionPurchasedEventHandler(
@@ -45,6 +48,8 @@ describe('SubscriptionPurchasedEventHandler', () => {
       subscriptionSettingService,
       getUserAnalyticsId,
       analyticsStore,
+      statisticsStore,
+      timer,
       logger,
     )
 
@@ -66,7 +71,14 @@ describe('SubscriptionPurchasedEventHandler', () => {
     userRepository.findOneByEmail = jest.fn().mockReturnValue(user)
     userRepository.save = jest.fn().mockReturnValue(user)
 
+    statisticsStore = {} as jest.Mocked<StatisticsStoreInterface>
+    statisticsStore.incrementMeasure = jest.fn()
+
+    timer = {} as jest.Mocked<TimerInterface>
+    timer.convertDateToMicroseconds = jest.fn().mockReturnValue(1)
+
     userSubscriptionRepository = {} as jest.Mocked<UserSubscriptionRepositoryInterface>
+    userSubscriptionRepository.countByUserUuid = jest.fn().mockReturnValue(0)
     userSubscriptionRepository.save = jest.fn().mockReturnValue(subscription)
 
     offlineUserSubscription = {} as jest.Mocked<OfflineUserSubscription>
@@ -146,6 +158,15 @@ describe('SubscriptionPurchasedEventHandler', () => {
       updatedAt: expect.any(Number),
       cancelled: false,
     })
+    expect(statisticsStore.incrementMeasure).toHaveBeenCalled()
+  })
+
+  it("should not measure registration to subscription time if this is not user's first subscription", async () => {
+    userSubscriptionRepository.countByUserUuid = jest.fn().mockReturnValue(1)
+
+    await createHandler().handle(event)
+
+    expect(statisticsStore.incrementMeasure).not.toHaveBeenCalled()
   })
 
   it('should update analytics on limited discount offer purchasing', async () => {

@@ -75,6 +75,21 @@ describe('MySQLUserSubscriptionRepository', () => {
     expect(result).toEqual(subscription)
   })
 
+  it('should count by user uuid', async () => {
+    ormRepository.createQueryBuilder = jest.fn().mockImplementation(() => selectQueryBuilder)
+
+    selectQueryBuilder.where = jest.fn().mockReturnThis()
+    selectQueryBuilder.getCount = jest.fn().mockReturnValue(2)
+
+    const result = await createRepository().countByUserUuid('123')
+
+    expect(selectQueryBuilder.where).toHaveBeenCalledWith('user_uuid = :user_uuid', {
+      user_uuid: '123',
+    })
+    expect(selectQueryBuilder.getCount).toHaveBeenCalled()
+    expect(result).toEqual(2)
+  })
+
   it('should find one, longest lasting subscription by user uuid if there are no ucanceled ones', async () => {
     subscription.cancelled = true
 
