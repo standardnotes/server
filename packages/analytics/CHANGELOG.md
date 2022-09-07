@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.24.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.23.0...@standardnotes/analytics@1.24.0) (2022-09-07)
+
+### Features
+
+* **analytics:** add calculation retention for two activities ([7132dc3](https://github.com/standardnotes/server/commit/7132dc3ac0cf878d2c326243747343e8a6746e2f))
+
 # [1.23.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.22.0...@standardnotes/analytics@1.23.0) (2022-09-07)
 
 ### Features
