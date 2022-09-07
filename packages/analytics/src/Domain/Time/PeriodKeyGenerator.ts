@@ -12,6 +12,12 @@ export class PeriodKeyGenerator implements PeriodKeyGeneratorInterface {
         }
 
         return periodKeys
+      case Period.Last7Days:
+        for (let i = 1; i <= 7; i++) {
+          periodKeys.unshift(this.getDailyKey(this.getDateNDaysBefore(i)))
+        }
+
+        return periodKeys
       case Period.Q1ThisYear:
         return this.generateMonthlyKeysRange(0, 3)
       case Period.Q2ThisYear:

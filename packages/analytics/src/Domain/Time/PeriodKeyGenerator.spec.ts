@@ -48,6 +48,18 @@ describe('PeriodKeyGenerator', () => {
     ])
   })
 
+  it('should generate period keys for last 7 days', () => {
+    expect(createGenerator().getDiscretePeriodKeys(Period.Last7Days)).toEqual([
+      '2022-5-17',
+      '2022-5-18',
+      '2022-5-19',
+      '2022-5-20',
+      '2022-5-21',
+      '2022-5-22',
+      '2022-5-23',
+    ])
+  })
+
   it('should generate period keys for Q1', () => {
     expect(createGenerator().getDiscretePeriodKeys(Period.Q1ThisYear)).toEqual(['2022-1', '2022-2', '2022-3'])
   })
