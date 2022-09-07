@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.16.4](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.16.3...@standardnotes/api-gateway@1.16.4) (2022-09-07)
+
+### Bug Fixes
+
+* **api-gateway:** add registration-to-subscription time to analytics report ([936591d](https://github.com/standardnotes/api-gateway/commit/936591d40b5f5beb5c0a824c92cdfa20fff51c97))
+
 ## [1.16.3](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.16.2...@standardnotes/api-gateway@1.16.3) (2022-09-07)
 
 **Note:** Version bump only for package @standardnotes/api-gateway
