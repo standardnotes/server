@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.24.4](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.24.3...@standardnotes/auth-server@1.24.4) (2022-09-07)
+
+### Bug Fixes
+
+* **auth:** forbid users on shared subscription to send out invitations ([132b617](https://github.com/standardnotes/server/commit/132b617aaa8a703877fd7e8d23711fb1ec234524))
+
 ## [1.24.3](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.24.2...@standardnotes/auth-server@1.24.3) (2022-09-06)
 
 **Note:** Version bump only for package @standardnotes/auth-server
