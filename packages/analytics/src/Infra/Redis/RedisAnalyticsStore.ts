@@ -95,21 +95,19 @@ export class RedisAnalyticsStore implements AnalyticsStoreInterface {
     return bitValue === 1
   }
 
-  async calculateActivityRetention(
-    activity: AnalyticsActivity,
-    firstPeriod: Period,
-    secondPeriod: Period,
-  ): Promise<number> {
-    const initialPeriodKey = this.periodKeyGenerator.getPeriodKey(firstPeriod)
-    const subsequentPeriodKey = this.periodKeyGenerator.getPeriodKey(secondPeriod)
-
-    const diffKey = `bitmap:action:${activity}:timespan:${initialPeriodKey}-${subsequentPeriodKey}`
+  async calculateActivitiesRetention(parameters: {
+    firstActivity: AnalyticsActivity
+    firstActivityPeriodKey: string
+    secondActivity: AnalyticsActivity
+    secondActivityPeriodKey: string
+  }): Promise<number> {
+    const diffKey = `bitmap:action:${parameters.firstActivity}-${parameters.secondActivity}:timespan:${parameters.secondActivityPeriodKey}`
 
     await this.redisClient.bitop(
       'AND',
       diffKey,
-      `bitmap:action:${activity}:timespan:${initialPeriodKey}`,
-      `bitmap:action:${activity}:timespan:${subsequentPeriodKey}`,
+      `bitmap:action:${parameters.firstActivity}:timespan:${parameters.firstActivityPeriodKey}`,
+      `bitmap:action:${parameters.secondActivity}:timespan:${parameters.secondActivityPeriodKey}`,
     )
 
     await this.redisClient.expire(diffKey, 3600)
@@ -117,10 +115,23 @@ export class RedisAnalyticsStore implements AnalyticsStoreInterface {
     const retainedTotalInActivity = await this.redisClient.bitcount(diffKey)
 
     const initialTotalInActivity = await this.redisClient.bitcount(
-      `bitmap:action:${activity}:timespan:${initialPeriodKey}`,
+      `bitmap:action:${parameters.firstActivity}:timespan:${parameters.firstActivityPeriodKey}`,
     )
 
     return Math.ceil((retainedTotalInActivity * 100) / initialTotalInActivity)
+  }
+
+  async calculateActivityRetention(
+    activity: AnalyticsActivity,
+    firstPeriod: Period,
+    secondPeriod: Period,
+  ): Promise<number> {
+    return this.calculateActivitiesRetention({
+      firstActivity: activity,
+      firstActivityPeriodKey: this.periodKeyGenerator.getPeriodKey(firstPeriod),
+      secondActivity: activity,
+      secondActivityPeriodKey: this.periodKeyGenerator.getPeriodKey(secondPeriod),
+    })
   }
 
   async calculateActivityTotalCount(activity: AnalyticsActivity, period: Period): Promise<number> {

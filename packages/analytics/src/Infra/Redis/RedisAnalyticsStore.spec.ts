@@ -125,7 +125,7 @@ describe('RedisAnalyticsStore', () => {
 
     expect(redisClient.bitop).toHaveBeenCalledWith(
       'AND',
-      'bitmap:action:editing-items:timespan:period-key-period-key',
+      'bitmap:action:editing-items-editing-items:timespan:period-key',
       'bitmap:action:editing-items:timespan:period-key',
       'bitmap:action:editing-items:timespan:period-key',
     )

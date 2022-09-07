@@ -6,6 +6,12 @@ export interface AnalyticsStoreInterface {
   markActivity(activities: AnalyticsActivity[], analyticsId: number, periods: Period[]): Promise<void>
   wasActivityDone(activity: AnalyticsActivity, analyticsId: number, period: Period): Promise<boolean>
   calculateActivityRetention(activity: AnalyticsActivity, firstPeriod: Period, secondPeriod: Period): Promise<number>
+  calculateActivitiesRetention(parameters: {
+    firstActivity: AnalyticsActivity
+    firstActivityPeriodKey: string
+    secondActivity: AnalyticsActivity
+    secondActivityPeriodKey: string
+  }): Promise<number>
   calculateActivityTotalCount(activity: AnalyticsActivity, period: Period): Promise<number>
   calculateActivityChangesTotalCount(
     activity: AnalyticsActivity,

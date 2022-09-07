@@ -93,7 +93,7 @@ describe('RedisStatisticsStore', () => {
   })
 
   it('should increment measure by a value', async () => {
-    await createStore().incrementMeasure(StatisticsMeasure.PaymentSuccess, 2, [Period.Today, Period.ThisMonth])
+    await createStore().incrementMeasure(StatisticsMeasure.Income, 2, [Period.Today, Period.ThisMonth])
 
     expect(pipeline.incr).toHaveBeenCalledTimes(2)
     expect(pipeline.incrbyfloat).toHaveBeenCalledTimes(2)
@@ -103,18 +103,18 @@ describe('RedisStatisticsStore', () => {
   it('should count a measurement average', async () => {
     redisClient.get = jest.fn().mockReturnValueOnce('5').mockReturnValueOnce('2')
 
-    expect(await createStore().getMeasureAverage(StatisticsMeasure.PaymentSuccess, Period.Today)).toEqual(2 / 5)
+    expect(await createStore().getMeasureAverage(StatisticsMeasure.Income, Period.Today)).toEqual(2 / 5)
   })
 
   it('should count a measurement average - 0 increments', async () => {
     redisClient.get = jest.fn().mockReturnValueOnce(null).mockReturnValueOnce(null)
 
-    expect(await createStore().getMeasureAverage(StatisticsMeasure.PaymentSuccess, Period.Today)).toEqual(0)
+    expect(await createStore().getMeasureAverage(StatisticsMeasure.Income, Period.Today)).toEqual(0)
   })
 
   it('should count a measurement average - 0 total value', async () => {
     redisClient.get = jest.fn().mockReturnValueOnce(5).mockReturnValueOnce(null)
 
-    expect(await createStore().getMeasureAverage(StatisticsMeasure.PaymentSuccess, Period.Today)).toEqual(0)
+    expect(await createStore().getMeasureAverage(StatisticsMeasure.Income, Period.Today)).toEqual(0)
   })
 })
