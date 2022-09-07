@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.23.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.22.0...@standardnotes/analytics@1.23.0) (2022-09-07)
+
+### Features
+
+* **auth:** add measuring registration to subscription time statistics ([b618252](https://github.com/standardnotes/server/commit/b61825235eebaf5eddb55cbda173176ca43c0099))
+
 # [1.22.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.21.1...@standardnotes/analytics@1.22.0) (2022-09-06)
 
 ### Features
