@@ -89,6 +89,7 @@ const requestReport = async (
     StatisticsMeasure.Refunds,
     StatisticsMeasure.RegistrationLength,
     StatisticsMeasure.SubscriptionLength,
+    StatisticsMeasure.RegistrationToSubscriptionTime,
   ]
   const statisticMeasures = []
   for (const statisticMeasureName of statisticMeasureNames) {
