@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.25.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.24.0...@standardnotes/analytics@1.25.0) (2022-09-07)
+
+### Features
+
+* **analytics:** add discrete period key generation for last 7 days ([f872c7d](https://github.com/standardnotes/server/commit/f872c7dfe9f120f40dd0c28a9e0f5749eb251643))
+
 # [1.24.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.23.0...@standardnotes/analytics@1.24.0) (2022-09-07)
 
 ### Features
