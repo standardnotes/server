@@ -9,6 +9,7 @@ import { InviteToSharedSubscription } from './InviteToSharedSubscription'
 import { UserSubscriptionRepositoryInterface } from '../../Subscription/UserSubscriptionRepositoryInterface'
 import { UserSubscription } from '../../Subscription/UserSubscription'
 import { RoleName } from '@standardnotes/common'
+import { UserSubscriptionType } from '../../Subscription/UserSubscriptionType'
 
 describe('InviteToSharedSubscription', () => {
   let userSubscriptionRepository: UserSubscriptionRepositoryInterface
@@ -28,9 +29,10 @@ describe('InviteToSharedSubscription', () => {
 
   beforeEach(() => {
     userSubscriptionRepository = {} as jest.Mocked<UserSubscriptionRepositoryInterface>
-    userSubscriptionRepository.findOneByUserUuid = jest
-      .fn()
-      .mockReturnValue({ subscriptionId: 2 } as jest.Mocked<UserSubscription>)
+    userSubscriptionRepository.findOneByUserUuid = jest.fn().mockReturnValue({
+      subscriptionId: 2,
+      subscriptionType: UserSubscriptionType.Regular,
+    } as jest.Mocked<UserSubscription>)
 
     timer = {} as jest.Mocked<TimerInterface>
     timer.getTimestampInMicroseconds = jest.fn().mockReturnValue(1)
@@ -158,5 +160,25 @@ describe('InviteToSharedSubscription', () => {
       sharedSubscriptionInvitationUuid: '1-2-3',
     })
     expect(domainEventPublisher.publish).toHaveBeenCalled()
+  })
+
+  it('should not create an inivitation for sharing the subscription if the inviter is on a shared subscription', async () => {
+    userSubscriptionRepository.findOneByUserUuid = jest.fn().mockReturnValue({
+      subscriptionId: 2,
+      subscriptionType: UserSubscriptionType.Shared,
+    } as jest.Mocked<UserSubscription>)
+
+    await createUseCase().execute({
+      inviteeIdentifier: 'invitee@test.te',
+      inviterUuid: '1-2-3',
+      inviterEmail: 'inviter@test.te',
+      inviterRoles: [RoleName.ProUser],
+    })
+
+    expect(sharedSubscriptionInvitationRepository.save).not.toHaveBeenCalled()
+
+    expect(domainEventFactory.createSharedSubscriptionInvitationCreatedEvent).not.toHaveBeenCalled()
+
+    expect(domainEventPublisher.publish).not.toHaveBeenCalled()
   })
 })

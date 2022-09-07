@@ -11,6 +11,7 @@ import { InviterIdentifierType } from '../../SharedSubscription/InviterIdentifie
 import { SharedSubscriptionInvitation } from '../../SharedSubscription/SharedSubscriptionInvitation'
 import { SharedSubscriptionInvitationRepositoryInterface } from '../../SharedSubscription/SharedSubscriptionInvitationRepositoryInterface'
 import { UserSubscriptionRepositoryInterface } from '../../Subscription/UserSubscriptionRepositoryInterface'
+import { UserSubscriptionType } from '../../Subscription/UserSubscriptionType'
 import { UseCaseInterface } from '../UseCaseInterface'
 
 import { InviteToSharedSubscriptionDTO } from './InviteToSharedSubscriptionDTO'
@@ -35,18 +36,18 @@ export class InviteToSharedSubscription implements UseCaseInterface {
       }
     }
 
-    const numberOfUsedInvites = await this.sharedSubscriptionInvitationRepository.countByInviterEmailAndStatus(
-      dto.inviterEmail,
-      [InvitationStatus.Sent, InvitationStatus.Accepted],
-    )
-    if (numberOfUsedInvites >= this.MAX_NUMBER_OF_INVITES) {
+    const inviterUserSubscription = await this.userSubscriptionRepository.findOneByUserUuid(dto.inviterUuid)
+    if (inviterUserSubscription === null || inviterUserSubscription.subscriptionType === UserSubscriptionType.Shared) {
       return {
         success: false,
       }
     }
 
-    const inviterUserSubscription = await this.userSubscriptionRepository.findOneByUserUuid(dto.inviterUuid)
-    if (inviterUserSubscription === null) {
+    const numberOfUsedInvites = await this.sharedSubscriptionInvitationRepository.countByInviterEmailAndStatus(
+      dto.inviterEmail,
+      [InvitationStatus.Sent, InvitationStatus.Accepted],
+    )
+    if (numberOfUsedInvites >= this.MAX_NUMBER_OF_INVITES) {
       return {
         success: false,
       }
