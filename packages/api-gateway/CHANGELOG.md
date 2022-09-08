@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.17.2](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.17.1...@standardnotes/api-gateway@1.17.2) (2022-09-08)
+
+### Bug Fixes
+
+* **api-gateway:** retention data structure to include both period keys ([50ddb91](https://github.com/standardnotes/api-gateway/commit/50ddb918ccc52bee4caad82504cb899bc5936150))
+
 ## [1.17.1](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.17.0...@standardnotes/api-gateway@1.17.1) (2022-09-08)
 
 ### Bug Fixes
