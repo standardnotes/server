@@ -106,9 +106,8 @@ const requestReport = async (
   }
 
   const periodKeys = periodKeyGenerator.getDiscretePeriodKeys(Period.Last7Days)
-  const registerToActivityRetention = new Map<string, Map<string, number>>()
+  const retentionOverDays = []
   for (let i = 0; i < periodKeys.length; i++) {
-    const retentionOverDays = new Map<string, number>()
     for (let j = 0; j < periodKeys.length - i; j++) {
       const dailyRetention = await analyticsStore.calculateActivitiesRetention({
         firstActivity: AnalyticsActivity.Register,
@@ -117,10 +116,11 @@ const requestReport = async (
         secondActivityPeriodKey: periodKeys[i + j],
       })
 
-      retentionOverDays.set(periodKeys[i + j], dailyRetention)
+      retentionOverDays.push({
+        periodKey: periodKeys[i + j],
+        value: dailyRetention,
+      })
     }
-
-    registerToActivityRetention.set(periodKeys[i], retentionOverDays)
   }
 
   const event: DailyAnalyticsReportGeneratedEvent = {
@@ -144,7 +144,10 @@ const requestReport = async (
         {
           firstActivity: AnalyticsActivity.Register,
           secondActivity: AnalyticsActivity.GeneralActivity,
-          retention: registerToActivityRetention,
+          retention: {
+            periodKeys,
+            values: retentionOverDays,
+          },
         },
       ],
     },

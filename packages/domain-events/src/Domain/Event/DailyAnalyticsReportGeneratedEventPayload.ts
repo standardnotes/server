@@ -31,6 +31,12 @@ export interface DailyAnalyticsReportGeneratedEventPayload {
   retentionStatistics: Array<{
     firstActivity: string
     secondActivity: string
-    retention: Map<string, Map<string, number>>
+    retention: {
+      periodKeys: Array<string>
+      values: Array<{
+        periodKey: string
+        value: number
+      }>
+    }
   }>
 }
