@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.60.1](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.60.0...@standardnotes/domain-events@2.60.1) (2022-09-08)
+
+### Bug Fixes
+
+* **api-gateway:** retention data structure ([47be084](https://github.com/standardnotes/server/commit/47be0841fc6d5fa00892e775bb3a40f404a6382b))
+
 # [2.60.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.59.3...@standardnotes/domain-events@2.60.0) (2022-09-08)
 
 ### Features

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.17.1](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.17.0...@standardnotes/api-gateway@1.17.1) (2022-09-08)
+
+### Bug Fixes
+
+* **api-gateway:** retention data structure ([47be084](https://github.com/standardnotes/api-gateway/commit/47be0841fc6d5fa00892e775bb3a40f404a6382b))
+
 # [1.17.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.16.8...@standardnotes/api-gateway@1.17.0) (2022-09-08)
 
 ### Features
