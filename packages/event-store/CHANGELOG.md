@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.12](https://github.com/standardnotes/server/compare/@standardnotes/event-store@1.3.11...@standardnotes/event-store@1.3.12) (2022-09-08)
+
+### Bug Fixes
+
+* **event-store:** add listening to refund processed event ([73e1ea7](https://github.com/standardnotes/server/commit/73e1ea7f93b7d7956dd4a82298098e81ff9c85b1))
+
 ## [1.3.11](https://github.com/standardnotes/server/compare/@standardnotes/event-store@1.3.10...@standardnotes/event-store@1.3.11) (2022-09-08)
 
 **Note:** Version bump only for package @standardnotes/event-store
