@@ -16,6 +16,7 @@ import {
   AnalyticsActivity,
   AnalyticsStoreInterface,
   Period,
+  PeriodKeyGeneratorInterface,
   StatisticsMeasure,
   StatisticsStoreInterface,
 } from '@standardnotes/analytics'
@@ -24,6 +25,7 @@ const requestReport = async (
   analyticsStore: AnalyticsStoreInterface,
   statisticsStore: StatisticsStoreInterface,
   domainEventPublisher: DomainEventPublisherInterface,
+  periodKeyGenerator: PeriodKeyGeneratorInterface,
 ): Promise<void> => {
   const analyticsOverTime = []
 
@@ -103,6 +105,24 @@ const requestReport = async (
     }
   }
 
+  const periodKeys = periodKeyGenerator.getDiscretePeriodKeys(Period.Last7Days)
+  const registerToActivityRetention = new Map<string, Map<string, number>>()
+  for (let i = 0; i < periodKeys.length; i++) {
+    const retentionOverDays = new Map<string, number>()
+    for (let j = 0; j < periodKeys.length - i; j++) {
+      const dailyRetention = await analyticsStore.calculateActivitiesRetention({
+        firstActivity: AnalyticsActivity.Register,
+        firstActivityPeriodKey: periodKeys[i],
+        secondActivity: AnalyticsActivity.GeneralActivity,
+        secondActivityPeriodKey: periodKeys[i + j],
+      })
+
+      retentionOverDays.set(periodKeys[i + j], dailyRetention)
+    }
+
+    registerToActivityRetention.set(periodKeys[i], retentionOverDays)
+  }
+
   const event: DailyAnalyticsReportGeneratedEvent = {
     type: 'DAILY_ANALYTICS_REPORT_GENERATED',
     createdAt: new Date(),
@@ -120,6 +140,13 @@ const requestReport = async (
       activityStatistics: yesterdayActivityStatistics,
       activityStatisticsOverTime: analyticsOverTime,
       statisticMeasures,
+      retentionStatistics: [
+        {
+          firstActivity: AnalyticsActivity.Register,
+          secondActivity: AnalyticsActivity.GeneralActivity,
+          retention: registerToActivityRetention,
+        },
+      ],
     },
   }
 
@@ -138,8 +165,9 @@ void container.load().then((container) => {
   const analyticsStore: AnalyticsStoreInterface = container.get(TYPES.AnalyticsStore)
   const statisticsStore: StatisticsStoreInterface = container.get(TYPES.StatisticsStore)
   const domainEventPublisher: DomainEventPublisherInterface = container.get(TYPES.DomainEventPublisher)
+  const periodKeyGenerator: PeriodKeyGeneratorInterface = container.get(TYPES.PeriodKeyGenerator)
 
-  Promise.resolve(requestReport(analyticsStore, statisticsStore, domainEventPublisher))
+  Promise.resolve(requestReport(analyticsStore, statisticsStore, domainEventPublisher, periodKeyGenerator))
     .then(() => {
       logger.info('Usage report generation complete')
 

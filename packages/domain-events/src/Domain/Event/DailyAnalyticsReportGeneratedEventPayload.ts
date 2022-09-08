@@ -28,4 +28,9 @@ export interface DailyAnalyticsReportGeneratedEventPayload {
     totalCount: number
   }>
   outOfSyncIncidents: number
+  retentionStatistics: Array<{
+    firstActivity: string
+    secondActivity: string
+    retention: Map<string, Map<string, number>>
+  }>
 }

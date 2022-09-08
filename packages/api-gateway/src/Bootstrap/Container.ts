@@ -6,6 +6,7 @@ import * as AWS from 'aws-sdk'
 import {
   AnalyticsStoreInterface,
   PeriodKeyGenerator,
+  PeriodKeyGeneratorInterface,
   RedisAnalyticsStore,
   RedisStatisticsStore,
   StatisticsStoreInterface,
@@ -91,13 +92,13 @@ export class ContainerConfigLoader {
 
     // Services
     container.bind<HttpServiceInterface>(TYPES.HTTPService).to(HttpService)
-    const periodKeyGenerator = new PeriodKeyGenerator()
+    container.bind<PeriodKeyGeneratorInterface>(TYPES.PeriodKeyGenerator).toConstantValue(new PeriodKeyGenerator())
     container
       .bind<AnalyticsStoreInterface>(TYPES.AnalyticsStore)
-      .toConstantValue(new RedisAnalyticsStore(periodKeyGenerator, container.get(TYPES.Redis)))
+      .toConstantValue(new RedisAnalyticsStore(container.get(TYPES.PeriodKeyGenerator), container.get(TYPES.Redis)))
     container
       .bind<StatisticsStoreInterface>(TYPES.StatisticsStore)
-      .toConstantValue(new RedisStatisticsStore(periodKeyGenerator, container.get(TYPES.Redis)))
+      .toConstantValue(new RedisStatisticsStore(container.get(TYPES.PeriodKeyGenerator), container.get(TYPES.Redis)))
     container.bind<CrossServiceTokenCacheInterface>(TYPES.CrossServiceTokenCache).to(RedisCrossServiceTokenCache)
     container.bind<TimerInterface>(TYPES.Timer).toConstantValue(new Timer())
 

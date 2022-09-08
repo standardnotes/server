@@ -26,6 +26,7 @@ const TYPES = {
   StatisticsStore: Symbol.for('StatisticsStore'),
   DomainEventPublisher: Symbol.for('DomainEventPublisher'),
   Timer: Symbol.for('Timer'),
+  PeriodKeyGenerator: Symbol.for('PeriodKeyGenerator'),
 }
 
 export default TYPES
