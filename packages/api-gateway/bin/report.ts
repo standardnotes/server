@@ -117,7 +117,8 @@ const requestReport = async (
       })
 
       retentionOverDays.push({
-        periodKey: periodKeys[i + j],
+        firstPeriodKey: periodKeys[i],
+        secondPeriodKey: periodKeys[i + j],
         value: dailyRetention,
       })
     }

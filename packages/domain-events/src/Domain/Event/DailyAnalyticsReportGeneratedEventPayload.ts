@@ -34,7 +34,8 @@ export interface DailyAnalyticsReportGeneratedEventPayload {
     retention: {
       periodKeys: Array<string>
       values: Array<{
-        periodKey: string
+        firstPeriodKey: string
+        secondPeriodKey: string
         value: number
       }>
     }
