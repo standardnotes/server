@@ -1,6 +1,6 @@
 {
   "name": "@standardnotes/scheduler-server",
-  "version": "1.10.24",
+  "version": "1.10.25",
   "engines": {
     "node": ">=16.0.0 <17.0.0"
   },

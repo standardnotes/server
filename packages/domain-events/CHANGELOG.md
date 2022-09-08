@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.60.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.59.3...@standardnotes/domain-events@2.60.0) (2022-09-08)
+
+### Features
+
+* **api-gateway:** add registration-to-activity retention analytics to report ([f139bb0](https://github.com/standardnotes/server/commit/f139bb003669bb41f98ad4bb59a036c489f43606))
+
 ## [2.59.3](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.59.2...@standardnotes/domain-events@2.59.3) (2022-09-08)
 
 ### Reverts

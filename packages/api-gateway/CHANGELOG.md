@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.17.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.16.8...@standardnotes/api-gateway@1.17.0) (2022-09-08)
+
+### Features
+
+* **api-gateway:** add registration-to-activity retention analytics to report ([f139bb0](https://github.com/standardnotes/api-gateway/commit/f139bb003669bb41f98ad4bb59a036c489f43606))
+
 ## [1.16.8](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.16.7...@standardnotes/api-gateway@1.16.8) (2022-09-08)
 
 **Note:** Version bump only for package @standardnotes/api-gateway
