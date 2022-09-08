@@ -80,6 +80,7 @@ export class ContainerConfigLoader {
       ['PAYMENT_SUCCESS', container.get(TYPES.EventHandler)],
       ['ACCOUNT_CLAIM_REQUESTED', container.get(TYPES.EventHandler)],
       ['SUBSCRIPTION_REVERT_REQUESTED', container.get(TYPES.EventHandler)],
+      ['REFUND_PROCESSED', container.get(TYPES.EventHandler)],
     ])
 
     container
