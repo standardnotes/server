@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.59.3](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.59.2...@standardnotes/domain-events@2.59.3) (2022-09-08)
+
+### Reverts
+
+* Revert "fix(domain-events): add boolean for sending emails on refund processed" ([fe4821d](https://github.com/standardnotes/server/commit/fe4821d4f7df38297cb92314b9cd3fde3d2c58b6))
+
 ## [2.59.2](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.59.1...@standardnotes/domain-events@2.59.2) (2022-09-08)
 
 ### Bug Fixes
