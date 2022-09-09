@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.27.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.26.0...@standardnotes/analytics@1.27.0) (2022-09-09)
+
+### Features
+
+* **api-gateway:** add tracking general activity for free and paid users breakdown ([0afd3de](https://github.com/standardnotes/server/commit/0afd3de9779e2abe10deede24626a3cbe6b15e6c))
+
 # [1.26.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.25.0...@standardnotes/analytics@1.26.0) (2022-09-09)
 
 ### Features

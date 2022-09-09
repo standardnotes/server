@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.18.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.17.4...@standardnotes/api-gateway@1.18.0) (2022-09-09)
+
+### Bug Fixes
+
+* **api-gateway:** add general activity breakdown to yesterdays report stats ([339c86f](https://github.com/standardnotes/api-gateway/commit/339c86fca073b02054260417b7519c08874e1e4e))
+
+### Features
+
+* **api-gateway:** add tracking general activity for free and paid users breakdown ([0afd3de](https://github.com/standardnotes/api-gateway/commit/0afd3de9779e2abe10deede24626a3cbe6b15e6c))
+
 ## [1.17.4](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.17.3...@standardnotes/api-gateway@1.17.4) (2022-09-09)
 
 ### Bug Fixes
