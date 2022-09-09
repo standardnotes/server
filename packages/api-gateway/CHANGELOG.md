@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.17.4](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.17.3...@standardnotes/api-gateway@1.17.4) (2022-09-09)
+
+### Bug Fixes
+
+* **api-gateway:** add notes count statistics to report ([ced852d](https://github.com/standardnotes/api-gateway/commit/ced852d9dbf8cab4c235b94a834968a5fc5e7d36))
+
 ## [1.17.3](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.17.2...@standardnotes/api-gateway@1.17.3) (2022-09-09)
 
 **Note:** Version bump only for package @standardnotes/api-gateway
