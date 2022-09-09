@@ -28,15 +28,19 @@ export class CheckIntegrity implements UseCaseInterface {
     const serverItemIntegrityPayloads = await this.itemRepository.findItemsForComputingIntegrityPayloads(dto.userUuid)
 
     let notesCount = 0
+    let filesCount = 0
     const serverItemIntegrityPayloadsMap = new Map<string, ExtendedIntegrityPayload>()
     for (const serverItemIntegrityPayload of serverItemIntegrityPayloads) {
       serverItemIntegrityPayloadsMap.set(serverItemIntegrityPayload.uuid, serverItemIntegrityPayload)
       if (serverItemIntegrityPayload.content_type === ContentType.Note) {
         notesCount++
       }
+      if (serverItemIntegrityPayload.content_type === ContentType.File) {
+        filesCount++
+      }
     }
 
-    await this.saveNotesCountStatistics(dto.freeUser, dto.analyticsId, notesCount)
+    await this.saveNotesCountStatistics(dto.freeUser, dto.analyticsId, { notes: notesCount, files: filesCount })
 
     const clientItemIntegrityPayloadsMap = new Map<string, number>()
     for (const clientItemIntegrityPayload of dto.integrityPayloads) {
@@ -88,7 +92,11 @@ export class CheckIntegrity implements UseCaseInterface {
     }
   }
 
-  private async saveNotesCountStatistics(freeUser: boolean, analyticsId: number, notesCount: number) {
+  private async saveNotesCountStatistics(
+    freeUser: boolean,
+    analyticsId: number,
+    counts: { notes: number; files: number },
+  ) {
     const integrityWasCheckedToday = await this.analyticsStore.wasActivityDone(
       AnalyticsActivity.CheckingIntegrity,
       analyticsId,
@@ -100,9 +108,14 @@ export class CheckIntegrity implements UseCaseInterface {
 
       await this.statisticsStore.incrementMeasure(
         freeUser ? StatisticsMeasure.NotesCountFreeUsers : StatisticsMeasure.NotesCountPaidUsers,
-        notesCount,
+        counts.notes,
         [Period.Today, Period.ThisMonth],
       )
+
+      await this.statisticsStore.incrementMeasure(StatisticsMeasure.FilesCount, counts.files, [
+        Period.Today,
+        Period.ThisMonth,
+      ])
     }
   }
 }

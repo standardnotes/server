@@ -96,6 +96,7 @@ const requestReport = async (
     StatisticsMeasure.RegistrationToSubscriptionTime,
     StatisticsMeasure.NotesCountFreeUsers,
     StatisticsMeasure.NotesCountPaidUsers,
+    StatisticsMeasure.FilesCount,
   ]
   const statisticMeasures = []
   for (const statisticMeasureName of statisticMeasureNames) {

@@ -37,6 +37,11 @@ describe('CheckIntegrity', () => {
         updated_at_timestamp: 4,
         content_type: ContentType.ItemsKey,
       },
+      {
+        uuid: '5-6-7',
+        updated_at_timestamp: 5,
+        content_type: ContentType.File,
+      },
     ])
 
     statisticsStore = {} as jest.Mocked<StatisticsStoreInterface>
@@ -67,6 +72,10 @@ describe('CheckIntegrity', () => {
             uuid: '3-4-5',
             updated_at_timestamp: 3,
           },
+          {
+            uuid: '5-6-7',
+            updated_at_timestamp: 5,
+          },
         ],
       }),
     ).toEqual({
@@ -92,6 +101,10 @@ describe('CheckIntegrity', () => {
           {
             uuid: '3-4-5',
             updated_at_timestamp: 3,
+          },
+          {
+            uuid: '5-6-7',
+            updated_at_timestamp: 5,
           },
         ],
       }),
@@ -121,6 +134,10 @@ describe('CheckIntegrity', () => {
           {
             uuid: '2-3-4',
             updated_at_timestamp: 2,
+          },
+          {
+            uuid: '5-6-7',
+            updated_at_timestamp: 5,
           },
         ],
       }),
