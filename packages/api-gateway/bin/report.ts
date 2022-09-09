@@ -70,6 +70,8 @@ const requestReport = async (
   const yesterdayActivityNames = [
     AnalyticsActivity.LimitedDiscountOfferPurchased,
     AnalyticsActivity.GeneralActivity,
+    AnalyticsActivity.GeneralActivityFreeUsers,
+    AnalyticsActivity.GeneralActivityPaidUsers,
     AnalyticsActivity.PaymentFailed,
     AnalyticsActivity.PaymentSuccess,
   ]
