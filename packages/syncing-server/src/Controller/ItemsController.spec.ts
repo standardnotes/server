@@ -75,6 +75,7 @@ describe('ItemsController', () => {
       uuid: '123',
     }
     response.locals.analyticsId = 123
+    response.locals.freeUser = false
 
     syncResponse = {} as jest.Mocked<SyncResponse20200115>
 
@@ -132,6 +133,8 @@ describe('ItemsController', () => {
         },
       ],
       userUuid: '123',
+      analyticsId: 123,
+      freeUser: false,
     })
 
     expect(result.statusCode).toEqual(200)
@@ -147,6 +150,8 @@ describe('ItemsController', () => {
     expect(checkIntegrity.execute).toHaveBeenCalledWith({
       integrityPayloads: [],
       userUuid: '123',
+      analyticsId: 123,
+      freeUser: false,
     })
 
     expect(result.statusCode).toEqual(200)

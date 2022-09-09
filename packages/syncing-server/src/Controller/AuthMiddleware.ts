@@ -5,6 +5,7 @@ import { verify } from 'jsonwebtoken'
 import { CrossServiceTokenData } from '@standardnotes/security'
 import * as winston from 'winston'
 import TYPES from '../Bootstrap/Types'
+import { RoleName } from '@standardnotes/common'
 
 @injectable()
 export class AuthMiddleware extends BaseMiddleware {
@@ -27,6 +28,8 @@ export class AuthMiddleware extends BaseMiddleware {
 
       response.locals.user = decodedToken.user
       response.locals.roleNames = decodedToken.roles.map((role) => role.name)
+      response.locals.freeUser =
+        response.locals.roleNames.length === 1 && response.locals.roleNames[0] === RoleName.CoreUser
       response.locals.session = decodedToken.session
       response.locals.readOnlyAccess = decodedToken.session?.readonly_access ?? false
       response.locals.analyticsId = decodedToken.analyticsId

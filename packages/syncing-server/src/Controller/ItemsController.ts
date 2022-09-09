@@ -62,6 +62,8 @@ export class ItemsController extends BaseHttpController {
     const result = await this.checkIntegrity.execute({
       userUuid: response.locals.user.uuid,
       integrityPayloads,
+      analyticsId: response.locals.analyticsId,
+      freeUser: response.locals.freeUser,
     })
 
     return this.json(result)

@@ -35,7 +35,7 @@ describe('AuthMiddleware', () => {
     next = jest.fn()
   })
 
-  it('should authorize user from an auth JWT token if present', async () => {
+  it('should authorize a paid user from an auth JWT token if present', async () => {
     const authToken = sign(
       {
         user: { uuid: '123' },
@@ -66,6 +66,34 @@ describe('AuthMiddleware', () => {
     expect(response.locals.session).toEqual({ uuid: '234' })
     expect(response.locals.readOnlyAccess).toBeFalsy()
     expect(response.locals.analyticsId).toEqual(123)
+    expect(response.locals.freeUser).toEqual(false)
+
+    expect(next).toHaveBeenCalled()
+  })
+
+  it('should authorize a free user from an auth JWT token if present', async () => {
+    const authToken = sign(
+      {
+        user: { uuid: '123' },
+        session: { uuid: '234' },
+        roles: [
+          {
+            uuid: '1-2-3',
+            name: RoleName.CoreUser,
+          },
+        ],
+        analyticsId: 123,
+        permissions: [],
+      },
+      jwtSecret,
+      { algorithm: 'HS256' },
+    )
+
+    request.header = jest.fn().mockReturnValue(authToken)
+
+    await createMiddleware().handler(request, response, next)
+
+    expect(response.locals.freeUser).toEqual(true)
 
     expect(next).toHaveBeenCalled()
   })
