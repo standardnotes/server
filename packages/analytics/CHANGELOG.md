@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.26.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.25.0...@standardnotes/analytics@1.26.0) (2022-09-09)
+
+### Features
+
+* **syncing-server:** add statistics for notes count for free and paid users ([c9ec7b4](https://github.com/standardnotes/server/commit/c9ec7b492aea1911e441ed8ad9a155f871be2ef7))
+
 # [1.25.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.24.0...@standardnotes/analytics@1.25.0) (2022-09-07)
 
 ### Features

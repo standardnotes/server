@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.7.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.6.70...@standardnotes/syncing-server@1.7.0) (2022-09-09)
+
+### Features
+
+* **syncing-server:** add statistics for notes count for free and paid users ([c9ec7b4](https://github.com/standardnotes/syncing-server-js/commit/c9ec7b492aea1911e441ed8ad9a155f871be2ef7))
+
 ## [1.6.70](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.6.69...@standardnotes/syncing-server@1.6.70) (2022-09-08)
 
 **Note:** Version bump only for package @standardnotes/syncing-server
