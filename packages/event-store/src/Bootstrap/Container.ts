@@ -81,6 +81,11 @@ export class ContainerConfigLoader {
       ['ACCOUNT_CLAIM_REQUESTED', container.get(TYPES.EventHandler)],
       ['SUBSCRIPTION_REVERT_REQUESTED', container.get(TYPES.EventHandler)],
       ['REFUND_PROCESSED', container.get(TYPES.EventHandler)],
+      ['ACCOUNT_RESET_REQUESTED', container.get(TYPES.EventHandler)],
+      ['DISCOUNT_APPLIED', container.get(TYPES.EventHandler)],
+      ['SUBSCRIPTION_RATE_ADJUSTED', container.get(TYPES.EventHandler)],
+      ['REFUND_REQUESTED', container.get(TYPES.EventHandler)],
+      ['INVOICE_GENERATED', container.get(TYPES.EventHandler)],
     ])
 
     container
