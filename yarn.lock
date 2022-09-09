@@ -1767,6 +1767,7 @@ __metadata:
     "@newrelic/winston-enricher": ^4.0.0
     "@sentry/node": ^7.3.0
     "@standardnotes/analytics": "workspace:*"
+    "@standardnotes/common": "workspace:^"
     "@standardnotes/domain-events": "workspace:*"
     "@standardnotes/domain-events-infra": "workspace:*"
     "@standardnotes/security": "workspace:*"
@@ -1884,7 +1885,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@standardnotes/common@^1.19.1, @standardnotes/common@^1.23.1, @standardnotes/common@workspace:*, @standardnotes/common@workspace:packages/common":
+"@standardnotes/common@^1.19.1, @standardnotes/common@^1.23.1, @standardnotes/common@workspace:*, @standardnotes/common@workspace:^, @standardnotes/common@workspace:packages/common":
   version: 0.0.0-use.local
   resolution: "@standardnotes/common@workspace:packages/common"
   dependencies:

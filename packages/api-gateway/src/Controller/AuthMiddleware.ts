@@ -1,4 +1,5 @@
 import { CrossServiceTokenData } from '@standardnotes/security'
+import { RoleName } from '@standardnotes/common'
 import { AnalyticsActivity, AnalyticsStoreInterface, Period } from '@standardnotes/analytics'
 import { TimerInterface } from '@standardnotes/time'
 import { NextFunction, Request, Response } from 'express'
@@ -75,9 +76,20 @@ export class AuthMiddleware extends BaseMiddleware {
 
       const decodedToken = <CrossServiceTokenData>verify(crossServiceToken, this.jwtSecret, { algorithms: ['HS256'] })
 
-      await this.analyticsStore.markActivity([AnalyticsActivity.GeneralActivity], decodedToken.analyticsId as number, [
-        Period.Today,
-      ])
+      response.locals.freeUser =
+        decodedToken.roles.length === 1 &&
+        decodedToken.roles.find((role) => role.name === RoleName.CoreUser) !== undefined
+
+      await this.analyticsStore.markActivity(
+        [
+          AnalyticsActivity.GeneralActivity,
+          response.locals.freeUser
+            ? AnalyticsActivity.GeneralActivityFreeUsers
+            : AnalyticsActivity.GeneralActivityPaidUsers,
+        ],
+        decodedToken.analyticsId as number,
+        [Period.Today],
+      )
 
       if (this.crossServiceTokenCacheTTL && !crossServiceTokenFetchedFromCache) {
         await this.crossServiceTokenCache.set({

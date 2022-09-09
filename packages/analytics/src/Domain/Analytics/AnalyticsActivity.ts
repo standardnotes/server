@@ -1,5 +1,7 @@
 export enum AnalyticsActivity {
   GeneralActivity = 'general-activity',
+  GeneralActivityFreeUsers = 'general-activity-free-users',
+  GeneralActivityPaidUsers = 'general-activity-paid-users',
   EditingItems = 'editing-items',
   CheckingIntegrity = 'checking-integrity',
   Login = 'login',
