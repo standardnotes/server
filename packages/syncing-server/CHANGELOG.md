@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.8.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.7.1...@standardnotes/syncing-server@1.8.0) (2022-09-09)
+
+### Features
+
+* **syncing-server:** add tracking files count in stats ([52cc646](https://github.com/standardnotes/syncing-server-js/commit/52cc6462a66dae3bd6c05f551d4ba661c8a9b8c8))
+
 ## [1.7.1](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.7.0...@standardnotes/syncing-server@1.7.1) (2022-09-09)
 
 **Note:** Version bump only for package @standardnotes/syncing-server

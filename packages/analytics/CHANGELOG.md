@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.28.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.27.0...@standardnotes/analytics@1.28.0) (2022-09-09)
+
+### Features
+
+* **syncing-server:** add tracking files count in stats ([52cc646](https://github.com/standardnotes/server/commit/52cc6462a66dae3bd6c05f551d4ba661c8a9b8c8))
+
 # [1.27.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.26.0...@standardnotes/analytics@1.27.0) (2022-09-09)
 
 ### Features

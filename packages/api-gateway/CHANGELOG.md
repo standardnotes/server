@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.19.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.18.0...@standardnotes/api-gateway@1.19.0) (2022-09-09)
+
+### Features
+
+* **syncing-server:** add tracking files count in stats ([52cc646](https://github.com/standardnotes/api-gateway/commit/52cc6462a66dae3bd6c05f551d4ba661c8a9b8c8))
+
 # [1.18.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.17.4...@standardnotes/api-gateway@1.18.0) (2022-09-09)
 
 ### Bug Fixes
