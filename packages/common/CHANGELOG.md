@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.32.0](https://github.com/standardnotes/server/compare/@standardnotes/common@1.31.0...@standardnotes/common@1.32.0) (2022-09-09)
+
+### Features
+
+* **common:** add either and only types ([c3ebb32](https://github.com/standardnotes/server/commit/c3ebb321cfacd20769ebfd99413e283859b6e260))
+
 # [1.31.0](https://github.com/standardnotes/server/compare/@standardnotes/common@1.30.0...@standardnotes/common@1.31.0) (2022-09-05)
 
 ### Features
