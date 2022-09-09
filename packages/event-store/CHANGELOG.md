@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.13](https://github.com/standardnotes/server/compare/@standardnotes/event-store@1.3.12...@standardnotes/event-store@1.3.13) (2022-09-09)
+
+### Bug Fixes
+
+* **event-store:** add missing event subscriptions ([432d071](https://github.com/standardnotes/server/commit/432d071ec88a49f90513be6c55a06005a471b174))
+
 ## [1.3.12](https://github.com/standardnotes/server/compare/@standardnotes/event-store@1.3.11...@standardnotes/event-store@1.3.12) (2022-09-08)
 
 ### Bug Fixes
