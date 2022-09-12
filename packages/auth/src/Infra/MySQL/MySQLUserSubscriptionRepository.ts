@@ -44,6 +44,7 @@ export class MySQLUserSubscriptionRepository implements UserSubscriptionReposito
         subscriptionId,
         type,
       })
+      .orderBy('created_at', 'DESC')
       .getMany()
   }
 

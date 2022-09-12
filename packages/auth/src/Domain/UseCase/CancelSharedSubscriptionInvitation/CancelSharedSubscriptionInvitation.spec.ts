@@ -16,6 +16,7 @@ import { DomainEventPublisherInterface, SharedSubscriptionInvitationCanceledEven
 import { DomainEventFactoryInterface } from '../../Event/DomainEventFactoryInterface'
 import { InviterIdentifierType } from '../../SharedSubscription/InviterIdentifierType'
 import { InviteeIdentifierType } from '../../SharedSubscription/InviteeIdentifierType'
+import { Logger } from 'winston'
 
 describe('CancelSharedSubscriptionInvitation', () => {
   let sharedSubscriptionInvitationRepository: SharedSubscriptionInvitationRepositoryInterface
@@ -28,6 +29,7 @@ describe('CancelSharedSubscriptionInvitation', () => {
   let invitation: SharedSubscriptionInvitation
   let domainEventPublisher: DomainEventPublisherInterface
   let domainEventFactory: DomainEventFactoryInterface
+  let logger: Logger
 
   const createUseCase = () =>
     new CancelSharedSubscriptionInvitation(
@@ -38,6 +40,7 @@ describe('CancelSharedSubscriptionInvitation', () => {
       domainEventPublisher,
       domainEventFactory,
       timer,
+      logger,
     )
 
   beforeEach(() => {
@@ -59,6 +62,9 @@ describe('CancelSharedSubscriptionInvitation', () => {
       inviteeIdentifier: 'invitee@test.te',
       inviteeIdentifierType: InviteeIdentifierType.Email,
     } as jest.Mocked<SharedSubscriptionInvitation>
+
+    logger = {} as jest.Mocked<Logger>
+    logger.debug = jest.fn()
 
     sharedSubscriptionInvitationRepository = {} as jest.Mocked<SharedSubscriptionInvitationRepositoryInterface>
     sharedSubscriptionInvitationRepository.findOneByUuid = jest.fn().mockReturnValue(invitation)

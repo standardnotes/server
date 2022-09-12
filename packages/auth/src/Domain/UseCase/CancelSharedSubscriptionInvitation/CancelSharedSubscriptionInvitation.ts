@@ -2,6 +2,7 @@ import { SubscriptionName } from '@standardnotes/common'
 import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
 import { TimerInterface } from '@standardnotes/time'
 import { inject, injectable } from 'inversify'
+import { Logger } from 'winston'
 
 import TYPES from '../../../Bootstrap/Types'
 import { DomainEventFactoryInterface } from '../../Event/DomainEventFactoryInterface'
@@ -29,6 +30,7 @@ export class CancelSharedSubscriptionInvitation implements UseCaseInterface {
     @inject(TYPES.DomainEventPublisher) private domainEventPublisher: DomainEventPublisherInterface,
     @inject(TYPES.DomainEventFactory) private domainEventFactory: DomainEventFactoryInterface,
     @inject(TYPES.Timer) private timer: TimerInterface,
+    @inject(TYPES.Logger) private logger: Logger,
   ) {}
 
   async execute(dto: CancelSharedSubscriptionInvitationDTO): Promise<CancelSharedSubscriptionInvitationResponse> {
@@ -36,12 +38,20 @@ export class CancelSharedSubscriptionInvitation implements UseCaseInterface {
       dto.sharedSubscriptionInvitationUuid,
     )
     if (sharedSubscriptionInvitation === null) {
+      this.logger.debug(
+        `Could not find a shared subscription invitation with uuid ${dto.sharedSubscriptionInvitationUuid}`,
+      )
+
       return {
         success: false,
       }
     }
 
     if (dto.inviterEmail !== sharedSubscriptionInvitation.inviterIdentifier) {
+      this.logger.debug(
+        `Subscription belongs to a different inviter (${sharedSubscriptionInvitation.inviterIdentifier}). Modifier: ${dto.inviterEmail}`,
+      )
+
       return {
         success: false,
       }
@@ -53,7 +63,9 @@ export class CancelSharedSubscriptionInvitation implements UseCaseInterface {
       sharedSubscriptionInvitation.subscriptionId,
       UserSubscriptionType.Regular,
     )
-    if (inviterUserSubscriptions.length !== 1) {
+    if (inviterUserSubscriptions.length === 0) {
+      this.logger.debug(`Could not find a regular subscription with id ${sharedSubscriptionInvitation.subscriptionId}`)
+
       return {
         success: false,
       }
