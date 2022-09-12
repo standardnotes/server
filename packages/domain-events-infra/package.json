@@ -34,7 +34,7 @@
   },
   "devDependencies": {
     "@types/ioredis": "^4.28.10",
-    "@types/jest": "^28.1.4",
+    "@types/jest": "^29.0.1",
     "@types/newrelic": "^7.0.3",
     "@typescript-eslint/eslint-plugin": "^5.30.0",
     "eslint-plugin-prettier": "^4.2.1",
