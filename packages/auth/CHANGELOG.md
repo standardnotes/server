@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.25.13](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.25.12...@standardnotes/auth-server@1.25.13) (2022-09-12)
+
+### Bug Fixes
+
+* **auth:** add debug logs for canceling shared subscription invitations ([dd13e2e](https://github.com/standardnotes/server/commit/dd13e2eaf74de56a3c8c30c236c32c6dc0c560f2))
+
 ## [1.25.12](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.25.11...@standardnotes/auth-server@1.25.12) (2022-09-12)
 
 ### Bug Fixes
