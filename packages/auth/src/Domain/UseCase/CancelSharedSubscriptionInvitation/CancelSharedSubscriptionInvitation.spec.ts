@@ -126,7 +126,7 @@ describe('CancelSharedSubscriptionInvitation', () => {
     })
   })
 
-  it('should cancel a shared subscription invitation without subscription removal is subscription is not found', async () => {
+  it('should cancel a shared subscription invitation without subscription removal if subscription is not found', async () => {
     userSubscriptionRepository.findOneByUserUuidAndSubscriptionId = jest.fn().mockReturnValue(null)
 
     expect(
@@ -175,7 +175,7 @@ describe('CancelSharedSubscriptionInvitation', () => {
     })
   })
 
-  it('should not cancel a shared subscription invitation if invitee is not found', async () => {
+  it('should cancel a shared subscription invitation without subscription removal if invitee is not found', async () => {
     userRepository.findOneByEmail = jest.fn().mockReturnValue(null)
     expect(
       await createUseCase().execute({
@@ -183,20 +183,21 @@ describe('CancelSharedSubscriptionInvitation', () => {
         inviterEmail: 'test@test.te',
       }),
     ).toEqual({
-      success: false,
+      success: true,
     })
-  })
 
-  it('should not cancel a shared subscription invitation if invitee is not found', async () => {
-    userRepository.findOneByEmail = jest.fn().mockReturnValue(null)
-    expect(
-      await createUseCase().execute({
-        sharedSubscriptionInvitationUuid: '1-2-3',
-        inviterEmail: 'test@test.te',
-      }),
-    ).toEqual({
-      success: false,
+    expect(sharedSubscriptionInvitationRepository.save).toHaveBeenCalledWith({
+      status: 'canceled',
+      subscriptionId: 3,
+      updatedAt: 1,
+      inviterIdentifier: 'test@test.te',
+      uuid: '1-2-3',
+      inviterIdentifierType: 'email',
+      inviteeIdentifier: 'invitee@test.te',
+      inviteeIdentifierType: 'email',
     })
+    expect(userSubscriptionRepository.save).not.toHaveBeenCalled()
+    expect(roleService.removeUserRole).not.toHaveBeenCalled()
   })
 
   it('should not cancel a shared subscription invitation if inviter subscription is not found', async () => {

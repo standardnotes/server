@@ -48,11 +48,6 @@ export class CancelSharedSubscriptionInvitation implements UseCaseInterface {
     }
 
     const invitee = await this.userRepository.findOneByEmail(sharedSubscriptionInvitation.inviteeIdentifier)
-    if (invitee === null) {
-      return {
-        success: false,
-      }
-    }
 
     const inviterUserSubscriptions = await this.userSubscriptionRepository.findBySubscriptionIdAndType(
       sharedSubscriptionInvitation.subscriptionId,
@@ -70,20 +65,22 @@ export class CancelSharedSubscriptionInvitation implements UseCaseInterface {
 
     await this.sharedSubscriptionInvitationRepository.save(sharedSubscriptionInvitation)
 
-    await this.removeSharedSubscription(sharedSubscriptionInvitation.subscriptionId, invitee)
+    if (invitee !== null) {
+      await this.removeSharedSubscription(sharedSubscriptionInvitation.subscriptionId, invitee)
 
-    await this.roleService.removeUserRole(invitee, inviterUserSubscription.planName as SubscriptionName)
+      await this.roleService.removeUserRole(invitee, inviterUserSubscription.planName as SubscriptionName)
 
-    await this.domainEventPublisher.publish(
-      this.domainEventFactory.createSharedSubscriptionInvitationCanceledEvent({
-        inviteeIdentifier: invitee.uuid,
-        inviteeIdentifierType: InviteeIdentifierType.Uuid,
-        inviterEmail: sharedSubscriptionInvitation.inviterIdentifier,
-        inviterSubscriptionId: sharedSubscriptionInvitation.subscriptionId,
-        inviterSubscriptionUuid: inviterUserSubscription.uuid,
-        sharedSubscriptionInvitationUuid: sharedSubscriptionInvitation.uuid,
-      }),
-    )
+      await this.domainEventPublisher.publish(
+        this.domainEventFactory.createSharedSubscriptionInvitationCanceledEvent({
+          inviteeIdentifier: invitee.uuid,
+          inviteeIdentifierType: InviteeIdentifierType.Uuid,
+          inviterEmail: sharedSubscriptionInvitation.inviterIdentifier,
+          inviterSubscriptionId: sharedSubscriptionInvitation.subscriptionId,
+          inviterSubscriptionUuid: inviterUserSubscription.uuid,
+          sharedSubscriptionInvitationUuid: sharedSubscriptionInvitation.uuid,
+        }),
+      )
+    }
 
     return {
       success: true,
