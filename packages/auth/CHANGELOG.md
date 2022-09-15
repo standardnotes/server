@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.26.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.26.0...@standardnotes/auth-server@1.26.1) (2022-09-15)
+
+### Bug Fixes
+
+* **auth:** disallow duplicating subscription invites ([531f13f](https://github.com/standardnotes/server/commit/531f13fe1f4bdfb8d27f5e3c07ec0b15d36ad413))
+
 # [1.26.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.25.13...@standardnotes/auth-server@1.26.0) (2022-09-13)
 
 ### Features
