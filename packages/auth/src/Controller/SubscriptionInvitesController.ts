@@ -13,7 +13,7 @@ import {
   SubscriptionServerInterface,
 } from '@standardnotes/api'
 import { RoleName } from '@standardnotes/common'
-import { inject } from 'inversify'
+import { inject, injectable } from 'inversify'
 
 import TYPES from '../Bootstrap/Types'
 import { AcceptSharedSubscriptionInvitation } from '../Domain/UseCase/AcceptSharedSubscriptionInvitation/AcceptSharedSubscriptionInvitation'
@@ -22,6 +22,7 @@ import { DeclineSharedSubscriptionInvitation } from '../Domain/UseCase/DeclineSh
 import { InviteToSharedSubscription } from '../Domain/UseCase/InviteToSharedSubscription/InviteToSharedSubscription'
 import { ListSharedSubscriptionInvitations } from '../Domain/UseCase/ListSharedSubscriptionInvitations/ListSharedSubscriptionInvitations'
 
+@injectable()
 export class SubscriptionInvitesController implements SubscriptionServerInterface {
   constructor(
     @inject(TYPES.InviteToSharedSubscription) private inviteToSharedSubscription: InviteToSharedSubscription,
