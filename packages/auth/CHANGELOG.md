@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.27.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.26.1...@standardnotes/auth-server@1.27.0) (2022-09-15)
+
+### Features
+
+* **auth:** implement subscription server interface on server side ([5d812be](https://github.com/standardnotes/server/commit/5d812befc4733954919eef0d3718ae6f8eb81654))
+
 ## [1.26.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.26.0...@standardnotes/auth-server@1.26.1) (2022-09-15)
 
 ### Bug Fixes
