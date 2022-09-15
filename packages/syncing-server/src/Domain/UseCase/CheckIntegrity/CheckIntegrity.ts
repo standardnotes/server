@@ -112,10 +112,12 @@ export class CheckIntegrity implements UseCaseInterface {
         [Period.Today, Period.ThisMonth],
       )
 
-      await this.statisticsStore.incrementMeasure(StatisticsMeasure.FilesCount, counts.files, [
-        Period.Today,
-        Period.ThisMonth,
-      ])
+      if (!freeUser) {
+        await this.statisticsStore.incrementMeasure(StatisticsMeasure.FilesCount, counts.files, [
+          Period.Today,
+          Period.ThisMonth,
+        ])
+      }
     }
   }
 }
