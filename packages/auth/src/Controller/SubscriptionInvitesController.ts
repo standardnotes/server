@@ -1,15 +1,19 @@
-import { Role } from '@standardnotes/security'
-import { Request, Response } from 'express'
-import { inject } from 'inversify'
 import {
-  BaseHttpController,
-  controller,
-  httpDelete,
-  httpGet,
-  httpPost,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  results,
-} from 'inversify-express-utils'
+  HttpStatusCode,
+  SubscriptionInviteAcceptRequestParams,
+  SubscriptionInviteAcceptResponse,
+  SubscriptionInviteCancelRequestParams,
+  SubscriptionInviteCancelResponse,
+  SubscriptionInviteDeclineRequestParams,
+  SubscriptionInviteDeclineResponse,
+  SubscriptionInviteListRequestParams,
+  SubscriptionInviteListResponse,
+  SubscriptionInviteRequestParams,
+  SubscriptionInviteResponse,
+  SubscriptionServerInterface,
+} from '@standardnotes/api'
+import { RoleName } from '@standardnotes/common'
+import { inject } from 'inversify'
 
 import TYPES from '../Bootstrap/Types'
 import { AcceptSharedSubscriptionInvitation } from '../Domain/UseCase/AcceptSharedSubscriptionInvitation/AcceptSharedSubscriptionInvitation'
@@ -18,8 +22,7 @@ import { DeclineSharedSubscriptionInvitation } from '../Domain/UseCase/DeclineSh
 import { InviteToSharedSubscription } from '../Domain/UseCase/InviteToSharedSubscription/InviteToSharedSubscription'
 import { ListSharedSubscriptionInvitations } from '../Domain/UseCase/ListSharedSubscriptionInvitations/ListSharedSubscriptionInvitations'
 
-@controller('/subscription-invites')
-export class SubscriptionInvitesController extends BaseHttpController {
+export class SubscriptionInvitesController implements SubscriptionServerInterface {
   constructor(
     @inject(TYPES.InviteToSharedSubscription) private inviteToSharedSubscription: InviteToSharedSubscription,
     @inject(TYPES.AcceptSharedSubscriptionInvitation)
@@ -30,75 +33,103 @@ export class SubscriptionInvitesController extends BaseHttpController {
     private cancelSharedSubscriptionInvitation: CancelSharedSubscriptionInvitation,
     @inject(TYPES.ListSharedSubscriptionInvitations)
     private listSharedSubscriptionInvitations: ListSharedSubscriptionInvitations,
-  ) {
-    super()
-  }
+  ) {}
 
-  @httpGet('/:inviteUuid/accept')
-  async acceptInvite(request: Request): Promise<results.JsonResult> {
+  async acceptInvite(params: SubscriptionInviteAcceptRequestParams): Promise<SubscriptionInviteAcceptResponse> {
     const result = await this.acceptSharedSubscriptionInvitation.execute({
-      sharedSubscriptionInvitationUuid: request.params.inviteUuid,
+      sharedSubscriptionInvitationUuid: params.inviteUuid,
     })
 
     if (result.success) {
-      return this.json(result)
+      return {
+        status: HttpStatusCode.Success,
+        data: result,
+      }
     }
 
-    return this.json(result, 400)
+    return {
+      status: HttpStatusCode.BadRequest,
+      data: result,
+    }
   }
 
-  @httpGet('/:inviteUuid/decline')
-  async declineInvite(request: Request): Promise<results.JsonResult> {
+  async declineInvite(params: SubscriptionInviteDeclineRequestParams): Promise<SubscriptionInviteDeclineResponse> {
     const result = await this.declineSharedSubscriptionInvitation.execute({
-      sharedSubscriptionInvitationUuid: request.params.inviteUuid,
+      sharedSubscriptionInvitationUuid: params.inviteUuid,
     })
 
     if (result.success) {
-      return this.json(result)
+      return {
+        status: HttpStatusCode.Success,
+        data: result,
+      }
     }
 
-    return this.json(result, 400)
+    return {
+      status: HttpStatusCode.BadRequest,
+      data: result,
+    }
   }
 
-  @httpPost('/', TYPES.ApiGatewayAuthMiddleware)
-  async inviteToSubscriptionSharing(request: Request, response: Response): Promise<results.JsonResult> {
-    if (!request.body.identifier) {
-      return this.json({ error: { message: 'Missing invitee identifier' } }, 400)
+  async invite(params: SubscriptionInviteRequestParams): Promise<SubscriptionInviteResponse> {
+    if (!params.identifier) {
+      return {
+        status: HttpStatusCode.BadRequest,
+        data: {
+          error: {
+            message: 'Missing invitee identifier',
+          },
+        },
+      }
     }
+
     const result = await this.inviteToSharedSubscription.execute({
-      inviterEmail: response.locals.user.email,
-      inviterUuid: response.locals.user.uuid,
-      inviteeIdentifier: request.body.identifier,
-      inviterRoles: response.locals.roles.map((role: Role) => role.name),
+      inviterEmail: params.inviterEmail as string,
+      inviterUuid: params.inviterUuid as string,
+      inviteeIdentifier: params.identifier,
+      inviterRoles: params.inviterRoles as RoleName[],
     })
 
     if (result.success) {
-      return this.json(result)
+      return {
+        status: HttpStatusCode.Success,
+        data: result,
+      }
     }
 
-    return this.json(result, 400)
+    return {
+      status: HttpStatusCode.BadRequest,
+      data: result,
+    }
   }
 
-  @httpDelete('/:inviteUuid', TYPES.ApiGatewayAuthMiddleware)
-  async cancelSubscriptionSharing(request: Request, response: Response): Promise<results.JsonResult> {
+  async cancelInvite(params: SubscriptionInviteCancelRequestParams): Promise<SubscriptionInviteCancelResponse> {
     const result = await this.cancelSharedSubscriptionInvitation.execute({
-      sharedSubscriptionInvitationUuid: request.params.inviteUuid,
-      inviterEmail: response.locals.user.email,
+      sharedSubscriptionInvitationUuid: params.inviteUuid,
+      inviterEmail: params.inviterEmail as string,
     })
 
     if (result.success) {
-      return this.json(result)
+      return {
+        status: HttpStatusCode.Success,
+        data: result,
+      }
     }
 
-    return this.json(result, 400)
+    return {
+      status: HttpStatusCode.BadRequest,
+      data: result,
+    }
   }
 
-  @httpGet('/', TYPES.ApiGatewayAuthMiddleware)
-  async listInvites(_request: Request, response: Response): Promise<results.JsonResult> {
+  async listInvites(params: SubscriptionInviteListRequestParams): Promise<SubscriptionInviteListResponse> {
     const result = await this.listSharedSubscriptionInvitations.execute({
-      inviterEmail: response.locals.user.email,
+      inviterEmail: params.inviterEmail as string,
     })
 
-    return this.json(result)
+    return {
+      status: HttpStatusCode.Success,
+      data: result,
+    }
   }
 }

@@ -2484,16 +2484,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@standardnotes/api", [\
-        ["npm:1.1.19", {\
-          "packageLocation": "./.yarn/cache/@standardnotes-api-npm-1.1.19-6a6d650ec9-cca168245a.zip/node_modules/@standardnotes/api/",\
+        ["npm:1.7.2", {\
+          "packageLocation": "./.yarn/cache/@standardnotes-api-npm-1.7.2-e68e7d4e63-bdfc414e6d.zip/node_modules/@standardnotes/api/",\
           "packageDependencies": [\
-            ["@standardnotes/api", "npm:1.1.19"],\
-            ["@standardnotes/auth", "npm:3.19.4"],\
+            ["@standardnotes/api", "npm:1.7.2"],\
             ["@standardnotes/common", "workspace:packages/common"],\
-            ["@standardnotes/encryption", "npm:1.12.0"],\
-            ["@standardnotes/responses", "npm:1.6.39"],\
-            ["@standardnotes/services", "npm:1.15.0"],\
-            ["@standardnotes/utils", "npm:1.6.12"]\
+            ["@standardnotes/encryption", "npm:1.15.2"],\
+            ["@standardnotes/models", "npm:1.18.2"],\
+            ["@standardnotes/responses", "npm:1.10.1"],\
+            ["@standardnotes/security", "workspace:packages/security"],\
+            ["@standardnotes/utils", "npm:1.9.0"],\
+            ["reflect-metadata", "npm:0.1.13"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -2562,7 +2563,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@newrelic/winston-enricher", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:4.0.0"],\
             ["@sentry/node", "npm:7.5.0"],\
             ["@standardnotes/analytics", "workspace:packages/analytics"],\
-            ["@standardnotes/api", "npm:1.1.19"],\
+            ["@standardnotes/api", "npm:1.7.2"],\
             ["@standardnotes/common", "workspace:packages/common"],\
             ["@standardnotes/domain-events", "workspace:packages/domain-events"],\
             ["@standardnotes/domain-events-infra", "workspace:packages/domain-events-infra"],\
@@ -2687,16 +2688,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@standardnotes/encryption", [\
-        ["npm:1.12.0", {\
-          "packageLocation": "./.yarn/cache/@standardnotes-encryption-npm-1.12.0-eb2342c675-1a28653b1e.zip/node_modules/@standardnotes/encryption/",\
+        ["npm:1.15.2", {\
+          "packageLocation": "./.yarn/cache/@standardnotes-encryption-npm-1.15.2-ef86a8281d-6e8336f1e7.zip/node_modules/@standardnotes/encryption/",\
           "packageDependencies": [\
-            ["@standardnotes/encryption", "npm:1.12.0"],\
+            ["@standardnotes/encryption", "npm:1.15.2"],\
             ["@standardnotes/common", "workspace:packages/common"],\
-            ["@standardnotes/models", "npm:1.14.0"],\
-            ["@standardnotes/responses", "npm:1.6.39"],\
-            ["@standardnotes/services", "npm:1.15.0"],\
-            ["@standardnotes/sncrypto-common", "npm:1.9.0"],\
-            ["@standardnotes/utils", "npm:1.6.12"],\
+            ["@standardnotes/models", "npm:1.18.2"],\
+            ["@standardnotes/responses", "npm:1.10.1"],\
+            ["@standardnotes/sncrypto-common", "npm:1.11.1"],\
+            ["@standardnotes/utils", "npm:1.9.0"],\
             ["reflect-metadata", "npm:0.1.13"]\
           ],\
           "linkType": "HARD"\
@@ -2739,6 +2739,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@standardnotes/features", "npm:1.50.0"],\
             ["@standardnotes/auth", "npm:3.19.4"],\
             ["@standardnotes/common", "workspace:packages/common"],\
+            ["reflect-metadata", "npm:0.1.13"]\
+          ],\
+          "linkType": "HARD"\
+        }],\
+        ["npm:1.52.0", {\
+          "packageLocation": "./.yarn/cache/@standardnotes-features-npm-1.52.0-8c1adf7881-3e6014272f.zip/node_modules/@standardnotes/features/",\
+          "packageDependencies": [\
+            ["@standardnotes/features", "npm:1.52.0"],\
+            ["@standardnotes/auth", "npm:3.19.4"],\
+            ["@standardnotes/common", "workspace:packages/common"],\
+            ["@standardnotes/security", "workspace:packages/security"],\
             ["reflect-metadata", "npm:0.1.13"]\
           ],\
           "linkType": "HARD"\
@@ -2797,14 +2808,14 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@standardnotes/models", [\
-        ["npm:1.14.0", {\
-          "packageLocation": "./.yarn/cache/@standardnotes-models-npm-1.14.0-6f064d99e7-bfb9d517b6.zip/node_modules/@standardnotes/models/",\
+        ["npm:1.18.2", {\
+          "packageLocation": "./.yarn/cache/@standardnotes-models-npm-1.18.2-56f35bb72d-88180a93e5.zip/node_modules/@standardnotes/models/",\
           "packageDependencies": [\
-            ["@standardnotes/models", "npm:1.14.0"],\
+            ["@standardnotes/models", "npm:1.18.2"],\
             ["@standardnotes/common", "workspace:packages/common"],\
-            ["@standardnotes/features", "npm:1.50.0"],\
-            ["@standardnotes/responses", "npm:1.6.39"],\
-            ["@standardnotes/utils", "npm:1.6.12"],\
+            ["@standardnotes/features", "npm:1.52.0"],\
+            ["@standardnotes/responses", "npm:1.10.1"],\
+            ["@standardnotes/utils", "npm:1.9.0"],\
             ["lodash", "npm:4.17.21"],\
             ["reflect-metadata", "npm:0.1.13"]\
           ],\
@@ -2840,6 +2851,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@standardnotes/responses", [\
+        ["npm:1.10.1", {\
+          "packageLocation": "./.yarn/cache/@standardnotes-responses-npm-1.10.1-9f82fff6c1-b84fb3f71c.zip/node_modules/@standardnotes/responses/",\
+          "packageDependencies": [\
+            ["@standardnotes/responses", "npm:1.10.1"],\
+            ["@standardnotes/common", "workspace:packages/common"],\
+            ["@standardnotes/features", "npm:1.52.0"],\
+            ["@standardnotes/security", "workspace:packages/security"],\
+            ["reflect-metadata", "npm:0.1.13"]\
+          ],\
+          "linkType": "HARD"\
+        }],\
         ["npm:1.6.39", {\
           "packageLocation": "./.yarn/cache/@standardnotes-responses-npm-1.6.39-395f4c2d65-0ea1d4d5b8.zip/node_modules/@standardnotes/responses/",\
           "packageDependencies": [\
@@ -2932,21 +2954,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "SOFT"\
         }]\
       ]],\
-      ["@standardnotes/services", [\
-        ["npm:1.15.0", {\
-          "packageLocation": "./.yarn/cache/@standardnotes-services-npm-1.15.0-acab3bc6a3-1028a5b4c1.zip/node_modules/@standardnotes/services/",\
-          "packageDependencies": [\
-            ["@standardnotes/services", "npm:1.15.0"],\
-            ["@standardnotes/auth", "npm:3.19.4"],\
-            ["@standardnotes/common", "workspace:packages/common"],\
-            ["@standardnotes/models", "npm:1.14.0"],\
-            ["@standardnotes/responses", "npm:1.6.39"],\
-            ["@standardnotes/utils", "npm:1.6.12"],\
-            ["reflect-metadata", "npm:0.1.13"]\
-          ],\
-          "linkType": "HARD"\
-        }]\
-      ]],\
       ["@standardnotes/settings", [\
         ["workspace:packages/settings", {\
           "packageLocation": "./packages/settings/",\
@@ -2960,6 +2967,14 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@standardnotes/sncrypto-common", [\
+        ["npm:1.11.1", {\
+          "packageLocation": "./.yarn/cache/@standardnotes-sncrypto-common-npm-1.11.1-58d12d6912-69d698abb7.zip/node_modules/@standardnotes/sncrypto-common/",\
+          "packageDependencies": [\
+            ["@standardnotes/sncrypto-common", "npm:1.11.1"],\
+            ["reflect-metadata", "npm:0.1.13"]\
+          ],\
+          "linkType": "HARD"\
+        }],\
         ["npm:1.9.0", {\
           "packageLocation": "./.yarn/cache/@standardnotes-sncrypto-common-npm-1.9.0-48773f745a-42252d7198.zip/node_modules/@standardnotes/sncrypto-common/",\
           "packageDependencies": [\
@@ -3069,6 +3084,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@standardnotes/common", "workspace:packages/common"],\
             ["dompurify", "npm:2.3.8"],\
             ["lodash", "npm:4.17.21"]\
+          ],\
+          "linkType": "HARD"\
+        }],\
+        ["npm:1.9.0", {\
+          "packageLocation": "./.yarn/cache/@standardnotes-utils-npm-1.9.0-da939553f6-4591aff48d.zip/node_modules/@standardnotes/utils/",\
+          "packageDependencies": [\
+            ["@standardnotes/utils", "npm:1.9.0"],\
+            ["@standardnotes/common", "workspace:packages/common"],\
+            ["dompurify", "npm:2.4.0"],\
+            ["lodash", "npm:4.17.21"],\
+            ["reflect-metadata", "npm:0.1.13"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -5842,6 +5868,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/dompurify-npm-2.3.8-c4b696b00d-dc7b32ee57.zip/node_modules/dompurify/",\
           "packageDependencies": [\
             ["dompurify", "npm:2.3.8"]\
+          ],\
+          "linkType": "HARD"\
+        }],\
+        ["npm:2.4.0", {\
+          "packageLocation": "./.yarn/cache/dompurify-npm-2.4.0-0ffecf22ef-c93ea73cf8.zip/node_modules/dompurify/",\
+          "packageDependencies": [\
+            ["dompurify", "npm:2.4.0"]\
           ],\
           "linkType": "HARD"\
         }]\

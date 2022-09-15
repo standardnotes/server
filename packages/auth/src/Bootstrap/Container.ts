@@ -200,6 +200,7 @@ import { MuteMarketingEmails } from '../Domain/UseCase/MuteMarketingEmails/MuteM
 import { PaymentFailedEventHandler } from '../Domain/Handler/PaymentFailedEventHandler'
 import { PaymentSuccessEventHandler } from '../Domain/Handler/PaymentSuccessEventHandler'
 import { RefundProcessedEventHandler } from '../Domain/Handler/RefundProcessedEventHandler'
+import { SubscriptionInvitesController } from '../Controller/SubscriptionInvitesController'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -262,6 +263,7 @@ export class ContainerConfigLoader {
 
     // Controller
     container.bind<AuthController>(TYPES.AuthController).to(AuthController)
+    container.bind<SubscriptionInvitesController>(TYPES.SubscriptionInvitesController).to(SubscriptionInvitesController)
 
     // Repositories
     container.bind<SessionRepositoryInterface>(TYPES.SessionRepository).to(MySQLSessionRepository)

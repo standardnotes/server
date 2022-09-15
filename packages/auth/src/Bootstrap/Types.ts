@@ -5,6 +5,7 @@ const TYPES = {
   SQS: Symbol.for('SQS'),
   // Controller
   AuthController: Symbol.for('AuthController'),
+  SubscriptionInvitesController: Symbol.for('SubscriptionInvitesController'),
   // Repositories
   UserRepository: Symbol.for('UserRepository'),
   SessionRepository: Symbol.for('SessionRepository'),

@@ -17,10 +17,10 @@ import '../src/Controller/SubscriptionTokensController'
 import '../src/Controller/OfflineController'
 import '../src/Controller/ValetTokenController'
 import '../src/Controller/ListedController'
-import '../src/Controller/SubscriptionInvitesController'
 import '../src/Controller/SubscriptionSettingsController'
 
 import '../src/Infra/InversifyExpressUtils/InversifyExpressAuthController'
+import '../src/Infra/InversifyExpressUtils/InversifyExpressSubscriptionInvitesController'
 
 import * as cors from 'cors'
 import { urlencoded, json, Request, Response, NextFunction, RequestHandler, ErrorRequestHandler } from 'express'
