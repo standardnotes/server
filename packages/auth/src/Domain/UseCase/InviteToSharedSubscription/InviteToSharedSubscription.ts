@@ -53,6 +53,16 @@ export class InviteToSharedSubscription implements UseCaseInterface {
       }
     }
 
+    const existingInvitation = await this.sharedSubscriptionInvitationRepository.findOneByInviteeAndInviterEmail(
+      dto.inviteeIdentifier,
+      dto.inviterEmail,
+    )
+    if (existingInvitation !== null) {
+      return {
+        success: false,
+      }
+    }
+
     const sharedSubscriptionInvition = new SharedSubscriptionInvitation()
     sharedSubscriptionInvition.inviterIdentifier = dto.inviterEmail
     sharedSubscriptionInvition.inviterIdentifierType = InviterIdentifierType.Email

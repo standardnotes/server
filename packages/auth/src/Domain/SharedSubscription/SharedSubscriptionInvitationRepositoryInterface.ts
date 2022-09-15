@@ -7,5 +7,9 @@ export interface SharedSubscriptionInvitationRepositoryInterface {
   findOneByUuidAndStatus(uuid: Uuid, status: InvitationStatus): Promise<SharedSubscriptionInvitation | null>
   findOneByUuid(uuid: Uuid): Promise<SharedSubscriptionInvitation | null>
   findByInviterEmail(inviterEmail: string): Promise<SharedSubscriptionInvitation[]>
+  findOneByInviteeAndInviterEmail(
+    inviteeEmail: string,
+    inviterEmail: string,
+  ): Promise<SharedSubscriptionInvitation | null>
   countByInviterEmailAndStatus(inviterEmail: Uuid, statuses: InvitationStatus[]): Promise<number>
 }

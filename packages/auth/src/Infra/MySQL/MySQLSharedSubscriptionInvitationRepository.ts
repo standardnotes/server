@@ -13,6 +13,19 @@ export class MySQLSharedSubscriptionInvitationRepository implements SharedSubscr
     private ormRepository: Repository<SharedSubscriptionInvitation>,
   ) {}
 
+  async findOneByInviteeAndInviterEmail(
+    inviteeEmail: string,
+    inviterEmail: string,
+  ): Promise<SharedSubscriptionInvitation | null> {
+    return this.ormRepository
+      .createQueryBuilder('invitation')
+      .where('invitation.inviter_identifier = :inviterEmail AND invitation.invitee_identifier = :inviteeEmail', {
+        inviterEmail,
+        inviteeEmail,
+      })
+      .getOne()
+  }
+
   async save(sharedSubscriptionInvitation: SharedSubscriptionInvitation): Promise<SharedSubscriptionInvitation> {
     return this.ormRepository.save(sharedSubscriptionInvitation)
   }

@@ -70,6 +70,23 @@ describe('MySQLSharedSubscriptionInvitationRepository', () => {
     expect(result).toEqual(invitation)
   })
 
+  it('should find one invitation by invitee and inviter email', async () => {
+    queryBuilder.where = jest.fn().mockReturnThis()
+    queryBuilder.getOne = jest.fn().mockReturnValue(invitation)
+
+    const result = await createRepository().findOneByInviteeAndInviterEmail('invitee@test.te', 'inviter@test.te')
+
+    expect(queryBuilder.where).toHaveBeenCalledWith(
+      'invitation.inviter_identifier = :inviterEmail AND invitation.invitee_identifier = :inviteeEmail',
+      {
+        inviterEmail: 'inviter@test.te',
+        inviteeEmail: 'invitee@test.te',
+      },
+    )
+
+    expect(result).toEqual(invitation)
+  })
+
   it('should find one invitation by uuid', async () => {
     queryBuilder.where = jest.fn().mockReturnThis()
     queryBuilder.getOne = jest.fn().mockReturnValue(invitation)

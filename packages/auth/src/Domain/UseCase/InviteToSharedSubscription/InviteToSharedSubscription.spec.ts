@@ -10,6 +10,7 @@ import { UserSubscriptionRepositoryInterface } from '../../Subscription/UserSubs
 import { UserSubscription } from '../../Subscription/UserSubscription'
 import { RoleName } from '@standardnotes/common'
 import { UserSubscriptionType } from '../../Subscription/UserSubscriptionType'
+import { SharedSubscriptionInvitation } from '../../SharedSubscription/SharedSubscriptionInvitation'
 
 describe('InviteToSharedSubscription', () => {
   let userSubscriptionRepository: UserSubscriptionRepositoryInterface
@@ -40,6 +41,7 @@ describe('InviteToSharedSubscription', () => {
     sharedSubscriptionInvitationRepository = {} as jest.Mocked<SharedSubscriptionInvitationRepositoryInterface>
     sharedSubscriptionInvitationRepository.save = jest.fn().mockImplementation((same) => ({ ...same, uuid: '1-2-3' }))
     sharedSubscriptionInvitationRepository.countByInviterEmailAndStatus = jest.fn().mockReturnValue(2)
+    sharedSubscriptionInvitationRepository.findOneByInviteeAndInviterEmail = jest.fn().mockReturnValue(null)
 
     domainEventPublisher = {} as jest.Mocked<DomainEventPublisherInterface>
     domainEventPublisher.publish = jest.fn()
@@ -179,6 +181,28 @@ describe('InviteToSharedSubscription', () => {
 
     expect(domainEventFactory.createSharedSubscriptionInvitationCreatedEvent).not.toHaveBeenCalled()
 
+    expect(domainEventPublisher.publish).not.toHaveBeenCalled()
+  })
+
+  it('should not create an invitation if it already exists', async () => {
+    sharedSubscriptionInvitationRepository.findOneByInviteeAndInviterEmail = jest
+      .fn()
+      .mockReturnValue({} as jest.Mocked<SharedSubscriptionInvitation>)
+
+    expect(
+      await createUseCase().execute({
+        inviteeIdentifier: 'invitee@test.te',
+        inviterUuid: '1-2-3',
+        inviterEmail: 'inviter@test.te',
+        inviterRoles: [RoleName.ProUser],
+      }),
+    ).toEqual({
+      success: false,
+    })
+
+    expect(sharedSubscriptionInvitationRepository.save).not.toHaveBeenCalled()
+
+    expect(domainEventFactory.createSharedSubscriptionInvitationCreatedEvent).not.toHaveBeenCalled()
     expect(domainEventPublisher.publish).not.toHaveBeenCalled()
   })
 })
