@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.28.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.27.0...@standardnotes/auth-server@1.28.0) (2022-09-15)
+
+### Features
+
+* **auth:** add remaining subscription time stats ([a59ba08](https://github.com/standardnotes/server/commit/a59ba083397c75960af0e8a102b617bf5baa287f))
+
 # [1.27.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.26.1...@standardnotes/auth-server@1.27.0) (2022-09-15)
 
 ### Features
