@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.28.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.28.0...@standardnotes/auth-server@1.28.1) (2022-09-15)
+
+### Bug Fixes
+
+* **auth:** missing injectable annotation ([d851524](https://github.com/standardnotes/server/commit/d85152429ca379d3d0314a9864cc46ebee541958))
+
 # [1.28.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.27.0...@standardnotes/auth-server@1.28.0) (2022-09-15)
 
 ### Features
