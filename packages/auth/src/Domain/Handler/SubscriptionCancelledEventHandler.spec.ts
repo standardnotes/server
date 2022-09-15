@@ -13,7 +13,6 @@ import { GetUserAnalyticsId } from '../UseCase/GetUserAnalyticsId/GetUserAnalyti
 import { UserRepositoryInterface } from '../User/UserRepositoryInterface'
 import { User } from '../User/User'
 import { UserSubscription } from '../Subscription/UserSubscription'
-import { Logger } from 'winston'
 
 describe('SubscriptionCancelledEventHandler', () => {
   let userSubscriptionRepository: UserSubscriptionRepositoryInterface
@@ -24,7 +23,6 @@ describe('SubscriptionCancelledEventHandler', () => {
   let analyticsStore: AnalyticsStoreInterface
   let statisticsStore: StatisticsStoreInterface
   let timestamp: number
-  let logger: Logger
 
   const createHandler = () =>
     new SubscriptionCancelledEventHandler(
@@ -34,7 +32,6 @@ describe('SubscriptionCancelledEventHandler', () => {
       getUserAnalyticsId,
       analyticsStore,
       statisticsStore,
-      logger,
     )
 
   beforeEach(() => {
@@ -75,9 +72,6 @@ describe('SubscriptionCancelledEventHandler', () => {
       offline: false,
       replaced: false,
     }
-
-    logger = {} as jest.Mocked<Logger>
-    logger.info = jest.fn()
   })
 
   it('should update subscription cancelled', async () => {
