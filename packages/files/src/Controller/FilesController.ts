@@ -9,6 +9,7 @@ import { CreateUploadSession } from '../Domain/UseCase/CreateUploadSession/Creat
 import { FinishUploadSession } from '../Domain/UseCase/FinishUploadSession/FinishUploadSession'
 import { GetFileMetadata } from '../Domain/UseCase/GetFileMetadata/GetFileMetadata'
 import { RemoveFile } from '../Domain/UseCase/RemoveFile/RemoveFile'
+import { ValetTokenOperation } from '@standardnotes/security'
 
 @controller('/v1/files', TYPES.ValetTokenAuthMiddleware)
 export class FilesController extends BaseHttpController {
@@ -29,6 +30,10 @@ export class FilesController extends BaseHttpController {
     _request: Request,
     response: Response,
   ): Promise<results.BadRequestErrorMessageResult | results.JsonResult> {
+    if (response.locals.permittedOperation !== ValetTokenOperation.Write) {
+      return this.badRequest('Not permitted for this operation')
+    }
+
     const result = await this.createUploadSession.execute({
       userUuid: response.locals.userUuid,
       resourceRemoteIdentifier: response.locals.permittedResources[0].remoteIdentifier,
@@ -46,6 +51,10 @@ export class FilesController extends BaseHttpController {
     request: Request,
     response: Response,
   ): Promise<results.BadRequestErrorMessageResult | results.JsonResult> {
+    if (response.locals.permittedOperation !== ValetTokenOperation.Write) {
+      return this.badRequest('Not permitted for this operation')
+    }
+
     const chunkId = +(request.headers['x-chunk-id'] as string)
     if (!chunkId) {
       return this.badRequest('Missing x-chunk-id header in request.')
@@ -70,6 +79,10 @@ export class FilesController extends BaseHttpController {
     _request: Request,
     response: Response,
   ): Promise<results.BadRequestErrorMessageResult | results.JsonResult> {
+    if (response.locals.permittedOperation !== ValetTokenOperation.Write) {
+      return this.badRequest('Not permitted for this operation')
+    }
+
     const result = await this.finishUploadSession.execute({
       userUuid: response.locals.userUuid,
       resourceRemoteIdentifier: response.locals.permittedResources[0].remoteIdentifier,
@@ -89,6 +102,10 @@ export class FilesController extends BaseHttpController {
     _request: Request,
     response: Response,
   ): Promise<results.BadRequestErrorMessageResult | results.JsonResult> {
+    if (response.locals.permittedOperation !== ValetTokenOperation.Delete) {
+      return this.badRequest('Not permitted for this operation')
+    }
+
     const result = await this.removeFile.execute({
       userUuid: response.locals.userUuid,
       resourceRemoteIdentifier: response.locals.permittedResources[0].remoteIdentifier,
@@ -107,6 +124,10 @@ export class FilesController extends BaseHttpController {
     request: Request,
     response: Response,
   ): Promise<results.BadRequestErrorMessageResult | (() => Writable)> {
+    if (response.locals.permittedOperation !== ValetTokenOperation.Read) {
+      return this.badRequest('Not permitted for this operation')
+    }
+
     const range = request.headers['range']
     if (!range) {
       return this.badRequest('File download requires range header to be set.')

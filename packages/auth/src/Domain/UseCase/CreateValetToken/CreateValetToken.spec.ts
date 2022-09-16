@@ -1,6 +1,6 @@
 import 'reflect-metadata'
 
-import { TokenEncoderInterface, ValetTokenData } from '@standardnotes/security'
+import { TokenEncoderInterface, ValetTokenData, ValetTokenOperation } from '@standardnotes/security'
 import { CreateValetToken } from './CreateValetToken'
 import { TimerInterface } from '@standardnotes/time'
 import { UserSubscription } from '../../Subscription/UserSubscription'
@@ -70,7 +70,7 @@ describe('CreateValetToken', () => {
 
   it('should create a read valet token', async () => {
     const response = await createUseCase().execute({
-      operation: 'read',
+      operation: ValetTokenOperation.Read,
       userUuid: '1-2-3',
       resources: [
         {
@@ -92,7 +92,7 @@ describe('CreateValetToken', () => {
       .mockReturnValue({ regularSubscription: null, sharedSubscription: null })
 
     const response = await createUseCase().execute({
-      operation: 'read',
+      operation: ValetTokenOperation.Read,
       userUuid: '1-2-3',
       resources: [
         {
@@ -117,7 +117,7 @@ describe('CreateValetToken', () => {
     timer.getTimestampInMicroseconds = jest.fn().mockReturnValue(150)
 
     const response = await createUseCase().execute({
-      operation: 'read',
+      operation: ValetTokenOperation.Read,
       userUuid: '1-2-3',
       resources: [
         {
@@ -135,7 +135,7 @@ describe('CreateValetToken', () => {
 
   it('should not create a write valet token if unencrypted file size has not been provided for a resource', async () => {
     const response = await createUseCase().execute({
-      operation: 'write',
+      operation: ValetTokenOperation.Write,
       resources: [
         {
           remoteIdentifier: '2-3-4',
@@ -152,7 +152,7 @@ describe('CreateValetToken', () => {
 
   it('should create a write valet token', async () => {
     const response = await createUseCase().execute({
-      operation: 'write',
+      operation: ValetTokenOperation.Write,
       resources: [
         {
           remoteIdentifier: '2-3-4',
@@ -192,7 +192,7 @@ describe('CreateValetToken', () => {
       .mockReturnValue({ regularSubscription, sharedSubscription })
 
     const response = await createUseCase().execute({
-      operation: 'write',
+      operation: ValetTokenOperation.Write,
       resources: [
         {
           remoteIdentifier: '2-3-4',
@@ -232,7 +232,7 @@ describe('CreateValetToken', () => {
       .mockReturnValue({ regularSubscription: null, sharedSubscription })
 
     const response = await createUseCase().execute({
-      operation: 'write',
+      operation: ValetTokenOperation.Write,
       resources: [
         {
           remoteIdentifier: '2-3-4',
@@ -252,7 +252,7 @@ describe('CreateValetToken', () => {
     subscriptionSettingService.findSubscriptionSettingWithDecryptedValue = jest.fn().mockReturnValue(null)
 
     const response = await createUseCase().execute({
-      operation: 'write',
+      operation: ValetTokenOperation.Write,
       userUuid: '1-2-3',
       resources: [
         {

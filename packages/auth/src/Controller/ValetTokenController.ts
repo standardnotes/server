@@ -12,6 +12,7 @@ import { CreateValetTokenPayload } from '@standardnotes/responses'
 import TYPES from '../Bootstrap/Types'
 import { CreateValetToken } from '../Domain/UseCase/CreateValetToken/CreateValetToken'
 import { ErrorTag } from '@standardnotes/common'
+import { ValetTokenOperation } from '@standardnotes/security'
 
 @controller('/valet-tokens', TYPES.ApiGatewayAuthMiddleware)
 export class ValetTokenController extends BaseHttpController {
@@ -37,7 +38,7 @@ export class ValetTokenController extends BaseHttpController {
 
     const createValetKeyResponse = await this.createValetKey.execute({
       userUuid: response.locals.user.uuid,
-      operation: payload.operation,
+      operation: payload.operation as ValetTokenOperation,
       resources: payload.resources,
     })
 

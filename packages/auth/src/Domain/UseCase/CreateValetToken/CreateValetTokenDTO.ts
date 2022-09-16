@@ -1,5 +1,10 @@
-import { CreateValetTokenPayload } from '@standardnotes/responses'
+import { ValetTokenOperation } from '@standardnotes/security'
 
-export type CreateValetTokenDTO = CreateValetTokenPayload & {
+export type CreateValetTokenDTO = {
+  operation: ValetTokenOperation
+  resources: Array<{
+    remoteIdentifier: string
+    unencryptedFileSize?: number
+  }>
   userUuid: string
 }

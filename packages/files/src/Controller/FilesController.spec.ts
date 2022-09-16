@@ -11,6 +11,8 @@ import { FilesController } from './FilesController'
 import { GetFileMetadata } from '../Domain/UseCase/GetFileMetadata/GetFileMetadata'
 import { results } from 'inversify-express-utils'
 import { RemoveFile } from '../Domain/UseCase/RemoveFile/RemoveFile'
+import { ValetTokenOperation } from '@standardnotes/security'
+import { BadRequestErrorMessageResult } from 'inversify-express-utils/lib/results'
 
 describe('FilesController', () => {
   let uploadFileChunk: UploadFileChunk
@@ -75,6 +77,8 @@ describe('FilesController', () => {
   })
 
   it('should return a writable stream upon file download', async () => {
+    response.locals.permittedOperation = ValetTokenOperation.Read
+
     request.headers['range'] = 'bytes=0-'
 
     const result = (await createController().download(request, response)) as () => Writable
@@ -89,7 +93,19 @@ describe('FilesController', () => {
     expect(result()).toBeInstanceOf(Writable)
   })
 
+  it('should not allow download on invalid operation in the valet token', async () => {
+    response.locals.permittedOperation = ValetTokenOperation.Write
+
+    request.headers['range'] = 'bytes=0-'
+
+    const result = await createController().download(request, response)
+
+    expect(result).toBeInstanceOf(BadRequestErrorMessageResult)
+  })
+
   it('should return proper byte range on consecutive calls', async () => {
+    response.locals.permittedOperation = ValetTokenOperation.Read
+
     request.headers['range'] = 'bytes=0-'
     ;(await createController().download(request, response)) as () => Writable
 
@@ -112,6 +128,8 @@ describe('FilesController', () => {
   })
 
   it('should return a writable stream with custom chunk size', async () => {
+    response.locals.permittedOperation = ValetTokenOperation.Read
+
     request.headers['x-chunk-size'] = '50000'
     request.headers['range'] = 'bytes=0-'
 
@@ -128,6 +146,8 @@ describe('FilesController', () => {
   })
 
   it('should default to maximum chunk size if custom chunk size is too large', async () => {
+    response.locals.permittedOperation = ValetTokenOperation.Read
+
     request.headers['x-chunk-size'] = '200000'
     request.headers['range'] = 'bytes=0-'
 
@@ -144,12 +164,16 @@ describe('FilesController', () => {
   })
 
   it('should not return a writable stream if bytes range is not provided', async () => {
+    response.locals.permittedOperation = ValetTokenOperation.Read
+
     const httpResponse = await createController().download(request, response)
 
     expect(httpResponse).toBeInstanceOf(results.BadRequestErrorMessageResult)
   })
 
   it('should not return a writable stream if getting file metadata fails', async () => {
+    response.locals.permittedOperation = ValetTokenOperation.Read
+
     request.headers['range'] = 'bytes=0-'
 
     getFileMetadata.execute = jest.fn().mockReturnValue({ success: false, message: 'error' })
@@ -160,6 +184,8 @@ describe('FilesController', () => {
   })
 
   it('should not return a writable stream if creating download stream fails', async () => {
+    response.locals.permittedOperation = ValetTokenOperation.Read
+
     request.headers['range'] = 'bytes=0-'
 
     streamDownloadFile.execute = jest.fn().mockReturnValue({ success: false, message: 'error' })
@@ -170,6 +196,8 @@ describe('FilesController', () => {
   })
 
   it('should create an upload session', async () => {
+    response.locals.permittedOperation = ValetTokenOperation.Write
+
     await createController().startUpload(request, response)
 
     expect(createUploadSession.execute).toHaveBeenCalledWith({
@@ -178,7 +206,17 @@ describe('FilesController', () => {
     })
   })
 
+  it('should not create an upload session on invalid operation in the valet token', async () => {
+    response.locals.permittedOperation = ValetTokenOperation.Read
+
+    const result = await createController().startUpload(request, response)
+
+    expect(result).toBeInstanceOf(BadRequestErrorMessageResult)
+  })
+
   it('should return bad request if upload session could not be created', async () => {
+    response.locals.permittedOperation = ValetTokenOperation.Write
+
     createUploadSession.execute = jest.fn().mockReturnValue({ success: false })
 
     const httpResponse = await createController().startUpload(request, response)
@@ -188,6 +226,8 @@ describe('FilesController', () => {
   })
 
   it('should finish an upload session', async () => {
+    response.locals.permittedOperation = ValetTokenOperation.Write
+
     await createController().finishUpload(request, response)
 
     expect(finishUploadSession.execute).toHaveBeenCalledWith({
@@ -196,7 +236,17 @@ describe('FilesController', () => {
     })
   })
 
+  it('should not finish an upload session on invalid operation in the valet token', async () => {
+    response.locals.permittedOperation = ValetTokenOperation.Read
+
+    const result = await createController().finishUpload(request, response)
+
+    expect(result).toBeInstanceOf(BadRequestErrorMessageResult)
+  })
+
   it('should return bad request if upload session could not be finished', async () => {
+    response.locals.permittedOperation = ValetTokenOperation.Write
+
     finishUploadSession.execute = jest.fn().mockReturnValue({ success: false })
 
     const httpResponse = await createController().finishUpload(request, response)
@@ -206,6 +256,8 @@ describe('FilesController', () => {
   })
 
   it('should remove a file', async () => {
+    response.locals.permittedOperation = ValetTokenOperation.Delete
+
     await createController().remove(request, response)
 
     expect(removeFile.execute).toHaveBeenCalledWith({
@@ -215,6 +267,8 @@ describe('FilesController', () => {
   })
 
   it('should return bad request if file removal could not be completed', async () => {
+    response.locals.permittedOperation = ValetTokenOperation.Delete
+
     removeFile.execute = jest.fn().mockReturnValue({ success: false })
 
     const httpResponse = await createController().remove(request, response)
@@ -223,7 +277,18 @@ describe('FilesController', () => {
     expect(result.statusCode).toEqual(400)
   })
 
+  it('should return bad request if file removal is not permitted on valet token', async () => {
+    response.locals.permittedOperation = ValetTokenOperation.Read
+
+    const httpResponse = await createController().remove(request, response)
+    const result = await httpResponse.executeAsync()
+
+    expect(result.statusCode).toEqual(400)
+  })
+
   it('should upload a chunk to an upload session', async () => {
+    response.locals.permittedOperation = ValetTokenOperation.Write
+
     request.headers['x-chunk-id'] = '2'
     request.body = Buffer.from([123])
 
@@ -238,6 +303,8 @@ describe('FilesController', () => {
   })
 
   it('should return bad request if chunk could not be uploaded', async () => {
+    response.locals.permittedOperation = ValetTokenOperation.Write
+
     request.headers['x-chunk-id'] = '2'
     request.body = Buffer.from([123])
     uploadFileChunk.execute = jest.fn().mockReturnValue({ success: false })
@@ -248,7 +315,18 @@ describe('FilesController', () => {
     expect(result.statusCode).toEqual(400)
   })
 
+  it('should return bad request if valet token is not permitted', async () => {
+    response.locals.permittedOperation = ValetTokenOperation.Read
+
+    const httpResponse = await createController().uploadChunk(request, response)
+    const result = await httpResponse.executeAsync()
+
+    expect(result.statusCode).toEqual(400)
+  })
+
   it('should return bad request if chunk id is missing', async () => {
+    response.locals.permittedOperation = ValetTokenOperation.Write
+
     request.body = Buffer.from([123])
 
     const httpResponse = await createController().uploadChunk(request, response)
