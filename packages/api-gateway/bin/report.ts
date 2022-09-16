@@ -94,7 +94,7 @@ const requestReport = async (
     StatisticsMeasure.RegistrationLength,
     StatisticsMeasure.SubscriptionLength,
     StatisticsMeasure.RegistrationToSubscriptionTime,
-    StatisticsMeasure.SubscriptionCancelToExpireTime,
+    StatisticsMeasure.RemainingSubscriptionTimePercentage,
     StatisticsMeasure.NotesCountFreeUsers,
     StatisticsMeasure.NotesCountPaidUsers,
     StatisticsMeasure.FilesCount,

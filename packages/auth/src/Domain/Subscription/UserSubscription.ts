@@ -35,6 +35,13 @@ export class UserSubscription {
   declare updatedAt: number
 
   @Column({
+    name: 'renewed_at',
+    type: 'bigint',
+    nullable: true,
+  })
+  declare renewedAt: number | null
+
+  @Column({
     type: 'tinyint',
     width: 1,
     nullable: false,

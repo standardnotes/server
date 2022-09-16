@@ -88,13 +88,14 @@ export class MySQLUserSubscriptionRepository implements UserSubscriptionReposito
     return null
   }
 
-  async updateEndsAt(subscriptionId: number, endsAt: number, updatedAt: number): Promise<void> {
+  async updateEndsAt(subscriptionId: number, endsAt: number, timestamp: number): Promise<void> {
     await this.ormRepository
       .createQueryBuilder()
       .update()
       .set({
         endsAt,
-        updatedAt,
+        updatedAt: timestamp,
+        renewedAt: timestamp,
       })
       .where('subscription_id = :subscriptionId', {
         subscriptionId,

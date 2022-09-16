@@ -27,14 +27,6 @@ export class SubscriptionCancelledEventHandler implements DomainEventHandlerInte
     @inject(TYPES.StatisticsStore) private statisticsStore: StatisticsStoreInterface,
   ) {}
   async handle(event: SubscriptionCancelledEvent): Promise<void> {
-    if (event.payload.offline) {
-      await this.updateOfflineSubscriptionCancelled(event.payload.subscriptionId, event.payload.timestamp)
-
-      return
-    }
-
-    await this.updateSubscriptionCancelled(event.payload.subscriptionId, event.payload.timestamp)
-
     const user = await this.userRepository.findOneByEmail(event.payload.userEmail)
     if (user !== null) {
       const { analyticsId } = await this.getUserAnalyticsId.execute({ userUuid: user.uuid })
@@ -54,14 +46,27 @@ export class SubscriptionCancelledEventHandler implements DomainEventHandlerInte
           Period.ThisMonth,
         ])
 
+        const lastPurchaseTime = lastSubscription.renewedAt ?? lastSubscription.updatedAt
         const remainingSubscriptionTime = lastSubscription.endsAt - event.payload.timestamp
+        const totalSubscriptionTime = lastSubscription.endsAt - lastPurchaseTime
+
+        const remainingSubscriptionPercentage = Math.floor((remainingSubscriptionTime / totalSubscriptionTime) * 100)
+
         await this.statisticsStore.incrementMeasure(
-          StatisticsMeasure.SubscriptionCancelToExpireTime,
-          remainingSubscriptionTime,
+          StatisticsMeasure.RemainingSubscriptionTimePercentage,
+          remainingSubscriptionPercentage,
           [Period.Today, Period.ThisWeek, Period.ThisMonth],
         )
       }
     }
+
+    if (event.payload.offline) {
+      await this.updateOfflineSubscriptionCancelled(event.payload.subscriptionId, event.payload.timestamp)
+
+      return
+    }
+
+    await this.updateSubscriptionCancelled(event.payload.subscriptionId, event.payload.timestamp)
   }
 
   private async updateSubscriptionCancelled(subscriptionId: number, timestamp: number): Promise<void> {
