@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.28.4](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.28.3...@standardnotes/auth-server@1.28.4) (2022-09-16)
+
+### Bug Fixes
+
+* **auth:** feature service spec ([c207c3f](https://github.com/standardnotes/server/commit/c207c3fc8442eec9b8c3150f09ecccfdd6a5ed50))
+
 ## [1.28.3](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.28.2...@standardnotes/auth-server@1.28.3) (2022-09-16)
 
 ### Bug Fixes
