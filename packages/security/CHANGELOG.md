@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.3.2](https://github.com/standardnotes/server/compare/@standardnotes/security@1.3.1...@standardnotes/security@1.3.2) (2022-09-16)
+
+### Bug Fixes
+
+* **files:** add verifying permitted operation on valet token ([377d32c](https://github.com/standardnotes/server/commit/377d32c4498305f0f59ff59e7357f0d2f10ce3a2))
+
 ## [1.3.1](https://github.com/standardnotes/server/compare/@standardnotes/security@1.3.0...@standardnotes/security@1.3.1) (2022-09-09)
 
 **Note:** Version bump only for package @standardnotes/security

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.28.2](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.28.1...@standardnotes/auth-server@1.28.2) (2022-09-16)
+
+### Bug Fixes
+
+* **files:** add verifying permitted operation on valet token ([377d32c](https://github.com/standardnotes/server/commit/377d32c4498305f0f59ff59e7357f0d2f10ce3a2))
+
 ## [1.28.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.28.0...@standardnotes/auth-server@1.28.1) (2022-09-15)
 
 ### Bug Fixes

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.52](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.5.51...@standardnotes/files-server@1.5.52) (2022-09-16)
+
+### Bug Fixes
+
+* **files:** add verifying permitted operation on valet token ([377d32c](https://github.com/standardnotes/files/commit/377d32c4498305f0f59ff59e7357f0d2f10ce3a2))
+
 ## [1.5.51](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.5.50...@standardnotes/files-server@1.5.51) (2022-09-09)
 
 **Note:** Version bump only for package @standardnotes/files-server
