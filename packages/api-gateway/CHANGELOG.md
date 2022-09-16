@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.19.5](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.19.4...@standardnotes/api-gateway@1.19.5) (2022-09-16)
+
+### Bug Fixes
+
+* **auth:** change remaining subscription time stats to percentage ([5eb957c](https://github.com/standardnotes/api-gateway/commit/5eb957c82a8cc5fdcb6815e2cd30e49cd2b1e8ac))
+
 ## [1.19.4](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.19.3...@standardnotes/api-gateway@1.19.4) (2022-09-16)
 
 **Note:** Version bump only for package @standardnotes/api-gateway

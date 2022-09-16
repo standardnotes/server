@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.29.1](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.29.0...@standardnotes/analytics@1.29.1) (2022-09-16)
+
+### Bug Fixes
+
+* **auth:** change remaining subscription time stats to percentage ([5eb957c](https://github.com/standardnotes/server/commit/5eb957c82a8cc5fdcb6815e2cd30e49cd2b1e8ac))
+
 # [1.29.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.28.0...@standardnotes/analytics@1.29.0) (2022-09-15)
 
 ### Features
