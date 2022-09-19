@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.29.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.29.0...@standardnotes/auth-server@1.29.1) (2022-09-19)
+
+### Bug Fixes
+
+* **auth:** uuid validator binding ([db6f966](https://github.com/standardnotes/server/commit/db6f966045d51e59555740c9e009bf66b629673c))
+
 # [1.29.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.28.4...@standardnotes/auth-server@1.29.0) (2022-09-19)
 
 ### Features

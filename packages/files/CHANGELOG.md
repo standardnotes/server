@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.6.1](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.6.0...@standardnotes/files-server@1.6.1) (2022-09-19)
+
+### Bug Fixes
+
+* **files:** uuid validator binding ([a628bdc](https://github.com/standardnotes/files/commit/a628bdc44e97935b8a79460b74c30c0d29ef83bf))
+
 # [1.6.0](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.5.52...@standardnotes/files-server@1.6.0) (2022-09-19)
 
 ### Features
