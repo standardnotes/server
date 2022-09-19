@@ -108,7 +108,7 @@ export class ContainerConfigLoader {
         .toConstantValue(new FSFileUploader(container.get(TYPES.FILE_UPLOAD_PATH), container.get(TYPES.Logger)))
       container.bind<FileRemoverInterface>(TYPES.FileRemover).to(FSFileRemover)
     }
-    container.bind<ValidatorInterface<Uuid>>(TYPES.UuidValidator).to(UuidValidator)
+    container.bind<ValidatorInterface<Uuid>>(TYPES.UuidValidator).toConstantValue(new UuidValidator())
 
     if (env.get('SNS_AWS_REGION', true)) {
       container.bind<AWS.SNS>(TYPES.SNS).toConstantValue(
