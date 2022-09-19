@@ -566,7 +566,7 @@ export class ContainerConfigLoader {
     container
       .bind<StatisticsStoreInterface>(TYPES.StatisticsStore)
       .toConstantValue(new RedisStatisticsStore(periodKeyGenerator, container.get(TYPES.Redis)))
-    container.bind<ValidatorInterface<Uuid>>(TYPES.UuidValidator).to(UuidValidator)
+    container.bind<ValidatorInterface<Uuid>>(TYPES.UuidValidator).toConstantValue(new UuidValidator())
 
     if (env.get('SNS_TOPIC_ARN', true)) {
       container
