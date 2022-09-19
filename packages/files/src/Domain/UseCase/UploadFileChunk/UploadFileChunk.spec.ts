@@ -33,6 +33,7 @@ describe('UploadFileChunk', () => {
       chunkId: 2,
       data: new Uint8Array([123]),
       resourceRemoteIdentifier: '2-3-4',
+      resourceUnencryptedFileSize: 123,
       userUuid: '1-2-3',
     })
 
@@ -50,6 +51,7 @@ describe('UploadFileChunk', () => {
         chunkId: 2,
         data: new Uint8Array([123]),
         resourceRemoteIdentifier: '2-3-4',
+        resourceUnencryptedFileSize: 123,
         userUuid: '1-2-3',
       }),
     ).toEqual({
@@ -66,6 +68,7 @@ describe('UploadFileChunk', () => {
       chunkId: 2,
       data: new Uint8Array([123]),
       resourceRemoteIdentifier: '2-3-4',
+      resourceUnencryptedFileSize: 123,
       userUuid: '1-2-3',
     })
 
@@ -74,6 +77,7 @@ describe('UploadFileChunk', () => {
       data: new Uint8Array([123]),
       filePath: '1-2-3/2-3-4',
       uploadId: '123',
+      unencryptedFileSize: 123,
     })
     expect(uploadRepository.storeUploadChunkResult).toHaveBeenCalledWith('123', {
       tag: 'ETag123',
