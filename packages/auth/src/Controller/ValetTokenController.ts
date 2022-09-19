@@ -11,12 +11,15 @@ import { CreateValetTokenPayload } from '@standardnotes/responses'
 
 import TYPES from '../Bootstrap/Types'
 import { CreateValetToken } from '../Domain/UseCase/CreateValetToken/CreateValetToken'
-import { ErrorTag } from '@standardnotes/common'
+import { ErrorTag, Uuid, ValidatorInterface } from '@standardnotes/common'
 import { ValetTokenOperation } from '@standardnotes/security'
 
 @controller('/valet-tokens', TYPES.ApiGatewayAuthMiddleware)
 export class ValetTokenController extends BaseHttpController {
-  constructor(@inject(TYPES.CreateValetToken) private createValetKey: CreateValetToken) {
+  constructor(
+    @inject(TYPES.CreateValetToken) private createValetKey: CreateValetToken,
+    @inject(TYPES.UuidValidator) private uuidValitor: ValidatorInterface<Uuid>,
+  ) {
     super()
   }
 
@@ -34,6 +37,20 @@ export class ValetTokenController extends BaseHttpController {
         },
         401,
       )
+    }
+
+    for (const resource of payload.resources) {
+      if (!this.uuidValitor.validate(resource.remoteIdentifier)) {
+        return this.json(
+          {
+            error: {
+              tag: ErrorTag.ParametersInvalid,
+              message: 'Invalid remote resource identifier.',
+            },
+          },
+          400,
+        )
+      }
     }
 
     const createValetKeyResponse = await this.createValetKey.execute({

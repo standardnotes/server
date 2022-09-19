@@ -189,6 +189,7 @@ const TYPES = {
   UserSubscriptionService: Symbol.for('UserSubscriptionService'),
   AnalyticsStore: Symbol.for('AnalyticsStore'),
   StatisticsStore: Symbol.for('StatisticsStore'),
+  UuidValidator: Symbol.for('UuidValidator'),
 }
 
 export default TYPES

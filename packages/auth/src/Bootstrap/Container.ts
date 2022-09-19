@@ -130,7 +130,14 @@ import { RedisOfflineSubscriptionTokenRepository } from '../Infra/Redis/RedisOff
 import { CreateOfflineSubscriptionToken } from '../Domain/UseCase/CreateOfflineSubscriptionToken/CreateOfflineSubscriptionToken'
 import { AuthenticateOfflineSubscriptionToken } from '../Domain/UseCase/AuthenticateOfflineSubscriptionToken/AuthenticateOfflineSubscriptionToken'
 import { SubscriptionCancelledEventHandler } from '../Domain/Handler/SubscriptionCancelledEventHandler'
-import { ContentDecoder, ContentDecoderInterface, ProtocolVersion } from '@standardnotes/common'
+import {
+  ContentDecoder,
+  ContentDecoderInterface,
+  ProtocolVersion,
+  Uuid,
+  UuidValidator,
+  ValidatorInterface,
+} from '@standardnotes/common'
 import { GetUserOfflineSubscription } from '../Domain/UseCase/GetUserOfflineSubscription/GetUserOfflineSubscription'
 import { ApiGatewayOfflineAuthMiddleware } from '../Controller/ApiGatewayOfflineAuthMiddleware'
 import { UserEmailChangedEventHandler } from '../Domain/Handler/UserEmailChangedEventHandler'
@@ -559,6 +566,7 @@ export class ContainerConfigLoader {
     container
       .bind<StatisticsStoreInterface>(TYPES.StatisticsStore)
       .toConstantValue(new RedisStatisticsStore(periodKeyGenerator, container.get(TYPES.Redis)))
+    container.bind<ValidatorInterface<Uuid>>(TYPES.UuidValidator).to(UuidValidator)
 
     if (env.get('SNS_TOPIC_ARN', true)) {
       container

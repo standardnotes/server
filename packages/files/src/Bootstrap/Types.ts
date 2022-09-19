@@ -23,6 +23,7 @@ const TYPES = {
   FileUploader: Symbol.for('FileUploader'),
   FileDownloader: Symbol.for('FileDownloader'),
   FileRemover: Symbol.for('FileRemover'),
+  UuidValidator: Symbol.for('UuidValidator'),
 
   // repositories
   UploadRepository: Symbol.for('UploadRepository'),

@@ -1,3 +1,4 @@
+import { Uuid, ValidatorInterface } from '@standardnotes/common'
 import { TokenDecoderInterface, ValetTokenData } from '@standardnotes/security'
 import { NextFunction, Request, Response } from 'express'
 import { inject, injectable } from 'inversify'
@@ -9,6 +10,7 @@ import TYPES from '../Bootstrap/Types'
 export class ValetTokenAuthMiddleware extends BaseMiddleware {
   constructor(
     @inject(TYPES.ValetTokenDecoder) private tokenDecoder: TokenDecoderInterface<ValetTokenData>,
+    @inject(TYPES.UuidValidator) private uuidValidator: ValidatorInterface<Uuid>,
     @inject(TYPES.Logger) private logger: Logger,
   ) {
     super()
@@ -43,6 +45,21 @@ export class ValetTokenAuthMiddleware extends BaseMiddleware {
         })
 
         return
+      }
+
+      for (const resource of valetTokenData.permittedResources) {
+        if (!this.uuidValidator.validate(resource.remoteIdentifier)) {
+          this.logger.debug('Invalid remote resource identifier in token.')
+
+          response.status(401).send({
+            error: {
+              tag: 'invalid-auth',
+              message: 'Invalid valet token.',
+            },
+          })
+
+          return
+        }
       }
 
       if (this.userHasNoSpaceToUpload(valetTokenData)) {

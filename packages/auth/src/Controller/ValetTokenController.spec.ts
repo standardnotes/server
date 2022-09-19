@@ -4,17 +4,22 @@ import { Request, Response } from 'express'
 import { results } from 'inversify-express-utils'
 import { ValetTokenController } from './ValetTokenController'
 import { CreateValetToken } from '../Domain/UseCase/CreateValetToken/CreateValetToken'
+import { Uuid, ValidatorInterface } from '@standardnotes/common'
 
 describe('ValetTokenController', () => {
   let createValetToken: CreateValetToken
+  let uuidValidator: ValidatorInterface<Uuid>
   let request: Request
   let response: Response
 
-  const createController = () => new ValetTokenController(createValetToken)
+  const createController = () => new ValetTokenController(createValetToken, uuidValidator)
 
   beforeEach(() => {
     createValetToken = {} as jest.Mocked<CreateValetToken>
     createValetToken.execute = jest.fn().mockReturnValue({ success: true, valetToken: 'foobar' })
+
+    uuidValidator = {} as jest.Mocked<ValidatorInterface<Uuid>>
+    uuidValidator.validate = jest.fn().mockReturnValue(true)
 
     request = {
       body: {
@@ -40,6 +45,17 @@ describe('ValetTokenController', () => {
       resources: ['1-2-3/2-3-4'],
     })
     expect(await result.content.readAsStringAsync()).toEqual('{"success":true,"valetToken":"foobar"}')
+  })
+
+  it('should not create a valet token if the remote resource identifier is not a valid uuid', async () => {
+    uuidValidator.validate = jest.fn().mockReturnValue(false)
+
+    const httpResponse = <results.JsonResult>await createController().create(request, response)
+    const result = await httpResponse.executeAsync()
+
+    expect(createValetToken.execute).not.toHaveBeenCalled()
+
+    expect(result.statusCode).toEqual(400)
   })
 
   it('should create a read valet token for read only access session', async () => {
