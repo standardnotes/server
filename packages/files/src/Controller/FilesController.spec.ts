@@ -298,6 +298,7 @@ describe('FilesController', () => {
       chunkId: 2,
       data: Buffer.from([123]),
       resourceRemoteIdentifier: '2-3-4',
+      resourceUnencryptedFileSize: 123,
       userUuid: '1-2-3',
     })
   })

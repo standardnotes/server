@@ -1,11 +1,12 @@
 import { promises } from 'fs'
 import { dirname } from 'path'
 import { inject, injectable } from 'inversify'
+import { Logger } from 'winston'
 
 import { FileUploaderInterface } from '../../Domain/Services/FileUploaderInterface'
 import { UploadChunkResult } from '../../Domain/Upload/UploadChunkResult'
-import { Logger } from 'winston'
 import TYPES from '../../Bootstrap/Types'
+import { ChunkId } from '../../Domain/Upload/ChunkId'
 
 @injectable()
 export class FSFileUploader implements FileUploaderInterface {
@@ -22,13 +23,21 @@ export class FSFileUploader implements FileUploaderInterface {
     uploadId: string
     data: Uint8Array
     filePath: string
-    chunkId: number
+    chunkId: ChunkId
+    unencryptedFileSize: number
   }): Promise<string> {
     if (!this.inMemoryChunks.has(dto.uploadId)) {
       this.inMemoryChunks.set(dto.uploadId, new Map<number, Uint8Array>())
     }
 
     const fileChunks = this.inMemoryChunks.get(dto.uploadId) as Map<number, Uint8Array>
+
+    const alreadyStoredBytes = this.accumulatedEncryptedFileSize(fileChunks)
+    if (alreadyStoredBytes >= dto.unencryptedFileSize) {
+      throw new Error(
+        `Could not finish chunk upload. Accumulated encrypted file size (${alreadyStoredBytes}B) already exceeds the unecrypted file size: ${dto.unencryptedFileSize}`,
+      )
+    }
 
     this.logger.debug(`FS storing file chunk ${dto.chunkId} in memory for ${dto.uploadId}`)
 
@@ -63,5 +72,15 @@ export class FSFileUploader implements FileUploaderInterface {
     await promises.mkdir(dirname(fullPath), { recursive: true })
 
     return fullPath
+  }
+
+  private accumulatedEncryptedFileSize(fileChunks: Map<number, Uint8Array>): number {
+    let accumulatedSize = 0
+
+    for (const value of fileChunks.values()) {
+      accumulatedSize += value.byteLength
+    }
+
+    return accumulatedSize
   }
 }

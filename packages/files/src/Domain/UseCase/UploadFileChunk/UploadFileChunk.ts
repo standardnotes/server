@@ -39,6 +39,7 @@ export class UploadFileChunk implements UseCaseInterface {
         data: dto.data,
         chunkId: dto.chunkId,
         filePath,
+        unencryptedFileSize: dto.resourceUnencryptedFileSize,
       })
 
       await this.uploadRepository.storeUploadChunkResult(uploadId, {

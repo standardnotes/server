@@ -5,4 +5,5 @@ export type UploadFileChunkDTO = {
   chunkId: ChunkId
   userUuid: string
   resourceRemoteIdentifier: string
+  resourceUnencryptedFileSize: number
 }

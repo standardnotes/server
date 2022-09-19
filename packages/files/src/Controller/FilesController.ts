@@ -63,6 +63,7 @@ export class FilesController extends BaseHttpController {
     const result = await this.uploadFileChunk.execute({
       userUuid: response.locals.userUuid,
       resourceRemoteIdentifier: response.locals.permittedResources[0].remoteIdentifier,
+      resourceUnencryptedFileSize: response.locals.permittedResources[0].unencryptedFileSize,
       chunkId,
       data: request.body,
     })
