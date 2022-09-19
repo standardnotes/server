@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.6.0](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.5.52...@standardnotes/files-server@1.6.0) (2022-09-19)
+
+### Features
+
+* **files:** add validating remote identifiers ([db15457](https://github.com/standardnotes/files/commit/db15457ce4eb533ec822cf93c3ed83eafe9e64d5))
+
 ## [1.5.52](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.5.51...@standardnotes/files-server@1.5.52) (2022-09-16)
 
 ### Bug Fixes

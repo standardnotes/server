@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.29.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.28.4...@standardnotes/auth-server@1.29.0) (2022-09-19)
+
+### Features
+
+* **files:** add validating remote identifiers ([db15457](https://github.com/standardnotes/server/commit/db15457ce4eb533ec822cf93c3ed83eafe9e64d5))
+
 ## [1.28.4](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.28.3...@standardnotes/auth-server@1.28.4) (2022-09-16)
 
 ### Bug Fixes

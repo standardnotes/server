@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.33.0](https://github.com/standardnotes/server/compare/@standardnotes/common@1.32.0...@standardnotes/common@1.33.0) (2022-09-19)
+
+### Features
+
+* **files:** add validating remote identifiers ([db15457](https://github.com/standardnotes/server/commit/db15457ce4eb533ec822cf93c3ed83eafe9e64d5))
+
 # [1.32.0](https://github.com/standardnotes/server/compare/@standardnotes/common@1.31.0...@standardnotes/common@1.32.0) (2022-09-09)
 
 ### Features
