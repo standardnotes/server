@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.6.2](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.6.1...@standardnotes/files-server@1.6.2) (2022-09-19)
+
+### Bug Fixes
+
+* add upper bound for FS file chunk upload ([dfa7e06](https://github.com/standardnotes/files/commit/dfa7e06f8780bec21893ec77ab4a0945a6681545))
+
 ## [1.6.1](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.6.0...@standardnotes/files-server@1.6.1) (2022-09-19)
 
 ### Bug Fixes
