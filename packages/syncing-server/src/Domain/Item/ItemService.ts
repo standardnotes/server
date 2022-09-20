@@ -21,10 +21,13 @@ import { SaveItemsResult } from './SaveItemsResult'
 import { ItemSaveValidatorInterface } from './SaveValidator/ItemSaveValidatorInterface'
 import { ConflictType } from '@standardnotes/responses'
 import { ItemTransferCalculatorInterface } from './ItemTransferCalculatorInterface'
+import { ProjectorInterface } from '../../Projection/ProjectorInterface'
+import { ItemProjection } from '../../Projection/ItemProjection'
 
 @injectable()
 export class ItemService implements ItemServiceInterface {
   private readonly DEFAULT_ITEMS_LIMIT = 150
+  private readonly MAX_ITEMS_LIMIT = 300
   private readonly SYNC_TOKEN_VERSION = 2
 
   constructor(
@@ -38,6 +41,7 @@ export class ItemService implements ItemServiceInterface {
     @inject(TYPES.CONTENT_SIZE_TRANSFER_LIMIT) private contentSizeTransferLimit: number,
     @inject(TYPES.ItemTransferCalculator) private itemTransferCalculator: ItemTransferCalculatorInterface,
     @inject(TYPES.Timer) private timer: TimerInterface,
+    @inject(TYPES.ItemProjector) private itemProjector: ProjectorInterface<Item, ItemProjection>,
     @inject(TYPES.Logger) private logger: Logger,
   ) {}
 
@@ -54,7 +58,7 @@ export class ItemService implements ItemServiceInterface {
       deleted: lastSyncTime ? undefined : false,
       sortBy: 'updated_at_timestamp',
       sortOrder: 'ASC',
-      limit,
+      limit: limit < this.MAX_ITEMS_LIMIT ? limit : this.MAX_ITEMS_LIMIT,
     }
 
     const itemUuidsToFetch = await this.itemTransferCalculator.computeItemUuidsToFetch(
@@ -196,7 +200,6 @@ export class ItemService implements ItemServiceInterface {
     dto.existingItem.contentSize = 0
     if (dto.itemHash.content) {
       dto.existingItem.content = dto.itemHash.content
-      dto.existingItem.contentSize = Buffer.byteLength(dto.itemHash.content)
     }
     if (dto.itemHash.content_type) {
       dto.existingItem.contentType = dto.itemHash.content_type
@@ -219,14 +222,6 @@ export class ItemService implements ItemServiceInterface {
       dto.existingItem.itemsKeyId = dto.itemHash.items_key_id
     }
 
-    if (dto.itemHash.deleted === true) {
-      dto.existingItem.deleted = true
-      dto.existingItem.content = null
-      ;(dto.existingItem.contentSize = 0), (dto.existingItem.encItemKey = null)
-      dto.existingItem.authHash = null
-      dto.existingItem.itemsKeyId = null
-    }
-
     const updatedAt = this.timer.getTimestampInMicroseconds()
     const secondsFromLastUpdate = this.timer.convertMicrosecondsToSeconds(
       updatedAt - dto.existingItem.updatedAtTimestamp,
@@ -242,6 +237,17 @@ export class ItemService implements ItemServiceInterface {
 
     dto.existingItem.updatedAtTimestamp = updatedAt
     dto.existingItem.updatedAt = this.timer.convertMicrosecondsToDate(updatedAt)
+
+    dto.existingItem.contentSize = Buffer.byteLength(JSON.stringify(this.itemProjector.projectFull(dto.existingItem)))
+
+    if (dto.itemHash.deleted === true) {
+      dto.existingItem.deleted = true
+      dto.existingItem.content = null
+      dto.existingItem.contentSize = 0
+      dto.existingItem.encItemKey = null
+      dto.existingItem.authHash = null
+      dto.existingItem.itemsKeyId = null
+    }
 
     const savedItem = await this.itemRepository.save(dto.existingItem)
 

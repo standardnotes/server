@@ -16,6 +16,8 @@ import { ItemSaveValidatorInterface } from './SaveValidator/ItemSaveValidatorInt
 import { ItemFactoryInterface } from './ItemFactoryInterface'
 import { ItemConflict } from './ItemConflict'
 import { ItemTransferCalculatorInterface } from './ItemTransferCalculatorInterface'
+import { ProjectorInterface } from '../../Projection/ProjectorInterface'
+import { ItemProjection } from '../../Projection/ItemProjection'
 
 describe('ItemService', () => {
   let itemRepository: ItemRepositoryInterface
@@ -37,6 +39,7 @@ describe('ItemService', () => {
   let itemFactory: ItemFactoryInterface
   let timeHelper: Timer
   let itemTransferCalculator: ItemTransferCalculatorInterface
+  let itemProjector: ProjectorInterface<Item, ItemProjection>
 
   const createService = () =>
     new ItemService(
@@ -50,6 +53,7 @@ describe('ItemService', () => {
       contentSizeTransferLimit,
       itemTransferCalculator,
       timer,
+      itemProjector,
       logger,
     )
 
@@ -156,6 +160,24 @@ describe('ItemService', () => {
     itemFactory = {} as jest.Mocked<ItemFactoryInterface>
     itemFactory.create = jest.fn().mockReturnValue(newItem)
     itemFactory.createStub = jest.fn().mockReturnValue(newItem)
+
+    itemProjector = {} as jest.Mocked<ProjectorInterface<Item, ItemProjection>>
+    itemProjector.projectFull = jest.fn().mockReturnValue({
+      uuid: '1-2-3',
+      items_key_id: 'foobar',
+      duplicate_of: null,
+      enc_item_key: 'foobar',
+      content:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Sed viverra tellus in hac habitasse. Tortor posuere ac ut consequat semper. Ut diam quam nulla porttitor. Sapien pellentesque habitant morbi tristique senectus et netus et malesuada. Dapibus ultrices in iaculis nunc. Pellentesque habitant morbi tristique senectus et netus et malesuada fames. Faucibus et molestie ac feugiat sed lectus vestibulum mattis. Eu consequat ac felis donec. Eget velit aliquet sagittis id. Nullam eget felis eget nunc. Turpis in eu mi bibendum neque egestas congue.',
+      content_type: ContentType.Note,
+      auth_hash: 'foobar',
+      deleted: false,
+      created_at: '2022-09-01 10:00:00',
+      created_at_timestamp: 123123123123123,
+      updated_at: '2022-09-01 10:00:00',
+      updated_at_timestamp: 123123123123123,
+      updated_with_session: '2-4-5',
+    })
   })
 
   it('should retrieve all items for a user from last sync with sync token version 1', async () => {
@@ -206,6 +228,34 @@ describe('ItemService', () => {
       sortOrder: 'ASC',
       userUuid: '1-2-3',
       limit: 150,
+    })
+    expect(itemRepository.findAll).toHaveBeenCalledWith({
+      uuids: ['1-2-3', '2-3-4'],
+      sortBy: 'updated_at_timestamp',
+      sortOrder: 'ASC',
+    })
+  })
+
+  it('should retrieve all items for a user from last sync with upper bound items limit', async () => {
+    expect(
+      await createService().getItems({
+        userUuid: '1-2-3',
+        syncToken,
+        contentType: ContentType.Note,
+        limit: 1000,
+      }),
+    ).toEqual({
+      items: [item1, item2],
+    })
+
+    expect(itemRepository.countAll).toHaveBeenCalledWith({
+      contentType: 'Note',
+      lastSyncTime: 1616164633241564,
+      syncTimeComparison: '>',
+      sortBy: 'updated_at_timestamp',
+      sortOrder: 'ASC',
+      userUuid: '1-2-3',
+      limit: 300,
     })
     expect(itemRepository.findAll).toHaveBeenCalledWith({
       uuids: ['1-2-3', '2-3-4'],
@@ -589,7 +639,7 @@ describe('ItemService', () => {
       savedItems: [
         {
           content: 'asdqwe1',
-          contentSize: 7,
+          contentSize: 950,
           contentType: 'Note',
           createdAtTimestamp: expect.any(Number),
           createdAt: expect.any(Date),
@@ -625,7 +675,7 @@ describe('ItemService', () => {
       savedItems: [
         {
           content: 'asdqwe1',
-          contentSize: 7,
+          contentSize: 950,
           contentType: 'Note',
           createdAtTimestamp: expect.any(Number),
           createdAt: expect.any(Date),
@@ -660,7 +710,7 @@ describe('ItemService', () => {
       savedItems: [
         {
           content: 'asdqwe1',
-          contentSize: 7,
+          contentSize: 950,
           contentType: 'Note',
           createdAtTimestamp: 123,
           createdAt: expect.any(Date),
@@ -696,7 +746,7 @@ describe('ItemService', () => {
       conflicts: [],
       savedItems: [
         {
-          contentSize: 0,
+          contentSize: 950,
           createdAtTimestamp: expect.any(Number),
           createdAt: expect.any(Date),
           userUuid: '1-2-3',
@@ -726,7 +776,7 @@ describe('ItemService', () => {
       savedItems: [
         {
           content: 'asdqwe1',
-          contentSize: 7,
+          contentSize: 950,
           contentType: 'Note',
           createdAtTimestamp: expect.any(Number),
           createdAt: expect.any(Date),
@@ -759,7 +809,7 @@ describe('ItemService', () => {
       savedItems: [
         {
           content: 'asdqwe1',
-          contentSize: 7,
+          contentSize: 950,
           contentType: 'Note',
           createdAtTimestamp: expect.any(Number),
           createdAt: expect.any(Date),
@@ -794,7 +844,7 @@ describe('ItemService', () => {
       savedItems: [
         {
           content: 'asdqwe1',
-          contentSize: 7,
+          contentSize: 950,
           contentType: 'Note',
           createdAtTimestamp: expect.any(Number),
           createdAt: expect.any(Date),
@@ -865,7 +915,7 @@ describe('ItemService', () => {
       savedItems: [
         {
           content: 'asdqwe1',
-          contentSize: 7,
+          contentSize: 950,
           contentType: 'Note',
           createdAtTimestamp: expect.any(Number),
           createdAt: expect.any(Date),

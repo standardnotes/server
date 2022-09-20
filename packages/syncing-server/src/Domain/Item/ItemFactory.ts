@@ -3,13 +3,18 @@ import { TimerInterface } from '@standardnotes/time'
 import { inject, injectable } from 'inversify'
 
 import TYPES from '../../Bootstrap/Types'
+import { ItemProjection } from '../../Projection/ItemProjection'
+import { ProjectorInterface } from '../../Projection/ProjectorInterface'
 import { Item } from './Item'
 import { ItemFactoryInterface } from './ItemFactoryInterface'
 import { ItemHash } from './ItemHash'
 
 @injectable()
 export class ItemFactory implements ItemFactoryInterface {
-  constructor(@inject(TYPES.Timer) private timer: TimerInterface) {}
+  constructor(
+    @inject(TYPES.Timer) private timer: TimerInterface,
+    @inject(TYPES.ItemProjector) private itemProjector: ProjectorInterface<Item, ItemProjection>,
+  ) {}
 
   createStub(dto: { userUuid: string; itemHash: ItemHash; sessionUuid: Uuid | null }): Item {
     const item = this.create(dto)
@@ -36,7 +41,6 @@ export class ItemFactory implements ItemFactoryInterface {
     newItem.contentSize = 0
     if (dto.itemHash.content) {
       newItem.content = dto.itemHash.content
-      newItem.contentSize = Buffer.byteLength(dto.itemHash.content)
     }
     newItem.userUuid = dto.userUuid
     if (dto.itemHash.content_type) {
@@ -74,6 +78,8 @@ export class ItemFactory implements ItemFactoryInterface {
       newItem.createdAtTimestamp = this.timer.convertStringDateToMicroseconds(dto.itemHash.created_at)
       newItem.createdAt = this.timer.convertStringDateToDate(dto.itemHash.created_at)
     }
+
+    newItem.contentSize = Buffer.byteLength(JSON.stringify(this.itemProjector.projectFull(newItem)))
 
     return newItem
   }

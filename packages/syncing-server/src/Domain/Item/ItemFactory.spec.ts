@@ -5,12 +5,16 @@ import { ContentType } from '@standardnotes/common'
 
 import { ItemFactory } from './ItemFactory'
 import { ItemHash } from './ItemHash'
+import { ProjectorInterface } from '../../Projection/ProjectorInterface'
+import { ItemProjection } from '../../Projection/ItemProjection'
+import { Item } from './Item'
 
 describe('ItemFactory', () => {
   let timer: TimerInterface
+  let itemProjector: ProjectorInterface<Item, ItemProjection>
   let timeHelper: Timer
 
-  const createFactory = () => new ItemFactory(timer)
+  const createFactory = () => new ItemFactory(timer, itemProjector)
 
   beforeEach(() => {
     timeHelper = new Timer()
@@ -26,6 +30,23 @@ describe('ItemFactory', () => {
     timer.convertStringDateToDate = jest
       .fn()
       .mockImplementation((date: string) => timeHelper.convertStringDateToDate(date))
+
+    itemProjector = {} as jest.Mocked<ProjectorInterface<Item, ItemProjection>>
+    itemProjector.projectFull = jest.fn().mockReturnValue({
+      uuid: '1-2-3',
+      items_key_id: 'foobar',
+      duplicate_of: null,
+      enc_item_key: 'foobar',
+      content: 'foobar',
+      content_type: ContentType.Note,
+      auth_hash: 'foobar',
+      deleted: false,
+      created_at: '2022-09-01 10:00:00',
+      created_at_timestamp: 123123123123123,
+      updated_at: '2022-09-01 10:00:00',
+      updated_at_timestamp: 123123123123123,
+      updated_with_session: '2-4-5',
+    })
   })
 
   it('should create an item based on item hash', () => {
@@ -43,7 +64,7 @@ describe('ItemFactory', () => {
       updatedAtTimestamp: 1616164633241568,
       userUuid: 'a-b-c',
       uuid: '1-2-3',
-      contentSize: 0,
+      contentSize: 341,
     })
   })
 
@@ -64,7 +85,7 @@ describe('ItemFactory', () => {
       userUuid: 'a-b-c',
       uuid: '1-2-3',
       content: null,
-      contentSize: 0,
+      contentSize: 341,
     })
   })
 
@@ -86,7 +107,7 @@ describe('ItemFactory', () => {
       userUuid: 'a-b-c',
       uuid: '1-2-3',
       content: 'foobar',
-      contentSize: 6,
+      contentSize: 341,
     })
   })
 
@@ -106,7 +127,7 @@ describe('ItemFactory', () => {
       userUuid: 'a-b-c',
       uuid: '1-2-3',
       content: null,
-      contentSize: 0,
+      contentSize: 341,
     })
   })
 
@@ -128,7 +149,7 @@ describe('ItemFactory', () => {
 
     expect(item).toEqual({
       content: 'asdqwe1',
-      contentSize: 7,
+      contentSize: 341,
       contentType: 'Note',
       createdAt: expect.any(Date),
       updatedWithSession: '1-2-3',
@@ -161,7 +182,7 @@ describe('ItemFactory', () => {
 
     expect(item).toEqual({
       content: 'asdqwe1',
-      contentSize: 7,
+      contentSize: 341,
       contentType: 'Note',
       createdAt: expect.any(Date),
       updatedWithSession: '1-2-3',
