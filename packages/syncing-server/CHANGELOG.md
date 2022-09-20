@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.8.7](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.8.6...@standardnotes/syncing-server@1.8.7) (2022-09-20)
+
+### Bug Fixes
+
+* **syncing-server:** content size calculation and add syncing upper bound for limit paramter ([c2e9f3e](https://github.com/standardnotes/syncing-server-js/commit/c2e9f3e72b87c445a6f4d61cbf59621954187d21))
+
 ## [1.8.6](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.8.5...@standardnotes/syncing-server@1.8.6) (2022-09-19)
 
 **Note:** Version bump only for package @standardnotes/syncing-server
