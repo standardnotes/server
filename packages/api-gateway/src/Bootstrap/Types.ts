@@ -18,6 +18,7 @@ const TYPES = {
   // Middleware
   StatisticsMiddleware: Symbol.for('StatisticsMiddleware'),
   AuthMiddleware: Symbol.for('AuthMiddleware'),
+  WebSocketAuthMiddleware: Symbol.for('WebSocketAuthMiddleware'),
   SubscriptionTokenAuthMiddleware: Symbol.for('SubscriptionTokenAuthMiddleware'),
   // Services
   HTTPService: Symbol.for('HTTPService'),

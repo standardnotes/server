@@ -129,6 +129,7 @@ const TYPES = {
   GetUserAnalyticsId: Symbol.for('GetUserAnalyticsId'),
   VerifyPredicate: Symbol.for('VerifyPredicate'),
   CreateWebSocketConnectionToken: Symbol.for('CreateWebSocketConnectionToken'),
+  CreateCrossServiceToken: Symbol.for('CreateCrossServiceToken'),
   // Handlers
   UserRegisteredEventHandler: Symbol.for('UserRegisteredEventHandler'),
   AccountDeletionRequestedEventHandler: Symbol.for('AccountDeletionRequestedEventHandler'),
@@ -171,6 +172,7 @@ const TYPES = {
   SessionTokenEncoder: Symbol.for('SessionTokenEncoder'),
   ValetTokenEncoder: Symbol.for('ValetTokenEncoder'),
   WebSocketConnectionTokenEncoder: Symbol.for('WebSocketConnectionTokenEncoder'),
+  WebSocketConnectionTokenDecoder: Symbol.for('WebSocketConnectionTokenDecoder'),
   AuthenticationMethodResolver: Symbol.for('AuthenticationMethodResolver'),
   DomainEventPublisher: Symbol.for('DomainEventPublisher'),
   DomainEventSubscriberFactory: Symbol.for('DomainEventSubscriberFactory'),

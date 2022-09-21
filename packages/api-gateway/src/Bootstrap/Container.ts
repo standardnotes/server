@@ -23,6 +23,7 @@ import { SubscriptionTokenAuthMiddleware } from '../Controller/SubscriptionToken
 import { StatisticsMiddleware } from '../Controller/StatisticsMiddleware'
 import { CrossServiceTokenCacheInterface } from '../Service/Cache/CrossServiceTokenCacheInterface'
 import { RedisCrossServiceTokenCache } from '../Infra/Redis/RedisCrossServiceTokenCache'
+import { WebSocketAuthMiddleware } from '../Controller/WebSocketAuthMiddleware'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -85,6 +86,7 @@ export class ContainerConfigLoader {
 
     // Middleware
     container.bind<AuthMiddleware>(TYPES.AuthMiddleware).to(AuthMiddleware)
+    container.bind<WebSocketAuthMiddleware>(TYPES.WebSocketAuthMiddleware).to(WebSocketAuthMiddleware)
     container
       .bind<SubscriptionTokenAuthMiddleware>(TYPES.SubscriptionTokenAuthMiddleware)
       .to(SubscriptionTokenAuthMiddleware)

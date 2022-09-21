@@ -20,7 +20,7 @@ export class WebSocketsController extends BaseHttpController {
     await this.httpService.callAuthServer(request, response, 'sockets/tokens', request.body)
   }
 
-  @httpPost('/', TYPES.AuthMiddleware)
+  @httpPost('/', TYPES.WebSocketAuthMiddleware)
   async createWebSocketConnection(request: Request, response: Response): Promise<void> {
     if (!request.headers.connectionid) {
       this.logger.error('Could not create a websocket connection. Missing connection id header.')

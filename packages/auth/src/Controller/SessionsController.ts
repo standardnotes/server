@@ -12,26 +12,18 @@ import TYPES from '../Bootstrap/Types'
 import { Session } from '../Domain/Session/Session'
 import { AuthenticateRequest } from '../Domain/UseCase/AuthenticateRequest'
 import { GetActiveSessionsForUser } from '../Domain/UseCase/GetActiveSessionsForUser'
-import { Role } from '../Domain/Role/Role'
 import { User } from '../Domain/User/User'
 import { ProjectorInterface } from '../Projection/ProjectorInterface'
 import { SessionProjector } from '../Projection/SessionProjector'
-import { CrossServiceTokenData, TokenEncoderInterface } from '@standardnotes/security'
-import { RoleName } from '@standardnotes/common'
-import { GetUserAnalyticsId } from '../Domain/UseCase/GetUserAnalyticsId/GetUserAnalyticsId'
+import { CreateCrossServiceToken } from '../Domain/UseCase/CreateCrossServiceToken/CreateCrossServiceToken'
 
 @controller('/sessions')
 export class SessionsController extends BaseHttpController {
   constructor(
     @inject(TYPES.GetActiveSessionsForUser) private getActiveSessionsForUser: GetActiveSessionsForUser,
     @inject(TYPES.AuthenticateRequest) private authenticateRequest: AuthenticateRequest,
-    @inject(TYPES.UserProjector) private userProjector: ProjectorInterface<User>,
     @inject(TYPES.SessionProjector) private sessionProjector: ProjectorInterface<Session>,
-    @inject(TYPES.RoleProjector) private roleProjector: ProjectorInterface<Role>,
-    @inject(TYPES.CrossServiceTokenEncoder) private tokenEncoder: TokenEncoderInterface<CrossServiceTokenData>,
-    @inject(TYPES.GetUserAnalyticsId) private getUserAnalyticsId: GetUserAnalyticsId,
-    @inject(TYPES.ANALYTICS_ENABLED) private analyticsEnabled: boolean,
-    @inject(TYPES.AUTH_JWT_TTL) private jwtTTL: number,
+    @inject(TYPES.CreateCrossServiceToken) private createCrossServiceToken: CreateCrossServiceToken,
   ) {
     super()
   }
@@ -56,25 +48,12 @@ export class SessionsController extends BaseHttpController {
 
     const user = authenticateRequestResponse.user as User
 
-    const roles = await user.roles
+    const result = await this.createCrossServiceToken.execute({
+      user,
+      session: authenticateRequestResponse.session,
+    })
 
-    const authTokenData: CrossServiceTokenData = {
-      user: this.projectUser(user),
-      roles: this.projectRoles(roles),
-    }
-
-    if (this.analyticsEnabled) {
-      const { analyticsId } = await this.getUserAnalyticsId.execute({ userUuid: user.uuid })
-      authTokenData.analyticsId = analyticsId
-    }
-
-    if (authenticateRequestResponse.session !== undefined) {
-      authTokenData.session = this.projectSession(authenticateRequestResponse.session)
-    }
-
-    const authToken = this.tokenEncoder.encodeExpirableToken(authTokenData, this.jwtTTL)
-
-    return this.json({ authToken })
+    return this.json({ authToken: result.token })
   }
 
   @httpGet('/', TYPES.AuthMiddleware, TYPES.SessionMiddleware)
@@ -92,37 +71,5 @@ export class SessionsController extends BaseHttpController {
         ),
       ),
     )
-  }
-
-  private projectUser(user: User): { uuid: string; email: string } {
-    return <{ uuid: string; email: string }>this.userProjector.projectSimple(user)
-  }
-
-  private projectSession(session: Session): {
-    uuid: string
-    api_version: string
-    created_at: string
-    updated_at: string
-    device_info: string
-    readonly_access: boolean
-    access_expiration: string
-    refresh_expiration: string
-  } {
-    return <
-      {
-        uuid: string
-        api_version: string
-        created_at: string
-        updated_at: string
-        device_info: string
-        readonly_access: boolean
-        access_expiration: string
-        refresh_expiration: string
-      }
-    >this.sessionProjector.projectSimple(session)
-  }
-
-  private projectRoles(roles: Array<Role>): Array<{ uuid: string; name: RoleName }> {
-    return roles.map((role) => <{ uuid: string; name: RoleName }>this.roleProjector.projectSimple(role))
   }
 }

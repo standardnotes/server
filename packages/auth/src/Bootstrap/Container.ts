@@ -212,6 +212,7 @@ import { SubscriptionInvitesController } from '../Controller/SubscriptionInvites
 import { CreateWebSocketConnectionToken } from '../Domain/UseCase/CreateWebSocketConnectionToken/CreateWebSocketConnectionToken'
 import { WebSocketsController } from '../Controller/WebSocketsController'
 import { WebSocketServerInterface } from '@standardnotes/api'
+import { CreateCrossServiceToken } from '../Domain/UseCase/CreateCrossServiceToken/CreateCrossServiceToken'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -462,6 +463,7 @@ export class ContainerConfigLoader {
     container
       .bind<CreateWebSocketConnectionToken>(TYPES.CreateWebSocketConnectionToken)
       .to(CreateWebSocketConnectionToken)
+    container.bind<CreateCrossServiceToken>(TYPES.CreateCrossServiceToken).to(CreateCrossServiceToken)
 
     // Handlers
     container.bind<UserRegisteredEventHandler>(TYPES.UserRegisteredEventHandler).to(UserRegisteredEventHandler)
@@ -534,6 +536,11 @@ export class ContainerConfigLoader {
     container
       .bind<TokenDecoderInterface<OfflineUserTokenData>>(TYPES.OfflineUserTokenDecoder)
       .toConstantValue(new TokenDecoder<OfflineUserTokenData>(container.get(TYPES.AUTH_JWT_SECRET)))
+    container
+      .bind<TokenDecoderInterface<WebSocketConnectionTokenData>>(TYPES.WebSocketConnectionTokenDecoder)
+      .toConstantValue(
+        new TokenDecoder<WebSocketConnectionTokenData>(container.get(TYPES.WEB_SOCKET_CONNECTION_TOKEN_SECRET)),
+      )
     container
       .bind<TokenEncoderInterface<OfflineUserTokenData>>(TYPES.OfflineUserTokenEncoder)
       .toConstantValue(new TokenEncoder<OfflineUserTokenData>(container.get(TYPES.AUTH_JWT_SECRET)))

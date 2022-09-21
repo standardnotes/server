@@ -9,43 +9,25 @@ import { ProjectorInterface } from '../Projection/ProjectorInterface'
 import { GetActiveSessionsForUser } from '../Domain/UseCase/GetActiveSessionsForUser'
 import { AuthenticateRequest } from '../Domain/UseCase/AuthenticateRequest'
 import { User } from '../Domain/User/User'
-import { Role } from '../Domain/Role/Role'
-import { CrossServiceTokenData, TokenEncoderInterface } from '@standardnotes/security'
-import { GetUserAnalyticsId } from '../Domain/UseCase/GetUserAnalyticsId/GetUserAnalyticsId'
+import { CreateCrossServiceToken } from '../Domain/UseCase/CreateCrossServiceToken/CreateCrossServiceToken'
 
 describe('SessionsController', () => {
   let getActiveSessionsForUser: GetActiveSessionsForUser
   let authenticateRequest: AuthenticateRequest
-  let userProjector: ProjectorInterface<User>
-  let tokenEncoder: TokenEncoderInterface<CrossServiceTokenData>
-  const jwtTTL = 60
   let sessionProjector: ProjectorInterface<Session>
-  let roleProjector: ProjectorInterface<Role>
   let session: Session
   let request: express.Request
   let response: express.Response
   let user: User
-  let role: Role
-  let getUserAnalyticsId: GetUserAnalyticsId
+  let createCrossServiceToken: CreateCrossServiceToken
 
   const createController = () =>
-    new SessionsController(
-      getActiveSessionsForUser,
-      authenticateRequest,
-      userProjector,
-      sessionProjector,
-      roleProjector,
-      tokenEncoder,
-      getUserAnalyticsId,
-      true,
-      jwtTTL,
-    )
+    new SessionsController(getActiveSessionsForUser, authenticateRequest, sessionProjector, createCrossServiceToken)
 
   beforeEach(() => {
     session = {} as jest.Mocked<Session>
 
     user = {} as jest.Mocked<User>
-    user.roles = Promise.resolve([role])
 
     getActiveSessionsForUser = {} as jest.Mocked<GetActiveSessionsForUser>
     getActiveSessionsForUser.execute = jest.fn().mockReturnValue({ sessions: [session] })
@@ -53,21 +35,11 @@ describe('SessionsController', () => {
     authenticateRequest = {} as jest.Mocked<AuthenticateRequest>
     authenticateRequest.execute = jest.fn()
 
-    userProjector = {} as jest.Mocked<ProjectorInterface<User>>
-    userProjector.projectSimple = jest.fn().mockReturnValue({ bar: 'baz' })
-
-    roleProjector = {} as jest.Mocked<ProjectorInterface<Role>>
-    roleProjector.projectSimple = jest.fn().mockReturnValue({ name: 'role1', uuid: '1-3-4' })
-
     sessionProjector = {} as jest.Mocked<ProjectorInterface<Session>>
     sessionProjector.projectCustom = jest.fn().mockReturnValue({ foo: 'bar' })
-    sessionProjector.projectSimple = jest.fn().mockReturnValue({ test: 'test' })
 
-    tokenEncoder = {} as jest.Mocked<TokenEncoderInterface<CrossServiceTokenData>>
-    tokenEncoder.encodeExpirableToken = jest.fn().mockReturnValue('foobar')
-
-    getUserAnalyticsId = {} as jest.Mocked<GetUserAnalyticsId>
-    getUserAnalyticsId.execute = jest.fn().mockReturnValue({ analyticsId: 123 })
+    createCrossServiceToken = {} as jest.Mocked<CreateCrossServiceToken>
+    createCrossServiceToken.execute = jest.fn().mockReturnValue({ token: 'foobar' })
 
     request = {
       params: {},
@@ -113,75 +85,6 @@ describe('SessionsController', () => {
     const result = await httpResponse.executeAsync()
     const httpResponseContent = await result.content.readAsStringAsync()
     const httpResponseJSON = JSON.parse(httpResponseContent)
-
-    expect(tokenEncoder.encodeExpirableToken).toHaveBeenCalledWith(
-      {
-        analyticsId: 123,
-        roles: [
-          {
-            name: 'role1',
-            uuid: '1-3-4',
-          },
-        ],
-        session: {
-          test: 'test',
-        },
-        user: {
-          bar: 'baz',
-        },
-      },
-      60,
-    )
-
-    expect(httpResponseJSON.authToken).toEqual('foobar')
-  })
-
-  it('should validate a session from an incoming request - disabled analytics', async () => {
-    authenticateRequest.execute = jest.fn().mockReturnValue({
-      success: true,
-      user,
-      session,
-    })
-
-    request.headers.authorization = 'test'
-
-    const controller = new SessionsController(
-      getActiveSessionsForUser,
-      authenticateRequest,
-      userProjector,
-      sessionProjector,
-      roleProjector,
-      tokenEncoder,
-      getUserAnalyticsId,
-      false,
-      jwtTTL,
-    )
-
-    const httpResponse = await controller.validate(request)
-
-    expect(httpResponse).toBeInstanceOf(results.JsonResult)
-
-    const result = await httpResponse.executeAsync()
-    const httpResponseContent = await result.content.readAsStringAsync()
-    const httpResponseJSON = JSON.parse(httpResponseContent)
-
-    expect(tokenEncoder.encodeExpirableToken).toHaveBeenCalledWith(
-      {
-        roles: [
-          {
-            name: 'role1',
-            uuid: '1-3-4',
-          },
-        ],
-        session: {
-          test: 'test',
-        },
-        user: {
-          bar: 'baz',
-        },
-      },
-      60,
-    )
 
     expect(httpResponseJSON.authToken).toEqual('foobar')
   })
