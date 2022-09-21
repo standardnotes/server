@@ -20,7 +20,7 @@ export class WebSocketsController extends BaseHttpController {
     await this.httpService.callAuthServer(request, response, 'sockets/tokens', request.body)
   }
 
-  @httpPost('/', TYPES.WebSocketAuthMiddleware)
+  @httpPost('/connections', TYPES.WebSocketAuthMiddleware)
   async createWebSocketConnection(request: Request, response: Response): Promise<void> {
     if (!request.headers.connectionid) {
       this.logger.error('Could not create a websocket connection. Missing connection id header.')
@@ -30,10 +30,15 @@ export class WebSocketsController extends BaseHttpController {
       return
     }
 
-    await this.httpService.callAuthServer(request, response, `sockets/${request.headers.connectionid}`, request.body)
+    await this.httpService.callAuthServer(
+      request,
+      response,
+      `sockets/connections/${request.headers.connectionid}`,
+      request.body,
+    )
   }
 
-  @httpDelete('/')
+  @httpDelete('/connections')
   async deleteWebSocketConnection(request: Request, response: Response): Promise<void> {
     if (!request.headers.connectionid) {
       this.logger.error('Could not delete a websocket connection. Missing connection id header.')
@@ -43,6 +48,11 @@ export class WebSocketsController extends BaseHttpController {
       return
     }
 
-    await this.httpService.callAuthServer(request, response, `sockets/${request.headers.connectionid}`, request.body)
+    await this.httpService.callAuthServer(
+      request,
+      response,
+      `sockets/connections/${request.headers.connectionid}`,
+      request.body,
+    )
   }
 }
