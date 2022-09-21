@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.30.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.29.1...@standardnotes/auth-server@1.30.0) (2022-09-21)
+
+### Features
+
+* **auth:** add creating web socket connection tokens ([8033177](https://github.com/standardnotes/server/commit/8033177f48dc961194f24fb7daa1073b8b697b74))
+
 ## [1.29.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.29.0...@standardnotes/auth-server@1.29.1) (2022-09-19)
 
 ### Bug Fixes

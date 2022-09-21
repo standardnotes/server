@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.20.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.19.6...@standardnotes/api-gateway@1.20.0) (2022-09-21)
+
+### Features
+
+* **auth:** add creating web socket connection tokens ([8033177](https://github.com/standardnotes/api-gateway/commit/8033177f48dc961194f24fb7daa1073b8b697b74))
+
 ## [1.19.6](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.19.5...@standardnotes/api-gateway@1.19.6) (2022-09-19)
 
 **Note:** Version bump only for package @standardnotes/api-gateway

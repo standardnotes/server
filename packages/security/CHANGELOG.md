@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/standardnotes/server/compare/@standardnotes/security@1.3.3...@standardnotes/security@1.4.0) (2022-09-21)
+
+### Features
+
+* **auth:** add creating web socket connection tokens ([8033177](https://github.com/standardnotes/server/commit/8033177f48dc961194f24fb7daa1073b8b697b74))
+
 ## [1.3.3](https://github.com/standardnotes/server/compare/@standardnotes/security@1.3.2...@standardnotes/security@1.3.3) (2022-09-19)
 
 **Note:** Version bump only for package @standardnotes/security
