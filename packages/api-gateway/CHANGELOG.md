@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.21.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.20.0...@standardnotes/api-gateway@1.21.0) (2022-09-21)
+
+### Features
+
+* **auth:** add creating cross service token in exchange for web socket connection token ([965ae79](https://github.com/standardnotes/api-gateway/commit/965ae79414e25d0959f67e16dcbb054229013e1c))
+
 # [1.20.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.19.6...@standardnotes/api-gateway@1.20.0) (2022-09-21)
 
 ### Features

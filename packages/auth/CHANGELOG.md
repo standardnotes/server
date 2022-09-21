@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.31.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.30.1...@standardnotes/auth-server@1.31.0) (2022-09-21)
+
+### Features
+
+* **auth:** add creating cross service token in exchange for web socket connection token ([965ae79](https://github.com/standardnotes/server/commit/965ae79414e25d0959f67e16dcbb054229013e1c))
+
 ## [1.30.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.30.0...@standardnotes/auth-server@1.30.1) (2022-09-21)
 
 ### Bug Fixes
