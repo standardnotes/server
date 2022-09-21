@@ -29,28 +29,6 @@ export class InversifyExpressWebSocketsController extends BaseHttpController {
     super()
   }
 
-  @httpPost('/:connectionId', TYPES.ApiGatewayAuthMiddleware)
-  async storeWebSocketsConnection(
-    request: Request,
-    response: Response,
-  ): Promise<results.JsonResult | results.BadRequestErrorMessageResult> {
-    await this.addWebSocketsConnection.execute({
-      userUuid: response.locals.user.uuid,
-      connectionId: request.params.connectionId,
-    })
-
-    return this.json({ success: true })
-  }
-
-  @httpDelete('/:connectionId')
-  async deleteWebSocketsConnection(
-    request: Request,
-  ): Promise<results.JsonResult | results.BadRequestErrorMessageResult> {
-    await this.removeWebSocketsConnection.execute({ connectionId: request.params.connectionId })
-
-    return this.json({ success: true })
-  }
-
   @httpPost('/tokens', TYPES.ApiGatewayAuthMiddleware)
   async createConnectionToken(_request: Request, response: Response): Promise<results.JsonResult> {
     const result = await this.webSocketsController.createConnectionToken({
@@ -93,5 +71,27 @@ export class InversifyExpressWebSocketsController extends BaseHttpController {
     })
 
     return this.json({ authToken: result.token })
+  }
+
+  @httpPost('/connections/:connectionId', TYPES.ApiGatewayAuthMiddleware)
+  async storeWebSocketsConnection(
+    request: Request,
+    response: Response,
+  ): Promise<results.JsonResult | results.BadRequestErrorMessageResult> {
+    await this.addWebSocketsConnection.execute({
+      userUuid: response.locals.user.uuid,
+      connectionId: request.params.connectionId,
+    })
+
+    return this.json({ success: true })
+  }
+
+  @httpDelete('/connections/:connectionId')
+  async deleteWebSocketsConnection(
+    request: Request,
+  ): Promise<results.JsonResult | results.BadRequestErrorMessageResult> {
+    await this.removeWebSocketsConnection.execute({ connectionId: request.params.connectionId })
+
+    return this.json({ success: true })
   }
 }
