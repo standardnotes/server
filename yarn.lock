@@ -1803,18 +1803,18 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@standardnotes/api@npm:^1.7.2":
-  version: 1.7.2
-  resolution: "@standardnotes/api@npm:1.7.2"
+"@standardnotes/api@npm:^1.8.1":
+  version: 1.8.1
+  resolution: "@standardnotes/api@npm:1.8.1"
   dependencies:
     "@standardnotes/common": ^1.32.0
-    "@standardnotes/encryption": 1.15.2
-    "@standardnotes/models": 1.18.2
-    "@standardnotes/responses": 1.10.1
+    "@standardnotes/encryption": 1.15.3
+    "@standardnotes/models": 1.18.3
+    "@standardnotes/responses": 1.10.2
     "@standardnotes/security": ^1.1.0
     "@standardnotes/utils": 1.9.0
     reflect-metadata: ^0.1.13
-  checksum: bdfc414e6d01620fd047979255a43eb447afbb69d1bb694015b162ad236431273cd234bba4129d13ba94791271aaff71895d726357491d6ab984c7d5a7a8a3f7
+  checksum: 76c5d1a2d29cf7f407813246febf54fe02c5d7cacedcfd1bf5f6ee6630d847f58cae0b5827fbba1c5c5d5a30e56095833c9eff8b413111f8aae9cc17802ffa63
   languageName: node
   linkType: hard
 
@@ -1825,7 +1825,7 @@ __metadata:
     "@newrelic/winston-enricher": ^4.0.0
     "@sentry/node": ^7.3.0
     "@standardnotes/analytics": "workspace:*"
-    "@standardnotes/api": ^1.7.2
+    "@standardnotes/api": ^1.8.1
     "@standardnotes/common": "workspace:*"
     "@standardnotes/domain-events": "workspace:*"
     "@standardnotes/domain-events-infra": "workspace:*"
@@ -1951,17 +1951,17 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@standardnotes/encryption@npm:1.15.2":
-  version: 1.15.2
-  resolution: "@standardnotes/encryption@npm:1.15.2"
+"@standardnotes/encryption@npm:1.15.3":
+  version: 1.15.3
+  resolution: "@standardnotes/encryption@npm:1.15.3"
   dependencies:
     "@standardnotes/common": ^1.32.0
-    "@standardnotes/models": 1.18.2
-    "@standardnotes/responses": 1.10.1
+    "@standardnotes/models": 1.18.3
+    "@standardnotes/responses": 1.10.2
     "@standardnotes/sncrypto-common": 1.11.1
     "@standardnotes/utils": 1.9.0
     reflect-metadata: ^0.1.13
-  checksum: 6e8336f1e7e961fbd42c4890458dca877da62dcc1987f7e9a7fb6ca230821276fce6a33652669bcc1752a80ffc55e4cf82b8631f7902d9714f4a07a7956092b0
+  checksum: 1a7863299f86ee28de1640b93277f8b3e206bec2b34a205eb6e6fd6c6899a4908623acd9f2452d71a83c542b1f181408e7743386e5e1079239c6c0fa384242c9
   languageName: node
   linkType: hard
 
@@ -2066,17 +2066,17 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@standardnotes/models@npm:1.18.2":
-  version: 1.18.2
-  resolution: "@standardnotes/models@npm:1.18.2"
+"@standardnotes/models@npm:1.18.3":
+  version: 1.18.3
+  resolution: "@standardnotes/models@npm:1.18.3"
   dependencies:
     "@standardnotes/common": ^1.32.0
     "@standardnotes/features": 1.52.0
-    "@standardnotes/responses": 1.10.1
+    "@standardnotes/responses": 1.10.2
     "@standardnotes/utils": 1.9.0
     lodash: ^4.17.21
     reflect-metadata: ^0.1.13
-  checksum: 88180a93e5acdc349e1f96159c40610d7f52d49f0566386d9d6db8767d5ac4ba73af3131c8e433afa253557349e3f96238f6b2060e94df51ceedb5d378b3dd1f
+  checksum: 21830c805ffa1ac2184c64903f88915b7b439eb4eb80ac0686c4920a9a4c86cc6c71a3daeb1ede8f3fe6cf0ce106f7ba396f994165306c1c59c05902a7ec075a
   languageName: node
   linkType: hard
 
@@ -2105,15 +2105,15 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@standardnotes/responses@npm:1.10.1":
-  version: 1.10.1
-  resolution: "@standardnotes/responses@npm:1.10.1"
+"@standardnotes/responses@npm:1.10.2":
+  version: 1.10.2
+  resolution: "@standardnotes/responses@npm:1.10.2"
   dependencies:
     "@standardnotes/common": ^1.32.0
     "@standardnotes/features": 1.52.0
     "@standardnotes/security": ^1.1.0
     reflect-metadata: ^0.1.13
-  checksum: b84fb3f71cc32286fc757280e01c2da7fd0576e96455bfd53c5e55f807875d7201a23e727a7c702277b90f1959837a9a0cbda94ca6a4f4ad6a4896e306ed851c
+  checksum: 364724b5c7efa06948a240da82320817bce58049d6ea226cc2e828e86144ba4d19e5ae6fa437311438008b16aff7bd8cbe7e3f7475a2e9c89cf47650e1e1e9b0
   languageName: node
   linkType: hard
 

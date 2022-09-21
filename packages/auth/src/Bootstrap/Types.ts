@@ -6,6 +6,7 @@ const TYPES = {
   // Controller
   AuthController: Symbol.for('AuthController'),
   SubscriptionInvitesController: Symbol.for('SubscriptionInvitesController'),
+  WebSocketsController: Symbol.for('WebSocketsController'),
   // Repositories
   UserRepository: Symbol.for('UserRepository'),
   SessionRepository: Symbol.for('SessionRepository'),
@@ -60,6 +61,8 @@ const TYPES = {
   AUTH_JWT_TTL: Symbol.for('AUTH_JWT_TTL'),
   VALET_TOKEN_SECRET: Symbol.for('VALET_TOKEN_SECRET'),
   VALET_TOKEN_TTL: Symbol.for('VALET_TOKEN_TTL'),
+  WEB_SOCKET_CONNECTION_TOKEN_SECRET: Symbol.for('WEB_SOCKET_CONNECTION_TOKEN_SECRET'),
+  WEB_SOCKET_CONNECTION_TOKEN_TTL: Symbol.for('WEB_SOCKET_CONNECTION_TOKEN_TTL'),
   ENCRYPTION_SERVER_KEY: Symbol.for('ENCRYPTION_SERVER_KEY'),
   ACCESS_TOKEN_AGE: Symbol.for('ACCESS_TOKEN_AGE'),
   REFRESH_TOKEN_AGE: Symbol.for('REFRESH_TOKEN_AGE'),
@@ -125,6 +128,7 @@ const TYPES = {
   GetSubscriptionSetting: Symbol.for('GetSubscriptionSetting'),
   GetUserAnalyticsId: Symbol.for('GetUserAnalyticsId'),
   VerifyPredicate: Symbol.for('VerifyPredicate'),
+  CreateWebSocketConnectionToken: Symbol.for('CreateWebSocketConnectionToken'),
   // Handlers
   UserRegisteredEventHandler: Symbol.for('UserRegisteredEventHandler'),
   AccountDeletionRequestedEventHandler: Symbol.for('AccountDeletionRequestedEventHandler'),
@@ -166,6 +170,7 @@ const TYPES = {
   CrossServiceTokenEncoder: Symbol.for('CrossServiceTokenEncoder'),
   SessionTokenEncoder: Symbol.for('SessionTokenEncoder'),
   ValetTokenEncoder: Symbol.for('ValetTokenEncoder'),
+  WebSocketConnectionTokenEncoder: Symbol.for('WebSocketConnectionTokenEncoder'),
   AuthenticationMethodResolver: Symbol.for('AuthenticationMethodResolver'),
   DomainEventPublisher: Symbol.for('DomainEventPublisher'),
   DomainEventSubscriberFactory: Symbol.for('DomainEventSubscriberFactory'),

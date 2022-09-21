@@ -15,6 +15,11 @@ export class WebSocketsController extends BaseHttpController {
     super()
   }
 
+  @httpPost('/tokens', TYPES.AuthMiddleware)
+  async createWebSocketConnectionToken(request: Request, response: Response): Promise<void> {
+    await this.httpService.callAuthServer(request, response, 'sockets/tokens', request.body)
+  }
+
   @httpPost('/', TYPES.AuthMiddleware)
   async createWebSocketConnection(request: Request, response: Response): Promise<void> {
     if (!request.headers.connectionid) {

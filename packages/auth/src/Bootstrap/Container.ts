@@ -156,6 +156,7 @@ import {
   TokenEncoder,
   TokenEncoderInterface,
   ValetTokenData,
+  WebSocketConnectionTokenData,
 } from '@standardnotes/security'
 import { FileUploadedEventHandler } from '../Domain/Handler/FileUploadedEventHandler'
 import { CreateValetToken } from '../Domain/UseCase/CreateValetToken/CreateValetToken'
@@ -208,6 +209,9 @@ import { PaymentFailedEventHandler } from '../Domain/Handler/PaymentFailedEventH
 import { PaymentSuccessEventHandler } from '../Domain/Handler/PaymentSuccessEventHandler'
 import { RefundProcessedEventHandler } from '../Domain/Handler/RefundProcessedEventHandler'
 import { SubscriptionInvitesController } from '../Controller/SubscriptionInvitesController'
+import { CreateWebSocketConnectionToken } from '../Domain/UseCase/CreateWebSocketConnectionToken/CreateWebSocketConnectionToken'
+import { WebSocketsController } from '../Controller/WebSocketsController'
+import { WebSocketServerInterface } from '@standardnotes/api'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -271,6 +275,7 @@ export class ContainerConfigLoader {
     // Controller
     container.bind<AuthController>(TYPES.AuthController).to(AuthController)
     container.bind<SubscriptionInvitesController>(TYPES.SubscriptionInvitesController).to(SubscriptionInvitesController)
+    container.bind<WebSocketServerInterface>(TYPES.WebSocketsController).to(WebSocketsController)
 
     // Repositories
     container.bind<SessionRepositoryInterface>(TYPES.SessionRepository).to(MySQLSessionRepository)
@@ -369,6 +374,12 @@ export class ContainerConfigLoader {
     container.bind(TYPES.AUTH_JWT_TTL).toConstantValue(+env.get('AUTH_JWT_TTL'))
     container.bind(TYPES.VALET_TOKEN_SECRET).toConstantValue(env.get('VALET_TOKEN_SECRET', true))
     container.bind(TYPES.VALET_TOKEN_TTL).toConstantValue(+env.get('VALET_TOKEN_TTL', true))
+    container
+      .bind(TYPES.WEB_SOCKET_CONNECTION_TOKEN_SECRET)
+      .toConstantValue(env.get('WEB_SOCKET_CONNECTION_TOKEN_SECRET', true))
+    container
+      .bind(TYPES.WEB_SOCKET_CONNECTION_TOKEN_TTL)
+      .toConstantValue(+env.get('WEB_SOCKET_CONNECTION_TOKEN_TTL', true))
     container.bind(TYPES.ENCRYPTION_SERVER_KEY).toConstantValue(env.get('ENCRYPTION_SERVER_KEY'))
     container.bind(TYPES.ACCESS_TOKEN_AGE).toConstantValue(env.get('ACCESS_TOKEN_AGE'))
     container.bind(TYPES.REFRESH_TOKEN_AGE).toConstantValue(env.get('REFRESH_TOKEN_AGE'))
@@ -448,6 +459,9 @@ export class ContainerConfigLoader {
     container.bind<GetSubscriptionSetting>(TYPES.GetSubscriptionSetting).to(GetSubscriptionSetting)
     container.bind<GetUserAnalyticsId>(TYPES.GetUserAnalyticsId).to(GetUserAnalyticsId)
     container.bind<VerifyPredicate>(TYPES.VerifyPredicate).to(VerifyPredicate)
+    container
+      .bind<CreateWebSocketConnectionToken>(TYPES.CreateWebSocketConnectionToken)
+      .to(CreateWebSocketConnectionToken)
 
     // Handlers
     container.bind<UserRegisteredEventHandler>(TYPES.UserRegisteredEventHandler).to(UserRegisteredEventHandler)
@@ -532,6 +546,11 @@ export class ContainerConfigLoader {
     container
       .bind<TokenEncoderInterface<ValetTokenData>>(TYPES.ValetTokenEncoder)
       .toConstantValue(new TokenEncoder<ValetTokenData>(container.get(TYPES.VALET_TOKEN_SECRET)))
+    container
+      .bind<TokenEncoderInterface<WebSocketConnectionTokenData>>(TYPES.WebSocketConnectionTokenEncoder)
+      .toConstantValue(
+        new TokenEncoder<WebSocketConnectionTokenData>(container.get(TYPES.WEB_SOCKET_CONNECTION_TOKEN_SECRET)),
+      )
     container.bind<AuthenticationMethodResolver>(TYPES.AuthenticationMethodResolver).to(AuthenticationMethodResolver)
     container.bind<DomainEventFactory>(TYPES.DomainEventFactory).to(DomainEventFactory)
     container.bind<AxiosInstance>(TYPES.HTTPClient).toConstantValue(axios.create())

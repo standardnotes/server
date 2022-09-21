@@ -1,45 +1,29 @@
-import { Request, Response } from 'express'
-import { inject } from 'inversify'
 import {
-  BaseHttpController,
-  controller,
-  httpDelete,
-  httpPost,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  results,
-} from 'inversify-express-utils'
+  HttpStatusCode,
+  WebSocketConnectionTokenRequestParams,
+  WebSocketConnectionTokenResponse,
+  WebSocketServerInterface,
+} from '@standardnotes/api'
+import { inject, injectable } from 'inversify'
+
 import TYPES from '../Bootstrap/Types'
-import { AddWebSocketsConnection } from '../Domain/UseCase/AddWebSocketsConnection/AddWebSocketsConnection'
-import { RemoveWebSocketsConnection } from '../Domain/UseCase/RemoveWebSocketsConnection/RemoveWebSocketsConnection'
+import { CreateWebSocketConnectionToken } from '../Domain/UseCase/CreateWebSocketConnectionToken/CreateWebSocketConnectionToken'
 
-@controller('/sockets')
-export class WebSocketsController extends BaseHttpController {
+@injectable()
+export class WebSocketsController implements WebSocketServerInterface {
   constructor(
-    @inject(TYPES.AddWebSocketsConnection) private addWebSocketsConnection: AddWebSocketsConnection,
-    @inject(TYPES.RemoveWebSocketsConnection) private removeWebSocketsConnection: RemoveWebSocketsConnection,
-  ) {
-    super()
-  }
+    @inject(TYPES.CreateWebSocketConnectionToken)
+    private createWebSocketConnectionToken: CreateWebSocketConnectionToken,
+  ) {}
 
-  @httpPost('/:connectionId', TYPES.ApiGatewayAuthMiddleware)
-  async storeWebSocketsConnection(
-    request: Request,
-    response: Response,
-  ): Promise<results.JsonResult | results.BadRequestErrorMessageResult> {
-    await this.addWebSocketsConnection.execute({
-      userUuid: response.locals.user.uuid,
-      connectionId: request.params.connectionId,
-    })
+  async createConnectionToken(
+    params: WebSocketConnectionTokenRequestParams,
+  ): Promise<WebSocketConnectionTokenResponse> {
+    const result = await this.createWebSocketConnectionToken.execute({ userUuid: params.userUuid as string })
 
-    return this.json({ success: true })
-  }
-
-  @httpDelete('/:connectionId')
-  async deleteWebSocketsConnection(
-    request: Request,
-  ): Promise<results.JsonResult | results.BadRequestErrorMessageResult> {
-    await this.removeWebSocketsConnection.execute({ connectionId: request.params.connectionId })
-
-    return this.json({ success: true })
+    return {
+      status: HttpStatusCode.Success,
+      data: result,
+    }
   }
 }
