@@ -1,11 +1,12 @@
 import { TokenEncoderInterface, WebSocketConnectionTokenData } from '@standardnotes/security'
-import { inject } from 'inversify'
+import { inject, injectable } from 'inversify'
 
 import TYPES from '../../../Bootstrap/Types'
 import { UseCaseInterface } from '../UseCaseInterface'
 import { CreateWebSocketConnectionDTO } from './CreateWebSocketConnectionDTO'
 import { CreateWebSocketConnectionResponse } from './CreateWebSocketConnectionResponse'
 
+@injectable()
 export class CreateWebSocketConnectionToken implements UseCaseInterface {
   constructor(
     @inject(TYPES.WebSocketConnectionTokenEncoder)
