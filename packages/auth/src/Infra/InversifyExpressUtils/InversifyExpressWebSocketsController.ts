@@ -35,7 +35,7 @@ export class InversifyExpressWebSocketsController extends BaseHttpController {
       userUuid: response.locals.user.uuid,
     })
 
-    return this.json(result)
+    return this.json(result.data, result.status)
   }
 
   @httpPost('/tokens/validate')
