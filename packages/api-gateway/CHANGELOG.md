@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.21.1](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.21.0...@standardnotes/api-gateway@1.21.1) (2022-09-21)
+
+### Bug Fixes
+
+* **api-gateway:** web socket connection routing ([d35de38](https://github.com/standardnotes/api-gateway/commit/d35de38289e70d707d57a859b8bf39833fa825dd))
+
 # [1.21.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.20.0...@standardnotes/api-gateway@1.21.0) (2022-09-21)
 
 ### Features
