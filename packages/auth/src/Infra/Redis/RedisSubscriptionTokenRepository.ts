@@ -23,7 +23,7 @@ export class RedisSubscriptionTokenRepository implements SubscriptionTokenReposi
   async save(subscriptionToken: SubscriptionToken): Promise<boolean> {
     const key = `${this.PREFIX}:${subscriptionToken.token}`
 
-    const wasSet = await this.redisClient.setex(key, subscriptionToken.ttl, subscriptionToken.userUuid)
+    const wasSet = await this.redisClient.set(key, subscriptionToken.userUuid)
 
     return wasSet === 'OK'
   }

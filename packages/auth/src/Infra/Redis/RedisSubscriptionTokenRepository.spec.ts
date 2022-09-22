@@ -12,7 +12,7 @@ describe('RedisSubscriptionTokenRepository', () => {
 
   beforeEach(() => {
     redisClient = {} as jest.Mocked<IORedis.Redis>
-    redisClient.setex = jest.fn().mockReturnValue('OK')
+    redisClient.set = jest.fn().mockReturnValue('OK')
     redisClient.get = jest.fn()
   })
 
@@ -41,11 +41,11 @@ describe('RedisSubscriptionTokenRepository', () => {
 
     expect(await createRepository().save(subscriptionToken)).toBeTruthy()
 
-    expect(redisClient.setex).toHaveBeenCalledWith('subscription-token:random-string', 123, '1-2-3')
+    expect(redisClient.set).toHaveBeenCalledWith('subscription-token:random-string', '1-2-3')
   })
 
   it('should indicate subscription token was not saved', async () => {
-    redisClient.setex = jest.fn().mockReturnValue(null)
+    redisClient.set = jest.fn().mockReturnValue(null)
 
     const subscriptionToken: SubscriptionToken = {
       userUuid: '1-2-3',
@@ -55,6 +55,6 @@ describe('RedisSubscriptionTokenRepository', () => {
 
     expect(await createRepository().save(subscriptionToken)).toBeFalsy()
 
-    expect(redisClient.setex).toHaveBeenCalledWith('subscription-token:random-string', 123, '1-2-3')
+    expect(redisClient.set).toHaveBeenCalledWith('subscription-token:random-string', '1-2-3')
   })
 })
