@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.32.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.31.2...@standardnotes/auth-server@1.32.0) (2022-09-22)
+
+### Features
+
+* **auth:** remove muting emails by use case in favor of updating user settings ([d3f36c0](https://github.com/standardnotes/server/commit/d3f36c05dfc114098a6c231d81149ebd1a959b74))
+
 ## [1.31.2](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.31.1...@standardnotes/auth-server@1.31.2) (2022-09-21)
 
 ### Bug Fixes

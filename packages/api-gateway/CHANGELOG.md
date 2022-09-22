@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.22.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.21.1...@standardnotes/api-gateway@1.22.0) (2022-09-22)
+
+### Features
+
+* **auth:** remove muting emails by use case in favor of updating user settings ([d3f36c0](https://github.com/standardnotes/api-gateway/commit/d3f36c05dfc114098a6c231d81149ebd1a959b74))
+
 ## [1.21.1](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.21.0...@standardnotes/api-gateway@1.21.1) (2022-09-21)
 
 ### Bug Fixes
