@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.32.2](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.32.1...@standardnotes/auth-server@1.32.2) (2022-09-22)
+
+### Bug Fixes
+
+* **auth:** add throwing an error if the subscription token was not persisted ([76cee6d](https://github.com/standardnotes/server/commit/76cee6dbad9bff041d8d5a1d4435046509c14f71))
+
 ## [1.32.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.32.0...@standardnotes/auth-server@1.32.1) (2022-09-22)
 
 ### Bug Fixes
