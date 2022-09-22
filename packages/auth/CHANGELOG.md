@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.32.6](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.32.5...@standardnotes/auth-server@1.32.6) (2022-09-22)
+
+### Reverts
+
+* Revert "fix(auth): subscription token ttl" ([644c52a](https://github.com/standardnotes/server/commit/644c52ae36d3720dee0712e2cb826c7e617ab7b7))
+* Revert "fix(auth): increase subscription token ttl" ([2554273](https://github.com/standardnotes/server/commit/2554273a3f85a968fed4286d109bed5413ef9908))
+* Revert "tmp(auth): disable expiring of subscription tokens" ([a8ee149](https://github.com/standardnotes/server/commit/a8ee149d7ac78775bf447ab924458b116414a15e))
+
 ## [1.32.5](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.32.4...@standardnotes/auth-server@1.32.5) (2022-09-22)
 
 **Note:** Version bump only for package @standardnotes/auth-server
