@@ -1,6 +1,7 @@
 import { CryptoNode } from '@standardnotes/sncrypto-node'
 import { TimerInterface } from '@standardnotes/time'
 import { inject, injectable } from 'inversify'
+import { Logger } from 'winston'
 
 import TYPES from '../../../Bootstrap/Types'
 import { SubscriptionTokenRepositoryInterface } from '../../Subscription/SubscriptionTokenRepositoryInterface'
@@ -15,6 +16,7 @@ export class CreateSubscriptionToken implements UseCaseInterface {
     private subscriptionTokenRepository: SubscriptionTokenRepositoryInterface,
     @inject(TYPES.CryptoNode) private cryptoNode: CryptoNode,
     @inject(TYPES.Timer) private timer: TimerInterface,
+    @inject(TYPES.Logger) private logger: Logger,
   ) {}
 
   async execute(dto: CreateSubscriptionTokenDTO): Promise<CreateSubscriptionTokenResponse> {
@@ -26,7 +28,13 @@ export class CreateSubscriptionToken implements UseCaseInterface {
       expiresAt: this.timer.convertStringDateToMicroseconds(this.timer.getUTCDateNHoursAhead(3).toString()),
     }
 
-    await this.subscriptionTokenRepository.save(subscriptionToken)
+    const subscriptionTokenWasSaved = await this.subscriptionTokenRepository.save(subscriptionToken)
+
+    if (!subscriptionTokenWasSaved) {
+      this.logger.error(`Could not create subscription token for user ${dto.userUuid}`)
+
+      throw new Error('Could not create subscription token')
+    }
 
     return {
       subscriptionToken,

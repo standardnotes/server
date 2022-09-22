@@ -24,11 +24,13 @@ export class RedisSubscriptionTokenRepository implements SubscriptionTokenReposi
     return userUuid
   }
 
-  async save(subscriptionToken: SubscriptionToken): Promise<void> {
+  async save(subscriptionToken: SubscriptionToken): Promise<boolean> {
     const key = `${this.PREFIX}:${subscriptionToken.token}`
     const expiresAtTimestampInSeconds = this.timer.convertMicrosecondsToSeconds(subscriptionToken.expiresAt)
 
-    await this.redisClient.set(key, subscriptionToken.userUuid)
-    await this.redisClient.expireat(key, expiresAtTimestampInSeconds)
+    const wasSet = await this.redisClient.set(key, subscriptionToken.userUuid)
+    const timeoutWasSet = await this.redisClient.expireat(key, expiresAtTimestampInSeconds)
+
+    return wasSet === 'OK' && timeoutWasSet !== 0
   }
 }

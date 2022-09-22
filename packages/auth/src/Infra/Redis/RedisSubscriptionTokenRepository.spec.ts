@@ -14,9 +14,9 @@ describe('RedisSubscriptionTokenRepository', () => {
 
   beforeEach(() => {
     redisClient = {} as jest.Mocked<IORedis.Redis>
-    redisClient.set = jest.fn()
+    redisClient.set = jest.fn().mockReturnValue('OK')
     redisClient.get = jest.fn()
-    redisClient.expireat = jest.fn()
+    redisClient.expireat = jest.fn().mockReturnValue(1)
 
     timer = {} as jest.Mocked<TimerInterface>
     timer.convertMicrosecondsToSeconds = jest.fn().mockReturnValue(1)
@@ -45,7 +45,23 @@ describe('RedisSubscriptionTokenRepository', () => {
       expiresAt: 123,
     }
 
-    await createRepository().save(subscriptionToken)
+    expect(await createRepository().save(subscriptionToken)).toBeTruthy()
+
+    expect(redisClient.set).toHaveBeenCalledWith('subscription-token:random-string', '1-2-3')
+
+    expect(redisClient.expireat).toHaveBeenCalledWith('subscription-token:random-string', 1)
+  })
+
+  it('should indicate subscription token was not saved', async () => {
+    redisClient.set = jest.fn().mockReturnValue(null)
+
+    const subscriptionToken: SubscriptionToken = {
+      userUuid: '1-2-3',
+      token: 'random-string',
+      expiresAt: 123,
+    }
+
+    expect(await createRepository().save(subscriptionToken)).toBeFalsy()
 
     expect(redisClient.set).toHaveBeenCalledWith('subscription-token:random-string', '1-2-3')
 
