@@ -23,7 +23,7 @@ export class CreateSubscriptionToken implements UseCaseInterface {
     const subscriptionToken = {
       userUuid: dto.userUuid,
       token,
-      ttl: 10_800_000,
+      ttl: 10_800,
     }
 
     const subscriptionTokenWasSaved = await this.subscriptionTokenRepository.save(subscriptionToken)

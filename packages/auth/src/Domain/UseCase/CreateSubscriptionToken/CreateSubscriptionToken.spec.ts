@@ -32,7 +32,7 @@ describe('CreateSubscriptionToken', () => {
     expect(subscriptionTokenRepository.save).toHaveBeenCalledWith({
       userUuid: '1-2-3',
       token: 'random-string',
-      ttl: 10_800_000,
+      ttl: 10_800,
     })
   })
 
