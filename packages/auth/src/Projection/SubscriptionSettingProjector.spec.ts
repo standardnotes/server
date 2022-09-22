@@ -17,28 +17,31 @@ describe('SubscriptionSettingProjector', () => {
       serverEncryptionVersion: 1,
       createdAt: 1,
       updatedAt: 2,
+      sensitive: false,
     } as jest.Mocked<SubscriptionSetting>
   })
 
   it('should create a simple projection of a setting', async () => {
     const projection = await createProjector().projectSimple(setting)
-    expect(projection).toEqual({
+    expect(projection).toStrictEqual({
       uuid: 'setting-uuid',
       name: 'setting-name',
       value: 'setting-value',
       createdAt: 1,
       updatedAt: 2,
+      sensitive: false,
     })
   })
   it('should create a simple projection of list of settings', async () => {
     const projection = await createProjector().projectManySimple([setting])
-    expect(projection).toEqual([
+    expect(projection).toStrictEqual([
       {
         uuid: 'setting-uuid',
         name: 'setting-name',
         value: 'setting-value',
         createdAt: 1,
         updatedAt: 2,
+        sensitive: false,
       },
     ])
   })
