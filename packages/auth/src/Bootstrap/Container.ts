@@ -143,7 +143,6 @@ import { ApiGatewayOfflineAuthMiddleware } from '../Controller/ApiGatewayOffline
 import { UserEmailChangedEventHandler } from '../Domain/Handler/UserEmailChangedEventHandler'
 import { SettingsAssociationServiceInterface } from '../Domain/Setting/SettingsAssociationServiceInterface'
 import { SettingsAssociationService } from '../Domain/Setting/SettingsAssociationService'
-import { MuteFailedBackupsEmails } from '../Domain/UseCase/MuteFailedBackupsEmails/MuteFailedBackupsEmails'
 import { SubscriptionSyncRequestedEventHandler } from '../Domain/Handler/SubscriptionSyncRequestedEventHandler'
 import {
   CrossServiceTokenData,
@@ -163,7 +162,6 @@ import { CreateValetToken } from '../Domain/UseCase/CreateValetToken/CreateValet
 import { CreateListedAccount } from '../Domain/UseCase/CreateListedAccount/CreateListedAccount'
 import { ListedAccountCreatedEventHandler } from '../Domain/Handler/ListedAccountCreatedEventHandler'
 import { ListedAccountDeletedEventHandler } from '../Domain/Handler/ListedAccountDeletedEventHandler'
-import { MuteSignInEmails } from '../Domain/UseCase/MuteSignInEmails/MuteSignInEmails'
 import { FileRemovedEventHandler } from '../Domain/Handler/FileRemovedEventHandler'
 import { UserDisabledSessionUserAgentLoggingEventHandler } from '../Domain/Handler/UserDisabledSessionUserAgentLoggingEventHandler'
 import { SettingInterpreterInterface } from '../Domain/Setting/SettingInterpreterInterface'
@@ -204,7 +202,6 @@ import { GetUserAnalyticsId } from '../Domain/UseCase/GetUserAnalyticsId/GetUser
 import { AuthController } from '../Controller/AuthController'
 import { VerifyPredicate } from '../Domain/UseCase/VerifyPredicate/VerifyPredicate'
 import { PredicateVerificationRequestedEventHandler } from '../Domain/Handler/PredicateVerificationRequestedEventHandler'
-import { MuteMarketingEmails } from '../Domain/UseCase/MuteMarketingEmails/MuteMarketingEmails'
 import { PaymentFailedEventHandler } from '../Domain/Handler/PaymentFailedEventHandler'
 import { PaymentSuccessEventHandler } from '../Domain/Handler/PaymentSuccessEventHandler'
 import { RefundProcessedEventHandler } from '../Domain/Handler/RefundProcessedEventHandler'
@@ -439,9 +436,6 @@ export class ContainerConfigLoader {
     container
       .bind<CreateOfflineSubscriptionToken>(TYPES.CreateOfflineSubscriptionToken)
       .to(CreateOfflineSubscriptionToken)
-    container.bind<MuteFailedBackupsEmails>(TYPES.MuteFailedBackupsEmails).to(MuteFailedBackupsEmails)
-    container.bind<MuteSignInEmails>(TYPES.MuteSignInEmails).to(MuteSignInEmails)
-    container.bind<MuteMarketingEmails>(TYPES.MuteMarketingEmails).to(MuteMarketingEmails)
     container.bind<CreateValetToken>(TYPES.CreateValetToken).to(CreateValetToken)
     container.bind<CreateListedAccount>(TYPES.CreateListedAccount).to(CreateListedAccount)
     container.bind<InviteToSharedSubscription>(TYPES.InviteToSharedSubscription).to(InviteToSharedSubscription)

@@ -29,34 +29,4 @@ export class ActionsController extends BaseHttpController {
   async methods(request: Request, response: Response): Promise<void> {
     await this.httpService.callAuthServer(request, response, 'auth/methods', request.body)
   }
-
-  @httpGet('/failed-backups-emails/mute/:settingUuid')
-  async muteFailedBackupsEmails(request: Request, response: Response): Promise<void> {
-    await this.httpService.callAuthServer(
-      request,
-      response,
-      `internal/settings/email_backup/${request.params.settingUuid}/mute`,
-      request.body,
-    )
-  }
-
-  @httpGet('/sign-in-emails/mute/:settingUuid')
-  async muteSignInEmails(request: Request, response: Response): Promise<void> {
-    await this.httpService.callAuthServer(
-      request,
-      response,
-      `internal/settings/sign_in/${request.params.settingUuid}/mute`,
-      request.body,
-    )
-  }
-
-  @httpGet('/marketing-emails/mute/:settingUuid')
-  async muteMarketingEmails(request: Request, response: Response): Promise<void> {
-    await this.httpService.callAuthServer(
-      request,
-      response,
-      `internal/settings/marketing-emails/${request.params.settingUuid}/mute`,
-      request.body,
-    )
-  }
 }

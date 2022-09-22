@@ -1,4 +1,4 @@
-import { Request, Response } from 'express'
+import { Request } from 'express'
 import { inject } from 'inversify'
 import {
   BaseHttpController,
@@ -10,18 +10,12 @@ import {
 import TYPES from '../Bootstrap/Types'
 import { GetSetting } from '../Domain/UseCase/GetSetting/GetSetting'
 import { GetUserFeatures } from '../Domain/UseCase/GetUserFeatures/GetUserFeatures'
-import { MuteFailedBackupsEmails } from '../Domain/UseCase/MuteFailedBackupsEmails/MuteFailedBackupsEmails'
-import { MuteMarketingEmails } from '../Domain/UseCase/MuteMarketingEmails/MuteMarketingEmails'
-import { MuteSignInEmails } from '../Domain/UseCase/MuteSignInEmails/MuteSignInEmails'
 
 @controller('/internal')
 export class InternalController extends BaseHttpController {
   constructor(
     @inject(TYPES.GetUserFeatures) private doGetUserFeatures: GetUserFeatures,
     @inject(TYPES.GetSetting) private doGetSetting: GetSetting,
-    @inject(TYPES.MuteFailedBackupsEmails) private doMuteFailedBackupsEmails: MuteFailedBackupsEmails,
-    @inject(TYPES.MuteSignInEmails) private doMuteSignInEmails: MuteSignInEmails,
-    @inject(TYPES.MuteMarketingEmails) private doMuteMarketingEmails: MuteMarketingEmails,
   ) {
     super()
   }
@@ -53,51 +47,5 @@ export class InternalController extends BaseHttpController {
     }
 
     return this.json(result, 400)
-  }
-
-  @httpGet('/settings/email_backup/:settingUuid/mute')
-  async muteFailedBackupsEmails(request: Request): Promise<results.JsonResult> {
-    const { settingUuid } = request.params
-    const result = await this.doMuteFailedBackupsEmails.execute({
-      settingUuid,
-    })
-
-    if (result.success) {
-      return this.json({ message: result.message })
-    }
-
-    return this.json({ message: result.message }, 404)
-  }
-
-  @httpGet('/settings/sign_in/:settingUuid/mute')
-  async muteSignInEmails(request: Request): Promise<results.JsonResult> {
-    const { settingUuid } = request.params
-    const result = await this.doMuteSignInEmails.execute({
-      settingUuid,
-    })
-
-    if (result.success) {
-      return this.json({ message: result.message })
-    }
-
-    return this.json({ message: result.message }, 404)
-  }
-
-  @httpGet('/settings/marketing-emails/:settingUuid/mute')
-  async muteMarketingEmails(request: Request, response: Response): Promise<void> {
-    const { settingUuid } = request.params
-    const result = await this.doMuteMarketingEmails.execute({
-      settingUuid,
-    })
-
-    response.setHeader('content-type', 'text/html')
-
-    if (result.success) {
-      response.send(result.message)
-
-      return
-    }
-
-    response.status(404).send(result.message)
   }
 }
