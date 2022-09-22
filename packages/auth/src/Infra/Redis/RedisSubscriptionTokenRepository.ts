@@ -4,16 +4,12 @@ import { inject, injectable } from 'inversify'
 import TYPES from '../../Bootstrap/Types'
 import { SubscriptionToken } from '../../Domain/Subscription/SubscriptionToken'
 import { SubscriptionTokenRepositoryInterface } from '../../Domain/Subscription/SubscriptionTokenRepositoryInterface'
-import { TimerInterface } from '@standardnotes/time'
 
 @injectable()
 export class RedisSubscriptionTokenRepository implements SubscriptionTokenRepositoryInterface {
   private readonly PREFIX = 'subscription-token'
 
-  constructor(
-    @inject(TYPES.Redis) private redisClient: IORedis.Redis,
-    @inject(TYPES.Timer) private timer: TimerInterface,
-  ) {}
+  constructor(@inject(TYPES.Redis) private redisClient: IORedis.Redis) {}
 
   async getUserUuidByToken(token: string): Promise<string | undefined> {
     const userUuid = await this.redisClient.get(`${this.PREFIX}:${token}`)
@@ -26,11 +22,9 @@ export class RedisSubscriptionTokenRepository implements SubscriptionTokenReposi
 
   async save(subscriptionToken: SubscriptionToken): Promise<boolean> {
     const key = `${this.PREFIX}:${subscriptionToken.token}`
-    const expiresAtTimestampInSeconds = this.timer.convertMicrosecondsToSeconds(subscriptionToken.expiresAt)
 
-    const wasSet = await this.redisClient.set(key, subscriptionToken.userUuid)
-    const timeoutWasSet = await this.redisClient.expireat(key, expiresAtTimestampInSeconds)
+    const wasSet = await this.redisClient.setex(key, subscriptionToken.ttl, subscriptionToken.userUuid)
 
-    return wasSet === 'OK' && timeoutWasSet !== 0
+    return wasSet === 'OK'
   }
 }

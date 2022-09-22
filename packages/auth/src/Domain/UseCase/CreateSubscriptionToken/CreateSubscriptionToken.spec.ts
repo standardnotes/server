@@ -1,7 +1,6 @@
 import 'reflect-metadata'
 
 import { CryptoNode } from '@standardnotes/sncrypto-node'
-import { TimerInterface } from '@standardnotes/time'
 import { SubscriptionTokenRepositoryInterface } from '../../Subscription/SubscriptionTokenRepositoryInterface'
 
 import { CreateSubscriptionToken } from './CreateSubscriptionToken'
@@ -10,10 +9,9 @@ import { Logger } from 'winston'
 describe('CreateSubscriptionToken', () => {
   let subscriptionTokenRepository: SubscriptionTokenRepositoryInterface
   let cryptoNode: CryptoNode
-  let timer: TimerInterface
   let logger: Logger
 
-  const createUseCase = () => new CreateSubscriptionToken(subscriptionTokenRepository, cryptoNode, timer, logger)
+  const createUseCase = () => new CreateSubscriptionToken(subscriptionTokenRepository, cryptoNode, logger)
 
   beforeEach(() => {
     subscriptionTokenRepository = {} as jest.Mocked<SubscriptionTokenRepositoryInterface>
@@ -21,10 +19,6 @@ describe('CreateSubscriptionToken', () => {
 
     cryptoNode = {} as jest.Mocked<CryptoNode>
     cryptoNode.generateRandomKey = jest.fn().mockReturnValueOnce('random-string')
-
-    timer = {} as jest.Mocked<TimerInterface>
-    timer.convertStringDateToMicroseconds = jest.fn().mockReturnValue(1)
-    timer.getUTCDateNHoursAhead = jest.fn().mockReturnValue(new Date(1))
 
     logger = {} as jest.Mocked<Logger>
     logger.error = jest.fn()
@@ -38,7 +32,7 @@ describe('CreateSubscriptionToken', () => {
     expect(subscriptionTokenRepository.save).toHaveBeenCalledWith({
       userUuid: '1-2-3',
       token: 'random-string',
-      expiresAt: 1,
+      ttl: 10_800,
     })
   })
 
