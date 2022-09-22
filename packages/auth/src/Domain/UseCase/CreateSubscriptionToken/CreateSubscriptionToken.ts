@@ -1,4 +1,5 @@
 import { CryptoNode } from '@standardnotes/sncrypto-node'
+import { TimerInterface } from '@standardnotes/time'
 import { inject, injectable } from 'inversify'
 import { Logger } from 'winston'
 
@@ -14,6 +15,7 @@ export class CreateSubscriptionToken implements UseCaseInterface {
     @inject(TYPES.SubscriptionTokenRepository)
     private subscriptionTokenRepository: SubscriptionTokenRepositoryInterface,
     @inject(TYPES.CryptoNode) private cryptoNode: CryptoNode,
+    @inject(TYPES.Timer) private timer: TimerInterface,
     @inject(TYPES.Logger) private logger: Logger,
   ) {}
 
@@ -23,7 +25,7 @@ export class CreateSubscriptionToken implements UseCaseInterface {
     const subscriptionToken = {
       userUuid: dto.userUuid,
       token,
-      ttl: 10_800,
+      expiresAt: this.timer.convertStringDateToMicroseconds(this.timer.getUTCDateNHoursAhead(3).toString()),
     }
 
     const subscriptionTokenWasSaved = await this.subscriptionTokenRepository.save(subscriptionToken)

@@ -1,19 +1,25 @@
 import 'reflect-metadata'
 
 import * as IORedis from 'ioredis'
+import { TimerInterface } from '@standardnotes/time'
 
 import { RedisSubscriptionTokenRepository } from './RedisSubscriptionTokenRepository'
 import { SubscriptionToken } from '../../Domain/Subscription/SubscriptionToken'
 
 describe('RedisSubscriptionTokenRepository', () => {
   let redisClient: IORedis.Redis
+  let timer: TimerInterface
 
-  const createRepository = () => new RedisSubscriptionTokenRepository(redisClient)
+  const createRepository = () => new RedisSubscriptionTokenRepository(redisClient, timer)
 
   beforeEach(() => {
     redisClient = {} as jest.Mocked<IORedis.Redis>
-    redisClient.setex = jest.fn().mockReturnValue('OK')
+    redisClient.set = jest.fn().mockReturnValue('OK')
     redisClient.get = jest.fn()
+    redisClient.expireat = jest.fn().mockReturnValue(1)
+
+    timer = {} as jest.Mocked<TimerInterface>
+    timer.convertMicrosecondsToSeconds = jest.fn().mockReturnValue(1)
   })
 
   it('should get a user uuid in exchange for an subscription token', async () => {
@@ -36,25 +42,29 @@ describe('RedisSubscriptionTokenRepository', () => {
     const subscriptionToken: SubscriptionToken = {
       userUuid: '1-2-3',
       token: 'random-string',
-      ttl: 123,
+      expiresAt: 123,
     }
 
     expect(await createRepository().save(subscriptionToken)).toBeTruthy()
 
-    expect(redisClient.setex).toHaveBeenCalledWith('subscription-token:random-string', 123, '1-2-3')
+    expect(redisClient.set).toHaveBeenCalledWith('subscription-token:random-string', '1-2-3')
+
+    expect(redisClient.expireat).toHaveBeenCalledWith('subscription-token:random-string', 1)
   })
 
   it('should indicate subscription token was not saved', async () => {
-    redisClient.setex = jest.fn().mockReturnValue(null)
+    redisClient.set = jest.fn().mockReturnValue(null)
 
     const subscriptionToken: SubscriptionToken = {
       userUuid: '1-2-3',
       token: 'random-string',
-      ttl: 123,
+      expiresAt: 123,
     }
 
     expect(await createRepository().save(subscriptionToken)).toBeFalsy()
 
-    expect(redisClient.setex).toHaveBeenCalledWith('subscription-token:random-string', 123, '1-2-3')
+    expect(redisClient.set).toHaveBeenCalledWith('subscription-token:random-string', '1-2-3')
+
+    expect(redisClient.expireat).toHaveBeenCalledWith('subscription-token:random-string', 1)
   })
 })
