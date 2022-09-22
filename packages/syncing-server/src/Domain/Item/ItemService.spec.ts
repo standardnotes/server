@@ -40,6 +40,7 @@ describe('ItemService', () => {
   let timeHelper: Timer
   let itemTransferCalculator: ItemTransferCalculatorInterface
   let itemProjector: ProjectorInterface<Item, ItemProjection>
+  const maxItemsSyncLimit = 300
 
   const createService = () =>
     new ItemService(
@@ -54,6 +55,7 @@ describe('ItemService', () => {
       itemTransferCalculator,
       timer,
       itemProjector,
+      maxItemsSyncLimit,
       logger,
     )
 

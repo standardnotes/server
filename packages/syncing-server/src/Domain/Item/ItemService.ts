@@ -27,7 +27,6 @@ import { ItemProjection } from '../../Projection/ItemProjection'
 @injectable()
 export class ItemService implements ItemServiceInterface {
   private readonly DEFAULT_ITEMS_LIMIT = 150
-  private readonly MAX_ITEMS_LIMIT = 300
   private readonly SYNC_TOKEN_VERSION = 2
 
   constructor(
@@ -42,6 +41,7 @@ export class ItemService implements ItemServiceInterface {
     @inject(TYPES.ItemTransferCalculator) private itemTransferCalculator: ItemTransferCalculatorInterface,
     @inject(TYPES.Timer) private timer: TimerInterface,
     @inject(TYPES.ItemProjector) private itemProjector: ProjectorInterface<Item, ItemProjection>,
+    @inject(TYPES.MAX_ITEMS_LIMIT) private maxItemsSyncLimit: number,
     @inject(TYPES.Logger) private logger: Logger,
   ) {}
 
@@ -58,7 +58,7 @@ export class ItemService implements ItemServiceInterface {
       deleted: lastSyncTime ? undefined : false,
       sortBy: 'updated_at_timestamp',
       sortOrder: 'ASC',
-      limit: limit < this.MAX_ITEMS_LIMIT ? limit : this.MAX_ITEMS_LIMIT,
+      limit: limit < this.maxItemsSyncLimit ? limit : this.maxItemsSyncLimit,
     }
 
     const itemUuidsToFetch = await this.itemTransferCalculator.computeItemUuidsToFetch(

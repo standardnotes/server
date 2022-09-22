@@ -36,6 +36,7 @@ const TYPES = {
   NEW_RELIC_ENABLED: Symbol.for('NEW_RELIC_ENABLED'),
   VERSION: Symbol.for('VERSION'),
   CONTENT_SIZE_TRANSFER_LIMIT: Symbol.for('CONTENT_SIZE_TRANSFER_LIMIT'),
+  MAX_ITEMS_LIMIT: Symbol.for('MAX_ITEMS_LIMIT'),
   // use cases
   SyncItems: Symbol.for('SyncItems'),
   CheckIntegrity: Symbol.for('CheckIntegrity'),

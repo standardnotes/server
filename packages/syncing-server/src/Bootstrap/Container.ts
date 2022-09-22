@@ -90,6 +90,7 @@ const newrelicFormatter = require('@newrelic/winston-enricher')
 
 export class ContainerConfigLoader {
   private readonly DEFAULT_CONTENT_SIZE_TRANSFER_LIMIT = 10_000_000
+  private readonly DEFAULT_MAX_ITEMS_LIMIT = 300
 
   async load(): Promise<Container> {
     const env: Env = new Env()
@@ -191,7 +192,10 @@ export class ContainerConfigLoader {
     container.bind(TYPES.VERSION).toConstantValue(env.get('VERSION'))
     container
       .bind(TYPES.CONTENT_SIZE_TRANSFER_LIMIT)
-      .toConstantValue(env.get('CONTENT_SIZE_TRANSFER_LIMIT', true) ?? this.DEFAULT_CONTENT_SIZE_TRANSFER_LIMIT)
+      .toConstantValue(+env.get('CONTENT_SIZE_TRANSFER_LIMIT', true) ?? this.DEFAULT_CONTENT_SIZE_TRANSFER_LIMIT)
+    container
+      .bind(TYPES.MAX_ITEMS_LIMIT)
+      .toConstantValue(+env.get('MAX_ITEMS_LIMIT', true) ?? this.DEFAULT_MAX_ITEMS_LIMIT)
 
     // use cases
     container.bind<SyncItems>(TYPES.SyncItems).to(SyncItems)
