@@ -192,10 +192,16 @@ export class ContainerConfigLoader {
     container.bind(TYPES.VERSION).toConstantValue(env.get('VERSION'))
     container
       .bind(TYPES.CONTENT_SIZE_TRANSFER_LIMIT)
-      .toConstantValue(+env.get('CONTENT_SIZE_TRANSFER_LIMIT', true) ?? this.DEFAULT_CONTENT_SIZE_TRANSFER_LIMIT)
+      .toConstantValue(
+        env.get('CONTENT_SIZE_TRANSFER_LIMIT', true)
+          ? +env.get('CONTENT_SIZE_TRANSFER_LIMIT', true)
+          : this.DEFAULT_CONTENT_SIZE_TRANSFER_LIMIT,
+      )
     container
       .bind(TYPES.MAX_ITEMS_LIMIT)
-      .toConstantValue(+env.get('MAX_ITEMS_LIMIT', true) ?? this.DEFAULT_MAX_ITEMS_LIMIT)
+      .toConstantValue(
+        env.get('MAX_ITEMS_LIMIT', true) ? +env.get('MAX_ITEMS_LIMIT', true) : this.DEFAULT_MAX_ITEMS_LIMIT,
+      )
 
     // use cases
     container.bind<SyncItems>(TYPES.SyncItems).to(SyncItems)
