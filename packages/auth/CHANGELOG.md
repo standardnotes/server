@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.32.4](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.32.3...@standardnotes/auth-server@1.32.4) (2022-09-22)
+
+### Bug Fixes
+
+* **auth:** increase subscription token ttl ([07def20](https://github.com/standardnotes/server/commit/07def20f6b47f9d1c678cfe5206b924dd5e6014a))
+
 ## [1.32.3](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.32.2...@standardnotes/auth-server@1.32.3) (2022-09-22)
 
 ### Bug Fixes
