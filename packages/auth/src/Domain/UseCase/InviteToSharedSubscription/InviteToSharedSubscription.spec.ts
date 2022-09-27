@@ -11,6 +11,7 @@ import { UserSubscription } from '../../Subscription/UserSubscription'
 import { RoleName } from '@standardnotes/common'
 import { UserSubscriptionType } from '../../Subscription/UserSubscriptionType'
 import { SharedSubscriptionInvitation } from '../../SharedSubscription/SharedSubscriptionInvitation'
+import { InvitationStatus } from '../../SharedSubscription/InvitationStatus'
 
 describe('InviteToSharedSubscription', () => {
   let userSubscriptionRepository: UserSubscriptionRepositoryInterface
@@ -187,7 +188,7 @@ describe('InviteToSharedSubscription', () => {
   it('should not create an invitation if it already exists', async () => {
     sharedSubscriptionInvitationRepository.findOneByInviteeAndInviterEmail = jest
       .fn()
-      .mockReturnValue({} as jest.Mocked<SharedSubscriptionInvitation>)
+      .mockReturnValue({ status: InvitationStatus.Sent } as jest.Mocked<SharedSubscriptionInvitation>)
 
     expect(
       await createUseCase().execute({
@@ -204,5 +205,28 @@ describe('InviteToSharedSubscription', () => {
 
     expect(domainEventFactory.createSharedSubscriptionInvitationCreatedEvent).not.toHaveBeenCalled()
     expect(domainEventPublisher.publish).not.toHaveBeenCalled()
+  })
+
+  it('should create an invitation if it already exists but was canceled', async () => {
+    sharedSubscriptionInvitationRepository.findOneByInviteeAndInviterEmail = jest
+      .fn()
+      .mockReturnValue({ status: InvitationStatus.Canceled } as jest.Mocked<SharedSubscriptionInvitation>)
+
+    expect(
+      await createUseCase().execute({
+        inviteeIdentifier: 'invitee@test.te',
+        inviterUuid: '1-2-3',
+        inviterEmail: 'inviter@test.te',
+        inviterRoles: [RoleName.ProUser],
+      }),
+    ).toEqual({
+      success: true,
+      sharedSubscriptionInvitationUuid: '1-2-3',
+    })
+
+    expect(sharedSubscriptionInvitationRepository.save).toHaveBeenCalled()
+
+    expect(domainEventFactory.createSharedSubscriptionInvitationCreatedEvent).toHaveBeenCalled()
+    expect(domainEventPublisher.publish).toHaveBeenCalled()
   })
 })

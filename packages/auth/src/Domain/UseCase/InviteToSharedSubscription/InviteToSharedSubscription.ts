@@ -57,7 +57,7 @@ export class InviteToSharedSubscription implements UseCaseInterface {
       dto.inviteeIdentifier,
       dto.inviterEmail,
     )
-    if (existingInvitation !== null) {
+    if (existingInvitation !== null && existingInvitation.status !== InvitationStatus.Canceled) {
       return {
         success: false,
       }
