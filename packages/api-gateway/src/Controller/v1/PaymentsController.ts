@@ -70,11 +70,6 @@ export class PaymentsController extends BaseHttpController {
     await this.httpService.callPaymentsServer(request, response, 'admin/events/registration', request.body)
   }
 
-  @httpPost('/admin/graphql')
-  async adminGraphql(request: Request, response: Response): Promise<void> {
-    await this.httpService.callPaymentsServer(request, response, 'admin/graphql', request.body)
-  }
-
   @httpPost('/admin/auth/login')
   async adminLogin(request: Request, response: Response): Promise<void> {
     await this.httpService.callPaymentsServer(request, response, 'admin/auth/login', request.body)
