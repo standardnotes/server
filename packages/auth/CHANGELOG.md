@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.32.7](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.32.6...@standardnotes/auth-server@1.32.7) (2022-09-27)
+
+### Bug Fixes
+
+* **auth:** allow resending canceled subscription invites ([b190931](https://github.com/standardnotes/server/commit/b19093179baaa1fb8cdf3f9d9bee20e625ed0b9b))
+
 ## [1.32.6](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.32.5...@standardnotes/auth-server@1.32.6) (2022-09-22)
 
 ### Reverts
