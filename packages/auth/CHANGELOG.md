@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.32.8](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.32.7...@standardnotes/auth-server@1.32.8) (2022-09-27)
+
+### Bug Fixes
+
+* **auth:** ttl for lock counter on login lockout ([54da5de](https://github.com/standardnotes/server/commit/54da5def4bbfbb4f74cbf02ae23e45103d250dd9))
+
 ## [1.32.7](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.32.6...@standardnotes/auth-server@1.32.7) (2022-09-27)
 
 ### Bug Fixes
