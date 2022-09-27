@@ -30,7 +30,7 @@ export class LockRepository implements LockRepositoryInterface {
   }
 
   async updateLockCounter(userIdentifier: string, counter: number): Promise<void> {
-    await this.redisClient.set(`${this.PREFIX}:${userIdentifier}`, counter)
+    await this.redisClient.setex(`${this.PREFIX}:${userIdentifier}`, this.failedLoginLockout, counter)
   }
 
   async getLockCounter(userIdentifier: string): Promise<number> {

@@ -15,7 +15,6 @@ describe('LockRepository', () => {
     redisClient.expire = jest.fn()
     redisClient.del = jest.fn()
     redisClient.get = jest.fn()
-    redisClient.set = jest.fn()
     redisClient.setex = jest.fn()
   })
 
@@ -88,6 +87,6 @@ describe('LockRepository', () => {
   it('should update a lock counter', async () => {
     await createRepository().updateLockCounter('123', 3)
 
-    expect(redisClient.set).toHaveBeenCalledWith('lock:123', 3)
+    expect(redisClient.setex).toHaveBeenCalledWith('lock:123', 120, 3)
   })
 })
