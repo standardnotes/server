@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.22.1](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.22.0...@standardnotes/api-gateway@1.22.1) (2022-09-27)
+
+### Bug Fixes
+
+* **api-gateway:** remove admin graphql endpoint from being publicly available ([0a90d98](https://github.com/standardnotes/api-gateway/commit/0a90d98c71c6023b700f852c91aedfe1ad23af55))
+
 # [1.22.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.21.1...@standardnotes/api-gateway@1.22.0) (2022-09-22)
 
 ### Features
