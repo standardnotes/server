@@ -43,6 +43,15 @@ export class SubscriptionSettingService implements SubscriptionSettingServiceInt
 
     for (const settingName of defaultSettingsWithValues.keys()) {
       const setting = defaultSettingsWithValues.get(settingName) as SettingDescription
+      if (!setting.replaceable) {
+        const existingSetting = await this.subscriptionSettingRepository.findLastByNameAndUserSubscriptionUuid(
+          settingName,
+          userSubscription.uuid,
+        )
+        if (existingSetting !== null) {
+          continue
+        }
+      }
 
       await this.createOrReplace({
         userSubscription,

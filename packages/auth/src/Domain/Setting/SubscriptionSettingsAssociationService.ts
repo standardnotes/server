@@ -28,7 +28,7 @@ export class SubscriptionSettingsAssociationService implements SubscriptionSetti
       new Map([
         [
           SubscriptionSettingName.FileUploadBytesUsed,
-          { sensitive: false, serverEncryptionVersion: EncryptionVersion.Unencrypted, value: '0' },
+          { sensitive: false, serverEncryptionVersion: EncryptionVersion.Unencrypted, value: '0', replaceable: false },
         ],
       ]),
     ],
@@ -37,7 +37,7 @@ export class SubscriptionSettingsAssociationService implements SubscriptionSetti
       new Map([
         [
           SubscriptionSettingName.FileUploadBytesUsed,
-          { sensitive: false, serverEncryptionVersion: EncryptionVersion.Unencrypted, value: '0' },
+          { sensitive: false, serverEncryptionVersion: EncryptionVersion.Unencrypted, value: '0', replaceable: false },
         ],
       ]),
     ],
@@ -56,6 +56,7 @@ export class SubscriptionSettingsAssociationService implements SubscriptionSetti
       sensitive: false,
       serverEncryptionVersion: EncryptionVersion.Unencrypted,
       value: (await this.getFileUploadLimit(subscriptionName)).toString(),
+      replaceable: true,
     })
 
     return defaultSettings

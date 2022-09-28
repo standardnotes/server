@@ -4,4 +4,5 @@ export type SettingDescription = {
   value: string
   sensitive: boolean
   serverEncryptionVersion: EncryptionVersion
+  replaceable: boolean
 }

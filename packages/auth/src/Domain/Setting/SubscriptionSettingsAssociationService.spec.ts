@@ -61,6 +61,7 @@ describe('SubscriptionSettingsAssociationService', () => {
       sensitive: false,
       serverEncryptionVersion: 0,
       value: '107374182400',
+      replaceable: true,
     })
   })
 
@@ -88,6 +89,7 @@ describe('SubscriptionSettingsAssociationService', () => {
       sensitive: false,
       serverEncryptionVersion: 0,
       value: '104857600',
+      replaceable: true,
     })
   })
 

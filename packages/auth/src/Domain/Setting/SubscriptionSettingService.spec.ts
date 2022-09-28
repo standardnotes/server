@@ -60,6 +60,7 @@ describe('SubscriptionSettingService', () => {
             value: '0',
             sensitive: 0,
             serverEncryptionVersion: EncryptionVersion.Unencrypted,
+            replaceable: true,
           },
         ],
       ]),
@@ -75,6 +76,48 @@ describe('SubscriptionSettingService', () => {
   })
 
   it('should create default settings for a subscription', async () => {
+    await createService().applyDefaultSubscriptionSettingsForSubscription(userSubscription, SubscriptionName.PlusPlan)
+
+    expect(subscriptionSettingRepository.save).toHaveBeenCalledWith(setting)
+  })
+
+  it('should not replace existing default settings for a subscription if it is not replaceable', async () => {
+    subscriptionSettingsAssociationService.getDefaultSettingsAndValuesForSubscriptionName = jest.fn().mockReturnValue(
+      new Map([
+        [
+          SubscriptionSettingName.FileUploadBytesUsed,
+          {
+            value: '0',
+            sensitive: 0,
+            serverEncryptionVersion: EncryptionVersion.Unencrypted,
+            replaceable: false,
+          },
+        ],
+      ]),
+    )
+    subscriptionSettingRepository.findLastByNameAndUserSubscriptionUuid = jest.fn().mockReturnValue(setting)
+
+    await createService().applyDefaultSubscriptionSettingsForSubscription(userSubscription, SubscriptionName.PlusPlan)
+
+    expect(subscriptionSettingRepository.save).not.toHaveBeenCalled()
+  })
+
+  it('should create default settings for a subscription if it is not replaceable and not existing', async () => {
+    subscriptionSettingsAssociationService.getDefaultSettingsAndValuesForSubscriptionName = jest.fn().mockReturnValue(
+      new Map([
+        [
+          SubscriptionSettingName.FileUploadBytesUsed,
+          {
+            value: '0',
+            sensitive: 0,
+            serverEncryptionVersion: EncryptionVersion.Unencrypted,
+            replaceable: false,
+          },
+        ],
+      ]),
+    )
+    subscriptionSettingRepository.findLastByNameAndUserSubscriptionUuid = jest.fn().mockReturnValue(null)
+
     await createService().applyDefaultSubscriptionSettingsForSubscription(userSubscription, SubscriptionName.PlusPlan)
 
     expect(subscriptionSettingRepository.save).toHaveBeenCalledWith(setting)

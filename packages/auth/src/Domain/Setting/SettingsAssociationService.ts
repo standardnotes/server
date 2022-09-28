@@ -52,6 +52,7 @@ export class SettingsAssociationService implements SettingsAssociationServiceInt
         sensitive: false,
         serverEncryptionVersion: EncryptionVersion.Unencrypted,
         value: MuteSignInEmailsOption.NotMuted,
+        replaceable: false,
       },
     ],
     [
@@ -60,6 +61,7 @@ export class SettingsAssociationService implements SettingsAssociationServiceInt
         sensitive: false,
         serverEncryptionVersion: EncryptionVersion.Unencrypted,
         value: MuteMarketingEmailsOption.NotMuted,
+        replaceable: false,
       },
     ],
     [
@@ -68,6 +70,7 @@ export class SettingsAssociationService implements SettingsAssociationServiceInt
         sensitive: false,
         serverEncryptionVersion: EncryptionVersion.Unencrypted,
         value: LogSessionUserAgentOption.Enabled,
+        replaceable: false,
       },
     ],
   ])
@@ -79,6 +82,7 @@ export class SettingsAssociationService implements SettingsAssociationServiceInt
         sensitive: false,
         serverEncryptionVersion: EncryptionVersion.Unencrypted,
         value: LogSessionUserAgentOption.Disabled,
+        replaceable: false,
       },
     ],
   ])
