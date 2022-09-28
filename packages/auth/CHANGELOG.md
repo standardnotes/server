@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.32.11](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.32.10...@standardnotes/auth-server@1.32.11) (2022-09-28)
+
+### Bug Fixes
+
+* **auth:** prevent replacing files bytes used subscription setting upon renewal ([40e6733](https://github.com/standardnotes/server/commit/40e673379bb84bd21bcc8dbcb1aa36caaa2adbf8))
+
 ## [1.32.10](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.32.9...@standardnotes/auth-server@1.32.10) (2022-09-28)
 
 ### Bug Fixes
