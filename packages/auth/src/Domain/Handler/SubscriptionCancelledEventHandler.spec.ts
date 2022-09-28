@@ -87,6 +87,20 @@ describe('SubscriptionCancelledEventHandler', () => {
     ])
   })
 
+  it('should not track statistics for subscriptions that are in a legacy 5 year plan', async () => {
+    event.payload.timestamp = 1642395451516000
+
+    const userSubscription = {
+      createdAt: 1642395451515000,
+      endsAt: 1642395451515000 + 126_230_400_000_001,
+    } as jest.Mocked<UserSubscription>
+    userSubscriptionRepository.findBySubscriptionId = jest.fn().mockReturnValue([userSubscription])
+
+    await createHandler().handle(event)
+
+    expect(statisticsStore.incrementMeasure).not.toHaveBeenCalled()
+  })
+
   it('should update subscription cancelled - user not found', async () => {
     userRepository.findOneByEmail = jest.fn().mockReturnValue(null)
 
