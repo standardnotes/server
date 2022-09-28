@@ -2567,7 +2567,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@standardnotes/common", "workspace:packages/common"],\
             ["@standardnotes/domain-events", "workspace:packages/domain-events"],\
             ["@standardnotes/domain-events-infra", "workspace:packages/domain-events-infra"],\
-            ["@standardnotes/features", "npm:1.50.0"],\
+            ["@standardnotes/features", "npm:1.52.1"],\
             ["@standardnotes/predicates", "workspace:packages/predicates"],\
             ["@standardnotes/responses", "npm:1.6.39"],\
             ["@standardnotes/security", "workspace:packages/security"],\
@@ -2651,7 +2651,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["@standardnotes/domain-events", "workspace:packages/domain-events"],\
             ["@standardnotes/common", "workspace:packages/common"],\
-            ["@standardnotes/features", "npm:1.50.0"],\
+            ["@standardnotes/features", "npm:1.52.1"],\
             ["@standardnotes/predicates", "workspace:packages/predicates"],\
             ["@standardnotes/security", "workspace:packages/security"],\
             ["@types/jest", "npm:28.1.4"],\
@@ -2747,6 +2747,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@standardnotes-features-npm-1.52.0-8c1adf7881-3e6014272f.zip/node_modules/@standardnotes/features/",\
           "packageDependencies": [\
             ["@standardnotes/features", "npm:1.52.0"],\
+            ["@standardnotes/auth", "npm:3.19.4"],\
+            ["@standardnotes/common", "workspace:packages/common"],\
+            ["@standardnotes/security", "workspace:packages/security"],\
+            ["reflect-metadata", "npm:0.1.13"]\
+          ],\
+          "linkType": "HARD"\
+        }],\
+        ["npm:1.52.1", {\
+          "packageLocation": "./.yarn/cache/@standardnotes-features-npm-1.52.1-1fee85cf4e-ff3684399e.zip/node_modules/@standardnotes/features/",\
+          "packageDependencies": [\
+            ["@standardnotes/features", "npm:1.52.1"],\
             ["@standardnotes/auth", "npm:3.19.4"],\
             ["@standardnotes/common", "workspace:packages/common"],\
             ["@standardnotes/security", "workspace:packages/security"],\
