@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.32.10](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.32.9...@standardnotes/auth-server@1.32.10) (2022-09-28)
+
+### Bug Fixes
+
+* **auth:** exclude legacy 5 year plans from subscription length statistics ([c5a07a8](https://github.com/standardnotes/server/commit/c5a07a888aadc22f62a92a236977c266f8d8e1c0))
+
 ## [1.32.9](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.32.8...@standardnotes/auth-server@1.32.9) (2022-09-28)
 
 **Note:** Version bump only for package @standardnotes/auth-server
