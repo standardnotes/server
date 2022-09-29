@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.32.12](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.32.11...@standardnotes/auth-server@1.32.12) (2022-09-29)
+
+### Bug Fixes
+
+* **auth:** reassign not replaceable subscription settings ([477f146](https://github.com/standardnotes/server/commit/477f146725c8e83b86a8224708046d0fd86bfa0b))
+
 ## [1.32.11](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.32.10...@standardnotes/auth-server@1.32.11) (2022-09-28)
 
 ### Bug Fixes
