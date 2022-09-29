@@ -49,6 +49,9 @@ export class SubscriptionSettingService implements SubscriptionSettingServiceInt
           userSubscription.uuid,
         )
         if (existingSetting !== null) {
+          existingSetting.userSubscription = Promise.resolve(userSubscription)
+          await this.subscriptionSettingRepository.save(existingSetting)
+
           continue
         }
       }

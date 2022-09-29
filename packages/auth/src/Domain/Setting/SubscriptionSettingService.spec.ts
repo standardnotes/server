@@ -81,7 +81,7 @@ describe('SubscriptionSettingService', () => {
     expect(subscriptionSettingRepository.save).toHaveBeenCalledWith(setting)
   })
 
-  it('should not replace existing default settings for a subscription if it is not replaceable', async () => {
+  it('should reassign existing default settings for a subscription if it is not replaceable', async () => {
     subscriptionSettingsAssociationService.getDefaultSettingsAndValuesForSubscriptionName = jest.fn().mockReturnValue(
       new Map([
         [
@@ -99,7 +99,7 @@ describe('SubscriptionSettingService', () => {
 
     await createService().applyDefaultSubscriptionSettingsForSubscription(userSubscription, SubscriptionName.PlusPlan)
 
-    expect(subscriptionSettingRepository.save).not.toHaveBeenCalled()
+    expect(subscriptionSettingRepository.save).toHaveBeenCalled()
   })
 
   it('should create default settings for a subscription if it is not replaceable and not existing', async () => {
