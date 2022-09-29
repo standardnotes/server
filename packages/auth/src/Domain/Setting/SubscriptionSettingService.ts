@@ -1,4 +1,4 @@
-import { SubscriptionName } from '@standardnotes/common'
+import { SubscriptionName, Uuid } from '@standardnotes/common'
 import { SubscriptionSettingName } from '@standardnotes/settings'
 import { inject, injectable } from 'inversify'
 import { Logger } from 'winston'
@@ -16,6 +16,7 @@ import { FindSubscriptionSettingDTO } from './FindSubscriptionSettingDTO'
 import { SubscriptionSettingRepositoryInterface } from './SubscriptionSettingRepositoryInterface'
 import { SettingFactoryInterface } from './SettingFactoryInterface'
 import { SubscriptionSettingsAssociationServiceInterface } from './SubscriptionSettingsAssociationServiceInterface'
+import { UserSubscriptionRepositoryInterface } from '../Subscription/UserSubscriptionRepositoryInterface'
 
 @injectable()
 export class SubscriptionSettingService implements SubscriptionSettingServiceInterface {
@@ -26,12 +27,14 @@ export class SubscriptionSettingService implements SubscriptionSettingServiceInt
     @inject(TYPES.SubscriptionSettingsAssociationService)
     private subscriptionSettingAssociationService: SubscriptionSettingsAssociationServiceInterface,
     @inject(TYPES.SettingDecrypter) private settingDecrypter: SettingDecrypterInterface,
+    @inject(TYPES.UserSubscriptionRepository) private userSubscriptionRepository: UserSubscriptionRepositoryInterface,
     @inject(TYPES.Logger) private logger: Logger,
   ) {}
 
   async applyDefaultSubscriptionSettingsForSubscription(
     userSubscription: UserSubscription,
     subscriptionName: SubscriptionName,
+    userUuid: Uuid,
   ): Promise<void> {
     const defaultSettingsWithValues =
       await this.subscriptionSettingAssociationService.getDefaultSettingsAndValuesForSubscriptionName(subscriptionName)
@@ -44,10 +47,7 @@ export class SubscriptionSettingService implements SubscriptionSettingServiceInt
     for (const settingName of defaultSettingsWithValues.keys()) {
       const setting = defaultSettingsWithValues.get(settingName) as SettingDescription
       if (!setting.replaceable) {
-        const existingSetting = await this.subscriptionSettingRepository.findLastByNameAndUserSubscriptionUuid(
-          settingName,
-          userSubscription.uuid,
-        )
+        const existingSetting = await this.findPreviousSubscriptionSetting(settingName, userSubscription.uuid, userUuid)
         if (existingSetting !== null) {
           existingSetting.userSubscription = Promise.resolve(userSubscription)
           await this.subscriptionSettingRepository.save(existingSetting)
@@ -125,5 +125,23 @@ export class SubscriptionSettingService implements SubscriptionSettingServiceInt
       status: 'replaced',
       subscriptionSetting,
     }
+  }
+
+  private async findPreviousSubscriptionSetting(
+    settingName: SubscriptionSettingName,
+    currentUserSubscriptionUuid: Uuid,
+    userUuid: Uuid,
+  ): Promise<SubscriptionSetting | null> {
+    const userSubscriptions = await this.userSubscriptionRepository.findByUserUuid(userUuid)
+    const previousSubscriptions = userSubscriptions.filter(
+      (subscription) => subscription.uuid !== currentUserSubscriptionUuid,
+    )
+    const lastSubscription = previousSubscriptions.shift()
+
+    if (!lastSubscription) {
+      return null
+    }
+
+    return this.subscriptionSettingRepository.findLastByNameAndUserSubscriptionUuid(settingName, lastSubscription.uuid)
   }
 }

@@ -58,6 +58,7 @@ export class SubscriptionReassignedEventHandler implements DomainEventHandlerInt
     await this.subscriptionSettingService.applyDefaultSubscriptionSettingsForSubscription(
       userSubscription,
       event.payload.subscriptionName,
+      user.uuid,
     )
   }
 

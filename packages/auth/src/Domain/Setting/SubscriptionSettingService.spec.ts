@@ -13,6 +13,7 @@ import { SubscriptionName } from '@standardnotes/common'
 import { User } from '../User/User'
 import { SettingFactoryInterface } from './SettingFactoryInterface'
 import { SubscriptionSettingsAssociationServiceInterface } from './SubscriptionSettingsAssociationServiceInterface'
+import { UserSubscriptionRepositoryInterface } from '../Subscription/UserSubscriptionRepositoryInterface'
 
 describe('SubscriptionSettingService', () => {
   let setting: SubscriptionSetting
@@ -22,6 +23,7 @@ describe('SubscriptionSettingService', () => {
   let subscriptionSettingRepository: SubscriptionSettingRepositoryInterface
   let subscriptionSettingsAssociationService: SubscriptionSettingsAssociationServiceInterface
   let settingDecrypter: SettingDecrypterInterface
+  let userSubscriptionRepository: UserSubscriptionRepositoryInterface
   let logger: Logger
 
   const createService = () =>
@@ -30,6 +32,7 @@ describe('SubscriptionSettingService', () => {
       subscriptionSettingRepository,
       subscriptionSettingsAssociationService,
       settingDecrypter,
+      userSubscriptionRepository,
       logger,
     )
 
@@ -50,6 +53,16 @@ describe('SubscriptionSettingService', () => {
     subscriptionSettingRepository = {} as jest.Mocked<SubscriptionSettingRepositoryInterface>
     subscriptionSettingRepository.findLastByNameAndUserSubscriptionUuid = jest.fn().mockReturnValue(null)
     subscriptionSettingRepository.save = jest.fn().mockImplementation((setting) => setting)
+
+    userSubscriptionRepository = {} as jest.Mocked<UserSubscriptionRepositoryInterface>
+    userSubscriptionRepository.findByUserUuid = jest.fn().mockReturnValue([
+      {
+        uuid: 's-1-2-3',
+      } as jest.Mocked<UserSubscription>,
+      {
+        uuid: 's-2-3-4',
+      } as jest.Mocked<UserSubscription>,
+    ])
 
     subscriptionSettingsAssociationService = {} as jest.Mocked<SubscriptionSettingsAssociationServiceInterface>
     subscriptionSettingsAssociationService.getDefaultSettingsAndValuesForSubscriptionName = jest.fn().mockReturnValue(
@@ -76,7 +89,11 @@ describe('SubscriptionSettingService', () => {
   })
 
   it('should create default settings for a subscription', async () => {
-    await createService().applyDefaultSubscriptionSettingsForSubscription(userSubscription, SubscriptionName.PlusPlan)
+    await createService().applyDefaultSubscriptionSettingsForSubscription(
+      userSubscription,
+      SubscriptionName.PlusPlan,
+      '1-2-3',
+    )
 
     expect(subscriptionSettingRepository.save).toHaveBeenCalledWith(setting)
   })
@@ -97,7 +114,11 @@ describe('SubscriptionSettingService', () => {
     )
     subscriptionSettingRepository.findLastByNameAndUserSubscriptionUuid = jest.fn().mockReturnValue(setting)
 
-    await createService().applyDefaultSubscriptionSettingsForSubscription(userSubscription, SubscriptionName.PlusPlan)
+    await createService().applyDefaultSubscriptionSettingsForSubscription(
+      userSubscription,
+      SubscriptionName.PlusPlan,
+      '1-2-3',
+    )
 
     expect(subscriptionSettingRepository.save).toHaveBeenCalled()
   })
@@ -118,7 +139,41 @@ describe('SubscriptionSettingService', () => {
     )
     subscriptionSettingRepository.findLastByNameAndUserSubscriptionUuid = jest.fn().mockReturnValue(null)
 
-    await createService().applyDefaultSubscriptionSettingsForSubscription(userSubscription, SubscriptionName.PlusPlan)
+    await createService().applyDefaultSubscriptionSettingsForSubscription(
+      userSubscription,
+      SubscriptionName.PlusPlan,
+      '1-2-3',
+    )
+
+    expect(subscriptionSettingRepository.save).toHaveBeenCalledWith(setting)
+  })
+
+  it('should create default settings for a subscription if it is not replaceable and no previous subscription existed', async () => {
+    subscriptionSettingsAssociationService.getDefaultSettingsAndValuesForSubscriptionName = jest.fn().mockReturnValue(
+      new Map([
+        [
+          SubscriptionSettingName.FileUploadBytesUsed,
+          {
+            value: '0',
+            sensitive: 0,
+            serverEncryptionVersion: EncryptionVersion.Unencrypted,
+            replaceable: false,
+          },
+        ],
+      ]),
+    )
+    subscriptionSettingRepository.findLastByNameAndUserSubscriptionUuid = jest.fn().mockReturnValue(null)
+    userSubscriptionRepository.findByUserUuid = jest.fn().mockReturnValue([
+      {
+        uuid: '1-2-3',
+      } as jest.Mocked<UserSubscription>,
+    ])
+
+    await createService().applyDefaultSubscriptionSettingsForSubscription(
+      userSubscription,
+      SubscriptionName.PlusPlan,
+      '1-2-3',
+    )
 
     expect(subscriptionSettingRepository.save).toHaveBeenCalledWith(setting)
   })
@@ -128,7 +183,11 @@ describe('SubscriptionSettingService', () => {
       .fn()
       .mockReturnValue(undefined)
 
-    await createService().applyDefaultSubscriptionSettingsForSubscription(userSubscription, SubscriptionName.PlusPlan)
+    await createService().applyDefaultSubscriptionSettingsForSubscription(
+      userSubscription,
+      SubscriptionName.PlusPlan,
+      '1-2-3',
+    )
 
     expect(subscriptionSettingRepository.save).not.toHaveBeenCalled()
   })

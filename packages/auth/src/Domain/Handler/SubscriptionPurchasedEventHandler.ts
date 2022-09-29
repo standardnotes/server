@@ -76,6 +76,7 @@ export class SubscriptionPurchasedEventHandler implements DomainEventHandlerInte
     await this.subscriptionSettingService.applyDefaultSubscriptionSettingsForSubscription(
       userSubscription,
       event.payload.subscriptionName,
+      user.uuid,
     )
 
     const { analyticsId } = await this.getUserAnalyticsId.execute({ userUuid: user.uuid })

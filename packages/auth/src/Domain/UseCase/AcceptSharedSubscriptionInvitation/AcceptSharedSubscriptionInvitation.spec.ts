@@ -104,6 +104,7 @@ describe('AcceptSharedSubscriptionInvitation', () => {
     expect(subscriptionSettingService.applyDefaultSubscriptionSettingsForSubscription).toHaveBeenCalledWith(
       inviteeSubscription,
       'PLUS_PLAN',
+      '123',
     )
   })
 

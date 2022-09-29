@@ -36,6 +36,28 @@ describe('MySQLUserSubscriptionRepository', () => {
     expect(ormRepository.save).toHaveBeenCalledWith(subscription)
   })
 
+  it('should find all subscriptions by user uuid', async () => {
+    const canceledSubscription = {
+      planName: SubscriptionName.ProPlan,
+      cancelled: true,
+    } as jest.Mocked<UserSubscription>
+
+    ormRepository.createQueryBuilder = jest.fn().mockImplementation(() => selectQueryBuilder)
+
+    selectQueryBuilder.where = jest.fn().mockReturnThis()
+    selectQueryBuilder.orderBy = jest.fn().mockReturnThis()
+    selectQueryBuilder.getMany = jest.fn().mockReturnValue([canceledSubscription, subscription])
+
+    const result = await createRepository().findByUserUuid('123')
+
+    expect(selectQueryBuilder.where).toHaveBeenCalledWith('user_uuid = :user_uuid', {
+      user_uuid: '123',
+    })
+    expect(selectQueryBuilder.orderBy).toHaveBeenCalledWith('ends_at', 'DESC')
+    expect(selectQueryBuilder.getMany).toHaveBeenCalled()
+    expect(result).toEqual([canceledSubscription, subscription])
+  })
+
   it('should find one longest lasting uncanceled subscription by user uuid if there are canceled ones', async () => {
     const canceledSubscription = {
       planName: SubscriptionName.ProPlan,

@@ -94,6 +94,7 @@ describe('SubscriptionReassignedEventHandler', () => {
     expect(subscriptionSettingService.applyDefaultSubscriptionSettingsForSubscription).toHaveBeenCalledWith(
       subscription,
       SubscriptionName.ProPlan,
+      '123',
     )
   })
 

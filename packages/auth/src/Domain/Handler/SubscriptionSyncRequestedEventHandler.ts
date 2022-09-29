@@ -89,6 +89,7 @@ export class SubscriptionSyncRequestedEventHandler implements DomainEventHandler
     await this.subscriptionSettingService.applyDefaultSubscriptionSettingsForSubscription(
       userSubscription,
       event.payload.subscriptionName,
+      user.uuid,
     )
 
     await this.settingService.createOrReplace({

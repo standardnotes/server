@@ -130,6 +130,7 @@ describe('SubscriptionSyncRequestedEventHandler', () => {
     expect(subscriptionSettingService.applyDefaultSubscriptionSettingsForSubscription).toHaveBeenCalledWith(
       subscription,
       SubscriptionName.ProPlan,
+      '123',
     )
 
     expect(settingService.createOrReplace).toHaveBeenCalledWith({

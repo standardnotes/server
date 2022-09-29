@@ -1,4 +1,4 @@
-import { SubscriptionName } from '@standardnotes/common'
+import { SubscriptionName, Uuid } from '@standardnotes/common'
 import { UserSubscription } from '../Subscription/UserSubscription'
 
 import { CreateOrReplaceSubscriptionSettingDTO } from './CreateOrReplaceSubscriptionSettingDTO'
@@ -10,6 +10,7 @@ export interface SubscriptionSettingServiceInterface {
   applyDefaultSubscriptionSettingsForSubscription(
     userSubscription: UserSubscription,
     subscriptionName: SubscriptionName,
+    userUuid: Uuid,
   ): Promise<void>
   createOrReplace(dto: CreateOrReplaceSubscriptionSettingDTO): Promise<CreateOrReplaceSubscriptionSettingResponse>
   findSubscriptionSettingWithDecryptedValue(dto: FindSubscriptionSettingDTO): Promise<SubscriptionSetting | null>

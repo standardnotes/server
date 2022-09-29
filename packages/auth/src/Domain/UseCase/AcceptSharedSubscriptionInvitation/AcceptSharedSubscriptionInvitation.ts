@@ -75,6 +75,7 @@ export class AcceptSharedSubscriptionInvitation implements UseCaseInterface {
     await this.subscriptionSettingService.applyDefaultSubscriptionSettingsForSubscription(
       inviteeSubscription,
       inviteeSubscription.planName as SubscriptionName,
+      invitee.uuid,
     )
 
     return {
