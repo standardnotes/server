@@ -45,7 +45,7 @@
   },
   "devDependencies": {
     "@types/ioredis": "^4.28.10",
-    "@types/jest": "^28.1.4",
+    "@types/jest": "^29.1.0",
     "@types/newrelic": "^7.0.3",
     "@types/node": "^18.0.0",
     "@typescript-eslint/eslint-plugin": "^5.29.0",
