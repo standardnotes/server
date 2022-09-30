@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.34.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.33.0...@standardnotes/auth-server@1.34.0) (2022-09-30)
+
+### Features
+
+* **auth:** add measuring new customers ([b6118c1](https://github.com/standardnotes/server/commit/b6118c17e176ba0acc93b95a38e32748ac851410))
+
 # [1.33.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.32.13...@standardnotes/auth-server@1.33.0) (2022-09-30)
 
 ### Features
