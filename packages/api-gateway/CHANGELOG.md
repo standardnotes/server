@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.23.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.22.6...@standardnotes/api-gateway@1.23.0) (2022-09-30)
+
+### Features
+
+* **api-gateway:** add churn metrics to the report ([dfab849](https://github.com/standardnotes/api-gateway/commit/dfab849f48ab782c3cd2e97f52fdb72b7143002f))
+
 ## [1.22.6](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.22.5...@standardnotes/api-gateway@1.22.6) (2022-09-30)
 
 **Note:** Version bump only for package @standardnotes/api-gateway
