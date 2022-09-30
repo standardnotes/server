@@ -42,11 +42,11 @@ export class SubscriptionRefundedEventHandler implements DomainEventHandlerInter
     await this.removeRoleFromSubscriptionUsers(event.payload.subscriptionId, event.payload.subscriptionName)
 
     const { analyticsId } = await this.getUserAnalyticsId.execute({ userUuid: user.uuid })
-    await this.analyticsStore.markActivity([AnalyticsActivity.SubscriptionRefunded], analyticsId, [
-      Period.Today,
-      Period.ThisWeek,
-      Period.ThisMonth,
-    ])
+    await this.analyticsStore.markActivity(
+      [AnalyticsActivity.SubscriptionRefunded, AnalyticsActivity.Churn],
+      analyticsId,
+      [Period.Today, Period.ThisWeek, Period.ThisMonth],
+    )
   }
 
   private async removeRoleFromSubscriptionUsers(

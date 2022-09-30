@@ -11,9 +11,11 @@ export enum AnalyticsActivity {
   SubscriptionRenewed = 'subscription-renewed',
   SubscriptionRefunded = 'subscription-refunded',
   SubscriptionCancelled = 'subscription-cancelled',
+  SubscriptionExpired = 'subscription-expired',
   EmailUnbackedUpData = 'email-unbacked-up-data',
   EmailBackup = 'email-backup',
   LimitedDiscountOfferPurchased = 'limited-discount-offer-purchased',
   PaymentFailed = 'payment-failed',
   PaymentSuccess = 'payment-success',
+  Churn = 'churn',
 }

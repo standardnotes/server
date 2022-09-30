@@ -94,6 +94,7 @@ describe('SubscriptionRenewedEventHandler', () => {
 
     analyticsStore = {} as jest.Mocked<AnalyticsStoreInterface>
     analyticsStore.markActivity = jest.fn()
+    analyticsStore.unmarkActivity = jest.fn()
 
     logger = {} as jest.Mocked<Logger>
     logger.warn = jest.fn()
