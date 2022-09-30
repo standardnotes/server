@@ -108,6 +108,14 @@ export class SubscriptionPurchasedEventHandler implements DomainEventHandlerInte
         Period.Today,
         Period.ThisWeek,
         Period.ThisMonth,
+        Period.ThisYear,
+      ])
+      const activeSubscriptions = await this.userSubscriptionRepository.countActiveSubscriptions()
+      await this.statisticsStore.setMeasure(StatisticsMeasure.TotalCustomers, activeSubscriptions, [
+        Period.Today,
+        Period.ThisWeek,
+        Period.ThisMonth,
+        Period.ThisYear,
       ])
     }
   }

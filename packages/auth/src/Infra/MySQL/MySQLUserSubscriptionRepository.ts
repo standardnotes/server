@@ -1,4 +1,5 @@
 import { Uuid } from '@standardnotes/common'
+import { TimerInterface } from '@standardnotes/time'
 import { inject, injectable } from 'inversify'
 import { Repository } from 'typeorm'
 import TYPES from '../../Bootstrap/Types'
@@ -12,7 +13,17 @@ export class MySQLUserSubscriptionRepository implements UserSubscriptionReposito
   constructor(
     @inject(TYPES.ORMUserSubscriptionRepository)
     private ormRepository: Repository<UserSubscription>,
+    @inject(TYPES.Timer) private timer: TimerInterface,
   ) {}
+
+  async countActiveSubscriptions(): Promise<number> {
+    return await this.ormRepository
+      .createQueryBuilder()
+      .select('user_uuid')
+      .distinct()
+      .where('ends_at > :timestamp', { timestamp: this.timer.getTimestampInMicroseconds() })
+      .getCount()
+  }
 
   async findByUserUuid(userUuid: string): Promise<UserSubscription[]> {
     return await this.ormRepository

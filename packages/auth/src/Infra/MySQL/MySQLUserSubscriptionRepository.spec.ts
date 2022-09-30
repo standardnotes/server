@@ -7,14 +7,16 @@ import { UserSubscription } from '../../Domain/Subscription/UserSubscription'
 
 import { MySQLUserSubscriptionRepository } from './MySQLUserSubscriptionRepository'
 import { UserSubscriptionType } from '../../Domain/Subscription/UserSubscriptionType'
+import { TimerInterface } from '@standardnotes/time'
 
 describe('MySQLUserSubscriptionRepository', () => {
   let ormRepository: Repository<UserSubscription>
   let selectQueryBuilder: SelectQueryBuilder<UserSubscription>
   let updateQueryBuilder: UpdateQueryBuilder<UserSubscription>
   let subscription: UserSubscription
+  let timer: TimerInterface
 
-  const createRepository = () => new MySQLUserSubscriptionRepository(ormRepository)
+  const createRepository = () => new MySQLUserSubscriptionRepository(ormRepository, timer)
 
   beforeEach(() => {
     selectQueryBuilder = {} as jest.Mocked<SelectQueryBuilder<UserSubscription>>
@@ -28,6 +30,9 @@ describe('MySQLUserSubscriptionRepository', () => {
     ormRepository = {} as jest.Mocked<Repository<UserSubscription>>
     ormRepository.createQueryBuilder = jest.fn().mockImplementation(() => selectQueryBuilder)
     ormRepository.save = jest.fn()
+
+    timer = {} as jest.Mocked<TimerInterface>
+    timer.getTimestampInMicroseconds = jest.fn().mockReturnValue(123)
   })
 
   it('should save', async () => {
@@ -56,6 +61,25 @@ describe('MySQLUserSubscriptionRepository', () => {
     expect(selectQueryBuilder.orderBy).toHaveBeenCalledWith('ends_at', 'DESC')
     expect(selectQueryBuilder.getMany).toHaveBeenCalled()
     expect(result).toEqual([canceledSubscription, subscription])
+  })
+
+  it('should count all active subscriptions', async () => {
+    ormRepository.createQueryBuilder = jest.fn().mockImplementation(() => selectQueryBuilder)
+
+    selectQueryBuilder.select = jest.fn().mockReturnThis()
+    selectQueryBuilder.distinct = jest.fn().mockReturnThis()
+    selectQueryBuilder.where = jest.fn().mockReturnThis()
+    selectQueryBuilder.getCount = jest.fn().mockReturnValue(2)
+
+    const result = await createRepository().countActiveSubscriptions()
+
+    expect(selectQueryBuilder.select).toHaveBeenCalledWith('user_uuid')
+    expect(selectQueryBuilder.distinct).toHaveBeenCalled()
+    expect(selectQueryBuilder.where).toHaveBeenCalledWith('ends_at > :timestamp', {
+      timestamp: 123,
+    })
+    expect(selectQueryBuilder.getCount).toHaveBeenCalled()
+    expect(result).toEqual(2)
   })
 
   it('should find one longest lasting uncanceled subscription by user uuid if there are canceled ones', async () => {

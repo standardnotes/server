@@ -12,5 +12,6 @@ export interface UserSubscriptionRepositoryInterface {
   findBySubscriptionId(subscriptionId: number): Promise<UserSubscription[]>
   updateEndsAt(subscriptionId: number, endsAt: number, updatedAt: number): Promise<void>
   updateCancelled(subscriptionId: number, cancelled: boolean, updatedAt: number): Promise<void>
+  countActiveSubscriptions(): Promise<number>
   save(subscription: UserSubscription): Promise<UserSubscription>
 }

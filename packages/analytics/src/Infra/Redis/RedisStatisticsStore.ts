@@ -8,6 +8,16 @@ import { StatisticsStoreInterface } from '../../Domain/Statistics/StatisticsStor
 export class RedisStatisticsStore implements StatisticsStoreInterface {
   constructor(private periodKeyGenerator: PeriodKeyGeneratorInterface, private redisClient: IORedis.Redis) {}
 
+  async setMeasure(measure: StatisticsMeasure, value: number, periods: Period[]): Promise<void> {
+    const pipeline = this.redisClient.pipeline()
+
+    for (const period of periods) {
+      pipeline.set(`count:measure:${measure}:timespan:${this.periodKeyGenerator.getPeriodKey(period)}`, value)
+    }
+
+    await pipeline.exec()
+  }
+
   async getMeasureTotal(measure: StatisticsMeasure, period: Period): Promise<number> {
     const totalValue = await this.redisClient.get(
       `count:measure:${measure}:timespan:${this.periodKeyGenerator.getPeriodKey(period)}`,

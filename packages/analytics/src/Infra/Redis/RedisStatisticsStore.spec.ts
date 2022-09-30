@@ -16,6 +16,7 @@ describe('RedisStatisticsStore', () => {
     pipeline = {} as jest.Mocked<IORedis.Pipeline>
     pipeline.incr = jest.fn()
     pipeline.incrbyfloat = jest.fn()
+    pipeline.set = jest.fn()
     pipeline.setbit = jest.fn()
     pipeline.exec = jest.fn()
 
@@ -89,6 +90,13 @@ describe('RedisStatisticsStore', () => {
     await createStore().incrementOutOfSyncIncidents()
 
     expect(pipeline.incr).toHaveBeenCalled()
+    expect(pipeline.exec).toHaveBeenCalled()
+  })
+
+  it('should set a value to a measure', async () => {
+    await createStore().setMeasure(StatisticsMeasure.Income, 2, [Period.Today, Period.ThisMonth])
+
+    expect(pipeline.set).toHaveBeenCalledTimes(2)
     expect(pipeline.exec).toHaveBeenCalled()
   })
 

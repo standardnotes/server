@@ -49,9 +49,17 @@ export class PeriodKeyGenerator implements PeriodKeyGeneratorInterface {
         return this.getMonthlyKey()
       case Period.LastMonth:
         return this.getMonthlyKey(this.getLastMonthDate())
+      case Period.ThisYear:
+        return this.getYearlyKey()
       default:
         throw new Error(`Unsuporrted period: ${period}`)
     }
+  }
+
+  private getYearlyKey(date?: Date): string {
+    date = date ?? new Date()
+
+    return this.getYear(date)
   }
 
   private getMonthlyKey(date?: Date): string {

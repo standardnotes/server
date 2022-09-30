@@ -73,12 +73,14 @@ describe('SubscriptionPurchasedEventHandler', () => {
 
     statisticsStore = {} as jest.Mocked<StatisticsStoreInterface>
     statisticsStore.incrementMeasure = jest.fn()
+    statisticsStore.setMeasure = jest.fn()
 
     timer = {} as jest.Mocked<TimerInterface>
     timer.convertDateToMicroseconds = jest.fn().mockReturnValue(1)
 
     userSubscriptionRepository = {} as jest.Mocked<UserSubscriptionRepositoryInterface>
     userSubscriptionRepository.countByUserUuid = jest.fn().mockReturnValue(0)
+    userSubscriptionRepository.countActiveSubscriptions = jest.fn().mockReturnValue(13)
     userSubscriptionRepository.save = jest.fn().mockReturnValue(subscription)
 
     offlineUserSubscription = {} as jest.Mocked<OfflineUserSubscription>

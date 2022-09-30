@@ -8,7 +8,13 @@ import { RoleServiceInterface } from '../Role/RoleServiceInterface'
 import { UserRepositoryInterface } from '../User/UserRepositoryInterface'
 import { UserSubscriptionRepositoryInterface } from '../Subscription/UserSubscriptionRepositoryInterface'
 import { OfflineUserSubscriptionRepositoryInterface } from '../Subscription/OfflineUserSubscriptionRepositoryInterface'
-import { AnalyticsStoreInterface, AnalyticsActivity, Period } from '@standardnotes/analytics'
+import {
+  AnalyticsStoreInterface,
+  AnalyticsActivity,
+  Period,
+  StatisticsMeasure,
+  StatisticsStoreInterface,
+} from '@standardnotes/analytics'
 import { GetUserAnalyticsId } from '../UseCase/GetUserAnalyticsId/GetUserAnalyticsId'
 
 @injectable()
@@ -21,6 +27,7 @@ export class SubscriptionExpiredEventHandler implements DomainEventHandlerInterf
     @inject(TYPES.RoleService) private roleService: RoleServiceInterface,
     @inject(TYPES.GetUserAnalyticsId) private getUserAnalyticsId: GetUserAnalyticsId,
     @inject(TYPES.AnalyticsStore) private analyticsStore: AnalyticsStoreInterface,
+    @inject(TYPES.StatisticsStore) private statisticsStore: StatisticsStoreInterface,
     @inject(TYPES.Logger) private logger: Logger,
   ) {}
 
@@ -47,6 +54,14 @@ export class SubscriptionExpiredEventHandler implements DomainEventHandlerInterf
       analyticsId,
       [Period.Today, Period.ThisWeek, Period.ThisMonth],
     )
+
+    const activeSubscriptions = await this.userSubscriptionRepository.countActiveSubscriptions()
+    await this.statisticsStore.setMeasure(StatisticsMeasure.TotalCustomers, activeSubscriptions, [
+      Period.Today,
+      Period.ThisWeek,
+      Period.ThisMonth,
+      Period.ThisYear,
+    ])
   }
 
   private async removeRoleFromSubscriptionUsers(

@@ -14,7 +14,7 @@ import { RoleServiceInterface } from '../Role/RoleServiceInterface'
 import { OfflineUserSubscriptionRepositoryInterface } from '../Subscription/OfflineUserSubscriptionRepositoryInterface'
 import { UserSubscription } from '../Subscription/UserSubscription'
 import { GetUserAnalyticsId } from '../UseCase/GetUserAnalyticsId/GetUserAnalyticsId'
-import { AnalyticsActivity, AnalyticsStoreInterface, Period } from '@standardnotes/analytics'
+import { AnalyticsActivity, AnalyticsStoreInterface, Period, StatisticsStoreInterface } from '@standardnotes/analytics'
 
 describe('SubscriptionRefundedEventHandler', () => {
   let userRepository: UserRepositoryInterface
@@ -27,6 +27,7 @@ describe('SubscriptionRefundedEventHandler', () => {
   let timestamp: number
   let getUserAnalyticsId: GetUserAnalyticsId
   let analyticsStore: AnalyticsStoreInterface
+  let statisticsStore: StatisticsStoreInterface
 
   const createHandler = () =>
     new SubscriptionRefundedEventHandler(
@@ -36,6 +37,7 @@ describe('SubscriptionRefundedEventHandler', () => {
       roleService,
       getUserAnalyticsId,
       analyticsStore,
+      statisticsStore,
       logger,
     )
 
@@ -57,6 +59,7 @@ describe('SubscriptionRefundedEventHandler', () => {
     userSubscriptionRepository = {} as jest.Mocked<UserSubscriptionRepositoryInterface>
     userSubscriptionRepository.updateEndsAt = jest.fn()
     userSubscriptionRepository.countByUserUuid = jest.fn().mockReturnValue(1)
+    userSubscriptionRepository.countActiveSubscriptions = jest.fn().mockReturnValue(13)
     userSubscriptionRepository.findBySubscriptionId = jest
       .fn()
       .mockReturnValue([{ user: Promise.resolve(user) } as jest.Mocked<UserSubscription>])
@@ -85,6 +88,9 @@ describe('SubscriptionRefundedEventHandler', () => {
     analyticsStore = {} as jest.Mocked<AnalyticsStoreInterface>
     analyticsStore.markActivity = jest.fn()
     analyticsStore.wasActivityDone = jest.fn().mockReturnValue(true)
+
+    statisticsStore = {} as jest.Mocked<StatisticsStoreInterface>
+    statisticsStore.setMeasure = jest.fn()
 
     logger = {} as jest.Mocked<Logger>
     logger.info = jest.fn()

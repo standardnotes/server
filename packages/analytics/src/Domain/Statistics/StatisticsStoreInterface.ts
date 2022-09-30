@@ -9,6 +9,7 @@ export interface StatisticsStoreInterface {
   getYesterdayApplicationUsage(): Promise<Array<{ version: string; count: number }>>
   getYesterdayOutOfSyncIncidents(): Promise<number>
   incrementMeasure(measure: StatisticsMeasure, value: number, periods: Period[]): Promise<void>
+  setMeasure(measure: StatisticsMeasure, value: number, periods: Period[]): Promise<void>
   getMeasureAverage(measure: StatisticsMeasure, period: Period): Promise<number>
   getMeasureTotal(measure: StatisticsMeasure, period: Period): Promise<number>
 }
