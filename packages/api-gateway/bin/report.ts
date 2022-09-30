@@ -38,6 +38,8 @@ const requestReport = async (
     AnalyticsActivity.DeleteAccount,
     AnalyticsActivity.SubscriptionCancelled,
     AnalyticsActivity.SubscriptionRefunded,
+    AnalyticsActivity.ExistingCustomersChurn,
+    AnalyticsActivity.NewCustomersChurn,
   ]
 
   for (const analyticsName of thirtyDaysAnalyticsNames) {
@@ -74,6 +76,8 @@ const requestReport = async (
     AnalyticsActivity.GeneralActivityPaidUsers,
     AnalyticsActivity.PaymentFailed,
     AnalyticsActivity.PaymentSuccess,
+    AnalyticsActivity.NewCustomersChurn,
+    AnalyticsActivity.ExistingCustomersChurn,
   ]
 
   for (const activityName of yesterdayActivityNames) {
@@ -98,6 +102,8 @@ const requestReport = async (
     StatisticsMeasure.NotesCountFreeUsers,
     StatisticsMeasure.NotesCountPaidUsers,
     StatisticsMeasure.FilesCount,
+    StatisticsMeasure.NewCustomers,
+    StatisticsMeasure.TotalCustomers,
   ]
   const statisticMeasures = []
   for (const statisticMeasureName of statisticMeasureNames) {
