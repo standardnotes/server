@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.35.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.34.1...@standardnotes/auth-server@1.35.0) (2022-09-30)
+
+### Features
+
+* **auth:** add tracking total customers count ([8a98f74](https://github.com/standardnotes/server/commit/8a98f746eb13c25f7940286aca594e2304232bdf))
+
 ## [1.34.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.34.0...@standardnotes/auth-server@1.34.1) (2022-09-30)
 
 ### Bug Fixes

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.32.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.31.1...@standardnotes/analytics@1.32.0) (2022-09-30)
+
+### Features
+
+* **auth:** add tracking total customers count ([8a98f74](https://github.com/standardnotes/server/commit/8a98f746eb13c25f7940286aca594e2304232bdf))
+
 ## [1.31.1](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.31.0...@standardnotes/analytics@1.31.1) (2022-09-30)
 
 ### Bug Fixes
