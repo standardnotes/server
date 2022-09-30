@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.31.1](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.31.0...@standardnotes/analytics@1.31.1) (2022-09-30)
+
+### Bug Fixes
+
+* **auth:** fix calculating new and existing customers churn ([82bb851](https://github.com/standardnotes/server/commit/82bb85174d94a5e03f364604a1c07a9b1633920d))
+
 # [1.31.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.30.0...@standardnotes/analytics@1.31.0) (2022-09-30)
 
 ### Features

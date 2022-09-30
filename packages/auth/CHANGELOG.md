@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.34.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.34.0...@standardnotes/auth-server@1.34.1) (2022-09-30)
+
+### Bug Fixes
+
+* **auth:** fix calculating new and existing customers churn ([82bb851](https://github.com/standardnotes/server/commit/82bb85174d94a5e03f364604a1c07a9b1633920d))
+
 # [1.34.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.33.0...@standardnotes/auth-server@1.34.0) (2022-09-30)
 
 ### Features
