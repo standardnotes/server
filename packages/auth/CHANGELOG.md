@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.33.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.32.13...@standardnotes/auth-server@1.33.0) (2022-09-30)
+
+### Features
+
+* **auth:** add tracking churn activity ([39337c1](https://github.com/standardnotes/server/commit/39337c1c4f799f39672eeb8c9d050e7cbb19878a))
+
 ## [1.32.13](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.32.12...@standardnotes/auth-server@1.32.13) (2022-09-29)
 
 ### Bug Fixes

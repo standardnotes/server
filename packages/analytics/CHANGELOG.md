@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.30.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.29.1...@standardnotes/analytics@1.30.0) (2022-09-30)
+
+### Features
+
+* **auth:** add tracking churn activity ([39337c1](https://github.com/standardnotes/server/commit/39337c1c4f799f39672eeb8c9d050e7cbb19878a))
+
 ## [1.29.1](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.29.0...@standardnotes/analytics@1.29.1) (2022-09-16)
 
 ### Bug Fixes
