@@ -14,7 +14,7 @@ import { RoleServiceInterface } from '../Role/RoleServiceInterface'
 import { OfflineUserSubscriptionRepositoryInterface } from '../Subscription/OfflineUserSubscriptionRepositoryInterface'
 import { UserSubscription } from '../Subscription/UserSubscription'
 import { GetUserAnalyticsId } from '../UseCase/GetUserAnalyticsId/GetUserAnalyticsId'
-import { AnalyticsStoreInterface } from '@standardnotes/analytics'
+import { AnalyticsActivity, AnalyticsStoreInterface, Period } from '@standardnotes/analytics'
 
 describe('SubscriptionRefundedEventHandler', () => {
   let userRepository: UserRepositoryInterface
@@ -56,6 +56,7 @@ describe('SubscriptionRefundedEventHandler', () => {
 
     userSubscriptionRepository = {} as jest.Mocked<UserSubscriptionRepositoryInterface>
     userSubscriptionRepository.updateEndsAt = jest.fn()
+    userSubscriptionRepository.countByUserUuid = jest.fn().mockReturnValue(1)
     userSubscriptionRepository.findBySubscriptionId = jest
       .fn()
       .mockReturnValue([{ user: Promise.resolve(user) } as jest.Mocked<UserSubscription>])
@@ -83,6 +84,7 @@ describe('SubscriptionRefundedEventHandler', () => {
 
     analyticsStore = {} as jest.Mocked<AnalyticsStoreInterface>
     analyticsStore.markActivity = jest.fn()
+    analyticsStore.wasActivityDone = jest.fn().mockReturnValue(true)
 
     logger = {} as jest.Mocked<Logger>
     logger.info = jest.fn()
@@ -118,5 +120,34 @@ describe('SubscriptionRefundedEventHandler', () => {
 
     expect(roleService.removeUserRole).not.toHaveBeenCalled()
     expect(userSubscriptionRepository.updateEndsAt).not.toHaveBeenCalled()
+  })
+
+  it('should mark churn for new customer', async () => {
+    await createHandler().handle(event)
+
+    expect(analyticsStore.markActivity).toHaveBeenCalledWith([AnalyticsActivity.NewCustomersChurn], 3, [
+      Period.ThisMonth,
+    ])
+  })
+
+  it('should mark churn for existing customer', async () => {
+    userSubscriptionRepository.countByUserUuid = jest.fn().mockReturnValue(3)
+
+    await createHandler().handle(event)
+
+    expect(analyticsStore.markActivity).toHaveBeenCalledWith([AnalyticsActivity.ExistingCustomersChurn], 3, [
+      Period.ThisMonth,
+    ])
+  })
+
+  it('should not mark churn if customer did not purchase subscription in defined analytic periods', async () => {
+    userSubscriptionRepository.countByUserUuid = jest.fn().mockReturnValue(3)
+    analyticsStore.wasActivityDone = jest.fn().mockReturnValue(false)
+
+    await createHandler().handle(event)
+
+    expect(analyticsStore.markActivity).not.toHaveBeenCalledWith([AnalyticsActivity.ExistingCustomersChurn], 3, [
+      Period.ThisMonth,
+    ])
   })
 })

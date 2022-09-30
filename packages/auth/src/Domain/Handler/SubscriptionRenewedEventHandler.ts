@@ -66,11 +66,11 @@ export class SubscriptionRenewedEventHandler implements DomainEventHandlerInterf
       Period.ThisWeek,
       Period.ThisMonth,
     ])
-    await this.analyticsStore.unmarkActivity([AnalyticsActivity.Churn], analyticsId, [
-      Period.Today,
-      Period.ThisWeek,
-      Period.ThisMonth,
-    ])
+    await this.analyticsStore.unmarkActivity(
+      [AnalyticsActivity.ExistingCustomersChurn, AnalyticsActivity.NewCustomersChurn],
+      analyticsId,
+      [Period.Today, Period.ThisWeek, Period.ThisMonth],
+    )
   }
 
   private async addRoleToSubscriptionUsers(subscriptionId: number, subscriptionName: SubscriptionName): Promise<void> {

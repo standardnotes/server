@@ -17,5 +17,6 @@ export enum AnalyticsActivity {
   LimitedDiscountOfferPurchased = 'limited-discount-offer-purchased',
   PaymentFailed = 'payment-failed',
   PaymentSuccess = 'payment-success',
-  Churn = 'churn',
+  NewCustomersChurn = 'new-customers-churn',
+  ExistingCustomersChurn = 'existing-customers-churn',
 }

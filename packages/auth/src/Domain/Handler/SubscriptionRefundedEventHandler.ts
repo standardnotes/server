@@ -1,4 +1,4 @@
-import { SubscriptionName } from '@standardnotes/common'
+import { SubscriptionName, Uuid } from '@standardnotes/common'
 import { DomainEventHandlerInterface, SubscriptionRefundedEvent } from '@standardnotes/domain-events'
 import { inject, injectable } from 'inversify'
 import { Logger } from 'winston'
@@ -42,11 +42,13 @@ export class SubscriptionRefundedEventHandler implements DomainEventHandlerInter
     await this.removeRoleFromSubscriptionUsers(event.payload.subscriptionId, event.payload.subscriptionName)
 
     const { analyticsId } = await this.getUserAnalyticsId.execute({ userUuid: user.uuid })
-    await this.analyticsStore.markActivity(
-      [AnalyticsActivity.SubscriptionRefunded, AnalyticsActivity.Churn],
-      analyticsId,
-      [Period.Today, Period.ThisWeek, Period.ThisMonth],
-    )
+    await this.analyticsStore.markActivity([AnalyticsActivity.SubscriptionRefunded], analyticsId, [
+      Period.Today,
+      Period.ThisWeek,
+      Period.ThisMonth,
+    ])
+
+    await this.markChurnActivity(analyticsId, user.uuid)
   }
 
   private async removeRoleFromSubscriptionUsers(
@@ -65,5 +67,23 @@ export class SubscriptionRefundedEventHandler implements DomainEventHandlerInter
 
   private async updateOfflineSubscriptionEndsAt(subscriptionId: number, timestamp: number): Promise<void> {
     await this.offlineUserSubscriptionRepository.updateEndsAt(subscriptionId, timestamp, timestamp)
+  }
+
+  private async markChurnActivity(analyticsId: number, userUuid: Uuid): Promise<void> {
+    const existingSubscriptionsCount = await this.userSubscriptionRepository.countByUserUuid(userUuid)
+
+    const churnActivity =
+      existingSubscriptionsCount > 1 ? AnalyticsActivity.ExistingCustomersChurn : AnalyticsActivity.NewCustomersChurn
+
+    for (const period of [Period.ThisMonth, Period.ThisWeek, Period.Today]) {
+      const customerPurchasedInPeriod = await this.analyticsStore.wasActivityDone(
+        AnalyticsActivity.SubscriptionPurchased,
+        analyticsId,
+        period,
+      )
+      if (customerPurchasedInPeriod) {
+        await this.analyticsStore.markActivity([churnActivity], analyticsId, [period])
+      }
+    }
   }
 }

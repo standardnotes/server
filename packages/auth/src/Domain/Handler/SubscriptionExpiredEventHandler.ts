@@ -43,7 +43,7 @@ export class SubscriptionExpiredEventHandler implements DomainEventHandlerInterf
 
     const { analyticsId } = await this.getUserAnalyticsId.execute({ userUuid: user.uuid })
     await this.analyticsStore.markActivity(
-      [AnalyticsActivity.SubscriptionExpired, AnalyticsActivity.Churn],
+      [AnalyticsActivity.SubscriptionExpired, AnalyticsActivity.ExistingCustomersChurn],
       analyticsId,
       [Period.Today, Period.ThisWeek, Period.ThisMonth],
     )
