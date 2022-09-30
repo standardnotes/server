@@ -8,4 +8,5 @@ export enum StatisticsMeasure {
   NotesCountFreeUsers = 'notes-count-free-users',
   NotesCountPaidUsers = 'notes-count-paid-users',
   FilesCount = 'files-count',
+  NewCustomers = 'new-customers',
 }

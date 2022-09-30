@@ -104,6 +104,11 @@ export class SubscriptionPurchasedEventHandler implements DomainEventHandlerInte
         event.payload.timestamp - this.timer.convertDateToMicroseconds(user.createdAt),
         [Period.Today, Period.ThisWeek, Period.ThisMonth],
       )
+      await this.statisticsStore.incrementMeasure(StatisticsMeasure.NewCustomers, 1, [
+        Period.Today,
+        Period.ThisWeek,
+        Period.ThisMonth,
+      ])
     }
   }
 
