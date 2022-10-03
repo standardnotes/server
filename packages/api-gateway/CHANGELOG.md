@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.24.2](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.24.1...@standardnotes/api-gateway@1.24.2) (2022-10-03)
+
+### Bug Fixes
+
+* **api-gateway:** report churn values for empty months ([f43fbf1](https://github.com/standardnotes/api-gateway/commit/f43fbf15844be05add905134dfb3e8ca90f78458))
+
 ## [1.24.1](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.24.0...@standardnotes/api-gateway@1.24.1) (2022-10-03)
 
 ### Bug Fixes
