@@ -19,9 +19,8 @@ export class MySQLUserSubscriptionRepository implements UserSubscriptionReposito
   async countActiveSubscriptions(): Promise<number> {
     return await this.ormRepository
       .createQueryBuilder()
-      .select('user_uuid')
-      .distinct()
       .where('ends_at > :timestamp', { timestamp: this.timer.getTimestampInMicroseconds() })
+      .groupBy('user_uuid')
       .getCount()
   }
 

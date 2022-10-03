@@ -66,18 +66,16 @@ describe('MySQLUserSubscriptionRepository', () => {
   it('should count all active subscriptions', async () => {
     ormRepository.createQueryBuilder = jest.fn().mockImplementation(() => selectQueryBuilder)
 
-    selectQueryBuilder.select = jest.fn().mockReturnThis()
-    selectQueryBuilder.distinct = jest.fn().mockReturnThis()
+    selectQueryBuilder.groupBy = jest.fn().mockReturnThis()
     selectQueryBuilder.where = jest.fn().mockReturnThis()
     selectQueryBuilder.getCount = jest.fn().mockReturnValue(2)
 
     const result = await createRepository().countActiveSubscriptions()
 
-    expect(selectQueryBuilder.select).toHaveBeenCalledWith('user_uuid')
-    expect(selectQueryBuilder.distinct).toHaveBeenCalled()
     expect(selectQueryBuilder.where).toHaveBeenCalledWith('ends_at > :timestamp', {
       timestamp: 123,
     })
+    expect(selectQueryBuilder.groupBy).toHaveBeenCalledWith('user_uuid')
     expect(selectQueryBuilder.getCount).toHaveBeenCalled()
     expect(result).toEqual(2)
   })
