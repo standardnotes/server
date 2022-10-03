@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.36.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.35.0...@standardnotes/auth-server@1.36.0) (2022-10-03)
+
+### Features
+
+* **auth:** disallow v1 sign in for users with 004 protocol version ([6a9d479](https://github.com/standardnotes/server/commit/6a9d479f7173268bc0c79b1c7583021989be783a))
+
 # [1.35.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.34.1...@standardnotes/auth-server@1.35.0) (2022-09-30)
 
 ### Features
