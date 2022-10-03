@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.33.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.32.0...@standardnotes/analytics@1.33.0) (2022-10-03)
+
+### Features
+
+* add calculating monthly churn rate ([f075cd8](https://github.com/standardnotes/server/commit/f075cd8c4dfc411ba513dfec21bb84c03b238254))
+
 # [1.32.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.31.1...@standardnotes/analytics@1.32.0) (2022-09-30)
 
 ### Features

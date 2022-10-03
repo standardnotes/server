@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.24.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.23.0...@standardnotes/api-gateway@1.24.0) (2022-10-03)
+
+### Features
+
+* add calculating monthly churn rate ([f075cd8](https://github.com/standardnotes/api-gateway/commit/f075cd8c4dfc411ba513dfec21bb84c03b238254))
+
 # [1.23.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.22.6...@standardnotes/api-gateway@1.23.0) (2022-09-30)
 
 ### Features
