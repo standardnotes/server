@@ -137,7 +137,7 @@ export class InversifyExpressAuthController extends BaseHttpController {
             message: signInResult.errorMessage,
           },
         },
-        401,
+        signInResult.errorCode ?? 401,
       )
     }
 

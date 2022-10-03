@@ -21,6 +21,8 @@ import { UseCaseInterface } from './UseCaseInterface'
 import { PKCERepositoryInterface } from '../User/PKCERepositoryInterface'
 import { CrypterInterface } from '../Encryption/CrypterInterface'
 import { SignInDTOV2Challenged } from './SignInDTOV2Challenged'
+import { ProtocolVersion } from '@standardnotes/common'
+import { HttpStatusCode } from '@standardnotes/api'
 
 @injectable()
 export class SignIn implements UseCaseInterface {
@@ -39,7 +41,8 @@ export class SignIn implements UseCaseInterface {
   ) {}
 
   async execute(dto: SignInDTO): Promise<SignInResponse> {
-    if (this.isCodeChallengedVersion(dto)) {
+    const performingCodeChallengedSignIn = this.isCodeChallengedVersion(dto)
+    if (performingCodeChallengedSignIn) {
       const validCodeVerifier = await this.validateCodeVerifier(dto.codeVerifier)
       if (!validCodeVerifier) {
         this.logger.debug('Code verifier does not match')
@@ -59,6 +62,14 @@ export class SignIn implements UseCaseInterface {
       return {
         success: false,
         errorMessage: 'Invalid email or password',
+      }
+    }
+
+    if (user.version === ProtocolVersion.V004 && !performingCodeChallengedSignIn) {
+      return {
+        success: false,
+        errorMessage: 'Please update your client application.',
+        errorCode: HttpStatusCode.Gone,
       }
     }
 

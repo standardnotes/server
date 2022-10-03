@@ -16,6 +16,7 @@ import { Setting } from '../Setting/Setting'
 import { MuteSignInEmailsOption } from '@standardnotes/settings'
 import { PKCERepositoryInterface } from '../User/PKCERepositoryInterface'
 import { CrypterInterface } from '../Encryption/CrypterInterface'
+import { ProtocolVersion } from '@standardnotes/common'
 
 describe('SignIn', () => {
   let user: User
@@ -50,6 +51,7 @@ describe('SignIn', () => {
     user = {
       uuid: '1-2-3',
       email: 'test@test.com',
+      version: ProtocolVersion.V004,
     } as jest.Mocked<User>
     user.encryptedPassword = '$2a$11$K3g6XoTau8VmLJcai1bB0eD9/YvBSBRtBhMprJOaVZ0U3SgasZH3a'
 
@@ -99,7 +101,10 @@ describe('SignIn', () => {
     logger.error = jest.fn()
   })
 
-  it('should sign in a user', async () => {
+  it('should sign in a legacy user without code verifier', async () => {
+    user.version = ProtocolVersion.V003
+    userRepository.findOneByEmail = jest.fn().mockReturnValue(user)
+
     expect(
       await createUseCase().execute({
         email: 'test@test.te',
@@ -122,6 +127,22 @@ describe('SignIn', () => {
       muteSignInEmailsSettingUuid: '3-4-5',
     })
     expect(domainEventPublisher.publish).toHaveBeenCalled()
+  })
+
+  it('should not sign in a user without code verifier', async () => {
+    expect(
+      await createUseCase().execute({
+        email: 'test@test.te',
+        password: 'qweqwe123123',
+        userAgent: 'Google Chrome',
+        apiVersion: '20190520',
+        ephemeralSession: false,
+      }),
+    ).toEqual({
+      success: false,
+      errorCode: 410,
+      errorMessage: 'Please update your client application.',
+    })
   })
 
   it('should sign in a user with valid code verifier', async () => {
@@ -165,6 +186,7 @@ describe('SignIn', () => {
         userAgent: 'Google Chrome',
         apiVersion: '20190520',
         ephemeralSession: false,
+        codeVerifier: 'test',
       }),
     ).toEqual({
       success: true,
@@ -192,6 +214,7 @@ describe('SignIn', () => {
         userAgent: 'Google Chrome',
         apiVersion: '20190520',
         ephemeralSession: false,
+        codeVerifier: 'test',
       }),
     ).toEqual({
       success: true,
@@ -218,6 +241,7 @@ describe('SignIn', () => {
         email: 'test@test.com',
         encryptedPassword: '$2a$11$K3g6XoTau8VmLJcai1bB0eD9/YvBSBRtBhMprJOaVZ0U3SgasZH3a',
         uuid: '1-2-3',
+        version: '004',
       },
     })
   })
@@ -234,6 +258,7 @@ describe('SignIn', () => {
         userAgent: 'Google Chrome',
         apiVersion: '20190520',
         ephemeralSession: false,
+        codeVerifier: 'test',
       }),
     ).toEqual({
       success: true,
@@ -249,6 +274,7 @@ describe('SignIn', () => {
         userAgent: 'Google Chrome',
         apiVersion: '20190520',
         ephemeralSession: false,
+        codeVerifier: 'test',
       }),
     ).toEqual({
       success: false,
@@ -284,6 +310,7 @@ describe('SignIn', () => {
         userAgent: 'Google Chrome',
         apiVersion: '20190520',
         ephemeralSession: false,
+        codeVerifier: 'test',
       }),
     ).toEqual({
       success: false,
