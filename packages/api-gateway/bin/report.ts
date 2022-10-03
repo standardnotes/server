@@ -26,7 +26,6 @@ const requestReport = async (
   statisticsStore: StatisticsStoreInterface,
   domainEventPublisher: DomainEventPublisherInterface,
   periodKeyGenerator: PeriodKeyGeneratorInterface,
-  logger: Logger,
 ): Promise<void> => {
   const analyticsOverTime = []
 
@@ -141,40 +140,32 @@ const requestReport = async (
   const churnRates = []
   for (const monthPeriodKey of monthlyPeriodKeys) {
     const monthPeriod = periodKeyGenerator.convertPeriodKeyToPeriod(monthPeriodKey)
-    logger.info(`Calculating churn for: ${monthPeriodKey} (${monthPeriod})`)
     const dailyPeriodKeys = periodKeyGenerator.getDiscretePeriodKeys(monthPeriod)
 
     const totalCustomerCounts: Array<number> = []
     for (const dailyPeriodKey of dailyPeriodKeys) {
       const customersCount = await statisticsStore.getMeasureTotal(StatisticsMeasure.TotalCustomers, dailyPeriodKey)
-      logger.info(`Customers count for ${dailyPeriodKey}: ${customersCount}`)
       totalCustomerCounts.push(customersCount)
     }
     const filteredTotalCustomerCounts = totalCustomerCounts.filter((count) => !!count)
-    const averageCustomersCount =
-      filteredTotalCustomerCounts.reduce((total, current) => total + current, 0) / filteredTotalCustomerCounts.length
-    logger.info(
-      `Average customers count for ${monthPeriodKey} (total: ${filteredTotalCustomerCounts.length}): ${averageCustomersCount}`,
-    )
+    const averageCustomersCount = filteredTotalCustomerCounts.length
+      ? filteredTotalCustomerCounts.reduce((total, current) => total + current, 0) / filteredTotalCustomerCounts.length
+      : 0
 
     const existingCustomersChurn = await analyticsStore.calculateActivityTotalCount(
       AnalyticsActivity.ExistingCustomersChurn,
       monthPeriodKey,
     )
-    logger.info(`Existing customers churn ${existingCustomersChurn}`)
     const newCustomersChurn = await analyticsStore.calculateActivityTotalCount(
       AnalyticsActivity.NewCustomersChurn,
       monthPeriodKey,
     )
-    logger.info(`Existing customers churn ${newCustomersChurn}`)
 
     const totalChurn = existingCustomersChurn + newCustomersChurn
 
-    logger.info(`Churn Rate: ${(totalChurn / averageCustomersCount) * 100}`)
-
     churnRates.push({
       periodKey: monthPeriodKey,
-      rate: (totalChurn / averageCustomersCount) * 100,
+      rate: averageCustomersCount ? (totalChurn / averageCustomersCount) * 100 : 0,
     })
   }
 
@@ -229,7 +220,7 @@ void container.load().then((container) => {
   const domainEventPublisher: DomainEventPublisherInterface = container.get(TYPES.DomainEventPublisher)
   const periodKeyGenerator: PeriodKeyGeneratorInterface = container.get(TYPES.PeriodKeyGenerator)
 
-  Promise.resolve(requestReport(analyticsStore, statisticsStore, domainEventPublisher, periodKeyGenerator, logger))
+  Promise.resolve(requestReport(analyticsStore, statisticsStore, domainEventPublisher, periodKeyGenerator))
     .then(() => {
       logger.info('Usage report generation complete')
 
