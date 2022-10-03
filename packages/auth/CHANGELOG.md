@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.36.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.36.0...@standardnotes/auth-server@1.36.1) (2022-10-03)
+
+### Bug Fixes
+
+* **auth:** counting active subscriptions ([e7736bb](https://github.com/standardnotes/server/commit/e7736bba250782a3967fd08c82dbf32884b5b892))
+
 # [1.36.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.35.0...@standardnotes/auth-server@1.36.0) (2022-10-03)
 
 ### Features
