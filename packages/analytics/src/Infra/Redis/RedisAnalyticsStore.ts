@@ -134,9 +134,12 @@ export class RedisAnalyticsStore implements AnalyticsStoreInterface {
     })
   }
 
-  async calculateActivityTotalCount(activity: AnalyticsActivity, period: Period): Promise<number> {
-    return this.redisClient.bitcount(
-      `bitmap:action:${activity}:timespan:${this.periodKeyGenerator.getPeriodKey(period)}`,
-    )
+  async calculateActivityTotalCount(activity: AnalyticsActivity, periodOrPeriodKey: Period | string): Promise<number> {
+    let periodKey = periodOrPeriodKey
+    if (!isNaN(+periodOrPeriodKey)) {
+      periodKey = this.periodKeyGenerator.getPeriodKey(periodOrPeriodKey as Period)
+    }
+
+    return this.redisClient.bitcount(`bitmap:action:${activity}:timespan:${periodKey}`)
   }
 }

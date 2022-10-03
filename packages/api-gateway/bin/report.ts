@@ -136,6 +136,37 @@ const requestReport = async (
     }
   }
 
+  const monthlyPeriodKeys = periodKeyGenerator.getDiscretePeriodKeys(Period.ThisYear)
+  const churnRates = []
+  for (const monthPeriodKey of monthlyPeriodKeys) {
+    const monthPeriod = periodKeyGenerator.convertPeriodKeyToPeriod(monthPeriodKey)
+    const dailyPeriodKeys = periodKeyGenerator.getDiscretePeriodKeys(monthPeriod)
+
+    const totalCustomerCounts: Array<number> = []
+    for (const dailyPeriodKey of dailyPeriodKeys) {
+      totalCustomerCounts.push(await statisticsStore.getMeasureTotal(StatisticsMeasure.TotalCustomers, dailyPeriodKey))
+    }
+    const filteredTotalCustomerCounts = totalCustomerCounts.filter((count) => !!count)
+    const averageCustomersCount =
+      filteredTotalCustomerCounts.reduce((total, current) => total + current, 0) / filteredTotalCustomerCounts.length
+
+    const existingCustomersChurn = await analyticsStore.calculateActivityTotalCount(
+      AnalyticsActivity.ExistingCustomersChurn,
+      monthPeriodKey,
+    )
+    const newCustomersChurn = await analyticsStore.calculateActivityTotalCount(
+      AnalyticsActivity.NewCustomersChurn,
+      monthPeriodKey,
+    )
+
+    const totalChurn = existingCustomersChurn + newCustomersChurn
+
+    churnRates.push({
+      periodKey: monthPeriodKey,
+      rate: totalChurn / averageCustomersCount,
+    })
+  }
+
   const event: DailyAnalyticsReportGeneratedEvent = {
     type: 'DAILY_ANALYTICS_REPORT_GENERATED',
     createdAt: new Date(),
@@ -163,6 +194,10 @@ const requestReport = async (
           },
         },
       ],
+      churn: {
+        periodKeys: monthlyPeriodKeys,
+        values: churnRates,
+      },
     },
   }
 

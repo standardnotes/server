@@ -102,7 +102,7 @@ describe('RedisAnalyticsStore', () => {
     expect(caughtError).not.toBeNull()
   })
 
-  it('should calculate total count of activities', async () => {
+  it('should calculate total count of activities by period', async () => {
     redisClient.bitcount = jest.fn().mockReturnValue(70)
 
     expect(await createStore().calculateActivityTotalCount(AnalyticsActivity.EditingItems, Period.Yesterday)).toEqual(
@@ -110,6 +110,14 @@ describe('RedisAnalyticsStore', () => {
     )
 
     expect(redisClient.bitcount).toHaveBeenCalledWith('bitmap:action:editing-items:timespan:period-key')
+  })
+
+  it('should calculate total count of activities by period key', async () => {
+    redisClient.bitcount = jest.fn().mockReturnValue(70)
+
+    expect(await createStore().calculateActivityTotalCount(AnalyticsActivity.EditingItems, '2022-10-03')).toEqual(70)
+
+    expect(redisClient.bitcount).toHaveBeenCalledWith('bitmap:action:editing-items:timespan:2022-10-03')
   })
 
   it('should calculate activity retention', async () => {

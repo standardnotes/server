@@ -2,6 +2,28 @@ import { Period } from './Period'
 import { PeriodKeyGeneratorInterface } from './PeriodKeyGeneratorInterface'
 
 export class PeriodKeyGenerator implements PeriodKeyGeneratorInterface {
+  private readonly MONTHS = [
+    Period.JanuaryThisYear,
+    Period.FebruaryThisYear,
+    Period.MarchThisYear,
+    Period.AprilThisYear,
+    Period.MayThisYear,
+    Period.JuneThisYear,
+    Period.JulyThisYear,
+    Period.AugustThisYear,
+    Period.SeptemberThisYear,
+    Period.OctoberThisYear,
+    Period.NovemberThisYear,
+    Period.DecemberThisYear,
+  ]
+
+  convertPeriodKeyToPeriod(periodKey: string): Period {
+    const date = new Date(periodKey)
+    const month = this.getMonth(date)
+
+    return this.MONTHS[+month - 1]
+  }
+
   getDiscretePeriodKeys(period: Period): string[] {
     const periodKeys = []
 
@@ -26,6 +48,23 @@ export class PeriodKeyGenerator implements PeriodKeyGeneratorInterface {
         return this.generateMonthlyKeysRange(6, 9)
       case Period.Q4ThisYear:
         return this.generateMonthlyKeysRange(9, 12)
+      case Period.ThisYear:
+        return this.generateMonthlyKeysRange(0, 12)
+      case Period.ThisMonth:
+        return this.generateDailyKeysRange()
+      case Period.JanuaryThisYear:
+      case Period.FebruaryThisYear:
+      case Period.MarchThisYear:
+      case Period.AprilThisYear:
+      case Period.MayThisYear:
+      case Period.JuneThisYear:
+      case Period.JulyThisYear:
+      case Period.AugustThisYear:
+      case Period.SeptemberThisYear:
+      case Period.OctoberThisYear:
+      case Period.NovemberThisYear:
+      case Period.DecemberThisYear:
+        return this.generateDailyKeysRange(period - 15)
       default:
         throw new Error(`Unsuporrted period: ${period}`)
     }
@@ -51,6 +90,30 @@ export class PeriodKeyGenerator implements PeriodKeyGeneratorInterface {
         return this.getMonthlyKey(this.getLastMonthDate())
       case Period.ThisYear:
         return this.getYearlyKey()
+      case Period.JanuaryThisYear:
+        return this.generateMonthlyKeysRange(0, 1)[0]
+      case Period.FebruaryThisYear:
+        return this.generateMonthlyKeysRange(1, 2)[0]
+      case Period.MarchThisYear:
+        return this.generateMonthlyKeysRange(2, 3)[0]
+      case Period.AprilThisYear:
+        return this.generateMonthlyKeysRange(3, 4)[0]
+      case Period.MayThisYear:
+        return this.generateMonthlyKeysRange(4, 5)[0]
+      case Period.JuneThisYear:
+        return this.generateMonthlyKeysRange(5, 6)[0]
+      case Period.JulyThisYear:
+        return this.generateMonthlyKeysRange(6, 7)[0]
+      case Period.AugustThisYear:
+        return this.generateMonthlyKeysRange(7, 8)[0]
+      case Period.SeptemberThisYear:
+        return this.generateMonthlyKeysRange(8, 9)[0]
+      case Period.OctoberThisYear:
+        return this.generateMonthlyKeysRange(9, 10)[0]
+      case Period.NovemberThisYear:
+        return this.generateMonthlyKeysRange(10, 11)[0]
+      case Period.DecemberThisYear:
+        return this.generateMonthlyKeysRange(11, 12)[0]
       default:
         throw new Error(`Unsuporrted period: ${period}`)
     }
@@ -145,6 +208,24 @@ export class PeriodKeyGenerator implements PeriodKeyGeneratorInterface {
       today.setMonth(i)
       today.setDate(1)
       keys.push(this.getMonthlyKey(today))
+    }
+
+    return keys
+  }
+
+  private generateDailyKeysRange(month?: number): string[] {
+    const today = new Date()
+    if (month) {
+      today.setMonth(month)
+    }
+    const numberOfDays = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate()
+
+    const keys = []
+    for (let i = 1; i <= numberOfDays; i++) {
+      const date = new Date()
+      date.setMonth(today.getMonth())
+      date.setDate(i)
+      keys.push(this.getDailyKey(date))
     }
 
     return keys

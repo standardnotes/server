@@ -18,10 +18,13 @@ export class RedisStatisticsStore implements StatisticsStoreInterface {
     await pipeline.exec()
   }
 
-  async getMeasureTotal(measure: StatisticsMeasure, period: Period): Promise<number> {
-    const totalValue = await this.redisClient.get(
-      `count:measure:${measure}:timespan:${this.periodKeyGenerator.getPeriodKey(period)}`,
-    )
+  async getMeasureTotal(measure: StatisticsMeasure, periodOrPeriodKey: Period | string): Promise<number> {
+    let periodKey = periodOrPeriodKey
+    if (!isNaN(+periodOrPeriodKey)) {
+      periodKey = this.periodKeyGenerator.getPeriodKey(periodOrPeriodKey as Period)
+    }
+
+    const totalValue = await this.redisClient.get(`count:measure:${measure}:timespan:${periodKey}`)
 
     if (totalValue === null) {
       return 0

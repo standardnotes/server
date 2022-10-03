@@ -125,4 +125,20 @@ describe('RedisStatisticsStore', () => {
 
     expect(await createStore().getMeasureAverage(StatisticsMeasure.Income, Period.Today)).toEqual(0)
   })
+
+  it('should retrieve a measurement total for period', async () => {
+    redisClient.get = jest.fn().mockReturnValueOnce(5)
+
+    expect(await createStore().getMeasureTotal(StatisticsMeasure.Income, Period.Today)).toEqual(5)
+
+    expect(redisClient.get).toHaveBeenCalledWith('count:measure:income:timespan:period-key')
+  })
+
+  it('should retrieve a measurement total for period key', async () => {
+    redisClient.get = jest.fn().mockReturnValueOnce(5)
+
+    expect(await createStore().getMeasureTotal(StatisticsMeasure.Income, '2022-10-03')).toEqual(5)
+
+    expect(redisClient.get).toHaveBeenCalledWith('count:measure:income:timespan:2022-10-03')
+  })
 })

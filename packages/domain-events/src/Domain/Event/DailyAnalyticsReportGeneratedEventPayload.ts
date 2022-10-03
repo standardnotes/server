@@ -40,4 +40,11 @@ export interface DailyAnalyticsReportGeneratedEventPayload {
       }>
     }
   }>
+  churn: {
+    periodKeys: Array<string>
+    values: Array<{
+      rate: number
+      periodKey: string
+    }>
+  }
 }

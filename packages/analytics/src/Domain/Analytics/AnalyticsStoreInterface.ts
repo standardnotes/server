@@ -12,7 +12,7 @@ export interface AnalyticsStoreInterface {
     secondActivity: AnalyticsActivity
     secondActivityPeriodKey: string
   }): Promise<number>
-  calculateActivityTotalCount(activity: AnalyticsActivity, period: Period): Promise<number>
+  calculateActivityTotalCount(activity: AnalyticsActivity, periodOrPeriodKey: Period | string): Promise<number>
   calculateActivityChangesTotalCount(
     activity: AnalyticsActivity,
     period: Period,
