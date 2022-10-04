@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.35.0](https://github.com/standardnotes/server/compare/@standardnotes/common@1.34.0...@standardnotes/common@1.35.0) (2022-10-04)
+
+### Features
+
+* **auth:** add detailed income stats ([8668fec](https://github.com/standardnotes/server/commit/8668fec33dac1598bdc4d6ca869c296ed6eaa617))
+
 # [1.34.0](https://github.com/standardnotes/server/compare/@standardnotes/common@1.33.0...@standardnotes/common@1.34.0) (2022-10-04)
 
 ### Features

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.62.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.61.1...@standardnotes/domain-events@2.62.0) (2022-10-04)
+
+### Features
+
+* **auth:** add detailed income stats ([8668fec](https://github.com/standardnotes/server/commit/8668fec33dac1598bdc4d6ca869c296ed6eaa617))
+
 ## [2.61.1](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.61.0...@standardnotes/domain-events@2.61.1) (2022-10-04)
 
 **Note:** Version bump only for package @standardnotes/domain-events
