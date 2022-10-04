@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.34.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.33.0...@standardnotes/analytics@1.34.0) (2022-10-04)
+
+### Features
+
+* **analytics:** add new statistics measures for income ([19455ba](https://github.com/standardnotes/server/commit/19455ba6a7d84a389830c728c3dfea550b156985))
+
 # [1.33.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.32.0...@standardnotes/analytics@1.33.0) (2022-10-03)
 
 ### Features

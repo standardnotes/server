@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.36.3](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.36.2...@standardnotes/auth-server@1.36.3) (2022-10-04)
+
+### Bug Fixes
+
+* **auth:** turn down severity of logs for predicate verification ([09b3f9a](https://github.com/standardnotes/server/commit/09b3f9a0d787d2a329f84e2d625ec8a63b4bd847))
+
 ## [1.36.2](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.36.1...@standardnotes/auth-server@1.36.2) (2022-10-03)
 
 **Note:** Version bump only for package @standardnotes/auth-server
