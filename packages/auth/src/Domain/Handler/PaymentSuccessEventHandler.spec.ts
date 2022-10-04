@@ -1,7 +1,7 @@
 import 'reflect-metadata'
 
 import { PaymentSuccessEvent } from '@standardnotes/domain-events'
-import { AnalyticsStoreInterface, StatisticsStoreInterface } from '@standardnotes/analytics'
+import { AnalyticsStoreInterface, Period, StatisticsStoreInterface } from '@standardnotes/analytics'
 
 import { PaymentSuccessEventHandler } from './PaymentSuccessEventHandler'
 import { UserRepositoryInterface } from '../User/UserRepositoryInterface'
@@ -38,14 +38,41 @@ describe('PaymentSuccessEventHandler', () => {
     event.payload = {
       userEmail: 'test@test.com',
       amount: 12.45,
+      billingFrequency: 12,
+      paymentType: 'initial',
+      subscriptionName: 'PRO_PLAN',
     }
   })
 
-  it('should mark payment failed for analytics', async () => {
+  it('should mark payment success for analytics', async () => {
     await createHandler().handle(event)
 
     expect(analyticsStore.markActivity).toHaveBeenCalled()
-    expect(statisticsStore.incrementMeasure).toHaveBeenCalled()
+    expect(statisticsStore.incrementMeasure).toHaveBeenNthCalledWith(
+      2,
+      'pro-subscription-initial-annual-payments-income',
+      12.45,
+      [Period.Today, Period.ThisWeek, Period.ThisMonth],
+    )
+  })
+
+  it('should mark non-detailed payment success statistics for analytics', async () => {
+    event.payload = {
+      userEmail: 'test@test.com',
+      amount: 12.45,
+      billingFrequency: 13,
+      paymentType: 'initial',
+      subscriptionName: 'PRO_PLAN',
+    }
+
+    await createHandler().handle(event)
+
+    expect(statisticsStore.incrementMeasure).toBeCalledTimes(1)
+    expect(statisticsStore.incrementMeasure).toHaveBeenNthCalledWith(1, 'income', 12.45, [
+      Period.Today,
+      Period.ThisWeek,
+      Period.ThisMonth,
+    ])
   })
 
   it('should not mark payment failed for analytics if user is not found', async () => {

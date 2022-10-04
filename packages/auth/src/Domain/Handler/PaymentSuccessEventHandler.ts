@@ -5,6 +5,7 @@ import {
   StatisticsMeasure,
   StatisticsStoreInterface,
 } from '@standardnotes/analytics'
+import { PaymentType, SubscriptionBillingFrequency, SubscriptionName } from '@standardnotes/common'
 import { DomainEventHandlerInterface, PaymentSuccessEvent } from '@standardnotes/domain-events'
 import { inject, injectable } from 'inversify'
 
@@ -14,6 +15,47 @@ import { UserRepositoryInterface } from '../User/UserRepositoryInterface'
 
 @injectable()
 export class PaymentSuccessEventHandler implements DomainEventHandlerInterface {
+  private readonly DETAILED_MEASURES = new Map([
+    [
+      SubscriptionName.PlusPlan,
+      new Map([
+        [
+          PaymentType.Initial,
+          new Map([
+            [SubscriptionBillingFrequency.Monthly, StatisticsMeasure.PlusSubscriptionInitialMonthlyPaymentsIncome],
+            [SubscriptionBillingFrequency.Annual, StatisticsMeasure.PlusSubscriptionInitialAnnualPaymentsIncome],
+          ]),
+        ],
+        [
+          PaymentType.Renewal,
+          new Map([
+            [SubscriptionBillingFrequency.Monthly, StatisticsMeasure.PlusSubscriptionRenewingMonthlyPaymentsIncome],
+            [SubscriptionBillingFrequency.Annual, StatisticsMeasure.PlusSubscriptionRenewingAnnualPaymentsIncome],
+          ]),
+        ],
+      ]),
+    ],
+    [
+      SubscriptionName.ProPlan,
+      new Map([
+        [
+          PaymentType.Initial,
+          new Map([
+            [SubscriptionBillingFrequency.Monthly, StatisticsMeasure.ProSubscriptionInitialMonthlyPaymentsIncome],
+            [SubscriptionBillingFrequency.Annual, StatisticsMeasure.ProSubscriptionInitialAnnualPaymentsIncome],
+          ]),
+        ],
+        [
+          PaymentType.Renewal,
+          new Map([
+            [SubscriptionBillingFrequency.Monthly, StatisticsMeasure.ProSubscriptionRenewingMonthlyPaymentsIncome],
+            [SubscriptionBillingFrequency.Annual, StatisticsMeasure.ProSubscriptionRenewingAnnualPaymentsIncome],
+          ]),
+        ],
+      ]),
+    ],
+  ])
+
   constructor(
     @inject(TYPES.UserRepository) private userRepository: UserRepositoryInterface,
     @inject(TYPES.GetUserAnalyticsId) private getUserAnalyticsId: GetUserAnalyticsId,
@@ -34,10 +76,21 @@ export class PaymentSuccessEventHandler implements DomainEventHandlerInterface {
       Period.ThisMonth,
     ])
 
-    await this.statisticsStore.incrementMeasure(StatisticsMeasure.Income, event.payload.amount, [
-      Period.Today,
-      Period.ThisWeek,
-      Period.ThisMonth,
-    ])
+    const statisticMeasures = [StatisticsMeasure.Income]
+
+    const detailedMeasure = this.DETAILED_MEASURES.get(event.payload.subscriptionName as SubscriptionName)
+      ?.get(event.payload.paymentType as PaymentType)
+      ?.get(event.payload.billingFrequency as SubscriptionBillingFrequency)
+    if (detailedMeasure !== undefined) {
+      statisticMeasures.push(detailedMeasure)
+    }
+
+    for (const measure of statisticMeasures) {
+      await this.statisticsStore.incrementMeasure(measure, event.payload.amount, [
+        Period.Today,
+        Period.ThisWeek,
+        Period.ThisMonth,
+      ])
+    }
   }
 }
