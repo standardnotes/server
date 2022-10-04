@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.34.0](https://github.com/standardnotes/server/compare/@standardnotes/common@1.33.0...@standardnotes/common@1.34.0) (2022-10-04)
+
+### Features
+
+* **common:** add subscription billing frequency ([3c40ee4](https://github.com/standardnotes/server/commit/3c40ee4b4a33dffc35da148a0fa1582c08619733))
+
 # [1.33.0](https://github.com/standardnotes/server/compare/@standardnotes/common@1.32.0...@standardnotes/common@1.33.0) (2022-09-19)
 
 ### Features
