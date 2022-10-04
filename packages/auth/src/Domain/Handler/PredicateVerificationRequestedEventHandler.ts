@@ -23,7 +23,7 @@ export class PredicateVerificationRequestedEventHandler implements DomainEventHa
   ) {}
 
   async handle(event: PredicateVerificationRequestedEvent): Promise<void> {
-    this.logger.info(`Received verification request of predicate: ${event.payload.predicate.name}`)
+    this.logger.debug(`Received verification request of predicate: ${event.payload.predicate.name}`)
 
     let userUuid = event.meta.correlation.userIdentifier
     if (event.meta.correlation.userIdentifierType === 'email') {
@@ -55,7 +55,7 @@ export class PredicateVerificationRequestedEventHandler implements DomainEventHa
       }),
     )
 
-    this.logger.info(
+    this.logger.debug(
       `Published predicate verification (${predicateVerificationResult}) result for: ${event.payload.predicate.name}`,
     )
   }
