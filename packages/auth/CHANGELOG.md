@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.38.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.37.1...@standardnotes/auth-server@1.38.0) (2022-10-05)
+
+### Features
+
+* **auth:** add groups model and database structure ([3091177](https://github.com/standardnotes/server/commit/309117770007b8f2d67dcf86fa2c4b9b436e0aef))
+
 ## [1.37.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.37.0...@standardnotes/auth-server@1.37.1) (2022-10-05)
 
 **Note:** Version bump only for package @standardnotes/auth-server
