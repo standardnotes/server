@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.35.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.34.0...@standardnotes/analytics@1.35.0) (2022-10-05)
+
+### Features
+
+* **api-gateway:** include increments count in statistics measures report ([84e8a5c](https://github.com/standardnotes/server/commit/84e8a5cc6e6ba216f1c0737a7a93aba581eced0f))
+
 # [1.34.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.33.0...@standardnotes/analytics@1.34.0) (2022-10-04)
 
 ### Features

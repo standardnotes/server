@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.26.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.25.0...@standardnotes/api-gateway@1.26.0) (2022-10-05)
+
+### Features
+
+* **api-gateway:** include increments count in statistics measures report ([84e8a5c](https://github.com/standardnotes/api-gateway/commit/84e8a5cc6e6ba216f1c0737a7a93aba581eced0f))
+
 # [1.25.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.24.5...@standardnotes/api-gateway@1.25.0) (2022-10-05)
 
 ### Features
