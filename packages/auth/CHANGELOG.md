@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.38.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.38.0...@standardnotes/auth-server@1.38.1) (2022-10-05)
+
+### Bug Fixes
+
+* **auth:** group typeorm annotations ([a02a26e](https://github.com/standardnotes/server/commit/a02a26ebdcc1decda84b265cd75b4932b7131c76))
+
 # [1.38.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.37.1...@standardnotes/auth-server@1.38.0) (2022-10-05)
 
 ### Features
