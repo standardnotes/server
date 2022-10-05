@@ -1,5 +1,7 @@
 import { DataSource, LoggerOptions } from 'typeorm'
 import { AnalyticsEntity } from '../Domain/Analytics/AnalyticsEntity'
+import { Group } from '../Domain/Group/Group'
+import { GroupUser } from '../Domain/Group/GroupUser'
 import { Permission } from '../Domain/Permission/Permission'
 import { Role } from '../Domain/Role/Role'
 import { RevokedSession } from '../Domain/Session/RevokedSession'
@@ -57,6 +59,8 @@ export const AppDataSource = new DataSource({
     SharedSubscriptionInvitation,
     SubscriptionSetting,
     AnalyticsEntity,
+    Group,
+    GroupUser,
   ],
   migrations: [env.get('DB_MIGRATIONS_PATH', true) ?? 'dist/migrations/*.js'],
   migrationsRun: true,
