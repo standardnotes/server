@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.25.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.24.5...@standardnotes/api-gateway@1.25.0) (2022-10-05)
+
+### Features
+
+* **api-gateway:** add detailed payments statistics to report ([7429f5c](https://github.com/standardnotes/api-gateway/commit/7429f5c8e9dafdba557cdbfb3d9020513fc7a9ee))
+
 ## [1.24.5](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.24.4...@standardnotes/api-gateway@1.24.5) (2022-10-04)
 
 **Note:** Version bump only for package @standardnotes/api-gateway
