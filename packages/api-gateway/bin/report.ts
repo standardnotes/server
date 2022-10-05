@@ -94,6 +94,14 @@ const requestReport = async (
 
   const statisticMeasureNames = [
     StatisticsMeasure.Income,
+    StatisticsMeasure.PlusSubscriptionInitialAnnualPaymentsIncome,
+    StatisticsMeasure.PlusSubscriptionInitialMonthlyPaymentsIncome,
+    StatisticsMeasure.PlusSubscriptionRenewingAnnualPaymentsIncome,
+    StatisticsMeasure.PlusSubscriptionRenewingMonthlyPaymentsIncome,
+    StatisticsMeasure.ProSubscriptionInitialAnnualPaymentsIncome,
+    StatisticsMeasure.ProSubscriptionInitialMonthlyPaymentsIncome,
+    StatisticsMeasure.ProSubscriptionRenewingAnnualPaymentsIncome,
+    StatisticsMeasure.ProSubscriptionRenewingMonthlyPaymentsIncome,
     StatisticsMeasure.Refunds,
     StatisticsMeasure.RegistrationLength,
     StatisticsMeasure.SubscriptionLength,
