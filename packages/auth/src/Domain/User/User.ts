@@ -194,7 +194,12 @@ export class User {
   )
   declare analyticsEntity: Promise<AnalyticsEntity>
 
-  @OneToMany(() => GroupUser, (groupUser) => groupUser.user)
+  @OneToMany(
+    /* istanbul ignore next */
+    () => GroupUser,
+    /* istanbul ignore next */
+    (groupUser) => groupUser.user,
+  )
   declare groups: Promise<Group[]>
 
   supportsSessions(): boolean {

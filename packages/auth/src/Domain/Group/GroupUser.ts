@@ -34,11 +34,31 @@ export class GroupUser {
   })
   declare encryptedGroupKey: string
 
-  @ManyToOne(() => User, (user) => user.groups, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'user_uuid' })
+  @ManyToOne(
+    /* istanbul ignore next */
+    () => User,
+    /* istanbul ignore next */
+    (user) => user.groups,
+    /* istanbul ignore next */
+    { onDelete: 'CASCADE' },
+  )
+  @JoinColumn(
+    /* istanbul ignore next */
+    { name: 'user_uuid' },
+  )
   declare user: Promise<User>
 
-  @ManyToOne(() => Group, (group) => group.users, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'group_uuid' })
+  @ManyToOne(
+    /* istanbul ignore next */
+    () => Group,
+    /* istanbul ignore next */
+    (group) => group.users,
+    /* istanbul ignore next */
+    { onDelete: 'CASCADE' },
+  )
+  @JoinColumn(
+    /* istanbul ignore next */
+    { name: 'group_uuid' },
+  )
   declare group: Promise<Group>
 }

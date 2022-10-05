@@ -13,6 +13,11 @@ export class Group {
   })
   declare type: GroupType
 
-  @OneToMany(() => GroupUser, (groupUser) => groupUser.group)
+  @OneToMany(
+    /* istanbul ignore next */
+    () => GroupUser,
+    /* istanbul ignore next */
+    (groupUser) => groupUser.group,
+  )
   declare users: Promise<User[]>
 }
