@@ -121,6 +121,7 @@ const requestReport = async (
         period,
         totalValue: await statisticsStore.getMeasureTotal(statisticMeasureName, period),
         average: await statisticsStore.getMeasureAverage(statisticMeasureName, period),
+        increments: await statisticsStore.getMeasureIncrementCounts(statisticMeasureName, period),
       })
     }
   }

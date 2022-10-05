@@ -12,4 +12,5 @@ export interface StatisticsStoreInterface {
   setMeasure(measure: StatisticsMeasure, value: number, periods: Period[]): Promise<void>
   getMeasureAverage(measure: StatisticsMeasure, period: Period): Promise<number>
   getMeasureTotal(measure: StatisticsMeasure, periodOrPeriodKey: Period | string): Promise<number>
+  getMeasureIncrementCounts(measure: StatisticsMeasure, period: Period): Promise<number>
 }

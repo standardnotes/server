@@ -8,6 +8,17 @@ import { StatisticsStoreInterface } from '../../Domain/Statistics/StatisticsStor
 export class RedisStatisticsStore implements StatisticsStoreInterface {
   constructor(private periodKeyGenerator: PeriodKeyGeneratorInterface, private redisClient: IORedis.Redis) {}
 
+  async getMeasureIncrementCounts(measure: StatisticsMeasure, period: Period): Promise<number> {
+    const increments = await this.redisClient.get(
+      `count:increments:${measure}:timespan:${this.periodKeyGenerator.getPeriodKey(period)}`,
+    )
+    if (increments === null) {
+      return 0
+    }
+
+    return +increments
+  }
+
   async setMeasure(measure: StatisticsMeasure, value: number, periods: Period[]): Promise<void> {
     const pipeline = this.redisClient.pipeline()
 
@@ -45,16 +56,15 @@ export class RedisStatisticsStore implements StatisticsStoreInterface {
   }
 
   async getMeasureAverage(measure: StatisticsMeasure, period: Period): Promise<number> {
-    const increments = await this.redisClient.get(
-      `count:increments:${measure}:timespan:${this.periodKeyGenerator.getPeriodKey(period)}`,
-    )
-    if (increments === null) {
+    const increments = await this.getMeasureIncrementCounts(measure, period)
+
+    if (increments === 0) {
       return 0
     }
 
     const totalValue = await this.getMeasureTotal(measure, period)
 
-    return totalValue / +increments
+    return totalValue / increments
   }
 
   async getYesterdayOutOfSyncIncidents(): Promise<number> {
