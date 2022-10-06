@@ -2532,7 +2532,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["eslint", "npm:8.19.0"],\
             ["eslint-plugin-prettier", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:4.2.1"],\
             ["express", "npm:4.18.1"],\
-            ["helmet", "npm:5.1.1"],\
+            ["helmet", "npm:6.0.0"],\
             ["inversify", "npm:6.0.1"],\
             ["inversify-express-utils", "npm:6.4.3"],\
             ["ioredis", "npm:5.2.0"],\
@@ -2793,7 +2793,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["eslint-plugin-prettier", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:4.2.1"],\
             ["express", "npm:4.18.1"],\
             ["express-winston", "virtual:b442cf0427cc365d1c137f7340f9b81f9b204561afe791a8564ae9590c3a7fc4b5f793aaf8817b946f75a3cb64d03ef8790eb847f8b576b41e700da7b00c240c#npm:4.2.0"],\
-            ["helmet", "npm:5.1.1"],\
+            ["helmet", "npm:6.0.0"],\
             ["inversify", "npm:6.0.1"],\
             ["inversify-express-utils", "npm:6.4.3"],\
             ["ioredis", "npm:5.2.0"],\
@@ -3042,7 +3042,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["eslint", "npm:8.19.0"],\
             ["eslint-plugin-prettier", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:4.2.1"],\
             ["express", "npm:4.18.1"],\
-            ["helmet", "npm:5.1.1"],\
+            ["helmet", "npm:6.0.0"],\
             ["inversify", "npm:6.0.1"],\
             ["inversify-express-utils", "npm:6.4.3"],\
             ["ioredis", "npm:5.2.0"],\
@@ -7296,10 +7296,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["helmet", [\
-        ["npm:5.1.1", {\
-          "packageLocation": "./.yarn/cache/helmet-npm-5.1.1-d12265628c-b72ba26cc4.zip/node_modules/helmet/",\
+        ["npm:6.0.0", {\
+          "packageLocation": "./.yarn/cache/helmet-npm-6.0.0-2285459f57-0dd89d5b77.zip/node_modules/helmet/",\
           "packageDependencies": [\
-            ["helmet", "npm:5.1.1"]\
+            ["helmet", "npm:6.0.0"]\
           ],\
           "linkType": "HARD"\
         }]\
