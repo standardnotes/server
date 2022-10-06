@@ -1,16 +1,6 @@
 import { DataSource, LoggerOptions } from 'typeorm'
-import { AnalyticsEntity } from '../Domain/Analytics/AnalyticsEntity'
-import { Permission } from '../Domain/Permission/Permission'
-import { Role } from '../Domain/Role/Role'
-import { RevokedSession } from '../Domain/Session/RevokedSession'
-import { Session } from '../Domain/Session/Session'
-import { OfflineSetting } from '../Domain/Setting/OfflineSetting'
-import { Setting } from '../Domain/Setting/Setting'
-import { SubscriptionSetting } from '../Domain/Setting/SubscriptionSetting'
-import { SharedSubscriptionInvitation } from '../Domain/SharedSubscription/SharedSubscriptionInvitation'
-import { OfflineUserSubscription } from '../Domain/Subscription/OfflineUserSubscription'
-import { UserSubscription } from '../Domain/Subscription/UserSubscription'
-import { User } from '../Domain/User/User'
+import { Workspace } from '../Domain/Workspace/Workspace'
+import { WorkspaceUser } from '../Domain/Workspace/WorkspaceUser'
 import { Env } from './Env'
 
 const env: Env = new Env()
@@ -44,20 +34,7 @@ export const AppDataSource = new DataSource({
     ],
     removeNodeErrorCount: 10,
   },
-  entities: [
-    User,
-    UserSubscription,
-    OfflineUserSubscription,
-    Session,
-    RevokedSession,
-    Role,
-    Permission,
-    Setting,
-    OfflineSetting,
-    SharedSubscriptionInvitation,
-    SubscriptionSetting,
-    AnalyticsEntity,
-  ],
+  entities: [Workspace, WorkspaceUser],
   migrations: [env.get('DB_MIGRATIONS_PATH', true) ?? 'dist/migrations/*.js'],
   migrationsRun: true,
   logging: <LoggerOptions>env.get('DB_DEBUG_LEVEL'),

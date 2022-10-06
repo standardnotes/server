@@ -63,6 +63,9 @@
     },
     {
       "path": "./packages/time"
+    },
+    {
+      "path": "./packages/workspace"
     }
   ]
 }

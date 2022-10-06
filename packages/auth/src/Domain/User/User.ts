@@ -5,8 +5,6 @@ import { Setting } from '../Setting/Setting'
 import { UserSubscription } from '../Subscription/UserSubscription'
 import { AnalyticsEntity } from '../Analytics/AnalyticsEntity'
 import { ProtocolVersion } from '@standardnotes/common'
-import { Group } from '../Group/Group'
-import { GroupUser } from '../Group/GroupUser'
 
 @Entity({ name: 'users' })
 export class User {
@@ -193,14 +191,6 @@ export class User {
     { lazy: true, eager: false },
   )
   declare analyticsEntity: Promise<AnalyticsEntity>
-
-  @OneToMany(
-    /* istanbul ignore next */
-    () => GroupUser,
-    /* istanbul ignore next */
-    (groupUser) => groupUser.user,
-  )
-  declare groups: Promise<Group[]>
 
   supportsSessions(): boolean {
     return parseInt(this.version) >= parseInt(ProtocolVersion.V004)

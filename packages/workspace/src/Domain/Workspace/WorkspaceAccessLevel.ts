@@ -1,4 +1,4 @@
-export enum GroupAccessLevel {
+export enum WorkspaceAccessLevel {
   Owner = 'owner',
   Admin = 'admin',
   ReadOnly = 'read-only',

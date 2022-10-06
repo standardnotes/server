@@ -79,6 +79,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       {\
         "name": "@standardnotes/time",\
         "reference": "workspace:packages/time"\
+      },\
+      {\
+        "name": "@standardnotes/workspace-server",\
+        "reference": "workspace:packages/workspace"\
       }\
     ],\
     "enableTopLevelFallback": true,\
@@ -99,7 +103,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ["@standardnotes/settings", ["workspace:packages/settings"]],\
       ["@standardnotes/sncrypto-node", ["workspace:packages/sncrypto-node"]],\
       ["@standardnotes/syncing-server", ["workspace:packages/syncing-server"]],\
-      ["@standardnotes/time", ["workspace:packages/time"]]\
+      ["@standardnotes/time", ["workspace:packages/time"]],\
+      ["@standardnotes/workspace-server", ["workspace:packages/workspace"]]\
     ],\
     "fallbackPool": [\
     ],\
@@ -3097,6 +3102,43 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["reflect-metadata", "npm:0.1.13"]\
           ],\
           "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@standardnotes/workspace-server", [\
+        ["workspace:packages/workspace", {\
+          "packageLocation": "./packages/workspace/",\
+          "packageDependencies": [\
+            ["@standardnotes/workspace-server", "workspace:packages/workspace"],\
+            ["@newrelic/winston-enricher", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:4.0.0"],\
+            ["@sentry/node", "npm:7.5.0"],\
+            ["@standardnotes/common", "workspace:packages/common"],\
+            ["@standardnotes/domain-events", "workspace:packages/domain-events"],\
+            ["@standardnotes/domain-events-infra", "workspace:packages/domain-events-infra"],\
+            ["@standardnotes/security", "workspace:packages/security"],\
+            ["@types/cors", "npm:2.8.12"],\
+            ["@types/express", "npm:4.17.13"],\
+            ["@types/ioredis", "npm:4.28.10"],\
+            ["@types/jest", "npm:28.1.4"],\
+            ["@types/newrelic", "npm:7.0.3"],\
+            ["@typescript-eslint/eslint-plugin", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:5.30.5"],\
+            ["aws-sdk", "npm:2.1168.0"],\
+            ["cors", "npm:2.8.5"],\
+            ["dotenv", "npm:16.0.1"],\
+            ["eslint", "npm:8.19.0"],\
+            ["eslint-plugin-prettier", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:4.2.1"],\
+            ["express", "npm:4.18.1"],\
+            ["inversify", "npm:6.0.1"],\
+            ["inversify-express-utils", "npm:6.4.3"],\
+            ["ioredis", "npm:5.2.0"],\
+            ["jest", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:28.1.2"],\
+            ["mysql2", "npm:2.3.3"],\
+            ["newrelic", "npm:9.0.0"],\
+            ["reflect-metadata", "npm:0.1.13"],\
+            ["ts-jest", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:28.0.5"],\
+            ["typeorm", "virtual:31b5a94a105c89c9294c3d524a7f8929fe63ee5a2efadf21951ca4c0cfd2ecf02e8f4ef5a066bbda091f1e3a56e57c6749069a080618c96b22e51131a330fc4a#npm:0.3.7"],\
+            ["winston", "npm:3.8.1"]\
+          ],\
+          "linkType": "SOFT"\
         }]\
       ]],\
       ["@szmarczak/http-timer", [\
