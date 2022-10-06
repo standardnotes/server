@@ -72,6 +72,6 @@
     "eslint-plugin-prettier": "^4.0.0",
     "jest": "^28.1.2",
     "npm-check-updates": "^16.0.1",
-    "ts-jest": "^28.0.5"
+    "ts-jest": "^29.0.3"
   }
 }
