@@ -8,6 +8,7 @@ import {
 import { PaymentType, SubscriptionBillingFrequency, SubscriptionName } from '@standardnotes/common'
 import { DomainEventHandlerInterface, PaymentSuccessEvent } from '@standardnotes/domain-events'
 import { inject, injectable } from 'inversify'
+import { Logger } from 'winston'
 
 import TYPES from '../../Bootstrap/Types'
 import { GetUserAnalyticsId } from '../UseCase/GetUserAnalyticsId/GetUserAnalyticsId'
@@ -61,6 +62,7 @@ export class PaymentSuccessEventHandler implements DomainEventHandlerInterface {
     @inject(TYPES.GetUserAnalyticsId) private getUserAnalyticsId: GetUserAnalyticsId,
     @inject(TYPES.AnalyticsStore) private analyticsStore: AnalyticsStoreInterface,
     @inject(TYPES.StatisticsStore) private statisticsStore: StatisticsStoreInterface,
+    @inject(TYPES.Logger) private logger: Logger,
   ) {}
 
   async handle(event: PaymentSuccessEvent): Promise<void> {
@@ -83,6 +85,10 @@ export class PaymentSuccessEventHandler implements DomainEventHandlerInterface {
       ?.get(event.payload.billingFrequency as SubscriptionBillingFrequency)
     if (detailedMeasure !== undefined) {
       statisticMeasures.push(detailedMeasure)
+    } else {
+      this.logger.warn(
+        `Could not find detailed measure for: subscription - ${event.payload.subscriptionName}, payment type - ${event.payload.paymentType}, billing frequency - ${event.payload.billingFrequency}`,
+      )
     }
 
     for (const measure of statisticMeasures) {

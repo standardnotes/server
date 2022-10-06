@@ -7,6 +7,7 @@ import { PaymentSuccessEventHandler } from './PaymentSuccessEventHandler'
 import { UserRepositoryInterface } from '../User/UserRepositoryInterface'
 import { User } from '../User/User'
 import { GetUserAnalyticsId } from '../UseCase/GetUserAnalyticsId/GetUserAnalyticsId'
+import { Logger } from 'winston'
 
 describe('PaymentSuccessEventHandler', () => {
   let userRepository: UserRepositoryInterface
@@ -15,9 +16,10 @@ describe('PaymentSuccessEventHandler', () => {
   let getUserAnalyticsId: GetUserAnalyticsId
   let analyticsStore: AnalyticsStoreInterface
   let statisticsStore: StatisticsStoreInterface
+  let logger: Logger
 
   const createHandler = () =>
-    new PaymentSuccessEventHandler(userRepository, getUserAnalyticsId, analyticsStore, statisticsStore)
+    new PaymentSuccessEventHandler(userRepository, getUserAnalyticsId, analyticsStore, statisticsStore, logger)
 
   beforeEach(() => {
     user = {} as jest.Mocked<User>
@@ -42,6 +44,9 @@ describe('PaymentSuccessEventHandler', () => {
       paymentType: 'initial',
       subscriptionName: 'PRO_PLAN',
     }
+
+    logger = {} as jest.Mocked<Logger>
+    logger.warn = jest.fn()
   })
 
   it('should mark payment success for analytics', async () => {
