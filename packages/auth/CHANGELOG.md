@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.39.2](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.39.1...@standardnotes/auth-server@1.39.2) (2022-10-06)
+
+### Bug Fixes
+
+* **auth:** add warning logs for unrecognized payment type ([d21517a](https://github.com/standardnotes/server/commit/d21517abe6a7ed4773e73e83a347bae69495c084))
+
 ## [1.39.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.39.0...@standardnotes/auth-server@1.39.1) (2022-10-06)
 
 **Note:** Version bump only for package @standardnotes/auth-server
