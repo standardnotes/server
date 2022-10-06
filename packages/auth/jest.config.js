@@ -1,19 +1,12 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const base = require('../../jest.config');
+const base = require('../../jest.config')
+const { defaults: tsjPreset } = require('ts-jest/presets')
 
 module.exports = {
   ...base,
-  globals: {
-    'ts-jest': {
-      tsconfig: 'tsconfig.json',
-    },
+  transform: {
+    ...tsjPreset.transform,
   },
-  coveragePathIgnorePatterns: [
-    '/Bootstrap/',
-    '/InversifyExpressUtils/',
-    'HealthCheckController'
-  ],
-  setupFilesAfterEnv: [
-    './test-setup.ts'
-  ]
-};
+  coveragePathIgnorePatterns: ['/Bootstrap/', '/InversifyExpressUtils/', 'HealthCheckController'],
+  setupFilesAfterEnv: ['./test-setup.ts'],
+}
