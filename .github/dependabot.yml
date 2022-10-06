@@ -85,6 +85,11 @@ updates:
     schedule:
       interval: "daily"
 
+  - package-ecosystem: "npm"
+    directory: "/packages/workspace"
+    schedule:
+      interval: "daily"
+
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
