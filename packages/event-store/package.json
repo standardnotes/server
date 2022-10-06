@@ -28,7 +28,7 @@
     "eslint": "^8.14.0",
     "eslint-plugin-prettier": "^4.2.1",
     "jest": "^28.1.2",
-    "ts-jest": "^28.0.5"
+    "ts-jest": "^29.0.3"
   },
   "dependencies": {
     "@standardnotes/domain-events": "workspace:*",
