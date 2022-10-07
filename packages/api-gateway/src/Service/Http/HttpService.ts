@@ -16,6 +16,7 @@ export class HttpService implements HttpServiceInterface {
     @inject(TYPES.SYNCING_SERVER_JS_URL) private syncingServerJsUrl: string,
     @inject(TYPES.PAYMENTS_SERVER_URL) private paymentsServerUrl: string,
     @inject(TYPES.FILES_SERVER_URL) private filesServerUrl: string,
+    @inject(TYPES.WORKSPACE_SERVER_URL) private workspaceServerUrl: string,
     @inject(TYPES.HTTP_CALL_TIMEOUT) private httpCallTimeout: number,
     @inject(TYPES.CrossServiceTokenCache) private crossServiceTokenCache: CrossServiceTokenCacheInterface,
     @inject(TYPES.Logger) private logger: Logger,
@@ -46,6 +47,15 @@ export class HttpService implements HttpServiceInterface {
     payload?: Record<string, unknown> | string,
   ): Promise<void> {
     await this.callServer(this.authServerUrl, request, response, endpoint, payload)
+  }
+
+  async callWorkspaceServer(
+    request: Request,
+    response: Response,
+    endpoint: string,
+    payload?: Record<string, unknown> | string,
+  ): Promise<void> {
+    await this.callServer(this.workspaceServerUrl, request, response, endpoint, payload)
   }
 
   async callPaymentsServer(

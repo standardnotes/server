@@ -21,6 +21,15 @@ import {
 } from '@standardnotes/domain-events-infra'
 import { ApiGatewayAuthMiddleware } from '../Controller/ApiGatewayAuthMiddleware'
 import { CrossServiceTokenData, TokenDecoder, TokenDecoderInterface } from '@standardnotes/security'
+import { WorkspaceRepositoryInterface } from '../Domain/Workspace/WorkspaceRepositoryInterface'
+import { MySQLWorkspaceRepository } from '../Infra/MySQL/MySQLWorkspaceRepository'
+import { WorkspaceUserRepositoryInterface } from '../Domain/Workspace/WorkspaceUserRepositoryInterface'
+import { MySQLWorkspaceUserRepository } from '../Infra/MySQL/MySQLWorkspaceUserRepository'
+import { Repository } from 'typeorm'
+import { Workspace } from '../Domain/Workspace/Workspace'
+import { WorkspaceUser } from '../Domain/Workspace/WorkspaceUser'
+import { CreateWorkspace } from '../Domain/UseCase/CreateWorkspace/CreateWorkspace'
+import { WorkspacesController } from '../Controller/WorkspacesController'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -82,8 +91,17 @@ export class ContainerConfigLoader {
     }
 
     // Controller
+    container.bind<WorkspacesController>(TYPES.WorkspacesController).to(WorkspacesController)
     // Repositories
+    container.bind<WorkspaceRepositoryInterface>(TYPES.WorkspaceRepository).to(MySQLWorkspaceRepository)
+    container.bind<WorkspaceUserRepositoryInterface>(TYPES.WorkspaceUserRepository).to(MySQLWorkspaceUserRepository)
     // ORM
+    container
+      .bind<Repository<Workspace>>(TYPES.ORMWorkspaceRepository)
+      .toConstantValue(AppDataSource.getRepository(Workspace))
+    container
+      .bind<Repository<WorkspaceUser>>(TYPES.ORMWorkspaceUserRepository)
+      .toConstantValue(AppDataSource.getRepository(WorkspaceUser))
     // Middleware
     container.bind<ApiGatewayAuthMiddleware>(TYPES.ApiGatewayAuthMiddleware).to(ApiGatewayAuthMiddleware)
     // env vars
@@ -97,6 +115,7 @@ export class ContainerConfigLoader {
     container.bind(TYPES.VERSION).toConstantValue(env.get('VERSION'))
 
     // use cases
+    container.bind(TYPES.CreateWorkspace).to(CreateWorkspace)
     // Handlers
     // Services
     container

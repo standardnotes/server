@@ -4,8 +4,13 @@ const TYPES = {
   SNS: Symbol.for('SNS'),
   SQS: Symbol.for('SQS'),
   // Controller
+  WorkspacesController: Symbol.for('WorkspacesController'),
   // Repositories
+  WorkspaceRepository: Symbol.for('WorkspaceRepository'),
+  WorkspaceUserRepository: Symbol.for('WorkspaceUserRepository'),
   // ORM
+  ORMWorkspaceRepository: Symbol.for('ORMWorkspaceRepository'),
+  ORMWorkspaceUserRepository: Symbol.for('ORMWorkspaceUserRepository'),
   // Middleware
   ApiGatewayAuthMiddleware: Symbol.for('ApiGatewayAuthMiddleware'),
   // env vars
@@ -19,6 +24,7 @@ const TYPES = {
   NEW_RELIC_ENABLED: Symbol.for('NEW_RELIC_ENABLED'),
   VERSION: Symbol.for('VERSION'),
   // use cases
+  CreateWorkspace: Symbol.for('CreateWorkspace'),
   // Handlers
   // Services
   CrossServiceTokenDecoder: Symbol.for('CrossServiceTokenDecoder'),

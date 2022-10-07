@@ -19,6 +19,7 @@ import '../src/Controller/v1/TokensController'
 import '../src/Controller/v1/OfflineController'
 import '../src/Controller/v1/FilesController'
 import '../src/Controller/v1/SubscriptionInvitesController'
+import '../src/Controller/v1/WorkspacesController'
 
 import '../src/Controller/v2/PaymentsControllerV2'
 import '../src/Controller/v2/ActionsControllerV2'
