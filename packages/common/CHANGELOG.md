@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.36.0](https://github.com/standardnotes/server/compare/@standardnotes/common@1.35.1...@standardnotes/common@1.36.0) (2022-10-07)
+
+### Features
+
+* add user protocol version to the user registration event ([868b7d1](https://github.com/standardnotes/server/commit/868b7d149a572d1991b77daaa37e4c77e10f07d3))
+
 ## [1.35.1](https://github.com/standardnotes/server/compare/@standardnotes/common@1.35.0...@standardnotes/common@1.35.1) (2022-10-06)
 
 **Note:** Version bump only for package @standardnotes/common

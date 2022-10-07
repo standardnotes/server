@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.64.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.63.1...@standardnotes/domain-events@2.64.0) (2022-10-07)
+
+### Features
+
+* add user protocol version to the user registration event ([868b7d1](https://github.com/standardnotes/server/commit/868b7d149a572d1991b77daaa37e4c77e10f07d3))
+
 ## [2.63.1](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.63.0...@standardnotes/domain-events@2.63.1) (2022-10-06)
 
 **Note:** Version bump only for package @standardnotes/domain-events

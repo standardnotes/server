@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.40.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.39.2...@standardnotes/auth-server@1.40.0) (2022-10-07)
+
+### Features
+
+* add user protocol version to the user registration event ([868b7d1](https://github.com/standardnotes/server/commit/868b7d149a572d1991b77daaa37e4c77e10f07d3))
+
 ## [1.39.2](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.39.1...@standardnotes/auth-server@1.39.2) (2022-10-06)
 
 ### Bug Fixes
