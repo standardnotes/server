@@ -7,7 +7,6 @@ import {
   GoogleDriveBackupFailedEvent,
   ItemsSyncedEvent,
   OneDriveBackupFailedEvent,
-  UserRegisteredEvent,
 } from '@standardnotes/domain-events'
 import { TimerInterface } from '@standardnotes/time'
 import { inject, injectable } from 'inversify'
@@ -110,24 +109,6 @@ export class DomainEventFactory implements DomainEventFactoryInterface {
         origin: DomainEventService.SyncingServer,
       },
       payload: dto,
-    }
-  }
-
-  createUserRegisteredEvent(userUuid: string, email: string): UserRegisteredEvent {
-    return {
-      type: 'USER_REGISTERED',
-      createdAt: this.timer.getUTCDate(),
-      meta: {
-        correlation: {
-          userIdentifier: userUuid,
-          userIdentifierType: 'uuid',
-        },
-        origin: DomainEventService.SyncingServer,
-      },
-      payload: {
-        userUuid,
-        email,
-      },
     }
   }
 

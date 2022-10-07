@@ -1,4 +1,4 @@
-import { EmailMessageIdentifier, RoleName, Uuid } from '@standardnotes/common'
+import { EmailMessageIdentifier, ProtocolVersion, RoleName, Uuid } from '@standardnotes/common'
 import {
   AccountDeletionRequestedEvent,
   UserEmailChangedEvent,
@@ -253,21 +253,22 @@ export class DomainEventFactory implements DomainEventFactoryInterface {
     }
   }
 
-  createUserRegisteredEvent(userUuid: string, email: string): UserRegisteredEvent {
+  createUserRegisteredEvent(dto: {
+    userUuid: string
+    email: string
+    protocolVersion: ProtocolVersion
+  }): UserRegisteredEvent {
     return {
       type: 'USER_REGISTERED',
       createdAt: this.timer.getUTCDate(),
       meta: {
         correlation: {
-          userIdentifier: userUuid,
+          userIdentifier: dto.userUuid,
           userIdentifierType: 'uuid',
         },
         origin: DomainEventService.Auth,
       },
-      payload: {
-        userUuid,
-        email,
-      },
+      payload: dto,
     }
   }
 

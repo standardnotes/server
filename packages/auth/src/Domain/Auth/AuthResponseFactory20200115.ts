@@ -3,7 +3,7 @@ import {
   SessionTokenData,
   TokenEncoderInterface,
 } from '@standardnotes/security'
-import { Uuid } from '@standardnotes/common'
+import { ProtocolVersion, Uuid } from '@standardnotes/common'
 import { SessionBody } from '@standardnotes/responses'
 import { inject, injectable } from 'inversify'
 import { Logger } from 'winston'
@@ -48,7 +48,11 @@ export class AuthResponseFactory20200115 extends AuthResponseFactory20190520 {
     return {
       session: sessionPayload,
       key_params: this.keyParamsFactory.create(dto.user, true),
-      user: this.userProjector.projectSimple(dto.user) as { uuid: Uuid; email: string },
+      user: this.userProjector.projectSimple(dto.user) as {
+        uuid: Uuid
+        email: string
+        protocolVersion: ProtocolVersion
+      },
     }
   }
 

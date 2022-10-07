@@ -11,6 +11,7 @@ import TYPES from '../Bootstrap/Types'
 import { ClearLoginAttempts } from '../Domain/UseCase/ClearLoginAttempts'
 import { Register } from '../Domain/UseCase/Register'
 import { DomainEventFactoryInterface } from '../Domain/Event/DomainEventFactoryInterface'
+import { ProtocolVersion } from '@standardnotes/common'
 
 @injectable()
 export class AuthController implements UserServerInterface {
@@ -59,10 +60,11 @@ export class AuthController implements UserServerInterface {
     await this.clearLoginAttempts.execute({ email: registerResult.authResponse.user.email as string })
 
     await this.domainEventPublisher.publish(
-      this.domainEventFactory.createUserRegisteredEvent(
-        <string>registerResult.authResponse.user.uuid,
-        <string>registerResult.authResponse.user.email,
-      ),
+      this.domainEventFactory.createUserRegisteredEvent({
+        userUuid: <string>registerResult.authResponse.user.uuid,
+        email: <string>registerResult.authResponse.user.email,
+        protocolVersion: (<string>registerResult.authResponse.user.protocolVersion) as ProtocolVersion,
+      }),
     )
 
     return {

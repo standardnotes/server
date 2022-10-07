@@ -1,5 +1,6 @@
-import { TimerInterface } from '@standardnotes/time'
 import 'reflect-metadata'
+
+import { TimerInterface } from '@standardnotes/time'
 
 import { DomainEventFactory } from './DomainEventFactory'
 
@@ -11,24 +12,6 @@ describe('DomainEventFactory', () => {
   beforeEach(() => {
     timer = {} as jest.Mocked<TimerInterface>
     timer.getUTCDate = jest.fn().mockReturnValue(new Date(1))
-  })
-
-  it('should create a USER_REGISTERED event', () => {
-    expect(createFactory().createUserRegisteredEvent('1-2-3', 'test@test.te')).toEqual({
-      createdAt: expect.any(Date),
-      meta: {
-        correlation: {
-          userIdentifier: '1-2-3',
-          userIdentifierType: 'uuid',
-        },
-        origin: 'syncing-server',
-      },
-      payload: {
-        userUuid: '1-2-3',
-        email: 'test@test.te',
-      },
-      type: 'USER_REGISTERED',
-    })
   })
 
   it('should create a ITEMS_SYNCED event', () => {

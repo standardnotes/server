@@ -6,6 +6,7 @@ import { UserRegisteredEventHandler } from './UserRegisteredEventHandler'
 import { AxiosInstance } from 'axios'
 import { GetUserAnalyticsId } from '../UseCase/GetUserAnalyticsId/GetUserAnalyticsId'
 import { AnalyticsStoreInterface } from '@standardnotes/analytics'
+import { ProtocolVersion } from '@standardnotes/common'
 
 describe('UserRegisteredEventHandler', () => {
   let httpClient: AxiosInstance
@@ -35,6 +36,7 @@ describe('UserRegisteredEventHandler', () => {
     event.payload = {
       userUuid: '1-2-3',
       email: 'test@test.te',
+      protocolVersion: ProtocolVersion.V004,
     }
 
     getUserAnalyticsId = {} as jest.Mocked<GetUserAnalyticsId>

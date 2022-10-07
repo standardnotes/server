@@ -1,6 +1,6 @@
 import 'reflect-metadata'
 
-import { EmailMessageIdentifier, RoleName } from '@standardnotes/common'
+import { EmailMessageIdentifier, ProtocolVersion, RoleName } from '@standardnotes/common'
 import { PredicateName, PredicateAuthority, PredicateVerificationResult } from '@standardnotes/predicates'
 import { TimerInterface } from '@standardnotes/time'
 
@@ -212,7 +212,13 @@ describe('DomainEventFactory', () => {
   })
 
   it('should create a USER_REGISTERED event', () => {
-    expect(createFactory().createUserRegisteredEvent('1-2-3', 'test@test.te')).toEqual({
+    expect(
+      createFactory().createUserRegisteredEvent({
+        userUuid: '1-2-3',
+        email: 'test@test.te',
+        protocolVersion: ProtocolVersion.V004,
+      }),
+    ).toEqual({
       createdAt: expect.any(Date),
       meta: {
         correlation: {
@@ -224,6 +230,7 @@ describe('DomainEventFactory', () => {
       payload: {
         userUuid: '1-2-3',
         email: 'test@test.te',
+        protocolVersion: '004',
       },
       type: 'USER_REGISTERED',
     })

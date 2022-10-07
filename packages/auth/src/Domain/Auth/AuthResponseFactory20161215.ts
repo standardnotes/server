@@ -1,5 +1,5 @@
 import { SessionTokenData, TokenEncoderInterface } from '@standardnotes/security'
-import { Uuid } from '@standardnotes/common'
+import { ProtocolVersion, Uuid } from '@standardnotes/common'
 import * as crypto from 'crypto'
 
 import { inject, injectable } from 'inversify'
@@ -39,7 +39,11 @@ export class AuthResponseFactory20161215 implements AuthResponseFactoryInterface
     this.logger.debug(`Created JWT token for user ${dto.user.uuid}: ${token}`)
 
     return {
-      user: this.userProjector.projectSimple(dto.user) as { uuid: Uuid; email: string },
+      user: this.userProjector.projectSimple(dto.user) as {
+        uuid: Uuid
+        email: string
+        protocolVersion: ProtocolVersion
+      },
       token,
     }
   }

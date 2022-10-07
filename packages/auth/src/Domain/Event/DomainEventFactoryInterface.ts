@@ -1,4 +1,4 @@
-import { Uuid, RoleName, EmailMessageIdentifier } from '@standardnotes/common'
+import { Uuid, RoleName, EmailMessageIdentifier, ProtocolVersion } from '@standardnotes/common'
 import { Predicate, PredicateVerificationResult } from '@standardnotes/predicates'
 import {
   AccountDeletionRequestedEvent,
@@ -33,7 +33,11 @@ export interface DomainEventFactoryInterface {
     muteSignInEmailsSettingUuid: Uuid
   }): UserSignedInEvent
   createListedAccountRequestedEvent(userUuid: string, userEmail: string): ListedAccountRequestedEvent
-  createUserRegisteredEvent(userUuid: string, email: string): UserRegisteredEvent
+  createUserRegisteredEvent(dto: {
+    userUuid: string
+    email: string
+    protocolVersion: ProtocolVersion
+  }): UserRegisteredEvent
   createEmailBackupRequestedEvent(
     userUuid: string,
     muteEmailsSettingUuid: string,

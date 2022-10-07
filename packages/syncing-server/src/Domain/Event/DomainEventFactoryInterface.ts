@@ -6,11 +6,9 @@ import {
   GoogleDriveBackupFailedEvent,
   ItemsSyncedEvent,
   OneDriveBackupFailedEvent,
-  UserRegisteredEvent,
 } from '@standardnotes/domain-events'
 
 export interface DomainEventFactoryInterface {
-  createUserRegisteredEvent(userUuid: string, email: string): UserRegisteredEvent
   createDropboxBackupFailedEvent(muteCloudEmailsSettingUuid: string, email: string): DropboxBackupFailedEvent
   createGoogleDriveBackupFailedEvent(muteCloudEmailsSettingUuid: string, email: string): GoogleDriveBackupFailedEvent
   createOneDriveBackupFailedEvent(muteCloudEmailsSettingUuid: string, email: string): OneDriveBackupFailedEvent

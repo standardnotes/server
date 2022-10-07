@@ -9,6 +9,7 @@ export class UserProjector implements ProjectorInterface<User> {
     return {
       uuid: user.uuid,
       email: user.email,
+      protocolVersion: user.version,
     }
   }
 
