@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.27.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.26.2...@standardnotes/api-gateway@1.27.0) (2022-10-07)
+
+### Features
+
+* add workspaces creation ([156ab65](https://github.com/standardnotes/api-gateway/commit/156ab6527265351b13797394cbd34da037ab5a38))
+
 ## [1.26.2](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.26.1...@standardnotes/api-gateway@1.26.2) (2022-10-07)
 
 **Note:** Version bump only for package @standardnotes/api-gateway
