@@ -30,9 +30,15 @@ export class CreateWorkspace implements UseCaseInterface {
 
     const ownerAssociation = new WorkspaceUser()
     ownerAssociation.accessLevel = WorkspaceAccessLevel.Owner
-    ownerAssociation.encryptedWorkspaceKey = dto.encryptedWorkspaceKey
-    ownerAssociation.encryptedPrivateKey = dto.encryptedPrivateKey
-    ownerAssociation.publicKey = dto.publicKey
+    if (dto.encryptedWorkspaceKey !== undefined) {
+      ownerAssociation.encryptedWorkspaceKey = dto.encryptedWorkspaceKey
+    }
+    if (dto.encryptedPrivateKey !== undefined) {
+      ownerAssociation.encryptedPrivateKey = dto.encryptedPrivateKey
+    }
+    if (dto.publicKey !== undefined) {
+      ownerAssociation.publicKey = dto.publicKey
+    }
     ownerAssociation.status = WorkspaceUserStatus.Active
     ownerAssociation.userUuid = dto.ownerUuid
     ownerAssociation.workspaceUuid = workspace.uuid

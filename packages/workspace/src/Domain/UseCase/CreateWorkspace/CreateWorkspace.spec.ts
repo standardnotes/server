@@ -51,11 +51,8 @@ describe('CreateWorkspace', () => {
     })
   })
 
-  it('should create a workspace without a name and owner association with it', async () => {
+  it('should create a workspace without optional parameters', async () => {
     await createUseCase().execute({
-      encryptedPrivateKey: 'foo',
-      encryptedWorkspaceKey: 'bar',
-      publicKey: 'buzz',
       ownerUuid: '1-2-3',
       type: WorkspaceType.Private,
     })
@@ -65,9 +62,6 @@ describe('CreateWorkspace', () => {
     })
     expect(workspaceUserRepository.save).toHaveBeenCalledWith({
       accessLevel: 'owner',
-      encryptedWorkspaceKey: 'bar',
-      encryptedPrivateKey: 'foo',
-      publicKey: 'buzz',
       status: 'active',
       userUuid: '1-2-3',
       workspaceUuid: 'w-1-2-3',

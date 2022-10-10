@@ -38,15 +38,17 @@ export class WorkspaceUser {
     name: 'public_key',
     length: 255,
     type: 'varchar',
+    nullable: true,
   })
-  declare publicKey: string
+  declare publicKey: string | null
 
   @Column({
     name: 'encrypted_private_key',
     length: 255,
     type: 'varchar',
+    nullable: true,
   })
-  declare encryptedPrivateKey: string
+  declare encryptedPrivateKey: string | null
 
   @Column({
     name: 'status',
