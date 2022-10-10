@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.2](https://github.com/standardnotes/server/compare/@standardnotes/workspace-server@1.2.1...@standardnotes/workspace-server@1.2.2) (2022-10-10)
+
+### Bug Fixes
+
+* **workspace:** extract workspace type to common types ([0ea88ad](https://github.com/standardnotes/server/commit/0ea88ad202d54de79d1433183c1706823639da93))
+
 ## [1.2.1](https://github.com/standardnotes/server/compare/@standardnotes/workspace-server@1.2.0...@standardnotes/workspace-server@1.2.1) (2022-10-10)
 
 ### Bug Fixes

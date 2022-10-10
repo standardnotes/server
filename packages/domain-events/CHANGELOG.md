@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.64.1](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.64.0...@standardnotes/domain-events@2.64.1) (2022-10-10)
+
+**Note:** Version bump only for package @standardnotes/domain-events
+
 # [2.64.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.63.1...@standardnotes/domain-events@2.64.0) (2022-10-07)
 
 ### Features

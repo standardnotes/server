@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.36.1](https://github.com/standardnotes/server/compare/@standardnotes/common@1.36.0...@standardnotes/common@1.36.1) (2022-10-10)
+
+### Bug Fixes
+
+* **workspace:** extract workspace type to common types ([0ea88ad](https://github.com/standardnotes/server/commit/0ea88ad202d54de79d1433183c1706823639da93))
+
 # [1.36.0](https://github.com/standardnotes/server/compare/@standardnotes/common@1.35.1...@standardnotes/common@1.36.0) (2022-10-07)
 
 ### Features
