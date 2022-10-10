@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/standardnotes/server/compare/@standardnotes/event-store@1.3.25...@standardnotes/event-store@1.4.0) (2022-10-10)
+
+### Features
+
+* add workspace invite created event ([db4c49c](https://github.com/standardnotes/server/commit/db4c49c57b81bfea6b8c6b8774c6a30e0561e154))
+
 ## [1.3.25](https://github.com/standardnotes/server/compare/@standardnotes/event-store@1.3.24...@standardnotes/event-store@1.3.25) (2022-10-10)
 
 **Note:** Version bump only for package @standardnotes/event-store

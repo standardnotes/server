@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.65.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.64.1...@standardnotes/domain-events@2.65.0) (2022-10-10)
+
+### Features
+
+* add workspace invite created event ([db4c49c](https://github.com/standardnotes/server/commit/db4c49c57b81bfea6b8c6b8774c6a30e0561e154))
+
 ## [2.64.1](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.64.0...@standardnotes/domain-events@2.64.1) (2022-10-10)
 
 **Note:** Version bump only for package @standardnotes/domain-events
