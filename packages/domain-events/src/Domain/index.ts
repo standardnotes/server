@@ -100,6 +100,8 @@ export * from './Event/UserRolesChangedEvent'
 export * from './Event/UserRolesChangedEventPayload'
 export * from './Event/UserSignedInEvent'
 export * from './Event/UserSignedInEventPayload'
+export * from './Event/WorkspaceInviteCreatedEvent'
+export * from './Event/WorkspaceInviteCreatedEventPayload'
 
 export * from './Handler/DomainEventHandlerInterface'
 export * from './Handler/DomainEventMessageHandlerInterface'
