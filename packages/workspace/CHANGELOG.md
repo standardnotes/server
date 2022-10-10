@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/standardnotes/server/compare/@standardnotes/workspace-server@1.3.0...@standardnotes/workspace-server@1.4.0) (2022-10-10)
+
+### Features
+
+* **workspace:** add inviting to workspace ([e06cc3b](https://github.com/standardnotes/server/commit/e06cc3ba80fd3bbf8a5fb0e176bc76b4318a36e9))
+
 # [1.3.0](https://github.com/standardnotes/server/compare/@standardnotes/workspace-server@1.2.3...@standardnotes/workspace-server@1.3.0) (2022-10-10)
 
 ### Features
