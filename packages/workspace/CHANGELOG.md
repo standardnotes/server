@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.5.0](https://github.com/standardnotes/server/compare/@standardnotes/workspace-server@1.4.1...@standardnotes/workspace-server@1.5.0) (2022-10-10)
+
+### Features
+
+* **workspace:** add publishing workspace invite created ([6f9683c](https://github.com/standardnotes/server/commit/6f9683c41a1135489832d9a854a114c82825a647))
+
 ## [1.4.1](https://github.com/standardnotes/server/compare/@standardnotes/workspace-server@1.4.0...@standardnotes/workspace-server@1.4.1) (2022-10-10)
 
 **Note:** Version bump only for package @standardnotes/workspace-server
