@@ -42,11 +42,11 @@ export class WorkspaceUser {
   declare publicKey: string
 
   @Column({
-    name: 'private_key',
+    name: 'encrypted_private_key',
     length: 255,
     type: 'varchar',
   })
-  declare privateKey: string
+  declare encryptedPrivateKey: string
 
   @Column({
     name: 'status',

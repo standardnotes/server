@@ -41,7 +41,7 @@ describe('CreateWorkspace', () => {
     expect(workspaceUserRepository.save).toHaveBeenCalledWith({
       accessLevel: 'owner',
       encryptedWorkspaceKey: 'bar',
-      privateKey: 'foo',
+      encryptedPrivateKey: 'foo',
       publicKey: 'buzz',
       status: 'active',
       userUuid: '1-2-3',
@@ -64,7 +64,7 @@ describe('CreateWorkspace', () => {
     expect(workspaceUserRepository.save).toHaveBeenCalledWith({
       accessLevel: 'owner',
       encryptedWorkspaceKey: 'bar',
-      privateKey: 'foo',
+      encryptedPrivateKey: 'foo',
       publicKey: 'buzz',
       status: 'active',
       userUuid: '1-2-3',
