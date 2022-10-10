@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.37.0](https://github.com/standardnotes/server/compare/@standardnotes/common@1.36.1...@standardnotes/common@1.37.0) (2022-10-10)
+
+### Features
+
+* **common:** add WORKSPACE_INVITE_CREATED email message identifier ([15d960d](https://github.com/standardnotes/server/commit/15d960d47b0bcf5aeddf869ac939eafb08166db7))
+
 ## [1.36.1](https://github.com/standardnotes/server/compare/@standardnotes/common@1.36.0...@standardnotes/common@1.36.1) (2022-10-10)
 
 ### Bug Fixes
