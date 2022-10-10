@@ -1,5 +1,6 @@
 import { WorkspaceType } from '@standardnotes/common'
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
+import { WorkspaceInvite } from '../Invite/WorkspaceInvite'
 
 @Entity({ name: 'workspaces' })
 export class Workspace {
@@ -23,4 +24,24 @@ export class Workspace {
     default: 0,
   })
   declare keyRotationIndex: number
+
+  @Column({
+    name: 'created_at',
+    type: 'bigint',
+  })
+  declare createdAt: number
+
+  @Column({
+    name: 'updated_at',
+    type: 'bigint',
+  })
+  declare updatedAt: number
+
+  @OneToMany(
+    /* istanbul ignore next */
+    () => WorkspaceInvite,
+    /* istanbul ignore next */
+    (workspaceInvite) => workspaceInvite.workspace,
+  )
+  declare invites: Promise<WorkspaceInvite[]>
 }

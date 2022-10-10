@@ -61,4 +61,16 @@ export class WorkspaceUser {
     default: 0,
   })
   declare keyRotationIndex: number
+
+  @Column({
+    name: 'created_at',
+    type: 'bigint',
+  })
+  declare createdAt: number
+
+  @Column({
+    name: 'updated_at',
+    type: 'bigint',
+  })
+  declare updatedAt: number
 }

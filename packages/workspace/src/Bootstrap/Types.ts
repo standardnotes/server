@@ -8,9 +8,11 @@ const TYPES = {
   // Repositories
   WorkspaceRepository: Symbol.for('WorkspaceRepository'),
   WorkspaceUserRepository: Symbol.for('WorkspaceUserRepository'),
+  WorkspaceInviteRepository: Symbol.for('WorkspaceInviteRepository'),
   // ORM
   ORMWorkspaceRepository: Symbol.for('ORMWorkspaceRepository'),
   ORMWorkspaceUserRepository: Symbol.for('ORMWorkspaceUserRepository'),
+  ORMWorkspaceInviteRepository: Symbol.for('ORMWorkspaceInviteRepository'),
   // Middleware
   ApiGatewayAuthMiddleware: Symbol.for('ApiGatewayAuthMiddleware'),
   // env vars
@@ -25,9 +27,11 @@ const TYPES = {
   VERSION: Symbol.for('VERSION'),
   // use cases
   CreateWorkspace: Symbol.for('CreateWorkspace'),
+  InviteToWorkspace: Symbol.for('InviteToWorkspace'),
   // Handlers
   UserRegisteredEventHandler: Symbol.for('UserRegisteredEventHandler'),
   // Services
+  Timer: Symbol.for('Timer'),
   CrossServiceTokenDecoder: Symbol.for('CrossServiceTokenDecoder'),
   DomainEventPublisher: Symbol.for('DomainEventPublisher'),
   DomainEventSubscriberFactory: Symbol.for('DomainEventSubscriberFactory'),

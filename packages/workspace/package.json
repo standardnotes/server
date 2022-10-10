@@ -30,6 +30,7 @@
     "@standardnotes/domain-events": "workspace:^",
     "@standardnotes/domain-events-infra": "workspace:^",
     "@standardnotes/security": "workspace:*",
+    "@standardnotes/time": "workspace:^",
     "aws-sdk": "^2.1159.0",
     "cors": "2.8.5",
     "dotenv": "^16.0.1",

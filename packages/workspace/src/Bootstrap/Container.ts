@@ -7,6 +7,7 @@ import {
   DomainEventMessageHandlerInterface,
   DomainEventSubscriberFactoryInterface,
 } from '@standardnotes/domain-events'
+import { TimerInterface, Timer } from '@standardnotes/time'
 import { Env } from './Env'
 import TYPES from './Types'
 import { AppDataSource } from './DataSource'
@@ -31,6 +32,10 @@ import { WorkspaceUser } from '../Domain/Workspace/WorkspaceUser'
 import { CreateWorkspace } from '../Domain/UseCase/CreateWorkspace/CreateWorkspace'
 import { WorkspacesController } from '../Controller/WorkspacesController'
 import { UserRegisteredEventHandler } from '../Domain/Handler/UserRegisteredEventHandler'
+import { WorkspaceInviteRepositoryInterface } from '../Domain/Invite/WorkspaceInviteRepositoryInterface'
+import { MySQLWorkspaceInviteRepository } from '../Infra/MySQL/MySQLWorkspaceInviteRepository'
+import { WorkspaceInvite } from '../Domain/Invite/WorkspaceInvite'
+import { InviteToWorkspace } from '../Domain/UseCase/InviteToWorkspace/InviteToWorkspace'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -96,6 +101,9 @@ export class ContainerConfigLoader {
     // Repositories
     container.bind<WorkspaceRepositoryInterface>(TYPES.WorkspaceRepository).to(MySQLWorkspaceRepository)
     container.bind<WorkspaceUserRepositoryInterface>(TYPES.WorkspaceUserRepository).to(MySQLWorkspaceUserRepository)
+    container
+      .bind<WorkspaceInviteRepositoryInterface>(TYPES.WorkspaceInviteRepository)
+      .to(MySQLWorkspaceInviteRepository)
     // ORM
     container
       .bind<Repository<Workspace>>(TYPES.ORMWorkspaceRepository)
@@ -103,6 +111,9 @@ export class ContainerConfigLoader {
     container
       .bind<Repository<WorkspaceUser>>(TYPES.ORMWorkspaceUserRepository)
       .toConstantValue(AppDataSource.getRepository(WorkspaceUser))
+    container
+      .bind<Repository<WorkspaceInvite>>(TYPES.ORMWorkspaceInviteRepository)
+      .toConstantValue(AppDataSource.getRepository(WorkspaceInvite))
     // Middleware
     container.bind<ApiGatewayAuthMiddleware>(TYPES.ApiGatewayAuthMiddleware).to(ApiGatewayAuthMiddleware)
     // env vars
@@ -117,9 +128,11 @@ export class ContainerConfigLoader {
 
     // use cases
     container.bind<CreateWorkspace>(TYPES.CreateWorkspace).to(CreateWorkspace)
+    container.bind<InviteToWorkspace>(TYPES.InviteToWorkspace).to(InviteToWorkspace)
     // Handlers
     container.bind<UserRegisteredEventHandler>(TYPES.UserRegisteredEventHandler).to(UserRegisteredEventHandler)
     // Services
+    container.bind<TimerInterface>(TYPES.Timer).toConstantValue(new Timer())
     container
       .bind<TokenDecoderInterface<CrossServiceTokenData>>(TYPES.CrossServiceTokenDecoder)
       .toConstantValue(new TokenDecoder<CrossServiceTokenData>(container.get(TYPES.AUTH_JWT_SECRET)))
@@ -136,7 +149,9 @@ export class ContainerConfigLoader {
         )
     }
 
-    const eventHandlers: Map<string, DomainEventHandlerInterface> = new Map([])
+    const eventHandlers: Map<string, DomainEventHandlerInterface> = new Map([
+      ['USER_REGISTERED', container.get(TYPES.UserRegisteredEventHandler)],
+    ])
 
     if (env.get('SQS_QUEUE_URL', true)) {
       container

@@ -1,4 +1,5 @@
 import { DataSource, LoggerOptions } from 'typeorm'
+import { WorkspaceInvite } from '../Domain/Invite/WorkspaceInvite'
 import { Workspace } from '../Domain/Workspace/Workspace'
 import { WorkspaceUser } from '../Domain/Workspace/WorkspaceUser'
 import { Env } from './Env'
@@ -34,7 +35,7 @@ export const AppDataSource = new DataSource({
     ],
     removeNodeErrorCount: 10,
   },
-  entities: [Workspace, WorkspaceUser],
+  entities: [Workspace, WorkspaceUser, WorkspaceInvite],
   migrations: [env.get('DB_MIGRATIONS_PATH', true) ?? 'dist/migrations/*.js'],
   migrationsRun: true,
   logging: <LoggerOptions>env.get('DB_DEBUG_LEVEL'),

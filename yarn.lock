@@ -2397,7 +2397,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@standardnotes/time@workspace:*, @standardnotes/time@workspace:packages/time":
+"@standardnotes/time@workspace:*, @standardnotes/time@workspace:^, @standardnotes/time@workspace:packages/time":
   version: 0.0.0-use.local
   resolution: "@standardnotes/time@workspace:packages/time"
   dependencies:
@@ -2447,6 +2447,7 @@ __metadata:
     "@standardnotes/domain-events": "workspace:^"
     "@standardnotes/domain-events-infra": "workspace:^"
     "@standardnotes/security": "workspace:*"
+    "@standardnotes/time": "workspace:^"
     "@types/cors": ^2.8.9
     "@types/express": ^4.17.11
     "@types/ioredis": ^4.28.10

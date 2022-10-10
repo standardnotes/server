@@ -1,3 +1,4 @@
+import { TimerInterface } from '@standardnotes/time'
 import { inject, injectable } from 'inversify'
 
 import TYPES from '../../../Bootstrap/Types'
@@ -17,6 +18,7 @@ export class CreateWorkspace implements UseCaseInterface {
   constructor(
     @inject(TYPES.WorkspaceRepository) private workspaceRepository: WorkspaceRepositoryInterface,
     @inject(TYPES.WorkspaceUserRepository) private workspaceUserRepository: WorkspaceUserRepositoryInterface,
+    @inject(TYPES.Timer) private timer: TimerInterface,
   ) {}
 
   async execute(dto: CreateWorkspaceDTO): Promise<CreateWorkspaceResponse> {
@@ -25,6 +27,9 @@ export class CreateWorkspace implements UseCaseInterface {
       workspace.name = dto.name
     }
     workspace.type = dto.type
+    const timestamp = this.timer.getTimestampInMicroseconds()
+    workspace.createdAt = timestamp
+    workspace.updatedAt = timestamp
 
     workspace = await this.workspaceRepository.save(workspace)
 
@@ -42,6 +47,8 @@ export class CreateWorkspace implements UseCaseInterface {
     ownerAssociation.status = WorkspaceUserStatus.Active
     ownerAssociation.userUuid = dto.ownerUuid
     ownerAssociation.workspaceUuid = workspace.uuid
+    ownerAssociation.createdAt = timestamp
+    ownerAssociation.updatedAt = timestamp
 
     await this.workspaceUserRepository.save(ownerAssociation)
 
