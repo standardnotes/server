@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/standardnotes/server/compare/@standardnotes/workspace-server@1.2.3...@standardnotes/workspace-server@1.3.0) (2022-10-10)
+
+### Features
+
+* **workspace:** add creating root workspace upon user registration ([3f61d31](https://github.com/standardnotes/server/commit/3f61d3163ef91b3b94056208a41bb4858c0df259))
+
 ## [1.2.3](https://github.com/standardnotes/server/compare/@standardnotes/workspace-server@1.2.2...@standardnotes/workspace-server@1.2.3) (2022-10-10)
 
 ### Bug Fixes
