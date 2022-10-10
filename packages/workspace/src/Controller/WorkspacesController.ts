@@ -5,10 +5,10 @@ import {
   WorkspaceCreationResponse,
   WorkspaceServerInterface,
 } from '@standardnotes/api'
+import { WorkspaceType } from '@standardnotes/common'
 
 import TYPES from '../Bootstrap/Types'
 import { CreateWorkspace } from '../Domain/UseCase/CreateWorkspace/CreateWorkspace'
-import { WorkspaceType } from '../Domain/Workspace/WorkspaceType'
 
 @injectable()
 export class WorkspacesController implements WorkspaceServerInterface {

@@ -1,12 +1,10 @@
-import { Uuid } from '@standardnotes/common'
-
-import { WorkspaceType } from '../../Workspace/WorkspaceType'
+import { Uuid, WorkspaceType } from '@standardnotes/common'
 
 export type CreateWorkspaceDTO = {
   ownerUuid: Uuid
   encryptedWorkspaceKey: string
   encryptedPrivateKey: string
   publicKey: string
-  name?: string
   type: WorkspaceType
+  name?: string
 }

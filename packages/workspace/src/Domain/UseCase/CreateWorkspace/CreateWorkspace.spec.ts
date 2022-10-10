@@ -1,6 +1,8 @@
 import 'reflect-metadata'
+
+import { WorkspaceType } from '@standardnotes/common'
+
 import { WorkspaceRepositoryInterface } from '../../Workspace/WorkspaceRepositoryInterface'
-import { WorkspaceType } from '../../Workspace/WorkspaceType'
 import { WorkspaceUserRepositoryInterface } from '../../Workspace/WorkspaceUserRepositoryInterface'
 
 import { CreateWorkspace } from './CreateWorkspace'

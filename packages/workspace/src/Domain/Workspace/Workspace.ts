@@ -1,5 +1,5 @@
+import { WorkspaceType } from '@standardnotes/common'
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
-import { WorkspaceType } from './WorkspaceType'
 
 @Entity({ name: 'workspaces' })
 export class Workspace {
