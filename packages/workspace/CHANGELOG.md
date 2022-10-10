@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.1](https://github.com/standardnotes/server/compare/@standardnotes/workspace-server@1.2.0...@standardnotes/workspace-server@1.2.1) (2022-10-10)
+
+### Bug Fixes
+
+* **workspace:** rename private key to encrypted private key ([447d600](https://github.com/standardnotes/server/commit/447d600dbe0ee101a7579409adc9da6cd3e309de))
+
 # [1.2.0](https://github.com/standardnotes/server/compare/@standardnotes/workspace-server@1.1.2...@standardnotes/workspace-server@1.2.0) (2022-10-07)
 
 ### Features
