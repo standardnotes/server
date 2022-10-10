@@ -4,12 +4,17 @@ import { TimerInterface } from '@standardnotes/time'
 import { WorkspaceInviteRepositoryInterface } from '../../Invite/WorkspaceInviteRepositoryInterface'
 
 import { InviteToWorkspace } from './InviteToWorkspace'
+import { DomainEventFactoryInterface } from '../../Event/DomainEventFactoryInterface'
+import { DomainEventPublisherInterface, WorkspaceInviteCreatedEvent } from '@standardnotes/domain-events'
 
 describe('InviteToWorkspace', () => {
   let workspaceInviteRepository: WorkspaceInviteRepositoryInterface
   let timer: TimerInterface
+  let domainEventFactory: DomainEventFactoryInterface
+  let domainEventPublisher: DomainEventPublisherInterface
 
-  const createUseCase = () => new InviteToWorkspace(workspaceInviteRepository, timer)
+  const createUseCase = () =>
+    new InviteToWorkspace(workspaceInviteRepository, timer, domainEventFactory, domainEventPublisher)
 
   beforeEach(() => {
     workspaceInviteRepository = {} as jest.Mocked<WorkspaceInviteRepositoryInterface>
@@ -22,6 +27,14 @@ describe('InviteToWorkspace', () => {
 
     timer = {} as jest.Mocked<TimerInterface>
     timer.getTimestampInMicroseconds = jest.fn().mockReturnValue(1)
+
+    domainEventPublisher = {} as jest.Mocked<DomainEventPublisherInterface>
+    domainEventPublisher.publish = jest.fn()
+
+    domainEventFactory = {} as jest.Mocked<DomainEventFactoryInterface>
+    domainEventFactory.createWorkspaceInviteCreatedEvent = jest
+      .fn()
+      .mockReturnValue({} as jest.Mocked<WorkspaceInviteCreatedEvent>)
   })
 
   it('should create an invite', async () => {
@@ -41,5 +54,7 @@ describe('InviteToWorkspace', () => {
       createdAt: 1,
       updatedAt: 1,
     })
+
+    expect(domainEventPublisher.publish).toHaveBeenCalled()
   })
 })

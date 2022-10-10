@@ -8,4 +8,5 @@ export enum DomainEventService {
   ApiGateway = 'api-gateway',
   Files = 'files',
   Scheduler = 'scheduler',
+  Workspace = 'workspace',
 }

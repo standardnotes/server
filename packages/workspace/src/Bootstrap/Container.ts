@@ -36,6 +36,8 @@ import { WorkspaceInviteRepositoryInterface } from '../Domain/Invite/WorkspaceIn
 import { MySQLWorkspaceInviteRepository } from '../Infra/MySQL/MySQLWorkspaceInviteRepository'
 import { WorkspaceInvite } from '../Domain/Invite/WorkspaceInvite'
 import { InviteToWorkspace } from '../Domain/UseCase/InviteToWorkspace/InviteToWorkspace'
+import { DomainEventFactory } from '../Domain/Event/DomainEventFactory'
+import { DomainEventFactoryInterface } from '../Domain/Event/DomainEventFactoryInterface'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -132,6 +134,7 @@ export class ContainerConfigLoader {
     // Handlers
     container.bind<UserRegisteredEventHandler>(TYPES.UserRegisteredEventHandler).to(UserRegisteredEventHandler)
     // Services
+    container.bind<DomainEventFactoryInterface>(TYPES.DomainEventFactory).to(DomainEventFactory)
     container.bind<TimerInterface>(TYPES.Timer).toConstantValue(new Timer())
     container
       .bind<TokenDecoderInterface<CrossServiceTokenData>>(TYPES.CrossServiceTokenDecoder)

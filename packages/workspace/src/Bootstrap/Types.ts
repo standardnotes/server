@@ -36,6 +36,7 @@ const TYPES = {
   DomainEventPublisher: Symbol.for('DomainEventPublisher'),
   DomainEventSubscriberFactory: Symbol.for('DomainEventSubscriberFactory'),
   DomainEventMessageHandler: Symbol.for('DomainEventMessageHandler'),
+  DomainEventFactory: Symbol.for('DomainEventFactory'),
 }
 
 export default TYPES
