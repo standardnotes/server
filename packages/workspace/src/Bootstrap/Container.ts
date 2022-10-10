@@ -30,6 +30,7 @@ import { Workspace } from '../Domain/Workspace/Workspace'
 import { WorkspaceUser } from '../Domain/Workspace/WorkspaceUser'
 import { CreateWorkspace } from '../Domain/UseCase/CreateWorkspace/CreateWorkspace'
 import { WorkspacesController } from '../Controller/WorkspacesController'
+import { UserRegisteredEventHandler } from '../Domain/Handler/UserRegisteredEventHandler'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -115,8 +116,9 @@ export class ContainerConfigLoader {
     container.bind(TYPES.VERSION).toConstantValue(env.get('VERSION'))
 
     // use cases
-    container.bind(TYPES.CreateWorkspace).to(CreateWorkspace)
+    container.bind<CreateWorkspace>(TYPES.CreateWorkspace).to(CreateWorkspace)
     // Handlers
+    container.bind<UserRegisteredEventHandler>(TYPES.UserRegisteredEventHandler).to(UserRegisteredEventHandler)
     // Services
     container
       .bind<TokenDecoderInterface<CrossServiceTokenData>>(TYPES.CrossServiceTokenDecoder)

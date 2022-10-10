@@ -26,6 +26,7 @@ const TYPES = {
   // use cases
   CreateWorkspace: Symbol.for('CreateWorkspace'),
   // Handlers
+  UserRegisteredEventHandler: Symbol.for('UserRegisteredEventHandler'),
   // Services
   CrossServiceTokenDecoder: Symbol.for('CrossServiceTokenDecoder'),
   DomainEventPublisher: Symbol.for('DomainEventPublisher'),
