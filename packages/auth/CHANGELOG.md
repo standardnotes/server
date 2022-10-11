@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.41.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.40.4...@standardnotes/auth-server@1.41.0) (2022-10-11)
+
+### Features
+
+* **workspace:** add invite to workspace endpoints ([266adda](https://github.com/standardnotes/server/commit/266adda45bd3ad84bc6605824b6be1dd912f3f9a))
+
 ## [1.40.4](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.40.3...@standardnotes/auth-server@1.40.4) (2022-10-10)
 
 **Note:** Version bump only for package @standardnotes/auth-server
