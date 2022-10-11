@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.8.0](https://github.com/standardnotes/server/compare/@standardnotes/workspace-server@1.7.0...@standardnotes/workspace-server@1.8.0) (2022-10-11)
+
+### Features
+
+* **workspace:** add workspace user display name ([ba9d3bf](https://github.com/standardnotes/server/commit/ba9d3bfe4632d5001b8c967860df086f103e2e35))
+
 # [1.7.0](https://github.com/standardnotes/server/compare/@standardnotes/workspace-server@1.6.0...@standardnotes/workspace-server@1.7.0) (2022-10-11)
 
 ### Features
