@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.42.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.41.2...@standardnotes/auth-server@1.42.0) (2022-10-11)
+
+### Features
+
+* add listin worspaces and workspace users ([095d13f](https://github.com/standardnotes/server/commit/095d13f8bbfe543fcf086840e1a985447a6c51ef))
+
 ## [1.41.2](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.41.1...@standardnotes/auth-server@1.41.2) (2022-10-11)
 
 **Note:** Version bump only for package @standardnotes/auth-server
