@@ -27,4 +27,13 @@ describe('MySQLWorkspaceInviteRepository', () => {
 
     expect(ormRepository.save).toHaveBeenCalledWith(invite)
   })
+
+  it('should find one by uuid', async () => {
+    queryBuilder.where = jest.fn().mockReturnThis()
+    queryBuilder.getOne = jest.fn().mockReturnValue(null)
+
+    await createRepository().findOneByUuid('i-1-2-3')
+
+    expect(queryBuilder.where).toHaveBeenCalledWith('uuid = :uuid', { uuid: 'i-1-2-3' })
+  })
 })

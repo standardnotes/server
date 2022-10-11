@@ -12,6 +12,10 @@ export class MySQLWorkspaceInviteRepository implements WorkspaceInviteRepository
     private ormRepository: Repository<WorkspaceInvite>,
   ) {}
 
+  async findOneByUuid(uuid: string): Promise<WorkspaceInvite | null> {
+    return this.ormRepository.createQueryBuilder().where('uuid = :uuid', { uuid }).getOne()
+  }
+
   async save(workspaceInvite: WorkspaceInvite): Promise<WorkspaceInvite> {
     return this.ormRepository.save(workspaceInvite)
   }
