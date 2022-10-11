@@ -36,6 +36,7 @@ export class AcceptInvitation implements UseCaseInterface {
 
     const workspaceUser = new WorkspaceUser()
     workspaceUser.userUuid = dto.acceptingUserUuid
+    workspaceUser.userDisplayName = invite.inviteeEmail
     workspaceUser.workspaceUuid = invite.workspaceUuid
     workspaceUser.publicKey = dto.publicKey
     workspaceUser.encryptedPrivateKey = dto.encryptedPrivateKey

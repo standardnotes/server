@@ -21,6 +21,14 @@ export class WorkspaceUser {
   declare userUuid: string
 
   @Column({
+    name: 'user_display_name',
+    type: 'varchar',
+    length: 255,
+    nullable: true,
+  })
+  declare userDisplayName: string | null
+
+  @Column({
     name: 'workspace_uuid',
     length: 36,
   })
