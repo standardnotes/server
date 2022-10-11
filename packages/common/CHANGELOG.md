@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.38.0](https://github.com/standardnotes/server/compare/@standardnotes/common@1.37.0...@standardnotes/common@1.38.0) (2022-10-11)
+
+### Features
+
+* **workspace:** add invite access level ([f742270](https://github.com/standardnotes/server/commit/f74227067b7151cb63a54e815e57f81984467bfe))
+
 # [1.37.0](https://github.com/standardnotes/server/compare/@standardnotes/common@1.36.1...@standardnotes/common@1.37.0) (2022-10-10)
 
 ### Features

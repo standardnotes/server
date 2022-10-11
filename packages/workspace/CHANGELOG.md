@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.9.0](https://github.com/standardnotes/server/compare/@standardnotes/workspace-server@1.8.0...@standardnotes/workspace-server@1.9.0) (2022-10-11)
+
+### Features
+
+* **workspace:** add invite access level ([f742270](https://github.com/standardnotes/server/commit/f74227067b7151cb63a54e815e57f81984467bfe))
+
 # [1.8.0](https://github.com/standardnotes/server/compare/@standardnotes/workspace-server@1.7.0...@standardnotes/workspace-server@1.8.0) (2022-10-11)
 
 ### Features

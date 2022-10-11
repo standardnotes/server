@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.9](https://github.com/standardnotes/server/compare/@standardnotes/predicates@1.4.8...@standardnotes/predicates@1.4.9) (2022-10-11)
+
+**Note:** Version bump only for package @standardnotes/predicates
+
 ## [1.4.8](https://github.com/standardnotes/server/compare/@standardnotes/predicates@1.4.7...@standardnotes/predicates@1.4.8) (2022-10-10)
 
 **Note:** Version bump only for package @standardnotes/predicates
