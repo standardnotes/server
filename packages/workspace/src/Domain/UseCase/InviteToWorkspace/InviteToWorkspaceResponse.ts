@@ -1,3 +1,5 @@
+import { WorkspaceInvite } from '../../Invite/WorkspaceInvite'
+
 export type InviteToWorkspaceResponse = {
-  uuid: string
+  invite: WorkspaceInvite
 }

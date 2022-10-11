@@ -44,7 +44,17 @@ describe('InviteToWorkspace', () => {
       workspaceUuid: 'w-1-2-3',
     })
 
-    expect(result).toEqual({ uuid: 'i-1-2-3' })
+    expect(result).toEqual({
+      invite: {
+        uuid: 'i-1-2-3',
+        inviterUuid: 'u-1-2-3',
+        inviteeEmail: 'test@test.te',
+        workspaceUuid: 'w-1-2-3',
+        status: 'created',
+        createdAt: 1,
+        updatedAt: 1,
+      },
+    })
 
     expect(workspaceInviteRepository.save).toHaveBeenCalledWith({
       inviterUuid: 'u-1-2-3',

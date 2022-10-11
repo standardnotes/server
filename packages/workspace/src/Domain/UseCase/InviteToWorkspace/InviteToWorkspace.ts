@@ -44,7 +44,7 @@ export class InviteToWorkspace implements UseCaseInterface {
     )
 
     return {
-      uuid: invite.uuid,
+      invite,
     }
   }
 }

@@ -3,16 +3,35 @@ import {
   HttpStatusCode,
   WorkspaceCreationRequestParams,
   WorkspaceCreationResponse,
+  WorkspaceInvitationRequestParams,
+  WorkspaceInvitationResponse,
   WorkspaceServerInterface,
 } from '@standardnotes/api'
-import { WorkspaceType } from '@standardnotes/common'
+import { Uuid, WorkspaceType } from '@standardnotes/common'
 
 import TYPES from '../Bootstrap/Types'
 import { CreateWorkspace } from '../Domain/UseCase/CreateWorkspace/CreateWorkspace'
+import { InviteToWorkspace } from '../Domain/UseCase/InviteToWorkspace/InviteToWorkspace'
 
 @injectable()
 export class WorkspacesController implements WorkspaceServerInterface {
-  constructor(@inject(TYPES.CreateWorkspace) private doCreateWorkspace: CreateWorkspace) {}
+  constructor(
+    @inject(TYPES.CreateWorkspace) private doCreateWorkspace: CreateWorkspace,
+    @inject(TYPES.InviteToWorkspace) private doInviteToWorkspace: InviteToWorkspace,
+  ) {}
+
+  async inviteToWorkspace(params: WorkspaceInvitationRequestParams): Promise<WorkspaceInvitationResponse> {
+    const { invite } = await this.doInviteToWorkspace.execute({
+      inviteeEmail: params.inviteeEmail,
+      workspaceUuid: params.workspaceUuid,
+      inviterUuid: params.inviterUuid as Uuid,
+    })
+
+    return {
+      status: HttpStatusCode.Success,
+      data: { uuid: invite.uuid },
+    }
+  }
 
   async createWorkspace(params: WorkspaceCreationRequestParams): Promise<WorkspaceCreationResponse> {
     const { workspace } = await this.doCreateWorkspace.execute({
