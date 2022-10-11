@@ -1907,7 +1907,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@standardnotes/common@^1.19.1, @standardnotes/common@^1.23.1, @standardnotes/common@^1.32.0, @standardnotes/common@workspace:*, @standardnotes/common@workspace:^, @standardnotes/common@workspace:packages/common":
+"@standardnotes/common@^1.19.1, @standardnotes/common@^1.23.1, @standardnotes/common@^1.32.0, @standardnotes/common@^1.39.0, @standardnotes/common@workspace:*, @standardnotes/common@workspace:^, @standardnotes/common@workspace:packages/common":
   version: 0.0.0-use.local
   resolution: "@standardnotes/common@workspace:packages/common"
   dependencies:
@@ -1920,15 +1920,6 @@ __metadata:
     ts-jest: ^29.0.3
   languageName: unknown
   linkType: soft
-
-"@standardnotes/common@npm:^1.39.0":
-  version: 1.39.0
-  resolution: "@standardnotes/common@npm:1.39.0"
-  dependencies:
-    reflect-metadata: ^0.1.13
-  checksum: 92cfad04a631cdcf971516be4bf0e066e9cb6e894017102ac406cd8964282e088653ebed282d7624f371d617418edce124d12a62964723697ed7fa33b6d6e4d0
-  languageName: node
-  linkType: hard
 
 "@standardnotes/config@npm:2.4.3":
   version: 2.4.3

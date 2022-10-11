@@ -2525,7 +2525,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@standardnotes-api-npm-1.15.0-12a67ff9b7-88ae0a340e.zip/node_modules/@standardnotes/api/",\
           "packageDependencies": [\
             ["@standardnotes/api", "npm:1.15.0"],\
-            ["@standardnotes/common", "npm:1.39.0"],\
+            ["@standardnotes/common", "workspace:packages/common"],\
             ["@standardnotes/encryption", "npm:1.17.0"],\
             ["@standardnotes/models", "npm:1.26.0"],\
             ["@standardnotes/responses", "npm:1.11.0"],\
@@ -2653,14 +2653,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@standardnotes/common", [\
-        ["npm:1.39.0", {\
-          "packageLocation": "./.yarn/cache/@standardnotes-common-npm-1.39.0-1e36e2ef74-92cfad04a6.zip/node_modules/@standardnotes/common/",\
-          "packageDependencies": [\
-            ["@standardnotes/common", "npm:1.39.0"],\
-            ["reflect-metadata", "npm:0.1.13"]\
-          ],\
-          "linkType": "HARD"\
-        }],\
         ["workspace:packages/common", {\
           "packageLocation": "./packages/common/",\
           "packageDependencies": [\
@@ -2737,7 +2729,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@standardnotes-encryption-npm-1.17.0-587d631df2-587516dfed.zip/node_modules/@standardnotes/encryption/",\
           "packageDependencies": [\
             ["@standardnotes/encryption", "npm:1.17.0"],\
-            ["@standardnotes/common", "npm:1.39.0"],\
+            ["@standardnotes/common", "workspace:packages/common"],\
             ["@standardnotes/models", "npm:1.26.0"],\
             ["@standardnotes/responses", "npm:1.11.0"],\
             ["@standardnotes/sncrypto-common", "npm:1.13.0"],\
@@ -2804,7 +2796,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["@standardnotes/features", "npm:1.53.0"],\
             ["@standardnotes/auth", "npm:3.19.4"],\
-            ["@standardnotes/common", "npm:1.39.0"],\
+            ["@standardnotes/common", "workspace:packages/common"],\
             ["@standardnotes/security", "workspace:packages/security"],\
             ["reflect-metadata", "npm:0.1.13"]\
           ],\
@@ -2868,7 +2860,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@standardnotes-models-npm-1.26.0-dade8919ab-f595a3de88.zip/node_modules/@standardnotes/models/",\
           "packageDependencies": [\
             ["@standardnotes/models", "npm:1.26.0"],\
-            ["@standardnotes/common", "npm:1.39.0"],\
+            ["@standardnotes/common", "workspace:packages/common"],\
             ["@standardnotes/features", "npm:1.53.0"],\
             ["@standardnotes/responses", "npm:1.11.0"],\
             ["@standardnotes/utils", "npm:1.10.0"],\
@@ -2911,7 +2903,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@standardnotes-responses-npm-1.11.0-d066ddbbb6-46d6a47980.zip/node_modules/@standardnotes/responses/",\
           "packageDependencies": [\
             ["@standardnotes/responses", "npm:1.11.0"],\
-            ["@standardnotes/common", "npm:1.39.0"],\
+            ["@standardnotes/common", "workspace:packages/common"],\
             ["@standardnotes/features", "npm:1.53.0"],\
             ["@standardnotes/security", "workspace:packages/security"],\
             ["reflect-metadata", "npm:0.1.13"]\
@@ -3137,7 +3129,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@standardnotes-utils-npm-1.10.0-0dc2ade40b-c02d54ca8a.zip/node_modules/@standardnotes/utils/",\
           "packageDependencies": [\
             ["@standardnotes/utils", "npm:1.10.0"],\
-            ["@standardnotes/common", "npm:1.39.0"],\
+            ["@standardnotes/common", "workspace:packages/common"],\
             ["dompurify", "npm:2.4.0"],\
             ["lodash", "npm:4.17.21"],\
             ["reflect-metadata", "npm:0.1.13"]\
