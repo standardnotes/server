@@ -1,5 +1,5 @@
 import { TimerInterface } from '@standardnotes/time'
-import { WorkspaceAccessLevel } from '@standardnotes/common'
+import { WorkspaceAccessLevel, WorkspaceUserStatus } from '@standardnotes/common'
 import { inject, injectable } from 'inversify'
 
 import TYPES from '../../../Bootstrap/Types'
@@ -7,7 +7,6 @@ import { Workspace } from '../../Workspace/Workspace'
 import { WorkspaceRepositoryInterface } from '../../Workspace/WorkspaceRepositoryInterface'
 import { WorkspaceUser } from '../../Workspace/WorkspaceUser'
 import { WorkspaceUserRepositoryInterface } from '../../Workspace/WorkspaceUserRepositoryInterface'
-import { WorkspaceUserStatus } from '../../Workspace/WorkspaceUserStatus'
 import { UseCaseInterface } from '../UseCaseInterface'
 
 import { CreateWorkspaceDTO } from './CreateWorkspaceDTO'

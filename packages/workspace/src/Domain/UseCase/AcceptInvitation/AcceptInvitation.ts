@@ -1,4 +1,5 @@
 import { TimerInterface } from '@standardnotes/time'
+import { WorkspaceUserStatus } from '@standardnotes/common'
 import { inject, injectable } from 'inversify'
 
 import TYPES from '../../../Bootstrap/Types'
@@ -6,7 +7,6 @@ import { WorkspaceInviteRepositoryInterface } from '../../Invite/WorkspaceInvite
 import { WorkspaceInviteStatus } from '../../Invite/WorkspaceInviteStatus'
 import { WorkspaceUser } from '../../Workspace/WorkspaceUser'
 import { WorkspaceUserRepositoryInterface } from '../../Workspace/WorkspaceUserRepositoryInterface'
-import { WorkspaceUserStatus } from '../../Workspace/WorkspaceUserStatus'
 import { UseCaseInterface } from '../UseCaseInterface'
 
 import { AcceptInvitationDTO } from './AcceptInvitationDTO'

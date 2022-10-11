@@ -1,7 +1,5 @@
-import { WorkspaceAccessLevel } from '@standardnotes/common'
+import { WorkspaceAccessLevel, WorkspaceUserStatus } from '@standardnotes/common'
 import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm'
-
-import { WorkspaceUserStatus } from './WorkspaceUserStatus'
 
 @Entity({ name: 'workspace_users' })
 @Index('index_workspace_users_on_workspace_and_user', ['userUuid', 'workspaceUuid'], { unique: true })

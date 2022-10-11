@@ -60,6 +60,7 @@ describe('InviteToWorkspace', () => {
     })
 
     expect(workspaceInviteRepository.save).toHaveBeenCalledWith({
+      accessLevel: 'write-and-read',
       inviterUuid: 'u-1-2-3',
       inviteeEmail: 'test@test.te',
       workspaceUuid: 'w-1-2-3',
