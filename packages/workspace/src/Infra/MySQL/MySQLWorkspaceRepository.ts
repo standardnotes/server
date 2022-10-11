@@ -11,6 +11,14 @@ export class MySQLWorkspaceRepository implements WorkspaceRepositoryInterface {
     private ormRepository: Repository<Workspace>,
   ) {}
 
+  async findOneByUuid(uuid: string): Promise<Workspace | null> {
+    return this.ormRepository.createQueryBuilder().where('uuid = :uuid', { uuid }).getOne()
+  }
+
+  async findByUuids(uuids: string[]): Promise<Workspace[]> {
+    return this.ormRepository.createQueryBuilder().where('uuid IN (:...uuids)', { uuids }).getMany()
+  }
+
   async save(workspace: Workspace): Promise<Workspace> {
     return this.ormRepository.save(workspace)
   }

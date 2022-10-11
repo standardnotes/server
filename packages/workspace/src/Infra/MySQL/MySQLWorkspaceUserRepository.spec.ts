@@ -27,4 +27,22 @@ describe('MySQLWorkspaceUserRepository', () => {
 
     expect(ormRepository.save).toHaveBeenCalledWith(workspace)
   })
+
+  it('should find many by user uuid', async () => {
+    queryBuilder.where = jest.fn().mockReturnThis()
+    queryBuilder.getMany = jest.fn().mockReturnValue([])
+
+    await createRepository().findByUserUuid('i-1-2-3')
+
+    expect(queryBuilder.where).toHaveBeenCalledWith('user_uuid = :userUuid', { userUuid: 'i-1-2-3' })
+  })
+
+  it('should find many by workspace uuid', async () => {
+    queryBuilder.where = jest.fn().mockReturnThis()
+    queryBuilder.getMany = jest.fn().mockReturnValue([])
+
+    await createRepository().findByWorkspaceUuid('i-1-2-3')
+
+    expect(queryBuilder.where).toHaveBeenCalledWith('workspace_uuid = :workspaceUuid', { workspaceUuid: 'i-1-2-3' })
+  })
 })

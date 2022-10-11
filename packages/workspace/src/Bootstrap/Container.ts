@@ -38,6 +38,14 @@ import { WorkspaceInvite } from '../Domain/Invite/WorkspaceInvite'
 import { InviteToWorkspace } from '../Domain/UseCase/InviteToWorkspace/InviteToWorkspace'
 import { DomainEventFactory } from '../Domain/Event/DomainEventFactory'
 import { DomainEventFactoryInterface } from '../Domain/Event/DomainEventFactoryInterface'
+import { WorkspaceProjection } from '../Domain/Projection/WorkspaceProjection'
+import { WorkspaceProjector } from '../Domain/Projection/WorkspaceProjector'
+import { ProjectorInterface } from '../Domain/Projection/ProjectorInterface'
+import { WorkspaceUserProjection } from '../Domain/Projection/WorkspaceUserProjection'
+import { WorkspaceUserProjector } from '../Domain/Projection/WorkspaceUserProjector'
+import { AcceptInvitation } from '../Domain/UseCase/AcceptInvitation/AcceptInvitation'
+import { ListWorkspaces } from '../Domain/UseCase/ListWorkspaces/ListWorkspaces'
+import { ListWorkspaceUsers } from '../Domain/UseCase/ListWorkspaceUsers/ListWorkspaceUsers'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -131,8 +139,16 @@ export class ContainerConfigLoader {
     // use cases
     container.bind<CreateWorkspace>(TYPES.CreateWorkspace).to(CreateWorkspace)
     container.bind<InviteToWorkspace>(TYPES.InviteToWorkspace).to(InviteToWorkspace)
+    container.bind<AcceptInvitation>(TYPES.AcceptInvitation).to(AcceptInvitation)
+    container.bind<ListWorkspaces>(TYPES.ListWorkspaces).to(ListWorkspaces)
+    container.bind<ListWorkspaceUsers>(TYPES.ListWorkspaceUsers).to(ListWorkspaceUsers)
     // Handlers
     container.bind<UserRegisteredEventHandler>(TYPES.UserRegisteredEventHandler).to(UserRegisteredEventHandler)
+    // Projection
+    container.bind<ProjectorInterface<Workspace, WorkspaceProjection>>(TYPES.WorkspaceProjector).to(WorkspaceProjector)
+    container
+      .bind<ProjectorInterface<WorkspaceUser, WorkspaceUserProjection>>(TYPES.WorkspaceUserProjector)
+      .to(WorkspaceUserProjector)
     // Services
     container.bind<DomainEventFactoryInterface>(TYPES.DomainEventFactory).to(DomainEventFactory)
     container.bind<TimerInterface>(TYPES.Timer).toConstantValue(new Timer())

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { inject } from 'inversify'
-import { BaseHttpController, controller, httpPost, results } from 'inversify-express-utils'
+import { BaseHttpController, controller, httpGet, httpPost, results } from 'inversify-express-utils'
 import TYPES from '../../Bootstrap/Types'
 import { WorkspacesController } from '../../Controller/WorkspacesController'
 
@@ -15,6 +15,25 @@ export class InversifyExpressWorkspacesController extends BaseHttpController {
     const result = await this.workspacesController.createWorkspace({
       ...request.body,
       ownerUuid: response.locals.user.uuid,
+    })
+
+    return this.json(result.data, result.status)
+  }
+
+  @httpGet('/')
+  async listWorkspaces(response: Response): Promise<results.JsonResult> {
+    const result = await this.workspacesController.listWorkspaces({
+      userUuid: response.locals.user.uuid,
+    })
+
+    return this.json(result.data, result.status)
+  }
+
+  @httpGet('/:workspaceUuid/users')
+  async listWorkspaceUsers(request: Request, response: Response): Promise<results.JsonResult> {
+    const result = await this.workspacesController.listWorkspaceUsers({
+      userUuid: response.locals.user.uuid,
+      workspaceUuid: request.params.workspaceUuid,
     })
 
     return this.json(result.data, result.status)

@@ -12,6 +12,14 @@ export class MySQLWorkspaceUserRepository implements WorkspaceUserRepositoryInte
     private ormRepository: Repository<WorkspaceUser>,
   ) {}
 
+  async findByWorkspaceUuid(workspaceUuid: string): Promise<WorkspaceUser[]> {
+    return this.ormRepository.createQueryBuilder().where('workspace_uuid = :workspaceUuid', { workspaceUuid }).getMany()
+  }
+
+  async findByUserUuid(userUuid: string): Promise<WorkspaceUser[]> {
+    return this.ormRepository.createQueryBuilder().where('user_uuid = :userUuid', { userUuid }).getMany()
+  }
+
   async save(workspaceUser: WorkspaceUser): Promise<WorkspaceUser> {
     return this.ormRepository.save(workspaceUser)
   }

@@ -28,8 +28,14 @@ const TYPES = {
   // use cases
   CreateWorkspace: Symbol.for('CreateWorkspace'),
   InviteToWorkspace: Symbol.for('InviteToWorkspace'),
+  AcceptInvitation: Symbol.for('AcceptInvitation'),
+  ListWorkspaces: Symbol.for('ListWorkspaces'),
+  ListWorkspaceUsers: Symbol.for('ListWorkspaceUsers'),
   // Handlers
   UserRegisteredEventHandler: Symbol.for('UserRegisteredEventHandler'),
+  // Projection
+  WorkspaceProjector: Symbol.for('WorkspaceProjector'),
+  WorkspaceUserProjector: Symbol.for('WorkspaceUserProjector'),
   // Services
   Timer: Symbol.for('Timer'),
   CrossServiceTokenDecoder: Symbol.for('CrossServiceTokenDecoder'),

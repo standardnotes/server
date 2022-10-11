@@ -1,6 +1,6 @@
 import { inject } from 'inversify'
 import { Request, Response } from 'express'
-import { controller, BaseHttpController, httpPost } from 'inversify-express-utils'
+import { controller, BaseHttpController, httpPost, httpGet } from 'inversify-express-utils'
 
 import TYPES from '../../Bootstrap/Types'
 import { HttpServiceInterface } from '../../Service/Http/HttpServiceInterface'
@@ -13,6 +13,21 @@ export class WorkspacesController extends BaseHttpController {
 
   @httpPost('/')
   async create(request: Request, response: Response): Promise<void> {
+    await this.httpService.callWorkspaceServer(request, response, 'workspaces', request.body)
+  }
+
+  @httpGet('/:workspaceUuid/users')
+  async listWorkspaceUsers(request: Request, response: Response): Promise<void> {
+    await this.httpService.callWorkspaceServer(
+      request,
+      response,
+      `workspaces/${request.params.workspaceUuid}/users`,
+      request.body,
+    )
+  }
+
+  @httpGet('/')
+  async listWorkspaces(request: Request, response: Response): Promise<void> {
     await this.httpService.callWorkspaceServer(request, response, 'workspaces', request.body)
   }
 

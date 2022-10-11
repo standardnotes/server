@@ -25,10 +25,11 @@
   "dependencies": {
     "@newrelic/winston-enricher": "^4.0.0",
     "@sentry/node": "^7.3.0",
-    "@standardnotes/api": "^1.12.1",
+    "@standardnotes/api": "^1.15.0",
     "@standardnotes/common": "workspace:*",
     "@standardnotes/domain-events": "workspace:^",
     "@standardnotes/domain-events-infra": "workspace:^",
+    "@standardnotes/models": "^1.26.0",
     "@standardnotes/security": "workspace:*",
     "@standardnotes/time": "workspace:^",
     "aws-sdk": "^2.1159.0",
