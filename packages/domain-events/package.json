@@ -1,6 +1,6 @@
 {
   "name": "@standardnotes/domain-events",
-  "version": "2.66.2",
+  "version": "2.66.3",
   "engines": {
     "node": ">=16.0.0 <17.0.0"
   },

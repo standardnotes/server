@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.10.0](https://github.com/standardnotes/server/compare/@standardnotes/workspace-server@1.9.0...@standardnotes/workspace-server@1.10.0) (2022-10-11)
+
+### Features
+
+* **workspace:** extract workspace user status to common ([8bc9261](https://github.com/standardnotes/server/commit/8bc92616d2fbeb833c3fcbef6b87538745fc7f3e))
+
 # [1.9.0](https://github.com/standardnotes/server/compare/@standardnotes/workspace-server@1.8.0...@standardnotes/workspace-server@1.9.0) (2022-10-11)
 
 ### Features
