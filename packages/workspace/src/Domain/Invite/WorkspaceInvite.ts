@@ -1,4 +1,6 @@
+import { WorkspaceAccessLevel } from '@standardnotes/common'
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
+
 import { Workspace } from '../Workspace/Workspace'
 import { WorkspaceInviteStatus } from './WorkspaceInviteStatus'
 
@@ -39,6 +41,12 @@ export class WorkspaceInvite {
     length: 36,
   })
   declare workspaceUuid: string
+
+  @Column({
+    name: 'access_level',
+    length: 64,
+  })
+  declare accessLevel: WorkspaceAccessLevel
 
   @Column({
     name: 'created_at',

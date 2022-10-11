@@ -6,6 +6,7 @@ import { WorkspaceInviteRepositoryInterface } from '../../Invite/WorkspaceInvite
 import { InviteToWorkspace } from './InviteToWorkspace'
 import { DomainEventFactoryInterface } from '../../Event/DomainEventFactoryInterface'
 import { DomainEventPublisherInterface, WorkspaceInviteCreatedEvent } from '@standardnotes/domain-events'
+import { WorkspaceAccessLevel } from '@standardnotes/common'
 
 describe('InviteToWorkspace', () => {
   let workspaceInviteRepository: WorkspaceInviteRepositoryInterface
@@ -42,6 +43,7 @@ describe('InviteToWorkspace', () => {
       inviteeEmail: 'test@test.te',
       inviterUuid: 'u-1-2-3',
       workspaceUuid: 'w-1-2-3',
+      accessLevel: WorkspaceAccessLevel.WriteAndRead,
     })
 
     expect(result).toEqual({
@@ -51,6 +53,7 @@ describe('InviteToWorkspace', () => {
         inviteeEmail: 'test@test.te',
         workspaceUuid: 'w-1-2-3',
         status: 'created',
+        accessLevel: 'write-and-read',
         createdAt: 1,
         updatedAt: 1,
       },

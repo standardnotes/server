@@ -26,6 +26,7 @@ export class InviteToWorkspace implements UseCaseInterface {
     invite.inviterUuid = dto.inviterUuid
     invite.inviteeEmail = dto.inviteeEmail
     invite.workspaceUuid = dto.workspaceUuid
+    invite.accessLevel = dto.accessLevel
     invite.status = WorkspaceInviteStatus.Created
 
     const timestamp = this.timer.getTimestampInMicroseconds()

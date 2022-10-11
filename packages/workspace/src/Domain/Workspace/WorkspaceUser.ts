@@ -1,5 +1,6 @@
+import { WorkspaceAccessLevel } from '@standardnotes/common'
 import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm'
-import { WorkspaceAccessLevel } from './WorkspaceAccessLevel'
+
 import { WorkspaceUserStatus } from './WorkspaceUserStatus'
 
 @Entity({ name: 'workspace_users' })

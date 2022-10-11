@@ -6,6 +6,7 @@ import { WorkspaceInviteRepositoryInterface } from '../../Invite/WorkspaceInvite
 import { WorkspaceUserRepositoryInterface } from '../../Workspace/WorkspaceUserRepositoryInterface'
 
 import { AcceptInvitation } from './AcceptInvitation'
+import { WorkspaceAccessLevel } from '@standardnotes/common'
 
 describe('AcceptInvitation', () => {
   let workspaceInviteRepository: WorkspaceInviteRepositoryInterface
@@ -19,6 +20,8 @@ describe('AcceptInvitation', () => {
     invite = {
       uuid: 'i-1-2-3',
       workspaceUuid: 'w-1-2-3',
+      inviteeEmail: 'test@test.te',
+      accessLevel: WorkspaceAccessLevel.WriteAndRead,
     } as jest.Mocked<WorkspaceInvite>
     workspaceInviteRepository = {} as jest.Mocked<WorkspaceInviteRepositoryInterface>
     workspaceInviteRepository.findOneByUuid = jest.fn().mockReturnValue(invite)
@@ -45,6 +48,8 @@ describe('AcceptInvitation', () => {
       updatedAt: 1,
       uuid: 'i-1-2-3',
       workspaceUuid: 'w-1-2-3',
+      inviteeEmail: 'test@test.te',
+      accessLevel: 'write-and-read',
     })
     expect(workspaceUserRepository.save).toHaveBeenCalledWith({
       encryptedPrivateKey: 'foo',
@@ -52,6 +57,8 @@ describe('AcceptInvitation', () => {
       status: 'pending-keyshare',
       userUuid: 'u-1-2-3',
       workspaceUuid: 'w-1-2-3',
+      accessLevel: 'write-and-read',
+      userDisplayName: 'test@test.te',
     })
   })
 

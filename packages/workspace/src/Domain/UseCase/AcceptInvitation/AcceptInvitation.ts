@@ -40,6 +40,7 @@ export class AcceptInvitation implements UseCaseInterface {
     workspaceUser.workspaceUuid = invite.workspaceUuid
     workspaceUser.publicKey = dto.publicKey
     workspaceUser.encryptedPrivateKey = dto.encryptedPrivateKey
+    workspaceUser.accessLevel = invite.accessLevel
     workspaceUser.status = WorkspaceUserStatus.PendingKeyshare
 
     await this.workspaceUserRepository.save(workspaceUser)

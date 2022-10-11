@@ -7,7 +7,7 @@ import {
   WorkspaceInvitationResponse,
   WorkspaceServerInterface,
 } from '@standardnotes/api'
-import { Uuid, WorkspaceType } from '@standardnotes/common'
+import { Uuid, WorkspaceAccessLevel, WorkspaceType } from '@standardnotes/common'
 
 import TYPES from '../Bootstrap/Types'
 import { CreateWorkspace } from '../Domain/UseCase/CreateWorkspace/CreateWorkspace'
@@ -25,6 +25,7 @@ export class WorkspacesController implements WorkspaceServerInterface {
       inviteeEmail: params.inviteeEmail,
       workspaceUuid: params.workspaceUuid,
       inviterUuid: params.inviterUuid as Uuid,
+      accessLevel: params.accessLevel as WorkspaceAccessLevel,
     })
 
     return {

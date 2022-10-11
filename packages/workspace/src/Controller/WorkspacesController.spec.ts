@@ -1,4 +1,4 @@
-import { WorkspaceType } from '@standardnotes/common'
+import { WorkspaceAccessLevel, WorkspaceType } from '@standardnotes/common'
 import 'reflect-metadata'
 
 import { CreateWorkspace } from '../Domain/UseCase/CreateWorkspace/CreateWorkspace'
@@ -42,6 +42,7 @@ describe('WorkspacesController', () => {
     const result = await createController().inviteToWorkspace({
       inviteeEmail: 'test@test.te',
       workspaceUuid: 'w-1-2-3',
+      accessLevel: WorkspaceAccessLevel.ReadOnly,
     })
 
     expect(result).toEqual({
