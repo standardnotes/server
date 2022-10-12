@@ -31,6 +31,7 @@ const TYPES = {
   AcceptInvitation: Symbol.for('AcceptInvitation'),
   ListWorkspaces: Symbol.for('ListWorkspaces'),
   ListWorkspaceUsers: Symbol.for('ListWorkspaceUsers'),
+  InitiateKeyShare: Symbol.for('InitiateKeyShare'),
   // Handlers
   UserRegisteredEventHandler: Symbol.for('UserRegisteredEventHandler'),
   // Projection

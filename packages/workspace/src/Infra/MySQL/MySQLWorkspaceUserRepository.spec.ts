@@ -45,4 +45,16 @@ describe('MySQLWorkspaceUserRepository', () => {
 
     expect(queryBuilder.where).toHaveBeenCalledWith('workspace_uuid = :workspaceUuid', { workspaceUuid: 'i-1-2-3' })
   })
+
+  it('should find one by workspace uuid and user uuid', async () => {
+    queryBuilder.where = jest.fn().mockReturnThis()
+    queryBuilder.getOne = jest.fn().mockReturnValue(null)
+
+    await createRepository().findOneByUserUuidAndWorkspaceUuid({ workspaceUuid: 'w-1-2-3', userUuid: 'u-1-2-3' })
+
+    expect(queryBuilder.where).toHaveBeenCalledWith('workspace_uuid = :workspaceUuid AND user_uuid = :userUuid', {
+      workspaceUuid: 'w-1-2-3',
+      userUuid: 'u-1-2-3',
+    })
+  })
 })

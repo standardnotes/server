@@ -46,6 +46,7 @@ import { WorkspaceUserProjector } from '../Domain/Projection/WorkspaceUserProjec
 import { AcceptInvitation } from '../Domain/UseCase/AcceptInvitation/AcceptInvitation'
 import { ListWorkspaces } from '../Domain/UseCase/ListWorkspaces/ListWorkspaces'
 import { ListWorkspaceUsers } from '../Domain/UseCase/ListWorkspaceUsers/ListWorkspaceUsers'
+import { InitiateKeyShare } from '../Domain/UseCase/InitiateKeyShare/InitiateKeyShare'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -142,6 +143,7 @@ export class ContainerConfigLoader {
     container.bind<AcceptInvitation>(TYPES.AcceptInvitation).to(AcceptInvitation)
     container.bind<ListWorkspaces>(TYPES.ListWorkspaces).to(ListWorkspaces)
     container.bind<ListWorkspaceUsers>(TYPES.ListWorkspaceUsers).to(ListWorkspaceUsers)
+    container.bind<InitiateKeyShare>(TYPES.InitiateKeyShare).to(InitiateKeyShare)
     // Handlers
     container.bind<UserRegisteredEventHandler>(TYPES.UserRegisteredEventHandler).to(UserRegisteredEventHandler)
     // Projection

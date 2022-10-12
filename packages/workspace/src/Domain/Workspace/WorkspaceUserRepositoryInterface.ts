@@ -5,4 +5,5 @@ export interface WorkspaceUserRepositoryInterface {
   save(workspace: WorkspaceUser): Promise<WorkspaceUser>
   findByUserUuid(userUuid: Uuid): Promise<WorkspaceUser[]>
   findByWorkspaceUuid(workspaceUuid: Uuid): Promise<WorkspaceUser[]>
+  findOneByUserUuidAndWorkspaceUuid(dto: { workspaceUuid: Uuid; userUuid: Uuid }): Promise<WorkspaceUser | null>
 }
