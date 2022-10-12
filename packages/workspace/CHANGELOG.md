@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.13.1](https://github.com/standardnotes/server/compare/@standardnotes/workspace-server@1.13.0...@standardnotes/workspace-server@1.13.1) (2022-10-12)
+
+### Bug Fixes
+
+* **workspace:** add workspace to workspace user foreign keys ([4f6a2a8](https://github.com/standardnotes/server/commit/4f6a2a83d3d7b57d176e169f33780730eeae6919))
+
 # [1.13.0](https://github.com/standardnotes/server/compare/@standardnotes/workspace-server@1.12.0...@standardnotes/workspace-server@1.13.0) (2022-10-12)
 
 ### Features
