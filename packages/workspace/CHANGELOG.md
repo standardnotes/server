@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.13.0](https://github.com/standardnotes/server/compare/@standardnotes/workspace-server@1.12.0...@standardnotes/workspace-server@1.13.0) (2022-10-12)
+
+### Features
+
+* **workspace:** add endpoints for initiating keyshare in a workspace ([0c1a779](https://github.com/standardnotes/server/commit/0c1a779ef03819928e7e791a6843d90eb9fed964))
+
 # [1.12.0](https://github.com/standardnotes/server/compare/@standardnotes/workspace-server@1.11.0...@standardnotes/workspace-server@1.12.0) (2022-10-12)
 
 ### Features

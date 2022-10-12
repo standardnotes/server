@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.43.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.42.0...@standardnotes/auth-server@1.43.0) (2022-10-12)
+
+### Features
+
+* **workspace:** add endpoints for initiating keyshare in a workspace ([0c1a779](https://github.com/standardnotes/server/commit/0c1a779ef03819928e7e791a6843d90eb9fed964))
+
 # [1.42.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.41.2...@standardnotes/auth-server@1.42.0) (2022-10-11)
 
 ### Features

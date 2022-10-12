@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.30.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.29.0...@standardnotes/api-gateway@1.30.0) (2022-10-12)
+
+### Features
+
+* **workspace:** add endpoints for initiating keyshare in a workspace ([0c1a779](https://github.com/standardnotes/api-gateway/commit/0c1a779ef03819928e7e791a6843d90eb9fed964))
+
 # [1.29.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.28.2...@standardnotes/api-gateway@1.29.0) (2022-10-11)
 
 ### Features
