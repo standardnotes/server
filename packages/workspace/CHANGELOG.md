@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.12.0](https://github.com/standardnotes/server/compare/@standardnotes/workspace-server@1.11.0...@standardnotes/workspace-server@1.12.0) (2022-10-12)
+
+### Features
+
+* **workspace:** add initiating key share ([cea9021](https://github.com/standardnotes/server/commit/cea9021c164588969890370a2332f11749ac820e))
+
 # [1.11.0](https://github.com/standardnotes/server/compare/@standardnotes/workspace-server@1.10.0...@standardnotes/workspace-server@1.11.0) (2022-10-11)
 
 ### Features
