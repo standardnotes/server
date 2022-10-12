@@ -1,6 +1,7 @@
 import { WorkspaceType } from '@standardnotes/common'
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
 import { WorkspaceInvite } from '../Invite/WorkspaceInvite'
+import { WorkspaceUser } from './WorkspaceUser'
 
 @Entity({ name: 'workspaces' })
 export class Workspace {
@@ -44,4 +45,12 @@ export class Workspace {
     (workspaceInvite) => workspaceInvite.workspace,
   )
   declare invites: Promise<WorkspaceInvite[]>
+
+  @OneToMany(
+    /* istanbul ignore next */
+    () => WorkspaceUser,
+    /* istanbul ignore next */
+    (workspaceUser) => workspaceUser.workspace,
+  )
+  declare users: Promise<WorkspaceUser[]>
 }

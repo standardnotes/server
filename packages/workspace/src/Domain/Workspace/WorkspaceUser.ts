@@ -1,5 +1,6 @@
 import { WorkspaceAccessLevel, WorkspaceUserStatus } from '@standardnotes/common'
-import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, Entity, Index, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
+import { Workspace } from './Workspace'
 
 @Entity({ name: 'workspace_users' })
 @Index('index_workspace_users_on_workspace_and_user', ['userUuid', 'workspaceUuid'], { unique: true })
@@ -80,4 +81,18 @@ export class WorkspaceUser {
     type: 'bigint',
   })
   declare updatedAt: number
+
+  @ManyToOne(
+    /* istanbul ignore next */
+    () => Workspace,
+    /* istanbul ignore next */
+    (workspace) => workspace.users,
+    /* istanbul ignore next */
+    { onDelete: 'CASCADE' },
+  )
+  @JoinColumn(
+    /* istanbul ignore next */
+    { name: 'workspace_uuid' },
+  )
+  declare workspace: Promise<Workspace>
 }
