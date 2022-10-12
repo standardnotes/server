@@ -1824,18 +1824,18 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@standardnotes/api@npm:^1.15.0":
-  version: 1.15.0
-  resolution: "@standardnotes/api@npm:1.15.0"
+"@standardnotes/api@npm:^1.16.0":
+  version: 1.16.0
+  resolution: "@standardnotes/api@npm:1.16.0"
   dependencies:
     "@standardnotes/common": ^1.39.0
-    "@standardnotes/encryption": 1.17.0
-    "@standardnotes/models": 1.26.0
+    "@standardnotes/encryption": 1.17.1
+    "@standardnotes/models": 1.27.0
     "@standardnotes/responses": 1.11.0
     "@standardnotes/security": ^1.1.0
     "@standardnotes/utils": 1.10.0
     reflect-metadata: ^0.1.13
-  checksum: 88ae0a340e175b8251e4960f377998a9e21ec5c7967be85c813ff2103d281faea8b13faf787ac51dab4d1737521df136748c9dbd34f0eee2f61d860085bca840
+  checksum: 465f76dd29f0207019cf16e916ab7495e0f09c5e332225a5e089bcc26b6969754b9c813f132cbc9225830705dc9d88b03fa9cbdce8f84e45ffb303be410b260f
   languageName: node
   linkType: hard
 
@@ -1846,7 +1846,7 @@ __metadata:
     "@newrelic/winston-enricher": ^4.0.0
     "@sentry/node": ^7.3.0
     "@standardnotes/analytics": "workspace:*"
-    "@standardnotes/api": ^1.15.0
+    "@standardnotes/api": ^1.16.0
     "@standardnotes/common": "workspace:*"
     "@standardnotes/domain-events": "workspace:*"
     "@standardnotes/domain-events-infra": "workspace:*"
@@ -1972,17 +1972,17 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@standardnotes/encryption@npm:1.17.0":
-  version: 1.17.0
-  resolution: "@standardnotes/encryption@npm:1.17.0"
+"@standardnotes/encryption@npm:1.17.1":
+  version: 1.17.1
+  resolution: "@standardnotes/encryption@npm:1.17.1"
   dependencies:
     "@standardnotes/common": ^1.39.0
-    "@standardnotes/models": 1.26.0
+    "@standardnotes/models": 1.27.0
     "@standardnotes/responses": 1.11.0
     "@standardnotes/sncrypto-common": 1.13.0
     "@standardnotes/utils": 1.10.0
     reflect-metadata: ^0.1.13
-  checksum: 587516dfed87ba0bc46fef9ddcc6edb42757c140f852096d6bf6f7911418a7aa1eb0b370c5a0c56eeab3e6b13117ec055374b6e023c64e67cdf2362a584ac06e
+  checksum: 2b2408ffbd3440a89d7b2ddbaf8d50563ea126cd37c8d8ba9aa2b9cd4682f394a28fe16a5e5161685c49866def00a2cc13c3947c2b81e656f94713ac8c526a13
   languageName: node
   linkType: hard
 
@@ -2099,7 +2099,21 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@standardnotes/models@npm:1.26.0, @standardnotes/models@npm:^1.26.0":
+"@standardnotes/models@npm:1.27.0":
+  version: 1.27.0
+  resolution: "@standardnotes/models@npm:1.27.0"
+  dependencies:
+    "@standardnotes/common": ^1.39.0
+    "@standardnotes/features": 1.53.0
+    "@standardnotes/responses": 1.11.0
+    "@standardnotes/utils": 1.10.0
+    lodash: ^4.17.21
+    reflect-metadata: ^0.1.13
+  checksum: 263fd9e9233daa997060c538cc48df8fb5598be6464fe952f79d3fb90ce759ddb8279516ecc8b56c763ee3488c2783218d289b40020835db7c51047cb21196ad
+  languageName: node
+  linkType: hard
+
+"@standardnotes/models@npm:^1.26.0":
   version: 1.26.0
   resolution: "@standardnotes/models@npm:1.26.0"
   dependencies:
@@ -2378,7 +2392,7 @@ __metadata:
   dependencies:
     "@newrelic/winston-enricher": ^4.0.0
     "@sentry/node": ^7.3.0
-    "@standardnotes/api": ^1.15.0
+    "@standardnotes/api": ^1.16.0
     "@standardnotes/common": "workspace:*"
     "@standardnotes/domain-events": "workspace:^"
     "@standardnotes/domain-events-infra": "workspace:^"

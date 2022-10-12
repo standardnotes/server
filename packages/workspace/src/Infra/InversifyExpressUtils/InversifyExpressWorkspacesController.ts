@@ -39,6 +39,18 @@ export class InversifyExpressWorkspacesController extends BaseHttpController {
     return this.json(result.data, result.status)
   }
 
+  @httpPost('/:workspaceUuid/users/:userUuid/keyshare')
+  async initiateKeyshare(request: Request, response: Response): Promise<results.JsonResult> {
+    const result = await this.workspacesController.initiateKeyshare({
+      userUuid: request.params.userUuid,
+      workspaceUuid: request.params.workspaceUuid,
+      encryptedWorkspaceKey: request.body.encryptedWorkspaceKey,
+      performingUserUuid: response.locals.user.uuid,
+    })
+
+    return this.json(result.data, result.status)
+  }
+
   @httpPost('/:workspaceUuid/invites')
   async inviteToWorkspace(request: Request, response: Response): Promise<results.JsonResult> {
     if (request.params.workspaceUuid !== request.body.workspaceUuid) {

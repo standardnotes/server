@@ -1,4 +1,4 @@
-import { WorkspaceUserStatus } from '@standardnotes/common'
+import { WorkspaceAccessLevel, WorkspaceUserStatus } from '@standardnotes/common'
 import { TimerInterface } from '@standardnotes/time'
 import { inject, injectable } from 'inversify'
 import TYPES from '../../../Bootstrap/Types'
@@ -15,6 +15,19 @@ export class InitiateKeyShare implements UseCaseInterface {
   ) {}
 
   async execute(dto: InitiateKeyShareDTO): Promise<InitiateKeyShareResponse> {
+    const workspaceOwner = await this.workspaceUserRepository.findOneByUserUuidAndWorkspaceUuid({
+      workspaceUuid: dto.workspaceUuid,
+      userUuid: dto.performingUserUuid,
+    })
+    if (
+      workspaceOwner === null ||
+      ![WorkspaceAccessLevel.Admin, WorkspaceAccessLevel.Owner].includes(workspaceOwner.accessLevel)
+    ) {
+      return {
+        success: false,
+      }
+    }
+
     const workspaceUser = await this.workspaceUserRepository.findOneByUserUuidAndWorkspaceUuid({
       workspaceUuid: dto.workspaceUuid,
       userUuid: dto.userUuid,

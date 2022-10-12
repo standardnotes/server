@@ -11,6 +11,8 @@ import {
   WorkspaceInvitationAcceptingRequestParams,
   WorkspaceInvitationAcceptingResponse,
   WorkspaceUserListRequestParams,
+  WorkspaceKeyshareInitiatingRequestParams,
+  WorkspaceKeyshareInitiatingResponse,
 } from '@standardnotes/api'
 import { Uuid, WorkspaceAccessLevel, WorkspaceType } from '@standardnotes/common'
 
@@ -26,6 +28,7 @@ import { AcceptInvitation } from '../Domain/UseCase/AcceptInvitation/AcceptInvit
 import { WorkspaceUser } from '../Domain/Workspace/WorkspaceUser'
 import { WorkspaceUserProjection } from '../Domain/Projection/WorkspaceUserProjection'
 import { ListWorkspaceUsers } from '../Domain/UseCase/ListWorkspaceUsers/ListWorkspaceUsers'
+import { InitiateKeyShare } from '../Domain/UseCase/InitiateKeyShare/InitiateKeyShare'
 
 @injectable()
 export class WorkspacesController implements WorkspaceServerInterface {
@@ -35,10 +38,40 @@ export class WorkspacesController implements WorkspaceServerInterface {
     @inject(TYPES.ListWorkspaces) private doListWorkspaces: ListWorkspaces,
     @inject(TYPES.ListWorkspaceUsers) private doListWorkspaceUsers: ListWorkspaceUsers,
     @inject(TYPES.AcceptInvitation) private doAcceptInvite: AcceptInvitation,
+    @inject(TYPES.InitiateKeyShare) private doInitiateKeyshare: InitiateKeyShare,
     @inject(TYPES.WorkspaceProjector) private workspaceProjector: ProjectorInterface<Workspace, WorkspaceProjection>,
     @inject(TYPES.WorkspaceUserProjector)
     private workspaceUserProjector: ProjectorInterface<WorkspaceUser, WorkspaceUserProjection>,
   ) {}
+
+  async initiateKeyshare(
+    params: WorkspaceKeyshareInitiatingRequestParams,
+  ): Promise<WorkspaceKeyshareInitiatingResponse> {
+    const result = await this.doInitiateKeyshare.execute({
+      userUuid: params.userUuid,
+      workspaceUuid: params.workspaceUuid,
+      encryptedWorkspaceKey: params.encryptedWorkspaceKey,
+      performingUserUuid: params.performingUserUuid as Uuid,
+    })
+
+    if (!result.success) {
+      return {
+        status: HttpStatusCode.BadRequest,
+        data: {
+          error: {
+            message: 'Could not initiate keyshare.',
+          },
+        },
+      }
+    }
+
+    return {
+      status: HttpStatusCode.Success,
+      data: {
+        success: true,
+      },
+    }
+  }
 
   async inviteToWorkspace(params: WorkspaceInvitationRequestParams): Promise<WorkspaceInvitationResponse> {
     const { invite } = await this.doInviteToWorkspace.execute({

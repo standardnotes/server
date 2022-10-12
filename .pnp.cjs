@@ -2521,13 +2521,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@standardnotes/api", [\
-        ["npm:1.15.0", {\
-          "packageLocation": "./.yarn/cache/@standardnotes-api-npm-1.15.0-12a67ff9b7-88ae0a340e.zip/node_modules/@standardnotes/api/",\
+        ["npm:1.16.0", {\
+          "packageLocation": "./.yarn/cache/@standardnotes-api-npm-1.16.0-efccf518ba-465f76dd29.zip/node_modules/@standardnotes/api/",\
           "packageDependencies": [\
-            ["@standardnotes/api", "npm:1.15.0"],\
+            ["@standardnotes/api", "npm:1.16.0"],\
             ["@standardnotes/common", "workspace:packages/common"],\
-            ["@standardnotes/encryption", "npm:1.17.0"],\
-            ["@standardnotes/models", "npm:1.26.0"],\
+            ["@standardnotes/encryption", "npm:1.17.1"],\
+            ["@standardnotes/models", "npm:1.27.0"],\
             ["@standardnotes/responses", "npm:1.11.0"],\
             ["@standardnotes/security", "workspace:packages/security"],\
             ["@standardnotes/utils", "npm:1.10.0"],\
@@ -2600,7 +2600,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@newrelic/winston-enricher", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:4.0.0"],\
             ["@sentry/node", "npm:7.5.0"],\
             ["@standardnotes/analytics", "workspace:packages/analytics"],\
-            ["@standardnotes/api", "npm:1.15.0"],\
+            ["@standardnotes/api", "npm:1.16.0"],\
             ["@standardnotes/common", "workspace:packages/common"],\
             ["@standardnotes/domain-events", "workspace:packages/domain-events"],\
             ["@standardnotes/domain-events-infra", "workspace:packages/domain-events-infra"],\
@@ -2725,12 +2725,12 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["@standardnotes/encryption", [\
-        ["npm:1.17.0", {\
-          "packageLocation": "./.yarn/cache/@standardnotes-encryption-npm-1.17.0-587d631df2-587516dfed.zip/node_modules/@standardnotes/encryption/",\
+        ["npm:1.17.1", {\
+          "packageLocation": "./.yarn/cache/@standardnotes-encryption-npm-1.17.1-f4d1330273-2b2408ffbd.zip/node_modules/@standardnotes/encryption/",\
           "packageDependencies": [\
-            ["@standardnotes/encryption", "npm:1.17.0"],\
+            ["@standardnotes/encryption", "npm:1.17.1"],\
             ["@standardnotes/common", "workspace:packages/common"],\
-            ["@standardnotes/models", "npm:1.26.0"],\
+            ["@standardnotes/models", "npm:1.27.0"],\
             ["@standardnotes/responses", "npm:1.11.0"],\
             ["@standardnotes/sncrypto-common", "npm:1.13.0"],\
             ["@standardnotes/utils", "npm:1.10.0"],\
@@ -2860,6 +2860,19 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@standardnotes-models-npm-1.26.0-dade8919ab-f595a3de88.zip/node_modules/@standardnotes/models/",\
           "packageDependencies": [\
             ["@standardnotes/models", "npm:1.26.0"],\
+            ["@standardnotes/common", "workspace:packages/common"],\
+            ["@standardnotes/features", "npm:1.53.0"],\
+            ["@standardnotes/responses", "npm:1.11.0"],\
+            ["@standardnotes/utils", "npm:1.10.0"],\
+            ["lodash", "npm:4.17.21"],\
+            ["reflect-metadata", "npm:0.1.13"]\
+          ],\
+          "linkType": "HARD"\
+        }],\
+        ["npm:1.27.0", {\
+          "packageLocation": "./.yarn/cache/@standardnotes-models-npm-1.27.0-831bd645c6-263fd9e923.zip/node_modules/@standardnotes/models/",\
+          "packageDependencies": [\
+            ["@standardnotes/models", "npm:1.27.0"],\
             ["@standardnotes/common", "workspace:packages/common"],\
             ["@standardnotes/features", "npm:1.53.0"],\
             ["@standardnotes/responses", "npm:1.11.0"],\
@@ -3154,7 +3167,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@standardnotes/workspace-server", "workspace:packages/workspace"],\
             ["@newrelic/winston-enricher", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:4.0.0"],\
             ["@sentry/node", "npm:7.5.0"],\
-            ["@standardnotes/api", "npm:1.15.0"],\
+            ["@standardnotes/api", "npm:1.16.0"],\
             ["@standardnotes/common", "workspace:packages/common"],\
             ["@standardnotes/domain-events", "workspace:packages/domain-events"],\
             ["@standardnotes/domain-events-infra", "workspace:packages/domain-events-infra"],\

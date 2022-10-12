@@ -6,6 +6,7 @@ import { WorkspaceUserProjection } from '../Domain/Projection/WorkspaceUserProje
 import { AcceptInvitation } from '../Domain/UseCase/AcceptInvitation/AcceptInvitation'
 
 import { CreateWorkspace } from '../Domain/UseCase/CreateWorkspace/CreateWorkspace'
+import { InitiateKeyShare } from '../Domain/UseCase/InitiateKeyShare/InitiateKeyShare'
 import { InviteToWorkspace } from '../Domain/UseCase/InviteToWorkspace/InviteToWorkspace'
 import { ListWorkspaces } from '../Domain/UseCase/ListWorkspaces/ListWorkspaces'
 import { ListWorkspaceUsers } from '../Domain/UseCase/ListWorkspaceUsers/ListWorkspaceUsers'
@@ -20,6 +21,7 @@ describe('WorkspacesController', () => {
   let doAcceptInvitation: AcceptInvitation
   let doListWorkspaces: ListWorkspaces
   let doListWorkspaceUsers: ListWorkspaceUsers
+  let doInitiateKeyshare: InitiateKeyShare
   let workspacesProject: ProjectorInterface<Workspace, WorkspaceProjection>
   let workspaceUsersProjector: ProjectorInterface<WorkspaceUser, WorkspaceUserProjection>
   let workspace1: Workspace
@@ -34,6 +36,7 @@ describe('WorkspacesController', () => {
       doListWorkspaces,
       doListWorkspaceUsers,
       doAcceptInvitation,
+      doInitiateKeyshare,
       workspacesProject,
       workspaceUsersProjector,
     )
@@ -55,6 +58,9 @@ describe('WorkspacesController', () => {
 
     doAcceptInvitation = {} as jest.Mocked<AcceptInvitation>
     doAcceptInvitation.execute = jest.fn().mockReturnValue({ success: true })
+
+    doInitiateKeyshare = {} as jest.Mocked<InitiateKeyShare>
+    doInitiateKeyshare.execute = jest.fn().mockReturnValue({ success: true })
 
     workspacesProject = {} as jest.Mocked<ProjectorInterface<Workspace, WorkspaceProjection>>
     workspacesProject.project = jest.fn().mockReturnValue({ foo: 'bar' })
@@ -156,6 +162,42 @@ describe('WorkspacesController', () => {
         users: [{ bar: 'buzz' }, { bar: 'buzz' }],
       },
       status: 200,
+    })
+  })
+
+  it('should initiate keyshare', async () => {
+    const result = await createController().initiateKeyshare({
+      userUuid: 'u-1-2-3',
+      encryptedWorkspaceKey: 'foo',
+      workspaceUuid: 'w-1-2-3',
+      performingUserUuid: 'p-1-2-3',
+    })
+
+    expect(result).toEqual({
+      data: {
+        success: true,
+      },
+      status: 200,
+    })
+  })
+
+  it('should not initiate keyshare if it fails', async () => {
+    doInitiateKeyshare.execute = jest.fn().mockReturnValue({ success: false })
+
+    const result = await createController().initiateKeyshare({
+      userUuid: 'u-1-2-3',
+      encryptedWorkspaceKey: 'foo',
+      workspaceUuid: 'w-1-2-3',
+      performingUserUuid: 'p-1-2-3',
+    })
+
+    expect(result).toEqual({
+      data: {
+        error: {
+          message: 'Could not initiate keyshare.',
+        },
+      },
+      status: 400,
     })
   })
 })

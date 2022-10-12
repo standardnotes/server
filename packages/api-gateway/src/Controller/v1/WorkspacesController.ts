@@ -26,6 +26,16 @@ export class WorkspacesController extends BaseHttpController {
     )
   }
 
+  @httpPost('/:workspaceUuid/users/:userUuid/keyshare')
+  async initiateKeyshare(request: Request, response: Response): Promise<void> {
+    await this.httpService.callWorkspaceServer(
+      request,
+      response,
+      `workspaces/${request.params.workspaceUuid}/users/${request.params.userUuid}/keyshare`,
+      request.body,
+    )
+  }
+
   @httpGet('/')
   async listWorkspaces(request: Request, response: Response): Promise<void> {
     await this.httpService.callWorkspaceServer(request, response, 'workspaces', request.body)
