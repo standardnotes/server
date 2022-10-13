@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.31.2](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.31.1...@standardnotes/api-gateway@1.31.2) (2022-10-13)
+
+### Bug Fixes
+
+* **api-gateway:** make web sockets url optional ([219b1ba](https://github.com/standardnotes/api-gateway/commit/219b1baa41f24ba140f24f48bf9c9d7e01288ed5))
+
 ## [1.31.1](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.31.0...@standardnotes/api-gateway@1.31.1) (2022-10-13)
 
 **Note:** Version bump only for package @standardnotes/api-gateway
