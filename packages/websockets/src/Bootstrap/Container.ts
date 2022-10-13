@@ -1,4 +1,5 @@
 import * as winston from 'winston'
+import axios, { AxiosInstance } from 'axios'
 import Redis from 'ioredis'
 import * as AWS from 'aws-sdk'
 import { Container } from 'inversify'
@@ -124,6 +125,7 @@ export class ContainerConfigLoader {
       .to(WebSocketMessageRequestedEventHandler)
 
     // Services
+    container.bind<AxiosInstance>(TYPES.HTTPClient).toConstantValue(axios.create())
     container
       .bind<TokenDecoderInterface<CrossServiceTokenData>>(TYPES.CrossServiceTokenDecoder)
       .toConstantValue(new TokenDecoder<CrossServiceTokenData>(container.get(TYPES.AUTH_JWT_SECRET)))
