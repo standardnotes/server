@@ -65,6 +65,12 @@ export class HttpService implements HttpServiceInterface {
     endpoint: string,
     payload?: Record<string, unknown> | string,
   ): Promise<void> {
+    if (!this.webSocketServerUrl) {
+      this.logger.debug('Websockets Server URL not defined. Skipped request to WebSockets API.')
+
+      return
+    }
+
     await this.callServer(this.webSocketServerUrl, request, response, endpoint, payload)
   }
 
