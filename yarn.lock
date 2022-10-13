@@ -2289,19 +2289,12 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@standardnotes/sncrypto-common@npm:1.13.0":
+"@standardnotes/sncrypto-common@npm:1.13.0, @standardnotes/sncrypto-common@npm:^1.9.0":
   version: 1.13.0
   resolution: "@standardnotes/sncrypto-common@npm:1.13.0"
   dependencies:
     reflect-metadata: ^0.1.13
   checksum: e58258f52546a3f0ce2d8f76d4be79a7d23e15dfd81e687ac66cd3fc00dc91e563556da2e600dbd2f270f659b3e1f3e4301dd6e6e7e6eb4faf51c4343fc65c96
-  languageName: node
-  linkType: hard
-
-"@standardnotes/sncrypto-common@npm:^1.9.0":
-  version: 1.9.0
-  resolution: "@standardnotes/sncrypto-common@npm:1.9.0"
-  checksum: 42252d71984b52756dff44ec3721961858e9f4227ca6555c0d60551852cb5f0a938b2b4969177c23c85d34e7f182369393f8b795afc65cff65b1c30b139f8f68
   languageName: node
   linkType: hard
 
