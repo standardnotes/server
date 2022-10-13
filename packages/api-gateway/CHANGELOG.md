@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.31.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.30.1...@standardnotes/api-gateway@1.31.0) (2022-10-13)
+
+### Features
+
+* **auth:** remove websocket handling in favor of websockets service ([86ae4a5](https://github.com/standardnotes/api-gateway/commit/86ae4a59a3ac7915ad96ed5176b545f4d005e837))
+
 ## [1.30.1](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.30.0...@standardnotes/api-gateway@1.30.1) (2022-10-13)
 
 **Note:** Version bump only for package @standardnotes/api-gateway

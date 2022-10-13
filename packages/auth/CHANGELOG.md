@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.44.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.43.1...@standardnotes/auth-server@1.44.0) (2022-10-13)
+
+### Features
+
+* **auth:** remove websocket handling in favor of websockets service ([86ae4a5](https://github.com/standardnotes/server/commit/86ae4a59a3ac7915ad96ed5176b545f4d005e837))
+
 ## [1.43.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.43.0...@standardnotes/auth-server@1.43.1) (2022-10-13)
 
 **Note:** Version bump only for package @standardnotes/auth-server
