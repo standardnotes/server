@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.45.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.44.0...@standardnotes/auth-server@1.45.0) (2022-10-13)
+
+### Features
+
+* publish workspace invite accepted event for websockets ([86379eb](https://github.com/standardnotes/server/commit/86379eb96d7231d6a76ee91350accef2d44a941d))
+
 # [1.44.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.43.1...@standardnotes/auth-server@1.44.0) (2022-10-13)
 
 ### Features

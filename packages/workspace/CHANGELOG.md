@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.14.0](https://github.com/standardnotes/server/compare/@standardnotes/workspace-server@1.13.2...@standardnotes/workspace-server@1.14.0) (2022-10-13)
+
+### Features
+
+* publish workspace invite accepted event for websockets ([86379eb](https://github.com/standardnotes/server/commit/86379eb96d7231d6a76ee91350accef2d44a941d))
+
 ## [1.13.2](https://github.com/standardnotes/server/compare/@standardnotes/workspace-server@1.13.1...@standardnotes/workspace-server@1.13.2) (2022-10-13)
 
 **Note:** Version bump only for package @standardnotes/workspace-server

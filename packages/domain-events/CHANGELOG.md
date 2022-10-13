@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.68.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.67.0...@standardnotes/domain-events@2.68.0) (2022-10-13)
+
+### Features
+
+* publish workspace invite accepted event for websockets ([86379eb](https://github.com/standardnotes/server/commit/86379eb96d7231d6a76ee91350accef2d44a941d))
+
 # [2.67.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.66.3...@standardnotes/domain-events@2.67.0) (2022-10-13)
 
 ### Features
