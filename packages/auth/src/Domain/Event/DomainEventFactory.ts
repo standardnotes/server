@@ -1,4 +1,4 @@
-import { EmailMessageIdentifier, ProtocolVersion, RoleName, Uuid } from '@standardnotes/common'
+import { EmailMessageIdentifier, JSONString, ProtocolVersion, RoleName, Uuid } from '@standardnotes/common'
 import {
   AccountDeletionRequestedEvent,
   UserEmailChangedEvent,
@@ -15,6 +15,7 @@ import {
   PredicateVerifiedEvent,
   DomainEventService,
   EmailMessageRequestedEvent,
+  WebSocketMessageRequestedEvent,
 } from '@standardnotes/domain-events'
 import { Predicate, PredicateVerificationResult } from '@standardnotes/predicates'
 import { TimerInterface } from '@standardnotes/time'
@@ -26,6 +27,21 @@ import { DomainEventFactoryInterface } from './DomainEventFactoryInterface'
 @injectable()
 export class DomainEventFactory implements DomainEventFactoryInterface {
   constructor(@inject(TYPES.Timer) private timer: TimerInterface) {}
+
+  createWebSocketMessageRequestedEvent(dto: { userUuid: Uuid; message: JSONString }): WebSocketMessageRequestedEvent {
+    return {
+      type: 'WEB_SOCKET_MESSAGE_REQUESTED',
+      createdAt: this.timer.getUTCDate(),
+      meta: {
+        correlation: {
+          userIdentifier: dto.userUuid,
+          userIdentifierType: 'uuid',
+        },
+        origin: DomainEventService.Auth,
+      },
+      payload: dto,
+    }
+  }
 
   createEmailMessageRequestedEvent(dto: {
     userEmail: string

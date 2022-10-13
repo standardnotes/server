@@ -1,4 +1,4 @@
-import { Uuid, RoleName, EmailMessageIdentifier, ProtocolVersion } from '@standardnotes/common'
+import { Uuid, RoleName, EmailMessageIdentifier, ProtocolVersion, JSONString } from '@standardnotes/common'
 import { Predicate, PredicateVerificationResult } from '@standardnotes/predicates'
 import {
   AccountDeletionRequestedEvent,
@@ -15,10 +15,12 @@ import {
   SharedSubscriptionInvitationCanceledEvent,
   PredicateVerifiedEvent,
   EmailMessageRequestedEvent,
+  WebSocketMessageRequestedEvent,
 } from '@standardnotes/domain-events'
 import { InviteeIdentifierType } from '../SharedSubscription/InviteeIdentifierType'
 
 export interface DomainEventFactoryInterface {
+  createWebSocketMessageRequestedEvent(dto: { userUuid: Uuid; message: JSONString }): WebSocketMessageRequestedEvent
   createEmailMessageRequestedEvent(dto: {
     userEmail: string
     messageIdentifier: EmailMessageIdentifier

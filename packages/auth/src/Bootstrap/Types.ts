@@ -6,7 +6,6 @@ const TYPES = {
   // Controller
   AuthController: Symbol.for('AuthController'),
   SubscriptionInvitesController: Symbol.for('SubscriptionInvitesController'),
-  WebSocketsController: Symbol.for('WebSocketsController'),
   // Repositories
   UserRepository: Symbol.for('UserRepository'),
   SessionRepository: Symbol.for('SessionRepository'),
@@ -17,7 +16,6 @@ const TYPES = {
   OfflineSettingRepository: Symbol.for('OfflineSettingRepository'),
   LockRepository: Symbol.for('LockRepository'),
   RoleRepository: Symbol.for('RoleRepository'),
-  WebSocketsConnectionRepository: Symbol.for('WebSocketsConnectionRepository'),
   UserSubscriptionRepository: Symbol.for('UserSubscriptionRepository'),
   OfflineUserSubscriptionRepository: Symbol.for('OfflineUserSubscriptionRepository'),
   SubscriptionTokenRepository: Symbol.for('SubscriptionTokenRepository'),
@@ -83,7 +81,6 @@ const TYPES = {
   REDIS_EVENTS_CHANNEL: Symbol.for('REDIS_EVENTS_CHANNEL'),
   NEW_RELIC_ENABLED: Symbol.for('NEW_RELIC_ENABLED'),
   SYNCING_SERVER_URL: Symbol.for('SYNCING_SERVER_URL'),
-  WEBSOCKETS_API_URL: Symbol.for('WEBSOCKETS_API_URL'),
   VERSION: Symbol.for('VERSION'),
   PAYMENTS_SERVER_URL: Symbol.for('PAYMENTS_SERVER_URL'),
   // use cases
@@ -107,8 +104,6 @@ const TYPES = {
   UpdateSetting: Symbol.for('UpdateSetting'),
   DeleteSetting: Symbol.for('DeleteSetting'),
   DeleteAccount: Symbol.for('DeleteAccount'),
-  AddWebSocketsConnection: Symbol.for('AddWebSocketsConnection'),
-  RemoveWebSocketsConnection: Symbol.for('RemoveWebSocketsConnection'),
   GetUserSubscription: Symbol.for('GetUserSubscription'),
   GetUserOfflineSubscription: Symbol.for('GetUserOfflineSubscription'),
   CreateSubscriptionToken: Symbol.for('CreateSubscriptionToken'),
@@ -125,7 +120,6 @@ const TYPES = {
   GetSubscriptionSetting: Symbol.for('GetSubscriptionSetting'),
   GetUserAnalyticsId: Symbol.for('GetUserAnalyticsId'),
   VerifyPredicate: Symbol.for('VerifyPredicate'),
-  CreateWebSocketConnectionToken: Symbol.for('CreateWebSocketConnectionToken'),
   CreateCrossServiceToken: Symbol.for('CreateCrossServiceToken'),
   // Handlers
   UserRegisteredEventHandler: Symbol.for('UserRegisteredEventHandler'),
@@ -168,7 +162,6 @@ const TYPES = {
   CrossServiceTokenEncoder: Symbol.for('CrossServiceTokenEncoder'),
   SessionTokenEncoder: Symbol.for('SessionTokenEncoder'),
   ValetTokenEncoder: Symbol.for('ValetTokenEncoder'),
-  WebSocketConnectionTokenEncoder: Symbol.for('WebSocketConnectionTokenEncoder'),
   WebSocketConnectionTokenDecoder: Symbol.for('WebSocketConnectionTokenDecoder'),
   AuthenticationMethodResolver: Symbol.for('AuthenticationMethodResolver'),
   DomainEventPublisher: Symbol.for('DomainEventPublisher'),

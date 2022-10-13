@@ -18,6 +18,29 @@ describe('DomainEventFactory', () => {
     timer.getUTCDate = jest.fn().mockReturnValue(new Date(1))
   })
 
+  it('should create a WEB_SOCKET_MESSAGE_REQUESTED event', () => {
+    expect(
+      createFactory().createWebSocketMessageRequestedEvent({
+        userUuid: '1-2-3',
+        message: 'foobar',
+      }),
+    ).toEqual({
+      createdAt: expect.any(Date),
+      meta: {
+        correlation: {
+          userIdentifier: '1-2-3',
+          userIdentifierType: 'uuid',
+        },
+        origin: 'auth',
+      },
+      payload: {
+        userUuid: '1-2-3',
+        message: 'foobar',
+      },
+      type: 'WEB_SOCKET_MESSAGE_REQUESTED',
+    })
+  })
+
   it('should create a EMAIL_MESSAGE_REQUESTED event', () => {
     expect(
       createFactory().createEmailMessageRequestedEvent({

@@ -79,10 +79,6 @@ import { DeleteAccount } from '../Domain/UseCase/DeleteAccount/DeleteAccount'
 import { DeleteSetting } from '../Domain/UseCase/DeleteSetting/DeleteSetting'
 import { SettingFactory } from '../Domain/Setting/SettingFactory'
 import { SettingService } from '../Domain/Setting/SettingService'
-import { WebSocketsConnectionRepositoryInterface } from '../Domain/WebSockets/WebSocketsConnectionRepositoryInterface'
-import { RedisWebSocketsConnectionRepository } from '../Infra/Redis/RedisWebSocketsConnectionRepository'
-import { AddWebSocketsConnection } from '../Domain/UseCase/AddWebSocketsConnection/AddWebSocketsConnection'
-import { RemoveWebSocketsConnection } from '../Domain/UseCase/RemoveWebSocketsConnection/RemoveWebSocketsConnection'
 import axios, { AxiosInstance } from 'axios'
 import { UserSubscription } from '../Domain/Subscription/UserSubscription'
 import { MySQLUserSubscriptionRepository } from '../Infra/MySQL/MySQLUserSubscriptionRepository'
@@ -206,9 +202,6 @@ import { PaymentFailedEventHandler } from '../Domain/Handler/PaymentFailedEventH
 import { PaymentSuccessEventHandler } from '../Domain/Handler/PaymentSuccessEventHandler'
 import { RefundProcessedEventHandler } from '../Domain/Handler/RefundProcessedEventHandler'
 import { SubscriptionInvitesController } from '../Controller/SubscriptionInvitesController'
-import { CreateWebSocketConnectionToken } from '../Domain/UseCase/CreateWebSocketConnectionToken/CreateWebSocketConnectionToken'
-import { WebSocketsController } from '../Controller/WebSocketsController'
-import { WebSocketServerInterface } from '@standardnotes/api'
 import { CreateCrossServiceToken } from '../Domain/UseCase/CreateCrossServiceToken/CreateCrossServiceToken'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -273,7 +266,6 @@ export class ContainerConfigLoader {
     // Controller
     container.bind<AuthController>(TYPES.AuthController).to(AuthController)
     container.bind<SubscriptionInvitesController>(TYPES.SubscriptionInvitesController).to(SubscriptionInvitesController)
-    container.bind<WebSocketServerInterface>(TYPES.WebSocketsController).to(WebSocketsController)
 
     // Repositories
     container.bind<SessionRepositoryInterface>(TYPES.SessionRepository).to(MySQLSessionRepository)
@@ -295,9 +287,6 @@ export class ContainerConfigLoader {
       .bind<RedisEphemeralSessionRepository>(TYPES.EphemeralSessionRepository)
       .to(RedisEphemeralSessionRepository)
     container.bind<LockRepository>(TYPES.LockRepository).to(LockRepository)
-    container
-      .bind<WebSocketsConnectionRepositoryInterface>(TYPES.WebSocketsConnectionRepository)
-      .to(RedisWebSocketsConnectionRepository)
     container
       .bind<SubscriptionTokenRepositoryInterface>(TYPES.SubscriptionTokenRepository)
       .to(RedisSubscriptionTokenRepository)
@@ -375,9 +364,6 @@ export class ContainerConfigLoader {
     container
       .bind(TYPES.WEB_SOCKET_CONNECTION_TOKEN_SECRET)
       .toConstantValue(env.get('WEB_SOCKET_CONNECTION_TOKEN_SECRET', true))
-    container
-      .bind(TYPES.WEB_SOCKET_CONNECTION_TOKEN_TTL)
-      .toConstantValue(+env.get('WEB_SOCKET_CONNECTION_TOKEN_TTL', true))
     container.bind(TYPES.ENCRYPTION_SERVER_KEY).toConstantValue(env.get('ENCRYPTION_SERVER_KEY'))
     container.bind(TYPES.ACCESS_TOKEN_AGE).toConstantValue(env.get('ACCESS_TOKEN_AGE'))
     container.bind(TYPES.REFRESH_TOKEN_AGE).toConstantValue(env.get('REFRESH_TOKEN_AGE'))
@@ -399,7 +385,6 @@ export class ContainerConfigLoader {
     container.bind(TYPES.REDIS_EVENTS_CHANNEL).toConstantValue(env.get('REDIS_EVENTS_CHANNEL'))
     container.bind(TYPES.NEW_RELIC_ENABLED).toConstantValue(env.get('NEW_RELIC_ENABLED', true))
     container.bind(TYPES.SYNCING_SERVER_URL).toConstantValue(env.get('SYNCING_SERVER_URL'))
-    container.bind(TYPES.WEBSOCKETS_API_URL).toConstantValue(env.get('WEBSOCKETS_API_URL', true))
     container.bind(TYPES.VERSION).toConstantValue(env.get('VERSION'))
     container.bind(TYPES.PAYMENTS_SERVER_URL).toConstantValue(env.get('PAYMENTS_SERVER_URL', true))
 
@@ -424,8 +409,6 @@ export class ContainerConfigLoader {
     container.bind<UpdateSetting>(TYPES.UpdateSetting).to(UpdateSetting)
     container.bind<DeleteSetting>(TYPES.DeleteSetting).to(DeleteSetting)
     container.bind<DeleteAccount>(TYPES.DeleteAccount).to(DeleteAccount)
-    container.bind<AddWebSocketsConnection>(TYPES.AddWebSocketsConnection).to(AddWebSocketsConnection)
-    container.bind<RemoveWebSocketsConnection>(TYPES.RemoveWebSocketsConnection).to(RemoveWebSocketsConnection)
     container.bind<GetUserSubscription>(TYPES.GetUserSubscription).to(GetUserSubscription)
     container.bind<GetUserOfflineSubscription>(TYPES.GetUserOfflineSubscription).to(GetUserOfflineSubscription)
     container.bind<CreateSubscriptionToken>(TYPES.CreateSubscriptionToken).to(CreateSubscriptionToken)
@@ -454,9 +437,6 @@ export class ContainerConfigLoader {
     container.bind<GetSubscriptionSetting>(TYPES.GetSubscriptionSetting).to(GetSubscriptionSetting)
     container.bind<GetUserAnalyticsId>(TYPES.GetUserAnalyticsId).to(GetUserAnalyticsId)
     container.bind<VerifyPredicate>(TYPES.VerifyPredicate).to(VerifyPredicate)
-    container
-      .bind<CreateWebSocketConnectionToken>(TYPES.CreateWebSocketConnectionToken)
-      .to(CreateWebSocketConnectionToken)
     container.bind<CreateCrossServiceToken>(TYPES.CreateCrossServiceToken).to(CreateCrossServiceToken)
 
     // Handlers
@@ -547,11 +527,6 @@ export class ContainerConfigLoader {
     container
       .bind<TokenEncoderInterface<ValetTokenData>>(TYPES.ValetTokenEncoder)
       .toConstantValue(new TokenEncoder<ValetTokenData>(container.get(TYPES.VALET_TOKEN_SECRET)))
-    container
-      .bind<TokenEncoderInterface<WebSocketConnectionTokenData>>(TYPES.WebSocketConnectionTokenEncoder)
-      .toConstantValue(
-        new TokenEncoder<WebSocketConnectionTokenData>(container.get(TYPES.WEB_SOCKET_CONNECTION_TOKEN_SECRET)),
-      )
     container.bind<AuthenticationMethodResolver>(TYPES.AuthenticationMethodResolver).to(AuthenticationMethodResolver)
     container.bind<DomainEventFactory>(TYPES.DomainEventFactory).to(DomainEventFactory)
     container.bind<AxiosInstance>(TYPES.HTTPClient).toConstantValue(axios.create())
