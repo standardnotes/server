@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.45](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.10.44...@standardnotes/scheduler-server@1.10.45) (2022-10-13)
+
+**Note:** Version bump only for package @standardnotes/scheduler-server
+
 ## [1.10.44](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.10.43...@standardnotes/scheduler-server@1.10.44) (2022-10-11)
 
 **Note:** Version bump only for package @standardnotes/scheduler-server
