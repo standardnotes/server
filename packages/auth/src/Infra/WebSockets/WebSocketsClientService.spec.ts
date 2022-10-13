@@ -1,6 +1,10 @@
 import 'reflect-metadata'
 
-import { DomainEventPublisherInterface, UserRolesChangedEvent } from '@standardnotes/domain-events'
+import {
+  DomainEventPublisherInterface,
+  UserRolesChangedEvent,
+  WebSocketMessageRequestedEvent,
+} from '@standardnotes/domain-events'
 import { RoleName } from '@standardnotes/common'
 
 import { User } from '../../Domain/User/User'
@@ -30,6 +34,9 @@ describe('WebSocketsClientService', () => {
 
     domainEventFactory = {} as jest.Mocked<DomainEventFactoryInterface>
     domainEventFactory.createUserRolesChangedEvent = jest.fn().mockReturnValue(event)
+    domainEventFactory.createWebSocketMessageRequestedEvent = jest
+      .fn()
+      .mockReturnValue({} as jest.Mocked<WebSocketMessageRequestedEvent>)
 
     domainEventPublisher = {} as jest.Mocked<DomainEventPublisherInterface>
     domainEventPublisher.publish = jest.fn()

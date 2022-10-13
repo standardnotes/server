@@ -7,14 +7,29 @@ import { WorkspaceUserRepositoryInterface } from '../../Workspace/WorkspaceUserR
 
 import { AcceptInvitation } from './AcceptInvitation'
 import { WorkspaceAccessLevel } from '@standardnotes/common'
+import { DomainEventFactoryInterface } from '../../Event/DomainEventFactoryInterface'
+import {
+  DomainEventPublisherInterface,
+  WebSocketMessageRequestedEvent,
+  WorkspaceInviteAcceptedEvent,
+} from '@standardnotes/domain-events'
 
 describe('AcceptInvitation', () => {
   let workspaceInviteRepository: WorkspaceInviteRepositoryInterface
   let workspaceUserRepository: WorkspaceUserRepositoryInterface
+  let domainEventFactory: DomainEventFactoryInterface
+  let domainEventPublisher: DomainEventPublisherInterface
   let timer: TimerInterface
   let invite: WorkspaceInvite
 
-  const createUseCase = () => new AcceptInvitation(workspaceInviteRepository, workspaceUserRepository, timer)
+  const createUseCase = () =>
+    new AcceptInvitation(
+      workspaceInviteRepository,
+      workspaceUserRepository,
+      domainEventFactory,
+      domainEventPublisher,
+      timer,
+    )
 
   beforeEach(() => {
     invite = {
@@ -32,6 +47,17 @@ describe('AcceptInvitation', () => {
 
     timer = {} as jest.Mocked<TimerInterface>
     timer.getTimestampInMicroseconds = jest.fn().mockReturnValue(1)
+
+    domainEventFactory = {} as jest.Mocked<DomainEventFactoryInterface>
+    domainEventFactory.createWebSocketMessageRequestedEvent = jest
+      .fn()
+      .mockReturnValue({} as jest.Mocked<WebSocketMessageRequestedEvent>)
+    domainEventFactory.createWorkspaceInviteAcceptedEvent = jest
+      .fn()
+      .mockReturnValue({} as jest.Mocked<WorkspaceInviteAcceptedEvent>)
+
+    domainEventPublisher = {} as jest.Mocked<DomainEventPublisherInterface>
+    domainEventPublisher.publish = jest.fn()
   })
 
   it('should accept an invite and assign user to workspace', async () => {

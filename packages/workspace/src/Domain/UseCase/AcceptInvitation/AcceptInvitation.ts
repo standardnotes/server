@@ -11,12 +11,16 @@ import { UseCaseInterface } from '../UseCaseInterface'
 
 import { AcceptInvitationDTO } from './AcceptInvitationDTO'
 import { AcceptInvitationResponse } from './AcceptInvitationResponse'
+import { DomainEventFactoryInterface } from '../../Event/DomainEventFactoryInterface'
+import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
 
 @injectable()
 export class AcceptInvitation implements UseCaseInterface {
   constructor(
     @inject(TYPES.WorkspaceInviteRepository) private workspaceInviteRepository: WorkspaceInviteRepositoryInterface,
     @inject(TYPES.WorkspaceUserRepository) private workspaceUserRepository: WorkspaceUserRepositoryInterface,
+    @inject(TYPES.DomainEventFactory) private domainEventFactory: DomainEventFactoryInterface,
+    @inject(TYPES.DomainEventPublisher) private domainEventPublisher: DomainEventPublisherInterface,
     @inject(TYPES.Timer) private timer: TimerInterface,
   ) {}
 
@@ -44,6 +48,19 @@ export class AcceptInvitation implements UseCaseInterface {
     workspaceUser.status = WorkspaceUserStatus.PendingKeyshare
 
     await this.workspaceUserRepository.save(workspaceUser)
+
+    const event = this.domainEventFactory.createWorkspaceInviteAcceptedEvent({
+      inviteeUuid: invite.acceptingUserUuid,
+      inviterUuid: invite.inviterUuid,
+      workspaceUuid: invite.workspaceUuid,
+    })
+
+    await this.domainEventPublisher.publish(
+      this.domainEventFactory.createWebSocketMessageRequestedEvent({
+        userUuid: invite.inviterUuid,
+        message: JSON.stringify(event),
+      }),
+    )
 
     return {
       success: true,

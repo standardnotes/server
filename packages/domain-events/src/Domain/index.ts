@@ -102,6 +102,8 @@ export * from './Event/UserSignedInEvent'
 export * from './Event/UserSignedInEventPayload'
 export * from './Event/WebSocketMessageRequestedEvent'
 export * from './Event/WebSocketMessageRequestedEventPayload'
+export * from './Event/WorkspaceInviteAcceptedEvent'
+export * from './Event/WorkspaceInviteAcceptedEventPayload'
 export * from './Event/WorkspaceInviteCreatedEvent'
 export * from './Event/WorkspaceInviteCreatedEventPayload'
 
