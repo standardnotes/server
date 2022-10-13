@@ -71,15 +71,6 @@ export class ContainerConfigLoader {
     })
     container.bind<winston.Logger>(TYPES.Logger).toConstantValue(logger)
 
-    if (env.get('SNS_AWS_REGION', true)) {
-      container.bind<AWS.SNS>(TYPES.SNS).toConstantValue(
-        new AWS.SNS({
-          apiVersion: 'latest',
-          region: env.get('SNS_AWS_REGION', true),
-        }),
-      )
-    }
-
     if (env.get('SQS_QUEUE_URL', true)) {
       const sqsConfig: AWS.SQS.Types.ClientConfiguration = {
         apiVersion: 'latest',
@@ -114,8 +105,6 @@ export class ContainerConfigLoader {
       .bind(TYPES.WEB_SOCKET_CONNECTION_TOKEN_TTL)
       .toConstantValue(+env.get('WEB_SOCKET_CONNECTION_TOKEN_TTL', true))
     container.bind(TYPES.REDIS_URL).toConstantValue(env.get('REDIS_URL'))
-    container.bind(TYPES.SNS_TOPIC_ARN).toConstantValue(env.get('SNS_TOPIC_ARN', true))
-    container.bind(TYPES.SNS_AWS_REGION).toConstantValue(env.get('SNS_AWS_REGION', true))
     container.bind(TYPES.SQS_QUEUE_URL).toConstantValue(env.get('SQS_QUEUE_URL', true))
     container.bind(TYPES.REDIS_EVENTS_CHANNEL).toConstantValue(env.get('REDIS_EVENTS_CHANNEL'))
     container.bind(TYPES.NEW_RELIC_ENABLED).toConstantValue(env.get('NEW_RELIC_ENABLED', true))

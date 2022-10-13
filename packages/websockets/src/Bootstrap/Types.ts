@@ -1,7 +1,6 @@
 const TYPES = {
   Logger: Symbol.for('Logger'),
   Redis: Symbol.for('Redis'),
-  SNS: Symbol.for('SNS'),
   SQS: Symbol.for('SQS'),
   // Controller
   WebSocketsController: Symbol.for('WebSocketsController'),
@@ -14,8 +13,6 @@ const TYPES = {
   WEB_SOCKET_CONNECTION_TOKEN_SECRET: Symbol.for('WEB_SOCKET_CONNECTION_TOKEN_SECRET'),
   WEB_SOCKET_CONNECTION_TOKEN_TTL: Symbol.for('WEB_SOCKET_CONNECTION_TOKEN_TTL'),
   REDIS_URL: Symbol.for('REDIS_URL'),
-  SNS_TOPIC_ARN: Symbol.for('SNS_TOPIC_ARN'),
-  SNS_AWS_REGION: Symbol.for('SNS_AWS_REGION'),
   SQS_QUEUE_URL: Symbol.for('SQS_QUEUE_URL'),
   SQS_AWS_REGION: Symbol.for('SQS_AWS_REGION'),
   REDIS_EVENTS_CHANNEL: Symbol.for('REDIS_EVENTS_CHANNEL'),
