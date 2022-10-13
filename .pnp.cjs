@@ -81,6 +81,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "reference": "workspace:packages/time"\
       },\
       {\
+        "name": "@standardnotes/websockets-server",\
+        "reference": "workspace:packages/websockets"\
+      },\
+      {\
         "name": "@standardnotes/workspace-server",\
         "reference": "workspace:packages/workspace"\
       }\
@@ -104,6 +108,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ["@standardnotes/sncrypto-node", ["workspace:packages/sncrypto-node"]],\
       ["@standardnotes/syncing-server", ["workspace:packages/syncing-server"]],\
       ["@standardnotes/time", ["workspace:packages/time"]],\
+      ["@standardnotes/websockets-server", ["workspace:packages/websockets"]],\
       ["@standardnotes/workspace-server", ["workspace:packages/workspace"]]\
     ],\
     "fallbackPool": [\
@@ -2534,6 +2539,20 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["reflect-metadata", "npm:0.1.13"]\
           ],\
           "linkType": "HARD"\
+        }],\
+        ["npm:1.16.1", {\
+          "packageLocation": "./.yarn/cache/@standardnotes-api-npm-1.16.1-7af309f020-1f939c1825.zip/node_modules/@standardnotes/api/",\
+          "packageDependencies": [\
+            ["@standardnotes/api", "npm:1.16.1"],\
+            ["@standardnotes/common", "workspace:packages/common"],\
+            ["@standardnotes/encryption", "npm:1.18.0"],\
+            ["@standardnotes/models", "npm:1.27.0"],\
+            ["@standardnotes/responses", "npm:1.11.0"],\
+            ["@standardnotes/security", "workspace:packages/security"],\
+            ["@standardnotes/utils", "npm:1.10.0"],\
+            ["reflect-metadata", "npm:0.1.13"]\
+          ],\
+          "linkType": "HARD"\
         }]\
       ]],\
       ["@standardnotes/api-gateway", [\
@@ -2729,6 +2748,19 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@standardnotes-encryption-npm-1.17.1-f4d1330273-2b2408ffbd.zip/node_modules/@standardnotes/encryption/",\
           "packageDependencies": [\
             ["@standardnotes/encryption", "npm:1.17.1"],\
+            ["@standardnotes/common", "workspace:packages/common"],\
+            ["@standardnotes/models", "npm:1.27.0"],\
+            ["@standardnotes/responses", "npm:1.11.0"],\
+            ["@standardnotes/sncrypto-common", "npm:1.13.0"],\
+            ["@standardnotes/utils", "npm:1.10.0"],\
+            ["reflect-metadata", "npm:0.1.13"]\
+          ],\
+          "linkType": "HARD"\
+        }],\
+        ["npm:1.18.0", {\
+          "packageLocation": "./.yarn/cache/@standardnotes-encryption-npm-1.18.0-d83f58c21a-f9c39d0986.zip/node_modules/@standardnotes/encryption/",\
+          "packageDependencies": [\
+            ["@standardnotes/encryption", "npm:1.18.0"],\
             ["@standardnotes/common", "workspace:packages/common"],\
             ["@standardnotes/models", "npm:1.27.0"],\
             ["@standardnotes/responses", "npm:1.11.0"],\
@@ -3158,6 +3190,45 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["lodash", "npm:4.17.21"]\
           ],\
           "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@standardnotes/websockets-server", [\
+        ["workspace:packages/websockets", {\
+          "packageLocation": "./packages/websockets/",\
+          "packageDependencies": [\
+            ["@standardnotes/websockets-server", "workspace:packages/websockets"],\
+            ["@newrelic/winston-enricher", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:4.0.0"],\
+            ["@sentry/node", "npm:7.5.0"],\
+            ["@standardnotes/api", "npm:1.16.1"],\
+            ["@standardnotes/common", "workspace:packages/common"],\
+            ["@standardnotes/domain-events", "workspace:packages/domain-events"],\
+            ["@standardnotes/domain-events-infra", "workspace:packages/domain-events-infra"],\
+            ["@standardnotes/security", "workspace:packages/security"],\
+            ["@types/cors", "npm:2.8.12"],\
+            ["@types/express", "npm:4.17.13"],\
+            ["@types/ioredis", "npm:4.28.10"],\
+            ["@types/jest", "npm:29.1.1"],\
+            ["@types/newrelic", "npm:7.0.3"],\
+            ["@typescript-eslint/eslint-plugin", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:5.30.5"],\
+            ["aws-sdk", "npm:2.1168.0"],\
+            ["axios", "npm:0.27.2"],\
+            ["cors", "npm:2.8.5"],\
+            ["dotenv", "npm:16.0.1"],\
+            ["eslint", "npm:8.19.0"],\
+            ["eslint-plugin-prettier", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:4.2.1"],\
+            ["express", "npm:4.18.1"],\
+            ["inversify", "npm:6.0.1"],\
+            ["inversify-express-utils", "npm:6.4.3"],\
+            ["ioredis", "npm:5.2.0"],\
+            ["jest", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:29.1.2"],\
+            ["mysql2", "npm:2.3.3"],\
+            ["newrelic", "npm:9.0.0"],\
+            ["reflect-metadata", "npm:0.1.13"],\
+            ["ts-jest", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:29.0.3"],\
+            ["typeorm", "virtual:31b5a94a105c89c9294c3d524a7f8929fe63ee5a2efadf21951ca4c0cfd2ecf02e8f4ef5a066bbda091f1e3a56e57c6749069a080618c96b22e51131a330fc4a#npm:0.3.7"],\
+            ["winston", "npm:3.8.1"]\
+          ],\
+          "linkType": "SOFT"\
         }]\
       ]],\
       ["@standardnotes/workspace-server", [\

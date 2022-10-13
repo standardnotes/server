@@ -1839,6 +1839,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@standardnotes/api@npm:^1.16.1":
+  version: 1.16.1
+  resolution: "@standardnotes/api@npm:1.16.1"
+  dependencies:
+    "@standardnotes/common": ^1.39.0
+    "@standardnotes/encryption": 1.18.0
+    "@standardnotes/models": 1.27.0
+    "@standardnotes/responses": 1.11.0
+    "@standardnotes/security": ^1.1.0
+    "@standardnotes/utils": 1.10.0
+    reflect-metadata: ^0.1.13
+  checksum: 1f939c1825e716e8c7acc5b24063f6e8cefa1f40f56830affef968fafd5ae9dfe296462ed6b8b6d9b1436a681e1467b8e433f244d3976cf823016f172ca051b6
+  languageName: node
+  linkType: hard
+
 "@standardnotes/auth-server@workspace:packages/auth":
   version: 0.0.0-use.local
   resolution: "@standardnotes/auth-server@workspace:packages/auth"
@@ -1983,6 +1998,20 @@ __metadata:
     "@standardnotes/utils": 1.10.0
     reflect-metadata: ^0.1.13
   checksum: 2b2408ffbd3440a89d7b2ddbaf8d50563ea126cd37c8d8ba9aa2b9cd4682f394a28fe16a5e5161685c49866def00a2cc13c3947c2b81e656f94713ac8c526a13
+  languageName: node
+  linkType: hard
+
+"@standardnotes/encryption@npm:1.18.0":
+  version: 1.18.0
+  resolution: "@standardnotes/encryption@npm:1.18.0"
+  dependencies:
+    "@standardnotes/common": ^1.39.0
+    "@standardnotes/models": 1.27.0
+    "@standardnotes/responses": 1.11.0
+    "@standardnotes/sncrypto-common": 1.13.0
+    "@standardnotes/utils": 1.10.0
+    reflect-metadata: ^0.1.13
+  checksum: f9c39d09861bdd40c50c1ae8bf875176bea3c9caba6b5aa83797f48a555e1d4418d39b14c8a261b2ac45bbfbbd4f84d787ff261baeceabf84cdf448ee9542d1f
   languageName: node
   linkType: hard
 
@@ -2209,7 +2238,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@standardnotes/security@^1.1.0, @standardnotes/security@^1.2.0, @standardnotes/security@workspace:*, @standardnotes/security@workspace:packages/security":
+"@standardnotes/security@^1.1.0, @standardnotes/security@^1.2.0, @standardnotes/security@workspace:*, @standardnotes/security@workspace:^, @standardnotes/security@workspace:packages/security":
   version: 0.0.0-use.local
   resolution: "@standardnotes/security@workspace:packages/security"
   dependencies:
@@ -2385,6 +2414,43 @@ __metadata:
   checksum: e177b1fa518ca2c0bcc5602d2a83d37946461bc4c3d8daa329d7290d61dec9bcfd5b9c1593582672598b0696d994f7ce42b9ca16f82a485fd45cb221411bd4e8
   languageName: node
   linkType: hard
+
+"@standardnotes/websockets-server@workspace:packages/websockets":
+  version: 0.0.0-use.local
+  resolution: "@standardnotes/websockets-server@workspace:packages/websockets"
+  dependencies:
+    "@newrelic/winston-enricher": ^4.0.0
+    "@sentry/node": ^7.3.0
+    "@standardnotes/api": ^1.16.1
+    "@standardnotes/common": "workspace:^"
+    "@standardnotes/domain-events": "workspace:^"
+    "@standardnotes/domain-events-infra": "workspace:^"
+    "@standardnotes/security": "workspace:^"
+    "@types/cors": ^2.8.9
+    "@types/express": ^4.17.11
+    "@types/ioredis": ^4.28.10
+    "@types/jest": ^29.1.1
+    "@types/newrelic": ^7.0.3
+    "@typescript-eslint/eslint-plugin": ^5.29.0
+    aws-sdk: ^2.1159.0
+    axios: ^0.27.2
+    cors: 2.8.5
+    dotenv: ^16.0.1
+    eslint: ^8.14.0
+    eslint-plugin-prettier: ^4.0.0
+    express: ^4.18.1
+    inversify: ^6.0.1
+    inversify-express-utils: ^6.4.3
+    ioredis: ^5.2.0
+    jest: ^29.1.2
+    mysql2: ^2.3.3
+    newrelic: ^9.0.0
+    reflect-metadata: 0.1.13
+    ts-jest: ^29.0.3
+    typeorm: ^0.3.6
+    winston: ^3.8.1
+  languageName: unknown
+  linkType: soft
 
 "@standardnotes/workspace-server@workspace:packages/workspace":
   version: 0.0.0-use.local
