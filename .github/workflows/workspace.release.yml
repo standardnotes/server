@@ -21,7 +21,7 @@ jobs:
       id: cache-build
       uses: actions/cache@v3
       with:
-        path: packages/workspace/dist
+        path: packages/**/dist
         key: ${{ runner.os }}-workspace-build
 
     - name: Set up Node
@@ -46,7 +46,7 @@ jobs:
       id: cache-build
       uses: actions/cache@v3
       with:
-        path: packages/workspace/dist
+        path: packages/**/dist
         key: ${{ runner.os }}-workspace-build
 
     - name: Set up Node
@@ -74,7 +74,7 @@ jobs:
       id: cache-build
       uses: actions/cache@v3
       with:
-        path: packages/workspace/dist
+        path: packages/**/dist
         key: ${{ runner.os }}-workspace-build
 
     - name: Set up Node
@@ -102,7 +102,7 @@ jobs:
       id: cache-build
       uses: actions/cache@v3
       with:
-        path: packages/workspace/dist
+        path: packages/**/dist
         key: ${{ runner.os }}-workspace-build
 
     - name: Set up Node
@@ -151,7 +151,7 @@ jobs:
       id: cache-build
       uses: actions/cache@v3
       with:
-        path: packages/workspace/dist
+        path: packages/**/dist
         key: ${{ runner.os }}-workspace-build
 
     - name: Set up Node
@@ -199,7 +199,7 @@ jobs:
       id: cache-build
       uses: actions/cache@v3
       with:
-        path: packages/workspace/dist
+        path: packages/**/dist
         key: ${{ runner.os }}-workspace-build
 
     - name: Set up Node
