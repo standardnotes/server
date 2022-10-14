@@ -2,6 +2,7 @@ import { WorkspaceAccessLevel } from '@standardnotes/common'
 import { inject, injectable } from 'inversify'
 
 import TYPES from '../../../Bootstrap/Types'
+import { Workspace } from '../../Workspace/Workspace'
 import { WorkspaceRepositoryInterface } from '../../Workspace/WorkspaceRepositoryInterface'
 import { WorkspaceUserRepositoryInterface } from '../../Workspace/WorkspaceUserRepositoryInterface'
 import { UseCaseInterface } from '../UseCaseInterface'
@@ -29,8 +30,14 @@ export class ListWorkspaces implements UseCaseInterface {
       }
     }
 
-    const ownedWorkspaces = await this.workspaceRepository.findByUuids(ownedWorkspacesUuids)
-    const joinedWorkspaces = await this.workspaceRepository.findByUuids(joinedWorkspacesUuids)
+    let ownedWorkspaces: Array<Workspace> = []
+    if (ownedWorkspacesUuids.length > 0) {
+      ownedWorkspaces = await this.workspaceRepository.findByUuids(ownedWorkspacesUuids)
+    }
+    let joinedWorkspaces: Array<Workspace> = []
+    if (joinedWorkspacesUuids.length > 0) {
+      joinedWorkspaces = await this.workspaceRepository.findByUuids(joinedWorkspacesUuids)
+    }
 
     return {
       ownedWorkspaces,

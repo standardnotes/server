@@ -44,4 +44,17 @@ describe('ListWorkspaces', () => {
       joinedWorkspaces: [joinedWorkspace],
     })
   })
+
+  it('should list empty owned and joined workspaces for a user that does not have any', async () => {
+    workspaceUserRepository.findByUserUuid = jest.fn().mockReturnValue([])
+
+    const result = await createUseCase().execute({
+      userUuid: 'u-1-2-3',
+    })
+
+    expect(result).toEqual({
+      ownedWorkspaces: [],
+      joinedWorkspaces: [],
+    })
+  })
 })
