@@ -21,7 +21,7 @@ export class InversifyExpressWorkspacesController extends BaseHttpController {
   }
 
   @httpGet('/')
-  async listWorkspaces(response: Response): Promise<results.JsonResult> {
+  async listWorkspaces(_request: Request, response: Response): Promise<results.JsonResult> {
     const result = await this.workspacesController.listWorkspaces({
       userUuid: response.locals.user.uuid,
     })
