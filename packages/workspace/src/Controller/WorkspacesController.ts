@@ -14,7 +14,7 @@ import {
   WorkspaceKeyshareInitiatingRequestParams,
   WorkspaceKeyshareInitiatingResponse,
 } from '@standardnotes/api'
-import { Uuid, WorkspaceAccessLevel, WorkspaceType } from '@standardnotes/common'
+import { Uuid, WorkspaceAccessLevel } from '@standardnotes/common'
 
 import TYPES from '../Bootstrap/Types'
 import { CreateWorkspace } from '../Domain/UseCase/CreateWorkspace/CreateWorkspace'
@@ -93,7 +93,7 @@ export class WorkspacesController implements WorkspaceServerInterface {
       encryptedWorkspaceKey: params.encryptedWorkspaceKey,
       publicKey: params.publicKey,
       name: params.workspaceName,
-      type: WorkspaceType.Root,
+      type: params.workspaceType,
       ownerUuid: params.ownerUuid as string,
     })
 

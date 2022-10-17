@@ -1,5 +1,6 @@
-import { WorkspaceAccessLevel, WorkspaceType } from '@standardnotes/common'
 import 'reflect-metadata'
+import { WorkspaceAccessLevel, WorkspaceType } from '@standardnotes/common'
+
 import { ProjectorInterface } from '../Domain/Projection/ProjectorInterface'
 import { WorkspaceProjection } from '../Domain/Projection/WorkspaceProjection'
 import { WorkspaceUserProjection } from '../Domain/Projection/WorkspaceUserProjection'
