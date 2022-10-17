@@ -28,9 +28,9 @@ export class ListWorkspaces implements UseCaseInterface {
     const joinedWorkspacesUuids = []
     for (const workspaceAssociation of workspaceAssociations) {
       if ([WorkspaceAccessLevel.Admin, WorkspaceAccessLevel.Owner].includes(workspaceAssociation.accessLevel)) {
-        ownedWorkspacesUuids.push(workspaceAssociation.uuid)
+        ownedWorkspacesUuids.push(workspaceAssociation.workspaceUuid)
       } else {
-        joinedWorkspacesUuids.push(workspaceAssociation.uuid)
+        joinedWorkspacesUuids.push(workspaceAssociation.workspaceUuid)
       }
     }
 
@@ -45,13 +45,6 @@ export class ListWorkspaces implements UseCaseInterface {
     if (joinedWorkspacesUuids.length > 0) {
       joinedWorkspaces = await this.workspaceRepository.findByUuids(joinedWorkspacesUuids)
     }
-
-    this.logger.debug(
-      `Found workspaces for user ${dto.userUuid}: ${JSON.stringify({
-        ownedWorkspaces,
-        joinedWorkspaces,
-      })}`,
-    )
 
     return {
       ownedWorkspaces,

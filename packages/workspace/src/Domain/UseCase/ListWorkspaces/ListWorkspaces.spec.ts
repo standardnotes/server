@@ -1,6 +1,7 @@
-import { WorkspaceAccessLevel } from '@standardnotes/common'
 import 'reflect-metadata'
+import { WorkspaceAccessLevel } from '@standardnotes/common'
 import { Logger } from 'winston'
+
 import { Workspace } from '../../Workspace/Workspace'
 import { WorkspaceRepositoryInterface } from '../../Workspace/WorkspaceRepositoryInterface'
 import { WorkspaceUser } from '../../Workspace/WorkspaceUser'
