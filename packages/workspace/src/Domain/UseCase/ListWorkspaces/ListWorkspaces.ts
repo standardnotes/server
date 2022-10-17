@@ -1,5 +1,6 @@
 import { WorkspaceAccessLevel } from '@standardnotes/common'
 import { inject, injectable } from 'inversify'
+import { Logger } from 'winston'
 
 import TYPES from '../../../Bootstrap/Types'
 import { Workspace } from '../../Workspace/Workspace'
@@ -15,9 +16,12 @@ export class ListWorkspaces implements UseCaseInterface {
   constructor(
     @inject(TYPES.WorkspaceRepository) private workspaceRepository: WorkspaceRepositoryInterface,
     @inject(TYPES.WorkspaceUserRepository) private workspaceUserRepository: WorkspaceUserRepositoryInterface,
+    @inject(TYPES.Logger) private logger: Logger,
   ) {}
 
   async execute(dto: ListWorkspacesDTO): Promise<ListWorkspacesResponse> {
+    this.logger.debug(`Listing workspaces for user ${dto.userUuid}`)
+
     const workspaceAssociations = await this.workspaceUserRepository.findByUserUuid(dto.userUuid)
 
     const ownedWorkspacesUuids = []
@@ -30,6 +34,9 @@ export class ListWorkspaces implements UseCaseInterface {
       }
     }
 
+    this.logger.debug(`Owned workspaces uuids: ${JSON.stringify(ownedWorkspacesUuids)}`)
+    this.logger.debug(`Joined workspaces uuids: ${JSON.stringify(joinedWorkspacesUuids)}`)
+
     let ownedWorkspaces: Array<Workspace> = []
     if (ownedWorkspacesUuids.length > 0) {
       ownedWorkspaces = await this.workspaceRepository.findByUuids(ownedWorkspacesUuids)
@@ -38,6 +45,13 @@ export class ListWorkspaces implements UseCaseInterface {
     if (joinedWorkspacesUuids.length > 0) {
       joinedWorkspaces = await this.workspaceRepository.findByUuids(joinedWorkspacesUuids)
     }
+
+    this.logger.debug(
+      `Found workspaces for user ${dto.userUuid}: ${JSON.stringify({
+        ownedWorkspaces,
+        joinedWorkspaces,
+      })}`,
+    )
 
     return {
       ownedWorkspaces,

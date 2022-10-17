@@ -1,5 +1,6 @@
 import { WorkspaceAccessLevel } from '@standardnotes/common'
 import 'reflect-metadata'
+import { Logger } from 'winston'
 import { Workspace } from '../../Workspace/Workspace'
 import { WorkspaceRepositoryInterface } from '../../Workspace/WorkspaceRepositoryInterface'
 import { WorkspaceUser } from '../../Workspace/WorkspaceUser'
@@ -14,10 +15,14 @@ describe('ListWorkspaces', () => {
   let joinedWorkspace: Workspace
   let workspaceUser1: WorkspaceUser
   let workspaceUser2: WorkspaceUser
+  let logger: Logger
 
-  const createUseCase = () => new ListWorkspaces(workspaceRepository, workspaceUserRepository)
+  const createUseCase = () => new ListWorkspaces(workspaceRepository, workspaceUserRepository, logger)
 
   beforeEach(() => {
+    logger = {} as jest.Mocked<Logger>
+    logger.debug = jest.fn()
+
     ownedWorkspace = { uuid: 'o-1-2-3' } as jest.Mocked<Workspace>
     joinedWorkspace = { uuid: 'j-1-2-3' } as jest.Mocked<Workspace>
 

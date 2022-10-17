@@ -31,7 +31,6 @@ jobs:
         node-version-file: '.nvmrc'
 
     - name: Build
-      if: steps.cache-build.outputs.cache-hit != 'true'
       run: yarn build:workspace
 
   lint:
