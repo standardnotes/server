@@ -32,8 +32,9 @@ export class AcceptInvitation implements UseCaseInterface {
       }
     }
 
+    const timestamp = this.timer.getTimestampInMicroseconds()
     invite.acceptingUserUuid = dto.acceptingUserUuid
-    invite.updatedAt = this.timer.getTimestampInMicroseconds()
+    invite.updatedAt = timestamp
     invite.status = WorkspaceInviteStatus.Accepted
 
     await this.workspaceInviteRepository.save(invite)
@@ -46,6 +47,8 @@ export class AcceptInvitation implements UseCaseInterface {
     workspaceUser.encryptedPrivateKey = dto.encryptedPrivateKey
     workspaceUser.accessLevel = invite.accessLevel
     workspaceUser.status = WorkspaceUserStatus.PendingKeyshare
+    workspaceUser.createdAt = timestamp
+    workspaceUser.updatedAt = timestamp
 
     await this.workspaceUserRepository.save(workspaceUser)
 

@@ -85,6 +85,8 @@ describe('AcceptInvitation', () => {
       workspaceUuid: 'w-1-2-3',
       accessLevel: 'write-and-read',
       userDisplayName: 'test@test.te',
+      createdAt: 1,
+      updatedAt: 1,
     })
   })
 
