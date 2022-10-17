@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.14.5](https://github.com/standardnotes/server/compare/@standardnotes/workspace-server@1.14.4...@standardnotes/workspace-server@1.14.5) (2022-10-17)
+
+### Bug Fixes
+
+* **workspaces:** allow type of workspace to come from parameters ([6af8ff7](https://github.com/standardnotes/server/commit/6af8ff700ea795252d5f8d3a955f27eef9240ae2))
+
 ## [1.14.4](https://github.com/standardnotes/server/compare/@standardnotes/workspace-server@1.14.3...@standardnotes/workspace-server@1.14.4) (2022-10-17)
 
 ### Bug Fixes
