@@ -12,7 +12,7 @@ on:
 
 jobs:
   call_server_application_workflow:
-    name: Build, Test & Deploy Server Application
+    name: Server Application
     uses: standardnotes/server/.github/workflows/server-application.yml@main
     with:
       service_name: workspace
