@@ -3,9 +3,6 @@
   "compilerOptions": {
     "composite": true,
     "outDir": "./dist",
-    "types": [
-      "reflect-metadata"
-    ]
   },
   "include": [
     "src/**/*",

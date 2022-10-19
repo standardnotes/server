@@ -107,7 +107,7 @@ jobs:
       run: yarn build ${{ inputs.package_path }}
 
     - name: Test
-      run: yarn test:${{ inputs.service_name }}
+      run: yarn test ${{ inputs.package_path }}
 
   e2e:
     if: ${{ inputs.run_e2e_test_suite }} == true
