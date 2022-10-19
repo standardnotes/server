@@ -1,0 +1,47 @@
+name: Auth Server
+
+concurrency:
+  group: auth
+  cancel-in-progress: true
+
+on:
+  push:
+    tags:
+      - '*standardnotes/auth-server*'
+  workflow_dispatch:
+
+jobs:
+  call_server_application_workflow:
+    name: Server Application
+    uses: standardnotes/server/.github/workflows/server-application.yml@main
+    with:
+      service_name: auth
+      workspace_name: "@standardnotes/auth"
+      run_e2e_test_suite: true
+      e2e_tag_parameter_name: auth_image_tag
+      package_path: packages/auth
+    secrets: inherit
+
+  newrelic:
+    needs: call_server_application_workflow
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create New Relic deployment marker for Web
+        uses: newrelic/deployment-marker-action@v1
+        with:
+          accountId: ${{ secrets.NEW_RELIC_ACCOUNT_ID }}
+          apiKey: ${{ secrets.NEW_RELIC_API_KEY }}
+          applicationId: ${{ secrets.NEW_RELIC_APPLICATION_ID_AUTH_WEB_PROD }}
+          revision: "${{ github.sha }}"
+          description: "Automated Deployment via Github Actions"
+          user: "${{ github.actor }}"
+      - name: Create New Relic deployment marker for Worker
+        uses: newrelic/deployment-marker-action@v1
+        with:
+          accountId: ${{ secrets.NEW_RELIC_ACCOUNT_ID }}
+          apiKey: ${{ secrets.NEW_RELIC_API_KEY }}
+          applicationId: ${{ secrets.NEW_RELIC_APPLICATION_ID_AUTH_WORKER_PROD }}
+          revision: "${{ github.sha }}"
+          description: "Automated Deployment via Github Actions"
+          user: "${{ github.actor }}"
