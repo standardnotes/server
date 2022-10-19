@@ -2038,7 +2038,7 @@ __metadata:
     "@types/jest": "npm:^29.1.1"
     "@types/newrelic": "npm:^7.0.3"
     "@types/nodemailer": "npm:^6.4.1"
-    "@typescript-eslint/eslint-plugin": "npm:^5.30.5"
+    "@typescript-eslint/eslint-plugin": "npm:^5.40.1"
     aws-sdk: "npm:^2.1159.0"
     dotenv: "npm:^16.0.1"
     eslint: "npm:^8.14.0"
@@ -2236,7 +2236,7 @@ __metadata:
     "@types/jest": "npm:^29.1.1"
     "@types/newrelic": "npm:^7.0.3"
     "@types/node": "npm:^18.0.0"
-    "@typescript-eslint/parser": "npm:^5.29.0"
+    "@typescript-eslint/parser": "npm:^5.40.1"
     eslint: "npm:^8.17.0"
     eslint-config-prettier: "npm:^8.5.0"
     ini: "npm:^3.0.0"
@@ -2902,7 +2902,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/eslint-plugin@npm:^5.12.1, @typescript-eslint/eslint-plugin@npm:^5.29.0, @typescript-eslint/eslint-plugin@npm:^5.30.5":
+"@typescript-eslint/eslint-plugin@npm:^5.12.1, @typescript-eslint/eslint-plugin@npm:^5.29.0, @typescript-eslint/eslint-plugin@npm:^5.40.1":
   version: 5.40.1
   resolution: "@typescript-eslint/eslint-plugin@npm:5.40.1"
   dependencies:
@@ -2947,7 +2947,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/parser@npm:^5.12.1":
+"@typescript-eslint/parser@npm:^5.12.1, @typescript-eslint/parser@npm:^5.40.1":
   version: 5.40.1
   resolution: "@typescript-eslint/parser@npm:5.40.1"
   dependencies:
@@ -2961,23 +2961,6 @@ __metadata:
     typescript:
       optional: true
   checksum: 44806f4aeaa1cec872ce04cbe5fa981111aac50f22aa205278fb221bbf05608bd8ac0b327b70758cb5461a56dc13aea3adf12cade683556754e057090958012e
-  languageName: node
-  linkType: hard
-
-"@typescript-eslint/parser@npm:^5.29.0":
-  version: 5.30.5
-  resolution: "@typescript-eslint/parser@npm:5.30.5"
-  dependencies:
-    "@typescript-eslint/scope-manager": "npm:5.30.5"
-    "@typescript-eslint/types": "npm:5.30.5"
-    "@typescript-eslint/typescript-estree": "npm:5.30.5"
-    debug: "npm:^4.3.4"
-  peerDependencies:
-    eslint: ^6.0.0 || ^7.0.0 || ^8.0.0
-  peerDependenciesMeta:
-    typescript:
-      optional: true
-  checksum: 693719d1ac1a771ac1e6039c40a3bb3810eab0d5f6f362bc842d16c650be86f0220ace81ac1554bbef3e3b72e2809bb85c1f8595b5d18302658451fa22bad995
   languageName: node
   linkType: hard
 
