@@ -122,15 +122,13 @@ jobs:
       run: yarn test ${{ inputs.package_path }}
 
   e2e:
-    if: ${{ inputs.run_e2e_test_suite }} == true
+    if: ${{ inputs.run_e2e_test_suite }}
     runs-on: ubuntu-latest
 
     needs: build
 
     steps:
     - uses: actions/checkout@v3
-
-    - run: ${{ inputs.run_e2e_test_suite }} == true && echo $?
 
     - name: Cache build
       id: cache-build
@@ -348,7 +346,7 @@ jobs:
   deploy-worker:
     needs: [ publish-aws-ecr, publish-docker-hub ]
 
-    if: ${{ inputs.deploy_worker }} == true
+    if: ${{ inputs.deploy_worker }}
 
     runs-on: ubuntu-latest
 
