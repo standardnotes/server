@@ -9,6 +9,10 @@ on:
       workspace_name:
         required: true
         type: string
+      deploy_web:
+        required: false
+        default: true
+        type: boolean
       deploy_worker:
         required: false
         default: true
@@ -83,7 +87,7 @@ jobs:
       with:
         path: |
           packages/**/dist
-          ${{ steps.bundle-dir.outputs.temp_dir }}
+          ${{ needs.build.steps.bundle-dir.outputs.temp_dir }}
         key: ${{ runner.os }}-${{ inputs.service_name }}-build-${{ github.sha }}
 
     - name: Set up Node
@@ -113,7 +117,7 @@ jobs:
       with:
         path: |
           packages/**/dist
-          ${{ steps.bundle-dir.outputs.temp_dir }}
+          ${{ needs.build.steps.bundle-dir.outputs.temp_dir }}
         key: ${{ runner.os }}-${{ inputs.service_name }}-build-${{ github.sha }}
 
     - name: Set up Node
@@ -144,7 +148,7 @@ jobs:
       with:
         path: |
           packages/**/dist
-          ${{ steps.bundle-dir.outputs.temp_dir }}
+          ${{ needs.build.steps.bundle-dir.outputs.temp_dir }}
         key: ${{ runner.os }}-${{ inputs.service_name }}-build-${{ github.sha }}
 
     - name: Set up Node
@@ -213,7 +217,7 @@ jobs:
       with:
         path: |
           packages/**/dist
-          ${{ steps.bundle-dir.outputs.temp_dir }}
+          ${{ needs.build.steps.bundle-dir.outputs.temp_dir }}
         key: ${{ runner.os }}-${{ inputs.service_name }}-build-${{ github.sha }}
 
     - name: Set up Node
@@ -276,7 +280,7 @@ jobs:
       with:
         path: |
           packages/**/dist
-          ${{ steps.bundle-dir.outputs.temp_dir }}
+          ${{ needs.build.steps.bundle-dir.outputs.temp_dir }}
         key: ${{ runner.os }}-${{ inputs.service_name }}-build-${{ github.sha }}
 
     - name: Set up Node
@@ -323,6 +327,8 @@ jobs:
     needs: [ publish-aws-ecr, publish-docker-hub ]
 
     runs-on: ubuntu-latest
+
+    if: ${{ inputs.deploy_web }}
 
     steps:
 
