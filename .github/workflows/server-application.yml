@@ -208,7 +208,7 @@ jobs:
     - name: Bundle
       id: bundle
       run: |
-        TEMP_DIR=$(mktemp -d -t "${{ inputs.service_name }}-${{ github.sha }}")
+        TEMP_DIR=$(mktemp -d -t "${{ inputs.service_name }}-${{ github.sha }}-XXXXXXX")
         echo "::set-output name=dir::$TEMP_DIR"
         yarn workspace ${{ inputs.workspace_name }} bundle --no-compress --output-directory $TEMP_DIR
 
