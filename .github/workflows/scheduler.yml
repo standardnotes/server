@@ -1,0 +1,39 @@
+name: Scheduler Server
+
+concurrency:
+  group: scheduler
+  cancel-in-progress: true
+
+on:
+  push:
+    tags:
+      - '*standardnotes/scheduler-server*'
+  workflow_dispatch:
+
+jobs:
+  call_server_application_workflow:
+    name: Server Application
+    uses: standardnotes/server/.github/workflows/server-application.yml@main
+    with:
+      service_name: scheduler
+      workspace_name: "@standardnotes/scheduler-server"
+      run_e2e_test_suite: false
+      deploy_web: false
+      package_path: packages/scheduler
+    secrets: inherit
+
+  newrelic:
+    needs: call_server_application_workflow
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Create New Relic deployment marker for Worker
+        uses: newrelic/deployment-marker-action@v1
+        with:
+          accountId: ${{ secrets.NEW_RELIC_ACCOUNT_ID }}
+          apiKey: ${{ secrets.NEW_RELIC_API_KEY }}
+          applicationId: ${{ secrets.NEW_RELIC_APPLICATION_ID_SCHEDULER_WORKER_PROD }}
+          revision: "${{ github.sha }}"
+          description: "Automated Deployment via Github Actions"
+          user: "${{ github.actor }}"
