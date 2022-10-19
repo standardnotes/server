@@ -1,0 +1,47 @@
+name: Syncing Server
+
+concurrency:
+  group: syncing_server
+  cancel-in-progress: true
+
+on:
+  push:
+    tags:
+      - '*standardnotes/syncing-server*'
+  workflow_dispatch:
+
+jobs:
+  call_server_application_workflow:
+    name: Server Application
+    uses: standardnotes/server/.github/workflows/server-application.yml@main
+    with:
+      service_name: syncing-server-js
+      workspace_name: "@standardnotes/syncing-server"
+      run_e2e_test_suite: true
+      e2e_tag_parameter_name: syncing_server_js_image_tag
+      package_path: packages/syncing-server
+    secrets: inherit
+
+  newrelic:
+    needs: call_server_application_workflow
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create New Relic deployment marker for Web
+        uses: newrelic/deployment-marker-action@v1
+        with:
+          accountId: ${{ secrets.NEW_RELIC_ACCOUNT_ID }}
+          apiKey: ${{ secrets.NEW_RELIC_API_KEY }}
+          applicationId: ${{ secrets.NEW_RELIC_APPLICATION_ID_SYNCING_SERVER_WEB_PROD }}
+          revision: "${{ github.sha }}"
+          description: "Automated Deployment via Github Actions"
+          user: "${{ github.actor }}"
+      - name: Create New Relic deployment marker for Worker
+        uses: newrelic/deployment-marker-action@v1
+        with:
+          accountId: ${{ secrets.NEW_RELIC_ACCOUNT_ID }}
+          apiKey: ${{ secrets.NEW_RELIC_API_KEY }}
+          applicationId: ${{ secrets.NEW_RELIC_APPLICATION_ID_SYNCING_SERVER_WORKER_PROD }}
+          revision: "${{ github.sha }}"
+          description: "Automated Deployment via Github Actions"
+          user: "${{ github.actor }}"
