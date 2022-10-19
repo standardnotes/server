@@ -34,15 +34,19 @@ on:
       AWS_SECRET_ACCESS_KEY:
         required: true
 
-env:
-  TEMP_DIR: $(mktemp -d -t "${{ inputs.service_name }}-${{ github.sha }}-XXXXXXX")
-
 jobs:
   build:
     runs-on: ubuntu-latest
 
+    outputs:
+      temp_dir: ${{ steps.bundle-dir.outputs.temp_dir }}
+
     steps:
     - uses: actions/checkout@v3
+
+    - name: Create Bundle Dir
+      id: bundle-dir
+      run: echo "temp_dir=$(mktemp -d -t \"${{ inputs.service_name }}-${{ github.sha }}-XXXXXXX\")" >> $GITHUB_OUTPUT
 
     - name: Cache build
       id: cache-build
@@ -50,7 +54,7 @@ jobs:
       with:
         path: |
           packages/**/dist
-          $TEMP_DIR
+          ${{ steps.bundle-dir.outputs.temp_dir }}
         key: ${{ runner.os }}-${{ inputs.service_name }}-build-${{ github.sha }}
 
     - name: Set up Node
@@ -63,7 +67,7 @@ jobs:
       run: yarn build ${{ inputs.package_path }}
 
     - name: Bundle
-      run: yarn workspace ${{ inputs.workspace_name }} bundle --no-compress --output-directory $TEMP_DIR
+      run: yarn workspace ${{ inputs.workspace_name }} bundle --no-compress --output-directory ${{ steps.bundle-dir.outputs.temp_dir }}
 
   lint:
     runs-on: ubuntu-latest
@@ -149,7 +153,7 @@ jobs:
 
     - name: Bundle
       if: steps.cache-build.outputs.cache-hit != 'true'
-      run: yarn workspace ${{ inputs.workspace_name }} bundle --no-compress --output-directory $TEMP_DIR
+      run: yarn workspace ${{ inputs.workspace_name }} bundle --no-compress --output-directory ${{ needs.build.steps.bundle-dir.outputs.temp_dir }}
 
     - name: Login to Docker Hub
       uses: docker/login-action@v2
@@ -170,8 +174,8 @@ jobs:
       uses: docker/build-push-action@v3
       with:
         builder: ${{ steps.buildx.outputs.name }}
-        context: $TEMP_DIR
-        file: $TEMP_DIR/${{ inputs.package_path }}/Dockerfile
+        context: ${{ needs.build.steps.bundle-dir.outputs.temp_dir }}
+        file: ${{ needs.build.steps.bundle-dir.outputs.temp_dir }}/${{ inputs.package_path }}/Dockerfile
         platforms: linux/amd64,linux/arm64
         push: true
         tags: standardnotes/${{ inputs.service_name }}:${{ github.sha }}
@@ -190,7 +194,7 @@ jobs:
         wait_workflow: true
 
   publish-aws-ecr:
-    needs: [ test, lint, e2e ]
+    needs: [ build, test, lint, e2e ]
 
     runs-on: ubuntu-latest
 
@@ -216,7 +220,7 @@ jobs:
 
     - name: Bundle
       if: steps.cache-build.outputs.cache-hit != 'true'
-      run: yarn workspace ${{ inputs.workspace_name }} bundle --no-compress --output-directory $TEMP_DIR
+      run: yarn workspace ${{ inputs.workspace_name }} bundle --no-compress --output-directory ${{ needs.build.steps.bundle-dir.outputs.temp_dir }}
 
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
@@ -242,8 +246,8 @@ jobs:
       uses: docker/build-push-action@v3
       with:
         builder: ${{ steps.buildx.outputs.name }}
-        context: $TEMP_DIR
-        file: $TEMP_DIR/${{ inputs.package_path }}/Dockerfile
+        context: ${{ needs.build.steps.bundle-dir.outputs.temp_dir }}
+        file: ${{ needs.build.steps.bundle-dir.outputs.temp_dir }}/${{ inputs.package_path }}/Dockerfile
         platforms: linux/amd64,linux/arm64
         push: true
         tags: |
@@ -251,7 +255,7 @@ jobs:
           ${{ steps.login-ecr.outputs.registry }}/${{ inputs.service_name }}:latest
 
   publish-docker-hub:
-    needs: [ test, lint, e2e ]
+    needs: [ build, test, lint, e2e ]
 
     runs-on: ubuntu-latest
 
@@ -277,7 +281,7 @@ jobs:
 
     - name: Bundle
       if: steps.cache-build.outputs.cache-hit != 'true'
-      run: yarn workspace ${{ inputs.workspace_name }} bundle --no-compress --output-directory $TEMP_DIR
+      run: yarn workspace ${{ inputs.workspace_name }} bundle --no-compress --output-directory ${{ needs.build.steps.bundle-dir.outputs.temp_dir }}
 
     - name: Login to Docker Hub
       uses: docker/login-action@v2
@@ -298,8 +302,8 @@ jobs:
       uses: docker/build-push-action@v3
       with:
         builder: ${{ steps.buildx.outputs.name }}
-        context: $TEMP_DIR
-        file: $TEMP_DIR/${{ inputs.package_path }}/Dockerfile
+        context: ${{ needs.build.steps.bundle-dir.outputs.temp_dir }}
+        file: ${{ needs.build.steps.bundle-dir.outputs.temp_dir }}/${{ inputs.package_path }}/Dockerfile
         platforms: linux/amd64,linux/arm64
         push: true
         tags: |
