@@ -1,0 +1,46 @@
+{
+  "name": "microtime",
+  "version": "3.1.1",
+  "description": "Get the current time in microseconds",
+  "author": "Wade Simmons <wade@wades.im> (http://wades.im/mons)",
+  "homepage": "https://github.com/wadey/node-microtime",
+  "repository": "git://github.com/wadey/node-microtime.git",
+  "main": "./index",
+  "license": "MIT",
+  "keywords": [
+    "microtime",
+    "microseconds",
+    "gettimeofday"
+  ],
+  "engines": {
+    "node": ">= 14.13.0"
+  },
+  "scripts": {
+    "install": "node-gyp-build",
+    "rebuild": "node-gyp rebuild",
+    "prebuild": "prebuildify -t 14.13.0 -t electron@18.2.0 --napi --strip",
+    "prebuild-linux-x64": "prebuildify -t 14.13.0 -t electron@18.2.0 --napi --strip",
+    "prebuild-linux-arm": "prebuildify-cross -i linux-armv7 -t 14.13.0 --napi --strip",
+    "prebuild-linux-arm64": "prebuildify-cross -i linux-arm64 -t 14.13.0 --napi --strip",
+    "prebuild-darwin-x64+arm64": "prebuildify -t 14.13.0 -t electron@18.2.0 --arch x64+arm64 --napi --strip",
+    "prebuild-win32-x64": "prebuildify -t 14.13.0 -t electron@18.2.0 --napi --strip",
+    "prebuild-win32-x86": "prebuildify -t 14.13.0 -t electron@18.2.0 --napi --strip",
+    "download-prebuilds": "prebuildify-ci download",
+    "test": "node test.js",
+    "format": "clang-format -i src/microtime.cc",
+    "lint-test": "standard && clang-format -output-replacements-xml src/microtime.cc | (! grep -q '<replacement ') && node test.js"
+  },
+  "dependencies": {
+    "node-addon-api": "^5.0.0",
+    "node-gyp-build": "^4.4.0"
+  },
+  "devDependencies": {
+    "clang-format": "^1.8.0",
+    "node-gyp": "^9.0.0",
+    "prebuildify": "^5.0.0",
+    "prebuildify-ci": "^1.0.5",
+    "prebuildify-cross": "^5.0.0",
+    "standard": "^12.0.1"
+  },
+  "gypfile": true
+}

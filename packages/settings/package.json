@@ -20,13 +20,13 @@
     "clean": "rm -fr dist",
     "prestart": "yarn clean",
     "start": "tsc -p tsconfig.json --watch",
-    "prebuild": "yarn clean",
-    "build": "tsc -p tsconfig.json",
+    "build": "tsc --build",
     "lint": "eslint . --ext .ts"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.30.0",
-    "eslint-plugin-prettier": "^4.2.1"
+    "eslint-plugin-prettier": "^4.2.1",
+    "typescript": "^4.8.4"
   },
   "dependencies": {
     "reflect-metadata": "^0.1.13"

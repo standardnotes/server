@@ -30,14 +30,6 @@
     "test:workspace": "yarn workspace @standardnotes/workspace-server test",
     "clean": "yarn workspaces foreach -p --verbose run clean",
     "setup:env": "cp .env.sample .env && yarn workspaces foreach -p --verbose run setup:env",
-    "build": "yarn workspaces foreach -pt -j 10 --verbose run build",
-    "build:auth": "yarn workspaces foreach -pt --verbose -R --from @standardnotes/auth-server run build",
-    "build:scheduler": "yarn workspaces foreach -pt --verbose -R --from @standardnotes/scheduler-server run build",
-    "build:syncing-server": "yarn workspaces foreach -pt --verbose -R --from @standardnotes/syncing-server run build",
-    "build:files": "yarn workspaces foreach -pt --verbose -R --from @standardnotes/files-server run build",
-    "build:api-gateway": "yarn workspaces foreach -pt --verbose -R --from @standardnotes/api-gateway run build",
-    "build:websockets": "yarn workspaces foreach -pt --verbose -R --from @standardnotes/websockets-server run build",
-    "build:workspace": "yarn workspaces foreach -pt --verbose -R --from @standardnotes/workspace-server run build",
     "start:auth": "yarn workspace @standardnotes/auth-server start",
     "start:auth-worker": "yarn workspace @standardnotes/auth-server worker",
     "start:scheduler": "yarn workspace @standardnotes/scheduler-server worker",
@@ -69,9 +61,9 @@
     "npm-check-updates": "^16.0.1",
     "prettier": "^2.7.1",
     "ts-node": "^10.9.1",
-    "typescript": "^4.7.4"
+    "typescript": "^4.8.4"
   },
-  "packageManager": "yarn@3.2.1",
+  "packageManager": "yarn@4.0.0-rc.25",
   "dependencies": {
     "@sentry/node": "^7.3.0",
     "newrelic": "^9.0.0"
