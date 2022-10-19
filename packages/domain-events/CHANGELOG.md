@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.69.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.68.0...@standardnotes/domain-events@2.69.0) (2022-10-19)
+
+### Features
+
+* building server applications in ARM64 architecture for Docker ([fd92866](https://github.com/standardnotes/server/commit/fd92866ba1a86b22769b23cc4c8387a83f87979a))
+
 # [2.68.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.67.0...@standardnotes/domain-events@2.68.0) (2022-10-13)
 
 ### Features

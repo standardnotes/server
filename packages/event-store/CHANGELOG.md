@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.5.0](https://github.com/standardnotes/server/compare/@standardnotes/event-store@1.4.6...@standardnotes/event-store@1.5.0) (2022-10-19)
+
+### Bug Fixes
+
+* linter issues ([f1e63de](https://github.com/standardnotes/server/commit/f1e63de661bb1572b5d7210fad7c242b0c38e549))
+
+### Features
+
+* building server applications in ARM64 architecture for Docker ([fd92866](https://github.com/standardnotes/server/commit/fd92866ba1a86b22769b23cc4c8387a83f87979a))
+
 ## [1.4.6](https://github.com/standardnotes/server/compare/@standardnotes/event-store@1.4.5...@standardnotes/event-store@1.4.6) (2022-10-13)
 
 **Note:** Version bump only for package @standardnotes/event-store

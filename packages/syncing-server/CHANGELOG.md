@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.10.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.9.8...@standardnotes/syncing-server@1.10.0) (2022-10-19)
+
+### Features
+
+* building server applications in ARM64 architecture for Docker ([fd92866](https://github.com/standardnotes/syncing-server-js/commit/fd92866ba1a86b22769b23cc4c8387a83f87979a))
+
 ## [1.9.8](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.9.7...@standardnotes/syncing-server@1.9.8) (2022-10-13)
 
 **Note:** Version bump only for package @standardnotes/syncing-server

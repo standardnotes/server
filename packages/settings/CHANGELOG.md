@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.18.0](https://github.com/standardnotes/server/compare/@standardnotes/settings@1.17.1...@standardnotes/settings@1.18.0) (2022-10-19)
+
+### Features
+
+* building server applications in ARM64 architecture for Docker ([fd92866](https://github.com/standardnotes/server/commit/fd92866ba1a86b22769b23cc4c8387a83f87979a))
+
 ## [1.17.1](https://github.com/standardnotes/server/compare/@standardnotes/settings@1.17.0...@standardnotes/settings@1.17.1) (2022-10-06)
 
 **Note:** Version bump only for package @standardnotes/settings

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.7.0](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.6.18...@standardnotes/files-server@1.7.0) (2022-10-19)
+
+### Features
+
+* building server applications in ARM64 architecture for Docker ([fd92866](https://github.com/standardnotes/files/commit/fd92866ba1a86b22769b23cc4c8387a83f87979a))
+
 ## [1.6.18](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.6.17...@standardnotes/files-server@1.6.18) (2022-10-13)
 
 **Note:** Version bump only for package @standardnotes/files-server

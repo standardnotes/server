@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.46.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.45.0...@standardnotes/auth-server@1.46.0) (2022-10-19)
+
+### Bug Fixes
+
+* test setup ([1c8a9f1](https://github.com/standardnotes/server/commit/1c8a9f1dc9a2e8c0c4ca7aa18b8ee91546caecb3))
+
+### Features
+
+* building server applications in ARM64 architecture for Docker ([fd92866](https://github.com/standardnotes/server/commit/fd92866ba1a86b22769b23cc4c8387a83f87979a))
+
 # [1.45.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.44.0...@standardnotes/auth-server@1.45.0) (2022-10-13)
 
 ### Features
