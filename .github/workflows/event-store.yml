@@ -1,13 +1,13 @@
-name: Api Gateway
+name: Event Store
 
 concurrency:
-  group: api_gateway
+  group: event-store
   cancel-in-progress: true
 
 on:
   push:
     tags:
-      - '*standardnotes/api-gateway*'
+      - '*standardnotes/event-store*'
   workflow_dispatch:
 
 jobs:
@@ -15,24 +15,25 @@ jobs:
     name: Server Application
     uses: standardnotes/server/.github/workflows/server-application.yml@main
     with:
-      service_name: api-gateway
-      workspace_name: "@standardnotes/api-gateway"
-      run_e2e_test_suite: true
-      e2e_tag_parameter_name: api_gateway_image_tag
-      deploy_worker: false
-      package_path: packages/api-gateway
+      service_name: event-store
+      workspace_name: "@standardnotes/event-store"
+      run_e2e_test_suite: false
+      deploy_web: false
+      package_path: packages/event-store
     secrets: inherit
 
   newrelic:
     needs: call_server_application_workflow
+
     runs-on: ubuntu-latest
+
     steps:
-      - name: Create New Relic deployment marker for Web
+      - name: Create New Relic deployment marker for Worker
         uses: newrelic/deployment-marker-action@v1
         with:
           accountId: ${{ secrets.NEW_RELIC_ACCOUNT_ID }}
           apiKey: ${{ secrets.NEW_RELIC_API_KEY }}
-          applicationId: ${{ secrets.NEW_RELIC_APPLICATION_ID_API_GATEWAY_WEB_PROD }}
+          applicationId: ${{ secrets.NEW_RELIC_APPLICATION_ID_EVENT_STORE_PROD }}
           revision: "${{ github.sha }}"
           description: "Automated Deployment via Github Actions"
           user: "${{ github.actor }}"
