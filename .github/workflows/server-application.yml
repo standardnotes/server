@@ -9,6 +9,10 @@ on:
       workspace_name:
         required: true
         type: string
+      deploy_worker:
+        required: false
+        default: true
+        type: boolean
       run_e2e_test_suite:
         required: true
         type: boolean
@@ -291,6 +295,8 @@ jobs:
 
   deploy-worker:
     needs: publish
+
+    if: ${{ inputs.deploy_worker }} == true
 
     runs-on: ubuntu-latest
 
