@@ -225,10 +225,6 @@ jobs:
 
     - name: Publish Docker image
       uses: docker/build-push-action@v3
-      env:
-        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REPOSITORY: ${{ inputs.service_name }}
-        IMAGE_TAG: ${{ github.sha }}
       with:
         builder: ${{ steps.buildx.outputs.name }}
         context: ${{ steps.bundle.outputs.dir }}
@@ -237,8 +233,8 @@ jobs:
         push: true
         tags: |
           standardnotes/${{ inputs.service_name }}:latest
-          $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
-          $ECR_REGISTRY/$ECR_REPOSITORY:latest
+          ${{ steps.login-ecr.outputs.registry }}/${{ inputs.service_name }}:${{ github.sha }}
+          ${{ steps.login-ecr.outputs.registry }}/${{ inputs.service_name }}:latest
 
   deploy-web:
     needs: publish
