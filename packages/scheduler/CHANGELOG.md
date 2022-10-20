@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.11.1](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.11.0...@standardnotes/scheduler-server@1.11.1) (2022-10-20)
+
+### Bug Fixes
+
+* **scheduler:** add wait-for script for docker purposes ([23ced94](https://github.com/standardnotes/server/commit/23ced9427f63f96b5c470dccbc5aa07bd77e4d81))
+
 # [1.11.0](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.10.46...@standardnotes/scheduler-server@1.11.0) (2022-10-19)
 
 ### Features
