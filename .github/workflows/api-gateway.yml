@@ -17,7 +17,6 @@ jobs:
     with:
       service_name: api-gateway
       workspace_name: "@standardnotes/api-gateway"
-      run_e2e_test_suite: true
       e2e_tag_parameter_name: api_gateway_image_tag
       deploy_worker: false
       package_path: packages/api-gateway

@@ -17,9 +17,6 @@ on:
         required: false
         default: true
         type: boolean
-      run_e2e_test_suite:
-        required: true
-        type: boolean
       e2e_tag_parameter_name:
         required: false
         type: string
@@ -134,7 +131,6 @@ jobs:
       run: yarn test ${{ inputs.package_path }}
 
   e2e:
-    if: ${{ inputs.run_e2e_test_suite }}
     runs-on: ubuntu-latest
 
     needs: build

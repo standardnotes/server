@@ -17,7 +17,7 @@ jobs:
     with:
       service_name: scheduler
       workspace_name: "@standardnotes/scheduler-server"
-      run_e2e_test_suite: false
+      e2e_tag_parameter_name: scheduler_image_tag
       deploy_web: false
       package_path: packages/scheduler
     secrets: inherit

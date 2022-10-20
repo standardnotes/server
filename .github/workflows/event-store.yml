@@ -17,7 +17,7 @@ jobs:
     with:
       service_name: event-store
       workspace_name: "@standardnotes/event-store"
-      run_e2e_test_suite: false
+      e2e_tag_parameter_name: event_store_image_tag
       deploy_web: false
       package_path: packages/event-store
     secrets: inherit

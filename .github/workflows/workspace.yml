@@ -17,7 +17,6 @@ jobs:
     with:
       service_name: workspace
       workspace_name: "@standardnotes/workspace-server"
-      run_e2e_test_suite: true
       e2e_tag_parameter_name: workspace_image_tag
       package_path: packages/workspace
     secrets: inherit

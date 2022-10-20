@@ -17,7 +17,7 @@ jobs:
     with:
       service_name: websockets
       workspace_name: "@standardnotes/websockets-server"
-      run_e2e_test_suite: false
+      e2e_tag_parameter_name: websockets_image_tag
       package_path: packages/websockets
     secrets: inherit
 
