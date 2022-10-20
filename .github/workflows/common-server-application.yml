@@ -234,5 +234,5 @@ jobs:
     name: Deploy Worker
     uses: standardnotes/server/.github/workflows/common-deploy.yml@main
     with:
-      service_name: ${{ inputs.service_name }}
+      service_name: ${{ inputs.service_name }}-worker
     secrets: inherit
