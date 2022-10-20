@@ -34,8 +34,6 @@ on:
         required: true
       AWS_SECRET_ACCESS_KEY:
         required: true
-      AWS_ECR_REGISTRY:
-        required: true
 
 jobs:
   build:
@@ -222,7 +220,7 @@ jobs:
     uses: standardnotes/server/.github/workflows/common-deploy.yml@main
     with:
       service_name: ${{ inputs.service_name }}
-      docker_image: ${{ secrets.AWS_ECR_REGISTRY }}/${{ inputs.service_name }}:${{ github.sha }}
+      docker_image: ${{ inputs.service_name }}:${{ github.sha }}
     secrets: inherit
 
   deploy-worker:
@@ -234,5 +232,5 @@ jobs:
     uses: standardnotes/server/.github/workflows/common-deploy.yml@main
     with:
       service_name: ${{ inputs.service_name }}-worker
-      docker_image: ${{ secrets.AWS_ECR_REGISTRY }}/${{ inputs.service_name }}:${{ github.sha }}
+      docker_image: ${{ inputs.service_name }}:${{ github.sha }}
     secrets: inherit

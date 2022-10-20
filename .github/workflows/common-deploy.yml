@@ -14,6 +14,8 @@ on:
         required: true
       AWS_SECRET_ACCESS_KEY:
         required: true
+      AWS_ECR_REGISTRY:
+        required: true
 
 jobs:
   deploy:
@@ -42,7 +44,7 @@ jobs:
       with:
         task-definition: task-definition.json
         container-name: ${{ inputs.service_name }}-prod
-        image: ${{ inputs.docker_image }}
+        image: ${{ secrets.AWS_ECR_REGISTRY }}/${{ inputs.docker_image }}
 
     - name: Deploy Amazon ECS task definition
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1
