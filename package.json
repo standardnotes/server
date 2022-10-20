@@ -14,7 +14,7 @@
     "lint": "yarn workspaces foreach -p -j 10 --verbose run lint",
     "lint:auth": "yarn workspace @standardnotes/auth-server lint",
     "lint:scheduler": "yarn workspace @standardnotes/scheduler-server lint",
-    "lint:syncing-server": "yarn workspace @standardnotes/syncing-server lint",
+    "lint:syncing-server-js": "yarn workspace @standardnotes/syncing-server lint",
     "lint:files": "yarn workspace @standardnotes/files-server lint",
     "lint:api-gateway": "yarn workspace @standardnotes/api-gateway lint",
     "lint:event-store": "yarn workspace @standardnotes/event-store lint",
