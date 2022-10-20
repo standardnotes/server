@@ -1,0 +1,50 @@
+name: Server Application Deployment Reusable Workflow
+
+on:
+  workflow_call:
+    inputs:
+      service_name:
+        required: true
+        type: string
+    secrets:
+      AWS_ACCESS_KEY_ID:
+        required: true
+      AWS_SECRET_ACCESS_KEY:
+        required: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
+
+    - name: Download task definition
+      run: |
+        aws ecs describe-task-definition --task-definition ${{ inputs.service_name }}-prod --query taskDefinition > task-definition.json
+
+    - name: Fill in the new version in the Amazon ECS task definition
+      run: |
+        jq '(.containerDefinitions[] | select(.name=="${{ inputs.service_name }}-prod") | .environment[] | select(.name=="VERSION")).value = "${{ github.sha }}"' task-definition.json > tmp.json && mv tmp.json task-definition.json
+
+    - name: Fill in the new image ID in the Amazon ECS task definition
+      id: task-def-prod
+      uses: aws-actions/amazon-ecs-render-task-definition@v1
+      with:
+        task-definition: task-definition.json
+        container-name: ${{ inputs.service_name }}-prod
+        image: ${{ secrets.AWS_ECR_REGISTRY }}/${{ inputs.service_name }}:${{ github.sha }}
+
+    - name: Deploy Amazon ECS task definition
+      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+      with:
+        task-definition: ${{ steps.task-def-prod.outputs.task-definition }}
+        service: ${{ inputs.service_name }}-prod
+        cluster: prod
+        wait-for-service-stability: true

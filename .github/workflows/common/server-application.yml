@@ -1,0 +1,238 @@
+name: Server Application Reusable Workflow
+
+on:
+  workflow_call:
+    inputs:
+      service_name:
+        required: true
+        type: string
+      workspace_name:
+        required: true
+        type: string
+      deploy_web:
+        required: false
+        default: true
+        type: boolean
+      deploy_worker:
+        required: false
+        default: true
+        type: boolean
+      run_e2e_test_suite:
+        required: true
+        type: boolean
+      e2e_tag_parameter_name:
+        required: false
+        type: string
+      package_path:
+        required: true
+        type: string
+    secrets:
+      DOCKER_USERNAME:
+        required: true
+      DOCKER_PASSWORD:
+        required: true
+      CI_PAT_TOKEN:
+        required: true
+      AWS_ACCESS_KEY_ID:
+        required: true
+      AWS_SECRET_ACCESS_KEY:
+        required: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    outputs:
+      temp_dir: ${{ steps.bundle-dir.outputs.temp_dir }}
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Create Bundle Dir
+      id: bundle-dir
+      run: echo "temp_dir=$(mktemp -d -t ${{ inputs.service_name }}-${{ github.sha }}-XXXXXXX)" >> $GITHUB_OUTPUT
+
+    - name: Cache build
+      id: cache-build
+      uses: actions/cache@v3
+      with:
+        path: |
+          packages/**/dist
+          ${{ steps.bundle-dir.outputs.temp_dir }}
+        key: ${{ runner.os }}-${{ inputs.service_name }}-build-${{ github.sha }}
+
+    - name: Set up Node
+      uses: actions/setup-node@v3
+      with:
+        registry-url: 'https://registry.npmjs.org'
+        node-version-file: '.nvmrc'
+
+    - name: Build
+      run: yarn build ${{ inputs.package_path }}
+
+    - name: Bundle
+      run: yarn workspace ${{ inputs.workspace_name }} bundle --no-compress --output-directory ${{ steps.bundle-dir.outputs.temp_dir }}
+
+  lint:
+    runs-on: ubuntu-latest
+
+    needs: build
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Cache build
+      id: cache-build
+      uses: actions/cache@v3
+      with:
+        path: |
+          packages/**/dist
+          ${{ needs.build.outputs.temp_dir }}
+        key: ${{ runner.os }}-${{ inputs.service_name }}-build-${{ github.sha }}
+
+    - name: Set up Node
+      uses: actions/setup-node@v3
+      with:
+        registry-url: 'https://registry.npmjs.org'
+        node-version-file: '.nvmrc'
+
+    - name: Build
+      if: steps.cache-build.outputs.cache-hit != 'true'
+      run: yarn build ${{ inputs.package_path }}
+
+    - name: Lint
+      run: yarn lint:${{ inputs.service_name }}
+
+  test:
+    runs-on: ubuntu-latest
+
+    needs: build
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Cache build
+      id: cache-build
+      uses: actions/cache@v3
+      with:
+        path: |
+          packages/**/dist
+          ${{ needs.build.outputs.temp_dir }}
+        key: ${{ runner.os }}-${{ inputs.service_name }}-build-${{ github.sha }}
+
+    - name: Set up Node
+      uses: actions/setup-node@v3
+      with:
+        registry-url: 'https://registry.npmjs.org'
+        node-version-file: '.nvmrc'
+
+    - name: Build
+      if: steps.cache-build.outputs.cache-hit != 'true'
+      run: yarn build ${{ inputs.package_path }}
+
+    - name: Test
+      run: yarn test ${{ inputs.package_path }}
+
+  e2e:
+    if: ${{ inputs.run_e2e_test_suite }}
+    runs-on: ubuntu-latest
+
+    needs: build
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Cache build
+      id: cache-build
+      uses: actions/cache@v3
+      with:
+        path: |
+          packages/**/dist
+          ${{ needs.build.outputs.temp_dir }}
+        key: ${{ runner.os }}-${{ inputs.service_name }}-build-${{ github.sha }}
+
+    - name: Set up Node
+      uses: actions/setup-node@v3
+      with:
+        registry-url: 'https://registry.npmjs.org'
+        node-version-file: '.nvmrc'
+
+    - name: Build
+      if: steps.cache-build.outputs.cache-hit != 'true'
+      run: yarn build ${{ inputs.package_path }}
+
+    - name: Bundle
+      if: steps.cache-build.outputs.cache-hit != 'true'
+      run: yarn workspace ${{ inputs.workspace_name }} bundle --no-compress --output-directory ${{ needs.build.outputs.temp_dir }}
+
+    - name: Login to Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@master
+      with:
+        platforms: all
+
+    - name: Set up Docker Buildx
+      id: buildx
+      uses: docker/setup-buildx-action@master
+
+    - name: Publish Docker image for E2E testing
+      uses: docker/build-push-action@v3
+      with:
+        builder: ${{ steps.buildx.outputs.name }}
+        context: ${{ needs.build.outputs.temp_dir }}
+        file: ${{ needs.build.outputs.temp_dir }}/${{ inputs.package_path }}/Dockerfile
+        platforms: linux/amd64,linux/arm64
+        push: true
+        tags: standardnotes/${{ inputs.service_name }}:${{ github.sha }}
+
+    - name: Run E2E test suite
+      uses: convictional/trigger-workflow-and-wait@v1.6.3
+      with:
+        owner: standardnotes
+        repo: e2e
+        github_token: ${{ secrets.CI_PAT_TOKEN }}
+        workflow_file_name: testing-with-stable-client.yml
+        wait_interval: 30
+        client_payload: '{"${{ inputs.e2e_tag_parameter_name }}": "${{ github.sha }}"}'
+        propagate_failure: true
+        trigger_workflow: true
+        wait_workflow: true
+
+  publish:
+    needs: [ build, test, lint, e2e ]
+
+    name: Publish Docker Image
+    uses: standardnotes/server/.github/workflows/common/docker-image.yml@main
+    with:
+      service_name: ${{ inputs.service_name }}
+      bundle_dir: ${{ needs.build.outputs.temp_dir }}
+      package_path: ${{ inputs.package_path }}
+      workspace_name: ${{ inputs.workspace_name }}
+    secrets: inherit
+
+  deploy-worker:
+    if: ${{ inputs.deploy_web }}
+
+    needs: publish
+
+    name: Deploy Web
+    uses: standardnotes/server/.github/workflows/common/deploy.yml@main
+    with:
+      service_name: ${{ inputs.service_name }}
+    secrets: inherit
+
+  deploy-worker:
+    if: ${{ inputs.deploy_worker }}
+
+    needs: publish
+
+    name: Deploy Worker
+    uses: standardnotes/server/.github/workflows/common/deploy.yml@main
+    with:
+      service_name: ${{ inputs.service_name }}
+    secrets: inherit
