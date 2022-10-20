@@ -1,4 +1,4 @@
-name: [Reusable] Server Application Workflow
+name: Reusable Server Application Workflow
 
 on:
   workflow_call:
