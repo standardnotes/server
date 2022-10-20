@@ -207,7 +207,7 @@ jobs:
     needs: [ build, test, lint, e2e ]
 
     name: Publish Docker Image
-    uses: standardnotes/server/.github/workflows/common.docker-image.yml@main
+    uses: standardnotes/server/.github/workflows/common-docker-image.yml@main
     with:
       service_name: ${{ inputs.service_name }}
       bundle_dir: ${{ needs.build.outputs.temp_dir }}
@@ -221,7 +221,7 @@ jobs:
     needs: publish
 
     name: Deploy Web
-    uses: standardnotes/server/.github/workflows/common.deploy.yml@main
+    uses: standardnotes/server/.github/workflows/common-deploy.yml@main
     with:
       service_name: ${{ inputs.service_name }}
     secrets: inherit
@@ -232,7 +232,7 @@ jobs:
     needs: publish
 
     name: Deploy Worker
-    uses: standardnotes/server/.github/workflows/common.deploy.yml@main
+    uses: standardnotes/server/.github/workflows/common-deploy.yml@main
     with:
       service_name: ${{ inputs.service_name }}
     secrets: inherit

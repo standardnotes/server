@@ -13,7 +13,7 @@ on:
 jobs:
   call_server_application_workflow:
     name: Server Application
-    uses: standardnotes/server/.github/workflows/common.server-application.yml@main
+    uses: standardnotes/server/.github/workflows/common-server-application.yml@main
     with:
       service_name: workspace
       workspace_name: "@standardnotes/workspace-server"
