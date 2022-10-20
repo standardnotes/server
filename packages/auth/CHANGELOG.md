@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.46.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.46.0...@standardnotes/auth-server@1.46.1) (2022-10-20)
+
+### Bug Fixes
+
+* **auth:** additional response message to accepting invitation ([126e6a3](https://github.com/standardnotes/server/commit/126e6a3c2f99c8e3ec994d8ce50d008b0f0ec43f))
+
 # [1.46.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.45.0...@standardnotes/auth-server@1.46.0) (2022-10-19)
 
 ### Bug Fixes
