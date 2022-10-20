@@ -215,7 +215,7 @@ jobs:
       workspace_name: ${{ inputs.workspace_name }}
     secrets: inherit
 
-  deploy-worker:
+  deploy-web:
     if: ${{ inputs.deploy_web }}
 
     needs: publish
