@@ -1,4 +1,4 @@
-name: Server Application Deployment Reusable Workflow
+name: Reusable Server Application Deployment Workflow
 
 on:
   workflow_call:

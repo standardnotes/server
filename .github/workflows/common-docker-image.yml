@@ -1,4 +1,4 @@
-name: Publish Docker Image Reusable Workflow
+name: Reusable Publish Docker Image Workflow
 
 on:
   workflow_call:
