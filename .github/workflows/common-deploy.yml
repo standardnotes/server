@@ -6,6 +6,9 @@ on:
       service_name:
         required: true
         type: string
+      docker_image:
+        required: true
+        type: string
     secrets:
       AWS_ACCESS_KEY_ID:
         required: true
@@ -39,7 +42,7 @@ jobs:
       with:
         task-definition: task-definition.json
         container-name: ${{ inputs.service_name }}-prod
-        image: ${{ secrets.AWS_ECR_REGISTRY }}/${{ inputs.service_name }}:${{ github.sha }}
+        image: ${{ inputs.docker_image }}
 
     - name: Deploy Amazon ECS task definition
       uses: aws-actions/amazon-ecs-deploy-task-definition@v1

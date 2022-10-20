@@ -220,6 +220,7 @@ jobs:
     uses: standardnotes/server/.github/workflows/common-deploy.yml@main
     with:
       service_name: ${{ inputs.service_name }}
+      docker_image: ${{ secrets.AWS_ECR_REGISTRY }}/${{ inputs.service_name }}:${{ github.sha }}
     secrets: inherit
 
   deploy-worker:
@@ -231,4 +232,5 @@ jobs:
     uses: standardnotes/server/.github/workflows/common-deploy.yml@main
     with:
       service_name: ${{ inputs.service_name }}-worker
+      docker_image: ${{ secrets.AWS_ECR_REGISTRY }}/${{ inputs.service_name }}:${{ github.sha }}
     secrets: inherit
