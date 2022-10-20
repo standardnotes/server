@@ -116,6 +116,7 @@ describe('AcceptSharedSubscriptionInvitation', () => {
       }),
     ).toEqual({
       success: false,
+      message: 'Could not find the subscription invitation. It may have been already accepted or declined.',
     })
 
     expect(sharedSubscriptionInvitationRepository.save).not.toHaveBeenCalled()
@@ -132,6 +133,8 @@ describe('AcceptSharedSubscriptionInvitation', () => {
       }),
     ).toEqual({
       success: false,
+      message:
+        'Could not find the invitee in our user database. Please first register an account before accepting the invitation.',
     })
 
     expect(sharedSubscriptionInvitationRepository.save).not.toHaveBeenCalled()
@@ -148,6 +151,7 @@ describe('AcceptSharedSubscriptionInvitation', () => {
       }),
     ).toEqual({
       success: false,
+      message: 'The person that invited you does not have a running subscription with Standard Notes anymore.',
     })
 
     expect(sharedSubscriptionInvitationRepository.save).not.toHaveBeenCalled()

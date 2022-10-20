@@ -37,6 +37,7 @@ export class AcceptSharedSubscriptionInvitation implements UseCaseInterface {
     if (sharedSubscriptionInvitation === null) {
       return {
         success: false,
+        message: 'Could not find the subscription invitation. It may have been already accepted or declined.',
       }
     }
 
@@ -44,6 +45,8 @@ export class AcceptSharedSubscriptionInvitation implements UseCaseInterface {
     if (invitee === null) {
       return {
         success: false,
+        message:
+          'Could not find the invitee in our user database. Please first register an account before accepting the invitation.',
       }
     }
 
@@ -54,6 +57,7 @@ export class AcceptSharedSubscriptionInvitation implements UseCaseInterface {
     if (inviterUserSubscriptions.length !== 1) {
       return {
         success: false,
+        message: 'The person that invited you does not have a running subscription with Standard Notes anymore.',
       }
     }
     const inviterUserSubscription = inviterUserSubscriptions[0]
