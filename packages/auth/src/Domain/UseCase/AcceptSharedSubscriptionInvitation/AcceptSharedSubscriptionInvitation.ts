@@ -54,13 +54,17 @@ export class AcceptSharedSubscriptionInvitation implements UseCaseInterface {
       sharedSubscriptionInvitation.subscriptionId,
       UserSubscriptionType.Regular,
     )
-    if (inviterUserSubscriptions.length !== 1) {
+    const timestamp = this.timer.getTimestampInMicroseconds()
+    const activeUserSubscriptions = inviterUserSubscriptions.filter((userSubscription: UserSubscription) => {
+      return userSubscription.endsAt >= timestamp
+    })
+    if (activeUserSubscriptions.length === 0) {
       return {
         success: false,
         message: 'The person that invited you does not have a running subscription with Standard Notes anymore.',
       }
     }
-    const inviterUserSubscription = inviterUserSubscriptions[0]
+    const inviterUserSubscription = activeUserSubscriptions[0]
 
     sharedSubscriptionInvitation.status = InvitationStatus.Accepted
     sharedSubscriptionInvitation.updatedAt = this.timer.getTimestampInMicroseconds()
