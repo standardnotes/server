@@ -22,7 +22,7 @@ export class InversifyExpressSubscriptionInvitesController extends BaseHttpContr
     super()
   }
 
-  @httpGet('/:inviteUuid/accept')
+  @httpPost('/:inviteUuid/accept', TYPES.ApiGatewayAuthMiddleware)
   async acceptInvite(request: Request): Promise<results.JsonResult> {
     const response = await this.subscriptionInvitesController.acceptInvite({
       api: request.query.api as ApiVersion,
