@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.47.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.47.0...@standardnotes/auth-server@1.47.1) (2022-10-24)
+
+### Bug Fixes
+
+* **auth:** accepting shared subscription for inviters with multiple subscriptions ([f8433c1](https://github.com/standardnotes/server/commit/f8433c106fe593f9132558d080b88d08cf9cfe86))
+
 # [1.47.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.46.1...@standardnotes/auth-server@1.47.0) (2022-10-24)
 
 ### Features
