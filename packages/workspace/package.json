@@ -1,6 +1,6 @@
 {
   "name": "@standardnotes/workspace-server",
-  "version": "1.15.0",
+  "version": "1.16.0",
   "engines": {
     "node": ">=16.0.0 <17.0.0"
   },

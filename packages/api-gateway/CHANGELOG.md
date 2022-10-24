@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.33.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.32.0...@standardnotes/api-gateway@1.33.0) (2022-10-24)
+
+### Features
+
+* **auth:** change accepting invitations to be an authorized endpoint ([771a555](https://github.com/standardnotes/api-gateway/commit/771a555b4f33452311cd5bf0b8cfcbc4f2f1c4dd))
+
 # [1.32.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.31.2...@standardnotes/api-gateway@1.32.0) (2022-10-19)
 
 ### Features
