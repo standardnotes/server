@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.33.1](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.33.0...@standardnotes/api-gateway@1.33.1) (2022-10-24)
+
+### Bug Fixes
+
+* **api-gateway:** remove invite declining endpoint ([23b05ca](https://github.com/standardnotes/api-gateway/commit/23b05caea2197e36fa446ffb3c9a5e7598224f3e))
+
 # [1.33.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.32.0...@standardnotes/api-gateway@1.33.0) (2022-10-24)
 
 ### Features
