@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.71.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.70.0...@standardnotes/domain-events@2.71.0) (2022-10-31)
+
+### Features
+
+* **domain-events:** add subscription reactivated event ([6e8481b](https://github.com/standardnotes/server/commit/6e8481bb2f271f3b9e86ca7d2ac683f1fd6f6516))
+
 # [2.70.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.69.0...@standardnotes/domain-events@2.70.0) (2022-10-26)
 
 ### Features
