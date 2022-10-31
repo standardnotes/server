@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.3](https://github.com/standardnotes/server/compare/@standardnotes/event-store@1.5.2...@standardnotes/event-store@1.5.3) (2022-10-31)
+
+### Bug Fixes
+
+* **event-store:** add subscription reactivate handler ([9589403](https://github.com/standardnotes/server/commit/9589403c9de9304f1183789e111f6e4cf58cb7ff))
+
 ## [1.5.2](https://github.com/standardnotes/server/compare/@standardnotes/event-store@1.5.1...@standardnotes/event-store@1.5.2) (2022-10-31)
 
 **Note:** Version bump only for package @standardnotes/event-store
