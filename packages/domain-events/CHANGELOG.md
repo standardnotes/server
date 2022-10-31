@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.72.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.71.0...@standardnotes/domain-events@2.72.0) (2022-10-31)
+
+### Features
+
+* **domain-events:** add exit discount applied event ([7b797f0](https://github.com/standardnotes/server/commit/7b797f0cbabfbca4f8bf8859c613dcff38d91df3))
+
 # [2.71.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.70.0...@standardnotes/domain-events@2.71.0) (2022-10-31)
 
 ### Features
