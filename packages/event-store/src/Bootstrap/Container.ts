@@ -87,6 +87,7 @@ export class ContainerConfigLoader {
       ['REFUND_REQUESTED', container.get(TYPES.EventHandler)],
       ['INVOICE_GENERATED', container.get(TYPES.EventHandler)],
       ['WORKSPACE_INVITE_CREATED', container.get(TYPES.EventHandler)],
+      ['SUBSCRIPTION_REACTIVATED', container.get(TYPES.EventHandler)],
     ])
 
     container
