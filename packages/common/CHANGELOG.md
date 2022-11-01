@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.43.0](https://github.com/standardnotes/server/compare/@standardnotes/common@1.42.0...@standardnotes/common@1.43.0) (2022-11-01)
+
+### Features
+
+* **common:** add user request type ([d4af1d7](https://github.com/standardnotes/server/commit/d4af1d743ef914228a15f15b36a15dc9b612c704))
+
 # [1.42.0](https://github.com/standardnotes/server/compare/@standardnotes/common@1.41.0...@standardnotes/common@1.42.0) (2022-10-31)
 
 ### Features
