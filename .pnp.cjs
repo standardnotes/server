@@ -112,7 +112,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./",\
         "packageDependencies": [\
           ["@commitlint/cli", "npm:17.0.3"],\
-          ["@commitlint/config-conventional", "npm:17.0.3"],\
+          ["@commitlint/config-conventional", "npm:17.2.0"],\
           ["@lerna-lite/cli", "npm:1.6.0"],\
           ["@lerna-lite/list", "npm:1.6.0"],\
           ["@lerna-lite/run", "npm:1.6.0"],\
@@ -933,10 +933,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@commitlint/config-conventional", [\
-      ["npm:17.0.3", {\
-        "packageLocation": "./.yarn/cache/@commitlint-config-conventional-npm-17.0.3-58ee159448-5614f6772c.zip/node_modules/@commitlint/config-conventional/",\
+      ["npm:17.2.0", {\
+        "packageLocation": "./.yarn/cache/@commitlint-config-conventional-npm-17.2.0-b4487b0349-e9ef6112ad.zip/node_modules/@commitlint/config-conventional/",\
         "packageDependencies": [\
-          ["@commitlint/config-conventional", "npm:17.0.3"],\
+          ["@commitlint/config-conventional", "npm:17.2.0"],\
           ["conventional-changelog-conventionalcommits", "npm:5.0.0"]\
         ],\
         "linkType": "HARD"\
@@ -3029,7 +3029,7 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["@standardnotes/server-monorepo", "workspace:."],\
           ["@commitlint/cli", "npm:17.0.3"],\
-          ["@commitlint/config-conventional", "npm:17.0.3"],\
+          ["@commitlint/config-conventional", "npm:17.2.0"],\
           ["@lerna-lite/cli", "npm:1.6.0"],\
           ["@lerna-lite/list", "npm:1.6.0"],\
           ["@lerna-lite/run", "npm:1.6.0"],\
@@ -11335,7 +11335,7 @@ const RAW_RUNTIME_STATE =
     ]],\
     ["protobufjs", [\
       ["npm:6.11.3", {\
-        "packageLocation": "./.yarn/unplugged/protobufjs-npm-6.11.3-566fb31188/node_modules/protobufjs/",\
+        "packageLocation": "./.yarn/cache/protobufjs-npm-6.11.3-566fb31188-5a7a343bc1.zip/node_modules/protobufjs/",\
         "packageDependencies": [\
           ["protobufjs", "npm:6.11.3"],\
           ["@protobufjs/aspromise", "npm:1.1.2"],\

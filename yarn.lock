@@ -428,11 +428,11 @@ __metadata:
   linkType: hard
 
 "@commitlint/config-conventional@npm:^17.0.2":
-  version: 17.0.3
-  resolution: "@commitlint/config-conventional@npm:17.0.3"
+  version: 17.2.0
+  resolution: "@commitlint/config-conventional@npm:17.2.0"
   dependencies:
     conventional-changelog-conventionalcommits: "npm:^5.0.0"
-  checksum: 5614f6772c655fbc3543bf95caf1343ee81653d93e68cc4f564219f1a1e44ccdd0a166d102ec96f90a907a09d47df8661014dd25295f426a078f923b4494f47d
+  checksum: e9ef6112ad5e2fae39a37459af257e8a3b9c5e13c9157f6279be71c40552cc32e205e63b727981ec66fe124ade246384f9bc34323915d66d654e4bf7b859afbf
   languageName: node
   linkType: hard
 
