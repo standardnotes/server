@@ -11,6 +11,7 @@ const maxQueryExecutionTime = env.get('DB_MAX_QUERY_EXECUTION_TIME', true)
 
 export const AppDataSource = new DataSource({
   type: 'mysql',
+  charset: 'utf8mb4',
   supportBigNumbers: true,
   bigNumberStrings: false,
   maxQueryExecutionTime,
