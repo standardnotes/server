@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.5](https://github.com/standardnotes/server/compare/@standardnotes/event-store@1.5.4...@standardnotes/event-store@1.5.5) (2022-11-01)
+
+### Bug Fixes
+
+* force utf8mb4 charset on typeorm ([5160cc3](https://github.com/standardnotes/server/commit/5160cc36ddc9e30551d5ad40a9e210d87091eec3))
+
 ## [1.5.4](https://github.com/standardnotes/server/compare/@standardnotes/event-store@1.5.3...@standardnotes/event-store@1.5.4) (2022-10-31)
 
 **Note:** Version bump only for package @standardnotes/event-store

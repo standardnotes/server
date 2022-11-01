@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.4](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.10.3...@standardnotes/syncing-server@1.10.4) (2022-11-01)
+
+### Bug Fixes
+
+* force utf8mb4 charset on typeorm ([5160cc3](https://github.com/standardnotes/syncing-server-js/commit/5160cc36ddc9e30551d5ad40a9e210d87091eec3))
+
 ## [1.10.3](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.10.2...@standardnotes/syncing-server@1.10.3) (2022-10-31)
 
 **Note:** Version bump only for package @standardnotes/syncing-server

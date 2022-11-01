@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.16.4](https://github.com/standardnotes/server/compare/@standardnotes/workspace-server@1.16.3...@standardnotes/workspace-server@1.16.4) (2022-11-01)
+
+### Bug Fixes
+
+* force utf8mb4 charset on typeorm ([5160cc3](https://github.com/standardnotes/server/commit/5160cc36ddc9e30551d5ad40a9e210d87091eec3))
+
 ## [1.16.3](https://github.com/standardnotes/server/compare/@standardnotes/workspace-server@1.16.2...@standardnotes/workspace-server@1.16.3) (2022-10-31)
 
 **Note:** Version bump only for package @standardnotes/workspace-server
