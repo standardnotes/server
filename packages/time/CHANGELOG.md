@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.13.0](https://github.com/standardnotes/server/compare/@standardnotes/time@1.12.0...@standardnotes/time@1.13.0) (2022-11-02)
+
+### Features
+
+* **auth:** add processing user requests ([2255f85](https://github.com/standardnotes/server/commit/2255f856f928e855ac94f8aca4e1fb81047f58f7))
+
 # [1.12.0](https://github.com/standardnotes/server/compare/@standardnotes/time@1.11.1...@standardnotes/time@1.12.0) (2022-10-19)
 
 ### Features

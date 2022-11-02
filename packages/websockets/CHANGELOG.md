@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/standardnotes/server/compare/@standardnotes/websockets-server@1.3.5...@standardnotes/websockets-server@1.4.0) (2022-11-02)
+
+### Features
+
+* **auth:** add processing user requests ([2255f85](https://github.com/standardnotes/server/commit/2255f856f928e855ac94f8aca4e1fb81047f58f7))
+
 ## [1.3.5](https://github.com/standardnotes/server/compare/@standardnotes/websockets-server@1.3.4...@standardnotes/websockets-server@1.3.5) (2022-11-02)
 
 **Note:** Version bump only for package @standardnotes/websockets-server

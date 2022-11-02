@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.34.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.33.6...@standardnotes/api-gateway@1.34.0) (2022-11-02)
+
+### Features
+
+* **auth:** add processing user requests ([2255f85](https://github.com/standardnotes/api-gateway/commit/2255f856f928e855ac94f8aca4e1fb81047f58f7))
+
 ## [1.33.6](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.33.5...@standardnotes/api-gateway@1.33.6) (2022-11-02)
 
 **Note:** Version bump only for package @standardnotes/api-gateway

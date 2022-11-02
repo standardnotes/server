@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.8.0](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.7.5...@standardnotes/files-server@1.8.0) (2022-11-02)
+
+### Features
+
+* **auth:** add processing user requests ([2255f85](https://github.com/standardnotes/files/commit/2255f856f928e855ac94f8aca4e1fb81047f58f7))
+
 ## [1.7.5](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.7.4...@standardnotes/files-server@1.7.5) (2022-11-02)
 
 **Note:** Version bump only for package @standardnotes/files-server

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.17.0](https://github.com/standardnotes/server/compare/@standardnotes/workspace-server@1.16.6...@standardnotes/workspace-server@1.17.0) (2022-11-02)
+
+### Features
+
+* **auth:** add processing user requests ([2255f85](https://github.com/standardnotes/server/commit/2255f856f928e855ac94f8aca4e1fb81047f58f7))
+
 ## [1.16.6](https://github.com/standardnotes/server/compare/@standardnotes/workspace-server@1.16.5...@standardnotes/workspace-server@1.16.6) (2022-11-02)
 
 **Note:** Version bump only for package @standardnotes/workspace-server
