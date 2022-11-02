@@ -2592,7 +2592,7 @@ const RAW_RUNTIME_STATE =
           ["@types/prettyjson", "npm:0.0.30"],\
           ["@typescript-eslint/eslint-plugin", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:5.40.1"],\
           ["aws-sdk", "npm:2.1234.0"],\
-          ["axios", "npm:0.27.2"],\
+          ["axios", "npm:1.1.3"],\
           ["cors", "npm:2.8.5"],\
           ["dotenv", "npm:16.0.1"],\
           ["eslint", "npm:8.25.0"],\
@@ -2659,7 +2659,7 @@ const RAW_RUNTIME_STATE =
           ["@types/uuid", "npm:8.3.4"],\
           ["@typescript-eslint/eslint-plugin", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:5.40.1"],\
           ["aws-sdk", "npm:2.1234.0"],\
-          ["axios", "npm:0.27.2"],\
+          ["axios", "npm:1.1.3"],\
           ["bcryptjs", "npm:2.4.3"],\
           ["cors", "npm:2.8.5"],\
           ["dayjs", "npm:1.11.6"],\
@@ -3122,7 +3122,7 @@ const RAW_RUNTIME_STATE =
           ["@types/uuid", "npm:8.3.4"],\
           ["@typescript-eslint/eslint-plugin", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:5.40.1"],\
           ["aws-sdk", "npm:2.1234.0"],\
-          ["axios", "npm:0.27.2"],\
+          ["axios", "npm:1.1.3"],\
           ["cors", "npm:2.8.5"],\
           ["dotenv", "npm:16.0.1"],\
           ["eslint", "npm:8.25.0"],\
@@ -3212,7 +3212,7 @@ const RAW_RUNTIME_STATE =
           ["@types/newrelic", "npm:7.0.3"],\
           ["@typescript-eslint/eslint-plugin", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:5.40.1"],\
           ["aws-sdk", "npm:2.1234.0"],\
-          ["axios", "npm:0.27.2"],\
+          ["axios", "npm:1.1.3"],\
           ["cors", "npm:2.8.5"],\
           ["dotenv", "npm:16.0.1"],\
           ["eslint", "npm:8.25.0"],\
@@ -4663,12 +4663,13 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["axios", [\
-      ["npm:0.27.2", {\
-        "packageLocation": "./.yarn/cache/axios-npm-0.27.2-dbe3a48aea-4cd898afe9.zip/node_modules/axios/",\
+      ["npm:1.1.3", {\
+        "packageLocation": "./.yarn/cache/axios-npm-1.1.3-4b63965ac1-2e28acd01c.zip/node_modules/axios/",\
         "packageDependencies": [\
-          ["axios", "npm:0.27.2"],\
-          ["follow-redirects", "virtual:dbe3a48aea1dd5649e16abaf23d4ae05582d2149e16141955113766a0f84f681baf358c77ddccfc82eb23e4ccc66c6c912df62a9c01f2a83f1842bf86cc297b1#npm:1.15.2"],\
-          ["form-data", "npm:4.0.0"]\
+          ["axios", "npm:1.1.3"],\
+          ["follow-redirects", "virtual:4b63965ac1b2157b91a1875529bea3b0bbc3068d3676d1bef28bff5cf6689705374a86cc3832f95ba8d934037a93cc0e09c3662c13ca0e747800d7ca279a53c0#npm:1.15.2"],\
+          ["form-data", "npm:4.0.0"],\
+          ["proxy-from-env", "npm:1.1.0"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -7213,10 +7214,10 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "SOFT"\
       }],\
-      ["virtual:dbe3a48aea1dd5649e16abaf23d4ae05582d2149e16141955113766a0f84f681baf358c77ddccfc82eb23e4ccc66c6c912df62a9c01f2a83f1842bf86cc297b1#npm:1.15.2", {\
-        "packageLocation": "./.yarn/__virtual__/follow-redirects-virtual-42073a9d6a/0/cache/follow-redirects-npm-1.15.2-1ec1dd82be-930171f8b8.zip/node_modules/follow-redirects/",\
+      ["virtual:4b63965ac1b2157b91a1875529bea3b0bbc3068d3676d1bef28bff5cf6689705374a86cc3832f95ba8d934037a93cc0e09c3662c13ca0e747800d7ca279a53c0#npm:1.15.2", {\
+        "packageLocation": "./.yarn/__virtual__/follow-redirects-virtual-b0bb08d690/0/cache/follow-redirects-npm-1.15.2-1ec1dd82be-930171f8b8.zip/node_modules/follow-redirects/",\
         "packageDependencies": [\
-          ["follow-redirects", "virtual:dbe3a48aea1dd5649e16abaf23d4ae05582d2149e16141955113766a0f84f681baf358c77ddccfc82eb23e4ccc66c6c912df62a9c01f2a83f1842bf86cc297b1#npm:1.15.2"],\
+          ["follow-redirects", "virtual:4b63965ac1b2157b91a1875529bea3b0bbc3068d3676d1bef28bff5cf6689705374a86cc3832f95ba8d934037a93cc0e09c3662c13ca0e747800d7ca279a53c0#npm:1.15.2"],\
           ["@types/debug", null],\
           ["debug", null]\
         ],\
@@ -11346,7 +11347,7 @@ const RAW_RUNTIME_STATE =
     ]],\
     ["protobufjs", [\
       ["npm:6.11.3", {\
-        "packageLocation": "./.yarn/unplugged/protobufjs-npm-6.11.3-566fb31188/node_modules/protobufjs/",\
+        "packageLocation": "./.yarn/cache/protobufjs-npm-6.11.3-566fb31188-5a7a343bc1.zip/node_modules/protobufjs/",\
         "packageDependencies": [\
           ["protobufjs", "npm:6.11.3"],\
           ["@protobufjs/aspromise", "npm:1.1.2"],\
@@ -11389,6 +11390,15 @@ const RAW_RUNTIME_STATE =
           ["proxy-addr", "npm:2.0.7"],\
           ["forwarded", "npm:0.2.0"],\
           ["ipaddr.js", "npm:1.9.1"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["proxy-from-env", [\
+      ["npm:1.1.0", {\
+        "packageLocation": "./.yarn/cache/proxy-from-env-npm-1.1.0-c13d07f26b-0bba2ef7c8.zip/node_modules/proxy-from-env/",\
+        "packageDependencies": [\
+          ["proxy-from-env", "npm:1.1.0"]\
         ],\
         "linkType": "HARD"\
       }]\
