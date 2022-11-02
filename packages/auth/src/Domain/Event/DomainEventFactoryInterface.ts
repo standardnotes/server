@@ -16,6 +16,7 @@ import {
   PredicateVerifiedEvent,
   EmailMessageRequestedEvent,
   WebSocketMessageRequestedEvent,
+  ExitDiscountApplyRequestedEvent,
 } from '@standardnotes/domain-events'
 import { InviteeIdentifierType } from '../SharedSubscription/InviteeIdentifierType'
 
@@ -83,4 +84,8 @@ export interface DomainEventFactoryInterface {
     predicate: Predicate
     predicateVerificationResult: PredicateVerificationResult
   }): PredicateVerifiedEvent
+  createExitDiscountApplyRequestedEvent(dto: {
+    userEmail: string
+    discountCode: string
+  }): ExitDiscountApplyRequestedEvent
 }

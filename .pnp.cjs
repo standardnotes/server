@@ -2555,16 +2555,16 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@standardnotes/api", [\
-      ["npm:1.17.2", {\
-        "packageLocation": "./.yarn/cache/@standardnotes-api-npm-1.17.2-c07102ac18-4f74f52306.zip/node_modules/@standardnotes/api/",\
+      ["npm:1.19.0", {\
+        "packageLocation": "./.yarn/cache/@standardnotes-api-npm-1.19.0-ce8296df3c-b28884be40.zip/node_modules/@standardnotes/api/",\
         "packageDependencies": [\
-          ["@standardnotes/api", "npm:1.17.2"],\
+          ["@standardnotes/api", "npm:1.19.0"],\
           ["@standardnotes/common", "workspace:packages/common"],\
-          ["@standardnotes/encryption", "npm:1.18.5"],\
-          ["@standardnotes/models", "npm:1.30.0"],\
-          ["@standardnotes/responses", "npm:1.11.2"],\
+          ["@standardnotes/encryption", "npm:1.19.0"],\
+          ["@standardnotes/models", "npm:1.33.0"],\
+          ["@standardnotes/responses", "npm:1.12.0"],\
           ["@standardnotes/security", "workspace:packages/security"],\
-          ["@standardnotes/utils", "npm:1.10.0"],\
+          ["@standardnotes/utils", "npm:1.11.0"],\
           ["reflect-metadata", "npm:0.1.13"]\
         ],\
         "linkType": "HARD"\
@@ -2635,7 +2635,7 @@ const RAW_RUNTIME_STATE =
           ["@newrelic/winston-enricher", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:4.0.0"],\
           ["@sentry/node", "npm:7.5.0"],\
           ["@standardnotes/analytics", "workspace:packages/analytics"],\
-          ["@standardnotes/api", "npm:1.17.2"],\
+          ["@standardnotes/api", "npm:1.19.0"],\
           ["@standardnotes/common", "workspace:packages/common"],\
           ["@standardnotes/domain-events", "workspace:packages/domain-events"],\
           ["@standardnotes/domain-events-infra", "workspace:packages/domain-events-infra"],\
@@ -2662,7 +2662,7 @@ const RAW_RUNTIME_STATE =
           ["axios", "npm:0.27.2"],\
           ["bcryptjs", "npm:2.4.3"],\
           ["cors", "npm:2.8.5"],\
-          ["dayjs", "npm:1.11.5"],\
+          ["dayjs", "npm:1.11.6"],\
           ["dotenv", "npm:16.0.1"],\
           ["eslint", "npm:8.25.0"],\
           ["eslint-plugin-prettier", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:4.2.1"],\
@@ -2764,15 +2764,15 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@standardnotes/encryption", [\
-      ["npm:1.18.5", {\
-        "packageLocation": "./.yarn/cache/@standardnotes-encryption-npm-1.18.5-80059dd62d-b023188012.zip/node_modules/@standardnotes/encryption/",\
+      ["npm:1.19.0", {\
+        "packageLocation": "./.yarn/cache/@standardnotes-encryption-npm-1.19.0-29799e7bcc-af7665e979.zip/node_modules/@standardnotes/encryption/",\
         "packageDependencies": [\
-          ["@standardnotes/encryption", "npm:1.18.5"],\
+          ["@standardnotes/encryption", "npm:1.19.0"],\
           ["@standardnotes/common", "workspace:packages/common"],\
-          ["@standardnotes/models", "npm:1.30.0"],\
-          ["@standardnotes/responses", "npm:1.11.2"],\
+          ["@standardnotes/models", "npm:1.33.0"],\
+          ["@standardnotes/responses", "npm:1.12.0"],\
           ["@standardnotes/sncrypto-common", "npm:1.13.0"],\
-          ["@standardnotes/utils", "npm:1.10.0"],\
+          ["@standardnotes/utils", "npm:1.11.0"],\
           ["reflect-metadata", "npm:0.1.13"]\
         ],\
         "linkType": "HARD"\
@@ -2821,10 +2821,10 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "HARD"\
       }],\
-      ["npm:1.53.2", {\
-        "packageLocation": "./.yarn/cache/@standardnotes-features-npm-1.53.2-cd8faaf4ee-820219e3a5.zip/node_modules/@standardnotes/features/",\
+      ["npm:1.54.0", {\
+        "packageLocation": "./.yarn/cache/@standardnotes-features-npm-1.54.0-15f8cf20f0-7647e7506e.zip/node_modules/@standardnotes/features/",\
         "packageDependencies": [\
-          ["@standardnotes/features", "npm:1.53.2"],\
+          ["@standardnotes/features", "npm:1.54.0"],\
           ["@standardnotes/auth", "npm:3.19.4"],\
           ["@standardnotes/common", "workspace:packages/common"],\
           ["@standardnotes/security", "workspace:packages/security"],\
@@ -2860,7 +2860,7 @@ const RAW_RUNTIME_STATE =
           ["aws-sdk", "npm:2.1234.0"],\
           ["connect-busboy", "npm:1.0.0"],\
           ["cors", "npm:2.8.5"],\
-          ["dayjs", "npm:1.11.5"],\
+          ["dayjs", "npm:1.11.6"],\
           ["dotenv", "npm:16.0.1"],\
           ["eslint", "npm:8.25.0"],\
           ["eslint-plugin-prettier", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:4.2.1"],\
@@ -2900,14 +2900,14 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "HARD"\
       }],\
-      ["npm:1.30.0", {\
-        "packageLocation": "./.yarn/cache/@standardnotes-models-npm-1.30.0-c2134137c4-40c234f92b.zip/node_modules/@standardnotes/models/",\
+      ["npm:1.33.0", {\
+        "packageLocation": "./.yarn/cache/@standardnotes-models-npm-1.33.0-df7d20ae6d-7d45409e4a.zip/node_modules/@standardnotes/models/",\
         "packageDependencies": [\
-          ["@standardnotes/models", "npm:1.30.0"],\
+          ["@standardnotes/models", "npm:1.33.0"],\
           ["@standardnotes/common", "workspace:packages/common"],\
-          ["@standardnotes/features", "npm:1.53.2"],\
-          ["@standardnotes/responses", "npm:1.11.2"],\
-          ["@standardnotes/utils", "npm:1.10.0"],\
+          ["@standardnotes/features", "npm:1.54.0"],\
+          ["@standardnotes/responses", "npm:1.12.0"],\
+          ["@standardnotes/utils", "npm:1.11.0"],\
           ["lodash", "npm:4.17.21"],\
           ["reflect-metadata", "npm:0.1.13"]\
         ],\
@@ -2955,12 +2955,12 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "HARD"\
       }],\
-      ["npm:1.11.2", {\
-        "packageLocation": "./.yarn/cache/@standardnotes-responses-npm-1.11.2-61f5ee52c3-2a1ffd142c.zip/node_modules/@standardnotes/responses/",\
+      ["npm:1.12.0", {\
+        "packageLocation": "./.yarn/cache/@standardnotes-responses-npm-1.12.0-1de721974f-15b2e92d57.zip/node_modules/@standardnotes/responses/",\
         "packageDependencies": [\
-          ["@standardnotes/responses", "npm:1.11.2"],\
+          ["@standardnotes/responses", "npm:1.12.0"],\
           ["@standardnotes/common", "workspace:packages/common"],\
-          ["@standardnotes/features", "npm:1.53.2"],\
+          ["@standardnotes/features", "npm:1.54.0"],\
           ["@standardnotes/security", "workspace:packages/security"],\
           ["reflect-metadata", "npm:0.1.13"]\
         ],\
@@ -2985,7 +2985,7 @@ const RAW_RUNTIME_STATE =
           ["@types/node", "npm:18.0.3"],\
           ["@typescript-eslint/eslint-plugin", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:5.40.1"],\
           ["aws-sdk", "npm:2.1234.0"],\
-          ["dayjs", "npm:1.11.5"],\
+          ["dayjs", "npm:1.11.6"],\
           ["dotenv", "npm:16.0.1"],\
           ["eslint", "npm:8.25.0"],\
           ["eslint-plugin-prettier", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:4.2.1"],\
@@ -3158,7 +3158,7 @@ const RAW_RUNTIME_STATE =
           ["@types/jest", "npm:29.1.1"],\
           ["@types/microtime", "npm:2.1.0"],\
           ["@typescript-eslint/eslint-plugin", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:5.30.5"],\
-          ["dayjs", "npm:1.11.5"],\
+          ["dayjs", "npm:1.11.6"],\
           ["eslint-plugin-prettier", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:4.2.1"],\
           ["jest", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:29.1.2"],\
           ["microtime", "npm:3.1.1"],\
@@ -3180,6 +3180,17 @@ const RAW_RUNTIME_STATE =
           ["reflect-metadata", "npm:0.1.13"]\
         ],\
         "linkType": "HARD"\
+      }],\
+      ["npm:1.11.0", {\
+        "packageLocation": "./.yarn/cache/@standardnotes-utils-npm-1.11.0-afbc24024c-9e7d9c1257.zip/node_modules/@standardnotes/utils/",\
+        "packageDependencies": [\
+          ["@standardnotes/utils", "npm:1.11.0"],\
+          ["@standardnotes/common", "workspace:packages/common"],\
+          ["dompurify", "npm:2.4.0"],\
+          ["lodash", "npm:4.17.21"],\
+          ["reflect-metadata", "npm:0.1.13"]\
+        ],\
+        "linkType": "HARD"\
       }]\
     ]],\
     ["@standardnotes/websockets-server", [\
@@ -3189,7 +3200,7 @@ const RAW_RUNTIME_STATE =
           ["@standardnotes/websockets-server", "workspace:packages/websockets"],\
           ["@newrelic/winston-enricher", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:4.0.0"],\
           ["@sentry/node", "npm:7.5.0"],\
-          ["@standardnotes/api", "npm:1.17.2"],\
+          ["@standardnotes/api", "npm:1.19.0"],\
           ["@standardnotes/common", "workspace:packages/common"],\
           ["@standardnotes/domain-events", "workspace:packages/domain-events"],\
           ["@standardnotes/domain-events-infra", "workspace:packages/domain-events-infra"],\
@@ -3229,7 +3240,7 @@ const RAW_RUNTIME_STATE =
           ["@standardnotes/workspace-server", "workspace:packages/workspace"],\
           ["@newrelic/winston-enricher", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:4.0.0"],\
           ["@sentry/node", "npm:7.5.0"],\
-          ["@standardnotes/api", "npm:1.17.2"],\
+          ["@standardnotes/api", "npm:1.19.0"],\
           ["@standardnotes/common", "workspace:packages/common"],\
           ["@standardnotes/domain-events", "workspace:packages/domain-events"],\
           ["@standardnotes/domain-events-infra", "workspace:packages/domain-events-infra"],\
@@ -5891,10 +5902,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["dayjs", [\
-      ["npm:1.11.5", {\
-        "packageLocation": "./.yarn/cache/dayjs-npm-1.11.5-a825142dc5-ea78d43de0.zip/node_modules/dayjs/",\
+      ["npm:1.11.6", {\
+        "packageLocation": "./.yarn/cache/dayjs-npm-1.11.6-44daf311a9-f59ea45f24.zip/node_modules/dayjs/",\
         "packageDependencies": [\
-          ["dayjs", "npm:1.11.5"]\
+          ["dayjs", "npm:1.11.6"]\
         ],\
         "linkType": "HARD"\
       }]\

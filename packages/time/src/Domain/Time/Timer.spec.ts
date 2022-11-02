@@ -35,9 +35,9 @@ describe('Timer', () => {
   })
 
   it('should calculate days difference between now and a given date', () => {
-    const dateNDaysAgo = createTimer().getUTCDateNDaysAgo(4)
+    const dateNDaysAgo = createTimer().getUTCDateNDaysAgo(3)
 
-    expect(createTimer().dateWasNDaysAgo(dateNDaysAgo)).toEqual(4)
+    expect(createTimer().dateWasNDaysAgo(dateNDaysAgo)).toEqual(3)
   })
 
   it('should return a utc date n hours ago', () => {

@@ -6,6 +6,7 @@ const TYPES = {
   // Controller
   AuthController: Symbol.for('AuthController'),
   SubscriptionInvitesController: Symbol.for('SubscriptionInvitesController'),
+  UserRequestsController: Symbol.for('UserRequestsController'),
   // Repositories
   UserRepository: Symbol.for('UserRepository'),
   SessionRepository: Symbol.for('SessionRepository'),
@@ -121,6 +122,7 @@ const TYPES = {
   GetUserAnalyticsId: Symbol.for('GetUserAnalyticsId'),
   VerifyPredicate: Symbol.for('VerifyPredicate'),
   CreateCrossServiceToken: Symbol.for('CreateCrossServiceToken'),
+  ProcessUserRequest: Symbol.for('ProcessUserRequest'),
   // Handlers
   UserRegisteredEventHandler: Symbol.for('UserRegisteredEventHandler'),
   AccountDeletionRequestedEventHandler: Symbol.for('AccountDeletionRequestedEventHandler'),

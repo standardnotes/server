@@ -147,4 +147,9 @@ export class UsersController extends BaseHttpController {
   async deleteUser(request: Request, response: Response): Promise<void> {
     await this.httpService.callPaymentsServer(request, response, 'api/account', request.body)
   }
+
+  @httpPost('/:userUuid/requests', TYPES.AuthMiddleware)
+  async submitRequest(request: Request, response: Response): Promise<void> {
+    await this.httpService.callAuthServer(request, response, `users/${request.params.userUuid}/requests`, request.body)
+  }
 }

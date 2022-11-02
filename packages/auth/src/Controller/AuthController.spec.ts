@@ -109,4 +109,15 @@ describe('AuthController', () => {
 
     expect(response.status).toEqual(400)
   })
+
+  it('should throw error on the delete user method as it is still a part of the payments server', async () => {
+    let caughtError = null
+    try {
+      await createController().deleteAccount({ userUuid: '1-2-3' })
+    } catch (error) {
+      caughtError = error
+    }
+
+    expect(caughtError).not.toBeNull()
+  })
 })

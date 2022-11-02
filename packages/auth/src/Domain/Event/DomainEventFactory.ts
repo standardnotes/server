@@ -16,6 +16,7 @@ import {
   DomainEventService,
   EmailMessageRequestedEvent,
   WebSocketMessageRequestedEvent,
+  ExitDiscountApplyRequestedEvent,
 } from '@standardnotes/domain-events'
 import { Predicate, PredicateVerificationResult } from '@standardnotes/predicates'
 import { TimerInterface } from '@standardnotes/time'
@@ -27,6 +28,24 @@ import { DomainEventFactoryInterface } from './DomainEventFactoryInterface'
 @injectable()
 export class DomainEventFactory implements DomainEventFactoryInterface {
   constructor(@inject(TYPES.Timer) private timer: TimerInterface) {}
+
+  createExitDiscountApplyRequestedEvent(dto: {
+    userEmail: string
+    discountCode: string
+  }): ExitDiscountApplyRequestedEvent {
+    return {
+      type: 'EXIT_DISCOUNT_APPLY_REQUESTED',
+      createdAt: this.timer.getUTCDate(),
+      meta: {
+        correlation: {
+          userIdentifier: dto.userEmail,
+          userIdentifierType: 'email',
+        },
+        origin: DomainEventService.Auth,
+      },
+      payload: dto,
+    }
+  }
 
   createWebSocketMessageRequestedEvent(dto: { userUuid: Uuid; message: JSONString }): WebSocketMessageRequestedEvent {
     return {

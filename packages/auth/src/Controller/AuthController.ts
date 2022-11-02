@@ -2,6 +2,7 @@ import { inject, injectable } from 'inversify'
 import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
 import {
   HttpStatusCode,
+  UserDeletionResponse,
   UserRegistrationRequestParams,
   UserRegistrationResponse,
   UserServerInterface,
@@ -12,6 +13,7 @@ import { ClearLoginAttempts } from '../Domain/UseCase/ClearLoginAttempts'
 import { Register } from '../Domain/UseCase/Register'
 import { DomainEventFactoryInterface } from '../Domain/Event/DomainEventFactoryInterface'
 import { ProtocolVersion } from '@standardnotes/common'
+import { UserDeletionRequestParams } from '@standardnotes/api/dist/Domain/Request/User/UserDeletionRequestParams'
 
 @injectable()
 export class AuthController implements UserServerInterface {
@@ -21,6 +23,10 @@ export class AuthController implements UserServerInterface {
     @inject(TYPES.DomainEventPublisher) private domainEventPublisher: DomainEventPublisherInterface,
     @inject(TYPES.DomainEventFactory) private domainEventFactory: DomainEventFactoryInterface,
   ) {}
+
+  async deleteAccount(_params: UserDeletionRequestParams): Promise<UserDeletionResponse> {
+    throw new Error('This method is implemented on the payments server.')
+  }
 
   async register(params: UserRegistrationRequestParams): Promise<UserRegistrationResponse> {
     if (!params.email || !params.password) {

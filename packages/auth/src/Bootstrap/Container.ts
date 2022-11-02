@@ -203,6 +203,8 @@ import { PaymentSuccessEventHandler } from '../Domain/Handler/PaymentSuccessEven
 import { RefundProcessedEventHandler } from '../Domain/Handler/RefundProcessedEventHandler'
 import { SubscriptionInvitesController } from '../Controller/SubscriptionInvitesController'
 import { CreateCrossServiceToken } from '../Domain/UseCase/CreateCrossServiceToken/CreateCrossServiceToken'
+import { ProcessUserRequest } from '../Domain/UseCase/ProcessUserRequest/ProcessUserRequest'
+import { UserRequestsController } from '../Controller/UserRequestsController'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -266,6 +268,7 @@ export class ContainerConfigLoader {
     // Controller
     container.bind<AuthController>(TYPES.AuthController).to(AuthController)
     container.bind<SubscriptionInvitesController>(TYPES.SubscriptionInvitesController).to(SubscriptionInvitesController)
+    container.bind<UserRequestsController>(TYPES.UserRequestsController).to(UserRequestsController)
 
     // Repositories
     container.bind<SessionRepositoryInterface>(TYPES.SessionRepository).to(MySQLSessionRepository)
@@ -438,6 +441,7 @@ export class ContainerConfigLoader {
     container.bind<GetUserAnalyticsId>(TYPES.GetUserAnalyticsId).to(GetUserAnalyticsId)
     container.bind<VerifyPredicate>(TYPES.VerifyPredicate).to(VerifyPredicate)
     container.bind<CreateCrossServiceToken>(TYPES.CreateCrossServiceToken).to(CreateCrossServiceToken)
+    container.bind<ProcessUserRequest>(TYPES.ProcessUserRequest).to(ProcessUserRequest)
 
     // Handlers
     container.bind<UserRegisteredEventHandler>(TYPES.UserRegisteredEventHandler).to(UserRegisteredEventHandler)

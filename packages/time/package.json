@@ -23,7 +23,7 @@
     "test": "jest spec --coverage"
   },
   "dependencies": {
-    "dayjs": "^1.10.8",
+    "dayjs": "^1.11.6",
     "microtime": "^3.1.0",
     "reflect-metadata": "^0.1.13"
   },

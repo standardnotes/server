@@ -1861,18 +1861,18 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@standardnotes/api@npm:^1.17.2":
-  version: 1.17.2
-  resolution: "@standardnotes/api@npm:1.17.2"
+"@standardnotes/api@npm:^1.19.0":
+  version: 1.19.0
+  resolution: "@standardnotes/api@npm:1.19.0"
   dependencies:
-    "@standardnotes/common": "npm:^1.39.0"
-    "@standardnotes/encryption": "npm:1.18.5"
-    "@standardnotes/models": "npm:1.30.0"
-    "@standardnotes/responses": "npm:1.11.2"
+    "@standardnotes/common": "npm:^1.43.0"
+    "@standardnotes/encryption": "npm:1.19.0"
+    "@standardnotes/models": "npm:1.33.0"
+    "@standardnotes/responses": "npm:1.12.0"
     "@standardnotes/security": "npm:^1.1.0"
-    "@standardnotes/utils": "npm:1.10.0"
+    "@standardnotes/utils": "npm:1.11.0"
     reflect-metadata: "npm:^0.1.13"
-  checksum: 4f74f52306c27f8bc8b26eb78abb952393b608f16cf18683ec3f7363b64c511786401e59fd57bfc7613c55876aabcb47f256dfcdb0d09b8416ca1901d8562338
+  checksum: b28884be401012f9bac25639f240f80179f59c01d03258979fc89793e26d1b4303752ef15c150bd5b76227676b10ce1ff6fea498f92fd03be6918d08eec8097b
   languageName: node
   linkType: hard
 
@@ -1883,7 +1883,7 @@ __metadata:
     "@newrelic/winston-enricher": "npm:^4.0.0"
     "@sentry/node": "npm:^7.3.0"
     "@standardnotes/analytics": "workspace:*"
-    "@standardnotes/api": "npm:^1.17.2"
+    "@standardnotes/api": "npm:^1.19.0"
     "@standardnotes/common": "workspace:*"
     "@standardnotes/domain-events": "workspace:*"
     "@standardnotes/domain-events-infra": "workspace:*"
@@ -1910,7 +1910,7 @@ __metadata:
     axios: "npm:^0.27.2"
     bcryptjs: "npm:2.4.3"
     cors: "npm:2.8.5"
-    dayjs: "npm:^1.11.3"
+    dayjs: "npm:^1.11.6"
     dotenv: "npm:^16.0.1"
     eslint: "npm:^8.14.0"
     eslint-plugin-prettier: "npm:^4.0.0"
@@ -1945,7 +1945,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@standardnotes/common@npm:^1.19.1, @standardnotes/common@npm:^1.23.1, @standardnotes/common@npm:^1.39.0, @standardnotes/common@workspace:*, @standardnotes/common@workspace:^, @standardnotes/common@workspace:packages/common":
+"@standardnotes/common@npm:^1.19.1, @standardnotes/common@npm:^1.23.1, @standardnotes/common@npm:^1.39.0, @standardnotes/common@npm:^1.43.0, @standardnotes/common@workspace:*, @standardnotes/common@workspace:^, @standardnotes/common@workspace:packages/common":
   version: 0.0.0-use.local
   resolution: "@standardnotes/common@workspace:packages/common"
   dependencies:
@@ -2013,17 +2013,17 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@standardnotes/encryption@npm:1.18.5":
-  version: 1.18.5
-  resolution: "@standardnotes/encryption@npm:1.18.5"
+"@standardnotes/encryption@npm:1.19.0":
+  version: 1.19.0
+  resolution: "@standardnotes/encryption@npm:1.19.0"
   dependencies:
-    "@standardnotes/common": "npm:^1.39.0"
-    "@standardnotes/models": "npm:1.30.0"
-    "@standardnotes/responses": "npm:1.11.2"
+    "@standardnotes/common": "npm:^1.43.0"
+    "@standardnotes/models": "npm:1.33.0"
+    "@standardnotes/responses": "npm:1.12.0"
     "@standardnotes/sncrypto-common": "npm:1.13.0"
-    "@standardnotes/utils": "npm:1.10.0"
+    "@standardnotes/utils": "npm:1.11.0"
     reflect-metadata: "npm:^0.1.13"
-  checksum: b02318801254b428d6a9a26f8ab9bf9b47ddf4e538616f928e6b8db6dfa60270e99b9cd350346d7956c923071ac693d6952c5ec195e46f3df1256a9996520a2f
+  checksum: af7665e97983650978462f65c1ba768f2c03b742497e3256957beb2e0dcf1d8c47f34f8778eb2dd52c0c7345f0b86f701ca64e0b8fd4ea6597b83c5b73ca7f5b
   languageName: node
   linkType: hard
 
@@ -2068,15 +2068,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@standardnotes/features@npm:1.53.2":
-  version: 1.53.2
-  resolution: "@standardnotes/features@npm:1.53.2"
+"@standardnotes/features@npm:1.54.0":
+  version: 1.54.0
+  resolution: "@standardnotes/features@npm:1.54.0"
   dependencies:
     "@standardnotes/auth": "npm:^3.19.4"
-    "@standardnotes/common": "npm:^1.39.0"
+    "@standardnotes/common": "npm:^1.43.0"
     "@standardnotes/security": "npm:^1.2.0"
     reflect-metadata: "npm:^0.1.13"
-  checksum: 820219e3a58fb2b03f3341e9cac2c4a5704b77f1ec8f1ad986aa7ffa92e2ce4bc87c24a1aee98ac80c957a293edf84bef91cff9fce973ab2f108f5ef726db2cc
+  checksum: 7647e7506e2d863c8a8909644aca157baa9b3b23f0fe260d1786ba8366267571e414ddf5000e1fe109b918d979e97428b1d57afbd457db49efd4219b4c8ff759
   languageName: node
   linkType: hard
 
@@ -2106,7 +2106,7 @@ __metadata:
     aws-sdk: "npm:^2.1158.0"
     connect-busboy: "npm:^1.0.0"
     cors: "npm:^2.8.5"
-    dayjs: "npm:^1.11.3"
+    dayjs: "npm:^1.11.6"
     dotenv: "npm:^16.0.1"
     eslint: "npm:^8.14.0"
     eslint-plugin-prettier: "npm:^4.0.0"
@@ -2131,17 +2131,17 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@standardnotes/models@npm:1.30.0":
-  version: 1.30.0
-  resolution: "@standardnotes/models@npm:1.30.0"
+"@standardnotes/models@npm:1.33.0":
+  version: 1.33.0
+  resolution: "@standardnotes/models@npm:1.33.0"
   dependencies:
-    "@standardnotes/common": "npm:^1.39.0"
-    "@standardnotes/features": "npm:1.53.2"
-    "@standardnotes/responses": "npm:1.11.2"
-    "@standardnotes/utils": "npm:1.10.0"
+    "@standardnotes/common": "npm:^1.43.0"
+    "@standardnotes/features": "npm:1.54.0"
+    "@standardnotes/responses": "npm:1.12.0"
+    "@standardnotes/utils": "npm:1.11.0"
     lodash: "npm:^4.17.21"
     reflect-metadata: "npm:^0.1.13"
-  checksum: 40c234f92ba0b4c33ba7e8cc604058f3b87086d83dd5642ed5d17faff47dacbf6079bf3912c5eac6f51d0dae13da1ad960746c3cc36a0d37128f3bf6b2ce873d
+  checksum: 7d45409e4aeef5d4299e1fd12a18e13554023e63652460754313099d11f54130afa4bf8f0de0280ed7a83ff6bb4bc59eb96b28a4f1f617755e969f4672b07b1a
   languageName: node
   linkType: hard
 
@@ -2197,15 +2197,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@standardnotes/responses@npm:1.11.2":
-  version: 1.11.2
-  resolution: "@standardnotes/responses@npm:1.11.2"
+"@standardnotes/responses@npm:1.12.0":
+  version: 1.12.0
+  resolution: "@standardnotes/responses@npm:1.12.0"
   dependencies:
-    "@standardnotes/common": "npm:^1.39.0"
-    "@standardnotes/features": "npm:1.53.2"
+    "@standardnotes/common": "npm:^1.43.0"
+    "@standardnotes/features": "npm:1.54.0"
     "@standardnotes/security": "npm:^1.1.0"
     reflect-metadata: "npm:^0.1.13"
-  checksum: 2a1ffd142c23866228afe06d1dc6e453515d8bf8ad3da0ca2e24d638835a2f639913d75aa830c24343bed743baeb76c382c2cf70232e75538b5c3803fe8ddf0d
+  checksum: 15b2e92d57870d881b2923843db6c9506be6f1e49e4522cbc261a8c8933bff2a41b0e82855fd5e8c42f933da9f05408f38e2f1d53b320a61312ee76bac37398c
   languageName: node
   linkType: hard
 
@@ -2226,7 +2226,7 @@ __metadata:
     "@types/node": "npm:^18.0.0"
     "@typescript-eslint/eslint-plugin": "npm:^5.29.0"
     aws-sdk: "npm:^2.1158.0"
-    dayjs: "npm:^1.11.3"
+    dayjs: "npm:^1.11.6"
     dotenv: "npm:^16.0.1"
     eslint: "npm:^8.14.0"
     eslint-plugin-prettier: "npm:^4.0.0"
@@ -2386,7 +2386,7 @@ __metadata:
     "@types/jest": "npm:^29.1.1"
     "@types/microtime": "npm:^2.1.0"
     "@typescript-eslint/eslint-plugin": "npm:^5.30.0"
-    dayjs: "npm:^1.10.8"
+    dayjs: "npm:^1.11.6"
     eslint-plugin-prettier: "npm:^4.2.1"
     jest: "npm:^29.1.2"
     microtime: "npm:^3.1.0"
@@ -2408,13 +2408,25 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@standardnotes/utils@npm:1.11.0":
+  version: 1.11.0
+  resolution: "@standardnotes/utils@npm:1.11.0"
+  dependencies:
+    "@standardnotes/common": "npm:^1.43.0"
+    dompurify: "npm:^2.3.8"
+    lodash: "npm:^4.17.21"
+    reflect-metadata: "npm:^0.1.13"
+  checksum: 9e7d9c12573d9819f8dfa3128d5437e7c6c7cad72e6c65e90456a1dfcfe711fb9fdc91493fb974fa6941a37cbd62a800283d4b04d8a6464250a1681da7ace983
+  languageName: node
+  linkType: hard
+
 "@standardnotes/websockets-server@workspace:packages/websockets":
   version: 0.0.0-use.local
   resolution: "@standardnotes/websockets-server@workspace:packages/websockets"
   dependencies:
     "@newrelic/winston-enricher": "npm:^4.0.0"
     "@sentry/node": "npm:^7.3.0"
-    "@standardnotes/api": "npm:^1.17.2"
+    "@standardnotes/api": "npm:^1.19.0"
     "@standardnotes/common": "workspace:^"
     "@standardnotes/domain-events": "workspace:^"
     "@standardnotes/domain-events-infra": "workspace:^"
@@ -2452,7 +2464,7 @@ __metadata:
   dependencies:
     "@newrelic/winston-enricher": "npm:^4.0.0"
     "@sentry/node": "npm:^7.3.0"
-    "@standardnotes/api": "npm:^1.17.2"
+    "@standardnotes/api": "npm:^1.19.0"
     "@standardnotes/common": "workspace:*"
     "@standardnotes/domain-events": "workspace:^"
     "@standardnotes/domain-events-infra": "workspace:^"
@@ -4551,10 +4563,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dayjs@npm:^1.10.8, dayjs@npm:^1.11.3":
-  version: 1.11.5
-  resolution: "dayjs@npm:1.11.5"
-  checksum: ea78d43de0ff67d65f54cd8c927908ee72421f4d73ce5aa19060e20f26b1940db2980b273427eb1813434fdb2df6731e2ac609d97e89e665d29e7b638f762894
+"dayjs@npm:^1.11.6":
+  version: 1.11.6
+  resolution: "dayjs@npm:1.11.6"
+  checksum: f59ea45f2438056f10955a979124738906d897fb642b6157ead34b675240a79a1424655f691a35af810248575506459bf65eadd7d51625cdc537bf805a92dea6
   languageName: node
   linkType: hard
 

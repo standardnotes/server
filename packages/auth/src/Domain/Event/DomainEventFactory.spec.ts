@@ -18,6 +18,29 @@ describe('DomainEventFactory', () => {
     timer.getUTCDate = jest.fn().mockReturnValue(new Date(1))
   })
 
+  it('should create a EXIT_DISCOUNT_APPLY_REQUESTED event', () => {
+    expect(
+      createFactory().createExitDiscountApplyRequestedEvent({
+        userEmail: 'test@test.te',
+        discountCode: 'exit-20',
+      }),
+    ).toEqual({
+      createdAt: expect.any(Date),
+      meta: {
+        correlation: {
+          userIdentifier: 'test@test.te',
+          userIdentifierType: 'email',
+        },
+        origin: 'auth',
+      },
+      payload: {
+        userEmail: 'test@test.te',
+        discountCode: 'exit-20',
+      },
+      type: 'EXIT_DISCOUNT_APPLY_REQUESTED',
+    })
+  })
+
   it('should create a WEB_SOCKET_MESSAGE_REQUESTED event', () => {
     expect(
       createFactory().createWebSocketMessageRequestedEvent({

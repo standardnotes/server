@@ -20,6 +20,7 @@ import '../src/Controller/SubscriptionSettingsController'
 
 import '../src/Infra/InversifyExpressUtils/InversifyExpressAuthController'
 import '../src/Infra/InversifyExpressUtils/InversifyExpressSubscriptionInvitesController'
+import '../src/Infra/InversifyExpressUtils/InversifyExpressUserRequestsController'
 import '../src/Infra/InversifyExpressUtils/InversifyExpressWebSocketsController'
 
 import * as cors from 'cors'
