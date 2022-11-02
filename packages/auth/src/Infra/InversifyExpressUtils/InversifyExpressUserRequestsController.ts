@@ -6,7 +6,7 @@ import TYPES from '../../Bootstrap/Types'
 import { UserRequestsController } from '../../Controller/UserRequestsController'
 
 @controller('/users/:userUuid/requests')
-export class InversifyExpressAuthController extends BaseHttpController {
+export class InversifyExpressUserRequestsController extends BaseHttpController {
   constructor(@inject(TYPES.UserRequestsController) private userRequestsController: UserRequestsController) {
     super()
   }
