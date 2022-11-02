@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.48.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.48.0...@standardnotes/auth-server@1.48.1) (2022-11-02)
+
+### Bug Fixes
+
+* **auth:** controller name ([5b0d9dd](https://github.com/standardnotes/server/commit/5b0d9dd3949d4da9d5ac3ca86a0e54ead2ce730d))
+
 # [1.48.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.47.7...@standardnotes/auth-server@1.48.0) (2022-11-02)
 
 ### Features
