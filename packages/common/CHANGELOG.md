@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.44.0](https://github.com/standardnotes/server/compare/@standardnotes/common@1.43.0...@standardnotes/common@1.44.0) (2022-11-03)
+
+### Features
+
+* **common:** add subscription cancelled email message identifier ([0c5305a](https://github.com/standardnotes/server/commit/0c5305acf62aae047caedca25de25049c37f7653))
+
 # [1.43.0](https://github.com/standardnotes/server/compare/@standardnotes/common@1.42.0...@standardnotes/common@1.43.0) (2022-11-01)
 
 ### Features
