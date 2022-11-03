@@ -3,6 +3,7 @@ import {
   DiscountWithdrawRequestedEvent,
   DomainEventPublisherInterface,
   EmailMessageRequestedEvent,
+  ExitDiscountWithdrawRequestedEvent,
 } from '@standardnotes/domain-events'
 import { PredicateName } from '@standardnotes/predicates'
 import 'reflect-metadata'
@@ -48,6 +49,9 @@ describe('JobDoneInterpreter', () => {
     domainEventFactory.createDiscountWithdrawRequestedEvent = jest
       .fn()
       .mockReturnValue({} as jest.Mocked<DiscountWithdrawRequestedEvent>)
+    domainEventFactory.createExitDiscountWithdrawRequestedEvent = jest
+      .fn()
+      .mockReturnValue({} as jest.Mocked<ExitDiscountWithdrawRequestedEvent>)
 
     domainEventPublisher = {} as jest.Mocked<DomainEventPublisherInterface>
     domainEventPublisher.publish = jest.fn()
