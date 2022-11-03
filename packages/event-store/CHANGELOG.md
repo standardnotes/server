@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.6.0](https://github.com/standardnotes/server/compare/@standardnotes/event-store@1.5.8...@standardnotes/event-store@1.6.0) (2022-11-03)
+
+### Features
+
+* **event-store:** add discount events to event store ([eb53c38](https://github.com/standardnotes/server/commit/eb53c3896f8c64747e30901722c0bdc63125128f))
+
 ## [1.5.8](https://github.com/standardnotes/server/compare/@standardnotes/event-store@1.5.7...@standardnotes/event-store@1.5.8) (2022-11-02)
 
 **Note:** Version bump only for package @standardnotes/event-store
