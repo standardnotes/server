@@ -205,6 +205,7 @@ import { SubscriptionInvitesController } from '../Controller/SubscriptionInvites
 import { CreateCrossServiceToken } from '../Domain/UseCase/CreateCrossServiceToken/CreateCrossServiceToken'
 import { ProcessUserRequest } from '../Domain/UseCase/ProcessUserRequest/ProcessUserRequest'
 import { UserRequestsController } from '../Controller/UserRequestsController'
+import { SubscriptionReactivatedEventHandler } from '../Domain/Handler/SubscriptionReactivatedEventHandler'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -493,6 +494,9 @@ export class ContainerConfigLoader {
     container.bind<PaymentFailedEventHandler>(TYPES.PaymentFailedEventHandler).to(PaymentFailedEventHandler)
     container.bind<PaymentSuccessEventHandler>(TYPES.PaymentSuccessEventHandler).to(PaymentSuccessEventHandler)
     container.bind<RefundProcessedEventHandler>(TYPES.RefundProcessedEventHandler).to(RefundProcessedEventHandler)
+    container
+      .bind<SubscriptionReactivatedEventHandler>(TYPES.SubscriptionReactivatedEventHandler)
+      .to(SubscriptionReactivatedEventHandler)
 
     // Services
     container.bind<UAParser>(TYPES.DeviceDetector).toConstantValue(new UAParser())
@@ -604,6 +608,7 @@ export class ContainerConfigLoader {
       ['PAYMENT_FAILED', container.get(TYPES.PaymentFailedEventHandler)],
       ['PAYMENT_SUCCESS', container.get(TYPES.PaymentSuccessEventHandler)],
       ['REFUND_PROCESSED', container.get(TYPES.RefundProcessedEventHandler)],
+      ['SUBSCRIPTION_REACTIVATED', container.get(TYPES.SubscriptionReactivatedEventHandler)],
     ])
 
     if (env.get('SQS_QUEUE_URL', true)) {

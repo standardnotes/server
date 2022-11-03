@@ -145,6 +145,7 @@ const TYPES = {
   PaymentFailedEventHandler: Symbol.for('PaymentFailedEventHandler'),
   PaymentSuccessEventHandler: Symbol.for('PaymentSuccessEventHandler'),
   RefundProcessedEventHandler: Symbol.for('RefundProcessedEventHandler'),
+  SubscriptionReactivatedEventHandler: Symbol.for('SubscriptionReactivatedEventHandler'),
   // Services
   DeviceDetector: Symbol.for('DeviceDetector'),
   SessionService: Symbol.for('SessionService'),

@@ -91,7 +91,9 @@ export class SubscriptionPurchasedEventHandler implements DomainEventHandlerInte
       [Period.Today, Period.ThisWeek, Period.ThisMonth],
     )
 
-    const limitedDiscountPurchased = ['limited-10', 'limited-20'].includes(event.payload.discountCode as string)
+    const limitedDiscountPurchased = ['limited-10', 'limited-20', 'exit-20'].includes(
+      event.payload.discountCode as string,
+    )
     if (limitedDiscountPurchased) {
       await this.analyticsStore.markActivity([AnalyticsActivity.LimitedDiscountOfferPurchased], analyticsId, [
         Period.Today,

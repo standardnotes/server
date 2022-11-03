@@ -40,6 +40,7 @@ const requestReport = async (
     AnalyticsActivity.SubscriptionRefunded,
     AnalyticsActivity.ExistingCustomersChurn,
     AnalyticsActivity.NewCustomersChurn,
+    AnalyticsActivity.SubscriptionReactivated,
   ]
 
   for (const analyticsName of thirtyDaysAnalyticsNames) {
