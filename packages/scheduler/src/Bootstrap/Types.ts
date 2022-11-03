@@ -24,6 +24,7 @@ const TYPES = {
   PredicateVerifiedEventHandler: Symbol.for('PredicateVerifiedEventHandler'),
   UserRegisteredEventHandler: Symbol.for('UserRegisteredEventHandler'),
   SubscriptionCancelledEventHandler: Symbol.for('SubscriptionCancelledEventHandler'),
+  ExitDiscountAppliedEventHandler: Symbol.for('ExitDiscountAppliedEventHandler'),
   // Services
   DomainEventPublisher: Symbol.for('DomainEventPublisher'),
   DomainEventSubscriberFactory: Symbol.for('DomainEventSubscriberFactory'),

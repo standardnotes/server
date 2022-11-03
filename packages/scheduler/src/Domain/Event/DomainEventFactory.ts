@@ -4,6 +4,7 @@ import {
   DiscountWithdrawRequestedEvent,
   DomainEventService,
   EmailMessageRequestedEvent,
+  ExitDiscountWithdrawRequestedEvent,
   PredicateVerificationRequestedEvent,
 } from '@standardnotes/domain-events'
 import { PredicateAuthority } from '@standardnotes/predicates'
@@ -39,6 +40,24 @@ export class DomainEventFactory implements DomainEventFactoryInterface {
   }): DiscountWithdrawRequestedEvent {
     return {
       type: 'DISCOUNT_WITHDRAW_REQUESTED',
+      createdAt: this.timer.getUTCDate(),
+      meta: {
+        correlation: {
+          userIdentifier: dto.userEmail,
+          userIdentifierType: 'email',
+        },
+        origin: DomainEventService.Scheduler,
+      },
+      payload: dto,
+    }
+  }
+
+  createExitDiscountWithdrawRequestedEvent(dto: {
+    userEmail: string
+    discountCode: string
+  }): ExitDiscountWithdrawRequestedEvent {
+    return {
+      type: 'EXIT_DISCOUNT_WITHDRAW_REQUESTED',
       createdAt: this.timer.getUTCDate(),
       meta: {
         correlation: {

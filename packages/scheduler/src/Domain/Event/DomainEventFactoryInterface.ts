@@ -3,6 +3,7 @@ import {
   DiscountApplyRequestedEvent,
   DiscountWithdrawRequestedEvent,
   EmailMessageRequestedEvent,
+  ExitDiscountWithdrawRequestedEvent,
   PredicateVerificationRequestedEvent,
 } from '@standardnotes/domain-events'
 
@@ -18,4 +19,8 @@ export interface DomainEventFactoryInterface {
   }): EmailMessageRequestedEvent
   createDiscountApplyRequestedEvent(dto: { userEmail: string; discountCode: string }): DiscountApplyRequestedEvent
   createDiscountWithdrawRequestedEvent(dto: { userEmail: string; discountCode: string }): DiscountWithdrawRequestedEvent
+  createExitDiscountWithdrawRequestedEvent(dto: {
+    userEmail: string
+    discountCode: string
+  }): ExitDiscountWithdrawRequestedEvent
 }

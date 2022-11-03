@@ -65,6 +65,11 @@ export class JobDoneInterpreter implements JobDoneInterpreterInterface {
           await this.requestDiscountWithdraw(job)
         }
         return
+      case JobName.WITHDRAW_SUBSCRIPTION_EXIT_DISCOUNT:
+        if (job.userIdentifierType === 'email') {
+          await this.requestExitDiscountWithdraw(job)
+        }
+        return
       default:
         this.logger.warn(`[${jobUuid}]${job.name}: job is not interpretable.`)
 
@@ -128,6 +133,17 @@ export class JobDoneInterpreter implements JobDoneInterpreterInterface {
       this.domainEventFactory.createDiscountWithdrawRequestedEvent({
         userEmail: job.userIdentifier,
         discountCode: 'limited-20',
+      }),
+    )
+  }
+
+  private async requestExitDiscountWithdraw(job: Job): Promise<void> {
+    this.logger.debug(`[${job.uuid}]${job.name}: requesting exit discount withdraw.`)
+
+    await this.domainEventPublisher.publish(
+      this.domainEventFactory.createExitDiscountWithdrawRequestedEvent({
+        userEmail: job.userIdentifier,
+        discountCode: 'exit-20',
       }),
     )
   }

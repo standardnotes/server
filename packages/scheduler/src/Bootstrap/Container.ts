@@ -36,6 +36,7 @@ import { PredicateVerifiedEventHandler } from '../Domain/Handler/PredicateVerifi
 import { VerifyPredicates } from '../Domain/UseCase/VerifyPredicates/VerifyPredicates'
 import { UserRegisteredEventHandler } from '../Domain/Handler/UserRegisteredEventHandler'
 import { SubscriptionCancelledEventHandler } from '../Domain/Handler/SubscriptionCancelledEventHandler'
+import { ExitDiscountAppliedEventHandler } from '../Domain/Handler/ExitDiscountAppliedEventHandler'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -124,6 +125,9 @@ export class ContainerConfigLoader {
     container
       .bind<SubscriptionCancelledEventHandler>(TYPES.SubscriptionCancelledEventHandler)
       .to(SubscriptionCancelledEventHandler)
+    container
+      .bind<ExitDiscountAppliedEventHandler>(TYPES.ExitDiscountAppliedEventHandler)
+      .to(ExitDiscountAppliedEventHandler)
 
     // Services
     container.bind<DomainEventFactory>(TYPES.DomainEventFactory).to(DomainEventFactory)
@@ -146,6 +150,7 @@ export class ContainerConfigLoader {
       ['PREDICATE_VERIFIED', container.get(TYPES.PredicateVerifiedEventHandler)],
       ['USER_REGISTERED', container.get(TYPES.UserRegisteredEventHandler)],
       ['SUBSCRIPTION_CANCELLED', container.get(TYPES.SubscriptionCancelledEventHandler)],
+      ['EXIT_DISCOUNT_APPLIED', container.get(TYPES.ExitDiscountAppliedEventHandler)],
     ])
 
     if (env.get('SQS_QUEUE_URL', true)) {

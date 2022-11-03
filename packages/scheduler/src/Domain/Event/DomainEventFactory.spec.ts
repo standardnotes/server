@@ -65,6 +65,29 @@ describe('DomainEventFactory', () => {
     })
   })
 
+  it('should create a EXIT_DISCOUNT_WITHDRAW_REQUESTED event', () => {
+    expect(
+      createFactory().createExitDiscountWithdrawRequestedEvent({
+        userEmail: 'test@test.te',
+        discountCode: 'exit-20',
+      }),
+    ).toEqual({
+      createdAt: expect.any(Date),
+      meta: {
+        correlation: {
+          userIdentifier: 'test@test.te',
+          userIdentifierType: 'email',
+        },
+        origin: 'scheduler',
+      },
+      payload: {
+        userEmail: 'test@test.te',
+        discountCode: 'exit-20',
+      },
+      type: 'EXIT_DISCOUNT_WITHDRAW_REQUESTED',
+    })
+  })
+
   it('should create a EMAIL_MESSAGE_REQUESTED event', () => {
     expect(
       createFactory().createEmailMessageRequestedEvent({

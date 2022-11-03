@@ -253,6 +253,35 @@ describe('JobDoneInterpreter', () => {
     expect(domainEventPublisher.publish).not.toHaveBeenCalled()
   })
 
+  it('should request exit discount withdraw', async () => {
+    jobRepository.findOneByUuid = jest.fn().mockReturnValue({
+      name: JobName.WITHDRAW_SUBSCRIPTION_EXIT_DISCOUNT,
+      userIdentifier: 'test@standardnotes.com',
+      userIdentifierType: 'email',
+    } as jest.Mocked<Job>)
+
+    await createInterpreter().interpret('1-2-3')
+
+    expect(domainEventFactory.createExitDiscountWithdrawRequestedEvent).toHaveBeenCalledWith({
+      userEmail: 'test@standardnotes.com',
+      discountCode: 'exit-20',
+    })
+    expect(domainEventPublisher.publish).toHaveBeenCalled()
+  })
+
+  it('should not request exit discount withdraw if email is missing', async () => {
+    jobRepository.findOneByUuid = jest.fn().mockReturnValue({
+      name: JobName.WITHDRAW_SUBSCRIPTION_EXIT_DISCOUNT,
+      userIdentifier: '2-3-4',
+      userIdentifierType: 'uuid',
+    } as jest.Mocked<Job>)
+
+    await createInterpreter().interpret('1-2-3')
+
+    expect(domainEventFactory.createExitDiscountWithdrawRequestedEvent).not.toHaveBeenCalled()
+    expect(domainEventPublisher.publish).not.toHaveBeenCalled()
+  })
+
   it('should do nothing if there is no interpretation for a given job', async () => {
     jobRepository.findOneByUuid = jest.fn().mockReturnValue({
       name: 'foobar' as JobName,
