@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.37.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.36.0...@standardnotes/analytics@1.37.0) (2022-11-03)
+
+### Features
+
+* **auth:** add analytics for subscription reactivating ([460d6a8](https://github.com/standardnotes/server/commit/460d6a8d0f17eee624feb5d2588086ae6f0996e4))
+
 # [1.36.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.35.1...@standardnotes/analytics@1.36.0) (2022-10-19)
 
 ### Features
