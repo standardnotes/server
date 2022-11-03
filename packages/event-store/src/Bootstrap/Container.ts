@@ -82,12 +82,17 @@ export class ContainerConfigLoader {
       ['SUBSCRIPTION_REVERT_REQUESTED', container.get(TYPES.EventHandler)],
       ['REFUND_PROCESSED', container.get(TYPES.EventHandler)],
       ['ACCOUNT_RESET_REQUESTED', container.get(TYPES.EventHandler)],
+      ['DISCOUNT_APPLY_REQUESTED', container.get(TYPES.EventHandler)],
       ['DISCOUNT_APPLIED', container.get(TYPES.EventHandler)],
+      ['DISCOUNT_WITHDRAW_REQUESTED', container.get(TYPES.EventHandler)],
       ['SUBSCRIPTION_RATE_ADJUSTED', container.get(TYPES.EventHandler)],
       ['REFUND_REQUESTED', container.get(TYPES.EventHandler)],
       ['INVOICE_GENERATED', container.get(TYPES.EventHandler)],
       ['WORKSPACE_INVITE_CREATED', container.get(TYPES.EventHandler)],
       ['SUBSCRIPTION_REACTIVATED', container.get(TYPES.EventHandler)],
+      ['EXIT_DISCOUNT_APPLY_REQUESTED', container.get(TYPES.EventHandler)],
+      ['EXIT_DISCOUNT_APPLIED', container.get(TYPES.EventHandler)],
+      ['EXIT_DISCOUNT_WITHDRAW_REQUESTED', container.get(TYPES.EventHandler)],
     ])
 
     container
