@@ -37,7 +37,11 @@ export class SubscriptionRenewedEventHandler implements DomainEventHandlerInterf
         return
       }
 
-      await this.updateOfflineSubscriptionEndsAt(offlineUserSubscription, event.payload.timestamp)
+      await this.updateOfflineSubscriptionEndsAt(
+        offlineUserSubscription,
+        event.payload.subscriptionExpiresAt,
+        event.payload.timestamp,
+      )
 
       await this.roleService.setOfflineUserRole(offlineUserSubscription)
 
@@ -92,9 +96,10 @@ export class SubscriptionRenewedEventHandler implements DomainEventHandlerInterf
 
   private async updateOfflineSubscriptionEndsAt(
     offlineUserSubscription: OfflineUserSubscription,
+    subscriptionExpiresAt: number,
     timestamp: number,
   ): Promise<void> {
-    offlineUserSubscription.endsAt = timestamp
+    offlineUserSubscription.endsAt = subscriptionExpiresAt
     offlineUserSubscription.updatedAt = timestamp
 
     await this.offlineUserSubscriptionRepository.save(offlineUserSubscription)
