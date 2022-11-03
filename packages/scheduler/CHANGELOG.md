@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.13.0](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.12.0...@standardnotes/scheduler-server@1.13.0) (2022-11-03)
+
+### Features
+
+* **scheduler:** add publishing exit discount withdraw requested event ([d66f784](https://github.com/standardnotes/server/commit/d66f78453820c8a97d090f858d9a4fc2557773fa))
+
 # [1.12.0](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.11.7...@standardnotes/scheduler-server@1.12.0) (2022-11-02)
 
 ### Features
