@@ -18,6 +18,7 @@ export class UserRegisteredEventHandler implements DomainEventHandlerInterface {
   async handle(event: UserRegisteredEvent): Promise<void> {
     let analyticsEntity = new AnalyticsEntity()
     analyticsEntity.userUuid = event.payload.userUuid
+    analyticsEntity.userEmail = event.payload.email
     analyticsEntity = await this.analyticsEntityRepository.save(analyticsEntity)
 
     await this.analyticsStore.markActivity([AnalyticsActivity.Register], analyticsEntity.id, [

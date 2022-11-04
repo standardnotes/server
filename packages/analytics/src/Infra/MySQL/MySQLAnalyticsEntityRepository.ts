@@ -13,6 +13,13 @@ export class MySQLAnalyticsEntityRepository implements AnalyticsEntityRepository
     private ormRepository: Repository<AnalyticsEntity>,
   ) {}
 
+  async findOneByUserEmail(email: string): Promise<AnalyticsEntity | null> {
+    return this.ormRepository
+      .createQueryBuilder('analytics_entity')
+      .where('analytics_entity.user_email = :email', { email })
+      .getOne()
+  }
+
   async findOneByUserUuid(userUuid: Uuid): Promise<AnalyticsEntity | null> {
     return this.ormRepository
       .createQueryBuilder('analytics_entity')

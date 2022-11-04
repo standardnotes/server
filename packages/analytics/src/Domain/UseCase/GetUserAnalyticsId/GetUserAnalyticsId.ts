@@ -12,7 +12,12 @@ export class GetUserAnalyticsId implements UseCaseInterface {
   ) {}
 
   async execute(dto: GetUserAnalyticsIdDTO): Promise<GetUserAnalyticsIdResponse> {
-    const analyticsEntity = await this.analyticsEntityRepository.findOneByUserUuid(dto.userUuid)
+    let analyticsEntity = null
+    if (dto.userUuid) {
+      analyticsEntity = await this.analyticsEntityRepository.findOneByUserUuid(dto.userUuid)
+    } else if (dto.userEmail) {
+      analyticsEntity = await this.analyticsEntityRepository.findOneByUserEmail(dto.userEmail)
+    }
 
     if (analyticsEntity === null) {
       throw new Error(`Could not find analytics entity for user ${dto.userUuid}`)

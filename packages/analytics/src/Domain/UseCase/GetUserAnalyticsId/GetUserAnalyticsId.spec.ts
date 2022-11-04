@@ -16,10 +16,15 @@ describe('GetUserAnalyticsId', () => {
 
     analyticsEntityRepository = {} as jest.Mocked<AnalyticsEntityRepositoryInterface>
     analyticsEntityRepository.findOneByUserUuid = jest.fn().mockReturnValue(analyticsEntity)
+    analyticsEntityRepository.findOneByUserEmail = jest.fn().mockReturnValue(analyticsEntity)
   })
 
-  it('should return analytics id for a user', async () => {
+  it('should return analytics id for a user by uuid', async () => {
     expect(await createUseCase().execute({ userUuid: '1-2-3' })).toEqual({ analyticsId: 123 })
+  })
+
+  it('should return analytics id for a user by email', async () => {
+    expect(await createUseCase().execute({ userEmail: 'test@test.te' })).toEqual({ analyticsId: 123 })
   })
 
   it('should throw error if user is missing analytics entity', async () => {

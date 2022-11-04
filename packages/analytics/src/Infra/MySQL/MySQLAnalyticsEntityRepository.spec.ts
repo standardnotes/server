@@ -46,4 +46,15 @@ describe('MySQLAnalyticsEntityRepository', () => {
 
     expect(result).toEqual(analyticsEntity)
   })
+
+  it('should find one by user email', async () => {
+    queryBuilder.where = jest.fn().mockReturnThis()
+    queryBuilder.getOne = jest.fn().mockReturnValue(analyticsEntity)
+
+    const result = await createRepository().findOneByUserEmail('test@test.te')
+
+    expect(queryBuilder.where).toHaveBeenCalledWith('analytics_entity.user_email = :email', { email: 'test@test.te' })
+
+    expect(result).toEqual(analyticsEntity)
+  })
 })

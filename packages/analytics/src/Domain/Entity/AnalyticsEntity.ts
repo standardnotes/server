@@ -11,4 +11,12 @@ export class AnalyticsEntity {
   })
   @Index('user_uuid')
   declare userUuid: string
+
+  @Column({
+    name: 'user_email',
+    length: 255,
+    nullable: true,
+  })
+  @Index('email')
+  declare userEmail: string
 }
