@@ -20,6 +20,7 @@ describe('MySQLAnalyticsEntityRepository', () => {
 
     ormRepository = {} as jest.Mocked<Repository<AnalyticsEntity>>
     ormRepository.save = jest.fn()
+    ormRepository.remove = jest.fn()
     ormRepository.createQueryBuilder = jest.fn().mockImplementation(() => queryBuilder)
   })
 
@@ -27,6 +28,12 @@ describe('MySQLAnalyticsEntityRepository', () => {
     await createRepository().save(analyticsEntity)
 
     expect(ormRepository.save).toHaveBeenCalledWith(analyticsEntity)
+  })
+
+  it('should remove', async () => {
+    await createRepository().remove(analyticsEntity)
+
+    expect(ormRepository.remove).toHaveBeenCalledWith(analyticsEntity)
   })
 
   it('should find one by user uuid', async () => {

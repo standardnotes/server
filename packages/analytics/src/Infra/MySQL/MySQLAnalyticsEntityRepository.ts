@@ -23,4 +23,8 @@ export class MySQLAnalyticsEntityRepository implements AnalyticsEntityRepository
   async save(analyticsEntity: AnalyticsEntity): Promise<AnalyticsEntity> {
     return this.ormRepository.save(analyticsEntity)
   }
+
+  async remove(analyticsEntity: AnalyticsEntity): Promise<void> {
+    await this.ormRepository.remove(analyticsEntity)
+  }
 }

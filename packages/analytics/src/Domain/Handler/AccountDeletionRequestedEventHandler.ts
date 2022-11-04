@@ -5,23 +5,28 @@ import { inject, injectable } from 'inversify'
 import TYPES from '../../Bootstrap/Types'
 import { AnalyticsActivity } from '../Analytics/AnalyticsActivity'
 import { AnalyticsStoreInterface } from '../Analytics/AnalyticsStoreInterface'
+import { AnalyticsEntityRepositoryInterface } from '../Entity/AnalyticsEntityRepositoryInterface'
 import { StatisticsMeasure } from '../Statistics/StatisticsMeasure'
 import { StatisticsStoreInterface } from '../Statistics/StatisticsStoreInterface'
 import { Period } from '../Time/Period'
-import { GetUserAnalyticsId } from '../UseCase/GetUserAnalyticsId/GetUserAnalyticsId'
 
 @injectable()
 export class AccountDeletionRequestedEventHandler implements DomainEventHandlerInterface {
   constructor(
-    @inject(TYPES.GetUserAnalyticsId) private getUserAnalyticsId: GetUserAnalyticsId,
+    @inject(TYPES.AnalyticsEntityRepository) private analyticsEntityRepository: AnalyticsEntityRepositoryInterface,
     @inject(TYPES.AnalyticsStore) private analyticsStore: AnalyticsStoreInterface,
     @inject(TYPES.StatisticsStore) private statisticsStore: StatisticsStoreInterface,
     @inject(TYPES.Timer) private timer: TimerInterface,
   ) {}
 
   async handle(event: AccountDeletionRequestedEvent): Promise<void> {
-    const { analyticsId } = await this.getUserAnalyticsId.execute({ userUuid: event.payload.userUuid })
-    await this.analyticsStore.markActivity([AnalyticsActivity.DeleteAccount], analyticsId, [
+    const analyticsEntity = await this.analyticsEntityRepository.findOneByUserUuid(event.payload.userUuid)
+
+    if (analyticsEntity === null) {
+      return
+    }
+
+    await this.analyticsStore.markActivity([AnalyticsActivity.DeleteAccount], analyticsEntity.id, [
       Period.Today,
       Period.ThisWeek,
       Period.ThisMonth,
@@ -33,5 +38,7 @@ export class AccountDeletionRequestedEventHandler implements DomainEventHandlerI
       Period.ThisWeek,
       Period.ThisMonth,
     ])
+
+    await this.analyticsEntityRepository.remove(analyticsEntity)
   }
 }

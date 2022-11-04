@@ -2,21 +2,21 @@ import 'reflect-metadata'
 
 import { AccountDeletionRequestedEvent } from '@standardnotes/domain-events'
 import { AccountDeletionRequestedEventHandler } from './AccountDeletionRequestedEventHandler'
-import { GetUserAnalyticsId } from '../UseCase/GetUserAnalyticsId/GetUserAnalyticsId'
 import { TimerInterface } from '@standardnotes/time'
 import { AnalyticsStoreInterface } from '../Analytics/AnalyticsStoreInterface'
 import { StatisticsStoreInterface } from '../Statistics/StatisticsStoreInterface'
 import { Period } from '../Time/Period'
+import { AnalyticsEntityRepositoryInterface } from '../Entity/AnalyticsEntityRepositoryInterface'
 
 describe('AccountDeletionRequestedEventHandler', () => {
   let event: AccountDeletionRequestedEvent
-  let getUserAnalyticsId: GetUserAnalyticsId
+  let analyticsEntityRepository: AnalyticsEntityRepositoryInterface
   let analyticsStore: AnalyticsStoreInterface
   let statisticsStore: StatisticsStoreInterface
   let timer: TimerInterface
 
   const createHandler = () =>
-    new AccountDeletionRequestedEventHandler(getUserAnalyticsId, analyticsStore, statisticsStore, timer)
+    new AccountDeletionRequestedEventHandler(analyticsEntityRepository, analyticsStore, statisticsStore, timer)
 
   beforeEach(() => {
     event = {} as jest.Mocked<AccountDeletionRequestedEvent>
@@ -27,8 +27,9 @@ describe('AccountDeletionRequestedEventHandler', () => {
       regularSubscriptionUuid: '2-3-4',
     }
 
-    getUserAnalyticsId = {} as jest.Mocked<GetUserAnalyticsId>
-    getUserAnalyticsId.execute = jest.fn().mockReturnValue({ analyticsId: 3 })
+    analyticsEntityRepository = {} as jest.Mocked<AnalyticsEntityRepositoryInterface>
+    analyticsEntityRepository.findOneByUserUuid = jest.fn().mockReturnValue({ id: 3 })
+    analyticsEntityRepository.remove = jest.fn()
 
     analyticsStore = {} as jest.Mocked<AnalyticsStoreInterface>
     analyticsStore.markActivity = jest.fn()
@@ -53,5 +54,16 @@ describe('AccountDeletionRequestedEventHandler', () => {
       Period.ThisWeek,
       Period.ThisMonth,
     ])
+    expect(analyticsEntityRepository.remove).toHaveBeenCalled()
+  })
+
+  it('should not mark anything if entity is not found', async () => {
+    analyticsEntityRepository.findOneByUserUuid = jest.fn().mockReturnValue(null)
+
+    await createHandler().handle(event)
+
+    expect(analyticsStore.markActivity).not.toHaveBeenCalled()
+    expect(statisticsStore.incrementMeasure).not.toHaveBeenCalled()
+    expect(analyticsEntityRepository.remove).not.toHaveBeenCalled()
   })
 })
