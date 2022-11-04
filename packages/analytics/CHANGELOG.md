@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.42.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.41.0...@standardnotes/analytics@1.42.0) (2022-11-04)
+
+### Bug Fixes
+
+* **analytics:** imports ([35611fb](https://github.com/standardnotes/server/commit/35611fbc07e50efbba954d7c96db9917e0dddd7d))
+
+### Features
+
+* **analytics:** add user registered handler ([034aa38](https://github.com/standardnotes/server/commit/034aa381539cf4b46769cfd1646dec2051d836c3))
+
 # [1.41.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.40.0...@standardnotes/analytics@1.41.0) (2022-11-04)
 
 ### Bug Fixes
