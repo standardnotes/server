@@ -16,6 +16,7 @@ const TYPES = {
   // ORM
   ORMAnalyticsEntityRepository: Symbol.for('ORMAnalyticsEntityRepository'),
   // Use Case
+  GetUserAnalyticsId: Symbol.for('GetUserAnalyticsId'),
   // Handlers
   // Services
   DomainEventPublisher: Symbol.for('DomainEventPublisher'),

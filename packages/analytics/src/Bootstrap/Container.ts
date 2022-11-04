@@ -32,6 +32,7 @@ import { AnalyticsEntityRepositoryInterface } from '../Domain/Entity/AnalyticsEn
 import { MySQLAnalyticsEntityRepository } from '../Infra/MySQL/MySQLAnalyticsEntityRepository'
 import { Repository } from 'typeorm'
 import { AnalyticsEntity } from '../Domain/Entity/AnalyticsEntity'
+import { GetUserAnalyticsId } from '../Domain/UseCase/GetUserAnalyticsId/GetUserAnalyticsId'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -111,6 +112,7 @@ export class ContainerConfigLoader {
       .toConstantValue(AppDataSource.getRepository(AnalyticsEntity))
 
     // Use Case
+    container.bind<GetUserAnalyticsId>(TYPES.GetUserAnalyticsId).to(GetUserAnalyticsId)
 
     // Hanlders
 
