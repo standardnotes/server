@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.49.12](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.49.11...@standardnotes/auth-server@1.49.12) (2022-11-04)
+
+### Bug Fixes
+
+* **auth:** event specs ([a3be4b0](https://github.com/standardnotes/server/commit/a3be4b063d679c125d152e7025750a6ca1d5d7a1))
+
 ## [1.49.11](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.49.10...@standardnotes/auth-server@1.49.11) (2022-11-04)
 
 **Note:** Version bump only for package @standardnotes/auth-server

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.47.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.46.0...@standardnotes/analytics@1.47.0) (2022-11-04)
+
+### Features
+
+* **analytics:** add subscription cancelled event handler ([037fb23](https://github.com/standardnotes/server/commit/037fb2398ae9aaa11682e1a8576bab28c69e0f9b))
+
 # [1.46.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.45.0...@standardnotes/analytics@1.46.0) (2022-11-04)
 
 ### Features

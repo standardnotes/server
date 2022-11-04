@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.75.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.74.1...@standardnotes/domain-events@2.75.0) (2022-11-04)
+
+### Features
+
+* **analytics:** add subscription cancelled event handler ([037fb23](https://github.com/standardnotes/server/commit/037fb2398ae9aaa11682e1a8576bab28c69e0f9b))
+
 ## [2.74.1](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.74.0...@standardnotes/domain-events@2.74.1) (2022-11-04)
 
 ### Bug Fixes
