@@ -28,6 +28,10 @@ import { AnalyticsStoreInterface } from '../Domain/Analytics/AnalyticsStoreInter
 import { RedisAnalyticsStore } from '../Infra/Redis/RedisAnalyticsStore'
 import { StatisticsStoreInterface } from '../Domain/Statistics/StatisticsStoreInterface'
 import { RedisStatisticsStore } from '../Infra/Redis/RedisStatisticsStore'
+import { AnalyticsEntityRepositoryInterface } from '../Domain/Entity/AnalyticsEntityRepositoryInterface'
+import { MySQLAnalyticsEntityRepository } from '../Infra/MySQL/MySQLAnalyticsEntityRepository'
+import { Repository } from 'typeorm'
+import { AnalyticsEntity } from '../Domain/Entity/AnalyticsEntity'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -97,8 +101,14 @@ export class ContainerConfigLoader {
     container.bind(TYPES.NEW_RELIC_ENABLED).toConstantValue(env.get('NEW_RELIC_ENABLED', true))
 
     // Repositories
+    container
+      .bind<AnalyticsEntityRepositoryInterface>(TYPES.AnalyticsEntityRepository)
+      .to(MySQLAnalyticsEntityRepository)
 
     // ORM
+    container
+      .bind<Repository<AnalyticsEntity>>(TYPES.ORMAnalyticsEntityRepository)
+      .toConstantValue(AppDataSource.getRepository(AnalyticsEntity))
 
     // Use Case
 

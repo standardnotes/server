@@ -12,7 +12,9 @@ const TYPES = {
   REDIS_EVENTS_CHANNEL: Symbol.for('REDIS_EVENTS_CHANNEL'),
   NEW_RELIC_ENABLED: Symbol.for('NEW_RELIC_ENABLED'),
   // Repositories
+  AnalyticsEntityRepository: Symbol.for('AnalyticsEntityRepository'),
   // ORM
+  ORMAnalyticsEntityRepository: Symbol.for('ORMAnalyticsEntityRepository'),
   // Use Case
   // Handlers
   // Services

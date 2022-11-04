@@ -1,4 +1,7 @@
 import { DataSource, LoggerOptions } from 'typeorm'
+
+import { AnalyticsEntity } from '../Domain/Entity/AnalyticsEntity'
+
 import { Env } from './Env'
 
 const env: Env = new Env()
@@ -33,7 +36,7 @@ export const AppDataSource = new DataSource({
     ],
     removeNodeErrorCount: 10,
   },
-  entities: [],
+  entities: [AnalyticsEntity],
   migrations: [env.get('DB_MIGRATIONS_PATH', true) ?? 'dist/migrations/*.js'],
   migrationsRun: true,
   logging: <LoggerOptions>env.get('DB_DEBUG_LEVEL'),
