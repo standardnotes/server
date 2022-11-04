@@ -254,6 +254,7 @@ export class DomainEventFactory implements DomainEventFactoryInterface {
 
   createAccountDeletionRequestedEvent(dto: {
     userUuid: Uuid
+    userCreatedAtTimestamp: number
     regularSubscriptionUuid: Uuid | undefined
   }): AccountDeletionRequestedEvent {
     return {

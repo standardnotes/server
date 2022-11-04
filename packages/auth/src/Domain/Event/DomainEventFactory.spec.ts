@@ -363,6 +363,7 @@ describe('DomainEventFactory', () => {
     expect(
       createFactory().createAccountDeletionRequestedEvent({
         userUuid: '1-2-3',
+        userCreatedAtTimestamp: 123,
         regularSubscriptionUuid: '2-3-4',
       }),
     ).toEqual({
@@ -376,6 +377,7 @@ describe('DomainEventFactory', () => {
       },
       payload: {
         userUuid: '1-2-3',
+        userCreatedAtTimestamp: 123,
         regularSubscriptionUuid: '2-3-4',
       },
       type: 'ACCOUNT_DELETION_REQUESTED',

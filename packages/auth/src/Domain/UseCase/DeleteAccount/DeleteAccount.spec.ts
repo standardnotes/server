@@ -8,6 +8,7 @@ import { DeleteAccount } from './DeleteAccount'
 import { UserSubscription } from '../../Subscription/UserSubscription'
 import { UserSubscriptionType } from '../../Subscription/UserSubscriptionType'
 import { UserSubscriptionServiceInterface } from '../../Subscription/UserSubscriptionServiceInterface'
+import { TimerInterface } from '@standardnotes/time'
 
 describe('DeleteAccount', () => {
   let userRepository: UserRepositoryInterface
@@ -16,9 +17,10 @@ describe('DeleteAccount', () => {
   let userSubscriptionService: UserSubscriptionServiceInterface
   let user: User
   let regularSubscription: UserSubscription
+  let timer: TimerInterface
 
   const createUseCase = () =>
-    new DeleteAccount(userRepository, userSubscriptionService, domainEventPublisher, domainEventFactory)
+    new DeleteAccount(userRepository, userSubscriptionService, domainEventPublisher, domainEventFactory, timer)
 
   beforeEach(() => {
     user = {
@@ -46,6 +48,9 @@ describe('DeleteAccount', () => {
     domainEventFactory.createAccountDeletionRequestedEvent = jest
       .fn()
       .mockReturnValue({} as jest.Mocked<AccountDeletionRequestedEvent>)
+
+    timer = {} as jest.Mocked<TimerInterface>
+    timer.convertDateToMicroseconds = jest.fn().mockReturnValue(1)
   })
 
   it('should trigger account deletion - no subscription', async () => {
@@ -62,6 +67,7 @@ describe('DeleteAccount', () => {
     expect(domainEventPublisher.publish).toHaveBeenCalledTimes(1)
     expect(domainEventFactory.createAccountDeletionRequestedEvent).toHaveBeenLastCalledWith({
       userUuid: '1-2-3',
+      userCreatedAtTimestamp: 1,
       regularSubscriptionUuid: undefined,
     })
   })
@@ -80,6 +86,7 @@ describe('DeleteAccount', () => {
     expect(domainEventPublisher.publish).toHaveBeenCalledTimes(1)
     expect(domainEventFactory.createAccountDeletionRequestedEvent).toHaveBeenLastCalledWith({
       userUuid: '1-2-3',
+      userCreatedAtTimestamp: 1,
       regularSubscriptionUuid: '1-2-3',
     })
   })

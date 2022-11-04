@@ -55,6 +55,7 @@ export interface DomainEventFactoryInterface {
   ): CloudBackupRequestedEvent
   createAccountDeletionRequestedEvent(dto: {
     userUuid: Uuid
+    userCreatedAtTimestamp: number
     regularSubscriptionUuid: Uuid | undefined
   }): AccountDeletionRequestedEvent
   createUserRolesChangedEvent(userUuid: string, email: string, currentRoles: RoleName[]): UserRolesChangedEvent
