@@ -1805,15 +1805,32 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@standardnotes/analytics@workspace:packages/analytics"
   dependencies:
+    "@newrelic/winston-enricher": "npm:^4.0.0"
+    "@sentry/node": "npm:^7.3.0"
+    "@standardnotes/common": "workspace:*"
+    "@standardnotes/domain-events": "workspace:*"
+    "@standardnotes/domain-events-infra": "workspace:*"
+    "@standardnotes/time": "workspace:*"
     "@types/ioredis": "npm:^4.28.10"
     "@types/jest": "npm:^29.1.1"
+    "@types/newrelic": "npm:^7.0.3"
+    "@types/node": "npm:^18.0.0"
     "@typescript-eslint/eslint-plugin": "npm:^5.30.0"
+    aws-sdk: "npm:^2.1158.0"
+    dayjs: "npm:^1.11.6"
+    dotenv: "npm:^16.0.1"
+    eslint: "npm:^8.14.0"
     eslint-plugin-prettier: "npm:^4.2.1"
+    inversify: "npm:^6.0.1"
     ioredis: "npm:^5.2.3"
     jest: "npm:^29.1.2"
+    mysql2: "npm:^2.3.3"
+    newrelic: "npm:^9.0.0"
     reflect-metadata: "npm:^0.1.13"
     ts-jest: "npm:^29.0.3"
+    typeorm: "npm:^0.3.6"
     typescript: "npm:^4.8.4"
+    winston: "npm:^3.8.1"
   languageName: unknown
   linkType: soft
 
