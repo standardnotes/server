@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.44.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.43.0...@standardnotes/analytics@1.44.0) (2022-11-04)
+
+### Features
+
+* **analytics:** removing analytics entity upon account deletion ([2720a7c](https://github.com/standardnotes/server/commit/2720a7c827a6352cb5254e88d42d45c385921448))
+
 # [1.43.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.42.0...@standardnotes/analytics@1.43.0) (2022-11-04)
 
 ### Features
