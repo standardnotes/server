@@ -37,6 +37,7 @@ import { UserRegisteredEventHandler } from '../Domain/Handler/UserRegisteredEven
 import { AccountDeletionRequestedEventHandler } from '../Domain/Handler/AccountDeletionRequestedEventHandler'
 import { PaymentFailedEventHandler } from '../Domain/Handler/PaymentFailedEventHandler'
 import { PaymentSuccessEventHandler } from '../Domain/Handler/PaymentSuccessEventHandler'
+import { SubscriptionCancelledEventHandler } from '../Domain/Handler/SubscriptionCancelledEventHandler'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -125,6 +126,9 @@ export class ContainerConfigLoader {
       .to(AccountDeletionRequestedEventHandler)
     container.bind<PaymentFailedEventHandler>(TYPES.PaymentFailedEventHandler).to(PaymentFailedEventHandler)
     container.bind<PaymentSuccessEventHandler>(TYPES.PaymentSuccessEventHandler).to(PaymentSuccessEventHandler)
+    container
+      .bind<SubscriptionCancelledEventHandler>(TYPES.SubscriptionCancelledEventHandler)
+      .to(SubscriptionCancelledEventHandler)
 
     // Services
     container.bind<DomainEventFactory>(TYPES.DomainEventFactory).to(DomainEventFactory)
