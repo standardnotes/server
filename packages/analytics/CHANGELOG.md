@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.39.1](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.39.0...@standardnotes/analytics@1.39.1) (2022-11-04)
+
+### Bug Fixes
+
+* **analytics:** linter setup ([5329f2a](https://github.com/standardnotes/server/commit/5329f2a2fb815f8691e37279fcadcf01beb716ad))
+
 # [1.39.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.38.0...@standardnotes/analytics@1.39.0) (2022-11-04)
 
 ### Features
