@@ -34,6 +34,7 @@ import { Repository } from 'typeorm'
 import { AnalyticsEntity } from '../Domain/Entity/AnalyticsEntity'
 import { GetUserAnalyticsId } from '../Domain/UseCase/GetUserAnalyticsId/GetUserAnalyticsId'
 import { UserRegisteredEventHandler } from '../Domain/Handler/UserRegisteredEventHandler'
+import { AccountDeletionRequestedEventHandler } from '../Domain/Handler/AccountDeletionRequestedEventHandler'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -117,6 +118,9 @@ export class ContainerConfigLoader {
 
     // Hanlders
     container.bind<UserRegisteredEventHandler>(TYPES.UserRegisteredEventHandler).to(UserRegisteredEventHandler)
+    container
+      .bind<AccountDeletionRequestedEventHandler>(TYPES.AccountDeletionRequestedEventHandler)
+      .to(AccountDeletionRequestedEventHandler)
 
     // Services
     container.bind<DomainEventFactory>(TYPES.DomainEventFactory).to(DomainEventFactory)
