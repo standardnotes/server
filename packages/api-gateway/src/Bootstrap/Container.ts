@@ -2,7 +2,6 @@ import * as winston from 'winston'
 import axios, { AxiosInstance } from 'axios'
 import Redis from 'ioredis'
 import { Container } from 'inversify'
-import * as AWS from 'aws-sdk'
 import {
   AnalyticsStoreInterface,
   PeriodKeyGenerator,
@@ -11,7 +10,6 @@ import {
   RedisStatisticsStore,
   StatisticsStoreInterface,
 } from '@standardnotes/analytics'
-import { RedisDomainEventPublisher, SNSDomainEventPublisher } from '@standardnotes/domain-events-infra'
 import { Timer, TimerInterface } from '@standardnotes/time'
 
 import { Env } from './Env'
@@ -58,15 +56,6 @@ export class ContainerConfigLoader {
     }
     container.bind(TYPES.Redis).toConstantValue(redis)
 
-    if (env.get('SNS_AWS_REGION', true)) {
-      container.bind<AWS.SNS>(TYPES.SNS).toConstantValue(
-        new AWS.SNS({
-          apiVersion: 'latest',
-          region: env.get('SNS_AWS_REGION', true),
-        }),
-      )
-    }
-
     container.bind<AxiosInstance>(TYPES.HTTPClient).toConstantValue(axios.create())
 
     // env vars
@@ -81,8 +70,6 @@ export class ContainerConfigLoader {
       .bind(TYPES.HTTP_CALL_TIMEOUT)
       .toConstantValue(env.get('HTTP_CALL_TIMEOUT', true) ? +env.get('HTTP_CALL_TIMEOUT', true) : 60_000)
     container.bind(TYPES.VERSION).toConstantValue(env.get('VERSION'))
-    container.bind(TYPES.SNS_TOPIC_ARN).toConstantValue(env.get('SNS_TOPIC_ARN', true))
-    container.bind(TYPES.SNS_AWS_REGION).toConstantValue(env.get('SNS_AWS_REGION', true))
     container.bind(TYPES.REDIS_EVENTS_CHANNEL).toConstantValue(env.get('REDIS_EVENTS_CHANNEL'))
     container.bind(TYPES.CROSS_SERVICE_TOKEN_CACHE_TTL).toConstantValue(+env.get('CROSS_SERVICE_TOKEN_CACHE_TTL', true))
 
@@ -105,18 +92,6 @@ export class ContainerConfigLoader {
       .toConstantValue(new RedisStatisticsStore(container.get(TYPES.PeriodKeyGenerator), container.get(TYPES.Redis)))
     container.bind<CrossServiceTokenCacheInterface>(TYPES.CrossServiceTokenCache).to(RedisCrossServiceTokenCache)
     container.bind<TimerInterface>(TYPES.Timer).toConstantValue(new Timer())
-
-    if (env.get('SNS_TOPIC_ARN', true)) {
-      container
-        .bind<SNSDomainEventPublisher>(TYPES.DomainEventPublisher)
-        .toConstantValue(new SNSDomainEventPublisher(container.get(TYPES.SNS), container.get(TYPES.SNS_TOPIC_ARN)))
-    } else {
-      container
-        .bind<RedisDomainEventPublisher>(TYPES.DomainEventPublisher)
-        .toConstantValue(
-          new RedisDomainEventPublisher(container.get(TYPES.Redis), container.get(TYPES.REDIS_EVENTS_CHANNEL)),
-        )
-    }
 
     return container
   }
