@@ -6,7 +6,8 @@
   },
   "include": [
     "src/**/*",
-    "bin/**/*"
+    "bin/**/*",
+    "migrations/**/*"
   ],
   "references": []
 }
