@@ -18,6 +18,7 @@ const TYPES = {
   // Use Case
   GetUserAnalyticsId: Symbol.for('GetUserAnalyticsId'),
   // Handlers
+  UserRegisteredEventHandler: Symbol.for('UserRegisteredEventHandler'),
   // Services
   DomainEventPublisher: Symbol.for('DomainEventPublisher'),
   DomainEventSubscriberFactory: Symbol.for('DomainEventSubscriberFactory'),

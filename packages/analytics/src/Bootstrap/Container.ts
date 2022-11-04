@@ -33,6 +33,7 @@ import { MySQLAnalyticsEntityRepository } from '../Infra/MySQL/MySQLAnalyticsEnt
 import { Repository } from 'typeorm'
 import { AnalyticsEntity } from '../Domain/Entity/AnalyticsEntity'
 import { GetUserAnalyticsId } from '../Domain/UseCase/GetUserAnalyticsId/GetUserAnalyticsId'
+import { UserRegisteredEventHandler } from '../Domain/Handler/UserRegisteredEventHandler'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -115,6 +116,7 @@ export class ContainerConfigLoader {
     container.bind<GetUserAnalyticsId>(TYPES.GetUserAnalyticsId).to(GetUserAnalyticsId)
 
     // Hanlders
+    container.bind<UserRegisteredEventHandler>(TYPES.UserRegisteredEventHandler).to(UserRegisteredEventHandler)
 
     // Services
     container.bind<DomainEventFactory>(TYPES.DomainEventFactory).to(DomainEventFactory)
@@ -139,7 +141,9 @@ export class ContainerConfigLoader {
         )
     }
 
-    const eventHandlers: Map<string, DomainEventHandlerInterface> = new Map([])
+    const eventHandlers: Map<string, DomainEventHandlerInterface> = new Map([
+      ['USER_REGISTERED', container.get(TYPES.UserRegisteredEventHandler)],
+    ])
 
     if (env.get('SQS_QUEUE_URL', true)) {
       container
