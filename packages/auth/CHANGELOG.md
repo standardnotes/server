@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.49.8](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.49.7...@standardnotes/auth-server@1.49.8) (2022-11-04)
+
+### Bug Fixes
+
+* **auth:** add user created at timestamp to account deletion event ([7b05bf8](https://github.com/standardnotes/server/commit/7b05bf899152a2f36ce1fa851e8d5821c67840d7))
+
 ## [1.49.7](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.49.6...@standardnotes/auth-server@1.49.7) (2022-11-04)
 
 **Note:** Version bump only for package @standardnotes/auth-server

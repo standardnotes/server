@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.43.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.42.0...@standardnotes/analytics@1.43.0) (2022-11-04)
+
+### Features
+
+* **analytics:** add account deletion event handler ([5383e0c](https://github.com/standardnotes/server/commit/5383e0cf525ddd203beee451f1cfd5fd8600b522))
+
 # [1.42.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.41.0...@standardnotes/analytics@1.42.0) (2022-11-04)
 
 ### Bug Fixes

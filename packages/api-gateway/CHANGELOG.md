@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.36.5](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.36.4...@standardnotes/api-gateway@1.36.5) (2022-11-04)
+
+### Bug Fixes
+
+* **api-gateway:** removing sns bindings ([b4c5b5a](https://github.com/standardnotes/api-gateway/commit/b4c5b5a84e4c619f175620b141279dfa8e2e6754))
+
 ## [1.36.4](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.36.3...@standardnotes/api-gateway@1.36.4) (2022-11-04)
 
 **Note:** Version bump only for package @standardnotes/api-gateway
