@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.18](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.10.17...@standardnotes/syncing-server@1.10.18) (2022-11-04)
+
+**Note:** Version bump only for package @standardnotes/syncing-server
+
 ## [1.10.17](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.10.16...@standardnotes/syncing-server@1.10.17) (2022-11-04)
 
 **Note:** Version bump only for package @standardnotes/syncing-server

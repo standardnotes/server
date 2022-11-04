@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.45.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.44.0...@standardnotes/analytics@1.45.0) (2022-11-04)
+
+### Features
+
+* add payment failed handler and email to analytics entity ([51b12d0](https://github.com/standardnotes/server/commit/51b12d05d49868db1d61313c4d8b3829994e7eb3))
+
 # [1.44.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.43.0...@standardnotes/analytics@1.44.0) (2022-11-04)
 
 ### Features
