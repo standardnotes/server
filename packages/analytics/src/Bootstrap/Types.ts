@@ -21,6 +21,7 @@ const TYPES = {
   UserRegisteredEventHandler: Symbol.for('UserRegisteredEventHandler'),
   AccountDeletionRequestedEventHandler: Symbol.for('AccountDeletionRequestedEventHandler'),
   PaymentFailedEventHandler: Symbol.for('PaymentFailedEventHandler'),
+  PaymentSuccessEventHandler: Symbol.for('PaymentSuccessEventHandler'),
   // Services
   DomainEventPublisher: Symbol.for('DomainEventPublisher'),
   DomainEventSubscriberFactory: Symbol.for('DomainEventSubscriberFactory'),
