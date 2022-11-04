@@ -80,6 +80,7 @@ describe('AccountDeletionRequestedEventHandler', () => {
     event.createdAt = new Date(1)
     event.payload = {
       userUuid: '1-2-3',
+      userCreatedAtTimestamp: 1,
       regularSubscriptionUuid: '2-3-4',
     }
 

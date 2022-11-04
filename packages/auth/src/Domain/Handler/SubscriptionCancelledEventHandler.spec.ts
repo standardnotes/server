@@ -71,6 +71,10 @@ describe('SubscriptionCancelledEventHandler', () => {
       timestamp,
       offline: false,
       replaced: false,
+      subscriptionCreatedAt: 1,
+      subscriptionEndsAt: 2,
+      subscriptionUpdatedAt: 2,
+      lastPayedAt: 1,
     }
   })
 
