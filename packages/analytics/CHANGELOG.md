@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.39.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.38.0...@standardnotes/analytics@1.39.0) (2022-11-04)
+
+### Features
+
+* **analytics:** move the analytics report from api-gateway to analytics ([34e11fd](https://github.com/standardnotes/server/commit/34e11fd5b0ef09a056c90127065c9dfae3e0172a))
+
 # [1.38.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.37.0...@standardnotes/analytics@1.38.0) (2022-11-04)
 
 ### Features
