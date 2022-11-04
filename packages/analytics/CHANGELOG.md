@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.41.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.40.0...@standardnotes/analytics@1.41.0) (2022-11-04)
+
+### Bug Fixes
+
+* **analytics:** linter setup with migrations ([262d295](https://github.com/standardnotes/server/commit/262d2951218753f6f14613c5d8ae20ade0e4ef06))
+
+### Features
+
+* **analytics:** add retrieving user analytics id ([4e5ac0a](https://github.com/standardnotes/server/commit/4e5ac0a47b469e5fa681f0131d04c9823cebedf3))
+
 # [1.40.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.39.1...@standardnotes/analytics@1.40.0) (2022-11-04)
 
 ### Features
