@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.40.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.39.1...@standardnotes/analytics@1.40.0) (2022-11-04)
+
+### Features
+
+* **analytics:** add analytics entities ([f315b1a](https://github.com/standardnotes/server/commit/f315b1ac5c9369d36fa616c6b4bb5492148564f8))
+
 ## [1.39.1](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.39.0...@standardnotes/analytics@1.39.1) (2022-11-04)
 
 ### Bug Fixes
