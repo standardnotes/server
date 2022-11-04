@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.74.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.73.1...@standardnotes/domain-events@2.74.0) (2022-11-04)
+
+### Features
+
+* add analytics worker service ([d568432](https://github.com/standardnotes/server/commit/d5684326b1301855d0e07415195d4b246292f9a9))
+
 ## [2.73.1](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.73.0...@standardnotes/domain-events@2.73.1) (2022-11-03)
 
 **Note:** Version bump only for package @standardnotes/domain-events

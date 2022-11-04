@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.38.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.37.0...@standardnotes/analytics@1.38.0) (2022-11-04)
+
+### Features
+
+* add analytics worker service ([d568432](https://github.com/standardnotes/server/commit/d5684326b1301855d0e07415195d4b246292f9a9))
+
 # [1.37.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.36.0...@standardnotes/analytics@1.37.0) (2022-11-03)
 
 ### Features
