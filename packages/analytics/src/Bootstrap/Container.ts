@@ -22,6 +22,12 @@ import {
   SQSNewRelicEventMessageHandler,
 } from '@standardnotes/domain-events-infra'
 import { Timer, TimerInterface } from '@standardnotes/time'
+import { PeriodKeyGeneratorInterface } from '../Domain/Time/PeriodKeyGeneratorInterface'
+import { PeriodKeyGenerator } from '../Domain/Time/PeriodKeyGenerator'
+import { AnalyticsStoreInterface } from '../Domain/Analytics/AnalyticsStoreInterface'
+import { RedisAnalyticsStore } from '../Infra/Redis/RedisAnalyticsStore'
+import { StatisticsStoreInterface } from '../Domain/Statistics/StatisticsStoreInterface'
+import { RedisStatisticsStore } from '../Infra/Redis/RedisStatisticsStore'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -100,6 +106,13 @@ export class ContainerConfigLoader {
 
     // Services
     container.bind<DomainEventFactory>(TYPES.DomainEventFactory).to(DomainEventFactory)
+    container.bind<PeriodKeyGeneratorInterface>(TYPES.PeriodKeyGenerator).toConstantValue(new PeriodKeyGenerator())
+    container
+      .bind<AnalyticsStoreInterface>(TYPES.AnalyticsStore)
+      .toConstantValue(new RedisAnalyticsStore(container.get(TYPES.PeriodKeyGenerator), container.get(TYPES.Redis)))
+    container
+      .bind<StatisticsStoreInterface>(TYPES.StatisticsStore)
+      .toConstantValue(new RedisStatisticsStore(container.get(TYPES.PeriodKeyGenerator), container.get(TYPES.Redis)))
     container.bind<TimerInterface>(TYPES.Timer).toConstantValue(new Timer())
 
     if (env.get('SNS_TOPIC_ARN', true)) {

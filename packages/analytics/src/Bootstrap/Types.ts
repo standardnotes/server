@@ -20,7 +20,10 @@ const TYPES = {
   DomainEventSubscriberFactory: Symbol.for('DomainEventSubscriberFactory'),
   DomainEventFactory: Symbol.for('DomainEventFactory'),
   DomainEventMessageHandler: Symbol.for('DomainEventMessageHandler'),
+  AnalyticsStore: Symbol.for('AnalyticsStore'),
+  StatisticsStore: Symbol.for('StatisticsStore'),
   Timer: Symbol.for('Timer'),
+  PeriodKeyGenerator: Symbol.for('PeriodKeyGenerator'),
 }
 
 export default TYPES

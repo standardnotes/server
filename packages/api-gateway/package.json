@@ -17,7 +17,6 @@
     "lint": "eslint . --ext .ts",
     "setup:env": "cp .env.sample .env",
     "start": "yarn node dist/bin/server.js",
-    "report": "yarn node dist/bin/report.js",
     "upgrade:snjs": "yarn ncu -u '@standardnotes/*'"
   },
   "dependencies": {

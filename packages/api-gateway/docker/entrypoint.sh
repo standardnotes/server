@@ -16,11 +16,6 @@ case "$COMMAND" in
     yarn workspace @standardnotes/api-gateway start
     ;;
 
-  'report' )
-    echo "Starting Usage Report Generation..."
-    yarn workspace @standardnotes/api-gateway report
-    ;;
-
    * )
     echo "Unknown command"
     ;;

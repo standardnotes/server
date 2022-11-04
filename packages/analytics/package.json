@@ -23,6 +23,7 @@
     "lint:fix": "eslint . --ext .ts --fix",
     "test": "jest --coverage --config=./jest.config.js --maxWorkers=50%",
     "worker": "yarn node dist/bin/worker.js",
+    "report": "yarn node dist/bin/report.js",
     "setup:env": "cp .env.sample .env",
     "typeorm": "typeorm-ts-node-commonjs"
   },
