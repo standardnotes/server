@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.78.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.77.0...@standardnotes/domain-events@2.78.0) (2022-11-07)
+
+### Features
+
+* **analytics:** add handling subscription expired events ([c0f5817](https://github.com/standardnotes/server/commit/c0f5817d4753410ee5d997c1b94e340b400cb5d9))
+
 # [2.77.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.76.0...@standardnotes/domain-events@2.77.0) (2022-11-07)
 
 ### Features
