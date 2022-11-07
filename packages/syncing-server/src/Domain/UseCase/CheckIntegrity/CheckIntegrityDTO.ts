@@ -5,5 +5,4 @@ export type CheckIntegrityDTO = {
   userUuid: Uuid
   integrityPayloads: IntegrityPayload[]
   freeUser: boolean
-  analyticsId: number
 }

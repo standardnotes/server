@@ -8,7 +8,6 @@ import { Role } from '../../Role/Role'
 import { Session } from '../../Session/Session'
 import { User } from '../../User/User'
 import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'
-import { GetUserAnalyticsId } from '../GetUserAnalyticsId/GetUserAnalyticsId'
 import { UseCaseInterface } from '../UseCaseInterface'
 import { CreateCrossServiceTokenDTO } from './CreateCrossServiceTokenDTO'
 import { CreateCrossServiceTokenResponse } from './CreateCrossServiceTokenResponse'
@@ -20,9 +19,7 @@ export class CreateCrossServiceToken implements UseCaseInterface {
     @inject(TYPES.SessionProjector) private sessionProjector: ProjectorInterface<Session>,
     @inject(TYPES.RoleProjector) private roleProjector: ProjectorInterface<Role>,
     @inject(TYPES.CrossServiceTokenEncoder) private tokenEncoder: TokenEncoderInterface<CrossServiceTokenData>,
-    @inject(TYPES.GetUserAnalyticsId) private getUserAnalyticsId: GetUserAnalyticsId,
     @inject(TYPES.UserRepository) private userRepository: UserRepositoryInterface,
-    @inject(TYPES.ANALYTICS_ENABLED) private analyticsEnabled: boolean,
     @inject(TYPES.AUTH_JWT_TTL) private jwtTTL: number,
   ) {}
 
@@ -41,11 +38,6 @@ export class CreateCrossServiceToken implements UseCaseInterface {
     const authTokenData: CrossServiceTokenData = {
       user: this.projectUser(user),
       roles: this.projectRoles(roles),
-    }
-
-    if (this.analyticsEnabled) {
-      const { analyticsId } = await this.getUserAnalyticsId.execute({ userUuid: user.uuid })
-      authTokenData.analyticsId = analyticsId
     }
 
     if (dto.session !== undefined) {

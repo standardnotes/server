@@ -11,9 +11,6 @@ import { SessionRepositoryInterface } from '../Session/SessionRepositoryInterfac
 import { User } from '../User/User'
 import { UserRepositoryInterface } from '../User/UserRepositoryInterface'
 import { AccountDeletionRequestedEventHandler } from './AccountDeletionRequestedEventHandler'
-import { GetUserAnalyticsId } from '../UseCase/GetUserAnalyticsId/GetUserAnalyticsId'
-import { AnalyticsStoreInterface, StatisticsStoreInterface } from '@standardnotes/analytics'
-import { TimerInterface } from '@standardnotes/time'
 
 describe('AccountDeletionRequestedEventHandler', () => {
   let userRepository: UserRepositoryInterface
@@ -26,10 +23,6 @@ describe('AccountDeletionRequestedEventHandler', () => {
   let revokedSession: RevokedSession
   let user: User
   let event: AccountDeletionRequestedEvent
-  let getUserAnalyticsId: GetUserAnalyticsId
-  let analyticsStore: AnalyticsStoreInterface
-  let statisticsStore: StatisticsStoreInterface
-  let timer: TimerInterface
 
   const createHandler = () =>
     new AccountDeletionRequestedEventHandler(
@@ -37,10 +30,6 @@ describe('AccountDeletionRequestedEventHandler', () => {
       sessionRepository,
       ephemeralSessionRepository,
       revokedSessionRepository,
-      getUserAnalyticsId,
-      analyticsStore,
-      statisticsStore,
-      timer,
       logger,
     )
 
@@ -84,22 +73,9 @@ describe('AccountDeletionRequestedEventHandler', () => {
       regularSubscriptionUuid: '2-3-4',
     }
 
-    getUserAnalyticsId = {} as jest.Mocked<GetUserAnalyticsId>
-    getUserAnalyticsId.execute = jest.fn().mockReturnValue({ analyticsId: 3 })
-
-    analyticsStore = {} as jest.Mocked<AnalyticsStoreInterface>
-    analyticsStore.markActivity = jest.fn()
-
     logger = {} as jest.Mocked<Logger>
     logger.info = jest.fn()
     logger.warn = jest.fn()
-
-    statisticsStore = {} as jest.Mocked<StatisticsStoreInterface>
-    statisticsStore.incrementMeasure = jest.fn()
-
-    timer = {} as jest.Mocked<TimerInterface>
-    timer.getTimestampInMicroseconds = jest.fn().mockReturnValue(123)
-    timer.convertDateToMicroseconds = jest.fn().mockReturnValue(100)
   })
 
   it('should remove a user', async () => {

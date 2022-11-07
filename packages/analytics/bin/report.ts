@@ -34,8 +34,6 @@ const requestReport = async (
   }> = []
 
   const thirtyDaysAnalyticsNames = [
-    AnalyticsActivity.GeneralActivity,
-    AnalyticsActivity.EditingItems,
     AnalyticsActivity.SubscriptionPurchased,
     AnalyticsActivity.Register,
     AnalyticsActivity.SubscriptionRenewed,
@@ -80,9 +78,6 @@ const requestReport = async (
   }> = []
   const yesterdayActivityNames = [
     AnalyticsActivity.LimitedDiscountOfferPurchased,
-    AnalyticsActivity.GeneralActivity,
-    AnalyticsActivity.GeneralActivityFreeUsers,
-    AnalyticsActivity.GeneralActivityPaidUsers,
     AnalyticsActivity.PaymentFailed,
     AnalyticsActivity.PaymentSuccess,
     AnalyticsActivity.NewCustomersChurn,
@@ -116,9 +111,6 @@ const requestReport = async (
     StatisticsMeasure.SubscriptionLength,
     StatisticsMeasure.RegistrationToSubscriptionTime,
     StatisticsMeasure.RemainingSubscriptionTimePercentage,
-    StatisticsMeasure.NotesCountFreeUsers,
-    StatisticsMeasure.NotesCountPaidUsers,
-    StatisticsMeasure.FilesCount,
     StatisticsMeasure.NewCustomers,
     StatisticsMeasure.TotalCustomers,
   ]
@@ -137,29 +129,6 @@ const requestReport = async (
         totalValue: await statisticsStore.getMeasureTotal(statisticMeasureName, period),
         average: await statisticsStore.getMeasureAverage(statisticMeasureName, period),
         increments: await statisticsStore.getMeasureIncrementCounts(statisticMeasureName, period),
-      })
-    }
-  }
-
-  const periodKeys = periodKeyGenerator.getDiscretePeriodKeys(Period.Last7Days)
-  const retentionOverDays: Array<{
-    firstPeriodKey: string
-    secondPeriodKey: string
-    value: number
-  }> = []
-  for (let i = 0; i < periodKeys.length; i++) {
-    for (let j = 0; j < periodKeys.length - i; j++) {
-      const dailyRetention = await analyticsStore.calculateActivitiesRetention({
-        firstActivity: AnalyticsActivity.Register,
-        firstActivityPeriodKey: periodKeys[i],
-        secondActivity: AnalyticsActivity.GeneralActivity,
-        secondActivityPeriodKey: periodKeys[i + j],
-      })
-
-      retentionOverDays.push({
-        firstPeriodKey: periodKeys[i],
-        secondPeriodKey: periodKeys[i + j],
-        value: dailyRetention,
       })
     }
   }
@@ -207,16 +176,7 @@ const requestReport = async (
     activityStatistics: yesterdayActivityStatistics,
     activityStatisticsOverTime: analyticsOverTime,
     statisticMeasures,
-    retentionStatistics: [
-      {
-        firstActivity: AnalyticsActivity.Register,
-        secondActivity: AnalyticsActivity.GeneralActivity,
-        retention: {
-          periodKeys,
-          values: retentionOverDays,
-        },
-      },
-    ],
+    retentionStatistics: [],
     churn: {
       periodKeys: monthlyPeriodKeys,
       values: churnRates,

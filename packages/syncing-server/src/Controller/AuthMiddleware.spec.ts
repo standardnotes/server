@@ -50,7 +50,6 @@ describe('AuthMiddleware', () => {
             name: RoleName.ProUser,
           },
         ],
-        analyticsId: 123,
         permissions: [],
       },
       jwtSecret,
@@ -65,7 +64,6 @@ describe('AuthMiddleware', () => {
     expect(response.locals.roleNames).toEqual(['CORE_USER', 'PRO_USER'])
     expect(response.locals.session).toEqual({ uuid: '234' })
     expect(response.locals.readOnlyAccess).toBeFalsy()
-    expect(response.locals.analyticsId).toEqual(123)
     expect(response.locals.freeUser).toEqual(false)
 
     expect(next).toHaveBeenCalled()
@@ -82,7 +80,6 @@ describe('AuthMiddleware', () => {
             name: RoleName.CoreUser,
           },
         ],
-        analyticsId: 123,
         permissions: [],
       },
       jwtSecret,
@@ -116,7 +113,6 @@ describe('AuthMiddleware', () => {
             name: RoleName.ProUser,
           },
         ],
-        analyticsId: 123,
         permissions: [],
       },
       jwtSecret,
@@ -131,7 +127,6 @@ describe('AuthMiddleware', () => {
     expect(response.locals.roleNames).toEqual(['CORE_USER', 'PRO_USER'])
     expect(response.locals.session).toEqual({ uuid: '234', readonly_access: true })
     expect(response.locals.readOnlyAccess).toBeTruthy()
-    expect(response.locals.analyticsId).toEqual(123)
 
     expect(next).toHaveBeenCalled()
   })

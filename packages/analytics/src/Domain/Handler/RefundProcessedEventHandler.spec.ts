@@ -1,9 +1,11 @@
 import 'reflect-metadata'
 
 import { RefundProcessedEvent } from '@standardnotes/domain-events'
-import { Period, StatisticsMeasure, StatisticsStoreInterface } from '@standardnotes/analytics'
 
 import { RefundProcessedEventHandler } from './RefundProcessedEventHandler'
+import { StatisticsMeasure } from '../Statistics/StatisticsMeasure'
+import { StatisticsStoreInterface } from '../Statistics/StatisticsStoreInterface'
+import { Period } from '../Time/Period'
 
 describe('RefundProcessedEventHandler', () => {
   let event: RefundProcessedEvent

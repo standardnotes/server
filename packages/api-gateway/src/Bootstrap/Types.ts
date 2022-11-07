@@ -15,17 +15,13 @@ const TYPES = {
   REDIS_EVENTS_CHANNEL: Symbol.for('REDIS_EVENTS_CHANNEL'),
   CROSS_SERVICE_TOKEN_CACHE_TTL: Symbol.for('CROSS_SERVICE_TOKEN_CACHE_TTL'),
   // Middleware
-  StatisticsMiddleware: Symbol.for('StatisticsMiddleware'),
   AuthMiddleware: Symbol.for('AuthMiddleware'),
   WebSocketAuthMiddleware: Symbol.for('WebSocketAuthMiddleware'),
   SubscriptionTokenAuthMiddleware: Symbol.for('SubscriptionTokenAuthMiddleware'),
   // Services
   HTTPService: Symbol.for('HTTPService'),
   CrossServiceTokenCache: Symbol.for('CrossServiceTokenCache'),
-  AnalyticsStore: Symbol.for('AnalyticsStore'),
-  StatisticsStore: Symbol.for('StatisticsStore'),
   Timer: Symbol.for('Timer'),
-  PeriodKeyGenerator: Symbol.for('PeriodKeyGenerator'),
 }
 
 export default TYPES

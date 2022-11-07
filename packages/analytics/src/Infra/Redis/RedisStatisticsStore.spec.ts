@@ -1,7 +1,8 @@
 import * as IORedis from 'ioredis'
 
-import { Period, PeriodKeyGeneratorInterface } from '../../Domain'
 import { StatisticsMeasure } from '../../Domain/Statistics/StatisticsMeasure'
+import { Period } from '../../Domain/Time/Period'
+import { PeriodKeyGeneratorInterface } from '../../Domain/Time/PeriodKeyGeneratorInterface'
 
 import { RedisStatisticsStore } from './RedisStatisticsStore'
 

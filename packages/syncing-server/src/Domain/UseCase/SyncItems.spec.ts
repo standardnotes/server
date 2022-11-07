@@ -1,7 +1,6 @@
 import 'reflect-metadata'
 
 import { ContentType } from '@standardnotes/common'
-import { AnalyticsStoreInterface, Period } from '@standardnotes/analytics'
 
 import { ApiVersion } from '../Api/ApiVersion'
 import { Item } from '../Item/Item'
@@ -16,9 +15,8 @@ describe('SyncItems', () => {
   let item2: Item
   let item3: Item
   let itemHash: ItemHash
-  let analyticsStore: AnalyticsStoreInterface
 
-  const createUseCase = () => new SyncItems(itemService, analyticsStore)
+  const createUseCase = () => new SyncItems(itemService)
 
   beforeEach(() => {
     item1 = {
@@ -53,61 +51,9 @@ describe('SyncItems', () => {
       syncToken: 'qwerty',
     })
     itemService.frontLoadKeysItemsToTop = jest.fn().mockReturnValue([item3, item1])
-
-    analyticsStore = {} as jest.Mocked<AnalyticsStoreInterface>
-    analyticsStore.markActivity = jest.fn()
   })
 
   it('should sync items', async () => {
-    expect(
-      await createUseCase().execute({
-        userUuid: '1-2-3',
-        itemHashes: [itemHash],
-        computeIntegrityHash: false,
-        syncToken: 'foo',
-        cursorToken: 'bar',
-        limit: 10,
-        readOnlyAccess: false,
-        contentType: 'Note',
-        apiVersion: ApiVersion.v20200115,
-        analyticsId: 123,
-        sessionUuid: '2-3-4',
-      }),
-    ).toEqual({
-      conflicts: [],
-      cursorToken: 'asdzxc',
-      retrievedItems: [item1],
-      savedItems: [item2],
-      syncToken: 'qwerty',
-    })
-
-    expect(itemService.frontLoadKeysItemsToTop).not.toHaveBeenCalled()
-    expect(itemService.getItems).toHaveBeenCalledWith({
-      contentType: 'Note',
-      cursorToken: 'bar',
-      limit: 10,
-      syncToken: 'foo',
-      userUuid: '1-2-3',
-    })
-    expect(itemService.saveItems).toHaveBeenCalledWith({
-      itemHashes: [itemHash],
-      userUuid: '1-2-3',
-      apiVersion: '20200115',
-      readOnlyAccess: false,
-      sessionUuid: '2-3-4',
-    })
-    expect(analyticsStore.markActivity).toHaveBeenNthCalledWith(1, ['editing-items'], 123, [
-      Period.Today,
-      Period.ThisWeek,
-      Period.ThisMonth,
-    ])
-    expect(analyticsStore.markActivity).toHaveBeenNthCalledWith(2, ['email-unbacked-up-data'], 123, [
-      Period.Today,
-      Period.ThisWeek,
-    ])
-  })
-
-  it('should sync items - no analytics', async () => {
     expect(
       await createUseCase().execute({
         userUuid: '1-2-3',
@@ -144,7 +90,6 @@ describe('SyncItems', () => {
       readOnlyAccess: false,
       sessionUuid: null,
     })
-    expect(analyticsStore.markActivity).not.toHaveBeenCalled()
   })
 
   it('should sync items and return items keys on top for first sync', async () => {
@@ -158,7 +103,6 @@ describe('SyncItems', () => {
         sessionUuid: '2-3-4',
         contentType: 'Note',
         apiVersion: ApiVersion.v20200115,
-        analyticsId: 123,
       }),
     ).toEqual({
       conflicts: [],
@@ -202,7 +146,6 @@ describe('SyncItems', () => {
         limit: 10,
         contentType: 'Note',
         apiVersion: ApiVersion.v20200115,
-        analyticsId: 123,
       }),
     ).toEqual({
       conflicts: [

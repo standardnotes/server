@@ -6,7 +6,6 @@ import { Session } from '../../Session/Session'
 import { User } from '../../User/User'
 import { Role } from '../../Role/Role'
 import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'
-import { GetUserAnalyticsId } from '../GetUserAnalyticsId/GetUserAnalyticsId'
 
 import { CreateCrossServiceToken } from './CreateCrossServiceToken'
 
@@ -15,7 +14,6 @@ describe('CreateCrossServiceToken', () => {
   let sessionProjector: ProjectorInterface<Session>
   let roleProjector: ProjectorInterface<Role>
   let tokenEncoder: TokenEncoderInterface<CrossServiceTokenData>
-  let getUserAnalyticsId: GetUserAnalyticsId
   let userRepository: UserRepositoryInterface
   const jwtTTL = 60
 
@@ -23,17 +21,8 @@ describe('CreateCrossServiceToken', () => {
   let user: User
   let role: Role
 
-  const createUseCase = (analyticsEnabled = true) =>
-    new CreateCrossServiceToken(
-      userProjector,
-      sessionProjector,
-      roleProjector,
-      tokenEncoder,
-      getUserAnalyticsId,
-      userRepository,
-      analyticsEnabled,
-      jwtTTL,
-    )
+  const createUseCase = () =>
+    new CreateCrossServiceToken(userProjector, sessionProjector, roleProjector, tokenEncoder, userRepository, jwtTTL)
 
   beforeEach(() => {
     session = {} as jest.Mocked<Session>
@@ -54,41 +43,12 @@ describe('CreateCrossServiceToken', () => {
     tokenEncoder = {} as jest.Mocked<TokenEncoderInterface<CrossServiceTokenData>>
     tokenEncoder.encodeExpirableToken = jest.fn().mockReturnValue('foobar')
 
-    getUserAnalyticsId = {} as jest.Mocked<GetUserAnalyticsId>
-    getUserAnalyticsId.execute = jest.fn().mockReturnValue({ analyticsId: 123 })
-
     userRepository = {} as jest.Mocked<UserRepositoryInterface>
     userRepository.findOneByUuid = jest.fn().mockReturnValue(user)
   })
 
   it('should create a cross service token for user', async () => {
     await createUseCase().execute({
-      user,
-      session,
-    })
-
-    expect(tokenEncoder.encodeExpirableToken).toHaveBeenCalledWith(
-      {
-        analyticsId: 123,
-        roles: [
-          {
-            name: 'role1',
-            uuid: '1-3-4',
-          },
-        ],
-        session: {
-          test: 'test',
-        },
-        user: {
-          bar: 'baz',
-        },
-      },
-      60,
-    )
-  })
-
-  it('should create a cross service token for user - analytics disabled', async () => {
-    await createUseCase(false).execute({
       user,
       session,
     })
@@ -119,7 +79,6 @@ describe('CreateCrossServiceToken', () => {
 
     expect(tokenEncoder.encodeExpirableToken).toHaveBeenCalledWith(
       {
-        analyticsId: 123,
         roles: [
           {
             name: 'role1',
@@ -141,7 +100,6 @@ describe('CreateCrossServiceToken', () => {
 
     expect(tokenEncoder.encodeExpirableToken).toHaveBeenCalledWith(
       {
-        analyticsId: 123,
         roles: [
           {
             name: 'role1',

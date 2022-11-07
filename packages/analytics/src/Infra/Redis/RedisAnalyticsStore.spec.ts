@@ -1,6 +1,6 @@
 import * as IORedis from 'ioredis'
-import { Period } from '../../Domain'
 import { AnalyticsActivity } from '../../Domain/Analytics/AnalyticsActivity'
+import { Period } from '../../Domain/Time/Period'
 import { PeriodKeyGeneratorInterface } from '../../Domain/Time/PeriodKeyGeneratorInterface'
 
 import { RedisAnalyticsStore } from './RedisAnalyticsStore'
@@ -35,24 +35,24 @@ describe('RedisAnalyticsStore', () => {
 
     periodKeyGenerator.getDiscretePeriodKeys = jest.fn().mockReturnValue(['2022-4-24', '2022-4-25', '2022-4-26'])
 
-    await createStore().calculateActivityTotalCountOverTime(AnalyticsActivity.EditingItems, Period.Last30Days)
+    await createStore().calculateActivityTotalCountOverTime(AnalyticsActivity.Register, Period.Last30Days)
 
     expect(redisClient.bitop).toHaveBeenCalledTimes(1)
     expect(redisClient.bitop).toHaveBeenNthCalledWith(
       1,
       'OR',
-      'bitmap:action:editing-items:timespan:2022-4-24-2022-4-26',
-      'bitmap:action:editing-items:timespan:2022-4-24',
-      'bitmap:action:editing-items:timespan:2022-4-25',
-      'bitmap:action:editing-items:timespan:2022-4-26',
+      'bitmap:action:register:timespan:2022-4-24-2022-4-26',
+      'bitmap:action:register:timespan:2022-4-24',
+      'bitmap:action:register:timespan:2022-4-25',
+      'bitmap:action:register:timespan:2022-4-26',
     )
-    expect(redisClient.bitcount).toHaveBeenCalledWith('bitmap:action:editing-items:timespan:2022-4-24-2022-4-26')
+    expect(redisClient.bitcount).toHaveBeenCalledWith('bitmap:action:register:timespan:2022-4-24-2022-4-26')
   })
 
   it('should not calculate total count over time of activities if period is unsupported', async () => {
     let caughtError = null
     try {
-      await createStore().calculateActivityTotalCountOverTime(AnalyticsActivity.EditingItems, Period.LastWeek)
+      await createStore().calculateActivityTotalCountOverTime(AnalyticsActivity.Register, Period.LastWeek)
     } catch (error) {
       caughtError = error
     }
@@ -66,7 +66,7 @@ describe('RedisAnalyticsStore', () => {
     redisClient.bitcount = jest.fn().mockReturnValueOnce(70).mockReturnValueOnce(71).mockReturnValueOnce(72)
 
     expect(
-      await createStore().calculateActivityChangesTotalCount(AnalyticsActivity.EditingItems, Period.Last30Days),
+      await createStore().calculateActivityChangesTotalCount(AnalyticsActivity.Register, Period.Last30Days),
     ).toEqual([
       {
         periodKey: '2022-4-24',
@@ -82,9 +82,9 @@ describe('RedisAnalyticsStore', () => {
       },
     ])
 
-    expect(redisClient.bitcount).toHaveBeenNthCalledWith(1, 'bitmap:action:editing-items:timespan:2022-4-24')
-    expect(redisClient.bitcount).toHaveBeenNthCalledWith(2, 'bitmap:action:editing-items:timespan:2022-4-25')
-    expect(redisClient.bitcount).toHaveBeenNthCalledWith(3, 'bitmap:action:editing-items:timespan:2022-4-26')
+    expect(redisClient.bitcount).toHaveBeenNthCalledWith(1, 'bitmap:action:register:timespan:2022-4-24')
+    expect(redisClient.bitcount).toHaveBeenNthCalledWith(2, 'bitmap:action:register:timespan:2022-4-25')
+    expect(redisClient.bitcount).toHaveBeenNthCalledWith(3, 'bitmap:action:register:timespan:2022-4-26')
   })
 
   it('should throw error on calculating total count changes of activities on unsupported period', async () => {
@@ -94,7 +94,7 @@ describe('RedisAnalyticsStore', () => {
 
     let caughtError = null
     try {
-      await createStore().calculateActivityChangesTotalCount(AnalyticsActivity.EditingItems, Period.LastWeek)
+      await createStore().calculateActivityChangesTotalCount(AnalyticsActivity.Register, Period.LastWeek)
     } catch (error) {
       caughtError = error
     }
@@ -105,19 +105,17 @@ describe('RedisAnalyticsStore', () => {
   it('should calculate total count of activities by period', async () => {
     redisClient.bitcount = jest.fn().mockReturnValue(70)
 
-    expect(await createStore().calculateActivityTotalCount(AnalyticsActivity.EditingItems, Period.Yesterday)).toEqual(
-      70,
-    )
+    expect(await createStore().calculateActivityTotalCount(AnalyticsActivity.Register, Period.Yesterday)).toEqual(70)
 
-    expect(redisClient.bitcount).toHaveBeenCalledWith('bitmap:action:editing-items:timespan:period-key')
+    expect(redisClient.bitcount).toHaveBeenCalledWith('bitmap:action:register:timespan:period-key')
   })
 
   it('should calculate total count of activities by period key', async () => {
     redisClient.bitcount = jest.fn().mockReturnValue(70)
 
-    expect(await createStore().calculateActivityTotalCount(AnalyticsActivity.EditingItems, '2022-10-03')).toEqual(70)
+    expect(await createStore().calculateActivityTotalCount(AnalyticsActivity.Register, '2022-10-03')).toEqual(70)
 
-    expect(redisClient.bitcount).toHaveBeenCalledWith('bitmap:action:editing-items:timespan:2022-10-03')
+    expect(redisClient.bitcount).toHaveBeenCalledWith('bitmap:action:register:timespan:2022-10-03')
   })
 
   it('should calculate activity retention', async () => {
@@ -125,7 +123,7 @@ describe('RedisAnalyticsStore', () => {
 
     expect(
       await createStore().calculateActivityRetention(
-        AnalyticsActivity.EditingItems,
+        AnalyticsActivity.Register,
         Period.DayBeforeYesterday,
         Period.Yesterday,
       ),
@@ -133,44 +131,44 @@ describe('RedisAnalyticsStore', () => {
 
     expect(redisClient.bitop).toHaveBeenCalledWith(
       'AND',
-      'bitmap:action:editing-items-editing-items:timespan:period-key',
-      'bitmap:action:editing-items:timespan:period-key',
-      'bitmap:action:editing-items:timespan:period-key',
+      'bitmap:action:register-register:timespan:period-key',
+      'bitmap:action:register:timespan:period-key',
+      'bitmap:action:register:timespan:period-key',
     )
   })
 
   it('shoud tell if activity was done', async () => {
-    await createStore().wasActivityDone(AnalyticsActivity.EditingItems, 123, Period.Yesterday)
+    await createStore().wasActivityDone(AnalyticsActivity.Register, 123, Period.Yesterday)
 
-    expect(redisClient.getbit).toHaveBeenCalledWith('bitmap:action:editing-items:timespan:period-key', 123)
+    expect(redisClient.getbit).toHaveBeenCalledWith('bitmap:action:register:timespan:period-key', 123)
   })
 
   it('should mark activity as done', async () => {
-    await createStore().markActivity([AnalyticsActivity.EditingItems], 123, [Period.Today])
+    await createStore().markActivity([AnalyticsActivity.Register], 123, [Period.Today])
 
     expect(pipeline.setbit).toBeCalledTimes(1)
-    expect(pipeline.setbit).toHaveBeenNthCalledWith(1, 'bitmap:action:editing-items:timespan:period-key', 123, 1)
+    expect(pipeline.setbit).toHaveBeenNthCalledWith(1, 'bitmap:action:register:timespan:period-key', 123, 1)
     expect(pipeline.exec).toHaveBeenCalled()
   })
 
   it('should mark activities as done', async () => {
-    await createStore().markActivity([AnalyticsActivity.EditingItems, AnalyticsActivity.EmailUnbackedUpData], 123, [
+    await createStore().markActivity([AnalyticsActivity.Register, AnalyticsActivity.SubscriptionPurchased], 123, [
       Period.Today,
       Period.ThisWeek,
     ])
 
     expect(pipeline.setbit).toBeCalledTimes(4)
-    expect(pipeline.setbit).toHaveBeenNthCalledWith(1, 'bitmap:action:editing-items:timespan:period-key', 123, 1)
-    expect(pipeline.setbit).toHaveBeenNthCalledWith(2, 'bitmap:action:editing-items:timespan:period-key', 123, 1)
+    expect(pipeline.setbit).toHaveBeenNthCalledWith(1, 'bitmap:action:register:timespan:period-key', 123, 1)
+    expect(pipeline.setbit).toHaveBeenNthCalledWith(2, 'bitmap:action:register:timespan:period-key', 123, 1)
     expect(pipeline.setbit).toHaveBeenNthCalledWith(
       3,
-      'bitmap:action:email-unbacked-up-data:timespan:period-key',
+      'bitmap:action:subscription-purchased:timespan:period-key',
       123,
       1,
     )
     expect(pipeline.setbit).toHaveBeenNthCalledWith(
       4,
-      'bitmap:action:email-unbacked-up-data:timespan:period-key',
+      'bitmap:action:subscription-purchased:timespan:period-key',
       123,
       1,
     )
@@ -178,31 +176,31 @@ describe('RedisAnalyticsStore', () => {
   })
 
   it('should unmark activity as done', async () => {
-    await createStore().unmarkActivity([AnalyticsActivity.EditingItems], 123, [Period.Today])
+    await createStore().unmarkActivity([AnalyticsActivity.Register], 123, [Period.Today])
 
     expect(pipeline.setbit).toBeCalledTimes(1)
-    expect(pipeline.setbit).toHaveBeenNthCalledWith(1, 'bitmap:action:editing-items:timespan:period-key', 123, 0)
+    expect(pipeline.setbit).toHaveBeenNthCalledWith(1, 'bitmap:action:register:timespan:period-key', 123, 0)
     expect(pipeline.exec).toHaveBeenCalled()
   })
 
   it('should unmark activities as done', async () => {
-    await createStore().unmarkActivity([AnalyticsActivity.EditingItems, AnalyticsActivity.EmailUnbackedUpData], 123, [
+    await createStore().unmarkActivity([AnalyticsActivity.Register, AnalyticsActivity.SubscriptionPurchased], 123, [
       Period.Today,
       Period.ThisWeek,
     ])
 
     expect(pipeline.setbit).toBeCalledTimes(4)
-    expect(pipeline.setbit).toHaveBeenNthCalledWith(1, 'bitmap:action:editing-items:timespan:period-key', 123, 0)
-    expect(pipeline.setbit).toHaveBeenNthCalledWith(2, 'bitmap:action:editing-items:timespan:period-key', 123, 0)
+    expect(pipeline.setbit).toHaveBeenNthCalledWith(1, 'bitmap:action:register:timespan:period-key', 123, 0)
+    expect(pipeline.setbit).toHaveBeenNthCalledWith(2, 'bitmap:action:register:timespan:period-key', 123, 0)
     expect(pipeline.setbit).toHaveBeenNthCalledWith(
       3,
-      'bitmap:action:email-unbacked-up-data:timespan:period-key',
+      'bitmap:action:subscription-purchased:timespan:period-key',
       123,
       0,
     )
     expect(pipeline.setbit).toHaveBeenNthCalledWith(
       4,
-      'bitmap:action:email-unbacked-up-data:timespan:period-key',
+      'bitmap:action:subscription-purchased:timespan:period-key',
       123,
       0,
     )

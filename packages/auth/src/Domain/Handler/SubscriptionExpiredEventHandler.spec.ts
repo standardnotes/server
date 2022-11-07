@@ -13,8 +13,6 @@ import { UserSubscriptionRepositoryInterface } from '../Subscription/UserSubscri
 import { RoleServiceInterface } from '../Role/RoleServiceInterface'
 import { OfflineUserSubscriptionRepositoryInterface } from '../Subscription/OfflineUserSubscriptionRepositoryInterface'
 import { UserSubscription } from '../Subscription/UserSubscription'
-import { AnalyticsStoreInterface, StatisticsStoreInterface } from '@standardnotes/analytics'
-import { GetUserAnalyticsId } from '../UseCase/GetUserAnalyticsId/GetUserAnalyticsId'
 
 describe('SubscriptionExpiredEventHandler', () => {
   let userRepository: UserRepositoryInterface
@@ -25,9 +23,6 @@ describe('SubscriptionExpiredEventHandler', () => {
   let user: User
   let event: SubscriptionExpiredEvent
   let timestamp: number
-  let getUserAnalyticsId: GetUserAnalyticsId
-  let analyticsStore: AnalyticsStoreInterface
-  let statisticsStore: StatisticsStoreInterface
 
   const createHandler = () =>
     new SubscriptionExpiredEventHandler(
@@ -35,9 +30,6 @@ describe('SubscriptionExpiredEventHandler', () => {
       userSubscriptionRepository,
       offlineUserSubscriptionRepository,
       roleService,
-      getUserAnalyticsId,
-      analyticsStore,
-      statisticsStore,
       logger,
     )
 
@@ -81,15 +73,6 @@ describe('SubscriptionExpiredEventHandler', () => {
       offline: false,
       totalActiveSubscriptionsCount: 123,
     }
-
-    getUserAnalyticsId = {} as jest.Mocked<GetUserAnalyticsId>
-    getUserAnalyticsId.execute = jest.fn().mockReturnValue({ analyticsId: 3 })
-
-    analyticsStore = {} as jest.Mocked<AnalyticsStoreInterface>
-    analyticsStore.markActivity = jest.fn()
-
-    statisticsStore = {} as jest.Mocked<StatisticsStoreInterface>
-    statisticsStore.setMeasure = jest.fn()
 
     logger = {} as jest.Mocked<Logger>
     logger.info = jest.fn()

@@ -1,9 +1,10 @@
 import * as IORedis from 'ioredis'
 
-import { Period, PeriodKeyGeneratorInterface } from '../../Domain'
 import { StatisticsMeasure } from '../../Domain/Statistics/StatisticsMeasure'
 
 import { StatisticsStoreInterface } from '../../Domain/Statistics/StatisticsStoreInterface'
+import { Period } from '../../Domain/Time/Period'
+import { PeriodKeyGeneratorInterface } from '../../Domain/Time/PeriodKeyGeneratorInterface'
 
 export class RedisStatisticsStore implements StatisticsStoreInterface {
   constructor(private periodKeyGenerator: PeriodKeyGeneratorInterface, private redisClient: IORedis.Redis) {}

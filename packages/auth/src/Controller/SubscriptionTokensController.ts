@@ -16,7 +16,6 @@ import { Role } from '../Domain/Role/Role'
 import { SettingServiceInterface } from '../Domain/Setting/SettingServiceInterface'
 import { AuthenticateSubscriptionToken } from '../Domain/UseCase/AuthenticateSubscriptionToken/AuthenticateSubscriptionToken'
 import { CreateSubscriptionToken } from '../Domain/UseCase/CreateSubscriptionToken/CreateSubscriptionToken'
-import { GetUserAnalyticsId } from '../Domain/UseCase/GetUserAnalyticsId/GetUserAnalyticsId'
 import { User } from '../Domain/User/User'
 import { ProjectorInterface } from '../Projection/ProjectorInterface'
 
@@ -29,7 +28,6 @@ export class SubscriptionTokensController extends BaseHttpController {
     @inject(TYPES.UserProjector) private userProjector: ProjectorInterface<User>,
     @inject(TYPES.RoleProjector) private roleProjector: ProjectorInterface<Role>,
     @inject(TYPES.CrossServiceTokenEncoder) private tokenEncoder: TokenEncoderInterface<CrossServiceTokenData>,
-    @inject(TYPES.GetUserAnalyticsId) private getUserAnalyticsId: GetUserAnalyticsId,
     @inject(TYPES.AUTH_JWT_TTL) private jwtTTL: number,
   ) {
     super()
@@ -88,13 +86,10 @@ export class SubscriptionTokensController extends BaseHttpController {
 
     const roles = await user.roles
 
-    const { analyticsId } = await this.getUserAnalyticsId.execute({ userUuid: user.uuid })
-
     const authTokenData: CrossServiceTokenData = {
       user: await this.projectUser(user),
       roles: await this.projectRoles(roles),
       extensionKey,
-      analyticsId,
     }
 
     const authToken = this.tokenEncoder.encodeExpirableToken(authTokenData, this.jwtTTL)

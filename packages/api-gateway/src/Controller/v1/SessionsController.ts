@@ -4,7 +4,7 @@ import { BaseHttpController, controller, httpDelete, httpGet, httpPost } from 'i
 import TYPES from '../../Bootstrap/Types'
 import { HttpServiceInterface } from '../../Service/Http/HttpServiceInterface'
 
-@controller('/v1/sessions', TYPES.StatisticsMiddleware)
+@controller('/v1/sessions')
 export class SessionsController extends BaseHttpController {
   constructor(@inject(TYPES.HTTPService) private httpService: HttpServiceInterface) {
     super()

@@ -2,14 +2,6 @@ import * as winston from 'winston'
 import axios, { AxiosInstance } from 'axios'
 import Redis from 'ioredis'
 import { Container } from 'inversify'
-import {
-  AnalyticsStoreInterface,
-  PeriodKeyGenerator,
-  PeriodKeyGeneratorInterface,
-  RedisAnalyticsStore,
-  RedisStatisticsStore,
-  StatisticsStoreInterface,
-} from '@standardnotes/analytics'
 import { Timer, TimerInterface } from '@standardnotes/time'
 
 import { Env } from './Env'
@@ -18,7 +10,6 @@ import { AuthMiddleware } from '../Controller/AuthMiddleware'
 import { HttpServiceInterface } from '../Service/Http/HttpServiceInterface'
 import { HttpService } from '../Service/Http/HttpService'
 import { SubscriptionTokenAuthMiddleware } from '../Controller/SubscriptionTokenAuthMiddleware'
-import { StatisticsMiddleware } from '../Controller/StatisticsMiddleware'
 import { CrossServiceTokenCacheInterface } from '../Service/Cache/CrossServiceTokenCacheInterface'
 import { RedisCrossServiceTokenCache } from '../Infra/Redis/RedisCrossServiceTokenCache'
 import { WebSocketAuthMiddleware } from '../Controller/WebSocketAuthMiddleware'
@@ -79,17 +70,9 @@ export class ContainerConfigLoader {
     container
       .bind<SubscriptionTokenAuthMiddleware>(TYPES.SubscriptionTokenAuthMiddleware)
       .to(SubscriptionTokenAuthMiddleware)
-    container.bind<StatisticsMiddleware>(TYPES.StatisticsMiddleware).to(StatisticsMiddleware)
 
     // Services
     container.bind<HttpServiceInterface>(TYPES.HTTPService).to(HttpService)
-    container.bind<PeriodKeyGeneratorInterface>(TYPES.PeriodKeyGenerator).toConstantValue(new PeriodKeyGenerator())
-    container
-      .bind<AnalyticsStoreInterface>(TYPES.AnalyticsStore)
-      .toConstantValue(new RedisAnalyticsStore(container.get(TYPES.PeriodKeyGenerator), container.get(TYPES.Redis)))
-    container
-      .bind<StatisticsStoreInterface>(TYPES.StatisticsStore)
-      .toConstantValue(new RedisStatisticsStore(container.get(TYPES.PeriodKeyGenerator), container.get(TYPES.Redis)))
     container.bind<CrossServiceTokenCacheInterface>(TYPES.CrossServiceTokenCache).to(RedisCrossServiceTokenCache)
     container.bind<TimerInterface>(TYPES.Timer).toConstantValue(new Timer())
 

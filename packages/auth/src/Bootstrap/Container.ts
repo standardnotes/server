@@ -9,13 +9,6 @@ import {
 } from '@standardnotes/domain-events'
 import { TimerInterface, Timer } from '@standardnotes/time'
 import { UAParser } from 'ua-parser-js'
-import {
-  AnalyticsStoreInterface,
-  PeriodKeyGenerator,
-  RedisAnalyticsStore,
-  RedisStatisticsStore,
-  StatisticsStoreInterface,
-} from '@standardnotes/analytics'
 
 import { Env } from './Env'
 import TYPES from './Types'
@@ -191,21 +184,13 @@ import { RoleRepositoryInterface } from '../Domain/Role/RoleRepositoryInterface'
 import { RevokedSessionRepositoryInterface } from '../Domain/Session/RevokedSessionRepositoryInterface'
 import { SessionRepositoryInterface } from '../Domain/Session/SessionRepositoryInterface'
 import { UserRepositoryInterface } from '../Domain/User/UserRepositoryInterface'
-import { AnalyticsEntity } from '../Domain/Analytics/AnalyticsEntity'
-import { AnalyticsEntityRepositoryInterface } from '../Domain/Analytics/AnalyticsEntityRepositoryInterface'
-import { MySQLAnalyticsEntityRepository } from '../Infra/MySQL/MySQLAnalyticsEntityRepository'
-import { GetUserAnalyticsId } from '../Domain/UseCase/GetUserAnalyticsId/GetUserAnalyticsId'
 import { AuthController } from '../Controller/AuthController'
 import { VerifyPredicate } from '../Domain/UseCase/VerifyPredicate/VerifyPredicate'
 import { PredicateVerificationRequestedEventHandler } from '../Domain/Handler/PredicateVerificationRequestedEventHandler'
-import { PaymentFailedEventHandler } from '../Domain/Handler/PaymentFailedEventHandler'
-import { PaymentSuccessEventHandler } from '../Domain/Handler/PaymentSuccessEventHandler'
-import { RefundProcessedEventHandler } from '../Domain/Handler/RefundProcessedEventHandler'
 import { SubscriptionInvitesController } from '../Controller/SubscriptionInvitesController'
 import { CreateCrossServiceToken } from '../Domain/UseCase/CreateCrossServiceToken/CreateCrossServiceToken'
 import { ProcessUserRequest } from '../Domain/UseCase/ProcessUserRequest/ProcessUserRequest'
 import { UserRequestsController } from '../Controller/UserRequestsController'
-import { SubscriptionReactivatedEventHandler } from '../Domain/Handler/SubscriptionReactivatedEventHandler'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -301,9 +286,6 @@ export class ContainerConfigLoader {
       .bind<SharedSubscriptionInvitationRepositoryInterface>(TYPES.SharedSubscriptionInvitationRepository)
       .to(MySQLSharedSubscriptionInvitationRepository)
     container.bind<PKCERepositoryInterface>(TYPES.PKCERepository).to(RedisPKCERepository)
-    container
-      .bind<AnalyticsEntityRepositoryInterface>(TYPES.AnalyticsEntityRepository)
-      .to(MySQLAnalyticsEntityRepository)
 
     // ORM
     container
@@ -332,9 +314,6 @@ export class ContainerConfigLoader {
     container
       .bind<Repository<UserSubscription>>(TYPES.ORMUserSubscriptionRepository)
       .toConstantValue(AppDataSource.getRepository(UserSubscription))
-    container
-      .bind<Repository<AnalyticsEntity>>(TYPES.ORMAnalyticsEntityRepository)
-      .toConstantValue(AppDataSource.getRepository(AnalyticsEntity))
 
     // Middleware
     container.bind<AuthMiddleware>(TYPES.AuthMiddleware).to(AuthMiddleware)
@@ -379,7 +358,6 @@ export class ContainerConfigLoader {
     container
       .bind(TYPES.DISABLE_USER_REGISTRATION)
       .toConstantValue(env.get('DISABLE_USER_REGISTRATION', true) === 'true')
-    container.bind(TYPES.ANALYTICS_ENABLED).toConstantValue(env.get('ANALYTICS_ENABLED', true) === 'true')
     container.bind(TYPES.SNS_TOPIC_ARN).toConstantValue(env.get('SNS_TOPIC_ARN', true))
     container.bind(TYPES.SNS_AWS_REGION).toConstantValue(env.get('SNS_AWS_REGION', true))
     container.bind(TYPES.SQS_QUEUE_URL).toConstantValue(env.get('SQS_QUEUE_URL', true))
@@ -439,7 +417,6 @@ export class ContainerConfigLoader {
       .bind<ListSharedSubscriptionInvitations>(TYPES.ListSharedSubscriptionInvitations)
       .to(ListSharedSubscriptionInvitations)
     container.bind<GetSubscriptionSetting>(TYPES.GetSubscriptionSetting).to(GetSubscriptionSetting)
-    container.bind<GetUserAnalyticsId>(TYPES.GetUserAnalyticsId).to(GetUserAnalyticsId)
     container.bind<VerifyPredicate>(TYPES.VerifyPredicate).to(VerifyPredicate)
     container.bind<CreateCrossServiceToken>(TYPES.CreateCrossServiceToken).to(CreateCrossServiceToken)
     container.bind<ProcessUserRequest>(TYPES.ProcessUserRequest).to(ProcessUserRequest)
@@ -491,12 +468,6 @@ export class ContainerConfigLoader {
     container
       .bind<PredicateVerificationRequestedEventHandler>(TYPES.PredicateVerificationRequestedEventHandler)
       .to(PredicateVerificationRequestedEventHandler)
-    container.bind<PaymentFailedEventHandler>(TYPES.PaymentFailedEventHandler).to(PaymentFailedEventHandler)
-    container.bind<PaymentSuccessEventHandler>(TYPES.PaymentSuccessEventHandler).to(PaymentSuccessEventHandler)
-    container.bind<RefundProcessedEventHandler>(TYPES.RefundProcessedEventHandler).to(RefundProcessedEventHandler)
-    container
-      .bind<SubscriptionReactivatedEventHandler>(TYPES.SubscriptionReactivatedEventHandler)
-      .to(SubscriptionReactivatedEventHandler)
 
     // Services
     container.bind<UAParser>(TYPES.DeviceDetector).toConstantValue(new UAParser())
@@ -562,13 +533,6 @@ export class ContainerConfigLoader {
       .bind<SelectorInterface<boolean>>(TYPES.BooleanSelector)
       .toConstantValue(new DeterministicSelector<boolean>())
     container.bind<UserSubscriptionServiceInterface>(TYPES.UserSubscriptionService).to(UserSubscriptionService)
-    const periodKeyGenerator = new PeriodKeyGenerator()
-    container
-      .bind<AnalyticsStoreInterface>(TYPES.AnalyticsStore)
-      .toConstantValue(new RedisAnalyticsStore(periodKeyGenerator, container.get(TYPES.Redis)))
-    container
-      .bind<StatisticsStoreInterface>(TYPES.StatisticsStore)
-      .toConstantValue(new RedisStatisticsStore(periodKeyGenerator, container.get(TYPES.Redis)))
     container.bind<ValidatorInterface<Uuid>>(TYPES.UuidValidator).toConstantValue(new UuidValidator())
 
     if (env.get('SNS_TOPIC_ARN', true)) {
@@ -605,10 +569,6 @@ export class ContainerConfigLoader {
       ],
       ['SHARED_SUBSCRIPTION_INVITATION_CREATED', container.get(TYPES.SharedSubscriptionInvitationCreatedEventHandler)],
       ['PREDICATE_VERIFICATION_REQUESTED', container.get(TYPES.PredicateVerificationRequestedEventHandler)],
-      ['PAYMENT_FAILED', container.get(TYPES.PaymentFailedEventHandler)],
-      ['PAYMENT_SUCCESS', container.get(TYPES.PaymentSuccessEventHandler)],
-      ['REFUND_PROCESSED', container.get(TYPES.RefundProcessedEventHandler)],
-      ['SUBSCRIPTION_REACTIVATED', container.get(TYPES.SubscriptionReactivatedEventHandler)],
     ])
 
     if (env.get('SQS_QUEUE_URL', true)) {

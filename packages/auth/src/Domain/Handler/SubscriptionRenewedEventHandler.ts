@@ -1,6 +1,5 @@
 import { DomainEventHandlerInterface, SubscriptionRenewedEvent } from '@standardnotes/domain-events'
 import { inject, injectable } from 'inversify'
-import { AnalyticsActivity, AnalyticsStoreInterface, Period } from '@standardnotes/analytics'
 
 import TYPES from '../../Bootstrap/Types'
 import { UserSubscriptionRepositoryInterface } from '../Subscription/UserSubscriptionRepositoryInterface'
@@ -10,7 +9,6 @@ import { RoleServiceInterface } from '../Role/RoleServiceInterface'
 import { UserRepositoryInterface } from '../User/UserRepositoryInterface'
 import { Logger } from 'winston'
 import { OfflineUserSubscription } from '../Subscription/OfflineUserSubscription'
-import { GetUserAnalyticsId } from '../UseCase/GetUserAnalyticsId/GetUserAnalyticsId'
 
 @injectable()
 export class SubscriptionRenewedEventHandler implements DomainEventHandlerInterface {
@@ -20,8 +18,6 @@ export class SubscriptionRenewedEventHandler implements DomainEventHandlerInterf
     @inject(TYPES.OfflineUserSubscriptionRepository)
     private offlineUserSubscriptionRepository: OfflineUserSubscriptionRepositoryInterface,
     @inject(TYPES.RoleService) private roleService: RoleServiceInterface,
-    @inject(TYPES.GetUserAnalyticsId) private getUserAnalyticsId: GetUserAnalyticsId,
-    @inject(TYPES.AnalyticsStore) private analyticsStore: AnalyticsStoreInterface,
     @inject(TYPES.Logger) private logger: Logger,
   ) {}
 
@@ -63,18 +59,6 @@ export class SubscriptionRenewedEventHandler implements DomainEventHandlerInterf
     }
 
     await this.addRoleToSubscriptionUsers(event.payload.subscriptionId, event.payload.subscriptionName)
-
-    const { analyticsId } = await this.getUserAnalyticsId.execute({ userUuid: user.uuid })
-    await this.analyticsStore.markActivity([AnalyticsActivity.SubscriptionRenewed], analyticsId, [
-      Period.Today,
-      Period.ThisWeek,
-      Period.ThisMonth,
-    ])
-    await this.analyticsStore.unmarkActivity(
-      [AnalyticsActivity.ExistingCustomersChurn, AnalyticsActivity.NewCustomersChurn],
-      analyticsId,
-      [Period.Today, Period.ThisWeek, Period.ThisMonth],
-    )
   }
 
   private async addRoleToSubscriptionUsers(subscriptionId: number, subscriptionName: SubscriptionName): Promise<void> {

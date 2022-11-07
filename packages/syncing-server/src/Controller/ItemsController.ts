@@ -41,7 +41,6 @@ export class ItemsController extends BaseHttpController {
       contentType: request.body.content_type,
       apiVersion: request.body.api ?? ApiVersion.v20161215,
       readOnlyAccess: response.locals.readOnlyAccess,
-      analyticsId: response.locals.analyticsId,
       sessionUuid: response.locals.session ? response.locals.session.uuid : null,
     })
 
@@ -62,7 +61,6 @@ export class ItemsController extends BaseHttpController {
     const result = await this.checkIntegrity.execute({
       userUuid: response.locals.user.uuid,
       integrityPayloads,
-      analyticsId: response.locals.analyticsId,
       freeUser: response.locals.freeUser,
     })
 

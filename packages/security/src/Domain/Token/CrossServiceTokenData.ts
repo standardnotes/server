@@ -19,5 +19,4 @@ export type CrossServiceTokenData = {
     refresh_expiration: string
   }
   extensionKey?: string
-  analyticsId?: number
 }

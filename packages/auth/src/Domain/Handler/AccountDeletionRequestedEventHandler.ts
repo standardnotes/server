@@ -1,19 +1,10 @@
-import {
-  AnalyticsActivity,
-  AnalyticsStoreInterface,
-  Period,
-  StatisticsMeasure,
-  StatisticsStoreInterface,
-} from '@standardnotes/analytics'
 import { AccountDeletionRequestedEvent, DomainEventHandlerInterface } from '@standardnotes/domain-events'
-import { TimerInterface } from '@standardnotes/time'
 import { inject, injectable } from 'inversify'
 import { Logger } from 'winston'
 import TYPES from '../../Bootstrap/Types'
 import { EphemeralSessionRepositoryInterface } from '../Session/EphemeralSessionRepositoryInterface'
 import { RevokedSessionRepositoryInterface } from '../Session/RevokedSessionRepositoryInterface'
 import { SessionRepositoryInterface } from '../Session/SessionRepositoryInterface'
-import { GetUserAnalyticsId } from '../UseCase/GetUserAnalyticsId/GetUserAnalyticsId'
 import { UserRepositoryInterface } from '../User/UserRepositoryInterface'
 
 @injectable()
@@ -23,10 +14,6 @@ export class AccountDeletionRequestedEventHandler implements DomainEventHandlerI
     @inject(TYPES.SessionRepository) private sessionRepository: SessionRepositoryInterface,
     @inject(TYPES.EphemeralSessionRepository) private ephemeralSessionRepository: EphemeralSessionRepositoryInterface,
     @inject(TYPES.RevokedSessionRepository) private revokedSessionRepository: RevokedSessionRepositoryInterface,
-    @inject(TYPES.GetUserAnalyticsId) private getUserAnalyticsId: GetUserAnalyticsId,
-    @inject(TYPES.AnalyticsStore) private analyticsStore: AnalyticsStoreInterface,
-    @inject(TYPES.StatisticsStore) private statisticsStore: StatisticsStoreInterface,
-    @inject(TYPES.Timer) private timer: TimerInterface,
     @inject(TYPES.Logger) private logger: Logger,
   ) {}
 
@@ -40,21 +27,6 @@ export class AccountDeletionRequestedEventHandler implements DomainEventHandlerI
     }
 
     await this.removeSessions(event.payload.userUuid)
-
-    const { analyticsId } = await this.getUserAnalyticsId.execute({ userUuid: user.uuid })
-    await this.analyticsStore.markActivity([AnalyticsActivity.DeleteAccount], analyticsId, [
-      Period.Today,
-      Period.ThisWeek,
-      Period.ThisMonth,
-    ])
-
-    const registrationLength =
-      this.timer.getTimestampInMicroseconds() - this.timer.convertDateToMicroseconds(user.createdAt)
-    await this.statisticsStore.incrementMeasure(StatisticsMeasure.RegistrationLength, registrationLength, [
-      Period.Today,
-      Period.ThisWeek,
-      Period.ThisMonth,
-    ])
 
     await this.userRepository.remove(user)
 

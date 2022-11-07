@@ -1,11 +1,9 @@
-import { AnalyticsActivity, AnalyticsStoreInterface, Period } from '@standardnotes/analytics'
 import { DomainEventHandlerInterface, UserRegisteredEvent } from '@standardnotes/domain-events'
 import { AxiosInstance } from 'axios'
 import { inject, injectable } from 'inversify'
 import { Logger } from 'winston'
 
 import TYPES from '../../Bootstrap/Types'
-import { GetUserAnalyticsId } from '../UseCase/GetUserAnalyticsId/GetUserAnalyticsId'
 
 @injectable()
 export class UserRegisteredEventHandler implements DomainEventHandlerInterface {
@@ -13,8 +11,6 @@ export class UserRegisteredEventHandler implements DomainEventHandlerInterface {
     @inject(TYPES.HTTPClient) private httpClient: AxiosInstance,
     @inject(TYPES.USER_SERVER_REGISTRATION_URL) private userServerRegistrationUrl: string,
     @inject(TYPES.USER_SERVER_AUTH_KEY) private userServerAuthKey: string,
-    @inject(TYPES.GetUserAnalyticsId) private getUserAnalyticsId: GetUserAnalyticsId,
-    @inject(TYPES.AnalyticsStore) private analyticsStore: AnalyticsStoreInterface,
     @inject(TYPES.Logger) private logger: Logger,
   ) {}
 
@@ -23,13 +19,6 @@ export class UserRegisteredEventHandler implements DomainEventHandlerInterface {
       this.logger.debug('User server registration url not defined. Skipped post-registration actions.')
       return
     }
-
-    const { analyticsId } = await this.getUserAnalyticsId.execute({ userUuid: event.payload.userUuid })
-    await this.analyticsStore.markActivity([AnalyticsActivity.Register], analyticsId, [
-      Period.Today,
-      Period.ThisWeek,
-      Period.ThisMonth,
-    ])
 
     await this.httpClient.request({
       method: 'POST',

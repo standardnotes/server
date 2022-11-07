@@ -64,22 +64,7 @@ describe('DomainEventFactory', () => {
           },
         ],
         outOfSyncIncidents: 324,
-        retentionStatistics: [
-          {
-            firstActivity: AnalyticsActivity.Register,
-            secondActivity: AnalyticsActivity.Login,
-            retention: {
-              periodKeys: ['2022-10-9'],
-              values: [
-                {
-                  firstPeriodKey: AnalyticsActivity.Register,
-                  secondPeriodKey: AnalyticsActivity.Login,
-                  value: 12,
-                },
-              ],
-            },
-          },
-        ],
+        retentionStatistics: [],
         churn: {
           periodKeys: ['2022-10-9'],
           values: [
@@ -136,22 +121,7 @@ describe('DomainEventFactory', () => {
           ],
         },
         outOfSyncIncidents: 324,
-        retentionStatistics: [
-          {
-            firstActivity: 'register',
-            retention: {
-              periodKeys: ['2022-10-9'],
-              values: [
-                {
-                  firstPeriodKey: 'register',
-                  secondPeriodKey: 'login',
-                  value: 12,
-                },
-              ],
-            },
-            secondActivity: 'login',
-          },
-        ],
+        retentionStatistics: [],
         snjsStatistics: [
           {
             count: 2,

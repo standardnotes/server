@@ -74,7 +74,6 @@ describe('ItemsController', () => {
     response.locals.user = {
       uuid: '123',
     }
-    response.locals.analyticsId = 123
     response.locals.freeUser = false
 
     syncResponse = {} as jest.Mocked<SyncResponse20200115>
@@ -133,7 +132,6 @@ describe('ItemsController', () => {
         },
       ],
       userUuid: '123',
-      analyticsId: 123,
       freeUser: false,
     })
 
@@ -150,7 +148,6 @@ describe('ItemsController', () => {
     expect(checkIntegrity.execute).toHaveBeenCalledWith({
       integrityPayloads: [],
       userUuid: '123',
-      analyticsId: 123,
       freeUser: false,
     })
 
@@ -183,7 +180,6 @@ describe('ItemsController', () => {
       limit: 150,
       syncToken: 'MjoxNjE3MTk1MzQyLjc1ODEyMTc=',
       userUuid: '123',
-      analyticsId: 123,
       sessionUuid: null,
     })
 
@@ -215,7 +211,6 @@ describe('ItemsController', () => {
       limit: 150,
       syncToken: 'MjoxNjE3MTk1MzQyLjc1ODEyMTc=',
       userUuid: '123',
-      analyticsId: 123,
       sessionUuid: null,
     })
 
@@ -236,7 +231,6 @@ describe('ItemsController', () => {
       limit: 150,
       syncToken: 'MjoxNjE3MTk1MzQyLjc1ODEyMTc=',
       userUuid: '123',
-      analyticsId: 123,
       sessionUuid: '2-3-4',
     })
 

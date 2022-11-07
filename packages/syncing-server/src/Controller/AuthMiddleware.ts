@@ -32,7 +32,6 @@ export class AuthMiddleware extends BaseMiddleware {
         response.locals.roleNames.length === 1 && response.locals.roleNames[0] === RoleName.CoreUser
       response.locals.session = decodedToken.session
       response.locals.readOnlyAccess = decodedToken.session?.readonly_access ?? false
-      response.locals.analyticsId = decodedToken.analyticsId
 
       return next()
     } catch (error) {

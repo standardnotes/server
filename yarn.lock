@@ -1899,7 +1899,6 @@ __metadata:
   dependencies:
     "@newrelic/winston-enricher": "npm:^4.0.0"
     "@sentry/node": "npm:^7.3.0"
-    "@standardnotes/analytics": "workspace:*"
     "@standardnotes/api": "npm:^1.19.0"
     "@standardnotes/common": "workspace:*"
     "@standardnotes/domain-events": "workspace:*"

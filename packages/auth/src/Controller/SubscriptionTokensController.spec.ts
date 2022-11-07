@@ -13,7 +13,6 @@ import { Role } from '../Domain/Role/Role'
 import { SettingServiceInterface } from '../Domain/Setting/SettingServiceInterface'
 import { Setting } from '../Domain/Setting/Setting'
 import { CrossServiceTokenData, TokenEncoderInterface } from '@standardnotes/security'
-import { GetUserAnalyticsId } from '../Domain/UseCase/GetUserAnalyticsId/GetUserAnalyticsId'
 
 describe('SubscriptionTokensController', () => {
   let createSubscriptionToken: CreateSubscriptionToken
@@ -24,7 +23,6 @@ describe('SubscriptionTokensController', () => {
   let settingService: SettingServiceInterface
   let extensionKeySetting: Setting
   let tokenEncoder: TokenEncoderInterface<CrossServiceTokenData>
-  let getUserAnalyticsId: GetUserAnalyticsId
 
   let request: express.Request
   let response: express.Response
@@ -39,7 +37,6 @@ describe('SubscriptionTokensController', () => {
       userProjector,
       roleProjector,
       tokenEncoder,
-      getUserAnalyticsId,
       jwtTTL,
     )
 
@@ -77,9 +74,6 @@ describe('SubscriptionTokensController', () => {
 
     tokenEncoder = {} as jest.Mocked<TokenEncoderInterface<CrossServiceTokenData>>
     tokenEncoder.encodeExpirableToken = jest.fn().mockReturnValue('foobar')
-
-    getUserAnalyticsId = {} as jest.Mocked<GetUserAnalyticsId>
-    getUserAnalyticsId.execute = jest.fn().mockReturnValue({ analyticsId: 123 })
 
     request = {
       headers: {},
@@ -137,7 +131,6 @@ describe('SubscriptionTokensController', () => {
 
     expect(tokenEncoder.encodeExpirableToken).toHaveBeenCalledWith(
       {
-        analyticsId: 123,
         extensionKey: 'abc123',
         roles: [
           {

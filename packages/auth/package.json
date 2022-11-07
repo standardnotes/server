@@ -32,7 +32,6 @@
   "dependencies": {
     "@newrelic/winston-enricher": "^4.0.0",
     "@sentry/node": "^7.3.0",
-    "@standardnotes/analytics": "workspace:*",
     "@standardnotes/api": "^1.19.0",
     "@standardnotes/common": "workspace:*",
     "@standardnotes/domain-events": "workspace:*",

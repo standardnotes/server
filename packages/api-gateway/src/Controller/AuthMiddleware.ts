@@ -1,6 +1,5 @@
 import { CrossServiceTokenData } from '@standardnotes/security'
 import { RoleName } from '@standardnotes/common'
-import { AnalyticsActivity, AnalyticsStoreInterface, Period } from '@standardnotes/analytics'
 import { TimerInterface } from '@standardnotes/time'
 import { NextFunction, Request, Response } from 'express'
 import { inject, injectable } from 'inversify'
@@ -21,7 +20,6 @@ export class AuthMiddleware extends BaseMiddleware {
     @inject(TYPES.CROSS_SERVICE_TOKEN_CACHE_TTL) private crossServiceTokenCacheTTL: number,
     @inject(TYPES.CrossServiceTokenCache) private crossServiceTokenCache: CrossServiceTokenCacheInterface,
     @inject(TYPES.Timer) private timer: TimerInterface,
-    @inject(TYPES.AnalyticsStore) private analyticsStore: AnalyticsStoreInterface,
     @inject(TYPES.Logger) private logger: Logger,
   ) {
     super()
@@ -79,17 +77,6 @@ export class AuthMiddleware extends BaseMiddleware {
       response.locals.freeUser =
         decodedToken.roles.length === 1 &&
         decodedToken.roles.find((role) => role.name === RoleName.CoreUser) !== undefined
-
-      await this.analyticsStore.markActivity(
-        [
-          AnalyticsActivity.GeneralActivity,
-          response.locals.freeUser
-            ? AnalyticsActivity.GeneralActivityFreeUsers
-            : AnalyticsActivity.GeneralActivityPaidUsers,
-        ],
-        decodedToken.analyticsId as number,
-        [Period.Today],
-      )
 
       if (this.crossServiceTokenCacheTTL && !crossServiceTokenFetchedFromCache) {
         await this.crossServiceTokenCache.set({

@@ -7,7 +7,6 @@ import { Stream } from 'stream'
 import { Logger } from 'winston'
 import * as dayjs from 'dayjs'
 import * as utc from 'dayjs/plugin/utc'
-import { AnalyticsActivity, AnalyticsStoreInterface, Period } from '@standardnotes/analytics'
 
 import { ContainerConfigLoader } from '../src/Bootstrap/Container'
 import TYPES from '../src/Bootstrap/Types'
@@ -19,34 +18,10 @@ import { MuteFailedBackupsEmailsOption, MuteFailedCloudBackupsEmailsOption, Sett
 import { RoleServiceInterface } from '../src/Domain/Role/RoleServiceInterface'
 import { PermissionName } from '@standardnotes/features'
 import { SettingServiceInterface } from '../src/Domain/Setting/SettingServiceInterface'
-import { AnalyticsEntityRepositoryInterface } from '../src/Domain/Analytics/AnalyticsEntityRepositoryInterface'
 
 const inputArgs = process.argv.slice(2)
 const backupProvider = inputArgs[0]
 const backupFrequency = inputArgs[1]
-
-const shouldEmailBackupBeTriggered = async (
-  analyticsId: number,
-  analyticsStore: AnalyticsStoreInterface,
-): Promise<boolean> => {
-  let periods = [Period.Today, Period.Yesterday]
-  if (backupFrequency === 'weekly') {
-    periods = [Period.ThisWeek, Period.LastWeek]
-  }
-
-  for (const period of periods) {
-    const wasUnBackedUpDataCreatedInPeriod = await analyticsStore.wasActivityDone(
-      AnalyticsActivity.EmailUnbackedUpData,
-      analyticsId,
-      period,
-    )
-    if (wasUnBackedUpDataCreatedInPeriod) {
-      return true
-    }
-  }
-
-  return false
-}
 
 const requestBackups = async (
   settingRepository: SettingRepositoryInterface,
@@ -54,9 +29,6 @@ const requestBackups = async (
   settingService: SettingServiceInterface,
   domainEventFactory: DomainEventFactoryInterface,
   domainEventPublisher: DomainEventPublisherInterface,
-  analyticsEntityRepository: AnalyticsEntityRepositoryInterface,
-  analyticsStore: AnalyticsStoreInterface,
-  logger: Logger,
 ): Promise<void> => {
   let settingName: SettingName,
     permissionName: PermissionName,
@@ -123,23 +95,6 @@ const requestBackups = async (
             }
 
             if (backupProvider === 'email') {
-              const analyticsEntity = await analyticsEntityRepository.findOneByUserUuid(setting.setting_user_uuid)
-              if (analyticsEntity === null) {
-                callback()
-
-                return
-              }
-
-              const emailBackupsShouldBeTriggered = await shouldEmailBackupBeTriggered(
-                analyticsEntity.id,
-                analyticsStore,
-              )
-              if (!emailBackupsShouldBeTriggered) {
-                logger.info(
-                  `Email backup for user ${setting.setting_user_uuid} should not be triggered due to inactivity. It will be triggered until further changes.`,
-                )
-              }
-
               await domainEventPublisher.publish(
                 domainEventFactory.createEmailBackupRequestedEvent(
                   setting.setting_user_uuid,
@@ -147,15 +102,6 @@ const requestBackups = async (
                   userHasEmailsMuted,
                 ),
               )
-
-              await analyticsStore.markActivity([AnalyticsActivity.EmailBackup], analyticsEntity.id, [
-                Period.Today,
-                Period.ThisWeek,
-              ])
-              await analyticsStore.unmarkActivity([AnalyticsActivity.EmailUnbackedUpData], analyticsEntity.id, [
-                Period.Today,
-                Period.ThisWeek,
-              ])
 
               callback()
 
@@ -206,20 +152,9 @@ void container.load().then((container) => {
   const settingService: SettingServiceInterface = container.get(TYPES.SettingService)
   const domainEventFactory: DomainEventFactoryInterface = container.get(TYPES.DomainEventFactory)
   const domainEventPublisher: DomainEventPublisherInterface = container.get(TYPES.DomainEventPublisher)
-  const analyticsEntityRepository: AnalyticsEntityRepositoryInterface = container.get(TYPES.AnalyticsEntityRepository)
-  const analyticsStore: AnalyticsStoreInterface = container.get(TYPES.AnalyticsStore)
 
   Promise.resolve(
-    requestBackups(
-      settingRepository,
-      roleService,
-      settingService,
-      domainEventFactory,
-      domainEventPublisher,
-      analyticsEntityRepository,
-      analyticsStore,
-      logger,
-    ),
+    requestBackups(settingRepository, roleService, settingService, domainEventFactory, domainEventPublisher),
   )
     .then(() => {
       logger.info(`${backupFrequency} ${backupProvider} backup requesting complete`)

@@ -43,6 +43,7 @@ import { SubscriptionRefundedEventHandler } from '../Domain/Handler/Subscription
 import { SubscriptionPurchasedEventHandler } from '../Domain/Handler/SubscriptionPurchasedEventHandler'
 import { SubscriptionExpiredEventHandler } from '../Domain/Handler/SubscriptionExpiredEventHandler'
 import { SubscriptionReactivatedEventHandler } from '../Domain/Handler/SubscriptionReactivatedEventHandler'
+import { RefundProcessedEventHandler } from '../Domain/Handler/RefundProcessedEventHandler'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -149,6 +150,7 @@ export class ContainerConfigLoader {
     container
       .bind<SubscriptionReactivatedEventHandler>(TYPES.SubscriptionReactivatedEventHandler)
       .to(SubscriptionReactivatedEventHandler)
+    container.bind<RefundProcessedEventHandler>(TYPES.RefundProcessedEventHandler).to(RefundProcessedEventHandler)
 
     // Services
     container.bind<DomainEventFactory>(TYPES.DomainEventFactory).to(DomainEventFactory)
@@ -175,6 +177,16 @@ export class ContainerConfigLoader {
 
     const eventHandlers: Map<string, DomainEventHandlerInterface> = new Map([
       ['USER_REGISTERED', container.get(TYPES.UserRegisteredEventHandler)],
+      ['ACCOUNT_DELETION_REQUESTED', container.get(TYPES.AccountDeletionRequestedEventHandler)],
+      ['PAYMENT_FAILED', container.get(TYPES.PaymentFailedEventHandler)],
+      ['PAYMENT_SUCCESS', container.get(TYPES.PaymentSuccessEventHandler)],
+      ['SUBSCRIPTION_CANCELLED', container.get(TYPES.SubscriptionCancelledEventHandler)],
+      ['SUBSCRIPTION_RENEWED', container.get(TYPES.SubscriptionRenewedEventHandler)],
+      ['SUBSCRIPTION_REFUNDED', container.get(TYPES.SubscriptionRefundedEventHandler)],
+      ['SUBSCRIPTION_PURCHASED', container.get(TYPES.SubscriptionPurchasedEventHandler)],
+      ['SUBSCRIPTION_EXPIRED', container.get(TYPES.SubscriptionExpiredEventHandler)],
+      ['SUBSCRIPTION_REACTIVATED', container.get(TYPES.SubscriptionReactivatedEventHandler)],
+      ['REFUND_PROCESSED', container.get(TYPES.RefundProcessedEventHandler)],
     ])
 
     if (env.get('SQS_QUEUE_URL', true)) {

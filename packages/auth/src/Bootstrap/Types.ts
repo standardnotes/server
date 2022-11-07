@@ -23,7 +23,6 @@ const TYPES = {
   OfflineSubscriptionTokenRepository: Symbol.for('OfflineSubscriptionTokenRepository'),
   SharedSubscriptionInvitationRepository: Symbol.for('SharedSubscriptionInvitationRepository'),
   PKCERepository: Symbol.for('PKCERepository'),
-  AnalyticsEntityRepository: Symbol.for('AnalyticsEntityRepository'),
   // ORM
   ORMOfflineSettingRepository: Symbol.for('ORMOfflineSettingRepository'),
   ORMOfflineUserSubscriptionRepository: Symbol.for('ORMOfflineUserSubscriptionRepository'),
@@ -35,7 +34,6 @@ const TYPES = {
   ORMSubscriptionSettingRepository: Symbol.for('ORMSubscriptionSettingRepository'),
   ORMUserRepository: Symbol.for('ORMUserRepository'),
   ORMUserSubscriptionRepository: Symbol.for('ORMUserSubscriptionRepository'),
-  ORMAnalyticsEntityRepository: Symbol.for('ORMAnalyticsEntityRepository'),
   // Middleware
   AuthMiddleware: Symbol.for('AuthMiddleware'),
   ApiGatewayAuthMiddleware: Symbol.for('ApiGatewayAuthMiddleware'),
@@ -71,7 +69,6 @@ const TYPES = {
   PSEUDO_KEY_PARAMS_KEY: Symbol.for('PSEUDO_KEY_PARAMS_KEY'),
   REDIS_URL: Symbol.for('REDIS_URL'),
   DISABLE_USER_REGISTRATION: Symbol.for('DISABLE_USER_REGISTRATION'),
-  ANALYTICS_ENABLED: Symbol.for('ANALYTICS_ENABLED'),
   SNS_TOPIC_ARN: Symbol.for('SNS_TOPIC_ARN'),
   SNS_AWS_REGION: Symbol.for('SNS_AWS_REGION'),
   SQS_QUEUE_URL: Symbol.for('SQS_QUEUE_URL'),
@@ -119,7 +116,6 @@ const TYPES = {
   CancelSharedSubscriptionInvitation: Symbol.for('CancelSharedSubscriptionInvitation'),
   ListSharedSubscriptionInvitations: Symbol.for('ListSharedSubscriptionInvitations'),
   GetSubscriptionSetting: Symbol.for('GetSubscriptionSetting'),
-  GetUserAnalyticsId: Symbol.for('GetUserAnalyticsId'),
   VerifyPredicate: Symbol.for('VerifyPredicate'),
   CreateCrossServiceToken: Symbol.for('CreateCrossServiceToken'),
   ProcessUserRequest: Symbol.for('ProcessUserRequest'),
@@ -142,10 +138,6 @@ const TYPES = {
   UserDisabledSessionUserAgentLoggingEventHandler: Symbol.for('UserDisabledSessionUserAgentLoggingEventHandler'),
   SharedSubscriptionInvitationCreatedEventHandler: Symbol.for('SharedSubscriptionInvitationCreatedEventHandler'),
   PredicateVerificationRequestedEventHandler: Symbol.for('PredicateVerificationRequestedEventHandler'),
-  PaymentFailedEventHandler: Symbol.for('PaymentFailedEventHandler'),
-  PaymentSuccessEventHandler: Symbol.for('PaymentSuccessEventHandler'),
-  RefundProcessedEventHandler: Symbol.for('RefundProcessedEventHandler'),
-  SubscriptionReactivatedEventHandler: Symbol.for('SubscriptionReactivatedEventHandler'),
   // Services
   DeviceDetector: Symbol.for('DeviceDetector'),
   SessionService: Symbol.for('SessionService'),
@@ -187,8 +179,6 @@ const TYPES = {
   ProtocolVersionSelector: Symbol.for('ProtocolVersionSelector'),
   BooleanSelector: Symbol.for('BooleanSelector'),
   UserSubscriptionService: Symbol.for('UserSubscriptionService'),
-  AnalyticsStore: Symbol.for('AnalyticsStore'),
-  StatisticsStore: Symbol.for('StatisticsStore'),
   UuidValidator: Symbol.for('UuidValidator'),
 }
 

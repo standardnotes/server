@@ -7,13 +7,6 @@ import {
   DomainEventMessageHandlerInterface,
   DomainEventSubscriberFactoryInterface,
 } from '@standardnotes/domain-events'
-import {
-  AnalyticsStoreInterface,
-  PeriodKeyGenerator,
-  RedisAnalyticsStore,
-  RedisStatisticsStore,
-  StatisticsStoreInterface,
-} from '@standardnotes/analytics'
 
 import { Env } from './Env'
 import TYPES from './Types'
@@ -242,13 +235,6 @@ export class ContainerConfigLoader {
     container.bind<ExtensionsHttpServiceInterface>(TYPES.ExtensionsHttpService).to(ExtensionsHttpService)
     container.bind<ItemBackupServiceInterface>(TYPES.ItemBackupService).to(S3ItemBackupService)
     container.bind<RevisionServiceInterface>(TYPES.RevisionService).to(RevisionService)
-    const periodKeyGenerator = new PeriodKeyGenerator()
-    container
-      .bind<AnalyticsStoreInterface>(TYPES.AnalyticsStore)
-      .toConstantValue(new RedisAnalyticsStore(periodKeyGenerator, container.get(TYPES.Redis)))
-    container
-      .bind<StatisticsStoreInterface>(TYPES.StatisticsStore)
-      .toConstantValue(new RedisStatisticsStore(periodKeyGenerator, container.get(TYPES.Redis)))
 
     if (env.get('SNS_TOPIC_ARN', true)) {
       container

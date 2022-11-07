@@ -5,7 +5,7 @@ import { BaseHttpController, controller, httpPost } from 'inversify-express-util
 import TYPES from '../../Bootstrap/Types'
 import { HttpServiceInterface } from '../../Service/Http/HttpServiceInterface'
 
-@controller('/v2', TYPES.StatisticsMiddleware)
+@controller('/v2')
 export class ActionsControllerV2 extends BaseHttpController {
   constructor(@inject(TYPES.HTTPService) private httpService: HttpServiceInterface) {
     super()
