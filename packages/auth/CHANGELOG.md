@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.54.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.53.0...@standardnotes/auth-server@1.54.0) (2022-11-07)
+
+### Features
+
+* **auth:** remove analytics table in favor of analytics service ([49feadd](https://github.com/standardnotes/server/commit/49feadd32a5fc8994a1b63f5293d41ca60f01e02))
+
 # [1.53.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.52.1...@standardnotes/auth-server@1.53.0) (2022-11-07)
 
 ### Features
