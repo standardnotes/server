@@ -2594,7 +2594,6 @@ const RAW_RUNTIME_STATE =
           ["@standardnotes/api-gateway", "workspace:packages/api-gateway"],\
           ["@newrelic/winston-enricher", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:4.0.0"],\
           ["@sentry/node", "npm:7.5.0"],\
-          ["@standardnotes/analytics", "workspace:packages/analytics"],\
           ["@standardnotes/common", "workspace:packages/common"],\
           ["@standardnotes/domain-events", "workspace:packages/domain-events"],\
           ["@standardnotes/domain-events-infra", "workspace:packages/domain-events-infra"],\
@@ -3116,7 +3115,6 @@ const RAW_RUNTIME_STATE =
           ["@standardnotes/syncing-server", "workspace:packages/syncing-server"],\
           ["@newrelic/winston-enricher", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:4.0.0"],\
           ["@sentry/node", "npm:7.5.0"],\
-          ["@standardnotes/analytics", "workspace:packages/analytics"],\
           ["@standardnotes/common", "workspace:packages/common"],\
           ["@standardnotes/domain-events", "workspace:packages/domain-events"],\
           ["@standardnotes/domain-events-infra", "workspace:packages/domain-events-infra"],\

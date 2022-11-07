@@ -1801,7 +1801,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@standardnotes/analytics@workspace:*, @standardnotes/analytics@workspace:packages/analytics":
+"@standardnotes/analytics@workspace:packages/analytics":
   version: 0.0.0-use.local
   resolution: "@standardnotes/analytics@workspace:packages/analytics"
   dependencies:
@@ -1840,7 +1840,6 @@ __metadata:
   dependencies:
     "@newrelic/winston-enricher": "npm:^4.0.0"
     "@sentry/node": "npm:^7.3.0"
-    "@standardnotes/analytics": "workspace:*"
     "@standardnotes/common": "workspace:^"
     "@standardnotes/domain-events": "workspace:*"
     "@standardnotes/domain-events-infra": "workspace:*"
@@ -2346,7 +2345,6 @@ __metadata:
   dependencies:
     "@newrelic/winston-enricher": "npm:^4.0.0"
     "@sentry/node": "npm:^7.3.0"
-    "@standardnotes/analytics": "workspace:*"
     "@standardnotes/common": "workspace:*"
     "@standardnotes/domain-events": "workspace:*"
     "@standardnotes/domain-events-infra": "workspace:*"
