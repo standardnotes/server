@@ -1,6 +1,6 @@
 {
   "name": "@standardnotes/analytics",
-  "version": "1.47.0",
+  "version": "1.48.0",
   "engines": {
     "node": ">=14.0.0 <17.0.0"
   },
