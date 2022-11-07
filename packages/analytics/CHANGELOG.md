@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.49.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.48.0...@standardnotes/analytics@1.49.0) (2022-11-07)
+
+### Features
+
+* **analytics:** add handling subscription refunded event ([197c991](https://github.com/standardnotes/server/commit/197c9914caf8fb31ce3ee69d05381d2a6416b366))
+
 # [1.48.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.47.0...@standardnotes/analytics@1.48.0) (2022-11-07)
 
 ### Features

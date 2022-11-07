@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.50.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.49.13...@standardnotes/auth-server@1.50.0) (2022-11-07)
+
+### Features
+
+* **analytics:** add handling subscription refunded event ([197c991](https://github.com/standardnotes/server/commit/197c9914caf8fb31ce3ee69d05381d2a6416b366))
+
 ## [1.49.13](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.49.12...@standardnotes/auth-server@1.49.13) (2022-11-07)
 
 **Note:** Version bump only for package @standardnotes/auth-server
