@@ -8,4 +8,8 @@ export interface SubscriptionPurchasedEventPayload {
   timestamp: number
   offline: boolean
   discountCode: string | null
+  limitedDiscountPurchased: boolean
+  newSubscriber: boolean
+  totalActiveSubscriptionsCount: number
+  userRegisteredAt: number
 }
