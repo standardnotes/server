@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.52.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.51.0...@standardnotes/analytics@1.52.0) (2022-11-07)
+
+### Features
+
+* **analytics:** add handling subscription reactivated events ([6359030](https://github.com/standardnotes/server/commit/63590300308975097f4d092a4f140f479093a1ae))
+
 # [1.51.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.50.0...@standardnotes/analytics@1.51.0) (2022-11-07)
 
 ### Features
