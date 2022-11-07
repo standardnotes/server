@@ -4,6 +4,8 @@ export interface SubscriptionRefundedEventPayload {
   userEmail: string
   subscriptionId: number
   subscriptionName: SubscriptionName
+  userExistingSubscriptionsCount: number
+  totalActiveSubscriptionsCount: number
   timestamp: number
   offline: boolean
 }

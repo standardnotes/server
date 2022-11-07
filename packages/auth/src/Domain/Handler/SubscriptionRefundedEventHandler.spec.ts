@@ -80,6 +80,8 @@ describe('SubscriptionRefundedEventHandler', () => {
       subscriptionName: SubscriptionName.PlusPlan,
       timestamp,
       offline: false,
+      userExistingSubscriptionsCount: 3,
+      totalActiveSubscriptionsCount: 1,
     }
 
     getUserAnalyticsId = {} as jest.Mocked<GetUserAnalyticsId>
