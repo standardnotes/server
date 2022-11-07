@@ -26,6 +26,7 @@ const TYPES = {
   SubscriptionRenewedEventHandler: Symbol.for('SubscriptionRenewedEventHandler'),
   SubscriptionRefundedEventHandler: Symbol.for('SubscriptionRefundedEventHandler'),
   SubscriptionPurchasedEventHandler: Symbol.for('SubscriptionPurchasedEventHandler'),
+  SubscriptionExpiredEventHandler: Symbol.for('SubscriptionExpiredEventHandler'),
   // Services
   DomainEventPublisher: Symbol.for('DomainEventPublisher'),
   DomainEventSubscriberFactory: Symbol.for('DomainEventSubscriberFactory'),

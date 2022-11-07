@@ -6,4 +6,5 @@ export interface SubscriptionExpiredEventPayload {
   subscriptionName: SubscriptionName
   timestamp: number
   offline: boolean
+  totalActiveSubscriptionsCount: number
 }

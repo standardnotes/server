@@ -79,6 +79,7 @@ describe('SubscriptionExpiredEventHandler', () => {
       subscriptionName: SubscriptionName.PlusPlan,
       timestamp,
       offline: false,
+      totalActiveSubscriptionsCount: 123,
     }
 
     getUserAnalyticsId = {} as jest.Mocked<GetUserAnalyticsId>
