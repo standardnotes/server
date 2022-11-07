@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.52.0...@standardnotes/analytics@2.1.0) (2022-11-07)
+
+### Features
+
+* remove analytics scope from other services in favor of a separate service ([ff1d5db](https://github.com/standardnotes/server/commit/ff1d5db12c93f8e51c07c3aecb9fed4be48ea96a))
+
 # [1.52.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.51.0...@standardnotes/analytics@1.52.0) (2022-11-07)
 
 ### Features

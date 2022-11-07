@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.11.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.10.25...@standardnotes/syncing-server@1.11.0) (2022-11-07)
+
+### Features
+
+* remove analytics scope from other services in favor of a separate service ([ff1d5db](https://github.com/standardnotes/syncing-server-js/commit/ff1d5db12c93f8e51c07c3aecb9fed4be48ea96a))
+
 ## [1.10.25](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.10.24...@standardnotes/syncing-server@1.10.25) (2022-11-07)
 
 **Note:** Version bump only for package @standardnotes/syncing-server

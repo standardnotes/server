@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.6.0](https://github.com/standardnotes/server/compare/@standardnotes/security@1.5.3...@standardnotes/security@1.6.0) (2022-11-07)
+
+### Features
+
+* remove analytics scope from other services in favor of a separate service ([ff1d5db](https://github.com/standardnotes/server/commit/ff1d5db12c93f8e51c07c3aecb9fed4be48ea96a))
+
 ## [1.5.3](https://github.com/standardnotes/server/compare/@standardnotes/security@1.5.2...@standardnotes/security@1.5.3) (2022-11-03)
 
 **Note:** Version bump only for package @standardnotes/security
