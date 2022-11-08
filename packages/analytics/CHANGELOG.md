@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.2.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.1.0...@standardnotes/analytics@2.2.0) (2022-11-08)
+
+### Features
+
+* **analytics:** add persistence for revenue modifications ([4928685](https://github.com/standardnotes/server/commit/49286851989f557d3b391b6b535a9aa307fbef50))
+* **analytics:** create new ddd architecture for persisting revenue modifications ([0103233](https://github.com/standardnotes/server/commit/0103233d4a1e222e7c9b059475c1cdc3b2617455))
+
 # [2.1.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@1.52.0...@standardnotes/analytics@2.1.0) (2022-11-07)
 
 ### Features
