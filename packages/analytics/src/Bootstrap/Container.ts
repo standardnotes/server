@@ -44,6 +44,12 @@ import { SubscriptionPurchasedEventHandler } from '../Domain/Handler/Subscriptio
 import { SubscriptionExpiredEventHandler } from '../Domain/Handler/SubscriptionExpiredEventHandler'
 import { SubscriptionReactivatedEventHandler } from '../Domain/Handler/SubscriptionReactivatedEventHandler'
 import { RefundProcessedEventHandler } from '../Domain/Handler/RefundProcessedEventHandler'
+import { RevenueModificationRepositoryInterface } from '../Domain/Revenue/RevenueModificationRepositoryInterface'
+import { MySQLRevenueModificationRepository } from '../Infra/MySQL/MySQLRevenueModificationRepository'
+import { TypeORMRevenueModification } from '../Infra/TypeORM/TypeORMRevenueModification'
+import { MapInterface } from '../Domain/Map/MapInterface'
+import { RevenueModification } from '../Domain/Revenue/RevenueModification'
+import { RevenueModificationMap } from '../Domain/Map/RevenueModificationMap'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -116,11 +122,17 @@ export class ContainerConfigLoader {
     container
       .bind<AnalyticsEntityRepositoryInterface>(TYPES.AnalyticsEntityRepository)
       .to(MySQLAnalyticsEntityRepository)
+    container
+      .bind<RevenueModificationRepositoryInterface>(TYPES.RevenueModificationRepository)
+      .to(MySQLRevenueModificationRepository)
 
     // ORM
     container
       .bind<Repository<AnalyticsEntity>>(TYPES.ORMAnalyticsEntityRepository)
       .toConstantValue(AppDataSource.getRepository(AnalyticsEntity))
+    container
+      .bind<Repository<TypeORMRevenueModification>>(TYPES.ORMRevenueModificationRepository)
+      .toConstantValue(AppDataSource.getRepository(TypeORMRevenueModification))
 
     // Use Case
     container.bind<GetUserAnalyticsId>(TYPES.GetUserAnalyticsId).to(GetUserAnalyticsId)
@@ -151,6 +163,11 @@ export class ContainerConfigLoader {
       .bind<SubscriptionReactivatedEventHandler>(TYPES.SubscriptionReactivatedEventHandler)
       .to(SubscriptionReactivatedEventHandler)
     container.bind<RefundProcessedEventHandler>(TYPES.RefundProcessedEventHandler).to(RefundProcessedEventHandler)
+
+    // Maps
+    container
+      .bind<MapInterface<RevenueModification, TypeORMRevenueModification>>(TYPES.RevenueModificationMap)
+      .to(RevenueModificationMap)
 
     // Services
     container.bind<DomainEventFactory>(TYPES.DomainEventFactory).to(DomainEventFactory)

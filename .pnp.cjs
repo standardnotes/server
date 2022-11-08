@@ -2551,6 +2551,7 @@ const RAW_RUNTIME_STATE =
           ["@types/jest", "npm:29.1.1"],\
           ["@types/newrelic", "npm:7.0.3"],\
           ["@types/node", "npm:18.0.3"],\
+          ["@types/uuid", "npm:8.3.4"],\
           ["@typescript-eslint/eslint-plugin", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:5.30.5"],\
           ["aws-sdk", "npm:2.1234.0"],\
           ["dayjs", "npm:1.11.6"],\
@@ -2563,9 +2564,11 @@ const RAW_RUNTIME_STATE =
           ["mysql2", "npm:2.3.3"],\
           ["newrelic", "npm:9.0.0"],\
           ["reflect-metadata", "npm:0.1.13"],\
+          ["shallow-equal-object", "npm:1.1.1"],\
           ["ts-jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.0.3"],\
           ["typeorm", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:0.3.10"],\
           ["typescript", "patch:typescript@npm%3A4.8.4#optional!builtin<compat/typescript>::version=4.8.4&hash=701156"],\
+          ["uuid", "npm:9.0.0"],\
           ["winston", "npm:3.8.2"]\
         ],\
         "linkType": "SOFT"\
@@ -12209,6 +12212,15 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["shallow-clone", "npm:3.0.1"],\
           ["kind-of", "npm:6.0.3"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["shallow-equal-object", [\
+      ["npm:1.1.1", {\
+        "packageLocation": "./.yarn/cache/shallow-equal-object-npm-1.1.1-a41b289b2e-9e5e0cd10b.zip/node_modules/shallow-equal-object/",\
+        "packageDependencies": [\
+          ["shallow-equal-object", "npm:1.1.1"]\
         ],\
         "linkType": "HARD"\
       }]\

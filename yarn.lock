@@ -1815,6 +1815,7 @@ __metadata:
     "@types/jest": "npm:^29.1.1"
     "@types/newrelic": "npm:^7.0.3"
     "@types/node": "npm:^18.0.0"
+    "@types/uuid": "npm:^8.3.0"
     "@typescript-eslint/eslint-plugin": "npm:^5.30.0"
     aws-sdk: "npm:^2.1158.0"
     dayjs: "npm:^1.11.6"
@@ -1827,9 +1828,11 @@ __metadata:
     mysql2: "npm:^2.3.3"
     newrelic: "npm:^9.0.0"
     reflect-metadata: "npm:^0.1.13"
+    shallow-equal-object: "npm:^1.1.1"
     ts-jest: "npm:^29.0.3"
     typeorm: "npm:^0.3.6"
     typescript: "npm:^4.8.4"
+    uuid: "npm:^9.0.0"
     winston: "npm:^3.8.1"
   languageName: unknown
   linkType: soft
@@ -9966,6 +9969,13 @@ __metadata:
   dependencies:
     kind-of: "npm:^6.0.2"
   checksum: 4b5c12c1cf13c645cdfbc71c1e367bb57106d81313fb5c8de0122029a23fca8ff1ab210007b78d621a430af26d2efea27a68fd927e2976ff7ad905619438b37e
+  languageName: node
+  linkType: hard
+
+"shallow-equal-object@npm:^1.1.1":
+  version: 1.1.1
+  resolution: "shallow-equal-object@npm:1.1.1"
+  checksum: 9e5e0cd10ba5447f85038d7b104e66c15603e164b2112366f044f9447512bfb6f0b71bd9869e76824e76fae76568e94df3d9871bf5af8ab2ff78eee9487baecf
   languageName: node
   linkType: hard
 

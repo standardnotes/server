@@ -13,8 +13,10 @@ const TYPES = {
   NEW_RELIC_ENABLED: Symbol.for('NEW_RELIC_ENABLED'),
   // Repositories
   AnalyticsEntityRepository: Symbol.for('AnalyticsEntityRepository'),
+  RevenueModificationRepository: Symbol.for('RevenueModificationRepository'),
   // ORM
   ORMAnalyticsEntityRepository: Symbol.for('ORMAnalyticsEntityRepository'),
+  ORMRevenueModificationRepository: Symbol.for('ORMRevenueModificationRepository'),
   // Use Case
   GetUserAnalyticsId: Symbol.for('GetUserAnalyticsId'),
   // Handlers
@@ -29,6 +31,8 @@ const TYPES = {
   SubscriptionExpiredEventHandler: Symbol.for('SubscriptionExpiredEventHandler'),
   SubscriptionReactivatedEventHandler: Symbol.for('SubscriptionReactivatedEventHandler'),
   RefundProcessedEventHandler: Symbol.for('RefundProcessedEventHandler'),
+  // Maps
+  RevenueModificationMap: Symbol.for('RevenueModificationMap'),
   // Services
   DomainEventPublisher: Symbol.for('DomainEventPublisher'),
   DomainEventSubscriberFactory: Symbol.for('DomainEventSubscriberFactory'),
