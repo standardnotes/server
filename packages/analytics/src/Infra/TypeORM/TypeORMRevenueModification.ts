@@ -2,7 +2,10 @@ import { Column, Entity, Index, PrimaryColumn } from 'typeorm'
 
 @Entity({ name: 'revenue_modifications' })
 export class TypeORMRevenueModification {
-  @PrimaryColumn()
+  @PrimaryColumn({
+    type: 'uuid',
+    length: 36,
+  })
   declare uuid: string
 
   @Column({
