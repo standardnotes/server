@@ -7,18 +7,24 @@ import { SubscriptionExpiredEventHandler } from './SubscriptionExpiredEventHandl
 import { GetUserAnalyticsId } from '../UseCase/GetUserAnalyticsId/GetUserAnalyticsId'
 import { StatisticsStoreInterface } from '../Statistics/StatisticsStoreInterface'
 import { AnalyticsStoreInterface } from '../Analytics/AnalyticsStoreInterface'
+import { SaveRevenueModification } from '../UseCase/SaveRevenueModification/SaveRevenueModification'
+import { Result } from '../Core/Result'
+import { RevenueModification } from '../Revenue/RevenueModification'
 
 describe('SubscriptionExpiredEventHandler', () => {
   let event: SubscriptionExpiredEvent
   let getUserAnalyticsId: GetUserAnalyticsId
   let analyticsStore: AnalyticsStoreInterface
   let statisticsStore: StatisticsStoreInterface
+  let saveRevenueModification: SaveRevenueModification
 
-  const createHandler = () => new SubscriptionExpiredEventHandler(getUserAnalyticsId, analyticsStore, statisticsStore)
+  const createHandler = () =>
+    new SubscriptionExpiredEventHandler(getUserAnalyticsId, analyticsStore, statisticsStore, saveRevenueModification)
 
   beforeEach(() => {
     event = {} as jest.Mocked<SubscriptionExpiredEvent>
     event.createdAt = new Date(1)
+    event.type = 'SUBSCRIPTION_EXPIRED'
     event.payload = {
       subscriptionId: 1,
       userEmail: 'test@test.com',
@@ -26,6 +32,9 @@ describe('SubscriptionExpiredEventHandler', () => {
       timestamp: 1,
       offline: false,
       totalActiveSubscriptionsCount: 123,
+      userExistingSubscriptionsCount: 2,
+      billingFrequency: 1,
+      payAmount: 12.99,
     }
 
     getUserAnalyticsId = {} as jest.Mocked<GetUserAnalyticsId>
@@ -36,6 +45,9 @@ describe('SubscriptionExpiredEventHandler', () => {
 
     statisticsStore = {} as jest.Mocked<StatisticsStoreInterface>
     statisticsStore.setMeasure = jest.fn()
+
+    saveRevenueModification = {} as jest.Mocked<SaveRevenueModification>
+    saveRevenueModification.execute = jest.fn().mockReturnValue(Result.ok<RevenueModification>())
   })
 
   it('should update analytics and statistics', async () => {
@@ -43,5 +55,6 @@ describe('SubscriptionExpiredEventHandler', () => {
 
     expect(analyticsStore.markActivity).toHaveBeenCalled()
     expect(statisticsStore.setMeasure).toHaveBeenCalled()
+    expect(saveRevenueModification.execute).toHaveBeenCalled()
   })
 })
