@@ -81,6 +81,8 @@ describe('SubscriptionRenewedEventHandler', () => {
       subscriptionExpiresAt,
       timestamp,
       offline: false,
+      billingFrequency: 1,
+      payAmount: 12.99,
     }
 
     logger = {} as jest.Mocked<Logger>
