@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.3.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.2.0...@standardnotes/analytics@2.3.0) (2022-11-09)
+
+### Features
+
+* **analytics:** add saving revenue modifications upon subscription purchased ([5ea9941](https://github.com/standardnotes/server/commit/5ea9941519ffb3027527130ec869da14abc5e994))
+
 # [2.2.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.1.0...@standardnotes/analytics@2.2.0) (2022-11-08)
 
 ### Features
