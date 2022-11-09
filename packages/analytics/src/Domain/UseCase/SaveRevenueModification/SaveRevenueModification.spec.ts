@@ -1,5 +1,7 @@
 import 'reflect-metadata'
 
+import { TimerInterface } from '@standardnotes/time'
+
 import { Email } from '../../Common/Email'
 import { Uuid } from '../../Common/Uuid'
 import { MonthlyRevenue } from '../../Revenue/MonthlyRevenue'
@@ -13,8 +15,9 @@ import { SaveRevenueModification } from './SaveRevenueModification'
 describe('SaveRevenueModification', () => {
   let revenueModificationRepository: RevenueModificationRepositoryInterface
   let previousMonthlyRevenue: RevenueModification
+  let timer: TimerInterface
 
-  const createUseCase = () => new SaveRevenueModification(revenueModificationRepository)
+  const createUseCase = () => new SaveRevenueModification(revenueModificationRepository, timer)
 
   beforeEach(() => {
     previousMonthlyRevenue = {
@@ -24,6 +27,9 @@ describe('SaveRevenueModification', () => {
     revenueModificationRepository = {} as jest.Mocked<RevenueModificationRepositoryInterface>
     revenueModificationRepository.findLastByUserUuid = jest.fn().mockReturnValue(previousMonthlyRevenue)
     revenueModificationRepository.save = jest.fn()
+
+    timer = {} as jest.Mocked<TimerInterface>
+    timer.getTimestampInMicroseconds = jest.fn().mockReturnValue(1)
   })
 
   it('should persist a revenue modification', async () => {

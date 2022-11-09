@@ -37,6 +37,7 @@ export class RevenueModificationMap implements MapInterface<RevenueModification,
         subscription,
         eventType: SubscriptionEventType.create(persistence.eventType).getValue(),
         previousMonthlyRevenue: previousMonthlyRevenueOrError.getValue(),
+        createdAt: persistence.createdAt,
       },
       new UniqueEntityId(persistence.uuid),
     )
@@ -55,6 +56,7 @@ export class RevenueModificationMap implements MapInterface<RevenueModification,
     persistence.subscriptionPlan = subscription.props.planName.value
     persistence.userEmail = user.props.email.value
     persistence.userUuid = user.id.toString()
+    persistence.createdAt = domain.props.createdAt
 
     return persistence
   }

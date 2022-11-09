@@ -9,15 +9,7 @@ export class RevenueModification extends Aggregate<RevenueModificationProps> {
   }
 
   static create(props: RevenueModificationProps, id?: UniqueEntityId): RevenueModification {
-    const revenueModification = new RevenueModification(
-      {
-        ...props,
-        createdAt: props.createdAt ? props.createdAt : new Date(),
-      },
-      id,
-    )
-
-    return revenueModification
+    return new RevenueModification(props, id)
   }
 
   get newMonthlyRevenue(): MonthlyRevenue {
@@ -27,6 +19,7 @@ export class RevenueModification extends Aggregate<RevenueModificationProps> {
     switch (this.props.eventType.value) {
       case 'SUBSCRIPTION_PURCHASED':
       case 'SUBSCRIPTION_RENEWED':
+      case 'SUBSCRIPTION_DATA_MIGRATED':
         revenue = subscription.props.payedAmount / subscription.props.billingFrequency
         break
       case 'SUBSCRIPTION_EXPIRED':

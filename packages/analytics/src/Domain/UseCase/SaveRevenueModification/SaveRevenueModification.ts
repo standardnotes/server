@@ -9,12 +9,14 @@ import { User } from '../../User/User'
 import { Result } from '../../Core/Result'
 import { DomainUseCaseInterface } from '../DomainUseCaseInterface'
 import { SaveRevenueModificationDTO } from './SaveRevenueModificationDTO'
+import { TimerInterface } from '@standardnotes/time'
 
 @injectable()
 export class SaveRevenueModification implements DomainUseCaseInterface<RevenueModification> {
   constructor(
     @inject(TYPES.RevenueModificationRepository)
     private revenueModificationRepository: RevenueModificationRepositoryInterface,
+    @inject(TYPES.Timer) private timer: TimerInterface,
   ) {}
 
   async execute(dto: SaveRevenueModificationDTO): Promise<Result<RevenueModification>> {
@@ -45,6 +47,7 @@ export class SaveRevenueModification implements DomainUseCaseInterface<RevenueMo
       subscription,
       user,
       previousMonthlyRevenue,
+      createdAt: this.timer.getTimestampInMicroseconds(),
     })
 
     await this.revenueModificationRepository.save(revenueModification)

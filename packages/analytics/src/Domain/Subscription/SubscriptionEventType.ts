@@ -19,6 +19,7 @@ export class SubscriptionEventType extends ValueObject<SubscriptionEventTypeProp
         'SUBSCRIPTION_EXPIRED',
         'SUBSCRIPTION_REFUNDED',
         'SUBSCRIPTION_CANCELLED',
+        'SUBSCRIPTION_DATA_MIGRATED',
       ].includes(subscriptionEventType)
     ) {
       return Result.fail<SubscriptionEventType>(`Invalid subscription event type ${subscriptionEventType}`)

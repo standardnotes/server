@@ -56,4 +56,10 @@ export class TypeORMRevenueModification {
     name: 'new_mrr',
   })
   declare newMonthlyRevenue: number
+
+  @Column({
+    name: 'created_at',
+    type: 'bigint',
+  })
+  declare createdAt: number
 }

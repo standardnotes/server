@@ -24,6 +24,7 @@ describe('RevenueModification', () => {
 
   it('should create an aggregate for purchased subscription', () => {
     const revenueModification = RevenueModification.create({
+      createdAt: 2,
       eventType: SubscriptionEventType.create('SUBSCRIPTION_PURCHASED').getValue(),
       previousMonthlyRevenue: MonthlyRevenue.create(123).getValue(),
       subscription,
@@ -36,7 +37,7 @@ describe('RevenueModification', () => {
 
   it('should create an aggregate for subscription expired', () => {
     const revenueModification = RevenueModification.create({
-      createdAt: new Date(1),
+      createdAt: 1,
       eventType: SubscriptionEventType.create('SUBSCRIPTION_EXPIRED').getValue(),
       previousMonthlyRevenue: MonthlyRevenue.create(123).getValue(),
       subscription,
@@ -49,6 +50,7 @@ describe('RevenueModification', () => {
 
   it('should create an aggregate for subscription cancelled', () => {
     const revenueModification = RevenueModification.create({
+      createdAt: 2,
       eventType: SubscriptionEventType.create('SUBSCRIPTION_CANCELLED').getValue(),
       previousMonthlyRevenue: MonthlyRevenue.create(123).getValue(),
       subscription,
