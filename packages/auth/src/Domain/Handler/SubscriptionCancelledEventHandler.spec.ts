@@ -40,6 +40,9 @@ describe('SubscriptionCancelledEventHandler', () => {
       subscriptionEndsAt: 2,
       subscriptionUpdatedAt: 2,
       lastPayedAt: 1,
+      userExistingSubscriptionsCount: 1,
+      billingFrequency: 1,
+      payAmount: 12.99,
     }
   })
 

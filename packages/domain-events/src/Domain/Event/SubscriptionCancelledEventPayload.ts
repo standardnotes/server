@@ -11,4 +11,7 @@ export interface SubscriptionCancelledEventPayload {
   timestamp: number
   offline: boolean
   replaced: boolean
+  userExistingSubscriptionsCount: number
+  billingFrequency: number
+  payAmount: number
 }

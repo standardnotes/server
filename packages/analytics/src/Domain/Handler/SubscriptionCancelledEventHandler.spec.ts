@@ -9,14 +9,19 @@ import { AnalyticsStoreInterface } from '../Analytics/AnalyticsStoreInterface'
 import { StatisticsMeasure } from '../Statistics/StatisticsMeasure'
 import { StatisticsStoreInterface } from '../Statistics/StatisticsStoreInterface'
 import { Period } from '../Time/Period'
+import { Result } from '../Core/Result'
+import { RevenueModification } from '../Revenue/RevenueModification'
+import { SaveRevenueModification } from '../UseCase/SaveRevenueModification/SaveRevenueModification'
 
 describe('SubscriptionCancelledEventHandler', () => {
   let event: SubscriptionCancelledEvent
   let getUserAnalyticsId: GetUserAnalyticsId
   let analyticsStore: AnalyticsStoreInterface
   let statisticsStore: StatisticsStoreInterface
+  let saveRevenueModification: SaveRevenueModification
 
-  const createHandler = () => new SubscriptionCancelledEventHandler(getUserAnalyticsId, analyticsStore, statisticsStore)
+  const createHandler = () =>
+    new SubscriptionCancelledEventHandler(getUserAnalyticsId, analyticsStore, statisticsStore, saveRevenueModification)
 
   beforeEach(() => {
     getUserAnalyticsId = {} as jest.Mocked<GetUserAnalyticsId>
@@ -30,6 +35,7 @@ describe('SubscriptionCancelledEventHandler', () => {
 
     event = {} as jest.Mocked<SubscriptionCancelledEvent>
     event.createdAt = new Date(1)
+    event.type = 'SUBSCRIPTION_CANCELLED'
     event.payload = {
       subscriptionId: 1,
       userEmail: 'test@test.com',
@@ -41,7 +47,13 @@ describe('SubscriptionCancelledEventHandler', () => {
       timestamp: 1,
       offline: false,
       replaced: false,
+      userExistingSubscriptionsCount: 1,
+      billingFrequency: 1,
+      payAmount: 12.99,
     }
+
+    saveRevenueModification = {} as jest.Mocked<SaveRevenueModification>
+    saveRevenueModification.execute = jest.fn().mockReturnValue(Result.ok<RevenueModification>())
   })
 
   it('should track subscription cancelled statistics', async () => {
@@ -55,6 +67,7 @@ describe('SubscriptionCancelledEventHandler', () => {
       Period.ThisWeek,
       Period.ThisMonth,
     ])
+    expect(saveRevenueModification.execute).toHaveBeenCalled()
   })
 
   it('should not track statistics for subscriptions that are in a legacy 5 year plan', async () => {
@@ -65,5 +78,6 @@ describe('SubscriptionCancelledEventHandler', () => {
     await createHandler().handle(event)
 
     expect(statisticsStore.incrementMeasure).not.toHaveBeenCalled()
+    expect(saveRevenueModification.execute).toHaveBeenCalled()
   })
 })
