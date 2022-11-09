@@ -8,6 +8,9 @@ import { GetUserAnalyticsId } from '../UseCase/GetUserAnalyticsId/GetUserAnalyti
 import { AnalyticsStoreInterface } from '../Analytics/AnalyticsStoreInterface'
 import { StatisticsStoreInterface } from '../Statistics/StatisticsStoreInterface'
 import { Period } from '../Time/Period'
+import { SaveRevenueModification } from '../UseCase/SaveRevenueModification/SaveRevenueModification'
+import { Result } from '../Core/Result'
+import { RevenueModification } from '../Revenue/RevenueModification'
 
 describe('SubscriptionPurchasedEventHandler', () => {
   let event: SubscriptionPurchasedEvent
@@ -15,8 +18,10 @@ describe('SubscriptionPurchasedEventHandler', () => {
   let getUserAnalyticsId: GetUserAnalyticsId
   let analyticsStore: AnalyticsStoreInterface
   let statisticsStore: StatisticsStoreInterface
+  let saveRevenueModification: SaveRevenueModification
 
-  const createHandler = () => new SubscriptionPurchasedEventHandler(getUserAnalyticsId, analyticsStore, statisticsStore)
+  const createHandler = () =>
+    new SubscriptionPurchasedEventHandler(getUserAnalyticsId, analyticsStore, statisticsStore, saveRevenueModification)
 
   beforeEach(() => {
     statisticsStore = {} as jest.Mocked<StatisticsStoreInterface>
@@ -25,6 +30,7 @@ describe('SubscriptionPurchasedEventHandler', () => {
 
     event = {} as jest.Mocked<SubscriptionPurchasedEvent>
     event.createdAt = new Date(1)
+    event.type = 'SUBSCRIPTION_PURCHASED'
     event.payload = {
       subscriptionId: 1,
       userEmail: 'test@test.com',
@@ -37,6 +43,8 @@ describe('SubscriptionPurchasedEventHandler', () => {
       newSubscriber: true,
       totalActiveSubscriptionsCount: 123,
       userRegisteredAt: 23,
+      billingFrequency: 12,
+      payAmount: 29.99,
     }
 
     getUserAnalyticsId = {} as jest.Mocked<GetUserAnalyticsId>
@@ -45,12 +53,16 @@ describe('SubscriptionPurchasedEventHandler', () => {
     analyticsStore = {} as jest.Mocked<AnalyticsStoreInterface>
     analyticsStore.markActivity = jest.fn()
     analyticsStore.unmarkActivity = jest.fn()
+
+    saveRevenueModification = {} as jest.Mocked<SaveRevenueModification>
+    saveRevenueModification.execute = jest.fn().mockReturnValue(Result.ok<RevenueModification>())
   })
 
   it('should mark subscription creation statistics', async () => {
     await createHandler().handle(event)
 
     expect(statisticsStore.incrementMeasure).toHaveBeenCalled()
+    expect(saveRevenueModification.execute).toHaveBeenCalled()
   })
 
   it("should not measure registration to subscription time if this is not user's first subscription", async () => {

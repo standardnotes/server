@@ -12,4 +12,6 @@ export interface SubscriptionPurchasedEventPayload {
   newSubscriber: boolean
   totalActiveSubscriptionsCount: number
   userRegisteredAt: number
+  billingFrequency: number
+  payAmount: number
 }

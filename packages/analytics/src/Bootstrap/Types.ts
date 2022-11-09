@@ -19,6 +19,7 @@ const TYPES = {
   ORMRevenueModificationRepository: Symbol.for('ORMRevenueModificationRepository'),
   // Use Case
   GetUserAnalyticsId: Symbol.for('GetUserAnalyticsId'),
+  SaveRevenueModification: Symbol.for('SaveRevenueModification'),
   // Handlers
   UserRegisteredEventHandler: Symbol.for('UserRegisteredEventHandler'),
   AccountDeletionRequestedEventHandler: Symbol.for('AccountDeletionRequestedEventHandler'),

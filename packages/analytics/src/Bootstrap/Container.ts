@@ -50,6 +50,7 @@ import { TypeORMRevenueModification } from '../Infra/TypeORM/TypeORMRevenueModif
 import { MapInterface } from '../Domain/Map/MapInterface'
 import { RevenueModification } from '../Domain/Revenue/RevenueModification'
 import { RevenueModificationMap } from '../Domain/Map/RevenueModificationMap'
+import { SaveRevenueModification } from '../Domain/UseCase/SaveRevenueModification/SaveRevenueModification'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -136,6 +137,7 @@ export class ContainerConfigLoader {
 
     // Use Case
     container.bind<GetUserAnalyticsId>(TYPES.GetUserAnalyticsId).to(GetUserAnalyticsId)
+    container.bind<SaveRevenueModification>(TYPES.SaveRevenueModification).to(SaveRevenueModification)
 
     // Hanlders
     container.bind<UserRegisteredEventHandler>(TYPES.UserRegisteredEventHandler).to(UserRegisteredEventHandler)

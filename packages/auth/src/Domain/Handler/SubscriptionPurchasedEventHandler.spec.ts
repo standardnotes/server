@@ -90,6 +90,8 @@ describe('SubscriptionPurchasedEventHandler', () => {
       newSubscriber: true,
       totalActiveSubscriptionsCount: 123,
       userRegisteredAt: dayjs.utc().valueOf() - 23,
+      billingFrequency: 12,
+      payAmount: 29.99,
     }
 
     subscriptionSettingService = {} as jest.Mocked<SubscriptionSettingServiceInterface>

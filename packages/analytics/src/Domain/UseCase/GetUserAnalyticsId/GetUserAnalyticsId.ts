@@ -1,5 +1,7 @@
 import { inject, injectable } from 'inversify'
 import TYPES from '../../../Bootstrap/Types'
+import { Email } from '../../Common/Email'
+import { Uuid } from '../../Common/Uuid'
 import { AnalyticsEntityRepositoryInterface } from '../../Entity/AnalyticsEntityRepositoryInterface'
 import { UseCaseInterface } from '../UseCaseInterface'
 import { GetUserAnalyticsIdDTO } from './GetUserAnalyticsIdDTO'
@@ -25,6 +27,8 @@ export class GetUserAnalyticsId implements UseCaseInterface {
 
     return {
       analyticsId: analyticsEntity.id,
+      userUuid: Uuid.create(analyticsEntity.userUuid).getValue(),
+      userEmail: Email.create(analyticsEntity.userEmail).getValue(),
     }
   }
 }

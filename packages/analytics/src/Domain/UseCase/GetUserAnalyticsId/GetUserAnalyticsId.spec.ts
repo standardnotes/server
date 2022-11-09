@@ -12,7 +12,11 @@ describe('GetUserAnalyticsId', () => {
   const createUseCase = () => new GetUserAnalyticsId(analyticsEntityRepository)
 
   beforeEach(() => {
-    analyticsEntity = { id: 123 } as jest.Mocked<AnalyticsEntity>
+    analyticsEntity = {
+      id: 123,
+      userUuid: '1-2-3',
+      userEmail: 'test@test.te',
+    } as jest.Mocked<AnalyticsEntity>
 
     analyticsEntityRepository = {} as jest.Mocked<AnalyticsEntityRepositoryInterface>
     analyticsEntityRepository.findOneByUserUuid = jest.fn().mockReturnValue(analyticsEntity)
@@ -20,11 +24,11 @@ describe('GetUserAnalyticsId', () => {
   })
 
   it('should return analytics id for a user by uuid', async () => {
-    expect(await createUseCase().execute({ userUuid: '1-2-3' })).toEqual({ analyticsId: 123 })
+    expect(await (await createUseCase().execute({ userUuid: '1-2-3' })).analyticsId).toEqual(123)
   })
 
   it('should return analytics id for a user by email', async () => {
-    expect(await createUseCase().execute({ userEmail: 'test@test.te' })).toEqual({ analyticsId: 123 })
+    expect(await (await createUseCase().execute({ userEmail: 'test@test.te' })).analyticsId).toEqual(123)
   })
 
   it('should throw error if user is missing analytics entity', async () => {
