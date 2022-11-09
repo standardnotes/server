@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.56.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.55.0...@standardnotes/auth-server@1.56.0) (2022-11-09)
+
+### Features
+
+* **analytics:** add saving revenue modifications upon subscription renewed ([cdb7fcf](https://github.com/standardnotes/server/commit/cdb7fcf8311fecfabe3ef9eb656cd6ec57b87de0))
+
 # [1.55.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.54.0...@standardnotes/auth-server@1.55.0) (2022-11-09)
 
 ### Features

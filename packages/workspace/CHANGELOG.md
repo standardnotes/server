@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.17.10](https://github.com/standardnotes/server/compare/@standardnotes/workspace-server@1.17.9...@standardnotes/workspace-server@1.17.10) (2022-11-09)
+
+**Note:** Version bump only for package @standardnotes/workspace-server
+
 ## [1.17.9](https://github.com/standardnotes/server/compare/@standardnotes/workspace-server@1.17.8...@standardnotes/workspace-server@1.17.9) (2022-11-09)
 
 **Note:** Version bump only for package @standardnotes/workspace-server

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.80.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.79.0...@standardnotes/domain-events@2.80.0) (2022-11-09)
+
+### Features
+
+* **analytics:** add saving revenue modifications upon subscription renewed ([cdb7fcf](https://github.com/standardnotes/server/commit/cdb7fcf8311fecfabe3ef9eb656cd6ec57b87de0))
+
 # [2.79.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.78.1...@standardnotes/domain-events@2.79.0) (2022-11-09)
 
 ### Features
