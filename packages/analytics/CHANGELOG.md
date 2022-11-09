@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.7.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.6.0...@standardnotes/analytics@2.7.0) (2022-11-09)
+
+### Features
+
+* **analytics:** add saving revenue modifications upon subscription canceled ([52a257a](https://github.com/standardnotes/server/commit/52a257abb16034134a50474fbbb2493a00c58b99))
+
 # [2.6.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.5.0...@standardnotes/analytics@2.6.0) (2022-11-09)
 
 ### Features
