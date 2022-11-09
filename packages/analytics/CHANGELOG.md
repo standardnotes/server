@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.7.1](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.7.0...@standardnotes/analytics@2.7.1) (2022-11-09)
+
+### Bug Fixes
+
+* **analytics:** add missing created at column ([89502be](https://github.com/standardnotes/server/commit/89502bed638b17301e42e0d5916635b0a59f585d))
+
 # [2.7.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.6.0...@standardnotes/analytics@2.7.0) (2022-11-09)
 
 ### Features
