@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.3.1](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.3.0...@standardnotes/analytics@2.3.1) (2022-11-09)
+
+### Bug Fixes
+
+* **analytics:** missing injectable annotation ([9d3ef24](https://github.com/standardnotes/server/commit/9d3ef24ba94ad28976a211d40f94f1bce8d0d305))
+
 # [2.3.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.2.0...@standardnotes/analytics@2.3.0) (2022-11-09)
 
 ### Features
