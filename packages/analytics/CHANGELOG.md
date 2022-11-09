@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.7.2](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.7.1...@standardnotes/analytics@2.7.2) (2022-11-09)
+
+### Bug Fixes
+
+* **analytics:** mrr column types ([90aef90](https://github.com/standardnotes/server/commit/90aef905af05b8c1c86c7bd383df6b2b502f7c91))
+
 ## [2.7.1](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.7.0...@standardnotes/analytics@2.7.1) (2022-11-09)
 
 ### Bug Fixes
