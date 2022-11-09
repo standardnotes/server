@@ -74,6 +74,8 @@ describe('SubscriptionRefundedEventHandler', () => {
       offline: false,
       userExistingSubscriptionsCount: 3,
       totalActiveSubscriptionsCount: 1,
+      billingFrequency: 1,
+      payAmount: 12.99,
     }
 
     logger = {} as jest.Mocked<Logger>

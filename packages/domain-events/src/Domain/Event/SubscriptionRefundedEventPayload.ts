@@ -8,4 +8,6 @@ export interface SubscriptionRefundedEventPayload {
   totalActiveSubscriptionsCount: number
   timestamp: number
   offline: boolean
+  billingFrequency: number
+  payAmount: number
 }

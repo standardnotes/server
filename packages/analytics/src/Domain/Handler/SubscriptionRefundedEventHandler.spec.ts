@@ -10,18 +10,24 @@ import { SubscriptionRefundedEventHandler } from './SubscriptionRefundedEventHan
 import { StatisticsStoreInterface } from '../Statistics/StatisticsStoreInterface'
 import { AnalyticsActivity } from '../Analytics/AnalyticsActivity'
 import { Period } from '../Time/Period'
+import { Result } from '../Core/Result'
+import { RevenueModification } from '../Revenue/RevenueModification'
+import { SaveRevenueModification } from '../UseCase/SaveRevenueModification/SaveRevenueModification'
 
 describe('SubscriptionRefundedEventHandler', () => {
   let event: SubscriptionRefundedEvent
   let getUserAnalyticsId: GetUserAnalyticsId
   let analyticsStore: AnalyticsStoreInterface
   let statisticsStore: StatisticsStoreInterface
+  let saveRevenueModification: SaveRevenueModification
 
-  const createHandler = () => new SubscriptionRefundedEventHandler(getUserAnalyticsId, analyticsStore, statisticsStore)
+  const createHandler = () =>
+    new SubscriptionRefundedEventHandler(getUserAnalyticsId, analyticsStore, statisticsStore, saveRevenueModification)
 
   beforeEach(() => {
     event = {} as jest.Mocked<SubscriptionRefundedEvent>
     event.createdAt = new Date(1)
+    event.type = 'SUBSCRIPTION_REFUNDED'
     event.payload = {
       subscriptionId: 1,
       userEmail: 'test@test.com',
@@ -30,6 +36,8 @@ describe('SubscriptionRefundedEventHandler', () => {
       offline: false,
       userExistingSubscriptionsCount: 3,
       totalActiveSubscriptionsCount: 1,
+      billingFrequency: 1,
+      payAmount: 12.99,
     }
 
     getUserAnalyticsId = {} as jest.Mocked<GetUserAnalyticsId>
@@ -41,6 +49,9 @@ describe('SubscriptionRefundedEventHandler', () => {
 
     statisticsStore = {} as jest.Mocked<StatisticsStoreInterface>
     statisticsStore.setMeasure = jest.fn()
+
+    saveRevenueModification = {} as jest.Mocked<SaveRevenueModification>
+    saveRevenueModification.execute = jest.fn().mockReturnValue(Result.ok<RevenueModification>())
   })
 
   it('should mark churn for new customer', async () => {
@@ -56,6 +67,8 @@ describe('SubscriptionRefundedEventHandler', () => {
     expect(analyticsStore.markActivity).toHaveBeenCalledWith([AnalyticsActivity.NewCustomersChurn], 3, [
       Period.ThisMonth,
     ])
+
+    expect(saveRevenueModification.execute).toHaveBeenCalled()
   })
 
   it('should mark churn for existing customer', async () => {
