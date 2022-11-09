@@ -49,11 +49,13 @@ export class TypeORMRevenueModification {
 
   @Column({
     name: 'previous_mrr',
+    type: 'float',
   })
   declare previousMonthlyRevenue: number
 
   @Column({
     name: 'new_mrr',
+    type: 'float',
   })
   declare newMonthlyRevenue: number
 
