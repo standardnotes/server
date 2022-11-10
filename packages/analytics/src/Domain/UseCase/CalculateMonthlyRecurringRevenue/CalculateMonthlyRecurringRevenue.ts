@@ -1,3 +1,4 @@
+import { SubscriptionBillingFrequency, SubscriptionName } from '@standardnotes/common'
 import { inject, injectable } from 'inversify'
 import TYPES from '../../../Bootstrap/Types'
 import { Result } from '../../Core/Result'
@@ -18,9 +19,49 @@ export class CalculateMonthlyRecurringRevenue implements DomainUseCaseInterface<
   ) {}
 
   async execute(_dto: CalculateMonthlyRecurringRevenueDTO): Promise<Result<MonthlyRevenue>> {
-    const mrrDiff = await this.revenueModificationRepository.sumMRRDiff()
+    const mrrDiff = await this.revenueModificationRepository.sumMRRDiff({})
 
     await this.statisticsStore.setMeasure(StatisticsMeasure.MRR, mrrDiff, [
+      Period.Today,
+      Period.ThisMonth,
+      Period.ThisYear,
+    ])
+
+    const monthlyPlansMrrDiff = await this.revenueModificationRepository.sumMRRDiff({
+      billingFrequency: SubscriptionBillingFrequency.Monthly,
+    })
+
+    await this.statisticsStore.setMeasure(StatisticsMeasure.MonthlyPlansMRR, monthlyPlansMrrDiff, [
+      Period.Today,
+      Period.ThisMonth,
+      Period.ThisYear,
+    ])
+
+    const annualPlansMrrDiff = await this.revenueModificationRepository.sumMRRDiff({
+      billingFrequency: SubscriptionBillingFrequency.Annual,
+    })
+
+    await this.statisticsStore.setMeasure(StatisticsMeasure.AnnualPlansMRR, annualPlansMrrDiff, [
+      Period.Today,
+      Period.ThisMonth,
+      Period.ThisYear,
+    ])
+
+    const proPlansMrrDiff = await this.revenueModificationRepository.sumMRRDiff({
+      planName: SubscriptionName.ProPlan,
+    })
+
+    await this.statisticsStore.setMeasure(StatisticsMeasure.ProPlansMRR, proPlansMrrDiff, [
+      Period.Today,
+      Period.ThisMonth,
+      Period.ThisYear,
+    ])
+
+    const plusPlansMrrDiff = await this.revenueModificationRepository.sumMRRDiff({
+      planName: SubscriptionName.PlusPlan,
+    })
+
+    await this.statisticsStore.setMeasure(StatisticsMeasure.PlusPlansMRR, plusPlansMrrDiff, [
       Period.Today,
       Period.ThisMonth,
       Period.ThisYear,

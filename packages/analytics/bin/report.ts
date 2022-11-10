@@ -109,7 +109,13 @@ const requestReport = async (
     }>
   }> = []
 
-  const thirtyDaysStatisticsNames = [StatisticsMeasure.MRR]
+  const thirtyDaysStatisticsNames = [
+    StatisticsMeasure.MRR,
+    StatisticsMeasure.AnnualPlansMRR,
+    StatisticsMeasure.MonthlyPlansMRR,
+    StatisticsMeasure.PlusPlansMRR,
+    StatisticsMeasure.ProPlansMRR,
+  ]
   for (const statisticName of thirtyDaysStatisticsNames) {
     statisticsOverTime.push({
       name: statisticName,

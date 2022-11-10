@@ -3,6 +3,6 @@ import { RevenueModification } from './RevenueModification'
 
 export interface RevenueModificationRepositoryInterface {
   findLastByUserUuid(userUuid: Uuid): Promise<RevenueModification | null>
-  sumMRRDiff(): Promise<number>
+  sumMRRDiff(dto: { planName?: string; billingFrequency?: number }): Promise<number>
   save(revenueModification: RevenueModification): Promise<RevenueModification>
 }

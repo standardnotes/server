@@ -17,11 +17,17 @@ export class MySQLRevenueModificationRepository implements RevenueModificationRe
     private revenueModificationMap: MapInterface<RevenueModification, TypeORMRevenueModification>,
   ) {}
 
-  async sumMRRDiff(): Promise<number> {
-    const result = await this.ormRepository
-      .createQueryBuilder()
-      .select('sum(new_mrr - previous_mrr)', 'mrrDiff')
-      .getRawOne()
+  async sumMRRDiff(dto: { planName?: string; billingFrequency?: number }): Promise<number> {
+    const query = this.ormRepository.createQueryBuilder().select('sum(new_mrr - previous_mrr)', 'mrrDiff')
+
+    if (dto.planName !== undefined) {
+      query.where('subscription_plan = :planName', { planName: dto.planName })
+    }
+    if (dto.billingFrequency !== undefined) {
+      query.where('billing_frequency = :billingFrequency', { billingFrequency: dto.billingFrequency })
+    }
+
+    const result = await query.getRawOne()
 
     if (result === undefined) {
       return 0

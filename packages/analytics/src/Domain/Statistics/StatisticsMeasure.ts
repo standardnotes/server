@@ -16,4 +16,8 @@ export enum StatisticsMeasure {
   NewCustomers = 'new-customers',
   TotalCustomers = 'total-customers',
   MRR = 'mrr',
+  MonthlyPlansMRR = 'monthly-plans-mrr',
+  AnnualPlansMRR = 'annual-plans-mrr',
+  ProPlansMRR = 'pro-plans-mrr',
+  PlusPlansMRR = 'plus-plans-mrr',
 }
