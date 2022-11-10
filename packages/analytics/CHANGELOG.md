@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.7.3](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.7.2...@standardnotes/analytics@2.7.3) (2022-11-10)
+
+### Bug Fixes
+
+* **analytics:** arhcitecture arrangements for use case execution ([7393954](https://github.com/standardnotes/server/commit/7393954ff6ece6143f7661104299172548db90ee))
+
 ## [2.7.2](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.7.1...@standardnotes/analytics@2.7.2) (2022-11-09)
 
 ### Bug Fixes
