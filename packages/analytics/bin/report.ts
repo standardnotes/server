@@ -100,8 +100,6 @@ const requestReport = async (
     })
   }
 
-  const thirtyDaysStatisticsNames = [StatisticsMeasure.MRR]
-
   const statisticsOverTime: Array<{
     name: string
     period: number
@@ -110,11 +108,22 @@ const requestReport = async (
       totalCount: number
     }>
   }> = []
+
+  const thirtyDaysStatisticsNames = [StatisticsMeasure.MRR]
   for (const statisticName of thirtyDaysStatisticsNames) {
     statisticsOverTime.push({
       name: statisticName,
       period: Period.Last30Days,
       counts: await statisticsStore.calculateTotalCountOverPeriod(statisticName, Period.Last30Days),
+    })
+  }
+
+  const monthlyStatisticsNames = [StatisticsMeasure.MRR]
+  for (const statisticName of monthlyStatisticsNames) {
+    statisticsOverTime.push({
+      name: statisticName,
+      period: Period.ThisYear,
+      counts: await statisticsStore.calculateTotalCountOverPeriod(statisticName, Period.ThisYear),
     })
   }
 

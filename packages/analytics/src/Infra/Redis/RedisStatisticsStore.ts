@@ -14,7 +14,14 @@ export class RedisStatisticsStore implements StatisticsStoreInterface {
     period: Period,
   ): Promise<{ periodKey: string; totalCount: number }[]> {
     if (
-      ![Period.Last30Days, Period.Q1ThisYear, Period.Q2ThisYear, Period.Q3ThisYear, Period.Q4ThisYear].includes(period)
+      ![
+        Period.Last30Days,
+        Period.ThisYear,
+        Period.Q1ThisYear,
+        Period.Q2ThisYear,
+        Period.Q3ThisYear,
+        Period.Q4ThisYear,
+      ].includes(period)
     ) {
       throw new Error(`Unsuporrted period: ${period}`)
     }
