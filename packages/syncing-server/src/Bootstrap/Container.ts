@@ -47,7 +47,9 @@ import { OwnershipFilter } from '../Domain/Item/SaveRule/OwnershipFilter'
 import { TimeDifferenceFilter } from '../Domain/Item/SaveRule/TimeDifferenceFilter'
 import { ItemFactoryInterface } from '../Domain/Item/ItemFactoryInterface'
 import { ItemFactory } from '../Domain/Item/ItemFactory'
-import axios, { AxiosInstance } from 'axios'
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const axios = require('axios')
+import { AxiosInstance } from 'axios'
 import { UuidFilter } from '../Domain/Item/SaveRule/UuidFilter'
 import { ContentTypeFilter } from '../Domain/Item/SaveRule/ContentTypeFilter'
 import { ContentFilter } from '../Domain/Item/SaveRule/ContentFilter'

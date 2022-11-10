@@ -1,5 +1,7 @@
 import * as winston from 'winston'
-import axios, { AxiosInstance } from 'axios'
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const axios = require('axios')
+import { AxiosInstance } from 'axios'
 import Redis from 'ioredis'
 import * as AWS from 'aws-sdk'
 import { Container } from 'inversify'

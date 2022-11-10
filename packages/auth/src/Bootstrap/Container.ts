@@ -72,7 +72,9 @@ import { DeleteAccount } from '../Domain/UseCase/DeleteAccount/DeleteAccount'
 import { DeleteSetting } from '../Domain/UseCase/DeleteSetting/DeleteSetting'
 import { SettingFactory } from '../Domain/Setting/SettingFactory'
 import { SettingService } from '../Domain/Setting/SettingService'
-import axios, { AxiosInstance } from 'axios'
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const axios = require('axios')
+import { AxiosInstance } from 'axios'
 import { UserSubscription } from '../Domain/Subscription/UserSubscription'
 import { MySQLUserSubscriptionRepository } from '../Infra/MySQL/MySQLUserSubscriptionRepository'
 import { WebSocketsClientService } from '../Infra/WebSockets/WebSocketsClientService'
