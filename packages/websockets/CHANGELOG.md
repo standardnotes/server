@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.15](https://github.com/standardnotes/server/compare/@standardnotes/websockets-server@1.4.14...@standardnotes/websockets-server@1.4.15) (2022-11-10)
+
+**Note:** Version bump only for package @standardnotes/websockets-server
+
 ## [1.4.14](https://github.com/standardnotes/server/compare/@standardnotes/websockets-server@1.4.13...@standardnotes/websockets-server@1.4.14) (2022-11-10)
 
 **Note:** Version bump only for package @standardnotes/websockets-server
