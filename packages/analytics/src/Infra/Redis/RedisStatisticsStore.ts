@@ -16,6 +16,7 @@ export class RedisStatisticsStore implements StatisticsStoreInterface {
     if (
       ![
         Period.Last30Days,
+        Period.Last30DaysIncludingToday,
         Period.ThisYear,
         Period.Q1ThisYear,
         Period.Q2ThisYear,
