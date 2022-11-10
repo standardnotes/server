@@ -1947,7 +1947,7 @@ __metadata:
     ts-jest: "npm:^29.0.3"
     typeorm: "npm:^0.3.6"
     typescript: "npm:^4.8.4"
-    ua-parser-js: "npm:1.0.2"
+    ua-parser-js: "npm:^1.0.32"
     uuid: "npm:^9.0.0"
     winston: "npm:^3.8.1"
   languageName: unknown
@@ -2390,7 +2390,7 @@ __metadata:
     ts-jest: "npm:^29.0.3"
     typeorm: "npm:^0.3.6"
     typescript: "npm:^4.8.4"
-    ua-parser-js: "npm:1.0.2"
+    ua-parser-js: "npm:^1.0.32"
     uuid: "npm:^9.0.0"
     winston: "npm:^3.8.1"
   languageName: unknown
@@ -11031,10 +11031,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ua-parser-js@npm:1.0.2":
-  version: 1.0.2
-  resolution: "ua-parser-js@npm:1.0.2"
-  checksum: 5ee14b105c4982bd86ca358e334187cde40aaf1dde2f1626fbd9c76de98b845191f02fc4e015e68885d047db336344f9ffba5b33cac5f6de6ad9a1adba88ea79
+"ua-parser-js@npm:^1.0.32":
+  version: 1.0.32
+  resolution: "ua-parser-js@npm:1.0.32"
+  checksum: 9d320c6742248cf25264ece5f7756df097be7a7843cd71c10a9adaea35fe304600cd487da0bdb7add7239a5801905d720835ba4293a5add9568b868cd4079428
   languageName: node
   linkType: hard
 
