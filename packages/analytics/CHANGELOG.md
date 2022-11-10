@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.8.3](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.8.2...@standardnotes/analytics@2.8.3) (2022-11-10)
+
+### Bug Fixes
+
+* **analytics:** add subscription id to error logs ([81be065](https://github.com/standardnotes/server/commit/81be06598c918279f98a8ba6b59ea1b3803c949c))
+
 ## [2.8.2](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.8.1...@standardnotes/analytics@2.8.2) (2022-11-10)
 
 ### Bug Fixes
