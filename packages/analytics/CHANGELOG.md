@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.8.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.7.3...@standardnotes/analytics@2.8.0) (2022-11-10)
+
+### Features
+
+* **analytics:** add calculating monthly recurring revenue ([77e5065](https://github.com/standardnotes/server/commit/77e50655f6fa7f9c28e13f8b8bc6de246c0454f0))
+
 ## [2.7.3](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.7.2...@standardnotes/analytics@2.7.3) (2022-11-10)
 
 ### Bug Fixes

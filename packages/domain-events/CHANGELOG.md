@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.84.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.83.0...@standardnotes/domain-events@2.84.0) (2022-11-10)
+
+### Features
+
+* **analytics:** add calculating monthly recurring revenue ([77e5065](https://github.com/standardnotes/server/commit/77e50655f6fa7f9c28e13f8b8bc6de246c0454f0))
+
 # [2.83.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.82.0...@standardnotes/domain-events@2.83.0) (2022-11-09)
 
 ### Features
