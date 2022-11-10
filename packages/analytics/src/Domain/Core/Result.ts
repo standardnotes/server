@@ -1,7 +1,7 @@
 /* istanbul ignore file */
 
 export class Result<T> {
-  constructor(private isSuccess: boolean, private error?: T | string, private value?: T) {
+  constructor(private isSuccess: boolean, private error?: string, private value?: T) {
     Object.freeze(this)
   }
 
@@ -11,13 +11,13 @@ export class Result<T> {
 
   getValue(): T {
     if (!this.isSuccess) {
-      throw new Error('Cannot get value of an unsuccessfull result')
+      throw new Error(`Cannot get value of an unsuccessfull result: ${this.error}`)
     }
 
     return this.value as T
   }
 
-  getError(): T | string {
+  getError(): string {
     if (this.isSuccess || this.error === undefined) {
       throw new Error('Cannot get an error of a successfull result')
     }
@@ -29,7 +29,7 @@ export class Result<T> {
     return new Result<U>(true, undefined, value)
   }
 
-  static fail<U>(error: U | string): Result<U> {
+  static fail<U>(error: string): Result<U> {
     return new Result<U>(false, error)
   }
 }

@@ -1,4 +1,5 @@
 import { Entity } from '../Core/Entity'
+import { Result } from '../Core/Result'
 import { UniqueEntityId } from '../Core/UniqueEntityId'
 import { UserProps } from './UserProps'
 
@@ -11,7 +12,7 @@ export class User extends Entity<UserProps> {
     super(props, id)
   }
 
-  public static create(props: UserProps, id?: UniqueEntityId): User {
-    return new User(props, id)
+  public static create(props: UserProps, id?: UniqueEntityId): Result<User> {
+    return Result.ok<User>(new User(props, id))
   }
 }

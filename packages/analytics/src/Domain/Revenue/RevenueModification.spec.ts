@@ -16,10 +16,10 @@ describe('RevenueModification', () => {
       isFirstSubscriptionForUser: true,
       payedAmount: 123,
       planName: SubscriptionPlanName.create('PRO_PLAN').getValue(),
-    })
+    }).getValue()
     user = User.create({
       email: Email.create('test@test.te').getValue(),
-    })
+    }).getValue()
   })
 
   it('should create an aggregate for purchased subscription', () => {
@@ -27,37 +27,12 @@ describe('RevenueModification', () => {
       createdAt: 2,
       eventType: SubscriptionEventType.create('SUBSCRIPTION_PURCHASED').getValue(),
       previousMonthlyRevenue: MonthlyRevenue.create(123).getValue(),
+      newMonthlyRevenue: MonthlyRevenue.create(45).getValue(),
       subscription,
       user,
-    })
+    }).getValue()
 
     expect(revenueModification.id.toString()).toHaveLength(36)
-    expect(revenueModification.newMonthlyRevenue.value).toEqual(123 / 12)
-  })
-
-  it('should create an aggregate for subscription expired', () => {
-    const revenueModification = RevenueModification.create({
-      createdAt: 1,
-      eventType: SubscriptionEventType.create('SUBSCRIPTION_EXPIRED').getValue(),
-      previousMonthlyRevenue: MonthlyRevenue.create(123).getValue(),
-      subscription,
-      user,
-    })
-
-    expect(revenueModification.id.toString()).toHaveLength(36)
-    expect(revenueModification.newMonthlyRevenue.value).toEqual(0)
-  })
-
-  it('should create an aggregate for subscription cancelled', () => {
-    const revenueModification = RevenueModification.create({
-      createdAt: 2,
-      eventType: SubscriptionEventType.create('SUBSCRIPTION_CANCELLED').getValue(),
-      previousMonthlyRevenue: MonthlyRevenue.create(123).getValue(),
-      subscription,
-      user,
-    })
-
-    expect(revenueModification.id.toString()).toHaveLength(36)
-    expect(revenueModification.newMonthlyRevenue.value).toEqual(123)
+    expect(revenueModification.props.newMonthlyRevenue.value).toEqual(45)
   })
 })

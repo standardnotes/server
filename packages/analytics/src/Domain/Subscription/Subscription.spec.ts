@@ -8,7 +8,7 @@ describe('Subscription', () => {
       isFirstSubscriptionForUser: true,
       payedAmount: 12.99,
       planName: SubscriptionPlanName.create('PRO_PLAN').getValue(),
-    })
+    }).getValue()
 
     expect(subscription.id.toString()).toHaveLength(36)
   })

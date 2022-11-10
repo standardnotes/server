@@ -12,6 +12,7 @@ import { Period } from '../Time/Period'
 import { Result } from '../Core/Result'
 import { RevenueModification } from '../Revenue/RevenueModification'
 import { SaveRevenueModification } from '../UseCase/SaveRevenueModification/SaveRevenueModification'
+import { Logger } from 'winston'
 
 describe('SubscriptionCancelledEventHandler', () => {
   let event: SubscriptionCancelledEvent
@@ -19,11 +20,21 @@ describe('SubscriptionCancelledEventHandler', () => {
   let analyticsStore: AnalyticsStoreInterface
   let statisticsStore: StatisticsStoreInterface
   let saveRevenueModification: SaveRevenueModification
+  let logger: Logger
 
   const createHandler = () =>
-    new SubscriptionCancelledEventHandler(getUserAnalyticsId, analyticsStore, statisticsStore, saveRevenueModification)
+    new SubscriptionCancelledEventHandler(
+      getUserAnalyticsId,
+      analyticsStore,
+      statisticsStore,
+      saveRevenueModification,
+      logger,
+    )
 
   beforeEach(() => {
+    logger = {} as jest.Mocked<Logger>
+    logger.error = jest.fn()
+
     getUserAnalyticsId = {} as jest.Mocked<GetUserAnalyticsId>
     getUserAnalyticsId.execute = jest.fn().mockReturnValue({ analyticsId: 3 })
 
@@ -79,5 +90,15 @@ describe('SubscriptionCancelledEventHandler', () => {
 
     expect(statisticsStore.incrementMeasure).not.toHaveBeenCalled()
     expect(saveRevenueModification.execute).toHaveBeenCalled()
+  })
+
+  it('should log failure to save revenue modification', async () => {
+    saveRevenueModification.execute = jest.fn().mockReturnValue(Result.fail('Oops'))
+
+    event.payload.timestamp = 1642395451516000
+
+    await createHandler().handle(event)
+
+    expect(logger.error).toHaveBeenCalled()
   })
 })

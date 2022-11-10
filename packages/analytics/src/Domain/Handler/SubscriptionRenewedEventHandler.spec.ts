@@ -9,17 +9,22 @@ import { AnalyticsStoreInterface } from '../Analytics/AnalyticsStoreInterface'
 import { SaveRevenueModification } from '../UseCase/SaveRevenueModification/SaveRevenueModification'
 import { RevenueModification } from '../Revenue/RevenueModification'
 import { Result } from '../Core/Result'
+import { Logger } from 'winston'
 
 describe('SubscriptionRenewedEventHandler', () => {
   let event: SubscriptionRenewedEvent
   let getUserAnalyticsId: GetUserAnalyticsId
   let analyticsStore: AnalyticsStoreInterface
   let saveRevenueModification: SaveRevenueModification
+  let logger: Logger
 
   const createHandler = () =>
-    new SubscriptionRenewedEventHandler(getUserAnalyticsId, analyticsStore, saveRevenueModification)
+    new SubscriptionRenewedEventHandler(getUserAnalyticsId, analyticsStore, saveRevenueModification, logger)
 
   beforeEach(() => {
+    logger = {} as jest.Mocked<Logger>
+    logger.error = jest.fn()
+
     event = {} as jest.Mocked<SubscriptionRenewedEvent>
     event.createdAt = new Date(1)
     event.type = 'SUBSCRIPTION_RENEWED'
@@ -51,5 +56,13 @@ describe('SubscriptionRenewedEventHandler', () => {
     expect(analyticsStore.markActivity).toHaveBeenCalled()
     expect(analyticsStore.unmarkActivity).toHaveBeenCalled()
     expect(saveRevenueModification.execute).toHaveBeenCalled()
+  })
+
+  it('should log failure to save revenue modification', async () => {
+    saveRevenueModification.execute = jest.fn().mockReturnValue(Result.fail('Oops'))
+
+    await createHandler().handle(event)
+
+    expect(logger.error).toHaveBeenCalled()
   })
 })

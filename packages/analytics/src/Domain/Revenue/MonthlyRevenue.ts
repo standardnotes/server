@@ -13,7 +13,7 @@ export class MonthlyRevenue extends ValueObject<MonthlyRevenueProps> {
 
   static create(revenue: number): Result<MonthlyRevenue> {
     if (isNaN(revenue) || revenue < 0) {
-      return Result.fail<MonthlyRevenue>('Monthly revenue must be a non-negative number')
+      return Result.fail<MonthlyRevenue>(`Monthly revenue must be a non-negative number. Supplied: ${revenue}`)
     } else {
       return Result.ok<MonthlyRevenue>(new MonthlyRevenue({ value: revenue }))
     }

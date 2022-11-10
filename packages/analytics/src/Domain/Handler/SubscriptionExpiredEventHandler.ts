@@ -1,5 +1,6 @@
 import { DomainEventHandlerInterface, SubscriptionExpiredEvent } from '@standardnotes/domain-events'
 import { inject, injectable } from 'inversify'
+import { Logger } from 'winston'
 
 import TYPES from '../../Bootstrap/Types'
 import { AnalyticsActivity } from '../Analytics/AnalyticsActivity'
@@ -20,6 +21,7 @@ export class SubscriptionExpiredEventHandler implements DomainEventHandlerInterf
     @inject(TYPES.AnalyticsStore) private analyticsStore: AnalyticsStoreInterface,
     @inject(TYPES.StatisticsStore) private statisticsStore: StatisticsStoreInterface,
     @inject(TYPES.SaveRevenueModification) private saveRevenueModification: SaveRevenueModification,
+    @inject(TYPES.Logger) private logger: Logger,
   ) {}
 
   async handle(event: SubscriptionExpiredEvent): Promise<void> {
@@ -36,7 +38,7 @@ export class SubscriptionExpiredEventHandler implements DomainEventHandlerInterf
       [Period.Today, Period.ThisWeek, Period.ThisMonth, Period.ThisYear],
     )
 
-    await this.saveRevenueModification.execute({
+    const result = await this.saveRevenueModification.execute({
       billingFrequency: event.payload.billingFrequency,
       eventType: SubscriptionEventType.create(event.type).getValue(),
       newSubscriber: event.payload.userExistingSubscriptionsCount === 1,
@@ -46,5 +48,9 @@ export class SubscriptionExpiredEventHandler implements DomainEventHandlerInterf
       userEmail: Email.create(event.payload.userEmail).getValue(),
       userUuid,
     })
+
+    if (result.isFailed()) {
+      this.logger.error(`[${event.type}] Could not save revenue modification: ${result.getError()}`)
+    }
   }
 }

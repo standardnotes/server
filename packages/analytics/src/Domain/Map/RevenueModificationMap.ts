@@ -14,13 +14,18 @@ import { SubscriptionEventType } from '../Subscription/SubscriptionEventType'
 @injectable()
 export class RevenueModificationMap implements MapInterface<RevenueModification, TypeORMRevenueModification> {
   toDomain(persistence: TypeORMRevenueModification): RevenueModification {
-    const user = User.create(
+    const userOrError = User.create(
       {
         email: Email.create(persistence.userEmail).getValue(),
       },
       new UniqueEntityId(persistence.userUuid),
     )
-    const subscription = Subscription.create(
+    if (userOrError.isFailed()) {
+      throw new Error(`Could not create user: ${userOrError.getError()}`)
+    }
+    const user = userOrError.getValue()
+
+    const subscriptionOrError = Subscription.create(
       {
         billingFrequency: persistence.billingFrequency,
         isFirstSubscriptionForUser: persistence.isNewCustomer,
@@ -29,18 +34,31 @@ export class RevenueModificationMap implements MapInterface<RevenueModification,
       },
       new UniqueEntityId(persistence.subscriptionId),
     )
-    const previousMonthlyRevenueOrError = MonthlyRevenue.create(persistence.previousMonthlyRevenue)
+    if (subscriptionOrError.isFailed()) {
+      throw new Error(`Could not create subscription: ${subscriptionOrError.getError()}`)
+    }
+    const subscription = subscriptionOrError.getValue()
 
-    return RevenueModification.create(
+    const previousMonthlyRevenueOrError = MonthlyRevenue.create(persistence.previousMonthlyRevenue)
+    const newMonthlyRevenueOrError = MonthlyRevenue.create(persistence.newMonthlyRevenue)
+
+    const revenuModificationOrError = RevenueModification.create(
       {
         user,
         subscription,
         eventType: SubscriptionEventType.create(persistence.eventType).getValue(),
         previousMonthlyRevenue: previousMonthlyRevenueOrError.getValue(),
+        newMonthlyRevenue: newMonthlyRevenueOrError.getValue(),
         createdAt: persistence.createdAt,
       },
       new UniqueEntityId(persistence.uuid),
     )
+
+    if (revenuModificationOrError.isFailed()) {
+      throw new Error(`Could not map revenue modification to domain: ${revenuModificationOrError.getError()}`)
+    }
+
+    return revenuModificationOrError.getValue()
   }
 
   toPersistence(domain: RevenueModification): TypeORMRevenueModification {
@@ -50,7 +68,7 @@ export class RevenueModificationMap implements MapInterface<RevenueModification,
     persistence.billingFrequency = subscription.props.billingFrequency
     persistence.eventType = domain.props.eventType.value
     persistence.isNewCustomer = subscription.props.isFirstSubscriptionForUser
-    persistence.newMonthlyRevenue = domain.newMonthlyRevenue.value
+    persistence.newMonthlyRevenue = domain.props.newMonthlyRevenue.value
     persistence.previousMonthlyRevenue = domain.props.previousMonthlyRevenue.value
     persistence.subscriptionId = subscription.id.toValue() as number
     persistence.subscriptionPlan = subscription.props.planName.value

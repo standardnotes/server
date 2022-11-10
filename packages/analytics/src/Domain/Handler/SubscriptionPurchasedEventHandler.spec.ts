@@ -11,6 +11,7 @@ import { Period } from '../Time/Period'
 import { SaveRevenueModification } from '../UseCase/SaveRevenueModification/SaveRevenueModification'
 import { Result } from '../Core/Result'
 import { RevenueModification } from '../Revenue/RevenueModification'
+import { Logger } from 'winston'
 
 describe('SubscriptionPurchasedEventHandler', () => {
   let event: SubscriptionPurchasedEvent
@@ -19,11 +20,21 @@ describe('SubscriptionPurchasedEventHandler', () => {
   let analyticsStore: AnalyticsStoreInterface
   let statisticsStore: StatisticsStoreInterface
   let saveRevenueModification: SaveRevenueModification
+  let logger: Logger
 
   const createHandler = () =>
-    new SubscriptionPurchasedEventHandler(getUserAnalyticsId, analyticsStore, statisticsStore, saveRevenueModification)
+    new SubscriptionPurchasedEventHandler(
+      getUserAnalyticsId,
+      analyticsStore,
+      statisticsStore,
+      saveRevenueModification,
+      logger,
+    )
 
   beforeEach(() => {
+    logger = {} as jest.Mocked<Logger>
+    logger.error = jest.fn()
+
     statisticsStore = {} as jest.Mocked<StatisticsStoreInterface>
     statisticsStore.incrementMeasure = jest.fn()
     statisticsStore.setMeasure = jest.fn()
@@ -79,5 +90,13 @@ describe('SubscriptionPurchasedEventHandler', () => {
     await createHandler().handle(event)
 
     expect(analyticsStore.markActivity).toHaveBeenCalledWith(['limited-discount-offer-purchased'], 3, [Period.Today])
+  })
+
+  it('should log failure to save revenue modification', async () => {
+    saveRevenueModification.execute = jest.fn().mockReturnValue(Result.fail('Oops'))
+
+    await createHandler().handle(event)
+
+    expect(logger.error).toHaveBeenCalled()
   })
 })

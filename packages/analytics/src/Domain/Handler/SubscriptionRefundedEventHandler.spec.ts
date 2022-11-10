@@ -13,6 +13,7 @@ import { Period } from '../Time/Period'
 import { Result } from '../Core/Result'
 import { RevenueModification } from '../Revenue/RevenueModification'
 import { SaveRevenueModification } from '../UseCase/SaveRevenueModification/SaveRevenueModification'
+import { Logger } from 'winston'
 
 describe('SubscriptionRefundedEventHandler', () => {
   let event: SubscriptionRefundedEvent
@@ -20,11 +21,21 @@ describe('SubscriptionRefundedEventHandler', () => {
   let analyticsStore: AnalyticsStoreInterface
   let statisticsStore: StatisticsStoreInterface
   let saveRevenueModification: SaveRevenueModification
+  let logger: Logger
 
   const createHandler = () =>
-    new SubscriptionRefundedEventHandler(getUserAnalyticsId, analyticsStore, statisticsStore, saveRevenueModification)
+    new SubscriptionRefundedEventHandler(
+      getUserAnalyticsId,
+      analyticsStore,
+      statisticsStore,
+      saveRevenueModification,
+      logger,
+    )
 
   beforeEach(() => {
+    logger = {} as jest.Mocked<Logger>
+    logger.error = jest.fn()
+
     event = {} as jest.Mocked<SubscriptionRefundedEvent>
     event.createdAt = new Date(1)
     event.type = 'SUBSCRIPTION_REFUNDED'
@@ -87,5 +98,13 @@ describe('SubscriptionRefundedEventHandler', () => {
     expect(analyticsStore.markActivity).not.toHaveBeenCalledWith([AnalyticsActivity.ExistingCustomersChurn], 3, [
       Period.ThisMonth,
     ])
+  })
+
+  it('should log failure to save revenue modification', async () => {
+    saveRevenueModification.execute = jest.fn().mockReturnValue(Result.fail('Oops'))
+
+    await createHandler().handle(event)
+
+    expect(logger.error).toHaveBeenCalled()
   })
 })

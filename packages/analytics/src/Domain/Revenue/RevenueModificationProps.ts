@@ -8,5 +8,6 @@ export interface RevenueModificationProps {
   subscription: Subscription
   eventType: SubscriptionEventType
   previousMonthlyRevenue: MonthlyRevenue
+  newMonthlyRevenue: MonthlyRevenue
   createdAt: number
 }

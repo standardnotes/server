@@ -1,4 +1,5 @@
 import { Entity } from '../Core/Entity'
+import { Result } from '../Core/Result'
 import { UniqueEntityId } from '../Core/UniqueEntityId'
 import { SubscriptionProps } from './SubscriptionProps'
 
@@ -11,7 +12,7 @@ export class Subscription extends Entity<SubscriptionProps> {
     super(props, id)
   }
 
-  static create(props: SubscriptionProps, id?: UniqueEntityId): Subscription {
-    return new Subscription(props, id)
+  static create(props: SubscriptionProps, id?: UniqueEntityId): Result<Subscription> {
+    return Result.ok<Subscription>(new Subscription(props, id))
   }
 }

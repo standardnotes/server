@@ -10,6 +10,7 @@ import { SaveRevenueModification } from '../UseCase/SaveRevenueModification/Save
 import { Email } from '../Common/Email'
 import { SubscriptionEventType } from '../Subscription/SubscriptionEventType'
 import { SubscriptionPlanName } from '../Subscription/SubscriptionPlanName'
+import { Logger } from 'winston'
 
 @injectable()
 export class SubscriptionRenewedEventHandler implements DomainEventHandlerInterface {
@@ -17,6 +18,7 @@ export class SubscriptionRenewedEventHandler implements DomainEventHandlerInterf
     @inject(TYPES.GetUserAnalyticsId) private getUserAnalyticsId: GetUserAnalyticsId,
     @inject(TYPES.AnalyticsStore) private analyticsStore: AnalyticsStoreInterface,
     @inject(TYPES.SaveRevenueModification) private saveRevenueModification: SaveRevenueModification,
+    @inject(TYPES.Logger) private logger: Logger,
   ) {}
 
   async handle(event: SubscriptionRenewedEvent): Promise<void> {
@@ -32,7 +34,7 @@ export class SubscriptionRenewedEventHandler implements DomainEventHandlerInterf
       [Period.Today, Period.ThisWeek, Period.ThisMonth],
     )
 
-    await this.saveRevenueModification.execute({
+    const result = await this.saveRevenueModification.execute({
       billingFrequency: event.payload.billingFrequency,
       eventType: SubscriptionEventType.create(event.type).getValue(),
       newSubscriber: false,
@@ -42,5 +44,9 @@ export class SubscriptionRenewedEventHandler implements DomainEventHandlerInterf
       userEmail: Email.create(event.payload.userEmail).getValue(),
       userUuid,
     })
+
+    if (result.isFailed()) {
+      this.logger.error(`[${event.type}] Could not save revenue modification: ${result.getError()}`)
+    }
   }
 }
