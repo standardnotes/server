@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.9.1](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.9.0...@standardnotes/analytics@2.9.1) (2022-11-10)
+
+### Bug Fixes
+
+* **analytics:** generate mrr stats for last 30 days including Today ([b92c4ae](https://github.com/standardnotes/server/commit/b92c4ae650b53db5c0bb2a9cf9afb01caeb8d822))
+
 # [2.9.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.8.3...@standardnotes/analytics@2.9.0) (2022-11-10)
 
 ### Features
