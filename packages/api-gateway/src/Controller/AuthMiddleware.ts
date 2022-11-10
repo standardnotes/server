@@ -60,7 +60,7 @@ export class AuthMiddleware extends BaseMiddleware {
         })
 
         if (authResponse.status > 200) {
-          response.setHeader('content-type', authResponse.headers['content-type'])
+          response.setHeader('content-type', authResponse.headers['content-type'] as string)
           response.status(authResponse.status).send(authResponse.data)
 
           return
