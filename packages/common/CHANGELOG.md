@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.44.1](https://github.com/standardnotes/server/compare/@standardnotes/common@1.44.0...@standardnotes/common@1.44.1) (2022-11-10)
+
+### Bug Fixes
+
+* **analytics:** add five year plans mrr calculation ([a03c5bc](https://github.com/standardnotes/server/commit/a03c5bceea2a9b166b1d5ad75181021462a86627))
+
 # [1.44.0](https://github.com/standardnotes/server/compare/@standardnotes/common@1.43.0...@standardnotes/common@1.44.0) (2022-11-03)
 
 ### Features

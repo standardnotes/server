@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.9.3](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.9.2...@standardnotes/analytics@2.9.3) (2022-11-10)
+
+### Bug Fixes
+
+* **analytics:** add five year plans mrr calculation ([a03c5bc](https://github.com/standardnotes/server/commit/a03c5bceea2a9b166b1d5ad75181021462a86627))
+
 ## [2.9.2](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.9.1...@standardnotes/analytics@2.9.2) (2022-11-10)
 
 ### Bug Fixes
