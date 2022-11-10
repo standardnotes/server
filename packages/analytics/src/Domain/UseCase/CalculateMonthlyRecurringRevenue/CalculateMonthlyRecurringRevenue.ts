@@ -20,7 +20,11 @@ export class CalculateMonthlyRecurringRevenue implements DomainUseCaseInterface<
   async execute(_dto: CalculateMonthlyRecurringRevenueDTO): Promise<Result<MonthlyRevenue>> {
     const mrrDiff = await this.revenueModificationRepository.sumMRRDiff()
 
-    await this.statisticsStore.setMeasure(StatisticsMeasure.MRR, mrrDiff, [Period.Today])
+    await this.statisticsStore.setMeasure(StatisticsMeasure.MRR, mrrDiff, [
+      Period.Today,
+      Period.ThisMonth,
+      Period.ThisYear,
+    ])
 
     return MonthlyRevenue.create(mrrDiff)
   }
