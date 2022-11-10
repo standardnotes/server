@@ -46,7 +46,9 @@ export class SubscriptionRenewedEventHandler implements DomainEventHandlerInterf
     })
 
     if (result.isFailed()) {
-      this.logger.error(`[${event.type}] Could not save revenue modification: ${result.getError()}`)
+      this.logger.error(
+        `[${event.type}][${event.payload.subscriptionId}] Could not save revenue modification: ${result.getError()}`,
+      )
     }
   }
 }
