@@ -17,6 +17,19 @@ export class MySQLRevenueModificationRepository implements RevenueModificationRe
     private revenueModificationMap: MapInterface<RevenueModification, TypeORMRevenueModification>,
   ) {}
 
+  async sumMRRDiff(): Promise<number> {
+    const result = await this.ormRepository
+      .createQueryBuilder()
+      .select('sum(new_mrr - previous_mrr)', 'mrrDiff')
+      .getRawOne()
+
+    if (result === undefined) {
+      return 0
+    }
+
+    return +(+result.mrrDiff).toFixed(2)
+  }
+
   async findLastByUserUuid(userUuid: Uuid): Promise<RevenueModification | null> {
     const persistence = await this.ormRepository
       .createQueryBuilder()

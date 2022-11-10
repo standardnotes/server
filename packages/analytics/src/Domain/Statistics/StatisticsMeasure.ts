@@ -15,4 +15,5 @@ export enum StatisticsMeasure {
   Refunds = 'refunds',
   NewCustomers = 'new-customers',
   TotalCustomers = 'total-customers',
+  MRR = 'mrr',
 }

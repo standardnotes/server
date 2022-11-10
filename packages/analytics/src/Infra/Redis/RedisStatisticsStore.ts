@@ -9,6 +9,27 @@ import { PeriodKeyGeneratorInterface } from '../../Domain/Time/PeriodKeyGenerato
 export class RedisStatisticsStore implements StatisticsStoreInterface {
   constructor(private periodKeyGenerator: PeriodKeyGeneratorInterface, private redisClient: IORedis.Redis) {}
 
+  async calculateTotalCountOverPeriod(
+    measure: StatisticsMeasure,
+    period: Period,
+  ): Promise<{ periodKey: string; totalCount: number }[]> {
+    if (
+      ![Period.Last30Days, Period.Q1ThisYear, Period.Q2ThisYear, Period.Q3ThisYear, Period.Q4ThisYear].includes(period)
+    ) {
+      throw new Error(`Unsuporrted period: ${period}`)
+    }
+    const periodKeys = this.periodKeyGenerator.getDiscretePeriodKeys(period)
+    const counts = []
+    for (const periodKey of periodKeys) {
+      counts.push({
+        periodKey,
+        totalCount: await this.getMeasureTotal(measure, periodKey),
+      })
+    }
+
+    return counts
+  }
+
   async getMeasureIncrementCounts(measure: StatisticsMeasure, period: Period): Promise<number> {
     const increments = await this.redisClient.get(
       `count:increments:${measure}:timespan:${this.periodKeyGenerator.getPeriodKey(period)}`,

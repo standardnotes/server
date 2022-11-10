@@ -20,6 +20,7 @@ const TYPES = {
   // Use Case
   GetUserAnalyticsId: Symbol.for('GetUserAnalyticsId'),
   SaveRevenueModification: Symbol.for('SaveRevenueModification'),
+  CalculateMonthlyRecurringRevenue: Symbol.for('CalculateMonthlyRecurringRevenue'),
   // Handlers
   UserRegisteredEventHandler: Symbol.for('UserRegisteredEventHandler'),
   AccountDeletionRequestedEventHandler: Symbol.for('AccountDeletionRequestedEventHandler'),

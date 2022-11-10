@@ -9,14 +9,6 @@ export class DomainEventFactory implements DomainEventFactoryInterface {
   constructor(@inject(TYPES.Timer) private timer: TimerInterface) {}
 
   createDailyAnalyticsReportGeneratedEvent(dto: {
-    snjsStatistics: Array<{
-      version: string
-      count: number
-    }>
-    applicationStatistics: Array<{
-      version: string
-      count: number
-    }>
     activityStatistics: Array<{
       name: string
       retention: number
@@ -38,18 +30,13 @@ export class DomainEventFactory implements DomainEventFactoryInterface {
       }>
       totalCount: number
     }>
-    outOfSyncIncidents: number
-    retentionStatistics: Array<{
-      firstActivity: string
-      secondActivity: string
-      retention: {
-        periodKeys: Array<string>
-        values: Array<{
-          firstPeriodKey: string
-          secondPeriodKey: string
-          value: number
-        }>
-      }
+    statisticsOverTime: Array<{
+      name: string
+      period: number
+      counts: Array<{
+        periodKey: string
+        totalCount: number
+      }>
     }>
     churn: {
       periodKeys: Array<string>

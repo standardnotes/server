@@ -15,6 +15,7 @@ import { ContainerConfigLoader } from '../src/Bootstrap/Container'
 import TYPES from '../src/Bootstrap/Types'
 import { Env } from '../src/Bootstrap/Env'
 import { DomainEventFactoryInterface } from '../src/Domain/Event/DomainEventFactoryInterface'
+import { CalculateMonthlyRecurringRevenue } from '../src/Domain/UseCase/CalculateMonthlyRecurringRevenue/CalculateMonthlyRecurringRevenue'
 
 const requestReport = async (
   analyticsStore: AnalyticsStoreInterface,
@@ -22,7 +23,10 @@ const requestReport = async (
   domainEventFactory: DomainEventFactoryInterface,
   domainEventPublisher: DomainEventPublisherInterface,
   periodKeyGenerator: PeriodKeyGeneratorInterface,
+  calculateMonthlyRecurringRevenue: CalculateMonthlyRecurringRevenue,
 ): Promise<void> => {
+  await calculateMonthlyRecurringRevenue.execute({})
+
   const analyticsOverTime: Array<{
     name: string
     period: number
@@ -93,6 +97,24 @@ const requestReport = async (
         Period.Yesterday,
       ),
       totalCount: await analyticsStore.calculateActivityTotalCount(activityName, Period.Yesterday),
+    })
+  }
+
+  const thirtyDaysStatisticsNames = [StatisticsMeasure.MRR]
+
+  const statisticsOverTime: Array<{
+    name: string
+    period: number
+    counts: Array<{
+      periodKey: string
+      totalCount: number
+    }>
+  }> = []
+  for (const statisticName of thirtyDaysStatisticsNames) {
+    statisticsOverTime.push({
+      name: statisticName,
+      period: Period.Last30Days,
+      counts: await statisticsStore.calculateTotalCountOverPeriod(statisticName, Period.Last30Days),
     })
   }
 
@@ -170,13 +192,10 @@ const requestReport = async (
   }
 
   const event = domainEventFactory.createDailyAnalyticsReportGeneratedEvent({
-    applicationStatistics: await statisticsStore.getYesterdayApplicationUsage(),
-    snjsStatistics: await statisticsStore.getYesterdaySNJSUsage(),
-    outOfSyncIncidents: await statisticsStore.getYesterdayOutOfSyncIncidents(),
     activityStatistics: yesterdayActivityStatistics,
     activityStatisticsOverTime: analyticsOverTime,
+    statisticsOverTime,
     statisticMeasures,
-    retentionStatistics: [],
     churn: {
       periodKeys: monthlyPeriodKeys,
       values: churnRates,
@@ -200,9 +219,19 @@ void container.load().then((container) => {
   const domainEventFactory: DomainEventFactoryInterface = container.get(TYPES.DomainEventFactory)
   const domainEventPublisher: DomainEventPublisherInterface = container.get(TYPES.DomainEventPublisher)
   const periodKeyGenerator: PeriodKeyGeneratorInterface = container.get(TYPES.PeriodKeyGenerator)
+  const calculateMonthlyRecurringRevenue: CalculateMonthlyRecurringRevenue = container.get(
+    TYPES.CalculateMonthlyRecurringRevenue,
+  )
 
   Promise.resolve(
-    requestReport(analyticsStore, statisticsStore, domainEventFactory, domainEventPublisher, periodKeyGenerator),
+    requestReport(
+      analyticsStore,
+      statisticsStore,
+      domainEventFactory,
+      domainEventPublisher,
+      periodKeyGenerator,
+      calculateMonthlyRecurringRevenue,
+    ),
   )
     .then(() => {
       logger.info('Usage report generation complete')

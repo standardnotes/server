@@ -22,18 +22,6 @@ describe('DomainEventFactory', () => {
   it('should create a DAILY_ANALYTICS_REPORT_GENERATED event', () => {
     expect(
       createFactory().createDailyAnalyticsReportGeneratedEvent({
-        snjsStatistics: [
-          {
-            version: '1-2-3',
-            count: 2,
-          },
-        ],
-        applicationStatistics: [
-          {
-            version: '2-3-4',
-            count: 45,
-          },
-        ],
         activityStatistics: [
           {
             name: AnalyticsActivity.Register,
@@ -63,8 +51,18 @@ describe('DomainEventFactory', () => {
             totalCount: 123,
           },
         ],
-        outOfSyncIncidents: 324,
-        retentionStatistics: [],
+        statisticsOverTime: [
+          {
+            name: StatisticsMeasure.MRR,
+            period: Period.Last30Days,
+            counts: [
+              {
+                periodKey: '2022-10-9',
+                totalCount: 3,
+              },
+            ],
+          },
+        ],
         churn: {
           periodKeys: ['2022-10-9'],
           values: [
@@ -105,10 +103,16 @@ describe('DomainEventFactory', () => {
             totalCount: 123,
           },
         ],
-        applicationStatistics: [
+        statisticsOverTime: [
           {
-            count: 45,
-            version: '2-3-4',
+            counts: [
+              {
+                periodKey: '2022-10-9',
+                totalCount: 3,
+              },
+            ],
+            name: 'mrr',
+            period: 9,
           },
         ],
         churn: {
@@ -120,14 +124,6 @@ describe('DomainEventFactory', () => {
             },
           ],
         },
-        outOfSyncIncidents: 324,
-        retentionStatistics: [],
-        snjsStatistics: [
-          {
-            count: 2,
-            version: '1-2-3',
-          },
-        ],
         statisticMeasures: [
           {
             average: 23,
