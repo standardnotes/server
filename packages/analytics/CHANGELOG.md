@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.9.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.8.3...@standardnotes/analytics@2.9.0) (2022-11-10)
+
+### Features
+
+* **analytics:** add mrr for annual, monthly, pro and plus subscription plans ([ce3e259](https://github.com/standardnotes/server/commit/ce3e259bdedd10796fb4469f0eabd64bc326a115))
+
 ## [2.8.3](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.8.2...@standardnotes/analytics@2.8.3) (2022-11-10)
 
 ### Bug Fixes
