@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.9.2](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.9.1...@standardnotes/analytics@2.9.2) (2022-11-10)
+
+### Bug Fixes
+
+* **analytics:** add missing period for stats report ([9b593f2](https://github.com/standardnotes/server/commit/9b593f2a6b105ab8f9c7cef8bdda6892c42e20ef))
+
 ## [2.9.1](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.9.0...@standardnotes/analytics@2.9.1) (2022-11-10)
 
 ### Bug Fixes
