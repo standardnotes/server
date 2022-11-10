@@ -26,4 +26,5 @@ export enum Period {
   OctoberThisYear,
   NovemberThisYear,
   DecemberThisYear,
+  Last30DaysIncludingToday,
 }

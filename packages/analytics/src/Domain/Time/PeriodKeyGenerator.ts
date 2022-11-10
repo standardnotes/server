@@ -34,6 +34,12 @@ export class PeriodKeyGenerator implements PeriodKeyGeneratorInterface {
         }
 
         return periodKeys
+      case Period.Last30DaysIncludingToday:
+        for (let i = 0; i <= 29; i++) {
+          periodKeys.unshift(this.getDailyKey(this.getDateNDaysBefore(i)))
+        }
+
+        return periodKeys
       case Period.Last7Days:
         for (let i = 1; i <= 7; i++) {
           periodKeys.unshift(this.getDailyKey(this.getDateNDaysBefore(i)))

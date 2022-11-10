@@ -119,8 +119,8 @@ const requestReport = async (
   for (const statisticName of thirtyDaysStatisticsNames) {
     statisticsOverTime.push({
       name: statisticName,
-      period: Period.Last30Days,
-      counts: await statisticsStore.calculateTotalCountOverPeriod(statisticName, Period.Last30Days),
+      period: Period.Last30DaysIncludingToday,
+      counts: await statisticsStore.calculateTotalCountOverPeriod(statisticName, Period.Last30DaysIncludingToday),
     })
   }
 
