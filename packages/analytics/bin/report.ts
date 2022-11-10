@@ -113,6 +113,7 @@ const requestReport = async (
     StatisticsMeasure.MRR,
     StatisticsMeasure.AnnualPlansMRR,
     StatisticsMeasure.MonthlyPlansMRR,
+    StatisticsMeasure.FiveYearPlansMRR,
     StatisticsMeasure.PlusPlansMRR,
     StatisticsMeasure.ProPlansMRR,
   ]

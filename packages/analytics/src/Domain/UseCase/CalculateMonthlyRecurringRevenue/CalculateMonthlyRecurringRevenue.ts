@@ -47,6 +47,16 @@ export class CalculateMonthlyRecurringRevenue implements DomainUseCaseInterface<
       Period.ThisYear,
     ])
 
+    const fiveYearPlansMrrDiff = await this.revenueModificationRepository.sumMRRDiff({
+      billingFrequency: SubscriptionBillingFrequency.FiveYear,
+    })
+
+    await this.statisticsStore.setMeasure(StatisticsMeasure.FiveYearPlansMRR, fiveYearPlansMrrDiff, [
+      Period.Today,
+      Period.ThisMonth,
+      Period.ThisYear,
+    ])
+
     const proPlansMrrDiff = await this.revenueModificationRepository.sumMRRDiff({
       planName: SubscriptionName.ProPlan,
     })

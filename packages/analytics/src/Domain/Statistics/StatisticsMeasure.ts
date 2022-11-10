@@ -18,6 +18,7 @@ export enum StatisticsMeasure {
   MRR = 'mrr',
   MonthlyPlansMRR = 'monthly-plans-mrr',
   AnnualPlansMRR = 'annual-plans-mrr',
+  FiveYearPlansMRR = 'five-year-plans-mrr',
   ProPlansMRR = 'pro-plans-mrr',
   PlusPlansMRR = 'plus-plans-mrr',
 }
