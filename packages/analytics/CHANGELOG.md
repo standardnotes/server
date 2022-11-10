@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.8.1](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.8.0...@standardnotes/analytics@2.8.1) (2022-11-10)
+
+### Bug Fixes
+
+* **analytics:** add persisting mrr for this month and this year as well ([8df0482](https://github.com/standardnotes/server/commit/8df0482eb4bfd63b9639fd786c9b6952ad7f801d))
+
 # [2.8.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.7.3...@standardnotes/analytics@2.8.0) (2022-11-10)
 
 ### Features
