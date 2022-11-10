@@ -1857,7 +1857,7 @@ __metadata:
     "@types/prettyjson": "npm:^0.0.30"
     "@typescript-eslint/eslint-plugin": "npm:^5.29.0"
     aws-sdk: "npm:^2.1160.0"
-    axios: "npm:^0.27.2"
+    axios: "npm:^1.1.3"
     cors: "npm:2.8.5"
     dotenv: "npm:^16.0.1"
     eslint: "npm:^8.14.0"
@@ -1925,7 +1925,7 @@ __metadata:
     "@types/uuid": "npm:^8.3.0"
     "@typescript-eslint/eslint-plugin": "npm:^5.29.0"
     aws-sdk: "npm:^2.1159.0"
-    axios: "npm:^0.27.2"
+    axios: "npm:^1.1.3"
     bcryptjs: "npm:2.4.3"
     cors: "npm:2.8.5"
     dayjs: "npm:^1.11.6"
@@ -2369,7 +2369,7 @@ __metadata:
     "@types/uuid": "npm:^8.3.0"
     "@typescript-eslint/eslint-plugin": "npm:^5.29.0"
     aws-sdk: "npm:^2.1159.0"
-    axios: "npm:^0.27.2"
+    axios: "npm:^1.1.3"
     cors: "npm:2.8.5"
     dotenv: "npm:^16.0.1"
     eslint: "npm:^8.14.0"
@@ -2455,7 +2455,7 @@ __metadata:
     "@types/newrelic": "npm:^7.0.3"
     "@typescript-eslint/eslint-plugin": "npm:^5.29.0"
     aws-sdk: "npm:^2.1159.0"
-    axios: "npm:^0.27.2"
+    axios: "npm:^1.1.3"
     cors: "npm:2.8.5"
     dotenv: "npm:^16.0.1"
     eslint: "npm:^8.14.0"
@@ -3528,13 +3528,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^0.27.2":
-  version: 0.27.2
-  resolution: "axios@npm:0.27.2"
+"axios@npm:^1.1.3":
+  version: 1.1.3
+  resolution: "axios@npm:1.1.3"
   dependencies:
-    follow-redirects: "npm:^1.14.9"
+    follow-redirects: "npm:^1.15.0"
     form-data: "npm:^4.0.0"
-  checksum: 4cd898afe90caaf05307fc5a0da4c61012493b6bfd4937fff9774455c01d368db583b17c4737e73853f149b32e615487930b491661682a1f69a1973b1f533bb7
+    proxy-from-env: "npm:^1.1.0"
+  checksum: 2e28acd01cc06f9f10dfce3531ebbcd74f2f2a364f44ff4aa59363239baf699c58361e9bb6425ff91283f5fc623051c55bdd2d08c1c06dd7780f0d0762297ca7
   languageName: node
   linkType: hard
 
@@ -5592,7 +5593,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"follow-redirects@npm:^1.14.9":
+"follow-redirects@npm:^1.15.0":
   version: 1.15.2
   resolution: "follow-redirects@npm:1.15.2"
   peerDependenciesMeta:
@@ -9293,6 +9294,13 @@ __metadata:
     forwarded: "npm:0.2.0"
     ipaddr.js: "npm:1.9.1"
   checksum: c03f00d8f882b97636262d0ae7da0c502325474ea215f21b4f0664ad8f40f49d2071b52c18257d011338be3db21ca65a6e8cbc0d95fb23efc00516ce9ee37c27
+  languageName: node
+  linkType: hard
+
+"proxy-from-env@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "proxy-from-env@npm:1.1.0"
+  checksum: 0bba2ef7c8374b384e94e4477764e53df66fcdfa7d19e2c4a063cb39eea979c139ce13981970223665422e72b7d149609a927046e2e40ab340b84d91af082591
   languageName: node
   linkType: hard
 
