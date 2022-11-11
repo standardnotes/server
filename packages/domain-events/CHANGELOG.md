@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.85.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.84.1...@standardnotes/domain-events@2.85.0) (2022-11-11)
+
+### Features
+
+* **domain-events:** add user content size recalculation requested event ([36ec39d](https://github.com/standardnotes/server/commit/36ec39d2fb5caec5952d820bb0d5d08d825a770c))
+
 ## [2.84.1](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.84.0...@standardnotes/domain-events@2.84.1) (2022-11-10)
 
 **Note:** Version bump only for package @standardnotes/domain-events
