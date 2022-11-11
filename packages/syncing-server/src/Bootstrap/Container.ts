@@ -79,6 +79,7 @@ import { AppDataSource } from './DataSource'
 import { RevisionRepositoryInterface } from '../Domain/Revision/RevisionRepositoryInterface'
 import { ItemRepositoryInterface } from '../Domain/Item/ItemRepositoryInterface'
 import { Repository } from 'typeorm'
+import { UserContentSizeRecalculationRequestedEventHandler } from '../Domain/Handler/UserContentSizeRecalculationRequestedEventHandler'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -220,6 +221,9 @@ export class ContainerConfigLoader {
     container
       .bind<CloudBackupRequestedEventHandler>(TYPES.CloudBackupRequestedEventHandler)
       .to(CloudBackupRequestedEventHandler)
+    container
+      .bind<UserContentSizeRecalculationRequestedEventHandler>(TYPES.UserContentSizeRecalculationRequestedEventHandler)
+      .to(UserContentSizeRecalculationRequestedEventHandler)
 
     // Services
     container.bind<ContentDecoder>(TYPES.ContentDecoder).to(ContentDecoder)
