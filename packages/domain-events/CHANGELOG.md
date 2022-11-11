@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.86.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.85.0...@standardnotes/domain-events@2.86.0) (2022-11-11)
+
+### Features
+
+* **syncing-server:** add item content size recalculation ([1a13861](https://github.com/standardnotes/server/commit/1a138616478a646d76404c425800937d2049a226))
+
 # [2.85.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.84.1...@standardnotes/domain-events@2.85.0) (2022-11-11)
 
 ### Features
