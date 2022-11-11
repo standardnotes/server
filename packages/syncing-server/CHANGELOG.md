@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.13.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.12.0...@standardnotes/syncing-server@1.13.0) (2022-11-11)
+
+### Features
+
+* **syncing-server:** add content size recalculation job ([7e404ae](https://github.com/standardnotes/syncing-server-js/commit/7e404ae71a46e3251ee9e9abfd6c258ec536c2d3))
+
 # [1.12.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.11.10...@standardnotes/syncing-server@1.12.0) (2022-11-11)
 
 ### Features
