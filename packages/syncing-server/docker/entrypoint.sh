@@ -19,6 +19,12 @@ case "$COMMAND" in
     yarn workspace @standardnotes/syncing-server worker
     ;;
 
+  'content-size-recalculate' )
+    echo "Starting Content Size Recalculation..."
+    USER_UUID=$1 && shift 1
+    yarn workspace @standardnotes/syncing-server content-size $USER_UUID
+    ;;
+
    * )
     echo "Unknown command"
     ;;

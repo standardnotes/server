@@ -20,6 +20,7 @@
     "test": "jest --coverage --config=./jest.config.js --maxWorkers=50%",
     "start": "yarn node dist/bin/server.js",
     "worker": "yarn node dist/bin/worker.js",
+    "content-size": "yarn node dist/bin/content.js",
     "upgrade:snjs": "yarn ncu -u '@standardnotes/*'"
   },
   "dependencies": {

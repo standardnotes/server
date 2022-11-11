@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import {
   DomainEventService,
   DropboxBackupFailedEvent,
@@ -7,6 +8,7 @@ import {
   GoogleDriveBackupFailedEvent,
   ItemsSyncedEvent,
   OneDriveBackupFailedEvent,
+  UserContentSizeRecalculationRequestedEvent,
 } from '@standardnotes/domain-events'
 import { TimerInterface } from '@standardnotes/time'
 import { inject, injectable } from 'inversify'
@@ -16,6 +18,23 @@ import { DomainEventFactoryInterface } from './DomainEventFactoryInterface'
 @injectable()
 export class DomainEventFactory implements DomainEventFactoryInterface {
   constructor(@inject(TYPES.Timer) private timer: TimerInterface) {}
+
+  createUserContentSizeRecalculationRequestedEvent(userUuid: string): UserContentSizeRecalculationRequestedEvent {
+    return {
+      type: 'USER_CONTENT_SIZE_RECALCULATION_REQUESTED',
+      createdAt: this.timer.getUTCDate(),
+      meta: {
+        correlation: {
+          userIdentifier: userUuid,
+          userIdentifierType: 'uuid',
+        },
+        origin: DomainEventService.SyncingServer,
+      },
+      payload: {
+        userUuid,
+      },
+    }
+  }
 
   createDuplicateItemSyncedEvent(itemUuid: string, userUuid: string): DuplicateItemSyncedEvent {
     return {
