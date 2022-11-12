@@ -20,7 +20,8 @@ export class SubscriptionTokenAuthMiddleware extends BaseMiddleware {
   }
 
   async handler(request: Request, response: Response, next: NextFunction): Promise<void> {
-    const subscriptionToken = request.query.subscription_token
+    const subscriptionToken = request.query.subscription_token || request.body.subscription_token
+
     const email = request.headers['x-offline-email']
     if (!subscriptionToken) {
       response.status(401).send({
