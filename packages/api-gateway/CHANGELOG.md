@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.38.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.37.11...@standardnotes/api-gateway@1.38.0) (2022-11-13)
+
+### Features
+
+* iap confirm endpoint ([#338](https://github.com/standardnotes/api-gateway/issues/338)) ([3bba367](https://github.com/standardnotes/api-gateway/commit/3bba36742ac00c8756dd69f3a81ea124538d5cbe))
+
 ## [1.37.11](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.37.10...@standardnotes/api-gateway@1.37.11) (2022-11-11)
 
 **Note:** Version bump only for package @standardnotes/api-gateway
