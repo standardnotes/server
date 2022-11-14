@@ -8,26 +8,31 @@ import { Revision } from '../Domain/Revision/Revision'
 import { RevisionServiceInterface } from '../Domain/Revision/RevisionServiceInterface'
 import { ErrorTag } from '@standardnotes/common'
 import { RevisionProjection } from '../Projection/RevisionProjection'
+import { MapInterface } from '@standardnotes/domain-core'
+import { RevisionMetadata } from '../Domain/Revision/RevisionMetadata'
+import { SimpleRevisionProjection } from '../Projection/SimpleRevisionProjection'
 
 @controller('/items/:itemUuid/revisions', TYPES.AuthMiddleware)
 export class RevisionsController extends BaseHttpController {
   constructor(
     @inject(TYPES.RevisionService) private revisionService: RevisionServiceInterface,
     @inject(TYPES.RevisionProjector) private revisionProjector: ProjectorInterface<Revision, RevisionProjection>,
+    @inject(TYPES.RevisionMetadataMap)
+    private revisionMetadataMap: MapInterface<RevisionMetadata, SimpleRevisionProjection>,
   ) {
     super()
   }
 
   @httpGet('/')
   public async getRevisions(req: Request, response: Response): Promise<results.JsonResult> {
-    const revisions = await this.revisionService.getRevisions(response.locals.user.uuid, req.params.itemUuid)
+    const metadatas = await this.revisionService.getRevisionsMetadata(response.locals.user.uuid, req.params.itemUuid)
 
-    const revisionProjections = []
-    for (const revision of revisions) {
-      revisionProjections.push(await this.revisionProjector.projectSimple(revision))
+    const metadataProjections = []
+    for (const metadata of metadatas) {
+      metadataProjections.push(this.revisionMetadataMap.toProjection(metadata))
     }
 
-    return this.json(revisionProjections)
+    return this.json(metadataProjections)
   }
 
   @httpGet('/:uuid')

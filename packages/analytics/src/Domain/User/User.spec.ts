@@ -1,4 +1,5 @@
-import { Email } from '../Common/Email'
+import { Email } from '@standardnotes/domain-core'
+
 import { User } from './User'
 
 describe('User', () => {

@@ -2,13 +2,13 @@ import 'reflect-metadata'
 
 import { SubscriptionName } from '@standardnotes/common'
 import { SubscriptionExpiredEvent } from '@standardnotes/domain-events'
+import { Result } from '@standardnotes/domain-core'
 
 import { SubscriptionExpiredEventHandler } from './SubscriptionExpiredEventHandler'
 import { GetUserAnalyticsId } from '../UseCase/GetUserAnalyticsId/GetUserAnalyticsId'
 import { StatisticsStoreInterface } from '../Statistics/StatisticsStoreInterface'
 import { AnalyticsStoreInterface } from '../Analytics/AnalyticsStoreInterface'
 import { SaveRevenueModification } from '../UseCase/SaveRevenueModification/SaveRevenueModification'
-import { Result } from '../Core/Result'
 import { RevenueModification } from '../Revenue/RevenueModification'
 import { Logger } from 'winston'
 

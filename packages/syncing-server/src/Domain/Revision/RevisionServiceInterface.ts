@@ -1,11 +1,12 @@
 import { RoleName } from '@standardnotes/common'
 import { Item } from '../Item/Item'
 import { Revision } from './Revision'
+import { RevisionMetadata } from './RevisionMetadata'
 
 export interface RevisionServiceInterface {
   createRevision(item: Item): Promise<void>
   copyRevisions(fromItemUuid: string, toItemUuid: string): Promise<void>
-  getRevisions(userUuid: string, itemUuid: string): Promise<Revision[]>
+  getRevisionsMetadata(userUuid: string, itemUuid: string): Promise<RevisionMetadata[]>
   getRevision(dto: {
     userUuid: string
     userRoles: RoleName[]

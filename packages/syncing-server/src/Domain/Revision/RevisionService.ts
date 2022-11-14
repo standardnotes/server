@@ -8,6 +8,7 @@ import { Revision } from './Revision'
 import { RevisionRepositoryInterface } from './RevisionRepositoryInterface'
 import { RevisionServiceInterface } from './RevisionServiceInterface'
 import { ItemRepositoryInterface } from '../Item/ItemRepositoryInterface'
+import { RevisionMetadata } from './RevisionMetadata'
 
 @injectable()
 export class RevisionService implements RevisionServiceInterface {
@@ -28,15 +29,13 @@ export class RevisionService implements RevisionServiceInterface {
     return true
   }
 
-  async getRevisions(userUuid: string, itemUuid: string): Promise<Revision[]> {
+  async getRevisionsMetadata(userUuid: string, itemUuid: string): Promise<RevisionMetadata[]> {
     const userItem = await this.itemRepository.findByUuid(itemUuid)
     if (userItem === null || userItem.userUuid !== userUuid) {
       return []
     }
 
-    const revisions = await this.revisionRepository.findByItemId({ itemUuid })
-
-    return revisions
+    return this.revisionRepository.findMetadataByItemId(itemUuid)
   }
 
   async getRevision(dto: {

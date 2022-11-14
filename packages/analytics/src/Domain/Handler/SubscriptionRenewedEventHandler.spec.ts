@@ -2,13 +2,13 @@ import 'reflect-metadata'
 
 import { SubscriptionName } from '@standardnotes/common'
 import { SubscriptionRenewedEvent } from '@standardnotes/domain-events'
+import { Result } from '@standardnotes/domain-core'
 
 import { SubscriptionRenewedEventHandler } from './SubscriptionRenewedEventHandler'
 import { GetUserAnalyticsId } from '../UseCase/GetUserAnalyticsId/GetUserAnalyticsId'
 import { AnalyticsStoreInterface } from '../Analytics/AnalyticsStoreInterface'
 import { SaveRevenueModification } from '../UseCase/SaveRevenueModification/SaveRevenueModification'
 import { RevenueModification } from '../Revenue/RevenueModification'
-import { Result } from '../Core/Result'
 import { Logger } from 'winston'
 
 describe('SubscriptionRenewedEventHandler', () => {

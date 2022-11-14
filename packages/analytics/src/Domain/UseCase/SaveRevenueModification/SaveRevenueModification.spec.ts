@@ -1,9 +1,8 @@
 import 'reflect-metadata'
 
 import { TimerInterface } from '@standardnotes/time'
+import { Email, Result, Uuid } from '@standardnotes/domain-core'
 
-import { Email } from '../../Common/Email'
-import { Uuid } from '../../Common/Uuid'
 import { MonthlyRevenue } from '../../Revenue/MonthlyRevenue'
 
 import { RevenueModification } from '../../Revenue/RevenueModification'
@@ -12,7 +11,6 @@ import { SubscriptionEventType } from '../../Subscription/SubscriptionEventType'
 import { SubscriptionPlanName } from '../../Subscription/SubscriptionPlanName'
 import { SaveRevenueModification } from './SaveRevenueModification'
 import { User } from '../../User/User'
-import { Result } from '../../Core/Result'
 import { Subscription } from '../../Subscription/Subscription'
 
 describe('SaveRevenueModification', () => {

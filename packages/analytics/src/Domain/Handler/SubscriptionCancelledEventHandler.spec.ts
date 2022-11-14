@@ -1,6 +1,7 @@
 import 'reflect-metadata'
 
 import { SubscriptionName } from '@standardnotes/common'
+import { Result } from '@standardnotes/domain-core'
 import { SubscriptionCancelledEvent } from '@standardnotes/domain-events'
 
 import { SubscriptionCancelledEventHandler } from './SubscriptionCancelledEventHandler'
@@ -9,7 +10,6 @@ import { AnalyticsStoreInterface } from '../Analytics/AnalyticsStoreInterface'
 import { StatisticsMeasure } from '../Statistics/StatisticsMeasure'
 import { StatisticsStoreInterface } from '../Statistics/StatisticsStoreInterface'
 import { Period } from '../Time/Period'
-import { Result } from '../Core/Result'
 import { RevenueModification } from '../Revenue/RevenueModification'
 import { SaveRevenueModification } from '../UseCase/SaveRevenueModification/SaveRevenueModification'
 import { Logger } from 'winston'

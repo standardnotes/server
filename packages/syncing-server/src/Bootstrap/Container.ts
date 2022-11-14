@@ -80,6 +80,10 @@ import { RevisionRepositoryInterface } from '../Domain/Revision/RevisionReposito
 import { ItemRepositoryInterface } from '../Domain/Item/ItemRepositoryInterface'
 import { Repository } from 'typeorm'
 import { UserContentSizeRecalculationRequestedEventHandler } from '../Domain/Handler/UserContentSizeRecalculationRequestedEventHandler'
+import { RevisionMetadataMap } from '../Domain/Map/RevisionMetadataMap'
+import { MapInterface } from '@standardnotes/domain-core'
+import { RevisionMetadata } from '../Domain/Revision/RevisionMetadata'
+import { SimpleRevisionProjection } from '../Projection/SimpleRevisionProjection'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -224,6 +228,11 @@ export class ContainerConfigLoader {
     container
       .bind<UserContentSizeRecalculationRequestedEventHandler>(TYPES.UserContentSizeRecalculationRequestedEventHandler)
       .to(UserContentSizeRecalculationRequestedEventHandler)
+
+    // Map
+    container
+      .bind<MapInterface<RevisionMetadata, SimpleRevisionProjection>>(TYPES.RevisionMetadataMap)
+      .to(RevisionMetadataMap)
 
     // Services
     container.bind<ContentDecoder>(TYPES.ContentDecoder).to(ContentDecoder)

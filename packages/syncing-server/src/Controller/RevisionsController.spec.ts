@@ -8,23 +8,32 @@ import { results } from 'inversify-express-utils'
 import { ProjectorInterface } from '../Projection/ProjectorInterface'
 import { RevisionServiceInterface } from '../Domain/Revision/RevisionServiceInterface'
 import { RevisionProjection } from '../Projection/RevisionProjection'
+import { MapInterface } from '@standardnotes/domain-core'
+import { RevisionMetadata } from '../Domain/Revision/RevisionMetadata'
+import { SimpleRevisionProjection } from '../Projection/SimpleRevisionProjection'
 
 describe('RevisionsController', () => {
   let revisionProjector: ProjectorInterface<Revision, RevisionProjection>
+  let revisionMap: MapInterface<RevisionMetadata, SimpleRevisionProjection>
   let revisionService: RevisionServiceInterface
   let revision: Revision
+  let revisionMetadata: RevisionMetadata
   let request: express.Request
   let response: express.Response
 
-  const createController = () => new RevisionsController(revisionService, revisionProjector)
+  const createController = () => new RevisionsController(revisionService, revisionProjector, revisionMap)
 
   beforeEach(() => {
     revision = {} as jest.Mocked<Revision>
 
+    revisionMetadata = {} as jest.Mocked<RevisionMetadata>
+
+    revisionMap = {} as jest.Mocked<MapInterface<RevisionMetadata, SimpleRevisionProjection>>
+
     revisionProjector = {} as jest.Mocked<ProjectorInterface<Revision, RevisionProjection>>
 
     revisionService = {} as jest.Mocked<RevisionServiceInterface>
-    revisionService.getRevisions = jest.fn().mockReturnValue([revision])
+    revisionService.getRevisionsMetadata = jest.fn().mockReturnValue([revisionMetadata])
     revisionService.getRevision = jest.fn().mockReturnValue(revision)
     revisionService.removeRevision = jest.fn().mockReturnValue(true)
 
@@ -42,7 +51,7 @@ describe('RevisionsController', () => {
   })
 
   it('should return revisions for an item', async () => {
-    revisionProjector.projectSimple = jest.fn().mockReturnValue({ foo: 'bar' })
+    revisionMap.toProjection = jest.fn().mockReturnValue({ foo: 'bar' })
 
     const revisionResponse = await createController().getRevisions(request, response)
 

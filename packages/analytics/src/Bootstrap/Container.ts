@@ -47,7 +47,7 @@ import { RefundProcessedEventHandler } from '../Domain/Handler/RefundProcessedEv
 import { RevenueModificationRepositoryInterface } from '../Domain/Revenue/RevenueModificationRepositoryInterface'
 import { MySQLRevenueModificationRepository } from '../Infra/MySQL/MySQLRevenueModificationRepository'
 import { TypeORMRevenueModification } from '../Infra/TypeORM/TypeORMRevenueModification'
-import { MapInterface } from '../Domain/Map/MapInterface'
+import { MapInterface } from '@standardnotes/domain-core/src/Domain/Map/MapInterface'
 import { RevenueModification } from '../Domain/Revenue/RevenueModification'
 import { RevenueModificationMap } from '../Domain/Map/RevenueModificationMap'
 import { SaveRevenueModification } from '../Domain/UseCase/SaveRevenueModification/SaveRevenueModification'

@@ -1,12 +1,11 @@
 import { injectable } from 'inversify'
-import { Email, UniqueEntityId } from '@standardnotes/domain-core'
+import { Email, MapInterface, UniqueEntityId } from '@standardnotes/domain-core'
 
 import { TypeORMRevenueModification } from '../../Infra/TypeORM/TypeORMRevenueModification'
 import { MonthlyRevenue } from '../Revenue/MonthlyRevenue'
 import { RevenueModification } from '../Revenue/RevenueModification'
 import { Subscription } from '../Subscription/Subscription'
 import { User } from '../User/User'
-import { MapInterface } from './MapInterface'
 import { SubscriptionPlanName } from '../Subscription/SubscriptionPlanName'
 import { SubscriptionEventType } from '../Subscription/SubscriptionEventType'
 
@@ -60,7 +59,7 @@ export class RevenueModificationMap implements MapInterface<RevenueModification,
     return revenuModificationOrError.getValue()
   }
 
-  toPersistence(domain: RevenueModification): TypeORMRevenueModification {
+  toProjection(domain: RevenueModification): TypeORMRevenueModification {
     const { subscription, user } = domain.props
     const persistence = new TypeORMRevenueModification()
     persistence.uuid = domain.id.toString()

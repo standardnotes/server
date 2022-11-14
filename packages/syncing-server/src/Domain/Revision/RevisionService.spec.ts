@@ -4,6 +4,7 @@ import { TimerInterface } from '@standardnotes/time'
 import { Item } from '../Item/Item'
 import { ItemRepositoryInterface } from '../Item/ItemRepositoryInterface'
 import { Revision } from './Revision'
+import { RevisionMetadata } from './RevisionMetadata'
 import { RevisionRepositoryInterface } from './RevisionRepositoryInterface'
 import { RevisionService } from './RevisionService'
 
@@ -50,6 +51,7 @@ describe('RevisionService', () => {
     } as jest.Mocked<Revision>
 
     revisionRepository.findByItemId = jest.fn().mockReturnValue([revision1, revision2])
+    revisionRepository.findMetadataByItemId = jest.fn().mockReturnValue([{} as jest.Mocked<RevisionMetadata>])
     revisionRepository.findOneById = jest.fn().mockReturnValue(revision1)
     revisionRepository.removeByUuid = jest.fn()
 
@@ -177,24 +179,24 @@ describe('RevisionService', () => {
     ).toBeNull()
   })
 
-  it('should get revisions for an item', async () => {
-    await createService().getRevisions('1-2-3', '2-3-4')
+  it('should get revisions metadata for an item', async () => {
+    await createService().getRevisionsMetadata('1-2-3', '2-3-4')
 
-    expect(revisionRepository.findByItemId).toHaveBeenCalledWith({ itemUuid: '2-3-4' })
+    expect(revisionRepository.findMetadataByItemId).toHaveBeenCalledWith('2-3-4')
   })
 
-  it('should not get revisions for an non existing item', async () => {
+  it('should not get revisions metadata for an non existing item', async () => {
     itemRepository.findByUuid = jest.fn().mockReturnValue(null)
 
-    expect(await createService().getRevisions('1-2-3', '2-3-4')).toEqual([])
+    expect(await createService().getRevisionsMetadata('1-2-3', '2-3-4')).toEqual([])
 
-    expect(revisionRepository.findByItemId).not.toHaveBeenCalled()
+    expect(revisionRepository.findMetadataByItemId).not.toHaveBeenCalled()
   })
 
-  it("should not get revisions for another user's item", async () => {
-    expect(await createService().getRevisions('3-4-5', '4-5-6')).toEqual([])
+  it("should not get revisions metadata for another user's item", async () => {
+    expect(await createService().getRevisionsMetadata('3-4-5', '4-5-6')).toEqual([])
 
-    expect(revisionRepository.findByItemId).not.toHaveBeenCalled()
+    expect(revisionRepository.findMetadataByItemId).not.toHaveBeenCalled()
   })
 
   it('should save a revision for a note item', async () => {

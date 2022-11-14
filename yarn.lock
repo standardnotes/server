@@ -1979,7 +1979,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@standardnotes/domain-core@workspace:*, @standardnotes/domain-core@workspace:packages/domain-core":
+"@standardnotes/domain-core@workspace:*, @standardnotes/domain-core@workspace:^, @standardnotes/domain-core@workspace:packages/domain-core":
   version: 0.0.0-use.local
   resolution: "@standardnotes/domain-core@workspace:packages/domain-core"
   dependencies:
@@ -2365,6 +2365,7 @@ __metadata:
     "@newrelic/winston-enricher": "npm:^4.0.0"
     "@sentry/node": "npm:^7.19.0"
     "@standardnotes/common": "workspace:*"
+    "@standardnotes/domain-core": "workspace:^"
     "@standardnotes/domain-events": "workspace:*"
     "@standardnotes/domain-events-infra": "workspace:*"
     "@standardnotes/payloads": "npm:^1.5.1"

@@ -10,3 +10,5 @@ export * from './Core/Result'
 export * from './Core/UniqueEntityId'
 export * from './Core/ValueObject'
 export * from './Core/ValueObjectProps'
+
+export * from './Map/MapInterface'

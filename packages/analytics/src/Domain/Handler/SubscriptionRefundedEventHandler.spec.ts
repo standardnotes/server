@@ -2,6 +2,7 @@ import 'reflect-metadata'
 
 import { SubscriptionName } from '@standardnotes/common'
 import { SubscriptionRefundedEvent } from '@standardnotes/domain-events'
+import { Result } from '@standardnotes/domain-core'
 
 import { GetUserAnalyticsId } from '../UseCase/GetUserAnalyticsId/GetUserAnalyticsId'
 import { AnalyticsStoreInterface } from '../Analytics/AnalyticsStoreInterface'
@@ -10,7 +11,6 @@ import { SubscriptionRefundedEventHandler } from './SubscriptionRefundedEventHan
 import { StatisticsStoreInterface } from '../Statistics/StatisticsStoreInterface'
 import { AnalyticsActivity } from '../Analytics/AnalyticsActivity'
 import { Period } from '../Time/Period'
-import { Result } from '../Core/Result'
 import { RevenueModification } from '../Revenue/RevenueModification'
 import { SaveRevenueModification } from '../UseCase/SaveRevenueModification/SaveRevenueModification'
 import { Logger } from 'winston'

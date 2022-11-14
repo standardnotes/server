@@ -1,4 +1,5 @@
-import { Email } from '../Common/Email'
+import { Email } from '@standardnotes/domain-core'
+
 import { Subscription } from '../Subscription/Subscription'
 import { SubscriptionEventType } from '../Subscription/SubscriptionEventType'
 import { SubscriptionPlanName } from '../Subscription/SubscriptionPlanName'

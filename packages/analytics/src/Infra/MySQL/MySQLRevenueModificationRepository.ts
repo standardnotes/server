@@ -1,9 +1,8 @@
 import { inject, injectable } from 'inversify'
 import { Repository } from 'typeorm'
-import { Uuid } from '@standardnotes/domain-core'
+import { MapInterface, Uuid } from '@standardnotes/domain-core'
 
 import TYPES from '../../Bootstrap/Types'
-import { MapInterface } from '../../Domain/Map/MapInterface'
 import { RevenueModification } from '../../Domain/Revenue/RevenueModification'
 import { RevenueModificationRepositoryInterface } from '../../Domain/Revenue/RevenueModificationRepositoryInterface'
 import { TypeORMRevenueModification } from '../TypeORM/TypeORMRevenueModification'
@@ -52,7 +51,7 @@ export class MySQLRevenueModificationRepository implements RevenueModificationRe
   }
 
   async save(revenueModification: RevenueModification): Promise<RevenueModification> {
-    let persistence = this.revenueModificationMap.toPersistence(revenueModification)
+    let persistence = this.revenueModificationMap.toProjection(revenueModification)
 
     persistence = await this.ormRepository.save(persistence)
 

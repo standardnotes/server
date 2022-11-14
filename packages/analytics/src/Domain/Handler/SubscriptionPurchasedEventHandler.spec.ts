@@ -2,6 +2,7 @@ import 'reflect-metadata'
 
 import { SubscriptionName } from '@standardnotes/common'
 import { SubscriptionPurchasedEvent } from '@standardnotes/domain-events'
+import { Result } from '@standardnotes/domain-core'
 
 import { SubscriptionPurchasedEventHandler } from './SubscriptionPurchasedEventHandler'
 import { GetUserAnalyticsId } from '../UseCase/GetUserAnalyticsId/GetUserAnalyticsId'
@@ -9,7 +10,6 @@ import { AnalyticsStoreInterface } from '../Analytics/AnalyticsStoreInterface'
 import { StatisticsStoreInterface } from '../Statistics/StatisticsStoreInterface'
 import { Period } from '../Time/Period'
 import { SaveRevenueModification } from '../UseCase/SaveRevenueModification/SaveRevenueModification'
-import { Result } from '../Core/Result'
 import { RevenueModification } from '../Revenue/RevenueModification'
 import { Logger } from 'winston'
 
