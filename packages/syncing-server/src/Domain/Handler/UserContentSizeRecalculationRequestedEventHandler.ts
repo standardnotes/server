@@ -3,6 +3,7 @@
 import { DomainEventHandlerInterface, UserContentSizeRecalculationRequestedEvent } from '@standardnotes/domain-events'
 import { inject, injectable } from 'inversify'
 import { Stream } from 'stream'
+import { Logger } from 'winston'
 import TYPES from '../../Bootstrap/Types'
 import { ItemProjection } from '../../Projection/ItemProjection'
 import { ProjectorInterface } from '../../Projection/ProjectorInterface'
@@ -14,6 +15,7 @@ export class UserContentSizeRecalculationRequestedEventHandler implements Domain
   constructor(
     @inject(TYPES.ItemRepository) private itemRepository: ItemRepositoryInterface,
     @inject(TYPES.ItemProjector) private itemProjector: ProjectorInterface<Item, ItemProjection>,
+    @inject(TYPES.Logger) private logger: Logger,
   ) {}
 
   async handle(event: UserContentSizeRecalculationRequestedEvent): Promise<void> {
@@ -24,16 +26,31 @@ export class UserContentSizeRecalculationRequestedEventHandler implements Domain
       sortOrder: 'ASC',
     })
 
+    const loggerHandle = this.logger
+
     await new Promise((resolve, reject) => {
       stream
         .pipe(
           new Stream.Transform({
             objectMode: true,
             transform: async (item, _encoding, callback) => {
+              if (!item.item_uuid) {
+                callback()
+
+                return
+              }
+              loggerHandle.info(`Fixing content size for item ${item.item_uuid}`)
+
               const modelItem = await this.itemRepository.findByUuid(item.item_uuid)
               if (modelItem !== null) {
-                modelItem.contentSize = Buffer.byteLength(JSON.stringify(this.itemProjector.projectFull(modelItem)))
-                await this.itemRepository.save(modelItem)
+                const fixedContentSize = Buffer.byteLength(JSON.stringify(this.itemProjector.projectFull(modelItem)))
+                if (modelItem.contentSize !== fixedContentSize) {
+                  loggerHandle.info(`Fixing content size from ${modelItem.contentSize} to ${fixedContentSize}`)
+
+                  modelItem.contentSize = fixedContentSize
+
+                  await this.itemRepository.save(modelItem)
+                }
                 callback()
 
                 return
