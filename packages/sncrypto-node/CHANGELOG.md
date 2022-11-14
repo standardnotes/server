@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.12.1](https://github.com/standardnotes/server/compare/@standardnotes/sncrypto-node@1.12.0...@standardnotes/sncrypto-node@1.12.1) (2022-11-14)
+
+**Note:** Version bump only for package @standardnotes/sncrypto-node
+
 # [1.12.0](https://github.com/standardnotes/server/compare/@standardnotes/sncrypto-node@1.11.1...@standardnotes/sncrypto-node@1.12.0) (2022-10-19)
 
 ### Features
