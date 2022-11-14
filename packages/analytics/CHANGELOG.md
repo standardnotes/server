@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.10.1](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.10.0...@standardnotes/analytics@2.10.1) (2022-11-14)
+
+### Bug Fixes
+
+* **syncing-server:** retrieving revisions ([50f7ae3](https://github.com/standardnotes/server/commit/50f7ae338ad66d3465fa16c31e7c47c57b1e0c3c))
+
 # [2.10.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.9.9...@standardnotes/analytics@2.10.0) (2022-11-14)
 
 ### Features
