@@ -45,7 +45,9 @@ export class UserContentSizeRecalculationRequestedEventHandler implements Domain
 
               const modelItem = await this.itemRepository.findByUuid(item.item_uuid)
               if (modelItem !== null) {
-                const fixedContentSize = Buffer.byteLength(JSON.stringify(this.itemProjector.projectFull(modelItem)))
+                const fixedContentSize = Buffer.byteLength(
+                  JSON.stringify(await this.itemProjector.projectFull(modelItem)),
+                )
                 if (modelItem.contentSize !== fixedContentSize) {
                   loggerHandle.info(`Fixing content size from ${modelItem.contentSize} to ${fixedContentSize}`)
 
