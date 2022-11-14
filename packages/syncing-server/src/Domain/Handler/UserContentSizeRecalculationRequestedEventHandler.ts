@@ -19,6 +19,8 @@ export class UserContentSizeRecalculationRequestedEventHandler implements Domain
   ) {}
 
   async handle(event: UserContentSizeRecalculationRequestedEvent): Promise<void> {
+    this.logger.info(`Starting content size recalculation for user: ${event.payload.userUuid}`)
+
     const stream = await this.itemRepository.streamAll({
       deleted: false,
       userUuid: event.payload.userUuid,

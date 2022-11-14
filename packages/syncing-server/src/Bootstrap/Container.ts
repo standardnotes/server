@@ -261,6 +261,10 @@ export class ContainerConfigLoader {
       ['ACCOUNT_DELETION_REQUESTED', container.get(TYPES.AccountDeletionRequestedEventHandler)],
       ['EMAIL_BACKUP_REQUESTED', container.get(TYPES.EmailBackupRequestedEventHandler)],
       ['CLOUD_BACKUP_REQUESTED', container.get(TYPES.CloudBackupRequestedEventHandler)],
+      [
+        'USER_CONTENT_SIZE_RECALCULATION_REQUESTED',
+        container.get(TYPES.UserContentSizeRecalculationRequestedEventHandler),
+      ],
     ])
 
     if (env.get('SQS_QUEUE_URL', true)) {
