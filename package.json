@@ -46,7 +46,7 @@
     "@lerna-lite/list": "^1.5.1",
     "@lerna-lite/run": "^1.5.1",
     "@types/jest": "^29.1.1",
-    "@types/newrelic": "^7.0.3",
+    "@types/newrelic": "^7.0.4",
     "@types/node": "^18.0.0",
     "@typescript-eslint/parser": "^5.40.1",
     "eslint": "^8.17.0",
@@ -60,6 +60,6 @@
   "packageManager": "yarn@4.0.0-rc.25",
   "dependencies": {
     "@sentry/node": "^7.3.0",
-    "newrelic": "^9.0.0"
+    "newrelic": "^9.6.0"
   }
 }

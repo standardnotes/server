@@ -37,7 +37,7 @@
     "inversify-express-utils": "^6.4.3",
     "ioredis": "^5.2.0",
     "jsonwebtoken": "8.5.1",
-    "newrelic": "^9.0.0",
+    "newrelic": "^9.6.0",
     "prettyjson": "^1.2.5",
     "reflect-metadata": "0.1.13",
     "winston": "^3.8.1"
@@ -48,7 +48,7 @@
     "@types/ioredis": "^4.28.10",
     "@types/jest": "^29.1.1",
     "@types/jsonwebtoken": "^8.5.0",
-    "@types/newrelic": "^7.0.3",
+    "@types/newrelic": "^7.0.4",
     "@types/prettyjson": "^0.0.30",
     "@typescript-eslint/eslint-plugin": "^5.29.0",
     "eslint": "^8.14.0",

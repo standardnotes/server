@@ -1813,7 +1813,7 @@ __metadata:
     "@standardnotes/time": "workspace:*"
     "@types/ioredis": "npm:^4.28.10"
     "@types/jest": "npm:^29.1.1"
-    "@types/newrelic": "npm:^7.0.3"
+    "@types/newrelic": "npm:^7.0.4"
     "@types/node": "npm:^18.0.0"
     "@types/uuid": "npm:^8.3.0"
     "@typescript-eslint/eslint-plugin": "npm:^5.30.0"
@@ -1826,7 +1826,7 @@ __metadata:
     ioredis: "npm:^5.2.3"
     jest: "npm:^29.1.2"
     mysql2: "npm:^2.3.3"
-    newrelic: "npm:^9.0.0"
+    newrelic: "npm:^9.6.0"
     reflect-metadata: "npm:^0.1.13"
     shallow-equal-object: "npm:^1.1.1"
     ts-jest: "npm:^29.0.3"
@@ -1853,7 +1853,7 @@ __metadata:
     "@types/ioredis": "npm:^4.28.10"
     "@types/jest": "npm:^29.1.1"
     "@types/jsonwebtoken": "npm:^8.5.0"
-    "@types/newrelic": "npm:^7.0.3"
+    "@types/newrelic": "npm:^7.0.4"
     "@types/prettyjson": "npm:^0.0.30"
     "@typescript-eslint/eslint-plugin": "npm:^5.29.0"
     aws-sdk: "npm:^2.1160.0"
@@ -1869,7 +1869,7 @@ __metadata:
     ioredis: "npm:^5.2.0"
     jest: "npm:^29.1.2"
     jsonwebtoken: "npm:8.5.1"
-    newrelic: "npm:^9.0.0"
+    newrelic: "npm:^9.6.0"
     nodemon: "npm:^2.0.19"
     npm-check-updates: "npm:^16.0.1"
     prettyjson: "npm:^1.2.5"
@@ -1918,7 +1918,7 @@ __metadata:
     "@types/express": "npm:^4.17.11"
     "@types/ioredis": "npm:^4.28.10"
     "@types/jest": "npm:^29.1.1"
-    "@types/newrelic": "npm:^7.0.3"
+    "@types/newrelic": "npm:^7.0.4"
     "@types/otplib": "npm:^10.0.0"
     "@types/prettyjson": "npm:^0.0.30"
     "@types/ua-parser-js": "npm:^0.7.36"
@@ -1938,7 +1938,7 @@ __metadata:
     ioredis: "npm:^5.2.0"
     jest: "npm:^29.1.2"
     mysql2: "npm:^2.3.3"
-    newrelic: "npm:^9.0.0"
+    newrelic: "npm:^9.6.0"
     nodemon: "npm:^2.0.19"
     npm-check-updates: "npm:^16.0.1"
     otplib: "npm:12.0.1"
@@ -1998,13 +1998,13 @@ __metadata:
     "@standardnotes/domain-events": "workspace:*"
     "@types/ioredis": "npm:^4.28.10"
     "@types/jest": "npm:^29.1.1"
-    "@types/newrelic": "npm:^7.0.3"
+    "@types/newrelic": "npm:^7.0.4"
     "@typescript-eslint/eslint-plugin": "npm:^5.30.0"
     aws-sdk: "npm:^2.1082.0"
     eslint-plugin-prettier: "npm:^4.2.1"
     ioredis: "npm:^5.2.0"
     jest: "npm:^29.1.2"
-    newrelic: "npm:^9.0.0"
+    newrelic: "npm:^9.6.0"
     reflect-metadata: "npm:^0.1.13"
     sqs-consumer: "npm:^5.6.0"
     ts-jest: "npm:^29.0.3"
@@ -2054,7 +2054,7 @@ __metadata:
     "@standardnotes/time": "workspace:*"
     "@types/ioredis": "npm:^4.28.10"
     "@types/jest": "npm:^29.1.1"
-    "@types/newrelic": "npm:^7.0.3"
+    "@types/newrelic": "npm:^7.0.4"
     "@types/nodemailer": "npm:^6.4.1"
     "@typescript-eslint/eslint-plugin": "npm:^5.40.1"
     aws-sdk: "npm:^2.1159.0"
@@ -2065,7 +2065,7 @@ __metadata:
     ioredis: "npm:^5.2.0"
     jest: "npm:^29.1.2"
     mysql2: "npm:^2.3.3"
-    newrelic: "npm:^9.0.0"
+    newrelic: "npm:^9.6.0"
     reflect-metadata: "npm:0.1.13"
     ts-jest: "npm:^29.0.3"
     typeorm: "npm:^0.3.6"
@@ -2117,7 +2117,7 @@ __metadata:
     "@types/ioredis": "npm:^4.28.10"
     "@types/jest": "npm:^29.1.1"
     "@types/jsonwebtoken": "npm:^8.5.0"
-    "@types/newrelic": "npm:^7.0.3"
+    "@types/newrelic": "npm:^7.0.4"
     "@types/prettyjson": "npm:^0.0.30"
     "@types/uuid": "npm:^8.3.0"
     "@typescript-eslint/eslint-plugin": "npm:^5.29.0"
@@ -2136,7 +2136,7 @@ __metadata:
     ioredis: "npm:^5.2.0"
     jest: "npm:^29.1.2"
     jsonwebtoken: "npm:^8.5.1"
-    newrelic: "npm:^9.0.0"
+    newrelic: "npm:^9.6.0"
     nodemon: "npm:^2.0.19"
     npm-check-updates: "npm:^16.0.1"
     prettyjson: "npm:^1.2.5"
@@ -2240,7 +2240,7 @@ __metadata:
     "@standardnotes/time": "workspace:*"
     "@types/ioredis": "npm:^4.28.10"
     "@types/jest": "npm:^29.1.1"
-    "@types/newrelic": "npm:^7.0.3"
+    "@types/newrelic": "npm:^7.0.4"
     "@types/node": "npm:^18.0.0"
     "@typescript-eslint/eslint-plugin": "npm:^5.29.0"
     aws-sdk: "npm:^2.1158.0"
@@ -2252,7 +2252,7 @@ __metadata:
     ioredis: "npm:^5.2.0"
     jest: "npm:^29.1.2"
     mysql2: "npm:^2.3.3"
-    newrelic: "npm:^9.0.0"
+    newrelic: "npm:^9.6.0"
     npm-check-updates: "npm:^16.0.1"
     reflect-metadata: "npm:^0.1.13"
     ts-jest: "npm:^29.0.3"
@@ -2290,13 +2290,13 @@ __metadata:
     "@lerna-lite/run": "npm:^1.5.1"
     "@sentry/node": "npm:^7.3.0"
     "@types/jest": "npm:^29.1.1"
-    "@types/newrelic": "npm:^7.0.3"
+    "@types/newrelic": "npm:^7.0.4"
     "@types/node": "npm:^18.0.0"
     "@typescript-eslint/parser": "npm:^5.40.1"
     eslint: "npm:^8.17.0"
     eslint-config-prettier: "npm:^8.5.0"
     ini: "npm:^3.0.0"
-    newrelic: "npm:^9.0.0"
+    newrelic: "npm:^9.6.0"
     npm-check-updates: "npm:^16.0.1"
     prettier: "npm:^2.7.1"
     ts-node: "npm:^10.9.1"
@@ -2363,7 +2363,7 @@ __metadata:
     "@types/ioredis": "npm:^4.28.10"
     "@types/jest": "npm:^29.1.1"
     "@types/jsonwebtoken": "npm:^8.5.0"
-    "@types/newrelic": "npm:^7.0.3"
+    "@types/newrelic": "npm:^7.0.4"
     "@types/prettyjson": "npm:^0.0.30"
     "@types/ua-parser-js": "npm:^0.7.36"
     "@types/uuid": "npm:^8.3.0"
@@ -2382,7 +2382,7 @@ __metadata:
     jest: "npm:^29.1.2"
     jsonwebtoken: "npm:8.5.1"
     mysql2: "npm:^2.3.3"
-    newrelic: "npm:^9.0.0"
+    newrelic: "npm:^9.6.0"
     nodemon: "npm:^2.0.19"
     npm-check-updates: "npm:^16.0.1"
     prettyjson: "npm:^1.2.5"
@@ -2452,7 +2452,7 @@ __metadata:
     "@types/express": "npm:^4.17.11"
     "@types/ioredis": "npm:^4.28.10"
     "@types/jest": "npm:^29.1.1"
-    "@types/newrelic": "npm:^7.0.3"
+    "@types/newrelic": "npm:^7.0.4"
     "@typescript-eslint/eslint-plugin": "npm:^5.29.0"
     aws-sdk: "npm:^2.1159.0"
     axios: "npm:^1.1.3"
@@ -2466,7 +2466,7 @@ __metadata:
     ioredis: "npm:^5.2.0"
     jest: "npm:^29.1.2"
     mysql2: "npm:^2.3.3"
-    newrelic: "npm:^9.0.0"
+    newrelic: "npm:^9.6.0"
     reflect-metadata: "npm:0.1.13"
     ts-jest: "npm:^29.0.3"
     typeorm: "npm:^0.3.6"
@@ -2492,7 +2492,7 @@ __metadata:
     "@types/express": "npm:^4.17.11"
     "@types/ioredis": "npm:^4.28.10"
     "@types/jest": "npm:^29.1.1"
-    "@types/newrelic": "npm:^7.0.3"
+    "@types/newrelic": "npm:^7.0.4"
     "@typescript-eslint/eslint-plugin": "npm:^5.29.0"
     aws-sdk: "npm:^2.1159.0"
     cors: "npm:2.8.5"
@@ -2505,7 +2505,7 @@ __metadata:
     ioredis: "npm:^5.2.0"
     jest: "npm:^29.1.2"
     mysql2: "npm:^2.3.3"
-    newrelic: "npm:^9.0.0"
+    newrelic: "npm:^9.6.0"
     reflect-metadata: "npm:0.1.13"
     ts-jest: "npm:^29.0.3"
     typeorm: "npm:^0.3.6"
@@ -2832,10 +2832,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/newrelic@npm:^7.0.3":
-  version: 7.0.3
-  resolution: "@types/newrelic@npm:7.0.3"
-  checksum: f56ebaa21cb5a7b20f7fba2f44105f871e54c7668541708794d3c614dabbdd9980e61fdd30372b80700f1264627d88b912c93ce8ad169af96c24e710004bcf8c
+"@types/newrelic@npm:^7.0.4":
+  version: 7.0.4
+  resolution: "@types/newrelic@npm:7.0.4"
+  checksum: b44215b3abe27bca702ffda7c326d951e11083b79f64ec9099664b981f3c51698a164e81c252ea99c994a138e105dfd38a873c274ecbad5f3e43488c1d9c8e8d
   languageName: node
   linkType: hard
 
@@ -8293,9 +8293,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"newrelic@npm:^9.0.0":
-  version: 9.0.0
-  resolution: "newrelic@npm:9.0.0"
+"newrelic@npm:^9.6.0":
+  version: 9.6.0
+  resolution: "newrelic@npm:9.6.0"
   dependencies:
     "@grpc/grpc-js": "npm:^1.5.5"
     "@grpc/proto-loader": "npm:^0.6.13"
@@ -8304,7 +8304,6 @@ __metadata:
     "@newrelic/native-metrics": "npm:^9.0.0"
     "@newrelic/superagent": "npm:^6.0.0"
     "@tyriar/fibonacci-heap": "npm:^2.0.7"
-    async: "npm:^3.2.3"
     concat-stream: "npm:^2.0.0"
     https-proxy-agent: "npm:^5.0.0"
     json-stringify-safe: "npm:^5.0.0"
@@ -8316,7 +8315,7 @@ __metadata:
       optional: true
   bin:
     newrelic-naming-rules: bin/test-naming-rules.js
-  checksum: 397f7d2626f6ae7a7aecda7037e406fca4d055ce39d3fd644aecd94b4ecf4b110ec06930651984c8f00bf98c12710e397935979b8861330e09782a84da18619e
+  checksum: eb378acde172c814c7d2c4804d323c493d8ab4587095dd668a6370de7cbddd1effd7cc61899aaf927134f7a0ce26581d8c0ea905ac667b4879756936c34e73fa
   languageName: node
   linkType: hard
 
