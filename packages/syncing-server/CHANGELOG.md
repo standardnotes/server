@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.13.7](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.13.6...@standardnotes/syncing-server@1.13.7) (2022-11-14)
+
+### Bug Fixes
+
+* **syncing-server:** content recalculation missing await ([f766fef](https://github.com/standardnotes/syncing-server-js/commit/f766fefbf0d13a9d37b0598c5c3d228fc376c943))
+
 ## [1.13.6](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.13.5...@standardnotes/syncing-server@1.13.6) (2022-11-14)
 
 ### Bug Fixes
