@@ -6,7 +6,7 @@
   "main": "dist/src/index.js",
   "typings": "dist/src/index.d.ts",
   "engines": {
-    "node": ">=16.0.0 <17.0.0"
+    "node": ">=18.0.0 <19.0.0"
   },
   "scripts": {
     "clean": "rm -fr dist",
