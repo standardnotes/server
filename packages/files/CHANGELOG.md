@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.8.22](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.8.21...@standardnotes/files-server@1.8.22) (2022-11-14)
+
+**Note:** Version bump only for package @standardnotes/files-server
+
 ## [1.8.21](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.8.18...@standardnotes/files-server@1.8.21) (2022-11-14)
 
 ### Bug Fixes
