@@ -23,6 +23,7 @@
     "test": "jest spec --coverage --passWithNoTests"
   },
   "dependencies": {
+    "@newrelic/native-metrics": "^9.0.0",
     "@standardnotes/common": "workspace:*",
     "@standardnotes/features": "^1.52.1",
     "@standardnotes/predicates": "workspace:*",

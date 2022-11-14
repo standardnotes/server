@@ -23,6 +23,7 @@
     "test": "jest spec"
   },
   "dependencies": {
+    "@newrelic/native-metrics": "^9.0.0",
     "@standardnotes/sncrypto-common": "^1.9.0",
     "reflect-metadata": "^0.1.13"
   },

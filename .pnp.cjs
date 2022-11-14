@@ -116,6 +116,7 @@ const RAW_RUNTIME_STATE =
           ["@lerna-lite/cli", "npm:1.6.0"],\
           ["@lerna-lite/list", "npm:1.6.0"],\
           ["@lerna-lite/run", "npm:1.6.0"],\
+          ["@newrelic/native-metrics", "npm:9.0.0"],\
           ["@sentry/node", "npm:7.5.0"],\
           ["@types/jest", "npm:29.1.1"],\
           ["@types/newrelic", "npm:7.0.4"],\
@@ -2541,6 +2542,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./packages/analytics/",\
         "packageDependencies": [\
           ["@standardnotes/analytics", "workspace:packages/analytics"],\
+          ["@newrelic/native-metrics", "npm:9.0.0"],\
           ["@newrelic/winston-enricher", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:4.0.0"],\
           ["@sentry/node", "npm:7.5.0"],\
           ["@standardnotes/common", "workspace:packages/common"],\
@@ -2595,6 +2597,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./packages/api-gateway/",\
         "packageDependencies": [\
           ["@standardnotes/api-gateway", "workspace:packages/api-gateway"],\
+          ["@newrelic/native-metrics", "npm:9.0.0"],\
           ["@newrelic/winston-enricher", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:4.0.0"],\
           ["@sentry/node", "npm:7.5.0"],\
           ["@standardnotes/common", "workspace:packages/common"],\
@@ -2651,6 +2654,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./packages/auth/",\
         "packageDependencies": [\
           ["@standardnotes/auth-server", "workspace:packages/auth"],\
+          ["@newrelic/native-metrics", "npm:9.0.0"],\
           ["@newrelic/winston-enricher", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:4.0.0"],\
           ["@sentry/node", "npm:7.5.0"],\
           ["@standardnotes/api", "npm:1.19.0"],\
@@ -2711,6 +2715,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./packages/common/",\
         "packageDependencies": [\
           ["@standardnotes/common", "workspace:packages/common"],\
+          ["@newrelic/native-metrics", "npm:9.0.0"],\
           ["@types/jest", "npm:29.1.1"],\
           ["@types/node", "npm:18.0.3"],\
           ["@typescript-eslint/eslint-plugin", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:5.30.5"],\
@@ -2742,6 +2747,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./packages/domain-events/",\
         "packageDependencies": [\
           ["@standardnotes/domain-events", "workspace:packages/domain-events"],\
+          ["@newrelic/native-metrics", "npm:9.0.0"],\
           ["@standardnotes/common", "workspace:packages/common"],\
           ["@standardnotes/features", "npm:1.53.1"],\
           ["@standardnotes/predicates", "workspace:packages/predicates"],\
@@ -2762,6 +2768,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./packages/domain-events-infra/",\
         "packageDependencies": [\
           ["@standardnotes/domain-events-infra", "workspace:packages/domain-events-infra"],\
+          ["@newrelic/native-metrics", "npm:9.0.0"],\
           ["@standardnotes/domain-events", "workspace:packages/domain-events"],\
           ["@types/ioredis", "npm:4.28.10"],\
           ["@types/jest", "npm:29.1.1"],\
@@ -2801,6 +2808,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./packages/event-store/",\
         "packageDependencies": [\
           ["@standardnotes/event-store", "workspace:packages/event-store"],\
+          ["@newrelic/native-metrics", "npm:9.0.0"],\
           ["@standardnotes/domain-events", "workspace:packages/domain-events"],\
           ["@standardnotes/domain-events-infra", "workspace:packages/domain-events-infra"],\
           ["@standardnotes/time", "workspace:packages/time"],\
@@ -2856,6 +2864,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./packages/files/",\
         "packageDependencies": [\
           ["@standardnotes/files-server", "workspace:packages/files"],\
+          ["@newrelic/native-metrics", "npm:9.0.0"],\
           ["@sentry/node", "npm:7.5.0"],\
           ["@standardnotes/common", "workspace:packages/common"],\
           ["@standardnotes/config", "npm:2.4.3"],\
@@ -2949,6 +2958,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./packages/predicates/",\
         "packageDependencies": [\
           ["@standardnotes/predicates", "workspace:packages/predicates"],\
+          ["@newrelic/native-metrics", "npm:9.0.0"],\
           ["@standardnotes/common", "workspace:packages/common"],\
           ["@types/jest", "npm:29.1.1"],\
           ["@typescript-eslint/eslint-plugin", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:5.30.5"],\
@@ -2990,6 +3000,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./packages/scheduler/",\
         "packageDependencies": [\
           ["@standardnotes/scheduler-server", "workspace:packages/scheduler"],\
+          ["@newrelic/native-metrics", "npm:9.0.0"],\
           ["@newrelic/winston-enricher", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:4.0.0"],\
           ["@sentry/node", "npm:7.5.0"],\
           ["@standardnotes/common", "workspace:packages/common"],\
@@ -3027,6 +3038,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./packages/security/",\
         "packageDependencies": [\
           ["@standardnotes/security", "workspace:packages/security"],\
+          ["@newrelic/native-metrics", "npm:9.0.0"],\
           ["@standardnotes/common", "workspace:packages/common"],\
           ["@types/jest", "npm:29.1.1"],\
           ["@types/jsonwebtoken", "npm:8.5.9"],\
@@ -3051,6 +3063,7 @@ const RAW_RUNTIME_STATE =
           ["@lerna-lite/cli", "npm:1.6.0"],\
           ["@lerna-lite/list", "npm:1.6.0"],\
           ["@lerna-lite/run", "npm:1.6.0"],\
+          ["@newrelic/native-metrics", "npm:9.0.0"],\
           ["@sentry/node", "npm:7.5.0"],\
           ["@types/jest", "npm:29.1.1"],\
           ["@types/newrelic", "npm:7.0.4"],\
@@ -3073,6 +3086,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./packages/settings/",\
         "packageDependencies": [\
           ["@standardnotes/settings", "workspace:packages/settings"],\
+          ["@newrelic/native-metrics", "npm:9.0.0"],\
           ["@typescript-eslint/eslint-plugin", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:5.30.5"],\
           ["eslint-plugin-prettier", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:4.2.1"],\
           ["reflect-metadata", "npm:0.1.13"],\
@@ -3096,6 +3110,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./packages/sncrypto-node/",\
         "packageDependencies": [\
           ["@standardnotes/sncrypto-node", "workspace:packages/sncrypto-node"],\
+          ["@newrelic/native-metrics", "npm:9.0.0"],\
           ["@standardnotes/sncrypto-common", "npm:1.13.0"],\
           ["@types/jest", "npm:29.1.1"],\
           ["@types/node", "npm:18.0.3"],\
@@ -3116,6 +3131,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./packages/syncing-server/",\
         "packageDependencies": [\
           ["@standardnotes/syncing-server", "workspace:packages/syncing-server"],\
+          ["@newrelic/native-metrics", "npm:9.0.0"],\
           ["@newrelic/winston-enricher", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:4.0.0"],\
           ["@sentry/node", "npm:7.5.0"],\
           ["@standardnotes/common", "workspace:packages/common"],\
@@ -3172,6 +3188,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./packages/time/",\
         "packageDependencies": [\
           ["@standardnotes/time", "workspace:packages/time"],\
+          ["@newrelic/native-metrics", "npm:9.0.0"],\
           ["@types/jest", "npm:29.1.1"],\
           ["@types/microtime", "npm:2.1.0"],\
           ["@typescript-eslint/eslint-plugin", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:5.30.5"],\
@@ -3215,6 +3232,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./packages/websockets/",\
         "packageDependencies": [\
           ["@standardnotes/websockets-server", "workspace:packages/websockets"],\
+          ["@newrelic/native-metrics", "npm:9.0.0"],\
           ["@newrelic/winston-enricher", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:4.0.0"],\
           ["@sentry/node", "npm:7.5.0"],\
           ["@standardnotes/api", "npm:1.19.0"],\
@@ -3255,6 +3273,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./packages/workspace/",\
         "packageDependencies": [\
           ["@standardnotes/workspace-server", "workspace:packages/workspace"],\
+          ["@newrelic/native-metrics", "npm:9.0.0"],\
           ["@newrelic/winston-enricher", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:4.0.0"],\
           ["@sentry/node", "npm:7.5.0"],\
           ["@standardnotes/api", "npm:1.19.0"],\

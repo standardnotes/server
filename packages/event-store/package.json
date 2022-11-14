@@ -31,6 +31,7 @@
     "typescript": "^4.8.4"
   },
   "dependencies": {
+    "@newrelic/native-metrics": "^9.0.0",
     "@standardnotes/domain-events": "workspace:*",
     "@standardnotes/domain-events-infra": "workspace:*",
     "@standardnotes/time": "workspace:*",

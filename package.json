@@ -59,6 +59,7 @@
   },
   "packageManager": "yarn@4.0.0-rc.25",
   "dependencies": {
+    "@newrelic/native-metrics": "^9.0.0",
     "@sentry/node": "^7.3.0",
     "newrelic": "^9.6.0"
   }
