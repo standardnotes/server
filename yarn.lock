@@ -1706,59 +1706,46 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/core@npm:7.5.0":
-  version: 7.5.0
-  resolution: "@sentry/core@npm:7.5.0"
+"@sentry/core@npm:7.19.0":
+  version: 7.19.0
+  resolution: "@sentry/core@npm:7.19.0"
   dependencies:
-    "@sentry/hub": "npm:7.5.0"
-    "@sentry/types": "npm:7.5.0"
-    "@sentry/utils": "npm:7.5.0"
+    "@sentry/types": "npm:7.19.0"
+    "@sentry/utils": "npm:7.19.0"
     tslib: "npm:^1.9.3"
-  checksum: 99c8e93a6fbc47c286a92b299d625d145e7e559d857442299a68b3769659812f0bf90c4b6731bd5abe611edd9da20e18e5a8e842c6f50b94b742ce1df6613f91
+  checksum: cabd7852ff9ea58287724678f232588f15d63437c7d0bad91543c91c821ac0f19a00835dd986645aed9d9094b2c0a8c82c1e9e4fb43342b9d31c6890010b2ec2
   languageName: node
   linkType: hard
 
-"@sentry/hub@npm:7.5.0":
-  version: 7.5.0
-  resolution: "@sentry/hub@npm:7.5.0"
+"@sentry/node@npm:^7.19.0":
+  version: 7.19.0
+  resolution: "@sentry/node@npm:7.19.0"
   dependencies:
-    "@sentry/types": "npm:7.5.0"
-    "@sentry/utils": "npm:7.5.0"
-    tslib: "npm:^1.9.3"
-  checksum: 27e240423ec8875afca79887d9cf41ce8101a37b18184bddfbf87fa225e1d902baf51620083b03c5ff28d887b52f3e0da8243e7cd26f0522db6db5190739edf5
-  languageName: node
-  linkType: hard
-
-"@sentry/node@npm:^7.3.0":
-  version: 7.5.0
-  resolution: "@sentry/node@npm:7.5.0"
-  dependencies:
-    "@sentry/core": "npm:7.5.0"
-    "@sentry/hub": "npm:7.5.0"
-    "@sentry/types": "npm:7.5.0"
-    "@sentry/utils": "npm:7.5.0"
+    "@sentry/core": "npm:7.19.0"
+    "@sentry/types": "npm:7.19.0"
+    "@sentry/utils": "npm:7.19.0"
     cookie: "npm:^0.4.1"
     https-proxy-agent: "npm:^5.0.0"
     lru_map: "npm:^0.3.3"
     tslib: "npm:^1.9.3"
-  checksum: 9b65bc44d262c68fe450af3ef1572a6d38d613c3f5102b9eb1c99c7584e2fe5739ada6bc04a9835e2dfedce5854eb1b88a75a8526d1f03f61dc488f671b02a3c
+  checksum: 3a69647d2ea2a8583bb77f3e30aa7cc587568b8e2f02d8ae7cf0c8928f03e4135fc3b9fcbdc90b35f190cb8973d70590fa7e4ef683d43e7e4a4fa50d22ac568a
   languageName: node
   linkType: hard
 
-"@sentry/types@npm:7.5.0":
-  version: 7.5.0
-  resolution: "@sentry/types@npm:7.5.0"
-  checksum: 8029b56bae1da62af6c651950442e632f4c0a72d35d41d608b8f8e8a277871cd5f423c1d4e572f3a97b2ce72cb3972fa60085b1f6888a7b31494b9c34155c16d
+"@sentry/types@npm:7.19.0":
+  version: 7.19.0
+  resolution: "@sentry/types@npm:7.19.0"
+  checksum: 541e1ef49ae4482bbec605c3a2075a669930db2f707fafa431174010fcd0f2ba57637399822fbe0f4c5750696fe57e450d66c0182c1b7a0a3f4e6be9d030ed55
   languageName: node
   linkType: hard
 
-"@sentry/utils@npm:7.5.0":
-  version: 7.5.0
-  resolution: "@sentry/utils@npm:7.5.0"
+"@sentry/utils@npm:7.19.0":
+  version: 7.19.0
+  resolution: "@sentry/utils@npm:7.19.0"
   dependencies:
-    "@sentry/types": "npm:7.5.0"
+    "@sentry/types": "npm:7.19.0"
     tslib: "npm:^1.9.3"
-  checksum: f5045667ea3f1c4c1effb13ee042eb8a83f575402f9db6622f35898543228952b9450cd13439e1ccac17ddffeab2c804e626a7596b171e425f5aee1ff82b5d20
+  checksum: 50e4f391fe9e6009f417c54a8ec96ba25ae77615d92c7f8c22a496901b9e3f182b78cecbc412bff0b2853812258642962b1ee38f42f9708e089756b4ebb3790e
   languageName: node
   linkType: hard
 
@@ -1807,7 +1794,7 @@ __metadata:
   dependencies:
     "@newrelic/native-metrics": "npm:^9.0.0"
     "@newrelic/winston-enricher": "npm:^4.0.0"
-    "@sentry/node": "npm:^7.3.0"
+    "@sentry/node": "npm:^7.19.0"
     "@standardnotes/common": "workspace:*"
     "@standardnotes/domain-events": "workspace:*"
     "@standardnotes/domain-events-infra": "workspace:*"
@@ -1844,7 +1831,7 @@ __metadata:
   dependencies:
     "@newrelic/native-metrics": "npm:^9.0.0"
     "@newrelic/winston-enricher": "npm:^4.0.0"
-    "@sentry/node": "npm:^7.3.0"
+    "@sentry/node": "npm:^7.19.0"
     "@standardnotes/common": "workspace:^"
     "@standardnotes/domain-events": "workspace:*"
     "@standardnotes/domain-events-infra": "workspace:*"
@@ -1903,7 +1890,7 @@ __metadata:
   dependencies:
     "@newrelic/native-metrics": "npm:^9.0.0"
     "@newrelic/winston-enricher": "npm:^4.0.0"
-    "@sentry/node": "npm:^7.3.0"
+    "@sentry/node": "npm:^7.19.0"
     "@standardnotes/api": "npm:^1.19.0"
     "@standardnotes/common": "workspace:*"
     "@standardnotes/domain-events": "workspace:*"
@@ -2110,7 +2097,7 @@ __metadata:
   resolution: "@standardnotes/files-server@workspace:packages/files"
   dependencies:
     "@newrelic/native-metrics": "npm:^9.0.0"
-    "@sentry/node": "npm:^7.3.0"
+    "@sentry/node": "npm:^7.19.0"
     "@standardnotes/common": "workspace:*"
     "@standardnotes/config": "npm:2.4.3"
     "@standardnotes/domain-events": "workspace:*"
@@ -2242,7 +2229,7 @@ __metadata:
   dependencies:
     "@newrelic/native-metrics": "npm:^9.0.0"
     "@newrelic/winston-enricher": "npm:^4.0.0"
-    "@sentry/node": "npm:^7.3.0"
+    "@sentry/node": "npm:^7.19.0"
     "@standardnotes/common": "workspace:*"
     "@standardnotes/domain-events": "workspace:*"
     "@standardnotes/domain-events-infra": "workspace:*"
@@ -2300,7 +2287,7 @@ __metadata:
     "@lerna-lite/list": "npm:^1.5.1"
     "@lerna-lite/run": "npm:^1.5.1"
     "@newrelic/native-metrics": "npm:^9.0.0"
-    "@sentry/node": "npm:^7.3.0"
+    "@sentry/node": "npm:^7.19.0"
     "@types/jest": "npm:^29.1.1"
     "@types/newrelic": "npm:^7.0.4"
     "@types/node": "npm:^18.0.0"
@@ -2362,7 +2349,7 @@ __metadata:
   dependencies:
     "@newrelic/native-metrics": "npm:^9.0.0"
     "@newrelic/winston-enricher": "npm:^4.0.0"
-    "@sentry/node": "npm:^7.3.0"
+    "@sentry/node": "npm:^7.19.0"
     "@standardnotes/common": "workspace:*"
     "@standardnotes/domain-events": "workspace:*"
     "@standardnotes/domain-events-infra": "workspace:*"
@@ -2459,7 +2446,7 @@ __metadata:
   dependencies:
     "@newrelic/native-metrics": "npm:^9.0.0"
     "@newrelic/winston-enricher": "npm:^4.0.0"
-    "@sentry/node": "npm:^7.3.0"
+    "@sentry/node": "npm:^7.19.0"
     "@standardnotes/api": "npm:^1.19.0"
     "@standardnotes/common": "workspace:^"
     "@standardnotes/domain-events": "workspace:^"
@@ -2498,7 +2485,7 @@ __metadata:
   dependencies:
     "@newrelic/native-metrics": "npm:^9.0.0"
     "@newrelic/winston-enricher": "npm:^4.0.0"
-    "@sentry/node": "npm:^7.3.0"
+    "@sentry/node": "npm:^7.19.0"
     "@standardnotes/api": "npm:^1.19.0"
     "@standardnotes/common": "workspace:*"
     "@standardnotes/domain-events": "workspace:^"

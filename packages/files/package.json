@@ -26,7 +26,7 @@
   },
   "dependencies": {
     "@newrelic/native-metrics": "^9.0.0",
-    "@sentry/node": "^7.3.0",
+    "@sentry/node": "^7.19.0",
     "@standardnotes/common": "workspace:*",
     "@standardnotes/domain-events": "workspace:*",
     "@standardnotes/domain-events-infra": "workspace:*",
