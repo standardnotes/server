@@ -25,7 +25,7 @@
   "dependencies": {
     "@newrelic/native-metrics": "^9.0.0",
     "@standardnotes/domain-events": "workspace:*",
-    "aws-sdk": "^2.1082.0",
+    "aws-sdk": "^2.1253.0",
     "ioredis": "^5.2.4",
     "newrelic": "^9.6.0",
     "reflect-metadata": "^0.1.13",

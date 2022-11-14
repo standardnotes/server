@@ -2555,7 +2555,7 @@ const RAW_RUNTIME_STATE =
           ["@types/node", "npm:18.0.3"],\
           ["@types/uuid", "npm:8.3.4"],\
           ["@typescript-eslint/eslint-plugin", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:5.30.5"],\
-          ["aws-sdk", "npm:2.1234.0"],\
+          ["aws-sdk", "npm:2.1253.0"],\
           ["dayjs", "npm:1.11.6"],\
           ["dotenv", "npm:16.0.1"],\
           ["eslint", "npm:8.25.0"],\
@@ -2613,7 +2613,7 @@ const RAW_RUNTIME_STATE =
           ["@types/newrelic", "npm:7.0.4"],\
           ["@types/prettyjson", "npm:0.0.30"],\
           ["@typescript-eslint/eslint-plugin", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:5.40.1"],\
-          ["aws-sdk", "npm:2.1234.0"],\
+          ["aws-sdk", "npm:2.1253.0"],\
           ["axios", "npm:1.1.3"],\
           ["cors", "npm:2.8.5"],\
           ["dotenv", "npm:16.0.1"],\
@@ -2680,7 +2680,7 @@ const RAW_RUNTIME_STATE =
           ["@types/ua-parser-js", "npm:0.7.36"],\
           ["@types/uuid", "npm:8.3.4"],\
           ["@typescript-eslint/eslint-plugin", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:5.40.1"],\
-          ["aws-sdk", "npm:2.1234.0"],\
+          ["aws-sdk", "npm:2.1253.0"],\
           ["axios", "npm:1.1.3"],\
           ["bcryptjs", "npm:2.4.3"],\
           ["cors", "npm:2.8.5"],\
@@ -2774,7 +2774,7 @@ const RAW_RUNTIME_STATE =
           ["@types/jest", "npm:29.1.1"],\
           ["@types/newrelic", "npm:7.0.4"],\
           ["@typescript-eslint/eslint-plugin", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:5.30.5"],\
-          ["aws-sdk", "npm:2.1234.0"],\
+          ["aws-sdk", "npm:2.1253.0"],\
           ["eslint-plugin-prettier", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:4.2.1"],\
           ["ioredis", "npm:5.2.4"],\
           ["jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.1.2"],\
@@ -2817,7 +2817,7 @@ const RAW_RUNTIME_STATE =
           ["@types/newrelic", "npm:7.0.4"],\
           ["@types/nodemailer", "npm:6.4.6"],\
           ["@typescript-eslint/eslint-plugin", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:5.40.1"],\
-          ["aws-sdk", "npm:2.1234.0"],\
+          ["aws-sdk", "npm:2.1253.0"],\
           ["dotenv", "npm:16.0.1"],\
           ["eslint", "npm:8.25.0"],\
           ["eslint-plugin-prettier", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:4.2.1"],\
@@ -2884,7 +2884,7 @@ const RAW_RUNTIME_STATE =
           ["@types/prettyjson", "npm:0.0.30"],\
           ["@types/uuid", "npm:8.3.4"],\
           ["@typescript-eslint/eslint-plugin", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:5.40.1"],\
-          ["aws-sdk", "npm:2.1234.0"],\
+          ["aws-sdk", "npm:2.1253.0"],\
           ["connect-busboy", "npm:1.0.0"],\
           ["cors", "npm:2.8.5"],\
           ["dayjs", "npm:1.11.6"],\
@@ -3013,7 +3013,7 @@ const RAW_RUNTIME_STATE =
           ["@types/newrelic", "npm:7.0.4"],\
           ["@types/node", "npm:18.0.3"],\
           ["@typescript-eslint/eslint-plugin", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:5.40.1"],\
-          ["aws-sdk", "npm:2.1234.0"],\
+          ["aws-sdk", "npm:2.1253.0"],\
           ["dayjs", "npm:1.11.6"],\
           ["dotenv", "npm:16.0.1"],\
           ["eslint", "npm:8.25.0"],\
@@ -3154,7 +3154,7 @@ const RAW_RUNTIME_STATE =
           ["@types/ua-parser-js", "npm:0.7.36"],\
           ["@types/uuid", "npm:8.3.4"],\
           ["@typescript-eslint/eslint-plugin", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:5.40.1"],\
-          ["aws-sdk", "npm:2.1234.0"],\
+          ["aws-sdk", "npm:2.1253.0"],\
           ["axios", "npm:1.1.3"],\
           ["cors", "npm:2.8.5"],\
           ["dotenv", "npm:16.0.1"],\
@@ -3246,7 +3246,7 @@ const RAW_RUNTIME_STATE =
           ["@types/jest", "npm:29.1.1"],\
           ["@types/newrelic", "npm:7.0.4"],\
           ["@typescript-eslint/eslint-plugin", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:5.40.1"],\
-          ["aws-sdk", "npm:2.1234.0"],\
+          ["aws-sdk", "npm:2.1253.0"],\
           ["axios", "npm:1.1.3"],\
           ["cors", "npm:2.8.5"],\
           ["dotenv", "npm:16.0.1"],\
@@ -3289,7 +3289,7 @@ const RAW_RUNTIME_STATE =
           ["@types/jest", "npm:29.1.1"],\
           ["@types/newrelic", "npm:7.0.4"],\
           ["@typescript-eslint/eslint-plugin", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:5.40.1"],\
-          ["aws-sdk", "npm:2.1234.0"],\
+          ["aws-sdk", "npm:2.1253.0"],\
           ["cors", "npm:2.8.5"],\
           ["dotenv", "npm:16.0.1"],\
           ["eslint", "npm:8.25.0"],\
@@ -4749,10 +4749,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["aws-sdk", [\
-      ["npm:2.1234.0", {\
-        "packageLocation": "./.yarn/cache/aws-sdk-npm-2.1234.0-7ee3cd4390-cd4b3e8baf.zip/node_modules/aws-sdk/",\
+      ["npm:2.1253.0", {\
+        "packageLocation": "./.yarn/cache/aws-sdk-npm-2.1253.0-2cf60975ab-faa4af2949.zip/node_modules/aws-sdk/",\
         "packageDependencies": [\
-          ["aws-sdk", "npm:2.1234.0"],\
+          ["aws-sdk", "npm:2.1253.0"],\
           ["buffer", "npm:4.9.2"],\
           ["events", "npm:1.1.1"],\
           ["ieee754", "npm:1.1.13"],\
@@ -12519,7 +12519,7 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["sqs-consumer", "virtual:685a6222c3349423674bb7f0684ba34e2ab20912010f352e04dcf707a156e13183fc382e2417cb37a60f3e7b52fd0178c53181674890e1773eb83e190dc13378#npm:5.7.0"],\
           ["@types/aws-sdk", null],\
-          ["aws-sdk", "npm:2.1234.0"],\
+          ["aws-sdk", "npm:2.1253.0"],\
           ["debug", "virtual:b86a9fb34323a98c6519528ed55faa0d9b44ca8879307c0b29aa384bde47ff59a7d0c9051b31246f14521dfb71ba3c5d6d0b35c29fffc17bf875aa6ad977d9e8#npm:4.3.4"]\
         ],\
         "packagePeers": [\

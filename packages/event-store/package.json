@@ -35,7 +35,7 @@
     "@standardnotes/domain-events": "workspace:*",
     "@standardnotes/domain-events-infra": "workspace:*",
     "@standardnotes/time": "workspace:*",
-    "aws-sdk": "^2.1159.0",
+    "aws-sdk": "^2.1253.0",
     "dotenv": "^16.0.1",
     "inversify": "^6.0.1",
     "ioredis": "^5.2.4",
