@@ -13,10 +13,14 @@ export class RevisionMetadata extends Entity<RevisionMetadataProps> {
 
   static create(props: RevisionMetadataProps, id?: UniqueEntityId): Result<RevisionMetadata> {
     if (!(props.createdAt instanceof Date)) {
-      return Result.fail<RevisionMetadata>(`Could not create Revision Metadata. Creation date should be a date object, given: ${props.createdAt}`)
+      return Result.fail<RevisionMetadata>(
+        `Could not create Revision Metadata. Creation date should be a date object, given: ${props.createdAt}`,
+      )
     }
     if (!(props.updatedAt instanceof Date)) {
-      return Result.fail<RevisionMetadata>(`Could not create Revision Metadata. Update date should be a date object, given: ${props.updatedAt}`)
+      return Result.fail<RevisionMetadata>(
+        `Could not create Revision Metadata. Update date should be a date object, given: ${props.updatedAt}`,
+      )
     }
 
     return Result.ok<RevisionMetadata>(new RevisionMetadata(props, id))
