@@ -56,6 +56,11 @@ case "$COMMAND" in
     yarn workspace @standardnotes/auth-server email-campaign $MESSAGE_IDENTIFIER
     ;;
 
+  'content-recalculation' )
+    echo "Starting Content Size Recalculation..."
+    yarn workspace @standardnotes/auth-server content-recalculation
+    ;;
+
    * )
     echo "Unknown command"
     ;;

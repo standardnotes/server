@@ -17,10 +17,12 @@ import {
   EmailMessageRequestedEvent,
   WebSocketMessageRequestedEvent,
   ExitDiscountApplyRequestedEvent,
+  UserContentSizeRecalculationRequestedEvent,
 } from '@standardnotes/domain-events'
 import { InviteeIdentifierType } from '../SharedSubscription/InviteeIdentifierType'
 
 export interface DomainEventFactoryInterface {
+  createUserContentSizeRecalculationRequestedEvent(userUuid: string): UserContentSizeRecalculationRequestedEvent
   createWebSocketMessageRequestedEvent(dto: { userUuid: Uuid; message: JSONString }): WebSocketMessageRequestedEvent
   createEmailMessageRequestedEvent(dto: {
     userEmail: string

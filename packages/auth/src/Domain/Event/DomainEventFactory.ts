@@ -1,3 +1,5 @@
+/* istanbul ignore file */
+
 import { EmailMessageIdentifier, JSONString, ProtocolVersion, RoleName, Uuid } from '@standardnotes/common'
 import {
   AccountDeletionRequestedEvent,
@@ -17,6 +19,7 @@ import {
   EmailMessageRequestedEvent,
   WebSocketMessageRequestedEvent,
   ExitDiscountApplyRequestedEvent,
+  UserContentSizeRecalculationRequestedEvent,
 } from '@standardnotes/domain-events'
 import { Predicate, PredicateVerificationResult } from '@standardnotes/predicates'
 import { TimerInterface } from '@standardnotes/time'
@@ -28,6 +31,23 @@ import { DomainEventFactoryInterface } from './DomainEventFactoryInterface'
 @injectable()
 export class DomainEventFactory implements DomainEventFactoryInterface {
   constructor(@inject(TYPES.Timer) private timer: TimerInterface) {}
+
+  createUserContentSizeRecalculationRequestedEvent(userUuid: string): UserContentSizeRecalculationRequestedEvent {
+    return {
+      type: 'USER_CONTENT_SIZE_RECALCULATION_REQUESTED',
+      createdAt: this.timer.getUTCDate(),
+      meta: {
+        correlation: {
+          userIdentifier: userUuid,
+          userIdentifierType: 'uuid',
+        },
+        origin: DomainEventService.Auth,
+      },
+      payload: {
+        userUuid,
+      },
+    }
+  }
 
   createExitDiscountApplyRequestedEvent(dto: {
     userEmail: string
