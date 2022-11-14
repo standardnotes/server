@@ -50,7 +50,7 @@
     "nodemon": "^2.0.19",
     "prettyjson": "^1.2.5",
     "reflect-metadata": "0.1.13",
-    "typeorm": "^0.3.6",
+    "typeorm": "^0.3.10",
     "ua-parser-js": "^1.0.32",
     "uuid": "^9.0.0",
     "winston": "^3.8.1"
