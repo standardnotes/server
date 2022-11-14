@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.13.6](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.13.5...@standardnotes/syncing-server@1.13.6) (2022-11-14)
+
+### Bug Fixes
+
+* **syncing-server:** add missing content size recalculation handler binding ([79511ae](https://github.com/standardnotes/syncing-server-js/commit/79511aea5f0fc2114aa7c45851ce4dbe8bc531bb))
+
 ## [1.13.5](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.13.2...@standardnotes/syncing-server@1.13.5) (2022-11-14)
 
 ### Bug Fixes
