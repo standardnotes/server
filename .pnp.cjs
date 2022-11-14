@@ -2549,7 +2549,7 @@ const RAW_RUNTIME_STATE =
           ["@standardnotes/domain-events", "workspace:packages/domain-events"],\
           ["@standardnotes/domain-events-infra", "workspace:packages/domain-events-infra"],\
           ["@standardnotes/time", "workspace:packages/time"],\
-          ["@types/ioredis", "npm:4.28.10"],\
+          ["@types/ioredis", "npm:5.0.0"],\
           ["@types/jest", "npm:29.1.1"],\
           ["@types/newrelic", "npm:7.0.4"],\
           ["@types/node", "npm:18.0.3"],\
@@ -2561,7 +2561,7 @@ const RAW_RUNTIME_STATE =
           ["eslint", "npm:8.25.0"],\
           ["eslint-plugin-prettier", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:4.2.1"],\
           ["inversify", "npm:6.0.1"],\
-          ["ioredis", "npm:5.2.3"],\
+          ["ioredis", "npm:5.2.4"],\
           ["jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.1.2"],\
           ["mysql2", "npm:2.3.3"],\
           ["newrelic", "npm:9.6.0"],\
@@ -2607,7 +2607,7 @@ const RAW_RUNTIME_STATE =
           ["@standardnotes/time", "workspace:packages/time"],\
           ["@types/cors", "npm:2.8.12"],\
           ["@types/express", "npm:4.17.14"],\
-          ["@types/ioredis", "npm:4.28.10"],\
+          ["@types/ioredis", "npm:5.0.0"],\
           ["@types/jest", "npm:29.1.1"],\
           ["@types/jsonwebtoken", "npm:8.5.9"],\
           ["@types/newrelic", "npm:7.0.4"],\
@@ -2623,7 +2623,7 @@ const RAW_RUNTIME_STATE =
           ["helmet", "npm:6.0.0"],\
           ["inversify", "npm:6.0.1"],\
           ["inversify-express-utils", "npm:6.4.3"],\
-          ["ioredis", "npm:5.2.3"],\
+          ["ioredis", "npm:5.2.4"],\
           ["jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.1.2"],\
           ["jsonwebtoken", "npm:8.5.1"],\
           ["newrelic", "npm:9.6.0"],\
@@ -2672,7 +2672,7 @@ const RAW_RUNTIME_STATE =
           ["@types/bcryptjs", "npm:2.4.2"],\
           ["@types/cors", "npm:2.8.12"],\
           ["@types/express", "npm:4.17.14"],\
-          ["@types/ioredis", "npm:4.28.10"],\
+          ["@types/ioredis", "npm:5.0.0"],\
           ["@types/jest", "npm:29.1.1"],\
           ["@types/newrelic", "npm:7.0.4"],\
           ["@types/otplib", "npm:10.0.0"],\
@@ -2691,7 +2691,7 @@ const RAW_RUNTIME_STATE =
           ["express", "npm:4.18.2"],\
           ["inversify", "npm:6.0.1"],\
           ["inversify-express-utils", "npm:6.4.3"],\
-          ["ioredis", "npm:5.2.3"],\
+          ["ioredis", "npm:5.2.4"],\
           ["jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.1.2"],\
           ["mysql2", "npm:2.3.3"],\
           ["newrelic", "npm:9.6.0"],\
@@ -2770,13 +2770,13 @@ const RAW_RUNTIME_STATE =
           ["@standardnotes/domain-events-infra", "workspace:packages/domain-events-infra"],\
           ["@newrelic/native-metrics", "npm:9.0.0"],\
           ["@standardnotes/domain-events", "workspace:packages/domain-events"],\
-          ["@types/ioredis", "npm:4.28.10"],\
+          ["@types/ioredis", "npm:5.0.0"],\
           ["@types/jest", "npm:29.1.1"],\
           ["@types/newrelic", "npm:7.0.4"],\
           ["@typescript-eslint/eslint-plugin", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:5.30.5"],\
           ["aws-sdk", "npm:2.1234.0"],\
           ["eslint-plugin-prettier", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:4.2.1"],\
-          ["ioredis", "npm:5.2.3"],\
+          ["ioredis", "npm:5.2.4"],\
           ["jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.1.2"],\
           ["newrelic", "npm:9.6.0"],\
           ["reflect-metadata", "npm:0.1.13"],\
@@ -2812,7 +2812,7 @@ const RAW_RUNTIME_STATE =
           ["@standardnotes/domain-events", "workspace:packages/domain-events"],\
           ["@standardnotes/domain-events-infra", "workspace:packages/domain-events-infra"],\
           ["@standardnotes/time", "workspace:packages/time"],\
-          ["@types/ioredis", "npm:4.28.10"],\
+          ["@types/ioredis", "npm:5.0.0"],\
           ["@types/jest", "npm:29.1.1"],\
           ["@types/newrelic", "npm:7.0.4"],\
           ["@types/nodemailer", "npm:6.4.6"],\
@@ -2822,7 +2822,7 @@ const RAW_RUNTIME_STATE =
           ["eslint", "npm:8.25.0"],\
           ["eslint-plugin-prettier", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:4.2.1"],\
           ["inversify", "npm:6.0.1"],\
-          ["ioredis", "npm:5.2.3"],\
+          ["ioredis", "npm:5.2.4"],\
           ["jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.1.2"],\
           ["mysql2", "npm:2.3.3"],\
           ["newrelic", "npm:9.6.0"],\
@@ -2877,7 +2877,7 @@ const RAW_RUNTIME_STATE =
           ["@types/connect-busboy", "npm:1.0.0"],\
           ["@types/cors", "npm:2.8.12"],\
           ["@types/express", "npm:4.17.14"],\
-          ["@types/ioredis", "npm:4.28.10"],\
+          ["@types/ioredis", "npm:5.0.0"],\
           ["@types/jest", "npm:29.1.1"],\
           ["@types/jsonwebtoken", "npm:8.5.9"],\
           ["@types/newrelic", "npm:7.0.4"],\
@@ -2896,7 +2896,7 @@ const RAW_RUNTIME_STATE =
           ["helmet", "npm:6.0.0"],\
           ["inversify", "npm:6.0.1"],\
           ["inversify-express-utils", "npm:6.4.3"],\
-          ["ioredis", "npm:5.2.3"],\
+          ["ioredis", "npm:5.2.4"],\
           ["jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.1.2"],\
           ["jsonwebtoken", "npm:8.5.1"],\
           ["newrelic", "npm:9.6.0"],\
@@ -3008,7 +3008,7 @@ const RAW_RUNTIME_STATE =
           ["@standardnotes/domain-events-infra", "workspace:packages/domain-events-infra"],\
           ["@standardnotes/predicates", "workspace:packages/predicates"],\
           ["@standardnotes/time", "workspace:packages/time"],\
-          ["@types/ioredis", "npm:4.28.10"],\
+          ["@types/ioredis", "npm:5.0.0"],\
           ["@types/jest", "npm:29.1.1"],\
           ["@types/newrelic", "npm:7.0.4"],\
           ["@types/node", "npm:18.0.3"],\
@@ -3019,7 +3019,7 @@ const RAW_RUNTIME_STATE =
           ["eslint", "npm:8.25.0"],\
           ["eslint-plugin-prettier", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:4.2.1"],\
           ["inversify", "npm:6.0.1"],\
-          ["ioredis", "npm:5.2.3"],\
+          ["ioredis", "npm:5.2.4"],\
           ["jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.1.2"],\
           ["mysql2", "npm:2.3.3"],\
           ["newrelic", "npm:9.6.0"],\
@@ -3146,7 +3146,7 @@ const RAW_RUNTIME_STATE =
           ["@types/dotenv", "npm:8.2.0"],\
           ["@types/express", "npm:4.17.14"],\
           ["@types/inversify-express-utils", "npm:2.0.0"],\
-          ["@types/ioredis", "npm:4.28.10"],\
+          ["@types/ioredis", "npm:5.0.0"],\
           ["@types/jest", "npm:29.1.1"],\
           ["@types/jsonwebtoken", "npm:8.5.9"],\
           ["@types/newrelic", "npm:7.0.4"],\
@@ -3164,7 +3164,7 @@ const RAW_RUNTIME_STATE =
           ["helmet", "npm:6.0.0"],\
           ["inversify", "npm:6.0.1"],\
           ["inversify-express-utils", "npm:6.4.3"],\
-          ["ioredis", "npm:5.2.3"],\
+          ["ioredis", "npm:5.2.4"],\
           ["jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.1.2"],\
           ["jsonwebtoken", "npm:8.5.1"],\
           ["mysql2", "npm:2.3.3"],\
@@ -3242,7 +3242,7 @@ const RAW_RUNTIME_STATE =
           ["@standardnotes/security", "workspace:packages/security"],\
           ["@types/cors", "npm:2.8.12"],\
           ["@types/express", "npm:4.17.14"],\
-          ["@types/ioredis", "npm:4.28.10"],\
+          ["@types/ioredis", "npm:5.0.0"],\
           ["@types/jest", "npm:29.1.1"],\
           ["@types/newrelic", "npm:7.0.4"],\
           ["@typescript-eslint/eslint-plugin", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:5.40.1"],\
@@ -3255,7 +3255,7 @@ const RAW_RUNTIME_STATE =
           ["express", "npm:4.18.2"],\
           ["inversify", "npm:6.0.1"],\
           ["inversify-express-utils", "npm:6.4.3"],\
-          ["ioredis", "npm:5.2.3"],\
+          ["ioredis", "npm:5.2.4"],\
           ["jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.1.2"],\
           ["mysql2", "npm:2.3.3"],\
           ["newrelic", "npm:9.6.0"],\
@@ -3285,7 +3285,7 @@ const RAW_RUNTIME_STATE =
           ["@standardnotes/time", "workspace:packages/time"],\
           ["@types/cors", "npm:2.8.12"],\
           ["@types/express", "npm:4.17.14"],\
-          ["@types/ioredis", "npm:4.28.10"],\
+          ["@types/ioredis", "npm:5.0.0"],\
           ["@types/jest", "npm:29.1.1"],\
           ["@types/newrelic", "npm:7.0.4"],\
           ["@typescript-eslint/eslint-plugin", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:5.40.1"],\
@@ -3297,7 +3297,7 @@ const RAW_RUNTIME_STATE =
           ["express", "npm:4.18.2"],\
           ["inversify", "npm:6.0.1"],\
           ["inversify-express-utils", "npm:6.4.3"],\
-          ["ioredis", "npm:5.2.3"],\
+          ["ioredis", "npm:5.2.4"],\
           ["jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.1.2"],\
           ["mysql2", "npm:2.3.3"],\
           ["newrelic", "npm:9.6.0"],\
@@ -3549,11 +3549,11 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@types/ioredis", [\
-      ["npm:4.28.10", {\
-        "packageLocation": "./.yarn/cache/@types-ioredis-npm-4.28.10-4bdbe26a79-a7f24a8a13.zip/node_modules/@types/ioredis/",\
+      ["npm:5.0.0", {\
+        "packageLocation": "./.yarn/cache/@types-ioredis-npm-5.0.0-6efa70abfa-439770c9da.zip/node_modules/@types/ioredis/",\
         "packageDependencies": [\
-          ["@types/ioredis", "npm:4.28.10"],\
-          ["@types/node", "npm:18.0.3"]\
+          ["@types/ioredis", "npm:5.0.0"],\
+          ["ioredis", "npm:5.2.4"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -8270,10 +8270,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["ioredis", [\
-      ["npm:5.2.3", {\
-        "packageLocation": "./.yarn/cache/ioredis-npm-5.2.3-54d9576179-3849fbe54a.zip/node_modules/ioredis/",\
+      ["npm:5.2.4", {\
+        "packageLocation": "./.yarn/cache/ioredis-npm-5.2.4-875ff55d9a-f6572bf619.zip/node_modules/ioredis/",\
         "packageDependencies": [\
-          ["ioredis", "npm:5.2.3"],\
+          ["ioredis", "npm:5.2.4"],\
           ["@ioredis/commands", "npm:1.2.0"],\
           ["cluster-key-slot", "npm:1.1.1"],\
           ["debug", "virtual:b86a9fb34323a98c6519528ed55faa0d9b44ca8879307c0b29aa384bde47ff59a7d0c9051b31246f14521dfb71ba3c5d6d0b35c29fffc17bf875aa6ad977d9e8#npm:4.3.4"],\
@@ -13410,7 +13410,7 @@ const RAW_RUNTIME_STATE =
           ["@types/better-sqlite3", null],\
           ["@types/google-cloud__spanner", null],\
           ["@types/hdb-pool", null],\
-          ["@types/ioredis", "npm:4.28.10"],\
+          ["@types/ioredis", "npm:5.0.0"],\
           ["@types/mongodb", null],\
           ["@types/mssql", null],\
           ["@types/mysql2", null],\
@@ -13434,7 +13434,7 @@ const RAW_RUNTIME_STATE =
           ["dotenv", "npm:16.0.3"],\
           ["glob", "npm:7.2.3"],\
           ["hdb-pool", null],\
-          ["ioredis", "npm:5.2.3"],\
+          ["ioredis", "npm:5.2.4"],\
           ["js-yaml", "npm:4.1.0"],\
           ["mkdirp", "npm:1.0.4"],\
           ["mongodb", null],\
