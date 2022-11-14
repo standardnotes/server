@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.86.3](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.86.0...@standardnotes/domain-events@2.86.3) (2022-11-14)
+
+### Bug Fixes
+
+* versioning issue ([7ca377f](https://github.com/standardnotes/server/commit/7ca377f1b889379e6a43a66c0134bf266763516d))
+
 # [2.86.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.85.0...@standardnotes/domain-events@2.86.0) (2022-11-11)
 
 ### Features

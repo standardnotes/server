@@ -1,6 +1,6 @@
 {
   "name": "@standardnotes/sncrypto-node",
-  "version": "1.12.2",
+  "version": "1.12.3",
   "engines": {
     "node": ">=18.0.0 <19.0.0"
   },

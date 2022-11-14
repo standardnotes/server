@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.13.3](https://github.com/standardnotes/server/compare/@standardnotes/time@1.13.0...@standardnotes/time@1.13.3) (2022-11-14)
+
+### Bug Fixes
+
+* versioning issue ([7ca377f](https://github.com/standardnotes/server/commit/7ca377f1b889379e6a43a66c0134bf266763516d))
+
 # [1.13.0](https://github.com/standardnotes/server/compare/@standardnotes/time@1.12.0...@standardnotes/time@1.13.0) (2022-11-02)
 
 ### Features

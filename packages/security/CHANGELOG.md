@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.6.4](https://github.com/standardnotes/server/compare/@standardnotes/security@1.6.1...@standardnotes/security@1.6.4) (2022-11-14)
+
+### Bug Fixes
+
+* versioning issue ([7ca377f](https://github.com/standardnotes/server/commit/7ca377f1b889379e6a43a66c0134bf266763516d))
+
 ## [1.6.1](https://github.com/standardnotes/server/compare/@standardnotes/security@1.6.0...@standardnotes/security@1.6.1) (2022-11-10)
 
 **Note:** Version bump only for package @standardnotes/security
