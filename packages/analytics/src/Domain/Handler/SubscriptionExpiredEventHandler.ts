@@ -1,11 +1,11 @@
 import { DomainEventHandlerInterface, SubscriptionExpiredEvent } from '@standardnotes/domain-events'
 import { inject, injectable } from 'inversify'
 import { Logger } from 'winston'
+import { Email } from '@standardnotes/domain-core'
 
 import TYPES from '../../Bootstrap/Types'
 import { AnalyticsActivity } from '../Analytics/AnalyticsActivity'
 import { AnalyticsStoreInterface } from '../Analytics/AnalyticsStoreInterface'
-import { Email } from '../Common/Email'
 import { StatisticsMeasure } from '../Statistics/StatisticsMeasure'
 import { StatisticsStoreInterface } from '../Statistics/StatisticsStoreInterface'
 import { SubscriptionEventType } from '../Subscription/SubscriptionEventType'

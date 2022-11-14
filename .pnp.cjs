@@ -30,6 +30,10 @@ const RAW_RUNTIME_STATE =
       "reference": "workspace:packages/common"\
     },\
     {\
+      "name": "@standardnotes/domain-core",\
+      "reference": "workspace:packages/domain-core"\
+    },\
+    {\
       "name": "@standardnotes/domain-events",\
       "reference": "workspace:packages/domain-events"\
     },\
@@ -89,6 +93,7 @@ const RAW_RUNTIME_STATE =
     ["@standardnotes/api-gateway", ["workspace:packages/api-gateway"]],\
     ["@standardnotes/auth-server", ["workspace:packages/auth"]],\
     ["@standardnotes/common", ["workspace:packages/common"]],\
+    ["@standardnotes/domain-core", ["workspace:packages/domain-core"]],\
     ["@standardnotes/domain-events", ["workspace:packages/domain-events"]],\
     ["@standardnotes/domain-events-infra", ["workspace:packages/domain-events-infra"]],\
     ["@standardnotes/event-store", ["workspace:packages/event-store"]],\
@@ -2532,6 +2537,7 @@ const RAW_RUNTIME_STATE =
           ["@newrelic/winston-enricher", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:4.0.0"],\
           ["@sentry/node", "npm:7.19.0"],\
           ["@standardnotes/common", "workspace:packages/common"],\
+          ["@standardnotes/domain-core", "workspace:packages/domain-core"],\
           ["@standardnotes/domain-events", "workspace:packages/domain-events"],\
           ["@standardnotes/domain-events-infra", "workspace:packages/domain-events-infra"],\
           ["@standardnotes/time", "workspace:packages/time"],\
@@ -2539,7 +2545,6 @@ const RAW_RUNTIME_STATE =
           ["@types/jest", "npm:29.1.1"],\
           ["@types/newrelic", "npm:7.0.4"],\
           ["@types/node", "npm:18.11.9"],\
-          ["@types/uuid", "npm:8.3.4"],\
           ["@typescript-eslint/eslint-plugin", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:5.30.5"],\
           ["aws-sdk", "npm:2.1253.0"],\
           ["dayjs", "npm:1.11.6"],\
@@ -2552,11 +2557,9 @@ const RAW_RUNTIME_STATE =
           ["mysql2", "npm:2.3.3"],\
           ["newrelic", "npm:9.6.0"],\
           ["reflect-metadata", "npm:0.1.13"],\
-          ["shallow-equal-object", "npm:1.1.1"],\
           ["ts-jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.0.3"],\
           ["typeorm", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:0.3.10"],\
           ["typescript", "patch:typescript@npm%3A4.8.4#optional!builtin<compat/typescript>::version=4.8.4&hash=701156"],\
-          ["uuid", "npm:9.0.0"],\
           ["winston", "npm:3.8.2"]\
         ],\
         "linkType": "SOFT"\
@@ -2701,7 +2704,6 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./packages/common/",\
         "packageDependencies": [\
           ["@standardnotes/common", "workspace:packages/common"],\
-          ["@newrelic/native-metrics", "npm:9.0.0"],\
           ["@types/jest", "npm:29.1.1"],\
           ["@types/node", "npm:18.11.9"],\
           ["@typescript-eslint/eslint-plugin", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:5.30.5"],\
@@ -2728,12 +2730,34 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["@standardnotes/domain-core", [\
+      ["workspace:packages/domain-core", {\
+        "packageLocation": "./packages/domain-core/",\
+        "packageDependencies": [\
+          ["@standardnotes/domain-core", "workspace:packages/domain-core"],\
+          ["@standardnotes/common", "workspace:packages/common"],\
+          ["@standardnotes/features", "npm:1.53.1"],\
+          ["@standardnotes/predicates", "workspace:packages/predicates"],\
+          ["@standardnotes/security", "workspace:packages/security"],\
+          ["@types/jest", "npm:29.1.1"],\
+          ["@types/uuid", "npm:8.3.4"],\
+          ["@typescript-eslint/eslint-plugin", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:5.30.5"],\
+          ["eslint-plugin-prettier", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:4.2.1"],\
+          ["jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.1.2"],\
+          ["reflect-metadata", "npm:0.1.13"],\
+          ["shallow-equal-object", "npm:1.1.1"],\
+          ["ts-jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.0.3"],\
+          ["typescript", "patch:typescript@npm%3A4.8.4#optional!builtin<compat/typescript>::version=4.8.4&hash=701156"],\
+          ["uuid", "npm:9.0.0"]\
+        ],\
+        "linkType": "SOFT"\
+      }]\
+    ]],\
     ["@standardnotes/domain-events", [\
       ["workspace:packages/domain-events", {\
         "packageLocation": "./packages/domain-events/",\
         "packageDependencies": [\
           ["@standardnotes/domain-events", "workspace:packages/domain-events"],\
-          ["@newrelic/native-metrics", "npm:9.0.0"],\
           ["@standardnotes/common", "workspace:packages/common"],\
           ["@standardnotes/features", "npm:1.53.1"],\
           ["@standardnotes/predicates", "workspace:packages/predicates"],\
@@ -2944,7 +2968,6 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./packages/predicates/",\
         "packageDependencies": [\
           ["@standardnotes/predicates", "workspace:packages/predicates"],\
-          ["@newrelic/native-metrics", "npm:9.0.0"],\
           ["@standardnotes/common", "workspace:packages/common"],\
           ["@types/jest", "npm:29.1.1"],\
           ["@typescript-eslint/eslint-plugin", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:5.30.5"],\
@@ -3024,7 +3047,6 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./packages/security/",\
         "packageDependencies": [\
           ["@standardnotes/security", "workspace:packages/security"],\
-          ["@newrelic/native-metrics", "npm:9.0.0"],\
           ["@standardnotes/common", "workspace:packages/common"],\
           ["@types/jest", "npm:29.1.1"],\
           ["@types/jsonwebtoken", "npm:8.5.9"],\
@@ -3096,7 +3118,6 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./packages/sncrypto-node/",\
         "packageDependencies": [\
           ["@standardnotes/sncrypto-node", "workspace:packages/sncrypto-node"],\
-          ["@newrelic/native-metrics", "npm:9.0.0"],\
           ["@standardnotes/sncrypto-common", "npm:1.13.0"],\
           ["@types/jest", "npm:29.1.1"],\
           ["@types/node", "npm:18.11.9"],\
@@ -3174,7 +3195,6 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./packages/time/",\
         "packageDependencies": [\
           ["@standardnotes/time", "workspace:packages/time"],\
-          ["@newrelic/native-metrics", "npm:9.0.0"],\
           ["@types/jest", "npm:29.1.1"],\
           ["@types/microtime", "npm:2.1.0"],\
           ["@typescript-eslint/eslint-plugin", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:5.30.5"],\

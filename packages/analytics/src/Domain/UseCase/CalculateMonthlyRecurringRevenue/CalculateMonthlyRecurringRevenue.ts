@@ -1,7 +1,8 @@
 import { SubscriptionBillingFrequency, SubscriptionName } from '@standardnotes/common'
 import { inject, injectable } from 'inversify'
+import { Result } from '@standardnotes/domain-core'
+
 import TYPES from '../../../Bootstrap/Types'
-import { Result } from '../../Core/Result'
 import { MonthlyRevenue } from '../../Revenue/MonthlyRevenue'
 import { RevenueModificationRepositoryInterface } from '../../Revenue/RevenueModificationRepositoryInterface'
 import { StatisticsMeasure } from '../../Statistics/StatisticsMeasure'

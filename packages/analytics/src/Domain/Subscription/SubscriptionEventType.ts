@@ -1,5 +1,5 @@
-import { ValueObject } from '../Core/ValueObject'
-import { Result } from '../Core/Result'
+import { ValueObject, Result } from '@standardnotes/domain-core'
+
 import { SubscriptionEventTypeProps } from './SubscriptionEventTypeProps'
 
 export class SubscriptionEventType extends ValueObject<SubscriptionEventTypeProps> {

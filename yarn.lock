@@ -1796,6 +1796,7 @@ __metadata:
     "@newrelic/winston-enricher": "npm:^4.0.0"
     "@sentry/node": "npm:^7.19.0"
     "@standardnotes/common": "workspace:*"
+    "@standardnotes/domain-core": "workspace:*"
     "@standardnotes/domain-events": "workspace:*"
     "@standardnotes/domain-events-infra": "workspace:*"
     "@standardnotes/time": "workspace:*"
@@ -1803,7 +1804,6 @@ __metadata:
     "@types/jest": "npm:^29.1.1"
     "@types/newrelic": "npm:^7.0.4"
     "@types/node": "npm:^18.11.9"
-    "@types/uuid": "npm:^8.3.0"
     "@typescript-eslint/eslint-plugin": "npm:^5.30.0"
     aws-sdk: "npm:^2.1253.0"
     dayjs: "npm:^1.11.6"
@@ -1816,11 +1816,9 @@ __metadata:
     mysql2: "npm:^2.3.3"
     newrelic: "npm:^9.6.0"
     reflect-metadata: "npm:^0.1.13"
-    shallow-equal-object: "npm:^1.1.1"
     ts-jest: "npm:^29.0.3"
     typeorm: "npm:^0.3.10"
     typescript: "npm:^4.8.4"
-    uuid: "npm:^9.0.0"
     winston: "npm:^3.8.1"
   languageName: unknown
   linkType: soft
@@ -1957,7 +1955,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@standardnotes/common@workspace:packages/common"
   dependencies:
-    "@newrelic/native-metrics": "npm:^9.0.0"
     "@types/jest": "npm:^29.1.1"
     "@types/node": "npm:^18.11.9"
     "@typescript-eslint/eslint-plugin": "npm:^5.30.0"
@@ -1981,6 +1978,27 @@ __metadata:
   checksum: de200da31e9336158437176f2e31dfa47445dbb6d66b595122de080cb3138483f238f92716c0f7bc7cc5da6505e7f6dcdd8146cdd19480495f46d0a4c62f2d20
   languageName: node
   linkType: hard
+
+"@standardnotes/domain-core@workspace:*, @standardnotes/domain-core@workspace:packages/domain-core":
+  version: 0.0.0-use.local
+  resolution: "@standardnotes/domain-core@workspace:packages/domain-core"
+  dependencies:
+    "@standardnotes/common": "workspace:*"
+    "@standardnotes/features": "npm:^1.52.1"
+    "@standardnotes/predicates": "workspace:*"
+    "@standardnotes/security": "workspace:*"
+    "@types/jest": "npm:^29.1.1"
+    "@types/uuid": "npm:^8.3.0"
+    "@typescript-eslint/eslint-plugin": "npm:^5.30.0"
+    eslint-plugin-prettier: "npm:^4.2.1"
+    jest: "npm:^29.1.2"
+    reflect-metadata: "npm:^0.1.13"
+    shallow-equal-object: "npm:^1.1.1"
+    ts-jest: "npm:^29.0.3"
+    typescript: "npm:^4.8.4"
+    uuid: "npm:^9.0.0"
+  languageName: unknown
+  linkType: soft
 
 "@standardnotes/domain-events-infra@workspace:*, @standardnotes/domain-events-infra@workspace:^, @standardnotes/domain-events-infra@workspace:packages/domain-events-infra":
   version: 0.0.0-use.local
@@ -2009,7 +2027,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@standardnotes/domain-events@workspace:packages/domain-events"
   dependencies:
-    "@newrelic/native-metrics": "npm:^9.0.0"
     "@standardnotes/common": "workspace:*"
     "@standardnotes/features": "npm:^1.52.1"
     "@standardnotes/predicates": "workspace:*"
@@ -2187,7 +2204,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@standardnotes/predicates@workspace:packages/predicates"
   dependencies:
-    "@newrelic/native-metrics": "npm:^9.0.0"
     "@standardnotes/common": "workspace:*"
     "@types/jest": "npm:^29.1.1"
     "@typescript-eslint/eslint-plugin": "npm:^5.30.0"
@@ -2263,7 +2279,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@standardnotes/security@workspace:packages/security"
   dependencies:
-    "@newrelic/native-metrics": "npm:^9.0.0"
     "@standardnotes/common": "workspace:*"
     "@types/jest": "npm:^29.1.1"
     "@types/jsonwebtoken": "npm:^8.5.8"
@@ -2328,7 +2343,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@standardnotes/sncrypto-node@workspace:packages/sncrypto-node"
   dependencies:
-    "@newrelic/native-metrics": "npm:^9.0.0"
     "@standardnotes/sncrypto-common": "npm:^1.9.0"
     "@types/jest": "npm:^29.1.1"
     "@types/node": "npm:^18.11.9"
@@ -2402,7 +2416,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@standardnotes/time@workspace:packages/time"
   dependencies:
-    "@newrelic/native-metrics": "npm:^9.0.0"
     "@types/jest": "npm:^29.1.1"
     "@types/microtime": "npm:^2.1.0"
     "@typescript-eslint/eslint-plugin": "npm:^5.30.0"

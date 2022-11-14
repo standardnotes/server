@@ -1,5 +1,5 @@
-import { ValueObject } from '../Core/ValueObject'
-import { Result } from '../Core/Result'
+import { Result, ValueObject } from '@standardnotes/domain-core'
+
 import { SubscriptionPlanNameProps } from './SubscriptionPlanNameProps'
 
 export class SubscriptionPlanName extends ValueObject<SubscriptionPlanNameProps> {

@@ -36,6 +36,9 @@
       "path": "./packages/common"
     },
     {
+      "path": "./packages/domain-core"
+    },
+    {
       "path": "./packages/domain-events"
     },
     {

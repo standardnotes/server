@@ -1,6 +1,5 @@
-import { Entity } from '../Core/Entity'
-import { Result } from '../Core/Result'
-import { UniqueEntityId } from '../Core/UniqueEntityId'
+import { Entity, Result, UniqueEntityId } from '@standardnotes/domain-core'
+
 import { UserProps } from './UserProps'
 
 export class User extends Entity<UserProps> {

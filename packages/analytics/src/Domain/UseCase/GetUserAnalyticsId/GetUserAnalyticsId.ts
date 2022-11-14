@@ -1,7 +1,7 @@
 import { inject, injectable } from 'inversify'
+import { Email, Uuid } from '@standardnotes/domain-core'
+
 import TYPES from '../../../Bootstrap/Types'
-import { Email } from '../../Common/Email'
-import { Uuid } from '../../Common/Uuid'
 import { AnalyticsEntityRepositoryInterface } from '../../Entity/AnalyticsEntityRepositoryInterface'
 import { UseCaseInterface } from '../UseCaseInterface'
 import { GetUserAnalyticsIdDTO } from './GetUserAnalyticsIdDTO'

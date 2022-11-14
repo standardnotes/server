@@ -1,4 +1,4 @@
-import { Email } from '../Common/Email'
+import { Email } from '@standardnotes/domain-core'
 
 export interface UserProps {
   email: Email

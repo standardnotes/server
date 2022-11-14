@@ -1,10 +1,10 @@
 {
-  "name": "@standardnotes/domain-events",
-  "version": "2.86.3",
+  "name": "@standardnotes/domain-core",
+  "version": "1.0.0",
   "engines": {
     "node": ">=18.0.0 <19.0.0"
   },
-  "description": "Domain Events SDK used in SN projects",
+  "description": "Domain Core SDK used in SN projects",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
   "files": [
@@ -27,10 +27,13 @@
     "@standardnotes/features": "^1.52.1",
     "@standardnotes/predicates": "workspace:*",
     "@standardnotes/security": "workspace:*",
-    "reflect-metadata": "^0.1.13"
+    "reflect-metadata": "^0.1.13",
+    "shallow-equal-object": "^1.1.1",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@types/jest": "^29.1.1",
+    "@types/uuid": "^8.3.0",
     "@typescript-eslint/eslint-plugin": "^5.30.0",
     "eslint-plugin-prettier": "^4.2.1",
     "jest": "^29.1.2",

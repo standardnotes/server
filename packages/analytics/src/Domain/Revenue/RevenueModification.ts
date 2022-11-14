@@ -1,6 +1,5 @@
-import { Aggregate } from '../Core/Aggregate'
-import { Result } from '../Core/Result'
-import { UniqueEntityId } from '../Core/UniqueEntityId'
+import { Aggregate, UniqueEntityId, Result } from '@standardnotes/domain-core'
+
 import { RevenueModificationProps } from './RevenueModificationProps'
 
 export class RevenueModification extends Aggregate<RevenueModificationProps> {

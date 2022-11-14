@@ -1,13 +1,12 @@
 import { injectable } from 'inversify'
+import { Email, UniqueEntityId } from '@standardnotes/domain-core'
 
 import { TypeORMRevenueModification } from '../../Infra/TypeORM/TypeORMRevenueModification'
-import { UniqueEntityId } from '../Core/UniqueEntityId'
 import { MonthlyRevenue } from '../Revenue/MonthlyRevenue'
 import { RevenueModification } from '../Revenue/RevenueModification'
 import { Subscription } from '../Subscription/Subscription'
 import { User } from '../User/User'
 import { MapInterface } from './MapInterface'
-import { Email } from '../Common/Email'
 import { SubscriptionPlanName } from '../Subscription/SubscriptionPlanName'
 import { SubscriptionEventType } from '../Subscription/SubscriptionEventType'
 
