@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.10.2](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.10.1...@standardnotes/analytics@2.10.2) (2022-11-14)
+
+### Bug Fixes
+
+* **analytics:** imports from domain-core ([15dfd6d](https://github.com/standardnotes/server/commit/15dfd6dcba75a772000eeb01b78a532067b01d5b))
+
 ## [2.10.1](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.10.0...@standardnotes/analytics@2.10.1) (2022-11-14)
 
 ### Bug Fixes
