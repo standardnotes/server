@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.60.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.59.11...@standardnotes/auth-server@1.60.0) (2022-11-14)
+
+### Features
+
+* **auth:** add content size recalculation procedure trigger ([590ec66](https://github.com/standardnotes/server/commit/590ec6643db57adf3e202c6ccab4bac36aae8b59))
+
 ## [1.59.11](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.59.10...@standardnotes/auth-server@1.59.11) (2022-11-14)
 
 **Note:** Version bump only for package @standardnotes/auth-server
