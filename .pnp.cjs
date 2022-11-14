@@ -120,7 +120,7 @@ const RAW_RUNTIME_STATE =
           ["@sentry/node", "npm:7.19.0"],\
           ["@types/jest", "npm:29.1.1"],\
           ["@types/newrelic", "npm:7.0.4"],\
-          ["@types/node", "npm:18.0.3"],\
+          ["@types/node", "npm:18.11.9"],\
           ["@typescript-eslint/parser", "virtual:8859b278716fedf3e7458b5628625f7e35678c418626878559a0b816445001b7e24c55546f4677ba4c20b521aa0cf52cc33ac07deff171e383ada6eeab69933f#npm:5.40.1"],\
           ["eslint", "npm:8.19.0"],\
           ["eslint-config-prettier", "virtual:8859b278716fedf3e7458b5628625f7e35678c418626878559a0b816445001b7e24c55546f4677ba4c20b521aa0cf52cc33ac07deff171e383ada6eeab69933f#npm:8.5.0"],\
@@ -2538,7 +2538,7 @@ const RAW_RUNTIME_STATE =
           ["@types/ioredis", "npm:5.0.0"],\
           ["@types/jest", "npm:29.1.1"],\
           ["@types/newrelic", "npm:7.0.4"],\
-          ["@types/node", "npm:18.0.3"],\
+          ["@types/node", "npm:18.11.9"],\
           ["@types/uuid", "npm:8.3.4"],\
           ["@typescript-eslint/eslint-plugin", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:5.30.5"],\
           ["aws-sdk", "npm:2.1253.0"],\
@@ -2703,7 +2703,7 @@ const RAW_RUNTIME_STATE =
           ["@standardnotes/common", "workspace:packages/common"],\
           ["@newrelic/native-metrics", "npm:9.0.0"],\
           ["@types/jest", "npm:29.1.1"],\
-          ["@types/node", "npm:18.0.3"],\
+          ["@types/node", "npm:18.11.9"],\
           ["@typescript-eslint/eslint-plugin", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:5.30.5"],\
           ["eslint-plugin-prettier", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:4.2.1"],\
           ["jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.1.2"],\
@@ -2997,7 +2997,7 @@ const RAW_RUNTIME_STATE =
           ["@types/ioredis", "npm:5.0.0"],\
           ["@types/jest", "npm:29.1.1"],\
           ["@types/newrelic", "npm:7.0.4"],\
-          ["@types/node", "npm:18.0.3"],\
+          ["@types/node", "npm:18.11.9"],\
           ["@typescript-eslint/eslint-plugin", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:5.40.1"],\
           ["aws-sdk", "npm:2.1253.0"],\
           ["dayjs", "npm:1.11.6"],\
@@ -3053,7 +3053,7 @@ const RAW_RUNTIME_STATE =
           ["@sentry/node", "npm:7.19.0"],\
           ["@types/jest", "npm:29.1.1"],\
           ["@types/newrelic", "npm:7.0.4"],\
-          ["@types/node", "npm:18.0.3"],\
+          ["@types/node", "npm:18.11.9"],\
           ["@typescript-eslint/parser", "virtual:8859b278716fedf3e7458b5628625f7e35678c418626878559a0b816445001b7e24c55546f4677ba4c20b521aa0cf52cc33ac07deff171e383ada6eeab69933f#npm:5.40.1"],\
           ["eslint", "npm:8.19.0"],\
           ["eslint-config-prettier", "virtual:8859b278716fedf3e7458b5628625f7e35678c418626878559a0b816445001b7e24c55546f4677ba4c20b521aa0cf52cc33ac07deff171e383ada6eeab69933f#npm:8.5.0"],\
@@ -3099,7 +3099,7 @@ const RAW_RUNTIME_STATE =
           ["@newrelic/native-metrics", "npm:9.0.0"],\
           ["@standardnotes/sncrypto-common", "npm:1.13.0"],\
           ["@types/jest", "npm:29.1.1"],\
-          ["@types/node", "npm:18.0.3"],\
+          ["@types/node", "npm:18.11.9"],\
           ["@typescript-eslint/eslint-plugin", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:5.30.5"],\
           ["eslint-plugin-prettier", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:4.2.1"],\
           ["jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.1.2"],\
@@ -3681,6 +3681,13 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/@types-node-npm-18.0.3-c2cbe1f26e-2b50e8bd02.zip/node_modules/@types/node/",\
         "packageDependencies": [\
           ["@types/node", "npm:18.0.3"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["npm:18.11.9", {\
+        "packageLocation": "./.yarn/cache/@types-node-npm-18.11.9-d21dd6ec05-7b7d90894d.zip/node_modules/@types/node/",\
+        "packageDependencies": [\
+          ["@types/node", "npm:18.11.9"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -13120,7 +13127,7 @@ const RAW_RUNTIME_STATE =
           ["@tsconfig/node12", "npm:1.0.11"],\
           ["@tsconfig/node14", "npm:1.0.3"],\
           ["@tsconfig/node16", "npm:1.0.3"],\
-          ["@types/node", "npm:18.0.3"],\
+          ["@types/node", "npm:18.11.9"],\
           ["@types/swc__core", null],\
           ["@types/swc__wasm", null],\
           ["@types/typescript", null],\

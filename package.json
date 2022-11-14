@@ -47,7 +47,7 @@
     "@lerna-lite/run": "^1.5.1",
     "@types/jest": "^29.1.1",
     "@types/newrelic": "^7.0.4",
-    "@types/node": "^18.0.0",
+    "@types/node": "^18.11.9",
     "@typescript-eslint/parser": "^5.40.1",
     "eslint": "^8.17.0",
     "eslint-config-prettier": "^8.5.0",
