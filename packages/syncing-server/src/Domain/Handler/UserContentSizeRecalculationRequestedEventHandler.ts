@@ -19,7 +19,7 @@ export class UserContentSizeRecalculationRequestedEventHandler implements Domain
   ) {}
 
   async handle(event: UserContentSizeRecalculationRequestedEvent): Promise<void> {
-    this.logger.info(`Starting content size recalculation for user: ${event.payload.userUuid}`)
+    this.logger.debug(`Starting content size recalculation for user: ${event.payload.userUuid}`)
 
     const stream = await this.itemRepository.streamAll({
       deleted: false,
@@ -41,7 +41,7 @@ export class UserContentSizeRecalculationRequestedEventHandler implements Domain
 
                 return
               }
-              loggerHandle.info(`Fixing content size for item ${item.item_uuid}`)
+              loggerHandle.debug(`Fixing content size for item ${item.item_uuid}`)
 
               const modelItem = await this.itemRepository.findByUuid(item.item_uuid)
               if (modelItem !== null) {
@@ -49,7 +49,7 @@ export class UserContentSizeRecalculationRequestedEventHandler implements Domain
                   JSON.stringify(await this.itemProjector.projectFull(modelItem)),
                 )
                 if (modelItem.contentSize !== fixedContentSize) {
-                  loggerHandle.info(`Fixing content size from ${modelItem.contentSize} to ${fixedContentSize}`)
+                  loggerHandle.debug(`Fixing content size from ${modelItem.contentSize} to ${fixedContentSize}`)
 
                   modelItem.contentSize = fixedContentSize
 
