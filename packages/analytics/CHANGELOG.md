@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.11.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.10.3...@standardnotes/analytics@2.11.0) (2022-11-16)
+
+### Features
+
+* **analytics:** add publishing churn calculation values in the report ([6c43a33](https://github.com/standardnotes/server/commit/6c43a331d09c2dcf1300742509da6a1d8ef2f5b7))
+
 ## [2.10.3](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.10.2...@standardnotes/analytics@2.10.3) (2022-11-16)
 
 ### Bug Fixes

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.88.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.87.0...@standardnotes/domain-events@2.88.0) (2022-11-16)
+
+### Features
+
+* **analytics:** add publishing churn calculation values in the report ([6c43a33](https://github.com/standardnotes/server/commit/6c43a331d09c2dcf1300742509da6a1d8ef2f5b7))
+
 # [2.87.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.86.3...@standardnotes/domain-events@2.87.0) (2022-11-14)
 
 ### Features
