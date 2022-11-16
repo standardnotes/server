@@ -20,7 +20,9 @@ export class CalculateMonthlyRecurringRevenue implements DomainUseCaseInterface<
   ) {}
 
   async execute(_dto: CalculateMonthlyRecurringRevenueDTO): Promise<Result<MonthlyRevenue>> {
-    const mrrDiff = await this.revenueModificationRepository.sumMRRDiff({})
+    const mrrDiff = await this.revenueModificationRepository.sumMRRDiff({
+      billingFrequencies: [SubscriptionBillingFrequency.Annual, SubscriptionBillingFrequency.Monthly],
+    })
 
     await this.statisticsStore.setMeasure(StatisticsMeasure.MRR, mrrDiff, [
       Period.Today,
@@ -29,7 +31,7 @@ export class CalculateMonthlyRecurringRevenue implements DomainUseCaseInterface<
     ])
 
     const monthlyPlansMrrDiff = await this.revenueModificationRepository.sumMRRDiff({
-      billingFrequency: SubscriptionBillingFrequency.Monthly,
+      billingFrequencies: [SubscriptionBillingFrequency.Monthly],
     })
 
     await this.statisticsStore.setMeasure(StatisticsMeasure.MonthlyPlansMRR, monthlyPlansMrrDiff, [
@@ -39,7 +41,7 @@ export class CalculateMonthlyRecurringRevenue implements DomainUseCaseInterface<
     ])
 
     const annualPlansMrrDiff = await this.revenueModificationRepository.sumMRRDiff({
-      billingFrequency: SubscriptionBillingFrequency.Annual,
+      billingFrequencies: [SubscriptionBillingFrequency.Annual],
     })
 
     await this.statisticsStore.setMeasure(StatisticsMeasure.AnnualPlansMRR, annualPlansMrrDiff, [
@@ -49,7 +51,7 @@ export class CalculateMonthlyRecurringRevenue implements DomainUseCaseInterface<
     ])
 
     const fiveYearPlansMrrDiff = await this.revenueModificationRepository.sumMRRDiff({
-      billingFrequency: SubscriptionBillingFrequency.FiveYear,
+      billingFrequencies: [SubscriptionBillingFrequency.FiveYear],
     })
 
     await this.statisticsStore.setMeasure(StatisticsMeasure.FiveYearPlansMRR, fiveYearPlansMrrDiff, [
@@ -59,7 +61,8 @@ export class CalculateMonthlyRecurringRevenue implements DomainUseCaseInterface<
     ])
 
     const proPlansMrrDiff = await this.revenueModificationRepository.sumMRRDiff({
-      planName: SubscriptionName.ProPlan,
+      planNames: [SubscriptionName.ProPlan],
+      billingFrequencies: [SubscriptionBillingFrequency.Annual, SubscriptionBillingFrequency.Monthly],
     })
 
     await this.statisticsStore.setMeasure(StatisticsMeasure.ProPlansMRR, proPlansMrrDiff, [
@@ -69,7 +72,8 @@ export class CalculateMonthlyRecurringRevenue implements DomainUseCaseInterface<
     ])
 
     const plusPlansMrrDiff = await this.revenueModificationRepository.sumMRRDiff({
-      planName: SubscriptionName.PlusPlan,
+      planNames: [SubscriptionName.PlusPlan],
+      billingFrequencies: [SubscriptionBillingFrequency.Annual, SubscriptionBillingFrequency.Monthly],
     })
 
     await this.statisticsStore.setMeasure(StatisticsMeasure.PlusPlansMRR, plusPlansMrrDiff, [

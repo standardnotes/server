@@ -16,14 +16,14 @@ export class MySQLRevenueModificationRepository implements RevenueModificationRe
     private revenueModificationMap: MapInterface<RevenueModification, TypeORMRevenueModification>,
   ) {}
 
-  async sumMRRDiff(dto: { planName?: string; billingFrequency?: number }): Promise<number> {
+  async sumMRRDiff(dto: { billingFrequencies: number[]; planNames?: string[] }): Promise<number> {
     const query = this.ormRepository.createQueryBuilder().select('sum(new_mrr - previous_mrr)', 'mrrDiff')
 
-    if (dto.planName !== undefined) {
-      query.where('subscription_plan = :planName', { planName: dto.planName })
+    if (dto.billingFrequencies.length > 0) {
+      query.where('billing_frequency IN (:...billingFrequencies)', { billingFrequencies: dto.billingFrequencies })
     }
-    if (dto.billingFrequency !== undefined) {
-      query.where('billing_frequency = :billingFrequency', { billingFrequency: dto.billingFrequency })
+    if (dto.planNames && dto.planNames.length > 0) {
+      query.andWhere('subscription_plan IN (:...planNames)', { planNames: dto.planNames })
     }
 
     const result = await query.getRawOne()
