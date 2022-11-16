@@ -36,6 +36,9 @@ export interface DomainEventFactoryInterface {
       values: Array<{
         rate: number
         periodKey: string
+        averageCustomersCount: number
+        existingCustomersChurn: number
+        newCustomersChurn: number
       }>
     }
   }): DailyAnalyticsReportGeneratedEvent

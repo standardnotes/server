@@ -32,6 +32,9 @@ export interface DailyAnalyticsReportGeneratedEventPayload {
     periodKeys: Array<string>
     values: Array<{
       rate: number
+      averageCustomersCount: number
+      existingCustomersChurn: number
+      newCustomersChurn: number
       periodKey: string
     }>
   }

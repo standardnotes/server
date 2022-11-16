@@ -175,6 +175,9 @@ const requestReport = async (
   const churnRates: Array<{
     rate: number
     periodKey: string
+    averageCustomersCount: number
+    existingCustomersChurn: number
+    newCustomersChurn: number
   }> = []
   for (const monthPeriodKey of monthlyPeriodKeys) {
     const monthPeriod = periodKeyGenerator.convertPeriodKeyToPeriod(monthPeriodKey)
@@ -204,6 +207,9 @@ const requestReport = async (
     churnRates.push({
       periodKey: monthPeriodKey,
       rate: averageCustomersCount ? (totalChurn / averageCustomersCount) * 100 : 0,
+      averageCustomersCount,
+      existingCustomersChurn,
+      newCustomersChurn,
     })
   }
 

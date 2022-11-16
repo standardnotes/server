@@ -1,3 +1,5 @@
+/* istanbul ignore file */
+
 import { DomainEventService, DailyAnalyticsReportGeneratedEvent } from '@standardnotes/domain-events'
 import { TimerInterface } from '@standardnotes/time'
 import { inject, injectable } from 'inversify'
@@ -43,6 +45,9 @@ export class DomainEventFactory implements DomainEventFactoryInterface {
       values: Array<{
         rate: number
         periodKey: string
+        averageCustomersCount: number
+        existingCustomersChurn: number
+        newCustomersChurn: number
       }>
     }
   }): DailyAnalyticsReportGeneratedEvent {
