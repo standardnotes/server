@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.13.13](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.13.12...@standardnotes/syncing-server@1.13.13) (2022-11-17)
+
+### Bug Fixes
+
+* **syncing-server:** paginating with upper bound limit ([94afa34](https://github.com/standardnotes/syncing-server-js/commit/94afa347807d757b46d507086832fbfb3c73353d))
+
 ## [1.13.12](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.13.11...@standardnotes/syncing-server@1.13.12) (2022-11-16)
 
 **Note:** Version bump only for package @standardnotes/syncing-server
