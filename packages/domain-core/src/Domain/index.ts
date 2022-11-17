@@ -8,7 +8,13 @@ export * from './Core/Entity'
 export * from './Core/Id'
 export * from './Core/Result'
 export * from './Core/UniqueEntityId'
+export * from './Core/Validator'
 export * from './Core/ValueObject'
 export * from './Core/ValueObjectProps'
 
 export * from './Map/MapInterface'
+
+export * from './Revision/ContentType'
+export * from './Revision/ContentTypeProps'
+export * from './Revision/Revision'
+export * from './Revision/RevisionProps'

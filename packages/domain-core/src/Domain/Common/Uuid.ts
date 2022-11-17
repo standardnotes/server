@@ -1,6 +1,7 @@
 import { ValueObject } from '../Core/ValueObject'
 import { Result } from '../Core/Result'
 import { UuidProps } from './UuidProps'
+import { Validator } from '../Core/Validator'
 
 export class Uuid extends ValueObject<UuidProps> {
   get value(): string {
@@ -12,8 +13,9 @@ export class Uuid extends ValueObject<UuidProps> {
   }
 
   static create(uuid: string): Result<Uuid> {
-    if (!!uuid === false || uuid.length === 0) {
-      return Result.fail<Uuid>('Uuid cannot be empty')
+    const validUuidOrError = Validator.isValidUuid(uuid)
+    if (validUuidOrError.isFailed()) {
+      return Result.fail<Uuid>(validUuidOrError.getError())
     } else {
       return Result.ok<Uuid>(new Uuid({ value: uuid }))
     }
