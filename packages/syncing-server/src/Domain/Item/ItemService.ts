@@ -49,6 +49,7 @@ export class ItemService implements ItemServiceInterface {
     const lastSyncTime = this.getLastSyncTime(dto)
     const syncTimeComparison = dto.cursorToken ? '>=' : '>'
     const limit = dto.limit === undefined || dto.limit < 1 ? this.DEFAULT_ITEMS_LIMIT : dto.limit
+    const upperBoundLimit = limit < this.maxItemsSyncLimit ? limit : this.maxItemsSyncLimit
 
     const itemQuery: ItemQuery = {
       userUuid: dto.userUuid,
@@ -58,7 +59,7 @@ export class ItemService implements ItemServiceInterface {
       deleted: lastSyncTime ? undefined : false,
       sortBy: 'updated_at_timestamp',
       sortOrder: 'ASC',
-      limit: limit < this.maxItemsSyncLimit ? limit : this.maxItemsSyncLimit,
+      limit: upperBoundLimit,
     }
 
     const itemUuidsToFetch = await this.itemTransferCalculator.computeItemUuidsToFetch(
@@ -76,7 +77,7 @@ export class ItemService implements ItemServiceInterface {
     const totalItemsCount = await this.itemRepository.countAll(itemQuery)
 
     let cursorToken = undefined
-    if (totalItemsCount > limit) {
+    if (totalItemsCount > upperBoundLimit) {
       const lastSyncTime = items[items.length - 1].updatedAtTimestamp / Time.MicrosecondsInASecond
       cursorToken = Buffer.from(`${this.SYNC_TOKEN_VERSION}:${lastSyncTime}`, 'utf-8').toString('base64')
     }
