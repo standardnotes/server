@@ -1,7 +1,7 @@
-name: Revisions
+name: Revisions Server
 
 concurrency:
-  group: revisions
+  group: revisions_server
   cancel-in-progress: true
 
 on:
