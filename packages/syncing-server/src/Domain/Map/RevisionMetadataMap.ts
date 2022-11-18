@@ -1,6 +1,6 @@
 /* istanbul ignore file */
 import { ContentType } from '@standardnotes/common'
-import { MapInterface, UniqueEntityId } from '@standardnotes/domain-core'
+import { MapperInterface, UniqueEntityId } from '@standardnotes/domain-core'
 import { TimerInterface } from '@standardnotes/time'
 import { inject, injectable } from 'inversify'
 
@@ -10,7 +10,7 @@ import { RevisionMetadata } from '../Revision/RevisionMetadata'
 import { RevisionServiceInterface } from '../Revision/RevisionServiceInterface'
 
 @injectable()
-export class RevisionMetadataMap implements MapInterface<RevisionMetadata, SimpleRevisionProjection> {
+export class RevisionMetadataMap implements MapperInterface<RevisionMetadata, SimpleRevisionProjection> {
   constructor(
     @inject(TYPES.RevisionService) private revisionService: RevisionServiceInterface,
     @inject(TYPES.Timer) private timer: TimerInterface,

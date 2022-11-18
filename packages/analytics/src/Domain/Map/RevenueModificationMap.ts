@@ -1,5 +1,5 @@
 import { injectable } from 'inversify'
-import { Email, MapInterface, UniqueEntityId } from '@standardnotes/domain-core'
+import { Email, MapperInterface, UniqueEntityId } from '@standardnotes/domain-core'
 
 import { TypeORMRevenueModification } from '../../Infra/TypeORM/TypeORMRevenueModification'
 import { MonthlyRevenue } from '../Revenue/MonthlyRevenue'
@@ -10,7 +10,7 @@ import { SubscriptionPlanName } from '../Subscription/SubscriptionPlanName'
 import { SubscriptionEventType } from '../Subscription/SubscriptionEventType'
 
 @injectable()
-export class RevenueModificationMap implements MapInterface<RevenueModification, TypeORMRevenueModification> {
+export class RevenueModificationMap implements MapperInterface<RevenueModification, TypeORMRevenueModification> {
   toDomain(persistence: TypeORMRevenueModification): RevenueModification {
     const userOrError = User.create(
       {

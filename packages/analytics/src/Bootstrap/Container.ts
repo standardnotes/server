@@ -7,7 +7,7 @@ import {
   DomainEventMessageHandlerInterface,
   DomainEventSubscriberFactoryInterface,
 } from '@standardnotes/domain-events'
-import { MapInterface } from '@standardnotes/domain-core'
+import { MapperInterface } from '@standardnotes/domain-core'
 
 import { Env } from './Env'
 import TYPES from './Types'
@@ -172,7 +172,7 @@ export class ContainerConfigLoader {
 
     // Maps
     container
-      .bind<MapInterface<RevenueModification, TypeORMRevenueModification>>(TYPES.RevenueModificationMap)
+      .bind<MapperInterface<RevenueModification, TypeORMRevenueModification>>(TYPES.RevenueModificationMap)
       .to(RevenueModificationMap)
 
     // Services

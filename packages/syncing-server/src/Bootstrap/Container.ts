@@ -81,7 +81,7 @@ import { ItemRepositoryInterface } from '../Domain/Item/ItemRepositoryInterface'
 import { Repository } from 'typeorm'
 import { UserContentSizeRecalculationRequestedEventHandler } from '../Domain/Handler/UserContentSizeRecalculationRequestedEventHandler'
 import { RevisionMetadataMap } from '../Domain/Map/RevisionMetadataMap'
-import { MapInterface } from '@standardnotes/domain-core'
+import { MapperInterface } from '@standardnotes/domain-core'
 import { RevisionMetadata } from '../Domain/Revision/RevisionMetadata'
 import { SimpleRevisionProjection } from '../Projection/SimpleRevisionProjection'
 
@@ -231,7 +231,7 @@ export class ContainerConfigLoader {
 
     // Map
     container
-      .bind<MapInterface<RevisionMetadata, SimpleRevisionProjection>>(TYPES.RevisionMetadataMap)
+      .bind<MapperInterface<RevisionMetadata, SimpleRevisionProjection>>(TYPES.RevisionMetadataMap)
       .to(RevisionMetadataMap)
 
     // Services

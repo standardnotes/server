@@ -8,7 +8,7 @@ import { Revision } from '../Domain/Revision/Revision'
 import { RevisionServiceInterface } from '../Domain/Revision/RevisionServiceInterface'
 import { ErrorTag } from '@standardnotes/common'
 import { RevisionProjection } from '../Projection/RevisionProjection'
-import { MapInterface } from '@standardnotes/domain-core'
+import { MapperInterface } from '@standardnotes/domain-core'
 import { RevisionMetadata } from '../Domain/Revision/RevisionMetadata'
 import { SimpleRevisionProjection } from '../Projection/SimpleRevisionProjection'
 
@@ -18,7 +18,7 @@ export class RevisionsController extends BaseHttpController {
     @inject(TYPES.RevisionService) private revisionService: RevisionServiceInterface,
     @inject(TYPES.RevisionProjector) private revisionProjector: ProjectorInterface<Revision, RevisionProjection>,
     @inject(TYPES.RevisionMetadataMap)
-    private revisionMetadataMap: MapInterface<RevisionMetadata, SimpleRevisionProjection>,
+    private revisionMetadataMap: MapperInterface<RevisionMetadata, SimpleRevisionProjection>,
   ) {
     super()
   }

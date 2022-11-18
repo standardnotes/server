@@ -1,6 +1,6 @@
 import { inject, injectable } from 'inversify'
 import { Repository } from 'typeorm'
-import { MapInterface, Uuid } from '@standardnotes/domain-core'
+import { MapperInterface, Uuid } from '@standardnotes/domain-core'
 
 import TYPES from '../../Bootstrap/Types'
 import { RevenueModification } from '../../Domain/Revenue/RevenueModification'
@@ -13,7 +13,7 @@ export class MySQLRevenueModificationRepository implements RevenueModificationRe
     @inject(TYPES.ORMRevenueModificationRepository)
     private ormRepository: Repository<TypeORMRevenueModification>,
     @inject(TYPES.RevenueModificationMap)
-    private revenueModificationMap: MapInterface<RevenueModification, TypeORMRevenueModification>,
+    private revenueModificationMap: MapperInterface<RevenueModification, TypeORMRevenueModification>,
   ) {}
 
   async sumMRRDiff(dto: { billingFrequencies: number[]; planNames?: string[] }): Promise<number> {
