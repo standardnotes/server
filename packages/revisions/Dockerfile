@@ -12,6 +12,6 @@ WORKDIR /workspace
 
 COPY ./ /workspace
 
-ENTRYPOINT [ "/workspace/packages/syncing-server/docker/entrypoint.sh" ]
+ENTRYPOINT [ "/workspace/packages/revisions/docker/entrypoint.sh" ]
 
 CMD [ "start-web" ]
