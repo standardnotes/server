@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.11.1](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.11.0...@standardnotes/analytics@2.11.1) (2022-11-18)
+
+### Bug Fixes
+
+* mapper interface imports ([1ec0723](https://github.com/standardnotes/server/commit/1ec072373d640c4e2f24b9bb12fec0c678b48032))
+
 # [2.11.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.10.3...@standardnotes/analytics@2.11.0) (2022-11-16)
 
 ### Features
