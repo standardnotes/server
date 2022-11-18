@@ -8,13 +8,13 @@ import { results } from 'inversify-express-utils'
 import { ProjectorInterface } from '../Projection/ProjectorInterface'
 import { RevisionServiceInterface } from '../Domain/Revision/RevisionServiceInterface'
 import { RevisionProjection } from '../Projection/RevisionProjection'
-import { MapInterface } from '@standardnotes/domain-core'
+import { MapperInterface } from '@standardnotes/domain-core'
 import { RevisionMetadata } from '../Domain/Revision/RevisionMetadata'
 import { SimpleRevisionProjection } from '../Projection/SimpleRevisionProjection'
 
 describe('RevisionsController', () => {
   let revisionProjector: ProjectorInterface<Revision, RevisionProjection>
-  let revisionMap: MapInterface<RevisionMetadata, SimpleRevisionProjection>
+  let revisionMap: MapperInterface<RevisionMetadata, SimpleRevisionProjection>
   let revisionService: RevisionServiceInterface
   let revision: Revision
   let revisionMetadata: RevisionMetadata
@@ -28,7 +28,7 @@ describe('RevisionsController', () => {
 
     revisionMetadata = {} as jest.Mocked<RevisionMetadata>
 
-    revisionMap = {} as jest.Mocked<MapInterface<RevisionMetadata, SimpleRevisionProjection>>
+    revisionMap = {} as jest.Mocked<MapperInterface<RevisionMetadata, SimpleRevisionProjection>>
 
     revisionProjector = {} as jest.Mocked<ProjectorInterface<Revision, RevisionProjection>>
 
