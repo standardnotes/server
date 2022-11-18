@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.89.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.88.0...@standardnotes/domain-events@2.89.0) (2022-11-18)
+
+### Features
+
+* add item revision creation requested event ([5c9dff3](https://github.com/standardnotes/server/commit/5c9dff38c9006d39150ea95b2ca17c4ab7175ec2))
+
 # [2.88.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.87.0...@standardnotes/domain-events@2.88.0) (2022-11-16)
 
 ### Features
