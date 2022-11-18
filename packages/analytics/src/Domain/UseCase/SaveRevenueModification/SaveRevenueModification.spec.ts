@@ -46,7 +46,7 @@ describe('SaveRevenueModification', () => {
       planName: SubscriptionPlanName.create('PRO_PLAN').getValue(),
       subscriptionId: 1234,
       userEmail: Email.create('test@test.te').getValue(),
-      userUuid: Uuid.create('1-2-3').getValue(),
+      userUuid: Uuid.create('84c0f8e8-544a-4c7e-9adf-26209303bc1d').getValue(),
     })
 
     expect(revenueOrError.isFailed()).toBeFalsy()
@@ -64,7 +64,7 @@ describe('SaveRevenueModification', () => {
       planName: SubscriptionPlanName.create('PRO_PLAN').getValue(),
       subscriptionId: 1234,
       userEmail: Email.create('test@test.te').getValue(),
-      userUuid: Uuid.create('1-2-3').getValue(),
+      userUuid: Uuid.create('84c0f8e8-544a-4c7e-9adf-26209303bc1d').getValue(),
     })
 
     expect(revenueOrError.isFailed()).toBeFalsy()
@@ -82,7 +82,7 @@ describe('SaveRevenueModification', () => {
       planName: SubscriptionPlanName.create('PRO_PLAN').getValue(),
       subscriptionId: 1234,
       userEmail: Email.create('test@test.te').getValue(),
-      userUuid: Uuid.create('1-2-3').getValue(),
+      userUuid: Uuid.create('84c0f8e8-544a-4c7e-9adf-26209303bc1d').getValue(),
     })
 
     expect(revenueOrError.isFailed()).toBeFalsy()
@@ -102,7 +102,7 @@ describe('SaveRevenueModification', () => {
       planName: SubscriptionPlanName.create('PRO_PLAN').getValue(),
       subscriptionId: 1234,
       userEmail: Email.create('test@test.te').getValue(),
-      userUuid: Uuid.create('1-2-3').getValue(),
+      userUuid: Uuid.create('84c0f8e8-544a-4c7e-9adf-26209303bc1d').getValue(),
     })
 
     expect(revenueOrError.isFailed()).toBeFalsy()
@@ -123,7 +123,7 @@ describe('SaveRevenueModification', () => {
       planName: SubscriptionPlanName.create('PRO_PLAN').getValue(),
       subscriptionId: 1234,
       userEmail: Email.create('test@test.te').getValue(),
-      userUuid: Uuid.create('1-2-3').getValue(),
+      userUuid: Uuid.create('84c0f8e8-544a-4c7e-9adf-26209303bc1d').getValue(),
     })
 
     expect(revenueOrError.isFailed()).toBeTruthy()
@@ -143,7 +143,7 @@ describe('SaveRevenueModification', () => {
       planName: SubscriptionPlanName.create('PRO_PLAN').getValue(),
       subscriptionId: 1234,
       userEmail: Email.create('test@test.te').getValue(),
-      userUuid: Uuid.create('1-2-3').getValue(),
+      userUuid: Uuid.create('84c0f8e8-544a-4c7e-9adf-26209303bc1d').getValue(),
     })
 
     expect(revenueOrError.isFailed()).toBeTruthy()
@@ -163,7 +163,7 @@ describe('SaveRevenueModification', () => {
       planName: SubscriptionPlanName.create('PRO_PLAN').getValue(),
       subscriptionId: 1234,
       userEmail: Email.create('test@test.te').getValue(),
-      userUuid: Uuid.create('1-2-3').getValue(),
+      userUuid: Uuid.create('84c0f8e8-544a-4c7e-9adf-26209303bc1d').getValue(),
     })
 
     expect(revenueOrError.isFailed()).toBeTruthy()
@@ -183,7 +183,7 @@ describe('SaveRevenueModification', () => {
       planName: SubscriptionPlanName.create('PRO_PLAN').getValue(),
       subscriptionId: 1234,
       userEmail: Email.create('test@test.te').getValue(),
-      userUuid: Uuid.create('1-2-3').getValue(),
+      userUuid: Uuid.create('84c0f8e8-544a-4c7e-9adf-26209303bc1d').getValue(),
     })
 
     expect(revenueOrError.isFailed()).toBeTruthy()
@@ -203,7 +203,7 @@ describe('SaveRevenueModification', () => {
       planName: SubscriptionPlanName.create('PRO_PLAN').getValue(),
       subscriptionId: 1234,
       userEmail: Email.create('test@test.te').getValue(),
-      userUuid: Uuid.create('1-2-3').getValue(),
+      userUuid: Uuid.create('84c0f8e8-544a-4c7e-9adf-26209303bc1d').getValue(),
     })
 
     expect(revenueOrError.isFailed()).toBeTruthy()
