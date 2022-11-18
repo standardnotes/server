@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.13.15](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.13.14...@standardnotes/syncing-server@1.13.15) (2022-11-18)
+
+### Bug Fixes
+
+* **syncing-server:** mapper interface imports in specs ([91f36c3](https://github.com/standardnotes/syncing-server-js/commit/91f36c3a3f37e1d53e2203bdfc932fe98cf57b13))
+
 ## [1.13.14](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.13.13...@standardnotes/syncing-server@1.13.14) (2022-11-18)
 
 ### Bug Fixes
