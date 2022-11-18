@@ -1,5 +1,7 @@
 export * from './Common/Email'
 export * from './Common/EmailProps'
+export * from './Common/Timestamps'
+export * from './Common/TimestampsProps'
 export * from './Common/Uuid'
 export * from './Common/UuidProps'
 
@@ -12,9 +14,13 @@ export * from './Core/Validator'
 export * from './Core/ValueObject'
 export * from './Core/ValueObjectProps'
 
-export * from './Map/MapInterface'
+export * from './Mapping/MapperInterface'
 
 export * from './Revision/ContentType'
 export * from './Revision/ContentTypeProps'
 export * from './Revision/Revision'
+export * from './Revision/RevisionMetadata'
+export * from './Revision/RevisionMetadataProps'
 export * from './Revision/RevisionProps'
+
+export * from './UseCase/UseCaseInterface'

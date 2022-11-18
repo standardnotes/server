@@ -20,13 +20,13 @@ describe('Validator', () => {
 
   it('should validate proper uuids', () => {
     for (const validUuid of validUuids) {
-      expect(Validator.isValidUuid(validUuid)).toBeTruthy()
+      expect(Validator.isValidUuid(validUuid).isFailed()).toBeFalsy()
     }
   })
 
   it('should not validate invalid uuids', () => {
     for (const invalidUuid of invalidUuids) {
-      expect(Validator.isValidUuid(invalidUuid as string)).toBeFalsy()
+      expect(Validator.isValidUuid(invalidUuid as string).isFailed()).toBeTruthy()
     }
   })
 })

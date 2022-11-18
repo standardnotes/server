@@ -54,6 +54,9 @@
       "path": "./packages/predicates"
     },
     {
+      "path": "./packages/revisions"
+    },
+    {
       "path": "./packages/scheduler"
     },
     {

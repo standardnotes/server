@@ -54,6 +54,10 @@ const RAW_RUNTIME_STATE =
       "reference": "workspace:packages/predicates"\
     },\
     {\
+      "name": "@standardnotes/revisions-server",\
+      "reference": "workspace:packages/revisions"\
+    },\
+    {\
       "name": "@standardnotes/scheduler-server",\
       "reference": "workspace:packages/scheduler"\
     },\
@@ -99,6 +103,7 @@ const RAW_RUNTIME_STATE =
     ["@standardnotes/event-store", ["workspace:packages/event-store"]],\
     ["@standardnotes/files-server", ["workspace:packages/files"]],\
     ["@standardnotes/predicates", ["workspace:packages/predicates"]],\
+    ["@standardnotes/revisions-server", ["workspace:packages/revisions"]],\
     ["@standardnotes/scheduler-server", ["workspace:packages/scheduler"]],\
     ["@standardnotes/security", ["workspace:packages/security"]],\
     ["@standardnotes/server-monorepo", ["workspace:."]],\
@@ -3002,6 +3007,52 @@ const RAW_RUNTIME_STATE =
           ["reflect-metadata", "npm:0.1.13"]\
         ],\
         "linkType": "HARD"\
+      }]\
+    ]],\
+    ["@standardnotes/revisions-server", [\
+      ["workspace:packages/revisions", {\
+        "packageLocation": "./packages/revisions/",\
+        "packageDependencies": [\
+          ["@standardnotes/revisions-server", "workspace:packages/revisions"],\
+          ["@newrelic/native-metrics", "npm:9.0.0"],\
+          ["@newrelic/winston-enricher", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:4.0.0"],\
+          ["@sentry/node", "npm:7.19.0"],\
+          ["@standardnotes/api", "npm:1.19.0"],\
+          ["@standardnotes/common", "workspace:packages/common"],\
+          ["@standardnotes/domain-core", "workspace:packages/domain-core"],\
+          ["@standardnotes/domain-events", "workspace:packages/domain-events"],\
+          ["@standardnotes/domain-events-infra", "workspace:packages/domain-events-infra"],\
+          ["@standardnotes/security", "workspace:packages/security"],\
+          ["@standardnotes/time", "workspace:packages/time"],\
+          ["@types/cors", "npm:2.8.12"],\
+          ["@types/dotenv", "npm:8.2.0"],\
+          ["@types/express", "npm:4.17.14"],\
+          ["@types/inversify-express-utils", "npm:2.0.0"],\
+          ["@types/ioredis", "npm:5.0.0"],\
+          ["@types/jest", "npm:29.1.1"],\
+          ["@types/newrelic", "npm:7.0.4"],\
+          ["@typescript-eslint/eslint-plugin", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:5.40.1"],\
+          ["aws-sdk", "npm:2.1253.0"],\
+          ["cors", "npm:2.8.5"],\
+          ["dotenv", "npm:16.0.1"],\
+          ["eslint", "npm:8.25.0"],\
+          ["eslint-plugin-prettier", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:4.2.1"],\
+          ["express", "npm:4.18.2"],\
+          ["helmet", "npm:6.0.0"],\
+          ["inversify", "npm:6.0.1"],\
+          ["inversify-express-utils", "npm:6.4.3"],\
+          ["ioredis", "npm:5.2.4"],\
+          ["jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.1.2"],\
+          ["mysql2", "npm:2.3.3"],\
+          ["newrelic", "npm:9.6.0"],\
+          ["npm-check-updates", "npm:16.0.1"],\
+          ["reflect-metadata", "npm:0.1.13"],\
+          ["ts-jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.0.3"],\
+          ["typeorm", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:0.3.10"],\
+          ["typescript", "patch:typescript@npm%3A4.8.4#optional!builtin<compat/typescript>::version=4.8.4&hash=701156"],\
+          ["winston", "npm:3.8.2"]\
+        ],\
+        "linkType": "SOFT"\
       }]\
     ]],\
     ["@standardnotes/scheduler-server", [\
