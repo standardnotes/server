@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.15.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.14.0...@standardnotes/syncing-server@1.15.0) (2022-11-21)
+
+### Features
+
+* **syncing-server:** add creating item dumps for revision service ([8d152dd](https://github.com/standardnotes/syncing-server-js/commit/8d152ddfcb3c88cbbf9df04e3ed6e2c02571d821))
+
 # [1.14.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.13.17...@standardnotes/syncing-server@1.14.0) (2022-11-21)
 
 ### Features

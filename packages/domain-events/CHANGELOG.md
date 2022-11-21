@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.90.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.89.0...@standardnotes/domain-events@2.90.0) (2022-11-21)
+
+### Features
+
+* **syncing-server:** add creating item dumps for revision service ([8d152dd](https://github.com/standardnotes/server/commit/8d152ddfcb3c88cbbf9df04e3ed6e2c02571d821))
+
 # [2.89.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.88.0...@standardnotes/domain-events@2.89.0) (2022-11-18)
 
 ### Features
