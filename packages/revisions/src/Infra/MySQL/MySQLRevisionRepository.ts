@@ -1,5 +1,6 @@
 import { MapperInterface, Uuid } from '@standardnotes/domain-core'
 import { Repository } from 'typeorm'
+import { Revision } from '../../Domain/Revision/Revision'
 
 import { RevisionMetadata } from '../../Domain/Revision/RevisionMetadata'
 import { RevisionRepositoryInterface } from '../../Domain/Revision/RevisionRepositoryInterface'
@@ -8,8 +9,17 @@ import { TypeORMRevision } from '../TypeORM/TypeORMRevision'
 export class MySQLRevisionRepository implements RevisionRepositoryInterface {
   constructor(
     private ormRepository: Repository<TypeORMRevision>,
-    private revisionMapper: MapperInterface<RevisionMetadata, TypeORMRevision>,
+    private revisionMetadataMapper: MapperInterface<RevisionMetadata, TypeORMRevision>,
+    private revisionMapper: MapperInterface<Revision, TypeORMRevision>,
   ) {}
+
+  async save(revision: Revision): Promise<Revision> {
+    const typeormRevision = this.revisionMapper.toProjection(revision)
+
+    await this.ormRepository.save(typeormRevision)
+
+    return revision
+  }
 
   async findMetadataByItemId(itemUuid: Uuid): Promise<Array<RevisionMetadata>> {
     const queryBuilder = this.ormRepository
@@ -27,7 +37,7 @@ export class MySQLRevisionRepository implements RevisionRepositoryInterface {
 
     const metadata = []
     for (const simplifiedRevision of simplifiedRevisions) {
-      metadata.push(this.revisionMapper.toDomain(simplifiedRevision))
+      metadata.push(this.revisionMetadataMapper.toDomain(simplifiedRevision))
     }
 
     return metadata

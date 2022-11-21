@@ -6,10 +6,13 @@ const TYPES = {
   S3: Symbol.for('S3'),
   // Map
   RevisionMetadataPersistenceMapper: Symbol.for('RevisionMetadataPersistenceMapper'),
+  RevisionPersistenceMapper: Symbol.for('RevisionPersistenceMapper'),
+  RevisionItemStringMapper: Symbol.for('RevisionItemStringMapper'),
   // ORM
   ORMRevisionRepository: Symbol.for('ORMRevisionRepository'),
   // Repositories
   RevisionRepository: Symbol.for('RevisionRepository'),
+  DumpRepository: Symbol.for('DumpRepository'),
   // env vars
   REDIS_URL: Symbol.for('REDIS_URL'),
   SQS_QUEUE_URL: Symbol.for('SQS_QUEUE_URL'),
@@ -25,6 +28,7 @@ const TYPES = {
   // Controller
   RevisionsController: Symbol.for('RevisionsController'),
   // Handlers
+  ItemDumpedEventHandler: Symbol.for('ItemDumpedEventHandler'),
   // Services
   CrossServiceTokenDecoder: Symbol.for('CrossServiceTokenDecoder'),
   DomainEventSubscriberFactory: Symbol.for('DomainEventSubscriberFactory'),

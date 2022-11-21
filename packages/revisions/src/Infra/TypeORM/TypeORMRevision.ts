@@ -1,5 +1,3 @@
-import { ContentType } from '@standardnotes/common'
-
 import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm'
 
 @Entity({ name: 'revisions' })
@@ -25,7 +23,7 @@ export class TypeORMRevision {
     length: 255,
     nullable: true,
   })
-  declare contentType: ContentType | null
+  declare contentType: string | null
 
   @Column({
     type: 'varchar',

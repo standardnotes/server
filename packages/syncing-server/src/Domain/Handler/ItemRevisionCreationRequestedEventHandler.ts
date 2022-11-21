@@ -9,13 +9,11 @@ import TYPES from '../../Bootstrap/Types'
 import { DomainEventFactoryInterface } from '../Event/DomainEventFactoryInterface'
 import { ItemBackupServiceInterface } from '../Item/ItemBackupServiceInterface'
 import { ItemRepositoryInterface } from '../Item/ItemRepositoryInterface'
-import { RevisionServiceInterface } from '../Revision/RevisionServiceInterface'
 
 @injectable()
 export class ItemRevisionCreationRequestedEventHandler implements DomainEventHandlerInterface {
   constructor(
     @inject(TYPES.ItemRepository) private itemRepository: ItemRepositoryInterface,
-    @inject(TYPES.RevisionService) private revisionService: RevisionServiceInterface,
     @inject(TYPES.ItemBackupService) private itemBackupService: ItemBackupServiceInterface,
     @inject(TYPES.DomainEventFactory) private domainEventFactory: DomainEventFactoryInterface,
     @inject(TYPES.DomainEventPublisher) private domainEventPublisher: DomainEventPublisherInterface,
@@ -33,7 +31,5 @@ export class ItemRevisionCreationRequestedEventHandler implements DomainEventHan
         this.domainEventFactory.createItemDumpedEvent(fileDumpPath, event.meta.correlation.userIdentifier),
       )
     }
-
-    await this.revisionService.createRevision(item)
   }
 }

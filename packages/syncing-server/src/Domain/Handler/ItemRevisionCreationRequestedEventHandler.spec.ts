@@ -5,16 +5,15 @@ import {
   DomainEventService,
   ItemRevisionCreationRequestedEvent,
 } from '@standardnotes/domain-events'
+
 import { Item } from '../Item/Item'
 import { ItemRepositoryInterface } from '../Item/ItemRepositoryInterface'
 import { ItemRevisionCreationRequestedEventHandler } from './ItemRevisionCreationRequestedEventHandler'
-import { RevisionServiceInterface } from '../Revision/RevisionServiceInterface'
 import { ItemBackupServiceInterface } from '../Item/ItemBackupServiceInterface'
 import { DomainEventFactoryInterface } from '../Event/DomainEventFactoryInterface'
 
 describe('ItemRevisionCreationRequestedEventHandler', () => {
   let itemRepository: ItemRepositoryInterface
-  let revisionService: RevisionServiceInterface
   let event: ItemRevisionCreationRequestedEvent
   let item: Item
   let itemBackupService: ItemBackupServiceInterface
@@ -24,7 +23,6 @@ describe('ItemRevisionCreationRequestedEventHandler', () => {
   const createHandler = () =>
     new ItemRevisionCreationRequestedEventHandler(
       itemRepository,
-      revisionService,
       itemBackupService,
       domainEventFactory,
       domainEventPublisher,
@@ -38,9 +36,6 @@ describe('ItemRevisionCreationRequestedEventHandler', () => {
 
     itemRepository = {} as jest.Mocked<ItemRepositoryInterface>
     itemRepository.findByUuid = jest.fn().mockReturnValue(item)
-
-    revisionService = {} as jest.Mocked<RevisionServiceInterface>
-    revisionService.createRevision = jest.fn()
 
     event = {} as jest.Mocked<ItemRevisionCreationRequestedEvent>
     event.createdAt = new Date(1)
@@ -68,7 +63,6 @@ describe('ItemRevisionCreationRequestedEventHandler', () => {
   it('should create a revision for an item', async () => {
     await createHandler().handle(event)
 
-    expect(revisionService.createRevision).toHaveBeenCalled()
     expect(domainEventPublisher.publish).toHaveBeenCalled()
     expect(domainEventFactory.createItemDumpedEvent).toHaveBeenCalled()
   })
@@ -78,7 +72,7 @@ describe('ItemRevisionCreationRequestedEventHandler', () => {
 
     await createHandler().handle(event)
 
-    expect(revisionService.createRevision).not.toHaveBeenCalled()
+    expect(domainEventPublisher.publish).not.toHaveBeenCalled()
   })
 
   it('should not create a revision for an item if the dump was not created', async () => {

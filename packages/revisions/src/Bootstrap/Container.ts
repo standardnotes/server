@@ -29,6 +29,12 @@ import { MySQLRevisionRepository } from '../Infra/MySQL/MySQLRevisionRepository'
 import { RevisionMetadataPersistenceMapper } from '../Mapping/RevisionMetadataPersistenceMapper'
 import { TypeORMRevision } from '../Infra/TypeORM/TypeORMRevision'
 import { RevisionMetadata } from '../Domain/Revision/RevisionMetadata'
+import { Revision } from '../Domain/Revision/Revision'
+import { RevisionItemStringMapper } from '../Mapping/RevisionItemStringMapper'
+import { RevisionPersistenceMapper } from '../Mapping/RevisionPersistenceMapper'
+import { ItemDumpedEventHandler } from '../Domain/Handler/ItemDumpedEventHandler'
+import { DumpRepositoryInterface } from '../Domain/Dump/DumpRepositoryInterface'
+import { S3DumpRepository } from '../Infra/S3/S3ItemDumpRepository'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -88,21 +94,17 @@ export class ContainerConfigLoader {
     container
       .bind<MapperInterface<RevisionMetadata, TypeORMRevision>>(TYPES.RevisionMetadataPersistenceMapper)
       .toConstantValue(new RevisionMetadataPersistenceMapper())
+    container
+      .bind<MapperInterface<Revision, TypeORMRevision>>(TYPES.RevisionPersistenceMapper)
+      .toConstantValue(new RevisionPersistenceMapper())
+    container
+      .bind<MapperInterface<Revision, string>>(TYPES.RevisionItemStringMapper)
+      .toConstantValue(new RevisionItemStringMapper())
 
     // ORM
     container
       .bind<Repository<TypeORMRevision>>(TYPES.ORMRevisionRepository)
       .toConstantValue(AppDataSource.getRepository(TypeORMRevision))
-
-    // Repositories
-    container
-      .bind<RevisionRepositoryInterface>(TYPES.RevisionRepository)
-      .toConstantValue(
-        new MySQLRevisionRepository(
-          container.get(TYPES.ORMRevisionRepository),
-          container.get(TYPES.RevisionMetadataPersistenceMapper),
-        ),
-      )
 
     // env vars
     container.bind(TYPES.REDIS_URL).toConstantValue(env.get('REDIS_URL'))
@@ -113,6 +115,26 @@ export class ContainerConfigLoader {
     container.bind(TYPES.S3_BACKUP_BUCKET_NAME).toConstantValue(env.get('S3_BACKUP_BUCKET_NAME', true))
     container.bind(TYPES.NEW_RELIC_ENABLED).toConstantValue(env.get('NEW_RELIC_ENABLED', true))
     container.bind(TYPES.VERSION).toConstantValue(env.get('VERSION'))
+
+    // Repositories
+    container
+      .bind<RevisionRepositoryInterface>(TYPES.RevisionRepository)
+      .toConstantValue(
+        new MySQLRevisionRepository(
+          container.get(TYPES.ORMRevisionRepository),
+          container.get(TYPES.RevisionMetadataPersistenceMapper),
+          container.get(TYPES.RevisionPersistenceMapper),
+        ),
+      )
+    container
+      .bind<DumpRepositoryInterface>(TYPES.DumpRepository)
+      .toConstantValue(
+        new S3DumpRepository(
+          container.get(TYPES.S3_BACKUP_BUCKET_NAME),
+          container.get(TYPES.S3),
+          container.get(TYPES.RevisionItemStringMapper),
+        ),
+      )
 
     // use cases
     container
@@ -125,6 +147,11 @@ export class ContainerConfigLoader {
       .toConstantValue(new RevisionsController(container.get(TYPES.GetRevisionsMetada), container.get(TYPES.Logger)))
 
     // Handlers
+    container
+      .bind<ItemDumpedEventHandler>(TYPES.ItemDumpedEventHandler)
+      .toConstantValue(
+        new ItemDumpedEventHandler(container.get(TYPES.DumpRepository), container.get(TYPES.RevisionRepository)),
+      )
 
     // Services
     container
@@ -136,7 +163,9 @@ export class ContainerConfigLoader {
       .bind<InversifyExpressApiGatewayAuthMiddleware>(TYPES.ApiGatewayAuthMiddleware)
       .to(InversifyExpressApiGatewayAuthMiddleware)
 
-    const eventHandlers: Map<string, DomainEventHandlerInterface> = new Map([])
+    const eventHandlers: Map<string, DomainEventHandlerInterface> = new Map([
+      ['ITEM_DUMPED', container.get(TYPES.ItemDumpedEventHandler)],
+    ])
 
     if (env.get('SQS_QUEUE_URL', true)) {
       container
