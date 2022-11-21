@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.1](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.2.0...@standardnotes/revisions-server@1.2.1) (2022-11-21)
+
+### Bug Fixes
+
+* **revisions:** add missing worker process ([a363039](https://github.com/standardnotes/server/commit/a363039fa1f1c75842d1eaba2a476257eba385f7))
+
 # [1.2.0](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.1.3...@standardnotes/revisions-server@1.2.0) (2022-11-21)
 
 ### Features
