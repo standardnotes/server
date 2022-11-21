@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.16.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.15.0...@standardnotes/syncing-server@1.16.0) (2022-11-21)
+
+### Features
+
+* **revisions:** add persisting revisions from s3 dump ([822ee89](https://github.com/standardnotes/syncing-server-js/commit/822ee890aff80cd099fc67b778ee02b8e9ef40eb))
+
 # [1.15.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.14.0...@standardnotes/syncing-server@1.15.0) (2022-11-21)
 
 ### Features

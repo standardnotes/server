@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.1.3...@standardnotes/revisions-server@1.2.0) (2022-11-21)
+
+### Features
+
+* **revisions:** add persisting revisions from s3 dump ([822ee89](https://github.com/standardnotes/server/commit/822ee890aff80cd099fc67b778ee02b8e9ef40eb))
+
 ## [1.1.3](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.1.2...@standardnotes/revisions-server@1.1.3) (2022-11-21)
 
 **Note:** Version bump only for package @standardnotes/revisions-server
