@@ -6,6 +6,7 @@ import {
   EmailArchiveExtensionSyncedEvent,
   EmailBackupAttachmentCreatedEvent,
   GoogleDriveBackupFailedEvent,
+  ItemRevisionCreationRequestedEvent,
   ItemsSyncedEvent,
   OneDriveBackupFailedEvent,
   UserContentSizeRecalculationRequestedEvent,
@@ -18,6 +19,23 @@ import { DomainEventFactoryInterface } from './DomainEventFactoryInterface'
 @injectable()
 export class DomainEventFactory implements DomainEventFactoryInterface {
   constructor(@inject(TYPES.Timer) private timer: TimerInterface) {}
+
+  createItemRevisionCreationRequested(itemUuid: string, userUuid: string): ItemRevisionCreationRequestedEvent {
+    return {
+      type: 'ITEM_REVISION_CREATION_REQUESTED',
+      createdAt: this.timer.getUTCDate(),
+      meta: {
+        correlation: {
+          userIdentifier: userUuid,
+          userIdentifierType: 'uuid',
+        },
+        origin: DomainEventService.SyncingServer,
+      },
+      payload: {
+        itemUuid,
+      },
+    }
+  }
 
   createUserContentSizeRecalculationRequestedEvent(userUuid: string): UserContentSizeRecalculationRequestedEvent {
     return {

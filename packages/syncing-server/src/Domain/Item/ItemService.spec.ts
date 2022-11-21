@@ -7,7 +7,6 @@ import { ItemHash } from './ItemHash'
 import { ItemRepositoryInterface } from './ItemRepositoryInterface'
 import { ItemService } from './ItemService'
 import { ApiVersion } from '../Api/ApiVersion'
-import { RevisionServiceInterface } from '../Revision/RevisionServiceInterface'
 import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
 import { DomainEventFactoryInterface } from '../Event/DomainEventFactoryInterface'
 import { Logger } from 'winston'
@@ -21,7 +20,6 @@ import { ItemProjection } from '../../Projection/ItemProjection'
 
 describe('ItemService', () => {
   let itemRepository: ItemRepositoryInterface
-  let revisionService: RevisionServiceInterface
   let domainEventPublisher: DomainEventPublisherInterface
   let domainEventFactory: DomainEventFactoryInterface
   const revisionFrequency = 300
@@ -47,7 +45,6 @@ describe('ItemService', () => {
       itemSaveValidator,
       itemFactory,
       itemRepository,
-      revisionService,
       domainEventPublisher,
       domainEventFactory,
       revisionFrequency,
@@ -125,9 +122,6 @@ describe('ItemService', () => {
     itemRepository.countAll = jest.fn().mockReturnValue(2)
     itemRepository.save = jest.fn().mockImplementation((item: Item) => item)
 
-    revisionService = {} as jest.Mocked<RevisionServiceInterface>
-    revisionService.createRevision = jest.fn()
-
     timer = {} as jest.Mocked<TimerInterface>
     timer.getTimestampInMicroseconds = jest.fn().mockReturnValue(1616164633241568)
     timer.getUTCDate = jest.fn().mockReturnValue(new Date())
@@ -147,6 +141,7 @@ describe('ItemService', () => {
 
     domainEventFactory = {} as jest.Mocked<DomainEventFactoryInterface>
     domainEventFactory.createDuplicateItemSyncedEvent = jest.fn()
+    domainEventFactory.createItemRevisionCreationRequested = jest.fn()
 
     logger = {} as jest.Mocked<Logger>
     logger.error = jest.fn()
@@ -491,7 +486,8 @@ describe('ItemService', () => {
       syncToken: 'MjpOYU4=',
     })
 
-    expect(revisionService.createRevision).toHaveBeenCalledTimes(1)
+    expect(domainEventFactory.createItemRevisionCreationRequested).toHaveBeenCalledTimes(1)
+    expect(domainEventPublisher.publish).toHaveBeenCalledTimes(1)
   })
 
   it('should not save new items in read only access mode', async () => {
@@ -515,8 +511,6 @@ describe('ItemService', () => {
       savedItems: [],
       syncToken: 'MjoxNjE2MTY0NjMzLjI0MTU2OQ==',
     })
-
-    expect(revisionService.createRevision).toHaveBeenCalledTimes(0)
   })
 
   it('should save new items that are duplicates', async () => {
@@ -538,8 +532,8 @@ describe('ItemService', () => {
       syncToken: 'MjoxNjE2MTY0NjMzLjI0MTU3MQ==',
     })
 
-    expect(revisionService.createRevision).toHaveBeenCalledTimes(1)
-    expect(domainEventPublisher.publish).toHaveBeenCalledTimes(1)
+    expect(domainEventFactory.createItemRevisionCreationRequested).toHaveBeenCalledTimes(1)
+    expect(domainEventPublisher.publish).toHaveBeenCalledTimes(2)
     expect(domainEventFactory.createDuplicateItemSyncedEvent).toHaveBeenCalledTimes(1)
   })
 
@@ -933,8 +927,9 @@ describe('ItemService', () => {
       ],
       syncToken: 'MjoxNjE2MTY0NjMzLjI0MTU2OQ==',
     })
-    expect(domainEventPublisher.publish).toHaveBeenCalledTimes(1)
+    expect(domainEventPublisher.publish).toHaveBeenCalledTimes(2)
     expect(domainEventFactory.createDuplicateItemSyncedEvent).toHaveBeenCalledTimes(1)
+    expect(domainEventFactory.createItemRevisionCreationRequested).toHaveBeenCalledTimes(1)
   })
 
   it('should skip saving conflicting items and mark them as sync conflicts when saving to database fails', async () => {

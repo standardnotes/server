@@ -6,7 +6,6 @@ import { Logger } from 'winston'
 
 import TYPES from '../../Bootstrap/Types'
 import { DomainEventFactoryInterface } from '../Event/DomainEventFactoryInterface'
-import { RevisionServiceInterface } from '../Revision/RevisionServiceInterface'
 import { GetItemsDTO } from './GetItemsDTO'
 import { GetItemsResult } from './GetItemsResult'
 import { Item } from './Item'
@@ -33,7 +32,6 @@ export class ItemService implements ItemServiceInterface {
     @inject(TYPES.ItemSaveValidator) private itemSaveValidator: ItemSaveValidatorInterface,
     @inject(TYPES.ItemFactory) private itemFactory: ItemFactoryInterface,
     @inject(TYPES.ItemRepository) private itemRepository: ItemRepositoryInterface,
-    @inject(TYPES.RevisionService) private revisionService: RevisionServiceInterface,
     @inject(TYPES.DomainEventPublisher) private domainEventPublisher: DomainEventPublisherInterface,
     @inject(TYPES.DomainEventFactory) private domainEventFactory: DomainEventFactoryInterface,
     @inject(TYPES.REVISIONS_FREQUENCY) private revisionFrequency: number,
@@ -253,7 +251,9 @@ export class ItemService implements ItemServiceInterface {
     const savedItem = await this.itemRepository.save(dto.existingItem)
 
     if (secondsFromLastUpdate >= this.revisionFrequency) {
-      await this.revisionService.createRevision(savedItem)
+      await this.domainEventPublisher.publish(
+        this.domainEventFactory.createItemRevisionCreationRequested(savedItem.uuid, savedItem.userUuid),
+      )
     }
 
     if (wasMarkedAsDuplicate) {
@@ -270,7 +270,9 @@ export class ItemService implements ItemServiceInterface {
 
     const savedItem = await this.itemRepository.save(newItem)
 
-    await this.revisionService.createRevision(savedItem)
+    await this.domainEventPublisher.publish(
+      this.domainEventFactory.createItemRevisionCreationRequested(savedItem.uuid, savedItem.userUuid),
+    )
 
     if (savedItem.duplicateOf) {
       await this.domainEventPublisher.publish(

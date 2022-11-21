@@ -4,6 +4,7 @@ import {
   EmailArchiveExtensionSyncedEvent,
   EmailBackupAttachmentCreatedEvent,
   GoogleDriveBackupFailedEvent,
+  ItemRevisionCreationRequestedEvent,
   ItemsSyncedEvent,
   OneDriveBackupFailedEvent,
   UserContentSizeRecalculationRequestedEvent,
@@ -31,4 +32,5 @@ export interface DomainEventFactoryInterface {
     email: string
   }): EmailBackupAttachmentCreatedEvent
   createDuplicateItemSyncedEvent(itemUuid: string, userUuid: string): DuplicateItemSyncedEvent
+  createItemRevisionCreationRequested(itemUuid: string, userUuid: string): ItemRevisionCreationRequestedEvent
 }

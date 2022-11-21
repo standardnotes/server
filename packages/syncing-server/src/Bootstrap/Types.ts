@@ -49,6 +49,7 @@ const TYPES = {
   EmailBackupRequestedEventHandler: Symbol.for('EmailBackupRequestedEventHandler'),
   CloudBackupRequestedEventHandler: Symbol.for('CloudBackupRequestedEventHandler'),
   UserContentSizeRecalculationRequestedEventHandler: Symbol.for('UserContentSizeRecalculationRequestedEventHandler'),
+  ItemRevisionCreationRequestedEventHandler: Symbol.for('ItemRevisionCreationRequestedEventHandler'),
   // Map
   RevisionMetadataMap: Symbol.for('RevisionMetadataMap'),
   // Services

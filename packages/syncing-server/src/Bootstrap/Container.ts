@@ -84,6 +84,7 @@ import { RevisionMetadataMap } from '../Domain/Map/RevisionMetadataMap'
 import { MapperInterface } from '@standardnotes/domain-core'
 import { RevisionMetadata } from '../Domain/Revision/RevisionMetadata'
 import { SimpleRevisionProjection } from '../Projection/SimpleRevisionProjection'
+import { ItemRevisionCreationRequestedEventHandler } from '../Domain/Handler/ItemRevisionCreationRequestedEventHandler'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -228,6 +229,9 @@ export class ContainerConfigLoader {
     container
       .bind<UserContentSizeRecalculationRequestedEventHandler>(TYPES.UserContentSizeRecalculationRequestedEventHandler)
       .to(UserContentSizeRecalculationRequestedEventHandler)
+    container
+      .bind<ItemRevisionCreationRequestedEventHandler>(TYPES.ItemRevisionCreationRequestedEventHandler)
+      .to(ItemRevisionCreationRequestedEventHandler)
 
     // Map
     container
@@ -274,6 +278,7 @@ export class ContainerConfigLoader {
         'USER_CONTENT_SIZE_RECALCULATION_REQUESTED',
         container.get(TYPES.UserContentSizeRecalculationRequestedEventHandler),
       ],
+      ['ITEM_REVISION_CREATION_REQUESTED', container.get(TYPES.ItemRevisionCreationRequestedEventHandler)],
     ])
 
     if (env.get('SQS_QUEUE_URL', true)) {
