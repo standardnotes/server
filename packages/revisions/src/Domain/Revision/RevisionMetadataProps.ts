@@ -1,4 +1,4 @@
-import { Timestamps } from '../Common/Timestamps'
+import { Timestamps } from '@standardnotes/domain-core'
 
 import { ContentType } from './ContentType'
 

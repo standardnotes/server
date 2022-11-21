@@ -16,11 +16,4 @@ export * from './Core/ValueObjectProps'
 
 export * from './Mapping/MapperInterface'
 
-export * from './Revision/ContentType'
-export * from './Revision/ContentTypeProps'
-export * from './Revision/Revision'
-export * from './Revision/RevisionMetadata'
-export * from './Revision/RevisionMetadataProps'
-export * from './Revision/RevisionProps'
-
 export * from './UseCase/UseCaseInterface'

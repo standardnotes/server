@@ -1,6 +1,7 @@
-import { MapperInterface, RevisionMetadata, Uuid } from '@standardnotes/domain-core'
+import { MapperInterface, Uuid } from '@standardnotes/domain-core'
 import { Repository } from 'typeorm'
 
+import { RevisionMetadata } from '../../Domain/Revision/RevisionMetadata'
 import { RevisionRepositoryInterface } from '../../Domain/Revision/RevisionRepositoryInterface'
 import { TypeORMRevision } from '../TypeORM/TypeORMRevision'
 

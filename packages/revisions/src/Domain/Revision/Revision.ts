@@ -1,6 +1,4 @@
-import { Entity } from '../Core/Entity'
-import { Result } from '../Core/Result'
-import { UniqueEntityId } from '../Core/UniqueEntityId'
+import { Entity, Result, UniqueEntityId } from '@standardnotes/domain-core'
 
 import { RevisionProps } from './RevisionProps'
 

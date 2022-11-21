@@ -2,6 +2,7 @@ import * as winston from 'winston'
 import Redis from 'ioredis'
 import * as AWS from 'aws-sdk'
 import { Container } from 'inversify'
+import { Repository } from 'typeorm'
 import {
   DomainEventHandlerInterface,
   DomainEventMessageHandlerInterface,
@@ -15,6 +16,7 @@ import {
   SQSEventMessageHandler,
   SQSNewRelicEventMessageHandler,
 } from '@standardnotes/domain-events-infra'
+import { MapperInterface } from '@standardnotes/domain-core'
 
 import { Env } from './Env'
 import TYPES from './Types'
@@ -25,9 +27,8 @@ import { GetRevisionsMetada } from '../Domain/UseCase/GetRevisionsMetada/GetRevi
 import { RevisionRepositoryInterface } from '../Domain/Revision/RevisionRepositoryInterface'
 import { MySQLRevisionRepository } from '../Infra/MySQL/MySQLRevisionRepository'
 import { RevisionMetadataPersistenceMapper } from '../Mapping/RevisionMetadataPersistenceMapper'
-import { MapperInterface, RevisionMetadata } from '@standardnotes/domain-core'
 import { TypeORMRevision } from '../Infra/TypeORM/TypeORMRevision'
-import { Repository } from 'typeorm'
+import { RevisionMetadata } from '../Domain/Revision/RevisionMetadata'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')

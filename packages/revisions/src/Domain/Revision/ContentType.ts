@@ -1,7 +1,7 @@
-import { ValueObject } from '../Core/ValueObject'
-import { Result } from '../Core/Result'
-import { ContentTypeProps } from './ContentTypeProps'
 import { ContentType as ContentTypeValues } from '@standardnotes/common'
+import { Result, ValueObject } from '@standardnotes/domain-core'
+
+import { ContentTypeProps } from './ContentTypeProps'
 
 export class ContentType extends ValueObject<ContentTypeProps> {
   get value(): string | null {

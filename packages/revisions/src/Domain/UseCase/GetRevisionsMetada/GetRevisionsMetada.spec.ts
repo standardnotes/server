@@ -1,5 +1,4 @@
-import { RevisionMetadata } from '@standardnotes/domain-core'
-
+import { RevisionMetadata } from '../../Revision/RevisionMetadata'
 import { RevisionRepositoryInterface } from '../../Revision/RevisionRepositoryInterface'
 import { GetRevisionsMetada } from './GetRevisionsMetada'
 

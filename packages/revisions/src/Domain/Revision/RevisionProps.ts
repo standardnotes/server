@@ -1,4 +1,5 @@
-import { Uuid } from '../Common/Uuid'
+import { Uuid } from '@standardnotes/domain-core'
+
 import { ContentType } from './ContentType'
 
 export interface RevisionProps {

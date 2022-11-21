@@ -1,5 +1,7 @@
-import { RevisionMetadata, MapperInterface, UniqueEntityId, ContentType, Timestamps } from '@standardnotes/domain-core'
+import { MapperInterface, Timestamps, UniqueEntityId } from '@standardnotes/domain-core'
 
+import { ContentType } from '../Domain/Revision/ContentType'
+import { RevisionMetadata } from '../Domain/Revision/RevisionMetadata'
 import { TypeORMRevision } from '../Infra/TypeORM/TypeORMRevision'
 
 export class RevisionMetadataPersistenceMapper implements MapperInterface<RevisionMetadata, TypeORMRevision> {

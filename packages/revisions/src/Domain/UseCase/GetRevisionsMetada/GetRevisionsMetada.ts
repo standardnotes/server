@@ -1,5 +1,6 @@
-import { Result, RevisionMetadata, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
+import { Result, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
 
+import { RevisionMetadata } from '../../Revision/RevisionMetadata'
 import { RevisionRepositoryInterface } from '../../Revision/RevisionRepositoryInterface'
 
 import { GetRevisionsMetadaDTO } from './GetRevisionsMetadaDTO'
