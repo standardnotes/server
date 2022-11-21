@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.1](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.2.0...@standardnotes/domain-core@1.2.1) (2022-11-21)
+
+### Bug Fixes
+
+* **domain-core:** remove revisions related models to revisions microservice ([a6542dd](https://github.com/standardnotes/server/commit/a6542dd63870a8ada5fd8143d8e2133a570d9329))
+
 # [1.2.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.1.1...@standardnotes/domain-core@1.2.0) (2022-11-18)
 
 ### Features
