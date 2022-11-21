@@ -3,6 +3,7 @@ import { KeyParamsData } from '@standardnotes/responses'
 import { S3 } from 'aws-sdk'
 import { inject, injectable } from 'inversify'
 import { Logger } from 'winston'
+
 import TYPES from '../../Bootstrap/Types'
 import { Item } from '../../Domain/Item/Item'
 import { ItemBackupServiceInterface } from '../../Domain/Item/ItemBackupServiceInterface'
@@ -17,6 +18,26 @@ export class S3ItemBackupService implements ItemBackupServiceInterface {
     @inject(TYPES.Logger) private logger: Logger,
     @inject(TYPES.S3) private s3Client?: S3,
   ) {}
+
+  async dump(item: Item): Promise<string> {
+    if (!this.s3BackupBucketName || this.s3Client === undefined) {
+      this.logger.warn('S3 backup not configured')
+
+      return ''
+    }
+
+    const uploadResult = await this.s3Client
+      .upload({
+        Bucket: this.s3BackupBucketName,
+        Key: uuid.v4(),
+        Body: JSON.stringify({
+          item: await this.itemProjector.projectFull(item),
+        }),
+      })
+      .promise()
+
+    return uploadResult.Key
+  }
 
   async backup(items: Item[], authParams: KeyParamsData): Promise<string> {
     if (!this.s3BackupBucketName || this.s3Client === undefined) {

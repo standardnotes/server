@@ -6,6 +6,7 @@ import {
   EmailArchiveExtensionSyncedEvent,
   EmailBackupAttachmentCreatedEvent,
   GoogleDriveBackupFailedEvent,
+  ItemDumpedEvent,
   ItemRevisionCreationRequestedEvent,
   ItemsSyncedEvent,
   OneDriveBackupFailedEvent,
@@ -19,6 +20,23 @@ import { DomainEventFactoryInterface } from './DomainEventFactoryInterface'
 @injectable()
 export class DomainEventFactory implements DomainEventFactoryInterface {
   constructor(@inject(TYPES.Timer) private timer: TimerInterface) {}
+
+  createItemDumpedEvent(fileDumpPath: string, userUuid: string): ItemDumpedEvent {
+    return {
+      type: 'ITEM_DUMPED',
+      createdAt: this.timer.getUTCDate(),
+      meta: {
+        correlation: {
+          userIdentifier: userUuid,
+          userIdentifierType: 'uuid',
+        },
+        origin: DomainEventService.SyncingServer,
+      },
+      payload: {
+        fileDumpPath,
+      },
+    }
+  }
 
   createItemRevisionCreationRequested(itemUuid: string, userUuid: string): ItemRevisionCreationRequestedEvent {
     return {
