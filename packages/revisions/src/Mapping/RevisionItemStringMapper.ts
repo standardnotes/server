@@ -9,19 +9,19 @@ export class RevisionItemStringMapper implements MapperInterface<Revision, strin
 
     const contentTypeOrError = ContentType.create(item.content_type)
     if (contentTypeOrError.isFailed()) {
-      throw new Error(`Could not map item string to revision: ${contentTypeOrError.getError()}`)
+      throw new Error(`Could not map item string to revision [content type]: ${contentTypeOrError.getError()}`)
     }
     const contentType = contentTypeOrError.getValue()
 
     const itemUuidOrError = Uuid.create(item.uuid)
     if (itemUuidOrError.isFailed()) {
-      throw new Error(`Could not map item string to revision: ${itemUuidOrError.getError()}`)
+      throw new Error(`Could not map item string to revision [item uuid]: ${itemUuidOrError.getError()}`)
     }
     const itemUuid = itemUuidOrError.getValue()
 
     const userUuidOrError = Uuid.create(item.user_uuid)
     if (userUuidOrError.isFailed()) {
-      throw new Error(`Could not map item string to revision: ${userUuidOrError.getError()}`)
+      throw new Error(`Could not map item string to revision [user uuid]: ${userUuidOrError.getError()}`)
     }
     const userUuid = userUuidOrError.getValue()
 
@@ -38,7 +38,7 @@ export class RevisionItemStringMapper implements MapperInterface<Revision, strin
     })
 
     if (revisionOrError.isFailed()) {
-      throw new Error(`Could not map item string to revision: ${revisionOrError.getError()}`)
+      throw new Error(`Could not map item string to revision [revision]: ${revisionOrError.getError()}`)
     }
 
     return revisionOrError.getValue()
