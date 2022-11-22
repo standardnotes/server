@@ -35,6 +35,7 @@ import { RevisionPersistenceMapper } from '../Mapping/RevisionPersistenceMapper'
 import { ItemDumpedEventHandler } from '../Domain/Handler/ItemDumpedEventHandler'
 import { DumpRepositoryInterface } from '../Domain/Dump/DumpRepositoryInterface'
 import { S3DumpRepository } from '../Infra/S3/S3ItemDumpRepository'
+import { FSDumpRepository } from '../Infra/FS/FSDumpRepository'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -126,15 +127,21 @@ export class ContainerConfigLoader {
           container.get(TYPES.RevisionPersistenceMapper),
         ),
       )
-    container
-      .bind<DumpRepositoryInterface>(TYPES.DumpRepository)
-      .toConstantValue(
-        new S3DumpRepository(
-          container.get(TYPES.S3_BACKUP_BUCKET_NAME),
-          container.get(TYPES.S3),
-          container.get(TYPES.RevisionItemStringMapper),
-        ),
-      )
+    if (env.get('S3_AWS_REGION', true)) {
+      container
+        .bind<DumpRepositoryInterface>(TYPES.DumpRepository)
+        .toConstantValue(
+          new S3DumpRepository(
+            container.get(TYPES.S3_BACKUP_BUCKET_NAME),
+            container.get(TYPES.S3),
+            container.get(TYPES.RevisionItemStringMapper),
+          ),
+        )
+    } else {
+      container
+        .bind<DumpRepositoryInterface>(TYPES.DumpRepository)
+        .toConstantValue(new FSDumpRepository(container.get(TYPES.RevisionItemStringMapper)))
+    }
 
     // use cases
     container
