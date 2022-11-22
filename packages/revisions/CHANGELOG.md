@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.2](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.4.1...@standardnotes/revisions-server@1.4.2) (2022-11-22)
+
+### Bug Fixes
+
+* sqs binding ([806a732](https://github.com/standardnotes/server/commit/806a732cbc92cd89deb9d9d2aa95565922ce6b72))
+
 ## [1.4.1](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.4.0...@standardnotes/revisions-server@1.4.1) (2022-11-22)
 
 ### Bug Fixes
