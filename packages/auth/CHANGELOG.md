@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.60.7](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.60.6...@standardnotes/auth-server@1.60.7) (2022-11-22)
+
+### Bug Fixes
+
+* **auth:** remove temporary email campaign check for team member ([5f2be44](https://github.com/standardnotes/server/commit/5f2be44b853e83abb6c4e758efd477e899381e07))
+
 ## [1.60.6](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.60.5...@standardnotes/auth-server@1.60.6) (2022-11-22)
 
 ### Bug Fixes
