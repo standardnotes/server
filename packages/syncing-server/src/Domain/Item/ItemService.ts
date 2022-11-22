@@ -255,9 +255,11 @@ export class ItemService implements ItemServiceInterface {
     if (secondsFromLastUpdate >= this.revisionFrequency) {
       await this.revisionService.createRevision(savedItem)
 
-      await this.domainEventPublisher.publish(
-        this.domainEventFactory.createItemRevisionCreationRequested(savedItem.uuid, savedItem.userUuid),
-      )
+      if ([ContentType.Note, ContentType.File].includes(savedItem.contentType as ContentType)) {
+        await this.domainEventPublisher.publish(
+          this.domainEventFactory.createItemRevisionCreationRequested(savedItem.uuid, savedItem.userUuid),
+        )
+      }
     }
 
     if (wasMarkedAsDuplicate) {
@@ -276,9 +278,11 @@ export class ItemService implements ItemServiceInterface {
 
     await this.revisionService.createRevision(savedItem)
 
-    await this.domainEventPublisher.publish(
-      this.domainEventFactory.createItemRevisionCreationRequested(savedItem.uuid, savedItem.userUuid),
-    )
+    if ([ContentType.Note, ContentType.File].includes(savedItem.contentType as ContentType)) {
+      await this.domainEventPublisher.publish(
+        this.domainEventFactory.createItemRevisionCreationRequested(savedItem.uuid, savedItem.userUuid),
+      )
+    }
 
     if (savedItem.duplicateOf) {
       await this.domainEventPublisher.publish(

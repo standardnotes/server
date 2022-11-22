@@ -158,7 +158,9 @@ describe('ItemService', () => {
     itemSaveValidator = {} as jest.Mocked<ItemSaveValidatorInterface>
     itemSaveValidator.validate = jest.fn().mockReturnValue({ passed: true })
 
-    newItem = {} as jest.Mocked<Item>
+    newItem = {
+      contentType: ContentType.Note,
+    } as jest.Mocked<Item>
 
     itemFactory = {} as jest.Mocked<ItemFactoryInterface>
     itemFactory.create = jest.fn().mockReturnValue(newItem)
@@ -521,7 +523,11 @@ describe('ItemService', () => {
 
   it('should save new items that are duplicates', async () => {
     itemRepository.findByUuid = jest.fn().mockReturnValue(null)
-    const duplicateItem = { updatedAtTimestamp: 1616164633241570, duplicateOf: '1-2-3' } as jest.Mocked<Item>
+    const duplicateItem = {
+      updatedAtTimestamp: 1616164633241570,
+      duplicateOf: '1-2-3',
+      contentType: ContentType.Note,
+    } as jest.Mocked<Item>
     itemFactory.create = jest.fn().mockReturnValueOnce(duplicateItem)
 
     const result = await createService().saveItems({
