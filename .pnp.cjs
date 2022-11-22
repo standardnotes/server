@@ -122,7 +122,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./",\
         "packageDependencies": [\
           ["@commitlint/cli", "npm:17.0.3"],\
-          ["@commitlint/config-conventional", "npm:17.0.3"],\
+          ["@commitlint/config-conventional", "npm:17.3.0"],\
           ["@lerna-lite/cli", "npm:1.6.0"],\
           ["@lerna-lite/list", "npm:1.6.0"],\
           ["@lerna-lite/run", "npm:1.6.0"],\
@@ -944,10 +944,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@commitlint/config-conventional", [\
-      ["npm:17.0.3", {\
-        "packageLocation": "./.yarn/cache/@commitlint-config-conventional-npm-17.0.3-58ee159448-5614f6772c.zip/node_modules/@commitlint/config-conventional/",\
+      ["npm:17.3.0", {\
+        "packageLocation": "./.yarn/cache/@commitlint-config-conventional-npm-17.3.0-d8ddc41628-7e6c9496eb.zip/node_modules/@commitlint/config-conventional/",\
         "packageDependencies": [\
-          ["@commitlint/config-conventional", "npm:17.0.3"],\
+          ["@commitlint/config-conventional", "npm:17.3.0"],\
           ["conventional-changelog-conventionalcommits", "npm:5.0.0"]\
         ],\
         "linkType": "HARD"\
@@ -3118,7 +3118,7 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["@standardnotes/server-monorepo", "workspace:."],\
           ["@commitlint/cli", "npm:17.0.3"],\
-          ["@commitlint/config-conventional", "npm:17.0.3"],\
+          ["@commitlint/config-conventional", "npm:17.3.0"],\
           ["@lerna-lite/cli", "npm:1.6.0"],\
           ["@lerna-lite/list", "npm:1.6.0"],\
           ["@lerna-lite/run", "npm:1.6.0"],\
