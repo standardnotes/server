@@ -63,16 +63,6 @@ describe('ItemProjector', () => {
     })
   })
 
-  it('should throw error on custom projection', async () => {
-    let error = null
-    try {
-      await createProjector().projectCustom('test', item)
-    } catch (e) {
-      error = e
-    }
-    expect((error as Error).message).toEqual('not implemented')
-  })
-
   it('should throw error on simple projection', async () => {
     let error = null
     try {
