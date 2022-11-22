@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.2.2...@standardnotes/revisions-server@1.3.0) (2022-11-22)
+
+### Features
+
+* **revisions:** add filesystem dump repository ([14ab1ca](https://github.com/standardnotes/server/commit/14ab1cae6981b7c12e797dd316da1b3bdb37c75f))
+
 ## [1.2.2](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.2.1...@standardnotes/revisions-server@1.2.2) (2022-11-22)
 
 **Note:** Version bump only for package @standardnotes/revisions-server
