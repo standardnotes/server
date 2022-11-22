@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.3.0...@standardnotes/revisions-server@1.4.0) (2022-11-22)
+
+### Features
+
+* **revisions:** add database ([e553222](https://github.com/standardnotes/server/commit/e553222b4b0f185bea5146d440834483b140339d))
+
 # [1.3.0](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.2.2...@standardnotes/revisions-server@1.3.0) (2022-11-22)
 
 ### Features
