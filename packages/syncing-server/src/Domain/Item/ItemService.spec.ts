@@ -17,6 +17,7 @@ import { ItemConflict } from './ItemConflict'
 import { ItemTransferCalculatorInterface } from './ItemTransferCalculatorInterface'
 import { ProjectorInterface } from '../../Projection/ProjectorInterface'
 import { ItemProjection } from '../../Projection/ItemProjection'
+import { RevisionServiceInterface } from '../Revision/RevisionServiceInterface'
 
 describe('ItemService', () => {
   let itemRepository: ItemRepositoryInterface
@@ -38,6 +39,7 @@ describe('ItemService', () => {
   let timeHelper: Timer
   let itemTransferCalculator: ItemTransferCalculatorInterface
   let itemProjector: ProjectorInterface<Item, ItemProjection>
+  let revisionService: RevisionServiceInterface
   const maxItemsSyncLimit = 300
 
   const createService = () =>
@@ -45,6 +47,7 @@ describe('ItemService', () => {
       itemSaveValidator,
       itemFactory,
       itemRepository,
+      revisionService,
       domainEventPublisher,
       domainEventFactory,
       revisionFrequency,
@@ -121,6 +124,9 @@ describe('ItemService', () => {
     itemRepository.findAll = jest.fn().mockReturnValue([item1, item2])
     itemRepository.countAll = jest.fn().mockReturnValue(2)
     itemRepository.save = jest.fn().mockImplementation((item: Item) => item)
+
+    revisionService = {} as jest.Mocked<RevisionServiceInterface>
+    revisionService.createRevision = jest.fn()
 
     timer = {} as jest.Mocked<TimerInterface>
     timer.getTimestampInMicroseconds = jest.fn().mockReturnValue(1616164633241568)
