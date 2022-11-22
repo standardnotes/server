@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.46.0](https://github.com/standardnotes/server/compare/@standardnotes/common@1.45.0...@standardnotes/common@1.46.0) (2022-11-22)
+
+### Features
+
+* **common:** add marketing campaign for black friday 2022 email message identifier ([d77eb7f](https://github.com/standardnotes/server/commit/d77eb7f5f11bcc7cd5c6fa6d20e891b466af7b45))
+
 # [1.45.0](https://github.com/standardnotes/server/compare/@standardnotes/common@1.44.4...@standardnotes/common@1.45.0) (2022-11-14)
 
 ### Features
