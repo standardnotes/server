@@ -85,6 +85,7 @@ import { MapperInterface } from '@standardnotes/domain-core'
 import { RevisionMetadata } from '../Domain/Revision/RevisionMetadata'
 import { SimpleRevisionProjection } from '../Projection/SimpleRevisionProjection'
 import { ItemRevisionCreationRequestedEventHandler } from '../Domain/Handler/ItemRevisionCreationRequestedEventHandler'
+import { FSItemBackupService } from '../Infra/FS/FSItemBackupService'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -92,6 +93,7 @@ const newrelicFormatter = require('@newrelic/winston-enricher')
 export class ContainerConfigLoader {
   private readonly DEFAULT_CONTENT_SIZE_TRANSFER_LIMIT = 10_000_000
   private readonly DEFAULT_MAX_ITEMS_LIMIT = 300
+  private readonly DEFAULT_FILE_UPLOAD_PATH = `${__dirname}/../../uploads`
 
   async load(): Promise<Container> {
     const env: Env = new Env()
@@ -203,6 +205,11 @@ export class ContainerConfigLoader {
       .toConstantValue(
         env.get('MAX_ITEMS_LIMIT', true) ? +env.get('MAX_ITEMS_LIMIT', true) : this.DEFAULT_MAX_ITEMS_LIMIT,
       )
+    container
+      .bind(TYPES.FILE_UPLOAD_PATH)
+      .toConstantValue(
+        env.get('FILE_UPLOAD_PATH', true) ? env.get('FILE_UPLOAD_PATH', true) : this.DEFAULT_FILE_UPLOAD_PATH,
+      )
 
     // use cases
     container.bind<SyncItems>(TYPES.SyncItems).to(SyncItems)
@@ -252,7 +259,11 @@ export class ContainerConfigLoader {
       .to(SyncResponseFactoryResolver)
     container.bind<AuthHttpServiceInterface>(TYPES.AuthHttpService).to(AuthHttpService)
     container.bind<ExtensionsHttpServiceInterface>(TYPES.ExtensionsHttpService).to(ExtensionsHttpService)
-    container.bind<ItemBackupServiceInterface>(TYPES.ItemBackupService).to(S3ItemBackupService)
+    if (env.get('S3_AWS_REGION', true)) {
+      container.bind<ItemBackupServiceInterface>(TYPES.ItemBackupService).to(S3ItemBackupService)
+    } else {
+      container.bind<ItemBackupServiceInterface>(TYPES.ItemBackupService).to(FSItemBackupService)
+    }
     container.bind<RevisionServiceInterface>(TYPES.RevisionService).to(RevisionService)
 
     if (env.get('SNS_TOPIC_ARN', true)) {

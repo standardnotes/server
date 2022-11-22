@@ -37,6 +37,7 @@ const TYPES = {
   VERSION: Symbol.for('VERSION'),
   CONTENT_SIZE_TRANSFER_LIMIT: Symbol.for('CONTENT_SIZE_TRANSFER_LIMIT'),
   MAX_ITEMS_LIMIT: Symbol.for('MAX_ITEMS_LIMIT'),
+  FILE_UPLOAD_PATH: Symbol.for('FILE_UPLOAD_PATH'),
   // use cases
   SyncItems: Symbol.for('SyncItems'),
   CheckIntegrity: Symbol.for('CheckIntegrity'),
