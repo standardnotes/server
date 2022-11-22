@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.18.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.17.0...@standardnotes/syncing-server@1.18.0) (2022-11-22)
+
+### Features
+
+* **syncing-server:** add dump projection for revisions ([455f35e](https://github.com/standardnotes/syncing-server-js/commit/455f35e0c1ac811720b67592a9017a3470a7740c))
+
 # [1.17.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.16.1...@standardnotes/syncing-server@1.17.0) (2022-11-22)
 
 ### Features

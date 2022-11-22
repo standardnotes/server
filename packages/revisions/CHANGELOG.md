@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.1](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.4.0...@standardnotes/revisions-server@1.4.1) (2022-11-22)
+
+### Bug Fixes
+
+* **revisions:** add more verbose error messages ([daa7a9f](https://github.com/standardnotes/server/commit/daa7a9ff61d389e573960b443faff77e0abe01dc))
+
 # [1.4.0](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.3.0...@standardnotes/revisions-server@1.4.0) (2022-11-22)
 
 ### Features
