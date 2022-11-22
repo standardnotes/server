@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.60.5](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.60.4...@standardnotes/auth-server@1.60.5) (2022-11-22)
+
+### Bug Fixes
+
+* **auth:** tmp send email campaign only to team ([94359f1](https://github.com/standardnotes/server/commit/94359f1299a2bb009099af163d3929c4adc7e274))
+
 ## [1.60.4](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.60.3...@standardnotes/auth-server@1.60.4) (2022-11-22)
 
 **Note:** Version bump only for package @standardnotes/auth-server
