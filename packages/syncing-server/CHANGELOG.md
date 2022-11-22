@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.18.5](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.18.4...@standardnotes/syncing-server@1.18.5) (2022-11-22)
+
+### Bug Fixes
+
+* **syncing-server:** publish revision creation request only for notes and files ([3086625](https://github.com/standardnotes/syncing-server-js/commit/308662550f7da086a93cb47fd2d0f41cbec14159))
+
 ## [1.18.4](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.18.3...@standardnotes/syncing-server@1.18.4) (2022-11-22)
 
 ### Bug Fixes
