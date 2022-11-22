@@ -31,7 +31,7 @@ export class S3ItemBackupService implements ItemBackupServiceInterface {
         Bucket: this.s3BackupBucketName,
         Key: uuid.v4(),
         Body: JSON.stringify({
-          item: await this.itemProjector.projectFull(item),
+          item: await this.itemProjector.projectCustom('dump', item),
         }),
       })
       .promise()

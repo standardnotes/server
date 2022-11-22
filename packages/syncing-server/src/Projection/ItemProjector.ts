@@ -5,6 +5,7 @@ import { ProjectorInterface } from './ProjectorInterface'
 
 import { Item } from '../Domain/Item/Item'
 import { ItemProjection } from './ItemProjection'
+import { ItemProjectionWithUser } from './ItemProjectionWithUser'
 
 @injectable()
 export class ItemProjector implements ProjectorInterface<Item, ItemProjection> {
@@ -14,8 +15,13 @@ export class ItemProjector implements ProjectorInterface<Item, ItemProjection> {
     throw Error('not implemented')
   }
 
-  async projectCustom(_projectionType: string, _item: Item): Promise<ItemProjection> {
-    throw Error('not implemented')
+  async projectCustom(_projectionType: string, item: Item): Promise<ItemProjectionWithUser> {
+    const fullProjection = await this.projectFull(item)
+
+    return {
+      ...fullProjection,
+      user_uuid: item.userUuid,
+    }
   }
 
   async projectFull(item: Item): Promise<ItemProjection> {

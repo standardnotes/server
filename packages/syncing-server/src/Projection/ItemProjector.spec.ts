@@ -27,6 +27,7 @@ describe('ItemProjector', () => {
     item.createdAtTimestamp = 123
     item.updatedAtTimestamp = 123
     item.updatedWithSession = '7-6-5'
+    item.userUuid = 'u1-2-3'
   })
 
   it('should create a full projection of an item', async () => {
@@ -42,6 +43,23 @@ describe('ItemProjector', () => {
       created_at: '2021-04-15T08:00:00.123456Z',
       updated_at: '2021-04-15T08:00:00.123456Z',
       updated_with_session: '7-6-5',
+    })
+  })
+
+  it('should create a custom projection of an item', async () => {
+    expect(await createProjector().projectCustom('dump', item)).toMatchObject({
+      uuid: '1-2-3',
+      items_key_id: '2-3-4',
+      duplicate_of: null,
+      enc_item_key: '3-4-5',
+      content: 'test',
+      content_type: 'Note',
+      auth_hash: 'asd',
+      deleted: false,
+      created_at: '2021-04-15T08:00:00.123456Z',
+      updated_at: '2021-04-15T08:00:00.123456Z',
+      updated_with_session: '7-6-5',
+      user_uuid: 'u1-2-3',
     })
   })
 
