@@ -21,16 +21,15 @@ export class MySQLRevisionRepository implements RevisionRepositoryInterface {
     return revision
   }
 
-  async findMetadataByItemId(itemUuid: Uuid): Promise<Array<RevisionMetadata>> {
+  async findMetadataByItemId(itemUuid: Uuid, userUuid: Uuid): Promise<Array<RevisionMetadata>> {
     const queryBuilder = this.ormRepository
       .createQueryBuilder()
       .select('uuid', 'uuid')
       .addSelect('content_type', 'contentType')
       .addSelect('created_at', 'createdAt')
       .addSelect('updated_at', 'updatedAt')
-      .where('item_uuid = :item_uuid', {
-        item_uuid: itemUuid,
-      })
+      .where('item_uuid = :itemUuid', { itemUuid })
+      .andWhere('user_uuid = :userUuid', { userUuid })
       .orderBy('created_at', 'DESC')
 
     const simplifiedRevisions = await queryBuilder.getMany()

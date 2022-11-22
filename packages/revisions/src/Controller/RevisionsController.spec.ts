@@ -20,14 +20,14 @@ describe('RevisionsController', () => {
   })
 
   it('should get revisions list', async () => {
-    const response = await createController().getRevisions({ itemUuid: '1-2-3' })
+    const response = await createController().getRevisions({ itemUuid: '1-2-3', userUuid: '1-2-3' })
 
     expect(response.status).toEqual(200)
   })
 
   it('should indicate failure to get revisions list', async () => {
     getRevisionsMetadata.execute = jest.fn().mockReturnValue(Result.fail('Oops'))
-    const response = await createController().getRevisions({ itemUuid: '1-2-3' })
+    const response = await createController().getRevisions({ itemUuid: '1-2-3', userUuid: '1-2-3' })
 
     expect(response.status).toEqual(400)
   })

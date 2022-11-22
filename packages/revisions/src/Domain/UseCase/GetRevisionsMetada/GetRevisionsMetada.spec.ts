@@ -13,14 +13,29 @@ describe('GetRevisionsMetada', () => {
   })
 
   it('should return revisions metadata for a given item', async () => {
-    const result = await createUseCase().execute({ itemUuid: '84c0f8e8-544a-4c7e-9adf-26209303bc1d' })
+    const result = await createUseCase().execute({
+      itemUuid: '84c0f8e8-544a-4c7e-9adf-26209303bc1d',
+      userUuid: '84c0f8e8-544a-4c7e-9adf-26209303bc1d',
+    })
 
     expect(result.isFailed()).toBeFalsy()
     expect(result.getValue().length).toEqual(1)
   })
 
   it('should not return revisions metadata for a an invalid item uuid', async () => {
-    const result = await createUseCase().execute({ itemUuid: '1-2-3' })
+    const result = await createUseCase().execute({
+      itemUuid: '1-2-3',
+      userUuid: '84c0f8e8-544a-4c7e-9adf-26209303bc1d',
+    })
+
+    expect(result.isFailed()).toBeTruthy()
+  })
+
+  it('should not return revisions metadata for a an invalid user uuid', async () => {
+    const result = await createUseCase().execute({
+      userUuid: '1-2-3',
+      itemUuid: '84c0f8e8-544a-4c7e-9adf-26209303bc1d',
+    })
 
     expect(result.isFailed()).toBeTruthy()
   })

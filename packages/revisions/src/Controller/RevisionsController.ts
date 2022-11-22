@@ -8,7 +8,10 @@ export class RevisionsController {
   constructor(private getRevisionsMetadata: GetRevisionsMetada, private logger: Logger) {}
 
   async getRevisions(params: GetRevisionsMetadataRequestParams): Promise<HttpResponse> {
-    const revisionMetadataOrError = await this.getRevisionsMetadata.execute({ itemUuid: params.itemUuid })
+    const revisionMetadataOrError = await this.getRevisionsMetadata.execute({
+      itemUuid: params.itemUuid,
+      userUuid: params.userUuid,
+    })
 
     if (revisionMetadataOrError.isFailed()) {
       this.logger.warn(revisionMetadataOrError.getError())

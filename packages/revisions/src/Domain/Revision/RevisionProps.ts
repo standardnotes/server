@@ -4,6 +4,7 @@ import { ContentType } from './ContentType'
 
 export interface RevisionProps {
   itemUuid: Uuid
+  userUuid: Uuid
   content: string | null
   contentType: ContentType
   itemsKeyId: string | null

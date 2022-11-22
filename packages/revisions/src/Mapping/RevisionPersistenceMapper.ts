@@ -23,6 +23,12 @@ export class RevisionPersistenceMapper implements MapperInterface<Revision, Type
     }
     const itemUuid = itemUuidOrError.getValue()
 
+    const userUuidOrError = Uuid.create(projection.userUuid)
+    if (userUuidOrError.isFailed()) {
+      throw new Error(`Could not map typeorm revision to domain revision: ${userUuidOrError.getError()}`)
+    }
+    const userUuid = userUuidOrError.getValue()
+
     const revisionOrError = Revision.create(
       {
         authHash: projection.authHash,
@@ -32,6 +38,7 @@ export class RevisionPersistenceMapper implements MapperInterface<Revision, Type
         encItemKey: projection.encItemKey,
         itemsKeyId: projection.itemsKeyId,
         itemUuid,
+        userUuid,
         timestamps,
       },
       new UniqueEntityId(projection.uuid),
@@ -55,6 +62,7 @@ export class RevisionPersistenceMapper implements MapperInterface<Revision, Type
     typeormRevision.encItemKey = domain.props.encItemKey
     typeormRevision.itemUuid = domain.props.itemUuid.value
     typeormRevision.itemsKeyId = domain.props.itemsKeyId
+    typeormRevision.userUuid = domain.props.userUuid.value
     typeormRevision.uuid = domain.id.toString()
 
     return typeormRevision

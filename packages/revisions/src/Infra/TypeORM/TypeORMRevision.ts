@@ -9,7 +9,15 @@ export class TypeORMRevision {
     name: 'item_uuid',
     length: 36,
   })
+  @Index('item_uuid')
   declare itemUuid: string
+
+  @Column({
+    name: 'user_uuid',
+    length: 36,
+  })
+  @Index('user_uuid')
+  declare userUuid: string
 
   @Column({
     type: 'mediumtext',
@@ -53,7 +61,7 @@ export class TypeORMRevision {
     type: 'date',
     nullable: true,
   })
-  @Index('index_revisions_on_creation_date')
+  @Index('creation_date')
   declare creationDate: Date
 
   @Column({
@@ -62,7 +70,7 @@ export class TypeORMRevision {
     precision: 6,
     nullable: true,
   })
-  @Index('index_revisions_on_created_at')
+  @Index('created_at')
   declare createdAt: Date
 
   @Column({

@@ -5,7 +5,7 @@ import { Revision } from '../Domain/Revision/Revision'
 
 export class RevisionItemStringMapper implements MapperInterface<Revision, string> {
   toDomain(projection: string): Revision {
-    const item = JSON.parse(projection)
+    const item = JSON.parse(projection).item
 
     const contentTypeOrError = ContentType.create(item.content_type)
     if (contentTypeOrError.isFailed()) {
@@ -19,8 +19,15 @@ export class RevisionItemStringMapper implements MapperInterface<Revision, strin
     }
     const itemUuid = itemUuidOrError.getValue()
 
+    const userUuidOrError = Uuid.create(item.user_uuid)
+    if (userUuidOrError.isFailed()) {
+      throw new Error(`Could not map item string to revision: ${userUuidOrError.getError()}`)
+    }
+    const userUuid = userUuidOrError.getValue()
+
     const revisionOrError = Revision.create({
       itemUuid,
+      userUuid,
       authHash: item.auth_hash,
       content: item.content,
       contentType,

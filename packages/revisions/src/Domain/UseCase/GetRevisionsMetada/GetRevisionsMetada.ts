@@ -14,7 +14,15 @@ export class GetRevisionsMetada implements UseCaseInterface<RevisionMetadata[]> 
       return Result.fail<RevisionMetadata[]>(`Could not get revisions: ${itemUuidOrError.getError()}`)
     }
 
-    const revisionsMetdata = await this.revisionRepository.findMetadataByItemId(itemUuidOrError.getValue())
+    const userUuidOrError = Uuid.create(dto.userUuid)
+    if (userUuidOrError.isFailed()) {
+      return Result.fail<RevisionMetadata[]>(`Could not get revisions: ${userUuidOrError.getError()}`)
+    }
+
+    const revisionsMetdata = await this.revisionRepository.findMetadataByItemId(
+      itemUuidOrError.getValue(),
+      userUuidOrError.getValue(),
+    )
 
     return Result.ok<RevisionMetadata[]>(revisionsMetdata)
   }
