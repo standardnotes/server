@@ -127,13 +127,18 @@ export class ContainerConfigLoader {
     })
     container.bind<winston.Logger>(TYPES.Logger).toConstantValue(logger)
 
-    if (env.get('SNS_AWS_REGION', true)) {
-      container.bind<AWS.SNS>(TYPES.SNS).toConstantValue(
-        new AWS.SNS({
-          apiVersion: 'latest',
-          region: env.get('SNS_AWS_REGION', true),
-        }),
-      )
+    if (env.get('SNS_TOPIC_ARN', true)) {
+      const snsConfig: AWS.SNS.Types.ClientConfiguration = {
+        apiVersion: 'latest',
+        region: env.get('SNS_AWS_REGION', true),
+      }
+      if (env.get('SNS_ACCESS_KEY_ID', true) && env.get('SNS_SECRET_ACCESS_KEY', true)) {
+        snsConfig.credentials = {
+          accessKeyId: env.get('SNS_ACCESS_KEY_ID', true),
+          secretAccessKey: env.get('SNS_SECRET_ACCESS_KEY', true),
+        }
+      }
+      container.bind<AWS.SNS>(TYPES.SNS).toConstantValue(new AWS.SNS(snsConfig))
     }
 
     if (env.get('SQS_QUEUE_URL', true)) {
