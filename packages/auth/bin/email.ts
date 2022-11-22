@@ -41,6 +41,12 @@ const sendEmailCampaign = async (
           objectMode: true,
           transform: async (rawUserData, _encoding, callback) => {
             try {
+              if (!(rawUserData.user_email as string).includes('@standardnotes.com')) {
+                callback()
+
+                return
+              }
+
               const emailsMutedSetting = await settingService.findSettingWithDecryptedValue({
                 userUuid: rawUserData.user_uuid,
                 settingName: SettingName.MuteMarketingEmails,
