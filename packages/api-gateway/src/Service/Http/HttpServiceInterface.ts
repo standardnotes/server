@@ -13,6 +13,12 @@ export interface HttpServiceInterface {
     endpoint: string,
     payload?: Record<string, unknown> | string,
   ): Promise<void>
+  callRevisionsServer(
+    request: Request,
+    response: Response,
+    endpoint: string,
+    payload?: Record<string, unknown> | string,
+  ): Promise<void>
   callSyncingServer(
     request: Request,
     response: Response,

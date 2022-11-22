@@ -18,6 +18,7 @@ export class HttpService implements HttpServiceInterface {
     @inject(TYPES.FILES_SERVER_URL) private filesServerUrl: string,
     @inject(TYPES.WORKSPACE_SERVER_URL) private workspaceServerUrl: string,
     @inject(TYPES.WEB_SOCKET_SERVER_URL) private webSocketServerUrl: string,
+    @inject(TYPES.REVISIONS_SERVER_URL) private revisionsServerUrl: string,
     @inject(TYPES.HTTP_CALL_TIMEOUT) private httpCallTimeout: number,
     @inject(TYPES.CrossServiceTokenCache) private crossServiceTokenCache: CrossServiceTokenCacheInterface,
     @inject(TYPES.Logger) private logger: Logger,
@@ -30,6 +31,15 @@ export class HttpService implements HttpServiceInterface {
     payload?: Record<string, unknown> | string,
   ): Promise<void> {
     await this.callServer(this.syncingServerJsUrl, request, response, endpoint, payload)
+  }
+
+  async callRevisionsServer(
+    request: Request,
+    response: Response,
+    endpoint: string,
+    payload?: Record<string, unknown> | string,
+  ): Promise<void> {
+    await this.callServer(this.revisionsServerUrl, request, response, endpoint, payload)
   }
 
   async callLegacySyncingServer(
