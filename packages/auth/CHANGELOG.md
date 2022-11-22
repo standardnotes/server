@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.60.6](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.60.5...@standardnotes/auth-server@1.60.6) (2022-11-22)
+
+### Bug Fixes
+
+* sns binding ([3686a26](https://github.com/standardnotes/server/commit/3686a260192468c00b52087590dd2edf76ada939))
+
 ## [1.60.5](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.60.4...@standardnotes/auth-server@1.60.5) (2022-11-22)
 
 ### Bug Fixes
