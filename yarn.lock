@@ -1805,7 +1805,7 @@ __metadata:
     "@types/newrelic": "npm:^7.0.4"
     "@types/node": "npm:^18.11.9"
     "@typescript-eslint/eslint-plugin": "npm:^5.30.0"
-    aws-sdk: "npm:^2.1253.0"
+    aws-sdk: "npm:^2.1260.0"
     dayjs: "npm:^1.11.6"
     dotenv: "npm:^16.0.1"
     eslint: "npm:^8.14.0"
@@ -1843,7 +1843,7 @@ __metadata:
     "@types/newrelic": "npm:^7.0.4"
     "@types/prettyjson": "npm:^0.0.30"
     "@typescript-eslint/eslint-plugin": "npm:^5.29.0"
-    aws-sdk: "npm:^2.1253.0"
+    aws-sdk: "npm:^2.1260.0"
     axios: "npm:^1.1.3"
     cors: "npm:2.8.5"
     dotenv: "npm:^16.0.1"
@@ -1912,7 +1912,7 @@ __metadata:
     "@types/ua-parser-js": "npm:^0.7.36"
     "@types/uuid": "npm:^8.3.0"
     "@typescript-eslint/eslint-plugin": "npm:^5.29.0"
-    aws-sdk: "npm:^2.1253.0"
+    aws-sdk: "npm:^2.1260.0"
     axios: "npm:^1.1.3"
     bcryptjs: "npm:2.4.3"
     cors: "npm:2.8.5"
@@ -2010,7 +2010,7 @@ __metadata:
     "@types/jest": "npm:^29.1.1"
     "@types/newrelic": "npm:^7.0.4"
     "@typescript-eslint/eslint-plugin": "npm:^5.30.0"
-    aws-sdk: "npm:^2.1253.0"
+    aws-sdk: "npm:^2.1260.0"
     eslint-plugin-prettier: "npm:^4.2.1"
     ioredis: "npm:^5.2.4"
     jest: "npm:^29.1.2"
@@ -2068,7 +2068,7 @@ __metadata:
     "@types/newrelic": "npm:^7.0.4"
     "@types/nodemailer": "npm:^6.4.1"
     "@typescript-eslint/eslint-plugin": "npm:^5.40.1"
-    aws-sdk: "npm:^2.1253.0"
+    aws-sdk: "npm:^2.1260.0"
     dotenv: "npm:^16.0.1"
     eslint: "npm:^8.14.0"
     eslint-plugin-prettier: "npm:^4.2.1"
@@ -2133,7 +2133,7 @@ __metadata:
     "@types/prettyjson": "npm:^0.0.30"
     "@types/uuid": "npm:^8.3.0"
     "@typescript-eslint/eslint-plugin": "npm:^5.29.0"
-    aws-sdk: "npm:^2.1253.0"
+    aws-sdk: "npm:^2.1260.0"
     connect-busboy: "npm:^1.0.0"
     cors: "npm:^2.8.5"
     dayjs: "npm:^1.11.6"
@@ -2261,7 +2261,7 @@ __metadata:
     "@types/jest": "npm:^29.1.1"
     "@types/newrelic": "npm:^7.0.4"
     "@typescript-eslint/eslint-plugin": "npm:^5.29.0"
-    aws-sdk: "npm:^2.1253.0"
+    aws-sdk: "npm:^2.1260.0"
     cors: "npm:2.8.5"
     dotenv: "npm:^16.0.1"
     eslint: "npm:^8.14.0"
@@ -2300,7 +2300,7 @@ __metadata:
     "@types/newrelic": "npm:^7.0.4"
     "@types/node": "npm:^18.11.9"
     "@typescript-eslint/eslint-plugin": "npm:^5.29.0"
-    aws-sdk: "npm:^2.1253.0"
+    aws-sdk: "npm:^2.1260.0"
     dayjs: "npm:^1.11.6"
     dotenv: "npm:^16.0.1"
     eslint: "npm:^8.14.0"
@@ -2429,7 +2429,7 @@ __metadata:
     "@types/ua-parser-js": "npm:^0.7.36"
     "@types/uuid": "npm:^8.3.0"
     "@typescript-eslint/eslint-plugin": "npm:^5.29.0"
-    aws-sdk: "npm:^2.1253.0"
+    aws-sdk: "npm:^2.1260.0"
     axios: "npm:^1.1.3"
     cors: "npm:2.8.5"
     dotenv: "npm:^16.0.1"
@@ -2516,7 +2516,7 @@ __metadata:
     "@types/jest": "npm:^29.1.1"
     "@types/newrelic": "npm:^7.0.4"
     "@typescript-eslint/eslint-plugin": "npm:^5.29.0"
-    aws-sdk: "npm:^2.1253.0"
+    aws-sdk: "npm:^2.1260.0"
     axios: "npm:^1.1.3"
     cors: "npm:2.8.5"
     dotenv: "npm:^16.0.1"
@@ -2557,7 +2557,7 @@ __metadata:
     "@types/jest": "npm:^29.1.1"
     "@types/newrelic": "npm:^7.0.4"
     "@typescript-eslint/eslint-plugin": "npm:^5.29.0"
-    aws-sdk: "npm:^2.1253.0"
+    aws-sdk: "npm:^2.1260.0"
     cors: "npm:2.8.5"
     dotenv: "npm:^16.0.1"
     eslint: "npm:^8.14.0"
@@ -3580,9 +3580,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"aws-sdk@npm:^2.1253.0":
-  version: 2.1253.0
-  resolution: "aws-sdk@npm:2.1253.0"
+"aws-sdk@npm:^2.1260.0":
+  version: 2.1260.0
+  resolution: "aws-sdk@npm:2.1260.0"
   dependencies:
     buffer: "npm:4.9.2"
     events: "npm:1.1.1"
@@ -3594,7 +3594,7 @@ __metadata:
     util: "npm:^0.12.4"
     uuid: "npm:8.0.0"
     xml2js: "npm:0.4.19"
-  checksum: faa4af29491f175158b14b58ead3bcc0f84c440300033f49846119f59dc26117b4dad0040a7eef3b12a94a31876913ce2b998c4cfdb103b908e38c52fee52c83
+  checksum: 9a1b2e4cb5fea2dad4b02c4ae25e68f85c4f952c19d13bd816ad76f6fdde808ca0a6e56e372002e876fbdc34d55d3c6b9b68d788fd7c915b94d40fbf216c6ba0
   languageName: node
   linkType: hard
 
