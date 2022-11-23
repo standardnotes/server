@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.11.7](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.11.6...@standardnotes/analytics@2.11.7) (2022-11-23)
+
+### Bug Fixes
+
+* binding of sns and sqs with additional config ([74bc791](https://github.com/standardnotes/server/commit/74bc79116bc50d9a5af1a558db1b7108dcda6d0e))
+
 ## [2.11.6](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.11.5...@standardnotes/analytics@2.11.6) (2022-11-22)
 
 **Note:** Version bump only for package @standardnotes/analytics

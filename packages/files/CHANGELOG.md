@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.8.27](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.8.26...@standardnotes/files-server@1.8.27) (2022-11-23)
+
+### Bug Fixes
+
+* binding of sns and sqs with additional config ([74bc791](https://github.com/standardnotes/files/commit/74bc79116bc50d9a5af1a558db1b7108dcda6d0e))
+
 ## [1.8.26](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.8.25...@standardnotes/files-server@1.8.26) (2022-11-22)
 
 **Note:** Version bump only for package @standardnotes/files-server

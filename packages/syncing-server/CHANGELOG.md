@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.18.6](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.18.5...@standardnotes/syncing-server@1.18.6) (2022-11-23)
+
+### Bug Fixes
+
+* binding of sns and sqs with additional config ([74bc791](https://github.com/standardnotes/syncing-server-js/commit/74bc79116bc50d9a5af1a558db1b7108dcda6d0e))
+
 ## [1.18.5](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.18.4...@standardnotes/syncing-server@1.18.5) (2022-11-22)
 
 ### Bug Fixes

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.17.27](https://github.com/standardnotes/server/compare/@standardnotes/workspace-server@1.17.26...@standardnotes/workspace-server@1.17.27) (2022-11-23)
+
+### Bug Fixes
+
+* binding of sns and sqs with additional config ([74bc791](https://github.com/standardnotes/server/commit/74bc79116bc50d9a5af1a558db1b7108dcda6d0e))
+
 ## [1.17.26](https://github.com/standardnotes/server/compare/@standardnotes/workspace-server@1.17.25...@standardnotes/workspace-server@1.17.26) (2022-11-22)
 
 **Note:** Version bump only for package @standardnotes/workspace-server
