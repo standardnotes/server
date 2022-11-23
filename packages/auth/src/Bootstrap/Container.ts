@@ -235,6 +235,12 @@ export class ContainerConfigLoader {
         apiVersion: 'latest',
         region: env.get('SNS_AWS_REGION', true),
       }
+      if (env.get('SNS_ENDPOINT', true)) {
+        snsConfig.endpoint = env.get('SNS_ENDPOINT', true)
+      }
+      if (env.get('SNS_DISABLE_SSL', true) === 'true') {
+        snsConfig.sslEnabled = false
+      }
       if (env.get('SNS_ACCESS_KEY_ID', true) && env.get('SNS_SECRET_ACCESS_KEY', true)) {
         snsConfig.credentials = {
           accessKeyId: env.get('SNS_ACCESS_KEY_ID', true),
