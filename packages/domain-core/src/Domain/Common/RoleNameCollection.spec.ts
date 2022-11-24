@@ -48,4 +48,30 @@ describe('RoleNameCollection', () => {
     const valueOrError = RoleNameCollection.create(roles1)
     expect(valueOrError.getValue().includes(RoleName.create('CORE_USER').getValue())).toBeFalsy()
   })
+
+  it('should tell if collection has a role with more or equal power to', () => {
+    let roles = [RoleName.create('CORE_USER').getValue()]
+    let valueOrError = RoleNameCollection.create(roles)
+    let roleNames = valueOrError.getValue()
+
+    expect(roleNames.hasARoleNameWithMoreOrEqualPowerTo(RoleName.create('PLUS_USER').getValue())).toBeFalsy()
+    expect(roleNames.hasARoleNameWithMoreOrEqualPowerTo(RoleName.create('PRO_USER').getValue())).toBeFalsy()
+    expect(roleNames.hasARoleNameWithMoreOrEqualPowerTo(RoleName.create('CORE_USER').getValue())).toBeTruthy()
+
+    roles = [RoleName.create('CORE_USER').getValue(), RoleName.create('PLUS_USER').getValue()]
+    valueOrError = RoleNameCollection.create(roles)
+    roleNames = valueOrError.getValue()
+
+    expect(roleNames.hasARoleNameWithMoreOrEqualPowerTo(RoleName.create('PLUS_USER').getValue())).toBeTruthy()
+    expect(roleNames.hasARoleNameWithMoreOrEqualPowerTo(RoleName.create('PRO_USER').getValue())).toBeFalsy()
+    expect(roleNames.hasARoleNameWithMoreOrEqualPowerTo(RoleName.create('CORE_USER').getValue())).toBeTruthy()
+
+    roles = [RoleName.create('PRO_USER').getValue(), RoleName.create('PLUS_USER').getValue()]
+    valueOrError = RoleNameCollection.create(roles)
+    roleNames = valueOrError.getValue()
+
+    expect(roleNames.hasARoleNameWithMoreOrEqualPowerTo(RoleName.create('PLUS_USER').getValue())).toBeTruthy()
+    expect(roleNames.hasARoleNameWithMoreOrEqualPowerTo(RoleName.create('PRO_USER').getValue())).toBeTruthy()
+    expect(roleNames.hasARoleNameWithMoreOrEqualPowerTo(RoleName.create('CORE_USER').getValue())).toBeTruthy()
+  })
 })

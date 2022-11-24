@@ -14,6 +14,19 @@ export class RoleName extends ValueObject<RoleNameProps> {
     return this.props.value
   }
 
+  hasMoreOrEqualPowerTo(roleName: RoleName): boolean {
+    switch (this.value) {
+      case RoleName.NAMES.ProUser:
+        return true
+      case RoleName.NAMES.PlusUser:
+        return [RoleName.NAMES.CoreUser, RoleName.NAMES.PlusUser].includes(roleName.value)
+      case RoleName.NAMES.CoreUser:
+        return [RoleName.NAMES.CoreUser].includes(roleName.value)
+      default:
+        return false
+    }
+  }
+
   private constructor(props: RoleNameProps) {
     super(props)
   }

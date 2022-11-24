@@ -18,6 +18,16 @@ export class RoleNameCollection extends ValueObject<RoleNameCollectionProps> {
     return false
   }
 
+  hasARoleNameWithMoreOrEqualPowerTo(roleName: RoleName): boolean {
+    for (const existingRoleName of this.props.value) {
+      if (existingRoleName.hasMoreOrEqualPowerTo(roleName)) {
+        return true
+      }
+    }
+
+    return false
+  }
+
   override equals(roleNameCollection: RoleNameCollection): boolean {
     if (this.props.value.length !== roleNameCollection.value.length) {
       return false
