@@ -1,5 +1,7 @@
 export * from './Common/Email'
 export * from './Common/EmailProps'
+export * from './Common/RoleName'
+export * from './Common/RoleNameProps'
 export * from './Common/Timestamps'
 export * from './Common/TimestampsProps'
 export * from './Common/Uuid'
