@@ -1792,7 +1792,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@standardnotes/analytics@workspace:packages/analytics"
   dependencies:
-    "@newrelic/native-metrics": "npm:^9.0.0"
     "@newrelic/winston-enricher": "npm:^4.0.0"
     "@sentry/node": "npm:^7.19.0"
     "@standardnotes/common": "workspace:*"
@@ -1827,7 +1826,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@standardnotes/api-gateway@workspace:packages/api-gateway"
   dependencies:
-    "@newrelic/native-metrics": "npm:^9.0.0"
     "@newrelic/winston-enricher": "npm:^4.0.0"
     "@sentry/node": "npm:^7.19.0"
     "@standardnotes/common": "workspace:^"
@@ -1886,7 +1884,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@standardnotes/auth-server@workspace:packages/auth"
   dependencies:
-    "@newrelic/native-metrics": "npm:^9.0.0"
     "@newrelic/winston-enricher": "npm:^4.0.0"
     "@sentry/node": "npm:^7.19.0"
     "@standardnotes/api": "npm:^1.19.0"
@@ -2004,7 +2001,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@standardnotes/domain-events-infra@workspace:packages/domain-events-infra"
   dependencies:
-    "@newrelic/native-metrics": "npm:^9.0.0"
     "@standardnotes/domain-events": "workspace:*"
     "@types/ioredis": "npm:^5.0.0"
     "@types/jest": "npm:^29.1.1"
@@ -2059,7 +2055,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@standardnotes/event-store@workspace:packages/event-store"
   dependencies:
-    "@newrelic/native-metrics": "npm:^9.0.0"
     "@standardnotes/domain-events": "workspace:*"
     "@standardnotes/domain-events-infra": "workspace:*"
     "@standardnotes/time": "workspace:*"
@@ -2113,7 +2108,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@standardnotes/files-server@workspace:packages/files"
   dependencies:
-    "@newrelic/native-metrics": "npm:^9.0.0"
     "@sentry/node": "npm:^7.19.0"
     "@standardnotes/common": "workspace:*"
     "@standardnotes/config": "npm:2.4.3"
@@ -2243,7 +2237,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@standardnotes/revisions-server@workspace:packages/revisions"
   dependencies:
-    "@newrelic/native-metrics": "npm:^9.0.0"
     "@newrelic/winston-enricher": "npm:^4.0.0"
     "@sentry/node": "npm:^7.19.0"
     "@standardnotes/api": "npm:^1.19.0"
@@ -2287,7 +2280,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@standardnotes/scheduler-server@workspace:packages/scheduler"
   dependencies:
-    "@newrelic/native-metrics": "npm:^9.0.0"
     "@newrelic/winston-enricher": "npm:^4.0.0"
     "@sentry/node": "npm:^7.19.0"
     "@standardnotes/common": "workspace:*"
@@ -2345,7 +2337,6 @@ __metadata:
     "@lerna-lite/cli": "npm:^1.5.1"
     "@lerna-lite/list": "npm:^1.5.1"
     "@lerna-lite/run": "npm:^1.5.1"
-    "@newrelic/native-metrics": "npm:^9.0.0"
     "@sentry/node": "npm:^7.19.0"
     "@types/jest": "npm:^29.1.1"
     "@types/newrelic": "npm:^7.0.4"
@@ -2366,7 +2357,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@standardnotes/settings@workspace:packages/settings"
   dependencies:
-    "@newrelic/native-metrics": "npm:^9.0.0"
     "@typescript-eslint/eslint-plugin": "npm:^5.30.0"
     eslint-plugin-prettier: "npm:^4.2.1"
     reflect-metadata: "npm:^0.1.13"
@@ -2405,7 +2395,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@standardnotes/syncing-server@workspace:packages/syncing-server"
   dependencies:
-    "@newrelic/native-metrics": "npm:^9.0.0"
     "@newrelic/winston-enricher": "npm:^4.0.0"
     "@sentry/node": "npm:^7.19.0"
     "@standardnotes/common": "workspace:*"
@@ -2502,7 +2491,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@standardnotes/websockets-server@workspace:packages/websockets"
   dependencies:
-    "@newrelic/native-metrics": "npm:^9.0.0"
     "@newrelic/winston-enricher": "npm:^4.0.0"
     "@sentry/node": "npm:^7.19.0"
     "@standardnotes/api": "npm:^1.19.0"
@@ -2541,7 +2529,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@standardnotes/workspace-server@workspace:packages/workspace"
   dependencies:
-    "@newrelic/native-metrics": "npm:^9.0.0"
     "@newrelic/winston-enricher": "npm:^4.0.0"
     "@sentry/node": "npm:^7.19.0"
     "@standardnotes/api": "npm:^1.19.0"

@@ -23,7 +23,6 @@
     "test": "jest spec --coverage"
   },
   "dependencies": {
-    "@newrelic/native-metrics": "^9.0.0",
     "@standardnotes/domain-events": "workspace:*",
     "aws-sdk": "^2.1260.0",
     "ioredis": "^5.2.4",

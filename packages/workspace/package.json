@@ -22,7 +22,6 @@
     "typeorm": "typeorm-ts-node-commonjs"
   },
   "dependencies": {
-    "@newrelic/native-metrics": "^9.0.0",
     "@newrelic/winston-enricher": "^4.0.0",
     "@sentry/node": "^7.19.0",
     "@standardnotes/api": "^1.19.0",

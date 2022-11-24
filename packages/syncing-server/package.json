@@ -25,7 +25,6 @@
     "upgrade:snjs": "yarn ncu -u '@standardnotes/*'"
   },
   "dependencies": {
-    "@newrelic/native-metrics": "^9.0.0",
     "@newrelic/winston-enricher": "^4.0.0",
     "@sentry/node": "^7.19.0",
     "@standardnotes/common": "workspace:*",
