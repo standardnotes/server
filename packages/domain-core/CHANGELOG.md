@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.5.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.4.0...@standardnotes/domain-core@1.5.0) (2022-11-24)
+
+### Features
+
+* **domain-core:** add methods to check role power ([9d90f27](https://github.com/standardnotes/server/commit/9d90f276de8915d91d009909154036ba128687e0))
+
 # [1.4.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.3.0...@standardnotes/domain-core@1.4.0) (2022-11-24)
 
 ### Features
