@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.2.2...@standardnotes/domain-core@1.3.0) (2022-11-24)
+
+### Features
+
+* **domain-core:** add role name value object ([748630e](https://github.com/standardnotes/server/commit/748630e1f1ed1dfae2e743cd2b3d3fd91967088c))
+
 ## [1.2.2](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.2.1...@standardnotes/domain-core@1.2.2) (2022-11-22)
 
 **Note:** Version bump only for package @standardnotes/domain-core
