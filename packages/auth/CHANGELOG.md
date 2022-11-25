@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.60.12](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.60.11...@standardnotes/auth-server@1.60.12) (2022-11-25)
+
+### Bug Fixes
+
+* **auth:** tmp test email campaign black friday 2022 reminder on team only ([25a6796](https://github.com/standardnotes/server/commit/25a6796e636bc30de99001bd16a2a1084b608b6a))
+
 ## [1.60.11](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.60.10...@standardnotes/auth-server@1.60.11) (2022-11-25)
 
 **Note:** Version bump only for package @standardnotes/auth-server
