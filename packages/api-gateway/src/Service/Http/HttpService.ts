@@ -39,6 +39,11 @@ export class HttpService implements HttpServiceInterface {
     endpoint: string,
     payload?: Record<string, unknown> | string,
   ): Promise<void> {
+    if (!this.revisionsServerUrl) {
+      response.status(400).send({ message: 'Revisions Server not configured' })
+
+      return
+    }
     await this.callServer(this.revisionsServerUrl, request, response, endpoint, payload)
   }
 
@@ -66,6 +71,12 @@ export class HttpService implements HttpServiceInterface {
     endpoint: string,
     payload?: Record<string, unknown> | string,
   ): Promise<void> {
+    if (!this.workspaceServerUrl) {
+      response.status(400).send({ message: 'Workspace Server not configured' })
+
+      return
+    }
+
     await this.callServer(this.workspaceServerUrl, request, response, endpoint, payload)
   }
 
