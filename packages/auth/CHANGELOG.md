@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.60.13](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.60.12...@standardnotes/auth-server@1.60.13) (2022-11-25)
+
+### Bug Fixes
+
+* **auth:** bring back streaming all users in an email campaign send out ([8407c3b](https://github.com/standardnotes/server/commit/8407c3b64910c87591a97b856f5b0c0aebc98e51))
+
 ## [1.60.12](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.60.11...@standardnotes/auth-server@1.60.12) (2022-11-25)
 
 ### Bug Fixes
