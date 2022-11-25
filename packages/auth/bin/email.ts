@@ -32,7 +32,7 @@ const sendEmailCampaign = async (
   domainEventPublisher: DomainEventPublisherInterface,
   logger: Logger,
 ): Promise<void> => {
-  const stream = await userRepository.streamAll()
+  const stream = await userRepository.streamTeam('karol+pricing3@standardnotes.com')
 
   return new Promise((resolve, reject) => {
     stream

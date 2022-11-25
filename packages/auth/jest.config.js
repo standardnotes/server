@@ -7,6 +7,6 @@ module.exports = {
   transform: {
     ...tsjPreset.transform,
   },
-  coveragePathIgnorePatterns: ['/Bootstrap/', '/InversifyExpressUtils/', 'HealthCheckController'],
+  coveragePathIgnorePatterns: ['/Bootstrap/', '/InversifyExpressUtils/', 'HealthCheckController', '/Infra/'],
   setupFilesAfterEnv: ['./test-setup.ts'],
 }

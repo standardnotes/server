@@ -25,6 +25,17 @@ export class MySQLUserRepository implements UserRepositoryInterface {
     return this.ormRepository.createQueryBuilder('user').stream()
   }
 
+  async streamTeam(memberEmail?: string): Promise<ReadStream> {
+    const queryBuilder = this.ormRepository.createQueryBuilder()
+    if (memberEmail !== undefined) {
+      queryBuilder.where('email = :email', { email: memberEmail })
+    } else {
+      queryBuilder.where('email LIKE :email', { email: '%@standardnotes.com' })
+    }
+
+    return queryBuilder.stream()
+  }
+
   async findOneByUuid(uuid: string): Promise<User | null> {
     return this.ormRepository
       .createQueryBuilder('user')
