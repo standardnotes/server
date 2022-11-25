@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.46.1](https://github.com/standardnotes/server/compare/@standardnotes/common@1.46.0...@standardnotes/common@1.46.1) (2022-11-25)
+
+### Bug Fixes
+
+* **common:** add black friday 2022 reminder message identifier ([91b76ed](https://github.com/standardnotes/server/commit/91b76edce1c1abfa4e860932d98ce8cd369017c0))
+
 # [1.46.0](https://github.com/standardnotes/server/compare/@standardnotes/common@1.45.0...@standardnotes/common@1.46.0) (2022-11-22)
 
 ### Features
