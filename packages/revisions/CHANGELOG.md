@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.7.0](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.6.0...@standardnotes/revisions-server@1.7.0) (2022-11-28)
+
+### Features
+
+* **revisions:** add handling account deletion requests ([b4e8971](https://github.com/standardnotes/server/commit/b4e8971ad27fd198239f6eb976b8286575373ed6))
+
 # [1.6.0](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.5.0...@standardnotes/revisions-server@1.6.0) (2022-11-28)
 
 ### Features
