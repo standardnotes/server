@@ -209,6 +209,7 @@ export class ContainerConfigLoader {
     const eventHandlers: Map<string, DomainEventHandlerInterface> = new Map([
       ['ITEM_DUMPED', container.get(TYPES.ItemDumpedEventHandler)],
       ['ACCOUNT_DELETION_REQUESTED', container.get(TYPES.AccountDeletionRequestedEventHandler)],
+      ['REVISIONS_COPY_REQUESTED', container.get(TYPES.RevisionsCopyRequestedEventHandler)],
     ])
 
     if (env.get('SQS_QUEUE_URL', true)) {
