@@ -36,6 +36,7 @@ import { ItemDumpedEventHandler } from '../Domain/Handler/ItemDumpedEventHandler
 import { DumpRepositoryInterface } from '../Domain/Dump/DumpRepositoryInterface'
 import { S3DumpRepository } from '../Infra/S3/S3ItemDumpRepository'
 import { FSDumpRepository } from '../Infra/FS/FSDumpRepository'
+import { GetRevision } from '../Domain/UseCase/GetRevision/GetRevision'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -152,11 +153,20 @@ export class ContainerConfigLoader {
     container
       .bind<GetRevisionsMetada>(TYPES.GetRevisionsMetada)
       .toConstantValue(new GetRevisionsMetada(container.get(TYPES.RevisionRepository)))
+    container
+      .bind<GetRevision>(TYPES.GetRevision)
+      .toConstantValue(new GetRevision(container.get(TYPES.RevisionRepository)))
 
     // Controller
     container
       .bind<RevisionsController>(TYPES.RevisionsController)
-      .toConstantValue(new RevisionsController(container.get(TYPES.GetRevisionsMetada), container.get(TYPES.Logger)))
+      .toConstantValue(
+        new RevisionsController(
+          container.get(TYPES.GetRevisionsMetada),
+          container.get(TYPES.GetRevision),
+          container.get(TYPES.Logger),
+        ),
+      )
 
     // Handlers
     container

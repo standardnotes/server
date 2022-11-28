@@ -25,6 +25,7 @@ const TYPES = {
   VERSION: Symbol.for('VERSION'),
   // use cases
   GetRevisionsMetada: Symbol.for('GetRevisionsMetada'),
+  GetRevision: Symbol.for('GetRevision'),
   // Controller
   RevisionsController: Symbol.for('RevisionsController'),
   // Handlers

@@ -13,6 +13,20 @@ export class MySQLRevisionRepository implements RevisionRepositoryInterface {
     private revisionMapper: MapperInterface<Revision, TypeORMRevision>,
   ) {}
 
+  async findOneByUuid(revisionUuid: Uuid, userUuid: Uuid): Promise<Revision | null> {
+    const typeormRevision = await this.ormRepository
+      .createQueryBuilder()
+      .where('uuid = :revisionUuid', { revisionUuid })
+      .andWhere('user_uuid = :userUuid', { userUuid })
+      .getOne()
+
+    if (typeormRevision === null) {
+      return null
+    }
+
+    return this.revisionMapper.toDomain(typeormRevision)
+  }
+
   async save(revision: Revision): Promise<Revision> {
     const typeormRevision = this.revisionMapper.toProjection(revision)
 
