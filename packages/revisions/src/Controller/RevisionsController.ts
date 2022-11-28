@@ -5,11 +5,14 @@ import { GetRevisionsMetada } from '../Domain/UseCase/GetRevisionsMetada/GetRevi
 import { GetRevisionsMetadataRequestParams } from '../Infra/Http/GetRevisionsMetadataRequestParams'
 import { GetRevisionRequestParams } from '../Infra/Http/GetRevisionRequestParams'
 import { GetRevision } from '../Domain/UseCase/GetRevision/GetRevision'
+import { DeleteRevision } from '../Domain/UseCase/DeleteRevision/DeleteRevision'
+import { DeleteRevisionRequestParams } from '../Infra/Http/DeleteRevisionRequestParams'
 
 export class RevisionsController {
   constructor(
     private getRevisionsMetadata: GetRevisionsMetada,
     private doGetRevision: GetRevision,
+    private doDeleteRevision: DeleteRevision,
     private logger: Logger,
   ) {}
 
@@ -39,13 +42,13 @@ export class RevisionsController {
   }
 
   async getRevision(params: GetRevisionRequestParams): Promise<HttpResponse> {
-    const revisionMetadataOrError = await this.doGetRevision.execute({
+    const revisionOrError = await this.doGetRevision.execute({
       revisionUuid: params.revisionUuid,
       userUuid: params.userUuid,
     })
 
-    if (revisionMetadataOrError.isFailed()) {
-      this.logger.warn(revisionMetadataOrError.getError())
+    if (revisionOrError.isFailed()) {
+      this.logger.warn(revisionOrError.getError())
 
       return {
         status: HttpStatusCode.BadRequest,
@@ -59,7 +62,32 @@ export class RevisionsController {
 
     return {
       status: HttpStatusCode.Success,
-      data: { revision: revisionMetadataOrError.getValue() },
+      data: { revision: revisionOrError.getValue() },
+    }
+  }
+
+  async deleteRevision(params: DeleteRevisionRequestParams): Promise<HttpResponse> {
+    const revisionOrError = await this.doDeleteRevision.execute({
+      revisionUuid: params.revisionUuid,
+      userUuid: params.userUuid,
+    })
+
+    if (revisionOrError.isFailed()) {
+      this.logger.warn(revisionOrError.getError())
+
+      return {
+        status: HttpStatusCode.BadRequest,
+        data: {
+          error: {
+            message: 'Could not delete revision.',
+          },
+        },
+      }
+    }
+
+    return {
+      status: HttpStatusCode.Success,
+      data: { message: revisionOrError.getValue() },
     }
   }
 }

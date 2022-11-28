@@ -37,6 +37,7 @@ import { DumpRepositoryInterface } from '../Domain/Dump/DumpRepositoryInterface'
 import { S3DumpRepository } from '../Infra/S3/S3ItemDumpRepository'
 import { FSDumpRepository } from '../Infra/FS/FSDumpRepository'
 import { GetRevision } from '../Domain/UseCase/GetRevision/GetRevision'
+import { DeleteRevision } from '../Domain/UseCase/DeleteRevision/DeleteRevision'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -156,6 +157,9 @@ export class ContainerConfigLoader {
     container
       .bind<GetRevision>(TYPES.GetRevision)
       .toConstantValue(new GetRevision(container.get(TYPES.RevisionRepository)))
+    container
+      .bind<DeleteRevision>(TYPES.DeleteRevision)
+      .toConstantValue(new DeleteRevision(container.get(TYPES.RevisionRepository)))
 
     // Controller
     container
@@ -164,6 +168,7 @@ export class ContainerConfigLoader {
         new RevisionsController(
           container.get(TYPES.GetRevisionsMetada),
           container.get(TYPES.GetRevision),
+          container.get(TYPES.DeleteRevision),
           container.get(TYPES.Logger),
         ),
       )

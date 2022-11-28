@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { BaseHttpController, controller, httpGet, results } from 'inversify-express-utils'
+import { BaseHttpController, controller, httpDelete, httpGet, results } from 'inversify-express-utils'
 import { inject } from 'inversify'
 
 import TYPES from '../../Bootstrap/Types'
@@ -15,6 +15,26 @@ export class InversifyExpressRevisionsController extends BaseHttpController {
   public async getRevisions(req: Request, response: Response): Promise<results.JsonResult> {
     const result = await this.revisionsController.getRevisions({
       itemUuid: req.params.itemUuid,
+      userUuid: response.locals.user.uuid,
+    })
+
+    return this.json(result.data, result.status)
+  }
+
+  @httpGet('/:uuid')
+  public async getRevision(req: Request, response: Response): Promise<results.JsonResult> {
+    const result = await this.revisionsController.getRevision({
+      revisionUuid: req.params.uuid,
+      userUuid: response.locals.user.uuid,
+    })
+
+    return this.json(result.data, result.status)
+  }
+
+  @httpDelete('/:uuid')
+  public async deleteRevision(req: Request, response: Response): Promise<results.JsonResult> {
+    const result = await this.revisionsController.deleteRevision({
+      revisionUuid: req.params.uuid,
       userUuid: response.locals.user.uuid,
     })
 

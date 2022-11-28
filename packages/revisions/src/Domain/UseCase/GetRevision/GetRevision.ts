@@ -16,7 +16,7 @@ export class GetRevision implements UseCaseInterface<Revision> {
 
     const userUuidOrError = Uuid.create(dto.userUuid)
     if (userUuidOrError.isFailed()) {
-      return Result.fail<Revision>(`Could not get revisions: ${userUuidOrError.getError()}`)
+      return Result.fail<Revision>(`Could not get revision: ${userUuidOrError.getError()}`)
     }
     const userUuid = userUuidOrError.getValue()
 
