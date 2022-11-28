@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.5.0](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.4.8...@standardnotes/revisions-server@1.5.0) (2022-11-28)
+
+### Features
+
+* **revisions:** add fetching single revision ([284561d](https://github.com/standardnotes/server/commit/284561d093eaa6d73af888142583ec705ba18f79))
+
 ## [1.4.8](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.4.7...@standardnotes/revisions-server@1.4.8) (2022-11-25)
 
 **Note:** Version bump only for package @standardnotes/revisions-server
