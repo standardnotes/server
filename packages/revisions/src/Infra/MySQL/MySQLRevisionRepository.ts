@@ -13,6 +13,15 @@ export class MySQLRevisionRepository implements RevisionRepositoryInterface {
     private revisionMapper: MapperInterface<Revision, TypeORMRevision>,
   ) {}
 
+  async removeByUserUuid(userUuid: Uuid): Promise<void> {
+    await this.ormRepository
+      .createQueryBuilder()
+      .delete()
+      .from('revisions')
+      .where('user_uuid = :userUuid', { userUuid })
+      .execute()
+  }
+
   async removeOneByUuid(revisionUuid: Uuid, userUuid: Uuid): Promise<void> {
     await this.ormRepository
       .createQueryBuilder()

@@ -38,6 +38,7 @@ import { S3DumpRepository } from '../Infra/S3/S3ItemDumpRepository'
 import { FSDumpRepository } from '../Infra/FS/FSDumpRepository'
 import { GetRevision } from '../Domain/UseCase/GetRevision/GetRevision'
 import { DeleteRevision } from '../Domain/UseCase/DeleteRevision/DeleteRevision'
+import { AccountDeletionRequestedEventHandler } from '../Domain/Handler/AccountDeletionRequestedEventHandler'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -179,6 +180,11 @@ export class ContainerConfigLoader {
       .toConstantValue(
         new ItemDumpedEventHandler(container.get(TYPES.DumpRepository), container.get(TYPES.RevisionRepository)),
       )
+    container
+      .bind<AccountDeletionRequestedEventHandler>(TYPES.AccountDeletionRequestedEventHandler)
+      .toConstantValue(
+        new AccountDeletionRequestedEventHandler(container.get(TYPES.RevisionRepository), container.get(TYPES.Logger)),
+      )
 
     // Services
     container
@@ -192,6 +198,7 @@ export class ContainerConfigLoader {
 
     const eventHandlers: Map<string, DomainEventHandlerInterface> = new Map([
       ['ITEM_DUMPED', container.get(TYPES.ItemDumpedEventHandler)],
+      ['ACCOUNT_DELETION_REQUESTED', container.get(TYPES.AccountDeletionRequestedEventHandler)],
     ])
 
     if (env.get('SQS_QUEUE_URL', true)) {

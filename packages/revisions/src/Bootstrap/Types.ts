@@ -31,6 +31,7 @@ const TYPES = {
   RevisionsController: Symbol.for('RevisionsController'),
   // Handlers
   ItemDumpedEventHandler: Symbol.for('ItemDumpedEventHandler'),
+  AccountDeletionRequestedEventHandler: Symbol.for('AccountDeletionRequestedEventHandler'),
   // Services
   CrossServiceTokenDecoder: Symbol.for('CrossServiceTokenDecoder'),
   DomainEventSubscriberFactory: Symbol.for('DomainEventSubscriberFactory'),
