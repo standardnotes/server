@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.8.0](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.7.1...@standardnotes/revisions-server@1.8.0) (2022-11-28)
+
+### Bug Fixes
+
+* **revisions:** binding for revisions copy request handler ([1c6c6a9](https://github.com/standardnotes/server/commit/1c6c6a9296d91c35699a15b2cb4182e26233eeb2))
+
+### Features
+
+* **revisions:** add copying revisions on duplicated items ([7bb698e](https://github.com/standardnotes/server/commit/7bb698e44222ef128d9642d625e96b7d26ee4dbf))
+
 ## [1.7.1](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.7.0...@standardnotes/revisions-server@1.7.1) (2022-11-28)
 
 ### Bug Fixes

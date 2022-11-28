@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.91.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.90.2...@standardnotes/domain-events@2.91.0) (2022-11-28)
+
+### Features
+
+* **revisions:** add copying revisions on duplicated items ([7bb698e](https://github.com/standardnotes/server/commit/7bb698e44222ef128d9642d625e96b7d26ee4dbf))
+
 ## [2.90.2](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.90.1...@standardnotes/domain-events@2.90.2) (2022-11-25)
 
 **Note:** Version bump only for package @standardnotes/domain-events
