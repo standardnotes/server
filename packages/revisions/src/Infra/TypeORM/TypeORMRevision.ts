@@ -61,7 +61,6 @@ export class TypeORMRevision {
     type: 'date',
     nullable: true,
   })
-  @Index('creation_date')
   declare creationDate: Date
 
   @Column({
@@ -70,7 +69,6 @@ export class TypeORMRevision {
     precision: 6,
     nullable: true,
   })
-  @Index('created_at')
   declare createdAt: Date
 
   @Column({
