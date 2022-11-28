@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.6.0](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.5.0...@standardnotes/revisions-server@1.6.0) (2022-11-28)
+
+### Features
+
+* **revisions:** add deleting revisions ([ac8a69f](https://github.com/standardnotes/server/commit/ac8a69f8d428e3cf8e4df5269db3cb31d9b118d5))
+
 # [1.5.0](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.4.8...@standardnotes/revisions-server@1.5.0) (2022-11-28)
 
 ### Features
