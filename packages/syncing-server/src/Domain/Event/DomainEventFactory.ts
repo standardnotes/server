@@ -10,6 +10,7 @@ import {
   ItemRevisionCreationRequestedEvent,
   ItemsSyncedEvent,
   OneDriveBackupFailedEvent,
+  RevisionsCopyRequestedEvent,
   UserContentSizeRecalculationRequestedEvent,
 } from '@standardnotes/domain-events'
 import { TimerInterface } from '@standardnotes/time'
@@ -20,6 +21,27 @@ import { DomainEventFactoryInterface } from './DomainEventFactoryInterface'
 @injectable()
 export class DomainEventFactory implements DomainEventFactoryInterface {
   constructor(@inject(TYPES.Timer) private timer: TimerInterface) {}
+
+  createRevisionsCopyRequestedEvent(
+    userUuid: string,
+    dto: {
+      originalItemUuid: string
+      newItemUuid: string
+    },
+  ): RevisionsCopyRequestedEvent {
+    return {
+      type: 'REVISIONS_COPY_REQUESTED',
+      createdAt: this.timer.getUTCDate(),
+      meta: {
+        correlation: {
+          userIdentifier: userUuid,
+          userIdentifierType: 'uuid',
+        },
+        origin: DomainEventService.SyncingServer,
+      },
+      payload: dto,
+    }
+  }
 
   createItemDumpedEvent(fileDumpPath: string, userUuid: string): ItemDumpedEvent {
     return {

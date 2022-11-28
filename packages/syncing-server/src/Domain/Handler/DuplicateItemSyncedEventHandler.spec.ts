@@ -1,11 +1,16 @@
 import 'reflect-metadata'
 
-import { DuplicateItemSyncedEvent } from '@standardnotes/domain-events'
+import {
+  DomainEventPublisherInterface,
+  DuplicateItemSyncedEvent,
+  RevisionsCopyRequestedEvent,
+} from '@standardnotes/domain-events'
 import { Logger } from 'winston'
 import { Item } from '../Item/Item'
 import { ItemRepositoryInterface } from '../Item/ItemRepositoryInterface'
 import { DuplicateItemSyncedEventHandler } from './DuplicateItemSyncedEventHandler'
 import { RevisionServiceInterface } from '../Revision/RevisionServiceInterface'
+import { DomainEventFactoryInterface } from '../Event/DomainEventFactoryInterface'
 
 describe('DuplicateItemSyncedEventHandler', () => {
   let itemRepository: ItemRepositoryInterface
@@ -14,8 +19,17 @@ describe('DuplicateItemSyncedEventHandler', () => {
   let duplicateItem: Item
   let originalItem: Item
   let event: DuplicateItemSyncedEvent
+  let domainEventFactory: DomainEventFactoryInterface
+  let domainEventPublisher: DomainEventPublisherInterface
 
-  const createHandler = () => new DuplicateItemSyncedEventHandler(itemRepository, revisionService, logger)
+  const createHandler = () =>
+    new DuplicateItemSyncedEventHandler(
+      itemRepository,
+      revisionService,
+      domainEventFactory,
+      domainEventPublisher,
+      logger,
+    )
 
   beforeEach(() => {
     originalItem = {
@@ -45,6 +59,14 @@ describe('DuplicateItemSyncedEventHandler', () => {
       userUuid: '1-2-3',
       itemUuid: '2-3-4',
     }
+
+    domainEventFactory = {} as jest.Mocked<DomainEventFactoryInterface>
+    domainEventFactory.createRevisionsCopyRequestedEvent = jest
+      .fn()
+      .mockReturnValue({} as jest.Mocked<RevisionsCopyRequestedEvent>)
+
+    domainEventPublisher = {} as jest.Mocked<DomainEventPublisherInterface>
+    domainEventPublisher.publish = jest.fn()
   })
 
   it('should copy revisions from original item to the duplicate item', async () => {

@@ -27,11 +27,13 @@ const TYPES = {
   GetRevisionsMetada: Symbol.for('GetRevisionsMetada'),
   GetRevision: Symbol.for('GetRevision'),
   DeleteRevision: Symbol.for('DeleteRevision'),
+  CopyRevisions: Symbol.for('CopyRevisions'),
   // Controller
   RevisionsController: Symbol.for('RevisionsController'),
   // Handlers
   ItemDumpedEventHandler: Symbol.for('ItemDumpedEventHandler'),
   AccountDeletionRequestedEventHandler: Symbol.for('AccountDeletionRequestedEventHandler'),
+  RevisionsCopyRequestedEventHandler: Symbol.for('RevisionsCopyRequestedEventHandler'),
   // Services
   CrossServiceTokenDecoder: Symbol.for('CrossServiceTokenDecoder'),
   DomainEventSubscriberFactory: Symbol.for('DomainEventSubscriberFactory'),

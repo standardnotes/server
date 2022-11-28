@@ -8,6 +8,7 @@ import {
   ItemRevisionCreationRequestedEvent,
   ItemsSyncedEvent,
   OneDriveBackupFailedEvent,
+  RevisionsCopyRequestedEvent,
   UserContentSizeRecalculationRequestedEvent,
 } from '@standardnotes/domain-events'
 
@@ -35,4 +36,8 @@ export interface DomainEventFactoryInterface {
   createDuplicateItemSyncedEvent(itemUuid: string, userUuid: string): DuplicateItemSyncedEvent
   createItemRevisionCreationRequested(itemUuid: string, userUuid: string): ItemRevisionCreationRequestedEvent
   createItemDumpedEvent(fileDumpPath: string, userUuid: string): ItemDumpedEvent
+  createRevisionsCopyRequestedEvent(
+    userUuid: string,
+    dto: { originalItemUuid: string; newItemUuid: string },
+  ): RevisionsCopyRequestedEvent
 }

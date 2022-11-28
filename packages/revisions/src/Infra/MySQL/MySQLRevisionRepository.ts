@@ -1,7 +1,7 @@
 import { MapperInterface, Uuid } from '@standardnotes/domain-core'
 import { Repository } from 'typeorm'
-import { Revision } from '../../Domain/Revision/Revision'
 
+import { Revision } from '../../Domain/Revision/Revision'
 import { RevisionMetadata } from '../../Domain/Revision/RevisionMetadata'
 import { RevisionRepositoryInterface } from '../../Domain/Revision/RevisionRepositoryInterface'
 import { TypeORMRevision } from '../TypeORM/TypeORMRevision'
@@ -12,6 +12,20 @@ export class MySQLRevisionRepository implements RevisionRepositoryInterface {
     private revisionMetadataMapper: MapperInterface<RevisionMetadata, TypeORMRevision>,
     private revisionMapper: MapperInterface<Revision, TypeORMRevision>,
   ) {}
+
+  async findByItemUuid(itemUuid: Uuid): Promise<Revision[]> {
+    const typeormRevisions = await this.ormRepository
+      .createQueryBuilder()
+      .where('item_uuid = :itemUuid', { itemUuid })
+      .getMany()
+
+    const revisions = []
+    for (const revision of typeormRevisions) {
+      revisions.push(this.revisionMapper.toDomain(revision))
+    }
+
+    return revisions
+  }
 
   async removeByUserUuid(userUuid: Uuid): Promise<void> {
     await this.ormRepository
