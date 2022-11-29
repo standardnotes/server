@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.8.2](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.8.1...@standardnotes/revisions-server@1.8.2) (2022-11-29)
+
+### Bug Fixes
+
+* **revisions:** make user uuid nullable ([fc8f8c5](https://github.com/standardnotes/server/commit/fc8f8c574dbc8901cc4a12986154841d39abcc9b))
+
 ## [1.8.1](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.8.0...@standardnotes/revisions-server@1.8.1) (2022-11-29)
 
 ### Bug Fixes
