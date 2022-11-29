@@ -16,7 +16,7 @@ export class MySQLRevisionRepository implements RevisionRepositoryInterface {
   async findByItemUuid(itemUuid: Uuid): Promise<Revision[]> {
     const typeormRevisions = await this.ormRepository
       .createQueryBuilder()
-      .where('item_uuid = :itemUuid', { itemUuid })
+      .where('item_uuid = :itemUuid', { itemUuid: itemUuid.value })
       .getMany()
 
     const revisions = []
@@ -32,7 +32,7 @@ export class MySQLRevisionRepository implements RevisionRepositoryInterface {
       .createQueryBuilder()
       .delete()
       .from('revisions')
-      .where('user_uuid = :userUuid', { userUuid })
+      .where('user_uuid = :userUuid', { userUuid: userUuid.value })
       .execute()
   }
 
@@ -41,15 +41,18 @@ export class MySQLRevisionRepository implements RevisionRepositoryInterface {
       .createQueryBuilder()
       .delete()
       .from('revisions')
-      .where('uuid = :revisionUuid AND user_uuid = :userUuid', { userUuid, revisionUuid })
+      .where('uuid = :revisionUuid AND user_uuid = :userUuid', {
+        userUuid: userUuid.value,
+        revisionUuid: revisionUuid.value,
+      })
       .execute()
   }
 
   async findOneByUuid(revisionUuid: Uuid, userUuid: Uuid): Promise<Revision | null> {
     const typeormRevision = await this.ormRepository
       .createQueryBuilder()
-      .where('uuid = :revisionUuid', { revisionUuid })
-      .andWhere('user_uuid = :userUuid', { userUuid })
+      .where('uuid = :revisionUuid', { revisionUuid: revisionUuid.value })
+      .andWhere('user_uuid = :userUuid', { userUuid: userUuid.value })
       .getOne()
 
     if (typeormRevision === null) {
@@ -74,8 +77,8 @@ export class MySQLRevisionRepository implements RevisionRepositoryInterface {
       .addSelect('content_type', 'contentType')
       .addSelect('created_at', 'createdAt')
       .addSelect('updated_at', 'updatedAt')
-      .where('item_uuid = :itemUuid', { itemUuid })
-      .andWhere('user_uuid = :userUuid', { userUuid })
+      .where('item_uuid = :itemUuid', { itemUuid: itemUuid.value })
+      .andWhere('user_uuid = :userUuid', { userUuid: userUuid.value })
       .orderBy('created_at', 'DESC')
 
     const simplifiedRevisions = await queryBuilder.getMany()
