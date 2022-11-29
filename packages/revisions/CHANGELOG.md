@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.8.1](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.8.0...@standardnotes/revisions-server@1.8.1) (2022-11-29)
+
+### Bug Fixes
+
+* **revisions:** mysql queries ([b0a994d](https://github.com/standardnotes/server/commit/b0a994d5be3b35f054a14a6e9661232090ec11e5))
+
 # [1.8.0](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.7.1...@standardnotes/revisions-server@1.8.0) (2022-11-28)
 
 ### Bug Fixes
