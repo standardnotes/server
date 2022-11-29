@@ -15,9 +15,11 @@ export class TypeORMRevision {
   @Column({
     name: 'user_uuid',
     length: 36,
+    type: 'varchar',
+    nullable: true,
   })
   @Index('user_uuid')
-  declare userUuid: string
+  declare userUuid: string | null
 
   @Column({
     type: 'mediumtext',
