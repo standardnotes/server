@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.9.0](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.8.2...@standardnotes/revisions-server@1.9.0) (2022-11-30)
+
+### Features
+
+* **revisions:** add updating user uuid on revisions in async processing ([0f67aa4](https://github.com/standardnotes/server/commit/0f67aa4058301dfa92794b90a842966173f71b95))
+
 ## [1.8.2](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.8.1...@standardnotes/revisions-server@1.8.2) (2022-11-29)
 
 ### Bug Fixes

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.92.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.91.0...@standardnotes/domain-events@2.92.0) (2022-11-30)
+
+### Features
+
+* **revisions:** add updating user uuid on revisions in async processing ([0f67aa4](https://github.com/standardnotes/server/commit/0f67aa4058301dfa92794b90a842966173f71b95))
+
 # [2.91.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.90.2...@standardnotes/domain-events@2.91.0) (2022-11-28)
 
 ### Features
