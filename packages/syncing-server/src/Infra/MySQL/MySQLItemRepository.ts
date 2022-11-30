@@ -130,8 +130,12 @@ export class MySQLItemRepository implements ItemRepositoryInterface {
 
   private createFindAllQueryBuilder(query: ItemQuery): SelectQueryBuilder<Item> {
     const queryBuilder = this.ormRepository.createQueryBuilder('item')
+
     queryBuilder.orderBy(`item.${query.sortBy}`, query.sortOrder)
 
+    if (query.selectFields !== undefined) {
+      queryBuilder.select(query.selectFields.map((field) => `item.${field}`))
+    }
     if (query.userUuid !== undefined) {
       queryBuilder.where('item.user_uuid = :userUuid', { userUuid: query.userUuid })
     }
@@ -148,6 +152,9 @@ export class MySQLItemRepository implements ItemRepositoryInterface {
       queryBuilder.andWhere(`item.updated_at_timestamp ${query.syncTimeComparison} :lastSyncTime`, {
         lastSyncTime: query.lastSyncTime,
       })
+    }
+    if (query.createdBefore !== undefined) {
+      queryBuilder.andWhere('item.created_at < :createdAt', { createdAt: query.createdBefore.toISOString() })
     }
     if (query.offset !== undefined) {
       queryBuilder.skip(query.offset)

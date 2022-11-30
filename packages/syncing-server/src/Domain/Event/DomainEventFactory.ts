@@ -11,6 +11,7 @@ import {
   ItemsSyncedEvent,
   OneDriveBackupFailedEvent,
   RevisionsCopyRequestedEvent,
+  RevisionsOwnershipUpdateRequestedEvent,
   UserContentSizeRecalculationRequestedEvent,
 } from '@standardnotes/domain-events'
 import { TimerInterface } from '@standardnotes/time'
@@ -21,6 +22,24 @@ import { DomainEventFactoryInterface } from './DomainEventFactoryInterface'
 @injectable()
 export class DomainEventFactory implements DomainEventFactoryInterface {
   constructor(@inject(TYPES.Timer) private timer: TimerInterface) {}
+
+  createRevisionsOwnershipUpdateRequestedEvent(dto: {
+    userUuid: string
+    itemUuid: string
+  }): RevisionsOwnershipUpdateRequestedEvent {
+    return {
+      type: 'REVISIONS_OWNERSHIP_UPDATE_REQUESTED',
+      createdAt: this.timer.getUTCDate(),
+      meta: {
+        correlation: {
+          userIdentifier: dto.userUuid,
+          userIdentifierType: 'uuid',
+        },
+        origin: DomainEventService.SyncingServer,
+      },
+      payload: dto,
+    }
+  }
 
   createRevisionsCopyRequestedEvent(
     userUuid: string,

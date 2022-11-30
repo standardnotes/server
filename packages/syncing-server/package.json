@@ -22,6 +22,7 @@
     "start": "yarn node dist/bin/server.js",
     "worker": "yarn node dist/bin/worker.js",
     "content-size": "yarn node dist/bin/content.js",
+    "revisions-ownership": "yarn node dist/bin/revisions.js",
     "upgrade:snjs": "yarn ncu -u '@standardnotes/*'"
   },
   "dependencies": {

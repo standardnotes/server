@@ -9,4 +9,6 @@ export type ItemQuery = {
   deleted?: boolean
   offset?: number
   limit?: number
+  createdBefore?: Date
+  selectFields?: string[]
 }
