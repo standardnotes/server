@@ -9,5 +9,6 @@ export interface RevisionRepositoryInterface {
   findOneByUuid(revisionUuid: Uuid, userUuid: Uuid): Promise<Revision | null>
   findByItemUuid(itemUuid: Uuid): Promise<Array<Revision>>
   findMetadataByItemId(itemUuid: Uuid, userUuid: Uuid): Promise<Array<RevisionMetadata>>
+  updateUserUuid(itemUuid: Uuid, userUuid: Uuid): Promise<void>
   save(revision: Revision): Promise<Revision>
 }

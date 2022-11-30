@@ -41,6 +41,7 @@ import { DeleteRevision } from '../Domain/UseCase/DeleteRevision/DeleteRevision'
 import { AccountDeletionRequestedEventHandler } from '../Domain/Handler/AccountDeletionRequestedEventHandler'
 import { RevisionsCopyRequestedEventHandler } from '../Domain/Handler/RevisionsCopyRequestedEventHandler'
 import { CopyRevisions } from '../Domain/UseCase/CopyRevisions/CopyRevisions'
+import { RevisionsOwnershipUpdateRequestedEventHandler } from '../Domain/Handler/RevisionsOwnershipUpdateRequestedEventHandler'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -195,6 +196,9 @@ export class ContainerConfigLoader {
       .toConstantValue(
         new RevisionsCopyRequestedEventHandler(container.get(TYPES.CopyRevisions), container.get(TYPES.Logger)),
       )
+    container
+      .bind<RevisionsOwnershipUpdateRequestedEventHandler>(TYPES.RevisionsOwnershipUpdateRequestedEventHandler)
+      .toConstantValue(new RevisionsOwnershipUpdateRequestedEventHandler(container.get(TYPES.RevisionRepository)))
 
     // Services
     container
@@ -210,6 +214,7 @@ export class ContainerConfigLoader {
       ['ITEM_DUMPED', container.get(TYPES.ItemDumpedEventHandler)],
       ['ACCOUNT_DELETION_REQUESTED', container.get(TYPES.AccountDeletionRequestedEventHandler)],
       ['REVISIONS_COPY_REQUESTED', container.get(TYPES.RevisionsCopyRequestedEventHandler)],
+      ['REVISIONS_OWNERSHIP_UPDATE_REQUESTED', container.get(TYPES.RevisionsOwnershipUpdateRequestedEventHandler)],
     ])
 
     if (env.get('SQS_QUEUE_URL', true)) {

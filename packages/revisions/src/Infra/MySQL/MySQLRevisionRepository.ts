@@ -13,6 +13,17 @@ export class MySQLRevisionRepository implements RevisionRepositoryInterface {
     private revisionMapper: MapperInterface<Revision, TypeORMRevision>,
   ) {}
 
+  async updateUserUuid(itemUuid: Uuid, userUuid: Uuid): Promise<void> {
+    await this.ormRepository
+      .createQueryBuilder()
+      .update()
+      .set({
+        userUuid: userUuid.value,
+      })
+      .where('item_uuid = :itemUuid', { itemUuid: itemUuid.value })
+      .execute()
+  }
+
   async findByItemUuid(itemUuid: Uuid): Promise<Revision[]> {
     const typeormRevisions = await this.ormRepository
       .createQueryBuilder()
