@@ -25,6 +25,7 @@ import { Repository } from 'typeorm'
 import { TypeORMSetting } from '../Infra/TypeORM/TypeORMSetting'
 import { SettingRepositoryInterface } from '../Domain/Setting/SettingRepositoryInterface'
 import { MySQLSettingRepository } from '../Infra/MySQL/MySQLSettingRepository'
+import { SettingsController } from '../Controller/SettingsController'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -102,6 +103,9 @@ export class ContainerConfigLoader {
       .toConstantValue(new MuteAllEmails(container.get(TYPES.SettingRepository)))
 
     // Controller
+    container
+      .bind<SettingsController>(TYPES.SettingsController)
+      .toConstantValue(new SettingsController(container.get(TYPES.MuteAllEmails)))
 
     // Handlers
 
