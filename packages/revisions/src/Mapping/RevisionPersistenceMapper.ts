@@ -1,4 +1,4 @@
-import { MapperInterface, Timestamps, UniqueEntityId, Uuid } from '@standardnotes/domain-core'
+import { MapperInterface, Dates, UniqueEntityId, Uuid } from '@standardnotes/domain-core'
 import { ContentType } from '../Domain/Revision/ContentType'
 import { Revision } from '../Domain/Revision/Revision'
 import { TypeORMRevision } from '../Infra/TypeORM/TypeORMRevision'
@@ -11,11 +11,11 @@ export class RevisionPersistenceMapper implements MapperInterface<Revision, Type
     }
     const contentType = contentTypeOrError.getValue()
 
-    const timestampsOrError = Timestamps.create(projection.createdAt, projection.updatedAt)
-    if (timestampsOrError.isFailed()) {
-      throw new Error(`Could not map typeorm revision to domain revision: ${timestampsOrError.getError()}`)
+    const datesOrError = Dates.create(projection.createdAt, projection.updatedAt)
+    if (datesOrError.isFailed()) {
+      throw new Error(`Could not map typeorm revision to domain revision: ${datesOrError.getError()}`)
     }
-    const timestamps = timestampsOrError.getValue()
+    const dates = datesOrError.getValue()
 
     const itemUuidOrError = Uuid.create(projection.itemUuid)
     if (itemUuidOrError.isFailed()) {
@@ -42,7 +42,7 @@ export class RevisionPersistenceMapper implements MapperInterface<Revision, Type
         itemsKeyId: projection.itemsKeyId,
         itemUuid,
         userUuid,
-        timestamps,
+        dates,
       },
       new UniqueEntityId(projection.uuid),
     )
@@ -59,8 +59,8 @@ export class RevisionPersistenceMapper implements MapperInterface<Revision, Type
     typeormRevision.authHash = domain.props.authHash
     typeormRevision.content = domain.props.content
     typeormRevision.contentType = domain.props.contentType.value
-    typeormRevision.createdAt = domain.props.timestamps.createdAt
-    typeormRevision.updatedAt = domain.props.timestamps.updatedAt
+    typeormRevision.createdAt = domain.props.dates.createdAt
+    typeormRevision.updatedAt = domain.props.dates.updatedAt
     typeormRevision.creationDate = domain.props.creationDate
     typeormRevision.encItemKey = domain.props.encItemKey
     typeormRevision.itemUuid = domain.props.itemUuid.value

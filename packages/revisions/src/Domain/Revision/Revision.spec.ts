@@ -1,4 +1,4 @@
-import { Timestamps, Uuid } from '@standardnotes/domain-core'
+import { Dates, Uuid } from '@standardnotes/domain-core'
 import { ContentType } from './ContentType'
 import { Revision } from './Revision'
 
@@ -13,7 +13,7 @@ describe('Revision', () => {
       encItemKey: 'test',
       authHash: 'test',
       creationDate: new Date(1),
-      timestamps: Timestamps.create(new Date(1), new Date(2)).getValue(),
+      dates: Dates.create(new Date(1), new Date(2)).getValue(),
     })
 
     expect(entityOrError.isFailed()).toBeFalsy()

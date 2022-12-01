@@ -1,4 +1,4 @@
-import { MapperInterface, Timestamps, UniqueEntityId } from '@standardnotes/domain-core'
+import { MapperInterface, Dates, UniqueEntityId } from '@standardnotes/domain-core'
 
 import { ContentType } from '../Domain/Revision/ContentType'
 import { RevisionMetadata } from '../Domain/Revision/RevisionMetadata'
@@ -12,16 +12,16 @@ export class RevisionMetadataPersistenceMapper implements MapperInterface<Revisi
     }
     const contentType = contentTypeOrError.getValue()
 
-    const timestampsOrError = Timestamps.create(projection.createdAt, projection.updatedAt)
-    if (timestampsOrError.isFailed()) {
-      throw new Error(`Could not create timestamps: ${timestampsOrError.getError()}`)
+    const datesOrError = Dates.create(projection.createdAt, projection.updatedAt)
+    if (datesOrError.isFailed()) {
+      throw new Error(`Could not create dates: ${datesOrError.getError()}`)
     }
-    const timestamps = timestampsOrError.getValue()
+    const dates = datesOrError.getValue()
 
     const revisionMetadataOrError = RevisionMetadata.create(
       {
         contentType,
-        timestamps,
+        dates,
       },
       new UniqueEntityId(projection.uuid),
     )

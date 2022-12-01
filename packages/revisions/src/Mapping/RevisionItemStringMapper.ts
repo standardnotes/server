@@ -1,4 +1,4 @@
-import { MapperInterface, Timestamps, Uuid } from '@standardnotes/domain-core'
+import { MapperInterface, Dates, Uuid } from '@standardnotes/domain-core'
 
 import { ContentType } from '../Domain/Revision/ContentType'
 import { Revision } from '../Domain/Revision/Revision'
@@ -34,7 +34,7 @@ export class RevisionItemStringMapper implements MapperInterface<Revision, strin
       itemsKeyId: item.items_key_id,
       encItemKey: item.enc_item_key,
       creationDate: new Date(),
-      timestamps: Timestamps.create(new Date(), new Date()).getValue(),
+      dates: Dates.create(new Date(), new Date()).getValue(),
     })
 
     if (revisionOrError.isFailed()) {

@@ -1,4 +1,4 @@
-import { Timestamps, Uuid } from '@standardnotes/domain-core'
+import { Dates, Uuid } from '@standardnotes/domain-core'
 
 import { ContentType } from './ContentType'
 
@@ -11,5 +11,5 @@ export interface RevisionProps {
   encItemKey: string | null
   authHash: string | null
   creationDate: Date
-  timestamps: Timestamps
+  dates: Dates
 }
