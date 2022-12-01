@@ -4,6 +4,7 @@ const TYPES = {
   Redis: Symbol.for('Redis'),
   SQS: Symbol.for('SQS'),
   // Map
+  SettingPersistenceMapper: Symbol.for('SettingPersistenceMapper'),
   // ORM
   ORMSettingRepository: Symbol.for('ORMSettingRepository'),
   // Repositories

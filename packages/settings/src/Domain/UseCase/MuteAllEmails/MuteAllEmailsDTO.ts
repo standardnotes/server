@@ -1,3 +1,3 @@
 export interface MuteAllEmailsDTO {
-  userUuid: string
+  unsubscribeToken: string
 }

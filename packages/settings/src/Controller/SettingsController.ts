@@ -8,7 +8,7 @@ export class SettingsController {
 
   async muteAllEmails(params: MuteAllEmailsRequestParams): Promise<HttpResponse> {
     const result = await this.doMuteAllEmails.execute({
-      userUuid: params.userUuid,
+      unsubscribeToken: params.unsubscribeToken,
     })
 
     if (result.isFailed()) {

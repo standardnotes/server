@@ -22,6 +22,7 @@ export class SettingName extends ValueObject<SettingNameProps> {
     LogSessionUserAgent: 'LOG_SESSION_USER_AGENT',
     FileUploadBytesLimit: 'FILE_UPLOAD_BYTES_LIMIT',
     FileUploadBytesUsed: 'FILE_UPLOAD_BYTES_USED',
+    EmailUnsubscribeToken: 'EMAIL_UNSUBSCRIBE_TOKEN',
   }
 
   get value(): string {

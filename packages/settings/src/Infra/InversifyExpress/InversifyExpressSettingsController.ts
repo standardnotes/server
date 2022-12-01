@@ -11,10 +11,10 @@ export class InversifyExpressSettingsController extends BaseHttpController {
     super()
   }
 
-  @httpPost('/mute-emails')
+  @httpPost('/mute-emails/:unsubscribeToken')
   public async muteAllEmails(request: Request): Promise<results.JsonResult> {
     const result = await this.settingsController.muteAllEmails({
-      userUuid: request.params.userUuid,
+      unsubscribeToken: request.params.unsubscribeToken,
     })
 
     return this.json(result.data, result.status)

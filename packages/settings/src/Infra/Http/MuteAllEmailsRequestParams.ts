@@ -1,3 +1,3 @@
 export interface MuteAllEmailsRequestParams {
-  userUuid: string
+  unsubscribeToken: string
 }

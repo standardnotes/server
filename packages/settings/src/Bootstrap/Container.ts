@@ -7,6 +7,7 @@ import {
   DomainEventMessageHandlerInterface,
   DomainEventSubscriberFactoryInterface,
 } from '@standardnotes/domain-events'
+import { MapperInterface } from '@standardnotes/domain-core'
 import { TokenDecoderInterface, CrossServiceTokenData, TokenDecoder } from '@standardnotes/security'
 import {
   RedisDomainEventSubscriberFactory,
@@ -26,6 +27,8 @@ import { TypeORMSetting } from '../Infra/TypeORM/TypeORMSetting'
 import { SettingRepositoryInterface } from '../Domain/Setting/SettingRepositoryInterface'
 import { MySQLSettingRepository } from '../Infra/MySQL/MySQLSettingRepository'
 import { SettingsController } from '../Controller/SettingsController'
+import { SettingPersistenceMapper } from '../Mapping/SettingPersistenceMapper'
+import { Setting } from '../Domain/Setting/Setting'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -78,6 +81,9 @@ export class ContainerConfigLoader {
     }
 
     // Map
+    container
+      .bind<MapperInterface<Setting, TypeORMSetting>>(TYPES.SettingPersistenceMapper)
+      .toConstantValue(new SettingPersistenceMapper())
 
     // ORM
     container
@@ -95,7 +101,12 @@ export class ContainerConfigLoader {
     // Repositories
     container
       .bind<SettingRepositoryInterface>(TYPES.SettingRepository)
-      .toConstantValue(new MySQLSettingRepository(container.get(TYPES.ORMSettingRepository)))
+      .toConstantValue(
+        new MySQLSettingRepository(
+          container.get(TYPES.ORMSettingRepository),
+          container.get(TYPES.SettingPersistenceMapper),
+        ),
+      )
 
     // use cases
     container
