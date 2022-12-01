@@ -20,6 +20,11 @@ import { Env } from './Env'
 import TYPES from './Types'
 import { AppDataSource } from './DataSource'
 import { InversifyExpressApiGatewayAuthMiddleware } from '../Infra/InversifyExpress/InversifyExpressApiGatewayAuthMiddleware'
+import { MuteAllEmails } from '../Domain/UseCase/MuteAllEmails/MuteAllEmails'
+import { Repository } from 'typeorm'
+import { TypeORMSetting } from '../Infra/TypeORM/TypeORMSetting'
+import { SettingRepositoryInterface } from '../Domain/Setting/SettingRepositoryInterface'
+import { MySQLSettingRepository } from '../Infra/MySQL/MySQLSettingRepository'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -74,6 +79,9 @@ export class ContainerConfigLoader {
     // Map
 
     // ORM
+    container
+      .bind<Repository<TypeORMSetting>>(TYPES.ORMSettingRepository)
+      .toConstantValue(AppDataSource.getRepository(TypeORMSetting))
 
     // env vars
     container.bind(TYPES.REDIS_URL).toConstantValue(env.get('REDIS_URL'))
@@ -84,8 +92,14 @@ export class ContainerConfigLoader {
     container.bind(TYPES.VERSION).toConstantValue(env.get('VERSION'))
 
     // Repositories
+    container
+      .bind<SettingRepositoryInterface>(TYPES.SettingRepository)
+      .toConstantValue(new MySQLSettingRepository(container.get(TYPES.ORMSettingRepository)))
 
     // use cases
+    container
+      .bind<MuteAllEmails>(TYPES.MuteAllEmails)
+      .toConstantValue(new MuteAllEmails(container.get(TYPES.SettingRepository)))
 
     // Controller
 
