@@ -1,5 +1,4 @@
 import { PermissionName } from '@standardnotes/features'
-import { SubscriptionSettingName } from '@standardnotes/settings'
 import { EncryptionVersion } from '../Encryption/EncryptionVersion'
 import { SettingDescription } from './SettingDescription'
 
@@ -9,5 +8,5 @@ export interface SettingsAssociationServiceInterface {
   getPermissionAssociatedWithSetting(settingName: string): PermissionName | undefined
   getEncryptionVersionForSetting(settingName: string): EncryptionVersion
   getSensitivityForSetting(settingName: string): boolean
-  isSettingMutableByClient(settingName: string | SubscriptionSettingName): boolean
+  isSettingMutableByClient(settingName: string): boolean
 }

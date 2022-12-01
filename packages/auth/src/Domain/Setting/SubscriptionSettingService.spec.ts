@@ -1,6 +1,6 @@
 import 'reflect-metadata'
 
-import { SubscriptionSettingName } from '@standardnotes/settings'
+import { SettingName } from '@standardnotes/domain-core'
 import { Logger } from 'winston'
 import { EncryptionVersion } from '../Encryption/EncryptionVersion'
 
@@ -68,7 +68,7 @@ describe('SubscriptionSettingService', () => {
     subscriptionSettingsAssociationService.getDefaultSettingsAndValuesForSubscriptionName = jest.fn().mockReturnValue(
       new Map([
         [
-          SubscriptionSettingName.FileUploadBytesUsed,
+          SettingName.NAMES.FileUploadBytesUsed,
           {
             value: '0',
             sensitive: 0,
@@ -102,7 +102,7 @@ describe('SubscriptionSettingService', () => {
     subscriptionSettingsAssociationService.getDefaultSettingsAndValuesForSubscriptionName = jest.fn().mockReturnValue(
       new Map([
         [
-          SubscriptionSettingName.FileUploadBytesUsed,
+          SettingName.NAMES.FileUploadBytesUsed,
           {
             value: '0',
             sensitive: 0,
@@ -127,7 +127,7 @@ describe('SubscriptionSettingService', () => {
     subscriptionSettingsAssociationService.getDefaultSettingsAndValuesForSubscriptionName = jest.fn().mockReturnValue(
       new Map([
         [
-          SubscriptionSettingName.FileUploadBytesUsed,
+          SettingName.NAMES.FileUploadBytesUsed,
           {
             value: '0',
             sensitive: 0,
@@ -152,7 +152,7 @@ describe('SubscriptionSettingService', () => {
     subscriptionSettingsAssociationService.getDefaultSettingsAndValuesForSubscriptionName = jest.fn().mockReturnValue(
       new Map([
         [
-          SubscriptionSettingName.FileUploadBytesUsed,
+          SettingName.NAMES.FileUploadBytesUsed,
           {
             value: '0',
             sensitive: 0,
@@ -266,7 +266,7 @@ describe('SubscriptionSettingService', () => {
       await createService().findSubscriptionSettingWithDecryptedValue({
         userSubscriptionUuid: '2-3-4',
         userUuid: '1-2-3',
-        subscriptionSettingName: 'test' as SubscriptionSettingName,
+        subscriptionSettingName: 'test',
       }),
     ).toEqual({
       serverEncryptionVersion: 1,

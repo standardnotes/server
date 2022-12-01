@@ -12,7 +12,6 @@ import { EphemeralSession } from './EphemeralSession'
 import { RevokedSessionRepositoryInterface } from './RevokedSessionRepositoryInterface'
 import { RevokedSession } from './RevokedSession'
 import { SettingServiceInterface } from '../Setting/SettingServiceInterface'
-import { LogSessionUserAgentOption } from '@standardnotes/settings'
 import { Setting } from '../Setting/Setting'
 import { CryptoNode } from '@standardnotes/sncrypto-node'
 
@@ -171,7 +170,7 @@ describe('SessionService', () => {
     user.uuid = '123'
 
     settingService.findSettingWithDecryptedValue = jest.fn().mockReturnValue({
-      value: LogSessionUserAgentOption.Disabled,
+      value: 'disabled',
     } as jest.Mocked<Setting>)
 
     const sessionPayload = await createService().createNewSessionForUser({

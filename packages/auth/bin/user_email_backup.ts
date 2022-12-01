@@ -12,7 +12,7 @@ import { Env } from '../src/Bootstrap/Env'
 import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
 import { DomainEventFactoryInterface } from '../src/Domain/Event/DomainEventFactoryInterface'
 import { SettingRepositoryInterface } from '../src/Domain/Setting/SettingRepositoryInterface'
-import { MuteFailedBackupsEmailsOption, SettingName } from '@standardnotes/settings'
+import { SettingName } from '@standardnotes/domain-core'
 import { RoleServiceInterface } from '../src/Domain/Role/RoleServiceInterface'
 import { PermissionName } from '@standardnotes/features'
 import { UserRepositoryInterface } from '../src/Domain/User/UserRepositoryInterface'
@@ -29,7 +29,7 @@ const requestBackups = async (
 ): Promise<void> => {
   const permissionName = PermissionName.DailyEmailBackup
   const muteEmailsSettingName = SettingName.NAMES.MuteFailedBackupsEmails
-  const muteEmailsSettingValue = MuteFailedBackupsEmailsOption.Muted
+  const muteEmailsSettingValue = 'muted'
 
   if (!backupEmail) {
     throw new Error('Could not trigger email backup for user - missing email parameter')

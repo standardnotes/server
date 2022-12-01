@@ -1,15 +1,5 @@
 import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
-import { EmailLevel } from '@standardnotes/domain-core'
-import {
-  DropboxBackupFrequency,
-  EmailBackupFrequency,
-  GoogleDriveBackupFrequency,
-  LogSessionUserAgentOption,
-  MuteFailedBackupsEmailsOption,
-  MuteFailedCloudBackupsEmailsOption,
-  OneDriveBackupFrequency,
-  SettingName,
-} from '@standardnotes/settings'
+import { EmailLevel, SettingName } from '@standardnotes/domain-core'
 import { inject, injectable } from 'inversify'
 import { Logger } from 'winston'
 import TYPES from '../../Bootstrap/Types'
@@ -34,11 +24,7 @@ export class SettingInterpreter implements SettingInterpreterInterface {
     SettingName.NAMES.OneDriveBackupFrequency,
   ]
 
-  private readonly cloudBackupFrequencyDisabledValues = [
-    DropboxBackupFrequency.Disabled,
-    GoogleDriveBackupFrequency.Disabled,
-    OneDriveBackupFrequency.Disabled,
-  ]
+  private readonly cloudBackupFrequencyDisabledValues = ['disabled']
 
   private readonly emailSettingToSubscriptionRejectionLevelMap: Map<SettingName, string> = new Map([
     [SettingName.MuteFailedBackupsEmails, EmailLevel.LEVELS.FailedEmailBackup],
@@ -81,7 +67,7 @@ export class SettingInterpreter implements SettingInterpreterInterface {
       userUuid,
     )
     if (muteFailedEmailsBackupSetting !== null) {
-      userHasEmailsMuted = muteFailedEmailsBackupSetting.value === MuteFailedBackupsEmailsOption.Muted
+      userHasEmailsMuted = muteFailedEmailsBackupSetting.value === 'muted'
       muteEmailsSettingUuid = muteFailedEmailsBackupSetting.uuid
     }
 
@@ -100,23 +86,19 @@ export class SettingInterpreter implements SettingInterpreterInterface {
   }
 
   private isEnablingEmailBackupSetting(setting: Setting): boolean {
-    return setting.name === SettingName.NAMES.EmailBackupFrequency && setting.value !== EmailBackupFrequency.Disabled
+    return setting.name === SettingName.NAMES.EmailBackupFrequency && setting.value !== 'disabled'
   }
 
   private isEnablingCloudBackupSetting(setting: Setting): boolean {
     return (
       (this.cloudBackupFrequencySettings.includes(setting.name) ||
         this.cloudBackupTokenSettings.includes(setting.name)) &&
-      !this.cloudBackupFrequencyDisabledValues.includes(
-        setting.value as DropboxBackupFrequency | OneDriveBackupFrequency | GoogleDriveBackupFrequency,
-      )
+      !this.cloudBackupFrequencyDisabledValues.includes(setting.value as string)
     )
   }
 
   private isDisablingSessionUserAgentLogging(setting: Setting): boolean {
-    return (
-      SettingName.NAMES.LogSessionUserAgent === setting.name && LogSessionUserAgentOption.Disabled === setting.value
-    )
+    return SettingName.NAMES.LogSessionUserAgent === setting.name && 'disabled' === setting.value
   }
 
   private async triggerEmailSubscriptionChange(
@@ -186,7 +168,7 @@ export class SettingInterpreter implements SettingInterpreterInterface {
       userUuid,
     )
     if (muteFailedCloudBackupSetting !== null) {
-      userHasEmailsMuted = muteFailedCloudBackupSetting.value === MuteFailedCloudBackupsEmailsOption.Muted
+      userHasEmailsMuted = muteFailedCloudBackupSetting.value === 'muted'
       muteEmailsSettingUuid = muteFailedCloudBackupSetting.uuid
     }
 

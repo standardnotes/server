@@ -1,5 +1,5 @@
 import Redis, { Cluster } from 'ioredis'
-import { SettingName } from '@standardnotes/settings'
+import { SettingName } from '@standardnotes/domain-core'
 import { MigrationInterface, QueryRunner } from 'typeorm'
 
 import { Setting } from '../src/Domain/Setting/Setting'

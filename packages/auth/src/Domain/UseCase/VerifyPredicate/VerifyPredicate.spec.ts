@@ -8,7 +8,6 @@ import { UserSubscription } from '../../Subscription/UserSubscription'
 import { UserSubscriptionRepositoryInterface } from '../../Subscription/UserSubscriptionRepositoryInterface'
 
 import { VerifyPredicate } from './VerifyPredicate'
-import { EmailBackupFrequency } from '@standardnotes/settings'
 
 describe('VerifyPredicate', () => {
   let settingRepository: SettingRepositoryInterface
@@ -30,7 +29,7 @@ describe('VerifyPredicate', () => {
   })
 
   it('should tell that a user has enabled email backups', async () => {
-    setting = { value: EmailBackupFrequency.Weekly } as jest.Mocked<Setting>
+    setting = { value: 'weekly' } as jest.Mocked<Setting>
     settingRepository.findOneByNameAndUserUuid = jest.fn().mockReturnValue(setting)
 
     expect(
@@ -44,7 +43,7 @@ describe('VerifyPredicate', () => {
   })
 
   it('should tell that a user has disabled email backups', async () => {
-    setting = { value: EmailBackupFrequency.Disabled } as jest.Mocked<Setting>
+    setting = { value: 'disabled' } as jest.Mocked<Setting>
     settingRepository.findOneByNameAndUserUuid = jest.fn().mockReturnValue(setting)
 
     expect(

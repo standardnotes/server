@@ -1,4 +1,5 @@
-import { Result, ValueObject } from '@standardnotes/domain-core'
+import { Result } from '../Core/Result'
+import { ValueObject } from '../Core/ValueObject'
 
 import { SettingNameProps } from './SettingNameProps'
 
@@ -19,6 +20,8 @@ export class SettingName extends ValueObject<SettingNameProps> {
     MuteMarketingEmails: 'MUTE_MARKETING_EMAILS',
     ListedAuthorSecrets: 'LISTED_AUTHOR_SECRETS',
     LogSessionUserAgent: 'LOG_SESSION_USER_AGENT',
+    FileUploadBytesLimit: 'FILE_UPLOAD_BYTES_LIMIT',
+    FileUploadBytesUsed: 'FILE_UPLOAD_BYTES_USED',
   }
 
   get value(): string {

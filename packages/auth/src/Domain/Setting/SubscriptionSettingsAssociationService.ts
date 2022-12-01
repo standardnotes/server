@@ -1,6 +1,6 @@
 import { RoleName, SubscriptionName } from '@standardnotes/common'
 import { PermissionName } from '@standardnotes/features'
-import { SubscriptionSettingName } from '@standardnotes/settings'
+import { SettingName } from '@standardnotes/domain-core'
 import { inject, injectable } from 'inversify'
 
 import TYPES from '../../Bootstrap/Types'
@@ -19,15 +19,12 @@ export class SubscriptionSettingsAssociationService implements SubscriptionSetti
     @inject(TYPES.RoleRepository) private roleRepository: RoleRepositoryInterface,
   ) {}
 
-  private readonly settingsToSubscriptionNameMap = new Map<
-    SubscriptionName,
-    Map<SubscriptionSettingName, SettingDescription>
-  >([
+  private readonly settingsToSubscriptionNameMap = new Map<SubscriptionName, Map<string, SettingDescription>>([
     [
       SubscriptionName.PlusPlan,
       new Map([
         [
-          SubscriptionSettingName.FileUploadBytesUsed,
+          SettingName.NAMES.FileUploadBytesUsed,
           { sensitive: false, serverEncryptionVersion: EncryptionVersion.Unencrypted, value: '0', replaceable: false },
         ],
       ]),
@@ -36,7 +33,7 @@ export class SubscriptionSettingsAssociationService implements SubscriptionSetti
       SubscriptionName.ProPlan,
       new Map([
         [
-          SubscriptionSettingName.FileUploadBytesUsed,
+          SettingName.NAMES.FileUploadBytesUsed,
           { sensitive: false, serverEncryptionVersion: EncryptionVersion.Unencrypted, value: '0', replaceable: false },
         ],
       ]),
@@ -45,14 +42,14 @@ export class SubscriptionSettingsAssociationService implements SubscriptionSetti
 
   async getDefaultSettingsAndValuesForSubscriptionName(
     subscriptionName: SubscriptionName,
-  ): Promise<Map<SubscriptionSettingName, SettingDescription> | undefined> {
+  ): Promise<Map<string, SettingDescription> | undefined> {
     const defaultSettings = this.settingsToSubscriptionNameMap.get(subscriptionName)
 
     if (defaultSettings === undefined) {
       return undefined
     }
 
-    defaultSettings.set(SubscriptionSettingName.FileUploadBytesLimit, {
+    defaultSettings.set(SettingName.NAMES.FileUploadBytesLimit, {
       sensitive: false,
       serverEncryptionVersion: EncryptionVersion.Unencrypted,
       value: (await this.getFileUploadLimit(subscriptionName)).toString(),

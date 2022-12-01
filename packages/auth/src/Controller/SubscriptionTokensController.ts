@@ -1,6 +1,6 @@
 import { CrossServiceTokenData, TokenEncoderInterface } from '@standardnotes/security'
 import { ErrorTag, RoleName } from '@standardnotes/common'
-import { SettingName } from '@standardnotes/settings'
+import { SettingName } from '@standardnotes/domain-core'
 import { Request, Response } from 'express'
 import { inject } from 'inversify'
 import {

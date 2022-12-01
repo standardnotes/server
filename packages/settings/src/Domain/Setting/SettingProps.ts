@@ -1,6 +1,4 @@
-import { EncryptionVersion, Timestamps, Uuid } from '@standardnotes/domain-core'
-
-import { SettingName } from './SettingName'
+import { EncryptionVersion, SettingName, Timestamps, Uuid } from '@standardnotes/domain-core'
 
 export interface SettingProps {
   userUuid: Uuid

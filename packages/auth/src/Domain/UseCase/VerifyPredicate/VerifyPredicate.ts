@@ -1,6 +1,6 @@
 import { Uuid } from '@standardnotes/common'
 import { PredicateName, PredicateVerificationResult } from '@standardnotes/predicates'
-import { EmailBackupFrequency, SettingName } from '@standardnotes/settings'
+import { SettingName } from '@standardnotes/domain-core'
 import { inject, injectable } from 'inversify'
 
 import TYPES from '../../../Bootstrap/Types'
@@ -45,7 +45,7 @@ export class VerifyPredicate implements UseCaseInterface {
       userUuid,
     )
 
-    if (setting === null || setting.value === EmailBackupFrequency.Disabled) {
+    if (setting === null || setting.value === 'disabled') {
       return false
     }
 

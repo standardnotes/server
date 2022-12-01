@@ -13,7 +13,7 @@ import { SimpleSetting } from '../../Setting/SimpleSetting'
 import { User } from '../../User/User'
 import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'
 import { UpdateSetting } from './UpdateSetting'
-import { SettingName } from '@standardnotes/settings'
+import { SettingName } from '@standardnotes/domain-core'
 
 describe('UpdateSetting', () => {
   let settingService: SettingServiceInterface

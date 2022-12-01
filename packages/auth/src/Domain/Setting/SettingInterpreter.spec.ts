@@ -5,13 +5,8 @@ import {
   MuteEmailsSettingChangedEvent,
   UserDisabledSessionUserAgentLoggingEvent,
 } from '@standardnotes/domain-events'
-import {
-  EmailBackupFrequency,
-  LogSessionUserAgentOption,
-  MuteMarketingEmailsOption,
-  OneDriveBackupFrequency,
-  SettingName,
-} from '@standardnotes/settings'
+import { MuteMarketingEmailsOption } from '@standardnotes/settings'
+import { SettingName } from '@standardnotes/domain-core'
 import 'reflect-metadata'
 import { Logger } from 'winston'
 import { DomainEventFactoryInterface } from '../Event/DomainEventFactoryInterface'
@@ -72,10 +67,10 @@ describe('SettingInterpreter', () => {
   it('should trigger session cleanup if user is disabling session user agent logging', async () => {
     const setting = {
       name: SettingName.NAMES.LogSessionUserAgent,
-      value: LogSessionUserAgentOption.Disabled,
+      value: 'disabled',
     } as jest.Mocked<Setting>
 
-    await createInterpreter().interpretSettingUpdated(setting, user, LogSessionUserAgentOption.Disabled)
+    await createInterpreter().interpretSettingUpdated(setting, user, 'disabled')
 
     expect(domainEventPublisher.publish).toHaveBeenCalled()
     expect(domainEventFactory.createUserDisabledSessionUserAgentLoggingEvent).toHaveBeenCalledWith({
@@ -87,10 +82,10 @@ describe('SettingInterpreter', () => {
   it('should trigger backup if email backup setting is created - emails not muted', async () => {
     const setting = {
       name: SettingName.NAMES.EmailBackupFrequency,
-      value: EmailBackupFrequency.Daily,
+      value: 'daily',
     } as jest.Mocked<Setting>
 
-    await createInterpreter().interpretSettingUpdated(setting, user, EmailBackupFrequency.Daily)
+    await createInterpreter().interpretSettingUpdated(setting, user, 'daily')
 
     expect(domainEventPublisher.publish).toHaveBeenCalled()
     expect(domainEventFactory.createEmailBackupRequestedEvent).toHaveBeenCalledWith('4-5-6', '', false)
@@ -99,7 +94,7 @@ describe('SettingInterpreter', () => {
   it('should trigger backup if email backup setting is created - emails muted', async () => {
     const setting = {
       name: SettingName.NAMES.EmailBackupFrequency,
-      value: EmailBackupFrequency.Daily,
+      value: 'daily',
     } as jest.Mocked<Setting>
     settingRepository.findOneByNameAndUserUuid = jest.fn().mockReturnValue({
       name: SettingName.NAMES.MuteFailedBackupsEmails,
@@ -107,7 +102,7 @@ describe('SettingInterpreter', () => {
       value: 'muted',
     } as jest.Mocked<Setting>)
 
-    await createInterpreter().interpretSettingUpdated(setting, user, EmailBackupFrequency.Daily)
+    await createInterpreter().interpretSettingUpdated(setting, user, 'daily')
 
     expect(domainEventPublisher.publish).toHaveBeenCalled()
     expect(domainEventFactory.createEmailBackupRequestedEvent).toHaveBeenCalledWith('4-5-6', '6-7-8', true)
@@ -116,11 +111,11 @@ describe('SettingInterpreter', () => {
   it('should not trigger backup if email backup setting is disabled', async () => {
     const setting = {
       name: SettingName.NAMES.EmailBackupFrequency,
-      value: EmailBackupFrequency.Disabled,
+      value: 'disabled',
     } as jest.Mocked<Setting>
     settingRepository.findOneByNameAndUserUuid = jest.fn().mockReturnValue(null)
 
-    await createInterpreter().interpretSettingUpdated(setting, user, EmailBackupFrequency.Disabled)
+    await createInterpreter().interpretSettingUpdated(setting, user, 'disabled')
 
     expect(domainEventPublisher.publish).not.toHaveBeenCalled()
     expect(domainEventFactory.createEmailBackupRequestedEvent).not.toHaveBeenCalled()
@@ -259,11 +254,11 @@ describe('SettingInterpreter', () => {
     const setting = {
       name: SettingName.NAMES.OneDriveBackupFrequency,
       serverEncryptionVersion: 0,
-      value: OneDriveBackupFrequency.Disabled,
+      value: 'disabled',
       sensitive: false,
     } as jest.Mocked<Setting>
 
-    await createInterpreter().interpretSettingUpdated(setting, user, OneDriveBackupFrequency.Disabled)
+    await createInterpreter().interpretSettingUpdated(setting, user, 'disabled')
 
     expect(domainEventPublisher.publish).not.toHaveBeenCalled()
     expect(domainEventFactory.createCloudBackupRequestedEvent).not.toHaveBeenCalled()

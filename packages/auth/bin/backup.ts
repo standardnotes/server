@@ -3,20 +3,19 @@ import 'reflect-metadata'
 import 'newrelic'
 
 import { Stream } from 'stream'
-
 import { Logger } from 'winston'
 import * as dayjs from 'dayjs'
 import * as utc from 'dayjs/plugin/utc'
+import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
+import { SettingName } from '@standardnotes/domain-core'
+import { PermissionName } from '@standardnotes/features'
 
 import { ContainerConfigLoader } from '../src/Bootstrap/Container'
 import TYPES from '../src/Bootstrap/Types'
 import { Env } from '../src/Bootstrap/Env'
-import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
 import { DomainEventFactoryInterface } from '../src/Domain/Event/DomainEventFactoryInterface'
 import { SettingRepositoryInterface } from '../src/Domain/Setting/SettingRepositoryInterface'
-import { MuteFailedBackupsEmailsOption, MuteFailedCloudBackupsEmailsOption, SettingName } from '@standardnotes/settings'
 import { RoleServiceInterface } from '../src/Domain/Role/RoleServiceInterface'
-import { PermissionName } from '@standardnotes/features'
 import { SettingServiceInterface } from '../src/Domain/Setting/SettingServiceInterface'
 
 const inputArgs = process.argv.slice(2)
@@ -40,27 +39,27 @@ const requestBackups = async (
       settingName = SettingName.NAMES.EmailBackupFrequency
       permissionName = PermissionName.DailyEmailBackup
       muteEmailsSettingName = SettingName.NAMES.MuteFailedBackupsEmails
-      muteEmailsSettingValue = MuteFailedBackupsEmailsOption.Muted
+      muteEmailsSettingValue = 'muted'
       break
     case 'dropbox':
       settingName = SettingName.NAMES.DropboxBackupFrequency
       permissionName = PermissionName.DailyDropboxBackup
       muteEmailsSettingName = SettingName.NAMES.MuteFailedCloudBackupsEmails
-      muteEmailsSettingValue = MuteFailedCloudBackupsEmailsOption.Muted
+      muteEmailsSettingValue = 'muted'
       providerTokenSettingName = SettingName.NAMES.DropboxBackupToken
       break
     case 'one_drive':
       settingName = SettingName.NAMES.OneDriveBackupFrequency
       permissionName = PermissionName.DailyOneDriveBackup
       muteEmailsSettingName = SettingName.NAMES.MuteFailedCloudBackupsEmails
-      muteEmailsSettingValue = MuteFailedCloudBackupsEmailsOption.Muted
+      muteEmailsSettingValue = 'muted'
       providerTokenSettingName = SettingName.NAMES.OneDriveBackupToken
       break
     case 'google_drive':
       settingName = SettingName.NAMES.GoogleDriveBackupFrequency
       permissionName = PermissionName.DailyGDriveBackup
       muteEmailsSettingName = SettingName.NAMES.MuteFailedCloudBackupsEmails
-      muteEmailsSettingValue = MuteFailedCloudBackupsEmailsOption.Muted
+      muteEmailsSettingValue = 'muted'
       providerTokenSettingName = SettingName.NAMES.GoogleDriveBackupToken
       break
     default:

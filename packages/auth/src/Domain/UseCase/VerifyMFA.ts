@@ -1,6 +1,6 @@
 import * as crypto from 'crypto'
 import { ErrorTag } from '@standardnotes/common'
-import { SettingName } from '@standardnotes/settings'
+import { SettingName } from '@standardnotes/domain-core'
 import { v4 as uuidv4 } from 'uuid'
 import { inject, injectable } from 'inversify'
 import { authenticator } from 'otplib'

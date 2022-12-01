@@ -30,6 +30,9 @@ export * from './Encryption/EncryptionVersionProps'
 
 export * from './Mapping/MapperInterface'
 
+export * from './Setting/SettingName'
+export * from './Setting/SettingNameProps'
+
 export * from './Subscription/SubscriptionPlanName'
 export * from './Subscription/SubscriptionPlanNameProps'
 

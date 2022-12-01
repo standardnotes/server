@@ -1,6 +1,6 @@
 import 'reflect-metadata'
 
-import { SettingName } from '@standardnotes/settings'
+import { SettingName } from '@standardnotes/domain-core'
 import { PermissionName } from '@standardnotes/features'
 
 import { SettingsAssociationService } from './SettingsAssociationService'

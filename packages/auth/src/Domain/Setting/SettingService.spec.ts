@@ -1,6 +1,6 @@
 import 'reflect-metadata'
 
-import { LogSessionUserAgentOption, MuteSignInEmailsOption, SettingName } from '@standardnotes/settings'
+import { SettingName } from '@standardnotes/domain-core'
 import { Logger } from 'winston'
 import { EncryptionVersion } from '../Encryption/EncryptionVersion'
 import { User } from '../User/User'
@@ -56,7 +56,7 @@ describe('SettingService', () => {
         [
           SettingName.NAMES.MuteSignInEmails,
           {
-            value: MuteSignInEmailsOption.NotMuted,
+            value: 'not_muted',
             sensitive: 0,
             serverEncryptionVersion: EncryptionVersion.Unencrypted,
           },
@@ -71,7 +71,7 @@ describe('SettingService', () => {
           {
             sensitive: false,
             serverEncryptionVersion: EncryptionVersion.Unencrypted,
-            value: LogSessionUserAgentOption.Disabled,
+            value: 'disabled',
           },
         ],
       ]),

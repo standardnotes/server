@@ -1,4 +1,4 @@
-import { SettingName } from '@standardnotes/settings'
+import { SettingName } from '@standardnotes/domain-core'
 import { Request } from 'express'
 import { inject } from 'inversify'
 import {

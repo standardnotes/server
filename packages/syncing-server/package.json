@@ -35,7 +35,6 @@
     "@standardnotes/payloads": "^1.5.1",
     "@standardnotes/responses": "^1.6.39",
     "@standardnotes/security": "workspace:*",
-    "@standardnotes/settings": "workspace:*",
     "@standardnotes/time": "workspace:*",
     "aws-sdk": "^2.1260.0",
     "axios": "^1.1.3",

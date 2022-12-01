@@ -1,9 +1,9 @@
 import 'reflect-metadata'
 
 import { AxiosInstance } from 'axios'
+import { SettingName } from '@standardnotes/domain-core'
 
 import { AuthHttpService } from './AuthHttpService'
-import { SettingName } from '@standardnotes/settings'
 
 describe('AuthHttpService', () => {
   let httpClient: AxiosInstance

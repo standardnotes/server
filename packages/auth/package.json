@@ -41,7 +41,6 @@
     "@standardnotes/predicates": "workspace:*",
     "@standardnotes/responses": "^1.6.39",
     "@standardnotes/security": "workspace:*",
-    "@standardnotes/settings": "workspace:*",
     "@standardnotes/sncrypto-common": "^1.9.0",
     "@standardnotes/sncrypto-node": "workspace:*",
     "@standardnotes/time": "workspace:*",

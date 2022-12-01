@@ -9,7 +9,7 @@ import { SettingProjector } from '../../../Projection/SettingProjector'
 import { Logger } from 'winston'
 import { SettingServiceInterface } from '../../Setting/SettingServiceInterface'
 import { User } from '../../User/User'
-import { SettingName } from '@standardnotes/settings'
+import { SettingName } from '@standardnotes/domain-core'
 import { RoleServiceInterface } from '../../Role/RoleServiceInterface'
 import { SettingsAssociationServiceInterface } from '../../Setting/SettingsAssociationServiceInterface'
 

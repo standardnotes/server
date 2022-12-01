@@ -1,7 +1,7 @@
 import 'reflect-metadata'
 
 import { RoleName, SubscriptionName } from '@standardnotes/common'
-import { SubscriptionSettingName } from '@standardnotes/settings'
+import { SettingName } from '@standardnotes/domain-core'
 
 import { PermissionName } from '@standardnotes/features'
 import { EncryptionVersion } from '../Encryption/EncryptionVersion'
@@ -50,14 +50,11 @@ describe('SubscriptionSettingsAssociationService', () => {
 
     const flatSettings = [
       ...(
-        settings as Map<
-          SubscriptionSettingName,
-          { value: string; sensitive: boolean; serverEncryptionVersion: EncryptionVersion }
-        >
+        settings as Map<string, { value: string; sensitive: boolean; serverEncryptionVersion: EncryptionVersion }>
       ).keys(),
     ]
     expect(flatSettings).toEqual(['FILE_UPLOAD_BYTES_USED', 'FILE_UPLOAD_BYTES_LIMIT'])
-    expect(settings?.get(SubscriptionSettingName.FileUploadBytesLimit)).toEqual({
+    expect(settings?.get(SettingName.NAMES.FileUploadBytesLimit)).toEqual({
       sensitive: false,
       serverEncryptionVersion: 0,
       value: '107374182400',
@@ -78,14 +75,11 @@ describe('SubscriptionSettingsAssociationService', () => {
 
     const flatSettings = [
       ...(
-        settings as Map<
-          SubscriptionSettingName,
-          { value: string; sensitive: boolean; serverEncryptionVersion: EncryptionVersion }
-        >
+        settings as Map<string, { value: string; sensitive: boolean; serverEncryptionVersion: EncryptionVersion }>
       ).keys(),
     ]
     expect(flatSettings).toEqual(['FILE_UPLOAD_BYTES_USED', 'FILE_UPLOAD_BYTES_LIMIT'])
-    expect(settings?.get(SubscriptionSettingName.FileUploadBytesLimit)).toEqual({
+    expect(settings?.get(SettingName.NAMES.FileUploadBytesLimit)).toEqual({
       sensitive: false,
       serverEncryptionVersion: 0,
       value: '104857600',

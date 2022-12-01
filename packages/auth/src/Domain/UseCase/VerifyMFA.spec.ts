@@ -6,7 +6,7 @@ import { UserRepositoryInterface } from '../User/UserRepositoryInterface'
 import { VerifyMFA } from './VerifyMFA'
 import { Setting } from '../Setting/Setting'
 import { SettingServiceInterface } from '../Setting/SettingServiceInterface'
-import { SettingName } from '@standardnotes/settings'
+import { SettingName } from '@standardnotes/domain-core'
 import { SelectorInterface } from '@standardnotes/security'
 import { LockRepositoryInterface } from '../User/LockRepositoryInterface'
 

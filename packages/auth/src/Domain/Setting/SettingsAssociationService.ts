@@ -1,10 +1,5 @@
 import { PermissionName } from '@standardnotes/features'
-import {
-  LogSessionUserAgentOption,
-  MuteMarketingEmailsOption,
-  MuteSignInEmailsOption,
-  SettingName,
-} from '@standardnotes/settings'
+import { SettingName } from '@standardnotes/domain-core'
 import { injectable } from 'inversify'
 
 import { EncryptionVersion } from '../Encryption/EncryptionVersion'
@@ -51,7 +46,7 @@ export class SettingsAssociationService implements SettingsAssociationServiceInt
       {
         sensitive: false,
         serverEncryptionVersion: EncryptionVersion.Unencrypted,
-        value: MuteSignInEmailsOption.NotMuted,
+        value: 'not_muted',
         replaceable: false,
       },
     ],
@@ -60,7 +55,7 @@ export class SettingsAssociationService implements SettingsAssociationServiceInt
       {
         sensitive: false,
         serverEncryptionVersion: EncryptionVersion.Unencrypted,
-        value: MuteMarketingEmailsOption.NotMuted,
+        value: 'not_muted',
         replaceable: false,
       },
     ],
@@ -69,7 +64,7 @@ export class SettingsAssociationService implements SettingsAssociationServiceInt
       {
         sensitive: false,
         serverEncryptionVersion: EncryptionVersion.Unencrypted,
-        value: LogSessionUserAgentOption.Enabled,
+        value: 'enabled',
         replaceable: false,
       },
     ],
@@ -81,7 +76,7 @@ export class SettingsAssociationService implements SettingsAssociationServiceInt
       {
         sensitive: false,
         serverEncryptionVersion: EncryptionVersion.Unencrypted,
-        value: LogSessionUserAgentOption.Disabled,
+        value: 'disabled',
         replaceable: false,
       },
     ],

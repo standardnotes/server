@@ -16,7 +16,7 @@ import { EphemeralSession } from './EphemeralSession'
 import { RevokedSession } from './RevokedSession'
 import { RevokedSessionRepositoryInterface } from './RevokedSessionRepositoryInterface'
 import { SettingServiceInterface } from '../Setting/SettingServiceInterface'
-import { LogSessionUserAgentOption, SettingName } from '@standardnotes/settings'
+import { SettingName } from '@standardnotes/domain-core'
 import { SessionBody } from '@standardnotes/responses'
 import { Uuid } from '@standardnotes/common'
 import { CryptoNode } from '@standardnotes/sncrypto-node'
@@ -299,6 +299,6 @@ export class SessionService implements SessionServiceInterface {
       return true
     }
 
-    return loggingSetting.value === LogSessionUserAgentOption.Enabled
+    return loggingSetting.value === 'enabled'
   }
 }

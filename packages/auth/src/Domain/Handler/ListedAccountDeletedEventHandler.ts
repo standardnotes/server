@@ -1,5 +1,5 @@
 import { DomainEventHandlerInterface, ListedAccountDeletedEvent } from '@standardnotes/domain-events'
-import { ListedAuthorSecretsData, SettingName } from '@standardnotes/settings'
+import { SettingName } from '@standardnotes/domain-core'
 import { inject, injectable } from 'inversify'
 import { Logger } from 'winston'
 
@@ -33,9 +33,9 @@ export class ListedAccountDeletedEventHandler implements DomainEventHandlerInter
       return
     }
 
-    const existingSecrets: ListedAuthorSecretsData = JSON.parse(listedAuthorSecretsSetting.value as string)
+    const existingSecrets = JSON.parse(listedAuthorSecretsSetting.value as string)
     const filteredSecrets = existingSecrets.filter(
-      (secret) =>
+      (secret: Record<string, unknown>) =>
         secret.authorId !== event.payload.userId ||
         (secret.authorId === event.payload.userId && secret.hostUrl !== event.payload.hostUrl),
     )

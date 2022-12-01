@@ -1,6 +1,6 @@
 import 'reflect-metadata'
 
-import { SubscriptionSettingName } from '@standardnotes/settings'
+import { SettingName } from '@standardnotes/domain-core'
 
 import { SubscriptionSettingProjector } from '../../../Projection/SubscriptionSettingProjector'
 import { SubscriptionSetting } from '../../Setting/SubscriptionSetting'
@@ -54,7 +54,7 @@ describe('GetSubscriptionSetting', () => {
     expect(
       await createUseCase().execute({
         userUuid: '1-2-3',
-        subscriptionSettingName: SubscriptionSettingName.FileUploadBytesUsed,
+        subscriptionSettingName: SettingName.NAMES.FileUploadBytesUsed,
       }),
     ).toEqual({
       success: true,
@@ -70,7 +70,7 @@ describe('GetSubscriptionSetting', () => {
     expect(
       await createUseCase().execute({
         userUuid: '1-2-3',
-        subscriptionSettingName: SubscriptionSettingName.FileUploadBytesLimit,
+        subscriptionSettingName: SettingName.NAMES.FileUploadBytesLimit,
       }),
     ).toEqual({
       success: false,
@@ -86,7 +86,7 @@ describe('GetSubscriptionSetting', () => {
     expect(
       await createUseCase().execute({
         userUuid: '1-2-3',
-        subscriptionSettingName: SubscriptionSettingName.FileUploadBytesLimit,
+        subscriptionSettingName: SettingName.NAMES.FileUploadBytesLimit,
       }),
     ).toEqual({
       success: false,
@@ -99,7 +99,7 @@ describe('GetSubscriptionSetting', () => {
   it('should not retrieve a sensitive setting for user', async () => {
     subscriptionSetting = {
       sensitive: true,
-      name: SubscriptionSettingName.FileUploadBytesLimit,
+      name: SettingName.NAMES.FileUploadBytesLimit,
     } as jest.Mocked<SubscriptionSetting>
 
     subscriptionSettingService.findSubscriptionSettingWithDecryptedValue = jest
@@ -109,7 +109,7 @@ describe('GetSubscriptionSetting', () => {
     expect(
       await createUseCase().execute({
         userUuid: '1-2-3',
-        subscriptionSettingName: SubscriptionSettingName.FileUploadBytesLimit,
+        subscriptionSettingName: SettingName.NAMES.FileUploadBytesLimit,
       }),
     ).toEqual({
       success: true,
@@ -120,7 +120,7 @@ describe('GetSubscriptionSetting', () => {
   it('should retrieve a sensitive setting for user if explicitly told to', async () => {
     subscriptionSetting = {
       sensitive: true,
-      name: SubscriptionSettingName.FileUploadBytesLimit,
+      name: SettingName.NAMES.FileUploadBytesLimit,
     } as jest.Mocked<SubscriptionSetting>
 
     subscriptionSettingService.findSubscriptionSettingWithDecryptedValue = jest
@@ -130,7 +130,7 @@ describe('GetSubscriptionSetting', () => {
     expect(
       await createUseCase().execute({
         userUuid: '1-2-3',
-        subscriptionSettingName: SubscriptionSettingName.FileUploadBytesLimit,
+        subscriptionSettingName: SettingName.NAMES.FileUploadBytesLimit,
         allowSensitiveRetrieval: true,
       }),
     ).toEqual({

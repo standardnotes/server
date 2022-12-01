@@ -1,5 +1,5 @@
 import { DomainEventHandlerInterface, ListedAccountCreatedEvent } from '@standardnotes/domain-events'
-import { ListedAuthorSecretsData, SettingName } from '@standardnotes/settings'
+import { SettingName } from '@standardnotes/domain-core'
 import { inject, injectable } from 'inversify'
 import { Logger } from 'winston'
 
@@ -25,14 +25,14 @@ export class ListedAccountCreatedEventHandler implements DomainEventHandlerInter
 
     const newSecret = { authorId: event.payload.userId, secret: event.payload.secret, hostUrl: event.payload.hostUrl }
 
-    let authSecrets: ListedAuthorSecretsData = [newSecret]
+    let authSecrets = [newSecret]
 
     const listedAuthorSecretsSetting = await this.settingService.findSettingWithDecryptedValue({
       settingName: SettingName.NAMES.ListedAuthorSecrets,
       userUuid: user.uuid,
     })
     if (listedAuthorSecretsSetting !== null) {
-      const existingSecrets: ListedAuthorSecretsData = JSON.parse(listedAuthorSecretsSetting.value as string)
+      const existingSecrets = JSON.parse(listedAuthorSecretsSetting.value as string)
       existingSecrets.push(newSecret)
       authSecrets = existingSecrets
     }

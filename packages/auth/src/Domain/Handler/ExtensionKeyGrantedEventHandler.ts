@@ -1,5 +1,5 @@
 import { DomainEventHandlerInterface, ExtensionKeyGrantedEvent } from '@standardnotes/domain-events'
-import { SettingName } from '@standardnotes/settings'
+import { SettingName } from '@standardnotes/domain-core'
 import { OfflineFeaturesTokenData } from '@standardnotes/security'
 import { ContentDecoderInterface } from '@standardnotes/common'
 import { inject, injectable } from 'inversify'
