@@ -1,8 +1,8 @@
-import { Timestamps } from './Timestamps'
+import { Dates } from './Dates'
 
-describe('Timestamps', () => {
+describe('Dates', () => {
   it('should create a value object', () => {
-    const valueOrError = Timestamps.create(new Date(1), new Date(2))
+    const valueOrError = Dates.create(new Date(1), new Date(2))
 
     expect(valueOrError.isFailed()).toBeFalsy()
     expect(valueOrError.getValue().createdAt).toEqual(new Date(1))
@@ -10,11 +10,11 @@ describe('Timestamps', () => {
   })
 
   it('should not create an invalid value object', () => {
-    let valueOrError = Timestamps.create(null as unknown as Date, '2' as unknown as Date)
+    let valueOrError = Dates.create(null as unknown as Date, '2' as unknown as Date)
 
     expect(valueOrError.isFailed()).toBeTruthy()
 
-    valueOrError = Timestamps.create(new Date(2), '2' as unknown as Date)
+    valueOrError = Dates.create(new Date(2), '2' as unknown as Date)
 
     expect(valueOrError.isFailed()).toBeTruthy()
   })

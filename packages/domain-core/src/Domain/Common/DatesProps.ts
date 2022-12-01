@@ -1,4 +1,4 @@
-export interface TimestampsProps {
+export interface DatesProps {
   createdAt: Date
   updatedAt: Date
 }
