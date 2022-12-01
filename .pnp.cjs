@@ -2582,6 +2582,20 @@ const RAW_RUNTIME_STATE =
           ["reflect-metadata", "npm:0.1.13"]\
         ],\
         "linkType": "HARD"\
+      }],\
+      ["npm:1.20.13", {\
+        "packageLocation": "./.yarn/cache/@standardnotes-api-npm-1.20.13-3efe52d749-67bdb982ec.zip/node_modules/@standardnotes/api/",\
+        "packageDependencies": [\
+          ["@standardnotes/api", "npm:1.20.13"],\
+          ["@standardnotes/common", "workspace:packages/common"],\
+          ["@standardnotes/encryption", "npm:1.19.21"],\
+          ["@standardnotes/models", "npm:1.38.0"],\
+          ["@standardnotes/responses", "npm:1.12.9"],\
+          ["@standardnotes/security", "workspace:packages/security"],\
+          ["@standardnotes/utils", "npm:1.13.0"],\
+          ["reflect-metadata", "npm:0.1.13"]\
+        ],\
+        "linkType": "HARD"\
       }]\
     ]],\
     ["@standardnotes/api-gateway", [\
@@ -2811,6 +2825,19 @@ const RAW_RUNTIME_STATE =
           ["reflect-metadata", "npm:0.1.13"]\
         ],\
         "linkType": "HARD"\
+      }],\
+      ["npm:1.19.21", {\
+        "packageLocation": "./.yarn/cache/@standardnotes-encryption-npm-1.19.21-dfa10f00e6-c8c2c27bfe.zip/node_modules/@standardnotes/encryption/",\
+        "packageDependencies": [\
+          ["@standardnotes/encryption", "npm:1.19.21"],\
+          ["@standardnotes/common", "workspace:packages/common"],\
+          ["@standardnotes/models", "npm:1.38.0"],\
+          ["@standardnotes/responses", "npm:1.12.9"],\
+          ["@standardnotes/sncrypto-common", "npm:1.13.3"],\
+          ["@standardnotes/utils", "npm:1.13.0"],\
+          ["reflect-metadata", "npm:0.1.13"]\
+        ],\
+        "linkType": "HARD"\
       }]\
     ]],\
     ["@standardnotes/event-store", [\
@@ -2860,6 +2887,17 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/@standardnotes-features-npm-1.54.0-15f8cf20f0-7647e7506e.zip/node_modules/@standardnotes/features/",\
         "packageDependencies": [\
           ["@standardnotes/features", "npm:1.54.0"],\
+          ["@standardnotes/auth", "npm:3.19.4"],\
+          ["@standardnotes/common", "workspace:packages/common"],\
+          ["@standardnotes/security", "workspace:packages/security"],\
+          ["reflect-metadata", "npm:0.1.13"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["npm:1.55.3", {\
+        "packageLocation": "./.yarn/cache/@standardnotes-features-npm-1.55.3-c124505183-b39fe2d49b.zip/node_modules/@standardnotes/features/",\
+        "packageDependencies": [\
+          ["@standardnotes/features", "npm:1.55.3"],\
           ["@standardnotes/auth", "npm:3.19.4"],\
           ["@standardnotes/common", "workspace:packages/common"],\
           ["@standardnotes/security", "workspace:packages/security"],\
@@ -2947,6 +2985,13 @@ const RAW_RUNTIME_STATE =
           ["reflect-metadata", "npm:0.1.13"]\
         ],\
         "linkType": "HARD"\
+      }],\
+      ["npm:1.38.0", {\
+        "packageLocation": "./.yarn/cache/@standardnotes-models-npm-1.38.0-108f602f56-2dc2ac957e.zip/node_modules/@standardnotes/models/",\
+        "packageDependencies": [\
+          ["@standardnotes/models", "npm:1.38.0"]\
+        ],\
+        "linkType": "HARD"\
       }]\
     ]],\
     ["@standardnotes/payloads", [\
@@ -2996,6 +3041,17 @@ const RAW_RUNTIME_STATE =
           ["@standardnotes/responses", "npm:1.12.0"],\
           ["@standardnotes/common", "workspace:packages/common"],\
           ["@standardnotes/features", "npm:1.54.0"],\
+          ["@standardnotes/security", "workspace:packages/security"],\
+          ["reflect-metadata", "npm:0.1.13"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["npm:1.12.9", {\
+        "packageLocation": "./.yarn/cache/@standardnotes-responses-npm-1.12.9-280dc75972-353fe1ca6d.zip/node_modules/@standardnotes/responses/",\
+        "packageDependencies": [\
+          ["@standardnotes/responses", "npm:1.12.9"],\
+          ["@standardnotes/common", "workspace:packages/common"],\
+          ["@standardnotes/features", "npm:1.55.3"],\
           ["@standardnotes/security", "workspace:packages/security"],\
           ["reflect-metadata", "npm:0.1.13"]\
         ],\
@@ -3138,6 +3194,7 @@ const RAW_RUNTIME_STATE =
           ["@standardnotes/settings-server", "workspace:packages/settings"],\
           ["@newrelic/winston-enricher", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:4.0.0"],\
           ["@sentry/node", "npm:7.19.0"],\
+          ["@standardnotes/api", "npm:1.20.13"],\
           ["@standardnotes/domain-core", "workspace:packages/domain-core"],\
           ["@standardnotes/domain-events", "workspace:packages/domain-events"],\
           ["@standardnotes/domain-events-infra", "workspace:packages/domain-events-infra"],\
@@ -3179,6 +3236,14 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/@standardnotes-sncrypto-common-npm-1.13.0-18cb5f8eb9-348a9f88f5.zip/node_modules/@standardnotes/sncrypto-common/",\
         "packageDependencies": [\
           ["@standardnotes/sncrypto-common", "npm:1.13.0"],\
+          ["reflect-metadata", "npm:0.1.13"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["npm:1.13.3", {\
+        "packageLocation": "./.yarn/cache/@standardnotes-sncrypto-common-npm-1.13.3-97ef3850ce-a73af90962.zip/node_modules/@standardnotes/sncrypto-common/",\
+        "packageDependencies": [\
+          ["@standardnotes/sncrypto-common", "npm:1.13.3"],\
           ["reflect-metadata", "npm:0.1.13"]\
         ],\
         "linkType": "HARD"\
@@ -3297,6 +3362,17 @@ const RAW_RUNTIME_STATE =
           ["@standardnotes/utils", "npm:1.11.0"],\
           ["@standardnotes/common", "workspace:packages/common"],\
           ["dompurify", "npm:2.4.0"],\
+          ["lodash", "npm:4.17.21"],\
+          ["reflect-metadata", "npm:0.1.13"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["npm:1.13.0", {\
+        "packageLocation": "./.yarn/cache/@standardnotes-utils-npm-1.13.0-28780a59f0-1578e8adb7.zip/node_modules/@standardnotes/utils/",\
+        "packageDependencies": [\
+          ["@standardnotes/utils", "npm:1.13.0"],\
+          ["@standardnotes/common", "workspace:packages/common"],\
+          ["dompurify", "npm:2.4.1"],\
           ["lodash", "npm:4.17.21"],\
           ["reflect-metadata", "npm:0.1.13"]\
         ],\
@@ -6397,6 +6473,13 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/dompurify-npm-2.4.0-0ffecf22ef-bd570792df.zip/node_modules/dompurify/",\
         "packageDependencies": [\
           ["dompurify", "npm:2.4.0"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["npm:2.4.1", {\
+        "packageLocation": "./.yarn/cache/dompurify-npm-2.4.1-1c79f22057-ddc0633356.zip/node_modules/dompurify/",\
+        "packageDependencies": [\
+          ["dompurify", "npm:2.4.1"]\
         ],\
         "linkType": "HARD"\
       }]\

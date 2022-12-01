@@ -5,6 +5,7 @@ import 'newrelic'
 import * as Sentry from '@sentry/node'
 
 import '../src/Infra/InversifyExpress/InversifyExpressHealthCheckController'
+import '../src/Infra/InversifyExpress/InversifyExpressSettingsController'
 
 import * as cors from 'cors'
 import { urlencoded, json, Request, Response, NextFunction, RequestHandler, ErrorRequestHandler } from 'express'
