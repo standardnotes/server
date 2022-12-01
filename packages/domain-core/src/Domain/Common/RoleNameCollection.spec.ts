@@ -35,6 +35,19 @@ describe('RoleNameCollection', () => {
     expect(valueOrError.getValue().equals(roles2)).toBeFalsy()
   })
 
+  it('should tell if collections are not equal', () => {
+    const roles1 = [RoleName.create('PRO_USER').getValue(), RoleName.create('PLUS_USER').getValue()]
+
+    const roles2 = RoleNameCollection.create([
+      RoleName.create('PRO_USER').getValue(),
+      RoleName.create('PLUS_USER').getValue(),
+      RoleName.create('CORE_USER').getValue(),
+    ]).getValue()
+
+    const valueOrError = RoleNameCollection.create(roles1)
+    expect(valueOrError.getValue().equals(roles2)).toBeFalsy()
+  })
+
   it('should tell if collections are equal', () => {
     const roles1 = [
       RoleName.create(RoleName.NAMES.ProUser).getValue(),

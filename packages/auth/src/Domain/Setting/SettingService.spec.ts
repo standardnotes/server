@@ -54,7 +54,7 @@ describe('SettingService', () => {
     settingsAssociationService.getDefaultSettingsAndValuesForNewUser = jest.fn().mockReturnValue(
       new Map([
         [
-          SettingName.MuteSignInEmails,
+          SettingName.NAMES.MuteSignInEmails,
           {
             value: MuteSignInEmailsOption.NotMuted,
             sensitive: 0,
@@ -67,7 +67,7 @@ describe('SettingService', () => {
     settingsAssociationService.getDefaultSettingsAndValuesForNewVaultAccount = jest.fn().mockReturnValue(
       new Map([
         [
-          SettingName.LogSessionUserAgent,
+          SettingName.NAMES.LogSessionUserAgent,
           {
             sensitive: false,
             serverEncryptionVersion: EncryptionVersion.Unencrypted,
@@ -173,9 +173,7 @@ describe('SettingService', () => {
 
     settingRepository.findLastByNameAndUserUuid = jest.fn().mockReturnValue(setting)
 
-    expect(
-      await createService().findSettingWithDecryptedValue({ userUuid: '1-2-3', settingName: 'test' as SettingName }),
-    ).toEqual({
+    expect(await createService().findSettingWithDecryptedValue({ userUuid: '1-2-3', settingName: 'test' })).toEqual({
       serverEncryptionVersion: 1,
       value: 'decrypted',
     })

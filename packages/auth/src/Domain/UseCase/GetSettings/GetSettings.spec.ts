@@ -31,7 +31,7 @@ describe('GetSettings', () => {
     } as jest.Mocked<Setting>
 
     mfaSetting = {
-      name: SettingName.MfaSecret,
+      name: SettingName.NAMES.MfaSecret,
       updatedAt: 122,
       sensitive: true,
     } as jest.Mocked<Setting>

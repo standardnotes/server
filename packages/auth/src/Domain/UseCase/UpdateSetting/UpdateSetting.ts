@@ -25,7 +25,7 @@ export class UpdateSetting implements UseCaseInterface {
   ) {}
 
   async execute(dto: UpdateSettingDto): Promise<UpdateSettingResponse> {
-    if (!Object.values(SettingName).includes(dto.props.name as SettingName)) {
+    if (!Object.values(SettingName.NAMES).includes(dto.props.name)) {
       return {
         success: false,
         error: {
@@ -51,7 +51,7 @@ export class UpdateSetting implements UseCaseInterface {
       }
     }
 
-    if (!(await this.userHasPermissionToUpdateSetting(user, props.name as SettingName))) {
+    if (!(await this.userHasPermissionToUpdateSetting(user, props.name))) {
       return {
         success: false,
         error: {
@@ -61,10 +61,8 @@ export class UpdateSetting implements UseCaseInterface {
       }
     }
 
-    props.serverEncryptionVersion = this.settingsAssociationService.getEncryptionVersionForSetting(
-      props.name as SettingName,
-    )
-    props.sensitive = this.settingsAssociationService.getSensitivityForSetting(props.name as SettingName)
+    props.serverEncryptionVersion = this.settingsAssociationService.getEncryptionVersionForSetting(props.name)
+    props.sensitive = this.settingsAssociationService.getSensitivityForSetting(props.name)
 
     const response = await this.settingService.createOrReplace({
       user,
@@ -91,8 +89,8 @@ export class UpdateSetting implements UseCaseInterface {
     throw new Error(`Unrecognized status: ${exhaustiveCheck}!`)
   }
 
-  private async userHasPermissionToUpdateSetting(user: User, settingName: SettingName): Promise<boolean> {
-    const settingIsMutableByClient = await this.settingsAssociationService.isSettingMutableByClient(settingName)
+  private async userHasPermissionToUpdateSetting(user: User, settingName: string): Promise<boolean> {
+    const settingIsMutableByClient = this.settingsAssociationService.isSettingMutableByClient(settingName)
     if (!settingIsMutableByClient) {
       return false
     }

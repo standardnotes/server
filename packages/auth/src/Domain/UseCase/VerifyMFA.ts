@@ -50,7 +50,7 @@ export class VerifyMFA implements UseCaseInterface {
 
       const mfaSecret = await this.settingService.findSettingWithDecryptedValue({
         userUuid: user.uuid,
-        settingName: SettingName.MfaSecret,
+        settingName: SettingName.NAMES.MfaSecret,
       })
       if (mfaSecret === null || mfaSecret.value === null) {
         return {

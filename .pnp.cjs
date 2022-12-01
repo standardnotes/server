@@ -3137,6 +3137,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./packages/settings/",\
         "packageDependencies": [\
           ["@standardnotes/settings", "workspace:packages/settings"],\
+          ["@standardnotes/domain-core", "workspace:packages/domain-core"],\
           ["@typescript-eslint/eslint-plugin", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:5.30.5"],\
           ["eslint-plugin-prettier", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:4.2.1"],\
           ["reflect-metadata", "npm:0.1.13"],\

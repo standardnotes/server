@@ -1,4 +1,3 @@
-import { SettingName } from '@standardnotes/settings'
 import { ReadStream } from 'fs'
 import { inject, injectable } from 'inversify'
 import { Repository } from 'typeorm'
@@ -18,7 +17,7 @@ export class MySQLSettingRepository implements SettingRepositoryInterface {
     return this.ormRepository.save(setting)
   }
 
-  async findOneByUuidAndNames(uuid: string, names: SettingName[]): Promise<Setting | null> {
+  async findOneByUuidAndNames(uuid: string, names: string[]): Promise<Setting | null> {
     return this.ormRepository
       .createQueryBuilder('setting')
       .where('setting.uuid = :uuid AND setting.name IN (:...names)', {
@@ -28,7 +27,7 @@ export class MySQLSettingRepository implements SettingRepositoryInterface {
       .getOne()
   }
 
-  async streamAllByNameAndValue(name: SettingName, value: string): Promise<ReadStream> {
+  async streamAllByNameAndValue(name: string, value: string): Promise<ReadStream> {
     return this.ormRepository
       .createQueryBuilder('setting')
       .where('setting.name = :name AND setting.value = :value', {

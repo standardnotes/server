@@ -1,4 +1,3 @@
-import { SettingName } from '@standardnotes/settings'
 import { inject, injectable } from 'inversify'
 import { Logger } from 'winston'
 import TYPES from '../../Bootstrap/Types'
@@ -74,7 +73,7 @@ export class SettingService implements SettingServiceInterface {
 
     const existing = await this.findSettingWithDecryptedValue({
       userUuid: user.uuid,
-      settingName: props.name as SettingName,
+      settingName: props.name,
       settingUuid: props.uuid,
     })
 

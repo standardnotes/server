@@ -34,7 +34,7 @@ export class moveMfaItemsToUserSettings1627638504691 implements MigrationInterfa
 
       const setting = new Setting()
       setting.uuid = item['uuid']
-      setting.name = SettingName.MfaSecret
+      setting.name = SettingName.NAMES.MfaSecret
       setting.value = item['content']
       if (item['deleted']) {
         setting.value = null

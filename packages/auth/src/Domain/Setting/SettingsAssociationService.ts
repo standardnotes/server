@@ -15,39 +15,39 @@ import { SettingsAssociationServiceInterface } from './SettingsAssociationServic
 @injectable()
 export class SettingsAssociationService implements SettingsAssociationServiceInterface {
   private readonly UNENCRYPTED_SETTINGS = [
-    SettingName.EmailBackupFrequency,
-    SettingName.MuteFailedBackupsEmails,
-    SettingName.MuteFailedCloudBackupsEmails,
-    SettingName.MuteSignInEmails,
-    SettingName.MuteMarketingEmails,
-    SettingName.DropboxBackupFrequency,
-    SettingName.GoogleDriveBackupFrequency,
-    SettingName.OneDriveBackupFrequency,
-    SettingName.LogSessionUserAgent,
+    SettingName.NAMES.EmailBackupFrequency,
+    SettingName.NAMES.MuteFailedBackupsEmails,
+    SettingName.NAMES.MuteFailedCloudBackupsEmails,
+    SettingName.NAMES.MuteSignInEmails,
+    SettingName.NAMES.MuteMarketingEmails,
+    SettingName.NAMES.DropboxBackupFrequency,
+    SettingName.NAMES.GoogleDriveBackupFrequency,
+    SettingName.NAMES.OneDriveBackupFrequency,
+    SettingName.NAMES.LogSessionUserAgent,
   ]
 
   private readonly UNSENSITIVE_SETTINGS = [
-    SettingName.DropboxBackupFrequency,
-    SettingName.GoogleDriveBackupFrequency,
-    SettingName.OneDriveBackupFrequency,
-    SettingName.EmailBackupFrequency,
-    SettingName.MuteFailedBackupsEmails,
-    SettingName.MuteFailedCloudBackupsEmails,
-    SettingName.MuteSignInEmails,
-    SettingName.MuteMarketingEmails,
-    SettingName.ListedAuthorSecrets,
-    SettingName.LogSessionUserAgent,
+    SettingName.NAMES.DropboxBackupFrequency,
+    SettingName.NAMES.GoogleDriveBackupFrequency,
+    SettingName.NAMES.OneDriveBackupFrequency,
+    SettingName.NAMES.EmailBackupFrequency,
+    SettingName.NAMES.MuteFailedBackupsEmails,
+    SettingName.NAMES.MuteFailedCloudBackupsEmails,
+    SettingName.NAMES.MuteSignInEmails,
+    SettingName.NAMES.MuteMarketingEmails,
+    SettingName.NAMES.ListedAuthorSecrets,
+    SettingName.NAMES.LogSessionUserAgent,
   ]
 
-  private readonly CLIENT_IMMUTABLE_SETTINGS = [SettingName.ListedAuthorSecrets]
+  private readonly CLIENT_IMMUTABLE_SETTINGS = [SettingName.NAMES.ListedAuthorSecrets]
 
-  private readonly permissionsAssociatedWithSettings = new Map<SettingName, PermissionName>([
-    [SettingName.EmailBackupFrequency, PermissionName.DailyEmailBackup],
+  private readonly permissionsAssociatedWithSettings = new Map<string, PermissionName>([
+    [SettingName.NAMES.EmailBackupFrequency, PermissionName.DailyEmailBackup],
   ])
 
-  private readonly defaultSettings = new Map<SettingName, SettingDescription>([
+  private readonly defaultSettings = new Map<string, SettingDescription>([
     [
-      SettingName.MuteSignInEmails,
+      SettingName.NAMES.MuteSignInEmails,
       {
         sensitive: false,
         serverEncryptionVersion: EncryptionVersion.Unencrypted,
@@ -56,7 +56,7 @@ export class SettingsAssociationService implements SettingsAssociationServiceInt
       },
     ],
     [
-      SettingName.MuteMarketingEmails,
+      SettingName.NAMES.MuteMarketingEmails,
       {
         sensitive: false,
         serverEncryptionVersion: EncryptionVersion.Unencrypted,
@@ -65,7 +65,7 @@ export class SettingsAssociationService implements SettingsAssociationServiceInt
       },
     ],
     [
-      SettingName.LogSessionUserAgent,
+      SettingName.NAMES.LogSessionUserAgent,
       {
         sensitive: false,
         serverEncryptionVersion: EncryptionVersion.Unencrypted,
@@ -75,9 +75,9 @@ export class SettingsAssociationService implements SettingsAssociationServiceInt
     ],
   ])
 
-  private readonly vaultAccountDefaultSettingsOverwrites = new Map<SettingName, SettingDescription>([
+  private readonly vaultAccountDefaultSettingsOverwrites = new Map<string, SettingDescription>([
     [
-      SettingName.LogSessionUserAgent,
+      SettingName.NAMES.LogSessionUserAgent,
       {
         sensitive: false,
         serverEncryptionVersion: EncryptionVersion.Unencrypted,
@@ -87,7 +87,7 @@ export class SettingsAssociationService implements SettingsAssociationServiceInt
     ],
   ])
 
-  isSettingMutableByClient(settingName: SettingName): boolean {
+  isSettingMutableByClient(settingName: string): boolean {
     if (this.CLIENT_IMMUTABLE_SETTINGS.includes(settingName)) {
       return false
     }
@@ -95,7 +95,7 @@ export class SettingsAssociationService implements SettingsAssociationServiceInt
     return true
   }
 
-  getSensitivityForSetting(settingName: SettingName): boolean {
+  getSensitivityForSetting(settingName: string): boolean {
     if (this.UNSENSITIVE_SETTINGS.includes(settingName)) {
       return false
     }
@@ -103,7 +103,7 @@ export class SettingsAssociationService implements SettingsAssociationServiceInt
     return true
   }
 
-  getEncryptionVersionForSetting(settingName: SettingName): EncryptionVersion {
+  getEncryptionVersionForSetting(settingName: string): EncryptionVersion {
     if (this.UNENCRYPTED_SETTINGS.includes(settingName)) {
       return EncryptionVersion.Unencrypted
     }
@@ -111,7 +111,7 @@ export class SettingsAssociationService implements SettingsAssociationServiceInt
     return EncryptionVersion.Default
   }
 
-  getPermissionAssociatedWithSetting(settingName: SettingName): PermissionName | undefined {
+  getPermissionAssociatedWithSetting(settingName: string): PermissionName | undefined {
     if (!this.permissionsAssociatedWithSettings.has(settingName)) {
       return undefined
     }
@@ -119,11 +119,11 @@ export class SettingsAssociationService implements SettingsAssociationServiceInt
     return this.permissionsAssociatedWithSettings.get(settingName)
   }
 
-  getDefaultSettingsAndValuesForNewUser(): Map<SettingName, SettingDescription> {
+  getDefaultSettingsAndValuesForNewUser(): Map<string, SettingDescription> {
     return this.defaultSettings
   }
 
-  getDefaultSettingsAndValuesForNewVaultAccount(): Map<SettingName, SettingDescription> {
+  getDefaultSettingsAndValuesForNewVaultAccount(): Map<string, SettingDescription> {
     const defaultVaultSettings = new Map(this.defaultSettings)
 
     for (const vaultAccountDefaultSettingOverwriteKey of this.vaultAccountDefaultSettingsOverwrites.keys()) {

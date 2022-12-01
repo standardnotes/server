@@ -30,38 +30,38 @@ const requestBackups = async (
   domainEventFactory: DomainEventFactoryInterface,
   domainEventPublisher: DomainEventPublisherInterface,
 ): Promise<void> => {
-  let settingName: SettingName,
+  let settingName: string,
     permissionName: PermissionName,
-    muteEmailsSettingName: SettingName,
+    muteEmailsSettingName: string,
     muteEmailsSettingValue: string,
-    providerTokenSettingName: SettingName
+    providerTokenSettingName: string
   switch (backupProvider) {
     case 'email':
-      settingName = SettingName.EmailBackupFrequency
+      settingName = SettingName.NAMES.EmailBackupFrequency
       permissionName = PermissionName.DailyEmailBackup
-      muteEmailsSettingName = SettingName.MuteFailedBackupsEmails
+      muteEmailsSettingName = SettingName.NAMES.MuteFailedBackupsEmails
       muteEmailsSettingValue = MuteFailedBackupsEmailsOption.Muted
       break
     case 'dropbox':
-      settingName = SettingName.DropboxBackupFrequency
+      settingName = SettingName.NAMES.DropboxBackupFrequency
       permissionName = PermissionName.DailyDropboxBackup
-      muteEmailsSettingName = SettingName.MuteFailedCloudBackupsEmails
+      muteEmailsSettingName = SettingName.NAMES.MuteFailedCloudBackupsEmails
       muteEmailsSettingValue = MuteFailedCloudBackupsEmailsOption.Muted
-      providerTokenSettingName = SettingName.DropboxBackupToken
+      providerTokenSettingName = SettingName.NAMES.DropboxBackupToken
       break
     case 'one_drive':
-      settingName = SettingName.OneDriveBackupFrequency
+      settingName = SettingName.NAMES.OneDriveBackupFrequency
       permissionName = PermissionName.DailyOneDriveBackup
-      muteEmailsSettingName = SettingName.MuteFailedCloudBackupsEmails
+      muteEmailsSettingName = SettingName.NAMES.MuteFailedCloudBackupsEmails
       muteEmailsSettingValue = MuteFailedCloudBackupsEmailsOption.Muted
-      providerTokenSettingName = SettingName.OneDriveBackupToken
+      providerTokenSettingName = SettingName.NAMES.OneDriveBackupToken
       break
     case 'google_drive':
-      settingName = SettingName.GoogleDriveBackupFrequency
+      settingName = SettingName.NAMES.GoogleDriveBackupFrequency
       permissionName = PermissionName.DailyGDriveBackup
-      muteEmailsSettingName = SettingName.MuteFailedCloudBackupsEmails
+      muteEmailsSettingName = SettingName.NAMES.MuteFailedCloudBackupsEmails
       muteEmailsSettingValue = MuteFailedCloudBackupsEmailsOption.Muted
-      providerTokenSettingName = SettingName.GoogleDriveBackupToken
+      providerTokenSettingName = SettingName.NAMES.GoogleDriveBackupToken
       break
     default:
       throw new Error(`Not handled backup provider: ${backupProvider}`)

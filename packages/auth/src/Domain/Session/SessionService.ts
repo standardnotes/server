@@ -291,7 +291,7 @@ export class SessionService implements SessionServiceInterface {
 
   private async isLoggingUserAgentEnabledOnSessions(user: User): Promise<boolean> {
     const loggingSetting = await this.settingService.findSettingWithDecryptedValue({
-      settingName: SettingName.LogSessionUserAgent,
+      settingName: SettingName.NAMES.LogSessionUserAgent,
       userUuid: user.uuid,
     })
 

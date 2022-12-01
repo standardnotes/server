@@ -1,4 +1,3 @@
-import { SettingName } from '@standardnotes/settings'
 import { inject, injectable } from 'inversify'
 import { GetSettingDto } from './GetSettingDto'
 import { GetSettingResponse } from './GetSettingResponse'
@@ -19,7 +18,7 @@ export class GetSetting implements UseCaseInterface {
 
     const setting = await this.settingService.findSettingWithDecryptedValue({
       userUuid,
-      settingName: settingName as SettingName,
+      settingName: settingName,
     })
 
     if (setting === null) {

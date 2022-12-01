@@ -59,7 +59,7 @@ describe('UpdateSetting', () => {
 
   it('should create a setting', async () => {
     const props = {
-      name: SettingName.ExtensionKey,
+      name: SettingName.NAMES.ExtensionKey,
       unencryptedValue: 'test-setting-value',
       serverEncryptionVersion: EncryptionVersion.Default,
       sensitive: false,
@@ -88,7 +88,7 @@ describe('UpdateSetting', () => {
     userRepository.findOneByUuid = jest.fn().mockReturnValue(null)
 
     const props = {
-      name: SettingName.ExtensionKey,
+      name: SettingName.NAMES.ExtensionKey,
       unencryptedValue: 'test-setting-value',
       serverEncryptionVersion: EncryptionVersion.Unencrypted,
       sensitive: false,
@@ -136,7 +136,7 @@ describe('UpdateSetting', () => {
     roleService.userHasPermission = jest.fn().mockReturnValue(false)
 
     const props = {
-      name: SettingName.ExtensionKey,
+      name: SettingName.NAMES.ExtensionKey,
       unencryptedValue: 'test-setting-value',
       serverEncryptionVersion: EncryptionVersion.Unencrypted,
       sensitive: false,
@@ -159,7 +159,7 @@ describe('UpdateSetting', () => {
     settingsAssociationService.isSettingMutableByClient = jest.fn().mockReturnValue(false)
 
     const props = {
-      name: SettingName.ExtensionKey,
+      name: SettingName.NAMES.ExtensionKey,
       unencryptedValue: 'test-setting-value',
       serverEncryptionVersion: EncryptionVersion.Unencrypted,
       sensitive: false,

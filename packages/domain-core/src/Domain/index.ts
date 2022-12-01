@@ -8,6 +8,8 @@ export * from './Common/RoleNameCollection'
 export * from './Common/RoleNameCollectionProps'
 export * from './Common/Username'
 export * from './Common/UsernameProps'
+export * from './Common/Timestamps'
+export * from './Common/TimestampsProps'
 export * from './Common/Uuid'
 export * from './Common/UuidProps'
 
@@ -22,6 +24,9 @@ export * from './Core/ValueObjectProps'
 
 export * from './Email/EmailLevel'
 export * from './Email/EmailLevelProps'
+
+export * from './Encryption/EncryptionVersion'
+export * from './Encryption/EncryptionVersionProps'
 
 export * from './Mapping/MapperInterface'
 

@@ -45,12 +45,12 @@ describe('GetSetting', () => {
   it('should not retrieve a sensitive setting for user', async () => {
     setting = {
       sensitive: true,
-      name: SettingName.MfaSecret,
+      name: SettingName.NAMES.MfaSecret,
     } as jest.Mocked<Setting>
 
     settingService.findSettingWithDecryptedValue = jest.fn().mockReturnValue(setting)
 
-    expect(await createUseCase().execute({ userUuid: '1-2-3', settingName: SettingName.MfaSecret })).toEqual({
+    expect(await createUseCase().execute({ userUuid: '1-2-3', settingName: SettingName.NAMES.MfaSecret })).toEqual({
       success: true,
       sensitive: true,
     })
@@ -59,7 +59,7 @@ describe('GetSetting', () => {
   it('should retrieve a sensitive setting for user if explicitly told to', async () => {
     setting = {
       sensitive: true,
-      name: SettingName.MfaSecret,
+      name: SettingName.NAMES.MfaSecret,
     } as jest.Mocked<Setting>
 
     settingService.findSettingWithDecryptedValue = jest.fn().mockReturnValue(setting)

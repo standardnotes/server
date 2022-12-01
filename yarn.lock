@@ -2359,6 +2359,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@standardnotes/settings@workspace:packages/settings"
   dependencies:
+    "@standardnotes/domain-core": "workspace:^"
     "@typescript-eslint/eslint-plugin": "npm:^5.30.0"
     eslint-plugin-prettier: "npm:^4.2.1"
     reflect-metadata: "npm:^0.1.13"
