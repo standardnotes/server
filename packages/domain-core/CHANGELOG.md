@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.6.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.5.2...@standardnotes/domain-core@1.6.0) (2022-12-02)
+
+### Features
+
+* **domain-core:** add subscription plan name value object ([800fe9e](https://github.com/standardnotes/server/commit/800fe9e4c80c33f2da8097b5a153f470a23b7984))
+
 ## [1.5.2](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.5.1...@standardnotes/domain-core@1.5.2) (2022-12-02)
 
 ### Bug Fixes
