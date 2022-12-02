@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.9.1](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.9.0...@standardnotes/revisions-server@1.9.1) (2022-12-02)
+
+### Bug Fixes
+
+* **revisions:** change timestamps to dates value object ([2351cd3](https://github.com/standardnotes/server/commit/2351cd3ad660c81b3b6bbc3759bc1c32a03406af))
+
 # [1.9.0](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.8.2...@standardnotes/revisions-server@1.9.0) (2022-11-30)
 
 ### Features
