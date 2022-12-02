@@ -20,4 +20,7 @@ export * from './Core/ValueObjectProps'
 
 export * from './Mapping/MapperInterface'
 
+export * from './Subscription/SubscriptionPlanName'
+export * from './Subscription/SubscriptionPlanNameProps'
+
 export * from './UseCase/UseCaseInterface'
