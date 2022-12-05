@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.93.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.92.0...@standardnotes/domain-events@2.93.0) (2022-12-05)
+
+### Features
+
+* **domain-events:** add email subscription sync requested event ([fddf9fc](https://github.com/standardnotes/server/commit/fddf9fccbd92fa4279e97bcd2420ec9e270fedbb))
+
 # [2.92.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.91.0...@standardnotes/domain-events@2.92.0) (2022-11-30)
 
 ### Features
