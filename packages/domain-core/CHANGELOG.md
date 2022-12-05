@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.7.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.6.0...@standardnotes/domain-core@1.7.0) (2022-12-05)
+
+### Features
+
+* **domain-core:** distinguish between username and email ([06fd404](https://github.com/standardnotes/server/commit/06fd404d44b44a53733f889aabd4da63f21e2f36))
+
 # [1.6.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.5.2...@standardnotes/domain-core@1.6.0) (2022-12-02)
 
 ### Features
