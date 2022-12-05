@@ -1,7 +1,7 @@
-import { Email, Uuid } from '@standardnotes/domain-core'
+import { Username, Uuid } from '@standardnotes/domain-core'
 
 export type GetUserAnalyticsIdResponse = {
   analyticsId: number
-  userEmail: Email
+  username: Username
   userUuid: Uuid
 }

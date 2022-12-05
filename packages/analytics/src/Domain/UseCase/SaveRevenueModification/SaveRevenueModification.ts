@@ -23,7 +23,7 @@ export class SaveRevenueModification implements DomainUseCaseInterface<RevenueMo
   async execute(dto: SaveRevenueModificationDTO): Promise<Result<RevenueModification>> {
     const userOrError = User.create(
       {
-        email: dto.userEmail,
+        username: dto.username,
       },
       new UniqueEntityId(dto.userUuid.value),
     )

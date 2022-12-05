@@ -1,7 +1,7 @@
 import 'reflect-metadata'
 
 import { TimerInterface } from '@standardnotes/time'
-import { Email, Result, Uuid } from '@standardnotes/domain-core'
+import { Result, Username, Uuid } from '@standardnotes/domain-core'
 
 import { MonthlyRevenue } from '../../Revenue/MonthlyRevenue'
 
@@ -45,7 +45,7 @@ describe('SaveRevenueModification', () => {
       payedAmount: 12.99,
       planName: SubscriptionPlanName.create('PRO_PLAN').getValue(),
       subscriptionId: 1234,
-      userEmail: Email.create('test@test.te').getValue(),
+      username: Username.create('test@test.te').getValue(),
       userUuid: Uuid.create('84c0f8e8-544a-4c7e-9adf-26209303bc1d').getValue(),
     })
 
@@ -63,7 +63,7 @@ describe('SaveRevenueModification', () => {
       payedAmount: 12.99,
       planName: SubscriptionPlanName.create('PRO_PLAN').getValue(),
       subscriptionId: 1234,
-      userEmail: Email.create('test@test.te').getValue(),
+      username: Username.create('test@test.te').getValue(),
       userUuid: Uuid.create('84c0f8e8-544a-4c7e-9adf-26209303bc1d').getValue(),
     })
 
@@ -81,7 +81,7 @@ describe('SaveRevenueModification', () => {
       payedAmount: 2,
       planName: SubscriptionPlanName.create('PRO_PLAN').getValue(),
       subscriptionId: 1234,
-      userEmail: Email.create('test@test.te').getValue(),
+      username: Username.create('test@test.te').getValue(),
       userUuid: Uuid.create('84c0f8e8-544a-4c7e-9adf-26209303bc1d').getValue(),
     })
 
@@ -101,7 +101,7 @@ describe('SaveRevenueModification', () => {
       payedAmount: 12.99,
       planName: SubscriptionPlanName.create('PRO_PLAN').getValue(),
       subscriptionId: 1234,
-      userEmail: Email.create('test@test.te').getValue(),
+      username: Username.create('test@test.te').getValue(),
       userUuid: Uuid.create('84c0f8e8-544a-4c7e-9adf-26209303bc1d').getValue(),
     })
 
@@ -122,7 +122,7 @@ describe('SaveRevenueModification', () => {
       payedAmount: 12.99,
       planName: SubscriptionPlanName.create('PRO_PLAN').getValue(),
       subscriptionId: 1234,
-      userEmail: Email.create('test@test.te').getValue(),
+      username: Username.create('test@test.te').getValue(),
       userUuid: Uuid.create('84c0f8e8-544a-4c7e-9adf-26209303bc1d').getValue(),
     })
 
@@ -142,7 +142,7 @@ describe('SaveRevenueModification', () => {
       payedAmount: 12.99,
       planName: SubscriptionPlanName.create('PRO_PLAN').getValue(),
       subscriptionId: 1234,
-      userEmail: Email.create('test@test.te').getValue(),
+      username: Username.create('test@test.te').getValue(),
       userUuid: Uuid.create('84c0f8e8-544a-4c7e-9adf-26209303bc1d').getValue(),
     })
 
@@ -162,7 +162,7 @@ describe('SaveRevenueModification', () => {
       payedAmount: 12.99,
       planName: SubscriptionPlanName.create('PRO_PLAN').getValue(),
       subscriptionId: 1234,
-      userEmail: Email.create('test@test.te').getValue(),
+      username: Username.create('test@test.te').getValue(),
       userUuid: Uuid.create('84c0f8e8-544a-4c7e-9adf-26209303bc1d').getValue(),
     })
 
@@ -182,7 +182,7 @@ describe('SaveRevenueModification', () => {
       payedAmount: 12.99,
       planName: SubscriptionPlanName.create('PRO_PLAN').getValue(),
       subscriptionId: 1234,
-      userEmail: Email.create('test@test.te').getValue(),
+      username: Username.create('test@test.te').getValue(),
       userUuid: Uuid.create('84c0f8e8-544a-4c7e-9adf-26209303bc1d').getValue(),
     })
 
@@ -202,7 +202,7 @@ describe('SaveRevenueModification', () => {
       payedAmount: 12.99,
       planName: SubscriptionPlanName.create('PRO_PLAN').getValue(),
       subscriptionId: 1234,
-      userEmail: Email.create('test@test.te').getValue(),
+      username: Username.create('test@test.te').getValue(),
       userUuid: Uuid.create('84c0f8e8-544a-4c7e-9adf-26209303bc1d').getValue(),
     })
 

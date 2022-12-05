@@ -1,15 +1,15 @@
-import { Email } from './Email'
+import { Username } from './Username'
 
-describe('Email', () => {
+describe('Username', () => {
   it('should create a value object', () => {
-    const valueOrError = Email.create('test@test.te')
+    const valueOrError = Username.create('test@test.te')
 
     expect(valueOrError.isFailed()).toBeFalsy()
     expect(valueOrError.getValue().value).toEqual('test@test.te')
   })
 
   it('should not create an invalid value object', () => {
-    const valueOrError = Email.create('foobar')
+    const valueOrError = Username.create('')
 
     expect(valueOrError.isFailed()).toBeTruthy()
   })

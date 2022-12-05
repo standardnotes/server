@@ -15,7 +15,7 @@ describe('GetUserAnalyticsId', () => {
     analyticsEntity = {
       id: 123,
       userUuid: '84c0f8e8-544a-4c7e-9adf-26209303bc1d',
-      userEmail: 'test@test.te',
+      username: 'test@test.te',
     } as jest.Mocked<AnalyticsEntity>
 
     analyticsEntityRepository = {} as jest.Mocked<AnalyticsEntityRepositoryInterface>

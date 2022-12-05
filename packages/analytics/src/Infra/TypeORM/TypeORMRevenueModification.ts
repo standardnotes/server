@@ -18,7 +18,7 @@ export class TypeORMRevenueModification {
     length: 255,
   })
   @Index('email')
-  declare userEmail: string
+  declare username: string
 
   @Column({
     name: 'user_uuid',

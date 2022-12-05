@@ -1,5 +1,5 @@
 import { injectable } from 'inversify'
-import { Email, MapperInterface, UniqueEntityId } from '@standardnotes/domain-core'
+import { MapperInterface, UniqueEntityId, Username } from '@standardnotes/domain-core'
 
 import { TypeORMRevenueModification } from '../../Infra/TypeORM/TypeORMRevenueModification'
 import { MonthlyRevenue } from '../Revenue/MonthlyRevenue'
@@ -14,7 +14,7 @@ export class RevenueModificationMap implements MapperInterface<RevenueModificati
   toDomain(persistence: TypeORMRevenueModification): RevenueModification {
     const userOrError = User.create(
       {
-        email: Email.create(persistence.userEmail).getValue(),
+        username: Username.create(persistence.username).getValue(),
       },
       new UniqueEntityId(persistence.userUuid),
     )
@@ -70,7 +70,7 @@ export class RevenueModificationMap implements MapperInterface<RevenueModificati
     persistence.previousMonthlyRevenue = domain.props.previousMonthlyRevenue.value
     persistence.subscriptionId = subscription.id.toValue() as number
     persistence.subscriptionPlan = subscription.props.planName.value
-    persistence.userEmail = user.props.email.value
+    persistence.username = user.props.username.value
     persistence.userUuid = user.id.toString()
     persistence.createdAt = domain.props.createdAt
 

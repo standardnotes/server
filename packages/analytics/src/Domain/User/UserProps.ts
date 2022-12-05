@@ -1,5 +1,5 @@
-import { Email } from '@standardnotes/domain-core'
+import { Username } from '@standardnotes/domain-core'
 
 export interface UserProps {
-  email: Email
+  username: Username
 }

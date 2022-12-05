@@ -3,7 +3,7 @@ import { Result } from '../Core/Result'
 import { RoleNameProps } from './RoleNameProps'
 
 export class RoleName extends ValueObject<RoleNameProps> {
-  private static readonly NAMES = {
+  static readonly NAMES = {
     CoreUser: 'CORE_USER',
     PlusUser: 'PLUS_USER',
     ProUser: 'PRO_USER',

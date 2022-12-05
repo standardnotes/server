@@ -1,5 +1,5 @@
 import { inject, injectable } from 'inversify'
-import { Email, Uuid } from '@standardnotes/domain-core'
+import { Username, Uuid } from '@standardnotes/domain-core'
 
 import TYPES from '../../../Bootstrap/Types'
 import { AnalyticsEntityRepositoryInterface } from '../../Entity/AnalyticsEntityRepositoryInterface'
@@ -28,7 +28,7 @@ export class GetUserAnalyticsId implements UseCaseInterface {
     return {
       analyticsId: analyticsEntity.id,
       userUuid: Uuid.create(analyticsEntity.userUuid).getValue(),
-      userEmail: Email.create(analyticsEntity.userEmail).getValue(),
+      username: Username.create(analyticsEntity.username).getValue(),
     }
   }
 }

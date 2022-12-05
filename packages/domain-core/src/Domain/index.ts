@@ -6,6 +6,8 @@ export * from './Common/RoleName'
 export * from './Common/RoleNameProps'
 export * from './Common/RoleNameCollection'
 export * from './Common/RoleNameCollectionProps'
+export * from './Common/Username'
+export * from './Common/UsernameProps'
 export * from './Common/Uuid'
 export * from './Common/UuidProps'
 

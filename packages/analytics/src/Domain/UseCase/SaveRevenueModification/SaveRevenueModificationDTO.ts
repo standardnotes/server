@@ -1,4 +1,4 @@
-import { Email, Uuid } from '@standardnotes/domain-core'
+import { Username, Uuid } from '@standardnotes/domain-core'
 
 import { SubscriptionEventType } from '../../Subscription/SubscriptionEventType'
 import { SubscriptionPlanName } from '../../Subscription/SubscriptionPlanName'
@@ -9,7 +9,7 @@ export interface SaveRevenueModificationDTO {
   planName: SubscriptionPlanName
   newSubscriber: boolean
   userUuid: Uuid
-  userEmail: Email
+  username: Username
   subscriptionId: number
   billingFrequency: number
 }

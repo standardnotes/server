@@ -18,5 +18,5 @@ export class AnalyticsEntity {
     nullable: true,
   })
   @Index('email')
-  declare userEmail: string
+  declare username: string
 }

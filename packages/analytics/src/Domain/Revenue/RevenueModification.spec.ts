@@ -1,4 +1,4 @@
-import { Email } from '@standardnotes/domain-core'
+import { Username } from '@standardnotes/domain-core'
 
 import { Subscription } from '../Subscription/Subscription'
 import { SubscriptionEventType } from '../Subscription/SubscriptionEventType'
@@ -19,7 +19,7 @@ describe('RevenueModification', () => {
       planName: SubscriptionPlanName.create('PRO_PLAN').getValue(),
     }).getValue()
     user = User.create({
-      email: Email.create('test@test.te').getValue(),
+      username: Username.create('test@test.te').getValue(),
     }).getValue()
   })
 

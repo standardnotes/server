@@ -1,6 +1,7 @@
 import { ValueObject } from '../Core/ValueObject'
 import { Result } from '../Core/Result'
 import { EmailProps } from './EmailProps'
+import { Validator } from '../Core/Validator'
 
 export class Email extends ValueObject<EmailProps> {
   get value(): string {
@@ -12,10 +13,11 @@ export class Email extends ValueObject<EmailProps> {
   }
 
   static create(email: string): Result<Email> {
-    if (!!email === false || email.length === 0) {
-      return Result.fail<Email>('Email cannot be empty')
-    } else {
-      return Result.ok<Email>(new Email({ value: email }))
+    const emailValidation = Validator.isValidEmail(email)
+    if (emailValidation.isFailed()) {
+      return Result.fail<Email>(emailValidation.getError())
     }
+
+    return Result.ok<Email>(new Email({ value: email }))
   }
 }

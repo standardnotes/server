@@ -1,6 +1,6 @@
 import { DomainEventHandlerInterface, SubscriptionRenewedEvent } from '@standardnotes/domain-events'
 import { inject, injectable } from 'inversify'
-import { Email } from '@standardnotes/domain-core'
+import { Username } from '@standardnotes/domain-core'
 
 import TYPES from '../../Bootstrap/Types'
 import { GetUserAnalyticsId } from '../UseCase/GetUserAnalyticsId/GetUserAnalyticsId'
@@ -41,7 +41,7 @@ export class SubscriptionRenewedEventHandler implements DomainEventHandlerInterf
       payedAmount: event.payload.payAmount,
       planName: SubscriptionPlanName.create(event.payload.subscriptionName).getValue(),
       subscriptionId: event.payload.subscriptionId,
-      userEmail: Email.create(event.payload.userEmail).getValue(),
+      username: Username.create(event.payload.userEmail).getValue(),
       userUuid,
     })
 

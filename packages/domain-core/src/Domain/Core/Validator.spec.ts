@@ -18,6 +18,31 @@ describe('Validator', () => {
     '../../escaped.sh',
   ]
 
+  const validEmails = [
+    'something@something.com',
+    'someone@localhost.localdomain',
+    'a/b@domain.com',
+    '{}@domain.com',
+    'karol+test@standardnotes.com',
+    "m*'!%@something.sa",
+    'tu!!7n7.ad##0!!!@company.ca',
+    '%@com.com',
+    "!#$%&'*+/=?^_`{|}~.-@com.com",
+    'someone@do-ma-in.com',
+    '""testlah""@example.com',
+  ]
+
+  const invalidEmails = [
+    'someone@127.0.0.1',
+    'a@b.b',
+    '',
+    null,
+    '.wooly@example.com',
+    'wo..oly@example.com',
+    'somebody@example',
+    'a@p.com',
+  ]
+
   it('should validate proper uuids', () => {
     for (const validUuid of validUuids) {
       expect(Validator.isValidUuid(validUuid).isFailed()).toBeFalsy()
@@ -27,6 +52,30 @@ describe('Validator', () => {
   it('should not validate invalid uuids', () => {
     for (const invalidUuid of invalidUuids) {
       expect(Validator.isValidUuid(invalidUuid as string).isFailed()).toBeTruthy()
+    }
+  })
+
+  it('should validate proper emails', () => {
+    for (const validEmail of validEmails) {
+      expect(Validator.isValidEmail(validEmail).isFailed()).toBeFalsy()
+    }
+  })
+
+  it('should not validate invalid emails', () => {
+    for (const invalidEmail of invalidEmails) {
+      expect(Validator.isValidEmail(invalidEmail as string).isFailed()).toBeTruthy()
+    }
+  })
+
+  it('should validate value if not empty', () => {
+    for (const value of [1, 'foobar', {}, 0]) {
+      expect(Validator.isNotEmpty(value).isFailed()).toBeFalsy()
+    }
+  })
+
+  it('should not validate value if empty', () => {
+    for (const value of [null, undefined, '', []]) {
+      expect(Validator.isNotEmpty(value).isFailed()).toBeTruthy()
     }
   })
 })
