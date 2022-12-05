@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.8.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.7.0...@standardnotes/domain-core@1.8.0) (2022-12-05)
+
+### Features
+
+* **domain-core:** add email subscription rejection levels ([02f3c85](https://github.com/standardnotes/server/commit/02f3c85796ade7cb69edbdda2367c0d91ac1bdf0))
+
 # [1.7.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.6.0...@standardnotes/domain-core@1.7.0) (2022-12-05)
 
 ### Features
