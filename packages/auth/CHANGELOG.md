@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.62.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.62.0...@standardnotes/auth-server@1.62.1) (2022-12-06)
+
+### Bug Fixes
+
+* **auth:** remove redundant specs and fix stream query ([fb81d2b](https://github.com/standardnotes/server/commit/fb81d2b9260cf7bee3e3e6911d5a6e8eb1d650e3))
+
 # [1.62.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.61.0...@standardnotes/auth-server@1.62.0) (2022-12-06)
 
 ### Features
