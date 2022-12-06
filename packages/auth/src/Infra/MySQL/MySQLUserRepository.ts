@@ -22,7 +22,10 @@ export class MySQLUserRepository implements UserRepositoryInterface {
   }
 
   async streamAll(): Promise<ReadStream> {
-    return this.ormRepository.createQueryBuilder('user').stream()
+    return this.ormRepository
+      .createQueryBuilder('user')
+      .where('created_at < :createdAt', { createdAt: new Date().toISOString() })
+      .stream()
   }
 
   async streamTeam(memberEmail?: string): Promise<ReadStream> {

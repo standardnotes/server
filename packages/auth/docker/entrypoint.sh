@@ -5,69 +5,69 @@ COMMAND=$1 && shift 1
 
 case "$COMMAND" in
   'start-local' )
-    echo "Starting Web..."
+    echo "[Docker] Starting Web..."
     yarn workspace @standardnotes/auth-server start:local
     ;;
 
   'start-web' )
-    echo "Starting Web..."
+    echo "[Docker] Starting Web..."
     yarn workspace @standardnotes/auth-server start
     ;;
 
   'start-worker' )
-    echo "Starting Worker..."
+    echo "[Docker] Starting Worker..."
     yarn workspace @standardnotes/auth-server worker
     ;;
 
   'email-daily-backup' )
-    echo "Starting Email Daily Backup..."
+    echo "[Docker] Starting Email Daily Backup..."
     yarn workspace @standardnotes/auth-server daily-backup:email
     ;;
 
   'email-weekly-backup' )
-    echo "Starting Email Weekly Backup..."
+    echo "[Docker] Starting Email Weekly Backup..."
     yarn workspace @standardnotes/auth-server weekly-backup:email
     ;;
 
   'email-backup' )
-    echo "Starting Email Backup For Single User..."
+    echo "[Docker] Starting Email Backup For Single User..."
     EMAIL=$1 && shift 1
     yarn workspace @standardnotes/auth-server user-email-backup $EMAIL
     ;;
 
   'dropbox-daily-backup' )
-    echo "Starting Dropbox Daily Backup..."
+    echo "[Docker] Starting Dropbox Daily Backup..."
     yarn workspace @standardnotes/auth-server daily-backup:dropbox
     ;;
 
   'google-drive-daily-backup' )
-    echo "Starting Google Drive Daily Backup..."
+    echo "[Docker] Starting Google Drive Daily Backup..."
     yarn workspace @standardnotes/auth-server daily-backup:google_drive
     ;;
 
   'one-drive-daily-backup' )
-    echo "Starting One Drive Daily Backup..."
+    echo "[Docker] Starting One Drive Daily Backup..."
     yarn workspace @standardnotes/auth-server daily-backup:one_drive
     ;;
 
   'email-campaign' )
-    echo "Starting Email Campaign Sending..."
+    echo "[Docker] Starting Email Campaign Sending..."
     MESSAGE_IDENTIFIER=$1 && shift 1
     yarn workspace @standardnotes/auth-server email-campaign $MESSAGE_IDENTIFIER
     ;;
 
   'email-subscriptions-sync' )
-    echo "Starting Email Subscriptions sync..."
+    echo "[Docker] Starting Email Subscriptions sync..."
     yarn workspace @standardnotes/auth-server email-subscriptions-sync
     ;;
 
   'content-recalculation' )
-    echo "Starting Content Size Recalculation..."
+    echo "[Docker] Starting Content Size Recalculation..."
     yarn workspace @standardnotes/auth-server content-recalculation
     ;;
 
    * )
-    echo "Unknown command"
+    echo "[Docker] Unknown command"
     ;;
 esac
 
