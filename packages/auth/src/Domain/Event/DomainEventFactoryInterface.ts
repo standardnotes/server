@@ -18,6 +18,7 @@ import {
   WebSocketMessageRequestedEvent,
   ExitDiscountApplyRequestedEvent,
   UserContentSizeRecalculationRequestedEvent,
+  MuteEmailsSettingChangedEvent,
 } from '@standardnotes/domain-events'
 import { InviteeIdentifierType } from '../SharedSubscription/InviteeIdentifierType'
 
@@ -91,4 +92,9 @@ export interface DomainEventFactoryInterface {
     userEmail: string
     discountCode: string
   }): ExitDiscountApplyRequestedEvent
+  createMuteEmailsSettingChangedEvent(dto: {
+    username: string
+    mute: boolean
+    emailSubscriptionRejectionLevel: string
+  }): MuteEmailsSettingChangedEvent
 }

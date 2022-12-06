@@ -1888,6 +1888,7 @@ __metadata:
     "@sentry/node": "npm:^7.19.0"
     "@standardnotes/api": "npm:^1.19.0"
     "@standardnotes/common": "workspace:*"
+    "@standardnotes/domain-core": "workspace:^"
     "@standardnotes/domain-events": "workspace:*"
     "@standardnotes/domain-events-infra": "workspace:*"
     "@standardnotes/features": "npm:^1.52.1"

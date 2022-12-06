@@ -20,6 +20,7 @@ import {
   WebSocketMessageRequestedEvent,
   ExitDiscountApplyRequestedEvent,
   UserContentSizeRecalculationRequestedEvent,
+  MuteEmailsSettingChangedEvent,
 } from '@standardnotes/domain-events'
 import { Predicate, PredicateVerificationResult } from '@standardnotes/predicates'
 import { TimerInterface } from '@standardnotes/time'
@@ -31,6 +32,25 @@ import { DomainEventFactoryInterface } from './DomainEventFactoryInterface'
 @injectable()
 export class DomainEventFactory implements DomainEventFactoryInterface {
   constructor(@inject(TYPES.Timer) private timer: TimerInterface) {}
+
+  createMuteEmailsSettingChangedEvent(dto: {
+    username: string
+    mute: boolean
+    emailSubscriptionRejectionLevel: string
+  }): MuteEmailsSettingChangedEvent {
+    return {
+      type: 'MUTE_EMAILS_SETTING_CHANGED',
+      createdAt: this.timer.getUTCDate(),
+      meta: {
+        correlation: {
+          userIdentifier: dto.username,
+          userIdentifierType: 'email',
+        },
+        origin: DomainEventService.Auth,
+      },
+      payload: dto,
+    }
+  }
 
   createUserContentSizeRecalculationRequestedEvent(userUuid: string): UserContentSizeRecalculationRequestedEvent {
     return {

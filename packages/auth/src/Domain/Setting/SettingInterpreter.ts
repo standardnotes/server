@@ -1,4 +1,5 @@
 import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
+import { EmailSubscriptionRejectionLevel } from '@standardnotes/domain-core'
 import {
   DropboxBackupFrequency,
   EmailBackupFrequency,
@@ -39,6 +40,13 @@ export class SettingInterpreter implements SettingInterpreterInterface {
     OneDriveBackupFrequency.Disabled,
   ]
 
+  private readonly emailSettingToSubscriptionRejectionLevelMap: Map<SettingName, string> = new Map([
+    [SettingName.MuteFailedBackupsEmails, EmailSubscriptionRejectionLevel.LEVELS.FailedEmailBackup],
+    [SettingName.MuteFailedCloudBackupsEmails, EmailSubscriptionRejectionLevel.LEVELS.FailedCloudBackup],
+    [SettingName.MuteMarketingEmails, EmailSubscriptionRejectionLevel.LEVELS.Marketing],
+    [SettingName.MuteSignInEmails, EmailSubscriptionRejectionLevel.LEVELS.SignIn],
+  ])
+
   constructor(
     @inject(TYPES.DomainEventPublisher) private domainEventPublisher: DomainEventPublisherInterface,
     @inject(TYPES.DomainEventFactory) private domainEventFactory: DomainEventFactoryInterface,
@@ -48,6 +56,10 @@ export class SettingInterpreter implements SettingInterpreterInterface {
   ) {}
 
   async interpretSettingUpdated(updatedSetting: Setting, user: User, unencryptedValue: string | null): Promise<void> {
+    if (this.isChangingMuteEmailsSetting(updatedSetting)) {
+      await this.triggerEmailSubscriptionChange(user, updatedSetting.name as SettingName, unencryptedValue)
+    }
+
     if (this.isEnablingEmailBackupSetting(updatedSetting)) {
       await this.triggerEmailBackup(user.uuid)
     }
@@ -78,6 +90,15 @@ export class SettingInterpreter implements SettingInterpreterInterface {
     )
   }
 
+  private isChangingMuteEmailsSetting(setting: Setting): boolean {
+    return [
+      SettingName.MuteFailedBackupsEmails,
+      SettingName.MuteFailedCloudBackupsEmails,
+      SettingName.MuteMarketingEmails,
+      SettingName.MuteSignInEmails,
+    ].includes(setting.name as SettingName)
+  }
+
   private isEnablingEmailBackupSetting(setting: Setting): boolean {
     return setting.name === SettingName.EmailBackupFrequency && setting.value !== EmailBackupFrequency.Disabled
   }
@@ -94,6 +115,20 @@ export class SettingInterpreter implements SettingInterpreterInterface {
 
   private isDisablingSessionUserAgentLogging(setting: Setting): boolean {
     return SettingName.LogSessionUserAgent === setting.name && LogSessionUserAgentOption.Disabled === setting.value
+  }
+
+  private async triggerEmailSubscriptionChange(
+    user: User,
+    settingName: SettingName,
+    unencryptedValue: string | null,
+  ): Promise<void> {
+    await this.domainEventPublisher.publish(
+      this.domainEventFactory.createMuteEmailsSettingChangedEvent({
+        username: user.email,
+        mute: unencryptedValue === 'muted',
+        emailSubscriptionRejectionLevel: this.emailSettingToSubscriptionRejectionLevelMap.get(settingName) as string,
+      }),
+    )
   }
 
   private async triggerSessionUserAgentCleanup(user: User) {

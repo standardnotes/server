@@ -2,11 +2,13 @@ import {
   CloudBackupRequestedEvent,
   DomainEventPublisherInterface,
   EmailBackupRequestedEvent,
+  MuteEmailsSettingChangedEvent,
   UserDisabledSessionUserAgentLoggingEvent,
 } from '@standardnotes/domain-events'
 import {
   EmailBackupFrequency,
   LogSessionUserAgentOption,
+  MuteMarketingEmailsOption,
   OneDriveBackupFrequency,
   SettingName,
 } from '@standardnotes/settings'
@@ -57,6 +59,9 @@ describe('SettingInterpreter', () => {
     domainEventFactory.createUserDisabledSessionUserAgentLoggingEvent = jest
       .fn()
       .mockReturnValue({} as jest.Mocked<UserDisabledSessionUserAgentLoggingEvent>)
+    domainEventFactory.createMuteEmailsSettingChangedEvent = jest
+      .fn()
+      .mockReturnValue({} as jest.Mocked<MuteEmailsSettingChangedEvent>)
 
     logger = {} as jest.Mocked<Logger>
     logger.debug = jest.fn()
@@ -199,6 +204,23 @@ describe('SettingInterpreter', () => {
       '',
       false,
     )
+  })
+
+  it('should trigger mute subscription emails rejection if mute setting changed', async () => {
+    const setting = {
+      name: SettingName.MuteMarketingEmails,
+      value: MuteMarketingEmailsOption.Muted,
+    } as jest.Mocked<Setting>
+    settingRepository.findOneByNameAndUserUuid = jest.fn().mockReturnValue(null)
+
+    await createInterpreter().interpretSettingUpdated(setting, user, MuteMarketingEmailsOption.Muted)
+
+    expect(domainEventPublisher.publish).toHaveBeenCalled()
+    expect(domainEventFactory.createMuteEmailsSettingChangedEvent).toHaveBeenCalledWith({
+      emailSubscriptionRejectionLevel: 'MARKETING',
+      mute: true,
+      username: 'test@test.te',
+    })
   })
 
   it('should trigger cloud backup if backup frequency setting is updated and a backup token setting is present', async () => {
