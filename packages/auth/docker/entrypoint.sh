@@ -56,6 +56,11 @@ case "$COMMAND" in
     yarn workspace @standardnotes/auth-server email-campaign $MESSAGE_IDENTIFIER
     ;;
 
+  'email-subscriptions-sync' )
+    echo "Starting Email Subscriptions sync..."
+    yarn workspace @standardnotes/auth-server email-subscriptions-sync
+    ;;
+
   'content-recalculation' )
     echo "Starting Content Size Recalculation..."
     yarn workspace @standardnotes/auth-server content-recalculation
