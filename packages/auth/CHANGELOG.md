@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.61.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.60.17...@standardnotes/auth-server@1.61.0) (2022-12-06)
+
+### Features
+
+* **auth:** add publishing mute emails setting changed event ([6928988](https://github.com/standardnotes/server/commit/6928988f7855c939f2365e35cb6cb0ff18e5c37a))
+
 ## [1.60.17](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.60.16...@standardnotes/auth-server@1.60.17) (2022-12-06)
 
 **Note:** Version bump only for package @standardnotes/auth-server
