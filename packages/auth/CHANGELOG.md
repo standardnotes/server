@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.62.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.61.0...@standardnotes/auth-server@1.62.0) (2022-12-06)
+
+### Features
+
+* **auth:** add procedure for email subscriptions sync ([7848dc0](https://github.com/standardnotes/server/commit/7848dc06d4f4fe8c380ed45c32e23ac0e62014fa))
+
 # [1.61.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.60.17...@standardnotes/auth-server@1.61.0) (2022-12-06)
 
 ### Features
