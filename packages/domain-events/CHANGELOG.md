@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.94.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.93.0...@standardnotes/domain-events@2.94.0) (2022-12-06)
+
+### Features
+
+* **domain-events:** add mute emails setting changed event ([b7fb1d9](https://github.com/standardnotes/server/commit/b7fb1d9c08f66b0366f9af9cea8241f4c5ea9a18))
+
 # [2.93.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.92.0...@standardnotes/domain-events@2.93.0) (2022-12-05)
 
 ### Features
