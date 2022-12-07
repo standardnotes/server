@@ -1,4 +1,4 @@
-<div>
+export const html = `<div>
   <p>Hi there,</p>
   <p>
     We hope you've been finding great use out of Standard Notes. We built Standard Notes to be a secure place for
@@ -80,4 +80,5 @@
     directly to this email or send an email to <a href="help@standardnotes.com">help@standardnotes.com</a> and
     we'd be happy to help.
   </p>
-</div>,
+</div>
+`

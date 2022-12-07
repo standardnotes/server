@@ -1,4 +1,4 @@
-<div>
+export const html = `<div>
   <p>
     Did you know you can enable daily email backups for your account? This <strong>free</strong> feature sends an
     email to your inbox with an encrypted backup file including all your notes and tags.
@@ -15,4 +15,4 @@
   <a href="https://standardnotes.com/help/28/how-do-i-enable-daily-email-backups">
     Learn more about daily email backups →
   </a>
-</div>
+</div>`

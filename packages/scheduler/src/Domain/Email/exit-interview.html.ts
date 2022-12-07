@@ -1,4 +1,4 @@
-<div>
+export const html = `<div>
   <p>
     We're truly sad to see you leave. Our mission is simple: build the best, most private, and most secure
     note-taking app available. It's clear we've fallen short of your expectations somewhere along the way.
@@ -26,3 +26,4 @@
     our support team will be in touch with you.
   </p>
 </div>
+`
