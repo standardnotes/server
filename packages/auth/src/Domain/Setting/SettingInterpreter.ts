@@ -1,5 +1,5 @@
 import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
-import { EmailSubscriptionRejectionLevel } from '@standardnotes/domain-core'
+import { EmailLevel } from '@standardnotes/domain-core'
 import {
   DropboxBackupFrequency,
   EmailBackupFrequency,
@@ -41,10 +41,10 @@ export class SettingInterpreter implements SettingInterpreterInterface {
   ]
 
   private readonly emailSettingToSubscriptionRejectionLevelMap: Map<SettingName, string> = new Map([
-    [SettingName.MuteFailedBackupsEmails, EmailSubscriptionRejectionLevel.LEVELS.FailedEmailBackup],
-    [SettingName.MuteFailedCloudBackupsEmails, EmailSubscriptionRejectionLevel.LEVELS.FailedCloudBackup],
-    [SettingName.MuteMarketingEmails, EmailSubscriptionRejectionLevel.LEVELS.Marketing],
-    [SettingName.MuteSignInEmails, EmailSubscriptionRejectionLevel.LEVELS.SignIn],
+    [SettingName.MuteFailedBackupsEmails, EmailLevel.LEVELS.FailedEmailBackup],
+    [SettingName.MuteFailedCloudBackupsEmails, EmailLevel.LEVELS.FailedCloudBackup],
+    [SettingName.MuteMarketingEmails, EmailLevel.LEVELS.Marketing],
+    [SettingName.MuteSignInEmails, EmailLevel.LEVELS.SignIn],
   ])
 
   constructor(

@@ -20,8 +20,8 @@ export * from './Core/Validator'
 export * from './Core/ValueObject'
 export * from './Core/ValueObjectProps'
 
-export * from './Email/EmailSubscriptionRejectionLevel'
-export * from './Email/EmailSubscriptionRejectionLevelProps'
+export * from './Email/EmailLevel'
+export * from './Email/EmailLevelProps'
 
 export * from './Mapping/MapperInterface'
 

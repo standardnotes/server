@@ -1,8 +1,8 @@
-import { EmailSubscriptionRejectionLevel } from './EmailSubscriptionRejectionLevel'
+import { EmailLevel } from './EmailLevel'
 
-describe('EmailSubscriptionRejectionLevel', () => {
+describe('EmailLevel', () => {
   it('should create a value object', () => {
-    const valueOrError = EmailSubscriptionRejectionLevel.create(EmailSubscriptionRejectionLevel.LEVELS.SignIn)
+    const valueOrError = EmailLevel.create(EmailLevel.LEVELS.SignIn)
 
     expect(valueOrError.isFailed()).toBeFalsy()
     expect(valueOrError.getValue().value).toEqual('SIGN_IN')
@@ -10,7 +10,7 @@ describe('EmailSubscriptionRejectionLevel', () => {
 
   it('should not create an invalid value object', () => {
     for (const value of ['', undefined, null, 0, 'FOOBAR']) {
-      const valueOrError = EmailSubscriptionRejectionLevel.create(value as string)
+      const valueOrError = EmailLevel.create(value as string)
 
       expect(valueOrError.isFailed()).toBeTruthy()
     }
