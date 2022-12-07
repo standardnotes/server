@@ -78,6 +78,7 @@ export class ContainerConfigLoader {
       ['LISTED_ACCOUNT_REQUESTED', container.get(TYPES.EventHandler)],
       ['LISTED_ACCOUNT_CREATED', container.get(TYPES.EventHandler)],
       ['LISTED_ACCOUNT_DELETED', container.get(TYPES.EventHandler)],
+      ['EMAIL_REQUESTED', container.get(TYPES.EventHandler)],
       ['SHARED_SUBSCRIPTION_INVITATION_CREATED', container.get(TYPES.EventHandler)],
       ['EMAIL_BACKUP_ATTACHMENT_CREATED', container.get(TYPES.EventHandler)],
       ['EMAIL_BACKUP_REQUESTED', container.get(TYPES.EventHandler)],
