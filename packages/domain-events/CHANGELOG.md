@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.96.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.95.0...@standardnotes/domain-events@2.96.0) (2022-12-07)
+
+### Features
+
+* **auth:** replace user signed in events with email requested ([e48cca6](https://github.com/standardnotes/server/commit/e48cca6b45b02876f2d82b726c1d2f124d90b587))
+
 # [2.95.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.94.1...@standardnotes/domain-events@2.95.0) (2022-12-07)
 
 ### Features
