@@ -1,9 +1,8 @@
-import { EmailMessageIdentifier } from '@standardnotes/common'
 import {
   DiscountApplyRequestedEvent,
   DiscountWithdrawRequestedEvent,
   DomainEventService,
-  EmailMessageRequestedEvent,
+  EmailRequestedEvent,
   ExitDiscountWithdrawRequestedEvent,
   PredicateVerificationRequestedEvent,
 } from '@standardnotes/domain-events'
@@ -70,13 +69,15 @@ export class DomainEventFactory implements DomainEventFactoryInterface {
     }
   }
 
-  createEmailMessageRequestedEvent(dto: {
+  createEmailRequestedEvent(dto: {
     userEmail: string
-    messageIdentifier: EmailMessageIdentifier
-    context: Record<string, unknown>
-  }): EmailMessageRequestedEvent {
+    messageIdentifier: string
+    level: string
+    body: string
+    subject: string
+  }): EmailRequestedEvent {
     return {
-      type: 'EMAIL_MESSAGE_REQUESTED',
+      type: 'EMAIL_REQUESTED',
       createdAt: this.timer.getUTCDate(),
       meta: {
         correlation: {

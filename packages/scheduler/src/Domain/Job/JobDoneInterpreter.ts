@@ -1,8 +1,9 @@
-import { EmailMessageIdentifier } from '@standardnotes/common'
 import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
 import { PredicateName } from '@standardnotes/predicates'
 import { inject, injectable } from 'inversify'
 import { Logger } from 'winston'
+import { EmailLevel } from '@standardnotes/domain-core'
+import { TimerInterface } from '@standardnotes/time'
 
 import TYPES from '../../Bootstrap/Types'
 import { DomainEventFactoryInterface } from '../Event/DomainEventFactoryInterface'
@@ -13,6 +14,15 @@ import { Job } from './Job'
 import { JobDoneInterpreterInterface } from './JobDoneInterpreterInterface'
 import { JobName } from './JobName'
 import { JobRepositoryInterface } from './JobRepositoryInterface'
+import { getSubject as getExitInterviewSubject, getBody as getExitInterviewBody } from '../Email/ExitInterview'
+import {
+  getSubject as getEncourageEmailBackupsSubject,
+  getBody as getEncourageEmailBackupsBody,
+} from '../Email/EncourageEmailBackups'
+import {
+  getSubject as getEncourageSubscriptionPurchasingSubject,
+  getBody as getEncourageSubscriptionPurchasingBody,
+} from '../Email/EncourageSubscriptionPurchasing'
 
 @injectable()
 export class JobDoneInterpreter implements JobDoneInterpreterInterface {
@@ -21,6 +31,7 @@ export class JobDoneInterpreter implements JobDoneInterpreterInterface {
     @inject(TYPES.PredicateRepository) private predicateRepository: PredicateRepositoryInterface,
     @inject(TYPES.DomainEventFactory) private domainEventFactory: DomainEventFactoryInterface,
     @inject(TYPES.DomainEventPublisher) private domainEventPublisher: DomainEventPublisherInterface,
+    @inject(TYPES.Timer) private timer: TimerInterface,
     @inject(TYPES.Logger) private logger: Logger,
   ) {}
 
@@ -81,10 +92,12 @@ export class JobDoneInterpreter implements JobDoneInterpreterInterface {
     this.logger.debug(`[${job.uuid}]${job.name}: requesting email backup encouragement email.`)
 
     await this.domainEventPublisher.publish(
-      this.domainEventFactory.createEmailMessageRequestedEvent({
+      this.domainEventFactory.createEmailRequestedEvent({
         userEmail: job.userIdentifier,
-        messageIdentifier: EmailMessageIdentifier.ENCOURAGE_EMAIL_BACKUPS,
-        context: {},
+        messageIdentifier: 'ENCOURAGE_EMAIL_BACKUPS',
+        subject: getEncourageEmailBackupsSubject(),
+        body: getEncourageEmailBackupsBody(),
+        level: EmailLevel.LEVELS.System,
       }),
     )
   }
@@ -93,12 +106,14 @@ export class JobDoneInterpreter implements JobDoneInterpreterInterface {
     this.logger.debug(`[${job.uuid}]${job.name}: requesting subscription purchase encouragement email.`)
 
     await this.domainEventPublisher.publish(
-      this.domainEventFactory.createEmailMessageRequestedEvent({
+      this.domainEventFactory.createEmailRequestedEvent({
         userEmail: job.userIdentifier,
-        messageIdentifier: EmailMessageIdentifier.ENCOURAGE_SUBSCRIPTION_PURCHASING,
-        context: {
-          userRegisteredAt: job.createdAt,
-        },
+        messageIdentifier: 'ENCOURAGE_SUBSCRIPTION_PURCHASING',
+        subject: getEncourageSubscriptionPurchasingSubject(),
+        body: getEncourageSubscriptionPurchasingBody(
+          this.timer.convertMicrosecondsToDate(job.createdAt).toLocaleString(),
+        ),
+        level: EmailLevel.LEVELS.System,
       }),
     )
   }
@@ -107,10 +122,12 @@ export class JobDoneInterpreter implements JobDoneInterpreterInterface {
     this.logger.debug(`[${job.uuid}]${job.name}: requesting exit interview email.`)
 
     await this.domainEventPublisher.publish(
-      this.domainEventFactory.createEmailMessageRequestedEvent({
+      this.domainEventFactory.createEmailRequestedEvent({
         userEmail: job.userIdentifier,
-        messageIdentifier: EmailMessageIdentifier.EXIT_INTERVIEW,
-        context: {},
+        messageIdentifier: 'EXIT_INTERVIEW',
+        subject: getExitInterviewSubject(),
+        body: getExitInterviewBody(),
+        level: EmailLevel.LEVELS.System,
       }),
     )
   }

@@ -1,8 +1,7 @@
-import { EmailMessageIdentifier } from '@standardnotes/common'
 import {
   DiscountApplyRequestedEvent,
   DiscountWithdrawRequestedEvent,
-  EmailMessageRequestedEvent,
+  EmailRequestedEvent,
   ExitDiscountWithdrawRequestedEvent,
   PredicateVerificationRequestedEvent,
 } from '@standardnotes/domain-events'
@@ -12,11 +11,13 @@ import { Predicate } from '../Predicate/Predicate'
 
 export interface DomainEventFactoryInterface {
   createPredicateVerificationRequestedEvent(job: Job, predicate: Predicate): PredicateVerificationRequestedEvent
-  createEmailMessageRequestedEvent(dto: {
+  createEmailRequestedEvent(dto: {
     userEmail: string
-    messageIdentifier: EmailMessageIdentifier
-    context: Record<string, unknown>
-  }): EmailMessageRequestedEvent
+    messageIdentifier: string
+    level: string
+    body: string
+    subject: string
+  }): EmailRequestedEvent
   createDiscountApplyRequestedEvent(dto: { userEmail: string; discountCode: string }): DiscountApplyRequestedEvent
   createDiscountWithdrawRequestedEvent(dto: { userEmail: string; discountCode: string }): DiscountWithdrawRequestedEvent
   createExitDiscountWithdrawRequestedEvent(dto: {

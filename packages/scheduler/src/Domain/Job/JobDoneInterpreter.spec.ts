@@ -6,6 +6,7 @@ import {
   ExitDiscountWithdrawRequestedEvent,
 } from '@standardnotes/domain-events'
 import { PredicateName } from '@standardnotes/predicates'
+import { TimerInterface } from '@standardnotes/time'
 import 'reflect-metadata'
 import { Logger } from 'winston'
 import { DomainEventFactoryInterface } from '../Event/DomainEventFactoryInterface'
@@ -26,12 +27,16 @@ describe('JobDoneInterpreter', () => {
   let domainEventPublisher: DomainEventPublisherInterface
   let job: Job
   let logger: Logger
+  let timer: TimerInterface
 
   const createInterpreter = () =>
-    new JobDoneInterpreter(jobRepository, predicateRepository, domainEventFactory, domainEventPublisher, logger)
+    new JobDoneInterpreter(jobRepository, predicateRepository, domainEventFactory, domainEventPublisher, timer, logger)
 
   beforeEach(() => {
     job = {} as jest.Mocked<Job>
+
+    timer = {} as jest.Mocked<TimerInterface>
+    timer.convertMicrosecondsToDate = jest.fn().mockReturnValue(new Date())
 
     jobRepository = {} as jest.Mocked<JobRepositoryInterface>
     jobRepository.findOneByUuid = jest.fn().mockReturnValue(job)
@@ -40,7 +45,7 @@ describe('JobDoneInterpreter', () => {
     predicateRepository.findByJobUuid = jest.fn().mockReturnValue([])
 
     domainEventFactory = {} as jest.Mocked<DomainEventFactoryInterface>
-    domainEventFactory.createEmailMessageRequestedEvent = jest
+    domainEventFactory.createEmailRequestedEvent = jest
       .fn()
       .mockReturnValue({} as jest.Mocked<EmailMessageRequestedEvent>)
     domainEventFactory.createDiscountApplyRequestedEvent = jest
@@ -89,11 +94,7 @@ describe('JobDoneInterpreter', () => {
 
     await createInterpreter().interpret('1-2-3')
 
-    expect(domainEventFactory.createEmailMessageRequestedEvent).toHaveBeenCalledWith({
-      context: {},
-      messageIdentifier: 'ENCOURAGE_EMAIL_BACKUPS',
-      userEmail: 'test@test.te',
-    })
+    expect(domainEventFactory.createEmailRequestedEvent).toHaveBeenCalled()
     expect(domainEventPublisher.publish).toHaveBeenCalled()
   })
 
@@ -111,7 +112,7 @@ describe('JobDoneInterpreter', () => {
 
     await createInterpreter().interpret('1-2-3')
 
-    expect(domainEventFactory.createEmailMessageRequestedEvent).not.toHaveBeenCalled()
+    expect(domainEventFactory.createEmailRequestedEvent).not.toHaveBeenCalled()
     expect(domainEventPublisher.publish).not.toHaveBeenCalled()
   })
 
@@ -124,7 +125,7 @@ describe('JobDoneInterpreter', () => {
 
     await createInterpreter().interpret('1-2-3')
 
-    expect(domainEventFactory.createEmailMessageRequestedEvent).not.toHaveBeenCalled()
+    expect(domainEventFactory.createEmailRequestedEvent).not.toHaveBeenCalled()
     expect(domainEventPublisher.publish).not.toHaveBeenCalled()
   })
 
@@ -143,11 +144,7 @@ describe('JobDoneInterpreter', () => {
 
     await createInterpreter().interpret('1-2-3')
 
-    expect(domainEventFactory.createEmailMessageRequestedEvent).toHaveBeenCalledWith({
-      context: { userRegisteredAt: 123 },
-      messageIdentifier: 'ENCOURAGE_SUBSCRIPTION_PURCHASING',
-      userEmail: 'test@test.te',
-    })
+    expect(domainEventFactory.createEmailRequestedEvent).toHaveBeenCalled()
     expect(domainEventPublisher.publish).toHaveBeenCalled()
   })
 
@@ -160,7 +157,7 @@ describe('JobDoneInterpreter', () => {
 
     await createInterpreter().interpret('1-2-3')
 
-    expect(domainEventFactory.createEmailMessageRequestedEvent).not.toHaveBeenCalled()
+    expect(domainEventFactory.createEmailRequestedEvent).not.toHaveBeenCalled()
     expect(domainEventPublisher.publish).not.toHaveBeenCalled()
   })
 
@@ -173,11 +170,7 @@ describe('JobDoneInterpreter', () => {
 
     await createInterpreter().interpret('1-2-3')
 
-    expect(domainEventFactory.createEmailMessageRequestedEvent).toHaveBeenCalledWith({
-      context: {},
-      messageIdentifier: 'EXIT_INTERVIEW',
-      userEmail: 'test@test.te',
-    })
+    expect(domainEventFactory.createEmailRequestedEvent).toHaveBeenCalled()
     expect(domainEventPublisher.publish).toHaveBeenCalled()
   })
 
@@ -190,7 +183,7 @@ describe('JobDoneInterpreter', () => {
 
     await createInterpreter().interpret('1-2-3')
 
-    expect(domainEventFactory.createEmailMessageRequestedEvent).not.toHaveBeenCalled()
+    expect(domainEventFactory.createEmailRequestedEvent).not.toHaveBeenCalled()
     expect(domainEventPublisher.publish).not.toHaveBeenCalled()
   })
 
@@ -295,7 +288,7 @@ describe('JobDoneInterpreter', () => {
 
     await createInterpreter().interpret('1-2-3')
 
-    expect(domainEventFactory.createEmailMessageRequestedEvent).not.toHaveBeenCalled()
+    expect(domainEventFactory.createEmailRequestedEvent).not.toHaveBeenCalled()
     expect(domainEventPublisher.publish).not.toHaveBeenCalled()
   })
 })
