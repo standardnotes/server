@@ -1,6 +1,6 @@
 /* istanbul ignore file */
 
-import { EmailMessageIdentifier, JSONString, ProtocolVersion, RoleName, Uuid } from '@standardnotes/common'
+import { JSONString, ProtocolVersion, RoleName, Uuid } from '@standardnotes/common'
 import {
   AccountDeletionRequestedEvent,
   UserEmailChangedEvent,
@@ -10,17 +10,16 @@ import {
   EmailBackupRequestedEvent,
   CloudBackupRequestedEvent,
   ListedAccountRequestedEvent,
-  UserSignedInEvent,
   UserDisabledSessionUserAgentLoggingEvent,
   SharedSubscriptionInvitationCreatedEvent,
   SharedSubscriptionInvitationCanceledEvent,
   PredicateVerifiedEvent,
   DomainEventService,
-  EmailMessageRequestedEvent,
   WebSocketMessageRequestedEvent,
   ExitDiscountApplyRequestedEvent,
   UserContentSizeRecalculationRequestedEvent,
   MuteEmailsSettingChangedEvent,
+  EmailRequestedEvent,
 } from '@standardnotes/domain-events'
 import { Predicate, PredicateVerificationResult } from '@standardnotes/predicates'
 import { TimerInterface } from '@standardnotes/time'
@@ -102,13 +101,15 @@ export class DomainEventFactory implements DomainEventFactoryInterface {
     }
   }
 
-  createEmailMessageRequestedEvent(dto: {
+  createEmailRequestedEvent(dto: {
     userEmail: string
-    messageIdentifier: EmailMessageIdentifier
-    context: Record<string, unknown>
-  }): EmailMessageRequestedEvent {
+    messageIdentifier: string
+    level: string
+    body: string
+    subject: string
+  }): EmailRequestedEvent {
     return {
-      type: 'EMAIL_MESSAGE_REQUESTED',
+      type: 'EMAIL_REQUESTED',
       createdAt: this.timer.getUTCDate(),
       meta: {
         correlation: {
@@ -190,28 +191,6 @@ export class DomainEventFactory implements DomainEventFactoryInterface {
   }): UserDisabledSessionUserAgentLoggingEvent {
     return {
       type: 'USER_DISABLED_SESSION_USER_AGENT_LOGGING',
-      createdAt: this.timer.getUTCDate(),
-      meta: {
-        correlation: {
-          userIdentifier: dto.userUuid,
-          userIdentifierType: 'uuid',
-        },
-        origin: DomainEventService.Auth,
-      },
-      payload: dto,
-    }
-  }
-
-  createUserSignedInEvent(dto: {
-    userUuid: string
-    userEmail: string
-    device: string
-    browser: string
-    signInAlertEnabled: boolean
-    muteSignInEmailsSettingUuid: Uuid
-  }): UserSignedInEvent {
-    return {
-      type: 'USER_SIGNED_IN',
       createdAt: this.timer.getUTCDate(),
       meta: {
         correlation: {

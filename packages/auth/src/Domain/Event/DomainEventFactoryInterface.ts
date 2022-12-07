@@ -1,4 +1,4 @@
-import { Uuid, RoleName, EmailMessageIdentifier, ProtocolVersion, JSONString } from '@standardnotes/common'
+import { Uuid, RoleName, ProtocolVersion, JSONString } from '@standardnotes/common'
 import { Predicate, PredicateVerificationResult } from '@standardnotes/predicates'
 import {
   AccountDeletionRequestedEvent,
@@ -9,35 +9,28 @@ import {
   OfflineSubscriptionTokenCreatedEvent,
   EmailBackupRequestedEvent,
   ListedAccountRequestedEvent,
-  UserSignedInEvent,
   UserDisabledSessionUserAgentLoggingEvent,
   SharedSubscriptionInvitationCreatedEvent,
   SharedSubscriptionInvitationCanceledEvent,
   PredicateVerifiedEvent,
-  EmailMessageRequestedEvent,
   WebSocketMessageRequestedEvent,
   ExitDiscountApplyRequestedEvent,
   UserContentSizeRecalculationRequestedEvent,
   MuteEmailsSettingChangedEvent,
+  EmailRequestedEvent,
 } from '@standardnotes/domain-events'
 import { InviteeIdentifierType } from '../SharedSubscription/InviteeIdentifierType'
 
 export interface DomainEventFactoryInterface {
   createUserContentSizeRecalculationRequestedEvent(userUuid: string): UserContentSizeRecalculationRequestedEvent
   createWebSocketMessageRequestedEvent(dto: { userUuid: Uuid; message: JSONString }): WebSocketMessageRequestedEvent
-  createEmailMessageRequestedEvent(dto: {
+  createEmailRequestedEvent(dto: {
     userEmail: string
-    messageIdentifier: EmailMessageIdentifier
-    context: Record<string, unknown>
-  }): EmailMessageRequestedEvent
-  createUserSignedInEvent(dto: {
-    userUuid: string
-    userEmail: string
-    device: string
-    browser: string
-    signInAlertEnabled: boolean
-    muteSignInEmailsSettingUuid: Uuid
-  }): UserSignedInEvent
+    messageIdentifier: string
+    level: string
+    body: string
+    subject: string
+  }): EmailRequestedEvent
   createListedAccountRequestedEvent(userUuid: string, userEmail: string): ListedAccountRequestedEvent
   createUserRegisteredEvent(dto: {
     userUuid: string

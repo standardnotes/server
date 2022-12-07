@@ -1,18 +1,12 @@
 import * as bcrypt from 'bcryptjs'
 import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
-import { PermissionName } from '@standardnotes/features'
-import { MuteSignInEmailsOption, SettingName } from '@standardnotes/settings'
 
 import { inject, injectable } from 'inversify'
 import { Logger } from 'winston'
 import TYPES from '../../Bootstrap/Types'
 import { AuthResponseFactoryResolverInterface } from '../Auth/AuthResponseFactoryResolverInterface'
-import { EncryptionVersion } from '../Encryption/EncryptionVersion'
 import { DomainEventFactoryInterface } from '../Event/DomainEventFactoryInterface'
-import { RoleServiceInterface } from '../Role/RoleServiceInterface'
 import { SessionServiceInterface } from '../Session/SessionServiceInterface'
-import { Setting } from '../Setting/Setting'
-import { SettingServiceInterface } from '../Setting/SettingServiceInterface'
 import { User } from '../User/User'
 import { UserRepositoryInterface } from '../User/UserRepositoryInterface'
 import { SignInDTO } from './SignInDTO'
@@ -23,6 +17,8 @@ import { CrypterInterface } from '../Encryption/CrypterInterface'
 import { SignInDTOV2Challenged } from './SignInDTOV2Challenged'
 import { ProtocolVersion } from '@standardnotes/common'
 import { HttpStatusCode } from '@standardnotes/api'
+import { EmailLevel } from '@standardnotes/domain-core'
+import { getBody, getSubject } from '../Email/UserSignedIn'
 
 @injectable()
 export class SignIn implements UseCaseInterface {
@@ -33,8 +29,6 @@ export class SignIn implements UseCaseInterface {
     @inject(TYPES.DomainEventPublisher) private domainEventPublisher: DomainEventPublisherInterface,
     @inject(TYPES.DomainEventFactory) private domainEventFactory: DomainEventFactoryInterface,
     @inject(TYPES.SessionService) private sessionService: SessionServiceInterface,
-    @inject(TYPES.RoleService) private roleService: RoleServiceInterface,
-    @inject(TYPES.SettingService) private settingService: SettingServiceInterface,
     @inject(TYPES.PKCERepository) private pkceRepository: PKCERepositoryInterface,
     @inject(TYPES.Crypter) private crypter: CrypterInterface,
     @inject(TYPES.Logger) private logger: Logger,
@@ -109,46 +103,23 @@ export class SignIn implements UseCaseInterface {
 
   private async sendSignInEmailNotification(user: User, userAgent: string): Promise<void> {
     try {
-      const muteSignInEmailsSetting = await this.findOrCreateMuteSignInEmailsSetting(user)
-
       await this.domainEventPublisher.publish(
-        this.domainEventFactory.createUserSignedInEvent({
-          userUuid: user.uuid,
+        this.domainEventFactory.createEmailRequestedEvent({
           userEmail: user.email,
-          device: this.sessionService.getOperatingSystemInfoFromUserAgent(userAgent),
-          browser: this.sessionService.getBrowserInfoFromUserAgent(userAgent),
-          signInAlertEnabled:
-            (await this.roleService.userHasPermission(user.uuid, PermissionName.SignInAlerts)) &&
-            muteSignInEmailsSetting.value === MuteSignInEmailsOption.NotMuted,
-          muteSignInEmailsSettingUuid: muteSignInEmailsSetting.uuid,
+          level: EmailLevel.LEVELS.SignIn,
+          body: getBody(
+            user.email,
+            this.sessionService.getOperatingSystemInfoFromUserAgent(userAgent),
+            this.sessionService.getBrowserInfoFromUserAgent(userAgent),
+            new Date(),
+          ),
+          messageIdentifier: 'SIGN_IN',
+          subject: getSubject(user.email),
         }),
       )
     } catch (error) {
       this.logger.error(`Could not publish sign in event: ${(error as Error).message}`)
     }
-  }
-
-  private async findOrCreateMuteSignInEmailsSetting(user: User): Promise<Setting> {
-    const existingMuteSignInEmailsSetting = await this.settingService.findSettingWithDecryptedValue({
-      userUuid: user.uuid,
-      settingName: SettingName.MuteSignInEmails,
-    })
-
-    if (existingMuteSignInEmailsSetting !== null) {
-      return existingMuteSignInEmailsSetting
-    }
-
-    const createSettingResult = await this.settingService.createOrReplace({
-      user,
-      props: {
-        name: SettingName.MuteSignInEmails,
-        sensitive: false,
-        unencryptedValue: MuteSignInEmailsOption.NotMuted,
-        serverEncryptionVersion: EncryptionVersion.Unencrypted,
-      },
-    })
-
-    return createSettingResult.setting
   }
 
   private isCodeChallengedVersion(dto: SignInDTO): dto is SignInDTOV2Challenged {

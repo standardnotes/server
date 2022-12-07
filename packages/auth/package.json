@@ -26,7 +26,6 @@
     "daily-backup:one_drive": "yarn node dist/bin/backup.js one_drive daily",
     "weekly-backup:email": "yarn node dist/bin/backup.js email weekly",
     "content-recalculation": "yarn node dist/bin/content.js",
-    "email-campaign": "yarn node dist/bin/email.js",
     "typeorm": "typeorm-ts-node-commonjs",
     "upgrade:snjs": "yarn ncu -u '@standardnotes/*'"
   },

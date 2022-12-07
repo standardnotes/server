@@ -50,12 +50,6 @@ case "$COMMAND" in
     yarn workspace @standardnotes/auth-server daily-backup:one_drive
     ;;
 
-  'email-campaign' )
-    echo "[Docker] Starting Email Campaign Sending..."
-    MESSAGE_IDENTIFIER=$1 && shift 1
-    yarn workspace @standardnotes/auth-server email-campaign $MESSAGE_IDENTIFIER
-    ;;
-
   'content-recalculation' )
     echo "[Docker] Starting Content Size Recalculation..."
     yarn workspace @standardnotes/auth-server content-recalculation
