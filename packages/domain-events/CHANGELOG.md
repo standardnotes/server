@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.95.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.94.1...@standardnotes/domain-events@2.95.0) (2022-12-07)
+
+### Features
+
+* **domain-events:** add email requested event ([fa75aa4](https://github.com/standardnotes/server/commit/fa75aa40f036dc3b9b4ed1364bffdbba6dec4da4))
+
 ## [2.94.1](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.94.0...@standardnotes/domain-events@2.94.1) (2022-12-07)
 
 ### Bug Fixes
