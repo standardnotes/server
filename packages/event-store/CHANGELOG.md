@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.6.38](https://github.com/standardnotes/server/compare/@standardnotes/event-store@1.6.37...@standardnotes/event-store@1.6.38) (2022-12-07)
+
+### Bug Fixes
+
+* **event-store:** add email requested subscription ([eff0945](https://github.com/standardnotes/server/commit/eff09454c3a28b0124b74c2850fed19313b9e2b2))
+* **event-store:** reduce handlers ([473feba](https://github.com/standardnotes/server/commit/473feba6a8f008c9d73238be82e1d197082464c0))
+
 ## [1.6.37](https://github.com/standardnotes/server/compare/@standardnotes/event-store@1.6.36...@standardnotes/event-store@1.6.37) (2022-12-07)
 
 **Note:** Version bump only for package @standardnotes/event-store
