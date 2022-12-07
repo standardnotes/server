@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.14.1](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.14.0...@standardnotes/scheduler-server@1.14.1) (2022-12-07)
+
+### Bug Fixes
+
+* **scheduler:** importing email contents ([c52bb93](https://github.com/standardnotes/server/commit/c52bb93d794447f04d3ea173f0aac9f26e4eba20))
+
 # [1.14.0](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.13.37...@standardnotes/scheduler-server@1.14.0) (2022-12-07)
 
 ### Features
