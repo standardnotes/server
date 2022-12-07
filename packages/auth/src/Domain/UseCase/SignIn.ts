@@ -21,7 +21,7 @@ import { UseCaseInterface } from './UseCaseInterface'
 import { PKCERepositoryInterface } from '../User/PKCERepositoryInterface'
 import { CrypterInterface } from '../Encryption/CrypterInterface'
 import { SignInDTOV2Challenged } from './SignInDTOV2Challenged'
-import { ProtocolVersion } from '@standardnotes/common'
+import { leftVersionGreaterThanOrEqualToRight, ProtocolVersion } from '@standardnotes/common'
 import { HttpStatusCode } from '@standardnotes/api'
 
 @injectable()
@@ -65,7 +65,12 @@ export class SignIn implements UseCaseInterface {
       }
     }
 
-    if (user.version === ProtocolVersion.V004 && !performingCodeChallengedSignIn) {
+    const userVersionIs004OrGreater = leftVersionGreaterThanOrEqualToRight(
+      user.version as ProtocolVersion,
+      ProtocolVersion.V004,
+    )
+
+    if (userVersionIs004OrGreater && !performingCodeChallengedSignIn) {
       return {
         success: false,
         errorMessage: 'Please update your client application.',

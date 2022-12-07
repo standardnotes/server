@@ -129,7 +129,29 @@ describe('SignIn', () => {
     expect(domainEventPublisher.publish).toHaveBeenCalled()
   })
 
-  it('should not sign in a user without code verifier', async () => {
+  it('should not sign in 004 user without code verifier', async () => {
+    expect(
+      await createUseCase().execute({
+        email: 'test@test.te',
+        password: 'qweqwe123123',
+        userAgent: 'Google Chrome',
+        apiVersion: '20190520',
+        ephemeralSession: false,
+      }),
+    ).toEqual({
+      success: false,
+      errorCode: 410,
+      errorMessage: 'Please update your client application.',
+    })
+  })
+
+  it('should not sign in 005 user without code verifier', async () => {
+    user = {
+      uuid: '1-2-3',
+      email: 'test@test.com',
+      version: '005',
+    } as jest.Mocked<User>
+
     expect(
       await createUseCase().execute({
         email: 'test@test.te',
