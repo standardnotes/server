@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.63.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.63.0...@standardnotes/auth-server@1.63.1) (2022-12-07)
+
+### Bug Fixes
+
+* **auth:** remove not needed event from factory ([2542cf6](https://github.com/standardnotes/server/commit/2542cf6f9a40c3a5eb4e11ead3cbbc25afefae48))
+
 # [1.63.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.62.1...@standardnotes/auth-server@1.63.0) (2022-12-07)
 
 ### Features
