@@ -21,7 +21,6 @@ import {
   ExitDiscountApplyRequestedEvent,
   UserContentSizeRecalculationRequestedEvent,
   MuteEmailsSettingChangedEvent,
-  EmailSubscriptionSyncRequestedEvent,
 } from '@standardnotes/domain-events'
 import { Predicate, PredicateVerificationResult } from '@standardnotes/predicates'
 import { TimerInterface } from '@standardnotes/time'
@@ -33,29 +32,6 @@ import { DomainEventFactoryInterface } from './DomainEventFactoryInterface'
 @injectable()
 export class DomainEventFactory implements DomainEventFactoryInterface {
   constructor(@inject(TYPES.Timer) private timer: TimerInterface) {}
-
-  createEmailSubscriptionSyncRequestedEvent(dto: {
-    username: string
-    userUuid: string
-    subscriptionPlanName: string | null
-    muteFailedBackupsEmails: boolean
-    muteFailedCloudBackupsEmails: boolean
-    muteMarketingEmails: boolean
-    muteSignInEmails: boolean
-  }): EmailSubscriptionSyncRequestedEvent {
-    return {
-      type: 'EMAIL_SUBSCRIPTION_SYNC_REQUESTED',
-      createdAt: this.timer.getUTCDate(),
-      meta: {
-        correlation: {
-          userIdentifier: dto.userUuid,
-          userIdentifierType: 'uuid',
-        },
-        origin: DomainEventService.Auth,
-      },
-      payload: dto,
-    }
-  }
 
   createMuteEmailsSettingChangedEvent(dto: {
     username: string

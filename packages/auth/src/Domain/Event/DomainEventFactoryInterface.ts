@@ -19,7 +19,6 @@ import {
   ExitDiscountApplyRequestedEvent,
   UserContentSizeRecalculationRequestedEvent,
   MuteEmailsSettingChangedEvent,
-  EmailSubscriptionSyncRequestedEvent,
 } from '@standardnotes/domain-events'
 import { InviteeIdentifierType } from '../SharedSubscription/InviteeIdentifierType'
 
@@ -98,13 +97,4 @@ export interface DomainEventFactoryInterface {
     mute: boolean
     emailSubscriptionRejectionLevel: string
   }): MuteEmailsSettingChangedEvent
-  createEmailSubscriptionSyncRequestedEvent(dto: {
-    username: string
-    userUuid: string
-    subscriptionPlanName: string | null
-    muteFailedBackupsEmails: boolean
-    muteFailedCloudBackupsEmails: boolean
-    muteMarketingEmails: boolean
-    muteSignInEmails: boolean
-  }): EmailSubscriptionSyncRequestedEvent
 }
