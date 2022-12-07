@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.63.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.62.1...@standardnotes/auth-server@1.63.0) (2022-12-07)
+
+### Features
+
+* **domain-core:** rename email subscription rejection level to email level ([c87561f](https://github.com/standardnotes/server/commit/c87561fca782883b84f58b4f0b9f85ecc279ca50))
+
 ## [1.62.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.62.0...@standardnotes/auth-server@1.62.1) (2022-12-06)
 
 ### Bug Fixes
