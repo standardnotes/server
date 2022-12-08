@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.97.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.96.0...@standardnotes/domain-events@2.97.0) (2022-12-08)
+
+### Features
+
+* **domain-events:** remove unused account reset requested event ([3a12f5c](https://github.com/standardnotes/server/commit/3a12f5c1c40ab6cb236b963bad2a987bacef55e4))
+
 # [2.96.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.95.0...@standardnotes/domain-events@2.96.0) (2022-12-07)
 
 ### Features
