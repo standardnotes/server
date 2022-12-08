@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.98.2](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.98.1...@standardnotes/domain-events@2.98.2) (2022-12-08)
+
+### Bug Fixes
+
+* **domain-events:** remove unused event ([5a1eb9f](https://github.com/standardnotes/server/commit/5a1eb9fdacb8cfe8fde06df9e83fef1753b1a619))
+
 ## [2.98.1](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.98.0...@standardnotes/domain-events@2.98.1) (2022-12-08)
 
 ### Bug Fixes
