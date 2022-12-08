@@ -4,4 +4,10 @@ export interface EmailRequestedEventPayload {
   level: string
   subject: string
   body: string
+  attachments?: Array<{
+    filePath: string
+    fileName: string
+    attachmentFileName: string
+    attachmentContentType: string
+  }>
 }
