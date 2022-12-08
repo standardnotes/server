@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.98.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.97.0...@standardnotes/domain-events@2.98.0) (2022-12-08)
+
+### Features
+
+* **domain-events:** remove unused events and add attachments option for sending emails ([435cd2f](https://github.com/standardnotes/server/commit/435cd2f66a1332a294001e87eed3ece1b8b991ae))
+
 # [2.97.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.96.0...@standardnotes/domain-events@2.97.0) (2022-12-08)
 
 ### Features
