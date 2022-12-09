@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.23.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.22.0...@standardnotes/syncing-server@1.23.0) (2022-12-09)
+
+### Features
+
+* **syncing-server:** replace one drive backup failed event with email requested ([130f90b](https://github.com/standardnotes/syncing-server-js/commit/130f90bdb6cc88e073b9380e8aed5eebe8c49c1e))
+
 # [1.22.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.21.0...@standardnotes/syncing-server@1.22.0) (2022-12-09)
 
 ### Features

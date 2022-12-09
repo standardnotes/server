@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.15.0](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.14.10...@standardnotes/scheduler-server@1.15.0) (2022-12-09)
+
+### Features
+
+* **syncing-server:** replace one drive backup failed event with email requested ([130f90b](https://github.com/standardnotes/server/commit/130f90bdb6cc88e073b9380e8aed5eebe8c49c1e))
+
 ## [1.14.10](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.14.9...@standardnotes/scheduler-server@1.14.10) (2022-12-09)
 
 **Note:** Version bump only for package @standardnotes/scheduler-server

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.101.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.100.0...@standardnotes/domain-events@2.101.0) (2022-12-09)
+
+### Features
+
+* **syncing-server:** replace one drive backup failed event with email requested ([130f90b](https://github.com/standardnotes/server/commit/130f90bdb6cc88e073b9380e8aed5eebe8c49c1e))
+
 # [2.100.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.99.0...@standardnotes/domain-events@2.100.0) (2022-12-09)
 
 ### Features
