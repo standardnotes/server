@@ -53,6 +53,7 @@ describe('ExtensionsHttpService', () => {
     domainEventFactory.createDropboxBackupFailedEvent = jest.fn()
     domainEventFactory.createGoogleDriveBackupFailedEvent = jest.fn()
     domainEventFactory.createOneDriveBackupFailedEvent = jest.fn()
+    domainEventFactory.createEmailRequestedEvent = jest.fn()
 
     contentDecoder = {} as jest.Mocked<ContentDecoderInterface>
     contentDecoder.decode = jest.fn().mockReturnValue({ name: 'Dropbox' })

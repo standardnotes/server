@@ -1,7 +1,6 @@
 /* istanbul ignore file */
 import {
   DomainEventService,
-  DropboxBackupFailedEvent,
   DuplicateItemSyncedEvent,
   EmailArchiveExtensionSyncedEvent,
   EmailBackupAttachmentCreatedEvent,
@@ -127,24 +126,6 @@ export class DomainEventFactory implements DomainEventFactoryInterface {
       payload: {
         itemUuid,
         userUuid,
-      },
-    }
-  }
-
-  createDropboxBackupFailedEvent(muteCloudEmailsSettingUuid: string, email: string): DropboxBackupFailedEvent {
-    return {
-      type: 'DROPBOX_BACKUP_FAILED',
-      createdAt: this.timer.getUTCDate(),
-      meta: {
-        correlation: {
-          userIdentifier: email,
-          userIdentifierType: 'email',
-        },
-        origin: DomainEventService.SyncingServer,
-      },
-      payload: {
-        muteCloudEmailsSettingUuid,
-        email,
       },
     }
   }

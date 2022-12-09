@@ -1,5 +1,4 @@
 import {
-  DropboxBackupFailedEvent,
   DuplicateItemSyncedEvent,
   EmailArchiveExtensionSyncedEvent,
   EmailBackupAttachmentCreatedEvent,
@@ -15,7 +14,6 @@ import {
 
 export interface DomainEventFactoryInterface {
   createUserContentSizeRecalculationRequestedEvent(userUuid: string): UserContentSizeRecalculationRequestedEvent
-  createDropboxBackupFailedEvent(muteCloudEmailsSettingUuid: string, email: string): DropboxBackupFailedEvent
   createEmailRequestedEvent(dto: {
     userEmail: string
     messageIdentifier: string

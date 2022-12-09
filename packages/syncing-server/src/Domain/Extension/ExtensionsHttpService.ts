@@ -11,7 +11,8 @@ import { ItemRepositoryInterface } from '../Item/ItemRepositoryInterface'
 import { ExtensionName } from './ExtensionName'
 import { ExtensionsHttpServiceInterface } from './ExtensionsHttpServiceInterface'
 import { SendItemsToExtensionsServerDTO } from './SendItemsToExtensionsServerDTO'
-import { getBody, getSubject } from '../Email/GoogleDriveBackupFailed'
+import { getBody as googleDriveBody, getSubject as googleDriveSubject } from '../Email/GoogleDriveBackupFailed'
+import { getBody as dropboxBody, getSubject as dropboxSubject } from '../Email/DropboxBackupFailed'
 
 @injectable()
 export class ExtensionsHttpService implements ExtensionsHttpServiceInterface {
@@ -121,14 +122,20 @@ export class ExtensionsHttpService implements ExtensionsHttpServiceInterface {
   ): DomainEventInterface {
     switch (cloudProvider) {
       case 'DROPBOX':
-        return this.domainEventFactory.createDropboxBackupFailedEvent(muteCloudEmailsSettingUuid, email)
+        return this.domainEventFactory.createEmailRequestedEvent({
+          userEmail: email,
+          level: EmailLevel.LEVELS.FailedCloudBackup,
+          body: dropboxBody(),
+          messageIdentifier: 'FAILED_DROPBOX_BACKUP',
+          subject: dropboxSubject(),
+        })
       case 'GOOGLE_DRIVE':
         return this.domainEventFactory.createEmailRequestedEvent({
           userEmail: email,
           level: EmailLevel.LEVELS.FailedCloudBackup,
-          body: getBody(),
+          body: googleDriveBody(),
           messageIdentifier: 'FAILED_GOOGLE_DRIVE_BACKUP',
-          subject: getSubject(),
+          subject: googleDriveSubject(),
         })
       case 'ONE_DRIVE':
         return this.domainEventFactory.createOneDriveBackupFailedEvent(muteCloudEmailsSettingUuid, email)
