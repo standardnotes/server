@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.102.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.101.0...@standardnotes/domain-events@2.102.0) (2022-12-09)
+
+### Features
+
+* **syncing-server:** replace email backup attachment created with email requested ([32601f3](https://github.com/standardnotes/server/commit/32601f34f181b29b7c62cd2926111a0887d97fbf))
+
 # [2.101.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.100.0...@standardnotes/domain-events@2.101.0) (2022-12-09)
 
 ### Features
