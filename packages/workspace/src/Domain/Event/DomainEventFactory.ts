@@ -1,8 +1,8 @@
 import {
   DomainEventService,
+  EmailRequestedEvent,
   WebSocketMessageRequestedEvent,
   WorkspaceInviteAcceptedEvent,
-  WorkspaceInviteCreatedEvent,
 } from '@standardnotes/domain-events'
 import { TimerInterface } from '@standardnotes/time'
 import { inject, injectable } from 'inversify'
@@ -49,21 +49,22 @@ export class DomainEventFactory implements DomainEventFactoryInterface {
     }
   }
 
-  createWorkspaceInviteCreatedEvent(dto: {
-    inviterUuid: string
-    inviteeEmail: string
-    inviteUuid: string
-    workspaceUuid: string
-  }): WorkspaceInviteCreatedEvent {
+  createEmailRequestedEvent(dto: {
+    userEmail: string
+    messageIdentifier: string
+    level: string
+    body: string
+    subject: string
+  }): EmailRequestedEvent {
     return {
-      type: 'WORKSPACE_INVITE_CREATED',
+      type: 'EMAIL_REQUESTED',
       createdAt: this.timer.getUTCDate(),
       meta: {
         correlation: {
-          userIdentifier: dto.inviterUuid,
-          userIdentifierType: 'uuid',
+          userIdentifier: dto.userEmail,
+          userIdentifierType: 'email',
         },
-        origin: DomainEventService.Workspace,
+        origin: DomainEventService.Auth,
       },
       payload: dto,
     }

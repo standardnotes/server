@@ -3324,6 +3324,7 @@ const RAW_RUNTIME_STATE =
           ["@sentry/node", "npm:7.19.0"],\
           ["@standardnotes/api", "npm:1.19.0"],\
           ["@standardnotes/common", "workspace:packages/common"],\
+          ["@standardnotes/domain-core", "workspace:packages/domain-core"],\
           ["@standardnotes/domain-events", "workspace:packages/domain-events"],\
           ["@standardnotes/domain-events-infra", "workspace:packages/domain-events-infra"],\
           ["@standardnotes/models", "npm:1.28.0"],\

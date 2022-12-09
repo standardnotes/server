@@ -1,8 +1,10 @@
 import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
 import { TimerInterface } from '@standardnotes/time'
+import { EmailLevel } from '@standardnotes/domain-core'
 import { inject, injectable } from 'inversify'
 
 import TYPES from '../../../Bootstrap/Types'
+import { getBody, getSubject } from '../../Email/WorkspaceInviteCreated'
 import { DomainEventFactoryInterface } from '../../Event/DomainEventFactoryInterface'
 import { WorkspaceInvite } from '../../Invite/WorkspaceInvite'
 import { WorkspaceInviteRepositoryInterface } from '../../Invite/WorkspaceInviteRepositoryInterface'
@@ -36,11 +38,12 @@ export class InviteToWorkspace implements UseCaseInterface {
     invite = await this.workspaceInviteRepository.save(invite)
 
     await this.domainEventPublisher.publish(
-      this.domainEventFactory.createWorkspaceInviteCreatedEvent({
-        inviterUuid: dto.inviterUuid,
-        inviteeEmail: dto.inviteeEmail,
-        workspaceUuid: dto.workspaceUuid,
-        inviteUuid: invite.uuid,
+      this.domainEventFactory.createEmailRequestedEvent({
+        body: getBody(invite.uuid),
+        subject: getSubject(),
+        level: EmailLevel.LEVELS.System,
+        messageIdentifier: 'WORKSPACE_INVITE_CREATED',
+        userEmail: dto.inviteeEmail,
       }),
     )
 
