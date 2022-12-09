@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.99.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.98.4...@standardnotes/domain-events@2.99.0) (2022-12-09)
+
+### Features
+
+* **auth:** remove offline subscription token created event in favour of email requested ([fd58992](https://github.com/standardnotes/server/commit/fd589922bba29595a0dfd154a42fe158024fad28))
+
 ## [2.98.4](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.98.3...@standardnotes/domain-events@2.98.4) (2022-12-09)
 
 ### Bug Fixes
