@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.103.1](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.103.0...@standardnotes/domain-events@2.103.1) (2022-12-09)
+
+### Bug Fixes
+
+* **domain-events:** add additional styles option for sending email ([20d9214](https://github.com/standardnotes/server/commit/20d92149a8c559edf6aa25932b3dbcbc00b2e878))
+
 # [2.103.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.102.0...@standardnotes/domain-events@2.103.0) (2022-12-09)
 
 ### Features
