@@ -2,7 +2,7 @@ import {
   DiscountApplyRequestedEvent,
   DiscountWithdrawRequestedEvent,
   DomainEventPublisherInterface,
-  EmailMessageRequestedEvent,
+  EmailRequestedEvent,
   ExitDiscountWithdrawRequestedEvent,
 } from '@standardnotes/domain-events'
 import { PredicateName } from '@standardnotes/predicates'
@@ -45,9 +45,7 @@ describe('JobDoneInterpreter', () => {
     predicateRepository.findByJobUuid = jest.fn().mockReturnValue([])
 
     domainEventFactory = {} as jest.Mocked<DomainEventFactoryInterface>
-    domainEventFactory.createEmailRequestedEvent = jest
-      .fn()
-      .mockReturnValue({} as jest.Mocked<EmailMessageRequestedEvent>)
+    domainEventFactory.createEmailRequestedEvent = jest.fn().mockReturnValue({} as jest.Mocked<EmailRequestedEvent>)
     domainEventFactory.createDiscountApplyRequestedEvent = jest
       .fn()
       .mockReturnValue({} as jest.Mocked<DiscountApplyRequestedEvent>)

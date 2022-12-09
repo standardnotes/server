@@ -13,6 +13,7 @@ import { ExtensionsHttpServiceInterface } from './ExtensionsHttpServiceInterface
 import { SendItemsToExtensionsServerDTO } from './SendItemsToExtensionsServerDTO'
 import { getBody as googleDriveBody, getSubject as googleDriveSubject } from '../Email/GoogleDriveBackupFailed'
 import { getBody as dropboxBody, getSubject as dropboxSubject } from '../Email/DropboxBackupFailed'
+import { getBody as oneDriveBody, getSubject as oneDriveSubject } from '../Email/OneDriveBackupFailed'
 
 @injectable()
 export class ExtensionsHttpService implements ExtensionsHttpServiceInterface {
@@ -32,7 +33,6 @@ export class ExtensionsHttpService implements ExtensionsHttpServiceInterface {
     authParams: KeyParamsData
     forceMute: boolean
     userUuid: string
-    muteEmailsSettingUuid: string
   }): Promise<void> {
     let sent = false
     try {
@@ -41,7 +41,6 @@ export class ExtensionsHttpService implements ExtensionsHttpServiceInterface {
         auth_params: dto.authParams,
         silent: dto.forceMute,
         user_uuid: dto.userUuid,
-        settings_id: dto.muteEmailsSettingUuid,
       }
 
       const response = await this.httpClient.request({
@@ -61,13 +60,9 @@ export class ExtensionsHttpService implements ExtensionsHttpServiceInterface {
       this.logger.error(`[${dto.userUuid}] Failed to send a request to extensions server: ${(error as Error).message}`)
     }
 
-    if (!sent && !dto.forceMute && dto.muteEmailsSettingUuid !== undefined) {
+    if (!sent && !dto.forceMute) {
       await this.domainEventPublisher.publish(
-        this.createCloudBackupFailedEventBasedOnProvider(
-          dto.cloudProvider,
-          dto.authParams.identifier as string,
-          dto.muteEmailsSettingUuid,
-        ),
+        this.createCloudBackupFailedEventBasedOnProvider(dto.cloudProvider, dto.authParams.identifier as string),
       )
     }
   }
@@ -80,7 +75,6 @@ export class ExtensionsHttpService implements ExtensionsHttpServiceInterface {
         auth_params: dto.authParams,
         silent: dto.forceMute,
         user_uuid: dto.userUuid,
-        settings_id: dto.muteEmailsSettingUuid,
       }
       if (dto.items !== undefined) {
         payload.items = dto.items
@@ -103,14 +97,9 @@ export class ExtensionsHttpService implements ExtensionsHttpServiceInterface {
       this.logger.error(`[${dto.userUuid}] Failed to send a request to extensions server: ${(error as Error).message}`)
     }
 
-    if (!sent && !dto.forceMute && dto.muteEmailsSettingUuid !== undefined) {
+    if (!sent && !dto.forceMute) {
       await this.domainEventPublisher.publish(
-        await this.getBackupFailedEvent(
-          dto.muteEmailsSettingUuid,
-          dto.extensionId,
-          dto.userUuid,
-          dto.authParams.identifier as string,
-        ),
+        await this.getBackupFailedEvent(dto.extensionId, dto.userUuid, dto.authParams.identifier as string),
       )
     }
   }
@@ -118,7 +107,6 @@ export class ExtensionsHttpService implements ExtensionsHttpServiceInterface {
   private createCloudBackupFailedEventBasedOnProvider(
     cloudProvider: 'DROPBOX' | 'GOOGLE_DRIVE' | 'ONE_DRIVE',
     email: string,
-    muteCloudEmailsSettingUuid: string,
   ): DomainEventInterface {
     switch (cloudProvider) {
       case 'DROPBOX':
@@ -138,12 +126,17 @@ export class ExtensionsHttpService implements ExtensionsHttpServiceInterface {
           subject: googleDriveSubject(),
         })
       case 'ONE_DRIVE':
-        return this.domainEventFactory.createOneDriveBackupFailedEvent(muteCloudEmailsSettingUuid, email)
+        return this.domainEventFactory.createEmailRequestedEvent({
+          userEmail: email,
+          level: EmailLevel.LEVELS.FailedCloudBackup,
+          body: oneDriveBody(),
+          messageIdentifier: 'FAILED_ONE_DRIVE_BACKUP',
+          subject: oneDriveSubject(),
+        })
     }
   }
 
   private async getBackupFailedEvent(
-    muteCloudEmailsSettingUuid: string,
     extensionId: string,
     userUuid: string,
     email: string,
@@ -156,11 +149,11 @@ export class ExtensionsHttpService implements ExtensionsHttpServiceInterface {
     const content = this.contentDecoder.decode(extension.content)
     switch (this.getExtensionName(content)) {
       case ExtensionName.Dropbox:
-        return this.createCloudBackupFailedEventBasedOnProvider('DROPBOX', muteCloudEmailsSettingUuid, email)
+        return this.createCloudBackupFailedEventBasedOnProvider('DROPBOX', email)
       case ExtensionName.GoogleDrive:
-        return this.createCloudBackupFailedEventBasedOnProvider('GOOGLE_DRIVE', muteCloudEmailsSettingUuid, email)
+        return this.createCloudBackupFailedEventBasedOnProvider('GOOGLE_DRIVE', email)
       case ExtensionName.OneDrive:
-        return this.createCloudBackupFailedEventBasedOnProvider('ONE_DRIVE', muteCloudEmailsSettingUuid, email)
+        return this.createCloudBackupFailedEventBasedOnProvider('ONE_DRIVE', email)
     }
   }
 

@@ -50,9 +50,6 @@ describe('ExtensionsHttpService', () => {
     domainEventPublisher.publish = jest.fn()
 
     domainEventFactory = {} as jest.Mocked<DomainEventFactoryInterface>
-    domainEventFactory.createDropboxBackupFailedEvent = jest.fn()
-    domainEventFactory.createGoogleDriveBackupFailedEvent = jest.fn()
-    domainEventFactory.createOneDriveBackupFailedEvent = jest.fn()
     domainEventFactory.createEmailRequestedEvent = jest.fn()
 
     contentDecoder = {} as jest.Mocked<ContentDecoderInterface>
@@ -66,7 +63,6 @@ describe('ExtensionsHttpService', () => {
       forceMute: false,
       backupFilename: 'test',
       authParams,
-      muteEmailsSettingUuid: '3-4-5',
       cloudProvider: 'DROPBOX',
     })
 
@@ -74,7 +70,6 @@ describe('ExtensionsHttpService', () => {
       data: {
         auth_params: authParams,
         backup_filename: 'test',
-        settings_id: '3-4-5',
         silent: false,
         user_uuid: '1-2-3',
       },
@@ -100,12 +95,11 @@ describe('ExtensionsHttpService', () => {
       forceMute: false,
       backupFilename: 'test',
       authParams,
-      muteEmailsSettingUuid: '3-4-5',
       cloudProvider: 'DROPBOX',
     })
 
     expect(domainEventPublisher.publish).toHaveBeenCalled()
-    expect(domainEventFactory.createDropboxBackupFailedEvent).toHaveBeenCalled()
+    expect(domainEventFactory.createEmailRequestedEvent).toHaveBeenCalled()
   })
 
   it('should send items to extensions server', async () => {
@@ -117,7 +111,6 @@ describe('ExtensionsHttpService', () => {
       items: [item],
       backupFilename: '',
       authParams,
-      muteEmailsSettingUuid: '3-4-5',
     })
 
     expect(httpClient.request).toHaveBeenCalledWith({
@@ -125,7 +118,6 @@ describe('ExtensionsHttpService', () => {
         auth_params: authParams,
         backup_filename: '',
         items: [item],
-        settings_id: '3-4-5',
         silent: false,
         user_uuid: '1-2-3',
       },
@@ -146,14 +138,12 @@ describe('ExtensionsHttpService', () => {
       forceMute: false,
       backupFilename: 'backup-file',
       authParams,
-      muteEmailsSettingUuid: '3-4-5',
     })
 
     expect(httpClient.request).toHaveBeenCalledWith({
       data: {
         auth_params: authParams,
         backup_filename: 'backup-file',
-        settings_id: '3-4-5',
         silent: false,
         user_uuid: '1-2-3',
       },
@@ -181,11 +171,10 @@ describe('ExtensionsHttpService', () => {
       items: [item],
       backupFilename: 'backup-file',
       authParams,
-      muteEmailsSettingUuid: '3-4-5',
     })
 
     expect(domainEventPublisher.publish).toHaveBeenCalled()
-    expect(domainEventFactory.createDropboxBackupFailedEvent).toHaveBeenCalled()
+    expect(domainEventFactory.createEmailRequestedEvent).toHaveBeenCalled()
   })
 
   it('should publish a failed Dropbox backup event if request was sent and extensions server responded not ok', async () => {
@@ -201,11 +190,10 @@ describe('ExtensionsHttpService', () => {
       items: [item],
       backupFilename: 'backup-file',
       authParams,
-      muteEmailsSettingUuid: '3-4-5',
     })
 
     expect(domainEventPublisher.publish).toHaveBeenCalled()
-    expect(domainEventFactory.createDropboxBackupFailedEvent).toHaveBeenCalled()
+    expect(domainEventFactory.createEmailRequestedEvent).toHaveBeenCalled()
   })
 
   it('should publish a failed Google Drive backup event if request was not sent successfully', async () => {
@@ -223,11 +211,10 @@ describe('ExtensionsHttpService', () => {
       items: [item],
       backupFilename: 'backup-file',
       authParams,
-      muteEmailsSettingUuid: '3-4-5',
     })
 
     expect(domainEventPublisher.publish).toHaveBeenCalled()
-    expect(domainEventFactory.createGoogleDriveBackupFailedEvent).toHaveBeenCalled()
+    expect(domainEventFactory.createEmailRequestedEvent).toHaveBeenCalled()
   })
 
   it('should publish a failed One Drive backup event if request was not sent successfully', async () => {
@@ -245,11 +232,10 @@ describe('ExtensionsHttpService', () => {
       items: [item],
       backupFilename: 'backup-file',
       authParams,
-      muteEmailsSettingUuid: '3-4-5',
     })
 
     expect(domainEventPublisher.publish).toHaveBeenCalled()
-    expect(domainEventFactory.createOneDriveBackupFailedEvent).toHaveBeenCalled()
+    expect(domainEventFactory.createEmailRequestedEvent).toHaveBeenCalled()
   })
 
   it('should not publish a failed backup event if emailes are force muted', async () => {
@@ -267,7 +253,6 @@ describe('ExtensionsHttpService', () => {
       items: [item],
       backupFilename: 'backup-file',
       authParams,
-      muteEmailsSettingUuid: '3-4-5',
     })
 
     expect(domainEventPublisher.publish).not.toHaveBeenCalled()
@@ -290,7 +275,6 @@ describe('ExtensionsHttpService', () => {
         items: [item],
         backupFilename: 'backup-file',
         authParams,
-        muteEmailsSettingUuid: '3-4-5',
       })
     } catch (e) {
       error = e
@@ -317,7 +301,6 @@ describe('ExtensionsHttpService', () => {
         items: [item],
         backupFilename: 'backup-file',
         authParams,
-        muteEmailsSettingUuid: '3-4-5',
       })
     } catch (e) {
       error = e
@@ -341,11 +324,10 @@ describe('ExtensionsHttpService', () => {
       items: [item],
       backupFilename: 'backup-file',
       authParams,
-      muteEmailsSettingUuid: '3-4-5',
     })
 
     expect(domainEventPublisher.publish).toHaveBeenCalled()
-    expect(domainEventFactory.createDropboxBackupFailedEvent).toHaveBeenCalled()
+    expect(domainEventFactory.createEmailRequestedEvent).toHaveBeenCalled()
   })
 
   it('should publish a failed Google Drive backup event judging by extension url if request was not sent successfully', async () => {
@@ -363,11 +345,10 @@ describe('ExtensionsHttpService', () => {
       items: [item],
       backupFilename: 'backup-file',
       authParams,
-      muteEmailsSettingUuid: '3-4-5',
     })
 
     expect(domainEventPublisher.publish).toHaveBeenCalled()
-    expect(domainEventFactory.createGoogleDriveBackupFailedEvent).toHaveBeenCalled()
+    expect(domainEventFactory.createEmailRequestedEvent).toHaveBeenCalled()
   })
 
   it('should publish a failed One Drive backup event judging by extension url if request was not sent successfully', async () => {
@@ -385,11 +366,10 @@ describe('ExtensionsHttpService', () => {
       items: [item],
       backupFilename: 'backup-file',
       authParams,
-      muteEmailsSettingUuid: '3-4-5',
     })
 
     expect(domainEventPublisher.publish).toHaveBeenCalled()
-    expect(domainEventFactory.createOneDriveBackupFailedEvent).toHaveBeenCalled()
+    expect(domainEventFactory.createEmailRequestedEvent).toHaveBeenCalled()
   })
 
   it('should throw an error if cannot deduce extension by judging from the url', async () => {
@@ -409,7 +389,6 @@ describe('ExtensionsHttpService', () => {
         items: [item],
         backupFilename: 'backup-file',
         authParams,
-        muteEmailsSettingUuid: '3-4-5',
       })
     } catch (e) {
       error = e
@@ -435,7 +414,6 @@ describe('ExtensionsHttpService', () => {
         items: [item],
         backupFilename: 'backup-file',
         authParams,
-        muteEmailsSettingUuid: '3-4-5',
       })
     } catch (e) {
       error = e

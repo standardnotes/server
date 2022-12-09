@@ -1,4 +1,5 @@
 import { KeyParamsData } from '@standardnotes/responses'
+
 import { Item } from '../Item/Item'
 
 export type SendItemsToExtensionsServerDTO = {
@@ -8,6 +9,5 @@ export type SendItemsToExtensionsServerDTO = {
   authParams: KeyParamsData
   forceMute: boolean
   userUuid: string
-  muteEmailsSettingUuid?: string
   items?: Array<Item>
 }

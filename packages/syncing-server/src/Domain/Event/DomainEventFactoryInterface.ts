@@ -6,7 +6,6 @@ import {
   ItemDumpedEvent,
   ItemRevisionCreationRequestedEvent,
   ItemsSyncedEvent,
-  OneDriveBackupFailedEvent,
   RevisionsCopyRequestedEvent,
   RevisionsOwnershipUpdateRequestedEvent,
   UserContentSizeRecalculationRequestedEvent,
@@ -21,7 +20,6 @@ export interface DomainEventFactoryInterface {
     body: string
     subject: string
   }): EmailRequestedEvent
-  createOneDriveBackupFailedEvent(muteCloudEmailsSettingUuid: string, email: string): OneDriveBackupFailedEvent
   createItemsSyncedEvent(dto: {
     userUuid: string
     extensionUrl: string

@@ -8,7 +8,6 @@ import {
   ItemDumpedEvent,
   ItemRevisionCreationRequestedEvent,
   ItemsSyncedEvent,
-  OneDriveBackupFailedEvent,
   RevisionsCopyRequestedEvent,
   RevisionsOwnershipUpdateRequestedEvent,
   UserContentSizeRecalculationRequestedEvent,
@@ -148,24 +147,6 @@ export class DomainEventFactory implements DomainEventFactoryInterface {
         origin: DomainEventService.SyncingServer,
       },
       payload: dto,
-    }
-  }
-
-  createOneDriveBackupFailedEvent(muteCloudEmailsSettingUuid: string, email: string): OneDriveBackupFailedEvent {
-    return {
-      type: 'ONE_DRIVE_BACKUP_FAILED',
-      createdAt: this.timer.getUTCDate(),
-      meta: {
-        correlation: {
-          userIdentifier: email,
-          userIdentifierType: 'email',
-        },
-        origin: DomainEventService.SyncingServer,
-      },
-      payload: {
-        muteCloudEmailsSettingUuid,
-        email,
-      },
     }
   }
 
