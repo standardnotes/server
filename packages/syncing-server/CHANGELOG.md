@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.22.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.21.0...@standardnotes/syncing-server@1.22.0) (2022-12-09)
+
+### Features
+
+* **syncing-serfver:** remove dropbox backup failed event in favour of email requested ([118156c](https://github.com/standardnotes/syncing-server-js/commit/118156c62de70eca8fd89414f6e409abd0363e62))
+
 # [1.21.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.20.17...@standardnotes/syncing-server@1.21.0) (2022-12-09)
 
 ### Features
