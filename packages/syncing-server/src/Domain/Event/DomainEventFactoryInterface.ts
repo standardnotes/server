@@ -1,7 +1,6 @@
 import {
   DuplicateItemSyncedEvent,
   EmailArchiveExtensionSyncedEvent,
-  EmailBackupAttachmentCreatedEvent,
   EmailRequestedEvent,
   ItemDumpedEvent,
   ItemRevisionCreationRequestedEvent,
@@ -19,6 +18,13 @@ export interface DomainEventFactoryInterface {
     level: string
     body: string
     subject: string
+    sender?: string
+    attachments?: Array<{
+      filePath: string
+      fileName: string
+      attachmentFileName: string
+      attachmentContentType: string
+    }>
   }): EmailRequestedEvent
   createItemsSyncedEvent(dto: {
     userUuid: string
@@ -30,12 +36,6 @@ export interface DomainEventFactoryInterface {
     source: 'account-deletion' | 'realtime-extensions-sync'
   }): ItemsSyncedEvent
   createEmailArchiveExtensionSyncedEvent(userUuid: string, extensionId: string): EmailArchiveExtensionSyncedEvent
-  createEmailBackupAttachmentCreatedEvent(dto: {
-    backupFileName: string
-    backupFileIndex: number
-    backupFilesTotal: number
-    email: string
-  }): EmailBackupAttachmentCreatedEvent
   createDuplicateItemSyncedEvent(itemUuid: string, userUuid: string): DuplicateItemSyncedEvent
   createItemRevisionCreationRequested(itemUuid: string, userUuid: string): ItemRevisionCreationRequestedEvent
   createItemDumpedEvent(fileDumpPath: string, userUuid: string): ItemDumpedEvent

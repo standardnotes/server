@@ -3,7 +3,6 @@ import {
   DomainEventService,
   DuplicateItemSyncedEvent,
   EmailArchiveExtensionSyncedEvent,
-  EmailBackupAttachmentCreatedEvent,
   EmailRequestedEvent,
   ItemDumpedEvent,
   ItemRevisionCreationRequestedEvent,
@@ -135,6 +134,13 @@ export class DomainEventFactory implements DomainEventFactoryInterface {
     level: string
     body: string
     subject: string
+    sender?: string
+    attachments?: Array<{
+      filePath: string
+      fileName: string
+      attachmentFileName: string
+      attachmentContentType: string
+    }>
   }): EmailRequestedEvent {
     return {
       type: 'EMAIL_REQUESTED',
@@ -188,26 +194,6 @@ export class DomainEventFactory implements DomainEventFactoryInterface {
         userUuid,
         extensionId,
       },
-    }
-  }
-
-  createEmailBackupAttachmentCreatedEvent(dto: {
-    backupFileName: string
-    backupFileIndex: number
-    backupFilesTotal: number
-    email: string
-  }): EmailBackupAttachmentCreatedEvent {
-    return {
-      type: 'EMAIL_BACKUP_ATTACHMENT_CREATED',
-      createdAt: this.timer.getUTCDate(),
-      meta: {
-        correlation: {
-          userIdentifier: dto.email,
-          userIdentifierType: 'email',
-        },
-        origin: DomainEventService.SyncingServer,
-      },
-      payload: dto,
     }
   }
 }

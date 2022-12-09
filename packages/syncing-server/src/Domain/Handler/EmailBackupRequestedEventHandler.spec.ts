@@ -3,7 +3,7 @@ import 'reflect-metadata'
 import {
   DomainEventPublisherInterface,
   EmailBackupRequestedEvent,
-  EmailBackupAttachmentCreatedEvent,
+  EmailRequestedEvent,
 } from '@standardnotes/domain-events'
 import { Logger } from 'winston'
 import { AuthHttpServiceInterface } from '../Auth/AuthHttpServiceInterface'
@@ -35,6 +35,7 @@ describe('EmailBackupRequestedEventHandler', () => {
       domainEventFactory,
       emailAttachmentMaxByteSize,
       itemTransferCalculator,
+      's3-backup-bucket-name',
       logger,
     )
 
@@ -62,9 +63,7 @@ describe('EmailBackupRequestedEventHandler', () => {
     domainEventPublisher.publish = jest.fn()
 
     domainEventFactory = {} as jest.Mocked<DomainEventFactoryInterface>
-    domainEventFactory.createEmailBackupAttachmentCreatedEvent = jest
-      .fn()
-      .mockReturnValue({} as jest.Mocked<EmailBackupAttachmentCreatedEvent>)
+    domainEventFactory.createEmailRequestedEvent = jest.fn().mockReturnValue({} as jest.Mocked<EmailRequestedEvent>)
 
     itemTransferCalculator = {} as jest.Mocked<ItemTransferCalculatorInterface>
     itemTransferCalculator.computeItemUuidBundlesToFetch = jest.fn().mockReturnValue([['1-2-3']])
@@ -79,12 +78,7 @@ describe('EmailBackupRequestedEventHandler', () => {
     await createHandler().handle(event)
 
     expect(domainEventPublisher.publish).toHaveBeenCalledTimes(1)
-    expect(domainEventFactory.createEmailBackupAttachmentCreatedEvent).toHaveBeenCalledWith({
-      backupFileIndex: 1,
-      backupFileName: 'backup-file-name',
-      backupFilesTotal: 1,
-      email: 'test@test.com',
-    })
+    expect(domainEventFactory.createEmailRequestedEvent).toHaveBeenCalled()
   })
 
   it('should inform that multipart backup attachment for email was created', async () => {
@@ -97,18 +91,7 @@ describe('EmailBackupRequestedEventHandler', () => {
     await createHandler().handle(event)
 
     expect(domainEventPublisher.publish).toHaveBeenCalledTimes(2)
-    expect(domainEventFactory.createEmailBackupAttachmentCreatedEvent).toHaveBeenNthCalledWith(1, {
-      backupFileIndex: 1,
-      backupFileName: 'backup-file-name-1',
-      backupFilesTotal: 2,
-      email: 'test@test.com',
-    })
-    expect(domainEventFactory.createEmailBackupAttachmentCreatedEvent).toHaveBeenNthCalledWith(2, {
-      backupFileIndex: 2,
-      backupFileName: 'backup-file-name-2',
-      backupFilesTotal: 2,
-      email: 'test@test.com',
-    })
+    expect(domainEventFactory.createEmailRequestedEvent).toHaveBeenCalledTimes(2)
   })
 
   it('should not inform that backup attachment for email was created if user key params cannot be obtained', async () => {
@@ -119,7 +102,7 @@ describe('EmailBackupRequestedEventHandler', () => {
     await createHandler().handle(event)
 
     expect(domainEventPublisher.publish).not.toHaveBeenCalled()
-    expect(domainEventFactory.createEmailBackupAttachmentCreatedEvent).not.toHaveBeenCalled()
+    expect(domainEventFactory.createEmailRequestedEvent).not.toHaveBeenCalled()
   })
 
   it('should not inform that backup attachment for email was created if backup file name is empty', async () => {
@@ -128,6 +111,6 @@ describe('EmailBackupRequestedEventHandler', () => {
     await createHandler().handle(event)
 
     expect(domainEventPublisher.publish).not.toHaveBeenCalled()
-    expect(domainEventFactory.createEmailBackupAttachmentCreatedEvent).not.toHaveBeenCalled()
+    expect(domainEventFactory.createEmailRequestedEvent).not.toHaveBeenCalled()
   })
 })

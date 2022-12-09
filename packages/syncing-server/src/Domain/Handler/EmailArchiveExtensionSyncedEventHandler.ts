@@ -4,6 +4,7 @@ import {
   DomainEventPublisherInterface,
   EmailArchiveExtensionSyncedEvent,
 } from '@standardnotes/domain-events'
+import { EmailLevel } from '@standardnotes/domain-core'
 import { inject, injectable } from 'inversify'
 import { Logger } from 'winston'
 import TYPES from '../../Bootstrap/Types'
@@ -13,6 +14,7 @@ import { ItemBackupServiceInterface } from '../Item/ItemBackupServiceInterface'
 import { ItemRepositoryInterface } from '../Item/ItemRepositoryInterface'
 import { ItemQuery } from '../Item/ItemQuery'
 import { ItemTransferCalculatorInterface } from '../Item/ItemTransferCalculatorInterface'
+import { getBody, getSubject } from '../Email/EmailBackupAttachmentCreated'
 
 @injectable()
 export class EmailArchiveExtensionSyncedEventHandler implements DomainEventHandlerInterface {
@@ -24,6 +26,7 @@ export class EmailArchiveExtensionSyncedEventHandler implements DomainEventHandl
     @inject(TYPES.DomainEventFactory) private domainEventFactory: DomainEventFactoryInterface,
     @inject(TYPES.EMAIL_ATTACHMENT_MAX_BYTE_SIZE) private emailAttachmentMaxByteSize: number,
     @inject(TYPES.ItemTransferCalculator) private itemTransferCalculator: ItemTransferCalculatorInterface,
+    @inject(TYPES.S3_BACKUP_BUCKET_NAME) private s3BackupBucketName: string,
     @inject(TYPES.Logger) private logger: Logger,
   ) {}
 
@@ -64,14 +67,24 @@ export class EmailArchiveExtensionSyncedEventHandler implements DomainEventHandl
       this.logger.debug(`Data backed up into: ${backupFileName}`)
 
       if (backupFileName.length !== 0) {
-        this.logger.debug('Publishing EMAIL_BACKUP_ATTACHMENT_CREATED event')
+        const dateOnly = new Date().toISOString().substring(0, 10)
 
         await this.domainEventPublisher.publish(
-          this.domainEventFactory.createEmailBackupAttachmentCreatedEvent({
-            backupFileName,
-            backupFileIndex: bundleIndex++,
-            backupFilesTotal: itemUuidBundles.length,
-            email: authParams.identifier as string,
+          this.domainEventFactory.createEmailRequestedEvent({
+            body: getBody(authParams.identifier as string),
+            level: EmailLevel.LEVELS.System,
+            messageIdentifier: 'DATA_BACKUP',
+            subject: getSubject(bundleIndex++, itemUuidBundles.length, dateOnly),
+            userEmail: authParams.identifier as string,
+            sender: 'backups@standardnotes.org',
+            attachments: [
+              {
+                fileName: backupFileName,
+                filePath: this.s3BackupBucketName,
+                attachmentFileName: `SN-Data-${dateOnly}.txt`,
+                attachmentContentType: 'application/json',
+              },
+            ],
           }),
         )
       }
