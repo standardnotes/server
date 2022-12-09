@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.66.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.65.0...@standardnotes/auth-server@1.66.0) (2022-12-09)
+
+### Features
+
+* **email:** replace offline subscription token created event in favour of email requested ([b595264](https://github.com/standardnotes/server/commit/b595264e313ac5ae5404f6a4a05b90b8c11f7f02))
+
 # [1.65.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.64.7...@standardnotes/auth-server@1.65.0) (2022-12-09)
 
 ### Features
