@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.100.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.99.0...@standardnotes/domain-events@2.100.0) (2022-12-09)
+
+### Features
+
+* **syncing-server:** remove google drive backup failed event in favour of email requested ([00fe321](https://github.com/standardnotes/server/commit/00fe32136e7add627e58e8ea223f7f484f1d3718))
+
 # [2.99.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.98.4...@standardnotes/domain-events@2.99.0) (2022-12-09)
 
 ### Features

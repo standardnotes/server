@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.21.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.20.17...@standardnotes/syncing-server@1.21.0) (2022-12-09)
+
+### Features
+
+* **syncing-server:** remove google drive backup failed event in favour of email requested ([00fe321](https://github.com/standardnotes/syncing-server-js/commit/00fe32136e7add627e58e8ea223f7f484f1d3718))
+
 ## [1.20.17](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.20.16...@standardnotes/syncing-server@1.20.17) (2022-12-09)
 
 **Note:** Version bump only for package @standardnotes/syncing-server
