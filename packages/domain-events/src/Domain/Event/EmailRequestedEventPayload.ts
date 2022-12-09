@@ -5,6 +5,7 @@ export interface EmailRequestedEventPayload {
   subject: string
   body: string
   sender?: string
+  additionalStyles?: string
   attachments?: Array<{
     filePath: string
     fileName: string
