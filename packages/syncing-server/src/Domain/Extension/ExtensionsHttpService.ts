@@ -1,5 +1,6 @@
 import { KeyParamsData } from '@standardnotes/responses'
 import { DomainEventInterface, DomainEventPublisherInterface } from '@standardnotes/domain-events'
+import { EmailLevel } from '@standardnotes/domain-core'
 import { AxiosInstance } from 'axios'
 import { inject, injectable } from 'inversify'
 import { Logger } from 'winston'
@@ -10,6 +11,7 @@ import { ItemRepositoryInterface } from '../Item/ItemRepositoryInterface'
 import { ExtensionName } from './ExtensionName'
 import { ExtensionsHttpServiceInterface } from './ExtensionsHttpServiceInterface'
 import { SendItemsToExtensionsServerDTO } from './SendItemsToExtensionsServerDTO'
+import { getBody, getSubject } from '../Email/GoogleDriveBackupFailed'
 
 @injectable()
 export class ExtensionsHttpService implements ExtensionsHttpServiceInterface {
@@ -121,7 +123,13 @@ export class ExtensionsHttpService implements ExtensionsHttpServiceInterface {
       case 'DROPBOX':
         return this.domainEventFactory.createDropboxBackupFailedEvent(muteCloudEmailsSettingUuid, email)
       case 'GOOGLE_DRIVE':
-        return this.domainEventFactory.createGoogleDriveBackupFailedEvent(muteCloudEmailsSettingUuid, email)
+        return this.domainEventFactory.createEmailRequestedEvent({
+          userEmail: email,
+          level: EmailLevel.LEVELS.FailedCloudBackup,
+          body: getBody(),
+          messageIdentifier: 'FAILED_GOOGLE_DRIVE_BACKUP',
+          subject: getSubject(),
+        })
       case 'ONE_DRIVE':
         return this.domainEventFactory.createOneDriveBackupFailedEvent(muteCloudEmailsSettingUuid, email)
     }

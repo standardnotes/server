@@ -3,7 +3,7 @@ import {
   DuplicateItemSyncedEvent,
   EmailArchiveExtensionSyncedEvent,
   EmailBackupAttachmentCreatedEvent,
-  GoogleDriveBackupFailedEvent,
+  EmailRequestedEvent,
   ItemDumpedEvent,
   ItemRevisionCreationRequestedEvent,
   ItemsSyncedEvent,
@@ -16,7 +16,13 @@ import {
 export interface DomainEventFactoryInterface {
   createUserContentSizeRecalculationRequestedEvent(userUuid: string): UserContentSizeRecalculationRequestedEvent
   createDropboxBackupFailedEvent(muteCloudEmailsSettingUuid: string, email: string): DropboxBackupFailedEvent
-  createGoogleDriveBackupFailedEvent(muteCloudEmailsSettingUuid: string, email: string): GoogleDriveBackupFailedEvent
+  createEmailRequestedEvent(dto: {
+    userEmail: string
+    messageIdentifier: string
+    level: string
+    body: string
+    subject: string
+  }): EmailRequestedEvent
   createOneDriveBackupFailedEvent(muteCloudEmailsSettingUuid: string, email: string): OneDriveBackupFailedEvent
   createItemsSyncedEvent(dto: {
     userUuid: string

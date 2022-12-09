@@ -5,7 +5,7 @@ import {
   DuplicateItemSyncedEvent,
   EmailArchiveExtensionSyncedEvent,
   EmailBackupAttachmentCreatedEvent,
-  GoogleDriveBackupFailedEvent,
+  EmailRequestedEvent,
   ItemDumpedEvent,
   ItemRevisionCreationRequestedEvent,
   ItemsSyncedEvent,
@@ -149,21 +149,24 @@ export class DomainEventFactory implements DomainEventFactoryInterface {
     }
   }
 
-  createGoogleDriveBackupFailedEvent(muteCloudEmailsSettingUuid: string, email: string): GoogleDriveBackupFailedEvent {
+  createEmailRequestedEvent(dto: {
+    userEmail: string
+    messageIdentifier: string
+    level: string
+    body: string
+    subject: string
+  }): EmailRequestedEvent {
     return {
-      type: 'GOOGLE_DRIVE_BACKUP_FAILED',
+      type: 'EMAIL_REQUESTED',
       createdAt: this.timer.getUTCDate(),
       meta: {
         correlation: {
-          userIdentifier: email,
+          userIdentifier: dto.userEmail,
           userIdentifierType: 'email',
         },
         origin: DomainEventService.SyncingServer,
       },
-      payload: {
-        muteCloudEmailsSettingUuid,
-        email,
-      },
+      payload: dto,
     }
   }
 
