@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.66.7](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.66.6...@standardnotes/auth-server@1.66.7) (2022-12-09)
+
+### Bug Fixes
+
+* **auth:** linter issue ([104313c](https://github.com/standardnotes/server/commit/104313c15df79f6308d23e21f65111e5bd3d9c72))
+
 ## [1.66.6](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.66.5...@standardnotes/auth-server@1.66.6) (2022-12-09)
 
 **Note:** Version bump only for package @standardnotes/auth-server
