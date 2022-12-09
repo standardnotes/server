@@ -4,6 +4,7 @@ import 'newrelic'
 
 import { Logger } from 'winston'
 
+import { EmailLevel } from '@standardnotes/domain-core'
 import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
 import { AnalyticsActivity } from '../src/Domain/Analytics/AnalyticsActivity'
 import { Period } from '../src/Domain/Time/Period'
@@ -16,6 +17,8 @@ import TYPES from '../src/Bootstrap/Types'
 import { Env } from '../src/Bootstrap/Env'
 import { DomainEventFactoryInterface } from '../src/Domain/Event/DomainEventFactoryInterface'
 import { CalculateMonthlyRecurringRevenue } from '../src/Domain/UseCase/CalculateMonthlyRecurringRevenue/CalculateMonthlyRecurringRevenue'
+import { getBody, getSubject } from '../src/Domain/Email/DailyAnalyticsReport'
+import { TimerInterface } from '@standardnotes/time'
 
 const requestReport = async (
   analyticsStore: AnalyticsStoreInterface,
@@ -24,6 +27,8 @@ const requestReport = async (
   domainEventPublisher: DomainEventPublisherInterface,
   periodKeyGenerator: PeriodKeyGeneratorInterface,
   calculateMonthlyRecurringRevenue: CalculateMonthlyRecurringRevenue,
+  timer: TimerInterface,
+  adminEmails: string[],
 ): Promise<void> => {
   await calculateMonthlyRecurringRevenue.execute({})
 
@@ -213,18 +218,28 @@ const requestReport = async (
     })
   }
 
-  const event = domainEventFactory.createDailyAnalyticsReportGeneratedEvent({
-    activityStatistics: yesterdayActivityStatistics,
-    activityStatisticsOverTime: analyticsOverTime,
-    statisticsOverTime,
-    statisticMeasures,
-    churn: {
-      periodKeys: monthlyPeriodKeys,
-      values: churnRates,
-    },
-  })
-
-  await domainEventPublisher.publish(event)
+  for (const adminEmail of adminEmails) {
+    const event = domainEventFactory.createEmailRequestedEvent({
+      messageIdentifier: 'VERSION_ADOPTION_REPORT',
+      subject: getSubject(),
+      body: getBody(
+        {
+          activityStatistics: yesterdayActivityStatistics,
+          activityStatisticsOverTime: analyticsOverTime,
+          statisticsOverTime,
+          statisticMeasures,
+          churn: {
+            periodKeys: monthlyPeriodKeys,
+            values: churnRates,
+          },
+        },
+        timer,
+      ),
+      level: EmailLevel.LEVELS.System,
+      userEmail: adminEmail,
+    })
+    await domainEventPublisher.publish(event)
+  }
 }
 
 const container = new ContainerConfigLoader()
@@ -241,6 +256,7 @@ void container.load().then((container) => {
   const domainEventFactory: DomainEventFactoryInterface = container.get(TYPES.DomainEventFactory)
   const domainEventPublisher: DomainEventPublisherInterface = container.get(TYPES.DomainEventPublisher)
   const periodKeyGenerator: PeriodKeyGeneratorInterface = container.get(TYPES.PeriodKeyGenerator)
+  const timer: TimerInterface = container.get(TYPES.Timer)
   const calculateMonthlyRecurringRevenue: CalculateMonthlyRecurringRevenue = container.get(
     TYPES.CalculateMonthlyRecurringRevenue,
   )
@@ -253,6 +269,8 @@ void container.load().then((container) => {
       domainEventPublisher,
       periodKeyGenerator,
       calculateMonthlyRecurringRevenue,
+      timer,
+      container.get(TYPES.ADMIN_EMAILS),
     ),
   )
     .then(() => {

@@ -11,6 +11,7 @@ const TYPES = {
   SQS_AWS_REGION: Symbol.for('SQS_AWS_REGION'),
   REDIS_EVENTS_CHANNEL: Symbol.for('REDIS_EVENTS_CHANNEL'),
   NEW_RELIC_ENABLED: Symbol.for('NEW_RELIC_ENABLED'),
+  ADMIN_EMAILS: Symbol.for('ADMIN_EMAILS'),
   // Repositories
   AnalyticsEntityRepository: Symbol.for('AnalyticsEntityRepository'),
   RevenueModificationRepository: Symbol.for('RevenueModificationRepository'),

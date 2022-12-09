@@ -1,45 +1,11 @@
-import { DailyAnalyticsReportGeneratedEvent } from '@standardnotes/domain-events'
+import { EmailRequestedEvent } from '@standardnotes/domain-events'
 
 export interface DomainEventFactoryInterface {
-  createDailyAnalyticsReportGeneratedEvent(dto: {
-    activityStatistics: Array<{
-      name: string
-      retention: number
-      totalCount: number
-    }>
-    statisticMeasures: Array<{
-      name: string
-      totalValue: number
-      average: number
-      increments: number
-      period: number
-    }>
-    activityStatisticsOverTime: Array<{
-      name: string
-      period: number
-      counts: Array<{
-        periodKey: string
-        totalCount: number
-      }>
-      totalCount: number
-    }>
-    statisticsOverTime: Array<{
-      name: string
-      period: number
-      counts: Array<{
-        periodKey: string
-        totalCount: number
-      }>
-    }>
-    churn: {
-      periodKeys: Array<string>
-      values: Array<{
-        rate: number
-        periodKey: string
-        averageCustomersCount: number
-        existingCustomersChurn: number
-        newCustomersChurn: number
-      }>
-    }
-  }): DailyAnalyticsReportGeneratedEvent
+  createEmailRequestedEvent(dto: {
+    userEmail: string
+    messageIdentifier: string
+    level: string
+    body: string
+    subject: string
+  }): EmailRequestedEvent
 }

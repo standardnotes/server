@@ -130,6 +130,7 @@ export class ContainerConfigLoader {
     container.bind(TYPES.SQS_QUEUE_URL).toConstantValue(env.get('SQS_QUEUE_URL', true))
     container.bind(TYPES.REDIS_EVENTS_CHANNEL).toConstantValue(env.get('REDIS_EVENTS_CHANNEL'))
     container.bind(TYPES.NEW_RELIC_ENABLED).toConstantValue(env.get('NEW_RELIC_ENABLED', true))
+    container.bind(TYPES.ADMIN_EMAILS).toConstantValue(env.get('ADMIN_EMAILS').split(','))
 
     // Repositories
     container
