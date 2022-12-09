@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.18.0](https://github.com/standardnotes/server/compare/@standardnotes/workspace-server@1.17.47...@standardnotes/workspace-server@1.18.0) (2022-12-09)
+
+### Features
+
+* **workspace:** replace workspace invite created event with email requested ([61c1cff](https://github.com/standardnotes/server/commit/61c1cfff4bcee09e1f933cb3e085412b6f07cc42))
+
 ## [1.17.47](https://github.com/standardnotes/server/compare/@standardnotes/workspace-server@1.17.46...@standardnotes/workspace-server@1.17.47) (2022-12-09)
 
 **Note:** Version bump only for package @standardnotes/workspace-server

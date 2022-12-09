@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.103.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.102.0...@standardnotes/domain-events@2.103.0) (2022-12-09)
+
+### Features
+
+* **workspace:** replace workspace invite created event with email requested ([61c1cff](https://github.com/standardnotes/server/commit/61c1cfff4bcee09e1f933cb3e085412b6f07cc42))
+
 # [2.102.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.101.0...@standardnotes/domain-events@2.102.0) (2022-12-09)
 
 ### Features
