@@ -1,6 +1,10 @@
 import 'reflect-metadata'
 
-import { DomainEventPublisherInterface, SharedSubscriptionInvitationCreatedEvent } from '@standardnotes/domain-events'
+import {
+  DomainEventPublisherInterface,
+  SharedSubscriptionInvitationCreatedEvent,
+  EmailRequestedEvent,
+} from '@standardnotes/domain-events'
 import { TimerInterface } from '@standardnotes/time'
 import { DomainEventFactoryInterface } from '../../Event/DomainEventFactoryInterface'
 import { SharedSubscriptionInvitationRepositoryInterface } from '../../SharedSubscription/SharedSubscriptionInvitationRepositoryInterface'
@@ -51,6 +55,7 @@ describe('InviteToSharedSubscription', () => {
     domainEventFactory.createSharedSubscriptionInvitationCreatedEvent = jest
       .fn()
       .mockReturnValue({} as jest.Mocked<SharedSubscriptionInvitationCreatedEvent>)
+    domainEventFactory.createEmailRequestedEvent = jest.fn().mockReturnValue({} as jest.Mocked<EmailRequestedEvent>)
   })
 
   it('should not create an inivitation for sharing the subscription if inviter has no subscription', async () => {

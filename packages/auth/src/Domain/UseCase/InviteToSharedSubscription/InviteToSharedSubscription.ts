@@ -1,9 +1,11 @@
 import { RoleName } from '@standardnotes/common'
 import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
+import { EmailLevel } from '@standardnotes/domain-core'
 import { TimerInterface } from '@standardnotes/time'
 import { inject, injectable } from 'inversify'
 
 import TYPES from '../../../Bootstrap/Types'
+import { getBody, getSubject } from '../../Email/SharedSubscriptionInvitationCreated'
 import { DomainEventFactoryInterface } from '../../Event/DomainEventFactoryInterface'
 import { InvitationStatus } from '../../SharedSubscription/InvitationStatus'
 import { InviteeIdentifierType } from '../../SharedSubscription/InviteeIdentifierType'
@@ -86,6 +88,16 @@ export class InviteToSharedSubscription implements UseCaseInterface {
         inviteeIdentifier: dto.inviteeIdentifier,
         inviteeIdentifierType: savedInvitation.inviteeIdentifierType,
         sharedSubscriptionInvitationUuid: savedInvitation.uuid,
+      }),
+    )
+
+    await this.domainEventPublisher.publish(
+      this.domainEventFactory.createEmailRequestedEvent({
+        userEmail: dto.inviteeIdentifier,
+        level: EmailLevel.LEVELS.System,
+        body: getBody(dto.inviterEmail, savedInvitation.uuid),
+        messageIdentifier: 'SHARED_SUBSCRIPTION_INVITATION',
+        subject: getSubject(),
       }),
     )
 
