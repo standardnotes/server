@@ -1,4 +1,5 @@
 import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
+import { EmailLevel } from '@standardnotes/domain-core'
 import { CryptoNode } from '@standardnotes/sncrypto-node'
 import { TimerInterface } from '@standardnotes/time'
 import { inject, injectable } from 'inversify'
@@ -6,6 +7,7 @@ import { Logger } from 'winston'
 
 import TYPES from '../../../Bootstrap/Types'
 import { OfflineSubscriptionTokenRepositoryInterface } from '../../Auth/OfflineSubscriptionTokenRepositoryInterface'
+import { getBody, getSubject } from '../../Email/OfflineSubscriptionTokenCreated'
 import { DomainEventFactoryInterface } from '../../Event/DomainEventFactoryInterface'
 import { OfflineUserSubscriptionRepositoryInterface } from '../../Subscription/OfflineUserSubscriptionRepositoryInterface'
 import { UseCaseInterface } from '../UseCaseInterface'
@@ -62,7 +64,13 @@ export class CreateOfflineSubscriptionToken implements UseCaseInterface {
     await this.offlineSubscriptionTokenRepository.save(offlineSubscriptionToken)
 
     await this.domainEventPublisher.publish(
-      this.domainEventFactory.createOfflineSubscriptionTokenCreatedEvent(token, dto.userEmail),
+      this.domainEventFactory.createEmailRequestedEvent({
+        body: getBody(dto.userEmail, `https://standardnotes.com/dashboard/offline?subscription_token=${token}`),
+        level: EmailLevel.LEVELS.System,
+        subject: getSubject(),
+        messageIdentifier: 'OFFLINE_SUBSCRIPTION_ACCESS',
+        userEmail: dto.userEmail,
+      }),
     )
 
     return {

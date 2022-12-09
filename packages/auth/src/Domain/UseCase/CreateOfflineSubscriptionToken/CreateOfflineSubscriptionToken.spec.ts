@@ -5,7 +5,7 @@ import { TimerInterface } from '@standardnotes/time'
 import { OfflineSubscriptionTokenRepositoryInterface } from '../../Auth/OfflineSubscriptionTokenRepositoryInterface'
 
 import { CreateOfflineSubscriptionToken } from './CreateOfflineSubscriptionToken'
-import { DomainEventPublisherInterface, OfflineSubscriptionTokenCreatedEvent } from '@standardnotes/domain-events'
+import { DomainEventPublisherInterface, EmailRequestedEvent } from '@standardnotes/domain-events'
 import { DomainEventFactoryInterface } from '../../Event/DomainEventFactoryInterface'
 import { OfflineUserSubscriptionRepositoryInterface } from '../../Subscription/OfflineUserSubscriptionRepositoryInterface'
 import { OfflineUserSubscription } from '../../Subscription/OfflineUserSubscription'
@@ -47,9 +47,9 @@ describe('CreateOfflineSubscriptionToken', () => {
     domainEventPublisher.publish = jest.fn()
 
     domainEventFactory = {} as jest.Mocked<DomainEventFactoryInterface>
-    domainEventFactory.createOfflineSubscriptionTokenCreatedEvent = jest
+    domainEventFactory.createEmailRequestedEvent = jest
       .fn()
-      .mockReturnValue({} as jest.Mocked<OfflineSubscriptionTokenCreatedEvent>)
+      .mockReturnValue({} as jest.Mocked<EmailRequestedEvent>)
 
     timer = {} as jest.Mocked<TimerInterface>
     timer.convertStringDateToMicroseconds = jest.fn().mockReturnValue(1)
@@ -71,10 +71,7 @@ describe('CreateOfflineSubscriptionToken', () => {
       expiresAt: 1,
     })
 
-    expect(domainEventFactory.createOfflineSubscriptionTokenCreatedEvent).toHaveBeenCalledWith(
-      'random-string',
-      'test@test.com',
-    )
+    expect(domainEventFactory.createEmailRequestedEvent).toHaveBeenCalled()
     expect(domainEventPublisher.publish).toHaveBeenCalled()
   })
 
@@ -91,7 +88,7 @@ describe('CreateOfflineSubscriptionToken', () => {
     })
 
     expect(offlineSubscriptionTokenRepository.save).not.toHaveBeenCalled()
-    expect(domainEventFactory.createOfflineSubscriptionTokenCreatedEvent).not.toHaveBeenCalled()
+    expect(domainEventFactory.createEmailRequestedEvent).not.toHaveBeenCalled()
     expect(domainEventPublisher.publish).not.toHaveBeenCalled()
   })
 
@@ -110,7 +107,7 @@ describe('CreateOfflineSubscriptionToken', () => {
     })
 
     expect(offlineSubscriptionTokenRepository.save).not.toHaveBeenCalled()
-    expect(domainEventFactory.createOfflineSubscriptionTokenCreatedEvent).not.toHaveBeenCalled()
+    expect(domainEventFactory.createEmailRequestedEvent).not.toHaveBeenCalled()
     expect(domainEventPublisher.publish).not.toHaveBeenCalled()
   })
 
@@ -129,7 +126,7 @@ describe('CreateOfflineSubscriptionToken', () => {
     })
 
     expect(offlineSubscriptionTokenRepository.save).not.toHaveBeenCalled()
-    expect(domainEventFactory.createOfflineSubscriptionTokenCreatedEvent).not.toHaveBeenCalled()
+    expect(domainEventFactory.createEmailRequestedEvent).not.toHaveBeenCalled()
     expect(domainEventPublisher.publish).not.toHaveBeenCalled()
   })
 })

@@ -5,11 +5,5 @@ export function getSubject(email: string): string {
 }
 
 export function getBody(email: string, device: string, browser: string, date: Date): string {
-  const body = html
-
-  return body
-    .replace('%%EMAIL%%', email)
-    .replace('%%DEVICE%%', device)
-    .replace('%%BROWSER%%', browser)
-    .replace('%%TIME_AND_DATE%%', date.toLocaleString())
+  return html(email, device, browser, date.toLocaleString())
 }

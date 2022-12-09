@@ -6,7 +6,6 @@ import {
   UserEmailChangedEvent,
   UserRegisteredEvent,
   UserRolesChangedEvent,
-  OfflineSubscriptionTokenCreatedEvent,
   EmailBackupRequestedEvent,
   CloudBackupRequestedEvent,
   ListedAccountRequestedEvent,
@@ -287,24 +286,6 @@ export class DomainEventFactory implements DomainEventFactoryInterface {
         origin: DomainEventService.Auth,
       },
       payload: dto,
-    }
-  }
-
-  createOfflineSubscriptionTokenCreatedEvent(token: string, email: string): OfflineSubscriptionTokenCreatedEvent {
-    return {
-      type: 'OFFLINE_SUBSCRIPTION_TOKEN_CREATED',
-      createdAt: this.timer.getUTCDate(),
-      meta: {
-        correlation: {
-          userIdentifier: email,
-          userIdentifierType: 'email',
-        },
-        origin: DomainEventService.Auth,
-      },
-      payload: {
-        token,
-        email,
-      },
     }
   }
 

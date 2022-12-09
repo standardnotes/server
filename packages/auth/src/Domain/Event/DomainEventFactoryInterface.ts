@@ -6,7 +6,6 @@ import {
   UserRegisteredEvent,
   UserRolesChangedEvent,
   UserEmailChangedEvent,
-  OfflineSubscriptionTokenCreatedEvent,
   EmailBackupRequestedEvent,
   ListedAccountRequestedEvent,
   UserDisabledSessionUserAgentLoggingEvent,
@@ -56,7 +55,6 @@ export interface DomainEventFactoryInterface {
   }): AccountDeletionRequestedEvent
   createUserRolesChangedEvent(userUuid: string, email: string, currentRoles: RoleName[]): UserRolesChangedEvent
   createUserEmailChangedEvent(userUuid: string, fromEmail: string, toEmail: string): UserEmailChangedEvent
-  createOfflineSubscriptionTokenCreatedEvent(token: string, email: string): OfflineSubscriptionTokenCreatedEvent
   createUserDisabledSessionUserAgentLoggingEvent(dto: {
     userUuid: Uuid
     email: string
