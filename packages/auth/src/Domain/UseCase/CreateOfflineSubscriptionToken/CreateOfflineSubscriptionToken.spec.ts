@@ -47,9 +47,7 @@ describe('CreateOfflineSubscriptionToken', () => {
     domainEventPublisher.publish = jest.fn()
 
     domainEventFactory = {} as jest.Mocked<DomainEventFactoryInterface>
-    domainEventFactory.createEmailRequestedEvent = jest
-      .fn()
-      .mockReturnValue({} as jest.Mocked<EmailRequestedEvent>)
+    domainEventFactory.createEmailRequestedEvent = jest.fn().mockReturnValue({} as jest.Mocked<EmailRequestedEvent>)
 
     timer = {} as jest.Mocked<TimerInterface>
     timer.convertStringDateToMicroseconds = jest.fn().mockReturnValue(1)
