@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.12.22](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.12.21...@standardnotes/analytics@2.12.22) (2022-12-12)
+
+### Bug Fixes
+
+* **analytics:** report event publishing ([a605660](https://github.com/standardnotes/server/commit/a6056600eb96bf175189ad6d62870c9d736f331b))
+
 ## [2.12.21](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.12.20...@standardnotes/analytics@2.12.21) (2022-12-12)
 
 ### Bug Fixes
