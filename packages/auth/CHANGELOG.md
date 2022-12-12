@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.67.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.67.0...@standardnotes/auth-server@1.67.1) (2022-12-12)
+
+### Bug Fixes
+
+* user signed in email template ([c15e2e2](https://github.com/standardnotes/server/commit/c15e2e2c8f3a6c177e227d25440501fa38dd3d0e))
+
 # [1.67.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.66.9...@standardnotes/auth-server@1.67.0) (2022-12-12)
 
 ### Features
