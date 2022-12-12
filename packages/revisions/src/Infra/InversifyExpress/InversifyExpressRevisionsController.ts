@@ -18,7 +18,7 @@ export class InversifyExpressRevisionsController extends BaseHttpController {
       userUuid: response.locals.user.uuid,
     })
 
-    return this.json(result.data, result.status)
+    return this.json(result.data.error ? result.data : result.data.revisions, result.status)
   }
 
   @httpGet('/:uuid')
@@ -28,7 +28,7 @@ export class InversifyExpressRevisionsController extends BaseHttpController {
       userUuid: response.locals.user.uuid,
     })
 
-    return this.json(result.data, result.status)
+    return this.json(result.data.error ? result.data : result.data.revision, result.status)
   }
 
   @httpDelete('/:uuid')
