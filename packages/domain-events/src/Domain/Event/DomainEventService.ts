@@ -10,4 +10,7 @@ export enum DomainEventService {
   Scheduler = 'scheduler',
   Workspace = 'workspace',
   Analytics = 'analytics',
+  Revisions = 'revisions',
+  Email = 'email',
+  Settings = 'settings',
 }
