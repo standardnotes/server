@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.9.26](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.9.25...@standardnotes/revisions-server@1.9.26) (2022-12-12)
+
+### Bug Fixes
+
+* **revisions:** responses to match previous response structure ([530a426](https://github.com/standardnotes/server/commit/530a42660157b63d034cd2228fc83a3fcce921e0))
+
 ## [1.9.25](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.9.24...@standardnotes/revisions-server@1.9.25) (2022-12-12)
 
 **Note:** Version bump only for package @standardnotes/revisions-server
