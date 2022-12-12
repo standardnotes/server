@@ -193,6 +193,7 @@ import { SubscriptionInvitesController } from '../Controller/SubscriptionInvites
 import { CreateCrossServiceToken } from '../Domain/UseCase/CreateCrossServiceToken/CreateCrossServiceToken'
 import { ProcessUserRequest } from '../Domain/UseCase/ProcessUserRequest/ProcessUserRequest'
 import { UserRequestsController } from '../Controller/UserRequestsController'
+import { EmailSubscriptionUnsubscribedEventHandler } from '../Domain/Handler/EmailSubscriptionUnsubscribedEventHandler'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -560,6 +561,15 @@ export class ContainerConfigLoader {
         )
     }
 
+    container
+      .bind<EmailSubscriptionUnsubscribedEventHandler>(TYPES.EmailSubscriptionUnsubscribedEventHandler)
+      .toConstantValue(
+        new EmailSubscriptionUnsubscribedEventHandler(
+          container.get(TYPES.UserRepository),
+          container.get(TYPES.SettingService),
+        ),
+      )
+
     const eventHandlers: Map<string, DomainEventHandlerInterface> = new Map([
       ['USER_REGISTERED', container.get(TYPES.UserRegisteredEventHandler)],
       ['ACCOUNT_DELETION_REQUESTED', container.get(TYPES.AccountDeletionRequestedEventHandler)],
@@ -582,6 +592,7 @@ export class ContainerConfigLoader {
       ],
       ['SHARED_SUBSCRIPTION_INVITATION_CREATED', container.get(TYPES.SharedSubscriptionInvitationCreatedEventHandler)],
       ['PREDICATE_VERIFICATION_REQUESTED', container.get(TYPES.PredicateVerificationRequestedEventHandler)],
+      ['EMAIL_SUBSCRIPTION_UNSUBSCRIBED', container.get(TYPES.EmailSubscriptionUnsubscribedEventHandler)],
     ])
 
     if (env.get('SQS_QUEUE_URL', true)) {

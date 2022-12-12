@@ -138,6 +138,7 @@ const TYPES = {
   UserDisabledSessionUserAgentLoggingEventHandler: Symbol.for('UserDisabledSessionUserAgentLoggingEventHandler'),
   SharedSubscriptionInvitationCreatedEventHandler: Symbol.for('SharedSubscriptionInvitationCreatedEventHandler'),
   PredicateVerificationRequestedEventHandler: Symbol.for('PredicateVerificationRequestedEventHandler'),
+  EmailSubscriptionUnsubscribedEventHandler: Symbol.for('EmailSubscriptionUnsubscribedEventHandler'),
   // Services
   DeviceDetector: Symbol.for('DeviceDetector'),
   SessionService: Symbol.for('SessionService'),
