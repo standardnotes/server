@@ -260,6 +260,9 @@ void container.load().then((container) => {
   const calculateMonthlyRecurringRevenue: CalculateMonthlyRecurringRevenue = container.get(
     TYPES.CalculateMonthlyRecurringRevenue,
   )
+  const adminEmails = container.get(TYPES.ADMIN_EMAILS) as string[]
+
+  logger.info(`Sending report to following admins: ${adminEmails}`)
 
   Promise.resolve(
     requestReport(
@@ -270,7 +273,7 @@ void container.load().then((container) => {
       periodKeyGenerator,
       calculateMonthlyRecurringRevenue,
       timer,
-      container.get(TYPES.ADMIN_EMAILS),
+      adminEmails,
     ),
   )
     .then(() => {
