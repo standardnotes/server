@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.104.1](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.104.0...@standardnotes/domain-events@2.104.1) (2022-12-12)
+
+### Bug Fixes
+
+* **domain-events:** add additional domain event services ([2980c42](https://github.com/standardnotes/server/commit/2980c42e88b6be5f065c91c86bf85a706975f801))
+
 # [2.104.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.103.2...@standardnotes/domain-events@2.104.0) (2022-12-12)
 
 ### Features
