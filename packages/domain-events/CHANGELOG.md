@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.104.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.103.2...@standardnotes/domain-events@2.104.0) (2022-12-12)
+
+### Features
+
+* **domain-events:** add event for email subscription unsubscribed ([7f18fcf](https://github.com/standardnotes/server/commit/7f18fcfc139911620f2ea72729357aefd0613315))
+
 ## [2.103.2](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.103.1...@standardnotes/domain-events@2.103.2) (2022-12-09)
 
 **Note:** Version bump only for package @standardnotes/domain-events
