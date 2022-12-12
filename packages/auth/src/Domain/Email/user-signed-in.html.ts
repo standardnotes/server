@@ -20,6 +20,5 @@ export const html = (email: string, device: string, browser: string, timeAndDate
   <br />
   SN
 </p>
-<a href="https://app.standardnotes.com/?settings=account">Mute these emails</a>
 </div>
 `
