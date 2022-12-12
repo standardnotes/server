@@ -19,8 +19,6 @@ const fixRevisionsOwnership = async (
   logger: Logger,
 ): Promise<void> => {
   const stream = await itemRepository.streamAll({
-    sortBy: 'updated_at_timestamp',
-    sortOrder: 'ASC',
     createdBefore: new Date('2022-11-23'),
     selectFields: ['user_uuid', 'uuid'],
   })

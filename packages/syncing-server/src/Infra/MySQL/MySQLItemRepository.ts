@@ -131,7 +131,9 @@ export class MySQLItemRepository implements ItemRepositoryInterface {
   private createFindAllQueryBuilder(query: ItemQuery): SelectQueryBuilder<Item> {
     const queryBuilder = this.ormRepository.createQueryBuilder('item')
 
-    queryBuilder.orderBy(`item.${query.sortBy}`, query.sortOrder)
+    if (query.sortBy !== undefined && query.sortOrder !== undefined) {
+      queryBuilder.orderBy(`item.${query.sortBy}`, query.sortOrder)
+    }
 
     if (query.selectFields !== undefined) {
       queryBuilder.select(query.selectFields.map((field) => `item.${field}`))
