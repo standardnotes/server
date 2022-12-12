@@ -219,26 +219,27 @@ const requestReport = async (
   }
 
   for (const adminEmail of adminEmails) {
-    const event = domainEventFactory.createEmailRequestedEvent({
-      messageIdentifier: 'VERSION_ADOPTION_REPORT',
-      subject: getSubject(),
-      body: getBody(
-        {
-          activityStatistics: yesterdayActivityStatistics,
-          activityStatisticsOverTime: analyticsOverTime,
-          statisticsOverTime,
-          statisticMeasures,
-          churn: {
-            periodKeys: monthlyPeriodKeys,
-            values: churnRates,
+    await domainEventPublisher.publish(
+      domainEventFactory.createEmailRequestedEvent({
+        messageIdentifier: 'VERSION_ADOPTION_REPORT',
+        subject: getSubject(),
+        body: getBody(
+          {
+            activityStatistics: yesterdayActivityStatistics,
+            activityStatisticsOverTime: analyticsOverTime,
+            statisticsOverTime,
+            statisticMeasures,
+            churn: {
+              periodKeys: monthlyPeriodKeys,
+              values: churnRates,
+            },
           },
-        },
-        timer,
-      ),
-      level: EmailLevel.LEVELS.System,
-      userEmail: adminEmail,
-    })
-    await domainEventPublisher.publish(event)
+          timer,
+        ),
+        level: EmailLevel.LEVELS.System,
+        userEmail: adminEmail,
+      }),
+    )
   }
 }
 
@@ -262,7 +263,7 @@ void container.load().then((container) => {
   )
   const adminEmails = container.get(TYPES.ADMIN_EMAILS) as string[]
 
-  logger.info(`Sending report to following admins: ${adminEmails}`)
+  logger.info('Sending report to following admins: %O', adminEmails)
 
   Promise.resolve(
     requestReport(
