@@ -22,7 +22,7 @@ const fixRevisionsOwnership = async (
     sortBy: 'updated_at_timestamp',
     sortOrder: 'ASC',
     createdBefore: new Date('2022-11-23'),
-    selectFields: ['user_uuid', 'item_uuid'],
+    selectFields: ['user_uuid', 'uuid'],
   })
 
   return new Promise((resolve, reject) => {
