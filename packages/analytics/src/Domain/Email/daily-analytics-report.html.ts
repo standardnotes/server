@@ -377,7 +377,7 @@ const getChartUrls = (
 }
 
 export const html = (data: any, timer: TimerInterface) => {
-  const chartUrls = getChartUrls(event)
+  const chartUrls = getChartUrls(data)
 
   const successfullPaymentsActivity = data.activityStatistics.find(
     (a: { name: AnalyticsActivity }) => a.name === AnalyticsActivity.PaymentSuccess && Period.Yesterday,

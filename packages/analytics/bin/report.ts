@@ -263,7 +263,7 @@ void container.load().then((container) => {
   )
   const adminEmails = container.get(TYPES.ADMIN_EMAILS) as string[]
 
-  logger.info('Sending report to following admins: %O', adminEmails)
+  logger.info(`Sending report to following admins: ${adminEmails}`)
 
   Promise.resolve(
     requestReport(
