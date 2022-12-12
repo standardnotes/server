@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.67.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.66.9...@standardnotes/auth-server@1.67.0) (2022-12-12)
+
+### Features
+
+* **auth:** add email subscription unsubscribed event handler ([10e2a26](https://github.com/standardnotes/server/commit/10e2a263522dfa33c06940f29cb77f783f66b20c))
+
 ## [1.66.9](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.66.8...@standardnotes/auth-server@1.66.9) (2022-12-12)
 
 **Note:** Version bump only for package @standardnotes/auth-server
