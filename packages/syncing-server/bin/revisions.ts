@@ -32,6 +32,12 @@ const fixRevisionsOwnership = async (
           objectMode: true,
           transform: async (rawItemData, _encoding, callback) => {
             try {
+              if (!rawItemData.item_user_uuid || !rawItemData.item_uuid) {
+                logger.error('Could not process item %O', rawItemData)
+
+                return callback()
+              }
+
               await domainEventPublisher.publish(
                 domainEventFactory.createRevisionsOwnershipUpdateRequestedEvent({
                   userUuid: rawItemData.item_user_uuid,
