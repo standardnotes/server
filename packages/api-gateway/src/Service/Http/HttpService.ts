@@ -19,6 +19,7 @@ export class HttpService implements HttpServiceInterface {
     @inject(TYPES.WORKSPACE_SERVER_URL) private workspaceServerUrl: string,
     @inject(TYPES.WEB_SOCKET_SERVER_URL) private webSocketServerUrl: string,
     @inject(TYPES.REVISIONS_SERVER_URL) private revisionsServerUrl: string,
+    @inject(TYPES.EMAIL_SERVER_URL) private emailServerUrl: string,
     @inject(TYPES.HTTP_CALL_TIMEOUT) private httpCallTimeout: number,
     @inject(TYPES.CrossServiceTokenCache) private crossServiceTokenCache: CrossServiceTokenCacheInterface,
     @inject(TYPES.Logger) private logger: Logger,
@@ -63,6 +64,21 @@ export class HttpService implements HttpServiceInterface {
     payload?: Record<string, unknown> | string,
   ): Promise<void> {
     await this.callServer(this.authServerUrl, request, response, endpoint, payload)
+  }
+
+  async callEmailServer(
+    request: Request,
+    response: Response,
+    endpoint: string,
+    payload?: Record<string, unknown> | string,
+  ): Promise<void> {
+    if (!this.emailServerUrl) {
+      response.status(400).send({ message: 'Email Server not configured' })
+
+      return
+    }
+
+    await this.callServer(this.emailServerUrl, request, response, endpoint, payload)
   }
 
   async callWorkspaceServer(

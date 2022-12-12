@@ -29,4 +29,14 @@ export class ActionsController extends BaseHttpController {
   async methods(request: Request, response: Response): Promise<void> {
     await this.httpService.callAuthServer(request, response, 'auth/methods', request.body)
   }
+
+  @httpGet('/unsubscribe/:token')
+  async emailUnsubscribe(request: Request, response: Response): Promise<void> {
+    await this.httpService.callEmailServer(
+      request,
+      response,
+      `subscriptions/actions/unsubscribe/${request.params.token}`,
+      request.body,
+    )
+  }
 }

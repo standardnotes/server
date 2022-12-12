@@ -1,6 +1,12 @@
 import { Request, Response } from 'express'
 
 export interface HttpServiceInterface {
+  callEmailServer(
+    request: Request,
+    response: Response,
+    endpoint: string,
+    payload?: Record<string, unknown> | string,
+  ): Promise<void>
   callAuthServer(
     request: Request,
     response: Response,
