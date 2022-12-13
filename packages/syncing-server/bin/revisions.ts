@@ -11,6 +11,7 @@ import { DomainEventFactoryInterface } from '../src/Domain/Event/DomainEventFact
 import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
 import { ItemRepositoryInterface } from '../src/Domain/Item/ItemRepositoryInterface'
 import { Stream } from 'stream'
+import { ContentType } from '@standardnotes/common'
 
 const fixRevisionsOwnership = async (
   itemRepository: ItemRepositoryInterface,
@@ -21,6 +22,7 @@ const fixRevisionsOwnership = async (
   const stream = await itemRepository.streamAll({
     createdBefore: new Date('2022-11-23'),
     selectFields: ['user_uuid', 'uuid'],
+    contentType: ContentType.File,
   })
 
   return new Promise((resolve, reject) => {
@@ -30,7 +32,7 @@ const fixRevisionsOwnership = async (
           objectMode: true,
           transform: async (rawItemData, _encoding, callback) => {
             try {
-              if (!rawItemData.item_user_uuid || !rawItemData.item_uuid) {
+              if (!rawItemData.user_uuid || !rawItemData.item_uuid) {
                 logger.error('Could not process item %O', rawItemData)
 
                 return callback()
@@ -38,7 +40,7 @@ const fixRevisionsOwnership = async (
 
               await domainEventPublisher.publish(
                 domainEventFactory.createRevisionsOwnershipUpdateRequestedEvent({
-                  userUuid: rawItemData.item_user_uuid,
+                  userUuid: rawItemData.user_uuid,
                   itemUuid: rawItemData.item_uuid,
                 }),
               )
