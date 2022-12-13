@@ -12,7 +12,7 @@ export class RevisionsController extends BaseHttpController {
 
   @httpGet('/')
   async getRevisions(request: Request, response: Response): Promise<void> {
-    await this.httpService.callSyncingServer(request, response, `items/${request.params.item_id}/revisions`)
+    await this.httpService.callRevisionsServer(request, response, `items/${request.params.item_id}/revisions`)
   }
 
   @httpGet('/:id')
