@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.25.3](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.25.2...@standardnotes/syncing-server@1.25.3) (2022-12-13)
+
+### Bug Fixes
+
+* **syncing-server:** revisions ownership procedure destructured ([124c443](https://github.com/standardnotes/syncing-server-js/commit/124c4435285c2c2e8d0ce8b47907ebd47af27576))
+
 ## [1.25.2](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.25.1...@standardnotes/syncing-server@1.25.2) (2022-12-13)
 
 ### Bug Fixes
