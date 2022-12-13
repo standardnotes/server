@@ -5,10 +5,10 @@ export type ItemQuery = {
   uuids?: Array<string>
   lastSyncTime?: number
   syncTimeComparison?: '>' | '>='
-  contentType?: string
+  contentType?: string | string[]
   deleted?: boolean
   offset?: number
   limit?: number
-  createdBefore?: Date
+  createdBetween?: Date[]
   selectFields?: string[]
 }

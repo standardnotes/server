@@ -14,15 +14,22 @@ import { Stream } from 'stream'
 import { ContentType } from '@standardnotes/common'
 
 const fixRevisionsOwnership = async (
+  year: number,
+  month: number,
   itemRepository: ItemRepositoryInterface,
   domainEventFactory: DomainEventFactoryInterface,
   domainEventPublisher: DomainEventPublisherInterface,
   logger: Logger,
 ): Promise<void> => {
+  const createdAfter = new Date(`${year}-${month}-1`)
+  const createdBefore = new Date(`${month !== 12 ? year : year + 1}-${month !== 12 ? month + 1 : 1}-1`)
+
+  logger.info(`Processing items between ${createdAfter.toISOString} and ${createdBefore.toISOString}`)
+
   const stream = await itemRepository.streamAll({
-    createdBefore: new Date('2022-11-23'),
+    createdBetween: [createdAfter, createdBefore],
     selectFields: ['user_uuid', 'uuid'],
-    contentType: ContentType.Note,
+    contentType: [ContentType.Note, ContentType.File],
   })
 
   return new Promise((resolve, reject) => {
@@ -48,11 +55,15 @@ const fixRevisionsOwnership = async (
               logger.error(`Could not process item ${rawItemData.item_uuid}: ${(error as Error).message}`)
             }
 
-            callback()
+            return callback()
           },
         }),
       )
-      .on('finish', resolve)
+      .on('finish', () => {
+        logger.info(`Finished processing items between ${createdAfter.toISOString} and ${createdBefore.toISOString}`)
+
+        resolve()
+      })
       .on('error', reject)
   })
 }
@@ -70,7 +81,16 @@ void container.load().then((container) => {
   const domainEventFactory: DomainEventFactoryInterface = container.get(TYPES.DomainEventFactory)
   const domainEventPublisher: DomainEventPublisherInterface = container.get(TYPES.DomainEventPublisher)
 
-  Promise.resolve(fixRevisionsOwnership(itemRepository, domainEventFactory, domainEventPublisher, logger))
+  const years = [2016, 2017, 2018, 2019, 2020, 2021, 2022]
+
+  const promises = []
+  for (const year of years) {
+    for (let i = 1; i <= 12; i++) {
+      promises.push(fixRevisionsOwnership(year, i, itemRepository, domainEventFactory, domainEventPublisher, logger))
+    }
+  }
+
+  Promise.all(promises)
     .then(() => {
       logger.info('revisions ownership fix complete.')
 

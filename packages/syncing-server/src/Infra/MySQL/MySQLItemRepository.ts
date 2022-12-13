@@ -148,15 +148,22 @@ export class MySQLItemRepository implements ItemRepositoryInterface {
       queryBuilder.andWhere('item.deleted = :deleted', { deleted: query.deleted })
     }
     if (query.contentType) {
-      queryBuilder.andWhere('item.content_type = :contentType', { contentType: query.contentType })
+      if (Array.isArray(query.contentType)) {
+        queryBuilder.andWhere('item.content_type IN (:...contentTypes)', { contentTypes: query.contentType })
+      } else {
+        queryBuilder.andWhere('item.content_type = :contentType', { contentType: query.contentType })
+      }
     }
     if (query.lastSyncTime && query.syncTimeComparison) {
       queryBuilder.andWhere(`item.updated_at_timestamp ${query.syncTimeComparison} :lastSyncTime`, {
         lastSyncTime: query.lastSyncTime,
       })
     }
-    if (query.createdBefore !== undefined) {
-      queryBuilder.andWhere('item.created_at < :createdAt', { createdAt: query.createdBefore.toISOString() })
+    if (query.createdBetween !== undefined) {
+      queryBuilder.andWhere('item.created_at BETWEEN :createdAfter AND :createdBefore', {
+        createdAfter: query.createdBetween[0].toISOString(),
+        createdBefore: query.createdBetween[1].toISOString(),
+      })
     }
     if (query.offset !== undefined) {
       queryBuilder.skip(query.offset)
