@@ -22,7 +22,7 @@ const fixRevisionsOwnership = async (
   const stream = await itemRepository.streamAll({
     createdBefore: new Date('2022-11-23'),
     selectFields: ['user_uuid', 'uuid'],
-    contentType: ContentType.File,
+    contentType: ContentType.Note,
   })
 
   return new Promise((resolve, reject) => {
