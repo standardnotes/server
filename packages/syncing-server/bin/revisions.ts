@@ -24,7 +24,7 @@ const fixRevisionsOwnership = async (
   const createdAfter = new Date(`${year}-${month}-1`)
   const createdBefore = new Date(`${month !== 12 ? year : year + 1}-${month !== 12 ? month + 1 : 1}-1`)
 
-  logger.info(`Processing items between ${createdAfter.toISOString} and ${createdBefore.toISOString}`)
+  logger.info(`Processing items between ${createdAfter.toISOString()} and ${createdBefore.toISOString()}`)
 
   const stream = await itemRepository.streamAll({
     createdBetween: [createdAfter, createdBefore],
@@ -60,11 +60,21 @@ const fixRevisionsOwnership = async (
         }),
       )
       .on('finish', () => {
-        logger.info(`Finished processing items between ${createdAfter.toISOString} and ${createdBefore.toISOString}`)
+        logger.info(
+          `Finished processing items between ${createdAfter.toISOString()} and ${createdBefore.toISOString()}`,
+        )
 
         resolve()
       })
-      .on('error', reject)
+      .on('error', (error) => {
+        logger.error(
+          `Could not process items between ${createdAfter.toISOString()} and ${createdBefore.toISOString()}: ${JSON.stringify(
+            error,
+          )}`,
+        )
+
+        reject()
+      })
   })
 }
 
