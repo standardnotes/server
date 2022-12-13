@@ -21,7 +21,6 @@ import { Env } from './Env'
 import TYPES from './Types'
 import { AppDataSource } from './DataSource'
 import { InversifyExpressApiGatewayAuthMiddleware } from '../Infra/InversifyExpress/InversifyExpressApiGatewayAuthMiddleware'
-import { MuteAllEmails } from '../Domain/UseCase/MuteAllEmails/MuteAllEmails'
 import { Repository } from 'typeorm'
 import { TypeORMSetting } from '../Infra/TypeORM/TypeORMSetting'
 import { SettingRepositoryInterface } from '../Domain/Setting/SettingRepositoryInterface'
@@ -109,14 +108,9 @@ export class ContainerConfigLoader {
       )
 
     // use cases
-    container
-      .bind<MuteAllEmails>(TYPES.MuteAllEmails)
-      .toConstantValue(new MuteAllEmails(container.get(TYPES.SettingRepository)))
 
     // Controller
-    container
-      .bind<SettingsController>(TYPES.SettingsController)
-      .toConstantValue(new SettingsController(container.get(TYPES.MuteAllEmails)))
+    container.bind<SettingsController>(TYPES.SettingsController).toConstantValue(new SettingsController())
 
     // Handlers
 

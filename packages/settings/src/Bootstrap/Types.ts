@@ -18,7 +18,6 @@ const TYPES = {
   NEW_RELIC_ENABLED: Symbol.for('NEW_RELIC_ENABLED'),
   VERSION: Symbol.for('VERSION'),
   // use cases
-  MuteAllEmails: Symbol.for('MuteAllEmails'),
   // Controller
   SettingsController: Symbol.for('SettingsController'),
   // Handlers
