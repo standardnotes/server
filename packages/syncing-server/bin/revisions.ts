@@ -38,10 +38,11 @@ const fixRevisionsOwnership = async (
   const limit = 500
   const amountOfPages = Math.ceil(itemsCount / limit)
   const tenPercentOfPages = Math.ceil(amountOfPages / 10)
+  let itemsProcessedCounter = 0
   for (let page = 1; page <= amountOfPages; page++) {
     if (page % tenPercentOfPages === 0) {
       logger.info(
-        `Processing page ${page} of ${amountOfPages} items between ${createdAfter.toISOString()} and ${createdBefore.toISOString()}`,
+        `Processing page ${page} of ${amountOfPages} items between ${createdAfter.toISOString()} and ${createdBefore.toISOString()}. Processed successfully ${itemsProcessedCounter} items.`,
       )
     }
 
@@ -66,6 +67,8 @@ const fixRevisionsOwnership = async (
           itemUuid: item.uuid,
         }),
       )
+
+      itemsProcessedCounter++
     }
   }
 }
