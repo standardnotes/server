@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.26.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.25.6...@standardnotes/syncing-server@1.26.0) (2022-12-14)
+
+### Features
+
+* **syncing-server:** change revisions procedure to pagination instead of streaming ([4b1fe3b](https://github.com/standardnotes/syncing-server-js/commit/4b1fe3ba91594858e15cbdfbc21062c428dd03b4))
+
 ## [1.25.6](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.25.5...@standardnotes/syncing-server@1.25.6) (2022-12-14)
 
 ### Bug Fixes
