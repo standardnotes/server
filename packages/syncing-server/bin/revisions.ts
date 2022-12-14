@@ -91,12 +91,15 @@ void container.load().then((container) => {
   const domainEventFactory: DomainEventFactoryInterface = container.get(TYPES.DomainEventFactory)
   const domainEventPublisher: DomainEventPublisherInterface = container.get(TYPES.DomainEventPublisher)
 
-  const years = [2016, 2017, 2018, 2019, 2020, 2021, 2022]
+  const years = env.get('REVISION_YEARS').split(',')
+  const months = env.get('REVISION_MONTHS').split(',')
 
   const promises = []
   for (const year of years) {
-    for (let i = 1; i <= 12; i++) {
-      promises.push(fixRevisionsOwnership(year, i, itemRepository, domainEventFactory, domainEventPublisher, logger))
+    for (const month of months) {
+      promises.push(
+        fixRevisionsOwnership(+year, +month, itemRepository, domainEventFactory, domainEventPublisher, logger),
+      )
     }
   }
 
