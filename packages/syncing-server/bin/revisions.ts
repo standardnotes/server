@@ -66,6 +66,21 @@ const fixRevisionsOwnership = async (
 
         resolve()
       })
+      .on('close', () => {
+        logger.error(
+          `Stream closed unexpectedly for items between ${createdAfter.toISOString()} and ${createdBefore.toISOString()}`,
+        )
+
+        resolve()
+      })
+      .on('end', () => {
+        logger.info(`Stream ended for items between ${createdAfter.toISOString()} and ${createdBefore.toISOString()}`)
+
+        resolve()
+      })
+      .on('pause', () => {
+        logger.warn(`Stream paused for items between ${createdAfter.toISOString()} and ${createdBefore.toISOString()}`)
+      })
       .on('error', (error) => {
         logger.error(
           `Could not process items between ${createdAfter.toISOString()} and ${createdBefore.toISOString()}: ${JSON.stringify(
