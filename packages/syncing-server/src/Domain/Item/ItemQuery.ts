@@ -10,5 +10,5 @@ export type ItemQuery = {
   offset?: number
   limit?: number
   createdBetween?: Date[]
-  selectFields?: string[]
+  selectString?: string
 }
