@@ -10,7 +10,6 @@ import { Env } from '../src/Bootstrap/Env'
 import { DomainEventFactoryInterface } from '../src/Domain/Event/DomainEventFactoryInterface'
 import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
 import { ItemRepositoryInterface } from '../src/Domain/Item/ItemRepositoryInterface'
-import { Stream } from 'stream'
 import { ContentType } from '@standardnotes/common'
 
 const fixRevisionsOwnership = async (
@@ -26,71 +25,50 @@ const fixRevisionsOwnership = async (
 
   logger.info(`Processing items between ${createdAfter.toISOString()} and ${createdBefore.toISOString()}`)
 
-  const stream = await itemRepository.streamAll({
+  const itemsCount = await itemRepository.countAll({
     createdBetween: [createdAfter, createdBefore],
     selectFields: ['user_uuid', 'uuid'],
     contentType: [ContentType.Note, ContentType.File],
+    sortOrder: 'ASC',
+    sortBy: 'uuid',
   })
 
-  return new Promise((resolve, reject) => {
-    stream
-      .pipe(
-        new Stream.Transform({
-          objectMode: true,
-          transform: async (rawItemData, _encoding, callback) => {
-            try {
-              if (!rawItemData.user_uuid || !rawItemData.item_uuid) {
-                logger.error('Could not process item %O', rawItemData)
+  logger.info(`There are ${itemsCount} items between ${createdAfter.toISOString()} and ${createdBefore.toISOString()}`)
 
-                return callback()
-              }
+  const limit = 500
+  let page = 1
+  const amountOfPages = Math.ceil(itemsCount / limit)
+  const tenPercentOfPages = Math.ceil(amountOfPages / 10)
+  for (page; page <= amountOfPages; page++) {
+    if (page % tenPercentOfPages === 0) {
+      logger.info(`Processing page ${page} of ${amountOfPages}`)
+    }
 
-              await domainEventPublisher.publish(
-                domainEventFactory.createRevisionsOwnershipUpdateRequestedEvent({
-                  userUuid: rawItemData.user_uuid,
-                  itemUuid: rawItemData.item_uuid,
-                }),
-              )
-            } catch (error) {
-              logger.error(`Could not process item ${rawItemData.item_uuid}: ${(error as Error).message}`)
-            }
+    const items = await itemRepository.findAll({
+      createdBetween: [createdAfter, createdBefore],
+      selectFields: ['user_uuid', 'uuid'],
+      contentType: [ContentType.Note, ContentType.File],
+      offset: (page - 1) * limit,
+      limit,
+      sortOrder: 'ASC',
+      sortBy: 'uuid',
+    })
 
-            return callback()
-          },
+    for (const item of items) {
+      if (!item.userUuid || !item.uuid) {
+        logger.error('Could not process item %O', item)
+
+        continue
+      }
+
+      await domainEventPublisher.publish(
+        domainEventFactory.createRevisionsOwnershipUpdateRequestedEvent({
+          userUuid: item.userUuid,
+          itemUuid: item.uuid,
         }),
       )
-      .on('finish', () => {
-        logger.info(
-          `Finished processing items between ${createdAfter.toISOString()} and ${createdBefore.toISOString()}`,
-        )
-
-        resolve()
-      })
-      .on('close', () => {
-        logger.error(
-          `Stream closed unexpectedly for items between ${createdAfter.toISOString()} and ${createdBefore.toISOString()}`,
-        )
-
-        resolve()
-      })
-      .on('end', () => {
-        logger.info(`Stream ended for items between ${createdAfter.toISOString()} and ${createdBefore.toISOString()}`)
-
-        resolve()
-      })
-      .on('pause', () => {
-        logger.warn(`Stream paused for items between ${createdAfter.toISOString()} and ${createdBefore.toISOString()}`)
-      })
-      .on('error', (error) => {
-        logger.error(
-          `Could not process items between ${createdAfter.toISOString()} and ${createdBefore.toISOString()}: ${JSON.stringify(
-            error,
-          )}`,
-        )
-
-        reject()
-      })
-  })
+    }
+  }
 }
 
 const container = new ContainerConfigLoader()
