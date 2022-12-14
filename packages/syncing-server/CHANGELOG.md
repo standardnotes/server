@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.25.5](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.25.4...@standardnotes/syncing-server@1.25.5) (2022-12-14)
+
+### Bug Fixes
+
+* **syncing-server:** revisions procedure with env var defined ranges ([9b27547](https://github.com/standardnotes/syncing-server-js/commit/9b27547dae1e5d5e6d071a069803e2bf3f8acdda))
+
 ## [1.25.4](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.25.3...@standardnotes/syncing-server@1.25.4) (2022-12-13)
 
 ### Bug Fixes
