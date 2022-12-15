@@ -1,3 +1,5 @@
+export * from './Auth/LegacySession'
+export * from './Auth/LegacySessionProps'
 export * from './Auth/Session'
 export * from './Auth/SessionProps'
 export * from './Auth/SessionToken'
