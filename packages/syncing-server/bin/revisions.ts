@@ -15,6 +15,7 @@ import { ContentType } from '@standardnotes/common'
 const fixRevisionsOwnership = async (
   year: number,
   month: number,
+  revisionsProcessingLimit: number,
   itemRepository: ItemRepositoryInterface,
   domainEventFactory: DomainEventFactoryInterface,
   domainEventPublisher: DomainEventPublisherInterface,
@@ -23,7 +24,7 @@ const fixRevisionsOwnership = async (
   const createdAfter = new Date(`${year}-${month}-1`)
   const createdBefore = new Date(`${month !== 12 ? year : year + 1}-${month !== 12 ? month + 1 : 1}-1`)
 
-  logger.info(`Processing items between ${createdAfter.toISOString()} and ${createdBefore.toISOString()}`)
+  logger.info(`[${createdAfter.toISOString()} - ${createdBefore.toISOString()}] Processing items`)
 
   const itemsCount = await itemRepository.countAll({
     createdBetween: [createdAfter, createdBefore],
@@ -33,17 +34,21 @@ const fixRevisionsOwnership = async (
     sortBy: 'uuid',
   })
 
-  logger.info(`There are ${itemsCount} items between ${createdAfter.toISOString()} and ${createdBefore.toISOString()}`)
+  logger.info(
+    `[${createdAfter.toISOString()} - ${createdBefore.toISOString()}] There are ${itemsCount} items to process.`,
+  )
 
-  const limit = 500
-  const amountOfPages = Math.ceil(itemsCount / limit)
+  const amountOfPages = Math.ceil(itemsCount / revisionsProcessingLimit)
   const tenPercentOfPages = Math.ceil(amountOfPages / 10)
   let itemsProcessedCounter = 0
   let itemsSkippedCounter = 0
   for (let page = 1; page <= amountOfPages; page++) {
     if (page % tenPercentOfPages === 0) {
       logger.info(
-        `Processing page ${page} of ${amountOfPages} items between ${createdAfter.toISOString()} and ${createdBefore.toISOString()}. Processed successfully ${itemsProcessedCounter} items. Skipped ${itemsSkippedCounter} items.`,
+        `[${createdAfter.toISOString()} - ${createdBefore.toISOString()}] Processing page ${page}/${amountOfPages} of items.`,
+      )
+      logger.info(
+        `[${createdAfter.toISOString()} - ${createdBefore.toISOString()}] Processed successfully/skipped items: ${itemsProcessedCounter}/${itemsSkippedCounter}.`,
       )
     }
 
@@ -51,11 +56,19 @@ const fixRevisionsOwnership = async (
       createdBetween: [createdAfter, createdBefore],
       selectFields: ['uuid', 'user_uuid'],
       contentType: [ContentType.Note, ContentType.File],
-      offset: (page - 1) * limit,
-      limit,
+      offset: (page - 1) * revisionsProcessingLimit,
+      limit: revisionsProcessingLimit,
       sortOrder: 'ASC',
       sortBy: 'uuid',
     })
+
+    if (items.length === 0) {
+      logger.warn(
+        `[${createdAfter.toISOString()} - ${createdBefore.toISOString()}] No items fetched for offset ${
+          (page - 1) * revisionsProcessingLimit
+        } and limit ${revisionsProcessingLimit}.`,
+      )
+    }
 
     for (const item of items) {
       if (!item.userUuid || !item.uuid) {
@@ -90,12 +103,21 @@ void container.load().then((container) => {
 
   const years = env.get('REVISION_YEARS').split(',')
   const months = env.get('REVISION_MONTHS').split(',')
+  const revisionsProcessingLimit = env.get('REVISIONS_PROCESSING_LIMIT')
 
   const promises = []
   for (const year of years) {
     for (const month of months) {
       promises.push(
-        fixRevisionsOwnership(+year, +month, itemRepository, domainEventFactory, domainEventPublisher, logger),
+        fixRevisionsOwnership(
+          +year,
+          +month,
+          +revisionsProcessingLimit,
+          itemRepository,
+          domainEventFactory,
+          domainEventPublisher,
+          logger,
+        ),
       )
     }
   }
