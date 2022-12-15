@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.26.4](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.26.3...@standardnotes/syncing-server@1.26.4) (2022-12-15)
+
+### Bug Fixes
+
+* **syncing-server:** user uuid field name ([bfe6f42](https://github.com/standardnotes/syncing-server-js/commit/bfe6f4255a2d3f6e7dfa5eab1509dd770d9bff18))
+
 ## [1.26.3](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.26.2...@standardnotes/syncing-server@1.26.3) (2022-12-15)
 
 ### Bug Fixes
