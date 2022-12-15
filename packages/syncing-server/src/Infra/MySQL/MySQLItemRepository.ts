@@ -164,7 +164,7 @@ export class MySQLItemRepository implements ItemRepositoryInterface {
       })
     }
     if (query.createdBetween !== undefined) {
-      queryBuilder.andWhere('item.created_at >= :createdAfter AND item.created <= :createdBefore', {
+      queryBuilder.andWhere('item.created_at >= :createdAfter AND item.created_at <= :createdBefore', {
         createdAfter: query.createdBetween[0].toISOString(),
         createdBefore: query.createdBetween[1].toISOString(),
       })
