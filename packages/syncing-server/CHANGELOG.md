@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.26.5](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.26.4...@standardnotes/syncing-server@1.26.5) (2022-12-15)
+
+### Bug Fixes
+
+* **syncing-server:** revisions processing limit ([f10fa83](https://github.com/standardnotes/syncing-server-js/commit/f10fa839fbe1baec32fd234b41d8cd42fc50931a))
+
 ## [1.26.4](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.26.3...@standardnotes/syncing-server@1.26.4) (2022-12-15)
 
 ### Bug Fixes
