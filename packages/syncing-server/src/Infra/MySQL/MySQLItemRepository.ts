@@ -103,6 +103,10 @@ export class MySQLItemRepository implements ItemRepositoryInterface {
     return this.createFindAllQueryBuilder(query).getMany()
   }
 
+  async findAllRaw<T>(query: ItemQuery): Promise<T[]> {
+    return this.createFindAllQueryBuilder(query).getRawMany<T>()
+  }
+
   async streamAll(query: ItemQuery): Promise<ReadStream> {
     return this.createFindAllQueryBuilder(query).stream()
   }
@@ -160,7 +164,7 @@ export class MySQLItemRepository implements ItemRepositoryInterface {
       })
     }
     if (query.createdBetween !== undefined) {
-      queryBuilder.andWhere('item.created_at BETWEEN :createdAfter AND :createdBefore', {
+      queryBuilder.andWhere('item.created_at >= :createdAfter AND item.created <= :createdBefore', {
         createdAfter: query.createdBetween[0].toISOString(),
         createdBefore: query.createdBetween[1].toISOString(),
       })

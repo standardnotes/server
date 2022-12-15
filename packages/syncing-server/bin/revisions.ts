@@ -52,7 +52,7 @@ const fixRevisionsOwnership = async (
       )
     }
 
-    const items = await itemRepository.findAll({
+    const items = await itemRepository.findAllRaw<{ uuid: string; userUuid: string }>({
       createdBetween: [createdAfter, createdBefore],
       selectString: 'item.uuid as uuid, item.user_uuid as userUuid',
       contentType: [ContentType.Note, ContentType.File],
