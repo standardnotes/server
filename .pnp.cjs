@@ -2737,10 +2737,6 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./packages/domain-core/",\
         "packageDependencies": [\
           ["@standardnotes/domain-core", "workspace:packages/domain-core"],\
-          ["@standardnotes/common", "workspace:packages/common"],\
-          ["@standardnotes/features", "npm:1.53.1"],\
-          ["@standardnotes/predicates", "workspace:packages/predicates"],\
-          ["@standardnotes/security", "workspace:packages/security"],\
           ["@types/jest", "npm:29.1.1"],\
           ["@types/uuid", "npm:8.3.4"],\
           ["@typescript-eslint/eslint-plugin", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:5.30.5"],\

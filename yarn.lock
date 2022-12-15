@@ -1981,10 +1981,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@standardnotes/domain-core@workspace:packages/domain-core"
   dependencies:
-    "@standardnotes/common": "workspace:*"
-    "@standardnotes/features": "npm:^1.52.1"
-    "@standardnotes/predicates": "workspace:*"
-    "@standardnotes/security": "workspace:*"
     "@types/jest": "npm:^29.1.1"
     "@types/uuid": "npm:^8.3.0"
     "@typescript-eslint/eslint-plugin": "npm:^5.30.0"
