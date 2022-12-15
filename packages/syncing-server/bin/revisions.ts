@@ -28,7 +28,7 @@ const fixRevisionsOwnership = async (
 
   const itemsCount = await itemRepository.countAll({
     createdBetween: [createdAfter, createdBefore],
-    selectFields: ['uuid', 'user_uuid'],
+    selectString: 'item.uuid as uuid, item.user_uuid as userUuid',
     contentType: [ContentType.Note, ContentType.File],
     sortOrder: 'ASC',
     sortBy: 'uuid',
@@ -54,7 +54,7 @@ const fixRevisionsOwnership = async (
 
     const items = await itemRepository.findAll({
       createdBetween: [createdAfter, createdBefore],
-      selectFields: ['uuid', 'user_uuid'],
+      selectString: 'item.uuid as uuid, item.user_uuid as userUuid',
       contentType: [ContentType.Note, ContentType.File],
       offset: (page - 1) * revisionsProcessingLimit,
       limit: revisionsProcessingLimit,
