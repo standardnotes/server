@@ -135,8 +135,8 @@ export class MySQLItemRepository implements ItemRepositoryInterface {
       queryBuilder.orderBy(`item.${query.sortBy}`, query.sortOrder)
     }
 
-    if (query.selectString !== undefined) {
-      queryBuilder.select(query.selectString)
+    if (query.selectFields !== undefined) {
+      queryBuilder.select(query.selectFields)
     }
     if (query.userUuid !== undefined) {
       queryBuilder.where('item.user_uuid = :userUuid', { userUuid: query.userUuid })

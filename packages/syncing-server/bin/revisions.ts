@@ -27,7 +27,7 @@ const fixRevisionsOwnership = async (
 
   const itemsCount = await itemRepository.countAll({
     createdBetween: [createdAfter, createdBefore],
-    selectString: 'item.uuid AS uuid, item.user_uuid AS userUuid',
+    selectFields: ['uuid', 'userUuid'],
     contentType: [ContentType.Note, ContentType.File],
     sortOrder: 'ASC',
     sortBy: 'uuid',
@@ -39,16 +39,17 @@ const fixRevisionsOwnership = async (
   const amountOfPages = Math.ceil(itemsCount / limit)
   const tenPercentOfPages = Math.ceil(amountOfPages / 10)
   let itemsProcessedCounter = 0
+  let itemsSkippedCounter = 0
   for (let page = 1; page <= amountOfPages; page++) {
     if (page % tenPercentOfPages === 0) {
       logger.info(
-        `Processing page ${page} of ${amountOfPages} items between ${createdAfter.toISOString()} and ${createdBefore.toISOString()}. Processed successfully ${itemsProcessedCounter} items.`,
+        `Processing page ${page} of ${amountOfPages} items between ${createdAfter.toISOString()} and ${createdBefore.toISOString()}. Processed successfully ${itemsProcessedCounter} items. Skipped ${itemsSkippedCounter} items.`,
       )
     }
 
     const items = await itemRepository.findAll({
       createdBetween: [createdAfter, createdBefore],
-      selectString: 'item.uuid AS uuid, item.user_uuid AS userUuid',
+      selectFields: ['uuid', 'userUuid'],
       contentType: [ContentType.Note, ContentType.File],
       offset: (page - 1) * limit,
       limit,
@@ -58,6 +59,7 @@ const fixRevisionsOwnership = async (
 
     for (const item of items) {
       if (!item.userUuid || !item.uuid) {
+        itemsSkippedCounter++
         continue
       }
 
