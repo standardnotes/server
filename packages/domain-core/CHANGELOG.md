@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.10.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.9.0...@standardnotes/domain-core@1.10.0) (2022-12-15)
+
+### Features
+
+* **domain-core:** add session model ([1c4d4c5](https://github.com/standardnotes/server/commit/1c4d4c57dea1187dc130f1ae8b7dc8ede332320f))
+
 # [1.9.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.8.0...@standardnotes/domain-core@1.9.0) (2022-12-07)
 
 ### Features
