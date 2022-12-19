@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.15.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.14.0...@standardnotes/analytics@2.15.0) (2022-12-19)
+
+### Features
+
+* **auth:** add requesting persisting statistics ([a35271f](https://github.com/standardnotes/server/commit/a35271fbb399b68a3ac7021395d8063707fba222))
+
 # [2.14.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.13.0...@standardnotes/analytics@2.14.0) (2022-12-19)
 
 ### Features

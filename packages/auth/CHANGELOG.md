@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.70.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.69.1...@standardnotes/auth-server@1.70.0) (2022-12-19)
+
+### Features
+
+* **auth:** add requesting persisting statistics ([a35271f](https://github.com/standardnotes/server/commit/a35271fbb399b68a3ac7021395d8063707fba222))
+
 ## [1.69.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.69.0...@standardnotes/auth-server@1.69.1) (2022-12-19)
 
 **Note:** Version bump only for package @standardnotes/auth-server
