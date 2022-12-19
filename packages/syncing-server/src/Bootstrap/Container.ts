@@ -32,8 +32,6 @@ import { ExtensionsHttpService } from '../Domain/Extension/ExtensionsHttpService
 import { ItemBackupServiceInterface } from '../Domain/Item/ItemBackupServiceInterface'
 import { S3ItemBackupService } from '../Infra/S3/S3ItemBackupService'
 import { DomainEventFactoryInterface } from '../Domain/Event/DomainEventFactoryInterface'
-import { ItemsSyncedEventHandler } from '../Domain/Handler/ItemsSyncedEventHandler'
-import { EmailArchiveExtensionSyncedEventHandler } from '../Domain/Handler/EmailArchiveExtensionSyncedEventHandler'
 import { RevisionServiceInterface } from '../Domain/Revision/RevisionServiceInterface'
 import { RevisionService } from '../Domain/Revision/RevisionService'
 import { DuplicateItemSyncedEventHandler } from '../Domain/Handler/DuplicateItemSyncedEventHandler'
@@ -233,10 +231,6 @@ export class ContainerConfigLoader {
     container.bind<GetItem>(TYPES.GetItem).to(GetItem)
 
     // Handlers
-    container.bind<ItemsSyncedEventHandler>(TYPES.ItemsSyncedEventHandler).to(ItemsSyncedEventHandler)
-    container
-      .bind<EmailArchiveExtensionSyncedEventHandler>(TYPES.EmailArchiveExtensionSyncedEventHandler)
-      .to(EmailArchiveExtensionSyncedEventHandler)
     container
       .bind<DuplicateItemSyncedEventHandler>(TYPES.DuplicateItemSyncedEventHandler)
       .to(DuplicateItemSyncedEventHandler)
@@ -296,8 +290,6 @@ export class ContainerConfigLoader {
 
     const eventHandlers: Map<string, DomainEventHandlerInterface> = new Map([
       ['DUPLICATE_ITEM_SYNCED', container.get(TYPES.DuplicateItemSyncedEventHandler)],
-      ['ITEMS_SYNCED', container.get(TYPES.ItemsSyncedEventHandler)],
-      ['EMAIL_ARCHIVE_EXTENSION_SYNCED', container.get(TYPES.EmailArchiveExtensionSyncedEventHandler)],
       ['ACCOUNT_DELETION_REQUESTED', container.get(TYPES.AccountDeletionRequestedEventHandler)],
       ['EMAIL_BACKUP_REQUESTED', container.get(TYPES.EmailBackupRequestedEventHandler)],
       ['CLOUD_BACKUP_REQUESTED', container.get(TYPES.CloudBackupRequestedEventHandler)],

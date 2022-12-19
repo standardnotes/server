@@ -1,10 +1,8 @@
 import {
   DuplicateItemSyncedEvent,
-  EmailArchiveExtensionSyncedEvent,
   EmailRequestedEvent,
   ItemDumpedEvent,
   ItemRevisionCreationRequestedEvent,
-  ItemsSyncedEvent,
   RevisionsCopyRequestedEvent,
   RevisionsOwnershipUpdateRequestedEvent,
   UserContentSizeRecalculationRequestedEvent,
@@ -26,16 +24,6 @@ export interface DomainEventFactoryInterface {
       attachmentContentType: string
     }>
   }): EmailRequestedEvent
-  createItemsSyncedEvent(dto: {
-    userUuid: string
-    extensionUrl: string
-    extensionId: string
-    itemUuids: Array<string>
-    forceMute: boolean
-    skipFileBackup: boolean
-    source: 'account-deletion' | 'realtime-extensions-sync'
-  }): ItemsSyncedEvent
-  createEmailArchiveExtensionSyncedEvent(userUuid: string, extensionId: string): EmailArchiveExtensionSyncedEvent
   createDuplicateItemSyncedEvent(itemUuid: string, userUuid: string): DuplicateItemSyncedEvent
   createItemRevisionCreationRequested(itemUuid: string, userUuid: string): ItemRevisionCreationRequestedEvent
   createItemDumpedEvent(fileDumpPath: string, userUuid: string): ItemDumpedEvent

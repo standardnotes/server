@@ -2,11 +2,9 @@
 import {
   DomainEventService,
   DuplicateItemSyncedEvent,
-  EmailArchiveExtensionSyncedEvent,
   EmailRequestedEvent,
   ItemDumpedEvent,
   ItemRevisionCreationRequestedEvent,
-  ItemsSyncedEvent,
   RevisionsCopyRequestedEvent,
   RevisionsOwnershipUpdateRequestedEvent,
   UserContentSizeRecalculationRequestedEvent,
@@ -153,47 +151,6 @@ export class DomainEventFactory implements DomainEventFactoryInterface {
         origin: DomainEventService.SyncingServer,
       },
       payload: dto,
-    }
-  }
-
-  createItemsSyncedEvent(dto: {
-    userUuid: string
-    extensionUrl: string
-    extensionId: string
-    itemUuids: Array<string>
-    forceMute: boolean
-    skipFileBackup: boolean
-    source: 'account-deletion' | 'realtime-extensions-sync'
-  }): ItemsSyncedEvent {
-    return {
-      type: 'ITEMS_SYNCED',
-      createdAt: this.timer.getUTCDate(),
-      meta: {
-        correlation: {
-          userIdentifier: dto.userUuid,
-          userIdentifierType: 'uuid',
-        },
-        origin: DomainEventService.SyncingServer,
-      },
-      payload: dto,
-    }
-  }
-
-  createEmailArchiveExtensionSyncedEvent(userUuid: string, extensionId: string): EmailArchiveExtensionSyncedEvent {
-    return {
-      type: 'EMAIL_ARCHIVE_EXTENSION_SYNCED',
-      createdAt: this.timer.getUTCDate(),
-      meta: {
-        correlation: {
-          userIdentifier: userUuid,
-          userIdentifierType: 'uuid',
-        },
-        origin: DomainEventService.SyncingServer,
-      },
-      payload: {
-        userUuid,
-        extensionId,
-      },
     }
   }
 }
