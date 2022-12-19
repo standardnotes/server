@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.19.0](https://github.com/standardnotes/server/compare/@standardnotes/workspace-server@1.18.6...@standardnotes/workspace-server@1.19.0) (2022-12-19)
+
+### Features
+
+* **auth:** add session traces ([8bcb552](https://github.com/standardnotes/server/commit/8bcb552783b2d12f3296b3195752168482790bc8))
+
 ## [1.18.6](https://github.com/standardnotes/server/compare/@standardnotes/workspace-server@1.18.5...@standardnotes/workspace-server@1.18.6) (2022-12-15)
 
 **Note:** Version bump only for package @standardnotes/workspace-server

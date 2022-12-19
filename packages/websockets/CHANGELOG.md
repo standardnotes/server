@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.5.0](https://github.com/standardnotes/server/compare/@standardnotes/websockets-server@1.4.53...@standardnotes/websockets-server@1.5.0) (2022-12-19)
+
+### Features
+
+* **auth:** add session traces ([8bcb552](https://github.com/standardnotes/server/commit/8bcb552783b2d12f3296b3195752168482790bc8))
+
 ## [1.4.53](https://github.com/standardnotes/server/compare/@standardnotes/websockets-server@1.4.52...@standardnotes/websockets-server@1.4.53) (2022-12-12)
 
 **Note:** Version bump only for package @standardnotes/websockets-server

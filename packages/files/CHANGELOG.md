@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.9.0](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.8.52...@standardnotes/files-server@1.9.0) (2022-12-19)
+
+### Features
+
+* **auth:** add session traces ([8bcb552](https://github.com/standardnotes/files/commit/8bcb552783b2d12f3296b3195752168482790bc8))
+
 ## [1.8.52](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.8.51...@standardnotes/files-server@1.8.52) (2022-12-12)
 
 **Note:** Version bump only for package @standardnotes/files-server

@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.28.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.27.0...@standardnotes/syncing-server@1.28.0) (2022-12-19)
+
+### Bug Fixes
+
+* **syncing-server:** cleanup unused events ([f504a82](https://github.com/standardnotes/syncing-server-js/commit/f504a8288c6303101e7dd7fa13f158eec8dfca33))
+
+### Features
+
+* **auth:** add session traces ([8bcb552](https://github.com/standardnotes/syncing-server-js/commit/8bcb552783b2d12f3296b3195752168482790bc8))
+
 # [1.27.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.26.11...@standardnotes/syncing-server@1.27.0) (2022-12-19)
 
 ### Features

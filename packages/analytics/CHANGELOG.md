@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.13.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.12.27...@standardnotes/analytics@2.13.0) (2022-12-19)
+
+### Features
+
+* **auth:** add session traces ([8bcb552](https://github.com/standardnotes/server/commit/8bcb552783b2d12f3296b3195752168482790bc8))
+
 ## [2.12.27](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.12.26...@standardnotes/analytics@2.12.27) (2022-12-15)
 
 **Note:** Version bump only for package @standardnotes/analytics

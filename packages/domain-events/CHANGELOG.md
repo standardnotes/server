@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.104.2](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.104.1...@standardnotes/domain-events@2.104.2) (2022-12-19)
+
+### Bug Fixes
+
+* **syncing-server:** cleanup unused events ([f504a82](https://github.com/standardnotes/server/commit/f504a8288c6303101e7dd7fa13f158eec8dfca33))
+
 ## [2.104.1](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.104.0...@standardnotes/domain-events@2.104.1) (2022-12-12)
 
 ### Bug Fixes
