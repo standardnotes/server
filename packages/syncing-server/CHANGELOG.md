@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.27.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.26.11...@standardnotes/syncing-server@1.27.0) (2022-12-19)
+
+### Features
+
+* **syncing-server:** setup sentry profiling ([e3b96c3](https://github.com/standardnotes/syncing-server-js/commit/e3b96c3a1f33923e570686c7eef63c106e3bca1b))
+
 ## [1.26.11](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.26.10...@standardnotes/syncing-server@1.26.11) (2022-12-19)
 
 **Note:** Version bump only for package @standardnotes/syncing-server
