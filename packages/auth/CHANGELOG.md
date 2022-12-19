@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.69.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.68.0...@standardnotes/auth-server@1.69.0) (2022-12-19)
+
+### Features
+
+* **auth:** add session traces cleanup procedure ([147d8fd](https://github.com/standardnotes/server/commit/147d8fd9af89d2b97cd68eefac36e53d14d511bf))
+
 # [1.68.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.67.3...@standardnotes/auth-server@1.68.0) (2022-12-19)
 
 ### Features
