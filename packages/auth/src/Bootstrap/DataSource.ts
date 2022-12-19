@@ -10,6 +10,7 @@ import { SharedSubscriptionInvitation } from '../Domain/SharedSubscription/Share
 import { OfflineUserSubscription } from '../Domain/Subscription/OfflineUserSubscription'
 import { UserSubscription } from '../Domain/Subscription/UserSubscription'
 import { User } from '../Domain/User/User'
+import { TypeORMSessionTrace } from '../Infra/TypeORM/TypeORMSessionTrace'
 import { Env } from './Env'
 
 const env: Env = new Env()
@@ -56,6 +57,7 @@ export const AppDataSource = new DataSource({
     OfflineSetting,
     SharedSubscriptionInvitation,
     SubscriptionSetting,
+    TypeORMSessionTrace,
   ],
   migrations: [env.get('DB_MIGRATIONS_PATH', true) ?? 'dist/migrations/*.js'],
   migrationsRun: true,

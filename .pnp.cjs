@@ -126,7 +126,7 @@ const RAW_RUNTIME_STATE =
           ["@lerna-lite/cli", "npm:1.6.0"],\
           ["@lerna-lite/list", "npm:1.6.0"],\
           ["@lerna-lite/run", "npm:1.6.0"],\
-          ["@sentry/node", "npm:7.19.0"],\
+          ["@sentry/node", "npm:7.27.0"],\
           ["@types/jest", "npm:29.1.1"],\
           ["@types/newrelic", "npm:7.0.4"],\
           ["@types/node", "npm:18.11.9"],\
@@ -2438,16 +2438,6 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@sentry/core", [\
-      ["npm:7.19.0", {\
-        "packageLocation": "./.yarn/cache/@sentry-core-npm-7.19.0-151e6173ac-cabd7852ff.zip/node_modules/@sentry/core/",\
-        "packageDependencies": [\
-          ["@sentry/core", "npm:7.19.0"],\
-          ["@sentry/types", "npm:7.19.0"],\
-          ["@sentry/utils", "npm:7.19.0"],\
-          ["tslib", "npm:1.14.1"]\
-        ],\
-        "linkType": "HARD"\
-      }],\
       ["npm:7.27.0", {\
         "packageLocation": "./.yarn/cache/@sentry-core-npm-7.27.0-72a2ae90aa-1144287db2.zip/node_modules/@sentry/core/",\
         "packageDependencies": [\
@@ -2473,20 +2463,6 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@sentry/node", [\
-      ["npm:7.19.0", {\
-        "packageLocation": "./.yarn/cache/@sentry-node-npm-7.19.0-fd3d8dbde1-3a69647d2e.zip/node_modules/@sentry/node/",\
-        "packageDependencies": [\
-          ["@sentry/node", "npm:7.19.0"],\
-          ["@sentry/core", "npm:7.19.0"],\
-          ["@sentry/types", "npm:7.19.0"],\
-          ["@sentry/utils", "npm:7.19.0"],\
-          ["cookie", "npm:0.4.2"],\
-          ["https-proxy-agent", "npm:5.0.1"],\
-          ["lru_map", "npm:0.3.3"],\
-          ["tslib", "npm:1.14.1"]\
-        ],\
-        "linkType": "HARD"\
-      }],\
       ["npm:7.27.0", {\
         "packageLocation": "./.yarn/cache/@sentry-node-npm-7.27.0-f1028265b5-b85cd47555.zip/node_modules/@sentry/node/",\
         "packageDependencies": [\
@@ -2533,13 +2509,6 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@sentry/types", [\
-      ["npm:7.19.0", {\
-        "packageLocation": "./.yarn/cache/@sentry-types-npm-7.19.0-d6ed1960f2-541e1ef49a.zip/node_modules/@sentry/types/",\
-        "packageDependencies": [\
-          ["@sentry/types", "npm:7.19.0"]\
-        ],\
-        "linkType": "HARD"\
-      }],\
       ["npm:7.27.0", {\
         "packageLocation": "./.yarn/cache/@sentry-types-npm-7.27.0-67702fc3e1-20ace8aa51.zip/node_modules/@sentry/types/",\
         "packageDependencies": [\
@@ -2549,15 +2518,6 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@sentry/utils", [\
-      ["npm:7.19.0", {\
-        "packageLocation": "./.yarn/cache/@sentry-utils-npm-7.19.0-79844d4d90-50e4f391fe.zip/node_modules/@sentry/utils/",\
-        "packageDependencies": [\
-          ["@sentry/utils", "npm:7.19.0"],\
-          ["@sentry/types", "npm:7.19.0"],\
-          ["tslib", "npm:1.14.1"]\
-        ],\
-        "linkType": "HARD"\
-      }],\
       ["npm:7.27.0", {\
         "packageLocation": "./.yarn/cache/@sentry-utils-npm-7.27.0-1935a93244-760c02397d.zip/node_modules/@sentry/utils/",\
         "packageDependencies": [\
@@ -2621,7 +2581,7 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["@standardnotes/analytics", "workspace:packages/analytics"],\
           ["@newrelic/winston-enricher", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:4.0.0"],\
-          ["@sentry/node", "npm:7.19.0"],\
+          ["@sentry/node", "npm:7.27.0"],\
           ["@standardnotes/common", "workspace:packages/common"],\
           ["@standardnotes/domain-core", "workspace:packages/domain-core"],\
           ["@standardnotes/domain-events", "workspace:packages/domain-events"],\
@@ -2673,7 +2633,7 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["@standardnotes/api-gateway", "workspace:packages/api-gateway"],\
           ["@newrelic/winston-enricher", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:4.0.0"],\
-          ["@sentry/node", "npm:7.19.0"],\
+          ["@sentry/node", "npm:7.27.0"],\
           ["@standardnotes/common", "workspace:packages/common"],\
           ["@standardnotes/domain-events", "workspace:packages/domain-events"],\
           ["@standardnotes/domain-events-infra", "workspace:packages/domain-events-infra"],\
@@ -2729,7 +2689,9 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["@standardnotes/auth-server", "workspace:packages/auth"],\
           ["@newrelic/winston-enricher", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:4.0.0"],\
-          ["@sentry/node", "npm:7.19.0"],\
+          ["@sentry/node", "npm:7.27.0"],\
+          ["@sentry/profiling-node", "npm:0.0.12"],\
+          ["@sentry/tracing", "npm:7.27.0"],\
           ["@standardnotes/api", "npm:1.19.0"],\
           ["@standardnotes/common", "workspace:packages/common"],\
           ["@standardnotes/domain-core", "workspace:packages/domain-core"],\
@@ -2953,7 +2915,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./packages/files/",\
         "packageDependencies": [\
           ["@standardnotes/files-server", "workspace:packages/files"],\
-          ["@sentry/node", "npm:7.19.0"],\
+          ["@sentry/node", "npm:7.27.0"],\
           ["@standardnotes/common", "workspace:packages/common"],\
           ["@standardnotes/config", "npm:2.4.3"],\
           ["@standardnotes/domain-events", "workspace:packages/domain-events"],\
@@ -3088,7 +3050,7 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["@standardnotes/revisions-server", "workspace:packages/revisions"],\
           ["@newrelic/winston-enricher", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:4.0.0"],\
-          ["@sentry/node", "npm:7.19.0"],\
+          ["@sentry/node", "npm:7.27.0"],\
           ["@standardnotes/api", "npm:1.19.0"],\
           ["@standardnotes/common", "workspace:packages/common"],\
           ["@standardnotes/domain-core", "workspace:packages/domain-core"],\
@@ -3133,7 +3095,7 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["@standardnotes/scheduler-server", "workspace:packages/scheduler"],\
           ["@newrelic/winston-enricher", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:4.0.0"],\
-          ["@sentry/node", "npm:7.19.0"],\
+          ["@sentry/node", "npm:7.27.0"],\
           ["@standardnotes/common", "workspace:packages/common"],\
           ["@standardnotes/domain-core", "workspace:packages/domain-core"],\
           ["@standardnotes/domain-events", "workspace:packages/domain-events"],\
@@ -3194,7 +3156,7 @@ const RAW_RUNTIME_STATE =
           ["@lerna-lite/cli", "npm:1.6.0"],\
           ["@lerna-lite/list", "npm:1.6.0"],\
           ["@lerna-lite/run", "npm:1.6.0"],\
-          ["@sentry/node", "npm:7.19.0"],\
+          ["@sentry/node", "npm:7.27.0"],\
           ["@types/jest", "npm:29.1.1"],\
           ["@types/newrelic", "npm:7.0.4"],\
           ["@types/node", "npm:18.11.9"],\
@@ -3362,7 +3324,7 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["@standardnotes/websockets-server", "workspace:packages/websockets"],\
           ["@newrelic/winston-enricher", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:4.0.0"],\
-          ["@sentry/node", "npm:7.19.0"],\
+          ["@sentry/node", "npm:7.27.0"],\
           ["@standardnotes/api", "npm:1.19.0"],\
           ["@standardnotes/common", "workspace:packages/common"],\
           ["@standardnotes/domain-events", "workspace:packages/domain-events"],\
@@ -3402,7 +3364,7 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["@standardnotes/workspace-server", "workspace:packages/workspace"],\
           ["@newrelic/winston-enricher", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:4.0.0"],\
-          ["@sentry/node", "npm:7.19.0"],\
+          ["@sentry/node", "npm:7.27.0"],\
           ["@standardnotes/api", "npm:1.19.0"],\
           ["@standardnotes/common", "workspace:packages/common"],\
           ["@standardnotes/domain-core", "workspace:packages/domain-core"],\

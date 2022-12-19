@@ -61,7 +61,7 @@
   },
   "packageManager": "yarn@4.0.0-rc.25",
   "dependencies": {
-    "@sentry/node": "^7.19.0",
+    "@sentry/node": "^7.27.0",
     "newrelic": "^9.6.0"
   }
 }

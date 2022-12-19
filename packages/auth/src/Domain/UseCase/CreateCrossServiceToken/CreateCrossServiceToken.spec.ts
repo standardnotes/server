@@ -8,6 +8,10 @@ import { Role } from '../../Role/Role'
 import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'
 
 import { CreateCrossServiceToken } from './CreateCrossServiceToken'
+import { RoleToSubscriptionMapInterface } from '../../Role/RoleToSubscriptionMapInterface'
+import { TraceSession } from '../TraceSession/TraceSession'
+import { Logger } from 'winston'
+import { Result, RoleName, SubscriptionPlanName } from '@standardnotes/domain-core'
 
 describe('CreateCrossServiceToken', () => {
   let userProjector: ProjectorInterface<User>
@@ -15,6 +19,9 @@ describe('CreateCrossServiceToken', () => {
   let roleProjector: ProjectorInterface<Role>
   let tokenEncoder: TokenEncoderInterface<CrossServiceTokenData>
   let userRepository: UserRepositoryInterface
+  let roleToSubscriptionMap: RoleToSubscriptionMapInterface
+  let traceSession: TraceSession
+  let logger: Logger
   const jwtTTL = 60
 
   let session: Session
@@ -22,16 +29,29 @@ describe('CreateCrossServiceToken', () => {
   let role: Role
 
   const createUseCase = () =>
-    new CreateCrossServiceToken(userProjector, sessionProjector, roleProjector, tokenEncoder, userRepository, jwtTTL)
+    new CreateCrossServiceToken(
+      userProjector,
+      sessionProjector,
+      roleProjector,
+      tokenEncoder,
+      userRepository,
+      jwtTTL,
+      roleToSubscriptionMap,
+      traceSession,
+      logger,
+    )
 
   beforeEach(() => {
     session = {} as jest.Mocked<Session>
 
-    user = {} as jest.Mocked<User>
+    user = {
+      uuid: '1-2-3',
+      email: 'test@test.te',
+    } as jest.Mocked<User>
     user.roles = Promise.resolve([role])
 
     userProjector = {} as jest.Mocked<ProjectorInterface<User>>
-    userProjector.projectSimple = jest.fn().mockReturnValue({ bar: 'baz' })
+    userProjector.projectSimple = jest.fn().mockReturnValue({ uuid: '1-2-3', email: 'test@test.te' })
 
     roleProjector = {} as jest.Mocked<ProjectorInterface<Role>>
     roleProjector.projectSimple = jest.fn().mockReturnValue({ name: 'role1', uuid: '1-3-4' })
@@ -45,6 +65,18 @@ describe('CreateCrossServiceToken', () => {
 
     userRepository = {} as jest.Mocked<UserRepositoryInterface>
     userRepository.findOneByUuid = jest.fn().mockReturnValue(user)
+
+    roleToSubscriptionMap = {} as jest.Mocked<RoleToSubscriptionMapInterface>
+    roleToSubscriptionMap.filterNonSubscriptionRoles = jest.fn().mockReturnValue([RoleName.NAMES.PlusUser])
+    roleToSubscriptionMap.getSubscriptionNameForRoleName = jest
+      .fn()
+      .mockReturnValue(SubscriptionPlanName.NAMES.PlusPlan)
+
+    traceSession = {} as jest.Mocked<TraceSession>
+    traceSession.execute = jest.fn()
+
+    logger = {} as jest.Mocked<Logger>
+    logger.error = jest.fn()
   })
 
   it('should create a cross service token for user', async () => {
@@ -53,6 +85,11 @@ describe('CreateCrossServiceToken', () => {
       session,
     })
 
+    expect(traceSession.execute).toHaveBeenCalledWith({
+      userUuid: '1-2-3',
+      username: 'test@test.te',
+      subscriptionPlanName: 'PLUS_PLAN',
+    })
     expect(tokenEncoder.encodeExpirableToken).toHaveBeenCalledWith(
       {
         roles: [
@@ -65,7 +102,8 @@ describe('CreateCrossServiceToken', () => {
           test: 'test',
         },
         user: {
-          bar: 'baz',
+          email: 'test@test.te',
+          uuid: '1-2-3',
         },
       },
       60,
@@ -86,7 +124,8 @@ describe('CreateCrossServiceToken', () => {
           },
         ],
         user: {
-          bar: 'baz',
+          email: 'test@test.te',
+          uuid: '1-2-3',
         },
       },
       60,
@@ -107,7 +146,8 @@ describe('CreateCrossServiceToken', () => {
           },
         ],
         user: {
-          bar: 'baz',
+          email: 'test@test.te',
+          uuid: '1-2-3',
         },
       },
       60,
@@ -127,5 +167,127 @@ describe('CreateCrossServiceToken', () => {
     }
 
     expect(caughtError).not.toBeNull()
+  })
+
+  it('should trace session without a subscription role', async () => {
+    roleToSubscriptionMap.filterNonSubscriptionRoles = jest.fn().mockReturnValue([])
+
+    await createUseCase().execute({
+      user,
+      session,
+    })
+
+    expect(traceSession.execute).toHaveBeenCalledWith({
+      userUuid: '1-2-3',
+      username: 'test@test.te',
+      subscriptionPlanName: null,
+    })
+    expect(tokenEncoder.encodeExpirableToken).toHaveBeenCalledWith(
+      {
+        roles: [
+          {
+            name: 'role1',
+            uuid: '1-3-4',
+          },
+        ],
+        session: {
+          test: 'test',
+        },
+        user: {
+          email: 'test@test.te',
+          uuid: '1-2-3',
+        },
+      },
+      60,
+    )
+  })
+
+  it('should trace session without a subscription', async () => {
+    roleToSubscriptionMap.getSubscriptionNameForRoleName = jest.fn().mockReturnValue(undefined)
+
+    await createUseCase().execute({
+      user,
+      session,
+    })
+
+    expect(traceSession.execute).toHaveBeenCalledWith({
+      userUuid: '1-2-3',
+      username: 'test@test.te',
+      subscriptionPlanName: null,
+    })
+    expect(tokenEncoder.encodeExpirableToken).toHaveBeenCalledWith(
+      {
+        roles: [
+          {
+            name: 'role1',
+            uuid: '1-3-4',
+          },
+        ],
+        session: {
+          test: 'test',
+        },
+        user: {
+          email: 'test@test.te',
+          uuid: '1-2-3',
+        },
+      },
+      60,
+    )
+  })
+
+  it('should create token if tracing session throws an error', async () => {
+    traceSession.execute = jest.fn().mockRejectedValue(new Error('test'))
+
+    await createUseCase().execute({
+      user,
+      session,
+    })
+
+    expect(tokenEncoder.encodeExpirableToken).toHaveBeenCalledWith(
+      {
+        roles: [
+          {
+            name: 'role1',
+            uuid: '1-3-4',
+          },
+        ],
+        session: {
+          test: 'test',
+        },
+        user: {
+          email: 'test@test.te',
+          uuid: '1-2-3',
+        },
+      },
+      60,
+    )
+  })
+
+  it('should create token if tracing session fails', async () => {
+    traceSession.execute = jest.fn().mockReturnValue(Result.fail('Ooops'))
+
+    await createUseCase().execute({
+      user,
+      session,
+    })
+
+    expect(tokenEncoder.encodeExpirableToken).toHaveBeenCalledWith(
+      {
+        roles: [
+          {
+            name: 'role1',
+            uuid: '1-3-4',
+          },
+        ],
+        session: {
+          test: 'test',
+        },
+        user: {
+          email: 'test@test.te',
+          uuid: '1-2-3',
+        },
+      },
+      60,
+    )
   })
 })

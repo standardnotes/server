@@ -194,6 +194,13 @@ import { CreateCrossServiceToken } from '../Domain/UseCase/CreateCrossServiceTok
 import { ProcessUserRequest } from '../Domain/UseCase/ProcessUserRequest/ProcessUserRequest'
 import { UserRequestsController } from '../Controller/UserRequestsController'
 import { EmailSubscriptionUnsubscribedEventHandler } from '../Domain/Handler/EmailSubscriptionUnsubscribedEventHandler'
+import { SessionTraceRepositoryInterface } from '../Domain/Session/SessionTraceRepositoryInterface'
+import { MySQLSessionTraceRepository } from '../Infra/MySQL/MySQLSessionTraceRepository'
+import { MapperInterface } from '@standardnotes/domain-core'
+import { SessionTracePersistenceMapper } from '../Mapping/SessionTracePersistenceMapper'
+import { SessionTrace } from '../Domain/Session/SessionTrace'
+import { TypeORMSessionTrace } from '../Infra/TypeORM/TypeORMSessionTrace'
+import { TraceSession } from '../Domain/UseCase/TraceSession/TraceSession'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -231,6 +238,8 @@ export class ContainerConfigLoader {
     })
     container.bind<winston.Logger>(TYPES.Logger).toConstantValue(logger)
 
+    container.bind<TimerInterface>(TYPES.Timer).toConstantValue(new Timer())
+
     if (env.get('SNS_TOPIC_ARN', true)) {
       const snsConfig: AWS.SNS.Types.ClientConfiguration = {
         apiVersion: 'latest',
@@ -265,10 +274,46 @@ export class ContainerConfigLoader {
       container.bind<AWS.SQS>(TYPES.SQS).toConstantValue(new AWS.SQS(sqsConfig))
     }
 
+    // Mapping
+    container
+      .bind<MapperInterface<SessionTrace, TypeORMSessionTrace>>(TYPES.SessionTracePersistenceMapper)
+      .toConstantValue(new SessionTracePersistenceMapper())
+
     // Controller
     container.bind<AuthController>(TYPES.AuthController).to(AuthController)
     container.bind<SubscriptionInvitesController>(TYPES.SubscriptionInvitesController).to(SubscriptionInvitesController)
     container.bind<UserRequestsController>(TYPES.UserRequestsController).to(UserRequestsController)
+
+    // ORM
+    container
+      .bind<Repository<OfflineSetting>>(TYPES.ORMOfflineSettingRepository)
+      .toConstantValue(AppDataSource.getRepository(OfflineSetting))
+    container
+      .bind<Repository<OfflineUserSubscription>>(TYPES.ORMOfflineUserSubscriptionRepository)
+      .toConstantValue(AppDataSource.getRepository(OfflineUserSubscription))
+    container
+      .bind<Repository<RevokedSession>>(TYPES.ORMRevokedSessionRepository)
+      .toConstantValue(AppDataSource.getRepository(RevokedSession))
+    container.bind<Repository<Role>>(TYPES.ORMRoleRepository).toConstantValue(AppDataSource.getRepository(Role))
+    container
+      .bind<Repository<Session>>(TYPES.ORMSessionRepository)
+      .toConstantValue(AppDataSource.getRepository(Session))
+    container
+      .bind<Repository<Setting>>(TYPES.ORMSettingRepository)
+      .toConstantValue(AppDataSource.getRepository(Setting))
+    container
+      .bind<Repository<SharedSubscriptionInvitation>>(TYPES.ORMSharedSubscriptionInvitationRepository)
+      .toConstantValue(AppDataSource.getRepository(SharedSubscriptionInvitation))
+    container
+      .bind<Repository<SubscriptionSetting>>(TYPES.ORMSubscriptionSettingRepository)
+      .toConstantValue(AppDataSource.getRepository(SubscriptionSetting))
+    container.bind<Repository<User>>(TYPES.ORMUserRepository).toConstantValue(AppDataSource.getRepository(User))
+    container
+      .bind<Repository<UserSubscription>>(TYPES.ORMUserSubscriptionRepository)
+      .toConstantValue(AppDataSource.getRepository(UserSubscription))
+    container
+      .bind<Repository<TypeORMSessionTrace>>(TYPES.ORMSessionTraceRepository)
+      .toConstantValue(AppDataSource.getRepository(TypeORMSessionTrace))
 
     // Repositories
     container.bind<SessionRepositoryInterface>(TYPES.SessionRepository).to(MySQLSessionRepository)
@@ -300,34 +345,14 @@ export class ContainerConfigLoader {
       .bind<SharedSubscriptionInvitationRepositoryInterface>(TYPES.SharedSubscriptionInvitationRepository)
       .to(MySQLSharedSubscriptionInvitationRepository)
     container.bind<PKCERepositoryInterface>(TYPES.PKCERepository).to(RedisPKCERepository)
-
-    // ORM
     container
-      .bind<Repository<OfflineSetting>>(TYPES.ORMOfflineSettingRepository)
-      .toConstantValue(AppDataSource.getRepository(OfflineSetting))
-    container
-      .bind<Repository<OfflineUserSubscription>>(TYPES.ORMOfflineUserSubscriptionRepository)
-      .toConstantValue(AppDataSource.getRepository(OfflineUserSubscription))
-    container
-      .bind<Repository<RevokedSession>>(TYPES.ORMRevokedSessionRepository)
-      .toConstantValue(AppDataSource.getRepository(RevokedSession))
-    container.bind<Repository<Role>>(TYPES.ORMRoleRepository).toConstantValue(AppDataSource.getRepository(Role))
-    container
-      .bind<Repository<Session>>(TYPES.ORMSessionRepository)
-      .toConstantValue(AppDataSource.getRepository(Session))
-    container
-      .bind<Repository<Setting>>(TYPES.ORMSettingRepository)
-      .toConstantValue(AppDataSource.getRepository(Setting))
-    container
-      .bind<Repository<SharedSubscriptionInvitation>>(TYPES.ORMSharedSubscriptionInvitationRepository)
-      .toConstantValue(AppDataSource.getRepository(SharedSubscriptionInvitation))
-    container
-      .bind<Repository<SubscriptionSetting>>(TYPES.ORMSubscriptionSettingRepository)
-      .toConstantValue(AppDataSource.getRepository(SubscriptionSetting))
-    container.bind<Repository<User>>(TYPES.ORMUserRepository).toConstantValue(AppDataSource.getRepository(User))
-    container
-      .bind<Repository<UserSubscription>>(TYPES.ORMUserSubscriptionRepository)
-      .toConstantValue(AppDataSource.getRepository(UserSubscription))
+      .bind<SessionTraceRepositoryInterface>(TYPES.SessionTraceRepository)
+      .toConstantValue(
+        new MySQLSessionTraceRepository(
+          container.get(TYPES.ORMSessionTraceRepository),
+          container.get(TYPES.SessionTracePersistenceMapper),
+        ),
+      )
 
     // Middleware
     container.bind<AuthMiddleware>(TYPES.AuthMiddleware).to(AuthMiddleware)
@@ -383,8 +408,97 @@ export class ContainerConfigLoader {
     container.bind(TYPES.SYNCING_SERVER_URL).toConstantValue(env.get('SYNCING_SERVER_URL'))
     container.bind(TYPES.VERSION).toConstantValue(env.get('VERSION'))
     container.bind(TYPES.PAYMENTS_SERVER_URL).toConstantValue(env.get('PAYMENTS_SERVER_URL', true))
+    container
+      .bind(TYPES.SESSION_TRACE_DAYS_TTL)
+      .toConstantValue(env.get('SESSION_TRACE_DAYS_TTL', true) ? +env.get('SESSION_TRACE_DAYS_TTL', true) : 90)
+
+    // Services
+    container.bind<UAParser>(TYPES.DeviceDetector).toConstantValue(new UAParser())
+    container.bind<SessionService>(TYPES.SessionService).to(SessionService)
+    container.bind<AuthResponseFactory20161215>(TYPES.AuthResponseFactory20161215).to(AuthResponseFactory20161215)
+    container.bind<AuthResponseFactory20190520>(TYPES.AuthResponseFactory20190520).to(AuthResponseFactory20190520)
+    container.bind<AuthResponseFactory20200115>(TYPES.AuthResponseFactory20200115).to(AuthResponseFactory20200115)
+    container.bind<AuthResponseFactoryResolver>(TYPES.AuthResponseFactoryResolver).to(AuthResponseFactoryResolver)
+    container.bind<KeyParamsFactory>(TYPES.KeyParamsFactory).to(KeyParamsFactory)
+    container
+      .bind<TokenDecoderInterface<SessionTokenData>>(TYPES.SessionTokenDecoder)
+      .toConstantValue(new TokenDecoder<SessionTokenData>(container.get(TYPES.JWT_SECRET)))
+    container
+      .bind<TokenDecoderInterface<SessionTokenData>>(TYPES.FallbackSessionTokenDecoder)
+      .toConstantValue(new TokenDecoder<SessionTokenData>(container.get(TYPES.LEGACY_JWT_SECRET)))
+    container
+      .bind<TokenDecoderInterface<CrossServiceTokenData>>(TYPES.CrossServiceTokenDecoder)
+      .toConstantValue(new TokenDecoder<CrossServiceTokenData>(container.get(TYPES.AUTH_JWT_SECRET)))
+    container
+      .bind<TokenDecoderInterface<OfflineUserTokenData>>(TYPES.OfflineUserTokenDecoder)
+      .toConstantValue(new TokenDecoder<OfflineUserTokenData>(container.get(TYPES.AUTH_JWT_SECRET)))
+    container
+      .bind<TokenDecoderInterface<WebSocketConnectionTokenData>>(TYPES.WebSocketConnectionTokenDecoder)
+      .toConstantValue(
+        new TokenDecoder<WebSocketConnectionTokenData>(container.get(TYPES.WEB_SOCKET_CONNECTION_TOKEN_SECRET)),
+      )
+    container
+      .bind<TokenEncoderInterface<OfflineUserTokenData>>(TYPES.OfflineUserTokenEncoder)
+      .toConstantValue(new TokenEncoder<OfflineUserTokenData>(container.get(TYPES.AUTH_JWT_SECRET)))
+    container
+      .bind<TokenEncoderInterface<SessionTokenData>>(TYPES.SessionTokenEncoder)
+      .toConstantValue(new TokenEncoder<SessionTokenData>(container.get(TYPES.JWT_SECRET)))
+    container
+      .bind<TokenEncoderInterface<CrossServiceTokenData>>(TYPES.CrossServiceTokenEncoder)
+      .toConstantValue(new TokenEncoder<CrossServiceTokenData>(container.get(TYPES.AUTH_JWT_SECRET)))
+    container
+      .bind<TokenEncoderInterface<ValetTokenData>>(TYPES.ValetTokenEncoder)
+      .toConstantValue(new TokenEncoder<ValetTokenData>(container.get(TYPES.VALET_TOKEN_SECRET)))
+    container.bind<AuthenticationMethodResolver>(TYPES.AuthenticationMethodResolver).to(AuthenticationMethodResolver)
+    container.bind<DomainEventFactory>(TYPES.DomainEventFactory).to(DomainEventFactory)
+    container.bind<AxiosInstance>(TYPES.HTTPClient).toConstantValue(axios.create())
+    container.bind<CrypterInterface>(TYPES.Crypter).to(CrypterNode)
+    container.bind<SettingServiceInterface>(TYPES.SettingService).to(SettingService)
+    container.bind<SubscriptionSettingServiceInterface>(TYPES.SubscriptionSettingService).to(SubscriptionSettingService)
+    container.bind<OfflineSettingServiceInterface>(TYPES.OfflineSettingService).to(OfflineSettingService)
+    container.bind<CryptoNode>(TYPES.CryptoNode).toConstantValue(new CryptoNode())
+    container.bind<ContentDecoderInterface>(TYPES.ContenDecoder).toConstantValue(new ContentDecoder())
+    container.bind<ClientServiceInterface>(TYPES.WebSocketsClientService).to(WebSocketsClientService)
+    container.bind<RoleServiceInterface>(TYPES.RoleService).to(RoleService)
+    container.bind<RoleToSubscriptionMapInterface>(TYPES.RoleToSubscriptionMap).to(RoleToSubscriptionMap)
+    container.bind<SettingsAssociationServiceInterface>(TYPES.SettingsAssociationService).to(SettingsAssociationService)
+    container
+      .bind<SubscriptionSettingsAssociationServiceInterface>(TYPES.SubscriptionSettingsAssociationService)
+      .to(SubscriptionSettingsAssociationService)
+    container.bind<FeatureServiceInterface>(TYPES.FeatureService).to(FeatureService)
+    container.bind<SettingInterpreterInterface>(TYPES.SettingInterpreter).to(SettingInterpreter)
+    container.bind<SettingDecrypterInterface>(TYPES.SettingDecrypter).to(SettingDecrypter)
+    container
+      .bind<SelectorInterface<ProtocolVersion>>(TYPES.ProtocolVersionSelector)
+      .toConstantValue(new DeterministicSelector<ProtocolVersion>())
+    container
+      .bind<SelectorInterface<boolean>>(TYPES.BooleanSelector)
+      .toConstantValue(new DeterministicSelector<boolean>())
+    container.bind<UserSubscriptionServiceInterface>(TYPES.UserSubscriptionService).to(UserSubscriptionService)
+    container.bind<ValidatorInterface<Uuid>>(TYPES.UuidValidator).toConstantValue(new UuidValidator())
+
+    if (env.get('SNS_TOPIC_ARN', true)) {
+      container
+        .bind<SNSDomainEventPublisher>(TYPES.DomainEventPublisher)
+        .toConstantValue(new SNSDomainEventPublisher(container.get(TYPES.SNS), container.get(TYPES.SNS_TOPIC_ARN)))
+    } else {
+      container
+        .bind<RedisDomainEventPublisher>(TYPES.DomainEventPublisher)
+        .toConstantValue(
+          new RedisDomainEventPublisher(container.get(TYPES.Redis), container.get(TYPES.REDIS_EVENTS_CHANNEL)),
+        )
+    }
 
     // use cases
+    container
+      .bind<TraceSession>(TYPES.TraceSession)
+      .toConstantValue(
+        new TraceSession(
+          container.get(TYPES.SessionTraceRepository),
+          container.get(TYPES.Timer),
+          container.get(TYPES.SESSION_TRACE_DAYS_TTL),
+        ),
+      )
     container.bind<AuthenticateUser>(TYPES.AuthenticateUser).to(AuthenticateUser)
     container.bind<AuthenticateRequest>(TYPES.AuthenticateRequest).to(AuthenticateRequest)
     container.bind<RefreshSessionToken>(TYPES.RefreshSessionToken).to(RefreshSessionToken)
@@ -482,84 +596,6 @@ export class ContainerConfigLoader {
     container
       .bind<PredicateVerificationRequestedEventHandler>(TYPES.PredicateVerificationRequestedEventHandler)
       .to(PredicateVerificationRequestedEventHandler)
-
-    // Services
-    container.bind<UAParser>(TYPES.DeviceDetector).toConstantValue(new UAParser())
-    container.bind<SessionService>(TYPES.SessionService).to(SessionService)
-    container.bind<AuthResponseFactory20161215>(TYPES.AuthResponseFactory20161215).to(AuthResponseFactory20161215)
-    container.bind<AuthResponseFactory20190520>(TYPES.AuthResponseFactory20190520).to(AuthResponseFactory20190520)
-    container.bind<AuthResponseFactory20200115>(TYPES.AuthResponseFactory20200115).to(AuthResponseFactory20200115)
-    container.bind<AuthResponseFactoryResolver>(TYPES.AuthResponseFactoryResolver).to(AuthResponseFactoryResolver)
-    container.bind<KeyParamsFactory>(TYPES.KeyParamsFactory).to(KeyParamsFactory)
-    container
-      .bind<TokenDecoderInterface<SessionTokenData>>(TYPES.SessionTokenDecoder)
-      .toConstantValue(new TokenDecoder<SessionTokenData>(container.get(TYPES.JWT_SECRET)))
-    container
-      .bind<TokenDecoderInterface<SessionTokenData>>(TYPES.FallbackSessionTokenDecoder)
-      .toConstantValue(new TokenDecoder<SessionTokenData>(container.get(TYPES.LEGACY_JWT_SECRET)))
-    container
-      .bind<TokenDecoderInterface<CrossServiceTokenData>>(TYPES.CrossServiceTokenDecoder)
-      .toConstantValue(new TokenDecoder<CrossServiceTokenData>(container.get(TYPES.AUTH_JWT_SECRET)))
-    container
-      .bind<TokenDecoderInterface<OfflineUserTokenData>>(TYPES.OfflineUserTokenDecoder)
-      .toConstantValue(new TokenDecoder<OfflineUserTokenData>(container.get(TYPES.AUTH_JWT_SECRET)))
-    container
-      .bind<TokenDecoderInterface<WebSocketConnectionTokenData>>(TYPES.WebSocketConnectionTokenDecoder)
-      .toConstantValue(
-        new TokenDecoder<WebSocketConnectionTokenData>(container.get(TYPES.WEB_SOCKET_CONNECTION_TOKEN_SECRET)),
-      )
-    container
-      .bind<TokenEncoderInterface<OfflineUserTokenData>>(TYPES.OfflineUserTokenEncoder)
-      .toConstantValue(new TokenEncoder<OfflineUserTokenData>(container.get(TYPES.AUTH_JWT_SECRET)))
-    container
-      .bind<TokenEncoderInterface<SessionTokenData>>(TYPES.SessionTokenEncoder)
-      .toConstantValue(new TokenEncoder<SessionTokenData>(container.get(TYPES.JWT_SECRET)))
-    container
-      .bind<TokenEncoderInterface<CrossServiceTokenData>>(TYPES.CrossServiceTokenEncoder)
-      .toConstantValue(new TokenEncoder<CrossServiceTokenData>(container.get(TYPES.AUTH_JWT_SECRET)))
-    container
-      .bind<TokenEncoderInterface<ValetTokenData>>(TYPES.ValetTokenEncoder)
-      .toConstantValue(new TokenEncoder<ValetTokenData>(container.get(TYPES.VALET_TOKEN_SECRET)))
-    container.bind<AuthenticationMethodResolver>(TYPES.AuthenticationMethodResolver).to(AuthenticationMethodResolver)
-    container.bind<DomainEventFactory>(TYPES.DomainEventFactory).to(DomainEventFactory)
-    container.bind<AxiosInstance>(TYPES.HTTPClient).toConstantValue(axios.create())
-    container.bind<CrypterInterface>(TYPES.Crypter).to(CrypterNode)
-    container.bind<SettingServiceInterface>(TYPES.SettingService).to(SettingService)
-    container.bind<SubscriptionSettingServiceInterface>(TYPES.SubscriptionSettingService).to(SubscriptionSettingService)
-    container.bind<OfflineSettingServiceInterface>(TYPES.OfflineSettingService).to(OfflineSettingService)
-    container.bind<CryptoNode>(TYPES.CryptoNode).toConstantValue(new CryptoNode())
-    container.bind<TimerInterface>(TYPES.Timer).toConstantValue(new Timer())
-    container.bind<ContentDecoderInterface>(TYPES.ContenDecoder).toConstantValue(new ContentDecoder())
-    container.bind<ClientServiceInterface>(TYPES.WebSocketsClientService).to(WebSocketsClientService)
-    container.bind<RoleServiceInterface>(TYPES.RoleService).to(RoleService)
-    container.bind<RoleToSubscriptionMapInterface>(TYPES.RoleToSubscriptionMap).to(RoleToSubscriptionMap)
-    container.bind<SettingsAssociationServiceInterface>(TYPES.SettingsAssociationService).to(SettingsAssociationService)
-    container
-      .bind<SubscriptionSettingsAssociationServiceInterface>(TYPES.SubscriptionSettingsAssociationService)
-      .to(SubscriptionSettingsAssociationService)
-    container.bind<FeatureServiceInterface>(TYPES.FeatureService).to(FeatureService)
-    container.bind<SettingInterpreterInterface>(TYPES.SettingInterpreter).to(SettingInterpreter)
-    container.bind<SettingDecrypterInterface>(TYPES.SettingDecrypter).to(SettingDecrypter)
-    container
-      .bind<SelectorInterface<ProtocolVersion>>(TYPES.ProtocolVersionSelector)
-      .toConstantValue(new DeterministicSelector<ProtocolVersion>())
-    container
-      .bind<SelectorInterface<boolean>>(TYPES.BooleanSelector)
-      .toConstantValue(new DeterministicSelector<boolean>())
-    container.bind<UserSubscriptionServiceInterface>(TYPES.UserSubscriptionService).to(UserSubscriptionService)
-    container.bind<ValidatorInterface<Uuid>>(TYPES.UuidValidator).toConstantValue(new UuidValidator())
-
-    if (env.get('SNS_TOPIC_ARN', true)) {
-      container
-        .bind<SNSDomainEventPublisher>(TYPES.DomainEventPublisher)
-        .toConstantValue(new SNSDomainEventPublisher(container.get(TYPES.SNS), container.get(TYPES.SNS_TOPIC_ARN)))
-    } else {
-      container
-        .bind<RedisDomainEventPublisher>(TYPES.DomainEventPublisher)
-        .toConstantValue(
-          new RedisDomainEventPublisher(container.get(TYPES.Redis), container.get(TYPES.REDIS_EVENTS_CHANNEL)),
-        )
-    }
 
     container
       .bind<EmailSubscriptionUnsubscribedEventHandler>(TYPES.EmailSubscriptionUnsubscribedEventHandler)

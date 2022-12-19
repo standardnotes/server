@@ -3,7 +3,7 @@ import 'reflect-metadata'
 import 'newrelic'
 
 import * as Sentry from '@sentry/node'
-import '@sentry/tracing'
+import * as Tracing from '@sentry/tracing'
 import { ProfilingIntegration } from '@sentry/profiling-node'
 
 import '../src/Controller/HealthCheckController'
@@ -12,7 +12,7 @@ import '../src/Controller/ItemsController'
 
 import helmet from 'helmet'
 import * as cors from 'cors'
-import { urlencoded, json, Request, Response, NextFunction, RequestHandler, ErrorRequestHandler } from 'express'
+import { urlencoded, json, Request, Response, NextFunction, ErrorRequestHandler } from 'express'
 import * as winston from 'winston'
 
 import { InversifyExpressServer } from 'inversify-express-utils'
@@ -68,12 +68,19 @@ void container.load().then((container) => {
         : 0
       Sentry.init({
         dsn: env.get('SENTRY_DSN'),
-        integrations: [new Sentry.Integrations.Http({ tracing: false, breadcrumbs: true }), new ProfilingIntegration()],
+        integrations: [
+          new Sentry.Integrations.Http({ tracing: tracesSampleRate !== 0 }),
+          new ProfilingIntegration(),
+          new Tracing.Integrations.Express({
+            app,
+          }),
+        ],
         tracesSampleRate,
         profilesSampleRate,
       })
 
-      app.use(Sentry.Handlers.requestHandler() as RequestHandler)
+      app.use(Sentry.Handlers.requestHandler())
+      app.use(Sentry.Handlers.tracingHandler())
     }
   })
 

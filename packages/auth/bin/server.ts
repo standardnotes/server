@@ -3,6 +3,8 @@ import 'reflect-metadata'
 import 'newrelic'
 
 import * as Sentry from '@sentry/node'
+import * as Tracing from '@sentry/tracing'
+import { ProfilingIntegration } from '@sentry/profiling-node'
 
 import '../src/Controller/HealthCheckController'
 import '../src/Controller/SessionController'
@@ -24,7 +26,7 @@ import '../src/Infra/InversifyExpressUtils/InversifyExpressUserRequestsControlle
 import '../src/Infra/InversifyExpressUtils/InversifyExpressWebSocketsController'
 
 import * as cors from 'cors'
-import { urlencoded, json, Request, Response, NextFunction, RequestHandler, ErrorRequestHandler } from 'express'
+import { urlencoded, json, Request, Response, NextFunction, ErrorRequestHandler } from 'express'
 import * as winston from 'winston'
 import * as dayjs from 'dayjs'
 import * as utc from 'dayjs/plugin/utc'
@@ -53,13 +55,28 @@ void container.load().then((container) => {
     app.use(cors())
 
     if (env.get('SENTRY_DSN', true)) {
+      const tracesSampleRate = env.get('SENTRY_TRACE_SAMPLE_RATE', true)
+        ? +env.get('SENTRY_TRACE_SAMPLE_RATE', true)
+        : 0
+
+      const profilesSampleRate = env.get('SENTRY_PROFILES_SAMPLE_RATE', true)
+        ? +env.get('SENTRY_PROFILES_SAMPLE_RATE', true)
+        : 0
       Sentry.init({
         dsn: env.get('SENTRY_DSN'),
-        integrations: [new Sentry.Integrations.Http({ tracing: false, breadcrumbs: true })],
-        tracesSampleRate: 0,
+        integrations: [
+          new Sentry.Integrations.Http({ tracing: tracesSampleRate !== 0 }),
+          new ProfilingIntegration(),
+          new Tracing.Integrations.Express({
+            app,
+          }),
+        ],
+        tracesSampleRate,
+        profilesSampleRate,
       })
 
-      app.use(Sentry.Handlers.requestHandler() as RequestHandler)
+      app.use(Sentry.Handlers.requestHandler())
+      app.use(Sentry.Handlers.tracingHandler())
     }
   })
 

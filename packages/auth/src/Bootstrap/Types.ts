@@ -3,6 +3,8 @@ const TYPES = {
   Redis: Symbol.for('Redis'),
   SNS: Symbol.for('SNS'),
   SQS: Symbol.for('SQS'),
+  // Mapping
+  SessionTracePersistenceMapper: Symbol.for('SessionTracePersistenceMapper'),
   // Controller
   AuthController: Symbol.for('AuthController'),
   SubscriptionInvitesController: Symbol.for('SubscriptionInvitesController'),
@@ -23,6 +25,7 @@ const TYPES = {
   OfflineSubscriptionTokenRepository: Symbol.for('OfflineSubscriptionTokenRepository'),
   SharedSubscriptionInvitationRepository: Symbol.for('SharedSubscriptionInvitationRepository'),
   PKCERepository: Symbol.for('PKCERepository'),
+  SessionTraceRepository: Symbol.for('SessionTraceRepository'),
   // ORM
   ORMOfflineSettingRepository: Symbol.for('ORMOfflineSettingRepository'),
   ORMOfflineUserSubscriptionRepository: Symbol.for('ORMOfflineUserSubscriptionRepository'),
@@ -34,6 +37,7 @@ const TYPES = {
   ORMSubscriptionSettingRepository: Symbol.for('ORMSubscriptionSettingRepository'),
   ORMUserRepository: Symbol.for('ORMUserRepository'),
   ORMUserSubscriptionRepository: Symbol.for('ORMUserSubscriptionRepository'),
+  ORMSessionTraceRepository: Symbol.for('ORMSessionTraceRepository'),
   // Middleware
   AuthMiddleware: Symbol.for('AuthMiddleware'),
   ApiGatewayAuthMiddleware: Symbol.for('ApiGatewayAuthMiddleware'),
@@ -81,6 +85,7 @@ const TYPES = {
   SYNCING_SERVER_URL: Symbol.for('SYNCING_SERVER_URL'),
   VERSION: Symbol.for('VERSION'),
   PAYMENTS_SERVER_URL: Symbol.for('PAYMENTS_SERVER_URL'),
+  SESSION_TRACE_DAYS_TTL: Symbol.for('SESSION_TRACE_DAYS_TTL'),
   // use cases
   AuthenticateUser: Symbol.for('AuthenticateUser'),
   AuthenticateRequest: Symbol.for('AuthenticateRequest'),
@@ -119,6 +124,7 @@ const TYPES = {
   VerifyPredicate: Symbol.for('VerifyPredicate'),
   CreateCrossServiceToken: Symbol.for('CreateCrossServiceToken'),
   ProcessUserRequest: Symbol.for('ProcessUserRequest'),
+  TraceSession: Symbol.for('TraceSession'),
   // Handlers
   UserRegisteredEventHandler: Symbol.for('UserRegisteredEventHandler'),
   AccountDeletionRequestedEventHandler: Symbol.for('AccountDeletionRequestedEventHandler'),
