@@ -1717,6 +1717,44 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@sentry/core@npm:7.27.0":
+  version: 7.27.0
+  resolution: "@sentry/core@npm:7.27.0"
+  dependencies:
+    "@sentry/types": "npm:7.27.0"
+    "@sentry/utils": "npm:7.27.0"
+    tslib: "npm:^1.9.3"
+  checksum: 1144287db2644f951287d002333fc3d498a36a10419acaef0ebbaaf1a7f9f966f512150a159ec9b286ac9ec52d13dafc94875eb78489b78652ada28161d5a1f0
+  languageName: node
+  linkType: hard
+
+"@sentry/hub@npm:^7.16.0":
+  version: 7.27.0
+  resolution: "@sentry/hub@npm:7.27.0"
+  dependencies:
+    "@sentry/core": "npm:7.27.0"
+    "@sentry/types": "npm:7.27.0"
+    "@sentry/utils": "npm:7.27.0"
+    tslib: "npm:^1.9.3"
+  checksum: 2d7e3252da8b60f2f8714d06d0d4d85cb920415f41ce2a515818bb5d8dd545ff68e57f3579be936d7c5ed22c44275fd6374befc18a06a598742be78468a23494
+  languageName: node
+  linkType: hard
+
+"@sentry/node@npm:^7.16.0, @sentry/node@npm:^7.27.0":
+  version: 7.27.0
+  resolution: "@sentry/node@npm:7.27.0"
+  dependencies:
+    "@sentry/core": "npm:7.27.0"
+    "@sentry/types": "npm:7.27.0"
+    "@sentry/utils": "npm:7.27.0"
+    cookie: "npm:^0.4.1"
+    https-proxy-agent: "npm:^5.0.0"
+    lru_map: "npm:^0.3.3"
+    tslib: "npm:^1.9.3"
+  checksum: b85cd47555146430590513eb52c1c6d2d615d92339b2167cfef336bb309b37d9b00463a416f0cde864892a22c23dbfdf208278f993de792a7ac7bf14591211f0
+  languageName: node
+  linkType: hard
+
 "@sentry/node@npm:^7.19.0":
   version: 7.19.0
   resolution: "@sentry/node@npm:7.19.0"
@@ -1732,10 +1770,45 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@sentry/profiling-node@npm:^0.0.12":
+  version: 0.0.12
+  resolution: "@sentry/profiling-node@npm:0.0.12"
+  dependencies:
+    "@sentry/hub": "npm:^7.16.0"
+    "@sentry/node": "npm:^7.16.0"
+    "@sentry/tracing": "npm:^7.16.0"
+    "@sentry/types": "npm:^7.16.0"
+    "@sentry/utils": "npm:^7.16.0"
+    nan: "npm:^2.17.0"
+    node-abi: "npm:^3.28.0"
+    node-gyp: "npm:^9.3.0"
+  checksum: 5fca1277702a36c3dd2c52664ac039721b7ba5a3c552ab531b72dcb82c8e0be803bb79abb62c99649e51f9bb060264d63eb935f485fd7fdd3098b3fae626b231
+  languageName: node
+  linkType: hard
+
+"@sentry/tracing@npm:^7.16.0, @sentry/tracing@npm:^7.27.0":
+  version: 7.27.0
+  resolution: "@sentry/tracing@npm:7.27.0"
+  dependencies:
+    "@sentry/core": "npm:7.27.0"
+    "@sentry/types": "npm:7.27.0"
+    "@sentry/utils": "npm:7.27.0"
+    tslib: "npm:^1.9.3"
+  checksum: 26ea3ce5aeb9669c8bb5abe8008b3daf189f7660e14506d5ad596118e79f7c80b980726031e5c9ecd740363d193c519944751277ac075d230f361aeb7b2123b3
+  languageName: node
+  linkType: hard
+
 "@sentry/types@npm:7.19.0":
   version: 7.19.0
   resolution: "@sentry/types@npm:7.19.0"
   checksum: 541e1ef49ae4482bbec605c3a2075a669930db2f707fafa431174010fcd0f2ba57637399822fbe0f4c5750696fe57e450d66c0182c1b7a0a3f4e6be9d030ed55
+  languageName: node
+  linkType: hard
+
+"@sentry/types@npm:7.27.0, @sentry/types@npm:^7.16.0":
+  version: 7.27.0
+  resolution: "@sentry/types@npm:7.27.0"
+  checksum: 20ace8aa518254d5233beabb3f91ce7a0f8a747a2410ea43bd5bb64f414ee291dbb7795554025dc9bc3af0c19c6c8d48f8310992ddaabd7c30a760dcbfefb339
   languageName: node
   linkType: hard
 
@@ -1746,6 +1819,16 @@ __metadata:
     "@sentry/types": "npm:7.19.0"
     tslib: "npm:^1.9.3"
   checksum: 50e4f391fe9e6009f417c54a8ec96ba25ae77615d92c7f8c22a496901b9e3f182b78cecbc412bff0b2853812258642962b1ee38f42f9708e089756b4ebb3790e
+  languageName: node
+  linkType: hard
+
+"@sentry/utils@npm:7.27.0, @sentry/utils@npm:^7.16.0":
+  version: 7.27.0
+  resolution: "@sentry/utils@npm:7.27.0"
+  dependencies:
+    "@sentry/types": "npm:7.27.0"
+    tslib: "npm:^1.9.3"
+  checksum: 760c02397dfe686a57de6777b098551c08cb10e96536123e3682c77b8494aec38979fe15042efcc7ef0f16cad60e15be66f7789ec944337c38d8ecf627b068e4
   languageName: node
   linkType: hard
 
@@ -2394,7 +2477,9 @@ __metadata:
   resolution: "@standardnotes/syncing-server@workspace:packages/syncing-server"
   dependencies:
     "@newrelic/winston-enricher": "npm:^4.0.0"
-    "@sentry/node": "npm:^7.19.0"
+    "@sentry/node": "npm:^7.27.0"
+    "@sentry/profiling-node": "npm:^0.0.12"
+    "@sentry/tracing": "npm:^7.27.0"
     "@standardnotes/common": "workspace:*"
     "@standardnotes/domain-core": "workspace:^"
     "@standardnotes/domain-events": "workspace:*"
@@ -3263,7 +3348,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"abbrev@npm:1":
+"abbrev@npm:1, abbrev@npm:^1.0.0":
   version: 1.1.1
   resolution: "abbrev@npm:1.1.1"
   checksum: 76e7fb9283b13208d5cf55df46669f9cf5e72007cb66595849be2d5e96c0a43704132d030c5705f9447266183986e1e8a4fc3e9578cb60a1f19cf0157664f957
@@ -8328,6 +8413,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"nan@npm:^2.17.0":
+  version: 2.17.0
+  resolution: "nan@npm:2.17.0"
+  dependencies:
+    node-gyp: "npm:latest"
+  checksum: d424a730ee926fd928545c29ba19609bc1af03f8210c4465c825ba87070b83c546da2964a14d6acdacca847798184f48d5b8585f061dcb59459b300f2aff09c8
+  languageName: node
+  linkType: hard
+
 "natural-compare@npm:^1.4.0":
   version: 1.4.0
   resolution: "natural-compare@npm:1.4.0"
@@ -8372,6 +8466,15 @@ __metadata:
   bin:
     newrelic-naming-rules: bin/test-naming-rules.js
   checksum: eb378acde172c814c7d2c4804d323c493d8ab4587095dd668a6370de7cbddd1effd7cc61899aaf927134f7a0ce26581d8c0ea905ac667b4879756936c34e73fa
+  languageName: node
+  linkType: hard
+
+"node-abi@npm:^3.28.0":
+  version: 3.30.0
+  resolution: "node-abi@npm:3.30.0"
+  dependencies:
+    semver: "npm:^7.3.5"
+  checksum: 5a769beae1a3a7a6ca519a6ac6b8b9105679754bae5b0ccd81c7df870cfcd482511620bce645dfec47c616a8de7c2ad10aa456bc359a37691994a38d94fbbcd8
   languageName: node
   linkType: hard
 
@@ -8429,6 +8532,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"node-gyp@npm:^9.3.0":
+  version: 9.3.0
+  resolution: "node-gyp@npm:9.3.0"
+  dependencies:
+    env-paths: "npm:^2.2.0"
+    glob: "npm:^7.1.4"
+    graceful-fs: "npm:^4.2.6"
+    make-fetch-happen: "npm:^10.0.3"
+    nopt: "npm:^6.0.0"
+    npmlog: "npm:^6.0.0"
+    rimraf: "npm:^3.0.2"
+    semver: "npm:^7.3.5"
+    tar: "npm:^6.1.2"
+    which: "npm:^2.0.2"
+  bin:
+    node-gyp: bin/node-gyp.js
+  checksum: 986e171f91cedd913800b4f272f9c22258a15bc8f44d2426630dc68d98281614004d4da1a8aec7a70a6171056425a95828cd68d8433b89d0e16ed973507ecccf
+  languageName: node
+  linkType: hard
+
 "node-int64@npm:^0.4.0":
   version: 0.4.0
   resolution: "node-int64@npm:0.4.0"
@@ -8471,6 +8594,17 @@ __metadata:
   bin:
     nopt: bin/nopt.js
   checksum: cb0f3672738e989b12d8459f30366e8a89f79462581a09816cbbd575e272bc0ae2a135ac0b60647748be64100787d631cd0ac18157d519021336ae277e3362a3
+  languageName: node
+  linkType: hard
+
+"nopt@npm:^6.0.0":
+  version: 6.0.0
+  resolution: "nopt@npm:6.0.0"
+  dependencies:
+    abbrev: "npm:^1.0.0"
+  bin:
+    nopt: bin/nopt.js
+  checksum: 6ae5c083c5b205d0850f3b00c093cb0b1d4fb28fb69c68c3f933048e666695b1f218db6a4a7f61a4bae2f127268f526a7f2764223208e4dd527c51c56c49a5c7
   languageName: node
   linkType: hard
 
