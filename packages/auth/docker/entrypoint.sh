@@ -24,6 +24,11 @@ case "$COMMAND" in
     yarn workspace @standardnotes/auth-server cleanup
     ;;
 
+  'cleanup' )
+    echo "[Docker] Starting Persisting Stats..."
+    yarn workspace @standardnotes/auth-server stats
+    ;;
+
   'email-daily-backup' )
     echo "[Docker] Starting Email Daily Backup..."
     yarn workspace @standardnotes/auth-server daily-backup:email

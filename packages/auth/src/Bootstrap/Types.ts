@@ -126,6 +126,7 @@ const TYPES = {
   ProcessUserRequest: Symbol.for('ProcessUserRequest'),
   TraceSession: Symbol.for('TraceSession'),
   CleanupSessionTraces: Symbol.for('CleanupSessionTraces'),
+  PersistStatistics: Symbol.for('PersistStatistics'),
   // Handlers
   UserRegisteredEventHandler: Symbol.for('UserRegisteredEventHandler'),
   AccountDeletionRequestedEventHandler: Symbol.for('AccountDeletionRequestedEventHandler'),

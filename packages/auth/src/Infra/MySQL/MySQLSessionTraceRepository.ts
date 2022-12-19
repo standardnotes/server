@@ -10,6 +10,15 @@ export class MySQLSessionTraceRepository implements SessionTraceRepositoryInterf
     private mapper: MapperInterface<SessionTrace, TypeORMSessionTrace>,
   ) {}
 
+  async countByDate(date: Date): Promise<number> {
+    return this.ormRepository
+      .createQueryBuilder('trace')
+      .where('trace.creation_date = :creationDate', {
+        creationDate: new Date(date.getFullYear(), date.getMonth(), date.getDate()),
+      })
+      .getCount()
+  }
+
   async removeExpiredBefore(date: Date): Promise<void> {
     await this.ormRepository
       .createQueryBuilder()

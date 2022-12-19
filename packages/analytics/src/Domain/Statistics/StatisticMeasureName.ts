@@ -26,6 +26,7 @@ export class StatisticMeasureName extends ValueObject<StatisticMeasureNameProps>
     FiveYearPlansMRR: 'five-year-plans-mrr',
     ProPlansMRR: 'pro-plans-mrr',
     PlusPlansMRR: 'plus-plans-mrr',
+    ActiveUsers: 'active-users',
   }
 
   get value(): string {

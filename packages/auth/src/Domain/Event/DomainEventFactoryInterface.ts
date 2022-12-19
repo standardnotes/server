@@ -17,6 +17,7 @@ import {
   UserContentSizeRecalculationRequestedEvent,
   MuteEmailsSettingChangedEvent,
   EmailRequestedEvent,
+  StatisticPersistenceRequestedEvent,
 } from '@standardnotes/domain-events'
 import { InviteeIdentifierType } from '../SharedSubscription/InviteeIdentifierType'
 
@@ -88,4 +89,9 @@ export interface DomainEventFactoryInterface {
     mute: boolean
     emailSubscriptionRejectionLevel: string
   }): MuteEmailsSettingChangedEvent
+  createStatisticPersistenceRequestedEvent(dto: {
+    statisticMeasureName: string
+    value: number
+    date: Date
+  }): StatisticPersistenceRequestedEvent
 }

@@ -202,6 +202,7 @@ import { SessionTrace } from '../Domain/Session/SessionTrace'
 import { TypeORMSessionTrace } from '../Infra/TypeORM/TypeORMSessionTrace'
 import { TraceSession } from '../Domain/UseCase/TraceSession/TraceSession'
 import { CleanupSessionTraces } from '../Domain/UseCase/CleanupSessionTraces/CleanupSessionTraces'
+import { PersistStatistics } from '../Domain/UseCase/PersistStatistics/PersistStatistics'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -498,6 +499,15 @@ export class ContainerConfigLoader {
           container.get(TYPES.SessionTraceRepository),
           container.get(TYPES.Timer),
           container.get(TYPES.SESSION_TRACE_DAYS_TTL),
+        ),
+      )
+    container
+      .bind<PersistStatistics>(TYPES.PersistStatistics)
+      .toConstantValue(
+        new PersistStatistics(
+          container.get(TYPES.SessionTraceRepository),
+          container.get(TYPES.DomainEventPublisher),
+          container.get(TYPES.DomainEventFactory),
         ),
       )
 

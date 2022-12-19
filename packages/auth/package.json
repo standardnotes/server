@@ -20,6 +20,7 @@
     "start": "yarn node dist/bin/server.js",
     "worker": "yarn node dist/bin/worker.js",
     "cleanup": "yarn node dist/bin/cleanup.js",
+    "stats": "yarn node dist/bin/stats.js",
     "daily-backup:email": "yarn node dist/bin/backup.js email daily",
     "user-email-backup": "yarn node dist/bin/user_email_backup.js",
     "daily-backup:dropbox": "yarn node dist/bin/backup.js dropbox daily",

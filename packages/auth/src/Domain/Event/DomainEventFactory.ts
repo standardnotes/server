@@ -19,6 +19,7 @@ import {
   UserContentSizeRecalculationRequestedEvent,
   MuteEmailsSettingChangedEvent,
   EmailRequestedEvent,
+  StatisticPersistenceRequestedEvent,
 } from '@standardnotes/domain-events'
 import { Predicate, PredicateVerificationResult } from '@standardnotes/predicates'
 import { TimerInterface } from '@standardnotes/time'
@@ -30,6 +31,25 @@ import { DomainEventFactoryInterface } from './DomainEventFactoryInterface'
 @injectable()
 export class DomainEventFactory implements DomainEventFactoryInterface {
   constructor(@inject(TYPES.Timer) private timer: TimerInterface) {}
+
+  createStatisticPersistenceRequestedEvent(dto: {
+    statisticMeasureName: string
+    value: number
+    date: Date
+  }): StatisticPersistenceRequestedEvent {
+    return {
+      type: 'STATISTIC_PERSISTENCE_REQUESTED',
+      createdAt: this.timer.getUTCDate(),
+      meta: {
+        correlation: {
+          userIdentifier: '-',
+          userIdentifierType: 'email',
+        },
+        origin: DomainEventService.Auth,
+      },
+      payload: dto,
+    }
+  }
 
   createMuteEmailsSettingChangedEvent(dto: {
     username: string
