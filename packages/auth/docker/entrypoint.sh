@@ -19,6 +19,11 @@ case "$COMMAND" in
     yarn workspace @standardnotes/auth-server worker
     ;;
 
+  'cleanup' )
+    echo "[Docker] Starting Cleanup..."
+    yarn workspace @standardnotes/auth-server cleanup
+    ;;
+
   'email-daily-backup' )
     echo "[Docker] Starting Email Daily Backup..."
     yarn workspace @standardnotes/auth-server daily-backup:email

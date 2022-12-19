@@ -125,6 +125,7 @@ const TYPES = {
   CreateCrossServiceToken: Symbol.for('CreateCrossServiceToken'),
   ProcessUserRequest: Symbol.for('ProcessUserRequest'),
   TraceSession: Symbol.for('TraceSession'),
+  CleanupSessionTraces: Symbol.for('CleanupSessionTraces'),
   // Handlers
   UserRegisteredEventHandler: Symbol.for('UserRegisteredEventHandler'),
   AccountDeletionRequestedEventHandler: Symbol.for('AccountDeletionRequestedEventHandler'),

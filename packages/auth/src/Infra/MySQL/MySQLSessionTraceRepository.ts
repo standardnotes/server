@@ -10,6 +10,14 @@ export class MySQLSessionTraceRepository implements SessionTraceRepositoryInterf
     private mapper: MapperInterface<SessionTrace, TypeORMSessionTrace>,
   ) {}
 
+  async removeExpiredBefore(date: Date): Promise<void> {
+    await this.ormRepository
+      .createQueryBuilder()
+      .delete()
+      .where('expires_at < :date', { date: date.toISOString() })
+      .execute()
+  }
+
   async findOneByUserUuidAndDate(userUuid: Uuid, date: Date): Promise<SessionTrace | null> {
     const typeOrm = await this.ormRepository
       .createQueryBuilder('trace')

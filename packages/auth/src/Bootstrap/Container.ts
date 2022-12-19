@@ -201,6 +201,7 @@ import { SessionTracePersistenceMapper } from '../Mapping/SessionTracePersistenc
 import { SessionTrace } from '../Domain/Session/SessionTrace'
 import { TypeORMSessionTrace } from '../Infra/TypeORM/TypeORMSessionTrace'
 import { TraceSession } from '../Domain/UseCase/TraceSession/TraceSession'
+import { CleanupSessionTraces } from '../Domain/UseCase/CleanupSessionTraces/CleanupSessionTraces'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -499,6 +500,10 @@ export class ContainerConfigLoader {
           container.get(TYPES.SESSION_TRACE_DAYS_TTL),
         ),
       )
+
+    container
+      .bind<CleanupSessionTraces>(TYPES.CleanupSessionTraces)
+      .toConstantValue(new CleanupSessionTraces(container.get(TYPES.SessionTraceRepository)))
     container.bind<AuthenticateUser>(TYPES.AuthenticateUser).to(AuthenticateUser)
     container.bind<AuthenticateRequest>(TYPES.AuthenticateRequest).to(AuthenticateRequest)
     container.bind<RefreshSessionToken>(TYPES.RefreshSessionToken).to(RefreshSessionToken)
