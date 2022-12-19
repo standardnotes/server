@@ -3,6 +3,8 @@ import 'reflect-metadata'
 import 'newrelic'
 
 import * as Sentry from '@sentry/node'
+import '@sentry/tracing'
+import { ProfilingIntegration } from '@sentry/profiling-node'
 
 import '../src/Controller/HealthCheckController'
 import '../src/Controller/RevisionsController'
@@ -57,10 +59,18 @@ void container.load().then((container) => {
     app.use(cors())
 
     if (env.get('SENTRY_DSN', true)) {
+      const tracesSampleRate = env.get('SENTRY_TRACE_SAMPLE_RATE', true)
+        ? +env.get('SENTRY_TRACE_SAMPLE_RATE', true)
+        : 0
+
+      const profilesSampleRate = env.get('SENTRY_PROFILES_SAMPLE_RATE', true)
+        ? +env.get('SENTRY_PROFILES_SAMPLE_RATE', true)
+        : 0
       Sentry.init({
         dsn: env.get('SENTRY_DSN'),
-        integrations: [new Sentry.Integrations.Http({ tracing: false, breadcrumbs: true })],
-        tracesSampleRate: 0,
+        integrations: [new Sentry.Integrations.Http({ tracing: false, breadcrumbs: true }), new ProfilingIntegration()],
+        tracesSampleRate,
+        profilesSampleRate,
       })
 
       app.use(Sentry.Handlers.requestHandler() as RequestHandler)
