@@ -5,11 +5,11 @@ import { Result } from '@standardnotes/domain-core'
 import TYPES from '../../../Bootstrap/Types'
 import { MonthlyRevenue } from '../../Revenue/MonthlyRevenue'
 import { RevenueModificationRepositoryInterface } from '../../Revenue/RevenueModificationRepositoryInterface'
-import { StatisticsMeasure } from '../../Statistics/StatisticsMeasure'
 import { StatisticsStoreInterface } from '../../Statistics/StatisticsStoreInterface'
 import { Period } from '../../Time/Period'
 import { DomainUseCaseInterface } from '../DomainUseCaseInterface'
 import { CalculateMonthlyRecurringRevenueDTO } from './CalculateMonthlyRecurringRevenueDTO'
+import { StatisticMeasureName } from '../../Statistics/StatisticMeasureName'
 
 @injectable()
 export class CalculateMonthlyRecurringRevenue implements DomainUseCaseInterface<MonthlyRevenue> {
@@ -24,7 +24,7 @@ export class CalculateMonthlyRecurringRevenue implements DomainUseCaseInterface<
       billingFrequencies: [SubscriptionBillingFrequency.Annual, SubscriptionBillingFrequency.Monthly],
     })
 
-    await this.statisticsStore.setMeasure(StatisticsMeasure.MRR, mrrDiff, [
+    await this.statisticsStore.setMeasure(StatisticMeasureName.NAMES.MRR, mrrDiff, [
       Period.Today,
       Period.ThisMonth,
       Period.ThisYear,
@@ -34,7 +34,7 @@ export class CalculateMonthlyRecurringRevenue implements DomainUseCaseInterface<
       billingFrequencies: [SubscriptionBillingFrequency.Monthly],
     })
 
-    await this.statisticsStore.setMeasure(StatisticsMeasure.MonthlyPlansMRR, monthlyPlansMrrDiff, [
+    await this.statisticsStore.setMeasure(StatisticMeasureName.NAMES.MonthlyPlansMRR, monthlyPlansMrrDiff, [
       Period.Today,
       Period.ThisMonth,
       Period.ThisYear,
@@ -44,7 +44,7 @@ export class CalculateMonthlyRecurringRevenue implements DomainUseCaseInterface<
       billingFrequencies: [SubscriptionBillingFrequency.Annual],
     })
 
-    await this.statisticsStore.setMeasure(StatisticsMeasure.AnnualPlansMRR, annualPlansMrrDiff, [
+    await this.statisticsStore.setMeasure(StatisticMeasureName.NAMES.AnnualPlansMRR, annualPlansMrrDiff, [
       Period.Today,
       Period.ThisMonth,
       Period.ThisYear,
@@ -54,7 +54,7 @@ export class CalculateMonthlyRecurringRevenue implements DomainUseCaseInterface<
       billingFrequencies: [SubscriptionBillingFrequency.FiveYear],
     })
 
-    await this.statisticsStore.setMeasure(StatisticsMeasure.FiveYearPlansMRR, fiveYearPlansMrrDiff, [
+    await this.statisticsStore.setMeasure(StatisticMeasureName.NAMES.FiveYearPlansMRR, fiveYearPlansMrrDiff, [
       Period.Today,
       Period.ThisMonth,
       Period.ThisYear,
@@ -65,7 +65,7 @@ export class CalculateMonthlyRecurringRevenue implements DomainUseCaseInterface<
       billingFrequencies: [SubscriptionBillingFrequency.Annual, SubscriptionBillingFrequency.Monthly],
     })
 
-    await this.statisticsStore.setMeasure(StatisticsMeasure.ProPlansMRR, proPlansMrrDiff, [
+    await this.statisticsStore.setMeasure(StatisticMeasureName.NAMES.ProPlansMRR, proPlansMrrDiff, [
       Period.Today,
       Period.ThisMonth,
       Period.ThisYear,
@@ -76,7 +76,7 @@ export class CalculateMonthlyRecurringRevenue implements DomainUseCaseInterface<
       billingFrequencies: [SubscriptionBillingFrequency.Annual, SubscriptionBillingFrequency.Monthly],
     })
 
-    await this.statisticsStore.setMeasure(StatisticsMeasure.PlusPlansMRR, plusPlansMrrDiff, [
+    await this.statisticsStore.setMeasure(StatisticMeasureName.NAMES.PlusPlansMRR, plusPlansMrrDiff, [
       Period.Today,
       Period.ThisMonth,
       Period.ThisYear,

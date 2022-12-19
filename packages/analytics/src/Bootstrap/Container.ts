@@ -52,6 +52,9 @@ import { RevenueModification } from '../Domain/Revenue/RevenueModification'
 import { RevenueModificationMap } from '../Domain/Map/RevenueModificationMap'
 import { SaveRevenueModification } from '../Domain/UseCase/SaveRevenueModification/SaveRevenueModification'
 import { CalculateMonthlyRecurringRevenue } from '../Domain/UseCase/CalculateMonthlyRecurringRevenue/CalculateMonthlyRecurringRevenue'
+import { PersistStatistic } from '../Domain/UseCase/PersistStatistic/PersistStatistic'
+import { StatisticMeasureRepositoryInterface } from '../Domain/Statistics/StatisticMeasureRepositoryInterface'
+import { StatisticPersistenceRequestedEventHandler } from '../Domain/Handler/StatisticPersistenceRequestedEventHandler'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -132,6 +135,29 @@ export class ContainerConfigLoader {
     container.bind(TYPES.NEW_RELIC_ENABLED).toConstantValue(env.get('NEW_RELIC_ENABLED', true))
     container.bind(TYPES.ADMIN_EMAILS).toConstantValue(env.get('ADMIN_EMAILS').split(','))
 
+    // Services
+    container.bind<DomainEventFactory>(TYPES.DomainEventFactory).to(DomainEventFactory)
+    container.bind<PeriodKeyGeneratorInterface>(TYPES.PeriodKeyGenerator).toConstantValue(new PeriodKeyGenerator())
+    container
+      .bind<AnalyticsStoreInterface>(TYPES.AnalyticsStore)
+      .toConstantValue(new RedisAnalyticsStore(container.get(TYPES.PeriodKeyGenerator), container.get(TYPES.Redis)))
+    container
+      .bind<StatisticsStoreInterface>(TYPES.StatisticsStore)
+      .toConstantValue(new RedisStatisticsStore(container.get(TYPES.PeriodKeyGenerator), container.get(TYPES.Redis)))
+    container.bind<TimerInterface>(TYPES.Timer).toConstantValue(new Timer())
+
+    if (env.get('SNS_TOPIC_ARN', true)) {
+      container
+        .bind<SNSDomainEventPublisher>(TYPES.DomainEventPublisher)
+        .toConstantValue(new SNSDomainEventPublisher(container.get(TYPES.SNS), container.get(TYPES.SNS_TOPIC_ARN)))
+    } else {
+      container
+        .bind<RedisDomainEventPublisher>(TYPES.DomainEventPublisher)
+        .toConstantValue(
+          new RedisDomainEventPublisher(container.get(TYPES.Redis), container.get(TYPES.REDIS_EVENTS_CHANNEL)),
+        )
+    }
+
     // Repositories
     container
       .bind<AnalyticsEntityRepositoryInterface>(TYPES.AnalyticsEntityRepository)
@@ -139,6 +165,9 @@ export class ContainerConfigLoader {
     container
       .bind<RevenueModificationRepositoryInterface>(TYPES.RevenueModificationRepository)
       .to(MySQLRevenueModificationRepository)
+    container
+      .bind<StatisticMeasureRepositoryInterface>(TYPES.StatisticMeasureRepository)
+      .toConstantValue(new RedisStatisticsStore(container.get(TYPES.PeriodKeyGenerator), container.get(TYPES.Redis)))
 
     // ORM
     container
@@ -154,6 +183,9 @@ export class ContainerConfigLoader {
     container
       .bind<CalculateMonthlyRecurringRevenue>(TYPES.CalculateMonthlyRecurringRevenue)
       .to(CalculateMonthlyRecurringRevenue)
+    container
+      .bind<PersistStatistic>(TYPES.PersistStatistic)
+      .toConstantValue(new PersistStatistic(container.get(TYPES.StatisticMeasureRepository)))
 
     // Hanlders
     container.bind<UserRegisteredEventHandler>(TYPES.UserRegisteredEventHandler).to(UserRegisteredEventHandler)
@@ -181,34 +213,19 @@ export class ContainerConfigLoader {
       .bind<SubscriptionReactivatedEventHandler>(TYPES.SubscriptionReactivatedEventHandler)
       .to(SubscriptionReactivatedEventHandler)
     container.bind<RefundProcessedEventHandler>(TYPES.RefundProcessedEventHandler).to(RefundProcessedEventHandler)
+    container
+      .bind<StatisticPersistenceRequestedEventHandler>(TYPES.StatisticPersistenceRequestedEventHandler)
+      .toConstantValue(
+        new StatisticPersistenceRequestedEventHandler(
+          container.get(TYPES.PersistStatistic),
+          container.get(TYPES.Logger),
+        ),
+      )
 
     // Maps
     container
       .bind<MapperInterface<RevenueModification, TypeORMRevenueModification>>(TYPES.RevenueModificationMap)
       .to(RevenueModificationMap)
-
-    // Services
-    container.bind<DomainEventFactory>(TYPES.DomainEventFactory).to(DomainEventFactory)
-    container.bind<PeriodKeyGeneratorInterface>(TYPES.PeriodKeyGenerator).toConstantValue(new PeriodKeyGenerator())
-    container
-      .bind<AnalyticsStoreInterface>(TYPES.AnalyticsStore)
-      .toConstantValue(new RedisAnalyticsStore(container.get(TYPES.PeriodKeyGenerator), container.get(TYPES.Redis)))
-    container
-      .bind<StatisticsStoreInterface>(TYPES.StatisticsStore)
-      .toConstantValue(new RedisStatisticsStore(container.get(TYPES.PeriodKeyGenerator), container.get(TYPES.Redis)))
-    container.bind<TimerInterface>(TYPES.Timer).toConstantValue(new Timer())
-
-    if (env.get('SNS_TOPIC_ARN', true)) {
-      container
-        .bind<SNSDomainEventPublisher>(TYPES.DomainEventPublisher)
-        .toConstantValue(new SNSDomainEventPublisher(container.get(TYPES.SNS), container.get(TYPES.SNS_TOPIC_ARN)))
-    } else {
-      container
-        .bind<RedisDomainEventPublisher>(TYPES.DomainEventPublisher)
-        .toConstantValue(
-          new RedisDomainEventPublisher(container.get(TYPES.Redis), container.get(TYPES.REDIS_EVENTS_CHANNEL)),
-        )
-    }
 
     const eventHandlers: Map<string, DomainEventHandlerInterface> = new Map([
       ['USER_REGISTERED', container.get(TYPES.UserRegisteredEventHandler)],
@@ -222,6 +239,7 @@ export class ContainerConfigLoader {
       ['SUBSCRIPTION_EXPIRED', container.get(TYPES.SubscriptionExpiredEventHandler)],
       ['SUBSCRIPTION_REACTIVATED', container.get(TYPES.SubscriptionReactivatedEventHandler)],
       ['REFUND_PROCESSED', container.get(TYPES.RefundProcessedEventHandler)],
+      ['STATISTIC_PERSISTENCE_REQUESTED', container.get(TYPES.StatisticPersistenceRequestedEventHandler)],
     ])
 
     if (env.get('SQS_QUEUE_URL', true)) {

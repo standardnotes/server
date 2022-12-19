@@ -6,7 +6,7 @@ import { Logger } from 'winston'
 import TYPES from '../../Bootstrap/Types'
 import { AnalyticsActivity } from '../Analytics/AnalyticsActivity'
 import { AnalyticsStoreInterface } from '../Analytics/AnalyticsStoreInterface'
-import { StatisticsMeasure } from '../Statistics/StatisticsMeasure'
+import { StatisticMeasureName } from '../Statistics/StatisticMeasureName'
 import { StatisticsStoreInterface } from '../Statistics/StatisticsStoreInterface'
 import { Period } from '../Time/Period'
 import { GetUserAnalyticsId } from '../UseCase/GetUserAnalyticsId/GetUserAnalyticsId'
@@ -20,15 +20,27 @@ export class PaymentSuccessEventHandler implements DomainEventHandlerInterface {
         [
           PaymentType.Initial,
           new Map([
-            [SubscriptionBillingFrequency.Monthly, StatisticsMeasure.PlusSubscriptionInitialMonthlyPaymentsIncome],
-            [SubscriptionBillingFrequency.Annual, StatisticsMeasure.PlusSubscriptionInitialAnnualPaymentsIncome],
+            [
+              SubscriptionBillingFrequency.Monthly,
+              StatisticMeasureName.NAMES.PlusSubscriptionInitialMonthlyPaymentsIncome,
+            ],
+            [
+              SubscriptionBillingFrequency.Annual,
+              StatisticMeasureName.NAMES.PlusSubscriptionInitialAnnualPaymentsIncome,
+            ],
           ]),
         ],
         [
           PaymentType.Renewal,
           new Map([
-            [SubscriptionBillingFrequency.Monthly, StatisticsMeasure.PlusSubscriptionRenewingMonthlyPaymentsIncome],
-            [SubscriptionBillingFrequency.Annual, StatisticsMeasure.PlusSubscriptionRenewingAnnualPaymentsIncome],
+            [
+              SubscriptionBillingFrequency.Monthly,
+              StatisticMeasureName.NAMES.PlusSubscriptionRenewingMonthlyPaymentsIncome,
+            ],
+            [
+              SubscriptionBillingFrequency.Annual,
+              StatisticMeasureName.NAMES.PlusSubscriptionRenewingAnnualPaymentsIncome,
+            ],
           ]),
         ],
       ]),
@@ -39,15 +51,27 @@ export class PaymentSuccessEventHandler implements DomainEventHandlerInterface {
         [
           PaymentType.Initial,
           new Map([
-            [SubscriptionBillingFrequency.Monthly, StatisticsMeasure.ProSubscriptionInitialMonthlyPaymentsIncome],
-            [SubscriptionBillingFrequency.Annual, StatisticsMeasure.ProSubscriptionInitialAnnualPaymentsIncome],
+            [
+              SubscriptionBillingFrequency.Monthly,
+              StatisticMeasureName.NAMES.ProSubscriptionInitialMonthlyPaymentsIncome,
+            ],
+            [
+              SubscriptionBillingFrequency.Annual,
+              StatisticMeasureName.NAMES.ProSubscriptionInitialAnnualPaymentsIncome,
+            ],
           ]),
         ],
         [
           PaymentType.Renewal,
           new Map([
-            [SubscriptionBillingFrequency.Monthly, StatisticsMeasure.ProSubscriptionRenewingMonthlyPaymentsIncome],
-            [SubscriptionBillingFrequency.Annual, StatisticsMeasure.ProSubscriptionRenewingAnnualPaymentsIncome],
+            [
+              SubscriptionBillingFrequency.Monthly,
+              StatisticMeasureName.NAMES.ProSubscriptionRenewingMonthlyPaymentsIncome,
+            ],
+            [
+              SubscriptionBillingFrequency.Annual,
+              StatisticMeasureName.NAMES.ProSubscriptionRenewingAnnualPaymentsIncome,
+            ],
           ]),
         ],
       ]),
@@ -69,7 +93,7 @@ export class PaymentSuccessEventHandler implements DomainEventHandlerInterface {
       Period.ThisMonth,
     ])
 
-    const statisticMeasures = [StatisticsMeasure.Income]
+    const statisticMeasures = [StatisticMeasureName.NAMES.Income]
 
     const detailedMeasure = this.DETAILED_MEASURES.get(event.payload.subscriptionName as SubscriptionName)
       ?.get(event.payload.paymentType as PaymentType)

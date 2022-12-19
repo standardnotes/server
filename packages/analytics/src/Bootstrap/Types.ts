@@ -15,6 +15,7 @@ const TYPES = {
   // Repositories
   AnalyticsEntityRepository: Symbol.for('AnalyticsEntityRepository'),
   RevenueModificationRepository: Symbol.for('RevenueModificationRepository'),
+  StatisticMeasureRepository: Symbol.for('StatisticMeasureRepository'),
   // ORM
   ORMAnalyticsEntityRepository: Symbol.for('ORMAnalyticsEntityRepository'),
   ORMRevenueModificationRepository: Symbol.for('ORMRevenueModificationRepository'),
@@ -22,6 +23,7 @@ const TYPES = {
   GetUserAnalyticsId: Symbol.for('GetUserAnalyticsId'),
   SaveRevenueModification: Symbol.for('SaveRevenueModification'),
   CalculateMonthlyRecurringRevenue: Symbol.for('CalculateMonthlyRecurringRevenue'),
+  PersistStatistic: Symbol.for('PersistStatistic'),
   // Handlers
   UserRegisteredEventHandler: Symbol.for('UserRegisteredEventHandler'),
   AccountDeletionRequestedEventHandler: Symbol.for('AccountDeletionRequestedEventHandler'),
@@ -34,6 +36,7 @@ const TYPES = {
   SubscriptionExpiredEventHandler: Symbol.for('SubscriptionExpiredEventHandler'),
   SubscriptionReactivatedEventHandler: Symbol.for('SubscriptionReactivatedEventHandler'),
   RefundProcessedEventHandler: Symbol.for('RefundProcessedEventHandler'),
+  StatisticPersistenceRequestedEventHandler: Symbol.for('StatisticPersistenceRequestedEventHandler'),
   // Maps
   RevenueModificationMap: Symbol.for('RevenueModificationMap'),
   // Services

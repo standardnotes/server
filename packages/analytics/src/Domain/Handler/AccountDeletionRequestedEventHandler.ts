@@ -6,7 +6,7 @@ import TYPES from '../../Bootstrap/Types'
 import { AnalyticsActivity } from '../Analytics/AnalyticsActivity'
 import { AnalyticsStoreInterface } from '../Analytics/AnalyticsStoreInterface'
 import { AnalyticsEntityRepositoryInterface } from '../Entity/AnalyticsEntityRepositoryInterface'
-import { StatisticsMeasure } from '../Statistics/StatisticsMeasure'
+import { StatisticMeasureName } from '../Statistics/StatisticMeasureName'
 import { StatisticsStoreInterface } from '../Statistics/StatisticsStoreInterface'
 import { Period } from '../Time/Period'
 
@@ -33,7 +33,7 @@ export class AccountDeletionRequestedEventHandler implements DomainEventHandlerI
     ])
 
     const registrationLength = this.timer.getTimestampInMicroseconds() - event.payload.userCreatedAtTimestamp
-    await this.statisticsStore.incrementMeasure(StatisticsMeasure.RegistrationLength, registrationLength, [
+    await this.statisticsStore.incrementMeasure(StatisticMeasureName.NAMES.RegistrationLength, registrationLength, [
       Period.Today,
       Period.ThisWeek,
       Period.ThisMonth,

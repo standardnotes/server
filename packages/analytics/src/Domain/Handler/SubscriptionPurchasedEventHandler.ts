@@ -6,7 +6,7 @@ import { Logger } from 'winston'
 import TYPES from '../../Bootstrap/Types'
 import { AnalyticsActivity } from '../Analytics/AnalyticsActivity'
 import { AnalyticsStoreInterface } from '../Analytics/AnalyticsStoreInterface'
-import { StatisticsMeasure } from '../Statistics/StatisticsMeasure'
+import { StatisticMeasureName } from '../Statistics/StatisticMeasureName'
 import { StatisticsStoreInterface } from '../Statistics/StatisticsStoreInterface'
 import { SubscriptionEventType } from '../Subscription/SubscriptionEventType'
 import { SubscriptionPlanName } from '../Subscription/SubscriptionPlanName'
@@ -45,18 +45,18 @@ export class SubscriptionPurchasedEventHandler implements DomainEventHandlerInte
 
     if (event.payload.newSubscriber) {
       await this.statisticsStore.incrementMeasure(
-        StatisticsMeasure.RegistrationToSubscriptionTime,
+        StatisticMeasureName.NAMES.RegistrationToSubscriptionTime,
         event.payload.timestamp - event.payload.userRegisteredAt,
         [Period.Today, Period.ThisWeek, Period.ThisMonth],
       )
-      await this.statisticsStore.incrementMeasure(StatisticsMeasure.NewCustomers, 1, [
+      await this.statisticsStore.incrementMeasure(StatisticMeasureName.NAMES.NewCustomers, 1, [
         Period.Today,
         Period.ThisWeek,
         Period.ThisMonth,
         Period.ThisYear,
       ])
       await this.statisticsStore.setMeasure(
-        StatisticsMeasure.TotalCustomers,
+        StatisticMeasureName.NAMES.TotalCustomers,
         event.payload.totalActiveSubscriptionsCount,
         [Period.Today, Period.ThisWeek, Period.ThisMonth, Period.ThisYear],
       )

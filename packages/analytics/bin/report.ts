@@ -8,7 +8,6 @@ import { EmailLevel } from '@standardnotes/domain-core'
 import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
 import { AnalyticsActivity } from '../src/Domain/Analytics/AnalyticsActivity'
 import { Period } from '../src/Domain/Time/Period'
-import { StatisticsMeasure } from '../src/Domain/Statistics/StatisticsMeasure'
 import { AnalyticsStoreInterface } from '../src/Domain/Analytics/AnalyticsStoreInterface'
 import { StatisticsStoreInterface } from '../src/Domain/Statistics/StatisticsStoreInterface'
 import { PeriodKeyGeneratorInterface } from '../src/Domain/Time/PeriodKeyGeneratorInterface'
@@ -19,6 +18,7 @@ import { DomainEventFactoryInterface } from '../src/Domain/Event/DomainEventFact
 import { CalculateMonthlyRecurringRevenue } from '../src/Domain/UseCase/CalculateMonthlyRecurringRevenue/CalculateMonthlyRecurringRevenue'
 import { getBody, getSubject } from '../src/Domain/Email/DailyAnalyticsReport'
 import { TimerInterface } from '@standardnotes/time'
+import { StatisticMeasureName } from '../src/Domain/Statistics/StatisticMeasureName'
 
 const requestReport = async (
   analyticsStore: AnalyticsStoreInterface,
@@ -115,12 +115,12 @@ const requestReport = async (
   }> = []
 
   const thirtyDaysStatisticsNames = [
-    StatisticsMeasure.MRR,
-    StatisticsMeasure.AnnualPlansMRR,
-    StatisticsMeasure.MonthlyPlansMRR,
-    StatisticsMeasure.FiveYearPlansMRR,
-    StatisticsMeasure.PlusPlansMRR,
-    StatisticsMeasure.ProPlansMRR,
+    StatisticMeasureName.NAMES.MRR,
+    StatisticMeasureName.NAMES.AnnualPlansMRR,
+    StatisticMeasureName.NAMES.MonthlyPlansMRR,
+    StatisticMeasureName.NAMES.FiveYearPlansMRR,
+    StatisticMeasureName.NAMES.PlusPlansMRR,
+    StatisticMeasureName.NAMES.ProPlansMRR,
   ]
   for (const statisticName of thirtyDaysStatisticsNames) {
     statisticsOverTime.push({
@@ -130,7 +130,7 @@ const requestReport = async (
     })
   }
 
-  const monthlyStatisticsNames = [StatisticsMeasure.MRR]
+  const monthlyStatisticsNames = [StatisticMeasureName.NAMES.MRR]
   for (const statisticName of monthlyStatisticsNames) {
     statisticsOverTime.push({
       name: statisticName,
@@ -140,22 +140,22 @@ const requestReport = async (
   }
 
   const statisticMeasureNames = [
-    StatisticsMeasure.Income,
-    StatisticsMeasure.PlusSubscriptionInitialAnnualPaymentsIncome,
-    StatisticsMeasure.PlusSubscriptionInitialMonthlyPaymentsIncome,
-    StatisticsMeasure.PlusSubscriptionRenewingAnnualPaymentsIncome,
-    StatisticsMeasure.PlusSubscriptionRenewingMonthlyPaymentsIncome,
-    StatisticsMeasure.ProSubscriptionInitialAnnualPaymentsIncome,
-    StatisticsMeasure.ProSubscriptionInitialMonthlyPaymentsIncome,
-    StatisticsMeasure.ProSubscriptionRenewingAnnualPaymentsIncome,
-    StatisticsMeasure.ProSubscriptionRenewingMonthlyPaymentsIncome,
-    StatisticsMeasure.Refunds,
-    StatisticsMeasure.RegistrationLength,
-    StatisticsMeasure.SubscriptionLength,
-    StatisticsMeasure.RegistrationToSubscriptionTime,
-    StatisticsMeasure.RemainingSubscriptionTimePercentage,
-    StatisticsMeasure.NewCustomers,
-    StatisticsMeasure.TotalCustomers,
+    StatisticMeasureName.NAMES.Income,
+    StatisticMeasureName.NAMES.PlusSubscriptionInitialAnnualPaymentsIncome,
+    StatisticMeasureName.NAMES.PlusSubscriptionInitialMonthlyPaymentsIncome,
+    StatisticMeasureName.NAMES.PlusSubscriptionRenewingAnnualPaymentsIncome,
+    StatisticMeasureName.NAMES.PlusSubscriptionRenewingMonthlyPaymentsIncome,
+    StatisticMeasureName.NAMES.ProSubscriptionInitialAnnualPaymentsIncome,
+    StatisticMeasureName.NAMES.ProSubscriptionInitialMonthlyPaymentsIncome,
+    StatisticMeasureName.NAMES.ProSubscriptionRenewingAnnualPaymentsIncome,
+    StatisticMeasureName.NAMES.ProSubscriptionRenewingMonthlyPaymentsIncome,
+    StatisticMeasureName.NAMES.Refunds,
+    StatisticMeasureName.NAMES.RegistrationLength,
+    StatisticMeasureName.NAMES.SubscriptionLength,
+    StatisticMeasureName.NAMES.RegistrationToSubscriptionTime,
+    StatisticMeasureName.NAMES.RemainingSubscriptionTimePercentage,
+    StatisticMeasureName.NAMES.NewCustomers,
+    StatisticMeasureName.NAMES.TotalCustomers,
   ]
   const statisticMeasures: Array<{
     name: string
@@ -190,7 +190,10 @@ const requestReport = async (
 
     const totalCustomerCounts: Array<number> = []
     for (const dailyPeriodKey of dailyPeriodKeys) {
-      const customersCount = await statisticsStore.getMeasureTotal(StatisticsMeasure.TotalCustomers, dailyPeriodKey)
+      const customersCount = await statisticsStore.getMeasureTotal(
+        StatisticMeasureName.NAMES.TotalCustomers,
+        dailyPeriodKey,
+      )
       totalCustomerCounts.push(customersCount)
     }
     const filteredTotalCustomerCounts = totalCustomerCounts.filter((count) => !!count)

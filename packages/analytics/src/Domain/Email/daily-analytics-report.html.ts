@@ -2,7 +2,7 @@
 import { TimerInterface } from '@standardnotes/time'
 
 import { AnalyticsActivity } from '../Analytics/AnalyticsActivity'
-import { StatisticsMeasure } from '../Statistics/StatisticsMeasure'
+import { StatisticMeasureName } from '../Statistics/StatisticMeasureName'
 import { Period } from '../Time/Period'
 
 const getChartUrls = (
@@ -417,156 +417,170 @@ export const html = (data: any, timer: TimerInterface) => {
       a.name === AnalyticsActivity.DeleteAccount && a.period === Period.Last30Days,
   )
   const incomeMeasureYesterday = data.statisticMeasures.find(
-    (a: { name: StatisticsMeasure; period: Period }) =>
-      a.name === StatisticsMeasure.Income && a.period === Period.Yesterday,
+    (a: { name: string; period: Period }) =>
+      a.name === StatisticMeasureName.NAMES.Income && a.period === Period.Yesterday,
   )
   const refundMeasureYesterday = data.statisticMeasures.find(
-    (a: { name: StatisticsMeasure; period: Period }) =>
-      a.name === StatisticsMeasure.Refunds && a.period === Period.Yesterday,
+    (a: { name: string; period: Period }) =>
+      a.name === StatisticMeasureName.NAMES.Refunds && a.period === Period.Yesterday,
   )
   const incomeYesterday = incomeMeasureYesterday?.totalValue ?? 0
   const refundsYesterday = refundMeasureYesterday?.totalValue ?? 0
   const revenueYesterday = incomeYesterday - refundsYesterday
 
   const subscriptionLengthMeasureYesterday = data.statisticMeasures.find(
-    (a: { name: StatisticsMeasure; period: Period }) =>
-      a.name === StatisticsMeasure.SubscriptionLength && a.period === Period.Yesterday,
+    (a: { name: string; period: Period }) =>
+      a.name === StatisticMeasureName.NAMES.SubscriptionLength && a.period === Period.Yesterday,
   )
   const subscriptionLengthDurationYesterday = timer.convertMicrosecondsToTimeStructure(
     Math.floor(subscriptionLengthMeasureYesterday?.average ?? 0),
   )
 
   const subscriptionRemainingTimePercentageMeasureYesterday = data.statisticMeasures.find(
-    (a: { name: StatisticsMeasure; period: Period }) =>
-      a.name === StatisticsMeasure.RemainingSubscriptionTimePercentage && a.period === Period.Yesterday,
+    (a: { name: string; period: Period }) =>
+      a.name === StatisticMeasureName.NAMES.RemainingSubscriptionTimePercentage && a.period === Period.Yesterday,
   )
   const subscriptionRemainingTimePercentageYesterday = Math.floor(
     subscriptionRemainingTimePercentageMeasureYesterday?.average ?? 0,
   )
 
   const registrationLengthMeasureYesterday = data.statisticMeasures.find(
-    (a: { name: StatisticsMeasure; period: Period }) =>
-      a.name === StatisticsMeasure.RegistrationLength && a.period === Period.Yesterday,
+    (a: { name: string; period: Period }) =>
+      a.name === StatisticMeasureName.NAMES.RegistrationLength && a.period === Period.Yesterday,
   )
   const registrationLengthDurationYesterday = timer.convertMicrosecondsToTimeStructure(
     Math.floor(registrationLengthMeasureYesterday?.average ?? 0),
   )
 
   const registrationToSubscriptionMeasureYesterday = data.statisticMeasures.find(
-    (a: { name: StatisticsMeasure; period: Period }) =>
-      a.name === StatisticsMeasure.RegistrationToSubscriptionTime && a.period === Period.Yesterday,
+    (a: { name: string; period: Period }) =>
+      a.name === StatisticMeasureName.NAMES.RegistrationToSubscriptionTime && a.period === Period.Yesterday,
   )
   const registrationToSubscriptionDurationYesterday = timer.convertMicrosecondsToTimeStructure(
     Math.floor(registrationToSubscriptionMeasureYesterday?.average ?? 0),
   )
 
   const incomeMeasureThisMonth = data.statisticMeasures.find(
-    (a: { name: StatisticsMeasure; period: Period }) =>
-      a.name === StatisticsMeasure.Income && a.period === Period.ThisMonth,
+    (a: { name: string; period: Period }) =>
+      a.name === StatisticMeasureName.NAMES.Income && a.period === Period.ThisMonth,
   )
   const refundMeasureThisMonth = data.statisticMeasures.find(
-    (a: { name: StatisticsMeasure; period: Period }) =>
-      a.name === StatisticsMeasure.Refunds && a.period === Period.ThisMonth,
+    (a: { name: string; period: Period }) =>
+      a.name === StatisticMeasureName.NAMES.Refunds && a.period === Period.ThisMonth,
   )
   const incomeThisMonth = incomeMeasureThisMonth?.totalValue ?? 0
   const refundsThisMonth = refundMeasureThisMonth?.totalValue ?? 0
   const revenueThisMonth = incomeThisMonth - refundsThisMonth
 
   const subscriptionLengthMeasureThisMonth = data.statisticMeasures.find(
-    (a: { name: StatisticsMeasure; period: Period }) =>
-      a.name === StatisticsMeasure.SubscriptionLength && a.period === Period.ThisMonth,
+    (a: { name: string; period: Period }) =>
+      a.name === StatisticMeasureName.NAMES.SubscriptionLength && a.period === Period.ThisMonth,
   )
   const subscriptionLengthDurationThisMonth = timer.convertMicrosecondsToTimeStructure(
     Math.floor(subscriptionLengthMeasureThisMonth?.average ?? 0),
   )
 
   const subscriptionRemainingTimePercentageMeasureThisMonth = data.statisticMeasures.find(
-    (a: { name: StatisticsMeasure; period: Period }) =>
-      a.name === StatisticsMeasure.RemainingSubscriptionTimePercentage && a.period === Period.ThisMonth,
+    (a: { name: string; period: Period }) =>
+      a.name === StatisticMeasureName.NAMES.RemainingSubscriptionTimePercentage && a.period === Period.ThisMonth,
   )
   const subscriptionRemainingTimePercentageThisMonth = Math.floor(
     subscriptionRemainingTimePercentageMeasureThisMonth?.average ?? 0,
   )
 
   const registrationLengthMeasureThisMonth = data.statisticMeasures.find(
-    (a: { name: StatisticsMeasure; period: Period }) =>
-      a.name === StatisticsMeasure.RegistrationLength && a.period === Period.ThisMonth,
+    (a: { name: string; period: Period }) =>
+      a.name === StatisticMeasureName.NAMES.RegistrationLength && a.period === Period.ThisMonth,
   )
   const registrationLengthDurationThisMonth = timer.convertMicrosecondsToTimeStructure(
     Math.floor(registrationLengthMeasureThisMonth?.average ?? 0),
   )
 
   const registrationToSubscriptionMeasureThisMonth = data.statisticMeasures.find(
-    (a: { name: StatisticsMeasure; period: Period }) =>
-      a.name === StatisticsMeasure.RegistrationToSubscriptionTime && a.period === Period.ThisMonth,
+    (a: { name: string; period: Period }) =>
+      a.name === StatisticMeasureName.NAMES.RegistrationToSubscriptionTime && a.period === Period.ThisMonth,
   )
   const registrationToSubscriptionDurationThisMonth = timer.convertMicrosecondsToTimeStructure(
     Math.floor(registrationToSubscriptionMeasureThisMonth?.average ?? 0),
   )
 
   const plusSubscriptionsInitialAnnualPaymentsYesterday = data.statisticMeasures.find(
-    (a: { name: StatisticsMeasure; period: Period }) =>
-      a.name === StatisticsMeasure.PlusSubscriptionInitialAnnualPaymentsIncome && a.period === Period.Yesterday,
+    (a: { name: string; period: Period }) =>
+      a.name === StatisticMeasureName.NAMES.PlusSubscriptionInitialAnnualPaymentsIncome &&
+      a.period === Period.Yesterday,
   )
   const plusSubscriptionsInitialMonthlyPaymentsYesterday = data.statisticMeasures.find(
-    (a: { name: StatisticsMeasure; period: Period }) =>
-      a.name === StatisticsMeasure.PlusSubscriptionInitialMonthlyPaymentsIncome && a.period === Period.Yesterday,
+    (a: { name: string; period: Period }) =>
+      a.name === StatisticMeasureName.NAMES.PlusSubscriptionInitialMonthlyPaymentsIncome &&
+      a.period === Period.Yesterday,
   )
   const plusSubscriptionsRenewingAnnualPaymentsYesterday = data.statisticMeasures.find(
-    (a: { name: StatisticsMeasure; period: Period }) =>
-      a.name === StatisticsMeasure.PlusSubscriptionRenewingAnnualPaymentsIncome && a.period === Period.Yesterday,
+    (a: { name: string; period: Period }) =>
+      a.name === StatisticMeasureName.NAMES.PlusSubscriptionRenewingAnnualPaymentsIncome &&
+      a.period === Period.Yesterday,
   )
   const plusSubscriptionsRenewingMonthlyPaymentsYesterday = data.statisticMeasures.find(
-    (a: { name: StatisticsMeasure; period: Period }) =>
-      a.name === StatisticsMeasure.PlusSubscriptionRenewingMonthlyPaymentsIncome && a.period === Period.Yesterday,
+    (a: { name: string; period: Period }) =>
+      a.name === StatisticMeasureName.NAMES.PlusSubscriptionRenewingMonthlyPaymentsIncome &&
+      a.period === Period.Yesterday,
   )
   const proSubscriptionsInitialAnnualPaymentsYesterday = data.statisticMeasures.find(
-    (a: { name: StatisticsMeasure; period: Period }) =>
-      a.name === StatisticsMeasure.ProSubscriptionInitialAnnualPaymentsIncome && a.period === Period.Yesterday,
+    (a: { name: string; period: Period }) =>
+      a.name === StatisticMeasureName.NAMES.ProSubscriptionInitialAnnualPaymentsIncome && a.period === Period.Yesterday,
   )
   const proSubscriptionsInitialMonthlyPaymentsYesterday = data.statisticMeasures.find(
-    (a: { name: StatisticsMeasure; period: Period }) =>
-      a.name === StatisticsMeasure.ProSubscriptionInitialMonthlyPaymentsIncome && a.period === Period.Yesterday,
+    (a: { name: string; period: Period }) =>
+      a.name === StatisticMeasureName.NAMES.ProSubscriptionInitialMonthlyPaymentsIncome &&
+      a.period === Period.Yesterday,
   )
   const proSubscriptionsRenewingAnnualPaymentsYesterday = data.statisticMeasures.find(
-    (a: { name: StatisticsMeasure; period: Period }) =>
-      a.name === StatisticsMeasure.ProSubscriptionRenewingAnnualPaymentsIncome && a.period === Period.Yesterday,
+    (a: { name: string; period: Period }) =>
+      a.name === StatisticMeasureName.NAMES.ProSubscriptionRenewingAnnualPaymentsIncome &&
+      a.period === Period.Yesterday,
   )
   const proSubscriptionsRenewingMonthlyPaymentsYesterday = data.statisticMeasures.find(
-    (a: { name: StatisticsMeasure; period: Period }) =>
-      a.name === StatisticsMeasure.ProSubscriptionRenewingMonthlyPaymentsIncome && a.period === Period.Yesterday,
+    (a: { name: string; period: Period }) =>
+      a.name === StatisticMeasureName.NAMES.ProSubscriptionRenewingMonthlyPaymentsIncome &&
+      a.period === Period.Yesterday,
   )
   const plusSubscriptionsInitialAnnualPaymentsThisMonth = data.statisticMeasures.find(
-    (a: { name: StatisticsMeasure; period: Period }) =>
-      a.name === StatisticsMeasure.PlusSubscriptionInitialAnnualPaymentsIncome && a.period === Period.ThisMonth,
+    (a: { name: string; period: Period }) =>
+      a.name === StatisticMeasureName.NAMES.PlusSubscriptionInitialAnnualPaymentsIncome &&
+      a.period === Period.ThisMonth,
   )
   const plusSubscriptionsInitialMonthlyPaymentsThisMonth = data.statisticMeasures.find(
-    (a: { name: StatisticsMeasure; period: Period }) =>
-      a.name === StatisticsMeasure.PlusSubscriptionInitialMonthlyPaymentsIncome && a.period === Period.ThisMonth,
+    (a: { name: string; period: Period }) =>
+      a.name === StatisticMeasureName.NAMES.PlusSubscriptionInitialMonthlyPaymentsIncome &&
+      a.period === Period.ThisMonth,
   )
   const plusSubscriptionsRenewingAnnualPaymentsThisMonth = data.statisticMeasures.find(
-    (a: { name: StatisticsMeasure; period: Period }) =>
-      a.name === StatisticsMeasure.PlusSubscriptionRenewingAnnualPaymentsIncome && a.period === Period.ThisMonth,
+    (a: { name: string; period: Period }) =>
+      a.name === StatisticMeasureName.NAMES.PlusSubscriptionRenewingAnnualPaymentsIncome &&
+      a.period === Period.ThisMonth,
   )
   const plusSubscriptionsRenewingMonthlyPaymentsThisMonth = data.statisticMeasures.find(
-    (a: { name: StatisticsMeasure; period: Period }) =>
-      a.name === StatisticsMeasure.PlusSubscriptionRenewingMonthlyPaymentsIncome && a.period === Period.ThisMonth,
+    (a: { name: string; period: Period }) =>
+      a.name === StatisticMeasureName.NAMES.PlusSubscriptionRenewingMonthlyPaymentsIncome &&
+      a.period === Period.ThisMonth,
   )
   const proSubscriptionsInitialAnnualPaymentsThisMonth = data.statisticMeasures.find(
-    (a: { name: StatisticsMeasure; period: Period }) =>
-      a.name === StatisticsMeasure.ProSubscriptionInitialAnnualPaymentsIncome && a.period === Period.ThisMonth,
+    (a: { name: string; period: Period }) =>
+      a.name === StatisticMeasureName.NAMES.ProSubscriptionInitialAnnualPaymentsIncome && a.period === Period.ThisMonth,
   )
   const proSubscriptionsInitialMonthlyPaymentsThisMonth = data.statisticMeasures.find(
-    (a: { name: StatisticsMeasure; period: Period }) =>
-      a.name === StatisticsMeasure.ProSubscriptionInitialMonthlyPaymentsIncome && a.period === Period.ThisMonth,
+    (a: { name: string; period: Period }) =>
+      a.name === StatisticMeasureName.NAMES.ProSubscriptionInitialMonthlyPaymentsIncome &&
+      a.period === Period.ThisMonth,
   )
   const proSubscriptionsRenewingAnnualPaymentsThisMonth = data.statisticMeasures.find(
-    (a: { name: StatisticsMeasure; period: Period }) =>
-      a.name === StatisticsMeasure.ProSubscriptionRenewingAnnualPaymentsIncome && a.period === Period.ThisMonth,
+    (a: { name: string; period: Period }) =>
+      a.name === StatisticMeasureName.NAMES.ProSubscriptionRenewingAnnualPaymentsIncome &&
+      a.period === Period.ThisMonth,
   )
   const proSubscriptionsRenewingMonthlyPaymentsThisMonth = data.statisticMeasures.find(
-    (a: { name: StatisticsMeasure; period: Period }) =>
-      a.name === StatisticsMeasure.ProSubscriptionRenewingMonthlyPaymentsIncome && a.period === Period.ThisMonth,
+    (a: { name: string; period: Period }) =>
+      a.name === StatisticMeasureName.NAMES.ProSubscriptionRenewingMonthlyPaymentsIncome &&
+      a.period === Period.ThisMonth,
   )
 
   const mrrOverTime = data.statisticsOverTime.find(

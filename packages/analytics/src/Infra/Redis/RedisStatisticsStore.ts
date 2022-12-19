@@ -1,16 +1,23 @@
 import * as IORedis from 'ioredis'
 
-import { StatisticsMeasure } from '../../Domain/Statistics/StatisticsMeasure'
+import { StatisticMeasure } from '../../Domain/Statistics/StatisticMeasure'
+import { StatisticMeasureRepositoryInterface } from '../../Domain/Statistics/StatisticMeasureRepositoryInterface'
 
 import { StatisticsStoreInterface } from '../../Domain/Statistics/StatisticsStoreInterface'
 import { Period } from '../../Domain/Time/Period'
 import { PeriodKeyGeneratorInterface } from '../../Domain/Time/PeriodKeyGeneratorInterface'
 
-export class RedisStatisticsStore implements StatisticsStoreInterface {
+export class RedisStatisticsStore implements StatisticsStoreInterface, StatisticMeasureRepositoryInterface {
   constructor(private periodKeyGenerator: PeriodKeyGeneratorInterface, private redisClient: IORedis.Redis) {}
 
+  async save(statisticMeasure: StatisticMeasure): Promise<void> {
+    const periodKey = this.periodKeyGenerator.getDailyKey(statisticMeasure.props.date)
+
+    await this.setMeasure(statisticMeasure.name, statisticMeasure.value, [periodKey])
+  }
+
   async calculateTotalCountOverPeriod(
-    measure: StatisticsMeasure,
+    measure: string,
     period: Period,
   ): Promise<{ periodKey: string; totalCount: number }[]> {
     if (
@@ -38,7 +45,7 @@ export class RedisStatisticsStore implements StatisticsStoreInterface {
     return counts
   }
 
-  async getMeasureIncrementCounts(measure: StatisticsMeasure, period: Period): Promise<number> {
+  async getMeasureIncrementCounts(measure: string, period: Period): Promise<number> {
     const increments = await this.redisClient.get(
       `count:increments:${measure}:timespan:${this.periodKeyGenerator.getPeriodKey(period)}`,
     )
@@ -49,17 +56,22 @@ export class RedisStatisticsStore implements StatisticsStoreInterface {
     return +increments
   }
 
-  async setMeasure(measure: StatisticsMeasure, value: number, periods: Period[]): Promise<void> {
+  async setMeasure(measure: string, value: number, periodsOrPeriodKeys: Period[] | string[]): Promise<void> {
     const pipeline = this.redisClient.pipeline()
 
-    for (const period of periods) {
-      pipeline.set(`count:measure:${measure}:timespan:${this.periodKeyGenerator.getPeriodKey(period)}`, value)
+    for (const periodOrPeriodKey of periodsOrPeriodKeys) {
+      let periodKey = periodOrPeriodKey
+      if (!isNaN(+periodOrPeriodKey)) {
+        periodKey = this.periodKeyGenerator.getPeriodKey(periodOrPeriodKey as Period)
+      }
+
+      pipeline.set(`count:measure:${measure}:timespan:${periodKey}`, value)
     }
 
     await pipeline.exec()
   }
 
-  async getMeasureTotal(measure: StatisticsMeasure, periodOrPeriodKey: Period | string): Promise<number> {
+  async getMeasureTotal(measure: string, periodOrPeriodKey: Period | string): Promise<number> {
     let periodKey = periodOrPeriodKey
     if (!isNaN(+periodOrPeriodKey)) {
       periodKey = this.periodKeyGenerator.getPeriodKey(periodOrPeriodKey as Period)
@@ -74,7 +86,7 @@ export class RedisStatisticsStore implements StatisticsStoreInterface {
     return +totalValue
   }
 
-  async incrementMeasure(measure: StatisticsMeasure, value: number, periods: Period[]): Promise<void> {
+  async incrementMeasure(measure: string, value: number, periods: Period[]): Promise<void> {
     const pipeline = this.redisClient.pipeline()
 
     for (const period of periods) {
@@ -85,7 +97,7 @@ export class RedisStatisticsStore implements StatisticsStoreInterface {
     await pipeline.exec()
   }
 
-  async getMeasureAverage(measure: StatisticsMeasure, period: Period): Promise<number> {
+  async getMeasureAverage(measure: string, period: Period): Promise<number> {
     const increments = await this.getMeasureIncrementCounts(measure, period)
 
     if (increments === 0) {

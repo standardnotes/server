@@ -2,7 +2,7 @@ import { DomainEventHandlerInterface, RefundProcessedEvent } from '@standardnote
 import { inject, injectable } from 'inversify'
 
 import TYPES from '../../Bootstrap/Types'
-import { StatisticsMeasure } from '../Statistics/StatisticsMeasure'
+import { StatisticMeasureName } from '../Statistics/StatisticMeasureName'
 import { StatisticsStoreInterface } from '../Statistics/StatisticsStoreInterface'
 import { Period } from '../Time/Period'
 
@@ -11,7 +11,7 @@ export class RefundProcessedEventHandler implements DomainEventHandlerInterface 
   constructor(@inject(TYPES.StatisticsStore) private statisticsStore: StatisticsStoreInterface) {}
 
   async handle(event: RefundProcessedEvent): Promise<void> {
-    await this.statisticsStore.incrementMeasure(StatisticsMeasure.Refunds, event.payload.amount, [
+    await this.statisticsStore.incrementMeasure(StatisticMeasureName.NAMES.Refunds, event.payload.amount, [
       Period.Today,
       Period.ThisWeek,
       Period.ThisMonth,

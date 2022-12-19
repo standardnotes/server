@@ -6,7 +6,7 @@ import { Logger } from 'winston'
 import TYPES from '../../Bootstrap/Types'
 import { AnalyticsActivity } from '../Analytics/AnalyticsActivity'
 import { AnalyticsStoreInterface } from '../Analytics/AnalyticsStoreInterface'
-import { StatisticsMeasure } from '../Statistics/StatisticsMeasure'
+import { StatisticMeasureName } from '../Statistics/StatisticMeasureName'
 import { StatisticsStoreInterface } from '../Statistics/StatisticsStoreInterface'
 import { SubscriptionEventType } from '../Subscription/SubscriptionEventType'
 import { SubscriptionPlanName } from '../Subscription/SubscriptionPlanName'
@@ -70,7 +70,7 @@ export class SubscriptionRefundedEventHandler implements DomainEventHandlerInter
     }
 
     await this.statisticsStore.setMeasure(
-      StatisticsMeasure.TotalCustomers,
+      StatisticMeasureName.NAMES.TotalCustomers,
       event.payload.totalActiveSubscriptionsCount,
       [Period.Today, Period.ThisWeek, Period.ThisMonth, Period.ThisYear],
     )

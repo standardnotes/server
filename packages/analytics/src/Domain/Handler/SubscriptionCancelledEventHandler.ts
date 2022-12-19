@@ -6,13 +6,13 @@ import { Username } from '@standardnotes/domain-core'
 import TYPES from '../../Bootstrap/Types'
 import { AnalyticsActivity } from '../Analytics/AnalyticsActivity'
 import { AnalyticsStoreInterface } from '../Analytics/AnalyticsStoreInterface'
-import { StatisticsMeasure } from '../Statistics/StatisticsMeasure'
 import { StatisticsStoreInterface } from '../Statistics/StatisticsStoreInterface'
 import { SubscriptionEventType } from '../Subscription/SubscriptionEventType'
 import { SubscriptionPlanName } from '../Subscription/SubscriptionPlanName'
 import { Period } from '../Time/Period'
 import { GetUserAnalyticsId } from '../UseCase/GetUserAnalyticsId/GetUserAnalyticsId'
 import { SaveRevenueModification } from '../UseCase/SaveRevenueModification/SaveRevenueModification'
+import { StatisticMeasureName } from '../Statistics/StatisticMeasureName'
 
 @injectable()
 export class SubscriptionCancelledEventHandler implements DomainEventHandlerInterface {
@@ -58,7 +58,7 @@ export class SubscriptionCancelledEventHandler implements DomainEventHandlerInte
     }
 
     const subscriptionLength = event.payload.timestamp - event.payload.subscriptionCreatedAt
-    await this.statisticsStore.incrementMeasure(StatisticsMeasure.SubscriptionLength, subscriptionLength, [
+    await this.statisticsStore.incrementMeasure(StatisticMeasureName.NAMES.SubscriptionLength, subscriptionLength, [
       Period.Today,
       Period.ThisWeek,
       Period.ThisMonth,
@@ -70,7 +70,7 @@ export class SubscriptionCancelledEventHandler implements DomainEventHandlerInte
     const remainingSubscriptionPercentage = Math.floor((remainingSubscriptionTime / totalSubscriptionTime) * 100)
 
     await this.statisticsStore.incrementMeasure(
-      StatisticsMeasure.RemainingSubscriptionTimePercentage,
+      StatisticMeasureName.NAMES.RemainingSubscriptionTimePercentage,
       remainingSubscriptionPercentage,
       [Period.Today, Period.ThisWeek, Period.ThisMonth],
     )

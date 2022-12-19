@@ -1,7 +1,7 @@
 import 'reflect-metadata'
 
 import { RevenueModificationRepositoryInterface } from '../../Revenue/RevenueModificationRepositoryInterface'
-import { StatisticsMeasure } from '../../Statistics/StatisticsMeasure'
+import { StatisticMeasureName } from '../../Statistics/StatisticMeasureName'
 import { StatisticsStoreInterface } from '../../Statistics/StatisticsStoreInterface'
 import { Period } from '../../Time/Period'
 
@@ -24,7 +24,7 @@ describe('CalculateMonthlyRecurringRevenue', () => {
   it('should calculate the MRR diff and persist it as a statistic', async () => {
     await createUseCase().execute({})
 
-    expect(statisticsStore.setMeasure).toHaveBeenCalledWith(StatisticsMeasure.MRR, 123.45, [
+    expect(statisticsStore.setMeasure).toHaveBeenCalledWith(StatisticMeasureName.NAMES.MRR, 123.45, [
       Period.Today,
       Period.ThisMonth,
       Period.ThisYear,

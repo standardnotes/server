@@ -137,7 +137,7 @@ export class PeriodKeyGenerator implements PeriodKeyGeneratorInterface {
     return `${this.getYear(date)}-${this.getMonth(date)}`
   }
 
-  private getDailyKey(date?: Date): string {
+  getDailyKey(date?: Date): string {
     date = date ?? new Date()
 
     return `${this.getYear(date)}-${this.getMonth(date)}-${this.getDayOfTheMonth(date)}`
