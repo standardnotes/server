@@ -24,11 +24,12 @@ const countActiveUsers = (measureName: string, data: any): { yesterday: number; 
     }
   }
 
-  const averageActiveUsersLast30Days = Math.floor(
-    filteredCounts.reduce((previousValue: { totalCount: any }, currentValue: { totalCount: any }) => {
-      return previousValue.totalCount + currentValue.totalCount
-    }) / filteredCounts.length,
-  )
+  const last30DaysNumbers = filteredCounts.map((count: { totalCount: number }) => count.totalCount)
+  const last30DaysCount = last30DaysNumbers.reduce((previousValue: number, currentValue: number) => {
+    return previousValue + currentValue
+  })
+
+  const averageActiveUsersLast30Days = Math.floor(last30DaysCount / last30DaysNumbers.length)
 
   return {
     yesterday: totalActiveUsersYesterday,
