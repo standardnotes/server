@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.17.7](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.17.6...@standardnotes/analytics@2.17.7) (2022-12-20)
+
+### Bug Fixes
+
+* **analytics:** monthly numbers of active users ([b34bbca](https://github.com/standardnotes/server/commit/b34bbcac8b9604283b3a5959ab3218c468ce8a00))
+
 ## [2.17.6](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.17.5...@standardnotes/analytics@2.17.6) (2022-12-20)
 
 ### Bug Fixes
