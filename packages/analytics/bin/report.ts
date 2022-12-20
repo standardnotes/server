@@ -121,6 +121,10 @@ const requestReport = async (
     StatisticMeasureName.NAMES.FiveYearPlansMRR,
     StatisticMeasureName.NAMES.PlusPlansMRR,
     StatisticMeasureName.NAMES.ProPlansMRR,
+    StatisticMeasureName.NAMES.ActiveUsers,
+    StatisticMeasureName.NAMES.ActiveFreeUsers,
+    StatisticMeasureName.NAMES.ActivePlusUsers,
+    StatisticMeasureName.NAMES.ActiveProUsers,
   ]
   for (const statisticName of thirtyDaysStatisticsNames) {
     statisticsOverTime.push({
