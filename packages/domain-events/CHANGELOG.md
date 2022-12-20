@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.105.1](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.105.0...@standardnotes/domain-events@2.105.1) (2022-12-20)
+
+### Bug Fixes
+
+* **auth:** replace date object with number timestamp ([5b4bb6e](https://github.com/standardnotes/server/commit/5b4bb6e7a78a1b0f4e663bb990619f65f6a5c757))
+
 # [2.105.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.104.2...@standardnotes/domain-events@2.105.0) (2022-12-19)
 
 ### Features

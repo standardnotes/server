@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.17.1](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.17.0...@standardnotes/analytics@2.17.1) (2022-12-20)
+
+### Bug Fixes
+
+* **analytics:** container binding ([04ffc69](https://github.com/standardnotes/server/commit/04ffc69e000803107d8834c286de97b3d213a842))
+* **auth:** replace date object with number timestamp ([5b4bb6e](https://github.com/standardnotes/server/commit/5b4bb6e7a78a1b0f4e663bb990619f65f6a5c757))
+
 # [2.17.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.16.0...@standardnotes/analytics@2.17.0) (2022-12-20)
 
 ### Features

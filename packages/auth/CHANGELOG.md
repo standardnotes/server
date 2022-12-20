@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.70.4](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.70.3...@standardnotes/auth-server@1.70.4) (2022-12-20)
+
+### Bug Fixes
+
+* **auth:** replace date object with number timestamp ([5b4bb6e](https://github.com/standardnotes/server/commit/5b4bb6e7a78a1b0f4e663bb990619f65f6a5c757))
+
 ## [1.70.3](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.70.2...@standardnotes/auth-server@1.70.3) (2022-12-20)
 
 ### Bug Fixes
