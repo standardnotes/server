@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.70.8](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.70.7...@standardnotes/auth-server@1.70.8) (2022-12-20)
+
+### Bug Fixes
+
+* **auth:** move tracing sessions to session creation instead of cross service token creation ([5255cfb](https://github.com/standardnotes/server/commit/5255cfbb257cc9e6ac437fe0c5b28d938e3e599b))
+
 ## [1.70.7](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.70.6...@standardnotes/auth-server@1.70.7) (2022-12-20)
 
 ### Bug Fixes
