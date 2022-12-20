@@ -14,6 +14,7 @@ describe('PersistStatistics', () => {
   beforeEach(() => {
     sessionTracesRepository = {} as jest.Mocked<SessionTraceRepositoryInterface>
     sessionTracesRepository.countByDate = jest.fn().mockReturnValue(1)
+    sessionTracesRepository.countByDateAndSubscriptionPlanName = jest.fn().mockReturnValue(2)
 
     domainEventFactory = {} as jest.Mocked<DomainEventFactoryInterface>
     domainEventFactory.createStatisticPersistenceRequestedEvent = jest
@@ -27,6 +28,6 @@ describe('PersistStatistics', () => {
   it('should request statistic persistence', async () => {
     await createUseCase().execute({ sessionsInADay: new Date() })
 
-    expect(domainEventPublisher.publish).toHaveBeenCalled()
+    expect(domainEventPublisher.publish).toHaveBeenCalledTimes(4)
   })
 })

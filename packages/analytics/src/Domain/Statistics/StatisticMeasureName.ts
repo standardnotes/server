@@ -27,6 +27,9 @@ export class StatisticMeasureName extends ValueObject<StatisticMeasureNameProps>
     ProPlansMRR: 'pro-plans-mrr',
     PlusPlansMRR: 'plus-plans-mrr',
     ActiveUsers: 'active-users',
+    ActiveProUsers: 'active-pro-users',
+    ActivePlusUsers: 'active-plus-users',
+    ActiveFreeUsers: 'active-free-users',
   }
 
   get value(): string {

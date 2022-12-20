@@ -1,4 +1,4 @@
-import { MapperInterface, Uuid } from '@standardnotes/domain-core'
+import { MapperInterface, SubscriptionPlanName, Uuid } from '@standardnotes/domain-core'
 import { Repository } from 'typeorm'
 import { SessionTrace } from '../../Domain/Session/SessionTrace'
 import { SessionTraceRepositoryInterface } from '../../Domain/Session/SessionTraceRepositoryInterface'
@@ -9,6 +9,18 @@ export class MySQLSessionTraceRepository implements SessionTraceRepositoryInterf
     private ormRepository: Repository<TypeORMSessionTrace>,
     private mapper: MapperInterface<SessionTrace, TypeORMSessionTrace>,
   ) {}
+
+  async countByDateAndSubscriptionPlanName(date: Date, subscriptionPlanName: SubscriptionPlanName): Promise<number> {
+    return this.ormRepository
+      .createQueryBuilder('trace')
+      .where('trace.creation_date = :creationDate', {
+        creationDate: new Date(date.getFullYear(), date.getMonth(), date.getDate()),
+      })
+      .andWhere('trace.subscription_plan_name = :subscriptionPlanName', {
+        subscriptionPlanName: subscriptionPlanName.value,
+      })
+      .getCount()
+  }
 
   async countByDate(date: Date): Promise<number> {
     return this.ormRepository
