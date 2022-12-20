@@ -15,6 +15,10 @@ import { SettingServiceInterface } from '../Setting/SettingServiceInterface'
 import { LogSessionUserAgentOption } from '@standardnotes/settings'
 import { Setting } from '../Setting/Setting'
 import { CryptoNode } from '@standardnotes/sncrypto-node'
+import { UserSubscriptionRepositoryInterface } from '../Subscription/UserSubscriptionRepositoryInterface'
+import { TraceSession } from '../UseCase/TraceSession/TraceSession'
+import { UserSubscription } from '../Subscription/UserSubscription'
+import { Result } from '@standardnotes/domain-core'
 
 describe('SessionService', () => {
   let sessionRepository: SessionRepositoryInterface
@@ -28,6 +32,8 @@ describe('SessionService', () => {
   let timer: TimerInterface
   let logger: winston.Logger
   let cryptoNode: CryptoNode
+  let traceSession: TraceSession
+  let userSubscriptionRepository: UserSubscriptionRepositoryInterface
 
   const createService = () =>
     new SessionService(
@@ -41,6 +47,8 @@ describe('SessionService', () => {
       234,
       settingService,
       cryptoNode,
+      traceSession,
+      userSubscriptionRepository,
     )
 
   beforeEach(() => {
@@ -106,6 +114,14 @@ describe('SessionService', () => {
     cryptoNode = {} as jest.Mocked<CryptoNode>
     cryptoNode.generateRandomKey = jest.fn().mockReturnValue('foo bar')
     cryptoNode.base64URLEncode = jest.fn().mockReturnValue('foobar')
+
+    traceSession = {} as jest.Mocked<TraceSession>
+    traceSession.execute = jest.fn()
+
+    userSubscriptionRepository = {} as jest.Mocked<UserSubscriptionRepositoryInterface>
+    userSubscriptionRepository.findOneByUserUuid = jest.fn().mockReturnValue({
+      planName: 'PRO_PLAN',
+    } as jest.Mocked<UserSubscription>)
   })
 
   it('should mark a revoked session as received', async () => {
@@ -195,6 +211,129 @@ describe('SessionService', () => {
       readonlyAccess: false,
     })
 
+    expect(sessionPayload).toEqual({
+      access_expiration: 123,
+      access_token: expect.any(String),
+      refresh_expiration: 123,
+      refresh_token: expect.any(String),
+      readonly_access: false,
+    })
+  })
+
+  it('should trace a session', async () => {
+    const user = {} as jest.Mocked<User>
+    user.uuid = '123'
+    user.email = 'test@test.te'
+
+    await createService().createNewSessionForUser({
+      user,
+      apiVersion: '003',
+      userAgent: 'Google Chrome',
+      readonlyAccess: false,
+    })
+
+    expect(traceSession.execute).toHaveBeenCalledWith({
+      userUuid: '123',
+      username: 'test@test.te',
+      subscriptionPlanName: 'PRO_PLAN',
+    })
+  })
+
+  it('should trace a session without a subscription', async () => {
+    userSubscriptionRepository.findOneByUserUuid = jest.fn().mockReturnValue(null)
+    const user = {} as jest.Mocked<User>
+    user.uuid = '123'
+    user.email = 'test@test.te'
+
+    await createService().createNewSessionForUser({
+      user,
+      apiVersion: '003',
+      userAgent: 'Google Chrome',
+      readonlyAccess: false,
+    })
+
+    expect(traceSession.execute).toHaveBeenCalledWith({
+      userUuid: '123',
+      username: 'test@test.te',
+      subscriptionPlanName: null,
+    })
+  })
+
+  it('should create a session if tracing session throws an error', async () => {
+    traceSession.execute = jest.fn().mockRejectedValue(new Error('foo bar'))
+    userSubscriptionRepository.findOneByUserUuid = jest.fn().mockReturnValue(null)
+    const user = {} as jest.Mocked<User>
+    user.uuid = '123'
+    user.email = 'test@test.te'
+
+    const sessionPayload = await createService().createNewSessionForUser({
+      user,
+      apiVersion: '003',
+      userAgent: 'Google Chrome',
+      readonlyAccess: false,
+    })
+
+    expect(traceSession.execute).toHaveBeenCalledWith({
+      userUuid: '123',
+      username: 'test@test.te',
+      subscriptionPlanName: null,
+    })
+    expect(sessionPayload).toEqual({
+      access_expiration: 123,
+      access_token: expect.any(String),
+      refresh_expiration: 123,
+      refresh_token: expect.any(String),
+      readonly_access: false,
+    })
+  })
+
+  it('should create a session if tracing session throws an error', async () => {
+    traceSession.execute = jest.fn().mockRejectedValue(new Error('foo bar'))
+    userSubscriptionRepository.findOneByUserUuid = jest.fn().mockReturnValue(null)
+    const user = {} as jest.Mocked<User>
+    user.uuid = '123'
+    user.email = 'test@test.te'
+
+    const sessionPayload = await createService().createNewSessionForUser({
+      user,
+      apiVersion: '003',
+      userAgent: 'Google Chrome',
+      readonlyAccess: false,
+    })
+
+    expect(traceSession.execute).toHaveBeenCalledWith({
+      userUuid: '123',
+      username: 'test@test.te',
+      subscriptionPlanName: null,
+    })
+    expect(sessionPayload).toEqual({
+      access_expiration: 123,
+      access_token: expect.any(String),
+      refresh_expiration: 123,
+      refresh_token: expect.any(String),
+      readonly_access: false,
+    })
+  })
+
+  it('should create a session if tracing session fails', async () => {
+    traceSession.execute = jest.fn().mockReturnValue(Result.fail('Oops'))
+    userSubscriptionRepository.findOneByUserUuid = jest.fn().mockReturnValue(null)
+    const user = {} as jest.Mocked<User>
+    user.uuid = '123'
+    user.email = 'test@test.te'
+
+    const sessionPayload = await createService().createNewSessionForUser({
+      user,
+      apiVersion: '003',
+      userAgent: 'Google Chrome',
+      readonlyAccess: false,
+    })
+
+    expect(traceSession.execute).toHaveBeenCalledWith({
+      userUuid: '123',
+      username: 'test@test.te',
+      subscriptionPlanName: null,
+    })
     expect(sessionPayload).toEqual({
       access_expiration: 123,
       access_token: expect.any(String),

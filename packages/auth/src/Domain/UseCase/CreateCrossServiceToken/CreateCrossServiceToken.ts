@@ -1,16 +1,13 @@
 import { RoleName } from '@standardnotes/common'
 import { TokenEncoderInterface, CrossServiceTokenData } from '@standardnotes/security'
 import { inject, injectable } from 'inversify'
-import { Logger } from 'winston'
 
 import TYPES from '../../../Bootstrap/Types'
 import { ProjectorInterface } from '../../../Projection/ProjectorInterface'
 import { Role } from '../../Role/Role'
-import { RoleToSubscriptionMapInterface } from '../../Role/RoleToSubscriptionMapInterface'
 import { Session } from '../../Session/Session'
 import { User } from '../../User/User'
 import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'
-import { TraceSession } from '../TraceSession/TraceSession'
 import { UseCaseInterface } from '../UseCaseInterface'
 
 import { CreateCrossServiceTokenDTO } from './CreateCrossServiceTokenDTO'
@@ -25,9 +22,6 @@ export class CreateCrossServiceToken implements UseCaseInterface {
     @inject(TYPES.CrossServiceTokenEncoder) private tokenEncoder: TokenEncoderInterface<CrossServiceTokenData>,
     @inject(TYPES.UserRepository) private userRepository: UserRepositoryInterface,
     @inject(TYPES.AUTH_JWT_TTL) private jwtTTL: number,
-    @inject(TYPES.RoleToSubscriptionMap) private roleToSubscriptionMap: RoleToSubscriptionMapInterface,
-    @inject(TYPES.TraceSession) private traceSession: TraceSession,
-    @inject(TYPES.Logger) private logger: Logger,
   ) {}
 
   async execute(dto: CreateCrossServiceTokenDTO): Promise<CreateCrossServiceTokenResponse> {
@@ -49,19 +43,6 @@ export class CreateCrossServiceToken implements UseCaseInterface {
 
     if (dto.session !== undefined) {
       authTokenData.session = this.projectSession(dto.session)
-    }
-
-    try {
-      const traceSessionResult = await this.traceSession.execute({
-        userUuid: user.uuid,
-        username: user.email,
-        subscriptionPlanName: this.getSubscriptionNameFromRoles(roles),
-      })
-      if (traceSessionResult.isFailed()) {
-        this.logger.error(traceSessionResult.getError())
-      }
-    } catch (error) {
-      this.logger.debug(`Could not trace session while creating cross service token.: ${(error as Error).message}`)
     }
 
     return {
@@ -99,18 +80,5 @@ export class CreateCrossServiceToken implements UseCaseInterface {
 
   private projectRoles(roles: Array<Role>): Array<{ uuid: string; name: RoleName }> {
     return roles.map((role) => <{ uuid: string; name: RoleName }>this.roleProjector.projectSimple(role))
-  }
-
-  private getSubscriptionNameFromRoles(roles: Array<Role>): string | null {
-    const nonSubscriptionRoles = this.roleToSubscriptionMap.filterSubscriptionRoles(roles)
-    if (nonSubscriptionRoles.length === 0) {
-      return null
-    }
-
-    const subscriptionName = this.roleToSubscriptionMap.getSubscriptionNameForRoleName(
-      nonSubscriptionRoles[0].name as RoleName,
-    )
-
-    return subscriptionName === undefined ? null : subscriptionName
   }
 }

@@ -1,10 +1,14 @@
 import * as crypto from 'crypto'
-import * as winston from 'winston'
 import * as dayjs from 'dayjs'
 import { UAParser } from 'ua-parser-js'
 import { inject, injectable } from 'inversify'
 import { v4 as uuidv4 } from 'uuid'
 import { TimerInterface } from '@standardnotes/time'
+import { Logger } from 'winston'
+import { LogSessionUserAgentOption, SettingName } from '@standardnotes/settings'
+import { SessionBody } from '@standardnotes/responses'
+import { Uuid } from '@standardnotes/common'
+import { CryptoNode } from '@standardnotes/sncrypto-node'
 
 import TYPES from '../../Bootstrap/Types'
 import { Session } from './Session'
@@ -16,10 +20,8 @@ import { EphemeralSession } from './EphemeralSession'
 import { RevokedSession } from './RevokedSession'
 import { RevokedSessionRepositoryInterface } from './RevokedSessionRepositoryInterface'
 import { SettingServiceInterface } from '../Setting/SettingServiceInterface'
-import { LogSessionUserAgentOption, SettingName } from '@standardnotes/settings'
-import { SessionBody } from '@standardnotes/responses'
-import { Uuid } from '@standardnotes/common'
-import { CryptoNode } from '@standardnotes/sncrypto-node'
+import { TraceSession } from '../UseCase/TraceSession/TraceSession'
+import { UserSubscriptionRepositoryInterface } from '../Subscription/UserSubscriptionRepositoryInterface'
 
 @injectable()
 export class SessionService implements SessionServiceInterface {
@@ -31,11 +33,13 @@ export class SessionService implements SessionServiceInterface {
     @inject(TYPES.RevokedSessionRepository) private revokedSessionRepository: RevokedSessionRepositoryInterface,
     @inject(TYPES.DeviceDetector) private deviceDetector: UAParser,
     @inject(TYPES.Timer) private timer: TimerInterface,
-    @inject(TYPES.Logger) private logger: winston.Logger,
+    @inject(TYPES.Logger) private logger: Logger,
     @inject(TYPES.ACCESS_TOKEN_AGE) private accessTokenAge: number,
     @inject(TYPES.REFRESH_TOKEN_AGE) private refreshTokenAge: number,
     @inject(TYPES.SettingService) private settingService: SettingServiceInterface,
     @inject(TYPES.CryptoNode) private cryptoNode: CryptoNode,
+    @inject(TYPES.TraceSession) private traceSession: TraceSession,
+    @inject(TYPES.UserSubscriptionRepository) private userSubscriptionRepository: UserSubscriptionRepositoryInterface,
   ) {}
 
   async createNewSessionForUser(dto: {
@@ -52,6 +56,20 @@ export class SessionService implements SessionServiceInterface {
     const sessionPayload = await this.createTokens(session)
 
     await this.sessionRepository.save(session)
+
+    try {
+      const userSubscription = await this.userSubscriptionRepository.findOneByUserUuid(dto.user.uuid)
+      const traceSessionResult = await this.traceSession.execute({
+        userUuid: dto.user.uuid,
+        username: dto.user.email,
+        subscriptionPlanName: userSubscription ? userSubscription.planName : null,
+      })
+      if (traceSessionResult.isFailed()) {
+        this.logger.error(traceSessionResult.getError())
+      }
+    } catch (error) {
+      this.logger.error(`Could not trace session while creating cross service token.: ${(error as Error).message}`)
+    }
 
     return sessionPayload
   }
