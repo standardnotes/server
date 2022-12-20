@@ -13,13 +13,13 @@ const countActiveUsers = (measureName: string, data: any): { yesterday: number; 
     totalActiveUsersLast30DaysIncludingToday.counts[totalActiveUsersLast30DaysIncludingToday.counts.length - 2]
       .totalCount
 
-  const filteredStats = totalActiveUsersLast30DaysIncludingToday.counts.filter(
+  const filteredCounts = totalActiveUsersLast30DaysIncludingToday.counts.filter(
     (count: { totalCount: number }) => count.totalCount !== 0,
   )
   const averageActiveUsersLast30Days = Math.floor(
-    filteredStats.counts.reduce((previousValue: { totalCount: any }, currentValue: { totalCount: any }) => {
+    filteredCounts.reduce((previousValue: { totalCount: any }, currentValue: { totalCount: any }) => {
       return previousValue.totalCount + currentValue.totalCount
-    }) / filteredStats.counts.length,
+    }) / filteredCounts.length,
   )
 
   return {
