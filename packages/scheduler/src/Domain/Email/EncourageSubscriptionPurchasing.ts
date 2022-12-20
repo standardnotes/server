@@ -5,7 +5,5 @@ export function getSubject(): string {
 }
 
 export function getBody(registrationDate: string): string {
-  const body = html
-
-  return body.replace('%%REGISTRATION_DATE%%', registrationDate)
+  return html(registrationDate, 90, 120)
 }

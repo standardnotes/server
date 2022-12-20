@@ -1,4 +1,4 @@
-export const html = `<div>
+export const html = (registrationDate: string, annualPlusPrice: number, annualProPrice: number) => `<div>
   <p>Hi there,</p>
   <p>
     We hope you've been finding great use out of Standard Notes. We built Standard Notes to be a secure place for
@@ -7,7 +7,7 @@ export const html = `<div>
   <p>
     As a reminder,
     <strong>
-      <em>you signed up for the Standard Notes free plan on %%REGISTRATION_DATE%%</em>
+      <em>you signed up for the Standard Notes free plan on ${registrationDate}</em>
     </strong>
     Your free account comes with standard features like end-to-end encryption, multiple-device sync, and
     two-factor authentication.
@@ -19,13 +19,13 @@ export const html = `<div>
   <ul>
     <li>
       <p>
-        <strong>Productivity</strong> <strong>($59/year)</strong> powers up your editing experience with unique
+        <strong>Productivity</strong> <strong>($${annualPlusPrice}/year)</strong> powers up your editing experience with unique
         and special-built note-types for markdown, rich text, spreadsheets, todo, and more.
       </p>
     </li>
     <li>
       <p>
-        <strong>Professional</strong> <strong>($99/year)</strong> gives you all the power of Productivity plus
+        <strong>Professional</strong> <strong>($${annualProPrice}/year)</strong> gives you all the power of Productivity plus
         100GB of end-to-end encrypted file storage for your private photos, videos, and documents, plus family
         subscription sharing with up to 5 people.
       </p>
