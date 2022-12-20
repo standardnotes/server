@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.70.7](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.70.6...@standardnotes/auth-server@1.70.7) (2022-12-20)
+
+### Bug Fixes
+
+* **auth:** change severity on tracing session errors - most probably hazardous reads ([cf0b918](https://github.com/standardnotes/server/commit/cf0b91891370e1c1799ad80c10ee9f6b98087a94))
+
 ## [1.70.6](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.70.5...@standardnotes/auth-server@1.70.6) (2022-12-20)
 
 ### Bug Fixes
