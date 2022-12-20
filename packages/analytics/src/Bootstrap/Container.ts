@@ -218,6 +218,7 @@ export class ContainerConfigLoader {
       .toConstantValue(
         new StatisticPersistenceRequestedEventHandler(
           container.get(TYPES.PersistStatistic),
+          container.get(TYPES.Timer),
           container.get(TYPES.Logger),
         ),
       )
