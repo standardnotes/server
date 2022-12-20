@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.70.2](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.70.1...@standardnotes/auth-server@1.70.2) (2022-12-20)
+
+### Bug Fixes
+
+* **auth:** docker command ([85d2f42](https://github.com/standardnotes/server/commit/85d2f42f473110e8dfca975bfecc7a56823bdef4))
+
 ## [1.70.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.70.0...@standardnotes/auth-server@1.70.1) (2022-12-20)
 
 ### Bug Fixes
