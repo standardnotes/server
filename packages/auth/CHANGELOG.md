@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.70.6](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.70.5...@standardnotes/auth-server@1.70.6) (2022-12-20)
+
+### Bug Fixes
+
+* **auth:** query for session traces ([14eb775](https://github.com/standardnotes/server/commit/14eb775749bfa9972dc3c07049505f3d15f0b556))
+
 ## [1.70.5](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.70.4...@standardnotes/auth-server@1.70.5) (2022-12-20)
 
 ### Bug Fixes
