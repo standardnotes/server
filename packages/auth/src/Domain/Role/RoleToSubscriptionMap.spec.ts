@@ -41,4 +41,23 @@ describe('RoleToSubscriptionMap', () => {
       },
     ])
   })
+
+  it('should filter our subscription roles from an array of roles', () => {
+    const roles = [
+      {
+        name: RoleName.CoreUser,
+      } as jest.Mocked<Role>,
+      {
+        name: RoleName.FilesBetaUser,
+      } as jest.Mocked<Role>,
+      {
+        name: RoleName.PlusUser,
+      } as jest.Mocked<Role>,
+    ]
+    expect(createMap().filterSubscriptionRoles(roles)).toEqual([
+      {
+        name: RoleName.PlusUser,
+      },
+    ])
+  })
 })

@@ -67,7 +67,7 @@ describe('CreateCrossServiceToken', () => {
     userRepository.findOneByUuid = jest.fn().mockReturnValue(user)
 
     roleToSubscriptionMap = {} as jest.Mocked<RoleToSubscriptionMapInterface>
-    roleToSubscriptionMap.filterNonSubscriptionRoles = jest.fn().mockReturnValue([RoleName.NAMES.PlusUser])
+    roleToSubscriptionMap.filterSubscriptionRoles = jest.fn().mockReturnValue([RoleName.NAMES.PlusUser])
     roleToSubscriptionMap.getSubscriptionNameForRoleName = jest
       .fn()
       .mockReturnValue(SubscriptionPlanName.NAMES.PlusPlan)
@@ -170,7 +170,7 @@ describe('CreateCrossServiceToken', () => {
   })
 
   it('should trace session without a subscription role', async () => {
-    roleToSubscriptionMap.filterNonSubscriptionRoles = jest.fn().mockReturnValue([])
+    roleToSubscriptionMap.filterSubscriptionRoles = jest.fn().mockReturnValue([])
 
     await createUseCase().execute({
       user,

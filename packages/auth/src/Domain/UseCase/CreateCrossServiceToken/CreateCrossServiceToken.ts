@@ -102,7 +102,7 @@ export class CreateCrossServiceToken implements UseCaseInterface {
   }
 
   private getSubscriptionNameFromRoles(roles: Array<Role>): string | null {
-    const nonSubscriptionRoles = this.roleToSubscriptionMap.filterNonSubscriptionRoles(roles)
+    const nonSubscriptionRoles = this.roleToSubscriptionMap.filterSubscriptionRoles(roles)
     if (nonSubscriptionRoles.length === 0) {
       return null
     }

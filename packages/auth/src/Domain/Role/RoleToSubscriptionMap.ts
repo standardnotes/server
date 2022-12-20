@@ -17,6 +17,10 @@ export class RoleToSubscriptionMap implements RoleToSubscriptionMapInterface {
     return roles.filter((role) => this.nonSubscriptionRoles.includes(role.name as RoleName))
   }
 
+  filterSubscriptionRoles(roles: Role[]): Array<Role> {
+    return roles.filter((role) => !this.nonSubscriptionRoles.includes(role.name as RoleName))
+  }
+
   getSubscriptionNameForRoleName(roleName: RoleName): SubscriptionName | undefined {
     return this.roleNameToSubscriptionNameMap.get(roleName)
   }
