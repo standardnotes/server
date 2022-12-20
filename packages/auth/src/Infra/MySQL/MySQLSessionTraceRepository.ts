@@ -14,7 +14,7 @@ export class MySQLSessionTraceRepository implements SessionTraceRepositoryInterf
     return this.ormRepository
       .createQueryBuilder('trace')
       .where('trace.creation_date = :creationDate', {
-        creationDate: new Date(date.getFullYear(), date.getMonth(), date.getDate()),
+        creationDate: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`,
       })
       .andWhere('trace.subscription_plan_name = :subscriptionPlanName', {
         subscriptionPlanName: subscriptionPlanName.value,
@@ -26,7 +26,7 @@ export class MySQLSessionTraceRepository implements SessionTraceRepositoryInterf
     return this.ormRepository
       .createQueryBuilder('trace')
       .where('trace.creation_date = :creationDate', {
-        creationDate: new Date(date.getFullYear(), date.getMonth(), date.getDate()),
+        creationDate: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`,
       })
       .getCount()
   }
@@ -44,7 +44,7 @@ export class MySQLSessionTraceRepository implements SessionTraceRepositoryInterf
       .createQueryBuilder('trace')
       .where('trace.user_uuid = :userUuid AND trace.creation_date = :creationDate', {
         userUuid: userUuid.value,
-        creationDate: new Date(date.getFullYear(), date.getMonth(), date.getDate()),
+        creationDate: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`,
       })
       .getOne()
 
