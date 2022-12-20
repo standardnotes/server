@@ -17,6 +17,12 @@ const countActiveUsers = (measureName: string, data: any): { yesterday: number; 
   const filteredCounts = totalActiveUsersLast30DaysIncludingToday.counts.filter(
     (count: { totalCount: number }) => count.totalCount !== 0,
   )
+  if (filteredCounts.length === 0) {
+    return {
+      yesterday: 0,
+      last30Days: 0,
+    }
+  }
 
   const averageActiveUsersLast30Days = Math.floor(
     filteredCounts.reduce((previousValue: { totalCount: any }, currentValue: { totalCount: any }) => {
