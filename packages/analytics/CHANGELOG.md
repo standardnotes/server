@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.17.3](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.17.2...@standardnotes/analytics@2.17.3) (2022-12-20)
+
+### Bug Fixes
+
+* **analytics:** add debug logs for the report ([031fcd7](https://github.com/standardnotes/server/commit/031fcd75eecdcf4c2f17257754a0ba3f24ba6d6e))
+
 ## [2.17.2](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.17.1...@standardnotes/analytics@2.17.2) (2022-12-20)
 
 ### Bug Fixes
