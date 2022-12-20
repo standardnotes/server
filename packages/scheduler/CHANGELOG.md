@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.16.3](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.16.2...@standardnotes/scheduler-server@1.16.3) (2022-12-20)
+
+### Bug Fixes
+
+* **scheduler:** new pricing for subscription encouragement email ([eb21872](https://github.com/standardnotes/server/commit/eb21872db1726c4f8a55b5d16de712650c5e946b))
+
 ## [1.16.2](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.16.1...@standardnotes/scheduler-server@1.16.2) (2022-12-20)
 
 **Note:** Version bump only for package @standardnotes/scheduler-server
