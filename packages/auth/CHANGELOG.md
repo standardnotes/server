@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.70.3](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.70.2...@standardnotes/auth-server@1.70.3) (2022-12-20)
+
+### Bug Fixes
+
+* **auth:** add persisting statistics for all subscription plans ([addedb3](https://github.com/standardnotes/server/commit/addedb3091ddae81618d56663e18f2ae76a43c4e))
+
 ## [1.70.2](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.70.1...@standardnotes/auth-server@1.70.2) (2022-12-20)
 
 ### Bug Fixes

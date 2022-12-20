@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.15.1](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.15.0...@standardnotes/analytics@2.15.1) (2022-12-20)
+
+### Bug Fixes
+
+* **auth:** add persisting statistics for all subscription plans ([addedb3](https://github.com/standardnotes/server/commit/addedb3091ddae81618d56663e18f2ae76a43c4e))
+
 # [2.15.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.14.0...@standardnotes/analytics@2.15.0) (2022-12-19)
 
 ### Features
