@@ -29,6 +29,7 @@ const requestReport = async (
   calculateMonthlyRecurringRevenue: CalculateMonthlyRecurringRevenue,
   timer: TimerInterface,
   adminEmails: string[],
+  logger: Logger,
 ): Promise<void> => {
   await calculateMonthlyRecurringRevenue.execute({})
 
@@ -133,6 +134,7 @@ const requestReport = async (
       counts: await statisticsStore.calculateTotalCountOverPeriod(statisticName, Period.Last30DaysIncludingToday),
     })
   }
+  logger.info('Calculated thirty days statistics: %O', statisticsOverTime)
 
   const monthlyStatisticsNames = [StatisticMeasureName.NAMES.MRR]
   for (const statisticName of monthlyStatisticsNames) {
@@ -282,6 +284,7 @@ void container.load().then((container) => {
       calculateMonthlyRecurringRevenue,
       timer,
       adminEmails,
+      logger,
     ),
   )
     .then(() => {
