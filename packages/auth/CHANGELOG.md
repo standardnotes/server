@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.70.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.70.0...@standardnotes/auth-server@1.70.1) (2022-12-20)
+
+### Bug Fixes
+
+* **auth:** saving subscription plan name in session traces ([3064d03](https://github.com/standardnotes/server/commit/3064d03aa9a2ac9ca3acfff30480ea8629faeb14))
+
 # [1.70.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.69.1...@standardnotes/auth-server@1.70.0) (2022-12-19)
 
 ### Features
