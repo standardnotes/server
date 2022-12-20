@@ -5,7 +5,7 @@ import { WorkspaceInviteRepositoryInterface } from '../../Invite/WorkspaceInvite
 
 import { InviteToWorkspace } from './InviteToWorkspace'
 import { DomainEventFactoryInterface } from '../../Event/DomainEventFactoryInterface'
-import { DomainEventPublisherInterface, WorkspaceInviteCreatedEvent } from '@standardnotes/domain-events'
+import { DomainEventPublisherInterface, EmailRequestedEvent } from '@standardnotes/domain-events'
 import { WorkspaceAccessLevel } from '@standardnotes/common'
 
 describe('InviteToWorkspace', () => {
@@ -33,9 +33,7 @@ describe('InviteToWorkspace', () => {
     domainEventPublisher.publish = jest.fn()
 
     domainEventFactory = {} as jest.Mocked<DomainEventFactoryInterface>
-    domainEventFactory.createWorkspaceInviteCreatedEvent = jest
-      .fn()
-      .mockReturnValue({} as jest.Mocked<WorkspaceInviteCreatedEvent>)
+    domainEventFactory.createEmailRequestedEvent = jest.fn().mockReturnValue({} as jest.Mocked<EmailRequestedEvent>)
   })
 
   it('should create an invite', async () => {
