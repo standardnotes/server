@@ -92,6 +92,6 @@ export interface DomainEventFactoryInterface {
   createStatisticPersistenceRequestedEvent(dto: {
     statisticMeasureName: string
     value: number
-    date: Date
+    date: number
   }): StatisticPersistenceRequestedEvent
 }

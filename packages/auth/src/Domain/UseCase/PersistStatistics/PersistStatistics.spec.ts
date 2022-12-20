@@ -1,4 +1,5 @@
 import { DomainEventPublisherInterface, StatisticPersistenceRequestedEvent } from '@standardnotes/domain-events'
+import { TimerInterface } from '@standardnotes/time'
 
 import { DomainEventFactoryInterface } from '../../Event/DomainEventFactoryInterface'
 import { SessionTraceRepositoryInterface } from '../../Session/SessionTraceRepositoryInterface'
@@ -9,7 +10,10 @@ describe('PersistStatistics', () => {
   let sessionTracesRepository: SessionTraceRepositoryInterface
   let domainEventPublisher: DomainEventPublisherInterface
   let domainEventFactory: DomainEventFactoryInterface
-  const createUseCase = () => new PersistStatistics(sessionTracesRepository, domainEventPublisher, domainEventFactory)
+  let timer: TimerInterface
+
+  const createUseCase = () =>
+    new PersistStatistics(sessionTracesRepository, domainEventPublisher, domainEventFactory, timer)
 
   beforeEach(() => {
     sessionTracesRepository = {} as jest.Mocked<SessionTraceRepositoryInterface>
@@ -23,6 +27,9 @@ describe('PersistStatistics', () => {
 
     domainEventPublisher = {} as jest.Mocked<DomainEventPublisherInterface>
     domainEventPublisher.publish = jest.fn()
+
+    timer = {} as jest.Mocked<TimerInterface>
+    timer.convertDateToMicroseconds = jest.fn().mockReturnValue(3)
   })
 
   it('should request statistic persistence', async () => {

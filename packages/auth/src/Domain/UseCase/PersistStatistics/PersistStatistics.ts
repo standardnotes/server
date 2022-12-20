@@ -1,5 +1,7 @@
 import { Result, SubscriptionPlanName, UseCaseInterface } from '@standardnotes/domain-core'
 import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
+import { TimerInterface } from '@standardnotes/time'
+
 import { DomainEventFactoryInterface } from '../../Event/DomainEventFactoryInterface'
 import { SessionTraceRepositoryInterface } from '../../Session/SessionTraceRepositoryInterface'
 import { PersistStatisticsDTO } from './PersistStatisticsDTO'
@@ -9,6 +11,7 @@ export class PersistStatistics implements UseCaseInterface<string> {
     private sessionTracesRepository: SessionTraceRepositoryInterface,
     private domainEventPublisher: DomainEventPublisherInterface,
     private domainEventFactory: DomainEventFactoryInterface,
+    private timer: TimerInterface,
   ) {}
 
   async execute(dto: PersistStatisticsDTO): Promise<Result<string>> {
@@ -17,7 +20,7 @@ export class PersistStatistics implements UseCaseInterface<string> {
       this.domainEventFactory.createStatisticPersistenceRequestedEvent({
         statisticMeasureName: 'active-users',
         value: countSessionsInADay,
-        date: dto.sessionsInADay,
+        date: this.timer.convertDateToMicroseconds(dto.sessionsInADay),
       }),
     )
 
@@ -30,7 +33,7 @@ export class PersistStatistics implements UseCaseInterface<string> {
       this.domainEventFactory.createStatisticPersistenceRequestedEvent({
         statisticMeasureName: 'active-pro-users',
         value: countProSessionsInADay,
-        date: dto.sessionsInADay,
+        date: this.timer.convertDateToMicroseconds(dto.sessionsInADay),
       }),
     )
 
@@ -43,7 +46,7 @@ export class PersistStatistics implements UseCaseInterface<string> {
       this.domainEventFactory.createStatisticPersistenceRequestedEvent({
         statisticMeasureName: 'active-plus-users',
         value: countPlusSessionsInADay,
-        date: dto.sessionsInADay,
+        date: this.timer.convertDateToMicroseconds(dto.sessionsInADay),
       }),
     )
 
@@ -52,7 +55,7 @@ export class PersistStatistics implements UseCaseInterface<string> {
       this.domainEventFactory.createStatisticPersistenceRequestedEvent({
         statisticMeasureName: 'active-free-users',
         value: countFreeSessionsInADay,
-        date: dto.sessionsInADay,
+        date: this.timer.convertDateToMicroseconds(dto.sessionsInADay),
       }),
     )
 

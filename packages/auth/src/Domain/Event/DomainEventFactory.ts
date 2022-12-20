@@ -35,7 +35,7 @@ export class DomainEventFactory implements DomainEventFactoryInterface {
   createStatisticPersistenceRequestedEvent(dto: {
     statisticMeasureName: string
     value: number
-    date: Date
+    date: number
   }): StatisticPersistenceRequestedEvent {
     return {
       type: 'STATISTIC_PERSISTENCE_REQUESTED',

@@ -508,6 +508,7 @@ export class ContainerConfigLoader {
           container.get(TYPES.SessionTraceRepository),
           container.get(TYPES.DomainEventPublisher),
           container.get(TYPES.DomainEventFactory),
+          container.get(TYPES.Timer),
         ),
       )
 
