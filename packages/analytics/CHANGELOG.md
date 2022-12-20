@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.17.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.16.0...@standardnotes/analytics@2.17.0) (2022-12-20)
+
+### Features
+
+* **analytics:** add users activit to the report email ([ed5a4eb](https://github.com/standardnotes/server/commit/ed5a4eb960a6c8fe9d0c77331f29dc3c7ffb9100))
+
 # [2.16.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.15.1...@standardnotes/analytics@2.16.0) (2022-12-20)
 
 ### Features
