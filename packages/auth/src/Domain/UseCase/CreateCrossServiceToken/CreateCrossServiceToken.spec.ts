@@ -77,6 +77,7 @@ describe('CreateCrossServiceToken', () => {
 
     logger = {} as jest.Mocked<Logger>
     logger.error = jest.fn()
+    logger.debug = jest.fn()
   })
 
   it('should create a cross service token for user', async () => {

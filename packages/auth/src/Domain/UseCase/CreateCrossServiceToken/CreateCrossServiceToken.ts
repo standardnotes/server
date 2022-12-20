@@ -61,7 +61,7 @@ export class CreateCrossServiceToken implements UseCaseInterface {
         this.logger.error(traceSessionResult.getError())
       }
     } catch (error) {
-      this.logger.error(`Could not trace session while creating cross service token: ${(error as Error).message}`)
+      this.logger.debug(`Could not trace session while creating cross service token.: ${(error as Error).message}`)
     }
 
     return {
