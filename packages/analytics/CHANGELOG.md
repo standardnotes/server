@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.16.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.15.1...@standardnotes/analytics@2.16.0) (2022-12-20)
+
+### Features
+
+* **analytics:** add active users stats to report ([6e16620](https://github.com/standardnotes/server/commit/6e1662038c3340fb60939464616789bab7639160))
+
 ## [2.15.1](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.15.0...@standardnotes/analytics@2.15.1) (2022-12-20)
 
 ### Bug Fixes
