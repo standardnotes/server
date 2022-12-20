@@ -5,6 +5,29 @@ import { AnalyticsActivity } from '../Analytics/AnalyticsActivity'
 import { StatisticMeasureName } from '../Statistics/StatisticMeasureName'
 import { Period } from '../Time/Period'
 
+const countActiveUsers = (measureName: string, data: any): { yesterday: number; last30Days: number } => {
+  const totalActiveUsersLast30DaysIncludingToday = data.statisticMeasures.find(
+    (a: { name: string; period: number }) => a.name === measureName && a.period === 27,
+  )
+  const totalActiveUsersYesterday =
+    totalActiveUsersLast30DaysIncludingToday.counts[totalActiveUsersLast30DaysIncludingToday.counts.length - 2]
+      .totalCount
+
+  const filteredStats = totalActiveUsersLast30DaysIncludingToday.counts.filter(
+    (count: { totalCount: number }) => count.totalCount !== 0,
+  )
+  const averageActiveUsersLast30Days = Math.floor(
+    filteredStats.counts.reduce((previousValue: { totalCount: any }, currentValue: { totalCount: any }) => {
+      return previousValue.totalCount + currentValue.totalCount
+    }) / filteredStats.counts.length,
+  )
+
+  return {
+    yesterday: totalActiveUsersYesterday,
+    last30Days: averageActiveUsersLast30Days,
+  }
+}
+
 const getChartUrls = (
   data: any,
 ): {
@@ -12,7 +35,6 @@ const getChartUrls = (
   users: string
   quarterlyPerformance: string
   churn: string
-  mrr: string
   mrrMonthly: string
 } => {
   const subscriptionPurchasingOverTime = data.activityStatisticsOverTime.find(
@@ -237,82 +259,6 @@ const getChartUrls = (
     },
   }
 
-  const mrrOverTime = data.statisticsOverTime.find(
-    (a: { name: string; period: number }) => a.name === 'mrr' && a.period === 27,
-  )
-  const monthlyPlansMrrOverTime = data.statisticsOverTime.find(
-    (a: { name: string; period: number }) => a.name === 'monthly-plans-mrr' && a.period === 27,
-  )
-  const annualPlansMrrOverTime = data.statisticsOverTime.find(
-    (a: { name: string; period: number }) => a.name === 'annual-plans-mrr' && a.period === 27,
-  )
-  const fiveYearPlansMrrOverTime = data.statisticsOverTime.find(
-    (a: { name: string; period: number }) => a.name === 'five-year-plans-mrr' && a.period === 27,
-  )
-  const proPlansMrrOverTime = data.statisticsOverTime.find(
-    (a: { name: string; period: number }) => a.name === 'pro-plans-mrr' && a.period === 27,
-  )
-  const plusPlansMrrOverTime = data.statisticsOverTime.find(
-    (a: { name: string; period: number }) => a.name === 'plus-plans-mrr' && a.period === 27,
-  )
-
-  const mrrOverTimeConfig = {
-    type: 'line',
-    data: {
-      labels: mrrOverTime?.counts.map((count: { periodKey: any }) => count.periodKey),
-      datasets: [
-        {
-          label: 'MRR',
-          backgroundColor: 'rgb(25, 255, 140)',
-          borderColor: 'rgb(25, 255, 140)',
-          data: mrrOverTime?.counts.map((count: { totalCount: any }) => count.totalCount),
-          fill: false,
-          pointRadius: 2,
-        },
-        {
-          label: 'MRR - Monthly Plans',
-          backgroundColor: 'rgb(54, 162, 235)',
-          borderColor: 'rgb(54, 162, 235)',
-          data: monthlyPlansMrrOverTime?.counts.map((count: { totalCount: any }) => count.totalCount),
-          fill: false,
-          pointRadius: 2,
-        },
-        {
-          label: 'MRR - Annual Plans',
-          backgroundColor: 'rgb(255, 221, 51)',
-          borderColor: 'rgb(255, 221, 51)',
-          data: annualPlansMrrOverTime?.counts.map((count: { totalCount: any }) => count.totalCount),
-          fill: false,
-          pointRadius: 2,
-        },
-        {
-          label: 'MRR - Five Year Plans',
-          backgroundColor: 'rgb(255, 120, 120)',
-          borderColor: 'rgb(255, 120, 120)',
-          data: fiveYearPlansMrrOverTime?.counts.map((count: { totalCount: any }) => count.totalCount),
-          fill: false,
-          pointRadius: 2,
-        },
-        {
-          label: 'MRR - PRO Plans',
-          backgroundColor: 'rgb(255, 99, 132)',
-          borderColor: 'rgb(255, 99, 132)',
-          data: proPlansMrrOverTime?.counts.map((count: { totalCount: any }) => count.totalCount),
-          fill: false,
-          pointRadius: 2,
-        },
-        {
-          label: 'MRR - PLUS Plans',
-          backgroundColor: 'rgb(221, 51, 255)',
-          borderColor: 'rgb(221, 51, 255)',
-          data: plusPlansMrrOverTime?.counts.map((count: { totalCount: any }) => count.totalCount),
-          fill: false,
-          pointRadius: 2,
-        },
-      ],
-    },
-  }
-
   const mrrMonthlyOverTime = data.statisticsOverTime
     .find((a: { name: string; period: Period }) => a.name === 'mrr' && a.period === Period.ThisYear)
     ?.counts.map((count: { totalCount: number }) => +count.totalCount.toFixed(2))
@@ -371,7 +317,6 @@ const getChartUrls = (
       JSON.stringify(quarterlyConfig),
     )}`,
     churn: `https://quickchart.io/chart?width=800&c=${encodeURIComponent(JSON.stringify(churnConfig))}`,
-    mrr: `https://quickchart.io/chart?width=800&c=${encodeURIComponent(JSON.stringify(mrrOverTimeConfig))}`,
     mrrMonthly: `https://quickchart.io/chart?width=800&c=${encodeURIComponent(JSON.stringify(mrrMonthlyConfig))}`,
   }
 }
@@ -608,12 +553,39 @@ export const html = (data: any, timer: TimerInterface) => {
     (value: { periodKey: string }) => value.periodKey === thisMonthPeriodKey,
   )
 
+  const totalActiveUsers = countActiveUsers(StatisticMeasureName.NAMES.ActiveUsers, data)
+  const totalActiveFreeUsers = countActiveUsers(StatisticMeasureName.NAMES.ActiveFreeUsers, data)
+  const totalActivePlusUsers = countActiveUsers(StatisticMeasureName.NAMES.ActivePlusUsers, data)
+  const totalActiveProUsers = countActiveUsers(StatisticMeasureName.NAMES.ActiveProUsers, data)
+
   return `      <div>
 <p>Hello,</p>
 <p>
   <strong>Here are some statistics from yesterday:</strong>
 </p>
 <ul>
+  <li>
+    <b>Active Users</b>
+    <ul>
+      <li>
+        <b>Total:</b> ${totalActiveUsers.yesterday.toLocaleString('en-US')}
+      </li>
+      <li>
+        <b>By Subscription Type:</b>
+        <ul>
+          <li>
+            <b>FREE:</b> ${totalActiveFreeUsers.yesterday.toLocaleString('en-US')}
+          </li>
+          <li>
+            <b>PLUS:</b> ${totalActivePlusUsers.yesterday.toLocaleString('en-US')}
+          </li>
+          <li>
+            <b>PRO:</b> ${totalActiveProUsers.yesterday.toLocaleString('en-US')}
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
   <li>
     <b>Payments</b>
     <ul>
@@ -813,6 +785,28 @@ export const html = (data: any, timer: TimerInterface) => {
 </p>
 <ul>
   <li>
+    <b>Active Users (Average)</b>
+    <ul>
+      <li>
+        <b>Total:</b> ${totalActiveUsers.last30Days.toLocaleString('en-US')}
+      </li>
+      <li>
+        <b>By Subscription Type:</b>
+        <ul>
+          <li>
+            <b>FREE:</b> ${totalActiveFreeUsers.last30Days.toLocaleString('en-US')}
+          </li>
+          <li>
+            <b>PLUS:</b> ${totalActivePlusUsers.last30Days.toLocaleString('en-US')}
+          </li>
+          <li>
+            <b>PRO:</b> ${totalActiveProUsers.last30Days.toLocaleString('en-US')}
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>
     <b>Payments (This Month)</b>
     <ul>
       <li>
@@ -944,10 +938,6 @@ export const html = (data: any, timer: TimerInterface) => {
     </ul>
   </li>
 </ul>
-<p>
-  <strong>Here is the MRR chart over 30 days:</strong>
-</p>
-<img src=${chartUrls.mrr}></img>
 <p>
   <strong>Here is the MRR Monthly chart this year:</strong>
 </p>
