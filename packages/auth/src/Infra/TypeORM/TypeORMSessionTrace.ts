@@ -1,6 +1,7 @@
 import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm'
 
 @Entity({ name: 'session_traces' })
+@Index('user_uuid_and_creation_date', ['userUuid', 'creationDate'], { unique: true })
 export class TypeORMSessionTrace {
   @PrimaryGeneratedColumn('uuid')
   declare uuid: string
