@@ -9,13 +9,21 @@ const countActiveUsers = (measureName: string, data: any): { yesterday: number; 
   const totalActiveUsersLast30DaysIncludingToday = data.statisticMeasures.find(
     (a: { name: string; period: number }) => a.name === measureName && a.period === 27,
   )
+  // eslint-disable-next-line no-console
+  console.log(totalActiveUsersLast30DaysIncludingToday)
+
   const totalActiveUsersYesterday =
     totalActiveUsersLast30DaysIncludingToday.counts[totalActiveUsersLast30DaysIncludingToday.counts.length - 2]
       .totalCount
 
+  // eslint-disable-next-line no-console
+  console.log(totalActiveUsersYesterday)
+
   const filteredCounts = totalActiveUsersLast30DaysIncludingToday.counts.filter(
     (count: { totalCount: number }) => count.totalCount !== 0,
   )
+  // eslint-disable-next-line no-console
+  console.log(filteredCounts)
   const averageActiveUsersLast30Days = Math.floor(
     filteredCounts.reduce((previousValue: { totalCount: any }, currentValue: { totalCount: any }) => {
       return previousValue.totalCount + currentValue.totalCount
