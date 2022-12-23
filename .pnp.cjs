@@ -2659,7 +2659,7 @@ const RAW_RUNTIME_STATE =
           ["inversify-express-utils", "npm:6.4.3"],\
           ["ioredis", "npm:5.2.4"],\
           ["jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.1.2"],\
-          ["jsonwebtoken", "npm:8.5.1"],\
+          ["jsonwebtoken", "npm:9.0.0"],\
           ["newrelic", "npm:9.6.0"],\
           ["nodemon", "npm:2.0.20"],\
           ["npm-check-updates", "npm:16.0.1"],\
@@ -2948,7 +2948,7 @@ const RAW_RUNTIME_STATE =
           ["inversify-express-utils", "npm:6.4.3"],\
           ["ioredis", "npm:5.2.4"],\
           ["jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.1.2"],\
-          ["jsonwebtoken", "npm:8.5.1"],\
+          ["jsonwebtoken", "npm:9.0.0"],\
           ["newrelic", "npm:9.6.0"],\
           ["nodemon", "npm:2.0.20"],\
           ["npm-check-updates", "npm:16.0.1"],\
@@ -3138,7 +3138,7 @@ const RAW_RUNTIME_STATE =
           ["@typescript-eslint/eslint-plugin", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:5.30.5"],\
           ["eslint-plugin-prettier", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:4.2.1"],\
           ["jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.1.2"],\
-          ["jsonwebtoken", "npm:8.5.1"],\
+          ["jsonwebtoken", "npm:9.0.0"],\
           ["reflect-metadata", "npm:0.1.13"],\
           ["ts-jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.0.3"],\
           ["typescript", "patch:typescript@npm%3A4.8.4#optional!builtin<compat/typescript>::version=4.8.4&hash=701156"]\
@@ -3258,7 +3258,7 @@ const RAW_RUNTIME_STATE =
           ["inversify-express-utils", "npm:6.4.3"],\
           ["ioredis", "npm:5.2.4"],\
           ["jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.1.2"],\
-          ["jsonwebtoken", "npm:8.5.1"],\
+          ["jsonwebtoken", "npm:9.0.0"],\
           ["mysql2", "npm:2.3.3"],\
           ["newrelic", "npm:9.6.0"],\
           ["nodemon", "npm:2.0.20"],\
@@ -9600,6 +9600,17 @@ const RAW_RUNTIME_STATE =
           ["semver", "npm:5.7.1"]\
         ],\
         "linkType": "HARD"\
+      }],\
+      ["npm:9.0.0", {\
+        "packageLocation": "./.yarn/cache/jsonwebtoken-npm-9.0.0-36fd1594c0-7ccbd0b7bf.zip/node_modules/jsonwebtoken/",\
+        "packageDependencies": [\
+          ["jsonwebtoken", "npm:9.0.0"],\
+          ["jws", "npm:3.2.2"],\
+          ["lodash", "npm:4.17.21"],\
+          ["ms", "npm:2.1.3"],\
+          ["semver", "npm:7.3.8"]\
+        ],\
+        "linkType": "HARD"\
       }]\
     ]],\
     ["jwa", [\
@@ -12277,6 +12288,14 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/semver-npm-7.3.7-3bfe704194-67bcf24790.zip/node_modules/semver/",\
         "packageDependencies": [\
           ["semver", "npm:7.3.7"],\
+          ["lru-cache", "npm:6.0.0"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["npm:7.3.8", {\
+        "packageLocation": "./.yarn/cache/semver-npm-7.3.8-25a996cb4f-94ad80ee14.zip/node_modules/semver/",\
+        "packageDependencies": [\
+          ["semver", "npm:7.3.8"],\
           ["lru-cache", "npm:6.0.0"]\
         ],\
         "linkType": "HARD"\
