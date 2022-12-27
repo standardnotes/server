@@ -1,0 +1,38 @@
+name: Stabilize Versions
+
+on:
+  schedule:
+    - cron: '0 1 * * *'
+  workflow_dispatch:
+
+jobs:
+  tag_stable:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Login to Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@master
+      with:
+        platforms: all
+
+    - name: Set up Docker Buildx
+      id: buildx
+      uses: docker/setup-buildx-action@master
+
+    - name: Tag Latest images as stable
+      run: |
+        docker buildx imagetools create standardnotes/syncing-server-js:latest --tag standardnotes/syncing-server-js:stable
+        docker buildx imagetools create standardnotes/auth:latest --tag standardnotes/auth:stable
+        docker buildx imagetools create standardnotes/analytics:latest --tag standardnotes/analytics:stable
+        docker buildx imagetools create standardnotes/workspace:latest --tag standardnotes/workspace:stable
+        docker buildx imagetools create standardnotes/revisions:latest --tag standardnotes/revisions:stable
+        docker buildx imagetools create standardnotes/event-store:latest --tag standardnotes/event-store:stable
+        docker buildx imagetools create standardnotes/files:latest --tag standardnotes/files:stable
+        docker buildx imagetools create standardnotes/websockets:latest --tag standardnotes/websockets:stable
+        docker buildx imagetools create standardnotes/api-gateway:latest --tag standardnotes/api-gateway:stable
