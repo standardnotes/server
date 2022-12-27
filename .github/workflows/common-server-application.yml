@@ -192,7 +192,7 @@ jobs:
         owner: standardnotes
         repo: self-hosted
         github_token: ${{ secrets.CI_PAT_TOKEN }}
-        workflow_file_name: testing-with-stable-client-and-updating-server.yml
+        workflow_file_name: testing-with-updating-client-and-server.yml
         wait_interval: 30
         client_payload: '{"${{ inputs.e2e_tag_parameter_name }}": "${{ github.sha }}"}'
         propagate_failure: true
