@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.73.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.73.0...@standardnotes/auth-server@1.73.1) (2022-12-28)
+
+### Bug Fixes
+
+* **auth:** temporarily remove credential id index due to mysql 5.6 limitations ([a5e7132](https://github.com/standardnotes/server/commit/a5e7132d3c4b74ed13877d7d437062c509201874))
+
 # [1.73.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.72.0...@standardnotes/auth-server@1.73.0) (2022-12-28)
 
 ### Features
