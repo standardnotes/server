@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.74.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.73.1...@standardnotes/auth-server@1.74.0) (2022-12-28)
+
+### Features
+
+* **auth:** add verifying authenticator registration response ([f5683cf](https://github.com/standardnotes/server/commit/f5683cfd9494db8e25010e9c4ef5fd4d8fcd6bc7))
+
 ## [1.73.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.73.0...@standardnotes/auth-server@1.73.1) (2022-12-28)
 
 ### Bug Fixes
