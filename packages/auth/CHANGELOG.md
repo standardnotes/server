@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.71.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.71.0...@standardnotes/auth-server@1.71.1) (2022-12-28)
+
+### Bug Fixes
+
+* **auth:** credential id field type ([98e3d18](https://github.com/standardnotes/server/commit/98e3d1833530dcd9e3e34a4c4a6b14a2a01afea1))
+
 # [1.71.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.70.9...@standardnotes/auth-server@1.71.0) (2022-12-28)
 
 ### Features
