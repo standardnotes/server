@@ -11,6 +11,7 @@ import { OfflineUserSubscription } from '../Domain/Subscription/OfflineUserSubsc
 import { UserSubscription } from '../Domain/Subscription/UserSubscription'
 import { User } from '../Domain/User/User'
 import { TypeORMAuthenticator } from '../Infra/TypeORM/TypeORMAuthenticator'
+import { TypeORMAuthenticatorChallenge } from '../Infra/TypeORM/TypeORMAuthenticatorChallenge'
 import { TypeORMSessionTrace } from '../Infra/TypeORM/TypeORMSessionTrace'
 import { Env } from './Env'
 
@@ -60,6 +61,7 @@ export const AppDataSource = new DataSource({
     SubscriptionSetting,
     TypeORMSessionTrace,
     TypeORMAuthenticator,
+    TypeORMAuthenticatorChallenge,
   ],
   migrations: [env.get('DB_MIGRATIONS_PATH', true) ?? 'dist/migrations/*.js'],
   migrationsRun: true,
