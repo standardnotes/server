@@ -1717,6 +1717,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@sentry/core@npm:7.28.1":
+  version: 7.28.1
+  resolution: "@sentry/core@npm:7.28.1"
+  dependencies:
+    "@sentry/types": "npm:7.28.1"
+    "@sentry/utils": "npm:7.28.1"
+    tslib: "npm:^1.9.3"
+  checksum: f29d747d3e15000d8010fe3c192260a78927f37d30a3bb82cd533f3a5beca0c7fd81353ec57420c4295daea5384a045bde70ff6d3af1468ec1201b1d84131d6d
+  languageName: node
+  linkType: hard
+
 "@sentry/hub@npm:^7.16.0":
   version: 7.27.0
   resolution: "@sentry/hub@npm:7.27.0"
@@ -1729,7 +1740,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/node@npm:^7.16.0, @sentry/node@npm:^7.27.0":
+"@sentry/node@npm:^7.16.0":
   version: 7.27.0
   resolution: "@sentry/node@npm:7.27.0"
   dependencies:
@@ -1741,6 +1752,21 @@ __metadata:
     lru_map: "npm:^0.3.3"
     tslib: "npm:^1.9.3"
   checksum: b85cd47555146430590513eb52c1c6d2d615d92339b2167cfef336bb309b37d9b00463a416f0cde864892a22c23dbfdf208278f993de792a7ac7bf14591211f0
+  languageName: node
+  linkType: hard
+
+"@sentry/node@npm:^7.28.1":
+  version: 7.28.1
+  resolution: "@sentry/node@npm:7.28.1"
+  dependencies:
+    "@sentry/core": "npm:7.28.1"
+    "@sentry/types": "npm:7.28.1"
+    "@sentry/utils": "npm:7.28.1"
+    cookie: "npm:^0.4.1"
+    https-proxy-agent: "npm:^5.0.0"
+    lru_map: "npm:^0.3.3"
+    tslib: "npm:^1.9.3"
+  checksum: b4922d1f0a1b1e96cd73e5381871d0a2d20c4a05dd09f1cb9def6795c5fbe099b2e2b97025262cac595d19a42ebc82a34a8f9e59f87c0176e5206ae1f6377532
   languageName: node
   linkType: hard
 
@@ -1760,7 +1786,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/tracing@npm:^7.16.0, @sentry/tracing@npm:^7.27.0":
+"@sentry/tracing@npm:^7.16.0":
   version: 7.27.0
   resolution: "@sentry/tracing@npm:7.27.0"
   dependencies:
@@ -1772,10 +1798,29 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@sentry/tracing@npm:^7.28.1":
+  version: 7.28.1
+  resolution: "@sentry/tracing@npm:7.28.1"
+  dependencies:
+    "@sentry/core": "npm:7.28.1"
+    "@sentry/types": "npm:7.28.1"
+    "@sentry/utils": "npm:7.28.1"
+    tslib: "npm:^1.9.3"
+  checksum: be501ca9d727f4893121c208f80fa82589964970c5a01155ba1d24cfd7ebdb2a1d6e325ea5556f0747d16519631013315781ad1c178f8721e5eab77de2446b63
+  languageName: node
+  linkType: hard
+
 "@sentry/types@npm:7.27.0, @sentry/types@npm:^7.16.0":
   version: 7.27.0
   resolution: "@sentry/types@npm:7.27.0"
   checksum: 20ace8aa518254d5233beabb3f91ce7a0f8a747a2410ea43bd5bb64f414ee291dbb7795554025dc9bc3af0c19c6c8d48f8310992ddaabd7c30a760dcbfefb339
+  languageName: node
+  linkType: hard
+
+"@sentry/types@npm:7.28.1":
+  version: 7.28.1
+  resolution: "@sentry/types@npm:7.28.1"
+  checksum: 7dc6639cb7645c37bd8f759b60dbf2a149573b8a24dfb06baf7d7978f785e4635a65b3fb9e007f0eea56d33b543043fcfa1c1a376a83aa9824bb2d25be1a56dc
   languageName: node
   linkType: hard
 
@@ -1786,6 +1831,16 @@ __metadata:
     "@sentry/types": "npm:7.27.0"
     tslib: "npm:^1.9.3"
   checksum: 760c02397dfe686a57de6777b098551c08cb10e96536123e3682c77b8494aec38979fe15042efcc7ef0f16cad60e15be66f7789ec944337c38d8ecf627b068e4
+  languageName: node
+  linkType: hard
+
+"@sentry/utils@npm:7.28.1":
+  version: 7.28.1
+  resolution: "@sentry/utils@npm:7.28.1"
+  dependencies:
+    "@sentry/types": "npm:7.28.1"
+    tslib: "npm:^1.9.3"
+  checksum: a4b5f73db0e287e49b2eab5da80d6bbf1f6c7e11e1cc06ae06f49a9477d2b45de98310b143198207f3ae1fdd25ef76c90984eb99553a8308f6516e12c0c9c98c
   languageName: node
   linkType: hard
 
@@ -1833,7 +1888,7 @@ __metadata:
   resolution: "@standardnotes/analytics@workspace:packages/analytics"
   dependencies:
     "@newrelic/winston-enricher": "npm:^4.0.0"
-    "@sentry/node": "npm:^7.27.0"
+    "@sentry/node": "npm:^7.28.1"
     "@standardnotes/common": "workspace:*"
     "@standardnotes/domain-core": "workspace:^"
     "@standardnotes/domain-events": "workspace:*"
@@ -1867,7 +1922,7 @@ __metadata:
   resolution: "@standardnotes/api-gateway@workspace:packages/api-gateway"
   dependencies:
     "@newrelic/winston-enricher": "npm:^4.0.0"
-    "@sentry/node": "npm:^7.27.0"
+    "@sentry/node": "npm:^7.28.1"
     "@standardnotes/common": "workspace:^"
     "@standardnotes/domain-events": "workspace:*"
     "@standardnotes/domain-events-infra": "workspace:*"
@@ -1925,9 +1980,9 @@ __metadata:
   resolution: "@standardnotes/auth-server@workspace:packages/auth"
   dependencies:
     "@newrelic/winston-enricher": "npm:^4.0.0"
-    "@sentry/node": "npm:^7.27.0"
+    "@sentry/node": "npm:^7.28.1"
     "@sentry/profiling-node": "npm:^0.0.12"
-    "@sentry/tracing": "npm:^7.27.0"
+    "@sentry/tracing": "npm:^7.28.1"
     "@standardnotes/api": "npm:^1.19.0"
     "@standardnotes/common": "workspace:*"
     "@standardnotes/domain-core": "workspace:^"
@@ -2147,7 +2202,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@standardnotes/files-server@workspace:packages/files"
   dependencies:
-    "@sentry/node": "npm:^7.27.0"
+    "@sentry/node": "npm:^7.28.1"
     "@standardnotes/common": "workspace:*"
     "@standardnotes/config": "npm:2.4.3"
     "@standardnotes/domain-events": "workspace:*"
@@ -2277,7 +2332,7 @@ __metadata:
   resolution: "@standardnotes/revisions-server@workspace:packages/revisions"
   dependencies:
     "@newrelic/winston-enricher": "npm:^4.0.0"
-    "@sentry/node": "npm:^7.27.0"
+    "@sentry/node": "npm:^7.28.1"
     "@standardnotes/api": "npm:^1.19.0"
     "@standardnotes/common": "workspace:^"
     "@standardnotes/domain-core": "workspace:^"
@@ -2320,7 +2375,7 @@ __metadata:
   resolution: "@standardnotes/scheduler-server@workspace:packages/scheduler"
   dependencies:
     "@newrelic/winston-enricher": "npm:^4.0.0"
-    "@sentry/node": "npm:^7.27.0"
+    "@sentry/node": "npm:^7.28.1"
     "@standardnotes/common": "workspace:*"
     "@standardnotes/domain-core": "workspace:^"
     "@standardnotes/domain-events": "workspace:*"
@@ -2377,7 +2432,7 @@ __metadata:
     "@lerna-lite/cli": "npm:^1.5.1"
     "@lerna-lite/list": "npm:^1.5.1"
     "@lerna-lite/run": "npm:^1.5.1"
-    "@sentry/node": "npm:^7.27.0"
+    "@sentry/node": "npm:^7.28.1"
     "@types/jest": "npm:^29.1.1"
     "@types/newrelic": "npm:^7.0.4"
     "@types/node": "npm:^18.11.9"
@@ -2436,9 +2491,9 @@ __metadata:
   resolution: "@standardnotes/syncing-server@workspace:packages/syncing-server"
   dependencies:
     "@newrelic/winston-enricher": "npm:^4.0.0"
-    "@sentry/node": "npm:^7.27.0"
+    "@sentry/node": "npm:^7.28.1"
     "@sentry/profiling-node": "npm:^0.0.12"
-    "@sentry/tracing": "npm:^7.27.0"
+    "@sentry/tracing": "npm:^7.28.1"
     "@standardnotes/common": "workspace:*"
     "@standardnotes/domain-core": "workspace:^"
     "@standardnotes/domain-events": "workspace:*"
@@ -2534,7 +2589,7 @@ __metadata:
   resolution: "@standardnotes/websockets-server@workspace:packages/websockets"
   dependencies:
     "@newrelic/winston-enricher": "npm:^4.0.0"
-    "@sentry/node": "npm:^7.27.0"
+    "@sentry/node": "npm:^7.28.1"
     "@standardnotes/api": "npm:^1.19.0"
     "@standardnotes/common": "workspace:^"
     "@standardnotes/domain-events": "workspace:^"
@@ -2572,7 +2627,7 @@ __metadata:
   resolution: "@standardnotes/workspace-server@workspace:packages/workspace"
   dependencies:
     "@newrelic/winston-enricher": "npm:^4.0.0"
-    "@sentry/node": "npm:^7.27.0"
+    "@sentry/node": "npm:^7.28.1"
     "@standardnotes/api": "npm:^1.19.0"
     "@standardnotes/common": "workspace:*"
     "@standardnotes/domain-core": "workspace:^"
