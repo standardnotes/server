@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.74.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.74.0...@standardnotes/auth-server@1.74.1) (2022-12-28)
+
+### Bug Fixes
+
+* **auth:** migrations to not include unique index for credentials id ([384dfc8](https://github.com/standardnotes/server/commit/384dfc8da4b1b640964fa6da207a67fcd68dc7ec))
+
 # [1.74.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.73.1...@standardnotes/auth-server@1.74.0) (2022-12-28)
 
 ### Features
