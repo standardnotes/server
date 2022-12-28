@@ -203,6 +203,17 @@ import { TypeORMSessionTrace } from '../Infra/TypeORM/TypeORMSessionTrace'
 import { TraceSession } from '../Domain/UseCase/TraceSession/TraceSession'
 import { CleanupSessionTraces } from '../Domain/UseCase/CleanupSessionTraces/CleanupSessionTraces'
 import { PersistStatistics } from '../Domain/UseCase/PersistStatistics/PersistStatistics'
+import { TypeORMAuthenticator } from '../Infra/TypeORM/TypeORMAuthenticator'
+import { Authenticator } from '../Domain/Authenticator/Authenticator'
+import { AuthenticatorPersistenceMapper } from '../Mapping/AuthenticatorPersistenceMapper'
+import { AuthenticatorChallenge } from '../Domain/Authenticator/AuthenticatorChallenge'
+import { TypeORMAuthenticatorChallenge } from '../Infra/TypeORM/TypeORMAuthenticatorChallenge'
+import { AuthenticatorChallengePersistenceMapper } from '../Mapping/AuthenticatorChallengePersistenceMapper'
+import { AuthenticatorRepositoryInterface } from '../Domain/Authenticator/AuthenticatorRepositoryInterface'
+import { MySQLAuthenticatorRepository } from '../Infra/MySQL/MySQLAuthenticatorRepository'
+import { AuthenticatorChallengeRepositoryInterface } from '../Domain/Authenticator/AuthenticatorChallengeRepositoryInterface'
+import { MySQLAuthenticatorChallengeRepository } from '../Infra/MySQL/MySQLAuthenticatorChallengeRepository'
+import { GenerateAuthenticatorRegistrationOptions } from '../Domain/UseCase/GenerateAuthenticatorRegistrationOptions/GenerateAuthenticatorRegistrationOptions'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -280,6 +291,14 @@ export class ContainerConfigLoader {
     container
       .bind<MapperInterface<SessionTrace, TypeORMSessionTrace>>(TYPES.SessionTracePersistenceMapper)
       .toConstantValue(new SessionTracePersistenceMapper())
+    container
+      .bind<MapperInterface<Authenticator, TypeORMAuthenticator>>(TYPES.AuthenticatorPersistenceMapper)
+      .toConstantValue(new AuthenticatorPersistenceMapper())
+    container
+      .bind<MapperInterface<AuthenticatorChallenge, TypeORMAuthenticatorChallenge>>(
+        TYPES.AuthenticatorChallengePersistenceMapper,
+      )
+      .toConstantValue(new AuthenticatorChallengePersistenceMapper())
 
     // Controller
     container.bind<AuthController>(TYPES.AuthController).to(AuthController)
@@ -316,6 +335,12 @@ export class ContainerConfigLoader {
     container
       .bind<Repository<TypeORMSessionTrace>>(TYPES.ORMSessionTraceRepository)
       .toConstantValue(AppDataSource.getRepository(TypeORMSessionTrace))
+    container
+      .bind<Repository<TypeORMAuthenticator>>(TYPES.ORMAuthenticatorRepository)
+      .toConstantValue(AppDataSource.getRepository(TypeORMAuthenticator))
+    container
+      .bind<Repository<TypeORMAuthenticatorChallenge>>(TYPES.ORMAuthenticatorChallengeRepository)
+      .toConstantValue(AppDataSource.getRepository(TypeORMAuthenticatorChallenge))
 
     // Repositories
     container.bind<SessionRepositoryInterface>(TYPES.SessionRepository).to(MySQLSessionRepository)
@@ -353,6 +378,22 @@ export class ContainerConfigLoader {
         new MySQLSessionTraceRepository(
           container.get(TYPES.ORMSessionTraceRepository),
           container.get(TYPES.SessionTracePersistenceMapper),
+        ),
+      )
+    container
+      .bind<AuthenticatorRepositoryInterface>(TYPES.AuthenticatorRepository)
+      .toConstantValue(
+        new MySQLAuthenticatorRepository(
+          container.get(TYPES.ORMAuthenticatorRepository),
+          container.get(TYPES.AuthenticatorPersistenceMapper),
+        ),
+      )
+    container
+      .bind<AuthenticatorChallengeRepositoryInterface>(TYPES.AuthenticatorChallengeRepository)
+      .toConstantValue(
+        new MySQLAuthenticatorChallengeRepository(
+          container.get(TYPES.ORMAuthenticatorChallengeRepository),
+          container.get(TYPES.AuthenticatorChallengePersistenceMapper),
         ),
       )
 
@@ -509,6 +550,14 @@ export class ContainerConfigLoader {
           container.get(TYPES.DomainEventPublisher),
           container.get(TYPES.DomainEventFactory),
           container.get(TYPES.Timer),
+        ),
+      )
+    container
+      .bind<GenerateAuthenticatorRegistrationOptions>(TYPES.GenerateAuthenticatorRegistrationOptions)
+      .toConstantValue(
+        new GenerateAuthenticatorRegistrationOptions(
+          container.get(TYPES.AuthenticatorRepository),
+          container.get(TYPES.AuthenticatorChallengeRepository),
         ),
       )
 

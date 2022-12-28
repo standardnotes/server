@@ -1,4 +1,4 @@
-import { Uuid } from '@standardnotes/domain-core'
+import { Dates, Uuid } from '@standardnotes/domain-core'
 
 export interface AuthenticatorProps {
   userUuid: Uuid
@@ -8,4 +8,5 @@ export interface AuthenticatorProps {
   credentialDeviceType: string
   credentialBackedUp: boolean
   transports?: string[]
+  dates: Dates
 }
