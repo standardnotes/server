@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.73.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.72.0...@standardnotes/auth-server@1.73.0) (2022-12-28)
+
+### Features
+
+* **auth:** add generating authencator registration options ([51ad06b](https://github.com/standardnotes/server/commit/51ad06b303d7dc994920818872fdf8bd37fc445c))
+
 # [1.72.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.71.1...@standardnotes/auth-server@1.72.0) (2022-12-28)
 
 ### Features
