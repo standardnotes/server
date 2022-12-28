@@ -1,4 +1,4 @@
-import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
 
 @Entity({ name: 'authenticators' })
 export class TypeORMAuthenticator {
@@ -16,7 +16,6 @@ export class TypeORMAuthenticator {
     type: 'varbinary',
     length: 1024,
   })
-  @Index('credential_id', { unique: true })
   declare credentialId: Buffer
 
   @Column({
