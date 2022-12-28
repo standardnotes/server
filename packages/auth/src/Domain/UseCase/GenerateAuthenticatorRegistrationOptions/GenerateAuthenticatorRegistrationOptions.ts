@@ -5,11 +5,9 @@ import { GenerateAuthenticatorRegistrationOptionsDTO } from './GenerateAuthentic
 import { AuthenticatorRepositoryInterface } from '../../Authenticator/AuthenticatorRepositoryInterface'
 import { AuthenticatorChallengeRepositoryInterface } from '../../Authenticator/AuthenticatorChallengeRepositoryInterface'
 import { AuthenticatorChallenge } from '../../Authenticator/AuthenticatorChallenge'
+import { RelyingParty } from '../../Authenticator/RelyingParty'
 
 export class GenerateAuthenticatorRegistrationOptions implements UseCaseInterface<Record<string, unknown>> {
-  private readonly RP_NAME = 'Standard Notes'
-  private readonly RP_ID = 'standardnotes.com'
-
   constructor(
     private authenticatorRepository: AuthenticatorRepositoryInterface,
     private authenticatorChallengeRepository: AuthenticatorChallengeRepositoryInterface,
@@ -30,8 +28,8 @@ export class GenerateAuthenticatorRegistrationOptions implements UseCaseInterfac
 
     const authenticators = await this.authenticatorRepository.findByUserUuid(userUuid)
     const options = generateRegistrationOptions({
-      rpID: this.RP_ID,
-      rpName: this.RP_NAME,
+      rpID: RelyingParty.RP_ID,
+      rpName: RelyingParty.RP_NAME,
       userID: userUuid.value,
       userName: username.value,
       attestationType: 'none',

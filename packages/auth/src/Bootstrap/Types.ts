@@ -134,6 +134,7 @@ const TYPES = {
   CleanupSessionTraces: Symbol.for('CleanupSessionTraces'),
   PersistStatistics: Symbol.for('PersistStatistics'),
   GenerateAuthenticatorRegistrationOptions: Symbol.for('GenerateAuthenticatorRegistrationOptions'),
+  VerifyAuthenticatorRegistrationResponse: Symbol.for('VerifyAuthenticatorRegistrationResponse'),
   // Handlers
   UserRegisteredEventHandler: Symbol.for('UserRegisteredEventHandler'),
   AccountDeletionRequestedEventHandler: Symbol.for('AccountDeletionRequestedEventHandler'),

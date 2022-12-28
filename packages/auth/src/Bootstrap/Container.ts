@@ -214,6 +214,7 @@ import { MySQLAuthenticatorRepository } from '../Infra/MySQL/MySQLAuthenticatorR
 import { AuthenticatorChallengeRepositoryInterface } from '../Domain/Authenticator/AuthenticatorChallengeRepositoryInterface'
 import { MySQLAuthenticatorChallengeRepository } from '../Infra/MySQL/MySQLAuthenticatorChallengeRepository'
 import { GenerateAuthenticatorRegistrationOptions } from '../Domain/UseCase/GenerateAuthenticatorRegistrationOptions/GenerateAuthenticatorRegistrationOptions'
+import { VerifyAuthenticatorRegistrationResponse } from '../Domain/UseCase/VerifyAuthenticatorRegistrationResponse/VerifyAuthenticatorRegistrationResponse'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -556,6 +557,14 @@ export class ContainerConfigLoader {
       .bind<GenerateAuthenticatorRegistrationOptions>(TYPES.GenerateAuthenticatorRegistrationOptions)
       .toConstantValue(
         new GenerateAuthenticatorRegistrationOptions(
+          container.get(TYPES.AuthenticatorRepository),
+          container.get(TYPES.AuthenticatorChallengeRepository),
+        ),
+      )
+    container
+      .bind<VerifyAuthenticatorRegistrationResponse>(TYPES.VerifyAuthenticatorRegistrationResponse)
+      .toConstantValue(
+        new VerifyAuthenticatorRegistrationResponse(
           container.get(TYPES.AuthenticatorRepository),
           container.get(TYPES.AuthenticatorChallengeRepository),
         ),

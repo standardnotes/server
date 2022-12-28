@@ -11,6 +11,12 @@ export class MySQLAuthenticatorRepository implements AuthenticatorRepositoryInte
     private mapper: MapperInterface<Authenticator, TypeORMAuthenticator>,
   ) {}
 
+  async save(authenticator: Authenticator): Promise<void> {
+    const persistence = this.mapper.toProjection(authenticator)
+
+    await this.ormRepository.save(persistence)
+  }
+
   async findByUserUuid(userUuid: Uuid): Promise<Authenticator[]> {
     const typeOrm = await this.ormRepository
       .createQueryBuilder('authenticator')
