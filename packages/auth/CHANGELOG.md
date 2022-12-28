@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.72.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.71.1...@standardnotes/auth-server@1.72.0) (2022-12-28)
+
+### Features
+
+* **auth:** add authenticator challenges model ([fa9bf0b](https://github.com/standardnotes/server/commit/fa9bf0b448acb3f19ab44c4b431ce367dab37b76))
+
 ## [1.71.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.71.0...@standardnotes/auth-server@1.71.1) (2022-12-28)
 
 ### Bug Fixes
