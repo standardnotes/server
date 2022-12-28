@@ -13,7 +13,8 @@ export class TypeORMAuthenticator {
 
   @Column({
     name: 'credential_id',
-    type: 'text',
+    type: 'varbinary',
+    length: 1024,
   })
   @Index('credential_id', { unique: true })
   declare credentialId: Buffer
