@@ -49,17 +49,17 @@ export class TypeORMAuthenticator {
     length: 255,
     nullable: true,
   })
-  declare transports: string[]
+  declare transports: string | null
 
   @Column({
     name: 'created_at',
-    type: 'bigint',
+    type: 'datetime',
   })
-  declare createdAt: number
+  declare createdAt: Date
 
   @Column({
     name: 'updated_at',
-    type: 'bigint',
+    type: 'datetime',
   })
-  declare updatedAt: number
+  declare updatedAt: Date
 }

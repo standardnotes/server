@@ -21,7 +21,7 @@ export class TypeORMAuthenticatorChallenge {
 
   @Column({
     name: 'created_at',
-    type: 'bigint',
+    type: 'datetime',
   })
-  declare createdAt: number
+  declare createdAt: Date
 }

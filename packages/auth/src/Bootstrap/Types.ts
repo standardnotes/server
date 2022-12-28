@@ -5,6 +5,8 @@ const TYPES = {
   SQS: Symbol.for('SQS'),
   // Mapping
   SessionTracePersistenceMapper: Symbol.for('SessionTracePersistenceMapper'),
+  AuthenticatorChallengePersistenceMapper: Symbol.for('AuthenticatorChallengePersistenceMapper'),
+  AuthenticatorPersistenceMapper: Symbol.for('AuthenticatorPersistenceMapper'),
   // Controller
   AuthController: Symbol.for('AuthController'),
   SubscriptionInvitesController: Symbol.for('SubscriptionInvitesController'),
@@ -26,6 +28,8 @@ const TYPES = {
   SharedSubscriptionInvitationRepository: Symbol.for('SharedSubscriptionInvitationRepository'),
   PKCERepository: Symbol.for('PKCERepository'),
   SessionTraceRepository: Symbol.for('SessionTraceRepository'),
+  AuthenticatorRepository: Symbol.for('AuthenticatorRepository'),
+  AuthenticatorChallengeRepository: Symbol.for('AuthenticatorChallengeRepository'),
   // ORM
   ORMOfflineSettingRepository: Symbol.for('ORMOfflineSettingRepository'),
   ORMOfflineUserSubscriptionRepository: Symbol.for('ORMOfflineUserSubscriptionRepository'),
@@ -38,6 +42,8 @@ const TYPES = {
   ORMUserRepository: Symbol.for('ORMUserRepository'),
   ORMUserSubscriptionRepository: Symbol.for('ORMUserSubscriptionRepository'),
   ORMSessionTraceRepository: Symbol.for('ORMSessionTraceRepository'),
+  ORMAuthenticatorRepository: Symbol.for('ORMAuthenticatorRepository'),
+  ORMAuthenticatorChallengeRepository: Symbol.for('ORMAuthenticatorChallengeRepository'),
   // Middleware
   AuthMiddleware: Symbol.for('AuthMiddleware'),
   ApiGatewayAuthMiddleware: Symbol.for('ApiGatewayAuthMiddleware'),
@@ -127,6 +133,7 @@ const TYPES = {
   TraceSession: Symbol.for('TraceSession'),
   CleanupSessionTraces: Symbol.for('CleanupSessionTraces'),
   PersistStatistics: Symbol.for('PersistStatistics'),
+  GenerateAuthenticatorRegistrationOptions: Symbol.for('GenerateAuthenticatorRegistrationOptions'),
   // Handlers
   UserRegisteredEventHandler: Symbol.for('UserRegisteredEventHandler'),
   AccountDeletionRequestedEventHandler: Symbol.for('AccountDeletionRequestedEventHandler'),
