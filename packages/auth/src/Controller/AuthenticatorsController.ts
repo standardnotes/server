@@ -1,15 +1,21 @@
 import { HttpStatusCode } from '@standardnotes/api'
+import { MapperInterface } from '@standardnotes/domain-core'
+import { Authenticator } from '../Domain/Authenticator/Authenticator'
 
 import { GenerateAuthenticatorAuthenticationOptions } from '../Domain/UseCase/GenerateAuthenticatorAuthenticationOptions/GenerateAuthenticatorAuthenticationOptions'
 import { GenerateAuthenticatorRegistrationOptions } from '../Domain/UseCase/GenerateAuthenticatorRegistrationOptions/GenerateAuthenticatorRegistrationOptions'
+import { ListAuthenticators } from '../Domain/UseCase/ListAuthenticators/ListAuthenticators'
 import { VerifyAuthenticatorAuthenticationResponse } from '../Domain/UseCase/VerifyAuthenticatorAuthenticationResponse/VerifyAuthenticatorAuthenticationResponse'
 import { VerifyAuthenticatorRegistrationResponse } from '../Domain/UseCase/VerifyAuthenticatorRegistrationResponse/VerifyAuthenticatorRegistrationResponse'
+import { AuthenticatorHttpProjection } from '../Infra/Http/Projection/AuthenticatorHttpProjection'
 import { GenerateAuthenticatorAuthenticationOptionsRequestParams } from '../Infra/Http/Request/GenerateAuthenticatorAuthenticationOptionsRequestParams'
 import { GenerateAuthenticatorRegistrationOptionsRequestParams } from '../Infra/Http/Request/GenerateAuthenticatorRegistrationOptionsRequestParams'
+import { ListAuthenticatorsRequestParams } from '../Infra/Http/Request/ListAuthenticatorsRequestParams'
 import { VerifyAuthenticatorAuthenticationResponseRequestParams } from '../Infra/Http/Request/VerifyAuthenticatorAuthenticationResponseRequestParams'
 import { VerifyAuthenticatorRegistrationResponseRequestParams } from '../Infra/Http/Request/VerifyAuthenticatorRegistrationResponseRequestParams'
 import { GenerateAuthenticatorAuthenticationOptionsResponse } from '../Infra/Http/Response/GenerateAuthenticatorAuthenticationOptionsResponse'
 import { GenerateAuthenticatorRegistrationOptionsResponse } from '../Infra/Http/Response/GenerateAuthenticatorRegistrationOptionsResponse'
+import { ListAuthenticatorsResponse } from '../Infra/Http/Response/ListAuthenticatorsResponse'
 import { VerifyAuthenticatorAuthenticationResponseResponse } from '../Infra/Http/Response/VerifyAuthenticatorAuthenticationResponseResponse'
 import { VerifyAuthenticatorRegistrationResponseResponse } from '../Infra/Http/Response/VerifyAuthenticatorRegistrationResponseResponse'
 
@@ -19,7 +25,24 @@ export class AuthenticatorsController {
     private verifyAuthenticatorRegistrationResponse: VerifyAuthenticatorRegistrationResponse,
     private generateAuthenticatorAuthenticationOptions: GenerateAuthenticatorAuthenticationOptions,
     private verifyAuthenticatorAuthenticationResponse: VerifyAuthenticatorAuthenticationResponse,
+    private listAuthenticators: ListAuthenticators,
+    private authenticatorHttpMapper: MapperInterface<Authenticator, AuthenticatorHttpProjection>,
   ) {}
+
+  async list(params: ListAuthenticatorsRequestParams): Promise<ListAuthenticatorsResponse> {
+    const result = await this.listAuthenticators.execute({
+      userUuid: params.userUuid,
+    })
+
+    return {
+      status: HttpStatusCode.Success,
+      data: {
+        authenticators: result
+          .getValue()
+          .map((authenticator) => this.authenticatorHttpMapper.toProjection(authenticator)),
+      },
+    }
+  }
 
   async generateRegistrationOptions(
     params: GenerateAuthenticatorRegistrationOptionsRequestParams,
@@ -51,6 +74,7 @@ export class AuthenticatorsController {
   ): Promise<VerifyAuthenticatorRegistrationResponseResponse> {
     const result = await this.verifyAuthenticatorRegistrationResponse.execute({
       userUuid: params.userUuid,
+      name: params.name,
       registrationCredential: params.registrationCredential,
     })
 

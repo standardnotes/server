@@ -17,6 +17,15 @@ export class InversifyExpressAuthenticatorsController extends BaseHttpController
     super()
   }
 
+  @httpGet('/')
+  async list(_request: Request, response: Response): Promise<results.JsonResult> {
+    const result = await this.authenticatorsController.list({
+      userUuid: response.locals.user.uuid,
+    })
+
+    return this.json(result.data, result.status)
+  }
+
   @httpGet('/generate-registration-options')
   async generateRegistrationOptions(_request: Request, response: Response): Promise<results.JsonResult> {
     const result = await this.authenticatorsController.generateRegistrationOptions({
@@ -31,7 +40,8 @@ export class InversifyExpressAuthenticatorsController extends BaseHttpController
   async verifyRegistration(request: Request, response: Response): Promise<results.JsonResult> {
     const result = await this.authenticatorsController.verifyRegistrationResponse({
       userUuid: response.locals.user.uuid,
-      registrationCredential: request.body,
+      registrationCredential: request.body.registrationCredential,
+      name: request.body.name,
     })
 
     return this.json(result.data, result.status)

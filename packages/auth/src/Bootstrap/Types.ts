@@ -7,6 +7,7 @@ const TYPES = {
   SessionTracePersistenceMapper: Symbol.for('SessionTracePersistenceMapper'),
   AuthenticatorChallengePersistenceMapper: Symbol.for('AuthenticatorChallengePersistenceMapper'),
   AuthenticatorPersistenceMapper: Symbol.for('AuthenticatorPersistenceMapper'),
+  AuthenticatorHttpMapper: Symbol.for('AuthenticatorHttpMapper'),
   // Controller
   AuthController: Symbol.for('AuthController'),
   AuthenticatorsController: Symbol.for('AuthenticatorsController'),
@@ -138,6 +139,7 @@ const TYPES = {
   VerifyAuthenticatorRegistrationResponse: Symbol.for('VerifyAuthenticatorRegistrationResponse'),
   GenerateAuthenticatorAuthenticationOptions: Symbol.for('GenerateAuthenticatorAuthenticationOptions'),
   VerifyAuthenticatorAuthenticationResponse: Symbol.for('VerifyAuthenticatorAuthenticationResponse'),
+  ListAuthenticators: Symbol.for('ListAuthenticators'),
   // Handlers
   UserRegisteredEventHandler: Symbol.for('UserRegisteredEventHandler'),
   AccountDeletionRequestedEventHandler: Symbol.for('AccountDeletionRequestedEventHandler'),

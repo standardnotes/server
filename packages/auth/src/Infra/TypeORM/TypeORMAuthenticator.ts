@@ -12,6 +12,13 @@ export class TypeORMAuthenticator {
   declare userUuid: string
 
   @Column({
+    name: 'name',
+    type: 'varchar',
+    length: 255,
+  })
+  declare name: string
+
+  @Column({
     name: 'credential_id',
     type: 'varbinary',
     length: 1024,

@@ -16,6 +16,7 @@ describe('GenerateAuthenticatorRegistrationOptions', () => {
   beforeEach(() => {
     const authenticator = Authenticator.create({
       counter: 1,
+      name: 'my-key',
       credentialBackedUp: true,
       credentialDeviceType: 'singleDevice',
       credentialId: Buffer.from('credentialId'),

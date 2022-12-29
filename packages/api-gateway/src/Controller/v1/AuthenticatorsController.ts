@@ -11,6 +11,11 @@ export class AuthenticatorsController extends BaseHttpController {
     super()
   }
 
+  @httpGet('/')
+  async list(request: Request, response: Response): Promise<void> {
+    await this.httpService.callAuthServer(request, response, 'authenticators/', request.body)
+  }
+
   @httpGet('/generate-registration-options')
   async generateRegistrationOptions(request: Request, response: Response): Promise<void> {
     await this.httpService.callAuthServer(

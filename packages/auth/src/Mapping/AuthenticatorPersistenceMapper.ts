@@ -20,6 +20,7 @@ export class AuthenticatorPersistenceMapper implements MapperInterface<Authentic
     const authenticatorOrError = Authenticator.create(
       {
         userUuid,
+        name: projection.name,
         counter: projection.counter,
         credentialBackedUp: projection.credentialBackedUp,
         credentialDeviceType: projection.credentialDeviceType,
@@ -42,6 +43,7 @@ export class AuthenticatorPersistenceMapper implements MapperInterface<Authentic
     const typeorm = new TypeORMAuthenticator()
 
     typeorm.uuid = domain.id.toString()
+    typeorm.name = domain.props.name
     typeorm.userUuid = domain.props.userUuid.value
     typeorm.credentialId = domain.props.credentialId
     typeorm.credentialPublicKey = domain.props.credentialPublicKey

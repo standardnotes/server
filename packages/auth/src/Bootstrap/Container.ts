@@ -218,6 +218,9 @@ import { VerifyAuthenticatorRegistrationResponse } from '../Domain/UseCase/Verif
 import { GenerateAuthenticatorAuthenticationOptions } from '../Domain/UseCase/GenerateAuthenticatorAuthenticationOptions/GenerateAuthenticatorAuthenticationOptions'
 import { VerifyAuthenticatorAuthenticationResponse } from '../Domain/UseCase/VerifyAuthenticatorAuthenticationResponse/VerifyAuthenticatorAuthenticationResponse'
 import { AuthenticatorsController } from '../Controller/AuthenticatorsController'
+import { ListAuthenticators } from '../Domain/UseCase/ListAuthenticators/ListAuthenticators'
+import { AuthenticatorHttpProjection } from '../Infra/Http/Projection/AuthenticatorHttpProjection'
+import { AuthenticatorHttpMapper } from '../Mapping/AuthenticatorHttpMapper'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -298,6 +301,9 @@ export class ContainerConfigLoader {
     container
       .bind<MapperInterface<Authenticator, TypeORMAuthenticator>>(TYPES.AuthenticatorPersistenceMapper)
       .toConstantValue(new AuthenticatorPersistenceMapper())
+    container
+      .bind<MapperInterface<Authenticator, AuthenticatorHttpProjection>>(TYPES.AuthenticatorHttpMapper)
+      .toConstantValue(new AuthenticatorHttpMapper())
     container
       .bind<MapperInterface<AuthenticatorChallenge, TypeORMAuthenticatorChallenge>>(
         TYPES.AuthenticatorChallengePersistenceMapper,
@@ -583,6 +589,9 @@ export class ContainerConfigLoader {
           container.get(TYPES.AuthenticatorChallengeRepository),
         ),
       )
+    container
+      .bind<ListAuthenticators>(TYPES.ListAuthenticators)
+      .toConstantValue(new ListAuthenticators(container.get(TYPES.AuthenticatorRepository)))
 
     container
       .bind<CleanupSessionTraces>(TYPES.CleanupSessionTraces)
@@ -647,6 +656,8 @@ export class ContainerConfigLoader {
           container.get(TYPES.VerifyAuthenticatorRegistrationResponse),
           container.get(TYPES.GenerateAuthenticatorAuthenticationOptions),
           container.get(TYPES.VerifyAuthenticatorAuthenticationResponse),
+          container.get(TYPES.ListAuthenticators),
+          container.get(TYPES.AuthenticatorHttpMapper),
         ),
       )
     container.bind<SubscriptionInvitesController>(TYPES.SubscriptionInvitesController).to(SubscriptionInvitesController)

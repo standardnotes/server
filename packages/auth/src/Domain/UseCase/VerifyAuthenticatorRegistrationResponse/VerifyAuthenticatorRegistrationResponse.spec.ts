@@ -32,6 +32,7 @@ describe('VerifyAuthenticatorRegistrationResponse', () => {
 
     const result = await useCase.execute({
       userUuid: 'invalid',
+      name: 'name',
       registrationCredential: {
         id: Buffer.from('id'),
         rawId: Buffer.from('rawId'),
@@ -49,6 +50,27 @@ describe('VerifyAuthenticatorRegistrationResponse', () => {
     )
   })
 
+  it('should return error if name is invalid', async () => {
+    const useCase = createUseCase()
+
+    const result = await useCase.execute({
+      userUuid: '00000000-0000-0000-0000-000000000000',
+      name: '',
+      registrationCredential: {
+        id: Buffer.from('id'),
+        rawId: Buffer.from('rawId'),
+        response: {
+          attestationObject: Buffer.from('attestationObject'),
+          clientDataJSON: Buffer.from('clientDataJSON'),
+        },
+        type: 'type',
+      },
+    })
+
+    expect(result.isFailed()).toBeTruthy()
+    expect(result.getError()).toEqual('Could not verify authenticator registration response: Given value is empty: ')
+  })
+
   it('should return error if challenge is not found', async () => {
     authenticatorChallengeRepository.findByUserUuid = jest.fn().mockReturnValue(null)
 
@@ -56,6 +78,7 @@ describe('VerifyAuthenticatorRegistrationResponse', () => {
 
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
+      name: 'name',
       registrationCredential: {
         id: Buffer.from('id'),
         rawId: Buffer.from('rawId'),
@@ -96,6 +119,7 @@ describe('VerifyAuthenticatorRegistrationResponse', () => {
 
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
+      name: 'name',
       registrationCredential: {
         id: Buffer.from('id'),
         rawId: Buffer.from('rawId'),
@@ -129,6 +153,7 @@ describe('VerifyAuthenticatorRegistrationResponse', () => {
 
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
+      name: 'name',
       registrationCredential: {
         id: Buffer.from('id'),
         rawId: Buffer.from('rawId'),
@@ -164,6 +189,7 @@ describe('VerifyAuthenticatorRegistrationResponse', () => {
 
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
+      name: 'name',
       registrationCredential: {
         id: Buffer.from('id'),
         rawId: Buffer.from('rawId'),
@@ -213,6 +239,7 @@ describe('VerifyAuthenticatorRegistrationResponse', () => {
 
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
+      name: 'name',
       registrationCredential: {
         id: Buffer.from('id'),
         rawId: Buffer.from('rawId'),
@@ -256,6 +283,7 @@ describe('VerifyAuthenticatorRegistrationResponse', () => {
 
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
+      name: 'name',
       registrationCredential: {
         id: Buffer.from('id'),
         rawId: Buffer.from('rawId'),
