@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.78.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.77.1...@standardnotes/auth-server@1.78.0) (2022-12-29)
+
+### Features
+
+* **auth:** add listing authenticators ([01837ea](https://github.com/standardnotes/server/commit/01837eaea9b1f219e7ad3be4d28cd0df099fe423))
+
 ## [1.77.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.77.0...@standardnotes/auth-server@1.77.1) (2022-12-29)
 
 ### Bug Fixes
