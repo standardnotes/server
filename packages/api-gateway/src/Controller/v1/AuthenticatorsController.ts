@@ -1,6 +1,6 @@
 import { inject } from 'inversify'
 import { Request, Response } from 'express'
-import { controller, BaseHttpController, httpPost, httpGet } from 'inversify-express-utils'
+import { controller, BaseHttpController, httpPost, httpGet, httpDelete } from 'inversify-express-utils'
 
 import TYPES from '../../Bootstrap/Types'
 import { HttpServiceInterface } from '../../Service/Http/HttpServiceInterface'
@@ -9,6 +9,16 @@ import { HttpServiceInterface } from '../../Service/Http/HttpServiceInterface'
 export class AuthenticatorsController extends BaseHttpController {
   constructor(@inject(TYPES.HTTPService) private httpService: HttpServiceInterface) {
     super()
+  }
+
+  @httpDelete('/:authenticatorId')
+  async delete(request: Request, response: Response): Promise<void> {
+    await this.httpService.callAuthServer(
+      request,
+      response,
+      `authenticators/${request.params.authenticatorId}`,
+      request.body,
+    )
   }
 
   @httpGet('/')

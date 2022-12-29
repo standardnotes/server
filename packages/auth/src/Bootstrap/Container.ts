@@ -221,6 +221,7 @@ import { AuthenticatorsController } from '../Controller/AuthenticatorsController
 import { ListAuthenticators } from '../Domain/UseCase/ListAuthenticators/ListAuthenticators'
 import { AuthenticatorHttpProjection } from '../Infra/Http/Projection/AuthenticatorHttpProjection'
 import { AuthenticatorHttpMapper } from '../Mapping/AuthenticatorHttpMapper'
+import { DeleteAuthenticator } from '../Domain/UseCase/DeleteAuthenticator/DeleteAuthenticator'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -592,6 +593,9 @@ export class ContainerConfigLoader {
     container
       .bind<ListAuthenticators>(TYPES.ListAuthenticators)
       .toConstantValue(new ListAuthenticators(container.get(TYPES.AuthenticatorRepository)))
+    container
+      .bind<DeleteAuthenticator>(TYPES.DeleteAuthenticator)
+      .toConstantValue(new DeleteAuthenticator(container.get(TYPES.AuthenticatorRepository)))
 
     container
       .bind<CleanupSessionTraces>(TYPES.CleanupSessionTraces)
@@ -657,6 +661,7 @@ export class ContainerConfigLoader {
           container.get(TYPES.GenerateAuthenticatorAuthenticationOptions),
           container.get(TYPES.VerifyAuthenticatorAuthenticationResponse),
           container.get(TYPES.ListAuthenticators),
+          container.get(TYPES.DeleteAuthenticator),
           container.get(TYPES.AuthenticatorHttpMapper),
         ),
       )

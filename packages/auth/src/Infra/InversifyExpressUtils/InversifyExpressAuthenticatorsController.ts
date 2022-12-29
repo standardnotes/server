@@ -3,6 +3,7 @@ import { inject } from 'inversify'
 import {
   BaseHttpController,
   controller,
+  httpDelete,
   httpGet,
   httpPost,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -21,6 +22,16 @@ export class InversifyExpressAuthenticatorsController extends BaseHttpController
   async list(_request: Request, response: Response): Promise<results.JsonResult> {
     const result = await this.authenticatorsController.list({
       userUuid: response.locals.user.uuid,
+    })
+
+    return this.json(result.data, result.status)
+  }
+
+  @httpDelete('/:authenticatorId')
+  async delete(request: Request, response: Response): Promise<results.JsonResult> {
+    const result = await this.authenticatorsController.delete({
+      userUuid: response.locals.user.uuid,
+      authenticatorId: request.params.authenticatorId,
     })
 
     return this.json(result.data, result.status)

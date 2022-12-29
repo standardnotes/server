@@ -1,4 +1,4 @@
-import { MapperInterface, Uuid } from '@standardnotes/domain-core'
+import { MapperInterface, UniqueEntityId, Uuid } from '@standardnotes/domain-core'
 import { Repository } from 'typeorm'
 
 import { Authenticator } from '../../Domain/Authenticator/Authenticator'
@@ -10,6 +10,25 @@ export class MySQLAuthenticatorRepository implements AuthenticatorRepositoryInte
     private ormRepository: Repository<TypeORMAuthenticator>,
     private mapper: MapperInterface<Authenticator, TypeORMAuthenticator>,
   ) {}
+
+  async findById(id: UniqueEntityId): Promise<Authenticator | null> {
+    const persistence = await this.ormRepository
+      .createQueryBuilder('authenticator')
+      .where('authenticator.uuid = :id', {
+        id: id.toString(),
+      })
+      .getOne()
+
+    if (persistence === null) {
+      return null
+    }
+
+    return this.mapper.toDomain(persistence)
+  }
+
+  async remove(authenticator: Authenticator): Promise<void> {
+    await this.ormRepository.remove(this.mapper.toProjection(authenticator))
+  }
 
   async findByUserUuidAndCredentialId(userUuid: Uuid, credentialId: Buffer): Promise<Authenticator | null> {
     const persistence = await this.ormRepository
