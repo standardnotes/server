@@ -1,5 +1,5 @@
 import { Dates, Result, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
-import { verifyRegistrationResponse } from '@simplewebauthn/server'
+import { VerifiedRegistrationResponse, verifyRegistrationResponse } from '@simplewebauthn/server'
 
 import { AuthenticatorChallengeRepositoryInterface } from '../../Authenticator/AuthenticatorChallengeRepositoryInterface'
 import { RelyingParty } from '../../Authenticator/RelyingParty'
@@ -28,24 +28,33 @@ export class VerifyAuthenticatorRegistrationResponse implements UseCaseInterface
       return Result.fail('Could not verify authenticator registration response: challenge not found')
     }
 
-    const verification = await verifyRegistrationResponse({
-      credential: dto.registrationCredential,
-      expectedChallenge: authenticatorChallenge.props.challenge.toString(),
-      expectedOrigin: `https://${RelyingParty.RP_ID}`,
-      expectedRPID: RelyingParty.RP_ID,
-    })
+    let verification: VerifiedRegistrationResponse
+    try {
+      verification = await verifyRegistrationResponse({
+        credential: dto.registrationCredential,
+        expectedChallenge: authenticatorChallenge.props.challenge.toString(),
+        expectedOrigin: `https://${RelyingParty.RP_ID}`,
+        expectedRPID: RelyingParty.RP_ID,
+      })
 
-    if (!verification.verified) {
-      return Result.fail('Could not verify authenticator registration response: verification failed')
+      if (!verification.verified) {
+        return Result.fail('Could not verify authenticator registration response: verification failed')
+      }
+    } catch (error) {
+      return Result.fail(`Could not verify authenticator registration response: ${(error as Error).message}`)
+    }
+
+    if (!verification.registrationInfo) {
+      return Result.fail('Could not verify authenticator registration response: registration info not found')
     }
 
     const authenticatorOrError = Authenticator.create({
       userUuid,
-      counter: verification.registrationInfo?.counter as number,
-      credentialBackedUp: verification.registrationInfo?.credentialBackedUp as boolean,
-      credentialDeviceType: verification.registrationInfo?.credentialDeviceType,
-      credentialId: verification.registrationInfo?.credentialID as Buffer,
-      credentialPublicKey: verification.registrationInfo?.credentialPublicKey as Buffer,
+      counter: verification.registrationInfo.counter,
+      credentialBackedUp: verification.registrationInfo.credentialBackedUp,
+      credentialDeviceType: verification.registrationInfo.credentialDeviceType,
+      credentialId: verification.registrationInfo.credentialID,
+      credentialPublicKey: verification.registrationInfo.credentialPublicKey,
       dates: Dates.create(new Date(), new Date()).getValue(),
     })
 

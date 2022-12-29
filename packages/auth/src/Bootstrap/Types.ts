@@ -136,6 +136,7 @@ const TYPES = {
   GenerateAuthenticatorRegistrationOptions: Symbol.for('GenerateAuthenticatorRegistrationOptions'),
   VerifyAuthenticatorRegistrationResponse: Symbol.for('VerifyAuthenticatorRegistrationResponse'),
   GenerateAuthenticatorAuthenticationOptions: Symbol.for('GenerateAuthenticatorAuthenticationOptions'),
+  VerifyAuthenticatorAuthenticationResponse: Symbol.for('VerifyAuthenticatorAuthenticationResponse'),
   // Handlers
   UserRegisteredEventHandler: Symbol.for('UserRegisteredEventHandler'),
   AccountDeletionRequestedEventHandler: Symbol.for('AccountDeletionRequestedEventHandler'),

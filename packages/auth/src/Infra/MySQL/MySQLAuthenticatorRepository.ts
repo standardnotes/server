@@ -11,6 +11,22 @@ export class MySQLAuthenticatorRepository implements AuthenticatorRepositoryInte
     private mapper: MapperInterface<Authenticator, TypeORMAuthenticator>,
   ) {}
 
+  async findByUserUuidAndCredentialId(userUuid: Uuid, credentialId: Buffer): Promise<Authenticator | null> {
+    const persistence = await this.ormRepository
+      .createQueryBuilder('authenticator')
+      .where('authenticator.user_uuid = :userUuid AND authenticator.credential_id = :credentialId', {
+        userUuid: userUuid.value,
+        credentialId,
+      })
+      .getOne()
+
+    if (persistence === null) {
+      return null
+    }
+
+    return this.mapper.toDomain(persistence)
+  }
+
   async save(authenticator: Authenticator): Promise<void> {
     const persistence = this.mapper.toProjection(authenticator)
 

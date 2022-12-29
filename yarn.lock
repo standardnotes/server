@@ -1904,6 +1904,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@simplewebauthn/typescript-types@npm:^6.3.0-alpha.1":
+  version: 6.3.0-alpha.1
+  resolution: "@simplewebauthn/typescript-types@npm:6.3.0-alpha.1"
+  checksum: 5667c214e9271c568dae2d5fe1e7d074f058415112a8f1c1138eefb5ca23735eef4be90185f454a96593624efe7c69135a8041070cb6ad419869bfa95ce2f7f5
+  languageName: node
+  linkType: hard
+
 "@sinclair/typebox@npm:^0.24.1":
   version: 0.24.44
   resolution: "@sinclair/typebox@npm:0.24.44"
@@ -2044,6 +2051,7 @@ __metadata:
     "@sentry/profiling-node": "npm:^0.0.12"
     "@sentry/tracing": "npm:^7.28.1"
     "@simplewebauthn/server": "npm:^6.2.2"
+    "@simplewebauthn/typescript-types": "npm:^6.3.0-alpha.1"
     "@standardnotes/api": "npm:^1.19.0"
     "@standardnotes/common": "workspace:*"
     "@standardnotes/domain-core": "workspace:^"

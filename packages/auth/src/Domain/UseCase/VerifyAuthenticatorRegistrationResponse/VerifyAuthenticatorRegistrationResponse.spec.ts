@@ -116,6 +116,78 @@ describe('VerifyAuthenticatorRegistrationResponse', () => {
     mock.mockRestore()
   })
 
+  it('should return error if verification throws error', async () => {
+    authenticatorChallengeRepository.findByUserUuidAndChallenge = jest.fn().mockReturnValue({
+      props: {
+        challenge: Buffer.from('challenge'),
+      },
+    } as jest.Mocked<AuthenticatorChallenge>)
+
+    const useCase = createUseCase()
+
+    const mock = jest.spyOn(simeplWebAuthnServer, 'verifyRegistrationResponse')
+    mock.mockImplementation(() => {
+      throw new Error('Oops')
+    })
+
+    const result = await useCase.execute({
+      userUuid: '00000000-0000-0000-0000-000000000000',
+      challenge: Buffer.from('invalid'),
+      registrationCredential: {
+        id: Buffer.from('id'),
+        rawId: Buffer.from('rawId'),
+        response: {
+          attestationObject: Buffer.from('attestationObject'),
+          clientDataJSON: Buffer.from('clientDataJSON'),
+        },
+        type: 'type',
+      },
+    })
+
+    expect(result.isFailed()).toBeTruthy()
+    expect(result.getError()).toEqual('Could not verify authenticator registration response: Oops')
+
+    mock.mockRestore()
+  })
+
+  it('should return error if verification is missing registration info', async () => {
+    authenticatorChallengeRepository.findByUserUuidAndChallenge = jest.fn().mockReturnValue({
+      props: {
+        challenge: Buffer.from('challenge'),
+      },
+    } as jest.Mocked<AuthenticatorChallenge>)
+
+    const useCase = createUseCase()
+
+    const mock = jest.spyOn(simeplWebAuthnServer, 'verifyRegistrationResponse')
+    mock.mockImplementation(() => {
+      return Promise.resolve({
+        verified: true,
+      } as jest.Mocked<VerifiedRegistrationResponse>)
+    })
+
+    const result = await useCase.execute({
+      userUuid: '00000000-0000-0000-0000-000000000000',
+      challenge: Buffer.from('invalid'),
+      registrationCredential: {
+        id: Buffer.from('id'),
+        rawId: Buffer.from('rawId'),
+        response: {
+          attestationObject: Buffer.from('attestationObject'),
+          clientDataJSON: Buffer.from('clientDataJSON'),
+        },
+        type: 'type',
+      },
+    })
+
+    expect(result.isFailed()).toBeTruthy()
+    expect(result.getError()).toEqual(
+      'Could not verify authenticator registration response: registration info not found',
+    )
+
+    mock.mockRestore()
+  })
+
   it('should return error if authenticator could not be created', async () => {
     authenticatorChallengeRepository.findByUserUuidAndChallenge = jest.fn().mockReturnValue({
       props: {
