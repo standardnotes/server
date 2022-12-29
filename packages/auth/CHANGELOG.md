@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.75.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.74.1...@standardnotes/auth-server@1.75.0) (2022-12-29)
+
+### Features
+
+* **auth:** add generating authenticator authentication options ([8c7c1e4](https://github.com/standardnotes/server/commit/8c7c1e4745647004f3dc361ec374014390952486))
+
 ## [1.74.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.74.0...@standardnotes/auth-server@1.74.1) (2022-12-28)
 
 ### Bug Fixes
