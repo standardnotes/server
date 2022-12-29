@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.42.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.41.3...@standardnotes/api-gateway@1.42.0) (2022-12-29)
+
+### Features
+
+* **auth:** add http endpoints for authenticators ([b6fda90](https://github.com/standardnotes/api-gateway/commit/b6fda901ef66a3e66541bd1e3f041b8268a1c3f5))
+
 ## [1.41.3](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.41.2...@standardnotes/api-gateway@1.41.3) (2022-12-28)
 
 **Note:** Version bump only for package @standardnotes/api-gateway

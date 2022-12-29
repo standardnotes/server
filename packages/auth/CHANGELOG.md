@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.77.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.76.0...@standardnotes/auth-server@1.77.0) (2022-12-29)
+
+### Features
+
+* **auth:** add http endpoints for authenticators ([b6fda90](https://github.com/standardnotes/server/commit/b6fda901ef66a3e66541bd1e3f041b8268a1c3f5))
+
 # [1.76.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.75.0...@standardnotes/auth-server@1.76.0) (2022-12-29)
 
 ### Features
