@@ -10,6 +10,7 @@ export class TypeORMAuthenticatorChallenge {
     name: 'user_uuid',
     length: 36,
   })
+  @Index('unique_user_uuid', { unique: true })
   declare userUuid: string
 
   @Column({

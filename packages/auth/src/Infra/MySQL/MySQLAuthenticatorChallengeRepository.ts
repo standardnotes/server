@@ -31,6 +31,20 @@ export class MySQLAuthenticatorChallengeRepository implements AuthenticatorChall
   async save(authenticatorChallenge: AuthenticatorChallenge): Promise<void> {
     const persistence = this.mapper.toProjection(authenticatorChallenge)
 
+    const typeOrm = await this.findByUserUuid(authenticatorChallenge.props.userUuid)
+    if (typeOrm !== null) {
+      persistence.uuid = typeOrm.uuid
+    }
+
     await this.ormRepository.save(persistence)
+  }
+
+  private async findByUserUuid(userUuid: Uuid): Promise<TypeORMAuthenticatorChallenge | null> {
+    return this.ormRepository
+      .createQueryBuilder('challenge')
+      .where('challenge.user_uuid = :userUuid', {
+        userUuid: userUuid.value,
+      })
+      .getOne()
   }
 }

@@ -135,6 +135,7 @@ const TYPES = {
   PersistStatistics: Symbol.for('PersistStatistics'),
   GenerateAuthenticatorRegistrationOptions: Symbol.for('GenerateAuthenticatorRegistrationOptions'),
   VerifyAuthenticatorRegistrationResponse: Symbol.for('VerifyAuthenticatorRegistrationResponse'),
+  GenerateAuthenticatorAuthenticationOptions: Symbol.for('GenerateAuthenticatorAuthenticationOptions'),
   // Handlers
   UserRegisteredEventHandler: Symbol.for('UserRegisteredEventHandler'),
   AccountDeletionRequestedEventHandler: Symbol.for('AccountDeletionRequestedEventHandler'),
