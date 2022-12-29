@@ -217,6 +217,7 @@ import { GenerateAuthenticatorRegistrationOptions } from '../Domain/UseCase/Gene
 import { VerifyAuthenticatorRegistrationResponse } from '../Domain/UseCase/VerifyAuthenticatorRegistrationResponse/VerifyAuthenticatorRegistrationResponse'
 import { GenerateAuthenticatorAuthenticationOptions } from '../Domain/UseCase/GenerateAuthenticatorAuthenticationOptions/GenerateAuthenticatorAuthenticationOptions'
 import { VerifyAuthenticatorAuthenticationResponse } from '../Domain/UseCase/VerifyAuthenticatorAuthenticationResponse/VerifyAuthenticatorAuthenticationResponse'
+import { AuthenticatorsController } from '../Controller/AuthenticatorsController'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -302,11 +303,6 @@ export class ContainerConfigLoader {
         TYPES.AuthenticatorChallengePersistenceMapper,
       )
       .toConstantValue(new AuthenticatorChallengePersistenceMapper())
-
-    // Controller
-    container.bind<AuthController>(TYPES.AuthController).to(AuthController)
-    container.bind<SubscriptionInvitesController>(TYPES.SubscriptionInvitesController).to(SubscriptionInvitesController)
-    container.bind<UserRequestsController>(TYPES.UserRequestsController).to(UserRequestsController)
 
     // ORM
     container
@@ -640,6 +636,21 @@ export class ContainerConfigLoader {
     container.bind<VerifyPredicate>(TYPES.VerifyPredicate).to(VerifyPredicate)
     container.bind<CreateCrossServiceToken>(TYPES.CreateCrossServiceToken).to(CreateCrossServiceToken)
     container.bind<ProcessUserRequest>(TYPES.ProcessUserRequest).to(ProcessUserRequest)
+
+    // Controller
+    container.bind<AuthController>(TYPES.AuthController).to(AuthController)
+    container
+      .bind<AuthenticatorsController>(TYPES.AuthenticatorsController)
+      .toConstantValue(
+        new AuthenticatorsController(
+          container.get(TYPES.GenerateAuthenticatorRegistrationOptions),
+          container.get(TYPES.VerifyAuthenticatorRegistrationResponse),
+          container.get(TYPES.GenerateAuthenticatorAuthenticationOptions),
+          container.get(TYPES.VerifyAuthenticatorAuthenticationResponse),
+        ),
+      )
+    container.bind<SubscriptionInvitesController>(TYPES.SubscriptionInvitesController).to(SubscriptionInvitesController)
+    container.bind<UserRequestsController>(TYPES.UserRequestsController).to(UserRequestsController)
 
     // Handlers
     container.bind<UserRegisteredEventHandler>(TYPES.UserRegisteredEventHandler).to(UserRegisteredEventHandler)

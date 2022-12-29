@@ -20,7 +20,7 @@ describe('VerifyAuthenticatorRegistrationResponse', () => {
     authenticatorRepository.save = jest.fn()
 
     authenticatorChallengeRepository = {} as jest.Mocked<AuthenticatorChallengeRepositoryInterface>
-    authenticatorChallengeRepository.findByUserUuidAndChallenge = jest.fn().mockReturnValue({
+    authenticatorChallengeRepository.findByUserUuid = jest.fn().mockReturnValue({
       props: {
         challenge: Buffer.from('challenge'),
       },
@@ -32,7 +32,6 @@ describe('VerifyAuthenticatorRegistrationResponse', () => {
 
     const result = await useCase.execute({
       userUuid: 'invalid',
-      challenge: Buffer.from('challenge'),
       registrationCredential: {
         id: Buffer.from('id'),
         rawId: Buffer.from('rawId'),
@@ -51,13 +50,12 @@ describe('VerifyAuthenticatorRegistrationResponse', () => {
   })
 
   it('should return error if challenge is not found', async () => {
-    authenticatorChallengeRepository.findByUserUuidAndChallenge = jest.fn().mockReturnValue(null)
+    authenticatorChallengeRepository.findByUserUuid = jest.fn().mockReturnValue(null)
 
     const useCase = createUseCase()
 
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
-      challenge: Buffer.from('challenge'),
       registrationCredential: {
         id: Buffer.from('id'),
         rawId: Buffer.from('rawId'),
@@ -74,7 +72,7 @@ describe('VerifyAuthenticatorRegistrationResponse', () => {
   })
 
   it('should return error if verification could not verify', async () => {
-    authenticatorChallengeRepository.findByUserUuidAndChallenge = jest.fn().mockReturnValue({
+    authenticatorChallengeRepository.findByUserUuid = jest.fn().mockReturnValue({
       props: {
         challenge: Buffer.from('challenge'),
       },
@@ -98,7 +96,6 @@ describe('VerifyAuthenticatorRegistrationResponse', () => {
 
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
-      challenge: Buffer.from('invalid'),
       registrationCredential: {
         id: Buffer.from('id'),
         rawId: Buffer.from('rawId'),
@@ -117,7 +114,7 @@ describe('VerifyAuthenticatorRegistrationResponse', () => {
   })
 
   it('should return error if verification throws error', async () => {
-    authenticatorChallengeRepository.findByUserUuidAndChallenge = jest.fn().mockReturnValue({
+    authenticatorChallengeRepository.findByUserUuid = jest.fn().mockReturnValue({
       props: {
         challenge: Buffer.from('challenge'),
       },
@@ -132,7 +129,6 @@ describe('VerifyAuthenticatorRegistrationResponse', () => {
 
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
-      challenge: Buffer.from('invalid'),
       registrationCredential: {
         id: Buffer.from('id'),
         rawId: Buffer.from('rawId'),
@@ -151,7 +147,7 @@ describe('VerifyAuthenticatorRegistrationResponse', () => {
   })
 
   it('should return error if verification is missing registration info', async () => {
-    authenticatorChallengeRepository.findByUserUuidAndChallenge = jest.fn().mockReturnValue({
+    authenticatorChallengeRepository.findByUserUuid = jest.fn().mockReturnValue({
       props: {
         challenge: Buffer.from('challenge'),
       },
@@ -168,7 +164,6 @@ describe('VerifyAuthenticatorRegistrationResponse', () => {
 
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
-      challenge: Buffer.from('invalid'),
       registrationCredential: {
         id: Buffer.from('id'),
         rawId: Buffer.from('rawId'),
@@ -189,7 +184,7 @@ describe('VerifyAuthenticatorRegistrationResponse', () => {
   })
 
   it('should return error if authenticator could not be created', async () => {
-    authenticatorChallengeRepository.findByUserUuidAndChallenge = jest.fn().mockReturnValue({
+    authenticatorChallengeRepository.findByUserUuid = jest.fn().mockReturnValue({
       props: {
         challenge: Buffer.from('challenge'),
       },
@@ -218,7 +213,6 @@ describe('VerifyAuthenticatorRegistrationResponse', () => {
 
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
-      challenge: Buffer.from('invalid'),
       registrationCredential: {
         id: Buffer.from('id'),
         rawId: Buffer.from('rawId'),
@@ -238,7 +232,7 @@ describe('VerifyAuthenticatorRegistrationResponse', () => {
   })
 
   it('should verify authenticator registration response', async () => {
-    authenticatorChallengeRepository.findByUserUuidAndChallenge = jest.fn().mockReturnValue({
+    authenticatorChallengeRepository.findByUserUuid = jest.fn().mockReturnValue({
       props: {
         challenge: Buffer.from('challenge'),
       },
@@ -262,7 +256,6 @@ describe('VerifyAuthenticatorRegistrationResponse', () => {
 
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
-      challenge: Buffer.from('invalid'),
       registrationCredential: {
         id: Buffer.from('id'),
         rawId: Buffer.from('rawId'),

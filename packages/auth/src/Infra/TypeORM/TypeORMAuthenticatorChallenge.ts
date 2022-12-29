@@ -1,7 +1,6 @@
 import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm'
 
 @Entity({ name: 'authenticator_challenges' })
-@Index('user_uuid_and_challenge', ['userUuid', 'challenge'])
 export class TypeORMAuthenticatorChallenge {
   @PrimaryGeneratedColumn('uuid')
   declare uuid: string

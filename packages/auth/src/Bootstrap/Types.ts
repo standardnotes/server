@@ -9,6 +9,7 @@ const TYPES = {
   AuthenticatorPersistenceMapper: Symbol.for('AuthenticatorPersistenceMapper'),
   // Controller
   AuthController: Symbol.for('AuthController'),
+  AuthenticatorsController: Symbol.for('AuthenticatorsController'),
   SubscriptionInvitesController: Symbol.for('SubscriptionInvitesController'),
   UserRequestsController: Symbol.for('UserRequestsController'),
   // Repositories

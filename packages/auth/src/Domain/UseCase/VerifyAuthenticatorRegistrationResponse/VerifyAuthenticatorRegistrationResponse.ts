@@ -20,10 +20,7 @@ export class VerifyAuthenticatorRegistrationResponse implements UseCaseInterface
     }
     const userUuid = userUuidOrError.getValue()
 
-    const authenticatorChallenge = await this.authenticatorChallengeRepository.findByUserUuidAndChallenge(
-      userUuid,
-      dto.challenge,
-    )
+    const authenticatorChallenge = await this.authenticatorChallengeRepository.findByUserUuid(userUuid)
     if (!authenticatorChallenge) {
       return Result.fail('Could not verify authenticator registration response: challenge not found')
     }
