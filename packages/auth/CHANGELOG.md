@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.79.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.78.0...@standardnotes/auth-server@1.79.0) (2022-12-29)
+
+### Features
+
+* **auth:** add removing authenticator ([de50d76](https://github.com/standardnotes/server/commit/de50d76800a4240729763b2df11c4a1718951670))
+
 # [1.78.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.77.1...@standardnotes/auth-server@1.78.0) (2022-12-29)
 
 ### Features

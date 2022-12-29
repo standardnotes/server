@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.44.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.43.0...@standardnotes/api-gateway@1.44.0) (2022-12-29)
+
+### Features
+
+* **auth:** add removing authenticator ([de50d76](https://github.com/standardnotes/api-gateway/commit/de50d76800a4240729763b2df11c4a1718951670))
+
 # [1.43.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.42.0...@standardnotes/api-gateway@1.43.0) (2022-12-29)
 
 ### Features
