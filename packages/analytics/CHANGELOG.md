@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.19.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.18.0...@standardnotes/analytics@2.19.0) (2022-12-30)
+
+### Features
+
+* **analytics:** add mixpanel events tracking ([df6e3f0](https://github.com/standardnotes/server/commit/df6e3f06a6868e30e60dd98431122983724644b4))
+
 # [2.18.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.17.8...@standardnotes/analytics@2.18.0) (2022-12-30)
 
 ### Features
