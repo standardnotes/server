@@ -27,6 +27,7 @@
   "devDependencies": {
     "@types/ioredis": "^5.0.0",
     "@types/jest": "^29.1.1",
+    "@types/mixpanel": "^2.14.4",
     "@types/newrelic": "^7.0.4",
     "@types/node": "^18.11.9",
     "@typescript-eslint/eslint-plugin": "^5.30.0",
@@ -49,6 +50,7 @@
     "dotenv": "^16.0.1",
     "inversify": "^6.0.1",
     "ioredis": "^5.2.4",
+    "mixpanel": "^0.17.0",
     "mysql2": "^2.3.3",
     "newrelic": "^9.6.0",
     "reflect-metadata": "^0.1.13",

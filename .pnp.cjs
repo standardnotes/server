@@ -2715,6 +2715,7 @@ const RAW_RUNTIME_STATE =
           ["@standardnotes/time", "workspace:packages/time"],\
           ["@types/ioredis", "npm:5.0.0"],\
           ["@types/jest", "npm:29.1.1"],\
+          ["@types/mixpanel", "npm:2.14.4"],\
           ["@types/newrelic", "npm:7.0.4"],\
           ["@types/node", "npm:18.11.9"],\
           ["@typescript-eslint/eslint-plugin", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:5.30.5"],\
@@ -2726,6 +2727,7 @@ const RAW_RUNTIME_STATE =
           ["inversify", "npm:6.0.1"],\
           ["ioredis", "npm:5.2.4"],\
           ["jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.1.2"],\
+          ["mixpanel", "npm:0.17.0"],\
           ["mysql2", "npm:2.3.3"],\
           ["newrelic", "npm:9.6.0"],\
           ["reflect-metadata", "npm:0.1.13"],\
@@ -3895,6 +3897,15 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/@types-minimist-npm-1.2.2-a445de65da-7fd2a4dc54.zip/node_modules/@types/minimist/",\
         "packageDependencies": [\
           ["@types/minimist", "npm:1.2.2"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["@types/mixpanel", [\
+      ["npm:2.14.4", {\
+        "packageLocation": "./.yarn/cache/@types-mixpanel-npm-2.14.4-34bd98306f-a2bf6e633e.zip/node_modules/@types/mixpanel/",\
+        "packageDependencies": [\
+          ["@types/mixpanel", "npm:2.14.4"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -8349,6 +8360,15 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["https-proxy-agent", [\
+      ["npm:5.0.0", {\
+        "packageLocation": "./.yarn/cache/https-proxy-agent-npm-5.0.0-bb777903c3-77d11b0e2c.zip/node_modules/https-proxy-agent/",\
+        "packageDependencies": [\
+          ["https-proxy-agent", "npm:5.0.0"],\
+          ["agent-base", "npm:6.0.2"],\
+          ["debug", "virtual:b86a9fb34323a98c6519528ed55faa0d9b44ca8879307c0b29aa384bde47ff59a7d0c9051b31246f14521dfb71ba3c5d6d0b35c29fffc17bf875aa6ad977d9e8#npm:4.3.4"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
       ["npm:5.0.1", {\
         "packageLocation": "./.yarn/cache/https-proxy-agent-npm-5.0.1-42d65f358e-8e767faec9.zip/node_modules/https-proxy-agent/",\
         "packageDependencies": [\
@@ -10632,6 +10652,16 @@ const RAW_RUNTIME_STATE =
           ["minizlib", "npm:2.1.2"],\
           ["minipass", "npm:3.3.4"],\
           ["yallist", "npm:4.0.0"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["mixpanel", [\
+      ["npm:0.17.0", {\
+        "packageLocation": "./.yarn/cache/mixpanel-npm-0.17.0-3073ce9949-5a945bdbdd.zip/node_modules/mixpanel/",\
+        "packageDependencies": [\
+          ["mixpanel", "npm:0.17.0"],\
+          ["https-proxy-agent", "npm:5.0.0"]\
         ],\
         "linkType": "HARD"\
       }]\

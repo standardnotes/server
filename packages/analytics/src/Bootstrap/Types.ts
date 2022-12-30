@@ -12,6 +12,7 @@ const TYPES = {
   REDIS_EVENTS_CHANNEL: Symbol.for('REDIS_EVENTS_CHANNEL'),
   NEW_RELIC_ENABLED: Symbol.for('NEW_RELIC_ENABLED'),
   ADMIN_EMAILS: Symbol.for('ADMIN_EMAILS'),
+  MIXPANEL_TOKEN: Symbol.for('MIXPANEL_TOKEN'),
   // Repositories
   AnalyticsEntityRepository: Symbol.for('AnalyticsEntityRepository'),
   RevenueModificationRepository: Symbol.for('RevenueModificationRepository'),
@@ -48,6 +49,7 @@ const TYPES = {
   StatisticsStore: Symbol.for('StatisticsStore'),
   Timer: Symbol.for('Timer'),
   PeriodKeyGenerator: Symbol.for('PeriodKeyGenerator'),
+  MixpanelClient: Symbol.for('MixpanelClient'),
 }
 
 export default TYPES

@@ -1963,6 +1963,7 @@ __metadata:
     "@standardnotes/time": "workspace:*"
     "@types/ioredis": "npm:^5.0.0"
     "@types/jest": "npm:^29.1.1"
+    "@types/mixpanel": "npm:^2.14.4"
     "@types/newrelic": "npm:^7.0.4"
     "@types/node": "npm:^18.11.9"
     "@typescript-eslint/eslint-plugin": "npm:^5.30.0"
@@ -1974,6 +1975,7 @@ __metadata:
     inversify: "npm:^6.0.1"
     ioredis: "npm:^5.2.4"
     jest: "npm:^29.1.2"
+    mixpanel: "npm:^0.17.0"
     mysql2: "npm:^2.3.3"
     newrelic: "npm:^9.6.0"
     reflect-metadata: "npm:^0.1.13"
@@ -3046,6 +3048,13 @@ __metadata:
   version: 1.2.2
   resolution: "@types/minimist@npm:1.2.2"
   checksum: 7fd2a4dc547de09d78c688d79aefcceb54e8c86eb61a5b1a593dfc03bbf1f8589a616ae978585211d078e51abc55b93064b2039c34266db8f277bd6bc03557c3
+  languageName: node
+  linkType: hard
+
+"@types/mixpanel@npm:^2.14.4":
+  version: 2.14.4
+  resolution: "@types/mixpanel@npm:2.14.4"
+  checksum: a2bf6e633e5c88dfade72e07a190fe760d3b7ac1308d148b56ab4b350aee5c2b75912c21b534551d3cbb4b078b2ac3e8c787e3eff9f667567a5b5c7091821558
   languageName: node
   linkType: hard
 
@@ -6547,6 +6556,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"https-proxy-agent@npm:5.0.0":
+  version: 5.0.0
+  resolution: "https-proxy-agent@npm:5.0.0"
+  dependencies:
+    agent-base: "npm:6"
+    debug: "npm:4"
+  checksum: 77d11b0e2c164d1f63f689247551b821b67c3daa7f13fe2d0445989d9ad224f67f2af8ebda09599de3f4be490b343c82bb37024d8a669c004fd4f38dc12a4d23
+  languageName: node
+  linkType: hard
+
 "https-proxy-agent@npm:^5.0.0":
   version: 5.0.1
   resolution: "https-proxy-agent@npm:5.0.1"
@@ -8527,6 +8546,15 @@ __metadata:
     minipass: "npm:^3.0.0"
     yallist: "npm:^4.0.0"
   checksum: c0071edb242d6808652840614193316e82d012b79ff1997352de3df1c19b7580d3d4790c462c8506b1f4225f08162ebba88ebceb1529d168304b06b23757e88d
+  languageName: node
+  linkType: hard
+
+"mixpanel@npm:^0.17.0":
+  version: 0.17.0
+  resolution: "mixpanel@npm:0.17.0"
+  dependencies:
+    https-proxy-agent: "npm:5.0.0"
+  checksum: 5a945bdbdd6093f7f4dda66b0e0ae2aa081bce4627c9a367b00b7f52a5daeae0031a579850117fd603112555160f56fb50e75afa6af8598b61a806bd8dd3f0e8
   languageName: node
   linkType: hard
 

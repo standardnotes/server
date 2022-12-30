@@ -1,5 +1,6 @@
 import { DomainEventHandlerInterface, UserRegisteredEvent } from '@standardnotes/domain-events'
-import { inject, injectable } from 'inversify'
+import { inject, injectable, optional } from 'inversify'
+import { Mixpanel } from 'mixpanel'
 
 import TYPES from '../../Bootstrap/Types'
 import { AnalyticsActivity } from '../Analytics/AnalyticsActivity'
@@ -13,6 +14,7 @@ export class UserRegisteredEventHandler implements DomainEventHandlerInterface {
   constructor(
     @inject(TYPES.AnalyticsEntityRepository) private analyticsEntityRepository: AnalyticsEntityRepositoryInterface,
     @inject(TYPES.AnalyticsStore) private analyticsStore: AnalyticsStoreInterface,
+    @inject(TYPES.MixpanelClient) @optional() private mixpanelClient: Mixpanel | null,
   ) {}
 
   async handle(event: UserRegisteredEvent): Promise<void> {
@@ -26,5 +28,12 @@ export class UserRegisteredEventHandler implements DomainEventHandlerInterface {
       Period.ThisWeek,
       Period.ThisMonth,
     ])
+
+    if (this.mixpanelClient !== null) {
+      this.mixpanelClient.track(event.type, {
+        distinct_id: analyticsEntity.id,
+        protocol_version: event.payload.protocolVersion,
+      })
+    }
   }
 }

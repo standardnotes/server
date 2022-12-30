@@ -8,6 +8,8 @@ import {
   DomainEventSubscriberFactoryInterface,
 } from '@standardnotes/domain-events'
 import { MapperInterface } from '@standardnotes/domain-core'
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const Mixpanel = require('mixpanel')
 
 import { Env } from './Env'
 import TYPES from './Types'
@@ -134,6 +136,7 @@ export class ContainerConfigLoader {
     container.bind(TYPES.REDIS_EVENTS_CHANNEL).toConstantValue(env.get('REDIS_EVENTS_CHANNEL'))
     container.bind(TYPES.NEW_RELIC_ENABLED).toConstantValue(env.get('NEW_RELIC_ENABLED', true))
     container.bind(TYPES.ADMIN_EMAILS).toConstantValue(env.get('ADMIN_EMAILS').split(','))
+    container.bind(TYPES.MIXPANEL_TOKEN).toConstantValue(env.get('MIXPANEL_TOKEN', true))
 
     // Services
     container.bind<DomainEventFactory>(TYPES.DomainEventFactory).to(DomainEventFactory)
@@ -156,6 +159,9 @@ export class ContainerConfigLoader {
         .toConstantValue(
           new RedisDomainEventPublisher(container.get(TYPES.Redis), container.get(TYPES.REDIS_EVENTS_CHANNEL)),
         )
+    }
+    if (env.get('MIXPANEL_TOKEN', true)) {
+      container.bind<Mixpanel>(TYPES.MixpanelClient).toConstantValue(Mixpanel.init(env.get('MIXPANEL_TOKEN', true)))
     }
 
     // Repositories
