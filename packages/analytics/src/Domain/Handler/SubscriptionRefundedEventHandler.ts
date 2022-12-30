@@ -58,7 +58,6 @@ export class SubscriptionRefundedEventHandler implements DomainEventHandlerInter
         distinct_id: analyticsId.toString(),
         subscription_name: event.payload.subscriptionName,
         user_existing_subscriptions_count: event.payload.userExistingSubscriptionsCount,
-        total_active_subscriptions_count: event.payload.totalActiveSubscriptionsCount,
         offline: event.payload.offline,
         billing_frequency: event.payload.billingFrequency,
         pay_amount: event.payload.payAmount,

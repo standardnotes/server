@@ -92,7 +92,6 @@ export class SubscriptionPurchasedEventHandler implements DomainEventHandlerInte
         discount_code: event.payload.discountCode,
         limited_discount_purchased: event.payload.limitedDiscountPurchased,
         new_subscriber: event.payload.newSubscriber,
-        total_active_subscriptions_count: event.payload.totalActiveSubscriptionsCount,
         user_registered_at: this.timer.convertMicrosecondsToDate(event.payload.userRegisteredAt),
         billing_frequency: event.payload.billingFrequency,
         pay_amount: event.payload.payAmount,

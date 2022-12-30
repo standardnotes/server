@@ -62,7 +62,6 @@ export class SubscriptionExpiredEventHandler implements DomainEventHandlerInterf
         distinct_id: analyticsId.toString(),
         subscription_name: event.payload.subscriptionName,
         offline: event.payload.offline,
-        total_active_subscriptions_count: event.payload.totalActiveSubscriptionsCount,
         user_existing_subscriptions_count: event.payload.userExistingSubscriptionsCount,
         billing_frequency: event.payload.billingFrequency,
         pay_amount: event.payload.payAmount,
