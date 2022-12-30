@@ -226,6 +226,7 @@ export class ContainerConfigLoader {
           container.get(TYPES.PersistStatistic),
           container.get(TYPES.Timer),
           container.get(TYPES.Logger),
+          env.get('MIXPANEL_TOKEN', true) ? container.get(TYPES.MixpanelClient) : null,
         ),
       )
 

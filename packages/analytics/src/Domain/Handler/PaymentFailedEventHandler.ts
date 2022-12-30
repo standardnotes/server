@@ -1,5 +1,6 @@
 import { DomainEventHandlerInterface, PaymentFailedEvent } from '@standardnotes/domain-events'
-import { inject, injectable } from 'inversify'
+import { inject, injectable, optional } from 'inversify'
+import { Mixpanel } from 'mixpanel'
 
 import TYPES from '../../Bootstrap/Types'
 import { AnalyticsActivity } from '../Analytics/AnalyticsActivity'
@@ -12,6 +13,7 @@ export class PaymentFailedEventHandler implements DomainEventHandlerInterface {
   constructor(
     @inject(TYPES.GetUserAnalyticsId) private getUserAnalyticsId: GetUserAnalyticsId,
     @inject(TYPES.AnalyticsStore) private analyticsStore: AnalyticsStoreInterface,
+    @inject(TYPES.MixpanelClient) @optional() private mixpanelClient: Mixpanel | null,
   ) {}
 
   async handle(event: PaymentFailedEvent): Promise<void> {
@@ -21,5 +23,11 @@ export class PaymentFailedEventHandler implements DomainEventHandlerInterface {
       Period.ThisWeek,
       Period.ThisMonth,
     ])
+
+    if (this.mixpanelClient !== null) {
+      this.mixpanelClient.track(event.type, {
+        distinct_id: analyticsId.toString(),
+      })
+    }
   }
 }

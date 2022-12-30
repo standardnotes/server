@@ -1,7 +1,8 @@
 import { DomainEventHandlerInterface, SubscriptionCancelledEvent } from '@standardnotes/domain-events'
-import { inject, injectable } from 'inversify'
+import { inject, injectable, optional } from 'inversify'
 import { Logger } from 'winston'
 import { Username } from '@standardnotes/domain-core'
+import { Mixpanel } from 'mixpanel'
 
 import TYPES from '../../Bootstrap/Types'
 import { AnalyticsActivity } from '../Analytics/AnalyticsActivity'
@@ -13,6 +14,7 @@ import { Period } from '../Time/Period'
 import { GetUserAnalyticsId } from '../UseCase/GetUserAnalyticsId/GetUserAnalyticsId'
 import { SaveRevenueModification } from '../UseCase/SaveRevenueModification/SaveRevenueModification'
 import { StatisticMeasureName } from '../Statistics/StatisticMeasureName'
+import { TimerInterface } from '@standardnotes/time'
 
 @injectable()
 export class SubscriptionCancelledEventHandler implements DomainEventHandlerInterface {
@@ -22,6 +24,8 @@ export class SubscriptionCancelledEventHandler implements DomainEventHandlerInte
     @inject(TYPES.StatisticsStore) private statisticsStore: StatisticsStoreInterface,
     @inject(TYPES.SaveRevenueModification) private saveRevenueModification: SaveRevenueModification,
     @inject(TYPES.Logger) private logger: Logger,
+    @inject(TYPES.MixpanelClient) @optional() private mixpanelClient: Mixpanel | null,
+    @inject(TYPES.Timer) private timer: TimerInterface,
   ) {}
 
   async handle(event: SubscriptionCancelledEvent): Promise<void> {
@@ -49,6 +53,22 @@ export class SubscriptionCancelledEventHandler implements DomainEventHandlerInte
       this.logger.error(
         `[${event.type}][${event.payload.subscriptionId}] Could not save revenue modification: ${result.getError()}`,
       )
+    }
+
+    if (this.mixpanelClient !== null) {
+      this.mixpanelClient.track(event.type, {
+        distinct_id: analyticsId.toString(),
+        subscription_name: event.payload.subscriptionName,
+        subscription_created_at: this.timer.convertMicrosecondsToDate(event.payload.subscriptionCreatedAt),
+        subscription_updated_at: this.timer.convertMicrosecondsToDate(event.payload.subscriptionUpdatedAt),
+        last_payed_at: this.timer.convertMicrosecondsToDate(event.payload.lastPayedAt),
+        subscription_ends_at: this.timer.convertMicrosecondsToDate(event.payload.subscriptionEndsAt),
+        offline: event.payload.offline,
+        replaced: event.payload.replaced,
+        user_existing_subscriptions_count: event.payload.userExistingSubscriptionsCount,
+        billing_frequency: event.payload.billingFrequency,
+        pay_amount: event.payload.payAmount,
+      })
     }
   }
 

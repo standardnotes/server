@@ -31,7 +31,12 @@ export class UserRegisteredEventHandler implements DomainEventHandlerInterface {
 
     if (this.mixpanelClient !== null) {
       this.mixpanelClient.track(event.type, {
-        distinct_id: analyticsEntity.id,
+        distinct_id: analyticsEntity.id.toString(),
+        protocol_version: event.payload.protocolVersion,
+      })
+
+      this.mixpanelClient.people.set(analyticsEntity.id.toString(), {
+        subscription: 'free',
         protocol_version: event.payload.protocolVersion,
       })
     }

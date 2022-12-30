@@ -1,7 +1,9 @@
 import { Username } from '@standardnotes/domain-core'
 import { DomainEventHandlerInterface, SubscriptionPurchasedEvent } from '@standardnotes/domain-events'
-import { inject, injectable } from 'inversify'
+import { TimerInterface } from '@standardnotes/time'
+import { inject, injectable, optional } from 'inversify'
 import { Logger } from 'winston'
+import { Mixpanel } from 'mixpanel'
 
 import TYPES from '../../Bootstrap/Types'
 import { AnalyticsActivity } from '../Analytics/AnalyticsActivity'
@@ -22,6 +24,8 @@ export class SubscriptionPurchasedEventHandler implements DomainEventHandlerInte
     @inject(TYPES.StatisticsStore) private statisticsStore: StatisticsStoreInterface,
     @inject(TYPES.SaveRevenueModification) private saveRevenueModification: SaveRevenueModification,
     @inject(TYPES.Logger) private logger: Logger,
+    @inject(TYPES.MixpanelClient) @optional() private mixpanelClient: Mixpanel | null,
+    @inject(TYPES.Timer) private timer: TimerInterface,
   ) {}
 
   async handle(event: SubscriptionPurchasedEvent): Promise<void> {
@@ -77,6 +81,24 @@ export class SubscriptionPurchasedEventHandler implements DomainEventHandlerInte
       this.logger.error(
         `[${event.type}][${event.payload.subscriptionId}] Could not save revenue modification: ${result.getError()}`,
       )
+    }
+
+    if (this.mixpanelClient !== null) {
+      this.mixpanelClient.track(event.type, {
+        distinct_id: analyticsId.toString(),
+        subscription_name: event.payload.subscriptionName,
+        subscription_expires_at: this.timer.convertMicrosecondsToDate(event.payload.subscriptionExpiresAt),
+        offline: event.payload.offline,
+        discount_code: event.payload.discountCode,
+        limited_discount_purchased: event.payload.limitedDiscountPurchased,
+        new_subscriber: event.payload.newSubscriber,
+        total_active_subscriptions_count: event.payload.totalActiveSubscriptionsCount,
+        user_registered_at: this.timer.convertMicrosecondsToDate(event.payload.userRegisteredAt),
+        billing_frequency: event.payload.billingFrequency,
+        pay_amount: event.payload.payAmount,
+      })
+
+      this.mixpanelClient.people.set(analyticsId.toString(), 'subscription', event.payload.subscriptionName)
     }
   }
 }

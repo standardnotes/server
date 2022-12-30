@@ -1,6 +1,7 @@
 import { PaymentType, SubscriptionBillingFrequency, SubscriptionName } from '@standardnotes/common'
 import { DomainEventHandlerInterface, PaymentSuccessEvent } from '@standardnotes/domain-events'
-import { inject, injectable } from 'inversify'
+import { inject, injectable, optional } from 'inversify'
+import { Mixpanel } from 'mixpanel'
 import { Logger } from 'winston'
 
 import TYPES from '../../Bootstrap/Types'
@@ -83,6 +84,7 @@ export class PaymentSuccessEventHandler implements DomainEventHandlerInterface {
     @inject(TYPES.AnalyticsStore) private analyticsStore: AnalyticsStoreInterface,
     @inject(TYPES.StatisticsStore) private statisticsStore: StatisticsStoreInterface,
     @inject(TYPES.Logger) private logger: Logger,
+    @inject(TYPES.MixpanelClient) @optional() private mixpanelClient: Mixpanel | null,
   ) {}
 
   async handle(event: PaymentSuccessEvent): Promise<void> {
@@ -112,6 +114,20 @@ export class PaymentSuccessEventHandler implements DomainEventHandlerInterface {
         Period.ThisWeek,
         Period.ThisMonth,
       ])
+    }
+
+    if (this.mixpanelClient !== null) {
+      this.mixpanelClient.track(event.type, {
+        distinct_id: analyticsId.toString(),
+        amount: event.payload.amount,
+        billing_frequency: event.payload.billingFrequency,
+        payment_type: event.payload.paymentType,
+        subscription_name: event.payload.subscriptionName,
+      })
+
+      this.mixpanelClient.people.track_charge(analyticsId.toString(), event.payload.amount)
+
+      this.mixpanelClient.people.set(analyticsId.toString(), 'subscription', event.payload.subscriptionName)
     }
   }
 }

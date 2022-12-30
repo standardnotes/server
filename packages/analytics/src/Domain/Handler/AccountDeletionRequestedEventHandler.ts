@@ -1,6 +1,7 @@
 import { AccountDeletionRequestedEvent, DomainEventHandlerInterface } from '@standardnotes/domain-events'
 import { TimerInterface } from '@standardnotes/time'
-import { inject, injectable } from 'inversify'
+import { inject, injectable, optional } from 'inversify'
+import { Mixpanel } from 'mixpanel'
 
 import TYPES from '../../Bootstrap/Types'
 import { AnalyticsActivity } from '../Analytics/AnalyticsActivity'
@@ -17,6 +18,7 @@ export class AccountDeletionRequestedEventHandler implements DomainEventHandlerI
     @inject(TYPES.AnalyticsStore) private analyticsStore: AnalyticsStoreInterface,
     @inject(TYPES.StatisticsStore) private statisticsStore: StatisticsStoreInterface,
     @inject(TYPES.Timer) private timer: TimerInterface,
+    @inject(TYPES.MixpanelClient) @optional() private mixpanelClient: Mixpanel | null,
   ) {}
 
   async handle(event: AccountDeletionRequestedEvent): Promise<void> {
@@ -40,5 +42,12 @@ export class AccountDeletionRequestedEventHandler implements DomainEventHandlerI
     ])
 
     await this.analyticsEntityRepository.remove(analyticsEntity)
+
+    if (this.mixpanelClient !== null) {
+      this.mixpanelClient.track(event.type, {
+        distinct_id: analyticsEntity.id.toString(),
+        user_created_at: this.timer.convertMicrosecondsToDate(event.payload.userCreatedAtTimestamp),
+      })
+    }
   }
 }

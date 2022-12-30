@@ -1,7 +1,8 @@
 import { Username } from '@standardnotes/domain-core'
 import { DomainEventHandlerInterface, SubscriptionExpiredEvent } from '@standardnotes/domain-events'
-import { inject, injectable } from 'inversify'
+import { inject, injectable, optional } from 'inversify'
 import { Logger } from 'winston'
+import { Mixpanel } from 'mixpanel'
 
 import TYPES from '../../Bootstrap/Types'
 import { AnalyticsActivity } from '../Analytics/AnalyticsActivity'
@@ -22,6 +23,7 @@ export class SubscriptionExpiredEventHandler implements DomainEventHandlerInterf
     @inject(TYPES.StatisticsStore) private statisticsStore: StatisticsStoreInterface,
     @inject(TYPES.SaveRevenueModification) private saveRevenueModification: SaveRevenueModification,
     @inject(TYPES.Logger) private logger: Logger,
+    @inject(TYPES.MixpanelClient) @optional() private mixpanelClient: Mixpanel | null,
   ) {}
 
   async handle(event: SubscriptionExpiredEvent): Promise<void> {
@@ -53,6 +55,20 @@ export class SubscriptionExpiredEventHandler implements DomainEventHandlerInterf
       this.logger.error(
         `[${event.type}][${event.payload.subscriptionId}] Could not save revenue modification: ${result.getError()}`,
       )
+    }
+
+    if (this.mixpanelClient !== null) {
+      this.mixpanelClient.track(event.type, {
+        distinct_id: analyticsId.toString(),
+        subscription_name: event.payload.subscriptionName,
+        offline: event.payload.offline,
+        total_active_subscriptions_count: event.payload.totalActiveSubscriptionsCount,
+        user_existing_subscriptions_count: event.payload.userExistingSubscriptionsCount,
+        billing_frequency: event.payload.billingFrequency,
+        pay_amount: event.payload.payAmount,
+      })
+
+      this.mixpanelClient.people.set(analyticsId.toString(), 'subscription', 'free')
     }
   }
 }

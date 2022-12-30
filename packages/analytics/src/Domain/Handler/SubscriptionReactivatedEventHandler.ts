@@ -1,5 +1,7 @@
 import { DomainEventHandlerInterface, SubscriptionReactivatedEvent } from '@standardnotes/domain-events'
-import { inject, injectable } from 'inversify'
+import { TimerInterface } from '@standardnotes/time'
+import { inject, injectable, optional } from 'inversify'
+import { Mixpanel } from 'mixpanel'
 
 import TYPES from '../../Bootstrap/Types'
 import { AnalyticsActivity } from '../Analytics/AnalyticsActivity'
@@ -12,6 +14,8 @@ export class SubscriptionReactivatedEventHandler implements DomainEventHandlerIn
   constructor(
     @inject(TYPES.AnalyticsStore) private analyticsStore: AnalyticsStoreInterface,
     @inject(TYPES.GetUserAnalyticsId) private getUserAnalyticsId: GetUserAnalyticsId,
+    @inject(TYPES.MixpanelClient) @optional() private mixpanelClient: Mixpanel | null,
+    @inject(TYPES.Timer) private timer: TimerInterface,
   ) {}
 
   async handle(event: SubscriptionReactivatedEvent): Promise<void> {
@@ -21,5 +25,16 @@ export class SubscriptionReactivatedEventHandler implements DomainEventHandlerIn
       Period.ThisWeek,
       Period.ThisMonth,
     ])
+
+    if (this.mixpanelClient !== null) {
+      this.mixpanelClient.track(event.type, {
+        distinct_id: analyticsId.toString(),
+        subscription_name: event.payload.subscriptionName,
+        subscription_expires_at: this.timer.convertMicrosecondsToDate(event.payload.subscriptionExpiresAt),
+        discount_code: event.payload.discountCode,
+      })
+
+      this.mixpanelClient.people.set(analyticsId.toString(), 'subscription', event.payload.subscriptionName)
+    }
   }
 }
