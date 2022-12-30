@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.18.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.17.8...@standardnotes/analytics@2.18.0) (2022-12-30)
+
+### Features
+
+* **analytics:** add mixpanel ([893d617](https://github.com/standardnotes/server/commit/893d6176c3b0b56c45e5188fe982232db2ceedc4))
+
 ## [2.17.8](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.17.7...@standardnotes/analytics@2.17.8) (2022-12-28)
 
 **Note:** Version bump only for package @standardnotes/analytics
