@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.19.1](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.19.0...@standardnotes/analytics@2.19.1) (2022-12-30)
+
+### Bug Fixes
+
+* **analytics:** remove unnecesary context from mixpanel events ([ba1e1ad](https://github.com/standardnotes/server/commit/ba1e1ad5ad82b052be4cc2d1cc2abdaf3b72cf4c))
+
 # [2.19.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.18.0...@standardnotes/analytics@2.19.0) (2022-12-30)
 
 ### Features
