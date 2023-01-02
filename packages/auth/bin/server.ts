@@ -4,7 +4,6 @@ import 'newrelic'
 
 import * as Sentry from '@sentry/node'
 import * as Tracing from '@sentry/tracing'
-import { ProfilingIntegration } from '@sentry/profiling-node'
 
 import '../src/Controller/HealthCheckController'
 import '../src/Controller/SessionController'
@@ -67,7 +66,6 @@ void container.load().then((container) => {
         dsn: env.get('SENTRY_DSN'),
         integrations: [
           new Sentry.Integrations.Http({ tracing: tracesSampleRate !== 0 }),
-          new ProfilingIntegration(),
           new Tracing.Integrations.Express({
             app,
           }),
