@@ -34,7 +34,6 @@
   "dependencies": {
     "@newrelic/winston-enricher": "^4.0.0",
     "@sentry/node": "^7.28.1",
-    "@sentry/profiling-node": "^0.0.12",
     "@sentry/tracing": "^7.28.1",
     "@simplewebauthn/server": "^6.2.2",
     "@simplewebauthn/typescript-types": "^6.3.0-alpha.1",

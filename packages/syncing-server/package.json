@@ -28,7 +28,6 @@
   "dependencies": {
     "@newrelic/winston-enricher": "^4.0.0",
     "@sentry/node": "^7.28.1",
-    "@sentry/profiling-node": "^0.0.12",
     "@sentry/tracing": "^7.28.1",
     "@standardnotes/common": "workspace:*",
     "@standardnotes/domain-core": "workspace:^",
