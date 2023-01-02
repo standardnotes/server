@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.28.4](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.28.3...@standardnotes/syncing-server@1.28.4) (2023-01-02)
+
+### Bug Fixes
+
+* remove @sentry/profiling-node as it is not compatible with ARM - fixes [#383](https://github.com/standardnotes/syncing-server-js/issues/383) ([fa6d80a](https://github.com/standardnotes/syncing-server-js/commit/fa6d80a753d4999818bb32a7fcb124f23c15f574))
+* remove @sentry/profiling-node integration as it is not compatible with ARM - fixes [#383](https://github.com/standardnotes/syncing-server-js/issues/383) ([9c72ad8](https://github.com/standardnotes/syncing-server-js/commit/9c72ad85a04040b3fdfce4f769e5e717ce81a3ce))
+
 ## [1.28.3](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.28.2...@standardnotes/syncing-server@1.28.3) (2022-12-28)
 
 **Note:** Version bump only for package @standardnotes/syncing-server

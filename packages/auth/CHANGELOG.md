@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.79.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.79.0...@standardnotes/auth-server@1.79.1) (2023-01-02)
+
+### Bug Fixes
+
+* remove @sentry/profiling-node as it is not compatible with ARM - fixes [#383](https://github.com/standardnotes/server/issues/383) ([fa6d80a](https://github.com/standardnotes/server/commit/fa6d80a753d4999818bb32a7fcb124f23c15f574))
+* remove @sentry/profiling-node integration as it is not compatible with ARM - fixes [#383](https://github.com/standardnotes/server/issues/383) ([9c72ad8](https://github.com/standardnotes/server/commit/9c72ad85a04040b3fdfce4f769e5e717ce81a3ce))
+
 # [1.79.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.78.0...@standardnotes/auth-server@1.79.0) (2022-12-29)
 
 ### Features
