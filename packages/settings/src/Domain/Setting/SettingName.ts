@@ -14,4 +14,5 @@ export enum SettingName {
   MuteMarketingEmails = 'MUTE_MARKETING_EMAILS',
   ListedAuthorSecrets = 'LISTED_AUTHOR_SECRETS',
   LogSessionUserAgent = 'LOG_SESSION_USER_AGENT',
+  RecoveryCodes = 'RECOVERY_CODES',
 }
