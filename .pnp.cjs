@@ -191,7 +191,7 @@ const RAW_RUNTIME_STATE =
           ["convert-source-map", "npm:1.8.0"],\
           ["debug", "virtual:b86a9fb34323a98c6519528ed55faa0d9b44ca8879307c0b29aa384bde47ff59a7d0c9051b31246f14521dfb71ba3c5d6d0b35c29fffc17bf875aa6ad977d9e8#npm:4.3.4"],\
           ["gensync", "npm:1.0.0-beta.2"],\
-          ["json5", "npm:2.2.1"],\
+          ["json5", "npm:2.2.3"],\
           ["semver", "npm:6.3.0"]\
         ],\
         "linkType": "HARD"\
@@ -9729,10 +9729,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["json5", [\
-      ["npm:2.2.1", {\
-        "packageLocation": "./.yarn/cache/json5-npm-2.2.1-44675c859c-8bb433c397.zip/node_modules/json5/",\
+      ["npm:2.2.3", {\
+        "packageLocation": "./.yarn/cache/json5-npm-2.2.3-9962c55073-e298f92c92.zip/node_modules/json5/",\
         "packageDependencies": [\
-          ["json5", "npm:2.2.1"]\
+          ["json5", "npm:2.2.3"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -12027,7 +12027,7 @@ const RAW_RUNTIME_STATE =
           ["rc-config-loader", "npm:4.1.0"],\
           ["debug", "virtual:b86a9fb34323a98c6519528ed55faa0d9b44ca8879307c0b29aa384bde47ff59a7d0c9051b31246f14521dfb71ba3c5d6d0b35c29fffc17bf875aa6ad977d9e8#npm:4.3.4"],\
           ["js-yaml", "npm:4.1.0"],\
-          ["json5", "npm:2.2.1"],\
+          ["json5", "npm:2.2.3"],\
           ["require-from-string", "npm:2.0.2"]\
         ],\
         "linkType": "HARD"\
@@ -13411,7 +13411,7 @@ const RAW_RUNTIME_STATE =
           ["fast-json-stable-stringify", "npm:2.1.0"],\
           ["jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.1.2"],\
           ["jest-util", "npm:29.1.2"],\
-          ["json5", "npm:2.2.1"],\
+          ["json5", "npm:2.2.3"],\
           ["lodash.memoize", "npm:4.1.2"],\
           ["make-error", "npm:1.3.6"],\
           ["semver", "npm:7.3.7"],\
