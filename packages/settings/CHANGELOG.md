@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.19.0](https://github.com/standardnotes/server/compare/@standardnotes/settings@1.18.4...@standardnotes/settings@1.19.0) (2023-01-04)
+
+### Features
+
+* **auth:** add generating recovery codes ([a360231](https://github.com/standardnotes/server/commit/a360231fd0b04afbc8cfa0ed74c8e21c4edadb4e))
+
 ## [1.18.4](https://github.com/standardnotes/server/compare/@standardnotes/settings@1.18.3...@standardnotes/settings@1.18.4) (2022-11-24)
 
 **Note:** Version bump only for package @standardnotes/settings
