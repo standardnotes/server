@@ -38,7 +38,7 @@ export class GenerateRecoveryCodes implements UseCaseInterface<string> {
         name: SettingName.RecoveryCodes,
         unencryptedValue: recoveryCodes,
         serverEncryptionVersion: EncryptionVersion.Default,
-        sensitive: true,
+        sensitive: false,
       },
     })
 
