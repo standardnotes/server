@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.45.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.44.0...@standardnotes/api-gateway@1.45.0) (2023-01-05)
+
+### Features
+
+* **auth:** add recovery sign in with recovery codes ([cac899a](https://github.com/standardnotes/api-gateway/commit/cac899a7e558d066895dfb3ba28418d94072f2b7))
+
 # [1.44.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.43.0...@standardnotes/api-gateway@1.44.0) (2022-12-29)
 
 ### Features
