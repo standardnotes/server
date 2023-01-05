@@ -9,6 +9,9 @@ import { Register } from '../Domain/UseCase/Register'
 import { DomainEventFactoryInterface } from '../Domain/Event/DomainEventFactoryInterface'
 import { KeyParamsOrigination, ProtocolVersion } from '@standardnotes/common'
 import { ApiVersion } from '@standardnotes/api'
+import { SignInWithRecoveryCodes } from '../Domain/UseCase/SignInWithRecoveryCodes/SignInWithRecoveryCodes'
+import { GetUserKeyParamsRecovery } from '../Domain/UseCase/GetUserKeyParamsRecovery/GetUserKeyParamsRecovery'
+import { GenerateRecoveryCodes } from '../Domain/UseCase/GenerateRecoveryCodes/GenerateRecoveryCodes'
 
 describe('AuthController', () => {
   let clearLoginAttempts: ClearLoginAttempts
@@ -17,9 +20,20 @@ describe('AuthController', () => {
   let domainEventFactory: DomainEventFactoryInterface
   let event: DomainEventInterface
   let user: User
+  let doSignInWithRecoveryCodes: SignInWithRecoveryCodes
+  let getUserKeyParamsRecovery: GetUserKeyParamsRecovery
+  let doGenerateRecoveryCodes: GenerateRecoveryCodes
 
   const createController = () =>
-    new AuthController(clearLoginAttempts, register, domainEventPublisher, domainEventFactory)
+    new AuthController(
+      clearLoginAttempts,
+      register,
+      domainEventPublisher,
+      domainEventFactory,
+      doSignInWithRecoveryCodes,
+      getUserKeyParamsRecovery,
+      doGenerateRecoveryCodes,
+    )
 
   beforeEach(() => {
     register = {} as jest.Mocked<Register>
@@ -113,7 +127,7 @@ describe('AuthController', () => {
   it('should throw error on the delete user method as it is still a part of the payments server', async () => {
     let caughtError = null
     try {
-      await createController().deleteAccount({ userUuid: '1-2-3' })
+      await createController().deleteAccount({} as never)
     } catch (error) {
       caughtError = error
     }

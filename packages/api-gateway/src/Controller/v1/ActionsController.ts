@@ -39,4 +39,19 @@ export class ActionsController extends BaseHttpController {
       request.body,
     )
   }
+
+  @httpPost('/recovery/codes', TYPES.AuthMiddleware)
+  async recoveryCodes(request: Request, response: Response): Promise<void> {
+    await this.httpService.callAuthServer(request, response, 'auth/recovery/codes', request.body)
+  }
+
+  @httpPost('/recovery/login')
+  async recoveryLogin(request: Request, response: Response): Promise<void> {
+    await this.httpService.callAuthServer(request, response, 'auth/recovery/login', request.body)
+  }
+
+  @httpPost('/recovery/login-params')
+  async recoveryParams(request: Request, response: Response): Promise<void> {
+    await this.httpService.callAuthServer(request, response, 'auth/recovery/params', request.body)
+  }
 }

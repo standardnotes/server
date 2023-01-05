@@ -142,6 +142,8 @@ const TYPES = {
   ListAuthenticators: Symbol.for('ListAuthenticators'),
   DeleteAuthenticator: Symbol.for('DeleteAuthenticator'),
   GenerateRecoveryCodes: Symbol.for('GenerateRecoveryCodes'),
+  SignInWithRecoveryCodes: Symbol.for('SignInWithRecoveryCodes'),
+  GetUserKeyParamsRecovery: Symbol.for('GetUserKeyParamsRecovery'),
   // Handlers
   UserRegisteredEventHandler: Symbol.for('UserRegisteredEventHandler'),
   AccountDeletionRequestedEventHandler: Symbol.for('AccountDeletionRequestedEventHandler'),

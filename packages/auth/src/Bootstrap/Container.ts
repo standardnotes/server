@@ -223,6 +223,8 @@ import { AuthenticatorHttpProjection } from '../Infra/Http/Projection/Authentica
 import { AuthenticatorHttpMapper } from '../Mapping/AuthenticatorHttpMapper'
 import { DeleteAuthenticator } from '../Domain/UseCase/DeleteAuthenticator/DeleteAuthenticator'
 import { GenerateRecoveryCodes } from '../Domain/UseCase/GenerateRecoveryCodes/GenerateRecoveryCodes'
+import { SignInWithRecoveryCodes } from '../Domain/UseCase/SignInWithRecoveryCodes/SignInWithRecoveryCodes'
+import { GetUserKeyParamsRecovery } from '../Domain/UseCase/GetUserKeyParamsRecovery/GetUserKeyParamsRecovery'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -617,6 +619,30 @@ export class ContainerConfigLoader {
     container.bind<VerifyMFA>(TYPES.VerifyMFA).to(VerifyMFA)
     container.bind<ClearLoginAttempts>(TYPES.ClearLoginAttempts).to(ClearLoginAttempts)
     container.bind<IncreaseLoginAttempts>(TYPES.IncreaseLoginAttempts).to(IncreaseLoginAttempts)
+    container
+      .bind<SignInWithRecoveryCodes>(TYPES.SignInWithRecoveryCodes)
+      .toConstantValue(
+        new SignInWithRecoveryCodes(
+          container.get(TYPES.UserRepository),
+          container.get(TYPES.AuthResponseFactory20200115),
+          container.get(TYPES.PKCERepository),
+          container.get(TYPES.Crypter),
+          container.get(TYPES.SettingService),
+          container.get(TYPES.GenerateRecoveryCodes),
+          container.get(TYPES.IncreaseLoginAttempts),
+          container.get(TYPES.ClearLoginAttempts),
+        ),
+      )
+    container
+      .bind<GetUserKeyParamsRecovery>(TYPES.GetUserKeyParamsRecovery)
+      .toConstantValue(
+        new GetUserKeyParamsRecovery(
+          container.get(TYPES.KeyParamsFactory),
+          container.get(TYPES.UserRepository),
+          container.get(TYPES.PKCERepository),
+          container.get(TYPES.SettingService),
+        ),
+      )
     container.bind<GetUserKeyParams>(TYPES.GetUserKeyParams).to(GetUserKeyParams)
     container.bind<UpdateUser>(TYPES.UpdateUser).to(UpdateUser)
     container.bind<Register>(TYPES.Register).to(Register)

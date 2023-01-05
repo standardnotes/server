@@ -252,6 +252,41 @@ export class InversifyExpressAuthController extends BaseHttpController {
     return this.json(signInResult.authResponse)
   }
 
+  @httpPost('/recovery/codes', TYPES.ApiGatewayAuthMiddleware)
+  async generateRecoveryCodes(_request: Request, response: Response): Promise<results.JsonResult> {
+    const result = await this.authController.generateRecoveryCodes({
+      userUuid: response.locals.user.uuid,
+    })
+
+    return this.json(result.data, result.status)
+  }
+
+  @httpPost('/recovery/login', TYPES.LockMiddleware)
+  async recoveryLogin(request: Request): Promise<results.JsonResult> {
+    const result = await this.authController.signInWithRecoveryCodes({
+      apiVersion: request.body.api,
+      userAgent: <string>request.headers['user-agent'],
+      codeVerifier: request.body.code_verifier,
+      username: request.body.email,
+      recoveryCodes: request.body.recovery_codes,
+      password: request.body.password,
+    })
+
+    return this.json(result.data, result.status)
+  }
+
+  @httpPost('/recovery/params')
+  async recoveryParams(request: Request): Promise<results.JsonResult> {
+    const result = await this.authController.recoveryKeyParams({
+      apiVersion: request.body.api,
+      username: request.body.email,
+      codeChallenge: request.body.code_challenge,
+      recoveryCodes: request.body.recovery_codes,
+    })
+
+    return this.json(result.data, result.status)
+  }
+
   @httpPost('/sign_out', TYPES.AuthMiddlewareWithoutResponse)
   async signOut(request: Request, response: Response): Promise<results.JsonResult | void> {
     if (response.locals.readOnlyAccess) {
