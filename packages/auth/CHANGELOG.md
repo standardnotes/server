@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.81.2](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.81.1...@standardnotes/auth-server@1.81.2) (2023-01-05)
+
+### Bug Fixes
+
+* **auth:** return type to include user ([db0baf9](https://github.com/standardnotes/server/commit/db0baf92f1336071a8602a1a20ba6439f10028e6))
+
 ## [1.81.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.81.0...@standardnotes/auth-server@1.81.1) (2023-01-05)
 
 ### Bug Fixes
