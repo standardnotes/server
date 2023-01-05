@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.81.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.81.0...@standardnotes/auth-server@1.81.1) (2023-01-05)
+
+### Bug Fixes
+
+* **auth:** allow retrieval of recovery codes setting ([13c5c97](https://github.com/standardnotes/server/commit/13c5c97ba73fcf1f4bd2905a1d8668ef5b468016))
+
 # [1.81.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.80.0...@standardnotes/auth-server@1.81.0) (2023-01-05)
 
 ### Features
