@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.16.5](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.16.4...@standardnotes/scheduler-server@1.16.5) (2023-01-06)
+
+### Bug Fixes
+
+* **scheduler:** change email levels ([79c3e33](https://github.com/standardnotes/server/commit/79c3e33434d186df7240d17cb598914361b1c9fe))
+
 ## [1.16.4](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.16.3...@standardnotes/scheduler-server@1.16.4) (2022-12-28)
 
 **Note:** Version bump only for package @standardnotes/scheduler-server
