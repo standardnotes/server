@@ -97,7 +97,7 @@ export class JobDoneInterpreter implements JobDoneInterpreterInterface {
         messageIdentifier: 'ENCOURAGE_EMAIL_BACKUPS',
         subject: getEncourageEmailBackupsSubject(),
         body: getEncourageEmailBackupsBody(),
-        level: EmailLevel.LEVELS.System,
+        level: EmailLevel.LEVELS.Marketing,
       }),
     )
   }
@@ -113,7 +113,7 @@ export class JobDoneInterpreter implements JobDoneInterpreterInterface {
         body: getEncourageSubscriptionPurchasingBody(
           this.timer.convertMicrosecondsToDate(job.createdAt).toLocaleString(),
         ),
-        level: EmailLevel.LEVELS.System,
+        level: EmailLevel.LEVELS.Marketing,
       }),
     )
   }
@@ -127,7 +127,7 @@ export class JobDoneInterpreter implements JobDoneInterpreterInterface {
         messageIdentifier: 'EXIT_INTERVIEW',
         subject: getExitInterviewSubject(),
         body: getExitInterviewBody(),
-        level: EmailLevel.LEVELS.System,
+        level: EmailLevel.LEVELS.Marketing,
       }),
     )
   }
