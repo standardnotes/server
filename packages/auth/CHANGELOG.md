@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.81.6](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.81.5...@standardnotes/auth-server@1.81.6) (2023-01-09)
+
+### Bug Fixes
+
+* **auth:** request parameters names ([dda8d79](https://github.com/standardnotes/server/commit/dda8d795262d6629493377ae5a6143263a792378))
+
 ## [1.81.5](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.81.4...@standardnotes/auth-server@1.81.5) (2023-01-09)
 
 ### Bug Fixes
