@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.81.3](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.81.2...@standardnotes/auth-server@1.81.3) (2023-01-09)
+
+### Bug Fixes
+
+* **auth:** remove mfa settings after recovery sign in ([a0208dd](https://github.com/standardnotes/server/commit/a0208dd5b3ce54ccfa96b3497cb36e16ccb4cf89))
+
 ## [1.81.2](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.81.1...@standardnotes/auth-server@1.81.2) (2023-01-05)
 
 ### Bug Fixes
