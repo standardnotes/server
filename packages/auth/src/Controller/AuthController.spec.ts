@@ -12,6 +12,7 @@ import { ApiVersion } from '@standardnotes/api'
 import { SignInWithRecoveryCodes } from '../Domain/UseCase/SignInWithRecoveryCodes/SignInWithRecoveryCodes'
 import { GetUserKeyParamsRecovery } from '../Domain/UseCase/GetUserKeyParamsRecovery/GetUserKeyParamsRecovery'
 import { GenerateRecoveryCodes } from '../Domain/UseCase/GenerateRecoveryCodes/GenerateRecoveryCodes'
+import { Logger } from 'winston'
 
 describe('AuthController', () => {
   let clearLoginAttempts: ClearLoginAttempts
@@ -23,6 +24,7 @@ describe('AuthController', () => {
   let doSignInWithRecoveryCodes: SignInWithRecoveryCodes
   let getUserKeyParamsRecovery: GetUserKeyParamsRecovery
   let doGenerateRecoveryCodes: GenerateRecoveryCodes
+  let logger: Logger
 
   const createController = () =>
     new AuthController(
@@ -33,6 +35,7 @@ describe('AuthController', () => {
       doSignInWithRecoveryCodes,
       getUserKeyParamsRecovery,
       doGenerateRecoveryCodes,
+      logger,
     )
 
   beforeEach(() => {
@@ -52,6 +55,9 @@ describe('AuthController', () => {
 
     domainEventFactory = {} as jest.Mocked<DomainEventFactoryInterface>
     domainEventFactory.createUserRegisteredEvent = jest.fn().mockReturnValue(event)
+
+    logger = {} as jest.Mocked<Logger>
+    logger.debug = jest.fn()
   })
 
   it('should register a user', async () => {

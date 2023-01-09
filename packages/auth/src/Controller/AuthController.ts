@@ -23,6 +23,7 @@ import { RecoveryKeyParamsResponse } from '../Infra/Http/Response/RecoveryKeyPar
 import { GenerateRecoveryCodes } from '../Domain/UseCase/GenerateRecoveryCodes/GenerateRecoveryCodes'
 import { GenerateRecoveryCodesRequestParams } from '../Infra/Http/Request/GenerateRecoveryCodesRequestParams'
 import { GenerateRecoveryCodesResponse } from '../Infra/Http/Response/GenerateRecoveryCodesResponse'
+import { Logger } from 'winston'
 
 @injectable()
 export class AuthController implements UserServerInterface {
@@ -34,6 +35,7 @@ export class AuthController implements UserServerInterface {
     @inject(TYPES.SignInWithRecoveryCodes) private doSignInWithRecoveryCodes: SignInWithRecoveryCodes,
     @inject(TYPES.GetUserKeyParamsRecovery) private getUserKeyParamsRecovery: GetUserKeyParamsRecovery,
     @inject(TYPES.GenerateRecoveryCodes) private doGenerateRecoveryCodes: GenerateRecoveryCodes,
+    @inject(TYPES.Logger) private logger: Logger,
   ) {}
 
   async deleteAccount(_params: never): Promise<UserDeletionResponse> {
@@ -138,11 +140,13 @@ export class AuthController implements UserServerInterface {
     })
 
     if (result.isFailed()) {
+      this.logger.debug('Failed to sign in with recovery codes', result.getError())
+
       return {
         status: HttpStatusCode.Unauthorized,
         data: {
           error: {
-            message: result.getError(),
+            message: 'Invalid login credentials.',
           },
         },
       }
@@ -173,11 +177,13 @@ export class AuthController implements UserServerInterface {
     })
 
     if (result.isFailed()) {
+      this.logger.debug('Failed to get recovery key params', result.getError())
+
       return {
         status: HttpStatusCode.Unauthorized,
         data: {
           error: {
-            message: result.getError(),
+            message: 'Invalid login credentials.',
           },
         },
       }
