@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.81.7](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.81.6...@standardnotes/auth-server@1.81.7) (2023-01-09)
+
+### Bug Fixes
+
+* **auth:** failure messages for debug logs upon signing in with recovery codes ([7ae8845](https://github.com/standardnotes/server/commit/7ae8845ae9ff9c208d192aea48e5517a16c8338f))
+
 ## [1.81.6](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.81.5...@standardnotes/auth-server@1.81.6) (2023-01-09)
 
 ### Bug Fixes
