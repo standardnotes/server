@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.81.4](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.81.3...@standardnotes/auth-server@1.81.4) (2023-01-09)
+
+### Bug Fixes
+
+* **auth:** error messages on account recovery ([1fc3c9b](https://github.com/standardnotes/server/commit/1fc3c9b83ee2239b618dfb609b1dc2d68d063331))
+
 ## [1.81.3](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.81.2...@standardnotes/auth-server@1.81.3) (2023-01-09)
 
 ### Bug Fixes
