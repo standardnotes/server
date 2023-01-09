@@ -142,7 +142,7 @@ export class AuthController implements UserServerInterface {
         status: HttpStatusCode.Unauthorized,
         data: {
           error: {
-            message: 'Invalid login credentials.',
+            message: result.getError(),
           },
         },
       }
@@ -177,7 +177,7 @@ export class AuthController implements UserServerInterface {
         status: HttpStatusCode.Unauthorized,
         data: {
           error: {
-            message: 'Invalid login credentials.',
+            message: result.getError(),
           },
         },
       }
