@@ -81,7 +81,7 @@ describe('SignInWithRecoveryCodes', () => {
     })
 
     expect(result.isFailed()).toBe(true)
-    expect(result.getError()).toBe('Invalid email or password')
+    expect(result.getError()).toBe('Empty password')
   })
 
   it('should return error if username is not provided', async () => {
@@ -107,7 +107,7 @@ describe('SignInWithRecoveryCodes', () => {
     })
 
     expect(result.isFailed()).toBe(true)
-    expect(result.getError()).toBe('Invalid email or password')
+    expect(result.getError()).toBe('Invalid code verifier')
   })
 
   it('should return error if recovery codes are not provided', async () => {
@@ -120,7 +120,7 @@ describe('SignInWithRecoveryCodes', () => {
     })
 
     expect(result.isFailed()).toBe(true)
-    expect(result.getError()).toBe('Invalid recovery codes')
+    expect(result.getError()).toBe('Empty recovery codes')
   })
 
   it('should return error if code verifier is invalid', async () => {
@@ -135,7 +135,7 @@ describe('SignInWithRecoveryCodes', () => {
     })
 
     expect(result.isFailed()).toBe(true)
-    expect(result.getError()).toBe('Invalid email or password')
+    expect(result.getError()).toBe('Invalid code verifier')
   })
 
   it('should return error if user is not found', async () => {
@@ -150,7 +150,7 @@ describe('SignInWithRecoveryCodes', () => {
     })
 
     expect(result.isFailed()).toBe(true)
-    expect(result.getError()).toBe('Invalid email or password')
+    expect(result.getError()).toBe('Could not find user')
   })
 
   it('should return error if recovery codes are invalid', async () => {
@@ -176,7 +176,7 @@ describe('SignInWithRecoveryCodes', () => {
     })
 
     expect(result.isFailed()).toBe(true)
-    expect(result.getError()).toBe('Invalid email or password')
+    expect(result.getError()).toBe('Invalid password')
   })
 
   it('should return error if recovery codes are not generated for user', async () => {

@@ -40,21 +40,21 @@ export class SignInWithRecoveryCodes implements UseCaseInterface<AuthResponse202
     if (!validCodeVerifier) {
       await this.increaseLoginAttempts.execute({ email: username.value })
 
-      return Result.fail('Invalid email or password')
+      return Result.fail('Invalid code verifier')
     }
 
     const passwordValidationResult = Validator.isNotEmpty(dto.password)
     if (passwordValidationResult.isFailed()) {
       await this.increaseLoginAttempts.execute({ email: username.value })
 
-      return Result.fail('Invalid email or password')
+      return Result.fail('Empty password')
     }
 
     const recoveryCodesValidationResult = Validator.isNotEmpty(dto.recoveryCodes)
     if (recoveryCodesValidationResult.isFailed()) {
       await this.increaseLoginAttempts.execute({ email: username.value })
 
-      return Result.fail('Invalid recovery codes')
+      return Result.fail('Empty recovery codes')
     }
 
     const user = await this.userRepository.findOneByEmail(username.value)
@@ -62,14 +62,14 @@ export class SignInWithRecoveryCodes implements UseCaseInterface<AuthResponse202
     if (!user) {
       await this.increaseLoginAttempts.execute({ email: username.value })
 
-      return Result.fail('Invalid email or password')
+      return Result.fail('Could not find user')
     }
 
     const passwordMatches = await bcrypt.compare(dto.password, user.encryptedPassword)
     if (!passwordMatches) {
       await this.increaseLoginAttempts.execute({ email: username.value })
 
-      return Result.fail('Invalid email or password')
+      return Result.fail('Invalid password')
     }
 
     const recoveryCodesSetting = await this.settingService.findSettingWithDecryptedValue({
