@@ -620,20 +620,6 @@ export class ContainerConfigLoader {
     container.bind<ClearLoginAttempts>(TYPES.ClearLoginAttempts).to(ClearLoginAttempts)
     container.bind<IncreaseLoginAttempts>(TYPES.IncreaseLoginAttempts).to(IncreaseLoginAttempts)
     container
-      .bind<SignInWithRecoveryCodes>(TYPES.SignInWithRecoveryCodes)
-      .toConstantValue(
-        new SignInWithRecoveryCodes(
-          container.get(TYPES.UserRepository),
-          container.get(TYPES.AuthResponseFactory20200115),
-          container.get(TYPES.PKCERepository),
-          container.get(TYPES.Crypter),
-          container.get(TYPES.SettingService),
-          container.get(TYPES.GenerateRecoveryCodes),
-          container.get(TYPES.IncreaseLoginAttempts),
-          container.get(TYPES.ClearLoginAttempts),
-        ),
-      )
-    container
       .bind<GetUserKeyParamsRecovery>(TYPES.GetUserKeyParamsRecovery)
       .toConstantValue(
         new GetUserKeyParamsRecovery(
@@ -655,6 +641,21 @@ export class ContainerConfigLoader {
     container.bind<GetUserFeatures>(TYPES.GetUserFeatures).to(GetUserFeatures)
     container.bind<UpdateSetting>(TYPES.UpdateSetting).to(UpdateSetting)
     container.bind<DeleteSetting>(TYPES.DeleteSetting).to(DeleteSetting)
+    container
+      .bind<SignInWithRecoveryCodes>(TYPES.SignInWithRecoveryCodes)
+      .toConstantValue(
+        new SignInWithRecoveryCodes(
+          container.get(TYPES.UserRepository),
+          container.get(TYPES.AuthResponseFactory20200115),
+          container.get(TYPES.PKCERepository),
+          container.get(TYPES.Crypter),
+          container.get(TYPES.SettingService),
+          container.get(TYPES.GenerateRecoveryCodes),
+          container.get(TYPES.IncreaseLoginAttempts),
+          container.get(TYPES.ClearLoginAttempts),
+          container.get(TYPES.DeleteSetting),
+        ),
+      )
     container.bind<DeleteAccount>(TYPES.DeleteAccount).to(DeleteAccount)
     container.bind<GetUserSubscription>(TYPES.GetUserSubscription).to(GetUserSubscription)
     container.bind<GetUserOfflineSubscription>(TYPES.GetUserOfflineSubscription).to(GetUserOfflineSubscription)

@@ -9,6 +9,7 @@ import { PKCERepositoryInterface } from '../../User/PKCERepositoryInterface'
 import { User } from '../../User/User'
 import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'
 import { ClearLoginAttempts } from '../ClearLoginAttempts'
+import { DeleteSetting } from '../DeleteSetting/DeleteSetting'
 import { GenerateRecoveryCodes } from '../GenerateRecoveryCodes/GenerateRecoveryCodes'
 import { IncreaseLoginAttempts } from '../IncreaseLoginAttempts'
 import { SignInWithRecoveryCodes } from './SignInWithRecoveryCodes'
@@ -22,6 +23,7 @@ describe('SignInWithRecoveryCodes', () => {
   let generateRecoveryCodes: GenerateRecoveryCodes
   let increaseLoginAttempts: IncreaseLoginAttempts
   let clearLoginAttempts: ClearLoginAttempts
+  let deleteSetting: DeleteSetting
 
   const createUseCase = () =>
     new SignInWithRecoveryCodes(
@@ -33,6 +35,7 @@ describe('SignInWithRecoveryCodes', () => {
       generateRecoveryCodes,
       increaseLoginAttempts,
       clearLoginAttempts,
+      deleteSetting,
     )
 
   beforeEach(() => {
@@ -63,6 +66,9 @@ describe('SignInWithRecoveryCodes', () => {
 
     clearLoginAttempts = {} as jest.Mocked<ClearLoginAttempts>
     clearLoginAttempts.execute = jest.fn()
+
+    deleteSetting = {} as jest.Mocked<DeleteSetting>
+    deleteSetting.execute = jest.fn()
   })
 
   it('should return error if password is not provided', async () => {
@@ -213,6 +219,7 @@ describe('SignInWithRecoveryCodes', () => {
     })
 
     expect(clearLoginAttempts.execute).toHaveBeenCalled()
+    expect(deleteSetting.execute).toHaveBeenCalled()
     expect(result.isFailed()).toBe(false)
   })
 })

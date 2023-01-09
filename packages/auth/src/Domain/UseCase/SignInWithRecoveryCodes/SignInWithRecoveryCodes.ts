@@ -14,6 +14,7 @@ import { SignInWithRecoveryCodesDTO } from './SignInWithRecoveryCodesDTO'
 import { AuthResponseFactory20200115 } from '../../Auth/AuthResponseFactory20200115'
 import { IncreaseLoginAttempts } from '../IncreaseLoginAttempts'
 import { ClearLoginAttempts } from '../ClearLoginAttempts'
+import { DeleteSetting } from '../DeleteSetting/DeleteSetting'
 
 export class SignInWithRecoveryCodes implements UseCaseInterface<AuthResponse20200115> {
   constructor(
@@ -25,6 +26,7 @@ export class SignInWithRecoveryCodes implements UseCaseInterface<AuthResponse202
     private generateRecoveryCodes: GenerateRecoveryCodes,
     private increaseLoginAttempts: IncreaseLoginAttempts,
     private clearLoginAttempts: ClearLoginAttempts,
+    private deleteSetting: DeleteSetting,
   ) {}
 
   async execute(dto: SignInWithRecoveryCodesDTO): Promise<Result<AuthResponse20200115>> {
@@ -102,6 +104,11 @@ export class SignInWithRecoveryCodes implements UseCaseInterface<AuthResponse202
 
       return Result.fail(`Could not sign in with recovery codes: ${generateNewRecoveryCodesResult.getError()}`)
     }
+
+    await this.deleteSetting.execute({
+      settingName: SettingName.MfaSecret,
+      userUuid: user.uuid,
+    })
 
     await this.clearLoginAttempts.execute({ email: username.value })
 
