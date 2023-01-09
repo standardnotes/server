@@ -264,10 +264,10 @@ export class InversifyExpressAuthController extends BaseHttpController {
   @httpPost('/recovery/login', TYPES.LockMiddleware)
   async recoveryLogin(request: Request): Promise<results.JsonResult> {
     const result = await this.authController.signInWithRecoveryCodes({
-      apiVersion: request.body.api,
+      apiVersion: request.body.apiVersion,
       userAgent: <string>request.headers['user-agent'],
       codeVerifier: request.body.code_verifier,
-      username: request.body.email,
+      username: request.body.username,
       recoveryCodes: request.body.recovery_codes,
       password: request.body.password,
     })
@@ -278,8 +278,8 @@ export class InversifyExpressAuthController extends BaseHttpController {
   @httpPost('/recovery/params')
   async recoveryParams(request: Request): Promise<results.JsonResult> {
     const result = await this.authController.recoveryKeyParams({
-      apiVersion: request.body.api,
-      username: request.body.email,
+      apiVersion: request.body.apiVersion,
+      username: request.body.username,
       codeChallenge: request.body.code_challenge,
       recoveryCodes: request.body.recovery_codes,
     })

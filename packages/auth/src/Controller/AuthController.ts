@@ -140,7 +140,7 @@ export class AuthController implements UserServerInterface {
     })
 
     if (result.isFailed()) {
-      this.logger.debug('Failed to sign in with recovery codes', result.getError())
+      this.logger.debug(`Failed to sign in with recovery codes: ${result.getError()}`)
 
       return {
         status: HttpStatusCode.Unauthorized,
@@ -177,7 +177,7 @@ export class AuthController implements UserServerInterface {
     })
 
     if (result.isFailed()) {
-      this.logger.debug('Failed to get recovery key params', result.getError())
+      this.logger.debug(`Failed to get recovery key params: ${result.getError()}`)
 
       return {
         status: HttpStatusCode.Unauthorized,
