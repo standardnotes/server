@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.81.8](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.81.7...@standardnotes/auth-server@1.81.8) (2023-01-11)
+
+### Bug Fixes
+
+* **auth:** add relying party configuration options ([d18f6cc](https://github.com/standardnotes/server/commit/d18f6ccd32fa97c927781c17659cf7a8e662ee07))
+
 ## [1.81.7](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.81.6...@standardnotes/auth-server@1.81.7) (2023-01-09)
 
 ### Bug Fixes
