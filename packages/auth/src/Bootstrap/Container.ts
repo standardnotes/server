@@ -463,7 +463,12 @@ export class ContainerConfigLoader {
     container
       .bind(TYPES.SESSION_TRACE_DAYS_TTL)
       .toConstantValue(env.get('SESSION_TRACE_DAYS_TTL', true) ? +env.get('SESSION_TRACE_DAYS_TTL', true) : 90)
-
+    container
+      .bind(TYPES.U2F_RELYING_PARTY_NAME)
+      .toConstantValue(env.get('U2F_RELYING_PARTY_NAME', true) ?? 'Standard Notes')
+    container
+      .bind(TYPES.U2F_RELYING_PARTY_ID)
+      .toConstantValue(env.get('U2F_RELYING_PARTY_ID', true) ?? 'standardnotes.com')
     // Services
     container.bind<UAParser>(TYPES.DeviceDetector).toConstantValue(new UAParser())
     container.bind<SessionService>(TYPES.SessionService).to(SessionService)
@@ -567,6 +572,8 @@ export class ContainerConfigLoader {
         new GenerateAuthenticatorRegistrationOptions(
           container.get(TYPES.AuthenticatorRepository),
           container.get(TYPES.AuthenticatorChallengeRepository),
+          container.get(TYPES.U2F_RELYING_PARTY_NAME),
+          container.get(TYPES.U2F_RELYING_PARTY_ID),
         ),
       )
     container
@@ -575,6 +582,7 @@ export class ContainerConfigLoader {
         new VerifyAuthenticatorRegistrationResponse(
           container.get(TYPES.AuthenticatorRepository),
           container.get(TYPES.AuthenticatorChallengeRepository),
+          container.get(TYPES.U2F_RELYING_PARTY_ID),
         ),
       )
     container
@@ -591,6 +599,7 @@ export class ContainerConfigLoader {
         new VerifyAuthenticatorAuthenticationResponse(
           container.get(TYPES.AuthenticatorRepository),
           container.get(TYPES.AuthenticatorChallengeRepository),
+          container.get(TYPES.U2F_RELYING_PARTY_ID),
         ),
       )
     container

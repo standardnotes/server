@@ -5,12 +5,12 @@ import { AuthenticatorDevice } from '@simplewebauthn/typescript-types'
 import { AuthenticatorChallengeRepositoryInterface } from '../../Authenticator/AuthenticatorChallengeRepositoryInterface'
 import { AuthenticatorRepositoryInterface } from '../../Authenticator/AuthenticatorRepositoryInterface'
 import { VerifyAuthenticatorAuthenticationResponseDTO } from './VerifyAuthenticatorAuthenticationResponseDTO'
-import { RelyingParty } from '../../Authenticator/RelyingParty'
 
 export class VerifyAuthenticatorAuthenticationResponse implements UseCaseInterface<boolean> {
   constructor(
     private authenticatorRepository: AuthenticatorRepositoryInterface,
     private authenticatorChallengeRepository: AuthenticatorChallengeRepositoryInterface,
+    private relyingPartyId: string,
   ) {}
 
   async execute(dto: VerifyAuthenticatorAuthenticationResponseDTO): Promise<Result<boolean>> {
@@ -40,8 +40,8 @@ export class VerifyAuthenticatorAuthenticationResponse implements UseCaseInterfa
       verification = await verifyAuthenticationResponse({
         credential: dto.authenticationCredential,
         expectedChallenge: authenticatorChallenge.props.challenge.toString(),
-        expectedOrigin: `https://${RelyingParty.RP_ID}`,
-        expectedRPID: RelyingParty.RP_ID,
+        expectedOrigin: `https://${this.relyingPartyId}`,
+        expectedRPID: this.relyingPartyId,
         authenticator: {
           counter: authenticator.props.counter,
           credentialID: authenticator.props.credentialId,

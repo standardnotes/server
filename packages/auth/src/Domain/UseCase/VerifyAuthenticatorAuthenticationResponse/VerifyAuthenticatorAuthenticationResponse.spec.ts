@@ -13,7 +13,11 @@ describe('VerifyAuthenticatorAuthenticationResponse', () => {
   let authenticatorChallengeRepository: AuthenticatorChallengeRepositoryInterface
 
   const createUseCase = () =>
-    new VerifyAuthenticatorAuthenticationResponse(authenticatorRepository, authenticatorChallengeRepository)
+    new VerifyAuthenticatorAuthenticationResponse(
+      authenticatorRepository,
+      authenticatorChallengeRepository,
+      'standardnotes.com',
+    )
 
   beforeEach(() => {
     const authenticator = Authenticator.create({

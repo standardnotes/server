@@ -2,7 +2,6 @@ import { Dates, Result, UseCaseInterface, Uuid, Validator } from '@standardnotes
 import { VerifiedRegistrationResponse, verifyRegistrationResponse } from '@simplewebauthn/server'
 
 import { AuthenticatorChallengeRepositoryInterface } from '../../Authenticator/AuthenticatorChallengeRepositoryInterface'
-import { RelyingParty } from '../../Authenticator/RelyingParty'
 import { AuthenticatorRepositoryInterface } from '../../Authenticator/AuthenticatorRepositoryInterface'
 import { Authenticator } from '../../Authenticator/Authenticator'
 import { VerifyAuthenticatorRegistrationResponseDTO } from './VerifyAuthenticatorRegistrationResponseDTO'
@@ -11,6 +10,7 @@ export class VerifyAuthenticatorRegistrationResponse implements UseCaseInterface
   constructor(
     private authenticatorRepository: AuthenticatorRepositoryInterface,
     private authenticatorChallengeRepository: AuthenticatorChallengeRepositoryInterface,
+    private relyingPartyId: string,
   ) {}
 
   async execute(dto: VerifyAuthenticatorRegistrationResponseDTO): Promise<Result<boolean>> {
@@ -35,8 +35,8 @@ export class VerifyAuthenticatorRegistrationResponse implements UseCaseInterface
       verification = await verifyRegistrationResponse({
         credential: dto.registrationCredential,
         expectedChallenge: authenticatorChallenge.props.challenge.toString(),
-        expectedOrigin: `https://${RelyingParty.RP_ID}`,
-        expectedRPID: RelyingParty.RP_ID,
+        expectedOrigin: `https://${this.relyingPartyId}`,
+        expectedRPID: this.relyingPartyId,
       })
 
       if (!verification.verified) {

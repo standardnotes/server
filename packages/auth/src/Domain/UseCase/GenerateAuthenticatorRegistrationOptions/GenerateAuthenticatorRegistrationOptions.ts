@@ -5,12 +5,13 @@ import { GenerateAuthenticatorRegistrationOptionsDTO } from './GenerateAuthentic
 import { AuthenticatorRepositoryInterface } from '../../Authenticator/AuthenticatorRepositoryInterface'
 import { AuthenticatorChallengeRepositoryInterface } from '../../Authenticator/AuthenticatorChallengeRepositoryInterface'
 import { AuthenticatorChallenge } from '../../Authenticator/AuthenticatorChallenge'
-import { RelyingParty } from '../../Authenticator/RelyingParty'
 
 export class GenerateAuthenticatorRegistrationOptions implements UseCaseInterface<Record<string, unknown>> {
   constructor(
     private authenticatorRepository: AuthenticatorRepositoryInterface,
     private authenticatorChallengeRepository: AuthenticatorChallengeRepositoryInterface,
+    private relyingPartyName: string,
+    private relyingPartyId: string,
   ) {}
 
   async execute(dto: GenerateAuthenticatorRegistrationOptionsDTO): Promise<Result<Record<string, unknown>>> {
@@ -28,8 +29,8 @@ export class GenerateAuthenticatorRegistrationOptions implements UseCaseInterfac
 
     const authenticators = await this.authenticatorRepository.findByUserUuid(userUuid)
     const options = generateRegistrationOptions({
-      rpID: RelyingParty.RP_ID,
-      rpName: RelyingParty.RP_NAME,
+      rpID: this.relyingPartyId,
+      rpName: this.relyingPartyName,
       userID: userUuid.value,
       userName: username.value,
       attestationType: 'none',

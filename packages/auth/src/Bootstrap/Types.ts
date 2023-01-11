@@ -94,6 +94,8 @@ const TYPES = {
   VERSION: Symbol.for('VERSION'),
   PAYMENTS_SERVER_URL: Symbol.for('PAYMENTS_SERVER_URL'),
   SESSION_TRACE_DAYS_TTL: Symbol.for('SESSION_TRACE_DAYS_TTL'),
+  U2F_RELYING_PARTY_ID: Symbol.for('U2F_RELYING_PARTY_ID'),
+  U2F_RELYING_PARTY_NAME: Symbol.for('U2F_RELYING_PARTY_NAME'),
   // use cases
   AuthenticateUser: Symbol.for('AuthenticateUser'),
   AuthenticateRequest: Symbol.for('AuthenticateRequest'),

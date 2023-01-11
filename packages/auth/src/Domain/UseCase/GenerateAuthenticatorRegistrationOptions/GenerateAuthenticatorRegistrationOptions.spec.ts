@@ -11,7 +11,12 @@ describe('GenerateAuthenticatorRegistrationOptions', () => {
   let authenticatorChallengeRepository: AuthenticatorChallengeRepositoryInterface
 
   const createUseCase = () =>
-    new GenerateAuthenticatorRegistrationOptions(authenticatorRepository, authenticatorChallengeRepository)
+    new GenerateAuthenticatorRegistrationOptions(
+      authenticatorRepository,
+      authenticatorChallengeRepository,
+      'Standard Notes',
+      'standardnotes.com',
+    )
 
   beforeEach(() => {
     const authenticator = Authenticator.create({

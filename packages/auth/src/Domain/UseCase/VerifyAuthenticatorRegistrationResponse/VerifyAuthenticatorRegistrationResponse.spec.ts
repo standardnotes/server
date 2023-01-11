@@ -13,7 +13,11 @@ describe('VerifyAuthenticatorRegistrationResponse', () => {
   let authenticatorChallengeRepository: AuthenticatorChallengeRepositoryInterface
 
   const createUseCase = () =>
-    new VerifyAuthenticatorRegistrationResponse(authenticatorRepository, authenticatorChallengeRepository)
+    new VerifyAuthenticatorRegistrationResponse(
+      authenticatorRepository,
+      authenticatorChallengeRepository,
+      'standardnotes.com',
+    )
 
   beforeEach(() => {
     authenticatorRepository = {} as jest.Mocked<AuthenticatorRepositoryInterface>
