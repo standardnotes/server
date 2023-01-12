@@ -48,7 +48,7 @@
     "inversify-express-utils": "^6.4.3",
     "ioredis": "^5.2.4",
     "jsonwebtoken": "8.5.1",
-    "mysql2": "^2.3.3",
+    "mysql2": "^3.0.0",
     "newrelic": "^9.6.0",
     "nodemon": "^2.0.19",
     "prettyjson": "^1.2.5",
