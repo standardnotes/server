@@ -60,7 +60,7 @@
     "inversify": "^6.0.1",
     "inversify-express-utils": "^6.4.3",
     "ioredis": "^5.2.4",
-    "mysql2": "^2.3.3",
+    "mysql2": "^3.0.0",
     "newrelic": "^9.6.0",
     "otplib": "12.0.1",
     "prettyjson": "^1.2.5",
