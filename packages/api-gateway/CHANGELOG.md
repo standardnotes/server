@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.45.1](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.45.0...@standardnotes/api-gateway@1.45.1) (2023-01-13)
+
+### Bug Fixes
+
+* add robots.txt setup for api-gateway and files server to disallow indexing ([bb82043](https://github.com/standardnotes/api-gateway/commit/bb820437af2b9644d7597de045b5840037b81db3))
+
 # [1.45.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.44.0...@standardnotes/api-gateway@1.45.0) (2023-01-05)
 
 ### Features

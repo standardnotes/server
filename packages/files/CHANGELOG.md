@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.9.4](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.9.3...@standardnotes/files-server@1.9.4) (2023-01-13)
+
+### Bug Fixes
+
+* add robots.txt setup for api-gateway and files server to disallow indexing ([bb82043](https://github.com/standardnotes/files/commit/bb820437af2b9644d7597de045b5840037b81db3))
+
 ## [1.9.3](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.9.2...@standardnotes/files-server@1.9.3) (2022-12-28)
 
 **Note:** Version bump only for package @standardnotes/files-server
