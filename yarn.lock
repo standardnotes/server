@@ -1918,7 +1918,7 @@ __metadata:
     "@types/express": "npm:^4.17.14"
     "@types/ioredis": "npm:^5.0.0"
     "@types/jest": "npm:^29.1.1"
-    "@types/jsonwebtoken": "npm:^8.5.0"
+    "@types/jsonwebtoken": "npm:^9.0.1"
     "@types/newrelic": "npm:^7.0.4"
     "@types/prettyjson": "npm:^0.0.30"
     "@typescript-eslint/eslint-plugin": "npm:^5.29.0"
@@ -1935,7 +1935,7 @@ __metadata:
     inversify-express-utils: "npm:^6.4.3"
     ioredis: "npm:^5.2.4"
     jest: "npm:^29.1.2"
-    jsonwebtoken: "npm:8.5.1"
+    jsonwebtoken: "npm:^9.0.0"
     newrelic: "npm:^9.6.0"
     nodemon: "npm:^2.0.19"
     npm-check-updates: "npm:^16.0.1"
@@ -2204,7 +2204,7 @@ __metadata:
     "@types/express": "npm:^4.17.14"
     "@types/ioredis": "npm:^5.0.0"
     "@types/jest": "npm:^29.1.1"
-    "@types/jsonwebtoken": "npm:^8.5.0"
+    "@types/jsonwebtoken": "npm:^9.0.1"
     "@types/newrelic": "npm:^7.0.4"
     "@types/prettyjson": "npm:^0.0.30"
     "@types/uuid": "npm:^8.3.0"
@@ -2224,7 +2224,7 @@ __metadata:
     inversify-express-utils: "npm:^6.4.3"
     ioredis: "npm:^5.2.4"
     jest: "npm:^29.1.2"
-    jsonwebtoken: "npm:^8.5.1"
+    jsonwebtoken: "npm:^9.0.0"
     newrelic: "npm:^9.6.0"
     nodemon: "npm:^2.0.19"
     npm-check-updates: "npm:^16.0.1"
@@ -2401,11 +2401,11 @@ __metadata:
   dependencies:
     "@standardnotes/common": "workspace:*"
     "@types/jest": "npm:^29.1.1"
-    "@types/jsonwebtoken": "npm:^8.5.8"
+    "@types/jsonwebtoken": "npm:^9.0.1"
     "@typescript-eslint/eslint-plugin": "npm:^5.30.0"
     eslint-plugin-prettier: "npm:^4.2.1"
     jest: "npm:^29.1.2"
-    jsonwebtoken: "npm:^8.5.1"
+    jsonwebtoken: "npm:^9.0.0"
     reflect-metadata: "npm:^0.1.13"
     ts-jest: "npm:^29.0.3"
     typescript: "npm:^4.8.4"
@@ -2497,7 +2497,7 @@ __metadata:
     "@types/inversify-express-utils": "npm:^2.0.0"
     "@types/ioredis": "npm:^5.0.0"
     "@types/jest": "npm:^29.1.1"
-    "@types/jsonwebtoken": "npm:^8.5.0"
+    "@types/jsonwebtoken": "npm:^9.0.1"
     "@types/newrelic": "npm:^7.0.4"
     "@types/prettyjson": "npm:^0.0.30"
     "@types/ua-parser-js": "npm:^0.7.36"
@@ -2515,7 +2515,7 @@ __metadata:
     inversify-express-utils: "npm:^6.4.3"
     ioredis: "npm:^5.2.4"
     jest: "npm:^29.1.2"
-    jsonwebtoken: "npm:8.5.1"
+    jsonwebtoken: "npm:^9.0.0"
     mysql2: "npm:^2.3.3"
     newrelic: "npm:^9.6.0"
     nodemon: "npm:^2.0.19"
@@ -2915,12 +2915,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/jsonwebtoken@npm:^8.5.0, @types/jsonwebtoken@npm:^8.5.8":
-  version: 8.5.9
-  resolution: "@types/jsonwebtoken@npm:8.5.9"
+"@types/jsonwebtoken@npm:^9.0.1":
+  version: 9.0.1
+  resolution: "@types/jsonwebtoken@npm:9.0.1"
   dependencies:
     "@types/node": "npm:*"
-  checksum: 3f15a76cd58fb56272cdcb1cf475e8f03b3127000ed9c49670b7be450a24460edeef6fa69837bb7feee554c1ead7d9ff4584eef0ea48d810282872dcfa03508e
+  checksum: 44d3fccc6b35826ad231012e5b25f82d9ec9c5790b2c41263bb5095673a8bd57ea19c1969ec3849d07c036bb95c992655b70265a2e456b83f6fa2cb137a7670e
   languageName: node
   linkType: hard
 
@@ -7764,7 +7764,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jsonwebtoken@npm:8.5.1, jsonwebtoken@npm:^8.5.1":
+"jsonwebtoken@npm:^8.5.1":
   version: 8.5.1
   resolution: "jsonwebtoken@npm:8.5.1"
   dependencies:
@@ -7779,6 +7779,18 @@ __metadata:
     ms: "npm:^2.1.1"
     semver: "npm:^5.6.0"
   checksum: 64198d5b0b69fce8e2c73e66b8d7923e177e960675333db349be16509d6f1549567568c5816c890ae10686cdd061035ba833221d35395d572b7947c0d3039b1c
+  languageName: node
+  linkType: hard
+
+"jsonwebtoken@npm:^9.0.0":
+  version: 9.0.0
+  resolution: "jsonwebtoken@npm:9.0.0"
+  dependencies:
+    jws: "npm:^3.2.2"
+    lodash: "npm:^4.17.21"
+    ms: "npm:^2.1.1"
+    semver: "npm:^7.3.8"
+  checksum: 7ccbd0b7bf6a8058458d84cf7551a96a9ad7c31094b9a1b83d90728b8008e5e3c42c8acb324b08511affef5d088d49499fe08e23b3347010ed2c1a069622066c
   languageName: node
   linkType: hard
 
@@ -10229,6 +10241,17 @@ __metadata:
   bin:
     semver: ./bin/semver.js
   checksum: 18f3d42ec70a542e9efc498ecc3d0b9b088099115e8658b49d2bfc6470b46a6144b294374dac3f343fe1600039cbd80d5e830dd356053fd5abd4f1af5118a928
+  languageName: node
+  linkType: hard
+
+"semver@npm:^7.3.8":
+  version: 7.3.8
+  resolution: "semver@npm:7.3.8"
+  dependencies:
+    lru-cache: "npm:^6.0.0"
+  bin:
+    semver: bin/semver.js
+  checksum: 94ad80ee14889020cb4a14d809fb99d16cbf4ff3dc7f4c564fc72efe2c5763a60090a1c16a9fd18ceeb1e993a1303a4d870c0a22f26adaf435b368b46a7d8462
   languageName: node
   linkType: hard
 
