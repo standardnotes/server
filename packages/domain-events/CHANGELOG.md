@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.105.2](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.105.1...@standardnotes/domain-events@2.105.2) (2023-01-13)
+
+**Note:** Version bump only for package @standardnotes/domain-events
+
 ## [2.105.1](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.105.0...@standardnotes/domain-events@2.105.1) (2022-12-20)
 
 ### Bug Fixes
