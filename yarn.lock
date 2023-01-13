@@ -1929,6 +1929,7 @@ __metadata:
     eslint: "npm:^8.14.0"
     eslint-plugin-prettier: "npm:^4.0.0"
     express: "npm:^4.18.2"
+    express-robots-txt: "npm:^1.0.0"
     helmet: "npm:^6.0.0"
     inversify: "npm:^6.0.1"
     inversify-express-utils: "npm:^6.4.3"
@@ -2216,6 +2217,7 @@ __metadata:
     eslint: "npm:^8.14.0"
     eslint-plugin-prettier: "npm:^4.0.0"
     express: "npm:^4.18.2"
+    express-robots-txt: "npm:^1.0.0"
     express-winston: "npm:^4.0.5"
     helmet: "npm:^6.0.0"
     inversify: "npm:^6.0.1"
@@ -5577,6 +5579,15 @@ __metadata:
     jest-message-util: "npm:^29.1.2"
     jest-util: "npm:^29.1.2"
   checksum: 49db94b19d9ce6294a04ee31145f049f4947489cfc3d2a0791d0b257c76504070ab28810abc3625cd3f43530aa992903b44a2352d614052115cd00e1e7b8a3f8
+  languageName: node
+  linkType: hard
+
+"express-robots-txt@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "express-robots-txt@npm:1.0.0"
+  peerDependencies:
+    express: ^4.12.1
+  checksum: 54f066f6c305694ea2082d2b0a46bab8dcbf2b478780cf3f1bc404a5d8c83a4e2d6f06e15b42f0aec2c8866ffb97150487e0bb9abdd9604fa78ea68950946b43
   languageName: node
   linkType: hard
 

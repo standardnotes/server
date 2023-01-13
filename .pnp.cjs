@@ -2701,6 +2701,7 @@ const RAW_RUNTIME_STATE =
           ["eslint", "npm:8.25.0"],\
           ["eslint-plugin-prettier", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:4.2.1"],\
           ["express", "npm:4.18.2"],\
+          ["express-robots-txt", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:1.0.0"],\
           ["helmet", "npm:6.0.0"],\
           ["inversify", "npm:6.0.1"],\
           ["inversify-express-utils", "npm:6.4.3"],\
@@ -2990,6 +2991,7 @@ const RAW_RUNTIME_STATE =
           ["eslint", "npm:8.25.0"],\
           ["eslint-plugin-prettier", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:4.2.1"],\
           ["express", "npm:4.18.2"],\
+          ["express-robots-txt", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:1.0.0"],\
           ["express-winston", "virtual:b442cf0427cc365d1c137f7340f9b81f9b204561afe791a8564ae9590c3a7fc4b5f793aaf8817b946f75a3cb64d03ef8790eb847f8b576b41e700da7b00c240c#npm:4.2.0"],\
           ["helmet", "npm:6.0.0"],\
           ["inversify", "npm:6.0.1"],\
@@ -7312,6 +7314,28 @@ const RAW_RUNTIME_STATE =
           ["type-is", "npm:1.6.18"],\
           ["utils-merge", "npm:1.0.1"],\
           ["vary", "npm:1.1.2"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["express-robots-txt", [\
+      ["npm:1.0.0", {\
+        "packageLocation": "./.yarn/cache/express-robots-txt-npm-1.0.0-dcc8bd8f0a-54f066f6c3.zip/node_modules/express-robots-txt/",\
+        "packageDependencies": [\
+          ["express-robots-txt", "npm:1.0.0"]\
+        ],\
+        "linkType": "SOFT"\
+      }],\
+      ["virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:1.0.0", {\
+        "packageLocation": "./.yarn/__virtual__/express-robots-txt-virtual-0a3eb9f2f5/0/cache/express-robots-txt-npm-1.0.0-dcc8bd8f0a-54f066f6c3.zip/node_modules/express-robots-txt/",\
+        "packageDependencies": [\
+          ["express-robots-txt", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:1.0.0"],\
+          ["@types/express", "npm:4.17.14"],\
+          ["express", "npm:4.18.2"]\
+        ],\
+        "packagePeers": [\
+          "@types/express",\
+          "express"\
         ],\
         "linkType": "HARD"\
       }]\
