@@ -8,53 +8,52 @@ export class RevisionHttpMapper
       Revision,
       {
         uuid: string
-        itemUuid: string
+        item_uuid: string
         content: string | null
-        contentType: string
-        itemsKeyId: string | null
-        encItemKey: string | null
-        authHash: string | null
-        createAt: string
-        updateAt: string
+        content_type: string
+        items_key_id: string | null
+        enc_item_key: string | null
+        auth_hash: string | null
+        created_at: string
+        updated_at: string
       }
     >
 {
   toDomain(_projection: {
     uuid: string
-    itemUuid: string
-    userUuid: string | null
+    item_uuid: string
     content: string | null
-    contentType: string
-    itemsKeyId: string | null
-    encItemKey: string | null
-    authHash: string | null
-    createAt: string
-    updateAt: string
+    content_type: string
+    items_key_id: string | null
+    enc_item_key: string | null
+    auth_hash: string | null
+    created_at: string
+    updated_at: string
   }): Revision {
     throw new Error('Method not implemented.')
   }
 
   toProjection(domain: Revision): {
     uuid: string
-    itemUuid: string
+    item_uuid: string
     content: string | null
-    contentType: string
-    itemsKeyId: string | null
-    encItemKey: string | null
-    authHash: string | null
-    createAt: string
-    updateAt: string
+    content_type: string
+    items_key_id: string | null
+    enc_item_key: string | null
+    auth_hash: string | null
+    created_at: string
+    updated_at: string
   } {
     return {
       uuid: domain.id.toString(),
-      itemUuid: domain.props.itemUuid.value,
+      item_uuid: domain.props.itemUuid.value,
       content: domain.props.content,
-      contentType: domain.props.contentType.value as string,
-      itemsKeyId: domain.props.itemsKeyId,
-      encItemKey: domain.props.encItemKey,
-      authHash: domain.props.authHash,
-      createAt: domain.props.dates.createdAt.toISOString(),
-      updateAt: domain.props.dates.updatedAt.toISOString(),
+      content_type: domain.props.contentType.value as string,
+      items_key_id: domain.props.itemsKeyId,
+      enc_item_key: domain.props.encItemKey,
+      auth_hash: domain.props.authHash,
+      created_at: domain.props.dates.createdAt.toISOString(),
+      updated_at: domain.props.dates.updatedAt.toISOString(),
     }
   }
 }

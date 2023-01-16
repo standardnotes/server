@@ -120,14 +120,14 @@ export class ContainerConfigLoader {
           Revision,
           {
             uuid: string
-            itemUuid: string
+            item_uuid: string
             content: string | null
-            contentType: string
-            itemsKeyId: string | null
-            encItemKey: string | null
-            authHash: string | null
-            createAt: string
-            updateAt: string
+            content_type: string
+            items_key_id: string | null
+            enc_item_key: string | null
+            auth_hash: string | null
+            created_at: string
+            updated_at: string
           }
         >
       >(TYPES.RevisionHttpMapper)
@@ -138,9 +138,9 @@ export class ContainerConfigLoader {
           RevisionMetadata,
           {
             uuid: string
-            contentType: string
-            createdAt: string
-            updatedAt: string
+            content_type: string
+            created_at: string
+            updated_at: string
           }
         >
       >(TYPES.RevisionMetadataHttpMapper)
