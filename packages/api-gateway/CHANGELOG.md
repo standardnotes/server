@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.45.3](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.45.2...@standardnotes/api-gateway@1.45.3) (2023-01-16)
+
+### Bug Fixes
+
+* **api-gateway:** add noindex robots meta tag to api gateway homepage ([04c6888](https://github.com/standardnotes/api-gateway/commit/04c6888cf65f9f1315fc2fb8af069d26bfbc31b1))
+
 ## [1.45.2](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.45.1...@standardnotes/api-gateway@1.45.2) (2023-01-13)
 
 **Note:** Version bump only for package @standardnotes/api-gateway
