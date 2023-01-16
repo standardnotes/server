@@ -57,7 +57,9 @@ export class LegacyController extends BaseHttpController {
   @all('*')
   async legacyProxyToSyncingServer(request: Request, response: Response): Promise<void> {
     if (request.path === '/') {
-      response.send('Welcome to the Standard Notes server infrastructure. Learn more at https://docs.standardnotes.com')
+      response.send(
+        '<!DOCTYPE html><html lang="en"><head><meta name="robots" content="noindex"></head><body>Welcome to the Standard Notes server infrastructure. Learn more at https://docs.standardnotes.com</body></html>',
+      )
 
       return
     }
