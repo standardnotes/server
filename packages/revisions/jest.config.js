@@ -7,5 +7,5 @@ module.exports = {
   transform: {
     ...tsjPreset.transform,
   },
-  coveragePathIgnorePatterns: ['/Bootstrap/', 'HealthCheckController', '/Infra/', '/Mapping/'],
+  coveragePathIgnorePatterns: ['/Bootstrap/', '/Controller/', 'HealthCheckController', '/Infra/', '/Mapping/'],
 }
