@@ -35,4 +35,5 @@ export * from './Mapping/MapperInterface'
 export * from './Subscription/SubscriptionPlanName'
 export * from './Subscription/SubscriptionPlanNameProps'
 
+export * from './UseCase/SyncUseCaseInterface'
 export * from './UseCase/UseCaseInterface'

@@ -30,6 +30,7 @@ const TYPES = {
   GetRevision: Symbol.for('GetRevision'),
   DeleteRevision: Symbol.for('DeleteRevision'),
   CopyRevisions: Symbol.for('CopyRevisions'),
+  GetRequiredRoleToViewRevision: Symbol.for('GetRequiredRoleToViewRevision'),
   // Controller
   RevisionsController: Symbol.for('RevisionsController'),
   // Handlers

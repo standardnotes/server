@@ -44,6 +44,8 @@ import { CopyRevisions } from '../Domain/UseCase/CopyRevisions/CopyRevisions'
 import { RevisionsOwnershipUpdateRequestedEventHandler } from '../Domain/Handler/RevisionsOwnershipUpdateRequestedEventHandler'
 import { RevisionHttpMapper } from '../Mapping/RevisionHttpMapper'
 import { RevisionMetadataHttpMapper } from '../Mapping/RevisionMetadataHttpMapper'
+import { GetRequiredRoleToViewRevision } from '../Domain/UseCase/GetRequiredRoleToViewRevision/GetRequiredRoleToViewRevision'
+import { Timer, TimerInterface } from '@standardnotes/time'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -104,6 +106,12 @@ export class ContainerConfigLoader {
     }
     container.bind<AWS.S3 | undefined>(TYPES.S3).toConstantValue(s3Client)
 
+    container.bind<TimerInterface>(TYPES.Timer).toConstantValue(new Timer())
+
+    container
+      .bind<GetRequiredRoleToViewRevision>(TYPES.GetRequiredRoleToViewRevision)
+      .toConstantValue(new GetRequiredRoleToViewRevision(container.get(TYPES.Timer)))
+
     // Map
     container
       .bind<MapperInterface<RevisionMetadata, TypeORMRevision>>(TYPES.RevisionMetadataPersistenceMapper)
@@ -144,7 +152,7 @@ export class ContainerConfigLoader {
           }
         >
       >(TYPES.RevisionMetadataHttpMapper)
-      .toConstantValue(new RevisionMetadataHttpMapper())
+      .toConstantValue(new RevisionMetadataHttpMapper(container.get(TYPES.GetRequiredRoleToViewRevision)))
 
     // ORM
     container
