@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.11.1](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.11.0...@standardnotes/domain-core@1.11.1) (2023-01-16)
+
+### Bug Fixes
+
+* **revisions:** add required role to revisions list response ([e7beee2](https://github.com/standardnotes/server/commit/e7beee278871d2939b058d842404fd6980d7f48a))
+
 # [1.11.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.10.0...@standardnotes/domain-core@1.11.0) (2022-12-15)
 
 ### Features
