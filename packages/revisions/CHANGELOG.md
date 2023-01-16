@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.6](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.10.5...@standardnotes/revisions-server@1.10.6) (2023-01-16)
+
+### Bug Fixes
+
+* **revisions:** mapping to snake case ([b97dafe](https://github.com/standardnotes/server/commit/b97dafe6f35ad0f9e42a228f354c4bceb1a2874d))
+
 ## [1.10.5](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.10.4...@standardnotes/revisions-server@1.10.5) (2023-01-16)
 
 ### Bug Fixes
