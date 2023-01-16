@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.46.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.45.3...@standardnotes/api-gateway@1.46.0) (2023-01-16)
+
+### Features
+
+* **api-gateway:** add all revisions endpoints on v2 ([60b3dd6](https://github.com/standardnotes/api-gateway/commit/60b3dd6138ef9b8e9a717873548afc2d3924a0d7))
+* **api-gateway:** switch to fetching revisions from reivsions server ([22c1f93](https://github.com/standardnotes/api-gateway/commit/22c1f936c3a770a82dc1a1e6aa136e183d308aa6))
+
 ## [1.45.3](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.45.2...@standardnotes/api-gateway@1.45.3) (2023-01-16)
 
 ### Bug Fixes
