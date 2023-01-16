@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.7](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.10.6...@standardnotes/revisions-server@1.10.7) (2023-01-16)
+
+### Bug Fixes
+
+* **revisions:** remove redundant specs ([11b8b07](https://github.com/standardnotes/server/commit/11b8b078b4c72f393fd4e555501242ffe22cc06f))
+
 ## [1.10.6](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.10.5...@standardnotes/revisions-server@1.10.6) (2023-01-16)
 
 ### Bug Fixes
