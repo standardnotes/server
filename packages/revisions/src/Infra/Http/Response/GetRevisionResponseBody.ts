@@ -1,5 +1,13 @@
-import { Revision } from '../../../Domain/Revision/Revision'
-
 export interface GetRevisionResponseBody {
-  revision: Revision
+  revision: {
+    uuid: string
+    itemUuid: string
+    content: string | null
+    contentType: string
+    itemsKeyId: string | null
+    encItemKey: string | null
+    authHash: string | null
+    createAt: string
+    updateAt: string
+  }
 }

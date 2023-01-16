@@ -8,6 +8,8 @@ const TYPES = {
   RevisionMetadataPersistenceMapper: Symbol.for('RevisionMetadataPersistenceMapper'),
   RevisionPersistenceMapper: Symbol.for('RevisionPersistenceMapper'),
   RevisionItemStringMapper: Symbol.for('RevisionItemStringMapper'),
+  RevisionHttpMapper: Symbol.for('RevisionHttpMapper'),
+  RevisionMetadataHttpMapper: Symbol.for('RevisionMetadataHttpMapper'),
   // ORM
   ORMRevisionRepository: Symbol.for('ORMRevisionRepository'),
   // Repositories

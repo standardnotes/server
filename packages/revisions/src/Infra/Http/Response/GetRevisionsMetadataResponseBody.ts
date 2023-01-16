@@ -1,5 +1,8 @@
-import { RevisionMetadata } from '../../../Domain/Revision/RevisionMetadata'
-
 export interface GetRevisionsMetadataResponseBody {
-  revisions: Array<RevisionMetadata>
+  revisions: Array<{
+    uuid: string
+    contentType: string
+    createdAt: string
+    updatedAt: string
+  }>
 }

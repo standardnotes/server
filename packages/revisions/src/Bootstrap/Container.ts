@@ -42,6 +42,8 @@ import { AccountDeletionRequestedEventHandler } from '../Domain/Handler/AccountD
 import { RevisionsCopyRequestedEventHandler } from '../Domain/Handler/RevisionsCopyRequestedEventHandler'
 import { CopyRevisions } from '../Domain/UseCase/CopyRevisions/CopyRevisions'
 import { RevisionsOwnershipUpdateRequestedEventHandler } from '../Domain/Handler/RevisionsOwnershipUpdateRequestedEventHandler'
+import { RevisionHttpMapper } from '../Mapping/RevisionHttpMapper'
+import { RevisionMetadataHttpMapper } from '../Mapping/RevisionMetadataHttpMapper'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -112,6 +114,37 @@ export class ContainerConfigLoader {
     container
       .bind<MapperInterface<Revision, string>>(TYPES.RevisionItemStringMapper)
       .toConstantValue(new RevisionItemStringMapper())
+    container
+      .bind<
+        MapperInterface<
+          Revision,
+          {
+            uuid: string
+            itemUuid: string
+            content: string | null
+            contentType: string
+            itemsKeyId: string | null
+            encItemKey: string | null
+            authHash: string | null
+            createAt: string
+            updateAt: string
+          }
+        >
+      >(TYPES.RevisionHttpMapper)
+      .toConstantValue(new RevisionHttpMapper())
+    container
+      .bind<
+        MapperInterface<
+          RevisionMetadata,
+          {
+            uuid: string
+            contentType: string
+            createdAt: string
+            updatedAt: string
+          }
+        >
+      >(TYPES.RevisionMetadataHttpMapper)
+      .toConstantValue(new RevisionMetadataHttpMapper())
 
     // ORM
     container
@@ -176,6 +209,8 @@ export class ContainerConfigLoader {
           container.get(TYPES.GetRevisionsMetada),
           container.get(TYPES.GetRevision),
           container.get(TYPES.DeleteRevision),
+          container.get(TYPES.RevisionHttpMapper),
+          container.get(TYPES.RevisionMetadataHttpMapper),
           container.get(TYPES.Logger),
         ),
       )
