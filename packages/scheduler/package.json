@@ -37,7 +37,7 @@
     "dotenv": "^16.0.1",
     "inversify": "^6.0.1",
     "ioredis": "^5.2.4",
-    "mysql2": "^2.3.3",
+    "mysql2": "^3.0.1",
     "newrelic": "^9.6.0",
     "reflect-metadata": "^0.1.13",
     "typeorm": "^0.3.10",

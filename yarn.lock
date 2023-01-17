@@ -1893,7 +1893,7 @@ __metadata:
     ioredis: "npm:^5.2.4"
     jest: "npm:^29.1.2"
     mixpanel: "npm:^0.17.0"
-    mysql2: "npm:^2.3.3"
+    mysql2: "npm:^3.0.1"
     newrelic: "npm:^9.6.0"
     reflect-metadata: "npm:^0.1.13"
     ts-jest: "npm:^29.0.3"
@@ -2008,7 +2008,7 @@ __metadata:
     inversify-express-utils: "npm:^6.4.3"
     ioredis: "npm:^5.2.4"
     jest: "npm:^29.1.2"
-    mysql2: "npm:^2.3.3"
+    mysql2: "npm:^3.0.1"
     newrelic: "npm:^9.6.0"
     nodemon: "npm:^2.0.19"
     npm-check-updates: "npm:^16.0.1"
@@ -2152,7 +2152,7 @@ __metadata:
     inversify: "npm:^6.0.1"
     ioredis: "npm:^5.2.4"
     jest: "npm:^29.1.2"
-    mysql2: "npm:^2.3.3"
+    mysql2: "npm:^3.0.1"
     newrelic: "npm:^9.6.0"
     reflect-metadata: "npm:0.1.13"
     ts-jest: "npm:^29.0.3"
@@ -2348,7 +2348,7 @@ __metadata:
     inversify-express-utils: "npm:^6.4.3"
     ioredis: "npm:^5.2.4"
     jest: "npm:^29.1.2"
-    mysql2: "npm:^2.3.3"
+    mysql2: "npm:^3.0.1"
     newrelic: "npm:^9.6.0"
     npm-check-updates: "npm:^16.0.1"
     reflect-metadata: "npm:0.1.13"
@@ -2384,7 +2384,7 @@ __metadata:
     inversify: "npm:^6.0.1"
     ioredis: "npm:^5.2.4"
     jest: "npm:^29.1.2"
-    mysql2: "npm:^2.3.3"
+    mysql2: "npm:^3.0.1"
     newrelic: "npm:^9.6.0"
     npm-check-updates: "npm:^16.0.1"
     reflect-metadata: "npm:^0.1.13"
@@ -2516,7 +2516,7 @@ __metadata:
     ioredis: "npm:^5.2.4"
     jest: "npm:^29.1.2"
     jsonwebtoken: "npm:^9.0.0"
-    mysql2: "npm:^2.3.3"
+    mysql2: "npm:^3.0.1"
     newrelic: "npm:^9.6.0"
     nodemon: "npm:^2.0.19"
     npm-check-updates: "npm:^16.0.1"
@@ -2600,7 +2600,7 @@ __metadata:
     inversify-express-utils: "npm:^6.4.3"
     ioredis: "npm:^5.2.4"
     jest: "npm:^29.1.2"
-    mysql2: "npm:^2.3.3"
+    mysql2: "npm:^3.0.1"
     newrelic: "npm:^9.6.0"
     reflect-metadata: "npm:0.1.13"
     ts-jest: "npm:^29.0.3"
@@ -2640,7 +2640,7 @@ __metadata:
     inversify-express-utils: "npm:^6.4.3"
     ioredis: "npm:^5.2.4"
     jest: "npm:^29.1.2"
-    mysql2: "npm:^2.3.3"
+    mysql2: "npm:^3.0.1"
     newrelic: "npm:^9.6.0"
     reflect-metadata: "npm:0.1.13"
     ts-jest: "npm:^29.0.3"
@@ -4930,7 +4930,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"denque@npm:^2.0.1":
+"denque@npm:^2.0.1, denque@npm:^2.1.0":
   version: 2.1.0
   resolution: "denque@npm:2.1.0"
   checksum: 7e1c278144b7c5047ff46783edf7d736193644abbdea1c788e1b686b402b7669fcf417e168c9a9ccd8a346ff0d1e1b15696177e2b231fd1af66ee03c072b4066
@@ -8109,6 +8109,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"long@npm:^5.2.1":
+  version: 5.2.1
+  resolution: "long@npm:5.2.1"
+  checksum: f81b18ff295bd2c97e6704ba9d38d787db014e26ccdb897f37a4448d8562a2fdd040bc19ba8aa20708cfd369fa051a001e22e23dbcf0fc85fcb8968e11ce1ee3
+  languageName: node
+  linkType: hard
+
 "lowercase-keys@npm:^2.0.0":
   version: 2.0.0
   resolution: "lowercase-keys@npm:2.0.0"
@@ -8123,22 +8130,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lru-cache@npm:^4.1.3":
-  version: 4.1.5
-  resolution: "lru-cache@npm:4.1.5"
-  dependencies:
-    pseudomap: "npm:^1.0.2"
-    yallist: "npm:^2.1.2"
-  checksum: 796f26ad9207f9f8654ff8784dcfcb6b86ec3fc5110389eb03ac0e898da22af566cefd5821062e3edba267ae869f86078aa9b74e5b74962c7cf8f943182f87dc
-  languageName: node
-  linkType: hard
-
 "lru-cache@npm:^6.0.0":
   version: 6.0.0
   resolution: "lru-cache@npm:6.0.0"
   dependencies:
     yallist: "npm:^4.0.0"
   checksum: b2d72088dd27df27189607554990b0fd31d3fbd4037df909ef66f48a14122baf8ffce7f33edc17e6543ea7cd71fa561136518355dde2ad57676fa0b2ea53b85f
+  languageName: node
+  linkType: hard
+
+"lru-cache@npm:^7.14.1":
+  version: 7.14.1
+  resolution: "lru-cache@npm:7.14.1"
+  checksum: e4c8c073d9632585dde73bb2c857c22866f61f3ee75fea6e1dcc5412b59eca4107bc511c4b4ae4e038c7f59a15488b67448b24a3a1154def46c8ab1d07935d85
   languageName: node
   linkType: hard
 
@@ -8553,19 +8557,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mysql2@npm:^2.3.3":
-  version: 2.3.3
-  resolution: "mysql2@npm:2.3.3"
+"mysql2@npm:^3.0.1":
+  version: 3.0.1
+  resolution: "mysql2@npm:3.0.1"
   dependencies:
-    denque: "npm:^2.0.1"
+    denque: "npm:^2.1.0"
     generate-function: "npm:^2.3.1"
     iconv-lite: "npm:^0.6.3"
-    long: "npm:^4.0.0"
-    lru-cache: "npm:^6.0.0"
-    named-placeholders: "npm:^1.1.2"
+    long: "npm:^5.2.1"
+    lru-cache: "npm:^7.14.1"
+    named-placeholders: "npm:^1.1.3"
     seq-queue: "npm:^0.0.5"
     sqlstring: "npm:^2.3.2"
-  checksum: dda663a63195f6e7336155e585b185ce5c64e810d8f1b51969c7fa5bf2bb29dabde4fd7b81b5872812728fd4e32c4fdf3421bad7325fc8e80525b4df184d27f7
+  checksum: 6bbee1ee05826ef665ef01b3a9ebeb5e811a3b793f4dacc5ae8faf86c5756fc7c8549715fdd6640bb33bd2771e42ce68d94819637339367761b3d64ae687bcb7
   languageName: node
   linkType: hard
 
@@ -8580,12 +8584,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"named-placeholders@npm:^1.1.2":
-  version: 1.1.2
-  resolution: "named-placeholders@npm:1.1.2"
+"named-placeholders@npm:^1.1.3":
+  version: 1.1.3
+  resolution: "named-placeholders@npm:1.1.3"
   dependencies:
-    lru-cache: "npm:^4.1.3"
-  checksum: 24477df960b120c1eb814efbeb7d7b6e859b788b922129f43f48ee95ae89a14e249dd37d67594cbb30dcea9283e9af40fc526e615c57b2a30788b63e497baba0
+    lru-cache: "npm:^7.14.1"
+  checksum: 1cd77eb10c4b2cc9b9d0a9d014542df5cda61118e682cffccc896769f74cf17f46225205d868be6a7c4aad7ae92ede7f1d435a76314f1a1c07618ff29fe7a9d5
   languageName: node
   linkType: hard
 
@@ -9633,13 +9637,6 @@ __metadata:
   version: 1.1.0
   resolution: "proxy-from-env@npm:1.1.0"
   checksum: 0bba2ef7c8374b384e94e4477764e53df66fcdfa7d19e2c4a063cb39eea979c139ce13981970223665422e72b7d149609a927046e2e40ab340b84d91af082591
-  languageName: node
-  linkType: hard
-
-"pseudomap@npm:^1.0.2":
-  version: 1.0.2
-  resolution: "pseudomap@npm:1.0.2"
-  checksum: 33cfbb99ac85cfad587ebd29aef15343a570aa2208fa68a3036ee317ef2ef4345cf1a20f7311177393558937cafdf981be4c125e47a90cbd7400d942352239a4
   languageName: node
   linkType: hard
 
@@ -11961,13 +11958,6 @@ __metadata:
   version: 5.0.8
   resolution: "y18n@npm:5.0.8"
   checksum: 10a6a4dcab8518b72a500520664b686bffe79d8e756af1a7eedf49fa72ab35e40f508896e0baa534f7f92e08193a6dad4283298c11ea7885e710c76b7e2bcc7a
-  languageName: node
-  linkType: hard
-
-"yallist@npm:^2.1.2":
-  version: 2.1.2
-  resolution: "yallist@npm:2.1.2"
-  checksum: f3ace13bed59d5f6cf13142e65482c0992f0ed3ef2c9e20331efe44774586fc5eb9cb80dd431118948a5366f351afabc48d1572a636ce1ef45f57b8cb93340be
   languageName: node
   linkType: hard
 

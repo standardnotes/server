@@ -2647,7 +2647,7 @@ const RAW_RUNTIME_STATE =
           ["ioredis", "npm:5.2.4"],\
           ["jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.1.2"],\
           ["mixpanel", "npm:0.17.0"],\
-          ["mysql2", "npm:2.3.3"],\
+          ["mysql2", "npm:3.0.1"],\
           ["newrelic", "npm:9.6.0"],\
           ["reflect-metadata", "npm:0.1.13"],\
           ["ts-jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.0.3"],\
@@ -2778,7 +2778,7 @@ const RAW_RUNTIME_STATE =
           ["inversify-express-utils", "npm:6.4.3"],\
           ["ioredis", "npm:5.2.4"],\
           ["jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.1.2"],\
-          ["mysql2", "npm:2.3.3"],\
+          ["mysql2", "npm:3.0.1"],\
           ["newrelic", "npm:9.6.0"],\
           ["nodemon", "npm:2.0.20"],\
           ["npm-check-updates", "npm:16.0.1"],\
@@ -2924,7 +2924,7 @@ const RAW_RUNTIME_STATE =
           ["inversify", "npm:6.0.1"],\
           ["ioredis", "npm:5.2.4"],\
           ["jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.1.2"],\
-          ["mysql2", "npm:2.3.3"],\
+          ["mysql2", "npm:3.0.1"],\
           ["newrelic", "npm:9.6.0"],\
           ["reflect-metadata", "npm:0.1.13"],\
           ["ts-jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.0.3"],\
@@ -3127,7 +3127,7 @@ const RAW_RUNTIME_STATE =
           ["inversify-express-utils", "npm:6.4.3"],\
           ["ioredis", "npm:5.2.4"],\
           ["jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.1.2"],\
-          ["mysql2", "npm:2.3.3"],\
+          ["mysql2", "npm:3.0.1"],\
           ["newrelic", "npm:9.6.0"],\
           ["npm-check-updates", "npm:16.0.1"],\
           ["reflect-metadata", "npm:0.1.13"],\
@@ -3165,7 +3165,7 @@ const RAW_RUNTIME_STATE =
           ["inversify", "npm:6.0.1"],\
           ["ioredis", "npm:5.2.4"],\
           ["jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.1.2"],\
-          ["mysql2", "npm:2.3.3"],\
+          ["mysql2", "npm:3.0.1"],\
           ["newrelic", "npm:9.6.0"],\
           ["npm-check-updates", "npm:16.0.1"],\
           ["reflect-metadata", "npm:0.1.13"],\
@@ -3308,7 +3308,7 @@ const RAW_RUNTIME_STATE =
           ["ioredis", "npm:5.2.4"],\
           ["jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.1.2"],\
           ["jsonwebtoken", "npm:9.0.0"],\
-          ["mysql2", "npm:2.3.3"],\
+          ["mysql2", "npm:3.0.1"],\
           ["newrelic", "npm:9.6.0"],\
           ["nodemon", "npm:2.0.20"],\
           ["npm-check-updates", "npm:16.0.1"],\
@@ -3396,7 +3396,7 @@ const RAW_RUNTIME_STATE =
           ["inversify-express-utils", "npm:6.4.3"],\
           ["ioredis", "npm:5.2.4"],\
           ["jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.1.2"],\
-          ["mysql2", "npm:2.3.3"],\
+          ["mysql2", "npm:3.0.1"],\
           ["newrelic", "npm:9.6.0"],\
           ["reflect-metadata", "npm:0.1.13"],\
           ["ts-jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.0.3"],\
@@ -3438,7 +3438,7 @@ const RAW_RUNTIME_STATE =
           ["inversify-express-utils", "npm:6.4.3"],\
           ["ioredis", "npm:5.2.4"],\
           ["jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.1.2"],\
-          ["mysql2", "npm:2.3.3"],\
+          ["mysql2", "npm:3.0.1"],\
           ["newrelic", "npm:9.6.0"],\
           ["reflect-metadata", "npm:0.1.13"],\
           ["ts-jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.0.3"],\
@@ -10184,6 +10184,13 @@ const RAW_RUNTIME_STATE =
           ["long", "npm:4.0.0"]\
         ],\
         "linkType": "HARD"\
+      }],\
+      ["npm:5.2.1", {\
+        "packageLocation": "./.yarn/cache/long-npm-5.2.1-3a12730171-f81b18ff29.zip/node_modules/long/",\
+        "packageDependencies": [\
+          ["long", "npm:5.2.1"]\
+        ],\
+        "linkType": "HARD"\
       }]\
     ]],\
     ["lowercase-keys", [\
@@ -10203,15 +10210,6 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["lru-cache", [\
-      ["npm:4.1.5", {\
-        "packageLocation": "./.yarn/cache/lru-cache-npm-4.1.5-ede304cc43-796f26ad92.zip/node_modules/lru-cache/",\
-        "packageDependencies": [\
-          ["lru-cache", "npm:4.1.5"],\
-          ["pseudomap", "npm:1.0.2"],\
-          ["yallist", "npm:2.1.2"]\
-        ],\
-        "linkType": "HARD"\
-      }],\
       ["npm:6.0.0", {\
         "packageLocation": "./.yarn/cache/lru-cache-npm-6.0.0-b4c8668fe1-b2d72088dd.zip/node_modules/lru-cache/",\
         "packageDependencies": [\
@@ -10224,6 +10222,13 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/lru-cache-npm-7.12.0-eae8176c54-041b5c3e57.zip/node_modules/lru-cache/",\
         "packageDependencies": [\
           ["lru-cache", "npm:7.12.0"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["npm:7.14.1", {\
+        "packageLocation": "./.yarn/cache/lru-cache-npm-7.14.1-d3ba9407b6-e4c8c073d9.zip/node_modules/lru-cache/",\
+        "packageDependencies": [\
+          ["lru-cache", "npm:7.14.1"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -10683,16 +10688,16 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["mysql2", [\
-      ["npm:2.3.3", {\
-        "packageLocation": "./.yarn/cache/mysql2-npm-2.3.3-fa543fff43-dda663a631.zip/node_modules/mysql2/",\
+      ["npm:3.0.1", {\
+        "packageLocation": "./.yarn/cache/mysql2-npm-3.0.1-ceda50bb4d-6bbee1ee05.zip/node_modules/mysql2/",\
         "packageDependencies": [\
-          ["mysql2", "npm:2.3.3"],\
+          ["mysql2", "npm:3.0.1"],\
           ["denque", "npm:2.1.0"],\
           ["generate-function", "npm:2.3.1"],\
           ["iconv-lite", "npm:0.6.3"],\
-          ["long", "npm:4.0.0"],\
-          ["lru-cache", "npm:6.0.0"],\
-          ["named-placeholders", "npm:1.1.2"],\
+          ["long", "npm:5.2.1"],\
+          ["lru-cache", "npm:7.14.1"],\
+          ["named-placeholders", "npm:1.1.3"],\
           ["seq-queue", "npm:0.0.5"],\
           ["sqlstring", "npm:2.3.3"]\
         ],\
@@ -10712,11 +10717,11 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["named-placeholders", [\
-      ["npm:1.1.2", {\
-        "packageLocation": "./.yarn/cache/named-placeholders-npm-1.1.2-5d4cbc92b0-24477df960.zip/node_modules/named-placeholders/",\
+      ["npm:1.1.3", {\
+        "packageLocation": "./.yarn/cache/named-placeholders-npm-1.1.3-1b385febe5-1cd77eb10c.zip/node_modules/named-placeholders/",\
         "packageDependencies": [\
-          ["named-placeholders", "npm:1.1.2"],\
-          ["lru-cache", "npm:4.1.5"]\
+          ["named-placeholders", "npm:1.1.3"],\
+          ["lru-cache", "npm:7.14.1"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -11876,15 +11881,6 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/proxy-from-env-npm-1.1.0-c13d07f26b-0bba2ef7c8.zip/node_modules/proxy-from-env/",\
         "packageDependencies": [\
           ["proxy-from-env", "npm:1.1.0"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
-    ["pseudomap", [\
-      ["npm:1.0.2", {\
-        "packageLocation": "./.yarn/cache/pseudomap-npm-1.0.2-0d0e40fee0-33cfbb99ac.zip/node_modules/pseudomap/",\
-        "packageDependencies": [\
-          ["pseudomap", "npm:1.0.2"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -13846,7 +13842,7 @@ const RAW_RUNTIME_STATE =
           ["mkdirp", "npm:1.0.4"],\
           ["mongodb", null],\
           ["mssql", null],\
-          ["mysql2", "npm:2.3.3"],\
+          ["mysql2", "npm:3.0.1"],\
           ["oracledb", null],\
           ["pg", null],\
           ["pg-native", null],\
@@ -14547,13 +14543,6 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["yallist", [\
-      ["npm:2.1.2", {\
-        "packageLocation": "./.yarn/cache/yallist-npm-2.1.2-2e38c366a3-f3ace13bed.zip/node_modules/yallist/",\
-        "packageDependencies": [\
-          ["yallist", "npm:2.1.2"]\
-        ],\
-        "linkType": "HARD"\
-      }],\
       ["npm:4.0.0", {\
         "packageLocation": "./.yarn/cache/yallist-npm-4.0.0-b493d9e907-cd7fe32508.zip/node_modules/yallist/",\
         "packageDependencies": [\
