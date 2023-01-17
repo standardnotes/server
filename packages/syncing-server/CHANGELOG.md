@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.28.8](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.28.7...@standardnotes/syncing-server@1.28.8) (2023-01-17)
+
+### Bug Fixes
+
+* **syncing-server-js:** add debug logs for dumping items for revisions creation ([8db19c3](https://github.com/standardnotes/syncing-server-js/commit/8db19c3e2b55af9230b92621f01ae0d7c514913a))
+* **syncing-server-js:** creating directory for revision dumps ([9b926fb](https://github.com/standardnotes/syncing-server-js/commit/9b926fbad6c40a2e3792cc0d7c54987febd6dced))
+
 ## [1.28.7](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.28.6...@standardnotes/syncing-server@1.28.7) (2023-01-16)
 
 **Note:** Version bump only for package @standardnotes/syncing-server
