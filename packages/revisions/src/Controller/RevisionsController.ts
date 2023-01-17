@@ -63,12 +63,14 @@ export class RevisionsController {
       }
     }
 
+    const revisions = revisionMetadataOrError.getValue()
+
+    this.logger.debug(`Found ${revisions.length} revisions for item ${params.itemUuid}`)
+
     return {
       status: HttpStatusCode.Success,
       data: {
-        revisions: revisionMetadataOrError
-          .getValue()
-          .map((revision) => this.revisionMetadataHttpMapper.toProjection(revision)),
+        revisions: revisions.map((revision) => this.revisionMetadataHttpMapper.toProjection(revision)),
       },
     }
   }
