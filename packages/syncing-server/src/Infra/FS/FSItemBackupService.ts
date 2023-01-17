@@ -3,6 +3,7 @@ import { promises } from 'fs'
 import * as uuid from 'uuid'
 import { inject, injectable } from 'inversify'
 import { Logger } from 'winston'
+import { dirname } from 'path'
 
 import TYPES from '../../Bootstrap/Types'
 import { Item } from '../../Domain/Item/Item'
@@ -30,6 +31,8 @@ export class FSItemBackupService implements ItemBackupServiceInterface {
     const path = `${this.fileUploadPath}/dumps/${uuid.v4()}`
 
     this.logger.debug(`Dumping item ${item.uuid} to ${path}`)
+
+    await promises.mkdir(dirname(path), { recursive: true })
 
     await promises.writeFile(path, contents)
 
