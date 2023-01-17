@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.6.58](https://github.com/standardnotes/server/compare/@standardnotes/event-store@1.6.57...@standardnotes/event-store@1.6.58) (2023-01-17)
+
+### Bug Fixes
+
+* allow to run typeorm in non-replica mode ([f73129c](https://github.com/standardnotes/server/commit/f73129cd7e7d6a9b8a63e5c80284467597557982))
+
 ## [1.6.57](https://github.com/standardnotes/server/compare/@standardnotes/event-store@1.6.56...@standardnotes/event-store@1.6.57) (2023-01-13)
 
 **Note:** Version bump only for package @standardnotes/event-store

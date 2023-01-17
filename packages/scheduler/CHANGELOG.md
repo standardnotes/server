@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.16.8](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.16.7...@standardnotes/scheduler-server@1.16.8) (2023-01-17)
+
+### Bug Fixes
+
+* allow to run typeorm in non-replica mode ([f73129c](https://github.com/standardnotes/server/commit/f73129cd7e7d6a9b8a63e5c80284467597557982))
+
 ## [1.16.7](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.16.6...@standardnotes/scheduler-server@1.16.7) (2023-01-16)
 
 **Note:** Version bump only for package @standardnotes/scheduler-server
