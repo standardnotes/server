@@ -2,6 +2,7 @@ import { KeyParamsData } from '@standardnotes/responses'
 import { promises } from 'fs'
 import * as uuid from 'uuid'
 import { inject, injectable } from 'inversify'
+import { Logger } from 'winston'
 
 import TYPES from '../../Bootstrap/Types'
 import { Item } from '../../Domain/Item/Item'
@@ -14,6 +15,7 @@ export class FSItemBackupService implements ItemBackupServiceInterface {
   constructor(
     @inject(TYPES.FILE_UPLOAD_PATH) private fileUploadPath: string,
     @inject(TYPES.ItemProjector) private itemProjector: ProjectorInterface<Item, ItemProjection>,
+    @inject(TYPES.Logger) private logger: Logger,
   ) {}
 
   async backup(_items: Item[], _authParams: KeyParamsData): Promise<string> {
@@ -26,6 +28,8 @@ export class FSItemBackupService implements ItemBackupServiceInterface {
     })
 
     const path = `${this.fileUploadPath}/dumps/${uuid.v4()}`
+
+    this.logger.debug(`Dumping item ${item.uuid} to ${path}`)
 
     await promises.writeFile(path, contents)
 
