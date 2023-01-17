@@ -94,9 +94,12 @@ export class MySQLRevisionRepository implements RevisionRepositoryInterface {
       .andWhere('user_uuid = :userUuid', { userUuid: userUuid.value })
       .orderBy('created_at', 'DESC')
 
-    const simplifiedRevisions = await queryBuilder.getMany()
+    const simplifiedRevisions = await queryBuilder.getRawMany()
 
-    this.logger.debug(`Found ${simplifiedRevisions.length} revisions MySQL entries for item ${itemUuid.value}`)
+    this.logger.debug(
+      `Found ${simplifiedRevisions.length} revisions MySQL entries for item ${itemUuid.value}`,
+      simplifiedRevisions,
+    )
 
     const metadata = []
     for (const simplifiedRevision of simplifiedRevisions) {
