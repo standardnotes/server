@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.82.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.81.11...@standardnotes/auth-server@1.82.0) (2023-01-17)
+
+### Features
+
+* super editor permissions migration ([#414](https://github.com/standardnotes/server/issues/414)) ([7d45667](https://github.com/standardnotes/server/commit/7d456671c2b234f6570261b84d67fc3468cbc654))
+
 ## [1.81.11](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.81.10...@standardnotes/auth-server@1.81.11) (2023-01-17)
 
 ### Bug Fixes
