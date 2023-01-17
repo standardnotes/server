@@ -11,19 +11,18 @@ on:
   workflow_dispatch:
 
 jobs:
-  call_server_application_workflow:
-    name: Server Application
-    uses: standardnotes/server/.github/workflows/common-server-application.yml@main
+  call_server_utility_workflow:
+    name: Server Utility
+    uses: standardnotes/server/.github/workflows/common-server-utility.yml@main
     with:
       service_name: scheduler
       workspace_name: "@standardnotes/scheduler-server"
-      e2e_tag_parameter_name: scheduler_image_tag
       deploy_web: false
       package_path: packages/scheduler
     secrets: inherit
 
   newrelic:
-    needs: call_server_application_workflow
+    needs: call_server_utility_workflow
 
     runs-on: ubuntu-latest
 
