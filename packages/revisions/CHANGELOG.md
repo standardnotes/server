@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.12](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.10.11...@standardnotes/revisions-server@1.10.12) (2023-01-17)
+
+### Bug Fixes
+
+* **revisions:** fetching revisions metadata ([51c7773](https://github.com/standardnotes/server/commit/51c777304be96d317f95e9787b51e8489f9998b4))
+
 ## [1.10.11](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.10.10...@standardnotes/revisions-server@1.10.11) (2023-01-17)
 
 ### Bug Fixes
