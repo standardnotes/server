@@ -1,5 +1,6 @@
 import { MapperInterface, Uuid } from '@standardnotes/domain-core'
 import { Repository } from 'typeorm'
+import { Logger } from 'winston'
 
 import { Revision } from '../../Domain/Revision/Revision'
 import { RevisionMetadata } from '../../Domain/Revision/RevisionMetadata'
@@ -11,6 +12,7 @@ export class MySQLRevisionRepository implements RevisionRepositoryInterface {
     private ormRepository: Repository<TypeORMRevision>,
     private revisionMetadataMapper: MapperInterface<RevisionMetadata, TypeORMRevision>,
     private revisionMapper: MapperInterface<Revision, TypeORMRevision>,
+    private logger: Logger,
   ) {}
 
   async updateUserUuid(itemUuid: Uuid, userUuid: Uuid): Promise<void> {
@@ -93,6 +95,8 @@ export class MySQLRevisionRepository implements RevisionRepositoryInterface {
       .orderBy('created_at', 'DESC')
 
     const simplifiedRevisions = await queryBuilder.getMany()
+
+    this.logger.debug(`Found ${simplifiedRevisions.length} revisions MySQL entries for item ${itemUuid.value}`)
 
     const metadata = []
     for (const simplifiedRevision of simplifiedRevisions) {

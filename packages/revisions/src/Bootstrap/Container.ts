@@ -177,6 +177,7 @@ export class ContainerConfigLoader {
           container.get(TYPES.ORMRevisionRepository),
           container.get(TYPES.RevisionMetadataPersistenceMapper),
           container.get(TYPES.RevisionPersistenceMapper),
+          container.get(TYPES.Logger),
         ),
       )
     if (env.get('S3_AWS_REGION', true)) {
