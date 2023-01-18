@@ -128,13 +128,13 @@ const RAW_RUNTIME_STATE =
           ["@lerna-lite/run", "npm:1.6.0"],\
           ["@sentry/node", "npm:7.28.1"],\
           ["@types/jest", "npm:29.1.1"],\
-          ["@types/newrelic", "npm:7.0.4"],\
+          ["@types/newrelic", "npm:9.4.0"],\
           ["@types/node", "npm:18.11.9"],\
           ["@typescript-eslint/parser", "virtual:8859b278716fedf3e7458b5628625f7e35678c418626878559a0b816445001b7e24c55546f4677ba4c20b521aa0cf52cc33ac07deff171e383ada6eeab69933f#npm:5.40.1"],\
           ["eslint", "npm:8.19.0"],\
           ["eslint-config-prettier", "virtual:8859b278716fedf3e7458b5628625f7e35678c418626878559a0b816445001b7e24c55546f4677ba4c20b521aa0cf52cc33ac07deff171e383ada6eeab69933f#npm:8.5.0"],\
           ["ini", "npm:3.0.0"],\
-          ["newrelic", "npm:9.6.0"],\
+          ["newrelic", "npm:9.8.0"],\
           ["npm-check-updates", "npm:16.0.1"],\
           ["prettier", "npm:2.7.1"],\
           ["ts-node", "virtual:8859b278716fedf3e7458b5628625f7e35678c418626878559a0b816445001b7e24c55546f4677ba4c20b521aa0cf52cc33ac07deff171e383ada6eeab69933f#npm:10.9.1"],\
@@ -1130,6 +1130,18 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["@contrast/fn-inspect", [\
+      ["npm:3.3.0", {\
+        "packageLocation": "./.yarn/unplugged/@contrast-fn-inspect-npm-3.3.0-c6a8faa5b7/node_modules/@contrast/fn-inspect/",\
+        "packageDependencies": [\
+          ["@contrast/fn-inspect", "npm:3.3.0"],\
+          ["nan", "npm:2.16.0"],\
+          ["node-gyp", "npm:9.0.0"],\
+          ["node-gyp-build", "npm:4.5.0"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["@cspotcode/source-map-support", [\
       ["npm:0.8.1", {\
         "packageLocation": "./.yarn/cache/@cspotcode-source-map-support-npm-0.8.1-964f2de99d-4327d8e6e4.zip/node_modules/@cspotcode/source-map-support/",\
@@ -1196,25 +1208,25 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@grpc/grpc-js", [\
-      ["npm:1.6.7", {\
-        "packageLocation": "./.yarn/cache/@grpc-grpc-js-npm-1.6.7-2e10ef0dbb-be24dd50f5.zip/node_modules/@grpc/grpc-js/",\
+      ["npm:1.8.4", {\
+        "packageLocation": "./.yarn/cache/@grpc-grpc-js-npm-1.8.4-287c8bdac8-6367a2ee38.zip/node_modules/@grpc/grpc-js/",\
         "packageDependencies": [\
-          ["@grpc/grpc-js", "npm:1.6.7"],\
-          ["@grpc/proto-loader", "npm:0.6.13"],\
+          ["@grpc/grpc-js", "npm:1.8.4"],\
+          ["@grpc/proto-loader", "npm:0.7.4"],\
           ["@types/node", "npm:18.0.3"]\
         ],\
         "linkType": "HARD"\
       }]\
     ]],\
     ["@grpc/proto-loader", [\
-      ["npm:0.6.13", {\
-        "packageLocation": "./.yarn/cache/@grpc-proto-loader-npm-0.6.13-658ac26dfb-6272a0318b.zip/node_modules/@grpc/proto-loader/",\
+      ["npm:0.7.4", {\
+        "packageLocation": "./.yarn/cache/@grpc-proto-loader-npm-0.7.4-43d91344a0-1f5d4211fe.zip/node_modules/@grpc/proto-loader/",\
         "packageDependencies": [\
-          ["@grpc/proto-loader", "npm:0.6.13"],\
+          ["@grpc/proto-loader", "npm:0.7.4"],\
           ["@types/long", "npm:4.0.2"],\
           ["lodash.camelcase", "npm:4.3.0"],\
           ["long", "npm:4.0.0"],\
-          ["protobufjs", "npm:6.11.3"],\
+          ["protobufjs", "npm:7.1.2"],\
           ["yargs", "npm:16.2.0"]\
         ],\
         "linkType": "HARD"\
@@ -1875,12 +1887,12 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "SOFT"\
       }],\
-      ["virtual:f10080c2deb75096716a913b06010dcd94891c77539a757ab32210a1efc3ff91527b36d6c7c46e890db826160e0724553ca23acd0a8a734b5554c9600c71eb52#npm:5.0.0", {\
-        "packageLocation": "./.yarn/__virtual__/@newrelic-aws-sdk-virtual-ccf1e948b3/0/cache/@newrelic-aws-sdk-npm-5.0.0-7d9d10d58f-ed1dc3fa16.zip/node_modules/@newrelic/aws-sdk/",\
+      ["virtual:4c49b89cbc97666c528d8405a7490a32a30cd8b65c1a61cb32c444f3a312dab1385405717f9866d113d67518b3d487f15de177279ba1a80f8958b28cad021846#npm:5.0.0", {\
+        "packageLocation": "./.yarn/__virtual__/@newrelic-aws-sdk-virtual-b32c5d232e/0/cache/@newrelic-aws-sdk-npm-5.0.0-7d9d10d58f-ed1dc3fa16.zip/node_modules/@newrelic/aws-sdk/",\
         "packageDependencies": [\
-          ["@newrelic/aws-sdk", "virtual:f10080c2deb75096716a913b06010dcd94891c77539a757ab32210a1efc3ff91527b36d6c7c46e890db826160e0724553ca23acd0a8a734b5554c9600c71eb52#npm:5.0.0"],\
+          ["@newrelic/aws-sdk", "virtual:4c49b89cbc97666c528d8405a7490a32a30cd8b65c1a61cb32c444f3a312dab1385405717f9866d113d67518b3d487f15de177279ba1a80f8958b28cad021846#npm:5.0.0"],\
           ["@types/newrelic", null],\
-          ["newrelic", "npm:9.6.0"]\
+          ["newrelic", "npm:9.8.0"]\
         ],\
         "packagePeers": [\
           "@types/newrelic",\
@@ -1897,12 +1909,12 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "SOFT"\
       }],\
-      ["virtual:f10080c2deb75096716a913b06010dcd94891c77539a757ab32210a1efc3ff91527b36d6c7c46e890db826160e0724553ca23acd0a8a734b5554c9600c71eb52#npm:7.0.0", {\
-        "packageLocation": "./.yarn/__virtual__/@newrelic-koa-virtual-613d84b4f1/0/cache/@newrelic-koa-npm-7.0.0-903c251b9f-0fc2298c8b.zip/node_modules/@newrelic/koa/",\
+      ["virtual:4c49b89cbc97666c528d8405a7490a32a30cd8b65c1a61cb32c444f3a312dab1385405717f9866d113d67518b3d487f15de177279ba1a80f8958b28cad021846#npm:7.0.0", {\
+        "packageLocation": "./.yarn/__virtual__/@newrelic-koa-virtual-cc6a41398f/0/cache/@newrelic-koa-npm-7.0.0-903c251b9f-0fc2298c8b.zip/node_modules/@newrelic/koa/",\
         "packageDependencies": [\
-          ["@newrelic/koa", "virtual:f10080c2deb75096716a913b06010dcd94891c77539a757ab32210a1efc3ff91527b36d6c7c46e890db826160e0724553ca23acd0a8a734b5554c9600c71eb52#npm:7.0.0"],\
+          ["@newrelic/koa", "virtual:4c49b89cbc97666c528d8405a7490a32a30cd8b65c1a61cb32c444f3a312dab1385405717f9866d113d67518b3d487f15de177279ba1a80f8958b28cad021846#npm:7.0.0"],\
           ["@types/newrelic", null],\
-          ["newrelic", "npm:9.6.0"]\
+          ["newrelic", "npm:9.8.0"]\
         ],\
         "packagePeers": [\
           "@types/newrelic",\
@@ -1932,12 +1944,12 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "SOFT"\
       }],\
-      ["virtual:f10080c2deb75096716a913b06010dcd94891c77539a757ab32210a1efc3ff91527b36d6c7c46e890db826160e0724553ca23acd0a8a734b5554c9600c71eb52#npm:6.0.0", {\
-        "packageLocation": "./.yarn/__virtual__/@newrelic-superagent-virtual-37eb7b41a0/0/cache/@newrelic-superagent-npm-6.0.0-db8b77d0f3-b77997b792.zip/node_modules/@newrelic/superagent/",\
+      ["virtual:4c49b89cbc97666c528d8405a7490a32a30cd8b65c1a61cb32c444f3a312dab1385405717f9866d113d67518b3d487f15de177279ba1a80f8958b28cad021846#npm:6.0.0", {\
+        "packageLocation": "./.yarn/__virtual__/@newrelic-superagent-virtual-dc0653ca20/0/cache/@newrelic-superagent-npm-6.0.0-db8b77d0f3-b77997b792.zip/node_modules/@newrelic/superagent/",\
         "packageDependencies": [\
-          ["@newrelic/superagent", "virtual:f10080c2deb75096716a913b06010dcd94891c77539a757ab32210a1efc3ff91527b36d6c7c46e890db826160e0724553ca23acd0a8a734b5554c9600c71eb52#npm:6.0.0"],\
+          ["@newrelic/superagent", "virtual:4c49b89cbc97666c528d8405a7490a32a30cd8b65c1a61cb32c444f3a312dab1385405717f9866d113d67518b3d487f15de177279ba1a80f8958b28cad021846#npm:6.0.0"],\
           ["@types/newrelic", null],\
-          ["newrelic", "npm:9.6.0"]\
+          ["newrelic", "npm:9.8.0"]\
         ],\
         "packagePeers": [\
           "@types/newrelic",\
@@ -1958,8 +1970,8 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/__virtual__/@newrelic-winston-enricher-virtual-6b8c53ab3d/0/cache/@newrelic-winston-enricher-npm-4.0.0-ebaf2d0d28-3fc901cded.zip/node_modules/@newrelic/winston-enricher/",\
         "packageDependencies": [\
           ["@newrelic/winston-enricher", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:4.0.0"],\
-          ["@types/newrelic", "npm:7.0.4"],\
-          ["newrelic", "npm:9.6.0"]\
+          ["@types/newrelic", "npm:9.4.0"],\
+          ["newrelic", "npm:9.8.0"]\
         ],\
         "packagePeers": [\
           "@types/newrelic",\
@@ -2635,7 +2647,7 @@ const RAW_RUNTIME_STATE =
           ["@types/ioredis", "npm:5.0.0"],\
           ["@types/jest", "npm:29.1.1"],\
           ["@types/mixpanel", "npm:2.14.4"],\
-          ["@types/newrelic", "npm:7.0.4"],\
+          ["@types/newrelic", "npm:9.4.0"],\
           ["@types/node", "npm:18.11.9"],\
           ["@typescript-eslint/eslint-plugin", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:5.30.5"],\
           ["aws-sdk", "npm:2.1260.0"],\
@@ -2648,7 +2660,7 @@ const RAW_RUNTIME_STATE =
           ["jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.1.2"],\
           ["mixpanel", "npm:0.17.0"],\
           ["mysql2", "npm:3.0.1"],\
-          ["newrelic", "npm:9.6.0"],\
+          ["newrelic", "npm:9.8.0"],\
           ["reflect-metadata", "npm:0.1.13"],\
           ["ts-jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.0.3"],\
           ["typeorm", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:0.3.10"],\
@@ -2691,7 +2703,7 @@ const RAW_RUNTIME_STATE =
           ["@types/ioredis", "npm:5.0.0"],\
           ["@types/jest", "npm:29.1.1"],\
           ["@types/jsonwebtoken", "npm:9.0.1"],\
-          ["@types/newrelic", "npm:7.0.4"],\
+          ["@types/newrelic", "npm:9.4.0"],\
           ["@types/prettyjson", "npm:0.0.30"],\
           ["@typescript-eslint/eslint-plugin", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:5.40.1"],\
           ["aws-sdk", "npm:2.1260.0"],\
@@ -2708,7 +2720,7 @@ const RAW_RUNTIME_STATE =
           ["ioredis", "npm:5.2.4"],\
           ["jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.1.2"],\
           ["jsonwebtoken", "npm:9.0.0"],\
-          ["newrelic", "npm:9.6.0"],\
+          ["newrelic", "npm:9.8.0"],\
           ["nodemon", "npm:2.0.20"],\
           ["npm-check-updates", "npm:16.0.1"],\
           ["prettyjson", "npm:1.2.5"],\
@@ -2759,7 +2771,7 @@ const RAW_RUNTIME_STATE =
           ["@types/express", "npm:4.17.14"],\
           ["@types/ioredis", "npm:5.0.0"],\
           ["@types/jest", "npm:29.1.1"],\
-          ["@types/newrelic", "npm:7.0.4"],\
+          ["@types/newrelic", "npm:9.4.0"],\
           ["@types/otplib", "npm:10.0.0"],\
           ["@types/prettyjson", "npm:0.0.30"],\
           ["@types/ua-parser-js", "npm:0.7.36"],\
@@ -2779,7 +2791,7 @@ const RAW_RUNTIME_STATE =
           ["ioredis", "npm:5.2.4"],\
           ["jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.1.2"],\
           ["mysql2", "npm:3.0.1"],\
-          ["newrelic", "npm:9.6.0"],\
+          ["newrelic", "npm:9.8.0"],\
           ["nodemon", "npm:2.0.20"],\
           ["npm-check-updates", "npm:16.0.1"],\
           ["otplib", "npm:12.0.1"],\
@@ -2873,13 +2885,13 @@ const RAW_RUNTIME_STATE =
           ["@standardnotes/domain-events", "workspace:packages/domain-events"],\
           ["@types/ioredis", "npm:5.0.0"],\
           ["@types/jest", "npm:29.1.1"],\
-          ["@types/newrelic", "npm:7.0.4"],\
+          ["@types/newrelic", "npm:9.4.0"],\
           ["@typescript-eslint/eslint-plugin", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:5.30.5"],\
           ["aws-sdk", "npm:2.1260.0"],\
           ["eslint-plugin-prettier", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:4.2.1"],\
           ["ioredis", "npm:5.2.4"],\
           ["jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.1.2"],\
-          ["newrelic", "npm:9.6.0"],\
+          ["newrelic", "npm:9.8.0"],\
           ["reflect-metadata", "npm:0.1.13"],\
           ["sqs-consumer", "virtual:685a6222c3349423674bb7f0684ba34e2ab20912010f352e04dcf707a156e13183fc382e2417cb37a60f3e7b52fd0178c53181674890e1773eb83e190dc13378#npm:5.7.0"],\
           ["ts-jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.0.3"],\
@@ -2914,7 +2926,7 @@ const RAW_RUNTIME_STATE =
           ["@standardnotes/time", "workspace:packages/time"],\
           ["@types/ioredis", "npm:5.0.0"],\
           ["@types/jest", "npm:29.1.1"],\
-          ["@types/newrelic", "npm:7.0.4"],\
+          ["@types/newrelic", "npm:9.4.0"],\
           ["@types/nodemailer", "npm:6.4.6"],\
           ["@typescript-eslint/eslint-plugin", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:5.40.1"],\
           ["aws-sdk", "npm:2.1260.0"],\
@@ -2925,7 +2937,7 @@ const RAW_RUNTIME_STATE =
           ["ioredis", "npm:5.2.4"],\
           ["jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.1.2"],\
           ["mysql2", "npm:3.0.1"],\
-          ["newrelic", "npm:9.6.0"],\
+          ["newrelic", "npm:9.8.0"],\
           ["reflect-metadata", "npm:0.1.13"],\
           ["ts-jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.0.3"],\
           ["typeorm", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:0.3.10"],\
@@ -2979,7 +2991,7 @@ const RAW_RUNTIME_STATE =
           ["@types/ioredis", "npm:5.0.0"],\
           ["@types/jest", "npm:29.1.1"],\
           ["@types/jsonwebtoken", "npm:9.0.1"],\
-          ["@types/newrelic", "npm:7.0.4"],\
+          ["@types/newrelic", "npm:9.4.0"],\
           ["@types/prettyjson", "npm:0.0.30"],\
           ["@types/uuid", "npm:8.3.4"],\
           ["@typescript-eslint/eslint-plugin", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:5.40.1"],\
@@ -2999,7 +3011,7 @@ const RAW_RUNTIME_STATE =
           ["ioredis", "npm:5.2.4"],\
           ["jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.1.2"],\
           ["jsonwebtoken", "npm:9.0.0"],\
-          ["newrelic", "npm:9.6.0"],\
+          ["newrelic", "npm:9.8.0"],\
           ["nodemon", "npm:2.0.20"],\
           ["npm-check-updates", "npm:16.0.1"],\
           ["prettyjson", "npm:1.2.5"],\
@@ -3114,7 +3126,7 @@ const RAW_RUNTIME_STATE =
           ["@types/inversify-express-utils", "npm:2.0.0"],\
           ["@types/ioredis", "npm:5.0.0"],\
           ["@types/jest", "npm:29.1.1"],\
-          ["@types/newrelic", "npm:7.0.4"],\
+          ["@types/newrelic", "npm:9.4.0"],\
           ["@typescript-eslint/eslint-plugin", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:5.40.1"],\
           ["aws-sdk", "npm:2.1260.0"],\
           ["cors", "npm:2.8.5"],\
@@ -3128,7 +3140,7 @@ const RAW_RUNTIME_STATE =
           ["ioredis", "npm:5.2.4"],\
           ["jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.1.2"],\
           ["mysql2", "npm:3.0.1"],\
-          ["newrelic", "npm:9.6.0"],\
+          ["newrelic", "npm:9.8.0"],\
           ["npm-check-updates", "npm:16.0.1"],\
           ["reflect-metadata", "npm:0.1.13"],\
           ["ts-jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.0.3"],\
@@ -3154,7 +3166,7 @@ const RAW_RUNTIME_STATE =
           ["@standardnotes/time", "workspace:packages/time"],\
           ["@types/ioredis", "npm:5.0.0"],\
           ["@types/jest", "npm:29.1.1"],\
-          ["@types/newrelic", "npm:7.0.4"],\
+          ["@types/newrelic", "npm:9.4.0"],\
           ["@types/node", "npm:18.11.9"],\
           ["@typescript-eslint/eslint-plugin", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:5.40.1"],\
           ["aws-sdk", "npm:2.1260.0"],\
@@ -3166,7 +3178,7 @@ const RAW_RUNTIME_STATE =
           ["ioredis", "npm:5.2.4"],\
           ["jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.1.2"],\
           ["mysql2", "npm:3.0.1"],\
-          ["newrelic", "npm:9.6.0"],\
+          ["newrelic", "npm:9.8.0"],\
           ["npm-check-updates", "npm:16.0.1"],\
           ["reflect-metadata", "npm:0.1.13"],\
           ["ts-jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.0.3"],\
@@ -3208,13 +3220,13 @@ const RAW_RUNTIME_STATE =
           ["@lerna-lite/run", "npm:1.6.0"],\
           ["@sentry/node", "npm:7.28.1"],\
           ["@types/jest", "npm:29.1.1"],\
-          ["@types/newrelic", "npm:7.0.4"],\
+          ["@types/newrelic", "npm:9.4.0"],\
           ["@types/node", "npm:18.11.9"],\
           ["@typescript-eslint/parser", "virtual:8859b278716fedf3e7458b5628625f7e35678c418626878559a0b816445001b7e24c55546f4677ba4c20b521aa0cf52cc33ac07deff171e383ada6eeab69933f#npm:5.40.1"],\
           ["eslint", "npm:8.19.0"],\
           ["eslint-config-prettier", "virtual:8859b278716fedf3e7458b5628625f7e35678c418626878559a0b816445001b7e24c55546f4677ba4c20b521aa0cf52cc33ac07deff171e383ada6eeab69933f#npm:8.5.0"],\
           ["ini", "npm:3.0.0"],\
-          ["newrelic", "npm:9.6.0"],\
+          ["newrelic", "npm:9.8.0"],\
           ["npm-check-updates", "npm:16.0.1"],\
           ["prettier", "npm:2.7.1"],\
           ["ts-node", "virtual:8859b278716fedf3e7458b5628625f7e35678c418626878559a0b816445001b7e24c55546f4677ba4c20b521aa0cf52cc33ac07deff171e383ada6eeab69933f#npm:10.9.1"],\
@@ -3290,7 +3302,7 @@ const RAW_RUNTIME_STATE =
           ["@types/ioredis", "npm:5.0.0"],\
           ["@types/jest", "npm:29.1.1"],\
           ["@types/jsonwebtoken", "npm:9.0.1"],\
-          ["@types/newrelic", "npm:7.0.4"],\
+          ["@types/newrelic", "npm:9.4.0"],\
           ["@types/prettyjson", "npm:0.0.30"],\
           ["@types/ua-parser-js", "npm:0.7.36"],\
           ["@types/uuid", "npm:8.3.4"],\
@@ -3309,7 +3321,7 @@ const RAW_RUNTIME_STATE =
           ["jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.1.2"],\
           ["jsonwebtoken", "npm:9.0.0"],\
           ["mysql2", "npm:3.0.1"],\
-          ["newrelic", "npm:9.6.0"],\
+          ["newrelic", "npm:9.8.0"],\
           ["nodemon", "npm:2.0.20"],\
           ["npm-check-updates", "npm:16.0.1"],\
           ["prettyjson", "npm:1.2.5"],\
@@ -3383,7 +3395,7 @@ const RAW_RUNTIME_STATE =
           ["@types/express", "npm:4.17.14"],\
           ["@types/ioredis", "npm:5.0.0"],\
           ["@types/jest", "npm:29.1.1"],\
-          ["@types/newrelic", "npm:7.0.4"],\
+          ["@types/newrelic", "npm:9.4.0"],\
           ["@typescript-eslint/eslint-plugin", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:5.40.1"],\
           ["aws-sdk", "npm:2.1260.0"],\
           ["axios", "npm:1.1.3"],\
@@ -3397,7 +3409,7 @@ const RAW_RUNTIME_STATE =
           ["ioredis", "npm:5.2.4"],\
           ["jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.1.2"],\
           ["mysql2", "npm:3.0.1"],\
-          ["newrelic", "npm:9.6.0"],\
+          ["newrelic", "npm:9.8.0"],\
           ["reflect-metadata", "npm:0.1.13"],\
           ["ts-jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.0.3"],\
           ["typeorm", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:0.3.10"],\
@@ -3426,7 +3438,7 @@ const RAW_RUNTIME_STATE =
           ["@types/express", "npm:4.17.14"],\
           ["@types/ioredis", "npm:5.0.0"],\
           ["@types/jest", "npm:29.1.1"],\
-          ["@types/newrelic", "npm:7.0.4"],\
+          ["@types/newrelic", "npm:9.4.0"],\
           ["@typescript-eslint/eslint-plugin", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:5.40.1"],\
           ["aws-sdk", "npm:2.1260.0"],\
           ["cors", "npm:2.8.5"],\
@@ -3439,7 +3451,7 @@ const RAW_RUNTIME_STATE =
           ["ioredis", "npm:5.2.4"],\
           ["jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.1.2"],\
           ["mysql2", "npm:3.0.1"],\
-          ["newrelic", "npm:9.6.0"],\
+          ["newrelic", "npm:9.8.0"],\
           ["reflect-metadata", "npm:0.1.13"],\
           ["ts-jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.0.3"],\
           ["typeorm", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:0.3.10"],\
@@ -3830,10 +3842,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@types/newrelic", [\
-      ["npm:7.0.4", {\
-        "packageLocation": "./.yarn/cache/@types-newrelic-npm-7.0.4-4f0b179b51-b44215b3ab.zip/node_modules/@types/newrelic/",\
+      ["npm:9.4.0", {\
+        "packageLocation": "./.yarn/cache/@types-newrelic-npm-9.4.0-72a77bd5e6-adb12973e8.zip/node_modules/@types/newrelic/",\
         "packageDependencies": [\
-          ["@types/newrelic", "npm:7.0.4"]\
+          ["@types/newrelic", "npm:9.4.0"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -10764,16 +10776,17 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["newrelic", [\
-      ["npm:9.6.0", {\
-        "packageLocation": "./.yarn/cache/newrelic-npm-9.6.0-f10080c2de-eb378acde1.zip/node_modules/newrelic/",\
+      ["npm:9.8.0", {\
+        "packageLocation": "./.yarn/cache/newrelic-npm-9.8.0-4c49b89cbc-ed3b893298.zip/node_modules/newrelic/",\
         "packageDependencies": [\
-          ["newrelic", "npm:9.6.0"],\
-          ["@grpc/grpc-js", "npm:1.6.7"],\
-          ["@grpc/proto-loader", "npm:0.6.13"],\
-          ["@newrelic/aws-sdk", "virtual:f10080c2deb75096716a913b06010dcd94891c77539a757ab32210a1efc3ff91527b36d6c7c46e890db826160e0724553ca23acd0a8a734b5554c9600c71eb52#npm:5.0.0"],\
-          ["@newrelic/koa", "virtual:f10080c2deb75096716a913b06010dcd94891c77539a757ab32210a1efc3ff91527b36d6c7c46e890db826160e0724553ca23acd0a8a734b5554c9600c71eb52#npm:7.0.0"],\
+          ["newrelic", "npm:9.8.0"],\
+          ["@contrast/fn-inspect", "npm:3.3.0"],\
+          ["@grpc/grpc-js", "npm:1.8.4"],\
+          ["@grpc/proto-loader", "npm:0.7.4"],\
+          ["@newrelic/aws-sdk", "virtual:4c49b89cbc97666c528d8405a7490a32a30cd8b65c1a61cb32c444f3a312dab1385405717f9866d113d67518b3d487f15de177279ba1a80f8958b28cad021846#npm:5.0.0"],\
+          ["@newrelic/koa", "virtual:4c49b89cbc97666c528d8405a7490a32a30cd8b65c1a61cb32c444f3a312dab1385405717f9866d113d67518b3d487f15de177279ba1a80f8958b28cad021846#npm:7.0.0"],\
           ["@newrelic/native-metrics", "npm:9.0.0"],\
-          ["@newrelic/superagent", "virtual:f10080c2deb75096716a913b06010dcd94891c77539a757ab32210a1efc3ff91527b36d6c7c46e890db826160e0724553ca23acd0a8a734b5554c9600c71eb52#npm:6.0.0"],\
+          ["@newrelic/superagent", "virtual:4c49b89cbc97666c528d8405a7490a32a30cd8b65c1a61cb32c444f3a312dab1385405717f9866d113d67518b3d487f15de177279ba1a80f8958b28cad021846#npm:6.0.0"],\
           ["@tyriar/fibonacci-heap", "npm:2.0.9"],\
           ["concat-stream", "npm:2.0.0"],\
           ["https-proxy-agent", "npm:5.0.1"],\
@@ -11828,10 +11841,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["protobufjs", [\
-      ["npm:6.11.3", {\
-        "packageLocation": "./.yarn/unplugged/protobufjs-npm-6.11.3-566fb31188/node_modules/protobufjs/",\
+      ["npm:7.1.2", {\
+        "packageLocation": "./.yarn/unplugged/protobufjs-npm-7.1.2-2e50888192/node_modules/protobufjs/",\
         "packageDependencies": [\
-          ["protobufjs", "npm:6.11.3"],\
+          ["protobufjs", "npm:7.1.2"],\
           ["@protobufjs/aspromise", "npm:1.1.2"],\
           ["@protobufjs/base64", "npm:1.1.2"],\
           ["@protobufjs/codegen", "npm:2.0.4"],\
@@ -11842,9 +11855,8 @@ const RAW_RUNTIME_STATE =
           ["@protobufjs/path", "npm:1.1.2"],\
           ["@protobufjs/pool", "npm:1.1.0"],\
           ["@protobufjs/utf8", "npm:1.1.0"],\
-          ["@types/long", "npm:4.0.2"],\
           ["@types/node", "npm:18.0.3"],\
-          ["long", "npm:4.0.0"]\
+          ["long", "npm:5.2.1"]\
         ],\
         "linkType": "HARD"\
       }]\
