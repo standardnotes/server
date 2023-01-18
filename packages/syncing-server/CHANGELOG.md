@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.29.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.28.10...@standardnotes/syncing-server@1.29.0) (2023-01-18)
+
+### Features
+
+* **syncing-server:** remove saving revisions in syncing-server database in favour of the revisions server ([7c393b1](https://github.com/standardnotes/syncing-server-js/commit/7c393b1125ee9838fd10ae9d3220f1da8790f94f))
+
 ## [1.28.10](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.28.9...@standardnotes/syncing-server@1.28.10) (2023-01-17)
 
 **Note:** Version bump only for package @standardnotes/syncing-server
