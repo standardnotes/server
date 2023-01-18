@@ -1,9 +1,8 @@
 import { inject, injectable } from 'inversify'
-import { RoleName, ContentType } from '@standardnotes/common'
+import { RoleName } from '@standardnotes/common'
 import { TimerInterface } from '@standardnotes/time'
 
 import TYPES from '../../Bootstrap/Types'
-import { Item } from '../Item/Item'
 import { Revision } from './Revision'
 import { RevisionRepositoryInterface } from './RevisionRepositoryInterface'
 import { RevisionServiceInterface } from './RevisionServiceInterface'
@@ -56,53 +55,6 @@ export class RevisionService implements RevisionServiceInterface {
     }
 
     return revision
-  }
-
-  async copyRevisions(fromItemUuid: string, toItemUuid: string): Promise<void> {
-    const revisions = await this.revisionRepository.findByItemId({
-      itemUuid: fromItemUuid,
-    })
-
-    const toItem = await this.itemRepository.findByUuid(toItemUuid)
-    if (toItem === null) {
-      throw Error(`Item ${toItemUuid} does not exist`)
-    }
-
-    for (const existingRevision of revisions) {
-      const revisionCopy = new Revision()
-      revisionCopy.authHash = existingRevision.authHash
-      revisionCopy.content = existingRevision.content
-      revisionCopy.contentType = existingRevision.contentType
-      revisionCopy.encItemKey = existingRevision.encItemKey
-      revisionCopy.item = Promise.resolve(toItem)
-      revisionCopy.itemsKeyId = existingRevision.itemsKeyId
-      revisionCopy.creationDate = existingRevision.creationDate
-      revisionCopy.createdAt = existingRevision.createdAt
-      revisionCopy.updatedAt = existingRevision.updatedAt
-
-      await this.revisionRepository.save(revisionCopy)
-    }
-  }
-
-  async createRevision(item: Item): Promise<void> {
-    if (![ContentType.Note, ContentType.File].includes(item.contentType as ContentType)) {
-      return
-    }
-
-    const now = new Date()
-
-    const revision = new Revision()
-    revision.authHash = item.authHash
-    revision.content = item.content
-    revision.contentType = item.contentType
-    revision.encItemKey = item.encItemKey
-    revision.item = Promise.resolve(item)
-    revision.itemsKeyId = item.itemsKeyId
-    revision.creationDate = now
-    revision.createdAt = now
-    revision.updatedAt = now
-
-    await this.revisionRepository.save(revision)
   }
 
   calculateRequiredRoleBasedOnRevisionDate(createdAt: Date): RoleName {

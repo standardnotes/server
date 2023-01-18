@@ -22,7 +22,6 @@ import { ConflictType } from '@standardnotes/responses'
 import { ItemTransferCalculatorInterface } from './ItemTransferCalculatorInterface'
 import { ProjectorInterface } from '../../Projection/ProjectorInterface'
 import { ItemProjection } from '../../Projection/ItemProjection'
-import { RevisionServiceInterface } from '../Revision/RevisionServiceInterface'
 
 @injectable()
 export class ItemService implements ItemServiceInterface {
@@ -33,7 +32,6 @@ export class ItemService implements ItemServiceInterface {
     @inject(TYPES.ItemSaveValidator) private itemSaveValidator: ItemSaveValidatorInterface,
     @inject(TYPES.ItemFactory) private itemFactory: ItemFactoryInterface,
     @inject(TYPES.ItemRepository) private itemRepository: ItemRepositoryInterface,
-    @inject(TYPES.RevisionService) private revisionService: RevisionServiceInterface,
     @inject(TYPES.DomainEventPublisher) private domainEventPublisher: DomainEventPublisherInterface,
     @inject(TYPES.DomainEventFactory) private domainEventFactory: DomainEventFactoryInterface,
     @inject(TYPES.REVISIONS_FREQUENCY) private revisionFrequency: number,
@@ -253,8 +251,6 @@ export class ItemService implements ItemServiceInterface {
     const savedItem = await this.itemRepository.save(dto.existingItem)
 
     if (secondsFromLastUpdate >= this.revisionFrequency) {
-      await this.revisionService.createRevision(savedItem)
-
       if ([ContentType.Note, ContentType.File].includes(savedItem.contentType as ContentType)) {
         await this.domainEventPublisher.publish(
           this.domainEventFactory.createItemRevisionCreationRequested(savedItem.uuid, savedItem.userUuid),
@@ -275,8 +271,6 @@ export class ItemService implements ItemServiceInterface {
     const newItem = this.itemFactory.create(dto)
 
     const savedItem = await this.itemRepository.save(newItem)
-
-    await this.revisionService.createRevision(savedItem)
 
     if ([ContentType.Note, ContentType.File].includes(savedItem.contentType as ContentType)) {
       await this.domainEventPublisher.publish(

@@ -8,13 +8,11 @@ import { Logger } from 'winston'
 import TYPES from '../../Bootstrap/Types'
 import { DomainEventFactoryInterface } from '../Event/DomainEventFactoryInterface'
 import { ItemRepositoryInterface } from '../Item/ItemRepositoryInterface'
-import { RevisionServiceInterface } from '../Revision/RevisionServiceInterface'
 
 @injectable()
 export class DuplicateItemSyncedEventHandler implements DomainEventHandlerInterface {
   constructor(
     @inject(TYPES.ItemRepository) private itemRepository: ItemRepositoryInterface,
-    @inject(TYPES.RevisionService) private revisionService: RevisionServiceInterface,
     @inject(TYPES.DomainEventFactory) private domainEventFactory: DomainEventFactoryInterface,
     @inject(TYPES.DomainEventPublisher) private domainEventPublisher: DomainEventPublisherInterface,
     @inject(TYPES.Logger) private logger: Logger,
@@ -41,8 +39,6 @@ export class DuplicateItemSyncedEventHandler implements DomainEventHandlerInterf
     )
 
     if (existingOriginalItem !== null) {
-      await this.revisionService.copyRevisions(existingOriginalItem.uuid, item.uuid)
-
       await this.domainEventPublisher.publish(
         this.domainEventFactory.createRevisionsCopyRequestedEvent(event.payload.userUuid, {
           originalItemUuid: existingOriginalItem.uuid,

@@ -9,12 +9,10 @@ import { Logger } from 'winston'
 import { Item } from '../Item/Item'
 import { ItemRepositoryInterface } from '../Item/ItemRepositoryInterface'
 import { DuplicateItemSyncedEventHandler } from './DuplicateItemSyncedEventHandler'
-import { RevisionServiceInterface } from '../Revision/RevisionServiceInterface'
 import { DomainEventFactoryInterface } from '../Event/DomainEventFactoryInterface'
 
 describe('DuplicateItemSyncedEventHandler', () => {
   let itemRepository: ItemRepositoryInterface
-  let revisionService: RevisionServiceInterface
   let logger: Logger
   let duplicateItem: Item
   let originalItem: Item
@@ -23,13 +21,7 @@ describe('DuplicateItemSyncedEventHandler', () => {
   let domainEventPublisher: DomainEventPublisherInterface
 
   const createHandler = () =>
-    new DuplicateItemSyncedEventHandler(
-      itemRepository,
-      revisionService,
-      domainEventFactory,
-      domainEventPublisher,
-      logger,
-    )
+    new DuplicateItemSyncedEventHandler(itemRepository, domainEventFactory, domainEventPublisher, logger)
 
   beforeEach(() => {
     originalItem = {
@@ -50,9 +42,6 @@ describe('DuplicateItemSyncedEventHandler', () => {
     logger = {} as jest.Mocked<Logger>
     logger.warn = jest.fn()
 
-    revisionService = {} as jest.Mocked<RevisionServiceInterface>
-    revisionService.copyRevisions = jest.fn()
-
     event = {} as jest.Mocked<DuplicateItemSyncedEvent>
     event.createdAt = new Date(1)
     event.payload = {
@@ -72,7 +61,7 @@ describe('DuplicateItemSyncedEventHandler', () => {
   it('should copy revisions from original item to the duplicate item', async () => {
     await createHandler().handle(event)
 
-    expect(revisionService.copyRevisions).toHaveBeenCalledWith('1-2-3', '2-3-4')
+    expect(domainEventPublisher.publish).toHaveBeenCalled()
   })
 
   it('should not copy revisions if original item does not exist', async () => {
@@ -80,7 +69,7 @@ describe('DuplicateItemSyncedEventHandler', () => {
 
     await createHandler().handle(event)
 
-    expect(revisionService.copyRevisions).not.toHaveBeenCalled()
+    expect(domainEventPublisher.publish).not.toHaveBeenCalled()
   })
 
   it('should not copy revisions if duplicate item does not exist', async () => {
@@ -88,13 +77,13 @@ describe('DuplicateItemSyncedEventHandler', () => {
 
     await createHandler().handle(event)
 
-    expect(revisionService.copyRevisions).not.toHaveBeenCalled()
+    expect(domainEventPublisher.publish).not.toHaveBeenCalled()
   })
 
   it('should not copy revisions if duplicate item is not pointing to duplicate anything', async () => {
     duplicateItem.duplicateOf = null
     await createHandler().handle(event)
 
-    expect(revisionService.copyRevisions).not.toHaveBeenCalled()
+    expect(domainEventPublisher.publish).not.toHaveBeenCalled()
   })
 })

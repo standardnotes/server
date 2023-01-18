@@ -1,4 +1,6 @@
-import { ContentType, RoleName } from '@standardnotes/common'
+import 'reflect-metadata'
+
+import { RoleName } from '@standardnotes/common'
 import { TimerInterface } from '@standardnotes/time'
 
 import { Item } from '../Item/Item'
@@ -12,7 +14,6 @@ describe('RevisionService', () => {
   let revisionRepository: RevisionRepositoryInterface
   let timer: TimerInterface
   let itemRepository: ItemRepositoryInterface
-  let item: Item
   let revision1: Revision
   let revision2: Revision
 
@@ -54,15 +55,6 @@ describe('RevisionService', () => {
     revisionRepository.findMetadataByItemId = jest.fn().mockReturnValue([{} as jest.Mocked<RevisionMetadata>])
     revisionRepository.findOneById = jest.fn().mockReturnValue(revision1)
     revisionRepository.removeByUuid = jest.fn()
-
-    item = {
-      authHash: 'test-hash',
-      content: 'test-content',
-      contentType: ContentType.Note,
-      encItemKey: 'test-enc-item-key',
-      uuid: '1-2-3',
-      itemsKeyId: 'test-items-key-id',
-    } as jest.Mocked<Item>
   })
 
   it('should not remove a revision for a non existing item', async () => {
@@ -197,61 +189,5 @@ describe('RevisionService', () => {
     expect(await createService().getRevisionsMetadata('3-4-5', '4-5-6')).toEqual([])
 
     expect(revisionRepository.findMetadataByItemId).not.toHaveBeenCalled()
-  })
-
-  it('should save a revision for a note item', async () => {
-    await createService().createRevision(item)
-
-    expect(revisionRepository.save).toHaveBeenCalledWith({
-      uuid: '3-4-5',
-      authHash: 'test-hash',
-      content: 'test-content',
-      contentType: 'Note',
-      encItemKey: 'test-enc-item-key',
-      item: Promise.resolve(item),
-      itemsKeyId: 'test-items-key-id',
-      createdAt: expect.any(Date),
-      creationDate: expect.any(Date),
-      updatedAt: expect.any(Date),
-    })
-  })
-
-  it('should not save a revision for a non note item', async () => {
-    item.contentType = ContentType.ItemsKey
-    await createService().createRevision(item)
-
-    expect(revisionRepository.save).not.toHaveBeenCalled()
-  })
-
-  it('should copy revisions from one item unto another', async () => {
-    revisionRepository.save = jest.fn().mockImplementation((revision) => revision)
-
-    await createService().copyRevisions('1-2-3', '2-3-4')
-
-    expect(revisionRepository.findByItemId).toHaveBeenCalledWith({ itemUuid: '1-2-3' })
-
-    expect(revisionRepository.save).toHaveBeenNthCalledWith(1, {
-      item: Promise.resolve(expect.any(Item)),
-      content: 'content1',
-      uuid: undefined,
-    })
-    expect(revisionRepository.save).toHaveBeenNthCalledWith(2, {
-      item: Promise.resolve(expect.any(Item)),
-      content: 'content2',
-      uuid: undefined,
-    })
-  })
-
-  it('should throw while copying revisions from one item unto another if the target item does not exist', async () => {
-    itemRepository.findByUuid = jest.fn().mockReturnValue(null)
-
-    let error = null
-    try {
-      await createService().copyRevisions('1-2-3', '2-3-4')
-    } catch (caughtError) {
-      error = caughtError
-    }
-
-    expect(error).not.toBeNull()
   })
 })
