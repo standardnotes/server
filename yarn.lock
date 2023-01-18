@@ -1987,7 +1987,7 @@ __metadata:
     "@standardnotes/domain-core": "workspace:^"
     "@standardnotes/domain-events": "workspace:*"
     "@standardnotes/domain-events-infra": "workspace:*"
-    "@standardnotes/features": "npm:^1.52.1"
+    "@standardnotes/features": "npm:^1.58.0"
     "@standardnotes/predicates": "workspace:*"
     "@standardnotes/responses": "npm:^1.6.39"
     "@standardnotes/security": "workspace:*"
@@ -2045,7 +2045,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@standardnotes/common@npm:^1.19.1, @standardnotes/common@npm:^1.23.1, @standardnotes/common@npm:^1.39.0, @standardnotes/common@npm:^1.43.0, @standardnotes/common@workspace:*, @standardnotes/common@workspace:^, @standardnotes/common@workspace:packages/common":
+"@standardnotes/common@npm:^1.19.1, @standardnotes/common@npm:^1.23.1, @standardnotes/common@npm:^1.39.0, @standardnotes/common@npm:^1.43.0, @standardnotes/common@npm:^1.45.0, @standardnotes/common@workspace:*, @standardnotes/common@workspace:^, @standardnotes/common@workspace:packages/common":
   version: 0.0.0-use.local
   resolution: "@standardnotes/common@workspace:packages/common"
   dependencies:
@@ -2194,6 +2194,18 @@ __metadata:
     "@standardnotes/security": "npm:^1.2.0"
     reflect-metadata: "npm:^0.1.13"
   checksum: 7647e7506e2d863c8a8909644aca157baa9b3b23f0fe260d1786ba8366267571e414ddf5000e1fe109b918d979e97428b1d57afbd457db49efd4219b4c8ff759
+  languageName: node
+  linkType: hard
+
+"@standardnotes/features@npm:^1.58.0":
+  version: 1.58.0
+  resolution: "@standardnotes/features@npm:1.58.0"
+  dependencies:
+    "@standardnotes/auth": "npm:^3.19.4"
+    "@standardnotes/common": "npm:^1.45.0"
+    "@standardnotes/security": "npm:^1.7.0"
+    reflect-metadata: "npm:^0.1.13"
+  checksum: 028c13956ab8d848b9deec1d3ca2db55edb35b25fd5ab8e7c8f4dd5983396a68a709c239ffab9dd5091ad63906a799eb09ceea8fdcbff845fc5302cf2c30f2c2
   languageName: node
   linkType: hard
 
@@ -2406,7 +2418,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@standardnotes/security@npm:^1.1.0, @standardnotes/security@npm:^1.2.0, @standardnotes/security@workspace:*, @standardnotes/security@workspace:^, @standardnotes/security@workspace:packages/security":
+"@standardnotes/security@npm:^1.1.0, @standardnotes/security@npm:^1.2.0, @standardnotes/security@npm:^1.7.0, @standardnotes/security@workspace:*, @standardnotes/security@workspace:^, @standardnotes/security@workspace:packages/security":
   version: 0.0.0-use.local
   resolution: "@standardnotes/security@workspace:packages/security"
   dependencies:

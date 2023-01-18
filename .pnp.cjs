@@ -2758,7 +2758,7 @@ const RAW_RUNTIME_STATE =
           ["@standardnotes/domain-core", "workspace:packages/domain-core"],\
           ["@standardnotes/domain-events", "workspace:packages/domain-events"],\
           ["@standardnotes/domain-events-infra", "workspace:packages/domain-events-infra"],\
-          ["@standardnotes/features", "npm:1.53.1"],\
+          ["@standardnotes/features", "npm:1.58.0"],\
           ["@standardnotes/predicates", "workspace:packages/predicates"],\
           ["@standardnotes/responses", "npm:1.11.1"],\
           ["@standardnotes/security", "workspace:packages/security"],\
@@ -2963,6 +2963,17 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/@standardnotes-features-npm-1.54.0-15f8cf20f0-7647e7506e.zip/node_modules/@standardnotes/features/",\
         "packageDependencies": [\
           ["@standardnotes/features", "npm:1.54.0"],\
+          ["@standardnotes/auth", "npm:3.19.4"],\
+          ["@standardnotes/common", "workspace:packages/common"],\
+          ["@standardnotes/security", "workspace:packages/security"],\
+          ["reflect-metadata", "npm:0.1.13"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["npm:1.58.0", {\
+        "packageLocation": "./.yarn/cache/@standardnotes-features-npm-1.58.0-5a58b65873-028c13956a.zip/node_modules/@standardnotes/features/",\
+        "packageDependencies": [\
+          ["@standardnotes/features", "npm:1.58.0"],\
           ["@standardnotes/auth", "npm:3.19.4"],\
           ["@standardnotes/common", "workspace:packages/common"],\
           ["@standardnotes/security", "workspace:packages/security"],\
