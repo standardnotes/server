@@ -2116,7 +2116,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@standardnotes/domain-events@workspace:packages/domain-events"
   dependencies:
-    "@standardnotes/features": "npm:^1.52.1"
+    "@standardnotes/features": "npm:^1.58.0"
     "@standardnotes/predicates": "workspace:*"
     "@standardnotes/security": "workspace:*"
     "@types/jest": "npm:^29.1.1"
@@ -2171,7 +2171,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@standardnotes/features@npm:1.53.1, @standardnotes/features@npm:^1.36.3, @standardnotes/features@npm:^1.52.1":
+"@standardnotes/features@npm:1.53.1, @standardnotes/features@npm:^1.36.3":
   version: 1.53.1
   resolution: "@standardnotes/features@npm:1.53.1"
   dependencies:

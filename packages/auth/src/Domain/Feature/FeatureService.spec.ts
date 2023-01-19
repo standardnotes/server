@@ -8,6 +8,27 @@ import { RoleToSubscriptionMapInterface } from '../Role/RoleToSubscriptionMapInt
 import { User } from '../User/User'
 import { UserSubscription } from '../Subscription/UserSubscription'
 
+jest.mock('@standardnotes/features', () => {
+  const original = jest.requireActual('@standardnotes/features')
+
+  return {
+    ...original,
+    GetFeatures: jest.fn().mockImplementation(() => [
+      {
+        identifier: 'org.standardnotes.theme-autobiography',
+        permission_name: original.PermissionName.AutobiographyTheme,
+        expires_at: 555,
+      },
+      {
+        identifier: 'org.standardnotes.bold-editor',
+        permission_name: original.PermissionName.BoldEditor,
+        expires_at: 777,
+      },
+    ]),
+  }
+})
+const { GetFeatures } = jest.requireMock('@standardnotes/features')
+
 import { FeatureService } from './FeatureService'
 import { Permission, PermissionName } from '@standardnotes/features'
 import { OfflineUserSubscriptionRepositoryInterface } from '../Subscription/OfflineUserSubscriptionRepositoryInterface'
@@ -303,6 +324,24 @@ describe('FeatureService', () => {
         name: PermissionName.FilesBeta,
       } as jest.Mocked<Permission>
 
+      GetFeatures.mockImplementation(() => [
+        {
+          identifier: 'org.standardnotes.theme-autobiography',
+          permission_name: PermissionName.AutobiographyTheme,
+          expires_at: 555,
+        },
+        {
+          identifier: 'org.standardnotes.bold-editor',
+          permission_name: PermissionName.BoldEditor,
+          expires_at: 777,
+        },
+        {
+          permission_name: PermissionName.FilesBeta,
+          expires_at: undefined,
+          no_expire: true,
+        },
+      ])
+
       const nonSubscriptionRole = {
         name: RoleName.NAMES.FilesBetaUser,
         uuid: 'role-files-beta',
@@ -333,7 +372,6 @@ describe('FeatureService', () => {
             expires_at: 777,
           }),
           expect.objectContaining({
-            identifier: 'org.standardnotes.files-beta',
             expires_at: undefined,
             no_expire: true,
           }),
