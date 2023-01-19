@@ -302,13 +302,13 @@ describe('FeatureService', () => {
         name: PermissionName.FilesBeta,
       } as jest.Mocked<Permission>
 
-      const nonSubscriptionRole = {
+      const _nonSubscriptionRole = {
         name: RoleName.FilesBetaUser,
         uuid: 'role-files-beta',
         permissions: Promise.resolve([nonSubscriptionPermission]),
       } as jest.Mocked<Role>
 
-      roleToSubscriptionMap.filterNonSubscriptionRoles = jest.fn().mockReturnValue([nonSubscriptionRole])
+      roleToSubscriptionMap.filterNonSubscriptionRoles = jest.fn().mockReturnValue([])
       roleToSubscriptionMap.getSubscriptionNameForRoleName = jest
         .fn()
         .mockReturnValueOnce(SubscriptionName.PlusPlan)
@@ -316,7 +316,7 @@ describe('FeatureService', () => {
 
       user = {
         uuid: 'user-1-1-1',
-        roles: Promise.resolve([role1, role2, nonSubscriptionRole]),
+        roles: Promise.resolve([role1, role2]),
         subscriptions: Promise.resolve([subscription1, subscription2]),
       } as jest.Mocked<User>
 
