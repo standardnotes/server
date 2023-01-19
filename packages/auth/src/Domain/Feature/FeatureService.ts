@@ -21,7 +21,7 @@ export class FeatureService implements FeatureServiceInterface {
     @inject(TYPES.Timer) private timer: TimerInterface,
   ) {}
 
-  async getFeaturesForOfflineUser(email: string): Promise<FeatureDescription[]> {
+  async getFeaturesForOfflineUser(email: string): Promise<{ features: FeatureDescription[]; roles: Role[] }> {
     const userSubscriptions = await this.offlineUserSubscriptionRepository.findByEmail(
       email,
       this.timer.getTimestampInMicroseconds(),
@@ -34,7 +34,11 @@ export class FeatureService implements FeatureServiceInterface {
       }
     }
 
-    return this.getFeaturesForSubscriptions(userSubscriptions, [...userRolesMap.values()])
+    const roles = [...userRolesMap.values()]
+    return {
+      features: await this.getFeaturesForSubscriptions(userSubscriptions, roles),
+      roles,
+    }
   }
 
   async getFeaturesForUser(user: User): Promise<Array<FeatureDescription>> {
