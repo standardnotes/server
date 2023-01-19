@@ -1,7 +1,5 @@
 import 'reflect-metadata'
 import { FeatureDescription } from '@standardnotes/features'
-import { RoleName } from '@standardnotes/domain-core'
-
 import { GetUserFeatures } from './GetUserFeatures'
 import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'
 import { User } from '../../User/User'
@@ -23,9 +21,7 @@ describe('GetUserFeatures', () => {
     feature1 = { name: 'foobar' } as jest.Mocked<FeatureDescription>
     featureService = {} as jest.Mocked<FeatureServiceInterface>
     featureService.getFeaturesForUser = jest.fn().mockReturnValue([feature1])
-    featureService.getFeaturesForOfflineUser = jest
-      .fn()
-      .mockReturnValue({ features: [feature1], roles: [RoleName.NAMES.ProUser] })
+    featureService.getFeaturesForOfflineUser = jest.fn().mockReturnValue([feature1])
   })
 
   it('should fail if a user is not found', async () => {
@@ -54,8 +50,11 @@ describe('GetUserFeatures', () => {
   it('should return offline user features', async () => {
     expect(await createUseCase().execute({ email: 'test@test.com', offline: true })).toEqual({
       success: true,
-      features: [{ name: 'foobar' }],
-      offlineRoles: [RoleName.NAMES.ProUser],
+      features: [
+        {
+          name: 'foobar',
+        },
+      ],
     })
   })
 })

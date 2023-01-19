@@ -15,12 +15,11 @@ export class GetUserFeatures implements UseCaseInterface {
 
   async execute(dto: GetUserFeaturesDto): Promise<GetUserFeaturesResponse> {
     if (dto.offline) {
-      const { features, roles } = await this.featureService.getFeaturesForOfflineUser(dto.email)
+      const userFeatures = await this.featureService.getFeaturesForOfflineUser(dto.email)
 
       return {
         success: true,
-        features,
-        offlineRoles: roles,
+        features: userFeatures,
       }
     }
 

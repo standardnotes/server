@@ -181,9 +181,9 @@ describe('FeatureService', () => {
 
   describe('offline subscribers', () => {
     it('should return user features with `expires_at` field', async () => {
-      const featuresResponse = await createService().getFeaturesForOfflineUser('test@test.com')
+      const features = await createService().getFeaturesForOfflineUser('test@test.com')
 
-      expect(featuresResponse.features).toEqual(
+      expect(features).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
             identifier: 'org.standardnotes.theme-autobiography',
@@ -196,7 +196,7 @@ describe('FeatureService', () => {
     it('should not return user features if a subscription could not be found', async () => {
       offlineUserSubscriptionRepository.findByEmail = jest.fn().mockReturnValue([])
 
-      expect(await createService().getFeaturesForOfflineUser('test@test.com')).toEqual({ features: [], roles: [] })
+      expect(await createService().getFeaturesForOfflineUser('test@test.com')).toEqual([])
     })
   })
 
