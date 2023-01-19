@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.84.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.83.1...@standardnotes/auth-server@1.84.0) (2023-01-19)
+
+### Features
+
+* offline roles ([#419](https://github.com/standardnotes/server/issues/419)) ([2db0c12](https://github.com/standardnotes/server/commit/2db0c125fe5872c5898103c2388881ab416b5a99))
+
 ## [1.83.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.83.0...@standardnotes/auth-server@1.83.1) (2023-01-19)
 
 ### Reverts

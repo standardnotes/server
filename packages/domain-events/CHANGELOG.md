@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.106.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.105.5...@standardnotes/domain-events@2.106.0) (2023-01-19)
+
+### Features
+
+* offline roles ([#419](https://github.com/standardnotes/server/issues/419)) ([2db0c12](https://github.com/standardnotes/server/commit/2db0c125fe5872c5898103c2388881ab416b5a99))
+
 ## [2.105.5](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.105.4...@standardnotes/domain-events@2.105.5) (2023-01-19)
 
 ### Bug Fixes
