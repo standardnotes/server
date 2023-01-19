@@ -1,5 +1,5 @@
 import { SessionTokenData, TokenEncoderInterface } from '@standardnotes/security'
-import { ProtocolVersion, Uuid } from '@standardnotes/common'
+import { ProtocolVersion } from '@standardnotes/common'
 import * as crypto from 'crypto'
 
 import { inject, injectable } from 'inversify'
@@ -40,7 +40,7 @@ export class AuthResponseFactory20161215 implements AuthResponseFactoryInterface
 
     return {
       user: this.userProjector.projectSimple(dto.user) as {
-        uuid: Uuid
+        uuid: string
         email: string
         protocolVersion: ProtocolVersion
       },

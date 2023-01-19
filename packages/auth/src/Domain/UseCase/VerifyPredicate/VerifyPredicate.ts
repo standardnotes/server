@@ -1,4 +1,3 @@
-import { Uuid } from '@standardnotes/common'
 import { PredicateName, PredicateVerificationResult } from '@standardnotes/predicates'
 import { EmailBackupFrequency, SettingName } from '@standardnotes/settings'
 import { inject, injectable } from 'inversify'
@@ -33,13 +32,13 @@ export class VerifyPredicate implements UseCaseInterface {
     }
   }
 
-  private async hasUserBoughtASubscription(userUuid: Uuid): Promise<boolean> {
+  private async hasUserBoughtASubscription(userUuid: string): Promise<boolean> {
     const subscription = await this.userSubscriptionRepository.findOneByUserUuid(userUuid)
 
     return subscription !== null
   }
 
-  private async hasUserEnabledEmailBackups(userUuid: Uuid): Promise<boolean> {
+  private async hasUserEnabledEmailBackups(userUuid: string): Promise<boolean> {
     const setting = await this.settingRepository.findOneByNameAndUserUuid(SettingName.EmailBackupFrequency, userUuid)
 
     if (setting === null || setting.value === EmailBackupFrequency.Disabled) {

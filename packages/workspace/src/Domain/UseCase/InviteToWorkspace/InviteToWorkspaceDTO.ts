@@ -1,8 +1,8 @@
-import { Uuid, WorkspaceAccessLevel } from '@standardnotes/common'
+import { WorkspaceAccessLevel } from '@standardnotes/common'
 
 export type InviteToWorkspaceDTO = {
-  workspaceUuid: Uuid
-  inviterUuid: Uuid
+  workspaceUuid: string
+  inviterUuid: string
   inviteeEmail: string
   accessLevel: WorkspaceAccessLevel
 }

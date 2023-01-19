@@ -1,7 +1,5 @@
-import { Uuid } from '@standardnotes/common'
-
 export type RemoveFileDTO = {
-  userUuid: Uuid
+  userUuid: string
   resourceRemoteIdentifier: string
-  regularSubscriptionUuid: Uuid
+  regularSubscriptionUuid: string
 }

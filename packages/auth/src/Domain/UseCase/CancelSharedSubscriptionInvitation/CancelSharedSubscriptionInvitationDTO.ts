@@ -1,6 +1,4 @@
-import { Uuid } from '@standardnotes/common'
-
 export type CancelSharedSubscriptionInvitationDTO = {
-  sharedSubscriptionInvitationUuid: Uuid
+  sharedSubscriptionInvitationUuid: string
   inviterEmail: string
 }

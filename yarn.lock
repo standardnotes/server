@@ -2116,7 +2116,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@standardnotes/domain-events@workspace:packages/domain-events"
   dependencies:
-    "@standardnotes/common": "workspace:*"
     "@standardnotes/features": "npm:^1.52.1"
     "@standardnotes/predicates": "workspace:*"
     "@standardnotes/security": "workspace:*"
@@ -2124,7 +2123,6 @@ __metadata:
     "@typescript-eslint/eslint-plugin": "npm:^5.30.0"
     eslint-plugin-prettier: "npm:^4.2.1"
     jest: "npm:^29.1.2"
-    reflect-metadata: "npm:^0.1.13"
     ts-jest: "npm:^29.0.3"
     typescript: "npm:^4.8.4"
   languageName: unknown
@@ -2214,8 +2212,8 @@ __metadata:
   resolution: "@standardnotes/files-server@workspace:packages/files"
   dependencies:
     "@sentry/node": "npm:^7.28.1"
-    "@standardnotes/common": "workspace:*"
     "@standardnotes/config": "npm:2.4.3"
+    "@standardnotes/domain-core": "workspace:^"
     "@standardnotes/domain-events": "workspace:*"
     "@standardnotes/domain-events-infra": "workspace:*"
     "@standardnotes/security": "workspace:*"
@@ -2304,12 +2302,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@standardnotes/predicates@workspace:packages/predicates"
   dependencies:
-    "@standardnotes/common": "workspace:*"
     "@types/jest": "npm:^29.1.1"
     "@typescript-eslint/eslint-plugin": "npm:^5.30.0"
     eslint-plugin-prettier: "npm:^4.2.1"
     jest: "npm:^29.1.2"
-    reflect-metadata: "npm:^0.1.13"
     ts-jest: "npm:^29.0.3"
     typescript: "npm:^4.8.4"
   languageName: unknown
@@ -2388,7 +2384,6 @@ __metadata:
   dependencies:
     "@newrelic/winston-enricher": "npm:^4.0.0"
     "@sentry/node": "npm:^7.28.1"
-    "@standardnotes/common": "workspace:*"
     "@standardnotes/domain-core": "workspace:^"
     "@standardnotes/domain-events": "workspace:*"
     "@standardnotes/domain-events-infra": "workspace:*"
@@ -2422,7 +2417,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@standardnotes/security@workspace:packages/security"
   dependencies:
-    "@standardnotes/common": "workspace:*"
     "@types/jest": "npm:^29.1.1"
     "@types/jsonwebtoken": "npm:^9.0.1"
     "@typescript-eslint/eslint-plugin": "npm:^5.30.0"
@@ -2602,7 +2596,6 @@ __metadata:
     "@newrelic/winston-enricher": "npm:^4.0.0"
     "@sentry/node": "npm:^7.28.1"
     "@standardnotes/api": "npm:^1.19.0"
-    "@standardnotes/common": "workspace:^"
     "@standardnotes/domain-core": "workspace:^"
     "@standardnotes/domain-events": "workspace:^"
     "@standardnotes/domain-events-infra": "workspace:^"

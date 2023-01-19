@@ -1,5 +1,3 @@
-import { Uuid } from '@standardnotes/common'
-
 export type ItemProjection = {
   uuid: string
   items_key_id: string | null
@@ -13,5 +11,5 @@ export type ItemProjection = {
   created_at_timestamp: number
   updated_at: string
   updated_at_timestamp: number
-  updated_with_session: Uuid | null
+  updated_with_session: string | null
 }

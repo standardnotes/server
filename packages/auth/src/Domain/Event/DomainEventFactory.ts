@@ -1,6 +1,6 @@
 /* istanbul ignore file */
 
-import { JSONString, ProtocolVersion, Uuid } from '@standardnotes/common'
+import { ProtocolVersion } from '@standardnotes/common'
 import {
   AccountDeletionRequestedEvent,
   UserEmailChangedEvent,
@@ -105,7 +105,7 @@ export class DomainEventFactory implements DomainEventFactoryInterface {
     }
   }
 
-  createWebSocketMessageRequestedEvent(dto: { userUuid: Uuid; message: JSONString }): WebSocketMessageRequestedEvent {
+  createWebSocketMessageRequestedEvent(dto: { userUuid: string; message: string }): WebSocketMessageRequestedEvent {
     return {
       type: 'WEB_SOCKET_MESSAGE_REQUESTED',
       createdAt: this.timer.getUTCDate(),
@@ -142,7 +142,7 @@ export class DomainEventFactory implements DomainEventFactoryInterface {
   }
 
   createPredicateVerifiedEvent(dto: {
-    userUuid: Uuid
+    userUuid: string
     predicate: Predicate
     predicateVerificationResult: PredicateVerificationResult
   }): PredicateVerifiedEvent {
@@ -164,10 +164,10 @@ export class DomainEventFactory implements DomainEventFactoryInterface {
   createSharedSubscriptionInvitationCanceledEvent(dto: {
     inviterEmail: string
     inviterSubscriptionId: number
-    inviterSubscriptionUuid: Uuid
+    inviterSubscriptionUuid: string
     inviteeIdentifier: string
     inviteeIdentifierType: InviteeIdentifierType
-    sharedSubscriptionInvitationUuid: Uuid
+    sharedSubscriptionInvitationUuid: string
   }): SharedSubscriptionInvitationCanceledEvent {
     return {
       type: 'SHARED_SUBSCRIPTION_INVITATION_CANCELED',
@@ -291,9 +291,9 @@ export class DomainEventFactory implements DomainEventFactoryInterface {
   }
 
   createAccountDeletionRequestedEvent(dto: {
-    userUuid: Uuid
+    userUuid: string
     userCreatedAtTimestamp: number
-    regularSubscriptionUuid: Uuid | undefined
+    regularSubscriptionUuid: string | undefined
   }): AccountDeletionRequestedEvent {
     return {
       type: 'ACCOUNT_DELETION_REQUESTED',

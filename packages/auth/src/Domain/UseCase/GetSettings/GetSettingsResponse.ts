@@ -1,11 +1,9 @@
-import { Uuid } from '@standardnotes/common'
-
 import { SimpleSetting } from '../../Setting/SimpleSetting'
 
 export type GetSettingsResponse =
   | {
       success: true
-      userUuid: Uuid
+      userUuid: string
       settings: SimpleSetting[]
     }
   | {

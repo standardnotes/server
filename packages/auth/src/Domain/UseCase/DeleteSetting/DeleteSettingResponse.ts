@@ -1,9 +1,7 @@
-import { Uuid } from '@standardnotes/common'
-
 export type DeleteSettingResponse =
   | {
       success: true
-      userUuid: Uuid
+      userUuid: string
       settingName: string
     }
   | {

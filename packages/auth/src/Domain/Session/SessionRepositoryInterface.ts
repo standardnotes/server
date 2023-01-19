@@ -1,4 +1,3 @@
-import { Uuid } from '@standardnotes/common'
 import { Session } from './Session'
 
 export interface SessionRepositoryInterface {
@@ -12,5 +11,5 @@ export interface SessionRepositoryInterface {
   updatedTokenExpirationDates(uuid: string, accessExpiration: Date, refreshExpiration: Date): Promise<void>
   save(session: Session): Promise<Session>
   remove(session: Session): Promise<Session>
-  clearUserAgentByUserUuid(userUuid: Uuid): Promise<void>
+  clearUserAgentByUserUuid(userUuid: string): Promise<void>
 }

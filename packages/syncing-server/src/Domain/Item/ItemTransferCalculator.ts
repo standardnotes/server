@@ -1,5 +1,4 @@
 import { inject, injectable } from 'inversify'
-import { Uuid } from '@standardnotes/common'
 import { Logger } from 'winston'
 
 import TYPES from '../../Bootstrap/Types'
@@ -15,7 +14,7 @@ export class ItemTransferCalculator implements ItemTransferCalculatorInterface {
     @inject(TYPES.Logger) private logger: Logger,
   ) {}
 
-  async computeItemUuidsToFetch(itemQuery: ItemQuery, bytesTransferLimit: number): Promise<Array<Uuid>> {
+  async computeItemUuidsToFetch(itemQuery: ItemQuery, bytesTransferLimit: number): Promise<Array<string>> {
     const itemUuidsToFetch = []
     const itemContentSizes = await this.itemRepository.findContentSizeForComputingTransferLimit(itemQuery)
     let totalContentSizeInBytes = 0
@@ -40,7 +39,7 @@ export class ItemTransferCalculator implements ItemTransferCalculatorInterface {
     return itemUuidsToFetch
   }
 
-  async computeItemUuidBundlesToFetch(itemQuery: ItemQuery, bytesTransferLimit: number): Promise<Array<Array<Uuid>>> {
+  async computeItemUuidBundlesToFetch(itemQuery: ItemQuery, bytesTransferLimit: number): Promise<Array<Array<string>>> {
     let itemUuidsToFetch = []
     const itemContentSizes = await this.itemRepository.findContentSizeForComputingTransferLimit(itemQuery)
     let totalContentSizeInBytes = 0
@@ -75,7 +74,7 @@ export class ItemTransferCalculator implements ItemTransferCalculatorInterface {
   private isTransferLimitBreached(dto: {
     totalContentSizeInBytes: number
     bytesTransferLimit: number
-    itemUuidsToFetch: Array<Uuid>
+    itemUuidsToFetch: Array<string>
     itemContentSizes: Array<{ uuid: string; contentSize: number | null }>
   }): boolean {
     const transferLimitBreached = dto.totalContentSizeInBytes >= dto.bytesTransferLimit

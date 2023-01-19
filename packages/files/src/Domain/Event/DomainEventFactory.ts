@@ -1,4 +1,3 @@
-import { Uuid } from '@standardnotes/common'
 import { FileUploadedEvent, FileRemovedEvent, DomainEventService } from '@standardnotes/domain-events'
 import { TimerInterface } from '@standardnotes/time'
 import { inject, injectable } from 'inversify'
@@ -15,7 +14,7 @@ export class DomainEventFactory implements DomainEventFactoryInterface {
     filePath: string
     fileName: string
     fileByteSize: number
-    regularSubscriptionUuid: Uuid
+    regularSubscriptionUuid: string
   }): FileRemovedEvent {
     return {
       type: 'FILE_REMOVED',

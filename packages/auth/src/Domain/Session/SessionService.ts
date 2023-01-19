@@ -7,7 +7,6 @@ import { TimerInterface } from '@standardnotes/time'
 import { Logger } from 'winston'
 import { LogSessionUserAgentOption, SettingName } from '@standardnotes/settings'
 import { SessionBody } from '@standardnotes/responses'
-import { Uuid } from '@standardnotes/common'
 import { CryptoNode } from '@standardnotes/sncrypto-node'
 
 import TYPES from '../../Bootstrap/Types'
@@ -226,7 +225,7 @@ export class SessionService implements SessionServiceInterface {
     return this.revokedSessionRepository.save(revokedSession)
   }
 
-  async deleteSessionByToken(token: string): Promise<Uuid | null> {
+  async deleteSessionByToken(token: string): Promise<string | null> {
     const session = await this.getSessionFromToken(token)
 
     if (session) {

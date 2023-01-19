@@ -1,4 +1,3 @@
-import { SubscriptionName } from '@standardnotes/common'
 import { DomainEventHandlerInterface, SubscriptionRefundedEvent } from '@standardnotes/domain-events'
 import { inject, injectable } from 'inversify'
 import { Logger } from 'winston'
@@ -38,10 +37,7 @@ export class SubscriptionRefundedEventHandler implements DomainEventHandlerInter
     await this.removeRoleFromSubscriptionUsers(event.payload.subscriptionId, event.payload.subscriptionName)
   }
 
-  private async removeRoleFromSubscriptionUsers(
-    subscriptionId: number,
-    subscriptionName: SubscriptionName,
-  ): Promise<void> {
+  private async removeRoleFromSubscriptionUsers(subscriptionId: number, subscriptionName: string): Promise<void> {
     const userSubscriptions = await this.userSubscriptionRepository.findBySubscriptionId(subscriptionId)
     for (const userSubscription of userSubscriptions) {
       await this.roleService.removeUserRole(await userSubscription.user, subscriptionName)

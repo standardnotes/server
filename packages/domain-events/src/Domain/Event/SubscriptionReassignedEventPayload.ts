@@ -1,11 +1,9 @@
-import { SubscriptionName } from '@standardnotes/common'
-
 export interface SubscriptionReassignedEventPayload {
   userEmail: string
   extensionKey: string
   offline: boolean
   subscriptionId: number
-  subscriptionName: SubscriptionName
+  subscriptionName: string
   subscriptionExpiresAt: number
   timestamp: number
 }

@@ -1,13 +1,12 @@
-import { Uuid } from '@standardnotes/common'
 import { UserSubscription } from './UserSubscription'
 import { UserSubscriptionType } from './UserSubscriptionType'
 
 export interface UserSubscriptionRepositoryInterface {
-  findOneByUuid(uuid: Uuid): Promise<UserSubscription | null>
-  countByUserUuid(userUuid: Uuid): Promise<number>
-  findOneByUserUuid(userUuid: Uuid): Promise<UserSubscription | null>
-  findByUserUuid(userUuid: Uuid): Promise<UserSubscription[]>
-  findOneByUserUuidAndSubscriptionId(userUuid: Uuid, subscriptionId: number): Promise<UserSubscription | null>
+  findOneByUuid(uuid: string): Promise<UserSubscription | null>
+  countByUserUuid(userUuid: string): Promise<number>
+  findOneByUserUuid(userUuid: string): Promise<UserSubscription | null>
+  findByUserUuid(userUuid: string): Promise<UserSubscription[]>
+  findOneByUserUuidAndSubscriptionId(userUuid: string, subscriptionId: number): Promise<UserSubscription | null>
   findBySubscriptionIdAndType(subscriptionId: number, type: UserSubscriptionType): Promise<UserSubscription[]>
   findBySubscriptionId(subscriptionId: number): Promise<UserSubscription[]>
   updateEndsAt(subscriptionId: number, endsAt: number, updatedAt: number): Promise<void>

@@ -1,5 +1,4 @@
 import { AxiosInstance } from 'axios'
-import { JSONString, Uuid } from '@standardnotes/common'
 import { inject, injectable } from 'inversify'
 
 import TYPES from '../../Bootstrap/Types'
@@ -15,7 +14,7 @@ export class WebSocketsClientMessenger implements ClientMessengerInterface {
     @inject(TYPES.WEBSOCKETS_API_URL) private webSocketsApiUrl: string,
   ) {}
 
-  async send(userUuid: Uuid, message: JSONString): Promise<void> {
+  async send(userUuid: string, message: string): Promise<void> {
     const userConnections = await this.webSocketsConnectionRepository.findAllByUserUuid(userUuid)
 
     for (const connectionUuid of userConnections) {

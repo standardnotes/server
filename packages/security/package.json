@@ -25,7 +25,6 @@
     "test": "jest spec --coverage"
   },
   "dependencies": {
-    "@standardnotes/common": "workspace:*",
     "jsonwebtoken": "^9.0.0",
     "reflect-metadata": "^0.1.13"
   },
