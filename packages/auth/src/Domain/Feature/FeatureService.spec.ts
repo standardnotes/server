@@ -307,7 +307,7 @@ describe('FeatureService', () => {
 
         return {
           ...original,
-          GetFeatures: jest.fn().mockReturnValueOnce([
+          GetFeatures: jest.fn().mockReturnValue([
             {
               identifier: 'org.standardnotes.theme-autobiography',
               expires_at: 555,
