@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.29.6](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.29.5...@standardnotes/syncing-server@1.29.6) (2023-01-19)
+
+### Bug Fixes
+
+* strings for role names ([ba7662f](https://github.com/standardnotes/syncing-server-js/commit/ba7662fc1ea24548ab4ea287c5f34d6f27c6c923))
+
 ## [1.29.5](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.29.4...@standardnotes/syncing-server@1.29.5) (2023-01-19)
 
 **Note:** Version bump only for package @standardnotes/syncing-server
