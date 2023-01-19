@@ -1,5 +1,5 @@
 import * as bcrypt from 'bcryptjs'
-import { RoleName } from '@standardnotes/common'
+import { RoleName } from '@standardnotes/domain-core'
 import { ApiVersion } from '@standardnotes/api'
 
 import { v4 as uuidv4 } from 'uuid'
@@ -63,7 +63,7 @@ export class Register implements UseCaseInterface {
     user.encryptedServerKey = await this.crypter.generateEncryptedUserServerKey()
     user.serverEncryptionVersion = User.DEFAULT_ENCRYPTION_VERSION
 
-    const defaultRole = await this.roleRepository.findOneByName(RoleName.CoreUser)
+    const defaultRole = await this.roleRepository.findOneByName(RoleName.NAMES.CoreUser)
     if (defaultRole) {
       user.roles = Promise.resolve([defaultRole])
     }

@@ -1,6 +1,7 @@
 import 'reflect-metadata'
 
-import { RoleName, SubscriptionName } from '@standardnotes/common'
+import { SubscriptionName } from '@standardnotes/common'
+import { RoleName } from '@standardnotes/domain-core'
 
 import { RoleToSubscriptionMap } from './RoleToSubscriptionMap'
 import { Role } from './Role'
@@ -9,11 +10,11 @@ describe('RoleToSubscriptionMap', () => {
   const createMap = () => new RoleToSubscriptionMap()
 
   it('should return subscription name for role name', () => {
-    expect(createMap().getSubscriptionNameForRoleName(RoleName.ProUser)).toEqual(SubscriptionName.ProPlan)
+    expect(createMap().getSubscriptionNameForRoleName(RoleName.NAMES.ProUser)).toEqual(SubscriptionName.ProPlan)
   })
 
   it('should return role name for subscription name', () => {
-    expect(createMap().getRoleNameForSubscriptionName(SubscriptionName.PlusPlan)).toEqual(RoleName.PlusUser)
+    expect(createMap().getRoleNameForSubscriptionName(SubscriptionName.PlusPlan)).toEqual(RoleName.NAMES.PlusUser)
   })
 
   it('should not return role name for subscription name that does not exist', () => {
@@ -23,21 +24,21 @@ describe('RoleToSubscriptionMap', () => {
   it('should filter our non subscription roles from an array of roles', () => {
     const roles = [
       {
-        name: RoleName.CoreUser,
+        name: RoleName.NAMES.CoreUser,
       } as jest.Mocked<Role>,
       {
-        name: RoleName.FilesBetaUser,
+        name: RoleName.NAMES.FilesBetaUser,
       } as jest.Mocked<Role>,
       {
-        name: RoleName.PlusUser,
+        name: RoleName.NAMES.PlusUser,
       } as jest.Mocked<Role>,
     ]
     expect(createMap().filterNonSubscriptionRoles(roles)).toEqual([
       {
-        name: RoleName.CoreUser,
+        name: RoleName.NAMES.CoreUser,
       },
       {
-        name: RoleName.FilesBetaUser,
+        name: RoleName.NAMES.FilesBetaUser,
       },
     ])
   })
@@ -45,18 +46,18 @@ describe('RoleToSubscriptionMap', () => {
   it('should filter our subscription roles from an array of roles', () => {
     const roles = [
       {
-        name: RoleName.CoreUser,
+        name: RoleName.NAMES.CoreUser,
       } as jest.Mocked<Role>,
       {
-        name: RoleName.FilesBetaUser,
+        name: RoleName.NAMES.FilesBetaUser,
       } as jest.Mocked<Role>,
       {
-        name: RoleName.PlusUser,
+        name: RoleName.NAMES.PlusUser,
       } as jest.Mocked<Role>,
     ]
     expect(createMap().filterSubscriptionRoles(roles)).toEqual([
       {
-        name: RoleName.PlusUser,
+        name: RoleName.NAMES.PlusUser,
       },
     ])
   })

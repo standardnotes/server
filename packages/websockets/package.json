@@ -26,6 +26,7 @@
     "@sentry/node": "^7.28.1",
     "@standardnotes/api": "^1.19.0",
     "@standardnotes/common": "workspace:^",
+    "@standardnotes/domain-core": "workspace:^",
     "@standardnotes/domain-events": "workspace:^",
     "@standardnotes/domain-events-infra": "workspace:^",
     "@standardnotes/security": "workspace:^",

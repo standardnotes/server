@@ -1,4 +1,4 @@
-import { Uuid, RoleName, ProtocolVersion, JSONString } from '@standardnotes/common'
+import { Uuid, ProtocolVersion, JSONString } from '@standardnotes/common'
 import { Predicate, PredicateVerificationResult } from '@standardnotes/predicates'
 import {
   AccountDeletionRequestedEvent,
@@ -54,7 +54,7 @@ export interface DomainEventFactoryInterface {
     userCreatedAtTimestamp: number
     regularSubscriptionUuid: Uuid | undefined
   }): AccountDeletionRequestedEvent
-  createUserRolesChangedEvent(userUuid: string, email: string, currentRoles: RoleName[]): UserRolesChangedEvent
+  createUserRolesChangedEvent(userUuid: string, email: string, currentRoles: string[]): UserRolesChangedEvent
   createUserEmailChangedEvent(userUuid: string, fromEmail: string, toEmail: string): UserEmailChangedEvent
   createUserDisabledSessionUserAgentLoggingEvent(dto: {
     userUuid: Uuid

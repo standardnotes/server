@@ -1,5 +1,5 @@
 import { inject, injectable } from 'inversify'
-import { RoleName } from '@standardnotes/common'
+import { RoleName } from '@standardnotes/domain-core'
 import { TimerInterface } from '@standardnotes/time'
 
 import TYPES from '../../Bootstrap/Types'
@@ -39,7 +39,7 @@ export class RevisionService implements RevisionServiceInterface {
 
   async getRevision(dto: {
     userUuid: string
-    userRoles: RoleName[]
+    userRoles: string[]
     itemUuid: string
     revisionUuid: string
   }): Promise<Revision | null> {
@@ -57,28 +57,31 @@ export class RevisionService implements RevisionServiceInterface {
     return revision
   }
 
-  calculateRequiredRoleBasedOnRevisionDate(createdAt: Date): RoleName {
+  calculateRequiredRoleBasedOnRevisionDate(createdAt: Date): string {
     const revisionCreatedNDaysAgo = this.timer.dateWasNDaysAgo(createdAt)
 
     if (revisionCreatedNDaysAgo > 30 && revisionCreatedNDaysAgo < 365) {
-      return RoleName.PlusUser
+      return RoleName.NAMES.PlusUser
     }
 
     if (revisionCreatedNDaysAgo > 365) {
-      return RoleName.ProUser
+      return RoleName.NAMES.ProUser
     }
 
-    return RoleName.CoreUser
+    return RoleName.NAMES.CoreUser
   }
 
-  private userHasEnoughPermissionsToSeeRevision(userRoles: RoleName[], revisionCreatedAt: Date): boolean {
+  private userHasEnoughPermissionsToSeeRevision(userRoles: string[], revisionCreatedAt: Date): boolean {
     const roleRequired = this.calculateRequiredRoleBasedOnRevisionDate(revisionCreatedAt)
 
     switch (roleRequired) {
-      case RoleName.PlusUser:
-        return userRoles.filter((userRole) => [RoleName.PlusUser, RoleName.ProUser].includes(userRole)).length > 0
-      case RoleName.ProUser:
-        return userRoles.includes(RoleName.ProUser)
+      case RoleName.NAMES.PlusUser:
+        return (
+          userRoles.filter((userRole) => [RoleName.NAMES.PlusUser, RoleName.NAMES.ProUser].includes(userRole)).length >
+          0
+        )
+      case RoleName.NAMES.ProUser:
+        return userRoles.includes(RoleName.NAMES.ProUser)
       default:
         return true
     }

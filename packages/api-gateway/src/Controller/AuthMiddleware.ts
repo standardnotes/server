@@ -1,5 +1,5 @@
 import { CrossServiceTokenData } from '@standardnotes/security'
-import { RoleName } from '@standardnotes/common'
+import { RoleName } from '@standardnotes/domain-core'
 import { TimerInterface } from '@standardnotes/time'
 import { NextFunction, Request, Response } from 'express'
 import { inject, injectable } from 'inversify'
@@ -76,7 +76,7 @@ export class AuthMiddleware extends BaseMiddleware {
 
       response.locals.freeUser =
         decodedToken.roles.length === 1 &&
-        decodedToken.roles.find((role) => role.name === RoleName.CoreUser) !== undefined
+        decodedToken.roles.find((role) => role.name === RoleName.NAMES.CoreUser) !== undefined
 
       if (this.crossServiceTokenCacheTTL && !crossServiceTokenFetchedFromCache) {
         await this.crossServiceTokenCache.set({

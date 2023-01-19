@@ -1,8 +1,8 @@
-import { RoleName, Uuid } from '@standardnotes/common'
+import { Uuid } from '@standardnotes/common'
 
 export type InviteToSharedSubscriptionDTO = {
   inviterEmail: string
   inviterUuid: Uuid
-  inviterRoles: RoleName[]
+  inviterRoles: string[]
   inviteeIdentifier: string
 }

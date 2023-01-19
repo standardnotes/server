@@ -1,6 +1,5 @@
-import { RoleName } from '@standardnotes/common'
 import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
-import { EmailLevel } from '@standardnotes/domain-core'
+import { EmailLevel, RoleName } from '@standardnotes/domain-core'
 import { TimerInterface } from '@standardnotes/time'
 import { inject, injectable } from 'inversify'
 
@@ -32,7 +31,7 @@ export class InviteToSharedSubscription implements UseCaseInterface {
   ) {}
 
   async execute(dto: InviteToSharedSubscriptionDTO): Promise<InviteToSharedSubscriptionResult> {
-    if (!dto.inviterRoles.includes(RoleName.ProUser)) {
+    if (!dto.inviterRoles.includes(RoleName.NAMES.ProUser)) {
       return {
         success: false,
       }

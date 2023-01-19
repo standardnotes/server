@@ -4,7 +4,8 @@ import { Logger } from 'winston'
 import { User } from '../User/User'
 import { UserRepositoryInterface } from '../User/UserRepositoryInterface'
 import { RoleRepositoryInterface } from '../Role/RoleRepositoryInterface'
-import { RoleName, SubscriptionName } from '@standardnotes/common'
+import { SubscriptionName } from '@standardnotes/common'
+import { RoleName } from '@standardnotes/domain-core'
 import { Role } from '../Role/Role'
 
 import { ClientServiceInterface } from '../Client/ClientServiceInterface'
@@ -39,7 +40,7 @@ describe('RoleService', () => {
 
   beforeEach(() => {
     basicRole = {
-      name: RoleName.CoreUser,
+      name: RoleName.NAMES.CoreUser,
       permissions: Promise.resolve([
         {
           name: PermissionName.MarkdownBasicEditor,
@@ -48,7 +49,7 @@ describe('RoleService', () => {
     } as jest.Mocked<Role>
 
     proRole = {
-      name: RoleName.ProUser,
+      name: RoleName.NAMES.ProUser,
       permissions: Promise.resolve([
         {
           name: PermissionName.DailyEmailBackup,
@@ -62,7 +63,7 @@ describe('RoleService', () => {
     roleRepository.findOneByName = jest.fn().mockReturnValue(proRole)
 
     roleToSubscriptionMap = {} as jest.Mocked<RoleToSubscriptionMapInterface>
-    roleToSubscriptionMap.getRoleNameForSubscriptionName = jest.fn().mockReturnValue(RoleName.ProUser)
+    roleToSubscriptionMap.getRoleNameForSubscriptionName = jest.fn().mockReturnValue(RoleName.NAMES.ProUser)
 
     offlineUserSubscription = {
       endsAt: 100,
@@ -97,7 +98,7 @@ describe('RoleService', () => {
     it('should add role to user', async () => {
       await createService().addUserRole(user, SubscriptionName.ProPlan)
 
-      expect(roleRepository.findOneByName).toHaveBeenCalledWith(RoleName.ProUser)
+      expect(roleRepository.findOneByName).toHaveBeenCalledWith(RoleName.NAMES.ProUser)
       user.roles = Promise.resolve([basicRole, proRole])
       expect(userRepository.save).toHaveBeenCalledWith(user)
     })
@@ -113,7 +114,7 @@ describe('RoleService', () => {
 
       await createService().addUserRole(user, SubscriptionName.ProPlan)
 
-      expect(roleRepository.findOneByName).toHaveBeenCalledWith(RoleName.ProUser)
+      expect(roleRepository.findOneByName).toHaveBeenCalledWith(RoleName.NAMES.ProUser)
       expect(userRepository.save).toHaveBeenCalledWith(user)
       expect(await user.roles).toHaveLength(2)
     })
@@ -142,7 +143,7 @@ describe('RoleService', () => {
     it('should set offline role to offline subscription', async () => {
       await createService().setOfflineUserRole(offlineUserSubscription)
 
-      expect(roleRepository.findOneByName).toHaveBeenCalledWith(RoleName.ProUser)
+      expect(roleRepository.findOneByName).toHaveBeenCalledWith(RoleName.NAMES.ProUser)
       expect(offlineUserSubscriptionRepository.save).toHaveBeenCalledWith({
         endsAt: 100,
         cancelled: false,

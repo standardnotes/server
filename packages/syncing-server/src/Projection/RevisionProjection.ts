@@ -1,4 +1,4 @@
-import { ContentType, RoleName } from '@standardnotes/common'
+import { ContentType } from '@standardnotes/common'
 
 export type RevisionProjection = {
   uuid: string
@@ -9,7 +9,7 @@ export type RevisionProjection = {
   enc_item_key: string | null
   auth_hash: string | null
   creation_date: string
-  required_role: RoleName
+  required_role: string
   created_at: string
   updated_at: string
 }

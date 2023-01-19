@@ -1,4 +1,3 @@
-import { RoleName } from '@standardnotes/common'
 import { TokenEncoderInterface, CrossServiceTokenData } from '@standardnotes/security'
 import { inject, injectable } from 'inversify'
 
@@ -78,7 +77,7 @@ export class CreateCrossServiceToken implements UseCaseInterface {
     >this.sessionProjector.projectSimple(session)
   }
 
-  private projectRoles(roles: Array<Role>): Array<{ uuid: string; name: RoleName }> {
-    return roles.map((role) => <{ uuid: string; name: RoleName }>this.roleProjector.projectSimple(role))
+  private projectRoles(roles: Array<Role>): Array<{ uuid: string; name: string }> {
+    return roles.map((role) => <{ uuid: string; name: string }>this.roleProjector.projectSimple(role))
   }
 }

@@ -1,7 +1,8 @@
 import 'reflect-metadata'
 
 import { Role } from '@standardnotes/security'
-import { RoleName, SubscriptionName } from '@standardnotes/common'
+import { SubscriptionName } from '@standardnotes/common'
+import { RoleName } from '@standardnotes/domain-core'
 
 import { RoleToSubscriptionMapInterface } from '../Role/RoleToSubscriptionMapInterface'
 import { User } from '../User/User'
@@ -40,10 +41,10 @@ describe('FeatureService', () => {
       .fn()
       .mockImplementation((subscriptionName: SubscriptionName) => {
         if (subscriptionName === SubscriptionName.PlusPlan) {
-          return RoleName.PlusUser
+          return RoleName.NAMES.PlusUser
         }
         if (subscriptionName === SubscriptionName.ProPlan) {
-          return RoleName.ProUser
+          return RoleName.NAMES.ProUser
         }
 
         return undefined
@@ -67,13 +68,13 @@ describe('FeatureService', () => {
     }
 
     role1 = {
-      name: RoleName.PlusUser,
+      name: RoleName.NAMES.PlusUser,
       uuid: 'role-1-1-1',
       permissions: Promise.resolve([permission1, permission3]),
     } as jest.Mocked<Role>
 
     role2 = {
-      name: RoleName.ProUser,
+      name: RoleName.NAMES.ProUser,
       uuid: 'role-2-2-2',
       permissions: Promise.resolve([permission2]),
     } as jest.Mocked<Role>
@@ -223,7 +224,7 @@ describe('FeatureService', () => {
 
     it('should not return user features if those cannot be find for permissions', async () => {
       role1 = {
-        name: RoleName.CoreUser,
+        name: RoleName.NAMES.CoreUser,
         uuid: 'role-1-1-1',
         permissions: Promise.resolve([permission4]),
       } as jest.Mocked<Role>
@@ -303,7 +304,7 @@ describe('FeatureService', () => {
       } as jest.Mocked<Permission>
 
       const nonSubscriptionRole = {
-        name: RoleName.FilesBetaUser,
+        name: RoleName.NAMES.FilesBetaUser,
         uuid: 'role-files-beta',
         permissions: Promise.resolve([nonSubscriptionPermission]),
       } as jest.Mocked<Role>
@@ -347,7 +348,7 @@ describe('FeatureService', () => {
         .mockReturnValueOnce(SubscriptionName.ProPlan)
 
       role2 = {
-        name: RoleName.ProUser,
+        name: RoleName.NAMES.ProUser,
         uuid: 'role-2-2-2',
         permissions: Promise.resolve([permission1, permission2]),
       } as jest.Mocked<Role>
@@ -384,7 +385,7 @@ describe('FeatureService', () => {
       subscription2.endsAt = lesserExpireAt
 
       role2 = {
-        name: RoleName.ProUser,
+        name: RoleName.NAMES.ProUser,
         uuid: 'role-2-2-2',
         permissions: Promise.resolve([permission1, permission2]),
       } as jest.Mocked<Role>

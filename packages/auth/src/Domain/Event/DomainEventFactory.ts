@@ -1,6 +1,6 @@
 /* istanbul ignore file */
 
-import { JSONString, ProtocolVersion, RoleName, Uuid } from '@standardnotes/common'
+import { JSONString, ProtocolVersion, Uuid } from '@standardnotes/common'
 import {
   AccountDeletionRequestedEvent,
   UserEmailChangedEvent,
@@ -347,7 +347,7 @@ export class DomainEventFactory implements DomainEventFactoryInterface {
     }
   }
 
-  createUserRolesChangedEvent(userUuid: string, email: string, currentRoles: RoleName[]): UserRolesChangedEvent {
+  createUserRolesChangedEvent(userUuid: string, email: string, currentRoles: string[]): UserRolesChangedEvent {
     return {
       type: 'USER_ROLES_CHANGED',
       createdAt: this.timer.getUTCDate(),

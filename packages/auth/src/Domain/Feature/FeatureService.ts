@@ -1,4 +1,4 @@
-import { RoleName, SubscriptionName } from '@standardnotes/common'
+import { SubscriptionName } from '@standardnotes/common'
 import { FeatureDescription, GetFeatures } from '@standardnotes/features'
 import { inject, injectable } from 'inversify'
 import TYPES from '../../Bootstrap/Types'
@@ -117,7 +117,7 @@ export class FeatureService implements FeatureServiceInterface {
           ...featureForPermission,
           expires_at: longestLastingSubscription ? longestLastingSubscription.endsAt : undefined,
           no_expire: longestLastingSubscription ? false : true,
-          role_name: role.name as RoleName,
+          role_name: role.name,
         })
 
         continue

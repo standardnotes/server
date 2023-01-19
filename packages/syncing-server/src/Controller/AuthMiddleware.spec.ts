@@ -5,7 +5,7 @@ import * as winston from 'winston'
 import { AuthMiddleware } from './AuthMiddleware'
 import { NextFunction, Request, Response } from 'express'
 import { sign } from 'jsonwebtoken'
-import { RoleName } from '@standardnotes/common'
+import { RoleName } from '@standardnotes/domain-core'
 
 describe('AuthMiddleware', () => {
   let logger: winston.Logger
@@ -43,11 +43,11 @@ describe('AuthMiddleware', () => {
         roles: [
           {
             uuid: '1-2-3',
-            name: RoleName.CoreUser,
+            name: RoleName.NAMES.CoreUser,
           },
           {
             uuid: '2-3-4',
-            name: RoleName.ProUser,
+            name: RoleName.NAMES.ProUser,
           },
         ],
         permissions: [],
@@ -77,7 +77,7 @@ describe('AuthMiddleware', () => {
         roles: [
           {
             uuid: '1-2-3',
-            name: RoleName.CoreUser,
+            name: RoleName.NAMES.CoreUser,
           },
         ],
         permissions: [],
@@ -106,11 +106,11 @@ describe('AuthMiddleware', () => {
         roles: [
           {
             uuid: '1-2-3',
-            name: RoleName.CoreUser,
+            name: RoleName.NAMES.CoreUser,
           },
           {
             uuid: '2-3-4',
-            name: RoleName.ProUser,
+            name: RoleName.NAMES.ProUser,
           },
         ],
         permissions: [],

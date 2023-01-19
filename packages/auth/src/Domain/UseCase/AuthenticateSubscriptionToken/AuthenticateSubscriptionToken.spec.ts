@@ -1,6 +1,6 @@
 import 'reflect-metadata'
 
-import { RoleName } from '@standardnotes/common'
+import { RoleName } from '@standardnotes/domain-core'
 
 import { SubscriptionTokenRepositoryInterface } from '../../Subscription/SubscriptionTokenRepositoryInterface'
 import { User } from '../../User/User'
@@ -20,7 +20,7 @@ describe('AuthenticateSubscriptionToken', () => {
     subscriptionTokenRepository.getUserUuidByToken = jest.fn().mockReturnValue('1-2-3')
 
     user = {
-      roles: Promise.resolve([{ name: RoleName.CoreUser }]),
+      roles: Promise.resolve([{ name: RoleName.NAMES.CoreUser }]),
     } as jest.Mocked<User>
 
     userRepository = {} as jest.Mocked<UserRepositoryInterface>

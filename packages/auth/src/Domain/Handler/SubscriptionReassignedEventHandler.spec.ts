@@ -1,6 +1,7 @@
 import 'reflect-metadata'
 
-import { RoleName, SubscriptionName } from '@standardnotes/common'
+import { SubscriptionName } from '@standardnotes/common'
+import { RoleName } from '@standardnotes/domain-core'
 import { SubscriptionReassignedEvent } from '@standardnotes/domain-events'
 import { Logger } from 'winston'
 
@@ -45,7 +46,7 @@ describe('SubscriptionReassignedEventHandler', () => {
       email: 'test@test.com',
       roles: Promise.resolve([
         {
-          name: RoleName.CoreUser,
+          name: RoleName.NAMES.CoreUser,
         },
       ]),
     } as jest.Mocked<User>
@@ -137,7 +138,7 @@ describe('SubscriptionReassignedEventHandler', () => {
         email: 'test@test.com',
         roles: Promise.resolve([
           {
-            name: RoleName.CoreUser,
+            name: RoleName.NAMES.CoreUser,
           },
         ]),
       },
