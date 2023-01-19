@@ -4,7 +4,7 @@ export type GetUserFeaturesResponse =
   | {
       success: true
       features: FeatureDescription[]
-      offlineRoles?: string[]
+      roles?: string[]
       userUuid?: string
     }
   | {

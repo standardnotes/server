@@ -55,7 +55,7 @@ describe('GetUserFeatures', () => {
     expect(await createUseCase().execute({ email: 'test@test.com', offline: true })).toEqual({
       success: true,
       features: [{ name: 'foobar' }],
-      offlineRoles: [RoleName.NAMES.ProUser],
+      roles: [RoleName.NAMES.ProUser],
     })
   })
 })

@@ -20,7 +20,7 @@ export class GetUserFeatures implements UseCaseInterface {
       return {
         success: true,
         features,
-        offlineRoles: roles,
+        roles,
       }
     }
 
