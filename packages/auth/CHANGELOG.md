@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.83.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.82.6...@standardnotes/auth-server@1.83.0) (2023-01-19)
+
+### Features
+
+* include roles in offline features request ([#418](https://github.com/standardnotes/server/issues/418)) ([2e7fdd9](https://github.com/standardnotes/server/commit/2e7fdd93dd3b07e0a9f2e72521251af1d15660d4))
+
 ## [1.82.6](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.82.5...@standardnotes/auth-server@1.82.6) (2023-01-19)
 
 ### Bug Fixes
