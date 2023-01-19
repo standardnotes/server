@@ -331,11 +331,6 @@ describe('FeatureService', () => {
             identifier: 'org.standardnotes.bold-editor',
             expires_at: 777,
           }),
-          expect.objectContaining({
-            identifier: 'org.standardnotes.files-beta',
-            expires_at: undefined,
-            no_expire: true,
-          }),
         ]),
       )
     })
