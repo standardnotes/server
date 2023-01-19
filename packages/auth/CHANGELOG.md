@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.83.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.83.0...@standardnotes/auth-server@1.83.1) (2023-01-19)
+
+### Reverts
+
+* Revert "feat: include roles in offline features request (#418)" ([f20ee68](https://github.com/standardnotes/server/commit/f20ee68f504449b6ff37748c4d7f83c08bb4039d)), closes [#418](https://github.com/standardnotes/server/issues/418)
+
 # [1.83.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.82.6...@standardnotes/auth-server@1.83.0) (2023-01-19)
 
 ### Features
