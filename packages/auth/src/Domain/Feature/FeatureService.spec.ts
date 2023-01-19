@@ -297,17 +297,6 @@ describe('FeatureService', () => {
     })
 
     it('should return user features along with features related to non subscription roles', async () => {
-      const nonSubscriptionPermission = {
-        uuid: 'files-beta-permission-1-1-1',
-        name: PermissionName.FilesBeta,
-      } as jest.Mocked<Permission>
-
-      const _nonSubscriptionRole = {
-        name: RoleName.FilesBetaUser,
-        uuid: 'role-files-beta',
-        permissions: Promise.resolve([nonSubscriptionPermission]),
-      } as jest.Mocked<Role>
-
       roleToSubscriptionMap.filterNonSubscriptionRoles = jest.fn().mockReturnValue([])
       roleToSubscriptionMap.getSubscriptionNameForRoleName = jest
         .fn()
