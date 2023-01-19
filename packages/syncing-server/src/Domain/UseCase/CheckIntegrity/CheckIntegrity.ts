@@ -1,5 +1,5 @@
 import { inject, injectable } from 'inversify'
-import { IntegrityPayload } from '@standardnotes/payloads'
+import { IntegrityPayload } from '@standardnotes/responses'
 import { ContentType } from '@standardnotes/common'
 
 import TYPES from '../../../Bootstrap/Types'

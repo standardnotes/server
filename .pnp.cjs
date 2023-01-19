@@ -3063,18 +3063,6 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
-    ["@standardnotes/payloads", [\
-      ["npm:1.5.1", {\
-        "packageLocation": "./.yarn/cache/@standardnotes-payloads-npm-1.5.1-45dffe2f5c-092457c23a.zip/node_modules/@standardnotes/payloads/",\
-        "packageDependencies": [\
-          ["@standardnotes/payloads", "npm:1.5.1"],\
-          ["@standardnotes/common", "workspace:packages/common"],\
-          ["@standardnotes/features", "npm:1.53.1"],\
-          ["@standardnotes/utils", "npm:1.10.0"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
     ["@standardnotes/predicates", [\
       ["workspace:packages/predicates", {\
         "packageLocation": "./packages/predicates/",\
@@ -3296,7 +3284,6 @@ const RAW_RUNTIME_STATE =
           ["@standardnotes/domain-core", "workspace:packages/domain-core"],\
           ["@standardnotes/domain-events", "workspace:packages/domain-events"],\
           ["@standardnotes/domain-events-infra", "workspace:packages/domain-events-infra"],\
-          ["@standardnotes/payloads", "npm:1.5.1"],\
           ["@standardnotes/responses", "npm:1.11.1"],\
           ["@standardnotes/security", "workspace:packages/security"],\
           ["@standardnotes/settings", "workspace:packages/settings"],\

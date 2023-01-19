@@ -2045,7 +2045,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@standardnotes/common@npm:^1.19.1, @standardnotes/common@npm:^1.23.1, @standardnotes/common@npm:^1.39.0, @standardnotes/common@npm:^1.43.0, @standardnotes/common@npm:^1.46.3, @standardnotes/common@workspace:*, @standardnotes/common@workspace:^, @standardnotes/common@workspace:packages/common":
+"@standardnotes/common@npm:^1.23.1, @standardnotes/common@npm:^1.39.0, @standardnotes/common@npm:^1.43.0, @standardnotes/common@npm:^1.46.3, @standardnotes/common@workspace:*, @standardnotes/common@workspace:^, @standardnotes/common@workspace:packages/common":
   version: 0.0.0-use.local
   resolution: "@standardnotes/common@workspace:packages/common"
   dependencies:
@@ -2171,7 +2171,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@standardnotes/features@npm:1.53.1, @standardnotes/features@npm:^1.36.3":
+"@standardnotes/features@npm:1.53.1":
   version: 1.53.1
   resolution: "@standardnotes/features@npm:1.53.1"
   dependencies:
@@ -2285,17 +2285,6 @@ __metadata:
     lodash: "npm:^4.17.21"
     reflect-metadata: "npm:^0.1.13"
   checksum: cb7e6561b858cf86fb89835c10c917dd36a5f9fd89975599911230323102bcfaf4f9a01741973376ba522cf6454490225f20543047cbda211e42a78dbb0030b6
-  languageName: node
-  linkType: hard
-
-"@standardnotes/payloads@npm:^1.5.1":
-  version: 1.5.1
-  resolution: "@standardnotes/payloads@npm:1.5.1"
-  dependencies:
-    "@standardnotes/common": "npm:^1.19.1"
-    "@standardnotes/features": "npm:^1.36.3"
-    "@standardnotes/utils": "npm:^1.4.6"
-  checksum: 092457c23ae76d6c402f9eac77de167a7bbe05701186b55569af5c1afd320728b8cfa327468e61572141cd541c7188b2182ba534a7e712fc80af26ba9382d264
   languageName: node
   linkType: hard
 
@@ -2504,7 +2493,6 @@ __metadata:
     "@standardnotes/domain-core": "workspace:^"
     "@standardnotes/domain-events": "workspace:*"
     "@standardnotes/domain-events-infra": "workspace:*"
-    "@standardnotes/payloads": "npm:^1.5.1"
     "@standardnotes/responses": "npm:^1.6.39"
     "@standardnotes/security": "workspace:*"
     "@standardnotes/settings": "workspace:*"
@@ -2566,7 +2554,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@standardnotes/utils@npm:1.10.0, @standardnotes/utils@npm:^1.4.6":
+"@standardnotes/utils@npm:1.10.0":
   version: 1.10.0
   resolution: "@standardnotes/utils@npm:1.10.0"
   dependencies:
