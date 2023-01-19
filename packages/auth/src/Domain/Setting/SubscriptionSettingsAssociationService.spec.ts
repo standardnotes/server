@@ -1,6 +1,7 @@
 import 'reflect-metadata'
 
-import { RoleName, SubscriptionName } from '@standardnotes/common'
+import { SubscriptionName } from '@standardnotes/common'
+import { RoleName } from '@standardnotes/domain-core'
 import { SubscriptionSettingName } from '@standardnotes/settings'
 
 import { PermissionName } from '@standardnotes/features'
@@ -20,7 +21,7 @@ describe('SubscriptionSettingsAssociationService', () => {
 
   beforeEach(() => {
     roleToSubscriptionMap = {} as jest.Mocked<RoleToSubscriptionMapInterface>
-    roleToSubscriptionMap.getRoleNameForSubscriptionName = jest.fn().mockReturnValue(RoleName.PlusUser)
+    roleToSubscriptionMap.getRoleNameForSubscriptionName = jest.fn().mockReturnValue(RoleName.NAMES.PlusUser)
 
     role = {} as jest.Mocked<Role>
 

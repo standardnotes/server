@@ -1,4 +1,3 @@
-import { RoleName } from '@standardnotes/common'
 import { inject, injectable } from 'inversify'
 
 import TYPES from '../../Bootstrap/Types'
@@ -18,7 +17,7 @@ export class WebSocketsClientService implements ClientServiceInterface {
     const event = this.domainEventFactory.createUserRolesChangedEvent(
       user.uuid,
       user.email,
-      (await user.roles).map((role) => role.name) as RoleName[],
+      (await user.roles).map((role) => role.name),
     )
 
     await this.domainEventPublisher.publish(

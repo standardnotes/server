@@ -4,27 +4,22 @@ import { Request, Response } from 'express'
 import { results } from 'inversify-express-utils'
 import { ValetTokenController } from './ValetTokenController'
 import { CreateValetToken } from '../Domain/UseCase/CreateValetToken/CreateValetToken'
-import { Uuid, ValidatorInterface } from '@standardnotes/common'
 
 describe('ValetTokenController', () => {
   let createValetToken: CreateValetToken
-  let uuidValidator: ValidatorInterface<Uuid>
   let request: Request
   let response: Response
 
-  const createController = () => new ValetTokenController(createValetToken, uuidValidator)
+  const createController = () => new ValetTokenController(createValetToken)
 
   beforeEach(() => {
     createValetToken = {} as jest.Mocked<CreateValetToken>
     createValetToken.execute = jest.fn().mockReturnValue({ success: true, valetToken: 'foobar' })
 
-    uuidValidator = {} as jest.Mocked<ValidatorInterface<Uuid>>
-    uuidValidator.validate = jest.fn().mockReturnValue(true)
-
     request = {
       body: {
         operation: 'write',
-        resources: ['1-2-3/2-3-4'],
+        resources: [{ remoteIdentifier: '00000000-0000-0000-0000-000000000000' }],
       },
     } as jest.Mocked<Request>
 
@@ -42,13 +37,13 @@ describe('ValetTokenController', () => {
     expect(createValetToken.execute).toHaveBeenCalledWith({
       operation: 'write',
       userUuid: '1-2-3',
-      resources: ['1-2-3/2-3-4'],
+      resources: [{ remoteIdentifier: '00000000-0000-0000-0000-000000000000' }],
     })
     expect(await result.content.readAsStringAsync()).toEqual('{"success":true,"valetToken":"foobar"}')
   })
 
   it('should not create a valet token if the remote resource identifier is not a valid uuid', async () => {
-    uuidValidator.validate = jest.fn().mockReturnValue(false)
+    request.body.resources = ['00000000-0000-0000-0000-000000000000', 'invalid-uuid']
 
     const httpResponse = <results.JsonResult>await createController().create(request, response)
     const result = await httpResponse.executeAsync()
@@ -68,7 +63,7 @@ describe('ValetTokenController', () => {
     expect(createValetToken.execute).toHaveBeenCalledWith({
       operation: 'read',
       userUuid: '1-2-3',
-      resources: ['1-2-3/2-3-4'],
+      resources: [{ remoteIdentifier: '00000000-0000-0000-0000-000000000000' }],
     })
     expect(await result.content.readAsStringAsync()).toEqual('{"success":true,"valetToken":"foobar"}')
   })
@@ -106,7 +101,7 @@ describe('ValetTokenController', () => {
     expect(createValetToken.execute).toHaveBeenCalledWith({
       operation: 'write',
       userUuid: '1-2-3',
-      resources: ['1-2-3/2-3-4'],
+      resources: [{ remoteIdentifier: '00000000-0000-0000-0000-000000000000' }],
     })
 
     expect(await result.content.readAsStringAsync()).toEqual('{"success":false}')

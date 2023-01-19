@@ -1,5 +1,5 @@
 import { CrossServiceTokenData } from '@standardnotes/security'
-import { RoleName } from '@standardnotes/common'
+import { RoleName } from '@standardnotes/domain-core'
 import { NextFunction, Request, Response } from 'express'
 import { inject, injectable } from 'inversify'
 import { BaseMiddleware } from 'inversify-express-utils'
@@ -62,7 +62,7 @@ export class WebSocketAuthMiddleware extends BaseMiddleware {
 
       response.locals.freeUser =
         decodedToken.roles.length === 1 &&
-        decodedToken.roles.find((role) => role.name === RoleName.CoreUser) !== undefined
+        decodedToken.roles.find((role) => role.name === RoleName.NAMES.CoreUser) !== undefined
       response.locals.userUuid = decodedToken.user.uuid
       response.locals.roles = decodedToken.roles
     } catch (error) {

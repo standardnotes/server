@@ -1,9 +1,8 @@
-import { Uuid } from '@standardnotes/common'
 import { SubscriptionSettingName } from '@standardnotes/settings'
 
 export type FindSubscriptionSettingDTO = {
-  userUuid: Uuid
-  userSubscriptionUuid: Uuid
+  userUuid: string
+  userSubscriptionUuid: string
   subscriptionSettingName: SubscriptionSettingName
-  settingUuid?: Uuid
+  settingUuid?: string
 }

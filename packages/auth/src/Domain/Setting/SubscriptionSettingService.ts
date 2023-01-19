@@ -1,4 +1,4 @@
-import { SubscriptionName, Uuid } from '@standardnotes/common'
+import { SubscriptionName } from '@standardnotes/common'
 import { SubscriptionSettingName } from '@standardnotes/settings'
 import { inject, injectable } from 'inversify'
 import { Logger } from 'winston'
@@ -34,7 +34,7 @@ export class SubscriptionSettingService implements SubscriptionSettingServiceInt
   async applyDefaultSubscriptionSettingsForSubscription(
     userSubscription: UserSubscription,
     subscriptionName: SubscriptionName,
-    userUuid: Uuid,
+    userUuid: string,
   ): Promise<void> {
     const defaultSettingsWithValues =
       await this.subscriptionSettingAssociationService.getDefaultSettingsAndValuesForSubscriptionName(subscriptionName)
@@ -129,8 +129,8 @@ export class SubscriptionSettingService implements SubscriptionSettingServiceInt
 
   private async findPreviousSubscriptionSetting(
     settingName: SubscriptionSettingName,
-    currentUserSubscriptionUuid: Uuid,
-    userUuid: Uuid,
+    currentUserSubscriptionUuid: string,
+    userUuid: string,
   ): Promise<SubscriptionSetting | null> {
     const userSubscriptions = await this.userSubscriptionRepository.findByUserUuid(userUuid)
     const previousSubscriptions = userSubscriptions.filter(

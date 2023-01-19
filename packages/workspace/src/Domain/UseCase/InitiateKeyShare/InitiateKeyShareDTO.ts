@@ -1,8 +1,6 @@
-import { Uuid } from '@standardnotes/common'
-
 export type InitiateKeyShareDTO = {
-  workspaceUuid: Uuid
-  userUuid: Uuid
-  performingUserUuid: Uuid
+  workspaceUuid: string
+  userUuid: string
+  performingUserUuid: string
   encryptedWorkspaceKey: string
 }

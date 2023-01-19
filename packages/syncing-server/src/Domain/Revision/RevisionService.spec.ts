@@ -1,6 +1,6 @@
 import 'reflect-metadata'
 
-import { RoleName } from '@standardnotes/common'
+import { RoleName } from '@standardnotes/domain-core'
 import { TimerInterface } from '@standardnotes/time'
 
 import { Item } from '../Item/Item'
@@ -99,7 +99,7 @@ describe('RevisionService', () => {
     expect(
       await createService().getRevision({
         itemUuid: '1-2-3',
-        userRoles: [RoleName.CoreUser],
+        userRoles: [RoleName.NAMES.CoreUser],
         userUuid: '1-2-3',
         revisionUuid: '3-4-5',
       }),
@@ -112,7 +112,7 @@ describe('RevisionService', () => {
     expect(
       await createService().getRevision({
         itemUuid: '1-2-3',
-        userRoles: [RoleName.CoreUser],
+        userRoles: [RoleName.NAMES.CoreUser],
         userUuid: '3-4-5',
         revisionUuid: '3-4-5',
       }),
@@ -125,7 +125,7 @@ describe('RevisionService', () => {
     expect(
       await createService().getRevision({
         itemUuid: '1-2-3',
-        userRoles: [RoleName.CoreUser],
+        userRoles: [RoleName.NAMES.CoreUser],
         userUuid: '1-2-3',
         revisionUuid: '3-4-5',
       }),
@@ -138,7 +138,7 @@ describe('RevisionService', () => {
     expect(
       await createService().getRevision({
         itemUuid: '1-2-3',
-        userRoles: [RoleName.CoreUser],
+        userRoles: [RoleName.NAMES.CoreUser],
         userUuid: '1-2-3',
         revisionUuid: '3-4-5',
       }),
@@ -151,7 +151,7 @@ describe('RevisionService', () => {
     expect(
       await createService().getRevision({
         itemUuid: '1-2-3',
-        userRoles: [RoleName.CoreUser],
+        userRoles: [RoleName.NAMES.CoreUser],
         userUuid: '1-2-3',
         revisionUuid: '3-4-5',
       }),
@@ -164,7 +164,7 @@ describe('RevisionService', () => {
     expect(
       await createService().getRevision({
         itemUuid: '1-2-3',
-        userRoles: [RoleName.CoreUser, RoleName.PlusUser],
+        userRoles: [RoleName.NAMES.CoreUser, RoleName.NAMES.PlusUser],
         userUuid: '1-2-3',
         revisionUuid: '3-4-5',
       }),

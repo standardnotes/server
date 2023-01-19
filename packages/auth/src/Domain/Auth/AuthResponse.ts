@@ -1,8 +1,8 @@
-import { ProtocolVersion, Uuid } from '@standardnotes/common'
+import { ProtocolVersion } from '@standardnotes/common'
 
 export interface AuthResponse {
   user: {
-    uuid: Uuid
+    uuid: string
     email: string
     protocolVersion: ProtocolVersion
   }

@@ -596,6 +596,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@contrast/fn-inspect@npm:^3.3.0":
+  version: 3.3.0
+  resolution: "@contrast/fn-inspect@npm:3.3.0"
+  dependencies:
+    nan: "npm:^2.16.0"
+    node-gyp: "npm:latest"
+    node-gyp-build: "npm:^4.4.0"
+  checksum: 228ed71b87a997ad522b4bb58b3d2e2490c3b069865bebf87a935cb175cc4e89c61a4debaddebadc93ed3204ef52f745350db232892d75e1b9a97319b18ab5af
+  languageName: node
+  linkType: hard
+
 "@cspotcode/source-map-support@npm:^0.8.0":
   version: 0.8.1
   resolution: "@cspotcode/source-map-support@npm:0.8.1"
@@ -657,28 +668,28 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@grpc/grpc-js@npm:^1.5.5":
-  version: 1.6.7
-  resolution: "@grpc/grpc-js@npm:1.6.7"
+"@grpc/grpc-js@npm:^1.7.3":
+  version: 1.8.4
+  resolution: "@grpc/grpc-js@npm:1.8.4"
   dependencies:
-    "@grpc/proto-loader": "npm:^0.6.4"
+    "@grpc/proto-loader": "npm:^0.7.0"
     "@types/node": "npm:>=12.12.47"
-  checksum: be24dd50f5f67b4b7f25a572c0e878df39a1ff060dc505a6ec87dc9276d44e17ce1b0f074fa16097d6f74c5676743182c4c37959eb20f72278126d4da56f26d1
+  checksum: 6367a2ee3895b00f3fe6c0a785cccc01b3a39549c8622293d6bdcae9659bc846376ca734d875f76b93e963ec39bb174033d55b07b946445c576f7589ca8e9e73
   languageName: node
   linkType: hard
 
-"@grpc/proto-loader@npm:^0.6.13, @grpc/proto-loader@npm:^0.6.4":
-  version: 0.6.13
-  resolution: "@grpc/proto-loader@npm:0.6.13"
+"@grpc/proto-loader@npm:^0.7.0, @grpc/proto-loader@npm:^0.7.3":
+  version: 0.7.4
+  resolution: "@grpc/proto-loader@npm:0.7.4"
   dependencies:
     "@types/long": "npm:^4.0.1"
     lodash.camelcase: "npm:^4.3.0"
     long: "npm:^4.0.0"
-    protobufjs: "npm:^6.11.3"
+    protobufjs: "npm:^7.0.0"
     yargs: "npm:^16.2.0"
   bin:
     proto-loader-gen-types: build/bin/proto-loader-gen-types.js
-  checksum: 6272a0318b3fe8ed6692f0f5999825638168222be67afa0b46554b29f413fb58b4edeafe2667187aaf69c633320f8d861d8af9fc99a4f565f520cc5ad37ee313
+  checksum: 1f5d4211fe0326a062af773b1a421f98390b27e3f40965eafc0ed9219485c23d4e2659e3fd3f0d8896ae2f9b241e2681eb16241bad5239deb82a1e8f9684fe11
   languageName: node
   linkType: hard
 
@@ -1881,7 +1892,7 @@ __metadata:
     "@types/ioredis": "npm:^5.0.0"
     "@types/jest": "npm:^29.1.1"
     "@types/mixpanel": "npm:^2.14.4"
-    "@types/newrelic": "npm:^7.0.4"
+    "@types/newrelic": "npm:^9.4.0"
     "@types/node": "npm:^18.11.9"
     "@typescript-eslint/eslint-plugin": "npm:^5.30.0"
     aws-sdk: "npm:^2.1260.0"
@@ -1894,7 +1905,7 @@ __metadata:
     jest: "npm:^29.1.2"
     mixpanel: "npm:^0.17.0"
     mysql2: "npm:^3.0.1"
-    newrelic: "npm:^9.6.0"
+    newrelic: "npm:^9.8.0"
     reflect-metadata: "npm:^0.1.13"
     ts-jest: "npm:^29.0.3"
     typeorm: "npm:^0.3.10"
@@ -1909,7 +1920,7 @@ __metadata:
   dependencies:
     "@newrelic/winston-enricher": "npm:^4.0.0"
     "@sentry/node": "npm:^7.28.1"
-    "@standardnotes/common": "workspace:^"
+    "@standardnotes/domain-core": "workspace:^"
     "@standardnotes/domain-events": "workspace:*"
     "@standardnotes/domain-events-infra": "workspace:*"
     "@standardnotes/security": "workspace:*"
@@ -1919,7 +1930,7 @@ __metadata:
     "@types/ioredis": "npm:^5.0.0"
     "@types/jest": "npm:^29.1.1"
     "@types/jsonwebtoken": "npm:^9.0.1"
-    "@types/newrelic": "npm:^7.0.4"
+    "@types/newrelic": "npm:^9.4.0"
     "@types/prettyjson": "npm:^0.0.30"
     "@typescript-eslint/eslint-plugin": "npm:^5.29.0"
     aws-sdk: "npm:^2.1260.0"
@@ -1936,7 +1947,7 @@ __metadata:
     ioredis: "npm:^5.2.4"
     jest: "npm:^29.1.2"
     jsonwebtoken: "npm:^9.0.0"
-    newrelic: "npm:^9.6.0"
+    newrelic: "npm:^9.8.0"
     nodemon: "npm:^2.0.19"
     npm-check-updates: "npm:^16.0.1"
     prettyjson: "npm:^1.2.5"
@@ -1989,7 +2000,7 @@ __metadata:
     "@types/express": "npm:^4.17.14"
     "@types/ioredis": "npm:^5.0.0"
     "@types/jest": "npm:^29.1.1"
-    "@types/newrelic": "npm:^7.0.4"
+    "@types/newrelic": "npm:^9.4.0"
     "@types/otplib": "npm:^10.0.0"
     "@types/prettyjson": "npm:^0.0.30"
     "@types/ua-parser-js": "npm:^0.7.36"
@@ -2009,7 +2020,7 @@ __metadata:
     ioredis: "npm:^5.2.4"
     jest: "npm:^29.1.2"
     mysql2: "npm:^3.0.1"
-    newrelic: "npm:^9.6.0"
+    newrelic: "npm:^9.8.0"
     nodemon: "npm:^2.0.19"
     npm-check-updates: "npm:^16.0.1"
     otplib: "npm:12.0.1"
@@ -2086,13 +2097,13 @@ __metadata:
     "@standardnotes/domain-events": "workspace:*"
     "@types/ioredis": "npm:^5.0.0"
     "@types/jest": "npm:^29.1.1"
-    "@types/newrelic": "npm:^7.0.4"
+    "@types/newrelic": "npm:^9.4.0"
     "@typescript-eslint/eslint-plugin": "npm:^5.30.0"
     aws-sdk: "npm:^2.1260.0"
     eslint-plugin-prettier: "npm:^4.2.1"
     ioredis: "npm:^5.2.4"
     jest: "npm:^29.1.2"
-    newrelic: "npm:^9.6.0"
+    newrelic: "npm:^9.8.0"
     reflect-metadata: "npm:^0.1.13"
     sqs-consumer: "npm:^5.6.0"
     ts-jest: "npm:^29.0.3"
@@ -2105,7 +2116,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@standardnotes/domain-events@workspace:packages/domain-events"
   dependencies:
-    "@standardnotes/common": "workspace:*"
     "@standardnotes/features": "npm:^1.58.0"
     "@standardnotes/predicates": "workspace:*"
     "@standardnotes/security": "workspace:*"
@@ -2113,7 +2123,6 @@ __metadata:
     "@typescript-eslint/eslint-plugin": "npm:^5.30.0"
     eslint-plugin-prettier: "npm:^4.2.1"
     jest: "npm:^29.1.2"
-    reflect-metadata: "npm:^0.1.13"
     ts-jest: "npm:^29.0.3"
     typescript: "npm:^4.8.4"
   languageName: unknown
@@ -2142,7 +2151,7 @@ __metadata:
     "@standardnotes/time": "workspace:*"
     "@types/ioredis": "npm:^5.0.0"
     "@types/jest": "npm:^29.1.1"
-    "@types/newrelic": "npm:^7.0.4"
+    "@types/newrelic": "npm:^9.4.0"
     "@types/nodemailer": "npm:^6.4.1"
     "@typescript-eslint/eslint-plugin": "npm:^5.40.1"
     aws-sdk: "npm:^2.1260.0"
@@ -2153,7 +2162,7 @@ __metadata:
     ioredis: "npm:^5.2.4"
     jest: "npm:^29.1.2"
     mysql2: "npm:^3.0.1"
-    newrelic: "npm:^9.6.0"
+    newrelic: "npm:^9.8.0"
     reflect-metadata: "npm:0.1.13"
     ts-jest: "npm:^29.0.3"
     typeorm: "npm:^0.3.10"
@@ -2203,8 +2212,8 @@ __metadata:
   resolution: "@standardnotes/files-server@workspace:packages/files"
   dependencies:
     "@sentry/node": "npm:^7.28.1"
-    "@standardnotes/common": "workspace:*"
     "@standardnotes/config": "npm:2.4.3"
+    "@standardnotes/domain-core": "workspace:^"
     "@standardnotes/domain-events": "workspace:*"
     "@standardnotes/domain-events-infra": "workspace:*"
     "@standardnotes/security": "workspace:*"
@@ -2217,7 +2226,7 @@ __metadata:
     "@types/ioredis": "npm:^5.0.0"
     "@types/jest": "npm:^29.1.1"
     "@types/jsonwebtoken": "npm:^9.0.1"
-    "@types/newrelic": "npm:^7.0.4"
+    "@types/newrelic": "npm:^9.4.0"
     "@types/prettyjson": "npm:^0.0.30"
     "@types/uuid": "npm:^8.3.0"
     "@typescript-eslint/eslint-plugin": "npm:^5.29.0"
@@ -2237,7 +2246,7 @@ __metadata:
     ioredis: "npm:^5.2.4"
     jest: "npm:^29.1.2"
     jsonwebtoken: "npm:^9.0.0"
-    newrelic: "npm:^9.6.0"
+    newrelic: "npm:^9.8.0"
     nodemon: "npm:^2.0.19"
     npm-check-updates: "npm:^16.0.1"
     prettyjson: "npm:^1.2.5"
@@ -2293,12 +2302,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@standardnotes/predicates@workspace:packages/predicates"
   dependencies:
-    "@standardnotes/common": "workspace:*"
     "@types/jest": "npm:^29.1.1"
     "@typescript-eslint/eslint-plugin": "npm:^5.30.0"
     eslint-plugin-prettier: "npm:^4.2.1"
     jest: "npm:^29.1.2"
-    reflect-metadata: "npm:^0.1.13"
     ts-jest: "npm:^29.0.3"
     typescript: "npm:^4.8.4"
   languageName: unknown
@@ -2347,7 +2354,7 @@ __metadata:
     "@types/inversify-express-utils": "npm:^2.0.0"
     "@types/ioredis": "npm:^5.0.0"
     "@types/jest": "npm:^29.1.1"
-    "@types/newrelic": "npm:^7.0.4"
+    "@types/newrelic": "npm:^9.4.0"
     "@typescript-eslint/eslint-plugin": "npm:^5.29.0"
     aws-sdk: "npm:^2.1260.0"
     cors: "npm:2.8.5"
@@ -2361,7 +2368,7 @@ __metadata:
     ioredis: "npm:^5.2.4"
     jest: "npm:^29.1.2"
     mysql2: "npm:^3.0.1"
-    newrelic: "npm:^9.6.0"
+    newrelic: "npm:^9.8.0"
     npm-check-updates: "npm:^16.0.1"
     reflect-metadata: "npm:0.1.13"
     ts-jest: "npm:^29.0.3"
@@ -2377,7 +2384,6 @@ __metadata:
   dependencies:
     "@newrelic/winston-enricher": "npm:^4.0.0"
     "@sentry/node": "npm:^7.28.1"
-    "@standardnotes/common": "workspace:*"
     "@standardnotes/domain-core": "workspace:^"
     "@standardnotes/domain-events": "workspace:*"
     "@standardnotes/domain-events-infra": "workspace:*"
@@ -2385,7 +2391,7 @@ __metadata:
     "@standardnotes/time": "workspace:*"
     "@types/ioredis": "npm:^5.0.0"
     "@types/jest": "npm:^29.1.1"
-    "@types/newrelic": "npm:^7.0.4"
+    "@types/newrelic": "npm:^9.4.0"
     "@types/node": "npm:^18.11.9"
     "@typescript-eslint/eslint-plugin": "npm:^5.29.0"
     aws-sdk: "npm:^2.1260.0"
@@ -2397,7 +2403,7 @@ __metadata:
     ioredis: "npm:^5.2.4"
     jest: "npm:^29.1.2"
     mysql2: "npm:^3.0.1"
-    newrelic: "npm:^9.6.0"
+    newrelic: "npm:^9.8.0"
     npm-check-updates: "npm:^16.0.1"
     reflect-metadata: "npm:^0.1.13"
     ts-jest: "npm:^29.0.3"
@@ -2411,7 +2417,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@standardnotes/security@workspace:packages/security"
   dependencies:
-    "@standardnotes/common": "workspace:*"
     "@types/jest": "npm:^29.1.1"
     "@types/jsonwebtoken": "npm:^9.0.1"
     "@typescript-eslint/eslint-plugin": "npm:^5.30.0"
@@ -2435,13 +2440,13 @@ __metadata:
     "@lerna-lite/run": "npm:^1.5.1"
     "@sentry/node": "npm:^7.28.1"
     "@types/jest": "npm:^29.1.1"
-    "@types/newrelic": "npm:^7.0.4"
+    "@types/newrelic": "npm:^9.4.0"
     "@types/node": "npm:^18.11.9"
     "@typescript-eslint/parser": "npm:^5.40.1"
     eslint: "npm:^8.17.0"
     eslint-config-prettier: "npm:^8.5.0"
     ini: "npm:^3.0.0"
-    newrelic: "npm:^9.6.0"
+    newrelic: "npm:^9.8.0"
     npm-check-updates: "npm:^16.0.1"
     prettier: "npm:^2.7.1"
     ts-node: "npm:^10.9.1"
@@ -2510,7 +2515,7 @@ __metadata:
     "@types/ioredis": "npm:^5.0.0"
     "@types/jest": "npm:^29.1.1"
     "@types/jsonwebtoken": "npm:^9.0.1"
-    "@types/newrelic": "npm:^7.0.4"
+    "@types/newrelic": "npm:^9.4.0"
     "@types/prettyjson": "npm:^0.0.30"
     "@types/ua-parser-js": "npm:^0.7.36"
     "@types/uuid": "npm:^8.3.0"
@@ -2529,7 +2534,7 @@ __metadata:
     jest: "npm:^29.1.2"
     jsonwebtoken: "npm:^9.0.0"
     mysql2: "npm:^3.0.1"
-    newrelic: "npm:^9.6.0"
+    newrelic: "npm:^9.8.0"
     nodemon: "npm:^2.0.19"
     npm-check-updates: "npm:^16.0.1"
     prettyjson: "npm:^1.2.5"
@@ -2591,7 +2596,7 @@ __metadata:
     "@newrelic/winston-enricher": "npm:^4.0.0"
     "@sentry/node": "npm:^7.28.1"
     "@standardnotes/api": "npm:^1.19.0"
-    "@standardnotes/common": "workspace:^"
+    "@standardnotes/domain-core": "workspace:^"
     "@standardnotes/domain-events": "workspace:^"
     "@standardnotes/domain-events-infra": "workspace:^"
     "@standardnotes/security": "workspace:^"
@@ -2599,7 +2604,7 @@ __metadata:
     "@types/express": "npm:^4.17.14"
     "@types/ioredis": "npm:^5.0.0"
     "@types/jest": "npm:^29.1.1"
-    "@types/newrelic": "npm:^7.0.4"
+    "@types/newrelic": "npm:^9.4.0"
     "@typescript-eslint/eslint-plugin": "npm:^5.29.0"
     aws-sdk: "npm:^2.1260.0"
     axios: "npm:^1.1.3"
@@ -2613,7 +2618,7 @@ __metadata:
     ioredis: "npm:^5.2.4"
     jest: "npm:^29.1.2"
     mysql2: "npm:^3.0.1"
-    newrelic: "npm:^9.6.0"
+    newrelic: "npm:^9.8.0"
     reflect-metadata: "npm:0.1.13"
     ts-jest: "npm:^29.0.3"
     typeorm: "npm:^0.3.10"
@@ -2640,7 +2645,7 @@ __metadata:
     "@types/express": "npm:^4.17.14"
     "@types/ioredis": "npm:^5.0.0"
     "@types/jest": "npm:^29.1.1"
-    "@types/newrelic": "npm:^7.0.4"
+    "@types/newrelic": "npm:^9.4.0"
     "@typescript-eslint/eslint-plugin": "npm:^5.29.0"
     aws-sdk: "npm:^2.1260.0"
     cors: "npm:2.8.5"
@@ -2653,7 +2658,7 @@ __metadata:
     ioredis: "npm:^5.2.4"
     jest: "npm:^29.1.2"
     mysql2: "npm:^3.0.1"
-    newrelic: "npm:^9.6.0"
+    newrelic: "npm:^9.8.0"
     reflect-metadata: "npm:0.1.13"
     ts-jest: "npm:^29.0.3"
     typeorm: "npm:^0.3.10"
@@ -2987,10 +2992,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/newrelic@npm:^7.0.4":
-  version: 7.0.4
-  resolution: "@types/newrelic@npm:7.0.4"
-  checksum: b44215b3abe27bca702ffda7c326d951e11083b79f64ec9099664b981f3c51698a164e81c252ea99c994a138e105dfd38a873c274ecbad5f3e43488c1d9c8e8d
+"@types/newrelic@npm:^9.4.0":
+  version: 9.4.0
+  resolution: "@types/newrelic@npm:9.4.0"
+  checksum: adb12973e86078be8b49f75cae9bf26d5f344a85df76a69cf73ad24b529e53ab43c66fd5d4f973382be09146be8d1407f2a9c388310415a6464d6d182fbecba1
   languageName: node
   linkType: hard
 
@@ -8121,7 +8126,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"long@npm:^5.2.1":
+"long@npm:^5.0.0, long@npm:^5.2.1":
   version: 5.2.1
   resolution: "long@npm:5.2.1"
   checksum: f81b18ff295bd2c97e6704ba9d38d787db014e26ccdb897f37a4448d8562a2fdd040bc19ba8aa20708cfd369fa051a001e22e23dbcf0fc85fcb8968e11ce1ee3
@@ -8635,12 +8640,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"newrelic@npm:^9.6.0":
-  version: 9.6.0
-  resolution: "newrelic@npm:9.6.0"
+"newrelic@npm:^9.8.0":
+  version: 9.8.0
+  resolution: "newrelic@npm:9.8.0"
   dependencies:
-    "@grpc/grpc-js": "npm:^1.5.5"
-    "@grpc/proto-loader": "npm:^0.6.13"
+    "@contrast/fn-inspect": "npm:^3.3.0"
+    "@grpc/grpc-js": "npm:^1.7.3"
+    "@grpc/proto-loader": "npm:^0.7.3"
     "@newrelic/aws-sdk": "npm:^5.0.0"
     "@newrelic/koa": "npm:^7.0.0"
     "@newrelic/native-metrics": "npm:^9.0.0"
@@ -8653,11 +8659,13 @@ __metadata:
     semver: "npm:^5.3.0"
     winston-transport: "npm:^4.5.0"
   dependenciesMeta:
+    "@contrast/fn-inspect":
+      optional: true
     "@newrelic/native-metrics":
       optional: true
   bin:
     newrelic-naming-rules: bin/test-naming-rules.js
-  checksum: eb378acde172c814c7d2c4804d323c493d8ab4587095dd668a6370de7cbddd1effd7cc61899aaf927134f7a0ce26581d8c0ea905ac667b4879756936c34e73fa
+  checksum: ed3b893298c7d36ce789f6e0a5e0039a083e67a302cb07268a9ff6dee230613caea6891200ac7737860bc6dc64fc1dc08112a3cc407f6d37da60690dd6122332
   languageName: node
   linkType: hard
 
@@ -9597,9 +9605,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"protobufjs@npm:^6.11.3":
-  version: 6.11.3
-  resolution: "protobufjs@npm:6.11.3"
+"protobufjs@npm:^7.0.0":
+  version: 7.1.2
+  resolution: "protobufjs@npm:7.1.2"
   dependencies:
     "@protobufjs/aspromise": "npm:^1.1.2"
     "@protobufjs/base64": "npm:^1.1.2"
@@ -9611,13 +9619,9 @@ __metadata:
     "@protobufjs/path": "npm:^1.1.2"
     "@protobufjs/pool": "npm:^1.1.0"
     "@protobufjs/utf8": "npm:^1.1.0"
-    "@types/long": "npm:^4.0.1"
     "@types/node": "npm:>=13.7.0"
-    long: "npm:^4.0.0"
-  bin:
-    pbjs: bin/pbjs
-    pbts: bin/pbts
-  checksum: 5a7a343bc1f4029022433690e9a1734a89a80fc441b580ddc8486262417b7755bddafd637a88c0f8105e594e361a02218508df67caf1ac9c18bbca82e6ab60ee
+    long: "npm:^5.0.0"
+  checksum: d9cfc7c168b7f385cf0d369284c70f7be00e0dae09df554b1d1bcc65c19ad53f0e0c4bb23cf5dd8ee3d02b08ee1ad0964a5e63c2de6397c88a51abeabb938928
   languageName: node
   linkType: hard
 

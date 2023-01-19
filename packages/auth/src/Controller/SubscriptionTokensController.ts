@@ -1,5 +1,5 @@
 import { CrossServiceTokenData, TokenEncoderInterface } from '@standardnotes/security'
-import { ErrorTag, RoleName } from '@standardnotes/common'
+import { ErrorTag } from '@standardnotes/common'
 import { SettingName } from '@standardnotes/settings'
 import { Request, Response } from 'express'
 import { inject } from 'inversify'
@@ -101,10 +101,10 @@ export class SubscriptionTokensController extends BaseHttpController {
     return <{ uuid: string; email: string }>await this.userProjector.projectSimple(user)
   }
 
-  private async projectRoles(roles: Array<Role>): Promise<Array<{ uuid: string; name: RoleName }>> {
+  private async projectRoles(roles: Array<Role>): Promise<Array<{ uuid: string; name: string }>> {
     const roleProjections = []
     for (const role of roles) {
-      roleProjections.push(<{ uuid: string; name: RoleName }>await this.roleProjector.projectSimple(role))
+      roleProjections.push(<{ uuid: string; name: string }>await this.roleProjector.projectSimple(role))
     }
 
     return roleProjections

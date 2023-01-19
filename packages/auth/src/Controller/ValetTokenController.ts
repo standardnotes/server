@@ -11,15 +11,13 @@ import { CreateValetTokenPayload } from '@standardnotes/responses'
 
 import TYPES from '../Bootstrap/Types'
 import { CreateValetToken } from '../Domain/UseCase/CreateValetToken/CreateValetToken'
-import { ErrorTag, Uuid, ValidatorInterface } from '@standardnotes/common'
+import { ErrorTag } from '@standardnotes/common'
 import { ValetTokenOperation } from '@standardnotes/security'
+import { Uuid } from '@standardnotes/domain-core'
 
 @controller('/valet-tokens', TYPES.ApiGatewayAuthMiddleware)
 export class ValetTokenController extends BaseHttpController {
-  constructor(
-    @inject(TYPES.CreateValetToken) private createValetKey: CreateValetToken,
-    @inject(TYPES.UuidValidator) private uuidValitor: ValidatorInterface<Uuid>,
-  ) {
+  constructor(@inject(TYPES.CreateValetToken) private createValetKey: CreateValetToken) {
     super()
   }
 
@@ -40,7 +38,8 @@ export class ValetTokenController extends BaseHttpController {
     }
 
     for (const resource of payload.resources) {
-      if (!this.uuidValitor.validate(resource.remoteIdentifier)) {
+      const resourceUuidOrError = Uuid.create(resource.remoteIdentifier)
+      if (resourceUuidOrError.isFailed()) {
         return this.json(
           {
             error: {

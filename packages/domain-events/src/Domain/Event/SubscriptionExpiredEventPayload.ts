@@ -1,9 +1,7 @@
-import { SubscriptionName } from '@standardnotes/common'
-
 export interface SubscriptionExpiredEventPayload {
   userEmail: string
   subscriptionId: number
-  subscriptionName: SubscriptionName
+  subscriptionName: string
   timestamp: number
   offline: boolean
   totalActiveSubscriptionsCount: number

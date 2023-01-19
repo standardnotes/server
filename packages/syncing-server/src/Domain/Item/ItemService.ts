@@ -1,6 +1,6 @@
 import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
 import { Time, TimerInterface } from '@standardnotes/time'
-import { ContentType, Uuid } from '@standardnotes/common'
+import { ContentType } from '@standardnotes/common'
 import { inject, injectable } from 'inversify'
 import { Logger } from 'winston'
 
@@ -193,7 +193,7 @@ export class ItemService implements ItemServiceInterface {
   private async updateExistingItem(dto: {
     existingItem: Item
     itemHash: ItemHash
-    sessionUuid: Uuid | null
+    sessionUuid: string | null
   }): Promise<Item> {
     dto.existingItem.updatedWithSession = dto.sessionUuid
     dto.existingItem.contentSize = 0
@@ -267,7 +267,7 @@ export class ItemService implements ItemServiceInterface {
     return savedItem
   }
 
-  private async saveNewItem(dto: { userUuid: string; itemHash: ItemHash; sessionUuid: Uuid | null }): Promise<Item> {
+  private async saveNewItem(dto: { userUuid: string; itemHash: ItemHash; sessionUuid: string | null }): Promise<Item> {
     const newItem = this.itemFactory.create(dto)
 
     const savedItem = await this.itemRepository.save(newItem)

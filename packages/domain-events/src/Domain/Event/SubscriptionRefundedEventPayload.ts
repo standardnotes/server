@@ -1,9 +1,7 @@
-import { SubscriptionName } from '@standardnotes/common'
-
 export interface SubscriptionRefundedEventPayload {
   userEmail: string
   subscriptionId: number
-  subscriptionName: SubscriptionName
+  subscriptionName: string
   userExistingSubscriptionsCount: number
   totalActiveSubscriptionsCount: number
   timestamp: number

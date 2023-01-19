@@ -1,15 +1,13 @@
-import { Uuid } from '@standardnotes/common'
-
 import { Role } from '../Role/Role'
 
 export type CrossServiceTokenData = {
   user: {
-    uuid: Uuid
+    uuid: string
     email: string
   }
   roles: Array<Role>
   session?: {
-    uuid: Uuid
+    uuid: string
     api_version: string
     created_at: string
     updated_at: string

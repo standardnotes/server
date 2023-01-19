@@ -1,7 +1,5 @@
-import { SubscriptionName } from '@standardnotes/common'
-
 export type Subscription = {
-  planName: SubscriptionName
+  planName: string
   endsAt: number
   createdAt: number
   updatedAt: number

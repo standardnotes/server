@@ -1,4 +1,4 @@
-import { ContentType, Uuid } from '@standardnotes/common'
+import { ContentType } from '@standardnotes/common'
 import { Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
 import { Revision } from '../Revision/Revision'
 
@@ -124,5 +124,5 @@ export class Item {
     length: 36,
     nullable: true,
   })
-  declare updatedWithSession: Uuid | null
+  declare updatedWithSession: string | null
 }

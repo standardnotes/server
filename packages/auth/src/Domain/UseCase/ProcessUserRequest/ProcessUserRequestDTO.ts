@@ -1,7 +1,7 @@
-import { UserRequestType, Uuid } from '@standardnotes/common'
+import { UserRequestType } from '@standardnotes/common'
 
 export type ProcessUserRequestDTO = {
-  userUuid: Uuid
+  userUuid: string
   userEmail: string
   requestType: UserRequestType
 }

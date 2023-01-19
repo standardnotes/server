@@ -1,6 +1,7 @@
 import 'reflect-metadata'
 
-import { RoleName, SubscriptionName } from '@standardnotes/common'
+import { SubscriptionName } from '@standardnotes/common'
+import { RoleName } from '@standardnotes/domain-core'
 import { TimerInterface } from '@standardnotes/time'
 
 import { RoleServiceInterface } from '../../Role/RoleServiceInterface'
@@ -49,7 +50,7 @@ describe('CancelSharedSubscriptionInvitation', () => {
       email: 'test@test.com',
       roles: Promise.resolve([
         {
-          name: RoleName.CoreUser,
+          name: RoleName.NAMES.CoreUser,
         },
       ]),
     } as jest.Mocked<User>

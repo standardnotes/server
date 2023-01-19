@@ -1,4 +1,4 @@
-import { Uuid, RoleName, ProtocolVersion, JSONString } from '@standardnotes/common'
+import { ProtocolVersion, JSONString } from '@standardnotes/common'
 import { Predicate, PredicateVerificationResult } from '@standardnotes/predicates'
 import {
   AccountDeletionRequestedEvent,
@@ -23,7 +23,7 @@ import { InviteeIdentifierType } from '../SharedSubscription/InviteeIdentifierTy
 
 export interface DomainEventFactoryInterface {
   createUserContentSizeRecalculationRequestedEvent(userUuid: string): UserContentSizeRecalculationRequestedEvent
-  createWebSocketMessageRequestedEvent(dto: { userUuid: Uuid; message: JSONString }): WebSocketMessageRequestedEvent
+  createWebSocketMessageRequestedEvent(dto: { userUuid: string; message: JSONString }): WebSocketMessageRequestedEvent
   createEmailRequestedEvent(dto: {
     userEmail: string
     messageIdentifier: string
@@ -50,14 +50,14 @@ export interface DomainEventFactoryInterface {
     userHasEmailsMuted: boolean,
   ): CloudBackupRequestedEvent
   createAccountDeletionRequestedEvent(dto: {
-    userUuid: Uuid
+    userUuid: string
     userCreatedAtTimestamp: number
-    regularSubscriptionUuid: Uuid | undefined
+    regularSubscriptionUuid: string | undefined
   }): AccountDeletionRequestedEvent
-  createUserRolesChangedEvent(userUuid: string, email: string, currentRoles: RoleName[]): UserRolesChangedEvent
+  createUserRolesChangedEvent(userUuid: string, email: string, currentRoles: string[]): UserRolesChangedEvent
   createUserEmailChangedEvent(userUuid: string, fromEmail: string, toEmail: string): UserEmailChangedEvent
   createUserDisabledSessionUserAgentLoggingEvent(dto: {
-    userUuid: Uuid
+    userUuid: string
     email: string
   }): UserDisabledSessionUserAgentLoggingEvent
   createSharedSubscriptionInvitationCreatedEvent(dto: {
@@ -70,13 +70,13 @@ export interface DomainEventFactoryInterface {
   createSharedSubscriptionInvitationCanceledEvent(dto: {
     inviterEmail: string
     inviterSubscriptionId: number
-    inviterSubscriptionUuid: Uuid
+    inviterSubscriptionUuid: string
     inviteeIdentifier: string
     inviteeIdentifierType: InviteeIdentifierType
-    sharedSubscriptionInvitationUuid: Uuid
+    sharedSubscriptionInvitationUuid: string
   }): SharedSubscriptionInvitationCanceledEvent
   createPredicateVerifiedEvent(dto: {
-    userUuid: Uuid
+    userUuid: string
     predicate: Predicate
     predicateVerificationResult: PredicateVerificationResult
   }): PredicateVerifiedEvent

@@ -1,7 +1,5 @@
-import { Uuid } from '@standardnotes/common'
-
 export type FinishUploadSessionDTO = {
-  userUuid: Uuid
+  userUuid: string
   resourceRemoteIdentifier: string
   uploadBytesUsed: number
   uploadBytesLimit: number

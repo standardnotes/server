@@ -1,4 +1,3 @@
-import { SubscriptionName } from '@standardnotes/common'
 import { DomainEventHandlerInterface, SubscriptionPurchasedEvent } from '@standardnotes/domain-events'
 import { inject, injectable } from 'inversify'
 import { Logger } from 'winston'
@@ -65,7 +64,7 @@ export class SubscriptionPurchasedEventHandler implements DomainEventHandlerInte
     )
   }
 
-  private async addUserRole(user: User, subscriptionName: SubscriptionName): Promise<void> {
+  private async addUserRole(user: User, subscriptionName: string): Promise<void> {
     await this.roleService.addUserRole(user, subscriptionName)
   }
 

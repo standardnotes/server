@@ -1,4 +1,3 @@
-import { Uuid } from '@standardnotes/common'
 import { FileUploadedEvent, FileRemovedEvent } from '@standardnotes/domain-events'
 
 export interface DomainEventFactoryInterface {
@@ -13,6 +12,6 @@ export interface DomainEventFactoryInterface {
     filePath: string
     fileName: string
     fileByteSize: number
-    regularSubscriptionUuid: Uuid
+    regularSubscriptionUuid: string
   }): FileRemovedEvent
 }

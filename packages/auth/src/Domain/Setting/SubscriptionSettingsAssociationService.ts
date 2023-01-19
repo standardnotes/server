@@ -1,4 +1,4 @@
-import { RoleName, SubscriptionName } from '@standardnotes/common'
+import { SubscriptionName } from '@standardnotes/common'
 import { PermissionName } from '@standardnotes/features'
 import { SubscriptionSettingName } from '@standardnotes/settings'
 import { inject, injectable } from 'inversify'
@@ -65,7 +65,7 @@ export class SubscriptionSettingsAssociationService implements SubscriptionSetti
   async getFileUploadLimit(subscriptionName: SubscriptionName): Promise<number> {
     const roleName = this.roleToSubscriptionMap.getRoleNameForSubscriptionName(subscriptionName)
 
-    const role = await this.roleRepository.findOneByName(roleName as RoleName)
+    const role = await this.roleRepository.findOneByName(roleName as string)
     if (role === null) {
       throw new Error(`Could not find role with name: ${roleName}`)
     }

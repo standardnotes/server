@@ -1,9 +1,8 @@
-import { Uuid } from '@standardnotes/common'
 import { WorkspaceUser } from './WorkspaceUser'
 
 export interface WorkspaceUserRepositoryInterface {
   save(workspace: WorkspaceUser): Promise<WorkspaceUser>
-  findByUserUuid(userUuid: Uuid): Promise<WorkspaceUser[]>
-  findByWorkspaceUuid(workspaceUuid: Uuid): Promise<WorkspaceUser[]>
-  findOneByUserUuidAndWorkspaceUuid(dto: { workspaceUuid: Uuid; userUuid: Uuid }): Promise<WorkspaceUser | null>
+  findByUserUuid(userUuid: string): Promise<WorkspaceUser[]>
+  findByWorkspaceUuid(workspaceUuid: string): Promise<WorkspaceUser[]>
+  findOneByUserUuidAndWorkspaceUuid(dto: { workspaceUuid: string; userUuid: string }): Promise<WorkspaceUser | null>
 }

@@ -44,7 +44,6 @@ import {
 import { MarkFilesToBeRemoved } from '../Domain/UseCase/MarkFilesToBeRemoved/MarkFilesToBeRemoved'
 import { AccountDeletionRequestedEventHandler } from '../Domain/Handler/AccountDeletionRequestedEventHandler'
 import { SharedSubscriptionInvitationCanceledEventHandler } from '../Domain/Handler/SharedSubscriptionInvitationCanceledEventHandler'
-import { Uuid, UuidValidator, ValidatorInterface } from '@standardnotes/common'
 
 export class ContainerConfigLoader {
   async load(): Promise<Container> {
@@ -108,7 +107,6 @@ export class ContainerConfigLoader {
         .toConstantValue(new FSFileUploader(container.get(TYPES.FILE_UPLOAD_PATH), container.get(TYPES.Logger)))
       container.bind<FileRemoverInterface>(TYPES.FileRemover).to(FSFileRemover)
     }
-    container.bind<ValidatorInterface<Uuid>>(TYPES.UuidValidator).toConstantValue(new UuidValidator())
 
     if (env.get('SNS_TOPIC_ARN', true)) {
       const snsConfig: AWS.SNS.Types.ClientConfiguration = {

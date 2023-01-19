@@ -4,11 +4,9 @@ import { ValetTokenAuthMiddleware } from './ValetTokenAuthMiddleware'
 import { NextFunction, Request, Response } from 'express'
 import { Logger } from 'winston'
 import { TokenDecoderInterface, ValetTokenData } from '@standardnotes/security'
-import { Uuid, ValidatorInterface } from '@standardnotes/common'
 
 describe('ValetTokenAuthMiddleware', () => {
   let tokenDecoder: TokenDecoderInterface<ValetTokenData>
-  let uuidValidator: ValidatorInterface<Uuid>
   let request: Request
   let response: Response
   let next: NextFunction
@@ -17,7 +15,7 @@ describe('ValetTokenAuthMiddleware', () => {
     debug: jest.fn(),
   } as unknown as jest.Mocked<Logger>
 
-  const createMiddleware = () => new ValetTokenAuthMiddleware(tokenDecoder, uuidValidator, logger)
+  const createMiddleware = () => new ValetTokenAuthMiddleware(tokenDecoder, logger)
 
   beforeEach(() => {
     tokenDecoder = {} as jest.Mocked<TokenDecoderInterface<ValetTokenData>>
@@ -25,7 +23,7 @@ describe('ValetTokenAuthMiddleware', () => {
       userUuid: '1-2-3',
       permittedResources: [
         {
-          remoteIdentifier: '1-2-3/2-3-4',
+          remoteIdentifier: '00000000-0000-0000-0000-000000000000',
           unencryptedFileSize: 30,
         },
       ],
@@ -33,9 +31,6 @@ describe('ValetTokenAuthMiddleware', () => {
       uploadBytesLimit: 100,
       uploadBytesUsed: 80,
     })
-
-    uuidValidator = {} as jest.Mocked<ValidatorInterface<Uuid>>
-    uuidValidator.validate = jest.fn().mockReturnValue(true)
 
     request = {
       headers: {},
@@ -55,7 +50,7 @@ describe('ValetTokenAuthMiddleware', () => {
       userUuid: '1-2-3',
       permittedResources: [
         {
-          remoteIdentifier: '1-2-3/2-3-4',
+          remoteIdentifier: '00000000-0000-0000-0000-000000000000',
           unencryptedFileSize: 30,
         },
       ],
@@ -73,7 +68,7 @@ describe('ValetTokenAuthMiddleware', () => {
       permittedOperation: 'write',
       permittedResources: [
         {
-          remoteIdentifier: '1-2-3/2-3-4',
+          remoteIdentifier: '00000000-0000-0000-0000-000000000000',
           unencryptedFileSize: 30,
         },
       ],
@@ -90,7 +85,7 @@ describe('ValetTokenAuthMiddleware', () => {
       userUuid: '1-2-3',
       permittedResources: [
         {
-          remoteIdentifier: '1-2-3/2-3-4',
+          remoteIdentifier: '00000000-0000-0000-0000-000000000000',
           unencryptedFileSize: 10,
         },
       ],
@@ -106,7 +101,7 @@ describe('ValetTokenAuthMiddleware', () => {
       permittedOperation: 'write',
       permittedResources: [
         {
-          remoteIdentifier: '1-2-3/2-3-4',
+          remoteIdentifier: '00000000-0000-0000-0000-000000000000',
           unencryptedFileSize: 10,
         },
       ],
@@ -123,7 +118,7 @@ describe('ValetTokenAuthMiddleware', () => {
       userUuid: '1-2-3',
       permittedResources: [
         {
-          remoteIdentifier: '1-2-3/2-3-4',
+          remoteIdentifier: '00000000-0000-0000-0000-000000000000',
           unencryptedFileSize: 21,
         },
       ],
@@ -145,7 +140,7 @@ describe('ValetTokenAuthMiddleware', () => {
       userUuid: '1-2-3',
       permittedResources: [
         {
-          remoteIdentifier: '1-2-3/2-3-4',
+          remoteIdentifier: '00000000-0000-0000-0000-000000000000',
           unencryptedFileSize: 21,
         },
       ],
@@ -161,7 +156,7 @@ describe('ValetTokenAuthMiddleware', () => {
       permittedOperation: 'read',
       permittedResources: [
         {
-          remoteIdentifier: '1-2-3/2-3-4',
+          remoteIdentifier: '00000000-0000-0000-0000-000000000000',
           unencryptedFileSize: 21,
         },
       ],
@@ -184,7 +179,7 @@ describe('ValetTokenAuthMiddleware', () => {
       userUuid: '1-2-3',
       permittedResources: [
         {
-          remoteIdentifier: '1-2-3/2-3-4',
+          remoteIdentifier: '1-2-3',
           unencryptedFileSize: 30,
         },
       ],
@@ -194,8 +189,6 @@ describe('ValetTokenAuthMiddleware', () => {
     })
 
     request.headers['x-valet-token'] = 'valet-token'
-
-    uuidValidator.validate = jest.fn().mockReturnValue(false)
 
     await createMiddleware().handler(request, response, next)
 

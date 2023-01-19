@@ -1,4 +1,3 @@
-import { Uuid } from '@standardnotes/common'
 import { inject, injectable } from 'inversify'
 
 import TYPES from '../../Bootstrap/Types'
@@ -21,7 +20,7 @@ export class UserSubscriptionService implements UserSubscriptionServiceInterface
     return this.findRegularSubscription(userSubscription)
   }
 
-  async findRegularSubscriptionForUuid(uuid: Uuid): Promise<FindRegularSubscriptionResponse> {
+  async findRegularSubscriptionForUuid(uuid: string): Promise<FindRegularSubscriptionResponse> {
     const userSubscription = await this.userSubscriptionRepository.findOneByUuid(uuid)
 
     return this.findRegularSubscription(userSubscription)

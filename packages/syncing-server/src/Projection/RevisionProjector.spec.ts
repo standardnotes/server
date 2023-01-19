@@ -1,4 +1,5 @@
-import { ContentType, RoleName } from '@standardnotes/common'
+import { ContentType } from '@standardnotes/common'
+import { RoleName } from '@standardnotes/domain-core'
 import { TimerInterface } from '@standardnotes/time'
 import { Item } from '../Domain/Item/Item'
 
@@ -26,7 +27,7 @@ describe('RevisionProjector', () => {
     timer.formatDate = jest.fn().mockReturnValue('2020-11-26')
 
     revisionService = {} as jest.Mocked<RevisionServiceInterface>
-    revisionService.calculateRequiredRoleBasedOnRevisionDate = jest.fn().mockReturnValue(RoleName.CoreUser)
+    revisionService.calculateRequiredRoleBasedOnRevisionDate = jest.fn().mockReturnValue(RoleName.NAMES.CoreUser)
 
     revision.creationDate = new Date(1)
     revision.createdAt = new Date(1)

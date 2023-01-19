@@ -12,7 +12,7 @@ import { SharedSubscriptionInvitationRepositoryInterface } from '../../SharedSub
 import { InviteToSharedSubscription } from './InviteToSharedSubscription'
 import { UserSubscriptionRepositoryInterface } from '../../Subscription/UserSubscriptionRepositoryInterface'
 import { UserSubscription } from '../../Subscription/UserSubscription'
-import { RoleName } from '@standardnotes/common'
+import { RoleName } from '@standardnotes/domain-core'
 import { UserSubscriptionType } from '../../Subscription/UserSubscriptionType'
 import { SharedSubscriptionInvitation } from '../../SharedSubscription/SharedSubscriptionInvitation'
 import { InvitationStatus } from '../../SharedSubscription/InvitationStatus'
@@ -65,7 +65,7 @@ describe('InviteToSharedSubscription', () => {
       inviteeIdentifier: 'invitee@test.te',
       inviterUuid: '1-2-3',
       inviterEmail: 'inviter@test.te',
-      inviterRoles: [RoleName.ProUser],
+      inviterRoles: [RoleName.NAMES.ProUser],
     })
 
     expect(sharedSubscriptionInvitationRepository.save).not.toHaveBeenCalled()
@@ -80,7 +80,7 @@ describe('InviteToSharedSubscription', () => {
         inviteeIdentifier: 'invitee@test.te',
         inviterUuid: '1-2-3',
         inviterEmail: 'inviter@test.te',
-        inviterRoles: [RoleName.PlusUser],
+        inviterRoles: [RoleName.NAMES.PlusUser],
       }),
     ).toEqual({
       success: false,
@@ -100,7 +100,7 @@ describe('InviteToSharedSubscription', () => {
         inviteeIdentifier: 'invitee@test.te',
         inviterUuid: '1-2-3',
         inviterEmail: 'inviter@test.te',
-        inviterRoles: [RoleName.ProUser],
+        inviterRoles: [RoleName.NAMES.ProUser],
       }),
     ).toEqual({
       success: false,
@@ -117,7 +117,7 @@ describe('InviteToSharedSubscription', () => {
       inviteeIdentifier: 'invitee@test.te',
       inviterUuid: '1-2-3',
       inviterEmail: 'inviter@test.te',
-      inviterRoles: [RoleName.ProUser],
+      inviterRoles: [RoleName.NAMES.ProUser],
     })
 
     expect(sharedSubscriptionInvitationRepository.save).toHaveBeenCalledWith({
@@ -146,7 +146,7 @@ describe('InviteToSharedSubscription', () => {
       inviteeIdentifier: 'a75a31ce95365904ef0e0a8e6cefc1f5e99adfef81bbdb6d4499eeb10ae0ff67',
       inviterEmail: 'inviter@test.te',
       inviterUuid: '1-2-3',
-      inviterRoles: [RoleName.ProUser],
+      inviterRoles: [RoleName.NAMES.ProUser],
     })
 
     expect(sharedSubscriptionInvitationRepository.save).toHaveBeenCalledWith({
@@ -180,7 +180,7 @@ describe('InviteToSharedSubscription', () => {
       inviteeIdentifier: 'invitee@test.te',
       inviterUuid: '1-2-3',
       inviterEmail: 'inviter@test.te',
-      inviterRoles: [RoleName.ProUser],
+      inviterRoles: [RoleName.NAMES.ProUser],
     })
 
     expect(sharedSubscriptionInvitationRepository.save).not.toHaveBeenCalled()
@@ -200,7 +200,7 @@ describe('InviteToSharedSubscription', () => {
         inviteeIdentifier: 'invitee@test.te',
         inviterUuid: '1-2-3',
         inviterEmail: 'inviter@test.te',
-        inviterRoles: [RoleName.ProUser],
+        inviterRoles: [RoleName.NAMES.ProUser],
       }),
     ).toEqual({
       success: false,
@@ -222,7 +222,7 @@ describe('InviteToSharedSubscription', () => {
         inviteeIdentifier: 'invitee@test.te',
         inviterUuid: '1-2-3',
         inviterEmail: 'inviter@test.te',
-        inviterRoles: [RoleName.ProUser],
+        inviterRoles: [RoleName.NAMES.ProUser],
       }),
     ).toEqual({
       success: true,

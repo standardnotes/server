@@ -1,4 +1,3 @@
-import { Uuid } from '@standardnotes/common'
 import { TimerInterface } from '@standardnotes/time'
 import { inject, injectable } from 'inversify'
 import { Repository } from 'typeorm'
@@ -34,7 +33,7 @@ export class MySQLUserSubscriptionRepository implements UserSubscriptionReposito
       .getMany()
   }
 
-  async countByUserUuid(userUuid: Uuid): Promise<number> {
+  async countByUserUuid(userUuid: string): Promise<number> {
     return await this.ormRepository
       .createQueryBuilder()
       .where('user_uuid = :user_uuid', {
@@ -47,7 +46,7 @@ export class MySQLUserSubscriptionRepository implements UserSubscriptionReposito
     return this.ormRepository.save(subscription)
   }
 
-  async findOneByUserUuidAndSubscriptionId(userUuid: Uuid, subscriptionId: number): Promise<UserSubscription | null> {
+  async findOneByUserUuidAndSubscriptionId(userUuid: string, subscriptionId: number): Promise<UserSubscription | null> {
     return await this.ormRepository
       .createQueryBuilder()
       .where('user_uuid = :userUuid AND subscription_id = :subscriptionId', {
@@ -78,7 +77,7 @@ export class MySQLUserSubscriptionRepository implements UserSubscriptionReposito
       .getMany()
   }
 
-  async findOneByUuid(uuid: Uuid): Promise<UserSubscription | null> {
+  async findOneByUuid(uuid: string): Promise<UserSubscription | null> {
     return await this.ormRepository
       .createQueryBuilder()
       .where('uuid = :uuid', {
@@ -87,7 +86,7 @@ export class MySQLUserSubscriptionRepository implements UserSubscriptionReposito
       .getOne()
   }
 
-  async findOneByUserUuid(userUuid: Uuid): Promise<UserSubscription | null> {
+  async findOneByUserUuid(userUuid: string): Promise<UserSubscription | null> {
     const subscriptions = await this.ormRepository
       .createQueryBuilder()
       .where('user_uuid = :user_uuid', {

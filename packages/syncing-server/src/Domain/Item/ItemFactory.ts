@@ -1,4 +1,3 @@
-import { Uuid } from '@standardnotes/common'
 import { TimerInterface } from '@standardnotes/time'
 import { inject, injectable } from 'inversify'
 
@@ -16,7 +15,7 @@ export class ItemFactory implements ItemFactoryInterface {
     @inject(TYPES.ItemProjector) private itemProjector: ProjectorInterface<Item, ItemProjection>,
   ) {}
 
-  createStub(dto: { userUuid: string; itemHash: ItemHash; sessionUuid: Uuid | null }): Item {
+  createStub(dto: { userUuid: string; itemHash: ItemHash; sessionUuid: string | null }): Item {
     const item = this.create(dto)
 
     if (dto.itemHash.content === undefined) {
@@ -34,7 +33,7 @@ export class ItemFactory implements ItemFactoryInterface {
     return item
   }
 
-  create(dto: { userUuid: string; itemHash: ItemHash; sessionUuid: Uuid | null }): Item {
+  create(dto: { userUuid: string; itemHash: ItemHash; sessionUuid: string | null }): Item {
     const newItem = new Item()
     newItem.uuid = dto.itemHash.uuid
     newItem.updatedWithSession = dto.sessionUuid

@@ -1,8 +1,8 @@
-import { Either, Uuid } from '@standardnotes/common'
+import { Either } from '@standardnotes/common'
 
 export type GetUserAnalyticsIdDTO = Either<
   {
-    userUuid: Uuid
+    userUuid: string
   },
   {
     userEmail: string

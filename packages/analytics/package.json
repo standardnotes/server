@@ -1,6 +1,6 @@
 {
   "name": "@standardnotes/analytics",
-  "version": "2.19.5",
+  "version": "2.19.8",
   "engines": {
     "node": ">=18.0.0 <19.0.0"
   },
@@ -28,7 +28,7 @@
     "@types/ioredis": "^5.0.0",
     "@types/jest": "^29.1.1",
     "@types/mixpanel": "^2.14.4",
-    "@types/newrelic": "^7.0.4",
+    "@types/newrelic": "^9.4.0",
     "@types/node": "^18.11.9",
     "@typescript-eslint/eslint-plugin": "^5.30.0",
     "eslint": "^8.14.0",
@@ -52,7 +52,7 @@
     "ioredis": "^5.2.4",
     "mixpanel": "^0.17.0",
     "mysql2": "^3.0.1",
-    "newrelic": "^9.6.0",
+    "newrelic": "^9.8.0",
     "reflect-metadata": "^0.1.13",
     "typeorm": "^0.3.10",
     "winston": "^3.8.1"

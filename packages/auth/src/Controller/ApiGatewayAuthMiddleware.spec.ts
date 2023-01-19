@@ -4,7 +4,7 @@ import { ApiGatewayAuthMiddleware } from './ApiGatewayAuthMiddleware'
 import { NextFunction, Request, Response } from 'express'
 import { Logger } from 'winston'
 import { CrossServiceTokenData, TokenDecoderInterface } from '@standardnotes/security'
-import { RoleName } from '@standardnotes/common'
+import { RoleName } from '@standardnotes/domain-core'
 
 describe('ApiGatewayAuthMiddleware', () => {
   let tokenDecoder: TokenDecoderInterface<CrossServiceTokenData>
@@ -28,7 +28,7 @@ describe('ApiGatewayAuthMiddleware', () => {
       roles: [
         {
           uuid: 'a-b-c',
-          name: RoleName.CoreUser,
+          name: RoleName.NAMES.CoreUser,
         },
       ],
     })
@@ -56,7 +56,7 @@ describe('ApiGatewayAuthMiddleware', () => {
     expect(response.locals.roles).toEqual([
       {
         uuid: 'a-b-c',
-        name: RoleName.CoreUser,
+        name: RoleName.NAMES.CoreUser,
       },
     ])
 

@@ -1,6 +1,6 @@
 {
   "name": "@standardnotes/syncing-server",
-  "version": "1.29.0",
+  "version": "1.29.3",
   "engines": {
     "node": ">=18.0.0 <19.0.0"
   },
@@ -49,7 +49,7 @@
     "ioredis": "^5.2.4",
     "jsonwebtoken": "^9.0.0",
     "mysql2": "^3.0.1",
-    "newrelic": "^9.6.0",
+    "newrelic": "^9.8.0",
     "nodemon": "^2.0.19",
     "prettyjson": "^1.2.5",
     "reflect-metadata": "0.1.13",
@@ -66,7 +66,7 @@
     "@types/ioredis": "^5.0.0",
     "@types/jest": "^29.1.1",
     "@types/jsonwebtoken": "^9.0.1",
-    "@types/newrelic": "^7.0.4",
+    "@types/newrelic": "^9.4.0",
     "@types/prettyjson": "^0.0.30",
     "@types/ua-parser-js": "^0.7.36",
     "@types/uuid": "^8.3.0",

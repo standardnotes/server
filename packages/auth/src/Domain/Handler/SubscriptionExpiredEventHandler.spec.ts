@@ -1,6 +1,7 @@
 import 'reflect-metadata'
 
-import { RoleName, SubscriptionName } from '@standardnotes/common'
+import { SubscriptionName } from '@standardnotes/common'
+import { RoleName } from '@standardnotes/domain-core'
 import { SubscriptionExpiredEvent } from '@standardnotes/domain-events'
 import { Logger } from 'winston'
 
@@ -39,7 +40,7 @@ describe('SubscriptionExpiredEventHandler', () => {
       email: 'test@test.com',
       roles: Promise.resolve([
         {
-          name: RoleName.ProUser,
+          name: RoleName.NAMES.ProUser,
         },
       ]),
     } as jest.Mocked<User>

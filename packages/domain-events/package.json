@@ -1,6 +1,6 @@
 {
   "name": "@standardnotes/domain-events",
-  "version": "2.105.2",
+  "version": "2.105.4",
   "engines": {
     "node": ">=18.0.0 <19.0.0"
   },
@@ -23,11 +23,9 @@
     "test": "jest spec --coverage --passWithNoTests"
   },
   "dependencies": {
-    "@standardnotes/common": "workspace:*",
     "@standardnotes/features": "^1.58.0",
     "@standardnotes/predicates": "workspace:*",
-    "@standardnotes/security": "workspace:*",
-    "reflect-metadata": "^0.1.13"
+    "@standardnotes/security": "workspace:*"
   },
   "devDependencies": {
     "@types/jest": "^29.1.1",

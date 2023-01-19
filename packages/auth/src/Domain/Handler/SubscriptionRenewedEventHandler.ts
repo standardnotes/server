@@ -4,7 +4,6 @@ import { inject, injectable } from 'inversify'
 import TYPES from '../../Bootstrap/Types'
 import { UserSubscriptionRepositoryInterface } from '../Subscription/UserSubscriptionRepositoryInterface'
 import { OfflineUserSubscriptionRepositoryInterface } from '../Subscription/OfflineUserSubscriptionRepositoryInterface'
-import { SubscriptionName } from '@standardnotes/common'
 import { RoleServiceInterface } from '../Role/RoleServiceInterface'
 import { UserRepositoryInterface } from '../User/UserRepositoryInterface'
 import { Logger } from 'winston'
@@ -61,7 +60,7 @@ export class SubscriptionRenewedEventHandler implements DomainEventHandlerInterf
     await this.addRoleToSubscriptionUsers(event.payload.subscriptionId, event.payload.subscriptionName)
   }
 
-  private async addRoleToSubscriptionUsers(subscriptionId: number, subscriptionName: SubscriptionName): Promise<void> {
+  private async addRoleToSubscriptionUsers(subscriptionId: number, subscriptionName: string): Promise<void> {
     const userSubscriptions = await this.userSubscriptionRepository.findBySubscriptionId(subscriptionId)
     for (const userSubscription of userSubscriptions) {
       const user = await userSubscription.user

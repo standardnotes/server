@@ -12,7 +12,6 @@ import {
   SubscriptionInviteResponse,
   SubscriptionServerInterface,
 } from '@standardnotes/api'
-import { RoleName } from '@standardnotes/common'
 import { inject, injectable } from 'inversify'
 
 import TYPES from '../Bootstrap/Types'
@@ -88,7 +87,7 @@ export class SubscriptionInvitesController implements SubscriptionServerInterfac
       inviterEmail: params.inviterEmail as string,
       inviterUuid: params.inviterUuid as string,
       inviteeIdentifier: params.identifier,
-      inviterRoles: params.inviterRoles as RoleName[],
+      inviterRoles: params.inviterRoles as string[],
     })
 
     if (result.success) {

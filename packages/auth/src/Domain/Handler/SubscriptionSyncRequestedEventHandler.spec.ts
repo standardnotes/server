@@ -1,6 +1,7 @@
 import 'reflect-metadata'
 
-import { ContentDecoderInterface, RoleName, SubscriptionName } from '@standardnotes/common'
+import { ContentDecoderInterface, SubscriptionName } from '@standardnotes/common'
+import { RoleName } from '@standardnotes/domain-core'
 import { SubscriptionSyncRequestedEvent } from '@standardnotes/domain-events'
 import { Logger } from 'winston'
 
@@ -55,7 +56,7 @@ describe('SubscriptionSyncRequestedEventHandler', () => {
       email: 'test@test.com',
       roles: Promise.resolve([
         {
-          name: RoleName.CoreUser,
+          name: RoleName.NAMES.CoreUser,
         },
       ]),
     } as jest.Mocked<User>
@@ -144,7 +145,7 @@ describe('SubscriptionSyncRequestedEventHandler', () => {
         email: 'test@test.com',
         roles: Promise.resolve([
           {
-            name: RoleName.CoreUser,
+            name: RoleName.NAMES.CoreUser,
           },
         ]),
         uuid: '123',

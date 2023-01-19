@@ -1,7 +1,5 @@
-import { Uuid } from '@standardnotes/common'
-
 export type GetSettingDto = {
-  userUuid: Uuid
+  userUuid: string
   settingName: string
   allowSensitiveRetrieval?: boolean
 }

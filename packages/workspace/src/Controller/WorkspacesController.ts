@@ -14,7 +14,7 @@ import {
   WorkspaceKeyshareInitiatingRequestParams,
   WorkspaceKeyshareInitiatingResponse,
 } from '@standardnotes/api'
-import { Uuid, WorkspaceAccessLevel } from '@standardnotes/common'
+import { WorkspaceAccessLevel } from '@standardnotes/common'
 
 import TYPES from '../Bootstrap/Types'
 import { CreateWorkspace } from '../Domain/UseCase/CreateWorkspace/CreateWorkspace'
@@ -51,7 +51,7 @@ export class WorkspacesController implements WorkspaceServerInterface {
       userUuid: params.userUuid,
       workspaceUuid: params.workspaceUuid,
       encryptedWorkspaceKey: params.encryptedWorkspaceKey,
-      performingUserUuid: params.performingUserUuid as Uuid,
+      performingUserUuid: params.performingUserUuid as string,
     })
 
     if (!result.success) {
@@ -77,7 +77,7 @@ export class WorkspacesController implements WorkspaceServerInterface {
     const { invite } = await this.doInviteToWorkspace.execute({
       inviteeEmail: params.inviteeEmail,
       workspaceUuid: params.workspaceUuid,
-      inviterUuid: params.inviterUuid as Uuid,
+      inviterUuid: params.inviterUuid as string,
       accessLevel: params.accessLevel as WorkspaceAccessLevel,
     })
 
@@ -105,7 +105,7 @@ export class WorkspacesController implements WorkspaceServerInterface {
 
   async listWorkspaces(params: WorkspaceListRequestParams): Promise<WorkspaceListResponse> {
     const { ownedWorkspaces, joinedWorkspaces } = await this.doListWorkspaces.execute({
-      userUuid: params.userUuid as Uuid,
+      userUuid: params.userUuid as string,
     })
 
     const ownedWorkspacesProjections = []
@@ -126,7 +126,7 @@ export class WorkspacesController implements WorkspaceServerInterface {
 
   async listWorkspaceUsers(params: WorkspaceUserListRequestParams): Promise<WorkspaceUserListResponse> {
     const { workspaceUsers } = await this.doListWorkspaceUsers.execute({
-      userUuid: params.userUuid as Uuid,
+      userUuid: params.userUuid as string,
       workspaceUuid: params.workspaceUuid,
     })
 

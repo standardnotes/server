@@ -1,4 +1,3 @@
-import { Uuid } from '@standardnotes/common'
 import { ItemHash } from '../Item/ItemHash'
 
 export type SyncItemsDTO = {
@@ -11,5 +10,5 @@ export type SyncItemsDTO = {
   contentType?: string
   apiVersion: string
   readOnlyAccess: boolean
-  sessionUuid: Uuid | null
+  sessionUuid: string | null
 }

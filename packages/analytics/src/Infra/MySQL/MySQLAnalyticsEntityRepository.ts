@@ -1,4 +1,3 @@
-import { Uuid } from '@standardnotes/common'
 import { inject, injectable } from 'inversify'
 import { Repository } from 'typeorm'
 
@@ -20,7 +19,7 @@ export class MySQLAnalyticsEntityRepository implements AnalyticsEntityRepository
       .getOne()
   }
 
-  async findOneByUserUuid(userUuid: Uuid): Promise<AnalyticsEntity | null> {
+  async findOneByUserUuid(userUuid: string): Promise<AnalyticsEntity | null> {
     return this.ormRepository
       .createQueryBuilder('analytics_entity')
       .where('analytics_entity.user_uuid = :userUuid', { userUuid })

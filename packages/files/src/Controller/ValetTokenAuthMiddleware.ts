@@ -1,5 +1,5 @@
-import { Uuid, ValidatorInterface } from '@standardnotes/common'
 import { TokenDecoderInterface, ValetTokenData } from '@standardnotes/security'
+import { Uuid } from '@standardnotes/domain-core'
 import { NextFunction, Request, Response } from 'express'
 import { inject, injectable } from 'inversify'
 import { BaseMiddleware } from 'inversify-express-utils'
@@ -10,7 +10,6 @@ import TYPES from '../Bootstrap/Types'
 export class ValetTokenAuthMiddleware extends BaseMiddleware {
   constructor(
     @inject(TYPES.ValetTokenDecoder) private tokenDecoder: TokenDecoderInterface<ValetTokenData>,
-    @inject(TYPES.UuidValidator) private uuidValidator: ValidatorInterface<Uuid>,
     @inject(TYPES.Logger) private logger: Logger,
   ) {
     super()
@@ -48,7 +47,8 @@ export class ValetTokenAuthMiddleware extends BaseMiddleware {
       }
 
       for (const resource of valetTokenData.permittedResources) {
-        if (!this.uuidValidator.validate(resource.remoteIdentifier)) {
+        const resourceUuidOrError = Uuid.create(resource.remoteIdentifier)
+        if (resourceUuidOrError.isFailed()) {
           this.logger.debug('Invalid remote resource identifier in token.')
 
           response.status(401).send({

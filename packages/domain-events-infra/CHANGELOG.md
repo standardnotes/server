@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.9.63](https://github.com/standardnotes/server/compare/@standardnotes/domain-events-infra@1.9.62...@standardnotes/domain-events-infra@1.9.63) (2023-01-19)
+
+**Note:** Version bump only for package @standardnotes/domain-events-infra
+
+## [1.9.62](https://github.com/standardnotes/server/compare/@standardnotes/domain-events-infra@1.9.61...@standardnotes/domain-events-infra@1.9.62) (2023-01-19)
+
+**Note:** Version bump only for package @standardnotes/domain-events-infra
+
+## [1.9.61](https://github.com/standardnotes/server/compare/@standardnotes/domain-events-infra@1.9.60...@standardnotes/domain-events-infra@1.9.61) (2023-01-18)
+
+**Note:** Version bump only for package @standardnotes/domain-events-infra
+
 ## [1.9.60](https://github.com/standardnotes/server/compare/@standardnotes/domain-events-infra@1.9.59...@standardnotes/domain-events-infra@1.9.60) (2023-01-13)
 
 **Note:** Version bump only for package @standardnotes/domain-events-infra
