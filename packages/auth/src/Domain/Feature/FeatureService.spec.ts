@@ -297,12 +297,17 @@ describe('FeatureService', () => {
     })
 
     it('should return user features along with features related to non subscription roles', async () => {
+      const nonSubscriptionPermission = {
+        uuid: 'files-beta-permission-1-1-1',
+        name: PermissionName.FilesBeta,
+      } as jest.Mocked<Permission>
+
       jest.mock('@standardnotes/features', () => {
         const original = jest.requireActual('@standardnotes/features')
 
         return {
           ...original,
-          GetFeatures: jest.fn().mockReturnValue([
+          GetFeatures: jest.fn().mockReturnValueOnce([
             {
               identifier: 'org.standardnotes.theme-autobiography',
               expires_at: 555,
@@ -312,17 +317,13 @@ describe('FeatureService', () => {
               expires_at: 777,
             },
             {
+              permission_name: nonSubscriptionPermission.uuid,
               expires_at: undefined,
               no_expire: true,
             },
           ]),
         }
       })
-
-      const nonSubscriptionPermission = {
-        uuid: 'files-beta-permission-1-1-1',
-        name: PermissionName.FilesBeta,
-      } as jest.Mocked<Permission>
 
       const nonSubscriptionRole = {
         name: RoleName.FilesBetaUser,
