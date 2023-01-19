@@ -23,7 +23,7 @@
     "test": "jest spec --coverage --passWithNoTests"
   },
   "dependencies": {
-    "@standardnotes/features": "^1.58.0",
+    "@standardnotes/features": "^1.58.1",
     "@standardnotes/predicates": "workspace:*",
     "@standardnotes/security": "workspace:*"
   },

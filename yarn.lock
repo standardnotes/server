@@ -1987,7 +1987,7 @@ __metadata:
     "@standardnotes/domain-core": "workspace:^"
     "@standardnotes/domain-events": "workspace:*"
     "@standardnotes/domain-events-infra": "workspace:*"
-    "@standardnotes/features": "npm:^1.58.0"
+    "@standardnotes/features": "npm:^1.58.1"
     "@standardnotes/predicates": "workspace:*"
     "@standardnotes/responses": "npm:^1.6.39"
     "@standardnotes/security": "workspace:*"
@@ -2045,7 +2045,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@standardnotes/common@npm:^1.19.1, @standardnotes/common@npm:^1.23.1, @standardnotes/common@npm:^1.39.0, @standardnotes/common@npm:^1.43.0, @standardnotes/common@npm:^1.45.0, @standardnotes/common@workspace:*, @standardnotes/common@workspace:^, @standardnotes/common@workspace:packages/common":
+"@standardnotes/common@npm:^1.19.1, @standardnotes/common@npm:^1.23.1, @standardnotes/common@npm:^1.39.0, @standardnotes/common@npm:^1.43.0, @standardnotes/common@npm:^1.46.3, @standardnotes/common@workspace:*, @standardnotes/common@workspace:^, @standardnotes/common@workspace:packages/common":
   version: 0.0.0-use.local
   resolution: "@standardnotes/common@workspace:packages/common"
   dependencies:
@@ -2073,7 +2073,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@standardnotes/domain-core@workspace:^, @standardnotes/domain-core@workspace:packages/domain-core":
+"@standardnotes/domain-core@npm:^1.11.1, @standardnotes/domain-core@workspace:^, @standardnotes/domain-core@workspace:packages/domain-core":
   version: 0.0.0-use.local
   resolution: "@standardnotes/domain-core@workspace:packages/domain-core"
   dependencies:
@@ -2116,7 +2116,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@standardnotes/domain-events@workspace:packages/domain-events"
   dependencies:
-    "@standardnotes/features": "npm:^1.58.0"
+    "@standardnotes/features": "npm:^1.58.1"
     "@standardnotes/predicates": "workspace:*"
     "@standardnotes/security": "workspace:*"
     "@types/jest": "npm:^29.1.1"
@@ -2195,15 +2195,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@standardnotes/features@npm:^1.58.0":
-  version: 1.58.0
-  resolution: "@standardnotes/features@npm:1.58.0"
+"@standardnotes/features@npm:^1.58.1":
+  version: 1.58.1
+  resolution: "@standardnotes/features@npm:1.58.1"
   dependencies:
     "@standardnotes/auth": "npm:^3.19.4"
-    "@standardnotes/common": "npm:^1.45.0"
+    "@standardnotes/common": "npm:^1.46.3"
+    "@standardnotes/domain-core": "npm:^1.11.1"
     "@standardnotes/security": "npm:^1.7.0"
     reflect-metadata: "npm:^0.1.13"
-  checksum: 028c13956ab8d848b9deec1d3ca2db55edb35b25fd5ab8e7c8f4dd5983396a68a709c239ffab9dd5091ad63906a799eb09ceea8fdcbff845fc5302cf2c30f2c2
+  checksum: 558e4506d873c5bede4966d32274b5bd6365b2f11fa7885ffa64ad5db18d9465e741253c07af1173b130b15129763a9fbeaebe4efdf96037d900ea57ad3e6e44
   languageName: node
   linkType: hard
 
