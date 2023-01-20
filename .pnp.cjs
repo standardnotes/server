@@ -2836,7 +2836,6 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./packages/domain-events/",\
         "packageDependencies": [\
           ["@standardnotes/domain-events", "workspace:packages/domain-events"],\
-          ["@standardnotes/features", "npm:1.58.1"],\
           ["@standardnotes/predicates", "workspace:packages/predicates"],\
           ["@standardnotes/security", "workspace:packages/security"],\
           ["@types/jest", "npm:29.1.1"],\
