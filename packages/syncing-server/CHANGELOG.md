@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.29.8](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.29.7...@standardnotes/syncing-server@1.29.8) (2023-01-20)
+
+### Reverts
+
+* Revert "chore: upgrade @standardnotes/* dependencies" ([5bf3ecd](https://github.com/standardnotes/syncing-server-js/commit/5bf3ecdf42e1e5b9cb538cad08a18fb6e4054129))
+
 ## [1.29.7](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.29.6...@standardnotes/syncing-server@1.29.7) (2023-01-20)
 
 **Note:** Version bump only for package @standardnotes/syncing-server

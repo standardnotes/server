@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.19.15](https://github.com/standardnotes/server/compare/@standardnotes/workspace-server@1.19.14...@standardnotes/workspace-server@1.19.15) (2023-01-20)
+
+### Reverts
+
+* Revert "chore: upgrade @standardnotes/* dependencies" ([5bf3ecd](https://github.com/standardnotes/server/commit/5bf3ecdf42e1e5b9cb538cad08a18fb6e4054129))
+
 ## [1.19.14](https://github.com/standardnotes/server/compare/@standardnotes/workspace-server@1.19.13...@standardnotes/workspace-server@1.19.14) (2023-01-20)
 
 **Note:** Version bump only for package @standardnotes/workspace-server
