@@ -2645,16 +2645,17 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@standardnotes/api", [\
-      ["npm:1.19.0", {\
-        "packageLocation": "./.yarn/cache/@standardnotes-api-npm-1.19.0-ce8296df3c-b28884be40.zip/node_modules/@standardnotes/api/",\
+      ["npm:1.24.4", {\
+        "packageLocation": "./.yarn/cache/@standardnotes-api-npm-1.24.4-7e098c6c65-3fec38ce6f.zip/node_modules/@standardnotes/api/",\
         "packageDependencies": [\
-          ["@standardnotes/api", "npm:1.19.0"],\
+          ["@standardnotes/api", "npm:1.24.4"],\
           ["@standardnotes/common", "workspace:packages/common"],\
-          ["@standardnotes/encryption", "npm:1.19.0"],\
-          ["@standardnotes/models", "npm:1.33.0"],\
-          ["@standardnotes/responses", "npm:1.12.0"],\
+          ["@standardnotes/domain-core", "workspace:packages/domain-core"],\
+          ["@standardnotes/encryption", "npm:1.21.4"],\
+          ["@standardnotes/models", "npm:1.42.6"],\
+          ["@standardnotes/responses", "npm:1.13.4"],\
           ["@standardnotes/security", "workspace:packages/security"],\
-          ["@standardnotes/utils", "npm:1.11.0"],\
+          ["@standardnotes/utils", "npm:1.16.2"],\
           ["reflect-metadata", "npm:0.1.13"]\
         ],\
         "linkType": "HARD"\
@@ -2706,17 +2707,6 @@ const RAW_RUNTIME_STATE =
         "linkType": "SOFT"\
       }]\
     ]],\
-    ["@standardnotes/auth", [\
-      ["npm:3.19.4", {\
-        "packageLocation": "./.yarn/cache/@standardnotes-auth-npm-3.19.4-29b35c1352-6b8c532f8b.zip/node_modules/@standardnotes/auth/",\
-        "packageDependencies": [\
-          ["@standardnotes/auth", "npm:3.19.4"],\
-          ["@standardnotes/common", "workspace:packages/common"],\
-          ["jsonwebtoken", "npm:8.5.1"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
     ["@standardnotes/auth-server", [\
       ["workspace:packages/auth", {\
         "packageLocation": "./packages/auth/",\
@@ -2727,14 +2717,14 @@ const RAW_RUNTIME_STATE =
           ["@sentry/tracing", "npm:7.28.1"],\
           ["@simplewebauthn/server", "npm:6.2.2"],\
           ["@simplewebauthn/typescript-types", "npm:6.3.0-alpha.1"],\
-          ["@standardnotes/api", "npm:1.19.0"],\
+          ["@standardnotes/api", "npm:1.24.4"],\
           ["@standardnotes/common", "workspace:packages/common"],\
           ["@standardnotes/domain-core", "workspace:packages/domain-core"],\
           ["@standardnotes/domain-events", "workspace:packages/domain-events"],\
           ["@standardnotes/domain-events-infra", "workspace:packages/domain-events-infra"],\
-          ["@standardnotes/features", "npm:1.58.1"],\
+          ["@standardnotes/features", "npm:1.58.4"],\
           ["@standardnotes/predicates", "workspace:packages/predicates"],\
-          ["@standardnotes/responses", "npm:1.11.1"],\
+          ["@standardnotes/responses", "npm:1.13.4"],\
           ["@standardnotes/security", "workspace:packages/security"],\
           ["@standardnotes/settings", "workspace:packages/settings"],\
           ["@standardnotes/sncrypto-common", "npm:1.13.0"],\
@@ -2873,15 +2863,15 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@standardnotes/encryption", [\
-      ["npm:1.19.0", {\
-        "packageLocation": "./.yarn/cache/@standardnotes-encryption-npm-1.19.0-29799e7bcc-af7665e979.zip/node_modules/@standardnotes/encryption/",\
+      ["npm:1.21.4", {\
+        "packageLocation": "./.yarn/cache/@standardnotes-encryption-npm-1.21.4-aa1ac49482-b49c272e14.zip/node_modules/@standardnotes/encryption/",\
         "packageDependencies": [\
-          ["@standardnotes/encryption", "npm:1.19.0"],\
+          ["@standardnotes/encryption", "npm:1.21.4"],\
           ["@standardnotes/common", "workspace:packages/common"],\
-          ["@standardnotes/models", "npm:1.33.0"],\
-          ["@standardnotes/responses", "npm:1.12.0"],\
-          ["@standardnotes/sncrypto-common", "npm:1.13.0"],\
-          ["@standardnotes/utils", "npm:1.11.0"],\
+          ["@standardnotes/models", "npm:1.42.6"],\
+          ["@standardnotes/responses", "npm:1.13.4"],\
+          ["@standardnotes/sncrypto-common", "npm:1.13.3"],\
+          ["@standardnotes/utils", "npm:1.16.2"],\
           ["reflect-metadata", "npm:0.1.13"]\
         ],\
         "linkType": "HARD"\
@@ -2919,33 +2909,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@standardnotes/features", [\
-      ["npm:1.53.1", {\
-        "packageLocation": "./.yarn/cache/@standardnotes-features-npm-1.53.1-0cbde9d159-5582c206ad.zip/node_modules/@standardnotes/features/",\
+      ["npm:1.58.4", {\
+        "packageLocation": "./.yarn/cache/@standardnotes-features-npm-1.58.4-a84962d125-a39afc145a.zip/node_modules/@standardnotes/features/",\
         "packageDependencies": [\
-          ["@standardnotes/features", "npm:1.53.1"],\
-          ["@standardnotes/auth", "npm:3.19.4"],\
-          ["@standardnotes/common", "workspace:packages/common"],\
-          ["@standardnotes/security", "workspace:packages/security"],\
-          ["reflect-metadata", "npm:0.1.13"]\
-        ],\
-        "linkType": "HARD"\
-      }],\
-      ["npm:1.54.0", {\
-        "packageLocation": "./.yarn/cache/@standardnotes-features-npm-1.54.0-15f8cf20f0-7647e7506e.zip/node_modules/@standardnotes/features/",\
-        "packageDependencies": [\
-          ["@standardnotes/features", "npm:1.54.0"],\
-          ["@standardnotes/auth", "npm:3.19.4"],\
-          ["@standardnotes/common", "workspace:packages/common"],\
-          ["@standardnotes/security", "workspace:packages/security"],\
-          ["reflect-metadata", "npm:0.1.13"]\
-        ],\
-        "linkType": "HARD"\
-      }],\
-      ["npm:1.58.1", {\
-        "packageLocation": "./.yarn/cache/@standardnotes-features-npm-1.58.1-a51ef65e8a-558e4506d8.zip/node_modules/@standardnotes/features/",\
-        "packageDependencies": [\
-          ["@standardnotes/features", "npm:1.58.1"],\
-          ["@standardnotes/auth", "npm:3.19.4"],\
+          ["@standardnotes/features", "npm:1.58.4"],\
           ["@standardnotes/common", "workspace:packages/common"],\
           ["@standardnotes/domain-core", "workspace:packages/domain-core"],\
           ["@standardnotes/security", "workspace:packages/security"],\
@@ -3009,29 +2976,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@standardnotes/models", [\
-      ["npm:1.28.0", {\
-        "packageLocation": "./.yarn/cache/@standardnotes-models-npm-1.28.0-6e4c7bb358-cb7e6561b8.zip/node_modules/@standardnotes/models/",\
+      ["npm:1.42.6", {\
+        "packageLocation": "./.yarn/cache/@standardnotes-models-npm-1.42.6-e82e2e64cb-081af91140.zip/node_modules/@standardnotes/models/",\
         "packageDependencies": [\
-          ["@standardnotes/models", "npm:1.28.0"],\
-          ["@standardnotes/common", "workspace:packages/common"],\
-          ["@standardnotes/features", "npm:1.53.1"],\
-          ["@standardnotes/responses", "npm:1.11.1"],\
-          ["@standardnotes/utils", "npm:1.10.0"],\
-          ["lodash", "npm:4.17.21"],\
-          ["reflect-metadata", "npm:0.1.13"]\
-        ],\
-        "linkType": "HARD"\
-      }],\
-      ["npm:1.33.0", {\
-        "packageLocation": "./.yarn/cache/@standardnotes-models-npm-1.33.0-df7d20ae6d-7d45409e4a.zip/node_modules/@standardnotes/models/",\
-        "packageDependencies": [\
-          ["@standardnotes/models", "npm:1.33.0"],\
-          ["@standardnotes/common", "workspace:packages/common"],\
-          ["@standardnotes/features", "npm:1.54.0"],\
-          ["@standardnotes/responses", "npm:1.12.0"],\
-          ["@standardnotes/utils", "npm:1.11.0"],\
-          ["lodash", "npm:4.17.21"],\
-          ["reflect-metadata", "npm:0.1.13"]\
+          ["@standardnotes/models", "npm:1.42.6"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -3052,23 +3000,12 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@standardnotes/responses", [\
-      ["npm:1.11.1", {\
-        "packageLocation": "./.yarn/cache/@standardnotes-responses-npm-1.11.1-ca2d49e2c4-e60c06d58a.zip/node_modules/@standardnotes/responses/",\
+      ["npm:1.13.4", {\
+        "packageLocation": "./.yarn/cache/@standardnotes-responses-npm-1.13.4-70cbd72561-4803ee14bd.zip/node_modules/@standardnotes/responses/",\
         "packageDependencies": [\
-          ["@standardnotes/responses", "npm:1.11.1"],\
+          ["@standardnotes/responses", "npm:1.13.4"],\
           ["@standardnotes/common", "workspace:packages/common"],\
-          ["@standardnotes/features", "npm:1.53.1"],\
-          ["@standardnotes/security", "workspace:packages/security"],\
-          ["reflect-metadata", "npm:0.1.13"]\
-        ],\
-        "linkType": "HARD"\
-      }],\
-      ["npm:1.12.0", {\
-        "packageLocation": "./.yarn/cache/@standardnotes-responses-npm-1.12.0-1de721974f-15b2e92d57.zip/node_modules/@standardnotes/responses/",\
-        "packageDependencies": [\
-          ["@standardnotes/responses", "npm:1.12.0"],\
-          ["@standardnotes/common", "workspace:packages/common"],\
-          ["@standardnotes/features", "npm:1.54.0"],\
+          ["@standardnotes/features", "npm:1.58.4"],\
           ["@standardnotes/security", "workspace:packages/security"],\
           ["reflect-metadata", "npm:0.1.13"]\
         ],\
@@ -3082,7 +3019,7 @@ const RAW_RUNTIME_STATE =
           ["@standardnotes/revisions-server", "workspace:packages/revisions"],\
           ["@newrelic/winston-enricher", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:4.0.0"],\
           ["@sentry/node", "npm:7.28.1"],\
-          ["@standardnotes/api", "npm:1.19.0"],\
+          ["@standardnotes/api", "npm:1.24.4"],\
           ["@standardnotes/common", "workspace:packages/common"],\
           ["@standardnotes/domain-core", "workspace:packages/domain-core"],\
           ["@standardnotes/domain-events", "workspace:packages/domain-events"],\
@@ -3223,6 +3160,14 @@ const RAW_RUNTIME_STATE =
           ["reflect-metadata", "npm:0.1.13"]\
         ],\
         "linkType": "HARD"\
+      }],\
+      ["npm:1.13.3", {\
+        "packageLocation": "./.yarn/cache/@standardnotes-sncrypto-common-npm-1.13.3-97ef3850ce-a73af90962.zip/node_modules/@standardnotes/sncrypto-common/",\
+        "packageDependencies": [\
+          ["@standardnotes/sncrypto-common", "npm:1.13.3"],\
+          ["reflect-metadata", "npm:0.1.13"]\
+        ],\
+        "linkType": "HARD"\
       }]\
     ]],\
     ["@standardnotes/sncrypto-node", [\
@@ -3257,7 +3202,7 @@ const RAW_RUNTIME_STATE =
           ["@standardnotes/domain-core", "workspace:packages/domain-core"],\
           ["@standardnotes/domain-events", "workspace:packages/domain-events"],\
           ["@standardnotes/domain-events-infra", "workspace:packages/domain-events-infra"],\
-          ["@standardnotes/responses", "npm:1.11.1"],\
+          ["@standardnotes/responses", "npm:1.13.4"],\
           ["@standardnotes/security", "workspace:packages/security"],\
           ["@standardnotes/settings", "workspace:packages/settings"],\
           ["@standardnotes/time", "workspace:packages/time"],\
@@ -3322,23 +3267,12 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@standardnotes/utils", [\
-      ["npm:1.10.0", {\
-        "packageLocation": "./.yarn/cache/@standardnotes-utils-npm-1.10.0-0dc2ade40b-3b9ad93b8e.zip/node_modules/@standardnotes/utils/",\
+      ["npm:1.16.2", {\
+        "packageLocation": "./.yarn/cache/@standardnotes-utils-npm-1.16.2-d786f2ad64-cee65dd64f.zip/node_modules/@standardnotes/utils/",\
         "packageDependencies": [\
-          ["@standardnotes/utils", "npm:1.10.0"],\
+          ["@standardnotes/utils", "npm:1.16.2"],\
           ["@standardnotes/common", "workspace:packages/common"],\
-          ["dompurify", "npm:2.4.0"],\
-          ["lodash", "npm:4.17.21"],\
-          ["reflect-metadata", "npm:0.1.13"]\
-        ],\
-        "linkType": "HARD"\
-      }],\
-      ["npm:1.11.0", {\
-        "packageLocation": "./.yarn/cache/@standardnotes-utils-npm-1.11.0-afbc24024c-9e7d9c1257.zip/node_modules/@standardnotes/utils/",\
-        "packageDependencies": [\
-          ["@standardnotes/utils", "npm:1.11.0"],\
-          ["@standardnotes/common", "workspace:packages/common"],\
-          ["dompurify", "npm:2.4.0"],\
+          ["dompurify", "npm:2.4.3"],\
           ["lodash", "npm:4.17.21"],\
           ["reflect-metadata", "npm:0.1.13"]\
         ],\
@@ -3352,7 +3286,7 @@ const RAW_RUNTIME_STATE =
           ["@standardnotes/websockets-server", "workspace:packages/websockets"],\
           ["@newrelic/winston-enricher", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:4.0.0"],\
           ["@sentry/node", "npm:7.28.1"],\
-          ["@standardnotes/api", "npm:1.19.0"],\
+          ["@standardnotes/api", "npm:1.24.4"],\
           ["@standardnotes/domain-core", "workspace:packages/domain-core"],\
           ["@standardnotes/domain-events", "workspace:packages/domain-events"],\
           ["@standardnotes/domain-events-infra", "workspace:packages/domain-events-infra"],\
@@ -3392,12 +3326,12 @@ const RAW_RUNTIME_STATE =
           ["@standardnotes/workspace-server", "workspace:packages/workspace"],\
           ["@newrelic/winston-enricher", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:4.0.0"],\
           ["@sentry/node", "npm:7.28.1"],\
-          ["@standardnotes/api", "npm:1.19.0"],\
+          ["@standardnotes/api", "npm:1.24.4"],\
           ["@standardnotes/common", "workspace:packages/common"],\
           ["@standardnotes/domain-core", "workspace:packages/domain-core"],\
           ["@standardnotes/domain-events", "workspace:packages/domain-events"],\
           ["@standardnotes/domain-events-infra", "workspace:packages/domain-events-infra"],\
-          ["@standardnotes/models", "npm:1.28.0"],\
+          ["@standardnotes/models", "npm:1.42.6"],\
           ["@standardnotes/security", "workspace:packages/security"],\
           ["@standardnotes/time", "workspace:packages/time"],\
           ["@types/cors", "npm:2.8.12"],\
@@ -6458,10 +6392,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["dompurify", [\
-      ["npm:2.4.0", {\
-        "packageLocation": "./.yarn/cache/dompurify-npm-2.4.0-0ffecf22ef-bd570792df.zip/node_modules/dompurify/",\
+      ["npm:2.4.3", {\
+        "packageLocation": "./.yarn/cache/dompurify-npm-2.4.3-de4e3be286-cf38bac4c2.zip/node_modules/dompurify/",\
         "packageDependencies": [\
-          ["dompurify", "npm:2.4.0"]\
+          ["dompurify", "npm:2.4.3"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -9637,23 +9571,6 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["jsonwebtoken", [\
-      ["npm:8.5.1", {\
-        "packageLocation": "./.yarn/cache/jsonwebtoken-npm-8.5.1-c007670b76-64198d5b0b.zip/node_modules/jsonwebtoken/",\
-        "packageDependencies": [\
-          ["jsonwebtoken", "npm:8.5.1"],\
-          ["jws", "npm:3.2.2"],\
-          ["lodash.includes", "npm:4.3.0"],\
-          ["lodash.isboolean", "npm:3.0.3"],\
-          ["lodash.isinteger", "npm:4.0.4"],\
-          ["lodash.isnumber", "npm:3.0.3"],\
-          ["lodash.isplainobject", "npm:4.0.6"],\
-          ["lodash.isstring", "npm:4.0.1"],\
-          ["lodash.once", "npm:4.1.1"],\
-          ["ms", "npm:2.1.3"],\
-          ["semver", "npm:5.7.1"]\
-        ],\
-        "linkType": "HARD"\
-      }],\
       ["npm:9.0.0", {\
         "packageLocation": "./.yarn/cache/jsonwebtoken-npm-9.0.0-36fd1594c0-7ccbd0b7bf.zip/node_modules/jsonwebtoken/",\
         "packageDependencies": [\
@@ -9899,15 +9816,6 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
-    ["lodash.includes", [\
-      ["npm:4.3.0", {\
-        "packageLocation": "./.yarn/cache/lodash.includes-npm-4.3.0-3a2f6fa22c-08a7ef2e25.zip/node_modules/lodash.includes/",\
-        "packageDependencies": [\
-          ["lodash.includes", "npm:4.3.0"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
     ["lodash.isarguments", [\
       ["npm:3.1.0", {\
         "packageLocation": "./.yarn/cache/lodash.isarguments-npm-3.1.0-9e74d350b8-2508395914.zip/node_modules/lodash.isarguments/",\
@@ -9917,56 +9825,11 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
-    ["lodash.isboolean", [\
-      ["npm:3.0.3", {\
-        "packageLocation": "./.yarn/cache/lodash.isboolean-npm-3.0.3-b575b41488-bace740c7a.zip/node_modules/lodash.isboolean/",\
-        "packageDependencies": [\
-          ["lodash.isboolean", "npm:3.0.3"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
-    ["lodash.isinteger", [\
-      ["npm:4.0.4", {\
-        "packageLocation": "./.yarn/cache/lodash.isinteger-npm-4.0.4-42add9f4e1-937ccd8758.zip/node_modules/lodash.isinteger/",\
-        "packageDependencies": [\
-          ["lodash.isinteger", "npm:4.0.4"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
     ["lodash.ismatch", [\
       ["npm:4.4.0", {\
         "packageLocation": "./.yarn/cache/lodash.ismatch-npm-4.4.0-e538fd6c3d-82bb7c7feb.zip/node_modules/lodash.ismatch/",\
         "packageDependencies": [\
           ["lodash.ismatch", "npm:4.4.0"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
-    ["lodash.isnumber", [\
-      ["npm:3.0.3", {\
-        "packageLocation": "./.yarn/cache/lodash.isnumber-npm-3.0.3-b3bb5f7347-0627047d8f.zip/node_modules/lodash.isnumber/",\
-        "packageDependencies": [\
-          ["lodash.isnumber", "npm:3.0.3"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
-    ["lodash.isplainobject", [\
-      ["npm:4.0.6", {\
-        "packageLocation": "./.yarn/cache/lodash.isplainobject-npm-4.0.6-d73937742f-fd98cdf396.zip/node_modules/lodash.isplainobject/",\
-        "packageDependencies": [\
-          ["lodash.isplainobject", "npm:4.0.6"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
-    ["lodash.isstring", [\
-      ["npm:4.0.1", {\
-        "packageLocation": "./.yarn/cache/lodash.isstring-npm-4.0.1-721fee791c-a0d31496f5.zip/node_modules/lodash.isstring/",\
-        "packageDependencies": [\
-          ["lodash.isstring", "npm:4.0.1"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -9985,15 +9848,6 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/lodash.merge-npm-4.6.2-77cb4416bf-aab58997bc.zip/node_modules/lodash.merge/",\
         "packageDependencies": [\
           ["lodash.merge", "npm:4.6.2"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
-    ["lodash.once", [\
-      ["npm:4.1.1", {\
-        "packageLocation": "./.yarn/cache/lodash.once-npm-4.1.1-d8ba329ead-210c440af7.zip/node_modules/lodash.once/",\
-        "packageDependencies": [\
-          ["lodash.once", "npm:4.1.1"]\
         ],\
         "linkType": "HARD"\
       }]\

@@ -33,7 +33,7 @@
     "@standardnotes/domain-core": "workspace:^",
     "@standardnotes/domain-events": "workspace:*",
     "@standardnotes/domain-events-infra": "workspace:*",
-    "@standardnotes/responses": "^1.6.39",
+    "@standardnotes/responses": "^1.13.4",
     "@standardnotes/security": "workspace:*",
     "@standardnotes/settings": "workspace:*",
     "@standardnotes/time": "workspace:*",
