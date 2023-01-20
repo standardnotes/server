@@ -2645,14 +2645,14 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@standardnotes/api", [\
-      ["npm:1.24.4", {\
-        "packageLocation": "./.yarn/cache/@standardnotes-api-npm-1.24.4-7e098c6c65-3fec38ce6f.zip/node_modules/@standardnotes/api/",\
+      ["npm:1.24.5", {\
+        "packageLocation": "./.yarn/cache/@standardnotes-api-npm-1.24.5-2a2f029be6-742a9d0936.zip/node_modules/@standardnotes/api/",\
         "packageDependencies": [\
-          ["@standardnotes/api", "npm:1.24.4"],\
+          ["@standardnotes/api", "npm:1.24.5"],\
           ["@standardnotes/common", "workspace:packages/common"],\
           ["@standardnotes/domain-core", "workspace:packages/domain-core"],\
-          ["@standardnotes/encryption", "npm:1.21.4"],\
-          ["@standardnotes/models", "npm:1.42.6"],\
+          ["@standardnotes/encryption", "npm:1.21.5"],\
+          ["@standardnotes/models", "npm:1.42.7"],\
           ["@standardnotes/responses", "npm:1.13.4"],\
           ["@standardnotes/security", "workspace:packages/security"],\
           ["@standardnotes/utils", "npm:1.16.2"],\
@@ -2717,7 +2717,7 @@ const RAW_RUNTIME_STATE =
           ["@sentry/tracing", "npm:7.28.1"],\
           ["@simplewebauthn/server", "npm:6.2.2"],\
           ["@simplewebauthn/typescript-types", "npm:6.3.0-alpha.1"],\
-          ["@standardnotes/api", "npm:1.24.4"],\
+          ["@standardnotes/api", "npm:1.24.5"],\
           ["@standardnotes/common", "workspace:packages/common"],\
           ["@standardnotes/domain-core", "workspace:packages/domain-core"],\
           ["@standardnotes/domain-events", "workspace:packages/domain-events"],\
@@ -2863,12 +2863,12 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@standardnotes/encryption", [\
-      ["npm:1.21.4", {\
-        "packageLocation": "./.yarn/cache/@standardnotes-encryption-npm-1.21.4-aa1ac49482-b49c272e14.zip/node_modules/@standardnotes/encryption/",\
+      ["npm:1.21.5", {\
+        "packageLocation": "./.yarn/cache/@standardnotes-encryption-npm-1.21.5-3a48807445-652b8859ff.zip/node_modules/@standardnotes/encryption/",\
         "packageDependencies": [\
-          ["@standardnotes/encryption", "npm:1.21.4"],\
+          ["@standardnotes/encryption", "npm:1.21.5"],\
           ["@standardnotes/common", "workspace:packages/common"],\
-          ["@standardnotes/models", "npm:1.42.6"],\
+          ["@standardnotes/models", "npm:1.42.7"],\
           ["@standardnotes/responses", "npm:1.13.4"],\
           ["@standardnotes/sncrypto-common", "npm:1.13.3"],\
           ["@standardnotes/utils", "npm:1.16.2"],\
@@ -2976,10 +2976,11 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@standardnotes/models", [\
-      ["npm:1.42.6", {\
-        "packageLocation": "./.yarn/cache/@standardnotes-models-npm-1.42.6-e82e2e64cb-081af91140.zip/node_modules/@standardnotes/models/",\
+      ["npm:1.42.7", {\
+        "packageLocation": "./.yarn/cache/@standardnotes-models-npm-1.42.7-6c0d7e2ac9-66271be0a9.zip/node_modules/@standardnotes/models/",\
         "packageDependencies": [\
-          ["@standardnotes/models", "npm:1.42.6"]\
+          ["@standardnotes/models", "npm:1.42.7"],\
+          ["@standardnotes/utils", "npm:1.16.2"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -3019,7 +3020,7 @@ const RAW_RUNTIME_STATE =
           ["@standardnotes/revisions-server", "workspace:packages/revisions"],\
           ["@newrelic/winston-enricher", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:4.0.0"],\
           ["@sentry/node", "npm:7.28.1"],\
-          ["@standardnotes/api", "npm:1.24.4"],\
+          ["@standardnotes/api", "npm:1.24.5"],\
           ["@standardnotes/common", "workspace:packages/common"],\
           ["@standardnotes/domain-core", "workspace:packages/domain-core"],\
           ["@standardnotes/domain-events", "workspace:packages/domain-events"],\
@@ -3286,12 +3287,13 @@ const RAW_RUNTIME_STATE =
           ["@standardnotes/websockets-server", "workspace:packages/websockets"],\
           ["@newrelic/winston-enricher", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:4.0.0"],\
           ["@sentry/node", "npm:7.28.1"],\
-          ["@standardnotes/api", "npm:1.24.4"],\
+          ["@standardnotes/api", "npm:1.24.5"],\
           ["@standardnotes/common", "workspace:packages/common"],\
           ["@standardnotes/domain-core", "workspace:packages/domain-core"],\
           ["@standardnotes/domain-events", "workspace:packages/domain-events"],\
           ["@standardnotes/domain-events-infra", "workspace:packages/domain-events-infra"],\
           ["@standardnotes/security", "workspace:packages/security"],\
+          ["@standardnotes/utils", "npm:1.16.2"],\
           ["@types/cors", "npm:2.8.12"],\
           ["@types/express", "npm:4.17.14"],\
           ["@types/ioredis", "npm:5.0.0"],\
@@ -3327,12 +3329,12 @@ const RAW_RUNTIME_STATE =
           ["@standardnotes/workspace-server", "workspace:packages/workspace"],\
           ["@newrelic/winston-enricher", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:4.0.0"],\
           ["@sentry/node", "npm:7.28.1"],\
-          ["@standardnotes/api", "npm:1.24.4"],\
+          ["@standardnotes/api", "npm:1.24.5"],\
           ["@standardnotes/common", "workspace:packages/common"],\
           ["@standardnotes/domain-core", "workspace:packages/domain-core"],\
           ["@standardnotes/domain-events", "workspace:packages/domain-events"],\
           ["@standardnotes/domain-events-infra", "workspace:packages/domain-events-infra"],\
-          ["@standardnotes/models", "npm:1.42.6"],\
+          ["@standardnotes/models", "npm:1.42.7"],\
           ["@standardnotes/security", "workspace:packages/security"],\
           ["@standardnotes/time", "workspace:packages/time"],\
           ["@types/cors", "npm:2.8.12"],\
