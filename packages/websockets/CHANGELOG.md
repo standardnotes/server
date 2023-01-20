@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.13](https://github.com/standardnotes/server/compare/@standardnotes/websockets-server@1.5.12...@standardnotes/websockets-server@1.5.13) (2023-01-20)
+
+### Bug Fixes
+
+* **websockets:** bundling issue ([27f45f7](https://github.com/standardnotes/server/commit/27f45f7cf67f68989dc737863582912de789878f))
+
 ## [1.5.12](https://github.com/standardnotes/server/compare/@standardnotes/websockets-server@1.5.11...@standardnotes/websockets-server@1.5.12) (2023-01-20)
 
 ### Reverts

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.19.16](https://github.com/standardnotes/server/compare/@standardnotes/workspace-server@1.19.15...@standardnotes/workspace-server@1.19.16) (2023-01-20)
+
+### Bug Fixes
+
+* dependency issues ([589f8e6](https://github.com/standardnotes/server/commit/589f8e62f4753b9c6fab21bd675114d373d89f2d))
+
 ## [1.19.15](https://github.com/standardnotes/server/compare/@standardnotes/workspace-server@1.19.14...@standardnotes/workspace-server@1.19.15) (2023-01-20)
 
 ### Reverts
