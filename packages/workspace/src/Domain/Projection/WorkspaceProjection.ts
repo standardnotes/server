@@ -1,3 +1,3 @@
-import { Workspace } from '@standardnotes/models'
+import { Workspace } from '@standardnotes/api'
 
 export type WorkspaceProjection = Workspace

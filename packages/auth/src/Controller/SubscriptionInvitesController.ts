@@ -1,4 +1,6 @@
 import {
+  AppleIAPConfirmRequestParams,
+  AppleIAPConfirmResponse,
   HttpStatusCode,
   SubscriptionInviteAcceptRequestParams,
   SubscriptionInviteAcceptResponse,
@@ -34,6 +36,10 @@ export class SubscriptionInvitesController implements SubscriptionServerInterfac
     @inject(TYPES.ListSharedSubscriptionInvitations)
     private listSharedSubscriptionInvitations: ListSharedSubscriptionInvitations,
   ) {}
+
+  async confirmAppleIAP(_params: AppleIAPConfirmRequestParams): Promise<AppleIAPConfirmResponse> {
+    throw new Error('Method implemented on the payments service.')
+  }
 
   async acceptInvite(params: SubscriptionInviteAcceptRequestParams): Promise<SubscriptionInviteAcceptResponse> {
     const result = await this.acceptSharedSubscriptionInvitation.execute({
