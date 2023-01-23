@@ -35,7 +35,7 @@
     "@newrelic/winston-enricher": "^4.0.0",
     "@sentry/node": "^7.28.1",
     "@sentry/tracing": "^7.28.1",
-    "@simplewebauthn/server": "^6.2.2",
+    "@simplewebauthn/server": "^7.0.0",
     "@simplewebauthn/typescript-types": "^6.3.0-alpha.1",
     "@standardnotes/api": "^1.24.9",
     "@standardnotes/common": "workspace:*",
