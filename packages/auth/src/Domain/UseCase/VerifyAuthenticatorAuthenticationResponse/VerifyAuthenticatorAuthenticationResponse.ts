@@ -11,6 +11,7 @@ export class VerifyAuthenticatorAuthenticationResponse implements UseCaseInterfa
     private authenticatorRepository: AuthenticatorRepositoryInterface,
     private authenticatorChallengeRepository: AuthenticatorChallengeRepositoryInterface,
     private relyingPartyId: string,
+    private expectedOrigin: string,
   ) {}
 
   async execute(dto: VerifyAuthenticatorAuthenticationResponseDTO): Promise<Result<boolean>> {
@@ -40,7 +41,7 @@ export class VerifyAuthenticatorAuthenticationResponse implements UseCaseInterfa
       verification = await verifyAuthenticationResponse({
         response: dto.authenticatorResponse,
         expectedChallenge: authenticatorChallenge.props.challenge.toString(),
-        expectedOrigin: `https://${this.relyingPartyId}`,
+        expectedOrigin: this.expectedOrigin,
         expectedRPID: this.relyingPartyId,
         authenticator: {
           counter: authenticator.props.counter,
