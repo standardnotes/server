@@ -414,9 +414,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@cbor-extract/cbor-extract-linux-arm64@npm:2.1.1":
+"@cbor-extract/cbor-extract-linux-arm64@npm:2.1.1, @cbor-extract/cbor-extract-linux-arm64@npm:^2.1.1":
   version: 2.1.1
   resolution: "@cbor-extract/cbor-extract-linux-arm64@npm:2.1.1"
+  checksum: 8de27a1ba14e6c4d54ec0c6ed83f59d967606b3bd0d6f11a4c2940706668f5645d536617d8487917584ddc4e09af79f058a04fd34f1b85f84840f1b90b6abda3
   conditions: os=linux & cpu=arm64
   languageName: node
   linkType: hard
@@ -428,9 +429,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@cbor-extract/cbor-extract-linux-x64@npm:2.1.1":
+"@cbor-extract/cbor-extract-linux-x64@npm:2.1.1, @cbor-extract/cbor-extract-linux-x64@npm:^2.1.1":
   version: 2.1.1
   resolution: "@cbor-extract/cbor-extract-linux-x64@npm:2.1.1"
+  checksum: cf4577e6521576bb4911ea7f0325c9354c12602a4115aaf481a547feb29657fa6105760e890b6331befb1e9fb248d1a453b7a4f8c6b4601c12a8e7eafa52fb4f
   conditions: os=linux & cpu=x64
   languageName: node
   linkType: hard
@@ -2023,6 +2025,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@standardnotes/auth-server@workspace:packages/auth"
   dependencies:
+    "@cbor-extract/cbor-extract-linux-arm64": "npm:^2.1.1"
+    "@cbor-extract/cbor-extract-linux-x64": "npm:^2.1.1"
     "@newrelic/winston-enricher": "npm:^4.0.0"
     "@sentry/node": "npm:^7.28.1"
     "@sentry/tracing": "npm:^7.28.1"

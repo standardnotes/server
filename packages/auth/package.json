@@ -32,11 +32,12 @@
     "upgrade:snjs": "yarn ncu -u '@standardnotes/*'"
   },
   "dependencies": {
+    "@cbor-extract/cbor-extract-linux-arm64": "^2.1.1",
+    "@cbor-extract/cbor-extract-linux-x64": "^2.1.1",
     "@newrelic/winston-enricher": "^4.0.0",
     "@sentry/node": "^7.28.1",
     "@sentry/tracing": "^7.28.1",
     "@simplewebauthn/server": "^7.0.0",
-    "@simplewebauthn/typescript-types": "^7.0.0",
     "@standardnotes/api": "^1.24.9",
     "@standardnotes/common": "workspace:*",
     "@standardnotes/domain-core": "workspace:^",
@@ -71,6 +72,7 @@
     "winston": "^3.8.1"
   },
   "devDependencies": {
+    "@simplewebauthn/typescript-types": "^7.0.0",
     "@types/bcryptjs": "^2.4.2",
     "@types/cors": "^2.8.9",
     "@types/express": "^4.17.14",

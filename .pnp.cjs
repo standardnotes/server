@@ -2801,6 +2801,8 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./packages/auth/",\
         "packageDependencies": [\
           ["@standardnotes/auth-server", "workspace:packages/auth"],\
+          ["@cbor-extract/cbor-extract-linux-arm64", "npm:2.1.1"],\
+          ["@cbor-extract/cbor-extract-linux-x64", "npm:2.1.1"],\
           ["@newrelic/winston-enricher", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:4.0.0"],\
           ["@sentry/node", "npm:7.28.1"],\
           ["@sentry/tracing", "npm:7.28.1"],\
