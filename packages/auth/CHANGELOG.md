@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.84.10](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.84.9...@standardnotes/auth-server@1.84.10) (2023-01-23)
+
+### Bug Fixes
+
+* **auth:** upgrade simplewebauthn types ([52ce5f3](https://github.com/standardnotes/server/commit/52ce5f3a2f3790042793ac73ddad70cd1b578a6b))
+
 ## [1.84.9](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.84.8...@standardnotes/auth-server@1.84.9) (2023-01-23)
 
 **Note:** Version bump only for package @standardnotes/auth-server
