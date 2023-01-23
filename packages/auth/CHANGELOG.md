@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.85.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.84.11...@standardnotes/auth-server@1.85.0) (2023-01-23)
+
+### Features
+
+* **auth:** add configuring u2f expect origin ([1797bc8](https://github.com/standardnotes/server/commit/1797bc81812be879b92c7d631085e76a36d37d45))
+
 ## [1.84.11](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.84.10...@standardnotes/auth-server@1.84.11) (2023-01-23)
 
 **Note:** Version bump only for package @standardnotes/auth-server
