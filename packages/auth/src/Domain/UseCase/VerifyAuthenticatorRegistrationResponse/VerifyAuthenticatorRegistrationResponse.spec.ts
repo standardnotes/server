@@ -37,7 +37,7 @@ describe('VerifyAuthenticatorRegistrationResponse', () => {
     const result = await useCase.execute({
       userUuid: 'invalid',
       name: 'name',
-      registrationCredential: {
+      attestationResponse: {
         id: Buffer.from('id'),
         rawId: Buffer.from('rawId'),
         response: {
@@ -60,7 +60,7 @@ describe('VerifyAuthenticatorRegistrationResponse', () => {
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
       name: '',
-      registrationCredential: {
+      attestationResponse: {
         id: Buffer.from('id'),
         rawId: Buffer.from('rawId'),
         response: {
@@ -83,7 +83,7 @@ describe('VerifyAuthenticatorRegistrationResponse', () => {
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
       name: 'name',
-      registrationCredential: {
+      attestationResponse: {
         id: Buffer.from('id'),
         rawId: Buffer.from('rawId'),
         response: {
@@ -115,8 +115,8 @@ describe('VerifyAuthenticatorRegistrationResponse', () => {
           counter: 1,
           credentialBackedUp: true,
           credentialDeviceType: 'singleDevice',
-          credentialID: Buffer.from('test'),
-          credentialPublicKey: Buffer.from('test'),
+          credentialID: Uint8Array.from([1, 2, 3]),
+          credentialPublicKey: Uint8Array.from([1, 2, 3]),
         },
       } as jest.Mocked<VerifiedRegistrationResponse>)
     })
@@ -124,7 +124,7 @@ describe('VerifyAuthenticatorRegistrationResponse', () => {
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
       name: 'name',
-      registrationCredential: {
+      attestationResponse: {
         id: Buffer.from('id'),
         rawId: Buffer.from('rawId'),
         response: {
@@ -158,7 +158,7 @@ describe('VerifyAuthenticatorRegistrationResponse', () => {
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
       name: 'name',
-      registrationCredential: {
+      attestationResponse: {
         id: Buffer.from('id'),
         rawId: Buffer.from('rawId'),
         response: {
@@ -194,7 +194,7 @@ describe('VerifyAuthenticatorRegistrationResponse', () => {
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
       name: 'name',
-      registrationCredential: {
+      attestationResponse: {
         id: Buffer.from('id'),
         rawId: Buffer.from('rawId'),
         response: {
@@ -230,8 +230,8 @@ describe('VerifyAuthenticatorRegistrationResponse', () => {
           counter: 1,
           credentialBackedUp: true,
           credentialDeviceType: 'singleDevice',
-          credentialID: Buffer.from('test'),
-          credentialPublicKey: Buffer.from('test'),
+          credentialID: Uint8Array.from([1, 2, 3]),
+          credentialPublicKey: Uint8Array.from([1, 2, 3]),
         },
       } as jest.Mocked<VerifiedRegistrationResponse>)
     })
@@ -244,7 +244,7 @@ describe('VerifyAuthenticatorRegistrationResponse', () => {
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
       name: 'name',
-      registrationCredential: {
+      attestationResponse: {
         id: Buffer.from('id'),
         rawId: Buffer.from('rawId'),
         response: {
@@ -279,8 +279,8 @@ describe('VerifyAuthenticatorRegistrationResponse', () => {
           counter: 1,
           credentialBackedUp: true,
           credentialDeviceType: 'singleDevice',
-          credentialID: Buffer.from('test'),
-          credentialPublicKey: Buffer.from('test'),
+          credentialID: Uint8Array.from([1, 2, 3]),
+          credentialPublicKey: Uint8Array.from([1, 2, 3]),
         },
       } as jest.Mocked<VerifiedRegistrationResponse>)
     })
@@ -288,7 +288,7 @@ describe('VerifyAuthenticatorRegistrationResponse', () => {
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
       name: 'name',
-      registrationCredential: {
+      attestationResponse: {
         id: Buffer.from('id'),
         rawId: Buffer.from('rawId'),
         response: {

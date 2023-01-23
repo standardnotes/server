@@ -51,7 +51,7 @@ export class InversifyExpressAuthenticatorsController extends BaseHttpController
   async verifyRegistration(request: Request, response: Response): Promise<results.JsonResult> {
     const result = await this.authenticatorsController.verifyRegistrationResponse({
       userUuid: response.locals.user.uuid,
-      registrationCredential: request.body.registrationCredential,
+      attestationResponse: request.body.attestationResponse,
       name: request.body.name,
     })
 
@@ -71,7 +71,7 @@ export class InversifyExpressAuthenticatorsController extends BaseHttpController
   async verifyAuthentication(request: Request, response: Response): Promise<results.JsonResult> {
     const result = await this.authenticatorsController.verifyAuthenticationResponse({
       userUuid: response.locals.user.uuid,
-      authenticationCredential: request.body,
+      authenticatorResponse: request.body,
     })
 
     return this.json(result.data, result.status)

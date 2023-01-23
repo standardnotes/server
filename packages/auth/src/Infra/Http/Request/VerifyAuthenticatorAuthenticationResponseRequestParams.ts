@@ -1,4 +1,4 @@
 export interface VerifyAuthenticatorAuthenticationResponseRequestParams {
   userUuid: string
-  authenticationCredential: Record<string, unknown>
+  authenticatorResponse: Record<string, unknown>
 }

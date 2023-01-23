@@ -49,7 +49,7 @@ describe('VerifyAuthenticatorAuthenticationResponse', () => {
 
     const result = await useCase.execute({
       userUuid: 'invalid',
-      authenticationCredential: {
+      authenticatorResponse: {
         authenticatorAttachment: 'platform',
         clientExtensionResults: {},
         id: 'id',
@@ -77,7 +77,7 @@ describe('VerifyAuthenticatorAuthenticationResponse', () => {
 
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
-      authenticationCredential: {
+      authenticatorResponse: {
         authenticatorAttachment: 'platform',
         clientExtensionResults: {},
         id: 'id',
@@ -105,7 +105,7 @@ describe('VerifyAuthenticatorAuthenticationResponse', () => {
 
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
-      authenticationCredential: {
+      authenticatorResponse: {
         authenticatorAttachment: 'platform',
         clientExtensionResults: {},
         id: 'id',
@@ -134,7 +134,7 @@ describe('VerifyAuthenticatorAuthenticationResponse', () => {
 
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
-      authenticationCredential: {
+      authenticatorResponse: {
         authenticatorAttachment: 'platform',
         clientExtensionResults: {},
         id: 'id',
@@ -167,7 +167,7 @@ describe('VerifyAuthenticatorAuthenticationResponse', () => {
 
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
-      authenticationCredential: {
+      authenticatorResponse: {
         authenticatorAttachment: 'platform',
         clientExtensionResults: {},
         id: 'id',
@@ -203,7 +203,7 @@ describe('VerifyAuthenticatorAuthenticationResponse', () => {
 
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
-      authenticationCredential: {
+      authenticatorResponse: {
         authenticatorAttachment: 'platform',
         clientExtensionResults: {},
         id: 'id',

@@ -93,7 +93,7 @@ export class AuthenticatorsController {
     const result = await this.verifyAuthenticatorRegistrationResponse.execute({
       userUuid: params.userUuid,
       name: params.name,
-      registrationCredential: params.registrationCredential,
+      attestationResponse: params.attestationResponse,
     })
 
     if (result.isFailed()) {
@@ -142,7 +142,7 @@ export class AuthenticatorsController {
   ): Promise<VerifyAuthenticatorAuthenticationResponseResponse> {
     const result = await this.verifyAuthenticatorAuthenticationResponse.execute({
       userUuid: params.userUuid,
-      authenticationCredential: params.authenticationCredential,
+      authenticatorResponse: params.authenticatorResponse,
     })
 
     if (result.isFailed()) {

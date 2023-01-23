@@ -33,7 +33,7 @@ export class VerifyAuthenticatorRegistrationResponse implements UseCaseInterface
     let verification: VerifiedRegistrationResponse
     try {
       verification = await verifyRegistrationResponse({
-        credential: dto.registrationCredential,
+        response: dto.attestationResponse,
         expectedChallenge: authenticatorChallenge.props.challenge.toString(),
         expectedOrigin: `https://${this.relyingPartyId}`,
         expectedRPID: this.relyingPartyId,

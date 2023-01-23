@@ -23,13 +23,13 @@ export class TypeORMAuthenticator {
     type: 'varbinary',
     length: 1024,
   })
-  declare credentialId: Buffer
+  declare credentialId: Uint8Array
 
   @Column({
     name: 'credential_public_key',
     type: 'blob',
   })
-  declare credentialPublicKey: Buffer
+  declare credentialPublicKey: Uint8Array
 
   @Column({
     name: 'counter',

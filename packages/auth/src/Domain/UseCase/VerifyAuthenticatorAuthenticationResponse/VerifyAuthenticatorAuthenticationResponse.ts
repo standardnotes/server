@@ -27,18 +27,18 @@ export class VerifyAuthenticatorAuthenticationResponse implements UseCaseInterfa
 
     const authenticator = await this.authenticatorRepository.findByUserUuidAndCredentialId(
       userUuid,
-      Buffer.from(dto.authenticationCredential.id as string),
+      Buffer.from(dto.authenticatorResponse.id as string),
     )
     if (!authenticator) {
       return Result.fail(
-        `Could not verify authenticator authentication response: authenticator ${dto.authenticationCredential.id} not found`,
+        `Could not verify authenticator authentication response: authenticator ${dto.authenticatorResponse.id} not found`,
       )
     }
 
     let verification: VerifiedAuthenticationResponse
     try {
       verification = await verifyAuthenticationResponse({
-        credential: dto.authenticationCredential,
+        response: dto.authenticatorResponse,
         expectedChallenge: authenticatorChallenge.props.challenge.toString(),
         expectedOrigin: `https://${this.relyingPartyId}`,
         expectedRPID: this.relyingPartyId,
