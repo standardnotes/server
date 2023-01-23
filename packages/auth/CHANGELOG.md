@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.86.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.85.0...@standardnotes/auth-server@1.86.0) (2023-01-23)
+
+### Features
+
+* **auth:** add configurable user verification requirement on u2f via env vars ([c38817c](https://github.com/standardnotes/server/commit/c38817c62e8109f1d5837dcda4a07f1b73976c72))
+
 # [1.85.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.84.11...@standardnotes/auth-server@1.85.0) (2023-01-23)
 
 ### Features
