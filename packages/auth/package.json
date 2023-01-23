@@ -37,7 +37,7 @@
     "@sentry/tracing": "^7.28.1",
     "@simplewebauthn/server": "^6.2.2",
     "@simplewebauthn/typescript-types": "^6.3.0-alpha.1",
-    "@standardnotes/api": "^1.24.5",
+    "@standardnotes/api": "^1.24.9",
     "@standardnotes/common": "workspace:*",
     "@standardnotes/domain-core": "workspace:^",
     "@standardnotes/domain-events": "workspace:*",

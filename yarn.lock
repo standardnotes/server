@@ -1930,19 +1930,19 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@standardnotes/api@npm:^1.24.5":
-  version: 1.24.5
-  resolution: "@standardnotes/api@npm:1.24.5"
+"@standardnotes/api@npm:^1.24.9":
+  version: 1.24.9
+  resolution: "@standardnotes/api@npm:1.24.9"
   dependencies:
     "@standardnotes/common": "npm:^1.46.4"
     "@standardnotes/domain-core": "npm:^1.11.1"
-    "@standardnotes/encryption": "npm:1.21.5"
-    "@standardnotes/models": "npm:1.42.7"
-    "@standardnotes/responses": "npm:1.13.4"
+    "@standardnotes/encryption": "npm:1.21.9"
+    "@standardnotes/models": "npm:1.42.11"
+    "@standardnotes/responses": "npm:1.13.6"
     "@standardnotes/security": "npm:^1.7.5"
-    "@standardnotes/utils": "npm:1.16.2"
+    "@standardnotes/utils": "npm:1.16.3"
     reflect-metadata: "npm:^0.1.13"
-  checksum: 742a9d09365a5364af734e5186038cdd35c97e83e92bf22b915ad4bf848aaa5cb9a749c7779167de0369f9453ff95cfa43ef5f83053a76591b41de3b0fc6576a
+  checksum: 73bfd0fe3b045cf227404b42f4ea42c7ac581b1896ecb777febbce8d34faa3434ef2f7aa769930ab2e1a69abfc3140df1aa7699b2b45516d75c2eea82ceee038
   languageName: node
   linkType: hard
 
@@ -1955,7 +1955,7 @@ __metadata:
     "@sentry/tracing": "npm:^7.28.1"
     "@simplewebauthn/server": "npm:^6.2.2"
     "@simplewebauthn/typescript-types": "npm:^6.3.0-alpha.1"
-    "@standardnotes/api": "npm:^1.24.5"
+    "@standardnotes/api": "npm:^1.24.9"
     "@standardnotes/common": "workspace:*"
     "@standardnotes/domain-core": "workspace:^"
     "@standardnotes/domain-events": "workspace:*"
@@ -2090,17 +2090,17 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@standardnotes/encryption@npm:1.21.5":
-  version: 1.21.5
-  resolution: "@standardnotes/encryption@npm:1.21.5"
+"@standardnotes/encryption@npm:1.21.9":
+  version: 1.21.9
+  resolution: "@standardnotes/encryption@npm:1.21.9"
   dependencies:
     "@standardnotes/common": "npm:^1.46.4"
-    "@standardnotes/models": "npm:1.42.7"
-    "@standardnotes/responses": "npm:1.13.4"
+    "@standardnotes/models": "npm:1.42.11"
+    "@standardnotes/responses": "npm:1.13.6"
     "@standardnotes/sncrypto-common": "npm:1.13.3"
-    "@standardnotes/utils": "npm:1.16.2"
+    "@standardnotes/utils": "npm:1.16.3"
     reflect-metadata: "npm:^0.1.13"
-  checksum: 652b8859ff122da8fbd6a366f9c1d1b5e60a514ded21d2f54c207a0408e9ec754f6c31fc875a62076b08ee915341b9df785bfdcd46a5c73d238d0865ef093647
+  checksum: dc1336cc052780a2b7d59b65c1e86e3ee008bc38ecf50d204514edc36ef0de6a92483cfb00e67bcf7acc541957059db0eb4611feccd3c8eff00ccc05763cf4ab
   languageName: node
   linkType: hard
 
@@ -2142,6 +2142,18 @@ __metadata:
     "@standardnotes/security": "npm:^1.7.5"
     reflect-metadata: "npm:^0.1.13"
   checksum: a39afc145a158985d46a4332aaa450722cffd0978391958536ed37ba9d465616ea59c0e7df70490634cb3849fc41443334cfa4e3bb321dea903dc88198c84ec1
+  languageName: node
+  linkType: hard
+
+"@standardnotes/features@npm:1.58.6":
+  version: 1.58.6
+  resolution: "@standardnotes/features@npm:1.58.6"
+  dependencies:
+    "@standardnotes/common": "npm:^1.46.4"
+    "@standardnotes/domain-core": "npm:^1.11.1"
+    "@standardnotes/security": "npm:^1.7.5"
+    reflect-metadata: "npm:^0.1.13"
+  checksum: 98550416f1e8fb588611356e9e93b2ff7580b62ceb30251a575a4c4a193519e63fcdcd0d0e06ff10a1184e371a2f673bc81033c9e7f210464917f3c42d45dc7c
   languageName: node
   linkType: hard
 
@@ -2197,12 +2209,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@standardnotes/models@npm:1.42.7, @standardnotes/models@npm:^1.42.7":
-  version: 1.42.7
-  resolution: "@standardnotes/models@npm:1.42.7"
+"@standardnotes/models@npm:1.42.11, @standardnotes/models@npm:^1.42.11":
+  version: 1.42.11
+  resolution: "@standardnotes/models@npm:1.42.11"
   dependencies:
-    "@standardnotes/utils": "npm:^1.16.2"
-  checksum: 66271be0a9a19dabd72b6798a9f22613adfefa3b53e91bb4da0a1c9c75c989acbc41d49240e44764fda17f4c2434142261a665a6bf5b3d77c216a0ba7f1e7bf2
+    "@standardnotes/common": "npm:^1.46.4"
+    "@standardnotes/features": "npm:1.58.6"
+    "@standardnotes/responses": "npm:1.13.6"
+    "@standardnotes/utils": "npm:^1.16.3"
+    lodash: "npm:^4.17.21"
+  checksum: 6ff3409f70b576d97d530df1f597d04a8ca620240fcea6ba477b3b0c3cda9fcfbe5f9a17932543162fececffe02f84bea0e5dbefde790335a912e76ba11e54ef
   languageName: node
   linkType: hard
 
@@ -2219,7 +2235,19 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@standardnotes/responses@npm:1.13.4, @standardnotes/responses@npm:^1.13.4":
+"@standardnotes/responses@npm:1.13.6":
+  version: 1.13.6
+  resolution: "@standardnotes/responses@npm:1.13.6"
+  dependencies:
+    "@standardnotes/common": "npm:^1.46.4"
+    "@standardnotes/features": "npm:1.58.6"
+    "@standardnotes/security": "npm:^1.7.5"
+    reflect-metadata: "npm:^0.1.13"
+  checksum: c57e3e1fa10333c6eaabec4b5c248a9fd8f2631e337113f9f165b30703b4074adebb8e48435786cfaddb63769f0939f167f64ae37b6a93cc156520dbeae795ae
+  languageName: node
+  linkType: hard
+
+"@standardnotes/responses@npm:^1.13.4":
   version: 1.13.4
   resolution: "@standardnotes/responses@npm:1.13.4"
   dependencies:
@@ -2237,7 +2265,7 @@ __metadata:
   dependencies:
     "@newrelic/winston-enricher": "npm:^4.0.0"
     "@sentry/node": "npm:^7.28.1"
-    "@standardnotes/api": "npm:^1.24.5"
+    "@standardnotes/api": "npm:^1.24.9"
     "@standardnotes/common": "workspace:^"
     "@standardnotes/domain-core": "workspace:^"
     "@standardnotes/domain-events": "workspace:*"
@@ -2469,7 +2497,19 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@standardnotes/utils@npm:1.16.2, @standardnotes/utils@npm:^1.16.2":
+"@standardnotes/utils@npm:1.16.3, @standardnotes/utils@npm:^1.16.3":
+  version: 1.16.3
+  resolution: "@standardnotes/utils@npm:1.16.3"
+  dependencies:
+    "@standardnotes/common": "npm:^1.46.4"
+    dompurify: "npm:^2.4.1"
+    lodash: "npm:^4.17.21"
+    reflect-metadata: "npm:^0.1.13"
+  checksum: 5c34beaafb732d43ebc4dd170b35c48985c09d6b2c02a817af19d0cfbf868750cfd81a8f8a8aa1d37b872e5c4fce54cd5a942f06008c9b5e1f8f93e903ac52ba
+  languageName: node
+  linkType: hard
+
+"@standardnotes/utils@npm:^1.16.2":
   version: 1.16.2
   resolution: "@standardnotes/utils@npm:1.16.2"
   dependencies:
@@ -2487,7 +2527,7 @@ __metadata:
   dependencies:
     "@newrelic/winston-enricher": "npm:^4.0.0"
     "@sentry/node": "npm:^7.28.1"
-    "@standardnotes/api": "npm:^1.24.5"
+    "@standardnotes/api": "npm:^1.24.9"
     "@standardnotes/common": "workspace:^"
     "@standardnotes/domain-core": "workspace:^"
     "@standardnotes/domain-events": "workspace:^"
@@ -2527,12 +2567,12 @@ __metadata:
   dependencies:
     "@newrelic/winston-enricher": "npm:^4.0.0"
     "@sentry/node": "npm:^7.28.1"
-    "@standardnotes/api": "npm:^1.24.5"
+    "@standardnotes/api": "npm:^1.24.9"
     "@standardnotes/common": "workspace:*"
     "@standardnotes/domain-core": "workspace:^"
     "@standardnotes/domain-events": "workspace:^"
     "@standardnotes/domain-events-infra": "workspace:^"
-    "@standardnotes/models": "npm:^1.42.7"
+    "@standardnotes/models": "npm:^1.42.11"
     "@standardnotes/security": "workspace:*"
     "@standardnotes/time": "workspace:^"
     "@types/cors": "npm:^2.8.9"
