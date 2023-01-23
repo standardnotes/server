@@ -914,6 +914,60 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["@cbor-extract/cbor-extract-darwin-arm64", [\
+      ["npm:2.1.1", {\
+        "packageLocation": "./.yarn/unplugged/@cbor-extract-cbor-extract-darwin-arm64-npm-2.1.1-7f6025512f/node_modules/@cbor-extract/cbor-extract-darwin-arm64/",\
+        "packageDependencies": [\
+          ["@cbor-extract/cbor-extract-darwin-arm64", "npm:2.1.1"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["@cbor-extract/cbor-extract-darwin-x64", [\
+      ["npm:2.1.1", {\
+        "packageLocation": "./.yarn/unplugged/@cbor-extract-cbor-extract-darwin-x64-npm-2.1.1-9c0e0a67cc/node_modules/@cbor-extract/cbor-extract-darwin-x64/",\
+        "packageDependencies": [\
+          ["@cbor-extract/cbor-extract-darwin-x64", "npm:2.1.1"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["@cbor-extract/cbor-extract-linux-arm", [\
+      ["npm:2.1.1", {\
+        "packageLocation": "./.yarn/unplugged/@cbor-extract-cbor-extract-linux-arm-npm-2.1.1-95d0b66b34/node_modules/@cbor-extract/cbor-extract-linux-arm/",\
+        "packageDependencies": [\
+          ["@cbor-extract/cbor-extract-linux-arm", "npm:2.1.1"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["@cbor-extract/cbor-extract-linux-arm64", [\
+      ["npm:2.1.1", {\
+        "packageLocation": "./.yarn/unplugged/@cbor-extract-cbor-extract-linux-arm64-npm-2.1.1-23a641c278/node_modules/@cbor-extract/cbor-extract-linux-arm64/",\
+        "packageDependencies": [\
+          ["@cbor-extract/cbor-extract-linux-arm64", "npm:2.1.1"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["@cbor-extract/cbor-extract-linux-x64", [\
+      ["npm:2.1.1", {\
+        "packageLocation": "./.yarn/unplugged/@cbor-extract-cbor-extract-linux-x64-npm-2.1.1-4471164400/node_modules/@cbor-extract/cbor-extract-linux-x64/",\
+        "packageDependencies": [\
+          ["@cbor-extract/cbor-extract-linux-x64", "npm:2.1.1"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["@cbor-extract/cbor-extract-win32-x64", [\
+      ["npm:2.1.1", {\
+        "packageLocation": "./.yarn/unplugged/@cbor-extract-cbor-extract-win32-x64-npm-2.1.1-b206bdfc73/node_modules/@cbor-extract/cbor-extract-win32-x64/",\
+        "packageDependencies": [\
+          ["@cbor-extract/cbor-extract-win32-x64", "npm:2.1.1"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["@colors/colors", [\
       ["npm:1.5.0", {\
         "packageLocation": "./.yarn/cache/@colors-colors-npm-1.5.0-875af3a8b4-5e08870799.zip/node_modules/@colors/colors/",\
@@ -1212,6 +1266,15 @@ const RAW_RUNTIME_STATE =
           ["long", "npm:4.0.0"],\
           ["protobufjs", "npm:7.1.2"],\
           ["yargs", "npm:16.2.0"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["@hexagon/base64", [\
+      ["npm:1.1.25", {\
+        "packageLocation": "./.yarn/cache/@hexagon-base64-npm-1.1.25-44c8260698-0b42e9b676.zip/node_modules/@hexagon/base64/",\
+        "packageDependencies": [\
+          ["@hexagon/base64", "npm:1.1.25"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -1954,15 +2017,6 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
-    ["@noble/ed25519", [\
-      ["npm:1.7.1", {\
-        "packageLocation": "./.yarn/cache/@noble-ed25519-npm-1.7.1-177d9beb01-b1aa4b9264.zip/node_modules/@noble/ed25519/",\
-        "packageDependencies": [\
-          ["@noble/ed25519", "npm:1.7.1"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
     ["@nodelib/fs.scandir", [\
       ["npm:2.1.5", {\
         "packageLocation": "./.yarn/cache/@nodelib-fs.scandir-npm-2.1.5-89c67370dd-5f309a3b37.zip/node_modules/@nodelib/fs.scandir/",\
@@ -2331,6 +2385,32 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["@peculiar/asn1-ecc", [\
+      ["npm:2.3.4", {\
+        "packageLocation": "./.yarn/cache/@peculiar-asn1-ecc-npm-2.3.4-d498135879-351f9e0a4f.zip/node_modules/@peculiar/asn1-ecc/",\
+        "packageDependencies": [\
+          ["@peculiar/asn1-ecc", "npm:2.3.4"],\
+          ["@peculiar/asn1-schema", "npm:2.3.3"],\
+          ["@peculiar/asn1-x509", "npm:2.3.4"],\
+          ["asn1js", "npm:3.0.5"],\
+          ["tslib", "npm:2.4.1"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["@peculiar/asn1-rsa", [\
+      ["npm:2.3.4", {\
+        "packageLocation": "./.yarn/cache/@peculiar-asn1-rsa-npm-2.3.4-5015f8b5ba-89bcb894f4.zip/node_modules/@peculiar/asn1-rsa/",\
+        "packageDependencies": [\
+          ["@peculiar/asn1-rsa", "npm:2.3.4"],\
+          ["@peculiar/asn1-schema", "npm:2.3.3"],\
+          ["@peculiar/asn1-x509", "npm:2.3.4"],\
+          ["asn1js", "npm:3.0.5"],\
+          ["tslib", "npm:2.4.1"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["@peculiar/asn1-schema", [\
       ["npm:2.3.3", {\
         "packageLocation": "./.yarn/cache/@peculiar-asn1-schema-npm-2.3.3-7c2b9469c4-f584f79d5a.zip/node_modules/@peculiar/asn1-schema/",\
@@ -2531,30 +2611,39 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
-    ["@simplewebauthn/server", [\
-      ["npm:6.2.2", {\
-        "packageLocation": "./.yarn/cache/@simplewebauthn-server-npm-6.2.2-ca870b05c2-5ffb9b1c15.zip/node_modules/@simplewebauthn/server/",\
+    ["@simplewebauthn/iso-webcrypto", [\
+      ["npm:7.0.0", {\
+        "packageLocation": "./.yarn/cache/@simplewebauthn-iso-webcrypto-npm-7.0.0-352babf4a0-c1644f9b68.zip/node_modules/@simplewebauthn/iso-webcrypto/",\
         "packageDependencies": [\
-          ["@simplewebauthn/server", "npm:6.2.2"],\
-          ["@noble/ed25519", "npm:1.7.1"],\
+          ["@simplewebauthn/iso-webcrypto", "npm:7.0.0"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["@simplewebauthn/server", [\
+      ["npm:7.0.0", {\
+        "packageLocation": "./.yarn/cache/@simplewebauthn-server-npm-7.0.0-e34589f137-836eb9fb97.zip/node_modules/@simplewebauthn/server/",\
+        "packageDependencies": [\
+          ["@simplewebauthn/server", "npm:7.0.0"],\
+          ["@hexagon/base64", "npm:1.1.25"],\
           ["@peculiar/asn1-android", "npm:2.3.3"],\
+          ["@peculiar/asn1-ecc", "npm:2.3.4"],\
+          ["@peculiar/asn1-rsa", "npm:2.3.4"],\
           ["@peculiar/asn1-schema", "npm:2.3.3"],\
           ["@peculiar/asn1-x509", "npm:2.3.4"],\
-          ["base64url", "npm:3.0.1"],\
-          ["cbor", "npm:5.2.0"],\
-          ["debug", "virtual:b86a9fb34323a98c6519528ed55faa0d9b44ca8879307c0b29aa384bde47ff59a7d0c9051b31246f14521dfb71ba3c5d6d0b35c29fffc17bf875aa6ad977d9e8#npm:4.3.4"],\
-          ["jsrsasign", "npm:10.6.1"],\
-          ["jwk-to-pem", "npm:2.0.5"],\
-          ["node-fetch", "virtual:25a5f5382d53dbf298bf7a1191760bc2e0a523a619eeb0e667b99a8649e8ad183f9e2e0b45f6fb831b92f4078b61622aa567cf79565f6aa5af9597e3c84864f6#npm:2.6.7"]\
+          ["@simplewebauthn/iso-webcrypto", "npm:7.0.0"],\
+          ["cbor-x", "npm:1.5.0"],\
+          ["cross-fetch", "npm:3.1.5"],\
+          ["debug", "virtual:b86a9fb34323a98c6519528ed55faa0d9b44ca8879307c0b29aa384bde47ff59a7d0c9051b31246f14521dfb71ba3c5d6d0b35c29fffc17bf875aa6ad977d9e8#npm:4.3.4"]\
         ],\
         "linkType": "HARD"\
       }]\
     ]],\
     ["@simplewebauthn/typescript-types", [\
-      ["npm:6.3.0-alpha.1", {\
-        "packageLocation": "./.yarn/cache/@simplewebauthn-typescript-types-npm-6.3.0-alpha.1-629da05c10-5667c214e9.zip/node_modules/@simplewebauthn/typescript-types/",\
+      ["npm:7.0.0", {\
+        "packageLocation": "./.yarn/cache/@simplewebauthn-typescript-types-npm-7.0.0-cc6ca20415-124238ea18.zip/node_modules/@simplewebauthn/typescript-types/",\
         "packageDependencies": [\
-          ["@simplewebauthn/typescript-types", "npm:6.3.0-alpha.1"]\
+          ["@simplewebauthn/typescript-types", "npm:7.0.0"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -2715,8 +2804,8 @@ const RAW_RUNTIME_STATE =
           ["@newrelic/winston-enricher", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:4.0.0"],\
           ["@sentry/node", "npm:7.28.1"],\
           ["@sentry/tracing", "npm:7.28.1"],\
-          ["@simplewebauthn/server", "npm:6.2.2"],\
-          ["@simplewebauthn/typescript-types", "npm:6.3.0-alpha.1"],\
+          ["@simplewebauthn/server", "npm:7.0.0"],\
+          ["@simplewebauthn/typescript-types", "npm:7.0.0"],\
           ["@standardnotes/api", "npm:1.24.9"],\
           ["@standardnotes/common", "workspace:packages/common"],\
           ["@standardnotes/domain-core", "workspace:packages/domain-core"],\
@@ -4770,19 +4859,6 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
-    ["asn1.js", [\
-      ["npm:5.4.1", {\
-        "packageLocation": "./.yarn/cache/asn1.js-npm-5.4.1-37c7edbcb0-5c36f81388.zip/node_modules/asn1.js/",\
-        "packageDependencies": [\
-          ["asn1.js", "npm:5.4.1"],\
-          ["bn.js", "npm:4.12.0"],\
-          ["inherits", "npm:2.0.4"],\
-          ["minimalistic-assert", "npm:1.0.1"],\
-          ["safer-buffer", "npm:2.1.2"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
     ["asn1js", [\
       ["npm:3.0.5", {\
         "packageLocation": "./.yarn/cache/asn1js-npm-3.0.5-cf5558af33-d0bc57da97.zip/node_modules/asn1js/",\
@@ -5008,15 +5084,6 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
-    ["base64url", [\
-      ["npm:3.0.1", {\
-        "packageLocation": "./.yarn/cache/base64url-npm-3.0.1-4c171c4917-72e1401ffe.zip/node_modules/base64url/",\
-        "packageDependencies": [\
-          ["base64url", "npm:3.0.1"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
     ["bcryptjs", [\
       ["npm:2.4.3", {\
         "packageLocation": "./.yarn/cache/bcryptjs-npm-2.4.3-32de4957eb-bf6a43e9c4.zip/node_modules/bcryptjs/",\
@@ -5031,15 +5098,6 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/before-after-hook-npm-2.2.2-b463f0552f-ed37dd1bc4.zip/node_modules/before-after-hook/",\
         "packageDependencies": [\
           ["before-after-hook", "npm:2.2.2"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
-    ["bignumber.js", [\
-      ["npm:9.1.1", {\
-        "packageLocation": "./.yarn/cache/bignumber.js-npm-9.1.1-5929e8d8dc-e44d008049.zip/node_modules/bignumber.js/",\
-        "packageDependencies": [\
-          ["bignumber.js", "npm:9.1.1"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -5061,15 +5119,6 @@ const RAW_RUNTIME_STATE =
           ["buffer", "npm:5.7.1"],\
           ["inherits", "npm:2.0.4"],\
           ["readable-stream", "npm:3.6.0"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
-    ["bn.js", [\
-      ["npm:4.12.0", {\
-        "packageLocation": "./.yarn/cache/bn.js-npm-4.12.0-3ec6c884f6-bfb4590775.zip/node_modules/bn.js/",\
-        "packageDependencies": [\
-          ["bn.js", "npm:4.12.0"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -5137,15 +5186,6 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["braces", "npm:3.0.2"],\
           ["fill-range", "npm:7.0.1"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
-    ["brorand", [\
-      ["npm:1.1.0", {\
-        "packageLocation": "./.yarn/cache/brorand-npm-1.1.0-ea86634c4b-f736e127fb.zip/node_modules/brorand/",\
-        "packageDependencies": [\
-          ["brorand", "npm:1.1.0"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -5385,13 +5425,29 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
-    ["cbor", [\
-      ["npm:5.2.0", {\
-        "packageLocation": "./.yarn/cache/cbor-npm-5.2.0-4f6440587f-d60986b9d0.zip/node_modules/cbor/",\
+    ["cbor-extract", [\
+      ["npm:2.1.1", {\
+        "packageLocation": "./.yarn/unplugged/cbor-extract-npm-2.1.1-bcad1459e1/node_modules/cbor-extract/",\
         "packageDependencies": [\
-          ["cbor", "npm:5.2.0"],\
-          ["bignumber.js", "npm:9.1.1"],\
-          ["nofilter", "npm:1.0.4"]\
+          ["cbor-extract", "npm:2.1.1"],\
+          ["@cbor-extract/cbor-extract-darwin-arm64", "npm:2.1.1"],\
+          ["@cbor-extract/cbor-extract-darwin-x64", "npm:2.1.1"],\
+          ["@cbor-extract/cbor-extract-linux-arm", "npm:2.1.1"],\
+          ["@cbor-extract/cbor-extract-linux-arm64", "npm:2.1.1"],\
+          ["@cbor-extract/cbor-extract-linux-x64", "npm:2.1.1"],\
+          ["@cbor-extract/cbor-extract-win32-x64", "npm:2.1.1"],\
+          ["node-gyp", "npm:9.0.0"],\
+          ["node-gyp-build-optional-packages", "npm:5.0.3"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["cbor-x", [\
+      ["npm:1.5.0", {\
+        "packageLocation": "./.yarn/cache/cbor-x-npm-1.5.0-9baf767c60-c9de4515b0.zip/node_modules/cbor-x/",\
+        "packageDependencies": [\
+          ["cbor-x", "npm:1.5.0"],\
+          ["cbor-extract", "npm:2.1.1"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -6079,6 +6135,16 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["cross-fetch", [\
+      ["npm:3.1.5", {\
+        "packageLocation": "./.yarn/cache/cross-fetch-npm-3.1.5-e414995db9-83fa7b1318.zip/node_modules/cross-fetch/",\
+        "packageDependencies": [\
+          ["cross-fetch", "npm:3.1.5"],\
+          ["node-fetch", "virtual:25a5f5382d53dbf298bf7a1191760bc2e0a523a619eeb0e667b99a8649e8ad183f9e2e0b45f6fb831b92f4078b61622aa567cf79565f6aa5af9597e3c84864f6#npm:2.6.7"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["cross-spawn", [\
       ["npm:7.0.3", {\
         "packageLocation": "./.yarn/cache/cross-spawn-npm-7.0.3-e4ff3e65b3-37ec685f91.zip/node_modules/cross-spawn/",\
@@ -6516,22 +6582,6 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/electron-to-chromium-npm-1.4.180-719856979a-c7ef421c63.zip/node_modules/electron-to-chromium/",\
         "packageDependencies": [\
           ["electron-to-chromium", "npm:1.4.180"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
-    ["elliptic", [\
-      ["npm:6.5.4", {\
-        "packageLocation": "./.yarn/cache/elliptic-npm-6.5.4-0ca8204a86-4453b008cf.zip/node_modules/elliptic/",\
-        "packageDependencies": [\
-          ["elliptic", "npm:6.5.4"],\
-          ["bn.js", "npm:4.12.0"],\
-          ["brorand", "npm:1.1.0"],\
-          ["hash.js", "npm:1.1.7"],\
-          ["hmac-drbg", "npm:1.0.1"],\
-          ["inherits", "npm:2.0.4"],\
-          ["minimalistic-assert", "npm:1.0.1"],\
-          ["minimalistic-crypto-utils", "npm:1.0.1"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -7997,17 +8047,6 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
-    ["hash.js", [\
-      ["npm:1.1.7", {\
-        "packageLocation": "./.yarn/cache/hash.js-npm-1.1.7-f1ad187358-e4266370d1.zip/node_modules/hash.js/",\
-        "packageDependencies": [\
-          ["hash.js", "npm:1.1.7"],\
-          ["inherits", "npm:2.0.4"],\
-          ["minimalistic-assert", "npm:1.0.1"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
     ["helmet", [\
       ["npm:6.0.0", {\
         "packageLocation": "./.yarn/cache/helmet-npm-6.0.0-2285459f57-73b6ba802d.zip/node_modules/helmet/",\
@@ -8022,18 +8061,6 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/highlight.js-npm-10.7.3-247e67d5c0-4ea636717f.zip/node_modules/highlight.js/",\
         "packageDependencies": [\
           ["highlight.js", "npm:10.7.3"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
-    ["hmac-drbg", [\
-      ["npm:1.0.1", {\
-        "packageLocation": "./.yarn/cache/hmac-drbg-npm-1.0.1-3499ad31cd-4e88d58ffc.zip/node_modules/hmac-drbg/",\
-        "packageDependencies": [\
-          ["hmac-drbg", "npm:1.0.1"],\
-          ["hash.js", "npm:1.1.7"],\
-          ["minimalistic-assert", "npm:1.0.1"],\
-          ["minimalistic-crypto-utils", "npm:1.0.1"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -9630,15 +9657,6 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
-    ["jsrsasign", [\
-      ["npm:10.6.1", {\
-        "packageLocation": "./.yarn/cache/jsrsasign-npm-10.6.1-a8fa295369-e8e9c1b24f.zip/node_modules/jsrsasign/",\
-        "packageDependencies": [\
-          ["jsrsasign", "npm:10.6.1"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
     ["jwa", [\
       ["npm:1.4.1", {\
         "packageLocation": "./.yarn/cache/jwa-npm-1.4.1-4f19d6572c-0cc3e68b68.zip/node_modules/jwa/",\
@@ -9646,18 +9664,6 @@ const RAW_RUNTIME_STATE =
           ["jwa", "npm:1.4.1"],\
           ["buffer-equal-constant-time", "npm:1.0.1"],\
           ["ecdsa-sig-formatter", "npm:1.0.11"],\
-          ["safe-buffer", "npm:5.2.1"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
-    ["jwk-to-pem", [\
-      ["npm:2.0.5", {\
-        "packageLocation": "./.yarn/cache/jwk-to-pem-npm-2.0.5-aff7d9f125-fced3a75b0.zip/node_modules/jwk-to-pem/",\
-        "packageDependencies": [\
-          ["jwk-to-pem", "npm:2.0.5"],\
-          ["asn1.js", "npm:5.4.1"],\
-          ["elliptic", "npm:6.5.4"],\
           ["safe-buffer", "npm:5.2.1"]\
         ],\
         "linkType": "HARD"\
@@ -10218,24 +10224,6 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
-    ["minimalistic-assert", [\
-      ["npm:1.0.1", {\
-        "packageLocation": "./.yarn/cache/minimalistic-assert-npm-1.0.1-dc8bb23d29-e2310081d8.zip/node_modules/minimalistic-assert/",\
-        "packageDependencies": [\
-          ["minimalistic-assert", "npm:1.0.1"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
-    ["minimalistic-crypto-utils", [\
-      ["npm:1.0.1", {\
-        "packageLocation": "./.yarn/cache/minimalistic-crypto-utils-npm-1.0.1-e66b10822e-7d909decd2.zip/node_modules/minimalistic-crypto-utils/",\
-        "packageDependencies": [\
-          ["minimalistic-crypto-utils", "npm:1.0.1"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
     ["minimatch", [\
       ["npm:3.1.2", {\
         "packageLocation": "./.yarn/cache/minimatch-npm-3.1.2-9405269906-97f5615ee8.zip/node_modules/minimatch/",\
@@ -10603,6 +10591,15 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["node-gyp-build-optional-packages", [\
+      ["npm:5.0.3", {\
+        "packageLocation": "./.yarn/cache/node-gyp-build-optional-packages-npm-5.0.3-50b9c76481-18e2444d34.zip/node_modules/node-gyp-build-optional-packages/",\
+        "packageDependencies": [\
+          ["node-gyp-build-optional-packages", "npm:5.0.3"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["node-int64", [\
       ["npm:0.4.0", {\
         "packageLocation": "./.yarn/cache/node-int64-npm-0.4.0-0dc04ec3b2-5333c7f5b1.zip/node_modules/node-int64/",\
@@ -10636,15 +10633,6 @@ const RAW_RUNTIME_STATE =
           ["supports-color", "npm:5.5.0"],\
           ["touch", "npm:3.1.0"],\
           ["undefsafe", "npm:2.0.5"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
-    ["nofilter", [\
-      ["npm:1.0.4", {\
-        "packageLocation": "./.yarn/cache/nofilter-npm-1.0.4-1cbdc6c03a-9a26874e7d.zip/node_modules/nofilter/",\
-        "packageDependencies": [\
-          ["nofilter", "npm:1.0.4"]\
         ],\
         "linkType": "HARD"\
       }]\
