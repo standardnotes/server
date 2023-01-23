@@ -465,6 +465,9 @@ export class ContainerConfigLoader {
     container
       .bind(TYPES.U2F_EXPECTED_ORIGIN)
       .toConstantValue(env.get('U2F_EXPECTED_ORIGIN', true) ?? 'https://app.standardnotes.com')
+    container
+      .bind(TYPES.U2F_REQUIRE_USER_VERIFICATION)
+      .toConstantValue(env.get('U2F_REQUIRE_USER_VERIFICATION', true) === 'true')
     // Services
     container.bind<UAParser>(TYPES.DeviceDetector).toConstantValue(new UAParser())
     container.bind<SessionService>(TYPES.SessionService).to(SessionService)
@@ -579,6 +582,7 @@ export class ContainerConfigLoader {
           container.get(TYPES.AuthenticatorChallengeRepository),
           container.get(TYPES.U2F_RELYING_PARTY_ID),
           container.get(TYPES.U2F_EXPECTED_ORIGIN),
+          container.get(TYPES.U2F_REQUIRE_USER_VERIFICATION),
         ),
       )
     container
@@ -597,6 +601,7 @@ export class ContainerConfigLoader {
           container.get(TYPES.AuthenticatorChallengeRepository),
           container.get(TYPES.U2F_RELYING_PARTY_ID),
           container.get(TYPES.U2F_EXPECTED_ORIGIN),
+          container.get(TYPES.U2F_REQUIRE_USER_VERIFICATION),
         ),
       )
     container

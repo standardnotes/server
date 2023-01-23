@@ -97,6 +97,7 @@ const TYPES = {
   U2F_RELYING_PARTY_ID: Symbol.for('U2F_RELYING_PARTY_ID'),
   U2F_RELYING_PARTY_NAME: Symbol.for('U2F_RELYING_PARTY_NAME'),
   U2F_EXPECTED_ORIGIN: Symbol.for('U2F_EXPECTED_ORIGIN'),
+  U2F_REQUIRE_USER_VERIFICATION: Symbol.for('U2F_REQUIRE_USER_VERIFICATION'),
   // use cases
   AuthenticateUser: Symbol.for('AuthenticateUser'),
   AuthenticateRequest: Symbol.for('AuthenticateRequest'),

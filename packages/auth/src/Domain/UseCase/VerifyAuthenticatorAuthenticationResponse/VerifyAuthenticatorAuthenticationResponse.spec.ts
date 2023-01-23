@@ -18,6 +18,7 @@ describe('VerifyAuthenticatorAuthenticationResponse', () => {
       authenticatorChallengeRepository,
       'standardnotes.com',
       'https://app.standardnotes.com',
+      true,
     )
 
   beforeEach(() => {
