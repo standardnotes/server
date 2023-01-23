@@ -1804,10 +1804,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@simplewebauthn/typescript-types@npm:^6.3.0-alpha.1":
-  version: 6.3.0-alpha.1
-  resolution: "@simplewebauthn/typescript-types@npm:6.3.0-alpha.1"
-  checksum: 5667c214e9271c568dae2d5fe1e7d074f058415112a8f1c1138eefb5ca23735eef4be90185f454a96593624efe7c69135a8041070cb6ad419869bfa95ce2f7f5
+"@simplewebauthn/typescript-types@npm:^7.0.0":
+  version: 7.0.0
+  resolution: "@simplewebauthn/typescript-types@npm:7.0.0"
+  checksum: 124238ea1859c80761c4cdbf19107e2e8e96fdefa64affb55fb4fc67d1ac5e3354c3098c908729d2de439a633115d98da77ded7289286fe576559306fa933815
   languageName: node
   linkType: hard
 
@@ -1954,7 +1954,7 @@ __metadata:
     "@sentry/node": "npm:^7.28.1"
     "@sentry/tracing": "npm:^7.28.1"
     "@simplewebauthn/server": "npm:^6.2.2"
-    "@simplewebauthn/typescript-types": "npm:^6.3.0-alpha.1"
+    "@simplewebauthn/typescript-types": "npm:^7.0.0"
     "@standardnotes/api": "npm:^1.24.9"
     "@standardnotes/common": "workspace:*"
     "@standardnotes/domain-core": "workspace:^"

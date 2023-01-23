@@ -2551,10 +2551,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@simplewebauthn/typescript-types", [\
-      ["npm:6.3.0-alpha.1", {\
-        "packageLocation": "./.yarn/cache/@simplewebauthn-typescript-types-npm-6.3.0-alpha.1-629da05c10-5667c214e9.zip/node_modules/@simplewebauthn/typescript-types/",\
+      ["npm:7.0.0", {\
+        "packageLocation": "./.yarn/cache/@simplewebauthn-typescript-types-npm-7.0.0-cc6ca20415-124238ea18.zip/node_modules/@simplewebauthn/typescript-types/",\
         "packageDependencies": [\
-          ["@simplewebauthn/typescript-types", "npm:6.3.0-alpha.1"]\
+          ["@simplewebauthn/typescript-types", "npm:7.0.0"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -2716,7 +2716,7 @@ const RAW_RUNTIME_STATE =
           ["@sentry/node", "npm:7.28.1"],\
           ["@sentry/tracing", "npm:7.28.1"],\
           ["@simplewebauthn/server", "npm:6.2.2"],\
-          ["@simplewebauthn/typescript-types", "npm:6.3.0-alpha.1"],\
+          ["@simplewebauthn/typescript-types", "npm:7.0.0"],\
           ["@standardnotes/api", "npm:1.24.9"],\
           ["@standardnotes/common", "workspace:packages/common"],\
           ["@standardnotes/domain-core", "workspace:packages/domain-core"],\
