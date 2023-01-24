@@ -8,12 +8,12 @@ import {
   results,
 } from 'inversify-express-utils'
 import { CreateValetTokenPayload } from '@standardnotes/responses'
+import { ErrorTag } from '@standardnotes/api'
+import { ValetTokenOperation } from '@standardnotes/security'
+import { Uuid } from '@standardnotes/domain-core'
 
 import TYPES from '../Bootstrap/Types'
 import { CreateValetToken } from '../Domain/UseCase/CreateValetToken/CreateValetToken'
-import { ErrorTag } from '@standardnotes/common'
-import { ValetTokenOperation } from '@standardnotes/security'
-import { Uuid } from '@standardnotes/domain-core'
 
 @controller('/valet-tokens', TYPES.ApiGatewayAuthMiddleware)
 export class ValetTokenController extends BaseHttpController {

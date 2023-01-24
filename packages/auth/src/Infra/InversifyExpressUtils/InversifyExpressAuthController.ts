@@ -1,4 +1,5 @@
 import { Request, Response } from 'express'
+import { ErrorTag } from '@standardnotes/api'
 import {
   BaseHttpController,
   controller,
@@ -16,7 +17,6 @@ import { VerifyMFA } from '../../Domain/UseCase/VerifyMFA'
 import { IncreaseLoginAttempts } from '../../Domain/UseCase/IncreaseLoginAttempts'
 import { Logger } from 'winston'
 import { GetUserKeyParams } from '../../Domain/UseCase/GetUserKeyParams/GetUserKeyParams'
-import { ErrorTag } from '@standardnotes/common'
 import { inject } from 'inversify'
 import { AuthController } from '../../Controller/AuthController'
 

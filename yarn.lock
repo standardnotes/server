@@ -2509,6 +2509,7 @@ __metadata:
     "@newrelic/winston-enricher": "npm:^4.0.0"
     "@sentry/node": "npm:^7.28.1"
     "@sentry/tracing": "npm:^7.28.1"
+    "@standardnotes/api": "npm:^1.24.9"
     "@standardnotes/common": "workspace:*"
     "@standardnotes/domain-core": "workspace:^"
     "@standardnotes/domain-events": "workspace:*"

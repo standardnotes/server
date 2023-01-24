@@ -1,4 +1,4 @@
-import { ErrorTag } from '@standardnotes/common'
+import { ErrorTag } from '@standardnotes/api'
 import { TokenDecoderInterface, WebSocketConnectionTokenData } from '@standardnotes/security'
 import { Request } from 'express'
 import { inject } from 'inversify'

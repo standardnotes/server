@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
 import { inject } from 'inversify'
+import { ErrorTag } from '@standardnotes/api'
 import {
   BaseHttpController,
   controller,
@@ -18,7 +19,6 @@ import { GetUserSubscription } from '../Domain/UseCase/GetUserSubscription/GetUs
 import { ClearLoginAttempts } from '../Domain/UseCase/ClearLoginAttempts'
 import { IncreaseLoginAttempts } from '../Domain/UseCase/IncreaseLoginAttempts'
 import { ChangeCredentials } from '../Domain/UseCase/ChangeCredentials/ChangeCredentials'
-import { ErrorTag } from '@standardnotes/common'
 
 @controller('/users')
 export class UsersController extends BaseHttpController {

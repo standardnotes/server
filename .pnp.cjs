@@ -3316,6 +3316,7 @@ const RAW_RUNTIME_STATE =
           ["@newrelic/winston-enricher", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:4.0.0"],\
           ["@sentry/node", "npm:7.28.1"],\
           ["@sentry/tracing", "npm:7.28.1"],\
+          ["@standardnotes/api", "npm:1.24.9"],\
           ["@standardnotes/common", "workspace:packages/common"],\
           ["@standardnotes/domain-core", "workspace:packages/domain-core"],\
           ["@standardnotes/domain-events", "workspace:packages/domain-events"],\
