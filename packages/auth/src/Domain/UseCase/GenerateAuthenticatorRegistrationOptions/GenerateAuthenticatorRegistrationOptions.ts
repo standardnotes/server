@@ -34,10 +34,6 @@ export class GenerateAuthenticatorRegistrationOptions implements UseCaseInterfac
       userID: userUuid.value,
       userName: username.value,
       attestationType: 'none',
-      authenticatorSelection: {
-        requireResidentKey: false,
-        userVerification: 'discouraged',
-      },
       excludeCredentials: authenticators.map((authenticator) => ({
         id: authenticator.props.credentialId,
         type: 'public-key',
