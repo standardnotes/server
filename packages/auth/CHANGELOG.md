@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.86.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.86.0...@standardnotes/auth-server@1.86.1) (2023-01-24)
+
+### Bug Fixes
+
+* **auth:** buffer types on authenticator credentials ([f5296a9](https://github.com/standardnotes/server/commit/f5296a947eabe4d3db22e3afdf1690efa5670532))
+
 # [1.86.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.85.0...@standardnotes/auth-server@1.86.0) (2023-01-23)
 
 ### Features
