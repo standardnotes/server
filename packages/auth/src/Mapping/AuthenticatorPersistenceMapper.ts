@@ -45,8 +45,8 @@ export class AuthenticatorPersistenceMapper implements MapperInterface<Authentic
     typeorm.uuid = domain.id.toString()
     typeorm.name = domain.props.name
     typeorm.userUuid = domain.props.userUuid.value
-    typeorm.credentialId = domain.props.credentialId
-    typeorm.credentialPublicKey = domain.props.credentialPublicKey
+    typeorm.credentialId = Buffer.from(domain.props.credentialId.buffer)
+    typeorm.credentialPublicKey = Buffer.from(domain.props.credentialPublicKey.buffer)
     typeorm.counter = domain.props.counter
     typeorm.credentialDeviceType = domain.props.credentialDeviceType
     typeorm.credentialBackedUp = domain.props.credentialBackedUp
