@@ -11,6 +11,14 @@ export class MySQLAuthenticatorRepository implements AuthenticatorRepositoryInte
     private mapper: MapperInterface<Authenticator, TypeORMAuthenticator>,
   ) {}
 
+  async removeByUserUuid(userUuid: Uuid): Promise<void> {
+    await this.ormRepository
+      .createQueryBuilder()
+      .delete()
+      .where('user_uuid = :userUuid', { userUuid: userUuid.value })
+      .execute()
+  }
+
   async findById(id: UniqueEntityId): Promise<Authenticator | null> {
     const persistence = await this.ormRepository
       .createQueryBuilder('authenticator')

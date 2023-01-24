@@ -665,6 +665,7 @@ export class ContainerConfigLoader {
           container.get(TYPES.IncreaseLoginAttempts),
           container.get(TYPES.ClearLoginAttempts),
           container.get(TYPES.DeleteSetting),
+          container.get(TYPES.AuthenticatorRepository),
         ),
       )
     container.bind<DeleteAccount>(TYPES.DeleteAccount).to(DeleteAccount)

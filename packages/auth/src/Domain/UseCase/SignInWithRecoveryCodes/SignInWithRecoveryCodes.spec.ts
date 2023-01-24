@@ -2,6 +2,7 @@ import { Result } from '@standardnotes/domain-core'
 
 import { AuthResponse20200115 } from '../../Auth/AuthResponse20200115'
 import { AuthResponseFactory20200115 } from '../../Auth/AuthResponseFactory20200115'
+import { AuthenticatorRepositoryInterface } from '../../Authenticator/AuthenticatorRepositoryInterface'
 import { CrypterInterface } from '../../Encryption/CrypterInterface'
 import { Setting } from '../../Setting/Setting'
 import { SettingServiceInterface } from '../../Setting/SettingServiceInterface'
@@ -24,6 +25,7 @@ describe('SignInWithRecoveryCodes', () => {
   let increaseLoginAttempts: IncreaseLoginAttempts
   let clearLoginAttempts: ClearLoginAttempts
   let deleteSetting: DeleteSetting
+  let authenticatorRepository: AuthenticatorRepositoryInterface
 
   const createUseCase = () =>
     new SignInWithRecoveryCodes(
@@ -36,12 +38,13 @@ describe('SignInWithRecoveryCodes', () => {
       increaseLoginAttempts,
       clearLoginAttempts,
       deleteSetting,
+      authenticatorRepository,
     )
 
   beforeEach(() => {
     userRepository = {} as jest.Mocked<UserRepositoryInterface>
     userRepository.findOneByEmail = jest.fn().mockReturnValue({
-      uuid: '1-2-3',
+      uuid: '00000000-0000-0000-0000-000000000000',
       encryptedPassword: '$2a$11$K3g6XoTau8VmLJcai1bB0eD9/YvBSBRtBhMprJOaVZ0U3SgasZH3a',
     } as jest.Mocked<User>)
 
@@ -69,6 +72,9 @@ describe('SignInWithRecoveryCodes', () => {
 
     deleteSetting = {} as jest.Mocked<DeleteSetting>
     deleteSetting.execute = jest.fn()
+
+    authenticatorRepository = {} as jest.Mocked<AuthenticatorRepositoryInterface>
+    authenticatorRepository.removeByUserUuid = jest.fn()
   })
 
   it('should return error if password is not provided', async () => {
@@ -209,6 +215,24 @@ describe('SignInWithRecoveryCodes', () => {
     expect(result.getError()).toBe('Could not sign in with recovery codes: Oops')
   })
 
+  it('should return error if user has an invalid uuid', async () => {
+    userRepository.findOneByEmail = jest.fn().mockReturnValue({
+      uuid: '1-2-3',
+      encryptedPassword: '$2a$11$K3g6XoTau8VmLJcai1bB0eD9/YvBSBRtBhMprJOaVZ0U3SgasZH3a',
+    } as jest.Mocked<User>)
+
+    const result = await createUseCase().execute({
+      userAgent: 'user-agent',
+      username: 'test@test.te',
+      password: 'qweqwe123123',
+      codeVerifier: 'code-verifier',
+      recoveryCodes: 'foo',
+    })
+
+    expect(result.isFailed()).toBe(true)
+    expect(result.getError()).toBe('Invalid user uuid')
+  })
+
   it('should return auth response', async () => {
     const result = await createUseCase().execute({
       userAgent: 'user-agent',
@@ -220,6 +244,7 @@ describe('SignInWithRecoveryCodes', () => {
 
     expect(clearLoginAttempts.execute).toHaveBeenCalled()
     expect(deleteSetting.execute).toHaveBeenCalled()
+    expect(authenticatorRepository.removeByUserUuid).toHaveBeenCalled()
     expect(result.isFailed()).toBe(false)
   })
 })
