@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.86.4](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.86.3...@standardnotes/auth-server@1.86.4) (2023-01-24)
+
+### Bug Fixes
+
+* **auth:** add cleanup of authenticator devices upon sign in with recovery codes ([f1d3117](https://github.com/standardnotes/server/commit/f1d311751832a2abdbe124cede7f020b28cbcd9d))
+
 ## [1.86.3](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.86.2...@standardnotes/auth-server@1.86.3) (2023-01-24)
 
 ### Reverts
