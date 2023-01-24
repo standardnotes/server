@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.87.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.86.4...@standardnotes/auth-server@1.87.0) (2023-01-24)
+
+### Features
+
+* **auth:** add U2F to MFA verification ([6a5b669](https://github.com/standardnotes/server/commit/6a5b669ec47d3fd71fec3e362d66480d91c544d0))
+
 ## [1.86.4](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.86.3...@standardnotes/auth-server@1.86.4) (2023-01-24)
 
 ### Bug Fixes
