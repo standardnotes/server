@@ -4,16 +4,21 @@ import { SettingName } from '@standardnotes/settings'
 import { v4 as uuidv4 } from 'uuid'
 import { inject, injectable } from 'inversify'
 import { authenticator } from 'otplib'
+import { SelectorInterface } from '@standardnotes/security'
+import { UseCaseInterface as DomainUseCaseInterface, Uuid } from '@standardnotes/domain-core'
 
 import TYPES from '../../Bootstrap/Types'
 import { MFAValidationError } from '../Error/MFAValidationError'
 import { UserRepositoryInterface } from '../User/UserRepositoryInterface'
+import { SettingServiceInterface } from '../Setting/SettingServiceInterface'
+import { LockRepositoryInterface } from '../User/LockRepositoryInterface'
+import { AuthenticatorRepositoryInterface } from '../Authenticator/AuthenticatorRepositoryInterface'
+
 import { UseCaseInterface } from './UseCaseInterface'
 import { VerifyMFADTO } from './VerifyMFADTO'
 import { VerifyMFAResponse } from './VerifyMFAResponse'
-import { SettingServiceInterface } from '../Setting/SettingServiceInterface'
-import { SelectorInterface } from '@standardnotes/security'
-import { LockRepositoryInterface } from '../User/LockRepositoryInterface'
+import { Logger } from 'winston'
+import { Setting } from '../Setting/Setting'
 
 @injectable()
 export class VerifyMFA implements UseCaseInterface {
@@ -23,6 +28,10 @@ export class VerifyMFA implements UseCaseInterface {
     @inject(TYPES.BooleanSelector) private booleanSelector: SelectorInterface<boolean>,
     @inject(TYPES.LockRepository) private lockRepository: LockRepositoryInterface,
     @inject(TYPES.PSEUDO_KEY_PARAMS_KEY) private pseudoKeyParamsKey: string,
+    @inject(TYPES.AuthenticatorRepository) private authenticatorRepository: AuthenticatorRepositoryInterface,
+    @inject(TYPES.VerifyAuthenticatorAuthenticationResponse)
+    private verifyAuthenticatorAuthenticationResponse: DomainUseCaseInterface<boolean>,
+    @inject(TYPES.Logger) private logger: Logger,
   ) {}
 
   async execute(dto: VerifyMFADTO): Promise<VerifyMFAResponse> {
@@ -48,24 +57,78 @@ export class VerifyMFA implements UseCaseInterface {
             }
       }
 
+      const userUuidOrError = Uuid.create(user.uuid)
+      if (userUuidOrError.isFailed()) {
+        return {
+          success: false,
+          errorMessage: 'User UUID is invalid.',
+        }
+      }
+      const userUuid = userUuidOrError.getValue()
+
+      let u2fEnabled = false
+      const u2fAuthenticators = await this.authenticatorRepository.findByUserUuid(userUuid)
+      if (u2fAuthenticators.length > 0) {
+        u2fEnabled = true
+      }
+
       const mfaSecret = await this.settingService.findSettingWithDecryptedValue({
         userUuid: user.uuid,
         settingName: SettingName.MfaSecret,
       })
-      if (mfaSecret === null || mfaSecret.value === null) {
+      const twoFactorEnabled = mfaSecret !== null && mfaSecret.value !== null
+
+      if (u2fEnabled === false && twoFactorEnabled === false) {
         return {
           success: true,
         }
       }
 
-      const verificationResult = await this.verifyMFASecret(
-        dto.email,
-        mfaSecret.value,
-        dto.requestParams,
-        dto.preventOTPFromFurtherUsage,
-      )
+      if (u2fEnabled) {
+        if (!dto.requestParams.authenticator_response) {
+          return {
+            success: false,
+            errorTag: ErrorTag.MfaRequired,
+            errorMessage: 'Please authenticate with your U2F device.',
+          }
+        }
 
-      return verificationResult
+        const verificationResultOrError = await this.verifyAuthenticatorAuthenticationResponse.execute({
+          userUuid: userUuid.value,
+          authenticatorResponse: dto.requestParams.authenticator_response,
+        })
+        if (verificationResultOrError.isFailed()) {
+          this.logger.debug(`Could not verify U2F authentication: ${verificationResultOrError.getError()}`)
+
+          return {
+            success: false,
+            errorTag: ErrorTag.MfaInvalid,
+            errorMessage: 'Could not verify U2F device.',
+          }
+        }
+
+        const verificationResult = verificationResultOrError.getValue()
+        if (verificationResult === false) {
+          return {
+            success: false,
+            errorTag: ErrorTag.MfaInvalid,
+            errorMessage: 'Could not verify U2F device.',
+          }
+        }
+
+        return {
+          success: true,
+        }
+      } else {
+        const verificationResult = await this.verifyMFASecret(
+          dto.email,
+          (mfaSecret as Setting).value as string,
+          dto.requestParams,
+          dto.preventOTPFromFurtherUsage,
+        )
+
+        return verificationResult
+      }
     } catch (error) {
       if (error instanceof MFAValidationError) {
         return {
