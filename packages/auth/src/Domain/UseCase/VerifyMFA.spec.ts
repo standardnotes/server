@@ -114,7 +114,7 @@ describe('VerifyMFA', () => {
     })
 
     it('should not pass MFA verification if user is not found and pseudo mfa is required', async () => {
-      booleanSelector.select = jest.fn().mockReturnValue(true)
+      booleanSelector.select = jest.fn().mockReturnValueOnce(true).mockReturnValueOnce(false)
       userRepository.findOneByEmail = jest.fn().mockReturnValue(null)
 
       expect(
@@ -240,6 +240,19 @@ describe('VerifyMFA', () => {
       authenticatorRepository.findByUserUuid = jest.fn().mockReturnValue([{} as jest.Mocked<Authenticator>])
     })
 
+    it('should not pass if user is not found and pseudo u2f is required', async () => {
+      booleanSelector.select = jest.fn().mockReturnValueOnce(false).mockReturnValueOnce(true)
+      userRepository.findOneByEmail = jest.fn().mockReturnValue(null)
+
+      expect(
+        await createVerifyMFA().execute({ email: 'test@test.te', requestParams: {}, preventOTPFromFurtherUsage: true }),
+      ).toEqual({
+        success: false,
+        errorTag: 'u2f-required',
+        errorMessage: 'Please authenticate with your U2F device.',
+      })
+    })
+
     it('should not pass if the user has an invalid uuid', async () => {
       userRepository.findOneByEmail = jest.fn().mockReturnValue({ uuid: 'invalid' } as jest.Mocked<User>)
 
@@ -264,7 +277,7 @@ describe('VerifyMFA', () => {
         }),
       ).toEqual({
         success: false,
-        errorTag: 'mfa-required',
+        errorTag: 'u2f-required',
         errorMessage: 'Please authenticate with your U2F device.',
       })
     })

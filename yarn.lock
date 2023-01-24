@@ -2005,9 +2005,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@standardnotes/api@npm:^1.24.9":
-  version: 1.24.9
-  resolution: "@standardnotes/api@npm:1.24.9"
+"@standardnotes/api@npm:^1.24.10":
+  version: 1.24.10
+  resolution: "@standardnotes/api@npm:1.24.10"
   dependencies:
     "@standardnotes/common": "npm:^1.46.4"
     "@standardnotes/domain-core": "npm:^1.11.1"
@@ -2017,7 +2017,7 @@ __metadata:
     "@standardnotes/security": "npm:^1.7.5"
     "@standardnotes/utils": "npm:1.16.3"
     reflect-metadata: "npm:^0.1.13"
-  checksum: 73bfd0fe3b045cf227404b42f4ea42c7ac581b1896ecb777febbce8d34faa3434ef2f7aa769930ab2e1a69abfc3140df1aa7699b2b45516d75c2eea82ceee038
+  checksum: 1b9a97fdd8f2951dac9f9c8d730b23825e4093a3c882004128e618f43de64d1c9050f3de0609bd0ff3999a8bfce2d203a2bce36d2132be3cd42ea7f310509620
   languageName: node
   linkType: hard
 
@@ -2032,7 +2032,7 @@ __metadata:
     "@sentry/tracing": "npm:^7.28.1"
     "@simplewebauthn/server": "npm:^7.0.0"
     "@simplewebauthn/typescript-types": "npm:^7.0.0"
-    "@standardnotes/api": "npm:^1.24.9"
+    "@standardnotes/api": "npm:^1.24.10"
     "@standardnotes/common": "workspace:*"
     "@standardnotes/domain-core": "workspace:^"
     "@standardnotes/domain-events": "workspace:*"
@@ -2342,7 +2342,7 @@ __metadata:
   dependencies:
     "@newrelic/winston-enricher": "npm:^4.0.0"
     "@sentry/node": "npm:^7.28.1"
-    "@standardnotes/api": "npm:^1.24.9"
+    "@standardnotes/api": "npm:^1.24.10"
     "@standardnotes/common": "workspace:^"
     "@standardnotes/domain-core": "workspace:^"
     "@standardnotes/domain-events": "workspace:*"
@@ -2509,7 +2509,7 @@ __metadata:
     "@newrelic/winston-enricher": "npm:^4.0.0"
     "@sentry/node": "npm:^7.28.1"
     "@sentry/tracing": "npm:^7.28.1"
-    "@standardnotes/api": "npm:^1.24.9"
+    "@standardnotes/api": "npm:^1.24.10"
     "@standardnotes/common": "workspace:*"
     "@standardnotes/domain-core": "workspace:^"
     "@standardnotes/domain-events": "workspace:*"
@@ -2605,7 +2605,7 @@ __metadata:
   dependencies:
     "@newrelic/winston-enricher": "npm:^4.0.0"
     "@sentry/node": "npm:^7.28.1"
-    "@standardnotes/api": "npm:^1.24.9"
+    "@standardnotes/api": "npm:^1.24.10"
     "@standardnotes/common": "workspace:^"
     "@standardnotes/domain-core": "workspace:^"
     "@standardnotes/domain-events": "workspace:^"
@@ -2645,7 +2645,7 @@ __metadata:
   dependencies:
     "@newrelic/winston-enricher": "npm:^4.0.0"
     "@sentry/node": "npm:^7.28.1"
-    "@standardnotes/api": "npm:^1.24.9"
+    "@standardnotes/api": "npm:^1.24.10"
     "@standardnotes/common": "workspace:*"
     "@standardnotes/domain-core": "workspace:^"
     "@standardnotes/domain-events": "workspace:^"

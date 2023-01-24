@@ -42,19 +42,35 @@ export class VerifyMFA implements UseCaseInterface {
           .createHash('sha256')
           .update(`mfa-selector-${dto.email}${this.pseudoKeyParamsKey}`)
           .digest('hex')
+        const u2fSelectorHash = crypto
+          .createHash('sha256')
+          .update(`u2f-selector-${dto.email}${this.pseudoKeyParamsKey}`)
+          .digest('hex')
 
         const isPseudoMFARequired = this.booleanSelector.select(mfaSelectorHash, [true, false])
 
-        return isPseudoMFARequired
-          ? {
-              success: false,
-              errorTag: ErrorTag.MfaRequired,
-              errorMessage: 'Please enter your two-factor authentication code.',
-              errorPayload: { mfa_key: `mfa_${uuidv4()}` },
-            }
-          : {
-              success: true,
-            }
+        const isPseudoU2FRequired = this.booleanSelector.select(u2fSelectorHash, [true, false])
+
+        if (isPseudoMFARequired) {
+          return {
+            success: false,
+            errorTag: ErrorTag.MfaRequired,
+            errorMessage: 'Please enter your two-factor authentication code.',
+            errorPayload: { mfa_key: `mfa_${uuidv4()}` },
+          }
+        }
+
+        if (isPseudoU2FRequired) {
+          return {
+            success: false,
+            errorTag: ErrorTag.U2FRequired,
+            errorMessage: 'Please authenticate with your U2F device.',
+          }
+        }
+
+        return {
+          success: true,
+        }
       }
 
       const userUuidOrError = Uuid.create(user.uuid)
@@ -88,7 +104,7 @@ export class VerifyMFA implements UseCaseInterface {
         if (!dto.requestParams.authenticator_response) {
           return {
             success: false,
-            errorTag: ErrorTag.MfaRequired,
+            errorTag: ErrorTag.U2FRequired,
             errorMessage: 'Please authenticate with your U2F device.',
           }
         }

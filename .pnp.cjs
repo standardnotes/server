@@ -2734,10 +2734,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@standardnotes/api", [\
-      ["npm:1.24.9", {\
-        "packageLocation": "./.yarn/cache/@standardnotes-api-npm-1.24.9-b92f13a962-73bfd0fe3b.zip/node_modules/@standardnotes/api/",\
+      ["npm:1.24.10", {\
+        "packageLocation": "./.yarn/cache/@standardnotes-api-npm-1.24.10-63391538ba-1b9a97fdd8.zip/node_modules/@standardnotes/api/",\
         "packageDependencies": [\
-          ["@standardnotes/api", "npm:1.24.9"],\
+          ["@standardnotes/api", "npm:1.24.10"],\
           ["@standardnotes/common", "workspace:packages/common"],\
           ["@standardnotes/domain-core", "workspace:packages/domain-core"],\
           ["@standardnotes/encryption", "npm:1.21.9"],\
@@ -2808,7 +2808,7 @@ const RAW_RUNTIME_STATE =
           ["@sentry/tracing", "npm:7.28.1"],\
           ["@simplewebauthn/server", "npm:7.0.0"],\
           ["@simplewebauthn/typescript-types", "npm:7.0.0"],\
-          ["@standardnotes/api", "npm:1.24.9"],\
+          ["@standardnotes/api", "npm:1.24.10"],\
           ["@standardnotes/common", "workspace:packages/common"],\
           ["@standardnotes/domain-core", "workspace:packages/domain-core"],\
           ["@standardnotes/domain-events", "workspace:packages/domain-events"],\
@@ -3137,7 +3137,7 @@ const RAW_RUNTIME_STATE =
           ["@standardnotes/revisions-server", "workspace:packages/revisions"],\
           ["@newrelic/winston-enricher", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:4.0.0"],\
           ["@sentry/node", "npm:7.28.1"],\
-          ["@standardnotes/api", "npm:1.24.9"],\
+          ["@standardnotes/api", "npm:1.24.10"],\
           ["@standardnotes/common", "workspace:packages/common"],\
           ["@standardnotes/domain-core", "workspace:packages/domain-core"],\
           ["@standardnotes/domain-events", "workspace:packages/domain-events"],\
@@ -3316,7 +3316,7 @@ const RAW_RUNTIME_STATE =
           ["@newrelic/winston-enricher", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:4.0.0"],\
           ["@sentry/node", "npm:7.28.1"],\
           ["@sentry/tracing", "npm:7.28.1"],\
-          ["@standardnotes/api", "npm:1.24.9"],\
+          ["@standardnotes/api", "npm:1.24.10"],\
           ["@standardnotes/common", "workspace:packages/common"],\
           ["@standardnotes/domain-core", "workspace:packages/domain-core"],\
           ["@standardnotes/domain-events", "workspace:packages/domain-events"],\
@@ -3416,7 +3416,7 @@ const RAW_RUNTIME_STATE =
           ["@standardnotes/websockets-server", "workspace:packages/websockets"],\
           ["@newrelic/winston-enricher", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:4.0.0"],\
           ["@sentry/node", "npm:7.28.1"],\
-          ["@standardnotes/api", "npm:1.24.9"],\
+          ["@standardnotes/api", "npm:1.24.10"],\
           ["@standardnotes/common", "workspace:packages/common"],\
           ["@standardnotes/domain-core", "workspace:packages/domain-core"],\
           ["@standardnotes/domain-events", "workspace:packages/domain-events"],\
@@ -3458,7 +3458,7 @@ const RAW_RUNTIME_STATE =
           ["@standardnotes/workspace-server", "workspace:packages/workspace"],\
           ["@newrelic/winston-enricher", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:4.0.0"],\
           ["@sentry/node", "npm:7.28.1"],\
-          ["@standardnotes/api", "npm:1.24.9"],\
+          ["@standardnotes/api", "npm:1.24.10"],\
           ["@standardnotes/common", "workspace:packages/common"],\
           ["@standardnotes/domain-core", "workspace:packages/domain-core"],\
           ["@standardnotes/domain-events", "workspace:packages/domain-events"],\
