@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.25](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.10.24...@standardnotes/revisions-server@1.10.25) (2023-01-24)
+
+### Bug Fixes
+
+* **auth:** add pseudo u2f params on non existing accounts ([e4c65ca](https://github.com/standardnotes/server/commit/e4c65ca631938d8b1d635a40e463d5544051e4a1))
+
 ## [1.10.24](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.10.23...@standardnotes/revisions-server@1.10.24) (2023-01-24)
 
 **Note:** Version bump only for package @standardnotes/revisions-server

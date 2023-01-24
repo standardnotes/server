@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.29.11](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.29.10...@standardnotes/syncing-server@1.29.11) (2023-01-24)
+
+### Bug Fixes
+
+* **auth:** add pseudo u2f params on non existing accounts ([e4c65ca](https://github.com/standardnotes/syncing-server-js/commit/e4c65ca631938d8b1d635a40e463d5544051e4a1))
+
 ## [1.29.10](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.29.9...@standardnotes/syncing-server@1.29.10) (2023-01-24)
 
 **Note:** Version bump only for package @standardnotes/syncing-server

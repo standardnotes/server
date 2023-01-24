@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.87.2](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.87.1...@standardnotes/auth-server@1.87.2) (2023-01-24)
+
+### Bug Fixes
+
+* **auth:** add pseudo u2f params on non existing accounts ([e4c65ca](https://github.com/standardnotes/server/commit/e4c65ca631938d8b1d635a40e463d5544051e4a1))
+
 ## [1.87.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.87.0...@standardnotes/auth-server@1.87.1) (2023-01-24)
 
 **Note:** Version bump only for package @standardnotes/auth-server
