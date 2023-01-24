@@ -26,7 +26,7 @@ export class GenerateAuthenticatorAuthenticationOptions implements UseCaseInterf
         type: 'public-key',
         transports: authenticator.props.transports,
       })),
-      userVerification: 'preferred',
+      userVerification: 'discouraged',
     })
 
     const authenticatorChallengeOrError = AuthenticatorChallenge.create({
