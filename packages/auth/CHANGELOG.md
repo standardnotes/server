@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.86.3](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.86.2...@standardnotes/auth-server@1.86.3) (2023-01-24)
+
+### Reverts
+
+* Revert "fix(auth): fido options user verification as discouraged" ([a3b4aa3](https://github.com/standardnotes/server/commit/a3b4aa3b4a8eb39acf0d907e0f3ab6ffadd9d056))
+
 ## [1.86.2](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.86.1...@standardnotes/auth-server@1.86.2) (2023-01-24)
 
 ### Bug Fixes
