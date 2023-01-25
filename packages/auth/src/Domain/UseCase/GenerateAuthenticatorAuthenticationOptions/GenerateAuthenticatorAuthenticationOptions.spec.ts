@@ -4,14 +4,22 @@ import { Authenticator } from '../../Authenticator/Authenticator'
 import { AuthenticatorChallenge } from '../../Authenticator/AuthenticatorChallenge'
 import { AuthenticatorChallengeRepositoryInterface } from '../../Authenticator/AuthenticatorChallengeRepositoryInterface'
 import { AuthenticatorRepositoryInterface } from '../../Authenticator/AuthenticatorRepositoryInterface'
+import { User } from '../../User/User'
+import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'
 import { GenerateAuthenticatorAuthenticationOptions } from './GenerateAuthenticatorAuthenticationOptions'
 
 describe('GenerateAuthenticatorAuthenticationOptions', () => {
+  let userRepository: UserRepositoryInterface
   let authenticatorRepository: AuthenticatorRepositoryInterface
   let authenticatorChallengeRepository: AuthenticatorChallengeRepositoryInterface
 
   const createUseCase = () =>
-    new GenerateAuthenticatorAuthenticationOptions(authenticatorRepository, authenticatorChallengeRepository)
+    new GenerateAuthenticatorAuthenticationOptions(
+      userRepository,
+      authenticatorRepository,
+      authenticatorChallengeRepository,
+      'pseudo-key-params-key',
+    )
 
   beforeEach(() => {
     const authenticator = Authenticator.create({
@@ -31,19 +39,51 @@ describe('GenerateAuthenticatorAuthenticationOptions', () => {
 
     authenticatorChallengeRepository = {} as jest.Mocked<AuthenticatorChallengeRepositoryInterface>
     authenticatorChallengeRepository.save = jest.fn()
+
+    userRepository = {} as jest.Mocked<UserRepositoryInterface>
+    userRepository.findOneByEmail = jest.fn().mockReturnValue({
+      uuid: '00000000-0000-0000-0000-000000000000',
+    } as jest.Mocked<User>)
   })
 
-  it('should return error if userUuid is invalid', async () => {
+  it('should return error if username is invalid', async () => {
     const useCase = createUseCase()
 
     const result = await useCase.execute({
-      userUuid: 'invalid',
+      username: '',
+    })
+
+    expect(result.isFailed()).toBe(true)
+    expect(result.getError()).toBe('Could not generate authenticator registration options: Username cannot be empty')
+  })
+
+  it('should return error if user uuid is not valid', async () => {
+    userRepository.findOneByEmail = jest.fn().mockReturnValue({
+      uuid: 'invalid',
+    } as jest.Mocked<User>)
+
+    const useCase = createUseCase()
+
+    const result = await useCase.execute({
+      username: 'test@test.te',
     })
 
     expect(result.isFailed()).toBe(true)
     expect(result.getError()).toBe(
       'Could not generate authenticator registration options: Given value is not a valid uuid: invalid',
     )
+  })
+
+  it('should return pseudo options if user is not found', async () => {
+    userRepository.findOneByEmail = jest.fn().mockReturnValue(null)
+
+    const useCase = createUseCase()
+
+    const result = await useCase.execute({
+      username: 'test@test.te',
+    })
+
+    expect(result.isFailed()).toBe(false)
   })
 
   it('should return error if authenticator challenge is invalid', async () => {
@@ -53,7 +93,7 @@ describe('GenerateAuthenticatorAuthenticationOptions', () => {
     const useCase = createUseCase()
 
     const result = await useCase.execute({
-      userUuid: '00000000-0000-0000-0000-000000000000',
+      username: 'test@test.te',
     })
 
     expect(result.isFailed()).toBe(true)
@@ -66,7 +106,7 @@ describe('GenerateAuthenticatorAuthenticationOptions', () => {
     const useCase = createUseCase()
 
     const result = await useCase.execute({
-      userUuid: '00000000-0000-0000-0000-000000000000',
+      username: 'test@test.te',
     })
 
     expect(result.isFailed()).toBe(false)

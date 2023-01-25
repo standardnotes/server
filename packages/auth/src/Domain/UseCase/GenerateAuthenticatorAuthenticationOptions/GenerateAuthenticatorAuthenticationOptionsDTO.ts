@@ -1,3 +1,3 @@
 export interface GenerateAuthenticatorAuthenticationOptionsDTO {
-  userUuid: string
+  username: string
 }

@@ -1,19 +1,50 @@
-import { Result, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
+import * as crypto from 'crypto'
+import { Result, UseCaseInterface, Username, Uuid } from '@standardnotes/domain-core'
 import { generateAuthenticationOptions } from '@simplewebauthn/server'
 
 import { GenerateAuthenticatorAuthenticationOptionsDTO } from './GenerateAuthenticatorAuthenticationOptionsDTO'
 import { AuthenticatorRepositoryInterface } from '../../Authenticator/AuthenticatorRepositoryInterface'
 import { AuthenticatorChallengeRepositoryInterface } from '../../Authenticator/AuthenticatorChallengeRepositoryInterface'
 import { AuthenticatorChallenge } from '../../Authenticator/AuthenticatorChallenge'
+import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'
 
 export class GenerateAuthenticatorAuthenticationOptions implements UseCaseInterface<Record<string, unknown>> {
   constructor(
+    private userRepository: UserRepositoryInterface,
     private authenticatorRepository: AuthenticatorRepositoryInterface,
     private authenticatorChallengeRepository: AuthenticatorChallengeRepositoryInterface,
+    private pseudoKeyParamsKey: string,
   ) {}
 
   async execute(dto: GenerateAuthenticatorAuthenticationOptionsDTO): Promise<Result<Record<string, unknown>>> {
-    const userUuidOrError = Uuid.create(dto.userUuid)
+    const usernameOrError = Username.create(dto.username)
+    if (usernameOrError.isFailed()) {
+      return Result.fail(`Could not generate authenticator registration options: ${usernameOrError.getError()}`)
+    }
+    const username = usernameOrError.getValue()
+
+    const user = await this.userRepository.findOneByEmail(username.value)
+    if (user === null) {
+      const credentialIdHash = crypto
+        .createHash('sha256')
+        .update(`u2f-selector-${dto.username}${this.pseudoKeyParamsKey}`)
+        .digest('base64url')
+
+      const options = generateAuthenticationOptions({
+        allowCredentials: [
+          {
+            id: Buffer.from(credentialIdHash),
+            type: 'public-key',
+            transports: [],
+          },
+        ],
+        userVerification: 'preferred',
+      })
+
+      return Result.ok(options)
+    }
+
+    const userUuidOrError = Uuid.create(user.uuid)
     if (userUuidOrError.isFailed()) {
       return Result.fail(`Could not generate authenticator registration options: ${userUuidOrError.getError()}`)
     }

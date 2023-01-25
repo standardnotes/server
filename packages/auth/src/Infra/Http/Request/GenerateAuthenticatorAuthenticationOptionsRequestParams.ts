@@ -1,3 +1,3 @@
 export interface GenerateAuthenticatorAuthenticationOptionsRequestParams {
-  userUuid: string
+  username: string
 }

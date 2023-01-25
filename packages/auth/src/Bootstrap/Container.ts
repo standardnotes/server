@@ -589,8 +589,10 @@ export class ContainerConfigLoader {
       .bind<GenerateAuthenticatorAuthenticationOptions>(TYPES.GenerateAuthenticatorAuthenticationOptions)
       .toConstantValue(
         new GenerateAuthenticatorAuthenticationOptions(
+          container.get(TYPES.UserRepository),
           container.get(TYPES.AuthenticatorRepository),
           container.get(TYPES.AuthenticatorChallengeRepository),
+          container.get(TYPES.PSEUDO_KEY_PARAMS_KEY),
         ),
       )
     container
@@ -708,7 +710,6 @@ export class ContainerConfigLoader {
           container.get(TYPES.GenerateAuthenticatorRegistrationOptions),
           container.get(TYPES.VerifyAuthenticatorRegistrationResponse),
           container.get(TYPES.GenerateAuthenticatorAuthenticationOptions),
-          container.get(TYPES.VerifyAuthenticatorAuthenticationResponse),
           container.get(TYPES.ListAuthenticators),
           container.get(TYPES.DeleteAuthenticator),
           container.get(TYPES.AuthenticatorHttpMapper),
