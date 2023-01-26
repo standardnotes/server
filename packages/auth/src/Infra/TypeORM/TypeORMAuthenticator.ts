@@ -20,10 +20,9 @@ export class TypeORMAuthenticator {
 
   @Column({
     name: 'credential_id',
-    type: 'varbinary',
-    length: 1024,
+    type: 'text',
   })
-  declare credentialId: Buffer
+  declare credentialId: string
 
   @Column({
     name: 'credential_public_key',

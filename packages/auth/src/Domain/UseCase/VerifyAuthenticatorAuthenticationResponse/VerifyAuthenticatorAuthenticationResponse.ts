@@ -29,7 +29,7 @@ export class VerifyAuthenticatorAuthenticationResponse implements UseCaseInterfa
 
     const authenticator = await this.authenticatorRepository.findByUserUuidAndCredentialId(
       userUuid,
-      Buffer.from(dto.authenticatorResponse.id as string),
+      dto.authenticatorResponse.id as string,
     )
     if (!authenticator) {
       return Result.fail(

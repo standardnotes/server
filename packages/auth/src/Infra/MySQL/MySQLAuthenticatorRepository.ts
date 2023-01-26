@@ -38,7 +38,7 @@ export class MySQLAuthenticatorRepository implements AuthenticatorRepositoryInte
     await this.ormRepository.remove(this.mapper.toProjection(authenticator))
   }
 
-  async findByUserUuidAndCredentialId(userUuid: Uuid, credentialId: Buffer): Promise<Authenticator | null> {
+  async findByUserUuidAndCredentialId(userUuid: Uuid, credentialId: string): Promise<Authenticator | null> {
     const persistence = await this.ormRepository
       .createQueryBuilder('authenticator')
       .where('authenticator.user_uuid = :userUuid AND authenticator.credential_id = :credentialId', {
