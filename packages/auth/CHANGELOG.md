@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.87.5](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.87.4...@standardnotes/auth-server@1.87.5) (2023-01-26)
+
+### Bug Fixes
+
+* **auth:** credential id column type in authenticators ([a92e8f6](https://github.com/standardnotes/server/commit/a92e8f61bcc1acfb7d8505d80a7a6c87e66c2ef2))
+
 ## [1.87.4](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.87.3...@standardnotes/auth-server@1.87.4) (2023-01-25)
 
 **Note:** Version bump only for package @standardnotes/auth-server
