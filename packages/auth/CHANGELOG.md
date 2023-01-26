@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.87.6](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.87.5...@standardnotes/auth-server@1.87.6) (2023-01-26)
+
+### Bug Fixes
+
+* **auth:** add migration for fixing credential id column type ([3c67290](https://github.com/standardnotes/server/commit/3c67290aebc0981fb011e29d83943c0054534d28))
+
 ## [1.87.5](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.87.4...@standardnotes/auth-server@1.87.5) (2023-01-26)
 
 ### Bug Fixes
