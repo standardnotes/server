@@ -25,6 +25,9 @@
     "upgrade:snjs": "yarn ncu -u '@standardnotes/*'"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.259.0",
+    "@aws-sdk/client-sns": "^3.259.0",
+    "@aws-sdk/client-sqs": "^3.259.0",
     "@sentry/node": "^7.28.1",
     "@standardnotes/domain-core": "workspace:^",
     "@standardnotes/domain-events": "workspace:*",
@@ -33,7 +36,6 @@
     "@standardnotes/sncrypto-common": "^1.9.0",
     "@standardnotes/sncrypto-node": "workspace:*",
     "@standardnotes/time": "workspace:*",
-    "aws-sdk": "^2.1260.0",
     "connect-busboy": "^1.0.0",
     "cors": "^2.8.5",
     "dayjs": "^1.11.6",

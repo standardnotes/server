@@ -1,5 +1,5 @@
-import * as AWS from 'aws-sdk'
 import * as winston from 'winston'
+import { SQSClient, SQSClientConfig } from '@aws-sdk/client-sqs'
 import { Container } from 'inversify'
 import { Event } from '../Domain/Event/Event'
 import { Env } from './Env'
@@ -29,7 +29,7 @@ export class ContainerConfigLoader {
     await AppDataSource.initialize()
 
     if (env.get('SQS_QUEUE_URL', true)) {
-      const sqsConfig: AWS.SQS.Types.ClientConfiguration = {
+      const sqsConfig: SQSClientConfig = {
         apiVersion: 'latest',
         region: env.get('SQS_AWS_REGION', true),
       }
@@ -39,7 +39,7 @@ export class ContainerConfigLoader {
           secretAccessKey: env.get('SQS_SECRET_ACCESS_KEY', true),
         }
       }
-      container.bind<AWS.SQS>(TYPES.SQS).toConstantValue(new AWS.SQS(sqsConfig))
+      container.bind<SQSClient>(TYPES.SQS).toConstantValue(new SQSClient(sqsConfig))
     }
 
     const logger = winston.createLogger({

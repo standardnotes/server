@@ -31,8 +31,6 @@ const TYPES = {
   ValetTokenAuthMiddleware: Symbol.for('ValetTokenAuthMiddleware'),
 
   // env vars
-  AWS_ACCESS_KEY_ID: Symbol.for('AWS_ACCESS_KEY_ID'),
-  AWS_SECRET_ACCESS_KEY: Symbol.for('AWS_SECRET_ACCESS_KEY'),
   S3_ENDPOINT: Symbol.for('S3_ENDPOINT'),
   S3_BUCKET_NAME: Symbol.for('S3_BUCKET_NAME'),
   S3_AWS_REGION: Symbol.for('S3_AWS_REGION'),

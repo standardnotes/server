@@ -15,7 +15,7 @@ export class StreamDownloadFile implements UseCaseInterface {
 
   async execute(dto: StreamDownloadFileDTO): Promise<StreamDownloadFileResponse> {
     try {
-      const readStream = this.fileDownloader.createDownloadStream(
+      const readStream = await this.fileDownloader.createDownloadStream(
         `${dto.userUuid}/${dto.resourceRemoteIdentifier}`,
         dto.startRange,
         dto.endRange,

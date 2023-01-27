@@ -1,6 +1,5 @@
 import * as winston from 'winston'
 import Redis from 'ioredis'
-import * as AWS from 'aws-sdk'
 import { Container } from 'inversify'
 import {
   DomainEventHandlerInterface,
@@ -57,6 +56,8 @@ import { CalculateMonthlyRecurringRevenue } from '../Domain/UseCase/CalculateMon
 import { PersistStatistic } from '../Domain/UseCase/PersistStatistic/PersistStatistic'
 import { StatisticMeasureRepositoryInterface } from '../Domain/Statistics/StatisticMeasureRepositoryInterface'
 import { StatisticPersistenceRequestedEventHandler } from '../Domain/Handler/StatisticPersistenceRequestedEventHandler'
+import { SNSClient, SNSClientConfig } from '@aws-sdk/client-sns'
+import { SQSClient, SQSClientConfig } from '@aws-sdk/client-sqs'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -95,15 +96,12 @@ export class ContainerConfigLoader {
     container.bind<winston.Logger>(TYPES.Logger).toConstantValue(logger)
 
     if (env.get('SNS_TOPIC_ARN', true)) {
-      const snsConfig: AWS.SNS.Types.ClientConfiguration = {
+      const snsConfig: SNSClientConfig = {
         apiVersion: 'latest',
         region: env.get('SNS_AWS_REGION', true),
       }
       if (env.get('SNS_ENDPOINT', true)) {
         snsConfig.endpoint = env.get('SNS_ENDPOINT', true)
-      }
-      if (env.get('SNS_DISABLE_SSL', true) === 'true') {
-        snsConfig.sslEnabled = false
       }
       if (env.get('SNS_ACCESS_KEY_ID', true) && env.get('SNS_SECRET_ACCESS_KEY', true)) {
         snsConfig.credentials = {
@@ -111,11 +109,11 @@ export class ContainerConfigLoader {
           secretAccessKey: env.get('SNS_SECRET_ACCESS_KEY', true),
         }
       }
-      container.bind<AWS.SNS>(TYPES.SNS).toConstantValue(new AWS.SNS(snsConfig))
+      container.bind<SNSClient>(TYPES.SNS).toConstantValue(new SNSClient(snsConfig))
     }
 
     if (env.get('SQS_QUEUE_URL', true)) {
-      const sqsConfig: AWS.SQS.Types.ClientConfiguration = {
+      const sqsConfig: SQSClientConfig = {
         apiVersion: 'latest',
         region: env.get('SQS_AWS_REGION', true),
       }
@@ -125,7 +123,7 @@ export class ContainerConfigLoader {
           secretAccessKey: env.get('SQS_SECRET_ACCESS_KEY', true),
         }
       }
-      container.bind<AWS.SQS>(TYPES.SQS).toConstantValue(new AWS.SQS(sqsConfig))
+      container.bind<SQSClient>(TYPES.SQS).toConstantValue(new SQSClient(sqsConfig))
     }
 
     // env vars
