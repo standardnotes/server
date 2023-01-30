@@ -22,6 +22,8 @@
     "typeorm": "typeorm-ts-node-commonjs"
   },
   "dependencies": {
+    "@aws-sdk/client-sns": "^3.259.0",
+    "@aws-sdk/client-sqs": "^3.259.0",
     "@newrelic/winston-enricher": "^4.0.0",
     "@sentry/node": "^7.28.1",
     "@standardnotes/api": "^1.24.10",
@@ -32,7 +34,6 @@
     "@standardnotes/models": "^1.42.11",
     "@standardnotes/security": "workspace:*",
     "@standardnotes/time": "workspace:^",
-    "aws-sdk": "^2.1260.0",
     "cors": "2.8.5",
     "dotenv": "^16.0.1",
     "express": "^4.18.2",

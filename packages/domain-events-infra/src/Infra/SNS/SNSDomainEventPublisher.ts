@@ -1,13 +1,13 @@
-import * as AWS from 'aws-sdk'
 import * as zlib from 'zlib'
+import { MessageAttributeValue, PublishCommand, PublishCommandInput, SNSClient } from '@aws-sdk/client-sns'
 
 import { DomainEventInterface, DomainEventPublisherInterface } from '@standardnotes/domain-events'
 
 export class SNSDomainEventPublisher implements DomainEventPublisherInterface {
-  constructor(private snsClient: AWS.SNS, private topicArn: string) {}
+  constructor(private snsClient: SNSClient, private topicArn: string) {}
 
   async publish(event: DomainEventInterface): Promise<void> {
-    const message: AWS.SNS.PublishInput = {
+    const message: PublishCommandInput = {
       TopicArn: this.topicArn,
       MessageAttributes: {
         event: {
@@ -27,12 +27,14 @@ export class SNSDomainEventPublisher implements DomainEventPublisherInterface {
     }
 
     if (event.meta.target !== undefined) {
-      ;(message.MessageAttributes as AWS.SNS.MessageAttributeMap).target = {
+      ;(message.MessageAttributes as Record<string, MessageAttributeValue>).target = {
         DataType: 'String',
         StringValue: event.meta.target,
       }
     }
 
-    await this.snsClient.publish(message).promise()
+    const command = new PublishCommand(message)
+
+    await this.snsClient.send(command)
   }
 }

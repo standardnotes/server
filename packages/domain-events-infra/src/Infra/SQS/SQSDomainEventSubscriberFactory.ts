@@ -1,6 +1,5 @@
-import { SQS } from 'aws-sdk'
-import { Consumer, SQSMessage } from 'sqs-consumer'
-
+import { Consumer } from 'sqs-consumer'
+import { Message, SQSClient } from '@aws-sdk/client-sqs'
 import {
   DomainEventMessageHandlerInterface,
   DomainEventSubscriberFactoryInterface,
@@ -9,7 +8,7 @@ import {
 
 export class SQSDomainEventSubscriberFactory implements DomainEventSubscriberFactoryInterface {
   constructor(
-    private sqs: SQS,
+    private sqs: SQSClient,
     private queueUrl: string,
     private domainEventMessageHandler: DomainEventMessageHandlerInterface,
   ) {}
@@ -22,7 +21,7 @@ export class SQSDomainEventSubscriberFactory implements DomainEventSubscriberFac
       sqs: this.sqs,
       handleMessage:
         /* istanbul ignore next */
-        async (message: SQSMessage) => await this.domainEventMessageHandler.handleMessage(<string>message.Body),
+        async (message: Message) => await this.domainEventMessageHandler.handleMessage(<string>message.Body),
     })
 
     sqsConsumer.on('error', this.domainEventMessageHandler.handleError.bind(this.domainEventMessageHandler))

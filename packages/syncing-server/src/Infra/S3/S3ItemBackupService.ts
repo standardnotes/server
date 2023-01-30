@@ -1,6 +1,6 @@
 import * as uuid from 'uuid'
+import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
 import { KeyParamsData } from '@standardnotes/responses'
-import { S3 } from 'aws-sdk'
 import { inject, injectable } from 'inversify'
 import { Logger } from 'winston'
 
@@ -16,7 +16,7 @@ export class S3ItemBackupService implements ItemBackupServiceInterface {
     @inject(TYPES.S3_BACKUP_BUCKET_NAME) private s3BackupBucketName: string,
     @inject(TYPES.ItemProjector) private itemProjector: ProjectorInterface<Item, ItemProjection>,
     @inject(TYPES.Logger) private logger: Logger,
-    @inject(TYPES.S3) private s3Client?: S3,
+    @inject(TYPES.S3) private s3Client?: S3Client,
   ) {}
 
   async dump(item: Item): Promise<string> {
@@ -26,17 +26,18 @@ export class S3ItemBackupService implements ItemBackupServiceInterface {
       return ''
     }
 
-    const uploadResult = await this.s3Client
-      .upload({
+    const s3Key = uuid.v4()
+    await this.s3Client.send(
+      new PutObjectCommand({
         Bucket: this.s3BackupBucketName,
-        Key: uuid.v4(),
+        Key: s3Key,
         Body: JSON.stringify({
           item: await this.itemProjector.projectCustom('dump', item),
         }),
-      })
-      .promise()
+      }),
+    )
 
-    return uploadResult.Key
+    return s3Key
   }
 
   async backup(items: Item[], authParams: KeyParamsData): Promise<string> {
@@ -53,17 +54,17 @@ export class S3ItemBackupService implements ItemBackupServiceInterface {
       itemProjections.push(await this.itemProjector.projectFull(item))
     }
 
-    const uploadResult = await this.s3Client
-      .upload({
+    await this.s3Client.send(
+      new PutObjectCommand({
         Bucket: this.s3BackupBucketName,
         Key: fileName,
         Body: JSON.stringify({
           items: itemProjections,
           auth_params: authParams,
         }),
-      })
-      .promise()
+      }),
+    )
 
-    return uploadResult.Key
+    return fileName
   }
 }

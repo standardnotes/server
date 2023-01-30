@@ -13,7 +13,7 @@ export class FSFileDownloader implements FileDownloaderInterface {
     return (await promises.stat(`${this.fileUploadPath}/${filePath}`)).size
   }
 
-  createDownloadStream(filePath: string, startRange: number, endRange: number): Readable {
-    return createReadStream(`${this.fileUploadPath}/${filePath}`, { start: startRange, end: endRange })
+  async createDownloadStream(filePath: string, startRange: number, endRange: number): Promise<Readable> {
+    return Promise.resolve(createReadStream(`${this.fileUploadPath}/${filePath}`, { start: startRange, end: endRange }))
   }
 }

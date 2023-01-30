@@ -1,6 +1,8 @@
 import * as winston from 'winston'
 import Redis from 'ioredis'
-import * as AWS from 'aws-sdk'
+import { SNSClient, SNSClientConfig } from '@aws-sdk/client-sns'
+import { SQSClient, SQSClientConfig } from '@aws-sdk/client-sqs'
+import { S3Client, S3ClientConfig } from '@aws-sdk/client-s3'
 import { Container } from 'inversify'
 
 import { Env } from './Env'
@@ -81,22 +83,18 @@ export class ContainerConfigLoader {
 
     container.bind(TYPES.Redis).toConstantValue(redis)
 
-    if (env.get('AWS_ACCESS_KEY_ID', true)) {
-      AWS.config.credentials = new AWS.EnvironmentCredentials('AWS')
-    }
-
     if (env.get('S3_AWS_REGION', true) || env.get('S3_ENDPOINT', true)) {
-      const s3Opts: AWS.S3.Types.ClientConfiguration = {
+      const s3Opts: S3ClientConfig = {
         apiVersion: 'latest',
       }
       if (env.get('S3_AWS_REGION', true)) {
         s3Opts.region = env.get('S3_AWS_REGION', true)
       }
       if (env.get('S3_ENDPOINT', true)) {
-        s3Opts.endpoint = new AWS.Endpoint(env.get('S3_ENDPOINT', true))
+        s3Opts.endpoint = env.get('S3_ENDPOINT', true)
       }
-      const s3Client = new AWS.S3(s3Opts)
-      container.bind<AWS.S3>(TYPES.S3).toConstantValue(s3Client)
+      const s3Client = new S3Client(s3Opts)
+      container.bind<S3Client>(TYPES.S3).toConstantValue(s3Client)
       container.bind<FileDownloaderInterface>(TYPES.FileDownloader).to(S3FileDownloader)
       container.bind<FileUploaderInterface>(TYPES.FileUploader).to(S3FileUploader)
       container.bind<FileRemoverInterface>(TYPES.FileRemover).to(S3FileRemover)
@@ -109,15 +107,12 @@ export class ContainerConfigLoader {
     }
 
     if (env.get('SNS_TOPIC_ARN', true)) {
-      const snsConfig: AWS.SNS.Types.ClientConfiguration = {
+      const snsConfig: SNSClientConfig = {
         apiVersion: 'latest',
         region: env.get('SNS_AWS_REGION', true),
       }
       if (env.get('SNS_ENDPOINT', true)) {
         snsConfig.endpoint = env.get('SNS_ENDPOINT', true)
-      }
-      if (env.get('SNS_DISABLE_SSL', true) === 'true') {
-        snsConfig.sslEnabled = false
       }
       if (env.get('SNS_ACCESS_KEY_ID', true) && env.get('SNS_SECRET_ACCESS_KEY', true)) {
         snsConfig.credentials = {
@@ -125,13 +120,15 @@ export class ContainerConfigLoader {
           secretAccessKey: env.get('SNS_SECRET_ACCESS_KEY', true),
         }
       }
-      container.bind<AWS.SNS>(TYPES.SNS).toConstantValue(new AWS.SNS(snsConfig))
+      container.bind<SNSClient>(TYPES.SNS).toConstantValue(new SNSClient(snsConfig))
     }
 
     if (env.get('SQS_QUEUE_URL', true)) {
-      const sqsConfig: AWS.SQS.Types.ClientConfiguration = {
-        apiVersion: 'latest',
+      const sqsConfig: SQSClientConfig = {
         region: env.get('SQS_AWS_REGION', true),
+      }
+      if (env.get('SQS_ENDPOINT', true)) {
+        sqsConfig.endpoint = env.get('SQS_ENDPOINT', true)
       }
       if (env.get('SQS_ACCESS_KEY_ID', true) && env.get('SQS_SECRET_ACCESS_KEY', true)) {
         sqsConfig.credentials = {
@@ -139,7 +136,7 @@ export class ContainerConfigLoader {
           secretAccessKey: env.get('SQS_SECRET_ACCESS_KEY', true),
         }
       }
-      container.bind<AWS.SQS>(TYPES.SQS).toConstantValue(new AWS.SQS(sqsConfig))
+      container.bind<SQSClient>(TYPES.SQS).toConstantValue(new SQSClient(sqsConfig))
     }
 
     // use cases

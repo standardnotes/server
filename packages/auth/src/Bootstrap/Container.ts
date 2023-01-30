@@ -1,6 +1,7 @@
 import * as winston from 'winston'
 import Redis from 'ioredis'
-import * as AWS from 'aws-sdk'
+import { SNSClient, SNSClientConfig } from '@aws-sdk/client-sns'
+import { SQSClient, SQSClientConfig } from '@aws-sdk/client-sqs'
 import { Container } from 'inversify'
 import {
   DomainEventHandlerInterface,
@@ -258,15 +259,11 @@ export class ContainerConfigLoader {
     container.bind<TimerInterface>(TYPES.Timer).toConstantValue(new Timer())
 
     if (env.get('SNS_TOPIC_ARN', true)) {
-      const snsConfig: AWS.SNS.Types.ClientConfiguration = {
-        apiVersion: 'latest',
+      const snsConfig: SNSClientConfig = {
         region: env.get('SNS_AWS_REGION', true),
       }
       if (env.get('SNS_ENDPOINT', true)) {
         snsConfig.endpoint = env.get('SNS_ENDPOINT', true)
-      }
-      if (env.get('SNS_DISABLE_SSL', true) === 'true') {
-        snsConfig.sslEnabled = false
       }
       if (env.get('SNS_ACCESS_KEY_ID', true) && env.get('SNS_SECRET_ACCESS_KEY', true)) {
         snsConfig.credentials = {
@@ -274,13 +271,15 @@ export class ContainerConfigLoader {
           secretAccessKey: env.get('SNS_SECRET_ACCESS_KEY', true),
         }
       }
-      container.bind<AWS.SNS>(TYPES.SNS).toConstantValue(new AWS.SNS(snsConfig))
+      container.bind<SNSClient>(TYPES.SNS).toConstantValue(new SNSClient(snsConfig))
     }
 
     if (env.get('SQS_QUEUE_URL', true)) {
-      const sqsConfig: AWS.SQS.Types.ClientConfiguration = {
-        apiVersion: 'latest',
+      const sqsConfig: SQSClientConfig = {
         region: env.get('SQS_AWS_REGION', true),
+      }
+      if (env.get('SQS_ENDPOINT', true)) {
+        sqsConfig.endpoint = env.get('SQS_ENDPOINT', true)
       }
       if (env.get('SQS_ACCESS_KEY_ID', true) && env.get('SQS_SECRET_ACCESS_KEY', true)) {
         sqsConfig.credentials = {
@@ -288,7 +287,7 @@ export class ContainerConfigLoader {
           secretAccessKey: env.get('SQS_SECRET_ACCESS_KEY', true),
         }
       }
-      container.bind<AWS.SQS>(TYPES.SQS).toConstantValue(new AWS.SQS(sqsConfig))
+      container.bind<SQSClient>(TYPES.SQS).toConstantValue(new SQSClient(sqsConfig))
     }
 
     // Mapping

@@ -1,6 +1,8 @@
 import * as winston from 'winston'
 import Redis from 'ioredis'
-import * as AWS from 'aws-sdk'
+import { Timer, TimerInterface } from '@standardnotes/time'
+import { SQSClient, SQSClientConfig } from '@aws-sdk/client-sqs'
+import { S3Client } from '@aws-sdk/client-s3'
 import { Container } from 'inversify'
 import { Repository } from 'typeorm'
 import {
@@ -45,7 +47,6 @@ import { RevisionsOwnershipUpdateRequestedEventHandler } from '../Domain/Handler
 import { RevisionHttpMapper } from '../Mapping/RevisionHttpMapper'
 import { RevisionMetadataHttpMapper } from '../Mapping/RevisionMetadataHttpMapper'
 import { GetRequiredRoleToViewRevision } from '../Domain/UseCase/GetRequiredRoleToViewRevision/GetRequiredRoleToViewRevision'
-import { Timer, TimerInterface } from '@standardnotes/time'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -84,9 +85,11 @@ export class ContainerConfigLoader {
     container.bind<winston.Logger>(TYPES.Logger).toConstantValue(logger)
 
     if (env.get('SQS_QUEUE_URL', true)) {
-      const sqsConfig: AWS.SQS.Types.ClientConfiguration = {
-        apiVersion: 'latest',
+      const sqsConfig: SQSClientConfig = {
         region: env.get('SQS_AWS_REGION', true),
+      }
+      if (env.get('SQS_ENDPOINT', true)) {
+        sqsConfig.endpoint = env.get('SQS_ENDPOINT', true)
       }
       if (env.get('SQS_ACCESS_KEY_ID', true) && env.get('SQS_SECRET_ACCESS_KEY', true)) {
         sqsConfig.credentials = {
@@ -94,17 +97,17 @@ export class ContainerConfigLoader {
           secretAccessKey: env.get('SQS_SECRET_ACCESS_KEY', true),
         }
       }
-      container.bind<AWS.SQS>(TYPES.SQS).toConstantValue(new AWS.SQS(sqsConfig))
+      container.bind<SQSClient>(TYPES.SQS).toConstantValue(new SQSClient(sqsConfig))
     }
 
     let s3Client = undefined
     if (env.get('S3_AWS_REGION', true)) {
-      s3Client = new AWS.S3({
+      s3Client = new S3Client({
         apiVersion: 'latest',
         region: env.get('S3_AWS_REGION', true),
       })
     }
-    container.bind<AWS.S3 | undefined>(TYPES.S3).toConstantValue(s3Client)
+    container.bind<S3Client | undefined>(TYPES.S3).toConstantValue(s3Client)
 
     container.bind<TimerInterface>(TYPES.Timer).toConstantValue(new Timer())
 
