@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.9.14](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.9.13...@standardnotes/files-server@1.9.14) (2023-01-30)
+
+### Bug Fixes
+
+* sqs configuration for aws sdk v3 ([b54c331](https://github.com/standardnotes/files/commit/b54c331bef0d4ad1ba1111700dc9f1bf64c1ea51))
+
 ## [1.9.13](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.9.12...@standardnotes/files-server@1.9.13) (2023-01-25)
 
 **Note:** Version bump only for package @standardnotes/files-server

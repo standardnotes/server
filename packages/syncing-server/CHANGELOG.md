@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.29.13](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.29.12...@standardnotes/syncing-server@1.29.13) (2023-01-30)
+
+### Bug Fixes
+
+* sqs configuration for aws sdk v3 ([b54c331](https://github.com/standardnotes/syncing-server-js/commit/b54c331bef0d4ad1ba1111700dc9f1bf64c1ea51))
+
 ## [1.29.12](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.29.11...@standardnotes/syncing-server@1.29.12) (2023-01-25)
 
 **Note:** Version bump only for package @standardnotes/syncing-server

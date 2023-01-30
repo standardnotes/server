@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.5.19](https://github.com/standardnotes/server/compare/@standardnotes/websockets-server@1.5.18...@standardnotes/websockets-server@1.5.19) (2023-01-30)
+
+### Bug Fixes
+
+* sqs configuration for aws sdk v3 ([b54c331](https://github.com/standardnotes/server/commit/b54c331bef0d4ad1ba1111700dc9f1bf64c1ea51))
+
 ## [1.5.18](https://github.com/standardnotes/server/compare/@standardnotes/websockets-server@1.5.17...@standardnotes/websockets-server@1.5.18) (2023-01-25)
 
 **Note:** Version bump only for package @standardnotes/websockets-server

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.19.15](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.19.14...@standardnotes/analytics@2.19.15) (2023-01-30)
+
+### Bug Fixes
+
+* sqs configuration for aws sdk v3 ([b54c331](https://github.com/standardnotes/server/commit/b54c331bef0d4ad1ba1111700dc9f1bf64c1ea51))
+
 ## [2.19.14](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.19.13...@standardnotes/analytics@2.19.14) (2023-01-25)
 
 **Note:** Version bump only for package @standardnotes/analytics

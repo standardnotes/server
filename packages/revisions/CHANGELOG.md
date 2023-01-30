@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.27](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.10.26...@standardnotes/revisions-server@1.10.27) (2023-01-30)
+
+### Bug Fixes
+
+* sqs configuration for aws sdk v3 ([b54c331](https://github.com/standardnotes/server/commit/b54c331bef0d4ad1ba1111700dc9f1bf64c1ea51))
+
 ## [1.10.26](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.10.25...@standardnotes/revisions-server@1.10.26) (2023-01-25)
 
 **Note:** Version bump only for package @standardnotes/revisions-server
