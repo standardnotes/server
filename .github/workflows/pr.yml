@@ -92,6 +92,10 @@ jobs:
     strategy:
       matrix:
         application: 
+          - { "service_name": "api-gateway", "workspace_name": "@standardnotes/api-gateway", "e2e_tag_parameter_name": "api_gateway_image_tag", "package_path": "packages/api-gateway" }
+          - { "service_name": "auth", "workspace_name": "@standardnotes/auth-server", "e2e_tag_parameter_name": "auth_image_tag", "package_path": "packages/auth" }  
+          - { "service_name": "files", "workspace_name": "@standardnotes/files-server", "e2e_tag_parameter_name": "files_image_tag", "package_path": "packages/files" }
+          - { "service_name": "revisions", "workspace_name": "@standardnotes/revisions-server", "e2e_tag_parameter_name": "revisions_image_tag", "package_path": "packages/revisions"}
           - { "service_name": "syncing-server-js",  "workspace_name": "@standardnotes/syncing-server", "e2e_tag_parameter_name": "syncing_server_js_image_tag", "package_path": "packages/syncing-server" }
     runs-on: ubuntu-latest
 
