@@ -10,8 +10,8 @@ export class VerifyAuthenticatorRegistrationResponse implements UseCaseInterface
   constructor(
     private authenticatorRepository: AuthenticatorRepositoryInterface,
     private authenticatorChallengeRepository: AuthenticatorChallengeRepositoryInterface,
-    private relyingPartyId: string,
-    private expectedOrigin: string,
+    private relyingPartyId: string[],
+    private expectedOrigin: string[],
     private requireUserVerification: boolean,
   ) {}
 

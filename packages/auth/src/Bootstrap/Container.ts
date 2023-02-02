@@ -460,10 +460,18 @@ export class ContainerConfigLoader {
       .toConstantValue(env.get('U2F_RELYING_PARTY_NAME', true) ?? 'Standard Notes')
     container
       .bind(TYPES.U2F_RELYING_PARTY_ID)
-      .toConstantValue(env.get('U2F_RELYING_PARTY_ID', true) ?? 'standardnotes.com')
+      .toConstantValue(
+        env.get('U2F_RELYING_PARTY_ID', true)
+          ? env.get('U2F_RELYING_PARTY_ID', true).split(',')
+          : ['standardnotes.com'],
+      )
     container
       .bind(TYPES.U2F_EXPECTED_ORIGIN)
-      .toConstantValue(env.get('U2F_EXPECTED_ORIGIN', true) ?? 'https://app.standardnotes.com')
+      .toConstantValue(
+        env.get('U2F_EXPECTED_ORIGIN', true)
+          ? env.get('U2F_EXPECTED_ORIGIN', true).split(',')
+          : ['https://app.standardnotes.com'],
+      )
     container
       .bind(TYPES.U2F_REQUIRE_USER_VERIFICATION)
       .toConstantValue(env.get('U2F_REQUIRE_USER_VERIFICATION', true) === 'true')
