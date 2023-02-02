@@ -573,7 +573,6 @@ export class ContainerConfigLoader {
         new GenerateAuthenticatorRegistrationOptions(
           container.get(TYPES.AuthenticatorRepository),
           container.get(TYPES.AuthenticatorChallengeRepository),
-          container.get(TYPES.SettingService),
           container.get(TYPES.U2F_RELYING_PARTY_NAME),
           container.get(TYPES.U2F_RELYING_PARTY_ID),
         ),
@@ -584,7 +583,6 @@ export class ContainerConfigLoader {
         new VerifyAuthenticatorRegistrationResponse(
           container.get(TYPES.AuthenticatorRepository),
           container.get(TYPES.AuthenticatorChallengeRepository),
-          container.get(TYPES.SettingService),
           container.get(TYPES.U2F_RELYING_PARTY_ID),
           container.get(TYPES.U2F_EXPECTED_ORIGIN),
           container.get(TYPES.U2F_REQUIRE_USER_VERIFICATION),

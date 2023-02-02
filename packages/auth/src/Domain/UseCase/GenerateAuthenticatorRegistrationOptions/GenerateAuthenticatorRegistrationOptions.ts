@@ -5,14 +5,11 @@ import { GenerateAuthenticatorRegistrationOptionsDTO } from './GenerateAuthentic
 import { AuthenticatorRepositoryInterface } from '../../Authenticator/AuthenticatorRepositoryInterface'
 import { AuthenticatorChallengeRepositoryInterface } from '../../Authenticator/AuthenticatorChallengeRepositoryInterface'
 import { AuthenticatorChallenge } from '../../Authenticator/AuthenticatorChallenge'
-import { SettingServiceInterface } from '../../Setting/SettingServiceInterface'
-import { SettingName } from '@standardnotes/settings'
 
 export class GenerateAuthenticatorRegistrationOptions implements UseCaseInterface<Record<string, unknown>> {
   constructor(
     private authenticatorRepository: AuthenticatorRepositoryInterface,
     private authenticatorChallengeRepository: AuthenticatorChallengeRepositoryInterface,
-    private settingService: SettingServiceInterface,
     private relyingPartyName: string,
     private relyingPartyId: string,
   ) {}
@@ -23,15 +20,6 @@ export class GenerateAuthenticatorRegistrationOptions implements UseCaseInterfac
       return Result.fail(`Could not generate authenticator registration options: ${userUuidOrError.getError()}`)
     }
     const userUuid = userUuidOrError.getValue()
-
-    const mfaSecret = await this.settingService.findSettingWithDecryptedValue({
-      userUuid: userUuid.value,
-      settingName: SettingName.MfaSecret,
-    })
-    const twoFactorEnabled = mfaSecret !== null && mfaSecret.value !== null
-    if (!twoFactorEnabled) {
-      return Result.fail('Could not verify authenticator registration response: Fallback 2FA not enabled for user.')
-    }
 
     const usernameOrError = Username.create(dto.username)
     if (usernameOrError.isFailed()) {

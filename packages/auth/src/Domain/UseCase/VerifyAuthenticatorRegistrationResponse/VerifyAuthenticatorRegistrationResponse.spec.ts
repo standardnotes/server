@@ -6,20 +6,16 @@ import { Authenticator } from '../../Authenticator/Authenticator'
 import { AuthenticatorChallenge } from '../../Authenticator/AuthenticatorChallenge'
 import { AuthenticatorChallengeRepositoryInterface } from '../../Authenticator/AuthenticatorChallengeRepositoryInterface'
 import { AuthenticatorRepositoryInterface } from '../../Authenticator/AuthenticatorRepositoryInterface'
-import { Setting } from '../../Setting/Setting'
-import { SettingServiceInterface } from '../../Setting/SettingServiceInterface'
 import { VerifyAuthenticatorRegistrationResponse } from './VerifyAuthenticatorRegistrationResponse'
 
 describe('VerifyAuthenticatorRegistrationResponse', () => {
   let authenticatorRepository: AuthenticatorRepositoryInterface
   let authenticatorChallengeRepository: AuthenticatorChallengeRepositoryInterface
-  let settingService: SettingServiceInterface
 
   const createUseCase = () =>
     new VerifyAuthenticatorRegistrationResponse(
       authenticatorRepository,
       authenticatorChallengeRepository,
-      settingService,
       'standardnotes.com',
       ['localhost', 'https://app.standardnotes.com'],
       true,
@@ -35,11 +31,6 @@ describe('VerifyAuthenticatorRegistrationResponse', () => {
         challenge: Buffer.from('challenge'),
       },
     } as jest.Mocked<AuthenticatorChallenge>)
-
-    settingService = {} as jest.Mocked<SettingServiceInterface>
-    settingService.findSettingWithDecryptedValue = jest.fn().mockReturnValue({
-      value: 'secret',
-    } as jest.Mocked<Setting>)
   })
 
   it('should return error if user uuid is invalid', async () => {
@@ -62,58 +53,6 @@ describe('VerifyAuthenticatorRegistrationResponse', () => {
     expect(result.isFailed()).toBeTruthy()
     expect(result.getError()).toEqual(
       'Could not verify authenticator registration response: Given value is not a valid uuid: invalid',
-    )
-  })
-
-  it('should return error if user does not have 2FA enabled', async () => {
-    settingService.findSettingWithDecryptedValue = jest.fn().mockReturnValue(null)
-
-    const useCase = createUseCase()
-
-    const result = await useCase.execute({
-      userUuid: '00000000-0000-0000-0000-000000000000',
-      name: 'name',
-      attestationResponse: {
-        id: Buffer.from('id'),
-        rawId: Buffer.from('rawId'),
-        response: {
-          attestationObject: Buffer.from('attestationObject'),
-          clientDataJSON: Buffer.from('clientDataJSON'),
-        },
-        type: 'type',
-      },
-    })
-
-    expect(result.isFailed()).toBeTruthy()
-    expect(result.getError()).toEqual(
-      'Could not verify authenticator registration response: Fallback 2FA not enabled for user.',
-    )
-  })
-
-  it('should return error if user has 2FA disabled', async () => {
-    settingService.findSettingWithDecryptedValue = jest.fn().mockReturnValue({
-      value: null,
-    } as jest.Mocked<Setting>)
-
-    const useCase = createUseCase()
-
-    const result = await useCase.execute({
-      userUuid: '00000000-0000-0000-0000-000000000000',
-      name: 'name',
-      attestationResponse: {
-        id: Buffer.from('id'),
-        rawId: Buffer.from('rawId'),
-        response: {
-          attestationObject: Buffer.from('attestationObject'),
-          clientDataJSON: Buffer.from('clientDataJSON'),
-        },
-        type: 'type',
-      },
-    })
-
-    expect(result.isFailed()).toBeTruthy()
-    expect(result.getError()).toEqual(
-      'Could not verify authenticator registration response: Fallback 2FA not enabled for user.',
     )
   })
 
