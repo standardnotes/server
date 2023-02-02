@@ -16,7 +16,7 @@ describe('VerifyAuthenticatorRegistrationResponse', () => {
     new VerifyAuthenticatorRegistrationResponse(
       authenticatorRepository,
       authenticatorChallengeRepository,
-      ['standardnotes.com'],
+      'standardnotes.com',
       ['localhost', 'https://app.standardnotes.com'],
       true,
     )
