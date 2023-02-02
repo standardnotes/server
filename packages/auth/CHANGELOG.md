@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.87.8](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.87.7...@standardnotes/auth-server@1.87.8) (2023-02-02)
+
+### Bug Fixes
+
+* **auth:** allow defining multiple expected origins upon u2f registration and verification ([b7967b3](https://github.com/standardnotes/server/commit/b7967b34d1118534644a3e464e9e43267455519d))
+
 ## [1.87.7](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.87.6...@standardnotes/auth-server@1.87.7) (2023-01-30)
 
 ### Bug Fixes
