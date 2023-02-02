@@ -5,11 +5,14 @@ import { AuthenticatorChallengeRepositoryInterface } from '../../Authenticator/A
 import { AuthenticatorRepositoryInterface } from '../../Authenticator/AuthenticatorRepositoryInterface'
 import { Authenticator } from '../../Authenticator/Authenticator'
 import { VerifyAuthenticatorRegistrationResponseDTO } from './VerifyAuthenticatorRegistrationResponseDTO'
+import { SettingName } from '@standardnotes/settings'
+import { SettingServiceInterface } from '../../Setting/SettingServiceInterface'
 
 export class VerifyAuthenticatorRegistrationResponse implements UseCaseInterface<boolean> {
   constructor(
     private authenticatorRepository: AuthenticatorRepositoryInterface,
     private authenticatorChallengeRepository: AuthenticatorChallengeRepositoryInterface,
+    private settingService: SettingServiceInterface,
     private relyingPartyId: string,
     private expectedOrigin: string[],
     private requireUserVerification: boolean,
@@ -21,6 +24,15 @@ export class VerifyAuthenticatorRegistrationResponse implements UseCaseInterface
       return Result.fail(`Could not verify authenticator registration response: ${userUuidOrError.getError()}`)
     }
     const userUuid = userUuidOrError.getValue()
+
+    const mfaSecret = await this.settingService.findSettingWithDecryptedValue({
+      userUuid: userUuid.value,
+      settingName: SettingName.MfaSecret,
+    })
+    const twoFactorEnabled = mfaSecret !== null && mfaSecret.value !== null
+    if (!twoFactorEnabled) {
+      return Result.fail('Could not verify authenticator registration response: Fallback 2FA not enabled for user.')
+    }
 
     const nameValidation = Validator.isNotEmpty(dto.name)
     if (nameValidation.isFailed()) {
