@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.87.11](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.87.10...@standardnotes/auth-server@1.87.11) (2023-02-02)
+
+### Reverts
+
+* Revert "fix(auth): disallow adding u2f devices if a user does not have 2fa enabled" ([bf55bbc](https://github.com/standardnotes/server/commit/bf55bbccd9ab1704671fa3980ede3bd0cc909833))
+
 ## [1.87.10](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.87.9...@standardnotes/auth-server@1.87.10) (2023-02-02)
 
 ### Bug Fixes
