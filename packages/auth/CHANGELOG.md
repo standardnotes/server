@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.87.10](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.87.9...@standardnotes/auth-server@1.87.10) (2023-02-02)
+
+### Bug Fixes
+
+* **auth:** disallow adding u2f devices if a user does not have 2fa enabled ([11bcd31](https://github.com/standardnotes/server/commit/11bcd318abc71d5a1fa80b8beda109076e3b6dad))
+
 ## [1.87.9](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.87.8...@standardnotes/auth-server@1.87.9) (2023-02-02)
 
 ### Bug Fixes
