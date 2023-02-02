@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.87.9](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.87.8...@standardnotes/auth-server@1.87.9) (2023-02-02)
+
+### Bug Fixes
+
+* **auth:** verification rpid options ([989e1ce](https://github.com/standardnotes/server/commit/989e1ce175cf70718304dd2d2463949147bcc084))
+
 ## [1.87.8](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.87.7...@standardnotes/auth-server@1.87.8) (2023-02-02)
 
 ### Bug Fixes
