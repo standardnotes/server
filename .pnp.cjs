@@ -6688,7 +6688,7 @@ const RAW_RUNTIME_STATE =
           ["cacheable-request", "npm:7.0.2"],\
           ["clone-response", "npm:1.0.2"],\
           ["get-stream", "npm:5.2.0"],\
-          ["http-cache-semantics", "npm:4.1.0"],\
+          ["http-cache-semantics", "npm:4.1.1"],\
           ["keyv", "npm:4.3.2"],\
           ["lowercase-keys", "npm:2.0.0"],\
           ["normalize-url", "npm:6.1.0"],\
@@ -9299,10 +9299,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["http-cache-semantics", [\
-      ["npm:4.1.0", {\
-        "packageLocation": "./.yarn/cache/http-cache-semantics-npm-4.1.0-860520a31f-ccfe23dd27.zip/node_modules/http-cache-semantics/",\
+      ["npm:4.1.1", {\
+        "packageLocation": "./.yarn/cache/http-cache-semantics-npm-4.1.1-1120131375-7b4d86f99f.zip/node_modules/http-cache-semantics/",\
         "packageDependencies": [\
-          ["http-cache-semantics", "npm:4.1.0"]\
+          ["http-cache-semantics", "npm:4.1.1"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -11056,7 +11056,7 @@ const RAW_RUNTIME_STATE =
           ["make-fetch-happen", "npm:10.1.8"],\
           ["agentkeepalive", "npm:4.2.1"],\
           ["cacache", "npm:16.1.1"],\
-          ["http-cache-semantics", "npm:4.1.0"],\
+          ["http-cache-semantics", "npm:4.1.1"],\
           ["http-proxy-agent", "npm:5.0.0"],\
           ["https-proxy-agent", "npm:5.0.1"],\
           ["is-lambda", "npm:1.0.1"],\
