@@ -1,7 +1,12 @@
-version: '3.8'
 services:
+  server:
+    build: .
+    env_file: .env
+    volumes:
+      - ./logs:/var/lib/server/logs
+
   db:
-    image: mysql:5.6
+    image: mysql:8
     environment:
       MYSQL_DATABASE: '${DB_DATABASE}'
       MYSQL_USER: '${DB_USERNAME}'
