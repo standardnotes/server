@@ -87,7 +87,7 @@ jobs:
         tags: standardnotes/server:${{ github.sha }}
 
     - name: Run Server
-      run: docker run -d standardnotes/server:${{ github.sha }}
+      run: docker run -d -p 3123:3000 standardnotes/server:${{ github.sha }}
       env:
         EXPOSED_PORT: 3123
         EXPOSED_FILES_SERVER_PORT: 3125
