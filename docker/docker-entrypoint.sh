@@ -22,6 +22,10 @@ else
   export FILES_SERVER_PORT=$EXPOSED_FILES_SERVER_PORT
 fi
 
+if [ -z "$REVISIONS_SERVER_PORT" ]; then
+  export REVISIONS_SERVER_PORT=3105
+fi
+
 ######
 # DB #
 ######
@@ -293,6 +297,54 @@ if [ -z "$FILES_SERVER_SQS_ENDPOINT" ]; then
 fi
 
 printenv | grep FILES_SERVER_ | sed 's/FILES_SERVER_//g' > /opt/server/packages/files/.env
+
+#############
+# REVISIONS #
+#############
+
+if [ -z "$REVISIONS_SERVER_LOG_LEVEL" ]; then
+  export REVISIONS_SERVER_LOG_LEVEL="info"
+fi
+
+export REVISIONS_SERVER_NODE_ENV="production"
+export REVISIONS_SERVER_VERSION="local"
+
+export REVISIONS_SERVER_REDIS_EVENTS_CHANNEL="revisions-events"
+
+export REVISIONS_SERVER_NEW_RELIC_ENABLED=false
+
+if [ -z "$REVISIONS_SERVER_SNS_TOPIC_ARN" ]; then
+  export REVISIONS_SERVER_SNS_TOPIC_ARN="arn:aws:sns:us-east-1:000000000000:revisions-server-local-topic"
+fi
+if [ -z "$REVISIONS_SERVER_SNS_ENDPOINT" ]; then
+  export REVISIONS_SERVER_SNS_ENDPOINT="http://localstack:4566"
+fi
+if [ -z "$REVISIONS_SERVER_SNS_SECRET_ACCESS_KEY" ]; then
+  export REVISIONS_SERVER_SNS_SECRET_ACCESS_KEY="x"
+fi
+if [ -z "$REVISIONS_SERVER_SNS_ACCESS_KEY_ID" ]; then
+  export REVISIONS_SERVER_SNS_ACCESS_KEY_ID="x"
+fi
+if [ -z "$REVISIONS_SERVER_SNS_AWS_REGION" ]; then
+  export REVISIONS_SERVER_SNS_AWS_REGION="us-east-1"
+fi
+if [ -z "$REVISIONS_SERVER_SQS_QUEUE_URL" ]; then
+  export REVISIONS_SERVER_SQS_QUEUE_URL="http://localstack:4566/000000000000/revisions-server-local-queue"
+fi
+if [ -z "$REVISIONS_SERVER_SQS_AWS_REGION" ]; then
+  export REVISIONS_SERVER_SQS_AWS_REGION="us-east-1"
+fi
+if [ -z "$REVISIONS_SERVER_SQS_ACCESS_KEY_ID" ]; then
+  export REVISIONS_SERVER_SQS_ACCESS_KEY_ID="x"
+fi
+if [ -z "$REVISIONS_SERVER_SQS_SECRET_ACCESS_KEY" ]; then
+  export REVISIONS_SERVER_SQS_SECRET_ACCESS_KEY="x"
+fi
+if [ -z "$REVISIONS_SERVER_SQS_ENDPOINT" ]; then
+  export REVISIONS_SERVER_SQS_ENDPOINT="http://localstack:4566"
+fi
+
+printenv | grep REVISIONS_SERVER_ | sed 's/REVISIONS_SERVER_//g' > /opt/server/packages/revisions/.env
 
 ###############
 # API GATEWAY #
