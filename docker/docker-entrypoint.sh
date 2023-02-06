@@ -16,6 +16,12 @@ if [ -z "$AUTH_SERVER_PORT" ]; then
   export AUTH_SERVER_PORT=3103
 fi
 
+if [ -z "$EXPOSED_FILES_SERVER_PORT" ]; then
+  export FILES_SERVER_PORT=3104
+else
+  export FILES_SERVER_PORT=$EXPOSED_FILES_SERVER_PORT
+fi
+
 ######
 # DB #
 ######
@@ -59,6 +65,10 @@ fi
 
 if [ -z "$AUTH_JWT_SECRET" ]; then
   export AUTH_JWT_SECRET=$(openssl rand -hex 32)
+fi
+
+if [ -z "$VALET_TOKEN_SECRET" ]; then
+  export VALET_TOKEN_SECRET=$(openssl rand -base64 32)
 fi
 
 ########
@@ -232,6 +242,58 @@ fi
 
 printenv | grep SYNCING_SERVER_ | sed 's/SYNCING_SERVER_//g' > /opt/server/packages/syncing-server/.env
 
+
+################
+# FILES SERVER #
+################
+
+if [ -z "$FILES_SERVER_LOG_LEVEL" ]; then
+  export FILES_SERVER_LOG_LEVEL="info"
+fi
+export FILES_SERVER_NODE_ENV="production"
+export FILES_SERVER_VERSION="local"
+
+export FILES_SERVER_REDIS_EVENTS_CHANNEL="files-events"
+
+if [ -z "$FILES_SERVER_MAX_CHUNK_BYTES" ]; then
+  export FILES_SERVER_MAX_CHUNK_BYTES=100000000
+fi
+
+export FILES_SERVER_NEW_RELIC_ENABLED=false
+
+if [ -z "$FILES_SERVER_SNS_TOPIC_ARN" ]; then
+  export FILES_SERVER_SNS_TOPIC_ARN="arn:aws:sns:us-east-1:000000000000:files-local-topic"
+fi
+if [ -z "$FILES_SERVER_SNS_ENDPOINT" ]; then
+  export FILES_SERVER_SNS_ENDPOINT="http://localstack:4566"
+fi
+if [ -z "$FILES_SERVER_SNS_SECRET_ACCESS_KEY" ]; then
+  export FILES_SERVER_SNS_SECRET_ACCESS_KEY="x"
+fi
+if [ -z "$FILES_SERVER_SNS_ACCESS_KEY_ID" ]; then
+  export FILES_SERVER_SNS_ACCESS_KEY_ID="x"
+fi
+if [ -z "$FILES_SERVER_SNS_AWS_REGION" ]; then
+  export FILES_SERVER_SNS_AWS_REGION="us-east-1"
+fi
+if [ -z "$FILES_SERVER_SQS_QUEUE_URL" ]; then
+  export FILES_SERVER_SQS_QUEUE_URL="http://localstack:4566/000000000000/files-local-queue"
+fi
+if [ -z "$FILES_SERVER_SQS_AWS_REGION" ]; then
+  export FILES_SERVER_SQS_AWS_REGION="us-east-1"
+fi
+if [ -z "$FILES_SERVER_SQS_ACCESS_KEY_ID" ]; then
+  export FILES_SERVER_SQS_ACCESS_KEY_ID="x"
+fi
+if [ -z "$FILES_SERVER_SQS_SECRET_ACCESS_KEY" ]; then
+  export FILES_SERVER_SQS_SECRET_ACCESS_KEY="x"
+fi
+if [ -z "$FILES_SERVER_SQS_ENDPOINT" ]; then
+  export FILES_SERVER_SQS_ENDPOINT="http://localstack:4566"
+fi
+
+printenv | grep FILES_SERVER_ | sed 's/FILES_SERVER_//g' > /opt/server/packages/files/.env
+
 ###############
 # API GATEWAY #
 ###############
@@ -250,6 +312,11 @@ export API_GATEWAY_SYNCING_SERVER_JS_URL=http://localhost:$SYNCING_SERVER_PORT
 export API_GATEWAY_AUTH_SERVER_URL=http://localhost:$AUTH_SERVER_PORT
 export API_GATEWAY_WORKSPACE_SERVER_URL=http://localhost:3004
 export API_GATEWAY_REVISIONS_SERVER_URL=http://localhost:3005
+if [ -z "$PUBLIC_FILES_SERVER_URL" ]; then
+  export API_GATEWAY_FILES_SERVER_URL=http://localhost:$FILES_SERVER_PORT
+else
+  export API_GATEWAY_FILES_SERVER_URL=$PUBLIC_FILES_SERVER_URL
+fi
 
 export API_GATEWAY_REDIS_EVENTS_CHANNEL="api-gateway-event"
 
