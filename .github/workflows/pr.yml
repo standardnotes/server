@@ -107,7 +107,6 @@ jobs:
           MYSQL_ROOT_PASSWORD: changeme123
         ports:
           - 3306:3306
-        command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8 --collation-server=utf8_general_ci
       cache:
         image: redis:6.0-alpine
         ports:
