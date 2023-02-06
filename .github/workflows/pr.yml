@@ -100,7 +100,7 @@ jobs:
         - 9001:9001
       db:
         image: mysql:8
-        environment:
+        env:
           MYSQL_DATABASE: standard_notes_db
           MYSQL_USER: std_notes_user
           MYSQL_PASSWORD: changeme123
