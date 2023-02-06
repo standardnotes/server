@@ -4,6 +4,7 @@ RUN apk add --update \
   bash \
   curl \
   py3-pip \
+  openssl \
   && rm -rf /var/cache/apk/*
 
 ENV NODE_ENV production

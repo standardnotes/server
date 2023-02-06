@@ -2,6 +2,8 @@ services:
   server:
     build: .
     env_file: .env
+    ports:
+      - ${EXPOSED_PORT}:3000
     volumes:
       - ./logs:/var/lib/server/logs
 
@@ -13,7 +15,7 @@ services:
       MYSQL_PASSWORD: '${DB_PASSWORD}'
       MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
     expose:
-      - ${DB_PORT}:3306
+      - 3306
     restart: unless-stopped
     command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8 --collation-server=utf8_general_ci
     volumes:
@@ -25,5 +27,5 @@ services:
     volumes:
       - ./data/redis/:/data
     expose:
-      - ${REDIS_PORT}:6379
+      - 6379
     restart: unless-stopped
