@@ -89,33 +89,49 @@ jobs:
       run: yarn test
 
   e2e:
-    strategy:
-      matrix:
-        application: 
-          - { "service_name": "api-gateway", "workspace_name": "@standardnotes/api-gateway", "e2e_tag_parameter_name": "api_gateway_image_tag", "package_path": "packages/api-gateway" }
-          - { "service_name": "auth", "workspace_name": "@standardnotes/auth-server", "e2e_tag_parameter_name": "auth_image_tag", "package_path": "packages/auth" }  
-          - { "service_name": "files", "workspace_name": "@standardnotes/files-server", "e2e_tag_parameter_name": "files_image_tag", "package_path": "packages/files" }
-          - { "service_name": "revisions", "workspace_name": "@standardnotes/revisions-server", "e2e_tag_parameter_name": "revisions_image_tag", "package_path": "packages/revisions"}
-          - { "service_name": "syncing-server-js",  "workspace_name": "@standardnotes/syncing-server", "e2e_tag_parameter_name": "syncing_server_js_image_tag", "package_path": "packages/syncing-server" }
     runs-on: ubuntu-latest
 
     needs: build
 
+    services:
+      snjs:
+        image: standardnotes/snjs
+        ports:
+        - 9001:9001
+      db:
+        image: mysql:8
+        environment:
+          MYSQL_DATABASE: standard_notes_db
+          MYSQL_USER: std_notes_user
+          MYSQL_PASSWORD: changeme123
+          MYSQL_ROOT_PASSWORD: changeme123
+        ports:
+          - 3306:3306
+        command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8 --collation-server=utf8_general_ci
+      cache:
+        image: redis:6.0-alpine
+        ports:
+          - 6379:6379
+      mock-event-publisher:
+        image: standardnotes/mock-event-publisher
+        ports:
+        - 3124:3000
+        env:
+          LOG_LEVEL: debug
+          NODE_ENV: production
+          VERSION: snjs-test
+          SNS_TOPIC_ARN: arn:aws:sns:us-east-1:000000000000:payments-local-topic
+          SNS_ENDPOINT: http://localstack:4566
+          SNS_DISABLE_SSL: true
+          SNS_SECRET_ACCESS_KEY: x
+          SNS_ACCESS_KEY_ID: x
+          SNS_AWS_REGION: us-east-1
+          NEW_RELIC_ENABLED: false
+        options: >-
+          --name "mock-event-publisher"
+
     steps:
     - uses: actions/checkout@v3
-
-    - name: Create Bundle Dir
-      id: bundle-dir
-      run: echo "temp_dir=$(mktemp -d -t ${{ matrix.application.service_name }}-${{ github.sha }}-XXXXXXX)" >> $GITHUB_OUTPUT
-
-    - name: Cache build
-      id: cache-build
-      uses: actions/cache@v3
-      with:
-        path: |
-          packages/**/dist
-          ${{ needs.e2e.outputs.temp_dir }}
-        key: ${{ runner.os }}-build-${{ github.sha }}
 
     - name: Set up Node
       uses: actions/setup-node@v3
@@ -123,12 +139,8 @@ jobs:
         registry-url: 'https://registry.npmjs.org'
         node-version-file: '.nvmrc'
 
-    - name: Build
-      if: steps.cache-build.outputs.cache-hit != 'true'
-      run: yarn build
-
-    - name: Bundle
-      run: yarn workspace ${{ matrix.application.workspace_name }} bundle --no-compress --output-directory ${{ steps.bundle-dir.outputs.temp_dir }}
+    - name: Install Headless Chrome
+      run: yarn global add mocha-headless-chrome
 
     - name: Login to Docker Hub
       uses: docker/login-action@v2
@@ -145,25 +157,41 @@ jobs:
       id: buildx
       uses: docker/setup-buildx-action@master
 
-    - name: Publish Docker image for E2E testing
+    - name: Build Docker image for E2E testing
       uses: docker/build-push-action@v3
       with:
         builder: ${{ steps.buildx.outputs.name }}
-        context: ${{ steps.bundle-dir.outputs.temp_dir }}
-        file: ${{ steps.bundle-dir.outputs.temp_dir }}/${{ matrix.application.package_path }}/Dockerfile
+        context: .
+        file: Dockerfile
         platforms: linux/amd64,linux/arm64
-        push: true
-        tags: standardnotes/${{ matrix.application.service_name }}:${{ github.sha }}
+        push: false
+        tags: standardnotes/server:${{ github.sha }}
 
-    - name: Run E2E test suite
-      uses: convictional/trigger-workflow-and-wait@master
-      with:
-        owner: standardnotes
-        repo: self-hosted
-        github_token: ${{ secrets.CI_PAT_TOKEN }}
-        workflow_file_name: testing-with-updating-client-and-server.yml
-        wait_interval: 30
-        client_payload: '{"${{ matrix.application.e2e_tag_parameter_name }}": "${{ github.sha }}"}'
-        propagate_failure: true
-        trigger_workflow: true
-        wait_workflow: true
+    - name: Run Server
+      run: docker run -d standardnotes/server:${{ github.sha }}
+      env:
+        EXPOSED_PORT: 3123
+        EXPOSED_FILES_SERVER_PORT: 3125
+        PUBLIC_FILES_SERVER_URL: http://localhost:3125
+        DB_HOST: localhost
+        DB_PORT: 3306
+        DB_USERNAME: std_notes_user
+        DB_PASSWORD: changeme123
+        DB_DATABASE: standard_notes_db
+        REDIS_PORT: 6379
+        REDIS_HOST: localhost
+        AUTH_SERVER_ACCESS_TOKEN_AGE: 4
+        AUTH_SERVER_REFRESH_TOKEN_AGE: 10
+        AUTH_SERVER_EPHEMERAL_SESSION_AGE: 300
+        SYNCING_SERVER_REVISIONS_FREQUENCY: 5
+        AUTH_SERVER_LOG_LEVEL: debug
+        SYNCING_SERVER_LOG_LEVEL: debug
+        FILES_SERVER_LOG_LEVEL: debug
+        REVISIONS_SERVER_LOG_LEVEL: debug
+        API_GATEWAY_LOG_LEVEL: debug
+
+    - name: Wait for server to start
+      run: docker/wait-for.sh localhost 3123
+
+    - name: Run E2E Test Suite
+      run: npx mocha-headless-chrome --timeout 1200000 -f http://localhost:9001/mocha/test.html
