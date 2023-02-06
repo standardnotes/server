@@ -138,9 +138,6 @@ jobs:
         registry-url: 'https://registry.npmjs.org'
         node-version-file: '.nvmrc'
 
-    - name: Install Headless Chrome
-      run: yarn global add mocha-headless-chrome
-
     - name: Login to Docker Hub
       uses: docker/login-action@v2
       with:
@@ -193,4 +190,4 @@ jobs:
       run: docker/wait-for.sh localhost 3123
 
     - name: Run E2E Test Suite
-      run: npx mocha-headless-chrome --timeout 1200000 -f http://localhost:9001/mocha/test.html
+      run: yarn dlx mocha-headless-chrome --timeout 1200000 -f http://localhost:9001/mocha/test.html
