@@ -211,17 +211,10 @@ jobs:
       workspace_name: ${{ inputs.workspace_name }}
     secrets: inherit
 
-  publish-self-hosting:
-    needs: [ build, test, lint, e2e ]
-
-    name: Publish Self Hosting Docker Image
-    uses: standardnotes/server/.github/workflows/common-self-hosting.yml@main
-    secrets: inherit
-
   deploy-web:
     if: ${{ inputs.deploy_web }}
 
-    needs: [ publish, publish-self-hosting ]
+    needs: publish
 
     name: Deploy Web
     uses: standardnotes/server/.github/workflows/common-deploy.yml@main
@@ -233,7 +226,7 @@ jobs:
   deploy-worker:
     if: ${{ inputs.deploy_worker }}
 
-    needs: [ publish, publish-self-hosting ]
+    needs: publish
 
     name: Deploy Worker
     uses: standardnotes/server/.github/workflows/common-deploy.yml@main
