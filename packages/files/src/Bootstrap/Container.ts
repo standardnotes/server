@@ -14,9 +14,6 @@ import { Timer, TimerInterface } from '@standardnotes/time'
 import { DomainEventFactoryInterface } from '../Domain/Event/DomainEventFactoryInterface'
 import { DomainEventFactory } from '../Domain/Event/DomainEventFactory'
 import {
-  RedisDomainEventPublisher,
-  RedisDomainEventSubscriberFactory,
-  RedisEventMessageHandler,
   SNSDomainEventPublisher,
   SQSDomainEventSubscriberFactory,
   SQSEventMessageHandler,
@@ -61,13 +58,12 @@ export class ContainerConfigLoader {
     container.bind(TYPES.S3_BUCKET_NAME).toConstantValue(env.get('S3_BUCKET_NAME', true))
     container.bind(TYPES.S3_AWS_REGION).toConstantValue(env.get('S3_AWS_REGION', true))
     container.bind(TYPES.VALET_TOKEN_SECRET).toConstantValue(env.get('VALET_TOKEN_SECRET'))
-    container.bind(TYPES.SNS_TOPIC_ARN).toConstantValue(env.get('SNS_TOPIC_ARN', true))
+    container.bind(TYPES.SNS_TOPIC_ARN).toConstantValue(env.get('SNS_TOPIC_ARN'))
     container.bind(TYPES.SNS_AWS_REGION).toConstantValue(env.get('SNS_AWS_REGION', true))
     container.bind(TYPES.REDIS_URL).toConstantValue(env.get('REDIS_URL'))
-    container.bind(TYPES.REDIS_EVENTS_CHANNEL).toConstantValue(env.get('REDIS_EVENTS_CHANNEL'))
     container.bind(TYPES.MAX_CHUNK_BYTES).toConstantValue(+env.get('MAX_CHUNK_BYTES'))
     container.bind(TYPES.VERSION).toConstantValue(env.get('VERSION'))
-    container.bind(TYPES.SQS_QUEUE_URL).toConstantValue(env.get('SQS_QUEUE_URL', true))
+    container.bind(TYPES.SQS_QUEUE_URL).toConstantValue(env.get('SQS_QUEUE_URL'))
     container
       .bind(TYPES.FILE_UPLOAD_PATH)
       .toConstantValue(env.get('FILE_UPLOAD_PATH', true) ?? `${__dirname}/../../uploads`)
@@ -161,17 +157,9 @@ export class ContainerConfigLoader {
     // repositories
     container.bind<UploadRepositoryInterface>(TYPES.UploadRepository).to(RedisUploadRepository)
 
-    if (env.get('SNS_TOPIC_ARN', true)) {
-      container
-        .bind<SNSDomainEventPublisher>(TYPES.DomainEventPublisher)
-        .toConstantValue(new SNSDomainEventPublisher(container.get(TYPES.SNS), container.get(TYPES.SNS_TOPIC_ARN)))
-    } else {
-      container
-        .bind<RedisDomainEventPublisher>(TYPES.DomainEventPublisher)
-        .toConstantValue(
-          new RedisDomainEventPublisher(container.get(TYPES.Redis), container.get(TYPES.REDIS_EVENTS_CHANNEL)),
-        )
-    }
+    container
+      .bind<SNSDomainEventPublisher>(TYPES.DomainEventPublisher)
+      .toConstantValue(new SNSDomainEventPublisher(container.get(TYPES.SNS), container.get(TYPES.SNS_TOPIC_ARN)))
 
     // Handlers
     container
@@ -189,37 +177,22 @@ export class ContainerConfigLoader {
       ],
     ])
 
-    if (env.get('SQS_QUEUE_URL', true)) {
-      container
-        .bind<DomainEventMessageHandlerInterface>(TYPES.DomainEventMessageHandler)
-        .toConstantValue(
-          env.get('NEW_RELIC_ENABLED', true) === 'true'
-            ? new SQSNewRelicEventMessageHandler(eventHandlers, container.get(TYPES.Logger))
-            : new SQSEventMessageHandler(eventHandlers, container.get(TYPES.Logger)),
-        )
-      container
-        .bind<DomainEventSubscriberFactoryInterface>(TYPES.DomainEventSubscriberFactory)
-        .toConstantValue(
-          new SQSDomainEventSubscriberFactory(
-            container.get(TYPES.SQS),
-            container.get(TYPES.SQS_QUEUE_URL),
-            container.get(TYPES.DomainEventMessageHandler),
-          ),
-        )
-    } else {
-      container
-        .bind<DomainEventMessageHandlerInterface>(TYPES.DomainEventMessageHandler)
-        .toConstantValue(new RedisEventMessageHandler(eventHandlers, container.get(TYPES.Logger)))
-      container
-        .bind<DomainEventSubscriberFactoryInterface>(TYPES.DomainEventSubscriberFactory)
-        .toConstantValue(
-          new RedisDomainEventSubscriberFactory(
-            container.get(TYPES.Redis),
-            container.get(TYPES.DomainEventMessageHandler),
-            container.get(TYPES.REDIS_EVENTS_CHANNEL),
-          ),
-        )
-    }
+    container
+      .bind<DomainEventMessageHandlerInterface>(TYPES.DomainEventMessageHandler)
+      .toConstantValue(
+        env.get('NEW_RELIC_ENABLED', true) === 'true'
+          ? new SQSNewRelicEventMessageHandler(eventHandlers, container.get(TYPES.Logger))
+          : new SQSEventMessageHandler(eventHandlers, container.get(TYPES.Logger)),
+      )
+    container
+      .bind<DomainEventSubscriberFactoryInterface>(TYPES.DomainEventSubscriberFactory)
+      .toConstantValue(
+        new SQSDomainEventSubscriberFactory(
+          container.get(TYPES.SQS),
+          container.get(TYPES.SQS_QUEUE_URL),
+          container.get(TYPES.DomainEventMessageHandler),
+        ),
+      )
 
     return container
   }

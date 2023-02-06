@@ -96,8 +96,6 @@ export AUTH_SERVER_NEW_RELIC_ENABLED=false
 export AUTH_SERVER_NEW_RELIC_APP_NAME=Auth
 export AUTH_SERVER_NEW_RELIC_NO_CONFIG_FILE=true
 
-export AUTH_SERVER_REDIS_EVENTS_CHANNEL="auth-events"
-
 if [ -z "$AUTH_SERVER_DISABLE_USER_REGISTRATION" ]; then
   export AUTH_SERVER_DISABLE_USER_REGISTRATION=false
 fi
@@ -224,8 +222,6 @@ if [ -z "$SYNCING_SERVER_SQS_ENDPOINT" ]; then
   export SYNCING_SERVER_SQS_ENDPOINT="http://localstack:4566"
 fi
 
-export SYNCING_SERVER_REDIS_EVENTS_CHANNEL="syncing-sever-events"
-
 export SYNCING_SERVER_AUTH_SERVER_URL=http://localhost:$AUTH_SERVER_PORT
 
 if [ -z "$SYNCING_SERVER_EMAIL_ATTACHMENT_MAX_BYTE_SIZE" ]; then
@@ -256,8 +252,6 @@ if [ -z "$FILES_SERVER_LOG_LEVEL" ]; then
 fi
 export FILES_SERVER_NODE_ENV="production"
 export FILES_SERVER_VERSION="local"
-
-export FILES_SERVER_REDIS_EVENTS_CHANNEL="files-events"
 
 if [ -z "$FILES_SERVER_MAX_CHUNK_BYTES" ]; then
   export FILES_SERVER_MAX_CHUNK_BYTES=100000000
@@ -308,8 +302,6 @@ fi
 
 export REVISIONS_SERVER_NODE_ENV="production"
 export REVISIONS_SERVER_VERSION="local"
-
-export REVISIONS_SERVER_REDIS_EVENTS_CHANNEL="revisions-events"
 
 export REVISIONS_SERVER_NEW_RELIC_ENABLED=false
 
@@ -369,8 +361,6 @@ if [ -z "$PUBLIC_FILES_SERVER_URL" ]; then
 else
   export API_GATEWAY_FILES_SERVER_URL=$PUBLIC_FILES_SERVER_URL
 fi
-
-export API_GATEWAY_REDIS_EVENTS_CHANNEL="api-gateway-event"
 
 printenv | grep API_GATEWAY_ | sed 's/API_GATEWAY_//g' > /opt/server/packages/api-gateway/.env
 
