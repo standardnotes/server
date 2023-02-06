@@ -24,6 +24,6 @@ RUN corepack enable
 
 RUN yarn install --immutable
 
-RUN yarn build
+RUN CI=true yarn build
 
 ENTRYPOINT ["docker-entrypoint.sh"]
