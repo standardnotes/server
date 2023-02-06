@@ -92,5 +92,5 @@ jobs:
     needs: build
 
     name: E2E
-    uses: standardnotes/server/.github/workflows/common-e2e.yml@main
+    uses: standardnotes/server/.github/workflows/common-e2e.yml@supervisor
     secrets: inherit
