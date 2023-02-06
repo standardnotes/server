@@ -2,6 +2,20 @@
 
 # Setup environment variables
 
+#########
+# PORTS #
+#########
+
+export API_GATEWAY_PORT=3000
+
+if [ -z "$SYNCING_SERVER_PORT" ]; then
+  export SYNCING_SERVER_PORT=3101
+fi
+
+if [ -z "$AUTH_SERVER_PORT" ]; then
+  export AUTH_SERVER_PORT=3103
+fi
+
 ######
 # DB #
 ######
@@ -47,31 +61,6 @@ if [ -z "$AUTH_JWT_SECRET" ]; then
   export AUTH_JWT_SECRET=$(openssl rand -hex 32)
 fi
 
-###############
-# API GATEWAY #
-###############
-
-if [ -z "$API_GATEWAY_LOG_LEVEL" ]; then
-  export API_GATEWAY_LOG_LEVEL="info"
-fi
-export API_GATEWAY_NODE_ENV=production
-export API_GATEWAY_VERSION=local
-
-export API_GATEWAY_NEW_RELIC_ENABLED=false
-export API_GATEWAY_NEW_RELIC_APP_NAME="API Gateway"
-export API_GATEWAY_NEW_RELIC_NO_CONFIG_FILE=true
-
-export API_GATEWAY_SYNCING_SERVER_JS_URL=http://localhost:3002
-export API_GATEWAY_AUTH_SERVER_URL=http://localhost:3003
-export API_GATEWAY_WORKSPACE_SERVER_URL=http://localhost:3004
-export API_GATEWAY_REVISIONS_SERVER_URL=http://localhost:3005
-
-export API_GATEWAY_REDIS_EVENTS_CHANNEL="api-gateway-event"
-
-export API_GATEWAY_PORT=3000
-
-printenv | grep API_GATEWAY_ | sed 's/API_GATEWAY_//g' > /opt/server/packages/api-gateway/.env
-
 ########
 # AUTH #
 ########
@@ -84,10 +73,6 @@ export AUTH_SERVER_VERSION="local"
 
 if [ -z "$AUTH_SERVER_AUTH_JWT_TTL" ]; then
   export AUTH_SERVER_AUTH_JWT_TTL=60000
-fi
-
-if [ -z "$AUTH_SERVER_PORT" ]; then
-  export AUTH_SERVER_PORT=3003
 fi
 
 export AUTH_SERVER_JWT_SECRET=$AUTH_JWT_SECRET
@@ -129,7 +114,7 @@ if [ -z "$AUTH_SERVER_ENCRYPTION_SERVER_KEY" ]; then
   export AUTH_SERVER_ENCRYPTION_SERVER_KEY=$(openssl rand -hex 32)
 fi
 
-export AUTH_SERVER_SYNCING_SERVER_URL=http://localhost:3000
+export AUTH_SERVER_SYNCING_SERVER_URL=http://localhost:$SYNCING_SERVER_PORT
 
 # File Uploads
 if [ -z "$AUTH_SERVER_VALET_TOKEN_TTL" ]; then
@@ -183,6 +168,92 @@ if [ -z "$AUTH_SERVER_U2F_REQUIRE_USER_VERIFICATION" ]; then
 fi
 
 printenv | grep AUTH_SERVER_ | sed 's/AUTH_SERVER_//g' > /opt/server/packages/auth/.env
+
+##################
+# SYNCING SERVER #
+##################
+
+if [ -z "$SYNCING_SERVER_LOG_LEVEL" ]; then
+  export SYNCING_SERVER_LOG_LEVEL="info"
+fi
+export SYNCING_SERVER_NODE_ENV=production
+export SYNCING_SERVER_VERSION=local
+
+if [ -z "$SYNCING_SERVER_SNS_TOPIC_ARN" ]; then
+  export SYNCING_SERVER_SNS_TOPIC_ARN="arn:aws:sns:us-east-1:000000000000:syncing-server-local-topic"
+fi
+if [ -z "$SYNCING_SERVER_SNS_ENDPOINT" ]; then
+  export SYNCING_SERVER_SNS_ENDPOINT="http://localstack:4566"
+fi
+if [ -z "$SYNCING_SERVER_SNS_SECRET_ACCESS_KEY" ]; then
+  export SYNCING_SERVER_SNS_SECRET_ACCESS_KEY="x"
+fi
+if [ -z "$SYNCING_SERVER_SNS_ACCESS_KEY_ID" ]; then
+  export SYNCING_SERVER_SNS_ACCESS_KEY_ID="x"
+fi
+if [ -z "$SYNCING_SERVER_SNS_AWS_REGION" ]; then
+  export SYNCING_SERVER_SNS_AWS_REGION="us-east-1"
+fi
+if [ -z "$SYNCING_SERVER_SQS_QUEUE_URL" ]; then
+  export SYNCING_SERVER_SQS_QUEUE_URL="http://localstack:4566/000000000000/syncing-server-local-queue"
+fi
+if [ -z "$SYNCING_SERVER_SQS_AWS_REGION" ]; then
+  export SYNCING_SERVER_SQS_AWS_REGION="us-east-1"
+fi
+if [ -z "$SYNCING_SERVER_SQS_ACCESS_KEY_ID" ]; then
+  export SYNCING_SERVER_SQS_ACCESS_KEY_ID="x"
+fi
+if [ -z "$SYNCING_SERVER_SQS_SECRET_ACCESS_KEY" ]; then
+  export SYNCING_SERVER_SQS_SECRET_ACCESS_KEY="x"
+fi
+if [ -z "$SYNCING_SERVER_SQS_ENDPOINT" ]; then
+  export SYNCING_SERVER_SQS_ENDPOINT="http://localstack:4566"
+fi
+
+export SYNCING_SERVER_REDIS_EVENTS_CHANNEL="syncing-sever-events"
+
+export SYNCING_SERVER_AUTH_SERVER_URL=http://localhost:$AUTH_SERVER_PORT
+
+if [ -z "$SYNCING_SERVER_EMAIL_ATTACHMENT_MAX_BYTE_SIZE" ]; then
+  export SYNCING_SERVER_EMAIL_ATTACHMENT_MAX_BYTE_SIZE=10485760
+fi
+
+if [ -z "$SYNCING_SERVER_REVISIONS_FREQUENCY" ]; then
+  export SYNCING_SERVER_REVISIONS_FREQUENCY=300
+fi
+
+export SYNCING_SERVER_NEW_RELIC_ENABLED=false
+export SYNCING_SERVER_NEW_RELIC_APP_NAME="Syncing Server JS"
+export SYNCING_SERVER_NEW_RELIC_NO_CONFIG_FILE=true
+
+if [ -z "$SYNCING_SERVER_FILE_UPLOAD_PATH" ]; then
+  export SYNCING_SERVER_FILE_UPLOAD_PATH="data/uploads"
+fi
+
+printenv | grep SYNCING_SERVER_ | sed 's/SYNCING_SERVER_//g' > /opt/server/packages/syncing-server/.env
+
+###############
+# API GATEWAY #
+###############
+
+if [ -z "$API_GATEWAY_LOG_LEVEL" ]; then
+  export API_GATEWAY_LOG_LEVEL="info"
+fi
+export API_GATEWAY_NODE_ENV=production
+export API_GATEWAY_VERSION=local
+
+export API_GATEWAY_NEW_RELIC_ENABLED=false
+export API_GATEWAY_NEW_RELIC_APP_NAME="API Gateway"
+export API_GATEWAY_NEW_RELIC_NO_CONFIG_FILE=true
+
+export API_GATEWAY_SYNCING_SERVER_JS_URL=http://localhost:$SYNCING_SERVER_PORT
+export API_GATEWAY_AUTH_SERVER_URL=http://localhost:$AUTH_SERVER_PORT
+export API_GATEWAY_WORKSPACE_SERVER_URL=http://localhost:3004
+export API_GATEWAY_REVISIONS_SERVER_URL=http://localhost:3005
+
+export API_GATEWAY_REDIS_EVENTS_CHANNEL="api-gateway-event"
+
+printenv | grep API_GATEWAY_ | sed 's/API_GATEWAY_//g' > /opt/server/packages/api-gateway/.env
 
 # Run supervisor
 
