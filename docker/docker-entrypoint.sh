@@ -59,8 +59,11 @@ fi
 if [ -z "$REDIS_PORT" ]; then
   export REDIS_PORT=6379
 fi
-if [ -z "$REDIS_URL" ]; then
+
+if [ -z "$REDIS_HOST" ]; then
   export REDIS_URL="redis://cache"
+else
+  export REDIS_URL="redis://$REDIS_HOST"
 fi
 
 ##########

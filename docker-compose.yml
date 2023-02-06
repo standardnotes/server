@@ -2,13 +2,30 @@ services:
   server:
     build: .
     env_file: .env
+    container_name: server-self-hosted
     ports:
       - ${EXPOSED_PORT}:3000
     volumes:
       - ./logs:/var/lib/server/logs
 
+  localstack:
+    image: localstack/localstack:1.3
+    container_name: localstack-self-hosted
+    expose:
+      - 4566
+    restart: unless-stopped
+    environment:
+      - SERVICES=sns,sqs
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - HOSTNAME_EXTERNAL=localstack
+      - LS_LOG=warn
+    volumes:
+      - ./docker/localstack_bootstrap.sh:/etc/localstack/init/ready.d/localstack_bootstrap.sh
+      - /var/run/docker.sock:/var/run/docker.sock
+
   db:
     image: mysql:8
+    container_name: db-self-hosted
     environment:
       MYSQL_DATABASE: '${DB_DATABASE}'
       MYSQL_USER: '${DB_USERNAME}'
@@ -24,6 +41,7 @@ services:
 
   cache:
     image: redis:6.0-alpine
+    container_name: cache-self-hosted
     volumes:
       - ./data/redis/:/data
     expose:
