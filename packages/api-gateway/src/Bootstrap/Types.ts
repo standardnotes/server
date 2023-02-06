@@ -14,7 +14,6 @@ const TYPES = {
   AUTH_JWT_SECRET: Symbol.for('AUTH_JWT_SECRET'),
   HTTP_CALL_TIMEOUT: Symbol.for('HTTP_CALL_TIMEOUT'),
   VERSION: Symbol.for('VERSION'),
-  REDIS_EVENTS_CHANNEL: Symbol.for('REDIS_EVENTS_CHANNEL'),
   CROSS_SERVICE_TOKEN_CACHE_TTL: Symbol.for('CROSS_SERVICE_TOKEN_CACHE_TTL'),
   // Middleware
   AuthMiddleware: Symbol.for('AuthMiddleware'),

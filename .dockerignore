@@ -1,0 +1,13 @@
+dist
+coverage
+
+.yarn/*
+!.yarn/cache
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/unplugged
+!.yarn/sdks
+!.yarn/versions
+
+data/*

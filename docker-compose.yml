@@ -1,14 +1,38 @@
-version: '3.8'
 services:
+  server:
+    build: .
+    env_file: .env
+    container_name: server-self-hosted
+    ports:
+      - ${EXPOSED_PORT}:3000
+    volumes:
+      - ./logs:/var/lib/server/logs
+
+  localstack:
+    image: localstack/localstack:1.3
+    container_name: localstack-self-hosted
+    expose:
+      - 4566
+    restart: unless-stopped
+    environment:
+      - SERVICES=sns,sqs
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - HOSTNAME_EXTERNAL=localstack
+      - LS_LOG=warn
+    volumes:
+      - ./docker/localstack_bootstrap.sh:/etc/localstack/init/ready.d/localstack_bootstrap.sh
+      - /var/run/docker.sock:/var/run/docker.sock
+
   db:
-    image: mysql:5.6
+    image: mysql:8
+    container_name: db-self-hosted
     environment:
       MYSQL_DATABASE: '${DB_DATABASE}'
       MYSQL_USER: '${DB_USERNAME}'
       MYSQL_PASSWORD: '${DB_PASSWORD}'
       MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
     expose:
-      - ${DB_PORT}:3306
+      - 3306
     restart: unless-stopped
     command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8 --collation-server=utf8_general_ci
     volumes:
@@ -17,8 +41,9 @@ services:
 
   cache:
     image: redis:6.0-alpine
+    container_name: cache-self-hosted
     volumes:
       - ./data/redis/:/data
     expose:
-      - ${REDIS_PORT}:6379
+      - 6379
     restart: unless-stopped

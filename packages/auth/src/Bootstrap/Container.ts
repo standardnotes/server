@@ -90,9 +90,6 @@ import { FeatureService } from '../Domain/Feature/FeatureService'
 import { SettingServiceInterface } from '../Domain/Setting/SettingServiceInterface'
 import { ExtensionKeyGrantedEventHandler } from '../Domain/Handler/ExtensionKeyGrantedEventHandler'
 import {
-  RedisDomainEventPublisher,
-  RedisDomainEventSubscriberFactory,
-  RedisEventMessageHandler,
   SNSDomainEventPublisher,
   SQSDomainEventSubscriberFactory,
   SQSEventMessageHandler,
@@ -258,37 +255,33 @@ export class ContainerConfigLoader {
 
     container.bind<TimerInterface>(TYPES.Timer).toConstantValue(new Timer())
 
-    if (env.get('SNS_TOPIC_ARN', true)) {
-      const snsConfig: SNSClientConfig = {
-        region: env.get('SNS_AWS_REGION', true),
-      }
-      if (env.get('SNS_ENDPOINT', true)) {
-        snsConfig.endpoint = env.get('SNS_ENDPOINT', true)
-      }
-      if (env.get('SNS_ACCESS_KEY_ID', true) && env.get('SNS_SECRET_ACCESS_KEY', true)) {
-        snsConfig.credentials = {
-          accessKeyId: env.get('SNS_ACCESS_KEY_ID', true),
-          secretAccessKey: env.get('SNS_SECRET_ACCESS_KEY', true),
-        }
-      }
-      container.bind<SNSClient>(TYPES.SNS).toConstantValue(new SNSClient(snsConfig))
+    const snsConfig: SNSClientConfig = {
+      region: env.get('SNS_AWS_REGION', true),
     }
+    if (env.get('SNS_ENDPOINT', true)) {
+      snsConfig.endpoint = env.get('SNS_ENDPOINT', true)
+    }
+    if (env.get('SNS_ACCESS_KEY_ID', true) && env.get('SNS_SECRET_ACCESS_KEY', true)) {
+      snsConfig.credentials = {
+        accessKeyId: env.get('SNS_ACCESS_KEY_ID', true),
+        secretAccessKey: env.get('SNS_SECRET_ACCESS_KEY', true),
+      }
+    }
+    container.bind<SNSClient>(TYPES.SNS).toConstantValue(new SNSClient(snsConfig))
 
-    if (env.get('SQS_QUEUE_URL', true)) {
-      const sqsConfig: SQSClientConfig = {
-        region: env.get('SQS_AWS_REGION', true),
-      }
-      if (env.get('SQS_ENDPOINT', true)) {
-        sqsConfig.endpoint = env.get('SQS_ENDPOINT', true)
-      }
-      if (env.get('SQS_ACCESS_KEY_ID', true) && env.get('SQS_SECRET_ACCESS_KEY', true)) {
-        sqsConfig.credentials = {
-          accessKeyId: env.get('SQS_ACCESS_KEY_ID', true),
-          secretAccessKey: env.get('SQS_SECRET_ACCESS_KEY', true),
-        }
-      }
-      container.bind<SQSClient>(TYPES.SQS).toConstantValue(new SQSClient(sqsConfig))
+    const sqsConfig: SQSClientConfig = {
+      region: env.get('SQS_AWS_REGION', true),
     }
+    if (env.get('SQS_ENDPOINT', true)) {
+      sqsConfig.endpoint = env.get('SQS_ENDPOINT', true)
+    }
+    if (env.get('SQS_ACCESS_KEY_ID', true) && env.get('SQS_SECRET_ACCESS_KEY', true)) {
+      sqsConfig.credentials = {
+        accessKeyId: env.get('SQS_ACCESS_KEY_ID', true),
+        secretAccessKey: env.get('SQS_SECRET_ACCESS_KEY', true),
+      }
+    }
+    container.bind<SQSClient>(TYPES.SQS).toConstantValue(new SQSClient(sqsConfig))
 
     // Mapping
     container
@@ -441,13 +434,12 @@ export class ContainerConfigLoader {
     container
       .bind(TYPES.DISABLE_USER_REGISTRATION)
       .toConstantValue(env.get('DISABLE_USER_REGISTRATION', true) === 'true')
-    container.bind(TYPES.SNS_TOPIC_ARN).toConstantValue(env.get('SNS_TOPIC_ARN', true))
+    container.bind(TYPES.SNS_TOPIC_ARN).toConstantValue(env.get('SNS_TOPIC_ARN'))
     container.bind(TYPES.SNS_AWS_REGION).toConstantValue(env.get('SNS_AWS_REGION', true))
-    container.bind(TYPES.SQS_QUEUE_URL).toConstantValue(env.get('SQS_QUEUE_URL', true))
+    container.bind(TYPES.SQS_QUEUE_URL).toConstantValue(env.get('SQS_QUEUE_URL'))
     container.bind(TYPES.USER_SERVER_REGISTRATION_URL).toConstantValue(env.get('USER_SERVER_REGISTRATION_URL', true))
     container.bind(TYPES.USER_SERVER_AUTH_KEY).toConstantValue(env.get('USER_SERVER_AUTH_KEY', true))
     container.bind(TYPES.USER_SERVER_CHANGE_EMAIL_URL).toConstantValue(env.get('USER_SERVER_CHANGE_EMAIL_URL', true))
-    container.bind(TYPES.REDIS_EVENTS_CHANNEL).toConstantValue(env.get('REDIS_EVENTS_CHANNEL'))
     container.bind(TYPES.NEW_RELIC_ENABLED).toConstantValue(env.get('NEW_RELIC_ENABLED', true))
     container.bind(TYPES.SYNCING_SERVER_URL).toConstantValue(env.get('SYNCING_SERVER_URL'))
     container.bind(TYPES.VERSION).toConstantValue(env.get('VERSION'))
@@ -535,17 +527,9 @@ export class ContainerConfigLoader {
       .toConstantValue(new DeterministicSelector<boolean>())
     container.bind<UserSubscriptionServiceInterface>(TYPES.UserSubscriptionService).to(UserSubscriptionService)
 
-    if (env.get('SNS_TOPIC_ARN', true)) {
-      container
-        .bind<SNSDomainEventPublisher>(TYPES.DomainEventPublisher)
-        .toConstantValue(new SNSDomainEventPublisher(container.get(TYPES.SNS), container.get(TYPES.SNS_TOPIC_ARN)))
-    } else {
-      container
-        .bind<RedisDomainEventPublisher>(TYPES.DomainEventPublisher)
-        .toConstantValue(
-          new RedisDomainEventPublisher(container.get(TYPES.Redis), container.get(TYPES.REDIS_EVENTS_CHANNEL)),
-        )
-    }
+    container
+      .bind<SNSDomainEventPublisher>(TYPES.DomainEventPublisher)
+      .toConstantValue(new SNSDomainEventPublisher(container.get(TYPES.SNS), container.get(TYPES.SNS_TOPIC_ARN)))
 
     // use cases
     container
@@ -803,37 +787,22 @@ export class ContainerConfigLoader {
       ['EMAIL_SUBSCRIPTION_UNSUBSCRIBED', container.get(TYPES.EmailSubscriptionUnsubscribedEventHandler)],
     ])
 
-    if (env.get('SQS_QUEUE_URL', true)) {
-      container
-        .bind<DomainEventMessageHandlerInterface>(TYPES.DomainEventMessageHandler)
-        .toConstantValue(
-          env.get('NEW_RELIC_ENABLED', true) === 'true'
-            ? new SQSNewRelicEventMessageHandler(eventHandlers, container.get(TYPES.Logger))
-            : new SQSEventMessageHandler(eventHandlers, container.get(TYPES.Logger)),
-        )
-      container
-        .bind<DomainEventSubscriberFactoryInterface>(TYPES.DomainEventSubscriberFactory)
-        .toConstantValue(
-          new SQSDomainEventSubscriberFactory(
-            container.get(TYPES.SQS),
-            container.get(TYPES.SQS_QUEUE_URL),
-            container.get(TYPES.DomainEventMessageHandler),
-          ),
-        )
-    } else {
-      container
-        .bind<DomainEventMessageHandlerInterface>(TYPES.DomainEventMessageHandler)
-        .toConstantValue(new RedisEventMessageHandler(eventHandlers, container.get(TYPES.Logger)))
-      container
-        .bind<DomainEventSubscriberFactoryInterface>(TYPES.DomainEventSubscriberFactory)
-        .toConstantValue(
-          new RedisDomainEventSubscriberFactory(
-            container.get(TYPES.Redis),
-            container.get(TYPES.DomainEventMessageHandler),
-            container.get(TYPES.REDIS_EVENTS_CHANNEL),
-          ),
-        )
-    }
+    container
+      .bind<DomainEventMessageHandlerInterface>(TYPES.DomainEventMessageHandler)
+      .toConstantValue(
+        env.get('NEW_RELIC_ENABLED', true) === 'true'
+          ? new SQSNewRelicEventMessageHandler(eventHandlers, container.get(TYPES.Logger))
+          : new SQSEventMessageHandler(eventHandlers, container.get(TYPES.Logger)),
+      )
+    container
+      .bind<DomainEventSubscriberFactoryInterface>(TYPES.DomainEventSubscriberFactory)
+      .toConstantValue(
+        new SQSDomainEventSubscriberFactory(
+          container.get(TYPES.SQS),
+          container.get(TYPES.SQS_QUEUE_URL),
+          container.get(TYPES.DomainEventMessageHandler),
+        ),
+      )
 
     return container
   }

@@ -13,9 +13,6 @@ import { Env } from './Env'
 import TYPES from './Types'
 import { AppDataSource } from './DataSource'
 import {
-  RedisDomainEventPublisher,
-  RedisDomainEventSubscriberFactory,
-  RedisEventMessageHandler,
   SNSDomainEventPublisher,
   SQSDomainEventSubscriberFactory,
   SQSEventMessageHandler,
@@ -141,10 +138,9 @@ export class ContainerConfigLoader {
     // env vars
     container.bind(TYPES.AUTH_JWT_SECRET).toConstantValue(env.get('AUTH_JWT_SECRET'))
     container.bind(TYPES.REDIS_URL).toConstantValue(env.get('REDIS_URL'))
-    container.bind(TYPES.SNS_TOPIC_ARN).toConstantValue(env.get('SNS_TOPIC_ARN', true))
+    container.bind(TYPES.SNS_TOPIC_ARN).toConstantValue(env.get('SNS_TOPIC_ARN'))
     container.bind(TYPES.SNS_AWS_REGION).toConstantValue(env.get('SNS_AWS_REGION', true))
-    container.bind(TYPES.SQS_QUEUE_URL).toConstantValue(env.get('SQS_QUEUE_URL', true))
-    container.bind(TYPES.REDIS_EVENTS_CHANNEL).toConstantValue(env.get('REDIS_EVENTS_CHANNEL'))
+    container.bind(TYPES.SQS_QUEUE_URL).toConstantValue(env.get('SQS_QUEUE_URL'))
     container.bind(TYPES.NEW_RELIC_ENABLED).toConstantValue(env.get('NEW_RELIC_ENABLED', true))
     container.bind(TYPES.VERSION).toConstantValue(env.get('VERSION'))
 
@@ -169,53 +165,30 @@ export class ContainerConfigLoader {
       .bind<TokenDecoderInterface<CrossServiceTokenData>>(TYPES.CrossServiceTokenDecoder)
       .toConstantValue(new TokenDecoder<CrossServiceTokenData>(container.get(TYPES.AUTH_JWT_SECRET)))
 
-    if (env.get('SNS_TOPIC_ARN', true)) {
-      container
-        .bind<SNSDomainEventPublisher>(TYPES.DomainEventPublisher)
-        .toConstantValue(new SNSDomainEventPublisher(container.get(TYPES.SNS), container.get(TYPES.SNS_TOPIC_ARN)))
-    } else {
-      container
-        .bind<RedisDomainEventPublisher>(TYPES.DomainEventPublisher)
-        .toConstantValue(
-          new RedisDomainEventPublisher(container.get(TYPES.Redis), container.get(TYPES.REDIS_EVENTS_CHANNEL)),
-        )
-    }
+    container
+      .bind<SNSDomainEventPublisher>(TYPES.DomainEventPublisher)
+      .toConstantValue(new SNSDomainEventPublisher(container.get(TYPES.SNS), container.get(TYPES.SNS_TOPIC_ARN)))
 
     const eventHandlers: Map<string, DomainEventHandlerInterface> = new Map([
       ['USER_REGISTERED', container.get(TYPES.UserRegisteredEventHandler)],
     ])
 
-    if (env.get('SQS_QUEUE_URL', true)) {
-      container
-        .bind<DomainEventMessageHandlerInterface>(TYPES.DomainEventMessageHandler)
-        .toConstantValue(
-          env.get('NEW_RELIC_ENABLED', true) === 'true'
-            ? new SQSNewRelicEventMessageHandler(eventHandlers, container.get(TYPES.Logger))
-            : new SQSEventMessageHandler(eventHandlers, container.get(TYPES.Logger)),
-        )
-      container
-        .bind<DomainEventSubscriberFactoryInterface>(TYPES.DomainEventSubscriberFactory)
-        .toConstantValue(
-          new SQSDomainEventSubscriberFactory(
-            container.get(TYPES.SQS),
-            container.get(TYPES.SQS_QUEUE_URL),
-            container.get(TYPES.DomainEventMessageHandler),
-          ),
-        )
-    } else {
-      container
-        .bind<DomainEventMessageHandlerInterface>(TYPES.DomainEventMessageHandler)
-        .toConstantValue(new RedisEventMessageHandler(eventHandlers, container.get(TYPES.Logger)))
-      container
-        .bind<DomainEventSubscriberFactoryInterface>(TYPES.DomainEventSubscriberFactory)
-        .toConstantValue(
-          new RedisDomainEventSubscriberFactory(
-            container.get(TYPES.Redis),
-            container.get(TYPES.DomainEventMessageHandler),
-            container.get(TYPES.REDIS_EVENTS_CHANNEL),
-          ),
-        )
-    }
+    container
+      .bind<DomainEventMessageHandlerInterface>(TYPES.DomainEventMessageHandler)
+      .toConstantValue(
+        env.get('NEW_RELIC_ENABLED', true) === 'true'
+          ? new SQSNewRelicEventMessageHandler(eventHandlers, container.get(TYPES.Logger))
+          : new SQSEventMessageHandler(eventHandlers, container.get(TYPES.Logger)),
+      )
+    container
+      .bind<DomainEventSubscriberFactoryInterface>(TYPES.DomainEventSubscriberFactory)
+      .toConstantValue(
+        new SQSDomainEventSubscriberFactory(
+          container.get(TYPES.SQS),
+          container.get(TYPES.SQS_QUEUE_URL),
+          container.get(TYPES.DomainEventMessageHandler),
+        ),
+      )
 
     return container
   }

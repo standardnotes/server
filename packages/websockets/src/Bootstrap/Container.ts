@@ -18,8 +18,6 @@ import { AddWebSocketsConnection } from '../Domain/UseCase/AddWebSocketsConnecti
 import { RemoveWebSocketsConnection } from '../Domain/UseCase/RemoveWebSocketsConnection/RemoveWebSocketsConnection'
 import { WebSocketsClientMessenger } from '../Infra/WebSockets/WebSocketsClientMessenger'
 import {
-  RedisDomainEventSubscriberFactory,
-  RedisEventMessageHandler,
   SQSDomainEventSubscriberFactory,
   SQSEventMessageHandler,
   SQSNewRelicEventMessageHandler,
@@ -110,8 +108,7 @@ export class ContainerConfigLoader {
       .bind(TYPES.WEB_SOCKET_CONNECTION_TOKEN_TTL)
       .toConstantValue(+env.get('WEB_SOCKET_CONNECTION_TOKEN_TTL', true))
     container.bind(TYPES.REDIS_URL).toConstantValue(env.get('REDIS_URL'))
-    container.bind(TYPES.SQS_QUEUE_URL).toConstantValue(env.get('SQS_QUEUE_URL', true))
-    container.bind(TYPES.REDIS_EVENTS_CHANNEL).toConstantValue(env.get('REDIS_EVENTS_CHANNEL'))
+    container.bind(TYPES.SQS_QUEUE_URL).toConstantValue(env.get('SQS_QUEUE_URL'))
     container.bind(TYPES.NEW_RELIC_ENABLED).toConstantValue(env.get('NEW_RELIC_ENABLED', true))
     container.bind(TYPES.WEBSOCKETS_API_URL).toConstantValue(env.get('WEBSOCKETS_API_URL', true))
     container.bind(TYPES.VERSION).toConstantValue(env.get('VERSION'))
@@ -144,37 +141,22 @@ export class ContainerConfigLoader {
       ['WEB_SOCKET_MESSAGE_REQUESTED', container.get(TYPES.WebSocketMessageRequestedEventHandler)],
     ])
 
-    if (env.get('SQS_QUEUE_URL', true)) {
-      container
-        .bind<DomainEventMessageHandlerInterface>(TYPES.DomainEventMessageHandler)
-        .toConstantValue(
-          env.get('NEW_RELIC_ENABLED', true) === 'true'
-            ? new SQSNewRelicEventMessageHandler(eventHandlers, container.get(TYPES.Logger))
-            : new SQSEventMessageHandler(eventHandlers, container.get(TYPES.Logger)),
-        )
-      container
-        .bind<DomainEventSubscriberFactoryInterface>(TYPES.DomainEventSubscriberFactory)
-        .toConstantValue(
-          new SQSDomainEventSubscriberFactory(
-            container.get(TYPES.SQS),
-            container.get(TYPES.SQS_QUEUE_URL),
-            container.get(TYPES.DomainEventMessageHandler),
-          ),
-        )
-    } else {
-      container
-        .bind<DomainEventMessageHandlerInterface>(TYPES.DomainEventMessageHandler)
-        .toConstantValue(new RedisEventMessageHandler(eventHandlers, container.get(TYPES.Logger)))
-      container
-        .bind<DomainEventSubscriberFactoryInterface>(TYPES.DomainEventSubscriberFactory)
-        .toConstantValue(
-          new RedisDomainEventSubscriberFactory(
-            container.get(TYPES.Redis),
-            container.get(TYPES.DomainEventMessageHandler),
-            container.get(TYPES.REDIS_EVENTS_CHANNEL),
-          ),
-        )
-    }
+    container
+      .bind<DomainEventMessageHandlerInterface>(TYPES.DomainEventMessageHandler)
+      .toConstantValue(
+        env.get('NEW_RELIC_ENABLED', true) === 'true'
+          ? new SQSNewRelicEventMessageHandler(eventHandlers, container.get(TYPES.Logger))
+          : new SQSEventMessageHandler(eventHandlers, container.get(TYPES.Logger)),
+      )
+    container
+      .bind<DomainEventSubscriberFactoryInterface>(TYPES.DomainEventSubscriberFactory)
+      .toConstantValue(
+        new SQSDomainEventSubscriberFactory(
+          container.get(TYPES.SQS),
+          container.get(TYPES.SQS_QUEUE_URL),
+          container.get(TYPES.DomainEventMessageHandler),
+        ),
+      )
 
     return container
   }
