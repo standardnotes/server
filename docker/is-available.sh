@@ -2,6 +2,8 @@
 
 WAIT_FOR_URL="$1"
 shift
+LOGS_PATH="$1"
+shift
 
 attempt=0
 while [ $attempt -le 180 ]; do
@@ -11,7 +13,16 @@ while [ $attempt -le 180 ]; do
     if [ "$?" -eq "0" ]; then
         sleep 2 # for warmup
         echo "# All services are up!"
+        exit 0
         break
     fi
     sleep 2
 done
+
+echo "# Failed to wait for all services to be up!"
+
+echo "# Errors:"
+tail $LOGS_PATH/*.err
+
+echo "# Logs:"
+tail $LOGS_PATH/*.log
