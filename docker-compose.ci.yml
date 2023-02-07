@@ -1,8 +1,8 @@
 services:
   server:
     build: .
-    env_file: .env
-    container_name: server-self-hosted
+    env_file: .github/ci.env
+    container_name: server-ci
     ports:
       - ${EXPOSED_PORT}:3000
       - ${EXPOSED_FILES_SERVER_PORT}:3104
@@ -13,7 +13,7 @@ services:
 
   localstack:
     image: localstack/localstack:1.3
-    container_name: localstack-self-hosted
+    container_name: localstack-ci
     expose:
       - 4566
     restart: unless-stopped
@@ -30,12 +30,8 @@ services:
 
   db:
     image: mysql:8
-    container_name: db-self-hosted
-    environment:
-      MYSQL_DATABASE: '${DB_DATABASE}'
-      MYSQL_USER: '${DB_USERNAME}'
-      MYSQL_PASSWORD: '${DB_PASSWORD}'
-      MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
+    container_name: db-ci
+    env_file: .github/ci.env
     expose:
       - 3306
     restart: unless-stopped
@@ -48,7 +44,7 @@ services:
 
   cache:
     image: redis:6.0-alpine
-    container_name: cache-self-hosted
+    container_name: cache-ci
     volumes:
       - ./data/redis/:/data
     expose:
