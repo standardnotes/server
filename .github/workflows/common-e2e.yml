@@ -48,9 +48,6 @@ jobs:
         registry-url: 'https://registry.npmjs.org'
         node-version-file: '.nvmrc'
 
-    - name: Create .env file
-      run: cp .env.sample .env
-
     - name: Run Server
       run: docker compose -f docker-compose.ci.yml up -d
 
