@@ -22,9 +22,9 @@ done
 echo "# Failed to wait for all services to be up!"
 
 echo "# Errors:"
-tail $LOGS_PATH/*.err
+tail -n 50 $LOGS_PATH/*.err
 
 echo "# Logs:"
-tail $LOGS_PATH/*.log
+tail -n 50 $LOGS_PATH/*.log
 
 exit 1
