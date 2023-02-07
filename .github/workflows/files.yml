@@ -17,7 +17,6 @@ jobs:
     with:
       service_name: files
       workspace_name: "@standardnotes/files-server"
-      e2e_tag_parameter_name: files_image_tag
       package_path: packages/files
     secrets: inherit
 

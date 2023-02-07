@@ -17,7 +17,6 @@ jobs:
     with:
       service_name: revisions
       workspace_name: "@standardnotes/revisions-server"
-      e2e_tag_parameter_name: revisions_image_tag
       package_path: packages/revisions
     secrets: inherit
 

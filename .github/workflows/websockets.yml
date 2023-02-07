@@ -11,9 +11,9 @@ on:
   workflow_dispatch:
 
 jobs:
-  call_server_utility_workflow:
-    name: Server Utility
-    uses: standardnotes/server/.github/workflows/common-server-utility.yml@main
+  call_server_application_workflow:
+    name: Server Application
+    uses: standardnotes/server/.github/workflows/common-server-application.yml@main
     with:
       service_name: websockets
       workspace_name: "@standardnotes/websockets-server"
@@ -21,7 +21,7 @@ jobs:
     secrets: inherit
 
   newrelic:
-    needs: call_server_utility_workflow
+    needs: call_server_application_workflow
 
     runs-on: ubuntu-latest
     steps:
