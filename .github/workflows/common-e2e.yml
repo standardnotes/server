@@ -30,10 +30,14 @@ jobs:
           MYSQL_ROOT_PASSWORD: changeme123
         ports:
           - 3306:3306
+        options: >-
+          --name "db"
       cache:
         image: redis:6.0-alpine
         ports:
           - 6379:6379
+        options: >-
+          --name "cache"
       mock-event-publisher:
         image: standardnotes/mock-event-publisher
         ports:
@@ -86,19 +90,28 @@ jobs:
         push: true
         tags: standardnotes/server:${{ github.sha }}
 
+    - name: Create Docker Network
+      run: docker network create -d bridge e2e-network
+
+    - name: Connect external containers to e2e network
+      run: |
+        docker network connect --alias mock-event-publisher e2e-network mock-event-publisher
+        docker network connect --alias db e2e-network db
+        docker network connect --alias cache e2e-network cache
+
     - name: Run Server
-      run: docker run -d -p 3123:3000 standardnotes/server:${{ github.sha }}
+      run: docker run --network e2e-network -d -p 3123:3000 standardnotes/server:${{ github.sha }}
       env:
         EXPOSED_PORT: 3123
         EXPOSED_FILES_SERVER_PORT: 3125
-        PUBLIC_FILES_SERVER_URL: http://localhost:3125
-        DB_HOST: localhost
+        PUBLIC_FILES_SERVER_URL: http://db:3125
+        DB_HOST: db
         DB_PORT: 3306
         DB_USERNAME: std_notes_user
         DB_PASSWORD: changeme123
         DB_DATABASE: standard_notes_db
         REDIS_PORT: 6379
-        REDIS_HOST: localhost
+        REDIS_HOST: cache
         AUTH_SERVER_ACCESS_TOKEN_AGE: 4
         AUTH_SERVER_REFRESH_TOKEN_AGE: 10
         AUTH_SERVER_EPHEMERAL_SESSION_AGE: 300
@@ -110,7 +123,7 @@ jobs:
         API_GATEWAY_LOG_LEVEL: debug
 
     - name: Wait for server to start
-      run: docker/wait-for.sh localhost 3123
+      run: docker/is-available.sh http://localhost:3123
 
     - name: Run E2E Test Suite
       run: yarn dlx mocha-headless-chrome --timeout 1200000 -f http://localhost:9001/mocha/test.html
