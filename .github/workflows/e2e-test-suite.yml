@@ -1,0 +1,17 @@
+name: E2E Test Suite against a stable self hosted server
+
+on:
+  workflow_dispatch:
+    inputs:
+      snjs_image_tag:
+        type: string
+        default: latest
+        description: The Docker image tag used for SNJS container
+
+jobs:
+  e2e:
+    name: E2E
+    uses: standardnotes/server/.github/workflows/common-e2e.yml@main
+    with:
+      snjs_image_tag: ${{ inputs.snjs_image_tag }}
+    secrets: inherit

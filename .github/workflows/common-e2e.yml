@@ -2,6 +2,11 @@ name: Reusable Run E2E Test Suite Workflow
 
 on:
   workflow_call:
+    inputs:
+      snjs_image_tag:
+        type: string
+        default: latest
+        description: The Docker image tag used for SNJS container
     secrets:
       DOCKER_USERNAME:
         required: true
@@ -18,7 +23,7 @@ jobs:
 
     services:
       snjs:
-        image: standardnotes/snjs
+        image: standardnotes/snjs:${{ inputs.snjs_image_tag }}
         ports:
         - 9001:9001
       mock-event-publisher:
