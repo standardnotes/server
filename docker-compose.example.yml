@@ -1,10 +1,10 @@
 services:
   server:
-    build: .
-    env_file: .github/ci.env
-    container_name: server-ci
+    image: standardnotes/server
+    env_file: .env.sample
+    container_name: server-self-hosted
     ports:
-      - 3123:3000
+      - 3000:3000
       - 3125:3104
     volumes:
       - ./logs:/var/lib/server/logs
@@ -13,7 +13,7 @@ services:
 
   localstack:
     image: localstack/localstack:1.3
-    container_name: localstack-ci
+    container_name: localstack-self-hosted
     expose:
       - 4566
     restart: unless-stopped
@@ -30,8 +30,12 @@ services:
 
   db:
     image: mysql:8
-    container_name: db-ci
-    env_file: .github/ci.env
+    container_name: db-self-hosted
+    environment:
+      - MYSQL_DATABASE=standard_notes_db
+      - MYSQL_USER=std_notes_user
+      - MYSQL_ROOT_PASSWORD=changeme123
+      - MYSQL_PASSWORD=changeme123
     expose:
       - 3306
     restart: unless-stopped
@@ -44,7 +48,7 @@ services:
 
   cache:
     image: redis:6.0-alpine
-    container_name: cache-ci
+    container_name: cache-self-hosted
     volumes:
       - ./data/redis/:/data
     expose:
