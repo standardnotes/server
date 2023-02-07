@@ -6,7 +6,7 @@ LOGS_PATH="$1"
 shift
 
 attempt=0
-while [ $attempt -le 180 ]; do
+while [ $attempt -le 120 ]; do
     attempt=$(( $attempt + 1 ))
     echo "# Waiting for all services to be up (attempt: $attempt) ..."
     ping_api_gateway_result=`curl -s $WAIT_FOR_URL | grep "Welcome"`

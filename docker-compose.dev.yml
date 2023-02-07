@@ -5,8 +5,11 @@ services:
     container_name: server-self-hosted
     ports:
       - ${EXPOSED_PORT}:3000
+      - ${EXPOSED_FILES_SERVER_PORT}:3104
     volumes:
       - ./logs:/var/lib/server/logs
+    networks:
+      - standardnotes_self_hosted
 
   localstack:
     image: localstack/localstack:1.3
@@ -22,6 +25,8 @@ services:
     volumes:
       - ./docker/localstack_bootstrap.sh:/etc/localstack/init/ready.d/localstack_bootstrap.sh
       - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - standardnotes_self_hosted
 
   db:
     image: mysql:8
@@ -38,6 +43,8 @@ services:
     volumes:
       - ./data/mysql:/var/lib/mysql
       - ./data/import:/docker-entrypoint-initdb.d
+    networks:
+      - standardnotes_self_hosted
 
   cache:
     image: redis:6.0-alpine
@@ -47,3 +54,9 @@ services:
     expose:
       - 6379
     restart: unless-stopped
+    networks:
+      - standardnotes_self_hosted
+
+networks:
+  standardnotes_self_hosted:
+    name: standardnotes_self_hosted
