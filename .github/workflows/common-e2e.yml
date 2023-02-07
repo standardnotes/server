@@ -49,7 +49,7 @@ jobs:
         node-version-file: '.nvmrc'
 
     - name: Create .env file
-      run: touch .env
+      run: cp .env.sample .env
 
     - name: Run Server
       run: docker compose -f docker-compose.dev.yml up -d
