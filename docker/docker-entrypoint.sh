@@ -57,10 +57,10 @@ if [ -z "$REDIS_PORT" ]; then
 fi
 
 if [ -z "$REDIS_HOST" ]; then
-  export REDIS_URL="redis://cache"
-else
-  export REDIS_URL="redis://$REDIS_HOST"
+  export REDIS_HOST="cache"
 fi
+
+export REDIS_URL="redis://$REDIS_HOST"
 
 ##########
 # SHARED #

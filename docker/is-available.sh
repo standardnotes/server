@@ -26,3 +26,5 @@ tail $LOGS_PATH/*.err
 
 echo "# Logs:"
 tail $LOGS_PATH/*.log
+
+exit 1
