@@ -1,4 +1,4 @@
-name: E2E Test Suite against a stable self hosted server
+name: E2E Test Suite On Self Hosted Server
 
 on:
   workflow_dispatch:
