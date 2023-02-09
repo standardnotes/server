@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.29.15](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.29.14...@standardnotes/syncing-server@1.29.15) (2023-02-09)
+
+### Bug Fixes
+
+* optimize memory usage ([e96fd6d](https://github.com/standardnotes/syncing-server-js/commit/e96fd6d69e1252842b5c91b1bedefa36e5d4a232))
+
 ## [1.29.14](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.29.13...@standardnotes/syncing-server@1.29.14) (2023-02-06)
 
 **Note:** Version bump only for package @standardnotes/syncing-server

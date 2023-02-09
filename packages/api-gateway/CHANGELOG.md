@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.46.12](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.46.11...@standardnotes/api-gateway@1.46.12) (2023-02-09)
+
+### Bug Fixes
+
+* optimize memory usage ([e96fd6d](https://github.com/standardnotes/api-gateway/commit/e96fd6d69e1252842b5c91b1bedefa36e5d4a232))
+
 ## [1.46.11](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.46.10...@standardnotes/api-gateway@1.46.11) (2023-02-06)
 
 **Note:** Version bump only for package @standardnotes/api-gateway

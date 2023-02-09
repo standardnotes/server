@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.29](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.10.28...@standardnotes/revisions-server@1.10.29) (2023-02-09)
+
+### Bug Fixes
+
+* optimize memory usage ([e96fd6d](https://github.com/standardnotes/server/commit/e96fd6d69e1252842b5c91b1bedefa36e5d4a232))
+
 ## [1.10.28](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.10.27...@standardnotes/revisions-server@1.10.28) (2023-02-06)
 
 **Note:** Version bump only for package @standardnotes/revisions-server
