@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.30](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.10.29...@standardnotes/revisions-server@1.10.30) (2023-02-09)
+
+### Bug Fixes
+
+* performance of startup sequence in supervisor controlled self-hosting setup ([5bbdc7e](https://github.com/standardnotes/server/commit/5bbdc7e426c436b17dc130e3c6d9163080561c76))
+
 ## [1.10.29](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.10.28...@standardnotes/revisions-server@1.10.29) (2023-02-09)
 
 ### Bug Fixes

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.46.13](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.46.12...@standardnotes/api-gateway@1.46.13) (2023-02-09)
+
+### Bug Fixes
+
+* performance of startup sequence in supervisor controlled self-hosting setup ([5bbdc7e](https://github.com/standardnotes/api-gateway/commit/5bbdc7e426c436b17dc130e3c6d9163080561c76))
+
 ## [1.46.12](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.46.11...@standardnotes/api-gateway@1.46.12) (2023-02-09)
 
 ### Bug Fixes

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.87.14](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.87.13...@standardnotes/auth-server@1.87.14) (2023-02-09)
+
+### Bug Fixes
+
+* performance of startup sequence in supervisor controlled self-hosting setup ([5bbdc7e](https://github.com/standardnotes/server/commit/5bbdc7e426c436b17dc130e3c6d9163080561c76))
+
 ## [1.87.13](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.87.12...@standardnotes/auth-server@1.87.13) (2023-02-09)
 
 ### Bug Fixes
