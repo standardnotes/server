@@ -16,7 +16,13 @@
     "build": "tsc --build",
     "lint": "eslint . --ext .ts",
     "setup:env": "cp .env.sample .env",
+    "wait-for:syncing-server": "docker/wait-for.sh localhost $SYNCING_SERVER_PORT",
+    "wait-for:auth": "docker/wait-for.sh localhost $AUTH_SERVER_PORT",
+    "wait-for:files": "docker/wait-for.sh localhost $FILES_SERVER_PORT",
+    "wait-for:revisions": "docker/wait-for.sh localhost $REVISIONS_SERVER_PORT",
+    "wait-for:services": "yarn wait-for:syncing-server && yarn wait-for:auth && yarn wait-for:files && yarn wait-for:revisions",
     "start": "yarn node dist/bin/server.js",
+    "supervisor:start": "yarn wait-for:services && yarn node dist/bin/server.js",
     "upgrade:snjs": "yarn ncu -u '@standardnotes/*'"
   },
   "dependencies": {
