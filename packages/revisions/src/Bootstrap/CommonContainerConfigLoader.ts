@@ -21,7 +21,9 @@ export class CommonContainerConfigLoader {
     const env: Env = new Env()
     env.load()
 
-    const container = new Container()
+    const container = new Container({
+      defaultScope: 'Singleton',
+    })
 
     await AppDataSource.initialize()
 

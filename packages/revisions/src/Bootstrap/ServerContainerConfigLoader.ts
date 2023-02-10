@@ -13,6 +13,9 @@ import { RevisionHttpMapper } from '../Mapping/RevisionHttpMapper'
 import { RevisionMetadataHttpMapper } from '../Mapping/RevisionMetadataHttpMapper'
 import { GetRequiredRoleToViewRevision } from '../Domain/UseCase/GetRequiredRoleToViewRevision/GetRequiredRoleToViewRevision'
 import { CommonContainerConfigLoader } from './CommonContainerConfigLoader'
+import { TYPE } from 'inversify-express-utils'
+import { InversifyExpressRevisionsController } from '../Infra/InversifyExpress/InversifyExpressRevisionsController'
+import { InversifyExpressHealthCheckController } from '../Infra/InversifyExpress/InversifyExpressHealthCheckController'
 
 export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
   override async load(): Promise<Container> {
@@ -83,6 +86,12 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
         context.container.get(TYPES.Logger),
       )
     })
+
+    container.bind(TYPE.Controller).toDynamicValue((context: interfaces.Context) => {
+      return new InversifyExpressRevisionsController(context.container.get(TYPES.RevisionsController))
+    })
+
+    container.bind(TYPE.Controller).toDynamicValue(() => new InversifyExpressHealthCheckController())
 
     return container
   }
