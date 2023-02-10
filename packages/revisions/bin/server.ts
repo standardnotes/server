@@ -13,6 +13,9 @@ import TYPES from '../src/Bootstrap/Types'
 import { Env } from '../src/Bootstrap/Env'
 import { ServerContainerConfigLoader } from '../src/Bootstrap/ServerContainerConfigLoader'
 
+import '../src/Infra/InversifyExpress/InversifyExpressRevisionsController'
+import '../src/Infra/InversifyExpress/InversifyExpressHealthCheckController'
+
 const container = new ServerContainerConfigLoader()
 void container.load().then((container) => {
   const env: Env = container.get(TYPES.Env)

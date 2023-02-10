@@ -1,16 +1,17 @@
 import { Request, Response } from 'express'
-import { BaseHttpController, httpDelete, httpGet, results } from 'inversify-express-utils'
+import { BaseHttpController, controller, httpDelete, httpGet, results } from 'inversify-express-utils'
 import { inject } from 'inversify'
 
 import TYPES from '../../Bootstrap/Types'
 import { RevisionsController } from '../../Controller/RevisionsController'
 
+@controller('/items/:itemUuid/revisions')
 export class InversifyExpressRevisionsController extends BaseHttpController {
   constructor(@inject(TYPES.RevisionsController) private revisionsController: RevisionsController) {
     super()
   }
 
-  @httpGet('/items/:itemUuid/revisions/', TYPES.ApiGatewayAuthMiddleware)
+  @httpGet('/')
   public async getRevisions(req: Request, response: Response): Promise<results.JsonResult> {
     const result = await this.revisionsController.getRevisions({
       itemUuid: req.params.itemUuid,
@@ -20,7 +21,7 @@ export class InversifyExpressRevisionsController extends BaseHttpController {
     return this.json(result.data, result.status)
   }
 
-  @httpGet('/items/:itemUuid/revisions/:uuid', TYPES.ApiGatewayAuthMiddleware)
+  @httpGet('/:uuid')
   public async getRevision(req: Request, response: Response): Promise<results.JsonResult> {
     const result = await this.revisionsController.getRevision({
       revisionUuid: req.params.uuid,
@@ -30,7 +31,7 @@ export class InversifyExpressRevisionsController extends BaseHttpController {
     return this.json(result.data, result.status)
   }
 
-  @httpDelete('/items/:itemUuid/revisions/:uuid', TYPES.ApiGatewayAuthMiddleware)
+  @httpDelete('/:uuid')
   public async deleteRevision(req: Request, response: Response): Promise<results.JsonResult> {
     const result = await this.revisionsController.deleteRevision({
       revisionUuid: req.params.uuid,

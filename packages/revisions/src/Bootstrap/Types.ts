@@ -40,8 +40,6 @@ const TYPES = {
   DomainEventSubscriberFactory: Symbol.for('DomainEventSubscriberFactory'),
   DomainEventMessageHandler: Symbol.for('DomainEventMessageHandler'),
   Timer: Symbol.for('Timer'),
-  // Middleware
-  ApiGatewayAuthMiddleware: Symbol.for('ApiGatewayAuthMiddleware'),
 }
 
 export default TYPES

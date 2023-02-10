@@ -1,7 +1,8 @@
-import { httpGet } from 'inversify-express-utils'
+import { BaseHttpController, controller, httpGet } from 'inversify-express-utils'
 
-export class InversifyExpressHealthCheckController {
-  @httpGet('/healthcheck/')
+@controller('/healthcheck')
+export class InversifyExpressHealthCheckController extends BaseHttpController {
+  @httpGet('/')
   public async get(): Promise<string> {
     return 'OK'
   }
