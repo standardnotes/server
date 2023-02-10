@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.11.1](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.11.0...@standardnotes/revisions-server@1.11.1) (2023-02-10)
+
+### Bug Fixes
+
+* **revisions:** remove missing middleware binding ([622c024](https://github.com/standardnotes/server/commit/622c024547126a7580274d7e368f3787b809f7bc))
+
 # [1.11.0](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.10.30...@standardnotes/revisions-server@1.11.0) (2023-02-10)
 
 ### Bug Fixes
