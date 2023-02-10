@@ -1,9 +1,9 @@
 const TYPES = {
   DBConnection: Symbol.for('DBConnection'),
   Logger: Symbol.for('Logger'),
-  Redis: Symbol.for('Redis'),
   SQS: Symbol.for('SQS'),
   S3: Symbol.for('S3'),
+  Env: Symbol.for('Env'),
   // Map
   RevisionMetadataPersistenceMapper: Symbol.for('RevisionMetadataPersistenceMapper'),
   RevisionPersistenceMapper: Symbol.for('RevisionPersistenceMapper'),
@@ -16,10 +16,8 @@ const TYPES = {
   RevisionRepository: Symbol.for('RevisionRepository'),
   DumpRepository: Symbol.for('DumpRepository'),
   // env vars
-  REDIS_URL: Symbol.for('REDIS_URL'),
   SQS_QUEUE_URL: Symbol.for('SQS_QUEUE_URL'),
   SQS_AWS_REGION: Symbol.for('SQS_AWS_REGION'),
-  AUTH_JWT_SECRET: Symbol.for('AUTH_JWT_SECRET'),
   S3_AWS_REGION: Symbol.for('S3_AWS_REGION'),
   S3_BACKUP_BUCKET_NAME: Symbol.for('S3_BACKUP_BUCKET_NAME'),
   NEW_RELIC_ENABLED: Symbol.for('NEW_RELIC_ENABLED'),
