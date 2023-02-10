@@ -3611,7 +3611,6 @@ __metadata:
     eslint: "npm:^8.32.0"
     eslint-plugin-prettier: "npm:^4.0.0"
     express: "npm:^4.18.2"
-    helmet: "npm:^6.0.0"
     inversify: "npm:^6.0.1"
     inversify-express-utils: "npm:^6.4.3"
     jest: "npm:^29.1.2"

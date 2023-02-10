@@ -4514,7 +4514,6 @@ const RAW_RUNTIME_STATE =
           ["eslint", "npm:8.32.0"],\
           ["eslint-plugin-prettier", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:4.2.1"],\
           ["express", "npm:4.18.2"],\
-          ["helmet", "npm:6.0.0"],\
           ["inversify", "npm:6.0.1"],\
           ["inversify-express-utils", "npm:6.4.3"],\
           ["jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.1.2"],\
