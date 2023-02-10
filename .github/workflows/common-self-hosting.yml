@@ -13,15 +13,8 @@ on:
         required: true
 
 jobs:
-  e2e:
-    name: E2E
-    uses: standardnotes/server/.github/workflows/common-e2e.yml@main
-    secrets: inherit
-
   publish:
     runs-on: ubuntu-latest
-
-    needs: e2e
 
     steps:
     - uses: actions/checkout@v3

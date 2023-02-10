@@ -88,15 +88,22 @@ jobs:
     - name: Test
       run: yarn test
 
+  e2e:
+    name: E2E
+    uses: standardnotes/server/.github/workflows/common-e2e.yml@main
+    secrets: inherit
+
   publish-self-hosting:
-    needs: [ test, lint ]
+    needs: [ test, lint, e2e ]
     name: Publish Self Hosting Docker Image
     uses: standardnotes/server/.github/workflows/common-self-hosting.yml@main
     secrets: inherit
 
   publish-services:
+    needs: [ test, lint, e2e ]
+
     runs-on: ubuntu-latest
-    needs: publish-self-hosting
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
