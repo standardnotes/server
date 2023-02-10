@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.11.2](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.11.1...@standardnotes/revisions-server@1.11.2) (2023-02-10)
+
+### Bug Fixes
+
+* **revisions:** remove inversify.js in favour of simple di container implementation ([#442](https://github.com/standardnotes/server/issues/442)) ([89ee103](https://github.com/standardnotes/server/commit/89ee103303651b2b181c3b79b7a500358165dcf2))
+
 ## [1.11.1](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.11.0...@standardnotes/revisions-server@1.11.1) (2023-02-10)
 
 ### Bug Fixes
