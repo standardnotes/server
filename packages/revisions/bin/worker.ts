@@ -1,12 +1,10 @@
-import 'reflect-metadata'
-
 import 'newrelic'
 
 import { Logger } from 'winston'
+import { DomainEventSubscriberFactoryInterface } from '@standardnotes/domain-events'
 
 import TYPES from '../src/Bootstrap/Types'
 import { Env } from '../src/Bootstrap/Env'
-import { DomainEventSubscriberFactoryInterface } from '@standardnotes/domain-events'
 import { WorkerContainerConfigLoader } from '../src/Bootstrap/WorkerContainerConfigLoader'
 
 const container = new WorkerContainerConfigLoader()
