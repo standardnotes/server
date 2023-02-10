@@ -89,6 +89,7 @@ jobs:
       run: yarn test
 
   e2e:
+    needs: build
     name: E2E
     uses: standardnotes/server/.github/workflows/common-e2e.yml@main
     secrets: inherit
