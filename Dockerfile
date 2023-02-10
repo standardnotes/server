@@ -39,4 +39,8 @@ RUN yarn workspace @standardnotes/files-server bundle --no-compress --output-dir
 RUN yarn workspace @standardnotes/revisions-server bundle --no-compress --output-directory /opt/bundled/revisions
 RUN yarn workspace @standardnotes/api-gateway bundle --no-compress --output-directory /opt/bundled/api-gateway
 
+WORKDIR /opt/bundled
+
+RUN rm -rf /opt/server
+
 ENTRYPOINT ["docker-entrypoint.sh"]
