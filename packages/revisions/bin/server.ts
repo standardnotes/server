@@ -4,22 +4,18 @@ import 'newrelic'
 
 import * as Sentry from '@sentry/node'
 
-import '../src/Infra/InversifyExpress/InversifyExpressRevisionsController'
-import '../src/Infra/InversifyExpress/InversifyExpressHealthCheckController'
-
 import * as cors from 'cors'
 import { urlencoded, json, Request, Response, NextFunction, RequestHandler, ErrorRequestHandler } from 'express'
 import * as winston from 'winston'
 
 import { InversifyExpressServer } from 'inversify-express-utils'
-import { ContainerConfigLoader } from '../src/Bootstrap/Container'
 import TYPES from '../src/Bootstrap/Types'
 import { Env } from '../src/Bootstrap/Env'
+import { ServerContainerConfigLoader } from '../src/Bootstrap/ServerContainerConfigLoader'
 
-const container = new ContainerConfigLoader()
+const container = new ServerContainerConfigLoader()
 void container.load().then((container) => {
-  const env: Env = new Env()
-  env.load()
+  const env: Env = container.get(TYPES.Env)
 
   const server = new InversifyExpressServer(container)
 
