@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.11.0](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.10.30...@standardnotes/revisions-server@1.11.0) (2023-02-10)
+
+### Bug Fixes
+
+* **revisions:** controller bindings ([645a24d](https://github.com/standardnotes/server/commit/645a24d29b2d1858251b80a8d453c98b955c79e3))
+* **revisions:** remove the interval ping ([be17b67](https://github.com/standardnotes/server/commit/be17b67cc1ff27c62dfee571f7d85954c1401fda))
+
+### Features
+
+* **revisions:** refactor container to split worker and server containers ([5120883](https://github.com/standardnotes/server/commit/512088369152766027cb25f1566fd2295ab75ac3))
+
 ## [1.10.30](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.10.29...@standardnotes/revisions-server@1.10.30) (2023-02-09)
 
 ### Bug Fixes
