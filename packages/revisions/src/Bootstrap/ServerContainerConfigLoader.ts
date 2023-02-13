@@ -13,10 +13,15 @@ import { RevisionHttpMapper } from '../Mapping/RevisionHttpMapper'
 import { RevisionMetadataHttpMapper } from '../Mapping/RevisionMetadataHttpMapper'
 import { GetRequiredRoleToViewRevision } from '../Domain/UseCase/GetRequiredRoleToViewRevision/GetRequiredRoleToViewRevision'
 import { CommonContainerConfigLoader } from './CommonContainerConfigLoader'
+import { ApiGatewayAuthMiddleware } from '../Controller/ApiGatewayAuthMiddleware'
+import { CrossServiceTokenData, TokenDecoder, TokenDecoderInterface } from '@standardnotes/security'
+import { Env } from './Env'
 
 export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
   override async load(): Promise<Container> {
     const container = await super.load()
+
+    const env: Env = container.get(TYPES.Env)
 
     container.bind<TimerInterface>(TYPES.Timer).toDynamicValue(() => new Timer())
 
@@ -72,6 +77,9 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
       return new DeleteRevision(context.container.get(TYPES.RevisionRepository))
     })
 
+    // env vars
+    container.bind(TYPES.AUTH_JWT_SECRET).toConstantValue(env.get('AUTH_JWT_SECRET'))
+
     // Controller
     container.bind<RevisionsController>(TYPES.RevisionsController).toDynamicValue((context: interfaces.Context) => {
       return new RevisionsController(
@@ -83,6 +91,18 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
         context.container.get(TYPES.Logger),
       )
     })
+
+    container
+      .bind<TokenDecoderInterface<CrossServiceTokenData>>(TYPES.CrossServiceTokenDecoder)
+      .toDynamicValue((context: interfaces.Context) => {
+        return new TokenDecoder<CrossServiceTokenData>(context.container.get(TYPES.AUTH_JWT_SECRET))
+      })
+
+    container
+      .bind<ApiGatewayAuthMiddleware>(TYPES.ApiGatewayAuthMiddleware)
+      .toDynamicValue((context: interfaces.Context) => {
+        return new ApiGatewayAuthMiddleware(context.container.get(TYPES.Logger), context.container.get(TYPES.Logger))
+      })
 
     return container
   }

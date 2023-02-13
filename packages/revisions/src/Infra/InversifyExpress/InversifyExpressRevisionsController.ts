@@ -5,7 +5,7 @@ import { inject } from 'inversify'
 import TYPES from '../../Bootstrap/Types'
 import { RevisionsController } from '../../Controller/RevisionsController'
 
-@controller('/items/:itemUuid/revisions')
+@controller('/items/:itemUuid/revisions', TYPES.ApiGatewayAuthMiddleware)
 export class InversifyExpressRevisionsController extends BaseHttpController {
   constructor(@inject(TYPES.RevisionsController) private revisionsController: RevisionsController) {
     super()

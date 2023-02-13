@@ -4501,6 +4501,7 @@ const RAW_RUNTIME_STATE =
           ["@standardnotes/domain-core", "workspace:packages/domain-core"],\
           ["@standardnotes/domain-events", "workspace:packages/domain-events"],\
           ["@standardnotes/domain-events-infra", "workspace:packages/domain-events-infra"],\
+          ["@standardnotes/security", "workspace:packages/security"],\
           ["@standardnotes/time", "workspace:packages/time"],\
           ["@types/cors", "npm:2.8.12"],\
           ["@types/dotenv", "npm:8.2.0"],\

@@ -16,6 +16,7 @@ const TYPES = {
   RevisionRepository: Symbol.for('RevisionRepository'),
   DumpRepository: Symbol.for('DumpRepository'),
   // env vars
+  AUTH_JWT_SECRET: Symbol.for('AUTH_JWT_SECRET'),
   SQS_QUEUE_URL: Symbol.for('SQS_QUEUE_URL'),
   SQS_AWS_REGION: Symbol.for('SQS_AWS_REGION'),
   S3_AWS_REGION: Symbol.for('S3_AWS_REGION'),
@@ -30,6 +31,7 @@ const TYPES = {
   GetRequiredRoleToViewRevision: Symbol.for('GetRequiredRoleToViewRevision'),
   // Controller
   RevisionsController: Symbol.for('RevisionsController'),
+  ApiGatewayAuthMiddleware: Symbol.for('ApiGatewayAuthMiddleware'),
   // Handlers
   ItemDumpedEventHandler: Symbol.for('ItemDumpedEventHandler'),
   AccountDeletionRequestedEventHandler: Symbol.for('AccountDeletionRequestedEventHandler'),

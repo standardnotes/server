@@ -3598,6 +3598,7 @@ __metadata:
     "@standardnotes/domain-core": "workspace:^"
     "@standardnotes/domain-events": "workspace:*"
     "@standardnotes/domain-events-infra": "workspace:*"
+    "@standardnotes/security": "workspace:^"
     "@standardnotes/time": "workspace:^"
     "@types/cors": "npm:^2.8.9"
     "@types/dotenv": "npm:^8.2.0"
