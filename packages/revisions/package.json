@@ -22,8 +22,8 @@
     "wait-for:files": "docker/wait-for.sh localhost $FILES_SERVER_PORT",
     "wait-for:revisions": "docker/wait-for.sh localhost $REVISIONS_SERVER_PORT",
     "start": "yarn node dist/bin/server.js",
-    "supervisor:start": "yarn wait-for:files && node dist/bin/server.js",
-    "supervisor:worker": "yarn wait-for:revisions && node dist/bin/worker.js",
+    "supervisor:start": "docker/wait-for.sh localhost $FILES_SERVER_PORT && node dist/bin/server.js",
+    "supervisor:worker": "docker/wait-for.sh localhost $REVISIONS_SERVER_PORT && node dist/bin/worker.js",
     "worker": "yarn node dist/bin/worker.js"
   },
   "dependencies": {

@@ -24,9 +24,9 @@
     "wait-for:infra": "yarn wait-for:db && yarn wait-for:cache",
     "wait-for:syncing-server": "docker/wait-for.sh localhost $SYNCING_SERVER_PORT",
     "start": "yarn node dist/bin/server.js",
-    "supervisor:start": "yarn wait-for:infra && node dist/bin/server.js",
+    "supervisor:start": "docker/wait-for.sh $DB_HOST $DB_PORT && docker/wait-for.sh $REDIS_HOST $REDIS_PORT && node dist/bin/server.js",
     "worker": "yarn node dist/bin/worker.js",
-    "supervisor:worker": "yarn wait-for:syncing-server && node dist/bin/worker.js",
+    "supervisor:worker": "docker/wait-for.sh localhost $SYNCING_SERVER_PORT && node dist/bin/worker.js",
     "content-size": "yarn node dist/bin/content.js",
     "upgrade:snjs": "yarn ncu -u '@standardnotes/*'"
   },
