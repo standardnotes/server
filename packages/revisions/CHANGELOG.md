@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.11.5](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.11.4...@standardnotes/revisions-server@1.11.5) (2023-02-13)
+
+### Bug Fixes
+
+* **revisions:** api gateway middleware binding ([d333c13](https://github.com/standardnotes/server/commit/d333c1393c67899a6303dbec40527584cd1b48ab))
+
 ## [1.11.4](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.11.3...@standardnotes/revisions-server@1.11.4) (2023-02-13)
 
 ### Bug Fixes
