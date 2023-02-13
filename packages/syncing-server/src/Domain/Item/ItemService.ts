@@ -1,10 +1,8 @@
 import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
 import { Time, TimerInterface } from '@standardnotes/time'
 import { ContentType } from '@standardnotes/common'
-import { inject, injectable } from 'inversify'
 import { Logger } from 'winston'
 
-import TYPES from '../../Bootstrap/Types'
 import { DomainEventFactoryInterface } from '../Event/DomainEventFactoryInterface'
 import { GetItemsDTO } from './GetItemsDTO'
 import { GetItemsResult } from './GetItemsResult'
@@ -23,24 +21,23 @@ import { ItemTransferCalculatorInterface } from './ItemTransferCalculatorInterfa
 import { ProjectorInterface } from '../../Projection/ProjectorInterface'
 import { ItemProjection } from '../../Projection/ItemProjection'
 
-@injectable()
 export class ItemService implements ItemServiceInterface {
   private readonly DEFAULT_ITEMS_LIMIT = 150
   private readonly SYNC_TOKEN_VERSION = 2
 
   constructor(
-    @inject(TYPES.ItemSaveValidator) private itemSaveValidator: ItemSaveValidatorInterface,
-    @inject(TYPES.ItemFactory) private itemFactory: ItemFactoryInterface,
-    @inject(TYPES.ItemRepository) private itemRepository: ItemRepositoryInterface,
-    @inject(TYPES.DomainEventPublisher) private domainEventPublisher: DomainEventPublisherInterface,
-    @inject(TYPES.DomainEventFactory) private domainEventFactory: DomainEventFactoryInterface,
-    @inject(TYPES.REVISIONS_FREQUENCY) private revisionFrequency: number,
-    @inject(TYPES.CONTENT_SIZE_TRANSFER_LIMIT) private contentSizeTransferLimit: number,
-    @inject(TYPES.ItemTransferCalculator) private itemTransferCalculator: ItemTransferCalculatorInterface,
-    @inject(TYPES.Timer) private timer: TimerInterface,
-    @inject(TYPES.ItemProjector) private itemProjector: ProjectorInterface<Item, ItemProjection>,
-    @inject(TYPES.MAX_ITEMS_LIMIT) private maxItemsSyncLimit: number,
-    @inject(TYPES.Logger) private logger: Logger,
+    private itemSaveValidator: ItemSaveValidatorInterface,
+    private itemFactory: ItemFactoryInterface,
+    private itemRepository: ItemRepositoryInterface,
+    private domainEventPublisher: DomainEventPublisherInterface,
+    private domainEventFactory: DomainEventFactoryInterface,
+    private revisionFrequency: number,
+    private contentSizeTransferLimit: number,
+    private itemTransferCalculator: ItemTransferCalculatorInterface,
+    private timer: TimerInterface,
+    private itemProjector: ProjectorInterface<Item, ItemProjection>,
+    private maxItemsSyncLimit: number,
+    private logger: Logger,
   ) {}
 
   async getItems(dto: GetItemsDTO): Promise<GetItemsResult> {

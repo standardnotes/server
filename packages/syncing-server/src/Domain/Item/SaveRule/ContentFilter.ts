@@ -1,10 +1,8 @@
-import { injectable } from 'inversify'
 import { ItemSaveValidationDTO } from '../SaveValidator/ItemSaveValidationDTO'
 import { ItemSaveRuleResult } from './ItemSaveRuleResult'
 import { ItemSaveRuleInterface } from './ItemSaveRuleInterface'
 import { ConflictType } from '@standardnotes/responses'
 
-@injectable()
 export class ContentFilter implements ItemSaveRuleInterface {
   async check(dto: ItemSaveValidationDTO): Promise<ItemSaveRuleResult> {
     if (dto.itemHash.content === undefined || dto.itemHash.content === null) {

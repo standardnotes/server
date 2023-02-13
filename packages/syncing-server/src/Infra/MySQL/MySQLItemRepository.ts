@@ -1,18 +1,12 @@
-import { inject, injectable } from 'inversify'
 import { Repository, SelectQueryBuilder } from 'typeorm'
 import { Item } from '../../Domain/Item/Item'
 import { ItemQuery } from '../../Domain/Item/ItemQuery'
 import { ItemRepositoryInterface } from '../../Domain/Item/ItemRepositoryInterface'
 import { ReadStream } from 'fs'
 import { ExtendedIntegrityPayload } from '../../Domain/Item/ExtendedIntegrityPayload'
-import TYPES from '../../Bootstrap/Types'
 
-@injectable()
 export class MySQLItemRepository implements ItemRepositoryInterface {
-  constructor(
-    @inject(TYPES.ORMItemRepository)
-    private ormRepository: Repository<Item>,
-  ) {}
+  constructor(private ormRepository: Repository<Item>) {}
 
   async save(item: Item): Promise<Item> {
     return this.ormRepository.save(item)

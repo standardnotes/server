@@ -1,6 +1,5 @@
 import { ContentType } from '@standardnotes/common'
-import { Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
-import { Revision } from '../Revision/Revision'
+import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm'
 
 @Entity({ name: 'items' })
 @Index('index_items_on_user_uuid_and_content_type', ['userUuid', 'contentType'])
@@ -109,14 +108,6 @@ export class Item {
   })
   @Index('updated_at_timestamp')
   declare updatedAtTimestamp: number
-
-  @OneToMany(
-    /* istanbul ignore next */
-    () => Revision,
-    /* istanbul ignore next */
-    (revision) => revision.item,
-  )
-  declare revisions: Promise<Revision[]>
 
   @Column({
     name: 'updated_with_session',

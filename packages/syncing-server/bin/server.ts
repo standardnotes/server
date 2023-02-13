@@ -6,7 +6,6 @@ import * as Sentry from '@sentry/node'
 import * as Tracing from '@sentry/tracing'
 
 import '../src/Controller/HealthCheckController'
-import '../src/Controller/RevisionsController'
 import '../src/Controller/ItemsController'
 
 import helmet from 'helmet'
@@ -15,11 +14,11 @@ import { urlencoded, json, Request, Response, NextFunction, ErrorRequestHandler 
 import * as winston from 'winston'
 
 import { InversifyExpressServer } from 'inversify-express-utils'
-import { ContainerConfigLoader } from '../src/Bootstrap/Container'
 import TYPES from '../src/Bootstrap/Types'
 import { Env } from '../src/Bootstrap/Env'
+import { ServerContainerConfigLoader } from '../src/Bootstrap/ServerContainerConfigLoader'
 
-const container = new ContainerConfigLoader()
+const container = new ServerContainerConfigLoader()
 void container.load().then((container) => {
   const env: Env = new Env()
   env.load()

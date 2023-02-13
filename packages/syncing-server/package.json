@@ -28,7 +28,6 @@
     "worker": "yarn node dist/bin/worker.js",
     "supervisor:worker": "yarn wait-for:syncing-server && yarn node dist/bin/worker.js",
     "content-size": "yarn node dist/bin/content.js",
-    "revisions-ownership": "yarn node dist/bin/revisions.js",
     "upgrade:snjs": "yarn ncu -u '@standardnotes/*'"
   },
   "dependencies": {
@@ -54,7 +53,6 @@
     "helmet": "^6.0.0",
     "inversify": "^6.0.1",
     "inversify-express-utils": "^6.4.3",
-    "ioredis": "^5.2.4",
     "jsonwebtoken": "^9.0.0",
     "mysql2": "^3.0.1",
     "newrelic": "^9.8.0",
@@ -71,7 +69,6 @@
     "@types/dotenv": "^8.2.0",
     "@types/express": "^4.17.14",
     "@types/inversify-express-utils": "^2.0.0",
-    "@types/ioredis": "^5.0.0",
     "@types/jest": "^29.1.1",
     "@types/jsonwebtoken": "^9.0.1",
     "@types/newrelic": "^9.4.0",

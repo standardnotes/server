@@ -4,11 +4,11 @@ import 'newrelic'
 
 import { Logger } from 'winston'
 
-import { ContainerConfigLoader } from '../src/Bootstrap/Container'
 import TYPES from '../src/Bootstrap/Types'
 import { Env } from '../src/Bootstrap/Env'
 import { DomainEventFactoryInterface } from '../src/Domain/Event/DomainEventFactoryInterface'
 import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
+import { WorkerContainerConfigLoader } from '../src/Bootstrap/WorkerContainerConfigLoader'
 
 const inputArgs = process.argv.slice(2)
 const userUuid = inputArgs[0]
@@ -20,7 +20,7 @@ const fixContentSize = async (
   await domainEventPublisher.publish(domainEventFactory.createUserContentSizeRecalculationRequestedEvent(userUuid))
 }
 
-const container = new ContainerConfigLoader()
+const container = new WorkerContainerConfigLoader()
 void container.load().then((container) => {
   const env: Env = new Env()
   env.load()

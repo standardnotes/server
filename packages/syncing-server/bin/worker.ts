@@ -4,12 +4,12 @@ import 'newrelic'
 
 import { Logger } from 'winston'
 
-import { ContainerConfigLoader } from '../src/Bootstrap/Container'
 import TYPES from '../src/Bootstrap/Types'
 import { Env } from '../src/Bootstrap/Env'
 import { DomainEventSubscriberFactoryInterface } from '@standardnotes/domain-events'
+import { WorkerContainerConfigLoader } from '../src/Bootstrap/WorkerContainerConfigLoader'
 
-const container = new ContainerConfigLoader()
+const container = new WorkerContainerConfigLoader()
 void container.load().then((container) => {
   const env: Env = new Env()
   env.load()

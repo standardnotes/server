@@ -1,19 +1,12 @@
 import { NextFunction, Request, Response } from 'express'
-import { inject, injectable } from 'inversify'
 import { BaseMiddleware } from 'inversify-express-utils'
 import { verify } from 'jsonwebtoken'
 import { CrossServiceTokenData } from '@standardnotes/security'
 import * as winston from 'winston'
 import { RoleName } from '@standardnotes/domain-core'
 
-import TYPES from '../Bootstrap/Types'
-
-@injectable()
 export class AuthMiddleware extends BaseMiddleware {
-  constructor(
-    @inject(TYPES.AUTH_JWT_SECRET) private authJWTSecret: string,
-    @inject(TYPES.Logger) private logger: winston.Logger,
-  ) {
+  constructor(private authJWTSecret: string, private logger: winston.Logger) {
     super()
   }
 

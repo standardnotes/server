@@ -5,9 +5,7 @@ import {
   EmailBackupRequestedEvent,
 } from '@standardnotes/domain-events'
 import { EmailLevel } from '@standardnotes/domain-core'
-import { inject, injectable } from 'inversify'
 import { Logger } from 'winston'
-import TYPES from '../../Bootstrap/Types'
 import { AuthHttpServiceInterface } from '../Auth/AuthHttpServiceInterface'
 import { DomainEventFactoryInterface } from '../Event/DomainEventFactoryInterface'
 import { ItemBackupServiceInterface } from '../Item/ItemBackupServiceInterface'
@@ -16,18 +14,17 @@ import { ItemTransferCalculatorInterface } from '../Item/ItemTransferCalculatorI
 import { ItemQuery } from '../Item/ItemQuery'
 import { getBody, getSubject } from '../Email/EmailBackupAttachmentCreated'
 
-@injectable()
 export class EmailBackupRequestedEventHandler implements DomainEventHandlerInterface {
   constructor(
-    @inject(TYPES.ItemRepository) private itemRepository: ItemRepositoryInterface,
-    @inject(TYPES.AuthHttpService) private authHttpService: AuthHttpServiceInterface,
-    @inject(TYPES.ItemBackupService) private itemBackupService: ItemBackupServiceInterface,
-    @inject(TYPES.DomainEventPublisher) private domainEventPublisher: DomainEventPublisherInterface,
-    @inject(TYPES.DomainEventFactory) private domainEventFactory: DomainEventFactoryInterface,
-    @inject(TYPES.EMAIL_ATTACHMENT_MAX_BYTE_SIZE) private emailAttachmentMaxByteSize: number,
-    @inject(TYPES.ItemTransferCalculator) private itemTransferCalculator: ItemTransferCalculatorInterface,
-    @inject(TYPES.S3_BACKUP_BUCKET_NAME) private s3BackupBucketName: string,
-    @inject(TYPES.Logger) private logger: Logger,
+    private itemRepository: ItemRepositoryInterface,
+    private authHttpService: AuthHttpServiceInterface,
+    private itemBackupService: ItemBackupServiceInterface,
+    private domainEventPublisher: DomainEventPublisherInterface,
+    private domainEventFactory: DomainEventFactoryInterface,
+    private emailAttachmentMaxByteSize: number,
+    private itemTransferCalculator: ItemTransferCalculatorInterface,
+    private s3BackupBucketName: string,
+    private logger: Logger,
   ) {}
 
   async handle(event: EmailBackupRequestedEvent): Promise<void> {

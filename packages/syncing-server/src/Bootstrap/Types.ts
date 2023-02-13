@@ -5,16 +5,14 @@ const TYPES = {
   SNS: Symbol.for('SNS'),
   SQS: Symbol.for('SQS'),
   S3: Symbol.for('S3'),
+  Env: Symbol.for('Env'),
   // Repositories
-  RevisionRepository: Symbol.for('RevisionRepository'),
   ItemRepository: Symbol.for('ItemRepository'),
   // ORM
-  ORMRevisionRepository: Symbol.for('ORMRevisionRepository'),
   ORMItemRepository: Symbol.for('ORMItemRepository'),
   // Middleware
   AuthMiddleware: Symbol.for('AuthMiddleware'),
   // Projectors
-  RevisionProjector: Symbol.for('RevisionProjector'),
   ItemProjector: Symbol.for('ItemProjector'),
   SavedItemProjector: Symbol.for('SavedItemProjector'),
   ItemConflictProjector: Symbol.for('ItemConflictProjector'),
@@ -25,7 +23,6 @@ const TYPES = {
   SQS_QUEUE_URL: Symbol.for('SQS_QUEUE_URL'),
   SQS_AWS_REGION: Symbol.for('SQS_AWS_REGION'),
   AUTH_JWT_SECRET: Symbol.for('AUTH_JWT_SECRET'),
-  INTERNAL_DNS_REROUTE_ENABLED: Symbol.for('INTERNAL_DNS_REROUTE_ENABLED'),
   EXTENSIONS_SERVER_URL: Symbol.for('EXTENSIONS_SERVER_URL'),
   AUTH_SERVER_URL: Symbol.for('AUTH_SERVER_URL'),
   S3_AWS_REGION: Symbol.for('S3_AWS_REGION'),
@@ -48,8 +45,6 @@ const TYPES = {
   CloudBackupRequestedEventHandler: Symbol.for('CloudBackupRequestedEventHandler'),
   UserContentSizeRecalculationRequestedEventHandler: Symbol.for('UserContentSizeRecalculationRequestedEventHandler'),
   ItemRevisionCreationRequestedEventHandler: Symbol.for('ItemRevisionCreationRequestedEventHandler'),
-  // Map
-  RevisionMetadataMap: Symbol.for('RevisionMetadataMap'),
   // Services
   ContentDecoder: Symbol.for('ContentDecoder'),
   DomainEventPublisher: Symbol.for('DomainEventPublisher'),
@@ -65,7 +60,6 @@ const TYPES = {
   AuthHttpService: Symbol.for('AuthHttpService'),
   ExtensionsHttpService: Symbol.for('ExtensionsHttpService'),
   ItemBackupService: Symbol.for('ItemBackupService'),
-  RevisionService: Symbol.for('RevisionService'),
   ItemSaveValidator: Symbol.for('ItemSaveValidator'),
   OwnershipFilter: Symbol.for('OwnershipFilter'),
   TimeDifferenceFilter: Symbol.for('TimeDifferenceFilter'),

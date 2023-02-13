@@ -1,14 +1,12 @@
 import { TimerInterface } from '@standardnotes/time'
-import { inject, injectable } from 'inversify'
-import TYPES from '../Bootstrap/Types'
-import { ProjectorInterface } from './ProjectorInterface'
 
 import { Item } from '../Domain/Item/Item'
+
+import { ProjectorInterface } from './ProjectorInterface'
 import { SavedItemProjection } from './SavedItemProjection'
 
-@injectable()
 export class SavedItemProjector implements ProjectorInterface<Item, SavedItemProjection> {
-  constructor(@inject(TYPES.Timer) private timer: TimerInterface) {}
+  constructor(private timer: TimerInterface) {}
 
   async projectSimple(_item: Item): Promise<SavedItemProjection> {
     throw Error('not implemented')
