@@ -1,5 +1,7 @@
 import { config, DotenvParseOutput } from 'dotenv'
+import { injectable } from 'inversify'
 
+@injectable()
 export class Env {
   private env?: DotenvParseOutput
 

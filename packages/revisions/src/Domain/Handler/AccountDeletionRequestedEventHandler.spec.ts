@@ -1,6 +1,7 @@
+import 'reflect-metadata'
+
 import { AccountDeletionRequestedEvent } from '@standardnotes/domain-events'
 import { Logger } from 'winston'
-
 import { AccountDeletionRequestedEventHandler } from './AccountDeletionRequestedEventHandler'
 import { RevisionRepositoryInterface } from '../Revision/RevisionRepositoryInterface'
 

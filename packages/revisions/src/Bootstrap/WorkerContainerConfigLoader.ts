@@ -1,171 +1,164 @@
 import { SQSClient, SQSClientConfig } from '@aws-sdk/client-sqs'
 import { S3Client } from '@aws-sdk/client-s3'
-import { DomainEventHandlerInterface } from '@standardnotes/domain-events'
+import { Container, interfaces } from 'inversify'
+import {
+  DomainEventHandlerInterface,
+  DomainEventMessageHandlerInterface,
+  DomainEventSubscriberFactoryInterface,
+} from '@standardnotes/domain-events'
 import {
   SQSDomainEventSubscriberFactory,
   SQSEventMessageHandler,
   SQSNewRelicEventMessageHandler,
 } from '@standardnotes/domain-events-infra'
-import * as winston from 'winston'
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const newrelicFormatter = require('@newrelic/winston-enricher')
+import { MapperInterface } from '@standardnotes/domain-core'
 
 import TYPES from './Types'
+import { Revision } from '../Domain/Revision/Revision'
 import { RevisionItemStringMapper } from '../Mapping/RevisionItemStringMapper'
 import { ItemDumpedEventHandler } from '../Domain/Handler/ItemDumpedEventHandler'
+import { DumpRepositoryInterface } from '../Domain/Dump/DumpRepositoryInterface'
 import { S3DumpRepository } from '../Infra/S3/S3ItemDumpRepository'
 import { FSDumpRepository } from '../Infra/FS/FSDumpRepository'
 import { AccountDeletionRequestedEventHandler } from '../Domain/Handler/AccountDeletionRequestedEventHandler'
 import { RevisionsCopyRequestedEventHandler } from '../Domain/Handler/RevisionsCopyRequestedEventHandler'
 import { CopyRevisions } from '../Domain/UseCase/CopyRevisions/CopyRevisions'
 import { RevisionsOwnershipUpdateRequestedEventHandler } from '../Domain/Handler/RevisionsOwnershipUpdateRequestedEventHandler'
+import { CommonContainerConfigLoader } from './CommonContainerConfigLoader'
 import { Env } from './Env'
-import { SimpleContainer } from './SimpleContainer'
-import { MySQLRevisionRepository } from '../Infra/MySQL/MySQLRevisionRepository'
-import { AppDataSource } from './DataSource'
-import { TypeORMRevision } from '../Infra/TypeORM/TypeORMRevision'
-import { RevisionPersistenceMapper } from '../Mapping/RevisionPersistenceMapper'
-import { RevisionMetadataPersistenceMapper } from '../Mapping/RevisionMetadataPersistenceMapper'
 
-export class WorkerContainerConfigLoader {
-  async load(): Promise<SimpleContainer> {
-    const env: Env = new Env()
-    env.load()
+export class WorkerContainerConfigLoader extends CommonContainerConfigLoader {
+  override async load(): Promise<Container> {
+    const container = await super.load()
 
-    await AppDataSource.initialize()
+    const env: Env = container.get(TYPES.Env)
 
-    const simpleContainer = new SimpleContainer()
+    container.bind<SQSClient>(TYPES.SQS).toDynamicValue((context: interfaces.Context) => {
+      const env: Env = context.container.get(TYPES.Env)
 
-    const newrelicWinstonFormatter = newrelicFormatter(winston)
-    const winstonFormatters = [winston.format.splat(), winston.format.json()]
-    if (env.get('NEW_RELIC_ENABLED', true) === 'true') {
-      winstonFormatters.push(newrelicWinstonFormatter())
-    }
+      const sqsConfig: SQSClientConfig = {
+        region: env.get('SQS_AWS_REGION'),
+      }
+      if (env.get('SQS_ENDPOINT', true)) {
+        sqsConfig.endpoint = env.get('SQS_ENDPOINT', true)
+      }
+      if (env.get('SQS_ACCESS_KEY_ID', true) && env.get('SQS_SECRET_ACCESS_KEY', true)) {
+        sqsConfig.credentials = {
+          accessKeyId: env.get('SQS_ACCESS_KEY_ID', true),
+          secretAccessKey: env.get('SQS_SECRET_ACCESS_KEY', true),
+        }
+      }
 
-    const logger = winston.createLogger({
-      level: env.get('LOG_LEVEL') || 'info',
-      format: winston.format.combine(...winstonFormatters),
-      transports: [new winston.transports.Console({ level: env.get('LOG_LEVEL') || 'info' })],
+      return new SQSClient(sqsConfig)
     })
 
-    simpleContainer.set(TYPES.Logger, logger)
+    container.bind<S3Client | undefined>(TYPES.S3).toDynamicValue((context: interfaces.Context) => {
+      const env: Env = context.container.get(TYPES.Env)
 
-    simpleContainer.set(TYPES.RevisionMetadataPersistenceMapper, new RevisionMetadataPersistenceMapper())
-
-    simpleContainer.set(TYPES.RevisionPersistenceMapper, new RevisionPersistenceMapper())
-
-    simpleContainer.set(TYPES.ORMRevisionRepository, AppDataSource.getRepository(TypeORMRevision))
-
-    simpleContainer.set(
-      TYPES.RevisionRepository,
-      new MySQLRevisionRepository(
-        simpleContainer.get(TYPES.ORMRevisionRepository),
-        simpleContainer.get(TYPES.RevisionMetadataPersistenceMapper),
-        simpleContainer.get(TYPES.RevisionPersistenceMapper),
-        simpleContainer.get(TYPES.Logger),
-      ),
-    )
-
-    const sqsConfig: SQSClientConfig = {
-      region: env.get('SQS_AWS_REGION'),
-    }
-    if (env.get('SQS_ENDPOINT', true)) {
-      sqsConfig.endpoint = env.get('SQS_ENDPOINT', true)
-    }
-    if (env.get('SQS_ACCESS_KEY_ID', true) && env.get('SQS_SECRET_ACCESS_KEY', true)) {
-      sqsConfig.credentials = {
-        accessKeyId: env.get('SQS_ACCESS_KEY_ID', true),
-        secretAccessKey: env.get('SQS_SECRET_ACCESS_KEY', true),
+      let s3Client = undefined
+      if (env.get('S3_AWS_REGION', true)) {
+        s3Client = new S3Client({
+          apiVersion: 'latest',
+          region: env.get('S3_AWS_REGION', true),
+        })
       }
-    }
 
-    simpleContainer.set(TYPES.SQS, new SQSClient(sqsConfig))
+      return s3Client
+    })
 
-    let s3Client = undefined
-    if (env.get('S3_AWS_REGION', true)) {
-      s3Client = new S3Client({
-        apiVersion: 'latest',
-        region: env.get('S3_AWS_REGION', true),
-      })
-    }
+    // Map
+    container
+      .bind<MapperInterface<Revision, string>>(TYPES.RevisionItemStringMapper)
+      .toDynamicValue(() => new RevisionItemStringMapper())
 
-    simpleContainer.set(TYPES.S3, s3Client)
+    // env vars
+    container.bind(TYPES.SQS_QUEUE_URL).toConstantValue(env.get('SQS_QUEUE_URL'))
+    container.bind(TYPES.S3_AWS_REGION).toConstantValue(env.get('S3_AWS_REGION', true))
+    container.bind(TYPES.S3_BACKUP_BUCKET_NAME).toConstantValue(env.get('S3_BACKUP_BUCKET_NAME', true))
 
-    simpleContainer.set(TYPES.RevisionItemStringMapper, new RevisionItemStringMapper())
+    container.bind<DumpRepositoryInterface>(TYPES.DumpRepository).toDynamicValue((context: interfaces.Context) => {
+      const env: Env = context.container.get(TYPES.Env)
 
-    simpleContainer.set(TYPES.NEW_RELIC_ENABLED, env.get('NEW_RELIC_ENABLED', true))
-    simpleContainer.set(TYPES.VERSION, env.get('VERSION'))
-    simpleContainer.set(TYPES.SQS_QUEUE_URL, env.get('SQS_QUEUE_URL'))
-    simpleContainer.set(TYPES.S3_AWS_REGION, env.get('S3_AWS_REGION', true))
-    simpleContainer.set(TYPES.S3_BACKUP_BUCKET_NAME, env.get('S3_BACKUP_BUCKET_NAME', true))
-
-    const dumpRepository = env.get('S3_AWS_REGION', true)
-      ? new S3DumpRepository(
-          simpleContainer.get(TYPES.S3_BACKUP_BUCKET_NAME),
-          simpleContainer.get(TYPES.S3),
-          simpleContainer.get(TYPES.RevisionItemStringMapper),
+      if (env.get('S3_AWS_REGION', true)) {
+        return new S3DumpRepository(
+          context.container.get(TYPES.S3_BACKUP_BUCKET_NAME),
+          context.container.get(TYPES.S3),
+          context.container.get(TYPES.RevisionItemStringMapper),
         )
-      : new FSDumpRepository(simpleContainer.get(TYPES.RevisionItemStringMapper))
+      } else {
+        return new FSDumpRepository(context.container.get(TYPES.RevisionItemStringMapper))
+      }
+    })
 
-    simpleContainer.set(TYPES.DumpRepository, dumpRepository)
+    // use cases
+    container.bind<CopyRevisions>(TYPES.CopyRevisions).toDynamicValue((context: interfaces.Context) => {
+      return new CopyRevisions(context.container.get(TYPES.RevisionRepository))
+    })
 
-    simpleContainer.set(TYPES.CopyRevisions, new CopyRevisions(simpleContainer.get(TYPES.RevisionRepository)))
+    // Handlers
+    container
+      .bind<ItemDumpedEventHandler>(TYPES.ItemDumpedEventHandler)
+      .toDynamicValue((context: interfaces.Context) => {
+        return new ItemDumpedEventHandler(
+          context.container.get(TYPES.DumpRepository),
+          context.container.get(TYPES.RevisionRepository),
+        )
+      })
+    container
+      .bind<AccountDeletionRequestedEventHandler>(TYPES.AccountDeletionRequestedEventHandler)
+      .toDynamicValue((context: interfaces.Context) => {
+        return new AccountDeletionRequestedEventHandler(
+          context.container.get(TYPES.RevisionRepository),
+          context.container.get(TYPES.Logger),
+        )
+      })
+    container
+      .bind<RevisionsCopyRequestedEventHandler>(TYPES.RevisionsCopyRequestedEventHandler)
+      .toDynamicValue((context: interfaces.Context) => {
+        return new RevisionsCopyRequestedEventHandler(
+          context.container.get(TYPES.CopyRevisions),
+          context.container.get(TYPES.Logger),
+        )
+      })
+    container
+      .bind<RevisionsOwnershipUpdateRequestedEventHandler>(TYPES.RevisionsOwnershipUpdateRequestedEventHandler)
+      .toDynamicValue((context: interfaces.Context) => {
+        return new RevisionsOwnershipUpdateRequestedEventHandler(context.container.get(TYPES.RevisionRepository))
+      })
 
-    simpleContainer.set(
-      TYPES.ItemDumpedEventHandler,
-      new ItemDumpedEventHandler(
-        simpleContainer.get(TYPES.DumpRepository),
-        simpleContainer.get(TYPES.RevisionRepository),
-      ),
-    )
+    container
+      .bind<DomainEventMessageHandlerInterface>(TYPES.DomainEventMessageHandler)
+      .toDynamicValue((context: interfaces.Context) => {
+        const env: Env = context.container.get(TYPES.Env)
 
-    simpleContainer.set(
-      TYPES.AccountDeletionRequestedEventHandler,
-      new AccountDeletionRequestedEventHandler(
-        simpleContainer.get(TYPES.RevisionRepository),
-        simpleContainer.get(TYPES.Logger),
-      ),
-    )
+        const eventHandlers: Map<string, DomainEventHandlerInterface> = new Map([
+          ['ITEM_DUMPED', context.container.get(TYPES.ItemDumpedEventHandler)],
+          ['ACCOUNT_DELETION_REQUESTED', context.container.get(TYPES.AccountDeletionRequestedEventHandler)],
+          ['REVISIONS_COPY_REQUESTED', context.container.get(TYPES.RevisionsCopyRequestedEventHandler)],
+          [
+            'REVISIONS_OWNERSHIP_UPDATE_REQUESTED',
+            context.container.get(TYPES.RevisionsOwnershipUpdateRequestedEventHandler),
+          ],
+        ])
 
-    simpleContainer.set(
-      TYPES.RevisionsCopyRequestedEventHandler,
-      new RevisionsCopyRequestedEventHandler(
-        simpleContainer.get(TYPES.CopyRevisions),
-        simpleContainer.get(TYPES.Logger),
-      ),
-    )
+        const handler =
+          env.get('NEW_RELIC_ENABLED', true) === 'true'
+            ? new SQSNewRelicEventMessageHandler(eventHandlers, context.container.get(TYPES.Logger))
+            : new SQSEventMessageHandler(eventHandlers, context.container.get(TYPES.Logger))
 
-    simpleContainer.set(
-      TYPES.RevisionsOwnershipUpdateRequestedEventHandler,
-      new RevisionsOwnershipUpdateRequestedEventHandler(simpleContainer.get(TYPES.RevisionRepository)),
-    )
+        return handler
+      })
 
-    const eventHandlers: Map<string, DomainEventHandlerInterface> = new Map([
-      ['ITEM_DUMPED', simpleContainer.get(TYPES.ItemDumpedEventHandler)],
-      ['ACCOUNT_DELETION_REQUESTED', simpleContainer.get(TYPES.AccountDeletionRequestedEventHandler)],
-      ['REVISIONS_COPY_REQUESTED', simpleContainer.get(TYPES.RevisionsCopyRequestedEventHandler)],
-      [
-        'REVISIONS_OWNERSHIP_UPDATE_REQUESTED',
-        simpleContainer.get(TYPES.RevisionsOwnershipUpdateRequestedEventHandler),
-      ],
-    ])
+    container
+      .bind<DomainEventSubscriberFactoryInterface>(TYPES.DomainEventSubscriberFactory)
+      .toDynamicValue((context: interfaces.Context) => {
+        return new SQSDomainEventSubscriberFactory(
+          context.container.get(TYPES.SQS),
+          context.container.get(TYPES.SQS_QUEUE_URL),
+          context.container.get(TYPES.DomainEventMessageHandler),
+        )
+      })
 
-    const handler =
-      env.get('NEW_RELIC_ENABLED', true) === 'true'
-        ? new SQSNewRelicEventMessageHandler(eventHandlers, simpleContainer.get(TYPES.Logger))
-        : new SQSEventMessageHandler(eventHandlers, simpleContainer.get(TYPES.Logger))
-
-    simpleContainer.set(TYPES.DomainEventMessageHandler, handler)
-
-    simpleContainer.set(
-      TYPES.DomainEventSubscriberFactory,
-      new SQSDomainEventSubscriberFactory(
-        simpleContainer.get(TYPES.SQS),
-        simpleContainer.get(TYPES.SQS_QUEUE_URL),
-        simpleContainer.get(TYPES.DomainEventMessageHandler),
-      ),
-    )
-
-    return simpleContainer
+    return container
   }
 }
