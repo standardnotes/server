@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.47.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.46.13...@standardnotes/api-gateway@1.47.0) (2023-02-13)
+
+### Features
+
+* **syncing-server:** refactor container config into server and worker ([#443](https://github.com/standardnotes/api-gateway/issues/443)) ([993d311](https://github.com/standardnotes/api-gateway/commit/993d31167b8b0ac11e3df530d2d1ee566940df6e))
+
 ## [1.46.13](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.46.12...@standardnotes/api-gateway@1.46.13) (2023-02-09)
 
 ### Bug Fixes
