@@ -1,10 +1,8 @@
-import { injectable } from 'inversify'
 import { ItemSaveRuleInterface } from '../SaveRule/ItemSaveRuleInterface'
 import { ItemSaveValidationDTO } from './ItemSaveValidationDTO'
 import { ItemSaveValidationResult } from './ItemSaveValidationResult'
 import { ItemSaveValidatorInterface } from './ItemSaveValidatorInterface'
 
-@injectable()
 export class ItemSaveValidator implements ItemSaveValidatorInterface {
   constructor(private rules: Array<ItemSaveRuleInterface>) {}
 

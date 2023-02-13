@@ -3,7 +3,6 @@ import { UseCaseInterface } from '../UseCaseInterface'
 import { GetItemDTO } from './GetItemDTO'
 import { GetItemResponse } from './GetItemResponse'
 
-
 export class GetItem implements UseCaseInterface {
   constructor(private itemRepository: ItemRepositoryInterface) {}
 
