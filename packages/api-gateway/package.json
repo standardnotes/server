@@ -18,7 +18,7 @@
     "setup:env": "cp .env.sample .env",
     "wait-for:revisions": "docker/wait-for.sh localhost $REVISIONS_SERVER_PORT",
     "start": "yarn node dist/bin/server.js",
-    "supervisor:start": "yarn wait-for:revisions && yarn node dist/bin/server.js",
+    "supervisor:start": "yarn wait-for:revisions && node dist/bin/server.js",
     "upgrade:snjs": "yarn ncu -u '@standardnotes/*'"
   },
   "dependencies": {

@@ -23,9 +23,9 @@
     "wait-for:auth": "docker/wait-for.sh localhost $AUTH_SERVER_PORT",
     "wait-for:files": "docker/wait-for.sh localhost $FILES_SERVER_PORT",
     "start": "yarn node dist/bin/server.js",
-    "supervisor:start": "yarn wait-for:auth && yarn node dist/bin/server.js",
+    "supervisor:start": "yarn wait-for:auth && node dist/bin/server.js",
     "worker": "yarn node dist/bin/worker.js",
-    "supervisor:worker": "yarn wait-for:files && yarn node dist/bin/worker.js",
+    "supervisor:worker": "yarn wait-for:files && node dist/bin/worker.js",
     "upgrade:snjs": "yarn ncu -u '@standardnotes/*'"
   },
   "dependencies": {
