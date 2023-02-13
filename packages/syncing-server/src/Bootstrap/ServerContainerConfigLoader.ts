@@ -23,8 +23,6 @@ import { ContentTypeFilter } from '../Domain/Item/SaveRule/ContentTypeFilter'
 import { ContentFilter } from '../Domain/Item/SaveRule/ContentFilter'
 import { CheckIntegrity } from '../Domain/UseCase/CheckIntegrity/CheckIntegrity'
 import { GetItem } from '../Domain/UseCase/GetItem/GetItem'
-import { ItemTransferCalculatorInterface } from '../Domain/Item/ItemTransferCalculatorInterface'
-import { ItemTransferCalculator } from '../Domain/Item/ItemTransferCalculator'
 import { ProjectorInterface } from '../Projection/ProjectorInterface'
 import { SavedItemProjection } from '../Projection/SavedItemProjection'
 import { SavedItemProjector } from '../Projection/SavedItemProjector'
@@ -104,14 +102,6 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
         context.container.get(TYPES.Logger),
       )
     })
-    container
-      .bind<ItemTransferCalculatorInterface>(TYPES.ItemTransferCalculator)
-      .toDynamicValue((context: interfaces.Context) => {
-        return new ItemTransferCalculator(
-          context.container.get(TYPES.ItemRepository),
-          context.container.get(TYPES.Logger),
-        )
-      })
     container
       .bind<SyncResponseFactory20161215>(TYPES.SyncResponseFactory20161215)
       .toDynamicValue((context: interfaces.Context) => {

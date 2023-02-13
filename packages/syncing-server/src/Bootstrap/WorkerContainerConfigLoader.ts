@@ -195,10 +195,6 @@ export class WorkerContainerConfigLoader extends CommonContainerConfigLoader {
           ['ACCOUNT_DELETION_REQUESTED', context.container.get(TYPES.AccountDeletionRequestedEventHandler)],
           ['EMAIL_BACKUP_REQUESTED', context.container.get(TYPES.EmailBackupRequestedEventHandler)],
           ['CLOUD_BACKUP_REQUESTED', context.container.get(TYPES.CloudBackupRequestedEventHandler)],
-          [
-            'USER_CONTENT_SIZE_RECALCULATION_REQUESTED',
-            context.container.get(TYPES.UserContentSizeRecalculationRequestedEventHandler),
-          ],
           ['ITEM_REVISION_CREATION_REQUESTED', context.container.get(TYPES.ItemRevisionCreationRequestedEventHandler)],
         ])
 

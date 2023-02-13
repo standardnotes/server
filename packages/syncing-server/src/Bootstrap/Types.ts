@@ -43,7 +43,6 @@ const TYPES = {
   DuplicateItemSyncedEventHandler: Symbol.for('DuplicateItemSyncedEventHandler'),
   EmailBackupRequestedEventHandler: Symbol.for('EmailBackupRequestedEventHandler'),
   CloudBackupRequestedEventHandler: Symbol.for('CloudBackupRequestedEventHandler'),
-  UserContentSizeRecalculationRequestedEventHandler: Symbol.for('UserContentSizeRecalculationRequestedEventHandler'),
   ItemRevisionCreationRequestedEventHandler: Symbol.for('ItemRevisionCreationRequestedEventHandler'),
   // Services
   ContentDecoder: Symbol.for('ContentDecoder'),

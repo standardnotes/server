@@ -16,6 +16,8 @@ import { SNSDomainEventPublisher } from '@standardnotes/domain-events-infra'
 import { DomainEventFactoryInterface } from '../Domain/Event/DomainEventFactoryInterface'
 import { DomainEventFactory } from '../Domain/Event/DomainEventFactory'
 import { Timer, TimerInterface } from '@standardnotes/time'
+import { ItemTransferCalculatorInterface } from '../Domain/Item/ItemTransferCalculatorInterface'
+import { ItemTransferCalculator } from '../Domain/Item/ItemTransferCalculator'
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
 
@@ -101,6 +103,15 @@ export class CommonContainerConfigLoader {
       .bind<DomainEventFactoryInterface>(TYPES.DomainEventFactory)
       .toDynamicValue((context: interfaces.Context) => {
         return new DomainEventFactory(context.container.get(TYPES.Timer))
+      })
+
+    container
+      .bind<ItemTransferCalculatorInterface>(TYPES.ItemTransferCalculator)
+      .toDynamicValue((context: interfaces.Context) => {
+        return new ItemTransferCalculator(
+          context.container.get(TYPES.ItemRepository),
+          context.container.get(TYPES.Logger),
+        )
       })
 
     return container
