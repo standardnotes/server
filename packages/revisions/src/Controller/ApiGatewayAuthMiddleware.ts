@@ -1,8 +1,10 @@
 import { CrossServiceTokenData, TokenDecoderInterface } from '@standardnotes/security'
 import { NextFunction, Request, Response } from 'express'
+import { injectable } from 'inversify'
 import { BaseMiddleware } from 'inversify-express-utils'
 import { Logger } from 'winston'
 
+@injectable()
 export class ApiGatewayAuthMiddleware extends BaseMiddleware {
   constructor(private tokenDecoder: TokenDecoderInterface<CrossServiceTokenData>, private logger: Logger) {
     super()
