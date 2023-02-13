@@ -4131,7 +4131,7 @@ const RAW_RUNTIME_STATE =
           ["eslint-plugin-prettier", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:4.2.1"],\
           ["express", "npm:4.18.2"],\
           ["express-robots-txt", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:1.0.0"],\
-          ["helmet", "npm:6.0.0"],\
+          ["helmet", "npm:6.0.1"],\
           ["inversify", "npm:6.0.1"],\
           ["inversify-express-utils", "npm:6.4.3"],\
           ["ioredis", "npm:5.2.4"],\
@@ -4414,7 +4414,7 @@ const RAW_RUNTIME_STATE =
           ["express", "npm:4.18.2"],\
           ["express-robots-txt", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:1.0.0"],\
           ["express-winston", "virtual:b442cf0427cc365d1c137f7340f9b81f9b204561afe791a8564ae9590c3a7fc4b5f793aaf8817b946f75a3cb64d03ef8790eb847f8b576b41e700da7b00c240c#npm:4.2.0"],\
-          ["helmet", "npm:6.0.0"],\
+          ["helmet", "npm:6.0.1"],\
           ["inversify", "npm:6.0.1"],\
           ["inversify-express-utils", "npm:6.4.3"],\
           ["ioredis", "npm:5.2.4"],\
@@ -4700,7 +4700,7 @@ const RAW_RUNTIME_STATE =
           ["eslint", "npm:8.32.0"],\
           ["eslint-plugin-prettier", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:4.2.1"],\
           ["express", "npm:4.18.2"],\
-          ["helmet", "npm:6.0.0"],\
+          ["helmet", "npm:6.0.1"],\
           ["inversify", "npm:6.0.1"],\
           ["inversify-express-utils", "npm:6.4.3"],\
           ["jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.1.2"],\
@@ -9241,10 +9241,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["helmet", [\
-      ["npm:6.0.0", {\
-        "packageLocation": "./.yarn/cache/helmet-npm-6.0.0-2285459f57-73b6ba802d.zip/node_modules/helmet/",\
+      ["npm:6.0.1", {\
+        "packageLocation": "./.yarn/cache/helmet-npm-6.0.1-204284f33b-a323b75c7b.zip/node_modules/helmet/",\
         "packageDependencies": [\
-          ["helmet", "npm:6.0.0"]\
+          ["helmet", "npm:6.0.1"]\
         ],\
         "linkType": "HARD"\
       }]\
