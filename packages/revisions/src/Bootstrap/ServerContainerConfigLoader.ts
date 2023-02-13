@@ -101,7 +101,10 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
     container
       .bind<ApiGatewayAuthMiddleware>(TYPES.ApiGatewayAuthMiddleware)
       .toDynamicValue((context: interfaces.Context) => {
-        return new ApiGatewayAuthMiddleware(context.container.get(TYPES.Logger), context.container.get(TYPES.Logger))
+        return new ApiGatewayAuthMiddleware(
+          context.container.get(TYPES.CrossServiceTokenDecoder),
+          context.container.get(TYPES.Logger),
+        )
       })
 
     return container
