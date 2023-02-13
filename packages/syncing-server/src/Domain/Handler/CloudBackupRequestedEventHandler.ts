@@ -1,7 +1,5 @@
 import { DomainEventHandlerInterface, CloudBackupRequestedEvent } from '@standardnotes/domain-events'
-import { inject, injectable } from 'inversify'
 
-import TYPES from '../../Bootstrap/Types'
 import { ItemRepositoryInterface } from '../Item/ItemRepositoryInterface'
 import { ItemQuery } from '../Item/ItemQuery'
 import { AuthHttpServiceInterface } from '../Auth/AuthHttpServiceInterface'
@@ -11,15 +9,14 @@ import { ItemBackupServiceInterface } from '../Item/ItemBackupServiceInterface'
 import { Logger } from 'winston'
 import { KeyParamsData } from '@standardnotes/responses'
 
-@injectable()
 export class CloudBackupRequestedEventHandler implements DomainEventHandlerInterface {
   constructor(
-    @inject(TYPES.ItemRepository) private itemRepository: ItemRepositoryInterface,
-    @inject(TYPES.AuthHttpService) private authHttpService: AuthHttpServiceInterface,
-    @inject(TYPES.ExtensionsHttpService) private extensionsHttpService: ExtensionsHttpServiceInterface,
-    @inject(TYPES.ItemBackupService) private itemBackupService: ItemBackupServiceInterface,
-    @inject(TYPES.EXTENSIONS_SERVER_URL) private extensionsServerUrl: string,
-    @inject(TYPES.Logger) private logger: Logger,
+    private itemRepository: ItemRepositoryInterface,
+    private authHttpService: AuthHttpServiceInterface,
+    private extensionsHttpService: ExtensionsHttpServiceInterface,
+    private itemBackupService: ItemBackupServiceInterface,
+    private extensionsServerUrl: string,
+    private logger: Logger,
   ) {}
 
   async handle(event: CloudBackupRequestedEvent): Promise<void> {

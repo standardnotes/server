@@ -1,22 +1,19 @@
 import * as uuid from 'uuid'
 import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
 import { KeyParamsData } from '@standardnotes/responses'
-import { inject, injectable } from 'inversify'
 import { Logger } from 'winston'
 
-import TYPES from '../../Bootstrap/Types'
 import { Item } from '../../Domain/Item/Item'
 import { ItemBackupServiceInterface } from '../../Domain/Item/ItemBackupServiceInterface'
 import { ProjectorInterface } from '../../Projection/ProjectorInterface'
 import { ItemProjection } from '../../Projection/ItemProjection'
 
-@injectable()
 export class S3ItemBackupService implements ItemBackupServiceInterface {
   constructor(
-    @inject(TYPES.S3_BACKUP_BUCKET_NAME) private s3BackupBucketName: string,
-    @inject(TYPES.ItemProjector) private itemProjector: ProjectorInterface<Item, ItemProjection>,
-    @inject(TYPES.Logger) private logger: Logger,
-    @inject(TYPES.S3) private s3Client?: S3Client,
+    private s3BackupBucketName: string,
+    private itemProjector: ProjectorInterface<Item, ItemProjection>,
+    private logger: Logger,
+    private s3Client?: S3Client,
   ) {}
 
   async dump(item: Item): Promise<string> {

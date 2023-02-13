@@ -4,7 +4,6 @@ import {
   ItemDumpedEvent,
   ItemRevisionCreationRequestedEvent,
   RevisionsCopyRequestedEvent,
-  RevisionsOwnershipUpdateRequestedEvent,
   UserContentSizeRecalculationRequestedEvent,
 } from '@standardnotes/domain-events'
 
@@ -31,8 +30,4 @@ export interface DomainEventFactoryInterface {
     userUuid: string,
     dto: { originalItemUuid: string; newItemUuid: string },
   ): RevisionsCopyRequestedEvent
-  createRevisionsOwnershipUpdateRequestedEvent(dto: {
-    userUuid: string
-    itemUuid: string
-  }): RevisionsOwnershipUpdateRequestedEvent
 }

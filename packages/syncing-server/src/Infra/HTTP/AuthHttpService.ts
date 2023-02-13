@@ -1,15 +1,10 @@
 import { KeyParamsData } from '@standardnotes/responses'
 import { AxiosInstance } from 'axios'
-import { inject, injectable } from 'inversify'
-import TYPES from '../../Bootstrap/Types'
+
 import { AuthHttpServiceInterface } from '../../Domain/Auth/AuthHttpServiceInterface'
 
-@injectable()
 export class AuthHttpService implements AuthHttpServiceInterface {
-  constructor(
-    @inject(TYPES.HTTPClient) private httpClient: AxiosInstance,
-    @inject(TYPES.AUTH_SERVER_URL) private authServerUrl: string,
-  ) {}
+  constructor(private httpClient: AxiosInstance, private authServerUrl: string) {}
 
   async getUserSetting(userUuid: string, settingName: string): Promise<{ uuid: string; value: string | null }> {
     const response = await this.httpClient.request({

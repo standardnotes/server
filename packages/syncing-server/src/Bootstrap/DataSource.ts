@@ -1,6 +1,5 @@
 import { DataSource, LoggerOptions } from 'typeorm'
 import { Item } from '../Domain/Item/Item'
-import { Revision } from '../Domain/Revision/Revision'
 import { Env } from './Env'
 
 const env: Env = new Env()
@@ -45,7 +44,7 @@ export const AppDataSource = new DataSource({
   username: inReplicaMode ? undefined : env.get('DB_USERNAME'),
   password: inReplicaMode ? undefined : env.get('DB_PASSWORD'),
   database: inReplicaMode ? undefined : env.get('DB_DATABASE'),
-  entities: [Item, Revision],
+  entities: [Item],
   migrations: [env.get('DB_MIGRATIONS_PATH', true) ?? 'dist/migrations/*.js'],
   migrationsRun: true,
   logging: <LoggerOptions>env.get('DB_DEBUG_LEVEL'),

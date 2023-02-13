@@ -1,18 +1,11 @@
-import { inject, injectable } from 'inversify'
 import { Logger } from 'winston'
-
-import TYPES from '../../Bootstrap/Types'
 
 import { ItemTransferCalculatorInterface } from './ItemTransferCalculatorInterface'
 import { ItemQuery } from './ItemQuery'
 import { ItemRepositoryInterface } from './ItemRepositoryInterface'
 
-@injectable()
 export class ItemTransferCalculator implements ItemTransferCalculatorInterface {
-  constructor(
-    @inject(TYPES.ItemRepository) private itemRepository: ItemRepositoryInterface,
-    @inject(TYPES.Logger) private logger: Logger,
-  ) {}
+  constructor(private itemRepository: ItemRepositoryInterface, private logger: Logger) {}
 
   async computeItemUuidsToFetch(itemQuery: ItemQuery, bytesTransferLimit: number): Promise<Array<string>> {
     const itemUuidsToFetch = []

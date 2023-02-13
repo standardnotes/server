@@ -1,19 +1,13 @@
 import { TimerInterface } from '@standardnotes/time'
-import { inject, injectable } from 'inversify'
 
-import TYPES from '../../Bootstrap/Types'
 import { ItemProjection } from '../../Projection/ItemProjection'
 import { ProjectorInterface } from '../../Projection/ProjectorInterface'
 import { Item } from './Item'
 import { ItemFactoryInterface } from './ItemFactoryInterface'
 import { ItemHash } from './ItemHash'
 
-@injectable()
 export class ItemFactory implements ItemFactoryInterface {
-  constructor(
-    @inject(TYPES.Timer) private timer: TimerInterface,
-    @inject(TYPES.ItemProjector) private itemProjector: ProjectorInterface<Item, ItemProjection>,
-  ) {}
+  constructor(private timer: TimerInterface, private itemProjector: ProjectorInterface<Item, ItemProjection>) {}
 
   createStub(dto: { userUuid: string; itemHash: ItemHash; sessionUuid: string | null }): Item {
     const item = this.create(dto)

@@ -1,7 +1,5 @@
-import { injectable } from 'inversify'
 import { ContentDecoderInterface } from './ContentDecoderInterface'
 
-@injectable()
 export class ContentDecoder implements ContentDecoderInterface {
   decode(content: string): Record<string, unknown> {
     try {

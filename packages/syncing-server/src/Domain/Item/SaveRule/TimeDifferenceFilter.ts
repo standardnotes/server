@@ -1,6 +1,5 @@
 import { Time, TimerInterface } from '@standardnotes/time'
-import { inject, injectable } from 'inversify'
-import TYPES from '../../../Bootstrap/Types'
+
 import { ApiVersion } from '../../Api/ApiVersion'
 import { ItemHash } from '../ItemHash'
 import { ItemSaveValidationDTO } from '../SaveValidator/ItemSaveValidationDTO'
@@ -8,9 +7,8 @@ import { ItemSaveRuleResult } from './ItemSaveRuleResult'
 import { ItemSaveRuleInterface } from './ItemSaveRuleInterface'
 import { ConflictType } from '@standardnotes/responses'
 
-@injectable()
 export class TimeDifferenceFilter implements ItemSaveRuleInterface {
-  constructor(@inject(TYPES.Timer) private timer: TimerInterface) {}
+  constructor(private timer: TimerInterface) {}
 
   async check(dto: ItemSaveValidationDTO): Promise<ItemSaveRuleResult> {
     if (!dto.existingItem) {

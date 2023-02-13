@@ -1,5 +1,3 @@
-import { inject, injectable } from 'inversify'
-import TYPES from '../../../Bootstrap/Types'
 import { ProjectorInterface } from '../../../Projection/ProjectorInterface'
 import { SyncItemsResponse } from '../../UseCase/SyncItemsResponse'
 import { Item } from '../Item'
@@ -10,11 +8,10 @@ import { SyncResponse20161215 } from './SyncResponse20161215'
 import { SyncResponseFactoryInterface } from './SyncResponseFactoryInterface'
 import { ConflictType } from '@standardnotes/responses'
 
-@injectable()
 export class SyncResponseFactory20161215 implements SyncResponseFactoryInterface {
   private readonly LEGACY_MIN_CONFLICT_INTERVAL = 20_000_000
 
-  constructor(@inject(TYPES.ItemProjector) private itemProjector: ProjectorInterface<Item, ItemProjection>) {}
+  constructor(private itemProjector: ProjectorInterface<Item, ItemProjection>) {}
 
   async createResponse(syncItemsResponse: SyncItemsResponse): Promise<SyncResponse20161215> {
     const conflicts = syncItemsResponse.conflicts.filter(

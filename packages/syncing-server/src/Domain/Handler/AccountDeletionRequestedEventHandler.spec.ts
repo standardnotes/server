@@ -36,7 +36,7 @@ describe('AccountDeletionRequestedEventHandler', () => {
     }
   })
 
-  it('should remove all items and revision for a user', async () => {
+  it('should remove all items for a user', async () => {
     await createHandler().handle(event)
 
     expect(itemRepository.deleteByUserUuid).toHaveBeenCalledWith('2-3-4')

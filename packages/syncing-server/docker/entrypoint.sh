@@ -25,11 +25,6 @@ case "$COMMAND" in
     yarn workspace @standardnotes/syncing-server content-size $USER_UUID
     ;;
 
-  'revisions-ownership-fix' )
-    echo "[Docker] Starting Revisions Ownership Fixing..."
-    yarn workspace @standardnotes/syncing-server revisions-ownership
-    ;;
-
    * )
     echo "[Docker] Unknown command"
     ;;

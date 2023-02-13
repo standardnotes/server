@@ -4687,7 +4687,6 @@ const RAW_RUNTIME_STATE =
           ["@types/dotenv", "npm:8.2.0"],\
           ["@types/express", "npm:4.17.14"],\
           ["@types/inversify-express-utils", "npm:2.0.0"],\
-          ["@types/ioredis", "npm:5.0.0"],\
           ["@types/jest", "npm:29.1.1"],\
           ["@types/jsonwebtoken", "npm:9.0.1"],\
           ["@types/newrelic", "npm:9.4.0"],\
@@ -4704,7 +4703,6 @@ const RAW_RUNTIME_STATE =
           ["helmet", "npm:6.0.0"],\
           ["inversify", "npm:6.0.1"],\
           ["inversify-express-utils", "npm:6.4.3"],\
-          ["ioredis", "npm:5.2.4"],\
           ["jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.1.2"],\
           ["jsonwebtoken", "npm:9.0.0"],\
           ["mysql2", "npm:3.0.1"],\
@@ -4714,7 +4712,7 @@ const RAW_RUNTIME_STATE =
           ["prettyjson", "npm:1.2.5"],\
           ["reflect-metadata", "npm:0.1.13"],\
           ["ts-jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.0.3"],\
-          ["typeorm", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:0.3.10"],\
+          ["typeorm", "virtual:365b8c88cdf194291829ee28b79556e2328175d26a621363e703848100bea0042e9500db2a1206c9bbc3a4a76a1d169639ef774b2ea3a1a98584a9936b58c6be#npm:0.3.10"],\
           ["typescript", "patch:typescript@npm%3A4.8.4#optional!builtin<compat/typescript>::version=4.8.4&hash=701156"],\
           ["ua-parser-js", "npm:1.0.32"],\
           ["uuid", "npm:9.0.0"],\

@@ -2,9 +2,8 @@ import { KeyParamsData } from '@standardnotes/responses'
 import { DomainEventInterface, DomainEventPublisherInterface } from '@standardnotes/domain-events'
 import { EmailLevel } from '@standardnotes/domain-core'
 import { AxiosInstance } from 'axios'
-import { inject, injectable } from 'inversify'
 import { Logger } from 'winston'
-import TYPES from '../../Bootstrap/Types'
+
 import { DomainEventFactoryInterface } from '../Event/DomainEventFactoryInterface'
 import { ContentDecoderInterface } from '../Item/ContentDecoderInterface'
 import { ItemRepositoryInterface } from '../Item/ItemRepositoryInterface'
@@ -15,15 +14,14 @@ import { getBody as googleDriveBody, getSubject as googleDriveSubject } from '..
 import { getBody as dropboxBody, getSubject as dropboxSubject } from '../Email/DropboxBackupFailed'
 import { getBody as oneDriveBody, getSubject as oneDriveSubject } from '../Email/OneDriveBackupFailed'
 
-@injectable()
 export class ExtensionsHttpService implements ExtensionsHttpServiceInterface {
   constructor(
-    @inject(TYPES.HTTPClient) private httpClient: AxiosInstance,
-    @inject(TYPES.ItemRepository) private itemRepository: ItemRepositoryInterface,
-    @inject(TYPES.ContentDecoder) private contentDecoder: ContentDecoderInterface,
-    @inject(TYPES.DomainEventPublisher) private domainEventPublisher: DomainEventPublisherInterface,
-    @inject(TYPES.DomainEventFactory) private domainEventFactory: DomainEventFactoryInterface,
-    @inject(TYPES.Logger) private logger: Logger,
+    private httpClient: AxiosInstance,
+    private itemRepository: ItemRepositoryInterface,
+    private contentDecoder: ContentDecoderInterface,
+    private domainEventPublisher: DomainEventPublisherInterface,
+    private domainEventFactory: DomainEventFactoryInterface,
+    private logger: Logger,
   ) {}
 
   async triggerCloudBackupOnExtensionsServer(dto: {

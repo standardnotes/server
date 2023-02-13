@@ -1,17 +1,14 @@
-import { inject, injectable } from 'inversify'
 import { IntegrityPayload } from '@standardnotes/responses'
 import { ContentType } from '@standardnotes/common'
 
-import TYPES from '../../../Bootstrap/Types'
 import { ItemRepositoryInterface } from '../../Item/ItemRepositoryInterface'
 import { UseCaseInterface } from '../UseCaseInterface'
 import { CheckIntegrityDTO } from './CheckIntegrityDTO'
 import { CheckIntegrityResponse } from './CheckIntegrityResponse'
 import { ExtendedIntegrityPayload } from '../../Item/ExtendedIntegrityPayload'
 
-@injectable()
 export class CheckIntegrity implements UseCaseInterface {
-  constructor(@inject(TYPES.ItemRepository) private itemRepository: ItemRepositoryInterface) {}
+  constructor(private itemRepository: ItemRepositoryInterface) {}
 
   async execute(dto: CheckIntegrityDTO): Promise<CheckIntegrityResponse> {
     const serverItemIntegrityPayloads = await this.itemRepository.findItemsForComputingIntegrityPayloads(dto.userUuid)
