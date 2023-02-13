@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.30.1](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.30.0...@standardnotes/syncing-server@1.30.1) (2023-02-13)
+
+### Bug Fixes
+
+* **syncing-server:** worker container configuration ([fa0b9bf](https://github.com/standardnotes/syncing-server-js/commit/fa0b9bf9353b78542ca02352cbb59232dadbe8b9))
+
 # [1.30.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.29.15...@standardnotes/syncing-server@1.30.0) (2023-02-13)
 
 ### Features
