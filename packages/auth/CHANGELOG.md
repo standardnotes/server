@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.87.15](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.87.14...@standardnotes/auth-server@1.87.15) (2023-02-14)
+
+**Note:** Version bump only for package @standardnotes/auth-server
+
 ## [1.87.14](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.87.13...@standardnotes/auth-server@1.87.14) (2023-02-09)
 
 ### Bug Fixes
