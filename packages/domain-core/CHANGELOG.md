@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.11.3](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.11.2...@standardnotes/domain-core@1.11.3) (2023-02-15)
+
+### Bug Fixes
+
+* **domain-core:** remove unnecessary dependencies ([16043a7](https://github.com/standardnotes/server/commit/16043a7d6881378ed3286e08dc9e21e5e6b89171))
+
 ## [1.11.2](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.11.1...@standardnotes/domain-core@1.11.2) (2023-01-20)
 
 **Note:** Version bump only for package @standardnotes/domain-core
