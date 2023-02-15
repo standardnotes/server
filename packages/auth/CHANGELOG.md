@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.88.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.87.15...@standardnotes/auth-server@1.88.0) (2023-02-15)
+
+### Features
+
+* optimize memory usage ([#444](https://github.com/standardnotes/server/issues/444)) ([fdf4b29](https://github.com/standardnotes/server/commit/fdf4b29ae2717e9b5d1fba2722beb7621a7e5c37))
+
 ## [1.87.15](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.87.14...@standardnotes/auth-server@1.87.15) (2023-02-14)
 
 **Note:** Version bump only for package @standardnotes/auth-server

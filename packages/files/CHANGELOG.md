@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.10.0](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.9.18...@standardnotes/files-server@1.10.0) (2023-02-15)
+
+### Features
+
+* optimize memory usage ([#444](https://github.com/standardnotes/files/issues/444)) ([fdf4b29](https://github.com/standardnotes/files/commit/fdf4b29ae2717e9b5d1fba2722beb7621a7e5c37))
+
 ## [1.9.18](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.9.17...@standardnotes/files-server@1.9.18) (2023-02-14)
 
 **Note:** Version bump only for package @standardnotes/files-server
