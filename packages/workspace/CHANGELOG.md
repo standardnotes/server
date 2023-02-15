@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.20.0](https://github.com/standardnotes/server/compare/@standardnotes/workspace-server@1.19.23...@standardnotes/workspace-server@1.20.0) (2023-02-15)
+
+### Features
+
+* optimize memory on server utilities ([881a696](https://github.com/standardnotes/server/commit/881a6967aca57d68795af0792114f848ddddf120))
+
 ## [1.19.23](https://github.com/standardnotes/server/compare/@standardnotes/workspace-server@1.19.22...@standardnotes/workspace-server@1.19.23) (2023-02-06)
 
 **Note:** Version bump only for package @standardnotes/workspace-server

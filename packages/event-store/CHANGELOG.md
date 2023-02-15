@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.7.0](https://github.com/standardnotes/server/compare/@standardnotes/event-store@1.6.68...@standardnotes/event-store@1.7.0) (2023-02-15)
+
+### Features
+
+* optimize memory on server utilities ([881a696](https://github.com/standardnotes/server/commit/881a6967aca57d68795af0792114f848ddddf120))
+
 ## [1.6.68](https://github.com/standardnotes/server/compare/@standardnotes/event-store@1.6.67...@standardnotes/event-store@1.6.68) (2023-01-30)
 
 ### Bug Fixes
