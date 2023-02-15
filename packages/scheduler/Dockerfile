@@ -8,9 +8,9 @@ ENV NODE_ENV production
 
 RUN corepack enable
 
-WORKDIR /workspace
-
 COPY ./ /workspace
+
+WORKDIR /workspace/packages/scheduler
 
 ENTRYPOINT [ "/workspace/packages/scheduler/docker/entrypoint.sh" ]
 

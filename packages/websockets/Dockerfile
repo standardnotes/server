@@ -8,9 +8,9 @@ ENV NODE_ENV production
 
 RUN corepack enable
 
-WORKDIR /workspace
-
 COPY ./ /workspace
+
+WORKDIR /workspace/packages/websockets
 
 ENTRYPOINT [ "/workspace/packages/websockets/docker/entrypoint.sh" ]
 

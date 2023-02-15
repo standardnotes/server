@@ -6,12 +6,12 @@ COMMAND=$1 && shift 1
 case "$COMMAND" in
   'start-worker' )
     echo "[Docker] Starting Worker..."
-    yarn workspace @standardnotes/analytics worker
+    node docker/entrypoint-worker.js
     ;;
 
   'report' )
     echo "[Docker] Starting Usage Report Generation..."
-    yarn workspace @standardnotes/analytics report
+    node docker/entrypoint-report.js
     ;;
 
    * )
