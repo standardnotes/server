@@ -4257,8 +4257,6 @@ const RAW_RUNTIME_STATE =
           ["@typescript-eslint/eslint-plugin", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:5.48.2"],\
           ["eslint-plugin-prettier", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:4.2.1"],\
           ["jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.1.2"],\
-          ["reflect-metadata", "npm:0.1.13"],\
-          ["shallow-equal-object", "npm:1.1.1"],\
           ["ts-jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.0.3"],\
           ["typescript", "patch:typescript@npm%3A4.8.4#optional!builtin<compat/typescript>::version=4.8.4&hash=701156"],\
           ["uuid", "npm:9.0.0"]\
@@ -13332,15 +13330,6 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["shallow-clone", "npm:3.0.1"],\
           ["kind-of", "npm:6.0.3"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
-    ["shallow-equal-object", [\
-      ["npm:1.1.1", {\
-        "packageLocation": "./.yarn/cache/shallow-equal-object-npm-1.1.1-a41b289b2e-9e5e0cd10b.zip/node_modules/shallow-equal-object/",\
-        "packageDependencies": [\
-          ["shallow-equal-object", "npm:1.1.1"]\
         ],\
         "linkType": "HARD"\
       }]\

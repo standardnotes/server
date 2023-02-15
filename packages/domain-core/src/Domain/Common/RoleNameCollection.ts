@@ -10,7 +10,7 @@ export class RoleNameCollection extends ValueObject<RoleNameCollectionProps> {
 
   includes(roleName: RoleName): boolean {
     for (const existingRoleName of this.props.value) {
-      if (existingRoleName.equals(roleName)) {
+      if (existingRoleName.value === roleName.value) {
         return true
       }
     }
@@ -28,7 +28,7 @@ export class RoleNameCollection extends ValueObject<RoleNameCollectionProps> {
     return false
   }
 
-  override equals(roleNameCollection: RoleNameCollection): boolean {
+  equals(roleNameCollection: RoleNameCollection): boolean {
     if (this.props.value.length !== roleNameCollection.value.length) {
       return false
     }
