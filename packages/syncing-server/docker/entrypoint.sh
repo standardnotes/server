@@ -4,19 +4,14 @@ set -e
 COMMAND=$1 && shift 1
 
 case "$COMMAND" in
-  'start-local')
-    echo "[Docker] Starting Web in Local Mode..."
-    yarn workspace @standardnotes/syncing-server start:local
-    ;;
-
   'start-web' )
     echo "[Docker] Starting Web..."
-    yarn workspace @standardnotes/syncing-server start
+    node docker/entrypoint-server.js
     ;;
 
   'start-worker' )
     echo "[Docker] Starting Worker..."
-    yarn workspace @standardnotes/syncing-server worker
+    node docker/entrypoint-worker.js
     ;;
 
   'content-size-recalculate' )
