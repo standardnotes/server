@@ -6,12 +6,12 @@ COMMAND=$1 && shift 1
 case "$COMMAND" in
   'start-web' )
     echo "Starting Web..."
-    yarn workspace @standardnotes/revisions-server start
+    node docker/entrypoint-server.js
     ;;
 
   'start-worker' )
     echo "Starting Worker..."
-    yarn workspace @standardnotes/revisions-server worker
+    node docker/entrypoint-worker.js
     ;;
 
    * )

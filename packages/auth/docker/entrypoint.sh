@@ -4,65 +4,60 @@ set -e
 COMMAND=$1 && shift 1
 
 case "$COMMAND" in
-  'start-local' )
-    echo "[Docker] Starting Web..."
-    yarn workspace @standardnotes/auth-server start:local
-    ;;
-
   'start-web' )
     echo "[Docker] Starting Web..."
-    yarn workspace @standardnotes/auth-server start
+    node docker/entrypoint-server.js
     ;;
 
   'start-worker' )
     echo "[Docker] Starting Worker..."
-    yarn workspace @standardnotes/auth-server worker
+    node docker/entrypoint-worker.js
     ;;
 
   'cleanup' )
     echo "[Docker] Starting Cleanup..."
-    yarn workspace @standardnotes/auth-server cleanup
+    node docker/entrypoint-cleanup.js
     ;;
 
   'stats' )
     echo "[Docker] Starting Persisting Stats..."
-    yarn workspace @standardnotes/auth-server stats
+    node docker/entrypoint-stats.js
     ;;
 
   'email-daily-backup' )
     echo "[Docker] Starting Email Daily Backup..."
-    yarn workspace @standardnotes/auth-server daily-backup:email
+    node docker/entrypoint-backup.js email daily
     ;;
 
   'email-weekly-backup' )
     echo "[Docker] Starting Email Weekly Backup..."
-    yarn workspace @standardnotes/auth-server weekly-backup:email
+    node docker/entrypoint-backup.js email weekly
     ;;
 
   'email-backup' )
     echo "[Docker] Starting Email Backup For Single User..."
     EMAIL=$1 && shift 1
-    yarn workspace @standardnotes/auth-server user-email-backup $EMAIL
+    node docker/entrypoint-user-email-backup.js $EMAIL
     ;;
 
   'dropbox-daily-backup' )
     echo "[Docker] Starting Dropbox Daily Backup..."
-    yarn workspace @standardnotes/auth-server daily-backup:dropbox
+    node docker/entrypoint-backup.js dropbox daily
     ;;
 
   'google-drive-daily-backup' )
     echo "[Docker] Starting Google Drive Daily Backup..."
-    yarn workspace @standardnotes/auth-server daily-backup:google_drive
+    node docker/entrypoint-backup.js google_drive daily
     ;;
 
   'one-drive-daily-backup' )
     echo "[Docker] Starting One Drive Daily Backup..."
-    yarn workspace @standardnotes/auth-server daily-backup:one_drive
+    node docker/entrypoint-backup.js one_drive daily
     ;;
 
   'content-recalculation' )
     echo "[Docker] Starting Content Size Recalculation..."
-    yarn workspace @standardnotes/auth-server content-recalculation
+    node docker/entrypoint-content.js
     ;;
 
    * )
