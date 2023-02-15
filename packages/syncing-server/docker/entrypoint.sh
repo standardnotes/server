@@ -17,7 +17,7 @@ case "$COMMAND" in
   'content-size-recalculate' )
     echo "[Docker] Starting Content Size Recalculation..."
     USER_UUID=$1 && shift 1
-    yarn workspace @standardnotes/syncing-server content-size $USER_UUID
+    node docker/entrypoint-content.js $USER_UUID
     ;;
 
    * )

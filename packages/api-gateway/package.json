@@ -16,9 +16,7 @@
     "build": "tsc --build",
     "lint": "eslint . --ext .ts",
     "setup:env": "cp .env.sample .env",
-    "wait-for:revisions": "docker/wait-for.sh localhost $REVISIONS_SERVER_PORT",
     "start": "yarn node dist/bin/server.js",
-    "supervisor:start": "docker/wait-for.sh localhost $REVISIONS_SERVER_PORT && node dist/bin/server.js",
     "upgrade:snjs": "yarn ncu -u '@standardnotes/*'"
   },
   "dependencies": {

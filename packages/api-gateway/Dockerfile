@@ -8,9 +8,9 @@ ENV NODE_ENV production
 
 RUN corepack enable
 
-WORKDIR /workspace
-
 COPY ./ /workspace
+
+WORKDIR /workspace/packages/api-gateway
 
 ENTRYPOINT [ "/workspace/packages/api-gateway/docker/entrypoint.sh" ]
 

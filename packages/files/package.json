@@ -20,12 +20,8 @@
     "lint": "eslint . --ext .ts",
     "pretest": "yarn lint && yarn build",
     "test": "jest --coverage --config=./jest.config.js --maxWorkers=50%",
-    "wait-for:auth": "docker/wait-for.sh localhost $AUTH_SERVER_PORT",
-    "wait-for:files": "docker/wait-for.sh localhost $FILES_SERVER_PORT",
     "start": "yarn node dist/bin/server.js",
-    "supervisor:start": "docker/wait-for.sh localhost $AUTH_SERVER_PORT && node dist/bin/server.js",
     "worker": "yarn node dist/bin/worker.js",
-    "supervisor:worker": "docker/wait-for.sh localhost $FILES_SERVER_PORT && node dist/bin/worker.js",
     "upgrade:snjs": "yarn ncu -u '@standardnotes/*'"
   },
   "dependencies": {
