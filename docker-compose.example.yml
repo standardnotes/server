@@ -24,7 +24,7 @@ services:
       - HOSTNAME_EXTERNAL=localstack
       - LS_LOG=warn
     volumes:
-      - ./docker/localstack_bootstrap.sh:/etc/localstack/init/ready.d/localstack_bootstrap.sh
+      - ./localstack_bootstrap.sh:/etc/localstack/init/ready.d/localstack_bootstrap.sh
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - standardnotes_self_hosted
