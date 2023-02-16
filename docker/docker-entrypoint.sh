@@ -356,10 +356,9 @@ export API_GATEWAY_AUTH_SERVER_URL=http://localhost:$AUTH_SERVER_PORT
 export API_GATEWAY_WORKSPACE_SERVER_URL=http://localhost:3004
 export API_GATEWAY_REVISIONS_SERVER_URL=http://localhost:3005
 if [ -z "$PUBLIC_FILES_SERVER_URL" ]; then
-  export API_GATEWAY_FILES_SERVER_URL=http://localhost:$FILES_SERVER_PORT
-else
-  export API_GATEWAY_FILES_SERVER_URL=$PUBLIC_FILES_SERVER_URL
+  export PUBLIC_FILES_SERVER_URL=http://localhost:3125
 fi
+export API_GATEWAY_FILES_SERVER_URL=$PUBLIC_FILES_SERVER_URL
 
 printenv | grep API_GATEWAY_ | sed 's/API_GATEWAY_//g' > /opt/bundled/api-gateway/packages/api-gateway/.env
 
