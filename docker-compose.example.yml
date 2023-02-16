@@ -8,7 +8,7 @@ services:
       - 3125:3104
     volumes:
       - ./logs:/var/lib/server/logs
-      - ./uploads:/opt/bundled/files/packages/files/uploads
+      - ./uploads:/opt/bundled/files/packages/files/dist/uploads
     networks:
       - standardnotes_self_hosted
 
