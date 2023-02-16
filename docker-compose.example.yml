@@ -1,7 +1,7 @@
 services:
   server:
     image: standardnotes/server
-    env_file: .env.sample
+    env_file: .env
     container_name: server_self_hosted
     ports:
       - 3000:3000
