@@ -44,9 +44,7 @@ fi
 if [ -z "$DB_DEBUG_LEVEL" ]; then
   export DB_DEBUG_LEVEL="all"
 fi
-if [ -z "$DB_MIGRATIONS_PATH" ]; then
-  export DB_MIGRATIONS_PATH="dist/migrations/*.js"
-fi
+export DB_MIGRATIONS_PATH="dist/migrations/*.js"
 
 #########
 # CACHE #
