@@ -31,7 +31,8 @@ RUN mkdir -p \
   /opt/bundled/auth \
   /opt/bundled/files \
   /opt/bundled/revisions \
-  /opt/bundled/api-gateway
+  /opt/bundled/api-gateway \
+  /opt/shared/uploads
 
 RUN yarn workspace @standardnotes/syncing-server bundle --no-compress --output-directory /opt/bundled/syncing-server
 RUN yarn workspace @standardnotes/auth-server bundle --no-compress --output-directory /opt/bundled/auth

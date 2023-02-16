@@ -233,9 +233,7 @@ export SYNCING_SERVER_NEW_RELIC_ENABLED=false
 export SYNCING_SERVER_NEW_RELIC_APP_NAME="Syncing Server JS"
 export SYNCING_SERVER_NEW_RELIC_NO_CONFIG_FILE=true
 
-if [ -z "$SYNCING_SERVER_FILE_UPLOAD_PATH" ]; then
-  export SYNCING_SERVER_FILE_UPLOAD_PATH="data/uploads"
-fi
+export SYNCING_SERVER_FILE_UPLOAD_PATH="/opt/shared/uploads"
 
 printenv | grep SYNCING_SERVER_ | sed 's/SYNCING_SERVER_//g' > /opt/bundled/syncing-server/packages/syncing-server/.env
 
