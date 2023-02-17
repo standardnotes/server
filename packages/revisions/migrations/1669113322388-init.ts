@@ -28,6 +28,14 @@ export class init1669113322388 implements MigrationInterface {
       return
     }
 
+    const revisionsTableHasUserUuidColumnQueryResult = await queryRunner.manager.query(
+      'SELECT COUNT(*) as count FROM information_schema.columns WHERE table_schema = DATABASE() AND table_name = "revisions" AND column_name = "user_uuid"',
+    )
+    const revisionsTableHasUserUuidColumn = revisionsTableHasUserUuidColumnQueryResult[0].count === 1
+    if (revisionsTableHasUserUuidColumn) {
+      return
+    }
+
     await queryRunner.query('ALTER TABLE `revisions` ADD COLUMN `user_uuid` varchar(36) NULL')
   }
 }
