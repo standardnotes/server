@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.12.2](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.12.1...@standardnotes/revisions-server@1.12.2) (2023-02-17)
+
+### Bug Fixes
+
+* **revisions:** initial migration to check if user_uuid exists on table ([85d0c12](https://github.com/standardnotes/server/commit/85d0c12dadffe3ed7b8c0717725813e168e20b6c))
+
 ## [1.12.1](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.12.0...@standardnotes/revisions-server@1.12.1) (2023-02-15)
 
 **Note:** Version bump only for package @standardnotes/revisions-server
