@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.7.1](https://github.com/standardnotes/server/compare/@standardnotes/event-store@1.7.0...@standardnotes/event-store@1.7.1) (2023-02-20)
+
+### Bug Fixes
+
+* **event-store:** add handling of email sent events ([d023a27](https://github.com/standardnotes/server/commit/d023a2737772e01eca8dc2c848ddebe43bb58734))
+
 # [1.7.0](https://github.com/standardnotes/server/compare/@standardnotes/event-store@1.6.68...@standardnotes/event-store@1.7.0) (2023-02-15)
 
 ### Features

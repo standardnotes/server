@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.107.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.106.2...@standardnotes/domain-events@2.107.0) (2023-02-20)
+
+### Features
+
+* **domain-events:** add email sent event ([190595f](https://github.com/standardnotes/server/commit/190595febf935f0f47818a2d9f7926a5f351a458))
+
 ## [2.106.2](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.106.1...@standardnotes/domain-events@2.106.2) (2023-01-20)
 
 ### Reverts
