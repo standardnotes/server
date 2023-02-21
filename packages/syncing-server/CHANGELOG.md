@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.31.4](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.31.3...@standardnotes/syncing-server@1.31.4) (2023-02-21)
+
+### Bug Fixes
+
+* **syncing-server:** creating email backup attachment files ([87b22ac](https://github.com/standardnotes/syncing-server-js/commit/87b22ac684732feaf3aef49496b25fbcda5bd888))
+
 ## [1.31.3](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.31.2...@standardnotes/syncing-server@1.31.3) (2023-02-21)
 
 **Note:** Version bump only for package @standardnotes/syncing-server
