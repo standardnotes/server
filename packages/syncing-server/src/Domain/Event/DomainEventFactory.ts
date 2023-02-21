@@ -6,7 +6,6 @@ import {
   ItemDumpedEvent,
   ItemRevisionCreationRequestedEvent,
   RevisionsCopyRequestedEvent,
-  UserContentSizeRecalculationRequestedEvent,
 } from '@standardnotes/domain-events'
 import { TimerInterface } from '@standardnotes/time'
 import { DomainEventFactoryInterface } from './DomainEventFactoryInterface'
@@ -65,23 +64,6 @@ export class DomainEventFactory implements DomainEventFactoryInterface {
       },
       payload: {
         itemUuid,
-      },
-    }
-  }
-
-  createUserContentSizeRecalculationRequestedEvent(userUuid: string): UserContentSizeRecalculationRequestedEvent {
-    return {
-      type: 'USER_CONTENT_SIZE_RECALCULATION_REQUESTED',
-      createdAt: this.timer.getUTCDate(),
-      meta: {
-        correlation: {
-          userIdentifier: userUuid,
-          userIdentifierType: 'uuid',
-        },
-        origin: DomainEventService.SyncingServer,
-      },
-      payload: {
-        userUuid,
       },
     }
   }

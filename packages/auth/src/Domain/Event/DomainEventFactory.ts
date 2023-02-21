@@ -16,7 +16,6 @@ import {
   DomainEventService,
   WebSocketMessageRequestedEvent,
   ExitDiscountApplyRequestedEvent,
-  UserContentSizeRecalculationRequestedEvent,
   MuteEmailsSettingChangedEvent,
   EmailRequestedEvent,
   StatisticPersistenceRequestedEvent,
@@ -67,23 +66,6 @@ export class DomainEventFactory implements DomainEventFactoryInterface {
         origin: DomainEventService.Auth,
       },
       payload: dto,
-    }
-  }
-
-  createUserContentSizeRecalculationRequestedEvent(userUuid: string): UserContentSizeRecalculationRequestedEvent {
-    return {
-      type: 'USER_CONTENT_SIZE_RECALCULATION_REQUESTED',
-      createdAt: this.timer.getUTCDate(),
-      meta: {
-        correlation: {
-          userIdentifier: userUuid,
-          userIdentifierType: 'uuid',
-        },
-        origin: DomainEventService.Auth,
-      },
-      payload: {
-        userUuid,
-      },
     }
   }
 

@@ -55,11 +55,6 @@ case "$COMMAND" in
     node docker/entrypoint-backup.js one_drive daily
     ;;
 
-  'content-recalculation' )
-    echo "[Docker] Starting Content Size Recalculation..."
-    node docker/entrypoint-content.js
-    ;;
-
    * )
     echo "[Docker] Unknown command"
     ;;

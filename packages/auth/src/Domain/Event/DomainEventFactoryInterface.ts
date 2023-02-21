@@ -14,7 +14,6 @@ import {
   PredicateVerifiedEvent,
   WebSocketMessageRequestedEvent,
   ExitDiscountApplyRequestedEvent,
-  UserContentSizeRecalculationRequestedEvent,
   MuteEmailsSettingChangedEvent,
   EmailRequestedEvent,
   StatisticPersistenceRequestedEvent,
@@ -22,7 +21,6 @@ import {
 import { InviteeIdentifierType } from '../SharedSubscription/InviteeIdentifierType'
 
 export interface DomainEventFactoryInterface {
-  createUserContentSizeRecalculationRequestedEvent(userUuid: string): UserContentSizeRecalculationRequestedEvent
   createWebSocketMessageRequestedEvent(dto: { userUuid: string; message: JSONString }): WebSocketMessageRequestedEvent
   createEmailRequestedEvent(dto: {
     userEmail: string

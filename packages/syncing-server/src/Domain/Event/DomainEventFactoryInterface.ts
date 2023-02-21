@@ -4,11 +4,9 @@ import {
   ItemDumpedEvent,
   ItemRevisionCreationRequestedEvent,
   RevisionsCopyRequestedEvent,
-  UserContentSizeRecalculationRequestedEvent,
 } from '@standardnotes/domain-events'
 
 export interface DomainEventFactoryInterface {
-  createUserContentSizeRecalculationRequestedEvent(userUuid: string): UserContentSizeRecalculationRequestedEvent
   createEmailRequestedEvent(dto: {
     userEmail: string
     messageIdentifier: string

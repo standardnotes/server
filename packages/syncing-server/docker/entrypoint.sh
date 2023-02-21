@@ -14,12 +14,6 @@ case "$COMMAND" in
     node docker/entrypoint-worker.js
     ;;
 
-  'content-size-recalculate' )
-    echo "[Docker] Starting Content Size Recalculation..."
-    USER_UUID=$1 && shift 1
-    node docker/entrypoint-content.js $USER_UUID
-    ;;
-
    * )
     echo "[Docker] Unknown command"
     ;;
