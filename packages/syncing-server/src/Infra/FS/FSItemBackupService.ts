@@ -16,7 +16,7 @@ export class FSItemBackupService implements ItemBackupServiceInterface {
     private logger: Logger,
   ) {}
 
-  async backup(_items: Item[], _authParams: KeyParamsData): Promise<string> {
+  async backup(_items: Item[], _authParams: KeyParamsData, _contentSizeLimit?: number): Promise<string[]> {
     throw new Error('Method not implemented.')
   }
 

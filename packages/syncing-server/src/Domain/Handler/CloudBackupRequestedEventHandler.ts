@@ -34,14 +34,19 @@ export class CloudBackupRequestedEventHandler implements DomainEventHandlerInter
       return
     }
 
-    const backupFilename = await this.itemBackupService.backup(items, authParams)
+    const backupFilenames = await this.itemBackupService.backup(items, authParams)
+    if (backupFilenames.length === 0) {
+      this.logger.warn(`No backup files created for user ${event.payload.userUuid}`)
+
+      return
+    }
 
     this.logger.debug(`Sending ${items.length} items to extensions server for user ${event.payload.userUuid}`)
 
     await this.extensionsHttpService.triggerCloudBackupOnExtensionsServer({
       cloudProvider: event.payload.cloudProvider,
       authParams,
-      backupFilename,
+      backupFilename: backupFilenames[0],
       forceMute: event.payload.userHasEmailsMuted,
       muteEmailsSettingUuid: event.payload.muteEmailsSettingUuid,
       extensionsServerUrl: this.getExtensionsServerUrl(event),

@@ -59,35 +59,35 @@ export class EmailBackupRequestedEventHandler implements DomainEventHandlerInter
         sortOrder: 'ASC',
       })
 
-      const backupFileName = await this.itemBackupService.backup(items, authParams)
+      const backupFileNames = await this.itemBackupService.backup(items, authParams, this.emailAttachmentMaxByteSize)
 
-      this.logger.debug(`Data backed up into: ${backupFileName}`)
-
-      if (backupFileName.length === 0) {
+      if (backupFileNames.length === 0) {
         this.logger.error(`Could not create a backup file for user ${event.payload.userUuid}`)
 
         return
       }
       const dateOnly = new Date().toISOString().substring(0, 10)
 
-      await this.domainEventPublisher.publish(
-        this.domainEventFactory.createEmailRequestedEvent({
-          body: getBody(authParams.identifier as string),
-          level: EmailLevel.LEVELS.System,
-          messageIdentifier: 'DATA_BACKUP',
-          subject: getSubject(bundleIndex++, itemUuidBundles.length, dateOnly),
-          userEmail: authParams.identifier as string,
-          sender: 'backups@standardnotes.org',
-          attachments: [
-            {
-              fileName: backupFileName,
-              filePath: this.s3BackupBucketName,
-              attachmentFileName: `SN-Data-${dateOnly}.txt`,
-              attachmentContentType: 'application/json',
-            },
-          ],
-        }),
-      )
+      for (const backupFileName of backupFileNames) {
+        await this.domainEventPublisher.publish(
+          this.domainEventFactory.createEmailRequestedEvent({
+            body: getBody(authParams.identifier as string),
+            level: EmailLevel.LEVELS.System,
+            messageIdentifier: 'DATA_BACKUP',
+            subject: getSubject(bundleIndex++, itemUuidBundles.length, dateOnly),
+            userEmail: authParams.identifier as string,
+            sender: 'backups@standardnotes.org',
+            attachments: [
+              {
+                fileName: backupFileName,
+                filePath: this.s3BackupBucketName,
+                attachmentFileName: `SN-Data-${dateOnly}.txt`,
+                attachmentContentType: 'application/json',
+              },
+            ],
+          }),
+        )
+      }
     }
   }
 }

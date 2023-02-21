@@ -57,7 +57,7 @@ describe('EmailBackupRequestedEventHandler', () => {
     }
 
     itemBackupService = {} as jest.Mocked<ItemBackupServiceInterface>
-    itemBackupService.backup = jest.fn().mockReturnValue('backup-file-name')
+    itemBackupService.backup = jest.fn().mockReturnValue(['backup-file-name'])
 
     domainEventPublisher = {} as jest.Mocked<DomainEventPublisherInterface>
     domainEventPublisher.publish = jest.fn()
@@ -84,14 +84,14 @@ describe('EmailBackupRequestedEventHandler', () => {
   it('should inform that multipart backup attachment for email was created', async () => {
     itemBackupService.backup = jest
       .fn()
-      .mockReturnValueOnce('backup-file-name-1')
-      .mockReturnValueOnce('backup-file-name-2')
+      .mockReturnValueOnce(['backup-file-name-1'])
+      .mockReturnValueOnce(['backup-file-name-2', 'backup-file-name-3'])
     itemTransferCalculator.computeItemUuidBundlesToFetch = jest.fn().mockReturnValue([['1-2-3'], ['2-3-4']])
 
     await createHandler().handle(event)
 
-    expect(domainEventPublisher.publish).toHaveBeenCalledTimes(2)
-    expect(domainEventFactory.createEmailRequestedEvent).toHaveBeenCalledTimes(2)
+    expect(domainEventPublisher.publish).toHaveBeenCalledTimes(3)
+    expect(domainEventFactory.createEmailRequestedEvent).toHaveBeenCalledTimes(3)
   })
 
   it('should not inform that backup attachment for email was created if user key params cannot be obtained', async () => {

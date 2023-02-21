@@ -53,7 +53,7 @@ describe('CloudBackupRequestedEventHandler', () => {
     }
 
     itemBackupService = {} as jest.Mocked<ItemBackupServiceInterface>
-    itemBackupService.backup = jest.fn().mockReturnValue('backup-file-name')
+    itemBackupService.backup = jest.fn().mockReturnValue(['backup-file-name'])
 
     logger = {} as jest.Mocked<Logger>
     logger.debug = jest.fn()
@@ -131,6 +131,14 @@ describe('CloudBackupRequestedEventHandler', () => {
 
     expect(extensionsHttpService.triggerCloudBackupOnExtensionsServer).not.toHaveBeenCalled()
     expect(expectedError).not.toBeNull()
+  })
+
+  it('should not trigger cloud backup if backup filename is not returned', async () => {
+    itemBackupService.backup = jest.fn().mockReturnValue([])
+
+    await createHandler().handle(event)
+
+    expect(extensionsHttpService.triggerCloudBackupOnExtensionsServer).not.toHaveBeenCalled()
   })
 
   it('should trigger cloud backup on extensions server with muted emails', async () => {

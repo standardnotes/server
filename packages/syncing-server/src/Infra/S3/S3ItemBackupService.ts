@@ -37,21 +37,52 @@ export class S3ItemBackupService implements ItemBackupServiceInterface {
     return s3Key
   }
 
-  async backup(items: Item[], authParams: KeyParamsData): Promise<string> {
+  async backup(items: Item[], authParams: KeyParamsData, contentSizeLimit?: number): Promise<string[]> {
     if (!this.s3BackupBucketName || this.s3Client === undefined) {
       this.logger.warn('S3 backup not configured')
 
-      return ''
+      return []
     }
 
+    const fileNames = []
+    let itemProjections: Array<ItemProjection> = []
+    let contentSizeCounter = 0
+    for (const item of items) {
+      const itemProjection = await this.itemProjector.projectFull(item)
+
+      if (contentSizeLimit === undefined) {
+        itemProjections.push(itemProjection)
+
+        continue
+      }
+
+      const itemContentSize = Buffer.byteLength(JSON.stringify(itemProjection))
+
+      if (contentSizeCounter + itemContentSize <= contentSizeLimit) {
+        itemProjections.push(itemProjection)
+
+        contentSizeCounter += itemContentSize
+      } else {
+        const backupFileName = await this.createBackupFile(itemProjections, authParams)
+        fileNames.push(backupFileName)
+
+        itemProjections = [itemProjection]
+        contentSizeCounter = itemContentSize
+      }
+    }
+
+    if (itemProjections.length > 0) {
+      const backupFileName = await this.createBackupFile(itemProjections, authParams)
+      fileNames.push(backupFileName)
+    }
+
+    return fileNames
+  }
+
+  private async createBackupFile(itemProjections: ItemProjection[], authParams: KeyParamsData): Promise<string> {
     const fileName = uuid.v4()
 
-    const itemProjections = []
-    for (const item of items) {
-      itemProjections.push(await this.itemProjector.projectFull(item))
-    }
-
-    await this.s3Client.send(
+    await (this.s3Client as S3Client).send(
       new PutObjectCommand({
         Bucket: this.s3BackupBucketName,
         Key: fileName,
