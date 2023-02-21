@@ -23,7 +23,6 @@ import { FSDumpRepository } from '../Infra/FS/FSDumpRepository'
 import { AccountDeletionRequestedEventHandler } from '../Domain/Handler/AccountDeletionRequestedEventHandler'
 import { RevisionsCopyRequestedEventHandler } from '../Domain/Handler/RevisionsCopyRequestedEventHandler'
 import { CopyRevisions } from '../Domain/UseCase/CopyRevisions/CopyRevisions'
-import { RevisionsOwnershipUpdateRequestedEventHandler } from '../Domain/Handler/RevisionsOwnershipUpdateRequestedEventHandler'
 import { CommonContainerConfigLoader } from './CommonContainerConfigLoader'
 import { Env } from './Env'
 
@@ -120,11 +119,6 @@ export class WorkerContainerConfigLoader extends CommonContainerConfigLoader {
           context.container.get(TYPES.Logger),
         )
       })
-    container
-      .bind<RevisionsOwnershipUpdateRequestedEventHandler>(TYPES.RevisionsOwnershipUpdateRequestedEventHandler)
-      .toDynamicValue((context: interfaces.Context) => {
-        return new RevisionsOwnershipUpdateRequestedEventHandler(context.container.get(TYPES.RevisionRepository))
-      })
 
     container
       .bind<DomainEventMessageHandlerInterface>(TYPES.DomainEventMessageHandler)
@@ -135,10 +129,6 @@ export class WorkerContainerConfigLoader extends CommonContainerConfigLoader {
           ['ITEM_DUMPED', context.container.get(TYPES.ItemDumpedEventHandler)],
           ['ACCOUNT_DELETION_REQUESTED', context.container.get(TYPES.AccountDeletionRequestedEventHandler)],
           ['REVISIONS_COPY_REQUESTED', context.container.get(TYPES.RevisionsCopyRequestedEventHandler)],
-          [
-            'REVISIONS_OWNERSHIP_UPDATE_REQUESTED',
-            context.container.get(TYPES.RevisionsOwnershipUpdateRequestedEventHandler),
-          ],
         ])
 
         const handler =
