@@ -34,6 +34,10 @@ http
       return
     }
 
+    delete req.headers.authorization
+    delete req.headers['x-auth-token']
+    delete req.headers['x-auth-offline-token']
+
     const target = (req.url as string).slice(1)
     req.url = target
     proxy.web(req, res, {
