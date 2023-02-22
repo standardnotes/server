@@ -12,7 +12,7 @@ proxy.on('error', (error, _req, res) => {
   ;(res as http.ServerResponse).writeHead(500, {
     'Content-Type': 'text/plain',
   })
-  res.end('Something went wrong. And we are reporting a custom error message.')
+  res.end(error.message)
 })
 
 http
