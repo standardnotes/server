@@ -1,7 +1,9 @@
 import * as http from 'http'
 import * as httpProxy from 'http-proxy'
 
-const proxy = httpProxy.createProxyServer({})
+const proxy = httpProxy.createProxyServer({
+  secure: true,
+})
 
 proxy.on('error', (error, req, res) => {
   console.error(error.message)
