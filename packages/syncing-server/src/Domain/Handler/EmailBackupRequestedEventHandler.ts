@@ -51,7 +51,7 @@ export class EmailBackupRequestedEventHandler implements DomainEventHandlerInter
       this.emailAttachmentMaxByteSize,
     )
 
-    let bundleIndex = 1
+    const backupFileNames: string[] = []
     for (const itemUuidBundle of itemUuidBundles) {
       const items = await this.itemRepository.findAll({
         uuids: itemUuidBundle,
@@ -59,35 +59,37 @@ export class EmailBackupRequestedEventHandler implements DomainEventHandlerInter
         sortOrder: 'ASC',
       })
 
-      const backupFileNames = await this.itemBackupService.backup(items, authParams, this.emailAttachmentMaxByteSize)
+      const bundleBackupFileNames = await this.itemBackupService.backup(
+        items,
+        authParams,
+        this.emailAttachmentMaxByteSize,
+      )
 
-      if (backupFileNames.length === 0) {
-        this.logger.error(`Could not create a backup file for user ${event.payload.userUuid}`)
+      backupFileNames.push(...bundleBackupFileNames)
+    }
 
-        return
-      }
-      const dateOnly = new Date().toISOString().substring(0, 10)
+    const dateOnly = new Date().toISOString().substring(0, 10)
+    let bundleIndex = 1
 
-      for (const backupFileName of backupFileNames) {
-        await this.domainEventPublisher.publish(
-          this.domainEventFactory.createEmailRequestedEvent({
-            body: getBody(authParams.identifier as string),
-            level: EmailLevel.LEVELS.System,
-            messageIdentifier: 'DATA_BACKUP',
-            subject: getSubject(bundleIndex++, itemUuidBundles.length, dateOnly),
-            userEmail: authParams.identifier as string,
-            sender: 'backups@standardnotes.org',
-            attachments: [
-              {
-                fileName: backupFileName,
-                filePath: this.s3BackupBucketName,
-                attachmentFileName: `SN-Data-${dateOnly}.txt`,
-                attachmentContentType: 'application/json',
-              },
-            ],
-          }),
-        )
-      }
+    for (const backupFileName of backupFileNames) {
+      await this.domainEventPublisher.publish(
+        this.domainEventFactory.createEmailRequestedEvent({
+          body: getBody(authParams.identifier as string),
+          level: EmailLevel.LEVELS.System,
+          messageIdentifier: 'DATA_BACKUP',
+          subject: getSubject(bundleIndex++, backupFileNames.length, dateOnly),
+          userEmail: authParams.identifier as string,
+          sender: 'backups@standardnotes.org',
+          attachments: [
+            {
+              fileName: backupFileName,
+              filePath: this.s3BackupBucketName,
+              attachmentFileName: `SN-Data-${dateOnly}.txt`,
+              attachmentContentType: 'application/json',
+            },
+          ],
+        }),
+      )
     }
   }
 }
