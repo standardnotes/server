@@ -19,12 +19,10 @@ services:
     restart: unless-stopped
     environment:
       - SERVICES=sns,sqs
-      - DOCKER_HOST=unix:///var/run/docker.sock
       - HOSTNAME_EXTERNAL=localstack
       - LS_LOG=warn
     volumes:
       - ./docker/localstack_bootstrap.sh:/etc/localstack/init/ready.d/localstack_bootstrap.sh
-      - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - standardnotes_self_hosted
 
