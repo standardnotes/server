@@ -4,8 +4,16 @@ import * as path from 'path'
 
 const MAX_IMAGE_SIZE = 10 * 1024 * 1024
 
+const ENABLED = false
+
 http
   .createServer((req, res) => {
+    if (!ENABLED) {
+      res.writeHead(404)
+      res.end()
+      return
+    }
+
     res.setHeader('Access-Control-Allow-Origin', '*')
     res.setHeader('Access-Control-Request-Method', '*')
     res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET')
@@ -49,24 +57,27 @@ http
       }
 
       const library = url.protocol === 'http:' ? http : https
-      library
+      const proxyRequest = library
         .get(url.href, (targetRes) => {
-          const contentLength = parseInt(targetRes.headers['content-length'] as string)
-          if (contentLength > MAX_IMAGE_SIZE) {
-            res.writeHead(413, { 'Content-Type': 'text/plain' })
-            res.end(`Image size exceeds the limit of ${MAX_IMAGE_SIZE} bytes.`)
-            return
-          }
+          let totalSize = 0
+          targetRes.on('data', (chunk) => {
+            totalSize += chunk.length
+            if (totalSize > MAX_IMAGE_SIZE) {
+              proxyRequest.destroy(new Error('Image size exceeds the limit.'))
+            }
+          })
 
-          const contentType = targetRes.headers['content-type']
-          if (!contentType || !contentType.startsWith('image/')) {
-            res.writeHead(400, { 'Content-Type': 'text/plain' })
-            res.end(`Invalid content type: ${contentType}`)
-            return
-          }
+          targetRes.on('end', () => {
+            const contentType = targetRes.headers['content-type']
+            if (!contentType || !contentType.startsWith('image/')) {
+              res.writeHead(400, { 'Content-Type': 'text/plain' })
+              res.end(`Invalid content type: ${contentType}`)
+              return
+            }
 
-          res.writeHead(targetRes.statusCode as number, targetRes.headers)
-          targetRes.pipe(res)
+            res.writeHead(targetRes.statusCode as number, targetRes.headers)
+            targetRes.pipe(res)
+          })
         })
         .on('error', (error) => {
           res.writeHead(500)
