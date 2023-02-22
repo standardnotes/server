@@ -54,6 +54,9 @@
       "path": "./packages/predicates"
     },
     {
+      "path": "./packages/proxy"
+    },
+    {
       "path": "./packages/revisions"
     },
     {

@@ -20,6 +20,7 @@ export class HttpService implements HttpServiceInterface {
     @inject(TYPES.WEB_SOCKET_SERVER_URL) private webSocketServerUrl: string,
     @inject(TYPES.REVISIONS_SERVER_URL) private revisionsServerUrl: string,
     @inject(TYPES.EMAIL_SERVER_URL) private emailServerUrl: string,
+    @inject(TYPES.PROXY_SERVER_URL) private proxyServerUrl: string,
     @inject(TYPES.HTTP_CALL_TIMEOUT) private httpCallTimeout: number,
     @inject(TYPES.CrossServiceTokenCache) private crossServiceTokenCache: CrossServiceTokenCacheInterface,
     @inject(TYPES.Logger) private logger: Logger,
@@ -109,6 +110,21 @@ export class HttpService implements HttpServiceInterface {
     }
 
     await this.callServer(this.webSocketServerUrl, request, response, endpoint, payload)
+  }
+
+  async callProxyServer(
+    request: Request,
+    response: Response,
+    endpoint: string,
+    payload?: Record<string, unknown> | string,
+  ): Promise<void> {
+    if (!this.proxyServerUrl) {
+      this.logger.debug('Proxy Server URL not defined. Skipped request to Proxy.')
+
+      return
+    }
+
+    await this.callServer(this.proxyServerUrl, request, response, endpoint, payload)
   }
 
   async callPaymentsServer(

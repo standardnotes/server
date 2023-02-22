@@ -3559,6 +3559,21 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@standardnotes/proxy-server@workspace:packages/proxy":
+  version: 0.0.0-use.local
+  resolution: "@standardnotes/proxy-server@workspace:packages/proxy"
+  dependencies:
+    "@types/http-proxy": "npm:^1.17.9"
+    "@types/newrelic": "npm:^9.4.0"
+    "@typescript-eslint/eslint-plugin": "npm:^5.48.2"
+    eslint: "npm:^8.32.0"
+    eslint-plugin-prettier: "npm:^4.0.0"
+    http-proxy: "npm:^1.18.1"
+    newrelic: "npm:^9.8.0"
+    typescript: "npm:^4.8.4"
+  languageName: unknown
+  linkType: soft
+
 "@standardnotes/responses@npm:1.13.6":
   version: 1.13.6
   resolution: "@standardnotes/responses@npm:1.13.6"
@@ -4121,6 +4136,15 @@ __metadata:
   version: 4.0.1
   resolution: "@types/http-cache-semantics@npm:4.0.1"
   checksum: 04aacd353b3823dea511927aa0b0a519a16a876aab4f6cc545828cafcadebddc631dcb1e1a949a09f1c30d37c5512e60e69469e22a75213ff1abf349deaad433
+  languageName: node
+  linkType: hard
+
+"@types/http-proxy@npm:^1.17.9":
+  version: 1.17.9
+  resolution: "@types/http-proxy@npm:1.17.9"
+  dependencies:
+    "@types/node": "npm:*"
+  checksum: 3ee577db823f0beb7d0a7eb8b21b0d488b43afb008161d7f4f714c5c53bea2d648b1ed5123c7f58136bc3881f4d2dfc31b5bc0b047c6b7cdb17865bc0b831499
   languageName: node
   linkType: hard
 
@@ -6671,7 +6695,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eventemitter3@npm:^4.0.4":
+"eventemitter3@npm:^4.0.0, eventemitter3@npm:^4.0.4":
   version: 4.0.7
   resolution: "eventemitter3@npm:4.0.7"
   checksum: e6ecb1ac2fee59b0ba0e778564cec0a1fe0631f28a50f24aa0e7ba367e718c5f9b23156fb2c1d238bcebe7923dfff37a63c39b519121a47c7bf78c38c96febd8
@@ -6972,7 +6996,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"follow-redirects@npm:^1.15.0":
+"follow-redirects@npm:^1.0.0, follow-redirects@npm:^1.15.0":
   version: 1.15.2
   resolution: "follow-redirects@npm:1.15.2"
   peerDependenciesMeta:
@@ -7504,6 +7528,17 @@ __metadata:
     agent-base: "npm:6"
     debug: "npm:4"
   checksum: b59a9b4bdd7c1d3450956a2974cb7b685517c758853a873064a536f5a831879ac92a28c717f69eb60ff3c924b262cb5aaf80cf62f5c2c24d1129d2b8dadf1e7c
+  languageName: node
+  linkType: hard
+
+"http-proxy@npm:^1.18.1":
+  version: 1.18.1
+  resolution: "http-proxy@npm:1.18.1"
+  dependencies:
+    eventemitter3: "npm:^4.0.0"
+    follow-redirects: "npm:^1.0.0"
+    requires-port: "npm:^1.0.0"
+  checksum: 5d681e4231e3de09359e6fb14c2cc3fb79536b4b465cb0c2af4616e6754af0a6f1e33baccd83038f39a377dbb1e0b16b02c3a41458685e1754e3611b6dd10d64
   languageName: node
   linkType: hard
 
@@ -10754,6 +10789,13 @@ __metadata:
   version: 2.0.2
   resolution: "require-from-string@npm:2.0.2"
   checksum: 3cd7be0f2b19d49ef2ec59c27cc9dbd64343c950c744651d8e31651026585d5da581df35be7a9b825f00921bf134d619fea292360dabbae11da2c211f2b601f2
+  languageName: node
+  linkType: hard
+
+"requires-port@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "requires-port@npm:1.0.0"
+  checksum: 28a1064f043588514802bff52dacac500c43b642383109145c55ff8bac26b3cf1ca951abc824446c773309c45dd049608986c1e15142ae7e336b9926065a1830
   languageName: node
   linkType: hard
 

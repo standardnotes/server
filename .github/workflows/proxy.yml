@@ -1,0 +1,21 @@
+name: Proxy Server
+
+concurrency:
+  group: proxy_server
+  cancel-in-progress: true
+
+on:
+  push:
+    tags:
+      - '*standardnotes/proxy-server*'
+  workflow_dispatch:
+
+jobs:
+  call_server_application_workflow:
+    name: Server Application
+    uses: standardnotes/server/.github/workflows/common-server-application.yml@main
+    with:
+      service_name: proxy
+      workspace_name: "@standardnotes/proxy-server"
+      package_path: packages/proxy
+    secrets: inherit
