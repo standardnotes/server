@@ -1,18 +1,14 @@
 import * as http from 'http'
 import * as httpProxy from 'http-proxy'
 
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
+const proxy = httpProxy.createProxyServer({})
 
-const proxy = httpProxy.createProxyServer({
-  secure: false,
-})
-
-proxy.on('error', (error, _req, res) => {
+proxy.on('error', (error, req, res) => {
   console.error(error.message)
   ;(res as http.ServerResponse).writeHead(500, {
     'Content-Type': 'text/plain',
   })
-  res.end(error.message)
+  res.end(`Proxying failed for URL: ${req.url} Error: ${error.message}`)
 })
 
 http
@@ -39,12 +35,17 @@ http
     delete req.headers['x-auth-offline-token']
 
     const target = (req.url as string).slice(1)
-    req.url = target
-    proxy.web(req, res, {
-      target: target,
-      ignorePath: false,
-      prependPath: false,
-      toProxy: true,
-    })
+    try {
+      const url = new URL(target)
+      req.url = url.href
+      proxy.web(req, res, {
+        target: target,
+        ignorePath: false,
+        prependPath: false,
+        toProxy: true,
+      })
+    } catch (error) {
+      res.end(`Invalid URL: ${target}`)
+    }
   })
   .listen(3000)
