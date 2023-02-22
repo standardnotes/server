@@ -19,12 +19,11 @@
     "start": "yarn node dist/bin/server.js"
   },
   "dependencies": {
-    "@types/http-proxy": "^1.17.9",
-    "http-proxy": "^1.18.1",
     "newrelic": "^9.8.0"
   },
   "devDependencies": {
     "@types/newrelic": "^9.4.0",
+    "@types/node": "^18.14.0",
     "@typescript-eslint/eslint-plugin": "^5.48.2",
     "eslint": "^8.32.0",
     "eslint-plugin-prettier": "^4.0.0",

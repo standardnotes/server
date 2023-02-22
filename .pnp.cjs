@@ -4471,12 +4471,11 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./packages/proxy/",\
         "packageDependencies": [\
           ["@standardnotes/proxy-server", "workspace:packages/proxy"],\
-          ["@types/http-proxy", "npm:1.17.9"],\
           ["@types/newrelic", "npm:9.4.0"],\
+          ["@types/node", "npm:18.14.0"],\
           ["@typescript-eslint/eslint-plugin", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:5.48.2"],\
           ["eslint", "npm:8.32.0"],\
           ["eslint-plugin-prettier", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:4.2.1"],\
-          ["http-proxy", "npm:1.18.1"],\
           ["newrelic", "npm:9.8.0"],\
           ["typescript", "patch:typescript@npm%3A4.8.4#optional!builtin<compat/typescript>::version=4.8.4&hash=701156"]\
         ],\
@@ -5098,16 +5097,6 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
-    ["@types/http-proxy", [\
-      ["npm:1.17.9", {\
-        "packageLocation": "./.yarn/cache/@types-http-proxy-npm-1.17.9-fa2f5ce316-3ee577db82.zip/node_modules/@types/http-proxy/",\
-        "packageDependencies": [\
-          ["@types/http-proxy", "npm:1.17.9"],\
-          ["@types/node", "npm:18.0.3"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
     ["@types/inversify-express-utils", [\
       ["npm:2.0.0", {\
         "packageLocation": "./.yarn/cache/@types-inversify-express-utils-npm-2.0.0-e78182955d-9841bfddff.zip/node_modules/@types/inversify-express-utils/",\
@@ -5281,6 +5270,13 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/@types-node-npm-18.11.9-d21dd6ec05-7b7d90894d.zip/node_modules/@types/node/",\
         "packageDependencies": [\
           ["@types/node", "npm:18.11.9"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["npm:18.14.0", {\
+        "packageLocation": "./.yarn/cache/@types-node-npm-18.14.0-ddc1a221d2-d17dff07c7.zip/node_modules/@types/node/",\
+        "packageDependencies": [\
+          ["@types/node", "npm:18.14.0"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -9346,18 +9342,6 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
-    ["http-proxy", [\
-      ["npm:1.18.1", {\
-        "packageLocation": "./.yarn/cache/http-proxy-npm-1.18.1-a313c479c5-5d681e4231.zip/node_modules/http-proxy/",\
-        "packageDependencies": [\
-          ["http-proxy", "npm:1.18.1"],\
-          ["eventemitter3", "npm:4.0.7"],\
-          ["follow-redirects", "virtual:4b63965ac1b2157b91a1875529bea3b0bbc3068d3676d1bef28bff5cf6689705374a86cc3832f95ba8d934037a93cc0e09c3662c13ca0e747800d7ca279a53c0#npm:1.15.2"],\
-          ["requires-port", "npm:1.0.0"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
     ["http-proxy-agent", [\
       ["npm:5.0.0", {\
         "packageLocation": "./.yarn/cache/http-proxy-agent-npm-5.0.0-7f1f121b83-b59a9b4bdd.zip/node_modules/http-proxy-agent/",\
@@ -13046,15 +13030,6 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/require-from-string-npm-2.0.2-8557e0db12-3cd7be0f2b.zip/node_modules/require-from-string/",\
         "packageDependencies": [\
           ["require-from-string", "npm:2.0.2"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
-    ["requires-port", [\
-      ["npm:1.0.0", {\
-        "packageLocation": "./.yarn/cache/requires-port-npm-1.0.0-fd036b488a-28a1064f04.zip/node_modules/requires-port/",\
-        "packageDependencies": [\
-          ["requires-port", "npm:1.0.0"]\
         ],\
         "linkType": "HARD"\
       }]\

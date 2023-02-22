@@ -1,38 +1,8 @@
 import * as http from 'http'
-import * as httpProxy from 'http-proxy'
+import * as https from 'https'
 import * as path from 'path'
 
-const proxy = httpProxy.createProxyServer({
-  secure: true,
-})
-
-proxy.on('error', (error, req, res) => {
-  console.error(error.message)
-  ;(res as http.ServerResponse).writeHead(500, {
-    'Content-Type': 'text/plain',
-  })
-  res.end(`Proxying failed for URL: ${req.url} Error: ${error.message}`)
-})
-
-// 10 MB in bytes
 const MAX_IMAGE_SIZE = 10 * 1024 * 1024
-
-proxy.on('proxyRes', (proxyRes, _req, res) => {
-  const contentLength = parseInt(proxyRes.headers['content-length'] as string)
-  if (contentLength > MAX_IMAGE_SIZE) {
-    res.writeHead(413, { 'Content-Type': 'text/plain' })
-    res.end(`Image size exceeds the limit of ${MAX_IMAGE_SIZE} bytes.`)
-    return
-  }
-
-  // validate response content type to be image
-  const contentType = proxyRes.headers['content-type'] as string
-  if (!contentType.startsWith('image/')) {
-    res.writeHead(400, { 'Content-Type': 'text/plain' })
-    res.end(`Invalid content type: ${contentType}`)
-    return
-  }
-})
 
 http
   .createServer((req, res) => {
@@ -78,16 +48,33 @@ http
         return
       }
 
-      req.url = url.href
-      proxy.web(req, res, {
-        target: target,
-        ignorePath: false,
-        prependPath: false,
-        toProxy: true,
-      })
+      const library = url.protocol === 'http:' ? http : https
+      library
+        .get(url.href, (targetRes) => {
+          const contentLength = parseInt(targetRes.headers['content-length'] as string)
+          if (contentLength > MAX_IMAGE_SIZE) {
+            res.writeHead(413, { 'Content-Type': 'text/plain' })
+            res.end(`Image size exceeds the limit of ${MAX_IMAGE_SIZE} bytes.`)
+            return
+          }
+
+          const contentType = targetRes.headers['content-type']
+          if (!contentType || !contentType.startsWith('image/')) {
+            res.writeHead(400, { 'Content-Type': 'text/plain' })
+            res.end(`Invalid content type: ${contentType}`)
+            return
+          }
+
+          res.writeHead(targetRes.statusCode as number, targetRes.headers)
+          targetRes.pipe(res)
+        })
+        .on('error', (error) => {
+          res.writeHead(500)
+          res.end(`Error: ${error.message}`)
+        })
     } catch (error) {
       res.writeHead(500)
-      res.end(`Invalid URL: ${target}`)
+      res.end(`Invalid URL: ${target} Error: ${error}`)
     }
   })
   .listen(3000)
