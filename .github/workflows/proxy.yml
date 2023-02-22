@@ -17,5 +17,6 @@ jobs:
     with:
       service_name: proxy
       workspace_name: "@standardnotes/proxy-server"
+      deploy_worker: false
       package_path: packages/proxy
     secrets: inherit
