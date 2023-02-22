@@ -13,6 +13,6 @@ export class ProxyController extends BaseHttpController {
 
   @all('*', TYPES.AuthMiddleware)
   async createToken(request: Request, response: Response): Promise<void> {
-    await this.httpService.callProxyServer(request, response, '/', request.body)
+    await this.httpService.callProxyServer(request, response, request.path.replace('/v1/proxy', ''), request.body)
   }
 }
