@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.49.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.48.3...@standardnotes/api-gateway@1.49.0) (2023-02-22)
+
+### Bug Fixes
+
+* **api-gateway:** proxy endpoint for request passing ([bc9182f](https://github.com/standardnotes/api-gateway/commit/bc9182f214c5386c5f1dd0bcbafbce34d413b6e8))
+
+### Features
+
+* **proxy:** add proxy server ([dfe30d7](https://github.com/standardnotes/api-gateway/commit/dfe30d7f5e8598ec1886db0e061b7d593cc27e29))
+
 ## [1.48.3](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.48.2...@standardnotes/api-gateway@1.48.3) (2023-02-21)
 
 **Note:** Version bump only for package @standardnotes/api-gateway
