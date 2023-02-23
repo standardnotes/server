@@ -37,6 +37,8 @@ const TYPES = {
   SubscriptionReactivatedEventHandler: Symbol.for('SubscriptionReactivatedEventHandler'),
   RefundProcessedEventHandler: Symbol.for('RefundProcessedEventHandler'),
   StatisticPersistenceRequestedEventHandler: Symbol.for('StatisticPersistenceRequestedEventHandler'),
+  SessionCreatedEventHandler: Symbol.for('SessionCreatedEventHandler'),
+  SessionRefreshedEventHandler: Symbol.for('SessionRefreshedEventHandler'),
   // Maps
   RevenueModificationMap: Symbol.for('RevenueModificationMap'),
   // Services

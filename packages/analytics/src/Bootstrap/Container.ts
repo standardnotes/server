@@ -55,6 +55,8 @@ import { StatisticMeasureRepositoryInterface } from '../Domain/Statistics/Statis
 import { StatisticPersistenceRequestedEventHandler } from '../Domain/Handler/StatisticPersistenceRequestedEventHandler'
 import { SNSClient, SNSClientConfig } from '@aws-sdk/client-sns'
 import { SQSClient, SQSClientConfig } from '@aws-sdk/client-sqs'
+import { SessionCreatedEventHandler } from '../Domain/Handler/SessionCreatedEventHandler'
+import { SessionRefreshedEventHandler } from '../Domain/Handler/SessionRefreshedEventHandler'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -186,6 +188,8 @@ export class ContainerConfigLoader {
       .to(AccountDeletionRequestedEventHandler)
     container.bind<PaymentFailedEventHandler>(TYPES.PaymentFailedEventHandler).to(PaymentFailedEventHandler)
     container.bind<PaymentSuccessEventHandler>(TYPES.PaymentSuccessEventHandler).to(PaymentSuccessEventHandler)
+    container.bind<SessionCreatedEventHandler>(TYPES.SessionCreatedEventHandler).to(SessionCreatedEventHandler)
+    container.bind<SessionRefreshedEventHandler>(TYPES.SessionRefreshedEventHandler).to(SessionRefreshedEventHandler)
     container
       .bind<SubscriptionCancelledEventHandler>(TYPES.SubscriptionCancelledEventHandler)
       .to(SubscriptionCancelledEventHandler)
@@ -234,6 +238,8 @@ export class ContainerConfigLoader {
       ['SUBSCRIPTION_REACTIVATED', container.get(TYPES.SubscriptionReactivatedEventHandler)],
       ['REFUND_PROCESSED', container.get(TYPES.RefundProcessedEventHandler)],
       ['STATISTIC_PERSISTENCE_REQUESTED', container.get(TYPES.StatisticPersistenceRequestedEventHandler)],
+      ['SESSION_CREATED', container.get(TYPES.SessionCreatedEventHandler)],
+      ['SESSION_REFRESHED', container.get(TYPES.SessionRefreshedEventHandler)],
     ])
 
     container
