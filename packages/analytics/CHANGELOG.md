@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.21.1](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.21.0...@standardnotes/analytics@2.21.1) (2023-02-23)
+
+### Bug Fixes
+
+* **analytics:** add general activity metric to mixpanel ([9d87200](https://github.com/standardnotes/server/commit/9d872008a7df7ccdd9afe7e7d99ccb0f12680319))
+
 # [2.21.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.20.3...@standardnotes/analytics@2.21.0) (2023-02-23)
 
 ### Features
