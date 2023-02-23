@@ -19,6 +19,8 @@ import {
   MuteEmailsSettingChangedEvent,
   EmailRequestedEvent,
   StatisticPersistenceRequestedEvent,
+  SessionCreatedEvent,
+  SessionRefreshedEvent,
 } from '@standardnotes/domain-events'
 import { Predicate, PredicateVerificationResult } from '@standardnotes/predicates'
 import { TimerInterface } from '@standardnotes/time'
@@ -30,6 +32,36 @@ import { DomainEventFactoryInterface } from './DomainEventFactoryInterface'
 @injectable()
 export class DomainEventFactory implements DomainEventFactoryInterface {
   constructor(@inject(TYPES.Timer) private timer: TimerInterface) {}
+
+  createSessionCreatedEvent(dto: { userUuid: string }): SessionCreatedEvent {
+    return {
+      type: 'SESSION_CREATED',
+      createdAt: this.timer.getUTCDate(),
+      meta: {
+        correlation: {
+          userIdentifier: dto.userUuid,
+          userIdentifierType: 'uuid',
+        },
+        origin: DomainEventService.Auth,
+      },
+      payload: dto,
+    }
+  }
+
+  createSessionRefreshedEvent(dto: { userUuid: string }): SessionRefreshedEvent {
+    return {
+      type: 'SESSION_REFRESHED',
+      createdAt: this.timer.getUTCDate(),
+      meta: {
+        correlation: {
+          userIdentifier: dto.userUuid,
+          userIdentifierType: 'uuid',
+        },
+        origin: DomainEventService.Auth,
+      },
+      payload: dto,
+    }
+  }
 
   createStatisticPersistenceRequestedEvent(dto: {
     statisticMeasureName: string

@@ -17,6 +17,8 @@ import {
   MuteEmailsSettingChangedEvent,
   EmailRequestedEvent,
   StatisticPersistenceRequestedEvent,
+  SessionCreatedEvent,
+  SessionRefreshedEvent,
 } from '@standardnotes/domain-events'
 import { InviteeIdentifierType } from '../SharedSubscription/InviteeIdentifierType'
 
@@ -92,4 +94,6 @@ export interface DomainEventFactoryInterface {
     value: number
     date: number
   }): StatisticPersistenceRequestedEvent
+  createSessionCreatedEvent(dto: { userUuid: string }): SessionCreatedEvent
+  createSessionRefreshedEvent(dto: { userUuid: string }): SessionRefreshedEvent
 }

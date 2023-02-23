@@ -9,6 +9,8 @@ import { SessionServiceInterface } from '../Session/SessionServiceInterface'
 import { KeyParamsFactoryInterface } from '../User/KeyParamsFactoryInterface'
 import { User } from '../User/User'
 import { AuthResponseFactory20200115 } from './AuthResponseFactory20200115'
+import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
+import { DomainEventFactoryInterface } from '../Event/DomainEventFactoryInterface'
 
 describe('AuthResponseFactory20200115', () => {
   let sessionService: SessionServiceInterface
@@ -18,13 +20,24 @@ describe('AuthResponseFactory20200115', () => {
   let sessionPayload: SessionBody
   let logger: Logger
   let tokenEncoder: TokenEncoderInterface<SessionTokenData>
+  let domainEventFactory: DomainEventFactoryInterface
+  let domainEventPublisher: DomainEventPublisherInterface
 
   const createFactory = () =>
-    new AuthResponseFactory20200115(sessionService, keyParamsFactory, userProjector, tokenEncoder, logger)
+    new AuthResponseFactory20200115(
+      sessionService,
+      keyParamsFactory,
+      userProjector,
+      tokenEncoder,
+      domainEventFactory,
+      domainEventPublisher,
+      logger,
+    )
 
   beforeEach(() => {
     logger = {} as jest.Mocked<Logger>
     logger.debug = jest.fn()
+    logger.error = jest.fn()
 
     sessionPayload = {
       access_token: 'access_token',
@@ -52,6 +65,12 @@ describe('AuthResponseFactory20200115', () => {
 
     tokenEncoder = {} as jest.Mocked<TokenEncoderInterface<SessionTokenData>>
     tokenEncoder.encodeToken = jest.fn().mockReturnValue('foobar')
+
+    domainEventFactory = {} as jest.Mocked<DomainEventFactoryInterface>
+    domainEventFactory.createSessionCreatedEvent = jest.fn().mockReturnValue({})
+
+    domainEventPublisher = {} as jest.Mocked<DomainEventPublisherInterface>
+    domainEventPublisher.publish = jest.fn()
   })
 
   it('should create a 20161215 auth response if user does not support sessions', async () => {
@@ -72,6 +91,37 @@ describe('AuthResponseFactory20200115', () => {
   })
 
   it('should create a 20200115 auth response', async () => {
+    user.supportsSessions = jest.fn().mockReturnValue(true)
+
+    const response = await createFactory().createResponse({
+      user,
+      apiVersion: '20200115',
+      userAgent: 'Google Chrome',
+      ephemeralSession: false,
+      readonlyAccess: false,
+    })
+
+    expect(response).toEqual({
+      key_params: {
+        key1: 'value1',
+        key2: 'value2',
+      },
+      session: {
+        access_token: 'access_token',
+        refresh_token: 'refresh_token',
+        access_expiration: 123,
+        refresh_expiration: 234,
+        readonly_access: false,
+      },
+      user: {
+        foo: 'bar',
+      },
+    })
+    expect(domainEventPublisher.publish).toHaveBeenCalled()
+  })
+
+  it('should create a 20200115 auth response even if publishing the domain event fails', async () => {
+    domainEventPublisher.publish = jest.fn().mockRejectedValue(new Error('test'))
     user.supportsSessions = jest.fn().mockReturnValue(true)
 
     const response = await createFactory().createResponse({
