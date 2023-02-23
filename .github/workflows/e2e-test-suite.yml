@@ -1,6 +1,8 @@
 name: E2E Test Suite On Self Hosted Server
 
 on:
+  schedule:
+    - cron: '0 */12 * * *'
   workflow_dispatch:
     inputs:
       snjs_image_tag:
@@ -13,5 +15,5 @@ jobs:
     name: E2E
     uses: standardnotes/server/.github/workflows/common-e2e.yml@main
     with:
-      snjs_image_tag: ${{ inputs.snjs_image_tag }}
+      snjs_image_tag: ${{ inputs.snjs_image_tag || 'latest' }}
     secrets: inherit
