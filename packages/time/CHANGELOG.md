@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.14.2](https://github.com/standardnotes/server/compare/@standardnotes/time@1.14.1...@standardnotes/time@1.14.2) (2023-02-23)
+
+### Bug Fixes
+
+* **auth:** mark sessions that are longer than configured as expired ([f13944b](https://github.com/standardnotes/server/commit/f13944badc0e04f153626d0d6ace6f8f6d57e533))
+
 ## [1.14.1](https://github.com/standardnotes/server/compare/@standardnotes/time@1.14.0...@standardnotes/time@1.14.1) (2023-01-20)
 
 **Note:** Version bump only for package @standardnotes/time

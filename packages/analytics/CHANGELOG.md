@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.21.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.20.3...@standardnotes/analytics@2.21.0) (2023-02-23)
+
+### Features
+
+* **analytics:** add listening on session created and refreshed events ([6911802](https://github.com/standardnotes/server/commit/6911802b8743d5d21fe1dcc3006e1d8d699fa94d))
+
 ## [2.20.3](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.20.2...@standardnotes/analytics@2.20.3) (2023-02-21)
 
 **Note:** Version bump only for package @standardnotes/analytics

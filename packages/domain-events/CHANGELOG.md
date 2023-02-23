@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.108.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.107.1...@standardnotes/domain-events@2.108.0) (2023-02-23)
+
+### Features
+
+* **auth:** add publishing session created and session refreshed events ([5b98924](https://github.com/standardnotes/server/commit/5b9892456158819831f1f2dcf349ac861d699a94))
+
 ## [2.107.1](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.107.0...@standardnotes/domain-events@2.107.1) (2023-02-21)
 
 **Note:** Version bump only for package @standardnotes/domain-events

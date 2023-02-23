@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.89.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.88.3...@standardnotes/auth-server@1.89.0) (2023-02-23)
+
+### Bug Fixes
+
+* **auth:** add safety buffer for session access token age ttl ([17bd50c](https://github.com/standardnotes/server/commit/17bd50c263520c4936bf674070e46f0ea0b5cfb1))
+* **auth:** mark sessions that are longer than configured as expired ([f13944b](https://github.com/standardnotes/server/commit/f13944badc0e04f153626d0d6ace6f8f6d57e533))
+
+### Features
+
+* **auth:** add publishing session created and session refreshed events ([5b98924](https://github.com/standardnotes/server/commit/5b9892456158819831f1f2dcf349ac861d699a94))
+
 ## [1.88.3](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.88.2...@standardnotes/auth-server@1.88.3) (2023-02-21)
 
 **Note:** Version bump only for package @standardnotes/auth-server
