@@ -88,10 +88,6 @@ const RAW_RUNTIME_STATE =
     {\
       "name": "@standardnotes/websockets-server",\
       "reference": "workspace:packages/websockets"\
-    },\
-    {\
-      "name": "@standardnotes/workspace-server",\
-      "reference": "workspace:packages/workspace"\
     }\
   ],\
   "enableTopLevelFallback": true,\
@@ -116,8 +112,7 @@ const RAW_RUNTIME_STATE =
     ["@standardnotes/sncrypto-node", ["workspace:packages/sncrypto-node"]],\
     ["@standardnotes/syncing-server", ["workspace:packages/syncing-server"]],\
     ["@standardnotes/time", ["workspace:packages/time"]],\
-    ["@standardnotes/websockets-server", ["workspace:packages/websockets"]],\
-    ["@standardnotes/workspace-server", ["workspace:packages/workspace"]]\
+    ["@standardnotes/websockets-server", ["workspace:packages/websockets"]]\
   ],\
   "fallbackPool": [\
   ],\
@@ -4806,49 +4801,6 @@ const RAW_RUNTIME_STATE =
           ["@types/newrelic", "npm:9.4.0"],\
           ["@typescript-eslint/eslint-plugin", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:5.48.2"],\
           ["axios", "npm:1.1.3"],\
-          ["cors", "npm:2.8.5"],\
-          ["dotenv", "npm:16.0.1"],\
-          ["eslint", "npm:8.32.0"],\
-          ["eslint-plugin-prettier", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:4.2.1"],\
-          ["express", "npm:4.18.2"],\
-          ["inversify", "npm:6.0.1"],\
-          ["inversify-express-utils", "npm:6.4.3"],\
-          ["ioredis", "npm:5.2.4"],\
-          ["jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.1.2"],\
-          ["mysql2", "npm:3.0.1"],\
-          ["newrelic", "npm:9.8.0"],\
-          ["reflect-metadata", "npm:0.1.13"],\
-          ["ts-jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.0.3"],\
-          ["typeorm", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:0.3.10"],\
-          ["typescript", "patch:typescript@npm%3A4.8.4#optional!builtin<compat/typescript>::version=4.8.4&hash=701156"],\
-          ["winston", "npm:3.8.2"]\
-        ],\
-        "linkType": "SOFT"\
-      }]\
-    ]],\
-    ["@standardnotes/workspace-server", [\
-      ["workspace:packages/workspace", {\
-        "packageLocation": "./packages/workspace/",\
-        "packageDependencies": [\
-          ["@standardnotes/workspace-server", "workspace:packages/workspace"],\
-          ["@aws-sdk/client-sns", "npm:3.259.0"],\
-          ["@aws-sdk/client-sqs", "npm:3.259.0"],\
-          ["@newrelic/winston-enricher", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:4.0.0"],\
-          ["@sentry/node", "npm:7.28.1"],\
-          ["@standardnotes/api", "npm:1.24.10"],\
-          ["@standardnotes/common", "workspace:packages/common"],\
-          ["@standardnotes/domain-core", "workspace:packages/domain-core"],\
-          ["@standardnotes/domain-events", "workspace:packages/domain-events"],\
-          ["@standardnotes/domain-events-infra", "workspace:packages/domain-events-infra"],\
-          ["@standardnotes/models", "npm:1.42.11"],\
-          ["@standardnotes/security", "workspace:packages/security"],\
-          ["@standardnotes/time", "workspace:packages/time"],\
-          ["@types/cors", "npm:2.8.12"],\
-          ["@types/express", "npm:4.17.14"],\
-          ["@types/ioredis", "npm:5.0.0"],\
-          ["@types/jest", "npm:29.1.1"],\
-          ["@types/newrelic", "npm:9.4.0"],\
-          ["@typescript-eslint/eslint-plugin", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:5.48.2"],\
           ["cors", "npm:2.8.5"],\
           ["dotenv", "npm:16.0.1"],\
           ["eslint", "npm:8.32.0"],\
