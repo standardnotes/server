@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.6](https://github.com/standardnotes/server/compare/@standardnotes/proxy-server@1.1.5...@standardnotes/proxy-server@1.1.6) (2023-02-23)
+
+### Bug Fixes
+
+* **proxy:** make healthcheck endpoint accessible at all times ([b1122a3](https://github.com/standardnotes/server/commit/b1122a3da5d0fe02b80b91da5e96cffbad994ce2))
+
 ## [1.1.5](https://github.com/standardnotes/server/compare/@standardnotes/proxy-server@1.1.4...@standardnotes/proxy-server@1.1.5) (2023-02-22)
 
 **Note:** Version bump only for package @standardnotes/proxy-server
