@@ -19,6 +19,10 @@ export class SessionRefreshedEventHandler implements DomainEventHandlerInterface
       this.mixpanelClient.track(event.type, {
         distinct_id: analyticsId.toString(),
       })
+
+      this.mixpanelClient.track('GENERAL_ACTIVITY', {
+        distinct_id: analyticsId.toString(),
+      })
     }
   }
 }
