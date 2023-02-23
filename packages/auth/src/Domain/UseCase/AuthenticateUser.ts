@@ -100,7 +100,10 @@ export class AuthenticateUser implements UseCaseInterface {
   private sessionIsExpired(session: Session): boolean {
     const sessionIsExpired = session.accessExpiration < this.timer.getUTCDate()
 
-    const currentConfigurationAccessTokenExpiration = this.timer.getUTCDateNSecondsAhead(this.accessTokenAge)
+    const freshlyCreatedSessionSafetyBufferSeconds = 10
+    const currentConfigurationAccessTokenExpiration = this.timer.getUTCDateNSecondsAhead(
+      this.accessTokenAge + freshlyCreatedSessionSafetyBufferSeconds,
+    )
 
     const sessionIsLongerThanCurrentConfiguration = session.accessExpiration > currentConfigurationAccessTokenExpiration
 
