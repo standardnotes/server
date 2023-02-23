@@ -8,6 +8,12 @@ const ENABLED = false
 
 http
   .createServer((req, res) => {
+    if (req.url === '/healthcheck') {
+      res.writeHead(200)
+      res.end()
+      return
+    }
+
     if (!ENABLED) {
       res.writeHead(404)
       res.end()
@@ -20,12 +26,6 @@ http
     res.setHeader('Access-Control-Allow-Headers', '*')
 
     if (req.method === 'OPTIONS') {
-      res.writeHead(200)
-      res.end()
-      return
-    }
-
-    if (req.url === '/healthcheck') {
       res.writeHead(200)
       res.end()
       return
