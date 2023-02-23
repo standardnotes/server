@@ -16,7 +16,6 @@ export class HttpService implements HttpServiceInterface {
     @inject(TYPES.SYNCING_SERVER_JS_URL) private syncingServerJsUrl: string,
     @inject(TYPES.PAYMENTS_SERVER_URL) private paymentsServerUrl: string,
     @inject(TYPES.FILES_SERVER_URL) private filesServerUrl: string,
-    @inject(TYPES.WORKSPACE_SERVER_URL) private workspaceServerUrl: string,
     @inject(TYPES.WEB_SOCKET_SERVER_URL) private webSocketServerUrl: string,
     @inject(TYPES.REVISIONS_SERVER_URL) private revisionsServerUrl: string,
     @inject(TYPES.EMAIL_SERVER_URL) private emailServerUrl: string,
@@ -80,21 +79,6 @@ export class HttpService implements HttpServiceInterface {
     }
 
     await this.callServer(this.emailServerUrl, request, response, endpoint, payload)
-  }
-
-  async callWorkspaceServer(
-    request: Request,
-    response: Response,
-    endpoint: string,
-    payload?: Record<string, unknown> | string,
-  ): Promise<void> {
-    if (!this.workspaceServerUrl) {
-      response.status(400).send({ message: 'Workspace Server not configured' })
-
-      return
-    }
-
-    await this.callServer(this.workspaceServerUrl, request, response, endpoint, payload)
   }
 
   async callWebSocketServer(

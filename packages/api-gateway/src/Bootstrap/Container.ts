@@ -59,7 +59,6 @@ export class ContainerConfigLoader {
     container.bind(TYPES.PAYMENTS_SERVER_URL).toConstantValue(env.get('PAYMENTS_SERVER_URL', true))
     container.bind(TYPES.FILES_SERVER_URL).toConstantValue(env.get('FILES_SERVER_URL', true))
     container.bind(TYPES.AUTH_JWT_SECRET).toConstantValue(env.get('AUTH_JWT_SECRET'))
-    container.bind(TYPES.WORKSPACE_SERVER_URL).toConstantValue(env.get('WORKSPACE_SERVER_URL', true))
     container.bind(TYPES.WEB_SOCKET_SERVER_URL).toConstantValue(env.get('WEB_SOCKET_SERVER_URL', true))
     container.bind(TYPES.PROXY_SERVER_URL).toConstantValue(env.get('PROXY_SERVER_URL', true))
     container

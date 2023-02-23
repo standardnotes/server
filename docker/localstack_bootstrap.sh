@@ -91,13 +91,6 @@ TOPIC_CREATED_RESULT=$(create_topic ${SCHEDULER_TOPIC_NAME})
 echo "created topic: $TOPIC_CREATED_RESULT"
 SCHEDULER_TOPIC_ARN=$(get_topic_arn_from_name $SCHEDULER_TOPIC_NAME)
 
-WORKSPACE_TOPIC_NAME="workspace-local-topic"
-
-echo "creating topic $WORKSPACE_TOPIC_NAME"
-TOPIC_CREATED_RESULT=$(create_topic ${WORKSPACE_TOPIC_NAME})
-echo "created topic: $TOPIC_CREATED_RESULT"
-WORKSPACE_TOPIC_ARN=$(get_topic_arn_from_name $WORKSPACE_TOPIC_NAME)
-
 QUEUE_NAME="analytics-local-queue"
 
 echo "creating queue $QUEUE_NAME"
@@ -181,13 +174,6 @@ echo "creating queue $QUEUE_NAME"
 QUEUE_URL=$(create_queue ${QUEUE_NAME})
 echo "created queue: $QUEUE_URL"
 SCHEDULER_QUEUE_ARN=$(get_queue_arn_from_name $QUEUE_NAME)
-
-QUEUE_NAME="workspace-local-queue"
-
-echo "creating queue $QUEUE_NAME"
-QUEUE_URL=$(create_queue ${QUEUE_NAME})
-echo "created queue: $QUEUE_URL"
-WORKSPACE_QUEUE_ARN=$(get_queue_arn_from_name $QUEUE_NAME)
 
 echo "all topics are:"
 echo "$(get_all_topics)"

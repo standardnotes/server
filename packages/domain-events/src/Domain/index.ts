@@ -92,8 +92,6 @@ export * from './Event/UserRolesChangedEvent'
 export * from './Event/UserRolesChangedEventPayload'
 export * from './Event/WebSocketMessageRequestedEvent'
 export * from './Event/WebSocketMessageRequestedEventPayload'
-export * from './Event/WorkspaceInviteAcceptedEvent'
-export * from './Event/WorkspaceInviteAcceptedEventPayload'
 
 export * from './Handler/DomainEventHandlerInterface'
 export * from './Handler/DomainEventMessageHandlerInterface'
