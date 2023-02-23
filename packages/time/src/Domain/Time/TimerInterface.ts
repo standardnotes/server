@@ -8,6 +8,7 @@ export interface TimerInterface {
   getUTCDateNDaysAhead(n: number): Date
   getUTCDateNHoursAgo(n: number): Date
   getUTCDateNHoursAhead(n: number): Date
+  getUTCDateNSecondsAhead(n: number): Date
   convertDateToMilliseconds(date: Date): number
   convertDateToMicroseconds(date: Date): number
   convertDateToISOString(date: Date): string

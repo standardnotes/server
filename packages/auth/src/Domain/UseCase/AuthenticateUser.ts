@@ -1,9 +1,10 @@
+import { TimerInterface } from '@standardnotes/time'
 import * as crypto from 'crypto'
-import * as dayjs from 'dayjs'
 import { inject, injectable } from 'inversify'
 
 import TYPES from '../../Bootstrap/Types'
 import { AuthenticationMethodResolverInterface } from '../Auth/AuthenticationMethodResolverInterface'
+import { Session } from '../Session/Session'
 
 import { AuthenticateUserDTO } from './AuthenticateUserDTO'
 import { AuthenticateUserResponse } from './AuthenticateUserResponse'
@@ -14,6 +15,8 @@ export class AuthenticateUser implements UseCaseInterface {
   constructor(
     @inject(TYPES.AuthenticationMethodResolver)
     private authenticationMethodResolver: AuthenticationMethodResolverInterface,
+    @inject(TYPES.Timer) private timer: TimerInterface,
+    @inject(TYPES.ACCESS_TOKEN_AGE) private accessTokenAge: number,
   ) {}
 
   async execute(dto: AuthenticateUserDTO): Promise<AuthenticateUserResponse> {
@@ -69,14 +72,14 @@ export class AuthenticateUser implements UseCaseInterface {
           }
         }
 
-        if (session.refreshExpiration < dayjs.utc().toDate()) {
+        if (session.refreshExpiration < this.timer.getUTCDate()) {
           return {
             success: false,
             failureType: 'INVALID_AUTH',
           }
         }
 
-        if (session.accessExpiration < dayjs.utc().toDate()) {
+        if (this.sessionIsExpired(session)) {
           return {
             success: false,
             failureType: 'EXPIRED_TOKEN',
@@ -92,5 +95,15 @@ export class AuthenticateUser implements UseCaseInterface {
       user,
       session: authenticationMethod.session,
     }
+  }
+
+  private sessionIsExpired(session: Session): boolean {
+    const sessionIsExpired = session.accessExpiration < this.timer.getUTCDate()
+
+    const currentConfigurationAccessTokenExpiration = this.timer.getUTCDateNSecondsAhead(this.accessTokenAge)
+
+    const sessionIsLongerThanCurrentConfiguration = session.accessExpiration > currentConfigurationAccessTokenExpiration
+
+    return sessionIsExpired || sessionIsLongerThanCurrentConfiguration
   }
 }

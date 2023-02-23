@@ -10,6 +10,10 @@ export class Timer implements TimerInterface {
     dayjs.extend(utc)
   }
 
+  getUTCDateNSecondsAhead(n: number): Date {
+    return dayjs.utc().add(n, 'second').toDate()
+  }
+
   convertMicrosecondsToTimeStructure(microseconds: number): TimeStructure {
     const days = Math.floor(microseconds / Time.MicrosecondsInADay)
 

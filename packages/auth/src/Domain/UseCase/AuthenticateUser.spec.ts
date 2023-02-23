@@ -1,5 +1,4 @@
 import 'reflect-metadata'
-import * as dayjs from 'dayjs'
 
 import { Session } from '../Session/Session'
 
@@ -7,28 +6,35 @@ import { User } from '../User/User'
 import { AuthenticateUser } from './AuthenticateUser'
 import { RevokedSession } from '../Session/RevokedSession'
 import { AuthenticationMethodResolverInterface } from '../Auth/AuthenticationMethodResolverInterface'
+import { TimerInterface } from '@standardnotes/time'
 
 describe('AuthenticateUser', () => {
   let user: User
   let session: Session
   let revokedSession: RevokedSession
   let authenticationMethodResolver: AuthenticationMethodResolverInterface
+  let timer: TimerInterface
+  const accessTokenAge = 3600
 
-  const createUseCase = () => new AuthenticateUser(authenticationMethodResolver)
+  const createUseCase = () => new AuthenticateUser(authenticationMethodResolver, timer, accessTokenAge)
 
   beforeEach(() => {
     user = {} as jest.Mocked<User>
     user.supportsSessions = jest.fn().mockReturnValue(false)
 
     session = {} as jest.Mocked<Session>
-    session.accessExpiration = dayjs.utc().add(1, 'day').toDate()
-    session.refreshExpiration = dayjs.utc().add(1, 'day').toDate()
+    session.accessExpiration = new Date(123)
+    session.refreshExpiration = new Date(234)
 
     revokedSession = {} as jest.Mocked<RevokedSession>
     revokedSession.uuid = '1-2-3'
 
     authenticationMethodResolver = {} as jest.Mocked<AuthenticationMethodResolverInterface>
     authenticationMethodResolver.resolve = jest.fn()
+
+    timer = {} as jest.Mocked<TimerInterface>
+    timer.getUTCDate = jest.fn().mockReturnValue(new Date(100))
+    timer.getUTCDateNSecondsAhead = jest.fn().mockReturnValue(new Date(100 + accessTokenAge))
   })
 
   it('should authenticate a user based on a JWT token', async () => {
@@ -107,7 +113,22 @@ describe('AuthenticateUser', () => {
   })
 
   it('should not authenticate a user from a session token if session is expired', async () => {
-    session.accessExpiration = dayjs.utc().subtract(1, 'day').toDate()
+    timer.getUTCDate = jest.fn().mockReturnValue(new Date(200))
+    user.supportsSessions = jest.fn().mockReturnValue(true)
+
+    authenticationMethodResolver.resolve = jest.fn().mockReturnValue({
+      type: 'session_token',
+      session,
+      user,
+    })
+
+    const response = await createUseCase().execute({ token: 'test' })
+
+    expect(response.success).toBeFalsy()
+  })
+
+  it('should not authenticate a user from a session token if session is longer than configured', async () => {
+    timer.getUTCDateNSecondsAhead = jest.fn().mockReturnValue(new Date(20))
     user.supportsSessions = jest.fn().mockReturnValue(true)
 
     authenticationMethodResolver.resolve = jest.fn().mockReturnValue({
@@ -122,7 +143,7 @@ describe('AuthenticateUser', () => {
   })
 
   it('should not authenticate a user from a session token if refresh token is expired', async () => {
-    session.refreshExpiration = dayjs.utc().subtract(1, 'day').toDate()
+    timer.getUTCDate = jest.fn().mockReturnValue(new Date(500))
     user.supportsSessions = jest.fn().mockReturnValue(true)
 
     authenticationMethodResolver.resolve = jest.fn().mockReturnValue({

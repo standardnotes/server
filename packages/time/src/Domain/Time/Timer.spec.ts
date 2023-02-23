@@ -54,6 +54,13 @@ describe('Timer', () => {
     expect(+dateNHoursAhead - +date >= 4 * 3600).toBeTruthy()
   })
 
+  it('should return a utc date n seconds ahead', () => {
+    const date = createTimer().getUTCDate()
+    const dateNHoursAhead = createTimer().getUTCDateNSecondsAhead(4 * 3600)
+
+    expect(+dateNHoursAhead - +date >= 4 * 3600).toBeTruthy()
+  })
+
   it('should convert a date to milliseconds', () => {
     const timestamp = createTimer().convertDateToMilliseconds(new Date(Date.UTC(2021, 2, 29, 12, 13, 45)))
     expect(timestamp).toEqual(1617020025000)
