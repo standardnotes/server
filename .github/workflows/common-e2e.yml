@@ -26,23 +26,6 @@ jobs:
         image: standardnotes/snjs:${{ inputs.snjs_image_tag }}
         ports:
         - 9001:9001
-      mock-event-publisher:
-        image: standardnotes/mock-event-publisher
-        ports:
-        - 3124:3000
-        env:
-          LOG_LEVEL: debug
-          NODE_ENV: production
-          VERSION: snjs-test
-          SNS_TOPIC_ARN: arn:aws:sns:us-east-1:000000000000:payments-local-topic
-          SNS_ENDPOINT: http://localstack:4566
-          SNS_DISABLE_SSL: true
-          SNS_SECRET_ACCESS_KEY: x
-          SNS_ACCESS_KEY_ID: x
-          SNS_AWS_REGION: us-east-1
-          NEW_RELIC_ENABLED: false
-        options: >-
-          --name "mock-event-publisher"
 
     steps:
     - uses: actions/checkout@v3
@@ -58,9 +41,6 @@ jobs:
 
     - name: Wait for server to start
       run: docker/is-available.sh http://localhost:3123 $(pwd)/logs
-
-    - name: Connect external containers to self-hosted network
-      run: docker network connect --alias mock-event-publisher standardnotes_self_hosted mock-event-publisher
 
     - name: Run E2E Test Suite
       run: yarn dlx mocha-headless-chrome --timeout 1200000 -f http://localhost:9001/mocha/test.html

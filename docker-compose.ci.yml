@@ -1,4 +1,22 @@
 services:
+  mock-event-publisher:
+    image: standardnotes/mock-event-publisher
+    ports:
+    - 3124:3000
+    environment:
+      LOG_LEVEL: debug
+      NODE_ENV: production
+      VERSION: snjs-test
+      SNS_TOPIC_ARN: arn:aws:sns:us-east-1:000000000000:payments-local-topic
+      SNS_ENDPOINT: http://localstack:4566
+      SNS_DISABLE_SSL: true
+      SNS_SECRET_ACCESS_KEY: x
+      SNS_ACCESS_KEY_ID: x
+      SNS_AWS_REGION: us-east-1
+      NEW_RELIC_ENABLED: false
+    networks:
+      - standardnotes_self_hosted
+
   server:
     build: .
     env_file: .github/ci.env
