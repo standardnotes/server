@@ -3559,20 +3559,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@standardnotes/proxy-server@workspace:packages/proxy":
-  version: 0.0.0-use.local
-  resolution: "@standardnotes/proxy-server@workspace:packages/proxy"
-  dependencies:
-    "@types/newrelic": "npm:^9.4.0"
-    "@types/node": "npm:^18.14.0"
-    "@typescript-eslint/eslint-plugin": "npm:^5.48.2"
-    eslint: "npm:^8.32.0"
-    eslint-plugin-prettier: "npm:^4.0.0"
-    newrelic: "npm:^9.8.0"
-    typescript: "npm:^4.8.4"
-  languageName: unknown
-  linkType: soft
-
 "@standardnotes/responses@npm:1.13.6":
   version: 1.13.6
   resolution: "@standardnotes/responses@npm:1.13.6"
@@ -4242,13 +4228,6 @@ __metadata:
   version: 18.11.9
   resolution: "@types/node@npm:18.11.9"
   checksum: 7b7d90894dd1ae9b6836e49ace5bdea55cc08806a508e38851e333f1ad77ec81ea6dca58e6a2444ad0471fee965b9908cc1ef06028eebca9c20d54729df98bab
-  languageName: node
-  linkType: hard
-
-"@types/node@npm:^18.14.0":
-  version: 18.14.0
-  resolution: "@types/node@npm:18.14.0"
-  checksum: d17dff07c712379d67af7750f1586b4840ade31ab814d04987aa25850f1d4ef29b63b9ed03a7a9dccee8c86106ca75ae3b6f8cdd17be3ef3f693e700b1ea437b
   languageName: node
   linkType: hard
 

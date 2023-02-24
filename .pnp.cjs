@@ -54,10 +54,6 @@ const RAW_RUNTIME_STATE =
       "reference": "workspace:packages/predicates"\
     },\
     {\
-      "name": "@standardnotes/proxy-server",\
-      "reference": "workspace:packages/proxy"\
-    },\
-    {\
       "name": "@standardnotes/revisions-server",\
       "reference": "workspace:packages/revisions"\
     },\
@@ -103,7 +99,6 @@ const RAW_RUNTIME_STATE =
     ["@standardnotes/event-store", ["workspace:packages/event-store"]],\
     ["@standardnotes/files-server", ["workspace:packages/files"]],\
     ["@standardnotes/predicates", ["workspace:packages/predicates"]],\
-    ["@standardnotes/proxy-server", ["workspace:packages/proxy"]],\
     ["@standardnotes/revisions-server", ["workspace:packages/revisions"]],\
     ["@standardnotes/scheduler-server", ["workspace:packages/scheduler"]],\
     ["@standardnotes/security", ["workspace:packages/security"]],\
@@ -4461,22 +4456,6 @@ const RAW_RUNTIME_STATE =
         "linkType": "SOFT"\
       }]\
     ]],\
-    ["@standardnotes/proxy-server", [\
-      ["workspace:packages/proxy", {\
-        "packageLocation": "./packages/proxy/",\
-        "packageDependencies": [\
-          ["@standardnotes/proxy-server", "workspace:packages/proxy"],\
-          ["@types/newrelic", "npm:9.4.0"],\
-          ["@types/node", "npm:18.14.0"],\
-          ["@typescript-eslint/eslint-plugin", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:5.48.2"],\
-          ["eslint", "npm:8.32.0"],\
-          ["eslint-plugin-prettier", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:4.2.1"],\
-          ["newrelic", "npm:9.8.0"],\
-          ["typescript", "patch:typescript@npm%3A4.8.4#optional!builtin<compat/typescript>::version=4.8.4&hash=701156"]\
-        ],\
-        "linkType": "SOFT"\
-      }]\
-    ]],\
     ["@standardnotes/responses", [\
       ["npm:1.13.4", {\
         "packageLocation": "./.yarn/cache/@standardnotes-responses-npm-1.13.4-70cbd72561-4803ee14bd.zip/node_modules/@standardnotes/responses/",\
@@ -5222,13 +5201,6 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/@types-node-npm-18.11.9-d21dd6ec05-7b7d90894d.zip/node_modules/@types/node/",\
         "packageDependencies": [\
           ["@types/node", "npm:18.11.9"]\
-        ],\
-        "linkType": "HARD"\
-      }],\
-      ["npm:18.14.0", {\
-        "packageLocation": "./.yarn/cache/@types-node-npm-18.14.0-ddc1a221d2-d17dff07c7.zip/node_modules/@types/node/",\
-        "packageDependencies": [\
-          ["@types/node", "npm:18.14.0"]\
         ],\
         "linkType": "HARD"\
       }]\
