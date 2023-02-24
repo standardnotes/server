@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.89.2](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.89.1...@standardnotes/auth-server@1.89.2) (2023-02-24)
+
+### Bug Fixes
+
+* **auth:** add cross-platform authenticator selection option ([edc4a20](https://github.com/standardnotes/server/commit/edc4a2085952efe0b83c8e837a52555087714ef7))
+
 ## [1.89.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.89.0...@standardnotes/auth-server@1.89.1) (2023-02-23)
 
 **Note:** Version bump only for package @standardnotes/auth-server
