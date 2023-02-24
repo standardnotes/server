@@ -49,10 +49,4 @@ export interface HttpServiceInterface {
     endpoint: string,
     payload?: Record<string, unknown> | string,
   ): Promise<void>
-  callProxyServer(
-    request: Request,
-    response: Response,
-    endpoint: string,
-    payload?: Record<string, unknown> | string,
-  ): Promise<void>
 }
