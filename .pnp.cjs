@@ -3960,26 +3960,26 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@simplewebauthn/iso-webcrypto", [\
-      ["npm:7.0.0", {\
-        "packageLocation": "./.yarn/cache/@simplewebauthn-iso-webcrypto-npm-7.0.0-352babf4a0-c1644f9b68.zip/node_modules/@simplewebauthn/iso-webcrypto/",\
+      ["npm:7.0.1", {\
+        "packageLocation": "./.yarn/cache/@simplewebauthn-iso-webcrypto-npm-7.0.1-bae5f6738c-ed506490e0.zip/node_modules/@simplewebauthn/iso-webcrypto/",\
         "packageDependencies": [\
-          ["@simplewebauthn/iso-webcrypto", "npm:7.0.0"]\
+          ["@simplewebauthn/iso-webcrypto", "npm:7.0.1"]\
         ],\
         "linkType": "HARD"\
       }]\
     ]],\
     ["@simplewebauthn/server", [\
-      ["npm:7.0.0", {\
-        "packageLocation": "./.yarn/cache/@simplewebauthn-server-npm-7.0.0-e34589f137-836eb9fb97.zip/node_modules/@simplewebauthn/server/",\
+      ["npm:7.0.1", {\
+        "packageLocation": "./.yarn/cache/@simplewebauthn-server-npm-7.0.1-ac81233d49-d11c708008.zip/node_modules/@simplewebauthn/server/",\
         "packageDependencies": [\
-          ["@simplewebauthn/server", "npm:7.0.0"],\
+          ["@simplewebauthn/server", "npm:7.0.1"],\
           ["@hexagon/base64", "npm:1.1.25"],\
           ["@peculiar/asn1-android", "npm:2.3.3"],\
           ["@peculiar/asn1-ecc", "npm:2.3.4"],\
           ["@peculiar/asn1-rsa", "npm:2.3.4"],\
           ["@peculiar/asn1-schema", "npm:2.3.3"],\
           ["@peculiar/asn1-x509", "npm:2.3.4"],\
-          ["@simplewebauthn/iso-webcrypto", "npm:7.0.0"],\
+          ["@simplewebauthn/iso-webcrypto", "npm:7.0.1"],\
           ["cbor-x", "npm:1.5.0"],\
           ["cross-fetch", "npm:3.1.5"],\
           ["debug", "virtual:b86a9fb34323a98c6519528ed55faa0d9b44ca8879307c0b29aa384bde47ff59a7d0c9051b31246f14521dfb71ba3c5d6d0b35c29fffc17bf875aa6ad977d9e8#npm:4.3.4"]\
@@ -4156,7 +4156,7 @@ const RAW_RUNTIME_STATE =
           ["@newrelic/winston-enricher", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:4.0.0"],\
           ["@sentry/node", "npm:7.28.1"],\
           ["@sentry/tracing", "npm:7.28.1"],\
-          ["@simplewebauthn/server", "npm:7.0.0"],\
+          ["@simplewebauthn/server", "npm:7.0.1"],\
           ["@simplewebauthn/typescript-types", "npm:7.0.0"],\
           ["@standardnotes/api", "npm:1.24.10"],\
           ["@standardnotes/common", "workspace:packages/common"],\

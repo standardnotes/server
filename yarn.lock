@@ -2893,7 +2893,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@peculiar/asn1-android@npm:^2.1.7":
+"@peculiar/asn1-android@npm:^2.3.3":
   version: 2.3.3
   resolution: "@peculiar/asn1-android@npm:2.3.3"
   dependencies:
@@ -2928,7 +2928,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@peculiar/asn1-schema@npm:^2.1.7, @peculiar/asn1-schema@npm:^2.3.3":
+"@peculiar/asn1-schema@npm:^2.3.3":
   version: 2.3.3
   resolution: "@peculiar/asn1-schema@npm:2.3.3"
   dependencies:
@@ -2939,7 +2939,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@peculiar/asn1-x509@npm:^2.1.7, @peculiar/asn1-x509@npm:^2.3.4":
+"@peculiar/asn1-x509@npm:^2.3.4":
   version: 2.3.4
   resolution: "@peculiar/asn1-x509@npm:2.3.4"
   dependencies:
@@ -3099,28 +3099,28 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@simplewebauthn/iso-webcrypto@npm:^7.0.0":
-  version: 7.0.0
-  resolution: "@simplewebauthn/iso-webcrypto@npm:7.0.0"
-  checksum: c1644f9b68dafc0e4afc76e671a3a59f5b86b7f6846f4e947718b97e3656afbf2a6499f2dff4cfc0ca302cf81564755774505863c76798da61e3d5daae55a837
+"@simplewebauthn/iso-webcrypto@npm:^7.0.1":
+  version: 7.0.1
+  resolution: "@simplewebauthn/iso-webcrypto@npm:7.0.1"
+  checksum: ed506490e0818e22b81e8bbe452ff1dc8d82e459a428bc046e8fd02257c574112900dea383c434a5ac7d9fb2e02e047dc409d7569d46f6c7eedb357b9973aa23
   languageName: node
   linkType: hard
 
-"@simplewebauthn/server@npm:^7.0.0":
-  version: 7.0.0
-  resolution: "@simplewebauthn/server@npm:7.0.0"
+"@simplewebauthn/server@npm:^7.0.1":
+  version: 7.0.1
+  resolution: "@simplewebauthn/server@npm:7.0.1"
   dependencies:
     "@hexagon/base64": "npm:^1.1.25"
-    "@peculiar/asn1-android": "npm:^2.1.7"
+    "@peculiar/asn1-android": "npm:^2.3.3"
     "@peculiar/asn1-ecc": "npm:^2.3.4"
     "@peculiar/asn1-rsa": "npm:^2.3.4"
-    "@peculiar/asn1-schema": "npm:^2.1.7"
-    "@peculiar/asn1-x509": "npm:^2.1.7"
-    "@simplewebauthn/iso-webcrypto": "npm:^7.0.0"
+    "@peculiar/asn1-schema": "npm:^2.3.3"
+    "@peculiar/asn1-x509": "npm:^2.3.4"
+    "@simplewebauthn/iso-webcrypto": "npm:^7.0.1"
     cbor-x: "npm:^1.4.1"
     cross-fetch: "npm:^3.1.5"
     debug: "npm:^4.3.2"
-  checksum: 836eb9fb97961e01fdb5f1b2719b5be1d4f28abd5aa24081584c2209a071aa37146235621d1005ba4c8a585661e7fb1c134f041a0d1c123012b1f198757a7b28
+  checksum: d11c708008845723f355624d309a476c32e4abcb3189ab477188583f41a618567852f027b71445d29e7a9ab36f4620e01a7bf334d0c8a01cf8fec4e0e8bdfcff
   languageName: node
   linkType: hard
 
@@ -3277,7 +3277,7 @@ __metadata:
     "@newrelic/winston-enricher": "npm:^4.0.0"
     "@sentry/node": "npm:^7.28.1"
     "@sentry/tracing": "npm:^7.28.1"
-    "@simplewebauthn/server": "npm:^7.0.0"
+    "@simplewebauthn/server": "npm:^7.0.1"
     "@simplewebauthn/typescript-types": "npm:^7.0.0"
     "@standardnotes/api": "npm:^1.24.10"
     "@standardnotes/common": "workspace:*"

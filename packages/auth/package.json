@@ -39,7 +39,7 @@
     "@newrelic/winston-enricher": "^4.0.0",
     "@sentry/node": "^7.28.1",
     "@sentry/tracing": "^7.28.1",
-    "@simplewebauthn/server": "^7.0.0",
+    "@simplewebauthn/server": "^7.0.1",
     "@standardnotes/api": "^1.24.10",
     "@standardnotes/common": "workspace:*",
     "@standardnotes/domain-core": "workspace:^",
