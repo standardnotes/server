@@ -11,6 +11,19 @@ export class MySQLAuthenticatorRepository implements AuthenticatorRepositoryInte
     private mapper: MapperInterface<Authenticator, TypeORMAuthenticator>,
   ) {}
 
+  async updateCounter(id: UniqueEntityId, counter: number): Promise<void> {
+    await this.ormRepository
+      .createQueryBuilder()
+      .update()
+      .set({
+        counter,
+      })
+      .where('uuid = :uuid', {
+        uuid: id.toString(),
+      })
+      .execute()
+  }
+
   async removeByUserUuid(userUuid: Uuid): Promise<void> {
     await this.ormRepository
       .createQueryBuilder()

@@ -7,6 +7,7 @@ export interface AuthenticatorRepositoryInterface {
   findById(id: UniqueEntityId): Promise<Authenticator | null>
   findByUserUuidAndCredentialId(userUuid: Uuid, credentialId: string): Promise<Authenticator | null>
   save(authenticator: Authenticator): Promise<void>
+  updateCounter(id: UniqueEntityId, counter: number): Promise<void>
   remove(authenticator: Authenticator): Promise<void>
   removeByUserUuid(userUuid: Uuid): Promise<void>
 }

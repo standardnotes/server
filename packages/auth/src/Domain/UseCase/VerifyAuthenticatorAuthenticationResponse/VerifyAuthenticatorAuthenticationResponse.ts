@@ -60,9 +60,7 @@ export class VerifyAuthenticatorAuthenticationResponse implements UseCaseInterfa
       return Result.fail(`Could not verify authenticator authentication response: ${(error as Error).message}`)
     }
 
-    authenticator.props.counter = verification.authenticationInfo.newCounter as number
-
-    await this.authenticatorRepository.save(authenticator)
+    await this.authenticatorRepository.updateCounter(authenticator.id, verification.authenticationInfo.newCounter)
 
     return Result.ok(true)
   }

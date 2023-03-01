@@ -36,7 +36,7 @@ describe('VerifyAuthenticatorAuthenticationResponse', () => {
 
     authenticatorRepository = {} as jest.Mocked<AuthenticatorRepositoryInterface>
     authenticatorRepository.findByUserUuidAndCredentialId = jest.fn().mockReturnValue(authenticator)
-    authenticatorRepository.save = jest.fn()
+    authenticatorRepository.updateCounter = jest.fn()
 
     authenticatorChallengeRepository = {} as jest.Mocked<AuthenticatorChallengeRepositoryInterface>
     authenticatorChallengeRepository.findByUserUuid = jest.fn().mockReturnValue({
@@ -221,6 +221,6 @@ describe('VerifyAuthenticatorAuthenticationResponse', () => {
     })
 
     expect(result.isFailed()).toBeFalsy()
-    expect(authenticatorRepository.save).toHaveBeenCalled()
+    expect(authenticatorRepository.updateCounter).toHaveBeenCalled()
   })
 })
