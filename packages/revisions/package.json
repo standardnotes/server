@@ -32,6 +32,7 @@
     "@standardnotes/domain-core": "workspace:^",
     "@standardnotes/domain-events": "workspace:*",
     "@standardnotes/domain-events-infra": "workspace:*",
+    "@standardnotes/responses": "^1.13.9",
     "@standardnotes/security": "workspace:^",
     "@standardnotes/time": "workspace:^",
     "cors": "2.8.5",
