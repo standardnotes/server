@@ -1,4 +1,4 @@
-import { HttpStatusCode } from '@standardnotes/api'
+import { HttpResponse, HttpStatusCode } from '@standardnotes/responses'
 import { MapperInterface } from '@standardnotes/domain-core'
 import { Authenticator } from '../Domain/Authenticator/Authenticator'
 import { DeleteAuthenticator } from '../Domain/UseCase/DeleteAuthenticator/DeleteAuthenticator'
@@ -13,11 +13,11 @@ import { GenerateAuthenticatorAuthenticationOptionsRequestParams } from '../Infr
 import { GenerateAuthenticatorRegistrationOptionsRequestParams } from '../Infra/Http/Request/GenerateAuthenticatorRegistrationOptionsRequestParams'
 import { ListAuthenticatorsRequestParams } from '../Infra/Http/Request/ListAuthenticatorsRequestParams'
 import { VerifyAuthenticatorRegistrationResponseRequestParams } from '../Infra/Http/Request/VerifyAuthenticatorRegistrationResponseRequestParams'
-import { DeleteAuthenticatorResponse } from '../Infra/Http/Response/DeleteAuthenticatorResponse'
-import { GenerateAuthenticatorAuthenticationOptionsResponse } from '../Infra/Http/Response/GenerateAuthenticatorAuthenticationOptionsResponse'
-import { GenerateAuthenticatorRegistrationOptionsResponse } from '../Infra/Http/Response/GenerateAuthenticatorRegistrationOptionsResponse'
-import { ListAuthenticatorsResponse } from '../Infra/Http/Response/ListAuthenticatorsResponse'
-import { VerifyAuthenticatorRegistrationResponseResponse } from '../Infra/Http/Response/VerifyAuthenticatorRegistrationResponseResponse'
+import { DeleteAuthenticatorResponseBody } from '../Infra/Http/Response/DeleteAuthenticatorResponseBody'
+import { GenerateAuthenticatorAuthenticationOptionsResponseBody } from '../Infra/Http/Response/GenerateAuthenticatorAuthenticationOptionsResponseBody'
+import { GenerateAuthenticatorRegistrationOptionsResponseBody } from '../Infra/Http/Response/GenerateAuthenticatorRegistrationOptionsResponseBody'
+import { ListAuthenticatorsResponseBody } from '../Infra/Http/Response/ListAuthenticatorsResponseBody'
+import { VerifyAuthenticatorRegistrationResponseResponseBody } from '../Infra/Http/Response/VerifyAuthenticatorRegistrationResponseResponseBody'
 
 export class AuthenticatorsController {
   constructor(
@@ -29,7 +29,7 @@ export class AuthenticatorsController {
     private authenticatorHttpMapper: MapperInterface<Authenticator, AuthenticatorHttpProjection>,
   ) {}
 
-  async list(params: ListAuthenticatorsRequestParams): Promise<ListAuthenticatorsResponse> {
+  async list(params: ListAuthenticatorsRequestParams): Promise<HttpResponse<ListAuthenticatorsResponseBody>> {
     const result = await this.listAuthenticators.execute({
       userUuid: params.userUuid,
     })
@@ -44,7 +44,7 @@ export class AuthenticatorsController {
     }
   }
 
-  async delete(params: DeleteAuthenticatorRequestParams): Promise<DeleteAuthenticatorResponse> {
+  async delete(params: DeleteAuthenticatorRequestParams): Promise<HttpResponse<DeleteAuthenticatorResponseBody>> {
     const result = await this.deleteAuthenticator.execute({
       userUuid: params.userUuid,
       authenticatorId: params.authenticatorId,
@@ -60,7 +60,7 @@ export class AuthenticatorsController {
 
   async generateRegistrationOptions(
     params: GenerateAuthenticatorRegistrationOptionsRequestParams,
-  ): Promise<GenerateAuthenticatorRegistrationOptionsResponse> {
+  ): Promise<HttpResponse<GenerateAuthenticatorRegistrationOptionsResponseBody>> {
     const result = await this.generateAuthenticatorRegistrationOptions.execute({
       userUuid: params.userUuid,
       username: params.username,
@@ -85,7 +85,7 @@ export class AuthenticatorsController {
 
   async verifyRegistrationResponse(
     params: VerifyAuthenticatorRegistrationResponseRequestParams,
-  ): Promise<VerifyAuthenticatorRegistrationResponseResponse> {
+  ): Promise<HttpResponse<VerifyAuthenticatorRegistrationResponseResponseBody>> {
     const result = await this.verifyAuthenticatorRegistrationResponse.execute({
       userUuid: params.userUuid,
       name: params.name,
@@ -111,7 +111,7 @@ export class AuthenticatorsController {
 
   async generateAuthenticationOptions(
     params: GenerateAuthenticatorAuthenticationOptionsRequestParams,
-  ): Promise<GenerateAuthenticatorAuthenticationOptionsResponse> {
+  ): Promise<HttpResponse<GenerateAuthenticatorAuthenticationOptionsResponseBody>> {
     const result = await this.generateAuthenticatorAuthenticationOptions.execute({
       username: params.username,
     })

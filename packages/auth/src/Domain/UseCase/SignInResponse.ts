@@ -1,4 +1,4 @@
-import { HttpStatusCode } from '@standardnotes/api'
+import { HttpStatusCode } from '@standardnotes/responses'
 
 import { AuthResponse20161215 } from '../Auth/AuthResponse20161215'
 import { AuthResponse20200115 } from '../Auth/AuthResponse20200115'

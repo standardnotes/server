@@ -4,7 +4,7 @@ import { BaseHttpController, controller, httpPost, results } from 'inversify-exp
 import { Request, Response } from 'express'
 import TYPES from '../Bootstrap/Types'
 import { CreateListedAccount } from '../Domain/UseCase/CreateListedAccount/CreateListedAccount'
-import { ErrorTag } from '@standardnotes/api'
+import { ErrorTag } from '@standardnotes/responses'
 
 @controller('/listed')
 export class ListedController extends BaseHttpController {

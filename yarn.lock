@@ -3250,19 +3250,19 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@standardnotes/api@npm:^1.24.10":
-  version: 1.24.10
-  resolution: "@standardnotes/api@npm:1.24.10"
+"@standardnotes/api@npm:^1.25.3":
+  version: 1.25.3
+  resolution: "@standardnotes/api@npm:1.25.3"
   dependencies:
     "@standardnotes/common": "npm:^1.46.4"
-    "@standardnotes/domain-core": "npm:^1.11.1"
-    "@standardnotes/encryption": "npm:1.21.9"
-    "@standardnotes/models": "npm:1.42.11"
-    "@standardnotes/responses": "npm:1.13.6"
+    "@standardnotes/domain-core": "npm:^1.11.3"
+    "@standardnotes/encryption": "npm:1.21.17"
+    "@standardnotes/models": "npm:1.43.5"
+    "@standardnotes/responses": "npm:1.13.9"
     "@standardnotes/security": "npm:^1.7.5"
-    "@standardnotes/utils": "npm:1.16.3"
+    "@standardnotes/utils": "npm:1.16.4"
     reflect-metadata: "npm:^0.1.13"
-  checksum: 1b9a97fdd8f2951dac9f9c8d730b23825e4093a3c882004128e618f43de64d1c9050f3de0609bd0ff3999a8bfce2d203a2bce36d2132be3cd42ea7f310509620
+  checksum: bc7953c4402ed3b96ae966717a1d81685e43187d3bdcc640e99256a8342d15901d7bdbd9cb34db99abba18fd86d1bb283bba66506f9a42598d86f11f01dd533d
   languageName: node
   linkType: hard
 
@@ -3279,14 +3279,14 @@ __metadata:
     "@sentry/tracing": "npm:^7.28.1"
     "@simplewebauthn/server": "npm:^7.0.1"
     "@simplewebauthn/typescript-types": "npm:^7.0.0"
-    "@standardnotes/api": "npm:^1.24.10"
+    "@standardnotes/api": "npm:^1.25.3"
     "@standardnotes/common": "workspace:*"
     "@standardnotes/domain-core": "workspace:^"
     "@standardnotes/domain-events": "workspace:*"
     "@standardnotes/domain-events-infra": "workspace:*"
     "@standardnotes/features": "npm:^1.58.4"
     "@standardnotes/predicates": "workspace:*"
-    "@standardnotes/responses": "npm:^1.13.4"
+    "@standardnotes/responses": "npm:^1.13.9"
     "@standardnotes/security": "workspace:*"
     "@standardnotes/settings": "workspace:*"
     "@standardnotes/sncrypto-common": "npm:^1.9.0"
@@ -3359,7 +3359,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@standardnotes/domain-core@npm:^1.11.1, @standardnotes/domain-core@workspace:^, @standardnotes/domain-core@workspace:packages/domain-core":
+"@standardnotes/domain-core@npm:^1.11.1, @standardnotes/domain-core@npm:^1.11.3, @standardnotes/domain-core@workspace:^, @standardnotes/domain-core@workspace:packages/domain-core":
   version: 0.0.0-use.local
   resolution: "@standardnotes/domain-core@workspace:packages/domain-core"
   dependencies:
@@ -3412,17 +3412,17 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@standardnotes/encryption@npm:1.21.9":
-  version: 1.21.9
-  resolution: "@standardnotes/encryption@npm:1.21.9"
+"@standardnotes/encryption@npm:1.21.17":
+  version: 1.21.17
+  resolution: "@standardnotes/encryption@npm:1.21.17"
   dependencies:
     "@standardnotes/common": "npm:^1.46.4"
-    "@standardnotes/models": "npm:1.42.11"
-    "@standardnotes/responses": "npm:1.13.6"
+    "@standardnotes/models": "npm:1.43.5"
+    "@standardnotes/responses": "npm:1.13.9"
     "@standardnotes/sncrypto-common": "npm:1.13.3"
-    "@standardnotes/utils": "npm:1.16.3"
+    "@standardnotes/utils": "npm:1.16.4"
     reflect-metadata: "npm:^0.1.13"
-  checksum: dc1336cc052780a2b7d59b65c1e86e3ee008bc38ecf50d204514edc36ef0de6a92483cfb00e67bcf7acc541957059db0eb4611feccd3c8eff00ccc05763cf4ab
+  checksum: ece7ac644e1fd8e2a03c9b32a013ee6987b24c4a968ef228dc5bbc6c855518f711467dc63b517f112af71ecfbd28b408816a43d0642bed0bd9d5c336b59dc0ad
   languageName: node
   linkType: hard
 
@@ -3455,7 +3455,19 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@standardnotes/features@npm:1.58.4, @standardnotes/features@npm:^1.58.4":
+"@standardnotes/features@npm:1.58.8":
+  version: 1.58.8
+  resolution: "@standardnotes/features@npm:1.58.8"
+  dependencies:
+    "@standardnotes/common": "npm:^1.46.4"
+    "@standardnotes/domain-core": "npm:^1.11.3"
+    "@standardnotes/security": "npm:^1.7.5"
+    reflect-metadata: "npm:^0.1.13"
+  checksum: 77bac7d0a024daa0d22d6cebebbccd0f5c1e8356e28670e959424bf0841d1b8ca98c43df45cdccc59ecab704a2bd638dfe629c1806e890d6715e6ab39f930499
+  languageName: node
+  linkType: hard
+
+"@standardnotes/features@npm:^1.58.4":
   version: 1.58.4
   resolution: "@standardnotes/features@npm:1.58.4"
   dependencies:
@@ -3464,18 +3476,6 @@ __metadata:
     "@standardnotes/security": "npm:^1.7.5"
     reflect-metadata: "npm:^0.1.13"
   checksum: a39afc145a158985d46a4332aaa450722cffd0978391958536ed37ba9d465616ea59c0e7df70490634cb3849fc41443334cfa4e3bb321dea903dc88198c84ec1
-  languageName: node
-  linkType: hard
-
-"@standardnotes/features@npm:1.58.6":
-  version: 1.58.6
-  resolution: "@standardnotes/features@npm:1.58.6"
-  dependencies:
-    "@standardnotes/common": "npm:^1.46.4"
-    "@standardnotes/domain-core": "npm:^1.11.1"
-    "@standardnotes/security": "npm:^1.7.5"
-    reflect-metadata: "npm:^0.1.13"
-  checksum: 98550416f1e8fb588611356e9e93b2ff7580b62ceb30251a575a4c4a193519e63fcdcd0d0e06ff10a1184e371a2f673bc81033c9e7f210464917f3c42d45dc7c
   languageName: node
   linkType: hard
 
@@ -3533,16 +3533,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@standardnotes/models@npm:1.42.11":
-  version: 1.42.11
-  resolution: "@standardnotes/models@npm:1.42.11"
+"@standardnotes/models@npm:1.43.5":
+  version: 1.43.5
+  resolution: "@standardnotes/models@npm:1.43.5"
   dependencies:
     "@standardnotes/common": "npm:^1.46.4"
-    "@standardnotes/features": "npm:1.58.6"
-    "@standardnotes/responses": "npm:1.13.6"
-    "@standardnotes/utils": "npm:^1.16.3"
+    "@standardnotes/features": "npm:1.58.8"
+    "@standardnotes/responses": "npm:1.13.9"
+    "@standardnotes/utils": "npm:^1.16.4"
     lodash: "npm:^4.17.21"
-  checksum: 6ff3409f70b576d97d530df1f597d04a8ca620240fcea6ba477b3b0c3cda9fcfbe5f9a17932543162fececffe02f84bea0e5dbefde790335a912e76ba11e54ef
+  checksum: fd8e3b60bdfcf1d25561082c669a540e4c1938ddb4bbde03b4da391d4639aaf9727d48db7d20f02f885f70d8643921791a916b6c2f3fbc4100e60e5b53445327
   languageName: node
   linkType: hard
 
@@ -3559,27 +3559,15 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@standardnotes/responses@npm:1.13.6":
-  version: 1.13.6
-  resolution: "@standardnotes/responses@npm:1.13.6"
+"@standardnotes/responses@npm:1.13.9, @standardnotes/responses@npm:^1.13.9":
+  version: 1.13.9
+  resolution: "@standardnotes/responses@npm:1.13.9"
   dependencies:
     "@standardnotes/common": "npm:^1.46.4"
-    "@standardnotes/features": "npm:1.58.6"
+    "@standardnotes/features": "npm:1.58.8"
     "@standardnotes/security": "npm:^1.7.5"
     reflect-metadata: "npm:^0.1.13"
-  checksum: c57e3e1fa10333c6eaabec4b5c248a9fd8f2631e337113f9f165b30703b4074adebb8e48435786cfaddb63769f0939f167f64ae37b6a93cc156520dbeae795ae
-  languageName: node
-  linkType: hard
-
-"@standardnotes/responses@npm:^1.13.4":
-  version: 1.13.4
-  resolution: "@standardnotes/responses@npm:1.13.4"
-  dependencies:
-    "@standardnotes/common": "npm:^1.46.4"
-    "@standardnotes/features": "npm:1.58.4"
-    "@standardnotes/security": "npm:^1.7.5"
-    reflect-metadata: "npm:^0.1.13"
-  checksum: 4803ee14bd036f8bc3690e3da29ea51d9041f2c283f03b9069e0c7a781e4953002039416f420a88f460157a183a560997d04d4e257ccdbf67981e8fec71dfa88
+  checksum: 5cb5daf9f3c5c402fadbea7a654267d8f9564ad7696f7919e1661a46ac4a1767f44e1b00e97f6e9e79f7a74600559502cdc5250e7eabd1934f632735e7ed1565
   languageName: node
   linkType: hard
 
@@ -3591,11 +3579,12 @@ __metadata:
     "@aws-sdk/client-sqs": "npm:^3.259.0"
     "@newrelic/winston-enricher": "npm:^4.0.0"
     "@sentry/node": "npm:^7.28.1"
-    "@standardnotes/api": "npm:^1.24.10"
+    "@standardnotes/api": "npm:^1.25.3"
     "@standardnotes/common": "workspace:^"
     "@standardnotes/domain-core": "workspace:^"
     "@standardnotes/domain-events": "workspace:*"
     "@standardnotes/domain-events-infra": "workspace:*"
+    "@standardnotes/responses": "npm:^1.13.9"
     "@standardnotes/security": "workspace:^"
     "@standardnotes/time": "workspace:^"
     "@types/cors": "npm:^2.8.9"
@@ -3758,12 +3747,12 @@ __metadata:
     "@newrelic/winston-enricher": "npm:^4.0.0"
     "@sentry/node": "npm:^7.28.1"
     "@sentry/tracing": "npm:^7.28.1"
-    "@standardnotes/api": "npm:^1.24.10"
+    "@standardnotes/api": "npm:^1.25.3"
     "@standardnotes/common": "workspace:*"
     "@standardnotes/domain-core": "workspace:^"
     "@standardnotes/domain-events": "workspace:*"
     "@standardnotes/domain-events-infra": "workspace:*"
-    "@standardnotes/responses": "npm:^1.13.4"
+    "@standardnotes/responses": "npm:^1.13.9"
     "@standardnotes/security": "workspace:*"
     "@standardnotes/settings": "workspace:*"
     "@standardnotes/time": "workspace:*"
@@ -3821,15 +3810,15 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@standardnotes/utils@npm:1.16.3, @standardnotes/utils@npm:^1.16.3":
-  version: 1.16.3
-  resolution: "@standardnotes/utils@npm:1.16.3"
+"@standardnotes/utils@npm:1.16.4, @standardnotes/utils@npm:^1.16.4":
+  version: 1.16.4
+  resolution: "@standardnotes/utils@npm:1.16.4"
   dependencies:
     "@standardnotes/common": "npm:^1.46.4"
     dompurify: "npm:^2.4.1"
     lodash: "npm:^4.17.21"
     reflect-metadata: "npm:^0.1.13"
-  checksum: 5c34beaafb732d43ebc4dd170b35c48985c09d6b2c02a817af19d0cfbf868750cfd81a8f8a8aa1d37b872e5c4fce54cd5a942f06008c9b5e1f8f93e903ac52ba
+  checksum: ed29da54cb222f11c4a64ce0618c612a4b16edf180a130434870ca93bffa0278e90b53e14f31f08a0c4fc8852c4267eeadbebb6f41d2184448ccb84d77490a14
   languageName: node
   linkType: hard
 
@@ -3852,11 +3841,12 @@ __metadata:
     "@aws-sdk/client-sqs": "npm:^3.259.0"
     "@newrelic/winston-enricher": "npm:^4.0.0"
     "@sentry/node": "npm:^7.28.1"
-    "@standardnotes/api": "npm:^1.24.10"
+    "@standardnotes/api": "npm:^1.25.3"
     "@standardnotes/common": "workspace:^"
     "@standardnotes/domain-core": "workspace:^"
     "@standardnotes/domain-events": "workspace:^"
     "@standardnotes/domain-events-infra": "workspace:^"
+    "@standardnotes/responses": "npm:^1.13.9"
     "@standardnotes/security": "workspace:^"
     "@standardnotes/utils": "npm:^1.16.2"
     "@types/cors": "npm:^2.8.9"

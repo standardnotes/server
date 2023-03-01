@@ -1,5 +1,5 @@
 import { Logger } from 'winston'
-import { HttpResponse, HttpStatusCode } from '@standardnotes/api'
+import { HttpResponse, HttpStatusCode } from '@standardnotes/responses'
 
 import { GetRevisionsMetada } from '../Domain/UseCase/GetRevisionsMetada/GetRevisionsMetada'
 import { GetRevisionsMetadataRequestParams } from '../Infra/Http/Request/GetRevisionsMetadataRequestParams'
@@ -7,8 +7,8 @@ import { GetRevisionRequestParams } from '../Infra/Http/Request/GetRevisionReque
 import { DeleteRevisionRequestParams } from '../Infra/Http/Request/DeleteRevisionRequestParams'
 import { GetRevision } from '../Domain/UseCase/GetRevision/GetRevision'
 import { DeleteRevision } from '../Domain/UseCase/DeleteRevision/DeleteRevision'
-import { GetRevisionsMetadataResponse } from '../Infra/Http/Response/GetRevisionsMetadataResponse'
-import { GetRevisionResponse } from '../Infra/Http/Response/GetRevisionResponse'
+import { GetRevisionsMetadataResponseBody } from '../Infra/Http/Response/GetRevisionsMetadataResponseBody'
+import { GetRevisionResponseBody } from '../Infra/Http/Response/GetRevisionResponseBody'
 import { MapperInterface } from '@standardnotes/domain-core'
 import { Revision } from '../Domain/Revision/Revision'
 import { RevisionMetadata } from '../Domain/Revision/RevisionMetadata'
@@ -44,7 +44,9 @@ export class RevisionsController {
     private logger: Logger,
   ) {}
 
-  async getRevisions(params: GetRevisionsMetadataRequestParams): Promise<GetRevisionsMetadataResponse> {
+  async getRevisions(
+    params: GetRevisionsMetadataRequestParams,
+  ): Promise<HttpResponse<GetRevisionsMetadataResponseBody>> {
     const revisionMetadataOrError = await this.getRevisionsMetadata.execute({
       itemUuid: params.itemUuid,
       userUuid: params.userUuid,
@@ -75,7 +77,7 @@ export class RevisionsController {
     }
   }
 
-  async getRevision(params: GetRevisionRequestParams): Promise<GetRevisionResponse> {
+  async getRevision(params: GetRevisionRequestParams): Promise<HttpResponse<GetRevisionResponseBody>> {
     const revisionOrError = await this.doGetRevision.execute({
       revisionUuid: params.revisionUuid,
       userUuid: params.userUuid,

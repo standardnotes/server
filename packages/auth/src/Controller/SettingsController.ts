@@ -1,4 +1,4 @@
-import { ErrorTag } from '@standardnotes/api'
+import { ErrorTag } from '@standardnotes/responses'
 import { Request, Response } from 'express'
 import { inject } from 'inversify'
 import {

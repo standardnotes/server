@@ -2,12 +2,12 @@ import { inject, injectable } from 'inversify'
 import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
 import {
   ApiVersion,
-  HttpStatusCode,
-  UserDeletionResponse,
   UserRegistrationRequestParams,
-  UserRegistrationResponse,
   UserServerInterface,
+  UserDeletionResponseBody,
+  UserRegistrationResponseBody,
 } from '@standardnotes/api'
+import { HttpResponse, HttpStatusCode } from '@standardnotes/responses'
 import { ProtocolVersion } from '@standardnotes/common'
 
 import TYPES from '../Bootstrap/Types'
@@ -16,13 +16,13 @@ import { Register } from '../Domain/UseCase/Register'
 import { DomainEventFactoryInterface } from '../Domain/Event/DomainEventFactoryInterface'
 import { SignInWithRecoveryCodes } from '../Domain/UseCase/SignInWithRecoveryCodes/SignInWithRecoveryCodes'
 import { SignInWithRecoveryCodesRequestParams } from '../Infra/Http/Request/SignInWithRecoveryCodesRequestParams'
-import { SignInWithRecoveryCodesResponse } from '../Infra/Http/Response/SignInWithRecoveryCodesResponse'
 import { GetUserKeyParamsRecovery } from '../Domain/UseCase/GetUserKeyParamsRecovery/GetUserKeyParamsRecovery'
 import { RecoveryKeyParamsRequestParams } from '../Infra/Http/Request/RecoveryKeyParamsRequestParams'
-import { RecoveryKeyParamsResponse } from '../Infra/Http/Response/RecoveryKeyParamsResponse'
+import { SignInWithRecoveryCodesResponseBody } from '../Infra/Http/Response/SignInWithRecoveryCodesResponseBody'
+import { RecoveryKeyParamsResponseBody } from '../Infra/Http/Response/RecoveryKeyParamsResponseBody'
+import { GenerateRecoveryCodesResponseBody } from '../Infra/Http/Response/GenerateRecoveryCodesResponseBody'
 import { GenerateRecoveryCodes } from '../Domain/UseCase/GenerateRecoveryCodes/GenerateRecoveryCodes'
 import { GenerateRecoveryCodesRequestParams } from '../Infra/Http/Request/GenerateRecoveryCodesRequestParams'
-import { GenerateRecoveryCodesResponse } from '../Infra/Http/Response/GenerateRecoveryCodesResponse'
 import { Logger } from 'winston'
 
 @injectable()
@@ -38,11 +38,11 @@ export class AuthController implements UserServerInterface {
     @inject(TYPES.Logger) private logger: Logger,
   ) {}
 
-  async deleteAccount(_params: never): Promise<UserDeletionResponse> {
+  async deleteAccount(_params: never): Promise<HttpResponse<UserDeletionResponseBody>> {
     throw new Error('This method is implemented on the payments server.')
   }
 
-  async register(params: UserRegistrationRequestParams): Promise<UserRegistrationResponse> {
+  async register(params: UserRegistrationRequestParams): Promise<HttpResponse<UserRegistrationResponseBody>> {
     if (!params.email || !params.password) {
       return {
         status: HttpStatusCode.BadRequest,
@@ -93,7 +93,9 @@ export class AuthController implements UserServerInterface {
     }
   }
 
-  async generateRecoveryCodes(params: GenerateRecoveryCodesRequestParams): Promise<GenerateRecoveryCodesResponse> {
+  async generateRecoveryCodes(
+    params: GenerateRecoveryCodesRequestParams,
+  ): Promise<HttpResponse<GenerateRecoveryCodesResponseBody>> {
     const result = await this.doGenerateRecoveryCodes.execute({
       userUuid: params.userUuid,
     })
@@ -119,7 +121,7 @@ export class AuthController implements UserServerInterface {
 
   async signInWithRecoveryCodes(
     params: SignInWithRecoveryCodesRequestParams,
-  ): Promise<SignInWithRecoveryCodesResponse> {
+  ): Promise<HttpResponse<SignInWithRecoveryCodesResponseBody>> {
     if (params.apiVersion !== ApiVersion.v0) {
       return {
         status: HttpStatusCode.BadRequest,
@@ -158,7 +160,9 @@ export class AuthController implements UserServerInterface {
     }
   }
 
-  async recoveryKeyParams(params: RecoveryKeyParamsRequestParams): Promise<RecoveryKeyParamsResponse> {
+  async recoveryKeyParams(
+    params: RecoveryKeyParamsRequestParams,
+  ): Promise<HttpResponse<RecoveryKeyParamsResponseBody>> {
     if (params.apiVersion !== ApiVersion.v0) {
       return {
         status: HttpStatusCode.BadRequest,
