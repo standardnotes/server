@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.89.4](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.89.3...@standardnotes/auth-server@1.89.4) (2023-03-01)
+
+### Bug Fixes
+
+* **auth:** updating counter post authenticator verification ([a9cc00a](https://github.com/standardnotes/server/commit/a9cc00a4783c12e71eb181a3ccf3218b418750d9))
+
 ## [1.89.3](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.89.2...@standardnotes/auth-server@1.89.3) (2023-02-27)
 
 **Note:** Version bump only for package @standardnotes/auth-server
