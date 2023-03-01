@@ -1,5 +1,5 @@
 import * as crypto from 'crypto'
-import { ErrorTag } from '@standardnotes/api'
+import { ErrorTag } from '@standardnotes/responses'
 import { SettingName } from '@standardnotes/settings'
 import { v4 as uuidv4 } from 'uuid'
 import { inject, injectable } from 'inversify'

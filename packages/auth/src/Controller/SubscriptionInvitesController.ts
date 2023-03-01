@@ -1,19 +1,19 @@
 import {
   AppleIAPConfirmRequestParams,
-  AppleIAPConfirmResponse,
-  HttpStatusCode,
+  AppleIAPConfirmResponseBody,
   SubscriptionInviteAcceptRequestParams,
-  SubscriptionInviteAcceptResponse,
+  SubscriptionInviteAcceptResponseBody,
   SubscriptionInviteCancelRequestParams,
-  SubscriptionInviteCancelResponse,
+  SubscriptionInviteCancelResponseBody,
   SubscriptionInviteDeclineRequestParams,
-  SubscriptionInviteDeclineResponse,
+  SubscriptionInviteDeclineResponseBody,
   SubscriptionInviteListRequestParams,
-  SubscriptionInviteListResponse,
+  SubscriptionInviteListResponseBody,
   SubscriptionInviteRequestParams,
-  SubscriptionInviteResponse,
+  SubscriptionInviteResponseBody,
   SubscriptionServerInterface,
 } from '@standardnotes/api'
+import { HttpResponse, HttpStatusCode } from '@standardnotes/responses'
 import { inject, injectable } from 'inversify'
 
 import TYPES from '../Bootstrap/Types'
@@ -37,11 +37,13 @@ export class SubscriptionInvitesController implements SubscriptionServerInterfac
     private listSharedSubscriptionInvitations: ListSharedSubscriptionInvitations,
   ) {}
 
-  async confirmAppleIAP(_params: AppleIAPConfirmRequestParams): Promise<AppleIAPConfirmResponse> {
+  async confirmAppleIAP(_params: AppleIAPConfirmRequestParams): Promise<HttpResponse<AppleIAPConfirmResponseBody>> {
     throw new Error('Method implemented on the payments service.')
   }
 
-  async acceptInvite(params: SubscriptionInviteAcceptRequestParams): Promise<SubscriptionInviteAcceptResponse> {
+  async acceptInvite(
+    params: SubscriptionInviteAcceptRequestParams,
+  ): Promise<HttpResponse<SubscriptionInviteAcceptResponseBody>> {
     const result = await this.acceptSharedSubscriptionInvitation.execute({
       sharedSubscriptionInvitationUuid: params.inviteUuid,
     })
@@ -59,7 +61,9 @@ export class SubscriptionInvitesController implements SubscriptionServerInterfac
     }
   }
 
-  async declineInvite(params: SubscriptionInviteDeclineRequestParams): Promise<SubscriptionInviteDeclineResponse> {
+  async declineInvite(
+    params: SubscriptionInviteDeclineRequestParams,
+  ): Promise<HttpResponse<SubscriptionInviteDeclineResponseBody>> {
     const result = await this.declineSharedSubscriptionInvitation.execute({
       sharedSubscriptionInvitationUuid: params.inviteUuid,
     })
@@ -77,7 +81,7 @@ export class SubscriptionInvitesController implements SubscriptionServerInterfac
     }
   }
 
-  async invite(params: SubscriptionInviteRequestParams): Promise<SubscriptionInviteResponse> {
+  async invite(params: SubscriptionInviteRequestParams): Promise<HttpResponse<SubscriptionInviteResponseBody>> {
     if (!params.identifier) {
       return {
         status: HttpStatusCode.BadRequest,
@@ -109,7 +113,9 @@ export class SubscriptionInvitesController implements SubscriptionServerInterfac
     }
   }
 
-  async cancelInvite(params: SubscriptionInviteCancelRequestParams): Promise<SubscriptionInviteCancelResponse> {
+  async cancelInvite(
+    params: SubscriptionInviteCancelRequestParams,
+  ): Promise<HttpResponse<SubscriptionInviteCancelResponseBody>> {
     const result = await this.cancelSharedSubscriptionInvitation.execute({
       sharedSubscriptionInvitationUuid: params.inviteUuid,
       inviterEmail: params.inviterEmail as string,
@@ -128,7 +134,9 @@ export class SubscriptionInvitesController implements SubscriptionServerInterfac
     }
   }
 
-  async listInvites(params: SubscriptionInviteListRequestParams): Promise<SubscriptionInviteListResponse> {
+  async listInvites(
+    params: SubscriptionInviteListRequestParams,
+  ): Promise<HttpResponse<SubscriptionInviteListResponseBody>> {
     const result = await this.listSharedSubscriptionInvitations.execute({
       inviterEmail: params.inviterEmail as string,
     })

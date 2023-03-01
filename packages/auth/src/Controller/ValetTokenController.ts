@@ -7,8 +7,7 @@ import {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   results,
 } from 'inversify-express-utils'
-import { CreateValetTokenPayload } from '@standardnotes/responses'
-import { ErrorTag } from '@standardnotes/api'
+import { CreateValetTokenPayload, ErrorTag } from '@standardnotes/responses'
 import { ValetTokenOperation } from '@standardnotes/security'
 import { Uuid } from '@standardnotes/domain-core'
 

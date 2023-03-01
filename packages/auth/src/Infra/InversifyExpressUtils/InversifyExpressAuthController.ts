@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { ErrorTag } from '@standardnotes/api'
+import { ErrorTag } from '@standardnotes/responses'
 import {
   BaseHttpController,
   controller,

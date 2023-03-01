@@ -27,7 +27,7 @@
     "@aws-sdk/client-sqs": "^3.259.0",
     "@newrelic/winston-enricher": "^4.0.0",
     "@sentry/node": "^7.28.1",
-    "@standardnotes/api": "^1.24.10",
+    "@standardnotes/api": "^1.25.3",
     "@standardnotes/common": "workspace:^",
     "@standardnotes/domain-core": "workspace:^",
     "@standardnotes/domain-events": "workspace:*",

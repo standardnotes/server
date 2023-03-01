@@ -1,7 +1,7 @@
+import { HttpStatusCode, HttpResponse } from '@standardnotes/responses'
 import {
-  HttpStatusCode,
   WebSocketConnectionTokenRequestParams,
-  WebSocketConnectionTokenResponse,
+  WebSocketConnectionTokenResponseBody,
   WebSocketServerInterface,
 } from '@standardnotes/api'
 import { inject, injectable } from 'inversify'
@@ -18,7 +18,7 @@ export class WebSocketsController implements WebSocketServerInterface {
 
   async createConnectionToken(
     params: WebSocketConnectionTokenRequestParams,
-  ): Promise<WebSocketConnectionTokenResponse> {
+  ): Promise<HttpResponse<WebSocketConnectionTokenResponseBody>> {
     const result = await this.createWebSocketConnectionToken.execute({ userUuid: params.userUuid as string })
 
     return {

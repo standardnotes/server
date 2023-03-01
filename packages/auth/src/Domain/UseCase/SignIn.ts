@@ -16,7 +16,7 @@ import { PKCERepositoryInterface } from '../User/PKCERepositoryInterface'
 import { CrypterInterface } from '../Encryption/CrypterInterface'
 import { SignInDTOV2Challenged } from './SignInDTOV2Challenged'
 import { leftVersionGreaterThanOrEqualToRight, ProtocolVersion } from '@standardnotes/common'
-import { HttpStatusCode } from '@standardnotes/api'
+import { HttpStatusCode } from '@standardnotes/responses'
 import { EmailLevel } from '@standardnotes/domain-core'
 import { getBody, getSubject } from '../Email/UserSignedIn'
 
