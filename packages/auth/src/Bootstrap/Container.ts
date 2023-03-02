@@ -463,6 +463,10 @@ export class ContainerConfigLoader {
     container
       .bind(TYPES.U2F_REQUIRE_USER_VERIFICATION)
       .toConstantValue(env.get('U2F_REQUIRE_USER_VERIFICATION', true) === 'true')
+    container
+      .bind(TYPES.READONLY_USERS)
+      .toConstantValue(env.get('READONLY_USERS', true) ? env.get('READONLY_USERS', true).split(',') : [])
+
     // Services
     container.bind<UAParser>(TYPES.DeviceDetector).toConstantValue(new UAParser())
     container.bind<SessionService>(TYPES.SessionService).to(SessionService)

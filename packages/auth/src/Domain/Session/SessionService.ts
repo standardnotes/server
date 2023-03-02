@@ -39,6 +39,7 @@ export class SessionService implements SessionServiceInterface {
     @inject(TYPES.CryptoNode) private cryptoNode: CryptoNode,
     @inject(TYPES.TraceSession) private traceSession: TraceSession,
     @inject(TYPES.UserSubscriptionRepository) private userSubscriptionRepository: UserSubscriptionRepositoryInterface,
+    @inject(TYPES.READONLY_USERS) private readonlyUsers: string[],
   ) {}
 
   async createNewSessionForUser(dto: {
@@ -268,7 +269,9 @@ export class SessionService implements SessionServiceInterface {
     session.apiVersion = dto.apiVersion
     session.createdAt = this.timer.getUTCDate()
     session.updatedAt = this.timer.getUTCDate()
-    session.readonlyAccess = dto.readonlyAccess
+
+    const userIsReadonly = this.readonlyUsers.includes(dto.user.email)
+    session.readonlyAccess = userIsReadonly || dto.readonlyAccess
 
     return session
   }
@@ -302,7 +305,7 @@ export class SessionService implements SessionServiceInterface {
       refresh_token: `${SessionService.SESSION_TOKEN_VERSION}:${session.uuid}:${refreshToken}`,
       access_expiration: this.timer.convertStringDateToMilliseconds(accessTokenExpiration.toString()),
       refresh_expiration: this.timer.convertStringDateToMilliseconds(refreshTokenExpiration.toString()),
-      readonly_access: false,
+      readonly_access: session.readonlyAccess,
     }
   }
 
