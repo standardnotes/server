@@ -1,3 +1,4 @@
+import { TimerInterface } from '@standardnotes/time'
 import * as dayjs from 'dayjs'
 
 import { inject, injectable } from 'inversify'
@@ -12,6 +13,7 @@ export class MySQLSessionRepository implements SessionRepositoryInterface {
   constructor(
     @inject(TYPES.ORMSessionRepository)
     private ormRepository: Repository<Session>,
+    @inject(TYPES.Timer) private timer: TimerInterface,
   ) {}
 
   async save(session: Session): Promise<Session> {
@@ -28,6 +30,7 @@ export class MySQLSessionRepository implements SessionRepositoryInterface {
       .update()
       .set({
         userAgent: null,
+        updatedAt: this.timer.getUTCDate(),
       })
       .where('user_uuid = :userUuid', { userUuid })
       .execute()
@@ -40,6 +43,7 @@ export class MySQLSessionRepository implements SessionRepositoryInterface {
       .set({
         hashedAccessToken,
         hashedRefreshToken,
+        updatedAt: this.timer.getUTCDate(),
       })
       .where('uuid = :uuid', { uuid })
       .execute()
@@ -52,6 +56,7 @@ export class MySQLSessionRepository implements SessionRepositoryInterface {
       .set({
         accessExpiration,
         refreshExpiration,
+        updatedAt: this.timer.getUTCDate(),
       })
       .where('uuid = :uuid', { uuid })
       .execute()
