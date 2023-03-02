@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.89.6](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.89.5...@standardnotes/auth-server@1.89.6) (2023-03-02)
+
+### Bug Fixes
+
+* **auth:** changing the updated_at property on sessions ([753f867](https://github.com/standardnotes/server/commit/753f86707ffdbab0d04f49b42275dbb28589780b))
+
 ## [1.89.5](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.89.4...@standardnotes/auth-server@1.89.5) (2023-03-01)
 
 **Note:** Version bump only for package @standardnotes/auth-server
