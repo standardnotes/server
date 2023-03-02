@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.90.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.89.7...@standardnotes/auth-server@1.90.0) (2023-03-02)
+
+### Features
+
+* **auth:** add configurable list of readonly users ([#462](https://github.com/standardnotes/server/issues/462)) ([d646995](https://github.com/standardnotes/server/commit/d6469954ceb24580c465535e61588b04924734ab))
+
 ## [1.89.7](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.89.6...@standardnotes/auth-server@1.89.7) (2023-03-02)
 
 ### Bug Fixes
