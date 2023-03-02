@@ -30,7 +30,7 @@ export class RefreshSessionToken {
       }
     }
 
-    if (!this.sessionService.isRefreshTokenValid(session, dto.refreshToken)) {
+    if (!this.sessionService.isRefreshTokenMatchingHashedSessionToken(session, dto.refreshToken)) {
       return {
         success: false,
         errorTag: 'invalid-refresh-token',

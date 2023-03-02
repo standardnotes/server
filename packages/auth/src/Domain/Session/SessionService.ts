@@ -113,7 +113,7 @@ export class SessionService implements SessionServiceInterface {
     return sessionPayload
   }
 
-  isRefreshTokenValid(session: Session, token: string): boolean {
+  isRefreshTokenMatchingHashedSessionToken(session: Session, token: string): boolean {
     const tokenParts = token.split(':')
     const refreshToken = tokenParts[2]
     if (!refreshToken) {

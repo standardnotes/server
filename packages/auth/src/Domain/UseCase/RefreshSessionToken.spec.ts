@@ -25,7 +25,7 @@ describe('RefreshSessionToken', () => {
     session.refreshExpiration = new Date(123)
 
     sessionService = {} as jest.Mocked<SessionServiceInterface>
-    sessionService.isRefreshTokenValid = jest.fn().mockReturnValue(true)
+    sessionService.isRefreshTokenMatchingHashedSessionToken = jest.fn().mockReturnValue(true)
     sessionService.getSessionFromToken = jest.fn().mockReturnValue(session)
     sessionService.refreshTokens = jest.fn().mockReturnValue({
       access_token: 'token1',
@@ -105,7 +105,7 @@ describe('RefreshSessionToken', () => {
   })
 
   it('should not refresh a session token if refresh token is not valid', async () => {
-    sessionService.isRefreshTokenValid = jest.fn().mockReturnValue(false)
+    sessionService.isRefreshTokenMatchingHashedSessionToken = jest.fn().mockReturnValue(false)
 
     const result = await createUseCase().execute({
       accessToken: '123',

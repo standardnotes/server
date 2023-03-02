@@ -21,7 +21,7 @@ export interface SessionServiceInterface {
   getRevokedSessionFromToken(token: string): Promise<RevokedSession | null>
   markRevokedSessionAsReceived(revokedSession: RevokedSession): Promise<RevokedSession>
   deleteSessionByToken(token: string): Promise<string | null>
-  isRefreshTokenValid(session: Session, token: string): boolean
+  isRefreshTokenMatchingHashedSessionToken(session: Session, token: string): boolean
   getDeviceInfo(session: Session): string
   getOperatingSystemInfoFromUserAgent(userAgent: string): string
   getBrowserInfoFromUserAgent(userAgent: string): string
