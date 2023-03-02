@@ -34,6 +34,7 @@ describe('SessionService', () => {
   let cryptoNode: CryptoNode
   let traceSession: TraceSession
   let userSubscriptionRepository: UserSubscriptionRepositoryInterface
+  const readonlyUsers = ['demo@standardnotes.com']
 
   const createService = () =>
     new SessionService(
@@ -49,6 +50,7 @@ describe('SessionService', () => {
       cryptoNode,
       traceSession,
       userSubscriptionRepository,
+      readonlyUsers,
     )
 
   beforeEach(() => {
@@ -59,6 +61,7 @@ describe('SessionService', () => {
     session.apiVersion = ApiVersion.v20200115
     session.hashedAccessToken = '4e07408562bedb8b60ce05c1decfe3ad16b72230967de01f640b7e4729b49fce'
     session.hashedRefreshToken = '4e07408562bedb8b60ce05c1decfe3ad16b72230967de01f640b7e4729b49fce'
+    session.readonlyAccess = false
 
     revokedSession = {} as jest.Mocked<RevokedSession>
     revokedSession.uuid = '2e1e43'
@@ -179,6 +182,42 @@ describe('SessionService', () => {
       refresh_expiration: 123,
       refresh_token: expect.any(String),
       readonly_access: false,
+    })
+  })
+
+  it('should create new readonly session for a user that is readonly restricted', async () => {
+    const user = {} as jest.Mocked<User>
+    user.email = 'demo@standardnotes.com'
+    user.uuid = '123'
+
+    const sessionPayload = await createService().createNewSessionForUser({
+      user,
+      apiVersion: '003',
+      userAgent: 'Google Chrome',
+      readonlyAccess: false,
+    })
+
+    expect(sessionRepository.save).toHaveBeenCalledWith(expect.any(Session))
+    expect(sessionRepository.save).toHaveBeenCalledWith({
+      accessExpiration: expect.any(Date),
+      apiVersion: '003',
+      createdAt: expect.any(Date),
+      hashedAccessToken: expect.any(String),
+      hashedRefreshToken: expect.any(String),
+      refreshExpiration: expect.any(Date),
+      updatedAt: expect.any(Date),
+      userAgent: 'Google Chrome',
+      userUuid: '123',
+      uuid: expect.any(String),
+      readonlyAccess: true,
+    })
+
+    expect(sessionPayload).toEqual({
+      access_expiration: 123,
+      access_token: expect.any(String),
+      refresh_expiration: 123,
+      refresh_token: expect.any(String),
+      readonly_access: true,
     })
   })
 
