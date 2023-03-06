@@ -58,6 +58,10 @@ export class SessionsController extends BaseHttpController {
 
   @httpGet('/', TYPES.AuthMiddleware, TYPES.SessionMiddleware)
   async getSessions(_request: Request, response: Response): Promise<results.JsonResult> {
+    if (response.locals.readOnlyAccess) {
+      return this.json([])
+    }
+
     const useCaseResponse = await this.getActiveSessionsForUser.execute({
       userUuid: response.locals.user.uuid,
     })
