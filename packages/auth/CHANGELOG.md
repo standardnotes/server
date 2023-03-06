@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.90.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.90.0...@standardnotes/auth-server@1.90.1) (2023-03-06)
+
+### Bug Fixes
+
+* **auth:** prevent listing sessions on readonly access ([dbccdf3](https://github.com/standardnotes/server/commit/dbccdf342b52f81fb14f246784d5dc6def2ff3fc))
+
 # [1.90.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.89.7...@standardnotes/auth-server@1.90.0) (2023-03-02)
 
 ### Features
