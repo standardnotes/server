@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.91.2](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.91.1...@standardnotes/auth-server@1.91.2) (2023-03-06)
+
+### Bug Fixes
+
+* **auth:** associate setting with sign in alerts permission ([9002945](https://github.com/standardnotes/server/commit/90029456fe6d654747d6b8b7ae106d3d58b3a3fe))
+* **auth:** remove sign in emails permission from free accounts ([b167b00](https://github.com/standardnotes/server/commit/b167b0007555b3850ae274354b6c271fe0a1e47f))
+
 ## [1.91.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.91.0...@standardnotes/auth-server@1.91.1) (2023-03-06)
 
 ### Bug Fixes
