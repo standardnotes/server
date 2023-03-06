@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.91.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.90.1...@standardnotes/auth-server@1.91.0) (2023-03-06)
+
+### Features
+
+* **auth:** add cleanup of expired sessions ([2fad6b6](https://github.com/standardnotes/server/commit/2fad6b62cbb5bec38a3171a996d3f9c4eedf7836))
+
 ## [1.90.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.90.0...@standardnotes/auth-server@1.90.1) (2023-03-06)
 
 ### Bug Fixes
