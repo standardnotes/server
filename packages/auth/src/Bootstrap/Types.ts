@@ -138,6 +138,7 @@ const TYPES = {
   ProcessUserRequest: Symbol.for('ProcessUserRequest'),
   TraceSession: Symbol.for('TraceSession'),
   CleanupSessionTraces: Symbol.for('CleanupSessionTraces'),
+  CleanupExpiredSessions: Symbol.for('CleanupExpiredSessions'),
   PersistStatistics: Symbol.for('PersistStatistics'),
   GenerateAuthenticatorRegistrationOptions: Symbol.for('GenerateAuthenticatorRegistrationOptions'),
   VerifyAuthenticatorRegistrationResponse: Symbol.for('VerifyAuthenticatorRegistrationResponse'),

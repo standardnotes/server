@@ -24,6 +24,10 @@ export class MySQLSessionRepository implements SessionRepositoryInterface {
     return this.ormRepository.remove(session)
   }
 
+  async removeExpiredBefore(date: Date): Promise<void> {
+    await this.ormRepository.createQueryBuilder().delete().where('refresh_expiration < :date', { date }).execute()
+  }
+
   async clearUserAgentByUserUuid(userUuid: string): Promise<void> {
     await this.ormRepository
       .createQueryBuilder('session')

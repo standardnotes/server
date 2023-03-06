@@ -12,4 +12,5 @@ export interface SessionRepositoryInterface {
   save(session: Session): Promise<Session>
   remove(session: Session): Promise<Session>
   clearUserAgentByUserUuid(userUuid: string): Promise<void>
+  removeExpiredBefore(date: Date): Promise<void>
 }

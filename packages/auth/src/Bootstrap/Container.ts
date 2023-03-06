@@ -216,6 +216,7 @@ import { DeleteAuthenticator } from '../Domain/UseCase/DeleteAuthenticator/Delet
 import { GenerateRecoveryCodes } from '../Domain/UseCase/GenerateRecoveryCodes/GenerateRecoveryCodes'
 import { SignInWithRecoveryCodes } from '../Domain/UseCase/SignInWithRecoveryCodes/SignInWithRecoveryCodes'
 import { GetUserKeyParamsRecovery } from '../Domain/UseCase/GetUserKeyParamsRecovery/GetUserKeyParamsRecovery'
+import { CleanupExpiredSessions } from '../Domain/UseCase/CleanupExpiredSessions/CleanupExpiredSessions'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -616,6 +617,9 @@ export class ContainerConfigLoader {
     container
       .bind<CleanupSessionTraces>(TYPES.CleanupSessionTraces)
       .toConstantValue(new CleanupSessionTraces(container.get(TYPES.SessionTraceRepository)))
+    container
+      .bind<CleanupExpiredSessions>(TYPES.CleanupExpiredSessions)
+      .toConstantValue(new CleanupExpiredSessions(container.get(TYPES.SessionRepository)))
     container.bind<AuthenticateUser>(TYPES.AuthenticateUser).to(AuthenticateUser)
     container.bind<AuthenticateRequest>(TYPES.AuthenticateRequest).to(AuthenticateRequest)
     container.bind<RefreshSessionToken>(TYPES.RefreshSessionToken).to(RefreshSessionToken)
