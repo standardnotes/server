@@ -51,7 +51,7 @@ export class SettingsAssociationService implements SettingsAssociationServiceInt
       {
         sensitive: false,
         serverEncryptionVersion: EncryptionVersion.Unencrypted,
-        value: MuteSignInEmailsOption.NotMuted,
+        value: MuteSignInEmailsOption.Muted,
         replaceable: false,
       },
     ],
