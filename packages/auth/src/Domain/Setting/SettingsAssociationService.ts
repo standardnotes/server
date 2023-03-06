@@ -43,6 +43,7 @@ export class SettingsAssociationService implements SettingsAssociationServiceInt
 
   private readonly permissionsAssociatedWithSettings = new Map<SettingName, PermissionName>([
     [SettingName.EmailBackupFrequency, PermissionName.DailyEmailBackup],
+    [SettingName.MuteSignInEmails, PermissionName.SignInAlerts],
   ])
 
   private readonly defaultSettings = new Map<SettingName, SettingDescription>([
