@@ -28,7 +28,7 @@ const requestBackups = async (
   domainEventPublisher: DomainEventPublisherInterface,
 ): Promise<void> => {
   const permissionName = PermissionName.DailyEmailBackup
-  const muteEmailsSettingName = SettingName.MuteFailedBackupsEmails
+  const muteEmailsSettingName = SettingName.NAMES.MuteFailedBackupsEmails
   const muteEmailsSettingValue = MuteFailedBackupsEmailsOption.Muted
 
   if (!backupEmail) {

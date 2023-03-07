@@ -83,7 +83,7 @@ export class SignInWithRecoveryCodes implements UseCaseInterface<AuthResponse202
     }
 
     const recoveryCodesSetting = await this.settingService.findSettingWithDecryptedValue({
-      settingName: SettingName.RecoveryCodes,
+      settingName: SettingName.create(SettingName.NAMES.RecoveryCodes).getValue(),
       userUuid: user.uuid,
     })
     if (!recoveryCodesSetting) {
@@ -116,7 +116,7 @@ export class SignInWithRecoveryCodes implements UseCaseInterface<AuthResponse202
     }
 
     await this.deleteSetting.execute({
-      settingName: SettingName.MfaSecret,
+      settingName: SettingName.NAMES.MfaSecret,
       userUuid: user.uuid,
     })
 

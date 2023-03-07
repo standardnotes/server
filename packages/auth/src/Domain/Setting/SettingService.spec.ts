@@ -54,7 +54,7 @@ describe('SettingService', () => {
     settingsAssociationService.getDefaultSettingsAndValuesForNewUser = jest.fn().mockReturnValue(
       new Map([
         [
-          SettingName.MuteSignInEmails,
+          SettingName.NAMES.MuteSignInEmails,
           {
             value: MuteSignInEmailsOption.NotMuted,
             sensitive: 0,
@@ -67,7 +67,7 @@ describe('SettingService', () => {
     settingsAssociationService.getDefaultSettingsAndValuesForNewVaultAccount = jest.fn().mockReturnValue(
       new Map([
         [
-          SettingName.LogSessionUserAgent,
+          SettingName.NAMES.LogSessionUserAgent,
           {
             sensitive: false,
             serverEncryptionVersion: EncryptionVersion.Unencrypted,

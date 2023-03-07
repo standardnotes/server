@@ -15,18 +15,27 @@ export class GetSetting implements UseCaseInterface {
   ) {}
 
   async execute(dto: GetSettingDto): Promise<GetSettingResponse> {
-    const { userUuid, settingName } = dto
+    const settingNameOrError = SettingName.create(dto.settingName)
+    if (settingNameOrError.isFailed()) {
+      return {
+        success: false,
+        error: {
+          message: settingNameOrError.getError(),
+        },
+      }
+    }
+    const settingName = settingNameOrError.getValue()
 
     const setting = await this.settingService.findSettingWithDecryptedValue({
-      userUuid,
-      settingName: settingName as SettingName,
+      userUuid: dto.userUuid,
+      settingName,
     })
 
     if (setting === null) {
       return {
         success: false,
         error: {
-          message: `Setting ${settingName} for user ${userUuid} not found!`,
+          message: `Setting ${settingName.value} for user ${dto.userUuid} not found!`,
         },
       }
     }
@@ -42,7 +51,7 @@ export class GetSetting implements UseCaseInterface {
 
     return {
       success: true,
-      userUuid,
+      userUuid: dto.settingName,
       setting: simpleSetting,
     }
   }

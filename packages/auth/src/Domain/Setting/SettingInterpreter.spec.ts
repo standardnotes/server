@@ -71,7 +71,7 @@ describe('SettingInterpreter', () => {
 
   it('should trigger session cleanup if user is disabling session user agent logging', async () => {
     const setting = {
-      name: SettingName.LogSessionUserAgent,
+      name: SettingName.NAMES.LogSessionUserAgent,
       value: LogSessionUserAgentOption.Disabled,
     } as jest.Mocked<Setting>
 
@@ -86,7 +86,7 @@ describe('SettingInterpreter', () => {
 
   it('should trigger backup if email backup setting is created - emails not muted', async () => {
     const setting = {
-      name: SettingName.EmailBackupFrequency,
+      name: SettingName.NAMES.EmailBackupFrequency,
       value: EmailBackupFrequency.Daily,
     } as jest.Mocked<Setting>
 
@@ -98,11 +98,11 @@ describe('SettingInterpreter', () => {
 
   it('should trigger backup if email backup setting is created - emails muted', async () => {
     const setting = {
-      name: SettingName.EmailBackupFrequency,
+      name: SettingName.NAMES.EmailBackupFrequency,
       value: EmailBackupFrequency.Daily,
     } as jest.Mocked<Setting>
     settingRepository.findOneByNameAndUserUuid = jest.fn().mockReturnValue({
-      name: SettingName.MuteFailedBackupsEmails,
+      name: SettingName.NAMES.MuteFailedBackupsEmails,
       uuid: '6-7-8',
       value: 'muted',
     } as jest.Mocked<Setting>)
@@ -115,7 +115,7 @@ describe('SettingInterpreter', () => {
 
   it('should not trigger backup if email backup setting is disabled', async () => {
     const setting = {
-      name: SettingName.EmailBackupFrequency,
+      name: SettingName.NAMES.EmailBackupFrequency,
       value: EmailBackupFrequency.Disabled,
     } as jest.Mocked<Setting>
     settingRepository.findOneByNameAndUserUuid = jest.fn().mockReturnValue(null)
@@ -128,7 +128,7 @@ describe('SettingInterpreter', () => {
 
   it('should trigger cloud backup if dropbox backup setting is created', async () => {
     const setting = {
-      name: SettingName.DropboxBackupToken,
+      name: SettingName.NAMES.DropboxBackupToken,
       value: 'test-token',
     } as jest.Mocked<Setting>
     settingRepository.findOneByNameAndUserUuid = jest.fn().mockReturnValue(null)
@@ -147,11 +147,11 @@ describe('SettingInterpreter', () => {
 
   it('should trigger cloud backup if dropbox backup setting is created - muted emails', async () => {
     const setting = {
-      name: SettingName.DropboxBackupToken,
+      name: SettingName.NAMES.DropboxBackupToken,
       value: 'test-token',
     } as jest.Mocked<Setting>
     settingRepository.findOneByNameAndUserUuid = jest.fn().mockReturnValue({
-      name: SettingName.MuteFailedCloudBackupsEmails,
+      name: SettingName.NAMES.MuteFailedCloudBackupsEmails,
       uuid: '6-7-8',
       value: 'muted',
     } as jest.Mocked<Setting>)
@@ -170,7 +170,7 @@ describe('SettingInterpreter', () => {
 
   it('should trigger cloud backup if google drive backup setting is created', async () => {
     const setting = {
-      name: SettingName.GoogleDriveBackupToken,
+      name: SettingName.NAMES.GoogleDriveBackupToken,
       value: 'test-token',
     } as jest.Mocked<Setting>
     settingRepository.findOneByNameAndUserUuid = jest.fn().mockReturnValue(null)
@@ -189,7 +189,7 @@ describe('SettingInterpreter', () => {
 
   it('should trigger cloud backup if one drive backup setting is created', async () => {
     const setting = {
-      name: SettingName.OneDriveBackupToken,
+      name: SettingName.NAMES.OneDriveBackupToken,
       value: 'test-token',
     } as jest.Mocked<Setting>
     settingRepository.findOneByNameAndUserUuid = jest.fn().mockReturnValue(null)
@@ -208,7 +208,7 @@ describe('SettingInterpreter', () => {
 
   it('should trigger mute subscription emails rejection if mute setting changed', async () => {
     const setting = {
-      name: SettingName.MuteMarketingEmails,
+      name: SettingName.NAMES.MuteMarketingEmails,
       value: MuteMarketingEmailsOption.Muted,
     } as jest.Mocked<Setting>
     settingRepository.findOneByNameAndUserUuid = jest.fn().mockReturnValue(null)
@@ -225,13 +225,13 @@ describe('SettingInterpreter', () => {
 
   it('should trigger cloud backup if backup frequency setting is updated and a backup token setting is present', async () => {
     settingRepository.findLastByNameAndUserUuid = jest.fn().mockReturnValueOnce({
-      name: SettingName.OneDriveBackupToken,
+      name: SettingName.NAMES.OneDriveBackupToken,
       serverEncryptionVersion: 1,
       value: 'encrypted-backup-token',
       sensitive: true,
     } as jest.Mocked<Setting>)
     const setting = {
-      name: SettingName.OneDriveBackupFrequency,
+      name: SettingName.NAMES.OneDriveBackupFrequency,
       serverEncryptionVersion: 0,
       value: 'daily',
       sensitive: false,
@@ -251,13 +251,13 @@ describe('SettingInterpreter', () => {
 
   it('should not trigger cloud backup if backup frequency setting is updated as disabled', async () => {
     settingRepository.findLastByNameAndUserUuid = jest.fn().mockReturnValueOnce({
-      name: SettingName.OneDriveBackupToken,
+      name: SettingName.NAMES.OneDriveBackupToken,
       serverEncryptionVersion: 1,
       value: 'encrypted-backup-token',
       sensitive: true,
     } as jest.Mocked<Setting>)
     const setting = {
-      name: SettingName.OneDriveBackupFrequency,
+      name: SettingName.NAMES.OneDriveBackupFrequency,
       serverEncryptionVersion: 0,
       value: OneDriveBackupFrequency.Disabled,
       sensitive: false,
@@ -272,7 +272,7 @@ describe('SettingInterpreter', () => {
   it('should not trigger cloud backup if backup frequency setting is updated and a backup token setting is not present', async () => {
     settingRepository.findLastByNameAndUserUuid = jest.fn().mockReturnValueOnce(null)
     const setting = {
-      name: SettingName.OneDriveBackupFrequency,
+      name: SettingName.NAMES.OneDriveBackupFrequency,
       serverEncryptionVersion: 0,
       value: 'daily',
       sensitive: false,

@@ -7,6 +7,7 @@ import TYPES from '../../../Bootstrap/Types'
 import { SubscriptionSettingServiceInterface } from '../../Setting/SubscriptionSettingServiceInterface'
 import { UserSubscriptionServiceInterface } from '../../Subscription/UserSubscriptionServiceInterface'
 import { SubscriptionSettingProjector } from '../../../Projection/SubscriptionSettingProjector'
+import { SettingName } from '@standardnotes/settings'
 
 @injectable()
 export class GetSubscriptionSetting implements UseCaseInterface {
@@ -17,6 +18,17 @@ export class GetSubscriptionSetting implements UseCaseInterface {
   ) {}
 
   async execute(dto: GetSubscriptionSettingDTO): Promise<GetSubscriptionSettingResponse> {
+    const subscriptionSettingNameOrError = SettingName.create(dto.subscriptionSettingName)
+    if (subscriptionSettingNameOrError.isFailed()) {
+      return {
+        success: false,
+        error: {
+          message: subscriptionSettingNameOrError.getError(),
+        },
+      }
+    }
+    const subscriptionSettingName = subscriptionSettingNameOrError.getValue()
+
     const { regularSubscription } = await this.userSubscriptionService.findRegularSubscriptionForUserUuid(dto.userUuid)
     if (regularSubscription === null) {
       return {
@@ -32,7 +44,7 @@ export class GetSubscriptionSetting implements UseCaseInterface {
     const setting = await this.subscriptionSettingService.findSubscriptionSettingWithDecryptedValue({
       userUuid: regularSubscriptionUser.uuid,
       userSubscriptionUuid: regularSubscription.uuid,
-      subscriptionSettingName: dto.subscriptionSettingName,
+      subscriptionSettingName: subscriptionSettingName,
     })
 
     if (setting === null) {

@@ -1,4 +1,3 @@
-import { SubscriptionSettingName } from '@standardnotes/settings'
 import { Request, Response } from 'express'
 import { inject } from 'inversify'
 import {
@@ -21,7 +20,7 @@ export class SubscriptionSettingsController extends BaseHttpController {
   async getSubscriptionSetting(request: Request, response: Response): Promise<results.JsonResult> {
     const result = await this.doGetSubscriptionSetting.execute({
       userUuid: response.locals.user.uuid,
-      subscriptionSettingName: request.params.subscriptionSettingName as SubscriptionSettingName,
+      subscriptionSettingName: request.params.subscriptionSettingName,
     })
 
     if (result.success) {

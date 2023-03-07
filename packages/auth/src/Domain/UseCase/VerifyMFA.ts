@@ -90,7 +90,7 @@ export class VerifyMFA implements UseCaseInterface {
 
       const mfaSecret = await this.settingService.findSettingWithDecryptedValue({
         userUuid: user.uuid,
-        settingName: SettingName.MfaSecret,
+        settingName: SettingName.create(SettingName.NAMES.MfaSecret).getValue(),
       })
       const twoFactorEnabled = mfaSecret !== null && mfaSecret.value !== null
 

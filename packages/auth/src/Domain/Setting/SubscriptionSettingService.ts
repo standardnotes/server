@@ -1,5 +1,4 @@
 import { SubscriptionName } from '@standardnotes/common'
-import { SubscriptionSettingName } from '@standardnotes/settings'
 import { inject, injectable } from 'inversify'
 import { Logger } from 'winston'
 
@@ -17,6 +16,7 @@ import { SubscriptionSettingRepositoryInterface } from './SubscriptionSettingRep
 import { SettingFactoryInterface } from './SettingFactoryInterface'
 import { SubscriptionSettingsAssociationServiceInterface } from './SubscriptionSettingsAssociationServiceInterface'
 import { UserSubscriptionRepositoryInterface } from '../Subscription/UserSubscriptionRepositoryInterface'
+import { SettingName } from '@standardnotes/settings'
 
 @injectable()
 export class SubscriptionSettingService implements SubscriptionSettingServiceInterface {
@@ -44,8 +44,13 @@ export class SubscriptionSettingService implements SubscriptionSettingServiceInt
       return
     }
 
-    for (const settingName of defaultSettingsWithValues.keys()) {
-      const setting = defaultSettingsWithValues.get(settingName) as SettingDescription
+    for (const settingNameString of defaultSettingsWithValues.keys()) {
+      const settingNameOrError = SettingName.create(settingNameString)
+      if (settingNameOrError.isFailed()) {
+        throw new Error(settingNameOrError.getError())
+      }
+      const settingName = settingNameOrError.getValue()
+      const setting = defaultSettingsWithValues.get(settingName.value) as SettingDescription
       if (!setting.replaceable) {
         const existingSetting = await this.findPreviousSubscriptionSetting(settingName, userSubscription.uuid, userUuid)
         if (existingSetting !== null) {
@@ -59,7 +64,7 @@ export class SubscriptionSettingService implements SubscriptionSettingServiceInt
       await this.createOrReplace({
         userSubscription,
         props: {
-          name: settingName,
+          name: settingName.value,
           unencryptedValue: setting.value,
           serverEncryptionVersion: setting.serverEncryptionVersion,
           sensitive: setting.sensitive,
@@ -76,7 +81,7 @@ export class SubscriptionSettingService implements SubscriptionSettingServiceInt
       setting = await this.subscriptionSettingRepository.findOneByUuid(dto.settingUuid)
     } else {
       setting = await this.subscriptionSettingRepository.findLastByNameAndUserSubscriptionUuid(
-        dto.subscriptionSettingName,
+        dto.subscriptionSettingName.value,
         dto.userSubscriptionUuid,
       )
     }
@@ -95,10 +100,16 @@ export class SubscriptionSettingService implements SubscriptionSettingServiceInt
   ): Promise<CreateOrReplaceSubscriptionSettingResponse> {
     const { userSubscription, props } = dto
 
+    const settingNameOrError = SettingName.create(props.name)
+    if (settingNameOrError.isFailed()) {
+      throw new Error(settingNameOrError.getError())
+    }
+    const settingName = settingNameOrError.getValue()
+
     const existing = await this.findSubscriptionSettingWithDecryptedValue({
       userUuid: (await userSubscription.user).uuid,
       userSubscriptionUuid: userSubscription.uuid,
-      subscriptionSettingName: props.name as SubscriptionSettingName,
+      subscriptionSettingName: settingName,
       settingUuid: props.uuid,
     })
 
@@ -128,7 +139,7 @@ export class SubscriptionSettingService implements SubscriptionSettingServiceInt
   }
 
   private async findPreviousSubscriptionSetting(
-    settingName: SubscriptionSettingName,
+    settingName: SettingName,
     currentUserSubscriptionUuid: string,
     userUuid: string,
   ): Promise<SubscriptionSetting | null> {
@@ -142,6 +153,9 @@ export class SubscriptionSettingService implements SubscriptionSettingServiceInt
       return null
     }
 
-    return this.subscriptionSettingRepository.findLastByNameAndUserSubscriptionUuid(settingName, lastSubscription.uuid)
+    return this.subscriptionSettingRepository.findLastByNameAndUserSubscriptionUuid(
+      settingName.value,
+      lastSubscription.uuid,
+    )
   }
 }

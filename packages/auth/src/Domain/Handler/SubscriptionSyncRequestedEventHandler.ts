@@ -95,7 +95,7 @@ export class SubscriptionSyncRequestedEventHandler implements DomainEventHandler
     await this.settingService.createOrReplace({
       user,
       props: {
-        name: SettingName.ExtensionKey,
+        name: SettingName.NAMES.ExtensionKey,
         unencryptedValue: event.payload.extensionKey,
         serverEncryptionVersion: EncryptionVersion.Default,
         sensitive: true,

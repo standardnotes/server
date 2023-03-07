@@ -25,15 +25,17 @@ export class UpdateSetting implements UseCaseInterface {
   ) {}
 
   async execute(dto: UpdateSettingDto): Promise<UpdateSettingResponse> {
-    if (!Object.values(SettingName).includes(dto.props.name as SettingName)) {
+    const settingNameOrError = SettingName.create(dto.props.name)
+    if (settingNameOrError.isFailed()) {
       return {
         success: false,
         error: {
-          message: `Setting name ${dto.props.name} is invalid.`,
+          message: settingNameOrError.getError(),
         },
         statusCode: 400,
       }
     }
+    const settingName = settingNameOrError.getValue()
 
     this.logger.debug('[%s] Updating setting: %O', dto.userUuid, dto)
 
@@ -51,7 +53,7 @@ export class UpdateSetting implements UseCaseInterface {
       }
     }
 
-    if (!(await this.userHasPermissionToUpdateSetting(user, props.name as SettingName))) {
+    if (!(await this.userHasPermissionToUpdateSetting(user, settingName))) {
       return {
         success: false,
         error: {
@@ -61,10 +63,8 @@ export class UpdateSetting implements UseCaseInterface {
       }
     }
 
-    props.serverEncryptionVersion = this.settingsAssociationService.getEncryptionVersionForSetting(
-      props.name as SettingName,
-    )
-    props.sensitive = this.settingsAssociationService.getSensitivityForSetting(props.name as SettingName)
+    props.serverEncryptionVersion = this.settingsAssociationService.getEncryptionVersionForSetting(settingName)
+    props.sensitive = this.settingsAssociationService.getSensitivityForSetting(settingName)
 
     const response = await this.settingService.createOrReplace({
       user,
@@ -92,7 +92,7 @@ export class UpdateSetting implements UseCaseInterface {
   }
 
   private async userHasPermissionToUpdateSetting(user: User, settingName: SettingName): Promise<boolean> {
-    const settingIsMutableByClient = await this.settingsAssociationService.isSettingMutableByClient(settingName)
+    const settingIsMutableByClient = this.settingsAssociationService.isSettingMutableByClient(settingName)
     if (!settingIsMutableByClient) {
       return false
     }

@@ -69,7 +69,7 @@ export class AdminController extends BaseHttpController {
     const result = await this.doDeleteSetting.execute({
       uuid,
       userUuid,
-      settingName: SettingName.MfaSecret,
+      settingName: SettingName.NAMES.MfaSecret,
       timestamp: updatedAt,
       softDelete: true,
     })
@@ -115,7 +115,7 @@ export class AdminController extends BaseHttpController {
 
     const result = await this.doDeleteSetting.execute({
       userUuid,
-      settingName: SettingName.EmailBackupFrequency,
+      settingName: SettingName.NAMES.EmailBackupFrequency,
     })
 
     if (result.success) {

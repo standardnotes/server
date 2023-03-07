@@ -3,7 +3,7 @@ import { SubscriptionName } from '@standardnotes/common'
 import { TimerInterface } from '@standardnotes/time'
 import { TokenEncoderInterface, ValetTokenData } from '@standardnotes/security'
 import { CreateValetTokenPayload, CreateValetTokenResponseData } from '@standardnotes/responses'
-import { SubscriptionSettingName } from '@standardnotes/settings'
+import { SettingName } from '@standardnotes/settings'
 
 import TYPES from '../../../Bootstrap/Types'
 import { UseCaseInterface } from '../UseCaseInterface'
@@ -56,7 +56,7 @@ export class CreateValetToken implements UseCaseInterface {
     const uploadBytesUsedSetting = await this.subscriptionSettingService.findSubscriptionSettingWithDecryptedValue({
       userUuid: regularSubscriptionUserUuid,
       userSubscriptionUuid: regularSubscription.uuid,
-      subscriptionSettingName: SubscriptionSettingName.FileUploadBytesUsed,
+      subscriptionSettingName: SettingName.create(SettingName.NAMES.FileUploadBytesUsed).getValue(),
     })
     if (uploadBytesUsedSetting !== null) {
       uploadBytesUsed = +(uploadBytesUsedSetting.value as string)
@@ -70,7 +70,7 @@ export class CreateValetToken implements UseCaseInterface {
       await this.subscriptionSettingService.findSubscriptionSettingWithDecryptedValue({
         userUuid: regularSubscriptionUserUuid,
         userSubscriptionUuid: regularSubscription.uuid,
-        subscriptionSettingName: SubscriptionSettingName.FileUploadBytesLimit,
+        subscriptionSettingName: SettingName.create(SettingName.NAMES.FileUploadBytesLimit).getValue(),
       })
     if (overwriteWithUserUploadBytesLimitSetting !== null) {
       uploadBytesLimit = +(overwriteWithUserUploadBytesLimitSetting.value as string)
