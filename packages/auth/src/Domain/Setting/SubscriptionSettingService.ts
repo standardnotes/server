@@ -17,6 +17,7 @@ import { SettingFactoryInterface } from './SettingFactoryInterface'
 import { SubscriptionSettingsAssociationServiceInterface } from './SubscriptionSettingsAssociationServiceInterface'
 import { UserSubscriptionRepositoryInterface } from '../Subscription/UserSubscriptionRepositoryInterface'
 import { SettingName } from '@standardnotes/settings'
+import { SettingInterpreterInterface } from './SettingInterpreterInterface'
 
 @injectable()
 export class SubscriptionSettingService implements SubscriptionSettingServiceInterface {
@@ -26,6 +27,7 @@ export class SubscriptionSettingService implements SubscriptionSettingServiceInt
     private subscriptionSettingRepository: SubscriptionSettingRepositoryInterface,
     @inject(TYPES.SubscriptionSettingsAssociationService)
     private subscriptionSettingAssociationService: SubscriptionSettingsAssociationServiceInterface,
+    @inject(TYPES.SettingInterpreter) private settingInterpreter: SettingInterpreterInterface,
     @inject(TYPES.SettingDecrypter) private settingDecrypter: SettingDecrypterInterface,
     @inject(TYPES.UserSubscriptionRepository) private userSubscriptionRepository: UserSubscriptionRepositoryInterface,
     @inject(TYPES.Logger) private logger: Logger,
@@ -50,6 +52,10 @@ export class SubscriptionSettingService implements SubscriptionSettingServiceInt
         throw new Error(settingNameOrError.getError())
       }
       const settingName = settingNameOrError.getValue()
+      if (!settingName.isASubscriptionSetting()) {
+        throw new Error(`Setting ${settingName.value} is not a subscription setting`)
+      }
+
       const setting = defaultSettingsWithValues.get(settingName.value) as SettingDescription
       if (!setting.replaceable) {
         const existingSetting = await this.findPreviousSubscriptionSetting(settingName, userSubscription.uuid, userUuid)
@@ -114,8 +120,9 @@ export class SubscriptionSettingService implements SubscriptionSettingServiceInt
       throw new Error(`Setting ${settingName.value} is not a subscription setting`)
     }
 
+    const user = await userSubscription.user
     const existing = await this.findSubscriptionSettingWithDecryptedValue({
-      userUuid: (await userSubscription.user).uuid,
+      userUuid: user.uuid,
       userSubscriptionUuid: userSubscription.uuid,
       subscriptionSettingName: settingName,
       settingUuid: props.uuid,
@@ -127,6 +134,8 @@ export class SubscriptionSettingService implements SubscriptionSettingServiceInt
       )
 
       this.logger.debug('Created subscription setting %s: %O', props.name, subscriptionSetting)
+
+      await this.settingInterpreter.interpretSettingUpdated(settingName.value, user, props.unencryptedValue)
 
       return {
         status: 'created',
@@ -140,6 +149,8 @@ export class SubscriptionSettingService implements SubscriptionSettingServiceInt
 
     this.logger.debug('Replaced existing subscription setting %s with: %O', props.name, subscriptionSetting)
 
+    await this.settingInterpreter.interpretSettingUpdated(settingName.value, user, props.unencryptedValue)
+
     return {
       status: 'replaced',
       subscriptionSetting,
@@ -151,10 +162,6 @@ export class SubscriptionSettingService implements SubscriptionSettingServiceInt
     currentUserSubscriptionUuid: string,
     userUuid: string,
   ): Promise<SubscriptionSetting | null> {
-    if (!settingName.isASubscriptionSetting()) {
-      throw new Error(`Setting ${settingName.value} is not a subscription setting`)
-    }
-
     const userSubscriptions = await this.userSubscriptionRepository.findByUserUuid(userUuid)
     const previousSubscriptions = userSubscriptions.filter(
       (subscription) => subscription.uuid !== currentUserSubscriptionUuid,

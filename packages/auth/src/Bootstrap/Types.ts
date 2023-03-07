@@ -132,7 +132,6 @@ const TYPES = {
   DeclineSharedSubscriptionInvitation: Symbol.for('DeclineSharedSubscriptionInvitation'),
   CancelSharedSubscriptionInvitation: Symbol.for('CancelSharedSubscriptionInvitation'),
   ListSharedSubscriptionInvitations: Symbol.for('ListSharedSubscriptionInvitations'),
-  GetSubscriptionSetting: Symbol.for('GetSubscriptionSetting'),
   VerifyPredicate: Symbol.for('VerifyPredicate'),
   CreateCrossServiceToken: Symbol.for('CreateCrossServiceToken'),
   ProcessUserRequest: Symbol.for('ProcessUserRequest'),

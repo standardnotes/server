@@ -4,24 +4,24 @@ import * as express from 'express'
 
 import { results } from 'inversify-express-utils'
 import { User } from '../Domain/User/User'
-import { GetSubscriptionSetting } from '../Domain/UseCase/GetSubscriptionSetting/GetSubscriptionSetting'
 import { SubscriptionSettingsController } from './SubscriptionSettingsController'
+import { GetSetting } from '../Domain/UseCase/GetSetting/GetSetting'
 
 describe('SubscriptionSettingsController', () => {
-  let getSubscriptionSetting: GetSubscriptionSetting
+  let getSetting: GetSetting
 
   let request: express.Request
   let response: express.Response
   let user: User
 
-  const createController = () => new SubscriptionSettingsController(getSubscriptionSetting)
+  const createController = () => new SubscriptionSettingsController(getSetting)
 
   beforeEach(() => {
     user = {} as jest.Mocked<User>
     user.uuid = '123'
 
-    getSubscriptionSetting = {} as jest.Mocked<GetSubscriptionSetting>
-    getSubscriptionSetting.execute = jest.fn()
+    getSetting = {} as jest.Mocked<GetSetting>
+    getSetting.execute = jest.fn()
 
     request = {
       headers: {},
@@ -41,12 +41,12 @@ describe('SubscriptionSettingsController', () => {
       uuid: '1-2-3',
     }
 
-    getSubscriptionSetting.execute = jest.fn().mockReturnValue({ success: true })
+    getSetting.execute = jest.fn().mockReturnValue({ success: true })
 
     const httpResponse = <results.JsonResult>await createController().getSubscriptionSetting(request, response)
     const result = await httpResponse.executeAsync()
 
-    expect(getSubscriptionSetting.execute).toHaveBeenCalledWith({ userUuid: '1-2-3', subscriptionSettingName: 'test' })
+    expect(getSetting.execute).toHaveBeenCalledWith({ userUuid: '1-2-3', settingName: 'test' })
 
     expect(result.statusCode).toEqual(200)
   })
@@ -58,12 +58,12 @@ describe('SubscriptionSettingsController', () => {
       uuid: '1-2-3',
     }
 
-    getSubscriptionSetting.execute = jest.fn().mockReturnValue({ success: false })
+    getSetting.execute = jest.fn().mockReturnValue({ success: false })
 
     const httpResponse = <results.JsonResult>await createController().getSubscriptionSetting(request, response)
     const result = await httpResponse.executeAsync()
 
-    expect(getSubscriptionSetting.execute).toHaveBeenCalledWith({ userUuid: '1-2-3', subscriptionSettingName: 'test' })
+    expect(getSetting.execute).toHaveBeenCalledWith({ userUuid: '1-2-3', settingName: 'test' })
 
     expect(result.statusCode).toEqual(400)
   })

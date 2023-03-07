@@ -12,6 +12,15 @@ export class MySQLSubscriptionSettingRepository implements SubscriptionSettingRe
     private ormRepository: Repository<SubscriptionSetting>,
   ) {}
 
+  async findAllBySubscriptionUuid(userSubscriptionUuid: string): Promise<SubscriptionSetting[]> {
+    return this.ormRepository
+      .createQueryBuilder('setting')
+      .where('setting.user_subscription_uuid = :userSubscriptionUuid', {
+        userSubscriptionUuid,
+      })
+      .getMany()
+  }
+
   async save(subscriptionSetting: SubscriptionSetting): Promise<SubscriptionSetting> {
     return this.ormRepository.save(subscriptionSetting)
   }

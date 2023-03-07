@@ -1,10 +1,5 @@
 import { PermissionName } from '@standardnotes/features'
-import {
-  LogSessionUserAgentOption,
-  MuteMarketingEmailsOption,
-  MuteSignInEmailsOption,
-  SettingName,
-} from '@standardnotes/settings'
+import { LogSessionUserAgentOption, MuteMarketingEmailsOption, SettingName } from '@standardnotes/settings'
 import { injectable } from 'inversify'
 
 import { EncryptionVersion } from '../Encryption/EncryptionVersion'
@@ -39,7 +34,11 @@ export class SettingsAssociationService implements SettingsAssociationServiceInt
     SettingName.NAMES.LogSessionUserAgent,
   ]
 
-  private readonly CLIENT_IMMUTABLE_SETTINGS = [SettingName.NAMES.ListedAuthorSecrets]
+  private readonly CLIENT_IMMUTABLE_SETTINGS = [
+    SettingName.NAMES.ListedAuthorSecrets,
+    SettingName.NAMES.FileUploadBytesLimit,
+    SettingName.NAMES.FileUploadBytesUsed,
+  ]
 
   private readonly permissionsAssociatedWithSettings = new Map<string, PermissionName>([
     [SettingName.NAMES.EmailBackupFrequency, PermissionName.DailyEmailBackup],
@@ -47,15 +46,6 @@ export class SettingsAssociationService implements SettingsAssociationServiceInt
   ])
 
   private readonly defaultSettings = new Map<string, SettingDescription>([
-    [
-      SettingName.NAMES.MuteSignInEmails,
-      {
-        sensitive: false,
-        serverEncryptionVersion: EncryptionVersion.Unencrypted,
-        value: MuteSignInEmailsOption.Muted,
-        replaceable: false,
-      },
-    ],
     [
       SettingName.NAMES.MuteMarketingEmails,
       {

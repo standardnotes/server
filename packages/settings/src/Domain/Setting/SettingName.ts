@@ -33,7 +33,19 @@ export class SettingName extends ValueObject<SettingNameProps> {
   }
 
   isASubscriptionSetting(): boolean {
+    return [
+      SettingName.NAMES.FileUploadBytesLimit,
+      SettingName.NAMES.FileUploadBytesUsed,
+      SettingName.NAMES.MuteSignInEmails,
+    ].includes(this.props.value)
+  }
+
+  isARegularOnlySubscriptionSetting(): boolean {
     return [SettingName.NAMES.FileUploadBytesLimit, SettingName.NAMES.FileUploadBytesUsed].includes(this.props.value)
+  }
+
+  isASharedAndRegularOnlySubscriptionSetting(): boolean {
+    return [SettingName.NAMES.MuteSignInEmails].includes(this.props.value)
   }
 
   private constructor(props: SettingNameProps) {

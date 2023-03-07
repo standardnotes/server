@@ -8,19 +8,19 @@ import {
   results,
 } from 'inversify-express-utils'
 import TYPES from '../Bootstrap/Types'
-import { GetSubscriptionSetting } from '../Domain/UseCase/GetSubscriptionSetting/GetSubscriptionSetting'
+import { GetSetting } from '../Domain/UseCase/GetSetting/GetSetting'
 
 @controller('/users/:userUuid')
 export class SubscriptionSettingsController extends BaseHttpController {
-  constructor(@inject(TYPES.GetSubscriptionSetting) private doGetSubscriptionSetting: GetSubscriptionSetting) {
+  constructor(@inject(TYPES.GetSetting) private doGetSetting: GetSetting) {
     super()
   }
 
   @httpGet('/subscription-settings/:subscriptionSettingName', TYPES.ApiGatewayAuthMiddleware)
   async getSubscriptionSetting(request: Request, response: Response): Promise<results.JsonResult> {
-    const result = await this.doGetSubscriptionSetting.execute({
+    const result = await this.doGetSetting.execute({
       userUuid: response.locals.user.uuid,
-      subscriptionSettingName: request.params.subscriptionSettingName,
+      settingName: request.params.subscriptionSettingName,
     })
 
     if (result.success) {

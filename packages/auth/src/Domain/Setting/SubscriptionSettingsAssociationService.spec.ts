@@ -54,7 +54,7 @@ describe('SubscriptionSettingsAssociationService', () => {
         settings as Map<string, { value: string; sensitive: boolean; serverEncryptionVersion: EncryptionVersion }>
       ).keys(),
     ]
-    expect(flatSettings).toEqual(['FILE_UPLOAD_BYTES_USED', 'FILE_UPLOAD_BYTES_LIMIT'])
+    expect(flatSettings).toEqual(['FILE_UPLOAD_BYTES_USED', 'MUTE_SIGN_IN_EMAILS', 'FILE_UPLOAD_BYTES_LIMIT'])
     expect(settings?.get(SettingName.NAMES.FileUploadBytesLimit)).toEqual({
       sensitive: false,
       serverEncryptionVersion: 0,
@@ -79,7 +79,7 @@ describe('SubscriptionSettingsAssociationService', () => {
         settings as Map<string, { value: string; sensitive: boolean; serverEncryptionVersion: EncryptionVersion }>
       ).keys(),
     ]
-    expect(flatSettings).toEqual(['FILE_UPLOAD_BYTES_USED', 'FILE_UPLOAD_BYTES_LIMIT'])
+    expect(flatSettings).toEqual(['FILE_UPLOAD_BYTES_USED', 'MUTE_SIGN_IN_EMAILS', 'FILE_UPLOAD_BYTES_LIMIT'])
     expect(settings?.get(SettingName.NAMES.FileUploadBytesLimit)).toEqual({
       sensitive: false,
       serverEncryptionVersion: 0,

@@ -15,7 +15,6 @@ import { Logger } from 'winston'
 import TYPES from '../../Bootstrap/Types'
 import { DomainEventFactoryInterface } from '../Event/DomainEventFactoryInterface'
 import { User } from '../User/User'
-import { Setting } from './Setting'
 import { SettingDecrypterInterface } from './SettingDecrypterInterface'
 import { SettingInterpreterInterface } from './SettingInterpreterInterface'
 import { SettingRepositoryInterface } from './SettingRepositoryInterface'
@@ -55,20 +54,24 @@ export class SettingInterpreter implements SettingInterpreterInterface {
     @inject(TYPES.Logger) private logger: Logger,
   ) {}
 
-  async interpretSettingUpdated(updatedSetting: Setting, user: User, unencryptedValue: string | null): Promise<void> {
-    if (this.isChangingMuteEmailsSetting(updatedSetting)) {
-      await this.triggerEmailSubscriptionChange(user, updatedSetting.name, unencryptedValue)
+  async interpretSettingUpdated(
+    updatedSettingName: string,
+    user: User,
+    unencryptedValue: string | null,
+  ): Promise<void> {
+    if (this.isChangingMuteEmailsSetting(updatedSettingName)) {
+      await this.triggerEmailSubscriptionChange(user, updatedSettingName, unencryptedValue)
     }
 
-    if (this.isEnablingEmailBackupSetting(updatedSetting)) {
+    if (this.isEnablingEmailBackupSetting(updatedSettingName, unencryptedValue)) {
       await this.triggerEmailBackup(user.uuid)
     }
 
-    if (this.isEnablingCloudBackupSetting(updatedSetting)) {
-      await this.triggerCloudBackup(updatedSetting, user.uuid, unencryptedValue)
+    if (this.isEnablingCloudBackupSetting(updatedSettingName, unencryptedValue)) {
+      await this.triggerCloudBackup(updatedSettingName, user.uuid, unencryptedValue)
     }
 
-    if (this.isDisablingSessionUserAgentLogging(updatedSetting)) {
+    if (this.isDisablingSessionUserAgentLogging(updatedSettingName, unencryptedValue)) {
       await this.triggerSessionUserAgentCleanup(user)
     }
   }
@@ -90,33 +93,34 @@ export class SettingInterpreter implements SettingInterpreterInterface {
     )
   }
 
-  private isChangingMuteEmailsSetting(setting: Setting): boolean {
+  private isChangingMuteEmailsSetting(settingName: string): boolean {
     return [
       SettingName.NAMES.MuteFailedBackupsEmails,
       SettingName.NAMES.MuteFailedCloudBackupsEmails,
       SettingName.NAMES.MuteMarketingEmails,
       SettingName.NAMES.MuteSignInEmails,
-    ].includes(setting.name)
+    ].includes(settingName)
   }
 
-  private isEnablingEmailBackupSetting(setting: Setting): boolean {
-    return setting.name === SettingName.NAMES.EmailBackupFrequency && setting.value !== EmailBackupFrequency.Disabled
-  }
-
-  private isEnablingCloudBackupSetting(setting: Setting): boolean {
+  private isEnablingEmailBackupSetting(settingName: string, newValue: string | null): boolean {
     return (
-      (this.cloudBackupFrequencySettings.includes(setting.name) ||
-        this.cloudBackupTokenSettings.includes(setting.name)) &&
+      settingName === SettingName.NAMES.EmailBackupFrequency &&
+      [EmailBackupFrequency.Daily, EmailBackupFrequency.Weekly].includes(newValue as EmailBackupFrequency)
+    )
+  }
+
+  private isEnablingCloudBackupSetting(settingName: string, newValue: string | null): boolean {
+    return (
+      (this.cloudBackupFrequencySettings.includes(settingName) ||
+        this.cloudBackupTokenSettings.includes(settingName)) &&
       !this.cloudBackupFrequencyDisabledValues.includes(
-        setting.value as DropboxBackupFrequency | OneDriveBackupFrequency | GoogleDriveBackupFrequency,
+        newValue as DropboxBackupFrequency | OneDriveBackupFrequency | GoogleDriveBackupFrequency,
       )
     )
   }
 
-  private isDisablingSessionUserAgentLogging(setting: Setting): boolean {
-    return (
-      SettingName.NAMES.LogSessionUserAgent === setting.name && LogSessionUserAgentOption.Disabled === setting.value
-    )
+  private isDisablingSessionUserAgentLogging(settingName: string, newValue: string | null): boolean {
+    return SettingName.NAMES.LogSessionUserAgent === settingName && LogSessionUserAgentOption.Disabled === newValue
   }
 
   private async triggerEmailSubscriptionChange(
@@ -142,10 +146,14 @@ export class SettingInterpreter implements SettingInterpreterInterface {
     )
   }
 
-  private async triggerCloudBackup(setting: Setting, userUuid: string, unencryptedValue: string | null): Promise<void> {
+  private async triggerCloudBackup(
+    settingName: string,
+    userUuid: string,
+    unencryptedValue: string | null,
+  ): Promise<void> {
     let cloudProvider
     let tokenSettingName
-    switch (setting.name) {
+    switch (settingName) {
       case SettingName.NAMES.DropboxBackupToken:
       case SettingName.NAMES.DropboxBackupFrequency:
         cloudProvider = 'DROPBOX'
@@ -164,7 +172,7 @@ export class SettingInterpreter implements SettingInterpreterInterface {
     }
 
     let backupToken = null
-    if (this.cloudBackupFrequencySettings.includes(setting.name)) {
+    if (this.cloudBackupFrequencySettings.includes(settingName)) {
       const tokenSetting = await this.settingRepository.findLastByNameAndUserUuid(tokenSettingName as string, userUuid)
       if (tokenSetting !== null) {
         backupToken = await this.settingDecrypter.decryptSettingValue(tokenSetting, userUuid)

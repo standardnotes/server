@@ -89,7 +89,7 @@ export class SettingService implements SettingServiceInterface {
 
       this.logger.debug('[%s] Created setting %s: %O', user.uuid, props.name, setting)
 
-      await this.settingInterpreter.interpretSettingUpdated(setting, user, props.unencryptedValue)
+      await this.settingInterpreter.interpretSettingUpdated(setting.name, user, props.unencryptedValue)
 
       return {
         status: 'created',
@@ -101,7 +101,7 @@ export class SettingService implements SettingServiceInterface {
 
     this.logger.debug('[%s] Replaced existing setting %s with: %O', user.uuid, props.name, setting)
 
-    await this.settingInterpreter.interpretSettingUpdated(setting, user, props.unencryptedValue)
+    await this.settingInterpreter.interpretSettingUpdated(setting.name, user, props.unencryptedValue)
 
     return {
       status: 'replaced',

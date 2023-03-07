@@ -51,13 +51,13 @@ describe('SettingsAssociationService', () => {
   it('should return the default set of settings for a newly registered user', () => {
     const settings = createService().getDefaultSettingsAndValuesForNewUser()
     const flatSettings = [...(settings as Map<string, SettingDescription>).keys()]
-    expect(flatSettings).toEqual(['MUTE_SIGN_IN_EMAILS', 'MUTE_MARKETING_EMAILS', 'LOG_SESSION_USER_AGENT'])
+    expect(flatSettings).toEqual(['MUTE_MARKETING_EMAILS', 'LOG_SESSION_USER_AGENT'])
   })
 
   it('should return the default set of settings for a newly registered vault account', () => {
     const settings = createService().getDefaultSettingsAndValuesForNewVaultAccount()
     const flatSettings = [...(settings as Map<string, SettingDescription>).keys()]
-    expect(flatSettings).toEqual(['MUTE_SIGN_IN_EMAILS', 'MUTE_MARKETING_EMAILS', 'LOG_SESSION_USER_AGENT'])
+    expect(flatSettings).toEqual(['MUTE_MARKETING_EMAILS', 'LOG_SESSION_USER_AGENT'])
 
     expect(settings.get(SettingName.NAMES.LogSessionUserAgent)?.value).toEqual('disabled')
   })

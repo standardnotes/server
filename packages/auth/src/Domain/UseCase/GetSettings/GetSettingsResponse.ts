@@ -1,10 +1,11 @@
 import { SimpleSetting } from '../../Setting/SimpleSetting'
+import { SimpleSubscriptionSetting } from '../../Setting/SimpleSubscriptionSetting'
 
 export type GetSettingsResponse =
   | {
       success: true
       userUuid: string
-      settings: SimpleSetting[]
+      settings: Array<SimpleSetting | SimpleSubscriptionSetting>
     }
   | {
       success: false

@@ -14,6 +14,7 @@ import { SettingFactoryInterface } from './SettingFactoryInterface'
 import { SubscriptionSettingsAssociationServiceInterface } from './SubscriptionSettingsAssociationServiceInterface'
 import { UserSubscriptionRepositoryInterface } from '../Subscription/UserSubscriptionRepositoryInterface'
 import { SettingName } from '@standardnotes/settings'
+import { SettingInterpreterInterface } from './SettingInterpreterInterface'
 
 describe('SubscriptionSettingService', () => {
   let setting: SubscriptionSetting
@@ -22,6 +23,7 @@ describe('SubscriptionSettingService', () => {
   let factory: SettingFactoryInterface
   let subscriptionSettingRepository: SubscriptionSettingRepositoryInterface
   let subscriptionSettingsAssociationService: SubscriptionSettingsAssociationServiceInterface
+  let settingInterpreter: SettingInterpreterInterface
   let settingDecrypter: SettingDecrypterInterface
   let userSubscriptionRepository: UserSubscriptionRepositoryInterface
   let logger: Logger
@@ -31,6 +33,7 @@ describe('SubscriptionSettingService', () => {
       factory,
       subscriptionSettingRepository,
       subscriptionSettingsAssociationService,
+      settingInterpreter,
       settingDecrypter,
       userSubscriptionRepository,
       logger,
@@ -80,6 +83,9 @@ describe('SubscriptionSettingService', () => {
         ],
       ]),
     )
+
+    settingInterpreter = {} as jest.Mocked<SettingInterpreterInterface>
+    settingInterpreter.interpretSettingUpdated = jest.fn()
 
     settingDecrypter = {} as jest.Mocked<SettingDecrypterInterface>
     settingDecrypter.decryptSettingValue = jest.fn().mockReturnValue('decrypted')

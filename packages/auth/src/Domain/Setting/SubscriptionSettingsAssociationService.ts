@@ -27,6 +27,15 @@ export class SubscriptionSettingsAssociationService implements SubscriptionSetti
           SettingName.NAMES.FileUploadBytesUsed,
           { sensitive: false, serverEncryptionVersion: EncryptionVersion.Unencrypted, value: '0', replaceable: false },
         ],
+        [
+          SettingName.NAMES.MuteSignInEmails,
+          {
+            sensitive: false,
+            serverEncryptionVersion: EncryptionVersion.Unencrypted,
+            value: 'not_muted',
+            replaceable: false,
+          },
+        ],
       ]),
     ],
     [
@@ -35,6 +44,15 @@ export class SubscriptionSettingsAssociationService implements SubscriptionSetti
         [
           SettingName.NAMES.FileUploadBytesUsed,
           { sensitive: false, serverEncryptionVersion: EncryptionVersion.Unencrypted, value: '0', replaceable: false },
+        ],
+        [
+          SettingName.NAMES.MuteSignInEmails,
+          {
+            sensitive: false,
+            serverEncryptionVersion: EncryptionVersion.Unencrypted,
+            value: 'not_muted',
+            replaceable: false,
+          },
         ],
       ]),
     ],
