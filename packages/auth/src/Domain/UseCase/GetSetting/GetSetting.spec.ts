@@ -1,5 +1,7 @@
-import { SettingName } from '@standardnotes/settings'
 import 'reflect-metadata'
+
+import { SettingName } from '@standardnotes/settings'
+
 import { SettingProjector } from '../../../Projection/SettingProjector'
 import { Setting } from '../../Setting/Setting'
 import { SettingServiceInterface } from '../../Setting/SettingServiceInterface'
@@ -24,20 +26,33 @@ describe('GetSetting', () => {
   })
 
   it('should find a setting for user', async () => {
-    expect(await createUseCase().execute({ userUuid: '1-2-3', settingName: 'test' })).toEqual({
+    expect(
+      await createUseCase().execute({ userUuid: '1-2-3', settingName: SettingName.NAMES.DropboxBackupFrequency }),
+    ).toEqual({
       success: true,
       userUuid: '1-2-3',
       setting: { foo: 'bar' },
     })
   })
 
+  it('should not find a setting if the setting name is invalid', async () => {
+    expect(await createUseCase().execute({ userUuid: '1-2-3', settingName: 'invalid' })).toEqual({
+      success: false,
+      error: {
+        message: 'Invalid setting name: invalid',
+      },
+    })
+  })
+
   it('should not get a setting for user if it does not exist', async () => {
     settingService.findSettingWithDecryptedValue = jest.fn().mockReturnValue(null)
 
-    expect(await createUseCase().execute({ userUuid: '1-2-3', settingName: 'test' })).toEqual({
+    expect(
+      await createUseCase().execute({ userUuid: '1-2-3', settingName: SettingName.NAMES.DropboxBackupFrequency }),
+    ).toEqual({
       success: false,
       error: {
-        message: 'Setting test for user 1-2-3 not found!',
+        message: 'Setting DROPBOX_BACKUP_FREQUENCY for user 1-2-3 not found!',
       },
     })
   })
@@ -65,7 +80,11 @@ describe('GetSetting', () => {
     settingService.findSettingWithDecryptedValue = jest.fn().mockReturnValue(setting)
 
     expect(
-      await createUseCase().execute({ userUuid: '1-2-3', settingName: 'MFA_SECRET', allowSensitiveRetrieval: true }),
+      await createUseCase().execute({
+        userUuid: '1-2-3',
+        settingName: SettingName.NAMES.MfaSecret,
+        allowSensitiveRetrieval: true,
+      }),
     ).toEqual({
       success: true,
       userUuid: '1-2-3',

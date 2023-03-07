@@ -51,7 +51,7 @@ export class GetSetting implements UseCaseInterface {
 
     return {
       success: true,
-      userUuid: dto.settingName,
+      userUuid: dto.userUuid,
       setting: simpleSetting,
     }
   }

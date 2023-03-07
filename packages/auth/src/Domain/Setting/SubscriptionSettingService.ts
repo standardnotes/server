@@ -76,6 +76,10 @@ export class SubscriptionSettingService implements SubscriptionSettingServiceInt
   async findSubscriptionSettingWithDecryptedValue(
     dto: FindSubscriptionSettingDTO,
   ): Promise<SubscriptionSetting | null> {
+    if (!dto.subscriptionSettingName.isASubscriptionSetting()) {
+      throw new Error(`Setting ${dto.subscriptionSettingName.value} is not a subscription setting`)
+    }
+
     let setting: SubscriptionSetting | null
     if (dto.settingUuid !== undefined) {
       setting = await this.subscriptionSettingRepository.findOneByUuid(dto.settingUuid)
@@ -105,6 +109,10 @@ export class SubscriptionSettingService implements SubscriptionSettingServiceInt
       throw new Error(settingNameOrError.getError())
     }
     const settingName = settingNameOrError.getValue()
+
+    if (!settingName.isASubscriptionSetting()) {
+      throw new Error(`Setting ${settingName.value} is not a subscription setting`)
+    }
 
     const existing = await this.findSubscriptionSettingWithDecryptedValue({
       userUuid: (await userSubscription.user).uuid,
@@ -143,6 +151,10 @@ export class SubscriptionSettingService implements SubscriptionSettingServiceInt
     currentUserSubscriptionUuid: string,
     userUuid: string,
   ): Promise<SubscriptionSetting | null> {
+    if (!settingName.isASubscriptionSetting()) {
+      throw new Error(`Setting ${settingName.value} is not a subscription setting`)
+    }
+
     const userSubscriptions = await this.userSubscriptionRepository.findByUserUuid(userUuid)
     const previousSubscriptions = userSubscriptions.filter(
       (subscription) => subscription.uuid !== currentUserSubscriptionUuid,

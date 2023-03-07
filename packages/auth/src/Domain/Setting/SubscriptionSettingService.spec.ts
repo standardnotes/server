@@ -1,6 +1,5 @@
 import 'reflect-metadata'
 
-import { SubscriptionSettingName } from '@standardnotes/settings'
 import { Logger } from 'winston'
 import { EncryptionVersion } from '../Encryption/EncryptionVersion'
 
@@ -14,6 +13,7 @@ import { User } from '../User/User'
 import { SettingFactoryInterface } from './SettingFactoryInterface'
 import { SubscriptionSettingsAssociationServiceInterface } from './SubscriptionSettingsAssociationServiceInterface'
 import { UserSubscriptionRepositoryInterface } from '../Subscription/UserSubscriptionRepositoryInterface'
+import { SettingName } from '@standardnotes/settings'
 
 describe('SubscriptionSettingService', () => {
   let setting: SubscriptionSetting
@@ -44,7 +44,9 @@ describe('SubscriptionSettingService', () => {
       user: Promise.resolve(user),
     } as jest.Mocked<UserSubscription>
 
-    setting = {} as jest.Mocked<SubscriptionSetting>
+    setting = {
+      name: SettingName.NAMES.FileUploadBytesUsed,
+    } as jest.Mocked<SubscriptionSetting>
 
     factory = {} as jest.Mocked<SettingFactoryInterface>
     factory.createSubscriptionSetting = jest.fn().mockReturnValue(setting)
@@ -68,7 +70,7 @@ describe('SubscriptionSettingService', () => {
     subscriptionSettingsAssociationService.getDefaultSettingsAndValuesForSubscriptionName = jest.fn().mockReturnValue(
       new Map([
         [
-          SubscriptionSettingName.FileUploadBytesUsed,
+          SettingName.NAMES.FileUploadBytesUsed,
           {
             value: '0',
             sensitive: 0,
@@ -98,11 +100,59 @@ describe('SubscriptionSettingService', () => {
     expect(subscriptionSettingRepository.save).toHaveBeenCalledWith(setting)
   })
 
+  it('should throw error if subscription setting is invalid', async () => {
+    subscriptionSettingsAssociationService.getDefaultSettingsAndValuesForSubscriptionName = jest.fn().mockReturnValue(
+      new Map([
+        [
+          'invalid',
+          {
+            value: '0',
+            sensitive: 0,
+            serverEncryptionVersion: EncryptionVersion.Unencrypted,
+            replaceable: true,
+          },
+        ],
+      ]),
+    )
+
+    await expect(
+      createService().applyDefaultSubscriptionSettingsForSubscription(
+        userSubscription,
+        SubscriptionName.PlusPlan,
+        '1-2-3',
+      ),
+    ).rejects.toThrow()
+  })
+
+  it('should throw error if setting name is not a subscription setting when applying defaults', async () => {
+    subscriptionSettingsAssociationService.getDefaultSettingsAndValuesForSubscriptionName = jest.fn().mockReturnValue(
+      new Map([
+        [
+          SettingName.NAMES.DropboxBackupFrequency,
+          {
+            value: '0',
+            sensitive: 0,
+            serverEncryptionVersion: EncryptionVersion.Unencrypted,
+            replaceable: false,
+          },
+        ],
+      ]),
+    )
+
+    await expect(
+      createService().applyDefaultSubscriptionSettingsForSubscription(
+        userSubscription,
+        SubscriptionName.PlusPlan,
+        '1-2-3',
+      ),
+    ).rejects.toThrow()
+  })
+
   it('should reassign existing default settings for a subscription if it is not replaceable', async () => {
     subscriptionSettingsAssociationService.getDefaultSettingsAndValuesForSubscriptionName = jest.fn().mockReturnValue(
       new Map([
         [
-          SubscriptionSettingName.FileUploadBytesUsed,
+          SettingName.NAMES.FileUploadBytesUsed,
           {
             value: '0',
             sensitive: 0,
@@ -127,7 +177,7 @@ describe('SubscriptionSettingService', () => {
     subscriptionSettingsAssociationService.getDefaultSettingsAndValuesForSubscriptionName = jest.fn().mockReturnValue(
       new Map([
         [
-          SubscriptionSettingName.FileUploadBytesUsed,
+          SettingName.NAMES.FileUploadBytesUsed,
           {
             value: '0',
             sensitive: 0,
@@ -152,7 +202,7 @@ describe('SubscriptionSettingService', () => {
     subscriptionSettingsAssociationService.getDefaultSettingsAndValuesForSubscriptionName = jest.fn().mockReturnValue(
       new Map([
         [
-          SubscriptionSettingName.FileUploadBytesUsed,
+          SettingName.NAMES.FileUploadBytesUsed,
           {
             value: '0',
             sensitive: 0,
@@ -196,7 +246,7 @@ describe('SubscriptionSettingService', () => {
     const result = await createService().createOrReplace({
       userSubscription,
       props: {
-        name: 'name',
+        name: SettingName.NAMES.FileUploadBytesLimit,
         unencryptedValue: 'value',
         serverEncryptionVersion: 1,
         sensitive: false,
@@ -206,6 +256,34 @@ describe('SubscriptionSettingService', () => {
     expect(result.status).toEqual('created')
   })
 
+  it('should throw error if the setting name is not valid', async () => {
+    await expect(
+      createService().createOrReplace({
+        userSubscription,
+        props: {
+          name: 'invalid',
+          unencryptedValue: 'value',
+          serverEncryptionVersion: 1,
+          sensitive: false,
+        },
+      }),
+    ).rejects.toThrow()
+  })
+
+  it('should throw error if the setting name is not a subscription setting', async () => {
+    await expect(
+      createService().createOrReplace({
+        userSubscription,
+        props: {
+          name: SettingName.NAMES.DropboxBackupFrequency,
+          unencryptedValue: 'value',
+          serverEncryptionVersion: 1,
+          sensitive: false,
+        },
+      }),
+    ).rejects.toThrow()
+  })
+
   it('should create setting with a given uuid if it does not exist', async () => {
     subscriptionSettingRepository.findOneByUuid = jest.fn().mockReturnValue(null)
 
@@ -213,7 +291,7 @@ describe('SubscriptionSettingService', () => {
       userSubscription,
       props: {
         uuid: '1-2-3',
-        name: 'name',
+        name: SettingName.NAMES.FileUploadBytesLimit,
         unencryptedValue: 'value',
         serverEncryptionVersion: 1,
         sensitive: false,
@@ -266,11 +344,21 @@ describe('SubscriptionSettingService', () => {
       await createService().findSubscriptionSettingWithDecryptedValue({
         userSubscriptionUuid: '2-3-4',
         userUuid: '1-2-3',
-        subscriptionSettingName: 'test' as SubscriptionSettingName,
+        subscriptionSettingName: SettingName.create(SettingName.NAMES.FileUploadBytesLimit).getValue(),
       }),
     ).toEqual({
       serverEncryptionVersion: 1,
       value: 'decrypted',
     })
+  })
+
+  it('should throw error when trying to find and decrypt a setting with invalid subscription setting name', async () => {
+    await expect(
+      createService().findSubscriptionSettingWithDecryptedValue({
+        userSubscriptionUuid: '2-3-4',
+        userUuid: '1-2-3',
+        subscriptionSettingName: SettingName.create(SettingName.NAMES.DropboxBackupFrequency).getValue(),
+      }),
+    ).rejects.toThrow()
   })
 })

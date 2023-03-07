@@ -122,7 +122,7 @@ describe('UpdateSetting', () => {
     expect(response).toEqual({
       success: false,
       error: {
-        message: 'Setting name random-setting is invalid.',
+        message: 'Invalid setting name: random-setting',
       },
       statusCode: 400,
     })

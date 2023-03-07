@@ -2,9 +2,9 @@ import 'reflect-metadata'
 
 import { SubscriptionName } from '@standardnotes/common'
 import { RoleName } from '@standardnotes/domain-core'
-import { SubscriptionSettingName } from '@standardnotes/settings'
-
+import { SettingName } from '@standardnotes/settings'
 import { PermissionName } from '@standardnotes/features'
+
 import { EncryptionVersion } from '../Encryption/EncryptionVersion'
 import { RoleRepositoryInterface } from '../Role/RoleRepositoryInterface'
 import { RoleToSubscriptionMapInterface } from '../Role/RoleToSubscriptionMapInterface'
@@ -51,14 +51,11 @@ describe('SubscriptionSettingsAssociationService', () => {
 
     const flatSettings = [
       ...(
-        settings as Map<
-          SubscriptionSettingName,
-          { value: string; sensitive: boolean; serverEncryptionVersion: EncryptionVersion }
-        >
+        settings as Map<string, { value: string; sensitive: boolean; serverEncryptionVersion: EncryptionVersion }>
       ).keys(),
     ]
     expect(flatSettings).toEqual(['FILE_UPLOAD_BYTES_USED', 'FILE_UPLOAD_BYTES_LIMIT'])
-    expect(settings?.get(SubscriptionSettingName.FileUploadBytesLimit)).toEqual({
+    expect(settings?.get(SettingName.NAMES.FileUploadBytesLimit)).toEqual({
       sensitive: false,
       serverEncryptionVersion: 0,
       value: '107374182400',
@@ -79,14 +76,11 @@ describe('SubscriptionSettingsAssociationService', () => {
 
     const flatSettings = [
       ...(
-        settings as Map<
-          SubscriptionSettingName,
-          { value: string; sensitive: boolean; serverEncryptionVersion: EncryptionVersion }
-        >
+        settings as Map<string, { value: string; sensitive: boolean; serverEncryptionVersion: EncryptionVersion }>
       ).keys(),
     ]
     expect(flatSettings).toEqual(['FILE_UPLOAD_BYTES_USED', 'FILE_UPLOAD_BYTES_LIMIT'])
-    expect(settings?.get(SubscriptionSettingName.FileUploadBytesLimit)).toEqual({
+    expect(settings?.get(SettingName.NAMES.FileUploadBytesLimit)).toEqual({
       sensitive: false,
       serverEncryptionVersion: 0,
       value: '104857600',

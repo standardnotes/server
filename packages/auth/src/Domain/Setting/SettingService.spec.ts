@@ -39,7 +39,9 @@ describe('SettingService', () => {
     } as jest.Mocked<User>
     user.isPotentiallyAVaultAccount = jest.fn().mockReturnValue(false)
 
-    setting = {} as jest.Mocked<Setting>
+    setting = {
+      name: SettingName.NAMES.DropboxBackupToken,
+    } as jest.Mocked<Setting>
 
     factory = {} as jest.Mocked<SettingFactoryInterface>
     factory.create = jest.fn().mockReturnValue(setting)
@@ -107,7 +109,7 @@ describe('SettingService', () => {
     const result = await createService().createOrReplace({
       user,
       props: {
-        name: 'name',
+        name: SettingName.NAMES.MuteFailedBackupsEmails,
         unencryptedValue: 'value',
         serverEncryptionVersion: 1,
         sensitive: false,
@@ -117,6 +119,20 @@ describe('SettingService', () => {
     expect(result.status).toEqual('created')
   })
 
+  it('should throw error if setting name is not valid', async () => {
+    await expect(
+      createService().createOrReplace({
+        user,
+        props: {
+          name: 'invalid',
+          unencryptedValue: 'value',
+          serverEncryptionVersion: 1,
+          sensitive: false,
+        },
+      }),
+    ).rejects.toThrowError('Invalid setting name: invalid')
+  })
+
   it('should create setting with a given uuid if it does not exist', async () => {
     settingRepository.findOneByUuid = jest.fn().mockReturnValue(null)
 
@@ -124,7 +140,7 @@ describe('SettingService', () => {
       user,
       props: {
         uuid: '1-2-3',
-        name: 'name',
+        name: SettingName.NAMES.MuteFailedBackupsEmails,
         unencryptedValue: 'value',
         serverEncryptionVersion: 1,
         sensitive: false,
@@ -174,7 +190,10 @@ describe('SettingService', () => {
     settingRepository.findLastByNameAndUserUuid = jest.fn().mockReturnValue(setting)
 
     expect(
-      await createService().findSettingWithDecryptedValue({ userUuid: '1-2-3', settingName: 'test' as SettingName }),
+      await createService().findSettingWithDecryptedValue({
+        userUuid: '1-2-3',
+        settingName: SettingName.create(SettingName.NAMES.LogSessionUserAgent).getValue(),
+      }),
     ).toEqual({
       serverEncryptionVersion: 1,
       value: 'decrypted',
