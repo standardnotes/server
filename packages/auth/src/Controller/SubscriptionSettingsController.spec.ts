@@ -46,7 +46,7 @@ describe('SubscriptionSettingsController', () => {
     const httpResponse = <results.JsonResult>await createController().getSubscriptionSetting(request, response)
     const result = await httpResponse.executeAsync()
 
-    expect(getSetting.execute).toHaveBeenCalledWith({ userUuid: '1-2-3', settingName: 'test' })
+    expect(getSetting.execute).toHaveBeenCalledWith({ userUuid: '1-2-3', settingName: 'TEST' })
 
     expect(result.statusCode).toEqual(200)
   })
@@ -63,7 +63,7 @@ describe('SubscriptionSettingsController', () => {
     const httpResponse = <results.JsonResult>await createController().getSubscriptionSetting(request, response)
     const result = await httpResponse.executeAsync()
 
-    expect(getSetting.execute).toHaveBeenCalledWith({ userUuid: '1-2-3', settingName: 'test' })
+    expect(getSetting.execute).toHaveBeenCalledWith({ userUuid: '1-2-3', settingName: 'TEST' })
 
     expect(result.statusCode).toEqual(400)
   })

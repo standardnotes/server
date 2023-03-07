@@ -20,7 +20,7 @@ export class SubscriptionSettingsController extends BaseHttpController {
   async getSubscriptionSetting(request: Request, response: Response): Promise<results.JsonResult> {
     const result = await this.doGetSetting.execute({
       userUuid: response.locals.user.uuid,
-      settingName: request.params.subscriptionSettingName,
+      settingName: request.params.subscriptionSettingName.toUpperCase(),
     })
 
     if (result.success) {
