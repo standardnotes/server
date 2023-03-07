@@ -49,7 +49,7 @@ describe('AuthHttpService', () => {
       },
     })
 
-    await createService().getUserSetting('1-2-3', SettingName.MuteFailedBackupsEmails)
+    await createService().getUserSetting('1-2-3', SettingName.NAMES.MuteFailedBackupsEmails)
 
     expect(httpClient.request).toHaveBeenCalledWith({
       method: 'GET',
@@ -64,7 +64,7 @@ describe('AuthHttpService', () => {
   it('should throw an error if a request to auth service in order to get user setting fails', async () => {
     let error = null
     try {
-      await createService().getUserSetting('1-2-3', SettingName.MuteFailedCloudBackupsEmails)
+      await createService().getUserSetting('1-2-3', SettingName.NAMES.MuteFailedCloudBackupsEmails)
     } catch (caughtError) {
       error = caughtError
     }
