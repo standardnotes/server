@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.93.2](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.93.1...@standardnotes/auth-server@1.93.2) (2023-03-08)
+
+### Bug Fixes
+
+* **auth:** authentication options ([1d11c5a](https://github.com/standardnotes/server/commit/1d11c5a1865f81ca57d0ad4313cc3df497b4c445))
+
 ## [1.93.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.93.0...@standardnotes/auth-server@1.93.1) (2023-03-08)
 
 ### Bug Fixes
