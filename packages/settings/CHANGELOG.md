@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.20.0](https://github.com/standardnotes/server/compare/@standardnotes/settings@1.19.1...@standardnotes/settings@1.20.0) (2023-03-08)
+
+### Features
+
+* sign in setting refactor ([#472](https://github.com/standardnotes/server/issues/472)) ([27cf093](https://github.com/standardnotes/server/commit/27cf093f85d0f2e208f48e7c7ddcce36b341ffb7))
+
 ## [1.19.1](https://github.com/standardnotes/server/compare/@standardnotes/settings@1.19.0...@standardnotes/settings@1.19.1) (2023-01-20)
 
 **Note:** Version bump only for package @standardnotes/settings

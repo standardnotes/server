@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.32.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.31.8...@standardnotes/syncing-server@1.32.0) (2023-03-08)
+
+### Features
+
+* sign in setting refactor ([#472](https://github.com/standardnotes/syncing-server-js/issues/472)) ([27cf093](https://github.com/standardnotes/syncing-server-js/commit/27cf093f85d0f2e208f48e7c7ddcce36b341ffb7))
+
 ## [1.31.8](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.31.7...@standardnotes/syncing-server@1.31.8) (2023-03-01)
 
 **Note:** Version bump only for package @standardnotes/syncing-server
