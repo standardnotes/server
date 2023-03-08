@@ -45,7 +45,7 @@
     "@standardnotes/domain-core": "workspace:^",
     "@standardnotes/domain-events": "workspace:*",
     "@standardnotes/domain-events-infra": "workspace:*",
-    "@standardnotes/features": "^1.58.4",
+    "@standardnotes/features": "^1.58.9",
     "@standardnotes/predicates": "workspace:*",
     "@standardnotes/responses": "^1.13.9",
     "@standardnotes/security": "workspace:*",
