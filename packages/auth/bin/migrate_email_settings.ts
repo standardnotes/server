@@ -31,7 +31,7 @@ const requestSettingMigration = async (
 ): Promise<void> => {
   const stream = await settingRepository.streamAllByNameAndValue(
     SettingName.create(SettingName.NAMES.MuteSignInEmails).getValue(),
-    'not_muted',
+    'muted',
   )
 
   return new Promise((resolve, reject) => {
@@ -76,7 +76,7 @@ const requestSettingMigration = async (
                 name: SettingName.NAMES.MuteSignInEmails,
                 sensitive: false,
                 serverEncryptionVersion: EncryptionVersion.Unencrypted,
-                unencryptedValue: 'not_muted',
+                unencryptedValue: 'muted',
               },
             })
 
