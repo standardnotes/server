@@ -19,7 +19,7 @@ export class GenerateAuthenticatorAuthenticationOptions implements UseCaseInterf
   async execute(dto: GenerateAuthenticatorAuthenticationOptionsDTO): Promise<Result<Record<string, unknown>>> {
     const usernameOrError = Username.create(dto.username)
     if (usernameOrError.isFailed()) {
-      return Result.fail(`Could not generate authenticator registration options: ${usernameOrError.getError()}`)
+      return Result.fail(`Could not generate authenticator authentication options: ${usernameOrError.getError()}`)
     }
     const username = usernameOrError.getValue()
 
@@ -46,7 +46,7 @@ export class GenerateAuthenticatorAuthenticationOptions implements UseCaseInterf
 
     const userUuidOrError = Uuid.create(user.uuid)
     if (userUuidOrError.isFailed()) {
-      return Result.fail(`Could not generate authenticator registration options: ${userUuidOrError.getError()}`)
+      return Result.fail(`Could not generate authenticator authentication options: ${userUuidOrError.getError()}`)
     }
     const userUuid = userUuidOrError.getValue()
 
@@ -67,7 +67,7 @@ export class GenerateAuthenticatorAuthenticationOptions implements UseCaseInterf
     })
     if (authenticatorChallengeOrError.isFailed()) {
       return Result.fail(
-        `Could not generate authenticator registration options: ${authenticatorChallengeOrError.getError()}`,
+        `Could not generate authenticator authentication options: ${authenticatorChallengeOrError.getError()}`,
       )
     }
     const authenticatorChallenge = authenticatorChallengeOrError.getValue()

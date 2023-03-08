@@ -54,7 +54,7 @@ describe('GenerateAuthenticatorAuthenticationOptions', () => {
     })
 
     expect(result.isFailed()).toBe(true)
-    expect(result.getError()).toBe('Could not generate authenticator registration options: Username cannot be empty')
+    expect(result.getError()).toBe('Could not generate authenticator authentication options: Username cannot be empty')
   })
 
   it('should return error if user uuid is not valid', async () => {
@@ -70,7 +70,7 @@ describe('GenerateAuthenticatorAuthenticationOptions', () => {
 
     expect(result.isFailed()).toBe(true)
     expect(result.getError()).toBe(
-      'Could not generate authenticator registration options: Given value is not a valid uuid: invalid',
+      'Could not generate authenticator authentication options: Given value is not a valid uuid: invalid',
     )
   })
 
@@ -97,7 +97,7 @@ describe('GenerateAuthenticatorAuthenticationOptions', () => {
     })
 
     expect(result.isFailed()).toBe(true)
-    expect(result.getError()).toBe('Could not generate authenticator registration options: Oops')
+    expect(result.getError()).toBe('Could not generate authenticator authentication options: Oops')
 
     mock.mockRestore()
   })
