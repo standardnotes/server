@@ -7,7 +7,7 @@ export class RoleName extends ValueObject<RoleNameProps> {
     CoreUser: 'CORE_USER',
     PlusUser: 'PLUS_USER',
     ProUser: 'PRO_USER',
-    FilesBetaUser: 'FILES_BETA_USER',
+    InternalTeamUser: 'INTERNAL_TEAM_USER',
   }
 
   get value(): string {
@@ -16,14 +16,17 @@ export class RoleName extends ValueObject<RoleNameProps> {
 
   hasMoreOrEqualPowerTo(roleName: RoleName): boolean {
     switch (this.value) {
-      case RoleName.NAMES.ProUser:
+      case RoleName.NAMES.InternalTeamUser:
         return true
+      case RoleName.NAMES.ProUser:
+        return [RoleName.NAMES.CoreUser, RoleName.NAMES.PlusUser, RoleName.NAMES.ProUser].includes(roleName.value)
       case RoleName.NAMES.PlusUser:
         return [RoleName.NAMES.CoreUser, RoleName.NAMES.PlusUser].includes(roleName.value)
       case RoleName.NAMES.CoreUser:
         return [RoleName.NAMES.CoreUser].includes(roleName.value)
+      /*istanbul ignore next*/
       default:
-        return false
+        throw new Error(`Invalid role name: ${this.value}`)
     }
   }
 

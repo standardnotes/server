@@ -3284,7 +3284,7 @@ __metadata:
     "@standardnotes/domain-core": "workspace:^"
     "@standardnotes/domain-events": "workspace:*"
     "@standardnotes/domain-events-infra": "workspace:*"
-    "@standardnotes/features": "npm:^1.58.4"
+    "@standardnotes/features": "npm:^1.58.9"
     "@standardnotes/predicates": "workspace:*"
     "@standardnotes/responses": "npm:^1.13.9"
     "@standardnotes/security": "workspace:*"
@@ -3331,7 +3331,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@standardnotes/common@npm:^1.46.4, @standardnotes/common@workspace:*, @standardnotes/common@workspace:^, @standardnotes/common@workspace:packages/common":
+"@standardnotes/common@npm:^1.46.4, @standardnotes/common@npm:^1.46.6, @standardnotes/common@workspace:*, @standardnotes/common@workspace:^, @standardnotes/common@workspace:packages/common":
   version: 0.0.0-use.local
   resolution: "@standardnotes/common@workspace:packages/common"
   dependencies:
@@ -3359,7 +3359,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@standardnotes/domain-core@npm:^1.11.1, @standardnotes/domain-core@npm:^1.11.3, @standardnotes/domain-core@workspace:^, @standardnotes/domain-core@workspace:packages/domain-core":
+"@standardnotes/domain-core@npm:^1.11.3, @standardnotes/domain-core@workspace:^, @standardnotes/domain-core@workspace:packages/domain-core":
   version: 0.0.0-use.local
   resolution: "@standardnotes/domain-core@workspace:packages/domain-core"
   dependencies:
@@ -3467,15 +3467,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@standardnotes/features@npm:^1.58.4":
-  version: 1.58.4
-  resolution: "@standardnotes/features@npm:1.58.4"
+"@standardnotes/features@npm:^1.58.9":
+  version: 1.58.9
+  resolution: "@standardnotes/features@npm:1.58.9"
   dependencies:
-    "@standardnotes/common": "npm:^1.46.4"
-    "@standardnotes/domain-core": "npm:^1.11.1"
-    "@standardnotes/security": "npm:^1.7.5"
+    "@standardnotes/common": "npm:^1.46.6"
+    "@standardnotes/domain-core": "npm:^1.11.3"
+    "@standardnotes/security": "npm:^1.7.6"
     reflect-metadata: "npm:^0.1.13"
-  checksum: a39afc145a158985d46a4332aaa450722cffd0978391958536ed37ba9d465616ea59c0e7df70490634cb3849fc41443334cfa4e3bb321dea903dc88198c84ec1
+  checksum: 218350ee55d2f920e26c4041e1e307655cf9e755b83c7fd2165be2222d95b40154c0d325a362cc84ce960ccf8c07c6d95c6a8558ddabf6ee335462cf6bd22508
   languageName: node
   linkType: hard
 
@@ -3649,7 +3649,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@standardnotes/security@npm:^1.7.5, @standardnotes/security@workspace:*, @standardnotes/security@workspace:^, @standardnotes/security@workspace:packages/security":
+"@standardnotes/security@npm:^1.7.5, @standardnotes/security@npm:^1.7.6, @standardnotes/security@workspace:*, @standardnotes/security@workspace:^, @standardnotes/security@workspace:packages/security":
   version: 0.0.0-use.local
   resolution: "@standardnotes/security@workspace:packages/security"
   dependencies:

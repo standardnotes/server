@@ -20,19 +20,26 @@ describe('RoleName', () => {
     const proUserRole = RoleName.create(RoleName.NAMES.ProUser).getValue()
     const plusUserRole = RoleName.create(RoleName.NAMES.PlusUser).getValue()
     const coreUser = RoleName.create(RoleName.NAMES.CoreUser).getValue()
+    const internalTeamUser = RoleName.create(RoleName.NAMES.InternalTeamUser).getValue()
 
+    expect(internalTeamUser.hasMoreOrEqualPowerTo(proUserRole)).toBeTruthy()
+    expect(internalTeamUser.hasMoreOrEqualPowerTo(proUserRole)).toBeTruthy()
+    expect(internalTeamUser.hasMoreOrEqualPowerTo(plusUserRole)).toBeTruthy()
+    expect(internalTeamUser.hasMoreOrEqualPowerTo(coreUser)).toBeTruthy()
+
+    expect(proUserRole.hasMoreOrEqualPowerTo(internalTeamUser)).toBeFalsy()
     expect(proUserRole.hasMoreOrEqualPowerTo(proUserRole)).toBeTruthy()
     expect(proUserRole.hasMoreOrEqualPowerTo(plusUserRole)).toBeTruthy()
     expect(proUserRole.hasMoreOrEqualPowerTo(coreUser)).toBeTruthy()
 
+    expect(plusUserRole.hasMoreOrEqualPowerTo(internalTeamUser)).toBeFalsy()
     expect(plusUserRole.hasMoreOrEqualPowerTo(proUserRole)).toBeFalsy()
     expect(plusUserRole.hasMoreOrEqualPowerTo(plusUserRole)).toBeTruthy()
     expect(plusUserRole.hasMoreOrEqualPowerTo(coreUser)).toBeTruthy()
 
+    expect(coreUser.hasMoreOrEqualPowerTo(internalTeamUser)).toBeFalsy()
     expect(coreUser.hasMoreOrEqualPowerTo(proUserRole)).toBeFalsy()
     expect(coreUser.hasMoreOrEqualPowerTo(plusUserRole)).toBeFalsy()
     expect(coreUser.hasMoreOrEqualPowerTo(coreUser)).toBeTruthy()
-
-    expect(RoleName.create(RoleName.NAMES.FilesBetaUser).getValue().hasMoreOrEqualPowerTo(coreUser)).toBeFalsy()
   })
 })

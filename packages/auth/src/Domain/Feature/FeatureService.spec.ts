@@ -343,7 +343,7 @@ describe('FeatureService', () => {
       ])
 
       const nonSubscriptionRole = {
-        name: RoleName.NAMES.FilesBetaUser,
+        name: RoleName.NAMES.InternalTeamUser,
         uuid: 'role-files-beta',
         permissions: Promise.resolve([nonSubscriptionPermission]),
       } as jest.Mocked<Role>

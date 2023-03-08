@@ -27,7 +27,7 @@ describe('RoleToSubscriptionMap', () => {
         name: RoleName.NAMES.CoreUser,
       } as jest.Mocked<Role>,
       {
-        name: RoleName.NAMES.FilesBetaUser,
+        name: RoleName.NAMES.InternalTeamUser,
       } as jest.Mocked<Role>,
       {
         name: RoleName.NAMES.PlusUser,
@@ -38,7 +38,7 @@ describe('RoleToSubscriptionMap', () => {
         name: RoleName.NAMES.CoreUser,
       },
       {
-        name: RoleName.NAMES.FilesBetaUser,
+        name: RoleName.NAMES.InternalTeamUser,
       },
     ])
   })
@@ -49,7 +49,7 @@ describe('RoleToSubscriptionMap', () => {
         name: RoleName.NAMES.CoreUser,
       } as jest.Mocked<Role>,
       {
-        name: RoleName.NAMES.FilesBetaUser,
+        name: RoleName.NAMES.InternalTeamUser,
       } as jest.Mocked<Role>,
       {
         name: RoleName.NAMES.PlusUser,
