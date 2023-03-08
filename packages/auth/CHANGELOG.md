@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.93.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.93.0...@standardnotes/auth-server@1.93.1) (2023-03-08)
+
+### Bug Fixes
+
+* **auth:** migrate muted email notifications settings ([f91e431](https://github.com/standardnotes/server/commit/f91e4316ff4993d032c016bb233b93a9f3356cf3))
+
 # [1.93.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.92.0...@standardnotes/auth-server@1.93.0) (2023-03-08)
 
 ### Bug Fixes
