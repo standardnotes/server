@@ -19,10 +19,11 @@ export class MySQLSettingRepository implements SettingRepositoryInterface {
   }
 
   async findOneByUuidAndNames(uuid: string, names: SettingName[]): Promise<Setting | null> {
+    const nameValues = names.map((name) => name.value)
     return this.ormRepository
       .createQueryBuilder('setting')
       .where('setting.uuid = :uuid AND setting.name IN (:...names)', {
-        names,
+        names: nameValues,
         uuid,
       })
       .getOne()
@@ -32,7 +33,7 @@ export class MySQLSettingRepository implements SettingRepositoryInterface {
     return this.ormRepository
       .createQueryBuilder('setting')
       .where('setting.name = :name AND setting.value = :value', {
-        name,
+        name: name.value,
         value,
       })
       .orderBy('updated_at', 'ASC')
