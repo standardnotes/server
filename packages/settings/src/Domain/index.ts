@@ -9,6 +9,5 @@ export * from './MuteFailedCloudBackupsEmails/MuteFailedCloudBackupsEmailsOption
 export * from './MuteMarketingEmails/MuteMarketingEmailsOption'
 export * from './MuteSignInEmails/MuteSignInEmailsOption'
 export * from './OneDriveBackupFrequency/OneDriveBackupFrequency'
-export * from './Setting/SensitiveSettingName'
 export * from './Setting/SettingName'
-export * from './Setting/SubscriptionSettingName'
+export * from './Setting/SettingNameProps'

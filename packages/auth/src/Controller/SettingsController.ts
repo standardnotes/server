@@ -61,7 +61,7 @@ export class SettingsController extends BaseHttpController {
     }
 
     const { userUuid, settingName } = request.params
-    const result = await this.doGetSetting.execute({ userUuid, settingName })
+    const result = await this.doGetSetting.execute({ userUuid, settingName: settingName.toUpperCase() })
 
     if (result.success) {
       return this.json(result)

@@ -12,12 +12,19 @@ import { User } from '../../User/User'
 import { SettingName } from '@standardnotes/settings'
 import { RoleServiceInterface } from '../../Role/RoleServiceInterface'
 import { SettingsAssociationServiceInterface } from '../../Setting/SettingsAssociationServiceInterface'
+import { SubscriptionSettingServiceInterface } from '../../Setting/SubscriptionSettingServiceInterface'
+import { UserSubscriptionServiceInterface } from '../../Subscription/UserSubscriptionServiceInterface'
+import { CreateOrReplaceSubscriptionSettingResponse } from '../../Setting/CreateOrReplaceSubscriptionSettingResponse'
+import { SubscriptionSettingProjector } from '../../../Projection/SubscriptionSettingProjector'
 
 @injectable()
 export class UpdateSetting implements UseCaseInterface {
   constructor(
     @inject(TYPES.SettingService) private settingService: SettingServiceInterface,
+    @inject(TYPES.SubscriptionSettingService) private subscriptionSettingService: SubscriptionSettingServiceInterface,
+    @inject(TYPES.UserSubscriptionService) private userSubscriptionService: UserSubscriptionServiceInterface,
     @inject(TYPES.SettingProjector) private settingProjector: SettingProjector,
+    @inject(TYPES.SubscriptionSettingProjector) private subscriptionSettingProjector: SubscriptionSettingProjector,
     @inject(TYPES.SettingsAssociationService) private settingsAssociationService: SettingsAssociationServiceInterface,
     @inject(TYPES.UserRepository) private userRepository: UserRepositoryInterface,
     @inject(TYPES.RoleService) private roleService: RoleServiceInterface,
@@ -25,15 +32,17 @@ export class UpdateSetting implements UseCaseInterface {
   ) {}
 
   async execute(dto: UpdateSettingDto): Promise<UpdateSettingResponse> {
-    if (!Object.values(SettingName).includes(dto.props.name as SettingName)) {
+    const settingNameOrError = SettingName.create(dto.props.name)
+    if (settingNameOrError.isFailed()) {
       return {
         success: false,
         error: {
-          message: `Setting name ${dto.props.name} is invalid.`,
+          message: settingNameOrError.getError(),
         },
         statusCode: 400,
       }
     }
+    const settingName = settingNameOrError.getValue()
 
     this.logger.debug('[%s] Updating setting: %O', dto.userUuid, dto)
 
@@ -51,7 +60,7 @@ export class UpdateSetting implements UseCaseInterface {
       }
     }
 
-    if (!(await this.userHasPermissionToUpdateSetting(user, props.name as SettingName))) {
+    if (!(await this.userHasPermissionToUpdateSetting(user, settingName))) {
       return {
         success: false,
         error: {
@@ -61,10 +70,34 @@ export class UpdateSetting implements UseCaseInterface {
       }
     }
 
-    props.serverEncryptionVersion = this.settingsAssociationService.getEncryptionVersionForSetting(
-      props.name as SettingName,
-    )
-    props.sensitive = this.settingsAssociationService.getSensitivityForSetting(props.name as SettingName)
+    props.serverEncryptionVersion = this.settingsAssociationService.getEncryptionVersionForSetting(settingName)
+    props.sensitive = this.settingsAssociationService.getSensitivityForSetting(settingName)
+
+    if (settingName.isASubscriptionSetting()) {
+      const { regularSubscription, sharedSubscription } =
+        await this.userSubscriptionService.findRegularSubscriptionForUserUuid(user.uuid)
+      const subscription = sharedSubscription ?? regularSubscription
+      if (!subscription) {
+        return {
+          success: false,
+          error: {
+            message: `User ${userUuid} has no subscription to change a subscription setting.`,
+          },
+          statusCode: 401,
+        }
+      }
+
+      const response = await this.subscriptionSettingService.createOrReplace({
+        userSubscription: subscription,
+        props,
+      })
+
+      return {
+        success: true,
+        setting: await this.subscriptionSettingProjector.projectSimple(response.subscriptionSetting),
+        statusCode: this.statusToStatusCode(response),
+      }
+    }
 
     const response = await this.settingService.createOrReplace({
       user,
@@ -79,7 +112,9 @@ export class UpdateSetting implements UseCaseInterface {
   }
 
   /* istanbul ignore next */
-  private statusToStatusCode(response: CreateOrReplaceSettingResponse): number {
+  private statusToStatusCode(
+    response: CreateOrReplaceSettingResponse | CreateOrReplaceSubscriptionSettingResponse,
+  ): number {
     if (response.status === 'created') {
       return 201
     }
@@ -92,7 +127,7 @@ export class UpdateSetting implements UseCaseInterface {
   }
 
   private async userHasPermissionToUpdateSetting(user: User, settingName: SettingName): Promise<boolean> {
-    const settingIsMutableByClient = await this.settingsAssociationService.isSettingMutableByClient(settingName)
+    const settingIsMutableByClient = this.settingsAssociationService.isSettingMutableByClient(settingName)
     if (!settingIsMutableByClient) {
       return false
     }

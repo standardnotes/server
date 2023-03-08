@@ -35,7 +35,7 @@ export class GenerateRecoveryCodes implements UseCaseInterface<string> {
     await this.settingService.createOrReplace({
       user,
       props: {
-        name: SettingName.RecoveryCodes,
+        name: SettingName.NAMES.RecoveryCodes,
         unencryptedValue: recoveryCodes,
         serverEncryptionVersion: EncryptionVersion.Default,
         sensitive: false,

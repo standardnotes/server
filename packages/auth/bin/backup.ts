@@ -32,36 +32,36 @@ const requestBackups = async (
 ): Promise<void> => {
   let settingName: SettingName,
     permissionName: PermissionName,
-    muteEmailsSettingName: SettingName,
+    muteEmailsSettingName: string,
     muteEmailsSettingValue: string,
     providerTokenSettingName: SettingName
   switch (backupProvider) {
     case 'email':
-      settingName = SettingName.EmailBackupFrequency
+      settingName = SettingName.create(SettingName.NAMES.EmailBackupFrequency).getValue()
       permissionName = PermissionName.DailyEmailBackup
-      muteEmailsSettingName = SettingName.MuteFailedBackupsEmails
+      muteEmailsSettingName = SettingName.NAMES.MuteFailedBackupsEmails
       muteEmailsSettingValue = MuteFailedBackupsEmailsOption.Muted
       break
     case 'dropbox':
-      settingName = SettingName.DropboxBackupFrequency
+      settingName = SettingName.create(SettingName.NAMES.DropboxBackupFrequency).getValue()
       permissionName = PermissionName.DailyDropboxBackup
-      muteEmailsSettingName = SettingName.MuteFailedCloudBackupsEmails
+      muteEmailsSettingName = SettingName.NAMES.MuteFailedCloudBackupsEmails
       muteEmailsSettingValue = MuteFailedCloudBackupsEmailsOption.Muted
-      providerTokenSettingName = SettingName.DropboxBackupToken
+      providerTokenSettingName = SettingName.create(SettingName.NAMES.DropboxBackupToken).getValue()
       break
     case 'one_drive':
-      settingName = SettingName.OneDriveBackupFrequency
+      settingName = SettingName.create(SettingName.NAMES.OneDriveBackupFrequency).getValue()
       permissionName = PermissionName.DailyOneDriveBackup
-      muteEmailsSettingName = SettingName.MuteFailedCloudBackupsEmails
+      muteEmailsSettingName = SettingName.NAMES.MuteFailedCloudBackupsEmails
       muteEmailsSettingValue = MuteFailedCloudBackupsEmailsOption.Muted
-      providerTokenSettingName = SettingName.OneDriveBackupToken
+      providerTokenSettingName = SettingName.create(SettingName.NAMES.OneDriveBackupToken).getValue()
       break
     case 'google_drive':
-      settingName = SettingName.GoogleDriveBackupFrequency
+      settingName = SettingName.create(SettingName.NAMES.GoogleDriveBackupFrequency).getValue()
       permissionName = PermissionName.DailyGDriveBackup
-      muteEmailsSettingName = SettingName.MuteFailedCloudBackupsEmails
+      muteEmailsSettingName = SettingName.NAMES.MuteFailedCloudBackupsEmails
       muteEmailsSettingValue = MuteFailedCloudBackupsEmailsOption.Muted
-      providerTokenSettingName = SettingName.GoogleDriveBackupToken
+      providerTokenSettingName = SettingName.create(SettingName.NAMES.GoogleDriveBackupToken).getValue()
       break
     default:
       throw new Error(`Not handled backup provider: ${backupProvider}`)

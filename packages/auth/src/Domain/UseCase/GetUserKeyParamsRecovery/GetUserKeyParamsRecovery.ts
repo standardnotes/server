@@ -40,7 +40,7 @@ export class GetUserKeyParamsRecovery implements UseCaseInterface<KeyParamsData>
     }
 
     const recoveryCodesSetting = await this.settingService.findSettingWithDecryptedValue({
-      settingName: SettingName.RecoveryCodes,
+      settingName: SettingName.create(SettingName.NAMES.RecoveryCodes).getValue(),
       userUuid: user.uuid,
     })
     if (!recoveryCodesSetting) {

@@ -9,12 +9,22 @@ import { Setting } from '../../Setting/Setting'
 import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'
 import { CrypterInterface } from '../../Encryption/CrypterInterface'
 import { EncryptionVersion } from '../../Encryption/EncryptionVersion'
+import { UserSubscriptionServiceInterface } from '../../Subscription/UserSubscriptionServiceInterface'
+import { SubscriptionSettingRepositoryInterface } from '../../Setting/SubscriptionSettingRepositoryInterface'
+import { SubscriptionSetting } from '../../Setting/SubscriptionSetting'
+import { SimpleSetting } from '../../Setting/SimpleSetting'
+import { SimpleSubscriptionSetting } from '../../Setting/SimpleSubscriptionSetting'
+import { SubscriptionSettingProjector } from '../../../Projection/SubscriptionSettingProjector'
 
 @injectable()
 export class GetSettings implements UseCaseInterface {
   constructor(
     @inject(TYPES.SettingRepository) private settingRepository: SettingRepositoryInterface,
+    @inject(TYPES.SubscriptionSettingRepository)
+    private subscriptionSettingRepository: SubscriptionSettingRepositoryInterface,
+    @inject(TYPES.UserSubscriptionService) private userSubscriptionService: UserSubscriptionServiceInterface,
     @inject(TYPES.SettingProjector) private settingProjector: SettingProjector,
+    @inject(TYPES.SubscriptionSettingProjector) private subscriptionSettingProjector: SubscriptionSettingProjector,
     @inject(TYPES.UserRepository) private userRepository: UserRepositoryInterface,
     @inject(TYPES.Crypter) private crypter: CrypterInterface,
   ) {}
@@ -33,27 +43,43 @@ export class GetSettings implements UseCaseInterface {
       }
     }
 
-    let settings = await this.settingRepository.findAllByUserUuid(userUuid)
+    let settings: Array<Setting | SubscriptionSetting>
+    settings = await this.settingRepository.findAllByUserUuid(userUuid)
+
+    const { regularSubscription, sharedSubscription } =
+      await this.userSubscriptionService.findRegularSubscriptionForUserUuid(user.uuid)
+    const subscription = sharedSubscription ?? regularSubscription
+    if (subscription) {
+      const subscriptionSettings = await this.subscriptionSettingRepository.findAllBySubscriptionUuid(subscription.uuid)
+      settings = settings.concat(subscriptionSettings)
+    }
 
     if (dto.settingName !== undefined) {
-      settings = settings.filter((setting: Setting) => setting.name === dto.settingName)
+      settings = settings.filter((setting: Setting | SubscriptionSetting) => setting.name === dto.settingName)
     }
 
     if (dto.updatedAfter !== undefined) {
-      settings = settings.filter((setting: Setting) => setting.updatedAt >= (dto.updatedAfter as number))
+      settings = settings.filter(
+        (setting: Setting | SubscriptionSetting) => setting.updatedAt >= (dto.updatedAfter as number),
+      )
     }
 
     if (!dto.allowSensitiveRetrieval) {
-      settings = settings.filter((setting: Setting) => !setting.sensitive)
+      settings = settings.filter((setting: Setting | SubscriptionSetting) => !setting.sensitive)
     }
 
+    const simpleSettings: Array<SimpleSetting | SimpleSubscriptionSetting> = []
     for (const setting of settings) {
       if (setting.value !== null && setting.serverEncryptionVersion === EncryptionVersion.Default) {
         setting.value = await this.crypter.decryptForUser(setting.value, user)
       }
-    }
 
-    const simpleSettings = await this.settingProjector.projectManySimple(settings)
+      if (setting instanceof SubscriptionSetting) {
+        simpleSettings.push(await this.subscriptionSettingProjector.projectSimple(setting))
+      } else {
+        simpleSettings.push(await this.settingProjector.projectSimple(setting))
+      }
+    }
 
     return {
       success: true,

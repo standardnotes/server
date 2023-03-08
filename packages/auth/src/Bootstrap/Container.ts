@@ -168,7 +168,6 @@ import { ListSharedSubscriptionInvitations } from '../Domain/UseCase/ListSharedS
 import { UserSubscriptionServiceInterface } from '../Domain/Subscription/UserSubscriptionServiceInterface'
 import { UserSubscriptionService } from '../Domain/Subscription/UserSubscriptionService'
 import { SubscriptionSettingProjector } from '../Projection/SubscriptionSettingProjector'
-import { GetSubscriptionSetting } from '../Domain/UseCase/GetSubscriptionSetting/GetSubscriptionSetting'
 import { SubscriptionSettingsAssociationService } from '../Domain/Setting/SubscriptionSettingsAssociationService'
 import { SubscriptionSettingsAssociationServiceInterface } from '../Domain/Setting/SubscriptionSettingsAssociationServiceInterface'
 import { PKCERepositoryInterface } from '../Domain/User/PKCERepositoryInterface'
@@ -691,7 +690,6 @@ export class ContainerConfigLoader {
     container
       .bind<ListSharedSubscriptionInvitations>(TYPES.ListSharedSubscriptionInvitations)
       .to(ListSharedSubscriptionInvitations)
-    container.bind<GetSubscriptionSetting>(TYPES.GetSubscriptionSetting).to(GetSubscriptionSetting)
     container.bind<VerifyPredicate>(TYPES.VerifyPredicate).to(VerifyPredicate)
     container.bind<CreateCrossServiceToken>(TYPES.CreateCrossServiceToken).to(CreateCrossServiceToken)
     container.bind<ProcessUserRequest>(TYPES.ProcessUserRequest).to(ProcessUserRequest)

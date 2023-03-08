@@ -57,7 +57,7 @@ export class SettingService implements SettingServiceInterface {
     if (dto.settingUuid !== undefined) {
       setting = await this.settingRepository.findOneByUuid(dto.settingUuid)
     } else {
-      setting = await this.settingRepository.findLastByNameAndUserUuid(dto.settingName, dto.userUuid)
+      setting = await this.settingRepository.findLastByNameAndUserUuid(dto.settingName.value, dto.userUuid)
     }
 
     if (setting === null) {
@@ -72,9 +72,15 @@ export class SettingService implements SettingServiceInterface {
   async createOrReplace(dto: CreateOrReplaceSettingDto): Promise<CreateOrReplaceSettingResponse> {
     const { user, props } = dto
 
+    const settingNameOrError = SettingName.create(props.name)
+    if (settingNameOrError.isFailed()) {
+      throw new Error(settingNameOrError.getError())
+    }
+    const settingName = settingNameOrError.getValue()
+
     const existing = await this.findSettingWithDecryptedValue({
       userUuid: user.uuid,
-      settingName: props.name as SettingName,
+      settingName,
       settingUuid: props.uuid,
     })
 
@@ -83,7 +89,7 @@ export class SettingService implements SettingServiceInterface {
 
       this.logger.debug('[%s] Created setting %s: %O', user.uuid, props.name, setting)
 
-      await this.settingInterpreter.interpretSettingUpdated(setting, user, props.unencryptedValue)
+      await this.settingInterpreter.interpretSettingUpdated(setting.name, user, props.unencryptedValue)
 
       return {
         status: 'created',
@@ -95,7 +101,7 @@ export class SettingService implements SettingServiceInterface {
 
     this.logger.debug('[%s] Replaced existing setting %s with: %O', user.uuid, props.name, setting)
 
-    await this.settingInterpreter.interpretSettingUpdated(setting, user, props.unencryptedValue)
+    await this.settingInterpreter.interpretSettingUpdated(setting.name, user, props.unencryptedValue)
 
     return {
       status: 'replaced',

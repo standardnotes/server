@@ -39,7 +39,10 @@ export class VerifyPredicate implements UseCaseInterface {
   }
 
   private async hasUserEnabledEmailBackups(userUuid: string): Promise<boolean> {
-    const setting = await this.settingRepository.findOneByNameAndUserUuid(SettingName.EmailBackupFrequency, userUuid)
+    const setting = await this.settingRepository.findOneByNameAndUserUuid(
+      SettingName.NAMES.EmailBackupFrequency,
+      userUuid,
+    )
 
     if (setting === null || setting.value === EmailBackupFrequency.Disabled) {
       return false

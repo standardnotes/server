@@ -55,7 +55,7 @@ describe('VerifyMFA', () => {
     lockRepository.lockSuccessfullOTP = jest.fn()
 
     setting = {
-      name: SettingName.MfaSecret,
+      name: SettingName.NAMES.MfaSecret,
       value: 'shhhh',
     } as jest.Mocked<Setting>
 
@@ -87,7 +87,7 @@ describe('VerifyMFA', () => {
 
     it('should pass MFA verification if user has MFA deleted', async () => {
       setting = {
-        name: SettingName.MfaSecret,
+        name: SettingName.NAMES.MfaSecret,
         value: null,
       } as jest.Mocked<Setting>
 
@@ -177,7 +177,7 @@ describe('VerifyMFA', () => {
 
     it('should not pass MFA verification if mfa is not correct', async () => {
       setting = {
-        name: SettingName.MfaSecret,
+        name: SettingName.NAMES.MfaSecret,
         value: 'shhhh2',
       } as jest.Mocked<Setting>
 

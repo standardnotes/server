@@ -27,13 +27,13 @@ export class EmailSubscriptionUnsubscribedEventHandler implements DomainEventHan
   private getSettingNameFromLevel(level: string): string {
     switch (level) {
       case EmailLevel.LEVELS.FailedCloudBackup:
-        return SettingName.MuteFailedCloudBackupsEmails
+        return SettingName.NAMES.MuteFailedCloudBackupsEmails
       case EmailLevel.LEVELS.FailedEmailBackup:
-        return SettingName.MuteFailedBackupsEmails
+        return SettingName.NAMES.MuteFailedBackupsEmails
       case EmailLevel.LEVELS.Marketing:
-        return SettingName.MuteMarketingEmails
+        return SettingName.NAMES.MuteMarketingEmails
       case EmailLevel.LEVELS.SignIn:
-        return SettingName.MuteSignInEmails
+        return SettingName.NAMES.MuteSignInEmails
       default:
         throw new Error(`Unknown level: ${level}`)
     }

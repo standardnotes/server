@@ -87,7 +87,7 @@ export class MySQLSettingRepository implements SettingRepositoryInterface {
 
   async deleteByUserUuid({ settingName, userUuid }: DeleteSettingDto): Promise<void> {
     await this.ormRepository
-      .createQueryBuilder('setting')
+      .createQueryBuilder()
       .delete()
       .where('name = :name AND user_uuid = :user_uuid', {
         user_uuid: userUuid,

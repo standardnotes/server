@@ -15,7 +15,6 @@ import { Logger } from 'winston'
 import TYPES from '../../Bootstrap/Types'
 import { DomainEventFactoryInterface } from '../Event/DomainEventFactoryInterface'
 import { User } from '../User/User'
-import { Setting } from './Setting'
 import { SettingDecrypterInterface } from './SettingDecrypterInterface'
 import { SettingInterpreterInterface } from './SettingInterpreterInterface'
 import { SettingRepositoryInterface } from './SettingRepositoryInterface'
@@ -23,15 +22,15 @@ import { SettingRepositoryInterface } from './SettingRepositoryInterface'
 @injectable()
 export class SettingInterpreter implements SettingInterpreterInterface {
   private readonly cloudBackupTokenSettings = [
-    SettingName.DropboxBackupToken,
-    SettingName.GoogleDriveBackupToken,
-    SettingName.OneDriveBackupToken,
+    SettingName.NAMES.DropboxBackupToken,
+    SettingName.NAMES.GoogleDriveBackupToken,
+    SettingName.NAMES.OneDriveBackupToken,
   ]
 
   private readonly cloudBackupFrequencySettings = [
-    SettingName.DropboxBackupFrequency,
-    SettingName.GoogleDriveBackupFrequency,
-    SettingName.OneDriveBackupFrequency,
+    SettingName.NAMES.DropboxBackupFrequency,
+    SettingName.NAMES.GoogleDriveBackupFrequency,
+    SettingName.NAMES.OneDriveBackupFrequency,
   ]
 
   private readonly cloudBackupFrequencyDisabledValues = [
@@ -40,11 +39,11 @@ export class SettingInterpreter implements SettingInterpreterInterface {
     OneDriveBackupFrequency.Disabled,
   ]
 
-  private readonly emailSettingToSubscriptionRejectionLevelMap: Map<SettingName, string> = new Map([
-    [SettingName.MuteFailedBackupsEmails, EmailLevel.LEVELS.FailedEmailBackup],
-    [SettingName.MuteFailedCloudBackupsEmails, EmailLevel.LEVELS.FailedCloudBackup],
-    [SettingName.MuteMarketingEmails, EmailLevel.LEVELS.Marketing],
-    [SettingName.MuteSignInEmails, EmailLevel.LEVELS.SignIn],
+  private readonly emailSettingToSubscriptionRejectionLevelMap: Map<string, string> = new Map([
+    [SettingName.NAMES.MuteFailedBackupsEmails, EmailLevel.LEVELS.FailedEmailBackup],
+    [SettingName.NAMES.MuteFailedCloudBackupsEmails, EmailLevel.LEVELS.FailedCloudBackup],
+    [SettingName.NAMES.MuteMarketingEmails, EmailLevel.LEVELS.Marketing],
+    [SettingName.NAMES.MuteSignInEmails, EmailLevel.LEVELS.SignIn],
   ])
 
   constructor(
@@ -55,20 +54,24 @@ export class SettingInterpreter implements SettingInterpreterInterface {
     @inject(TYPES.Logger) private logger: Logger,
   ) {}
 
-  async interpretSettingUpdated(updatedSetting: Setting, user: User, unencryptedValue: string | null): Promise<void> {
-    if (this.isChangingMuteEmailsSetting(updatedSetting)) {
-      await this.triggerEmailSubscriptionChange(user, updatedSetting.name as SettingName, unencryptedValue)
+  async interpretSettingUpdated(
+    updatedSettingName: string,
+    user: User,
+    unencryptedValue: string | null,
+  ): Promise<void> {
+    if (this.isChangingMuteEmailsSetting(updatedSettingName)) {
+      await this.triggerEmailSubscriptionChange(user, updatedSettingName, unencryptedValue)
     }
 
-    if (this.isEnablingEmailBackupSetting(updatedSetting)) {
+    if (this.isEnablingEmailBackupSetting(updatedSettingName, unencryptedValue)) {
       await this.triggerEmailBackup(user.uuid)
     }
 
-    if (this.isEnablingCloudBackupSetting(updatedSetting)) {
-      await this.triggerCloudBackup(updatedSetting, user.uuid, unencryptedValue)
+    if (this.isEnablingCloudBackupSetting(updatedSettingName, unencryptedValue)) {
+      await this.triggerCloudBackup(updatedSettingName, user.uuid, unencryptedValue)
     }
 
-    if (this.isDisablingSessionUserAgentLogging(updatedSetting)) {
+    if (this.isDisablingSessionUserAgentLogging(updatedSettingName, unencryptedValue)) {
       await this.triggerSessionUserAgentCleanup(user)
     }
   }
@@ -77,7 +80,7 @@ export class SettingInterpreter implements SettingInterpreterInterface {
     let userHasEmailsMuted = false
     let muteEmailsSettingUuid = ''
     const muteFailedEmailsBackupSetting = await this.settingRepository.findOneByNameAndUserUuid(
-      SettingName.MuteFailedBackupsEmails,
+      SettingName.NAMES.MuteFailedBackupsEmails,
       userUuid,
     )
     if (muteFailedEmailsBackupSetting !== null) {
@@ -90,36 +93,39 @@ export class SettingInterpreter implements SettingInterpreterInterface {
     )
   }
 
-  private isChangingMuteEmailsSetting(setting: Setting): boolean {
+  private isChangingMuteEmailsSetting(settingName: string): boolean {
     return [
-      SettingName.MuteFailedBackupsEmails,
-      SettingName.MuteFailedCloudBackupsEmails,
-      SettingName.MuteMarketingEmails,
-      SettingName.MuteSignInEmails,
-    ].includes(setting.name as SettingName)
+      SettingName.NAMES.MuteFailedBackupsEmails,
+      SettingName.NAMES.MuteFailedCloudBackupsEmails,
+      SettingName.NAMES.MuteMarketingEmails,
+      SettingName.NAMES.MuteSignInEmails,
+    ].includes(settingName)
   }
 
-  private isEnablingEmailBackupSetting(setting: Setting): boolean {
-    return setting.name === SettingName.EmailBackupFrequency && setting.value !== EmailBackupFrequency.Disabled
-  }
-
-  private isEnablingCloudBackupSetting(setting: Setting): boolean {
+  private isEnablingEmailBackupSetting(settingName: string, newValue: string | null): boolean {
     return (
-      (this.cloudBackupFrequencySettings.includes(setting.name as SettingName) ||
-        this.cloudBackupTokenSettings.includes(setting.name as SettingName)) &&
+      settingName === SettingName.NAMES.EmailBackupFrequency &&
+      [EmailBackupFrequency.Daily, EmailBackupFrequency.Weekly].includes(newValue as EmailBackupFrequency)
+    )
+  }
+
+  private isEnablingCloudBackupSetting(settingName: string, newValue: string | null): boolean {
+    return (
+      (this.cloudBackupFrequencySettings.includes(settingName) ||
+        this.cloudBackupTokenSettings.includes(settingName)) &&
       !this.cloudBackupFrequencyDisabledValues.includes(
-        setting.value as DropboxBackupFrequency | OneDriveBackupFrequency | GoogleDriveBackupFrequency,
+        newValue as DropboxBackupFrequency | OneDriveBackupFrequency | GoogleDriveBackupFrequency,
       )
     )
   }
 
-  private isDisablingSessionUserAgentLogging(setting: Setting): boolean {
-    return SettingName.LogSessionUserAgent === setting.name && LogSessionUserAgentOption.Disabled === setting.value
+  private isDisablingSessionUserAgentLogging(settingName: string, newValue: string | null): boolean {
+    return SettingName.NAMES.LogSessionUserAgent === settingName && LogSessionUserAgentOption.Disabled === newValue
   }
 
   private async triggerEmailSubscriptionChange(
     user: User,
-    settingName: SettingName,
+    settingName: string,
     unencryptedValue: string | null,
   ): Promise<void> {
     await this.domainEventPublisher.publish(
@@ -140,33 +146,34 @@ export class SettingInterpreter implements SettingInterpreterInterface {
     )
   }
 
-  private async triggerCloudBackup(setting: Setting, userUuid: string, unencryptedValue: string | null): Promise<void> {
+  private async triggerCloudBackup(
+    settingName: string,
+    userUuid: string,
+    unencryptedValue: string | null,
+  ): Promise<void> {
     let cloudProvider
     let tokenSettingName
-    switch (setting.name) {
-      case SettingName.DropboxBackupToken:
-      case SettingName.DropboxBackupFrequency:
+    switch (settingName) {
+      case SettingName.NAMES.DropboxBackupToken:
+      case SettingName.NAMES.DropboxBackupFrequency:
         cloudProvider = 'DROPBOX'
-        tokenSettingName = SettingName.DropboxBackupToken
+        tokenSettingName = SettingName.NAMES.DropboxBackupToken
         break
-      case SettingName.GoogleDriveBackupToken:
-      case SettingName.GoogleDriveBackupFrequency:
+      case SettingName.NAMES.GoogleDriveBackupToken:
+      case SettingName.NAMES.GoogleDriveBackupFrequency:
         cloudProvider = 'GOOGLE_DRIVE'
-        tokenSettingName = SettingName.GoogleDriveBackupToken
+        tokenSettingName = SettingName.NAMES.GoogleDriveBackupToken
         break
-      case SettingName.OneDriveBackupToken:
-      case SettingName.OneDriveBackupFrequency:
+      case SettingName.NAMES.OneDriveBackupToken:
+      case SettingName.NAMES.OneDriveBackupFrequency:
         cloudProvider = 'ONE_DRIVE'
-        tokenSettingName = SettingName.OneDriveBackupToken
+        tokenSettingName = SettingName.NAMES.OneDriveBackupToken
         break
     }
 
     let backupToken = null
-    if (this.cloudBackupFrequencySettings.includes(setting.name as SettingName)) {
-      const tokenSetting = await this.settingRepository.findLastByNameAndUserUuid(
-        tokenSettingName as SettingName,
-        userUuid,
-      )
+    if (this.cloudBackupFrequencySettings.includes(settingName)) {
+      const tokenSetting = await this.settingRepository.findLastByNameAndUserUuid(tokenSettingName as string, userUuid)
       if (tokenSetting !== null) {
         backupToken = await this.settingDecrypter.decryptSettingValue(tokenSetting, userUuid)
       }
@@ -183,7 +190,7 @@ export class SettingInterpreter implements SettingInterpreterInterface {
     let userHasEmailsMuted = false
     let muteEmailsSettingUuid = ''
     const muteFailedCloudBackupSetting = await this.settingRepository.findOneByNameAndUserUuid(
-      SettingName.MuteFailedCloudBackupsEmails,
+      SettingName.NAMES.MuteFailedCloudBackupsEmails,
       userUuid,
     )
     if (muteFailedCloudBackupSetting !== null) {

@@ -28,7 +28,7 @@ export class ListedAccountCreatedEventHandler implements DomainEventHandlerInter
     let authSecrets: ListedAuthorSecretsData = [newSecret]
 
     const listedAuthorSecretsSetting = await this.settingService.findSettingWithDecryptedValue({
-      settingName: SettingName.ListedAuthorSecrets,
+      settingName: SettingName.create(SettingName.NAMES.ListedAuthorSecrets).getValue(),
       userUuid: user.uuid,
     })
     if (listedAuthorSecretsSetting !== null) {
@@ -40,7 +40,7 @@ export class ListedAccountCreatedEventHandler implements DomainEventHandlerInter
     await this.settingService.createOrReplace({
       user,
       props: {
-        name: SettingName.ListedAuthorSecrets,
+        name: SettingName.NAMES.ListedAuthorSecrets,
         unencryptedValue: JSON.stringify(authSecrets),
         sensitive: false,
       },
