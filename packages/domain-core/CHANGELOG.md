@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.12.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.11.3...@standardnotes/domain-core@1.12.0) (2023-03-08)
+
+### Features
+
+* **domain-core:** add internal team user role ([#473](https://github.com/standardnotes/server/issues/473)) ([979a320](https://github.com/standardnotes/server/commit/979a320ca666991ad2b023436f58c59ae168c768))
+
 ## [1.11.3](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.11.2...@standardnotes/domain-core@1.11.3) (2023-02-15)
 
 ### Bug Fixes

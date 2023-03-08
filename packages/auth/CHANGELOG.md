@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.93.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.92.0...@standardnotes/auth-server@1.93.0) (2023-03-08)
+
+### Bug Fixes
+
+* **auth:** setting name value objects in typeorm queries ([28dc5ba](https://github.com/standardnotes/server/commit/28dc5ba2a4e946b7aed86432da160c0be76f839d))
+
+### Features
+
+* **domain-core:** add internal team user role ([#473](https://github.com/standardnotes/server/issues/473)) ([979a320](https://github.com/standardnotes/server/commit/979a320ca666991ad2b023436f58c59ae168c768))
+
 # [1.92.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.91.2...@standardnotes/auth-server@1.92.0) (2023-03-08)
 
 ### Features
