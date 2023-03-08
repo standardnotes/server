@@ -12,7 +12,7 @@ export class RoleToSubscriptionMap implements RoleToSubscriptionMapInterface {
     [RoleName.NAMES.ProUser, SubscriptionName.ProPlan],
   ])
 
-  private readonly nonSubscriptionRoles = [RoleName.NAMES.CoreUser, RoleName.NAMES.FilesBetaUser]
+  private readonly nonSubscriptionRoles = [RoleName.NAMES.CoreUser, RoleName.NAMES.InternalTeamUser]
 
   filterNonSubscriptionRoles(roles: Role[]): Array<Role> {
     return roles.filter((role) => this.nonSubscriptionRoles.includes(role.name))
