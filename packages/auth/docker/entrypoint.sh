@@ -40,11 +40,6 @@ case "$COMMAND" in
     node docker/entrypoint-user-email-backup.js $EMAIL
     ;;
 
-  'migrate-email-settings' )
-    echo "[Docker] Starting Email Settings Migration..."
-    node docker/entrypoint-migrate-email-settings.js
-    ;;
-
   'dropbox-daily-backup' )
     echo "[Docker] Starting Dropbox Daily Backup..."
     node docker/entrypoint-backup.js dropbox daily
