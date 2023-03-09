@@ -104,7 +104,7 @@ export class AuthenticatorsController {
 
     return {
       status: HttpStatusCode.Success,
-      data: { success: result.getValue() },
+      data: { id: result.getValue().toString() },
     }
   }
 

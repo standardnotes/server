@@ -1,4 +1,4 @@
-import { Dates, Result, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
+import { Dates, Result, UniqueEntityId, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
 import { VerifiedRegistrationResponse, verifyRegistrationResponse } from '@simplewebauthn/server'
 
 import { AuthenticatorChallengeRepositoryInterface } from '../../Authenticator/AuthenticatorChallengeRepositoryInterface'
@@ -6,7 +6,7 @@ import { AuthenticatorRepositoryInterface } from '../../Authenticator/Authentica
 import { Authenticator } from '../../Authenticator/Authenticator'
 import { VerifyAuthenticatorRegistrationResponseDTO } from './VerifyAuthenticatorRegistrationResponseDTO'
 
-export class VerifyAuthenticatorRegistrationResponse implements UseCaseInterface<boolean> {
+export class VerifyAuthenticatorRegistrationResponse implements UseCaseInterface<UniqueEntityId> {
   constructor(
     private authenticatorRepository: AuthenticatorRepositoryInterface,
     private authenticatorChallengeRepository: AuthenticatorChallengeRepositoryInterface,
@@ -15,7 +15,7 @@ export class VerifyAuthenticatorRegistrationResponse implements UseCaseInterface
     private requireUserVerification: boolean,
   ) {}
 
-  async execute(dto: VerifyAuthenticatorRegistrationResponseDTO): Promise<Result<boolean>> {
+  async execute(dto: VerifyAuthenticatorRegistrationResponseDTO): Promise<Result<UniqueEntityId>> {
     const userUuidOrError = Uuid.create(dto.userUuid)
     if (userUuidOrError.isFailed()) {
       return Result.fail(`Could not verify authenticator registration response: ${userUuidOrError.getError()}`)
@@ -65,6 +65,6 @@ export class VerifyAuthenticatorRegistrationResponse implements UseCaseInterface
 
     await this.authenticatorRepository.save(authenticator)
 
-    return Result.ok(true)
+    return Result.ok(authenticator.id)
   }
 }

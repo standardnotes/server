@@ -1,3 +1,3 @@
 export interface VerifyAuthenticatorRegistrationResponseResponseBody {
-  success: boolean
+  id: string
 }
