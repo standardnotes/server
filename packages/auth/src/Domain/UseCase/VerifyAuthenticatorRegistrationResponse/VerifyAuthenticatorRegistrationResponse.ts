@@ -1,4 +1,4 @@
-import { Dates, Result, UseCaseInterface, Uuid, Validator } from '@standardnotes/domain-core'
+import { Dates, Result, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
 import { VerifiedRegistrationResponse, verifyRegistrationResponse } from '@simplewebauthn/server'
 
 import { AuthenticatorChallengeRepositoryInterface } from '../../Authenticator/AuthenticatorChallengeRepositoryInterface'
@@ -21,11 +21,6 @@ export class VerifyAuthenticatorRegistrationResponse implements UseCaseInterface
       return Result.fail(`Could not verify authenticator registration response: ${userUuidOrError.getError()}`)
     }
     const userUuid = userUuidOrError.getValue()
-
-    const nameValidation = Validator.isNotEmpty(dto.name)
-    if (nameValidation.isFailed()) {
-      return Result.fail(`Could not verify authenticator registration response: ${nameValidation.getError()}`)
-    }
 
     const authenticatorChallenge = await this.authenticatorChallengeRepository.findByUserUuid(userUuid)
     if (!authenticatorChallenge) {
@@ -55,7 +50,6 @@ export class VerifyAuthenticatorRegistrationResponse implements UseCaseInterface
 
     const authenticatorOrError = Authenticator.create({
       userUuid,
-      name: dto.name,
       counter: verification.registrationInfo.counter,
       credentialBackedUp: verification.registrationInfo.credentialBackedUp,
       credentialDeviceType: verification.registrationInfo.credentialDeviceType,

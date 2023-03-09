@@ -88,7 +88,6 @@ export class AuthenticatorsController {
   ): Promise<HttpResponse<VerifyAuthenticatorRegistrationResponseResponseBody>> {
     const result = await this.verifyAuthenticatorRegistrationResponse.execute({
       userUuid: params.userUuid,
-      name: params.name,
       attestationResponse: params.attestationResponse,
     })
 

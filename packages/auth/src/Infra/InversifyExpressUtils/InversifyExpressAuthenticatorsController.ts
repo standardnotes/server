@@ -52,7 +52,6 @@ export class InversifyExpressAuthenticatorsController extends BaseHttpController
     const result = await this.authenticatorsController.verifyRegistrationResponse({
       userUuid: response.locals.user.uuid,
       attestationResponse: request.body.attestationResponse,
-      name: request.body.name,
     })
 
     return this.json(result.data, result.status)

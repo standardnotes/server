@@ -6,7 +6,6 @@ describe('Authenticator', () => {
   it('should create an entity', () => {
     const entityOrError = Authenticator.create({
       counter: 1,
-      name: 'my-key',
       credentialBackedUp: true,
       credentialDeviceType: 'singleDevice',
       credentialId: Buffer.from('credentialId'),

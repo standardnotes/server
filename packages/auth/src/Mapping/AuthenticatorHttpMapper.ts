@@ -11,7 +11,6 @@ export class AuthenticatorHttpMapper implements MapperInterface<Authenticator, A
   toProjection(domain: Authenticator): AuthenticatorHttpProjection {
     return {
       id: domain.id.toString(),
-      name: domain.props.name,
     }
   }
 }
