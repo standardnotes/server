@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.93.4](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.93.3...@standardnotes/auth-server@1.93.4) (2023-03-09)
+
+### Bug Fixes
+
+* **auth:** change response from verifying authenticator registration ([e1c533a](https://github.com/standardnotes/server/commit/e1c533a15e33e215e90fbe15d2d4994605eaa1bd))
+
 ## [1.93.3](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.93.2...@standardnotes/auth-server@1.93.3) (2023-03-09)
 
 ### Bug Fixes
