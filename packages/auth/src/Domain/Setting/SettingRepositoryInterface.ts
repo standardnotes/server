@@ -11,6 +11,7 @@ export interface SettingRepositoryInterface {
   findLastByNameAndUserUuid(name: string, userUuid: string): Promise<Setting | null>
   findAllByUserUuid(userUuid: string): Promise<Setting[]>
   streamAllByNameAndValue(name: SettingName, value: string): Promise<ReadStream>
+  streamAllByName(name: SettingName): Promise<ReadStream>
   deleteByUserUuid(dto: DeleteSettingDto): Promise<void>
   save(setting: Setting): Promise<Setting>
 }

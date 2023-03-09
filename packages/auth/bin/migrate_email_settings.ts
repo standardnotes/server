@@ -20,6 +20,7 @@ import { UserSubscriptionServiceInterface } from '../src/Domain/Subscription/Use
 import { UserRepositoryInterface } from '../src/Domain/User/UserRepositoryInterface'
 import { SubscriptionSettingServiceInterface } from '../src/Domain/Setting/SubscriptionSettingServiceInterface'
 import { EncryptionVersion } from '../src/Domain/Encryption/EncryptionVersion'
+import { SettingServiceInterface } from '../src/Domain/Setting/SettingServiceInterface'
 
 const requestSettingMigration = async (
   settingRepository: SettingRepositoryInterface,
@@ -28,10 +29,10 @@ const requestSettingMigration = async (
   userSubscriptionService: UserSubscriptionServiceInterface,
   domainEventFactory: DomainEventFactoryInterface,
   domainEventPublisher: DomainEventPublisherInterface,
+  settingService: SettingServiceInterface,
 ): Promise<void> => {
-  const stream = await settingRepository.streamAllByNameAndValue(
+  const stream = await settingRepository.streamAllByName(
     SettingName.create(SettingName.NAMES.MuteSignInEmails).getValue(),
-    'muted',
   )
 
   return new Promise((resolve, reject) => {
@@ -70,13 +71,25 @@ const requestSettingMigration = async (
               return
             }
 
+            const typeORMSetting = await settingService.findSettingWithDecryptedValue({
+              settingName: SettingName.create(SettingName.NAMES.MuteSignInEmails).getValue(),
+              settingUuid: setting.setting_uuid,
+              userUuid: user.uuid,
+            })
+
+            if (!typeORMSetting) {
+              callback()
+
+              return
+            }
+
             await subscriptionSettingService.createOrReplace({
               userSubscription: subscription,
               props: {
                 name: SettingName.NAMES.MuteSignInEmails,
                 sensitive: false,
                 serverEncryptionVersion: EncryptionVersion.Unencrypted,
-                unencryptedValue: 'muted',
+                unencryptedValue: typeORMSetting.value,
               },
             })
 
@@ -113,6 +126,7 @@ void container.load().then((container) => {
   )
   const userRepository: UserRepositoryInterface = container.get(TYPES.UserRepository)
   const userSubscriptionService: UserSubscriptionServiceInterface = container.get(TYPES.UserSubscriptionService)
+  const settingService: SettingServiceInterface = container.get(TYPES.SettingService)
 
   Promise.resolve(
     requestSettingMigration(
@@ -122,6 +136,7 @@ void container.load().then((container) => {
       userSubscriptionService,
       domainEventFactory,
       domainEventPublisher,
+      settingService,
     ),
   )
     .then(() => {

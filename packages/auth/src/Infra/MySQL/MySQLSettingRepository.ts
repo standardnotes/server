@@ -29,6 +29,16 @@ export class MySQLSettingRepository implements SettingRepositoryInterface {
       .getOne()
   }
 
+  async streamAllByName(name: SettingName): Promise<ReadStream> {
+    return this.ormRepository
+      .createQueryBuilder('setting')
+      .where('setting.name = :name', {
+        name: name.value,
+      })
+      .orderBy('updated_at', 'ASC')
+      .stream()
+  }
+
   async streamAllByNameAndValue(name: SettingName, value: string): Promise<ReadStream> {
     return this.ormRepository
       .createQueryBuilder('setting')
