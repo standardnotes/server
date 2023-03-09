@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.93.3](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.93.2...@standardnotes/auth-server@1.93.3) (2023-03-09)
+
+### Bug Fixes
+
+* **auth:** migrate encrypted sign in settings ([d827513](https://github.com/standardnotes/server/commit/d827513b73a57fbdb72c3112f32dc2a296103450))
+* **auth:** remove authenticator names from server ([c45653a](https://github.com/standardnotes/server/commit/c45653a50a9d25de1e0fc86127ff6931dc98406d))
+
 ## [1.93.2](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.93.1...@standardnotes/auth-server@1.93.2) (2023-03-08)
 
 ### Bug Fixes
