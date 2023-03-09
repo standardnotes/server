@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.93.5](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.93.4...@standardnotes/auth-server@1.93.5) (2023-03-09)
+
+### Bug Fixes
+
+* **auth:** remove migrate email settings procedure ([4bd5fb2](https://github.com/standardnotes/server/commit/4bd5fb22b447b0e0fdb136aa46ddc812c8b272cd))
+
 ## [1.93.4](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.93.3...@standardnotes/auth-server@1.93.4) (2023-03-09)
 
 ### Bug Fixes
