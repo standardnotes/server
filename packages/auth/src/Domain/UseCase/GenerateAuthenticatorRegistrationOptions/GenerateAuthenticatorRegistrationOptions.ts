@@ -33,7 +33,7 @@ export class GenerateAuthenticatorRegistrationOptions implements UseCaseInterfac
       rpName: this.relyingPartyName,
       userID: userUuid.value,
       userName: username.value,
-      attestationType: 'direct',
+      attestationType: 'none',
       authenticatorSelection: {
         authenticatorAttachment: 'cross-platform',
       },
