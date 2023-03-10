@@ -1940,17 +1940,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@grpc/grpc-js@npm:^1.7.3":
-  version: 1.8.4
-  resolution: "@grpc/grpc-js@npm:1.8.4"
+"@grpc/grpc-js@npm:^1.8.8":
+  version: 1.8.12
+  resolution: "@grpc/grpc-js@npm:1.8.12"
   dependencies:
     "@grpc/proto-loader": "npm:^0.7.0"
     "@types/node": "npm:>=12.12.47"
-  checksum: 6367a2ee3895b00f3fe6c0a785cccc01b3a39549c8622293d6bdcae9659bc846376ca734d875f76b93e963ec39bb174033d55b07b946445c576f7589ca8e9e73
+  checksum: cf2523ed610cd7c9f08f6c24bfdde8072d4d98e3026b9158d09709ff0ab079912c31af8803a723c3707a1d58a9030df7cdb8ef9d2e1135ac6d5440d10bd76752
   languageName: node
   linkType: hard
 
-"@grpc/proto-loader@npm:^0.7.0, @grpc/proto-loader@npm:^0.7.3":
+"@grpc/proto-loader@npm:^0.7.0":
   version: 0.7.4
   resolution: "@grpc/proto-loader@npm:0.7.4"
   dependencies:
@@ -1962,6 +1962,21 @@ __metadata:
   bin:
     proto-loader-gen-types: build/bin/proto-loader-gen-types.js
   checksum: 1f5d4211fe0326a062af773b1a421f98390b27e3f40965eafc0ed9219485c23d4e2659e3fd3f0d8896ae2f9b241e2681eb16241bad5239deb82a1e8f9684fe11
+  languageName: node
+  linkType: hard
+
+"@grpc/proto-loader@npm:^0.7.5":
+  version: 0.7.5
+  resolution: "@grpc/proto-loader@npm:0.7.5"
+  dependencies:
+    "@types/long": "npm:^4.0.1"
+    lodash.camelcase: "npm:^4.3.0"
+    long: "npm:^4.0.0"
+    protobufjs: "npm:^7.0.0"
+    yargs: "npm:^16.2.0"
+  bin:
+    proto-loader-gen-types: build/bin/proto-loader-gen-types.js
+  checksum: e6461534eb2d2fb26ef59134b062e9febd77d11dac2ab768a464188965409090248a9bae0d7f3e5010520b648754ec1ea761e9a77808f21117eb64cc22c86d5a
   languageName: node
   linkType: hard
 
@@ -2554,21 +2569,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@newrelic/aws-sdk@npm:^5.0.0":
-  version: 5.0.0
-  resolution: "@newrelic/aws-sdk@npm:5.0.0"
+"@newrelic/aws-sdk@npm:^5.0.2":
+  version: 5.0.2
+  resolution: "@newrelic/aws-sdk@npm:5.0.2"
   peerDependencies:
     newrelic: ">=8.7.0"
-  checksum: ed1dc3fa16800599718de7f53378f9c9301a46d925ebcb28d881ca43176483ffe0cdac0341c56ba5f1cec6fa395eac7e6763366ef1c2125c3cf500ba950e09f3
+  checksum: d99b851c78a94aeacb54ba928729c16dc49cbe7d261f6050337b408cc7ecc8578d7707f48f065e6ac9600c4b826fab1c785d160ce284263966dbc89708df8bae
   languageName: node
   linkType: hard
 
-"@newrelic/koa@npm:^7.0.0":
-  version: 7.0.0
-  resolution: "@newrelic/koa@npm:7.0.0"
+"@newrelic/koa@npm:^7.1.1":
+  version: 7.1.1
+  resolution: "@newrelic/koa@npm:7.1.1"
   peerDependencies:
     newrelic: ">=6.11.0"
-  checksum: 0fc2298c8bdb53ae99c9f4d1f2333d8874255fe1f6a00c73d0e1798a93393ea96cba1a773e46a0b0299d078bec5893fcfed9194e666400ffb481d71d5b8ab470
+  checksum: b4fd860e8bced9a562aafc56b48c3f75bc92853c64c58e67edb37b7213266ebf538f6aabfc67e9abbae045d7d8a2495fcdb725de178ca4471ad2de927c0add4c
   languageName: node
   linkType: hard
 
@@ -3198,7 +3213,7 @@ __metadata:
     jest: "npm:^29.1.2"
     mixpanel: "npm:^0.17.0"
     mysql2: "npm:^3.0.1"
-    newrelic: "npm:^9.8.0"
+    newrelic: "npm:^9.11.0"
     reflect-metadata: "npm:^0.1.13"
     ts-jest: "npm:^29.0.3"
     typeorm: "npm:^0.3.10"
@@ -3239,7 +3254,7 @@ __metadata:
     ioredis: "npm:^5.2.4"
     jest: "npm:^29.1.2"
     jsonwebtoken: "npm:^9.0.0"
-    newrelic: "npm:^9.8.0"
+    newrelic: "npm:^9.11.0"
     nodemon: "npm:^2.0.19"
     npm-check-updates: "npm:^16.0.1"
     prettyjson: "npm:^1.2.5"
@@ -3316,7 +3331,7 @@ __metadata:
     ioredis: "npm:^5.2.4"
     jest: "npm:^29.1.2"
     mysql2: "npm:^3.0.1"
-    newrelic: "npm:^9.8.0"
+    newrelic: "npm:^9.11.0"
     nodemon: "npm:^2.0.19"
     npm-check-updates: "npm:^16.0.1"
     otplib: "npm:12.0.1"
@@ -3388,7 +3403,7 @@ __metadata:
     eslint-plugin-prettier: "npm:^4.2.1"
     ioredis: "npm:^5.2.4"
     jest: "npm:^29.1.2"
-    newrelic: "npm:^9.8.0"
+    newrelic: "npm:^9.11.0"
     reflect-metadata: "npm:^0.1.13"
     sqs-consumer: "npm:^6.2.1"
     ts-jest: "npm:^29.0.3"
@@ -3446,7 +3461,7 @@ __metadata:
     ioredis: "npm:^5.2.4"
     jest: "npm:^29.1.2"
     mysql2: "npm:^3.0.1"
-    newrelic: "npm:^9.8.0"
+    newrelic: "npm:^9.11.0"
     reflect-metadata: "npm:0.1.13"
     ts-jest: "npm:^29.0.3"
     typeorm: "npm:^0.3.10"
@@ -3520,7 +3535,7 @@ __metadata:
     ioredis: "npm:^5.2.4"
     jest: "npm:^29.1.2"
     jsonwebtoken: "npm:^9.0.0"
-    newrelic: "npm:^9.8.0"
+    newrelic: "npm:^9.11.0"
     nodemon: "npm:^2.0.19"
     npm-check-updates: "npm:^16.0.1"
     prettyjson: "npm:^1.2.5"
@@ -3603,7 +3618,7 @@ __metadata:
     inversify-express-utils: "npm:^6.4.3"
     jest: "npm:^29.1.2"
     mysql2: "npm:^3.0.1"
-    newrelic: "npm:^9.8.0"
+    newrelic: "npm:^9.11.0"
     npm-check-updates: "npm:^16.0.1"
     reflect-metadata: "npm:0.1.13"
     ts-jest: "npm:^29.0.3"
@@ -3639,7 +3654,7 @@ __metadata:
     ioredis: "npm:^5.2.4"
     jest: "npm:^29.1.2"
     mysql2: "npm:^3.0.1"
-    newrelic: "npm:^9.8.0"
+    newrelic: "npm:^9.11.0"
     npm-check-updates: "npm:^16.0.1"
     reflect-metadata: "npm:^0.1.13"
     ts-jest: "npm:^29.0.3"
@@ -3682,7 +3697,7 @@ __metadata:
     eslint: "npm:^8.32.0"
     eslint-config-prettier: "npm:^8.6.0"
     ini: "npm:^3.0.0"
-    newrelic: "npm:^9.8.0"
+    newrelic: "npm:^9.11.0"
     npm-check-updates: "npm:^16.0.1"
     prettier: "npm:^2.7.1"
     ts-node: "npm:^10.9.1"
@@ -3780,7 +3795,7 @@ __metadata:
     jest: "npm:^29.1.2"
     jsonwebtoken: "npm:^9.0.0"
     mysql2: "npm:^3.0.1"
-    newrelic: "npm:^9.8.0"
+    newrelic: "npm:^9.11.0"
     nodemon: "npm:^2.0.19"
     npm-check-updates: "npm:^16.0.1"
     prettyjson: "npm:^1.2.5"
@@ -3867,7 +3882,7 @@ __metadata:
     ioredis: "npm:^5.2.4"
     jest: "npm:^29.1.2"
     mysql2: "npm:^3.0.1"
-    newrelic: "npm:^9.8.0"
+    newrelic: "npm:^9.11.0"
     reflect-metadata: "npm:0.1.13"
     ts-jest: "npm:^29.0.3"
     typeorm: "npm:^0.3.10"
@@ -5005,6 +5020,13 @@ __metadata:
   version: 2.2.2
   resolution: "before-after-hook@npm:2.2.2"
   checksum: ed37dd1bc4409c98af31033b3a4ce30ec53ddb146b9571096df59a4e7a7af327af54935fc69d169ebee907283233b326ce007c12089b19a04c2f602fa128d84c
+  languageName: node
+  linkType: hard
+
+"bignumber.js@npm:^9.0.0":
+  version: 9.1.1
+  resolution: "bignumber.js@npm:9.1.1"
+  checksum: e44d00804916c299d01e1a83b435111dbced54c6f165df4a0034a8a0a27182d6698f93f408ec804b3ae80896fd6ad8ad43f37939883dc03ecd04a125742f1483
   languageName: node
   linkType: hard
 
@@ -8508,6 +8530,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"json-bigint@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "json-bigint@npm:1.0.0"
+  dependencies:
+    bignumber.js: "npm:^9.0.0"
+  checksum: 6e40674d13a63ea28017694c6a8cd17953be9cdba4a3b3a3d8bdb4ef3229dc0307b278a2a301b9533b6d1ac60609361e2d3bb08436a7d5d04184af23938b617e
+  languageName: node
+  linkType: hard
+
 "json-buffer@npm:3.0.1, json-buffer@npm:~3.0.1":
   version: 3.0.1
   resolution: "json-buffer@npm:3.0.1"
@@ -9369,20 +9400,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"newrelic@npm:^9.8.0":
-  version: 9.8.0
-  resolution: "newrelic@npm:9.8.0"
+"newrelic@npm:^9.11.0":
+  version: 9.11.0
+  resolution: "newrelic@npm:9.11.0"
   dependencies:
     "@contrast/fn-inspect": "npm:^3.3.0"
-    "@grpc/grpc-js": "npm:^1.7.3"
-    "@grpc/proto-loader": "npm:^0.7.3"
-    "@newrelic/aws-sdk": "npm:^5.0.0"
-    "@newrelic/koa": "npm:^7.0.0"
+    "@grpc/grpc-js": "npm:^1.8.8"
+    "@grpc/proto-loader": "npm:^0.7.5"
+    "@newrelic/aws-sdk": "npm:^5.0.2"
+    "@newrelic/koa": "npm:^7.1.1"
     "@newrelic/native-metrics": "npm:^9.0.0"
     "@newrelic/superagent": "npm:^6.0.0"
     "@tyriar/fibonacci-heap": "npm:^2.0.7"
     concat-stream: "npm:^2.0.0"
     https-proxy-agent: "npm:^5.0.0"
+    json-bigint: "npm:^1.0.0"
     json-stringify-safe: "npm:^5.0.0"
     readable-stream: "npm:^3.6.0"
     semver: "npm:^5.3.0"
@@ -9394,7 +9426,7 @@ __metadata:
       optional: true
   bin:
     newrelic-naming-rules: bin/test-naming-rules.js
-  checksum: ed3b893298c7d36ce789f6e0a5e0039a083e67a302cb07268a9ff6dee230613caea6891200ac7737860bc6dc64fc1dc08112a3cc407f6d37da60690dd6122332
+  checksum: fd1ec1b30799f56632130100a84d90ebcf2ebdb0ded4432bc3b4d71fa3b801c48284eebce814ef32fc31510f1fca4b43676d1de63ed7d6ca00bd8cbc8f6b2f98
   languageName: node
   linkType: hard
 

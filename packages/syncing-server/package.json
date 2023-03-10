@@ -49,7 +49,7 @@
     "inversify-express-utils": "^6.4.3",
     "jsonwebtoken": "^9.0.0",
     "mysql2": "^3.0.1",
-    "newrelic": "^9.8.0",
+    "newrelic": "^9.11.0",
     "nodemon": "^2.0.19",
     "prettyjson": "^1.2.5",
     "reflect-metadata": "0.1.13",
