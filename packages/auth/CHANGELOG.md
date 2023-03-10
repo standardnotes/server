@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.93.11](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.93.10...@standardnotes/auth-server@1.93.11) (2023-03-10)
+
+### Bug Fixes
+
+* **auth:** chage attestation type to none ([f69073b](https://github.com/standardnotes/server/commit/f69073ba029bfe15cb6855ff764aba96010c84da))
+
 ## [1.93.10](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.93.9...@standardnotes/auth-server@1.93.10) (2023-03-10)
 
 ### Bug Fixes
