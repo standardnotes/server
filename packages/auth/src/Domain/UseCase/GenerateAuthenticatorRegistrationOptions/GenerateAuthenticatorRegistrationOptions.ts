@@ -43,7 +43,6 @@ export class GenerateAuthenticatorRegistrationOptions implements UseCaseInterfac
         type: 'public-key',
         transports: authenticator.props.transports,
       })),
-      supportedAlgorithmIDs: [-7, -257],
     })
 
     const authenticatorChallengeOrError = AuthenticatorChallenge.create({
