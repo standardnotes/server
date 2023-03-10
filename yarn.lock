@@ -7669,9 +7669,9 @@ __metadata:
   linkType: hard
 
 "ini@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "ini@npm:3.0.0"
-  checksum: fb9ef25d915fbc70583bb2f191e18b82a44bb1d4fc7053ce7b208e6d4a8a20c6abcc2627e79ee405effaec48e5a92cf6489920257810c4d00365c3391eabd729
+  version: 3.0.1
+  resolution: "ini@npm:3.0.1"
+  checksum: aa3a701669e6dc7ef1c9ce1b86931ca712cd255f0ad2b909189b2207491c95319999ee758c3395e86c9f5b6c9368cda493deeaf284cd139577dc2271e0fd422e
   languageName: node
   linkType: hard
 
