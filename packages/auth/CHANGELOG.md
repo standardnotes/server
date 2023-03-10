@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.93.8](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.93.7...@standardnotes/auth-server@1.93.8) (2023-03-10)
+
+### Reverts
+
+* Revert "fix(auth): change supported algorithms on authenticator registration options" ([74e35a2](https://github.com/standardnotes/server/commit/74e35a2d659f13def87869df29e863a2ce32910c))
+
 ## [1.93.7](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.93.6...@standardnotes/auth-server@1.93.7) (2023-03-10)
 
 ### Bug Fixes
