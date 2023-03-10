@@ -33,10 +33,9 @@ export class GenerateAuthenticatorRegistrationOptions implements UseCaseInterfac
       rpName: this.relyingPartyName,
       userID: userUuid.value,
       userName: username.value,
-      attestationType: 'none',
+      attestationType: 'direct',
       authenticatorSelection: {
         authenticatorAttachment: 'cross-platform',
-        userVerification: 'discouraged',
       },
       excludeCredentials: authenticators.map((authenticator) => ({
         id: authenticator.props.credentialId,

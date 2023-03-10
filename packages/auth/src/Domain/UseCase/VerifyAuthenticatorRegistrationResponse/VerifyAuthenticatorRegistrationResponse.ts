@@ -56,6 +56,7 @@ export class VerifyAuthenticatorRegistrationResponse implements UseCaseInterface
       credentialId: verification.registrationInfo.credentialID,
       credentialPublicKey: verification.registrationInfo.credentialPublicKey,
       dates: Dates.create(new Date(), new Date()).getValue(),
+      transports: dto.attestationResponse.response.transports,
     })
 
     if (authenticatorOrError.isFailed()) {

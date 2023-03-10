@@ -1,5 +1,6 @@
 import * as simeplWebAuthnServer from '@simplewebauthn/server'
 import { VerifiedRegistrationResponse } from '@simplewebauthn/server'
+import { RegistrationResponseJSON } from '@simplewebauthn/typescript-types'
 import { Result } from '@standardnotes/domain-core'
 import { Authenticator } from '../../Authenticator/Authenticator'
 
@@ -39,14 +40,15 @@ describe('VerifyAuthenticatorRegistrationResponse', () => {
     const result = await useCase.execute({
       userUuid: 'invalid',
       attestationResponse: {
-        id: Buffer.from('id'),
-        rawId: Buffer.from('rawId'),
+        id: 'id',
+        rawId: 'rawId',
         response: {
-          attestationObject: Buffer.from('attestationObject'),
-          clientDataJSON: Buffer.from('clientDataJSON'),
+          attestationObject: 'attestationObject',
+          clientDataJSON: 'clientDataJSON',
         },
-        type: 'type',
-      },
+        type: 'public-key',
+        clientExtensionResults: {},
+      } as jest.Mocked<RegistrationResponseJSON>,
     })
 
     expect(result.isFailed()).toBeTruthy()
@@ -63,14 +65,15 @@ describe('VerifyAuthenticatorRegistrationResponse', () => {
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
       attestationResponse: {
-        id: Buffer.from('id'),
-        rawId: Buffer.from('rawId'),
+        id: 'id',
+        rawId: 'rawId',
         response: {
-          attestationObject: Buffer.from('attestationObject'),
-          clientDataJSON: Buffer.from('clientDataJSON'),
+          attestationObject: 'attestationObject',
+          clientDataJSON: 'clientDataJSON',
         },
-        type: 'type',
-      },
+        type: 'public-key',
+        clientExtensionResults: {},
+      } as jest.Mocked<RegistrationResponseJSON>,
     })
 
     expect(result.isFailed()).toBeTruthy()
@@ -103,14 +106,15 @@ describe('VerifyAuthenticatorRegistrationResponse', () => {
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
       attestationResponse: {
-        id: Buffer.from('id'),
-        rawId: Buffer.from('rawId'),
+        id: 'id',
+        rawId: 'rawId',
         response: {
-          attestationObject: Buffer.from('attestationObject'),
-          clientDataJSON: Buffer.from('clientDataJSON'),
+          attestationObject: 'attestationObject',
+          clientDataJSON: 'clientDataJSON',
         },
-        type: 'type',
-      },
+        type: 'public-key',
+        clientExtensionResults: {},
+      } as jest.Mocked<RegistrationResponseJSON>,
     })
 
     expect(result.isFailed()).toBeTruthy()
@@ -136,14 +140,15 @@ describe('VerifyAuthenticatorRegistrationResponse', () => {
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
       attestationResponse: {
-        id: Buffer.from('id'),
-        rawId: Buffer.from('rawId'),
+        id: 'id',
+        rawId: 'rawId',
         response: {
-          attestationObject: Buffer.from('attestationObject'),
-          clientDataJSON: Buffer.from('clientDataJSON'),
+          attestationObject: 'attestationObject',
+          clientDataJSON: 'clientDataJSON',
         },
-        type: 'type',
-      },
+        type: 'public-key',
+        clientExtensionResults: {},
+      } as jest.Mocked<RegistrationResponseJSON>,
     })
 
     expect(result.isFailed()).toBeTruthy()
@@ -171,14 +176,15 @@ describe('VerifyAuthenticatorRegistrationResponse', () => {
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
       attestationResponse: {
-        id: Buffer.from('id'),
-        rawId: Buffer.from('rawId'),
+        id: 'id',
+        rawId: 'rawId',
         response: {
-          attestationObject: Buffer.from('attestationObject'),
-          clientDataJSON: Buffer.from('clientDataJSON'),
+          attestationObject: 'attestationObject',
+          clientDataJSON: 'clientDataJSON',
         },
-        type: 'type',
-      },
+        type: 'public-key',
+        clientExtensionResults: {},
+      } as jest.Mocked<RegistrationResponseJSON>,
     })
 
     expect(result.isFailed()).toBeTruthy()
@@ -220,14 +226,15 @@ describe('VerifyAuthenticatorRegistrationResponse', () => {
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
       attestationResponse: {
-        id: Buffer.from('id'),
-        rawId: Buffer.from('rawId'),
+        id: 'id',
+        rawId: 'rawId',
         response: {
-          attestationObject: Buffer.from('attestationObject'),
-          clientDataJSON: Buffer.from('clientDataJSON'),
+          attestationObject: 'attestationObject',
+          clientDataJSON: 'clientDataJSON',
         },
-        type: 'type',
-      },
+        type: 'public-key',
+        clientExtensionResults: {},
+      } as jest.Mocked<RegistrationResponseJSON>,
     })
 
     expect(result.isFailed()).toBeTruthy()
@@ -263,14 +270,15 @@ describe('VerifyAuthenticatorRegistrationResponse', () => {
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
       attestationResponse: {
-        id: Buffer.from('id'),
-        rawId: Buffer.from('rawId'),
+        id: 'id',
+        rawId: 'rawId',
         response: {
-          attestationObject: Buffer.from('attestationObject'),
-          clientDataJSON: Buffer.from('clientDataJSON'),
+          attestationObject: 'attestationObject',
+          clientDataJSON: 'clientDataJSON',
         },
-        type: 'type',
-      },
+        type: 'public-key',
+        clientExtensionResults: {},
+      } as jest.Mocked<RegistrationResponseJSON>,
     })
 
     expect(result.isFailed()).toBeFalsy()
