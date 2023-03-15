@@ -83,6 +83,7 @@ export class WorkerContainerConfigLoader extends CommonContainerConfigLoader {
           context.container.get(TYPES.S3_BACKUP_BUCKET_NAME),
           context.container.get(TYPES.S3),
           context.container.get(TYPES.RevisionItemStringMapper),
+          context.container.get(TYPES.Logger),
         )
       } else {
         return new FSDumpRepository(context.container.get(TYPES.RevisionItemStringMapper))
