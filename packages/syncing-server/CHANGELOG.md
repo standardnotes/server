@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.32.4](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.32.3...@standardnotes/syncing-server@1.32.4) (2023-03-15)
+
+### Bug Fixes
+
+* **syncing-server:** remove unused methods from auth http service ([10a596d](https://github.com/standardnotes/syncing-server-js/commit/10a596db655dc27f4acfef203c38362fb779cc25))
+
 ## [1.32.3](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.32.2...@standardnotes/syncing-server@1.32.3) (2023-03-10)
 
 **Note:** Version bump only for package @standardnotes/syncing-server

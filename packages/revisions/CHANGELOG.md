@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.12.11](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.12.10...@standardnotes/revisions-server@1.12.11) (2023-03-15)
+
+### Bug Fixes
+
+* **revisions:** add warning logs if a revision dump could not be found ([c76302c](https://github.com/standardnotes/server/commit/c76302cf9868f59770bde3882dcac67f4c51314b))
+
 ## [1.12.10](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.12.9...@standardnotes/revisions-server@1.12.10) (2023-03-10)
 
 **Note:** Version bump only for package @standardnotes/revisions-server
