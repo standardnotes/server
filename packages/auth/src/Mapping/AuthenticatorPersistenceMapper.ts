@@ -23,8 +23,8 @@ export class AuthenticatorPersistenceMapper implements MapperInterface<Authentic
         counter: projection.counter,
         credentialBackedUp: projection.credentialBackedUp,
         credentialDeviceType: projection.credentialDeviceType,
-        credentialId: Buffer.from(projection.credentialId, 'base64url'),
-        credentialPublicKey: projection.credentialPublicKey,
+        credentialId: new Uint8Array(Buffer.from(projection.credentialId, 'base64url')),
+        credentialPublicKey: new Uint8Array(projection.credentialPublicKey),
         dates,
         transports: projection.transports ? JSON.parse(projection.transports) : undefined,
       },
@@ -43,7 +43,7 @@ export class AuthenticatorPersistenceMapper implements MapperInterface<Authentic
 
     typeorm.uuid = domain.id.toString()
     typeorm.userUuid = domain.props.userUuid.value
-    typeorm.credentialId = Buffer.from(domain.props.credentialId).toString('base64url')
+    typeorm.credentialId = Buffer.from(domain.props.credentialId.buffer).toString('base64url')
     typeorm.credentialPublicKey = Buffer.from(domain.props.credentialPublicKey.buffer)
     typeorm.counter = domain.props.counter
     typeorm.credentialDeviceType = domain.props.credentialDeviceType
