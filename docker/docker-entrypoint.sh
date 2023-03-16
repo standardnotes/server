@@ -27,19 +27,24 @@ fi
 ######
 
 if [ -z "$DB_HOST" ]; then
-  export DB_HOST="db"
+  echo "DB_HOST is not set. Please set it in your .env file."
+  exit 1
 fi
 if [ -z "$DB_PORT" ]; then
-  export DB_PORT="3306"
+  echo "DB_PORT is not set. Please set it in your .env file."
+  exit 1
 fi
 if [ -z "$DB_USERNAME" ]; then
-  export DB_USERNAME="std_notes_user"
+  echo "DB_USERNAME is not set. Please set it in your .env file."
+  exit 1
 fi
 if [ -z "$DB_PASSWORD" ]; then
-  export DB_PASSWORD=$(openssl rand -hex 32)
+  echo "DB_PASSWORD is not set. Please set it in your .env file."
+  exit 1
 fi
 if [ -z "$DB_DATABASE" ]; then
-  export DB_DATABASE="standard_notes_db"
+  echo "DB_DATABASE is not set. Please set it in your .env file."
+  exit 1
 fi
 if [ -z "$DB_DEBUG_LEVEL" ]; then
   export DB_DEBUG_LEVEL="all"
@@ -51,11 +56,13 @@ export DB_MIGRATIONS_PATH="dist/migrations/*.js"
 #########
 
 if [ -z "$REDIS_PORT" ]; then
-  export REDIS_PORT=6379
+  echo "REDIS_PORT is not set. Please set it in your .env file."
+  exit 1
 fi
 
 if [ -z "$REDIS_HOST" ]; then
-  export REDIS_HOST="cache"
+  echo "REDIS_HOST is not set. Please set it in your .env file."
+  exit 1
 fi
 
 if [ -z "$REDIS_URL" ]; then
@@ -67,11 +74,13 @@ fi
 ##########
 
 if [ -z "$AUTH_JWT_SECRET" ]; then
-  export AUTH_JWT_SECRET=$(openssl rand -hex 32)
+  echo "AUTH_JWT_SECRET is not set. Please set it in your .env file. You can run 'openssl rand -hex 32' to generate a random string."
+  exit 1
 fi
 
 if [ -z "$VALET_TOKEN_SECRET" ]; then
-  export VALET_TOKEN_SECRET=$(openssl rand -base64 32)
+  echo "VALET_TOKEN_SECRET is not set. Please set it in your .env file. You can run 'openssl rand -hex 32' to generate a random string."
+  exit 1
 fi
 
 ########
@@ -122,7 +131,8 @@ if [ -z "$AUTH_SERVER_EPHEMERAL_SESSION_AGE" ]; then
 fi
 
 if [ -z "$AUTH_SERVER_ENCRYPTION_SERVER_KEY" ]; then
-  export AUTH_SERVER_ENCRYPTION_SERVER_KEY=$(openssl rand -hex 32)
+  echo "AUTH_SERVER_ENCRYPTION_SERVER_KEY is not set. Please set it in your .env file. You can run 'openssl rand -hex 32' to generate a random string."
+  exit 1
 fi
 
 export AUTH_SERVER_SYNCING_SERVER_URL=http://localhost:$SYNCING_SERVER_PORT
