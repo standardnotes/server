@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.93.12](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.93.11...@standardnotes/auth-server@1.93.12) (2023-03-16)
+
+### Bug Fixes
+
+* **auth:** persistence mapping for authenticators ([f8a2892](https://github.com/standardnotes/server/commit/f8a2892811ebb4d8f067e036fb9f54780a400535))
+
 ## [1.93.11](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.93.10...@standardnotes/auth-server@1.93.11) (2023-03-10)
 
 ### Bug Fixes
