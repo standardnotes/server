@@ -2,6 +2,7 @@
   "name": "@standardnotes/server-monorepo",
   "private": true,
   "author": "Standard Notes",
+  "version": "0.0.1",
   "workspaces": {
     "packages": [
       "packages/*"
