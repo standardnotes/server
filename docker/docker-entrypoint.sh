@@ -22,6 +22,14 @@ if [ -z "$REVISIONS_SERVER_PORT" ]; then
   export REVISIONS_SERVER_PORT=3105
 fi
 
+#############
+# NEW RELIC #
+#############
+
+if [ -z "$NEW_RELIC_ENABLED" ]; then
+  export NEW_RELIC_ENABLED=false
+fi
+
 ######
 # DB #
 ######
