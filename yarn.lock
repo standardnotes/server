@@ -3696,7 +3696,7 @@ __metadata:
     "@typescript-eslint/parser": "npm:^5.40.1"
     eslint: "npm:^8.32.0"
     eslint-config-prettier: "npm:^8.6.0"
-    ini: "npm:^3.0.0"
+    ini: "npm:^4.0.0"
     newrelic: "npm:^9.14.1"
     npm-check-updates: "npm:^16.0.1"
     prettier: "npm:^2.7.1"
@@ -7668,10 +7668,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ini@npm:^3.0.0":
-  version: 3.0.0
-  resolution: "ini@npm:3.0.0"
-  checksum: fb9ef25d915fbc70583bb2f191e18b82a44bb1d4fc7053ce7b208e6d4a8a20c6abcc2627e79ee405effaec48e5a92cf6489920257810c4d00365c3391eabd729
+"ini@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "ini@npm:4.0.0"
+  checksum: ab9bef835d1dbf02671b22ff7a324179b86fa15c3aab89ef66fa7f97095e0714d41b418f22d2310a348bd4c1a6da5b3d37dea49c35a730622832d2dc898f9abf
   languageName: node
   linkType: hard
 
