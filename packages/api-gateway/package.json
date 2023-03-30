@@ -20,7 +20,7 @@
     "upgrade:snjs": "yarn ncu -u '@standardnotes/*'"
   },
   "dependencies": {
-    "@newrelic/winston-enricher": "^4.0.0",
+    "@newrelic/winston-enricher": "^4.0.1",
     "@sentry/node": "^7.28.1",
     "@standardnotes/domain-core": "workspace:^",
     "@standardnotes/domain-events": "workspace:*",
@@ -37,7 +37,7 @@
     "inversify-express-utils": "^6.4.3",
     "ioredis": "^5.2.4",
     "jsonwebtoken": "^9.0.0",
-    "newrelic": "^9.11.0",
+    "newrelic": "^9.14.1",
     "prettyjson": "^1.2.5",
     "reflect-metadata": "0.1.13",
     "winston": "^3.8.1"

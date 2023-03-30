@@ -27,7 +27,7 @@
     "@aws-sdk/client-sqs": "^3.259.0",
     "@standardnotes/domain-events": "workspace:*",
     "ioredis": "^5.2.4",
-    "newrelic": "^9.11.0",
+    "newrelic": "^9.14.1",
     "reflect-metadata": "^0.1.13",
     "sqs-consumer": "^6.2.1",
     "winston": "^3.8.1"

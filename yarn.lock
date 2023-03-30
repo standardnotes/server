@@ -1940,13 +1940,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@grpc/grpc-js@npm:^1.8.8":
-  version: 1.8.12
-  resolution: "@grpc/grpc-js@npm:1.8.12"
+"@grpc/grpc-js@npm:^1.8.10":
+  version: 1.8.13
+  resolution: "@grpc/grpc-js@npm:1.8.13"
   dependencies:
     "@grpc/proto-loader": "npm:^0.7.0"
     "@types/node": "npm:>=12.12.47"
-  checksum: cf2523ed610cd7c9f08f6c24bfdde8072d4d98e3026b9158d09709ff0ab079912c31af8803a723c3707a1d58a9030df7cdb8ef9d2e1135ac6d5440d10bd76752
+  checksum: 04d24ca840f2bccb7fc8698ae611bdb3f361b6b4785fe5559155218766bc48da67959db8cb692b31062d6918f3e5c1475083ffb60e67d23b0560ba5c1b88510a
   languageName: node
   linkType: hard
 
@@ -2608,12 +2608,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@newrelic/winston-enricher@npm:^4.0.0":
-  version: 4.0.0
-  resolution: "@newrelic/winston-enricher@npm:4.0.0"
+"@newrelic/winston-enricher@npm:^4.0.1":
+  version: 4.0.1
+  resolution: "@newrelic/winston-enricher@npm:4.0.1"
   peerDependencies:
     newrelic: ">=8.13.0"
-  checksum: 3fc901cded1c0ffe59f540daadfcb5ec348a62143f5324ce7869af2d0f2924ce4fe2ad8d927f240439fa71327d3f87f7b1914cf3e5fee7bdfcfd855c9ffa249c
+  checksum: e45880f6ec9b8125e470b55e685701287c2ddb37b4423472113043031992bd7e0cb4042c784dcad7ec6ca90799ccaea4954c02873e9885b0148a0b79fc0316e0
   languageName: node
   linkType: hard
 
@@ -3191,7 +3191,7 @@ __metadata:
   dependencies:
     "@aws-sdk/client-sns": "npm:^3.259.0"
     "@aws-sdk/client-sqs": "npm:^3.259.0"
-    "@newrelic/winston-enricher": "npm:^4.0.0"
+    "@newrelic/winston-enricher": "npm:^4.0.1"
     "@sentry/node": "npm:^7.28.1"
     "@standardnotes/common": "workspace:*"
     "@standardnotes/domain-core": "workspace:^"
@@ -3213,7 +3213,7 @@ __metadata:
     jest: "npm:^29.1.2"
     mixpanel: "npm:^0.17.0"
     mysql2: "npm:^3.0.1"
-    newrelic: "npm:^9.11.0"
+    newrelic: "npm:^9.14.1"
     reflect-metadata: "npm:^0.1.13"
     ts-jest: "npm:^29.0.3"
     typeorm: "npm:^0.3.10"
@@ -3226,7 +3226,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@standardnotes/api-gateway@workspace:packages/api-gateway"
   dependencies:
-    "@newrelic/winston-enricher": "npm:^4.0.0"
+    "@newrelic/winston-enricher": "npm:^4.0.1"
     "@sentry/node": "npm:^7.28.1"
     "@standardnotes/domain-core": "workspace:^"
     "@standardnotes/domain-events": "workspace:*"
@@ -3254,7 +3254,7 @@ __metadata:
     ioredis: "npm:^5.2.4"
     jest: "npm:^29.1.2"
     jsonwebtoken: "npm:^9.0.0"
-    newrelic: "npm:^9.11.0"
+    newrelic: "npm:^9.14.1"
     nodemon: "npm:^2.0.19"
     npm-check-updates: "npm:^16.0.1"
     prettyjson: "npm:^1.2.5"
@@ -3289,7 +3289,7 @@ __metadata:
     "@aws-sdk/client-sqs": "npm:^3.259.0"
     "@cbor-extract/cbor-extract-linux-arm64": "npm:^2.1.1"
     "@cbor-extract/cbor-extract-linux-x64": "npm:^2.1.1"
-    "@newrelic/winston-enricher": "npm:^4.0.0"
+    "@newrelic/winston-enricher": "npm:^4.0.1"
     "@sentry/node": "npm:^7.28.1"
     "@sentry/tracing": "npm:^7.28.1"
     "@simplewebauthn/server": "npm:^7.0.1"
@@ -3331,7 +3331,7 @@ __metadata:
     ioredis: "npm:^5.2.4"
     jest: "npm:^29.1.2"
     mysql2: "npm:^3.0.1"
-    newrelic: "npm:^9.11.0"
+    newrelic: "npm:^9.14.1"
     nodemon: "npm:^2.0.19"
     npm-check-updates: "npm:^16.0.1"
     otplib: "npm:12.0.1"
@@ -3403,7 +3403,7 @@ __metadata:
     eslint-plugin-prettier: "npm:^4.2.1"
     ioredis: "npm:^5.2.4"
     jest: "npm:^29.1.2"
-    newrelic: "npm:^9.11.0"
+    newrelic: "npm:^9.14.1"
     reflect-metadata: "npm:^0.1.13"
     sqs-consumer: "npm:^6.2.1"
     ts-jest: "npm:^29.0.3"
@@ -3461,7 +3461,7 @@ __metadata:
     ioredis: "npm:^5.2.4"
     jest: "npm:^29.1.2"
     mysql2: "npm:^3.0.1"
-    newrelic: "npm:^9.11.0"
+    newrelic: "npm:^9.14.1"
     reflect-metadata: "npm:0.1.13"
     ts-jest: "npm:^29.0.3"
     typeorm: "npm:^0.3.10"
@@ -3535,7 +3535,7 @@ __metadata:
     ioredis: "npm:^5.2.4"
     jest: "npm:^29.1.2"
     jsonwebtoken: "npm:^9.0.0"
-    newrelic: "npm:^9.11.0"
+    newrelic: "npm:^9.14.1"
     nodemon: "npm:^2.0.19"
     npm-check-updates: "npm:^16.0.1"
     prettyjson: "npm:^1.2.5"
@@ -3592,7 +3592,7 @@ __metadata:
   dependencies:
     "@aws-sdk/client-s3": "npm:^3.259.0"
     "@aws-sdk/client-sqs": "npm:^3.259.0"
-    "@newrelic/winston-enricher": "npm:^4.0.0"
+    "@newrelic/winston-enricher": "npm:^4.0.1"
     "@sentry/node": "npm:^7.28.1"
     "@standardnotes/api": "npm:^1.25.3"
     "@standardnotes/common": "workspace:^"
@@ -3618,7 +3618,7 @@ __metadata:
     inversify-express-utils: "npm:^6.4.3"
     jest: "npm:^29.1.2"
     mysql2: "npm:^3.0.1"
-    newrelic: "npm:^9.11.0"
+    newrelic: "npm:^9.14.1"
     npm-check-updates: "npm:^16.0.1"
     reflect-metadata: "npm:0.1.13"
     ts-jest: "npm:^29.0.3"
@@ -3634,7 +3634,7 @@ __metadata:
   dependencies:
     "@aws-sdk/client-sns": "npm:^3.259.0"
     "@aws-sdk/client-sqs": "npm:^3.259.0"
-    "@newrelic/winston-enricher": "npm:^4.0.0"
+    "@newrelic/winston-enricher": "npm:^4.0.1"
     "@sentry/node": "npm:^7.28.1"
     "@standardnotes/domain-core": "workspace:^"
     "@standardnotes/domain-events": "workspace:*"
@@ -3654,7 +3654,7 @@ __metadata:
     ioredis: "npm:^5.2.4"
     jest: "npm:^29.1.2"
     mysql2: "npm:^3.0.1"
-    newrelic: "npm:^9.11.0"
+    newrelic: "npm:^9.14.1"
     npm-check-updates: "npm:^16.0.1"
     reflect-metadata: "npm:^0.1.13"
     ts-jest: "npm:^29.0.3"
@@ -3697,7 +3697,7 @@ __metadata:
     eslint: "npm:^8.32.0"
     eslint-config-prettier: "npm:^8.6.0"
     ini: "npm:^3.0.0"
-    newrelic: "npm:^9.11.0"
+    newrelic: "npm:^9.14.1"
     npm-check-updates: "npm:^16.0.1"
     prettier: "npm:^2.7.1"
     ts-node: "npm:^10.9.1"
@@ -3760,7 +3760,7 @@ __metadata:
     "@aws-sdk/client-s3": "npm:^3.259.0"
     "@aws-sdk/client-sns": "npm:^3.259.0"
     "@aws-sdk/client-sqs": "npm:^3.259.0"
-    "@newrelic/winston-enricher": "npm:^4.0.0"
+    "@newrelic/winston-enricher": "npm:^4.0.1"
     "@sentry/node": "npm:^7.28.1"
     "@sentry/tracing": "npm:^7.28.1"
     "@standardnotes/api": "npm:^1.25.3"
@@ -3795,7 +3795,7 @@ __metadata:
     jest: "npm:^29.1.2"
     jsonwebtoken: "npm:^9.0.0"
     mysql2: "npm:^3.0.1"
-    newrelic: "npm:^9.11.0"
+    newrelic: "npm:^9.14.1"
     nodemon: "npm:^2.0.19"
     npm-check-updates: "npm:^16.0.1"
     prettyjson: "npm:^1.2.5"
@@ -3855,7 +3855,7 @@ __metadata:
   resolution: "@standardnotes/websockets-server@workspace:packages/websockets"
   dependencies:
     "@aws-sdk/client-sqs": "npm:^3.259.0"
-    "@newrelic/winston-enricher": "npm:^4.0.0"
+    "@newrelic/winston-enricher": "npm:^4.0.1"
     "@sentry/node": "npm:^7.28.1"
     "@standardnotes/api": "npm:^1.25.3"
     "@standardnotes/common": "workspace:^"
@@ -3882,7 +3882,7 @@ __metadata:
     ioredis: "npm:^5.2.4"
     jest: "npm:^29.1.2"
     mysql2: "npm:^3.0.1"
-    newrelic: "npm:^9.11.0"
+    newrelic: "npm:^9.14.1"
     reflect-metadata: "npm:0.1.13"
     ts-jest: "npm:^29.0.3"
     typeorm: "npm:^0.3.10"
@@ -9400,12 +9400,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"newrelic@npm:^9.11.0":
-  version: 9.11.0
-  resolution: "newrelic@npm:9.11.0"
+"newrelic@npm:^9.14.1":
+  version: 9.14.1
+  resolution: "newrelic@npm:9.14.1"
   dependencies:
     "@contrast/fn-inspect": "npm:^3.3.0"
-    "@grpc/grpc-js": "npm:^1.8.8"
+    "@grpc/grpc-js": "npm:^1.8.10"
     "@grpc/proto-loader": "npm:^0.7.5"
     "@newrelic/aws-sdk": "npm:^5.0.2"
     "@newrelic/koa": "npm:^7.1.1"
@@ -9416,7 +9416,7 @@ __metadata:
     https-proxy-agent: "npm:^5.0.0"
     json-bigint: "npm:^1.0.0"
     json-stringify-safe: "npm:^5.0.0"
-    readable-stream: "npm:^3.6.0"
+    readable-stream: "npm:^3.6.1"
     semver: "npm:^5.3.0"
     winston-transport: "npm:^4.5.0"
   dependenciesMeta:
@@ -9426,7 +9426,7 @@ __metadata:
       optional: true
   bin:
     newrelic-naming-rules: bin/test-naming-rules.js
-  checksum: fd1ec1b30799f56632130100a84d90ebcf2ebdb0ded4432bc3b4d71fa3b801c48284eebce814ef32fc31510f1fca4b43676d1de63ed7d6ca00bd8cbc8f6b2f98
+  checksum: e050f9198acb25725b2297c0165b3288a9ba8bbfe965b6004677febfe89884dd9f687c179753fd0222c53d98fbfdc623c1cea9e2387b05a94e0428b70332749c
   languageName: node
   linkType: hard
 
@@ -10626,6 +10626,17 @@ __metadata:
     string_decoder: "npm:^1.1.1"
     util-deprecate: "npm:^1.0.1"
   checksum: bda7b24d3910bf0ec4a1df3c540e1b97b1ed3ca49ea0ddc0d2c6bf29d3997251a7244608de1d842555641d1c115d9b3566167fef9225ee6ef147c9e6a539395b
+  languageName: node
+  linkType: hard
+
+"readable-stream@npm:^3.6.1":
+  version: 3.6.2
+  resolution: "readable-stream@npm:3.6.2"
+  dependencies:
+    inherits: "npm:^2.0.3"
+    string_decoder: "npm:^1.1.1"
+    util-deprecate: "npm:^1.0.1"
+  checksum: b1cbe0fea6b407fc75bfbe4f6c54d48899e638d54a8a1207b5040c60566dd5f65059b32c3edf0ac0ce621ea46929b3337e8a19410870eff98b8be5a3ba543b7a
   languageName: node
   linkType: hard
 
