@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.94.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.93.14...@standardnotes/auth-server@1.94.0) (2023-04-03)
+
+### Bug Fixes
+
+* **auth:** feature service specs ([b88f560](https://github.com/standardnotes/server/commit/b88f560b07de183d4101220626785d3ba994b44c))
+
+### Features
+
+* **auth:** feature entitlement check for u2f endpoints ([51b264c](https://github.com/standardnotes/server/commit/51b264ca13fffc66e2dc31e87b0934ba61a48435))
+
 ## [1.93.14](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.93.13...@standardnotes/auth-server@1.93.14) (2023-04-03)
 
 ### Bug Fixes
