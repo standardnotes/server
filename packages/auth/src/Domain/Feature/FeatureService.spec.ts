@@ -214,7 +214,7 @@ describe('FeatureService', () => {
     it('should tell if a user is entitled to a feature that does not expire', async () => {
       const nonSubscriptionPermission = {
         uuid: 'files-beta-permission-1-1-1',
-        name: PermissionName.FilesBeta,
+        name: 'files-beta' as PermissionName,
       } as jest.Mocked<Permission>
 
       GetFeatures.mockImplementation(() => [
@@ -230,7 +230,7 @@ describe('FeatureService', () => {
         },
         {
           identifier: 'files-beta',
-          permission_name: PermissionName.FilesBeta,
+          permission_name: 'files-beta' as PermissionName,
           expires_at: undefined,
           no_expire: true,
         },
@@ -377,7 +377,7 @@ describe('FeatureService', () => {
     it('should return user features along with features related to non subscription roles', async () => {
       const nonSubscriptionPermission = {
         uuid: 'files-beta-permission-1-1-1',
-        name: PermissionName.FilesBeta,
+        name: 'files-beta' as PermissionName,
       } as jest.Mocked<Permission>
 
       GetFeatures.mockImplementation(() => [
@@ -393,7 +393,7 @@ describe('FeatureService', () => {
         },
         {
           identifier: 'files-beta',
-          permission_name: PermissionName.FilesBeta,
+          permission_name: 'files-beta' as PermissionName,
           expires_at: undefined,
           no_expire: true,
         },
