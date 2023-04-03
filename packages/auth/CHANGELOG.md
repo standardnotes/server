@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.93.14](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.93.13...@standardnotes/auth-server@1.93.14) (2023-04-03)
+
+### Bug Fixes
+
+* **auth:** relying party id ([aca8d29](https://github.com/standardnotes/server/commit/aca8d2948da67b32445dc8da54b561ff08bf5c62))
+
 ## [1.93.13](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.93.12...@standardnotes/auth-server@1.93.13) (2023-03-30)
 
 **Note:** Version bump only for package @standardnotes/auth-server
