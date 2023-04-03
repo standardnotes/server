@@ -3299,7 +3299,7 @@ __metadata:
     "@standardnotes/domain-core": "workspace:^"
     "@standardnotes/domain-events": "workspace:*"
     "@standardnotes/domain-events-infra": "workspace:*"
-    "@standardnotes/features": "npm:^1.58.9"
+    "@standardnotes/features": "npm:^1.58.12"
     "@standardnotes/predicates": "workspace:*"
     "@standardnotes/responses": "npm:^1.13.9"
     "@standardnotes/security": "workspace:*"
@@ -3482,15 +3482,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@standardnotes/features@npm:^1.58.9":
-  version: 1.58.9
-  resolution: "@standardnotes/features@npm:1.58.9"
+"@standardnotes/features@npm:^1.58.12":
+  version: 1.58.12
+  resolution: "@standardnotes/features@npm:1.58.12"
   dependencies:
     "@standardnotes/common": "npm:^1.46.6"
     "@standardnotes/domain-core": "npm:^1.11.3"
     "@standardnotes/security": "npm:^1.7.6"
     reflect-metadata: "npm:^0.1.13"
-  checksum: 218350ee55d2f920e26c4041e1e307655cf9e755b83c7fd2165be2222d95b40154c0d325a362cc84ce960ccf8c07c6d95c6a8558ddabf6ee335462cf6bd22508
+  checksum: 3fcd9a948848cf6fe567390a7740222fd96d10b8a9bceeaf608befcd7e24ac7374e1c87ed51c12ab62a9ed6036b3c6da82c78ab58f6b0c3f0c3c9aaa2b7ffdfe
   languageName: node
   linkType: hard
 

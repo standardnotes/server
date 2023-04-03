@@ -4,11 +4,16 @@ import { Authenticator } from '../../Authenticator/Authenticator'
 import { AuthenticatorChallenge } from '../../Authenticator/AuthenticatorChallenge'
 import { AuthenticatorChallengeRepositoryInterface } from '../../Authenticator/AuthenticatorChallengeRepositoryInterface'
 import { AuthenticatorRepositoryInterface } from '../../Authenticator/AuthenticatorRepositoryInterface'
+import { FeatureServiceInterface } from '../../Feature/FeatureServiceInterface'
+import { User } from '../../User/User'
+import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'
 import { GenerateAuthenticatorRegistrationOptions } from './GenerateAuthenticatorRegistrationOptions'
 
 describe('GenerateAuthenticatorRegistrationOptions', () => {
   let authenticatorRepository: AuthenticatorRepositoryInterface
   let authenticatorChallengeRepository: AuthenticatorChallengeRepositoryInterface
+  let userRepository: UserRepositoryInterface
+  let featureService: FeatureServiceInterface
 
   const createUseCase = () =>
     new GenerateAuthenticatorRegistrationOptions(
@@ -16,6 +21,8 @@ describe('GenerateAuthenticatorRegistrationOptions', () => {
       authenticatorChallengeRepository,
       'Standard Notes',
       'standardnotes.com',
+      userRepository,
+      featureService,
     )
 
   beforeEach(() => {
@@ -35,6 +42,12 @@ describe('GenerateAuthenticatorRegistrationOptions', () => {
 
     authenticatorChallengeRepository = {} as jest.Mocked<AuthenticatorChallengeRepositoryInterface>
     authenticatorChallengeRepository.save = jest.fn()
+
+    userRepository = {} as jest.Mocked<UserRepositoryInterface>
+    userRepository.findOneByUuid = jest.fn().mockReturnValue({} as jest.Mocked<User>)
+
+    featureService = {} as jest.Mocked<FeatureServiceInterface>
+    featureService.userIsEntitledToFeature = jest.fn().mockReturnValue(true)
   })
 
   it('should return error if userUuid is invalid', async () => {
@@ -61,6 +74,36 @@ describe('GenerateAuthenticatorRegistrationOptions', () => {
 
     expect(result.isFailed()).toBe(true)
     expect(result.getError()).toBe('Could not generate authenticator registration options: Username cannot be empty')
+  })
+
+  it('should return error if user is not entitled to u2f feature', async () => {
+    featureService.userIsEntitledToFeature = jest.fn().mockReturnValue(false)
+
+    const useCase = createUseCase()
+
+    const result = await useCase.execute({
+      userUuid: '00000000-0000-0000-0000-000000000000',
+      username: 'username',
+    })
+
+    expect(result.isFailed()).toBe(true)
+    expect(result.getError()).toBe(
+      'Could not generate authenticator registration options: user is not entitled to U2F.',
+    )
+  })
+
+  it('should return error if user is not found', async () => {
+    userRepository.findOneByUuid = jest.fn().mockReturnValue(null)
+
+    const useCase = createUseCase()
+
+    const result = await useCase.execute({
+      userUuid: '00000000-0000-0000-0000-000000000000',
+      username: 'username',
+    })
+
+    expect(result.isFailed()).toBe(true)
+    expect(result.getError()).toBe('Could not generate authenticator registration options: user not found.')
   })
 
   it('should return error if authenticator challenge is invalid', async () => {

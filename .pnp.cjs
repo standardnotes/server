@@ -4175,7 +4175,7 @@ const RAW_RUNTIME_STATE =
           ["@standardnotes/domain-core", "workspace:packages/domain-core"],\
           ["@standardnotes/domain-events", "workspace:packages/domain-events"],\
           ["@standardnotes/domain-events-infra", "workspace:packages/domain-events-infra"],\
-          ["@standardnotes/features", "npm:1.58.9"],\
+          ["@standardnotes/features", "npm:1.58.12"],\
           ["@standardnotes/predicates", "workspace:packages/predicates"],\
           ["@standardnotes/responses", "npm:1.13.9"],\
           ["@standardnotes/security", "workspace:packages/security"],\
@@ -4360,10 +4360,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@standardnotes/features", [\
-      ["npm:1.58.8", {\
-        "packageLocation": "./.yarn/cache/@standardnotes-features-npm-1.58.8-d97ff2aae1-77bac7d0a0.zip/node_modules/@standardnotes/features/",\
+      ["npm:1.58.12", {\
+        "packageLocation": "./.yarn/cache/@standardnotes-features-npm-1.58.12-9778b78276-3fcd9a9488.zip/node_modules/@standardnotes/features/",\
         "packageDependencies": [\
-          ["@standardnotes/features", "npm:1.58.8"],\
+          ["@standardnotes/features", "npm:1.58.12"],\
           ["@standardnotes/common", "workspace:packages/common"],\
           ["@standardnotes/domain-core", "workspace:packages/domain-core"],\
           ["@standardnotes/security", "workspace:packages/security"],\
@@ -4371,10 +4371,10 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "HARD"\
       }],\
-      ["npm:1.58.9", {\
-        "packageLocation": "./.yarn/cache/@standardnotes-features-npm-1.58.9-c278f712cd-218350ee55.zip/node_modules/@standardnotes/features/",\
+      ["npm:1.58.8", {\
+        "packageLocation": "./.yarn/cache/@standardnotes-features-npm-1.58.8-d97ff2aae1-77bac7d0a0.zip/node_modules/@standardnotes/features/",\
         "packageDependencies": [\
-          ["@standardnotes/features", "npm:1.58.9"],\
+          ["@standardnotes/features", "npm:1.58.8"],\
           ["@standardnotes/common", "workspace:packages/common"],\
           ["@standardnotes/domain-core", "workspace:packages/domain-core"],\
           ["@standardnotes/security", "workspace:packages/security"],\

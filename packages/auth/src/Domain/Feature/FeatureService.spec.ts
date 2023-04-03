@@ -30,7 +30,7 @@ jest.mock('@standardnotes/features', () => {
 const { GetFeatures } = jest.requireMock('@standardnotes/features')
 
 import { FeatureService } from './FeatureService'
-import { Permission, PermissionName } from '@standardnotes/features'
+import { FeatureIdentifier, Permission, PermissionName } from '@standardnotes/features'
 import { OfflineUserSubscriptionRepositoryInterface } from '../Subscription/OfflineUserSubscriptionRepositoryInterface'
 import { TimerInterface } from '@standardnotes/time'
 import { OfflineUserSubscription } from '../Subscription/OfflineUserSubscription'
@@ -201,6 +201,62 @@ describe('FeatureService', () => {
   })
 
   describe('online subscribers', () => {
+    it('should tell if a user is entitled to a feature', async () => {
+      expect(await createService().userIsEntitledToFeature(user, FeatureIdentifier.AutobiographyTheme)).toBe(true)
+      expect(await createService().userIsEntitledToFeature(user, FeatureIdentifier.DeprecatedBoldEditor)).toBe(false)
+    })
+
+    it('should tell if a user is not entitled to a feature because it is expired', async () => {
+      timer.getTimestampInMicroseconds = jest.fn().mockReturnValue(777)
+      expect(await createService().userIsEntitledToFeature(user, FeatureIdentifier.AutobiographyTheme)).toBe(false)
+    })
+
+    it('should tell if a user is entitled to a feature that does not expire', async () => {
+      const nonSubscriptionPermission = {
+        uuid: 'files-beta-permission-1-1-1',
+        name: PermissionName.FilesBeta,
+      } as jest.Mocked<Permission>
+
+      GetFeatures.mockImplementation(() => [
+        {
+          identifier: 'org.standardnotes.theme-autobiography',
+          permission_name: PermissionName.AutobiographyTheme,
+          expires_at: 555,
+        },
+        {
+          identifier: 'org.standardnotes.bold-editor',
+          permission_name: PermissionName.BoldEditor,
+          expires_at: 777,
+        },
+        {
+          identifier: 'files-beta',
+          permission_name: PermissionName.FilesBeta,
+          expires_at: undefined,
+          no_expire: true,
+        },
+      ])
+
+      const nonSubscriptionRole = {
+        name: RoleName.NAMES.InternalTeamUser,
+        uuid: 'role-files-beta',
+        permissions: Promise.resolve([nonSubscriptionPermission]),
+      } as jest.Mocked<Role>
+
+      roleToSubscriptionMap.filterNonSubscriptionRoles = jest.fn().mockReturnValue([nonSubscriptionRole])
+      roleToSubscriptionMap.getSubscriptionNameForRoleName = jest
+        .fn()
+        .mockReturnValueOnce(SubscriptionName.PlusPlan)
+        .mockReturnValueOnce(SubscriptionName.ProPlan)
+
+      user = {
+        uuid: 'user-1-1-1',
+        roles: Promise.resolve([role1, role2, nonSubscriptionRole]),
+        subscriptions: Promise.resolve([subscription1, subscription2]),
+      } as jest.Mocked<User>
+
+      expect(await createService().userIsEntitledToFeature(user, 'files-beta')).toBe(true)
+    })
+
     it('should return user features with `expires_at` field', async () => {
       const features = await createService().getFeaturesForUser(user)
       expect(features).toEqual(
@@ -336,6 +392,7 @@ describe('FeatureService', () => {
           expires_at: 777,
         },
         {
+          identifier: 'files-beta',
           permission_name: PermissionName.FilesBeta,
           expires_at: undefined,
           no_expire: true,

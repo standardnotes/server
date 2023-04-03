@@ -4,5 +4,6 @@ import { User } from '../User/User'
 
 export interface FeatureServiceInterface {
   getFeaturesForUser(user: User): Promise<Array<FeatureDescription>>
+  userIsEntitledToFeature(user: User, featureIdentifier: string): Promise<boolean>
   getFeaturesForOfflineUser(email: string): Promise<{ features: FeatureDescription[]; roles: string[] }>
 }

@@ -21,6 +21,25 @@ export class FeatureService implements FeatureServiceInterface {
     @inject(TYPES.Timer) private timer: TimerInterface,
   ) {}
 
+  async userIsEntitledToFeature(user: User, featureIdentifier: string): Promise<boolean> {
+    const userFeatures = await this.getFeaturesForUser(user)
+
+    const feature = userFeatures.find((userFeature) => userFeature.identifier === featureIdentifier)
+
+    if (feature === undefined) {
+      return false
+    }
+
+    if (feature.no_expire) {
+      return true
+    }
+
+    const featureIsExpired =
+      feature.expires_at !== undefined && feature.expires_at < this.timer.getTimestampInMicroseconds()
+
+    return !featureIsExpired
+  }
+
   async getFeaturesForOfflineUser(email: string): Promise<{ features: FeatureDescription[]; roles: string[] }> {
     const userSubscriptions = await this.offlineUserSubscriptionRepository.findByEmail(
       email,

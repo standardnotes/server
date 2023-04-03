@@ -563,6 +563,8 @@ export class ContainerConfigLoader {
           container.get(TYPES.AuthenticatorChallengeRepository),
           container.get(TYPES.U2F_RELYING_PARTY_NAME),
           container.get(TYPES.U2F_RELYING_PARTY_ID),
+          container.get(TYPES.UserRepository),
+          container.get(TYPES.FeatureService),
         ),
       )
     container
@@ -574,6 +576,8 @@ export class ContainerConfigLoader {
           container.get(TYPES.U2F_RELYING_PARTY_ID),
           container.get(TYPES.U2F_EXPECTED_ORIGIN),
           container.get(TYPES.U2F_REQUIRE_USER_VERIFICATION),
+          container.get(TYPES.UserRepository),
+          container.get(TYPES.FeatureService),
         ),
       )
     container
@@ -599,10 +603,22 @@ export class ContainerConfigLoader {
       )
     container
       .bind<ListAuthenticators>(TYPES.ListAuthenticators)
-      .toConstantValue(new ListAuthenticators(container.get(TYPES.AuthenticatorRepository)))
+      .toConstantValue(
+        new ListAuthenticators(
+          container.get(TYPES.AuthenticatorRepository),
+          container.get(TYPES.UserRepository),
+          container.get(TYPES.FeatureService),
+        ),
+      )
     container
       .bind<DeleteAuthenticator>(TYPES.DeleteAuthenticator)
-      .toConstantValue(new DeleteAuthenticator(container.get(TYPES.AuthenticatorRepository)))
+      .toConstantValue(
+        new DeleteAuthenticator(
+          container.get(TYPES.AuthenticatorRepository),
+          container.get(TYPES.UserRepository),
+          container.get(TYPES.FeatureService),
+        ),
+      )
     container
       .bind<GenerateRecoveryCodes>(TYPES.GenerateRecoveryCodes)
       .toConstantValue(

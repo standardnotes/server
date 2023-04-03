@@ -34,6 +34,17 @@ export class AuthenticatorsController {
       userUuid: params.userUuid,
     })
 
+    if (result.isFailed()) {
+      return {
+        status: HttpStatusCode.Unauthorized,
+        data: {
+          error: {
+            message: result.getError(),
+          },
+        },
+      }
+    }
+
     return {
       status: HttpStatusCode.Success,
       data: {
@@ -49,6 +60,17 @@ export class AuthenticatorsController {
       userUuid: params.userUuid,
       authenticatorId: params.authenticatorId,
     })
+
+    if (result.isFailed()) {
+      return {
+        status: HttpStatusCode.Unauthorized,
+        data: {
+          error: {
+            message: result.getError(),
+          },
+        },
+      }
+    }
 
     return {
       status: HttpStatusCode.Success,

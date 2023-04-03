@@ -2,12 +2,18 @@ import { Dates, Uuid } from '@standardnotes/domain-core'
 
 import { Authenticator } from '../../Authenticator/Authenticator'
 import { AuthenticatorRepositoryInterface } from '../../Authenticator/AuthenticatorRepositoryInterface'
+import { FeatureServiceInterface } from '../../Feature/FeatureServiceInterface'
+import { User } from '../../User/User'
+import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'
 import { DeleteAuthenticator } from './DeleteAuthenticator'
 
 describe('DeleteAuthenticator', () => {
   let authenticatorRepository: AuthenticatorRepositoryInterface
   let authenticator: Authenticator
-  const createUseCase = () => new DeleteAuthenticator(authenticatorRepository)
+  let userRepository: UserRepositoryInterface
+  let featureService: FeatureServiceInterface
+
+  const createUseCase = () => new DeleteAuthenticator(authenticatorRepository, userRepository, featureService)
 
   beforeEach(() => {
     authenticator = Authenticator.create({
@@ -24,6 +30,12 @@ describe('DeleteAuthenticator', () => {
     authenticatorRepository = {} as jest.Mocked<AuthenticatorRepositoryInterface>
     authenticatorRepository.findById = jest.fn().mockReturnValue(authenticator)
     authenticatorRepository.remove = jest.fn()
+
+    userRepository = {} as jest.Mocked<UserRepositoryInterface>
+    userRepository.findOneByUuid = jest.fn().mockReturnValue({} as jest.Mocked<User>)
+
+    featureService = {} as jest.Mocked<FeatureServiceInterface>
+    featureService.userIsEntitledToFeature = jest.fn().mockReturnValue(true)
   })
 
   it('should return error if authenticator not found', async () => {
@@ -36,6 +48,40 @@ describe('DeleteAuthenticator', () => {
 
     expect(result.isFailed()).toBe(true)
     expect(result.getError()).toEqual('Authenticator not found')
+  })
+
+  it('should return error if user is not found', async () => {
+    userRepository.findOneByUuid = jest.fn().mockReturnValue(null)
+
+    const result = await createUseCase().execute({
+      userUuid: '00000000-0000-0000-0000-000000000000',
+      authenticatorId: '00000000-0000-0000-0000-000000000000',
+    })
+
+    expect(result.isFailed()).toBe(true)
+    expect(result.getError()).toEqual('Could not delete authenticator: user not found.')
+  })
+
+  it('should return error if user is not entitled to U2F', async () => {
+    featureService.userIsEntitledToFeature = jest.fn().mockReturnValue(false)
+
+    const result = await createUseCase().execute({
+      userUuid: '00000000-0000-0000-0000-000000000000',
+      authenticatorId: '00000000-0000-0000-0000-000000000000',
+    })
+
+    expect(result.isFailed()).toBe(true)
+    expect(result.getError()).toEqual('Could not delete authenticator: user is not entitled to U2F.')
+  })
+
+  it('should return error if user uuid is not valid', async () => {
+    const result = await createUseCase().execute({
+      userUuid: 'invalid',
+      authenticatorId: '00000000-0000-0000-0000-000000000000',
+    })
+
+    expect(result.isFailed()).toBe(true)
+    expect(result.getError()).toEqual('Could not delete authenticator: Given value is not a valid uuid: invalid')
   })
 
   it('should return error if authenticator does not belong to user', async () => {
