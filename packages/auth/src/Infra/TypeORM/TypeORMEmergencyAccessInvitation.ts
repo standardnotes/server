@@ -24,10 +24,18 @@ export class TypeORMEmergencyAccessInvitation {
   declare grantor: Promise<User>
 
   @Column({
+    name: 'grantee_email',
+    length: 255,
+  })
+  declare granteeEmail: string
+
+  @Column({
     name: 'grantee_uuid',
     length: 36,
+    type: 'varchar',
+    nullable: true,
   })
-  declare granteeUuid: string
+  declare granteeUuid: string | null
 
   @ManyToOne(
     /* istanbul ignore next */
@@ -38,7 +46,7 @@ export class TypeORMEmergencyAccessInvitation {
     { onDelete: 'CASCADE', nullable: false },
   )
   @JoinColumn({ name: 'grantee_uuid', referencedColumnName: 'uuid', foreignKeyConstraintName: 'grantee_uuid_fk' })
-  declare grantee: Promise<User>
+  declare grantee: Promise<User | null>
 
   @Column({
     name: 'status',

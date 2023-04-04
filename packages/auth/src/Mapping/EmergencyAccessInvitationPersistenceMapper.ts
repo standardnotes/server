@@ -1,4 +1,4 @@
-import { Dates, MapperInterface, UniqueEntityId, Uuid } from '@standardnotes/domain-core'
+import { Dates, Email, MapperInterface, UniqueEntityId, Uuid } from '@standardnotes/domain-core'
 
 import { EmergencyAccessInvitation } from '../Domain/EmergencyAccess/EmergencyAccessInvitation'
 import { EmergencyAccessInvitationStatus } from '../Domain/EmergencyAccess/EmergencyAccessInvitationStatus'
@@ -14,11 +14,20 @@ export class EmergencyAccessInvitationPersistenceMapper
     }
     const grantorUuid = grantorUuidOrError.getValue()
 
-    const granteeUuidOrError = Uuid.create(projection.granteeUuid)
-    if (granteeUuidOrError.isFailed()) {
-      throw new Error(granteeUuidOrError.getError())
+    let granteeUuid = undefined
+    if (projection.granteeUuid) {
+      const granteeUuidOrError = Uuid.create(projection.granteeUuid)
+      if (granteeUuidOrError.isFailed()) {
+        throw new Error(granteeUuidOrError.getError())
+      }
+      granteeUuid = granteeUuidOrError.getValue()
     }
-    const granteeUuid = granteeUuidOrError.getValue()
+
+    const granteeEmailOrError = Email.create(projection.granteeEmail)
+    if (granteeEmailOrError.isFailed()) {
+      throw new Error(granteeEmailOrError.getError())
+    }
+    const granteeEmail = granteeEmailOrError.getValue()
 
     const emergencyAccessInvitationStatusOrError = EmergencyAccessInvitationStatus.create(projection.status)
     if (emergencyAccessInvitationStatusOrError.isFailed()) {
@@ -34,6 +43,7 @@ export class EmergencyAccessInvitationPersistenceMapper
 
     const emergencyAccessInvitationOrError = EmergencyAccessInvitation.create(
       {
+        granteeEmail,
         grantorUuid,
         granteeUuid,
         status: emergencyAccessInvitationStatus,
@@ -51,8 +61,12 @@ export class EmergencyAccessInvitationPersistenceMapper
     const typeorm = new TypeORMEmergencyAccessInvitation()
 
     typeorm.uuid = domain.id.toString()
+    typeorm.granteeEmail = domain.props.granteeEmail.value
     typeorm.grantorUuid = domain.props.grantorUuid.value
-    typeorm.granteeUuid = domain.props.granteeUuid.value
+    typeorm.granteeUuid = null
+    if (domain.props.granteeUuid) {
+      typeorm.granteeUuid = domain.props.granteeUuid.value
+    }
     typeorm.status = domain.props.status.value
     typeorm.expiresAt = domain.props.expiresAt
     typeorm.createdAt = domain.props.dates.createdAt
