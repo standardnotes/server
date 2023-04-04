@@ -168,7 +168,7 @@ describe('UpdateSetting', () => {
         error: {
           message: 'User 1-2-3 has no subscription to change a subscription setting.',
         },
-        statusCode: 401,
+        statusCode: 400,
       })
     })
 

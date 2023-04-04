@@ -83,7 +83,7 @@ export class UpdateSetting implements UseCaseInterface {
           error: {
             message: `User ${userUuid} has no subscription to change a subscription setting.`,
           },
-          statusCode: 401,
+          statusCode: 400,
         }
       }
 
