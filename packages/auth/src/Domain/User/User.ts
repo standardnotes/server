@@ -4,6 +4,7 @@ import { Role } from '../Role/Role'
 import { Setting } from '../Setting/Setting'
 import { UserSubscription } from '../Subscription/UserSubscription'
 import { ProtocolVersion } from '@standardnotes/common'
+import { TypeORMEmergencyAccessInvitation } from '../../Infra/TypeORM/TypeORMEmergencyAccessInvitation'
 
 @Entity({ name: 'users' })
 export class User {
@@ -180,6 +181,22 @@ export class User {
     { lazy: true, eager: false },
   )
   declare subscriptions: Promise<UserSubscription[]>
+
+  @OneToMany(
+    /* istanbul ignore next */
+    () => TypeORMEmergencyAccessInvitation,
+    /* istanbul ignore next */
+    (invitation) => invitation.grantor,
+  )
+  declare emergencyAccessInvitationsCreated: Promise<TypeORMEmergencyAccessInvitation[]>
+
+  @OneToMany(
+    /* istanbul ignore next */
+    () => TypeORMEmergencyAccessInvitation,
+    /* istanbul ignore next */
+    (invitation) => invitation.grantee,
+  )
+  declare emergencyAccessInvitationsReceived: Promise<TypeORMEmergencyAccessInvitation[]>
 
   supportsSessions(): boolean {
     return parseInt(this.version) >= parseInt(ProtocolVersion.V004)
