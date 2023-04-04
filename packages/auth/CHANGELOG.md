@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.94.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.94.0...@standardnotes/auth-server@1.94.1) (2023-04-04)
+
+### Bug Fixes
+
+* **auth:** change status code for updating a subscription setting without a subscription ([3417407](https://github.com/standardnotes/server/commit/3417407cbe3b8e19069f6003e767d707e14b4501))
+
 # [1.94.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.93.14...@standardnotes/auth-server@1.94.0) (2023-04-03)
 
 ### Bug Fixes
