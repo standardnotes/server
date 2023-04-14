@@ -22,7 +22,7 @@
   "devDependencies": {
     "@commitlint/cli": "^17.0.2",
     "@commitlint/config-conventional": "^17.0.2",
-    "@lerna-lite/cli": "^1.5.1",
+    "@lerna-lite/cli": "^2.0.0",
     "@lerna-lite/list": "^1.5.1",
     "@lerna-lite/run": "^1.5.1",
     "@types/jest": "^29.1.1",
