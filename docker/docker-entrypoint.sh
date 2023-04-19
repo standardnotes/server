@@ -190,7 +190,7 @@ if [ -z "$AUTH_SERVER_U2F_RELYING_PARTY_NAME" ]; then
   export AUTH_SERVER_U2F_RELYING_PARTY_NAME="Standard Notes"
 fi
 if [ -z "$AUTH_SERVER_U2F_EXPECTED_ORIGIN" ]; then
-  export AUTH_SERVER_U2F_EXPECTED_ORIGIN="http://localhost,http://localhost:3001"
+  export AUTH_SERVER_U2F_EXPECTED_ORIGIN="http://localhost,http://localhost:3001,https://app.standardnotes.com,android:apk-key-hash:WD_EG0kMOAtW--nuRzgetO9T4DcZpVA_wfKdzY4okCo"
 fi
 if [ -z "$AUTH_SERVER_U2F_REQUIRE_USER_VERIFICATION" ]; then
   export AUTH_SERVER_U2F_REQUIRE_USER_VERIFICATION=false
