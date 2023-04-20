@@ -12,4 +12,5 @@ export enum DomainEventService {
   Revisions = 'revisions',
   Email = 'email',
   Settings = 'settings',
+  SES = 'ses',
 }
