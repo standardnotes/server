@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.10.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events-infra@1.9.74...@standardnotes/domain-events-infra@1.10.0) (2023-04-21)
+
+### Features
+
+* **domain-events-infra:** add SES email bounce notifications handler ([#569](https://github.com/standardnotes/server/issues/569)) ([9b9f10d](https://github.com/standardnotes/server/commit/9b9f10d4ca9ceef1defa868b7c96f570e46d8053))
+
 ## [1.9.74](https://github.com/standardnotes/server/compare/@standardnotes/domain-events-infra@1.9.73...@standardnotes/domain-events-infra@1.9.74) (2023-03-30)
 
 **Note:** Version bump only for package @standardnotes/domain-events-infra
