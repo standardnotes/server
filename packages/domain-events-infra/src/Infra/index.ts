@@ -5,6 +5,7 @@ export * from './Redis/RedisEventMessageHandler'
 
 export * from './SNS/SNSDomainEventPublisher'
 
+export * from './SQS/SQSNewRelicBounceNotificiationHandler'
 export * from './SQS/SQSDomainEventSubscriberFactory'
 export * from './SQS/SQSEventMessageHandler'
 export * from './SQS/SQSNewRelicEventMessageHandler'
