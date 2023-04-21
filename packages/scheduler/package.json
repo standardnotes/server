@@ -38,7 +38,7 @@
     "inversify": "^6.0.1",
     "ioredis": "^5.2.4",
     "mysql2": "^3.0.1",
-    "newrelic": "^9.14.1",
+    "newrelic": "^10.0.0",
     "reflect-metadata": "^0.1.13",
     "typeorm": "^0.3.10",
     "winston": "^3.8.1"
@@ -46,7 +46,7 @@
   "devDependencies": {
     "@types/ioredis": "^5.0.0",
     "@types/jest": "^29.1.1",
-    "@types/newrelic": "^9.4.0",
+    "@types/newrelic": "^9.13.0",
     "@types/node": "^18.11.9",
     "@typescript-eslint/eslint-plugin": "^5.48.2",
     "eslint": "^8.32.0",
