@@ -21,6 +21,8 @@ packages/files/uploads/*
 data/*
 !data/.gitkeep
 
+packages/**/data/*
+
 logs/*
 !logs/.gitkeep
 

@@ -1,4 +1,6 @@
 import { DataSource, LoggerOptions } from 'typeorm'
+import { BetterSqlite3ConnectionOptions } from 'typeorm/driver/better-sqlite3/BetterSqlite3ConnectionOptions'
+import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions'
 import { Permission } from '../Domain/Permission/Permission'
 import { Role } from '../Domain/Role/Role'
 import { RevokedSession } from '../Domain/Session/RevokedSession'
@@ -18,6 +20,8 @@ import { Env } from './Env'
 
 const env: Env = new Env()
 env.load()
+
+const isConfiguredForMySQL = env.get('DB_TYPE') === 'mysql'
 
 const maxQueryExecutionTime = env.get('DB_MAX_QUERY_EXECUTION_TIME', true)
   ? +env.get('DB_MAX_QUERY_EXECUTION_TIME', true)
@@ -46,18 +50,8 @@ const replicationConfig = {
   restoreNodeTimeout: 5,
 }
 
-export const AppDataSource = new DataSource({
-  type: 'mysql',
-  charset: 'utf8mb4',
-  supportBigNumbers: true,
-  bigNumberStrings: false,
+const commonDataSourceOptions = {
   maxQueryExecutionTime,
-  replication: inReplicaMode ? replicationConfig : undefined,
-  host: inReplicaMode ? undefined : env.get('DB_HOST'),
-  port: inReplicaMode ? undefined : parseInt(env.get('DB_PORT')),
-  username: inReplicaMode ? undefined : env.get('DB_USERNAME'),
-  password: inReplicaMode ? undefined : env.get('DB_PASSWORD'),
-  database: inReplicaMode ? undefined : env.get('DB_DATABASE'),
   entities: [
     User,
     UserSubscription,
@@ -75,7 +69,29 @@ export const AppDataSource = new DataSource({
     TypeORMAuthenticatorChallenge,
     TypeORMEmergencyAccessInvitation,
   ],
-  migrations: [env.get('DB_MIGRATIONS_PATH', true) ?? 'dist/migrations/*.js'],
+  migrations: [`dist/migrations/${env.get('DB_TYPE')}/*.js`],
   migrationsRun: true,
   logging: <LoggerOptions>env.get('DB_DEBUG_LEVEL'),
-})
+}
+
+const mySQLDataSourceOptions: MysqlConnectionOptions = {
+  ...commonDataSourceOptions,
+  type: 'mysql',
+  charset: 'utf8mb4',
+  supportBigNumbers: true,
+  bigNumberStrings: false,
+  replication: inReplicaMode ? replicationConfig : undefined,
+  host: inReplicaMode ? undefined : env.get('DB_HOST'),
+  port: inReplicaMode ? undefined : parseInt(env.get('DB_PORT')),
+  username: inReplicaMode ? undefined : env.get('DB_USERNAME'),
+  password: inReplicaMode ? undefined : env.get('DB_PASSWORD'),
+  database: inReplicaMode ? undefined : env.get('DB_DATABASE'),
+}
+
+const sqliteDataSourceOptions: BetterSqlite3ConnectionOptions = {
+  ...commonDataSourceOptions,
+  type: 'better-sqlite3',
+  database: `data/${env.get('DB_DATABASE')}.sqlite`,
+}
+
+export const AppDataSource = new DataSource(isConfiguredForMySQL ? mySQLDataSourceOptions : sqliteDataSourceOptions)
