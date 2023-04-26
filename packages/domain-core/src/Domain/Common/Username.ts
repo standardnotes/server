@@ -13,6 +13,10 @@ export class Username extends ValueObject<UsernameProps> {
   }
 
   static create(username: string): Result<Username> {
+    if (Validator.isString(username).isFailed()) {
+      return Result.fail<Username>('Username must be a string')
+    }
+
     const trimmedAndLowerCasedUsername = username.trim().toLowerCase()
 
     if (Validator.isNotEmpty(trimmedAndLowerCasedUsername).isFailed()) {
