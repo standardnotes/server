@@ -1,3 +1,4 @@
+import { Email, Username } from '@standardnotes/domain-core'
 import { ReadStream } from 'fs'
 import { inject, injectable } from 'inversify'
 import { Repository } from 'typeorm'
@@ -28,10 +29,10 @@ export class MySQLUserRepository implements UserRepositoryInterface {
       .stream()
   }
 
-  async streamTeam(memberEmail?: string): Promise<ReadStream> {
+  async streamTeam(memberEmail?: Email): Promise<ReadStream> {
     const queryBuilder = this.ormRepository.createQueryBuilder()
     if (memberEmail !== undefined) {
-      queryBuilder.where('email = :email', { email: memberEmail })
+      queryBuilder.where('email = :email', { email: memberEmail.value })
     } else {
       queryBuilder.where('email LIKE :email', { email: '%@standardnotes.com' })
     }
@@ -47,11 +48,11 @@ export class MySQLUserRepository implements UserRepositoryInterface {
       .getOne()
   }
 
-  async findOneByEmail(email: string): Promise<User | null> {
+  async findOneByUsernameOrEmail(usernameOrEmail: Email | Username): Promise<User | null> {
     return this.ormRepository
       .createQueryBuilder('user')
-      .where('user.email = :email', { email: email.toLowerCase() })
-      .cache(`user_email_${email.toLowerCase()}`, 60000)
+      .where('user.email = :email', { email: usernameOrEmail.value })
+      .cache(`user_email_${usernameOrEmail.value}`, 60000)
       .getOne()
   }
 }

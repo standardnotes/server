@@ -16,6 +16,7 @@ import { MuteFailedBackupsEmailsOption, SettingName } from '@standardnotes/setti
 import { RoleServiceInterface } from '../src/Domain/Role/RoleServiceInterface'
 import { PermissionName } from '@standardnotes/features'
 import { UserRepositoryInterface } from '../src/Domain/User/UserRepositoryInterface'
+import { Email } from '@standardnotes/domain-core'
 
 const inputArgs = process.argv.slice(2)
 const backupEmail = inputArgs[0]
@@ -31,11 +32,13 @@ const requestBackups = async (
   const muteEmailsSettingName = SettingName.NAMES.MuteFailedBackupsEmails
   const muteEmailsSettingValue = MuteFailedBackupsEmailsOption.Muted
 
-  if (!backupEmail) {
+  const emailOrError = Email.create(backupEmail)
+  if (emailOrError.isFailed()) {
     throw new Error('Could not trigger email backup for user - missing email parameter')
   }
+  const email = emailOrError.getValue()
 
-  const user = await userRepository.findOneByEmail(backupEmail)
+  const user = await userRepository.findOneByUsernameOrEmail(email)
   if (user === null) {
     throw new Error(`Could not find user with email: ${backupEmail}`)
   }

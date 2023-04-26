@@ -45,7 +45,7 @@ describe('VerifyMFA', () => {
     } as jest.Mocked<User>
 
     userRepository = {} as jest.Mocked<UserRepositoryInterface>
-    userRepository.findOneByEmail = jest.fn().mockReturnValue(user)
+    userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue(user)
 
     booleanSelector = {} as jest.Mocked<SelectorInterface<boolean>>
     booleanSelector.select = jest.fn().mockReturnValue(false)
@@ -103,7 +103,7 @@ describe('VerifyMFA', () => {
     })
 
     it('should pass MFA verification if user is not found and pseudo mfa is not required', async () => {
-      userRepository.findOneByEmail = jest.fn().mockReturnValue(null)
+      userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue(null)
       expect(
         await createVerifyMFA().execute({ email: 'test@test.te', requestParams: {}, preventOTPFromFurtherUsage: true }),
       ).toEqual({
@@ -115,7 +115,7 @@ describe('VerifyMFA', () => {
 
     it('should not pass MFA verification if user is not found and pseudo mfa is required', async () => {
       booleanSelector.select = jest.fn().mockReturnValueOnce(true).mockReturnValueOnce(false)
-      userRepository.findOneByEmail = jest.fn().mockReturnValue(null)
+      userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue(null)
 
       expect(
         await createVerifyMFA().execute({ email: 'test@test.te', requestParams: {}, preventOTPFromFurtherUsage: true }),
@@ -150,6 +150,22 @@ describe('VerifyMFA', () => {
         }),
       ).toEqual({
         success: true,
+      })
+
+      expect(lockRepository.lockSuccessfullOTP).not.toHaveBeenCalled()
+    })
+
+    it('should not pass MFA if username is invalid', async () => {
+      expect(
+        await createVerifyMFA().execute({
+          email: '',
+          requestParams: { 'mfa_1-2-3': authenticator.generate('shhhh') },
+          preventOTPFromFurtherUsage: true,
+        }),
+      ).toEqual({
+        success: false,
+        errorTag: 'invalid-auth',
+        errorMessage: 'Username cannot be empty',
       })
 
       expect(lockRepository.lockSuccessfullOTP).not.toHaveBeenCalled()
@@ -242,7 +258,7 @@ describe('VerifyMFA', () => {
 
     it('should not pass if user is not found and pseudo u2f is required', async () => {
       booleanSelector.select = jest.fn().mockReturnValueOnce(false).mockReturnValueOnce(true)
-      userRepository.findOneByEmail = jest.fn().mockReturnValue(null)
+      userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue(null)
 
       expect(
         await createVerifyMFA().execute({ email: 'test@test.te', requestParams: {}, preventOTPFromFurtherUsage: true }),
@@ -254,7 +270,7 @@ describe('VerifyMFA', () => {
     })
 
     it('should not pass if the user has an invalid uuid', async () => {
-      userRepository.findOneByEmail = jest.fn().mockReturnValue({ uuid: 'invalid' } as jest.Mocked<User>)
+      userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue({ uuid: 'invalid' } as jest.Mocked<User>)
 
       expect(
         await createVerifyMFA().execute({

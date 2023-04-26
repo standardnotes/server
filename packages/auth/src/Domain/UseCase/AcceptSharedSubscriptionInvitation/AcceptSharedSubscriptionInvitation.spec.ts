@@ -50,6 +50,7 @@ describe('AcceptSharedSubscriptionInvitation', () => {
 
     invitation = {
       subscriptionId: 3,
+      inviteeIdentifier: 'test@test.te',
     } as jest.Mocked<SharedSubscriptionInvitation>
 
     sharedSubscriptionInvitationRepository = {} as jest.Mocked<SharedSubscriptionInvitationRepositoryInterface>
@@ -57,7 +58,7 @@ describe('AcceptSharedSubscriptionInvitation', () => {
     sharedSubscriptionInvitationRepository.save = jest.fn()
 
     userRepository = {} as jest.Mocked<UserRepositoryInterface>
-    userRepository.findOneByEmail = jest.fn().mockReturnValue(invitee)
+    userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue(invitee)
 
     inviteeSubscription = { endsAt: 3, planName: SubscriptionName.PlusPlan } as jest.Mocked<UserSubscription>
 
@@ -89,6 +90,7 @@ describe('AcceptSharedSubscriptionInvitation', () => {
     expect(sharedSubscriptionInvitationRepository.save).toHaveBeenCalledWith({
       status: 'accepted',
       subscriptionId: 3,
+      inviteeIdentifier: 'test@test.te',
       updatedAt: 1,
     })
     expect(userSubscriptionRepository.save).toHaveBeenCalledWith({
@@ -129,6 +131,7 @@ describe('AcceptSharedSubscriptionInvitation', () => {
 
     expect(sharedSubscriptionInvitationRepository.save).toHaveBeenCalledWith({
       status: 'accepted',
+      inviteeIdentifier: 'test@test.te',
       subscriptionId: 3,
       updatedAt: 3,
     })
@@ -168,7 +171,7 @@ describe('AcceptSharedSubscriptionInvitation', () => {
   })
 
   it('should not create a shared subscription if invitee is not found', async () => {
-    userRepository.findOneByEmail = jest.fn().mockReturnValue(null)
+    userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue(null)
     expect(
       await createUseCase().execute({
         sharedSubscriptionInvitationUuid: '1-2-3',
@@ -177,6 +180,28 @@ describe('AcceptSharedSubscriptionInvitation', () => {
       success: false,
       message:
         'Could not find the invitee in our user database. Please first register an account before accepting the invitation.',
+    })
+
+    expect(sharedSubscriptionInvitationRepository.save).not.toHaveBeenCalled()
+    expect(userSubscriptionRepository.save).not.toHaveBeenCalled()
+    expect(roleService.addUserRole).not.toHaveBeenCalled()
+    expect(subscriptionSettingService.applyDefaultSubscriptionSettingsForSubscription).not.toHaveBeenCalled()
+  })
+
+  it('should not create a shared subscription if invitee email is invalid', async () => {
+    invitation = {
+      subscriptionId: 3,
+      inviteeIdentifier: '',
+    } as jest.Mocked<SharedSubscriptionInvitation>
+    sharedSubscriptionInvitationRepository.findOneByUuidAndStatus = jest.fn().mockReturnValue(invitation)
+
+    expect(
+      await createUseCase().execute({
+        sharedSubscriptionInvitationUuid: '1-2-3',
+      }),
+    ).toEqual({
+      success: false,
+      message: 'Given value is not a valid email address: ',
     })
 
     expect(sharedSubscriptionInvitationRepository.save).not.toHaveBeenCalled()

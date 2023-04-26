@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { inject, injectable } from 'inversify'
 import { authenticator } from 'otplib'
 import { SelectorInterface } from '@standardnotes/security'
-import { UseCaseInterface as DomainUseCaseInterface, Uuid } from '@standardnotes/domain-core'
+import { UseCaseInterface as DomainUseCaseInterface, Username, Uuid } from '@standardnotes/domain-core'
 
 import TYPES from '../../Bootstrap/Types'
 import { MFAValidationError } from '../Error/MFAValidationError'
@@ -36,7 +36,17 @@ export class VerifyMFA implements UseCaseInterface {
 
   async execute(dto: VerifyMFADTO): Promise<VerifyMFAResponse> {
     try {
-      const user = await this.userRepository.findOneByEmail(dto.email)
+      const usernameOrError = Username.create(dto.email)
+      if (usernameOrError.isFailed()) {
+        return {
+          success: false,
+          errorTag: ErrorTag.AuthInvalid,
+          errorMessage: usernameOrError.getError(),
+        }
+      }
+      const username = usernameOrError.getValue()
+
+      const user = await this.userRepository.findOneByUsernameOrEmail(username)
       if (user == null) {
         const mfaSelectorHash = crypto
           .createHash('sha256')

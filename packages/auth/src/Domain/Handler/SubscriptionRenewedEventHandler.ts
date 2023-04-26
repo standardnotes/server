@@ -8,6 +8,7 @@ import { RoleServiceInterface } from '../Role/RoleServiceInterface'
 import { UserRepositoryInterface } from '../User/UserRepositoryInterface'
 import { Logger } from 'winston'
 import { OfflineUserSubscription } from '../Subscription/OfflineUserSubscription'
+import { Username } from '@standardnotes/domain-core'
 
 @injectable()
 export class SubscriptionRenewedEventHandler implements DomainEventHandlerInterface {
@@ -49,10 +50,16 @@ export class SubscriptionRenewedEventHandler implements DomainEventHandlerInterf
       event.payload.timestamp,
     )
 
-    const user = await this.userRepository.findOneByEmail(event.payload.userEmail)
+    const usernameOrError = Username.create(event.payload.userEmail)
+    if (usernameOrError.isFailed()) {
+      return
+    }
+    const username = usernameOrError.getValue()
+
+    const user = await this.userRepository.findOneByUsernameOrEmail(username)
 
     if (user === null) {
-      this.logger.warn(`Could not find user with email: ${event.payload.userEmail}`)
+      this.logger.warn(`Could not find user with email: ${username.value}`)
 
       return
     }

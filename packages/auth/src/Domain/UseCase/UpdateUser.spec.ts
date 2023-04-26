@@ -21,7 +21,7 @@ describe('UpdateUser', () => {
   beforeEach(() => {
     userRepository = {} as jest.Mocked<UserRepositoryInterface>
     userRepository.save = jest.fn()
-    userRepository.findOneByEmail = jest.fn().mockReturnValue(undefined)
+    userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue(undefined)
 
     authResponseFactory = {} as jest.Mocked<AuthResponseFactoryInterface>
     authResponseFactory.createResponse = jest.fn().mockReturnValue({ foo: 'bar' })

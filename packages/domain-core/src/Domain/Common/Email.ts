@@ -18,6 +18,6 @@ export class Email extends ValueObject<EmailProps> {
       return Result.fail<Email>(emailValidation.getError())
     }
 
-    return Result.ok<Email>(new Email({ value: email }))
+    return Result.ok<Email>(new Email({ value: email.trim().toLowerCase() }))
   }
 }

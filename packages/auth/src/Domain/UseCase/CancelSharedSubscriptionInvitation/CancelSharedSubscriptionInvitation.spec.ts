@@ -72,7 +72,7 @@ describe('CancelSharedSubscriptionInvitation', () => {
     sharedSubscriptionInvitationRepository.save = jest.fn()
 
     userRepository = {} as jest.Mocked<UserRepositoryInterface>
-    userRepository.findOneByEmail = jest.fn().mockReturnValue(invitee)
+    userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue(invitee)
 
     inviterSubscription = { endsAt: 3, planName: SubscriptionName.PlusPlan } as jest.Mocked<UserSubscription>
 
@@ -183,7 +183,7 @@ describe('CancelSharedSubscriptionInvitation', () => {
   })
 
   it('should cancel a shared subscription invitation without subscription removal if invitee is not found', async () => {
-    userRepository.findOneByEmail = jest.fn().mockReturnValue(null)
+    userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue(null)
     expect(
       await createUseCase().execute({
         sharedSubscriptionInvitationUuid: '1-2-3',
@@ -209,6 +209,28 @@ describe('CancelSharedSubscriptionInvitation', () => {
 
   it('should not cancel a shared subscription invitation if inviter subscription is not found', async () => {
     userSubscriptionRepository.findBySubscriptionIdAndType = jest.fn().mockReturnValue([])
+    expect(
+      await createUseCase().execute({
+        sharedSubscriptionInvitationUuid: '1-2-3',
+        inviterEmail: 'test@test.te',
+      }),
+    ).toEqual({
+      success: false,
+    })
+  })
+
+  it('should not cancel a shared subscription invitation if the invitee email is not valid', async () => {
+    invitation = {
+      uuid: '1-2-3',
+      subscriptionId: 3,
+      inviterIdentifier: 'test@test.te',
+      inviterIdentifierType: InviterIdentifierType.Email,
+      inviteeIdentifier: '',
+      inviteeIdentifierType: InviteeIdentifierType.Email,
+    } as jest.Mocked<SharedSubscriptionInvitation>
+
+    sharedSubscriptionInvitationRepository.findOneByUuid = jest.fn().mockReturnValue(invitation)
+
     expect(
       await createUseCase().execute({
         sharedSubscriptionInvitationUuid: '1-2-3',

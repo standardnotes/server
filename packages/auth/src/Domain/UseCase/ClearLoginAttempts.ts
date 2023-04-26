@@ -1,3 +1,4 @@
+import { Username } from '@standardnotes/domain-core'
 import { inject, injectable } from 'inversify'
 import { Logger } from 'winston'
 import TYPES from '../../Bootstrap/Types'
@@ -16,9 +17,15 @@ export class ClearLoginAttempts implements UseCaseInterface {
   ) {}
 
   async execute(dto: ClearLoginAttemptsDTO): Promise<ClearLoginAttemptsResponse> {
+    const usernameOrError = Username.create(dto.email)
+    if (usernameOrError.isFailed()) {
+      return { success: false }
+    }
+    const username = usernameOrError.getValue()
+
     await this.lockRepository.resetLockCounter(dto.email)
 
-    const user = await this.userRepository.findOneByEmail(dto.email)
+    const user = await this.userRepository.findOneByUsernameOrEmail(username)
 
     if (!user) {
       return { success: true }

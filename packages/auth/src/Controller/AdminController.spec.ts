@@ -28,7 +28,7 @@ describe('AdminController', () => {
     deleteSetting.execute = jest.fn().mockReturnValue({ success: true })
 
     userRepository = {} as jest.Mocked<UserRepositoryInterface>
-    userRepository.findOneByEmail = jest.fn().mockReturnValue(user)
+    userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue(user)
 
     createSubscriptionToken = {} as jest.Mocked<CreateSubscriptionToken>
     createSubscriptionToken.execute = jest.fn().mockReturnValue({
@@ -65,7 +65,7 @@ describe('AdminController', () => {
   it('should return error if no user with such email exists', async () => {
     request.params.email = 'test@sn.org'
 
-    userRepository.findOneByEmail = jest.fn().mockReturnValue(null)
+    userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue(null)
 
     const httpResponse = await createController().getUser(request)
     const result = await httpResponse.executeAsync()

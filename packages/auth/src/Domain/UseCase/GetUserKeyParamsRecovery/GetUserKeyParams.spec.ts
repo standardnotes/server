@@ -24,7 +24,7 @@ describe('GetUserKeyParamsRecovery', () => {
     user = {} as jest.Mocked<User>
 
     userRepository = {} as jest.Mocked<UserRepositoryInterface>
-    userRepository.findOneByEmail = jest.fn().mockReturnValue(user)
+    userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue(user)
 
     settingService = {} as jest.Mocked<SettingServiceInterface>
     settingService.findSettingWithDecryptedValue = jest.fn().mockReturnValue({ value: 'foo' } as Setting)
@@ -67,7 +67,7 @@ describe('GetUserKeyParamsRecovery', () => {
   })
 
   it('should return pseudo params if user does not exist', async () => {
-    userRepository.findOneByEmail = jest.fn().mockReturnValue(null)
+    userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue(null)
 
     const result = await createUseCase().execute({
       username: 'username',

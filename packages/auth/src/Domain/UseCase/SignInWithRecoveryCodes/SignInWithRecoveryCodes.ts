@@ -59,7 +59,7 @@ export class SignInWithRecoveryCodes implements UseCaseInterface<AuthResponse202
       return Result.fail('Empty recovery codes')
     }
 
-    const user = await this.userRepository.findOneByEmail(username.value)
+    const user = await this.userRepository.findOneByUsernameOrEmail(username)
 
     if (!user) {
       await this.increaseLoginAttempts.execute({ email: username.value })

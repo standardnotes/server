@@ -1,3 +1,4 @@
+import { Username } from '@standardnotes/domain-core'
 import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
 import { TimerInterface } from '@standardnotes/time'
 import { inject, injectable } from 'inversify'
@@ -22,7 +23,17 @@ export class DeleteAccount implements UseCaseInterface {
   ) {}
 
   async execute(dto: DeleteAccountDTO): Promise<DeleteAccountResponse> {
-    const user = await this.userRepository.findOneByEmail(dto.email)
+    const usernameOrError = Username.create(dto.email)
+    if (usernameOrError.isFailed()) {
+      return {
+        success: false,
+        responseCode: 400,
+        message: usernameOrError.getError(),
+      }
+    }
+    const username = usernameOrError.getValue()
+
+    const user = await this.userRepository.findOneByUsernameOrEmail(username)
 
     if (user === null) {
       return {

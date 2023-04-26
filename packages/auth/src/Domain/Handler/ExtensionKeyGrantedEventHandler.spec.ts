@@ -31,7 +31,7 @@ describe('ExtensionKeyGrantedEventHandler', () => {
     } as jest.Mocked<User>
 
     userRepository = {} as jest.Mocked<UserRepositoryInterface>
-    userRepository.findOneByEmail = jest.fn().mockReturnValue(user)
+    userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue(user)
 
     settingService = {} as jest.Mocked<SettingServiceInterface>
     settingService.createOrReplace = jest.fn()
@@ -92,8 +92,6 @@ describe('ExtensionKeyGrantedEventHandler', () => {
   it('should add extension key as user setting', async () => {
     await createHandler().handle(event)
 
-    expect(userRepository.findOneByEmail).toHaveBeenCalledWith('test@test.com')
-
     expect(settingService.createOrReplace).toHaveBeenCalledWith({
       props: {
         name: 'EXTENSION_KEY',
@@ -108,7 +106,15 @@ describe('ExtensionKeyGrantedEventHandler', () => {
   })
 
   it('should not do anything if no user is found for specified email', async () => {
-    userRepository.findOneByEmail = jest.fn().mockReturnValue(null)
+    userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue(null)
+
+    await createHandler().handle(event)
+
+    expect(settingService.createOrReplace).not.toHaveBeenCalled()
+  })
+
+  it('should not do anything if user email is invalid', async () => {
+    event.payload.userEmail = ''
 
     await createHandler().handle(event)
 

@@ -24,7 +24,7 @@ describe('GetUserKeyParams', () => {
     user = {} as jest.Mocked<User>
 
     userRepository = {} as jest.Mocked<UserRepositoryInterface>
-    userRepository.findOneByEmail = jest.fn().mockReturnValue(user)
+    userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue(user)
     userRepository.findOneByUuid = jest.fn().mockReturnValue(user)
 
     logger = {} as jest.Mocked<Logger>
@@ -44,6 +44,12 @@ describe('GetUserKeyParams', () => {
     })
 
     expect(keyParamsFactory.create).toHaveBeenCalledWith(user, true)
+  })
+
+  it('should throw an error when searching by email and the email is invalid', async () => {
+    await expect(createUseCase().execute({ email: '', authenticated: false })).rejects.toThrowError(
+      'Username cannot be empty',
+    )
   })
 
   it('should get key params for an unauthenticated user - searching by email', async () => {
@@ -87,7 +93,7 @@ describe('GetUserKeyParams', () => {
   })
 
   it('should get pseudo key params for a non existing user - when searching by email', async () => {
-    userRepository.findOneByEmail = jest.fn().mockReturnValue(null)
+    userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue(null)
 
     expect(await createUseCase().execute({ email: 'test@test.te', authenticated: false })).toEqual({
       keyParams: {

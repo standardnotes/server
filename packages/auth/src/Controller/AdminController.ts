@@ -1,3 +1,4 @@
+import { Username } from '@standardnotes/domain-core'
 import { SettingName } from '@standardnotes/settings'
 import { Request } from 'express'
 import { inject } from 'inversify'
@@ -30,9 +31,8 @@ export class AdminController extends BaseHttpController {
 
   @httpGet('/user/:email')
   async getUser(request: Request): Promise<results.JsonResult> {
-    const email = 'email' in request.params ? <string>request.params.email : undefined
-
-    if (!email) {
+    const usernameOrError = Username.create(request.params.email ?? '')
+    if (usernameOrError.isFailed()) {
       return this.json(
         {
           error: {
@@ -42,14 +42,15 @@ export class AdminController extends BaseHttpController {
         400,
       )
     }
+    const username = usernameOrError.getValue()
 
-    const user = await this.userRepository.findOneByEmail(email)
+    const user = await this.userRepository.findOneByUsernameOrEmail(username)
 
     if (!user) {
       return this.json(
         {
           error: {
-            message: `No user with email '${email}'.`,
+            message: `No user with email '${username.value}'.`,
           },
         },
         400,

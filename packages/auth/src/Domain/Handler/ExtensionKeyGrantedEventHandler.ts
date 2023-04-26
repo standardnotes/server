@@ -11,6 +11,7 @@ import { OfflineSettingServiceInterface } from '../Setting/OfflineSettingService
 import { OfflineSettingName } from '../Setting/OfflineSettingName'
 import { SettingServiceInterface } from '../Setting/SettingServiceInterface'
 import { UserRepositoryInterface } from '../User/UserRepositoryInterface'
+import { Username } from '@standardnotes/domain-core'
 
 @injectable()
 export class ExtensionKeyGrantedEventHandler implements DomainEventHandlerInterface {
@@ -23,6 +24,12 @@ export class ExtensionKeyGrantedEventHandler implements DomainEventHandlerInterf
   ) {}
 
   async handle(event: ExtensionKeyGrantedEvent): Promise<void> {
+    const usernameOrError = Username.create(event.payload.userEmail)
+    if (usernameOrError.isFailed()) {
+      return
+    }
+    const username = usernameOrError.getValue()
+
     if (event.payload.offline) {
       const offlineFeaturesTokenDecoded = this.contentDecoder.decode(
         event.payload.offlineFeaturesToken as string,
@@ -36,7 +43,7 @@ export class ExtensionKeyGrantedEventHandler implements DomainEventHandlerInterf
       }
 
       await this.offlineSettingService.createOrUpdate({
-        email: event.payload.userEmail,
+        email: username.value,
         name: OfflineSettingName.FeaturesToken,
         value: offlineFeaturesTokenDecoded.extensionKey,
       })
@@ -44,10 +51,10 @@ export class ExtensionKeyGrantedEventHandler implements DomainEventHandlerInterf
       return
     }
 
-    const user = await this.userRepository.findOneByEmail(event.payload.userEmail)
+    const user = await this.userRepository.findOneByUsernameOrEmail(username)
 
     if (user === null) {
-      this.logger.warn(`Could not find user with email: ${event.payload.userEmail}`)
+      this.logger.warn(`Could not find user with email: ${username.value}`)
       return
     }
 

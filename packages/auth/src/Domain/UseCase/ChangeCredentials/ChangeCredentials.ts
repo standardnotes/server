@@ -11,6 +11,7 @@ import { UseCaseInterface } from '../UseCaseInterface'
 import { DomainEventFactoryInterface } from '../../Event/DomainEventFactoryInterface'
 import { DomainEventPublisherInterface, UserEmailChangedEvent } from '@standardnotes/domain-events'
 import { TimerInterface } from '@standardnotes/time'
+import { Email } from '@standardnotes/domain-core'
 
 @injectable()
 export class ChangeCredentials implements UseCaseInterface {
@@ -35,7 +36,16 @@ export class ChangeCredentials implements UseCaseInterface {
 
     let userEmailChangedEvent: UserEmailChangedEvent | undefined = undefined
     if (dto.newEmail !== undefined) {
-      const existingUser = await this.userRepository.findOneByEmail(dto.newEmail)
+      const newEmailOrError = Email.create(dto.newEmail)
+      if (newEmailOrError.isFailed()) {
+        return {
+          success: false,
+          errorMessage: newEmailOrError.getError(),
+        }
+      }
+      const newEmail = newEmailOrError.getValue()
+
+      const existingUser = await this.userRepository.findOneByUsernameOrEmail(newEmail)
       if (existingUser !== null) {
         return {
           success: false,

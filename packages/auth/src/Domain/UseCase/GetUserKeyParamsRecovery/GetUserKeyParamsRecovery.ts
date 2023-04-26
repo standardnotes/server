@@ -34,7 +34,7 @@ export class GetUserKeyParamsRecovery implements UseCaseInterface<KeyParamsData>
       return Result.fail('Invalid code challenge')
     }
 
-    const user = await this.userRepository.findOneByEmail(username.value)
+    const user = await this.userRepository.findOneByUsernameOrEmail(username)
     if (!user) {
       return Result.ok(this.keyParamsFactory.createPseudoParams(username.value))
     }
