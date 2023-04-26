@@ -56,7 +56,7 @@ export class Register implements UseCaseInterface {
 
     let user = new User()
     user.uuid = uuidv4()
-    user.email = email
+    user.email = email.toLowerCase()
     user.createdAt = this.timer.getUTCDate()
     user.updatedAt = this.timer.getUTCDate()
     user.encryptedPassword = await bcrypt.hash(password, User.PASSWORD_HASH_COST)

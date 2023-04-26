@@ -50,8 +50,8 @@ export class MySQLUserRepository implements UserRepositoryInterface {
   async findOneByEmail(email: string): Promise<User | null> {
     return this.ormRepository
       .createQueryBuilder('user')
-      .where('user.email = :email', { email })
-      .cache(`user_email_${email}`, 60000)
+      .where('user.email = :email', { email: email.toLowerCase() })
+      .cache(`user_email_${email.toLowerCase()}`, 60000)
       .getOne()
   }
 }
