@@ -13,4 +13,10 @@ describe('Email', () => {
 
     expect(valueOrError.isFailed()).toBeTruthy()
   })
+
+  it('should not create an invalid type object', () => {
+    const valueOrError = Email.create(undefined as unknown as string)
+
+    expect(valueOrError.isFailed()).toBeTruthy()
+  })
 })
