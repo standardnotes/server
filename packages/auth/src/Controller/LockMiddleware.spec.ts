@@ -26,7 +26,9 @@ describe('LockMiddleware', () => {
     userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue(user)
 
     request = {
-      body: {},
+      body: {
+        email: 'test@test.te',
+      },
     } as jest.Mocked<Request>
     response = {} as jest.Mocked<Response>
     response.status = jest.fn().mockReturnThis()
@@ -43,6 +45,18 @@ describe('LockMiddleware', () => {
   })
 
   it('should let the request pass if user is not locked', async () => {
+    lockRepository.isUserLocked = jest.fn().mockReturnValue(false)
+
+    await createMiddleware().handler(request, response, next)
+
+    expect(response.status).not.toHaveBeenCalled()
+
+    expect(next).toHaveBeenCalled()
+  })
+
+  it('should let the request pass if user is not locked and is identified by username', async () => {
+    request.body.username = 'test'
+
     lockRepository.isUserLocked = jest.fn().mockReturnValue(false)
 
     await createMiddleware().handler(request, response, next)
