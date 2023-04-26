@@ -11,7 +11,7 @@ import { UseCaseInterface } from '../UseCaseInterface'
 import { DomainEventFactoryInterface } from '../../Event/DomainEventFactoryInterface'
 import { DomainEventPublisherInterface, UserEmailChangedEvent } from '@standardnotes/domain-events'
 import { TimerInterface } from '@standardnotes/time'
-import { Email } from '@standardnotes/domain-core'
+import { Username } from '@standardnotes/domain-core'
 
 @injectable()
 export class ChangeCredentials implements UseCaseInterface {
@@ -36,16 +36,16 @@ export class ChangeCredentials implements UseCaseInterface {
 
     let userEmailChangedEvent: UserEmailChangedEvent | undefined = undefined
     if (dto.newEmail !== undefined) {
-      const newEmailOrError = Email.create(dto.newEmail)
-      if (newEmailOrError.isFailed()) {
+      const newUsernameOrError = Username.create(dto.newEmail)
+      if (newUsernameOrError.isFailed()) {
         return {
           success: false,
-          errorMessage: newEmailOrError.getError(),
+          errorMessage: newUsernameOrError.getError(),
         }
       }
-      const newEmail = newEmailOrError.getValue()
+      const newUsername = newUsernameOrError.getValue()
 
-      const existingUser = await this.userRepository.findOneByUsernameOrEmail(newEmail)
+      const existingUser = await this.userRepository.findOneByUsernameOrEmail(newUsername)
       if (existingUser !== null) {
         return {
           success: false,
@@ -56,10 +56,10 @@ export class ChangeCredentials implements UseCaseInterface {
       userEmailChangedEvent = this.domainEventFactory.createUserEmailChangedEvent(
         dto.user.uuid,
         dto.user.email,
-        dto.newEmail,
+        newUsername.value,
       )
 
-      dto.user.email = dto.newEmail
+      dto.user.email = newUsername.value
     }
 
     dto.user.pwNonce = dto.pwNonce

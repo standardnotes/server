@@ -156,7 +156,7 @@ describe('ChangeCredentials', () => {
       }),
     ).toEqual({
       success: false,
-      errorMessage: 'Given value is not a valid email address: ',
+      errorMessage: 'Username cannot be empty',
     })
 
     expect(userRepository.save).not.toHaveBeenCalled()
