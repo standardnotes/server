@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.33.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.32.8...@standardnotes/syncing-server@1.33.0) (2023-04-27)
+
+### Features
+
+* add syncing server sqlite driver ([#573](https://github.com/standardnotes/syncing-server-js/issues/573)) ([723ff44](https://github.com/standardnotes/syncing-server-js/commit/723ff441517ec2242d828ba8136a0ad827221868))
+
 ## [1.32.8](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.32.7...@standardnotes/syncing-server@1.32.8) (2023-04-27)
 
 **Note:** Version bump only for package @standardnotes/syncing-server
