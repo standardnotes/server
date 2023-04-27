@@ -5,7 +5,7 @@ import { ItemRepositoryInterface } from '../../Domain/Item/ItemRepositoryInterfa
 import { ReadStream } from 'fs'
 import { ExtendedIntegrityPayload } from '../../Domain/Item/ExtendedIntegrityPayload'
 
-export class MySQLItemRepository implements ItemRepositoryInterface {
+export class TypeORMItemRepository implements ItemRepositoryInterface {
   constructor(private ormRepository: Repository<Item>) {}
 
   async save(item: Item): Promise<Item> {

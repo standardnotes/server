@@ -30,7 +30,7 @@ export class Item {
   declare itemsKeyId: string | null
 
   @Column({
-    type: 'mediumtext',
+    type: 'text',
     nullable: true,
   })
   declare content: string | null
