@@ -1,7 +1,5 @@
 export * from './Event/AccountDeletionRequestedEvent'
 export * from './Event/AccountDeletionRequestedEventPayload'
-export * from './Event/CloudBackupRequestedEvent'
-export * from './Event/CloudBackupRequestedEventPayload'
 export * from './Event/DiscountApplyRequestedEvent'
 export * from './Event/DiscountApplyRequestedEventPayload'
 export * from './Event/DiscountWithdrawRequestedEvent'

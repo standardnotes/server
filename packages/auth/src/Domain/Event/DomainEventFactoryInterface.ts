@@ -2,7 +2,6 @@ import { ProtocolVersion, JSONString } from '@standardnotes/common'
 import { Predicate, PredicateVerificationResult } from '@standardnotes/predicates'
 import {
   AccountDeletionRequestedEvent,
-  CloudBackupRequestedEvent,
   UserRegisteredEvent,
   UserRolesChangedEvent,
   UserEmailChangedEvent,
@@ -42,13 +41,6 @@ export interface DomainEventFactoryInterface {
     muteEmailsSettingUuid: string,
     userHasEmailsMuted: boolean,
   ): EmailBackupRequestedEvent
-  createCloudBackupRequestedEvent(
-    cloudProvider: 'DROPBOX' | 'ONE_DRIVE' | 'GOOGLE_DRIVE',
-    cloudProviderToken: string,
-    userUuid: string,
-    muteEmailsSettingUuid: string,
-    userHasEmailsMuted: boolean,
-  ): CloudBackupRequestedEvent
   createAccountDeletionRequestedEvent(dto: {
     userUuid: string
     userCreatedAtTimestamp: number

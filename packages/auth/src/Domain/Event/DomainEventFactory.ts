@@ -7,7 +7,6 @@ import {
   UserRegisteredEvent,
   UserRolesChangedEvent,
   EmailBackupRequestedEvent,
-  CloudBackupRequestedEvent,
   ListedAccountRequestedEvent,
   UserDisabledSessionUserAgentLoggingEvent,
   SharedSubscriptionInvitationCreatedEvent,
@@ -250,33 +249,6 @@ export class DomainEventFactory implements DomainEventFactoryInterface {
       payload: {
         userUuid,
         userEmail,
-      },
-    }
-  }
-
-  createCloudBackupRequestedEvent(
-    cloudProvider: 'DROPBOX' | 'ONE_DRIVE' | 'GOOGLE_DRIVE',
-    cloudProviderToken: string,
-    userUuid: string,
-    muteEmailsSettingUuid: string,
-    userHasEmailsMuted: boolean,
-  ): CloudBackupRequestedEvent {
-    return {
-      type: 'CLOUD_BACKUP_REQUESTED',
-      createdAt: this.timer.getUTCDate(),
-      meta: {
-        correlation: {
-          userIdentifier: userUuid,
-          userIdentifierType: 'uuid',
-        },
-        origin: DomainEventService.Auth,
-      },
-      payload: {
-        cloudProvider,
-        cloudProviderToken,
-        userUuid,
-        userHasEmailsMuted,
-        muteEmailsSettingUuid,
       },
     }
   }

@@ -27,7 +27,6 @@ import {
   SQSNewRelicEventMessageHandler,
 } from '@standardnotes/domain-events-infra'
 import { EmailBackupRequestedEventHandler } from '../Domain/Handler/EmailBackupRequestedEventHandler'
-import { CloudBackupRequestedEventHandler } from '../Domain/Handler/CloudBackupRequestedEventHandler'
 import { ItemRevisionCreationRequestedEventHandler } from '../Domain/Handler/ItemRevisionCreationRequestedEventHandler'
 import { FSItemBackupService } from '../Infra/FS/FSItemBackupService'
 import { CommonContainerConfigLoader } from './CommonContainerConfigLoader'
@@ -123,18 +122,6 @@ export class WorkerContainerConfigLoader extends CommonContainerConfigLoader {
         )
       })
     container
-      .bind<CloudBackupRequestedEventHandler>(TYPES.CloudBackupRequestedEventHandler)
-      .toDynamicValue((context: interfaces.Context) => {
-        return new CloudBackupRequestedEventHandler(
-          context.container.get(TYPES.ItemRepository),
-          context.container.get(TYPES.AuthHttpService),
-          context.container.get(TYPES.ExtensionsHttpService),
-          context.container.get(TYPES.ItemBackupService),
-          context.container.get(TYPES.EXTENSIONS_SERVER_URL),
-          context.container.get(TYPES.Logger),
-        )
-      })
-    container
       .bind<ItemRevisionCreationRequestedEventHandler>(TYPES.ItemRevisionCreationRequestedEventHandler)
       .toDynamicValue((context: interfaces.Context) => {
         return new ItemRevisionCreationRequestedEventHandler(
@@ -194,7 +181,6 @@ export class WorkerContainerConfigLoader extends CommonContainerConfigLoader {
           ['DUPLICATE_ITEM_SYNCED', context.container.get(TYPES.DuplicateItemSyncedEventHandler)],
           ['ACCOUNT_DELETION_REQUESTED', context.container.get(TYPES.AccountDeletionRequestedEventHandler)],
           ['EMAIL_BACKUP_REQUESTED', context.container.get(TYPES.EmailBackupRequestedEventHandler)],
-          ['CLOUD_BACKUP_REQUESTED', context.container.get(TYPES.CloudBackupRequestedEventHandler)],
           ['ITEM_REVISION_CREATION_REQUESTED', context.container.get(TYPES.ItemRevisionCreationRequestedEventHandler)],
         ])
 
