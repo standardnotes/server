@@ -19,6 +19,10 @@ on:
 
 jobs:
   e2e:
+    strategy:
+      matrix:
+        database: [ "mysql", "sqlite" ]
+
     runs-on: ubuntu-latest
 
     services:
@@ -38,6 +42,8 @@ jobs:
 
     - name: Run Server
       run: docker compose -f docker-compose.ci.yml up -d
+      env:
+        DB_TYPE: ${{ matrix.database }}
 
     - name: Wait for server to start
       run: docker/is-available.sh http://localhost:3123 $(pwd)/logs
