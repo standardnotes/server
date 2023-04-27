@@ -1,5 +1,4 @@
 import {
-  CloudBackupRequestedEvent,
   DomainEventPublisherInterface,
   EmailBackupRequestedEvent,
   MuteEmailsSettingChangedEvent,
@@ -9,7 +8,6 @@ import {
   EmailBackupFrequency,
   LogSessionUserAgentOption,
   MuteMarketingEmailsOption,
-  OneDriveBackupFrequency,
   SettingName,
 } from '@standardnotes/settings'
 import 'reflect-metadata'
@@ -30,8 +28,7 @@ describe('SettingInterpreter', () => {
   let settingDecrypter: SettingDecrypterInterface
   let logger: Logger
 
-  const createInterpreter = () =>
-    new SettingInterpreter(domainEventPublisher, domainEventFactory, settingRepository, settingDecrypter, logger)
+  const createInterpreter = () => new SettingInterpreter(domainEventPublisher, domainEventFactory, settingRepository)
 
   beforeEach(() => {
     user = {
@@ -53,9 +50,6 @@ describe('SettingInterpreter', () => {
     domainEventFactory.createEmailBackupRequestedEvent = jest
       .fn()
       .mockReturnValue({} as jest.Mocked<EmailBackupRequestedEvent>)
-    domainEventFactory.createCloudBackupRequestedEvent = jest
-      .fn()
-      .mockReturnValue({} as jest.Mocked<CloudBackupRequestedEvent>)
     domainEventFactory.createUserDisabledSessionUserAgentLoggingEvent = jest
       .fn()
       .mockReturnValue({} as jest.Mocked<UserDisabledSessionUserAgentLoggingEvent>)
@@ -124,70 +118,6 @@ describe('SettingInterpreter', () => {
     expect(domainEventFactory.createEmailBackupRequestedEvent).not.toHaveBeenCalled()
   })
 
-  it('should trigger cloud backup if dropbox backup setting is created', async () => {
-    settingRepository.findOneByNameAndUserUuid = jest.fn().mockReturnValue(null)
-
-    await createInterpreter().interpretSettingUpdated(SettingName.NAMES.DropboxBackupToken, user, 'test-token')
-
-    expect(domainEventPublisher.publish).toHaveBeenCalled()
-    expect(domainEventFactory.createCloudBackupRequestedEvent).toHaveBeenCalledWith(
-      'DROPBOX',
-      'test-token',
-      '4-5-6',
-      '',
-      false,
-    )
-  })
-
-  it('should trigger cloud backup if dropbox backup setting is created - muted emails', async () => {
-    settingRepository.findOneByNameAndUserUuid = jest.fn().mockReturnValue({
-      name: SettingName.NAMES.MuteFailedCloudBackupsEmails,
-      uuid: '6-7-8',
-      value: 'muted',
-    } as jest.Mocked<Setting>)
-
-    await createInterpreter().interpretSettingUpdated(SettingName.NAMES.DropboxBackupToken, user, 'test-token')
-
-    expect(domainEventPublisher.publish).toHaveBeenCalled()
-    expect(domainEventFactory.createCloudBackupRequestedEvent).toHaveBeenCalledWith(
-      'DROPBOX',
-      'test-token',
-      '4-5-6',
-      '6-7-8',
-      true,
-    )
-  })
-
-  it('should trigger cloud backup if google drive backup setting is created', async () => {
-    settingRepository.findOneByNameAndUserUuid = jest.fn().mockReturnValue(null)
-
-    await createInterpreter().interpretSettingUpdated(SettingName.NAMES.GoogleDriveBackupToken, user, 'test-token')
-
-    expect(domainEventPublisher.publish).toHaveBeenCalled()
-    expect(domainEventFactory.createCloudBackupRequestedEvent).toHaveBeenCalledWith(
-      'GOOGLE_DRIVE',
-      'test-token',
-      '4-5-6',
-      '',
-      false,
-    )
-  })
-
-  it('should trigger cloud backup if one drive backup setting is created', async () => {
-    settingRepository.findOneByNameAndUserUuid = jest.fn().mockReturnValue(null)
-
-    await createInterpreter().interpretSettingUpdated(SettingName.NAMES.OneDriveBackupToken, user, 'test-token')
-
-    expect(domainEventPublisher.publish).toHaveBeenCalled()
-    expect(domainEventFactory.createCloudBackupRequestedEvent).toHaveBeenCalledWith(
-      'ONE_DRIVE',
-      'test-token',
-      '4-5-6',
-      '',
-      false,
-    )
-  })
-
   it('should trigger mute subscription emails rejection if mute setting changed', async () => {
     settingRepository.findOneByNameAndUserUuid = jest.fn().mockReturnValue(null)
 
@@ -203,52 +133,5 @@ describe('SettingInterpreter', () => {
       mute: true,
       username: 'test@test.te',
     })
-  })
-
-  it('should trigger cloud backup if backup frequency setting is updated and a backup token setting is present', async () => {
-    settingRepository.findLastByNameAndUserUuid = jest.fn().mockReturnValueOnce({
-      name: SettingName.NAMES.OneDriveBackupToken,
-      serverEncryptionVersion: 1,
-      value: 'encrypted-backup-token',
-      sensitive: true,
-    } as jest.Mocked<Setting>)
-
-    await createInterpreter().interpretSettingUpdated(SettingName.NAMES.OneDriveBackupFrequency, user, 'daily')
-
-    expect(domainEventPublisher.publish).toHaveBeenCalled()
-    expect(domainEventFactory.createCloudBackupRequestedEvent).toHaveBeenCalledWith(
-      'ONE_DRIVE',
-      'decrypted',
-      '4-5-6',
-      '',
-      false,
-    )
-  })
-
-  it('should not trigger cloud backup if backup frequency setting is updated as disabled', async () => {
-    settingRepository.findLastByNameAndUserUuid = jest.fn().mockReturnValueOnce({
-      name: SettingName.NAMES.OneDriveBackupToken,
-      serverEncryptionVersion: 1,
-      value: 'encrypted-backup-token',
-      sensitive: true,
-    } as jest.Mocked<Setting>)
-
-    await createInterpreter().interpretSettingUpdated(
-      SettingName.NAMES.OneDriveBackupFrequency,
-      user,
-      OneDriveBackupFrequency.Disabled,
-    )
-
-    expect(domainEventPublisher.publish).not.toHaveBeenCalled()
-    expect(domainEventFactory.createCloudBackupRequestedEvent).not.toHaveBeenCalled()
-  })
-
-  it('should not trigger cloud backup if backup frequency setting is updated and a backup token setting is not present', async () => {
-    settingRepository.findLastByNameAndUserUuid = jest.fn().mockReturnValueOnce(null)
-
-    await createInterpreter().interpretSettingUpdated(SettingName.NAMES.OneDriveBackupFrequency, user, 'daily')
-
-    expect(domainEventPublisher.publish).not.toHaveBeenCalled()
-    expect(domainEventFactory.createCloudBackupRequestedEvent).not.toHaveBeenCalled()
   })
 })
