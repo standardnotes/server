@@ -7,7 +7,7 @@ import { OfflineSettingName } from '../../Domain/Setting/OfflineSettingName'
 import { OfflineSettingRepositoryInterface } from '../../Domain/Setting/OfflineSettingRepositoryInterface'
 
 @injectable()
-export class MySQLOfflineSettingRepository implements OfflineSettingRepositoryInterface {
+export class TypeORMOfflineSettingRepository implements OfflineSettingRepositoryInterface {
   constructor(@inject(TYPES.ORMOfflineSettingRepository) private ormRepository: Repository<OfflineSetting>) {}
 
   async save(offlineSetting: OfflineSetting): Promise<OfflineSetting> {

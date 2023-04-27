@@ -6,7 +6,7 @@ import { RevokedSession } from '../../Domain/Session/RevokedSession'
 import { RevokedSessionRepositoryInterface } from '../../Domain/Session/RevokedSessionRepositoryInterface'
 
 @injectable()
-export class MySQLRevokedSessionRepository implements RevokedSessionRepositoryInterface {
+export class TypeORMRevokedSessionRepository implements RevokedSessionRepositoryInterface {
   constructor(
     @inject(TYPES.ORMRevokedSessionRepository)
     private ormRepository: Repository<RevokedSession>,

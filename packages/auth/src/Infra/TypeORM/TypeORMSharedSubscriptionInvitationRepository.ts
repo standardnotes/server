@@ -7,7 +7,7 @@ import { SharedSubscriptionInvitation } from '../../Domain/SharedSubscription/Sh
 import { SharedSubscriptionInvitationRepositoryInterface } from '../../Domain/SharedSubscription/SharedSubscriptionInvitationRepositoryInterface'
 
 @injectable()
-export class MySQLSharedSubscriptionInvitationRepository implements SharedSubscriptionInvitationRepositoryInterface {
+export class TypeORMSharedSubscriptionInvitationRepository implements SharedSubscriptionInvitationRepositoryInterface {
   constructor(
     @inject(TYPES.ORMSharedSubscriptionInvitationRepository)
     private ormRepository: Repository<SharedSubscriptionInvitation>,

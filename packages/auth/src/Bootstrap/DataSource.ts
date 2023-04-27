@@ -69,7 +69,7 @@ const commonDataSourceOptions = {
     TypeORMAuthenticatorChallenge,
     TypeORMEmergencyAccessInvitation,
   ],
-  migrations: [`dist/migrations/${env.get('DB_TYPE')}/*.js`],
+  migrations: [`dist/migrations/${isConfiguredForMySQL ? 'mysql' : 'sqlite'}/*.js`],
   migrationsRun: true,
   logging: <LoggerOptions>env.get('DB_DEBUG_LEVEL'),
 }

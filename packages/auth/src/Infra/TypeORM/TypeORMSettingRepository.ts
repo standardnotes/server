@@ -8,7 +8,7 @@ import { SettingRepositoryInterface } from '../../Domain/Setting/SettingReposito
 import { DeleteSettingDto } from '../../Domain/UseCase/DeleteSetting/DeleteSettingDto'
 
 @injectable()
-export class MySQLSettingRepository implements SettingRepositoryInterface {
+export class TypeORMSettingRepository implements SettingRepositoryInterface {
   constructor(
     @inject(TYPES.ORMSettingRepository)
     private ormRepository: Repository<Setting>,

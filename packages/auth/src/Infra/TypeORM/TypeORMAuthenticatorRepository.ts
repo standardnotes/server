@@ -3,9 +3,9 @@ import { Repository } from 'typeorm'
 
 import { Authenticator } from '../../Domain/Authenticator/Authenticator'
 import { AuthenticatorRepositoryInterface } from '../../Domain/Authenticator/AuthenticatorRepositoryInterface'
-import { TypeORMAuthenticator } from '../TypeORM/TypeORMAuthenticator'
+import { TypeORMAuthenticator } from './TypeORMAuthenticator'
 
-export class MySQLAuthenticatorRepository implements AuthenticatorRepositoryInterface {
+export class TypeORMAuthenticatorRepository implements AuthenticatorRepositoryInterface {
   constructor(
     private ormRepository: Repository<TypeORMAuthenticator>,
     private mapper: MapperInterface<Authenticator, TypeORMAuthenticator>,

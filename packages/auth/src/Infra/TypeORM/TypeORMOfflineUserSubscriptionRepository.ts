@@ -6,7 +6,7 @@ import { OfflineUserSubscription } from '../../Domain/Subscription/OfflineUserSu
 import { OfflineUserSubscriptionRepositoryInterface } from '../../Domain/Subscription/OfflineUserSubscriptionRepositoryInterface'
 
 @injectable()
-export class MySQLOfflineUserSubscriptionRepository implements OfflineUserSubscriptionRepositoryInterface {
+export class TypeORMOfflineUserSubscriptionRepository implements OfflineUserSubscriptionRepositoryInterface {
   constructor(
     @inject(TYPES.ORMOfflineUserSubscriptionRepository)
     private ormRepository: Repository<OfflineUserSubscription>,

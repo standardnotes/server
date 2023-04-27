@@ -4,9 +4,9 @@ import { Repository } from 'typeorm'
 import { AuthenticatorChallenge } from '../../Domain/Authenticator/AuthenticatorChallenge'
 import { AuthenticatorChallengeRepositoryInterface } from '../../Domain/Authenticator/AuthenticatorChallengeRepositoryInterface'
 
-import { TypeORMAuthenticatorChallenge } from '../TypeORM/TypeORMAuthenticatorChallenge'
+import { TypeORMAuthenticatorChallenge } from './TypeORMAuthenticatorChallenge'
 
-export class MySQLAuthenticatorChallengeRepository implements AuthenticatorChallengeRepositoryInterface {
+export class TypeORMAuthenticatorChallengeRepository implements AuthenticatorChallengeRepositoryInterface {
   constructor(
     private ormRepository: Repository<TypeORMAuthenticatorChallenge>,
     private mapper: MapperInterface<AuthenticatorChallenge, TypeORMAuthenticatorChallenge>,

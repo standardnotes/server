@@ -9,7 +9,7 @@ import { Session } from '../../Domain/Session/Session'
 import { SessionRepositoryInterface } from '../../Domain/Session/SessionRepositoryInterface'
 
 @injectable()
-export class MySQLSessionRepository implements SessionRepositoryInterface {
+export class TypeORMSessionRepository implements SessionRepositoryInterface {
   constructor(
     @inject(TYPES.ORMSessionRepository)
     private ormRepository: Repository<Session>,

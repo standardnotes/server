@@ -8,7 +8,7 @@ import { User } from '../../Domain/User/User'
 import { UserRepositoryInterface } from '../../Domain/User/UserRepositoryInterface'
 
 @injectable()
-export class MySQLUserRepository implements UserRepositoryInterface {
+export class TypeORMUserRepository implements UserRepositoryInterface {
   constructor(
     @inject(TYPES.ORMUserRepository)
     private ormRepository: Repository<User>,

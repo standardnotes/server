@@ -8,7 +8,7 @@ import { UserSubscriptionRepositoryInterface } from '../../Domain/Subscription/U
 import { UserSubscriptionType } from '../../Domain/Subscription/UserSubscriptionType'
 
 @injectable()
-export class MySQLUserSubscriptionRepository implements UserSubscriptionRepositoryInterface {
+export class TypeORMUserSubscriptionRepository implements UserSubscriptionRepositoryInterface {
   constructor(
     @inject(TYPES.ORMUserSubscriptionRepository)
     private ormRepository: Repository<UserSubscription>,

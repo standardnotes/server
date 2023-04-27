@@ -6,7 +6,7 @@ import { SubscriptionSetting } from '../../Domain/Setting/SubscriptionSetting'
 import { SubscriptionSettingRepositoryInterface } from '../../Domain/Setting/SubscriptionSettingRepositoryInterface'
 
 @injectable()
-export class MySQLSubscriptionSettingRepository implements SubscriptionSettingRepositoryInterface {
+export class TypeORMSubscriptionSettingRepository implements SubscriptionSettingRepositoryInterface {
   constructor(
     @inject(TYPES.ORMSubscriptionSettingRepository)
     private ormRepository: Repository<SubscriptionSetting>,

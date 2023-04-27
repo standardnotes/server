@@ -2,9 +2,9 @@ import { MapperInterface, SubscriptionPlanName, Uuid } from '@standardnotes/doma
 import { Repository } from 'typeorm'
 import { SessionTrace } from '../../Domain/Session/SessionTrace'
 import { SessionTraceRepositoryInterface } from '../../Domain/Session/SessionTraceRepositoryInterface'
-import { TypeORMSessionTrace } from '../TypeORM/TypeORMSessionTrace'
+import { TypeORMSessionTrace } from './TypeORMSessionTrace'
 
-export class MySQLSessionTraceRepository implements SessionTraceRepositoryInterface {
+export class TypeORMSessionTraceRepository implements SessionTraceRepositoryInterface {
   constructor(
     private ormRepository: Repository<TypeORMSessionTrace>,
     private mapper: MapperInterface<SessionTrace, TypeORMSessionTrace>,

@@ -6,7 +6,7 @@ import { Role } from '../../Domain/Role/Role'
 import { RoleRepositoryInterface } from '../../Domain/Role/RoleRepositoryInterface'
 
 @injectable()
-export class MySQLRoleRepository implements RoleRepositoryInterface {
+export class TypeORMRoleRepository implements RoleRepositoryInterface {
   constructor(
     @inject(TYPES.ORMRoleRepository)
     private ormRepository: Repository<Role>,
