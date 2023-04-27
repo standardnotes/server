@@ -1,6 +1,6 @@
 {
   "name": "@standardnotes/syncing-server",
-  "version": "1.32.7",
+  "version": "1.32.8",
   "engines": {
     "node": ">=18.0.0 <19.0.0"
   },

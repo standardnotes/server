@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.96.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.95.3...@standardnotes/auth-server@1.96.0) (2023-04-27)
+
+### Features
+
+* sqlite driver for auth service ([#572](https://github.com/standardnotes/server/issues/572)) ([3aef599](https://github.com/standardnotes/server/commit/3aef5998df2b4cf96c597ffa11a47dfc250d1647))
+
 ## [1.95.3](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.95.2...@standardnotes/auth-server@1.95.3) (2023-04-21)
 
 **Note:** Version bump only for package @standardnotes/auth-server
