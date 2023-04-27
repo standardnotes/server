@@ -4682,6 +4682,7 @@ const RAW_RUNTIME_STATE =
           ["@standardnotes/security", "workspace:packages/security"],\
           ["@standardnotes/settings", "workspace:packages/settings"],\
           ["@standardnotes/time", "workspace:packages/time"],\
+          ["@types/better-sqlite3", "npm:7.6.4"],\
           ["@types/cors", "npm:2.8.12"],\
           ["@types/dotenv", "npm:8.2.0"],\
           ["@types/express", "npm:4.17.14"],\
@@ -4694,6 +4695,7 @@ const RAW_RUNTIME_STATE =
           ["@types/uuid", "npm:8.3.4"],\
           ["@typescript-eslint/eslint-plugin", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:5.48.2"],\
           ["axios", "npm:1.1.3"],\
+          ["better-sqlite3", "npm:8.3.0"],\
           ["cors", "npm:2.8.5"],\
           ["dotenv", "npm:16.0.1"],\
           ["eslint", "npm:8.32.0"],\
@@ -4711,7 +4713,7 @@ const RAW_RUNTIME_STATE =
           ["prettyjson", "npm:1.2.5"],\
           ["reflect-metadata", "npm:0.1.13"],\
           ["ts-jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.0.3"],\
-          ["typeorm", "virtual:365b8c88cdf194291829ee28b79556e2328175d26a621363e703848100bea0042e9500db2a1206c9bbc3a4a76a1d169639ef774b2ea3a1a98584a9936b58c6be#npm:0.3.10"],\
+          ["typeorm", "virtual:67ad3a1ca34e24ce4821cc48979e98af0c3e5dd7aabc7ad0b5d22d1d977d6f943f81c9f141a420105ebdc61ef777e508a96c7946081decd98f8c30543d468b33#npm:0.3.10"],\
           ["typescript", "patch:typescript@npm%3A4.8.4#optional!builtin<compat/typescript>::version=4.8.4&hash=701156"],\
           ["ua-parser-js", "npm:1.0.32"],\
           ["uuid", "npm:9.0.0"],\
@@ -14779,6 +14781,100 @@ const RAW_RUNTIME_STATE =
           ["@types/typeorm-aurora-data-api-driver", null],\
           ["app-root-path", "npm:3.1.0"],\
           ["better-sqlite3", null],\
+          ["buffer", "npm:6.0.3"],\
+          ["chalk", "npm:4.1.2"],\
+          ["cli-highlight", "npm:2.1.11"],\
+          ["date-fns", "npm:2.29.3"],\
+          ["debug", "virtual:b86a9fb34323a98c6519528ed55faa0d9b44ca8879307c0b29aa384bde47ff59a7d0c9051b31246f14521dfb71ba3c5d6d0b35c29fffc17bf875aa6ad977d9e8#npm:4.3.4"],\
+          ["dotenv", "npm:16.0.3"],\
+          ["glob", "npm:7.2.3"],\
+          ["hdb-pool", null],\
+          ["ioredis", null],\
+          ["js-yaml", "npm:4.1.0"],\
+          ["mkdirp", "npm:1.0.4"],\
+          ["mongodb", null],\
+          ["mssql", null],\
+          ["mysql2", "npm:3.0.1"],\
+          ["oracledb", null],\
+          ["pg", null],\
+          ["pg-native", null],\
+          ["pg-query-stream", null],\
+          ["redis", null],\
+          ["reflect-metadata", "npm:0.1.13"],\
+          ["sha.js", "npm:2.4.11"],\
+          ["sql.js", null],\
+          ["sqlite3", null],\
+          ["ts-node", null],\
+          ["tslib", "npm:2.4.0"],\
+          ["typeorm-aurora-data-api-driver", null],\
+          ["uuid", "npm:8.3.2"],\
+          ["xml2js", "npm:0.4.23"],\
+          ["yargs", "npm:17.5.1"]\
+        ],\
+        "packagePeers": [\
+          "@google-cloud/spanner",\
+          "@sap/hana-client",\
+          "@types/better-sqlite3",\
+          "@types/google-cloud__spanner",\
+          "@types/hdb-pool",\
+          "@types/ioredis",\
+          "@types/mongodb",\
+          "@types/mssql",\
+          "@types/mysql2",\
+          "@types/oracledb",\
+          "@types/pg-native",\
+          "@types/pg-query-stream",\
+          "@types/pg",\
+          "@types/redis",\
+          "@types/sap__hana-client",\
+          "@types/sql.js",\
+          "@types/sqlite3",\
+          "@types/ts-node",\
+          "@types/typeorm-aurora-data-api-driver",\
+          "better-sqlite3",\
+          "hdb-pool",\
+          "ioredis",\
+          "mongodb",\
+          "mssql",\
+          "mysql2",\
+          "oracledb",\
+          "pg-native",\
+          "pg-query-stream",\
+          "pg",\
+          "redis",\
+          "sql.js",\
+          "sqlite3",\
+          "ts-node",\
+          "typeorm-aurora-data-api-driver"\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["virtual:67ad3a1ca34e24ce4821cc48979e98af0c3e5dd7aabc7ad0b5d22d1d977d6f943f81c9f141a420105ebdc61ef777e508a96c7946081decd98f8c30543d468b33#npm:0.3.10", {\
+        "packageLocation": "./.yarn/__virtual__/typeorm-virtual-f86b034570/0/cache/typeorm-npm-0.3.10-4667857f33-749e1a6777.zip/node_modules/typeorm/",\
+        "packageDependencies": [\
+          ["typeorm", "virtual:67ad3a1ca34e24ce4821cc48979e98af0c3e5dd7aabc7ad0b5d22d1d977d6f943f81c9f141a420105ebdc61ef777e508a96c7946081decd98f8c30543d468b33#npm:0.3.10"],\
+          ["@google-cloud/spanner", null],\
+          ["@sap/hana-client", null],\
+          ["@sqltools/formatter", "npm:1.2.5"],\
+          ["@types/better-sqlite3", "npm:7.6.4"],\
+          ["@types/google-cloud__spanner", null],\
+          ["@types/hdb-pool", null],\
+          ["@types/ioredis", null],\
+          ["@types/mongodb", null],\
+          ["@types/mssql", null],\
+          ["@types/mysql2", null],\
+          ["@types/oracledb", null],\
+          ["@types/pg", null],\
+          ["@types/pg-native", null],\
+          ["@types/pg-query-stream", null],\
+          ["@types/redis", null],\
+          ["@types/sap__hana-client", null],\
+          ["@types/sql.js", null],\
+          ["@types/sqlite3", null],\
+          ["@types/ts-node", null],\
+          ["@types/typeorm-aurora-data-api-driver", null],\
+          ["app-root-path", "npm:3.1.0"],\
+          ["better-sqlite3", "npm:8.3.0"],\
           ["buffer", "npm:6.0.3"],\
           ["chalk", "npm:4.1.2"],\
           ["cli-highlight", "npm:2.1.11"],\

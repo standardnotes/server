@@ -6,7 +6,7 @@ import TYPES from './Types'
 import { AppDataSource } from './DataSource'
 import { SNSClient, SNSClientConfig } from '@aws-sdk/client-sns'
 import { ItemRepositoryInterface } from '../Domain/Item/ItemRepositoryInterface'
-import { MySQLItemRepository } from '../Infra/MySQL/MySQLItemRepository'
+import { TypeORMItemRepository } from '../Infra/TypeORM/TypeORMItemRepository'
 import { Repository } from 'typeorm'
 import { Item } from '../Domain/Item/Item'
 import { ItemProjection } from '../Projection/ItemProjection'
@@ -74,7 +74,7 @@ export class CommonContainerConfigLoader {
 
     // Repositories
     container.bind<ItemRepositoryInterface>(TYPES.ItemRepository).toDynamicValue((context: interfaces.Context) => {
-      return new MySQLItemRepository(context.container.get(TYPES.ORMItemRepository))
+      return new TypeORMItemRepository(context.container.get(TYPES.ORMItemRepository))
     })
 
     // ORM
