@@ -1,3 +1,4 @@
+import { Username } from '@standardnotes/domain-core'
 import { DomainEventHandlerInterface, ListedAccountDeletedEvent } from '@standardnotes/domain-events'
 import { ListedAuthorSecretsData, SettingName } from '@standardnotes/settings'
 import { inject, injectable } from 'inversify'
@@ -16,9 +17,16 @@ export class ListedAccountDeletedEventHandler implements DomainEventHandlerInter
   ) {}
 
   async handle(event: ListedAccountDeletedEvent): Promise<void> {
-    const user = await this.userRepository.findOneByEmail(event.payload.userEmail)
+    const usernameOrError = Username.create(event.payload.userEmail)
+    if (usernameOrError.isFailed()) {
+      return
+    }
+    const username = usernameOrError.getValue()
+
+    const user = await this.userRepository.findOneByUsernameOrEmail(username)
+
     if (user === null) {
-      this.logger.warn(`Could not find user with email ${event.payload.userEmail}`)
+      this.logger.warn(`Could not find user with email ${username.value}`)
 
       return
     }

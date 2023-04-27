@@ -47,7 +47,7 @@ describe('SignIn', () => {
     user.encryptedPassword = '$2a$11$K3g6XoTau8VmLJcai1bB0eD9/YvBSBRtBhMprJOaVZ0U3SgasZH3a'
 
     userRepository = {} as jest.Mocked<UserRepositoryInterface>
-    userRepository.findOneByEmail = jest.fn().mockReturnValue(user)
+    userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue(user)
 
     authResponseFactory = {} as jest.Mocked<AuthResponseFactoryInterface>
     authResponseFactory.createResponse = jest.fn().mockReturnValue({ foo: 'bar' })
@@ -79,7 +79,7 @@ describe('SignIn', () => {
 
   it('should sign in a legacy user without code verifier', async () => {
     user.version = ProtocolVersion.V003
-    userRepository.findOneByEmail = jest.fn().mockReturnValue(user)
+    userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue(user)
 
     expect(
       await createUseCase().execute({
@@ -134,6 +134,25 @@ describe('SignIn', () => {
       errorCode: 410,
       errorMessage: 'Please update your client application.',
     })
+  })
+
+  it('should not sign in a user with invalid username', async () => {
+    expect(
+      await createUseCase().execute({
+        email: '  ',
+        password: 'qweqwe123123',
+        userAgent: 'Google Chrome',
+        apiVersion: '20190520',
+        ephemeralSession: false,
+        codeVerifier: 'test',
+      }),
+    ).toEqual({
+      success: false,
+      errorMessage: 'Username cannot be empty',
+    })
+
+    expect(domainEventFactory.createEmailRequestedEvent).not.toHaveBeenCalled()
+    expect(domainEventPublisher.publish).not.toHaveBeenCalled()
   })
 
   it('should sign in a user with valid code verifier', async () => {
@@ -210,7 +229,7 @@ describe('SignIn', () => {
   })
 
   it('should not sign in a user that does not exist', async () => {
-    userRepository.findOneByEmail = jest.fn().mockReturnValue(null)
+    userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue(null)
 
     expect(
       await createUseCase().execute({

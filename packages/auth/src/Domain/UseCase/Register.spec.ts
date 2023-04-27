@@ -26,7 +26,7 @@ describe('Register', () => {
   beforeEach(() => {
     userRepository = {} as jest.Mocked<UserRepositoryInterface>
     userRepository.save = jest.fn()
-    userRepository.findOneByEmail = jest.fn().mockReturnValue(null)
+    userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue(null)
 
     roleRepository = {} as jest.Mocked<RoleRepositoryInterface>
     roleRepository.findOneByName = jest.fn().mockReturnValue(null)
@@ -115,8 +115,29 @@ describe('Register', () => {
     })
   })
 
+  it('should fail to register if username is invalid', async () => {
+    expect(
+      await createUseCase().execute({
+        email: '      ',
+        password: 'asdzxc',
+        updatedWithUserAgent: 'Mozilla',
+        apiVersion: '20200115',
+        ephemeralSession: false,
+        version: '004',
+        pwCost: 11,
+        pwSalt: 'qweqwe',
+        pwNonce: undefined,
+      }),
+    ).toEqual({
+      success: false,
+      errorMessage: 'Username cannot be empty',
+    })
+
+    expect(userRepository.save).not.toHaveBeenCalled()
+  })
+
   it('should fail to register if a user already exists', async () => {
-    userRepository.findOneByEmail = jest.fn().mockReturnValue(user)
+    userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue(user)
 
     expect(
       await createUseCase().execute({
@@ -160,7 +181,7 @@ describe('Register', () => {
   })
 
   it('should fail to register if a registration is disabled', async () => {
-    userRepository.findOneByEmail = jest.fn().mockReturnValue(user)
+    userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue(user)
 
     expect(
       await new Register(

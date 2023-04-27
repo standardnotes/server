@@ -1,5 +1,5 @@
 import * as bcrypt from 'bcryptjs'
-import { RoleName } from '@standardnotes/domain-core'
+import { RoleName, Username } from '@standardnotes/domain-core'
 import { ApiVersion } from '@standardnotes/api'
 
 import { v4 as uuidv4 } from 'uuid'
@@ -46,7 +46,16 @@ export class Register implements UseCaseInterface {
       }
     }
 
-    const existingUser = await this.userRepository.findOneByEmail(email)
+    const usernameOrError = Username.create(email)
+    if (usernameOrError.isFailed()) {
+      return {
+        success: false,
+        errorMessage: usernameOrError.getError(),
+      }
+    }
+    const username = usernameOrError.getValue()
+
+    const existingUser = await this.userRepository.findOneByUsernameOrEmail(username)
     if (existingUser) {
       return {
         success: false,
@@ -56,7 +65,7 @@ export class Register implements UseCaseInterface {
 
     let user = new User()
     user.uuid = uuidv4()
-    user.email = email
+    user.email = username.value
     user.createdAt = this.timer.getUTCDate()
     user.updatedAt = this.timer.getUTCDate()
     user.encryptedPassword = await bcrypt.hash(password, User.PASSWORD_HASH_COST)

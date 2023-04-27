@@ -55,7 +55,7 @@ describe('SubscriptionReassignedEventHandler', () => {
     } as jest.Mocked<UserSubscription>
 
     userRepository = {} as jest.Mocked<UserRepositoryInterface>
-    userRepository.findOneByEmail = jest.fn().mockReturnValue(user)
+    userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue(user)
     userRepository.save = jest.fn().mockReturnValue(user)
 
     userSubscriptionRepository = {} as jest.Mocked<UserSubscriptionRepositoryInterface>
@@ -102,7 +102,6 @@ describe('SubscriptionReassignedEventHandler', () => {
   it('should update the user role', async () => {
     await createHandler().handle(event)
 
-    expect(userRepository.findOneByEmail).toHaveBeenCalledWith('test@test.com')
     expect(roleService.addUserRole).toHaveBeenCalledWith(user, SubscriptionName.ProPlan)
   })
 
@@ -114,7 +113,6 @@ describe('SubscriptionReassignedEventHandler', () => {
     subscription.subscriptionId = 1
     subscription.user = Promise.resolve(user)
 
-    expect(userRepository.findOneByEmail).toHaveBeenCalledWith('test@test.com')
     expect(userSubscriptionRepository.save).toHaveBeenCalledWith({
       ...subscription,
       createdAt: expect.any(Number),
@@ -146,7 +144,16 @@ describe('SubscriptionReassignedEventHandler', () => {
   })
 
   it('should not do anything if no user is found for specified email', async () => {
-    userRepository.findOneByEmail = jest.fn().mockReturnValue(null)
+    userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue(null)
+
+    await createHandler().handle(event)
+
+    expect(roleService.addUserRole).not.toHaveBeenCalled()
+    expect(userSubscriptionRepository.save).not.toHaveBeenCalled()
+  })
+
+  it('should not do anything if username is invalid', async () => {
+    event.payload.userEmail = '  '
 
     await createHandler().handle(event)
 

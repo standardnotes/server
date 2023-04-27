@@ -43,7 +43,7 @@ describe('SignInWithRecoveryCodes', () => {
 
   beforeEach(() => {
     userRepository = {} as jest.Mocked<UserRepositoryInterface>
-    userRepository.findOneByEmail = jest.fn().mockReturnValue({
+    userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue({
       uuid: '00000000-0000-0000-0000-000000000000',
       encryptedPassword: '$2a$11$K3g6XoTau8VmLJcai1bB0eD9/YvBSBRtBhMprJOaVZ0U3SgasZH3a',
     } as jest.Mocked<User>)
@@ -145,7 +145,7 @@ describe('SignInWithRecoveryCodes', () => {
   })
 
   it('should return error if user is not found', async () => {
-    userRepository.findOneByEmail = jest.fn().mockReturnValue(undefined)
+    userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue(undefined)
 
     const result = await createUseCase().execute({
       userAgent: 'user-agent',
@@ -216,7 +216,7 @@ describe('SignInWithRecoveryCodes', () => {
   })
 
   it('should return error if user has an invalid uuid', async () => {
-    userRepository.findOneByEmail = jest.fn().mockReturnValue({
+    userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue({
       uuid: '1-2-3',
       encryptedPassword: '$2a$11$K3g6XoTau8VmLJcai1bB0eD9/YvBSBRtBhMprJOaVZ0U3SgasZH3a',
     } as jest.Mocked<User>)

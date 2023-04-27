@@ -57,6 +57,9 @@ fi
 if [ -z "$DB_DEBUG_LEVEL" ]; then
   export DB_DEBUG_LEVEL="all"
 fi
+if [ -z "$DB_TYPE" ]; then
+  export DB_TYPE="mysql"
+fi
 export DB_MIGRATIONS_PATH="dist/migrations/*.js"
 
 #########

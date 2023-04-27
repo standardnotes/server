@@ -41,7 +41,7 @@ describe('PredicateVerificationRequestedEventHandler', () => {
       .mockReturnValue({ predicateVerificationResult: PredicateVerificationResult.Affirmed })
 
     userRepository = {} as jest.Mocked<UserRepositoryInterface>
-    userRepository.findOneByEmail = jest.fn().mockReturnValue({ uuid: '1-2-3' } as jest.Mocked<User>)
+    userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue({ uuid: '1-2-3' } as jest.Mocked<User>)
 
     domainEventFactory = {} as jest.Mocked<DomainEventFactoryInterface>
     domainEventFactory.createPredicateVerifiedEvent = jest
@@ -79,7 +79,7 @@ describe('PredicateVerificationRequestedEventHandler', () => {
     expect(domainEventPublisher.publish).toHaveBeenCalled()
   })
 
-  it('should verify a predicate by user uuid', async () => {
+  it('should verify a predicate by user email', async () => {
     event.meta = {
       correlation: {
         userIdentifier: 'test@test.te',
@@ -97,6 +97,21 @@ describe('PredicateVerificationRequestedEventHandler', () => {
     expect(domainEventPublisher.publish).toHaveBeenCalled()
   })
 
+  it('should do nothing if username is invalid', async () => {
+    event.meta = {
+      correlation: {
+        userIdentifier: '  ',
+        userIdentifierType: 'email',
+      },
+      origin: DomainEventService.Auth,
+    }
+
+    await createHandler().handle(event)
+
+    expect(verifyPredicate.execute).not.toHaveBeenCalled()
+    expect(domainEventPublisher.publish).not.toHaveBeenCalled()
+  })
+
   it('should mark a predicate verification with undetermined result if user is missing', async () => {
     event.meta = {
       correlation: {
@@ -106,7 +121,7 @@ describe('PredicateVerificationRequestedEventHandler', () => {
       origin: DomainEventService.Auth,
     }
 
-    userRepository.findOneByEmail = jest.fn().mockReturnValue(null)
+    userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue(null)
 
     await createHandler().handle(event)
 

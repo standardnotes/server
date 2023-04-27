@@ -17,7 +17,7 @@ import { CrypterInterface } from '../Encryption/CrypterInterface'
 import { SignInDTOV2Challenged } from './SignInDTOV2Challenged'
 import { leftVersionGreaterThanOrEqualToRight, ProtocolVersion } from '@standardnotes/common'
 import { HttpStatusCode } from '@standardnotes/responses'
-import { EmailLevel } from '@standardnotes/domain-core'
+import { EmailLevel, Username } from '@standardnotes/domain-core'
 import { getBody, getSubject } from '../Email/UserSignedIn'
 
 @injectable()
@@ -48,7 +48,16 @@ export class SignIn implements UseCaseInterface {
       }
     }
 
-    const user = await this.userRepository.findOneByEmail(dto.email)
+    const usernameOrError = Username.create(dto.email)
+    if (usernameOrError.isFailed()) {
+      return {
+        success: false,
+        errorMessage: usernameOrError.getError(),
+      }
+    }
+    const username = usernameOrError.getValue()
+
+    const user = await this.userRepository.findOneByUsernameOrEmail(username)
 
     if (!user) {
       this.logger.debug(`User with email ${dto.email} was not found`)

@@ -20,6 +20,8 @@ services:
   server:
     build: .
     env_file: .github/ci.env
+    environment:
+      DB_TYPE: "${DB_TYPE}"
     container_name: server-ci
     ports:
       - 3123:3000

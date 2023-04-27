@@ -23,10 +23,12 @@ describe('LockMiddleware', () => {
     lockRepository.isUserLocked = jest.fn().mockReturnValue(true)
 
     userRepository = {} as jest.Mocked<UserRepositoryInterface>
-    userRepository.findOneByEmail = jest.fn().mockReturnValue(user)
+    userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue(user)
 
     request = {
-      body: {},
+      body: {
+        email: 'test@test.te',
+      },
     } as jest.Mocked<Request>
     response = {} as jest.Mocked<Response>
     response.status = jest.fn().mockReturnThis()
@@ -52,8 +54,20 @@ describe('LockMiddleware', () => {
     expect(next).toHaveBeenCalled()
   })
 
+  it('should let the request pass if user is not locked and is identified by username', async () => {
+    request.body.username = 'test'
+
+    lockRepository.isUserLocked = jest.fn().mockReturnValue(false)
+
+    await createMiddleware().handler(request, response, next)
+
+    expect(response.status).not.toHaveBeenCalled()
+
+    expect(next).toHaveBeenCalled()
+  })
+
   it('should return locked response if user is not found but the email is locked', async () => {
-    userRepository.findOneByEmail = jest.fn().mockReturnValue(null)
+    userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue(null)
 
     await createMiddleware().handler(request, response, next)
 
@@ -65,7 +79,7 @@ describe('LockMiddleware', () => {
   it('should pass the error to next middleware if one occurres', async () => {
     const error = new Error('Ooops')
 
-    userRepository.findOneByEmail = jest.fn().mockImplementation(() => {
+    userRepository.findOneByUsernameOrEmail = jest.fn().mockImplementation(() => {
       throw error
     })
 

@@ -22,10 +22,16 @@ describe('ClearLoginAttempts', () => {
     user.uuid = '234'
 
     userRepository = {} as jest.Mocked<UserRepositoryInterface>
-    userRepository.findOneByEmail = jest.fn().mockReturnValue(user)
+    userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue(user)
 
     lockRepository = {} as jest.Mocked<LockRepositoryInterface>
     lockRepository.resetLockCounter = jest.fn()
+  })
+
+  it('should do nothing if a user identifier is invalid', async () => {
+    expect(await createUseCase().execute({ email: '   ' })).toEqual({ success: false })
+
+    expect(lockRepository.resetLockCounter).toHaveBeenCalledTimes(0)
   })
 
   it('should unlock an user by email and uuid', async () => {
@@ -37,7 +43,7 @@ describe('ClearLoginAttempts', () => {
   })
 
   it('should unlock an user by email and uuid if user does not exist', async () => {
-    userRepository.findOneByEmail = jest.fn().mockReturnValue(null)
+    userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue(null)
 
     expect(await createUseCase().execute({ email: 'test@test.te' })).toEqual({ success: true })
 

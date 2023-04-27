@@ -91,7 +91,7 @@ describe('RoleService', () => {
         roles: Promise.resolve([basicRole]),
       } as jest.Mocked<User>
 
-      userRepository.findOneByEmail = jest.fn().mockReturnValue(user)
+      userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue(user)
       userRepository.save = jest.fn().mockReturnValue(user)
     })
 
@@ -110,7 +110,7 @@ describe('RoleService', () => {
         roles: Promise.resolve([basicRole, proRole]),
       } as jest.Mocked<User>
 
-      userRepository.findOneByEmail = jest.fn().mockReturnValue(user)
+      userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue(user)
 
       await createService().addUserRole(user, SubscriptionName.ProPlan)
 
@@ -177,7 +177,7 @@ describe('RoleService', () => {
         roles: Promise.resolve([basicRole, proRole]),
       } as jest.Mocked<User>
 
-      userRepository.findOneByEmail = jest.fn().mockReturnValue(user)
+      userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue(user)
       userRepository.save = jest.fn().mockReturnValue(user)
     })
 

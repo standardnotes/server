@@ -24,12 +24,19 @@ describe('IncreaseLoginAttempts', () => {
     user.uuid = '123'
 
     userRepository = {} as jest.Mocked<UserRepositoryInterface>
-    userRepository.findOneByEmail = jest.fn().mockReturnValue(user)
+    userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue(user)
 
     lockRepository = {} as jest.Mocked<LockRepositoryInterface>
     lockRepository.getLockCounter = jest.fn()
     lockRepository.lockUser = jest.fn()
     lockRepository.updateLockCounter = jest.fn()
+  })
+
+  it('should do nothing if a user identifier is invalid', async () => {
+    expect(await createUseCase().execute({ email: '  ' })).toEqual({ success: false })
+
+    expect(lockRepository.updateLockCounter).not.toHaveBeenCalled()
+    expect(lockRepository.lockUser).not.toHaveBeenCalled()
   })
 
   it('should lock a user if the number of failed login attempts is breached', async () => {
@@ -52,7 +59,7 @@ describe('IncreaseLoginAttempts', () => {
 
   it('should should update the lock counter based on email if user is not found', async () => {
     lockRepository.getLockCounter = jest.fn().mockReturnValue(4)
-    userRepository.findOneByEmail = jest.fn().mockReturnValue(null)
+    userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue(null)
 
     expect(await createUseCase().execute({ email: 'test@test.te' })).toEqual({ success: true })
 

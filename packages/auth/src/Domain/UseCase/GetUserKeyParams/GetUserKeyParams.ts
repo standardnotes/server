@@ -10,6 +10,7 @@ import { User } from '../../User/User'
 import { PKCERepositoryInterface } from '../../User/PKCERepositoryInterface'
 import { GetUserKeyParamsDTOV2Challenged } from './GetUserKeyParamsDTOV2Challenged'
 import { KeyParamsData } from '@standardnotes/responses'
+import { Username } from '@standardnotes/domain-core'
 
 @injectable()
 export class GetUserKeyParams implements UseCaseInterface {
@@ -33,7 +34,13 @@ export class GetUserKeyParams implements UseCaseInterface {
 
     let user: User | null = null
     if (dto.email !== undefined) {
-      user = await this.userRepository.findOneByEmail(dto.email)
+      const usernameOrError = Username.create(dto.email)
+      if (usernameOrError.isFailed()) {
+        throw Error(usernameOrError.getError())
+      }
+      const username = usernameOrError.getValue()
+
+      user = await this.userRepository.findOneByUsernameOrEmail(username)
       if (!user) {
         this.logger.debug(`No user with email ${dto.email}. Creating pseudo key params.`)
 

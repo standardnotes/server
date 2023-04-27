@@ -1,4 +1,4 @@
-import { EmailLevel } from '@standardnotes/domain-core'
+import { EmailLevel, Username } from '@standardnotes/domain-core'
 import { DomainEventHandlerInterface, EmailSubscriptionUnsubscribedEvent } from '@standardnotes/domain-events'
 import { SettingName } from '@standardnotes/settings'
 
@@ -9,7 +9,13 @@ export class EmailSubscriptionUnsubscribedEventHandler implements DomainEventHan
   constructor(private userRepository: UserRepositoryInterface, private settingsService: SettingServiceInterface) {}
 
   async handle(event: EmailSubscriptionUnsubscribedEvent): Promise<void> {
-    const user = await this.userRepository.findOneByEmail(event.payload.userEmail)
+    const usernameOrError = Username.create(event.payload.userEmail)
+    if (usernameOrError.isFailed()) {
+      return
+    }
+    const username = usernameOrError.getValue()
+
+    const user = await this.userRepository.findOneByUsernameOrEmail(username)
     if (user === null) {
       return
     }

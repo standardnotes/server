@@ -23,6 +23,14 @@ export class Validator {
     return Result.fail(`Given value is not a valid email address: ${value}`)
   }
 
+  static isString(value: unknown): Result<string> {
+    if (typeof value === 'string') {
+      return Result.ok()
+    }
+
+    return Result.fail(`Given value is not a string: ${typeof value}`)
+  }
+
   static isNotEmpty(value: unknown): Result<string> {
     if (value instanceof Array && value.length === 0) {
       return Result.fail(`Given value is empty: ${value}`)

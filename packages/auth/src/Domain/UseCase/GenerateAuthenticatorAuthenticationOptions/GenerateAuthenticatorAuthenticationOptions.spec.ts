@@ -40,7 +40,7 @@ describe('GenerateAuthenticatorAuthenticationOptions', () => {
     authenticatorChallengeRepository.save = jest.fn()
 
     userRepository = {} as jest.Mocked<UserRepositoryInterface>
-    userRepository.findOneByEmail = jest.fn().mockReturnValue({
+    userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue({
       uuid: '00000000-0000-0000-0000-000000000000',
     } as jest.Mocked<User>)
   })
@@ -57,7 +57,7 @@ describe('GenerateAuthenticatorAuthenticationOptions', () => {
   })
 
   it('should return error if user uuid is not valid', async () => {
-    userRepository.findOneByEmail = jest.fn().mockReturnValue({
+    userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue({
       uuid: 'invalid',
     } as jest.Mocked<User>)
 
@@ -74,7 +74,7 @@ describe('GenerateAuthenticatorAuthenticationOptions', () => {
   })
 
   it('should return pseudo options if user is not found', async () => {
-    userRepository.findOneByEmail = jest.fn().mockReturnValue(null)
+    userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue(null)
 
     const useCase = createUseCase()
 

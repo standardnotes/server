@@ -82,7 +82,7 @@ describe('ChangeCredentials', () => {
   })
 
   it('should change email', async () => {
-    userRepository.findOneByEmail = jest.fn().mockReturnValue(null)
+    userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue(null)
 
     expect(
       await createUseCase().execute({
@@ -117,7 +117,7 @@ describe('ChangeCredentials', () => {
   })
 
   it('should not change email if already taken', async () => {
-    userRepository.findOneByEmail = jest.fn().mockReturnValue({} as jest.Mocked<User>)
+    userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue({} as jest.Mocked<User>)
 
     expect(
       await createUseCase().execute({
@@ -134,6 +134,29 @@ describe('ChangeCredentials', () => {
     ).toEqual({
       success: false,
       errorMessage: 'The email you entered is already taken. Please try again.',
+    })
+
+    expect(userRepository.save).not.toHaveBeenCalled()
+    expect(domainEventFactory.createUserEmailChangedEvent).not.toHaveBeenCalled()
+    expect(domainEventPublisher.publish).not.toHaveBeenCalled()
+  })
+
+  it('should not change email if the new email is invalid', async () => {
+    expect(
+      await createUseCase().execute({
+        user,
+        apiVersion: '20190520',
+        currentPassword: 'qweqwe123123',
+        newPassword: 'test234',
+        newEmail: '',
+        pwNonce: 'asdzxc',
+        updatedWithUserAgent: 'Google Chrome',
+        kpCreated: '123',
+        kpOrigination: 'password-change',
+      }),
+    ).toEqual({
+      success: false,
+      errorMessage: 'Username cannot be empty',
     })
 
     expect(userRepository.save).not.toHaveBeenCalled()

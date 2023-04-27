@@ -13,11 +13,17 @@ export class Email extends ValueObject<EmailProps> {
   }
 
   static create(email: string): Result<Email> {
-    const emailValidation = Validator.isValidEmail(email)
+    if (Validator.isString(email).isFailed()) {
+      return Result.fail<Email>('Email must be a string')
+    }
+
+    const trimmedAndLowerCasedEmail = email.trim().toLowerCase()
+
+    const emailValidation = Validator.isValidEmail(trimmedAndLowerCasedEmail)
     if (emailValidation.isFailed()) {
       return Result.fail<Email>(emailValidation.getError())
     }
 
-    return Result.ok<Email>(new Email({ value: email }))
+    return Result.ok<Email>(new Email({ value: trimmedAndLowerCasedEmail }))
   }
 }

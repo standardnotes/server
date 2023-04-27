@@ -21,7 +21,7 @@ describe('ListedAccountDeletedEventHandler', () => {
     user = {} as jest.Mocked<User>
 
     userRepository = {} as jest.Mocked<UserRepositoryInterface>
-    userRepository.findOneByEmail = jest.fn().mockReturnValue(user)
+    userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue(user)
 
     settingService = {} as jest.Mocked<SettingServiceInterface>
     settingService.findSettingWithDecryptedValue = jest.fn().mockReturnValue({
@@ -42,8 +42,16 @@ describe('ListedAccountDeletedEventHandler', () => {
     logger.warn = jest.fn()
   })
 
+  it('should not remove the listed secret if username is invalid', async () => {
+    event.payload.userEmail = ''
+
+    await createHandler().handle(event)
+
+    expect(settingService.createOrReplace).not.toHaveBeenCalled()
+  })
+
   it('should not remove the listed secret if user is not found', async () => {
-    userRepository.findOneByEmail = jest.fn().mockReturnValue(null)
+    userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue(null)
 
     await createHandler().handle(event)
 

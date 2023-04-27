@@ -1,3 +1,4 @@
+import { Username } from '@standardnotes/domain-core'
 import {
   DomainEventHandlerInterface,
   DomainEventPublisherInterface,
@@ -27,7 +28,13 @@ export class PredicateVerificationRequestedEventHandler implements DomainEventHa
 
     let userUuid = event.meta.correlation.userIdentifier
     if (event.meta.correlation.userIdentifierType === 'email') {
-      const user = await this.userRepository.findOneByEmail(event.meta.correlation.userIdentifier)
+      const usernameOrError = Username.create(event.meta.correlation.userIdentifier)
+      if (usernameOrError.isFailed()) {
+        return
+      }
+      const username = usernameOrError.getValue()
+
+      const user = await this.userRepository.findOneByUsernameOrEmail(username)
       if (user === null) {
         await this.domainEventPublisher.publish(
           this.domainEventFactory.createPredicateVerifiedEvent({

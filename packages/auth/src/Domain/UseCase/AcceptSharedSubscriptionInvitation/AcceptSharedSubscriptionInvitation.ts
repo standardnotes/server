@@ -1,4 +1,5 @@
 import { SubscriptionName } from '@standardnotes/common'
+import { Email } from '@standardnotes/domain-core'
 import { TimerInterface } from '@standardnotes/time'
 import { inject, injectable } from 'inversify'
 
@@ -41,7 +42,16 @@ export class AcceptSharedSubscriptionInvitation implements UseCaseInterface {
       }
     }
 
-    const invitee = await this.userRepository.findOneByEmail(sharedSubscriptionInvitation.inviteeIdentifier)
+    const inviteeEmailOrError = Email.create(sharedSubscriptionInvitation.inviteeIdentifier)
+    if (inviteeEmailOrError.isFailed()) {
+      return {
+        success: false,
+        message: inviteeEmailOrError.getError(),
+      }
+    }
+    const inviteeEmail = inviteeEmailOrError.getValue()
+
+    const invitee = await this.userRepository.findOneByUsernameOrEmail(inviteeEmail)
     if (invitee === null) {
       return {
         success: false,

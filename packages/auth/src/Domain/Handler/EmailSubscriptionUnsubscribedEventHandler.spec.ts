@@ -15,7 +15,7 @@ describe('EmailSubscriptionUnsubscribedEventHandler', () => {
 
   beforeEach(() => {
     userRepository = {} as jest.Mocked<UserRepositoryInterface>
-    userRepository.findOneByEmail = jest.fn().mockReturnValue({} as jest.Mocked<User>)
+    userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue({} as jest.Mocked<User>)
 
     settingsService = {} as jest.Mocked<SettingServiceInterface>
     settingsService.createOrReplace = jest.fn()
@@ -28,8 +28,16 @@ describe('EmailSubscriptionUnsubscribedEventHandler', () => {
     } as jest.Mocked<EmailSubscriptionUnsubscribedEvent>
   })
 
+  it('should not do anything if username is invalid', async () => {
+    event.payload.userEmail = ''
+
+    await createHandler().handle(event)
+
+    expect(settingsService.createOrReplace).not.toHaveBeenCalled()
+  })
+
   it('should not do anything if user is not found', async () => {
-    userRepository.findOneByEmail = jest.fn().mockReturnValue(null)
+    userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue(null)
 
     await createHandler().handle(event)
 

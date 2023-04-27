@@ -13,10 +13,16 @@ export class Username extends ValueObject<UsernameProps> {
   }
 
   static create(username: string): Result<Username> {
-    if (Validator.isNotEmpty(username).isFailed()) {
+    if (Validator.isString(username).isFailed()) {
+      return Result.fail<Username>('Username must be a string')
+    }
+
+    const trimmedAndLowerCasedUsername = username.trim().toLowerCase()
+
+    if (Validator.isNotEmpty(trimmedAndLowerCasedUsername).isFailed()) {
       return Result.fail<Username>('Username cannot be empty')
     }
 
-    return Result.ok<Username>(new Username({ value: username }))
+    return Result.ok<Username>(new Username({ value: trimmedAndLowerCasedUsername }))
   }
 }

@@ -23,7 +23,7 @@ export class GenerateAuthenticatorAuthenticationOptions implements UseCaseInterf
     }
     const username = usernameOrError.getValue()
 
-    const user = await this.userRepository.findOneByEmail(username.value)
+    const user = await this.userRepository.findOneByUsernameOrEmail(username)
     if (user === null) {
       const credentialIdHash = crypto
         .createHash('sha256')

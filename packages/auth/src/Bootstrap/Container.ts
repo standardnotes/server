@@ -20,8 +20,8 @@ import { AppDataSource } from './DataSource'
 import { User } from '../Domain/User/User'
 import { Session } from '../Domain/Session/Session'
 import { SessionService } from '../Domain/Session/SessionService'
-import { MySQLSessionRepository } from '../Infra/MySQL/MySQLSessionRepository'
-import { MySQLUserRepository } from '../Infra/MySQL/MySQLUserRepository'
+import { TypeORMSessionRepository } from '../Infra/TypeORM/TypeORMSessionRepository'
+import { TypeORMUserRepository } from '../Infra/TypeORM/TypeORMUserRepository'
 import { SessionProjector } from '../Projection/SessionProjector'
 import { SessionMiddleware } from '../Controller/SessionMiddleware'
 import { RefreshSessionToken } from '../Domain/UseCase/RefreshSessionToken'
@@ -45,7 +45,7 @@ import { DeletePreviousSessionsForUser } from '../Domain/UseCase/DeletePreviousS
 import { DeleteSessionForUser } from '../Domain/UseCase/DeleteSessionForUser'
 import { Register } from '../Domain/UseCase/Register'
 import { LockRepository } from '../Infra/Redis/LockRepository'
-import { MySQLRevokedSessionRepository } from '../Infra/MySQL/MySQLRevokedSessionRepository'
+import { TypeORMRevokedSessionRepository } from '../Infra/TypeORM/TypeORMRevokedSessionRepository'
 import { AuthenticationMethodResolver } from '../Domain/Auth/AuthenticationMethodResolver'
 import { RevokedSession } from '../Domain/Session/RevokedSession'
 import { UserRegisteredEventHandler } from '../Domain/Handler/UserRegisteredEventHandler'
@@ -54,9 +54,9 @@ import { AuthenticateRequest } from '../Domain/UseCase/AuthenticateRequest'
 import { Role } from '../Domain/Role/Role'
 import { RoleProjector } from '../Projection/RoleProjector'
 import { PermissionProjector } from '../Projection/PermissionProjector'
-import { MySQLRoleRepository } from '../Infra/MySQL/MySQLRoleRepository'
+import { TypeORMRoleRepository } from '../Infra/TypeORM/TypeORMRoleRepository'
 import { Setting } from '../Domain/Setting/Setting'
-import { MySQLSettingRepository } from '../Infra/MySQL/MySQLSettingRepository'
+import { TypeORMSettingRepository } from '../Infra/TypeORM/TypeORMSettingRepository'
 import { CrypterInterface } from '../Domain/Encryption/CrypterInterface'
 import { CrypterNode } from '../Domain/Encryption/CrypterNode'
 import { CryptoNode } from '@standardnotes/sncrypto-node'
@@ -77,7 +77,7 @@ import { SettingService } from '../Domain/Setting/SettingService'
 const axios = require('axios')
 import { AxiosInstance } from 'axios'
 import { UserSubscription } from '../Domain/Subscription/UserSubscription'
-import { MySQLUserSubscriptionRepository } from '../Infra/MySQL/MySQLUserSubscriptionRepository'
+import { TypeORMUserSubscriptionRepository } from '../Infra/TypeORM/TypeORMUserSubscriptionRepository'
 import { WebSocketsClientService } from '../Infra/WebSockets/WebSocketsClientService'
 import { RoleService } from '../Domain/Role/RoleService'
 import { ClientServiceInterface } from '../Domain/Client/ClientServiceInterface'
@@ -109,10 +109,10 @@ import { OfflineSettingServiceInterface } from '../Domain/Setting/OfflineSetting
 import { OfflineSettingService } from '../Domain/Setting/OfflineSettingService'
 import { OfflineSettingRepositoryInterface } from '../Domain/Setting/OfflineSettingRepositoryInterface'
 import { SettingRepositoryInterface } from '../Domain/Setting/SettingRepositoryInterface'
-import { MySQLOfflineSettingRepository } from '../Infra/MySQL/MySQLOfflineSettingRepository'
+import { TypeORMOfflineSettingRepository } from '../Infra/TypeORM/TypeORMOfflineSettingRepository'
 import { OfflineUserSubscription } from '../Domain/Subscription/OfflineUserSubscription'
 import { OfflineUserSubscriptionRepositoryInterface } from '../Domain/Subscription/OfflineUserSubscriptionRepositoryInterface'
-import { MySQLOfflineUserSubscriptionRepository } from '../Infra/MySQL/MySQLOfflineUserSubscriptionRepository'
+import { TypeORMOfflineUserSubscriptionRepository } from '../Infra/TypeORM/TypeORMOfflineUserSubscriptionRepository'
 import { OfflineUserAuthMiddleware } from '../Controller/OfflineUserAuthMiddleware'
 import { OfflineSubscriptionTokenRepositoryInterface } from '../Domain/Auth/OfflineSubscriptionTokenRepositoryInterface'
 import { RedisOfflineSubscriptionTokenRepository } from '../Infra/Redis/RedisOfflineSubscriptionTokenRepository'
@@ -151,7 +151,7 @@ import { SettingInterpreter } from '../Domain/Setting/SettingInterpreter'
 import { SettingDecrypterInterface } from '../Domain/Setting/SettingDecrypterInterface'
 import { SettingDecrypter } from '../Domain/Setting/SettingDecrypter'
 import { SharedSubscriptionInvitationRepositoryInterface } from '../Domain/SharedSubscription/SharedSubscriptionInvitationRepositoryInterface'
-import { MySQLSharedSubscriptionInvitationRepository } from '../Infra/MySQL/MySQLSharedSubscriptionInvitationRepository'
+import { TypeORMSharedSubscriptionInvitationRepository } from '../Infra/TypeORM/TypeORMSharedSubscriptionInvitationRepository'
 import { InviteToSharedSubscription } from '../Domain/UseCase/InviteToSharedSubscription/InviteToSharedSubscription'
 import { SharedSubscriptionInvitation } from '../Domain/SharedSubscription/SharedSubscriptionInvitation'
 import { AcceptSharedSubscriptionInvitation } from '../Domain/UseCase/AcceptSharedSubscriptionInvitation/AcceptSharedSubscriptionInvitation'
@@ -162,7 +162,7 @@ import { SubscriptionSetting } from '../Domain/Setting/SubscriptionSetting'
 import { SubscriptionSettingServiceInterface } from '../Domain/Setting/SubscriptionSettingServiceInterface'
 import { SubscriptionSettingService } from '../Domain/Setting/SubscriptionSettingService'
 import { SubscriptionSettingRepositoryInterface } from '../Domain/Setting/SubscriptionSettingRepositoryInterface'
-import { MySQLSubscriptionSettingRepository } from '../Infra/MySQL/MySQLSubscriptionSettingRepository'
+import { TypeORMSubscriptionSettingRepository } from '../Infra/TypeORM/TypeORMSubscriptionSettingRepository'
 import { SettingFactoryInterface } from '../Domain/Setting/SettingFactoryInterface'
 import { ListSharedSubscriptionInvitations } from '../Domain/UseCase/ListSharedSubscriptionInvitations/ListSharedSubscriptionInvitations'
 import { UserSubscriptionServiceInterface } from '../Domain/Subscription/UserSubscriptionServiceInterface'
@@ -185,7 +185,7 @@ import { ProcessUserRequest } from '../Domain/UseCase/ProcessUserRequest/Process
 import { UserRequestsController } from '../Controller/UserRequestsController'
 import { EmailSubscriptionUnsubscribedEventHandler } from '../Domain/Handler/EmailSubscriptionUnsubscribedEventHandler'
 import { SessionTraceRepositoryInterface } from '../Domain/Session/SessionTraceRepositoryInterface'
-import { MySQLSessionTraceRepository } from '../Infra/MySQL/MySQLSessionTraceRepository'
+import { TypeORMSessionTraceRepository } from '../Infra/TypeORM/TypeORMSessionTraceRepository'
 import { MapperInterface } from '@standardnotes/domain-core'
 import { SessionTracePersistenceMapper } from '../Mapping/SessionTracePersistenceMapper'
 import { SessionTrace } from '../Domain/Session/SessionTrace'
@@ -200,9 +200,9 @@ import { AuthenticatorChallenge } from '../Domain/Authenticator/AuthenticatorCha
 import { TypeORMAuthenticatorChallenge } from '../Infra/TypeORM/TypeORMAuthenticatorChallenge'
 import { AuthenticatorChallengePersistenceMapper } from '../Mapping/AuthenticatorChallengePersistenceMapper'
 import { AuthenticatorRepositoryInterface } from '../Domain/Authenticator/AuthenticatorRepositoryInterface'
-import { MySQLAuthenticatorRepository } from '../Infra/MySQL/MySQLAuthenticatorRepository'
+import { TypeORMAuthenticatorRepository } from '../Infra/TypeORM/TypeORMAuthenticatorRepository'
 import { AuthenticatorChallengeRepositoryInterface } from '../Domain/Authenticator/AuthenticatorChallengeRepositoryInterface'
-import { MySQLAuthenticatorChallengeRepository } from '../Infra/MySQL/MySQLAuthenticatorChallengeRepository'
+import { TypeORMAuthenticatorChallengeRepository } from '../Infra/TypeORM/TypeORMAuthenticatorChallengeRepository'
 import { GenerateAuthenticatorRegistrationOptions } from '../Domain/UseCase/GenerateAuthenticatorRegistrationOptions/GenerateAuthenticatorRegistrationOptions'
 import { VerifyAuthenticatorRegistrationResponse } from '../Domain/UseCase/VerifyAuthenticatorRegistrationResponse/VerifyAuthenticatorRegistrationResponse'
 import { GenerateAuthenticatorAuthenticationOptions } from '../Domain/UseCase/GenerateAuthenticatorAuthenticationOptions/GenerateAuthenticatorAuthenticationOptions'
@@ -337,21 +337,25 @@ export class ContainerConfigLoader {
       .toConstantValue(AppDataSource.getRepository(TypeORMAuthenticatorChallenge))
 
     // Repositories
-    container.bind<SessionRepositoryInterface>(TYPES.SessionRepository).to(MySQLSessionRepository)
-    container.bind<RevokedSessionRepositoryInterface>(TYPES.RevokedSessionRepository).to(MySQLRevokedSessionRepository)
-    container.bind<UserRepositoryInterface>(TYPES.UserRepository).to(MySQLUserRepository)
-    container.bind<SettingRepositoryInterface>(TYPES.SettingRepository).to(MySQLSettingRepository)
+    container.bind<SessionRepositoryInterface>(TYPES.SessionRepository).to(TypeORMSessionRepository)
+    container
+      .bind<RevokedSessionRepositoryInterface>(TYPES.RevokedSessionRepository)
+      .to(TypeORMRevokedSessionRepository)
+    container.bind<UserRepositoryInterface>(TYPES.UserRepository).to(TypeORMUserRepository)
+    container.bind<SettingRepositoryInterface>(TYPES.SettingRepository).to(TypeORMSettingRepository)
     container
       .bind<SubscriptionSettingRepositoryInterface>(TYPES.SubscriptionSettingRepository)
-      .to(MySQLSubscriptionSettingRepository)
-    container.bind<OfflineSettingRepositoryInterface>(TYPES.OfflineSettingRepository).to(MySQLOfflineSettingRepository)
-    container.bind<RoleRepositoryInterface>(TYPES.RoleRepository).to(MySQLRoleRepository)
+      .to(TypeORMSubscriptionSettingRepository)
+    container
+      .bind<OfflineSettingRepositoryInterface>(TYPES.OfflineSettingRepository)
+      .to(TypeORMOfflineSettingRepository)
+    container.bind<RoleRepositoryInterface>(TYPES.RoleRepository).to(TypeORMRoleRepository)
     container
       .bind<UserSubscriptionRepositoryInterface>(TYPES.UserSubscriptionRepository)
-      .to(MySQLUserSubscriptionRepository)
+      .to(TypeORMUserSubscriptionRepository)
     container
       .bind<OfflineUserSubscriptionRepositoryInterface>(TYPES.OfflineUserSubscriptionRepository)
-      .to(MySQLOfflineUserSubscriptionRepository)
+      .to(TypeORMOfflineUserSubscriptionRepository)
     container
       .bind<RedisEphemeralSessionRepository>(TYPES.EphemeralSessionRepository)
       .to(RedisEphemeralSessionRepository)
@@ -364,12 +368,12 @@ export class ContainerConfigLoader {
       .to(RedisOfflineSubscriptionTokenRepository)
     container
       .bind<SharedSubscriptionInvitationRepositoryInterface>(TYPES.SharedSubscriptionInvitationRepository)
-      .to(MySQLSharedSubscriptionInvitationRepository)
+      .to(TypeORMSharedSubscriptionInvitationRepository)
     container.bind<PKCERepositoryInterface>(TYPES.PKCERepository).to(RedisPKCERepository)
     container
       .bind<SessionTraceRepositoryInterface>(TYPES.SessionTraceRepository)
       .toConstantValue(
-        new MySQLSessionTraceRepository(
+        new TypeORMSessionTraceRepository(
           container.get(TYPES.ORMSessionTraceRepository),
           container.get(TYPES.SessionTracePersistenceMapper),
         ),
@@ -377,7 +381,7 @@ export class ContainerConfigLoader {
     container
       .bind<AuthenticatorRepositoryInterface>(TYPES.AuthenticatorRepository)
       .toConstantValue(
-        new MySQLAuthenticatorRepository(
+        new TypeORMAuthenticatorRepository(
           container.get(TYPES.ORMAuthenticatorRepository),
           container.get(TYPES.AuthenticatorPersistenceMapper),
         ),
@@ -385,7 +389,7 @@ export class ContainerConfigLoader {
     container
       .bind<AuthenticatorChallengeRepositoryInterface>(TYPES.AuthenticatorChallengeRepository)
       .toConstantValue(
-        new MySQLAuthenticatorChallengeRepository(
+        new TypeORMAuthenticatorChallengeRepository(
           container.get(TYPES.ORMAuthenticatorChallengeRepository),
           container.get(TYPES.AuthenticatorChallengePersistenceMapper),
         ),

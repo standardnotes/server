@@ -34,7 +34,7 @@ describe('DeleteAccount', () => {
     } as jest.Mocked<UserSubscription>
 
     userRepository = {} as jest.Mocked<UserRepositoryInterface>
-    userRepository.findOneByEmail = jest.fn().mockReturnValue(user)
+    userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue(user)
 
     userSubscriptionService = {} as jest.Mocked<UserSubscriptionServiceInterface>
     userSubscriptionService.findRegularSubscriptionForUserUuid = jest
@@ -92,11 +92,22 @@ describe('DeleteAccount', () => {
   })
 
   it('should not trigger account deletion if user is not found', async () => {
-    userRepository.findOneByEmail = jest.fn().mockReturnValue(null)
+    userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue(null)
 
     expect(await createUseCase().execute({ email: 'test@test.te' })).toEqual({
       message: 'User not found',
       responseCode: 404,
+      success: false,
+    })
+
+    expect(domainEventPublisher.publish).not.toHaveBeenCalled()
+    expect(domainEventFactory.createAccountDeletionRequestedEvent).not.toHaveBeenCalled()
+  })
+
+  it('should not trigger account deletion if username is invalid', async () => {
+    expect(await createUseCase().execute({ email: '' })).toEqual({
+      message: 'Username cannot be empty',
+      responseCode: 400,
       success: false,
     })
 

@@ -13,6 +13,7 @@ import { SettingName } from '@standardnotes/settings'
 import { EncryptionVersion } from '../Encryption/EncryptionVersion'
 import { UserSubscriptionType } from '../Subscription/UserSubscriptionType'
 import { SubscriptionSettingServiceInterface } from '../Setting/SubscriptionSettingServiceInterface'
+import { Username } from '@standardnotes/domain-core'
 
 @injectable()
 export class SubscriptionReassignedEventHandler implements DomainEventHandlerInterface {
@@ -26,10 +27,16 @@ export class SubscriptionReassignedEventHandler implements DomainEventHandlerInt
   ) {}
 
   async handle(event: SubscriptionReassignedEvent): Promise<void> {
-    const user = await this.userRepository.findOneByEmail(event.payload.userEmail)
+    const usernameOrError = Username.create(event.payload.userEmail)
+    if (usernameOrError.isFailed()) {
+      return
+    }
+    const username = usernameOrError.getValue()
+
+    const user = await this.userRepository.findOneByUsernameOrEmail(username)
 
     if (user === null) {
-      this.logger.warn(`Could not find user with email: ${event.payload.userEmail}`)
+      this.logger.warn(`Could not find user with email: ${username.value}`)
 
       return
     }
