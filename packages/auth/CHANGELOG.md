@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.97.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.96.0...@standardnotes/auth-server@1.97.0) (2023-04-27)
+
+### Features
+
+* remove cloud backups ([#574](https://github.com/standardnotes/server/issues/574)) ([484f554](https://github.com/standardnotes/server/commit/484f55433928e5c21ee59d8fda94ab3c887cd169))
+
 # [1.96.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.95.3...@standardnotes/auth-server@1.96.0) (2023-04-27)
 
 ### Features

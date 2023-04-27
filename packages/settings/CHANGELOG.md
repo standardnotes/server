@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.21.0](https://github.com/standardnotes/server/compare/@standardnotes/settings@1.20.2...@standardnotes/settings@1.21.0) (2023-04-27)
+
+### Features
+
+* remove cloud backups ([#574](https://github.com/standardnotes/server/issues/574)) ([484f554](https://github.com/standardnotes/server/commit/484f55433928e5c21ee59d8fda94ab3c887cd169))
+
 ## [1.20.2](https://github.com/standardnotes/server/compare/@standardnotes/settings@1.20.1...@standardnotes/settings@1.20.2) (2023-04-27)
 
 **Note:** Version bump only for package @standardnotes/settings

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.110.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.109.0...@standardnotes/domain-events@2.110.0) (2023-04-27)
+
+### Features
+
+* remove cloud backups ([#574](https://github.com/standardnotes/server/issues/574)) ([484f554](https://github.com/standardnotes/server/commit/484f55433928e5c21ee59d8fda94ab3c887cd169))
+
 # [2.109.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.108.1...@standardnotes/domain-events@2.109.0) (2023-04-21)
 
 ### Features

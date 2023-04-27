@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.34.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.33.0...@standardnotes/syncing-server@1.34.0) (2023-04-27)
+
+### Features
+
+* remove cloud backups ([#574](https://github.com/standardnotes/syncing-server-js/issues/574)) ([484f554](https://github.com/standardnotes/syncing-server-js/commit/484f55433928e5c21ee59d8fda94ab3c887cd169))
+
 # [1.33.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.32.8...@standardnotes/syncing-server@1.33.0) (2023-04-27)
 
 ### Features
