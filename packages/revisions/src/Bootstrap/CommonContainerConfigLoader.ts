@@ -2,10 +2,11 @@ import { MapperInterface } from '@standardnotes/domain-core'
 import { Container, interfaces } from 'inversify'
 import { Repository } from 'typeorm'
 import * as winston from 'winston'
+
 import { Revision } from '../Domain/Revision/Revision'
 import { RevisionMetadata } from '../Domain/Revision/RevisionMetadata'
 import { RevisionRepositoryInterface } from '../Domain/Revision/RevisionRepositoryInterface'
-import { MySQLRevisionRepository } from '../Infra/MySQL/MySQLRevisionRepository'
+import { TypeORMRevisionRepository } from '../Infra/TypeORM/TypeORMRevisionRepository'
 import { TypeORMRevision } from '../Infra/TypeORM/TypeORMRevision'
 import { RevisionMetadataPersistenceMapper } from '../Mapping/RevisionMetadataPersistenceMapper'
 import { RevisionPersistenceMapper } from '../Mapping/RevisionPersistenceMapper'
@@ -67,7 +68,7 @@ export class CommonContainerConfigLoader {
     container
       .bind<RevisionRepositoryInterface>(TYPES.RevisionRepository)
       .toDynamicValue((context: interfaces.Context) => {
-        return new MySQLRevisionRepository(
+        return new TypeORMRevisionRepository(
           context.container.get(TYPES.ORMRevisionRepository),
           context.container.get(TYPES.RevisionMetadataPersistenceMapper),
           context.container.get(TYPES.RevisionPersistenceMapper),

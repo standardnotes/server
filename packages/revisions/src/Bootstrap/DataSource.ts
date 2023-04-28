@@ -1,4 +1,6 @@
 import { DataSource, LoggerOptions } from 'typeorm'
+import { BetterSqlite3ConnectionOptions } from 'typeorm/driver/better-sqlite3/BetterSqlite3ConnectionOptions'
+import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions'
 
 import { TypeORMRevision } from '../Infra/TypeORM/TypeORMRevision'
 
@@ -6,6 +8,8 @@ import { Env } from './Env'
 
 const env: Env = new Env()
 env.load()
+
+const isConfiguredForMySQL = env.get('DB_TYPE') === 'mysql'
 
 const maxQueryExecutionTime = env.get('DB_MAX_QUERY_EXECUTION_TIME', true)
   ? +env.get('DB_MAX_QUERY_EXECUTION_TIME', true)
@@ -34,22 +38,32 @@ const replicationConfig = {
   restoreNodeTimeout: 5,
 }
 
-const dataSource = new DataSource({
+const commonDataSourceOptions = {
+  maxQueryExecutionTime,
+  entities: [TypeORMRevision],
+  migrations: [`dist/migrations/${isConfiguredForMySQL ? 'mysql' : 'sqlite'}/*.js`],
+  migrationsRun: true,
+  logging: <LoggerOptions>env.get('DB_DEBUG_LEVEL'),
+}
+
+const mySQLDataSourceOptions: MysqlConnectionOptions = {
+  ...commonDataSourceOptions,
   type: 'mysql',
   charset: 'utf8mb4',
   supportBigNumbers: true,
   bigNumberStrings: false,
-  maxQueryExecutionTime,
   replication: inReplicaMode ? replicationConfig : undefined,
   host: inReplicaMode ? undefined : env.get('DB_HOST'),
   port: inReplicaMode ? undefined : parseInt(env.get('DB_PORT')),
   username: inReplicaMode ? undefined : env.get('DB_USERNAME'),
   password: inReplicaMode ? undefined : env.get('DB_PASSWORD'),
   database: inReplicaMode ? undefined : env.get('DB_DATABASE'),
-  entities: [TypeORMRevision],
-  migrations: [env.get('DB_MIGRATIONS_PATH', true) ?? 'dist/migrations/*.js'],
-  migrationsRun: true,
-  logging: <LoggerOptions>env.get('DB_DEBUG_LEVEL'),
-})
+}
 
-export const AppDataSource = dataSource
+const sqliteDataSourceOptions: BetterSqlite3ConnectionOptions = {
+  ...commonDataSourceOptions,
+  type: 'better-sqlite3',
+  database: `data/${env.get('DB_DATABASE')}.sqlite`,
+}
+
+export const AppDataSource = new DataSource(isConfiguredForMySQL ? mySQLDataSourceOptions : sqliteDataSourceOptions)
