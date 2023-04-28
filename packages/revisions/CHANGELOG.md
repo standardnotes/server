@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.13.0](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.12.16...@standardnotes/revisions-server@1.13.0) (2023-04-28)
+
+### Features
+
+* **revisions:** add sqlite driver ([#575](https://github.com/standardnotes/server/issues/575)) ([03f9c60](https://github.com/standardnotes/server/commit/03f9c6039c309fde1a762a010e70e8189f5a8e15))
+
 ## [1.12.16](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.12.15...@standardnotes/revisions-server@1.12.16) (2023-04-27)
 
 **Note:** Version bump only for package @standardnotes/revisions-server
