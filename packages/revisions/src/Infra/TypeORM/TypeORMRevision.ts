@@ -22,7 +22,7 @@ export class TypeORMRevision {
   declare userUuid: string | null
 
   @Column({
-    type: 'mediumtext',
+    type: 'text',
     nullable: true,
   })
   declare content: string | null

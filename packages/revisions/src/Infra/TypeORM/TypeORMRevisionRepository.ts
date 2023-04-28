@@ -5,9 +5,9 @@ import { Logger } from 'winston'
 import { Revision } from '../../Domain/Revision/Revision'
 import { RevisionMetadata } from '../../Domain/Revision/RevisionMetadata'
 import { RevisionRepositoryInterface } from '../../Domain/Revision/RevisionRepositoryInterface'
-import { TypeORMRevision } from '../TypeORM/TypeORMRevision'
+import { TypeORMRevision } from './TypeORMRevision'
 
-export class MySQLRevisionRepository implements RevisionRepositoryInterface {
+export class TypeORMRevisionRepository implements RevisionRepositoryInterface {
   constructor(
     private ormRepository: Repository<TypeORMRevision>,
     private revisionMetadataMapper: MapperInterface<RevisionMetadata, TypeORMRevision>,
@@ -97,7 +97,7 @@ export class MySQLRevisionRepository implements RevisionRepositoryInterface {
     const simplifiedRevisions = await queryBuilder.getRawMany()
 
     this.logger.debug(
-      `Found ${simplifiedRevisions.length} revisions MySQL entries for item ${itemUuid.value}`,
+      `Found ${simplifiedRevisions.length} revisions entries for item ${itemUuid.value}`,
       simplifiedRevisions,
     )
 
