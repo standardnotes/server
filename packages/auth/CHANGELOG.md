@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.99.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.98.0...@standardnotes/auth-server@1.99.0) (2023-05-01)
+
+### Features
+
+* **auth:** add sqlite lock cache for home server ([#577](https://github.com/standardnotes/server/issues/577)) ([9d7e63a](https://github.com/standardnotes/server/commit/9d7e63a7a78adcb9817084e460a01189012bc403))
+
 # [1.98.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.97.0...@standardnotes/auth-server@1.98.0) (2023-05-01)
 
 ### Features
