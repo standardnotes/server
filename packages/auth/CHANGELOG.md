@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.101.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.100.0...@standardnotes/auth-server@1.101.0) (2023-05-01)
+
+### Features
+
+* **auth:** add sqlite offline subscription token repository for home server ([#579](https://github.com/standardnotes/server/issues/579)) ([5fe6ed1](https://github.com/standardnotes/server/commit/5fe6ed1462da3dcd1f40a10babf906fd522a3617))
+
 # [1.100.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.99.0...@standardnotes/auth-server@1.100.0) (2023-05-01)
 
 ### Features
