@@ -226,6 +226,8 @@ import { TypeORMLockRepository } from '../Infra/TypeORM/TypeORMLockRepository'
 import { EphemeralSessionRepositoryInterface } from '../Domain/Session/EphemeralSessionRepositoryInterface'
 import { TypeORMEphemeralSessionRepository } from '../Infra/TypeORM/TypeORMEphemeralSessionRepository'
 import { TypeORMOfflineSubscriptionTokenRepository } from '../Infra/TypeORM/TypeORMOfflineSubscriptionTokenRepository'
+import { TypeORMPKCERepository } from '../Infra/TypeORM/TypeORMPKCERepository'
+import { TypeORMSubscriptionTokenRepository } from '../Infra/TypeORM/TypeORMSubscriptionTokenRepository'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -375,12 +377,8 @@ export class ContainerConfigLoader {
       .bind<OfflineUserSubscriptionRepositoryInterface>(TYPES.OfflineUserSubscriptionRepository)
       .to(TypeORMOfflineUserSubscriptionRepository)
     container
-      .bind<SubscriptionTokenRepositoryInterface>(TYPES.SubscriptionTokenRepository)
-      .to(RedisSubscriptionTokenRepository)
-    container
       .bind<SharedSubscriptionInvitationRepositoryInterface>(TYPES.SharedSubscriptionInvitationRepository)
       .to(TypeORMSharedSubscriptionInvitationRepository)
-    container.bind<PKCERepositoryInterface>(TYPES.PKCERepository).to(RedisPKCERepository)
     container
       .bind<SessionTraceRepositoryInterface>(TYPES.SessionTraceRepository)
       .toConstantValue(
@@ -518,7 +516,22 @@ export class ContainerConfigLoader {
             container.get(TYPES.Timer),
           ),
         )
+      container
+        .bind<PKCERepositoryInterface>(TYPES.PKCERepository)
+        .toConstantValue(
+          new TypeORMPKCERepository(
+            container.get(TYPES.CacheEntryRepository),
+            container.get(TYPES.Logger),
+            container.get(TYPES.Timer),
+          ),
+        )
+      container
+        .bind<SubscriptionTokenRepositoryInterface>(TYPES.SubscriptionTokenRepository)
+        .toConstantValue(
+          new TypeORMSubscriptionTokenRepository(container.get(TYPES.CacheEntryRepository), container.get(TYPES.Timer)),
+        )
     } else {
+      container.bind<PKCERepositoryInterface>(TYPES.PKCERepository).to(RedisPKCERepository)
       container.bind<LockRepositoryInterface>(TYPES.LockRepository).to(LockRepository)
       container
         .bind<EphemeralSessionRepositoryInterface>(TYPES.EphemeralSessionRepository)
@@ -526,6 +539,9 @@ export class ContainerConfigLoader {
       container
         .bind<OfflineSubscriptionTokenRepositoryInterface>(TYPES.OfflineSubscriptionTokenRepository)
         .to(RedisOfflineSubscriptionTokenRepository)
+      container
+        .bind<SubscriptionTokenRepositoryInterface>(TYPES.SubscriptionTokenRepository)
+        .to(RedisSubscriptionTokenRepository)
     }
 
     // Services
