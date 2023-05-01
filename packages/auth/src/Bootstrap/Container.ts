@@ -374,20 +374,6 @@ export class ContainerConfigLoader {
     container
       .bind<RedisEphemeralSessionRepository>(TYPES.EphemeralSessionRepository)
       .to(RedisEphemeralSessionRepository)
-    if (isConfiguredForHomeServer) {
-      container
-        .bind<LockRepositoryInterface>(TYPES.LockRepository)
-        .toConstantValue(
-          new TypeORMLockRepository(
-            container.get(TYPES.CacheEntryRepository),
-            container.get(TYPES.Timer),
-            container.get(TYPES.MAX_LOGIN_ATTEMPTS),
-            container.get(TYPES.FAILED_LOGIN_LOCKOUT),
-          ),
-        )
-    } else {
-      container.bind<LockRepositoryInterface>(TYPES.LockRepository).to(LockRepository)
-    }
     container
       .bind<SubscriptionTokenRepositoryInterface>(TYPES.SubscriptionTokenRepository)
       .to(RedisSubscriptionTokenRepository)
@@ -506,6 +492,21 @@ export class ContainerConfigLoader {
     container
       .bind(TYPES.READONLY_USERS)
       .toConstantValue(env.get('READONLY_USERS', true) ? env.get('READONLY_USERS', true).split(',') : [])
+
+    if (isConfiguredForHomeServer) {
+      container
+        .bind<LockRepositoryInterface>(TYPES.LockRepository)
+        .toConstantValue(
+          new TypeORMLockRepository(
+            container.get(TYPES.CacheEntryRepository),
+            container.get(TYPES.Timer),
+            container.get(TYPES.MAX_LOGIN_ATTEMPTS),
+            container.get(TYPES.FAILED_LOGIN_LOCKOUT),
+          ),
+        )
+    } else {
+      container.bind<LockRepositoryInterface>(TYPES.LockRepository).to(LockRepository)
+    }
 
     // Services
     container.bind<UAParser>(TYPES.DeviceDetector).toConstantValue(new UAParser())
