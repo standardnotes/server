@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.100.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.99.0...@standardnotes/auth-server@1.100.0) (2023-05-01)
+
+### Features
+
+* **auth:** add sqlite ephemeral session repository for home server ([#578](https://github.com/standardnotes/server/issues/578)) ([8f57ece](https://github.com/standardnotes/server/commit/8f57ece7b88f7961eaf49144c4fdd72fbd07979b))
+
 # [1.99.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.98.0...@standardnotes/auth-server@1.99.0) (2023-05-01)
 
 ### Features
