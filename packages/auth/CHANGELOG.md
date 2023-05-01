@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.98.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.97.0...@standardnotes/auth-server@1.98.0) (2023-05-01)
+
+### Features
+
+* **auth:** add cache entries model ([#576](https://github.com/standardnotes/server/issues/576)) ([56c922e](https://github.com/standardnotes/server/commit/56c922e715167935885df2c4d93c5e1d685e0298))
+
 # [1.97.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.96.0...@standardnotes/auth-server@1.97.0) (2023-04-27)
 
 ### Features
