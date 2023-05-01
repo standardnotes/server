@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.102.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.101.0...@standardnotes/auth-server@1.102.0) (2023-05-01)
+
+### Features
+
+* **auth:** add sqlite driver repositories ([#580](https://github.com/standardnotes/server/issues/580)) ([9712492](https://github.com/standardnotes/server/commit/97124928df6298368408ee74cda71e2678d279dc))
+
 # [1.101.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.100.0...@standardnotes/auth-server@1.101.0) (2023-05-01)
 
 ### Features
