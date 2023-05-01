@@ -171,6 +171,7 @@ import { SubscriptionSettingProjector } from '../Projection/SubscriptionSettingP
 import { SubscriptionSettingsAssociationService } from '../Domain/Setting/SubscriptionSettingsAssociationService'
 import { SubscriptionSettingsAssociationServiceInterface } from '../Domain/Setting/SubscriptionSettingsAssociationServiceInterface'
 import { PKCERepositoryInterface } from '../Domain/User/PKCERepositoryInterface'
+import { LockRepositoryInterface } from '../Domain/User/LockRepositoryInterface'
 import { RedisPKCERepository } from '../Infra/Redis/RedisPKCERepository'
 import { RoleRepositoryInterface } from '../Domain/Role/RoleRepositoryInterface'
 import { RevokedSessionRepositoryInterface } from '../Domain/Session/RevokedSessionRepositoryInterface'
@@ -216,6 +217,12 @@ import { GenerateRecoveryCodes } from '../Domain/UseCase/GenerateRecoveryCodes/G
 import { SignInWithRecoveryCodes } from '../Domain/UseCase/SignInWithRecoveryCodes/SignInWithRecoveryCodes'
 import { GetUserKeyParamsRecovery } from '../Domain/UseCase/GetUserKeyParamsRecovery/GetUserKeyParamsRecovery'
 import { CleanupExpiredSessions } from '../Domain/UseCase/CleanupExpiredSessions/CleanupExpiredSessions'
+import { TypeORMCacheEntry } from '../Infra/TypeORM/TypeORMCacheEntry'
+import { CacheEntryRepositoryInterface } from '../Domain/Cache/CacheEntryRepositoryInterface'
+import { TypeORMCacheEntryRepository } from '../Infra/TypeORM/TypeORMCacheEntryRepository'
+import { CacheEntry } from '../Domain/Cache/CacheEntry'
+import { CacheEntryPersistenceMapper } from '../Mapping/CacheEntryPersistenceMapper'
+import { TypeORMLockRepository } from '../Infra/TypeORM/TypeORMLockRepository'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -228,6 +235,8 @@ export class ContainerConfigLoader {
     const container = new Container()
 
     await AppDataSource.initialize()
+
+    const isConfiguredForHomeServer = env.get('DB_TYPE') === 'sqlite'
 
     const redisUrl = env.get('REDIS_URL')
     const isRedisInClusterMode = redisUrl.indexOf(',') > 0
@@ -298,6 +307,9 @@ export class ContainerConfigLoader {
         TYPES.AuthenticatorChallengePersistenceMapper,
       )
       .toConstantValue(new AuthenticatorChallengePersistenceMapper())
+    container
+      .bind<MapperInterface<CacheEntry, TypeORMCacheEntry>>(TYPES.CacheEntryPersistenceMapper)
+      .toConstantValue(new CacheEntryPersistenceMapper())
 
     // ORM
     container
@@ -335,6 +347,9 @@ export class ContainerConfigLoader {
     container
       .bind<Repository<TypeORMAuthenticatorChallenge>>(TYPES.ORMAuthenticatorChallengeRepository)
       .toConstantValue(AppDataSource.getRepository(TypeORMAuthenticatorChallenge))
+    container
+      .bind<Repository<TypeORMCacheEntry>>(TYPES.ORMCacheEntryRepository)
+      .toConstantValue(AppDataSource.getRepository(TypeORMCacheEntry))
 
     // Repositories
     container.bind<SessionRepositoryInterface>(TYPES.SessionRepository).to(TypeORMSessionRepository)
@@ -359,7 +374,20 @@ export class ContainerConfigLoader {
     container
       .bind<RedisEphemeralSessionRepository>(TYPES.EphemeralSessionRepository)
       .to(RedisEphemeralSessionRepository)
-    container.bind<LockRepository>(TYPES.LockRepository).to(LockRepository)
+    if (isConfiguredForHomeServer) {
+      container
+        .bind<LockRepositoryInterface>(TYPES.LockRepository)
+        .toConstantValue(
+          new TypeORMLockRepository(
+            container.get(TYPES.CacheEntryRepository),
+            container.get(TYPES.Timer),
+            container.get(TYPES.MAX_LOGIN_ATTEMPTS),
+            container.get(TYPES.FAILED_LOGIN_LOCKOUT),
+          ),
+        )
+    } else {
+      container.bind<LockRepositoryInterface>(TYPES.LockRepository).to(LockRepository)
+    }
     container
       .bind<SubscriptionTokenRepositoryInterface>(TYPES.SubscriptionTokenRepository)
       .to(RedisSubscriptionTokenRepository)
@@ -392,6 +420,14 @@ export class ContainerConfigLoader {
         new TypeORMAuthenticatorChallengeRepository(
           container.get(TYPES.ORMAuthenticatorChallengeRepository),
           container.get(TYPES.AuthenticatorChallengePersistenceMapper),
+        ),
+      )
+    container
+      .bind<CacheEntryRepositoryInterface>(TYPES.CacheEntryRepository)
+      .toConstantValue(
+        new TypeORMCacheEntryRepository(
+          container.get(TYPES.ORMCacheEntryRepository),
+          container.get(TYPES.CacheEntryPersistenceMapper),
         ),
       )
 
