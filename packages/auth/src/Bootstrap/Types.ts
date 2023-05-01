@@ -8,6 +8,7 @@ const TYPES = {
   AuthenticatorChallengePersistenceMapper: Symbol.for('AuthenticatorChallengePersistenceMapper'),
   AuthenticatorPersistenceMapper: Symbol.for('AuthenticatorPersistenceMapper'),
   AuthenticatorHttpMapper: Symbol.for('AuthenticatorHttpMapper'),
+  CacheEntryPersistenceMapper: Symbol.for('CacheEntryPersistenceMapper'),
   // Controller
   AuthController: Symbol.for('AuthController'),
   AuthenticatorsController: Symbol.for('AuthenticatorsController'),
@@ -32,6 +33,7 @@ const TYPES = {
   SessionTraceRepository: Symbol.for('SessionTraceRepository'),
   AuthenticatorRepository: Symbol.for('AuthenticatorRepository'),
   AuthenticatorChallengeRepository: Symbol.for('AuthenticatorChallengeRepository'),
+  CacheEntryRepository: Symbol.for('CacheEntryRepository'),
   // ORM
   ORMOfflineSettingRepository: Symbol.for('ORMOfflineSettingRepository'),
   ORMOfflineUserSubscriptionRepository: Symbol.for('ORMOfflineUserSubscriptionRepository'),
@@ -46,6 +48,7 @@ const TYPES = {
   ORMSessionTraceRepository: Symbol.for('ORMSessionTraceRepository'),
   ORMAuthenticatorRepository: Symbol.for('ORMAuthenticatorRepository'),
   ORMAuthenticatorChallengeRepository: Symbol.for('ORMAuthenticatorChallengeRepository'),
+  ORMCacheEntryRepository: Symbol.for('ORMCacheEntryRepository'),
   // Middleware
   AuthMiddleware: Symbol.for('AuthMiddleware'),
   ApiGatewayAuthMiddleware: Symbol.for('ApiGatewayAuthMiddleware'),
