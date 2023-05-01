@@ -223,6 +223,8 @@ import { TypeORMCacheEntryRepository } from '../Infra/TypeORM/TypeORMCacheEntryR
 import { CacheEntry } from '../Domain/Cache/CacheEntry'
 import { CacheEntryPersistenceMapper } from '../Mapping/CacheEntryPersistenceMapper'
 import { TypeORMLockRepository } from '../Infra/TypeORM/TypeORMLockRepository'
+import { EphemeralSessionRepositoryInterface } from '../Domain/Session/EphemeralSessionRepositoryInterface'
+import { TypeORMEphemeralSessionRepository } from '../Infra/TypeORM/TypeORMEphemeralSessionRepository'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -372,9 +374,6 @@ export class ContainerConfigLoader {
       .bind<OfflineUserSubscriptionRepositoryInterface>(TYPES.OfflineUserSubscriptionRepository)
       .to(TypeORMOfflineUserSubscriptionRepository)
     container
-      .bind<RedisEphemeralSessionRepository>(TYPES.EphemeralSessionRepository)
-      .to(RedisEphemeralSessionRepository)
-    container
       .bind<SubscriptionTokenRepositoryInterface>(TYPES.SubscriptionTokenRepository)
       .to(RedisSubscriptionTokenRepository)
     container
@@ -504,8 +503,20 @@ export class ContainerConfigLoader {
             container.get(TYPES.FAILED_LOGIN_LOCKOUT),
           ),
         )
+      container
+        .bind<EphemeralSessionRepositoryInterface>(TYPES.EphemeralSessionRepository)
+        .toConstantValue(
+          new TypeORMEphemeralSessionRepository(
+            container.get(TYPES.CacheEntryRepository),
+            container.get(TYPES.EPHEMERAL_SESSION_AGE),
+            container.get(TYPES.Timer),
+          ),
+        )
     } else {
       container.bind<LockRepositoryInterface>(TYPES.LockRepository).to(LockRepository)
+      container
+        .bind<EphemeralSessionRepositoryInterface>(TYPES.EphemeralSessionRepository)
+        .to(RedisEphemeralSessionRepository)
     }
 
     // Services
