@@ -225,6 +225,7 @@ import { CacheEntryPersistenceMapper } from '../Mapping/CacheEntryPersistenceMap
 import { TypeORMLockRepository } from '../Infra/TypeORM/TypeORMLockRepository'
 import { EphemeralSessionRepositoryInterface } from '../Domain/Session/EphemeralSessionRepositoryInterface'
 import { TypeORMEphemeralSessionRepository } from '../Infra/TypeORM/TypeORMEphemeralSessionRepository'
+import { TypeORMOfflineSubscriptionTokenRepository } from '../Infra/TypeORM/TypeORMOfflineSubscriptionTokenRepository'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -377,9 +378,6 @@ export class ContainerConfigLoader {
       .bind<SubscriptionTokenRepositoryInterface>(TYPES.SubscriptionTokenRepository)
       .to(RedisSubscriptionTokenRepository)
     container
-      .bind<OfflineSubscriptionTokenRepositoryInterface>(TYPES.OfflineSubscriptionTokenRepository)
-      .to(RedisOfflineSubscriptionTokenRepository)
-    container
       .bind<SharedSubscriptionInvitationRepositoryInterface>(TYPES.SharedSubscriptionInvitationRepository)
       .to(TypeORMSharedSubscriptionInvitationRepository)
     container.bind<PKCERepositoryInterface>(TYPES.PKCERepository).to(RedisPKCERepository)
@@ -512,11 +510,22 @@ export class ContainerConfigLoader {
             container.get(TYPES.Timer),
           ),
         )
+      container
+        .bind<OfflineSubscriptionTokenRepositoryInterface>(TYPES.OfflineSubscriptionTokenRepository)
+        .toConstantValue(
+          new TypeORMOfflineSubscriptionTokenRepository(
+            container.get(TYPES.CacheEntryRepository),
+            container.get(TYPES.Timer),
+          ),
+        )
     } else {
       container.bind<LockRepositoryInterface>(TYPES.LockRepository).to(LockRepository)
       container
         .bind<EphemeralSessionRepositoryInterface>(TYPES.EphemeralSessionRepository)
         .to(RedisEphemeralSessionRepository)
+      container
+        .bind<OfflineSubscriptionTokenRepositoryInterface>(TYPES.OfflineSubscriptionTokenRepository)
+        .to(RedisOfflineSubscriptionTokenRepository)
     }
 
     // Services
