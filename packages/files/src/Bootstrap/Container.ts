@@ -43,6 +43,7 @@ import {
 import { MarkFilesToBeRemoved } from '../Domain/UseCase/MarkFilesToBeRemoved/MarkFilesToBeRemoved'
 import { AccountDeletionRequestedEventHandler } from '../Domain/Handler/AccountDeletionRequestedEventHandler'
 import { SharedSubscriptionInvitationCanceledEventHandler } from '../Domain/Handler/SharedSubscriptionInvitationCanceledEventHandler'
+import { InMemoryUploadRepository } from '../Infra/InMemory/InMemoryUploadRepository'
 
 export class ContainerConfigLoader {
   async load(): Promise<Container> {
@@ -50,6 +51,8 @@ export class ContainerConfigLoader {
     env.load()
 
     const container = new Container()
+
+    const isConfiguredForHomeServer = env.get('DB_TYPE') === 'sqlite'
 
     const logger = this.createLogger({ env })
     container.bind<winston.Logger>(TYPES.Logger).toConstantValue(logger)
@@ -155,7 +158,13 @@ export class ContainerConfigLoader {
     container.bind<DomainEventFactoryInterface>(TYPES.DomainEventFactory).to(DomainEventFactory)
 
     // repositories
-    container.bind<UploadRepositoryInterface>(TYPES.UploadRepository).to(RedisUploadRepository)
+    if (isConfiguredForHomeServer) {
+      container
+        .bind<UploadRepositoryInterface>(TYPES.UploadRepository)
+        .toConstantValue(new InMemoryUploadRepository(container.get(TYPES.Timer)))
+    } else {
+      container.bind<UploadRepositoryInterface>(TYPES.UploadRepository).to(RedisUploadRepository)
+    }
 
     container
       .bind<SNSDomainEventPublisher>(TYPES.DomainEventPublisher)
