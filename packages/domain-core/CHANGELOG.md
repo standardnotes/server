@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.14.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.13.0...@standardnotes/domain-core@1.14.0) (2023-05-02)
+
+### Features
+
+* extract cache entry model to domain-core ([#581](https://github.com/standardnotes/server/issues/581)) ([c71f7ff](https://github.com/standardnotes/server/commit/c71f7ff8ad4ffbd7151e8397b5816e383b178eb4))
+
 # [1.13.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.12.0...@standardnotes/domain-core@1.13.0) (2023-04-27)
 
 ### Features
