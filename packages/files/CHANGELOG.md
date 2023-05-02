@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.11.0](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.10.14...@standardnotes/files-server@1.11.0) (2023-05-02)
+
+### Features
+
+* **files:** add in memory upload repository for home server purposes ([#583](https://github.com/standardnotes/files/issues/583)) ([14ce6dd](https://github.com/standardnotes/files/commit/14ce6dd818f377d63156ad10353de7d193d443c3))
+
 ## [1.10.14](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.10.13...@standardnotes/files-server@1.10.14) (2023-05-02)
 
 **Note:** Version bump only for package @standardnotes/files-server
