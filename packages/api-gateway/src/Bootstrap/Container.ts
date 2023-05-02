@@ -15,6 +15,7 @@ import { SubscriptionTokenAuthMiddleware } from '../Controller/SubscriptionToken
 import { CrossServiceTokenCacheInterface } from '../Service/Cache/CrossServiceTokenCacheInterface'
 import { RedisCrossServiceTokenCache } from '../Infra/Redis/RedisCrossServiceTokenCache'
 import { WebSocketAuthMiddleware } from '../Controller/WebSocketAuthMiddleware'
+import { InMemoryCrossServiceTokenCache } from '../Infra/InMemory/InMemoryCrossServiceTokenCache'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -25,6 +26,8 @@ export class ContainerConfigLoader {
     env.load()
 
     const container = new Container()
+
+    const isConfiguredForHomeServer = env.get('DB_TYPE') === 'sqlite'
 
     const newrelicWinstonFormatter = newrelicFormatter(winston)
     const winstonFormatters = [winston.format.splat(), winston.format.json()]
@@ -75,8 +78,15 @@ export class ContainerConfigLoader {
 
     // Services
     container.bind<HttpServiceInterface>(TYPES.HTTPService).to(HttpService)
-    container.bind<CrossServiceTokenCacheInterface>(TYPES.CrossServiceTokenCache).to(RedisCrossServiceTokenCache)
     container.bind<TimerInterface>(TYPES.Timer).toConstantValue(new Timer())
+
+    if (isConfiguredForHomeServer) {
+      container
+        .bind<CrossServiceTokenCacheInterface>(TYPES.CrossServiceTokenCache)
+        .toConstantValue(new InMemoryCrossServiceTokenCache(container.get(TYPES.Timer)))
+    } else {
+      container.bind<CrossServiceTokenCacheInterface>(TYPES.CrossServiceTokenCache).to(RedisCrossServiceTokenCache)
+    }
 
     return container
   }
