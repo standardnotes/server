@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
 
-@Entity({ name: 'cache_entries' })
+@Entity({ name: 'auth_cache_entries' })
 export class TypeORMCacheEntry {
   @PrimaryGeneratedColumn('uuid')
   declare uuid: string
