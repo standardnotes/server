@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.50.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.49.13...@standardnotes/api-gateway@1.50.0) (2023-05-02)
+
+### Features
+
+* **api-gateway:** add in memory cache for home server ([#582](https://github.com/standardnotes/api-gateway/issues/582)) ([0900dc7](https://github.com/standardnotes/api-gateway/commit/0900dc75ace12d263336c15d30d06a386b35ff20))
+
 ## [1.49.13](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.49.12...@standardnotes/api-gateway@1.49.13) (2023-05-02)
 
 **Note:** Version bump only for package @standardnotes/api-gateway
