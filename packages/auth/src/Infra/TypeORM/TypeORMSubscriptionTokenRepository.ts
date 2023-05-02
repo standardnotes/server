@@ -1,8 +1,8 @@
+import { CacheEntryRepositoryInterface, CacheEntry } from '@standardnotes/domain-core'
+import { TimerInterface } from '@standardnotes/time'
+
 import { SubscriptionToken } from '../../Domain/Subscription/SubscriptionToken'
 import { SubscriptionTokenRepositoryInterface } from '../../Domain/Subscription/SubscriptionTokenRepositoryInterface'
-import { TimerInterface } from '@standardnotes/time'
-import { CacheEntryRepositoryInterface } from '../../Domain/Cache/CacheEntryRepositoryInterface'
-import { CacheEntry } from '../../Domain/Cache/CacheEntry'
 
 export class TypeORMSubscriptionTokenRepository implements SubscriptionTokenRepositoryInterface {
   private readonly PREFIX = 'subscription-token'

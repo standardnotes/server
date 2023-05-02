@@ -1,6 +1,5 @@
-import { MapperInterface, UniqueEntityId } from '@standardnotes/domain-core'
+import { CacheEntry, MapperInterface, UniqueEntityId } from '@standardnotes/domain-core'
 
-import { CacheEntry } from '../Domain/Cache/CacheEntry'
 import { TypeORMCacheEntry } from '../Infra/TypeORM/TypeORMCacheEntry'
 
 export class CacheEntryPersistenceMapper implements MapperInterface<CacheEntry, TypeORMCacheEntry> {

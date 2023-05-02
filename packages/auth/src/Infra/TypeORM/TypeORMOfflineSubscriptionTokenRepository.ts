@@ -1,9 +1,8 @@
-import { OfflineSubscriptionToken } from '../../Domain/Auth/OfflineSubscriptionToken'
-import { OfflineSubscriptionTokenRepositoryInterface } from '../../Domain/Auth/OfflineSubscriptionTokenRepositoryInterface'
+import { CacheEntryRepositoryInterface, CacheEntry } from '@standardnotes/domain-core'
 import { TimerInterface } from '@standardnotes/time'
 
-import { CacheEntryRepositoryInterface } from '../../Domain/Cache/CacheEntryRepositoryInterface'
-import { CacheEntry } from '../../Domain/Cache/CacheEntry'
+import { OfflineSubscriptionToken } from '../../Domain/Auth/OfflineSubscriptionToken'
+import { OfflineSubscriptionTokenRepositoryInterface } from '../../Domain/Auth/OfflineSubscriptionTokenRepositoryInterface'
 
 export class TypeORMOfflineSubscriptionTokenRepository implements OfflineSubscriptionTokenRepositoryInterface {
   private readonly PREFIX = 'offline-subscription-token'

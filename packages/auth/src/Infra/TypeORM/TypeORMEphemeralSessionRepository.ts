@@ -1,6 +1,6 @@
+import { CacheEntryRepositoryInterface, CacheEntry } from '@standardnotes/domain-core'
 import { TimerInterface } from '@standardnotes/time'
-import { CacheEntry } from '../../Domain/Cache/CacheEntry'
-import { CacheEntryRepositoryInterface } from '../../Domain/Cache/CacheEntryRepositoryInterface'
+
 import { EphemeralSession } from '../../Domain/Session/EphemeralSession'
 import { EphemeralSessionRepositoryInterface } from '../../Domain/Session/EphemeralSessionRepositoryInterface'
 
