@@ -1,7 +1,6 @@
-import { MapperInterface } from '@standardnotes/domain-core'
+import { CacheEntry, CacheEntryRepositoryInterface, MapperInterface } from '@standardnotes/domain-core'
 import { Repository } from 'typeorm'
-import { CacheEntry } from '../../Domain/Cache/CacheEntry'
-import { CacheEntryRepositoryInterface } from '../../Domain/Cache/CacheEntryRepositoryInterface'
+
 import { TypeORMCacheEntry } from './TypeORMCacheEntry'
 
 export class TypeORMCacheEntryRepository implements CacheEntryRepositoryInterface {

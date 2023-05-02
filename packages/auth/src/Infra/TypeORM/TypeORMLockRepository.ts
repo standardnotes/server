@@ -1,7 +1,5 @@
+import { CacheEntryRepositoryInterface, CacheEntry } from '@standardnotes/domain-core'
 import { TimerInterface } from '@standardnotes/time'
-
-import { CacheEntry } from '../../Domain/Cache/CacheEntry'
-import { CacheEntryRepositoryInterface } from '../../Domain/Cache/CacheEntryRepositoryInterface'
 
 import { LockRepositoryInterface } from '../../Domain/User/LockRepositoryInterface'
 

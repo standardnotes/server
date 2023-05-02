@@ -1,8 +1,7 @@
+import { CacheEntry, CacheEntryRepositoryInterface } from '@standardnotes/domain-core'
 import { TimerInterface } from '@standardnotes/time'
 import { Logger } from 'winston'
-import { CacheEntry } from '../../Domain/Cache/CacheEntry'
 
-import { CacheEntryRepositoryInterface } from '../../Domain/Cache/CacheEntryRepositoryInterface'
 import { PKCERepositoryInterface } from '../../Domain/User/PKCERepositoryInterface'
 
 export class TypeORMPKCERepository implements PKCERepositoryInterface {
