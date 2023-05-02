@@ -18,12 +18,15 @@ describe('PeriodKeyGenerator', () => {
     Period.DecemberThisYear,
   ]
 
-  beforeEach(() => {
+  beforeAll(() => {
     jest.useFakeTimers()
+  })
+
+  beforeEach(() => {
     jest.setSystemTime(1653395155000)
   })
 
-  afterEach(() => {
+  afterAll(() => {
     jest.useRealTimers()
   })
 
