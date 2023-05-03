@@ -2,10 +2,8 @@ import 'reflect-metadata'
 
 import 'newrelic'
 
-import * as Sentry from '@sentry/node'
-
 import * as cors from 'cors'
-import { urlencoded, json, Request, Response, NextFunction, RequestHandler, ErrorRequestHandler } from 'express'
+import { urlencoded, json, Request, Response, NextFunction } from 'express'
 import * as winston from 'winston'
 
 import { InversifyExpressServer } from 'inversify-express-utils'
@@ -30,25 +28,11 @@ void container.load().then((container) => {
     app.use(json())
     app.use(urlencoded({ extended: true }))
     app.use(cors())
-
-    if (env.get('SENTRY_DSN', true)) {
-      Sentry.init({
-        dsn: env.get('SENTRY_DSN'),
-        integrations: [new Sentry.Integrations.Http({ tracing: false, breadcrumbs: true })],
-        tracesSampleRate: 0,
-      })
-
-      app.use(Sentry.Handlers.requestHandler() as RequestHandler)
-    }
   })
 
   const logger: winston.Logger = container.get(TYPES.Logger)
 
   server.setErrorConfig((app) => {
-    if (env.get('SENTRY_DSN', true)) {
-      app.use(Sentry.Handlers.errorHandler() as ErrorRequestHandler)
-    }
-
     app.use((error: Record<string, unknown>, _request: Request, response: Response, _next: NextFunction) => {
       logger.error(error.stack)
 

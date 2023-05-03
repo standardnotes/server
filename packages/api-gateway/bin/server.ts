@@ -2,8 +2,6 @@ import 'reflect-metadata'
 
 import 'newrelic'
 
-import * as Sentry from '@sentry/node'
-
 import '../src/Controller/LegacyController'
 import '../src/Controller/HealthCheckController'
 
@@ -27,7 +25,7 @@ import '../src/Controller/v2/RevisionsControllerV2'
 
 import helmet from 'helmet'
 import * as cors from 'cors'
-import { text, json, Request, Response, NextFunction, RequestHandler, ErrorRequestHandler } from 'express'
+import { text, json, Request, Response, NextFunction } from 'express'
 import * as winston from 'winston'
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const robots = require('express-robots-txt')
@@ -84,25 +82,11 @@ void container.load().then((container) => {
         Disallow: '/',
       }),
     )
-
-    if (env.get('SENTRY_DSN', true)) {
-      Sentry.init({
-        dsn: env.get('SENTRY_DSN'),
-        integrations: [new Sentry.Integrations.Http({ tracing: false, breadcrumbs: true })],
-        tracesSampleRate: 0,
-      })
-
-      app.use(Sentry.Handlers.requestHandler() as RequestHandler)
-    }
   })
 
   const logger: winston.Logger = container.get(TYPES.Logger)
 
   server.setErrorConfig((app) => {
-    if (env.get('SENTRY_DSN', true)) {
-      app.use(Sentry.Handlers.errorHandler() as ErrorRequestHandler)
-    }
-
     app.use((error: Record<string, unknown>, _request: Request, response: Response, _next: NextFunction) => {
       logger.error(error.stack)
 

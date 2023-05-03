@@ -121,7 +121,6 @@ const RAW_RUNTIME_STATE =
           ["@lerna-lite/cli", "npm:1.6.0"],\
           ["@lerna-lite/list", "npm:1.6.0"],\
           ["@lerna-lite/run", "npm:1.6.0"],\
-          ["@sentry/node", "npm:7.28.1"],\
           ["@types/jest", "npm:29.5.1"],\
           ["@types/newrelic", "npm:9.13.0"],\
           ["@types/node", "npm:18.11.9"],\
@@ -3938,67 +3937,6 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
-    ["@sentry/core", [\
-      ["npm:7.28.1", {\
-        "packageLocation": "./.yarn/cache/@sentry-core-npm-7.28.1-a468033ea8-f29d747d3e.zip/node_modules/@sentry/core/",\
-        "packageDependencies": [\
-          ["@sentry/core", "npm:7.28.1"],\
-          ["@sentry/types", "npm:7.28.1"],\
-          ["@sentry/utils", "npm:7.28.1"],\
-          ["tslib", "npm:1.14.1"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
-    ["@sentry/node", [\
-      ["npm:7.28.1", {\
-        "packageLocation": "./.yarn/cache/@sentry-node-npm-7.28.1-b0e124fdfc-b4922d1f0a.zip/node_modules/@sentry/node/",\
-        "packageDependencies": [\
-          ["@sentry/node", "npm:7.28.1"],\
-          ["@sentry/core", "npm:7.28.1"],\
-          ["@sentry/types", "npm:7.28.1"],\
-          ["@sentry/utils", "npm:7.28.1"],\
-          ["cookie", "npm:0.4.2"],\
-          ["https-proxy-agent", "npm:5.0.1"],\
-          ["lru_map", "npm:0.3.3"],\
-          ["tslib", "npm:1.14.1"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
-    ["@sentry/tracing", [\
-      ["npm:7.28.1", {\
-        "packageLocation": "./.yarn/cache/@sentry-tracing-npm-7.28.1-e15d453d8e-be501ca9d7.zip/node_modules/@sentry/tracing/",\
-        "packageDependencies": [\
-          ["@sentry/tracing", "npm:7.28.1"],\
-          ["@sentry/core", "npm:7.28.1"],\
-          ["@sentry/types", "npm:7.28.1"],\
-          ["@sentry/utils", "npm:7.28.1"],\
-          ["tslib", "npm:1.14.1"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
-    ["@sentry/types", [\
-      ["npm:7.28.1", {\
-        "packageLocation": "./.yarn/cache/@sentry-types-npm-7.28.1-42d9a8574c-7dc6639cb7.zip/node_modules/@sentry/types/",\
-        "packageDependencies": [\
-          ["@sentry/types", "npm:7.28.1"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
-    ["@sentry/utils", [\
-      ["npm:7.28.1", {\
-        "packageLocation": "./.yarn/cache/@sentry-utils-npm-7.28.1-71eaeb767f-a4b5f73db0.zip/node_modules/@sentry/utils/",\
-        "packageDependencies": [\
-          ["@sentry/utils", "npm:7.28.1"],\
-          ["@sentry/types", "npm:7.28.1"],\
-          ["tslib", "npm:1.14.1"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
     ["@simplewebauthn/iso-webcrypto", [\
       ["npm:7.0.1", {\
         "packageLocation": "./.yarn/cache/@simplewebauthn-iso-webcrypto-npm-7.0.1-bae5f6738c-ed506490e0.zip/node_modules/@simplewebauthn/iso-webcrypto/",\
@@ -4098,7 +4036,6 @@ const RAW_RUNTIME_STATE =
           ["@aws-sdk/client-sns", "npm:3.259.0"],\
           ["@aws-sdk/client-sqs", "npm:3.259.0"],\
           ["@newrelic/winston-enricher", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:4.0.1"],\
-          ["@sentry/node", "npm:7.28.1"],\
           ["@standardnotes/common", "workspace:packages/common"],\
           ["@standardnotes/domain-core", "workspace:packages/domain-core"],\
           ["@standardnotes/domain-events", "workspace:packages/domain-events"],\
@@ -4152,7 +4089,6 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["@standardnotes/api-gateway", "workspace:packages/api-gateway"],\
           ["@newrelic/winston-enricher", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:4.0.1"],\
-          ["@sentry/node", "npm:7.28.1"],\
           ["@standardnotes/domain-core", "workspace:packages/domain-core"],\
           ["@standardnotes/domain-events", "workspace:packages/domain-events"],\
           ["@standardnotes/domain-events-infra", "workspace:packages/domain-events-infra"],\
@@ -4201,8 +4137,6 @@ const RAW_RUNTIME_STATE =
           ["@cbor-extract/cbor-extract-linux-arm64", "npm:2.1.1"],\
           ["@cbor-extract/cbor-extract-linux-x64", "npm:2.1.1"],\
           ["@newrelic/winston-enricher", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:4.0.1"],\
-          ["@sentry/node", "npm:7.28.1"],\
-          ["@sentry/tracing", "npm:7.28.1"],\
           ["@simplewebauthn/server", "npm:7.0.1"],\
           ["@simplewebauthn/typescript-types", "npm:7.0.0"],\
           ["@standardnotes/api", "npm:1.25.3"],\
@@ -4414,7 +4348,6 @@ const RAW_RUNTIME_STATE =
           ["@aws-sdk/client-s3", "npm:3.259.0"],\
           ["@aws-sdk/client-sns", "npm:3.259.0"],\
           ["@aws-sdk/client-sqs", "npm:3.259.0"],\
-          ["@sentry/node", "npm:7.28.1"],\
           ["@standardnotes/domain-core", "workspace:packages/domain-core"],\
           ["@standardnotes/domain-events", "workspace:packages/domain-events"],\
           ["@standardnotes/domain-events-infra", "workspace:packages/domain-events-infra"],\
@@ -4511,7 +4444,6 @@ const RAW_RUNTIME_STATE =
           ["@aws-sdk/client-s3", "npm:3.259.0"],\
           ["@aws-sdk/client-sqs", "npm:3.259.0"],\
           ["@newrelic/winston-enricher", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:4.0.1"],\
-          ["@sentry/node", "npm:7.28.1"],\
           ["@standardnotes/api", "npm:1.25.3"],\
           ["@standardnotes/common", "workspace:packages/common"],\
           ["@standardnotes/domain-core", "workspace:packages/domain-core"],\
@@ -4557,7 +4489,6 @@ const RAW_RUNTIME_STATE =
           ["@aws-sdk/client-sns", "npm:3.259.0"],\
           ["@aws-sdk/client-sqs", "npm:3.259.0"],\
           ["@newrelic/winston-enricher", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:4.0.1"],\
-          ["@sentry/node", "npm:7.28.1"],\
           ["@standardnotes/domain-core", "workspace:packages/domain-core"],\
           ["@standardnotes/domain-events", "workspace:packages/domain-events"],\
           ["@standardnotes/domain-events-infra", "workspace:packages/domain-events-infra"],\
@@ -4615,7 +4546,6 @@ const RAW_RUNTIME_STATE =
           ["@lerna-lite/cli", "npm:1.6.0"],\
           ["@lerna-lite/list", "npm:1.6.0"],\
           ["@lerna-lite/run", "npm:1.6.0"],\
-          ["@sentry/node", "npm:7.28.1"],\
           ["@types/jest", "npm:29.5.1"],\
           ["@types/newrelic", "npm:9.13.0"],\
           ["@types/node", "npm:18.11.9"],\
@@ -4693,8 +4623,6 @@ const RAW_RUNTIME_STATE =
           ["@aws-sdk/client-sns", "npm:3.259.0"],\
           ["@aws-sdk/client-sqs", "npm:3.259.0"],\
           ["@newrelic/winston-enricher", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:4.0.1"],\
-          ["@sentry/node", "npm:7.28.1"],\
-          ["@sentry/tracing", "npm:7.28.1"],\
           ["@standardnotes/api", "npm:1.25.3"],\
           ["@standardnotes/common", "workspace:packages/common"],\
           ["@standardnotes/domain-core", "workspace:packages/domain-core"],\
@@ -4794,7 +4722,6 @@ const RAW_RUNTIME_STATE =
           ["@standardnotes/websockets-server", "workspace:packages/websockets"],\
           ["@aws-sdk/client-sqs", "npm:3.259.0"],\
           ["@newrelic/winston-enricher", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:4.0.1"],\
-          ["@sentry/node", "npm:7.28.1"],\
           ["@standardnotes/api", "npm:1.25.3"],\
           ["@standardnotes/common", "workspace:packages/common"],\
           ["@standardnotes/domain-core", "workspace:packages/domain-core"],\
@@ -7272,13 +7199,6 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["cookie", [\
-      ["npm:0.4.2", {\
-        "packageLocation": "./.yarn/cache/cookie-npm-0.4.2-7761894d5f-e2b0be16f5.zip/node_modules/cookie/",\
-        "packageDependencies": [\
-          ["cookie", "npm:0.4.2"]\
-        ],\
-        "linkType": "HARD"\
-      }],\
       ["npm:0.5.0", {\
         "packageLocation": "./.yarn/cache/cookie-npm-0.5.0-e2d58a161a-23bd6dd64f.zip/node_modules/cookie/",\
         "packageDependencies": [\
@@ -11002,15 +10922,6 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/lru-cache-npm-7.14.1-d3ba9407b6-e4c8c073d9.zip/node_modules/lru-cache/",\
         "packageDependencies": [\
           ["lru-cache", "npm:7.14.1"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
-    ["lru_map", [\
-      ["npm:0.3.3", {\
-        "packageLocation": "./.yarn/cache/lru_map-npm-0.3.3-a038bb3418-356e840fb3.zip/node_modules/lru_map/",\
-        "packageDependencies": [\
-          ["lru_map", "npm:0.3.3"]\
         ],\
         "linkType": "HARD"\
       }]\

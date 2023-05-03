@@ -3090,61 +3090,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/core@npm:7.28.1":
-  version: 7.28.1
-  resolution: "@sentry/core@npm:7.28.1"
-  dependencies:
-    "@sentry/types": "npm:7.28.1"
-    "@sentry/utils": "npm:7.28.1"
-    tslib: "npm:^1.9.3"
-  checksum: f29d747d3e15000d8010fe3c192260a78927f37d30a3bb82cd533f3a5beca0c7fd81353ec57420c4295daea5384a045bde70ff6d3af1468ec1201b1d84131d6d
-  languageName: node
-  linkType: hard
-
-"@sentry/node@npm:^7.28.1":
-  version: 7.28.1
-  resolution: "@sentry/node@npm:7.28.1"
-  dependencies:
-    "@sentry/core": "npm:7.28.1"
-    "@sentry/types": "npm:7.28.1"
-    "@sentry/utils": "npm:7.28.1"
-    cookie: "npm:^0.4.1"
-    https-proxy-agent: "npm:^5.0.0"
-    lru_map: "npm:^0.3.3"
-    tslib: "npm:^1.9.3"
-  checksum: b4922d1f0a1b1e96cd73e5381871d0a2d20c4a05dd09f1cb9def6795c5fbe099b2e2b97025262cac595d19a42ebc82a34a8f9e59f87c0176e5206ae1f6377532
-  languageName: node
-  linkType: hard
-
-"@sentry/tracing@npm:^7.28.1":
-  version: 7.28.1
-  resolution: "@sentry/tracing@npm:7.28.1"
-  dependencies:
-    "@sentry/core": "npm:7.28.1"
-    "@sentry/types": "npm:7.28.1"
-    "@sentry/utils": "npm:7.28.1"
-    tslib: "npm:^1.9.3"
-  checksum: be501ca9d727f4893121c208f80fa82589964970c5a01155ba1d24cfd7ebdb2a1d6e325ea5556f0747d16519631013315781ad1c178f8721e5eab77de2446b63
-  languageName: node
-  linkType: hard
-
-"@sentry/types@npm:7.28.1":
-  version: 7.28.1
-  resolution: "@sentry/types@npm:7.28.1"
-  checksum: 7dc6639cb7645c37bd8f759b60dbf2a149573b8a24dfb06baf7d7978f785e4635a65b3fb9e007f0eea56d33b543043fcfa1c1a376a83aa9824bb2d25be1a56dc
-  languageName: node
-  linkType: hard
-
-"@sentry/utils@npm:7.28.1":
-  version: 7.28.1
-  resolution: "@sentry/utils@npm:7.28.1"
-  dependencies:
-    "@sentry/types": "npm:7.28.1"
-    tslib: "npm:^1.9.3"
-  checksum: a4b5f73db0e287e49b2eab5da80d6bbf1f6c7e11e1cc06ae06f49a9477d2b45de98310b143198207f3ae1fdd25ef76c90984eb99553a8308f6516e12c0c9c98c
-  languageName: node
-  linkType: hard
-
 "@simplewebauthn/iso-webcrypto@npm:^7.0.1":
   version: 7.0.1
   resolution: "@simplewebauthn/iso-webcrypto@npm:7.0.1"
@@ -3230,7 +3175,6 @@ __metadata:
     "@aws-sdk/client-sns": "npm:^3.259.0"
     "@aws-sdk/client-sqs": "npm:^3.259.0"
     "@newrelic/winston-enricher": "npm:^4.0.1"
-    "@sentry/node": "npm:^7.28.1"
     "@standardnotes/common": "workspace:*"
     "@standardnotes/domain-core": "workspace:^"
     "@standardnotes/domain-events": "workspace:*"
@@ -3265,7 +3209,6 @@ __metadata:
   resolution: "@standardnotes/api-gateway@workspace:packages/api-gateway"
   dependencies:
     "@newrelic/winston-enricher": "npm:^4.0.1"
-    "@sentry/node": "npm:^7.28.1"
     "@standardnotes/domain-core": "workspace:^"
     "@standardnotes/domain-events": "workspace:*"
     "@standardnotes/domain-events-infra": "workspace:*"
@@ -3328,8 +3271,6 @@ __metadata:
     "@cbor-extract/cbor-extract-linux-arm64": "npm:^2.1.1"
     "@cbor-extract/cbor-extract-linux-x64": "npm:^2.1.1"
     "@newrelic/winston-enricher": "npm:^4.0.1"
-    "@sentry/node": "npm:^7.28.1"
-    "@sentry/tracing": "npm:^7.28.1"
     "@simplewebauthn/server": "npm:^7.0.1"
     "@simplewebauthn/typescript-types": "npm:^7.0.0"
     "@standardnotes/api": "npm:^1.25.3"
@@ -3528,7 +3469,6 @@ __metadata:
     "@aws-sdk/client-s3": "npm:^3.259.0"
     "@aws-sdk/client-sns": "npm:^3.259.0"
     "@aws-sdk/client-sqs": "npm:^3.259.0"
-    "@sentry/node": "npm:^7.28.1"
     "@standardnotes/domain-core": "workspace:^"
     "@standardnotes/domain-events": "workspace:*"
     "@standardnotes/domain-events-infra": "workspace:*"
@@ -3619,7 +3559,6 @@ __metadata:
     "@aws-sdk/client-s3": "npm:^3.259.0"
     "@aws-sdk/client-sqs": "npm:^3.259.0"
     "@newrelic/winston-enricher": "npm:^4.0.1"
-    "@sentry/node": "npm:^7.28.1"
     "@standardnotes/api": "npm:^1.25.3"
     "@standardnotes/common": "workspace:^"
     "@standardnotes/domain-core": "workspace:^"
@@ -3663,7 +3602,6 @@ __metadata:
     "@aws-sdk/client-sns": "npm:^3.259.0"
     "@aws-sdk/client-sqs": "npm:^3.259.0"
     "@newrelic/winston-enricher": "npm:^4.0.1"
-    "@sentry/node": "npm:^7.28.1"
     "@standardnotes/domain-core": "workspace:^"
     "@standardnotes/domain-events": "workspace:*"
     "@standardnotes/domain-events-infra": "workspace:*"
@@ -3717,7 +3655,6 @@ __metadata:
     "@lerna-lite/cli": "npm:^1.5.1"
     "@lerna-lite/list": "npm:^1.5.1"
     "@lerna-lite/run": "npm:^1.5.1"
-    "@sentry/node": "npm:^7.28.1"
     "@types/jest": "npm:^29.5.1"
     "@types/newrelic": "npm:^9.13.0"
     "@types/node": "npm:^18.11.9"
@@ -3789,8 +3726,6 @@ __metadata:
     "@aws-sdk/client-sns": "npm:^3.259.0"
     "@aws-sdk/client-sqs": "npm:^3.259.0"
     "@newrelic/winston-enricher": "npm:^4.0.1"
-    "@sentry/node": "npm:^7.28.1"
-    "@sentry/tracing": "npm:^7.28.1"
     "@standardnotes/api": "npm:^1.25.3"
     "@standardnotes/common": "workspace:*"
     "@standardnotes/domain-core": "workspace:^"
@@ -3886,7 +3821,6 @@ __metadata:
   dependencies:
     "@aws-sdk/client-sqs": "npm:^3.259.0"
     "@newrelic/winston-enricher": "npm:^4.0.1"
-    "@sentry/node": "npm:^7.28.1"
     "@standardnotes/api": "npm:^1.25.3"
     "@standardnotes/common": "workspace:^"
     "@standardnotes/domain-core": "workspace:^"
@@ -5921,13 +5855,6 @@ __metadata:
   version: 0.5.0
   resolution: "cookie@npm:0.5.0"
   checksum: 23bd6dd64f025869373c6f3c72a870b9bd0e0e6a0ffe734229c032d7aca51972ba584b39100c09141b18043e790862425aae4a60d7449fca565b21cdae0cb3c3
-  languageName: node
-  linkType: hard
-
-"cookie@npm:^0.4.1":
-  version: 0.4.2
-  resolution: "cookie@npm:0.4.2"
-  checksum: e2b0be16f59835785be50f5dfe076c26e81ab49c988a6290144444d0dfdf8192e82b0aa1857734b292567795e7af3f2c951d82e5036a2aacb15cd4a6681b5d49
   languageName: node
   linkType: hard
 
@@ -9068,13 +8995,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lru_map@npm:^0.3.3":
-  version: 0.3.3
-  resolution: "lru_map@npm:0.3.3"
-  checksum: 356e840fb3fa884e0150272698f7647ee05fcb82641af4e1f5b6ef3e698e4ac999e03f8b8c4dded2be7a3dd164eb504d3cdbab523c90322e1770c190b40099a1
-  languageName: node
-  linkType: hard
-
 "make-dir@npm:^2.1.0":
   version: 2.1.0
   resolution: "make-dir@npm:2.1.0"
@@ -12075,7 +11995,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:^1.11.1, tslib@npm:^1.8.1, tslib@npm:^1.9.3":
+"tslib@npm:^1.11.1, tslib@npm:^1.8.1":
   version: 1.14.1
   resolution: "tslib@npm:1.14.1"
   checksum: 441af59dc42ad4ae57140e62cb362369620c6076845c2c2b0ecc863c1d719ce24fdbc301e9053433fef43075e061bf84b702318ff1204b496a5bba10baf9eb9f
