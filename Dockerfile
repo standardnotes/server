@@ -23,7 +23,7 @@ WORKDIR /opt/server
 
 RUN corepack enable
 
-# RUN yarn install --immutable
+RUN yarn install --immutable
 
 RUN CI=true yarn build
 
