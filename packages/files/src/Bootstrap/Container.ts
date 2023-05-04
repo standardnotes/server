@@ -52,7 +52,7 @@ export class ContainerConfigLoader {
 
     const container = new Container()
 
-    const isConfiguredForHomeServer = env.get('DB_TYPE') === 'sqlite'
+    const isConfiguredForHomeServer = env.get('CACHE_TYPE') === 'memory'
 
     const logger = this.createLogger({ env })
     container.bind<winston.Logger>(TYPES.Logger).toConstantValue(logger)

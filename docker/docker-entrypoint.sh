@@ -60,6 +60,9 @@ fi
 if [ -z "$DB_TYPE" ]; then
   export DB_TYPE="mysql"
 fi
+if [ -z "$CACHE_TYPE" ]; then
+  export CACHE_TYPE="redis"
+fi
 export DB_MIGRATIONS_PATH="dist/migrations/*.js"
 
 #########

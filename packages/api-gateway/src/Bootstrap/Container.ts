@@ -27,7 +27,7 @@ export class ContainerConfigLoader {
 
     const container = new Container()
 
-    const isConfiguredForHomeServer = env.get('DB_TYPE') === 'sqlite'
+    const isConfiguredForHomeServer = env.get('CACHE_TYPE') === 'memory'
 
     const newrelicWinstonFormatter = newrelicFormatter(winston)
     const winstonFormatters = [winston.format.splat(), winston.format.json()]
