@@ -22,6 +22,7 @@ jobs:
     strategy:
       matrix:
         database: [ "mysql", "sqlite" ]
+        cache: [ "redis", "memory" ]
 
     runs-on: ubuntu-latest
 
@@ -44,6 +45,7 @@ jobs:
       run: docker compose -f docker-compose.ci.yml up -d
       env:
         DB_TYPE: ${{ matrix.database }}
+        CACHE_TYPE: ${{ matrix.cache }}
 
     - name: Wait for server to start
       run: docker/is-available.sh http://localhost:3123 $(pwd)/logs
