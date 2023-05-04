@@ -23,13 +23,14 @@ export class InversifyExpressSubscriptionInvitesController extends BaseHttpContr
   }
 
   @httpPost('/:inviteUuid/accept', TYPES.ApiGatewayAuthMiddleware)
-  async acceptInvite(request: Request): Promise<results.JsonResult> {
-    const response = await this.subscriptionInvitesController.acceptInvite({
+  async acceptInvite(request: Request, response: Response): Promise<void> {
+    const result = await this.subscriptionInvitesController.acceptInvite({
       api: request.query.api as ApiVersion,
       inviteUuid: request.params.inviteUuid,
     })
 
-    return this.json(response.data, response.status)
+    response.setHeader('x-invalidate-cache', response.locals.user.uuid)
+    response.status(result.status).send(result.data)
   }
 
   @httpGet('/:inviteUuid/decline')
