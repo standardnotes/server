@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.103.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.103.0...@standardnotes/auth-server@1.103.1) (2023-05-04)
+
+### Bug Fixes
+
+* **auth:** invalidate cross service token cache upon shared subscription accepting ([#586](https://github.com/standardnotes/server/issues/586)) ([bb468a8](https://github.com/standardnotes/server/commit/bb468a8b7e9efbc9a95281d2438b19efe9c01a0c))
+
 # [1.103.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.102.0...@standardnotes/auth-server@1.103.0) (2023-05-02)
 
 ### Features
