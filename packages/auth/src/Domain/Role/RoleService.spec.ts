@@ -220,7 +220,7 @@ describe('RoleService', () => {
     })
 
     it('should indicate if a user does not have a given permission', async () => {
-      const userHasPermission = await createService().userHasPermission('1-2-3', PermissionName.DailyGDriveBackup)
+      const userHasPermission = await createService().userHasPermission('1-2-3', PermissionName.MidnightTheme)
 
       expect(userHasPermission).toBeFalsy()
     })
@@ -228,7 +228,7 @@ describe('RoleService', () => {
     it('should indicate user does not have a permission if user could not be found', async () => {
       userRepository.findOneByUuid = jest.fn().mockReturnValue(null)
 
-      const userHasPermission = await createService().userHasPermission('1-2-3', PermissionName.DailyGDriveBackup)
+      const userHasPermission = await createService().userHasPermission('1-2-3', PermissionName.MidnightTheme)
 
       expect(userHasPermission).toBeFalsy()
     })

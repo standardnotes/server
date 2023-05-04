@@ -1,3 +1,5 @@
+import { PublicKeyCredentialRequestOptionsJSON } from '@simplewebauthn/typescript-types'
+
 export interface GenerateAuthenticatorAuthenticationOptionsResponseBody {
-  options: Record<string, unknown>
+  options: PublicKeyCredentialRequestOptionsJSON
 }

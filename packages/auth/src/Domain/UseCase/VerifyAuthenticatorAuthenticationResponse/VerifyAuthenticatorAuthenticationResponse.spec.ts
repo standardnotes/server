@@ -40,7 +40,7 @@ describe('VerifyAuthenticatorAuthenticationResponse', () => {
     authenticatorChallengeRepository = {} as jest.Mocked<AuthenticatorChallengeRepositoryInterface>
     authenticatorChallengeRepository.findByUserUuid = jest.fn().mockReturnValue({
       props: {
-        challenge: Buffer.from('challenge'),
+        challenge: 'challenge',
       },
     } as jest.Mocked<AuthenticatorChallenge>)
   })
@@ -61,7 +61,7 @@ describe('VerifyAuthenticatorAuthenticationResponse', () => {
           signature: 'signature',
           userHandle: 'userHandle',
         },
-        type: 'type',
+        type: 'public-key',
       },
     })
 
@@ -89,7 +89,7 @@ describe('VerifyAuthenticatorAuthenticationResponse', () => {
           signature: 'signature',
           userHandle: 'userHandle',
         },
-        type: 'type',
+        type: 'public-key',
       },
     })
 
@@ -117,7 +117,7 @@ describe('VerifyAuthenticatorAuthenticationResponse', () => {
           signature: 'signature',
           userHandle: 'userHandle',
         },
-        type: 'type',
+        type: 'public-key',
       },
     })
 
@@ -146,7 +146,7 @@ describe('VerifyAuthenticatorAuthenticationResponse', () => {
           signature: 'signature',
           userHandle: 'userHandle',
         },
-        type: 'type',
+        type: 'public-key',
       },
     })
 
@@ -179,7 +179,7 @@ describe('VerifyAuthenticatorAuthenticationResponse', () => {
           signature: 'signature',
           userHandle: 'userHandle',
         },
-        type: 'type',
+        type: 'public-key',
       },
     })
 
@@ -215,7 +215,7 @@ describe('VerifyAuthenticatorAuthenticationResponse', () => {
           signature: 'signature',
           userHandle: 'userHandle',
         },
-        type: 'type',
+        type: 'public-key',
       },
     })
 

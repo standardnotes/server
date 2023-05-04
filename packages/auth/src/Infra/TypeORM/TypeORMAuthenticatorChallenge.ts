@@ -17,7 +17,7 @@ export class TypeORMAuthenticatorChallenge {
     type: 'varchar',
     length: 255,
   })
-  declare challenge: Buffer
+  declare challenge: string
 
   @Column({
     name: 'created_at',
