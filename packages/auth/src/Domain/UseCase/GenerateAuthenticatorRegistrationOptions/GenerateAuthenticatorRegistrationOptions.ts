@@ -8,6 +8,7 @@ import { AuthenticatorChallenge } from '../../Authenticator/AuthenticatorChallen
 import { FeatureIdentifier } from '@standardnotes/features'
 import { FeatureServiceInterface } from '../../Feature/FeatureServiceInterface'
 import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'
+import { AuthenticatorTransportFuture } from '@simplewebauthn/typescript-types'
 
 export class GenerateAuthenticatorRegistrationOptions implements UseCaseInterface<Record<string, unknown>> {
   constructor(
@@ -59,7 +60,7 @@ export class GenerateAuthenticatorRegistrationOptions implements UseCaseInterfac
       excludeCredentials: authenticators.map((authenticator) => ({
         id: authenticator.props.credentialId,
         type: 'public-key',
-        transports: authenticator.props.transports,
+        transports: authenticator.props.transports as AuthenticatorTransportFuture[],
       })),
     })
 

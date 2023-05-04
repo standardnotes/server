@@ -3,6 +3,7 @@ FROM node:20.0.0-alpine
 ENV NODE_ENV production
 
 RUN apk add --update --no-cache \
+  alpine-sdk \
   openssl \
   curl \
   bash \
@@ -22,7 +23,7 @@ WORKDIR /opt/server
 
 RUN corepack enable
 
-RUN yarn install --immutable
+# RUN yarn install --immutable
 
 RUN CI=true yarn build
 
