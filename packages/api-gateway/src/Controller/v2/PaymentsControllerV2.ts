@@ -30,6 +30,16 @@ export class PaymentsControllerV2 extends BaseHttpController {
     await this.httpService.callPaymentsServer(request, response, 'api/subscriptions/deltas/apply', request.body)
   }
 
+  @httpPost('/subscriptions/change-payment-method', TYPES.SubscriptionTokenAuthMiddleware)
+  async changePaymentMethod(request: Request, response: Response): Promise<void> {
+    await this.httpService.callPaymentsServer(
+      request,
+      response,
+      'api/subscriptions/change-payment-method',
+      request.body,
+    )
+  }
+
   @httpGet('/subscriptions/:subscriptionId', TYPES.SubscriptionTokenAuthMiddleware)
   async getSubscription(request: Request, response: Response): Promise<void> {
     await this.httpService.callPaymentsServer(

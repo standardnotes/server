@@ -65,7 +65,10 @@ export class CreateOfflineSubscriptionToken implements UseCaseInterface {
 
     await this.domainEventPublisher.publish(
       this.domainEventFactory.createEmailRequestedEvent({
-        body: getBody(dto.userEmail, `https://standardnotes.com/dashboard/offline?subscription_token=${token}`),
+        body: getBody(
+          dto.userEmail,
+          `https://standardnotes.com/dashboard/offline?subscription_token=${token}&email=${dto.userEmail}`,
+        ),
         level: EmailLevel.LEVELS.System,
         subject: getSubject(),
         messageIdentifier: 'OFFLINE_SUBSCRIPTION_ACCESS',
