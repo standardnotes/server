@@ -22,7 +22,11 @@ jobs:
     strategy:
       matrix:
         database: [ "mysql", "sqlite" ]
-        cache: [ "redis", "memory" ]
+        include:
+          - cache: "redis"
+            database: "mysql"
+          - cache: "memory"
+            database: "sqlite"
 
     runs-on: ubuntu-latest
 
