@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.11.2](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.11.1...@standardnotes/files-server@1.11.2) (2023-05-05)
+
+### Bug Fixes
+
+* remove @standardnotes/config from files ([542b296](https://github.com/standardnotes/files/commit/542b2960188fc3a02b07fa8d5f76852ad9b71b7d))
+* remove sentry ([c6122d3](https://github.com/standardnotes/files/commit/c6122d33b9ef493758eb2f40837ae0ab90554a67))
+* remove unused imports ([990140c](https://github.com/standardnotes/files/commit/990140c3924456ba05d85ef535c953081b217e4b))
+
 ## [1.11.1](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.11.0...@standardnotes/files-server@1.11.1) (2023-05-04)
 
 ### Bug Fixes

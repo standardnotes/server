@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.21.11](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.21.10...@standardnotes/analytics@2.21.11) (2023-05-05)
+
+### Bug Fixes
+
+* remove sentry ([c6122d3](https://github.com/standardnotes/server/commit/c6122d33b9ef493758eb2f40837ae0ab90554a67))
+
 ## [2.21.10](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.21.9...@standardnotes/analytics@2.21.10) (2023-05-02)
 
 **Note:** Version bump only for package @standardnotes/analytics

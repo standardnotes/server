@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.34.2](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.34.1...@standardnotes/syncing-server@1.34.2) (2023-05-05)
+
+### Bug Fixes
+
+* remove sentry ([c6122d3](https://github.com/standardnotes/syncing-server-js/commit/c6122d33b9ef493758eb2f40837ae0ab90554a67))
+* remove unused imports ([990140c](https://github.com/standardnotes/syncing-server-js/commit/990140c3924456ba05d85ef535c953081b217e4b))
+
 ## [1.34.1](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.34.0...@standardnotes/syncing-server@1.34.1) (2023-05-02)
 
 **Note:** Version bump only for package @standardnotes/syncing-server

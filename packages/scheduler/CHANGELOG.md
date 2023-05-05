@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.17.15](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.17.14...@standardnotes/scheduler-server@1.17.15) (2023-05-05)
+
+### Bug Fixes
+
+* remove sentry ([c6122d3](https://github.com/standardnotes/server/commit/c6122d33b9ef493758eb2f40837ae0ab90554a67))
+
 ## [1.17.14](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.17.13...@standardnotes/scheduler-server@1.17.14) (2023-05-02)
 
 **Note:** Version bump only for package @standardnotes/scheduler-server

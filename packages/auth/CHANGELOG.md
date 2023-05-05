@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.103.2](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.103.1...@standardnotes/auth-server@1.103.2) (2023-05-05)
+
+### Bug Fixes
+
+* remove sentry ([c6122d3](https://github.com/standardnotes/server/commit/c6122d33b9ef493758eb2f40837ae0ab90554a67))
+* remove unused imports ([990140c](https://github.com/standardnotes/server/commit/990140c3924456ba05d85ef535c953081b217e4b))
+
 ## [1.103.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.103.0...@standardnotes/auth-server@1.103.1) (2023-05-04)
 
 ### Bug Fixes
