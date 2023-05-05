@@ -47,7 +47,7 @@
     "inversify-express-utils": "^6.4.3",
     "ioredis": "^5.2.4",
     "jsonwebtoken": "^9.0.0",
-    "newrelic": "^10.0.0",
+    "newrelic": "^10.1.0",
     "nodemon": "^2.0.19",
     "prettyjson": "^1.2.5",
     "reflect-metadata": "^0.1.13",

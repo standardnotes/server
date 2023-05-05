@@ -1,5 +1,4 @@
 import { DataSource, LoggerOptions } from 'typeorm'
-import { BetterSqlite3ConnectionOptions } from 'typeorm/driver/better-sqlite3/BetterSqlite3ConnectionOptions'
 import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions'
 import { Permission } from '../Domain/Permission/Permission'
 import { Role } from '../Domain/Role/Role'
@@ -18,6 +17,7 @@ import { TypeORMCacheEntry } from '../Infra/TypeORM/TypeORMCacheEntry'
 import { TypeORMEmergencyAccessInvitation } from '../Infra/TypeORM/TypeORMEmergencyAccessInvitation'
 import { TypeORMSessionTrace } from '../Infra/TypeORM/TypeORMSessionTrace'
 import { Env } from './Env'
+import { SqliteConnectionOptions } from 'typeorm/driver/sqlite/SqliteConnectionOptions'
 
 const env: Env = new Env()
 env.load()
@@ -90,9 +90,9 @@ const mySQLDataSourceOptions: MysqlConnectionOptions = {
   database: inReplicaMode ? undefined : env.get('DB_DATABASE'),
 }
 
-const sqliteDataSourceOptions: BetterSqlite3ConnectionOptions = {
+const sqliteDataSourceOptions: SqliteConnectionOptions = {
   ...commonDataSourceOptions,
-  type: 'better-sqlite3',
+  type: 'sqlite',
   database: `data/${env.get('DB_DATABASE')}.sqlite`,
 }
 

@@ -37,12 +37,9 @@
   },
   "packageManager": "yarn@4.0.0-rc.43",
   "dependencies": {
-    "newrelic": "^10.0.0"
+    "newrelic": "^10.1.0"
   },
   "dependenciesMeta": {
-    "better-sqlite3@8.3.0": {
-      "unplugged": true
-    },
     "newrelic@10.1.0": {
       "unplugged": true
     }
