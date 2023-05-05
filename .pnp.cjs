@@ -124,6 +124,7 @@ const RAW_RUNTIME_STATE =
           ["@types/jest", "npm:29.5.1"],\
           ["@types/newrelic", "npm:9.13.0"],\
           ["@types/node", "npm:18.11.9"],\
+          ["eslint", "npm:8.39.0"],\
           ["eslint-config-prettier", "virtual:8859b278716fedf3e7458b5628625f7e35678c418626878559a0b816445001b7e24c55546f4677ba4c20b521aa0cf52cc33ac07deff171e383ada6eeab69933f#npm:8.8.0"],\
           ["ini", "npm:3.0.0"],\
           ["newrelic", "npm:10.0.0"],\
@@ -4648,6 +4649,7 @@ const RAW_RUNTIME_STATE =
           ["@types/jest", "npm:29.5.1"],\
           ["@types/newrelic", "npm:9.13.0"],\
           ["@types/node", "npm:18.11.9"],\
+          ["eslint", "npm:8.39.0"],\
           ["eslint-config-prettier", "virtual:8859b278716fedf3e7458b5628625f7e35678c418626878559a0b816445001b7e24c55546f4677ba4c20b521aa0cf52cc33ac07deff171e383ada6eeab69933f#npm:8.8.0"],\
           ["ini", "npm:3.0.0"],\
           ["newrelic", "npm:10.0.0"],\
@@ -8285,7 +8287,7 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["eslint-config-prettier", "virtual:8859b278716fedf3e7458b5628625f7e35678c418626878559a0b816445001b7e24c55546f4677ba4c20b521aa0cf52cc33ac07deff171e383ada6eeab69933f#npm:8.8.0"],\
           ["@types/eslint", null],\
-          ["eslint", null]\
+          ["eslint", "npm:8.39.0"]\
         ],\
         "packagePeers": [\
           "@types/eslint",\

@@ -28,6 +28,7 @@
     "@types/jest": "^29.5.1",
     "@types/newrelic": "^9.13.0",
     "@types/node": "^18.11.9",
+    "eslint": "^8.39.0",
     "eslint-config-prettier": "^8.8.0",
     "ini": "^3.0.0",
     "npm-check-updates": "^16.0.1",
