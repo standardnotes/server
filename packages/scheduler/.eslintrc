@@ -1,5 +1,6 @@
 {
   "extends": "../../.eslintrc",
+  "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "project": "./linter.tsconfig.json"
   }
