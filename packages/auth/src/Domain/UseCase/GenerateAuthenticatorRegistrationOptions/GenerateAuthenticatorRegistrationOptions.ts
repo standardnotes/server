@@ -8,8 +8,11 @@ import { AuthenticatorChallenge } from '../../Authenticator/AuthenticatorChallen
 import { FeatureIdentifier } from '@standardnotes/features'
 import { FeatureServiceInterface } from '../../Feature/FeatureServiceInterface'
 import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'
+import { AuthenticatorTransportFuture, PublicKeyCredentialCreationOptionsJSON } from '@simplewebauthn/typescript-types'
 
-export class GenerateAuthenticatorRegistrationOptions implements UseCaseInterface<Record<string, unknown>> {
+export class GenerateAuthenticatorRegistrationOptions
+  implements UseCaseInterface<PublicKeyCredentialCreationOptionsJSON>
+{
   constructor(
     private authenticatorRepository: AuthenticatorRepositoryInterface,
     private authenticatorChallengeRepository: AuthenticatorChallengeRepositoryInterface,
@@ -19,7 +22,9 @@ export class GenerateAuthenticatorRegistrationOptions implements UseCaseInterfac
     private featureService: FeatureServiceInterface,
   ) {}
 
-  async execute(dto: GenerateAuthenticatorRegistrationOptionsDTO): Promise<Result<Record<string, unknown>>> {
+  async execute(
+    dto: GenerateAuthenticatorRegistrationOptionsDTO,
+  ): Promise<Result<PublicKeyCredentialCreationOptionsJSON>> {
     const userUuidOrError = Uuid.create(dto.userUuid)
     if (userUuidOrError.isFailed()) {
       return Result.fail(`Could not generate authenticator registration options: ${userUuidOrError.getError()}`)
@@ -59,7 +64,7 @@ export class GenerateAuthenticatorRegistrationOptions implements UseCaseInterfac
       excludeCredentials: authenticators.map((authenticator) => ({
         id: authenticator.props.credentialId,
         type: 'public-key',
-        transports: authenticator.props.transports,
+        transports: authenticator.props.transports as AuthenticatorTransportFuture[],
       })),
     })
 

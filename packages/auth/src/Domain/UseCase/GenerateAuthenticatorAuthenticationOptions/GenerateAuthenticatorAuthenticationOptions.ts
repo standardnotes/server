@@ -7,8 +7,11 @@ import { AuthenticatorRepositoryInterface } from '../../Authenticator/Authentica
 import { AuthenticatorChallengeRepositoryInterface } from '../../Authenticator/AuthenticatorChallengeRepositoryInterface'
 import { AuthenticatorChallenge } from '../../Authenticator/AuthenticatorChallenge'
 import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'
+import { AuthenticatorTransportFuture, PublicKeyCredentialRequestOptionsJSON } from '@simplewebauthn/typescript-types'
 
-export class GenerateAuthenticatorAuthenticationOptions implements UseCaseInterface<Record<string, unknown>> {
+export class GenerateAuthenticatorAuthenticationOptions
+  implements UseCaseInterface<PublicKeyCredentialRequestOptionsJSON>
+{
   constructor(
     private userRepository: UserRepositoryInterface,
     private authenticatorRepository: AuthenticatorRepositoryInterface,
@@ -16,7 +19,9 @@ export class GenerateAuthenticatorAuthenticationOptions implements UseCaseInterf
     private pseudoKeyParamsKey: string,
   ) {}
 
-  async execute(dto: GenerateAuthenticatorAuthenticationOptionsDTO): Promise<Result<Record<string, unknown>>> {
+  async execute(
+    dto: GenerateAuthenticatorAuthenticationOptionsDTO,
+  ): Promise<Result<PublicKeyCredentialRequestOptionsJSON>> {
     const usernameOrError = Username.create(dto.username)
     if (usernameOrError.isFailed()) {
       return Result.fail(`Could not generate authenticator authentication options: ${usernameOrError.getError()}`)
@@ -55,7 +60,7 @@ export class GenerateAuthenticatorAuthenticationOptions implements UseCaseInterf
       allowCredentials: authenticators.map((authenticator) => ({
         id: authenticator.props.credentialId,
         type: 'public-key',
-        transports: authenticator.props.transports,
+        transports: authenticator.props.transports as AuthenticatorTransportFuture[],
       })),
       userVerification: 'preferred',
     })

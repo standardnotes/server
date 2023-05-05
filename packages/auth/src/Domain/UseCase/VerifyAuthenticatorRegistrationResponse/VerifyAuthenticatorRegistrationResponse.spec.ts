@@ -36,7 +36,7 @@ describe('VerifyAuthenticatorRegistrationResponse', () => {
     authenticatorChallengeRepository = {} as jest.Mocked<AuthenticatorChallengeRepositoryInterface>
     authenticatorChallengeRepository.findByUserUuid = jest.fn().mockReturnValue({
       props: {
-        challenge: Buffer.from('challenge'),
+        challenge: 'challenge',
       },
     } as jest.Mocked<AuthenticatorChallenge>)
 
@@ -144,7 +144,7 @@ describe('VerifyAuthenticatorRegistrationResponse', () => {
   it('should return error if verification could not verify', async () => {
     authenticatorChallengeRepository.findByUserUuid = jest.fn().mockReturnValue({
       props: {
-        challenge: Buffer.from('challenge'),
+        challenge: 'challenge',
       },
     } as jest.Mocked<AuthenticatorChallenge>)
 
@@ -187,7 +187,7 @@ describe('VerifyAuthenticatorRegistrationResponse', () => {
   it('should return error if verification throws error', async () => {
     authenticatorChallengeRepository.findByUserUuid = jest.fn().mockReturnValue({
       props: {
-        challenge: Buffer.from('challenge'),
+        challenge: 'challenge',
       },
     } as jest.Mocked<AuthenticatorChallenge>)
 
@@ -221,7 +221,7 @@ describe('VerifyAuthenticatorRegistrationResponse', () => {
   it('should return error if verification is missing registration info', async () => {
     authenticatorChallengeRepository.findByUserUuid = jest.fn().mockReturnValue({
       props: {
-        challenge: Buffer.from('challenge'),
+        challenge: 'challenge',
       },
     } as jest.Mocked<AuthenticatorChallenge>)
 
@@ -259,7 +259,7 @@ describe('VerifyAuthenticatorRegistrationResponse', () => {
   it('should return error if authenticator could not be created', async () => {
     authenticatorChallengeRepository.findByUserUuid = jest.fn().mockReturnValue({
       props: {
-        challenge: Buffer.from('challenge'),
+        challenge: 'challenge',
       },
     } as jest.Mocked<AuthenticatorChallenge>)
 
@@ -308,7 +308,7 @@ describe('VerifyAuthenticatorRegistrationResponse', () => {
   it('should verify authenticator registration response', async () => {
     authenticatorChallengeRepository.findByUserUuid = jest.fn().mockReturnValue({
       props: {
-        challenge: Buffer.from('challenge'),
+        challenge: 'challenge',
       },
     } as jest.Mocked<AuthenticatorChallenge>)
 
