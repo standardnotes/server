@@ -17,6 +17,7 @@ jobs:
       with:
         path: |
           packages/**/dist
+          .yarn/unplugged
         key: ${{ runner.os }}-build-${{ github.sha }}
 
     - name: Set up Node
@@ -24,6 +25,9 @@ jobs:
       with:
         registry-url: 'https://registry.npmjs.org'
         node-version-file: '.nvmrc'
+
+    - name: Install dependencies
+      run: yarn install --immutable
 
     - name: Build
       run: yarn build
@@ -42,7 +46,7 @@ jobs:
       with:
         path: |
           packages/**/dist
-          ${{ needs.build.outputs.temp_dir }}
+          .yarn/unplugged
         key: ${{ runner.os }}-build-${{ github.sha }}
 
     - name: Set up Node
@@ -50,6 +54,10 @@ jobs:
       with:
         registry-url: 'https://registry.npmjs.org'
         node-version-file: '.nvmrc'
+
+    - name: Install dependencies
+      if: steps.cache-build.outputs.cache-hit != 'true'
+      run: yarn install --immutable
 
     - name: Build
       if: steps.cache-build.outputs.cache-hit != 'true'
@@ -72,7 +80,7 @@ jobs:
       with:
         path: |
           packages/**/dist
-          ${{ needs.build.outputs.temp_dir }}
+          .yarn/unplugged
         key: ${{ runner.os }}-build-${{ github.sha }}
 
     - name: Set up Node
@@ -80,6 +88,10 @@ jobs:
       with:
         registry-url: 'https://registry.npmjs.org'
         node-version-file: '.nvmrc'
+
+    - name: Install dependencies
+      if: steps.cache-build.outputs.cache-hit != 'true'
+      run: yarn install --immutable
 
     - name: Build
       if: steps.cache-build.outputs.cache-hit != 'true'
@@ -111,6 +123,15 @@ jobs:
         with:
           token: ${{ secrets.CI_PAT_TOKEN }}
           fetch-depth: 0
+
+      - name: Cache build
+        id: cache-build
+        uses: actions/cache@v3
+        with:
+          path: |
+            packages/**/dist
+            .yarn/unplugged
+          key: ${{ runner.os }}-build-${{ github.sha }}
 
       - name: Setup git config
         run: |
