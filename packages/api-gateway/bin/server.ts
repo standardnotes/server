@@ -25,7 +25,7 @@ import '../src/Controller/v2/RevisionsControllerV2'
 
 import helmet from 'helmet'
 import * as cors from 'cors'
-import { text, json, Request, Response, NextFunction, RequestHandler, ErrorRequestHandler } from 'express'
+import { text, json, Request, Response, NextFunction } from 'express'
 import * as winston from 'winston'
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const robots = require('express-robots-txt')

@@ -9,7 +9,7 @@ import '../src/Controller/FilesController'
 
 import helmet from 'helmet'
 import * as cors from 'cors'
-import { urlencoded, json, raw, Request, Response, NextFunction, RequestHandler, ErrorRequestHandler } from 'express'
+import { urlencoded, json, raw, Request, Response, NextFunction } from 'express'
 import * as winston from 'winston'
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const robots = require('express-robots-txt')

@@ -6,7 +6,7 @@ import '../src/Infra/InversifyExpressUtils/InversifyExpressHealthCheckController
 import '../src/Infra/InversifyExpressUtils/InversifyExpressWebSocketsController'
 
 import * as cors from 'cors'
-import { urlencoded, json, Request, Response, NextFunction, RequestHandler, ErrorRequestHandler } from 'express'
+import { urlencoded, json, Request, Response, NextFunction } from 'express'
 import * as winston from 'winston'
 
 import { InversifyExpressServer } from 'inversify-express-utils'

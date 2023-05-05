@@ -7,7 +7,7 @@ import '../src/Controller/ItemsController'
 
 import helmet from 'helmet'
 import * as cors from 'cors'
-import { urlencoded, json, Request, Response, NextFunction, ErrorRequestHandler } from 'express'
+import { urlencoded, json, Request, Response, NextFunction } from 'express'
 import * as winston from 'winston'
 
 import { InversifyExpressServer } from 'inversify-express-utils'

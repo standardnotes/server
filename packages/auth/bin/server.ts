@@ -23,7 +23,7 @@ import '../src/Infra/InversifyExpressUtils/InversifyExpressUserRequestsControlle
 import '../src/Infra/InversifyExpressUtils/InversifyExpressWebSocketsController'
 
 import * as cors from 'cors'
-import { urlencoded, json, Request, Response, NextFunction, ErrorRequestHandler } from 'express'
+import { urlencoded, json, Request, Response, NextFunction } from 'express'
 import * as winston from 'winston'
 import * as dayjs from 'dayjs'
 import * as utc from 'dayjs/plugin/utc'
