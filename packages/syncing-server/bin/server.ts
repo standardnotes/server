@@ -2,9 +2,6 @@ import 'reflect-metadata'
 
 import 'newrelic'
 
-import * as Sentry from '@sentry/node'
-import * as Tracing from '@sentry/tracing'
-
 import '../src/Controller/HealthCheckController'
 import '../src/Controller/ItemsController'
 
@@ -55,39 +52,11 @@ void container.load().then((container) => {
     app.use(json({ limit: '50mb' }))
     app.use(urlencoded({ extended: true, limit: '50mb', parameterLimit: 5000 }))
     app.use(cors())
-
-    if (env.get('SENTRY_DSN', true)) {
-      const tracesSampleRate = env.get('SENTRY_TRACE_SAMPLE_RATE', true)
-        ? +env.get('SENTRY_TRACE_SAMPLE_RATE', true)
-        : 0
-
-      const profilesSampleRate = env.get('SENTRY_PROFILES_SAMPLE_RATE', true)
-        ? +env.get('SENTRY_PROFILES_SAMPLE_RATE', true)
-        : 0
-      Sentry.init({
-        dsn: env.get('SENTRY_DSN'),
-        integrations: [
-          new Sentry.Integrations.Http({ tracing: tracesSampleRate !== 0 }),
-          new Tracing.Integrations.Express({
-            app,
-          }),
-        ],
-        tracesSampleRate,
-        profilesSampleRate,
-      })
-
-      app.use(Sentry.Handlers.requestHandler())
-      app.use(Sentry.Handlers.tracingHandler())
-    }
   })
 
   const logger: winston.Logger = container.get(TYPES.Logger)
 
   server.setErrorConfig((app) => {
-    if (env.get('SENTRY_DSN', true)) {
-      app.use(Sentry.Handlers.errorHandler() as ErrorRequestHandler)
-    }
-
     app.use((error: Record<string, unknown>, _request: Request, response: Response, _next: NextFunction) => {
       logger.error(error.stack)
 

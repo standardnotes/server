@@ -37,8 +37,6 @@
     "@cbor-extract/cbor-extract-linux-arm64": "^2.1.1",
     "@cbor-extract/cbor-extract-linux-x64": "^2.1.1",
     "@newrelic/winston-enricher": "^4.0.1",
-    "@sentry/node": "^7.28.1",
-    "@sentry/tracing": "^7.28.1",
     "@simplewebauthn/server": "^7.0.1",
     "@simplewebauthn/typescript-types": "^7.0.0",
     "@standardnotes/api": "^1.25.3",

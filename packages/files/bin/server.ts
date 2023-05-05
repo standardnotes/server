@@ -2,7 +2,6 @@ import 'reflect-metadata'
 
 import 'newrelic'
 
-import * as Sentry from '@sentry/node'
 import * as busboy from 'connect-busboy'
 
 import '../src/Controller/HealthCheckController'
@@ -73,25 +72,11 @@ void container.load().then((container) => {
         Disallow: '/',
       }),
     )
-
-    if (env.get('SENTRY_DSN', true)) {
-      Sentry.init({
-        dsn: env.get('SENTRY_DSN'),
-        integrations: [new Sentry.Integrations.Http({ tracing: false, breadcrumbs: true })],
-        tracesSampleRate: 0,
-      })
-
-      app.use(Sentry.Handlers.requestHandler() as RequestHandler)
-    }
   })
 
   const logger: winston.Logger = container.get(TYPES.Logger)
 
   server.setErrorConfig((app) => {
-    if (env.get('SENTRY_DSN', true)) {
-      app.use(Sentry.Handlers.errorHandler() as ErrorRequestHandler)
-    }
-
     app.use((error: Record<string, unknown>, _request: Request, response: Response, _next: NextFunction) => {
       logger.error(error.stack)
 
