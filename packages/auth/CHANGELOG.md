@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.104.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.103.2...@standardnotes/auth-server@1.104.0) (2023-05-05)
+
+### Features
+
+* change payment method endpoint ([f5ac8ac](https://github.com/standardnotes/server/commit/f5ac8ac5e95eaaeff0cb034c8d6f7a233a352cda))
+
 ## [1.103.2](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.103.1...@standardnotes/auth-server@1.103.2) (2023-05-05)
 
 ### Bug Fixes

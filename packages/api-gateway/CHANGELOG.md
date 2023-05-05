@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.51.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.50.2...@standardnotes/api-gateway@1.51.0) (2023-05-05)
+
+### Features
+
+* change payment method endpoint ([f5ac8ac](https://github.com/standardnotes/api-gateway/commit/f5ac8ac5e95eaaeff0cb034c8d6f7a233a352cda))
+
 ## [1.50.2](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.50.1...@standardnotes/api-gateway@1.50.2) (2023-05-05)
 
 ### Bug Fixes
