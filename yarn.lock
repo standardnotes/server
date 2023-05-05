@@ -3199,7 +3199,7 @@ __metadata:
     reflect-metadata: "npm:^0.1.13"
     ts-jest: "npm:^29.1.0"
     typeorm: "npm:^0.3.10"
-    typescript: "npm:^4.8.4"
+    typescript: "npm:^5.0.4"
     winston: "npm:^3.8.1"
   languageName: unknown
   linkType: soft
@@ -3241,7 +3241,7 @@ __metadata:
     prettyjson: "npm:^1.2.5"
     reflect-metadata: "npm:0.1.13"
     ts-jest: "npm:^29.1.0"
-    typescript: "npm:^4.8.4"
+    typescript: "npm:^5.0.4"
     winston: "npm:^3.8.1"
   languageName: unknown
   linkType: soft
@@ -3320,7 +3320,7 @@ __metadata:
     reflect-metadata: "npm:0.1.13"
     ts-jest: "npm:^29.1.0"
     typeorm: "npm:^0.3.10"
-    typescript: "npm:^4.8.4"
+    typescript: "npm:^5.0.4"
     ua-parser-js: "npm:^1.0.32"
     uuid: "npm:^9.0.0"
     winston: "npm:^3.8.1"
@@ -3338,7 +3338,7 @@ __metadata:
     jest: "npm:^29.5.0"
     reflect-metadata: "npm:^0.1.13"
     ts-jest: "npm:^29.1.0"
-    typescript: "npm:^4.8.4"
+    typescript: "npm:^5.0.4"
   languageName: unknown
   linkType: soft
 
@@ -3352,7 +3352,7 @@ __metadata:
     eslint-plugin-prettier: "npm:^4.2.1"
     jest: "npm:^29.5.0"
     ts-jest: "npm:^29.1.0"
-    typescript: "npm:^4.8.4"
+    typescript: "npm:^5.0.4"
     uuid: "npm:^9.0.0"
   languageName: unknown
   linkType: soft
@@ -3375,7 +3375,7 @@ __metadata:
     reflect-metadata: "npm:^0.1.13"
     sqs-consumer: "npm:^6.2.1"
     ts-jest: "npm:^29.1.0"
-    typescript: "npm:^4.8.4"
+    typescript: "npm:^5.0.4"
     winston: "npm:^3.8.1"
   languageName: unknown
   linkType: soft
@@ -3391,7 +3391,7 @@ __metadata:
     eslint-plugin-prettier: "npm:^4.2.1"
     jest: "npm:^29.5.0"
     ts-jest: "npm:^29.1.0"
-    typescript: "npm:^4.8.4"
+    typescript: "npm:^5.0.4"
   languageName: unknown
   linkType: soft
 
@@ -3433,7 +3433,7 @@ __metadata:
     reflect-metadata: "npm:0.1.13"
     ts-jest: "npm:^29.1.0"
     typeorm: "npm:^0.3.10"
-    typescript: "npm:^4.8.4"
+    typescript: "npm:^5.0.4"
     winston: "npm:^3.8.1"
   languageName: unknown
   linkType: soft
@@ -3508,7 +3508,7 @@ __metadata:
     reflect-metadata: "npm:^0.1.13"
     ts-jest: "npm:^29.1.0"
     ts-node: "npm:^10.9.1"
-    typescript: "npm:^4.8.4"
+    typescript: "npm:^5.0.4"
     uuid: "npm:^9.0.0"
     winston: "npm:^3.8.1"
   languageName: unknown
@@ -3536,7 +3536,7 @@ __metadata:
     eslint-plugin-prettier: "npm:^4.2.1"
     jest: "npm:^29.5.0"
     ts-jest: "npm:^29.1.0"
-    typescript: "npm:^4.8.4"
+    typescript: "npm:^5.0.4"
   languageName: unknown
   linkType: soft
 
@@ -3590,7 +3590,7 @@ __metadata:
     reflect-metadata: "npm:0.1.13"
     ts-jest: "npm:^29.1.0"
     typeorm: "npm:^0.3.10"
-    typescript: "npm:^4.8.4"
+    typescript: "npm:^5.0.4"
     winston: "npm:^3.8.1"
   languageName: unknown
   linkType: soft
@@ -3625,7 +3625,7 @@ __metadata:
     reflect-metadata: "npm:^0.1.13"
     ts-jest: "npm:^29.1.0"
     typeorm: "npm:^0.3.10"
-    typescript: "npm:^4.8.4"
+    typescript: "npm:^5.0.4"
     winston: "npm:^3.8.1"
   languageName: unknown
   linkType: soft
@@ -3642,7 +3642,7 @@ __metadata:
     jsonwebtoken: "npm:^9.0.0"
     reflect-metadata: "npm:^0.1.13"
     ts-jest: "npm:^29.1.0"
-    typescript: "npm:^4.8.4"
+    typescript: "npm:^5.0.4"
   languageName: unknown
   linkType: soft
 
@@ -3666,7 +3666,7 @@ __metadata:
     npm-check-updates: "npm:^16.0.1"
     prettier: "npm:^2.7.1"
     ts-node: "npm:^10.9.1"
-    typescript: "npm:^4.8.4"
+    typescript: "npm:^5.0.4"
   languageName: unknown
   linkType: soft
 
@@ -3678,7 +3678,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": "npm:^5.48.2"
     eslint-plugin-prettier: "npm:^4.2.1"
     reflect-metadata: "npm:^0.1.13"
-    typescript: "npm:^4.8.4"
+    typescript: "npm:^5.0.4"
   languageName: unknown
   linkType: soft
 
@@ -3714,7 +3714,7 @@ __metadata:
     regenerator-runtime: "npm:^0.13.9"
     ts-jest: "npm:^29.1.0"
     ts-loader: "npm:^9.2.6"
-    typescript: "npm:^4.8.4"
+    typescript: "npm:^5.0.4"
   languageName: unknown
   linkType: soft
 
@@ -3767,7 +3767,7 @@ __metadata:
     reflect-metadata: "npm:0.1.13"
     ts-jest: "npm:^29.1.0"
     typeorm: "npm:^0.3.10"
-    typescript: "npm:^4.8.4"
+    typescript: "npm:^5.0.4"
     ua-parser-js: "npm:^1.0.32"
     uuid: "npm:^9.0.0"
     winston: "npm:^3.8.1"
@@ -3787,7 +3787,7 @@ __metadata:
     microtime: "npm:^3.1.0"
     reflect-metadata: "npm:^0.1.13"
     ts-jest: "npm:^29.1.0"
-    typescript: "npm:^4.8.4"
+    typescript: "npm:^5.0.4"
   languageName: unknown
   linkType: soft
 
@@ -3850,7 +3850,7 @@ __metadata:
     reflect-metadata: "npm:0.1.13"
     ts-jest: "npm:^29.1.0"
     typeorm: "npm:^0.3.10"
-    typescript: "npm:^4.8.4"
+    typescript: "npm:^5.0.4"
     winston: "npm:^3.8.1"
   languageName: unknown
   linkType: soft
@@ -12226,13 +12226,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^4.8.4":
-  version: 4.8.4
-  resolution: "typescript@npm:4.8.4"
+"typescript@npm:^5.0.4":
+  version: 5.0.4
+  resolution: "typescript@npm:5.0.4"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 008c336ed785130b6e13254adbfc4084f5dbbe62851df9bac3eaf62fc29e0a396839c00ce47e0d92db44fa9a08b9f7ba4d31304f2b10cf7d42a0817728e822a1
+  checksum: 56649de784c427e8f3f63d4ebfcada4fcf03bb2a301f3327342111798db7f26f8a86285f979f376cf6cec4774bd96b4650f2693a07fc409f4544ad4c4d9fe4c9
   languageName: node
   linkType: hard
 
@@ -12246,13 +12246,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A^4.8.4#optional!builtin<compat/typescript>":
-  version: 4.8.4
-  resolution: "typescript@patch:typescript@npm%3A4.8.4#optional!builtin<compat/typescript>::version=4.8.4&hash=1a91c8"
+"typescript@patch:typescript@npm%3A^5.0.4#optional!builtin<compat/typescript>":
+  version: 5.0.4
+  resolution: "typescript@patch:typescript@npm%3A5.0.4#optional!builtin<compat/typescript>::version=5.0.4&hash=b5f058"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: f6e45be090c6971bf57d07481cb7bd896303ffaee35b5a52a3418908d3cd252b20f5d25b5b1ebaf5c52754f9802421542b4aa70093744cb6d6b306936b5053bb
+  checksum: e4296a207d18264eb9b17a912b0929c4e8be5a4e48aefa016e952eaa445e5a4ed363a72d9023f151dc7f100d48d4bfa35480aec199f123a664ef8a622355ae4f
   languageName: node
   linkType: hard
 
