@@ -10,8 +10,7 @@ const SAFE_TIME = 456789e3;
 
 const PortablePath = {
   root: `/`,
-  dot: `.`,
-  parent: `..`
+  dot: `.`
 };
 const npath = Object.create(path);
 const ppath = Object.create(path.posix);
@@ -1358,13 +1357,6 @@ class VirtualFS extends ProxiedFS {
   }
 }
 
-const [major, minor] = process.versions.node.split(`.`).map((value) => parseInt(value, 10));
-const HAS_CONSOLIDATED_HOOKS = major > 16 || major === 16 && minor >= 12;
-const HAS_UNFLAGGED_JSON_MODULES = major > 17 || major === 17 && minor >= 5 || major === 16 && minor >= 15;
-const HAS_JSON_IMPORT_ASSERTION_REQUIREMENT = major > 17 || major === 17 && minor >= 1 || major === 16 && minor > 14;
-const WATCH_MODE_MESSAGE_USES_ARRAYS = major > 19 || major === 19 && minor >= 2 || major === 18 && minor >= 13;
-const HAS_LAZY_LOADED_TRANSLATORS = major > 19 || major === 19 && minor >= 3;
-
 const builtinModules = new Set(Module.builtinModules || Object.keys(process.binding(`natives`)));
 const isBuiltinModule = (request) => request.startsWith(`node:`) || builtinModules.has(request);
 function readPackageScope(checkPath) {
@@ -1391,6 +1383,11 @@ function readPackage(requestPath) {
     return null;
   return JSON.parse(fs.readFileSync(jsonPath, `utf8`));
 }
+
+const [major, minor] = process.versions.node.split(`.`).map((value) => parseInt(value, 10));
+const HAS_CONSOLIDATED_HOOKS = major > 16 || major === 16 && minor >= 12;
+const HAS_UNFLAGGED_JSON_MODULES = major > 17 || major === 17 && minor >= 5 || major === 16 && minor >= 15;
+const HAS_JSON_IMPORT_ASSERTION_REQUIREMENT = major > 17 || major === 17 && minor >= 1 || major === 16 && minor > 14;
 
 async function tryReadFile$1(path2) {
   try {
@@ -1489,13 +1486,12 @@ async function load$1(urlString, context, nextLoad) {
     throw err;
   }
   if (process.env.WATCH_REPORT_DEPENDENCIES && process.send) {
-    const pathToSend = pathToFileURL(
-      npath.fromPortablePath(
-        VirtualFS.resolveVirtual(npath.toPortablePath(filePath))
-      )
-    ).href;
     process.send({
-      "watch:import": WATCH_MODE_MESSAGE_USES_ARRAYS ? [pathToSend] : pathToSend
+      "watch:import": pathToFileURL(
+        npath.fromPortablePath(
+          VirtualFS.resolveVirtual(npath.toPortablePath(filePath))
+        )
+      ).href
     });
   }
   return {
@@ -1884,7 +1880,12 @@ function patternKeyCompare(a, b) {
     return 1;
   return 0;
 }
-function packageImportsResolve({ name, base, conditions, readFileSyncFn }) {
+function packageImportsResolve({
+  name,
+  base,
+  conditions,
+  readFileSyncFn
+}) {
   if (name === "#" || StringPrototypeStartsWith(name, "#/") || StringPrototypeEndsWith(name, "/")) {
     const reason = "is not a valid internal imports specifier name";
     throw new ERR_INVALID_MODULE_SPECIFIER(name, reason, fileURLToPath(base));
@@ -2001,7 +2002,7 @@ async function resolve$1(originalSpecifier, context, nextResolve) {
   let allowLegacyResolve = false;
   if (dependencyNameMatch) {
     const [, dependencyName, subPath] = dependencyNameMatch;
-    if (subPath === `` && dependencyName !== `pnpapi`) {
+    if (subPath === ``) {
       const resolved = pnpapi.resolveToUnqualified(`${dependencyName}/package.json`, issuer);
       if (resolved) {
         const content = await tryReadFile$1(resolved);
@@ -2012,17 +2013,10 @@ async function resolve$1(originalSpecifier, context, nextResolve) {
       }
     }
   }
-  let result;
-  try {
-    result = pnpapi.resolveRequest(specifier, issuer, {
-      conditions: new Set(conditions),
-      extensions: allowLegacyResolve ? void 0 : []
-    });
-  } catch (err) {
-    if (err instanceof Error && `code` in err && err.code === `MODULE_NOT_FOUND`)
-      err.code = `ERR_MODULE_NOT_FOUND`;
-    throw err;
-  }
+  const result = pnpapi.resolveRequest(specifier, issuer, {
+    conditions: new Set(conditions),
+    extensions: allowLegacyResolve ? void 0 : []
+  });
   if (!result)
     throw new Error(`Resolving '${specifier}' from '${issuer}' failed`);
   const resultURL = pathToFileURL(result);
@@ -2038,34 +2032,32 @@ async function resolve$1(originalSpecifier, context, nextResolve) {
   };
 }
 
-if (!HAS_LAZY_LOADED_TRANSLATORS) {
-  const binding = process.binding(`fs`);
-  const originalfstat = binding.fstat;
-  const ZIP_MASK = 4278190080;
-  const ZIP_MAGIC = 704643072;
-  binding.fstat = function(...args) {
-    const [fd, useBigint, req] = args;
-    if ((fd & ZIP_MASK) === ZIP_MAGIC && useBigint === false && req === void 0) {
-      try {
-        const stats = fs.fstatSync(fd);
-        return new Float64Array([
-          stats.dev,
-          stats.mode,
-          stats.nlink,
-          stats.uid,
-          stats.gid,
-          stats.rdev,
-          stats.blksize,
-          stats.ino,
-          stats.size,
-          stats.blocks
-        ]);
-      } catch {
-      }
+const binding = process.binding(`fs`);
+const originalfstat = binding.fstat;
+const ZIP_MASK = 4278190080;
+const ZIP_MAGIC = 704643072;
+binding.fstat = function(...args) {
+  const [fd, useBigint, req] = args;
+  if ((fd & ZIP_MASK) === ZIP_MAGIC && useBigint === false && req === void 0) {
+    try {
+      const stats = fs.fstatSync(fd);
+      return new Float64Array([
+        stats.dev,
+        stats.mode,
+        stats.nlink,
+        stats.uid,
+        stats.gid,
+        stats.rdev,
+        stats.blksize,
+        stats.ino,
+        stats.size,
+        stats.blocks
+      ]);
+    } catch {
     }
-    return originalfstat.apply(this, args);
-  };
-}
+  }
+  return originalfstat.apply(this, args);
+};
 
 const resolve = resolve$1;
 const getFormat = HAS_CONSOLIDATED_HOOKS ? void 0 : getFormat$1;
