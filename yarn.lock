@@ -3573,7 +3573,7 @@ __metadata:
     "@types/jest": "npm:^29.5.1"
     "@types/mixpanel": "npm:^2.14.4"
     "@types/newrelic": "npm:^9.13.0"
-    "@types/node": "npm:^18.11.9"
+    "@types/node": "npm:^20.1.0"
     "@typescript-eslint/eslint-plugin": "npm:^5.59.2"
     "@typescript-eslint/parser": "npm:^5.59.2"
     dayjs: "npm:^1.11.6"
@@ -3726,7 +3726,7 @@ __metadata:
   resolution: "@standardnotes/common@workspace:packages/common"
   dependencies:
     "@types/jest": "npm:^29.5.1"
-    "@types/node": "npm:^18.11.9"
+    "@types/node": "npm:^20.1.0"
     "@typescript-eslint/eslint-plugin": "npm:^5.59.2"
     "@typescript-eslint/parser": "npm:^5.59.2"
     eslint: "npm:^8.39.0"
@@ -4011,7 +4011,7 @@ __metadata:
     "@types/ioredis": "npm:^5.0.0"
     "@types/jest": "npm:^29.5.1"
     "@types/newrelic": "npm:^9.13.0"
-    "@types/node": "npm:^18.11.9"
+    "@types/node": "npm:^20.1.0"
     "@typescript-eslint/eslint-plugin": "npm:^5.59.2"
     "@typescript-eslint/parser": "npm:^5.59.2"
     dayjs: "npm:^1.11.6"
@@ -4063,7 +4063,7 @@ __metadata:
     "@lerna-lite/run": "npm:^1.5.1"
     "@types/jest": "npm:^29.5.1"
     "@types/newrelic": "npm:^9.13.0"
-    "@types/node": "npm:^18.11.9"
+    "@types/node": "npm:^20.1.0"
     eslint: "npm:^8.39.0"
     eslint-config-prettier: "npm:^8.8.0"
     ini: "npm:^3.0.0"
@@ -4107,7 +4107,7 @@ __metadata:
   dependencies:
     "@standardnotes/sncrypto-common": "npm:^1.9.0"
     "@types/jest": "npm:^29.5.1"
-    "@types/node": "npm:^18.11.9"
+    "@types/node": "npm:^20.1.0"
     "@typescript-eslint/eslint-plugin": "npm:^5.59.2"
     "@typescript-eslint/parser": "npm:^5.59.2"
     eslint: "npm:^8.39.0"
@@ -4646,6 +4646,13 @@ __metadata:
   version: 18.16.4
   resolution: "@types/node@npm:18.16.4"
   checksum: a7a5662d6589016ff13c41bdab7dd1eab57284e51788c9f75a6f472f5e12085d221bfb11fd9abd18323619a102a26c9e27194105caff72bbbed842631adecb1e
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^20.1.0":
+  version: 20.1.0
+  resolution: "@types/node@npm:20.1.0"
+  checksum: 299fe2b03230b10367862b2b7f4b618671377e20846276f5f435262080d7b01231d45a2b3a08c5de31495fac2eda8048e977aebf06b3c1e26502f74fc021da63
   languageName: node
   linkType: hard
 

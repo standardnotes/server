@@ -27,7 +27,7 @@
     "@lerna-lite/run": "^1.5.1",
     "@types/jest": "^29.5.1",
     "@types/newrelic": "^9.13.0",
-    "@types/node": "^18.11.9",
+    "@types/node": "^20.1.0",
     "eslint": "^8.39.0",
     "eslint-config-prettier": "^8.8.0",
     "ini": "^3.0.0",

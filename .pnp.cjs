@@ -123,7 +123,7 @@ const RAW_RUNTIME_STATE =
           ["@lerna-lite/run", "npm:1.17.0"],\
           ["@types/jest", "npm:29.5.1"],\
           ["@types/newrelic", "npm:9.13.0"],\
-          ["@types/node", "npm:18.16.4"],\
+          ["@types/node", "npm:20.1.0"],\
           ["eslint", "npm:8.39.0"],\
           ["eslint-config-prettier", "virtual:8859b278716fedf3e7458b5628625f7e35678c418626878559a0b816445001b7e24c55546f4677ba4c20b521aa0cf52cc33ac07deff171e383ada6eeab69933f#npm:8.8.0"],\
           ["ini", "npm:3.0.1"],\
@@ -4232,7 +4232,7 @@ const RAW_RUNTIME_STATE =
           ["@types/jest", "npm:29.5.1"],\
           ["@types/mixpanel", "npm:2.14.4"],\
           ["@types/newrelic", "npm:9.13.0"],\
-          ["@types/node", "npm:18.16.4"],\
+          ["@types/node", "npm:20.1.0"],\
           ["@typescript-eslint/eslint-plugin", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:5.59.2"],\
           ["@typescript-eslint/parser", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:5.59.2"],\
           ["dayjs", "npm:1.11.7"],\
@@ -4392,7 +4392,7 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["@standardnotes/common", "workspace:packages/common"],\
           ["@types/jest", "npm:29.5.1"],\
-          ["@types/node", "npm:18.16.4"],\
+          ["@types/node", "npm:20.1.0"],\
           ["@typescript-eslint/eslint-plugin", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:5.59.2"],\
           ["@typescript-eslint/parser", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:5.59.2"],\
           ["eslint", "npm:8.39.0"],\
@@ -4697,7 +4697,7 @@ const RAW_RUNTIME_STATE =
           ["@types/ioredis", "npm:5.0.0"],\
           ["@types/jest", "npm:29.5.1"],\
           ["@types/newrelic", "npm:9.13.0"],\
-          ["@types/node", "npm:18.16.4"],\
+          ["@types/node", "npm:20.1.0"],\
           ["@typescript-eslint/eslint-plugin", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:5.59.2"],\
           ["@typescript-eslint/parser", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:5.59.2"],\
           ["dayjs", "npm:1.11.7"],\
@@ -4753,7 +4753,7 @@ const RAW_RUNTIME_STATE =
           ["@lerna-lite/run", "npm:1.17.0"],\
           ["@types/jest", "npm:29.5.1"],\
           ["@types/newrelic", "npm:9.13.0"],\
-          ["@types/node", "npm:18.16.4"],\
+          ["@types/node", "npm:20.1.0"],\
           ["eslint", "npm:8.39.0"],\
           ["eslint-config-prettier", "virtual:8859b278716fedf3e7458b5628625f7e35678c418626878559a0b816445001b7e24c55546f4677ba4c20b521aa0cf52cc33ac07deff171e383ada6eeab69933f#npm:8.8.0"],\
           ["ini", "npm:3.0.1"],\
@@ -4799,7 +4799,7 @@ const RAW_RUNTIME_STATE =
           ["@standardnotes/sncrypto-node", "workspace:packages/sncrypto-node"],\
           ["@standardnotes/sncrypto-common", "npm:1.13.3"],\
           ["@types/jest", "npm:29.5.1"],\
-          ["@types/node", "npm:18.16.4"],\
+          ["@types/node", "npm:20.1.0"],\
           ["@typescript-eslint/eslint-plugin", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:5.59.2"],\
           ["@typescript-eslint/parser", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:5.59.2"],\
           ["eslint", "npm:8.39.0"],\
@@ -5409,6 +5409,13 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/@types-node-npm-20.0.0-8659dc5e3b-cfb4d53144.zip/node_modules/@types/node/",\
         "packageDependencies": [\
           ["@types/node", "npm:20.0.0"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["npm:20.1.0", {\
+        "packageLocation": "./.yarn/cache/@types-node-npm-20.1.0-c5561d67cd-299fe2b032.zip/node_modules/@types/node/",\
+        "packageDependencies": [\
+          ["@types/node", "npm:20.1.0"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -14957,7 +14964,7 @@ const RAW_RUNTIME_STATE =
           ["@tsconfig/node12", "npm:1.0.11"],\
           ["@tsconfig/node14", "npm:1.0.3"],\
           ["@tsconfig/node16", "npm:1.0.3"],\
-          ["@types/node", "npm:18.16.4"],\
+          ["@types/node", "npm:20.1.0"],\
           ["@types/swc__core", null],\
           ["@types/swc__wasm", null],\
           ["@types/typescript", null],\
