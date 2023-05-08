@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.12.0](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.11.2...@standardnotes/files-server@1.12.0) (2023-05-08)
+
+### Features
+
+* upgrade to node 20.1.0 ([#590](https://github.com/standardnotes/files/issues/590)) ([8fbb94d](https://github.com/standardnotes/files/commit/8fbb94d15ab664cca775ec71d51db465547c35ee))
+
 ## [1.11.2](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.11.1...@standardnotes/files-server@1.11.2) (2023-05-05)
 
 ### Bug Fixes

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.35.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.34.2...@standardnotes/syncing-server@1.35.0) (2023-05-08)
+
+### Features
+
+* upgrade to node 20.1.0 ([#590](https://github.com/standardnotes/syncing-server-js/issues/590)) ([8fbb94d](https://github.com/standardnotes/syncing-server-js/commit/8fbb94d15ab664cca775ec71d51db465547c35ee))
+
 ## [1.34.2](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.34.1...@standardnotes/syncing-server@1.34.2) (2023-05-05)
 
 ### Bug Fixes

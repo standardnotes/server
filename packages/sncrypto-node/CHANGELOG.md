@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.14.0](https://github.com/standardnotes/server/compare/@standardnotes/sncrypto-node@1.13.2...@standardnotes/sncrypto-node@1.14.0) (2023-05-08)
+
+### Features
+
+* upgrade to node 20.1.0 ([#590](https://github.com/standardnotes/server/issues/590)) ([8fbb94d](https://github.com/standardnotes/server/commit/8fbb94d15ab664cca775ec71d51db465547c35ee))
+
 ## [1.13.2](https://github.com/standardnotes/server/compare/@standardnotes/sncrypto-node@1.13.1...@standardnotes/sncrypto-node@1.13.2) (2023-05-05)
 
 **Note:** Version bump only for package @standardnotes/sncrypto-node

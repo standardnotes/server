@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.52.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.51.0...@standardnotes/api-gateway@1.52.0) (2023-05-08)
+
+### Features
+
+* upgrade to node 20.1.0 ([#590](https://github.com/standardnotes/api-gateway/issues/590)) ([8fbb94d](https://github.com/standardnotes/api-gateway/commit/8fbb94d15ab664cca775ec71d51db465547c35ee))
+
 # [1.51.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.50.2...@standardnotes/api-gateway@1.51.0) (2023-05-05)
 
 ### Features
