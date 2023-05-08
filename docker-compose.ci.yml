@@ -22,6 +22,7 @@ services:
     env_file: .github/ci.env
     environment:
       DB_TYPE: "${DB_TYPE}"
+      CACHE_TYPE: "${CACHE_TYPE}"
     container_name: server-ci
     ports:
       - 3123:3000
@@ -32,7 +33,7 @@ services:
       - standardnotes_self_hosted
 
   localstack:
-    image: localstack/localstack:1.3
+    image: localstack/localstack:1.4
     container_name: localstack-ci
     expose:
       - 4566

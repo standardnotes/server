@@ -23,8 +23,8 @@
     "test": "jest spec --coverage"
   },
   "dependencies": {
-    "@aws-sdk/client-sns": "^3.259.0",
-    "@aws-sdk/client-sqs": "^3.259.0",
+    "@aws-sdk/client-sns": "^3.328.0",
+    "@aws-sdk/client-sqs": "^3.328.0",
     "@standardnotes/domain-events": "workspace:*",
     "ioredis": "^5.2.4",
     "newrelic": "^10.1.0",

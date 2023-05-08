@@ -25,9 +25,9 @@
     "upgrade:snjs": "yarn ncu -u '@standardnotes/*'"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.259.0",
-    "@aws-sdk/client-sns": "^3.259.0",
-    "@aws-sdk/client-sqs": "^3.259.0",
+    "@aws-sdk/client-s3": "^3.328.0",
+    "@aws-sdk/client-sns": "^3.328.0",
+    "@aws-sdk/client-sqs": "^3.328.0",
     "@standardnotes/domain-core": "workspace:^",
     "@standardnotes/domain-events": "workspace:*",
     "@standardnotes/domain-events-infra": "workspace:*",

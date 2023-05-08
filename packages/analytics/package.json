@@ -40,8 +40,8 @@
     "typescript": "^5.0.4"
   },
   "dependencies": {
-    "@aws-sdk/client-sns": "^3.259.0",
-    "@aws-sdk/client-sqs": "^3.259.0",
+    "@aws-sdk/client-sns": "^3.328.0",
+    "@aws-sdk/client-sqs": "^3.328.0",
     "@newrelic/winston-enricher": "^4.0.1",
     "@standardnotes/common": "workspace:*",
     "@standardnotes/domain-core": "workspace:^",

@@ -33,7 +33,7 @@
     "typescript": "^5.0.4"
   },
   "dependencies": {
-    "@aws-sdk/client-sqs": "^3.259.0",
+    "@aws-sdk/client-sqs": "^3.328.0",
     "@standardnotes/domain-events": "workspace:*",
     "@standardnotes/domain-events-infra": "workspace:*",
     "@standardnotes/time": "workspace:*",
