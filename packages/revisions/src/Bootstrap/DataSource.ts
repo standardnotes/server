@@ -1,10 +1,10 @@
 import { DataSource, LoggerOptions } from 'typeorm'
-import { BetterSqlite3ConnectionOptions } from 'typeorm/driver/better-sqlite3/BetterSqlite3ConnectionOptions'
 import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions'
 
 import { TypeORMRevision } from '../Infra/TypeORM/TypeORMRevision'
 
 import { Env } from './Env'
+import { SqliteConnectionOptions } from 'typeorm/driver/sqlite/SqliteConnectionOptions'
 
 const env: Env = new Env()
 env.load()
@@ -60,9 +60,9 @@ const mySQLDataSourceOptions: MysqlConnectionOptions = {
   database: inReplicaMode ? undefined : env.get('DB_DATABASE'),
 }
 
-const sqliteDataSourceOptions: BetterSqlite3ConnectionOptions = {
+const sqliteDataSourceOptions: SqliteConnectionOptions = {
   ...commonDataSourceOptions,
-  type: 'better-sqlite3',
+  type: 'sqlite',
   database: `data/${env.get('DB_DATABASE')}.sqlite`,
 }
 

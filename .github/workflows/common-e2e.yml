@@ -23,10 +23,10 @@ jobs:
       matrix:
         database: [ "mysql", "sqlite" ]
         include:
-          - cache: "redis"
-            database: "mysql"
-          - cache: "memory"
-            database: "sqlite"
+         - cache: "redis"
+           database: "mysql"
+         - cache: "memory"
+           database: "sqlite"
 
     runs-on: ubuntu-latest
 

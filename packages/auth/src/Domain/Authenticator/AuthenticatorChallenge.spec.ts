@@ -7,7 +7,7 @@ describe('AuthenticatorChallenge', () => {
     const entityOrError = AuthenticatorChallenge.create({
       userUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
       createdAt: new Date(1),
-      challenge: Buffer.from('challenge'),
+      challenge: 'challenge',
     })
 
     expect(entityOrError.isFailed()).toBeFalsy()
