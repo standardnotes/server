@@ -84,7 +84,7 @@ jobs:
       run: yarn build
 
     - name: Test
-      run: yarn test
+      run: yarn workspaces foreach run test
 
   e2e:
     needs: build
