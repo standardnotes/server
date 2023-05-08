@@ -29,6 +29,10 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
+    - uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
     - name: Create Bundle Dir
       id: bundle-dir
       run: echo "temp_dir=$(mktemp -d -t ${{ inputs.service_name }}-${{ github.sha }}-XXXXXXX)" >> $GITHUB_OUTPUT
