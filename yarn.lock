@@ -3945,7 +3945,7 @@ __metadata:
     "@types/node": "npm:^20.1.0"
     eslint: "npm:^8.39.0"
     eslint-config-prettier: "npm:^8.8.0"
-    ini: "npm:^3.0.0"
+    ini: "npm:^4.1.0"
     newrelic: "npm:^10.1.0"
     npm-check-updates: "npm:^16.0.1"
     ts-node: "npm:^10.9.1"
@@ -8205,14 +8205,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ini@npm:^3.0.0":
-  version: 3.0.1
-  resolution: "ini@npm:3.0.1"
-  checksum: aa3a701669e6dc7ef1c9ce1b86931ca712cd255f0ad2b909189b2207491c95319999ee758c3395e86c9f5b6c9368cda493deeaf284cd139577dc2271e0fd422e
-  languageName: node
-  linkType: hard
-
-"ini@npm:^4.0.0":
+"ini@npm:^4.0.0, ini@npm:^4.1.0":
   version: 4.1.0
   resolution: "ini@npm:4.1.0"
   checksum: 7bbdc8a0cd2f058a3d75103e50c363220c28b2cb9ca87df1b4dec29e314931f5e5659a09c5484417197942a9e05e56f7ec47fcd973ce450772d76b2d1884288f
