@@ -1,5 +1,28 @@
 import 'reflect-metadata'
 
+import {
+  ContainerConfigLoader as APIGatewayContainerConfigLoader,
+  TYPES as APIGatewayTYPES,
+  LegacyController,
+  HealthCheckController,
+  SessionsController,
+  UsersController,
+  ActionsController,
+  InvoicesController,
+  RevisionsController,
+  ItemsController,
+  PaymentsController,
+  WebSocketsController,
+  TokensController,
+  OfflineController,
+  FilesController,
+  SubscriptionInvitesController,
+  AuthenticatorsController,
+  PaymentsControllerV2,
+  ActionsControllerV2,
+  RevisionsControllerV2,
+} from '@standardnotes/api-gateway'
+
 import helmet from 'helmet'
 import * as cors from 'cors'
 import { text, json, Request, Response, NextFunction } from 'express'
@@ -9,10 +32,25 @@ const robots = require('express-robots-txt')
 
 import { InversifyExpressServer } from 'inversify-express-utils'
 import { Env } from '../src/Bootstrap/Env'
-import {
-  ContainerConfigLoader as APIGatewayContainerConfigLoader,
-  TYPES as APIGatewayTYPES,
-} from '@standardnotes/api-gateway'
+
+void LegacyController
+void HealthCheckController
+void SessionsController
+void UsersController
+void ActionsController
+void InvoicesController
+void RevisionsController
+void ItemsController
+void PaymentsController
+void WebSocketsController
+void TokensController
+void OfflineController
+void FilesController
+void SubscriptionInvitesController
+void AuthenticatorsController
+void PaymentsControllerV2
+void ActionsControllerV2
+void RevisionsControllerV2
 
 const container = new APIGatewayContainerConfigLoader()
 void container.load().then((container) => {
