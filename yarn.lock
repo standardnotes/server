@@ -3473,7 +3473,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@standardnotes/api-gateway@workspace:packages/api-gateway":
+"@standardnotes/api-gateway@workspace:^, @standardnotes/api-gateway@workspace:packages/api-gateway":
   version: 0.0.0-use.local
   resolution: "@standardnotes/api-gateway@workspace:packages/api-gateway"
   dependencies:
@@ -3785,6 +3785,31 @@ __metadata:
     ts-jest: "npm:^29.1.0"
     typescript: "npm:^5.0.4"
     uuid: "npm:^9.0.0"
+    winston: "npm:^3.8.1"
+  languageName: unknown
+  linkType: soft
+
+"@standardnotes/home-server@workspace:packages/home-server":
+  version: 0.0.0-use.local
+  resolution: "@standardnotes/home-server@workspace:packages/home-server"
+  dependencies:
+    "@standardnotes/api-gateway": "workspace:^"
+    "@types/cors": "npm:^2.8.9"
+    "@types/express": "npm:^4.17.14"
+    "@typescript-eslint/eslint-plugin": "npm:^5.59.2"
+    "@typescript-eslint/parser": "npm:^5.59.2"
+    cors: "npm:2.8.5"
+    dotenv: "npm:^16.0.1"
+    eslint: "npm:^8.39.0"
+    eslint-plugin-prettier: "npm:^4.2.1"
+    express: "npm:^4.18.2"
+    express-robots-txt: "npm:^1.0.0"
+    helmet: "npm:^6.0.0"
+    inversify: "npm:^6.0.1"
+    inversify-express-utils: "npm:^6.4.3"
+    prettier: "npm:^2.8.8"
+    reflect-metadata: "npm:0.1.13"
+    typescript: "npm:^5.0.4"
     winston: "npm:^3.8.1"
   languageName: unknown
   linkType: soft

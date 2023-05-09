@@ -4,7 +4,7 @@ import { Request, Response } from 'express'
 import { inject, injectable } from 'inversify'
 import { Logger } from 'winston'
 
-import TYPES from '../../Bootstrap/Types'
+import { TYPES } from '../../Bootstrap/Types'
 import { CrossServiceTokenCacheInterface } from '../Cache/CrossServiceTokenCacheInterface'
 import { HttpServiceInterface } from './HttpServiceInterface'
 

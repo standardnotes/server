@@ -50,6 +50,10 @@ const RAW_RUNTIME_STATE =
       "reference": "workspace:packages/files"\
     },\
     {\
+      "name": "@standardnotes/home-server",\
+      "reference": "workspace:packages/home-server"\
+    },\
+    {\
       "name": "@standardnotes/predicates",\
       "reference": "workspace:packages/predicates"\
     },\
@@ -98,6 +102,7 @@ const RAW_RUNTIME_STATE =
     ["@standardnotes/domain-events-infra", ["workspace:packages/domain-events-infra"]],\
     ["@standardnotes/event-store", ["workspace:packages/event-store"]],\
     ["@standardnotes/files-server", ["workspace:packages/files"]],\
+    ["@standardnotes/home-server", ["workspace:packages/home-server"]],\
     ["@standardnotes/predicates", ["workspace:packages/predicates"]],\
     ["@standardnotes/revisions-server", ["workspace:packages/revisions"]],\
     ["@standardnotes/scheduler-server", ["workspace:packages/scheduler"]],\
@@ -4599,6 +4604,33 @@ const RAW_RUNTIME_STATE =
           ["ts-jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.1.0"],\
           ["typescript", "patch:typescript@npm%3A5.0.4#optional!builtin<compat/typescript>::version=5.0.4&hash=b5f058"],\
           ["uuid", "npm:9.0.0"],\
+          ["winston", "npm:3.8.2"]\
+        ],\
+        "linkType": "SOFT"\
+      }]\
+    ]],\
+    ["@standardnotes/home-server", [\
+      ["workspace:packages/home-server", {\
+        "packageLocation": "./packages/home-server/",\
+        "packageDependencies": [\
+          ["@standardnotes/home-server", "workspace:packages/home-server"],\
+          ["@standardnotes/api-gateway", "workspace:packages/api-gateway"],\
+          ["@types/cors", "npm:2.8.13"],\
+          ["@types/express", "npm:4.17.17"],\
+          ["@typescript-eslint/eslint-plugin", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:5.59.2"],\
+          ["@typescript-eslint/parser", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:5.59.2"],\
+          ["cors", "npm:2.8.5"],\
+          ["dotenv", "npm:16.0.3"],\
+          ["eslint", "npm:8.39.0"],\
+          ["eslint-plugin-prettier", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:4.2.1"],\
+          ["express", "npm:4.18.2"],\
+          ["express-robots-txt", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:1.0.0"],\
+          ["helmet", "npm:6.1.5"],\
+          ["inversify", "npm:6.0.1"],\
+          ["inversify-express-utils", "npm:6.4.3"],\
+          ["prettier", "npm:2.8.8"],\
+          ["reflect-metadata", "npm:0.1.13"],\
+          ["typescript", "patch:typescript@npm%3A5.0.4#optional!builtin<compat/typescript>::version=5.0.4&hash=b5f058"],\
           ["winston", "npm:3.8.2"]\
         ],\
         "linkType": "SOFT"\
