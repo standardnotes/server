@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.22.1](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.22.0...@standardnotes/analytics@2.22.1) (2023-05-09)
+
+### Bug Fixes
+
+* node engine version requirement in package.json files ([62a0e89](https://github.com/standardnotes/server/commit/62a0e89748ab306566c4aa10b9dc0385fb0f1684))
+
 # [2.22.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.21.11...@standardnotes/analytics@2.22.0) (2023-05-08)
 
 ### Features

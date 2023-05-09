@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.35.1](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.35.0...@standardnotes/syncing-server@1.35.1) (2023-05-09)
+
+### Bug Fixes
+
+* node engine version requirement in package.json files ([62a0e89](https://github.com/standardnotes/syncing-server-js/commit/62a0e89748ab306566c4aa10b9dc0385fb0f1684))
+
 # [1.35.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.34.2...@standardnotes/syncing-server@1.35.0) (2023-05-08)
 
 ### Features

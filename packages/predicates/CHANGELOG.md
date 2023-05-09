@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.6.7](https://github.com/standardnotes/server/compare/@standardnotes/predicates@1.6.6...@standardnotes/predicates@1.6.7) (2023-05-09)
+
+### Bug Fixes
+
+* node engine version requirement in package.json files ([62a0e89](https://github.com/standardnotes/server/commit/62a0e89748ab306566c4aa10b9dc0385fb0f1684))
+
 ## [1.6.6](https://github.com/standardnotes/server/compare/@standardnotes/predicates@1.6.5...@standardnotes/predicates@1.6.6) (2023-05-05)
 
 **Note:** Version bump only for package @standardnotes/predicates
