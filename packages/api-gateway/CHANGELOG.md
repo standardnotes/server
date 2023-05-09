@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.53.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.52.1...@standardnotes/api-gateway@1.53.0) (2023-05-09)
+
+### Features
+
+* **home-server:** add boilerplate ([#601](https://github.com/standardnotes/api-gateway/issues/601)) ([750cd26](https://github.com/standardnotes/api-gateway/commit/750cd26c369e7d93fa3da29dbe41823059252639))
+
 ## [1.52.1](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.52.0...@standardnotes/api-gateway@1.52.1) (2023-05-09)
 
 ### Bug Fixes
