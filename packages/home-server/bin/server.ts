@@ -1,26 +1,28 @@
 import 'reflect-metadata'
 
+import * as prettyjson from 'prettyjson'
+
 import {
   ContainerConfigLoader as APIGatewayContainerConfigLoader,
   TYPES as APIGatewayTYPES,
-  LegacyController,
-  HealthCheckController,
-  SessionsController,
-  UsersController,
-  ActionsController,
-  InvoicesController,
-  RevisionsController,
-  ItemsController,
-  PaymentsController,
-  WebSocketsController,
-  TokensController,
-  OfflineController,
-  FilesController,
-  SubscriptionInvitesController,
-  AuthenticatorsController,
-  PaymentsControllerV2,
-  ActionsControllerV2,
-  RevisionsControllerV2,
+  LegacyController as _LegacyController,
+  HealthCheckController as _HealthCheckController,
+  SessionsController as _SessionsController,
+  UsersController as _UsersController,
+  ActionsController as _ActionsController,
+  InvoicesController as _InvoicesController,
+  RevisionsController as _RevisionsController,
+  ItemsController as _ItemsController,
+  PaymentsController as _PaymentsController,
+  WebSocketsController as _WebSocketsController,
+  TokensController as _TokensController,
+  OfflineController as _OfflineController,
+  FilesController as _FilesController,
+  SubscriptionInvitesController as _SubscriptionInvitesController,
+  AuthenticatorsController as _AuthenticatorsController,
+  PaymentsControllerV2 as _PaymentsControllerV2,
+  ActionsControllerV2 as _ActionsControllerV2,
+  RevisionsControllerV2 as _RevisionsControllerV2,
 } from '@standardnotes/api-gateway'
 
 import helmet from 'helmet'
@@ -30,27 +32,8 @@ import * as winston from 'winston'
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const robots = require('express-robots-txt')
 
-import { InversifyExpressServer } from 'inversify-express-utils'
+import { InversifyExpressServer, getRouteInfo } from 'inversify-express-utils'
 import { Env } from '../src/Bootstrap/Env'
-
-void LegacyController
-void HealthCheckController
-void SessionsController
-void UsersController
-void ActionsController
-void InvoicesController
-void RevisionsController
-void ItemsController
-void PaymentsController
-void WebSocketsController
-void TokensController
-void OfflineController
-void FilesController
-void SubscriptionInvitesController
-void AuthenticatorsController
-void PaymentsControllerV2
-void ActionsControllerV2
-void RevisionsControllerV2
 
 const container = new APIGatewayContainerConfigLoader()
 void container.load().then((container) => {
@@ -117,6 +100,11 @@ void container.load().then((container) => {
   })
 
   const serverInstance = server.build()
+
+  const routeInfo = getRouteInfo(container)
+
+  // eslint-disable-next-line no-console
+  console.info(prettyjson.render({ routes: routeInfo }))
 
   serverInstance.listen(env.get('PORT'))
 
