@@ -2,7 +2,7 @@
   "name": "@standardnotes/domain-events-infra",
   "version": "1.11.0",
   "engines": {
-    "node": ">=18.0.0 <19.0.0"
+    "node": ">=18.0.0 <21.0.0"
   },
   "description": "Domain Events Infrastructure SDK used in SN projects",
   "main": "dist/src/index.js",

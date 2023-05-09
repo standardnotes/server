@@ -2,7 +2,7 @@
   "name": "@standardnotes/common",
   "version": "1.47.0",
   "engines": {
-    "node": ">=18.0.0 <19.0.0"
+    "node": ">=18.0.0 <21.0.0"
   },
   "description": "Common types and utilities for Standard Notes projects",
   "main": "dist/src/index.js",
