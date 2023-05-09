@@ -7,7 +7,7 @@ import { Container } from 'inversify'
 import { Timer, TimerInterface } from '@standardnotes/time'
 
 import { Env } from './Env'
-import TYPES from './Types'
+import { TYPES } from './Types'
 import { AuthMiddleware } from '../Controller/AuthMiddleware'
 import { HttpServiceInterface } from '../Service/Http/HttpServiceInterface'
 import { HttpService } from '../Service/Http/HttpService'
@@ -42,15 +42,17 @@ export class ContainerConfigLoader {
     })
     container.bind<winston.Logger>(TYPES.Logger).toConstantValue(logger)
 
-    const redisUrl = env.get('REDIS_URL')
-    const isRedisInClusterMode = redisUrl.indexOf(',') > 0
-    let redis
-    if (isRedisInClusterMode) {
-      redis = new Redis.Cluster(redisUrl.split(','))
-    } else {
-      redis = new Redis(redisUrl)
+    if (!isConfiguredForHomeServer) {
+      const redisUrl = env.get('REDIS_URL')
+      const isRedisInClusterMode = redisUrl.indexOf(',') > 0
+      let redis
+      if (isRedisInClusterMode) {
+        redis = new Redis.Cluster(redisUrl.split(','))
+      } else {
+        redis = new Redis(redisUrl)
+      }
+      container.bind(TYPES.Redis).toConstantValue(redis)
     }
-    container.bind(TYPES.Redis).toConstantValue(redis)
 
     container.bind<AxiosInstance>(TYPES.HTTPClient).toConstantValue(axios.create())
 

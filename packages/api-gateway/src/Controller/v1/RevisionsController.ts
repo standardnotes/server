@@ -1,5 +1,5 @@
 import { BaseHttpController, controller, httpDelete, httpGet, results } from 'inversify-express-utils'
-import TYPES from '../../Bootstrap/Types'
+import { TYPES } from '../../Bootstrap/Types'
 
 @controller('/v1/items/:item_id/revisions', TYPES.AuthMiddleware)
 export class RevisionsController extends BaseHttpController {

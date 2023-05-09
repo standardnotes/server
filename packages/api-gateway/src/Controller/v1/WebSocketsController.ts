@@ -3,7 +3,7 @@ import { inject } from 'inversify'
 import { BaseHttpController, controller, httpDelete, httpPost } from 'inversify-express-utils'
 import { Logger } from 'winston'
 
-import TYPES from '../../Bootstrap/Types'
+import { TYPES } from '../../Bootstrap/Types'
 import { HttpServiceInterface } from '../../Service/Http/HttpServiceInterface'
 
 @controller('/v1/sockets')

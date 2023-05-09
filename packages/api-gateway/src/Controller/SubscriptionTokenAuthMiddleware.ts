@@ -5,7 +5,7 @@ import { BaseMiddleware } from 'inversify-express-utils'
 import { verify } from 'jsonwebtoken'
 import { AxiosError, AxiosInstance, AxiosResponse } from 'axios'
 import { Logger } from 'winston'
-import TYPES from '../Bootstrap/Types'
+import { TYPES } from '../Bootstrap/Types'
 import { TokenAuthenticationMethod } from './TokenAuthenticationMethod'
 
 @injectable()

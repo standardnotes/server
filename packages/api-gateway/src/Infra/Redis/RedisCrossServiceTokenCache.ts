@@ -1,6 +1,6 @@
 import { inject, injectable } from 'inversify'
 import * as IORedis from 'ioredis'
-import TYPES from '../../Bootstrap/Types'
+import { TYPES } from '../../Bootstrap/Types'
 
 import { CrossServiceTokenCacheInterface } from '../../Service/Cache/CrossServiceTokenCacheInterface'
 

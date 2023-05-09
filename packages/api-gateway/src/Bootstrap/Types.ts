@@ -1,4 +1,4 @@
-const TYPES = {
+export const TYPES = {
   Logger: Symbol.for('Logger'),
   Redis: Symbol.for('Redis'),
   HTTPClient: Symbol.for('HTTPClient'),
@@ -24,4 +24,4 @@ const TYPES = {
   Timer: Symbol.for('Timer'),
 }
 
-export default TYPES
+// export default TYPES

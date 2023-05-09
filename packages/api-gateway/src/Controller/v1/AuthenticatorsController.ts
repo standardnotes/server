@@ -2,7 +2,7 @@ import { inject } from 'inversify'
 import { Request, Response } from 'express'
 import { controller, BaseHttpController, httpPost, httpGet, httpDelete } from 'inversify-express-utils'
 
-import TYPES from '../../Bootstrap/Types'
+import { TYPES } from '../../Bootstrap/Types'
 import { HttpServiceInterface } from '../../Service/Http/HttpServiceInterface'
 
 @controller('/v1/authenticators')

@@ -7,7 +7,11 @@
   "private": true,
   "description": "API Gateway For Standard Notes Services",
   "main": "dist/src/index.js",
-  "typings": "dist/src/index.d.ts",
+  "types": "dist/src/index.d.ts",
+  "files": [
+    "dist/src/**/*.js",
+    "dist/src/**/*.d.ts"
+  ],
   "repository": "git@github.com:standardnotes/api-gateway.git",
   "author": "Karol Sójko <karolsojko@standardnotes.com>",
   "license": "AGPL-3.0-or-later",

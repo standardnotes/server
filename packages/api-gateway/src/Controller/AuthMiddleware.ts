@@ -8,7 +8,7 @@ import { verify } from 'jsonwebtoken'
 import { AxiosError, AxiosInstance } from 'axios'
 import { Logger } from 'winston'
 
-import TYPES from '../Bootstrap/Types'
+import { TYPES } from '../Bootstrap/Types'
 import { CrossServiceTokenCacheInterface } from '../Service/Cache/CrossServiceTokenCacheInterface'
 
 @injectable()
