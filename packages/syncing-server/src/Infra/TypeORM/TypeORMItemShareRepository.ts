@@ -13,15 +13,15 @@ export class TypeORMItemShareRepository implements ItemShareRepositoryInterface 
     return this.ormRepository.remove(itemShare)
   }
 
-  async updateEncryptedContentKey(shareToken: string, encryptedContentKey: string): Promise<void> {
+  async updateEncryptedContentKey(dto: { shareToken: string; encryptedContentKey: string }): Promise<void> {
     await this.ormRepository
       .createQueryBuilder('item_share')
       .update()
       .set({
-        encryptedContentKey,
+        encryptedContentKey: dto.encryptedContentKey,
       })
       .where('share_token = :shareToken', {
-        shareToken,
+        shareToken: dto.shareToken,
       })
       .execute()
   }
@@ -38,7 +38,7 @@ export class TypeORMItemShareRepository implements ItemShareRepositoryInterface 
   async findByShareToken(shareToken: string): Promise<ItemShare | null> {
     return this.ormRepository
       .createQueryBuilder('item_share')
-      .where('item.share_token = :shareToken', {
+      .where('item_share.share_token = :shareToken', {
         shareToken,
       })
       .getOne()

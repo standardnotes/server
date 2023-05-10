@@ -3,6 +3,7 @@ import { ItemShare } from './ItemShare'
 
 export type ItemShareHash = {
   uuid: string
+  item_uuid: string
   share_token: string
   public_key: string
   encrypted_content_key: string

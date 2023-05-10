@@ -12,7 +12,7 @@ export type UserItemSharesQuery = {
 export interface ItemShareRepositoryInterface {
   create(itemShare: ItemShare): Promise<ItemShare>
   remove(itemShare: ItemShare): Promise<ItemShare>
-  updateEncryptedContentKey(shareToken: string, encryptedContentKey: string): Promise<void>
+  updateEncryptedContentKey(dto: { shareToken: string; encryptedContentKey: string }): Promise<void>
   deleteByShareToken(shareToken: string): Promise<void>
   findByShareToken(shareToken: string): Promise<ItemShare | null>
   findAll(query: UserItemSharesQuery): Promise<ItemShare[]>

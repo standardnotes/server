@@ -10,8 +10,8 @@ export class ItemSharesController extends BaseHttpController {
     super()
   }
 
-  @all('(/*)?')
+  @all('*')
   async subscriptions(request: Request, response: Response): Promise<void> {
-    await this.httpService.callSyncingServer(request, response, request.path, request.body)
+    await this.httpService.callSyncingServer(request, response, request.path.replace('/v1/', ''), request.body)
   }
 }

@@ -8,6 +8,8 @@ export class ItemShareFactory implements ItemShareFactoryInterface {
   create(dto: { userUuid: string; itemShareHash: ItemShareHash }): ItemShare {
     const newItemShare = new ItemShare()
     newItemShare.uuid = dto.itemShareHash.uuid
+    newItemShare.userUuid = dto.userUuid
+    newItemShare.itemUuid = dto.itemShareHash.item_uuid
     newItemShare.shareToken = dto.itemShareHash.share_token
     newItemShare.encryptedContentKey = dto.itemShareHash.encrypted_content_key
     newItemShare.publicKey = dto.itemShareHash.public_key

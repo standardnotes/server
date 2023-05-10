@@ -1,3 +1,4 @@
+import { ItemShare } from './../Domain/ItemShare/ItemShare'
 import { DataSource, LoggerOptions } from 'typeorm'
 import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions'
 import { Item } from '../Domain/Item/Item'
@@ -38,7 +39,7 @@ const replicationConfig = {
 
 const commonDataSourceOptions = {
   maxQueryExecutionTime,
-  entities: [Item],
+  entities: [Item, ItemShare],
   migrations: [`dist/migrations/${isConfiguredForMySQL ? 'mysql' : 'sqlite'}/*.js`],
   migrationsRun: true,
   logging: <LoggerOptions>env.get('DB_DEBUG_LEVEL'),

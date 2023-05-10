@@ -9,9 +9,19 @@ export class CreateItemShare1683714734321 implements MigrationInterface {
       columns: [
         new TableColumn({
           name: 'uuid',
-          type: 'uuid',
+          type: 'varchar',
+          length: '36',
           isPrimary: true,
-          default: 'gen_random_uuid()',
+        }),
+        new TableColumn({
+          name: 'user_uuid',
+          type: 'varchar',
+          length: '36',
+        }),
+        new TableColumn({
+          name: 'item_uuid',
+          type: 'varchar',
+          length: '36',
         }),
         new TableColumn({
           name: 'share_token',
@@ -34,16 +44,6 @@ export class CreateItemShare1683714734321 implements MigrationInterface {
           name: 'encrypted_content_key',
           type: 'text',
           isNullable: true,
-        }),
-        new TableColumn({
-          name: 'user_uuid',
-          type: 'varchar',
-          length: '36',
-        }),
-        new TableColumn({
-          name: 'item_uuid',
-          type: 'varchar',
-          length: '36',
         }),
         new TableColumn({
           name: 'expired',

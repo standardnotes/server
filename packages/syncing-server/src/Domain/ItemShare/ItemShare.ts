@@ -11,9 +11,9 @@ export class ItemShare {
     type: 'varchar',
     name: 'share_token',
     length: 36,
-    nullable: true,
+    nullable: false,
   })
-  declare shareToken: string | null
+  declare shareToken: string
 
   @Column({
     name: 'content_type',

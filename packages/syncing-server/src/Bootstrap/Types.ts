@@ -11,6 +11,7 @@ const TYPES = {
   ItemShareRepository: Symbol.for('ItemShareRepository'),
   // ORM
   ORMItemRepository: Symbol.for('ORMItemRepository'),
+  ORMItemShareRepository: Symbol.for('ORMItemShareRepository'),
   // Middleware
   AuthMiddleware: Symbol.for('AuthMiddleware'),
   // Projectors
@@ -42,6 +43,7 @@ const TYPES = {
   ShareItem: Symbol.for('ShareItem'),
   GetSharedItem: Symbol.for('GetSharedItem'),
   UpdateSharedItem: Symbol.for('UpdateSharedItem'),
+  GetUserItemShares: Symbol.for('GetUserItemShares'),
   // Handlers
   AccountDeletionRequestedEventHandler: Symbol.for('AccountDeletionRequestedEventHandler'),
   DuplicateItemSyncedEventHandler: Symbol.for('DuplicateItemSyncedEventHandler'),

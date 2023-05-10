@@ -36,6 +36,7 @@ import { ItemShareService } from '../Domain/ItemShare/ItemShareService'
 import { ItemShareFactoryInterface } from '../Domain/ItemShare/ItemShareFactoryInterface'
 import { ItemShareFactory } from '../Domain/ItemShare/ItemShareFactory'
 import { ShareItemUseCase } from '../Domain/UseCase/ItemShare/ShareItemUseCase'
+import { GetUserItemSharesUseCase } from '../Domain/UseCase/ItemShare/GetUserItemSharesUseCase'
 
 export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
   private readonly DEFAULT_CONTENT_SIZE_TRANSFER_LIMIT = 10_000_000
@@ -100,6 +101,9 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
     container.bind<UpdateSharedItemUseCase>(TYPES.UpdateSharedItem).toDynamicValue((context: interfaces.Context) => {
       return new UpdateSharedItemUseCase(context.container.get(TYPES.ItemShareService))
     })
+    container.bind<GetUserItemSharesUseCase>(TYPES.GetUserItemShares).toDynamicValue((context: interfaces.Context) => {
+      return new GetUserItemSharesUseCase(context.container.get(TYPES.ItemShareService))
+    })
 
     // Services
     container.bind<ItemServiceInterface>(TYPES.ItemService).toDynamicValue((context: interfaces.Context) => {
@@ -119,7 +123,7 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
       )
     })
     // Services
-    container.bind<ItemShareServiceInterface>(TYPES.ItemService).toDynamicValue((context: interfaces.Context) => {
+    container.bind<ItemShareServiceInterface>(TYPES.ItemShareService).toDynamicValue((context: interfaces.Context) => {
       return new ItemShareService(
         context.container.get(TYPES.ItemShareRepository),
         context.container.get(TYPES.ItemShareFactory),
@@ -152,7 +156,7 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
     container.bind<ItemFactoryInterface>(TYPES.ItemFactory).toDynamicValue((context: interfaces.Context) => {
       return new ItemFactory(context.container.get(TYPES.Timer), context.container.get(TYPES.ItemProjector))
     })
-    container.bind<ItemShareFactoryInterface>(TYPES.ItemFactory).toDynamicValue((context: interfaces.Context) => {
+    container.bind<ItemShareFactoryInterface>(TYPES.ItemShareFactory).toDynamicValue((context: interfaces.Context) => {
       return new ItemShareFactory(context.container.get(TYPES.Timer))
     })
 

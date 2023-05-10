@@ -44,6 +44,7 @@ export class ItemShareService implements ItemShareServiceInterface {
       userUuid: dto.userUuid,
       itemShareHash: {
         uuid,
+        item_uuid: dto.itemUuid,
         share_token: shareToken,
         public_key: dto.publicKey,
         encrypted_content_key: dto.encryptedContentKey,
@@ -62,7 +63,10 @@ export class ItemShareService implements ItemShareServiceInterface {
       return false
     }
 
-    await this.itemShareRepository.updateEncryptedContentKey(itemShareItem.uuid, dto.encryptedContentKey)
+    await this.itemShareRepository.updateEncryptedContentKey({
+      shareToken: itemShareItem.shareToken,
+      encryptedContentKey: dto.encryptedContentKey,
+    })
 
     return true
   }
