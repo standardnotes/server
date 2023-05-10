@@ -32,6 +32,8 @@ export * from './Core/ValueObject'
 export * from './Core/ValueObjectProps'
 
 export * from './DI/ContainerConfigurationInterface'
+export * from './DI/ControllerContainer'
+export * from './DI/ControllerContainerInterface'
 
 export * from './Email/EmailLevel'
 export * from './Email/EmailLevelProps'

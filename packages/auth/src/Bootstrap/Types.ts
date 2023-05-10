@@ -10,6 +10,7 @@ const TYPES = {
   AuthenticatorHttpMapper: Symbol.for('AuthenticatorHttpMapper'),
   CacheEntryPersistenceMapper: Symbol.for('CacheEntryPersistenceMapper'),
   // Controller
+  ControllerContainer: Symbol.for('ControllerContainer'),
   AuthController: Symbol.for('AuthController'),
   AuthenticatorsController: Symbol.for('AuthenticatorsController'),
   SubscriptionInvitesController: Symbol.for('SubscriptionInvitesController'),

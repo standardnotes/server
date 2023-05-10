@@ -187,7 +187,13 @@ import { UserRequestsController } from '../Controller/UserRequestsController'
 import { EmailSubscriptionUnsubscribedEventHandler } from '../Domain/Handler/EmailSubscriptionUnsubscribedEventHandler'
 import { SessionTraceRepositoryInterface } from '../Domain/Session/SessionTraceRepositoryInterface'
 import { TypeORMSessionTraceRepository } from '../Infra/TypeORM/TypeORMSessionTraceRepository'
-import { CacheEntry, CacheEntryRepositoryInterface, MapperInterface } from '@standardnotes/domain-core'
+import {
+  CacheEntry,
+  CacheEntryRepositoryInterface,
+  ControllerContainer,
+  ControllerContainerInterface,
+  MapperInterface,
+} from '@standardnotes/domain-core'
 import { SessionTracePersistenceMapper } from '../Mapping/SessionTracePersistenceMapper'
 import { SessionTrace } from '../Domain/Session/SessionTrace'
 import { TypeORMSessionTrace } from '../Infra/TypeORM/TypeORMSessionTrace'
@@ -786,6 +792,7 @@ export class ContainerConfigLoader {
     container.bind<ProcessUserRequest>(TYPES.ProcessUserRequest).to(ProcessUserRequest)
 
     // Controller
+    container.bind<ControllerContainerInterface>(TYPES.ControllerContainer).toConstantValue(new ControllerContainer())
     container.bind<AuthController>(TYPES.AuthController).to(AuthController)
     container
       .bind<AuthenticatorsController>(TYPES.AuthenticatorsController)

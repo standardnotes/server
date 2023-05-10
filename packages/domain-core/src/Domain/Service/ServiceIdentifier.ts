@@ -6,6 +6,7 @@ export class ServiceIdentifier extends ValueObject<ServiceIdentifierProps> {
   static readonly NAMES = {
     Auth: 'Auth',
     SyncingServer: 'SyncingServer',
+    Revisions: 'Revisions',
   }
 
   get value(): string {

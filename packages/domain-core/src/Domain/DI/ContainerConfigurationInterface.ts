@@ -1,3 +1,5 @@
+import { ServiceContainerInterface } from '../Service/ServiceContainerInterface'
+
 export interface ContainerConfigurationInterface {
-  load(): Promise<unknown>
+  load(serviceContainer?: ServiceContainerInterface): Promise<unknown>
 }
