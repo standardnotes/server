@@ -7,7 +7,7 @@ import { BaseHttpController, controller, httpGet, httpPatch, httpPost, results }
 import TYPES from '../Bootstrap/Types'
 import { ShareItemUseCase } from '../Domain/UseCase/ItemShare/ShareItemUseCase'
 
-@controller('/share', TYPES.AuthMiddleware)
+@controller('/share')
 export class ItemSharesController extends BaseHttpController {
   constructor(
     @inject(TYPES.ShareItem) private shareItem: ShareItemUseCase,
@@ -18,7 +18,7 @@ export class ItemSharesController extends BaseHttpController {
     super()
   }
 
-  @httpPost('/')
+  @httpPost('/', TYPES.AuthMiddleware)
   public async share(request: Request, response: Response): Promise<results.JsonResult> {
     const result = await this.shareItem.execute({
       itemUuid: request.body.itemUuid,
@@ -31,7 +31,7 @@ export class ItemSharesController extends BaseHttpController {
     return this.json(result)
   }
 
-  @httpPatch('/')
+  @httpPatch('/', TYPES.AuthMiddleware)
   public async updateSharedItemRequest(request: Request): Promise<results.JsonResult> {
     const result = await this.updateSharedItem.execute({
       shareToken: request.body.shareToken,
@@ -54,7 +54,7 @@ export class ItemSharesController extends BaseHttpController {
     return this.json(result)
   }
 
-  @httpGet('/')
+  @httpGet('/', TYPES.AuthMiddleware)
   public async getItemSharesForUser(
     _request: Request,
     response: Response,
