@@ -134,7 +134,7 @@ const RAW_RUNTIME_STATE =
           ["eslint-config-prettier", "virtual:8859b278716fedf3e7458b5628625f7e35678c418626878559a0b816445001b7e24c55546f4677ba4c20b521aa0cf52cc33ac07deff171e383ada6eeab69933f#npm:8.8.0"],\
           ["ini", "npm:3.0.1"],\
           ["newrelic", "npm:10.1.0"],\
-          ["npm-check-updates", "npm:16.10.9"],\
+          ["npm-check-updates", "npm:16.10.12"],\
           ["ts-node", "virtual:ef6136dc31186c42f92851afb237eadaa9d36085920cabb6ed6ea317680c8271d6b94afcb795fd7e58c08243e470be87ece6bb707daf3ecb0604f7fd8c1aa682#npm:10.9.1"],\
           ["typescript", "patch:typescript@npm%3A5.0.4#optional!builtin<compat/typescript>::version=5.0.4&hash=b5f058"]\
         ],\
@@ -4326,7 +4326,7 @@ const RAW_RUNTIME_STATE =
           ["jsonwebtoken", "npm:9.0.0"],\
           ["newrelic", "npm:10.1.0"],\
           ["nodemon", "npm:2.0.22"],\
-          ["npm-check-updates", "npm:16.10.9"],\
+          ["npm-check-updates", "npm:16.10.12"],\
           ["prettier", "npm:2.8.8"],\
           ["prettyjson", "npm:1.2.5"],\
           ["reflect-metadata", "npm:0.1.13"],\
@@ -4389,7 +4389,7 @@ const RAW_RUNTIME_STATE =
           ["mysql2", "npm:3.2.4"],\
           ["newrelic", "npm:10.1.0"],\
           ["nodemon", "npm:2.0.22"],\
-          ["npm-check-updates", "npm:16.10.9"],\
+          ["npm-check-updates", "npm:16.10.12"],\
           ["otplib", "npm:12.0.1"],\
           ["prettier", "npm:2.8.8"],\
           ["prettyjson", "npm:1.2.5"],\
@@ -4597,7 +4597,7 @@ const RAW_RUNTIME_STATE =
           ["jsonwebtoken", "npm:9.0.0"],\
           ["newrelic", "npm:10.1.0"],\
           ["nodemon", "npm:2.0.22"],\
-          ["npm-check-updates", "npm:16.10.9"],\
+          ["npm-check-updates", "npm:16.10.12"],\
           ["prettier", "npm:2.8.8"],\
           ["prettyjson", "npm:1.2.5"],\
           ["reflect-metadata", "npm:0.1.13"],\
@@ -4715,7 +4715,7 @@ const RAW_RUNTIME_STATE =
           ["jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.5.0"],\
           ["mysql2", "npm:3.2.4"],\
           ["newrelic", "npm:10.1.0"],\
-          ["npm-check-updates", "npm:16.10.9"],\
+          ["npm-check-updates", "npm:16.10.12"],\
           ["prettier", "npm:2.8.8"],\
           ["reflect-metadata", "npm:0.1.13"],\
           ["sqlite3", "virtual:31b5a94a105c89c9294c3d524a7f8929fe63ee5a2efadf21951ca4c0cfd2ecf02e8f4ef5a066bbda091f1e3a56e57c6749069a080618c96b22e51131a330fc4a#npm:5.1.6"],\
@@ -4755,7 +4755,7 @@ const RAW_RUNTIME_STATE =
           ["jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.5.0"],\
           ["mysql2", "npm:3.2.4"],\
           ["newrelic", "npm:10.1.0"],\
-          ["npm-check-updates", "npm:16.10.9"],\
+          ["npm-check-updates", "npm:16.10.12"],\
           ["prettier", "npm:2.8.8"],\
           ["reflect-metadata", "npm:0.1.13"],\
           ["ts-jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.1.0"],\
@@ -4805,7 +4805,7 @@ const RAW_RUNTIME_STATE =
           ["eslint-config-prettier", "virtual:8859b278716fedf3e7458b5628625f7e35678c418626878559a0b816445001b7e24c55546f4677ba4c20b521aa0cf52cc33ac07deff171e383ada6eeab69933f#npm:8.8.0"],\
           ["ini", "npm:3.0.1"],\
           ["newrelic", "npm:10.1.0"],\
-          ["npm-check-updates", "npm:16.10.9"],\
+          ["npm-check-updates", "npm:16.10.12"],\
           ["ts-node", "virtual:ef6136dc31186c42f92851afb237eadaa9d36085920cabb6ed6ea317680c8271d6b94afcb795fd7e58c08243e470be87ece6bb707daf3ecb0604f7fd8c1aa682#npm:10.9.1"],\
           ["typescript", "patch:typescript@npm%3A5.0.4#optional!builtin<compat/typescript>::version=5.0.4&hash=b5f058"]\
         ],\
@@ -4907,7 +4907,7 @@ const RAW_RUNTIME_STATE =
           ["mysql2", "npm:3.2.4"],\
           ["newrelic", "npm:10.1.0"],\
           ["nodemon", "npm:2.0.22"],\
-          ["npm-check-updates", "npm:16.10.9"],\
+          ["npm-check-updates", "npm:16.10.12"],\
           ["prettier", "npm:2.8.8"],\
           ["prettyjson", "npm:1.2.5"],\
           ["reflect-metadata", "npm:0.1.13"],\
@@ -9249,6 +9249,18 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "HARD"\
       }],\
+      ["npm:10.2.3", {\
+        "packageLocation": "./.yarn/cache/glob-npm-10.2.3-324f53b7d5-8643c4897d.zip/node_modules/glob/",\
+        "packageDependencies": [\
+          ["glob", "npm:10.2.3"],\
+          ["foreground-child", "npm:3.1.1"],\
+          ["jackspeak", "npm:2.2.0"],\
+          ["minimatch", "npm:9.0.0"],\
+          ["minipass", "npm:5.0.0"],\
+          ["path-scurry", "npm:1.7.0"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
       ["npm:7.2.3", {\
         "packageLocation": "./.yarn/cache/glob-npm-7.2.3-2d866d17a5-c55966a5db.zip/node_modules/glob/",\
         "packageDependencies": [\
@@ -9271,17 +9283,6 @@ const RAW_RUNTIME_STATE =
           ["inherits", "npm:2.0.4"],\
           ["minimatch", "npm:5.1.6"],\
           ["once", "npm:1.4.0"]\
-        ],\
-        "linkType": "HARD"\
-      }],\
-      ["npm:9.3.5", {\
-        "packageLocation": "./.yarn/cache/glob-npm-9.3.5-2f602083f0-e5cd25695c.zip/node_modules/glob/",\
-        "packageDependencies": [\
-          ["glob", "npm:9.3.5"],\
-          ["fs.realpath", "npm:1.0.0"],\
-          ["minimatch", "npm:8.0.4"],\
-          ["minipass", "npm:4.2.8"],\
-          ["path-scurry", "npm:1.7.0"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -11686,14 +11687,6 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "HARD"\
       }],\
-      ["npm:8.0.4", {\
-        "packageLocation": "./.yarn/cache/minimatch-npm-8.0.4-bf57f0e98a-eea8425c44.zip/node_modules/minimatch/",\
-        "packageDependencies": [\
-          ["minimatch", "npm:8.0.4"],\
-          ["brace-expansion", "npm:2.0.1"]\
-        ],\
-        "linkType": "HARD"\
-      }],\
       ["npm:9.0.0", {\
         "packageLocation": "./.yarn/cache/minimatch-npm-9.0.0-c6737cb1be-07983996ed.zip/node_modules/minimatch/",\
         "packageDependencies": [\
@@ -12306,10 +12299,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["npm-check-updates", [\
-      ["npm:16.10.9", {\
-        "packageLocation": "./.yarn/cache/npm-check-updates-npm-16.10.9-33c9c7db2d-72ec7248a6.zip/node_modules/npm-check-updates/",\
+      ["npm:16.10.12", {\
+        "packageLocation": "./.yarn/cache/npm-check-updates-npm-16.10.12-52621487c3-4ec825b97d.zip/node_modules/npm-check-updates/",\
         "packageDependencies": [\
-          ["npm-check-updates", "npm:16.10.9"],\
+          ["npm-check-updates", "npm:16.10.12"],\
           ["chalk", "npm:5.2.0"],\
           ["cli-table3", "npm:0.6.3"],\
           ["commander", "npm:10.0.1"],\
@@ -12324,7 +12317,7 @@ const RAW_RUNTIME_STATE =
           ["json-parse-helpfulerror", "npm:1.0.3"],\
           ["jsonlines", "npm:0.1.1"],\
           ["lodash", "npm:4.17.21"],\
-          ["minimatch", "npm:8.0.4"],\
+          ["minimatch", "npm:9.0.0"],\
           ["p-map", "npm:4.0.0"],\
           ["pacote", "npm:15.1.1"],\
           ["parse-github-url", "npm:1.0.2"],\
@@ -12332,7 +12325,7 @@ const RAW_RUNTIME_STATE =
           ["prompts-ncu", "npm:3.0.0"],\
           ["rc-config-loader", "npm:4.1.2"],\
           ["remote-git-tags", "npm:3.0.0"],\
-          ["rimraf", "npm:4.4.1"],\
+          ["rimraf", "npm:5.0.0"],\
           ["semver", "npm:7.5.0"],\
           ["semver-utils", "npm:1.1.4"],\
           ["source-map-support", "npm:0.5.21"],\
@@ -13695,11 +13688,11 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "HARD"\
       }],\
-      ["npm:4.4.1", {\
-        "packageLocation": "./.yarn/cache/rimraf-npm-4.4.1-80b02e041a-1dcc3cb6a1.zip/node_modules/rimraf/",\
+      ["npm:5.0.0", {\
+        "packageLocation": "./.yarn/cache/rimraf-npm-5.0.0-3bcbe577cb-67d11322c6.zip/node_modules/rimraf/",\
         "packageDependencies": [\
-          ["rimraf", "npm:4.4.1"],\
-          ["glob", "npm:9.3.5"]\
+          ["rimraf", "npm:5.0.0"],\
+          ["glob", "npm:10.2.3"]\
         ],\
         "linkType": "HARD"\
       }]\
