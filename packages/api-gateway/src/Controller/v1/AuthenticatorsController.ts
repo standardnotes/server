@@ -3,11 +3,11 @@ import { Request, Response } from 'express'
 import { controller, BaseHttpController, httpPost, httpGet, httpDelete } from 'inversify-express-utils'
 
 import { TYPES } from '../../Bootstrap/Types'
-import { HttpServiceInterface } from '../../Service/Http/HttpServiceInterface'
+import { ServiceProxyInterface } from '../../Service/Http/ServiceProxyInterface'
 
 @controller('/v1/authenticators')
 export class AuthenticatorsController extends BaseHttpController {
-  constructor(@inject(TYPES.HTTPService) private httpService: HttpServiceInterface) {
+  constructor(@inject(TYPES.HTTPService) private httpService: ServiceProxyInterface) {
     super()
   }
 

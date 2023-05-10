@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 
-export interface HttpServiceInterface {
+export interface ServiceProxyInterface {
   callEmailServer(
     request: Request,
     response: Response,

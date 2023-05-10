@@ -6,10 +6,10 @@ import { Logger } from 'winston'
 
 import { TYPES } from '../../Bootstrap/Types'
 import { CrossServiceTokenCacheInterface } from '../Cache/CrossServiceTokenCacheInterface'
-import { HttpServiceInterface } from './HttpServiceInterface'
+import { ServiceProxyInterface } from './ServiceProxyInterface'
 
 @injectable()
-export class HttpService implements HttpServiceInterface {
+export class HttpServiceProxy implements ServiceProxyInterface {
   constructor(
     @inject(TYPES.HTTPClient) private httpClient: AxiosInstance,
     @inject(TYPES.AUTH_SERVER_URL) private authServerUrl: string,

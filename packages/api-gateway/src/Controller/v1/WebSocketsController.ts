@@ -4,12 +4,12 @@ import { BaseHttpController, controller, httpDelete, httpPost } from 'inversify-
 import { Logger } from 'winston'
 
 import { TYPES } from '../../Bootstrap/Types'
-import { HttpServiceInterface } from '../../Service/Http/HttpServiceInterface'
+import { ServiceProxyInterface } from '../../Service/Http/ServiceProxyInterface'
 
 @controller('/v1/sockets')
 export class WebSocketsController extends BaseHttpController {
   constructor(
-    @inject(TYPES.HTTPService) private httpService: HttpServiceInterface,
+    @inject(TYPES.HTTPService) private httpService: ServiceProxyInterface,
     @inject(TYPES.Logger) private logger: Logger,
   ) {
     super()

@@ -13,13 +13,13 @@ import {
 } from 'inversify-express-utils'
 import { Logger } from 'winston'
 import { TYPES } from '../../Bootstrap/Types'
-import { HttpServiceInterface } from '../../Service/Http/HttpServiceInterface'
+import { ServiceProxyInterface } from '../../Service/Http/ServiceProxyInterface'
 import { TokenAuthenticationMethod } from '../TokenAuthenticationMethod'
 
 @controller('/v1/users')
 export class UsersController extends BaseHttpController {
   constructor(
-    @inject(TYPES.HTTPService) private httpService: HttpServiceInterface,
+    @inject(TYPES.HTTPService) private httpService: ServiceProxyInterface,
     @inject(TYPES.Logger) private logger: Logger,
   ) {
     super()

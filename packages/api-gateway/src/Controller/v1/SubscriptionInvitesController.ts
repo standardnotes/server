@@ -3,11 +3,11 @@ import { inject } from 'inversify'
 import { BaseHttpController, controller, httpDelete, httpGet, httpPost } from 'inversify-express-utils'
 
 import { TYPES } from '../../Bootstrap/Types'
-import { HttpServiceInterface } from '../../Service/Http/HttpServiceInterface'
+import { ServiceProxyInterface } from '../../Service/Http/ServiceProxyInterface'
 
 @controller('/v1/subscription-invites')
 export class SubscriptionInvitesController extends BaseHttpController {
-  constructor(@inject(TYPES.HTTPService) private httpService: HttpServiceInterface) {
+  constructor(@inject(TYPES.HTTPService) private httpService: ServiceProxyInterface) {
     super()
   }
 

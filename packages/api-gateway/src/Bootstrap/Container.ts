@@ -9,8 +9,8 @@ import { Timer, TimerInterface } from '@standardnotes/time'
 import { Env } from './Env'
 import { TYPES } from './Types'
 import { AuthMiddleware } from '../Controller/AuthMiddleware'
-import { HttpServiceInterface } from '../Service/Http/HttpServiceInterface'
-import { HttpService } from '../Service/Http/HttpService'
+import { ServiceProxyInterface } from '../Service/Http/ServiceProxyInterface'
+import { HttpServiceProxy } from '../Service/Http/HttpServiceProxy'
 import { SubscriptionTokenAuthMiddleware } from '../Controller/SubscriptionTokenAuthMiddleware'
 import { CrossServiceTokenCacheInterface } from '../Service/Cache/CrossServiceTokenCacheInterface'
 import { RedisCrossServiceTokenCache } from '../Infra/Redis/RedisCrossServiceTokenCache'
@@ -79,7 +79,7 @@ export class ContainerConfigLoader {
       .to(SubscriptionTokenAuthMiddleware)
 
     // Services
-    container.bind<HttpServiceInterface>(TYPES.HTTPService).to(HttpService)
+    container.bind<ServiceProxyInterface>(TYPES.HTTPService).to(HttpServiceProxy)
     container.bind<TimerInterface>(TYPES.Timer).toConstantValue(new Timer())
 
     if (isConfiguredForHomeServer) {
