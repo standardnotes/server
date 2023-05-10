@@ -31,10 +31,17 @@ export * from './Core/Validator'
 export * from './Core/ValueObject'
 export * from './Core/ValueObjectProps'
 
+export * from './DI/ContainerConfigurationInterface'
+
 export * from './Email/EmailLevel'
 export * from './Email/EmailLevelProps'
 
 export * from './Mapping/MapperInterface'
+
+export * from './Service/ServiceContainerInterface'
+export * from './Service/ServiceIdentifier'
+export * from './Service/ServiceIdentifierProps'
+export * from './Service/ServiceInterface'
 
 export * from './Subscription/SubscriptionPlanName'
 export * from './Subscription/SubscriptionPlanNameProps'

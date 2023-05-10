@@ -27,8 +27,11 @@ export class OfflineController extends BaseHttpController {
     @inject(TYPES.OfflineUserTokenEncoder) private tokenEncoder: TokenEncoderInterface<OfflineUserTokenData>,
     @inject(TYPES.AUTH_JWT_TTL) private jwtTTL: number,
     @inject(TYPES.Logger) private logger: Logger,
+    @inject(TYPES.ControllerContainer) private controllerContainer: any,
   ) {
     super()
+
+    this.controllerContainer.register('OfflineController', this)
   }
 
   @httpGet('/features', TYPES.OfflineUserAuthMiddleware)
