@@ -1,3 +1,6 @@
+import { UpdateSharedItemUseCase } from './../Domain/UseCase/ItemShare/UpdateSharedItemUseCase'
+import { GetSharedItemUseCase } from './../Domain/UseCase/ItemShare/GetSharedItemUseCase'
+import { ItemShareServiceInterface } from './../Domain/ItemShare/ItemShareServiceInterface'
 import { Container, interfaces } from 'inversify'
 
 import { Env } from './Env'
@@ -29,6 +32,10 @@ import { SavedItemProjector } from '../Projection/SavedItemProjector'
 import { ItemConflict } from '../Domain/Item/ItemConflict'
 import { ItemConflictProjection } from '../Projection/ItemConflictProjection'
 import { CommonContainerConfigLoader } from './CommonContainerConfigLoader'
+import { ItemShareService } from '../Domain/ItemShare/ItemShareService'
+import { ItemShareFactoryInterface } from '../Domain/ItemShare/ItemShareFactoryInterface'
+import { ItemShareFactory } from '../Domain/ItemShare/ItemShareFactory'
+import { ShareItemUseCase } from '../Domain/UseCase/ItemShare/ShareItemUseCase'
 
 export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
   private readonly DEFAULT_CONTENT_SIZE_TRANSFER_LIMIT = 10_000_000
@@ -84,6 +91,15 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
     container.bind<GetItem>(TYPES.GetItem).toDynamicValue((context: interfaces.Context) => {
       return new GetItem(context.container.get(TYPES.ItemRepository))
     })
+    container.bind<ShareItemUseCase>(TYPES.ShareItem).toDynamicValue((context: interfaces.Context) => {
+      return new ShareItemUseCase(context.container.get(TYPES.ItemShareService))
+    })
+    container.bind<GetSharedItemUseCase>(TYPES.GetSharedItem).toDynamicValue((context: interfaces.Context) => {
+      return new GetSharedItemUseCase(context.container.get(TYPES.ItemShareService))
+    })
+    container.bind<UpdateSharedItemUseCase>(TYPES.UpdateSharedItem).toDynamicValue((context: interfaces.Context) => {
+      return new UpdateSharedItemUseCase(context.container.get(TYPES.ItemShareService))
+    })
 
     // Services
     container.bind<ItemServiceInterface>(TYPES.ItemService).toDynamicValue((context: interfaces.Context) => {
@@ -100,6 +116,14 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
         context.container.get(TYPES.ItemProjector),
         context.container.get(TYPES.MAX_ITEMS_LIMIT),
         context.container.get(TYPES.Logger),
+      )
+    })
+    // Services
+    container.bind<ItemShareServiceInterface>(TYPES.ItemService).toDynamicValue((context: interfaces.Context) => {
+      return new ItemShareService(
+        context.container.get(TYPES.ItemShareRepository),
+        context.container.get(TYPES.ItemShareFactory),
+        context.container.get(TYPES.GetItem),
       )
     })
     container
@@ -127,6 +151,9 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
 
     container.bind<ItemFactoryInterface>(TYPES.ItemFactory).toDynamicValue((context: interfaces.Context) => {
       return new ItemFactory(context.container.get(TYPES.Timer), context.container.get(TYPES.ItemProjector))
+    })
+    container.bind<ItemShareFactoryInterface>(TYPES.ItemFactory).toDynamicValue((context: interfaces.Context) => {
+      return new ItemShareFactory(context.container.get(TYPES.Timer))
     })
 
     container.bind<OwnershipFilter>(TYPES.OwnershipFilter).toDynamicValue(() => new OwnershipFilter())

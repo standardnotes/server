@@ -8,6 +8,7 @@ const TYPES = {
   Env: Symbol.for('Env'),
   // Repositories
   ItemRepository: Symbol.for('ItemRepository'),
+  ItemShareRepository: Symbol.for('ItemShareRepository'),
   // ORM
   ORMItemRepository: Symbol.for('ORMItemRepository'),
   // Middleware
@@ -38,6 +39,9 @@ const TYPES = {
   SyncItems: Symbol.for('SyncItems'),
   CheckIntegrity: Symbol.for('CheckIntegrity'),
   GetItem: Symbol.for('GetItem'),
+  ShareItem: Symbol.for('ShareItem'),
+  GetSharedItem: Symbol.for('GetSharedItem'),
+  UpdateSharedItem: Symbol.for('UpdateSharedItem'),
   // Handlers
   AccountDeletionRequestedEventHandler: Symbol.for('AccountDeletionRequestedEventHandler'),
   DuplicateItemSyncedEventHandler: Symbol.for('DuplicateItemSyncedEventHandler'),
@@ -51,6 +55,7 @@ const TYPES = {
   DomainEventMessageHandler: Symbol.for('DomainEventMessageHandler'),
   HTTPClient: Symbol.for('HTTPClient'),
   ItemService: Symbol.for('ItemService'),
+  ItemShareService: Symbol.for('ItemShareService'),
   Timer: Symbol.for('Timer'),
   SyncResponseFactory20161215: Symbol.for('SyncResponseFactory20161215'),
   SyncResponseFactory20200115: Symbol.for('SyncResponseFactory20200115'),
@@ -65,6 +70,7 @@ const TYPES = {
   ContentTypeFilter: Symbol.for('ContentTypeFilter'),
   ContentFilter: Symbol.for('ContentFilter'),
   ItemFactory: Symbol.for('ItemFactory'),
+  ItemShareFactory: Symbol.for('ItemShareFactory'),
   ItemTransferCalculator: Symbol.for('ItemTransferCalculator'),
 }
 

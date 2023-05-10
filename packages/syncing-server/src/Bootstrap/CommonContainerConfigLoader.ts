@@ -18,6 +18,8 @@ import { DomainEventFactory } from '../Domain/Event/DomainEventFactory'
 import { Timer, TimerInterface } from '@standardnotes/time'
 import { ItemTransferCalculatorInterface } from '../Domain/Item/ItemTransferCalculatorInterface'
 import { ItemTransferCalculator } from '../Domain/Item/ItemTransferCalculator'
+import { ItemShareRepositoryInterface } from '../Domain/ItemShare/ItemShareRepositoryInterface'
+import { TypeORMItemShareRepository } from '../Infra/TypeORM/TypeORMItemShareRepository'
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
 
@@ -76,6 +78,11 @@ export class CommonContainerConfigLoader {
     container.bind<ItemRepositoryInterface>(TYPES.ItemRepository).toDynamicValue((context: interfaces.Context) => {
       return new TypeORMItemRepository(context.container.get(TYPES.ORMItemRepository))
     })
+    container
+      .bind<ItemShareRepositoryInterface>(TYPES.ItemShareRepository)
+      .toDynamicValue((context: interfaces.Context) => {
+        return new TypeORMItemShareRepository(context.container.get(TYPES.ORMItemRepository))
+      })
 
     // ORM
     container.bind<Repository<Item>>(TYPES.ORMItemRepository).toDynamicValue(() => AppDataSource.getRepository(Item))
