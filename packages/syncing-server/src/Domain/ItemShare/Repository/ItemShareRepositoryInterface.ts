@@ -1,4 +1,4 @@
-import { ItemShare } from './ItemShare'
+import { ItemShare } from '../Model/ItemShare'
 
 export type ItemShareQuery = {
   userUuid: string
@@ -12,6 +12,7 @@ export type UserItemSharesQuery = {
 export interface ItemShareRepositoryInterface {
   create(itemShare: ItemShare): Promise<ItemShare>
   remove(itemShare: ItemShare): Promise<ItemShare>
+  expire(shareToken: string): Promise<void>
   updateEncryptedContentKey(dto: { shareToken: string; encryptedContentKey: string }): Promise<void>
   deleteByShareToken(shareToken: string): Promise<void>
   findByShareToken(shareToken: string): Promise<ItemShare | null>

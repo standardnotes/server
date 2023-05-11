@@ -1,4 +1,4 @@
-import { ItemShare } from './../Domain/ItemShare/ItemShare'
+import { ItemShare } from '../Domain/ItemShare/Model/ItemShare'
 import { DataSource, LoggerOptions } from 'typeorm'
 import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions'
 import { Item } from '../Domain/Item/Item'

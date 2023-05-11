@@ -1,6 +1,6 @@
 import { UpdateSharedItemUseCase } from './../Domain/UseCase/ItemShare/UpdateSharedItemUseCase'
 import { GetSharedItemUseCase } from './../Domain/UseCase/ItemShare/GetSharedItemUseCase'
-import { ItemShareServiceInterface } from './../Domain/ItemShare/ItemShareServiceInterface'
+import { ItemShareServiceInterface } from '../Domain/ItemShare/Service/ItemShareServiceInterface'
 import { Container, interfaces } from 'inversify'
 
 import { Env } from './Env'
@@ -32,13 +32,13 @@ import { SavedItemProjector } from '../Projection/SavedItemProjector'
 import { ItemConflict } from '../Domain/Item/ItemConflict'
 import { ItemConflictProjection } from '../Projection/ItemConflictProjection'
 import { CommonContainerConfigLoader } from './CommonContainerConfigLoader'
-import { ItemShareService } from '../Domain/ItemShare/ItemShareService'
-import { ItemShareFactoryInterface } from '../Domain/ItemShare/ItemShareFactoryInterface'
-import { ItemShareFactory } from '../Domain/ItemShare/ItemShareFactory'
+import { ItemShareService } from '../Domain/ItemShare/Service/ItemShareService'
+import { ItemShareFactory } from '../Domain/ItemShare/Factory/ItemShareFactory'
 import { ShareItemUseCase } from '../Domain/UseCase/ItemShare/ShareItemUseCase'
 import { GetUserItemSharesUseCase } from '../Domain/UseCase/ItemShare/GetUserItemSharesUseCase'
 import { TokenEncoder, TokenEncoderInterface, ValetTokenData } from '@standardnotes/security'
 import { CreateSharedFileValetToken } from '../Domain/UseCase/CreateSharedFileValetToken/CreateSharedFileValetToken'
+import { ItemShareFactoryInterface } from '../Domain/ItemShare/Factory/ItemShareFactoryInterface'
 
 export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
   private readonly DEFAULT_CONTENT_SIZE_TRANSFER_LIMIT = 10_000_000
@@ -145,6 +145,7 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
         context.container.get(TYPES.ItemShareRepository),
         context.container.get(TYPES.ItemShareFactory),
         context.container.get(TYPES.GetItem),
+        context.container.get(TYPES.Timer),
       )
     })
     container

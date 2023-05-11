@@ -34,6 +34,7 @@ export class ItemSharesController extends BaseHttpController {
       encryptedContentKey: request.body.encryptedContentKey,
       contentType: request.body.contentType,
       fileRemoteIdentifier: request.body.fileRemoteIdentifier,
+      duration: request.body.duration,
     })
 
     return this.json(result)

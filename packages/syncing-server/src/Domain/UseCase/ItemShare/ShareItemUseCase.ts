@@ -1,5 +1,6 @@
-import { ItemShare } from '../../ItemShare/ItemShare'
-import { ItemShareServiceInterface, ShareItemDTO } from '../../ItemShare/ItemShareServiceInterface'
+import { ItemShare } from '../../ItemShare/Model/ItemShare'
+import { ItemShareServiceInterface } from '../../ItemShare/Service/ItemShareServiceInterface'
+import { ShareItemDTO } from '../../ItemShare/Service/ShareItemDTO'
 import { UseCaseInterface } from '../UseCaseInterface'
 
 export type ShareItemResponse =

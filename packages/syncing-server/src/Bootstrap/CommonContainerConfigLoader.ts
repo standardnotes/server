@@ -1,5 +1,5 @@
-import { ItemShare } from './../Domain/ItemShare/ItemShare'
-import { TypeORMItemShareRepository } from './../Infra/TypeORM/TypeORMItemShareRepository'
+import { ItemShare } from '../Domain/ItemShare/Model/ItemShare'
+import { TypeORMItemShareRepository } from '../Domain/ItemShare/Repository/TypeORMItemShareRepository'
 import * as winston from 'winston'
 import { Container, interfaces } from 'inversify'
 
@@ -20,7 +20,7 @@ import { DomainEventFactory } from '../Domain/Event/DomainEventFactory'
 import { Timer, TimerInterface } from '@standardnotes/time'
 import { ItemTransferCalculatorInterface } from '../Domain/Item/ItemTransferCalculatorInterface'
 import { ItemTransferCalculator } from '../Domain/Item/ItemTransferCalculator'
-import { ItemShareRepositoryInterface } from '../Domain/ItemShare/ItemShareRepositoryInterface'
+import { ItemShareRepositoryInterface } from '../Domain/ItemShare/Repository/ItemShareRepositoryInterface'
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
 

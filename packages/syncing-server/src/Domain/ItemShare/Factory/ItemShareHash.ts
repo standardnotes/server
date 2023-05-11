@@ -1,5 +1,4 @@
 import { ContentType } from '@standardnotes/common'
-import { ItemShare } from './ItemShare'
 
 export type ItemShareHash = {
   uuid: string
@@ -9,12 +8,7 @@ export type ItemShareHash = {
   encrypted_content_key: string
   content_type: ContentType
   file_remote_identifier?: string
-  expired?: boolean
+  duration: string
   created_at_timestamp?: number
   updated_at_timestamp?: number
-}
-
-export interface ItemShareFactoryInterface {
-  create(dto: { userUuid: string; itemShareHash: ItemShareHash }): ItemShare
-  createStub(dto: { userUuid: string; itemShareHash: ItemShareHash }): ItemShare
 }

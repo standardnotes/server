@@ -1,5 +1,5 @@
-import { UpdateSharedItemDto } from './../../ItemShare/ItemShareServiceInterface'
-import { ItemShareServiceInterface } from '../../ItemShare/ItemShareServiceInterface'
+import { ItemShareServiceInterface } from '../../ItemShare/Service/ItemShareServiceInterface'
+import { UpdateSharedItemDto } from '../../ItemShare/Service/UpdateSharedItemDto'
 import { UseCaseInterface } from '../UseCaseInterface'
 
 export type UpdateSharedItemResponse =

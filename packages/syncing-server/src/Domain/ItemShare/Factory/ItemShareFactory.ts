@@ -1,6 +1,7 @@
 import { TimerInterface } from '@standardnotes/time'
-import { ItemShareFactoryInterface, ItemShareHash } from './ItemShareFactoryInterface'
-import { ItemShare } from './ItemShare'
+import { ItemShareFactoryInterface } from './ItemShareFactoryInterface'
+import { ItemShareHash } from './ItemShareHash'
+import { ItemShare } from '../Model/ItemShare'
 
 export class ItemShareFactory implements ItemShareFactoryInterface {
   constructor(private timer: TimerInterface) {}
@@ -13,13 +14,11 @@ export class ItemShareFactory implements ItemShareFactoryInterface {
     newItemShare.shareToken = dto.itemShareHash.share_token
     newItemShare.encryptedContentKey = dto.itemShareHash.encrypted_content_key
     newItemShare.publicKey = dto.itemShareHash.public_key
-    newItemShare.fileRemoteIdentifier = dto.itemShareHash.file_remote_identifier
+    newItemShare.fileRemoteIdentifier = dto.itemShareHash.file_remote_identifier ?? null
     newItemShare.contentType = dto.itemShareHash.content_type
-    if (dto.itemShareHash.expired != null) {
-      newItemShare.expired = dto.itemShareHash.expired
-    }
+    newItemShare.duration = dto.itemShareHash.duration
 
-    const now = this.timer.getTimestampInMicroseconds()
+    const now = this.timer.getTimestampInSeconds()
     newItemShare.updatedAtTimestamp = now
     newItemShare.createdAtTimestamp = now
 

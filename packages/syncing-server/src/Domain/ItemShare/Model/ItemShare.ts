@@ -57,7 +57,14 @@ export class ItemShare {
     length: 255,
     nullable: true,
   })
-  declare fileRemoteIdentifier: string | undefined
+  declare fileRemoteIdentifier: string | null
+
+  @Column({
+    name: 'duration',
+    type: 'varchar',
+    length: 255,
+  })
+  declare duration: string
 
   @Column({
     type: 'tinyint',
@@ -65,7 +72,7 @@ export class ItemShare {
     nullable: true,
     default: 0,
   })
-  declare expired: boolean
+  declare consumed: boolean
 
   @Column({
     name: 'created_at_timestamp',

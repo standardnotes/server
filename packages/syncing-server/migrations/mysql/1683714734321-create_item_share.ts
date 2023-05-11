@@ -17,17 +17,19 @@ export class CreateItemShare1683714734321 implements MigrationInterface {
           name: 'user_uuid',
           type: 'varchar',
           length: '36',
+          isNullable: false,
         }),
         new TableColumn({
           name: 'item_uuid',
           type: 'varchar',
           length: '36',
+          isNullable: false,
         }),
         new TableColumn({
           name: 'share_token',
           type: 'varchar',
           length: '36',
-          isNullable: true,
+          isNullable: false,
         }),
         new TableColumn({
           name: 'content_type',
@@ -52,7 +54,13 @@ export class CreateItemShare1683714734321 implements MigrationInterface {
           isNullable: true,
         }),
         new TableColumn({
-          name: 'expired',
+          name: 'duration',
+          type: 'varchar',
+          length: '255',
+          isNullable: false,
+        }),
+        new TableColumn({
+          name: 'consumed',
           type: 'tinyint',
           precision: 1,
           isNullable: true,

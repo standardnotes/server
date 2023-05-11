@@ -1,5 +1,5 @@
-import { ItemShare } from '../../ItemShare/ItemShare'
-import { ItemShareServiceInterface } from '../../ItemShare/ItemShareServiceInterface'
+import { ItemShare } from '../../ItemShare/Model/ItemShare'
+import { ItemShareServiceInterface } from '../../ItemShare/Service/ItemShareServiceInterface'
 import { UseCaseInterface } from '../UseCaseInterface'
 
 export type GetUserItemSharesResponse =

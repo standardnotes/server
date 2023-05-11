@@ -1,6 +1,6 @@
 import { Repository, SelectQueryBuilder } from 'typeorm'
-import { ItemShareRepositoryInterface, UserItemSharesQuery } from '../../Domain/ItemShare/ItemShareRepositoryInterface'
-import { ItemShare } from '../../Domain/ItemShare/ItemShare'
+import { ItemShareRepositoryInterface, UserItemSharesQuery } from './ItemShareRepositoryInterface'
+import { ItemShare } from '../Model/ItemShare'
 
 export class TypeORMItemShareRepository implements ItemShareRepositoryInterface {
   constructor(private ormRepository: Repository<ItemShare>) {}
@@ -11,6 +11,22 @@ export class TypeORMItemShareRepository implements ItemShareRepositoryInterface 
 
   async remove(itemShare: ItemShare): Promise<ItemShare> {
     return this.ormRepository.remove(itemShare)
+  }
+
+  async expire(shareToken: string): Promise<void> {
+    await this.ormRepository
+      .createQueryBuilder('item_share')
+      .update()
+      .set({
+        encryptedContentKey: null,
+        publicKey: null,
+        consumed: true,
+        fileRemoteIdentifier: null,
+      })
+      .where('share_token = :shareToken', {
+        shareToken: shareToken,
+      })
+      .execute()
   }
 
   async updateEncryptedContentKey(dto: { shareToken: string; encryptedContentKey: string }): Promise<void> {
