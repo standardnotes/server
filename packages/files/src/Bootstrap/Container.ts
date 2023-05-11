@@ -44,6 +44,7 @@ import { MarkFilesToBeRemoved } from '../Domain/UseCase/MarkFilesToBeRemoved/Mar
 import { AccountDeletionRequestedEventHandler } from '../Domain/Handler/AccountDeletionRequestedEventHandler'
 import { SharedSubscriptionInvitationCanceledEventHandler } from '../Domain/Handler/SharedSubscriptionInvitationCanceledEventHandler'
 import { InMemoryUploadRepository } from '../Infra/InMemory/InMemoryUploadRepository'
+import { SharedValetTokenAuthMiddleware } from '../Controller/SharedValetTokenAuthMiddleware'
 
 export class ContainerConfigLoader {
   async load(): Promise<Container> {
@@ -149,6 +150,9 @@ export class ContainerConfigLoader {
 
     // middleware
     container.bind<ValetTokenAuthMiddleware>(TYPES.ValetTokenAuthMiddleware).to(ValetTokenAuthMiddleware)
+    container
+      .bind<SharedValetTokenAuthMiddleware>(TYPES.SharedValetTokenAuthMiddleware)
+      .to(SharedValetTokenAuthMiddleware)
 
     // services
     container

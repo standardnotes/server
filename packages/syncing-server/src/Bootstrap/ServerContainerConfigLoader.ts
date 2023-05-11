@@ -37,6 +37,8 @@ import { ItemShareFactoryInterface } from '../Domain/ItemShare/ItemShareFactoryI
 import { ItemShareFactory } from '../Domain/ItemShare/ItemShareFactory'
 import { ShareItemUseCase } from '../Domain/UseCase/ItemShare/ShareItemUseCase'
 import { GetUserItemSharesUseCase } from '../Domain/UseCase/ItemShare/GetUserItemSharesUseCase'
+import { TokenEncoder, TokenEncoderInterface, ValetTokenData } from '@standardnotes/security'
+import { CreateSharedFileValetToken } from '../Domain/UseCase/CreateSharedFileValetToken/CreateSharedFileValetToken'
 
 export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
   private readonly DEFAULT_CONTENT_SIZE_TRANSFER_LIMIT = 10_000_000
@@ -69,6 +71,8 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
     container.bind(TYPES.REVISIONS_FREQUENCY).toConstantValue(env.get('REVISIONS_FREQUENCY'))
     container.bind(TYPES.NEW_RELIC_ENABLED).toConstantValue(env.get('NEW_RELIC_ENABLED', true))
     container.bind(TYPES.VERSION).toConstantValue(env.get('VERSION'))
+    container.bind(TYPES.VALET_TOKEN_SECRET).toConstantValue(env.get('VALET_TOKEN_SECRET'))
+    container.bind(TYPES.VALET_TOKEN_TTL).toConstantValue(+env.get('VALET_TOKEN_TTL', true))
     container
       .bind(TYPES.CONTENT_SIZE_TRANSFER_LIMIT)
       .toConstantValue(
@@ -104,6 +108,19 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
     container.bind<GetUserItemSharesUseCase>(TYPES.GetUserItemShares).toDynamicValue((context: interfaces.Context) => {
       return new GetUserItemSharesUseCase(context.container.get(TYPES.ItemShareService))
     })
+    container
+      .bind<CreateSharedFileValetToken>(TYPES.CreateSharedFileValetToken)
+      .toDynamicValue((context: interfaces.Context) => {
+        return new CreateSharedFileValetToken(
+          context.container.get(TYPES.GetSharedItem),
+          context.container.get(TYPES.ValetTokenEncoder),
+          context.container.get(TYPES.VALET_TOKEN_TTL),
+        )
+      })
+
+    container
+      .bind<TokenEncoderInterface<ValetTokenData>>(TYPES.ValetTokenEncoder)
+      .toConstantValue(new TokenEncoder<ValetTokenData>(container.get(TYPES.VALET_TOKEN_SECRET)))
 
     // Services
     container.bind<ItemServiceInterface>(TYPES.ItemService).toDynamicValue((context: interfaces.Context) => {

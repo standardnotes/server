@@ -49,6 +49,7 @@ export class ItemShareService implements ItemShareServiceInterface {
         public_key: dto.publicKey,
         encrypted_content_key: dto.encryptedContentKey,
         content_type: dto.contentType,
+        file_remote_identifier: dto.fileRemoteIdentifier,
       },
     })
 

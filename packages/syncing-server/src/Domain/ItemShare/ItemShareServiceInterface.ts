@@ -8,6 +8,7 @@ export type ShareItemDTO = {
   publicKey: string
   encryptedContentKey: string
   contentType: ContentType
+  fileRemoteIdentifier?: string
 }
 
 export type UpdateSharedItemDto = {

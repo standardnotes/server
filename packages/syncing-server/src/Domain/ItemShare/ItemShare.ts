@@ -52,6 +52,14 @@ export class ItemShare {
   declare itemUuid: string
 
   @Column({
+    name: 'file_remote_identifier',
+    type: 'varchar',
+    length: 255,
+    nullable: true,
+  })
+  declare fileRemoteIdentifier: string | undefined
+
+  @Column({
     type: 'tinyint',
     precision: 1,
     nullable: true,

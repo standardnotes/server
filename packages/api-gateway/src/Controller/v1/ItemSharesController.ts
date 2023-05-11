@@ -4,7 +4,7 @@ import { BaseHttpController, controller, all, httpGet } from 'inversify-express-
 import { TYPES } from '../../Bootstrap/Types'
 import { HttpServiceInterface } from '../../Service/Http/HttpServiceInterface'
 
-@controller('/v1/share')
+@controller('/v1/sharing')
 export class ItemSharesController extends BaseHttpController {
   constructor(@inject(TYPES.HTTPService) private httpService: HttpServiceInterface) {
     super()

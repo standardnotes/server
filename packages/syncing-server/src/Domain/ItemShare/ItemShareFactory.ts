@@ -13,6 +13,8 @@ export class ItemShareFactory implements ItemShareFactoryInterface {
     newItemShare.shareToken = dto.itemShareHash.share_token
     newItemShare.encryptedContentKey = dto.itemShareHash.encrypted_content_key
     newItemShare.publicKey = dto.itemShareHash.public_key
+    newItemShare.fileRemoteIdentifier = dto.itemShareHash.file_remote_identifier
+    newItemShare.contentType = dto.itemShareHash.content_type
     if (dto.itemShareHash.expired != null) {
       newItemShare.expired = dto.itemShareHash.expired
     }

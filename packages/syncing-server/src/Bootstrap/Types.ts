@@ -36,6 +36,8 @@ const TYPES = {
   CONTENT_SIZE_TRANSFER_LIMIT: Symbol.for('CONTENT_SIZE_TRANSFER_LIMIT'),
   MAX_ITEMS_LIMIT: Symbol.for('MAX_ITEMS_LIMIT'),
   FILE_UPLOAD_PATH: Symbol.for('FILE_UPLOAD_PATH'),
+  VALET_TOKEN_SECRET: Symbol.for('VALET_TOKEN_SECRET'),
+  VALET_TOKEN_TTL: Symbol.for('VALET_TOKEN_TTL'),
   // use cases
   SyncItems: Symbol.for('SyncItems'),
   CheckIntegrity: Symbol.for('CheckIntegrity'),
@@ -44,6 +46,7 @@ const TYPES = {
   GetSharedItem: Symbol.for('GetSharedItem'),
   UpdateSharedItem: Symbol.for('UpdateSharedItem'),
   GetUserItemShares: Symbol.for('GetUserItemShares'),
+  CreateSharedFileValetToken: Symbol.for('CreateSharedFileValetToken'),
   // Handlers
   AccountDeletionRequestedEventHandler: Symbol.for('AccountDeletionRequestedEventHandler'),
   DuplicateItemSyncedEventHandler: Symbol.for('DuplicateItemSyncedEventHandler'),
@@ -74,6 +77,7 @@ const TYPES = {
   ItemFactory: Symbol.for('ItemFactory'),
   ItemShareFactory: Symbol.for('ItemShareFactory'),
   ItemTransferCalculator: Symbol.for('ItemTransferCalculator'),
+  ValetTokenEncoder: Symbol.for('ValetTokenEncoder'),
 }
 
 export default TYPES

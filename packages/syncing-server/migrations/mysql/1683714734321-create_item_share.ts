@@ -46,6 +46,12 @@ export class CreateItemShare1683714734321 implements MigrationInterface {
           isNullable: true,
         }),
         new TableColumn({
+          name: 'file_remote_identifier',
+          type: 'varchar',
+          length: '255',
+          isNullable: true,
+        }),
+        new TableColumn({
           name: 'expired',
           type: 'tinyint',
           precision: 1,

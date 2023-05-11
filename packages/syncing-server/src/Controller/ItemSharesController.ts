@@ -6,14 +6,21 @@ import { inject } from 'inversify'
 import { BaseHttpController, controller, httpGet, httpPatch, httpPost, results } from 'inversify-express-utils'
 import TYPES from '../Bootstrap/Types'
 import { ShareItemUseCase } from '../Domain/UseCase/ItemShare/ShareItemUseCase'
+import { CreateSharedFileValetToken } from '../Domain/UseCase/CreateSharedFileValetToken/CreateSharedFileValetToken'
+import { ContentType } from '@standardnotes/common'
+import { ProjectorInterface } from '../Projection/ProjectorInterface'
+import { Item } from '../Domain/Item/Item'
+import { ItemProjection } from '../Projection/ItemProjection'
 
-@controller('/share')
+@controller('/sharing')
 export class ItemSharesController extends BaseHttpController {
   constructor(
     @inject(TYPES.ShareItem) private shareItem: ShareItemUseCase,
     @inject(TYPES.GetSharedItem) private getSharedItem: GetSharedItemUseCase,
     @inject(TYPES.UpdateSharedItem) private updateSharedItem: UpdateSharedItemUseCase,
     @inject(TYPES.GetUserItemShares) private getItemShares: GetUserItemSharesUseCase,
+    @inject(TYPES.CreateSharedFileValetToken) private createSharedFileValetToken: CreateSharedFileValetToken,
+    @inject(TYPES.ItemProjector) private itemProjector: ProjectorInterface<Item, ItemProjection>,
   ) {
     super()
   }
@@ -26,6 +33,7 @@ export class ItemSharesController extends BaseHttpController {
       publicKey: request.body.publicKey,
       encryptedContentKey: request.body.encryptedContentKey,
       contentType: request.body.contentType,
+      fileRemoteIdentifier: request.body.fileRemoteIdentifier,
     })
 
     return this.json(result)
@@ -51,7 +59,37 @@ export class ItemSharesController extends BaseHttpController {
       return this.notFound()
     }
 
-    return this.json(result)
+    const item = await this.itemProjector.projectFull(result.item)
+
+    if (result.item.contentType === ContentType.File) {
+      if (!result.itemShare.fileRemoteIdentifier) {
+        return this.notFound()
+      }
+
+      const valetTokenResult = await this.createSharedFileValetToken.execute({
+        shareToken: request.params.shareToken,
+        sharingUserUuid: result.item.userUuid,
+        remoteIdentifier: result.itemShare.fileRemoteIdentifier,
+      })
+
+      if (valetTokenResult.success === false) {
+        return this.json({
+          success: false,
+          message: 'Failed to create valet token',
+        })
+      }
+
+      return this.json({
+        itemShare: result.itemShare,
+        item,
+        fileValetToken: valetTokenResult.valetToken,
+      })
+    }
+
+    return this.json({
+      itemShare: result.itemShare,
+      item,
+    })
   }
 
   @httpGet('/', TYPES.AuthMiddleware)
