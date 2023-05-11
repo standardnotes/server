@@ -8,7 +8,7 @@ import { RoleRepositoryInterface } from '../../Domain/Role/RoleRepositoryInterfa
 @injectable()
 export class TypeORMRoleRepository implements RoleRepositoryInterface {
   constructor(
-    @inject(TYPES.ORMRoleRepository)
+    @inject(TYPES.Auth_ORMRoleRepository)
     private ormRepository: Repository<Role>,
   ) {}
 

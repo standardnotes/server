@@ -10,8 +10,8 @@ import { UseCaseInterface } from './UseCaseInterface'
 @injectable()
 export class AuthenticateRequest implements UseCaseInterface {
   constructor(
-    @inject(TYPES.AuthenticateUser) private authenticateUser: AuthenticateUser,
-    @inject(TYPES.Logger) private logger: Logger,
+    @inject(TYPES.Auth_AuthenticateUser) private authenticateUser: AuthenticateUser,
+    @inject(TYPES.Auth_Logger) private logger: Logger,
   ) {}
 
   async execute(dto: AuthenticateRequestDTO): Promise<AuthenticateRequestResponse> {

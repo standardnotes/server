@@ -19,22 +19,22 @@ import { OfflineUserTokenData, TokenEncoderInterface } from '@standardnotes/secu
 @controller('/offline')
 export class OfflineController extends BaseHttpController {
   constructor(
-    @inject(TYPES.GetUserFeatures) private doGetUserFeatures: GetUserFeatures,
-    @inject(TYPES.GetUserOfflineSubscription) private getUserOfflineSubscription: GetUserOfflineSubscription,
-    @inject(TYPES.CreateOfflineSubscriptionToken)
+    @inject(TYPES.Auth_GetUserFeatures) private doGetUserFeatures: GetUserFeatures,
+    @inject(TYPES.Auth_GetUserOfflineSubscription) private getUserOfflineSubscription: GetUserOfflineSubscription,
+    @inject(TYPES.Auth_CreateOfflineSubscriptionToken)
     private createOfflineSubscriptionToken: CreateOfflineSubscriptionToken,
-    @inject(TYPES.AuthenticateOfflineSubscriptionToken) private authenticateToken: AuthenticateOfflineSubscriptionToken,
-    @inject(TYPES.OfflineUserTokenEncoder) private tokenEncoder: TokenEncoderInterface<OfflineUserTokenData>,
-    @inject(TYPES.AUTH_JWT_TTL) private jwtTTL: number,
-    @inject(TYPES.Logger) private logger: Logger,
-    @inject(TYPES.ControllerContainer) private controllerContainer: any,
+    @inject(TYPES.Auth_AuthenticateOfflineSubscriptionToken) private authenticateToken: AuthenticateOfflineSubscriptionToken,
+    @inject(TYPES.Auth_OfflineUserTokenEncoder) private tokenEncoder: TokenEncoderInterface<OfflineUserTokenData>,
+    @inject(TYPES.Auth_AUTH_JWT_TTL) private jwtTTL: number,
+    @inject(TYPES.Auth_Logger) private logger: Logger,
+    @inject(TYPES.Auth_ControllerContainer) private controllerContainer: any,
   ) {
     super()
 
     this.controllerContainer.register('OfflineController', this)
   }
 
-  @httpGet('/features', TYPES.OfflineUserAuthMiddleware)
+  @httpGet('/features', TYPES.Auth_OfflineUserAuthMiddleware)
   async getOfflineFeatures(_request: Request, response: Response): Promise<results.JsonResult> {
     const result = await this.doGetUserFeatures.execute({
       email: response.locals.offlineUserEmail,
@@ -122,7 +122,7 @@ export class OfflineController extends BaseHttpController {
     return this.json({ authToken })
   }
 
-  @httpGet('/users/subscription', TYPES.ApiGatewayOfflineAuthMiddleware)
+  @httpGet('/users/subscription', TYPES.Auth_ApiGatewayOfflineAuthMiddleware)
   async getSubscription(_request: Request, response: Response): Promise<results.JsonResult> {
     const result = await this.getUserOfflineSubscription.execute({
       userEmail: response.locals.userEmail,

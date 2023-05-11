@@ -17,15 +17,15 @@ import { CreateOfflineSubscriptionTokenResponse } from './CreateOfflineSubscript
 @injectable()
 export class CreateOfflineSubscriptionToken implements UseCaseInterface {
   constructor(
-    @inject(TYPES.OfflineSubscriptionTokenRepository)
+    @inject(TYPES.Auth_OfflineSubscriptionTokenRepository)
     private offlineSubscriptionTokenRepository: OfflineSubscriptionTokenRepositoryInterface,
-    @inject(TYPES.OfflineUserSubscriptionRepository)
+    @inject(TYPES.Auth_OfflineUserSubscriptionRepository)
     private offlineUserSubscriptionRepository: OfflineUserSubscriptionRepositoryInterface,
-    @inject(TYPES.CryptoNode) private cryptoNode: CryptoNode,
-    @inject(TYPES.DomainEventPublisher) private domainEventPublisher: DomainEventPublisherInterface,
-    @inject(TYPES.DomainEventFactory) private domainEventFactory: DomainEventFactoryInterface,
-    @inject(TYPES.Timer) private timer: TimerInterface,
-    @inject(TYPES.Logger) private logger: Logger,
+    @inject(TYPES.Auth_CryptoNode) private cryptoNode: CryptoNode,
+    @inject(TYPES.Auth_DomainEventPublisher) private domainEventPublisher: DomainEventPublisherInterface,
+    @inject(TYPES.Auth_DomainEventFactory) private domainEventFactory: DomainEventFactoryInterface,
+    @inject(TYPES.Auth_Timer) private timer: TimerInterface,
+    @inject(TYPES.Auth_Logger) private logger: Logger,
   ) {}
 
   async execute(dto: CreateOfflineSubscriptionTokenDTO): Promise<CreateOfflineSubscriptionTokenResponse> {

@@ -14,8 +14,8 @@ import { GetUserFeatures } from '../Domain/UseCase/GetUserFeatures/GetUserFeatur
 @controller('/internal')
 export class InternalController extends BaseHttpController {
   constructor(
-    @inject(TYPES.GetUserFeatures) private doGetUserFeatures: GetUserFeatures,
-    @inject(TYPES.GetSetting) private doGetSetting: GetSetting,
+    @inject(TYPES.Auth_GetUserFeatures) private doGetUserFeatures: GetUserFeatures,
+    @inject(TYPES.Auth_GetSetting) private doGetSetting: GetSetting,
   ) {
     super()
   }

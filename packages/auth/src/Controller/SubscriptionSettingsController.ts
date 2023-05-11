@@ -12,11 +12,11 @@ import { GetSetting } from '../Domain/UseCase/GetSetting/GetSetting'
 
 @controller('/users/:userUuid')
 export class SubscriptionSettingsController extends BaseHttpController {
-  constructor(@inject(TYPES.GetSetting) private doGetSetting: GetSetting) {
+  constructor(@inject(TYPES.Auth_GetSetting) private doGetSetting: GetSetting) {
     super()
   }
 
-  @httpGet('/subscription-settings/:subscriptionSettingName', TYPES.ApiGatewayAuthMiddleware)
+  @httpGet('/subscription-settings/:subscriptionSettingName', TYPES.Auth_ApiGatewayAuthMiddleware)
   async getSubscriptionSetting(request: Request, response: Response): Promise<results.JsonResult> {
     const result = await this.doGetSetting.execute({
       userUuid: response.locals.user.uuid,

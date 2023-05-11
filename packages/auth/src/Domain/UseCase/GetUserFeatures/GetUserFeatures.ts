@@ -9,8 +9,8 @@ import { FeatureServiceInterface } from '../../Feature/FeatureServiceInterface'
 @injectable()
 export class GetUserFeatures implements UseCaseInterface {
   constructor(
-    @inject(TYPES.UserRepository) private userRepository: UserRepositoryInterface,
-    @inject(TYPES.FeatureService) private featureService: FeatureServiceInterface,
+    @inject(TYPES.Auth_UserRepository) private userRepository: UserRepositoryInterface,
+    @inject(TYPES.Auth_FeatureService) private featureService: FeatureServiceInterface,
   ) {}
 
   async execute(dto: GetUserFeaturesDto): Promise<GetUserFeaturesResponse> {

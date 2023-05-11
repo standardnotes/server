@@ -16,11 +16,11 @@ import { UserRepositoryInterface } from '../User/UserRepositoryInterface'
 @injectable()
 export class PredicateVerificationRequestedEventHandler implements DomainEventHandlerInterface {
   constructor(
-    @inject(TYPES.VerifyPredicate) private verifyPredicate: VerifyPredicate,
-    @inject(TYPES.UserRepository) private userRepository: UserRepositoryInterface,
-    @inject(TYPES.DomainEventFactory) private domainEventFactory: DomainEventFactoryInterface,
-    @inject(TYPES.DomainEventPublisher) private domainEventPublisher: DomainEventPublisherInterface,
-    @inject(TYPES.Logger) private logger: Logger,
+    @inject(TYPES.Auth_VerifyPredicate) private verifyPredicate: VerifyPredicate,
+    @inject(TYPES.Auth_UserRepository) private userRepository: UserRepositoryInterface,
+    @inject(TYPES.Auth_DomainEventFactory) private domainEventFactory: DomainEventFactoryInterface,
+    @inject(TYPES.Auth_DomainEventPublisher) private domainEventPublisher: DomainEventPublisherInterface,
+    @inject(TYPES.Auth_Logger) private logger: Logger,
   ) {}
 
   async handle(event: PredicateVerificationRequestedEvent): Promise<void> {

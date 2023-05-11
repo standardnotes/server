@@ -11,10 +11,10 @@ import { UseCaseInterface } from './UseCaseInterface'
 @injectable()
 export class IncreaseLoginAttempts implements UseCaseInterface {
   constructor(
-    @inject(TYPES.UserRepository) private userRepository: UserRepositoryInterface,
-    @inject(TYPES.LockRepository) private lockRepository: LockRepositoryInterface,
-    @inject(TYPES.MAX_LOGIN_ATTEMPTS) private maxLoginAttempts: number,
-    @inject(TYPES.Logger) private logger: Logger,
+    @inject(TYPES.Auth_UserRepository) private userRepository: UserRepositoryInterface,
+    @inject(TYPES.Auth_LockRepository) private lockRepository: LockRepositoryInterface,
+    @inject(TYPES.Auth_MAX_LOGIN_ATTEMPTS) private maxLoginAttempts: number,
+    @inject(TYPES.Auth_Logger) private logger: Logger,
   ) {}
 
   async execute(dto: IncreaseLoginAttemptsDTO): Promise<IncreaseLoginAttemptsResponse> {

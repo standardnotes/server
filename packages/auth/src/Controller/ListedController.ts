@@ -8,11 +8,11 @@ import { ErrorTag } from '@standardnotes/responses'
 
 @controller('/listed')
 export class ListedController extends BaseHttpController {
-  constructor(@inject(TYPES.CreateListedAccount) private doCreateListedAccount: CreateListedAccount) {
+  constructor(@inject(TYPES.Auth_CreateListedAccount) private doCreateListedAccount: CreateListedAccount) {
     super()
   }
 
-  @httpPost('/', TYPES.ApiGatewayAuthMiddleware)
+  @httpPost('/', TYPES.Auth_ApiGatewayAuthMiddleware)
   async createListedAccount(_request: Request, response: Response): Promise<results.JsonResult> {
     if (response.locals.readOnlyAccess) {
       return this.json(

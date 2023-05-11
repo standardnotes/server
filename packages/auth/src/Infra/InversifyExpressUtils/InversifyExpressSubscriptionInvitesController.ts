@@ -17,12 +17,12 @@ import { SubscriptionInvitesController } from '../../Controller/SubscriptionInvi
 @controller('/subscription-invites')
 export class InversifyExpressSubscriptionInvitesController extends BaseHttpController {
   constructor(
-    @inject(TYPES.SubscriptionInvitesController) private subscriptionInvitesController: SubscriptionInvitesController,
+    @inject(TYPES.Auth_SubscriptionInvitesController) private subscriptionInvitesController: SubscriptionInvitesController,
   ) {
     super()
   }
 
-  @httpPost('/:inviteUuid/accept', TYPES.ApiGatewayAuthMiddleware)
+  @httpPost('/:inviteUuid/accept', TYPES.Auth_ApiGatewayAuthMiddleware)
   async acceptInvite(request: Request, response: Response): Promise<void> {
     const result = await this.subscriptionInvitesController.acceptInvite({
       api: request.query.api as ApiVersion,
@@ -43,7 +43,7 @@ export class InversifyExpressSubscriptionInvitesController extends BaseHttpContr
     return this.json(response.data, response.status)
   }
 
-  @httpPost('/', TYPES.ApiGatewayAuthMiddleware)
+  @httpPost('/', TYPES.Auth_ApiGatewayAuthMiddleware)
   async inviteToSubscriptionSharing(request: Request, response: Response): Promise<results.JsonResult> {
     const result = await this.subscriptionInvitesController.invite({
       ...request.body,
@@ -55,7 +55,7 @@ export class InversifyExpressSubscriptionInvitesController extends BaseHttpContr
     return this.json(result.data, result.status)
   }
 
-  @httpDelete('/:inviteUuid', TYPES.ApiGatewayAuthMiddleware)
+  @httpDelete('/:inviteUuid', TYPES.Auth_ApiGatewayAuthMiddleware)
   async cancelSubscriptionSharing(request: Request, response: Response): Promise<results.JsonResult> {
     const result = await this.subscriptionInvitesController.cancelInvite({
       ...request.body,
@@ -66,7 +66,7 @@ export class InversifyExpressSubscriptionInvitesController extends BaseHttpContr
     return this.json(result.data, result.status)
   }
 
-  @httpGet('/', TYPES.ApiGatewayAuthMiddleware)
+  @httpGet('/', TYPES.Auth_ApiGatewayAuthMiddleware)
   async listInvites(request: Request, response: Response): Promise<results.JsonResult> {
     const result = await this.subscriptionInvitesController.listInvites({
       ...request.body,

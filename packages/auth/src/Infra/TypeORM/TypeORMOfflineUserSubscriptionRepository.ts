@@ -8,7 +8,7 @@ import { OfflineUserSubscriptionRepositoryInterface } from '../../Domain/Subscri
 @injectable()
 export class TypeORMOfflineUserSubscriptionRepository implements OfflineUserSubscriptionRepositoryInterface {
   constructor(
-    @inject(TYPES.ORMOfflineUserSubscriptionRepository)
+    @inject(TYPES.Auth_ORMOfflineUserSubscriptionRepository)
     private ormRepository: Repository<OfflineUserSubscription>,
   ) {}
 

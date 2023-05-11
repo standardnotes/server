@@ -22,12 +22,12 @@ import { InviteToSharedSubscriptionResult } from './InviteToSharedSubscriptionRe
 export class InviteToSharedSubscription implements UseCaseInterface {
   private readonly MAX_NUMBER_OF_INVITES = 5
   constructor(
-    @inject(TYPES.UserSubscriptionRepository) private userSubscriptionRepository: UserSubscriptionRepositoryInterface,
-    @inject(TYPES.Timer) private timer: TimerInterface,
-    @inject(TYPES.SharedSubscriptionInvitationRepository)
+    @inject(TYPES.Auth_UserSubscriptionRepository) private userSubscriptionRepository: UserSubscriptionRepositoryInterface,
+    @inject(TYPES.Auth_Timer) private timer: TimerInterface,
+    @inject(TYPES.Auth_SharedSubscriptionInvitationRepository)
     private sharedSubscriptionInvitationRepository: SharedSubscriptionInvitationRepositoryInterface,
-    @inject(TYPES.DomainEventPublisher) private domainEventPublisher: DomainEventPublisherInterface,
-    @inject(TYPES.DomainEventFactory) private domainEventFactory: DomainEventFactoryInterface,
+    @inject(TYPES.Auth_DomainEventPublisher) private domainEventPublisher: DomainEventPublisherInterface,
+    @inject(TYPES.Auth_DomainEventFactory) private domainEventFactory: DomainEventFactoryInterface,
   ) {}
 
   async execute(dto: InviteToSharedSubscriptionDTO): Promise<InviteToSharedSubscriptionResult> {

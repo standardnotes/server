@@ -24,16 +24,16 @@ import { Username } from '@standardnotes/domain-core'
 @injectable()
 export class SubscriptionSyncRequestedEventHandler implements DomainEventHandlerInterface {
   constructor(
-    @inject(TYPES.UserRepository) private userRepository: UserRepositoryInterface,
-    @inject(TYPES.UserSubscriptionRepository) private userSubscriptionRepository: UserSubscriptionRepositoryInterface,
-    @inject(TYPES.OfflineUserSubscriptionRepository)
+    @inject(TYPES.Auth_UserRepository) private userRepository: UserRepositoryInterface,
+    @inject(TYPES.Auth_UserSubscriptionRepository) private userSubscriptionRepository: UserSubscriptionRepositoryInterface,
+    @inject(TYPES.Auth_OfflineUserSubscriptionRepository)
     private offlineUserSubscriptionRepository: OfflineUserSubscriptionRepositoryInterface,
-    @inject(TYPES.RoleService) private roleService: RoleServiceInterface,
-    @inject(TYPES.SettingService) private settingService: SettingServiceInterface,
-    @inject(TYPES.SubscriptionSettingService) private subscriptionSettingService: SubscriptionSettingServiceInterface,
-    @inject(TYPES.OfflineSettingService) private offlineSettingService: OfflineSettingServiceInterface,
-    @inject(TYPES.ContenDecoder) private contentDecoder: ContentDecoderInterface,
-    @inject(TYPES.Logger) private logger: Logger,
+    @inject(TYPES.Auth_RoleService) private roleService: RoleServiceInterface,
+    @inject(TYPES.Auth_SettingService) private settingService: SettingServiceInterface,
+    @inject(TYPES.Auth_SubscriptionSettingService) private subscriptionSettingService: SubscriptionSettingServiceInterface,
+    @inject(TYPES.Auth_OfflineSettingService) private offlineSettingService: OfflineSettingServiceInterface,
+    @inject(TYPES.Auth_ContenDecoder) private contentDecoder: ContentDecoderInterface,
+    @inject(TYPES.Auth_Logger) private logger: Logger,
   ) {}
 
   async handle(event: SubscriptionSyncRequestedEvent): Promise<void> {

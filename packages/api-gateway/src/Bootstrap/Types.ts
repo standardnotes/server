@@ -19,8 +19,7 @@ export const TYPES = {
   WebSocketAuthMiddleware: Symbol.for('WebSocketAuthMiddleware'),
   SubscriptionTokenAuthMiddleware: Symbol.for('SubscriptionTokenAuthMiddleware'),
   // Services
-  HTTPService: Symbol.for('HTTPService'),
-  DirectCallServiceProxy: Symbol.for('DirectCallServiceProxy'),
+  ServiceProxy: Symbol.for('ServiceProxy'),
   CrossServiceTokenCache: Symbol.for('CrossServiceTokenCache'),
   Timer: Symbol.for('Timer'),
 }

@@ -9,8 +9,8 @@ import { OfflineSettingRepositoryInterface } from '../Domain/Setting/OfflineSett
 @injectable()
 export class OfflineUserAuthMiddleware extends BaseMiddleware {
   constructor(
-    @inject(TYPES.OfflineSettingRepository) private offlineSettingRepository: OfflineSettingRepositoryInterface,
-    @inject(TYPES.Logger) private logger: Logger,
+    @inject(TYPES.Auth_OfflineSettingRepository) private offlineSettingRepository: OfflineSettingRepositoryInterface,
+    @inject(TYPES.Auth_Logger) private logger: Logger,
   ) {
     super()
   }

@@ -7,11 +7,11 @@ import { UserRequestsController } from '../../Controller/UserRequestsController'
 
 @controller('/users/:userUuid/requests')
 export class InversifyExpressUserRequestsController extends BaseHttpController {
-  constructor(@inject(TYPES.UserRequestsController) private userRequestsController: UserRequestsController) {
+  constructor(@inject(TYPES.Auth_UserRequestsController) private userRequestsController: UserRequestsController) {
     super()
   }
 
-  @httpPost('/', TYPES.ApiGatewayAuthMiddleware)
+  @httpPost('/', TYPES.Auth_ApiGatewayAuthMiddleware)
   async submitRequest(request: Request, response: Response): Promise<results.JsonResult> {
     const result = await this.userRequestsController.submitUserRequest({
       requestType: request.body.requestType,

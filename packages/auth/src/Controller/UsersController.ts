@@ -23,18 +23,18 @@ import { ChangeCredentials } from '../Domain/UseCase/ChangeCredentials/ChangeCre
 @controller('/users')
 export class UsersController extends BaseHttpController {
   constructor(
-    @inject(TYPES.UpdateUser) private updateUser: UpdateUser,
-    @inject(TYPES.GetUserKeyParams) private getUserKeyParams: GetUserKeyParams,
-    @inject(TYPES.DeleteAccount) private doDeleteAccount: DeleteAccount,
-    @inject(TYPES.GetUserSubscription) private doGetUserSubscription: GetUserSubscription,
-    @inject(TYPES.ClearLoginAttempts) private clearLoginAttempts: ClearLoginAttempts,
-    @inject(TYPES.IncreaseLoginAttempts) private increaseLoginAttempts: IncreaseLoginAttempts,
-    @inject(TYPES.ChangeCredentials) private changeCredentialsUseCase: ChangeCredentials,
+    @inject(TYPES.Auth_UpdateUser) private updateUser: UpdateUser,
+    @inject(TYPES.Auth_GetUserKeyParams) private getUserKeyParams: GetUserKeyParams,
+    @inject(TYPES.Auth_DeleteAccount) private doDeleteAccount: DeleteAccount,
+    @inject(TYPES.Auth_GetUserSubscription) private doGetUserSubscription: GetUserSubscription,
+    @inject(TYPES.Auth_ClearLoginAttempts) private clearLoginAttempts: ClearLoginAttempts,
+    @inject(TYPES.Auth_IncreaseLoginAttempts) private increaseLoginAttempts: IncreaseLoginAttempts,
+    @inject(TYPES.Auth_ChangeCredentials) private changeCredentialsUseCase: ChangeCredentials,
   ) {
     super()
   }
 
-  @httpPatch('/:userId', TYPES.ApiGatewayAuthMiddleware)
+  @httpPatch('/:userId', TYPES.Auth_ApiGatewayAuthMiddleware)
   async update(request: Request, response: Response): Promise<results.JsonResult | void> {
     if (response.locals.readOnlyAccess) {
       return this.json(
@@ -125,7 +125,7 @@ export class UsersController extends BaseHttpController {
     return this.json({ message: result.message }, result.responseCode)
   }
 
-  @httpGet('/:userUuid/subscription', TYPES.ApiGatewayAuthMiddleware)
+  @httpGet('/:userUuid/subscription', TYPES.Auth_ApiGatewayAuthMiddleware)
   async getSubscription(request: Request, response: Response): Promise<results.JsonResult> {
     if (request.params.userUuid !== response.locals.user.uuid) {
       return this.json(
@@ -149,7 +149,7 @@ export class UsersController extends BaseHttpController {
     return this.json(result, 400)
   }
 
-  @httpPut('/:userId/attributes/credentials', TYPES.AuthMiddleware)
+  @httpPut('/:userId/attributes/credentials', TYPES.Auth_AuthMiddleware)
   async changeCredentials(request: Request, response: Response): Promise<results.JsonResult | void> {
     if (response.locals.readOnlyAccess) {
       return this.json(

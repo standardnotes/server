@@ -15,8 +15,8 @@ import { CreateCrossServiceToken } from '../../Domain/UseCase/CreateCrossService
 @controller('/sockets')
 export class InversifyExpressWebSocketsController extends BaseHttpController {
   constructor(
-    @inject(TYPES.CreateCrossServiceToken) private createCrossServiceToken: CreateCrossServiceToken,
-    @inject(TYPES.WebSocketConnectionTokenDecoder)
+    @inject(TYPES.Auth_CreateCrossServiceToken) private createCrossServiceToken: CreateCrossServiceToken,
+    @inject(TYPES.Auth_WebSocketConnectionTokenDecoder)
     private tokenDecoder: TokenDecoderInterface<WebSocketConnectionTokenData>,
   ) {
     super()

@@ -9,7 +9,7 @@ import { SharedSubscriptionInvitationRepositoryInterface } from '../../Domain/Sh
 @injectable()
 export class TypeORMSharedSubscriptionInvitationRepository implements SharedSubscriptionInvitationRepositoryInterface {
   constructor(
-    @inject(TYPES.ORMSharedSubscriptionInvitationRepository)
+    @inject(TYPES.Auth_ORMSharedSubscriptionInvitationRepository)
     private ormRepository: Repository<SharedSubscriptionInvitation>,
   ) {}
 

@@ -4623,6 +4623,8 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["@standardnotes/home-server", "workspace:packages/home-server"],\
           ["@standardnotes/api-gateway", "workspace:packages/api-gateway"],\
+          ["@standardnotes/auth-server", "workspace:packages/auth"],\
+          ["@standardnotes/domain-core", "workspace:packages/domain-core"],\
           ["@types/cors", "npm:2.8.13"],\
           ["@types/express", "npm:4.17.17"],\
           ["@types/prettyjson", "npm:0.0.30"],\

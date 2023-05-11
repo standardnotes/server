@@ -14,9 +14,9 @@ import { Uuid } from '@standardnotes/domain-core'
 import TYPES from '../Bootstrap/Types'
 import { CreateValetToken } from '../Domain/UseCase/CreateValetToken/CreateValetToken'
 
-@controller('/valet-tokens', TYPES.ApiGatewayAuthMiddleware)
+@controller('/valet-tokens', TYPES.Auth_ApiGatewayAuthMiddleware)
 export class ValetTokenController extends BaseHttpController {
-  constructor(@inject(TYPES.CreateValetToken) private createValetKey: CreateValetToken) {
+  constructor(@inject(TYPES.Auth_CreateValetToken) private createValetKey: CreateValetToken) {
     super()
   }
 

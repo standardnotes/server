@@ -8,7 +8,7 @@ import { OfflineUserSubscriptionRepositoryInterface } from '../../Subscription/O
 @injectable()
 export class GetUserOfflineSubscription implements UseCaseInterface {
   constructor(
-    @inject(TYPES.OfflineUserSubscriptionRepository)
+    @inject(TYPES.Auth_OfflineUserSubscriptionRepository)
     private offlineUserSubscriptionRepository: OfflineUserSubscriptionRepositoryInterface,
   ) {}
 

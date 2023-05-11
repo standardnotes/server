@@ -22,18 +22,18 @@ import { ProjectorInterface } from '../Projection/ProjectorInterface'
 @controller('/subscription-tokens')
 export class SubscriptionTokensController extends BaseHttpController {
   constructor(
-    @inject(TYPES.CreateSubscriptionToken) private createSubscriptionToken: CreateSubscriptionToken,
-    @inject(TYPES.AuthenticateSubscriptionToken) private authenticateToken: AuthenticateSubscriptionToken,
-    @inject(TYPES.SettingService) private settingService: SettingServiceInterface,
-    @inject(TYPES.UserProjector) private userProjector: ProjectorInterface<User>,
-    @inject(TYPES.RoleProjector) private roleProjector: ProjectorInterface<Role>,
-    @inject(TYPES.CrossServiceTokenEncoder) private tokenEncoder: TokenEncoderInterface<CrossServiceTokenData>,
-    @inject(TYPES.AUTH_JWT_TTL) private jwtTTL: number,
+    @inject(TYPES.Auth_CreateSubscriptionToken) private createSubscriptionToken: CreateSubscriptionToken,
+    @inject(TYPES.Auth_AuthenticateSubscriptionToken) private authenticateToken: AuthenticateSubscriptionToken,
+    @inject(TYPES.Auth_SettingService) private settingService: SettingServiceInterface,
+    @inject(TYPES.Auth_UserProjector) private userProjector: ProjectorInterface<User>,
+    @inject(TYPES.Auth_RoleProjector) private roleProjector: ProjectorInterface<Role>,
+    @inject(TYPES.Auth_CrossServiceTokenEncoder) private tokenEncoder: TokenEncoderInterface<CrossServiceTokenData>,
+    @inject(TYPES.Auth_AUTH_JWT_TTL) private jwtTTL: number,
   ) {
     super()
   }
 
-  @httpPost('/', TYPES.ApiGatewayAuthMiddleware)
+  @httpPost('/', TYPES.Auth_ApiGatewayAuthMiddleware)
   async createToken(_request: Request, response: Response): Promise<results.JsonResult> {
     if (response.locals.readOnlyAccess) {
       return this.json(

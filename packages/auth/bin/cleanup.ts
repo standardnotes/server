@@ -25,12 +25,12 @@ void container.load().then((container) => {
   const env: Env = new Env()
   env.load()
 
-  const logger: Logger = container.get(TYPES.Logger)
+  const logger: Logger = container.get(TYPES.Auth_Logger)
 
   logger.info('Starting sessions and session traces cleanup')
 
-  const cleanupSessionTraces: CleanupSessionTraces = container.get(TYPES.CleanupSessionTraces)
-  const cleanupExpiredSessions: CleanupExpiredSessions = container.get(TYPES.CleanupExpiredSessions)
+  const cleanupSessionTraces: CleanupSessionTraces = container.get(TYPES.Auth_CleanupSessionTraces)
+  const cleanupExpiredSessions: CleanupExpiredSessions = container.get(TYPES.Auth_CleanupExpiredSessions)
 
   Promise.resolve(cleanup(cleanupSessionTraces, cleanupExpiredSessions))
     .then(() => {

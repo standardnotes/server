@@ -20,12 +20,12 @@ import { UserRepositoryInterface } from '../Domain/User/UserRepositoryInterface'
 @controller('/admin')
 export class AdminController extends BaseHttpController {
   constructor(
-    @inject(TYPES.DeleteSetting) private doDeleteSetting: DeleteSetting,
-    @inject(TYPES.UserRepository) private userRepository: UserRepositoryInterface,
-    @inject(TYPES.CreateSubscriptionToken) private createSubscriptionToken: CreateSubscriptionToken,
-    @inject(TYPES.CreateOfflineSubscriptionToken)
+    @inject(TYPES.Auth_DeleteSetting) private doDeleteSetting: DeleteSetting,
+    @inject(TYPES.Auth_UserRepository) private userRepository: UserRepositoryInterface,
+    @inject(TYPES.Auth_CreateSubscriptionToken) private createSubscriptionToken: CreateSubscriptionToken,
+    @inject(TYPES.Auth_CreateOfflineSubscriptionToken)
     private createOfflineSubscriptionToken: CreateOfflineSubscriptionToken,
-    @inject(TYPES.ControllerContainer) private controllerContainer: ControllerContainerInterface,
+    @inject(TYPES.Auth_ControllerContainer) private controllerContainer: ControllerContainerInterface,
   ) {
     super()
 

@@ -19,7 +19,7 @@ import { TokenAuthenticationMethod } from '../TokenAuthenticationMethod'
 @controller('/v1/users')
 export class UsersController extends BaseHttpController {
   constructor(
-    @inject(TYPES.HTTPService) private httpService: ServiceProxyInterface,
+    @inject(TYPES.ServiceProxy) private httpService: ServiceProxyInterface,
     @inject(TYPES.Logger) private logger: Logger,
   ) {
     super()

@@ -20,10 +20,10 @@ import { CreateCrossServiceToken } from '../Domain/UseCase/CreateCrossServiceTok
 @controller('/sessions')
 export class SessionsController extends BaseHttpController {
   constructor(
-    @inject(TYPES.GetActiveSessionsForUser) private getActiveSessionsForUser: GetActiveSessionsForUser,
-    @inject(TYPES.AuthenticateRequest) private authenticateRequest: AuthenticateRequest,
-    @inject(TYPES.SessionProjector) private sessionProjector: ProjectorInterface<Session>,
-    @inject(TYPES.CreateCrossServiceToken) private createCrossServiceToken: CreateCrossServiceToken,
+    @inject(TYPES.Auth_GetActiveSessionsForUser) private getActiveSessionsForUser: GetActiveSessionsForUser,
+    @inject(TYPES.Auth_AuthenticateRequest) private authenticateRequest: AuthenticateRequest,
+    @inject(TYPES.Auth_SessionProjector) private sessionProjector: ProjectorInterface<Session>,
+    @inject(TYPES.Auth_CreateCrossServiceToken) private createCrossServiceToken: CreateCrossServiceToken,
   ) {
     super()
   }
@@ -56,7 +56,7 @@ export class SessionsController extends BaseHttpController {
     return this.json({ authToken: result.token })
   }
 
-  @httpGet('/', TYPES.AuthMiddleware, TYPES.SessionMiddleware)
+  @httpGet('/', TYPES.Auth_AuthMiddleware, TYPES.Auth_SessionMiddleware)
   async getSessions(_request: Request, response: Response): Promise<results.JsonResult> {
     if (response.locals.readOnlyAccess) {
       return this.json([])

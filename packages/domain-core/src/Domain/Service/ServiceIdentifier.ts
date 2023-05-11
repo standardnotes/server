@@ -4,6 +4,7 @@ import { ServiceIdentifierProps } from './ServiceIdentifierProps'
 
 export class ServiceIdentifier extends ValueObject<ServiceIdentifierProps> {
   static readonly NAMES = {
+    ApiGateway: 'ApiGateway',
     Auth: 'Auth',
     SyncingServer: 'SyncingServer',
     Revisions: 'Revisions',

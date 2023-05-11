@@ -10,7 +10,7 @@ import { DeleteSettingDto } from '../../Domain/UseCase/DeleteSetting/DeleteSetti
 @injectable()
 export class TypeORMSettingRepository implements SettingRepositoryInterface {
   constructor(
-    @inject(TYPES.ORMSettingRepository)
+    @inject(TYPES.Auth_ORMSettingRepository)
     private ormRepository: Repository<Setting>,
   ) {}
 

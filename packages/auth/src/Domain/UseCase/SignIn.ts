@@ -23,15 +23,15 @@ import { getBody, getSubject } from '../Email/UserSignedIn'
 @injectable()
 export class SignIn implements UseCaseInterface {
   constructor(
-    @inject(TYPES.UserRepository) private userRepository: UserRepositoryInterface,
-    @inject(TYPES.AuthResponseFactoryResolver)
+    @inject(TYPES.Auth_UserRepository) private userRepository: UserRepositoryInterface,
+    @inject(TYPES.Auth_AuthResponseFactoryResolver)
     private authResponseFactoryResolver: AuthResponseFactoryResolverInterface,
-    @inject(TYPES.DomainEventPublisher) private domainEventPublisher: DomainEventPublisherInterface,
-    @inject(TYPES.DomainEventFactory) private domainEventFactory: DomainEventFactoryInterface,
-    @inject(TYPES.SessionService) private sessionService: SessionServiceInterface,
-    @inject(TYPES.PKCERepository) private pkceRepository: PKCERepositoryInterface,
-    @inject(TYPES.Crypter) private crypter: CrypterInterface,
-    @inject(TYPES.Logger) private logger: Logger,
+    @inject(TYPES.Auth_DomainEventPublisher) private domainEventPublisher: DomainEventPublisherInterface,
+    @inject(TYPES.Auth_DomainEventFactory) private domainEventFactory: DomainEventFactoryInterface,
+    @inject(TYPES.Auth_SessionService) private sessionService: SessionServiceInterface,
+    @inject(TYPES.Auth_PKCERepository) private pkceRepository: PKCERepositoryInterface,
+    @inject(TYPES.Auth_Crypter) private crypter: CrypterInterface,
+    @inject(TYPES.Auth_Logger) private logger: Logger,
   ) {}
 
   async execute(dto: SignInDTO): Promise<SignInResponse> {

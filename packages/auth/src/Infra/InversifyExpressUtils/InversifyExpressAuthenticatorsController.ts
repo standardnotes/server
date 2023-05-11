@@ -14,11 +14,11 @@ import { AuthenticatorsController } from '../../Controller/AuthenticatorsControl
 
 @controller('/authenticators')
 export class InversifyExpressAuthenticatorsController extends BaseHttpController {
-  constructor(@inject(TYPES.AuthenticatorsController) private authenticatorsController: AuthenticatorsController) {
+  constructor(@inject(TYPES.Auth_AuthenticatorsController) private authenticatorsController: AuthenticatorsController) {
     super()
   }
 
-  @httpGet('/', TYPES.ApiGatewayAuthMiddleware)
+  @httpGet('/', TYPES.Auth_ApiGatewayAuthMiddleware)
   async list(_request: Request, response: Response): Promise<results.JsonResult> {
     const result = await this.authenticatorsController.list({
       userUuid: response.locals.user.uuid,
@@ -27,7 +27,7 @@ export class InversifyExpressAuthenticatorsController extends BaseHttpController
     return this.json(result.data, result.status)
   }
 
-  @httpDelete('/:authenticatorId', TYPES.ApiGatewayAuthMiddleware)
+  @httpDelete('/:authenticatorId', TYPES.Auth_ApiGatewayAuthMiddleware)
   async delete(request: Request, response: Response): Promise<results.JsonResult> {
     const result = await this.authenticatorsController.delete({
       userUuid: response.locals.user.uuid,
@@ -37,7 +37,7 @@ export class InversifyExpressAuthenticatorsController extends BaseHttpController
     return this.json(result.data, result.status)
   }
 
-  @httpGet('/generate-registration-options', TYPES.ApiGatewayAuthMiddleware)
+  @httpGet('/generate-registration-options', TYPES.Auth_ApiGatewayAuthMiddleware)
   async generateRegistrationOptions(_request: Request, response: Response): Promise<results.JsonResult> {
     const result = await this.authenticatorsController.generateRegistrationOptions({
       username: response.locals.user.email,
@@ -47,7 +47,7 @@ export class InversifyExpressAuthenticatorsController extends BaseHttpController
     return this.json(result.data, result.status)
   }
 
-  @httpPost('/verify-registration', TYPES.ApiGatewayAuthMiddleware)
+  @httpPost('/verify-registration', TYPES.Auth_ApiGatewayAuthMiddleware)
   async verifyRegistration(request: Request, response: Response): Promise<results.JsonResult> {
     const result = await this.authenticatorsController.verifyRegistrationResponse({
       userUuid: response.locals.user.uuid,

@@ -16,11 +16,11 @@ import { UserSubscription } from '../../Subscription/UserSubscription'
 @injectable()
 export class GetSetting implements UseCaseInterface {
   constructor(
-    @inject(TYPES.SettingProjector) private settingProjector: SettingProjector,
-    @inject(TYPES.SubscriptionSettingProjector) private subscriptionSettingProjector: SubscriptionSettingProjector,
-    @inject(TYPES.SettingService) private settingService: SettingServiceInterface,
-    @inject(TYPES.SubscriptionSettingService) private subscriptionSettingService: SubscriptionSettingServiceInterface,
-    @inject(TYPES.UserSubscriptionService) private userSubscriptionService: UserSubscriptionServiceInterface,
+    @inject(TYPES.Auth_SettingProjector) private settingProjector: SettingProjector,
+    @inject(TYPES.Auth_SubscriptionSettingProjector) private subscriptionSettingProjector: SubscriptionSettingProjector,
+    @inject(TYPES.Auth_SettingService) private settingService: SettingServiceInterface,
+    @inject(TYPES.Auth_SubscriptionSettingService) private subscriptionSettingService: SubscriptionSettingServiceInterface,
+    @inject(TYPES.Auth_UserSubscriptionService) private userSubscriptionService: UserSubscriptionServiceInterface,
   ) {}
 
   async execute(dto: GetSettingDto): Promise<GetSettingResponse> {

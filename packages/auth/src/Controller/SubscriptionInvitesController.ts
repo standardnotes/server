@@ -26,14 +26,14 @@ import { ListSharedSubscriptionInvitations } from '../Domain/UseCase/ListSharedS
 @injectable()
 export class SubscriptionInvitesController implements SubscriptionServerInterface {
   constructor(
-    @inject(TYPES.InviteToSharedSubscription) private inviteToSharedSubscription: InviteToSharedSubscription,
-    @inject(TYPES.AcceptSharedSubscriptionInvitation)
+    @inject(TYPES.Auth_InviteToSharedSubscription) private inviteToSharedSubscription: InviteToSharedSubscription,
+    @inject(TYPES.Auth_AcceptSharedSubscriptionInvitation)
     private acceptSharedSubscriptionInvitation: AcceptSharedSubscriptionInvitation,
-    @inject(TYPES.DeclineSharedSubscriptionInvitation)
+    @inject(TYPES.Auth_DeclineSharedSubscriptionInvitation)
     private declineSharedSubscriptionInvitation: DeclineSharedSubscriptionInvitation,
-    @inject(TYPES.CancelSharedSubscriptionInvitation)
+    @inject(TYPES.Auth_CancelSharedSubscriptionInvitation)
     private cancelSharedSubscriptionInvitation: CancelSharedSubscriptionInvitation,
-    @inject(TYPES.ListSharedSubscriptionInvitations)
+    @inject(TYPES.Auth_ListSharedSubscriptionInvitations)
     private listSharedSubscriptionInvitations: ListSharedSubscriptionInvitations,
   ) {}
 

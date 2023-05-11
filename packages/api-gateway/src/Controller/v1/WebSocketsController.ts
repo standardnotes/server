@@ -9,7 +9,7 @@ import { ServiceProxyInterface } from '../../Service/Http/ServiceProxyInterface'
 @controller('/v1/sockets')
 export class WebSocketsController extends BaseHttpController {
   constructor(
-    @inject(TYPES.HTTPService) private httpService: ServiceProxyInterface,
+    @inject(TYPES.ServiceProxy) private httpService: ServiceProxyInterface,
     @inject(TYPES.Logger) private logger: Logger,
   ) {
     super()

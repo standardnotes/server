@@ -8,8 +8,8 @@ import { SessionRepositoryInterface } from '../Session/SessionRepositoryInterfac
 @injectable()
 export class UserDisabledSessionUserAgentLoggingEventHandler implements DomainEventHandlerInterface {
   constructor(
-    @inject(TYPES.SessionRepository) private sessionRepository: SessionRepositoryInterface,
-    @inject(TYPES.SessionRepository) private revokedSessionRepository: RevokedSessionRepositoryInterface,
+    @inject(TYPES.Auth_SessionRepository) private sessionRepository: SessionRepositoryInterface,
+    @inject(TYPES.Auth_SessionRepository) private revokedSessionRepository: RevokedSessionRepositoryInterface,
   ) {}
 
   async handle(event: UserDisabledSessionUserAgentLoggingEvent): Promise<void> {

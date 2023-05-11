@@ -9,10 +9,10 @@ import { AuthenticationMethodResolverInterface } from './AuthenticationMethodRes
 @injectable()
 export class AuthenticationMethodResolver implements AuthenticationMethodResolverInterface {
   constructor(
-    @inject(TYPES.UserRepository) private userRepository: UserRepositoryInterface,
-    @inject(TYPES.SessionService) private sessionService: SessionServiceInterface,
-    @inject(TYPES.SessionTokenDecoder) private sessionTokenDecoder: TokenDecoderInterface<SessionTokenData>,
-    @inject(TYPES.FallbackSessionTokenDecoder)
+    @inject(TYPES.Auth_UserRepository) private userRepository: UserRepositoryInterface,
+    @inject(TYPES.Auth_SessionService) private sessionService: SessionServiceInterface,
+    @inject(TYPES.Auth_SessionTokenDecoder) private sessionTokenDecoder: TokenDecoderInterface<SessionTokenData>,
+    @inject(TYPES.Auth_FallbackSessionTokenDecoder)
     private fallbackSessionTokenDecoder: TokenDecoderInterface<SessionTokenData>,
   ) {}
 

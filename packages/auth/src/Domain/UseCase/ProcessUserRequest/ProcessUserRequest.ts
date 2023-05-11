@@ -13,9 +13,9 @@ import { ProcessUserRequestResponse } from './ProcessUserRequestResponse'
 @injectable()
 export class ProcessUserRequest implements UseCaseInterface {
   constructor(
-    @inject(TYPES.UserSubscriptionRepository) private userSubscriptionRepository: UserSubscriptionRepositoryInterface,
-    @inject(TYPES.DomainEventFactory) private domainEventFactory: DomainEventFactoryInterface,
-    @inject(TYPES.DomainEventPublisher) private domainEventPublisher: DomainEventPublisherInterface,
+    @inject(TYPES.Auth_UserSubscriptionRepository) private userSubscriptionRepository: UserSubscriptionRepositoryInterface,
+    @inject(TYPES.Auth_DomainEventFactory) private domainEventFactory: DomainEventFactoryInterface,
+    @inject(TYPES.Auth_DomainEventPublisher) private domainEventPublisher: DomainEventPublisherInterface,
   ) {}
 
   async execute(dto: ProcessUserRequestDTO): Promise<ProcessUserRequestResponse> {

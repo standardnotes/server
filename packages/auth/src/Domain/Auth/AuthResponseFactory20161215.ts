@@ -15,9 +15,9 @@ import { AuthResponseFactoryInterface } from './AuthResponseFactoryInterface'
 @injectable()
 export class AuthResponseFactory20161215 implements AuthResponseFactoryInterface {
   constructor(
-    @inject(TYPES.UserProjector) protected userProjector: ProjectorInterface<User>,
-    @inject(TYPES.SessionTokenEncoder) protected tokenEncoder: TokenEncoderInterface<SessionTokenData>,
-    @inject(TYPES.Logger) protected logger: Logger,
+    @inject(TYPES.Auth_UserProjector) protected userProjector: ProjectorInterface<User>,
+    @inject(TYPES.Auth_SessionTokenEncoder) protected tokenEncoder: TokenEncoderInterface<SessionTokenData>,
+    @inject(TYPES.Auth_Logger) protected logger: Logger,
   ) {}
 
   async createResponse(dto: {

@@ -17,13 +17,13 @@ import { Username } from '@standardnotes/domain-core'
 @injectable()
 export class SubscriptionPurchasedEventHandler implements DomainEventHandlerInterface {
   constructor(
-    @inject(TYPES.UserRepository) private userRepository: UserRepositoryInterface,
-    @inject(TYPES.UserSubscriptionRepository) private userSubscriptionRepository: UserSubscriptionRepositoryInterface,
-    @inject(TYPES.OfflineUserSubscriptionRepository)
+    @inject(TYPES.Auth_UserRepository) private userRepository: UserRepositoryInterface,
+    @inject(TYPES.Auth_UserSubscriptionRepository) private userSubscriptionRepository: UserSubscriptionRepositoryInterface,
+    @inject(TYPES.Auth_OfflineUserSubscriptionRepository)
     private offlineUserSubscriptionRepository: OfflineUserSubscriptionRepositoryInterface,
-    @inject(TYPES.RoleService) private roleService: RoleServiceInterface,
-    @inject(TYPES.SubscriptionSettingService) private subscriptionSettingService: SubscriptionSettingServiceInterface,
-    @inject(TYPES.Logger) private logger: Logger,
+    @inject(TYPES.Auth_RoleService) private roleService: RoleServiceInterface,
+    @inject(TYPES.Auth_SubscriptionSettingService) private subscriptionSettingService: SubscriptionSettingServiceInterface,
+    @inject(TYPES.Auth_Logger) private logger: Logger,
   ) {}
 
   async handle(event: SubscriptionPurchasedEvent): Promise<void> {

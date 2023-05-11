@@ -6,7 +6,7 @@ import { ServiceProxyInterface } from '../../Service/Http/ServiceProxyInterface'
 
 @controller('/v1')
 export class InvoicesController extends BaseHttpController {
-  constructor(@inject(TYPES.HTTPService) private httpService: ServiceProxyInterface) {
+  constructor(@inject(TYPES.ServiceProxy) private httpService: ServiceProxyInterface) {
     super()
   }
 

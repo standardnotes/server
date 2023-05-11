@@ -12,9 +12,9 @@ import { DeclineSharedSubscriptionInvitationResponse } from './DeclineSharedSubs
 @injectable()
 export class DeclineSharedSubscriptionInvitation implements UseCaseInterface {
   constructor(
-    @inject(TYPES.SharedSubscriptionInvitationRepository)
+    @inject(TYPES.Auth_SharedSubscriptionInvitationRepository)
     private sharedSubscriptionInvitationRepository: SharedSubscriptionInvitationRepositoryInterface,
-    @inject(TYPES.Timer) private timer: TimerInterface,
+    @inject(TYPES.Auth_Timer) private timer: TimerInterface,
   ) {}
 
   async execute(dto: DeclineSharedSubscriptionInvitationDTO): Promise<DeclineSharedSubscriptionInvitationResponse> {

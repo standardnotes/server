@@ -17,14 +17,14 @@ import { RefreshSessionToken } from '../Domain/UseCase/RefreshSessionToken'
 @controller('/session')
 export class SessionController extends BaseHttpController {
   constructor(
-    @inject(TYPES.DeleteSessionForUser) private deleteSessionForUser: DeleteSessionForUser,
-    @inject(TYPES.DeletePreviousSessionsForUser) private deletePreviousSessionsForUser: DeletePreviousSessionsForUser,
-    @inject(TYPES.RefreshSessionToken) private refreshSessionToken: RefreshSessionToken,
+    @inject(TYPES.Auth_DeleteSessionForUser) private deleteSessionForUser: DeleteSessionForUser,
+    @inject(TYPES.Auth_DeletePreviousSessionsForUser) private deletePreviousSessionsForUser: DeletePreviousSessionsForUser,
+    @inject(TYPES.Auth_RefreshSessionToken) private refreshSessionToken: RefreshSessionToken,
   ) {
     super()
   }
 
-  @httpDelete('/', TYPES.AuthMiddleware, TYPES.SessionMiddleware)
+  @httpDelete('/', TYPES.Auth_AuthMiddleware, TYPES.Auth_SessionMiddleware)
   async deleteSession(request: Request, response: Response): Promise<results.JsonResult | void> {
     if (response.locals.readOnlyAccess) {
       return this.json(
@@ -80,7 +80,7 @@ export class SessionController extends BaseHttpController {
     response.status(204).send()
   }
 
-  @httpDelete('/all', TYPES.AuthMiddleware, TYPES.SessionMiddleware)
+  @httpDelete('/all', TYPES.Auth_AuthMiddleware, TYPES.Auth_SessionMiddleware)
   async deleteAllSessions(_request: Request, response: Response): Promise<results.JsonResult | void> {
     if (response.locals.readOnlyAccess) {
       return this.json(

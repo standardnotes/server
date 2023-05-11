@@ -27,19 +27,19 @@ export class SessionService implements SessionServiceInterface {
   static readonly SESSION_TOKEN_VERSION = 1
 
   constructor(
-    @inject(TYPES.SessionRepository) private sessionRepository: SessionRepositoryInterface,
-    @inject(TYPES.EphemeralSessionRepository) private ephemeralSessionRepository: EphemeralSessionRepositoryInterface,
-    @inject(TYPES.RevokedSessionRepository) private revokedSessionRepository: RevokedSessionRepositoryInterface,
-    @inject(TYPES.DeviceDetector) private deviceDetector: UAParser,
-    @inject(TYPES.Timer) private timer: TimerInterface,
-    @inject(TYPES.Logger) private logger: Logger,
-    @inject(TYPES.ACCESS_TOKEN_AGE) private accessTokenAge: number,
-    @inject(TYPES.REFRESH_TOKEN_AGE) private refreshTokenAge: number,
-    @inject(TYPES.SettingService) private settingService: SettingServiceInterface,
-    @inject(TYPES.CryptoNode) private cryptoNode: CryptoNode,
-    @inject(TYPES.TraceSession) private traceSession: TraceSession,
-    @inject(TYPES.UserSubscriptionRepository) private userSubscriptionRepository: UserSubscriptionRepositoryInterface,
-    @inject(TYPES.READONLY_USERS) private readonlyUsers: string[],
+    @inject(TYPES.Auth_SessionRepository) private sessionRepository: SessionRepositoryInterface,
+    @inject(TYPES.Auth_EphemeralSessionRepository) private ephemeralSessionRepository: EphemeralSessionRepositoryInterface,
+    @inject(TYPES.Auth_RevokedSessionRepository) private revokedSessionRepository: RevokedSessionRepositoryInterface,
+    @inject(TYPES.Auth_DeviceDetector) private deviceDetector: UAParser,
+    @inject(TYPES.Auth_Timer) private timer: TimerInterface,
+    @inject(TYPES.Auth_Logger) private logger: Logger,
+    @inject(TYPES.Auth_ACCESS_TOKEN_AGE) private accessTokenAge: number,
+    @inject(TYPES.Auth_REFRESH_TOKEN_AGE) private refreshTokenAge: number,
+    @inject(TYPES.Auth_SettingService) private settingService: SettingServiceInterface,
+    @inject(TYPES.Auth_CryptoNode) private cryptoNode: CryptoNode,
+    @inject(TYPES.Auth_TraceSession) private traceSession: TraceSession,
+    @inject(TYPES.Auth_UserSubscriptionRepository) private userSubscriptionRepository: UserSubscriptionRepositoryInterface,
+    @inject(TYPES.Auth_READONLY_USERS) private readonlyUsers: string[],
   ) {}
 
   async createNewSessionForUser(dto: {

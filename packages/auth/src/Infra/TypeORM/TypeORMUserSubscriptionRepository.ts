@@ -10,9 +10,9 @@ import { UserSubscriptionType } from '../../Domain/Subscription/UserSubscription
 @injectable()
 export class TypeORMUserSubscriptionRepository implements UserSubscriptionRepositoryInterface {
   constructor(
-    @inject(TYPES.ORMUserSubscriptionRepository)
+    @inject(TYPES.Auth_ORMUserSubscriptionRepository)
     private ormRepository: Repository<UserSubscription>,
-    @inject(TYPES.Timer) private timer: TimerInterface,
+    @inject(TYPES.Auth_Timer) private timer: TimerInterface,
   ) {}
 
   async countActiveSubscriptions(): Promise<number> {

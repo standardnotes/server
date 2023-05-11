@@ -24,9 +24,9 @@ export class SettingInterpreter implements SettingInterpreterInterface {
   ])
 
   constructor(
-    @inject(TYPES.DomainEventPublisher) private domainEventPublisher: DomainEventPublisherInterface,
-    @inject(TYPES.DomainEventFactory) private domainEventFactory: DomainEventFactoryInterface,
-    @inject(TYPES.SettingRepository) private settingRepository: SettingRepositoryInterface,
+    @inject(TYPES.Auth_DomainEventPublisher) private domainEventPublisher: DomainEventPublisherInterface,
+    @inject(TYPES.Auth_DomainEventFactory) private domainEventFactory: DomainEventFactoryInterface,
+    @inject(TYPES.Auth_SettingRepository) private settingRepository: SettingRepositoryInterface,
   ) {}
 
   async interpretSettingUpdated(

@@ -15,8 +15,8 @@ import { SubscriptionSettingProps } from './SubscriptionSettingProps'
 @injectable()
 export class SettingFactory implements SettingFactoryInterface {
   constructor(
-    @inject(TYPES.Crypter) private crypter: CrypterInterface,
-    @inject(TYPES.Timer) private timer: TimerInterface,
+    @inject(TYPES.Auth_Crypter) private crypter: CrypterInterface,
+    @inject(TYPES.Auth_Timer) private timer: TimerInterface,
   ) {}
 
   async createSubscriptionSetting(

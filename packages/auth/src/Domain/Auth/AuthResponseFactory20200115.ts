@@ -23,13 +23,13 @@ import { AuthResponse20200115 } from './AuthResponse20200115'
 @injectable()
 export class AuthResponseFactory20200115 extends AuthResponseFactory20190520 {
   constructor(
-    @inject(TYPES.SessionService) private sessionService: SessionServiceInterface,
-    @inject(TYPES.KeyParamsFactory) private keyParamsFactory: KeyParamsFactoryInterface,
-    @inject(TYPES.UserProjector) userProjector: ProjectorInterface<User>,
-    @inject(TYPES.SessionTokenEncoder) protected override tokenEncoder: TokenEncoderInterface<SessionTokenData>,
-    @inject(TYPES.DomainEventFactory) private domainEventFactory: DomainEventFactoryInterface,
-    @inject(TYPES.DomainEventPublisher) private domainEventPublisher: DomainEventPublisherInterface,
-    @inject(TYPES.Logger) logger: Logger,
+    @inject(TYPES.Auth_SessionService) private sessionService: SessionServiceInterface,
+    @inject(TYPES.Auth_KeyParamsFactory) private keyParamsFactory: KeyParamsFactoryInterface,
+    @inject(TYPES.Auth_UserProjector) userProjector: ProjectorInterface<User>,
+    @inject(TYPES.Auth_SessionTokenEncoder) protected override tokenEncoder: TokenEncoderInterface<SessionTokenData>,
+    @inject(TYPES.Auth_DomainEventFactory) private domainEventFactory: DomainEventFactoryInterface,
+    @inject(TYPES.Auth_DomainEventPublisher) private domainEventPublisher: DomainEventPublisherInterface,
+    @inject(TYPES.Auth_Logger) logger: Logger,
   ) {
     super(userProjector, tokenEncoder, logger)
   }

@@ -17,12 +17,12 @@ import { RedisCrossServiceTokenCache } from '../Infra/Redis/RedisCrossServiceTok
 import { WebSocketAuthMiddleware } from '../Controller/WebSocketAuthMiddleware'
 import { InMemoryCrossServiceTokenCache } from '../Infra/InMemory/InMemoryCrossServiceTokenCache'
 import { DirectCallServiceProxy } from '../Service/Proxy/DirectCallServiceProxy'
-import { ContainerConfigurationInterface, ServiceContainerInterface } from '@standardnotes/domain-core'
+import { ServiceContainerInterface } from '@standardnotes/domain-core'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
 
-export class ContainerConfigLoader implements ContainerConfigurationInterface {
+export class ContainerConfigLoader {
   async load(serviceContainer?: ServiceContainerInterface): Promise<Container> {
     const env: Env = new Env()
     env.load()
@@ -86,10 +86,10 @@ export class ContainerConfigLoader implements ContainerConfigurationInterface {
         throw new Error('Service container is required when configured for home server')
       }
       container
-        .bind<ServiceProxyInterface>(TYPES.DirectCallServiceProxy)
+        .bind<ServiceProxyInterface>(TYPES.ServiceProxy)
         .toConstantValue(new DirectCallServiceProxy(serviceContainer))
     } else {
-      container.bind<ServiceProxyInterface>(TYPES.HTTPService).to(HttpServiceProxy)
+      container.bind<ServiceProxyInterface>(TYPES.ServiceProxy).to(HttpServiceProxy)
     }
     container.bind<TimerInterface>(TYPES.Timer).toConstantValue(new Timer())
 

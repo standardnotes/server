@@ -12,9 +12,9 @@ import { UseCaseInterface } from './UseCaseInterface'
 @injectable()
 export class DeleteSessionForUser implements UseCaseInterface {
   constructor(
-    @inject(TYPES.SessionRepository) private sessionRepository: SessionRepositoryInterface,
-    @inject(TYPES.EphemeralSessionRepository) private ephemeralSessionRepository: EphemeralSessionRepositoryInterface,
-    @inject(TYPES.SessionService) private sessionService: SessionServiceInterface,
+    @inject(TYPES.Auth_SessionRepository) private sessionRepository: SessionRepositoryInterface,
+    @inject(TYPES.Auth_EphemeralSessionRepository) private ephemeralSessionRepository: EphemeralSessionRepositoryInterface,
+    @inject(TYPES.Auth_SessionService) private sessionService: SessionServiceInterface,
   ) {}
 
   async execute(dto: DeleteSessionForUserDTO): Promise<DeleteSessionForUserResponse> {

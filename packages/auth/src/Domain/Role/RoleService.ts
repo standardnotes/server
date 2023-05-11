@@ -17,13 +17,13 @@ import { OfflineUserSubscription } from '../Subscription/OfflineUserSubscription
 @injectable()
 export class RoleService implements RoleServiceInterface {
   constructor(
-    @inject(TYPES.UserRepository) private userRepository: UserRepositoryInterface,
-    @inject(TYPES.RoleRepository) private roleRepository: RoleRepositoryInterface,
-    @inject(TYPES.OfflineUserSubscriptionRepository)
+    @inject(TYPES.Auth_UserRepository) private userRepository: UserRepositoryInterface,
+    @inject(TYPES.Auth_RoleRepository) private roleRepository: RoleRepositoryInterface,
+    @inject(TYPES.Auth_OfflineUserSubscriptionRepository)
     private offlineUserSubscriptionRepository: OfflineUserSubscriptionRepositoryInterface,
-    @inject(TYPES.WebSocketsClientService) private webSocketsClientService: ClientServiceInterface,
-    @inject(TYPES.RoleToSubscriptionMap) private roleToSubscriptionMap: RoleToSubscriptionMapInterface,
-    @inject(TYPES.Logger) private logger: Logger,
+    @inject(TYPES.Auth_WebSocketsClientService) private webSocketsClientService: ClientServiceInterface,
+    @inject(TYPES.Auth_RoleToSubscriptionMap) private roleToSubscriptionMap: RoleToSubscriptionMapInterface,
+    @inject(TYPES.Auth_Logger) private logger: Logger,
   ) {}
 
   async userHasPermission(userUuid: string, permissionName: PermissionName): Promise<boolean> {

@@ -12,7 +12,7 @@ export class Service implements ServiceInterface {
     private serviceContainer: ServiceContainerInterface,
     private controllerContainer: ControllerContainerInterface,
   ) {
-    this.serviceContainer.register(ServiceIdentifier.create(ServiceIdentifier.NAMES.Auth).getValue(), this)
+    this.serviceContainer.register(ServiceIdentifier.create(ServiceIdentifier.NAMES.ApiGateway).getValue(), this)
   }
 
   async handleRequest(request: never, response: never, endpointOrMethodIdentifier: string): Promise<void> {
@@ -28,7 +28,7 @@ export class Service implements ServiceInterface {
   async getContainer(): Promise<unknown> {
     const config = new ContainerConfigLoader()
 
-    return config.load()
+    return config.load(this.serviceContainer)
   }
 
   getId(): ServiceIdentifier {

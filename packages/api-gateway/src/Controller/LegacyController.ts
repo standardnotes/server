@@ -9,7 +9,7 @@ export class LegacyController extends BaseHttpController {
   private AUTH_ROUTES: Map<string, string>
   private PARAMETRIZED_AUTH_ROUTES: Map<string, string>
 
-  constructor(@inject(TYPES.HTTPService) private httpService: ServiceProxyInterface) {
+  constructor(@inject(TYPES.ServiceProxy) private httpService: ServiceProxyInterface) {
     super()
 
     this.AUTH_ROUTES = new Map([

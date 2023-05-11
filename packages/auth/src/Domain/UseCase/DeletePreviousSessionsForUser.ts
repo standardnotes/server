@@ -10,8 +10,8 @@ import { UseCaseInterface } from './UseCaseInterface'
 @injectable()
 export class DeletePreviousSessionsForUser implements UseCaseInterface {
   constructor(
-    @inject(TYPES.SessionRepository) private sessionRepository: SessionRepositoryInterface,
-    @inject(TYPES.SessionService) private sessionService: SessionServiceInterface,
+    @inject(TYPES.Auth_SessionRepository) private sessionRepository: SessionRepositoryInterface,
+    @inject(TYPES.Auth_SessionService) private sessionService: SessionServiceInterface,
   ) {}
 
   async execute(dto: DeletePreviousSessionsForUserDTO): Promise<DeletePreviousSessionsForUserResponse> {

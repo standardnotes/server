@@ -11,8 +11,8 @@ import { SelectorInterface } from '@standardnotes/security'
 @injectable()
 export class KeyParamsFactory implements KeyParamsFactoryInterface {
   constructor(
-    @inject(TYPES.PSEUDO_KEY_PARAMS_KEY) private pseudoKeyParamsKey: string,
-    @inject(TYPES.ProtocolVersionSelector) private protocolVersionSelector: SelectorInterface<ProtocolVersion>,
+    @inject(TYPES.Auth_PSEUDO_KEY_PARAMS_KEY) private pseudoKeyParamsKey: string,
+    @inject(TYPES.Auth_ProtocolVersionSelector) private protocolVersionSelector: SelectorInterface<ProtocolVersion>,
   ) {}
 
   createPseudoParams(email: string): KeyParamsData {

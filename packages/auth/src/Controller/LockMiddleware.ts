@@ -10,8 +10,8 @@ import { UserRepositoryInterface } from '../Domain/User/UserRepositoryInterface'
 @injectable()
 export class LockMiddleware extends BaseMiddleware {
   constructor(
-    @inject(TYPES.UserRepository) private userRepository: UserRepositoryInterface,
-    @inject(TYPES.LockRepository) private lockRepository: LockRepositoryInterface,
+    @inject(TYPES.Auth_UserRepository) private userRepository: UserRepositoryInterface,
+    @inject(TYPES.Auth_LockRepository) private lockRepository: LockRepositoryInterface,
   ) {
     super()
   }

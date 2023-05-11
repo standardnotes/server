@@ -11,7 +11,7 @@ import { UserSubscriptionType } from './UserSubscriptionType'
 @injectable()
 export class UserSubscriptionService implements UserSubscriptionServiceInterface {
   constructor(
-    @inject(TYPES.UserSubscriptionRepository) private userSubscriptionRepository: UserSubscriptionRepositoryInterface,
+    @inject(TYPES.Auth_UserSubscriptionRepository) private userSubscriptionRepository: UserSubscriptionRepositoryInterface,
   ) {}
 
   async findRegularSubscriptionForUserUuid(userUuid: string): Promise<FindRegularSubscriptionResponse> {

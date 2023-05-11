@@ -7,7 +7,7 @@ import { ServiceProxyInterface } from '../../Service/Http/ServiceProxyInterface'
 
 @controller('/v1/authenticators')
 export class AuthenticatorsController extends BaseHttpController {
-  constructor(@inject(TYPES.HTTPService) private httpService: ServiceProxyInterface) {
+  constructor(@inject(TYPES.ServiceProxy) private httpService: ServiceProxyInterface) {
     super()
   }
 

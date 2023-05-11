@@ -12,11 +12,11 @@ import { GetUserFeatures } from '../Domain/UseCase/GetUserFeatures/GetUserFeatur
 
 @controller('/users/:userUuid/features')
 export class FeaturesController extends BaseHttpController {
-  constructor(@inject(TYPES.GetUserFeatures) private doGetUserFeatures: GetUserFeatures) {
+  constructor(@inject(TYPES.Auth_GetUserFeatures) private doGetUserFeatures: GetUserFeatures) {
     super()
   }
 
-  @httpGet('/', TYPES.ApiGatewayAuthMiddleware)
+  @httpGet('/', TYPES.Auth_ApiGatewayAuthMiddleware)
   async getFeatures(request: Request, response: Response): Promise<results.JsonResult> {
     if (request.params.userUuid !== response.locals.user.uuid) {
       return this.json(

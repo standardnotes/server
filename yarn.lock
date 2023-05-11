@@ -3985,7 +3985,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@standardnotes/auth-server@workspace:packages/auth":
+"@standardnotes/auth-server@workspace:^, @standardnotes/auth-server@workspace:packages/auth":
   version: 0.0.0-use.local
   resolution: "@standardnotes/auth-server@workspace:packages/auth"
   dependencies:
@@ -4246,6 +4246,8 @@ __metadata:
   resolution: "@standardnotes/home-server@workspace:packages/home-server"
   dependencies:
     "@standardnotes/api-gateway": "workspace:^"
+    "@standardnotes/auth-server": "workspace:^"
+    "@standardnotes/domain-core": "workspace:^"
     "@types/cors": "npm:^2.8.9"
     "@types/express": "npm:^4.17.14"
     "@types/prettyjson": "npm:^0.0.30"

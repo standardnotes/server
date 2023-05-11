@@ -10,8 +10,8 @@ import { SubscriptionSetting } from './SubscriptionSetting'
 @injectable()
 export class SettingDecrypter implements SettingDecrypterInterface {
   constructor(
-    @inject(TYPES.UserRepository) private userRepository: UserRepositoryInterface,
-    @inject(TYPES.Crypter) private crypter: CrypterInterface,
+    @inject(TYPES.Auth_UserRepository) private userRepository: UserRepositoryInterface,
+    @inject(TYPES.Auth_Crypter) private crypter: CrypterInterface,
   ) {}
 
   async decryptSettingValue(setting: Setting | SubscriptionSetting, userUuid: string): Promise<string | null> {

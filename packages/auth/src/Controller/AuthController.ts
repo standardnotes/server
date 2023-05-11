@@ -28,14 +28,14 @@ import { Logger } from 'winston'
 @injectable()
 export class AuthController implements UserServerInterface {
   constructor(
-    @inject(TYPES.ClearLoginAttempts) private clearLoginAttempts: ClearLoginAttempts,
-    @inject(TYPES.Register) private registerUser: Register,
-    @inject(TYPES.DomainEventPublisher) private domainEventPublisher: DomainEventPublisherInterface,
-    @inject(TYPES.DomainEventFactory) private domainEventFactory: DomainEventFactoryInterface,
-    @inject(TYPES.SignInWithRecoveryCodes) private doSignInWithRecoveryCodes: SignInWithRecoveryCodes,
-    @inject(TYPES.GetUserKeyParamsRecovery) private getUserKeyParamsRecovery: GetUserKeyParamsRecovery,
-    @inject(TYPES.GenerateRecoveryCodes) private doGenerateRecoveryCodes: GenerateRecoveryCodes,
-    @inject(TYPES.Logger) private logger: Logger,
+    @inject(TYPES.Auth_ClearLoginAttempts) private clearLoginAttempts: ClearLoginAttempts,
+    @inject(TYPES.Auth_Register) private registerUser: Register,
+    @inject(TYPES.Auth_DomainEventPublisher) private domainEventPublisher: DomainEventPublisherInterface,
+    @inject(TYPES.Auth_DomainEventFactory) private domainEventFactory: DomainEventFactoryInterface,
+    @inject(TYPES.Auth_SignInWithRecoveryCodes) private doSignInWithRecoveryCodes: SignInWithRecoveryCodes,
+    @inject(TYPES.Auth_GetUserKeyParamsRecovery) private getUserKeyParamsRecovery: GetUserKeyParamsRecovery,
+    @inject(TYPES.Auth_GenerateRecoveryCodes) private doGenerateRecoveryCodes: GenerateRecoveryCodes,
+    @inject(TYPES.Auth_Logger) private logger: Logger,
   ) {}
 
   async deleteAccount(_params: never): Promise<HttpResponse<UserDeletionResponseBody>> {
