@@ -1,22 +1,24 @@
-import { GetUserItemSharesUseCase } from './../Domain/UseCase/ItemShare/GetUserItemSharesUseCase'
-import { UpdateSharedItemUseCase } from './../Domain/UseCase/ItemShare/UpdateSharedItemUseCase'
-import { GetSharedItemUseCase } from './../Domain/UseCase/ItemShare/GetSharedItemUseCase'
+import { GetUserItemSharesUseCase } from '../Domain/UseCase/Sharing/GetUserItemSharesUseCase'
+import { UpdateSharedItemUseCase } from '../Domain/UseCase/Sharing/UpdateSharedItemUseCase'
+import { GetSharedItemUseCase } from '../Domain/UseCase/Sharing/GetSharedItemUseCase'
 import { Request, Response } from 'express'
 import { inject } from 'inversify'
 import { BaseHttpController, controller, httpGet, httpPatch, httpPost, results } from 'inversify-express-utils'
 import TYPES from '../Bootstrap/Types'
-import { ShareItemUseCase } from '../Domain/UseCase/ItemShare/ShareItemUseCase'
+import { ShareItemUseCase } from '../Domain/UseCase/Sharing/ShareItemUseCase'
 import { CreateSharedFileValetToken } from '../Domain/UseCase/CreateSharedFileValetToken/CreateSharedFileValetToken'
 import { ContentType } from '@standardnotes/common'
 import { ProjectorInterface } from '../Projection/ProjectorInterface'
 import { Item } from '../Domain/Item/Item'
 import { ItemProjection } from '../Projection/ItemProjection'
+import { GetItem } from '../Domain/UseCase/GetItem/GetItem'
 
 @controller('/sharing')
-export class ItemSharesController extends BaseHttpController {
+export class SharingController extends BaseHttpController {
   constructor(
     @inject(TYPES.ShareItem) private shareItem: ShareItemUseCase,
     @inject(TYPES.GetSharedItem) private getSharedItem: GetSharedItemUseCase,
+    @inject(TYPES.GetItem) private getItem: GetItem,
     @inject(TYPES.UpdateSharedItem) private updateSharedItem: UpdateSharedItemUseCase,
     @inject(TYPES.GetUserItemShares) private getItemShares: GetUserItemSharesUseCase,
     @inject(TYPES.CreateSharedFileValetToken) private createSharedFileValetToken: CreateSharedFileValetToken,
@@ -26,7 +28,20 @@ export class ItemSharesController extends BaseHttpController {
   }
 
   @httpPost('/', TYPES.AuthMiddleware)
-  public async share(request: Request, response: Response): Promise<results.JsonResult> {
+  public async share(request: Request, response: Response): Promise<results.NotFoundResult | results.JsonResult> {
+    const getItemResponse = await this.getItem.execute({
+      userUuid: response.locals.user.uuid,
+      itemUuid: request.body.itemUuid,
+    })
+
+    if (getItemResponse.success === false) {
+      return this.notFoundJson()
+    }
+
+    if (getItemResponse.item.userUuid !== response.locals.user.uuid) {
+      return this.notFoundJson()
+    }
+
     const result = await this.shareItem.execute({
       itemUuid: request.body.itemUuid,
       userUuid: response.locals.user.uuid,
@@ -41,7 +56,25 @@ export class ItemSharesController extends BaseHttpController {
   }
 
   @httpPatch('/', TYPES.AuthMiddleware)
-  public async updateSharedItemRequest(request: Request): Promise<results.JsonResult> {
+  public async updateSharedItemRequest(
+    request: Request,
+    response: Response,
+  ): Promise<results.NotFoundResult | results.JsonResult> {
+    const getItemResponse = await this.getSharedItem.execute({
+      shareToken: request.body.shareToken,
+    })
+
+    if (getItemResponse.success === false) {
+      return this.json({
+        success: false,
+        message: 'Could not find shared item',
+      })
+    }
+
+    if (getItemResponse.item.userUuid !== response.locals.user.uuid) {
+      return this.notFoundJson()
+    }
+
     const result = await this.updateSharedItem.execute({
       shareToken: request.body.shareToken,
       encryptedContentKey: request.body.encryptedContentKey,
@@ -57,14 +90,14 @@ export class ItemSharesController extends BaseHttpController {
     })
 
     if (result.success === false) {
-      return this.notFound()
+      return this.notFoundJson()
     }
 
     const item = await this.itemProjector.projectFull(result.item)
 
     if (result.item.contentType === ContentType.File) {
       if (!result.itemShare.fileRemoteIdentifier) {
-        return this.notFound()
+        return this.notFoundJson()
       }
 
       const valetTokenResult = await this.createSharedFileValetToken.execute({
@@ -81,15 +114,15 @@ export class ItemSharesController extends BaseHttpController {
       }
 
       return this.json({
-        itemShare: result.itemShare,
         item,
+        itemShare: result.itemShare,
         fileValetToken: valetTokenResult.valetToken,
       })
     }
 
     return this.json({
-      itemShare: result.itemShare,
       item,
+      itemShare: result.itemShare,
     })
   }
 
@@ -103,9 +136,18 @@ export class ItemSharesController extends BaseHttpController {
     })
 
     if (result.success === false) {
-      return this.notFound()
+      return this.notFoundJson()
     }
 
     return this.json(result)
+  }
+
+  private notFoundJson(): results.JsonResult {
+    return this.json(
+      {
+        error: { message: 'Not found' },
+      },
+      404,
+    )
   }
 }

@@ -6,7 +6,7 @@ import { CreateValetTokenResponseData } from '@standardnotes/responses'
 import TYPES from '../../../Bootstrap/Types'
 import { UseCaseInterface } from '../UseCaseInterface'
 import { CreateSharedFileValetTokenDTO } from './CreateSharedFileValetTokenDTO'
-import { GetSharedItemUseCase } from '../ItemShare/GetSharedItemUseCase'
+import { GetSharedItemUseCase } from '../Sharing/GetSharedItemUseCase'
 
 @injectable()
 export class CreateSharedFileValetToken implements UseCaseInterface {

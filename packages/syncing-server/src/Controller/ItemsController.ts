@@ -78,9 +78,18 @@ export class ItemsController extends BaseHttpController {
     })
 
     if (!result.success) {
-      return this.notFound()
+      return this.notFoundJson()
     }
 
     return this.json({ item: await this.itemProjector.projectFull(result.item) })
+  }
+
+  private notFoundJson(): results.JsonResult {
+    return this.json(
+      {
+        error: { message: 'Item not found' },
+      },
+      404,
+    )
   }
 }
