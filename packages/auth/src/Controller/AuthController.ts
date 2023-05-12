@@ -1,4 +1,3 @@
-import { inject, injectable } from 'inversify'
 import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
 import {
   ApiVersion,
@@ -10,7 +9,6 @@ import {
 import { HttpResponse, HttpStatusCode } from '@standardnotes/responses'
 import { ProtocolVersion } from '@standardnotes/common'
 
-import TYPES from '../Bootstrap/Types'
 import { ClearLoginAttempts } from '../Domain/UseCase/ClearLoginAttempts'
 import { Register } from '../Domain/UseCase/Register'
 import { DomainEventFactoryInterface } from '../Domain/Event/DomainEventFactoryInterface'
@@ -26,18 +24,17 @@ import { GenerateRecoveryCodesRequestParams } from '../Infra/Http/Request/Genera
 import { Logger } from 'winston'
 import { ControllerContainerInterface } from '@standardnotes/domain-core'
 
-@injectable()
 export class AuthController implements UserServerInterface {
   constructor(
-    @inject(TYPES.Auth_ClearLoginAttempts) private clearLoginAttempts: ClearLoginAttempts,
-    @inject(TYPES.Auth_Register) private registerUser: Register,
-    @inject(TYPES.Auth_DomainEventPublisher) private domainEventPublisher: DomainEventPublisherInterface,
-    @inject(TYPES.Auth_DomainEventFactory) private domainEventFactory: DomainEventFactoryInterface,
-    @inject(TYPES.Auth_SignInWithRecoveryCodes) private doSignInWithRecoveryCodes: SignInWithRecoveryCodes,
-    @inject(TYPES.Auth_GetUserKeyParamsRecovery) private getUserKeyParamsRecovery: GetUserKeyParamsRecovery,
-    @inject(TYPES.Auth_GenerateRecoveryCodes) private doGenerateRecoveryCodes: GenerateRecoveryCodes,
-    @inject(TYPES.Auth_Logger) private logger: Logger,
-    @inject(TYPES.Auth_ControllerContainer) private controllerContainer: ControllerContainerInterface,
+    private clearLoginAttempts: ClearLoginAttempts,
+    private registerUser: Register,
+    private domainEventPublisher: DomainEventPublisherInterface,
+    private domainEventFactory: DomainEventFactoryInterface,
+    private doSignInWithRecoveryCodes: SignInWithRecoveryCodes,
+    private getUserKeyParamsRecovery: GetUserKeyParamsRecovery,
+    private doGenerateRecoveryCodes: GenerateRecoveryCodes,
+    private logger: Logger,
+    private controllerContainer: ControllerContainerInterface,
   ) {
     this.controllerContainer.register('auth.deleteAccount', this.deleteAccount.bind(this))
     this.controllerContainer.register('auth.register', this.register.bind(this))

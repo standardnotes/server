@@ -820,7 +820,21 @@ export class ContainerConfigLoader {
     container
       .bind<ControllerContainerInterface>(TYPES.Auth_ControllerContainer)
       .toConstantValue(controllerConatiner ?? new ControllerContainer())
-    container.bind<AuthController>(TYPES.Auth_AuthController).to(AuthController)
+    container
+      .bind<AuthController>(TYPES.Auth_AuthController)
+      .toConstantValue(
+        new AuthController(
+          container.get(TYPES.Auth_ClearLoginAttempts),
+          container.get(TYPES.Auth_Register),
+          container.get(TYPES.Auth_DomainEventPublisher),
+          container.get(TYPES.Auth_DomainEventFactory),
+          container.get(TYPES.Auth_SignInWithRecoveryCodes),
+          container.get(TYPES.Auth_GetUserKeyParamsRecovery),
+          container.get(TYPES.Auth_GenerateRecoveryCodes),
+          container.get(TYPES.Auth_Logger),
+          container.get(TYPES.Auth_ControllerContainer),
+        ),
+      )
     container
       .bind<AuthenticatorsController>(TYPES.Auth_AuthenticatorsController)
       .toConstantValue(
