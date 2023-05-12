@@ -18,6 +18,8 @@ import { WebSocketAuthMiddleware } from '../Controller/WebSocketAuthMiddleware'
 import { InMemoryCrossServiceTokenCache } from '../Infra/InMemory/InMemoryCrossServiceTokenCache'
 import { DirectCallServiceProxy } from '../Service/Proxy/DirectCallServiceProxy'
 import { ServiceContainerInterface } from '@standardnotes/domain-core'
+import { EndpointResolverInterface } from '../Service/Resolver/EndpointResolverInterface'
+import { EndpointResolver } from '../Service/Resolver/EndpointResolver'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -100,6 +102,9 @@ export class ContainerConfigLoader {
     } else {
       container.bind<CrossServiceTokenCacheInterface>(TYPES.CrossServiceTokenCache).to(RedisCrossServiceTokenCache)
     }
+    container
+      .bind<EndpointResolverInterface>(TYPES.EndpointResolver)
+      .toConstantValue(new EndpointResolver(isConfiguredForHomeServer))
 
     return container
   }

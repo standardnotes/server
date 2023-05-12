@@ -24,6 +24,7 @@ import { GenerateRecoveryCodesResponseBody } from '../Infra/Http/Response/Genera
 import { GenerateRecoveryCodes } from '../Domain/UseCase/GenerateRecoveryCodes/GenerateRecoveryCodes'
 import { GenerateRecoveryCodesRequestParams } from '../Infra/Http/Request/GenerateRecoveryCodesRequestParams'
 import { Logger } from 'winston'
+import { ControllerContainerInterface } from '@standardnotes/domain-core'
 
 @injectable()
 export class AuthController implements UserServerInterface {
@@ -36,7 +37,14 @@ export class AuthController implements UserServerInterface {
     @inject(TYPES.Auth_GetUserKeyParamsRecovery) private getUserKeyParamsRecovery: GetUserKeyParamsRecovery,
     @inject(TYPES.Auth_GenerateRecoveryCodes) private doGenerateRecoveryCodes: GenerateRecoveryCodes,
     @inject(TYPES.Auth_Logger) private logger: Logger,
-  ) {}
+    @inject(TYPES.Auth_ControllerContainer) private controllerContainer: ControllerContainerInterface,
+  ) {
+    this.controllerContainer.register('auth.deleteAccount', this.deleteAccount.bind(this))
+    this.controllerContainer.register('auth.register', this.register.bind(this))
+    this.controllerContainer.register('auth.generateRecoveryCodes', this.generateRecoveryCodes.bind(this))
+    this.controllerContainer.register('auth.signInWithRecoveryCodes', this.signInWithRecoveryCodes.bind(this))
+    this.controllerContainer.register('auth.recoveryKeyParams', this.recoveryKeyParams.bind(this))
+  }
 
   async deleteAccount(_params: never): Promise<HttpResponse<UserDeletionResponseBody>> {
     throw new Error('This method is implemented on the payments server.')

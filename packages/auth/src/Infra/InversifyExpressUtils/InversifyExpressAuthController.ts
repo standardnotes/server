@@ -19,6 +19,7 @@ import { Logger } from 'winston'
 import { GetUserKeyParams } from '../../Domain/UseCase/GetUserKeyParams/GetUserKeyParams'
 import { inject } from 'inversify'
 import { AuthController } from '../../Controller/AuthController'
+import { ControllerContainerInterface } from '@standardnotes/domain-core'
 
 @controller('/auth')
 export class InversifyExpressAuthController extends BaseHttpController {
@@ -31,8 +32,15 @@ export class InversifyExpressAuthController extends BaseHttpController {
     @inject(TYPES.Auth_IncreaseLoginAttempts) private increaseLoginAttempts: IncreaseLoginAttempts,
     @inject(TYPES.Auth_Logger) private logger: Logger,
     @inject(TYPES.Auth_AuthController) private authController: AuthController,
+    @inject(TYPES.Auth_ControllerContainer) private controllerContainer: ControllerContainerInterface,
   ) {
     super()
+
+    this.controllerContainer.register('auth.params', this.params.bind(this))
+    this.controllerContainer.register('auth.signIn', this.signIn.bind(this))
+    this.controllerContainer.register('auth.pkceParams', this.pkceParams.bind(this))
+    this.controllerContainer.register('auth.pkceSignIn', this.pkceSignIn.bind(this))
+    this.controllerContainer.register('auth.signOut', this.signOut.bind(this))
   }
 
   @httpGet('/params', TYPES.Auth_AuthMiddlewareWithoutResponse)

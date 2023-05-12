@@ -22,6 +22,7 @@ export const TYPES = {
   ServiceProxy: Symbol.for('ServiceProxy'),
   CrossServiceTokenCache: Symbol.for('CrossServiceTokenCache'),
   Timer: Symbol.for('Timer'),
+  EndpointResolver: Symbol.for('EndpointResolver'),
 }
 
 // export default TYPES
