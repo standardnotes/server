@@ -833,6 +833,7 @@ export class ContainerConfigLoader {
           container.get(TYPES.Auth_GenerateRecoveryCodes),
           container.get(TYPES.Auth_Logger),
           container.get(TYPES.Auth_ControllerContainer),
+          container.get(TYPES.Auth_SessionService),
         ),
       )
     container

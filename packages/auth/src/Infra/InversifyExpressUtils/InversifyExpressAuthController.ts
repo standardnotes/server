@@ -1,5 +1,4 @@
 import { Request, Response } from 'express'
-import { ErrorTag } from '@standardnotes/responses'
 import {
   BaseHttpController,
   controller,
@@ -10,7 +9,6 @@ import {
 } from 'inversify-express-utils'
 
 import TYPES from '../../Bootstrap/Types'
-import { SessionServiceInterface } from '../../Domain/Session/SessionServiceInterface'
 import { SignIn } from '../../Domain/UseCase/SignIn'
 import { ClearLoginAttempts } from '../../Domain/UseCase/ClearLoginAttempts'
 import { VerifyMFA } from '../../Domain/UseCase/VerifyMFA'
@@ -24,7 +22,6 @@ import { ControllerContainerInterface } from '@standardnotes/domain-core'
 @controller('/auth')
 export class InversifyExpressAuthController extends BaseHttpController {
   constructor(
-    @inject(TYPES.Auth_SessionService) private sessionService: SessionServiceInterface,
     @inject(TYPES.Auth_VerifyMFA) private verifyMFA: VerifyMFA,
     @inject(TYPES.Auth_SignIn) private signInUseCase: SignIn,
     @inject(TYPES.Auth_GetUserKeyParams) private getUserKeyParams: GetUserKeyParams,
@@ -40,7 +37,6 @@ export class InversifyExpressAuthController extends BaseHttpController {
     this.controllerContainer.register('auth.signIn', this.signIn.bind(this))
     this.controllerContainer.register('auth.pkceParams', this.pkceParams.bind(this))
     this.controllerContainer.register('auth.pkceSignIn', this.pkceSignIn.bind(this))
-    this.controllerContainer.register('auth.signOut', this.signOut.bind(this))
   }
 
   @httpGet('/params', TYPES.Auth_AuthMiddlewareWithoutResponse)
@@ -297,26 +293,12 @@ export class InversifyExpressAuthController extends BaseHttpController {
 
   @httpPost('/sign_out', TYPES.Auth_AuthMiddlewareWithoutResponse)
   async signOut(request: Request, response: Response): Promise<results.JsonResult | void> {
-    if (response.locals.readOnlyAccess) {
-      return this.json(
-        {
-          error: {
-            tag: ErrorTag.ReadOnlyAccess,
-            message: 'Session has read-only access.',
-          },
-        },
-        401,
-      )
-    }
+    const result = await this.authController.signOut({
+      readOnlyAccess: response.locals.readOnlyAccess,
+      authorizationHeader: <string>request.headers.authorization,
+    })
 
-    const authorizationHeader = <string>request.headers.authorization
-
-    const userUuid = await this.sessionService.deleteSessionByToken(authorizationHeader.replace('Bearer ', ''))
-
-    if (userUuid !== null) {
-      response.setHeader('x-invalidate-cache', userUuid)
-    }
-    response.status(204).send()
+    return this.json(result.data, result.status)
   }
 
   @httpPost('/')

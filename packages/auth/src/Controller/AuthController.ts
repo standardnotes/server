@@ -6,7 +6,7 @@ import {
   UserDeletionResponseBody,
   UserRegistrationResponseBody,
 } from '@standardnotes/api'
-import { HttpResponse, HttpStatusCode } from '@standardnotes/responses'
+import { ErrorTag, HttpResponse, HttpStatusCode } from '@standardnotes/responses'
 import { ProtocolVersion } from '@standardnotes/common'
 
 import { ClearLoginAttempts } from '../Domain/UseCase/ClearLoginAttempts'
@@ -23,6 +23,7 @@ import { GenerateRecoveryCodes } from '../Domain/UseCase/GenerateRecoveryCodes/G
 import { GenerateRecoveryCodesRequestParams } from '../Infra/Http/Request/GenerateRecoveryCodesRequestParams'
 import { Logger } from 'winston'
 import { ControllerContainerInterface } from '@standardnotes/domain-core'
+import { SessionServiceInterface } from '../Domain/Session/SessionServiceInterface'
 
 export class AuthController implements UserServerInterface {
   constructor(
@@ -35,12 +36,14 @@ export class AuthController implements UserServerInterface {
     private doGenerateRecoveryCodes: GenerateRecoveryCodes,
     private logger: Logger,
     private controllerContainer: ControllerContainerInterface,
+    private sessionService: SessionServiceInterface,
   ) {
     this.controllerContainer.register('auth.deleteAccount', this.deleteAccount.bind(this))
     this.controllerContainer.register('auth.register', this.register.bind(this))
     this.controllerContainer.register('auth.generateRecoveryCodes', this.generateRecoveryCodes.bind(this))
     this.controllerContainer.register('auth.signInWithRecoveryCodes', this.signInWithRecoveryCodes.bind(this))
     this.controllerContainer.register('auth.recoveryKeyParams', this.recoveryKeyParams.bind(this))
+    this.controllerContainer.register('auth.signOut', this.signOut.bind(this))
   }
 
   async deleteAccount(_params: never): Promise<HttpResponse<UserDeletionResponseBody>> {
@@ -203,6 +206,35 @@ export class AuthController implements UserServerInterface {
       data: {
         keyParams: result.getValue(),
       },
+    }
+  }
+
+  async signOut(params: Record<string, unknown>): Promise<HttpResponse> {
+    if (params.readOnlyAccess) {
+      return {
+        status: HttpStatusCode.Unauthorized,
+        data: {
+          error: {
+            tag: ErrorTag.ReadOnlyAccess,
+            message: 'Session has read-only access.',
+          },
+        },
+      }
+    }
+
+    const userUuid = await this.sessionService.deleteSessionByToken(
+      (params.authorizationHeader as string).replace('Bearer ', ''),
+    )
+
+    let headers = undefined
+    if (userUuid !== null) {
+      headers = new Map([['x-invalidate-cache', userUuid]])
+    }
+
+    return {
+      status: HttpStatusCode.NoContent,
+      data: {},
+      headers,
     }
   }
 }
