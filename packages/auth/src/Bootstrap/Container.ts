@@ -237,7 +237,7 @@ import { TypeORMSubscriptionTokenRepository } from '../Infra/TypeORM/TypeORMSubs
 const newrelicFormatter = require('@newrelic/winston-enricher')
 
 export class ContainerConfigLoader {
-  async load(): Promise<Container> {
+  async load(controllerConatiner?: ControllerContainerInterface): Promise<Container> {
     const env: Env = new Env()
     env.load()
 
@@ -819,7 +819,7 @@ export class ContainerConfigLoader {
     // Controller
     container
       .bind<ControllerContainerInterface>(TYPES.Auth_ControllerContainer)
-      .toConstantValue(new ControllerContainer())
+      .toConstantValue(controllerConatiner ?? new ControllerContainer())
     container.bind<AuthController>(TYPES.Auth_AuthController).to(AuthController)
     container
       .bind<AuthenticatorsController>(TYPES.Auth_AuthenticatorsController)

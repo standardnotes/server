@@ -61,6 +61,11 @@ export class ActionsController extends BaseHttpController {
 
   @httpPost('/recovery/login-params')
   async recoveryParams(request: Request, response: Response): Promise<void> {
-    await this.serviceProxy.callAuthServer(request, response, 'auth/recovery/params', request.body)
+    await this.serviceProxy.callAuthServer(
+      request,
+      response,
+      this.endpointResolver.resolveEndpointOrMethodIdentifier('auth/recovery/params'),
+      request.body,
+    )
   }
 }

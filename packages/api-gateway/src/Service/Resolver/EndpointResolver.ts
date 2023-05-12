@@ -5,7 +5,7 @@ export class EndpointResolver implements EndpointResolverInterface {
 
   private readonly endpointToMethodMap: Map<string, string> = new Map([
     ['/healthcheck', 'healthcheck'],
-    ['auth/params', 'auth.params'],
+    ['auth/recovery/params', 'auth.recoveryKeyParams'],
   ])
 
   resolveEndpointOrMethodIdentifier(endpoint: string): string {

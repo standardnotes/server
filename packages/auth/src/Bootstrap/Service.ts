@@ -28,7 +28,7 @@ export class Service implements ServiceInterface {
   async getContainer(): Promise<unknown> {
     const config = new ContainerConfigLoader()
 
-    return config.load()
+    return config.load(this.controllerContainer)
   }
 
   getId(): ServiceIdentifier {
