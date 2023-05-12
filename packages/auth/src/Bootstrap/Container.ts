@@ -232,6 +232,7 @@ import { TypeORMEphemeralSessionRepository } from '../Infra/TypeORM/TypeORMEphem
 import { TypeORMOfflineSubscriptionTokenRepository } from '../Infra/TypeORM/TypeORMOfflineSubscriptionTokenRepository'
 import { TypeORMPKCERepository } from '../Infra/TypeORM/TypeORMPKCERepository'
 import { TypeORMSubscriptionTokenRepository } from '../Infra/TypeORM/TypeORMSubscriptionTokenRepository'
+import { InversifyExpressAuthController } from '../Infra/InversifyExpressUtils/InversifyExpressAuthController'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -954,6 +955,21 @@ export class ContainerConfigLoader {
           container.get(TYPES.Auth_SQS),
           container.get(TYPES.Auth_SQS_QUEUE_URL),
           container.get(TYPES.Auth_DomainEventMessageHandler),
+        ),
+      )
+
+    container
+      .bind<InversifyExpressAuthController>(TYPES.Auth_InversifyExpressAuthController)
+      .toConstantValue(
+        new InversifyExpressAuthController(
+          container.get(TYPES.Auth_VerifyMFA),
+          container.get(TYPES.Auth_SignIn),
+          container.get(TYPES.Auth_GetUserKeyParams),
+          container.get(TYPES.Auth_ClearLoginAttempts),
+          container.get(TYPES.Auth_IncreaseLoginAttempts),
+          container.get(TYPES.Auth_Logger),
+          container.get(TYPES.Auth_AuthController),
+          container.get(TYPES.Auth_ControllerContainer),
         ),
       )
 

@@ -15,14 +15,14 @@ export class Service implements ServiceInterface {
     this.serviceContainer.register(ServiceIdentifier.create(ServiceIdentifier.NAMES.Auth).getValue(), this)
   }
 
-  async handleRequest(request: never, response: never, endpointOrMethodIdentifier: string): Promise<void> {
+  async handleRequest(request: never, response: never, endpointOrMethodIdentifier: string): Promise<unknown> {
     const method = this.controllerContainer.get(endpointOrMethodIdentifier)
 
     if (!method) {
       throw new Error(`Method ${endpointOrMethodIdentifier} not found`)
     }
 
-    await method(request, response)
+    return method(request, response)
   }
 
   async getContainer(): Promise<unknown> {

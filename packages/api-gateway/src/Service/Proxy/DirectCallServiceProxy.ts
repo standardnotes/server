@@ -16,7 +16,10 @@ export class DirectCallServiceProxy implements ServiceProxyInterface {
       throw new Error('Auth service not found')
     }
 
-    return authService.handleRequest(request, response, endpointOrMethodIdentifier)
+    const serviceResponse = await authService.handleRequest(request, response, endpointOrMethodIdentifier)
+
+    // eslint-disable-next-line no-console
+    console.log(`serviceResponse: ${JSON.stringify(serviceResponse)}`)
   }
 
   async callAuthServerWithLegacyFormat(
@@ -33,7 +36,7 @@ export class DirectCallServiceProxy implements ServiceProxyInterface {
       throw new Error('Revisions service not found')
     }
 
-    return service.handleRequest(request, response, endpointOrMethodIdentifier)
+    await service.handleRequest(request, response, endpointOrMethodIdentifier)
   }
 
   async callSyncingServer(request: never, response: never, endpointOrMethodIdentifier: string): Promise<void> {
@@ -44,7 +47,7 @@ export class DirectCallServiceProxy implements ServiceProxyInterface {
       throw new Error('Syncing service not found')
     }
 
-    return service.handleRequest(request, response, endpointOrMethodIdentifier)
+    await service.handleRequest(request, response, endpointOrMethodIdentifier)
   }
 
   async callLegacySyncingServer(

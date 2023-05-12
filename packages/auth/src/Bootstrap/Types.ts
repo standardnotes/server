@@ -217,6 +217,7 @@ const TYPES = {
   Auth_ProtocolVersionSelector: Symbol.for('Auth_ProtocolVersionSelector'),
   Auth_BooleanSelector: Symbol.for('Auth_BooleanSelector'),
   Auth_UserSubscriptionService: Symbol.for('Auth_UserSubscriptionService'),
+  Auth_InversifyExpressAuthController: Symbol.for('Auth_InversifyExpressAuthController'),
 }
 
 export default TYPES
