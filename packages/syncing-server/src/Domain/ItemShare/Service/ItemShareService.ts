@@ -12,6 +12,7 @@ import { ItemShareFactoryInterface } from '../Factory/ItemShareFactoryInterface'
 import { UpdateSharedItemDto } from './UpdateSharedItemDto'
 import { TimerInterface } from '@standardnotes/time'
 import { ItemShareDuration } from '@standardnotes/domain-core'
+import { CryptoNode } from '@standardnotes/sncrypto-node'
 
 export class ItemShareService implements ItemShareServiceInterface {
   constructor(
@@ -64,7 +65,8 @@ export class ItemShareService implements ItemShareServiceInterface {
 
   async shareItem(dto: ShareItemDTO): Promise<ShareItemResult | null> {
     const uuid = uuidv4()
-    const shareToken = uuidv4()
+    const crypto = new CryptoNode()
+    const shareToken = await crypto.generateRandomKey(192)
 
     const duration = ItemShareDuration.create(dto.duration)
     if (duration.isFailed()) {

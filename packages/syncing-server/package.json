@@ -38,6 +38,7 @@
     "@standardnotes/responses": "^1.13.9",
     "@standardnotes/security": "workspace:*",
     "@standardnotes/settings": "workspace:*",
+    "@standardnotes/sncrypto-node": "workspace:*",
     "@standardnotes/time": "workspace:*",
     "axios": "^1.1.3",
     "cors": "2.8.5",

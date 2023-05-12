@@ -4043,6 +4043,7 @@ __metadata:
     "@standardnotes/responses": "npm:^1.13.9"
     "@standardnotes/security": "workspace:*"
     "@standardnotes/settings": "workspace:*"
+    "@standardnotes/sncrypto-node": "workspace:*"
     "@standardnotes/time": "workspace:*"
     "@types/cors": "npm:^2.8.9"
     "@types/dotenv": "npm:^8.2.0"

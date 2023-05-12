@@ -4880,6 +4880,7 @@ const RAW_RUNTIME_STATE =
           ["@standardnotes/responses", "npm:1.13.21"],\
           ["@standardnotes/security", "workspace:packages/security"],\
           ["@standardnotes/settings", "workspace:packages/settings"],\
+          ["@standardnotes/sncrypto-node", "workspace:packages/sncrypto-node"],\
           ["@standardnotes/time", "workspace:packages/time"],\
           ["@types/cors", "npm:2.8.13"],\
           ["@types/dotenv", "npm:8.2.0"],\

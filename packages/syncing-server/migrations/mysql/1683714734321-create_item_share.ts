@@ -28,7 +28,7 @@ export class CreateItemShare1683714734321 implements MigrationInterface {
         new TableColumn({
           name: 'share_token',
           type: 'varchar',
-          length: '36',
+          length: '255',
           isNullable: false,
         }),
         new TableColumn({
