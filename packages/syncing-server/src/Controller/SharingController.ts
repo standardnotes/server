@@ -52,7 +52,11 @@ export class SharingController extends BaseHttpController {
       duration: request.body.duration,
     })
 
-    return this.json(result)
+    if (result.success === false) {
+      return this.errorResponse(400, result.message)
+    } else {
+      return this.json(result)
+    }
   }
 
   @httpPatch('/', TYPES.AuthMiddleware)
@@ -65,10 +69,7 @@ export class SharingController extends BaseHttpController {
     })
 
     if (getItemResponse.success === false) {
-      return this.json({
-        success: false,
-        message: 'Could not find shared item',
-      })
+      return this.errorResponse(400, 'Could not find shared item', getItemResponse.errorTag)
     }
 
     if (getItemResponse.item.userUuid !== response.locals.user.uuid) {
@@ -80,7 +81,11 @@ export class SharingController extends BaseHttpController {
       encryptedContentKey: request.body.encryptedContentKey,
     })
 
-    return this.json(result)
+    if (result.success === false) {
+      return this.errorResponse(400, result.message)
+    } else {
+      return this.json(result)
+    }
   }
 
   @httpGet('/item/:shareToken')
@@ -90,7 +95,7 @@ export class SharingController extends BaseHttpController {
     })
 
     if (result.success === false) {
-      return this.notFoundJson()
+      return this.notFoundJson(result.errorTag)
     }
 
     const item = await this.itemProjector.projectFull(result.item)
@@ -107,10 +112,7 @@ export class SharingController extends BaseHttpController {
       })
 
       if (valetTokenResult.success === false) {
-        return this.json({
-          success: false,
-          message: 'Failed to create valet token',
-        })
+        return this.errorResponse(400, 'Failed to create valet token')
       }
 
       return this.json({
@@ -142,10 +144,19 @@ export class SharingController extends BaseHttpController {
     return this.json(result)
   }
 
-  private notFoundJson(): results.JsonResult {
+  private errorResponse(status: number, message?: string, tag?: string) {
     return this.json(
       {
-        error: { message: 'Not found' },
+        error: { message, tag },
+      },
+      status,
+    )
+  }
+
+  private notFoundJson(errorTag?: string): results.JsonResult {
+    return this.json(
+      {
+        error: { message: 'Not found', tag: errorTag },
       },
       404,
     )

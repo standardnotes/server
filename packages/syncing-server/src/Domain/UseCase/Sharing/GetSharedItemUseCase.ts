@@ -12,6 +12,7 @@ export type GetSharedItemResponse =
   | {
       success: false
       message: string
+      errorTag: string
     }
 
 export class GetSharedItemUseCase implements UseCaseInterface {
@@ -20,10 +21,11 @@ export class GetSharedItemUseCase implements UseCaseInterface {
   async execute(dto: { shareToken: string }): Promise<GetSharedItemResponse> {
     const result = await this.itemShareService.getSharedItem(dto.shareToken)
 
-    if (result === null) {
+    if ('error' in result) {
       return {
         success: false,
         message: `Could not get shared item with token ${dto.shareToken}`,
+        errorTag: result.error.tag,
       }
     }
 

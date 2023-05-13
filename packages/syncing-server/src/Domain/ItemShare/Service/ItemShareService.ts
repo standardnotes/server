@@ -1,9 +1,8 @@
-import { Item } from '../../Item/Item'
 import { GetItem } from '../../UseCase/GetItem/GetItem'
 import { ItemShare } from '../Model/ItemShare'
 
 import { ItemShareRepositoryInterface } from '../Repository/ItemShareRepositoryInterface'
-import { ItemShareServiceInterface } from './ItemShareServiceInterface'
+import { ItemShareServiceInterface, ItemSharingGetSharedItemResult } from './ItemShareServiceInterface'
 
 import { v4 as uuidv4 } from 'uuid'
 import { ShareItemDTO } from './ShareItemDTO'
@@ -22,19 +21,19 @@ export class ItemShareService implements ItemShareServiceInterface {
     private timer: TimerInterface,
   ) {}
 
-  async getSharedItem(shareToken: string): Promise<{ itemShare: ItemShare; item: Item } | null> {
+  async getSharedItem(shareToken: string): Promise<ItemSharingGetSharedItemResult> {
     const itemShareItem = await this.itemShareRepository.findByShareToken(shareToken)
     if (!itemShareItem) {
-      return null
+      return { error: { tag: 'not-found-item-share' } }
     }
 
     if (itemShareItem.consumed) {
-      return null
+      return { error: { tag: 'expired-item-share' } }
     }
 
     const duration = ItemShareDuration.create(itemShareItem.duration)
     if (duration.isFailed()) {
-      return null
+      return { error: { tag: 'not-found-item-share' } }
     }
 
     const durationValue = duration.getValue()
@@ -43,7 +42,7 @@ export class ItemShareService implements ItemShareServiceInterface {
       const expired = itemShareItem.createdAtTimestamp + durationValue.asSeconds < this.timer.getTimestampInSeconds()
       if (expired) {
         await this.expireSharedItem(shareToken)
-        return null
+        return { error: { tag: 'expired-item-share' } }
       }
     }
 
@@ -53,7 +52,7 @@ export class ItemShareService implements ItemShareServiceInterface {
     })
 
     if (!itemResponse || !itemResponse.success) {
-      return null
+      return { error: { tag: 'not-found-item-share' } }
     }
 
     if (durationValue.value === ItemShareDuration.DURATIONS.AfterConsume) {
