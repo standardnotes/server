@@ -34,7 +34,7 @@ export * from './Core/ValueObjectProps'
 export * from './Email/EmailLevel'
 export * from './Email/EmailLevelProps'
 
-export * from './ItemSharing/ItemShareDuration'
+export * from './ItemLinks/ItemLinkDuration'
 
 export * from './Mapping/MapperInterface'
 

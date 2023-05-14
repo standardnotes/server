@@ -1,5 +1,5 @@
-import { ItemShare } from '../Domain/ItemShare/Model/ItemShare'
-import { TypeORMItemShareRepository } from '../Domain/ItemShare/Repository/TypeORMItemShareRepository'
+import { ItemLink } from '../Domain/ItemLink/Model/ItemLink'
+import { TypeORMItemLinkRepository } from '../Domain/ItemLink/Repository/TypeORMItemLinkRepository'
 import * as winston from 'winston'
 import { Container, interfaces } from 'inversify'
 
@@ -20,7 +20,7 @@ import { DomainEventFactory } from '../Domain/Event/DomainEventFactory'
 import { Timer, TimerInterface } from '@standardnotes/time'
 import { ItemTransferCalculatorInterface } from '../Domain/Item/ItemTransferCalculatorInterface'
 import { ItemTransferCalculator } from '../Domain/Item/ItemTransferCalculator'
-import { ItemShareRepositoryInterface } from '../Domain/ItemShare/Repository/ItemShareRepositoryInterface'
+import { ItemLinksRepositoryInterface } from '../Domain/ItemLink/Repository/ItemLinkRepositoryInterface'
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
 
@@ -80,16 +80,16 @@ export class CommonContainerConfigLoader {
       return new TypeORMItemRepository(context.container.get(TYPES.ORMItemRepository))
     })
     container
-      .bind<ItemShareRepositoryInterface>(TYPES.ItemShareRepository)
+      .bind<ItemLinksRepositoryInterface>(TYPES.ItemLinkRepository)
       .toDynamicValue((context: interfaces.Context) => {
-        return new TypeORMItemShareRepository(context.container.get(TYPES.ORMItemShareRepository))
+        return new TypeORMItemLinkRepository(context.container.get(TYPES.ORMItemLinkRepository))
       })
 
     // ORM
     container.bind<Repository<Item>>(TYPES.ORMItemRepository).toDynamicValue(() => AppDataSource.getRepository(Item))
     container
-      .bind<Repository<ItemShare>>(TYPES.ORMItemShareRepository)
-      .toDynamicValue(() => AppDataSource.getRepository(ItemShare))
+      .bind<Repository<ItemLink>>(TYPES.ORMItemLinkRepository)
+      .toDynamicValue(() => AppDataSource.getRepository(ItemLink))
 
     // Projectors
     container

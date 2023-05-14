@@ -1,15 +1,15 @@
 import { Repository, SelectQueryBuilder } from 'typeorm'
-import { ItemShareRepositoryInterface, UserItemSharesQuery } from './ItemShareRepositoryInterface'
-import { ItemShare } from '../Model/ItemShare'
+import { ItemLinksRepositoryInterface, UserItemLinksQuery } from './ItemLinkRepositoryInterface'
+import { ItemLink } from '../Model/ItemLink'
 
-export class TypeORMItemShareRepository implements ItemShareRepositoryInterface {
-  constructor(private ormRepository: Repository<ItemShare>) {}
+export class TypeORMItemLinkRepository implements ItemLinksRepositoryInterface {
+  constructor(private ormRepository: Repository<ItemLink>) {}
 
-  async create(itemShare: ItemShare): Promise<ItemShare> {
+  async create(itemShare: ItemLink): Promise<ItemLink> {
     return this.ormRepository.save(itemShare)
   }
 
-  async remove(itemShare: ItemShare): Promise<ItemShare> {
+  async remove(itemShare: ItemLink): Promise<ItemLink> {
     return this.ormRepository.remove(itemShare)
   }
 
@@ -45,12 +45,12 @@ export class TypeORMItemShareRepository implements ItemShareRepositoryInterface 
     await this.ormRepository
       .createQueryBuilder('item_share')
       .delete()
-      .from('item_shares')
+      .from('item_links')
       .where('share_token = :shareToken', { shareToken })
       .execute()
   }
 
-  async findByShareToken(shareToken: string): Promise<ItemShare | null> {
+  async findByShareToken(shareToken: string): Promise<ItemLink | null> {
     return this.ormRepository
       .createQueryBuilder('item_share')
       .where('item_share.share_token = :shareToken', {
@@ -59,11 +59,11 @@ export class TypeORMItemShareRepository implements ItemShareRepositoryInterface 
       .getOne()
   }
 
-  async findAll(query: UserItemSharesQuery): Promise<ItemShare[]> {
+  async findAll(query: UserItemLinksQuery): Promise<ItemLink[]> {
     return this.createFindAllQueryBuilder(query).getMany()
   }
 
-  private createFindAllQueryBuilder(query: UserItemSharesQuery): SelectQueryBuilder<ItemShare> {
+  private createFindAllQueryBuilder(query: UserItemLinksQuery): SelectQueryBuilder<ItemLink> {
     const queryBuilder = this.ormRepository.createQueryBuilder('item_share')
 
     queryBuilder.where('item_share.user_uuid = :userUuid', { userUuid: query.userUuid })

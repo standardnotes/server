@@ -1,6 +1,6 @@
 import { ContentType } from '@standardnotes/common'
 
-export type ItemShareHash = {
+export type ItemLinkHash = {
   uuid: string
   item_uuid: string
   share_token: string

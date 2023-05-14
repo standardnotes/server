@@ -8,10 +8,10 @@ const TYPES = {
   Env: Symbol.for('Env'),
   // Repositories
   ItemRepository: Symbol.for('ItemRepository'),
-  ItemShareRepository: Symbol.for('ItemShareRepository'),
+  ItemLinkRepository: Symbol.for('ItemLinkRepository'),
   // ORM
   ORMItemRepository: Symbol.for('ORMItemRepository'),
-  ORMItemShareRepository: Symbol.for('ORMItemShareRepository'),
+  ORMItemLinkRepository: Symbol.for('ORMItemLinkRepository'),
   // Middleware
   AuthMiddleware: Symbol.for('AuthMiddleware'),
   // Projectors
@@ -44,8 +44,7 @@ const TYPES = {
   GetItem: Symbol.for('GetItem'),
   ShareItem: Symbol.for('ShareItem'),
   GetSharedItem: Symbol.for('GetSharedItem'),
-  UpdateSharedItem: Symbol.for('UpdateSharedItem'),
-  GetUserItemShares: Symbol.for('GetUserItemShares'),
+  GetUserItemLinks: Symbol.for('GetUserItemLinks'),
   CreateSharedFileValetToken: Symbol.for('CreateSharedFileValetToken'),
   // Handlers
   AccountDeletionRequestedEventHandler: Symbol.for('AccountDeletionRequestedEventHandler'),
@@ -60,7 +59,7 @@ const TYPES = {
   DomainEventMessageHandler: Symbol.for('DomainEventMessageHandler'),
   HTTPClient: Symbol.for('HTTPClient'),
   ItemService: Symbol.for('ItemService'),
-  ItemShareService: Symbol.for('ItemShareService'),
+  ItemLinkService: Symbol.for('ItemLinkService'),
   Timer: Symbol.for('Timer'),
   SyncResponseFactory20161215: Symbol.for('SyncResponseFactory20161215'),
   SyncResponseFactory20200115: Symbol.for('SyncResponseFactory20200115'),
@@ -75,7 +74,7 @@ const TYPES = {
   ContentTypeFilter: Symbol.for('ContentTypeFilter'),
   ContentFilter: Symbol.for('ContentFilter'),
   ItemFactory: Symbol.for('ItemFactory'),
-  ItemShareFactory: Symbol.for('ItemShareFactory'),
+  ItemLinkFactory: Symbol.for('ItemLinkFactory'),
   ItemTransferCalculator: Symbol.for('ItemTransferCalculator'),
   ValetTokenEncoder: Symbol.for('ValetTokenEncoder'),
 }

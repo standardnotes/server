@@ -5,7 +5,7 @@ interface DurationProps {
   value: string
 }
 
-export class ItemShareDuration extends ValueObject<DurationProps> {
+export class ItemLinkDuration extends ValueObject<DurationProps> {
   static readonly DURATIONS = {
     AfterConsume: 'after-consume',
     OneDay: 'one-day',
@@ -20,19 +20,19 @@ export class ItemShareDuration extends ValueObject<DurationProps> {
 
   get isDateDuration(): boolean {
     return [
-      ItemShareDuration.DURATIONS.OneDay,
-      ItemShareDuration.DURATIONS.ThreeDays,
-      ItemShareDuration.DURATIONS.FiveDays,
+      ItemLinkDuration.DURATIONS.OneDay,
+      ItemLinkDuration.DURATIONS.ThreeDays,
+      ItemLinkDuration.DURATIONS.FiveDays,
     ].includes(this.value)
   }
 
   get asSeconds(): number {
     switch (this.value) {
-      case ItemShareDuration.DURATIONS.OneDay:
+      case ItemLinkDuration.DURATIONS.OneDay:
         return 86_400
-      case ItemShareDuration.DURATIONS.ThreeDays:
+      case ItemLinkDuration.DURATIONS.ThreeDays:
         return 259_200
-      case ItemShareDuration.DURATIONS.FiveDays:
+      case ItemLinkDuration.DURATIONS.FiveDays:
         return 432_000
       default:
         throw new Error('Cannot convert non-date duration to seconds')
@@ -43,12 +43,12 @@ export class ItemShareDuration extends ValueObject<DurationProps> {
     super(props)
   }
 
-  static create(name: string): Result<ItemShareDuration> {
+  static create(name: string): Result<ItemLinkDuration> {
     const isValidName = Object.values(this.DURATIONS).includes(name)
     if (!isValidName) {
-      return Result.fail<ItemShareDuration>(`Invalid item share duration: ${name}`)
+      return Result.fail<ItemLinkDuration>(`Invalid item share duration: ${name}`)
     } else {
-      return Result.ok<ItemShareDuration>(new ItemShareDuration({ value: name }))
+      return Result.ok<ItemLinkDuration>(new ItemLinkDuration({ value: name }))
     }
   }
 }

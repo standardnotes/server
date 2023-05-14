@@ -1,9 +1,9 @@
 import { ContentType } from '@standardnotes/common'
 import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm'
 
-@Entity({ name: 'item_shares' })
-@Index('index_item_shares_on_share_token', ['shareToken'])
-export class ItemShare {
+@Entity({ name: 'item_links' })
+@Index('index_item_links_on_share_token', ['shareToken'])
+export class ItemLink {
   @PrimaryGeneratedColumn('uuid')
   declare uuid: string
 
@@ -24,14 +24,6 @@ export class ItemShare {
   declare contentType: ContentType | null
 
   @Column({
-    name: 'permissions',
-    type: 'varchar',
-    length: 255,
-    nullable: false,
-  })
-  declare permissions: string | null
-
-  @Column({
     name: 'encrypted_content_key',
     type: 'text',
     nullable: true,
@@ -42,14 +34,14 @@ export class ItemShare {
     name: 'user_uuid',
     length: 36,
   })
-  @Index('index_item_shares_on_user_uuid')
+  @Index('index_item_links_on_user_uuid')
   declare userUuid: string
 
   @Column({
     name: 'item_uuid',
     length: 36,
   })
-  @Index('index_item_shares_on_item_uuid')
+  @Index('index_item_links_on_item_uuid')
   declare itemUuid: string
 
   @Column({

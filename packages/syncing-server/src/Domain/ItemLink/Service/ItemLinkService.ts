@@ -1,27 +1,26 @@
 import { GetItem } from '../../UseCase/GetItem/GetItem'
-import { ItemShare } from '../Model/ItemShare'
+import { ItemLink } from '../Model/ItemLink'
 
-import { ItemShareRepositoryInterface } from '../Repository/ItemShareRepositoryInterface'
-import { ItemShareServiceInterface, ItemSharingGetSharedItemResult } from './ItemShareServiceInterface'
+import { ItemLinksRepositoryInterface } from '../Repository/ItemLinkRepositoryInterface'
+import { ItemLinkServiceInterface, ItemLinkGetSharedItemResult } from './ItemLinkServiceInterface'
 
 import { v4 as uuidv4 } from 'uuid'
-import { ShareItemDTO } from './ShareItemDTO'
-import { ShareItemResult } from './ShareItemResult'
-import { ItemShareFactoryInterface } from '../Factory/ItemShareFactoryInterface'
-import { UpdateSharedItemDto } from './UpdateSharedItemDto'
+import { ShareItemDTO } from './LinkItemDTO'
+import { ShareItemResult } from './LinkItemResult'
+import { ItemLinkFactoryInterface } from '../Factory/ItemLinkFactoryInterface'
 import { TimerInterface } from '@standardnotes/time'
-import { ItemShareDuration } from '@standardnotes/domain-core'
+import { ItemLinkDuration } from '@standardnotes/domain-core'
 import { CryptoNode } from '@standardnotes/sncrypto-node'
 
-export class ItemShareService implements ItemShareServiceInterface {
+export class ItemLinkService implements ItemLinkServiceInterface {
   constructor(
-    private itemShareRepository: ItemShareRepositoryInterface,
-    private itemShareFactory: ItemShareFactoryInterface,
+    private itemShareRepository: ItemLinksRepositoryInterface,
+    private itemShareFactory: ItemLinkFactoryInterface,
     private getItem: GetItem,
     private timer: TimerInterface,
   ) {}
 
-  async getSharedItem(shareToken: string): Promise<ItemSharingGetSharedItemResult> {
+  async getSharedItem(shareToken: string): Promise<ItemLinkGetSharedItemResult> {
     const itemShareItem = await this.itemShareRepository.findByShareToken(shareToken)
     if (!itemShareItem) {
       return { error: { tag: 'not-found-item-share' } }
@@ -31,7 +30,7 @@ export class ItemShareService implements ItemShareServiceInterface {
       return { error: { tag: 'expired-item-share' } }
     }
 
-    const duration = ItemShareDuration.create(itemShareItem.duration)
+    const duration = ItemLinkDuration.create(itemShareItem.duration)
     if (duration.isFailed()) {
       return { error: { tag: 'not-found-item-share' } }
     }
@@ -55,11 +54,11 @@ export class ItemShareService implements ItemShareServiceInterface {
       return { error: { tag: 'not-found-item-share' } }
     }
 
-    if (durationValue.value === ItemShareDuration.DURATIONS.AfterConsume) {
+    if (durationValue.value === ItemLinkDuration.DURATIONS.AfterConsume) {
       await this.expireSharedItem(shareToken)
     }
 
-    return { itemShare: itemShareItem, item: { ...itemResponse.item, encItemKey: null, itemsKeyId: null } }
+    return { itemLink: itemShareItem, item: { ...itemResponse.item, encItemKey: null, itemsKeyId: null } }
   }
 
   async shareItem(dto: ShareItemDTO): Promise<ShareItemResult | null> {
@@ -67,12 +66,12 @@ export class ItemShareService implements ItemShareServiceInterface {
     const crypto = new CryptoNode()
     const shareToken = await crypto.generateRandomKey(192)
 
-    const duration = ItemShareDuration.create(dto.duration)
+    const duration = ItemLinkDuration.create(dto.duration)
     if (duration.isFailed()) {
       return null
     }
 
-    const newItemShare = this.itemShareFactory.create({
+    const newItemLink = this.itemShareFactory.create({
       userUuid: dto.userUuid,
       itemShareHash: {
         uuid,
@@ -86,26 +85,12 @@ export class ItemShareService implements ItemShareServiceInterface {
       },
     })
 
-    const savedItem = await this.itemShareRepository.create(newItemShare)
+    const savedItem = await this.itemShareRepository.create(newItemLink)
 
     return { itemShare: savedItem }
   }
 
-  async updateSharedItem(dto: UpdateSharedItemDto): Promise<boolean> {
-    const itemShareItem = await this.itemShareRepository.findByShareToken(dto.shareToken)
-    if (!itemShareItem) {
-      return false
-    }
-
-    await this.itemShareRepository.updateEncryptedContentKey({
-      shareToken: itemShareItem.shareToken,
-      encryptedContentKey: dto.encryptedContentKey,
-    })
-
-    return true
-  }
-
-  async getUserItemShares(userUuid: string): Promise<ItemShare[]> {
+  async getUserItemLinks(userUuid: string): Promise<ItemLink[]> {
     return this.itemShareRepository.findAll({ userUuid })
   }
 

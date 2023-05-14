@@ -1,13 +1,13 @@
-import { ItemShare } from '../../ItemShare/Model/ItemShare'
+import { ItemLink } from '../../ItemLink/Model/ItemLink'
 import { Item } from '../../Item/Item'
-import { ItemShareServiceInterface } from '../../ItemShare/Service/ItemShareServiceInterface'
+import { ItemLinkServiceInterface } from '../../ItemLink/Service/ItemLinkServiceInterface'
 import { UseCaseInterface } from '../UseCaseInterface'
 
 export type GetSharedItemResponse =
   | {
       success: true
       item: Item
-      itemShare: ItemShare
+      itemShare: ItemLink
     }
   | {
       success: false
@@ -16,7 +16,7 @@ export type GetSharedItemResponse =
     }
 
 export class GetSharedItemUseCase implements UseCaseInterface {
-  constructor(private itemShareService: ItemShareServiceInterface) {}
+  constructor(private itemShareService: ItemLinkServiceInterface) {}
 
   async execute(dto: { shareToken: string }): Promise<GetSharedItemResponse> {
     const result = await this.itemShareService.getSharedItem(dto.shareToken)
@@ -32,7 +32,7 @@ export class GetSharedItemUseCase implements UseCaseInterface {
     return {
       success: true,
       item: result.item,
-      itemShare: result.itemShare,
+      itemShare: result.itemLink,
     }
   }
 }

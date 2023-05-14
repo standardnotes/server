@@ -4,7 +4,7 @@ import 'newrelic'
 
 import '../src/Controller/HealthCheckController'
 import '../src/Controller/ItemsController'
-import '../src/Controller/SharingController'
+import '../src/Controller/LinksController'
 
 import helmet from 'helmet'
 import * as cors from 'cors'

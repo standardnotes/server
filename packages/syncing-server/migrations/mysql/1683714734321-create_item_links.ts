@@ -1,11 +1,11 @@
 import { MigrationInterface, QueryRunner, Table, TableColumn, TableIndex } from 'typeorm'
 
-export class CreateItemShare1683714734321 implements MigrationInterface {
-  name = 'createItemShare1683714734321'
+export class CreateItemLink1683714734321 implements MigrationInterface {
+  name = 'createItemLink1683714734321'
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     const table = new Table({
-      name: 'item_shares',
+      name: 'item_links',
       columns: [
         new TableColumn({
           name: 'uuid',
@@ -36,12 +36,6 @@ export class CreateItemShare1683714734321 implements MigrationInterface {
           type: 'varchar',
           length: '255',
           isNullable: true,
-        }),
-        new TableColumn({
-          name: 'permissions',
-          type: 'varchar',
-          length: '255',
-          isNullable: false,
         }),
         new TableColumn({
           name: 'encrypted_content_key',
@@ -81,32 +75,32 @@ export class CreateItemShare1683714734321 implements MigrationInterface {
     await queryRunner.createTable(table)
 
     await queryRunner.createIndex(
-      'item_shares',
+      'item_links',
       new TableIndex({
-        name: 'index_item_shares_on_share_token',
+        name: 'index_item_links_on_share_token',
         columnNames: ['share_token'],
         isUnique: true,
       }),
     )
 
     await queryRunner.createIndex(
-      'item_shares',
+      'item_links',
       new TableIndex({
-        name: 'index_item_shares_on_user_uuid',
+        name: 'index_item_links_on_user_uuid',
         columnNames: ['user_uuid'],
       }),
     )
 
     await queryRunner.createIndex(
-      'item_shares',
+      'item_links',
       new TableIndex({
-        name: 'index_item_shares_on_item_uuid',
+        name: 'index_item_links_on_item_uuid',
         columnNames: ['item_uuid'],
       }),
     )
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('item_shares')
+    await queryRunner.dropTable('item_links')
   }
 }

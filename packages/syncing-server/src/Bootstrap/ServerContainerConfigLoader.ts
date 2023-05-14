@@ -1,6 +1,5 @@
-import { UpdateSharedItemUseCase } from '../Domain/UseCase/Sharing/UpdateSharedItemUseCase'
-import { GetSharedItemUseCase } from '../Domain/UseCase/Sharing/GetSharedItemUseCase'
-import { ItemShareServiceInterface } from '../Domain/ItemShare/Service/ItemShareServiceInterface'
+import { GetSharedItemUseCase } from '../Domain/UseCase/Links/GetSharedItemUseCase'
+import { ItemLinkServiceInterface } from '../Domain/ItemLink/Service/ItemLinkServiceInterface'
 import { Container, interfaces } from 'inversify'
 
 import { Env } from './Env'
@@ -32,13 +31,13 @@ import { SavedItemProjector } from '../Projection/SavedItemProjector'
 import { ItemConflict } from '../Domain/Item/ItemConflict'
 import { ItemConflictProjection } from '../Projection/ItemConflictProjection'
 import { CommonContainerConfigLoader } from './CommonContainerConfigLoader'
-import { ItemShareService } from '../Domain/ItemShare/Service/ItemShareService'
-import { ItemShareFactory } from '../Domain/ItemShare/Factory/ItemShareFactory'
-import { ShareItemUseCase } from '../Domain/UseCase/Sharing/ShareItemUseCase'
-import { GetUserItemSharesUseCase } from '../Domain/UseCase/Sharing/GetUserItemSharesUseCase'
+import { ItemLinkService } from '../Domain/ItemLink/Service/ItemLinkService'
+import { ItemLinkFactory } from '../Domain/ItemLink/Factory/ItemLinkFactory'
+import { ShareItemUseCase } from '../Domain/UseCase/Links/ShareItemUseCase'
+import { GetUserItemLinksUseCase } from '../Domain/UseCase/Links/GetUserItemLinksUseCase'
 import { TokenEncoder, TokenEncoderInterface, ValetTokenData } from '@standardnotes/security'
 import { CreateSharedFileValetToken } from '../Domain/UseCase/CreateSharedFileValetToken/CreateSharedFileValetToken'
-import { ItemShareFactoryInterface } from '../Domain/ItemShare/Factory/ItemShareFactoryInterface'
+import { ItemLinkFactoryInterface } from '../Domain/ItemLink/Factory/ItemLinkFactoryInterface'
 
 export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
   private readonly DEFAULT_CONTENT_SIZE_TRANSFER_LIMIT = 10_000_000
@@ -97,16 +96,13 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
       return new GetItem(context.container.get(TYPES.ItemRepository))
     })
     container.bind<ShareItemUseCase>(TYPES.ShareItem).toDynamicValue((context: interfaces.Context) => {
-      return new ShareItemUseCase(context.container.get(TYPES.ItemShareService))
+      return new ShareItemUseCase(context.container.get(TYPES.ItemLinkService))
     })
     container.bind<GetSharedItemUseCase>(TYPES.GetSharedItem).toDynamicValue((context: interfaces.Context) => {
-      return new GetSharedItemUseCase(context.container.get(TYPES.ItemShareService))
+      return new GetSharedItemUseCase(context.container.get(TYPES.ItemLinkService))
     })
-    container.bind<UpdateSharedItemUseCase>(TYPES.UpdateSharedItem).toDynamicValue((context: interfaces.Context) => {
-      return new UpdateSharedItemUseCase(context.container.get(TYPES.ItemShareService))
-    })
-    container.bind<GetUserItemSharesUseCase>(TYPES.GetUserItemShares).toDynamicValue((context: interfaces.Context) => {
-      return new GetUserItemSharesUseCase(context.container.get(TYPES.ItemShareService))
+    container.bind<GetUserItemLinksUseCase>(TYPES.GetUserItemLinks).toDynamicValue((context: interfaces.Context) => {
+      return new GetUserItemLinksUseCase(context.container.get(TYPES.ItemLinkService))
     })
     container
       .bind<CreateSharedFileValetToken>(TYPES.CreateSharedFileValetToken)
@@ -140,10 +136,10 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
       )
     })
     // Services
-    container.bind<ItemShareServiceInterface>(TYPES.ItemShareService).toDynamicValue((context: interfaces.Context) => {
-      return new ItemShareService(
-        context.container.get(TYPES.ItemShareRepository),
-        context.container.get(TYPES.ItemShareFactory),
+    container.bind<ItemLinkServiceInterface>(TYPES.ItemLinkService).toDynamicValue((context: interfaces.Context) => {
+      return new ItemLinkService(
+        context.container.get(TYPES.ItemLinkRepository),
+        context.container.get(TYPES.ItemLinkFactory),
         context.container.get(TYPES.GetItem),
         context.container.get(TYPES.Timer),
       )
@@ -174,8 +170,8 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
     container.bind<ItemFactoryInterface>(TYPES.ItemFactory).toDynamicValue((context: interfaces.Context) => {
       return new ItemFactory(context.container.get(TYPES.Timer), context.container.get(TYPES.ItemProjector))
     })
-    container.bind<ItemShareFactoryInterface>(TYPES.ItemShareFactory).toDynamicValue((context: interfaces.Context) => {
-      return new ItemShareFactory(context.container.get(TYPES.Timer))
+    container.bind<ItemLinkFactoryInterface>(TYPES.ItemLinkFactory).toDynamicValue((context: interfaces.Context) => {
+      return new ItemLinkFactory(context.container.get(TYPES.Timer))
     })
 
     container.bind<OwnershipFilter>(TYPES.OwnershipFilter).toDynamicValue(() => new OwnershipFilter())

@@ -1,11 +1,10 @@
-import { GetUserItemSharesUseCase } from '../Domain/UseCase/Sharing/GetUserItemSharesUseCase'
-import { UpdateSharedItemUseCase } from '../Domain/UseCase/Sharing/UpdateSharedItemUseCase'
-import { GetSharedItemUseCase } from '../Domain/UseCase/Sharing/GetSharedItemUseCase'
+import { GetUserItemLinksUseCase } from '../Domain/UseCase/Links/GetUserItemLinksUseCase'
+import { GetSharedItemUseCase } from '../Domain/UseCase/Links/GetSharedItemUseCase'
 import { Request, Response } from 'express'
 import { inject } from 'inversify'
-import { BaseHttpController, controller, httpGet, httpPatch, httpPost, results } from 'inversify-express-utils'
+import { BaseHttpController, controller, httpGet, httpPost, results } from 'inversify-express-utils'
 import TYPES from '../Bootstrap/Types'
-import { ShareItemUseCase } from '../Domain/UseCase/Sharing/ShareItemUseCase'
+import { ShareItemUseCase } from '../Domain/UseCase/Links/ShareItemUseCase'
 import { CreateSharedFileValetToken } from '../Domain/UseCase/CreateSharedFileValetToken/CreateSharedFileValetToken'
 import { ContentType } from '@standardnotes/common'
 import { ProjectorInterface } from '../Projection/ProjectorInterface'
@@ -13,14 +12,13 @@ import { Item } from '../Domain/Item/Item'
 import { ItemProjection } from '../Projection/ItemProjection'
 import { GetItem } from '../Domain/UseCase/GetItem/GetItem'
 
-@controller('/sharing')
-export class SharingController extends BaseHttpController {
+@controller('/links')
+export class LinksController extends BaseHttpController {
   constructor(
     @inject(TYPES.ShareItem) private shareItem: ShareItemUseCase,
     @inject(TYPES.GetSharedItem) private getSharedItem: GetSharedItemUseCase,
     @inject(TYPES.GetItem) private getItem: GetItem,
-    @inject(TYPES.UpdateSharedItem) private updateSharedItem: UpdateSharedItemUseCase,
-    @inject(TYPES.GetUserItemShares) private getItemShares: GetUserItemSharesUseCase,
+    @inject(TYPES.GetUserItemLinks) private getItemLinks: GetUserItemLinksUseCase,
     @inject(TYPES.CreateSharedFileValetToken) private createSharedFileValetToken: CreateSharedFileValetToken,
     @inject(TYPES.ItemProjector) private itemProjector: ProjectorInterface<Item, ItemProjection>,
   ) {
@@ -50,35 +48,6 @@ export class SharingController extends BaseHttpController {
       contentType: request.body.contentType,
       fileRemoteIdentifier: request.body.fileRemoteIdentifier,
       duration: request.body.duration,
-    })
-
-    if (result.success === false) {
-      return this.errorResponse(400, result.message)
-    } else {
-      return this.json(result)
-    }
-  }
-
-  @httpPatch('/', TYPES.AuthMiddleware)
-  public async updateSharedItemRequest(
-    request: Request,
-    response: Response,
-  ): Promise<results.NotFoundResult | results.JsonResult> {
-    const getItemResponse = await this.getSharedItem.execute({
-      shareToken: request.body.shareToken,
-    })
-
-    if (getItemResponse.success === false) {
-      return this.errorResponse(400, 'Could not find shared item', getItemResponse.errorTag)
-    }
-
-    if (getItemResponse.item.userUuid !== response.locals.user.uuid) {
-      return this.notFoundJson()
-    }
-
-    const result = await this.updateSharedItem.execute({
-      shareToken: request.body.shareToken,
-      encryptedContentKey: request.body.encryptedContentKey,
     })
 
     if (result.success === false) {
@@ -129,11 +98,11 @@ export class SharingController extends BaseHttpController {
   }
 
   @httpGet('/', TYPES.AuthMiddleware)
-  public async getItemSharesForUser(
+  public async getItemLinksForUser(
     _request: Request,
     response: Response,
   ): Promise<results.NotFoundResult | results.JsonResult> {
-    const result = await this.getItemShares.execute({
+    const result = await this.getItemLinks.execute({
       userUuid: response.locals.user.uuid,
     })
 
