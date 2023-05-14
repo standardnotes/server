@@ -19,9 +19,8 @@ export class TypeORMItemShareRepository implements ItemShareRepositoryInterface 
       .update()
       .set({
         encryptedContentKey: null,
-        publicKey: null,
-        consumed: true,
         fileRemoteIdentifier: null,
+        consumed: true,
       })
       .where('share_token = :shareToken', {
         shareToken: shareToken,

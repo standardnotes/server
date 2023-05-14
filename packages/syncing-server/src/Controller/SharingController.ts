@@ -45,7 +45,7 @@ export class SharingController extends BaseHttpController {
     const result = await this.shareItem.execute({
       itemUuid: request.body.itemUuid,
       userUuid: response.locals.user.uuid,
-      publicKey: request.body.publicKey,
+      permissions: request.body.permissions,
       encryptedContentKey: request.body.encryptedContentKey,
       contentType: request.body.contentType,
       fileRemoteIdentifier: request.body.fileRemoteIdentifier,

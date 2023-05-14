@@ -4,7 +4,7 @@ export type ItemShareHash = {
   uuid: string
   item_uuid: string
   share_token: string
-  public_key: string
+  permissions: string
   encrypted_content_key: string
   content_type: ContentType
   file_remote_identifier?: string

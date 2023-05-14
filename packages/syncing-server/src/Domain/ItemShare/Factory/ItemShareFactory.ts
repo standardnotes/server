@@ -13,7 +13,7 @@ export class ItemShareFactory implements ItemShareFactoryInterface {
     newItemShare.itemUuid = dto.itemShareHash.item_uuid
     newItemShare.shareToken = dto.itemShareHash.share_token
     newItemShare.encryptedContentKey = dto.itemShareHash.encrypted_content_key
-    newItemShare.publicKey = dto.itemShareHash.public_key
+    newItemShare.permissions = dto.itemShareHash.permissions
     newItemShare.fileRemoteIdentifier = dto.itemShareHash.file_remote_identifier ?? null
     newItemShare.contentType = dto.itemShareHash.content_type
     newItemShare.duration = dto.itemShareHash.duration

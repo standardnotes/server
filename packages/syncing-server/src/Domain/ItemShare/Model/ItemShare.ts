@@ -24,11 +24,12 @@ export class ItemShare {
   declare contentType: ContentType | null
 
   @Column({
-    name: 'public_key',
-    type: 'text',
-    nullable: true,
+    name: 'permissions',
+    type: 'varchar',
+    length: 255,
+    nullable: false,
   })
-  declare publicKey: string | null
+  declare permissions: string | null
 
   @Column({
     name: 'encrypted_content_key',

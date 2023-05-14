@@ -78,7 +78,7 @@ export class ItemShareService implements ItemShareServiceInterface {
         uuid,
         item_uuid: dto.itemUuid,
         share_token: shareToken,
-        public_key: dto.publicKey,
+        permissions: dto.permissions,
         encrypted_content_key: dto.encryptedContentKey,
         content_type: dto.contentType,
         file_remote_identifier: dto.fileRemoteIdentifier,

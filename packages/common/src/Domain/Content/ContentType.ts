@@ -2,6 +2,7 @@
 export enum ContentType {
   Any = '*',
   Item = 'SF|Item',
+  SharedItem = 'SN|SharedItem',
   RootKey = 'SN|RootKey|NoSync',
   ItemsKey = 'SN|ItemsKey',
   EncryptedStorage = 'SN|EncryptedStorage',

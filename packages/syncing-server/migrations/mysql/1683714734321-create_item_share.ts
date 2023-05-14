@@ -38,9 +38,10 @@ export class CreateItemShare1683714734321 implements MigrationInterface {
           isNullable: true,
         }),
         new TableColumn({
-          name: 'public_key',
-          type: 'text',
-          isNullable: true,
+          name: 'permissions',
+          type: 'varchar',
+          length: '255',
+          isNullable: false,
         }),
         new TableColumn({
           name: 'encrypted_content_key',
