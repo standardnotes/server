@@ -1,20 +1,22 @@
 import { Request, Response } from 'express'
-import { BaseHttpController, results, httpPost } from 'inversify-express-utils'
+import { BaseHttpController, results, httpPost, controller } from 'inversify-express-utils'
 
 import TYPES from '../../Bootstrap/Types'
 import { UserRequestsController } from '../../Controller/UserRequestsController'
 import { ControllerContainerInterface } from '@standardnotes/domain-core'
+import { inject } from 'inversify'
 
+@controller('/users/:userUuid/requests')
 export class InversifyExpressUserRequestsController extends BaseHttpController {
   constructor(
-    private userRequestsController: UserRequestsController,
-    private controllerContainer: ControllerContainerInterface,
+    @inject(TYPES.Auth_UserRequestsController) private userRequestsController: UserRequestsController,
+    @inject(TYPES.Auth_ControllerContainer) private controllerContainer: ControllerContainerInterface,
   ) {
     super()
     this.controllerContainer.register('auth.userRequests.submitRequest', this.submitRequest.bind(this))
   }
 
-  @httpPost('/users/:userUuid/requests/', TYPES.Auth_ApiGatewayAuthMiddleware)
+  @httpPost('/', TYPES.Auth_ApiGatewayAuthMiddleware)
   async submitRequest(request: Request, response: Response): Promise<results.JsonResult> {
     const result = await this.userRequestsController.submitUserRequest({
       requestType: request.body.requestType,
