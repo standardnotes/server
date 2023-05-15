@@ -9,15 +9,20 @@ import {
 } from 'inversify-express-utils'
 import { CreateValetTokenPayload, ErrorTag } from '@standardnotes/responses'
 import { ValetTokenOperation } from '@standardnotes/security'
-import { Uuid } from '@standardnotes/domain-core'
+import { ControllerContainerInterface, Uuid } from '@standardnotes/domain-core'
 
 import TYPES from '../Bootstrap/Types'
 import { CreateValetToken } from '../Domain/UseCase/CreateValetToken/CreateValetToken'
 
 @controller('/valet-tokens', TYPES.Auth_ApiGatewayAuthMiddleware)
 export class ValetTokenController extends BaseHttpController {
-  constructor(@inject(TYPES.Auth_CreateValetToken) private createValetKey: CreateValetToken) {
+  constructor(
+    @inject(TYPES.Auth_CreateValetToken) private createValetKey: CreateValetToken,
+    @inject(TYPES.Auth_ControllerContainer) private controllerContainer: ControllerContainerInterface,
+  ) {
     super()
+
+    this.controllerContainer.register('auth.valet-tokens.create', this.create.bind(this))
   }
 
   @httpPost('/')

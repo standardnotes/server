@@ -15,6 +15,7 @@ import { CreateOfflineSubscriptionToken } from '../Domain/UseCase/CreateOfflineS
 import { GetUserOfflineSubscription } from '../Domain/UseCase/GetUserOfflineSubscription/GetUserOfflineSubscription'
 import { Logger } from 'winston'
 import { OfflineUserTokenData, TokenEncoderInterface } from '@standardnotes/security'
+import { ControllerContainerInterface } from '@standardnotes/domain-core'
 
 @controller('/offline')
 export class OfflineController extends BaseHttpController {
@@ -28,8 +29,12 @@ export class OfflineController extends BaseHttpController {
     @inject(TYPES.Auth_OfflineUserTokenEncoder) private tokenEncoder: TokenEncoderInterface<OfflineUserTokenData>,
     @inject(TYPES.Auth_AUTH_JWT_TTL) private jwtTTL: number,
     @inject(TYPES.Auth_Logger) private logger: Logger,
+    @inject(TYPES.Auth_ControllerContainer) private controllerContainer: ControllerContainerInterface,
   ) {
     super()
+
+    this.controllerContainer.register('auth.offline.features', this.getOfflineFeatures.bind(this))
+    this.controllerContainer.register('auth.offline.subscriptionTokens.create', this.createToken.bind(this))
   }
 
   @httpGet('/features', TYPES.Auth_OfflineUserAuthMiddleware)

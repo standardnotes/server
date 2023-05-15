@@ -49,11 +49,7 @@ export class ActionsController extends BaseHttpController {
     await this.serviceProxy.callEmailServer(
       request,
       response,
-      this.endpointResolver.resolveEndpointOrMethodIdentifier(
-        'GET',
-        'subscriptions/actions/unsubscribe/:token',
-        request.params.token,
-      ),
+      `subscriptions/actions/unsubscribe/${request.params.token}`,
       request.body,
     )
   }
