@@ -18,6 +18,7 @@ import { AuthenticateSubscriptionToken } from '../Domain/UseCase/AuthenticateSub
 import { CreateSubscriptionToken } from '../Domain/UseCase/CreateSubscriptionToken/CreateSubscriptionToken'
 import { User } from '../Domain/User/User'
 import { ProjectorInterface } from '../Projection/ProjectorInterface'
+import { ControllerContainerInterface } from '@standardnotes/domain-core'
 
 @controller('/subscription-tokens')
 export class SubscriptionTokensController extends BaseHttpController {
@@ -29,8 +30,11 @@ export class SubscriptionTokensController extends BaseHttpController {
     @inject(TYPES.Auth_RoleProjector) private roleProjector: ProjectorInterface<Role>,
     @inject(TYPES.Auth_CrossServiceTokenEncoder) private tokenEncoder: TokenEncoderInterface<CrossServiceTokenData>,
     @inject(TYPES.Auth_AUTH_JWT_TTL) private jwtTTL: number,
+    @inject(TYPES.Auth_ControllerContainer) private controllerContainer: ControllerContainerInterface,
   ) {
     super()
+
+    this.controllerContainer.register('auth.subscription-tokens.create', this.createToken.bind(this))
   }
 
   @httpPost('/', TYPES.Auth_ApiGatewayAuthMiddleware)

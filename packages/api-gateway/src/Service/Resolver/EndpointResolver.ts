@@ -32,6 +32,8 @@ export class EndpointResolver implements EndpointResolverInterface {
     ['[GET]:subscription-invites', 'auth.subscriptionInvites.list'],
     ['[DELETE]:subscription-invites/:inviteUuid', 'auth.subscriptionInvites.delete'],
     ['[POST]:subscription-invites/:inviteUuid/accept', 'auth.subscriptionInvites.accept'],
+    // Tokens Controller
+    ['[POST]:subscription-tokens', 'auth.subscription-tokens.create'],
   ])
 
   resolveEndpointOrMethodIdentifier(method: string, endpoint: string, ...params: string[]): string {
