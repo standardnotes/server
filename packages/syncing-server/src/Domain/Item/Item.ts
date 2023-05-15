@@ -15,6 +15,14 @@ export class Item {
 
   @Column({
     type: 'varchar',
+    name: 'group_uuid',
+    length: 255,
+    nullable: true,
+  })
+  declare groupUuid: string | null
+
+  @Column({
+    type: 'varchar',
     name: 'duplicate_of',
     length: 36,
     nullable: true,

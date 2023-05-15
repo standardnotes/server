@@ -5,6 +5,7 @@ import 'newrelic'
 import '../src/Controller/HealthCheckController'
 import '../src/Controller/ItemsController'
 import '../src/Controller/LinksController'
+import '../src/Controller/GroupsController'
 
 import helmet from 'helmet'
 import * as cors from 'cors'
@@ -29,26 +30,28 @@ void container.load().then((container) => {
       next()
     })
     /* eslint-disable */
-    app.use(helmet({
-      contentSecurityPolicy: {
-        directives: {
-          defaultSrc: ["https: 'self'"],
-          baseUri: ["'self'"],
-          childSrc: ["*", "blob:"],
-          connectSrc: ["*"],
-          fontSrc: ["*", "'self'"],
-          formAction: ["'self'"],
-          frameAncestors: ["*", "*.standardnotes.org"],
-          frameSrc: ["*", "blob:"],
-          imgSrc: ["'self'", "*", "data:"],
-          manifestSrc: ["'self'"],
-          mediaSrc: ["'self'"],
-          objectSrc: ["'self'"],
-          scriptSrc: ["'self'"],
-          styleSrc: ["'self'"]
-        }
-      }
-    }))
+    app.use(
+      helmet({
+        contentSecurityPolicy: {
+          directives: {
+            defaultSrc: ["https: 'self'"],
+            baseUri: ["'self'"],
+            childSrc: ['*', 'blob:'],
+            connectSrc: ['*'],
+            fontSrc: ['*', "'self'"],
+            formAction: ["'self'"],
+            frameAncestors: ['*', '*.standardnotes.org'],
+            frameSrc: ['*', 'blob:'],
+            imgSrc: ["'self'", '*', 'data:'],
+            manifestSrc: ["'self'"],
+            mediaSrc: ["'self'"],
+            objectSrc: ["'self'"],
+            scriptSrc: ["'self'"],
+            styleSrc: ["'self'"],
+          },
+        },
+      }),
+    )
     /* eslint-enable */
     app.use(json({ limit: '50mb' }))
     app.use(urlencoded({ extended: true, limit: '50mb', parameterLimit: 5000 }))

@@ -36,9 +36,7 @@ export class TypeORMItemRepository implements ItemRepositoryInterface {
     queryBuilder.select('item.uuid', 'uuid')
     queryBuilder.addSelect('item.content_size', 'contentSize')
 
-    const items = await queryBuilder.getRawMany()
-
-    return items
+    return queryBuilder.getRawMany()
   }
 
   async deleteByUserUuid(userUuid: string): Promise<void> {
@@ -133,12 +131,19 @@ export class TypeORMItemRepository implements ItemRepositoryInterface {
       queryBuilder.orderBy(`item.${query.sortBy}`, query.sortOrder)
     }
 
+    if (query.groupUuids != undefined) {
+      queryBuilder.where('item.group_uuid IN (:...groupUuids)', { groupUuids: query.groupUuids })
+      if (query.userUuid) {
+        queryBuilder.orWhere('item.user_uuid = :userUuid', { userUuid: query.userUuid })
+      }
+    } else if (query.userUuid !== undefined) {
+      queryBuilder.where('item.user_uuid = :userUuid', { userUuid: query.userUuid })
+    }
+
     if (query.selectString !== undefined) {
       queryBuilder.select(query.selectString)
     }
-    if (query.userUuid !== undefined) {
-      queryBuilder.where('item.user_uuid = :userUuid', { userUuid: query.userUuid })
-    }
+
     if (query.uuids && query.uuids.length > 0) {
       queryBuilder.andWhere('item.uuid IN (:...uuids)', { uuids: query.uuids })
     }

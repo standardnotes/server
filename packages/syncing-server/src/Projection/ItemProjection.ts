@@ -3,6 +3,7 @@ export type ItemProjection = {
   items_key_id: string | null
   duplicate_of: string | null
   enc_item_key: string | null
+  group_uuid: string | null
   content: string | null
   content_type: string
   auth_hash: string | null

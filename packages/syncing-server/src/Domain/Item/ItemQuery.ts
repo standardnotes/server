@@ -6,6 +6,7 @@ export type ItemQuery = {
   lastSyncTime?: number
   syncTimeComparison?: '>' | '>='
   contentType?: string | string[]
+  groupUuids?: string[]
   deleted?: boolean
   offset?: number
   limit?: number

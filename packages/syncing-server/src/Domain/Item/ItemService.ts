@@ -20,6 +20,7 @@ import { ConflictType } from '@standardnotes/responses'
 import { ItemTransferCalculatorInterface } from './ItemTransferCalculatorInterface'
 import { ProjectorInterface } from '../../Projection/ProjectorInterface'
 import { ItemProjection } from '../../Projection/ItemProjection'
+import { GroupUserRepositoryInterface } from '../GroupUser/Repository/GroupUserRepositoryInterface'
 
 export class ItemService implements ItemServiceInterface {
   private readonly DEFAULT_ITEMS_LIMIT = 150
@@ -37,6 +38,7 @@ export class ItemService implements ItemServiceInterface {
     private timer: TimerInterface,
     private itemProjector: ProjectorInterface<Item, ItemProjection>,
     private maxItemsSyncLimit: number,
+    private groupUsersRepository: GroupUserRepositoryInterface,
     private logger: Logger,
   ) {}
 
@@ -46,8 +48,12 @@ export class ItemService implements ItemServiceInterface {
     const limit = dto.limit === undefined || dto.limit < 1 ? this.DEFAULT_ITEMS_LIMIT : dto.limit
     const upperBoundLimit = limit < this.maxItemsSyncLimit ? limit : this.maxItemsSyncLimit
 
+    const groupUsers = await this.groupUsersRepository.findAll({ userUuid: dto.userUuid })
+    const userGroupUuids = groupUsers.map((groupUser) => groupUser.groupUuid)
+
     const itemQuery: ItemQuery = {
       userUuid: dto.userUuid,
+      groupUuids: userGroupUuids,
       lastSyncTime,
       syncTimeComparison,
       contentType: dto.contentType,
