@@ -24,8 +24,8 @@
     "upgrade:snjs": "yarn ncu -u '@standardnotes/*'"
   },
   "dependencies": {
-    "@aws-sdk/client-sns": "^3.328.0",
-    "@aws-sdk/client-sqs": "^3.328.0",
+    "@aws-sdk/client-sns": "^3.332.0",
+    "@aws-sdk/client-sqs": "^3.332.0",
     "@newrelic/winston-enricher": "^4.0.1",
     "@standardnotes/domain-core": "workspace:^",
     "@standardnotes/domain-events": "workspace:*",
