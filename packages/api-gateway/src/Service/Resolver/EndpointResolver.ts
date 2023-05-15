@@ -22,6 +22,11 @@ export class EndpointResolver implements EndpointResolverInterface {
     // Offline Controller
     ['[GET]:offline/features', 'auth.offline.features'],
     ['[POST]:offline/subscription-tokens', 'auth.offline.subscriptionTokens.create'],
+    // Sessions Controller
+    ['[GET]:sessions', 'auth.sessions.list'],
+    ['[DELETE]:session', 'auth.sessions.delete'],
+    ['[DELETE]:session/all', 'auth.sessions.deleteAll'],
+    ['[POST]:session/refresh', 'auth.sessions.refresh'],
   ])
 
   resolveEndpointOrMethodIdentifier(method: string, endpoint: string, ...params: string[]): string {

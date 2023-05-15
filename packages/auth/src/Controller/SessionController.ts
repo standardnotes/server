@@ -13,6 +13,7 @@ import TYPES from '../Bootstrap/Types'
 import { DeletePreviousSessionsForUser } from '../Domain/UseCase/DeletePreviousSessionsForUser'
 import { DeleteSessionForUser } from '../Domain/UseCase/DeleteSessionForUser'
 import { RefreshSessionToken } from '../Domain/UseCase/RefreshSessionToken'
+import { ControllerContainerInterface } from '@standardnotes/domain-core'
 
 @controller('/session')
 export class SessionController extends BaseHttpController {
@@ -21,8 +22,13 @@ export class SessionController extends BaseHttpController {
     @inject(TYPES.Auth_DeletePreviousSessionsForUser)
     private deletePreviousSessionsForUser: DeletePreviousSessionsForUser,
     @inject(TYPES.Auth_RefreshSessionToken) private refreshSessionToken: RefreshSessionToken,
+    @inject(TYPES.Auth_ControllerContainer) private controllerContainer: ControllerContainerInterface,
   ) {
     super()
+
+    this.controllerContainer.register('auth.session.delete', this.deleteSession.bind(this))
+    this.controllerContainer.register('auth.session.deleteAll', this.deleteAllSessions.bind(this))
+    this.controllerContainer.register('auth.session.refresh', this.refresh.bind(this))
   }
 
   @httpDelete('/', TYPES.Auth_AuthMiddleware, TYPES.Auth_SessionMiddleware)

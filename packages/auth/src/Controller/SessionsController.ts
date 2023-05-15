@@ -16,6 +16,7 @@ import { User } from '../Domain/User/User'
 import { ProjectorInterface } from '../Projection/ProjectorInterface'
 import { SessionProjector } from '../Projection/SessionProjector'
 import { CreateCrossServiceToken } from '../Domain/UseCase/CreateCrossServiceToken/CreateCrossServiceToken'
+import { ControllerContainerInterface } from '@standardnotes/domain-core'
 
 @controller('/sessions')
 export class SessionsController extends BaseHttpController {
@@ -24,8 +25,11 @@ export class SessionsController extends BaseHttpController {
     @inject(TYPES.Auth_AuthenticateRequest) private authenticateRequest: AuthenticateRequest,
     @inject(TYPES.Auth_SessionProjector) private sessionProjector: ProjectorInterface<Session>,
     @inject(TYPES.Auth_CreateCrossServiceToken) private createCrossServiceToken: CreateCrossServiceToken,
+    @inject(TYPES.Auth_ControllerContainer) private controllerContainer: ControllerContainerInterface,
   ) {
     super()
+
+    this.controllerContainer.register('auth.sessions.list', this.getSessions.bind(this))
   }
 
   @httpPost('/validate')
