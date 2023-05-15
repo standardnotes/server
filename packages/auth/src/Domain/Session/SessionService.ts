@@ -28,7 +28,8 @@ export class SessionService implements SessionServiceInterface {
 
   constructor(
     @inject(TYPES.Auth_SessionRepository) private sessionRepository: SessionRepositoryInterface,
-    @inject(TYPES.Auth_EphemeralSessionRepository) private ephemeralSessionRepository: EphemeralSessionRepositoryInterface,
+    @inject(TYPES.Auth_EphemeralSessionRepository)
+    private ephemeralSessionRepository: EphemeralSessionRepositoryInterface,
     @inject(TYPES.Auth_RevokedSessionRepository) private revokedSessionRepository: RevokedSessionRepositoryInterface,
     @inject(TYPES.Auth_DeviceDetector) private deviceDetector: UAParser,
     @inject(TYPES.Auth_Timer) private timer: TimerInterface,
@@ -38,7 +39,8 @@ export class SessionService implements SessionServiceInterface {
     @inject(TYPES.Auth_SettingService) private settingService: SettingServiceInterface,
     @inject(TYPES.Auth_CryptoNode) private cryptoNode: CryptoNode,
     @inject(TYPES.Auth_TraceSession) private traceSession: TraceSession,
-    @inject(TYPES.Auth_UserSubscriptionRepository) private userSubscriptionRepository: UserSubscriptionRepositoryInterface,
+    @inject(TYPES.Auth_UserSubscriptionRepository)
+    private userSubscriptionRepository: UserSubscriptionRepositoryInterface,
     @inject(TYPES.Auth_READONLY_USERS) private readonlyUsers: string[],
   ) {}
 

@@ -22,7 +22,9 @@ void container.load().then((container) => {
 
   logger.info('Starting worker...')
 
-  const subscriberFactory: DomainEventSubscriberFactoryInterface = container.get(TYPES.Auth_DomainEventSubscriberFactory)
+  const subscriberFactory: DomainEventSubscriberFactoryInterface = container.get(
+    TYPES.Auth_DomainEventSubscriberFactory,
+  )
   subscriberFactory.create().start()
 
   setInterval(() => logger.info('Alive and kicking!'), 20 * 60 * 1000)

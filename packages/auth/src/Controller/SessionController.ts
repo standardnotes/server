@@ -18,7 +18,8 @@ import { RefreshSessionToken } from '../Domain/UseCase/RefreshSessionToken'
 export class SessionController extends BaseHttpController {
   constructor(
     @inject(TYPES.Auth_DeleteSessionForUser) private deleteSessionForUser: DeleteSessionForUser,
-    @inject(TYPES.Auth_DeletePreviousSessionsForUser) private deletePreviousSessionsForUser: DeletePreviousSessionsForUser,
+    @inject(TYPES.Auth_DeletePreviousSessionsForUser)
+    private deletePreviousSessionsForUser: DeletePreviousSessionsForUser,
     @inject(TYPES.Auth_RefreshSessionToken) private refreshSessionToken: RefreshSessionToken,
   ) {
     super()

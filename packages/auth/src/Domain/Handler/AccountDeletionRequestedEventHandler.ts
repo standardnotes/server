@@ -12,7 +12,8 @@ export class AccountDeletionRequestedEventHandler implements DomainEventHandlerI
   constructor(
     @inject(TYPES.Auth_UserRepository) private userRepository: UserRepositoryInterface,
     @inject(TYPES.Auth_SessionRepository) private sessionRepository: SessionRepositoryInterface,
-    @inject(TYPES.Auth_EphemeralSessionRepository) private ephemeralSessionRepository: EphemeralSessionRepositoryInterface,
+    @inject(TYPES.Auth_EphemeralSessionRepository)
+    private ephemeralSessionRepository: EphemeralSessionRepositoryInterface,
     @inject(TYPES.Auth_RevokedSessionRepository) private revokedSessionRepository: RevokedSessionRepositoryInterface,
     @inject(TYPES.Auth_Logger) private logger: Logger,
   ) {}

@@ -22,7 +22,8 @@ import { InviteToSharedSubscriptionResult } from './InviteToSharedSubscriptionRe
 export class InviteToSharedSubscription implements UseCaseInterface {
   private readonly MAX_NUMBER_OF_INVITES = 5
   constructor(
-    @inject(TYPES.Auth_UserSubscriptionRepository) private userSubscriptionRepository: UserSubscriptionRepositoryInterface,
+    @inject(TYPES.Auth_UserSubscriptionRepository)
+    private userSubscriptionRepository: UserSubscriptionRepositoryInterface,
     @inject(TYPES.Auth_Timer) private timer: TimerInterface,
     @inject(TYPES.Auth_SharedSubscriptionInvitationRepository)
     private sharedSubscriptionInvitationRepository: SharedSubscriptionInvitationRepositoryInterface,

@@ -19,7 +19,8 @@ export class GetSetting implements UseCaseInterface {
     @inject(TYPES.Auth_SettingProjector) private settingProjector: SettingProjector,
     @inject(TYPES.Auth_SubscriptionSettingProjector) private subscriptionSettingProjector: SubscriptionSettingProjector,
     @inject(TYPES.Auth_SettingService) private settingService: SettingServiceInterface,
-    @inject(TYPES.Auth_SubscriptionSettingService) private subscriptionSettingService: SubscriptionSettingServiceInterface,
+    @inject(TYPES.Auth_SubscriptionSettingService)
+    private subscriptionSettingService: SubscriptionSettingServiceInterface,
     @inject(TYPES.Auth_UserSubscriptionService) private userSubscriptionService: UserSubscriptionServiceInterface,
   ) {}
 

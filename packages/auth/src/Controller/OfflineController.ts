@@ -23,15 +23,13 @@ export class OfflineController extends BaseHttpController {
     @inject(TYPES.Auth_GetUserOfflineSubscription) private getUserOfflineSubscription: GetUserOfflineSubscription,
     @inject(TYPES.Auth_CreateOfflineSubscriptionToken)
     private createOfflineSubscriptionToken: CreateOfflineSubscriptionToken,
-    @inject(TYPES.Auth_AuthenticateOfflineSubscriptionToken) private authenticateToken: AuthenticateOfflineSubscriptionToken,
+    @inject(TYPES.Auth_AuthenticateOfflineSubscriptionToken)
+    private authenticateToken: AuthenticateOfflineSubscriptionToken,
     @inject(TYPES.Auth_OfflineUserTokenEncoder) private tokenEncoder: TokenEncoderInterface<OfflineUserTokenData>,
     @inject(TYPES.Auth_AUTH_JWT_TTL) private jwtTTL: number,
     @inject(TYPES.Auth_Logger) private logger: Logger,
-    @inject(TYPES.Auth_ControllerContainer) private controllerContainer: any,
   ) {
     super()
-
-    this.controllerContainer.register('OfflineController', this)
   }
 
   @httpGet('/features', TYPES.Auth_OfflineUserAuthMiddleware)

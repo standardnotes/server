@@ -8,7 +8,8 @@ import { OfflineUserSubscriptionRepositoryInterface } from '../Subscription/Offl
 @injectable()
 export class SubscriptionCancelledEventHandler implements DomainEventHandlerInterface {
   constructor(
-    @inject(TYPES.Auth_UserSubscriptionRepository) private userSubscriptionRepository: UserSubscriptionRepositoryInterface,
+    @inject(TYPES.Auth_UserSubscriptionRepository)
+    private userSubscriptionRepository: UserSubscriptionRepositoryInterface,
     @inject(TYPES.Auth_OfflineUserSubscriptionRepository)
     private offlineUserSubscriptionRepository: OfflineUserSubscriptionRepositoryInterface,
   ) {}

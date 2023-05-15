@@ -24,9 +24,11 @@ export class AcceptSharedSubscriptionInvitation implements UseCaseInterface {
     @inject(TYPES.Auth_SharedSubscriptionInvitationRepository)
     private sharedSubscriptionInvitationRepository: SharedSubscriptionInvitationRepositoryInterface,
     @inject(TYPES.Auth_UserRepository) private userRepository: UserRepositoryInterface,
-    @inject(TYPES.Auth_UserSubscriptionRepository) private userSubscriptionRepository: UserSubscriptionRepositoryInterface,
+    @inject(TYPES.Auth_UserSubscriptionRepository)
+    private userSubscriptionRepository: UserSubscriptionRepositoryInterface,
     @inject(TYPES.Auth_RoleService) private roleService: RoleServiceInterface,
-    @inject(TYPES.Auth_SubscriptionSettingService) private subscriptionSettingService: SubscriptionSettingServiceInterface,
+    @inject(TYPES.Auth_SubscriptionSettingService)
+    private subscriptionSettingService: SubscriptionSettingServiceInterface,
     @inject(TYPES.Auth_Timer) private timer: TimerInterface,
   ) {}
 

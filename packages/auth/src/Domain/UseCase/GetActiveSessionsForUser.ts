@@ -10,7 +10,8 @@ import { UseCaseInterface } from './UseCaseInterface'
 export class GetActiveSessionsForUser implements UseCaseInterface {
   constructor(
     @inject(TYPES.Auth_SessionRepository) private sessionRepository: SessionRepositoryInterface,
-    @inject(TYPES.Auth_EphemeralSessionRepository) private ephemeralSessionRepository: EphemeralSessionRepositoryInterface,
+    @inject(TYPES.Auth_EphemeralSessionRepository)
+    private ephemeralSessionRepository: EphemeralSessionRepositoryInterface,
   ) {}
 
   async execute(dto: GetActiveSessionsForUserDTO): Promise<GetActiveSessionsForUserResponse> {

@@ -17,7 +17,8 @@ import { UserSubscriptionServiceInterface } from '../../Subscription/UserSubscri
 export class CreateValetToken implements UseCaseInterface {
   constructor(
     @inject(TYPES.Auth_ValetTokenEncoder) private tokenEncoder: TokenEncoderInterface<ValetTokenData>,
-    @inject(TYPES.Auth_SubscriptionSettingService) private subscriptionSettingService: SubscriptionSettingServiceInterface,
+    @inject(TYPES.Auth_SubscriptionSettingService)
+    private subscriptionSettingService: SubscriptionSettingServiceInterface,
     @inject(TYPES.Auth_SubscriptionSettingsAssociationService)
     private subscriptionSettingsAssociationService: SubscriptionSettingsAssociationServiceInterface,
     @inject(TYPES.Auth_UserSubscriptionService) private userSubscriptionService: UserSubscriptionServiceInterface,

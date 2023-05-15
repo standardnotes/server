@@ -13,7 +13,8 @@ import { Username } from '@standardnotes/domain-core'
 export class SubscriptionRefundedEventHandler implements DomainEventHandlerInterface {
   constructor(
     @inject(TYPES.Auth_UserRepository) private userRepository: UserRepositoryInterface,
-    @inject(TYPES.Auth_UserSubscriptionRepository) private userSubscriptionRepository: UserSubscriptionRepositoryInterface,
+    @inject(TYPES.Auth_UserSubscriptionRepository)
+    private userSubscriptionRepository: UserSubscriptionRepositoryInterface,
     @inject(TYPES.Auth_OfflineUserSubscriptionRepository)
     private offlineUserSubscriptionRepository: OfflineUserSubscriptionRepositoryInterface,
     @inject(TYPES.Auth_RoleService) private roleService: RoleServiceInterface,

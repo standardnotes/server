@@ -21,11 +21,13 @@ import { SubscriptionSettingProjector } from '../../../Projection/SubscriptionSe
 export class UpdateSetting implements UseCaseInterface {
   constructor(
     @inject(TYPES.Auth_SettingService) private settingService: SettingServiceInterface,
-    @inject(TYPES.Auth_SubscriptionSettingService) private subscriptionSettingService: SubscriptionSettingServiceInterface,
+    @inject(TYPES.Auth_SubscriptionSettingService)
+    private subscriptionSettingService: SubscriptionSettingServiceInterface,
     @inject(TYPES.Auth_UserSubscriptionService) private userSubscriptionService: UserSubscriptionServiceInterface,
     @inject(TYPES.Auth_SettingProjector) private settingProjector: SettingProjector,
     @inject(TYPES.Auth_SubscriptionSettingProjector) private subscriptionSettingProjector: SubscriptionSettingProjector,
-    @inject(TYPES.Auth_SettingsAssociationService) private settingsAssociationService: SettingsAssociationServiceInterface,
+    @inject(TYPES.Auth_SettingsAssociationService)
+    private settingsAssociationService: SettingsAssociationServiceInterface,
     @inject(TYPES.Auth_UserRepository) private userRepository: UserRepositoryInterface,
     @inject(TYPES.Auth_RoleService) private roleService: RoleServiceInterface,
     @inject(TYPES.Auth_Logger) private logger: Logger,

@@ -14,7 +14,8 @@ import { VerifyPredicateResponse } from './VerifyPredicateResponse'
 export class VerifyPredicate implements UseCaseInterface {
   constructor(
     @inject(TYPES.Auth_SettingRepository) private settingRepository: SettingRepositoryInterface,
-    @inject(TYPES.Auth_UserSubscriptionRepository) private userSubscriptionRepository: UserSubscriptionRepositoryInterface,
+    @inject(TYPES.Auth_UserSubscriptionRepository)
+    private userSubscriptionRepository: UserSubscriptionRepositoryInterface,
   ) {}
 
   async execute(dto: VerifyPredicateDTO): Promise<VerifyPredicateResponse> {

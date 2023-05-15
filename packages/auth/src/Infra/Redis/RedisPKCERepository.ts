@@ -9,7 +9,10 @@ import { PKCERepositoryInterface } from '../../Domain/User/PKCERepositoryInterfa
 export class RedisPKCERepository implements PKCERepositoryInterface {
   private readonly PREFIX = 'pkce'
 
-  constructor(@inject(TYPES.Auth_Redis) private redisClient: IORedis.Redis, @inject(TYPES.Auth_Logger) private logger: Logger) {}
+  constructor(
+    @inject(TYPES.Auth_Redis) private redisClient: IORedis.Redis,
+    @inject(TYPES.Auth_Logger) private logger: Logger,
+  ) {}
 
   async storeCodeChallenge(codeChallenge: string): Promise<void> {
     this.logger.debug(`Storing code challenge: ${codeChallenge}`)

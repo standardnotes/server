@@ -19,7 +19,8 @@ export class SettingService implements SettingServiceInterface {
   constructor(
     @inject(TYPES.Auth_SettingFactory) private factory: SettingFactoryInterface,
     @inject(TYPES.Auth_SettingRepository) private settingRepository: SettingRepositoryInterface,
-    @inject(TYPES.Auth_SettingsAssociationService) private settingsAssociationService: SettingsAssociationServiceInterface,
+    @inject(TYPES.Auth_SettingsAssociationService)
+    private settingsAssociationService: SettingsAssociationServiceInterface,
     @inject(TYPES.Auth_SettingInterpreter) private settingInterpreter: SettingInterpreterInterface,
     @inject(TYPES.Auth_SettingDecrypter) private settingDecrypter: SettingDecrypterInterface,
     @inject(TYPES.Auth_Logger) private logger: Logger,

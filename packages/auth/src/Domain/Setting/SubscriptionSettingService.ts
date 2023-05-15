@@ -29,7 +29,8 @@ export class SubscriptionSettingService implements SubscriptionSettingServiceInt
     private subscriptionSettingAssociationService: SubscriptionSettingsAssociationServiceInterface,
     @inject(TYPES.Auth_SettingInterpreter) private settingInterpreter: SettingInterpreterInterface,
     @inject(TYPES.Auth_SettingDecrypter) private settingDecrypter: SettingDecrypterInterface,
-    @inject(TYPES.Auth_UserSubscriptionRepository) private userSubscriptionRepository: UserSubscriptionRepositoryInterface,
+    @inject(TYPES.Auth_UserSubscriptionRepository)
+    private userSubscriptionRepository: UserSubscriptionRepositoryInterface,
     @inject(TYPES.Auth_Logger) private logger: Logger,
   ) {}
 

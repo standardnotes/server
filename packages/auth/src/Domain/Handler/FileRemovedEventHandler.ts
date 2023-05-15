@@ -13,7 +13,8 @@ import { UserSubscriptionServiceInterface } from '../Subscription/UserSubscripti
 export class FileRemovedEventHandler implements DomainEventHandlerInterface {
   constructor(
     @inject(TYPES.Auth_UserSubscriptionService) private userSubscriptionService: UserSubscriptionServiceInterface,
-    @inject(TYPES.Auth_SubscriptionSettingService) private subscriptionSettingService: SubscriptionSettingServiceInterface,
+    @inject(TYPES.Auth_SubscriptionSettingService)
+    private subscriptionSettingService: SubscriptionSettingServiceInterface,
     @inject(TYPES.Auth_Logger) private logger: Logger,
   ) {}
 

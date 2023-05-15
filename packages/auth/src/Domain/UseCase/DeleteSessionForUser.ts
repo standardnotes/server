@@ -13,7 +13,8 @@ import { UseCaseInterface } from './UseCaseInterface'
 export class DeleteSessionForUser implements UseCaseInterface {
   constructor(
     @inject(TYPES.Auth_SessionRepository) private sessionRepository: SessionRepositoryInterface,
-    @inject(TYPES.Auth_EphemeralSessionRepository) private ephemeralSessionRepository: EphemeralSessionRepositoryInterface,
+    @inject(TYPES.Auth_EphemeralSessionRepository)
+    private ephemeralSessionRepository: EphemeralSessionRepositoryInterface,
     @inject(TYPES.Auth_SessionService) private sessionService: SessionServiceInterface,
   ) {}
 
