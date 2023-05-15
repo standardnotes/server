@@ -16,6 +16,7 @@ import { DeleteSetting } from '../Domain/UseCase/DeleteSetting/DeleteSetting'
 import { GetSetting } from '../Domain/UseCase/GetSetting/GetSetting'
 import { GetSettings } from '../Domain/UseCase/GetSettings/GetSettings'
 import { UpdateSetting } from '../Domain/UseCase/UpdateSetting/UpdateSetting'
+import { ControllerContainerInterface } from '@standardnotes/domain-core'
 
 @controller('/users/:userUuid')
 export class SettingsController extends BaseHttpController {
@@ -24,8 +25,14 @@ export class SettingsController extends BaseHttpController {
     @inject(TYPES.Auth_GetSetting) private doGetSetting: GetSetting,
     @inject(TYPES.Auth_UpdateSetting) private doUpdateSetting: UpdateSetting,
     @inject(TYPES.Auth_DeleteSetting) private doDeleteSetting: DeleteSetting,
+    @inject(TYPES.Auth_ControllerContainer) private controllerContainer: ControllerContainerInterface,
   ) {
     super()
+
+    this.controllerContainer.register('auth.users.getSettings', this.getSettings.bind(this))
+    this.controllerContainer.register('auth.users.getSetting', this.getSetting.bind(this))
+    this.controllerContainer.register('auth.users.updateSetting', this.updateSetting.bind(this))
+    this.controllerContainer.register('auth.users.deleteSetting', this.deleteSetting.bind(this))
   }
 
   @httpGet('/settings', TYPES.Auth_ApiGatewayAuthMiddleware)

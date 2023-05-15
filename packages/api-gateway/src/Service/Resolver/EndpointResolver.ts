@@ -34,6 +34,21 @@ export class EndpointResolver implements EndpointResolverInterface {
     ['[POST]:subscription-invites/:inviteUuid/accept', 'auth.subscriptionInvites.accept'],
     // Tokens Controller
     ['[POST]:subscription-tokens', 'auth.subscription-tokens.create'],
+    // Users Controller
+    ['[PATCH]:users/:userId', 'auth.users.update'],
+    ['[PUT]:users/:userUuid/attributes/credentials', 'auth.users.updateCredentials'],
+    ['[PUT]:auth/params', 'auth.users.getKeyParams'],
+    ['[POST]:listed', 'auth.users.createListedAccount'],
+    ['[POST]:auth', 'auth.users.register'],
+    ['[GET]:users/:userUuid/settings', 'auth.users.getSettings'],
+    ['[PUT]:users/:userUuid/settings', 'auth.users.updateSetting'],
+    ['[GET]:users/:userUuid/settings/:settingName', 'auth.users.getSetting'],
+    ['[DELETE]:users/:userUuid/settings/:settingName', 'auth.users.deleteSetting'],
+    ['[GET]:users/:userUuid/subscription-settings/:subscriptionSettingName', 'auth.users.getSubscriptionSetting'],
+    ['[GET]:users/:userUuid/features', 'auth.users.getFeatures'],
+    ['[GET]:users/:userUuid/subscription', 'auth.users.getSubscription'],
+    ['[GET]:offline/users/subscription', 'auth.users.getOfflineSubscriptionByToken'],
+    ['[POST]:users/:userUuid/requests', 'auth.users.createRequest'],
   ])
 
   resolveEndpointOrMethodIdentifier(method: string, endpoint: string, ...params: string[]): string {

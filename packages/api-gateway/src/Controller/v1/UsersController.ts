@@ -84,7 +84,7 @@ export class UsersController extends BaseHttpController {
     await this.httpService.callAuthServer(
       request,
       response,
-      this.endpointResolver.resolveEndpointOrMethodIdentifier('PUT', 'auth/params'),
+      this.endpointResolver.resolveEndpointOrMethodIdentifier('GET', 'auth/params'),
     )
   }
 

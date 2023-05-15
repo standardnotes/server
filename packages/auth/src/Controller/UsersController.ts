@@ -19,6 +19,7 @@ import { GetUserSubscription } from '../Domain/UseCase/GetUserSubscription/GetUs
 import { ClearLoginAttempts } from '../Domain/UseCase/ClearLoginAttempts'
 import { IncreaseLoginAttempts } from '../Domain/UseCase/IncreaseLoginAttempts'
 import { ChangeCredentials } from '../Domain/UseCase/ChangeCredentials/ChangeCredentials'
+import { ControllerContainerInterface } from '@standardnotes/domain-core'
 
 @controller('/users')
 export class UsersController extends BaseHttpController {
@@ -30,8 +31,14 @@ export class UsersController extends BaseHttpController {
     @inject(TYPES.Auth_ClearLoginAttempts) private clearLoginAttempts: ClearLoginAttempts,
     @inject(TYPES.Auth_IncreaseLoginAttempts) private increaseLoginAttempts: IncreaseLoginAttempts,
     @inject(TYPES.Auth_ChangeCredentials) private changeCredentialsUseCase: ChangeCredentials,
+    @inject(TYPES.Auth_ControllerContainer) private controllerContainer: ControllerContainerInterface,
   ) {
     super()
+
+    this.controllerContainer.register('auth.users.update', this.update.bind(this))
+    this.controllerContainer.register('auth.users.getKeyParams', this.keyParams.bind(this))
+    this.controllerContainer.register('auth.users.getSubscription', this.getSubscription.bind(this))
+    this.controllerContainer.register('auth.users.updateCredentials', this.changeCredentials.bind(this))
   }
 
   @httpPatch('/:userId', TYPES.Auth_ApiGatewayAuthMiddleware)

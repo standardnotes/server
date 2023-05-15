@@ -35,6 +35,7 @@ export class OfflineController extends BaseHttpController {
 
     this.controllerContainer.register('auth.offline.features', this.getOfflineFeatures.bind(this))
     this.controllerContainer.register('auth.offline.subscriptionTokens.create', this.createToken.bind(this))
+    this.controllerContainer.register('auth.users.getOfflineSubscriptionByToken', this.getSubscription.bind(this))
   }
 
   @httpGet('/features', TYPES.Auth_OfflineUserAuthMiddleware)

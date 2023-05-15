@@ -6,6 +6,7 @@ import { results } from 'inversify-express-utils'
 import { User } from '../Domain/User/User'
 import { SubscriptionSettingsController } from './SubscriptionSettingsController'
 import { GetSetting } from '../Domain/UseCase/GetSetting/GetSetting'
+import { ControllerContainerInterface } from '@standardnotes/domain-core'
 
 describe('SubscriptionSettingsController', () => {
   let getSetting: GetSetting
@@ -13,10 +14,14 @@ describe('SubscriptionSettingsController', () => {
   let request: express.Request
   let response: express.Response
   let user: User
+  let controllerContainer: ControllerContainerInterface
 
-  const createController = () => new SubscriptionSettingsController(getSetting)
+  const createController = () => new SubscriptionSettingsController(getSetting, controllerContainer)
 
   beforeEach(() => {
+    controllerContainer = {} as jest.Mocked<ControllerContainerInterface>
+    controllerContainer.register = jest.fn()
+
     user = {} as jest.Mocked<User>
     user.uuid = '123'
 

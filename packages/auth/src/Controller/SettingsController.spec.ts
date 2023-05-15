@@ -10,6 +10,7 @@ import { GetSetting } from '../Domain/UseCase/GetSetting/GetSetting'
 import { UpdateSetting } from '../Domain/UseCase/UpdateSetting/UpdateSetting'
 import { DeleteSetting } from '../Domain/UseCase/DeleteSetting/DeleteSetting'
 import { EncryptionVersion } from '../Domain/Encryption/EncryptionVersion'
+import { ControllerContainerInterface } from '@standardnotes/domain-core'
 
 describe('SettingsController', () => {
   let deleteSetting: DeleteSetting
@@ -20,10 +21,15 @@ describe('SettingsController', () => {
   let request: express.Request
   let response: express.Response
   let user: User
+  let controllerContainer: ControllerContainerInterface
 
-  const createController = () => new SettingsController(getSettings, getSetting, updateSetting, deleteSetting)
+  const createController = () =>
+    new SettingsController(getSettings, getSetting, updateSetting, deleteSetting, controllerContainer)
 
   beforeEach(() => {
+    controllerContainer = {} as jest.Mocked<ControllerContainerInterface>
+    controllerContainer.register = jest.fn()
+
     deleteSetting = {} as jest.Mocked<DeleteSetting>
     deleteSetting.execute = jest.fn().mockReturnValue({ success: true })
 

@@ -10,6 +10,7 @@ import { GetActiveSessionsForUser } from '../Domain/UseCase/GetActiveSessionsFor
 import { AuthenticateRequest } from '../Domain/UseCase/AuthenticateRequest'
 import { User } from '../Domain/User/User'
 import { CreateCrossServiceToken } from '../Domain/UseCase/CreateCrossServiceToken/CreateCrossServiceToken'
+import { ControllerContainerInterface } from '@standardnotes/domain-core'
 
 describe('SessionsController', () => {
   let getActiveSessionsForUser: GetActiveSessionsForUser
@@ -20,11 +21,21 @@ describe('SessionsController', () => {
   let response: express.Response
   let user: User
   let createCrossServiceToken: CreateCrossServiceToken
+  let controllerContainer: ControllerContainerInterface
 
   const createController = () =>
-    new SessionsController(getActiveSessionsForUser, authenticateRequest, sessionProjector, createCrossServiceToken)
+    new SessionsController(
+      getActiveSessionsForUser,
+      authenticateRequest,
+      sessionProjector,
+      createCrossServiceToken,
+      controllerContainer,
+    )
 
   beforeEach(() => {
+    controllerContainer = {} as jest.Mocked<ControllerContainerInterface>
+    controllerContainer.register = jest.fn()
+
     session = {} as jest.Mocked<Session>
 
     user = {} as jest.Mocked<User>

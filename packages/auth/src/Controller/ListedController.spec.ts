@@ -6,6 +6,7 @@ import { results } from 'inversify-express-utils'
 import { ListedController } from './ListedController'
 import { User } from '../Domain/User/User'
 import { CreateListedAccount } from '../Domain/UseCase/CreateListedAccount/CreateListedAccount'
+import { ControllerContainerInterface } from '@standardnotes/domain-core'
 
 describe('ListedController', () => {
   let createListedAccount: CreateListedAccount
@@ -13,10 +14,14 @@ describe('ListedController', () => {
   let request: express.Request
   let response: express.Response
   let user: User
+  let controllerContainer: ControllerContainerInterface
 
-  const createController = () => new ListedController(createListedAccount)
+  const createController = () => new ListedController(createListedAccount, controllerContainer)
 
   beforeEach(() => {
+    controllerContainer = {} as jest.Mocked<ControllerContainerInterface>
+    controllerContainer.register = jest.fn()
+
     user = {} as jest.Mocked<User>
     user.uuid = '123'
 

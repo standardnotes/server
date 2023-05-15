@@ -9,11 +9,17 @@ import {
 } from 'inversify-express-utils'
 import TYPES from '../Bootstrap/Types'
 import { GetSetting } from '../Domain/UseCase/GetSetting/GetSetting'
+import { ControllerContainerInterface } from '@standardnotes/domain-core'
 
 @controller('/users/:userUuid')
 export class SubscriptionSettingsController extends BaseHttpController {
-  constructor(@inject(TYPES.Auth_GetSetting) private doGetSetting: GetSetting) {
+  constructor(
+    @inject(TYPES.Auth_GetSetting) private doGetSetting: GetSetting,
+    @inject(TYPES.Auth_ControllerContainer) private controllerContainer: ControllerContainerInterface,
+  ) {
     super()
+
+    this.controllerContainer.register('auth.users.getSubscriptionSetting', this.getSubscriptionSetting.bind(this))
   }
 
   @httpGet('/subscription-settings/:subscriptionSettingName', TYPES.Auth_ApiGatewayAuthMiddleware)

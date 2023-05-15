@@ -7,6 +7,7 @@ import { results } from 'inversify-express-utils'
 import { RefreshSessionToken } from '../Domain/UseCase/RefreshSessionToken'
 import { DeletePreviousSessionsForUser } from '../Domain/UseCase/DeletePreviousSessionsForUser'
 import { DeleteSessionForUser } from '../Domain/UseCase/DeleteSessionForUser'
+import { ControllerContainerInterface } from '@standardnotes/domain-core'
 
 describe('SessionController', () => {
   let deleteSessionForUser: DeleteSessionForUser
@@ -14,11 +15,15 @@ describe('SessionController', () => {
   let refreshSessionToken: RefreshSessionToken
   let request: express.Request
   let response: express.Response
+  let controllerContainer: ControllerContainerInterface
 
   const createController = () =>
-    new SessionController(deleteSessionForUser, deletePreviousSessionsForUser, refreshSessionToken)
+    new SessionController(deleteSessionForUser, deletePreviousSessionsForUser, refreshSessionToken, controllerContainer)
 
   beforeEach(() => {
+    controllerContainer = {} as jest.Mocked<ControllerContainerInterface>
+    controllerContainer.register = jest.fn()
+
     deleteSessionForUser = {} as jest.Mocked<DeleteSessionForUser>
     deleteSessionForUser.execute = jest.fn().mockReturnValue({ success: true })
 

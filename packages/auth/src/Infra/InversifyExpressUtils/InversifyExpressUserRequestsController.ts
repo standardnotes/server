@@ -13,7 +13,8 @@ export class InversifyExpressUserRequestsController extends BaseHttpController {
     @inject(TYPES.Auth_ControllerContainer) private controllerContainer: ControllerContainerInterface,
   ) {
     super()
-    this.controllerContainer.register('auth.userRequests.submitRequest', this.submitRequest.bind(this))
+
+    this.controllerContainer.register('auth.users.createRequest', this.submitRequest.bind(this))
   }
 
   @httpPost('/', TYPES.Auth_ApiGatewayAuthMiddleware)

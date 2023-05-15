@@ -37,7 +37,7 @@ export class InversifyExpressAuthController extends BaseHttpController {
     this.controllerContainer.register('auth.signIn', this.signIn.bind(this))
     this.controllerContainer.register('auth.pkceParams', this.pkceParams.bind(this))
     this.controllerContainer.register('auth.pkceSignIn', this.pkceSignIn.bind(this))
-    this.controllerContainer.register('auth.register', this.register.bind(this))
+    this.controllerContainer.register('auth.users.register', this.register.bind(this))
     this.controllerContainer.register('auth.generateRecoveryCodes', this.generateRecoveryCodes.bind(this))
     this.controllerContainer.register('auth.signInWithRecoveryCodes', this.recoveryLogin.bind(this))
     this.controllerContainer.register('auth.recoveryKeyParams', this.recoveryParams.bind(this))
