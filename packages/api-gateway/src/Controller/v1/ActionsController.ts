@@ -16,7 +16,12 @@ export class ActionsController extends BaseHttpController {
 
   @httpPost('/login')
   async login(request: Request, response: Response): Promise<void> {
-    await this.serviceProxy.callAuthServer(request, response, 'auth/sign_in', request.body)
+    await this.serviceProxy.callAuthServer(
+      request,
+      response,
+      this.endpointResolver.resolveEndpointOrMethodIdentifier('POST', 'auth/sign_in'),
+      request.body,
+    )
   }
 
   @httpGet('/login-params')
@@ -24,19 +29,19 @@ export class ActionsController extends BaseHttpController {
     await this.serviceProxy.callAuthServer(
       request,
       response,
-      this.endpointResolver.resolveEndpointOrMethodIdentifier('auth/params'),
+      this.endpointResolver.resolveEndpointOrMethodIdentifier('GET', 'auth/params'),
       request.body,
     )
   }
 
   @httpPost('/logout')
   async logout(request: Request, response: Response): Promise<void> {
-    await this.serviceProxy.callAuthServer(request, response, 'auth/sign_out', request.body)
-  }
-
-  @httpGet('/auth/methods')
-  async methods(request: Request, response: Response): Promise<void> {
-    await this.serviceProxy.callAuthServer(request, response, 'auth/methods', request.body)
+    await this.serviceProxy.callAuthServer(
+      request,
+      response,
+      this.endpointResolver.resolveEndpointOrMethodIdentifier('POST', 'auth/sign_out'),
+      request.body,
+    )
   }
 
   @httpGet('/unsubscribe/:token')
@@ -44,19 +49,33 @@ export class ActionsController extends BaseHttpController {
     await this.serviceProxy.callEmailServer(
       request,
       response,
-      `subscriptions/actions/unsubscribe/${request.params.token}`,
+      this.endpointResolver.resolveEndpointOrMethodIdentifier(
+        'GET',
+        'subscriptions/actions/unsubscribe/:token',
+        request.params.token,
+      ),
       request.body,
     )
   }
 
   @httpPost('/recovery/codes', TYPES.AuthMiddleware)
   async recoveryCodes(request: Request, response: Response): Promise<void> {
-    await this.serviceProxy.callAuthServer(request, response, 'auth/recovery/codes', request.body)
+    await this.serviceProxy.callAuthServer(
+      request,
+      response,
+      this.endpointResolver.resolveEndpointOrMethodIdentifier('POST', 'auth/recovery/codes'),
+      request.body,
+    )
   }
 
   @httpPost('/recovery/login')
   async recoveryLogin(request: Request, response: Response): Promise<void> {
-    await this.serviceProxy.callAuthServer(request, response, 'auth/recovery/login', request.body)
+    await this.serviceProxy.callAuthServer(
+      request,
+      response,
+      this.endpointResolver.resolveEndpointOrMethodIdentifier('POST', 'auth/recovery/login'),
+      request.body,
+    )
   }
 
   @httpPost('/recovery/login-params')
@@ -64,7 +83,7 @@ export class ActionsController extends BaseHttpController {
     await this.serviceProxy.callAuthServer(
       request,
       response,
-      this.endpointResolver.resolveEndpointOrMethodIdentifier('auth/recovery/params'),
+      this.endpointResolver.resolveEndpointOrMethodIdentifier('POST', 'auth/recovery/params'),
       request.body,
     )
   }

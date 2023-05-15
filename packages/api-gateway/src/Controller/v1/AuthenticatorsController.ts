@@ -4,10 +4,14 @@ import { controller, BaseHttpController, httpPost, httpGet, httpDelete } from 'i
 
 import { TYPES } from '../../Bootstrap/Types'
 import { ServiceProxyInterface } from '../../Service/Http/ServiceProxyInterface'
+import { EndpointResolverInterface } from '../../Service/Resolver/EndpointResolverInterface'
 
 @controller('/v1/authenticators')
 export class AuthenticatorsController extends BaseHttpController {
-  constructor(@inject(TYPES.ServiceProxy) private httpService: ServiceProxyInterface) {
+  constructor(
+    @inject(TYPES.ServiceProxy) private httpService: ServiceProxyInterface,
+    @inject(TYPES.EndpointResolver) private endpointResolver: EndpointResolverInterface,
+  ) {
     super()
   }
 
@@ -16,14 +20,23 @@ export class AuthenticatorsController extends BaseHttpController {
     await this.httpService.callAuthServer(
       request,
       response,
-      `authenticators/${request.params.authenticatorId}`,
+      this.endpointResolver.resolveEndpointOrMethodIdentifier(
+        'DELETE',
+        'authenticators/:authenticatorId',
+        request.params.authenticatorId,
+      ),
       request.body,
     )
   }
 
   @httpGet('/', TYPES.AuthMiddleware)
   async list(request: Request, response: Response): Promise<void> {
-    await this.httpService.callAuthServer(request, response, 'authenticators/', request.body)
+    await this.httpService.callAuthServer(
+      request,
+      response,
+      this.endpointResolver.resolveEndpointOrMethodIdentifier('GET', 'authenticators/'),
+      request.body,
+    )
   }
 
   @httpGet('/generate-registration-options', TYPES.AuthMiddleware)
@@ -31,7 +44,7 @@ export class AuthenticatorsController extends BaseHttpController {
     await this.httpService.callAuthServer(
       request,
       response,
-      'authenticators/generate-registration-options',
+      this.endpointResolver.resolveEndpointOrMethodIdentifier('GET', 'authenticators/generate-registration-options'),
       request.body,
     )
   }
@@ -41,13 +54,18 @@ export class AuthenticatorsController extends BaseHttpController {
     await this.httpService.callAuthServer(
       request,
       response,
-      'authenticators/generate-authentication-options',
+      this.endpointResolver.resolveEndpointOrMethodIdentifier('POST', 'authenticators/generate-authentication-options'),
       request.body,
     )
   }
 
   @httpPost('/verify-registration', TYPES.AuthMiddleware)
   async verifyRegistration(request: Request, response: Response): Promise<void> {
-    await this.httpService.callAuthServer(request, response, 'authenticators/verify-registration', request.body)
+    await this.httpService.callAuthServer(
+      request,
+      response,
+      this.endpointResolver.resolveEndpointOrMethodIdentifier('POST', 'authenticators/verify-registration'),
+      request.body,
+    )
   }
 }

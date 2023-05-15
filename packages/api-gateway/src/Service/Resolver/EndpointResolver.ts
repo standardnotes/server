@@ -3,22 +3,26 @@ import { EndpointResolverInterface } from './EndpointResolverInterface'
 export class EndpointResolver implements EndpointResolverInterface {
   constructor(private isConfiguredForHomeServer: boolean) {}
 
-  private readonly endpointToMethodMap: Map<string, string> = new Map([
-    ['/healthcheck', 'healthcheck'],
-    ['auth/recovery/params', 'auth.recoveryKeyParams'],
-    ['auth/params', 'auth.params'],
+  private readonly endpointToIdentifierMap: Map<string, string> = new Map([
+    ['[POST]:auth/sign_in', 'auth.signIn'],
+    ['[GET]:auth/params', 'auth.params'],
+    ['[POST]:auth/sign_out', 'auth.signOut'],
   ])
 
-  resolveEndpointOrMethodIdentifier(endpoint: string): string {
+  resolveEndpointOrMethodIdentifier(method: string, endpoint: string, ...params: string[]): string {
     if (!this.isConfiguredForHomeServer) {
+      if (params.length > 0) {
+        return params.reduce((acc, param) => acc.replace(/:[a-zA-Z0-9]+/, param), endpoint)
+      }
+
       return endpoint
     }
-    const method = this.endpointToMethodMap.get(endpoint)
+    const identifier = this.endpointToIdentifierMap.get(`[${method}]:${endpoint}`)
 
-    if (!method) {
+    if (!identifier) {
       throw new Error(`Endpoint ${endpoint} not found`)
     }
 
-    return method
+    return identifier
   }
 }

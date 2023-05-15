@@ -4,21 +4,35 @@ import { BaseHttpController, controller, httpGet, httpPost } from 'inversify-exp
 
 import { TYPES } from '../../Bootstrap/Types'
 import { ServiceProxyInterface } from '../../Service/Http/ServiceProxyInterface'
+import { EndpointResolverInterface } from '../../Service/Resolver/EndpointResolverInterface'
 
 @controller('/v1/offline')
 export class OfflineController extends BaseHttpController {
-  constructor(@inject(TYPES.ServiceProxy) private httpService: ServiceProxyInterface) {
+  constructor(
+    @inject(TYPES.ServiceProxy) private httpService: ServiceProxyInterface,
+    @inject(TYPES.EndpointResolver) private endpointResolver: EndpointResolverInterface,
+  ) {
     super()
   }
 
   @httpGet('/features')
   async getOfflineFeatures(request: Request, response: Response): Promise<void> {
-    await this.httpService.callAuthServer(request, response, 'offline/features', request.body)
+    await this.httpService.callAuthServer(
+      request,
+      response,
+      this.endpointResolver.resolveEndpointOrMethodIdentifier('GET', 'offline/features'),
+      request.body,
+    )
   }
 
   @httpPost('/subscription-tokens')
   async createOfflineSubscriptionToken(request: Request, response: Response): Promise<void> {
-    await this.httpService.callAuthServer(request, response, 'offline/subscription-tokens', request.body)
+    await this.httpService.callAuthServer(
+      request,
+      response,
+      this.endpointResolver.resolveEndpointOrMethodIdentifier('POST', 'offline/subscription-tokens'),
+      request.body,
+    )
   }
 
   @httpPost('/payments/stripe-setup-intent')

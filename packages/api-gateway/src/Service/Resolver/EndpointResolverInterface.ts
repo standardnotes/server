@@ -1,3 +1,3 @@
 export interface EndpointResolverInterface {
-  resolveEndpointOrMethodIdentifier(endpoint: string): string
+  resolveEndpointOrMethodIdentifier(method: string, endpoint: string, ...params: string[]): string
 }

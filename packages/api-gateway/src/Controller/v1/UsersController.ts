@@ -15,11 +15,13 @@ import { Logger } from 'winston'
 import { TYPES } from '../../Bootstrap/Types'
 import { ServiceProxyInterface } from '../../Service/Http/ServiceProxyInterface'
 import { TokenAuthenticationMethod } from '../TokenAuthenticationMethod'
+import { EndpointResolverInterface } from '../../Service/Resolver/EndpointResolverInterface'
 
 @controller('/v1/users')
 export class UsersController extends BaseHttpController {
   constructor(
     @inject(TYPES.ServiceProxy) private httpService: ServiceProxyInterface,
+    @inject(TYPES.EndpointResolver) private endpointResolver: EndpointResolverInterface,
     @inject(TYPES.Logger) private logger: Logger,
   ) {
     super()
@@ -37,7 +39,12 @@ export class UsersController extends BaseHttpController {
 
   @httpPatch('/:userId', TYPES.AuthMiddleware)
   async updateUser(request: Request, response: Response): Promise<void> {
-    await this.httpService.callAuthServer(request, response, `users/${request.params.userId}`, request.body)
+    await this.httpService.callAuthServer(
+      request,
+      response,
+      this.endpointResolver.resolveEndpointOrMethodIdentifier('PATCH', 'users/:userId', request.params.userId),
+      request.body,
+    )
   }
 
   @httpPut('/:userUuid/password', TYPES.AuthMiddleware)
@@ -49,7 +56,11 @@ export class UsersController extends BaseHttpController {
     await this.httpService.callAuthServer(
       request,
       response,
-      `users/${request.params.userUuid}/attributes/credentials`,
+      this.endpointResolver.resolveEndpointOrMethodIdentifier(
+        'PUT',
+        'users/:userUuid/attributes/credentials',
+        request.params.userUuid,
+      ),
       request.body,
     )
   }
@@ -59,14 +70,22 @@ export class UsersController extends BaseHttpController {
     await this.httpService.callAuthServer(
       request,
       response,
-      `users/${request.params.userUuid}/attributes/credentials`,
+      this.endpointResolver.resolveEndpointOrMethodIdentifier(
+        'PUT',
+        'users/:userUuid/attributes/credentials',
+        request.params.userUuid,
+      ),
       request.body,
     )
   }
 
   @httpGet('/:userId/params', TYPES.AuthMiddleware)
   async getKeyParams(request: Request, response: Response): Promise<void> {
-    await this.httpService.callAuthServer(request, response, 'auth/params')
+    await this.httpService.callAuthServer(
+      request,
+      response,
+      this.endpointResolver.resolveEndpointOrMethodIdentifier('PUT', 'auth/params'),
+    )
   }
 
   @all('/:userId/mfa', TYPES.AuthMiddleware)
@@ -76,22 +95,49 @@ export class UsersController extends BaseHttpController {
 
   @httpPost('/:userUuid/integrations/listed', TYPES.AuthMiddleware)
   async createListedAccount(request: Request, response: Response): Promise<void> {
-    await this.httpService.callAuthServer(request, response, 'listed', request.body)
+    await this.httpService.callAuthServer(
+      request,
+      response,
+      this.endpointResolver.resolveEndpointOrMethodIdentifier('POST', 'listed'),
+      request.body,
+    )
   }
 
   @httpPost('/')
   async register(request: Request, response: Response): Promise<void> {
-    await this.httpService.callAuthServer(request, response, 'auth', request.body)
+    await this.httpService.callAuthServer(
+      request,
+      response,
+      this.endpointResolver.resolveEndpointOrMethodIdentifier('POST', 'auth'),
+      request.body,
+    )
   }
 
   @httpGet('/:userUuid/settings', TYPES.AuthMiddleware)
   async listSettings(request: Request, response: Response): Promise<void> {
-    await this.httpService.callAuthServer(request, response, `users/${request.params.userUuid}/settings`)
+    await this.httpService.callAuthServer(
+      request,
+      response,
+      this.endpointResolver.resolveEndpointOrMethodIdentifier(
+        'GET',
+        'users/:userUuid/settings',
+        request.params.userUuid,
+      ),
+    )
   }
 
   @httpPut('/:userUuid/settings', TYPES.AuthMiddleware)
   async putSetting(request: Request, response: Response): Promise<void> {
-    await this.httpService.callAuthServer(request, response, `users/${request.params.userUuid}/settings`, request.body)
+    await this.httpService.callAuthServer(
+      request,
+      response,
+      this.endpointResolver.resolveEndpointOrMethodIdentifier(
+        'PUT',
+        'users/:userUuid/settings',
+        request.params.userUuid,
+      ),
+      request.body,
+    )
   }
 
   @httpGet('/:userUuid/settings/:settingName', TYPES.AuthMiddleware)
@@ -99,7 +145,12 @@ export class UsersController extends BaseHttpController {
     await this.httpService.callAuthServer(
       request,
       response,
-      `users/${request.params.userUuid}/settings/${request.params.settingName}`,
+      this.endpointResolver.resolveEndpointOrMethodIdentifier(
+        'GET',
+        'users/:userUuid/settings/:settingName',
+        request.params.userUuid,
+        request.params.settingName,
+      ),
     )
   }
 
@@ -108,7 +159,12 @@ export class UsersController extends BaseHttpController {
     await this.httpService.callAuthServer(
       request,
       response,
-      `users/${request.params.userUuid}/settings/${request.params.settingName}`,
+      this.endpointResolver.resolveEndpointOrMethodIdentifier(
+        'DELETE',
+        'users/:userUuid/settings/:settingName',
+        request.params.userUuid,
+        request.params.settingName,
+      ),
       request.body,
     )
   }
@@ -118,29 +174,62 @@ export class UsersController extends BaseHttpController {
     await this.httpService.callAuthServer(
       request,
       response,
-      `users/${request.params.userUuid}/subscription-settings/${request.params.subscriptionSettingName}`,
+      this.endpointResolver.resolveEndpointOrMethodIdentifier(
+        'GET',
+        'users/:userUuid/subscription-settings/:subscriptionSettingName',
+        request.params.userUuid,
+        request.params.subscriptionSettingName,
+      ),
     )
   }
 
   @httpGet('/:userUuid/features', TYPES.AuthMiddleware)
   async getFeatures(request: Request, response: Response): Promise<void> {
-    await this.httpService.callAuthServer(request, response, `users/${request.params.userUuid}/features`)
+    await this.httpService.callAuthServer(
+      request,
+      response,
+      this.endpointResolver.resolveEndpointOrMethodIdentifier(
+        'GET',
+        'users/:userUuid/features',
+        request.params.userUuid,
+      ),
+    )
   }
 
   @httpGet('/:userUuid/subscription', TYPES.AuthMiddleware)
   async getSubscription(request: Request, response: Response): Promise<void> {
-    await this.httpService.callAuthServer(request, response, `users/${request.params.userUuid}/subscription`)
+    await this.httpService.callAuthServer(
+      request,
+      response,
+      this.endpointResolver.resolveEndpointOrMethodIdentifier(
+        'GET',
+        'users/:userUuid/subscription',
+        request.params.userUuid,
+      ),
+    )
   }
 
   @httpGet('/subscription', TYPES.SubscriptionTokenAuthMiddleware)
   async getSubscriptionBySubscriptionToken(request: Request, response: Response): Promise<void> {
     if (response.locals.tokenAuthenticationMethod === TokenAuthenticationMethod.OfflineSubscriptionToken) {
-      await this.httpService.callAuthServer(request, response, 'offline/users/subscription')
+      await this.httpService.callAuthServer(
+        request,
+        response,
+        this.endpointResolver.resolveEndpointOrMethodIdentifier('GET', 'offline/users/subscription'),
+      )
 
       return
     }
 
-    await this.httpService.callAuthServer(request, response, `users/${response.locals.userUuid}/subscription`)
+    await this.httpService.callAuthServer(
+      request,
+      response,
+      this.endpointResolver.resolveEndpointOrMethodIdentifier(
+        'GET',
+        'users/:userUuid/subscription',
+        response.locals.userUuid,
+      ),
+    )
   }
 
   @httpDelete('/:userUuid', TYPES.AuthMiddleware)
@@ -150,6 +239,15 @@ export class UsersController extends BaseHttpController {
 
   @httpPost('/:userUuid/requests', TYPES.AuthMiddleware)
   async submitRequest(request: Request, response: Response): Promise<void> {
-    await this.httpService.callAuthServer(request, response, `users/${request.params.userUuid}/requests`, request.body)
+    await this.httpService.callAuthServer(
+      request,
+      response,
+      this.endpointResolver.resolveEndpointOrMethodIdentifier(
+        'POST',
+        'users/:userUuid/requests',
+        request.params.userUuid,
+      ),
+      request.body,
+    )
   }
 }
