@@ -24,14 +24,11 @@ export class InversifyExpressSubscriptionInvitesController extends BaseHttpContr
   ) {
     super()
 
-    this.controllerContainer.register('auth.subscriptionInvites.acceptInvite', this.acceptInvite.bind(this))
+    this.controllerContainer.register('auth.subscriptionInvites.accept', this.acceptInvite.bind(this))
     this.controllerContainer.register('auth.subscriptionInvites.declineInvite', this.declineInvite.bind(this))
-    this.controllerContainer.register('auth.subscriptionInvites.invite', this.inviteToSubscriptionSharing.bind(this))
-    this.controllerContainer.register(
-      'auth.subscriptionInvites.cancelInvite',
-      this.cancelSubscriptionSharing.bind(this),
-    )
-    this.controllerContainer.register('auth.subscriptionInvites.listInvites', this.listInvites.bind(this))
+    this.controllerContainer.register('auth.subscriptionInvites.create', this.inviteToSubscriptionSharing.bind(this))
+    this.controllerContainer.register('auth.subscriptionInvites.delete', this.cancelSubscriptionSharing.bind(this))
+    this.controllerContainer.register('auth.subscriptionInvites.list', this.listInvites.bind(this))
   }
 
   @httpPost('/:inviteUuid/accept', TYPES.Auth_ApiGatewayAuthMiddleware)

@@ -27,6 +27,11 @@ export class EndpointResolver implements EndpointResolverInterface {
     ['[DELETE]:session', 'auth.sessions.delete'],
     ['[DELETE]:session/all', 'auth.sessions.deleteAll'],
     ['[POST]:session/refresh', 'auth.sessions.refresh'],
+    // Subscription Invites Controller
+    ['[POST]:subscription-invites', 'auth.subscriptionInvites.create'],
+    ['[GET]:subscription-invites', 'auth.subscriptionInvites.list'],
+    ['[DELETE]:subscription-invites/:inviteUuid', 'auth.subscriptionInvites.delete'],
+    ['[POST]:subscription-invites/:inviteUuid/accept', 'auth.subscriptionInvites.accept'],
   ])
 
   resolveEndpointOrMethodIdentifier(method: string, endpoint: string, ...params: string[]): string {
