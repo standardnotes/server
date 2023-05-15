@@ -1,8 +1,6 @@
 import { Request, Response } from 'express'
-import { inject } from 'inversify'
 import {
   BaseHttpController,
-  controller,
   httpDelete,
   httpGet,
   httpPost,
@@ -11,14 +9,32 @@ import {
 } from 'inversify-express-utils'
 import TYPES from '../../Bootstrap/Types'
 import { AuthenticatorsController } from '../../Controller/AuthenticatorsController'
+import { ControllerContainerInterface } from '@standardnotes/domain-core'
 
-@controller('/authenticators')
 export class InversifyExpressAuthenticatorsController extends BaseHttpController {
-  constructor(@inject(TYPES.Auth_AuthenticatorsController) private authenticatorsController: AuthenticatorsController) {
+  constructor(
+    private authenticatorsController: AuthenticatorsController,
+    private controllerContainer: ControllerContainerInterface,
+  ) {
     super()
+
+    this.controllerContainer.register('auth.authenticators.list', this.list.bind(this))
+    this.controllerContainer.register('auth.authenticators.delete', this.delete.bind(this))
+    this.controllerContainer.register(
+      'auth.authenticators.generateRegistrationOptions',
+      this.generateRegistrationOptions.bind(this),
+    )
+    this.controllerContainer.register(
+      'auth.authenticators.verifyRegistrationResponse',
+      this.verifyRegistration.bind(this),
+    )
+    this.controllerContainer.register(
+      'auth.authenticators.generateAuthenticationOptions',
+      this.generateAuthenticationOptions.bind(this),
+    )
   }
 
-  @httpGet('/', TYPES.Auth_ApiGatewayAuthMiddleware)
+  @httpGet('/authenticators/', TYPES.Auth_ApiGatewayAuthMiddleware)
   async list(_request: Request, response: Response): Promise<results.JsonResult> {
     const result = await this.authenticatorsController.list({
       userUuid: response.locals.user.uuid,
@@ -27,7 +43,7 @@ export class InversifyExpressAuthenticatorsController extends BaseHttpController
     return this.json(result.data, result.status)
   }
 
-  @httpDelete('/:authenticatorId', TYPES.Auth_ApiGatewayAuthMiddleware)
+  @httpDelete('/authenticators/:authenticatorId', TYPES.Auth_ApiGatewayAuthMiddleware)
   async delete(request: Request, response: Response): Promise<results.JsonResult> {
     const result = await this.authenticatorsController.delete({
       userUuid: response.locals.user.uuid,
@@ -37,7 +53,7 @@ export class InversifyExpressAuthenticatorsController extends BaseHttpController
     return this.json(result.data, result.status)
   }
 
-  @httpGet('/generate-registration-options', TYPES.Auth_ApiGatewayAuthMiddleware)
+  @httpGet('/authenticators/generate-registration-options', TYPES.Auth_ApiGatewayAuthMiddleware)
   async generateRegistrationOptions(_request: Request, response: Response): Promise<results.JsonResult> {
     const result = await this.authenticatorsController.generateRegistrationOptions({
       username: response.locals.user.email,
@@ -47,7 +63,7 @@ export class InversifyExpressAuthenticatorsController extends BaseHttpController
     return this.json(result.data, result.status)
   }
 
-  @httpPost('/verify-registration', TYPES.Auth_ApiGatewayAuthMiddleware)
+  @httpPost('/authenticators/verify-registration', TYPES.Auth_ApiGatewayAuthMiddleware)
   async verifyRegistration(request: Request, response: Response): Promise<results.JsonResult> {
     const result = await this.authenticatorsController.verifyRegistrationResponse({
       userUuid: response.locals.user.uuid,
@@ -57,7 +73,7 @@ export class InversifyExpressAuthenticatorsController extends BaseHttpController
     return this.json(result.data, result.status)
   }
 
-  @httpPost('/generate-authentication-options')
+  @httpPost('/authenticators/generate-authentication-options')
   async generateAuthenticationOptions(request: Request): Promise<results.JsonResult> {
     const result = await this.authenticatorsController.generateAuthenticationOptions({
       username: request.body.username,

@@ -233,6 +233,10 @@ import { TypeORMOfflineSubscriptionTokenRepository } from '../Infra/TypeORM/Type
 import { TypeORMPKCERepository } from '../Infra/TypeORM/TypeORMPKCERepository'
 import { TypeORMSubscriptionTokenRepository } from '../Infra/TypeORM/TypeORMSubscriptionTokenRepository'
 import { InversifyExpressAuthController } from '../Infra/InversifyExpressUtils/InversifyExpressAuthController'
+import { InversifyExpressAuthenticatorsController } from '../Infra/InversifyExpressUtils/InversifyExpressAuthenticatorsController'
+import { InversifyExpressSubscriptionInvitesController } from '../Infra/InversifyExpressUtils/InversifyExpressSubscriptionInvitesController'
+import { InversifyExpressUserRequestsController } from '../Infra/InversifyExpressUtils/InversifyExpressUserRequestsController'
+import { InversifyExpressWebSocketsController } from '../Infra/InversifyExpressUtils/InversifyExpressWebSocketsController'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -833,7 +837,6 @@ export class ContainerConfigLoader {
           container.get(TYPES.Auth_GetUserKeyParamsRecovery),
           container.get(TYPES.Auth_GenerateRecoveryCodes),
           container.get(TYPES.Auth_Logger),
-          container.get(TYPES.Auth_ControllerContainer),
           container.get(TYPES.Auth_SessionService),
         ),
       )
@@ -969,6 +972,39 @@ export class ContainerConfigLoader {
           container.get(TYPES.Auth_IncreaseLoginAttempts),
           container.get(TYPES.Auth_Logger),
           container.get(TYPES.Auth_AuthController),
+          container.get(TYPES.Auth_ControllerContainer),
+        ),
+      )
+    container
+      .bind<InversifyExpressAuthenticatorsController>(TYPES.Auth_InversifyExpressAuthenticatorsController)
+      .toConstantValue(
+        new InversifyExpressAuthenticatorsController(
+          container.get(TYPES.Auth_AuthenticatorsController),
+          container.get(TYPES.Auth_ControllerContainer),
+        ),
+      )
+    container
+      .bind<InversifyExpressSubscriptionInvitesController>(TYPES.Auth_InversifyExpressSubscriptionInvitesController)
+      .toConstantValue(
+        new InversifyExpressSubscriptionInvitesController(
+          container.get(TYPES.Auth_SubscriptionInvitesController),
+          container.get(TYPES.Auth_ControllerContainer),
+        ),
+      )
+    container
+      .bind<InversifyExpressUserRequestsController>(TYPES.Auth_InversifyExpressUserRequestsController)
+      .toConstantValue(
+        new InversifyExpressUserRequestsController(
+          container.get(TYPES.Auth_UserRequestsController),
+          container.get(TYPES.Auth_ControllerContainer),
+        ),
+      )
+    container
+      .bind<InversifyExpressWebSocketsController>(TYPES.Auth_InversifyExpressWebSocketsController)
+      .toConstantValue(
+        new InversifyExpressWebSocketsController(
+          container.get(TYPES.Auth_CreateCrossServiceToken),
+          container.get(TYPES.Auth_WebSocketConnectionTokenDecoder),
           container.get(TYPES.Auth_ControllerContainer),
         ),
       )

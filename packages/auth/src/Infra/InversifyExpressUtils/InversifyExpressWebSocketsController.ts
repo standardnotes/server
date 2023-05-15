@@ -1,28 +1,27 @@
 import { ErrorTag } from '@standardnotes/responses'
 import { TokenDecoderInterface, WebSocketConnectionTokenData } from '@standardnotes/security'
 import { Request } from 'express'
-import { inject } from 'inversify'
 import {
   BaseHttpController,
-  controller,
   httpPost,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   results,
 } from 'inversify-express-utils'
-import TYPES from '../../Bootstrap/Types'
 import { CreateCrossServiceToken } from '../../Domain/UseCase/CreateCrossServiceToken/CreateCrossServiceToken'
+import { ControllerContainerInterface } from '@standardnotes/domain-core'
 
-@controller('/sockets')
 export class InversifyExpressWebSocketsController extends BaseHttpController {
   constructor(
-    @inject(TYPES.Auth_CreateCrossServiceToken) private createCrossServiceToken: CreateCrossServiceToken,
-    @inject(TYPES.Auth_WebSocketConnectionTokenDecoder)
+    private createCrossServiceToken: CreateCrossServiceToken,
     private tokenDecoder: TokenDecoderInterface<WebSocketConnectionTokenData>,
+    private controllerContainer: ControllerContainerInterface,
   ) {
     super()
+
+    this.controllerContainer.register('auth.webSockets.validateToken', this.validateToken.bind(this))
   }
 
-  @httpPost('/tokens/validate')
+  @httpPost('/sockets/tokens/validate')
   async validateToken(request: Request): Promise<results.JsonResult> {
     if (!request.headers.authorization) {
       return this.json(

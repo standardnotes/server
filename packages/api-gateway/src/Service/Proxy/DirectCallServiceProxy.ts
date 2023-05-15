@@ -16,10 +16,12 @@ export class DirectCallServiceProxy implements ServiceProxyInterface {
       throw new Error('Auth service not found')
     }
 
-    const serviceResponse = await authService.handleRequest(request, response, endpointOrMethodIdentifier)
+    const serviceResponse = (await authService.handleRequest(request, response, endpointOrMethodIdentifier)) as {
+      statusCode: number
+      json: Record<string, unknown>
+    }
 
-    // eslint-disable-next-line no-console
-    console.log(`serviceResponse: ${JSON.stringify(serviceResponse)}`)
+    void (response as Response).status(serviceResponse.statusCode).send(serviceResponse.json)
   }
 
   async callAuthServerWithLegacyFormat(

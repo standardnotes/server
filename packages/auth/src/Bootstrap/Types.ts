@@ -218,6 +218,10 @@ const TYPES = {
   Auth_BooleanSelector: Symbol.for('Auth_BooleanSelector'),
   Auth_UserSubscriptionService: Symbol.for('Auth_UserSubscriptionService'),
   Auth_InversifyExpressAuthController: Symbol.for('Auth_InversifyExpressAuthController'),
+  Auth_InversifyExpressAuthenticatorsController: Symbol.for('Auth_InversifyExpressAuthenticatorsController'),
+  Auth_InversifyExpressSubscriptionInvitesController: Symbol.for('Auth_InversifyExpressSubscriptionInvitesController'),
+  Auth_InversifyExpressUserRequestsController: Symbol.for('Auth_InversifyExpressUserRequestsController'),
+  Auth_InversifyExpressWebSocketsController: Symbol.for('Auth_InversifyExpressWebSocketsController'),
 }
 
 export default TYPES

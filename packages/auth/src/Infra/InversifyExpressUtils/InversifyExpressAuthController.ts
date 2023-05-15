@@ -14,11 +14,9 @@ import { VerifyMFA } from '../../Domain/UseCase/VerifyMFA'
 import { IncreaseLoginAttempts } from '../../Domain/UseCase/IncreaseLoginAttempts'
 import { Logger } from 'winston'
 import { GetUserKeyParams } from '../../Domain/UseCase/GetUserKeyParams/GetUserKeyParams'
-import { injectable } from 'inversify'
 import { AuthController } from '../../Controller/AuthController'
 import { ControllerContainerInterface } from '@standardnotes/domain-core'
 
-@injectable()
 export class InversifyExpressAuthController extends BaseHttpController {
   constructor(
     private verifyMFA: VerifyMFA,
@@ -36,6 +34,11 @@ export class InversifyExpressAuthController extends BaseHttpController {
     this.controllerContainer.register('auth.signIn', this.signIn.bind(this))
     this.controllerContainer.register('auth.pkceParams', this.pkceParams.bind(this))
     this.controllerContainer.register('auth.pkceSignIn', this.pkceSignIn.bind(this))
+    this.controllerContainer.register('auth.register', this.register.bind(this))
+    this.controllerContainer.register('auth.generateRecoveryCodes', this.generateRecoveryCodes.bind(this))
+    this.controllerContainer.register('auth.signInWithRecoveryCodes', this.recoveryLogin.bind(this))
+    this.controllerContainer.register('auth.recoveryKeyParams', this.recoveryParams.bind(this))
+    this.controllerContainer.register('auth.signOut', this.signOut.bind(this))
   }
 
   @httpGet('/auth/params', TYPES.Auth_AuthMiddlewareWithoutResponse)
