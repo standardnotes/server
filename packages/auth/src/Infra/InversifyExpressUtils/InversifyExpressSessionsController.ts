@@ -8,18 +8,19 @@ import {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   results,
 } from 'inversify-express-utils'
-import TYPES from '../Bootstrap/Types'
-import { Session } from '../Domain/Session/Session'
-import { AuthenticateRequest } from '../Domain/UseCase/AuthenticateRequest'
-import { GetActiveSessionsForUser } from '../Domain/UseCase/GetActiveSessionsForUser'
-import { User } from '../Domain/User/User'
-import { ProjectorInterface } from '../Projection/ProjectorInterface'
-import { SessionProjector } from '../Projection/SessionProjector'
-import { CreateCrossServiceToken } from '../Domain/UseCase/CreateCrossServiceToken/CreateCrossServiceToken'
 import { ControllerContainerInterface } from '@standardnotes/domain-core'
 
+import TYPES from '../../Bootstrap/Types'
+import { AuthenticateRequest } from '../../Domain/UseCase/AuthenticateRequest'
+import { CreateCrossServiceToken } from '../../Domain/UseCase/CreateCrossServiceToken/CreateCrossServiceToken'
+import { GetActiveSessionsForUser } from '../../Domain/UseCase/GetActiveSessionsForUser'
+import { ProjectorInterface } from '../../Projection/ProjectorInterface'
+import { SessionProjector } from '../../Projection/SessionProjector'
+import { User } from '../../Domain/User/User'
+import { Session } from '../../Domain/Session/Session'
+
 @controller('/sessions')
-export class SessionsController extends BaseHttpController {
+export class InversifyExpressSessionsController extends BaseHttpController {
   constructor(
     @inject(TYPES.Auth_GetActiveSessionsForUser) private getActiveSessionsForUser: GetActiveSessionsForUser,
     @inject(TYPES.Auth_AuthenticateRequest) private authenticateRequest: AuthenticateRequest,
@@ -30,6 +31,7 @@ export class SessionsController extends BaseHttpController {
     super()
 
     this.controllerContainer.register('auth.sessions.list', this.getSessions.bind(this))
+    this.controllerContainer.register('auth.sessions.validate', this.validate.bind(this))
   }
 
   @httpPost('/validate')

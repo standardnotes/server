@@ -24,6 +24,30 @@ export class HttpServiceProxy implements ServiceProxyInterface {
     @inject(TYPES.Logger) private logger: Logger,
   ) {}
 
+  async validateSession(
+    authorizationHeaderValue: string,
+  ): Promise<{ status: number; data: unknown; headers: { contentType: string } }> {
+    const authResponse = await this.httpClient.request({
+      method: 'POST',
+      headers: {
+        Authorization: authorizationHeaderValue,
+        Accept: 'application/json',
+      },
+      validateStatus: (status: number) => {
+        return status >= 200 && status < 500
+      },
+      url: `${this.authServerUrl}/sessions/validate`,
+    })
+
+    return {
+      status: authResponse.status,
+      data: authResponse.data,
+      headers: {
+        contentType: authResponse.headers['content-type'] as string,
+      },
+    }
+  }
+
   async callSyncingServer(
     request: Request,
     response: Response,

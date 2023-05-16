@@ -5,17 +5,17 @@ import { NextFunction, Request, Response } from 'express'
 import { inject, injectable } from 'inversify'
 import { BaseMiddleware } from 'inversify-express-utils'
 import { verify } from 'jsonwebtoken'
-import { AxiosError, AxiosInstance } from 'axios'
+import { AxiosError } from 'axios'
 import { Logger } from 'winston'
 
 import { TYPES } from '../Bootstrap/Types'
 import { CrossServiceTokenCacheInterface } from '../Service/Cache/CrossServiceTokenCacheInterface'
+import { ServiceProxyInterface } from '../Service/Http/ServiceProxyInterface'
 
 @injectable()
 export class AuthMiddleware extends BaseMiddleware {
   constructor(
-    @inject(TYPES.HTTPClient) private httpClient: AxiosInstance,
-    @inject(TYPES.AUTH_SERVER_URL) private authServerUrl: string,
+    @inject(TYPES.ServiceProxy) private serviceProxy: ServiceProxyInterface,
     @inject(TYPES.AUTH_JWT_SECRET) private jwtSecret: string,
     @inject(TYPES.CROSS_SERVICE_TOKEN_CACHE_TTL) private crossServiceTokenCacheTTL: number,
     @inject(TYPES.CrossServiceTokenCache) private crossServiceTokenCache: CrossServiceTokenCacheInterface,
@@ -47,26 +47,16 @@ export class AuthMiddleware extends BaseMiddleware {
       }
 
       if (crossServiceToken === null) {
-        const authResponse = await this.httpClient.request({
-          method: 'POST',
-          headers: {
-            Authorization: authHeaderValue,
-            Accept: 'application/json',
-          },
-          validateStatus: (status: number) => {
-            return status >= 200 && status < 500
-          },
-          url: `${this.authServerUrl}/sessions/validate`,
-        })
+        const authResponse = await this.serviceProxy.validateSession(authHeaderValue)
 
         if (authResponse.status > 200) {
-          response.setHeader('content-type', authResponse.headers['content-type'] as string)
+          response.setHeader('content-type', authResponse.headers.contentType)
           response.status(authResponse.status).send(authResponse.data)
 
           return
         }
 
-        crossServiceToken = authResponse.data.authToken
+        crossServiceToken = (authResponse.data as { authToken: string }).authToken
         crossServiceTokenFetchedFromCache = false
       }
 
@@ -94,9 +84,7 @@ export class AuthMiddleware extends BaseMiddleware {
         ? JSON.stringify((error as AxiosError).response?.data)
         : (error as Error).message
 
-      this.logger.error(
-        `Could not pass the request to ${this.authServerUrl}/sessions/validate on underlying service: ${errorMessage}`,
-      )
+      this.logger.error(`Could not pass the request to sessions/validate on underlying service: ${errorMessage}`)
 
       this.logger.debug('Response error: %O', (error as AxiosError).response ?? error)
 

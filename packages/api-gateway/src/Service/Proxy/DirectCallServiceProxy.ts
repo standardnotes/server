@@ -6,6 +6,34 @@ import { ServiceContainerInterface, ServiceIdentifier } from '@standardnotes/dom
 export class DirectCallServiceProxy implements ServiceProxyInterface {
   constructor(private serviceContainer: ServiceContainerInterface) {}
 
+  async validateSession(
+    authorizationHeaderValue: string,
+  ): Promise<{ status: number; data: unknown; headers: { contentType: string } }> {
+    const authService = this.serviceContainer.get(ServiceIdentifier.create(ServiceIdentifier.NAMES.Auth).getValue())
+    if (!authService) {
+      throw new Error('Auth service not found')
+    }
+
+    const serviceResponse = (await authService.handleRequest(
+      {
+        headers: {
+          authorization: authorizationHeaderValue,
+        },
+      } as never,
+      {} as never,
+      'auth.sessions.validate',
+    )) as {
+      statusCode: number
+      json: Record<string, unknown>
+    }
+
+    return {
+      status: serviceResponse.statusCode,
+      data: serviceResponse.json,
+      headers: { contentType: 'application/json' },
+    }
+  }
+
   async callEmailServer(_request: Request, _response: Response, _endpointOrMethodIdentifier: string): Promise<void> {
     throw new Error('Email server is not available.')
   }

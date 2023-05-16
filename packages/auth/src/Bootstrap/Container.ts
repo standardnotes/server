@@ -240,6 +240,7 @@ import { InversifyExpressAuthenticatorsController } from '../Infra/InversifyExpr
 import { InversifyExpressSubscriptionInvitesController } from '../Infra/InversifyExpressUtils/InversifyExpressSubscriptionInvitesController'
 import { InversifyExpressUserRequestsController } from '../Infra/InversifyExpressUtils/InversifyExpressUserRequestsController'
 import { InversifyExpressWebSocketsController } from '../Infra/InversifyExpressUtils/InversifyExpressWebSocketsController'
+import { InversifyExpressSessionsController } from '../Infra/InversifyExpressUtils/InversifyExpressSessionsController'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -1012,6 +1013,8 @@ export class ContainerConfigLoader {
           container.get(TYPES.Auth_ControllerContainer),
         ),
       )
+
+    // Inversify Controllers
     container
       .bind<InversifyExpressAuthenticatorsController>(TYPES.Auth_InversifyExpressAuthenticatorsController)
       .toConstantValue(
@@ -1042,6 +1045,17 @@ export class ContainerConfigLoader {
         new InversifyExpressWebSocketsController(
           container.get(TYPES.Auth_CreateCrossServiceToken),
           container.get(TYPES.Auth_WebSocketConnectionTokenDecoder),
+          container.get(TYPES.Auth_ControllerContainer),
+        ),
+      )
+    container
+      .bind<InversifyExpressSessionsController>(TYPES.Auth_SessionsController)
+      .toConstantValue(
+        new InversifyExpressSessionsController(
+          container.get(TYPES.Auth_GetActiveSessionsForUser),
+          container.get(TYPES.Auth_AuthenticateRequest),
+          container.get(TYPES.Auth_SessionProjector),
+          container.get(TYPES.Auth_CreateCrossServiceToken),
           container.get(TYPES.Auth_ControllerContainer),
         ),
       )

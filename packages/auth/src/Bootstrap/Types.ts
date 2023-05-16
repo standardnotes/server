@@ -222,6 +222,7 @@ const TYPES = {
   Auth_InversifyExpressSubscriptionInvitesController: Symbol.for('Auth_InversifyExpressSubscriptionInvitesController'),
   Auth_InversifyExpressUserRequestsController: Symbol.for('Auth_InversifyExpressUserRequestsController'),
   Auth_InversifyExpressWebSocketsController: Symbol.for('Auth_InversifyExpressWebSocketsController'),
+  Auth_SessionsController: Symbol.for('Auth_SessionsController'),
 }
 
 export default TYPES
