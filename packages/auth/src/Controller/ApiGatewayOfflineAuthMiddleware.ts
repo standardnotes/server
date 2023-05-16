@@ -8,8 +8,8 @@ import TYPES from '../Bootstrap/Types'
 @injectable()
 export class ApiGatewayOfflineAuthMiddleware extends BaseMiddleware {
   constructor(
-    @inject(TYPES.OfflineUserTokenDecoder) private tokenDecoder: TokenDecoderInterface<OfflineUserTokenData>,
-    @inject(TYPES.Logger) private logger: Logger,
+    @inject(TYPES.Auth_OfflineUserTokenDecoder) private tokenDecoder: TokenDecoderInterface<OfflineUserTokenData>,
+    @inject(TYPES.Auth_Logger) private logger: Logger,
   ) {
     super()
   }

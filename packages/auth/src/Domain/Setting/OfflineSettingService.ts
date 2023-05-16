@@ -12,8 +12,8 @@ import { OfflineSettingServiceInterface } from './OfflineSettingServiceInterface
 @injectable()
 export class OfflineSettingService implements OfflineSettingServiceInterface {
   constructor(
-    @inject(TYPES.OfflineSettingRepository) private offlineSettingRepository: OfflineSettingRepositoryInterface,
-    @inject(TYPES.Timer) private timer: TimerInterface,
+    @inject(TYPES.Auth_OfflineSettingRepository) private offlineSettingRepository: OfflineSettingRepositoryInterface,
+    @inject(TYPES.Auth_Timer) private timer: TimerInterface,
   ) {}
 
   async createOrUpdate(dto: {

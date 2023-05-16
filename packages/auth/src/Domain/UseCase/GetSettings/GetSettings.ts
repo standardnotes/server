@@ -19,14 +19,14 @@ import { SubscriptionSettingProjector } from '../../../Projection/SubscriptionSe
 @injectable()
 export class GetSettings implements UseCaseInterface {
   constructor(
-    @inject(TYPES.SettingRepository) private settingRepository: SettingRepositoryInterface,
-    @inject(TYPES.SubscriptionSettingRepository)
+    @inject(TYPES.Auth_SettingRepository) private settingRepository: SettingRepositoryInterface,
+    @inject(TYPES.Auth_SubscriptionSettingRepository)
     private subscriptionSettingRepository: SubscriptionSettingRepositoryInterface,
-    @inject(TYPES.UserSubscriptionService) private userSubscriptionService: UserSubscriptionServiceInterface,
-    @inject(TYPES.SettingProjector) private settingProjector: SettingProjector,
-    @inject(TYPES.SubscriptionSettingProjector) private subscriptionSettingProjector: SubscriptionSettingProjector,
-    @inject(TYPES.UserRepository) private userRepository: UserRepositoryInterface,
-    @inject(TYPES.Crypter) private crypter: CrypterInterface,
+    @inject(TYPES.Auth_UserSubscriptionService) private userSubscriptionService: UserSubscriptionServiceInterface,
+    @inject(TYPES.Auth_SettingProjector) private settingProjector: SettingProjector,
+    @inject(TYPES.Auth_SubscriptionSettingProjector) private subscriptionSettingProjector: SubscriptionSettingProjector,
+    @inject(TYPES.Auth_UserRepository) private userRepository: UserRepositoryInterface,
+    @inject(TYPES.Auth_Crypter) private crypter: CrypterInterface,
   ) {}
 
   async execute(dto: GetSettingsDto): Promise<GetSettingsResponse> {

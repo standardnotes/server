@@ -11,9 +11,9 @@ import { UserRepositoryInterface } from '../User/UserRepositoryInterface'
 @injectable()
 export class ListedAccountCreatedEventHandler implements DomainEventHandlerInterface {
   constructor(
-    @inject(TYPES.UserRepository) private userRepository: UserRepositoryInterface,
-    @inject(TYPES.SettingService) private settingService: SettingServiceInterface,
-    @inject(TYPES.Logger) private logger: Logger,
+    @inject(TYPES.Auth_UserRepository) private userRepository: UserRepositoryInterface,
+    @inject(TYPES.Auth_SettingService) private settingService: SettingServiceInterface,
+    @inject(TYPES.Auth_Logger) private logger: Logger,
   ) {}
 
   async handle(event: ListedAccountCreatedEvent): Promise<void> {

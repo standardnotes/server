@@ -11,8 +11,8 @@ export class SessionProjector implements ProjectorInterface<Session> {
   static readonly CURRENT_SESSION_PROJECTION = 'CURRENT_SESSION_PROJECTION'
 
   constructor(
-    @inject(TYPES.SessionService) private sessionService: SessionServiceInterface,
-    @inject(TYPES.Timer) private timer: TimerInterface,
+    @inject(TYPES.Auth_SessionService) private sessionService: SessionServiceInterface,
+    @inject(TYPES.Auth_Timer) private timer: TimerInterface,
   ) {}
 
   projectSimple(session: Session): Record<string, unknown> {

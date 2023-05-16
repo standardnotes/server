@@ -8,7 +8,7 @@ import { OfflineSettingRepositoryInterface } from '../../Domain/Setting/OfflineS
 
 @injectable()
 export class TypeORMOfflineSettingRepository implements OfflineSettingRepositoryInterface {
-  constructor(@inject(TYPES.ORMOfflineSettingRepository) private ormRepository: Repository<OfflineSetting>) {}
+  constructor(@inject(TYPES.Auth_ORMOfflineSettingRepository) private ormRepository: Repository<OfflineSetting>) {}
 
   async save(offlineSetting: OfflineSetting): Promise<OfflineSetting> {
     return this.ormRepository.save(offlineSetting)

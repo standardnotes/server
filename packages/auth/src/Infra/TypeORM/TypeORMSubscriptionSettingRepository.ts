@@ -8,7 +8,7 @@ import { SubscriptionSettingRepositoryInterface } from '../../Domain/Setting/Sub
 @injectable()
 export class TypeORMSubscriptionSettingRepository implements SubscriptionSettingRepositoryInterface {
   constructor(
-    @inject(TYPES.ORMSubscriptionSettingRepository)
+    @inject(TYPES.Auth_ORMSubscriptionSettingRepository)
     private ormRepository: Repository<SubscriptionSetting>,
   ) {}
 

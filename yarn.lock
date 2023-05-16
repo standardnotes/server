@@ -3985,7 +3985,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@standardnotes/auth-server@workspace:packages/auth":
+"@standardnotes/auth-server@workspace:^, @standardnotes/auth-server@workspace:packages/auth":
   version: 0.0.0-use.local
   resolution: "@standardnotes/auth-server@workspace:packages/auth"
   dependencies:
@@ -4246,8 +4246,11 @@ __metadata:
   resolution: "@standardnotes/home-server@workspace:packages/home-server"
   dependencies:
     "@standardnotes/api-gateway": "workspace:^"
+    "@standardnotes/auth-server": "workspace:^"
+    "@standardnotes/domain-core": "workspace:^"
     "@types/cors": "npm:^2.8.9"
     "@types/express": "npm:^4.17.14"
+    "@types/prettyjson": "npm:^0.0.30"
     "@typescript-eslint/eslint-plugin": "npm:^5.59.2"
     "@typescript-eslint/parser": "npm:^5.59.2"
     cors: "npm:2.8.5"
@@ -4260,6 +4263,7 @@ __metadata:
     inversify: "npm:^6.0.1"
     inversify-express-utils: "npm:^6.4.3"
     prettier: "npm:^2.8.8"
+    prettyjson: "npm:^1.2.5"
     reflect-metadata: "npm:0.1.13"
     typescript: "npm:^5.0.4"
     winston: "npm:^3.8.1"

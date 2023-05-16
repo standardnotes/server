@@ -6,7 +6,7 @@ import { AuthenticateRequest } from '../Domain/UseCase/AuthenticateRequest'
 
 @injectable()
 export class AuthMiddlewareWithoutResponse extends BaseMiddleware {
-  constructor(@inject(TYPES.AuthenticateRequest) private authenticateRequest: AuthenticateRequest) {
+  constructor(@inject(TYPES.Auth_AuthenticateRequest) private authenticateRequest: AuthenticateRequest) {
     super()
   }
 

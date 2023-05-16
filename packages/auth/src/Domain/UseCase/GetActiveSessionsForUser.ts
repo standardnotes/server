@@ -9,8 +9,9 @@ import { UseCaseInterface } from './UseCaseInterface'
 @injectable()
 export class GetActiveSessionsForUser implements UseCaseInterface {
   constructor(
-    @inject(TYPES.SessionRepository) private sessionRepository: SessionRepositoryInterface,
-    @inject(TYPES.EphemeralSessionRepository) private ephemeralSessionRepository: EphemeralSessionRepositoryInterface,
+    @inject(TYPES.Auth_SessionRepository) private sessionRepository: SessionRepositoryInterface,
+    @inject(TYPES.Auth_EphemeralSessionRepository)
+    private ephemeralSessionRepository: EphemeralSessionRepositoryInterface,
   ) {}
 
   async execute(dto: GetActiveSessionsForUserDTO): Promise<GetActiveSessionsForUserResponse> {

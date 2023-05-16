@@ -84,14 +84,14 @@ void container.load().then((container) => {
   const env: Env = new Env()
   env.load()
 
-  const logger: Logger = container.get(TYPES.Logger)
+  const logger: Logger = container.get(TYPES.Auth_Logger)
 
   logger.info(`Starting ${backupFrequency} ${backupProvider} backup requesting...`)
 
-  const settingRepository: SettingRepositoryInterface = container.get(TYPES.SettingRepository)
-  const roleService: RoleServiceInterface = container.get(TYPES.RoleService)
-  const domainEventFactory: DomainEventFactoryInterface = container.get(TYPES.DomainEventFactory)
-  const domainEventPublisher: DomainEventPublisherInterface = container.get(TYPES.DomainEventPublisher)
+  const settingRepository: SettingRepositoryInterface = container.get(TYPES.Auth_SettingRepository)
+  const roleService: RoleServiceInterface = container.get(TYPES.Auth_RoleService)
+  const domainEventFactory: DomainEventFactoryInterface = container.get(TYPES.Auth_DomainEventFactory)
+  const domainEventPublisher: DomainEventPublisherInterface = container.get(TYPES.Auth_DomainEventPublisher)
 
   Promise.resolve(requestBackups(settingRepository, roleService, domainEventFactory, domainEventPublisher))
     .then(() => {

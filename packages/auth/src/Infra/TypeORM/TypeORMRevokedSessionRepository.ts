@@ -8,7 +8,7 @@ import { RevokedSessionRepositoryInterface } from '../../Domain/Session/RevokedS
 @injectable()
 export class TypeORMRevokedSessionRepository implements RevokedSessionRepositoryInterface {
   constructor(
-    @inject(TYPES.ORMRevokedSessionRepository)
+    @inject(TYPES.Auth_ORMRevokedSessionRepository)
     private ormRepository: Repository<RevokedSession>,
   ) {}
 

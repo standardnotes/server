@@ -16,19 +16,26 @@ import { DeleteSetting } from '../Domain/UseCase/DeleteSetting/DeleteSetting'
 import { GetSetting } from '../Domain/UseCase/GetSetting/GetSetting'
 import { GetSettings } from '../Domain/UseCase/GetSettings/GetSettings'
 import { UpdateSetting } from '../Domain/UseCase/UpdateSetting/UpdateSetting'
+import { ControllerContainerInterface } from '@standardnotes/domain-core'
 
 @controller('/users/:userUuid')
 export class SettingsController extends BaseHttpController {
   constructor(
-    @inject(TYPES.GetSettings) private doGetSettings: GetSettings,
-    @inject(TYPES.GetSetting) private doGetSetting: GetSetting,
-    @inject(TYPES.UpdateSetting) private doUpdateSetting: UpdateSetting,
-    @inject(TYPES.DeleteSetting) private doDeleteSetting: DeleteSetting,
+    @inject(TYPES.Auth_GetSettings) private doGetSettings: GetSettings,
+    @inject(TYPES.Auth_GetSetting) private doGetSetting: GetSetting,
+    @inject(TYPES.Auth_UpdateSetting) private doUpdateSetting: UpdateSetting,
+    @inject(TYPES.Auth_DeleteSetting) private doDeleteSetting: DeleteSetting,
+    @inject(TYPES.Auth_ControllerContainer) private controllerContainer: ControllerContainerInterface,
   ) {
     super()
+
+    this.controllerContainer.register('auth.users.getSettings', this.getSettings.bind(this))
+    this.controllerContainer.register('auth.users.getSetting', this.getSetting.bind(this))
+    this.controllerContainer.register('auth.users.updateSetting', this.updateSetting.bind(this))
+    this.controllerContainer.register('auth.users.deleteSetting', this.deleteSetting.bind(this))
   }
 
-  @httpGet('/settings', TYPES.ApiGatewayAuthMiddleware)
+  @httpGet('/settings', TYPES.Auth_ApiGatewayAuthMiddleware)
   async getSettings(request: Request, response: Response): Promise<results.JsonResult> {
     if (request.params.userUuid !== response.locals.user.uuid) {
       return this.json(
@@ -47,7 +54,7 @@ export class SettingsController extends BaseHttpController {
     return this.json(result)
   }
 
-  @httpGet('/settings/:settingName', TYPES.ApiGatewayAuthMiddleware)
+  @httpGet('/settings/:settingName', TYPES.Auth_ApiGatewayAuthMiddleware)
   async getSetting(request: Request, response: Response): Promise<results.JsonResult> {
     if (request.params.userUuid !== response.locals.user.uuid) {
       return this.json(
@@ -70,7 +77,7 @@ export class SettingsController extends BaseHttpController {
     return this.json(result, 400)
   }
 
-  @httpPut('/settings', TYPES.ApiGatewayAuthMiddleware)
+  @httpPut('/settings', TYPES.Auth_ApiGatewayAuthMiddleware)
   async updateSetting(request: Request, response: Response): Promise<results.JsonResult | results.StatusCodeResult> {
     if (response.locals.readOnlyAccess) {
       return this.json(
@@ -117,7 +124,7 @@ export class SettingsController extends BaseHttpController {
     return this.json(result, result.statusCode)
   }
 
-  @httpDelete('/settings/:settingName', TYPES.ApiGatewayAuthMiddleware)
+  @httpDelete('/settings/:settingName', TYPES.Auth_ApiGatewayAuthMiddleware)
   async deleteSetting(request: Request, response: Response): Promise<results.JsonResult> {
     if (response.locals.readOnlyAccess) {
       return this.json(

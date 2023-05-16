@@ -12,9 +12,9 @@ export class RedisOfflineSubscriptionTokenRepository implements OfflineSubscript
   private readonly PREFIX = 'offline-subscription-token'
 
   constructor(
-    @inject(TYPES.Redis) private redisClient: IORedis.Redis,
-    @inject(TYPES.Timer) private timer: TimerInterface,
-    @inject(TYPES.Logger) private logger: Logger,
+    @inject(TYPES.Auth_Redis) private redisClient: IORedis.Redis,
+    @inject(TYPES.Auth_Timer) private timer: TimerInterface,
+    @inject(TYPES.Auth_Logger) private logger: Logger,
   ) {}
 
   async getUserEmailByToken(token: string): Promise<string | undefined> {

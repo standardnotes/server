@@ -11,10 +11,10 @@ import { AuthResponseFactoryResolverInterface } from './AuthResponseFactoryResol
 @injectable()
 export class AuthResponseFactoryResolver implements AuthResponseFactoryResolverInterface {
   constructor(
-    @inject(TYPES.AuthResponseFactory20161215) private authResponseFactory20161215: AuthResponseFactory20161215,
-    @inject(TYPES.AuthResponseFactory20190520) private authResponseFactory20190520: AuthResponseFactory20190520,
-    @inject(TYPES.AuthResponseFactory20200115) private authResponseFactory20200115: AuthResponseFactory20200115,
-    @inject(TYPES.Logger) private logger: Logger,
+    @inject(TYPES.Auth_AuthResponseFactory20161215) private authResponseFactory20161215: AuthResponseFactory20161215,
+    @inject(TYPES.Auth_AuthResponseFactory20190520) private authResponseFactory20190520: AuthResponseFactory20190520,
+    @inject(TYPES.Auth_AuthResponseFactory20200115) private authResponseFactory20200115: AuthResponseFactory20200115,
+    @inject(TYPES.Auth_Logger) private logger: Logger,
   ) {}
 
   resolveAuthResponseFactoryVersion(apiVersion: string): AuthResponseFactoryInterface {

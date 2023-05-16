@@ -1,5 +1,4 @@
 import { Request, Response } from 'express'
-import { ErrorTag } from '@standardnotes/responses'
 import {
   BaseHttpController,
   controller,
@@ -10,32 +9,42 @@ import {
 } from 'inversify-express-utils'
 
 import TYPES from '../../Bootstrap/Types'
-import { SessionServiceInterface } from '../../Domain/Session/SessionServiceInterface'
 import { SignIn } from '../../Domain/UseCase/SignIn'
 import { ClearLoginAttempts } from '../../Domain/UseCase/ClearLoginAttempts'
 import { VerifyMFA } from '../../Domain/UseCase/VerifyMFA'
 import { IncreaseLoginAttempts } from '../../Domain/UseCase/IncreaseLoginAttempts'
 import { Logger } from 'winston'
 import { GetUserKeyParams } from '../../Domain/UseCase/GetUserKeyParams/GetUserKeyParams'
-import { inject } from 'inversify'
 import { AuthController } from '../../Controller/AuthController'
+import { ControllerContainerInterface } from '@standardnotes/domain-core'
+import { inject } from 'inversify'
 
 @controller('/auth')
 export class InversifyExpressAuthController extends BaseHttpController {
   constructor(
-    @inject(TYPES.SessionService) private sessionService: SessionServiceInterface,
-    @inject(TYPES.VerifyMFA) private verifyMFA: VerifyMFA,
-    @inject(TYPES.SignIn) private signInUseCase: SignIn,
-    @inject(TYPES.GetUserKeyParams) private getUserKeyParams: GetUserKeyParams,
-    @inject(TYPES.ClearLoginAttempts) private clearLoginAttempts: ClearLoginAttempts,
-    @inject(TYPES.IncreaseLoginAttempts) private increaseLoginAttempts: IncreaseLoginAttempts,
-    @inject(TYPES.Logger) private logger: Logger,
-    @inject(TYPES.AuthController) private authController: AuthController,
+    @inject(TYPES.Auth_VerifyMFA) private verifyMFA: VerifyMFA,
+    @inject(TYPES.Auth_SignIn) private signInUseCase: SignIn,
+    @inject(TYPES.Auth_GetUserKeyParams) private getUserKeyParams: GetUserKeyParams,
+    @inject(TYPES.Auth_ClearLoginAttempts) private clearLoginAttempts: ClearLoginAttempts,
+    @inject(TYPES.Auth_IncreaseLoginAttempts) private increaseLoginAttempts: IncreaseLoginAttempts,
+    @inject(TYPES.Auth_Logger) private logger: Logger,
+    @inject(TYPES.Auth_AuthController) private authController: AuthController,
+    @inject(TYPES.Auth_ControllerContainer) private controllerContainer: ControllerContainerInterface,
   ) {
     super()
+
+    this.controllerContainer.register('auth.params', this.params.bind(this))
+    this.controllerContainer.register('auth.signIn', this.signIn.bind(this))
+    this.controllerContainer.register('auth.pkceParams', this.pkceParams.bind(this))
+    this.controllerContainer.register('auth.pkceSignIn', this.pkceSignIn.bind(this))
+    this.controllerContainer.register('auth.users.register', this.register.bind(this))
+    this.controllerContainer.register('auth.generateRecoveryCodes', this.generateRecoveryCodes.bind(this))
+    this.controllerContainer.register('auth.signInWithRecoveryCodes', this.recoveryLogin.bind(this))
+    this.controllerContainer.register('auth.recoveryKeyParams', this.recoveryParams.bind(this))
+    this.controllerContainer.register('auth.signOut', this.signOut.bind(this))
   }
 
-  @httpGet('/params', TYPES.AuthMiddlewareWithoutResponse)
+  @httpGet('/params', TYPES.Auth_AuthMiddlewareWithoutResponse)
   async params(request: Request, response: Response): Promise<results.JsonResult> {
     if (response.locals.session) {
       const result = await this.getUserKeyParams.execute({
@@ -85,7 +94,7 @@ export class InversifyExpressAuthController extends BaseHttpController {
     return this.json(result.keyParams)
   }
 
-  @httpPost('/sign_in', TYPES.LockMiddleware)
+  @httpPost('/sign_in', TYPES.Auth_LockMiddleware)
   async signIn(request: Request): Promise<results.JsonResult> {
     if (!request.body.email || !request.body.password) {
       this.logger.debug('/auth/sign_in request missing credentials: %O', request.body)
@@ -146,7 +155,7 @@ export class InversifyExpressAuthController extends BaseHttpController {
     return this.json(signInResult.authResponse)
   }
 
-  @httpPost('/pkce_params', TYPES.AuthMiddlewareWithoutResponse)
+  @httpPost('/pkce_params', TYPES.Auth_AuthMiddlewareWithoutResponse)
   async pkceParams(request: Request, response: Response): Promise<results.JsonResult> {
     if (!request.body.code_challenge) {
       return this.json(
@@ -209,7 +218,7 @@ export class InversifyExpressAuthController extends BaseHttpController {
     return this.json(result.keyParams)
   }
 
-  @httpPost('/pkce_sign_in', TYPES.LockMiddleware)
+  @httpPost('/pkce_sign_in', TYPES.Auth_LockMiddleware)
   async pkceSignIn(request: Request): Promise<results.JsonResult> {
     if (!request.body.email || !request.body.password || !request.body.code_verifier) {
       this.logger.debug('/auth/sign_in request missing credentials: %O', request.body)
@@ -252,7 +261,7 @@ export class InversifyExpressAuthController extends BaseHttpController {
     return this.json(signInResult.authResponse)
   }
 
-  @httpPost('/recovery/codes', TYPES.ApiGatewayAuthMiddleware)
+  @httpPost('/recovery/codes', TYPES.Auth_ApiGatewayAuthMiddleware)
   async generateRecoveryCodes(_request: Request, response: Response): Promise<results.JsonResult> {
     const result = await this.authController.generateRecoveryCodes({
       userUuid: response.locals.user.uuid,
@@ -261,7 +270,7 @@ export class InversifyExpressAuthController extends BaseHttpController {
     return this.json(result.data, result.status)
   }
 
-  @httpPost('/recovery/login', TYPES.LockMiddleware)
+  @httpPost('/recovery/login', TYPES.Auth_LockMiddleware)
   async recoveryLogin(request: Request): Promise<results.JsonResult> {
     const result = await this.authController.signInWithRecoveryCodes({
       apiVersion: request.body.api_version,
@@ -287,28 +296,14 @@ export class InversifyExpressAuthController extends BaseHttpController {
     return this.json(result.data, result.status)
   }
 
-  @httpPost('/sign_out', TYPES.AuthMiddlewareWithoutResponse)
+  @httpPost('/sign_out', TYPES.Auth_AuthMiddlewareWithoutResponse)
   async signOut(request: Request, response: Response): Promise<results.JsonResult | void> {
-    if (response.locals.readOnlyAccess) {
-      return this.json(
-        {
-          error: {
-            tag: ErrorTag.ReadOnlyAccess,
-            message: 'Session has read-only access.',
-          },
-        },
-        401,
-      )
-    }
+    const result = await this.authController.signOut({
+      readOnlyAccess: response.locals.readOnlyAccess,
+      authorizationHeader: <string>request.headers.authorization,
+    })
 
-    const authorizationHeader = <string>request.headers.authorization
-
-    const userUuid = await this.sessionService.deleteSessionByToken(authorizationHeader.replace('Bearer ', ''))
-
-    if (userUuid !== null) {
-      response.setHeader('x-invalidate-cache', userUuid)
-    }
-    response.status(204).send()
+    return this.json(result.data, result.status)
   }
 
   @httpPost('/')

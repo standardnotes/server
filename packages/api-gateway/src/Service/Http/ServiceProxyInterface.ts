@@ -1,52 +1,52 @@
 import { Request, Response } from 'express'
 
-export interface HttpServiceInterface {
+export interface ServiceProxyInterface {
   callEmailServer(
     request: Request,
     response: Response,
-    endpoint: string,
+    endpointOrMethodIdentifier: string,
     payload?: Record<string, unknown> | string,
   ): Promise<void>
   callAuthServer(
     request: Request,
     response: Response,
-    endpoint: string,
+    endpointOrMethodIdentifier: string,
     payload?: Record<string, unknown> | string,
   ): Promise<void>
   callAuthServerWithLegacyFormat(
     request: Request,
     response: Response,
-    endpoint: string,
+    endpointOrMethodIdentifier: string,
     payload?: Record<string, unknown> | string,
   ): Promise<void>
   callRevisionsServer(
     request: Request,
     response: Response,
-    endpoint: string,
+    endpointOrMethodIdentifier: string,
     payload?: Record<string, unknown> | string,
   ): Promise<void>
   callSyncingServer(
     request: Request,
     response: Response,
-    endpoint: string,
+    endpointOrMethodIdentifier: string,
     payload?: Record<string, unknown> | string,
   ): Promise<void>
   callLegacySyncingServer(
     request: Request,
     response: Response,
-    endpoint: string,
+    endpointOrMethodIdentifier: string,
     payload?: Record<string, unknown> | string,
   ): Promise<void>
   callPaymentsServer(
     request: Request,
     response: Response,
-    endpoint: string,
+    endpointOrMethodIdentifier: string,
     payload?: Record<string, unknown> | string,
   ): Promise<void>
   callWebSocketServer(
     request: Request,
     response: Response,
-    endpoint: string,
+    endpointOrMethodIdentifier: string,
     payload?: Record<string, unknown> | string,
   ): Promise<void>
 }

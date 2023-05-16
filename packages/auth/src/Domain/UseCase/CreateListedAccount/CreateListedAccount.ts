@@ -10,8 +10,8 @@ import { CreateListedAccountResponse } from './CreateListedAccountResponse'
 @injectable()
 export class CreateListedAccount implements UseCaseInterface {
   constructor(
-    @inject(TYPES.DomainEventPublisher) private domainEventPublisher: DomainEventPublisherInterface,
-    @inject(TYPES.DomainEventFactory) private domainEventFactory: DomainEventFactoryInterface,
+    @inject(TYPES.Auth_DomainEventPublisher) private domainEventPublisher: DomainEventPublisherInterface,
+    @inject(TYPES.Auth_DomainEventFactory) private domainEventFactory: DomainEventFactoryInterface,
   ) {}
 
   async execute(dto: CreateListedAccountDTO): Promise<CreateListedAccountResponse> {

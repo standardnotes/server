@@ -22,15 +22,16 @@ import { SettingInterpreterInterface } from './SettingInterpreterInterface'
 @injectable()
 export class SubscriptionSettingService implements SubscriptionSettingServiceInterface {
   constructor(
-    @inject(TYPES.SettingFactory) private factory: SettingFactoryInterface,
-    @inject(TYPES.SubscriptionSettingRepository)
+    @inject(TYPES.Auth_SettingFactory) private factory: SettingFactoryInterface,
+    @inject(TYPES.Auth_SubscriptionSettingRepository)
     private subscriptionSettingRepository: SubscriptionSettingRepositoryInterface,
-    @inject(TYPES.SubscriptionSettingsAssociationService)
+    @inject(TYPES.Auth_SubscriptionSettingsAssociationService)
     private subscriptionSettingAssociationService: SubscriptionSettingsAssociationServiceInterface,
-    @inject(TYPES.SettingInterpreter) private settingInterpreter: SettingInterpreterInterface,
-    @inject(TYPES.SettingDecrypter) private settingDecrypter: SettingDecrypterInterface,
-    @inject(TYPES.UserSubscriptionRepository) private userSubscriptionRepository: UserSubscriptionRepositoryInterface,
-    @inject(TYPES.Logger) private logger: Logger,
+    @inject(TYPES.Auth_SettingInterpreter) private settingInterpreter: SettingInterpreterInterface,
+    @inject(TYPES.Auth_SettingDecrypter) private settingDecrypter: SettingDecrypterInterface,
+    @inject(TYPES.Auth_UserSubscriptionRepository)
+    private userSubscriptionRepository: UserSubscriptionRepositoryInterface,
+    @inject(TYPES.Auth_Logger) private logger: Logger,
   ) {}
 
   async applyDefaultSubscriptionSettingsForSubscription(

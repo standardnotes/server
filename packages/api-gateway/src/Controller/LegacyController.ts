@@ -2,14 +2,14 @@ import { Request, Response } from 'express'
 import { inject } from 'inversify'
 import { controller, all, BaseHttpController, httpPost, httpGet, results, httpDelete } from 'inversify-express-utils'
 import { TYPES } from '../Bootstrap/Types'
-import { HttpServiceInterface } from '../Service/Http/HttpServiceInterface'
+import { ServiceProxyInterface } from '../Service/Http/ServiceProxyInterface'
 
 @controller('')
 export class LegacyController extends BaseHttpController {
   private AUTH_ROUTES: Map<string, string>
   private PARAMETRIZED_AUTH_ROUTES: Map<string, string>
 
-  constructor(@inject(TYPES.HTTPService) private httpService: HttpServiceInterface) {
+  constructor(@inject(TYPES.ServiceProxy) private httpService: ServiceProxyInterface) {
     super()
 
     this.AUTH_ROUTES = new Map([

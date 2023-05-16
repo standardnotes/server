@@ -15,12 +15,12 @@ void container.load().then((container) => {
   const env: Env = new Env()
   env.load()
 
-  const logger: Logger = container.get(TYPES.Logger)
+  const logger: Logger = container.get(TYPES.Auth_Logger)
 
   logger.info('Starting session traces cleanup')
 
-  const persistStats: PersistStatistics = container.get(TYPES.PersistStatistics)
-  const timer: TimerInterface = container.get(TYPES.Timer)
+  const persistStats: PersistStatistics = container.get(TYPES.Auth_PersistStatistics)
+  const timer: TimerInterface = container.get(TYPES.Auth_Timer)
 
   Promise.resolve(
     persistStats.execute({

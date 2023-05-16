@@ -21,13 +21,15 @@ import { AcceptSharedSubscriptionInvitationResponse } from './AcceptSharedSubscr
 @injectable()
 export class AcceptSharedSubscriptionInvitation implements UseCaseInterface {
   constructor(
-    @inject(TYPES.SharedSubscriptionInvitationRepository)
+    @inject(TYPES.Auth_SharedSubscriptionInvitationRepository)
     private sharedSubscriptionInvitationRepository: SharedSubscriptionInvitationRepositoryInterface,
-    @inject(TYPES.UserRepository) private userRepository: UserRepositoryInterface,
-    @inject(TYPES.UserSubscriptionRepository) private userSubscriptionRepository: UserSubscriptionRepositoryInterface,
-    @inject(TYPES.RoleService) private roleService: RoleServiceInterface,
-    @inject(TYPES.SubscriptionSettingService) private subscriptionSettingService: SubscriptionSettingServiceInterface,
-    @inject(TYPES.Timer) private timer: TimerInterface,
+    @inject(TYPES.Auth_UserRepository) private userRepository: UserRepositoryInterface,
+    @inject(TYPES.Auth_UserSubscriptionRepository)
+    private userSubscriptionRepository: UserSubscriptionRepositoryInterface,
+    @inject(TYPES.Auth_RoleService) private roleService: RoleServiceInterface,
+    @inject(TYPES.Auth_SubscriptionSettingService)
+    private subscriptionSettingService: SubscriptionSettingServiceInterface,
+    @inject(TYPES.Auth_Timer) private timer: TimerInterface,
   ) {}
 
   async execute(dto: AcceptSharedSubscriptionInvitationDTO): Promise<AcceptSharedSubscriptionInvitationResponse> {

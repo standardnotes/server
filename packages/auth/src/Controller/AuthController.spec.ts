@@ -13,6 +13,7 @@ import { SignInWithRecoveryCodes } from '../Domain/UseCase/SignInWithRecoveryCod
 import { GetUserKeyParamsRecovery } from '../Domain/UseCase/GetUserKeyParamsRecovery/GetUserKeyParamsRecovery'
 import { GenerateRecoveryCodes } from '../Domain/UseCase/GenerateRecoveryCodes/GenerateRecoveryCodes'
 import { Logger } from 'winston'
+import { SessionServiceInterface } from '../Domain/Session/SessionServiceInterface'
 
 describe('AuthController', () => {
   let clearLoginAttempts: ClearLoginAttempts
@@ -25,6 +26,7 @@ describe('AuthController', () => {
   let getUserKeyParamsRecovery: GetUserKeyParamsRecovery
   let doGenerateRecoveryCodes: GenerateRecoveryCodes
   let logger: Logger
+  let sessionService: SessionServiceInterface
 
   const createController = () =>
     new AuthController(
@@ -36,6 +38,7 @@ describe('AuthController', () => {
       getUserKeyParamsRecovery,
       doGenerateRecoveryCodes,
       logger,
+      sessionService,
     )
 
   beforeEach(() => {
@@ -58,6 +61,9 @@ describe('AuthController', () => {
 
     logger = {} as jest.Mocked<Logger>
     logger.debug = jest.fn()
+
+    sessionService = {} as jest.Mocked<SessionServiceInterface>
+    sessionService.deleteSessionByToken = jest.fn().mockReturnValue('1-2-3')
   })
 
   it('should register a user', async () => {

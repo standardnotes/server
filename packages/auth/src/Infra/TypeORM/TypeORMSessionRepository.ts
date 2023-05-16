@@ -11,9 +11,9 @@ import { SessionRepositoryInterface } from '../../Domain/Session/SessionReposito
 @injectable()
 export class TypeORMSessionRepository implements SessionRepositoryInterface {
   constructor(
-    @inject(TYPES.ORMSessionRepository)
+    @inject(TYPES.Auth_ORMSessionRepository)
     private ormRepository: Repository<Session>,
-    @inject(TYPES.Timer) private timer: TimerInterface,
+    @inject(TYPES.Auth_Timer) private timer: TimerInterface,
   ) {}
 
   async save(session: Session): Promise<Session> {

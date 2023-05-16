@@ -8,6 +8,7 @@ import * as express from 'express'
 import { DeleteSetting } from '../Domain/UseCase/DeleteSetting/DeleteSetting'
 import { CreateSubscriptionToken } from '../Domain/UseCase/CreateSubscriptionToken/CreateSubscriptionToken'
 import { CreateOfflineSubscriptionToken } from '../Domain/UseCase/CreateOfflineSubscriptionToken/CreateOfflineSubscriptionToken'
+import { ControllerContainerInterface } from '@standardnotes/domain-core'
 
 describe('AdminController', () => {
   let deleteSetting: DeleteSetting
@@ -16,9 +17,16 @@ describe('AdminController', () => {
   let createOfflineSubscriptionToken: CreateOfflineSubscriptionToken
   let request: express.Request
   let user: User
+  let controllerContainer: ControllerContainerInterface
 
   const createController = () =>
-    new AdminController(deleteSetting, userRepository, createSubscriptionToken, createOfflineSubscriptionToken)
+    new AdminController(
+      deleteSetting,
+      userRepository,
+      createSubscriptionToken,
+      createOfflineSubscriptionToken,
+      controllerContainer,
+    )
 
   beforeEach(() => {
     user = {} as jest.Mocked<User>
@@ -50,6 +58,9 @@ describe('AdminController', () => {
       body: {},
       params: {},
     } as jest.Mocked<express.Request>
+
+    controllerContainer = {} as jest.Mocked<ControllerContainerInterface>
+    controllerContainer.register = jest.fn()
   })
 
   it('should return error if missing email parameter', async () => {

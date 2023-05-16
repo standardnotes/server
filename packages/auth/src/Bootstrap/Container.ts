@@ -187,7 +187,13 @@ import { UserRequestsController } from '../Controller/UserRequestsController'
 import { EmailSubscriptionUnsubscribedEventHandler } from '../Domain/Handler/EmailSubscriptionUnsubscribedEventHandler'
 import { SessionTraceRepositoryInterface } from '../Domain/Session/SessionTraceRepositoryInterface'
 import { TypeORMSessionTraceRepository } from '../Infra/TypeORM/TypeORMSessionTraceRepository'
-import { CacheEntry, CacheEntryRepositoryInterface, MapperInterface } from '@standardnotes/domain-core'
+import {
+  CacheEntry,
+  CacheEntryRepositoryInterface,
+  ControllerContainer,
+  ControllerContainerInterface,
+  MapperInterface,
+} from '@standardnotes/domain-core'
 import { SessionTracePersistenceMapper } from '../Mapping/SessionTracePersistenceMapper'
 import { SessionTrace } from '../Domain/Session/SessionTrace'
 import { TypeORMSessionTrace } from '../Infra/TypeORM/TypeORMSessionTrace'
@@ -226,12 +232,17 @@ import { TypeORMEphemeralSessionRepository } from '../Infra/TypeORM/TypeORMEphem
 import { TypeORMOfflineSubscriptionTokenRepository } from '../Infra/TypeORM/TypeORMOfflineSubscriptionTokenRepository'
 import { TypeORMPKCERepository } from '../Infra/TypeORM/TypeORMPKCERepository'
 import { TypeORMSubscriptionTokenRepository } from '../Infra/TypeORM/TypeORMSubscriptionTokenRepository'
+import { InversifyExpressAuthController } from '../Infra/InversifyExpressUtils/InversifyExpressAuthController'
+import { InversifyExpressAuthenticatorsController } from '../Infra/InversifyExpressUtils/InversifyExpressAuthenticatorsController'
+import { InversifyExpressSubscriptionInvitesController } from '../Infra/InversifyExpressUtils/InversifyExpressSubscriptionInvitesController'
+import { InversifyExpressUserRequestsController } from '../Infra/InversifyExpressUtils/InversifyExpressUserRequestsController'
+import { InversifyExpressWebSocketsController } from '../Infra/InversifyExpressUtils/InversifyExpressWebSocketsController'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
 
 export class ContainerConfigLoader {
-  async load(): Promise<Container> {
+  async load(controllerConatiner?: ControllerContainerInterface): Promise<Container> {
     const env: Env = new Env()
     env.load()
 
@@ -241,16 +252,18 @@ export class ContainerConfigLoader {
 
     const isConfiguredForHomeServer = env.get('DB_TYPE') === 'sqlite'
 
-    const redisUrl = env.get('REDIS_URL')
-    const isRedisInClusterMode = redisUrl.indexOf(',') > 0
-    let redis
-    if (isRedisInClusterMode) {
-      redis = new Redis.Cluster(redisUrl.split(','))
-    } else {
-      redis = new Redis(redisUrl)
-    }
+    if (!isConfiguredForHomeServer) {
+      const redisUrl = env.get('REDIS_URL')
+      const isRedisInClusterMode = redisUrl.indexOf(',') > 0
+      let redis
+      if (isRedisInClusterMode) {
+        redis = new Redis.Cluster(redisUrl.split(','))
+      } else {
+        redis = new Redis(redisUrl)
+      }
 
-    container.bind(TYPES.Redis).toConstantValue(redis)
+      container.bind(TYPES.Auth_Redis).toConstantValue(redis)
+    }
 
     const newrelicWinstonFormatter = newrelicFormatter(winston)
     const winstonFormatters = [winston.format.splat(), winston.format.json()]
@@ -263,9 +276,9 @@ export class ContainerConfigLoader {
       format: winston.format.combine(...winstonFormatters),
       transports: [new winston.transports.Console({ level: env.get('LOG_LEVEL') || 'info' })],
     })
-    container.bind<winston.Logger>(TYPES.Logger).toConstantValue(logger)
+    container.bind<winston.Logger>(TYPES.Auth_Logger).toConstantValue(logger)
 
-    container.bind<TimerInterface>(TYPES.Timer).toConstantValue(new Timer())
+    container.bind<TimerInterface>(TYPES.Auth_Timer).toConstantValue(new Timer())
 
     const snsConfig: SNSClientConfig = {
       region: env.get('SNS_AWS_REGION', true),
@@ -279,7 +292,7 @@ export class ContainerConfigLoader {
         secretAccessKey: env.get('SNS_SECRET_ACCESS_KEY', true),
       }
     }
-    container.bind<SNSClient>(TYPES.SNS).toConstantValue(new SNSClient(snsConfig))
+    container.bind<SNSClient>(TYPES.Auth_SNS).toConstantValue(new SNSClient(snsConfig))
 
     const sqsConfig: SQSClientConfig = {
       region: env.get('SQS_AWS_REGION', true),
@@ -293,611 +306,718 @@ export class ContainerConfigLoader {
         secretAccessKey: env.get('SQS_SECRET_ACCESS_KEY', true),
       }
     }
-    container.bind<SQSClient>(TYPES.SQS).toConstantValue(new SQSClient(sqsConfig))
+    container.bind<SQSClient>(TYPES.Auth_SQS).toConstantValue(new SQSClient(sqsConfig))
 
     // Mapping
     container
-      .bind<MapperInterface<SessionTrace, TypeORMSessionTrace>>(TYPES.SessionTracePersistenceMapper)
+      .bind<MapperInterface<SessionTrace, TypeORMSessionTrace>>(TYPES.Auth_SessionTracePersistenceMapper)
       .toConstantValue(new SessionTracePersistenceMapper())
     container
-      .bind<MapperInterface<Authenticator, TypeORMAuthenticator>>(TYPES.AuthenticatorPersistenceMapper)
+      .bind<MapperInterface<Authenticator, TypeORMAuthenticator>>(TYPES.Auth_AuthenticatorPersistenceMapper)
       .toConstantValue(new AuthenticatorPersistenceMapper())
     container
-      .bind<MapperInterface<Authenticator, AuthenticatorHttpProjection>>(TYPES.AuthenticatorHttpMapper)
+      .bind<MapperInterface<Authenticator, AuthenticatorHttpProjection>>(TYPES.Auth_AuthenticatorHttpMapper)
       .toConstantValue(new AuthenticatorHttpMapper())
     container
       .bind<MapperInterface<AuthenticatorChallenge, TypeORMAuthenticatorChallenge>>(
-        TYPES.AuthenticatorChallengePersistenceMapper,
+        TYPES.Auth_AuthenticatorChallengePersistenceMapper,
       )
       .toConstantValue(new AuthenticatorChallengePersistenceMapper())
     container
-      .bind<MapperInterface<CacheEntry, TypeORMCacheEntry>>(TYPES.CacheEntryPersistenceMapper)
+      .bind<MapperInterface<CacheEntry, TypeORMCacheEntry>>(TYPES.Auth_CacheEntryPersistenceMapper)
       .toConstantValue(new CacheEntryPersistenceMapper())
 
     // ORM
     container
-      .bind<Repository<OfflineSetting>>(TYPES.ORMOfflineSettingRepository)
+      .bind<Repository<OfflineSetting>>(TYPES.Auth_ORMOfflineSettingRepository)
       .toConstantValue(AppDataSource.getRepository(OfflineSetting))
     container
-      .bind<Repository<OfflineUserSubscription>>(TYPES.ORMOfflineUserSubscriptionRepository)
+      .bind<Repository<OfflineUserSubscription>>(TYPES.Auth_ORMOfflineUserSubscriptionRepository)
       .toConstantValue(AppDataSource.getRepository(OfflineUserSubscription))
     container
-      .bind<Repository<RevokedSession>>(TYPES.ORMRevokedSessionRepository)
+      .bind<Repository<RevokedSession>>(TYPES.Auth_ORMRevokedSessionRepository)
       .toConstantValue(AppDataSource.getRepository(RevokedSession))
-    container.bind<Repository<Role>>(TYPES.ORMRoleRepository).toConstantValue(AppDataSource.getRepository(Role))
+    container.bind<Repository<Role>>(TYPES.Auth_ORMRoleRepository).toConstantValue(AppDataSource.getRepository(Role))
     container
-      .bind<Repository<Session>>(TYPES.ORMSessionRepository)
+      .bind<Repository<Session>>(TYPES.Auth_ORMSessionRepository)
       .toConstantValue(AppDataSource.getRepository(Session))
     container
-      .bind<Repository<Setting>>(TYPES.ORMSettingRepository)
+      .bind<Repository<Setting>>(TYPES.Auth_ORMSettingRepository)
       .toConstantValue(AppDataSource.getRepository(Setting))
     container
-      .bind<Repository<SharedSubscriptionInvitation>>(TYPES.ORMSharedSubscriptionInvitationRepository)
+      .bind<Repository<SharedSubscriptionInvitation>>(TYPES.Auth_ORMSharedSubscriptionInvitationRepository)
       .toConstantValue(AppDataSource.getRepository(SharedSubscriptionInvitation))
     container
-      .bind<Repository<SubscriptionSetting>>(TYPES.ORMSubscriptionSettingRepository)
+      .bind<Repository<SubscriptionSetting>>(TYPES.Auth_ORMSubscriptionSettingRepository)
       .toConstantValue(AppDataSource.getRepository(SubscriptionSetting))
-    container.bind<Repository<User>>(TYPES.ORMUserRepository).toConstantValue(AppDataSource.getRepository(User))
+    container.bind<Repository<User>>(TYPES.Auth_ORMUserRepository).toConstantValue(AppDataSource.getRepository(User))
     container
-      .bind<Repository<UserSubscription>>(TYPES.ORMUserSubscriptionRepository)
+      .bind<Repository<UserSubscription>>(TYPES.Auth_ORMUserSubscriptionRepository)
       .toConstantValue(AppDataSource.getRepository(UserSubscription))
     container
-      .bind<Repository<TypeORMSessionTrace>>(TYPES.ORMSessionTraceRepository)
+      .bind<Repository<TypeORMSessionTrace>>(TYPES.Auth_ORMSessionTraceRepository)
       .toConstantValue(AppDataSource.getRepository(TypeORMSessionTrace))
     container
-      .bind<Repository<TypeORMAuthenticator>>(TYPES.ORMAuthenticatorRepository)
+      .bind<Repository<TypeORMAuthenticator>>(TYPES.Auth_ORMAuthenticatorRepository)
       .toConstantValue(AppDataSource.getRepository(TypeORMAuthenticator))
     container
-      .bind<Repository<TypeORMAuthenticatorChallenge>>(TYPES.ORMAuthenticatorChallengeRepository)
+      .bind<Repository<TypeORMAuthenticatorChallenge>>(TYPES.Auth_ORMAuthenticatorChallengeRepository)
       .toConstantValue(AppDataSource.getRepository(TypeORMAuthenticatorChallenge))
     container
-      .bind<Repository<TypeORMCacheEntry>>(TYPES.ORMCacheEntryRepository)
+      .bind<Repository<TypeORMCacheEntry>>(TYPES.Auth_ORMCacheEntryRepository)
       .toConstantValue(AppDataSource.getRepository(TypeORMCacheEntry))
 
     // Repositories
-    container.bind<SessionRepositoryInterface>(TYPES.SessionRepository).to(TypeORMSessionRepository)
+    container.bind<SessionRepositoryInterface>(TYPES.Auth_SessionRepository).to(TypeORMSessionRepository)
     container
-      .bind<RevokedSessionRepositoryInterface>(TYPES.RevokedSessionRepository)
+      .bind<RevokedSessionRepositoryInterface>(TYPES.Auth_RevokedSessionRepository)
       .to(TypeORMRevokedSessionRepository)
-    container.bind<UserRepositoryInterface>(TYPES.UserRepository).to(TypeORMUserRepository)
-    container.bind<SettingRepositoryInterface>(TYPES.SettingRepository).to(TypeORMSettingRepository)
+    container.bind<UserRepositoryInterface>(TYPES.Auth_UserRepository).to(TypeORMUserRepository)
+    container.bind<SettingRepositoryInterface>(TYPES.Auth_SettingRepository).to(TypeORMSettingRepository)
     container
-      .bind<SubscriptionSettingRepositoryInterface>(TYPES.SubscriptionSettingRepository)
+      .bind<SubscriptionSettingRepositoryInterface>(TYPES.Auth_SubscriptionSettingRepository)
       .to(TypeORMSubscriptionSettingRepository)
     container
-      .bind<OfflineSettingRepositoryInterface>(TYPES.OfflineSettingRepository)
+      .bind<OfflineSettingRepositoryInterface>(TYPES.Auth_OfflineSettingRepository)
       .to(TypeORMOfflineSettingRepository)
-    container.bind<RoleRepositoryInterface>(TYPES.RoleRepository).to(TypeORMRoleRepository)
+    container.bind<RoleRepositoryInterface>(TYPES.Auth_RoleRepository).to(TypeORMRoleRepository)
     container
-      .bind<UserSubscriptionRepositoryInterface>(TYPES.UserSubscriptionRepository)
+      .bind<UserSubscriptionRepositoryInterface>(TYPES.Auth_UserSubscriptionRepository)
       .to(TypeORMUserSubscriptionRepository)
     container
-      .bind<OfflineUserSubscriptionRepositoryInterface>(TYPES.OfflineUserSubscriptionRepository)
+      .bind<OfflineUserSubscriptionRepositoryInterface>(TYPES.Auth_OfflineUserSubscriptionRepository)
       .to(TypeORMOfflineUserSubscriptionRepository)
     container
-      .bind<SharedSubscriptionInvitationRepositoryInterface>(TYPES.SharedSubscriptionInvitationRepository)
+      .bind<SharedSubscriptionInvitationRepositoryInterface>(TYPES.Auth_SharedSubscriptionInvitationRepository)
       .to(TypeORMSharedSubscriptionInvitationRepository)
     container
-      .bind<SessionTraceRepositoryInterface>(TYPES.SessionTraceRepository)
+      .bind<SessionTraceRepositoryInterface>(TYPES.Auth_SessionTraceRepository)
       .toConstantValue(
         new TypeORMSessionTraceRepository(
-          container.get(TYPES.ORMSessionTraceRepository),
-          container.get(TYPES.SessionTracePersistenceMapper),
+          container.get(TYPES.Auth_ORMSessionTraceRepository),
+          container.get(TYPES.Auth_SessionTracePersistenceMapper),
         ),
       )
     container
-      .bind<AuthenticatorRepositoryInterface>(TYPES.AuthenticatorRepository)
+      .bind<AuthenticatorRepositoryInterface>(TYPES.Auth_AuthenticatorRepository)
       .toConstantValue(
         new TypeORMAuthenticatorRepository(
-          container.get(TYPES.ORMAuthenticatorRepository),
-          container.get(TYPES.AuthenticatorPersistenceMapper),
+          container.get(TYPES.Auth_ORMAuthenticatorRepository),
+          container.get(TYPES.Auth_AuthenticatorPersistenceMapper),
         ),
       )
     container
-      .bind<AuthenticatorChallengeRepositoryInterface>(TYPES.AuthenticatorChallengeRepository)
+      .bind<AuthenticatorChallengeRepositoryInterface>(TYPES.Auth_AuthenticatorChallengeRepository)
       .toConstantValue(
         new TypeORMAuthenticatorChallengeRepository(
-          container.get(TYPES.ORMAuthenticatorChallengeRepository),
-          container.get(TYPES.AuthenticatorChallengePersistenceMapper),
+          container.get(TYPES.Auth_ORMAuthenticatorChallengeRepository),
+          container.get(TYPES.Auth_AuthenticatorChallengePersistenceMapper),
         ),
       )
     container
-      .bind<CacheEntryRepositoryInterface>(TYPES.CacheEntryRepository)
+      .bind<CacheEntryRepositoryInterface>(TYPES.Auth_CacheEntryRepository)
       .toConstantValue(
         new TypeORMCacheEntryRepository(
-          container.get(TYPES.ORMCacheEntryRepository),
-          container.get(TYPES.CacheEntryPersistenceMapper),
+          container.get(TYPES.Auth_ORMCacheEntryRepository),
+          container.get(TYPES.Auth_CacheEntryPersistenceMapper),
         ),
       )
 
     // Middleware
-    container.bind<AuthMiddleware>(TYPES.AuthMiddleware).to(AuthMiddleware)
-    container.bind<SessionMiddleware>(TYPES.SessionMiddleware).to(SessionMiddleware)
-    container.bind<LockMiddleware>(TYPES.LockMiddleware).to(LockMiddleware)
-    container.bind<AuthMiddlewareWithoutResponse>(TYPES.AuthMiddlewareWithoutResponse).to(AuthMiddlewareWithoutResponse)
-    container.bind<ApiGatewayAuthMiddleware>(TYPES.ApiGatewayAuthMiddleware).to(ApiGatewayAuthMiddleware)
+    container.bind<AuthMiddleware>(TYPES.Auth_AuthMiddleware).to(AuthMiddleware)
+    container.bind<SessionMiddleware>(TYPES.Auth_SessionMiddleware).to(SessionMiddleware)
+    container.bind<LockMiddleware>(TYPES.Auth_LockMiddleware).to(LockMiddleware)
     container
-      .bind<ApiGatewayOfflineAuthMiddleware>(TYPES.ApiGatewayOfflineAuthMiddleware)
+      .bind<AuthMiddlewareWithoutResponse>(TYPES.Auth_AuthMiddlewareWithoutResponse)
+      .to(AuthMiddlewareWithoutResponse)
+    container.bind<ApiGatewayAuthMiddleware>(TYPES.Auth_ApiGatewayAuthMiddleware).to(ApiGatewayAuthMiddleware)
+    container
+      .bind<ApiGatewayOfflineAuthMiddleware>(TYPES.Auth_ApiGatewayOfflineAuthMiddleware)
       .to(ApiGatewayOfflineAuthMiddleware)
-    container.bind<OfflineUserAuthMiddleware>(TYPES.OfflineUserAuthMiddleware).to(OfflineUserAuthMiddleware)
+    container.bind<OfflineUserAuthMiddleware>(TYPES.Auth_OfflineUserAuthMiddleware).to(OfflineUserAuthMiddleware)
 
     // Projectors
-    container.bind<SessionProjector>(TYPES.SessionProjector).to(SessionProjector)
-    container.bind<UserProjector>(TYPES.UserProjector).to(UserProjector)
-    container.bind<RoleProjector>(TYPES.RoleProjector).to(RoleProjector)
-    container.bind<PermissionProjector>(TYPES.PermissionProjector).to(PermissionProjector)
-    container.bind<SettingProjector>(TYPES.SettingProjector).to(SettingProjector)
-    container.bind<SubscriptionSettingProjector>(TYPES.SubscriptionSettingProjector).to(SubscriptionSettingProjector)
+    container.bind<SessionProjector>(TYPES.Auth_SessionProjector).to(SessionProjector)
+    container.bind<UserProjector>(TYPES.Auth_UserProjector).to(UserProjector)
+    container.bind<RoleProjector>(TYPES.Auth_RoleProjector).to(RoleProjector)
+    container.bind<PermissionProjector>(TYPES.Auth_PermissionProjector).to(PermissionProjector)
+    container.bind<SettingProjector>(TYPES.Auth_SettingProjector).to(SettingProjector)
+    container
+      .bind<SubscriptionSettingProjector>(TYPES.Auth_SubscriptionSettingProjector)
+      .to(SubscriptionSettingProjector)
 
     // Factories
-    container.bind<SettingFactoryInterface>(TYPES.SettingFactory).to(SettingFactory)
+    container.bind<SettingFactoryInterface>(TYPES.Auth_SettingFactory).to(SettingFactory)
 
     // env vars
-    container.bind(TYPES.JWT_SECRET).toConstantValue(env.get('JWT_SECRET'))
-    container.bind(TYPES.LEGACY_JWT_SECRET).toConstantValue(env.get('LEGACY_JWT_SECRET'))
-    container.bind(TYPES.AUTH_JWT_SECRET).toConstantValue(env.get('AUTH_JWT_SECRET'))
-    container.bind(TYPES.AUTH_JWT_TTL).toConstantValue(+env.get('AUTH_JWT_TTL'))
-    container.bind(TYPES.VALET_TOKEN_SECRET).toConstantValue(env.get('VALET_TOKEN_SECRET', true))
-    container.bind(TYPES.VALET_TOKEN_TTL).toConstantValue(+env.get('VALET_TOKEN_TTL', true))
+    container.bind(TYPES.Auth_JWT_SECRET).toConstantValue(env.get('JWT_SECRET'))
+    container.bind(TYPES.Auth_LEGACY_JWT_SECRET).toConstantValue(env.get('LEGACY_JWT_SECRET', true))
+    container.bind(TYPES.Auth_AUTH_JWT_SECRET).toConstantValue(env.get('AUTH_JWT_SECRET'))
     container
-      .bind(TYPES.WEB_SOCKET_CONNECTION_TOKEN_SECRET)
+      .bind(TYPES.Auth_AUTH_JWT_TTL)
+      .toConstantValue(env.get('AUTH_JWT_TTL', true) ? +env.get('AUTH_JWT_TTL') : 60_000)
+    container.bind(TYPES.Auth_VALET_TOKEN_SECRET).toConstantValue(env.get('VALET_TOKEN_SECRET', true))
+    container.bind(TYPES.Auth_VALET_TOKEN_TTL).toConstantValue(+env.get('VALET_TOKEN_TTL', true))
+    container
+      .bind(TYPES.Auth_WEB_SOCKET_CONNECTION_TOKEN_SECRET)
       .toConstantValue(env.get('WEB_SOCKET_CONNECTION_TOKEN_SECRET', true))
-    container.bind(TYPES.ENCRYPTION_SERVER_KEY).toConstantValue(env.get('ENCRYPTION_SERVER_KEY'))
-    container.bind(TYPES.ACCESS_TOKEN_AGE).toConstantValue(env.get('ACCESS_TOKEN_AGE'))
-    container.bind(TYPES.REFRESH_TOKEN_AGE).toConstantValue(env.get('REFRESH_TOKEN_AGE'))
-    container.bind(TYPES.MAX_LOGIN_ATTEMPTS).toConstantValue(env.get('MAX_LOGIN_ATTEMPTS'))
-    container.bind(TYPES.FAILED_LOGIN_LOCKOUT).toConstantValue(env.get('FAILED_LOGIN_LOCKOUT'))
-    container.bind(TYPES.PSEUDO_KEY_PARAMS_KEY).toConstantValue(env.get('PSEUDO_KEY_PARAMS_KEY'))
-    container.bind(TYPES.EPHEMERAL_SESSION_AGE).toConstantValue(env.get('EPHEMERAL_SESSION_AGE'))
-    container.bind(TYPES.REDIS_URL).toConstantValue(env.get('REDIS_URL'))
+    container.bind(TYPES.Auth_ENCRYPTION_SERVER_KEY).toConstantValue(env.get('ENCRYPTION_SERVER_KEY'))
     container
-      .bind(TYPES.DISABLE_USER_REGISTRATION)
+      .bind(TYPES.Auth_ACCESS_TOKEN_AGE)
+      .toConstantValue(env.get('ACCESS_TOKEN_AGE', true) ? +env.get('ACCESS_TOKEN_AGE', true) : 5184000)
+    container
+      .bind(TYPES.Auth_REFRESH_TOKEN_AGE)
+      .toConstantValue(env.get('REFRESH_TOKEN_AGE', true) ? +env.get('REFRESH_TOKEN_AGE', true) : 31556926)
+    container
+      .bind(TYPES.Auth_MAX_LOGIN_ATTEMPTS)
+      .toConstantValue(env.get('MAX_LOGIN_ATTEMPTS', true) ? +env.get('MAX_LOGIN_ATTEMPTS', true) : 6)
+    container
+      .bind(TYPES.Auth_FAILED_LOGIN_LOCKOUT)
+      .toConstantValue(env.get('FAILED_LOGIN_LOCKOUT', true) ? +env.get('FAILED_LOGIN_LOCKOUT', true) : 3600)
+    container.bind(TYPES.Auth_PSEUDO_KEY_PARAMS_KEY).toConstantValue(env.get('PSEUDO_KEY_PARAMS_KEY'))
+    container
+      .bind(TYPES.Auth_EPHEMERAL_SESSION_AGE)
+      .toConstantValue(env.get('EPHEMERAL_SESSION_AGE', true) ? +env.get('EPHEMERAL_SESSION_AGE', true) : 259200)
+    container.bind(TYPES.Auth_REDIS_URL).toConstantValue(env.get('REDIS_URL', true))
+    container
+      .bind(TYPES.Auth_DISABLE_USER_REGISTRATION)
       .toConstantValue(env.get('DISABLE_USER_REGISTRATION', true) === 'true')
-    container.bind(TYPES.SNS_TOPIC_ARN).toConstantValue(env.get('SNS_TOPIC_ARN'))
-    container.bind(TYPES.SNS_AWS_REGION).toConstantValue(env.get('SNS_AWS_REGION', true))
-    container.bind(TYPES.SQS_QUEUE_URL).toConstantValue(env.get('SQS_QUEUE_URL'))
-    container.bind(TYPES.USER_SERVER_REGISTRATION_URL).toConstantValue(env.get('USER_SERVER_REGISTRATION_URL', true))
-    container.bind(TYPES.USER_SERVER_AUTH_KEY).toConstantValue(env.get('USER_SERVER_AUTH_KEY', true))
-    container.bind(TYPES.USER_SERVER_CHANGE_EMAIL_URL).toConstantValue(env.get('USER_SERVER_CHANGE_EMAIL_URL', true))
-    container.bind(TYPES.NEW_RELIC_ENABLED).toConstantValue(env.get('NEW_RELIC_ENABLED', true))
-    container.bind(TYPES.SYNCING_SERVER_URL).toConstantValue(env.get('SYNCING_SERVER_URL'))
-    container.bind(TYPES.VERSION).toConstantValue(env.get('VERSION'))
-    container.bind(TYPES.PAYMENTS_SERVER_URL).toConstantValue(env.get('PAYMENTS_SERVER_URL', true))
+    container.bind(TYPES.Auth_SNS_TOPIC_ARN).toConstantValue(env.get('SNS_TOPIC_ARN', true))
+    container.bind(TYPES.Auth_SNS_AWS_REGION).toConstantValue(env.get('SNS_AWS_REGION', true))
+    container.bind(TYPES.Auth_SQS_QUEUE_URL).toConstantValue(env.get('SQS_QUEUE_URL', true))
     container
-      .bind(TYPES.SESSION_TRACE_DAYS_TTL)
+      .bind(TYPES.Auth_USER_SERVER_REGISTRATION_URL)
+      .toConstantValue(env.get('USER_SERVER_REGISTRATION_URL', true))
+    container.bind(TYPES.Auth_USER_SERVER_AUTH_KEY).toConstantValue(env.get('USER_SERVER_AUTH_KEY', true))
+    container
+      .bind(TYPES.Auth_USER_SERVER_CHANGE_EMAIL_URL)
+      .toConstantValue(env.get('USER_SERVER_CHANGE_EMAIL_URL', true))
+    container.bind(TYPES.Auth_NEW_RELIC_ENABLED).toConstantValue(env.get('NEW_RELIC_ENABLED', true))
+    container.bind(TYPES.Auth_SYNCING_SERVER_URL).toConstantValue(env.get('SYNCING_SERVER_URL', true))
+    container.bind(TYPES.Auth_VERSION).toConstantValue(env.get('VERSION'))
+    container.bind(TYPES.Auth_PAYMENTS_SERVER_URL).toConstantValue(env.get('PAYMENTS_SERVER_URL', true))
+    container
+      .bind(TYPES.Auth_SESSION_TRACE_DAYS_TTL)
       .toConstantValue(env.get('SESSION_TRACE_DAYS_TTL', true) ? +env.get('SESSION_TRACE_DAYS_TTL', true) : 90)
     container
-      .bind(TYPES.U2F_RELYING_PARTY_NAME)
+      .bind(TYPES.Auth_U2F_RELYING_PARTY_NAME)
       .toConstantValue(env.get('U2F_RELYING_PARTY_NAME', true) ?? 'Standard Notes')
     container
-      .bind(TYPES.U2F_RELYING_PARTY_ID)
+      .bind(TYPES.Auth_U2F_RELYING_PARTY_ID)
       .toConstantValue(env.get('U2F_RELYING_PARTY_ID', true) ?? 'app.standardnotes.com')
     container
-      .bind(TYPES.U2F_EXPECTED_ORIGIN)
+      .bind(TYPES.Auth_U2F_EXPECTED_ORIGIN)
       .toConstantValue(
         env.get('U2F_EXPECTED_ORIGIN', true)
           ? env.get('U2F_EXPECTED_ORIGIN', true).split(',')
           : ['https://app.standardnotes.com'],
       )
     container
-      .bind(TYPES.U2F_REQUIRE_USER_VERIFICATION)
+      .bind(TYPES.Auth_U2F_REQUIRE_USER_VERIFICATION)
       .toConstantValue(env.get('U2F_REQUIRE_USER_VERIFICATION', true) === 'true')
     container
-      .bind(TYPES.READONLY_USERS)
+      .bind(TYPES.Auth_READONLY_USERS)
       .toConstantValue(env.get('READONLY_USERS', true) ? env.get('READONLY_USERS', true).split(',') : [])
 
     if (isConfiguredForHomeServer) {
       container
-        .bind<LockRepositoryInterface>(TYPES.LockRepository)
+        .bind<LockRepositoryInterface>(TYPES.Auth_LockRepository)
         .toConstantValue(
           new TypeORMLockRepository(
-            container.get(TYPES.CacheEntryRepository),
-            container.get(TYPES.Timer),
-            container.get(TYPES.MAX_LOGIN_ATTEMPTS),
-            container.get(TYPES.FAILED_LOGIN_LOCKOUT),
+            container.get(TYPES.Auth_CacheEntryRepository),
+            container.get(TYPES.Auth_Timer),
+            container.get(TYPES.Auth_MAX_LOGIN_ATTEMPTS),
+            container.get(TYPES.Auth_FAILED_LOGIN_LOCKOUT),
           ),
         )
       container
-        .bind<EphemeralSessionRepositoryInterface>(TYPES.EphemeralSessionRepository)
+        .bind<EphemeralSessionRepositoryInterface>(TYPES.Auth_EphemeralSessionRepository)
         .toConstantValue(
           new TypeORMEphemeralSessionRepository(
-            container.get(TYPES.CacheEntryRepository),
-            container.get(TYPES.EPHEMERAL_SESSION_AGE),
-            container.get(TYPES.Timer),
+            container.get(TYPES.Auth_CacheEntryRepository),
+            container.get(TYPES.Auth_EPHEMERAL_SESSION_AGE),
+            container.get(TYPES.Auth_Timer),
           ),
         )
       container
-        .bind<OfflineSubscriptionTokenRepositoryInterface>(TYPES.OfflineSubscriptionTokenRepository)
+        .bind<OfflineSubscriptionTokenRepositoryInterface>(TYPES.Auth_OfflineSubscriptionTokenRepository)
         .toConstantValue(
           new TypeORMOfflineSubscriptionTokenRepository(
-            container.get(TYPES.CacheEntryRepository),
-            container.get(TYPES.Timer),
+            container.get(TYPES.Auth_CacheEntryRepository),
+            container.get(TYPES.Auth_Timer),
           ),
         )
       container
-        .bind<PKCERepositoryInterface>(TYPES.PKCERepository)
+        .bind<PKCERepositoryInterface>(TYPES.Auth_PKCERepository)
         .toConstantValue(
           new TypeORMPKCERepository(
-            container.get(TYPES.CacheEntryRepository),
-            container.get(TYPES.Logger),
-            container.get(TYPES.Timer),
+            container.get(TYPES.Auth_CacheEntryRepository),
+            container.get(TYPES.Auth_Logger),
+            container.get(TYPES.Auth_Timer),
           ),
         )
       container
-        .bind<SubscriptionTokenRepositoryInterface>(TYPES.SubscriptionTokenRepository)
+        .bind<SubscriptionTokenRepositoryInterface>(TYPES.Auth_SubscriptionTokenRepository)
         .toConstantValue(
-          new TypeORMSubscriptionTokenRepository(container.get(TYPES.CacheEntryRepository), container.get(TYPES.Timer)),
+          new TypeORMSubscriptionTokenRepository(
+            container.get(TYPES.Auth_CacheEntryRepository),
+            container.get(TYPES.Auth_Timer),
+          ),
         )
     } else {
-      container.bind<PKCERepositoryInterface>(TYPES.PKCERepository).to(RedisPKCERepository)
-      container.bind<LockRepositoryInterface>(TYPES.LockRepository).to(LockRepository)
+      container.bind<PKCERepositoryInterface>(TYPES.Auth_PKCERepository).to(RedisPKCERepository)
+      container.bind<LockRepositoryInterface>(TYPES.Auth_LockRepository).to(LockRepository)
       container
-        .bind<EphemeralSessionRepositoryInterface>(TYPES.EphemeralSessionRepository)
+        .bind<EphemeralSessionRepositoryInterface>(TYPES.Auth_EphemeralSessionRepository)
         .to(RedisEphemeralSessionRepository)
       container
-        .bind<OfflineSubscriptionTokenRepositoryInterface>(TYPES.OfflineSubscriptionTokenRepository)
+        .bind<OfflineSubscriptionTokenRepositoryInterface>(TYPES.Auth_OfflineSubscriptionTokenRepository)
         .to(RedisOfflineSubscriptionTokenRepository)
       container
-        .bind<SubscriptionTokenRepositoryInterface>(TYPES.SubscriptionTokenRepository)
+        .bind<SubscriptionTokenRepositoryInterface>(TYPES.Auth_SubscriptionTokenRepository)
         .to(RedisSubscriptionTokenRepository)
     }
 
     // Services
-    container.bind<UAParser>(TYPES.DeviceDetector).toConstantValue(new UAParser())
-    container.bind<SessionService>(TYPES.SessionService).to(SessionService)
-    container.bind<AuthResponseFactory20161215>(TYPES.AuthResponseFactory20161215).to(AuthResponseFactory20161215)
-    container.bind<AuthResponseFactory20190520>(TYPES.AuthResponseFactory20190520).to(AuthResponseFactory20190520)
-    container.bind<AuthResponseFactory20200115>(TYPES.AuthResponseFactory20200115).to(AuthResponseFactory20200115)
-    container.bind<AuthResponseFactoryResolver>(TYPES.AuthResponseFactoryResolver).to(AuthResponseFactoryResolver)
-    container.bind<KeyParamsFactory>(TYPES.KeyParamsFactory).to(KeyParamsFactory)
+    container.bind<UAParser>(TYPES.Auth_DeviceDetector).toConstantValue(new UAParser())
+    container.bind<SessionService>(TYPES.Auth_SessionService).to(SessionService)
+    container.bind<AuthResponseFactory20161215>(TYPES.Auth_AuthResponseFactory20161215).to(AuthResponseFactory20161215)
+    container.bind<AuthResponseFactory20190520>(TYPES.Auth_AuthResponseFactory20190520).to(AuthResponseFactory20190520)
+    container.bind<AuthResponseFactory20200115>(TYPES.Auth_AuthResponseFactory20200115).to(AuthResponseFactory20200115)
+    container.bind<AuthResponseFactoryResolver>(TYPES.Auth_AuthResponseFactoryResolver).to(AuthResponseFactoryResolver)
+    container.bind<KeyParamsFactory>(TYPES.Auth_KeyParamsFactory).to(KeyParamsFactory)
     container
-      .bind<TokenDecoderInterface<SessionTokenData>>(TYPES.SessionTokenDecoder)
-      .toConstantValue(new TokenDecoder<SessionTokenData>(container.get(TYPES.JWT_SECRET)))
+      .bind<TokenDecoderInterface<SessionTokenData>>(TYPES.Auth_SessionTokenDecoder)
+      .toConstantValue(new TokenDecoder<SessionTokenData>(container.get(TYPES.Auth_JWT_SECRET)))
     container
-      .bind<TokenDecoderInterface<SessionTokenData>>(TYPES.FallbackSessionTokenDecoder)
-      .toConstantValue(new TokenDecoder<SessionTokenData>(container.get(TYPES.LEGACY_JWT_SECRET)))
+      .bind<TokenDecoderInterface<SessionTokenData>>(TYPES.Auth_FallbackSessionTokenDecoder)
+      .toConstantValue(new TokenDecoder<SessionTokenData>(container.get(TYPES.Auth_LEGACY_JWT_SECRET)))
     container
-      .bind<TokenDecoderInterface<CrossServiceTokenData>>(TYPES.CrossServiceTokenDecoder)
-      .toConstantValue(new TokenDecoder<CrossServiceTokenData>(container.get(TYPES.AUTH_JWT_SECRET)))
+      .bind<TokenDecoderInterface<CrossServiceTokenData>>(TYPES.Auth_CrossServiceTokenDecoder)
+      .toConstantValue(new TokenDecoder<CrossServiceTokenData>(container.get(TYPES.Auth_AUTH_JWT_SECRET)))
     container
-      .bind<TokenDecoderInterface<OfflineUserTokenData>>(TYPES.OfflineUserTokenDecoder)
-      .toConstantValue(new TokenDecoder<OfflineUserTokenData>(container.get(TYPES.AUTH_JWT_SECRET)))
+      .bind<TokenDecoderInterface<OfflineUserTokenData>>(TYPES.Auth_OfflineUserTokenDecoder)
+      .toConstantValue(new TokenDecoder<OfflineUserTokenData>(container.get(TYPES.Auth_AUTH_JWT_SECRET)))
     container
-      .bind<TokenDecoderInterface<WebSocketConnectionTokenData>>(TYPES.WebSocketConnectionTokenDecoder)
+      .bind<TokenDecoderInterface<WebSocketConnectionTokenData>>(TYPES.Auth_WebSocketConnectionTokenDecoder)
       .toConstantValue(
-        new TokenDecoder<WebSocketConnectionTokenData>(container.get(TYPES.WEB_SOCKET_CONNECTION_TOKEN_SECRET)),
+        new TokenDecoder<WebSocketConnectionTokenData>(container.get(TYPES.Auth_WEB_SOCKET_CONNECTION_TOKEN_SECRET)),
       )
     container
-      .bind<TokenEncoderInterface<OfflineUserTokenData>>(TYPES.OfflineUserTokenEncoder)
-      .toConstantValue(new TokenEncoder<OfflineUserTokenData>(container.get(TYPES.AUTH_JWT_SECRET)))
+      .bind<TokenEncoderInterface<OfflineUserTokenData>>(TYPES.Auth_OfflineUserTokenEncoder)
+      .toConstantValue(new TokenEncoder<OfflineUserTokenData>(container.get(TYPES.Auth_AUTH_JWT_SECRET)))
     container
-      .bind<TokenEncoderInterface<SessionTokenData>>(TYPES.SessionTokenEncoder)
-      .toConstantValue(new TokenEncoder<SessionTokenData>(container.get(TYPES.JWT_SECRET)))
+      .bind<TokenEncoderInterface<SessionTokenData>>(TYPES.Auth_SessionTokenEncoder)
+      .toConstantValue(new TokenEncoder<SessionTokenData>(container.get(TYPES.Auth_JWT_SECRET)))
     container
-      .bind<TokenEncoderInterface<CrossServiceTokenData>>(TYPES.CrossServiceTokenEncoder)
-      .toConstantValue(new TokenEncoder<CrossServiceTokenData>(container.get(TYPES.AUTH_JWT_SECRET)))
+      .bind<TokenEncoderInterface<CrossServiceTokenData>>(TYPES.Auth_CrossServiceTokenEncoder)
+      .toConstantValue(new TokenEncoder<CrossServiceTokenData>(container.get(TYPES.Auth_AUTH_JWT_SECRET)))
     container
-      .bind<TokenEncoderInterface<ValetTokenData>>(TYPES.ValetTokenEncoder)
-      .toConstantValue(new TokenEncoder<ValetTokenData>(container.get(TYPES.VALET_TOKEN_SECRET)))
-    container.bind<AuthenticationMethodResolver>(TYPES.AuthenticationMethodResolver).to(AuthenticationMethodResolver)
-    container.bind<DomainEventFactory>(TYPES.DomainEventFactory).to(DomainEventFactory)
-    container.bind<AxiosInstance>(TYPES.HTTPClient).toConstantValue(axios.create())
-    container.bind<CrypterInterface>(TYPES.Crypter).to(CrypterNode)
-    container.bind<SettingServiceInterface>(TYPES.SettingService).to(SettingService)
-    container.bind<SubscriptionSettingServiceInterface>(TYPES.SubscriptionSettingService).to(SubscriptionSettingService)
-    container.bind<OfflineSettingServiceInterface>(TYPES.OfflineSettingService).to(OfflineSettingService)
-    container.bind<CryptoNode>(TYPES.CryptoNode).toConstantValue(new CryptoNode())
-    container.bind<ContentDecoderInterface>(TYPES.ContenDecoder).toConstantValue(new ContentDecoder())
-    container.bind<ClientServiceInterface>(TYPES.WebSocketsClientService).to(WebSocketsClientService)
-    container.bind<RoleServiceInterface>(TYPES.RoleService).to(RoleService)
-    container.bind<RoleToSubscriptionMapInterface>(TYPES.RoleToSubscriptionMap).to(RoleToSubscriptionMap)
-    container.bind<SettingsAssociationServiceInterface>(TYPES.SettingsAssociationService).to(SettingsAssociationService)
+      .bind<TokenEncoderInterface<ValetTokenData>>(TYPES.Auth_ValetTokenEncoder)
+      .toConstantValue(new TokenEncoder<ValetTokenData>(container.get(TYPES.Auth_VALET_TOKEN_SECRET)))
     container
-      .bind<SubscriptionSettingsAssociationServiceInterface>(TYPES.SubscriptionSettingsAssociationService)
+      .bind<AuthenticationMethodResolver>(TYPES.Auth_AuthenticationMethodResolver)
+      .to(AuthenticationMethodResolver)
+    container.bind<DomainEventFactory>(TYPES.Auth_DomainEventFactory).to(DomainEventFactory)
+    container.bind<AxiosInstance>(TYPES.Auth_HTTPClient).toConstantValue(axios.create())
+    container.bind<CrypterInterface>(TYPES.Auth_Crypter).to(CrypterNode)
+    container.bind<SettingServiceInterface>(TYPES.Auth_SettingService).to(SettingService)
+    container
+      .bind<SubscriptionSettingServiceInterface>(TYPES.Auth_SubscriptionSettingService)
+      .to(SubscriptionSettingService)
+    container.bind<OfflineSettingServiceInterface>(TYPES.Auth_OfflineSettingService).to(OfflineSettingService)
+    container.bind<CryptoNode>(TYPES.Auth_CryptoNode).toConstantValue(new CryptoNode())
+    container.bind<ContentDecoderInterface>(TYPES.Auth_ContenDecoder).toConstantValue(new ContentDecoder())
+    container.bind<ClientServiceInterface>(TYPES.Auth_WebSocketsClientService).to(WebSocketsClientService)
+    container.bind<RoleServiceInterface>(TYPES.Auth_RoleService).to(RoleService)
+    container.bind<RoleToSubscriptionMapInterface>(TYPES.Auth_RoleToSubscriptionMap).to(RoleToSubscriptionMap)
+    container
+      .bind<SettingsAssociationServiceInterface>(TYPES.Auth_SettingsAssociationService)
+      .to(SettingsAssociationService)
+    container
+      .bind<SubscriptionSettingsAssociationServiceInterface>(TYPES.Auth_SubscriptionSettingsAssociationService)
       .to(SubscriptionSettingsAssociationService)
-    container.bind<FeatureServiceInterface>(TYPES.FeatureService).to(FeatureService)
-    container.bind<SettingInterpreterInterface>(TYPES.SettingInterpreter).to(SettingInterpreter)
-    container.bind<SettingDecrypterInterface>(TYPES.SettingDecrypter).to(SettingDecrypter)
+    container.bind<FeatureServiceInterface>(TYPES.Auth_FeatureService).to(FeatureService)
+    container.bind<SettingInterpreterInterface>(TYPES.Auth_SettingInterpreter).to(SettingInterpreter)
+    container.bind<SettingDecrypterInterface>(TYPES.Auth_SettingDecrypter).to(SettingDecrypter)
     container
-      .bind<SelectorInterface<ProtocolVersion>>(TYPES.ProtocolVersionSelector)
+      .bind<SelectorInterface<ProtocolVersion>>(TYPES.Auth_ProtocolVersionSelector)
       .toConstantValue(new DeterministicSelector<ProtocolVersion>())
     container
-      .bind<SelectorInterface<boolean>>(TYPES.BooleanSelector)
+      .bind<SelectorInterface<boolean>>(TYPES.Auth_BooleanSelector)
       .toConstantValue(new DeterministicSelector<boolean>())
-    container.bind<UserSubscriptionServiceInterface>(TYPES.UserSubscriptionService).to(UserSubscriptionService)
+    container.bind<UserSubscriptionServiceInterface>(TYPES.Auth_UserSubscriptionService).to(UserSubscriptionService)
 
     container
-      .bind<SNSDomainEventPublisher>(TYPES.DomainEventPublisher)
-      .toConstantValue(new SNSDomainEventPublisher(container.get(TYPES.SNS), container.get(TYPES.SNS_TOPIC_ARN)))
+      .bind<SNSDomainEventPublisher>(TYPES.Auth_DomainEventPublisher)
+      .toConstantValue(
+        new SNSDomainEventPublisher(container.get(TYPES.Auth_SNS), container.get(TYPES.Auth_SNS_TOPIC_ARN)),
+      )
 
     // use cases
     container
-      .bind<TraceSession>(TYPES.TraceSession)
+      .bind<TraceSession>(TYPES.Auth_TraceSession)
       .toConstantValue(
         new TraceSession(
-          container.get(TYPES.SessionTraceRepository),
-          container.get(TYPES.Timer),
-          container.get(TYPES.SESSION_TRACE_DAYS_TTL),
+          container.get(TYPES.Auth_SessionTraceRepository),
+          container.get(TYPES.Auth_Timer),
+          container.get(TYPES.Auth_SESSION_TRACE_DAYS_TTL),
         ),
       )
     container
-      .bind<PersistStatistics>(TYPES.PersistStatistics)
+      .bind<PersistStatistics>(TYPES.Auth_PersistStatistics)
       .toConstantValue(
         new PersistStatistics(
-          container.get(TYPES.SessionTraceRepository),
-          container.get(TYPES.DomainEventPublisher),
-          container.get(TYPES.DomainEventFactory),
-          container.get(TYPES.Timer),
+          container.get(TYPES.Auth_SessionTraceRepository),
+          container.get(TYPES.Auth_DomainEventPublisher),
+          container.get(TYPES.Auth_DomainEventFactory),
+          container.get(TYPES.Auth_Timer),
         ),
       )
     container
-      .bind<GenerateAuthenticatorRegistrationOptions>(TYPES.GenerateAuthenticatorRegistrationOptions)
+      .bind<GenerateAuthenticatorRegistrationOptions>(TYPES.Auth_GenerateAuthenticatorRegistrationOptions)
       .toConstantValue(
         new GenerateAuthenticatorRegistrationOptions(
-          container.get(TYPES.AuthenticatorRepository),
-          container.get(TYPES.AuthenticatorChallengeRepository),
-          container.get(TYPES.U2F_RELYING_PARTY_NAME),
-          container.get(TYPES.U2F_RELYING_PARTY_ID),
-          container.get(TYPES.UserRepository),
-          container.get(TYPES.FeatureService),
+          container.get(TYPES.Auth_AuthenticatorRepository),
+          container.get(TYPES.Auth_AuthenticatorChallengeRepository),
+          container.get(TYPES.Auth_U2F_RELYING_PARTY_NAME),
+          container.get(TYPES.Auth_U2F_RELYING_PARTY_ID),
+          container.get(TYPES.Auth_UserRepository),
+          container.get(TYPES.Auth_FeatureService),
         ),
       )
     container
-      .bind<VerifyAuthenticatorRegistrationResponse>(TYPES.VerifyAuthenticatorRegistrationResponse)
+      .bind<VerifyAuthenticatorRegistrationResponse>(TYPES.Auth_VerifyAuthenticatorRegistrationResponse)
       .toConstantValue(
         new VerifyAuthenticatorRegistrationResponse(
-          container.get(TYPES.AuthenticatorRepository),
-          container.get(TYPES.AuthenticatorChallengeRepository),
-          container.get(TYPES.U2F_RELYING_PARTY_ID),
-          container.get(TYPES.U2F_EXPECTED_ORIGIN),
-          container.get(TYPES.U2F_REQUIRE_USER_VERIFICATION),
-          container.get(TYPES.UserRepository),
-          container.get(TYPES.FeatureService),
+          container.get(TYPES.Auth_AuthenticatorRepository),
+          container.get(TYPES.Auth_AuthenticatorChallengeRepository),
+          container.get(TYPES.Auth_U2F_RELYING_PARTY_ID),
+          container.get(TYPES.Auth_U2F_EXPECTED_ORIGIN),
+          container.get(TYPES.Auth_U2F_REQUIRE_USER_VERIFICATION),
+          container.get(TYPES.Auth_UserRepository),
+          container.get(TYPES.Auth_FeatureService),
         ),
       )
     container
-      .bind<GenerateAuthenticatorAuthenticationOptions>(TYPES.GenerateAuthenticatorAuthenticationOptions)
+      .bind<GenerateAuthenticatorAuthenticationOptions>(TYPES.Auth_GenerateAuthenticatorAuthenticationOptions)
       .toConstantValue(
         new GenerateAuthenticatorAuthenticationOptions(
-          container.get(TYPES.UserRepository),
-          container.get(TYPES.AuthenticatorRepository),
-          container.get(TYPES.AuthenticatorChallengeRepository),
-          container.get(TYPES.PSEUDO_KEY_PARAMS_KEY),
+          container.get(TYPES.Auth_UserRepository),
+          container.get(TYPES.Auth_AuthenticatorRepository),
+          container.get(TYPES.Auth_AuthenticatorChallengeRepository),
+          container.get(TYPES.Auth_PSEUDO_KEY_PARAMS_KEY),
         ),
       )
     container
-      .bind<VerifyAuthenticatorAuthenticationResponse>(TYPES.VerifyAuthenticatorAuthenticationResponse)
+      .bind<VerifyAuthenticatorAuthenticationResponse>(TYPES.Auth_VerifyAuthenticatorAuthenticationResponse)
       .toConstantValue(
         new VerifyAuthenticatorAuthenticationResponse(
-          container.get(TYPES.AuthenticatorRepository),
-          container.get(TYPES.AuthenticatorChallengeRepository),
-          container.get(TYPES.U2F_RELYING_PARTY_ID),
-          container.get(TYPES.U2F_EXPECTED_ORIGIN),
-          container.get(TYPES.U2F_REQUIRE_USER_VERIFICATION),
+          container.get(TYPES.Auth_AuthenticatorRepository),
+          container.get(TYPES.Auth_AuthenticatorChallengeRepository),
+          container.get(TYPES.Auth_U2F_RELYING_PARTY_ID),
+          container.get(TYPES.Auth_U2F_EXPECTED_ORIGIN),
+          container.get(TYPES.Auth_U2F_REQUIRE_USER_VERIFICATION),
         ),
       )
     container
-      .bind<ListAuthenticators>(TYPES.ListAuthenticators)
+      .bind<ListAuthenticators>(TYPES.Auth_ListAuthenticators)
       .toConstantValue(
         new ListAuthenticators(
-          container.get(TYPES.AuthenticatorRepository),
-          container.get(TYPES.UserRepository),
-          container.get(TYPES.FeatureService),
+          container.get(TYPES.Auth_AuthenticatorRepository),
+          container.get(TYPES.Auth_UserRepository),
+          container.get(TYPES.Auth_FeatureService),
         ),
       )
     container
-      .bind<DeleteAuthenticator>(TYPES.DeleteAuthenticator)
+      .bind<DeleteAuthenticator>(TYPES.Auth_DeleteAuthenticator)
       .toConstantValue(
         new DeleteAuthenticator(
-          container.get(TYPES.AuthenticatorRepository),
-          container.get(TYPES.UserRepository),
-          container.get(TYPES.FeatureService),
+          container.get(TYPES.Auth_AuthenticatorRepository),
+          container.get(TYPES.Auth_UserRepository),
+          container.get(TYPES.Auth_FeatureService),
         ),
       )
     container
-      .bind<GenerateRecoveryCodes>(TYPES.GenerateRecoveryCodes)
+      .bind<GenerateRecoveryCodes>(TYPES.Auth_GenerateRecoveryCodes)
       .toConstantValue(
         new GenerateRecoveryCodes(
-          container.get(TYPES.UserRepository),
-          container.get(TYPES.SettingService),
-          container.get(TYPES.CryptoNode),
+          container.get(TYPES.Auth_UserRepository),
+          container.get(TYPES.Auth_SettingService),
+          container.get(TYPES.Auth_CryptoNode),
         ),
       )
 
     container
-      .bind<CleanupSessionTraces>(TYPES.CleanupSessionTraces)
-      .toConstantValue(new CleanupSessionTraces(container.get(TYPES.SessionTraceRepository)))
+      .bind<CleanupSessionTraces>(TYPES.Auth_CleanupSessionTraces)
+      .toConstantValue(new CleanupSessionTraces(container.get(TYPES.Auth_SessionTraceRepository)))
     container
-      .bind<CleanupExpiredSessions>(TYPES.CleanupExpiredSessions)
-      .toConstantValue(new CleanupExpiredSessions(container.get(TYPES.SessionRepository)))
-    container.bind<AuthenticateUser>(TYPES.AuthenticateUser).to(AuthenticateUser)
-    container.bind<AuthenticateRequest>(TYPES.AuthenticateRequest).to(AuthenticateRequest)
-    container.bind<RefreshSessionToken>(TYPES.RefreshSessionToken).to(RefreshSessionToken)
-    container.bind<SignIn>(TYPES.SignIn).to(SignIn)
-    container.bind<VerifyMFA>(TYPES.VerifyMFA).to(VerifyMFA)
-    container.bind<ClearLoginAttempts>(TYPES.ClearLoginAttempts).to(ClearLoginAttempts)
-    container.bind<IncreaseLoginAttempts>(TYPES.IncreaseLoginAttempts).to(IncreaseLoginAttempts)
+      .bind<CleanupExpiredSessions>(TYPES.Auth_CleanupExpiredSessions)
+      .toConstantValue(new CleanupExpiredSessions(container.get(TYPES.Auth_SessionRepository)))
+    container.bind<AuthenticateUser>(TYPES.Auth_AuthenticateUser).to(AuthenticateUser)
+    container.bind<AuthenticateRequest>(TYPES.Auth_AuthenticateRequest).to(AuthenticateRequest)
+    container.bind<RefreshSessionToken>(TYPES.Auth_RefreshSessionToken).to(RefreshSessionToken)
+    container.bind<SignIn>(TYPES.Auth_SignIn).to(SignIn)
+    container.bind<VerifyMFA>(TYPES.Auth_VerifyMFA).to(VerifyMFA)
+    container.bind<ClearLoginAttempts>(TYPES.Auth_ClearLoginAttempts).to(ClearLoginAttempts)
+    container.bind<IncreaseLoginAttempts>(TYPES.Auth_IncreaseLoginAttempts).to(IncreaseLoginAttempts)
     container
-      .bind<GetUserKeyParamsRecovery>(TYPES.GetUserKeyParamsRecovery)
+      .bind<GetUserKeyParamsRecovery>(TYPES.Auth_GetUserKeyParamsRecovery)
       .toConstantValue(
         new GetUserKeyParamsRecovery(
-          container.get(TYPES.KeyParamsFactory),
-          container.get(TYPES.UserRepository),
-          container.get(TYPES.PKCERepository),
-          container.get(TYPES.SettingService),
+          container.get(TYPES.Auth_KeyParamsFactory),
+          container.get(TYPES.Auth_UserRepository),
+          container.get(TYPES.Auth_PKCERepository),
+          container.get(TYPES.Auth_SettingService),
         ),
       )
-    container.bind<GetUserKeyParams>(TYPES.GetUserKeyParams).to(GetUserKeyParams)
-    container.bind<UpdateUser>(TYPES.UpdateUser).to(UpdateUser)
-    container.bind<Register>(TYPES.Register).to(Register)
-    container.bind<GetActiveSessionsForUser>(TYPES.GetActiveSessionsForUser).to(GetActiveSessionsForUser)
-    container.bind<DeletePreviousSessionsForUser>(TYPES.DeletePreviousSessionsForUser).to(DeletePreviousSessionsForUser)
-    container.bind<DeleteSessionForUser>(TYPES.DeleteSessionForUser).to(DeleteSessionForUser)
-    container.bind<ChangeCredentials>(TYPES.ChangeCredentials).to(ChangeCredentials)
-    container.bind<GetSettings>(TYPES.GetSettings).to(GetSettings)
-    container.bind<GetSetting>(TYPES.GetSetting).to(GetSetting)
-    container.bind<GetUserFeatures>(TYPES.GetUserFeatures).to(GetUserFeatures)
-    container.bind<UpdateSetting>(TYPES.UpdateSetting).to(UpdateSetting)
-    container.bind<DeleteSetting>(TYPES.DeleteSetting).to(DeleteSetting)
+    container.bind<GetUserKeyParams>(TYPES.Auth_GetUserKeyParams).to(GetUserKeyParams)
+    container.bind<UpdateUser>(TYPES.Auth_UpdateUser).to(UpdateUser)
+    container.bind<Register>(TYPES.Auth_Register).to(Register)
+    container.bind<GetActiveSessionsForUser>(TYPES.Auth_GetActiveSessionsForUser).to(GetActiveSessionsForUser)
     container
-      .bind<SignInWithRecoveryCodes>(TYPES.SignInWithRecoveryCodes)
+      .bind<DeletePreviousSessionsForUser>(TYPES.Auth_DeletePreviousSessionsForUser)
+      .to(DeletePreviousSessionsForUser)
+    container.bind<DeleteSessionForUser>(TYPES.Auth_DeleteSessionForUser).to(DeleteSessionForUser)
+    container.bind<ChangeCredentials>(TYPES.Auth_ChangeCredentials).to(ChangeCredentials)
+    container.bind<GetSettings>(TYPES.Auth_GetSettings).to(GetSettings)
+    container.bind<GetSetting>(TYPES.Auth_GetSetting).to(GetSetting)
+    container.bind<GetUserFeatures>(TYPES.Auth_GetUserFeatures).to(GetUserFeatures)
+    container.bind<UpdateSetting>(TYPES.Auth_UpdateSetting).to(UpdateSetting)
+    container.bind<DeleteSetting>(TYPES.Auth_DeleteSetting).to(DeleteSetting)
+    container
+      .bind<SignInWithRecoveryCodes>(TYPES.Auth_SignInWithRecoveryCodes)
       .toConstantValue(
         new SignInWithRecoveryCodes(
-          container.get(TYPES.UserRepository),
-          container.get(TYPES.AuthResponseFactory20200115),
-          container.get(TYPES.PKCERepository),
-          container.get(TYPES.Crypter),
-          container.get(TYPES.SettingService),
-          container.get(TYPES.GenerateRecoveryCodes),
-          container.get(TYPES.IncreaseLoginAttempts),
-          container.get(TYPES.ClearLoginAttempts),
-          container.get(TYPES.DeleteSetting),
-          container.get(TYPES.AuthenticatorRepository),
+          container.get(TYPES.Auth_UserRepository),
+          container.get(TYPES.Auth_AuthResponseFactory20200115),
+          container.get(TYPES.Auth_PKCERepository),
+          container.get(TYPES.Auth_Crypter),
+          container.get(TYPES.Auth_SettingService),
+          container.get(TYPES.Auth_GenerateRecoveryCodes),
+          container.get(TYPES.Auth_IncreaseLoginAttempts),
+          container.get(TYPES.Auth_ClearLoginAttempts),
+          container.get(TYPES.Auth_DeleteSetting),
+          container.get(TYPES.Auth_AuthenticatorRepository),
         ),
       )
-    container.bind<DeleteAccount>(TYPES.DeleteAccount).to(DeleteAccount)
-    container.bind<GetUserSubscription>(TYPES.GetUserSubscription).to(GetUserSubscription)
-    container.bind<GetUserOfflineSubscription>(TYPES.GetUserOfflineSubscription).to(GetUserOfflineSubscription)
-    container.bind<CreateSubscriptionToken>(TYPES.CreateSubscriptionToken).to(CreateSubscriptionToken)
-    container.bind<AuthenticateSubscriptionToken>(TYPES.AuthenticateSubscriptionToken).to(AuthenticateSubscriptionToken)
+    container.bind<DeleteAccount>(TYPES.Auth_DeleteAccount).to(DeleteAccount)
+    container.bind<GetUserSubscription>(TYPES.Auth_GetUserSubscription).to(GetUserSubscription)
+    container.bind<GetUserOfflineSubscription>(TYPES.Auth_GetUserOfflineSubscription).to(GetUserOfflineSubscription)
+    container.bind<CreateSubscriptionToken>(TYPES.Auth_CreateSubscriptionToken).to(CreateSubscriptionToken)
     container
-      .bind<AuthenticateOfflineSubscriptionToken>(TYPES.AuthenticateOfflineSubscriptionToken)
+      .bind<AuthenticateSubscriptionToken>(TYPES.Auth_AuthenticateSubscriptionToken)
+      .to(AuthenticateSubscriptionToken)
+    container
+      .bind<AuthenticateOfflineSubscriptionToken>(TYPES.Auth_AuthenticateOfflineSubscriptionToken)
       .to(AuthenticateOfflineSubscriptionToken)
     container
-      .bind<CreateOfflineSubscriptionToken>(TYPES.CreateOfflineSubscriptionToken)
+      .bind<CreateOfflineSubscriptionToken>(TYPES.Auth_CreateOfflineSubscriptionToken)
       .to(CreateOfflineSubscriptionToken)
-    container.bind<CreateValetToken>(TYPES.CreateValetToken).to(CreateValetToken)
-    container.bind<CreateListedAccount>(TYPES.CreateListedAccount).to(CreateListedAccount)
-    container.bind<InviteToSharedSubscription>(TYPES.InviteToSharedSubscription).to(InviteToSharedSubscription)
+    container.bind<CreateValetToken>(TYPES.Auth_CreateValetToken).to(CreateValetToken)
+    container.bind<CreateListedAccount>(TYPES.Auth_CreateListedAccount).to(CreateListedAccount)
+    container.bind<InviteToSharedSubscription>(TYPES.Auth_InviteToSharedSubscription).to(InviteToSharedSubscription)
     container
-      .bind<AcceptSharedSubscriptionInvitation>(TYPES.AcceptSharedSubscriptionInvitation)
+      .bind<AcceptSharedSubscriptionInvitation>(TYPES.Auth_AcceptSharedSubscriptionInvitation)
       .to(AcceptSharedSubscriptionInvitation)
     container
-      .bind<DeclineSharedSubscriptionInvitation>(TYPES.DeclineSharedSubscriptionInvitation)
+      .bind<DeclineSharedSubscriptionInvitation>(TYPES.Auth_DeclineSharedSubscriptionInvitation)
       .to(DeclineSharedSubscriptionInvitation)
     container
-      .bind<CancelSharedSubscriptionInvitation>(TYPES.CancelSharedSubscriptionInvitation)
+      .bind<CancelSharedSubscriptionInvitation>(TYPES.Auth_CancelSharedSubscriptionInvitation)
       .to(CancelSharedSubscriptionInvitation)
     container
-      .bind<ListSharedSubscriptionInvitations>(TYPES.ListSharedSubscriptionInvitations)
+      .bind<ListSharedSubscriptionInvitations>(TYPES.Auth_ListSharedSubscriptionInvitations)
       .to(ListSharedSubscriptionInvitations)
-    container.bind<VerifyPredicate>(TYPES.VerifyPredicate).to(VerifyPredicate)
-    container.bind<CreateCrossServiceToken>(TYPES.CreateCrossServiceToken).to(CreateCrossServiceToken)
-    container.bind<ProcessUserRequest>(TYPES.ProcessUserRequest).to(ProcessUserRequest)
+    container.bind<VerifyPredicate>(TYPES.Auth_VerifyPredicate).to(VerifyPredicate)
+    container.bind<CreateCrossServiceToken>(TYPES.Auth_CreateCrossServiceToken).to(CreateCrossServiceToken)
+    container.bind<ProcessUserRequest>(TYPES.Auth_ProcessUserRequest).to(ProcessUserRequest)
 
     // Controller
-    container.bind<AuthController>(TYPES.AuthController).to(AuthController)
     container
-      .bind<AuthenticatorsController>(TYPES.AuthenticatorsController)
+      .bind<ControllerContainerInterface>(TYPES.Auth_ControllerContainer)
+      .toConstantValue(controllerConatiner ?? new ControllerContainer())
+    container
+      .bind<AuthController>(TYPES.Auth_AuthController)
       .toConstantValue(
-        new AuthenticatorsController(
-          container.get(TYPES.GenerateAuthenticatorRegistrationOptions),
-          container.get(TYPES.VerifyAuthenticatorRegistrationResponse),
-          container.get(TYPES.GenerateAuthenticatorAuthenticationOptions),
-          container.get(TYPES.ListAuthenticators),
-          container.get(TYPES.DeleteAuthenticator),
-          container.get(TYPES.AuthenticatorHttpMapper),
+        new AuthController(
+          container.get(TYPES.Auth_ClearLoginAttempts),
+          container.get(TYPES.Auth_Register),
+          container.get(TYPES.Auth_DomainEventPublisher),
+          container.get(TYPES.Auth_DomainEventFactory),
+          container.get(TYPES.Auth_SignInWithRecoveryCodes),
+          container.get(TYPES.Auth_GetUserKeyParamsRecovery),
+          container.get(TYPES.Auth_GenerateRecoveryCodes),
+          container.get(TYPES.Auth_Logger),
+          container.get(TYPES.Auth_SessionService),
         ),
       )
-    container.bind<SubscriptionInvitesController>(TYPES.SubscriptionInvitesController).to(SubscriptionInvitesController)
-    container.bind<UserRequestsController>(TYPES.UserRequestsController).to(UserRequestsController)
+    container
+      .bind<AuthenticatorsController>(TYPES.Auth_AuthenticatorsController)
+      .toConstantValue(
+        new AuthenticatorsController(
+          container.get(TYPES.Auth_GenerateAuthenticatorRegistrationOptions),
+          container.get(TYPES.Auth_VerifyAuthenticatorRegistrationResponse),
+          container.get(TYPES.Auth_GenerateAuthenticatorAuthenticationOptions),
+          container.get(TYPES.Auth_ListAuthenticators),
+          container.get(TYPES.Auth_DeleteAuthenticator),
+          container.get(TYPES.Auth_AuthenticatorHttpMapper),
+        ),
+      )
+    container
+      .bind<SubscriptionInvitesController>(TYPES.Auth_SubscriptionInvitesController)
+      .to(SubscriptionInvitesController)
+    container.bind<UserRequestsController>(TYPES.Auth_UserRequestsController).to(UserRequestsController)
 
     // Handlers
-    container.bind<UserRegisteredEventHandler>(TYPES.UserRegisteredEventHandler).to(UserRegisteredEventHandler)
+    container.bind<UserRegisteredEventHandler>(TYPES.Auth_UserRegisteredEventHandler).to(UserRegisteredEventHandler)
     container
-      .bind<AccountDeletionRequestedEventHandler>(TYPES.AccountDeletionRequestedEventHandler)
+      .bind<AccountDeletionRequestedEventHandler>(TYPES.Auth_AccountDeletionRequestedEventHandler)
       .to(AccountDeletionRequestedEventHandler)
     container
-      .bind<SubscriptionPurchasedEventHandler>(TYPES.SubscriptionPurchasedEventHandler)
+      .bind<SubscriptionPurchasedEventHandler>(TYPES.Auth_SubscriptionPurchasedEventHandler)
       .to(SubscriptionPurchasedEventHandler)
     container
-      .bind<SubscriptionCancelledEventHandler>(TYPES.SubscriptionCancelledEventHandler)
+      .bind<SubscriptionCancelledEventHandler>(TYPES.Auth_SubscriptionCancelledEventHandler)
       .to(SubscriptionCancelledEventHandler)
     container
-      .bind<SubscriptionRenewedEventHandler>(TYPES.SubscriptionRenewedEventHandler)
+      .bind<SubscriptionRenewedEventHandler>(TYPES.Auth_SubscriptionRenewedEventHandler)
       .to(SubscriptionRenewedEventHandler)
     container
-      .bind<SubscriptionRefundedEventHandler>(TYPES.SubscriptionRefundedEventHandler)
+      .bind<SubscriptionRefundedEventHandler>(TYPES.Auth_SubscriptionRefundedEventHandler)
       .to(SubscriptionRefundedEventHandler)
     container
-      .bind<SubscriptionExpiredEventHandler>(TYPES.SubscriptionExpiredEventHandler)
+      .bind<SubscriptionExpiredEventHandler>(TYPES.Auth_SubscriptionExpiredEventHandler)
       .to(SubscriptionExpiredEventHandler)
     container
-      .bind<SubscriptionSyncRequestedEventHandler>(TYPES.SubscriptionSyncRequestedEventHandler)
+      .bind<SubscriptionSyncRequestedEventHandler>(TYPES.Auth_SubscriptionSyncRequestedEventHandler)
       .to(SubscriptionSyncRequestedEventHandler)
     container
-      .bind<ExtensionKeyGrantedEventHandler>(TYPES.ExtensionKeyGrantedEventHandler)
+      .bind<ExtensionKeyGrantedEventHandler>(TYPES.Auth_ExtensionKeyGrantedEventHandler)
       .to(ExtensionKeyGrantedEventHandler)
     container
-      .bind<SubscriptionReassignedEventHandler>(TYPES.SubscriptionReassignedEventHandler)
+      .bind<SubscriptionReassignedEventHandler>(TYPES.Auth_SubscriptionReassignedEventHandler)
       .to(SubscriptionReassignedEventHandler)
-    container.bind<UserEmailChangedEventHandler>(TYPES.UserEmailChangedEventHandler).to(UserEmailChangedEventHandler)
-    container.bind<FileUploadedEventHandler>(TYPES.FileUploadedEventHandler).to(FileUploadedEventHandler)
-    container.bind<FileRemovedEventHandler>(TYPES.FileRemovedEventHandler).to(FileRemovedEventHandler)
     container
-      .bind<ListedAccountCreatedEventHandler>(TYPES.ListedAccountCreatedEventHandler)
+      .bind<UserEmailChangedEventHandler>(TYPES.Auth_UserEmailChangedEventHandler)
+      .to(UserEmailChangedEventHandler)
+    container.bind<FileUploadedEventHandler>(TYPES.Auth_FileUploadedEventHandler).to(FileUploadedEventHandler)
+    container.bind<FileRemovedEventHandler>(TYPES.Auth_FileRemovedEventHandler).to(FileRemovedEventHandler)
+    container
+      .bind<ListedAccountCreatedEventHandler>(TYPES.Auth_ListedAccountCreatedEventHandler)
       .to(ListedAccountCreatedEventHandler)
     container
-      .bind<ListedAccountDeletedEventHandler>(TYPES.ListedAccountDeletedEventHandler)
+      .bind<ListedAccountDeletedEventHandler>(TYPES.Auth_ListedAccountDeletedEventHandler)
       .to(ListedAccountDeletedEventHandler)
     container
-      .bind<UserDisabledSessionUserAgentLoggingEventHandler>(TYPES.UserDisabledSessionUserAgentLoggingEventHandler)
+      .bind<UserDisabledSessionUserAgentLoggingEventHandler>(TYPES.Auth_UserDisabledSessionUserAgentLoggingEventHandler)
       .to(UserDisabledSessionUserAgentLoggingEventHandler)
     container
-      .bind<SharedSubscriptionInvitationCreatedEventHandler>(TYPES.SharedSubscriptionInvitationCreatedEventHandler)
+      .bind<SharedSubscriptionInvitationCreatedEventHandler>(TYPES.Auth_SharedSubscriptionInvitationCreatedEventHandler)
       .to(SharedSubscriptionInvitationCreatedEventHandler)
     container
-      .bind<PredicateVerificationRequestedEventHandler>(TYPES.PredicateVerificationRequestedEventHandler)
+      .bind<PredicateVerificationRequestedEventHandler>(TYPES.Auth_PredicateVerificationRequestedEventHandler)
       .to(PredicateVerificationRequestedEventHandler)
 
     container
-      .bind<EmailSubscriptionUnsubscribedEventHandler>(TYPES.EmailSubscriptionUnsubscribedEventHandler)
+      .bind<EmailSubscriptionUnsubscribedEventHandler>(TYPES.Auth_EmailSubscriptionUnsubscribedEventHandler)
       .toConstantValue(
         new EmailSubscriptionUnsubscribedEventHandler(
-          container.get(TYPES.UserRepository),
-          container.get(TYPES.SettingService),
+          container.get(TYPES.Auth_UserRepository),
+          container.get(TYPES.Auth_SettingService),
         ),
       )
 
     const eventHandlers: Map<string, DomainEventHandlerInterface> = new Map([
-      ['USER_REGISTERED', container.get(TYPES.UserRegisteredEventHandler)],
-      ['ACCOUNT_DELETION_REQUESTED', container.get(TYPES.AccountDeletionRequestedEventHandler)],
-      ['SUBSCRIPTION_PURCHASED', container.get(TYPES.SubscriptionPurchasedEventHandler)],
-      ['SUBSCRIPTION_CANCELLED', container.get(TYPES.SubscriptionCancelledEventHandler)],
-      ['SUBSCRIPTION_RENEWED', container.get(TYPES.SubscriptionRenewedEventHandler)],
-      ['SUBSCRIPTION_REFUNDED', container.get(TYPES.SubscriptionRefundedEventHandler)],
-      ['SUBSCRIPTION_EXPIRED', container.get(TYPES.SubscriptionExpiredEventHandler)],
-      ['SUBSCRIPTION_SYNC_REQUESTED', container.get(TYPES.SubscriptionSyncRequestedEventHandler)],
-      ['EXTENSION_KEY_GRANTED', container.get(TYPES.ExtensionKeyGrantedEventHandler)],
-      ['SUBSCRIPTION_REASSIGNED', container.get(TYPES.SubscriptionReassignedEventHandler)],
-      ['USER_EMAIL_CHANGED', container.get(TYPES.UserEmailChangedEventHandler)],
-      ['FILE_UPLOADED', container.get(TYPES.FileUploadedEventHandler)],
-      ['FILE_REMOVED', container.get(TYPES.FileRemovedEventHandler)],
-      ['LISTED_ACCOUNT_CREATED', container.get(TYPES.ListedAccountCreatedEventHandler)],
-      ['LISTED_ACCOUNT_DELETED', container.get(TYPES.ListedAccountDeletedEventHandler)],
+      ['USER_REGISTERED', container.get(TYPES.Auth_UserRegisteredEventHandler)],
+      ['ACCOUNT_DELETION_REQUESTED', container.get(TYPES.Auth_AccountDeletionRequestedEventHandler)],
+      ['SUBSCRIPTION_PURCHASED', container.get(TYPES.Auth_SubscriptionPurchasedEventHandler)],
+      ['SUBSCRIPTION_CANCELLED', container.get(TYPES.Auth_SubscriptionCancelledEventHandler)],
+      ['SUBSCRIPTION_RENEWED', container.get(TYPES.Auth_SubscriptionRenewedEventHandler)],
+      ['SUBSCRIPTION_REFUNDED', container.get(TYPES.Auth_SubscriptionRefundedEventHandler)],
+      ['SUBSCRIPTION_EXPIRED', container.get(TYPES.Auth_SubscriptionExpiredEventHandler)],
+      ['SUBSCRIPTION_SYNC_REQUESTED', container.get(TYPES.Auth_SubscriptionSyncRequestedEventHandler)],
+      ['EXTENSION_KEY_GRANTED', container.get(TYPES.Auth_ExtensionKeyGrantedEventHandler)],
+      ['SUBSCRIPTION_REASSIGNED', container.get(TYPES.Auth_SubscriptionReassignedEventHandler)],
+      ['USER_EMAIL_CHANGED', container.get(TYPES.Auth_UserEmailChangedEventHandler)],
+      ['FILE_UPLOADED', container.get(TYPES.Auth_FileUploadedEventHandler)],
+      ['FILE_REMOVED', container.get(TYPES.Auth_FileRemovedEventHandler)],
+      ['LISTED_ACCOUNT_CREATED', container.get(TYPES.Auth_ListedAccountCreatedEventHandler)],
+      ['LISTED_ACCOUNT_DELETED', container.get(TYPES.Auth_ListedAccountDeletedEventHandler)],
       [
         'USER_DISABLED_SESSION_USER_AGENT_LOGGING',
-        container.get(TYPES.UserDisabledSessionUserAgentLoggingEventHandler),
+        container.get(TYPES.Auth_UserDisabledSessionUserAgentLoggingEventHandler),
       ],
-      ['SHARED_SUBSCRIPTION_INVITATION_CREATED', container.get(TYPES.SharedSubscriptionInvitationCreatedEventHandler)],
-      ['PREDICATE_VERIFICATION_REQUESTED', container.get(TYPES.PredicateVerificationRequestedEventHandler)],
-      ['EMAIL_SUBSCRIPTION_UNSUBSCRIBED', container.get(TYPES.EmailSubscriptionUnsubscribedEventHandler)],
+      [
+        'SHARED_SUBSCRIPTION_INVITATION_CREATED',
+        container.get(TYPES.Auth_SharedSubscriptionInvitationCreatedEventHandler),
+      ],
+      ['PREDICATE_VERIFICATION_REQUESTED', container.get(TYPES.Auth_PredicateVerificationRequestedEventHandler)],
+      ['EMAIL_SUBSCRIPTION_UNSUBSCRIBED', container.get(TYPES.Auth_EmailSubscriptionUnsubscribedEventHandler)],
     ])
 
     container
-      .bind<DomainEventMessageHandlerInterface>(TYPES.DomainEventMessageHandler)
+      .bind<DomainEventMessageHandlerInterface>(TYPES.Auth_DomainEventMessageHandler)
       .toConstantValue(
         env.get('NEW_RELIC_ENABLED', true) === 'true'
-          ? new SQSNewRelicEventMessageHandler(eventHandlers, container.get(TYPES.Logger))
-          : new SQSEventMessageHandler(eventHandlers, container.get(TYPES.Logger)),
+          ? new SQSNewRelicEventMessageHandler(eventHandlers, container.get(TYPES.Auth_Logger))
+          : new SQSEventMessageHandler(eventHandlers, container.get(TYPES.Auth_Logger)),
       )
     container
-      .bind<DomainEventSubscriberFactoryInterface>(TYPES.DomainEventSubscriberFactory)
+      .bind<DomainEventSubscriberFactoryInterface>(TYPES.Auth_DomainEventSubscriberFactory)
       .toConstantValue(
         new SQSDomainEventSubscriberFactory(
-          container.get(TYPES.SQS),
-          container.get(TYPES.SQS_QUEUE_URL),
-          container.get(TYPES.DomainEventMessageHandler),
+          container.get(TYPES.Auth_SQS),
+          container.get(TYPES.Auth_SQS_QUEUE_URL),
+          container.get(TYPES.Auth_DomainEventMessageHandler),
+        ),
+      )
+
+    container
+      .bind<InversifyExpressAuthController>(TYPES.Auth_InversifyExpressAuthController)
+      .toConstantValue(
+        new InversifyExpressAuthController(
+          container.get(TYPES.Auth_VerifyMFA),
+          container.get(TYPES.Auth_SignIn),
+          container.get(TYPES.Auth_GetUserKeyParams),
+          container.get(TYPES.Auth_ClearLoginAttempts),
+          container.get(TYPES.Auth_IncreaseLoginAttempts),
+          container.get(TYPES.Auth_Logger),
+          container.get(TYPES.Auth_AuthController),
+          container.get(TYPES.Auth_ControllerContainer),
+        ),
+      )
+    container
+      .bind<InversifyExpressAuthenticatorsController>(TYPES.Auth_InversifyExpressAuthenticatorsController)
+      .toConstantValue(
+        new InversifyExpressAuthenticatorsController(
+          container.get(TYPES.Auth_AuthenticatorsController),
+          container.get(TYPES.Auth_ControllerContainer),
+        ),
+      )
+    container
+      .bind<InversifyExpressSubscriptionInvitesController>(TYPES.Auth_InversifyExpressSubscriptionInvitesController)
+      .toConstantValue(
+        new InversifyExpressSubscriptionInvitesController(
+          container.get(TYPES.Auth_SubscriptionInvitesController),
+          container.get(TYPES.Auth_ControllerContainer),
+        ),
+      )
+    container
+      .bind<InversifyExpressUserRequestsController>(TYPES.Auth_InversifyExpressUserRequestsController)
+      .toConstantValue(
+        new InversifyExpressUserRequestsController(
+          container.get(TYPES.Auth_UserRequestsController),
+          container.get(TYPES.Auth_ControllerContainer),
+        ),
+      )
+    container
+      .bind<InversifyExpressWebSocketsController>(TYPES.Auth_InversifyExpressWebSocketsController)
+      .toConstantValue(
+        new InversifyExpressWebSocketsController(
+          container.get(TYPES.Auth_CreateCrossServiceToken),
+          container.get(TYPES.Auth_WebSocketConnectionTokenDecoder),
+          container.get(TYPES.Auth_ControllerContainer),
         ),
       )
 

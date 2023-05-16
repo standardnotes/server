@@ -1,5 +1,10 @@
 import 'reflect-metadata'
 
+import { ControllerContainer, ServiceContainer } from '@standardnotes/domain-core'
+import { Service as ApiGatewayService, TYPES as ApiGatewayTYPES } from '@standardnotes/api-gateway'
+import { Service as AuthService } from '@standardnotes/auth-server'
+import { Container } from 'inversify'
+import { InversifyExpressServer } from 'inversify-express-utils'
 import helmet from 'helmet'
 import * as cors from 'cors'
 import { text, json, Request, Response, NextFunction } from 'express'
@@ -7,25 +12,26 @@ import * as winston from 'winston'
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const robots = require('express-robots-txt')
 
-import { InversifyExpressServer } from 'inversify-express-utils'
 import { Env } from '../src/Bootstrap/Env'
-import {
-  ContainerConfigLoader as APIGatewayContainerConfigLoader,
-  TYPES as APIGatewayTYPES,
-} from '@standardnotes/api-gateway'
 
-const container = new APIGatewayContainerConfigLoader()
-void container.load().then((container) => {
+const startServer = async (): Promise<void> => {
+  const controllerContainer = new ControllerContainer()
+  const serviceContainer = new ServiceContainer()
+
+  const apiGatewayService = new ApiGatewayService(serviceContainer, controllerContainer)
+  const authService = new AuthService(serviceContainer, controllerContainer)
+
+  const container = Container.merge(
+    (await apiGatewayService.getContainer()) as Container,
+    (await authService.getContainer()) as Container,
+  )
+
   const env: Env = new Env()
   env.load()
 
   const server = new InversifyExpressServer(container)
 
   server.setConfig((app) => {
-    app.use((_request: Request, response: Response, next: NextFunction) => {
-      response.setHeader('X-API-Gateway-Version', container.get(APIGatewayTYPES.VERSION))
-      next()
-    })
     /* eslint-disable */
     app.use(helmet({
       contentSecurityPolicy: {
@@ -63,7 +69,7 @@ void container.load().then((container) => {
     )
   })
 
-  const logger: winston.Logger = container.get(APIGatewayTYPES.Logger)
+  const logger: winston.Logger = container.get(ApiGatewayTYPES.Logger)
 
   server.setErrorConfig((app) => {
     app.use((error: Record<string, unknown>, _request: Request, response: Response, _next: NextFunction) => {
@@ -80,7 +86,17 @@ void container.load().then((container) => {
 
   const serverInstance = server.build()
 
-  serverInstance.listen(env.get('PORT'))
+  serverInstance.listen(env.get('PORT', true) ? +env.get('PORT', true) : 3000)
 
   logger.info(`Server started on port ${process.env.PORT}`)
-})
+}
+
+Promise.resolve(startServer())
+  .then(() => {
+    // eslint-disable-next-line no-console
+    console.log('Server started')
+  })
+  .catch((error) => {
+    // eslint-disable-next-line no-console
+    console.log(`Could not start server: ${error.message}`)
+  })

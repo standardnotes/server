@@ -15,10 +15,10 @@ import { TimerInterface } from '@standardnotes/time'
 @injectable()
 export class FeatureService implements FeatureServiceInterface {
   constructor(
-    @inject(TYPES.RoleToSubscriptionMap) private roleToSubscriptionMap: RoleToSubscriptionMapInterface,
-    @inject(TYPES.OfflineUserSubscriptionRepository)
+    @inject(TYPES.Auth_RoleToSubscriptionMap) private roleToSubscriptionMap: RoleToSubscriptionMapInterface,
+    @inject(TYPES.Auth_OfflineUserSubscriptionRepository)
     private offlineUserSubscriptionRepository: OfflineUserSubscriptionRepositoryInterface,
-    @inject(TYPES.Timer) private timer: TimerInterface,
+    @inject(TYPES.Auth_Timer) private timer: TimerInterface,
   ) {}
 
   async userIsEntitledToFeature(user: User, featureIdentifier: string): Promise<boolean> {

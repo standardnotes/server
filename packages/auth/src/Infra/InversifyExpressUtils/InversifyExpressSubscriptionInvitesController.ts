@@ -1,7 +1,6 @@
 import { ApiVersion } from '@standardnotes/api'
 import { Role } from '@standardnotes/security'
 import { Request, Response } from 'express'
-import { inject } from 'inversify'
 import {
   BaseHttpController,
   controller,
@@ -13,16 +12,26 @@ import {
 } from 'inversify-express-utils'
 import TYPES from '../../Bootstrap/Types'
 import { SubscriptionInvitesController } from '../../Controller/SubscriptionInvitesController'
+import { ControllerContainerInterface } from '@standardnotes/domain-core'
+import { inject } from 'inversify'
 
 @controller('/subscription-invites')
 export class InversifyExpressSubscriptionInvitesController extends BaseHttpController {
   constructor(
-    @inject(TYPES.SubscriptionInvitesController) private subscriptionInvitesController: SubscriptionInvitesController,
+    @inject(TYPES.Auth_SubscriptionInvitesController)
+    private subscriptionInvitesController: SubscriptionInvitesController,
+    @inject(TYPES.Auth_ControllerContainer) private controllerContainer: ControllerContainerInterface,
   ) {
     super()
+
+    this.controllerContainer.register('auth.subscriptionInvites.accept', this.acceptInvite.bind(this))
+    this.controllerContainer.register('auth.subscriptionInvites.declineInvite', this.declineInvite.bind(this))
+    this.controllerContainer.register('auth.subscriptionInvites.create', this.inviteToSubscriptionSharing.bind(this))
+    this.controllerContainer.register('auth.subscriptionInvites.delete', this.cancelSubscriptionSharing.bind(this))
+    this.controllerContainer.register('auth.subscriptionInvites.list', this.listInvites.bind(this))
   }
 
-  @httpPost('/:inviteUuid/accept', TYPES.ApiGatewayAuthMiddleware)
+  @httpPost('/:inviteUuid/accept', TYPES.Auth_ApiGatewayAuthMiddleware)
   async acceptInvite(request: Request, response: Response): Promise<void> {
     const result = await this.subscriptionInvitesController.acceptInvite({
       api: request.query.api as ApiVersion,
@@ -43,7 +52,7 @@ export class InversifyExpressSubscriptionInvitesController extends BaseHttpContr
     return this.json(response.data, response.status)
   }
 
-  @httpPost('/', TYPES.ApiGatewayAuthMiddleware)
+  @httpPost('/', TYPES.Auth_ApiGatewayAuthMiddleware)
   async inviteToSubscriptionSharing(request: Request, response: Response): Promise<results.JsonResult> {
     const result = await this.subscriptionInvitesController.invite({
       ...request.body,
@@ -55,7 +64,7 @@ export class InversifyExpressSubscriptionInvitesController extends BaseHttpContr
     return this.json(result.data, result.status)
   }
 
-  @httpDelete('/:inviteUuid', TYPES.ApiGatewayAuthMiddleware)
+  @httpDelete('/:inviteUuid', TYPES.Auth_ApiGatewayAuthMiddleware)
   async cancelSubscriptionSharing(request: Request, response: Response): Promise<results.JsonResult> {
     const result = await this.subscriptionInvitesController.cancelInvite({
       ...request.body,
@@ -66,7 +75,7 @@ export class InversifyExpressSubscriptionInvitesController extends BaseHttpContr
     return this.json(result.data, result.status)
   }
 
-  @httpGet('/', TYPES.ApiGatewayAuthMiddleware)
+  @httpGet('/', TYPES.Auth_ApiGatewayAuthMiddleware)
   async listInvites(request: Request, response: Response): Promise<results.JsonResult> {
     const result = await this.subscriptionInvitesController.listInvites({
       ...request.body,

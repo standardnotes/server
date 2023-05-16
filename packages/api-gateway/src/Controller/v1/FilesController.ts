@@ -3,16 +3,25 @@ import { inject } from 'inversify'
 import { BaseHttpController, controller, httpPost } from 'inversify-express-utils'
 
 import { TYPES } from '../../Bootstrap/Types'
-import { HttpServiceInterface } from '../../Service/Http/HttpServiceInterface'
+import { ServiceProxyInterface } from '../../Service/Http/ServiceProxyInterface'
+import { EndpointResolverInterface } from '../../Service/Resolver/EndpointResolverInterface'
 
 @controller('/v1/files')
 export class FilesController extends BaseHttpController {
-  constructor(@inject(TYPES.HTTPService) private httpService: HttpServiceInterface) {
+  constructor(
+    @inject(TYPES.ServiceProxy) private httpService: ServiceProxyInterface,
+    @inject(TYPES.EndpointResolver) private endpointResolver: EndpointResolverInterface,
+  ) {
     super()
   }
 
   @httpPost('/valet-tokens', TYPES.AuthMiddleware)
   async createToken(request: Request, response: Response): Promise<void> {
-    await this.httpService.callAuthServer(request, response, 'valet-tokens', request.body)
+    await this.httpService.callAuthServer(
+      request,
+      response,
+      this.endpointResolver.resolveEndpointOrMethodIdentifier('POST', 'valet-tokens'),
+      request.body,
+    )
   }
 }

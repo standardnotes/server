@@ -9,8 +9,8 @@ import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
 @injectable()
 export class WebSocketsClientService implements ClientServiceInterface {
   constructor(
-    @inject(TYPES.DomainEventFactory) private domainEventFactory: DomainEventFactoryInterface,
-    @inject(TYPES.DomainEventPublisher) private domainEventPublisher: DomainEventPublisherInterface,
+    @inject(TYPES.Auth_DomainEventFactory) private domainEventFactory: DomainEventFactoryInterface,
+    @inject(TYPES.Auth_DomainEventPublisher) private domainEventPublisher: DomainEventPublisherInterface,
   ) {}
 
   async sendUserRolesChangedEvent(user: User): Promise<void> {

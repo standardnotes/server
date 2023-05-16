@@ -8,10 +8,10 @@ import TYPES from '../../Bootstrap/Types'
 @injectable()
 export class UserRegisteredEventHandler implements DomainEventHandlerInterface {
   constructor(
-    @inject(TYPES.HTTPClient) private httpClient: AxiosInstance,
-    @inject(TYPES.USER_SERVER_REGISTRATION_URL) private userServerRegistrationUrl: string,
-    @inject(TYPES.USER_SERVER_AUTH_KEY) private userServerAuthKey: string,
-    @inject(TYPES.Logger) private logger: Logger,
+    @inject(TYPES.Auth_HTTPClient) private httpClient: AxiosInstance,
+    @inject(TYPES.Auth_USER_SERVER_REGISTRATION_URL) private userServerRegistrationUrl: string,
+    @inject(TYPES.Auth_USER_SERVER_AUTH_KEY) private userServerAuthKey: string,
+    @inject(TYPES.Auth_Logger) private logger: Logger,
   ) {}
 
   async handle(event: UserRegisteredEvent): Promise<void> {

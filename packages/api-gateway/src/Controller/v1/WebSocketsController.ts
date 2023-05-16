@@ -4,12 +4,14 @@ import { BaseHttpController, controller, httpDelete, httpPost } from 'inversify-
 import { Logger } from 'winston'
 
 import { TYPES } from '../../Bootstrap/Types'
-import { HttpServiceInterface } from '../../Service/Http/HttpServiceInterface'
+import { ServiceProxyInterface } from '../../Service/Http/ServiceProxyInterface'
+import { EndpointResolverInterface } from '../../Service/Resolver/EndpointResolverInterface'
 
 @controller('/v1/sockets')
 export class WebSocketsController extends BaseHttpController {
   constructor(
-    @inject(TYPES.HTTPService) private httpService: HttpServiceInterface,
+    @inject(TYPES.ServiceProxy) private httpService: ServiceProxyInterface,
+    @inject(TYPES.EndpointResolver) private endpointResolver: EndpointResolverInterface,
     @inject(TYPES.Logger) private logger: Logger,
   ) {
     super()
@@ -17,7 +19,12 @@ export class WebSocketsController extends BaseHttpController {
 
   @httpPost('/tokens', TYPES.AuthMiddleware)
   async createWebSocketConnectionToken(request: Request, response: Response): Promise<void> {
-    await this.httpService.callWebSocketServer(request, response, 'sockets/tokens', request.body)
+    await this.httpService.callWebSocketServer(
+      request,
+      response,
+      this.endpointResolver.resolveEndpointOrMethodIdentifier('POST', 'sockets/tokens'),
+      request.body,
+    )
   }
 
   @httpPost('/connections', TYPES.WebSocketAuthMiddleware)
@@ -33,7 +40,11 @@ export class WebSocketsController extends BaseHttpController {
     await this.httpService.callWebSocketServer(
       request,
       response,
-      `sockets/connections/${request.headers.connectionid}`,
+      this.endpointResolver.resolveEndpointOrMethodIdentifier(
+        'POST',
+        'sockets/connections/:connectionId',
+        request.headers.connectionid as string,
+      ),
       request.body,
     )
   }
@@ -51,7 +62,11 @@ export class WebSocketsController extends BaseHttpController {
     await this.httpService.callWebSocketServer(
       request,
       response,
-      `sockets/connections/${request.headers.connectionid}`,
+      this.endpointResolver.resolveEndpointOrMethodIdentifier(
+        'DELETE',
+        'sockets/connections/:connectionId',
+        request.headers.connectionid as string,
+      ),
       request.body,
     )
   }

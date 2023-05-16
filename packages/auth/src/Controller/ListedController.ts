@@ -5,14 +5,20 @@ import { Request, Response } from 'express'
 import TYPES from '../Bootstrap/Types'
 import { CreateListedAccount } from '../Domain/UseCase/CreateListedAccount/CreateListedAccount'
 import { ErrorTag } from '@standardnotes/responses'
+import { ControllerContainerInterface } from '@standardnotes/domain-core'
 
 @controller('/listed')
 export class ListedController extends BaseHttpController {
-  constructor(@inject(TYPES.CreateListedAccount) private doCreateListedAccount: CreateListedAccount) {
+  constructor(
+    @inject(TYPES.Auth_CreateListedAccount) private doCreateListedAccount: CreateListedAccount,
+    @inject(TYPES.Auth_ControllerContainer) private controllerContainer: ControllerContainerInterface,
+  ) {
     super()
+
+    this.controllerContainer.register('auth.users.createListedAccount', this.createListedAccount.bind(this))
   }
 
-  @httpPost('/', TYPES.ApiGatewayAuthMiddleware)
+  @httpPost('/', TYPES.Auth_ApiGatewayAuthMiddleware)
   async createListedAccount(_request: Request, response: Response): Promise<results.JsonResult> {
     if (response.locals.readOnlyAccess) {
       return this.json(

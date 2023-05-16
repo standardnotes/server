@@ -13,10 +13,10 @@ import { UseCaseInterface } from './UseCaseInterface'
 @injectable()
 export class AuthenticateUser implements UseCaseInterface {
   constructor(
-    @inject(TYPES.AuthenticationMethodResolver)
+    @inject(TYPES.Auth_AuthenticationMethodResolver)
     private authenticationMethodResolver: AuthenticationMethodResolverInterface,
-    @inject(TYPES.Timer) private timer: TimerInterface,
-    @inject(TYPES.ACCESS_TOKEN_AGE) private accessTokenAge: number,
+    @inject(TYPES.Auth_Timer) private timer: TimerInterface,
+    @inject(TYPES.Auth_ACCESS_TOKEN_AGE) private accessTokenAge: number,
   ) {}
 
   async execute(dto: AuthenticateUserDTO): Promise<AuthenticateUserResponse> {

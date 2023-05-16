@@ -11,8 +11,8 @@ export class RedisSubscriptionTokenRepository implements SubscriptionTokenReposi
   private readonly PREFIX = 'subscription-token'
 
   constructor(
-    @inject(TYPES.Redis) private redisClient: IORedis.Redis,
-    @inject(TYPES.Timer) private timer: TimerInterface,
+    @inject(TYPES.Auth_Redis) private redisClient: IORedis.Redis,
+    @inject(TYPES.Auth_Timer) private timer: TimerInterface,
   ) {}
 
   async getUserUuidByToken(token: string): Promise<string | undefined> {

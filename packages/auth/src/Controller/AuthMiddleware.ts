@@ -8,8 +8,8 @@ import { AuthenticateRequest } from '../Domain/UseCase/AuthenticateRequest'
 @injectable()
 export class AuthMiddleware extends BaseMiddleware {
   constructor(
-    @inject(TYPES.AuthenticateRequest) private authenticateRequest: AuthenticateRequest,
-    @inject(TYPES.Logger) private logger: Logger,
+    @inject(TYPES.Auth_AuthenticateRequest) private authenticateRequest: AuthenticateRequest,
+    @inject(TYPES.Auth_Logger) private logger: Logger,
   ) {
     super()
   }

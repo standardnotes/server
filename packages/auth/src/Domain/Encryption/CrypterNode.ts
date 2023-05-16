@@ -9,9 +9,9 @@ import { CrypterInterface } from './CrypterInterface'
 @injectable()
 export class CrypterNode implements CrypterInterface {
   constructor(
-    @inject(TYPES.ENCRYPTION_SERVER_KEY) private encryptionServerKey: string,
-    @inject(TYPES.CryptoNode) private cryptoNode: CryptoNode,
-    @inject(TYPES.Logger) private logger: Logger,
+    @inject(TYPES.Auth_ENCRYPTION_SERVER_KEY) private encryptionServerKey: string,
+    @inject(TYPES.Auth_CryptoNode) private cryptoNode: CryptoNode,
+    @inject(TYPES.Auth_Logger) private logger: Logger,
   ) {
     const keyBuffer = Buffer.from(encryptionServerKey, 'hex')
     const { byteLength } = keyBuffer

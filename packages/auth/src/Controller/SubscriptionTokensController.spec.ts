@@ -13,6 +13,7 @@ import { Role } from '../Domain/Role/Role'
 import { SettingServiceInterface } from '../Domain/Setting/SettingServiceInterface'
 import { Setting } from '../Domain/Setting/Setting'
 import { CrossServiceTokenData, TokenEncoderInterface } from '@standardnotes/security'
+import { ControllerContainerInterface } from '@standardnotes/domain-core'
 
 describe('SubscriptionTokensController', () => {
   let createSubscriptionToken: CreateSubscriptionToken
@@ -29,6 +30,8 @@ describe('SubscriptionTokensController', () => {
   let user: User
   let role: Role
 
+  let controllerContainer: ControllerContainerInterface
+
   const createController = () =>
     new SubscriptionTokensController(
       createSubscriptionToken,
@@ -38,9 +41,13 @@ describe('SubscriptionTokensController', () => {
       roleProjector,
       tokenEncoder,
       jwtTTL,
+      controllerContainer,
     )
 
   beforeEach(() => {
+    controllerContainer = {} as jest.Mocked<ControllerContainerInterface>
+    controllerContainer.register = jest.fn()
+
     user = {} as jest.Mocked<User>
     user.uuid = '123'
     user.roles = Promise.resolve([role])

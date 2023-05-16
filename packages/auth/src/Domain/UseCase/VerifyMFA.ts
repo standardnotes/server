@@ -23,15 +23,15 @@ import { Setting } from '../Setting/Setting'
 @injectable()
 export class VerifyMFA implements UseCaseInterface {
   constructor(
-    @inject(TYPES.UserRepository) private userRepository: UserRepositoryInterface,
-    @inject(TYPES.SettingService) private settingService: SettingServiceInterface,
-    @inject(TYPES.BooleanSelector) private booleanSelector: SelectorInterface<boolean>,
-    @inject(TYPES.LockRepository) private lockRepository: LockRepositoryInterface,
-    @inject(TYPES.PSEUDO_KEY_PARAMS_KEY) private pseudoKeyParamsKey: string,
-    @inject(TYPES.AuthenticatorRepository) private authenticatorRepository: AuthenticatorRepositoryInterface,
-    @inject(TYPES.VerifyAuthenticatorAuthenticationResponse)
+    @inject(TYPES.Auth_UserRepository) private userRepository: UserRepositoryInterface,
+    @inject(TYPES.Auth_SettingService) private settingService: SettingServiceInterface,
+    @inject(TYPES.Auth_BooleanSelector) private booleanSelector: SelectorInterface<boolean>,
+    @inject(TYPES.Auth_LockRepository) private lockRepository: LockRepositoryInterface,
+    @inject(TYPES.Auth_PSEUDO_KEY_PARAMS_KEY) private pseudoKeyParamsKey: string,
+    @inject(TYPES.Auth_AuthenticatorRepository) private authenticatorRepository: AuthenticatorRepositoryInterface,
+    @inject(TYPES.Auth_VerifyAuthenticatorAuthenticationResponse)
     private verifyAuthenticatorAuthenticationResponse: DomainUseCaseInterface<boolean>,
-    @inject(TYPES.Logger) private logger: Logger,
+    @inject(TYPES.Auth_Logger) private logger: Logger,
   ) {}
 
   async execute(dto: VerifyMFADTO): Promise<VerifyMFAResponse> {

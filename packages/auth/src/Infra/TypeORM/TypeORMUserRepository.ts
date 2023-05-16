@@ -10,7 +10,7 @@ import { UserRepositoryInterface } from '../../Domain/User/UserRepositoryInterfa
 @injectable()
 export class TypeORMUserRepository implements UserRepositoryInterface {
   constructor(
-    @inject(TYPES.ORMUserRepository)
+    @inject(TYPES.Auth_ORMUserRepository)
     private ormRepository: Repository<User>,
   ) {}
 

@@ -30,7 +30,7 @@ import { DomainEventFactoryInterface } from './DomainEventFactoryInterface'
 
 @injectable()
 export class DomainEventFactory implements DomainEventFactoryInterface {
-  constructor(@inject(TYPES.Timer) private timer: TimerInterface) {}
+  constructor(@inject(TYPES.Auth_Timer) private timer: TimerInterface) {}
 
   createSessionCreatedEvent(dto: { userUuid: string }): SessionCreatedEvent {
     return {

@@ -13,10 +13,11 @@ import { UserRepositoryInterface } from '../User/UserRepositoryInterface'
 @injectable()
 export class FileUploadedEventHandler implements DomainEventHandlerInterface {
   constructor(
-    @inject(TYPES.UserRepository) private userRepository: UserRepositoryInterface,
-    @inject(TYPES.UserSubscriptionService) private userSubscriptionService: UserSubscriptionServiceInterface,
-    @inject(TYPES.SubscriptionSettingService) private subscriptionSettingService: SubscriptionSettingServiceInterface,
-    @inject(TYPES.Logger) private logger: Logger,
+    @inject(TYPES.Auth_UserRepository) private userRepository: UserRepositoryInterface,
+    @inject(TYPES.Auth_UserSubscriptionService) private userSubscriptionService: UserSubscriptionServiceInterface,
+    @inject(TYPES.Auth_SubscriptionSettingService)
+    private subscriptionSettingService: SubscriptionSettingServiceInterface,
+    @inject(TYPES.Auth_Logger) private logger: Logger,
   ) {}
 
   async handle(event: FileUploadedEvent): Promise<void> {

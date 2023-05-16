@@ -13,6 +13,7 @@ import { ClearLoginAttempts } from '../Domain/UseCase/ClearLoginAttempts'
 import { IncreaseLoginAttempts } from '../Domain/UseCase/IncreaseLoginAttempts'
 import { ChangeCredentials } from '../Domain/UseCase/ChangeCredentials/ChangeCredentials'
 import { InviteToSharedSubscription } from '../Domain/UseCase/InviteToSharedSubscription/InviteToSharedSubscription'
+import { ControllerContainerInterface } from '@standardnotes/domain-core'
 
 describe('UsersController', () => {
   let updateUser: UpdateUser
@@ -27,6 +28,7 @@ describe('UsersController', () => {
   let request: express.Request
   let response: express.Response
   let user: User
+  let controllerContainer: ControllerContainerInterface
 
   const createController = () =>
     new UsersController(
@@ -37,9 +39,13 @@ describe('UsersController', () => {
       clearLoginAttempts,
       increaseLoginAttempts,
       changeCredentials,
+      controllerContainer,
     )
 
   beforeEach(() => {
+    controllerContainer = {} as jest.Mocked<ControllerContainerInterface>
+    controllerContainer.register = jest.fn()
+
     updateUser = {} as jest.Mocked<UpdateUser>
     updateUser.execute = jest.fn()
 

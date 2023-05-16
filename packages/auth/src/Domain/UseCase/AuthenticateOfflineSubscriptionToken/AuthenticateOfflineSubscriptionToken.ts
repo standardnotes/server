@@ -12,11 +12,11 @@ import { AuthenticateOfflineSubscriptionTokenResponse } from './AuthenticateOffl
 @injectable()
 export class AuthenticateOfflineSubscriptionToken implements UseCaseInterface {
   constructor(
-    @inject(TYPES.OfflineSubscriptionTokenRepository)
+    @inject(TYPES.Auth_OfflineSubscriptionTokenRepository)
     private offlineSubscriptionTokenRepository: OfflineSubscriptionTokenRepositoryInterface,
-    @inject(TYPES.OfflineUserSubscriptionRepository)
+    @inject(TYPES.Auth_OfflineUserSubscriptionRepository)
     private offlineUserSubscriptionRepository: OfflineUserSubscriptionRepositoryInterface,
-    @inject(TYPES.OfflineSettingRepository) private offlineSettingRepository: OfflineSettingRepositoryInterface,
+    @inject(TYPES.Auth_OfflineSettingRepository) private offlineSettingRepository: OfflineSettingRepositoryInterface,
   ) {}
 
   async execute(dto: AuthenticateOfflineSubscriptionTokenDTO): Promise<AuthenticateOfflineSubscriptionTokenResponse> {

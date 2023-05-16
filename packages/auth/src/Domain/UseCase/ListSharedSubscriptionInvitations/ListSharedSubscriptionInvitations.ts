@@ -9,7 +9,7 @@ import { ListSharedSubscriptionInvitationsResponse } from './ListSharedSubscript
 @injectable()
 export class ListSharedSubscriptionInvitations implements UseCaseInterface {
   constructor(
-    @inject(TYPES.SharedSubscriptionInvitationRepository)
+    @inject(TYPES.Auth_SharedSubscriptionInvitationRepository)
     private sharedSubscriptionInvitationRepository: SharedSubscriptionInvitationRepositoryInterface,
   ) {}
 

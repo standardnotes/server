@@ -15,10 +15,10 @@ import { Username } from '@standardnotes/domain-core'
 @injectable()
 export class GetUserKeyParams implements UseCaseInterface {
   constructor(
-    @inject(TYPES.KeyParamsFactory) private keyParamsFactory: KeyParamsFactoryInterface,
-    @inject(TYPES.UserRepository) private userRepository: UserRepositoryInterface,
-    @inject(TYPES.PKCERepository) private pkceRepository: PKCERepositoryInterface,
-    @inject(TYPES.Logger) private logger: Logger,
+    @inject(TYPES.Auth_KeyParamsFactory) private keyParamsFactory: KeyParamsFactoryInterface,
+    @inject(TYPES.Auth_UserRepository) private userRepository: UserRepositoryInterface,
+    @inject(TYPES.Auth_PKCERepository) private pkceRepository: PKCERepositoryInterface,
+    @inject(TYPES.Auth_Logger) private logger: Logger,
   ) {}
 
   async execute(dto: GetUserKeyParamsDTO): Promise<GetUserKeyParamsResponse> {

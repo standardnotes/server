@@ -6,10 +6,10 @@ import { Logger } from 'winston'
 
 import { TYPES } from '../../Bootstrap/Types'
 import { CrossServiceTokenCacheInterface } from '../Cache/CrossServiceTokenCacheInterface'
-import { HttpServiceInterface } from './HttpServiceInterface'
+import { ServiceProxyInterface } from './ServiceProxyInterface'
 
 @injectable()
-export class HttpService implements HttpServiceInterface {
+export class HttpServiceProxy implements ServiceProxyInterface {
   constructor(
     @inject(TYPES.HTTPClient) private httpClient: AxiosInstance,
     @inject(TYPES.AUTH_SERVER_URL) private authServerUrl: string,
@@ -27,16 +27,16 @@ export class HttpService implements HttpServiceInterface {
   async callSyncingServer(
     request: Request,
     response: Response,
-    endpoint: string,
+    endpointOrMethodIdentifier: string,
     payload?: Record<string, unknown> | string,
   ): Promise<void> {
-    await this.callServer(this.syncingServerJsUrl, request, response, endpoint, payload)
+    await this.callServer(this.syncingServerJsUrl, request, response, endpointOrMethodIdentifier, payload)
   }
 
   async callRevisionsServer(
     request: Request,
     response: Response,
-    endpoint: string,
+    endpointOrMethodIdentifier: string,
     payload?: Record<string, unknown> | string,
   ): Promise<void> {
     if (!this.revisionsServerUrl) {
@@ -44,31 +44,37 @@ export class HttpService implements HttpServiceInterface {
 
       return
     }
-    await this.callServer(this.revisionsServerUrl, request, response, endpoint, payload)
+    await this.callServer(this.revisionsServerUrl, request, response, endpointOrMethodIdentifier, payload)
   }
 
   async callLegacySyncingServer(
     request: Request,
     response: Response,
-    endpoint: string,
+    endpointOrMethodIdentifier: string,
     payload?: Record<string, unknown> | string,
   ): Promise<void> {
-    await this.callServerWithLegacyFormat(this.syncingServerJsUrl, request, response, endpoint, payload)
+    await this.callServerWithLegacyFormat(
+      this.syncingServerJsUrl,
+      request,
+      response,
+      endpointOrMethodIdentifier,
+      payload,
+    )
   }
 
   async callAuthServer(
     request: Request,
     response: Response,
-    endpoint: string,
+    endpointOrMethodIdentifier: string,
     payload?: Record<string, unknown> | string,
   ): Promise<void> {
-    await this.callServer(this.authServerUrl, request, response, endpoint, payload)
+    await this.callServer(this.authServerUrl, request, response, endpointOrMethodIdentifier, payload)
   }
 
   async callEmailServer(
     request: Request,
     response: Response,
-    endpoint: string,
+    endpointOrMethodIdentifier: string,
     payload?: Record<string, unknown> | string,
   ): Promise<void> {
     if (!this.emailServerUrl) {
@@ -77,13 +83,13 @@ export class HttpService implements HttpServiceInterface {
       return
     }
 
-    await this.callServer(this.emailServerUrl, request, response, endpoint, payload)
+    await this.callServer(this.emailServerUrl, request, response, endpointOrMethodIdentifier, payload)
   }
 
   async callWebSocketServer(
     request: Request,
     response: Response,
-    endpoint: string,
+    endpointOrMethodIdentifier: string,
     payload?: Record<string, unknown> | string,
   ): Promise<void> {
     if (!this.webSocketServerUrl) {
@@ -92,13 +98,13 @@ export class HttpService implements HttpServiceInterface {
       return
     }
 
-    await this.callServer(this.webSocketServerUrl, request, response, endpoint, payload)
+    await this.callServer(this.webSocketServerUrl, request, response, endpointOrMethodIdentifier, payload)
   }
 
   async callPaymentsServer(
     request: Request,
     response: Response,
-    endpoint: string,
+    endpointOrMethodIdentifier: string,
     payload?: Record<string, unknown> | string,
   ): Promise<void> {
     if (!this.paymentsServerUrl) {
@@ -106,23 +112,29 @@ export class HttpService implements HttpServiceInterface {
 
       return
     }
-    await this.callServerWithLegacyFormat(this.paymentsServerUrl, request, response, endpoint, payload)
+    await this.callServerWithLegacyFormat(
+      this.paymentsServerUrl,
+      request,
+      response,
+      endpointOrMethodIdentifier,
+      payload,
+    )
   }
 
   async callAuthServerWithLegacyFormat(
     request: Request,
     response: Response,
-    endpoint: string,
+    endpointOrMethodIdentifier: string,
     payload?: Record<string, unknown> | string,
   ): Promise<void> {
-    await this.callServerWithLegacyFormat(this.authServerUrl, request, response, endpoint, payload)
+    await this.callServerWithLegacyFormat(this.authServerUrl, request, response, endpointOrMethodIdentifier, payload)
   }
 
   private async getServerResponse(
     serverUrl: string,
     request: Request,
     response: Response,
-    endpoint: string,
+    endpointOrMethodIdentifier: string,
     payload?: Record<string, unknown> | string,
   ): Promise<AxiosResponse | undefined> {
     try {
@@ -142,7 +154,7 @@ export class HttpService implements HttpServiceInterface {
         headers['X-Auth-Offline-Token'] = response.locals.offlineAuthToken
       }
 
-      this.logger.debug(`Calling [${request.method}] ${serverUrl}/${endpoint},
+      this.logger.debug(`Calling [${request.method}] ${serverUrl}/${endpointOrMethodIdentifier},
         headers: ${JSON.stringify(headers)},
         query: ${JSON.stringify(request.query)},
         payload: ${JSON.stringify(payload)}`)
@@ -150,7 +162,7 @@ export class HttpService implements HttpServiceInterface {
       const serviceResponse = await this.httpClient.request({
         method: request.method as Method,
         headers,
-        url: `${serverUrl}/${endpoint}`,
+        url: `${serverUrl}/${endpointOrMethodIdentifier}`,
         data: this.getRequestData(payload),
         maxContentLength: Infinity,
         maxBodyLength: Infinity,
@@ -172,7 +184,9 @@ export class HttpService implements HttpServiceInterface {
         ? JSON.stringify((error as AxiosError).response?.data)
         : (error as Error).message
 
-      this.logger.error(`Could not pass the request to ${serverUrl}/${endpoint} on underlying service: ${errorMessage}`)
+      this.logger.error(
+        `Could not pass the request to ${serverUrl}/${endpointOrMethodIdentifier} on underlying service: ${errorMessage}`,
+      )
 
       this.logger.debug('Response error: %O', (error as AxiosError).response ?? error)
 
@@ -195,10 +209,16 @@ export class HttpService implements HttpServiceInterface {
     serverUrl: string,
     request: Request,
     response: Response,
-    endpoint: string,
+    endpointOrMethodIdentifier: string,
     payload?: Record<string, unknown> | string,
   ): Promise<void> {
-    const serviceResponse = await this.getServerResponse(serverUrl, request, response, endpoint, payload)
+    const serviceResponse = await this.getServerResponse(
+      serverUrl,
+      request,
+      response,
+      endpointOrMethodIdentifier,
+      payload,
+    )
 
     this.logger.debug(`Response from underlying server: ${JSON.stringify(serviceResponse?.data)},
       headers: ${JSON.stringify(serviceResponse?.headers)}`)
@@ -233,10 +253,16 @@ export class HttpService implements HttpServiceInterface {
     serverUrl: string,
     request: Request,
     response: Response,
-    endpoint: string,
+    endpointOrMethodIdentifier: string,
     payload?: Record<string, unknown> | string,
   ): Promise<void> {
-    const serviceResponse = await this.getServerResponse(serverUrl, request, response, endpoint, payload)
+    const serviceResponse = await this.getServerResponse(
+      serverUrl,
+      request,
+      response,
+      endpointOrMethodIdentifier,
+      payload,
+    )
 
     if (!serviceResponse) {
       return

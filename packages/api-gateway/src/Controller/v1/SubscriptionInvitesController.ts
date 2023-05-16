@@ -3,31 +3,61 @@ import { inject } from 'inversify'
 import { BaseHttpController, controller, httpDelete, httpGet, httpPost } from 'inversify-express-utils'
 
 import { TYPES } from '../../Bootstrap/Types'
-import { HttpServiceInterface } from '../../Service/Http/HttpServiceInterface'
+import { ServiceProxyInterface } from '../../Service/Http/ServiceProxyInterface'
+import { EndpointResolverInterface } from '../../Service/Resolver/EndpointResolverInterface'
 
 @controller('/v1/subscription-invites')
 export class SubscriptionInvitesController extends BaseHttpController {
-  constructor(@inject(TYPES.HTTPService) private httpService: HttpServiceInterface) {
+  constructor(
+    @inject(TYPES.ServiceProxy) private httpService: ServiceProxyInterface,
+    @inject(TYPES.EndpointResolver) private endpointResolver: EndpointResolverInterface,
+  ) {
     super()
   }
 
   @httpPost('/', TYPES.AuthMiddleware)
   async inviteToSubscriptionSharing(request: Request, response: Response): Promise<void> {
-    await this.httpService.callAuthServer(request, response, 'subscription-invites', request.body)
+    await this.httpService.callAuthServer(
+      request,
+      response,
+      this.endpointResolver.resolveEndpointOrMethodIdentifier('POST', 'subscription-invites'),
+      request.body,
+    )
   }
 
   @httpGet('/', TYPES.AuthMiddleware)
   async listInvites(request: Request, response: Response): Promise<void> {
-    await this.httpService.callAuthServer(request, response, 'subscription-invites', request.body)
+    await this.httpService.callAuthServer(
+      request,
+      response,
+      this.endpointResolver.resolveEndpointOrMethodIdentifier('GET', 'subscription-invites'),
+      request.body,
+    )
   }
 
   @httpDelete('/:inviteUuid', TYPES.AuthMiddleware)
   async cancelSubscriptionSharing(request: Request, response: Response): Promise<void> {
-    await this.httpService.callAuthServer(request, response, `subscription-invites/${request.params.inviteUuid}`)
+    await this.httpService.callAuthServer(
+      request,
+      response,
+      this.endpointResolver.resolveEndpointOrMethodIdentifier(
+        'DELETE',
+        'subscription-invites/:inviteUuid',
+        request.params.inviteUuid,
+      ),
+    )
   }
 
   @httpPost('/:inviteUuid/accept', TYPES.AuthMiddleware)
   async acceptInvite(request: Request, response: Response): Promise<void> {
-    await this.httpService.callAuthServer(request, response, `subscription-invites/${request.params.inviteUuid}/accept`)
+    await this.httpService.callAuthServer(
+      request,
+      response,
+      this.endpointResolver.resolveEndpointOrMethodIdentifier(
+        'POST',
+        'subscription-invites/:inviteUuid/accept',
+        request.params.inviteUuid,
+      ),
+    )
   }
 }

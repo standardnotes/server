@@ -15,8 +15,8 @@ import { SubscriptionSettingsAssociationServiceInterface } from './SubscriptionS
 @injectable()
 export class SubscriptionSettingsAssociationService implements SubscriptionSettingsAssociationServiceInterface {
   constructor(
-    @inject(TYPES.RoleToSubscriptionMap) private roleToSubscriptionMap: RoleToSubscriptionMapInterface,
-    @inject(TYPES.RoleRepository) private roleRepository: RoleRepositoryInterface,
+    @inject(TYPES.Auth_RoleToSubscriptionMap) private roleToSubscriptionMap: RoleToSubscriptionMapInterface,
+    @inject(TYPES.Auth_RoleRepository) private roleRepository: RoleRepositoryInterface,
   ) {}
 
   private readonly settingsToSubscriptionNameMap = new Map<SubscriptionName, Map<string, SettingDescription>>([

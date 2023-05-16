@@ -17,12 +17,13 @@ import { SettingFactoryInterface } from './SettingFactoryInterface'
 @injectable()
 export class SettingService implements SettingServiceInterface {
   constructor(
-    @inject(TYPES.SettingFactory) private factory: SettingFactoryInterface,
-    @inject(TYPES.SettingRepository) private settingRepository: SettingRepositoryInterface,
-    @inject(TYPES.SettingsAssociationService) private settingsAssociationService: SettingsAssociationServiceInterface,
-    @inject(TYPES.SettingInterpreter) private settingInterpreter: SettingInterpreterInterface,
-    @inject(TYPES.SettingDecrypter) private settingDecrypter: SettingDecrypterInterface,
-    @inject(TYPES.Logger) private logger: Logger,
+    @inject(TYPES.Auth_SettingFactory) private factory: SettingFactoryInterface,
+    @inject(TYPES.Auth_SettingRepository) private settingRepository: SettingRepositoryInterface,
+    @inject(TYPES.Auth_SettingsAssociationService)
+    private settingsAssociationService: SettingsAssociationServiceInterface,
+    @inject(TYPES.Auth_SettingInterpreter) private settingInterpreter: SettingInterpreterInterface,
+    @inject(TYPES.Auth_SettingDecrypter) private settingDecrypter: SettingDecrypterInterface,
+    @inject(TYPES.Auth_Logger) private logger: Logger,
   ) {}
 
   async applyDefaultSettingsUponRegistration(user: User): Promise<void> {

@@ -20,13 +20,13 @@ import { AuthResponse20200115 } from '../Auth/AuthResponse20200115'
 @injectable()
 export class Register implements UseCaseInterface {
   constructor(
-    @inject(TYPES.UserRepository) private userRepository: UserRepositoryInterface,
-    @inject(TYPES.RoleRepository) private roleRepository: RoleRepositoryInterface,
-    @inject(TYPES.AuthResponseFactory20200115) private authResponseFactory20200115: AuthResponseFactory20200115,
-    @inject(TYPES.Crypter) private crypter: CrypterInterface,
-    @inject(TYPES.DISABLE_USER_REGISTRATION) private disableUserRegistration: boolean,
-    @inject(TYPES.SettingService) private settingService: SettingServiceInterface,
-    @inject(TYPES.Timer) private timer: TimerInterface,
+    @inject(TYPES.Auth_UserRepository) private userRepository: UserRepositoryInterface,
+    @inject(TYPES.Auth_RoleRepository) private roleRepository: RoleRepositoryInterface,
+    @inject(TYPES.Auth_AuthResponseFactory20200115) private authResponseFactory20200115: AuthResponseFactory20200115,
+    @inject(TYPES.Auth_Crypter) private crypter: CrypterInterface,
+    @inject(TYPES.Auth_DISABLE_USER_REGISTRATION) private disableUserRegistration: boolean,
+    @inject(TYPES.Auth_SettingService) private settingService: SettingServiceInterface,
+    @inject(TYPES.Auth_Timer) private timer: TimerInterface,
   ) {}
 
   async execute(dto: RegisterDTO): Promise<RegisterResponse> {

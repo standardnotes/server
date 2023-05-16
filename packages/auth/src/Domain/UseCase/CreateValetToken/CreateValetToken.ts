@@ -16,13 +16,14 @@ import { UserSubscriptionServiceInterface } from '../../Subscription/UserSubscri
 @injectable()
 export class CreateValetToken implements UseCaseInterface {
   constructor(
-    @inject(TYPES.ValetTokenEncoder) private tokenEncoder: TokenEncoderInterface<ValetTokenData>,
-    @inject(TYPES.SubscriptionSettingService) private subscriptionSettingService: SubscriptionSettingServiceInterface,
-    @inject(TYPES.SubscriptionSettingsAssociationService)
+    @inject(TYPES.Auth_ValetTokenEncoder) private tokenEncoder: TokenEncoderInterface<ValetTokenData>,
+    @inject(TYPES.Auth_SubscriptionSettingService)
+    private subscriptionSettingService: SubscriptionSettingServiceInterface,
+    @inject(TYPES.Auth_SubscriptionSettingsAssociationService)
     private subscriptionSettingsAssociationService: SubscriptionSettingsAssociationServiceInterface,
-    @inject(TYPES.UserSubscriptionService) private userSubscriptionService: UserSubscriptionServiceInterface,
-    @inject(TYPES.Timer) private timer: TimerInterface,
-    @inject(TYPES.VALET_TOKEN_TTL) private valetTokenTTL: number,
+    @inject(TYPES.Auth_UserSubscriptionService) private userSubscriptionService: UserSubscriptionServiceInterface,
+    @inject(TYPES.Auth_Timer) private timer: TimerInterface,
+    @inject(TYPES.Auth_VALET_TOKEN_TTL) private valetTokenTTL: number,
   ) {}
 
   async execute(dto: CreateValetTokenDTO): Promise<CreateValetTokenResponseData> {

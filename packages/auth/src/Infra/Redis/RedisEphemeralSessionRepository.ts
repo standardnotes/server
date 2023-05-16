@@ -11,8 +11,8 @@ export class RedisEphemeralSessionRepository implements EphemeralSessionReposito
   private readonly USER_SESSIONS_PREFIX = 'user-sessions'
 
   constructor(
-    @inject(TYPES.Redis) private redisClient: IORedis.Redis,
-    @inject(TYPES.EPHEMERAL_SESSION_AGE) private ephemeralSessionAge: number,
+    @inject(TYPES.Auth_Redis) private redisClient: IORedis.Redis,
+    @inject(TYPES.Auth_EPHEMERAL_SESSION_AGE) private ephemeralSessionAge: number,
   ) {}
 
   async deleteOne(uuid: string, userUuid: string): Promise<void> {

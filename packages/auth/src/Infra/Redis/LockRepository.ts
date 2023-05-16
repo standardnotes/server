@@ -10,9 +10,9 @@ export class LockRepository implements LockRepositoryInterface {
   private readonly OTP_PREFIX = 'otp-lock'
 
   constructor(
-    @inject(TYPES.Redis) private redisClient: IORedis.Redis,
-    @inject(TYPES.MAX_LOGIN_ATTEMPTS) private maxLoginAttempts: number,
-    @inject(TYPES.FAILED_LOGIN_LOCKOUT) private failedLoginLockout: number,
+    @inject(TYPES.Auth_Redis) private redisClient: IORedis.Redis,
+    @inject(TYPES.Auth_MAX_LOGIN_ATTEMPTS) private maxLoginAttempts: number,
+    @inject(TYPES.Auth_FAILED_LOGIN_LOCKOUT) private failedLoginLockout: number,
   ) {}
 
   async lockSuccessfullOTP(userIdentifier: string, otp: string): Promise<void> {

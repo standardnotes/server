@@ -9,8 +9,9 @@ import { UserSubscriptionRepositoryInterface } from '../../Subscription/UserSubs
 @injectable()
 export class GetUserSubscription implements UseCaseInterface {
   constructor(
-    @inject(TYPES.UserRepository) private userRepository: UserRepositoryInterface,
-    @inject(TYPES.UserSubscriptionRepository) private userSubscriptionRepository: UserSubscriptionRepositoryInterface,
+    @inject(TYPES.Auth_UserRepository) private userRepository: UserRepositoryInterface,
+    @inject(TYPES.Auth_UserSubscriptionRepository)
+    private userSubscriptionRepository: UserSubscriptionRepositoryInterface,
   ) {}
 
   async execute(dto: GetUserSubscriptionDto): Promise<GetUserSubscriptionResponse> {

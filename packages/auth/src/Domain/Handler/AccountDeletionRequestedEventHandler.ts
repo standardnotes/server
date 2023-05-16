@@ -10,11 +10,12 @@ import { UserRepositoryInterface } from '../User/UserRepositoryInterface'
 @injectable()
 export class AccountDeletionRequestedEventHandler implements DomainEventHandlerInterface {
   constructor(
-    @inject(TYPES.UserRepository) private userRepository: UserRepositoryInterface,
-    @inject(TYPES.SessionRepository) private sessionRepository: SessionRepositoryInterface,
-    @inject(TYPES.EphemeralSessionRepository) private ephemeralSessionRepository: EphemeralSessionRepositoryInterface,
-    @inject(TYPES.RevokedSessionRepository) private revokedSessionRepository: RevokedSessionRepositoryInterface,
-    @inject(TYPES.Logger) private logger: Logger,
+    @inject(TYPES.Auth_UserRepository) private userRepository: UserRepositoryInterface,
+    @inject(TYPES.Auth_SessionRepository) private sessionRepository: SessionRepositoryInterface,
+    @inject(TYPES.Auth_EphemeralSessionRepository)
+    private ephemeralSessionRepository: EphemeralSessionRepositoryInterface,
+    @inject(TYPES.Auth_RevokedSessionRepository) private revokedSessionRepository: RevokedSessionRepositoryInterface,
+    @inject(TYPES.Auth_Logger) private logger: Logger,
   ) {}
 
   async handle(event: AccountDeletionRequestedEvent): Promise<void> {

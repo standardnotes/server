@@ -12,11 +12,11 @@ import { CreateSubscriptionTokenResponse } from './CreateSubscriptionTokenRespon
 @injectable()
 export class CreateSubscriptionToken implements UseCaseInterface {
   constructor(
-    @inject(TYPES.SubscriptionTokenRepository)
+    @inject(TYPES.Auth_SubscriptionTokenRepository)
     private subscriptionTokenRepository: SubscriptionTokenRepositoryInterface,
-    @inject(TYPES.CryptoNode) private cryptoNode: CryptoNode,
-    @inject(TYPES.Timer) private timer: TimerInterface,
-    @inject(TYPES.Logger) private logger: Logger,
+    @inject(TYPES.Auth_CryptoNode) private cryptoNode: CryptoNode,
+    @inject(TYPES.Auth_Timer) private timer: TimerInterface,
+    @inject(TYPES.Auth_Logger) private logger: Logger,
   ) {}
 
   async execute(dto: CreateSubscriptionTokenDTO): Promise<CreateSubscriptionTokenResponse> {

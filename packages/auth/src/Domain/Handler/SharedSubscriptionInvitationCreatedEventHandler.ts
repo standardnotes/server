@@ -8,7 +8,7 @@ import { AcceptSharedSubscriptionInvitation } from '../UseCase/AcceptSharedSubsc
 @injectable()
 export class SharedSubscriptionInvitationCreatedEventHandler implements DomainEventHandlerInterface {
   constructor(
-    @inject(TYPES.AcceptSharedSubscriptionInvitation)
+    @inject(TYPES.Auth_AcceptSharedSubscriptionInvitation)
     private acceptSharedSubscriptionInvitation: AcceptSharedSubscriptionInvitation,
   ) {}
 

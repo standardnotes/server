@@ -1,4 +1,4 @@
-import { Username } from '@standardnotes/domain-core'
+import { ControllerContainerInterface, Username } from '@standardnotes/domain-core'
 import { SettingName } from '@standardnotes/settings'
 import { Request } from 'express'
 import { inject } from 'inversify'
@@ -20,13 +20,20 @@ import { UserRepositoryInterface } from '../Domain/User/UserRepositoryInterface'
 @controller('/admin')
 export class AdminController extends BaseHttpController {
   constructor(
-    @inject(TYPES.DeleteSetting) private doDeleteSetting: DeleteSetting,
-    @inject(TYPES.UserRepository) private userRepository: UserRepositoryInterface,
-    @inject(TYPES.CreateSubscriptionToken) private createSubscriptionToken: CreateSubscriptionToken,
-    @inject(TYPES.CreateOfflineSubscriptionToken)
+    @inject(TYPES.Auth_DeleteSetting) private doDeleteSetting: DeleteSetting,
+    @inject(TYPES.Auth_UserRepository) private userRepository: UserRepositoryInterface,
+    @inject(TYPES.Auth_CreateSubscriptionToken) private createSubscriptionToken: CreateSubscriptionToken,
+    @inject(TYPES.Auth_CreateOfflineSubscriptionToken)
     private createOfflineSubscriptionToken: CreateOfflineSubscriptionToken,
+    @inject(TYPES.Auth_ControllerContainer) private controllerContainer: ControllerContainerInterface,
   ) {
     super()
+
+    this.controllerContainer.register('admin.getUser', this.getUser.bind(this))
+    this.controllerContainer.register('admin.deleteMFASetting', this.deleteMFASetting.bind(this))
+    this.controllerContainer.register('admin.createToken', this.createToken.bind(this))
+    this.controllerContainer.register('admin.createOfflineToken', this.createOfflineToken.bind(this))
+    this.controllerContainer.register('admin.disableEmailBackups', this.disableEmailBackups.bind(this))
   }
 
   @httpGet('/user/:email')

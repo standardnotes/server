@@ -10,9 +10,9 @@ import { AuthenticateSubscriptionTokenResponse } from './AuthenticateSubscriptio
 @injectable()
 export class AuthenticateSubscriptionToken implements UseCaseInterface {
   constructor(
-    @inject(TYPES.SubscriptionTokenRepository)
+    @inject(TYPES.Auth_SubscriptionTokenRepository)
     private subscriptionTokenRepository: SubscriptionTokenRepositoryInterface,
-    @inject(TYPES.UserRepository) private userRepository: UserRepositoryInterface,
+    @inject(TYPES.Auth_UserRepository) private userRepository: UserRepositoryInterface,
   ) {}
 
   async execute(dto: AuthenticateSubscriptionTokenDTO): Promise<AuthenticateSubscriptionTokenResponse> {

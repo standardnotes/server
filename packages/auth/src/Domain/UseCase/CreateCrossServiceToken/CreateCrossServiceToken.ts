@@ -15,12 +15,12 @@ import { CreateCrossServiceTokenResponse } from './CreateCrossServiceTokenRespon
 @injectable()
 export class CreateCrossServiceToken implements UseCaseInterface {
   constructor(
-    @inject(TYPES.UserProjector) private userProjector: ProjectorInterface<User>,
-    @inject(TYPES.SessionProjector) private sessionProjector: ProjectorInterface<Session>,
-    @inject(TYPES.RoleProjector) private roleProjector: ProjectorInterface<Role>,
-    @inject(TYPES.CrossServiceTokenEncoder) private tokenEncoder: TokenEncoderInterface<CrossServiceTokenData>,
-    @inject(TYPES.UserRepository) private userRepository: UserRepositoryInterface,
-    @inject(TYPES.AUTH_JWT_TTL) private jwtTTL: number,
+    @inject(TYPES.Auth_UserProjector) private userProjector: ProjectorInterface<User>,
+    @inject(TYPES.Auth_SessionProjector) private sessionProjector: ProjectorInterface<Session>,
+    @inject(TYPES.Auth_RoleProjector) private roleProjector: ProjectorInterface<Role>,
+    @inject(TYPES.Auth_CrossServiceTokenEncoder) private tokenEncoder: TokenEncoderInterface<CrossServiceTokenData>,
+    @inject(TYPES.Auth_UserRepository) private userRepository: UserRepositoryInterface,
+    @inject(TYPES.Auth_AUTH_JWT_TTL) private jwtTTL: number,
   ) {}
 
   async execute(dto: CreateCrossServiceTokenDTO): Promise<CreateCrossServiceTokenResponse> {

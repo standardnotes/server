@@ -1,4 +1,3 @@
-import { inject, injectable } from 'inversify'
 import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
 import {
   ApiVersion,
@@ -7,10 +6,9 @@ import {
   UserDeletionResponseBody,
   UserRegistrationResponseBody,
 } from '@standardnotes/api'
-import { HttpResponse, HttpStatusCode } from '@standardnotes/responses'
+import { ErrorTag, HttpResponse, HttpStatusCode } from '@standardnotes/responses'
 import { ProtocolVersion } from '@standardnotes/common'
 
-import TYPES from '../Bootstrap/Types'
 import { ClearLoginAttempts } from '../Domain/UseCase/ClearLoginAttempts'
 import { Register } from '../Domain/UseCase/Register'
 import { DomainEventFactoryInterface } from '../Domain/Event/DomainEventFactoryInterface'
@@ -24,18 +22,19 @@ import { GenerateRecoveryCodesResponseBody } from '../Infra/Http/Response/Genera
 import { GenerateRecoveryCodes } from '../Domain/UseCase/GenerateRecoveryCodes/GenerateRecoveryCodes'
 import { GenerateRecoveryCodesRequestParams } from '../Infra/Http/Request/GenerateRecoveryCodesRequestParams'
 import { Logger } from 'winston'
+import { SessionServiceInterface } from '../Domain/Session/SessionServiceInterface'
 
-@injectable()
 export class AuthController implements UserServerInterface {
   constructor(
-    @inject(TYPES.ClearLoginAttempts) private clearLoginAttempts: ClearLoginAttempts,
-    @inject(TYPES.Register) private registerUser: Register,
-    @inject(TYPES.DomainEventPublisher) private domainEventPublisher: DomainEventPublisherInterface,
-    @inject(TYPES.DomainEventFactory) private domainEventFactory: DomainEventFactoryInterface,
-    @inject(TYPES.SignInWithRecoveryCodes) private doSignInWithRecoveryCodes: SignInWithRecoveryCodes,
-    @inject(TYPES.GetUserKeyParamsRecovery) private getUserKeyParamsRecovery: GetUserKeyParamsRecovery,
-    @inject(TYPES.GenerateRecoveryCodes) private doGenerateRecoveryCodes: GenerateRecoveryCodes,
-    @inject(TYPES.Logger) private logger: Logger,
+    private clearLoginAttempts: ClearLoginAttempts,
+    private registerUser: Register,
+    private domainEventPublisher: DomainEventPublisherInterface,
+    private domainEventFactory: DomainEventFactoryInterface,
+    private doSignInWithRecoveryCodes: SignInWithRecoveryCodes,
+    private getUserKeyParamsRecovery: GetUserKeyParamsRecovery,
+    private doGenerateRecoveryCodes: GenerateRecoveryCodes,
+    private logger: Logger,
+    private sessionService: SessionServiceInterface,
   ) {}
 
   async deleteAccount(_params: never): Promise<HttpResponse<UserDeletionResponseBody>> {
@@ -198,6 +197,35 @@ export class AuthController implements UserServerInterface {
       data: {
         keyParams: result.getValue(),
       },
+    }
+  }
+
+  async signOut(params: Record<string, unknown>): Promise<HttpResponse> {
+    if (params.readOnlyAccess) {
+      return {
+        status: HttpStatusCode.Unauthorized,
+        data: {
+          error: {
+            tag: ErrorTag.ReadOnlyAccess,
+            message: 'Session has read-only access.',
+          },
+        },
+      }
+    }
+
+    const userUuid = await this.sessionService.deleteSessionByToken(
+      (params.authorizationHeader as string).replace('Bearer ', ''),
+    )
+
+    let headers = undefined
+    if (userUuid !== null) {
+      headers = new Map([['x-invalidate-cache', userUuid]])
+    }
+
+    return {
+      status: HttpStatusCode.NoContent,
+      data: {},
+      headers,
     }
   }
 }

@@ -6,7 +6,7 @@ import { ProcessUserRequest } from '../Domain/UseCase/ProcessUserRequest/Process
 
 @injectable()
 export class UserRequestsController implements UserRequestServerInterface {
-  constructor(@inject(TYPES.ProcessUserRequest) private processUserRequest: ProcessUserRequest) {}
+  constructor(@inject(TYPES.Auth_ProcessUserRequest) private processUserRequest: ProcessUserRequest) {}
 
   async submitUserRequest(params: UserRequestRequestParams): Promise<HttpResponse<UserRequestResponseBody>> {
     const result = await this.processUserRequest.execute({
