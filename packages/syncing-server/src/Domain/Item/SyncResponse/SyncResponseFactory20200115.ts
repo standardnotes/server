@@ -15,7 +15,7 @@ export class SyncResponseFactory20200115 implements SyncResponseFactoryInterface
     private itemProjector: ProjectorInterface<Item, ItemProjection>,
     private itemConflictProjector: ProjectorInterface<ItemConflict, ItemConflictProjection>,
     private savedItemProjector: ProjectorInterface<Item, SavedItemProjection>,
-    private groupKeyProjector: ProjectorInterface<GroupUserKey, GroupUserKeyProjection>,
+    private groupUserKeyProjector: ProjectorInterface<GroupUserKey, GroupUserKeyProjection>,
   ) {}
 
   async createResponse(syncItemsResponse: SyncItemsResponse): Promise<SyncResponse20200115> {
@@ -36,7 +36,7 @@ export class SyncResponseFactory20200115 implements SyncResponseFactoryInterface
 
     const groupKeys = []
     for (const groupKey of syncItemsResponse.groupKeys) {
-      groupKeys.push(<GroupUserKeyProjection>await this.groupKeyProjector.projectFull(groupKey))
+      groupKeys.push(<GroupUserKeyProjection>await this.groupUserKeyProjector.projectFull(groupKey))
     }
 
     return {

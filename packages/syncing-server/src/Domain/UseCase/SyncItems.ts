@@ -1,4 +1,4 @@
-import { GroupUserKeyServiceInterface } from '../GroupUserKey/Service/GroupUserKeyService'
+import { GroupUserKeyServiceInterface } from '../GroupUserKey/Service/GroupUserKeyServiceInterface'
 import { Item } from '../Item/Item'
 import { ItemConflict } from '../Item/ItemConflict'
 import { ItemServiceInterface } from '../Item/ItemServiceInterface'
@@ -13,6 +13,7 @@ export class SyncItems implements UseCaseInterface {
     const getItemsResult = await this.itemService.getItems({
       userUuid: dto.userUuid,
       syncToken: dto.syncToken,
+      groupUuid: dto.groupUuid,
       cursorToken: dto.cursorToken,
       limit: dto.limit,
       contentType: dto.contentType,
@@ -31,7 +32,10 @@ export class SyncItems implements UseCaseInterface {
       retrievedItems = await this.itemService.frontLoadKeysItemsToTop(dto.userUuid, retrievedItems)
     }
 
-    const groupKeys = await this.groupUserService.getUserGroupKeys({ userUuid: dto.userUuid, syncToken: dto.syncToken })
+    const groupKeys = await this.groupUserService.getGroupUserKeysForUser({
+      userUuid: dto.userUuid,
+      syncToken: dto.syncToken,
+    })
 
     const syncResponse: SyncItemsResponse = {
       retrievedItems,

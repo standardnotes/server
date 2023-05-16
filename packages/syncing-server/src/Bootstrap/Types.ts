@@ -9,15 +9,21 @@ const TYPES = {
   // Repositories
   ItemRepository: Symbol.for('ItemRepository'),
   ItemLinkRepository: Symbol.for('ItemLinkRepository'),
+  GroupRepository: Symbol.for('GroupRepository'),
+  GroupUserKeyRepository: Symbol.for('GroupUserKeyRepository'),
   // ORM
   ORMItemRepository: Symbol.for('ORMItemRepository'),
   ORMItemLinkRepository: Symbol.for('ORMItemLinkRepository'),
+  ORMGroupRepository: Symbol.for('ORMGroupRepository'),
+  ORMGroupUserKeyRepository: Symbol.for('ORMGroupUserKeyRepository'),
   // Middleware
   AuthMiddleware: Symbol.for('AuthMiddleware'),
   // Projectors
   ItemProjector: Symbol.for('ItemProjector'),
   SavedItemProjector: Symbol.for('SavedItemProjector'),
   ItemConflictProjector: Symbol.for('ItemConflictProjector'),
+  GroupProjector: Symbol.for('GroupProjector'),
+  GroupUserKeyProjector: Symbol.for('GroupUserKeyProjector'),
   // env vars
   REDIS_URL: Symbol.for('REDIS_URL'),
   SNS_TOPIC_ARN: Symbol.for('SNS_TOPIC_ARN'),
@@ -77,6 +83,8 @@ const TYPES = {
   ItemLinkFactory: Symbol.for('ItemLinkFactory'),
   ItemTransferCalculator: Symbol.for('ItemTransferCalculator'),
   ValetTokenEncoder: Symbol.for('ValetTokenEncoder'),
+  GroupService: Symbol.for('GroupService'),
+  GroupUserKeyService: Symbol.for('GroupUserKeyService'),
 }
 
 export default TYPES

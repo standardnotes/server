@@ -2,7 +2,7 @@ import { GroupUserKey } from '../../GroupUserKey/Model/GroupUserKey'
 import { Group } from '../Model/Group'
 
 export interface GroupServiceInterface {
-  createGroup(userUuid: string): Promise<Group | null>
+  createGroup(dto: { userUuid: string; encryptedGroupKey: string; creatorPublicKey: string }): Promise<Group | null>
 
   addUserToGroup(dto: {
     groupUuid: string

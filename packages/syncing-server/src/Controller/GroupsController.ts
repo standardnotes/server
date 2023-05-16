@@ -1,41 +1,35 @@
 import { GroupServiceInterface } from './../Domain/Group/Service/GroupServiceInterface'
 import { Request, Response } from 'express'
-import { BaseHttpController, controller, httpGet, httpPost, results } from 'inversify-express-utils'
+import { BaseHttpController, controller, httpPost, results } from 'inversify-express-utils'
 import TYPES from '../Bootstrap/Types'
-import { GroupUserKeyServiceInterface } from '../Domain/GroupUserKey/Service/GroupUserKeyService'
 
 @controller('/groups')
 export class GroupsController extends BaseHttpController {
-  constructor(private groupsService: GroupServiceInterface, private groupUserService: GroupUserKeyServiceInterface) {
+  constructor(private groupsService: GroupServiceInterface) {
     super()
   }
 
   @httpPost('/', TYPES.AuthMiddleware)
-  public async createGroup(
-    _request: Request,
-    response: Response,
-  ): Promise<results.NotFoundResult | results.JsonResult> {
-    const result = await this.groupsService.createGroup(response.locals.user.uuid)
+  public async createGroup(request: Request, response: Response): Promise<results.NotFoundResult | results.JsonResult> {
+    const result = await this.groupsService.createGroup({
+      userUuid: response.locals.user.uuid,
+      creatorPublicKey: request.body.creator_public_key,
+      encryptedGroupKey: request.body.encrypted_group_key,
+    })
 
     if (!result) {
       return this.errorResponse(500, 'Could not create group')
     }
 
-    return this.json({ group: result })
-  }
+    const groupUserKey = await this.groupsService.addUserToGroup({
+      groupUuid: result.uuid,
+      ownerUuid: response.locals.user.uuid,
+      inviteeUuid: response.locals.user.uuid,
+      senderPublicKey: request.body.creator_public_key,
+      encryptedGroupKey: request.body.encrypted_group_key,
+    })
 
-  @httpGet('/', TYPES.AuthMiddleware)
-  public async getUserGroupKeys(
-    _request: Request,
-    response: Response,
-  ): Promise<results.NotFoundResult | results.JsonResult> {
-    const result = await this.groupUserService.getUserGroupKeys({ userUuid: response.locals.user.uuid })
-
-    if (!result) {
-      return this.errorResponse(500, 'Could not get user groups')
-    }
-
-    return this.json({ groups: result })
+    return this.json({ group: result, userKey: groupUserKey })
   }
 
   @httpPost('/:groupUuid/users', TYPES.AuthMiddleware)
@@ -55,7 +49,7 @@ export class GroupsController extends BaseHttpController {
       return this.errorResponse(500, 'Could not add user to group')
     }
 
-    return this.json({ groupUser: result })
+    return this.json({ groupUserKey: result })
   }
 
   private errorResponse(status: number, message?: string, tag?: string) {
@@ -64,15 +58,6 @@ export class GroupsController extends BaseHttpController {
         error: { message, tag },
       },
       status,
-    )
-  }
-
-  private notFoundJson(errorTag?: string): results.JsonResult {
-    return this.json(
-      {
-        error: { message: 'Not found', tag: errorTag },
-      },
-      404,
     )
   }
 }

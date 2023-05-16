@@ -53,7 +53,8 @@ export class ItemService implements ItemServiceInterface {
 
     const itemQuery: ItemQuery = {
       userUuid: dto.userUuid,
-      groupUuids: userGroupUuids,
+      includeGroupUuids: !dto.groupUuid ? userGroupUuids : undefined,
+      exclusiveGroupUuid: dto.groupUuid && userGroupUuids.includes(dto.groupUuid) ? dto.groupUuid : undefined,
       lastSyncTime,
       syncTimeComparison,
       contentType: dto.contentType,

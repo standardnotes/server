@@ -11,8 +11,8 @@ export class TypeORMGroupUserKeyRepository {
 
   findByUuid(uuid: string): Promise<GroupUserKey | null> {
     return this.ormRepository
-      .createQueryBuilder('group_user')
-      .where('group_user.uuid = :uuid', {
+      .createQueryBuilder('group_user_key')
+      .where('group_user_key.uuid = :uuid', {
         uuid,
       })
       .getOne()
@@ -27,9 +27,9 @@ export class TypeORMGroupUserKeyRepository {
   }
 
   private createFindAllQueryBuilder(query: GroupUserKeyQuery): SelectQueryBuilder<GroupUserKey> {
-    const queryBuilder = this.ormRepository.createQueryBuilder('group_user')
+    const queryBuilder = this.ormRepository.createQueryBuilder('group_user_key')
 
-    queryBuilder.where('group_user.user_uuid = :userUuid', { userUuid: query.userUuid })
+    queryBuilder.where('group_user_key.user_uuid = :userUuid', { userUuid: query.userUuid })
 
     return queryBuilder
   }

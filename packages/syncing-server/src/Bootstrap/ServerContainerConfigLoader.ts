@@ -87,7 +87,7 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
 
     // use cases
     container.bind<SyncItems>(TYPES.SyncItems).toDynamicValue((context: interfaces.Context) => {
-      return new SyncItems(context.container.get(TYPES.ItemService))
+      return new SyncItems(context.container.get(TYPES.ItemService), context.container.get(TYPES.GroupUserKeyService))
     })
     container.bind<CheckIntegrity>(TYPES.CheckIntegrity).toDynamicValue((context: interfaces.Context) => {
       return new CheckIntegrity(context.container.get(TYPES.ItemRepository))
@@ -132,6 +132,7 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
         context.container.get(TYPES.Timer),
         context.container.get(TYPES.ItemProjector),
         context.container.get(TYPES.MAX_ITEMS_LIMIT),
+        context.container.get(TYPES.GroupUserKeyRepository),
         context.container.get(TYPES.Logger),
       )
     })
@@ -156,6 +157,7 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
           context.container.get(TYPES.ItemProjector),
           context.container.get(TYPES.ItemConflictProjector),
           context.container.get(TYPES.SavedItemProjector),
+          context.container.get(TYPES.GroupUserKeyProjector),
         )
       })
     container
@@ -174,7 +176,11 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
       return new ItemLinkFactory(context.container.get(TYPES.Timer))
     })
 
-    container.bind<OwnershipFilter>(TYPES.OwnershipFilter).toDynamicValue(() => new OwnershipFilter())
+    container
+      .bind<OwnershipFilter>(TYPES.OwnershipFilter)
+      .toDynamicValue(
+        (context: interfaces.Context) => new OwnershipFilter(context.container.get(TYPES.GroupUserKeyService)),
+      )
     container
       .bind<TimeDifferenceFilter>(TYPES.TimeDifferenceFilter)
       .toDynamicValue((context: interfaces.Context) => new TimeDifferenceFilter(context.container.get(TYPES.Timer)))

@@ -131,13 +131,17 @@ export class TypeORMItemRepository implements ItemRepositoryInterface {
       queryBuilder.orderBy(`item.${query.sortBy}`, query.sortOrder)
     }
 
-    if (query.groupUuids != undefined) {
-      queryBuilder.where('item.group_uuid IN (:...groupUuids)', { groupUuids: query.groupUuids })
+    if (query.includeGroupUuids != undefined) {
+      queryBuilder.where('item.group_uuid IN (:...groupUuids)', { groupUuids: query.includeGroupUuids })
       if (query.userUuid) {
         queryBuilder.orWhere('item.user_uuid = :userUuid', { userUuid: query.userUuid })
       }
     } else if (query.userUuid !== undefined) {
       queryBuilder.where('item.user_uuid = :userUuid', { userUuid: query.userUuid })
+    }
+
+    if (query.exclusiveGroupUuid) {
+      queryBuilder.andWhere('item.group_uuid = :groupUuid', { groupUuid: query.exclusiveGroupUuid })
     }
 
     if (query.selectString !== undefined) {
