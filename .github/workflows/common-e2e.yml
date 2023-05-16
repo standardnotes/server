@@ -47,3 +47,46 @@ jobs:
 
     - name: Run E2E Test Suite
       run: yarn dlx mocha-headless-chrome --timeout 1200000 -f http://localhost:9001/mocha/test.html
+
+  e2e-home-server:
+    runs-on: ubuntu-latest
+
+    services:
+      snjs:
+        image: standardnotes/snjs:${{ inputs.snjs_image_tag }}
+        ports:
+        - 9001:9001
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Node
+      uses: actions/setup-node@v3
+      with:
+        registry-url: 'https://registry.npmjs.org'
+        node-version-file: '.nvmrc'
+
+    - name: Build
+      run: yarn build
+
+    - name: Copy dotenv file
+      run: cp packages/home-server/.env.sample packages/home-server/.env
+
+    - name: Fill in env variables
+      run: |
+        sed -i "s/JWT_SECRET=/JWT_SECRET=$(openssl rand -hex 32)/g" packages/home-server/.env
+        sed -i "s/AUTH_JWT_SECRET=/AUTH_JWT_SECRET=$(openssl rand -hex 32)/g" packages/home-server/.env
+        sed -i "s/ENCRYPTION_SERVER_KEY=/ENCRYPTION_SERVER_KEY=$(openssl rand -hex 32)/g" packages/home-server/.env
+        sed -i "s/PSEUDO_KEY_PARAMS_KEY=/PSEUDO_KEY_PARAMS_KEY=$(openssl rand -hex 32)/g" packages/home-server/.env
+
+    - name: Run Server
+      run: yarn workspace @standardnotes/home-server start
+      env:
+        PORT: 3123
+
+    - name: Wait for server to start
+      run: docker/is-available.sh http://localhost:3123 $(pwd)/logs
+
+    - name: Run E2E Test Suite
+      continue-on-error: true
+      run: yarn dlx mocha-headless-chrome --timeout 1200000 -f http://localhost:9001/mocha/test.html
