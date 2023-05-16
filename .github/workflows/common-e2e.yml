@@ -66,6 +66,9 @@ jobs:
         registry-url: 'https://registry.npmjs.org'
         node-version-file: '.nvmrc'
 
+    - name: Install Dependencies
+      run: yarn install --immutable
+
     - name: Build
       run: yarn build
 
