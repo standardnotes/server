@@ -86,7 +86,7 @@ const startServer = async (): Promise<void> => {
 
   const serverInstance = server.build()
 
-  serverInstance.listen(env.get('PORT'))
+  serverInstance.listen(env.get('PORT', true) ? +env.get('PORT', true) : 3000)
 
   logger.info(`Server started on port ${process.env.PORT}`)
 }

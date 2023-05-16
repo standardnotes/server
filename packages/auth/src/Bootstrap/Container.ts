@@ -453,19 +453,31 @@ export class ContainerConfigLoader {
     container.bind(TYPES.Auth_JWT_SECRET).toConstantValue(env.get('JWT_SECRET'))
     container.bind(TYPES.Auth_LEGACY_JWT_SECRET).toConstantValue(env.get('LEGACY_JWT_SECRET', true))
     container.bind(TYPES.Auth_AUTH_JWT_SECRET).toConstantValue(env.get('AUTH_JWT_SECRET'))
-    container.bind(TYPES.Auth_AUTH_JWT_TTL).toConstantValue(+env.get('AUTH_JWT_TTL'))
+    container
+      .bind(TYPES.Auth_AUTH_JWT_TTL)
+      .toConstantValue(env.get('AUTH_JWT_TTL', true) ? +env.get('AUTH_JWT_TTL') : 60_000)
     container.bind(TYPES.Auth_VALET_TOKEN_SECRET).toConstantValue(env.get('VALET_TOKEN_SECRET', true))
     container.bind(TYPES.Auth_VALET_TOKEN_TTL).toConstantValue(+env.get('VALET_TOKEN_TTL', true))
     container
       .bind(TYPES.Auth_WEB_SOCKET_CONNECTION_TOKEN_SECRET)
       .toConstantValue(env.get('WEB_SOCKET_CONNECTION_TOKEN_SECRET', true))
     container.bind(TYPES.Auth_ENCRYPTION_SERVER_KEY).toConstantValue(env.get('ENCRYPTION_SERVER_KEY'))
-    container.bind(TYPES.Auth_ACCESS_TOKEN_AGE).toConstantValue(env.get('ACCESS_TOKEN_AGE'))
-    container.bind(TYPES.Auth_REFRESH_TOKEN_AGE).toConstantValue(env.get('REFRESH_TOKEN_AGE'))
-    container.bind(TYPES.Auth_MAX_LOGIN_ATTEMPTS).toConstantValue(env.get('MAX_LOGIN_ATTEMPTS'))
-    container.bind(TYPES.Auth_FAILED_LOGIN_LOCKOUT).toConstantValue(env.get('FAILED_LOGIN_LOCKOUT'))
+    container
+      .bind(TYPES.Auth_ACCESS_TOKEN_AGE)
+      .toConstantValue(env.get('ACCESS_TOKEN_AGE', true) ? +env.get('ACCESS_TOKEN_AGE', true) : 5184000)
+    container
+      .bind(TYPES.Auth_REFRESH_TOKEN_AGE)
+      .toConstantValue(env.get('REFRESH_TOKEN_AGE', true) ? +env.get('REFRESH_TOKEN_AGE', true) : 31556926)
+    container
+      .bind(TYPES.Auth_MAX_LOGIN_ATTEMPTS)
+      .toConstantValue(env.get('MAX_LOGIN_ATTEMPTS', true) ? +env.get('MAX_LOGIN_ATTEMPTS', true) : 6)
+    container
+      .bind(TYPES.Auth_FAILED_LOGIN_LOCKOUT)
+      .toConstantValue(env.get('FAILED_LOGIN_LOCKOUT', true) ? +env.get('FAILED_LOGIN_LOCKOUT', true) : 3600)
     container.bind(TYPES.Auth_PSEUDO_KEY_PARAMS_KEY).toConstantValue(env.get('PSEUDO_KEY_PARAMS_KEY'))
-    container.bind(TYPES.Auth_EPHEMERAL_SESSION_AGE).toConstantValue(env.get('EPHEMERAL_SESSION_AGE'))
+    container
+      .bind(TYPES.Auth_EPHEMERAL_SESSION_AGE)
+      .toConstantValue(env.get('EPHEMERAL_SESSION_AGE', true) ? +env.get('EPHEMERAL_SESSION_AGE', true) : 259200)
     container.bind(TYPES.Auth_REDIS_URL).toConstantValue(env.get('REDIS_URL', true))
     container
       .bind(TYPES.Auth_DISABLE_USER_REGISTRATION)
