@@ -11,4 +11,6 @@ export type ChangeCredentialsDTO = {
   protocolVersion?: string
   kpOrigination?: string
   kpCreated?: string
+  publicKey?: string
+  encryptedPrivateKey?: string
 }

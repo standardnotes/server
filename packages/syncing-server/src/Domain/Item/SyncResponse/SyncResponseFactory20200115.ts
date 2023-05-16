@@ -7,12 +7,15 @@ import { ItemProjection } from '../../../Projection/ItemProjection'
 import { SyncResponse20200115 } from './SyncResponse20200115'
 import { SyncResponseFactoryInterface } from './SyncResponseFactoryInterface'
 import { SavedItemProjection } from '../../../Projection/SavedItemProjection'
+import { GroupUser } from '../../GroupUser/Model/GroupUser'
+import { GroupUserProjection } from '../../../Projection/GroupUserProjection'
 
 export class SyncResponseFactory20200115 implements SyncResponseFactoryInterface {
   constructor(
     private itemProjector: ProjectorInterface<Item, ItemProjection>,
     private itemConflictProjector: ProjectorInterface<ItemConflict, ItemConflictProjection>,
     private savedItemProjector: ProjectorInterface<Item, SavedItemProjection>,
+    private groupKeyProjector: ProjectorInterface<GroupUser, GroupUserProjection>,
   ) {}
 
   async createResponse(syncItemsResponse: SyncItemsResponse): Promise<SyncResponse20200115> {
@@ -31,12 +34,18 @@ export class SyncResponseFactory20200115 implements SyncResponseFactoryInterface
       conflicts.push(<ItemConflictProjection>await this.itemConflictProjector.projectFull(itemConflict))
     }
 
+    const groupKeys = []
+    for (const groupKey of syncItemsResponse.groupKeys) {
+      groupKeys.push(<GroupUserProjection>await this.groupKeyProjector.projectFull(groupKey))
+    }
+
     return {
       retrieved_items: retrievedItems,
       saved_items: savedItems,
       conflicts,
       sync_token: syncItemsResponse.syncToken,
       cursor_token: syncItemsResponse.cursorToken,
+      group_keys: groupKeys,
     }
   }
 }

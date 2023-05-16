@@ -62,6 +62,13 @@ export class ChangeCredentials implements UseCaseInterface {
       dto.user.email = newUsername.value
     }
 
+    if (dto.publicKey) {
+      dto.user.publicKey = dto.publicKey
+    }
+    if (dto.encryptedPrivateKey) {
+      dto.user.encryptedPrivateKey = dto.encryptedPrivateKey
+    }
+
     dto.user.pwNonce = dto.pwNonce
     if (dto.protocolVersion) {
       dto.user.version = dto.protocolVersion

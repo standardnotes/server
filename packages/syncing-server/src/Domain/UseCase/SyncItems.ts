@@ -1,3 +1,4 @@
+import { GroupUserServiceInterface } from '../GroupUser/Service/GroupUserService'
 import { Item } from '../Item/Item'
 import { ItemConflict } from '../Item/ItemConflict'
 import { ItemServiceInterface } from '../Item/ItemServiceInterface'
@@ -6,7 +7,7 @@ import { SyncItemsResponse } from './SyncItemsResponse'
 import { UseCaseInterface } from './UseCaseInterface'
 
 export class SyncItems implements UseCaseInterface {
-  constructor(private itemService: ItemServiceInterface) {}
+  constructor(private itemService: ItemServiceInterface, private groupUserService: GroupUserServiceInterface) {}
 
   async execute(dto: SyncItemsDTO): Promise<SyncItemsResponse> {
     const getItemsResult = await this.itemService.getItems({
@@ -30,12 +31,15 @@ export class SyncItems implements UseCaseInterface {
       retrievedItems = await this.itemService.frontLoadKeysItemsToTop(dto.userUuid, retrievedItems)
     }
 
+    const groupKeys = await this.groupUserService.getUserGroupKeys({ userUuid: dto.userUuid, syncToken: dto.syncToken })
+
     const syncResponse: SyncItemsResponse = {
       retrievedItems,
       syncToken: saveItemsResult.syncToken,
       savedItems: saveItemsResult.savedItems,
       conflicts: saveItemsResult.conflicts,
       cursorToken: getItemsResult.cursorToken,
+      groupKeys,
     }
 
     return syncResponse

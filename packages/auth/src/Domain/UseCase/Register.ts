@@ -71,6 +71,8 @@ export class Register implements UseCaseInterface {
     user.encryptedPassword = await bcrypt.hash(password, User.PASSWORD_HASH_COST)
     user.encryptedServerKey = await this.crypter.generateEncryptedUserServerKey()
     user.serverEncryptionVersion = User.DEFAULT_ENCRYPTION_VERSION
+    user.publicKey = dto.publicKey ?? null
+    user.encryptedPrivateKey = dto.encryptedPrivateKey ?? null
 
     const defaultRole = await this.roleRepository.findOneByName(RoleName.NAMES.CoreUser)
     if (defaultRole) {

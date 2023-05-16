@@ -2,11 +2,10 @@ import { ItemSaveValidationDTO } from '../SaveValidator/ItemSaveValidationDTO'
 import { ItemSaveRuleResult } from './ItemSaveRuleResult'
 import { ItemSaveRuleInterface } from './ItemSaveRuleInterface'
 import { ConflictType } from '@standardnotes/responses'
-import { GetUserGroupsUseCase } from '../../UseCase/Groups/GetUserGroupsUseCase'
-import { GetGroupItemsUseCase } from '../../UseCase/Groups/GetGroupItemsUseCase'
+import { GetUserGroupKeysUseCase } from '../../UseCase/Groups/GetUserGroupKeysUseCase'
 
 export class OwnershipFilter implements ItemSaveRuleInterface {
-  constructor(private getUserGroupsUseCase: GetUserGroupsUseCase, private getGroupItemsUseCase: GetGroupItemsUseCase) {}
+  constructor(private getUserGroupsUseCase: GetUserGroupKeysUseCase) {}
 
   async check(dto: ItemSaveValidationDTO): Promise<ItemSaveRuleResult> {
     const itemBelongsToADifferentUser = dto.existingItem !== null && dto.existingItem.userUuid !== dto.userUuid

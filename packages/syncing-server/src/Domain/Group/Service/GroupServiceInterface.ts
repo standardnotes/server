@@ -9,18 +9,6 @@ export interface GroupServiceInterface {
     ownerUuid: string
     inviteeUuid: string
     encryptedGroupKey: string
+    senderPublicKey: string
   }): Promise<GroupUser | null>
-
-  addItemToGroup(dto: {
-    groupUuid: string
-    userUuid: string
-    itemUuid: string
-    apiVersion: string
-    readOnlyAccess: boolean
-    sessionUuid: string | null
-  }): Promise<{ success: boolean }>
-
-  getGroup(groupUuid: string): Promise<Group | null>
-
-  getUserGroups(userUuid: string): Promise<Group[]>
 }

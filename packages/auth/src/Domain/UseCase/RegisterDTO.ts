@@ -10,4 +10,6 @@ export type RegisterDTO = {
   kpOrigination?: string
   kpCreated?: string
   version?: string
+  publicKey?: string
+  encryptedPrivateKey?: string
 }

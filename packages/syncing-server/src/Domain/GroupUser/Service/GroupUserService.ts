@@ -1,12 +1,26 @@
+import { GetUserGroupKeysDTO } from './GetUserGroupKeysDTO'
 import { GroupUser } from '../Model/GroupUser'
 
 export interface GroupUserServiceInterface {
-  createGroupUser(groupUuid: string, userUuid: string, encryptedGroupKey: string): Promise<GroupUser>
-  getGroupUsers(groupUuid: string): Promise<GroupUser[]>
+  createGroupUser(dto: {
+    groupUuid: string
+    userUuid: string
+    encryptedGroupKey: string
+    senderPublicKey: string
+  }): Promise<GroupUser>
+  getUsersForGroup(groupUuid: string): Promise<GroupUser[]>
+  getUserGroupKeys(dto: GetUserGroupKeysDTO): Promise<GroupUser[]>
 }
 
 export class GroupUserService implements GroupUserServiceInterface {
-  createGroupUser(groupUuid: string, userUuid: string, encryptedGroupKey: string): Promise<GroupUser> {}
+  createGroupUser(dto: {
+    groupUuid: string
+    userUuid: string
+    encryptedGroupKey: string
+    senderPublicKey: string
+  }): Promise<GroupUser> {}
 
-  getGroupUsers(groupUuid: string): Promise<GroupUser[]> {}
+  getUsersForGroup(groupUuid: string): Promise<GroupUser[]> {}
+
+  getUserGroupKeys(dto: GetUserGroupKeysDTO): Promise<GroupUser[]> {}
 }

@@ -72,6 +72,8 @@ export class UsersController extends BaseHttpController {
       kpOrigination: request.body.origination,
       kpCreated: request.body.created,
       version: request.body.version,
+      publicKey: request.body.public_key,
+      encryptedPrivateKey: request.body.private_key,
     })
 
     if (updateResult.success) {
@@ -208,6 +210,8 @@ export class UsersController extends BaseHttpController {
       kpOrigination: request.body.origination,
       updatedWithUserAgent: <string>request.headers['user-agent'],
       protocolVersion: request.body.version,
+      publicKey: request.body.new_public_key,
+      encryptedPrivateKey: request.body.new_encrypted_private_key,
     })
 
     if (!changeCredentialsResult.success) {

@@ -23,6 +23,11 @@ export class GroupUser {
   declare encryptedGroupKey: string
 
   @Column({
+    name: 'sender_public_key',
+  })
+  declare senderPublicKey: string
+
+  @Column({
     name: 'created_at_timestamp',
     type: 'bigint',
   })

@@ -15,4 +15,6 @@ export type UpdateUserDTO = {
   kpOrigination?: string
   kpCreated?: Date
   version?: string
+  publicKey?: string
+  encryptedPrivateKey?: string
 }
