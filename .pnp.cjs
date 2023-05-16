@@ -4326,7 +4326,7 @@ const RAW_RUNTIME_STATE =
           ["eslint-plugin-prettier", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:4.2.1"],\
           ["express", "npm:4.18.2"],\
           ["express-robots-txt", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:1.0.0"],\
-          ["helmet", "npm:6.1.5"],\
+          ["helmet", "npm:7.0.0"],\
           ["inversify", "npm:6.0.1"],\
           ["inversify-express-utils", "npm:6.4.3"],\
           ["ioredis", "npm:5.3.2"],\
@@ -4597,7 +4597,7 @@ const RAW_RUNTIME_STATE =
           ["express", "npm:4.18.2"],\
           ["express-robots-txt", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:1.0.0"],\
           ["express-winston", "virtual:b442cf0427cc365d1c137f7340f9b81f9b204561afe791a8564ae9590c3a7fc4b5f793aaf8817b946f75a3cb64d03ef8790eb847f8b576b41e700da7b00c240c#npm:4.2.0"],\
-          ["helmet", "npm:6.1.5"],\
+          ["helmet", "npm:7.0.0"],\
           ["inversify", "npm:6.0.1"],\
           ["inversify-express-utils", "npm:6.4.3"],\
           ["ioredis", "npm:5.3.2"],\
@@ -4636,7 +4636,7 @@ const RAW_RUNTIME_STATE =
           ["eslint-plugin-prettier", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:4.2.1"],\
           ["express", "npm:4.18.2"],\
           ["express-robots-txt", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:1.0.0"],\
-          ["helmet", "npm:6.1.5"],\
+          ["helmet", "npm:7.0.0"],\
           ["inversify", "npm:6.0.1"],\
           ["inversify-express-utils", "npm:6.4.3"],\
           ["prettier", "npm:2.8.8"],\
@@ -4911,7 +4911,7 @@ const RAW_RUNTIME_STATE =
           ["eslint", "npm:8.39.0"],\
           ["eslint-plugin-prettier", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:4.2.1"],\
           ["express", "npm:4.18.2"],\
-          ["helmet", "npm:6.1.5"],\
+          ["helmet", "npm:7.0.0"],\
           ["inversify", "npm:6.0.1"],\
           ["inversify-express-utils", "npm:6.4.3"],\
           ["jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.5.0"],\
@@ -9509,10 +9509,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["helmet", [\
-      ["npm:6.1.5", {\
-        "packageLocation": "./.yarn/cache/helmet-npm-6.1.5-523f0fdda8-0c6b62e3a7.zip/node_modules/helmet/",\
+      ["npm:7.0.0", {\
+        "packageLocation": "./.yarn/cache/helmet-npm-7.0.0-13c1e96edf-e904f951fc.zip/node_modules/helmet/",\
         "packageDependencies": [\
-          ["helmet", "npm:6.1.5"]\
+          ["helmet", "npm:7.0.0"]\
         ],\
         "linkType": "HARD"\
       }]\

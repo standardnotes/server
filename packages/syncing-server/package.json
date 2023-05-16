@@ -42,7 +42,7 @@
     "cors": "2.8.5",
     "dotenv": "^16.0.1",
     "express": "^4.18.2",
-    "helmet": "^6.0.0",
+    "helmet": "^7.0.0",
     "inversify": "^6.0.1",
     "inversify-express-utils": "^6.4.3",
     "jsonwebtoken": "^9.0.0",

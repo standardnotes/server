@@ -3951,7 +3951,7 @@ __metadata:
     eslint-plugin-prettier: "npm:^4.2.1"
     express: "npm:^4.18.2"
     express-robots-txt: "npm:^1.0.0"
-    helmet: "npm:^6.0.0"
+    helmet: "npm:^7.0.0"
     inversify: "npm:^6.0.1"
     inversify-express-utils: "npm:^6.4.3"
     ioredis: "npm:^5.2.4"
@@ -4222,7 +4222,7 @@ __metadata:
     express: "npm:^4.18.2"
     express-robots-txt: "npm:^1.0.0"
     express-winston: "npm:^4.0.5"
-    helmet: "npm:^6.0.0"
+    helmet: "npm:^7.0.0"
     inversify: "npm:^6.0.1"
     inversify-express-utils: "npm:^6.4.3"
     ioredis: "npm:^5.2.4"
@@ -4259,7 +4259,7 @@ __metadata:
     eslint-plugin-prettier: "npm:^4.2.1"
     express: "npm:^4.18.2"
     express-robots-txt: "npm:^1.0.0"
-    helmet: "npm:^6.0.0"
+    helmet: "npm:^7.0.0"
     inversify: "npm:^6.0.1"
     inversify-express-utils: "npm:^6.4.3"
     prettier: "npm:^2.8.8"
@@ -4518,7 +4518,7 @@ __metadata:
     eslint: "npm:^8.39.0"
     eslint-plugin-prettier: "npm:^4.2.1"
     express: "npm:^4.18.2"
-    helmet: "npm:^6.0.0"
+    helmet: "npm:^7.0.0"
     inversify: "npm:^6.0.1"
     inversify-express-utils: "npm:^6.4.3"
     jest: "npm:^29.5.0"
@@ -8400,10 +8400,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"helmet@npm:^6.0.0":
-  version: 6.1.5
-  resolution: "helmet@npm:6.1.5"
-  checksum: 0c6b62e3a71591144abe2f1522889fd4cba6867615a80ef8f1efe3e1f5edac71839b74a11f9ea00367baebffd175cfb8d625538f132c2ac5861a635d24fc9cd0
+"helmet@npm:^7.0.0":
+  version: 7.0.0
+  resolution: "helmet@npm:7.0.0"
+  checksum: e904f951fca29c14eea3a123f083cc5a6ee4702989e47dd198cc5f4341cc350065a5c461ab893000d368c14d9ce965ea060f3bc3391ac85b7fc4d7e370b04800
   languageName: node
   linkType: hard
 
