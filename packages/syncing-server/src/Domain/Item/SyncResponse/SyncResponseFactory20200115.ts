@@ -7,15 +7,15 @@ import { ItemProjection } from '../../../Projection/ItemProjection'
 import { SyncResponse20200115 } from './SyncResponse20200115'
 import { SyncResponseFactoryInterface } from './SyncResponseFactoryInterface'
 import { SavedItemProjection } from '../../../Projection/SavedItemProjection'
-import { GroupUser } from '../../GroupUser/Model/GroupUser'
-import { GroupUserProjection } from '../../../Projection/GroupUserProjection'
+import { GroupUserKey } from '../../GroupUserKey/Model/GroupUserKey'
+import { GroupUserKeyProjection } from '../../../Projection/GroupUserKeyProjection'
 
 export class SyncResponseFactory20200115 implements SyncResponseFactoryInterface {
   constructor(
     private itemProjector: ProjectorInterface<Item, ItemProjection>,
     private itemConflictProjector: ProjectorInterface<ItemConflict, ItemConflictProjection>,
     private savedItemProjector: ProjectorInterface<Item, SavedItemProjection>,
-    private groupKeyProjector: ProjectorInterface<GroupUser, GroupUserProjection>,
+    private groupKeyProjector: ProjectorInterface<GroupUserKey, GroupUserKeyProjection>,
   ) {}
 
   async createResponse(syncItemsResponse: SyncItemsResponse): Promise<SyncResponse20200115> {
@@ -36,7 +36,7 @@ export class SyncResponseFactory20200115 implements SyncResponseFactoryInterface
 
     const groupKeys = []
     for (const groupKey of syncItemsResponse.groupKeys) {
-      groupKeys.push(<GroupUserProjection>await this.groupKeyProjector.projectFull(groupKey))
+      groupKeys.push(<GroupUserKeyProjection>await this.groupKeyProjector.projectFull(groupKey))
     }
 
     return {

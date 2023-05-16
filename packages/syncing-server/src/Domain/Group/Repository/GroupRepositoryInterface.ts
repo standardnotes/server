@@ -2,7 +2,6 @@ import { Group } from '../Model/Group'
 
 export type GroupQuery = {
   userUuid: string
-  shareToken: string
 }
 
 export type UserGroupsQuery = {

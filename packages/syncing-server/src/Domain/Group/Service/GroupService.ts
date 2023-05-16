@@ -1,4 +1,4 @@
-import { GroupUser } from '../../GroupUser/Model/GroupUser'
+import { GroupUserKey } from '../../GroupUserKey/Model/GroupUserKey'
 import { Group } from '../Model/Group'
 
 import { GroupsRepositoryInterface } from '../Repository/GroupRepositoryInterface'
@@ -6,7 +6,7 @@ import { GroupServiceInterface } from './GroupServiceInterface'
 
 import { GroupFactoryInterface } from '../Factory/GroupFactoryInterface'
 import { TimerInterface } from '@standardnotes/time'
-import { GroupUserServiceInterface } from '../../GroupUser/Service/GroupUserService'
+import { GroupUserKeyServiceInterface } from '../../GroupUserKey/Service/GroupUserKeyService'
 
 import { v4 as uuidv4 } from 'uuid'
 
@@ -14,8 +14,7 @@ export class GroupService implements GroupServiceInterface {
   constructor(
     private groupRepository: GroupsRepositoryInterface,
     private groupFactory: GroupFactoryInterface,
-    private groupUserService: GroupUserServiceInterface,
-
+    private groupUserService: GroupUserKeyServiceInterface,
     private timer: TimerInterface,
   ) {}
 
@@ -41,8 +40,8 @@ export class GroupService implements GroupServiceInterface {
     inviteeUuid: string
     encryptedGroupKey: string
     senderPublicKey: string
-  }): Promise<GroupUser | null> {
-    const user = await this.groupUserService.createGroupUser({
+  }): Promise<GroupUserKey | null> {
+    const user = await this.groupUserService.createGroupUserKey({
       groupUuid: dto.groupUuid,
       userUuid: dto.inviteeUuid,
       encryptedGroupKey: dto.encryptedGroupKey,

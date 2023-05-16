@@ -20,7 +20,7 @@ import { ConflictType } from '@standardnotes/responses'
 import { ItemTransferCalculatorInterface } from './ItemTransferCalculatorInterface'
 import { ProjectorInterface } from '../../Projection/ProjectorInterface'
 import { ItemProjection } from '../../Projection/ItemProjection'
-import { GroupUserRepositoryInterface } from '../GroupUser/Repository/GroupUserRepositoryInterface'
+import { GroupUserKeyRepositoryInterface } from '../GroupUserKey/Repository/GroupUserKeyRepositoryInterface'
 
 export class ItemService implements ItemServiceInterface {
   private readonly DEFAULT_ITEMS_LIMIT = 150
@@ -38,7 +38,7 @@ export class ItemService implements ItemServiceInterface {
     private timer: TimerInterface,
     private itemProjector: ProjectorInterface<Item, ItemProjection>,
     private maxItemsSyncLimit: number,
-    private groupUsersRepository: GroupUserRepositoryInterface,
+    private groupUsersRepository: GroupUserKeyRepositoryInterface,
     private logger: Logger,
   ) {}
 

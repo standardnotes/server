@@ -1,4 +1,4 @@
-export type GroupUserProjection = {
+export type GroupUserKeyProjection = {
   uuid: string
   group_uuid: string
   user_uuid: string

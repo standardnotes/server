@@ -1,4 +1,4 @@
-import { GroupUser } from '../../GroupUser/Model/GroupUser'
+import { GroupUserKey } from '../../GroupUserKey/Model/GroupUserKey'
 import { Group } from '../Model/Group'
 
 export interface GroupServiceInterface {
@@ -10,5 +10,5 @@ export interface GroupServiceInterface {
     inviteeUuid: string
     encryptedGroupKey: string
     senderPublicKey: string
-  }): Promise<GroupUser | null>
+  }): Promise<GroupUserKey | null>
 }

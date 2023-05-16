@@ -1,7 +1,7 @@
-import { GetUserGroupKeysDTO } from './../../GroupUser/Service/GetUserGroupKeysDTO'
+import { GetUserGroupKeysDTO } from './../../GroupUserKey/Service/GetUserGroupKeysDTO'
 import { UseCaseInterface } from '../UseCaseInterface'
 import { Group } from '../../Group/Model/Group'
-import { GroupUserServiceInterface } from '../../GroupUser/Service/GroupUserService'
+import { GroupUserKeyServiceInterface } from '../../GroupUserKey/Service/GroupUserKeyService'
 
 export type GetUserGroupKeysUseCaseResult =
   | {
@@ -14,7 +14,7 @@ export type GetUserGroupKeysUseCaseResult =
     }
 
 export class GetUserGroupKeysUseCase implements UseCaseInterface {
-  constructor(private groupUserService: GroupUserServiceInterface) {}
+  constructor(private groupUserService: GroupUserKeyServiceInterface) {}
 
   async execute(dto: GetUserGroupKeysDTO): Promise<GetUserGroupKeysUseCaseResult> {
     const result = await this.groupUserService.getUserGroupKeys(dto)

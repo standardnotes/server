@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner, Table, TableColumn } from 'typeorm'
 
-export class CreateGroupUser1684173023883 implements MigrationInterface {
+export class CreateGroupUserKey1684173023883 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     const table = new Table({
       name: 'group_users',

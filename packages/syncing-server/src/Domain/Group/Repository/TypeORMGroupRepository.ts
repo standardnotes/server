@@ -5,6 +5,10 @@ import { Group } from '../Model/Group'
 export class TypeORMGroupRepository implements GroupsRepositoryInterface {
   constructor(private ormRepository: Repository<Group>) {}
 
+  async create(group: Group): Promise<Group> {
+    return this.ormRepository.save(group)
+  }
+
   findByUuid(uuid: string): Promise<Group | null> {
     return this.ormRepository
       .createQueryBuilder('group')
@@ -12,10 +16,6 @@ export class TypeORMGroupRepository implements GroupsRepositoryInterface {
         uuid,
       })
       .getOne()
-  }
-
-  async create(group: Group): Promise<Group> {
-    return this.ormRepository.save(group)
   }
 
   async remove(group: Group): Promise<Group> {

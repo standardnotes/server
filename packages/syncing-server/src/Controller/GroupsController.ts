@@ -2,11 +2,11 @@ import { GroupServiceInterface } from './../Domain/Group/Service/GroupServiceInt
 import { Request, Response } from 'express'
 import { BaseHttpController, controller, httpGet, httpPost, results } from 'inversify-express-utils'
 import TYPES from '../Bootstrap/Types'
-import { GroupUserServiceInterface } from '../Domain/GroupUser/Service/GroupUserService'
+import { GroupUserKeyServiceInterface } from '../Domain/GroupUserKey/Service/GroupUserKeyService'
 
 @controller('/groups')
 export class GroupsController extends BaseHttpController {
-  constructor(private groupsService: GroupServiceInterface, private groupUserService: GroupUserServiceInterface) {
+  constructor(private groupsService: GroupServiceInterface, private groupUserService: GroupUserKeyServiceInterface) {
     super()
   }
 

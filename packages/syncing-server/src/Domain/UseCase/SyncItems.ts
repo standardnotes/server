@@ -1,4 +1,4 @@
-import { GroupUserServiceInterface } from '../GroupUser/Service/GroupUserService'
+import { GroupUserKeyServiceInterface } from '../GroupUserKey/Service/GroupUserKeyService'
 import { Item } from '../Item/Item'
 import { ItemConflict } from '../Item/ItemConflict'
 import { ItemServiceInterface } from '../Item/ItemServiceInterface'
@@ -7,7 +7,7 @@ import { SyncItemsResponse } from './SyncItemsResponse'
 import { UseCaseInterface } from './UseCaseInterface'
 
 export class SyncItems implements UseCaseInterface {
-  constructor(private itemService: ItemServiceInterface, private groupUserService: GroupUserServiceInterface) {}
+  constructor(private itemService: ItemServiceInterface, private groupUserService: GroupUserKeyServiceInterface) {}
 
   async execute(dto: SyncItemsDTO): Promise<SyncItemsResponse> {
     const getItemsResult = await this.itemService.getItems({
