@@ -48,7 +48,7 @@ const commonDataSourceOptions = {
     TypeORMEmergencyAccessInvitation,
     TypeORMCacheEntry,
   ],
-  migrations: [`dist/migrations/${isConfiguredForMySQL ? 'mysql' : 'sqlite'}/*.js`],
+  migrations: [`${__dirname}/../../migrations/${isConfiguredForMySQL ? 'mysql' : 'sqlite'}/*.js`],
   migrationsRun: true,
   logging: <LoggerOptions>env.get('DB_DEBUG_LEVEL', true) ?? 'info',
 }

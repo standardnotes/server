@@ -1,11 +1,10 @@
 import 'reflect-metadata'
 
-import * as prettyjson from 'prettyjson'
 import { ControllerContainer, ServiceContainer } from '@standardnotes/domain-core'
 import { Service as ApiGatewayService, TYPES as ApiGatewayTYPES } from '@standardnotes/api-gateway'
 import { Service as AuthService } from '@standardnotes/auth-server'
 import { Container } from 'inversify'
-import { InversifyExpressServer, getRouteInfo } from 'inversify-express-utils'
+import { InversifyExpressServer } from 'inversify-express-utils'
 import helmet from 'helmet'
 import * as cors from 'cors'
 import { text, json, Request, Response, NextFunction } from 'express'
@@ -86,10 +85,6 @@ const startServer = async (): Promise<void> => {
   })
 
   const serverInstance = server.build()
-
-  const routeInfo = getRouteInfo(container)
-  // eslint-disable-next-line no-console
-  console.log(prettyjson.render({ routes: routeInfo }))
 
   serverInstance.listen(env.get('PORT'))
 
