@@ -4248,6 +4248,7 @@ __metadata:
     "@standardnotes/api-gateway": "workspace:^"
     "@standardnotes/auth-server": "workspace:^"
     "@standardnotes/domain-core": "workspace:^"
+    "@standardnotes/domain-events-infra": "workspace:^"
     "@types/cors": "npm:^2.8.9"
     "@types/express": "npm:^4.17.14"
     "@types/prettyjson": "npm:^0.0.30"

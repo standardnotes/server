@@ -6,6 +6,7 @@ import { Container } from 'inversify'
 import {
   DomainEventHandlerInterface,
   DomainEventMessageHandlerInterface,
+  DomainEventPublisherInterface,
   DomainEventSubscriberFactoryInterface,
 } from '@standardnotes/domain-events'
 import { TimerInterface, Timer } from '@standardnotes/time'
@@ -90,6 +91,8 @@ import { FeatureService } from '../Domain/Feature/FeatureService'
 import { SettingServiceInterface } from '../Domain/Setting/SettingServiceInterface'
 import { ExtensionKeyGrantedEventHandler } from '../Domain/Handler/ExtensionKeyGrantedEventHandler'
 import {
+  DirectCallDomainEventPublisher,
+  DirectCallEventMessageHandler,
   SNSDomainEventPublisher,
   SQSDomainEventSubscriberFactory,
   SQSEventMessageHandler,
@@ -242,7 +245,13 @@ import { InversifyExpressWebSocketsController } from '../Infra/InversifyExpressU
 const newrelicFormatter = require('@newrelic/winston-enricher')
 
 export class ContainerConfigLoader {
-  async load(controllerConatiner?: ControllerContainerInterface): Promise<Container> {
+  async load(configuration?: {
+    controllerConatiner?: ControllerContainerInterface
+    directCallDomainEventPublisher?: DirectCallDomainEventPublisher
+  }): Promise<Container> {
+    const directCallDomainEventPublisher =
+      configuration?.directCallDomainEventPublisher ?? new DirectCallDomainEventPublisher()
+
     const env: Env = new Env()
     env.load()
 
@@ -280,33 +289,35 @@ export class ContainerConfigLoader {
 
     container.bind<TimerInterface>(TYPES.Auth_Timer).toConstantValue(new Timer())
 
-    const snsConfig: SNSClientConfig = {
-      region: env.get('SNS_AWS_REGION', true),
-    }
-    if (env.get('SNS_ENDPOINT', true)) {
-      snsConfig.endpoint = env.get('SNS_ENDPOINT', true)
-    }
-    if (env.get('SNS_ACCESS_KEY_ID', true) && env.get('SNS_SECRET_ACCESS_KEY', true)) {
-      snsConfig.credentials = {
-        accessKeyId: env.get('SNS_ACCESS_KEY_ID', true),
-        secretAccessKey: env.get('SNS_SECRET_ACCESS_KEY', true),
+    if (!isConfiguredForHomeServer) {
+      const snsConfig: SNSClientConfig = {
+        region: env.get('SNS_AWS_REGION', true),
       }
-    }
-    container.bind<SNSClient>(TYPES.Auth_SNS).toConstantValue(new SNSClient(snsConfig))
+      if (env.get('SNS_ENDPOINT', true)) {
+        snsConfig.endpoint = env.get('SNS_ENDPOINT', true)
+      }
+      if (env.get('SNS_ACCESS_KEY_ID', true) && env.get('SNS_SECRET_ACCESS_KEY', true)) {
+        snsConfig.credentials = {
+          accessKeyId: env.get('SNS_ACCESS_KEY_ID', true),
+          secretAccessKey: env.get('SNS_SECRET_ACCESS_KEY', true),
+        }
+      }
+      container.bind<SNSClient>(TYPES.Auth_SNS).toConstantValue(new SNSClient(snsConfig))
 
-    const sqsConfig: SQSClientConfig = {
-      region: env.get('SQS_AWS_REGION', true),
-    }
-    if (env.get('SQS_ENDPOINT', true)) {
-      sqsConfig.endpoint = env.get('SQS_ENDPOINT', true)
-    }
-    if (env.get('SQS_ACCESS_KEY_ID', true) && env.get('SQS_SECRET_ACCESS_KEY', true)) {
-      sqsConfig.credentials = {
-        accessKeyId: env.get('SQS_ACCESS_KEY_ID', true),
-        secretAccessKey: env.get('SQS_SECRET_ACCESS_KEY', true),
+      const sqsConfig: SQSClientConfig = {
+        region: env.get('SQS_AWS_REGION', true),
       }
+      if (env.get('SQS_ENDPOINT', true)) {
+        sqsConfig.endpoint = env.get('SQS_ENDPOINT', true)
+      }
+      if (env.get('SQS_ACCESS_KEY_ID', true) && env.get('SQS_SECRET_ACCESS_KEY', true)) {
+        sqsConfig.credentials = {
+          accessKeyId: env.get('SQS_ACCESS_KEY_ID', true),
+          secretAccessKey: env.get('SQS_SECRET_ACCESS_KEY', true),
+        }
+      }
+      container.bind<SQSClient>(TYPES.Auth_SQS).toConstantValue(new SQSClient(sqsConfig))
     }
-    container.bind<SQSClient>(TYPES.Auth_SQS).toConstantValue(new SQSClient(sqsConfig))
 
     // Mapping
     container
@@ -649,9 +660,11 @@ export class ContainerConfigLoader {
     container.bind<UserSubscriptionServiceInterface>(TYPES.Auth_UserSubscriptionService).to(UserSubscriptionService)
 
     container
-      .bind<SNSDomainEventPublisher>(TYPES.Auth_DomainEventPublisher)
+      .bind<DomainEventPublisherInterface>(TYPES.Auth_DomainEventPublisher)
       .toConstantValue(
-        new SNSDomainEventPublisher(container.get(TYPES.Auth_SNS), container.get(TYPES.Auth_SNS_TOPIC_ARN)),
+        isConfiguredForHomeServer
+          ? directCallDomainEventPublisher
+          : new SNSDomainEventPublisher(container.get(TYPES.Auth_SNS), container.get(TYPES.Auth_SNS_TOPIC_ARN)),
       )
 
     // use cases
@@ -836,7 +849,7 @@ export class ContainerConfigLoader {
     // Controller
     container
       .bind<ControllerContainerInterface>(TYPES.Auth_ControllerContainer)
-      .toConstantValue(controllerConatiner ?? new ControllerContainer())
+      .toConstantValue(configuration?.controllerConatiner ?? new ControllerContainer())
     container
       .bind<AuthController>(TYPES.Auth_AuthController)
       .toConstantValue(
@@ -956,22 +969,34 @@ export class ContainerConfigLoader {
       ['EMAIL_SUBSCRIPTION_UNSUBSCRIBED', container.get(TYPES.Auth_EmailSubscriptionUnsubscribedEventHandler)],
     ])
 
-    container
-      .bind<DomainEventMessageHandlerInterface>(TYPES.Auth_DomainEventMessageHandler)
-      .toConstantValue(
-        env.get('NEW_RELIC_ENABLED', true) === 'true'
-          ? new SQSNewRelicEventMessageHandler(eventHandlers, container.get(TYPES.Auth_Logger))
-          : new SQSEventMessageHandler(eventHandlers, container.get(TYPES.Auth_Logger)),
+    if (isConfiguredForHomeServer) {
+      const directCallEventMessageHandler = new DirectCallEventMessageHandler(
+        eventHandlers,
+        container.get(TYPES.Auth_Logger),
       )
-    container
-      .bind<DomainEventSubscriberFactoryInterface>(TYPES.Auth_DomainEventSubscriberFactory)
-      .toConstantValue(
-        new SQSDomainEventSubscriberFactory(
-          container.get(TYPES.Auth_SQS),
-          container.get(TYPES.Auth_SQS_QUEUE_URL),
-          container.get(TYPES.Auth_DomainEventMessageHandler),
-        ),
-      )
+      directCallDomainEventPublisher.register(directCallEventMessageHandler)
+      container
+        .bind<DomainEventMessageHandlerInterface>(TYPES.Auth_DomainEventMessageHandler)
+        .toConstantValue(directCallEventMessageHandler)
+    } else {
+      container
+        .bind<DomainEventMessageHandlerInterface>(TYPES.Auth_DomainEventMessageHandler)
+        .toConstantValue(
+          env.get('NEW_RELIC_ENABLED', true) === 'true'
+            ? new SQSNewRelicEventMessageHandler(eventHandlers, container.get(TYPES.Auth_Logger))
+            : new SQSEventMessageHandler(eventHandlers, container.get(TYPES.Auth_Logger)),
+        )
+
+      container
+        .bind<DomainEventSubscriberFactoryInterface>(TYPES.Auth_DomainEventSubscriberFactory)
+        .toConstantValue(
+          new SQSDomainEventSubscriberFactory(
+            container.get(TYPES.Auth_SQS),
+            container.get(TYPES.Auth_SQS_QUEUE_URL),
+            container.get(TYPES.Auth_DomainEventMessageHandler),
+          ),
+        )
+    }
 
     container
       .bind<InversifyExpressAuthController>(TYPES.Auth_InversifyExpressAuthController)

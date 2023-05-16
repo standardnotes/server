@@ -2,6 +2,7 @@ import 'reflect-metadata'
 
 import { ControllerContainer, ServiceContainer } from '@standardnotes/domain-core'
 import { Service as ApiGatewayService, TYPES as ApiGatewayTYPES } from '@standardnotes/api-gateway'
+import { DirectCallDomainEventPublisher } from '@standardnotes/domain-events-infra'
 import { Service as AuthService } from '@standardnotes/auth-server'
 import { Container } from 'inversify'
 import { InversifyExpressServer } from 'inversify-express-utils'
@@ -17,9 +18,10 @@ import { Env } from '../src/Bootstrap/Env'
 const startServer = async (): Promise<void> => {
   const controllerContainer = new ControllerContainer()
   const serviceContainer = new ServiceContainer()
+  const directCallDomainEventPublisher = new DirectCallDomainEventPublisher()
 
   const apiGatewayService = new ApiGatewayService(serviceContainer, controllerContainer)
-  const authService = new AuthService(serviceContainer, controllerContainer)
+  const authService = new AuthService(serviceContainer, controllerContainer, directCallDomainEventPublisher)
 
   const container = Container.merge(
     (await apiGatewayService.getContainer()) as Container,
