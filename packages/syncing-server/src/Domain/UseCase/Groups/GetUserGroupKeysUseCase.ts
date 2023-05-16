@@ -1,4 +1,4 @@
-import { GetUserGroupKeysDTO } from './../../GroupUserKey/Service/GetUserGroupKeysDTO'
+import { GetUserGroupKeysDTO } from '../../GroupUserKey/Service/GetUserGroupKeysDTO'
 import { UseCaseInterface } from '../UseCaseInterface'
 import { Group } from '../../Group/Model/Group'
 import { GroupUserKeyServiceInterface } from '../../GroupUserKey/Service/GroupUserKeyService'

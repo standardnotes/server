@@ -1,6 +1,6 @@
 import { TimerInterface } from '@standardnotes/time'
 import { GroupUserKey } from '../Model/GroupUserKey'
-import { GroupUserKeyFactoryInterface } from '../Factory/GroupUserKeyFactoryInterface'
+import { GroupUserKeyFactoryInterface } from '../GroupUserKeyFactoryInterface'
 import { v4 as uuidv4 } from 'uuid'
 import { GroupUserKeyRepositoryInterface } from '../Repository/GroupUserKeyRepositoryInterface'
 

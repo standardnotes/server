@@ -1,7 +1,7 @@
 import { TimerInterface } from '@standardnotes/time'
 import { GroupUserKeyFactoryInterface } from './GroupUserKeyFactoryInterface'
 import { GroupUserKeyHash } from './GroupUserKeyHash'
-import { GroupUserKey } from '../Model/GroupUserKey'
+import { GroupUserKey } from './Model/GroupUserKey'
 
 export class GroupUserKeyFactory implements GroupUserKeyFactoryInterface {
   constructor(private timer: TimerInterface) {}

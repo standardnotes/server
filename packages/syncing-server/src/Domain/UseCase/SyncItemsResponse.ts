@@ -1,4 +1,4 @@
-import { GroupUserKey } from './../GroupUserKey/Model/GroupUserKey'
+import { GroupUserKey } from '../GroupUserKey/Model/GroupUserKey'
 import { Item } from '../Item/Item'
 import { ItemConflict } from '../Item/ItemConflict'
 
