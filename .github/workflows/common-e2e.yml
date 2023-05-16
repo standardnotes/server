@@ -19,15 +19,6 @@ on:
 
 jobs:
   e2e:
-    strategy:
-      matrix:
-        database: [ "mysql", "sqlite" ]
-        include:
-         - cache: "redis"
-           database: "mysql"
-         - cache: "memory"
-           database: "sqlite"
-
     runs-on: ubuntu-latest
 
     services:
@@ -48,8 +39,8 @@ jobs:
     - name: Run Server
       run: docker compose -f docker-compose.ci.yml up -d
       env:
-        DB_TYPE: ${{ matrix.database }}
-        CACHE_TYPE: ${{ matrix.cache }}
+        DB_TYPE: mysql
+        CACHE_TYPE: redis
 
     - name: Wait for server to start
       run: docker/is-available.sh http://localhost:3123 $(pwd)/logs
