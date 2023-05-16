@@ -83,7 +83,7 @@ jobs:
         sed -i "s/PSEUDO_KEY_PARAMS_KEY=/PSEUDO_KEY_PARAMS_KEY=$(openssl rand -hex 32)/g" packages/home-server/.env
 
     - name: Run Server
-      run: nohup yarn workspace @standardnotes/home-server start
+      run: nohup yarn workspace @standardnotes/home-server start &
       env:
         PORT: 3123
 
