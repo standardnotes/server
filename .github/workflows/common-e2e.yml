@@ -19,6 +19,7 @@ on:
 
 jobs:
   e2e:
+    name: (Docker) E2E Test Suite
     runs-on: ubuntu-latest
 
     services:
@@ -49,6 +50,7 @@ jobs:
       run: yarn dlx mocha-headless-chrome --timeout 1200000 -f http://localhost:9001/mocha/test.html
 
   e2e-home-server:
+    name: (WIP - Home Server) E2E Test Suite
     runs-on: ubuntu-latest
 
     services:
