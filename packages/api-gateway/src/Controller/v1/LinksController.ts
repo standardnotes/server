@@ -5,7 +5,7 @@ import { TYPES } from '../../Bootstrap/Types'
 import { HttpServiceInterface } from '../../Service/Http/HttpServiceInterface'
 
 @controller('/v1/sharing')
-export class ItemLinksController extends BaseHttpController {
+export class LinksController extends BaseHttpController {
   constructor(@inject(TYPES.HTTPService) private httpService: HttpServiceInterface) {
     super()
   }

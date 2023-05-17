@@ -81,6 +81,8 @@ const TYPES = {
   ContentFilter: Symbol.for('ContentFilter'),
   ItemFactory: Symbol.for('ItemFactory'),
   ItemLinkFactory: Symbol.for('ItemLinkFactory'),
+  GroupFactory: Symbol.for('GroupFactory'),
+  GroupUserKeyFactory: Symbol.for('GroupUserKeyFactory'),
   ItemTransferCalculator: Symbol.for('ItemTransferCalculator'),
   ValetTokenEncoder: Symbol.for('ValetTokenEncoder'),
   GroupService: Symbol.for('GroupService'),

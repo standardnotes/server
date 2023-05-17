@@ -1,3 +1,6 @@
+import { GroupServiceInterface } from './../Domain/Group/Service/GroupServiceInterface'
+import { GroupUserKeyFactory } from './../Domain/GroupUserKey/GroupUserKeyFactory'
+import { GroupFactoryInterface } from './../Domain/Group/Factory/GroupFactoryInterface'
 import { GetSharedItemUseCase } from '../Domain/UseCase/Links/GetSharedItemUseCase'
 import { ItemLinkServiceInterface } from '../Domain/ItemLink/Service/ItemLinkServiceInterface'
 import { Container, interfaces } from 'inversify'
@@ -38,6 +41,10 @@ import { GetUserItemLinksUseCase } from '../Domain/UseCase/Links/GetUserItemLink
 import { TokenEncoder, TokenEncoderInterface, ValetTokenData } from '@standardnotes/security'
 import { CreateSharedFileValetToken } from '../Domain/UseCase/CreateSharedFileValetToken/CreateSharedFileValetToken'
 import { ItemLinkFactoryInterface } from '../Domain/ItemLink/Factory/ItemLinkFactoryInterface'
+import { GroupFactory } from '../Domain/Group/Factory/GroupFactory'
+import { GroupService } from '../Domain/Group/Service/GroupService'
+import { GroupUserKeyService } from '../Domain/GroupUserKey/Service/GroupUserKeyService'
+import { GroupUserKeyServiceInterface } from '../Domain/GroupUserKey/Service/GroupUserKeyServiceInterface'
 
 export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
   private readonly DEFAULT_CONTENT_SIZE_TRANSFER_LIMIT = 10_000_000
@@ -145,6 +152,23 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
         context.container.get(TYPES.Timer),
       )
     })
+    container.bind<GroupServiceInterface>(TYPES.GroupService).toDynamicValue((context: interfaces.Context) => {
+      return new GroupService(
+        context.container.get(TYPES.GroupRepository),
+        context.container.get(TYPES.GroupFactory),
+        context.container.get(TYPES.GroupUserKeyService),
+        context.container.get(TYPES.Timer),
+      )
+    })
+    container
+      .bind<GroupUserKeyServiceInterface>(TYPES.GroupUserKeyService)
+      .toDynamicValue((context: interfaces.Context) => {
+        return new GroupUserKeyService(
+          context.container.get(TYPES.GroupUserKeyRepository),
+          context.container.get(TYPES.GroupUserKeyFactory),
+          context.container.get(TYPES.Timer),
+        )
+      })
     container
       .bind<SyncResponseFactory20161215>(TYPES.SyncResponseFactory20161215)
       .toDynamicValue((context: interfaces.Context) => {
@@ -174,6 +198,12 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
     })
     container.bind<ItemLinkFactoryInterface>(TYPES.ItemLinkFactory).toDynamicValue((context: interfaces.Context) => {
       return new ItemLinkFactory(context.container.get(TYPES.Timer))
+    })
+    container.bind<GroupFactoryInterface>(TYPES.GroupFactory).toDynamicValue((context: interfaces.Context) => {
+      return new GroupFactory(context.container.get(TYPES.Timer))
+    })
+    container.bind<GroupUserKeyFactory>(TYPES.GroupUserKeyFactory).toDynamicValue((context: interfaces.Context) => {
+      return new GroupUserKeyFactory(context.container.get(TYPES.Timer))
     })
 
     container

@@ -7,6 +7,7 @@ export class AddPkcFields1684172607219 implements MigrationInterface {
       new TableColumn({
         name: 'public_key',
         type: 'text',
+        isNullable: true,
       }),
     )
 
@@ -15,6 +16,7 @@ export class AddPkcFields1684172607219 implements MigrationInterface {
       new TableColumn({
         name: 'encrypted_private_key',
         type: 'text',
+        isNullable: true,
       }),
     )
   }

@@ -1,3 +1,6 @@
+import { GroupUserKey } from './../Domain/GroupUserKey/Model/GroupUserKey'
+import { Group } from './../Domain/Group/Model/Group'
+import { TypeORMGroupRepository } from './../Domain/Group/Repository/TypeORMGroupRepository'
 import { ItemLink } from '../Domain/ItemLink/Model/ItemLink'
 import { TypeORMItemLinkRepository } from '../Domain/ItemLink/Repository/TypeORMItemLinkRepository'
 import * as winston from 'winston'
@@ -21,6 +24,11 @@ import { Timer, TimerInterface } from '@standardnotes/time'
 import { ItemTransferCalculatorInterface } from '../Domain/Item/ItemTransferCalculatorInterface'
 import { ItemTransferCalculator } from '../Domain/Item/ItemTransferCalculator'
 import { ItemLinksRepositoryInterface } from '../Domain/ItemLink/Repository/ItemLinkRepositoryInterface'
+import { GroupsRepositoryInterface } from '../Domain/Group/Repository/GroupRepositoryInterface'
+import { GroupUserKeyRepositoryInterface } from '../Domain/GroupUserKey/Repository/GroupUserKeyRepositoryInterface'
+import { TypeORMGroupUserKeyRepository } from '../Domain/GroupUserKey/Repository/TypeORMGroupUserKeyRepository'
+import { GroupUserKeyProjection } from '../Projection/GroupUserKeyProjection'
+import { GroupUserKeyProjector } from '../Projection/GroupUserKeyProjector'
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
 
@@ -84,18 +92,35 @@ export class CommonContainerConfigLoader {
       .toDynamicValue((context: interfaces.Context) => {
         return new TypeORMItemLinkRepository(context.container.get(TYPES.ORMItemLinkRepository))
       })
+    container.bind<GroupsRepositoryInterface>(TYPES.GroupRepository).toDynamicValue((context: interfaces.Context) => {
+      return new TypeORMGroupRepository(context.container.get(TYPES.ORMGroupRepository))
+    })
+    container
+      .bind<GroupUserKeyRepositoryInterface>(TYPES.GroupUserKeyRepository)
+      .toDynamicValue((context: interfaces.Context) => {
+        return new TypeORMGroupUserKeyRepository(context.container.get(TYPES.ORMGroupUserKeyRepository))
+      })
 
     // ORM
     container.bind<Repository<Item>>(TYPES.ORMItemRepository).toDynamicValue(() => AppDataSource.getRepository(Item))
     container
       .bind<Repository<ItemLink>>(TYPES.ORMItemLinkRepository)
       .toDynamicValue(() => AppDataSource.getRepository(ItemLink))
+    container.bind<Repository<Group>>(TYPES.ORMGroupRepository).toDynamicValue(() => AppDataSource.getRepository(Group))
+    container
+      .bind<Repository<GroupUserKey>>(TYPES.ORMGroupUserKeyRepository)
+      .toDynamicValue(() => AppDataSource.getRepository(GroupUserKey))
 
     // Projectors
     container
       .bind<ProjectorInterface<Item, ItemProjection>>(TYPES.ItemProjector)
       .toDynamicValue((context: interfaces.Context) => {
         return new ItemProjector(context.container.get(TYPES.Timer))
+      })
+    container
+      .bind<ProjectorInterface<GroupUserKey, GroupUserKeyProjection>>(TYPES.GroupUserKeyProjector)
+      .toDynamicValue(() => {
+        return new GroupUserKeyProjector()
       })
 
     // env vars

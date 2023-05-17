@@ -9,8 +9,8 @@ export class OwnershipFilter implements ItemSaveRuleInterface {
   constructor(private groupUserKeyService: GroupUserKeyServiceInterface) {}
 
   async check(dto: ItemSaveValidationDTO): Promise<ItemSaveRuleResult> {
-    const itemBelongsToGroup = dto.itemHash.group_uuid !== null
-    const itemBelongsToADifferentUser = dto.existingItem !== null && dto.existingItem.userUuid !== dto.userUuid
+    const itemBelongsToGroup = dto.itemHash.group_uuid != null
+    const itemBelongsToADifferentUser = dto.existingItem != null && dto.existingItem.userUuid !== dto.userUuid
 
     if (itemBelongsToADifferentUser || itemBelongsToGroup) {
       const isAuthorizedForGroup = await this.itemBelongsToAuthorizedSharedGroup(dto.userUuid, dto.itemHash)

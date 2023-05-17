@@ -2,16 +2,17 @@ import { GroupServiceInterface } from './../Domain/Group/Service/GroupServiceInt
 import { Request, Response } from 'express'
 import { BaseHttpController, controller, httpPost, results } from 'inversify-express-utils'
 import TYPES from '../Bootstrap/Types'
+import { inject } from 'inversify'
 
 @controller('/groups')
 export class GroupsController extends BaseHttpController {
-  constructor(private groupsService: GroupServiceInterface) {
+  constructor(@inject(TYPES.GroupService) private groupService: GroupServiceInterface) {
     super()
   }
 
   @httpPost('/', TYPES.AuthMiddleware)
   public async createGroup(request: Request, response: Response): Promise<results.NotFoundResult | results.JsonResult> {
-    const result = await this.groupsService.createGroup({
+    const result = await this.groupService.createGroup({
       userUuid: response.locals.user.uuid,
       creatorPublicKey: request.body.creator_public_key,
       encryptedGroupKey: request.body.encrypted_group_key,
@@ -21,7 +22,7 @@ export class GroupsController extends BaseHttpController {
       return this.errorResponse(500, 'Could not create group')
     }
 
-    const groupUserKey = await this.groupsService.addUserToGroup({
+    const groupUserKey = await this.groupService.addUserToGroup({
       groupUuid: result.uuid,
       ownerUuid: response.locals.user.uuid,
       inviteeUuid: response.locals.user.uuid,
@@ -37,7 +38,7 @@ export class GroupsController extends BaseHttpController {
     request: Request,
     response: Response,
   ): Promise<results.NotFoundResult | results.JsonResult> {
-    const result = await this.groupsService.addUserToGroup({
+    const result = await this.groupService.addUserToGroup({
       groupUuid: request.params.groupUuid,
       ownerUuid: response.locals.user.uuid,
       inviteeUuid: request.body.invitee_uuid,

@@ -131,7 +131,7 @@ export class TypeORMItemRepository implements ItemRepositoryInterface {
       queryBuilder.orderBy(`item.${query.sortBy}`, query.sortOrder)
     }
 
-    if (query.includeGroupUuids != undefined) {
+    if (query.includeGroupUuids != undefined && query.includeGroupUuids.length > 0) {
       queryBuilder.where('item.group_uuid IN (:...groupUuids)', { groupUuids: query.includeGroupUuids })
       if (query.userUuid) {
         queryBuilder.orWhere('item.user_uuid = :userUuid', { userUuid: query.userUuid })

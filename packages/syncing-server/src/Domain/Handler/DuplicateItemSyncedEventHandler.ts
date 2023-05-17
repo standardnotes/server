@@ -35,7 +35,7 @@ export class DuplicateItemSyncedEventHandler implements DomainEventHandlerInterf
       event.payload.userUuid,
     )
 
-    if (existingOriginalItem !== null) {
+    if (existingOriginalItem != null) {
       await this.domainEventPublisher.publish(
         this.domainEventFactory.createRevisionsCopyRequestedEvent(event.payload.userUuid, {
           originalItemUuid: existingOriginalItem.uuid,
