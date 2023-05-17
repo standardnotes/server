@@ -2,17 +2,17 @@ import 'reflect-metadata'
 
 import * as express from 'express'
 
-import { SettingsController } from './SettingsController'
+import { InversifyExpressSettingsController } from './InversifyExpressSettingsController'
 import { results } from 'inversify-express-utils'
-import { User } from '../Domain/User/User'
-import { GetSettings } from '../Domain/UseCase/GetSettings/GetSettings'
-import { GetSetting } from '../Domain/UseCase/GetSetting/GetSetting'
-import { UpdateSetting } from '../Domain/UseCase/UpdateSetting/UpdateSetting'
-import { DeleteSetting } from '../Domain/UseCase/DeleteSetting/DeleteSetting'
-import { EncryptionVersion } from '../Domain/Encryption/EncryptionVersion'
 import { ControllerContainerInterface } from '@standardnotes/domain-core'
+import { EncryptionVersion } from '../../Domain/Encryption/EncryptionVersion'
+import { DeleteSetting } from '../../Domain/UseCase/DeleteSetting/DeleteSetting'
+import { GetSetting } from '../../Domain/UseCase/GetSetting/GetSetting'
+import { GetSettings } from '../../Domain/UseCase/GetSettings/GetSettings'
+import { UpdateSetting } from '../../Domain/UseCase/UpdateSetting/UpdateSetting'
+import { User } from '../../Domain/User/User'
 
-describe('SettingsController', () => {
+describe('InversifyExpressSettingsController', () => {
   let deleteSetting: DeleteSetting
   let getSettings: GetSettings
   let getSetting: GetSetting
@@ -24,7 +24,7 @@ describe('SettingsController', () => {
   let controllerContainer: ControllerContainerInterface
 
   const createController = () =>
-    new SettingsController(getSettings, getSetting, updateSetting, deleteSetting, controllerContainer)
+    new InversifyExpressSettingsController(getSettings, getSetting, updateSetting, deleteSetting, controllerContainer)
 
   beforeEach(() => {
     controllerContainer = {} as jest.Mocked<ControllerContainerInterface>

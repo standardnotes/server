@@ -10,16 +10,16 @@ import {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   results,
 } from 'inversify-express-utils'
-import TYPES from '../Bootstrap/Types'
-import { EncryptionVersion } from '../Domain/Encryption/EncryptionVersion'
-import { DeleteSetting } from '../Domain/UseCase/DeleteSetting/DeleteSetting'
-import { GetSetting } from '../Domain/UseCase/GetSetting/GetSetting'
-import { GetSettings } from '../Domain/UseCase/GetSettings/GetSettings'
-import { UpdateSetting } from '../Domain/UseCase/UpdateSetting/UpdateSetting'
+import TYPES from '../../Bootstrap/Types'
+import { EncryptionVersion } from '../../Domain/Encryption/EncryptionVersion'
+import { DeleteSetting } from '../../Domain/UseCase/DeleteSetting/DeleteSetting'
+import { GetSetting } from '../../Domain/UseCase/GetSetting/GetSetting'
+import { GetSettings } from '../../Domain/UseCase/GetSettings/GetSettings'
+import { UpdateSetting } from '../../Domain/UseCase/UpdateSetting/UpdateSetting'
 import { ControllerContainerInterface } from '@standardnotes/domain-core'
 
 @controller('/users/:userUuid')
-export class SettingsController extends BaseHttpController {
+export class InversifyExpressSettingsController extends BaseHttpController {
   constructor(
     @inject(TYPES.Auth_GetSettings) private doGetSettings: GetSettings,
     @inject(TYPES.Auth_GetSetting) private doGetSetting: GetSetting,
