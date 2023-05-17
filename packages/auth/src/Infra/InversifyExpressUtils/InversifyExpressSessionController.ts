@@ -9,14 +9,14 @@ import {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   results,
 } from 'inversify-express-utils'
-import TYPES from '../Bootstrap/Types'
-import { DeletePreviousSessionsForUser } from '../Domain/UseCase/DeletePreviousSessionsForUser'
-import { DeleteSessionForUser } from '../Domain/UseCase/DeleteSessionForUser'
-import { RefreshSessionToken } from '../Domain/UseCase/RefreshSessionToken'
+import TYPES from '../../Bootstrap/Types'
+import { DeletePreviousSessionsForUser } from '../../Domain/UseCase/DeletePreviousSessionsForUser'
+import { DeleteSessionForUser } from '../../Domain/UseCase/DeleteSessionForUser'
+import { RefreshSessionToken } from '../../Domain/UseCase/RefreshSessionToken'
 import { ControllerContainerInterface } from '@standardnotes/domain-core'
 
 @controller('/session')
-export class SessionController extends BaseHttpController {
+export class InversifyExpressSessionController extends BaseHttpController {
   constructor(
     @inject(TYPES.Auth_DeleteSessionForUser) private deleteSessionForUser: DeleteSessionForUser,
     @inject(TYPES.Auth_DeletePreviousSessionsForUser)

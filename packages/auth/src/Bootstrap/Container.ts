@@ -247,6 +247,7 @@ import { AuthMiddleware } from '../Infra/InversifyExpressUtils/Middleware/AuthMi
 import { OfflineUserAuthMiddleware } from '../Infra/InversifyExpressUtils/Middleware/OfflineUserAuthMiddleware'
 import { AuthMiddlewareWithoutResponse } from '../Infra/InversifyExpressUtils/Middleware/AuthMiddlewareWithoutResponse'
 import { LockMiddleware } from '../Infra/InversifyExpressUtils/Middleware/LockMiddleware'
+import { InversifyExpressSessionController } from '../Infra/InversifyExpressUtils/InversifyExpressSessionController'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -1128,6 +1129,16 @@ export class ContainerConfigLoader {
           container.get(TYPES.Auth_GetSetting),
           container.get(TYPES.Auth_UpdateSetting),
           container.get(TYPES.Auth_DeleteSetting),
+          container.get(TYPES.Auth_ControllerContainer),
+        ),
+      )
+    container
+      .bind<InversifyExpressSessionController>(TYPES.Auth_InversifyExpressSessionController)
+      .toConstantValue(
+        new InversifyExpressSessionController(
+          container.get(TYPES.Auth_DeleteSessionForUser),
+          container.get(TYPES.Auth_DeletePreviousSessionsForUser),
+          container.get(TYPES.Auth_RefreshSessionToken),
           container.get(TYPES.Auth_ControllerContainer),
         ),
       )

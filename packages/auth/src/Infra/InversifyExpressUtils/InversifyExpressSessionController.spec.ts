@@ -2,14 +2,14 @@ import 'reflect-metadata'
 
 import * as express from 'express'
 
-import { SessionController } from './SessionController'
+import { InversifyExpressSessionController } from './InversifyExpressSessionController'
 import { results } from 'inversify-express-utils'
-import { RefreshSessionToken } from '../Domain/UseCase/RefreshSessionToken'
-import { DeletePreviousSessionsForUser } from '../Domain/UseCase/DeletePreviousSessionsForUser'
-import { DeleteSessionForUser } from '../Domain/UseCase/DeleteSessionForUser'
 import { ControllerContainerInterface } from '@standardnotes/domain-core'
+import { DeletePreviousSessionsForUser } from '../../Domain/UseCase/DeletePreviousSessionsForUser'
+import { DeleteSessionForUser } from '../../Domain/UseCase/DeleteSessionForUser'
+import { RefreshSessionToken } from '../../Domain/UseCase/RefreshSessionToken'
 
-describe('SessionController', () => {
+describe('InversifyExpressSessionController', () => {
   let deleteSessionForUser: DeleteSessionForUser
   let deletePreviousSessionsForUser: DeletePreviousSessionsForUser
   let refreshSessionToken: RefreshSessionToken
@@ -18,7 +18,12 @@ describe('SessionController', () => {
   let controllerContainer: ControllerContainerInterface
 
   const createController = () =>
-    new SessionController(deleteSessionForUser, deletePreviousSessionsForUser, refreshSessionToken, controllerContainer)
+    new InversifyExpressSessionController(
+      deleteSessionForUser,
+      deletePreviousSessionsForUser,
+      refreshSessionToken,
+      controllerContainer,
+    )
 
   beforeEach(() => {
     controllerContainer = {} as jest.Mocked<ControllerContainerInterface>
