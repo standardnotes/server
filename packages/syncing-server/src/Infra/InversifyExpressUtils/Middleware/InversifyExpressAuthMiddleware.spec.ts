@@ -2,19 +2,19 @@ import 'reflect-metadata'
 
 import * as winston from 'winston'
 
-import { AuthMiddleware } from './AuthMiddleware'
+import { InversifyExpressAuthMiddleware } from './InversifyExpressAuthMiddleware'
 import { NextFunction, Request, Response } from 'express'
 import { sign } from 'jsonwebtoken'
 import { RoleName } from '@standardnotes/domain-core'
 
-describe('AuthMiddleware', () => {
+describe('InversifyExpressAuthMiddleware', () => {
   let logger: winston.Logger
   const jwtSecret = 'auth_jwt_secret'
   let request: Request
   let response: Response
   let next: NextFunction
 
-  const createMiddleware = () => new AuthMiddleware(jwtSecret, logger)
+  const createMiddleware = () => new InversifyExpressAuthMiddleware(jwtSecret, logger)
 
   beforeEach(() => {
     logger = {} as jest.Mocked<winston.Logger>

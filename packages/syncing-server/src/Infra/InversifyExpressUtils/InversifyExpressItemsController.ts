@@ -1,27 +1,34 @@
 import { Request, Response } from 'express'
 import { inject } from 'inversify'
 import { BaseHttpController, controller, httpGet, httpPost, results } from 'inversify-express-utils'
-import TYPES from '../Bootstrap/Types'
-import { ApiVersion } from '../Domain/Api/ApiVersion'
-import { Item } from '../Domain/Item/Item'
-import { SyncResponseFactoryResolverInterface } from '../Domain/Item/SyncResponse/SyncResponseFactoryResolverInterface'
-import { CheckIntegrity } from '../Domain/UseCase/CheckIntegrity/CheckIntegrity'
-import { GetItem } from '../Domain/UseCase/GetItem/GetItem'
-import { SyncItems } from '../Domain/UseCase/SyncItems'
-import { ItemProjection } from '../Projection/ItemProjection'
-import { ProjectorInterface } from '../Projection/ProjectorInterface'
 
-@controller('/items', TYPES.AuthMiddleware)
-export class ItemsController extends BaseHttpController {
+import TYPES from '../../Bootstrap/Types'
+import { Item } from '../../Domain/Item/Item'
+import { SyncResponseFactoryResolverInterface } from '../../Domain/Item/SyncResponse/SyncResponseFactoryResolverInterface'
+import { CheckIntegrity } from '../../Domain/UseCase/CheckIntegrity/CheckIntegrity'
+import { GetItem } from '../../Domain/UseCase/GetItem/GetItem'
+import { SyncItems } from '../../Domain/UseCase/SyncItems'
+import { ItemProjection } from '../../Projection/ItemProjection'
+import { ProjectorInterface } from '../../Projection/ProjectorInterface'
+import { ApiVersion } from '../../Domain/Api/ApiVersion'
+import { ControllerContainerInterface } from '@standardnotes/domain-core'
+
+@controller('/items', TYPES.Sync_AuthMiddleware)
+export class InversifyExpressItemsController extends BaseHttpController {
   constructor(
-    @inject(TYPES.SyncItems) private syncItems: SyncItems,
-    @inject(TYPES.CheckIntegrity) private checkIntegrity: CheckIntegrity,
-    @inject(TYPES.GetItem) private getItem: GetItem,
-    @inject(TYPES.ItemProjector) private itemProjector: ProjectorInterface<Item, ItemProjection>,
-    @inject(TYPES.SyncResponseFactoryResolver)
+    @inject(TYPES.Sync_SyncItems) private syncItems: SyncItems,
+    @inject(TYPES.Sync_CheckIntegrity) private checkIntegrity: CheckIntegrity,
+    @inject(TYPES.Sync_GetItem) private getItem: GetItem,
+    @inject(TYPES.Sync_ItemProjector) private itemProjector: ProjectorInterface<Item, ItemProjection>,
+    @inject(TYPES.Sync_SyncResponseFactoryResolver)
     private syncResponseFactoryResolver: SyncResponseFactoryResolverInterface,
+    @inject(TYPES.Sync_ControllerContainer) private controllerContainer: ControllerContainerInterface,
   ) {
     super()
+
+    this.controllerContainer.register('sync.items.sync', this.sync.bind(this))
+    this.controllerContainer.register('sync.items.check_integrity', this.checkItemsIntegrity.bind(this))
+    this.controllerContainer.register('sync.items.get_item', this.getSingleItem.bind(this))
   }
 
   @httpPost('/sync')

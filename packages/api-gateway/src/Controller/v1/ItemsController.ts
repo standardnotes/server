@@ -8,7 +8,7 @@ import { EndpointResolverInterface } from '../../Service/Resolver/EndpointResolv
 @controller('/v1/items', TYPES.AuthMiddleware)
 export class ItemsController extends BaseHttpController {
   constructor(
-    @inject(TYPES.ServiceProxy) private httpService: ServiceProxyInterface,
+    @inject(TYPES.ServiceProxy) private serviceProxy: ServiceProxyInterface,
     @inject(TYPES.EndpointResolver) private endpointResolver: EndpointResolverInterface,
   ) {
     super()
@@ -16,7 +16,7 @@ export class ItemsController extends BaseHttpController {
 
   @httpPost('/')
   async sync(request: Request, response: Response): Promise<void> {
-    await this.httpService.callSyncingServer(
+    await this.serviceProxy.callSyncingServer(
       request,
       response,
       this.endpointResolver.resolveEndpointOrMethodIdentifier('POST', 'items/sync'),
@@ -26,7 +26,7 @@ export class ItemsController extends BaseHttpController {
 
   @httpPost('/check-integrity')
   async checkIntegrity(request: Request, response: Response): Promise<void> {
-    await this.httpService.callSyncingServer(
+    await this.serviceProxy.callSyncingServer(
       request,
       response,
       this.endpointResolver.resolveEndpointOrMethodIdentifier('POST', 'items/check-integrity'),
@@ -36,7 +36,7 @@ export class ItemsController extends BaseHttpController {
 
   @httpGet('/:uuid')
   async getItem(request: Request, response: Response): Promise<void> {
-    await this.httpService.callSyncingServer(
+    await this.serviceProxy.callSyncingServer(
       request,
       response,
       this.endpointResolver.resolveEndpointOrMethodIdentifier('GET', 'items/:uuid', request.params.uuid),

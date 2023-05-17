@@ -4,6 +4,7 @@ import { ControllerContainer, ServiceContainer } from '@standardnotes/domain-cor
 import { Service as ApiGatewayService, TYPES as ApiGatewayTYPES } from '@standardnotes/api-gateway'
 import { DirectCallDomainEventPublisher } from '@standardnotes/domain-events-infra'
 import { Service as AuthService } from '@standardnotes/auth-server'
+import { Service as SyncingService } from '@standardnotes/syncing-server'
 import { Container } from 'inversify'
 import { InversifyExpressServer } from 'inversify-express-utils'
 import helmet from 'helmet'
@@ -20,12 +21,14 @@ const startServer = async (): Promise<void> => {
   const serviceContainer = new ServiceContainer()
   const directCallDomainEventPublisher = new DirectCallDomainEventPublisher()
 
-  const apiGatewayService = new ApiGatewayService(serviceContainer, controllerContainer)
+  const apiGatewayService = new ApiGatewayService(serviceContainer)
   const authService = new AuthService(serviceContainer, controllerContainer, directCallDomainEventPublisher)
+  const syncingService = new SyncingService(serviceContainer, controllerContainer, directCallDomainEventPublisher)
 
   const container = Container.merge(
     (await apiGatewayService.getContainer()) as Container,
     (await authService.getContainer()) as Container,
+    (await syncingService.getContainer()) as Container,
   )
 
   const env: Env = new Env()
@@ -93,12 +96,7 @@ const startServer = async (): Promise<void> => {
   logger.info(`Server started on port ${process.env.PORT}`)
 }
 
-Promise.resolve(startServer())
-  .then(() => {
-    // eslint-disable-next-line no-console
-    console.log('Server started')
-  })
-  .catch((error) => {
-    // eslint-disable-next-line no-console
-    console.log(`Could not start server: ${error.message}`)
-  })
+Promise.resolve(startServer()).catch((error) => {
+  // eslint-disable-next-line no-console
+  console.log(`Could not start server: ${error.message}`)
+})

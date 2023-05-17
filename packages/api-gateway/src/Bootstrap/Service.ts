@@ -1,28 +1,14 @@
-import {
-  ControllerContainerInterface,
-  ServiceContainerInterface,
-  ServiceIdentifier,
-  ServiceInterface,
-} from '@standardnotes/domain-core'
+import { ServiceContainerInterface, ServiceIdentifier, ServiceInterface } from '@standardnotes/domain-core'
 
 import { ContainerConfigLoader } from './Container'
 
 export class Service implements ServiceInterface {
-  constructor(
-    private serviceContainer: ServiceContainerInterface,
-    private controllerContainer: ControllerContainerInterface,
-  ) {
-    this.serviceContainer.register(ServiceIdentifier.create(ServiceIdentifier.NAMES.ApiGateway).getValue(), this)
+  constructor(private serviceContainer: ServiceContainerInterface) {
+    this.serviceContainer.register(this.getId(), this)
   }
 
-  async handleRequest(request: never, response: never, endpointOrMethodIdentifier: string): Promise<unknown> {
-    const method = this.controllerContainer.get(endpointOrMethodIdentifier)
-
-    if (!method) {
-      throw new Error(`Method ${endpointOrMethodIdentifier} not found`)
-    }
-
-    return method(request, response)
+  async handleRequest(_request: never, _response: never, _endpointOrMethodIdentifier: string): Promise<unknown> {
+    throw new Error('Requests are handled via inversify-express at ApiGateway level')
   }
 
   async getContainer(): Promise<unknown> {

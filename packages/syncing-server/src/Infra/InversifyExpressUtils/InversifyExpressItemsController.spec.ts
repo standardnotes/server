@@ -3,20 +3,21 @@ import 'reflect-metadata'
 import * as express from 'express'
 import { ContentType } from '@standardnotes/common'
 
-import { ItemsController } from './ItemsController'
+import { InversifyExpressItemsController } from './InversifyExpressItemsController'
 import { results } from 'inversify-express-utils'
-import { SyncItems } from '../Domain/UseCase/SyncItems'
-import { ApiVersion } from '../Domain/Api/ApiVersion'
-import { SyncResponseFactoryResolverInterface } from '../Domain/Item/SyncResponse/SyncResponseFactoryResolverInterface'
-import { SyncResponseFactoryInterface } from '../Domain/Item/SyncResponse/SyncResponseFactoryInterface'
-import { SyncResponse20200115 } from '../Domain/Item/SyncResponse/SyncResponse20200115'
-import { CheckIntegrity } from '../Domain/UseCase/CheckIntegrity/CheckIntegrity'
-import { GetItem } from '../Domain/UseCase/GetItem/GetItem'
-import { Item } from '../Domain/Item/Item'
-import { ProjectorInterface } from '../Projection/ProjectorInterface'
-import { ItemProjection } from '../Projection/ItemProjection'
+import { Item } from '../../Domain/Item/Item'
+import { ItemProjection } from '../../Projection/ItemProjection'
+import { ProjectorInterface } from '../../Projection/ProjectorInterface'
+import { ApiVersion } from '../../Domain/Api/ApiVersion'
+import { SyncResponse20200115 } from '../../Domain/Item/SyncResponse/SyncResponse20200115'
+import { SyncResponseFactoryInterface } from '../../Domain/Item/SyncResponse/SyncResponseFactoryInterface'
+import { SyncResponseFactoryResolverInterface } from '../../Domain/Item/SyncResponse/SyncResponseFactoryResolverInterface'
+import { CheckIntegrity } from '../../Domain/UseCase/CheckIntegrity/CheckIntegrity'
+import { GetItem } from '../../Domain/UseCase/GetItem/GetItem'
+import { SyncItems } from '../../Domain/UseCase/SyncItems'
+import { ControllerContainerInterface } from '@standardnotes/domain-core'
 
-describe('ItemsController', () => {
+describe('InversifyExpressItemsController', () => {
   let syncItems: SyncItems
   let checkIntegrity: CheckIntegrity
   let getItem: GetItem
@@ -26,11 +27,22 @@ describe('ItemsController', () => {
   let syncResponceFactoryResolver: SyncResponseFactoryResolverInterface
   let syncResponseFactory: SyncResponseFactoryInterface
   let syncResponse: SyncResponse20200115
+  let controllerContainer: ControllerContainerInterface
 
   const createController = () =>
-    new ItemsController(syncItems, checkIntegrity, getItem, itemProjector, syncResponceFactoryResolver)
+    new InversifyExpressItemsController(
+      syncItems,
+      checkIntegrity,
+      getItem,
+      itemProjector,
+      syncResponceFactoryResolver,
+      controllerContainer,
+    )
 
   beforeEach(() => {
+    controllerContainer = {} as jest.Mocked<ControllerContainerInterface>
+    controllerContainer.register = jest.fn()
+
     itemProjector = {} as jest.Mocked<ProjectorInterface<Item, ItemProjection>>
     itemProjector.projectFull = jest.fn().mockReturnValue({ foo: 'bar' })
 

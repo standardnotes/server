@@ -37,6 +37,6 @@ export class Service implements ServiceInterface {
   }
 
   getId(): ServiceIdentifier {
-    return ServiceIdentifier.create(ServiceIdentifier.NAMES.Auth).getValue()
+    return ServiceIdentifier.create(ServiceIdentifier.NAMES.SyncingServer).getValue()
   }
 }

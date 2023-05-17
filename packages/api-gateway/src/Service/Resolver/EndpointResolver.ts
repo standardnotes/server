@@ -51,6 +51,10 @@ export class EndpointResolver implements EndpointResolverInterface {
     ['[GET]:users/:userUuid/subscription', 'auth.users.getSubscription'],
     ['[GET]:offline/users/subscription', 'auth.users.getOfflineSubscriptionByToken'],
     ['[POST]:users/:userUuid/requests', 'auth.users.createRequest'],
+    // Syncing Server
+    ['[POST]:items/sync', 'sync.items.sync'],
+    ['[POST]:items/check-integrity', 'sync.items.check_integrity'],
+    ['[GET]:items/:uuid', 'sync.items.get_item'],
   ])
 
   resolveEndpointOrMethodIdentifier(method: string, endpoint: string, ...params: string[]): string {

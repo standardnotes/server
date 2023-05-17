@@ -77,7 +77,7 @@ export class AuthMiddleware extends BaseMiddleware {
         })
       }
 
-      response.locals.userUuid = decodedToken.user.uuid
+      response.locals.user = decodedToken.user
       response.locals.roles = decodedToken.roles
     } catch (error) {
       const errorMessage = (error as AxiosError).isAxiosError

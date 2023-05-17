@@ -2,8 +2,8 @@ import 'reflect-metadata'
 
 import 'newrelic'
 
-import '../src/Controller/HealthCheckController'
-import '../src/Controller/ItemsController'
+import '../src/Infra/InversifyExpressUtils/InversifyExpressHealthCheckController'
+import '../src/Infra/InversifyExpressUtils/InversifyExpressItemsController'
 
 import helmet from 'helmet'
 import * as cors from 'cors'
@@ -13,9 +13,9 @@ import * as winston from 'winston'
 import { InversifyExpressServer } from 'inversify-express-utils'
 import TYPES from '../src/Bootstrap/Types'
 import { Env } from '../src/Bootstrap/Env'
-import { ServerContainerConfigLoader } from '../src/Bootstrap/ServerContainerConfigLoader'
+import { ContainerConfigLoader } from '../src/Bootstrap/Container'
 
-const container = new ServerContainerConfigLoader()
+const container = new ContainerConfigLoader()
 void container.load().then((container) => {
   const env: Env = new Env()
   env.load()
@@ -24,7 +24,7 @@ void container.load().then((container) => {
 
   server.setConfig((app) => {
     app.use((_request: Request, response: Response, next: NextFunction) => {
-      response.setHeader('X-SSJS-Version', container.get(TYPES.VERSION))
+      response.setHeader('X-SSJS-Version', container.get(TYPES.Sync_VERSION))
       next()
     })
     /* eslint-disable */
@@ -54,7 +54,7 @@ void container.load().then((container) => {
     app.use(cors())
   })
 
-  const logger: winston.Logger = container.get(TYPES.Logger)
+  const logger: winston.Logger = container.get(TYPES.Sync_Logger)
 
   server.setErrorConfig((app) => {
     app.use((error: Record<string, unknown>, _request: Request, response: Response, _next: NextFunction) => {

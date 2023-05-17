@@ -4626,6 +4626,7 @@ const RAW_RUNTIME_STATE =
           ["@standardnotes/auth-server", "workspace:packages/auth"],\
           ["@standardnotes/domain-core", "workspace:packages/domain-core"],\
           ["@standardnotes/domain-events-infra", "workspace:packages/domain-events-infra"],\
+          ["@standardnotes/syncing-server", "workspace:packages/syncing-server"],\
           ["@types/cors", "npm:2.8.13"],\
           ["@types/express", "npm:4.17.17"],\
           ["@types/prettyjson", "npm:0.0.30"],\
@@ -4732,7 +4733,7 @@ const RAW_RUNTIME_STATE =
           ["reflect-metadata", "npm:0.1.13"],\
           ["sqlite3", "virtual:31b5a94a105c89c9294c3d524a7f8929fe63ee5a2efadf21951ca4c0cfd2ecf02e8f4ef5a066bbda091f1e3a56e57c6749069a080618c96b22e51131a330fc4a#npm:5.1.6"],\
           ["ts-jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.1.0"],\
-          ["typeorm", "virtual:365b8c88cdf194291829ee28b79556e2328175d26a621363e703848100bea0042e9500db2a1206c9bbc3a4a76a1d169639ef774b2ea3a1a98584a9936b58c6be#npm:0.3.15"],\
+          ["typeorm", "virtual:67ad3a1ca34e24ce4821cc48979e98af0c3e5dd7aabc7ad0b5d22d1d977d6f943f81c9f141a420105ebdc61ef777e508a96c7946081decd98f8c30543d468b33#npm:0.3.15"],\
           ["typescript", "patch:typescript@npm%3A5.0.4#optional!builtin<compat/typescript>::version=5.0.4&hash=b5f058"],\
           ["winston", "npm:3.8.2"]\
         ],\
@@ -4924,7 +4925,7 @@ const RAW_RUNTIME_STATE =
           ["reflect-metadata", "npm:0.1.13"],\
           ["sqlite3", "virtual:31b5a94a105c89c9294c3d524a7f8929fe63ee5a2efadf21951ca4c0cfd2ecf02e8f4ef5a066bbda091f1e3a56e57c6749069a080618c96b22e51131a330fc4a#npm:5.1.6"],\
           ["ts-jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.1.0"],\
-          ["typeorm", "virtual:365b8c88cdf194291829ee28b79556e2328175d26a621363e703848100bea0042e9500db2a1206c9bbc3a4a76a1d169639ef774b2ea3a1a98584a9936b58c6be#npm:0.3.15"],\
+          ["typeorm", "virtual:67ad3a1ca34e24ce4821cc48979e98af0c3e5dd7aabc7ad0b5d22d1d977d6f943f81c9f141a420105ebdc61ef777e508a96c7946081decd98f8c30543d468b33#npm:0.3.15"],\
           ["typescript", "patch:typescript@npm%3A5.0.4#optional!builtin<compat/typescript>::version=5.0.4&hash=b5f058"],\
           ["ua-parser-js", "npm:1.0.35"],\
           ["uuid", "npm:9.0.0"],\
@@ -15165,10 +15166,10 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "HARD"\
       }],\
-      ["virtual:365b8c88cdf194291829ee28b79556e2328175d26a621363e703848100bea0042e9500db2a1206c9bbc3a4a76a1d169639ef774b2ea3a1a98584a9936b58c6be#npm:0.3.15", {\
-        "packageLocation": "./.yarn/__virtual__/typeorm-virtual-7fe891193c/0/cache/typeorm-npm-0.3.15-20a6c4f754-db890f14cb.zip/node_modules/typeorm/",\
+      ["virtual:67ad3a1ca34e24ce4821cc48979e98af0c3e5dd7aabc7ad0b5d22d1d977d6f943f81c9f141a420105ebdc61ef777e508a96c7946081decd98f8c30543d468b33#npm:0.3.15", {\
+        "packageLocation": "./.yarn/__virtual__/typeorm-virtual-91f15b21d5/0/cache/typeorm-npm-0.3.15-20a6c4f754-db890f14cb.zip/node_modules/typeorm/",\
         "packageDependencies": [\
-          ["typeorm", "virtual:365b8c88cdf194291829ee28b79556e2328175d26a621363e703848100bea0042e9500db2a1206c9bbc3a4a76a1d169639ef774b2ea3a1a98584a9936b58c6be#npm:0.3.15"],\
+          ["typeorm", "virtual:67ad3a1ca34e24ce4821cc48979e98af0c3e5dd7aabc7ad0b5d22d1d977d6f943f81c9f141a420105ebdc61ef777e508a96c7946081decd98f8c30543d468b33#npm:0.3.15"],\
           ["@google-cloud/spanner", null],\
           ["@sap/hana-client", null],\
           ["@sqltools/formatter", "npm:1.2.5"],\
