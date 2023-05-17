@@ -63,7 +63,7 @@ export class WebSocketAuthMiddleware extends BaseMiddleware {
       response.locals.freeUser =
         decodedToken.roles.length === 1 &&
         decodedToken.roles.find((role) => role.name === RoleName.NAMES.CoreUser) !== undefined
-      response.locals.userUuid = decodedToken.user.uuid
+      response.locals.user = decodedToken.user
       response.locals.roles = decodedToken.roles
     } catch (error) {
       const errorMessage = (error as AxiosError).isAxiosError

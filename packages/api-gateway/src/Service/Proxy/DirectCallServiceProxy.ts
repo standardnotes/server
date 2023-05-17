@@ -77,7 +77,12 @@ export class DirectCallServiceProxy implements ServiceProxyInterface {
       throw new Error('Syncing service not found')
     }
 
-    await service.handleRequest(request, response, endpointOrMethodIdentifier)
+    const serviceResponse = (await service.handleRequest(request, response, endpointOrMethodIdentifier)) as {
+      statusCode: number
+      json: Record<string, unknown>
+    }
+
+    void (response as Response).status(serviceResponse.statusCode).send(serviceResponse.json)
   }
 
   async callLegacySyncingServer(

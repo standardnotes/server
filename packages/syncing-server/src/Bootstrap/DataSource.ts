@@ -16,7 +16,7 @@ const maxQueryExecutionTime = env.get('DB_MAX_QUERY_EXECUTION_TIME', true)
 const commonDataSourceOptions = {
   maxQueryExecutionTime,
   entities: [Item],
-  migrations: [`dist/migrations/${isConfiguredForMySQL ? 'mysql' : 'sqlite'}/*.js`],
+  migrations: [`${__dirname}/../../migrations/${isConfiguredForMySQL ? 'mysql' : 'sqlite'}/*.js`],
   migrationsRun: true,
   logging: <LoggerOptions>env.get('DB_DEBUG_LEVEL', true) ?? 'info',
 }

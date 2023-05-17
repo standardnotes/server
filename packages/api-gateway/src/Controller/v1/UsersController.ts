@@ -227,7 +227,7 @@ export class UsersController extends BaseHttpController {
       this.endpointResolver.resolveEndpointOrMethodIdentifier(
         'GET',
         'users/:userUuid/subscription',
-        response.locals.userUuid,
+        response.locals.user.uuid,
       ),
     )
   }

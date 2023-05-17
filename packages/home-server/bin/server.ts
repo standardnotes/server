@@ -21,7 +21,7 @@ const startServer = async (): Promise<void> => {
   const serviceContainer = new ServiceContainer()
   const directCallDomainEventPublisher = new DirectCallDomainEventPublisher()
 
-  const apiGatewayService = new ApiGatewayService(serviceContainer, controllerContainer)
+  const apiGatewayService = new ApiGatewayService(serviceContainer)
   const authService = new AuthService(serviceContainer, controllerContainer, directCallDomainEventPublisher)
   const syncingService = new SyncingService(serviceContainer, controllerContainer, directCallDomainEventPublisher)
 
@@ -96,12 +96,7 @@ const startServer = async (): Promise<void> => {
   logger.info(`Server started on port ${process.env.PORT}`)
 }
 
-Promise.resolve(startServer())
-  .then(() => {
-    // eslint-disable-next-line no-console
-    console.log('Server started')
-  })
-  .catch((error) => {
-    // eslint-disable-next-line no-console
-    console.log(`Could not start server: ${error.message}`)
-  })
+Promise.resolve(startServer()).catch((error) => {
+  // eslint-disable-next-line no-console
+  console.log(`Could not start server: ${error.message}`)
+})

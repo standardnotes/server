@@ -118,7 +118,7 @@ export class SubscriptionTokenAuthMiddleware extends BaseMiddleware {
       verify(authResponse.data.authToken, this.jwtSecret, { algorithms: ['HS256'] })
     )
 
-    response.locals.userUuid = decodedToken.user.uuid
+    response.locals.user = decodedToken.user
     response.locals.roles = decodedToken.roles
   }
 }
