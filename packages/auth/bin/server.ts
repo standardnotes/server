@@ -2,7 +2,6 @@ import 'reflect-metadata'
 
 import 'newrelic'
 
-import '../src/Controller/HealthCheckController'
 import '../src/Controller/FeaturesController'
 
 import '../src/Infra/InversifyExpressUtils/InversifyExpressAuthController'
@@ -21,6 +20,7 @@ import '../src/Infra/InversifyExpressUtils/InversifyExpressSessionController'
 import '../src/Infra/InversifyExpressUtils/InversifyExpressOfflineController'
 import '../src/Infra/InversifyExpressUtils/InversifyExpressListedController'
 import '../src/Infra/InversifyExpressUtils/InversifyExpressInternalController'
+import '../src/Infra/InversifyExpressUtils/InversifyExpressHealthCheckController'
 
 import * as cors from 'cors'
 import { urlencoded, json, Request, Response, NextFunction } from 'express'
