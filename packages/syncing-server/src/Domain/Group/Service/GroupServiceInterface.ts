@@ -10,5 +10,6 @@ export interface GroupServiceInterface {
     inviteeUuid: string
     encryptedGroupKey: string
     senderPublicKey: string
+    permissions: string
   }): Promise<GroupUserKey | null>
 }

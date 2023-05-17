@@ -23,6 +23,7 @@ export class GroupUserKeyProjector implements ProjectorInterface<GroupUserKey, G
       user_uuid: userKey.userUuid,
       encrypted_group_key: userKey.encryptedGroupKey,
       sender_public_key: userKey.senderPublicKey,
+      permissions: userKey.permissions,
       created_at_timestamp: userKey.createdAtTimestamp,
       updated_at_timestamp: userKey.updatedAtTimestamp,
     }

@@ -1,12 +1,22 @@
+import { GroupUserKey } from './../Domain/GroupUserKey/Model/GroupUserKey'
 import { GroupServiceInterface } from './../Domain/Group/Service/GroupServiceInterface'
 import { Request, Response } from 'express'
 import { BaseHttpController, controller, httpPost, results } from 'inversify-express-utils'
 import TYPES from '../Bootstrap/Types'
 import { inject } from 'inversify'
+import { ProjectorInterface } from '../Projection/ProjectorInterface'
+import { Group } from '../Domain/Group/Model/Group'
+import { GroupProjection } from '../Projection/GroupProjection'
+import { GroupUserKeyProjection } from '../Projection/GroupUserKeyProjection'
 
 @controller('/groups')
 export class GroupsController extends BaseHttpController {
-  constructor(@inject(TYPES.GroupService) private groupService: GroupServiceInterface) {
+  constructor(
+    @inject(TYPES.GroupService) private groupService: GroupServiceInterface,
+    @inject(TYPES.GroupProjector) private groupProjector: ProjectorInterface<Group, GroupProjection>,
+    @inject(TYPES.GroupUserKeyProjector)
+    private groupUserKeyProjector: ProjectorInterface<GroupUserKey, GroupUserKeyProjection>,
+  ) {
     super()
   }
 
@@ -28,9 +38,17 @@ export class GroupsController extends BaseHttpController {
       inviteeUuid: response.locals.user.uuid,
       senderPublicKey: request.body.creator_public_key,
       encryptedGroupKey: request.body.encrypted_group_key,
+      permissions: 'write',
     })
 
-    return this.json({ group: result, userKey: groupUserKey })
+    if (!groupUserKey) {
+      return this.errorResponse(500, 'Could not add user to group')
+    }
+
+    return this.json({
+      group: await this.groupProjector.projectFull(result),
+      groupUserKey: await this.groupUserKeyProjector.projectFull(groupUserKey),
+    })
   }
 
   @httpPost('/:groupUuid/users', TYPES.AuthMiddleware)
@@ -44,13 +62,14 @@ export class GroupsController extends BaseHttpController {
       inviteeUuid: request.body.invitee_uuid,
       encryptedGroupKey: request.body.encrypted_group_key,
       senderPublicKey: request.body.sender_public_key,
+      permissions: request.body.permissions,
     })
 
     if (!result) {
       return this.errorResponse(500, 'Could not add user to group')
     }
 
-    return this.json({ groupUserKey: result })
+    return this.json({ groupUserKey: await this.groupUserKeyProjector.projectFull(result) })
   }
 
   private errorResponse(status: number, message?: string, tag?: string) {

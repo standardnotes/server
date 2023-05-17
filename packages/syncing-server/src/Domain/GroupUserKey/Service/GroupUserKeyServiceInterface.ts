@@ -7,6 +7,7 @@ export interface GroupUserKeyServiceInterface {
     userUuid: string
     encryptedGroupKey: string
     senderPublicKey: string
+    permissions: string
   }): Promise<GroupUserKey>
 
   getGroupUserKeysForUser(dto: GetUserGroupKeysDTO): Promise<GroupUserKey[]>

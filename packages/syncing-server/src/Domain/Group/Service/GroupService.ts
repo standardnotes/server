@@ -44,6 +44,7 @@ export class GroupService implements GroupServiceInterface {
     inviteeUuid: string
     encryptedGroupKey: string
     senderPublicKey: string
+    permissions: string
   }): Promise<GroupUserKey | null> {
     const group = await this.groupRepository.findByUuid(dto.groupUuid)
     if (!group || group.userUuid !== dto.ownerUuid) {
@@ -55,6 +56,7 @@ export class GroupService implements GroupServiceInterface {
       userUuid: dto.inviteeUuid,
       encryptedGroupKey: dto.encryptedGroupKey,
       senderPublicKey: dto.senderPublicKey,
+      permissions: dto.permissions,
     })
 
     return user

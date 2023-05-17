@@ -17,6 +17,7 @@ export class GroupUserKeyService implements GroupUserKeyServiceInterface {
     userUuid: string
     encryptedGroupKey: string
     senderPublicKey: string
+    permissions: string
   }): Promise<GroupUserKey> {
     const groupUser = this.groupUserFactory.create({
       uuid: uuidv4(),
@@ -24,6 +25,7 @@ export class GroupUserKeyService implements GroupUserKeyServiceInterface {
       group_uuid: dto.groupUuid,
       encrypted_group_key: dto.encryptedGroupKey,
       sender_public_key: dto.senderPublicKey,
+      permissions: dto.permissions,
       created_at_timestamp: this.timer.getTimestampInSeconds(),
       updated_at_timestamp: this.timer.getTimestampInSeconds(),
     })

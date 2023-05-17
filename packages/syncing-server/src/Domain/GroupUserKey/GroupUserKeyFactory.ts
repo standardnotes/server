@@ -13,6 +13,7 @@ export class GroupUserKeyFactory implements GroupUserKeyFactoryInterface {
     newGroupUserKey.senderPublicKey = dto.sender_public_key
     newGroupUserKey.encryptedGroupKey = dto.encrypted_group_key
     newGroupUserKey.groupUuid = dto.group_uuid
+    newGroupUserKey.permissions = dto.permissions
 
     const now = this.timer.getTimestampInSeconds()
     newGroupUserKey.updatedAtTimestamp = now

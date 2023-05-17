@@ -36,6 +36,12 @@ export class CreateGroupUserKey1684173023883 implements MigrationInterface {
           isNullable: false,
         }),
         new TableColumn({
+          name: 'permissions',
+          type: 'varchar',
+          length: '255',
+          isNullable: false,
+        }),
+        new TableColumn({
           name: 'created_at_timestamp',
           type: 'bigint',
         }),

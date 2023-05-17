@@ -1,6 +1,6 @@
 import { GroupServiceInterface } from './../Domain/Group/Service/GroupServiceInterface'
 import { GroupUserKeyFactory } from './../Domain/GroupUserKey/GroupUserKeyFactory'
-import { GroupFactoryInterface } from './../Domain/Group/Factory/GroupFactoryInterface'
+import { GroupFactoryInterface } from '../Domain/Group/Factory/GroupFactoryInterface'
 import { GetSharedItemUseCase } from '../Domain/UseCase/Links/GetSharedItemUseCase'
 import { ItemLinkServiceInterface } from '../Domain/ItemLink/Service/ItemLinkServiceInterface'
 import { Container, interfaces } from 'inversify'

@@ -28,6 +28,11 @@ export class GroupUserKey {
   declare senderPublicKey: string
 
   @Column({
+    name: 'permissions',
+  })
+  declare permissions: string
+
+  @Column({
     name: 'created_at_timestamp',
     type: 'bigint',
   })

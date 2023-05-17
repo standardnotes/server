@@ -29,6 +29,8 @@ import { GroupUserKeyRepositoryInterface } from '../Domain/GroupUserKey/Reposito
 import { TypeORMGroupUserKeyRepository } from '../Domain/GroupUserKey/Repository/TypeORMGroupUserKeyRepository'
 import { GroupUserKeyProjection } from '../Projection/GroupUserKeyProjection'
 import { GroupUserKeyProjector } from '../Projection/GroupUserKeyProjector'
+import { GroupProjection } from '../Projection/GroupProjection'
+import { GroupProjector } from '../Projection/GroupProjector'
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
 
@@ -122,6 +124,9 @@ export class CommonContainerConfigLoader {
       .toDynamicValue(() => {
         return new GroupUserKeyProjector()
       })
+    container.bind<ProjectorInterface<Group, GroupProjection>>(TYPES.GroupProjector).toDynamicValue(() => {
+      return new GroupProjector()
+    })
 
     // env vars
     container.bind(TYPES.SNS_TOPIC_ARN).toConstantValue(env.get('SNS_TOPIC_ARN'))
