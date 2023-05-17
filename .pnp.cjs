@@ -132,7 +132,7 @@ const RAW_RUNTIME_STATE =
           ["@types/node", "npm:20.1.0"],\
           ["eslint", "npm:8.39.0"],\
           ["eslint-config-prettier", "virtual:8859b278716fedf3e7458b5628625f7e35678c418626878559a0b816445001b7e24c55546f4677ba4c20b521aa0cf52cc33ac07deff171e383ada6eeab69933f#npm:8.8.0"],\
-          ["ini", "npm:3.0.1"],\
+          ["ini", "npm:4.1.1"],\
           ["newrelic", "npm:10.1.0"],\
           ["npm-check-updates", "npm:16.10.9"],\
           ["ts-node", "virtual:ef6136dc31186c42f92851afb237eadaa9d36085920cabb6ed6ea317680c8271d6b94afcb795fd7e58c08243e470be87ece6bb707daf3ecb0604f7fd8c1aa682#npm:10.9.1"],\
@@ -4815,7 +4815,7 @@ const RAW_RUNTIME_STATE =
           ["@types/node", "npm:20.1.0"],\
           ["eslint", "npm:8.39.0"],\
           ["eslint-config-prettier", "virtual:8859b278716fedf3e7458b5628625f7e35678c418626878559a0b816445001b7e24c55546f4677ba4c20b521aa0cf52cc33ac07deff171e383ada6eeab69933f#npm:8.8.0"],\
-          ["ini", "npm:3.0.1"],\
+          ["ini", "npm:4.1.1"],\
           ["newrelic", "npm:10.1.0"],\
           ["npm-check-updates", "npm:16.10.9"],\
           ["ts-node", "virtual:ef6136dc31186c42f92851afb237eadaa9d36085920cabb6ed6ea317680c8271d6b94afcb795fd7e58c08243e470be87ece6bb707daf3ecb0604f7fd8c1aa682#npm:10.9.1"],\
@@ -9827,17 +9827,17 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "HARD"\
       }],\
-      ["npm:3.0.1", {\
-        "packageLocation": "./.yarn/cache/ini-npm-3.0.1-5000598340-aa3a701669.zip/node_modules/ini/",\
-        "packageDependencies": [\
-          ["ini", "npm:3.0.1"]\
-        ],\
-        "linkType": "HARD"\
-      }],\
       ["npm:4.1.0", {\
         "packageLocation": "./.yarn/cache/ini-npm-4.1.0-af70e81291-7bbdc8a0cd.zip/node_modules/ini/",\
         "packageDependencies": [\
           ["ini", "npm:4.1.0"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["npm:4.1.1", {\
+        "packageLocation": "./.yarn/cache/ini-npm-4.1.1-01c2cbda7b-0351902b49.zip/node_modules/ini/",\
+        "packageDependencies": [\
+          ["ini", "npm:4.1.1"]\
         ],\
         "linkType": "HARD"\
       }]\
