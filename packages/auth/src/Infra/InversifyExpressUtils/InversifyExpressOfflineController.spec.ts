@@ -2,21 +2,21 @@ import 'reflect-metadata'
 
 import * as express from 'express'
 
-import { OfflineController } from './OfflineController'
+import { InversifyExpressOfflineController } from './InversifyExpressOfflineController'
 import { results } from 'inversify-express-utils'
-import { User } from '../Domain/User/User'
-import { GetUserFeatures } from '../Domain/UseCase/GetUserFeatures/GetUserFeatures'
-import { CreateOfflineSubscriptionToken } from '../Domain/UseCase/CreateOfflineSubscriptionToken/CreateOfflineSubscriptionToken'
-import { CreateOfflineSubscriptionTokenResponse } from '../Domain/UseCase/CreateOfflineSubscriptionToken/CreateOfflineSubscriptionTokenResponse'
-import { AuthenticateOfflineSubscriptionToken } from '../Domain/UseCase/AuthenticateOfflineSubscriptionToken/AuthenticateOfflineSubscriptionToken'
-import { OfflineUserSubscription } from '../Domain/Subscription/OfflineUserSubscription'
-import { GetUserOfflineSubscription } from '../Domain/UseCase/GetUserOfflineSubscription/GetUserOfflineSubscription'
+import { User } from '../../Domain/User/User'
+import { GetUserFeatures } from '../../Domain/UseCase/GetUserFeatures/GetUserFeatures'
+import { CreateOfflineSubscriptionToken } from '../../Domain/UseCase/CreateOfflineSubscriptionToken/CreateOfflineSubscriptionToken'
+import { CreateOfflineSubscriptionTokenResponse } from '../../Domain/UseCase/CreateOfflineSubscriptionToken/CreateOfflineSubscriptionTokenResponse'
+import { AuthenticateOfflineSubscriptionToken } from '../../Domain/UseCase/AuthenticateOfflineSubscriptionToken/AuthenticateOfflineSubscriptionToken'
+import { OfflineUserSubscription } from '../../Domain/Subscription/OfflineUserSubscription'
+import { GetUserOfflineSubscription } from '../../Domain/UseCase/GetUserOfflineSubscription/GetUserOfflineSubscription'
 import { OfflineUserTokenData, TokenEncoderInterface } from '@standardnotes/security'
 import { SubscriptionName } from '@standardnotes/common'
 import { Logger } from 'winston'
 import { ControllerContainerInterface } from '@standardnotes/domain-core'
 
-describe('OfflineController', () => {
+describe('InversifyExpressOfflineController', () => {
   let getUserFeatures: GetUserFeatures
   let getUserOfflineSubscription: GetUserOfflineSubscription
   let createOfflineSubscriptionToken: CreateOfflineSubscriptionToken
@@ -32,7 +32,7 @@ describe('OfflineController', () => {
   let controllerContainer: ControllerContainerInterface
 
   const createController = () =>
-    new OfflineController(
+    new InversifyExpressOfflineController(
       getUserFeatures,
       getUserOfflineSubscription,
       createOfflineSubscriptionToken,

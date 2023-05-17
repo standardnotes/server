@@ -8,17 +8,17 @@ import {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   results,
 } from 'inversify-express-utils'
-import TYPES from '../Bootstrap/Types'
-import { GetUserFeatures } from '../Domain/UseCase/GetUserFeatures/GetUserFeatures'
-import { AuthenticateOfflineSubscriptionToken } from '../Domain/UseCase/AuthenticateOfflineSubscriptionToken/AuthenticateOfflineSubscriptionToken'
-import { CreateOfflineSubscriptionToken } from '../Domain/UseCase/CreateOfflineSubscriptionToken/CreateOfflineSubscriptionToken'
-import { GetUserOfflineSubscription } from '../Domain/UseCase/GetUserOfflineSubscription/GetUserOfflineSubscription'
 import { Logger } from 'winston'
 import { OfflineUserTokenData, TokenEncoderInterface } from '@standardnotes/security'
 import { ControllerContainerInterface } from '@standardnotes/domain-core'
+import TYPES from '../../Bootstrap/Types'
+import { AuthenticateOfflineSubscriptionToken } from '../../Domain/UseCase/AuthenticateOfflineSubscriptionToken/AuthenticateOfflineSubscriptionToken'
+import { CreateOfflineSubscriptionToken } from '../../Domain/UseCase/CreateOfflineSubscriptionToken/CreateOfflineSubscriptionToken'
+import { GetUserFeatures } from '../../Domain/UseCase/GetUserFeatures/GetUserFeatures'
+import { GetUserOfflineSubscription } from '../../Domain/UseCase/GetUserOfflineSubscription/GetUserOfflineSubscription'
 
 @controller('/offline')
-export class OfflineController extends BaseHttpController {
+export class InversifyExpressOfflineController extends BaseHttpController {
   constructor(
     @inject(TYPES.Auth_GetUserFeatures) private doGetUserFeatures: GetUserFeatures,
     @inject(TYPES.Auth_GetUserOfflineSubscription) private getUserOfflineSubscription: GetUserOfflineSubscription,
