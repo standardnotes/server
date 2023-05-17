@@ -2,13 +2,13 @@ import { inject } from 'inversify'
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { BaseHttpController, controller, httpPost, results } from 'inversify-express-utils'
 import { Request, Response } from 'express'
-import TYPES from '../Bootstrap/Types'
-import { CreateListedAccount } from '../Domain/UseCase/CreateListedAccount/CreateListedAccount'
+import TYPES from '../../Bootstrap/Types'
+import { CreateListedAccount } from '../../Domain/UseCase/CreateListedAccount/CreateListedAccount'
 import { ErrorTag } from '@standardnotes/responses'
 import { ControllerContainerInterface } from '@standardnotes/domain-core'
 
 @controller('/listed')
-export class ListedController extends BaseHttpController {
+export class InversifyExpressListedController extends BaseHttpController {
   constructor(
     @inject(TYPES.Auth_CreateListedAccount) private doCreateListedAccount: CreateListedAccount,
     @inject(TYPES.Auth_ControllerContainer) private controllerContainer: ControllerContainerInterface,

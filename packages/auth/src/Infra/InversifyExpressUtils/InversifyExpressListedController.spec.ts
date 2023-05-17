@@ -3,12 +3,12 @@ import 'reflect-metadata'
 import * as express from 'express'
 import { results } from 'inversify-express-utils'
 
-import { ListedController } from './ListedController'
-import { User } from '../Domain/User/User'
-import { CreateListedAccount } from '../Domain/UseCase/CreateListedAccount/CreateListedAccount'
+import { InversifyExpressListedController } from './InversifyExpressListedController'
+import { User } from '../../Domain/User/User'
+import { CreateListedAccount } from '../../Domain/UseCase/CreateListedAccount/CreateListedAccount'
 import { ControllerContainerInterface } from '@standardnotes/domain-core'
 
-describe('ListedController', () => {
+describe('InversifyExpressListedController', () => {
   let createListedAccount: CreateListedAccount
 
   let request: express.Request
@@ -16,7 +16,7 @@ describe('ListedController', () => {
   let user: User
   let controllerContainer: ControllerContainerInterface
 
-  const createController = () => new ListedController(createListedAccount, controllerContainer)
+  const createController = () => new InversifyExpressListedController(createListedAccount, controllerContainer)
 
   beforeEach(() => {
     controllerContainer = {} as jest.Mocked<ControllerContainerInterface>
