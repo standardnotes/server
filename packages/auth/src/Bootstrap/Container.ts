@@ -245,6 +245,7 @@ import { InversifyExpressValetTokenController } from '../Infra/InversifyExpressU
 import { InversifyExpressUsersController } from '../Infra/InversifyExpressUtils/InversifyExpressUsersController'
 import { InversifyExpressAdminController } from '../Infra/InversifyExpressUtils/InversifyExpressAdminController'
 import { InversifyExpressSubscriptionTokensController } from '../Infra/InversifyExpressUtils/InversifyExpressSubscriptionTokensController'
+import { InversifyExpressSubscriptionSettingsController } from '../Infra/InversifyExpressUtils/InversifyExpressSubscriptionSettingsController'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -1107,6 +1108,14 @@ export class ContainerConfigLoader {
           container.get(TYPES.Auth_RoleProjector),
           container.get(TYPES.Auth_CrossServiceTokenEncoder),
           container.get(TYPES.Auth_AUTH_JWT_TTL),
+          container.get(TYPES.Auth_ControllerContainer),
+        ),
+      )
+    container
+      .bind<InversifyExpressSubscriptionSettingsController>(TYPES.Auth_InversifyExpressSubscriptionSettingsController)
+      .toConstantValue(
+        new InversifyExpressSubscriptionSettingsController(
+          container.get(TYPES.Auth_GetSetting),
           container.get(TYPES.Auth_ControllerContainer),
         ),
       )

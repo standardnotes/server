@@ -7,12 +7,12 @@ import {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   results,
 } from 'inversify-express-utils'
-import TYPES from '../Bootstrap/Types'
-import { GetSetting } from '../Domain/UseCase/GetSetting/GetSetting'
+import TYPES from '../../Bootstrap/Types'
+import { GetSetting } from '../../Domain/UseCase/GetSetting/GetSetting'
 import { ControllerContainerInterface } from '@standardnotes/domain-core'
 
 @controller('/users/:userUuid')
-export class SubscriptionSettingsController extends BaseHttpController {
+export class InversifyExpressSubscriptionSettingsController extends BaseHttpController {
   constructor(
     @inject(TYPES.Auth_GetSetting) private doGetSetting: GetSetting,
     @inject(TYPES.Auth_ControllerContainer) private controllerContainer: ControllerContainerInterface,

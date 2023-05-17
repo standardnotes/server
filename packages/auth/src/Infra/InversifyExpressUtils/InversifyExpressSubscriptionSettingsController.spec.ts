@@ -3,12 +3,12 @@ import 'reflect-metadata'
 import * as express from 'express'
 
 import { results } from 'inversify-express-utils'
-import { User } from '../Domain/User/User'
-import { SubscriptionSettingsController } from './SubscriptionSettingsController'
-import { GetSetting } from '../Domain/UseCase/GetSetting/GetSetting'
+import { InversifyExpressSubscriptionSettingsController } from './InversifyExpressSubscriptionSettingsController'
 import { ControllerContainerInterface } from '@standardnotes/domain-core'
+import { User } from '../../Domain/User/User'
+import { GetSetting } from '../../Domain/UseCase/GetSetting/GetSetting'
 
-describe('SubscriptionSettingsController', () => {
+describe('InversifyExpressSubscriptionSettingsController', () => {
   let getSetting: GetSetting
 
   let request: express.Request
@@ -16,7 +16,7 @@ describe('SubscriptionSettingsController', () => {
   let user: User
   let controllerContainer: ControllerContainerInterface
 
-  const createController = () => new SubscriptionSettingsController(getSetting, controllerContainer)
+  const createController = () => new InversifyExpressSubscriptionSettingsController(getSetting, controllerContainer)
 
   beforeEach(() => {
     controllerContainer = {} as jest.Mocked<ControllerContainerInterface>
