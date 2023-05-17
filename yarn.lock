@@ -4249,6 +4249,7 @@ __metadata:
     "@standardnotes/auth-server": "workspace:^"
     "@standardnotes/domain-core": "workspace:^"
     "@standardnotes/domain-events-infra": "workspace:^"
+    "@standardnotes/syncing-server": "workspace:^"
     "@types/cors": "npm:^2.8.9"
     "@types/express": "npm:^4.17.14"
     "@types/prettyjson": "npm:^0.0.30"
@@ -4483,7 +4484,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@standardnotes/syncing-server@workspace:packages/syncing-server":
+"@standardnotes/syncing-server@workspace:^, @standardnotes/syncing-server@workspace:packages/syncing-server":
   version: 0.0.0-use.local
   resolution: "@standardnotes/syncing-server@workspace:packages/syncing-server"
   dependencies:

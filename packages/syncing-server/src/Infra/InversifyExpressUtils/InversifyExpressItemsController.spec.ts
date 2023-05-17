@@ -15,6 +15,7 @@ import { SyncResponseFactoryResolverInterface } from '../../Domain/Item/SyncResp
 import { CheckIntegrity } from '../../Domain/UseCase/CheckIntegrity/CheckIntegrity'
 import { GetItem } from '../../Domain/UseCase/GetItem/GetItem'
 import { SyncItems } from '../../Domain/UseCase/SyncItems'
+import { ControllerContainerInterface } from '@standardnotes/domain-core'
 
 describe('InversifyExpressItemsController', () => {
   let syncItems: SyncItems
@@ -26,11 +27,22 @@ describe('InversifyExpressItemsController', () => {
   let syncResponceFactoryResolver: SyncResponseFactoryResolverInterface
   let syncResponseFactory: SyncResponseFactoryInterface
   let syncResponse: SyncResponse20200115
+  let controllerContainer: ControllerContainerInterface
 
   const createController = () =>
-    new InversifyExpressItemsController(syncItems, checkIntegrity, getItem, itemProjector, syncResponceFactoryResolver)
+    new InversifyExpressItemsController(
+      syncItems,
+      checkIntegrity,
+      getItem,
+      itemProjector,
+      syncResponceFactoryResolver,
+      controllerContainer,
+    )
 
   beforeEach(() => {
+    controllerContainer = {} as jest.Mocked<ControllerContainerInterface>
+    controllerContainer.register = jest.fn()
+
     itemProjector = {} as jest.Mocked<ProjectorInterface<Item, ItemProjection>>
     itemProjector.projectFull = jest.fn().mockReturnValue({ foo: 'bar' })
 

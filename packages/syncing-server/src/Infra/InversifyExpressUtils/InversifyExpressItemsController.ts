@@ -11,18 +11,24 @@ import { SyncItems } from '../../Domain/UseCase/SyncItems'
 import { ItemProjection } from '../../Projection/ItemProjection'
 import { ProjectorInterface } from '../../Projection/ProjectorInterface'
 import { ApiVersion } from '../../Domain/Api/ApiVersion'
+import { ControllerContainerInterface } from '@standardnotes/domain-core'
 
-@controller('/items', TYPES.AuthMiddleware)
+@controller('/items', TYPES.Sync_AuthMiddleware)
 export class InversifyExpressItemsController extends BaseHttpController {
   constructor(
-    @inject(TYPES.SyncItems) private syncItems: SyncItems,
-    @inject(TYPES.CheckIntegrity) private checkIntegrity: CheckIntegrity,
-    @inject(TYPES.GetItem) private getItem: GetItem,
-    @inject(TYPES.ItemProjector) private itemProjector: ProjectorInterface<Item, ItemProjection>,
-    @inject(TYPES.SyncResponseFactoryResolver)
+    @inject(TYPES.Sync_SyncItems) private syncItems: SyncItems,
+    @inject(TYPES.Sync_CheckIntegrity) private checkIntegrity: CheckIntegrity,
+    @inject(TYPES.Sync_GetItem) private getItem: GetItem,
+    @inject(TYPES.Sync_ItemProjector) private itemProjector: ProjectorInterface<Item, ItemProjection>,
+    @inject(TYPES.Sync_SyncResponseFactoryResolver)
     private syncResponseFactoryResolver: SyncResponseFactoryResolverInterface,
+    @inject(TYPES.Sync_ControllerContainer) private controllerContainer: ControllerContainerInterface,
   ) {
     super()
+
+    this.controllerContainer.register('sync.items.sync', this.sync.bind(this))
+    this.controllerContainer.register('sync.items.check_integrity', this.checkItemsIntegrity.bind(this))
+    this.controllerContainer.register('sync.items.get_item', this.getSingleItem.bind(this))
   }
 
   @httpPost('/sync')

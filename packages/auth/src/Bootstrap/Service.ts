@@ -14,7 +14,7 @@ export class Service implements ServiceInterface {
     private controllerContainer: ControllerContainerInterface,
     private directCallDomainEventPublisher: DirectCallDomainEventPublisher,
   ) {
-    this.serviceContainer.register(ServiceIdentifier.create(ServiceIdentifier.NAMES.Auth).getValue(), this)
+    this.serviceContainer.register(this.getId(), this)
   }
 
   async handleRequest(request: never, response: never, endpointOrMethodIdentifier: string): Promise<unknown> {

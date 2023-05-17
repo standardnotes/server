@@ -6,11 +6,13 @@ import {
 } from '@standardnotes/domain-core'
 
 import { ContainerConfigLoader } from './Container'
+import { DirectCallDomainEventPublisher } from '@standardnotes/domain-events-infra'
 
 export class Service implements ServiceInterface {
   constructor(
     private serviceContainer: ServiceContainerInterface,
     private controllerContainer: ControllerContainerInterface,
+    private directCallDomainEventPublisher: DirectCallDomainEventPublisher,
   ) {
     this.serviceContainer.register(this.getId(), this)
   }
@@ -28,10 +30,13 @@ export class Service implements ServiceInterface {
   async getContainer(): Promise<unknown> {
     const config = new ContainerConfigLoader()
 
-    return config.load(this.serviceContainer)
+    return config.load({
+      controllerConatiner: this.controllerContainer,
+      directCallDomainEventPublisher: this.directCallDomainEventPublisher,
+    })
   }
 
   getId(): ServiceIdentifier {
-    return ServiceIdentifier.create(ServiceIdentifier.NAMES.Auth).getValue()
+    return ServiceIdentifier.create(ServiceIdentifier.NAMES.SyncingServer).getValue()
   }
 }
