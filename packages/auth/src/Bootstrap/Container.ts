@@ -14,7 +14,6 @@ import { UAParser } from 'ua-parser-js'
 
 import { Env } from './Env'
 import TYPES from './Types'
-import { AuthMiddleware } from '../Controller/AuthMiddleware'
 import { AuthenticateUser } from '../Domain/UseCase/AuthenticateUser'
 import { Repository } from 'typeorm'
 import { AppDataSource } from './DataSource'
@@ -24,7 +23,6 @@ import { SessionService } from '../Domain/Session/SessionService'
 import { TypeORMSessionRepository } from '../Infra/TypeORM/TypeORMSessionRepository'
 import { TypeORMUserRepository } from '../Infra/TypeORM/TypeORMUserRepository'
 import { SessionProjector } from '../Projection/SessionProjector'
-import { SessionMiddleware } from '../Controller/SessionMiddleware'
 import { RefreshSessionToken } from '../Domain/UseCase/RefreshSessionToken'
 import { KeyParamsFactory } from '../Domain/User/KeyParamsFactory'
 import { SignIn } from '../Domain/UseCase/SignIn'
@@ -36,8 +34,6 @@ import { AuthResponseFactory20200115 } from '../Domain/Auth/AuthResponseFactory2
 import { AuthResponseFactoryResolver } from '../Domain/Auth/AuthResponseFactoryResolver'
 import { ClearLoginAttempts } from '../Domain/UseCase/ClearLoginAttempts'
 import { IncreaseLoginAttempts } from '../Domain/UseCase/IncreaseLoginAttempts'
-import { LockMiddleware } from '../Controller/LockMiddleware'
-import { AuthMiddlewareWithoutResponse } from '../Controller/AuthMiddlewareWithoutResponse'
 import { GetUserKeyParams } from '../Domain/UseCase/GetUserKeyParams/GetUserKeyParams'
 import { UpdateUser } from '../Domain/UseCase/UpdateUser'
 import { RedisEphemeralSessionRepository } from '../Infra/Redis/RedisEphemeralSessionRepository'
@@ -103,7 +99,6 @@ import { ChangeCredentials } from '../Domain/UseCase/ChangeCredentials/ChangeCre
 import { SubscriptionReassignedEventHandler } from '../Domain/Handler/SubscriptionReassignedEventHandler'
 import { UserSubscriptionRepositoryInterface } from '../Domain/Subscription/UserSubscriptionRepositoryInterface'
 import { CreateSubscriptionToken } from '../Domain/UseCase/CreateSubscriptionToken/CreateSubscriptionToken'
-import { ApiGatewayAuthMiddleware } from '../Controller/ApiGatewayAuthMiddleware'
 import { SubscriptionTokenRepositoryInterface } from '../Domain/Subscription/SubscriptionTokenRepositoryInterface'
 import { RedisSubscriptionTokenRepository } from '../Infra/Redis/RedisSubscriptionTokenRepository'
 import { AuthenticateSubscriptionToken } from '../Domain/UseCase/AuthenticateSubscriptionToken/AuthenticateSubscriptionToken'
@@ -116,7 +111,6 @@ import { TypeORMOfflineSettingRepository } from '../Infra/TypeORM/TypeORMOffline
 import { OfflineUserSubscription } from '../Domain/Subscription/OfflineUserSubscription'
 import { OfflineUserSubscriptionRepositoryInterface } from '../Domain/Subscription/OfflineUserSubscriptionRepositoryInterface'
 import { TypeORMOfflineUserSubscriptionRepository } from '../Infra/TypeORM/TypeORMOfflineUserSubscriptionRepository'
-import { OfflineUserAuthMiddleware } from '../Controller/OfflineUserAuthMiddleware'
 import { OfflineSubscriptionTokenRepositoryInterface } from '../Domain/Auth/OfflineSubscriptionTokenRepositoryInterface'
 import { RedisOfflineSubscriptionTokenRepository } from '../Infra/Redis/RedisOfflineSubscriptionTokenRepository'
 import { CreateOfflineSubscriptionToken } from '../Domain/UseCase/CreateOfflineSubscriptionToken/CreateOfflineSubscriptionToken'
@@ -124,7 +118,6 @@ import { AuthenticateOfflineSubscriptionToken } from '../Domain/UseCase/Authenti
 import { SubscriptionCancelledEventHandler } from '../Domain/Handler/SubscriptionCancelledEventHandler'
 import { ContentDecoder, ContentDecoderInterface, ProtocolVersion } from '@standardnotes/common'
 import { GetUserOfflineSubscription } from '../Domain/UseCase/GetUserOfflineSubscription/GetUserOfflineSubscription'
-import { ApiGatewayOfflineAuthMiddleware } from '../Controller/ApiGatewayOfflineAuthMiddleware'
 import { UserEmailChangedEventHandler } from '../Domain/Handler/UserEmailChangedEventHandler'
 import { SettingsAssociationServiceInterface } from '../Domain/Setting/SettingsAssociationServiceInterface'
 import { SettingsAssociationService } from '../Domain/Setting/SettingsAssociationService'
@@ -241,6 +234,24 @@ import { InversifyExpressSubscriptionInvitesController } from '../Infra/Inversif
 import { InversifyExpressUserRequestsController } from '../Infra/InversifyExpressUtils/InversifyExpressUserRequestsController'
 import { InversifyExpressWebSocketsController } from '../Infra/InversifyExpressUtils/InversifyExpressWebSocketsController'
 import { InversifyExpressSessionsController } from '../Infra/InversifyExpressUtils/InversifyExpressSessionsController'
+import { InversifyExpressValetTokenController } from '../Infra/InversifyExpressUtils/InversifyExpressValetTokenController'
+import { InversifyExpressUsersController } from '../Infra/InversifyExpressUtils/InversifyExpressUsersController'
+import { InversifyExpressAdminController } from '../Infra/InversifyExpressUtils/InversifyExpressAdminController'
+import { InversifyExpressSubscriptionTokensController } from '../Infra/InversifyExpressUtils/InversifyExpressSubscriptionTokensController'
+import { InversifyExpressSubscriptionSettingsController } from '../Infra/InversifyExpressUtils/InversifyExpressSubscriptionSettingsController'
+import { InversifyExpressSettingsController } from '../Infra/InversifyExpressUtils/InversifyExpressSettingsController'
+import { SessionMiddleware } from '../Infra/InversifyExpressUtils/Middleware/SessionMiddleware'
+import { ApiGatewayAuthMiddleware } from '../Infra/InversifyExpressUtils/Middleware/ApiGatewayAuthMiddleware'
+import { ApiGatewayOfflineAuthMiddleware } from '../Infra/InversifyExpressUtils/Middleware/ApiGatewayOfflineAuthMiddleware'
+import { AuthMiddleware } from '../Infra/InversifyExpressUtils/Middleware/AuthMiddleware'
+import { OfflineUserAuthMiddleware } from '../Infra/InversifyExpressUtils/Middleware/OfflineUserAuthMiddleware'
+import { AuthMiddlewareWithoutResponse } from '../Infra/InversifyExpressUtils/Middleware/AuthMiddlewareWithoutResponse'
+import { LockMiddleware } from '../Infra/InversifyExpressUtils/Middleware/LockMiddleware'
+import { InversifyExpressSessionController } from '../Infra/InversifyExpressUtils/InversifyExpressSessionController'
+import { InversifyExpressOfflineController } from '../Infra/InversifyExpressUtils/InversifyExpressOfflineController'
+import { InversifyExpressListedController } from '../Infra/InversifyExpressUtils/InversifyExpressListedController'
+import { InversifyExpressInternalController } from '../Infra/InversifyExpressUtils/InversifyExpressInternalController'
+import { InversifyExpressFeaturesController } from '../Infra/InversifyExpressUtils/InversifyExpressFeaturesController'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -1015,50 +1026,166 @@ export class ContainerConfigLoader {
       )
 
     // Inversify Controllers
-    container
-      .bind<InversifyExpressAuthenticatorsController>(TYPES.Auth_InversifyExpressAuthenticatorsController)
-      .toConstantValue(
-        new InversifyExpressAuthenticatorsController(
-          container.get(TYPES.Auth_AuthenticatorsController),
-          container.get(TYPES.Auth_ControllerContainer),
-        ),
-      )
-    container
-      .bind<InversifyExpressSubscriptionInvitesController>(TYPES.Auth_InversifyExpressSubscriptionInvitesController)
-      .toConstantValue(
-        new InversifyExpressSubscriptionInvitesController(
-          container.get(TYPES.Auth_SubscriptionInvitesController),
-          container.get(TYPES.Auth_ControllerContainer),
-        ),
-      )
-    container
-      .bind<InversifyExpressUserRequestsController>(TYPES.Auth_InversifyExpressUserRequestsController)
-      .toConstantValue(
-        new InversifyExpressUserRequestsController(
-          container.get(TYPES.Auth_UserRequestsController),
-          container.get(TYPES.Auth_ControllerContainer),
-        ),
-      )
-    container
-      .bind<InversifyExpressWebSocketsController>(TYPES.Auth_InversifyExpressWebSocketsController)
-      .toConstantValue(
-        new InversifyExpressWebSocketsController(
-          container.get(TYPES.Auth_CreateCrossServiceToken),
-          container.get(TYPES.Auth_WebSocketConnectionTokenDecoder),
-          container.get(TYPES.Auth_ControllerContainer),
-        ),
-      )
-    container
-      .bind<InversifyExpressSessionsController>(TYPES.Auth_SessionsController)
-      .toConstantValue(
-        new InversifyExpressSessionsController(
-          container.get(TYPES.Auth_GetActiveSessionsForUser),
-          container.get(TYPES.Auth_AuthenticateRequest),
-          container.get(TYPES.Auth_SessionProjector),
-          container.get(TYPES.Auth_CreateCrossServiceToken),
-          container.get(TYPES.Auth_ControllerContainer),
-        ),
-      )
+    if (isConfiguredForHomeServer) {
+      container
+        .bind<InversifyExpressAuthenticatorsController>(TYPES.Auth_InversifyExpressAuthenticatorsController)
+        .toConstantValue(
+          new InversifyExpressAuthenticatorsController(
+            container.get(TYPES.Auth_AuthenticatorsController),
+            container.get(TYPES.Auth_ControllerContainer),
+          ),
+        )
+      container
+        .bind<InversifyExpressSubscriptionInvitesController>(TYPES.Auth_InversifyExpressSubscriptionInvitesController)
+        .toConstantValue(
+          new InversifyExpressSubscriptionInvitesController(
+            container.get(TYPES.Auth_SubscriptionInvitesController),
+            container.get(TYPES.Auth_ControllerContainer),
+          ),
+        )
+      container
+        .bind<InversifyExpressUserRequestsController>(TYPES.Auth_InversifyExpressUserRequestsController)
+        .toConstantValue(
+          new InversifyExpressUserRequestsController(
+            container.get(TYPES.Auth_UserRequestsController),
+            container.get(TYPES.Auth_ControllerContainer),
+          ),
+        )
+      container
+        .bind<InversifyExpressWebSocketsController>(TYPES.Auth_InversifyExpressWebSocketsController)
+        .toConstantValue(
+          new InversifyExpressWebSocketsController(
+            container.get(TYPES.Auth_CreateCrossServiceToken),
+            container.get(TYPES.Auth_WebSocketConnectionTokenDecoder),
+            container.get(TYPES.Auth_ControllerContainer),
+          ),
+        )
+      container
+        .bind<InversifyExpressSessionsController>(TYPES.Auth_SessionsController)
+        .toConstantValue(
+          new InversifyExpressSessionsController(
+            container.get(TYPES.Auth_GetActiveSessionsForUser),
+            container.get(TYPES.Auth_AuthenticateRequest),
+            container.get(TYPES.Auth_SessionProjector),
+            container.get(TYPES.Auth_CreateCrossServiceToken),
+            container.get(TYPES.Auth_ControllerContainer),
+          ),
+        )
+      container
+        .bind<InversifyExpressValetTokenController>(TYPES.Auth_InversifyExpressValetTokenController)
+        .toConstantValue(
+          new InversifyExpressValetTokenController(
+            container.get(TYPES.Auth_CreateValetToken),
+            container.get(TYPES.Auth_ControllerContainer),
+          ),
+        )
+      container
+        .bind<InversifyExpressUsersController>(TYPES.Auth_InversifyExpressUsersController)
+        .toConstantValue(
+          new InversifyExpressUsersController(
+            container.get(TYPES.Auth_UpdateUser),
+            container.get(TYPES.Auth_GetUserKeyParams),
+            container.get(TYPES.Auth_DeleteAccount),
+            container.get(TYPES.Auth_GetUserSubscription),
+            container.get(TYPES.Auth_ClearLoginAttempts),
+            container.get(TYPES.Auth_IncreaseLoginAttempts),
+            container.get(TYPES.Auth_ChangeCredentials),
+            container.get(TYPES.Auth_ControllerContainer),
+          ),
+        )
+      container
+        .bind<InversifyExpressAdminController>(TYPES.Auth_InversifyExpressAdminController)
+        .toConstantValue(
+          new InversifyExpressAdminController(
+            container.get(TYPES.Auth_DeleteSetting),
+            container.get(TYPES.Auth_UserRepository),
+            container.get(TYPES.Auth_CreateSubscriptionToken),
+            container.get(TYPES.Auth_CreateOfflineSubscriptionToken),
+            container.get(TYPES.Auth_ControllerContainer),
+          ),
+        )
+      container
+        .bind<InversifyExpressSubscriptionTokensController>(TYPES.Auth_InversifyExpressSubscriptionTokensController)
+        .toConstantValue(
+          new InversifyExpressSubscriptionTokensController(
+            container.get(TYPES.Auth_CreateSubscriptionToken),
+            container.get(TYPES.Auth_AuthenticateSubscriptionToken),
+            container.get(TYPES.Auth_SettingService),
+            container.get(TYPES.Auth_UserProjector),
+            container.get(TYPES.Auth_RoleProjector),
+            container.get(TYPES.Auth_CrossServiceTokenEncoder),
+            container.get(TYPES.Auth_AUTH_JWT_TTL),
+            container.get(TYPES.Auth_ControllerContainer),
+          ),
+        )
+      container
+        .bind<InversifyExpressSubscriptionSettingsController>(TYPES.Auth_InversifyExpressSubscriptionSettingsController)
+        .toConstantValue(
+          new InversifyExpressSubscriptionSettingsController(
+            container.get(TYPES.Auth_GetSetting),
+            container.get(TYPES.Auth_ControllerContainer),
+          ),
+        )
+      container
+        .bind<InversifyExpressSettingsController>(TYPES.Auth_InversifyExpressSettingsController)
+        .toConstantValue(
+          new InversifyExpressSettingsController(
+            container.get(TYPES.Auth_GetSettings),
+            container.get(TYPES.Auth_GetSetting),
+            container.get(TYPES.Auth_UpdateSetting),
+            container.get(TYPES.Auth_DeleteSetting),
+            container.get(TYPES.Auth_ControllerContainer),
+          ),
+        )
+      container
+        .bind<InversifyExpressSessionController>(TYPES.Auth_InversifyExpressSessionController)
+        .toConstantValue(
+          new InversifyExpressSessionController(
+            container.get(TYPES.Auth_DeleteSessionForUser),
+            container.get(TYPES.Auth_DeletePreviousSessionsForUser),
+            container.get(TYPES.Auth_RefreshSessionToken),
+            container.get(TYPES.Auth_ControllerContainer),
+          ),
+        )
+      container
+        .bind<InversifyExpressOfflineController>(TYPES.Auth_InversifyExpressOfflineController)
+        .toConstantValue(
+          new InversifyExpressOfflineController(
+            container.get(TYPES.Auth_GetUserFeatures),
+            container.get(TYPES.Auth_GetUserOfflineSubscription),
+            container.get(TYPES.Auth_CreateOfflineSubscriptionToken),
+            container.get(TYPES.Auth_AuthenticateOfflineSubscriptionToken),
+            container.get(TYPES.Auth_OfflineUserTokenEncoder),
+            container.get(TYPES.Auth_AUTH_JWT_TTL),
+            container.get(TYPES.Auth_Logger),
+            container.get(TYPES.Auth_ControllerContainer),
+          ),
+        )
+      container
+        .bind<InversifyExpressListedController>(TYPES.Auth_InversifyExpressListedController)
+        .toConstantValue(
+          new InversifyExpressListedController(
+            container.get(TYPES.Auth_CreateListedAccount),
+            container.get(TYPES.Auth_ControllerContainer),
+          ),
+        )
+      container
+        .bind<InversifyExpressInternalController>(TYPES.Auth_InversifyExpressInternalController)
+        .toConstantValue(
+          new InversifyExpressInternalController(
+            container.get(TYPES.Auth_GetUserFeatures),
+            container.get(TYPES.Auth_GetSetting),
+          ),
+        )
+      container
+        .bind<InversifyExpressFeaturesController>(TYPES.Auth_InversifyExpressFeaturesController)
+        .toConstantValue(
+          new InversifyExpressFeaturesController(
+            container.get(TYPES.Auth_GetUserFeatures),
+            container.get(TYPES.Auth_ControllerContainer),
+          ),
+        )
+    }
 
     return container
   }
