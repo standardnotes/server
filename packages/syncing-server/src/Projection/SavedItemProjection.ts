@@ -8,4 +8,5 @@ export type SavedItemProjection = {
   created_at_timestamp: number
   updated_at: string
   updated_at_timestamp: number
+  group_uuid: string | null
 }

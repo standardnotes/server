@@ -210,6 +210,9 @@ export class ItemService implements ItemServiceInterface {
     if (dto.itemHash.deleted !== undefined) {
       dto.existingItem.deleted = dto.itemHash.deleted
     }
+    if (dto.itemHash.group_uuid != undefined) {
+      dto.existingItem.groupUuid = dto.itemHash.group_uuid
+    }
     let wasMarkedAsDuplicate = false
     if (dto.itemHash.duplicate_of) {
       wasMarkedAsDuplicate = !dto.existingItem.duplicateOf
@@ -291,7 +294,7 @@ export class ItemService implements ItemServiceInterface {
     return savedItem
   }
 
-  private getLastSyncTime(dto: GetItemsDTO): number | undefined {
+  public getLastSyncTime(dto: { syncToken?: string | null; cursorToken?: string | null }): number | undefined {
     let token = dto.syncToken
     if (dto.cursorToken !== undefined && dto.cursorToken != null) {
       token = dto.cursorToken

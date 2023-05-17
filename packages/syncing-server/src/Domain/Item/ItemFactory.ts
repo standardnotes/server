@@ -36,6 +36,9 @@ export class ItemFactory implements ItemFactoryInterface {
       newItem.content = dto.itemHash.content
     }
     newItem.userUuid = dto.userUuid
+    if (dto.itemHash.group_uuid) {
+      newItem.groupUuid = dto.itemHash.group_uuid
+    }
     if (dto.itemHash.content_type) {
       newItem.contentType = dto.itemHash.content_type
     }

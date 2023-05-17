@@ -15,7 +15,7 @@ export class GroupUserKeyFactory implements GroupUserKeyFactoryInterface {
     newGroupUserKey.groupUuid = dto.group_uuid
     newGroupUserKey.permissions = dto.permissions
 
-    const now = this.timer.getTimestampInSeconds()
+    const now = this.timer.getTimestampInMicroseconds()
     newGroupUserKey.updatedAtTimestamp = now
     newGroupUserKey.createdAtTimestamp = now
 

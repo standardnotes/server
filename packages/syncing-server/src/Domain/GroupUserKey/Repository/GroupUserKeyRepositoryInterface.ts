@@ -6,6 +6,7 @@ export type GroupUserKeyQuery = {
 
 export type GroupUserKeyFindAllQuery = {
   userUuid: string
+  lastSyncTime?: number
 }
 
 export interface GroupUserKeyRepositoryInterface {

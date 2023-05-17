@@ -32,9 +32,14 @@ export class SyncItems implements UseCaseInterface {
       retrievedItems = await this.itemService.frontLoadKeysItemsToTop(dto.userUuid, retrievedItems)
     }
 
+    const lastSyncTime = this.itemService.getLastSyncTime({
+      syncToken: dto.syncToken,
+      cursorToken: dto.cursorToken,
+    })
+
     const groupKeys = await this.groupUserService.getGroupUserKeysForUser({
       userUuid: dto.userUuid,
-      syncToken: dto.syncToken,
+      lastSyncTime,
     })
 
     const syncResponse: SyncItemsResponse = {

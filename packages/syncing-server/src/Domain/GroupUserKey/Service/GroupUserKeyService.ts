@@ -4,6 +4,7 @@ import { GroupUserKeyFactoryInterface } from '../GroupUserKeyFactoryInterface'
 import { v4 as uuidv4 } from 'uuid'
 import { GroupUserKeyRepositoryInterface } from '../Repository/GroupUserKeyRepositoryInterface'
 import { GroupUserKeyServiceInterface } from './GroupUserKeyServiceInterface'
+import { GetUserGroupKeysDTO } from './GetUserGroupUserKeysDTO'
 
 export class GroupUserKeyService implements GroupUserKeyServiceInterface {
   constructor(
@@ -33,7 +34,7 @@ export class GroupUserKeyService implements GroupUserKeyServiceInterface {
     return this.groupUserRepository.create(groupUser)
   }
 
-  getGroupUserKeysForUser(dto: { userUuid: string }): Promise<GroupUserKey[]> {
-    return this.groupUserRepository.findAll({ userUuid: dto.userUuid })
+  getGroupUserKeysForUser(dto: GetUserGroupKeysDTO): Promise<GroupUserKey[]> {
+    return this.groupUserRepository.findAll(dto)
   }
 }
