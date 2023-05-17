@@ -18,7 +18,7 @@ const commonDataSourceOptions = {
   entities: [Item],
   migrations: [`dist/migrations/${isConfiguredForMySQL ? 'mysql' : 'sqlite'}/*.js`],
   migrationsRun: true,
-  logging: <LoggerOptions>env.get('DB_DEBUG_LEVEL'),
+  logging: <LoggerOptions>env.get('DB_DEBUG_LEVEL', true) ?? 'info',
 }
 
 let dataSource: DataSource

@@ -129,7 +129,6 @@ export class ContainerConfigLoader {
       container.bind(TYPES.Sync_S3_AWS_REGION).toConstantValue(env.get('S3_AWS_REGION', true))
       container.bind(TYPES.Sync_S3_BACKUP_BUCKET_NAME).toConstantValue(env.get('S3_BACKUP_BUCKET_NAME', true))
       container.bind(TYPES.Sync_EXTENSIONS_SERVER_URL).toConstantValue(env.get('EXTENSIONS_SERVER_URL', true))
-      container.bind(TYPES.Sync_AUTH_SERVER_URL).toConstantValue(env.get('AUTH_SERVER_URL'))
 
       container.bind<SNSClient>(TYPES.Sync_SNS).toDynamicValue((context: interfaces.Context) => {
         const env: Env = context.container.get(TYPES.Sync_Env)
@@ -381,21 +380,6 @@ export class ContainerConfigLoader {
         )
       })
     container
-      .bind<EmailBackupRequestedEventHandler>(TYPES.Sync_EmailBackupRequestedEventHandler)
-      .toDynamicValue((context: interfaces.Context) => {
-        return new EmailBackupRequestedEventHandler(
-          context.container.get(TYPES.Sync_ItemRepository),
-          context.container.get(TYPES.Sync_AuthHttpService),
-          context.container.get(TYPES.Sync_ItemBackupService),
-          context.container.get(TYPES.Sync_DomainEventPublisher),
-          context.container.get(TYPES.Sync_DomainEventFactory),
-          context.container.get(TYPES.Sync_EMAIL_ATTACHMENT_MAX_BYTE_SIZE),
-          context.container.get(TYPES.Sync_ItemTransferCalculator),
-          context.container.get(TYPES.Sync_S3_BACKUP_BUCKET_NAME),
-          context.container.get(TYPES.Sync_Logger),
-        )
-      })
-    container
       .bind<ItemRevisionCreationRequestedEventHandler>(TYPES.Sync_ItemRevisionCreationRequestedEventHandler)
       .toDynamicValue((context: interfaces.Context) => {
         return new ItemRevisionCreationRequestedEventHandler(
@@ -409,14 +393,6 @@ export class ContainerConfigLoader {
     // Services
     container.bind<ContentDecoder>(TYPES.Sync_ContentDecoder).toDynamicValue(() => new ContentDecoder())
     container.bind<AxiosInstance>(TYPES.Sync_HTTPClient).toDynamicValue(() => axios.create())
-    container
-      .bind<AuthHttpServiceInterface>(TYPES.Sync_AuthHttpService)
-      .toDynamicValue((context: interfaces.Context) => {
-        return new AuthHttpService(
-          context.container.get(TYPES.Sync_HTTPClient),
-          context.container.get(TYPES.Sync_AUTH_SERVER_URL),
-        )
-      })
     container
       .bind<ExtensionsHttpServiceInterface>(TYPES.Sync_ExtensionsHttpService)
       .toDynamicValue((context: interfaces.Context) => {
@@ -454,9 +430,38 @@ export class ContainerConfigLoader {
     const eventHandlers: Map<string, DomainEventHandlerInterface> = new Map([
       ['DUPLICATE_ITEM_SYNCED', container.get(TYPES.Sync_DuplicateItemSyncedEventHandler)],
       ['ACCOUNT_DELETION_REQUESTED', container.get(TYPES.Sync_AccountDeletionRequestedEventHandler)],
-      ['EMAIL_BACKUP_REQUESTED', container.get(TYPES.Sync_EmailBackupRequestedEventHandler)],
       ['ITEM_REVISION_CREATION_REQUESTED', container.get(TYPES.Sync_ItemRevisionCreationRequestedEventHandler)],
     ])
+    if (!isConfiguredForHomeServer) {
+      container.bind(TYPES.Sync_AUTH_SERVER_URL).toConstantValue(env.get('AUTH_SERVER_URL'))
+
+      container
+        .bind<AuthHttpServiceInterface>(TYPES.Sync_AuthHttpService)
+        .toDynamicValue((context: interfaces.Context) => {
+          return new AuthHttpService(
+            context.container.get(TYPES.Sync_HTTPClient),
+            context.container.get(TYPES.Sync_AUTH_SERVER_URL),
+          )
+        })
+
+      container
+        .bind<EmailBackupRequestedEventHandler>(TYPES.Sync_EmailBackupRequestedEventHandler)
+        .toDynamicValue((context: interfaces.Context) => {
+          return new EmailBackupRequestedEventHandler(
+            context.container.get(TYPES.Sync_ItemRepository),
+            context.container.get(TYPES.Sync_AuthHttpService),
+            context.container.get(TYPES.Sync_ItemBackupService),
+            context.container.get(TYPES.Sync_DomainEventPublisher),
+            context.container.get(TYPES.Sync_DomainEventFactory),
+            context.container.get(TYPES.Sync_EMAIL_ATTACHMENT_MAX_BYTE_SIZE),
+            context.container.get(TYPES.Sync_ItemTransferCalculator),
+            context.container.get(TYPES.Sync_S3_BACKUP_BUCKET_NAME),
+            context.container.get(TYPES.Sync_Logger),
+          )
+        })
+
+      eventHandlers.set('EMAIL_BACKUP_REQUESTED', container.get(TYPES.Sync_EmailBackupRequestedEventHandler))
+    }
 
     if (isConfiguredForHomeServer) {
       const directCallEventMessageHandler = new DirectCallEventMessageHandler(
