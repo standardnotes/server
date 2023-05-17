@@ -262,7 +262,7 @@ export class HttpServiceProxy implements ServiceProxyInterface {
     response.status(serviceResponse.status).send({
       meta: {
         auth: {
-          userUuid: response.locals.user.uuid,
+          userUuid: response.locals.user?.uuid,
           roles: response.locals.roles,
         },
         server: {

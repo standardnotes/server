@@ -255,7 +255,7 @@ export class ContainerConfigLoader {
       .bind(TYPES.Sync_REVISIONS_FREQUENCY)
       .toConstantValue(env.get('REVISIONS_FREQUENCY', true) ? +env.get('REVISIONS_FREQUENCY', true) : 300)
     container.bind(TYPES.Sync_NEW_RELIC_ENABLED).toConstantValue(env.get('NEW_RELIC_ENABLED', true))
-    container.bind(TYPES.Sync_VERSION).toConstantValue(env.get('VERSION'))
+    container.bind(TYPES.Sync_VERSION).toConstantValue(env.get('VERSION', true) ?? 'development')
     container
       .bind(TYPES.Sync_CONTENT_SIZE_TRANSFER_LIMIT)
       .toConstantValue(
@@ -353,7 +353,6 @@ export class ContainerConfigLoader {
         env.get('EMAIL_ATTACHMENT_MAX_BYTE_SIZE', true) ? +env.get('EMAIL_ATTACHMENT_MAX_BYTE_SIZE', true) : 10485760,
       )
     container.bind(TYPES.Sync_NEW_RELIC_ENABLED).toConstantValue(env.get('NEW_RELIC_ENABLED', true))
-    container.bind(TYPES.Sync_VERSION).toConstantValue(env.get('VERSION'))
     container
       .bind(TYPES.Sync_FILE_UPLOAD_PATH)
       .toConstantValue(

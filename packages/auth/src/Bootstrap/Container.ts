@@ -517,7 +517,7 @@ export class ContainerConfigLoader {
       .toConstantValue(env.get('USER_SERVER_CHANGE_EMAIL_URL', true))
     container.bind(TYPES.Auth_NEW_RELIC_ENABLED).toConstantValue(env.get('NEW_RELIC_ENABLED', true))
     container.bind(TYPES.Auth_SYNCING_SERVER_URL).toConstantValue(env.get('SYNCING_SERVER_URL', true))
-    container.bind(TYPES.Auth_VERSION).toConstantValue(env.get('VERSION'))
+    container.bind(TYPES.Auth_VERSION).toConstantValue(env.get('VERSION', true) ?? 'development')
     container.bind(TYPES.Auth_PAYMENTS_SERVER_URL).toConstantValue(env.get('PAYMENTS_SERVER_URL', true))
     container
       .bind(TYPES.Auth_SESSION_TRACE_DAYS_TTL)
