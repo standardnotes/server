@@ -7,12 +7,12 @@ import {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   results,
 } from 'inversify-express-utils'
-import TYPES from '../Bootstrap/Types'
-import { GetUserFeatures } from '../Domain/UseCase/GetUserFeatures/GetUserFeatures'
+import TYPES from '../../Bootstrap/Types'
+import { GetUserFeatures } from '../../Domain/UseCase/GetUserFeatures/GetUserFeatures'
 import { ControllerContainerInterface } from '@standardnotes/domain-core'
 
 @controller('/users/:userUuid/features')
-export class FeaturesController extends BaseHttpController {
+export class InversifyExpressFeaturesController extends BaseHttpController {
   constructor(
     @inject(TYPES.Auth_GetUserFeatures) private doGetUserFeatures: GetUserFeatures,
     @inject(TYPES.Auth_ControllerContainer) private controllerContainer: ControllerContainerInterface,

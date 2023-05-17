@@ -251,6 +251,7 @@ import { InversifyExpressSessionController } from '../Infra/InversifyExpressUtil
 import { InversifyExpressOfflineController } from '../Infra/InversifyExpressUtils/InversifyExpressOfflineController'
 import { InversifyExpressListedController } from '../Infra/InversifyExpressUtils/InversifyExpressListedController'
 import { InversifyExpressInternalController } from '../Infra/InversifyExpressUtils/InversifyExpressInternalController'
+import { InversifyExpressFeaturesController } from '../Infra/InversifyExpressUtils/InversifyExpressFeaturesController'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -1173,6 +1174,14 @@ export class ContainerConfigLoader {
         new InversifyExpressInternalController(
           container.get(TYPES.Auth_GetUserFeatures),
           container.get(TYPES.Auth_GetSetting),
+        ),
+      )
+    container
+      .bind<InversifyExpressFeaturesController>(TYPES.Auth_InversifyExpressFeaturesController)
+      .toConstantValue(
+        new InversifyExpressFeaturesController(
+          container.get(TYPES.Auth_GetUserFeatures),
+          container.get(TYPES.Auth_ControllerContainer),
         ),
       )
 

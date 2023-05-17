@@ -2,13 +2,13 @@ import 'reflect-metadata'
 
 import * as express from 'express'
 
-import { FeaturesController } from './FeaturesController'
+import { InversifyExpressFeaturesController } from './InversifyExpressFeaturesController'
 import { results } from 'inversify-express-utils'
-import { User } from '../Domain/User/User'
-import { GetUserFeatures } from '../Domain/UseCase/GetUserFeatures/GetUserFeatures'
+import { User } from '../../Domain/User/User'
+import { GetUserFeatures } from '../../Domain/UseCase/GetUserFeatures/GetUserFeatures'
 import { ControllerContainerInterface } from '@standardnotes/domain-core'
 
-describe('FeaturesController', () => {
+describe('InversifyExpressFeaturesController', () => {
   let getUserFeatures: GetUserFeatures
 
   let request: express.Request
@@ -16,7 +16,7 @@ describe('FeaturesController', () => {
   let user: User
   let controllerContainer: ControllerContainerInterface
 
-  const createController = () => new FeaturesController(getUserFeatures, controllerContainer)
+  const createController = () => new InversifyExpressFeaturesController(getUserFeatures, controllerContainer)
 
   beforeEach(() => {
     controllerContainer = {} as jest.Mocked<ControllerContainerInterface>
