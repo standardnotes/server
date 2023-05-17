@@ -2,9 +2,9 @@ import { NextFunction, Request, Response } from 'express'
 import { inject, injectable } from 'inversify'
 import { BaseMiddleware } from 'inversify-express-utils'
 import { Logger } from 'winston'
-import TYPES from '../Bootstrap/Types'
-import { OfflineSettingName } from '../Domain/Setting/OfflineSettingName'
-import { OfflineSettingRepositoryInterface } from '../Domain/Setting/OfflineSettingRepositoryInterface'
+import TYPES from '../../../Bootstrap/Types'
+import { OfflineSettingName } from '../../../Domain/Setting/OfflineSettingName'
+import { OfflineSettingRepositoryInterface } from '../../../Domain/Setting/OfflineSettingRepositoryInterface'
 
 @injectable()
 export class OfflineUserAuthMiddleware extends BaseMiddleware {

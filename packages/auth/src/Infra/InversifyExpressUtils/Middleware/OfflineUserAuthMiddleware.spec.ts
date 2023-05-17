@@ -3,8 +3,8 @@ import 'reflect-metadata'
 import { OfflineUserAuthMiddleware } from './OfflineUserAuthMiddleware'
 import { NextFunction, Request, Response } from 'express'
 import { Logger } from 'winston'
-import { OfflineSettingRepositoryInterface } from '../Domain/Setting/OfflineSettingRepositoryInterface'
-import { OfflineSetting } from '../Domain/Setting/OfflineSetting'
+import { OfflineSettingRepositoryInterface } from '../../../Domain/Setting/OfflineSettingRepositoryInterface'
+import { OfflineSetting } from '../../../Domain/Setting/OfflineSetting'
 
 describe('OfflineUserAuthMiddleware', () => {
   let offlineSettingRepository: OfflineSettingRepositoryInterface

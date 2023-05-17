@@ -2,9 +2,9 @@ import 'reflect-metadata'
 
 import { AuthMiddlewareWithoutResponse } from './AuthMiddlewareWithoutResponse'
 import { NextFunction, Request, Response } from 'express'
-import { User } from '../Domain/User/User'
-import { AuthenticateRequest } from '../Domain/UseCase/AuthenticateRequest'
-import { Session } from '../Domain/Session/Session'
+import { User } from '../../../Domain/User/User'
+import { AuthenticateRequest } from '../../../Domain/UseCase/AuthenticateRequest'
+import { Session } from '../../../Domain/Session/Session'
 
 describe('AuthMiddlewareWithoutResponse', () => {
   let authenticateRequest: AuthenticateRequest

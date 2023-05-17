@@ -2,9 +2,9 @@ import 'reflect-metadata'
 
 import { LockMiddleware } from './LockMiddleware'
 import { NextFunction, Request, Response } from 'express'
-import { User } from '../Domain/User/User'
-import { UserRepositoryInterface } from '../Domain/User/UserRepositoryInterface'
-import { LockRepositoryInterface } from '../Domain/User/LockRepositoryInterface'
+import { User } from '../../../Domain/User/User'
+import { UserRepositoryInterface } from '../../../Domain/User/UserRepositoryInterface'
+import { LockRepositoryInterface } from '../../../Domain/User/LockRepositoryInterface'
 
 describe('LockMiddleware', () => {
   let userRepository: UserRepositoryInterface
