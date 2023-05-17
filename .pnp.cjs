@@ -4713,7 +4713,6 @@ const RAW_RUNTIME_STATE =
           ["@types/cors", "npm:2.8.13"],\
           ["@types/dotenv", "npm:8.2.0"],\
           ["@types/express", "npm:4.17.17"],\
-          ["@types/inversify-express-utils", "npm:2.0.0"],\
           ["@types/jest", "npm:29.5.1"],\
           ["@types/newrelic", "npm:9.13.0"],\
           ["@typescript-eslint/eslint-plugin", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:5.59.2"],\
@@ -4897,7 +4896,6 @@ const RAW_RUNTIME_STATE =
           ["@types/cors", "npm:2.8.13"],\
           ["@types/dotenv", "npm:8.2.0"],\
           ["@types/express", "npm:4.17.17"],\
-          ["@types/inversify-express-utils", "npm:2.0.0"],\
           ["@types/jest", "npm:29.5.1"],\
           ["@types/jsonwebtoken", "npm:9.0.2"],\
           ["@types/newrelic", "npm:9.13.0"],\
@@ -5295,16 +5293,6 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/@types-http-cache-semantics-npm-4.0.1-90863c7a3e-04aacd353b.zip/node_modules/@types/http-cache-semantics/",\
         "packageDependencies": [\
           ["@types/http-cache-semantics", "npm:4.0.1"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
-    ["@types/inversify-express-utils", [\
-      ["npm:2.0.0", {\
-        "packageLocation": "./.yarn/cache/@types-inversify-express-utils-npm-2.0.0-e78182955d-9841bfddff.zip/node_modules/@types/inversify-express-utils/",\
-        "packageDependencies": [\
-          ["@types/inversify-express-utils", "npm:2.0.0"],\
-          ["inversify-express-utils", "npm:6.4.3"]\
         ],\
         "linkType": "HARD"\
       }]\

@@ -4330,7 +4330,6 @@ __metadata:
     "@types/cors": "npm:^2.8.9"
     "@types/dotenv": "npm:^8.2.0"
     "@types/express": "npm:^4.17.14"
-    "@types/inversify-express-utils": "npm:^2.0.0"
     "@types/jest": "npm:^29.5.1"
     "@types/newrelic": "npm:^9.13.0"
     "@typescript-eslint/eslint-plugin": "npm:^5.59.2"
@@ -4504,7 +4503,6 @@ __metadata:
     "@types/cors": "npm:^2.8.9"
     "@types/dotenv": "npm:^8.2.0"
     "@types/express": "npm:^4.17.14"
-    "@types/inversify-express-utils": "npm:^2.0.0"
     "@types/jest": "npm:^29.5.1"
     "@types/jsonwebtoken": "npm:^9.0.1"
     "@types/newrelic": "npm:^9.13.0"
@@ -4861,15 +4859,6 @@ __metadata:
   version: 4.0.1
   resolution: "@types/http-cache-semantics@npm:4.0.1"
   checksum: 04aacd353b3823dea511927aa0b0a519a16a876aab4f6cc545828cafcadebddc631dcb1e1a949a09f1c30d37c5512e60e69469e22a75213ff1abf349deaad433
-  languageName: node
-  linkType: hard
-
-"@types/inversify-express-utils@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "@types/inversify-express-utils@npm:2.0.0"
-  dependencies:
-    inversify-express-utils: "npm:*"
-  checksum: 9841bfddffc915cd79fb3434dfc992827d2cf18870ea628562d27307dde39f7d623cce820a478e82f6addee264e3a2a71df760f0c5815dcb567827491b81a0e9
   languageName: node
   linkType: hard
 
@@ -8724,7 +8713,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"inversify-express-utils@npm:*, inversify-express-utils@npm:^6.4.3":
+"inversify-express-utils@npm:^6.4.3":
   version: 6.4.3
   resolution: "inversify-express-utils@npm:6.4.3"
   dependencies:
