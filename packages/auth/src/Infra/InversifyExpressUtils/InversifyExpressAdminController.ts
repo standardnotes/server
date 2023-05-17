@@ -11,14 +11,14 @@ import {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   results,
 } from 'inversify-express-utils'
-import TYPES from '../Bootstrap/Types'
-import { CreateOfflineSubscriptionToken } from '../Domain/UseCase/CreateOfflineSubscriptionToken/CreateOfflineSubscriptionToken'
-import { CreateSubscriptionToken } from '../Domain/UseCase/CreateSubscriptionToken/CreateSubscriptionToken'
-import { DeleteSetting } from '../Domain/UseCase/DeleteSetting/DeleteSetting'
-import { UserRepositoryInterface } from '../Domain/User/UserRepositoryInterface'
+import TYPES from '../../Bootstrap/Types'
+import { CreateOfflineSubscriptionToken } from '../../Domain/UseCase/CreateOfflineSubscriptionToken/CreateOfflineSubscriptionToken'
+import { CreateSubscriptionToken } from '../../Domain/UseCase/CreateSubscriptionToken/CreateSubscriptionToken'
+import { DeleteSetting } from '../../Domain/UseCase/DeleteSetting/DeleteSetting'
+import { UserRepositoryInterface } from '../../Domain/User/UserRepositoryInterface'
 
 @controller('/admin')
-export class AdminController extends BaseHttpController {
+export class InversifyExpressAdminController extends BaseHttpController {
   constructor(
     @inject(TYPES.Auth_DeleteSetting) private doDeleteSetting: DeleteSetting,
     @inject(TYPES.Auth_UserRepository) private userRepository: UserRepositoryInterface,

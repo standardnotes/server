@@ -1,16 +1,16 @@
 import 'reflect-metadata'
 
-import { AdminController } from './AdminController'
+import { InversifyExpressAdminController } from './InversifyExpressAdminController'
 import { results } from 'inversify-express-utils'
-import { User } from '../Domain/User/User'
-import { UserRepositoryInterface } from '../Domain/User/UserRepositoryInterface'
+import { User } from '../../Domain/User/User'
+import { UserRepositoryInterface } from '../../Domain/User/UserRepositoryInterface'
 import * as express from 'express'
-import { DeleteSetting } from '../Domain/UseCase/DeleteSetting/DeleteSetting'
-import { CreateSubscriptionToken } from '../Domain/UseCase/CreateSubscriptionToken/CreateSubscriptionToken'
-import { CreateOfflineSubscriptionToken } from '../Domain/UseCase/CreateOfflineSubscriptionToken/CreateOfflineSubscriptionToken'
+import { DeleteSetting } from '../../Domain/UseCase/DeleteSetting/DeleteSetting'
+import { CreateSubscriptionToken } from '../../Domain/UseCase/CreateSubscriptionToken/CreateSubscriptionToken'
+import { CreateOfflineSubscriptionToken } from '../../Domain/UseCase/CreateOfflineSubscriptionToken/CreateOfflineSubscriptionToken'
 import { ControllerContainerInterface } from '@standardnotes/domain-core'
 
-describe('AdminController', () => {
+describe('InversifyExpressAdminController', () => {
   let deleteSetting: DeleteSetting
   let userRepository: UserRepositoryInterface
   let createSubscriptionToken: CreateSubscriptionToken
@@ -20,7 +20,7 @@ describe('AdminController', () => {
   let controllerContainer: ControllerContainerInterface
 
   const createController = () =>
-    new AdminController(
+    new InversifyExpressAdminController(
       deleteSetting,
       userRepository,
       createSubscriptionToken,

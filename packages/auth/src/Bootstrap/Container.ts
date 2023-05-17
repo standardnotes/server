@@ -243,6 +243,7 @@ import { InversifyExpressWebSocketsController } from '../Infra/InversifyExpressU
 import { InversifyExpressSessionsController } from '../Infra/InversifyExpressUtils/InversifyExpressSessionsController'
 import { InversifyExpressValetTokenController } from '../Infra/InversifyExpressUtils/InversifyExpressValetTokenController'
 import { InversifyExpressUsersController } from '../Infra/InversifyExpressUtils/InversifyExpressUsersController'
+import { InversifyExpressAdminController } from '../Infra/InversifyExpressUtils/InversifyExpressAdminController'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -1080,6 +1081,17 @@ export class ContainerConfigLoader {
           container.get(TYPES.Auth_ClearLoginAttempts),
           container.get(TYPES.Auth_IncreaseLoginAttempts),
           container.get(TYPES.Auth_ChangeCredentials),
+          container.get(TYPES.Auth_ControllerContainer),
+        ),
+      )
+    container
+      .bind<InversifyExpressAdminController>(TYPES.Auth_InversifyExpressAdminController)
+      .toConstantValue(
+        new InversifyExpressAdminController(
+          container.get(TYPES.Auth_DeleteSetting),
+          container.get(TYPES.Auth_UserRepository),
+          container.get(TYPES.Auth_CreateSubscriptionToken),
+          container.get(TYPES.Auth_CreateOfflineSubscriptionToken),
           container.get(TYPES.Auth_ControllerContainer),
         ),
       )
