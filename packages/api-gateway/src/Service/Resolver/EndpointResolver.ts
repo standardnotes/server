@@ -4,6 +4,8 @@ export class EndpointResolver implements EndpointResolverInterface {
   constructor(private isConfiguredForHomeServer: boolean) {}
 
   private readonly endpointToIdentifierMap: Map<string, string> = new Map([
+    // Auth Middleware
+    ['[POST]:sessions/validate', 'auth.sessions.validate'],
     // Actions Controller
     ['[POST]:auth/sign_in', 'auth.signIn'],
     ['[GET]:auth/params', 'auth.params'],

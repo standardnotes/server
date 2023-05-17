@@ -2,17 +2,18 @@ import 'reflect-metadata'
 
 import * as express from 'express'
 
-import { SessionsController } from './SessionsController'
+import { InversifyExpressSessionsController } from './InversifyExpressSessionsController'
 import { results } from 'inversify-express-utils'
-import { Session } from '../Domain/Session/Session'
-import { ProjectorInterface } from '../Projection/ProjectorInterface'
-import { GetActiveSessionsForUser } from '../Domain/UseCase/GetActiveSessionsForUser'
-import { AuthenticateRequest } from '../Domain/UseCase/AuthenticateRequest'
-import { User } from '../Domain/User/User'
-import { CreateCrossServiceToken } from '../Domain/UseCase/CreateCrossServiceToken/CreateCrossServiceToken'
 import { ControllerContainerInterface } from '@standardnotes/domain-core'
+import { User } from '@standardnotes/responses'
 
-describe('SessionsController', () => {
+import { AuthenticateRequest } from '../../Domain/UseCase/AuthenticateRequest'
+import { CreateCrossServiceToken } from '../../Domain/UseCase/CreateCrossServiceToken/CreateCrossServiceToken'
+import { GetActiveSessionsForUser } from '../../Domain/UseCase/GetActiveSessionsForUser'
+import { ProjectorInterface } from '../../Projection/ProjectorInterface'
+import { Session } from '../../Domain/Session/Session'
+
+describe('InversifyExpressSessionsController', () => {
   let getActiveSessionsForUser: GetActiveSessionsForUser
   let authenticateRequest: AuthenticateRequest
   let sessionProjector: ProjectorInterface<Session>
@@ -24,7 +25,7 @@ describe('SessionsController', () => {
   let controllerContainer: ControllerContainerInterface
 
   const createController = () =>
-    new SessionsController(
+    new InversifyExpressSessionsController(
       getActiveSessionsForUser,
       authenticateRequest,
       sessionProjector,

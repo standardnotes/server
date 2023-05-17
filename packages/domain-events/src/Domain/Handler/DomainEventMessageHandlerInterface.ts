@@ -1,4 +1,6 @@
+import { DomainEventInterface } from '../Event/DomainEventInterface'
+
 export interface DomainEventMessageHandlerInterface {
-  handleMessage(message: string): Promise<void>
+  handleMessage(messageOrEvent: string | DomainEventInterface): Promise<void>
   handleError(error: Error): Promise<void>
 }

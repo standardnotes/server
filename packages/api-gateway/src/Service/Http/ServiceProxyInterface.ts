@@ -49,4 +49,11 @@ export interface ServiceProxyInterface {
     endpointOrMethodIdentifier: string,
     payload?: Record<string, unknown> | string,
   ): Promise<void>
+  validateSession(authorizationHeaderValue: string): Promise<{
+    status: number
+    data: unknown
+    headers: {
+      contentType: string
+    }
+  }>
 }

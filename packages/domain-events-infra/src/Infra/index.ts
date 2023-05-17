@@ -1,3 +1,6 @@
+export * from './DirectCall/DirectCallDomainEventPublisher'
+export * from './DirectCall/DirectCallEventMessageHandler'
+
 export * from './Redis/RedisDomainEventPublisher'
 export * from './Redis/RedisDomainEventSubscriber'
 export * from './Redis/RedisDomainEventSubscriberFactory'
