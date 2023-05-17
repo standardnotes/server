@@ -7,7 +7,7 @@ export type ItemQuery = {
   syncTimeComparison?: '>' | '>='
   contentType?: string | string[]
   includeGroupUuids?: string[]
-  exclusiveGroupUuid?: string | null
+  exclusiveGroupUuids?: string[] | null
   deleted?: boolean
   offset?: number
   limit?: number

@@ -37,7 +37,7 @@ export class ItemsController extends BaseHttpController {
       computeIntegrityHash: request.body.compute_integrity === true,
       syncToken: request.body.sync_token,
       cursorToken: request.body.cursor_token,
-      groupUuid: request.body.group_uuid,
+      groupUuids: request.body.group_uuids,
       limit: request.body.limit,
       contentType: request.body.content_type,
       apiVersion: request.body.api ?? ApiVersion.v20161215,

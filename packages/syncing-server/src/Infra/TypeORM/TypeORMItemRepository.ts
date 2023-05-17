@@ -1,4 +1,4 @@
-import { Repository, SelectQueryBuilder } from 'typeorm'
+import { Brackets, Repository, SelectQueryBuilder } from 'typeorm'
 import { Item } from '../../Domain/Item/Item'
 import { ItemQuery } from '../../Domain/Item/ItemQuery'
 import { ItemRepositoryInterface } from '../../Domain/Item/ItemRepositoryInterface'
@@ -132,16 +132,18 @@ export class TypeORMItemRepository implements ItemRepositoryInterface {
     }
 
     if (query.includeGroupUuids != undefined && query.includeGroupUuids.length > 0) {
-      queryBuilder.where('item.group_uuid IN (:...groupUuids)', { groupUuids: query.includeGroupUuids })
-      if (query.userUuid) {
-        queryBuilder.orWhere('item.user_uuid = :userUuid', { userUuid: query.userUuid })
-      }
+      queryBuilder.where(
+        new Brackets((qb) => {
+          qb.where('item.group_uuid IN (:...groupUuids)', { groupUuids: query.includeGroupUuids })
+          if (query.userUuid) {
+            qb.orWhere('item.user_uuid = :userUuid', { userUuid: query.userUuid })
+          }
+        }),
+      )
+    } else if (query.exclusiveGroupUuids != undefined && query.exclusiveGroupUuids.length > 0) {
+      queryBuilder.andWhere('item.group_uuid IN (:...groupUuids)', { groupUuids: query.exclusiveGroupUuids })
     } else if (query.userUuid !== undefined) {
       queryBuilder.where('item.user_uuid = :userUuid', { userUuid: query.userUuid })
-    }
-
-    if (query.exclusiveGroupUuid) {
-      queryBuilder.andWhere('item.group_uuid = :groupUuid', { groupUuid: query.exclusiveGroupUuid })
     }
 
     if (query.selectString !== undefined) {

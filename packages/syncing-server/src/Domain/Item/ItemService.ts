@@ -50,11 +50,14 @@ export class ItemService implements ItemServiceInterface {
 
     const groupUsers = await this.groupUsersRepository.findAll({ userUuid: dto.userUuid })
     const userGroupUuids = groupUsers.map((groupUser) => groupUser.groupUuid)
+    const exclusiveGroupUuids = dto.groupUuids
+      ? dto.groupUuids.filter((groupUuid) => userGroupUuids.includes(groupUuid))
+      : undefined
 
     const itemQuery: ItemQuery = {
       userUuid: dto.userUuid,
-      includeGroupUuids: !dto.groupUuid ? userGroupUuids : undefined,
-      exclusiveGroupUuid: dto.groupUuid && userGroupUuids.includes(dto.groupUuid) ? dto.groupUuid : undefined,
+      includeGroupUuids: !dto.groupUuids ? userGroupUuids : undefined,
+      exclusiveGroupUuids: exclusiveGroupUuids,
       lastSyncTime,
       syncTimeComparison,
       contentType: dto.contentType,
