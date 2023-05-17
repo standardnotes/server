@@ -2,7 +2,6 @@ import { Container, interfaces } from 'inversify'
 
 import { Env } from './Env'
 import TYPES from './Types'
-import { AuthMiddleware } from '../Controller/AuthMiddleware'
 import { Item } from '../Domain/Item/Item'
 import { SyncResponseFactory20161215 } from '../Domain/Item/SyncResponse/SyncResponseFactory20161215'
 import { SyncResponseFactory20200115 } from '../Domain/Item/SyncResponse/SyncResponseFactory20200115'
@@ -29,6 +28,7 @@ import { SavedItemProjector } from '../Projection/SavedItemProjector'
 import { ItemConflict } from '../Domain/Item/ItemConflict'
 import { ItemConflictProjection } from '../Projection/ItemConflictProjection'
 import { CommonContainerConfigLoader } from './CommonContainerConfigLoader'
+import { InversifyExpressAuthMiddleware } from '../Infra/InversifyExpressUtils/Middleware/InversifyExpressAuthMiddleware'
 
 export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
   private readonly DEFAULT_CONTENT_SIZE_TRANSFER_LIMIT = 10_000_000
@@ -40,9 +40,14 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
     const env: Env = container.get(TYPES.Env)
 
     // Middleware
-    container.bind<AuthMiddleware>(TYPES.AuthMiddleware).toDynamicValue((context: interfaces.Context) => {
-      return new AuthMiddleware(context.container.get(TYPES.AUTH_JWT_SECRET), context.container.get(TYPES.Logger))
-    })
+    container
+      .bind<InversifyExpressAuthMiddleware>(TYPES.AuthMiddleware)
+      .toDynamicValue((context: interfaces.Context) => {
+        return new InversifyExpressAuthMiddleware(
+          context.container.get(TYPES.AUTH_JWT_SECRET),
+          context.container.get(TYPES.Logger),
+        )
+      })
 
     // Projectors
     container

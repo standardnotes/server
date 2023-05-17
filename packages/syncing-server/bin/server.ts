@@ -2,8 +2,8 @@ import 'reflect-metadata'
 
 import 'newrelic'
 
-import '../src/Controller/HealthCheckController'
-import '../src/Controller/ItemsController'
+import '../src/Infra/InversifyExpressUtils/InversifyExpressHealthCheckController'
+import '../src/Infra/InversifyExpressUtils/InversifyExpressItemsController'
 
 import helmet from 'helmet'
 import * as cors from 'cors'

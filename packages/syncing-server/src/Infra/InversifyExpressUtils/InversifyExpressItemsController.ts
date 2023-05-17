@@ -1,18 +1,19 @@
 import { Request, Response } from 'express'
 import { inject } from 'inversify'
 import { BaseHttpController, controller, httpGet, httpPost, results } from 'inversify-express-utils'
-import TYPES from '../Bootstrap/Types'
-import { ApiVersion } from '../Domain/Api/ApiVersion'
-import { Item } from '../Domain/Item/Item'
-import { SyncResponseFactoryResolverInterface } from '../Domain/Item/SyncResponse/SyncResponseFactoryResolverInterface'
-import { CheckIntegrity } from '../Domain/UseCase/CheckIntegrity/CheckIntegrity'
-import { GetItem } from '../Domain/UseCase/GetItem/GetItem'
-import { SyncItems } from '../Domain/UseCase/SyncItems'
-import { ItemProjection } from '../Projection/ItemProjection'
-import { ProjectorInterface } from '../Projection/ProjectorInterface'
+
+import TYPES from '../../Bootstrap/Types'
+import { Item } from '../../Domain/Item/Item'
+import { SyncResponseFactoryResolverInterface } from '../../Domain/Item/SyncResponse/SyncResponseFactoryResolverInterface'
+import { CheckIntegrity } from '../../Domain/UseCase/CheckIntegrity/CheckIntegrity'
+import { GetItem } from '../../Domain/UseCase/GetItem/GetItem'
+import { SyncItems } from '../../Domain/UseCase/SyncItems'
+import { ItemProjection } from '../../Projection/ItemProjection'
+import { ProjectorInterface } from '../../Projection/ProjectorInterface'
+import { ApiVersion } from '../../Domain/Api/ApiVersion'
 
 @controller('/items', TYPES.AuthMiddleware)
-export class ItemsController extends BaseHttpController {
+export class InversifyExpressItemsController extends BaseHttpController {
   constructor(
     @inject(TYPES.SyncItems) private syncItems: SyncItems,
     @inject(TYPES.CheckIntegrity) private checkIntegrity: CheckIntegrity,
