@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.36.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.35.4...@standardnotes/syncing-server@1.36.0) (2023-05-17)
+
+### Features
+
+* **auth:** move inversify express controllers to different structure ([#610](https://github.com/standardnotes/syncing-server-js/issues/610)) ([fea5802](https://github.com/standardnotes/syncing-server-js/commit/fea58029b90804dba31faa3c26dcd7dabe541648))
+
 ## [1.35.4](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.35.3...@standardnotes/syncing-server@1.35.4) (2023-05-17)
 
 **Note:** Version bump only for package @standardnotes/syncing-server

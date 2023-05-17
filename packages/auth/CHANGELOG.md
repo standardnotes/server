@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.108.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.107.0...@standardnotes/auth-server@1.108.0) (2023-05-17)
+
+### Features
+
+* **auth:** move inversify express controllers to different structure ([#610](https://github.com/standardnotes/server/issues/610)) ([fea5802](https://github.com/standardnotes/server/commit/fea58029b90804dba31faa3c26dcd7dabe541648))
+
 # [1.107.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.106.0...@standardnotes/auth-server@1.107.0) (2023-05-17)
 
 ### Features
