@@ -11,17 +11,17 @@ import {
   results,
 } from 'inversify-express-utils'
 
-import TYPES from '../Bootstrap/Types'
-import { Role } from '../Domain/Role/Role'
-import { SettingServiceInterface } from '../Domain/Setting/SettingServiceInterface'
-import { AuthenticateSubscriptionToken } from '../Domain/UseCase/AuthenticateSubscriptionToken/AuthenticateSubscriptionToken'
-import { CreateSubscriptionToken } from '../Domain/UseCase/CreateSubscriptionToken/CreateSubscriptionToken'
-import { User } from '../Domain/User/User'
-import { ProjectorInterface } from '../Projection/ProjectorInterface'
+import TYPES from '../../Bootstrap/Types'
+import { Role } from '../../Domain/Role/Role'
+import { SettingServiceInterface } from '../../Domain/Setting/SettingServiceInterface'
+import { AuthenticateSubscriptionToken } from '../../Domain/UseCase/AuthenticateSubscriptionToken/AuthenticateSubscriptionToken'
+import { CreateSubscriptionToken } from '../../Domain/UseCase/CreateSubscriptionToken/CreateSubscriptionToken'
+import { User } from '../../Domain/User/User'
+import { ProjectorInterface } from '../../Projection/ProjectorInterface'
 import { ControllerContainerInterface } from '@standardnotes/domain-core'
 
 @controller('/subscription-tokens')
-export class SubscriptionTokensController extends BaseHttpController {
+export class InversifyExpressSubscriptionTokensController extends BaseHttpController {
   constructor(
     @inject(TYPES.Auth_CreateSubscriptionToken) private createSubscriptionToken: CreateSubscriptionToken,
     @inject(TYPES.Auth_AuthenticateSubscriptionToken) private authenticateToken: AuthenticateSubscriptionToken,

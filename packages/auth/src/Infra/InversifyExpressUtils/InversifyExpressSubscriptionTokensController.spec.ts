@@ -3,19 +3,19 @@ import 'reflect-metadata'
 import * as express from 'express'
 import { results } from 'inversify-express-utils'
 
-import { SubscriptionTokensController } from './SubscriptionTokensController'
-import { User } from '../Domain/User/User'
-import { CreateSubscriptionToken } from '../Domain/UseCase/CreateSubscriptionToken/CreateSubscriptionToken'
-import { CreateSubscriptionTokenResponse } from '../Domain/UseCase/CreateSubscriptionToken/CreateSubscriptionTokenResponse'
-import { AuthenticateSubscriptionToken } from '../Domain/UseCase/AuthenticateSubscriptionToken/AuthenticateSubscriptionToken'
-import { ProjectorInterface } from '../Projection/ProjectorInterface'
-import { Role } from '../Domain/Role/Role'
-import { SettingServiceInterface } from '../Domain/Setting/SettingServiceInterface'
-import { Setting } from '../Domain/Setting/Setting'
+import { InversifyExpressSubscriptionTokensController } from './InversifyExpressSubscriptionTokensController'
 import { CrossServiceTokenData, TokenEncoderInterface } from '@standardnotes/security'
 import { ControllerContainerInterface } from '@standardnotes/domain-core'
+import { Setting } from '../../Domain/Setting/Setting'
+import { SettingServiceInterface } from '../../Domain/Setting/SettingServiceInterface'
+import { AuthenticateSubscriptionToken } from '../../Domain/UseCase/AuthenticateSubscriptionToken/AuthenticateSubscriptionToken'
+import { CreateSubscriptionToken } from '../../Domain/UseCase/CreateSubscriptionToken/CreateSubscriptionToken'
+import { CreateSubscriptionTokenResponse } from '../../Domain/UseCase/CreateSubscriptionToken/CreateSubscriptionTokenResponse'
+import { ProjectorInterface } from '../../Projection/ProjectorInterface'
+import { User } from '../../Domain/User/User'
+import { Role } from '../../Domain/Role/Role'
 
-describe('SubscriptionTokensController', () => {
+describe('InversifyExpressSubscriptionTokensController', () => {
   let createSubscriptionToken: CreateSubscriptionToken
   let authenticateToken: AuthenticateSubscriptionToken
   const jwtTTL = 60
@@ -33,7 +33,7 @@ describe('SubscriptionTokensController', () => {
   let controllerContainer: ControllerContainerInterface
 
   const createController = () =>
-    new SubscriptionTokensController(
+    new InversifyExpressSubscriptionTokensController(
       createSubscriptionToken,
       authenticateToken,
       settingService,
