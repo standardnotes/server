@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.111.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.110.2...@standardnotes/domain-events@2.111.0) (2023-05-17)
+
+### Features
+
+* add direct event handling for home server ([#608](https://github.com/standardnotes/server/issues/608)) ([8a47d81](https://github.com/standardnotes/server/commit/8a47d81936acd765224e74fd083810579a83c9a7))
+
 ## [2.110.2](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.110.1...@standardnotes/domain-events@2.110.2) (2023-05-09)
 
 ### Bug Fixes

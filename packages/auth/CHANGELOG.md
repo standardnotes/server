@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.107.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.106.0...@standardnotes/auth-server@1.107.0) (2023-05-17)
+
+### Features
+
+* add direct event handling for home server ([#608](https://github.com/standardnotes/server/issues/608)) ([8a47d81](https://github.com/standardnotes/server/commit/8a47d81936acd765224e74fd083810579a83c9a7))
+
 # [1.106.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.105.2...@standardnotes/auth-server@1.106.0) (2023-05-16)
 
 ### Features

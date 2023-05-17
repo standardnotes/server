@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.55.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.54.0...@standardnotes/api-gateway@1.55.0) (2023-05-17)
+
+### Features
+
+* add direct event handling for home server ([#608](https://github.com/standardnotes/api-gateway/issues/608)) ([8a47d81](https://github.com/standardnotes/api-gateway/commit/8a47d81936acd765224e74fd083810579a83c9a7))
+
 # [1.54.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.53.1...@standardnotes/api-gateway@1.54.0) (2023-05-16)
 
 ### Features

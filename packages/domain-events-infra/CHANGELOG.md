@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.12.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events-infra@1.11.2...@standardnotes/domain-events-infra@1.12.0) (2023-05-17)
+
+### Features
+
+* add direct event handling for home server ([#608](https://github.com/standardnotes/server/issues/608)) ([8a47d81](https://github.com/standardnotes/server/commit/8a47d81936acd765224e74fd083810579a83c9a7))
+
 ## [1.11.2](https://github.com/standardnotes/server/compare/@standardnotes/domain-events-infra@1.11.1...@standardnotes/domain-events-infra@1.11.2) (2023-05-15)
 
 **Note:** Version bump only for package @standardnotes/domain-events-infra
