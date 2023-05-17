@@ -2,20 +2,20 @@ import 'reflect-metadata'
 
 import * as express from 'express'
 
-import { UsersController } from './UsersController'
+import { InversifyExpressUsersController } from './InversifyExpressUsersController'
 import { results } from 'inversify-express-utils'
-import { User } from '../Domain/User/User'
-import { UpdateUser } from '../Domain/UseCase/UpdateUser'
-import { GetUserKeyParams } from '../Domain/UseCase/GetUserKeyParams/GetUserKeyParams'
-import { DeleteAccount } from '../Domain/UseCase/DeleteAccount/DeleteAccount'
-import { GetUserSubscription } from '../Domain/UseCase/GetUserSubscription/GetUserSubscription'
-import { ClearLoginAttempts } from '../Domain/UseCase/ClearLoginAttempts'
-import { IncreaseLoginAttempts } from '../Domain/UseCase/IncreaseLoginAttempts'
-import { ChangeCredentials } from '../Domain/UseCase/ChangeCredentials/ChangeCredentials'
-import { InviteToSharedSubscription } from '../Domain/UseCase/InviteToSharedSubscription/InviteToSharedSubscription'
 import { ControllerContainerInterface } from '@standardnotes/domain-core'
+import { DeleteAccount } from '../../Domain/UseCase/DeleteAccount/DeleteAccount'
+import { ChangeCredentials } from '../../Domain/UseCase/ChangeCredentials/ChangeCredentials'
+import { ClearLoginAttempts } from '../../Domain/UseCase/ClearLoginAttempts'
+import { GetUserKeyParams } from '../../Domain/UseCase/GetUserKeyParams/GetUserKeyParams'
+import { GetUserSubscription } from '../../Domain/UseCase/GetUserSubscription/GetUserSubscription'
+import { IncreaseLoginAttempts } from '../../Domain/UseCase/IncreaseLoginAttempts'
+import { InviteToSharedSubscription } from '../../Domain/UseCase/InviteToSharedSubscription/InviteToSharedSubscription'
+import { UpdateUser } from '../../Domain/UseCase/UpdateUser'
+import { User } from '../../Domain/User/User'
 
-describe('UsersController', () => {
+describe('InversifyExpressUsersController', () => {
   let updateUser: UpdateUser
   let deleteAccount: DeleteAccount
   let getUserKeyParams: GetUserKeyParams
@@ -31,7 +31,7 @@ describe('UsersController', () => {
   let controllerContainer: ControllerContainerInterface
 
   const createController = () =>
-    new UsersController(
+    new InversifyExpressUsersController(
       updateUser,
       getUserKeyParams,
       deleteAccount,

@@ -6,7 +6,7 @@ import { InversifyExpressValetTokenController } from './InversifyExpressValetTok
 import { CreateValetToken } from '../../Domain/UseCase/CreateValetToken/CreateValetToken'
 import { ControllerContainerInterface } from '@standardnotes/domain-core'
 
-describe('ValetTokenController', () => {
+describe('InversifyExpressValetTokenController', () => {
   let createValetToken: CreateValetToken
   let request: Request
   let response: Response

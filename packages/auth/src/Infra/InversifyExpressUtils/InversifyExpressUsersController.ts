@@ -11,18 +11,18 @@ import {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   results,
 } from 'inversify-express-utils'
-import TYPES from '../Bootstrap/Types'
-import { DeleteAccount } from '../Domain/UseCase/DeleteAccount/DeleteAccount'
-import { GetUserKeyParams } from '../Domain/UseCase/GetUserKeyParams/GetUserKeyParams'
-import { UpdateUser } from '../Domain/UseCase/UpdateUser'
-import { GetUserSubscription } from '../Domain/UseCase/GetUserSubscription/GetUserSubscription'
-import { ClearLoginAttempts } from '../Domain/UseCase/ClearLoginAttempts'
-import { IncreaseLoginAttempts } from '../Domain/UseCase/IncreaseLoginAttempts'
-import { ChangeCredentials } from '../Domain/UseCase/ChangeCredentials/ChangeCredentials'
+import TYPES from '../../Bootstrap/Types'
+import { DeleteAccount } from '../../Domain/UseCase/DeleteAccount/DeleteAccount'
+import { GetUserKeyParams } from '../../Domain/UseCase/GetUserKeyParams/GetUserKeyParams'
+import { UpdateUser } from '../../Domain/UseCase/UpdateUser'
+import { GetUserSubscription } from '../../Domain/UseCase/GetUserSubscription/GetUserSubscription'
+import { ClearLoginAttempts } from '../../Domain/UseCase/ClearLoginAttempts'
+import { IncreaseLoginAttempts } from '../../Domain/UseCase/IncreaseLoginAttempts'
+import { ChangeCredentials } from '../../Domain/UseCase/ChangeCredentials/ChangeCredentials'
 import { ControllerContainerInterface } from '@standardnotes/domain-core'
 
 @controller('/users')
-export class UsersController extends BaseHttpController {
+export class InversifyExpressUsersController extends BaseHttpController {
   constructor(
     @inject(TYPES.Auth_UpdateUser) private updateUser: UpdateUser,
     @inject(TYPES.Auth_GetUserKeyParams) private getUserKeyParams: GetUserKeyParams,
