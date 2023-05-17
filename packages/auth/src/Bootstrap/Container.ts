@@ -1026,164 +1026,166 @@ export class ContainerConfigLoader {
       )
 
     // Inversify Controllers
-    container
-      .bind<InversifyExpressAuthenticatorsController>(TYPES.Auth_InversifyExpressAuthenticatorsController)
-      .toConstantValue(
-        new InversifyExpressAuthenticatorsController(
-          container.get(TYPES.Auth_AuthenticatorsController),
-          container.get(TYPES.Auth_ControllerContainer),
-        ),
-      )
-    container
-      .bind<InversifyExpressSubscriptionInvitesController>(TYPES.Auth_InversifyExpressSubscriptionInvitesController)
-      .toConstantValue(
-        new InversifyExpressSubscriptionInvitesController(
-          container.get(TYPES.Auth_SubscriptionInvitesController),
-          container.get(TYPES.Auth_ControllerContainer),
-        ),
-      )
-    container
-      .bind<InversifyExpressUserRequestsController>(TYPES.Auth_InversifyExpressUserRequestsController)
-      .toConstantValue(
-        new InversifyExpressUserRequestsController(
-          container.get(TYPES.Auth_UserRequestsController),
-          container.get(TYPES.Auth_ControllerContainer),
-        ),
-      )
-    container
-      .bind<InversifyExpressWebSocketsController>(TYPES.Auth_InversifyExpressWebSocketsController)
-      .toConstantValue(
-        new InversifyExpressWebSocketsController(
-          container.get(TYPES.Auth_CreateCrossServiceToken),
-          container.get(TYPES.Auth_WebSocketConnectionTokenDecoder),
-          container.get(TYPES.Auth_ControllerContainer),
-        ),
-      )
-    container
-      .bind<InversifyExpressSessionsController>(TYPES.Auth_SessionsController)
-      .toConstantValue(
-        new InversifyExpressSessionsController(
-          container.get(TYPES.Auth_GetActiveSessionsForUser),
-          container.get(TYPES.Auth_AuthenticateRequest),
-          container.get(TYPES.Auth_SessionProjector),
-          container.get(TYPES.Auth_CreateCrossServiceToken),
-          container.get(TYPES.Auth_ControllerContainer),
-        ),
-      )
-    container
-      .bind<InversifyExpressValetTokenController>(TYPES.Auth_InversifyExpressValetTokenController)
-      .toConstantValue(
-        new InversifyExpressValetTokenController(
-          container.get(TYPES.Auth_CreateValetToken),
-          container.get(TYPES.Auth_ControllerContainer),
-        ),
-      )
-    container
-      .bind<InversifyExpressUsersController>(TYPES.Auth_InversifyExpressUsersController)
-      .toConstantValue(
-        new InversifyExpressUsersController(
-          container.get(TYPES.Auth_UpdateUser),
-          container.get(TYPES.Auth_GetUserKeyParams),
-          container.get(TYPES.Auth_DeleteAccount),
-          container.get(TYPES.Auth_GetUserSubscription),
-          container.get(TYPES.Auth_ClearLoginAttempts),
-          container.get(TYPES.Auth_IncreaseLoginAttempts),
-          container.get(TYPES.Auth_ChangeCredentials),
-          container.get(TYPES.Auth_ControllerContainer),
-        ),
-      )
-    container
-      .bind<InversifyExpressAdminController>(TYPES.Auth_InversifyExpressAdminController)
-      .toConstantValue(
-        new InversifyExpressAdminController(
-          container.get(TYPES.Auth_DeleteSetting),
-          container.get(TYPES.Auth_UserRepository),
-          container.get(TYPES.Auth_CreateSubscriptionToken),
-          container.get(TYPES.Auth_CreateOfflineSubscriptionToken),
-          container.get(TYPES.Auth_ControllerContainer),
-        ),
-      )
-    container
-      .bind<InversifyExpressSubscriptionTokensController>(TYPES.Auth_InversifyExpressSubscriptionTokensController)
-      .toConstantValue(
-        new InversifyExpressSubscriptionTokensController(
-          container.get(TYPES.Auth_CreateSubscriptionToken),
-          container.get(TYPES.Auth_AuthenticateSubscriptionToken),
-          container.get(TYPES.Auth_SettingService),
-          container.get(TYPES.Auth_UserProjector),
-          container.get(TYPES.Auth_RoleProjector),
-          container.get(TYPES.Auth_CrossServiceTokenEncoder),
-          container.get(TYPES.Auth_AUTH_JWT_TTL),
-          container.get(TYPES.Auth_ControllerContainer),
-        ),
-      )
-    container
-      .bind<InversifyExpressSubscriptionSettingsController>(TYPES.Auth_InversifyExpressSubscriptionSettingsController)
-      .toConstantValue(
-        new InversifyExpressSubscriptionSettingsController(
-          container.get(TYPES.Auth_GetSetting),
-          container.get(TYPES.Auth_ControllerContainer),
-        ),
-      )
-    container
-      .bind<InversifyExpressSettingsController>(TYPES.Auth_InversifyExpressSettingsController)
-      .toConstantValue(
-        new InversifyExpressSettingsController(
-          container.get(TYPES.Auth_GetSettings),
-          container.get(TYPES.Auth_GetSetting),
-          container.get(TYPES.Auth_UpdateSetting),
-          container.get(TYPES.Auth_DeleteSetting),
-          container.get(TYPES.Auth_ControllerContainer),
-        ),
-      )
-    container
-      .bind<InversifyExpressSessionController>(TYPES.Auth_InversifyExpressSessionController)
-      .toConstantValue(
-        new InversifyExpressSessionController(
-          container.get(TYPES.Auth_DeleteSessionForUser),
-          container.get(TYPES.Auth_DeletePreviousSessionsForUser),
-          container.get(TYPES.Auth_RefreshSessionToken),
-          container.get(TYPES.Auth_ControllerContainer),
-        ),
-      )
-    container
-      .bind<InversifyExpressOfflineController>(TYPES.Auth_InversifyExpressOfflineController)
-      .toConstantValue(
-        new InversifyExpressOfflineController(
-          container.get(TYPES.Auth_GetUserFeatures),
-          container.get(TYPES.Auth_GetUserOfflineSubscription),
-          container.get(TYPES.Auth_CreateOfflineSubscriptionToken),
-          container.get(TYPES.Auth_AuthenticateOfflineSubscriptionToken),
-          container.get(TYPES.Auth_OfflineUserTokenEncoder),
-          container.get(TYPES.Auth_AUTH_JWT_TTL),
-          container.get(TYPES.Auth_Logger),
-          container.get(TYPES.Auth_ControllerContainer),
-        ),
-      )
-    container
-      .bind<InversifyExpressListedController>(TYPES.Auth_InversifyExpressListedController)
-      .toConstantValue(
-        new InversifyExpressListedController(
-          container.get(TYPES.Auth_CreateListedAccount),
-          container.get(TYPES.Auth_ControllerContainer),
-        ),
-      )
-    container
-      .bind<InversifyExpressInternalController>(TYPES.Auth_InversifyExpressInternalController)
-      .toConstantValue(
-        new InversifyExpressInternalController(
-          container.get(TYPES.Auth_GetUserFeatures),
-          container.get(TYPES.Auth_GetSetting),
-        ),
-      )
-    container
-      .bind<InversifyExpressFeaturesController>(TYPES.Auth_InversifyExpressFeaturesController)
-      .toConstantValue(
-        new InversifyExpressFeaturesController(
-          container.get(TYPES.Auth_GetUserFeatures),
-          container.get(TYPES.Auth_ControllerContainer),
-        ),
-      )
+    if (isConfiguredForHomeServer) {
+      container
+        .bind<InversifyExpressAuthenticatorsController>(TYPES.Auth_InversifyExpressAuthenticatorsController)
+        .toConstantValue(
+          new InversifyExpressAuthenticatorsController(
+            container.get(TYPES.Auth_AuthenticatorsController),
+            container.get(TYPES.Auth_ControllerContainer),
+          ),
+        )
+      container
+        .bind<InversifyExpressSubscriptionInvitesController>(TYPES.Auth_InversifyExpressSubscriptionInvitesController)
+        .toConstantValue(
+          new InversifyExpressSubscriptionInvitesController(
+            container.get(TYPES.Auth_SubscriptionInvitesController),
+            container.get(TYPES.Auth_ControllerContainer),
+          ),
+        )
+      container
+        .bind<InversifyExpressUserRequestsController>(TYPES.Auth_InversifyExpressUserRequestsController)
+        .toConstantValue(
+          new InversifyExpressUserRequestsController(
+            container.get(TYPES.Auth_UserRequestsController),
+            container.get(TYPES.Auth_ControllerContainer),
+          ),
+        )
+      container
+        .bind<InversifyExpressWebSocketsController>(TYPES.Auth_InversifyExpressWebSocketsController)
+        .toConstantValue(
+          new InversifyExpressWebSocketsController(
+            container.get(TYPES.Auth_CreateCrossServiceToken),
+            container.get(TYPES.Auth_WebSocketConnectionTokenDecoder),
+            container.get(TYPES.Auth_ControllerContainer),
+          ),
+        )
+      container
+        .bind<InversifyExpressSessionsController>(TYPES.Auth_SessionsController)
+        .toConstantValue(
+          new InversifyExpressSessionsController(
+            container.get(TYPES.Auth_GetActiveSessionsForUser),
+            container.get(TYPES.Auth_AuthenticateRequest),
+            container.get(TYPES.Auth_SessionProjector),
+            container.get(TYPES.Auth_CreateCrossServiceToken),
+            container.get(TYPES.Auth_ControllerContainer),
+          ),
+        )
+      container
+        .bind<InversifyExpressValetTokenController>(TYPES.Auth_InversifyExpressValetTokenController)
+        .toConstantValue(
+          new InversifyExpressValetTokenController(
+            container.get(TYPES.Auth_CreateValetToken),
+            container.get(TYPES.Auth_ControllerContainer),
+          ),
+        )
+      container
+        .bind<InversifyExpressUsersController>(TYPES.Auth_InversifyExpressUsersController)
+        .toConstantValue(
+          new InversifyExpressUsersController(
+            container.get(TYPES.Auth_UpdateUser),
+            container.get(TYPES.Auth_GetUserKeyParams),
+            container.get(TYPES.Auth_DeleteAccount),
+            container.get(TYPES.Auth_GetUserSubscription),
+            container.get(TYPES.Auth_ClearLoginAttempts),
+            container.get(TYPES.Auth_IncreaseLoginAttempts),
+            container.get(TYPES.Auth_ChangeCredentials),
+            container.get(TYPES.Auth_ControllerContainer),
+          ),
+        )
+      container
+        .bind<InversifyExpressAdminController>(TYPES.Auth_InversifyExpressAdminController)
+        .toConstantValue(
+          new InversifyExpressAdminController(
+            container.get(TYPES.Auth_DeleteSetting),
+            container.get(TYPES.Auth_UserRepository),
+            container.get(TYPES.Auth_CreateSubscriptionToken),
+            container.get(TYPES.Auth_CreateOfflineSubscriptionToken),
+            container.get(TYPES.Auth_ControllerContainer),
+          ),
+        )
+      container
+        .bind<InversifyExpressSubscriptionTokensController>(TYPES.Auth_InversifyExpressSubscriptionTokensController)
+        .toConstantValue(
+          new InversifyExpressSubscriptionTokensController(
+            container.get(TYPES.Auth_CreateSubscriptionToken),
+            container.get(TYPES.Auth_AuthenticateSubscriptionToken),
+            container.get(TYPES.Auth_SettingService),
+            container.get(TYPES.Auth_UserProjector),
+            container.get(TYPES.Auth_RoleProjector),
+            container.get(TYPES.Auth_CrossServiceTokenEncoder),
+            container.get(TYPES.Auth_AUTH_JWT_TTL),
+            container.get(TYPES.Auth_ControllerContainer),
+          ),
+        )
+      container
+        .bind<InversifyExpressSubscriptionSettingsController>(TYPES.Auth_InversifyExpressSubscriptionSettingsController)
+        .toConstantValue(
+          new InversifyExpressSubscriptionSettingsController(
+            container.get(TYPES.Auth_GetSetting),
+            container.get(TYPES.Auth_ControllerContainer),
+          ),
+        )
+      container
+        .bind<InversifyExpressSettingsController>(TYPES.Auth_InversifyExpressSettingsController)
+        .toConstantValue(
+          new InversifyExpressSettingsController(
+            container.get(TYPES.Auth_GetSettings),
+            container.get(TYPES.Auth_GetSetting),
+            container.get(TYPES.Auth_UpdateSetting),
+            container.get(TYPES.Auth_DeleteSetting),
+            container.get(TYPES.Auth_ControllerContainer),
+          ),
+        )
+      container
+        .bind<InversifyExpressSessionController>(TYPES.Auth_InversifyExpressSessionController)
+        .toConstantValue(
+          new InversifyExpressSessionController(
+            container.get(TYPES.Auth_DeleteSessionForUser),
+            container.get(TYPES.Auth_DeletePreviousSessionsForUser),
+            container.get(TYPES.Auth_RefreshSessionToken),
+            container.get(TYPES.Auth_ControllerContainer),
+          ),
+        )
+      container
+        .bind<InversifyExpressOfflineController>(TYPES.Auth_InversifyExpressOfflineController)
+        .toConstantValue(
+          new InversifyExpressOfflineController(
+            container.get(TYPES.Auth_GetUserFeatures),
+            container.get(TYPES.Auth_GetUserOfflineSubscription),
+            container.get(TYPES.Auth_CreateOfflineSubscriptionToken),
+            container.get(TYPES.Auth_AuthenticateOfflineSubscriptionToken),
+            container.get(TYPES.Auth_OfflineUserTokenEncoder),
+            container.get(TYPES.Auth_AUTH_JWT_TTL),
+            container.get(TYPES.Auth_Logger),
+            container.get(TYPES.Auth_ControllerContainer),
+          ),
+        )
+      container
+        .bind<InversifyExpressListedController>(TYPES.Auth_InversifyExpressListedController)
+        .toConstantValue(
+          new InversifyExpressListedController(
+            container.get(TYPES.Auth_CreateListedAccount),
+            container.get(TYPES.Auth_ControllerContainer),
+          ),
+        )
+      container
+        .bind<InversifyExpressInternalController>(TYPES.Auth_InversifyExpressInternalController)
+        .toConstantValue(
+          new InversifyExpressInternalController(
+            container.get(TYPES.Auth_GetUserFeatures),
+            container.get(TYPES.Auth_GetSetting),
+          ),
+        )
+      container
+        .bind<InversifyExpressFeaturesController>(TYPES.Auth_InversifyExpressFeaturesController)
+        .toConstantValue(
+          new InversifyExpressFeaturesController(
+            container.get(TYPES.Auth_GetUserFeatures),
+            container.get(TYPES.Auth_ControllerContainer),
+          ),
+        )
+    }
 
     return container
   }
