@@ -2,13 +2,13 @@ import 'reflect-metadata'
 
 import * as express from 'express'
 
-import { InternalController } from './InternalController'
+import { InversifyExpressInternalController } from './InversifyExpressInternalController'
 import { results } from 'inversify-express-utils'
-import { User } from '../Domain/User/User'
-import { GetUserFeatures } from '../Domain/UseCase/GetUserFeatures/GetUserFeatures'
-import { GetSetting } from '../Domain/UseCase/GetSetting/GetSetting'
+import { User } from '../../Domain/User/User'
+import { GetUserFeatures } from '../../Domain/UseCase/GetUserFeatures/GetUserFeatures'
+import { GetSetting } from '../../Domain/UseCase/GetSetting/GetSetting'
 
-describe('InternalController', () => {
+describe('InversifyExpressInternalController', () => {
   let getUserFeatures: GetUserFeatures
   let getSetting: GetSetting
 
@@ -16,7 +16,7 @@ describe('InternalController', () => {
   let response: express.Response
   let user: User
 
-  const createController = () => new InternalController(getUserFeatures, getSetting)
+  const createController = () => new InversifyExpressInternalController(getUserFeatures, getSetting)
 
   beforeEach(() => {
     user = {} as jest.Mocked<User>

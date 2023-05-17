@@ -4,7 +4,6 @@ import 'newrelic'
 
 import '../src/Controller/HealthCheckController'
 import '../src/Controller/FeaturesController'
-import '../src/Controller/InternalController'
 
 import '../src/Infra/InversifyExpressUtils/InversifyExpressAuthController'
 import '../src/Infra/InversifyExpressUtils/InversifyExpressAuthenticatorsController'
@@ -21,6 +20,7 @@ import '../src/Infra/InversifyExpressUtils/InversifyExpressSettingsController'
 import '../src/Infra/InversifyExpressUtils/InversifyExpressSessionController'
 import '../src/Infra/InversifyExpressUtils/InversifyExpressOfflineController'
 import '../src/Infra/InversifyExpressUtils/InversifyExpressListedController'
+import '../src/Infra/InversifyExpressUtils/InversifyExpressInternalController'
 
 import * as cors from 'cors'
 import { urlencoded, json, Request, Response, NextFunction } from 'express'
