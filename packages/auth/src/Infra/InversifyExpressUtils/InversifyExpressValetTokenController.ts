@@ -10,12 +10,11 @@ import {
 import { CreateValetTokenPayload, ErrorTag } from '@standardnotes/responses'
 import { ValetTokenOperation } from '@standardnotes/security'
 import { ControllerContainerInterface, Uuid } from '@standardnotes/domain-core'
-
-import TYPES from '../Bootstrap/Types'
-import { CreateValetToken } from '../Domain/UseCase/CreateValetToken/CreateValetToken'
+import TYPES from '../../Bootstrap/Types'
+import { CreateValetToken } from '../../Domain/UseCase/CreateValetToken/CreateValetToken'
 
 @controller('/valet-tokens', TYPES.Auth_ApiGatewayAuthMiddleware)
-export class ValetTokenController extends BaseHttpController {
+export class InversifyExpressValetTokenController extends BaseHttpController {
   constructor(
     @inject(TYPES.Auth_CreateValetToken) private createValetKey: CreateValetToken,
     @inject(TYPES.Auth_ControllerContainer) private controllerContainer: ControllerContainerInterface,

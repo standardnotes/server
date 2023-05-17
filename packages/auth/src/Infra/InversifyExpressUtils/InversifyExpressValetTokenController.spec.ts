@@ -2,8 +2,8 @@ import 'reflect-metadata'
 
 import { Request, Response } from 'express'
 import { results } from 'inversify-express-utils'
-import { ValetTokenController } from './ValetTokenController'
-import { CreateValetToken } from '../Domain/UseCase/CreateValetToken/CreateValetToken'
+import { InversifyExpressValetTokenController } from './InversifyExpressValetTokenController'
+import { CreateValetToken } from '../../Domain/UseCase/CreateValetToken/CreateValetToken'
 import { ControllerContainerInterface } from '@standardnotes/domain-core'
 
 describe('ValetTokenController', () => {
@@ -12,7 +12,7 @@ describe('ValetTokenController', () => {
   let response: Response
   let controllerContainer: ControllerContainerInterface
 
-  const createController = () => new ValetTokenController(createValetToken, controllerContainer)
+  const createController = () => new InversifyExpressValetTokenController(createValetToken, controllerContainer)
 
   beforeEach(() => {
     controllerContainer = {} as jest.Mocked<ControllerContainerInterface>
