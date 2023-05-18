@@ -48,7 +48,7 @@ export class ItemService implements ItemServiceInterface {
     const limit = dto.limit === undefined || dto.limit < 1 ? this.DEFAULT_ITEMS_LIMIT : dto.limit
     const upperBoundLimit = limit < this.maxItemsSyncLimit ? limit : this.maxItemsSyncLimit
 
-    const groupUsers = await this.groupUsersRepository.findAll({ userUuid: dto.userUuid })
+    const groupUsers = await this.groupUsersRepository.findAllForUser({ userUuid: dto.userUuid })
     const userGroupUuids = groupUsers.map((groupUser) => groupUser.groupUuid)
     const exclusiveGroupUuids = dto.groupUuids
       ? dto.groupUuids.filter((groupUuid) => userGroupUuids.includes(groupUuid))

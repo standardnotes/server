@@ -4,6 +4,7 @@ export type GroupUserKeyHash = {
   group_uuid: string
   created_at_timestamp?: number
   updated_at_timestamp?: number
+  sender_uuid: string
   sender_public_key: string
   encrypted_group_key: string
   permissions: string

@@ -8,12 +8,12 @@ import { ItemProjectionWithUser } from './ItemProjectionWithUser'
 export class ItemProjector implements ProjectorInterface<Item, ItemProjection> {
   constructor(private timer: TimerInterface) {}
 
-  async projectSimple(_item: Item): Promise<ItemProjection> {
+  projectSimple(_item: Item): ItemProjection {
     throw Error('not implemented')
   }
 
-  async projectCustom(_projectionType: string, item: Item): Promise<ItemProjectionWithUser> {
-    const fullProjection = await this.projectFull(item)
+  projectCustom(_projectionType: string, item: Item): ItemProjectionWithUser {
+    const fullProjection = this.projectFull(item)
 
     return {
       ...fullProjection,
@@ -21,7 +21,7 @@ export class ItemProjector implements ProjectorInterface<Item, ItemProjection> {
     }
   }
 
-  async projectFull(item: Item): Promise<ItemProjection> {
+  projectFull(item: Item): ItemProjection {
     return {
       uuid: item.uuid,
       items_key_id: item.itemsKeyId,

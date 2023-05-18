@@ -8,15 +8,15 @@ import { SavedItemProjection } from './SavedItemProjection'
 export class SavedItemProjector implements ProjectorInterface<Item, SavedItemProjection> {
   constructor(private timer: TimerInterface) {}
 
-  async projectSimple(_item: Item): Promise<SavedItemProjection> {
+  projectSimple(_item: Item): SavedItemProjection {
     throw Error('not implemented')
   }
 
-  async projectCustom(_projectionType: string, _item: Item): Promise<SavedItemProjection> {
+  projectCustom(_projectionType: string, _item: Item): SavedItemProjection {
     throw Error('not implemented')
   }
 
-  async projectFull(item: Item): Promise<SavedItemProjection> {
+  projectFull(item: Item): SavedItemProjection {
     return {
       uuid: item.uuid,
       duplicate_of: item.duplicateOf,

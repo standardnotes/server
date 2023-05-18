@@ -1,4 +1,3 @@
-import { GroupUserKey } from '../../GroupUserKey/Model/GroupUserKey'
 import { Group } from '../Model/Group'
 
 import { GroupsRepositoryInterface } from '../Repository/GroupRepositoryInterface'
@@ -6,7 +5,6 @@ import { GroupServiceInterface } from './GroupServiceInterface'
 
 import { GroupFactoryInterface } from '../Factory/GroupFactoryInterface'
 import { TimerInterface } from '@standardnotes/time'
-import { GroupUserKeyServiceInterface } from '../../GroupUserKey/Service/GroupUserKeyServiceInterface'
 
 import { v4 as uuidv4 } from 'uuid'
 
@@ -14,7 +12,6 @@ export class GroupService implements GroupServiceInterface {
   constructor(
     private groupRepository: GroupsRepositoryInterface,
     private groupFactory: GroupFactoryInterface,
-    private groupUserService: GroupUserKeyServiceInterface,
     private timer: TimerInterface,
   ) {}
 
@@ -38,27 +35,14 @@ export class GroupService implements GroupServiceInterface {
     return savedGroup
   }
 
-  async addUserToGroup(dto: {
-    groupUuid: string
-    ownerUuid: string
-    inviteeUuid: string
-    encryptedGroupKey: string
-    senderPublicKey: string
-    permissions: string
-  }): Promise<GroupUserKey | null> {
+  async deleteGroup(dto: { groupUuid: string; originatorUuid: string }): Promise<boolean> {
     const group = await this.groupRepository.findByUuid(dto.groupUuid)
-    if (!group || group.userUuid !== dto.ownerUuid) {
-      return null
+    if (!group || group.userUuid !== dto.originatorUuid) {
+      return false
     }
 
-    const user = await this.groupUserService.createGroupUserKey({
-      groupUuid: dto.groupUuid,
-      userUuid: dto.inviteeUuid,
-      encryptedGroupKey: dto.encryptedGroupKey,
-      senderPublicKey: dto.senderPublicKey,
-      permissions: dto.permissions,
-    })
+    await this.groupRepository.remove(group)
 
-    return user
+    return true
   }
 }

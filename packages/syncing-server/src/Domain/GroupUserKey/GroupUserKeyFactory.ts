@@ -10,6 +10,7 @@ export class GroupUserKeyFactory implements GroupUserKeyFactoryInterface {
     const newGroupUserKey = new GroupUserKey()
     newGroupUserKey.uuid = dto.uuid
     newGroupUserKey.userUuid = dto.user_uuid
+    newGroupUserKey.senderUuid = dto.sender_uuid
     newGroupUserKey.senderPublicKey = dto.sender_public_key
     newGroupUserKey.encryptedGroupKey = dto.encrypted_group_key
     newGroupUserKey.groupUuid = dto.group_uuid

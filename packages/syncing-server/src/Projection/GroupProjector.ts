@@ -3,12 +3,12 @@ import { ProjectorInterface } from './ProjectorInterface'
 import { GroupProjection } from './GroupProjection'
 
 export class GroupProjector implements ProjectorInterface<Group, GroupProjection> {
-  async projectSimple(_userKey: Group): Promise<GroupProjection> {
+  projectSimple(_userKey: Group): GroupProjection {
     throw Error('not implemented')
   }
 
-  async projectCustom(_projectionType: string, userKey: Group): Promise<GroupProjection> {
-    const fullProjection = await this.projectFull(userKey)
+  projectCustom(_projectionType: string, userKey: Group): GroupProjection {
+    const fullProjection = this.projectFull(userKey)
 
     return {
       ...fullProjection,
@@ -16,7 +16,7 @@ export class GroupProjector implements ProjectorInterface<Group, GroupProjection
     }
   }
 
-  async projectFull(userKey: Group): Promise<GroupProjection> {
+  projectFull(userKey: Group): GroupProjection {
     return {
       uuid: userKey.uuid,
       user_uuid: userKey.userUuid,

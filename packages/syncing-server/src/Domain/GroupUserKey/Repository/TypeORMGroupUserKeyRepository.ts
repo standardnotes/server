@@ -1,12 +1,20 @@
 import { GroupUserKey } from '../Model/GroupUserKey'
 import { Repository, SelectQueryBuilder } from 'typeorm'
-import { GroupUserKeyFindAllQuery } from './GroupUserKeyRepositoryInterface'
+import {
+  GroupUserKeyFindAllForGroup,
+  GroupUserKeyFindAllForUserQuery,
+  GroupUserKeyRepositoryInterface,
+} from './GroupUserKeyRepositoryInterface'
 
-export class TypeORMGroupUserKeyRepository {
+export class TypeORMGroupUserKeyRepository implements GroupUserKeyRepositoryInterface {
   constructor(private ormRepository: Repository<GroupUserKey>) {}
 
-  async create(group: GroupUserKey): Promise<GroupUserKey> {
-    return this.ormRepository.save(group)
+  async create(groupUser: GroupUserKey): Promise<GroupUserKey> {
+    return this.ormRepository.save(groupUser)
+  }
+
+  async save(groupUser: GroupUserKey): Promise<GroupUserKey> {
+    return this.ormRepository.save(groupUser)
   }
 
   findByUuid(uuid: string): Promise<GroupUserKey | null> {
@@ -18,15 +26,30 @@ export class TypeORMGroupUserKeyRepository {
       .getOne()
   }
 
-  async remove(group: GroupUserKey): Promise<GroupUserKey> {
-    return this.ormRepository.remove(group)
+  findByUserUuidAndGroupUuid(userUuid: string, groupUuid: string): Promise<GroupUserKey | null> {
+    return this.ormRepository
+      .createQueryBuilder('group_user_key')
+      .where('group_user_key.user_uuid = :userUuid', { userUuid })
+      .andWhere('group_user_key.group_uuid = :groupUuid', { groupUuid })
+      .getOne()
   }
 
-  async findAll(query: GroupUserKeyFindAllQuery): Promise<GroupUserKey[]> {
+  async remove(userKey: GroupUserKey): Promise<GroupUserKey> {
+    return this.ormRepository.remove(userKey)
+  }
+
+  findAllForGroup(query: GroupUserKeyFindAllForGroup): Promise<GroupUserKey[]> {
+    return this.ormRepository
+      .createQueryBuilder('group_user_key')
+      .where('group_user_key.group_uuid = :groupUuid', { groupUuid: query.groupUuid })
+      .getMany()
+  }
+
+  async findAllForUser(query: GroupUserKeyFindAllForUserQuery): Promise<GroupUserKey[]> {
     return this.createFindAllQueryBuilder(query).getMany()
   }
 
-  private createFindAllQueryBuilder(query: GroupUserKeyFindAllQuery): SelectQueryBuilder<GroupUserKey> {
+  private createFindAllQueryBuilder(query: GroupUserKeyFindAllForUserQuery): SelectQueryBuilder<GroupUserKey> {
     const queryBuilder = this.ormRepository.createQueryBuilder('group_user_key')
 
     queryBuilder.where('group_user_key.user_uuid = :userUuid', { userUuid: query.userUuid })

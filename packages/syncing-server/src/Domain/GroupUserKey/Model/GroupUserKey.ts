@@ -23,6 +23,11 @@ export class GroupUserKey {
   declare encryptedGroupKey: string
 
   @Column({
+    name: 'sender_uuid',
+  })
+  declare senderUuid: string
+
+  @Column({
     name: 'sender_public_key',
   })
   declare senderPublicKey: string
