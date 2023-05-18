@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.109.2](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.109.1...@standardnotes/auth-server@1.109.2) (2023-05-18)
+
+### Bug Fixes
+
+* **auth:** changing user credentials to work both on http proxy and direct code call ([cc61229](https://github.com/standardnotes/server/commit/cc612296d0fbfa7e95556fda45eb9706845e4f58))
+
 ## [1.109.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.109.0...@standardnotes/auth-server@1.109.1) (2023-05-18)
 
 **Note:** Version bump only for package @standardnotes/auth-server
