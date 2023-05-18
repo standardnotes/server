@@ -296,6 +296,7 @@ export class ContainerConfigLoader {
       level: env.get('LOG_LEVEL') || 'info',
       format: winston.format.combine(...winstonFormatters),
       transports: [new winston.transports.Console({ level: env.get('LOG_LEVEL') || 'info' })],
+      defaultMeta: { service: 'auth' },
     })
     container.bind<winston.Logger>(TYPES.Auth_Logger).toConstantValue(logger)
 

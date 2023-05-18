@@ -113,6 +113,7 @@ export class ContainerConfigLoader {
         level: env.get('LOG_LEVEL') || 'info',
         format: winston.format.combine(...winstonFormatters),
         transports: [new winston.transports.Console({ level: env.get('LOG_LEVEL') || 'info' })],
+        defaultMeta: { service: 'syncing-server' },
       })
 
       return logger
