@@ -4,7 +4,7 @@ import { ServiceProxyInterface } from '../Http/ServiceProxyInterface'
 import { ServiceContainerInterface, ServiceIdentifier } from '@standardnotes/domain-core'
 
 export class DirectCallServiceProxy implements ServiceProxyInterface {
-  constructor(private serviceContainer: ServiceContainerInterface) {}
+  constructor(private serviceContainer: ServiceContainerInterface, private filesServerUrl: string) {}
 
   async validateSession(
     authorizationHeaderValue: string,
@@ -49,7 +49,7 @@ export class DirectCallServiceProxy implements ServiceProxyInterface {
       json: Record<string, unknown>
     }
 
-    void (response as Response).status(serviceResponse.statusCode).send(serviceResponse.json)
+    this.sendDecoratedResponse(response, serviceResponse)
   }
 
   async callAuthServerWithLegacyFormat(
@@ -82,7 +82,7 @@ export class DirectCallServiceProxy implements ServiceProxyInterface {
       json: Record<string, unknown>
     }
 
-    void (response as Response).status(serviceResponse.statusCode).send(serviceResponse.json)
+    this.sendDecoratedResponse(response, serviceResponse)
   }
 
   async callLegacySyncingServer(
@@ -103,5 +103,23 @@ export class DirectCallServiceProxy implements ServiceProxyInterface {
     _endpointOrMethodIdentifier: string,
   ): Promise<void> {
     throw new Error('Websockets server is not available.')
+  }
+
+  private sendDecoratedResponse(
+    response: Response,
+    serviceResponse: { statusCode: number; json: Record<string, unknown> },
+  ): void {
+    void response.status(serviceResponse.statusCode).send({
+      meta: {
+        auth: {
+          userUuid: response.locals.user?.uuid,
+          roles: response.locals.roles,
+        },
+        server: {
+          filesServerUrl: this.filesServerUrl,
+        },
+      },
+      data: serviceResponse.json,
+    })
   }
 }

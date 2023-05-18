@@ -90,7 +90,7 @@ export class ContainerConfigLoader {
       }
       container
         .bind<ServiceProxyInterface>(TYPES.ServiceProxy)
-        .toConstantValue(new DirectCallServiceProxy(serviceContainer))
+        .toConstantValue(new DirectCallServiceProxy(serviceContainer, container.get(TYPES.FILES_SERVER_URL)))
     } else {
       container.bind<ServiceProxyInterface>(TYPES.ServiceProxy).to(HttpServiceProxy)
     }
