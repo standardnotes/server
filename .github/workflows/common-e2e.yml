@@ -94,4 +94,4 @@ jobs:
 
     - name: Run E2E Test Suite
       continue-on-error: true
-      run: yarn dlx mocha-headless-chrome --timeout 1200000 -f http://localhost:9001/mocha/test.html
+      run: yarn dlx mocha-headless-chrome --timeout 1200000 -f http://localhost:9001/mocha/test.html?skip_paid_features=true
