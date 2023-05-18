@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.56.2](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.56.1...@standardnotes/api-gateway@1.56.2) (2023-05-18)
+
+### Bug Fixes
+
+* **api-gateway:** decorating responses for direct call proxy ([4ab32c6](https://github.com/standardnotes/api-gateway/commit/4ab32c670eedcfc64611a191bc25566d43372b23))
+* **api-gateway:** pkce endpoints resolution for direct code calls ([c7e605f](https://github.com/standardnotes/api-gateway/commit/c7e605fd6046e8476c493658c6feaed365e82e5d))
+
 ## [1.56.1](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.56.0...@standardnotes/api-gateway@1.56.1) (2023-05-18)
 
 **Note:** Version bump only for package @standardnotes/api-gateway

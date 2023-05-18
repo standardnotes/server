@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.4.2](https://github.com/standardnotes/server/compare/@standardnotes/home-server@1.4.1...@standardnotes/home-server@1.4.2) (2023-05-18)
+
+### Bug Fixes
+
+* **api-gateway:** decorating responses for direct call proxy ([4ab32c6](https://github.com/standardnotes/server/commit/4ab32c670eedcfc64611a191bc25566d43372b23))
+
 ## [1.4.1](https://github.com/standardnotes/server/compare/@standardnotes/home-server@1.4.0...@standardnotes/home-server@1.4.1) (2023-05-18)
 
 **Note:** Version bump only for package @standardnotes/home-server
