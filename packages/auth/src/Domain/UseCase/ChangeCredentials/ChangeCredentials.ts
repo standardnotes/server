@@ -25,14 +25,22 @@ export class ChangeCredentials implements UseCaseInterface {
   ) {}
 
   async execute(dto: ChangeCredentialsDTO): Promise<ChangeCredentialsResponse> {
-    if (!(await bcrypt.compare(dto.currentPassword, dto.user.encryptedPassword))) {
+    const user = await this.userRepository.findOneByUsernameOrEmail(dto.username)
+    if (!user) {
+      return {
+        success: false,
+        errorMessage: 'User not found.',
+      }
+    }
+
+    if (!(await bcrypt.compare(dto.currentPassword, user.encryptedPassword))) {
       return {
         success: false,
         errorMessage: 'The current password you entered is incorrect. Please try again.',
       }
     }
 
-    dto.user.encryptedPassword = await bcrypt.hash(dto.newPassword, User.PASSWORD_HASH_COST)
+    user.encryptedPassword = await bcrypt.hash(dto.newPassword, User.PASSWORD_HASH_COST)
 
     let userEmailChangedEvent: UserEmailChangedEvent | undefined = undefined
     if (dto.newEmail !== undefined) {
@@ -54,27 +62,27 @@ export class ChangeCredentials implements UseCaseInterface {
       }
 
       userEmailChangedEvent = this.domainEventFactory.createUserEmailChangedEvent(
-        dto.user.uuid,
-        dto.user.email,
+        user.uuid,
+        user.email,
         newUsername.value,
       )
 
-      dto.user.email = newUsername.value
+      user.email = newUsername.value
     }
 
-    dto.user.pwNonce = dto.pwNonce
+    user.pwNonce = dto.pwNonce
     if (dto.protocolVersion) {
-      dto.user.version = dto.protocolVersion
+      user.version = dto.protocolVersion
     }
     if (dto.kpCreated) {
-      dto.user.kpCreated = dto.kpCreated
+      user.kpCreated = dto.kpCreated
     }
     if (dto.kpOrigination) {
-      dto.user.kpOrigination = dto.kpOrigination
+      user.kpOrigination = dto.kpOrigination
     }
-    dto.user.updatedAt = this.timer.getUTCDate()
+    user.updatedAt = this.timer.getUTCDate()
 
-    const updatedUser = await this.userRepository.save(dto.user)
+    const updatedUser = await this.userRepository.save(user)
 
     if (userEmailChangedEvent !== undefined) {
       await this.domainEventPublisher.publish(userEmailChangedEvent)

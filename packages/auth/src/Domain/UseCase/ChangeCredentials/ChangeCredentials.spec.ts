@@ -11,6 +11,7 @@ import { User } from '../../User/User'
 import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'
 
 import { ChangeCredentials } from './ChangeCredentials'
+import { Username } from '@standardnotes/domain-core'
 
 describe('ChangeCredentials', () => {
   let userRepository: UserRepositoryInterface
@@ -25,9 +26,6 @@ describe('ChangeCredentials', () => {
     new ChangeCredentials(userRepository, authResponseFactoryResolver, domainEventPublisher, domainEventFactory, timer)
 
   beforeEach(() => {
-    userRepository = {} as jest.Mocked<UserRepositoryInterface>
-    userRepository.save = jest.fn()
-
     authResponseFactory = {} as jest.Mocked<AuthResponseFactoryInterface>
     authResponseFactory.createResponse = jest.fn().mockReturnValue({ foo: 'bar' })
 
@@ -38,6 +36,10 @@ describe('ChangeCredentials', () => {
     user.encryptedPassword = '$2a$11$K3g6XoTau8VmLJcai1bB0eD9/YvBSBRtBhMprJOaVZ0U3SgasZH3a'
     user.uuid = '1-2-3'
     user.email = 'test@test.te'
+
+    userRepository = {} as jest.Mocked<UserRepositoryInterface>
+    userRepository.save = jest.fn()
+    userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue(user)
 
     domainEventPublisher = {} as jest.Mocked<DomainEventPublisherInterface>
     domainEventPublisher.publish = jest.fn()
@@ -52,7 +54,7 @@ describe('ChangeCredentials', () => {
   it('should change password', async () => {
     expect(
       await createUseCase().execute({
-        user,
+        username: Username.create('test@test.te').getValue(),
         apiVersion: '20190520',
         currentPassword: 'qweqwe123123',
         newPassword: 'test234',
@@ -82,11 +84,11 @@ describe('ChangeCredentials', () => {
   })
 
   it('should change email', async () => {
-    userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue(null)
+    userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValueOnce(user).mockReturnValueOnce(null)
 
     expect(
       await createUseCase().execute({
-        user,
+        username: Username.create('test@test.te').getValue(),
         apiVersion: '20190520',
         currentPassword: 'qweqwe123123',
         newPassword: 'test234',
@@ -117,11 +119,14 @@ describe('ChangeCredentials', () => {
   })
 
   it('should not change email if already taken', async () => {
-    userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue({} as jest.Mocked<User>)
+    userRepository.findOneByUsernameOrEmail = jest
+      .fn()
+      .mockReturnValueOnce(user)
+      .mockReturnValueOnce({} as jest.Mocked<User>)
 
     expect(
       await createUseCase().execute({
-        user,
+        username: Username.create('test@test.te').getValue(),
         apiVersion: '20190520',
         currentPassword: 'qweqwe123123',
         newPassword: 'test234',
@@ -144,7 +149,7 @@ describe('ChangeCredentials', () => {
   it('should not change email if the new email is invalid', async () => {
     expect(
       await createUseCase().execute({
-        user,
+        username: Username.create('test@test.te').getValue(),
         apiVersion: '20190520',
         currentPassword: 'qweqwe123123',
         newPassword: 'test234',
@@ -164,10 +169,35 @@ describe('ChangeCredentials', () => {
     expect(domainEventPublisher.publish).not.toHaveBeenCalled()
   })
 
+  it('should not change email if the user is not found', async () => {
+    userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue(null)
+
+    expect(
+      await createUseCase().execute({
+        username: Username.create('test@test.te').getValue(),
+        apiVersion: '20190520',
+        currentPassword: 'qweqwe123123',
+        newPassword: 'test234',
+        newEmail: '',
+        pwNonce: 'asdzxc',
+        updatedWithUserAgent: 'Google Chrome',
+        kpCreated: '123',
+        kpOrigination: 'password-change',
+      }),
+    ).toEqual({
+      success: false,
+      errorMessage: 'User not found.',
+    })
+
+    expect(userRepository.save).not.toHaveBeenCalled()
+    expect(domainEventFactory.createUserEmailChangedEvent).not.toHaveBeenCalled()
+    expect(domainEventPublisher.publish).not.toHaveBeenCalled()
+  })
+
   it('should not change password if current password is incorrect', async () => {
     expect(
       await createUseCase().execute({
-        user,
+        username: Username.create('test@test.te').getValue(),
         apiVersion: '20190520',
         currentPassword: 'test123',
         newPassword: 'test234',
@@ -185,7 +215,7 @@ describe('ChangeCredentials', () => {
   it('should update protocol version while changing password', async () => {
     expect(
       await createUseCase().execute({
-        user,
+        username: Username.create('test@test.te').getValue(),
         apiVersion: '20190520',
         currentPassword: 'qweqwe123123',
         newPassword: 'test234',

@@ -19,7 +19,7 @@ import { GetUserSubscription } from '../../Domain/UseCase/GetUserSubscription/Ge
 import { ClearLoginAttempts } from '../../Domain/UseCase/ClearLoginAttempts'
 import { IncreaseLoginAttempts } from '../../Domain/UseCase/IncreaseLoginAttempts'
 import { ChangeCredentials } from '../../Domain/UseCase/ChangeCredentials/ChangeCredentials'
-import { ControllerContainerInterface } from '@standardnotes/domain-core'
+import { ControllerContainerInterface, Username } from '@standardnotes/domain-core'
 
 @controller('/users')
 export class InversifyExpressUsersController extends BaseHttpController {
@@ -203,9 +203,21 @@ export class InversifyExpressUsersController extends BaseHttpController {
         400,
       )
     }
+    const usernameOrError = Username.create(response.locals.user.email)
+    if (usernameOrError.isFailed()) {
+      return this.json(
+        {
+          error: {
+            message: 'Invalid username.',
+          },
+        },
+        400,
+      )
+    }
+    const username = usernameOrError.getValue()
 
     const changeCredentialsResult = await this.changeCredentialsUseCase.execute({
-      user: response.locals.user,
+      username,
       apiVersion: request.body.api,
       currentPassword: request.body.current_password,
       newPassword: request.body.new_password,

@@ -1,7 +1,7 @@
-import { User } from '../../User/User'
+import { Username } from '@standardnotes/domain-core'
 
 export type ChangeCredentialsDTO = {
-  user: User
+  username: Username
   apiVersion: string
   currentPassword: string
   newPassword: string

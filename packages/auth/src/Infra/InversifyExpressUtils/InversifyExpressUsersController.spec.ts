@@ -4,7 +4,7 @@ import * as express from 'express'
 
 import { InversifyExpressUsersController } from './InversifyExpressUsersController'
 import { results } from 'inversify-express-utils'
-import { ControllerContainerInterface } from '@standardnotes/domain-core'
+import { ControllerContainerInterface, Username } from '@standardnotes/domain-core'
 import { DeleteAccount } from '../../Domain/UseCase/DeleteAccount/DeleteAccount'
 import { ChangeCredentials } from '../../Domain/UseCase/ChangeCredentials/ChangeCredentials'
 import { ClearLoginAttempts } from '../../Domain/UseCase/ClearLoginAttempts'
@@ -321,10 +321,7 @@ describe('InversifyExpressUsersController', () => {
       kpOrigination: 'change-password',
       pwNonce: 'asdzxc',
       protocolVersion: '004',
-      user: {
-        uuid: '123',
-        email: 'test@test.te',
-      },
+      username: Username.create('test@test.te').getValue(),
     })
 
     expect(clearLoginAttempts.execute).toHaveBeenCalled()
