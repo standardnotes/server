@@ -7,6 +7,7 @@ export type GroupUserKeyQuery = {
 export type GroupUserKeyFindAllForUserQuery = {
   userUuid: string
   lastSyncTime?: number
+  senderUuid?: string
 }
 
 export type GroupUserKeyFindAllForGroup = {

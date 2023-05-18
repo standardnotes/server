@@ -60,6 +60,12 @@ export class TypeORMGroupUserKeyRepository implements GroupUserKeyRepositoryInte
       })
     }
 
+    if (query.senderUuid) {
+      queryBuilder.andWhere('group_user_key.sender_uuid = :senderUuid', {
+        senderUuid: query.senderUuid,
+      })
+    }
+
     return queryBuilder
   }
 }

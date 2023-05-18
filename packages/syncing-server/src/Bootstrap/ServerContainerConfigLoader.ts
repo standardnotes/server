@@ -156,7 +156,6 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
       return new GroupService(
         context.container.get(TYPES.GroupRepository),
         context.container.get(TYPES.GroupFactory),
-        context.container.get(TYPES.GroupUserKeyService),
         context.container.get(TYPES.Timer),
       )
     })
@@ -164,6 +163,7 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
       .bind<GroupUserKeyServiceInterface>(TYPES.GroupUserKeyService)
       .toDynamicValue((context: interfaces.Context) => {
         return new GroupUserKeyService(
+          context.container.get(TYPES.GroupRepository),
           context.container.get(TYPES.GroupUserKeyRepository),
           context.container.get(TYPES.GroupUserKeyFactory),
           context.container.get(TYPES.Timer),

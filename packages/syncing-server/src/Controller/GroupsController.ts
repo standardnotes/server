@@ -1,7 +1,7 @@
 import { GroupUserKey } from './../Domain/GroupUserKey/Model/GroupUserKey'
 import { GroupServiceInterface } from './../Domain/Group/Service/GroupServiceInterface'
 import { Request, Response } from 'express'
-import { BaseHttpController, controller, httpPost, results, httpDelete } from 'inversify-express-utils'
+import { BaseHttpController, controller, httpPost, results, httpDelete, httpGet } from 'inversify-express-utils'
 import TYPES from '../Bootstrap/Types'
 import { inject } from 'inversify'
 import { ProjectorInterface } from '../Projection/ProjectorInterface'
@@ -75,6 +75,21 @@ export class GroupsController extends BaseHttpController {
     }
 
     return this.json({ success: true })
+  }
+
+  @httpGet('/received-user-keys/:senderUuid', TYPES.AuthMiddleware)
+  public async getUserKeysBySender(
+    request: Request,
+    response: Response,
+  ): Promise<results.NotFoundResult | results.JsonResult> {
+    const result = await this.groupUserKeyService.getUserKeysForUserBySender({
+      userUuid: response.locals.user.uuid,
+      senderUuid: request.params.senderUuid,
+    })
+
+    return this.json({
+      groupUserKeys: result.map((groupUserKey) => this.groupUserKeyProjector.projectFull(groupUserKey)),
+    })
   }
 
   private errorResponse(status: number, message?: string, tag?: string) {

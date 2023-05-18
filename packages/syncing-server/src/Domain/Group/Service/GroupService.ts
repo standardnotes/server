@@ -1,12 +1,10 @@
-import { Group } from '../Model/Group'
-
-import { GroupsRepositoryInterface } from '../Repository/GroupRepositoryInterface'
-import { GroupServiceInterface } from './GroupServiceInterface'
-
-import { GroupFactoryInterface } from '../Factory/GroupFactoryInterface'
+import { v4 as uuidv4 } from 'uuid'
 import { TimerInterface } from '@standardnotes/time'
 
-import { v4 as uuidv4 } from 'uuid'
+import { Group } from '../Model/Group'
+import { GroupsRepositoryInterface } from '../Repository/GroupRepositoryInterface'
+import { GroupServiceInterface } from './GroupServiceInterface'
+import { GroupFactoryInterface } from '../Factory/GroupFactoryInterface'
 
 export class GroupService implements GroupServiceInterface {
   constructor(

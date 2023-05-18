@@ -136,4 +136,11 @@ export class GroupUserKeyService implements GroupUserKeyServiceInterface {
 
     return true
   }
+
+  async getUserKeysForUserBySender(dto: { userUuid: string; senderUuid: string }): Promise<GroupUserKey[]> {
+    return this.groupUserRepository.findAllForUser({
+      userUuid: dto.userUuid,
+      senderUuid: dto.senderUuid,
+    })
+  }
 }

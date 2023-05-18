@@ -32,4 +32,6 @@ export interface GroupUserKeyServiceInterface {
   }): Promise<boolean>
 
   deleteAllGroupUserKeysForGroup(dto: { originatorUuid: string; groupUuid: string }): Promise<boolean>
+
+  getUserKeysForUserBySender(dto: { userUuid: string; senderUuid: string }): Promise<GroupUserKey[]>
 }
