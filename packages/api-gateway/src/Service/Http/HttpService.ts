@@ -219,6 +219,7 @@ export class HttpService implements HttpServiceInterface {
       meta: {
         auth: {
           userUuid: response.locals.userUuid,
+          publicKey: response.locals.publicKey,
           roles: response.locals.roles,
         },
         server: {

@@ -81,7 +81,7 @@ export class GroupUserKeyService implements GroupUserKeyServiceInterface {
     updatedKeys: {
       userUuid: string
       encryptedGroupKey: string
-      semderPublicKey: string
+      senderPublicKey: string
     }[]
   }): Promise<boolean> {
     const group = await this.groupRepository.findByUuid(dto.groupUuid)
@@ -96,7 +96,7 @@ export class GroupUserKeyService implements GroupUserKeyServiceInterface {
       }
 
       userKey.encryptedGroupKey = keyParams.encryptedGroupKey
-      userKey.senderPublicKey = keyParams.semderPublicKey
+      userKey.senderPublicKey = keyParams.senderPublicKey
 
       const updatedAt = this.timer.getTimestampInMicroseconds()
       userKey.updatedAtTimestamp = updatedAt

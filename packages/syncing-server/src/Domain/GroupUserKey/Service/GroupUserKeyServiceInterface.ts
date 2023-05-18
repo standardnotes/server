@@ -27,7 +27,7 @@ export interface GroupUserKeyServiceInterface {
     updatedKeys: {
       userUuid: string
       encryptedGroupKey: string
-      semderPublicKey: string
+      senderPublicKey: string
     }[]
   }): Promise<boolean>
 

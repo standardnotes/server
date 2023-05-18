@@ -1,6 +1,6 @@
 import { GroupUserKey } from './../Domain/GroupUserKey/Model/GroupUserKey'
 import { ProjectorInterface } from './ProjectorInterface'
-import { GroupUserKeyProjection } from './GroupUserKeyProjection'
+import { GroupUserKeyProjection, GroupUserListingProjection } from './GroupUserKeyProjection'
 
 export class GroupUserKeyProjector implements ProjectorInterface<GroupUserKey, GroupUserKeyProjection> {
   projectSimple(_userKey: GroupUserKey): GroupUserKeyProjection {
@@ -19,7 +19,7 @@ export class GroupUserKeyProjector implements ProjectorInterface<GroupUserKey, G
   projectAsDisplayableUserForOtherGroupMembers(
     userKey: GroupUserKey,
     isRequesterGroupAdmin: boolean,
-  ): GroupUserKeyProjection {
+  ): GroupUserListingProjection {
     return {
       uuid: userKey.uuid,
       group_uuid: userKey.groupUuid,
@@ -36,6 +36,7 @@ export class GroupUserKeyProjector implements ProjectorInterface<GroupUserKey, G
       group_uuid: userKey.groupUuid,
       user_uuid: userKey.userUuid,
       encrypted_group_key: userKey.encryptedGroupKey,
+      sender_uuid: userKey.senderUuid,
       sender_public_key: userKey.senderPublicKey,
       permissions: userKey.permissions,
       created_at_timestamp: userKey.createdAtTimestamp,

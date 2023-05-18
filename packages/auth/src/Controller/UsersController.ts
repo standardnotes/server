@@ -19,11 +19,13 @@ import { GetUserSubscription } from '../Domain/UseCase/GetUserSubscription/GetUs
 import { ClearLoginAttempts } from '../Domain/UseCase/ClearLoginAttempts'
 import { IncreaseLoginAttempts } from '../Domain/UseCase/IncreaseLoginAttempts'
 import { ChangeCredentials } from '../Domain/UseCase/ChangeCredentials/ChangeCredentials'
+import { GetUser } from '../Domain/UseCase/GetUser'
 
 @controller('/users')
 export class UsersController extends BaseHttpController {
   constructor(
     @inject(TYPES.UpdateUser) private updateUser: UpdateUser,
+    @inject(TYPES.UpdateUser) private getUser: GetUser,
     @inject(TYPES.GetUserKeyParams) private getUserKeyParams: GetUserKeyParams,
     @inject(TYPES.DeleteAccount) private doDeleteAccount: DeleteAccount,
     @inject(TYPES.GetUserSubscription) private doGetUserSubscription: GetUserSubscription,
@@ -149,6 +151,33 @@ export class UsersController extends BaseHttpController {
     }
 
     return this.json(result, 400)
+  }
+
+  @httpGet('/:userId/attributes/credentials', TYPES.AuthMiddleware)
+  async getPkcCredentials(request: Request, response: Response): Promise<results.JsonResult | void> {
+    if (request.params.userId !== response.locals.user.uuid) {
+      return this.json(
+        {
+          error: {
+            message: 'Operation not allowed.',
+          },
+        },
+        401,
+      )
+    }
+
+    const result = await this.getUser.execute({
+      userUuid: request.params.userId,
+    })
+
+    if (!result.user) {
+      return this.json({ success: false }, 400)
+    }
+
+    return this.json({
+      public_key: result.user.publicKey,
+      encrypted_private_key: result.user.encryptedPrivateKey,
+    })
   }
 
   @httpPut('/:userId/attributes/credentials', TYPES.AuthMiddleware)
