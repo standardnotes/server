@@ -1,15 +1,7 @@
-import { GroupUser } from '../Domain/GroupUser/Model/GroupKey'
+import { GroupUser } from '../Domain/GroupUser/Model/GroupUser'
 import { GroupServiceInterface } from './../Domain/Group/Service/GroupServiceInterface'
 import { Request, Response } from 'express'
-import {
-  BaseHttpController,
-  controller,
-  httpPost,
-  results,
-  httpDelete,
-  httpGet,
-  httpPatch,
-} from 'inversify-express-utils'
+import { BaseHttpController, controller, httpPost, results, httpDelete } from 'inversify-express-utils'
 import TYPES from '../Bootstrap/Types'
 import { inject } from 'inversify'
 import { ProjectorInterface } from '../Projection/ProjectorInterface'
@@ -46,10 +38,7 @@ export class GroupsController extends BaseHttpController {
       groupUuid: result.uuid,
       originatorUuid: response.locals.user.uuid,
       userUuid: response.locals.user.uuid,
-      senderUuid: response.locals.user.uuid,
-      senderPublicKey: request.body.creator_public_key,
-      recipientPublicKey: request.body.recipient_public_key,
-      encryptedGroupKey: request.body.encrypted_group_key,
+      inviterUuid: response.locals.user.uuid,
       permissions: 'write',
     })
 
@@ -84,52 +73,6 @@ export class GroupsController extends BaseHttpController {
     }
 
     return this.json({ success: true })
-  }
-
-  @httpPatch('/user-keys', TYPES.AuthMiddleware)
-  public async updateAllUserKeysOfUser(
-    request: Request,
-    response: Response,
-  ): Promise<results.NotFoundResult | results.JsonResult> {
-    const result = await this.groupUserService.updateAllGroupUsersForCurrentUser({
-      userUuid: response.locals.user.uuid,
-      updatedKeys: request.body.updated_keys,
-    })
-
-    if (!result) {
-      return this.errorResponse(500, 'Could not update group member keys')
-    }
-
-    return this.json({ success: true })
-  }
-
-  @httpGet('/all-user-keys', TYPES.AuthMiddleware)
-  public async getAllUserKeysForCurrentUser(
-    _request: Request,
-    response: Response,
-  ): Promise<results.NotFoundResult | results.JsonResult> {
-    const result = await this.groupUserService.getAllUserKeysForUser({
-      userUuid: response.locals.user.uuid,
-    })
-
-    return this.json({
-      groupUsers: result.map((groupUser) => this.groupUserProjector.projectFull(groupUser)),
-    })
-  }
-
-  @httpGet('/received-user-keys/:senderUuid', TYPES.AuthMiddleware)
-  public async getUserKeysBySender(
-    request: Request,
-    response: Response,
-  ): Promise<results.NotFoundResult | results.JsonResult> {
-    const result = await this.groupUserService.getUserKeysForUserBySender({
-      userUuid: response.locals.user.uuid,
-      senderUuid: request.params.senderUuid,
-    })
-
-    return this.json({
-      groupUsers: result.map((groupUser) => this.groupUserProjector.projectFull(groupUser)),
-    })
   }
 
   private errorResponse(status: number, message?: string, tag?: string) {

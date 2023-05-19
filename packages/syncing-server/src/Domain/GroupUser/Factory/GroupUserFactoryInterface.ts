@@ -1,4 +1,4 @@
-import { GroupUser } from '../Model/GroupKey'
+import { GroupUser } from '../Model/GroupUser'
 import { GroupUserHash } from './GroupUserHash'
 
 export interface GroupUserFactoryInterface {

@@ -1,5 +1,5 @@
 import { Contact } from '../Contact/Model/Contact'
-import { GroupUser } from '../GroupUser/Model/GroupKey'
+import { GroupUser } from '../GroupUser/Model/GroupUser'
 import { Item } from '../Item/Item'
 import { ItemConflict } from '../Item/ItemConflict'
 

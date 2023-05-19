@@ -3,27 +3,27 @@ import { ProjectorInterface } from './ProjectorInterface'
 import { ContactProjection } from './ContactProjection'
 
 export class ContactProjector implements ProjectorInterface<Contact, ContactProjection> {
-  projectSimple(_userKey: Contact): ContactProjection {
+  projectSimple(_contact: Contact): ContactProjection {
     throw Error('not implemented')
   }
 
-  projectCustom(_projectionType: string, userKey: Contact): ContactProjection {
-    const fullProjection = this.projectFull(userKey)
+  projectCustom(_projectionType: string, contact: Contact): ContactProjection {
+    const fullProjection = this.projectFull(contact)
 
     return {
       ...fullProjection,
-      user_uuid: userKey.userUuid,
+      user_uuid: contact.userUuid,
     }
   }
 
-  projectFull(userKey: Contact): ContactProjection {
+  projectFull(contact: Contact): ContactProjection {
     return {
-      uuid: userKey.uuid,
-      user_uuid: userKey.userUuid,
-      contact_uuid: userKey.contactUuid,
-      contact_public_key: userKey.contactPublicKey,
-      created_at_timestamp: userKey.createdAtTimestamp,
-      updated_at_timestamp: userKey.updatedAtTimestamp,
+      uuid: contact.uuid,
+      user_uuid: contact.userUuid,
+      contact_uuid: contact.contactUuid,
+      contact_public_key: contact.contactPublicKey,
+      created_at_timestamp: contact.createdAtTimestamp,
+      updated_at_timestamp: contact.updatedAtTimestamp,
     }
   }
 }

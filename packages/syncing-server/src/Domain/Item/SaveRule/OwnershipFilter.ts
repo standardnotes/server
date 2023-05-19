@@ -49,11 +49,11 @@ export class OwnershipFilter implements ItemSaveRuleInterface {
     userUuid: string,
     itemHash: ItemHash,
   ): Promise<GroupPermission | undefined> {
-    const userKeys = await this.groupUserService.getGroupUsersForUser({ userUuid })
+    const groupUsers = await this.groupUserService.getGroupUsersForUser({ userUuid })
 
-    for (const userKey of userKeys) {
-      if (itemHash.group_uuid === userKey.groupUuid) {
-        return userKey.permissions as GroupPermission
+    for (const groupUser of groupUsers) {
+      if (itemHash.group_uuid === groupUser.groupUuid) {
+        return groupUser.permissions as GroupPermission
       }
     }
 

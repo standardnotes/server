@@ -1,7 +1,7 @@
 import { TimerInterface } from '@standardnotes/time'
 import { GroupUserFactoryInterface } from './GroupUserFactoryInterface'
 import { GroupUserHash } from './GroupUserHash'
-import { GroupUser } from '../Model/GroupKey'
+import { GroupUser } from '../Model/GroupUser'
 
 export class GroupUserFactory implements GroupUserFactoryInterface {
   constructor(private timer: TimerInterface) {}
@@ -10,10 +10,7 @@ export class GroupUserFactory implements GroupUserFactoryInterface {
     const newGroupUser = new GroupUser()
     newGroupUser.uuid = dto.uuid
     newGroupUser.userUuid = dto.user_uuid
-    newGroupUser.senderUuid = dto.sender_uuid
-    newGroupUser.senderPublicKey = dto.sender_public_key
-    newGroupUser.recipientPublicKey = dto.recipient_public_key
-    newGroupUser.encryptedGroupKey = dto.encrypted_group_key
+    newGroupUser.inviterUuid = dto.inviter_uuid
     newGroupUser.groupUuid = dto.group_uuid
     newGroupUser.permissions = dto.permissions
 

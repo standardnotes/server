@@ -1,5 +1,5 @@
 import { TimerInterface } from '@standardnotes/time'
-import { GroupUser } from '../Model/GroupKey'
+import { GroupUser } from '../Model/GroupUser'
 import { GroupUserFactoryInterface } from '../Factory/GroupUserFactoryInterface'
 import { v4 as uuidv4 } from 'uuid'
 import { GroupUserRepositoryInterface } from '../Repository/GroupUserRepositoryInterface'
@@ -19,10 +19,7 @@ export class GroupUserService implements GroupUserServiceInterface {
     originatorUuid: string
     groupUuid: string
     userUuid: string
-    senderUuid: string
-    senderPublicKey: string
-    recipientPublicKey: string
-    encryptedGroupKey: string
+    inviterUuid: string
     permissions: string
   }): Promise<GroupUser | null> {
     const group = await this.groupRepository.findByUuid(dto.groupUuid)
@@ -34,10 +31,7 @@ export class GroupUserService implements GroupUserServiceInterface {
       uuid: uuidv4(),
       user_uuid: dto.userUuid,
       group_uuid: dto.groupUuid,
-      sender_uuid: dto.senderUuid,
-      sender_public_key: dto.senderPublicKey,
-      recipient_public_key: dto.recipientPublicKey,
-      encrypted_group_key: dto.encryptedGroupKey,
+      inviter_uuid: dto.inviterUuid,
       permissions: dto.permissions,
       created_at_timestamp: this.timer.getTimestampInSeconds(),
       updated_at_timestamp: this.timer.getTimestampInSeconds(),
@@ -77,73 +71,13 @@ export class GroupUserService implements GroupUserServiceInterface {
     }
   }
 
-  async updateAllGroupUsersForCurrentUser(dto: {
-    userUuid: string
-    updatedKeys: {
-      uuid: string
-      encryptedGroupKey: string
-      senderPublicKey: string
-      recipientPublicKey: string
-    }[]
-  }): Promise<boolean> {
-    for (const updatedKey of dto.updatedKeys) {
-      const userKey = await this.groupUserRepository.findAsSenderOrRecipientByUuid(dto.userUuid, updatedKey.uuid)
-      if (!userKey) {
-        continue
-      }
-
-      userKey.encryptedGroupKey = updatedKey.encryptedGroupKey
-      userKey.senderPublicKey = updatedKey.senderPublicKey
-      userKey.recipientPublicKey = updatedKey.recipientPublicKey
-
-      const updatedAt = this.timer.getTimestampInMicroseconds()
-      userKey.updatedAtTimestamp = updatedAt
-
-      await this.groupUserRepository.save(userKey)
-    }
-
-    return true
-  }
-
-  async updateGroupUsersForAllMembers(dto: {
-    originatorUuid: string
-    groupUuid: string
-    updatedKeys: {
-      userUuid: string
-      encryptedGroupKey: string
-      senderPublicKey: string
-    }[]
-  }): Promise<boolean> {
-    const group = await this.groupRepository.findByUuid(dto.groupUuid)
-    if (!group || group.userUuid !== dto.originatorUuid) {
-      return false
-    }
-
-    for (const keyParams of dto.updatedKeys) {
-      const userKey = await this.groupUserRepository.findByUserUuidAndGroupUuid(keyParams.userUuid, dto.groupUuid)
-      if (!userKey) {
-        continue
-      }
-
-      userKey.encryptedGroupKey = keyParams.encryptedGroupKey
-      userKey.senderPublicKey = keyParams.senderPublicKey
-
-      const updatedAt = this.timer.getTimestampInMicroseconds()
-      userKey.updatedAtTimestamp = updatedAt
-
-      await this.groupUserRepository.save(userKey)
-    }
-
-    return true
-  }
-
   async deleteGroupUser(dto: { originatorUuid: string; groupUuid: string; userUuid: string }): Promise<boolean> {
     const groupUser = await this.groupUserRepository.findByUserUuidAndGroupUuid(dto.userUuid, dto.groupUuid)
     if (!groupUser) {
       return false
     }
 
-    const isAuthorized = groupUser.senderUuid !== dto.originatorUuid && groupUser.userUuid !== dto.originatorUuid
+    const isAuthorized = groupUser.inviterUuid !== dto.originatorUuid && groupUser.userUuid !== dto.originatorUuid
     if (isAuthorized) {
       return false
     }
@@ -165,19 +99,5 @@ export class GroupUserService implements GroupUserServiceInterface {
     }
 
     return true
-  }
-
-  async getAllUserKeysForUser(dto: { userUuid: string }): Promise<GroupUser[]> {
-    return this.groupUserRepository.findAllForUser({
-      userUuid: dto.userUuid,
-      includeSentAndReceived: true,
-    })
-  }
-
-  async getUserKeysForUserBySender(dto: { userUuid: string; senderUuid: string }): Promise<GroupUser[]> {
-    return this.groupUserRepository.findAllForUser({
-      userUuid: dto.userUuid,
-      senderUuid: dto.senderUuid,
-    })
   }
 }

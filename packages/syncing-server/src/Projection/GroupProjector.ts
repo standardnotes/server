@@ -3,25 +3,25 @@ import { ProjectorInterface } from './ProjectorInterface'
 import { GroupProjection } from './GroupProjection'
 
 export class GroupProjector implements ProjectorInterface<Group, GroupProjection> {
-  projectSimple(_userKey: Group): GroupProjection {
+  projectSimple(_group: Group): GroupProjection {
     throw Error('not implemented')
   }
 
-  projectCustom(_projectionType: string, userKey: Group): GroupProjection {
-    const fullProjection = this.projectFull(userKey)
+  projectCustom(_projectionType: string, group: Group): GroupProjection {
+    const fullProjection = this.projectFull(group)
 
     return {
       ...fullProjection,
-      user_uuid: userKey.userUuid,
+      user_uuid: group.userUuid,
     }
   }
 
-  projectFull(userKey: Group): GroupProjection {
+  projectFull(group: Group): GroupProjection {
     return {
-      uuid: userKey.uuid,
-      user_uuid: userKey.userUuid,
-      created_at_timestamp: userKey.createdAtTimestamp,
-      updated_at_timestamp: userKey.updatedAtTimestamp,
+      uuid: group.uuid,
+      user_uuid: group.userUuid,
+      created_at_timestamp: group.createdAtTimestamp,
+      updated_at_timestamp: group.updatedAtTimestamp,
     }
   }
 }

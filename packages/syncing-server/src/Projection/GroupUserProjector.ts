@@ -1,47 +1,44 @@
-import { GroupUser } from '../Domain/GroupUser/Model/GroupKey'
+import { GroupUser } from '../Domain/GroupUser/Model/GroupUser'
 import { ProjectorInterface } from './ProjectorInterface'
 import { GroupUserProjection, GroupUserListingProjection } from './GroupUserProjection'
 
 export class GroupUserProjector implements ProjectorInterface<GroupUser, GroupUserProjection> {
-  projectSimple(_userKey: GroupUser): GroupUserProjection {
+  projectSimple(_groupUser: GroupUser): GroupUserProjection {
     throw Error('not implemented')
   }
 
-  projectCustom(_projectionType: string, userKey: GroupUser): GroupUserProjection {
-    const fullProjection = this.projectFull(userKey)
+  projectCustom(_projectionType: string, groupUser: GroupUser): GroupUserProjection {
+    const fullProjection = this.projectFull(groupUser)
 
     return {
       ...fullProjection,
-      user_uuid: userKey.userUuid,
+      user_uuid: groupUser.userUuid,
     }
   }
 
   projectAsDisplayableUserForOtherGroupMembers(
-    userKey: GroupUser,
+    groupUser: GroupUser,
     isRequesterGroupAdmin: boolean,
   ): GroupUserListingProjection {
     return {
-      uuid: userKey.uuid,
-      group_uuid: userKey.groupUuid,
-      user_uuid: userKey.userUuid,
-      permissions: isRequesterGroupAdmin ? userKey.permissions : undefined,
-      created_at_timestamp: userKey.createdAtTimestamp,
-      updated_at_timestamp: userKey.updatedAtTimestamp,
+      uuid: groupUser.uuid,
+      group_uuid: groupUser.groupUuid,
+      user_uuid: groupUser.userUuid,
+      permissions: isRequesterGroupAdmin ? groupUser.permissions : undefined,
+      created_at_timestamp: groupUser.createdAtTimestamp,
+      updated_at_timestamp: groupUser.updatedAtTimestamp,
     }
   }
 
-  projectFull(userKey: GroupUser): GroupUserProjection {
+  projectFull(groupUser: GroupUser): GroupUserProjection {
     return {
-      uuid: userKey.uuid,
-      group_uuid: userKey.groupUuid,
-      user_uuid: userKey.userUuid,
-      sender_uuid: userKey.senderUuid,
-      sender_public_key: userKey.senderPublicKey,
-      recipient_public_key: userKey.recipientPublicKey,
-      encrypted_group_key: userKey.encryptedGroupKey,
-      permissions: userKey.permissions,
-      created_at_timestamp: userKey.createdAtTimestamp,
-      updated_at_timestamp: userKey.updatedAtTimestamp,
+      uuid: groupUser.uuid,
+      group_uuid: groupUser.groupUuid,
+      user_uuid: groupUser.userUuid,
+      inviter_uuid: groupUser.inviterUuid,
+      permissions: groupUser.permissions,
+      created_at_timestamp: groupUser.createdAtTimestamp,
+      updated_at_timestamp: groupUser.updatedAtTimestamp,
     }
   }
 }

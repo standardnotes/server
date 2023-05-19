@@ -1,4 +1,4 @@
-import { GroupUser } from '../Model/GroupKey'
+import { GroupUser } from '../Model/GroupUser'
 import { GetUserGroupKeysDTO } from './GetUserGroupUsersDTO'
 
 export interface GroupUserServiceInterface {
@@ -6,10 +6,7 @@ export interface GroupUserServiceInterface {
     originatorUuid: string
     groupUuid: string
     userUuid: string
-    senderUuid: string
-    senderPublicKey: string
-    recipientPublicKey: string
-    encryptedGroupKey: string
+    inviterUuid: string
     permissions: string
   }): Promise<GroupUser | null>
 
@@ -22,29 +19,5 @@ export interface GroupUserServiceInterface {
 
   deleteGroupUser(dto: { originatorUuid: string; groupUuid: string; userUuid: string }): Promise<boolean>
 
-  updateAllGroupUsersForCurrentUser(dto: {
-    userUuid: string
-    updatedKeys: {
-      uuid: string
-      encryptedGroupKey: string
-      senderPublicKey: string
-      recipientPublicKey: string
-    }[]
-  }): Promise<boolean>
-
-  updateGroupUsersForAllMembers(dto: {
-    originatorUuid: string
-    groupUuid: string
-    updatedKeys: {
-      userUuid: string
-      encryptedGroupKey: string
-      senderPublicKey: string
-    }[]
-  }): Promise<boolean>
-
   deleteAllGroupUsersForGroup(dto: { originatorUuid: string; groupUuid: string }): Promise<boolean>
-
-  getAllUserKeysForUser(dto: { userUuid: string }): Promise<GroupUser[]>
-
-  getUserKeysForUserBySender(dto: { userUuid: string; senderUuid: string }): Promise<GroupUser[]>
 }

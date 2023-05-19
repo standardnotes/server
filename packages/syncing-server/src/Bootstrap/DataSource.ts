@@ -1,4 +1,4 @@
-import { GroupUser } from '../Domain/GroupUser/Model/GroupKey'
+import { GroupUser } from '../Domain/GroupUser/Model/GroupUser'
 import { ItemLink } from '../Domain/ItemLink/Model/ItemLink'
 import { DataSource, LoggerOptions } from 'typeorm'
 import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions'

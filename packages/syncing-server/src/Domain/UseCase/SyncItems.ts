@@ -1,5 +1,5 @@
 import { ContactServiceInterface } from './../Contact/Service/ContactServiceInterface'
-import { GroupUser } from '../GroupUser/Model/GroupKey'
+import { GroupUser } from '../GroupUser/Model/GroupUser'
 import { GroupUserServiceInterface } from '../GroupUser/Service/GroupUserServiceInterface'
 import { Item } from '../Item/Item'
 import { ItemConflict } from '../Item/ItemConflict'
@@ -44,10 +44,10 @@ export class SyncItems implements UseCaseInterface {
       cursorToken: dto.cursorToken,
     })
 
-    let newUserKeys: GroupUser[] = []
+    let newGroupUsers: GroupUser[] = []
     const isNotPerformingGroupSpecificSync = dto.groupUuids == undefined || dto.groupUuids.length === 0
     if (isNotPerformingGroupSpecificSync) {
-      newUserKeys = await this.groupUserService.getGroupUsersForUser({
+      newGroupUsers = await this.groupUserService.getGroupUsersForUser({
         userUuid: dto.userUuid,
         lastSyncTime,
       })
@@ -64,7 +64,7 @@ export class SyncItems implements UseCaseInterface {
       savedItems: saveItemsResult.savedItems,
       conflicts: saveItemsResult.conflicts,
       cursorToken: getItemsResult.cursorToken,
-      groupKeys: newUserKeys,
+      groupKeys: newGroupUsers,
       contacts,
     }
 

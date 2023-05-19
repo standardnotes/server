@@ -1,4 +1,4 @@
-import { GroupUser } from '../Model/GroupKey'
+import { GroupUser } from '../Model/GroupUser'
 
 export type GroupUserQuery = {
   userUuid: string
@@ -7,7 +7,7 @@ export type GroupUserQuery = {
 export type GroupUserFindAllForUserQuery = {
   userUuid: string
   lastSyncTime?: number
-  senderUuid?: string
+  inviterUuid?: string
   includeSentAndReceived?: boolean
 }
 
@@ -17,7 +17,6 @@ export type GroupUserFindAllForGroup = {
 
 export interface GroupUserRepositoryInterface {
   findByUuid(groupUserUuid: string): Promise<GroupUser | null>
-  findAsSenderOrRecipientByUuid(userUuid: string, userKeyUuid: string): Promise<GroupUser | null>
   create(group: GroupUser): Promise<GroupUser>
   save(groupUser: GroupUser): Promise<GroupUser>
   remove(group: GroupUser): Promise<GroupUser>

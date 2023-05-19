@@ -26,26 +26,9 @@ export class CreateGroupUser1684173023883 implements MigrationInterface {
           isNullable: false,
         }),
         new TableColumn({
-          name: 'sender_uuid',
+          name: 'inviter_uuid',
           type: 'varchar',
           length: '36',
-          isNullable: false,
-        }),
-        new TableColumn({
-          name: 'sender_public_key',
-          type: 'varchar',
-          length: '255',
-          isNullable: false,
-        }),
-        new TableColumn({
-          name: 'recipient_public_key',
-          type: 'varchar',
-          length: '255',
-          isNullable: false,
-        }),
-        new TableColumn({
-          name: 'encrypted_group_key',
-          type: 'text',
           isNullable: false,
         }),
         new TableColumn({

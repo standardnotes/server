@@ -1,5 +1,5 @@
-import { GroupUser } from '../Model/GroupKey'
-import { Brackets, Repository, SelectQueryBuilder } from 'typeorm'
+import { GroupUser } from '../Model/GroupUser'
+import { Repository, SelectQueryBuilder } from 'typeorm'
 import {
   GroupUserFindAllForGroup,
   GroupUserFindAllForUserQuery,
@@ -26,19 +26,6 @@ export class TypeORMGroupUserRepository implements GroupUserRepositoryInterface 
       .getOne()
   }
 
-  findAsSenderOrRecipientByUuid(userUuid: string, userKeyUuid: string): Promise<GroupUser | null> {
-    return this.ormRepository
-      .createQueryBuilder('group_user')
-      .where(
-        new Brackets((qb) => {
-          qb.where('group_user.user_uuid = :userUuid', { userUuid })
-          qb.orWhere('group_user.sender_uuid = :userUuid', { userUuid })
-        }),
-      )
-      .andWhere('group_user.uuid = :userKeyUuid', { userKeyUuid })
-      .getOne()
-  }
-
   findByUserUuidAndGroupUuid(userUuid: string, groupUuid: string): Promise<GroupUser | null> {
     return this.ormRepository
       .createQueryBuilder('group_user')
@@ -47,8 +34,8 @@ export class TypeORMGroupUserRepository implements GroupUserRepositoryInterface 
       .getOne()
   }
 
-  async remove(userKey: GroupUser): Promise<GroupUser> {
-    return this.ormRepository.remove(userKey)
+  async remove(groupUser: GroupUser): Promise<GroupUser> {
+    return this.ormRepository.remove(groupUser)
   }
 
   findAllForGroup(query: GroupUserFindAllForGroup): Promise<GroupUser[]> {
@@ -77,9 +64,9 @@ export class TypeORMGroupUserRepository implements GroupUserRepositoryInterface 
       })
     }
 
-    if (query.senderUuid) {
-      queryBuilder.andWhere('group_user.sender_uuid = :senderUuid', {
-        senderUuid: query.senderUuid,
+    if (query.inviterUuid) {
+      queryBuilder.andWhere('group_user.inviter_uuid = :inviterUuid', {
+        inviterUuid: query.inviterUuid,
       })
     }
 

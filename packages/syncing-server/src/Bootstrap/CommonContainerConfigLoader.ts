@@ -1,4 +1,4 @@
-import { GroupUser } from '../Domain/GroupUser/Model/GroupKey'
+import { GroupUser } from '../Domain/GroupUser/Model/GroupUser'
 import { Group } from './../Domain/Group/Model/Group'
 import { TypeORMGroupRepository } from './../Domain/Group/Repository/TypeORMGroupRepository'
 import { ItemLink } from '../Domain/ItemLink/Model/ItemLink'

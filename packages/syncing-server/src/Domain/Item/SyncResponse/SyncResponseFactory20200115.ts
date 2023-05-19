@@ -8,7 +8,7 @@ import { ItemProjection } from '../../../Projection/ItemProjection'
 import { SyncResponse20200115 } from './SyncResponse20200115'
 import { SyncResponseFactoryInterface } from './SyncResponseFactoryInterface'
 import { SavedItemProjection } from '../../../Projection/SavedItemProjection'
-import { GroupUser } from '../../GroupUser/Model/GroupKey'
+import { GroupUser } from '../../GroupUser/Model/GroupUser'
 import { GroupUserProjection } from '../../../Projection/GroupUserProjection'
 import { ContactProjection } from '../../../Projection/ContactProjection'
 

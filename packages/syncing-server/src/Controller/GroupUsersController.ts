@@ -1,13 +1,5 @@
 import { Request, Response } from 'express'
-import {
-  BaseHttpController,
-  controller,
-  httpPost,
-  results,
-  httpDelete,
-  httpPatch,
-  httpGet,
-} from 'inversify-express-utils'
+import { BaseHttpController, controller, httpPost, results, httpDelete, httpGet } from 'inversify-express-utils'
 import TYPES from '../Bootstrap/Types'
 import { inject } from 'inversify'
 import { GroupUserServiceInterface } from '../Domain/GroupUser/Service/GroupUserServiceInterface'
@@ -31,10 +23,7 @@ export class GroupUsersController extends BaseHttpController {
       originatorUuid: response.locals.user.uuid,
       groupUuid: request.params.groupUuid,
       userUuid: request.body.invitee_uuid,
-      senderUuid: response.locals.user.uuid,
-      senderPublicKey: request.body.sender_public_key,
-      recipientPublicKey: request.body.recipient_public_key,
-      encryptedGroupKey: request.body.encrypted_group_key,
+      inviterUuid: response.locals.user.uuid,
       permissions: request.body.permissions,
     })
 
@@ -66,24 +55,6 @@ export class GroupUsersController extends BaseHttpController {
     )
 
     return this.json({ users: projected })
-  }
-
-  @httpPatch('/', TYPES.AuthMiddleware)
-  public async updateKeysOfAllMembers(
-    request: Request,
-    response: Response,
-  ): Promise<results.NotFoundResult | results.JsonResult> {
-    const result = await this.groupUserService.updateGroupUsersForAllMembers({
-      originatorUuid: response.locals.user.uuid,
-      groupUuid: request.params.groupUuid,
-      updatedKeys: request.body.updated_keys,
-    })
-
-    if (!result) {
-      return this.errorResponse(500, 'Could not update group member keys')
-    }
-
-    return this.json({ success: true })
   }
 
   @httpDelete('/:userUuid', TYPES.AuthMiddleware)

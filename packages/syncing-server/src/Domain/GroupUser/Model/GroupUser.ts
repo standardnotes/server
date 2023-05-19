@@ -18,24 +18,9 @@ export class GroupUser {
   declare userUuid: string
 
   @Column({
-    name: 'sender_uuid',
+    name: 'inviter_uuid',
   })
-  declare senderUuid: string
-
-  @Column({
-    name: 'sender_public_key',
-  })
-  declare senderPublicKey: string
-
-  @Column({
-    name: 'recipient_public_key',
-  })
-  declare recipientPublicKey: string
-
-  @Column({
-    name: 'encrypted_group_key',
-  })
-  declare encryptedGroupKey: string
+  declare inviterUuid: string
 
   @Column({
     name: 'permissions',
