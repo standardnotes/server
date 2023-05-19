@@ -4,7 +4,7 @@ import {
   DomainEventSubscriberFactoryInterface,
 } from '@standardnotes/domain-events'
 import { GroupServiceInterface } from './../Domain/Group/Service/GroupServiceInterface'
-import { GroupUserKeyFactory } from './../Domain/GroupUserKey/GroupUserKeyFactory'
+import { GroupUserFactory } from '../Domain/GroupUser/Factory/GroupUserFactory'
 import { GroupFactoryInterface } from '../Domain/Group/Factory/GroupFactoryInterface'
 import { GetSharedItemUseCase } from '../Domain/UseCase/Links/GetSharedItemUseCase'
 import { ItemLinkServiceInterface } from '../Domain/ItemLink/Service/ItemLinkServiceInterface'
@@ -48,8 +48,8 @@ import { CreateSharedFileValetToken } from '../Domain/UseCase/CreateSharedFileVa
 import { ItemLinkFactoryInterface } from '../Domain/ItemLink/Factory/ItemLinkFactoryInterface'
 import { GroupFactory } from '../Domain/Group/Factory/GroupFactory'
 import { GroupService } from '../Domain/Group/Service/GroupService'
-import { GroupUserKeyService } from '../Domain/GroupUserKey/Service/GroupUserKeyService'
-import { GroupUserKeyServiceInterface } from '../Domain/GroupUserKey/Service/GroupUserKeyServiceInterface'
+import { GroupUserService } from '../Domain/GroupUser/Service/GroupUserService'
+import { GroupUserServiceInterface } from '../Domain/GroupUser/Service/GroupUserServiceInterface'
 import {
   SQSDomainEventSubscriberFactory,
   SQSEventMessageHandler,
@@ -105,7 +105,11 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
 
     // use cases
     container.bind<SyncItems>(TYPES.SyncItems).toDynamicValue((context: interfaces.Context) => {
-      return new SyncItems(context.container.get(TYPES.ItemService), context.container.get(TYPES.GroupUserKeyService))
+      return new SyncItems(
+        context.container.get(TYPES.ItemService),
+        context.container.get(TYPES.GroupUserService),
+        context.container.get(TYPES.ContactService),
+      )
     })
     container.bind<CheckIntegrity>(TYPES.CheckIntegrity).toDynamicValue((context: interfaces.Context) => {
       return new CheckIntegrity(context.container.get(TYPES.ItemRepository))
@@ -150,7 +154,7 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
         context.container.get(TYPES.Timer),
         context.container.get(TYPES.ItemProjector),
         context.container.get(TYPES.MAX_ITEMS_LIMIT),
-        context.container.get(TYPES.GroupUserKeyRepository),
+        context.container.get(TYPES.GroupUserRepository),
         context.container.get(TYPES.Logger),
       )
     })
@@ -170,16 +174,14 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
         context.container.get(TYPES.Timer),
       )
     })
-    container
-      .bind<GroupUserKeyServiceInterface>(TYPES.GroupUserKeyService)
-      .toDynamicValue((context: interfaces.Context) => {
-        return new GroupUserKeyService(
-          context.container.get(TYPES.GroupRepository),
-          context.container.get(TYPES.GroupUserKeyRepository),
-          context.container.get(TYPES.GroupUserKeyFactory),
-          context.container.get(TYPES.Timer),
-        )
-      })
+    container.bind<GroupUserServiceInterface>(TYPES.GroupUserService).toDynamicValue((context: interfaces.Context) => {
+      return new GroupUserService(
+        context.container.get(TYPES.GroupRepository),
+        context.container.get(TYPES.GroupUserRepository),
+        context.container.get(TYPES.GroupUserFactory),
+        context.container.get(TYPES.Timer),
+      )
+    })
     container
       .bind<SyncResponseFactory20161215>(TYPES.SyncResponseFactory20161215)
       .toDynamicValue((context: interfaces.Context) => {
@@ -192,7 +194,8 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
           context.container.get(TYPES.ItemProjector),
           context.container.get(TYPES.ItemConflictProjector),
           context.container.get(TYPES.SavedItemProjector),
-          context.container.get(TYPES.GroupUserKeyProjector),
+          context.container.get(TYPES.GroupUserProjector),
+          context.container.get(TYPES.ContactProjector),
         )
       })
     container
@@ -213,8 +216,8 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
     container.bind<GroupFactoryInterface>(TYPES.GroupFactory).toDynamicValue((context: interfaces.Context) => {
       return new GroupFactory(context.container.get(TYPES.Timer))
     })
-    container.bind<GroupUserKeyFactory>(TYPES.GroupUserKeyFactory).toDynamicValue((context: interfaces.Context) => {
-      return new GroupUserKeyFactory(context.container.get(TYPES.Timer))
+    container.bind<GroupUserFactory>(TYPES.GroupUserFactory).toDynamicValue((context: interfaces.Context) => {
+      return new GroupUserFactory(context.container.get(TYPES.Timer))
     })
 
     container
@@ -256,7 +259,7 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
     container
       .bind<OwnershipFilter>(TYPES.OwnershipFilter)
       .toDynamicValue(
-        (context: interfaces.Context) => new OwnershipFilter(context.container.get(TYPES.GroupUserKeyService)),
+        (context: interfaces.Context) => new OwnershipFilter(context.container.get(TYPES.GroupUserService)),
       )
     container
       .bind<TimeDifferenceFilter>(TYPES.TimeDifferenceFilter)

@@ -1,21 +1,21 @@
 import { TimerInterface } from '@standardnotes/time'
-import { GroupUserKey } from '../Model/GroupUserKey'
-import { GroupUserKeyFactoryInterface } from '../GroupUserKeyFactoryInterface'
+import { GroupUser } from '../Model/GroupKey'
+import { GroupUserFactoryInterface } from '../Factory/GroupUserFactoryInterface'
 import { v4 as uuidv4 } from 'uuid'
-import { GroupUserKeyRepositoryInterface } from '../Repository/GroupUserKeyRepositoryInterface'
-import { GroupUserKeyServiceInterface } from './GroupUserKeyServiceInterface'
-import { GetUserGroupKeysDTO } from './GetUserGroupUserKeysDTO'
+import { GroupUserRepositoryInterface } from '../Repository/GroupUserRepositoryInterface'
+import { GroupUserServiceInterface } from './GroupUserServiceInterface'
+import { GetUserGroupKeysDTO } from './GetUserGroupUsersDTO'
 import { GroupsRepositoryInterface } from '../../Group/Repository/GroupRepositoryInterface'
 
-export class GroupUserKeyService implements GroupUserKeyServiceInterface {
+export class GroupUserService implements GroupUserServiceInterface {
   constructor(
     private groupRepository: GroupsRepositoryInterface,
-    private groupUserRepository: GroupUserKeyRepositoryInterface,
-    private groupUserFactory: GroupUserKeyFactoryInterface,
+    private groupUserRepository: GroupUserRepositoryInterface,
+    private groupUserFactory: GroupUserFactoryInterface,
     private timer: TimerInterface,
   ) {}
 
-  async createGroupUserKey(dto: {
+  async createGroupUser(dto: {
     originatorUuid: string
     groupUuid: string
     userUuid: string
@@ -24,7 +24,7 @@ export class GroupUserKeyService implements GroupUserKeyServiceInterface {
     recipientPublicKey: string
     encryptedGroupKey: string
     permissions: string
-  }): Promise<GroupUserKey | null> {
+  }): Promise<GroupUser | null> {
     const group = await this.groupRepository.findByUuid(dto.groupUuid)
     if (!group || group.userUuid !== dto.originatorUuid) {
       return null
@@ -46,14 +46,14 @@ export class GroupUserKeyService implements GroupUserKeyServiceInterface {
     return this.groupUserRepository.create(groupUser)
   }
 
-  getGroupUserKeysForUser(dto: GetUserGroupKeysDTO): Promise<GroupUserKey[]> {
+  getGroupUsersForUser(dto: GetUserGroupKeysDTO): Promise<GroupUser[]> {
     return this.groupUserRepository.findAllForUser(dto)
   }
 
   async getGroupUsers(dto: {
     groupUuid: string
     originatorUuid: string
-  }): Promise<{ users: GroupUserKey[]; isAdmin: boolean } | undefined> {
+  }): Promise<{ users: GroupUser[]; isAdmin: boolean } | undefined> {
     const group = await this.groupRepository.findByUuid(dto.groupUuid)
     if (!group) {
       return undefined
@@ -77,7 +77,7 @@ export class GroupUserKeyService implements GroupUserKeyServiceInterface {
     }
   }
 
-  async updateAllGroupUserKeysForCurrentUser(dto: {
+  async updateAllGroupUsersForCurrentUser(dto: {
     userUuid: string
     updatedKeys: {
       uuid: string
@@ -105,7 +105,7 @@ export class GroupUserKeyService implements GroupUserKeyServiceInterface {
     return true
   }
 
-  async updateGroupUserKeysForAllMembers(dto: {
+  async updateGroupUsersForAllMembers(dto: {
     originatorUuid: string
     groupUuid: string
     updatedKeys: {
@@ -137,7 +137,7 @@ export class GroupUserKeyService implements GroupUserKeyServiceInterface {
     return true
   }
 
-  async deleteGroupUserKey(dto: { originatorUuid: string; groupUuid: string; userUuid: string }): Promise<boolean> {
+  async deleteGroupUser(dto: { originatorUuid: string; groupUuid: string; userUuid: string }): Promise<boolean> {
     const groupUser = await this.groupUserRepository.findByUserUuidAndGroupUuid(dto.userUuid, dto.groupUuid)
     if (!groupUser) {
       return false
@@ -153,7 +153,7 @@ export class GroupUserKeyService implements GroupUserKeyServiceInterface {
     return true
   }
 
-  async deleteAllGroupUserKeysForGroup(dto: { originatorUuid: string; groupUuid: string }): Promise<boolean> {
+  async deleteAllGroupUsersForGroup(dto: { originatorUuid: string; groupUuid: string }): Promise<boolean> {
     const group = await this.groupRepository.findByUuid(dto.groupUuid)
     if (!group || group.userUuid !== dto.originatorUuid) {
       return false
@@ -167,14 +167,14 @@ export class GroupUserKeyService implements GroupUserKeyServiceInterface {
     return true
   }
 
-  async getAllUserKeysForUser(dto: { userUuid: string }): Promise<GroupUserKey[]> {
+  async getAllUserKeysForUser(dto: { userUuid: string }): Promise<GroupUser[]> {
     return this.groupUserRepository.findAllForUser({
       userUuid: dto.userUuid,
       includeSentAndReceived: true,
     })
   }
 
-  async getUserKeysForUserBySender(dto: { userUuid: string; senderUuid: string }): Promise<GroupUserKey[]> {
+  async getUserKeysForUserBySender(dto: { userUuid: string; senderUuid: string }): Promise<GroupUser[]> {
     return this.groupUserRepository.findAllForUser({
       userUuid: dto.userUuid,
       senderUuid: dto.senderUuid,

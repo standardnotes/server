@@ -1,11 +1,11 @@
 import { MigrationInterface, QueryRunner, Table, TableColumn } from 'typeorm'
 
-export class CreateGroupUserKey1684173023883 implements MigrationInterface {
-  name = 'createGroupUserKey1684173023883'
+export class CreateGroupUser1684173023883 implements MigrationInterface {
+  name = 'createGroupUser1684173023883'
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     const table = new Table({
-      name: 'group_user_keys',
+      name: 'group_users',
       columns: [
         new TableColumn({
           name: 'uuid',
@@ -69,6 +69,6 @@ export class CreateGroupUserKey1684173023883 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('group_user_keys')
+    await queryRunner.dropTable('group_users')
   }
 }

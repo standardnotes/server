@@ -1,6 +1,6 @@
 import { ContactServiceInterface } from './../Contact/Service/ContactServiceInterface'
-import { GroupUserKey } from '../GroupUserKey/Model/GroupUserKey'
-import { GroupUserKeyServiceInterface } from '../GroupUserKey/Service/GroupUserKeyServiceInterface'
+import { GroupUser } from '../GroupUser/Model/GroupKey'
+import { GroupUserServiceInterface } from '../GroupUser/Service/GroupUserServiceInterface'
 import { Item } from '../Item/Item'
 import { ItemConflict } from '../Item/ItemConflict'
 import { ItemServiceInterface } from '../Item/ItemServiceInterface'
@@ -11,7 +11,7 @@ import { UseCaseInterface } from './UseCaseInterface'
 export class SyncItems implements UseCaseInterface {
   constructor(
     private itemService: ItemServiceInterface,
-    private groupUserService: GroupUserKeyServiceInterface,
+    private groupUserService: GroupUserServiceInterface,
     private contactService: ContactServiceInterface,
   ) {}
 
@@ -44,10 +44,10 @@ export class SyncItems implements UseCaseInterface {
       cursorToken: dto.cursorToken,
     })
 
-    let newUserKeys: GroupUserKey[] = []
+    let newUserKeys: GroupUser[] = []
     const isNotPerformingGroupSpecificSync = dto.groupUuids == undefined || dto.groupUuids.length === 0
     if (isNotPerformingGroupSpecificSync) {
-      newUserKeys = await this.groupUserService.getGroupUserKeysForUser({
+      newUserKeys = await this.groupUserService.getGroupUsersForUser({
         userUuid: dto.userUuid,
         lastSyncTime,
       })

@@ -10,14 +10,14 @@ import {
 } from 'inversify-express-utils'
 import TYPES from '../Bootstrap/Types'
 import { inject } from 'inversify'
-import { GroupUserKeyServiceInterface } from '../Domain/GroupUserKey/Service/GroupUserKeyServiceInterface'
-import { GroupUserKeyProjector } from '../Projection/GroupUserKeyProjector'
+import { GroupUserServiceInterface } from '../Domain/GroupUser/Service/GroupUserServiceInterface'
+import { GroupUserProjector } from '../Projection/GroupUserProjector'
 
 @controller('/groups/:groupUuid/users')
-export class GroupUserKeysController extends BaseHttpController {
+export class GroupUsersController extends BaseHttpController {
   constructor(
-    @inject(TYPES.GroupUserKeyService) private groupUserKeyService: GroupUserKeyServiceInterface,
-    @inject(TYPES.GroupUserKeyProjector) private groupUserKeyProjector: GroupUserKeyProjector,
+    @inject(TYPES.GroupUserService) private groupUserService: GroupUserServiceInterface,
+    @inject(TYPES.GroupUserProjector) private groupUserProjector: GroupUserProjector,
   ) {
     super()
   }
@@ -27,7 +27,7 @@ export class GroupUserKeysController extends BaseHttpController {
     request: Request,
     response: Response,
   ): Promise<results.NotFoundResult | results.JsonResult> {
-    const result = await this.groupUserKeyService.createGroupUserKey({
+    const result = await this.groupUserService.createGroupUser({
       originatorUuid: response.locals.user.uuid,
       groupUuid: request.params.groupUuid,
       userUuid: request.body.invitee_uuid,
@@ -42,7 +42,7 @@ export class GroupUserKeysController extends BaseHttpController {
       return this.errorResponse(500, 'Could not add user to group')
     }
 
-    return this.json({ groupUserKey: await this.groupUserKeyProjector.projectFull(result) })
+    return this.json({ groupUser: await this.groupUserProjector.projectFull(result) })
   }
 
   @httpGet('/', TYPES.AuthMiddleware)
@@ -50,7 +50,7 @@ export class GroupUserKeysController extends BaseHttpController {
     request: Request,
     response: Response,
   ): Promise<results.NotFoundResult | results.JsonResult> {
-    const result = await this.groupUserKeyService.getGroupUsers({
+    const result = await this.groupUserService.getGroupUsers({
       originatorUuid: response.locals.user.uuid,
       groupUuid: request.params.groupUuid,
     })
@@ -61,8 +61,8 @@ export class GroupUserKeysController extends BaseHttpController {
 
     const { users, isAdmin } = result
 
-    const projected = users.map((groupUserKey) =>
-      this.groupUserKeyProjector.projectAsDisplayableUserForOtherGroupMembers(groupUserKey, isAdmin),
+    const projected = users.map((groupUser) =>
+      this.groupUserProjector.projectAsDisplayableUserForOtherGroupMembers(groupUser, isAdmin),
     )
 
     return this.json({ users: projected })
@@ -73,7 +73,7 @@ export class GroupUserKeysController extends BaseHttpController {
     request: Request,
     response: Response,
   ): Promise<results.NotFoundResult | results.JsonResult> {
-    const result = await this.groupUserKeyService.updateGroupUserKeysForAllMembers({
+    const result = await this.groupUserService.updateGroupUsersForAllMembers({
       originatorUuid: response.locals.user.uuid,
       groupUuid: request.params.groupUuid,
       updatedKeys: request.body.updated_keys,
@@ -91,7 +91,7 @@ export class GroupUserKeysController extends BaseHttpController {
     request: Request,
     response: Response,
   ): Promise<results.NotFoundResult | results.JsonResult> {
-    const result = await this.groupUserKeyService.deleteGroupUserKey({
+    const result = await this.groupUserService.deleteGroupUser({
       groupUuid: request.params.groupUuid,
       userUuid: request.params.userUuid,
       originatorUuid: response.locals.user.uuid,

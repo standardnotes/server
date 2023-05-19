@@ -11,14 +11,14 @@ const TYPES = {
   ItemRepository: Symbol.for('ItemRepository'),
   ItemLinkRepository: Symbol.for('ItemLinkRepository'),
   GroupRepository: Symbol.for('GroupRepository'),
-  GroupUserKeyRepository: Symbol.for('GroupUserKeyRepository'),
+  GroupUserRepository: Symbol.for('GroupUserRepository'),
   ContactRepository: Symbol.for('ContactRepository'),
 
   // ORM
   ORMItemRepository: Symbol.for('ORMItemRepository'),
   ORMItemLinkRepository: Symbol.for('ORMItemLinkRepository'),
   ORMGroupRepository: Symbol.for('ORMGroupRepository'),
-  ORMGroupUserKeyRepository: Symbol.for('ORMGroupUserKeyRepository'),
+  ORMGroupUserRepository: Symbol.for('ORMGroupUserRepository'),
   ORMContactRepository: Symbol.for('ORMContactRepository'),
 
   // Middleware
@@ -29,14 +29,14 @@ const TYPES = {
   SavedItemProjector: Symbol.for('SavedItemProjector'),
   ItemConflictProjector: Symbol.for('ItemConflictProjector'),
   GroupProjector: Symbol.for('GroupProjector'),
-  GroupUserKeyProjector: Symbol.for('GroupUserKeyProjector'),
+  GroupUserProjector: Symbol.for('GroupUserProjector'),
   ContactProjector: Symbol.for('ContactProjector'),
 
   // factories
   ItemFactory: Symbol.for('ItemFactory'),
   ItemLinkFactory: Symbol.for('ItemLinkFactory'),
   GroupFactory: Symbol.for('GroupFactory'),
-  GroupUserKeyFactory: Symbol.for('GroupUserKeyFactory'),
+  GroupUserFactory: Symbol.for('GroupUserFactory'),
   ContactFactory: Symbol.for('ContactFactory'),
 
   // env vars
@@ -76,7 +76,7 @@ const TYPES = {
 
   // Services
   GroupService: Symbol.for('GroupService'),
-  GroupUserKeyService: Symbol.for('GroupUserKeyService'),
+  GroupUserService: Symbol.for('GroupUserService'),
   ContactService: Symbol.for('ContactService'),
 
   ContentDecoder: Symbol.for('ContentDecoder'),

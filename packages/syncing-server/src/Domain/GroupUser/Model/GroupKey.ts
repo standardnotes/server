@@ -1,7 +1,7 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
 
-@Entity({ name: 'group_user_keys' })
-export class GroupUserKey {
+@Entity({ name: 'group_users' })
+export class GroupUser {
   @PrimaryGeneratedColumn('uuid')
   declare uuid: string
 

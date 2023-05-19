@@ -1,13 +1,13 @@
-import { GroupUserKey } from './../Domain/GroupUserKey/Model/GroupUserKey'
+import { GroupUser } from '../Domain/GroupUser/Model/GroupKey'
 import { ProjectorInterface } from './ProjectorInterface'
-import { GroupUserKeyProjection, GroupUserListingProjection } from './GroupUserKeyProjection'
+import { GroupUserProjection, GroupUserListingProjection } from './GroupUserProjection'
 
-export class GroupUserKeyProjector implements ProjectorInterface<GroupUserKey, GroupUserKeyProjection> {
-  projectSimple(_userKey: GroupUserKey): GroupUserKeyProjection {
+export class GroupUserProjector implements ProjectorInterface<GroupUser, GroupUserProjection> {
+  projectSimple(_userKey: GroupUser): GroupUserProjection {
     throw Error('not implemented')
   }
 
-  projectCustom(_projectionType: string, userKey: GroupUserKey): GroupUserKeyProjection {
+  projectCustom(_projectionType: string, userKey: GroupUser): GroupUserProjection {
     const fullProjection = this.projectFull(userKey)
 
     return {
@@ -17,7 +17,7 @@ export class GroupUserKeyProjector implements ProjectorInterface<GroupUserKey, G
   }
 
   projectAsDisplayableUserForOtherGroupMembers(
-    userKey: GroupUserKey,
+    userKey: GroupUser,
     isRequesterGroupAdmin: boolean,
   ): GroupUserListingProjection {
     return {
@@ -30,7 +30,7 @@ export class GroupUserKeyProjector implements ProjectorInterface<GroupUserKey, G
     }
   }
 
-  projectFull(userKey: GroupUserKey): GroupUserKeyProjection {
+  projectFull(userKey: GroupUser): GroupUserProjection {
     return {
       uuid: userKey.uuid,
       group_uuid: userKey.groupUuid,

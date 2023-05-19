@@ -2,12 +2,12 @@ import { ItemSaveValidationDTO } from '../SaveValidator/ItemSaveValidationDTO'
 import { ItemSaveRuleResult } from './ItemSaveRuleResult'
 import { ItemSaveRuleInterface } from './ItemSaveRuleInterface'
 import { ConflictType } from '@standardnotes/responses'
-import { GroupUserKeyServiceInterface } from '../../GroupUserKey/Service/GroupUserKeyServiceInterface'
+import { GroupUserServiceInterface } from '../../GroupUser/Service/GroupUserServiceInterface'
 import { ItemHash } from '../ItemHash'
-import { GroupPermission } from '../../GroupUserKey/Model/GroupPermission'
+import { GroupPermission } from '../../GroupUser/Model/GroupPermission'
 
 export class OwnershipFilter implements ItemSaveRuleInterface {
-  constructor(private groupUserKeyService: GroupUserKeyServiceInterface) {}
+  constructor(private groupUserService: GroupUserServiceInterface) {}
 
   async check(dto: ItemSaveValidationDTO): Promise<ItemSaveRuleResult> {
     const isItemBeingSetForGroup = dto.itemHash.group_uuid != null
@@ -49,7 +49,7 @@ export class OwnershipFilter implements ItemSaveRuleInterface {
     userUuid: string,
     itemHash: ItemHash,
   ): Promise<GroupPermission | undefined> {
-    const userKeys = await this.groupUserKeyService.getGroupUserKeysForUser({ userUuid })
+    const userKeys = await this.groupUserService.getGroupUsersForUser({ userUuid })
 
     for (const userKey of userKeys) {
       if (itemHash.group_uuid === userKey.groupUuid) {

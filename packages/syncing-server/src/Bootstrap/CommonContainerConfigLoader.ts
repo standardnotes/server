@@ -1,4 +1,4 @@
-import { GroupUserKey } from './../Domain/GroupUserKey/Model/GroupUserKey'
+import { GroupUser } from '../Domain/GroupUser/Model/GroupKey'
 import { Group } from './../Domain/Group/Model/Group'
 import { TypeORMGroupRepository } from './../Domain/Group/Repository/TypeORMGroupRepository'
 import { ItemLink } from '../Domain/ItemLink/Model/ItemLink'
@@ -25,10 +25,10 @@ import { ItemTransferCalculatorInterface } from '../Domain/Item/ItemTransferCalc
 import { ItemTransferCalculator } from '../Domain/Item/ItemTransferCalculator'
 import { ItemLinksRepositoryInterface } from '../Domain/ItemLink/Repository/ItemLinkRepositoryInterface'
 import { GroupsRepositoryInterface } from '../Domain/Group/Repository/GroupRepositoryInterface'
-import { GroupUserKeyRepositoryInterface } from '../Domain/GroupUserKey/Repository/GroupUserKeyRepositoryInterface'
-import { TypeORMGroupUserKeyRepository } from '../Domain/GroupUserKey/Repository/TypeORMGroupUserKeyRepository'
-import { GroupUserKeyProjection } from '../Projection/GroupUserKeyProjection'
-import { GroupUserKeyProjector } from '../Projection/GroupUserKeyProjector'
+import { GroupUserRepositoryInterface } from '../Domain/GroupUser/Repository/GroupUserRepositoryInterface'
+import { TypeORMGroupUserRepository } from '../Domain/GroupUser/Repository/TypeORMGroupUserRepository'
+import { GroupUserProjection } from '../Projection/GroupUserProjection'
+import { GroupUserProjector } from '../Projection/GroupUserProjector'
 import { GroupProjection } from '../Projection/GroupProjection'
 import { GroupProjector } from '../Projection/GroupProjector'
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -98,9 +98,9 @@ export class CommonContainerConfigLoader {
       return new TypeORMGroupRepository(context.container.get(TYPES.ORMGroupRepository))
     })
     container
-      .bind<GroupUserKeyRepositoryInterface>(TYPES.GroupUserKeyRepository)
+      .bind<GroupUserRepositoryInterface>(TYPES.GroupUserRepository)
       .toDynamicValue((context: interfaces.Context) => {
-        return new TypeORMGroupUserKeyRepository(context.container.get(TYPES.ORMGroupUserKeyRepository))
+        return new TypeORMGroupUserRepository(context.container.get(TYPES.ORMGroupUserRepository))
       })
 
     // ORM
@@ -110,8 +110,8 @@ export class CommonContainerConfigLoader {
       .toDynamicValue(() => AppDataSource.getRepository(ItemLink))
     container.bind<Repository<Group>>(TYPES.ORMGroupRepository).toDynamicValue(() => AppDataSource.getRepository(Group))
     container
-      .bind<Repository<GroupUserKey>>(TYPES.ORMGroupUserKeyRepository)
-      .toDynamicValue(() => AppDataSource.getRepository(GroupUserKey))
+      .bind<Repository<GroupUser>>(TYPES.ORMGroupUserRepository)
+      .toDynamicValue(() => AppDataSource.getRepository(GroupUser))
 
     // Projectors
     container
@@ -120,9 +120,9 @@ export class CommonContainerConfigLoader {
         return new ItemProjector(context.container.get(TYPES.Timer))
       })
     container
-      .bind<ProjectorInterface<GroupUserKey, GroupUserKeyProjection>>(TYPES.GroupUserKeyProjector)
+      .bind<ProjectorInterface<GroupUser, GroupUserProjection>>(TYPES.GroupUserProjector)
       .toDynamicValue(() => {
-        return new GroupUserKeyProjector()
+        return new GroupUserProjector()
       })
     container.bind<ProjectorInterface<Group, GroupProjection>>(TYPES.GroupProjector).toDynamicValue(() => {
       return new GroupProjector()

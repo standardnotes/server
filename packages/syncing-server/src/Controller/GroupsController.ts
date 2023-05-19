@@ -1,4 +1,4 @@
-import { GroupUserKey } from './../Domain/GroupUserKey/Model/GroupUserKey'
+import { GroupUser } from '../Domain/GroupUser/Model/GroupKey'
 import { GroupServiceInterface } from './../Domain/Group/Service/GroupServiceInterface'
 import { Request, Response } from 'express'
 import {
@@ -15,17 +15,17 @@ import { inject } from 'inversify'
 import { ProjectorInterface } from '../Projection/ProjectorInterface'
 import { Group } from '../Domain/Group/Model/Group'
 import { GroupProjection } from '../Projection/GroupProjection'
-import { GroupUserKeyProjection } from '../Projection/GroupUserKeyProjection'
-import { GroupUserKeyServiceInterface } from '../Domain/GroupUserKey/Service/GroupUserKeyServiceInterface'
+import { GroupUserProjection } from '../Projection/GroupUserProjection'
+import { GroupUserServiceInterface } from '../Domain/GroupUser/Service/GroupUserServiceInterface'
 
 @controller('/groups')
 export class GroupsController extends BaseHttpController {
   constructor(
     @inject(TYPES.GroupService) private groupService: GroupServiceInterface,
-    @inject(TYPES.GroupUserKeyService) private groupUserKeyService: GroupUserKeyServiceInterface,
+    @inject(TYPES.GroupUserService) private groupUserService: GroupUserServiceInterface,
     @inject(TYPES.GroupProjector) private groupProjector: ProjectorInterface<Group, GroupProjection>,
-    @inject(TYPES.GroupUserKeyProjector)
-    private groupUserKeyProjector: ProjectorInterface<GroupUserKey, GroupUserKeyProjection>,
+    @inject(TYPES.GroupUserProjector)
+    private groupUserProjector: ProjectorInterface<GroupUser, GroupUserProjection>,
   ) {
     super()
   }
@@ -42,7 +42,7 @@ export class GroupsController extends BaseHttpController {
       return this.errorResponse(500, 'Could not create group')
     }
 
-    const groupUserKey = await this.groupUserKeyService.createGroupUserKey({
+    const groupUser = await this.groupUserService.createGroupUser({
       groupUuid: result.uuid,
       originatorUuid: response.locals.user.uuid,
       userUuid: response.locals.user.uuid,
@@ -53,13 +53,13 @@ export class GroupsController extends BaseHttpController {
       permissions: 'write',
     })
 
-    if (!groupUserKey) {
+    if (!groupUser) {
       return this.errorResponse(500, 'Could not add user to group')
     }
 
     return this.json({
       group: this.groupProjector.projectFull(result),
-      groupUserKey: this.groupUserKeyProjector.projectFull(groupUserKey),
+      groupUser: this.groupUserProjector.projectFull(groupUser),
     })
   }
 
@@ -74,7 +74,7 @@ export class GroupsController extends BaseHttpController {
       return this.errorResponse(500, 'Could not delete group')
     }
 
-    const deleteUsersResult = await this.groupUserKeyService.deleteAllGroupUserKeysForGroup({
+    const deleteUsersResult = await this.groupUserService.deleteAllGroupUsersForGroup({
       groupUuid: request.params.groupUuid,
       originatorUuid: response.locals.user.uuid,
     })
@@ -91,7 +91,7 @@ export class GroupsController extends BaseHttpController {
     request: Request,
     response: Response,
   ): Promise<results.NotFoundResult | results.JsonResult> {
-    const result = await this.groupUserKeyService.updateAllGroupUserKeysForCurrentUser({
+    const result = await this.groupUserService.updateAllGroupUsersForCurrentUser({
       userUuid: response.locals.user.uuid,
       updatedKeys: request.body.updated_keys,
     })
@@ -108,12 +108,12 @@ export class GroupsController extends BaseHttpController {
     _request: Request,
     response: Response,
   ): Promise<results.NotFoundResult | results.JsonResult> {
-    const result = await this.groupUserKeyService.getAllUserKeysForUser({
+    const result = await this.groupUserService.getAllUserKeysForUser({
       userUuid: response.locals.user.uuid,
     })
 
     return this.json({
-      groupUserKeys: result.map((groupUserKey) => this.groupUserKeyProjector.projectFull(groupUserKey)),
+      groupUsers: result.map((groupUser) => this.groupUserProjector.projectFull(groupUser)),
     })
   }
 
@@ -122,13 +122,13 @@ export class GroupsController extends BaseHttpController {
     request: Request,
     response: Response,
   ): Promise<results.NotFoundResult | results.JsonResult> {
-    const result = await this.groupUserKeyService.getUserKeysForUserBySender({
+    const result = await this.groupUserService.getUserKeysForUserBySender({
       userUuid: response.locals.user.uuid,
       senderUuid: request.params.senderUuid,
     })
 
     return this.json({
-      groupUserKeys: result.map((groupUserKey) => this.groupUserKeyProjector.projectFull(groupUserKey)),
+      groupUsers: result.map((groupUser) => this.groupUserProjector.projectFull(groupUser)),
     })
   }
 

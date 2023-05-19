@@ -1,4 +1,4 @@
-export type GroupUserKeyHash = {
+export type GroupUserHash = {
   uuid: string
   user_uuid: string
   group_uuid: string

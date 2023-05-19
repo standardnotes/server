@@ -42,7 +42,7 @@ export class TypeORMContactRepository implements ContactsRepositoryInterface {
     }
 
     if (query.lastSyncTime) {
-      queryBuilder.andWhere('group_user_key.updated_at_timestamp > :lastSyncTime', {
+      queryBuilder.andWhere('group_user.updated_at_timestamp > :lastSyncTime', {
         lastSyncTime: query.lastSyncTime,
       })
     }

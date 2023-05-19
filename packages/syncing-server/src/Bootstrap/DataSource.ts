@@ -1,4 +1,4 @@
-import { GroupUserKey } from './../Domain/GroupUserKey/Model/GroupUserKey'
+import { GroupUser } from '../Domain/GroupUser/Model/GroupKey'
 import { ItemLink } from '../Domain/ItemLink/Model/ItemLink'
 import { DataSource, LoggerOptions } from 'typeorm'
 import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions'
@@ -41,7 +41,7 @@ const replicationConfig = {
 
 const commonDataSourceOptions = {
   maxQueryExecutionTime,
-  entities: [Item, ItemLink, Group, GroupUserKey],
+  entities: [Item, ItemLink, Group, GroupUser],
   migrations: [`dist/migrations/${isConfiguredForMySQL ? 'mysql' : 'sqlite'}/*.js`],
   migrationsRun: true,
   logging: <LoggerOptions>env.get('DB_DEBUG_LEVEL'),
