@@ -1,3 +1,4 @@
+import { ContactServiceInterface } from './../Contact/Service/ContactServiceInterface'
 import { GroupUserKey } from '../GroupUserKey/Model/GroupUserKey'
 import { GroupUserKeyServiceInterface } from '../GroupUserKey/Service/GroupUserKeyServiceInterface'
 import { Item } from '../Item/Item'
@@ -8,7 +9,11 @@ import { SyncItemsResponse } from './SyncItemsResponse'
 import { UseCaseInterface } from './UseCaseInterface'
 
 export class SyncItems implements UseCaseInterface {
-  constructor(private itemService: ItemServiceInterface, private groupUserService: GroupUserKeyServiceInterface) {}
+  constructor(
+    private itemService: ItemServiceInterface,
+    private groupUserService: GroupUserKeyServiceInterface,
+    private contactService: ContactServiceInterface,
+  ) {}
 
   async execute(dto: SyncItemsDTO): Promise<SyncItemsResponse> {
     const getItemsResult = await this.itemService.getItems({
@@ -34,19 +39,24 @@ export class SyncItems implements UseCaseInterface {
       retrievedItems = await this.itemService.frontLoadKeysItemsToTop(dto.userUuid, retrievedItems)
     }
 
+    const lastSyncTime = this.itemService.getLastSyncTime({
+      syncToken: dto.syncToken,
+      cursorToken: dto.cursorToken,
+    })
+
     let newUserKeys: GroupUserKey[] = []
     const isNotPerformingGroupSpecificSync = dto.groupUuids == undefined || dto.groupUuids.length === 0
     if (isNotPerformingGroupSpecificSync) {
-      const lastSyncTime = this.itemService.getLastSyncTime({
-        syncToken: dto.syncToken,
-        cursorToken: dto.cursorToken,
-      })
-
       newUserKeys = await this.groupUserService.getGroupUserKeysForUser({
         userUuid: dto.userUuid,
         lastSyncTime,
       })
     }
+
+    const contacts = await this.contactService.getUserContacts({
+      userUuid: dto.userUuid,
+      lastSyncTime: lastSyncTime,
+    })
 
     const syncResponse: SyncItemsResponse = {
       retrievedItems,
@@ -55,6 +65,7 @@ export class SyncItems implements UseCaseInterface {
       conflicts: saveItemsResult.conflicts,
       cursorToken: getItemsResult.cursorToken,
       groupKeys: newUserKeys,
+      contacts,
     }
 
     return syncResponse

@@ -4,7 +4,7 @@ export enum ContentType {
   Item = 'SF|Item',
   SharedItemsKey = 'SN|SharedItemsKey',
   KeypairArchive = 'SN|KeypairArchive',
-  Contact = 'SN|Contact',
+  TrustedContact = 'SN|TrustedContact',
   RootKey = 'SN|RootKey|NoSync',
   ItemsKey = 'SN|ItemsKey',
   EncryptedStorage = 'SN|EncryptedStorage',

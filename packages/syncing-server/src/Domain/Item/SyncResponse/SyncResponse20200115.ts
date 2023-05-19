@@ -1,3 +1,4 @@
+import { ContactProjection } from '../../../Projection/ContactProjection'
 import { GroupUserKeyProjection } from '../../../Projection/GroupUserKeyProjection'
 import { ItemConflictProjection } from '../../../Projection/ItemConflictProjection'
 import { ItemProjection } from '../../../Projection/ItemProjection'
@@ -10,4 +11,5 @@ export type SyncResponse20200115 = {
   sync_token: string
   cursor_token?: string
   group_keys: Array<GroupUserKeyProjection>
+  contacts: Array<ContactProjection>
 }

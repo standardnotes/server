@@ -1,5 +1,5 @@
 import { GroupUserKey } from '../Model/GroupUserKey'
-import { Repository, SelectQueryBuilder } from 'typeorm'
+import { Brackets, Repository, SelectQueryBuilder } from 'typeorm'
 import {
   GroupUserKeyFindAllForGroup,
   GroupUserKeyFindAllForUserQuery,
@@ -26,10 +26,15 @@ export class TypeORMGroupUserKeyRepository implements GroupUserKeyRepositoryInte
       .getOne()
   }
 
-  findByUserAndUuid(userUuid: string, userKeyUuid: string): Promise<GroupUserKey | null> {
+  findAsSenderOrRecipientByUuid(userUuid: string, userKeyUuid: string): Promise<GroupUserKey | null> {
     return this.ormRepository
       .createQueryBuilder('group_user_key')
-      .where('group_user_key.user_uuid = :userUuid', { userUuid })
+      .where(
+        new Brackets((qb) => {
+          qb.where('group_user_key.user_uuid = :userUuid', { userUuid })
+          qb.orWhere('group_user_key.sender_uuid = :userUuid', { userUuid })
+        }),
+      )
       .andWhere('group_user_key.uuid = :userKeyUuid', { userKeyUuid })
       .getOne()
   }
@@ -61,6 +66,10 @@ export class TypeORMGroupUserKeyRepository implements GroupUserKeyRepositoryInte
     const queryBuilder = this.ormRepository.createQueryBuilder('group_user_key')
 
     queryBuilder.where('group_user_key.user_uuid = :userUuid', { userUuid: query.userUuid })
+
+    if (query.includeSentAndReceived) {
+      queryBuilder.orWhere('group_user_key.sender_uuid = :userUuid', { userUuid: query.userUuid })
+    }
 
     if (query.lastSyncTime) {
       queryBuilder.andWhere('group_user_key.updated_at_timestamp > :lastSyncTime', {

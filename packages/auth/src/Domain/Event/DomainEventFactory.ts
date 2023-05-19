@@ -20,6 +20,7 @@ import {
   StatisticPersistenceRequestedEvent,
   SessionCreatedEvent,
   SessionRefreshedEvent,
+  UserCredentialsChangedEvent,
 } from '@standardnotes/domain-events'
 import { Predicate, PredicateVerificationResult } from '@standardnotes/predicates'
 import { TimerInterface } from '@standardnotes/time'
@@ -311,6 +312,24 @@ export class DomainEventFactory implements DomainEventFactoryInterface {
         origin: DomainEventService.Auth,
       },
       payload: dto,
+    }
+  }
+
+  createUserCredentialsChangedEvent(userUuid: string, newPublicKey: string): UserCredentialsChangedEvent {
+    return {
+      type: 'USER_CREDENTIALS_CHANGED',
+      createdAt: this.timer.getUTCDate(),
+      meta: {
+        correlation: {
+          userIdentifier: userUuid,
+          userIdentifierType: 'uuid',
+        },
+        origin: DomainEventService.Auth,
+      },
+      payload: {
+        userUuid,
+        newPublicKey,
+      },
     }
   }
 

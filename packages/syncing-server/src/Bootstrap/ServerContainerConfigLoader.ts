@@ -1,3 +1,8 @@
+import {
+  DomainEventHandlerInterface,
+  DomainEventMessageHandlerInterface,
+  DomainEventSubscriberFactoryInterface,
+} from '@standardnotes/domain-events'
 import { GroupServiceInterface } from './../Domain/Group/Service/GroupServiceInterface'
 import { GroupUserKeyFactory } from './../Domain/GroupUserKey/GroupUserKeyFactory'
 import { GroupFactoryInterface } from '../Domain/Group/Factory/GroupFactoryInterface'
@@ -45,6 +50,12 @@ import { GroupFactory } from '../Domain/Group/Factory/GroupFactory'
 import { GroupService } from '../Domain/Group/Service/GroupService'
 import { GroupUserKeyService } from '../Domain/GroupUserKey/Service/GroupUserKeyService'
 import { GroupUserKeyServiceInterface } from '../Domain/GroupUserKey/Service/GroupUserKeyServiceInterface'
+import {
+  SQSDomainEventSubscriberFactory,
+  SQSEventMessageHandler,
+  SQSNewRelicEventMessageHandler,
+} from '@standardnotes/domain-events-infra'
+import { UserCredentialsChangedEventHandler } from '../Domain/Handler/UserCredentialsChangedEventHandler'
 
 export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
   private readonly DEFAULT_CONTENT_SIZE_TRANSFER_LIMIT = 10_000_000
@@ -205,6 +216,42 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
     container.bind<GroupUserKeyFactory>(TYPES.GroupUserKeyFactory).toDynamicValue((context: interfaces.Context) => {
       return new GroupUserKeyFactory(context.container.get(TYPES.Timer))
     })
+
+    container
+      .bind<UserCredentialsChangedEventHandler>(TYPES.UserCredentialsChangedEventHandler)
+      .toDynamicValue((context: interfaces.Context) => {
+        return new UserCredentialsChangedEventHandler(
+          context.container.get(TYPES.ContactRepository),
+          context.container.get(TYPES.Timer),
+        )
+      })
+
+    const eventHandlers: Map<string, DomainEventHandlerInterface> = new Map([
+      ['USER_CREDENTIALS_CHANGED', container.get(TYPES.UserCredentialsChangedEventHandler)],
+    ])
+
+    container
+      .bind<DomainEventMessageHandlerInterface>(TYPES.DomainEventMessageHandler)
+      .toDynamicValue((context: interfaces.Context) => {
+        const env: Env = context.container.get(TYPES.Env)
+
+        const handler =
+          env.get('NEW_RELIC_ENABLED', true) === 'true'
+            ? new SQSNewRelicEventMessageHandler(eventHandlers, context.container.get(TYPES.Logger))
+            : new SQSEventMessageHandler(eventHandlers, context.container.get(TYPES.Logger))
+
+        return handler
+      })
+
+    container
+      .bind<DomainEventSubscriberFactoryInterface>(TYPES.DomainEventSubscriberFactory)
+      .toDynamicValue((context: interfaces.Context) => {
+        return new SQSDomainEventSubscriberFactory(
+          context.container.get(TYPES.SQS),
+          context.container.get(TYPES.SQS_QUEUE_URL),
+          context.container.get(TYPES.DomainEventMessageHandler),
+        )
+      })
 
     container
       .bind<OwnershipFilter>(TYPES.OwnershipFilter)

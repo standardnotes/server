@@ -6,24 +6,39 @@ const TYPES = {
   SQS: Symbol.for('SQS'),
   S3: Symbol.for('S3'),
   Env: Symbol.for('Env'),
+
   // Repositories
   ItemRepository: Symbol.for('ItemRepository'),
   ItemLinkRepository: Symbol.for('ItemLinkRepository'),
   GroupRepository: Symbol.for('GroupRepository'),
   GroupUserKeyRepository: Symbol.for('GroupUserKeyRepository'),
+  ContactRepository: Symbol.for('ContactRepository'),
+
   // ORM
   ORMItemRepository: Symbol.for('ORMItemRepository'),
   ORMItemLinkRepository: Symbol.for('ORMItemLinkRepository'),
   ORMGroupRepository: Symbol.for('ORMGroupRepository'),
   ORMGroupUserKeyRepository: Symbol.for('ORMGroupUserKeyRepository'),
+  ORMContactRepository: Symbol.for('ORMContactRepository'),
+
   // Middleware
   AuthMiddleware: Symbol.for('AuthMiddleware'),
+
   // Projectors
   ItemProjector: Symbol.for('ItemProjector'),
   SavedItemProjector: Symbol.for('SavedItemProjector'),
   ItemConflictProjector: Symbol.for('ItemConflictProjector'),
   GroupProjector: Symbol.for('GroupProjector'),
   GroupUserKeyProjector: Symbol.for('GroupUserKeyProjector'),
+  ContactProjector: Symbol.for('ContactProjector'),
+
+  // factories
+  ItemFactory: Symbol.for('ItemFactory'),
+  ItemLinkFactory: Symbol.for('ItemLinkFactory'),
+  GroupFactory: Symbol.for('GroupFactory'),
+  GroupUserKeyFactory: Symbol.for('GroupUserKeyFactory'),
+  ContactFactory: Symbol.for('ContactFactory'),
+
   // env vars
   REDIS_URL: Symbol.for('REDIS_URL'),
   SNS_TOPIC_ARN: Symbol.for('SNS_TOPIC_ARN'),
@@ -53,11 +68,17 @@ const TYPES = {
   GetUserItemLinks: Symbol.for('GetUserItemLinks'),
   CreateSharedFileValetToken: Symbol.for('CreateSharedFileValetToken'),
   // Handlers
+  UserCredentialsChangedEventHandler: Symbol.for('UserCredentialsChangedEventHandler'),
   AccountDeletionRequestedEventHandler: Symbol.for('AccountDeletionRequestedEventHandler'),
   DuplicateItemSyncedEventHandler: Symbol.for('DuplicateItemSyncedEventHandler'),
   EmailBackupRequestedEventHandler: Symbol.for('EmailBackupRequestedEventHandler'),
   ItemRevisionCreationRequestedEventHandler: Symbol.for('ItemRevisionCreationRequestedEventHandler'),
+
   // Services
+  GroupService: Symbol.for('GroupService'),
+  GroupUserKeyService: Symbol.for('GroupUserKeyService'),
+  ContactService: Symbol.for('ContactService'),
+
   ContentDecoder: Symbol.for('ContentDecoder'),
   DomainEventPublisher: Symbol.for('DomainEventPublisher'),
   DomainEventSubscriberFactory: Symbol.for('DomainEventSubscriberFactory'),
@@ -79,14 +100,8 @@ const TYPES = {
   UuidFilter: Symbol.for('UuidFilter'),
   ContentTypeFilter: Symbol.for('ContentTypeFilter'),
   ContentFilter: Symbol.for('ContentFilter'),
-  ItemFactory: Symbol.for('ItemFactory'),
-  ItemLinkFactory: Symbol.for('ItemLinkFactory'),
-  GroupFactory: Symbol.for('GroupFactory'),
-  GroupUserKeyFactory: Symbol.for('GroupUserKeyFactory'),
   ItemTransferCalculator: Symbol.for('ItemTransferCalculator'),
   ValetTokenEncoder: Symbol.for('ValetTokenEncoder'),
-  GroupService: Symbol.for('GroupService'),
-  GroupUserKeyService: Symbol.for('GroupUserKeyService'),
 }
 
 export default TYPES

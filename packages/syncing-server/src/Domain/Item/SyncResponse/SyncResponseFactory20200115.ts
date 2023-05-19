@@ -1,3 +1,4 @@
+import { Contact } from './../../Contact/Model/Contact'
 import { ProjectorInterface } from '../../../Projection/ProjectorInterface'
 import { SyncItemsResponse } from '../../UseCase/SyncItemsResponse'
 import { Item } from '../Item'
@@ -9,6 +10,7 @@ import { SyncResponseFactoryInterface } from './SyncResponseFactoryInterface'
 import { SavedItemProjection } from '../../../Projection/SavedItemProjection'
 import { GroupUserKey } from '../../GroupUserKey/Model/GroupUserKey'
 import { GroupUserKeyProjection } from '../../../Projection/GroupUserKeyProjection'
+import { ContactProjection } from '../../../Projection/ContactProjection'
 
 export class SyncResponseFactory20200115 implements SyncResponseFactoryInterface {
   constructor(
@@ -16,27 +18,33 @@ export class SyncResponseFactory20200115 implements SyncResponseFactoryInterface
     private itemConflictProjector: ProjectorInterface<ItemConflict, ItemConflictProjection>,
     private savedItemProjector: ProjectorInterface<Item, SavedItemProjection>,
     private groupUserKeyProjector: ProjectorInterface<GroupUserKey, GroupUserKeyProjection>,
+    private contactProjector: ProjectorInterface<Contact, ContactProjection>,
   ) {}
 
   async createResponse(syncItemsResponse: SyncItemsResponse): Promise<SyncResponse20200115> {
     const retrievedItems = []
     for (const item of syncItemsResponse.retrievedItems) {
-      retrievedItems.push(<ItemProjection>await this.itemProjector.projectFull(item))
+      retrievedItems.push(<ItemProjection>this.itemProjector.projectFull(item))
     }
 
     const savedItems = []
     for (const item of syncItemsResponse.savedItems) {
-      savedItems.push(<SavedItemProjection>await this.savedItemProjector.projectFull(item))
+      savedItems.push(<SavedItemProjection>this.savedItemProjector.projectFull(item))
     }
 
     const conflicts = []
     for (const itemConflict of syncItemsResponse.conflicts) {
-      conflicts.push(<ItemConflictProjection>await this.itemConflictProjector.projectFull(itemConflict))
+      conflicts.push(<ItemConflictProjection>this.itemConflictProjector.projectFull(itemConflict))
     }
 
     const groupKeys = []
     for (const groupKey of syncItemsResponse.groupKeys) {
-      groupKeys.push(<GroupUserKeyProjection>await this.groupUserKeyProjector.projectFull(groupKey))
+      groupKeys.push(<GroupUserKeyProjection>this.groupUserKeyProjector.projectFull(groupKey))
+    }
+
+    const contacts = []
+    for (const contact of syncItemsResponse.contacts) {
+      contacts.push(<ContactProjection>this.contactProjector.projectFull(contact))
     }
 
     return {
@@ -46,6 +54,7 @@ export class SyncResponseFactory20200115 implements SyncResponseFactoryInterface
       sync_token: syncItemsResponse.syncToken,
       cursor_token: syncItemsResponse.cursorToken,
       group_keys: groupKeys,
+      contacts,
     }
   }
 }

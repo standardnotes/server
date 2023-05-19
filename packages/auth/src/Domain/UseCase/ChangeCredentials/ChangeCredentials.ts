@@ -9,7 +9,11 @@ import { ChangeCredentialsDTO } from './ChangeCredentialsDTO'
 import { ChangeCredentialsResponse } from './ChangeCredentialsResponse'
 import { UseCaseInterface } from '../UseCaseInterface'
 import { DomainEventFactoryInterface } from '../../Event/DomainEventFactoryInterface'
-import { DomainEventPublisherInterface, UserEmailChangedEvent } from '@standardnotes/domain-events'
+import {
+  DomainEventPublisherInterface,
+  UserCredentialsChangedEvent,
+  UserEmailChangedEvent,
+} from '@standardnotes/domain-events'
 import { TimerInterface } from '@standardnotes/time'
 import { Username } from '@standardnotes/domain-core'
 
@@ -62,9 +66,12 @@ export class ChangeCredentials implements UseCaseInterface {
       dto.user.email = newUsername.value
     }
 
-    if (dto.publicKey) {
+    let userCredentialsChangedEvent: UserCredentialsChangedEvent | undefined = undefined
+    if (dto.publicKey && dto.user.publicKey !== dto.publicKey) {
       dto.user.publicKey = dto.publicKey
+      userCredentialsChangedEvent = this.domainEventFactory.createCredentialsChangedEvent(dto.user.uuid, dto.publicKey)
     }
+
     if (dto.encryptedPrivateKey) {
       dto.user.encryptedPrivateKey = dto.encryptedPrivateKey
     }
@@ -85,6 +92,10 @@ export class ChangeCredentials implements UseCaseInterface {
 
     if (userEmailChangedEvent !== undefined) {
       await this.domainEventPublisher.publish(userEmailChangedEvent)
+    }
+
+    if (userCredentialsChangedEvent != undefined) {
+      await this.domainEventPublisher.publish(userCredentialsChangedEvent)
     }
 
     const authResponseFactory = this.authResponseFactoryResolver.resolveAuthResponseFactoryVersion(dto.apiVersion)

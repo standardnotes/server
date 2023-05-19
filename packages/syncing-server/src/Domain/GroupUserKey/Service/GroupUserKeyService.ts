@@ -87,7 +87,7 @@ export class GroupUserKeyService implements GroupUserKeyServiceInterface {
     }[]
   }): Promise<boolean> {
     for (const updatedKey of dto.updatedKeys) {
-      const userKey = await this.groupUserRepository.findByUserAndUuid(dto.userUuid, updatedKey.uuid)
+      const userKey = await this.groupUserRepository.findAsSenderOrRecipientByUuid(dto.userUuid, updatedKey.uuid)
       if (!userKey) {
         continue
       }
@@ -170,6 +170,7 @@ export class GroupUserKeyService implements GroupUserKeyServiceInterface {
   async getAllUserKeysForUser(dto: { userUuid: string }): Promise<GroupUserKey[]> {
     return this.groupUserRepository.findAllForUser({
       userUuid: dto.userUuid,
+      includeSentAndReceived: true,
     })
   }
 

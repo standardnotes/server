@@ -86,7 +86,7 @@ export class GroupsController extends BaseHttpController {
     return this.json({ success: true })
   }
 
-  @httpPatch('/all-user-keys', TYPES.AuthMiddleware)
+  @httpPatch('/user-keys', TYPES.AuthMiddleware)
   public async updateAllUserKeysOfUser(
     request: Request,
     response: Response,

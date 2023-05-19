@@ -64,14 +64,9 @@ export class UsersController extends BaseHttpController {
     )
   }
 
-  @httpGet('/:userUuid/attributes/credentials', TYPES.AuthMiddleware)
+  @httpGet('/:userUuid', TYPES.AuthMiddleware)
   async getPkcCredentials(request: Request, response: Response): Promise<void> {
-    await this.httpService.callAuthServer(
-      request,
-      response,
-      `users/${request.params.userUuid}/attributes/credentials`,
-      request.body,
-    )
+    await this.httpService.callAuthServer(request, response, `users/${request.params.userUuid}`, request.body)
   }
 
   @httpGet('/:userId/params', TYPES.AuthMiddleware)
