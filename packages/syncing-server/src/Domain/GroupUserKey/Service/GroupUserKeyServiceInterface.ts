@@ -6,9 +6,10 @@ export interface GroupUserKeyServiceInterface {
     originatorUuid: string
     groupUuid: string
     userUuid: string
-    encryptedGroupKey: string
     senderUuid: string
     senderPublicKey: string
+    recipientPublicKey: string
+    encryptedGroupKey: string
     permissions: string
   }): Promise<GroupUserKey | null>
 
@@ -21,6 +22,16 @@ export interface GroupUserKeyServiceInterface {
 
   deleteGroupUserKey(dto: { originatorUuid: string; groupUuid: string; userUuid: string }): Promise<boolean>
 
+  updateAllGroupUserKeysForCurrentUser(dto: {
+    userUuid: string
+    updatedKeys: {
+      uuid: string
+      encryptedGroupKey: string
+      senderPublicKey: string
+      recipientPublicKey: string
+    }[]
+  }): Promise<boolean>
+
   updateGroupUserKeysForAllMembers(dto: {
     originatorUuid: string
     groupUuid: string
@@ -32,6 +43,8 @@ export interface GroupUserKeyServiceInterface {
   }): Promise<boolean>
 
   deleteAllGroupUserKeysForGroup(dto: { originatorUuid: string; groupUuid: string }): Promise<boolean>
+
+  getAllUserKeysForUser(dto: { userUuid: string }): Promise<GroupUserKey[]>
 
   getUserKeysForUserBySender(dto: { userUuid: string; senderUuid: string }): Promise<GroupUserKey[]>
 }

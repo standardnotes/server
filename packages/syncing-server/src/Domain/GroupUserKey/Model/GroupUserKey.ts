@@ -18,11 +18,6 @@ export class GroupUserKey {
   declare userUuid: string
 
   @Column({
-    name: 'encrypted_group_key',
-  })
-  declare encryptedGroupKey: string
-
-  @Column({
     name: 'sender_uuid',
   })
   declare senderUuid: string
@@ -31,6 +26,16 @@ export class GroupUserKey {
     name: 'sender_public_key',
   })
   declare senderPublicKey: string
+
+  @Column({
+    name: 'recipient_public_key',
+  })
+  declare recipientPublicKey: string
+
+  @Column({
+    name: 'encrypted_group_key',
+  })
+  declare encryptedGroupKey: string
 
   @Column({
     name: 'permissions',

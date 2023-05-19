@@ -20,6 +20,7 @@ import { ClearLoginAttempts } from '../Domain/UseCase/ClearLoginAttempts'
 import { IncreaseLoginAttempts } from '../Domain/UseCase/IncreaseLoginAttempts'
 import { ChangeCredentials } from '../Domain/UseCase/ChangeCredentials/ChangeCredentials'
 import { GetUser } from '../Domain/UseCase/GetUser'
+import { ChangePkcCredentials } from '../Domain/UseCase/ChangeCredentials/ChangePkcCredentials'
 
 @controller('/users')
 export class UsersController extends BaseHttpController {
@@ -32,6 +33,7 @@ export class UsersController extends BaseHttpController {
     @inject(TYPES.ClearLoginAttempts) private clearLoginAttempts: ClearLoginAttempts,
     @inject(TYPES.IncreaseLoginAttempts) private increaseLoginAttempts: IncreaseLoginAttempts,
     @inject(TYPES.ChangeCredentials) private changeCredentialsUseCase: ChangeCredentials,
+    @inject(TYPES.ChangePkcCredentials) private changePkcCredentialsUseCase: ChangePkcCredentials,
   ) {
     super()
   }
@@ -178,6 +180,54 @@ export class UsersController extends BaseHttpController {
       public_key: result.user.publicKey,
       encrypted_private_key: result.user.encryptedPrivateKey,
     })
+  }
+
+  @httpPut('/:userId/attributes/credentials/pkc', TYPES.AuthMiddleware)
+  async changePkcCredentials(request: Request, response: Response): Promise<results.JsonResult | void> {
+    if (response.locals.readOnlyAccess) {
+      return this.json(
+        {
+          error: {
+            tag: ErrorTag.ReadOnlyAccess,
+            message: 'Session has read-only access.',
+          },
+        },
+        401,
+      )
+    }
+
+    if (!request.body.new_public_key || !request.body.new_encrypted_private_key) {
+      return this.json(
+        {
+          error: {
+            message: 'Missing new pkc parameters.',
+          },
+        },
+        400,
+      )
+    }
+
+    const changePkcCredentialsResult = await this.changePkcCredentialsUseCase.execute({
+      user: response.locals.user,
+      apiVersion: request.body.api,
+      updatedWithUserAgent: <string>request.headers['user-agent'],
+      publicKey: request.body.new_public_key,
+      encryptedPrivateKey: request.body.new_encrypted_private_key,
+    })
+
+    if (!changePkcCredentialsResult.success) {
+      return this.json(
+        {
+          error: {
+            message: changePkcCredentialsResult.errorMessage,
+          },
+        },
+        401,
+      )
+    }
+
+    response.setHeader('x-invalidate-cache', response.locals.user.uuid)
+    response.send(changePkcCredentialsResult.authResponse)
   }
 
   @httpPut('/:userId/attributes/credentials', TYPES.AuthMiddleware)

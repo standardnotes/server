@@ -19,9 +19,10 @@ export class GroupUserKeyService implements GroupUserKeyServiceInterface {
     originatorUuid: string
     groupUuid: string
     userUuid: string
-    encryptedGroupKey: string
     senderUuid: string
     senderPublicKey: string
+    recipientPublicKey: string
+    encryptedGroupKey: string
     permissions: string
   }): Promise<GroupUserKey | null> {
     const group = await this.groupRepository.findByUuid(dto.groupUuid)
@@ -33,9 +34,10 @@ export class GroupUserKeyService implements GroupUserKeyServiceInterface {
       uuid: uuidv4(),
       user_uuid: dto.userUuid,
       group_uuid: dto.groupUuid,
-      encrypted_group_key: dto.encryptedGroupKey,
       sender_uuid: dto.senderUuid,
       sender_public_key: dto.senderPublicKey,
+      recipient_public_key: dto.recipientPublicKey,
+      encrypted_group_key: dto.encryptedGroupKey,
       permissions: dto.permissions,
       created_at_timestamp: this.timer.getTimestampInSeconds(),
       updated_at_timestamp: this.timer.getTimestampInSeconds(),
@@ -73,6 +75,34 @@ export class GroupUserKeyService implements GroupUserKeyServiceInterface {
       users,
       isAdmin: isUserGroupAdmin,
     }
+  }
+
+  async updateAllGroupUserKeysForCurrentUser(dto: {
+    userUuid: string
+    updatedKeys: {
+      uuid: string
+      encryptedGroupKey: string
+      senderPublicKey: string
+      recipientPublicKey: string
+    }[]
+  }): Promise<boolean> {
+    for (const updatedKey of dto.updatedKeys) {
+      const userKey = await this.groupUserRepository.findByUserAndUuid(dto.userUuid, updatedKey.uuid)
+      if (!userKey) {
+        continue
+      }
+
+      userKey.encryptedGroupKey = updatedKey.encryptedGroupKey
+      userKey.senderPublicKey = updatedKey.senderPublicKey
+      userKey.recipientPublicKey = updatedKey.recipientPublicKey
+
+      const updatedAt = this.timer.getTimestampInMicroseconds()
+      userKey.updatedAtTimestamp = updatedAt
+
+      await this.groupUserRepository.save(userKey)
+    }
+
+    return true
   }
 
   async updateGroupUserKeysForAllMembers(dto: {
@@ -135,6 +165,12 @@ export class GroupUserKeyService implements GroupUserKeyServiceInterface {
     }
 
     return true
+  }
+
+  async getAllUserKeysForUser(dto: { userUuid: string }): Promise<GroupUserKey[]> {
+    return this.groupUserRepository.findAllForUser({
+      userUuid: dto.userUuid,
+    })
   }
 
   async getUserKeysForUserBySender(dto: { userUuid: string; senderUuid: string }): Promise<GroupUserKey[]> {

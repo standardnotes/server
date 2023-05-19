@@ -226,6 +226,7 @@ import { TypeORMEphemeralSessionRepository } from '../Infra/TypeORM/TypeORMEphem
 import { TypeORMOfflineSubscriptionTokenRepository } from '../Infra/TypeORM/TypeORMOfflineSubscriptionTokenRepository'
 import { TypeORMPKCERepository } from '../Infra/TypeORM/TypeORMPKCERepository'
 import { TypeORMSubscriptionTokenRepository } from '../Infra/TypeORM/TypeORMSubscriptionTokenRepository'
+import { ChangePkcCredentials } from '../Domain/UseCase/ChangeCredentials/ChangePkcCredentials'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -734,6 +735,7 @@ export class ContainerConfigLoader {
     container.bind<DeletePreviousSessionsForUser>(TYPES.DeletePreviousSessionsForUser).to(DeletePreviousSessionsForUser)
     container.bind<DeleteSessionForUser>(TYPES.DeleteSessionForUser).to(DeleteSessionForUser)
     container.bind<ChangeCredentials>(TYPES.ChangeCredentials).to(ChangeCredentials)
+    container.bind<ChangePkcCredentials>(TYPES.ChangePkcCredentials).to(ChangePkcCredentials)
     container.bind<GetSettings>(TYPES.GetSettings).to(GetSettings)
     container.bind<GetSetting>(TYPES.GetSetting).to(GetSetting)
     container.bind<GetUserFeatures>(TYPES.GetUserFeatures).to(GetUserFeatures)

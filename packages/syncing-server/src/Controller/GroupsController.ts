@@ -1,7 +1,15 @@
 import { GroupUserKey } from './../Domain/GroupUserKey/Model/GroupUserKey'
 import { GroupServiceInterface } from './../Domain/Group/Service/GroupServiceInterface'
 import { Request, Response } from 'express'
-import { BaseHttpController, controller, httpPost, results, httpDelete, httpGet } from 'inversify-express-utils'
+import {
+  BaseHttpController,
+  controller,
+  httpPost,
+  results,
+  httpDelete,
+  httpGet,
+  httpPatch,
+} from 'inversify-express-utils'
 import TYPES from '../Bootstrap/Types'
 import { inject } from 'inversify'
 import { ProjectorInterface } from '../Projection/ProjectorInterface'
@@ -40,6 +48,7 @@ export class GroupsController extends BaseHttpController {
       userUuid: response.locals.user.uuid,
       senderUuid: response.locals.user.uuid,
       senderPublicKey: request.body.creator_public_key,
+      recipientPublicKey: request.body.recipient_public_key,
       encryptedGroupKey: request.body.encrypted_group_key,
       permissions: 'write',
     })
@@ -75,6 +84,37 @@ export class GroupsController extends BaseHttpController {
     }
 
     return this.json({ success: true })
+  }
+
+  @httpPatch('/all-user-keys', TYPES.AuthMiddleware)
+  public async updateAllUserKeysOfUser(
+    request: Request,
+    response: Response,
+  ): Promise<results.NotFoundResult | results.JsonResult> {
+    const result = await this.groupUserKeyService.updateAllGroupUserKeysForCurrentUser({
+      userUuid: response.locals.user.uuid,
+      updatedKeys: request.body.updated_keys,
+    })
+
+    if (!result) {
+      return this.errorResponse(500, 'Could not update group member keys')
+    }
+
+    return this.json({ success: true })
+  }
+
+  @httpGet('/all-user-keys', TYPES.AuthMiddleware)
+  public async getAllUserKeysForCurrentUser(
+    _request: Request,
+    response: Response,
+  ): Promise<results.NotFoundResult | results.JsonResult> {
+    const result = await this.groupUserKeyService.getAllUserKeysForUser({
+      userUuid: response.locals.user.uuid,
+    })
+
+    return this.json({
+      groupUserKeys: result.map((groupUserKey) => this.groupUserKeyProjector.projectFull(groupUserKey)),
+    })
   }
 
   @httpGet('/received-user-keys/:senderUuid', TYPES.AuthMiddleware)

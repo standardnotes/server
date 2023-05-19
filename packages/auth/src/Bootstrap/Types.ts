@@ -116,6 +116,7 @@ const TYPES = {
   DeletePreviousSessionsForUser: Symbol.for('DeletePreviousSessionsForUser'),
   DeleteSessionForUser: Symbol.for('DeleteSessionForUser'),
   ChangeCredentials: Symbol.for('ChangePassword'),
+  ChangePkcCredentials: Symbol.for('ChangePkcCredentials'),
   GetSettings: Symbol.for('GetSettings'),
   GetSetting: Symbol.for('GetSetting'),
   GetUserFeatures: Symbol.for('GetUserFeatures'),

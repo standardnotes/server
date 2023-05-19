@@ -31,9 +31,10 @@ export class GroupUserKeysController extends BaseHttpController {
       originatorUuid: response.locals.user.uuid,
       groupUuid: request.params.groupUuid,
       userUuid: request.body.invitee_uuid,
-      encryptedGroupKey: request.body.encrypted_group_key,
       senderUuid: response.locals.user.uuid,
       senderPublicKey: request.body.sender_public_key,
+      recipientPublicKey: request.body.recipient_public_key,
+      encryptedGroupKey: request.body.encrypted_group_key,
       permissions: request.body.permissions,
     })
 

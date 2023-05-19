@@ -26,6 +26,14 @@ export class TypeORMGroupUserKeyRepository implements GroupUserKeyRepositoryInte
       .getOne()
   }
 
+  findByUserAndUuid(userUuid: string, userKeyUuid: string): Promise<GroupUserKey | null> {
+    return this.ormRepository
+      .createQueryBuilder('group_user_key')
+      .where('group_user_key.user_uuid = :userUuid', { userUuid })
+      .andWhere('group_user_key.uuid = :userKeyUuid', { userKeyUuid })
+      .getOne()
+  }
+
   findByUserUuidAndGroupUuid(userUuid: string, groupUuid: string): Promise<GroupUserKey | null> {
     return this.ormRepository
       .createQueryBuilder('group_user_key')
