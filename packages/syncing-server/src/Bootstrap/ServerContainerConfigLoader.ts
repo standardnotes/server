@@ -56,6 +56,9 @@ import {
   SQSNewRelicEventMessageHandler,
 } from '@standardnotes/domain-events-infra'
 import { UserCredentialsChangedEventHandler } from '../Domain/Handler/UserCredentialsChangedEventHandler'
+import { GroupInviteServiceInterface } from '../Domain/GroupInvite/Service/GroupInviteServiceInterface'
+import { GroupInviteService } from '../Domain/GroupInvite/Service/GroupInviteService'
+import { GroupInviteFactory } from '../Domain/GroupInvite/Factory/GroupInviteFactory'
 
 export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
   private readonly DEFAULT_CONTENT_SIZE_TRANSFER_LIMIT = 10_000_000
@@ -183,6 +186,17 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
       )
     })
     container
+      .bind<GroupInviteServiceInterface>(TYPES.GroupInviteService)
+      .toDynamicValue((context: interfaces.Context) => {
+        return new GroupInviteService(
+          context.container.get(TYPES.GroupRepository),
+          context.container.get(TYPES.GroupInviteRepository),
+          context.container.get(TYPES.GroupInviteFactory),
+          context.container.get(TYPES.Timer),
+        )
+      })
+
+    container
       .bind<SyncResponseFactory20161215>(TYPES.SyncResponseFactory20161215)
       .toDynamicValue((context: interfaces.Context) => {
         return new SyncResponseFactory20161215(context.container.get(TYPES.ItemProjector))
@@ -218,6 +232,9 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
     })
     container.bind<GroupUserFactory>(TYPES.GroupUserFactory).toDynamicValue((context: interfaces.Context) => {
       return new GroupUserFactory(context.container.get(TYPES.Timer))
+    })
+    container.bind<GroupInviteFactory>(TYPES.GroupInviteFactory).toDynamicValue((context: interfaces.Context) => {
+      return new GroupInviteFactory(context.container.get(TYPES.Timer))
     })
 
     container

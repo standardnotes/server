@@ -13,6 +13,7 @@ const TYPES = {
   GroupRepository: Symbol.for('GroupRepository'),
   GroupUserRepository: Symbol.for('GroupUserRepository'),
   ContactRepository: Symbol.for('ContactRepository'),
+  GroupInviteRepository: Symbol.for('GroupInviteRepository'),
 
   // ORM
   ORMItemRepository: Symbol.for('ORMItemRepository'),
@@ -20,6 +21,7 @@ const TYPES = {
   ORMGroupRepository: Symbol.for('ORMGroupRepository'),
   ORMGroupUserRepository: Symbol.for('ORMGroupUserRepository'),
   ORMContactRepository: Symbol.for('ORMContactRepository'),
+  ORMGroupInviteRepository: Symbol.for('ORMGroupInviteRepository'),
 
   // Middleware
   AuthMiddleware: Symbol.for('AuthMiddleware'),
@@ -31,13 +33,21 @@ const TYPES = {
   GroupProjector: Symbol.for('GroupProjector'),
   GroupUserProjector: Symbol.for('GroupUserProjector'),
   ContactProjector: Symbol.for('ContactProjector'),
+  GroupInviteProjector: Symbol.for('GroupInviteProjector'),
 
-  // factories
+  // Services
+  GroupService: Symbol.for('GroupService'),
+  GroupUserService: Symbol.for('GroupUserService'),
+  ContactService: Symbol.for('ContactService'),
+  GroupInviteService: Symbol.for('GroupInviteService'),
+
+  // Factories
   ItemFactory: Symbol.for('ItemFactory'),
   ItemLinkFactory: Symbol.for('ItemLinkFactory'),
   GroupFactory: Symbol.for('GroupFactory'),
   GroupUserFactory: Symbol.for('GroupUserFactory'),
   ContactFactory: Symbol.for('ContactFactory'),
+  GroupInviteFactory: Symbol.for('GroupInviteFactory'),
 
   // env vars
   REDIS_URL: Symbol.for('REDIS_URL'),
@@ -73,11 +83,6 @@ const TYPES = {
   DuplicateItemSyncedEventHandler: Symbol.for('DuplicateItemSyncedEventHandler'),
   EmailBackupRequestedEventHandler: Symbol.for('EmailBackupRequestedEventHandler'),
   ItemRevisionCreationRequestedEventHandler: Symbol.for('ItemRevisionCreationRequestedEventHandler'),
-
-  // Services
-  GroupService: Symbol.for('GroupService'),
-  GroupUserService: Symbol.for('GroupUserService'),
-  ContactService: Symbol.for('ContactService'),
 
   ContentDecoder: Symbol.for('ContentDecoder'),
   DomainEventPublisher: Symbol.for('DomainEventPublisher'),

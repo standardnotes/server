@@ -19,7 +19,6 @@ export class GroupUserService implements GroupUserServiceInterface {
     originatorUuid: string
     groupUuid: string
     userUuid: string
-    inviterUuid: string
     permissions: string
   }): Promise<GroupUser | null> {
     const group = await this.groupRepository.findByUuid(dto.groupUuid)
@@ -31,7 +30,6 @@ export class GroupUserService implements GroupUserServiceInterface {
       uuid: uuidv4(),
       user_uuid: dto.userUuid,
       group_uuid: dto.groupUuid,
-      inviter_uuid: dto.inviterUuid,
       permissions: dto.permissions,
       created_at_timestamp: this.timer.getTimestampInSeconds(),
       updated_at_timestamp: this.timer.getTimestampInSeconds(),
@@ -72,13 +70,18 @@ export class GroupUserService implements GroupUserServiceInterface {
   }
 
   async deleteGroupUser(dto: { originatorUuid: string; groupUuid: string; userUuid: string }): Promise<boolean> {
-    const groupUser = await this.groupUserRepository.findByUserUuidAndGroupUuid(dto.userUuid, dto.groupUuid)
-    if (!groupUser) {
+    const group = await this.groupRepository.findByUuid(dto.groupUuid)
+    if (!group) {
       return false
     }
 
-    const isAuthorized = groupUser.inviterUuid !== dto.originatorUuid && groupUser.userUuid !== dto.originatorUuid
-    if (isAuthorized) {
+    const isAuthorized = group.userUuid === dto.originatorUuid
+    if (!isAuthorized) {
+      return false
+    }
+
+    const groupUser = await this.groupUserRepository.findByUserUuidAndGroupUuid(dto.userUuid, dto.groupUuid)
+    if (!groupUser) {
       return false
     }
 

@@ -2,14 +2,14 @@ import { Request, Response } from 'express'
 import { BaseHttpController, controller, httpPost, results, httpDelete, httpGet } from 'inversify-express-utils'
 import TYPES from '../Bootstrap/Types'
 import { inject } from 'inversify'
-import { GroupUserServiceInterface } from '../Domain/GroupUser/Service/GroupUserServiceInterface'
-import { GroupUserProjector } from '../Projection/GroupUserProjector'
+import { GroupInviteServiceInterface } from '../Domain/GroupInvite/Service/GroupInviteServiceInterface'
+import { GroupInviteProjector } from '../Projection/GroupInviteProjector'
 
-@controller('/groups/:groupUuid/users')
-export class GroupUsersController extends BaseHttpController {
+@controller('/groups/invites')
+export class GroupInvitesController extends BaseHttpController {
   constructor(
-    @inject(TYPES.GroupUserService) private groupUserService: GroupUserServiceInterface,
-    @inject(TYPES.GroupUserProjector) private groupUserProjector: GroupUserProjector,
+    @inject(TYPES.GroupInviteService) private groupInviteService: GroupInviteServiceInterface,
+    @inject(TYPES.GroupInviteProjector) private groupInviteProjector: GroupInviteProjector,
   ) {
     super()
   }
@@ -19,10 +19,11 @@ export class GroupUsersController extends BaseHttpController {
     request: Request,
     response: Response,
   ): Promise<results.NotFoundResult | results.JsonResult> {
-    const result = await this.groupUserService.createGroupUser({
+    const result = await this.groupInviteService.createGroupInvite({
       originatorUuid: response.locals.user.uuid,
       groupUuid: request.params.groupUuid,
       userUuid: request.body.invitee_uuid,
+      inviterUuid: response.locals.user.uuid,
       permissions: request.body.permissions,
     })
 
@@ -30,15 +31,15 @@ export class GroupUsersController extends BaseHttpController {
       return this.errorResponse(500, 'Could not add user to group')
     }
 
-    return this.json({ groupUser: await this.groupUserProjector.projectFull(result) })
+    return this.json({ groupInvite: await this.groupInviteProjector.projectFull(result) })
   }
 
   @httpGet('/', TYPES.AuthMiddleware)
-  public async getGroupUsers(
+  public async getGroupInvites(
     request: Request,
     response: Response,
   ): Promise<results.NotFoundResult | results.JsonResult> {
-    const result = await this.groupUserService.getGroupUsers({
+    const result = await this.groupInviteService.getGroupInvites({
       originatorUuid: response.locals.user.uuid,
       groupUuid: request.params.groupUuid,
     })
@@ -47,21 +48,19 @@ export class GroupUsersController extends BaseHttpController {
       return this.errorResponse(500, 'Could not get group users')
     }
 
-    const { users, isAdmin } = result
+    const { users } = result
 
-    const projected = users.map((groupUser) =>
-      this.groupUserProjector.projectAsDisplayableUserForOtherGroupMembers(groupUser, isAdmin),
-    )
+    const projected = users.map((groupInvite) => this.groupInviteProjector.projectFull(groupInvite))
 
     return this.json({ users: projected })
   }
 
   @httpDelete('/:userUuid', TYPES.AuthMiddleware)
-  public async deleteGroupUser(
+  public async deleteGroupInvite(
     request: Request,
     response: Response,
   ): Promise<results.NotFoundResult | results.JsonResult> {
-    const result = await this.groupUserService.deleteGroupUser({
+    const result = await this.groupInviteService.deleteGroupInvite({
       groupUuid: request.params.groupUuid,
       userUuid: request.params.userUuid,
       originatorUuid: response.locals.user.uuid,

@@ -4,7 +4,7 @@ import { ItemSaveRuleInterface } from './ItemSaveRuleInterface'
 import { ConflictType } from '@standardnotes/responses'
 import { GroupUserServiceInterface } from '../../GroupUser/Service/GroupUserServiceInterface'
 import { ItemHash } from '../ItemHash'
-import { GroupPermission } from '../../GroupUser/Model/GroupPermission'
+import { GroupUserPermission } from '../../GroupUser/Model/GroupUserPermission'
 
 export class OwnershipFilter implements ItemSaveRuleInterface {
   constructor(private groupUserService: GroupUserServiceInterface) {}
@@ -19,7 +19,7 @@ export class OwnershipFilter implements ItemSaveRuleInterface {
       const groupAuthorization = await this.itemBelongsToAuthorizedSharedGroup(dto.userUuid, dto.itemHash)
       if (groupAuthorization) {
         if (isItemBeingRemovedFromGroup) {
-          if (groupAuthorization === GroupPermission.Admin) {
+          if (groupAuthorization === GroupUserPermission.Admin) {
             return {
               passed: true,
             }
@@ -48,12 +48,12 @@ export class OwnershipFilter implements ItemSaveRuleInterface {
   private async itemBelongsToAuthorizedSharedGroup(
     userUuid: string,
     itemHash: ItemHash,
-  ): Promise<GroupPermission | undefined> {
+  ): Promise<GroupUserPermission | undefined> {
     const groupUsers = await this.groupUserService.getGroupUsersForUser({ userUuid })
 
     for (const groupUser of groupUsers) {
       if (itemHash.group_uuid === groupUser.groupUuid) {
-        return groupUser.permissions as GroupPermission
+        return groupUser.permissions as GroupUserPermission
       }
     }
 

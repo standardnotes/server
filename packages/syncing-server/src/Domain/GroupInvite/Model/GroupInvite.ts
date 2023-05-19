@@ -1,7 +1,7 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
 
-@Entity({ name: 'group_users' })
-export class GroupUser {
+@Entity({ name: 'group_invites' })
+export class GroupInvite {
   @PrimaryGeneratedColumn('uuid')
   declare uuid: string
 
@@ -18,9 +18,24 @@ export class GroupUser {
   declare userUuid: string
 
   @Column({
-    name: 'permissions',
+    name: 'inviter_uuid',
   })
-  declare permissions: string
+  declare inviterUuid: string
+
+  @Column({
+    name: 'invite_type',
+  })
+  declare inviteType: 'join' | 'key-change'
+
+  @Column({
+    name: 'inviter_public_key',
+  })
+  declare inviterPublicKey: string
+
+  @Column({
+    name: 'encrypted_group_key',
+  })
+  declare encryptedGroupKey: string
 
   @Column({
     name: 'created_at_timestamp',

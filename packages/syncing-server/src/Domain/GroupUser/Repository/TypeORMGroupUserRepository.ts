@@ -64,12 +64,6 @@ export class TypeORMGroupUserRepository implements GroupUserRepositoryInterface 
       })
     }
 
-    if (query.inviterUuid) {
-      queryBuilder.andWhere('group_user.inviter_uuid = :inviterUuid', {
-        inviterUuid: query.inviterUuid,
-      })
-    }
-
     return queryBuilder
   }
 }

@@ -10,7 +10,6 @@ export class GroupUserFactory implements GroupUserFactoryInterface {
     const newGroupUser = new GroupUser()
     newGroupUser.uuid = dto.uuid
     newGroupUser.userUuid = dto.user_uuid
-    newGroupUser.inviterUuid = dto.inviter_uuid
     newGroupUser.groupUuid = dto.group_uuid
     newGroupUser.permissions = dto.permissions
 

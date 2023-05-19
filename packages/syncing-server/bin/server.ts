@@ -7,6 +7,7 @@ import '../src/Controller/ItemsController'
 import '../src/Controller/LinksController'
 import '../src/Controller/GroupsController'
 import '../src/Controller/GroupUsersController'
+import '../src/Controller/GroupInvitesController'
 import '../src/Controller/ContactsController'
 
 import helmet from 'helmet'

@@ -35,7 +35,6 @@ export class GroupUserProjector implements ProjectorInterface<GroupUser, GroupUs
       uuid: groupUser.uuid,
       group_uuid: groupUser.groupUuid,
       user_uuid: groupUser.userUuid,
-      inviter_uuid: groupUser.inviterUuid,
       permissions: groupUser.permissions,
       created_at_timestamp: groupUser.createdAtTimestamp,
       updated_at_timestamp: groupUser.updatedAtTimestamp,

@@ -38,7 +38,6 @@ export class GroupsController extends BaseHttpController {
       groupUuid: result.uuid,
       originatorUuid: response.locals.user.uuid,
       userUuid: response.locals.user.uuid,
-      inviterUuid: response.locals.user.uuid,
       permissions: 'write',
     })
 

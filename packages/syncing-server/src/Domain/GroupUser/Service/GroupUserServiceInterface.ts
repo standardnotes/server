@@ -6,7 +6,6 @@ export interface GroupUserServiceInterface {
     originatorUuid: string
     groupUuid: string
     userUuid: string
-    inviterUuid: string
     permissions: string
   }): Promise<GroupUser | null>
 
