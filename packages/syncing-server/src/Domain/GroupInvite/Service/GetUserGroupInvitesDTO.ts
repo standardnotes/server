@@ -1,4 +1,4 @@
-export interface GetUserGroupKeysDTO {
+export interface GetUserGroupInvitesDTO {
   userUuid: string
   lastSyncTime?: number
 }

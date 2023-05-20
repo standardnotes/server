@@ -13,6 +13,12 @@ export class Group {
   declare userUuid: string
 
   @Column({
+    name: 'specified_items_key_uuid',
+    length: 36,
+  })
+  declare specifiedItemsKeyUuid: string
+
+  @Column({
     name: 'created_at_timestamp',
     type: 'bigint',
   })

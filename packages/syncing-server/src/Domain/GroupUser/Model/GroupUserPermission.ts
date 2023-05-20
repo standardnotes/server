@@ -1,5 +1,1 @@
-export enum GroupUserPermission {
-  Read = 'read',
-  Write = 'write',
-  Admin = 'admin',
-}
+export type GroupUserPermission = 'read' | 'write' | 'admin'

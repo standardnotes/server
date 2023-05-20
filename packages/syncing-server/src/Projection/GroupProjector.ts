@@ -20,6 +20,7 @@ export class GroupProjector implements ProjectorInterface<Group, GroupProjection
     return {
       uuid: group.uuid,
       user_uuid: group.userUuid,
+      specified_items_key_uuid: group.specifiedItemsKeyUuid,
       created_at_timestamp: group.createdAtTimestamp,
       updated_at_timestamp: group.updatedAtTimestamp,
     }

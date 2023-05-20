@@ -49,6 +49,12 @@ export class CreateGroupInvites1684528646896 implements MigrationInterface {
           isNullable: false,
         }),
         new TableColumn({
+          name: 'permissions',
+          type: 'varchar',
+          length: '36',
+          isNullable: false,
+        }),
+        new TableColumn({
           name: 'created_at_timestamp',
           type: 'bigint',
         }),

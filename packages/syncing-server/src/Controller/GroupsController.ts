@@ -1,7 +1,7 @@
 import { GroupUser } from '../Domain/GroupUser/Model/GroupUser'
 import { GroupServiceInterface } from './../Domain/Group/Service/GroupServiceInterface'
 import { Request, Response } from 'express'
-import { BaseHttpController, controller, httpPost, results, httpDelete } from 'inversify-express-utils'
+import { BaseHttpController, controller, httpPost, results, httpDelete, httpPatch } from 'inversify-express-utils'
 import TYPES from '../Bootstrap/Types'
 import { inject } from 'inversify'
 import { ProjectorInterface } from '../Projection/ProjectorInterface'
@@ -26,19 +26,17 @@ export class GroupsController extends BaseHttpController {
   public async createGroup(request: Request, response: Response): Promise<results.NotFoundResult | results.JsonResult> {
     const result = await this.groupService.createGroup({
       userUuid: response.locals.user.uuid,
-      creatorPublicKey: request.body.creator_public_key,
-      encryptedGroupKey: request.body.encrypted_group_key,
+      specifiedItemsKeyUuid: request.body.specified_items_key_uuid,
     })
 
     if (!result) {
       return this.errorResponse(500, 'Could not create group')
     }
 
-    const groupUser = await this.groupUserService.createGroupUser({
+    const groupUser = await this.groupUserService.addGroupUser({
       groupUuid: result.uuid,
-      originatorUuid: response.locals.user.uuid,
       userUuid: response.locals.user.uuid,
-      permissions: 'write',
+      permissions: 'admin',
     })
 
     if (!groupUser) {
@@ -51,6 +49,23 @@ export class GroupsController extends BaseHttpController {
     })
   }
 
+  @httpPatch('/:groupUuid', TYPES.AuthMiddleware)
+  public async updateGroup(request: Request, response: Response): Promise<results.NotFoundResult | results.JsonResult> {
+    const result = await this.groupService.updateGroup({
+      groupUuid: request.params.groupUuid,
+      originatorUuid: response.locals.user.uuid,
+      specifiedItemsKeyUuid: request.body.specified_items_key_uuid,
+    })
+
+    if (!result) {
+      return this.errorResponse(500, 'Could not update group')
+    }
+
+    return this.json({
+      group: this.groupProjector.projectFull(result),
+    })
+  }
+
   @httpDelete('/:groupUuid', TYPES.AuthMiddleware)
   public async deleteGroup(request: Request, response: Response): Promise<results.NotFoundResult | results.JsonResult> {
     const result = await this.groupService.deleteGroup({
@@ -60,15 +75,6 @@ export class GroupsController extends BaseHttpController {
 
     if (!result) {
       return this.errorResponse(500, 'Could not delete group')
-    }
-
-    const deleteUsersResult = await this.groupUserService.deleteAllGroupUsersForGroup({
-      groupUuid: request.params.groupUuid,
-      originatorUuid: response.locals.user.uuid,
-    })
-
-    if (!deleteUsersResult) {
-      return this.errorResponse(500, 'Could not delete group users')
     }
 
     return this.json({ success: true })

@@ -5,30 +5,55 @@ import { Group } from '../Model/Group'
 import { GroupsRepositoryInterface } from '../Repository/GroupRepositoryInterface'
 import { GroupServiceInterface } from './GroupServiceInterface'
 import { GroupFactoryInterface } from '../Factory/GroupFactoryInterface'
+import { GroupUserServiceInterface } from '../../GroupUser/Service/GroupUserServiceInterface'
+import { GroupInviteServiceInterface } from '../../GroupInvite/Service/GroupInviteServiceInterface'
 
 export class GroupService implements GroupServiceInterface {
   constructor(
     private groupRepository: GroupsRepositoryInterface,
     private groupFactory: GroupFactoryInterface,
+    private groupUserService: GroupUserServiceInterface,
+    private groupInviteService: GroupInviteServiceInterface,
     private timer: TimerInterface,
   ) {}
 
-  async createGroup(dto: {
-    userUuid: string
-    encryptedGroupKey: string
-    creatorPublicKey: string
-  }): Promise<Group | null> {
+  async createGroup(dto: { userUuid: string; specifiedItemsKeyUuid: string }): Promise<Group | null> {
     const group = this.groupFactory.create({
       userUuid: dto.userUuid,
       groupHash: {
         uuid: uuidv4(),
         user_uuid: dto.userUuid,
+        specified_items_key_uuid: dto.specifiedItemsKeyUuid,
         created_at_timestamp: this.timer.getTimestampInSeconds(),
         updated_at_timestamp: this.timer.getTimestampInSeconds(),
       },
     })
 
     const savedGroup = await this.groupRepository.create(group)
+
+    return savedGroup
+  }
+
+  async getGroup(dto: { groupUuid: string }): Promise<Group | null> {
+    const group = await this.groupRepository.findByUuid(dto.groupUuid)
+
+    return group
+  }
+
+  async updateGroup(dto: {
+    groupUuid: string
+    originatorUuid: string
+    specifiedItemsKeyUuid: string
+  }): Promise<Group | null> {
+    const group = await this.groupRepository.findByUuid(dto.groupUuid)
+    if (!group || group.userUuid !== dto.originatorUuid) {
+      return null
+    }
+
+    group.specifiedItemsKeyUuid = dto.specifiedItemsKeyUuid
+    group.updatedAtTimestamp = this.timer.getTimestampInSeconds()
+
+    const savedGroup = await this.groupRepository.save(group)
 
     return savedGroup
   }
@@ -40,6 +65,14 @@ export class GroupService implements GroupServiceInterface {
     }
 
     await this.groupRepository.remove(group)
+    await this.groupUserService.deleteAllGroupUsersForGroup({
+      groupUuid: dto.groupUuid,
+      originatorUuid: dto.originatorUuid,
+    })
+    await this.groupInviteService.deleteAllGroupInvitesForGroup({
+      groupUuid: dto.groupUuid,
+      originatorUuid: dto.originatorUuid,
+    })
 
     return true
   }

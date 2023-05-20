@@ -174,6 +174,8 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
       return new GroupService(
         context.container.get(TYPES.GroupRepository),
         context.container.get(TYPES.GroupFactory),
+        context.container.get(TYPES.GroupUserService),
+        context.container.get(TYPES.GroupInviteService),
         context.container.get(TYPES.Timer),
       )
     })
@@ -192,6 +194,7 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
           context.container.get(TYPES.GroupRepository),
           context.container.get(TYPES.GroupInviteRepository),
           context.container.get(TYPES.GroupInviteFactory),
+          context.container.get(TYPES.GroupUserService),
           context.container.get(TYPES.Timer),
         )
       })
@@ -276,7 +279,8 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
     container
       .bind<OwnershipFilter>(TYPES.OwnershipFilter)
       .toDynamicValue(
-        (context: interfaces.Context) => new OwnershipFilter(context.container.get(TYPES.GroupUserService)),
+        (context: interfaces.Context) =>
+          new OwnershipFilter(context.container.get(TYPES.GroupService), context.container.get(TYPES.GroupUserService)),
       )
     container
       .bind<TimeDifferenceFilter>(TYPES.TimeDifferenceFilter)

@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { BaseHttpController, controller, httpPost, results, httpDelete, httpGet } from 'inversify-express-utils'
+import { BaseHttpController, controller, results, httpDelete, httpGet } from 'inversify-express-utils'
 import TYPES from '../Bootstrap/Types'
 import { inject } from 'inversify'
 import { GroupUserServiceInterface } from '../Domain/GroupUser/Service/GroupUserServiceInterface'
@@ -14,31 +14,12 @@ export class GroupUsersController extends BaseHttpController {
     super()
   }
 
-  @httpPost('/', TYPES.AuthMiddleware)
-  public async addUserToGroup(
-    request: Request,
-    response: Response,
-  ): Promise<results.NotFoundResult | results.JsonResult> {
-    const result = await this.groupUserService.createGroupUser({
-      originatorUuid: response.locals.user.uuid,
-      groupUuid: request.params.groupUuid,
-      userUuid: request.body.invitee_uuid,
-      permissions: request.body.permissions,
-    })
-
-    if (!result) {
-      return this.errorResponse(500, 'Could not add user to group')
-    }
-
-    return this.json({ groupUser: await this.groupUserProjector.projectFull(result) })
-  }
-
   @httpGet('/', TYPES.AuthMiddleware)
   public async getGroupUsers(
     request: Request,
     response: Response,
   ): Promise<results.NotFoundResult | results.JsonResult> {
-    const result = await this.groupUserService.getGroupUsers({
+    const result = await this.groupUserService.getGroupUsersForGroup({
       originatorUuid: response.locals.user.uuid,
       groupUuid: request.params.groupUuid,
     })

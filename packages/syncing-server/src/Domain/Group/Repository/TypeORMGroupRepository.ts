@@ -9,6 +9,10 @@ export class TypeORMGroupRepository implements GroupsRepositoryInterface {
     return this.ormRepository.save(group)
   }
 
+  async save(group: Group): Promise<Group> {
+    return this.ormRepository.save(group)
+  }
+
   findByUuid(uuid: string): Promise<Group | null> {
     return this.ormRepository
       .createQueryBuilder('group')

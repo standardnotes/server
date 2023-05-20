@@ -1,17 +1,16 @@
 import { ContactServiceInterface } from './../Contact/Service/ContactServiceInterface'
-import { GroupUser } from '../GroupUser/Model/GroupUser'
-import { GroupUserServiceInterface } from '../GroupUser/Service/GroupUserServiceInterface'
 import { Item } from '../Item/Item'
 import { ItemConflict } from '../Item/ItemConflict'
 import { ItemServiceInterface } from '../Item/ItemServiceInterface'
 import { SyncItemsDTO } from './SyncItemsDTO'
 import { SyncItemsResponse } from './SyncItemsResponse'
 import { UseCaseInterface } from './UseCaseInterface'
+import { GroupInviteServiceInterface } from '../GroupInvite/Service/GroupInviteServiceInterface'
 
 export class SyncItems implements UseCaseInterface {
   constructor(
     private itemService: ItemServiceInterface,
-    private groupUserService: GroupUserServiceInterface,
+    private groupInviteService: GroupInviteServiceInterface,
     private contactService: ContactServiceInterface,
   ) {}
 
@@ -44,14 +43,10 @@ export class SyncItems implements UseCaseInterface {
       cursorToken: dto.cursorToken,
     })
 
-    let newGroupUsers: GroupUser[] = []
-    const isNotPerformingGroupSpecificSync = dto.groupUuids == undefined || dto.groupUuids.length === 0
-    if (isNotPerformingGroupSpecificSync) {
-      newGroupUsers = await this.groupUserService.getGroupUsersForUser({
-        userUuid: dto.userUuid,
-        lastSyncTime,
-      })
-    }
+    const groupInvites = await this.groupInviteService.getGroupInvitesForUser({
+      userUuid: dto.userUuid,
+      lastSyncTime,
+    })
 
     const contacts = await this.contactService.getUserContacts({
       userUuid: dto.userUuid,
@@ -64,7 +59,7 @@ export class SyncItems implements UseCaseInterface {
       savedItems: saveItemsResult.savedItems,
       conflicts: saveItemsResult.conflicts,
       cursorToken: getItemsResult.cursorToken,
-      groupKeys: newGroupUsers,
+      groupInvites,
       contacts,
     }
 

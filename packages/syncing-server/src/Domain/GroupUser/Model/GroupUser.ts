@@ -1,4 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
+import { GroupUserPermission } from './GroupUserPermission'
 
 @Entity({ name: 'group_users' })
 export class GroupUser {
@@ -20,7 +21,7 @@ export class GroupUser {
   @Column({
     name: 'permissions',
   })
-  declare permissions: string
+  declare permissions: GroupUserPermission
 
   @Column({
     name: 'created_at_timestamp',

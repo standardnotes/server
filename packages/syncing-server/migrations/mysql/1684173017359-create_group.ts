@@ -20,6 +20,12 @@ export class CreateGroup1684173017359 implements MigrationInterface {
           isNullable: false,
         }),
         new TableColumn({
+          name: 'specified_items_key_uuid',
+          type: 'varchar',
+          length: '36',
+          isNullable: false,
+        }),
+        new TableColumn({
           name: 'created_at_timestamp',
           type: 'bigint',
         }),

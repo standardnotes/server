@@ -4,7 +4,7 @@ import { GroupUserFactoryInterface } from '../Factory/GroupUserFactoryInterface'
 import { v4 as uuidv4 } from 'uuid'
 import { GroupUserRepositoryInterface } from '../Repository/GroupUserRepositoryInterface'
 import { GroupUserServiceInterface } from './GroupUserServiceInterface'
-import { GetUserGroupKeysDTO } from './GetUserGroupUsersDTO'
+import { GetGroupUsersDTO } from './GetGroupUsersDTO'
 import { GroupsRepositoryInterface } from '../../Group/Repository/GroupRepositoryInterface'
 
 export class GroupUserService implements GroupUserServiceInterface {
@@ -15,14 +15,9 @@ export class GroupUserService implements GroupUserServiceInterface {
     private timer: TimerInterface,
   ) {}
 
-  async createGroupUser(dto: {
-    originatorUuid: string
-    groupUuid: string
-    userUuid: string
-    permissions: string
-  }): Promise<GroupUser | null> {
+  async addGroupUser(dto: { groupUuid: string; userUuid: string; permissions: string }): Promise<GroupUser | null> {
     const group = await this.groupRepository.findByUuid(dto.groupUuid)
-    if (!group || group.userUuid !== dto.originatorUuid) {
+    if (!group) {
       return null
     }
 
@@ -38,11 +33,11 @@ export class GroupUserService implements GroupUserServiceInterface {
     return this.groupUserRepository.create(groupUser)
   }
 
-  getGroupUsersForUser(dto: GetUserGroupKeysDTO): Promise<GroupUser[]> {
+  getAllGroupUsersForUser(dto: GetGroupUsersDTO): Promise<GroupUser[]> {
     return this.groupUserRepository.findAllForUser(dto)
   }
 
-  async getGroupUsers(dto: {
+  async getGroupUsersForGroup(dto: {
     groupUuid: string
     originatorUuid: string
   }): Promise<{ users: GroupUser[]; isAdmin: boolean } | undefined> {

@@ -1,17 +1,17 @@
 import { GroupUser } from '../Model/GroupUser'
-import { GetUserGroupKeysDTO } from './GetUserGroupUsersDTO'
+import { GroupUserPermission } from '../Model/GroupUserPermission'
+import { GetGroupUsersDTO } from './GetGroupUsersDTO'
 
 export interface GroupUserServiceInterface {
-  createGroupUser(dto: {
-    originatorUuid: string
+  addGroupUser(dto: {
     groupUuid: string
     userUuid: string
-    permissions: string
+    permissions: GroupUserPermission
   }): Promise<GroupUser | null>
 
-  getGroupUsersForUser(dto: GetUserGroupKeysDTO): Promise<GroupUser[]>
+  getAllGroupUsersForUser(dto: GetGroupUsersDTO): Promise<GroupUser[]>
 
-  getGroupUsers(dto: {
+  getGroupUsersForGroup(dto: {
     groupUuid: string
     originatorUuid: string
   }): Promise<{ users: GroupUser[]; isAdmin: boolean } | undefined>

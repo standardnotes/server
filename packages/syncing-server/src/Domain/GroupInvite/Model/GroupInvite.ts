@@ -1,4 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
+import { GroupInviteType } from './GroupInviteType'
 
 @Entity({ name: 'group_invites' })
 export class GroupInvite {
@@ -25,7 +26,7 @@ export class GroupInvite {
   @Column({
     name: 'invite_type',
   })
-  declare inviteType: 'join' | 'key-change'
+  declare inviteType: GroupInviteType
 
   @Column({
     name: 'inviter_public_key',
@@ -36,6 +37,11 @@ export class GroupInvite {
     name: 'encrypted_group_key',
   })
   declare encryptedGroupKey: string
+
+  @Column({
+    name: 'permissions',
+  })
+  declare permissions: string
 
   @Column({
     name: 'created_at_timestamp',

@@ -1,23 +1,27 @@
 import { GroupInvite } from '../Model/GroupInvite'
-import { GetUserGroupKeysDTO } from './GetUserGroupInvitesDTO'
+import { GroupInviteType } from '../Model/GroupInviteType'
+import { GetUserGroupInvitesDTO } from './GetUserGroupInvitesDTO'
 
 export interface GroupInviteServiceInterface {
   createGroupInvite(dto: {
     originatorUuid: string
     groupUuid: string
     userUuid: string
-    inviterUuid: string
+    inviterPublicKey: string
+    encryptedGroupKey: string
+    inviteType: GroupInviteType
     permissions: string
   }): Promise<GroupInvite | null>
 
-  getGroupInvitesForUser(dto: GetUserGroupKeysDTO): Promise<GroupInvite[]>
+  getGroupInvitesForUser(dto: GetUserGroupInvitesDTO): Promise<GroupInvite[]>
 
-  getGroupInvites(dto: {
-    groupUuid: string
-    originatorUuid: string
-  }): Promise<{ users: GroupInvite[]; isAdmin: boolean } | undefined>
+  getGroupInvitesForGroup(dto: { groupUuid: string; originatorUuid: string }): Promise<GroupInvite[] | undefined>
 
-  deleteGroupInvite(dto: { originatorUuid: string; groupUuid: string; userUuid: string }): Promise<boolean>
+  acceptGroupInvite(dto: { originatorUuid: string; inviteUuid: string }): Promise<boolean>
+
+  declineGroupInvite(dto: { originatorUuid: string; inviteUuid: string }): Promise<boolean>
+
+  deleteGroupInvite(dto: { originatorUuid: string; groupUuid: string; inviteUuid: string }): Promise<boolean>
 
   deleteAllGroupInvitesForGroup(dto: { originatorUuid: string; groupUuid: string }): Promise<boolean>
 }

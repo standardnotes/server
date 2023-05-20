@@ -11,6 +11,7 @@ export type UserGroupsQuery = {
 export interface GroupsRepositoryInterface {
   findByUuid(uuid: string): Promise<Group | null>
   create(group: Group): Promise<Group>
+  save(group: Group): Promise<Group>
   remove(group: Group): Promise<Group>
   findAll(query: UserGroupsQuery): Promise<Group[]>
 }
