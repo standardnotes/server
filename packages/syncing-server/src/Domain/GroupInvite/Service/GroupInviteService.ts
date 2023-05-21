@@ -8,6 +8,8 @@ import { GetUserGroupInvitesDTO } from './GetUserGroupInvitesDTO'
 import { GroupsRepositoryInterface } from '../../Group/Repository/GroupRepositoryInterface'
 import { GroupUserServiceInterface } from '../../GroupUser/Service/GroupUserServiceInterface'
 import { GroupInviteType } from '../Model/GroupInviteType'
+import { CreateInviteDTO } from './CreateInviteDTO'
+import { UpdateInviteDTO } from './UpdateInviteDTO'
 
 export class GroupInviteService implements GroupInviteServiceInterface {
   constructor(
@@ -18,15 +20,7 @@ export class GroupInviteService implements GroupInviteServiceInterface {
     private timer: TimerInterface,
   ) {}
 
-  async createGroupInvite(dto: {
-    originatorUuid: string
-    groupUuid: string
-    userUuid: string
-    inviterPublicKey: string
-    encryptedGroupKey: string
-    inviteType: GroupInviteType
-    permissions: string
-  }): Promise<GroupInvite | null> {
+  async createInvite(dto: CreateInviteDTO): Promise<GroupInvite | null> {
     const group = await this.groupRepository.findByUuid(dto.groupUuid)
     if (!group || group.userUuid !== dto.originatorUuid) {
       return null
@@ -41,21 +35,39 @@ export class GroupInviteService implements GroupInviteServiceInterface {
       encrypted_group_key: dto.encryptedGroupKey,
       invite_type: dto.inviteType,
       permissions: dto.permissions,
-      created_at_timestamp: this.timer.getTimestampInSeconds(),
-      updated_at_timestamp: this.timer.getTimestampInSeconds(),
+      created_at_timestamp: this.timer.getTimestampInMicroseconds(),
+      updated_at_timestamp: this.timer.getTimestampInMicroseconds(),
     })
 
     return this.groupInviteRepository.create(groupInvite)
   }
 
-  getGroupInvitesForUser(dto: GetUserGroupInvitesDTO): Promise<GroupInvite[]> {
-    return this.groupInviteRepository.findAllForUser(dto)
+  async updateInvite(dto: UpdateInviteDTO): Promise<GroupInvite | null> {
+    const groupInvite = await this.groupInviteRepository.findByUuid(dto.inviteUuid)
+    if (!groupInvite || groupInvite.inviterUuid !== dto.originatorUuid) {
+      return null
+    }
+
+    groupInvite.inviterPublicKey = dto.inviterPublicKey
+    groupInvite.encryptedGroupKey = dto.encryptedGroupKey
+    if (dto.permissions) {
+      groupInvite.permissions = dto.permissions
+    }
+
+    return this.groupInviteRepository.update(groupInvite)
   }
 
-  async getGroupInvitesForGroup(dto: {
-    groupUuid: string
-    originatorUuid: string
-  }): Promise<GroupInvite[] | undefined> {
+  getInvitesForUser(dto: GetUserGroupInvitesDTO): Promise<GroupInvite[]> {
+    return this.groupInviteRepository.findAll(dto)
+  }
+
+  getOutboundInvitesForUser(dto: { userUuid: string }): Promise<GroupInvite[]> {
+    return this.groupInviteRepository.findAll({
+      inviterUuid: dto.userUuid,
+    })
+  }
+
+  async getInvitesForGroup(dto: { groupUuid: string; originatorUuid: string }): Promise<GroupInvite[] | undefined> {
     const group = await this.groupRepository.findByUuid(dto.groupUuid)
     if (!group) {
       return undefined
@@ -71,7 +83,7 @@ export class GroupInviteService implements GroupInviteServiceInterface {
     return users
   }
 
-  async acceptGroupInvite(dto: { originatorUuid: string; inviteUuid: string }): Promise<boolean> {
+  async acceptInvite(dto: { originatorUuid: string; inviteUuid: string }): Promise<boolean> {
     const invite = await this.groupInviteRepository.findByUuid(dto.inviteUuid)
     if (!invite) {
       return false
@@ -99,7 +111,7 @@ export class GroupInviteService implements GroupInviteServiceInterface {
     return true
   }
 
-  async declineGroupInvite(dto: { originatorUuid: string; inviteUuid: string }): Promise<boolean> {
+  async declineInvite(dto: { originatorUuid: string; inviteUuid: string }): Promise<boolean> {
     const invite = await this.groupInviteRepository.findByUuid(dto.inviteUuid)
     if (!invite) {
       return false
@@ -115,7 +127,7 @@ export class GroupInviteService implements GroupInviteServiceInterface {
     return true
   }
 
-  async deleteGroupInvite(dto: { originatorUuid: string; inviteUuid: string }): Promise<boolean> {
+  async deleteInvite(dto: { originatorUuid: string; inviteUuid: string }): Promise<boolean> {
     const invite = await this.groupInviteRepository.findByUuid(dto.inviteUuid)
     if (!invite) {
       return false
@@ -131,7 +143,7 @@ export class GroupInviteService implements GroupInviteServiceInterface {
     return true
   }
 
-  async deleteAllGroupInvitesForGroup(dto: { originatorUuid: string; groupUuid: string }): Promise<boolean> {
+  async deleteAllInvitesForGroup(dto: { originatorUuid: string; groupUuid: string }): Promise<boolean> {
     const group = await this.groupRepository.findByUuid(dto.groupUuid)
     if (!group || group.userUuid !== dto.originatorUuid) {
       return false

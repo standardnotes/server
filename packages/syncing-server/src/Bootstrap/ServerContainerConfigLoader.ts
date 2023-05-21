@@ -213,6 +213,7 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
           context.container.get(TYPES.SavedItemProjector),
           context.container.get(TYPES.GroupUserProjector),
           context.container.get(TYPES.ContactProjector),
+          context.container.get(TYPES.GroupProjector),
         )
       })
     container

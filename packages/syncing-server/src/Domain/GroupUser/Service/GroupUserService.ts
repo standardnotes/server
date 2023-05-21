@@ -26,8 +26,8 @@ export class GroupUserService implements GroupUserServiceInterface {
       user_uuid: dto.userUuid,
       group_uuid: dto.groupUuid,
       permissions: dto.permissions,
-      created_at_timestamp: this.timer.getTimestampInSeconds(),
-      updated_at_timestamp: this.timer.getTimestampInSeconds(),
+      created_at_timestamp: this.timer.getTimestampInMicroseconds(),
+      updated_at_timestamp: this.timer.getTimestampInMicroseconds(),
     })
 
     return this.groupUserRepository.create(groupUser)

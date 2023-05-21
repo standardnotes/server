@@ -54,10 +54,6 @@ export class TypeORMGroupUserRepository implements GroupUserRepositoryInterface 
 
     queryBuilder.where('group_user.user_uuid = :userUuid', { userUuid: query.userUuid })
 
-    if (query.includeSentAndReceived) {
-      queryBuilder.orWhere('group_user.sender_uuid = :userUuid', { userUuid: query.userUuid })
-    }
-
     if (query.lastSyncTime) {
       queryBuilder.andWhere('group_user.updated_at_timestamp > :lastSyncTime', {
         lastSyncTime: query.lastSyncTime,

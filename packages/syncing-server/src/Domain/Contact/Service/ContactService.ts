@@ -25,8 +25,8 @@ export class ContactService implements ContactServiceInterface {
         user_uuid: dto.userUuid,
         contact_uuid: dto.contactUuid,
         contact_public_key: dto.contactPublicKey,
-        created_at_timestamp: this.timer.getTimestampInSeconds(),
-        updated_at_timestamp: this.timer.getTimestampInSeconds(),
+        created_at_timestamp: this.timer.getTimestampInMicroseconds(),
+        updated_at_timestamp: this.timer.getTimestampInMicroseconds(),
       },
     })
 

@@ -43,7 +43,7 @@ export class SyncItems implements UseCaseInterface {
       cursorToken: dto.cursorToken,
     })
 
-    const groupInvites = await this.groupInviteService.getGroupInvitesForUser({
+    const groupInvites = await this.groupInviteService.getInvitesForUser({
       userUuid: dto.userUuid,
       lastSyncTime,
     })

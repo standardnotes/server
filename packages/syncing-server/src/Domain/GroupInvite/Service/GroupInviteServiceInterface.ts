@@ -1,27 +1,24 @@
 import { GroupInvite } from '../Model/GroupInvite'
-import { GroupInviteType } from '../Model/GroupInviteType'
+import { CreateInviteDTO } from './CreateInviteDTO'
 import { GetUserGroupInvitesDTO } from './GetUserGroupInvitesDTO'
+import { UpdateInviteDTO } from './UpdateInviteDTO'
 
 export interface GroupInviteServiceInterface {
-  createGroupInvite(dto: {
-    originatorUuid: string
-    groupUuid: string
-    userUuid: string
-    inviterPublicKey: string
-    encryptedGroupKey: string
-    inviteType: GroupInviteType
-    permissions: string
-  }): Promise<GroupInvite | null>
+  createInvite(dto: CreateInviteDTO): Promise<GroupInvite | null>
 
-  getGroupInvitesForUser(dto: GetUserGroupInvitesDTO): Promise<GroupInvite[]>
+  updateInvite(dto: UpdateInviteDTO): Promise<GroupInvite | null>
 
-  getGroupInvitesForGroup(dto: { groupUuid: string; originatorUuid: string }): Promise<GroupInvite[] | undefined>
+  getInvitesForUser(dto: GetUserGroupInvitesDTO): Promise<GroupInvite[]>
 
-  acceptGroupInvite(dto: { originatorUuid: string; inviteUuid: string }): Promise<boolean>
+  getInvitesForGroup(dto: { groupUuid: string; originatorUuid: string }): Promise<GroupInvite[] | undefined>
 
-  declineGroupInvite(dto: { originatorUuid: string; inviteUuid: string }): Promise<boolean>
+  getOutboundInvitesForUser(dto: { userUuid: string }): Promise<GroupInvite[]>
 
-  deleteGroupInvite(dto: { originatorUuid: string; groupUuid: string; inviteUuid: string }): Promise<boolean>
+  acceptInvite(dto: { originatorUuid: string; inviteUuid: string }): Promise<boolean>
 
-  deleteAllGroupInvitesForGroup(dto: { originatorUuid: string; groupUuid: string }): Promise<boolean>
+  declineInvite(dto: { originatorUuid: string; inviteUuid: string }): Promise<boolean>
+
+  deleteInvite(dto: { originatorUuid: string; groupUuid: string; inviteUuid: string }): Promise<boolean>
+
+  deleteAllInvitesForGroup(dto: { originatorUuid: string; groupUuid: string }): Promise<boolean>
 }

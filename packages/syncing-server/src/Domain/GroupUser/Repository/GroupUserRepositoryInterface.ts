@@ -7,7 +7,6 @@ export type GroupUserQuery = {
 export type GroupUserFindAllForUserQuery = {
   userUuid: string
   lastSyncTime?: number
-  includeSentAndReceived?: boolean
 }
 
 export type GroupUserFindAllForGroup = {

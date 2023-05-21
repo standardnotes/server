@@ -1,5 +1,13 @@
 import { Request, Response } from 'express'
-import { BaseHttpController, controller, httpPost, results, httpDelete, httpGet } from 'inversify-express-utils'
+import {
+  BaseHttpController,
+  controller,
+  httpPost,
+  results,
+  httpDelete,
+  httpGet,
+  httpPatch,
+} from 'inversify-express-utils'
 import TYPES from '../Bootstrap/Types'
 import { inject } from 'inversify'
 import { GroupInviteServiceInterface } from '../Domain/GroupInvite/Service/GroupInviteServiceInterface'
@@ -15,11 +23,11 @@ export class GroupInvitesController extends BaseHttpController {
   }
 
   @httpPost('/:groupUuid/invites', TYPES.AuthMiddleware)
-  public async createGroupInvitation(
+  public async createGroupInvite(
     request: Request,
     response: Response,
   ): Promise<results.NotFoundResult | results.JsonResult> {
-    const result = await this.groupInviteService.createGroupInvite({
+    const result = await this.groupInviteService.createInvite({
       originatorUuid: response.locals.user.uuid,
       groupUuid: request.params.groupUuid,
       userUuid: request.body.invitee_uuid,
@@ -30,18 +38,38 @@ export class GroupInvitesController extends BaseHttpController {
     })
 
     if (!result) {
-      return this.errorResponse(500, 'Could not add user to group')
+      return this.errorResponse(500, 'Could not create invite')
     }
 
-    return this.json({ groupInvite: this.groupInviteProjector.projectFull(result) })
+    return this.json({ invite: this.groupInviteProjector.projectFull(result) })
   }
 
-  @httpPost('/:groupUuid/invites/:inviteUuid', TYPES.AuthMiddleware)
+  @httpPatch('/:groupUuid/invites/:inviteUuid', TYPES.AuthMiddleware)
+  public async updateGroupInvite(
+    request: Request,
+    response: Response,
+  ): Promise<results.NotFoundResult | results.JsonResult> {
+    const result = await this.groupInviteService.updateInvite({
+      originatorUuid: response.locals.user.uuid,
+      inviteUuid: request.params.inviteUuid,
+      inviterPublicKey: request.body.inviter_public_key,
+      encryptedGroupKey: request.body.encrypted_group_key,
+      permissions: request.body.permissions,
+    })
+
+    if (!result) {
+      return this.errorResponse(500, 'Could not update invite')
+    }
+
+    return this.json({ invite: this.groupInviteProjector.projectFull(result) })
+  }
+
+  @httpPost('/:groupUuid/invites/:inviteUuid/accept', TYPES.AuthMiddleware)
   public async acceptGroupInvite(
     request: Request,
     response: Response,
   ): Promise<results.NotFoundResult | results.JsonResult> {
-    const result = await this.groupInviteService.acceptGroupInvite({
+    const result = await this.groupInviteService.acceptInvite({
       originatorUuid: response.locals.user.uuid,
       inviteUuid: request.params.inviteUuid,
     })
@@ -53,12 +81,12 @@ export class GroupInvitesController extends BaseHttpController {
     return this.json({ success: true })
   }
 
-  @httpDelete('/:groupUuid/invites/:inviteUuid', TYPES.AuthMiddleware)
+  @httpPost('/:groupUuid/invites/:inviteUuid/decline', TYPES.AuthMiddleware)
   public async declineGroupInvite(
     request: Request,
     response: Response,
   ): Promise<results.NotFoundResult | results.JsonResult> {
-    const result = await this.groupInviteService.declineGroupInvite({
+    const result = await this.groupInviteService.declineInvite({
       originatorUuid: response.locals.user.uuid,
       inviteUuid: request.params.inviteUuid,
     })
@@ -70,41 +98,59 @@ export class GroupInvitesController extends BaseHttpController {
     return this.json({ success: true })
   }
 
-  @httpGet('/invites', TYPES.AuthMiddleware)
-  public async getAllInvitesForCurrentUser(
+  @httpGet('/invites/outbound', TYPES.AuthMiddleware)
+  public async getOutboundUserInvites(
     _request: Request,
     response: Response,
   ): Promise<results.NotFoundResult | results.JsonResult> {
-    const result = await this.groupInviteService.getGroupInvitesForUser({
+    const result = await this.groupInviteService.getOutboundInvitesForUser({
       userUuid: response.locals.user.uuid,
     })
 
     if (!result) {
-      return this.errorResponse(500, 'Could not get group users')
+      return this.errorResponse(500, 'Could not get group invites')
     }
 
     const projected = result.map((invite) => this.groupInviteProjector.projectFull(invite))
 
-    return this.json({ users: projected })
+    return this.json({ invites: projected })
+  }
+
+  @httpGet('/invites', TYPES.AuthMiddleware)
+  public async getUserInvites(
+    _request: Request,
+    response: Response,
+  ): Promise<results.NotFoundResult | results.JsonResult> {
+    const result = await this.groupInviteService.getInvitesForUser({
+      userUuid: response.locals.user.uuid,
+    })
+
+    if (!result) {
+      return this.errorResponse(500, 'Could not get group invites')
+    }
+
+    const projected = result.map((invite) => this.groupInviteProjector.projectFull(invite))
+
+    return this.json({ invites: projected })
   }
 
   @httpGet('/:groupUuid/invites', TYPES.AuthMiddleware)
-  public async getGroupInvitesForGroup(
+  public async getGroupInvites(
     request: Request,
     response: Response,
   ): Promise<results.NotFoundResult | results.JsonResult> {
-    const result = await this.groupInviteService.getGroupInvitesForGroup({
+    const result = await this.groupInviteService.getInvitesForGroup({
       originatorUuid: response.locals.user.uuid,
       groupUuid: request.params.groupUuid,
     })
 
     if (!result) {
-      return this.errorResponse(500, 'Could not get group users')
+      return this.errorResponse(500, 'Could not get group invites')
     }
 
     const projected = result.map((invite) => this.groupInviteProjector.projectFull(invite))
 
-    return this.json({ users: projected })
+    return this.json({ invites: projected })
   }
 
   @httpDelete('/:groupUuid/invites/:inviteUuid', TYPES.AuthMiddleware)
@@ -112,14 +158,14 @@ export class GroupInvitesController extends BaseHttpController {
     request: Request,
     response: Response,
   ): Promise<results.NotFoundResult | results.JsonResult> {
-    const result = await this.groupInviteService.deleteGroupInvite({
+    const result = await this.groupInviteService.deleteInvite({
       originatorUuid: response.locals.user.uuid,
       groupUuid: request.params.groupUuid,
       inviteUuid: request.params.inviteUuid,
     })
 
     if (!result) {
-      return this.errorResponse(500, 'Could not delete user')
+      return this.errorResponse(500, 'Could not delete invite')
     }
 
     return this.json({ success: true })

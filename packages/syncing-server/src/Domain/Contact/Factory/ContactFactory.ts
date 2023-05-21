@@ -13,7 +13,7 @@ export class ContactFactory implements ContactFactoryInterface {
     newContact.contactUuid = dto.contactHash.contact_uuid
     newContact.contactPublicKey = dto.contactHash.contact_public_key
 
-    const now = this.timer.getTimestampInSeconds()
+    const now = this.timer.getTimestampInMicroseconds()
     newContact.updatedAtTimestamp = now
     newContact.createdAtTimestamp = now
 

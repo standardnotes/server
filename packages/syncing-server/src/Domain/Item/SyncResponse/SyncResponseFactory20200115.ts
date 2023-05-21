@@ -11,6 +11,8 @@ import { SyncResponseFactoryInterface } from './SyncResponseFactoryInterface'
 import { SavedItemProjection } from '../../../Projection/SavedItemProjection'
 import { ContactProjection } from '../../../Projection/ContactProjection'
 import { GroupInviteProjection } from '../../../Projection/GroupInviteProjection'
+import { GroupProjection } from '../../../Projection/GroupProjection'
+import { Group } from '../../Group/Model/Group'
 
 export class SyncResponseFactory20200115 implements SyncResponseFactoryInterface {
   constructor(
@@ -19,6 +21,7 @@ export class SyncResponseFactory20200115 implements SyncResponseFactoryInterface
     private savedItemProjector: ProjectorInterface<Item, SavedItemProjection>,
     private groupInviteProjector: ProjectorInterface<GroupInvite, GroupInviteProjection>,
     private contactProjector: ProjectorInterface<Contact, ContactProjection>,
+    private groupProjector: ProjectorInterface<Group, GroupProjection>,
   ) {}
 
   async createResponse(syncItemsResponse: SyncItemsResponse): Promise<SyncResponse20200115> {
@@ -37,6 +40,11 @@ export class SyncResponseFactory20200115 implements SyncResponseFactoryInterface
       conflicts.push(this.itemConflictProjector.projectFull(itemConflict))
     }
 
+    const groups = []
+    for (const group of syncItemsResponse.groups) {
+      groups.push(this.groupProjector.projectFull(group))
+    }
+
     const groupInvites = []
     for (const groupInvite of syncItemsResponse.groupInvites) {
       groupInvites.push(this.groupInviteProjector.projectFull(groupInvite))
@@ -53,6 +61,7 @@ export class SyncResponseFactory20200115 implements SyncResponseFactoryInterface
       conflicts,
       sync_token: syncItemsResponse.syncToken,
       cursor_token: syncItemsResponse.cursorToken,
+      groups,
       group_invites: groupInvites,
       contacts,
     }

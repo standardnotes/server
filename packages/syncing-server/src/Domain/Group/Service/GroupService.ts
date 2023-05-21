@@ -24,8 +24,8 @@ export class GroupService implements GroupServiceInterface {
         uuid: uuidv4(),
         user_uuid: dto.userUuid,
         specified_items_key_uuid: dto.specifiedItemsKeyUuid,
-        created_at_timestamp: this.timer.getTimestampInSeconds(),
-        updated_at_timestamp: this.timer.getTimestampInSeconds(),
+        created_at_timestamp: this.timer.getTimestampInMicroseconds(),
+        updated_at_timestamp: this.timer.getTimestampInMicroseconds(),
       },
     })
 
@@ -51,7 +51,7 @@ export class GroupService implements GroupServiceInterface {
     }
 
     group.specifiedItemsKeyUuid = dto.specifiedItemsKeyUuid
-    group.updatedAtTimestamp = this.timer.getTimestampInSeconds()
+    group.updatedAtTimestamp = this.timer.getTimestampInMicroseconds()
 
     const savedGroup = await this.groupRepository.save(group)
 
@@ -69,7 +69,7 @@ export class GroupService implements GroupServiceInterface {
       groupUuid: dto.groupUuid,
       originatorUuid: dto.originatorUuid,
     })
-    await this.groupInviteService.deleteAllGroupInvitesForGroup({
+    await this.groupInviteService.deleteAllInvitesForGroup({
       groupUuid: dto.groupUuid,
       originatorUuid: dto.originatorUuid,
     })

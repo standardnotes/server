@@ -12,7 +12,7 @@ export class GroupFactory implements GroupFactoryInterface {
     newGroup.userUuid = dto.userUuid
     newGroup.specifiedItemsKeyUuid = dto.groupHash.specified_items_key_uuid
 
-    const now = this.timer.getTimestampInSeconds()
+    const now = this.timer.getTimestampInMicroseconds()
     newGroup.updatedAtTimestamp = now
     newGroup.createdAtTimestamp = now
 

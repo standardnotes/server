@@ -13,7 +13,7 @@ export class TypeORMGroupInviteRepository implements GroupInviteRepositoryInterf
     return this.ormRepository.save(groupInvite)
   }
 
-  async save(groupInvite: GroupInvite): Promise<GroupInvite> {
+  async update(groupInvite: GroupInvite): Promise<GroupInvite> {
     return this.ormRepository.save(groupInvite)
   }
 
@@ -45,28 +45,24 @@ export class TypeORMGroupInviteRepository implements GroupInviteRepositoryInterf
       .getMany()
   }
 
-  async findAllForUser(query: GroupInviteFindAllForUserQuery): Promise<GroupInvite[]> {
+  async findAll(query: GroupInviteFindAllForUserQuery): Promise<GroupInvite[]> {
     return this.createFindAllQueryBuilder(query).getMany()
   }
 
   private createFindAllQueryBuilder(query: GroupInviteFindAllForUserQuery): SelectQueryBuilder<GroupInvite> {
     const queryBuilder = this.ormRepository.createQueryBuilder('group_invite')
 
-    queryBuilder.where('group_invite.user_uuid = :userUuid', { userUuid: query.userUuid })
-
-    if (query.includeSentAndReceived) {
-      queryBuilder.orWhere('group_invite.sender_uuid = :userUuid', { userUuid: query.userUuid })
+    if (query.userUuid) {
+      queryBuilder.where('group_invite.user_uuid = :userUuid', { userUuid: query.userUuid })
+    } else if (query.inviterUuid) {
+      queryBuilder.where('group_invite.inviter_uuid = :inviterUuid', {
+        inviterUuid: query.inviterUuid,
+      })
     }
 
     if (query.lastSyncTime) {
       queryBuilder.andWhere('group_invite.updated_at_timestamp > :lastSyncTime', {
         lastSyncTime: query.lastSyncTime,
-      })
-    }
-
-    if (query.inviterUuid) {
-      queryBuilder.andWhere('group_invite.inviter_uuid = :inviterUuid', {
-        inviterUuid: query.inviterUuid,
       })
     }
 
