@@ -69,7 +69,10 @@ export class ChangeCredentials implements UseCaseInterface {
     let userCredentialsChangedEvent: UserCredentialsChangedEvent | undefined = undefined
     if (dto.publicKey && dto.user.publicKey !== dto.publicKey) {
       dto.user.publicKey = dto.publicKey
-      userCredentialsChangedEvent = this.domainEventFactory.createCredentialsChangedEvent(dto.user.uuid, dto.publicKey)
+      userCredentialsChangedEvent = this.domainEventFactory.createUserCredentialsChangedEvent(
+        dto.user.uuid,
+        dto.publicKey,
+      )
     }
 
     if (dto.encryptedPrivateKey) {

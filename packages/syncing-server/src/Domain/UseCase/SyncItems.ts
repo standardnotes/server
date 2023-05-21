@@ -6,10 +6,12 @@ import { SyncItemsDTO } from './SyncItemsDTO'
 import { SyncItemsResponse } from './SyncItemsResponse'
 import { UseCaseInterface } from './UseCaseInterface'
 import { GroupInviteServiceInterface } from '../GroupInvite/Service/GroupInviteServiceInterface'
+import { GroupServiceInterface } from '../Group/Service/GroupServiceInterface'
 
 export class SyncItems implements UseCaseInterface {
   constructor(
     private itemService: ItemServiceInterface,
+    private groupService: GroupServiceInterface,
     private groupInviteService: GroupInviteServiceInterface,
     private contactService: ContactServiceInterface,
   ) {}
@@ -43,6 +45,11 @@ export class SyncItems implements UseCaseInterface {
       cursorToken: dto.cursorToken,
     })
 
+    const groups = await this.groupService.getGroups({
+      userUuid: dto.userUuid,
+      lastSyncTime,
+    })
+
     const groupInvites = await this.groupInviteService.getInvitesForUser({
       userUuid: dto.userUuid,
       lastSyncTime,
@@ -59,6 +66,7 @@ export class SyncItems implements UseCaseInterface {
       savedItems: saveItemsResult.savedItems,
       conflicts: saveItemsResult.conflicts,
       cursorToken: getItemsResult.cursorToken,
+      groups,
       groupInvites,
       contacts,
     }

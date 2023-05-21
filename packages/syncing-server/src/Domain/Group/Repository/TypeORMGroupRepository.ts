@@ -35,6 +35,12 @@ export class TypeORMGroupRepository implements GroupsRepositoryInterface {
 
     queryBuilder.where('group.user_uuid = :userUuid', { userUuid: query.userUuid })
 
+    if (query.lastSyncTime) {
+      queryBuilder.andWhere('group.updated_at_timestamp > :lastSyncTime', {
+        lastSyncTime: query.lastSyncTime,
+      })
+    }
+
     return queryBuilder
   }
 }

@@ -8,4 +8,6 @@ export interface GroupServiceInterface {
   deleteGroup(dto: { groupUuid: string; originatorUuid: string }): Promise<boolean>
 
   getGroup(dto: { groupUuid: string }): Promise<Group | null>
+
+  getGroups(dto: { userUuid: string; lastSyncTime?: number }): Promise<Group[]>
 }

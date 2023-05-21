@@ -1,3 +1,4 @@
+import { GroupUserPermission } from '../../GroupUser/Model/GroupUserPermission'
 import { GroupInviteType } from '../Model/GroupInviteType'
 
 export type GroupInviteHash = {
@@ -8,7 +9,7 @@ export type GroupInviteHash = {
   inviter_public_key: string
   encrypted_group_key: string
   invite_type: GroupInviteType
-  permissions: string
+  permissions: GroupUserPermission
   created_at_timestamp?: number
   updated_at_timestamp?: number
 }

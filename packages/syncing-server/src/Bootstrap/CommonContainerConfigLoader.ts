@@ -1,3 +1,6 @@
+import { TypeORMGroupInviteRepository } from './../Domain/GroupInvite/Repository/TypeORMGroupInviteRepository'
+import { Contact } from './../Domain/Contact/Model/Contact'
+import { GroupInvite } from './../Domain/GroupInvite/Model/GroupInvite'
 import { GroupUser } from '../Domain/GroupUser/Model/GroupUser'
 import { Group } from './../Domain/Group/Model/Group'
 import { TypeORMGroupRepository } from './../Domain/Group/Repository/TypeORMGroupRepository'
@@ -31,6 +34,13 @@ import { GroupUserProjection } from '../Projection/GroupUserProjection'
 import { GroupUserProjector } from '../Projection/GroupUserProjector'
 import { GroupProjection } from '../Projection/GroupProjection'
 import { GroupProjector } from '../Projection/GroupProjector'
+import { GroupInviteProjection } from '../Projection/GroupInviteProjection'
+import { GroupInviteProjector } from '../Projection/GroupInviteProjector'
+import { ContactProjection } from '../Projection/ContactProjection'
+import { ContactProjector } from '../Projection/ContactProjector'
+import { GroupInviteRepositoryInterface } from '../Domain/GroupInvite/Repository/GroupInviteRepositoryInterface'
+import { ContactsRepositoryInterface } from '../Domain/Contact/Repository/ContactRepositoryInterface'
+import { TypeORMContactRepository } from '../Domain/Contact/Repository/TypeORMContactRepository'
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
 
@@ -102,6 +112,16 @@ export class CommonContainerConfigLoader {
       .toDynamicValue((context: interfaces.Context) => {
         return new TypeORMGroupUserRepository(context.container.get(TYPES.ORMGroupUserRepository))
       })
+    container
+      .bind<GroupInviteRepositoryInterface>(TYPES.GroupInviteRepository)
+      .toDynamicValue((context: interfaces.Context) => {
+        return new TypeORMGroupInviteRepository(context.container.get(TYPES.ORMGroupInviteRepository))
+      })
+    container
+      .bind<ContactsRepositoryInterface>(TYPES.ContactRepository)
+      .toDynamicValue((context: interfaces.Context) => {
+        return new TypeORMContactRepository(context.container.get(TYPES.ORMContactRepository))
+      })
 
     // ORM
     container.bind<Repository<Item>>(TYPES.ORMItemRepository).toDynamicValue(() => AppDataSource.getRepository(Item))
@@ -112,6 +132,12 @@ export class CommonContainerConfigLoader {
     container
       .bind<Repository<GroupUser>>(TYPES.ORMGroupUserRepository)
       .toDynamicValue(() => AppDataSource.getRepository(GroupUser))
+    container
+      .bind<Repository<GroupInvite>>(TYPES.ORMGroupInviteRepository)
+      .toDynamicValue(() => AppDataSource.getRepository(GroupInvite))
+    container
+      .bind<Repository<Contact>>(TYPES.ORMContactRepository)
+      .toDynamicValue(() => AppDataSource.getRepository(Contact))
 
     // Projectors
     container
@@ -119,13 +145,19 @@ export class CommonContainerConfigLoader {
       .toDynamicValue((context: interfaces.Context) => {
         return new ItemProjector(context.container.get(TYPES.Timer))
       })
-    container
-      .bind<ProjectorInterface<GroupUser, GroupUserProjection>>(TYPES.GroupUserProjector)
-      .toDynamicValue(() => {
-        return new GroupUserProjector()
-      })
     container.bind<ProjectorInterface<Group, GroupProjection>>(TYPES.GroupProjector).toDynamicValue(() => {
       return new GroupProjector()
+    })
+    container.bind<ProjectorInterface<GroupUser, GroupUserProjection>>(TYPES.GroupUserProjector).toDynamicValue(() => {
+      return new GroupUserProjector()
+    })
+    container
+      .bind<ProjectorInterface<GroupInvite, GroupInviteProjection>>(TYPES.GroupInviteProjector)
+      .toDynamicValue(() => {
+        return new GroupInviteProjector()
+      })
+    container.bind<ProjectorInterface<Contact, ContactProjection>>(TYPES.ContactProjector).toDynamicValue(() => {
+      return new ContactProjector()
     })
 
     // env vars

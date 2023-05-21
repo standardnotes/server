@@ -6,6 +6,7 @@ export type GroupQuery = {
 
 export type UserGroupsQuery = {
   userUuid: string
+  lastSyncTime?: number
 }
 
 export interface GroupsRepositoryInterface {

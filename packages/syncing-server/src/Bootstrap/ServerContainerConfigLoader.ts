@@ -1,3 +1,4 @@
+import { ContactFactory } from './../Domain/Contact/Factory/ContactFactory'
 import {
   DomainEventHandlerInterface,
   DomainEventMessageHandlerInterface,
@@ -59,6 +60,9 @@ import { UserCredentialsChangedEventHandler } from '../Domain/Handler/UserCreden
 import { GroupInviteServiceInterface } from '../Domain/GroupInvite/Service/GroupInviteServiceInterface'
 import { GroupInviteService } from '../Domain/GroupInvite/Service/GroupInviteService'
 import { GroupInviteFactory } from '../Domain/GroupInvite/Factory/GroupInviteFactory'
+import { ContactServiceInterface } from '../Domain/Contact/Service/ContactServiceInterface'
+import { ContactService } from '../Domain/Contact/Service/ContactService'
+import { ContactFactoryInterface } from '../Domain/Contact/Factory/ContactFactoryInterface'
 
 export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
   private readonly DEFAULT_CONTENT_SIZE_TRANSFER_LIMIT = 10_000_000
@@ -110,6 +114,7 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
     container.bind<SyncItems>(TYPES.SyncItems).toDynamicValue((context: interfaces.Context) => {
       return new SyncItems(
         context.container.get(TYPES.ItemService),
+        context.container.get(TYPES.GroupService),
         context.container.get(TYPES.GroupUserService),
         context.container.get(TYPES.ContactService),
       )
@@ -198,6 +203,13 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
           context.container.get(TYPES.Timer),
         )
       })
+    container.bind<ContactServiceInterface>(TYPES.ContactService).toDynamicValue((context: interfaces.Context) => {
+      return new ContactService(
+        context.container.get(TYPES.ContactRepository),
+        context.container.get(TYPES.ContactFactory),
+        context.container.get(TYPES.Timer),
+      )
+    })
 
     container
       .bind<SyncResponseFactory20161215>(TYPES.SyncResponseFactory20161215)
@@ -240,12 +252,16 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
     container.bind<GroupInviteFactory>(TYPES.GroupInviteFactory).toDynamicValue((context: interfaces.Context) => {
       return new GroupInviteFactory(context.container.get(TYPES.Timer))
     })
+    container.bind<ContactFactoryInterface>(TYPES.ContactFactory).toDynamicValue((context: interfaces.Context) => {
+      return new ContactFactory(context.container.get(TYPES.Timer))
+    })
 
     container
       .bind<UserCredentialsChangedEventHandler>(TYPES.UserCredentialsChangedEventHandler)
       .toDynamicValue((context: interfaces.Context) => {
         return new UserCredentialsChangedEventHandler(
           context.container.get(TYPES.ContactRepository),
+          context.container.get(TYPES.GroupInviteRepository),
           context.container.get(TYPES.Timer),
         )
       })

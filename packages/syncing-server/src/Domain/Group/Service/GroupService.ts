@@ -40,6 +40,10 @@ export class GroupService implements GroupServiceInterface {
     return group
   }
 
+  getGroups(dto: { userUuid: string; lastSyncTime?: number }): Promise<Group[]> {
+    return this.groupRepository.findAll({ userUuid: dto.userUuid, lastSyncTime: dto.lastSyncTime })
+  }
+
   async updateGroup(dto: {
     groupUuid: string
     originatorUuid: string

@@ -6,6 +6,7 @@ import { GroupUserRepositoryInterface } from '../Repository/GroupUserRepositoryI
 import { GroupUserServiceInterface } from './GroupUserServiceInterface'
 import { GetGroupUsersDTO } from './GetGroupUsersDTO'
 import { GroupsRepositoryInterface } from '../../Group/Repository/GroupRepositoryInterface'
+import { GroupUserPermission } from '../Model/GroupUserPermission'
 
 export class GroupUserService implements GroupUserServiceInterface {
   constructor(
@@ -15,7 +16,11 @@ export class GroupUserService implements GroupUserServiceInterface {
     private timer: TimerInterface,
   ) {}
 
-  async addGroupUser(dto: { groupUuid: string; userUuid: string; permissions: string }): Promise<GroupUser | null> {
+  async addGroupUser(dto: {
+    groupUuid: string
+    userUuid: string
+    permissions: GroupUserPermission
+  }): Promise<GroupUser | null> {
     const group = await this.groupRepository.findByUuid(dto.groupUuid)
     if (!group) {
       return null
