@@ -25,7 +25,7 @@ import { GetUser } from '../Domain/UseCase/GetUser'
 export class UsersController extends BaseHttpController {
   constructor(
     @inject(TYPES.UpdateUser) private updateUser: UpdateUser,
-    @inject(TYPES.UpdateUser) private getUser: GetUser,
+    @inject(TYPES.GetUser) private getUser: GetUser,
     @inject(TYPES.GetUserKeyParams) private getUserKeyParams: GetUserKeyParams,
     @inject(TYPES.DeleteAccount) private doDeleteAccount: DeleteAccount,
     @inject(TYPES.GetUserSubscription) private doGetUserSubscription: GetUserSubscription,
@@ -175,6 +175,7 @@ export class UsersController extends BaseHttpController {
     }
 
     return this.json({
+      uuid: result.user.uuid,
       email: result.user.email,
       public_key: result.user.publicKey,
       encrypted_private_key: result.user.encryptedPrivateKey,

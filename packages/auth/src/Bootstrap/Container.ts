@@ -226,6 +226,7 @@ import { TypeORMEphemeralSessionRepository } from '../Infra/TypeORM/TypeORMEphem
 import { TypeORMOfflineSubscriptionTokenRepository } from '../Infra/TypeORM/TypeORMOfflineSubscriptionTokenRepository'
 import { TypeORMPKCERepository } from '../Infra/TypeORM/TypeORMPKCERepository'
 import { TypeORMSubscriptionTokenRepository } from '../Infra/TypeORM/TypeORMSubscriptionTokenRepository'
+import { GetUser } from '../Domain/UseCase/GetUser'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -729,6 +730,7 @@ export class ContainerConfigLoader {
       )
     container.bind<GetUserKeyParams>(TYPES.GetUserKeyParams).to(GetUserKeyParams)
     container.bind<UpdateUser>(TYPES.UpdateUser).to(UpdateUser)
+    container.bind<GetUser>(TYPES.GetUser).to(GetUser)
     container.bind<Register>(TYPES.Register).to(Register)
     container.bind<GetActiveSessionsForUser>(TYPES.GetActiveSessionsForUser).to(GetActiveSessionsForUser)
     container.bind<DeletePreviousSessionsForUser>(TYPES.DeletePreviousSessionsForUser).to(DeletePreviousSessionsForUser)
