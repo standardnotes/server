@@ -31,7 +31,6 @@ export class OwnershipFilter implements ItemSaveRuleInterface {
 
     if (itemBelongsToADifferentUser || isItemBeingSetForGroup || isItemBeingRemovedFromGroup) {
       const groupAuthorization = await this.groupAuthorizationForItem(dto.userUuid, dto.itemHash)
-
       if (!groupAuthorization) {
         return failValue
       }
@@ -42,6 +41,10 @@ export class OwnershipFilter implements ItemSaveRuleInterface {
 
       if (isItemBeingRemovedFromGroup) {
         return groupAuthorization === 'admin' ? successValue : failValue
+      }
+
+      if (dto.itemHash.content_type === ContentType.SharedItemsKey && groupAuthorization !== 'admin') {
+        return failValue
       }
 
       const usingValidKey = await this.groupItemIsBeingSavedWithValidItemsKey(dto.itemHash)
