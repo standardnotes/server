@@ -18,14 +18,15 @@ export class GroupService implements GroupServiceInterface {
   ) {}
 
   async createGroup(dto: { userUuid: string; specifiedItemsKeyUuid: string }): Promise<Group | null> {
+    const timestamp = this.timer.getTimestampInMicroseconds()
     const group = this.groupFactory.create({
       userUuid: dto.userUuid,
       groupHash: {
         uuid: uuidv4(),
         user_uuid: dto.userUuid,
         specified_items_key_uuid: dto.specifiedItemsKeyUuid,
-        created_at_timestamp: this.timer.getTimestampInMicroseconds(),
-        updated_at_timestamp: this.timer.getTimestampInMicroseconds(),
+        created_at_timestamp: timestamp,
+        updated_at_timestamp: timestamp,
       },
     })
 

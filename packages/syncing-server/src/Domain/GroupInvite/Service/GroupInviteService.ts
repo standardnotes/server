@@ -26,6 +26,8 @@ export class GroupInviteService implements GroupInviteServiceInterface {
       return null
     }
 
+    const timestamp = this.timer.getTimestampInMicroseconds()
+
     const groupInvite = this.groupInviteFactory.create({
       uuid: uuidv4(),
       user_uuid: dto.userUuid,
@@ -35,8 +37,8 @@ export class GroupInviteService implements GroupInviteServiceInterface {
       encrypted_group_key: dto.encryptedGroupKey,
       invite_type: dto.inviteType,
       permissions: dto.permissions,
-      created_at_timestamp: this.timer.getTimestampInMicroseconds(),
-      updated_at_timestamp: this.timer.getTimestampInMicroseconds(),
+      created_at_timestamp: timestamp,
+      updated_at_timestamp: timestamp,
     })
 
     return this.groupInviteRepository.create(groupInvite)
@@ -53,8 +55,9 @@ export class GroupInviteService implements GroupInviteServiceInterface {
     if (dto.permissions) {
       groupInvite.permissions = dto.permissions
     }
+    groupInvite.updatedAtTimestamp = this.timer.getTimestampInMicroseconds()
 
-    return this.groupInviteRepository.update(groupInvite)
+    return this.groupInviteRepository.save(groupInvite)
   }
 
   getInvitesForUser(dto: GetUserGroupInvitesDTO): Promise<GroupInvite[]> {

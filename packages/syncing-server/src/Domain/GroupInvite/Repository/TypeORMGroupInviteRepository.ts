@@ -13,7 +13,7 @@ export class TypeORMGroupInviteRepository implements GroupInviteRepositoryInterf
     return this.ormRepository.save(groupInvite)
   }
 
-  async update(groupInvite: GroupInvite): Promise<GroupInvite> {
+  async save(groupInvite: GroupInvite): Promise<GroupInvite> {
     return this.ormRepository.save(groupInvite)
   }
 

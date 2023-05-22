@@ -17,7 +17,7 @@ export type GroupInviteFindAllForGroup = {
 export interface GroupInviteRepositoryInterface {
   findByUuid(groupInviteUuid: string): Promise<GroupInvite | null>
   create(group: GroupInvite): Promise<GroupInvite>
-  update(groupInvite: GroupInvite): Promise<GroupInvite>
+  save(groupInvite: GroupInvite): Promise<GroupInvite>
   remove(group: GroupInvite): Promise<GroupInvite>
   findAll(query: GroupInviteFindAllForUserQuery): Promise<GroupInvite[]>
   findAllForGroup(query: GroupInviteFindAllForGroup): Promise<GroupInvite[]>

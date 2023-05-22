@@ -26,13 +26,14 @@ export class GroupUserService implements GroupUserServiceInterface {
       return null
     }
 
+    const timestamp = this.timer.getTimestampInMicroseconds()
     const groupUser = this.groupUserFactory.create({
       uuid: uuidv4(),
       user_uuid: dto.userUuid,
       group_uuid: dto.groupUuid,
       permissions: dto.permissions,
-      created_at_timestamp: this.timer.getTimestampInMicroseconds(),
-      updated_at_timestamp: this.timer.getTimestampInMicroseconds(),
+      created_at_timestamp: timestamp,
+      updated_at_timestamp: timestamp,
     })
 
     return this.groupUserRepository.create(groupUser)
