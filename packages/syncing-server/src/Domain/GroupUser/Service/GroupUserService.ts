@@ -42,6 +42,10 @@ export class GroupUserService implements GroupUserServiceInterface {
     return this.groupUserRepository.findAllForUser(dto)
   }
 
+  getUserForGroup(dto: { userUuid: string; groupUuid: string }): Promise<GroupUser | null> {
+    return this.groupUserRepository.findByUserUuidAndGroupUuid(dto.userUuid, dto.groupUuid)
+  }
+
   async getGroupUsersForGroup(dto: {
     groupUuid: string
     originatorUuid: string

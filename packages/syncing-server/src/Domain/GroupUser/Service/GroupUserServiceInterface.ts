@@ -11,6 +11,8 @@ export interface GroupUserServiceInterface {
 
   getAllGroupUsersForUser(dto: GetGroupUsersDTO): Promise<GroupUser[]>
 
+  getUserForGroup(dto: { userUuid: string; groupUuid: string }): Promise<GroupUser | null>
+
   getGroupUsersForGroup(dto: {
     groupUuid: string
     originatorUuid: string

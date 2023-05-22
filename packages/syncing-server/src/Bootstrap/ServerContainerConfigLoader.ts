@@ -115,7 +115,7 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
       return new SyncItems(
         context.container.get(TYPES.ItemService),
         context.container.get(TYPES.GroupService),
-        context.container.get(TYPES.GroupUserService),
+        context.container.get(TYPES.GroupInviteService),
         context.container.get(TYPES.ContactService),
       )
     })
@@ -223,7 +223,7 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
           context.container.get(TYPES.ItemProjector),
           context.container.get(TYPES.ItemConflictProjector),
           context.container.get(TYPES.SavedItemProjector),
-          context.container.get(TYPES.GroupUserProjector),
+          context.container.get(TYPES.GroupInviteProjector),
           context.container.get(TYPES.ContactProjector),
           context.container.get(TYPES.GroupProjector),
         )

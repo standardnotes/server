@@ -7,7 +7,7 @@ import { ProjectorInterface } from '../Projection/ProjectorInterface'
 import { Contact } from '../Domain/Contact/Model/Contact'
 import { ContactProjection } from '../Projection/ContactProjection'
 
-@controller('/contacts')
+@controller('/contacts', TYPES.AuthMiddleware)
 export class ContactsController extends BaseHttpController {
   constructor(
     @inject(TYPES.ContactService) private contactService: ContactServiceInterface,
@@ -16,7 +16,7 @@ export class ContactsController extends BaseHttpController {
     super()
   }
 
-  @httpPost('/', TYPES.AuthMiddleware)
+  @httpPost('/')
   public async createContact(
     request: Request,
     response: Response,
@@ -36,7 +36,7 @@ export class ContactsController extends BaseHttpController {
     })
   }
 
-  @httpDelete('/:contactUuid', TYPES.AuthMiddleware)
+  @httpDelete('/:contactUuid')
   public async deleteContact(
     request: Request,
     response: Response,

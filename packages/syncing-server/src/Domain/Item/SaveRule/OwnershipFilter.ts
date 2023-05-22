@@ -6,6 +6,7 @@ import { GroupUserServiceInterface } from '../../GroupUser/Service/GroupUserServ
 import { ItemHash } from '../ItemHash'
 import { GroupUserPermission } from '../../GroupUser/Model/GroupUserPermission'
 import { GroupServiceInterface } from '../../Group/Service/GroupServiceInterface'
+import { ContentType } from '@standardnotes/common'
 
 export class OwnershipFilter implements ItemSaveRuleInterface {
   constructor(private groupService: GroupServiceInterface, private groupUserService: GroupUserServiceInterface) {}
@@ -52,6 +53,11 @@ export class OwnershipFilter implements ItemSaveRuleInterface {
   }
 
   private async groupItemIsBeingSavedWithValidItemsKey(itemHash: ItemHash): Promise<boolean> {
+    const isItemNotEncryptedByItemsKey = itemHash.content_type === ContentType.SharedItemsKey
+    if (isItemNotEncryptedByItemsKey) {
+      return true
+    }
+
     const group = await this.groupService.getGroup({ groupUuid: itemHash.group_uuid as string })
 
     if (!group) {
@@ -65,12 +71,13 @@ export class OwnershipFilter implements ItemSaveRuleInterface {
     userUuid: string,
     itemHash: ItemHash,
   ): Promise<GroupUserPermission | undefined> {
-    const groupUsers = await this.groupUserService.getAllGroupUsersForUser({ userUuid })
+    const groupUser = await this.groupUserService.getUserForGroup({
+      userUuid,
+      groupUuid: itemHash.group_uuid as string,
+    })
 
-    for (const groupUser of groupUsers) {
-      if (itemHash.group_uuid === groupUser.groupUuid) {
-        return groupUser.permissions
-      }
+    if (groupUser) {
+      return groupUser.permissions
     }
 
     return undefined
