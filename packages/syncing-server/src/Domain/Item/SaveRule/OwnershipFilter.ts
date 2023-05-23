@@ -21,35 +21,49 @@ export class OwnershipFilter implements ItemSaveRuleInterface {
       passed: true,
     }
 
-    const failValue = {
+    const groupReadonlyFail = {
       passed: false,
       conflict: {
         unsavedItem: dto.itemHash,
-        type: ConflictType.UuidConflict,
+        type: ConflictType.ReadOnlyError,
       },
     }
 
     if (itemBelongsToADifferentUser || isItemBeingSetForGroup || isItemBeingRemovedFromGroup) {
       const groupAuthorization = await this.groupAuthorizationForItem(dto.userUuid, dto.itemHash)
       if (!groupAuthorization) {
-        return failValue
+        return {
+          passed: false,
+          conflict: {
+            unsavedItem: dto.itemHash,
+            type: ConflictType.UuidConflict,
+          },
+        }
       }
 
       if (groupAuthorization === 'read') {
-        return failValue
+        return groupReadonlyFail
       }
 
       if (isItemBeingRemovedFromGroup) {
-        return groupAuthorization === 'admin' ? successValue : failValue
+        return groupAuthorization === 'admin' ? successValue : groupReadonlyFail
       }
 
       if (dto.itemHash.content_type === ContentType.SharedItemsKey && groupAuthorization !== 'admin') {
-        return failValue
+        return groupReadonlyFail
       }
 
       const usingValidKey = await this.groupItemIsBeingSavedWithValidItemsKey(dto.itemHash)
 
-      return usingValidKey ? successValue : failValue
+      if (!usingValidKey) {
+        return {
+          passed: false,
+          conflict: {
+            unsavedItem: dto.itemHash,
+            type: ConflictType.ContentError,
+          },
+        }
+      }
     }
 
     return successValue
