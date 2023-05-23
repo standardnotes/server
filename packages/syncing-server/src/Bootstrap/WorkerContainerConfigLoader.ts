@@ -30,6 +30,7 @@ import { EmailBackupRequestedEventHandler } from '../Domain/Handler/EmailBackupR
 import { ItemRevisionCreationRequestedEventHandler } from '../Domain/Handler/ItemRevisionCreationRequestedEventHandler'
 import { FSItemBackupService } from '../Infra/FS/FSItemBackupService'
 import { CommonContainerConfigLoader } from './CommonContainerConfigLoader'
+import { UserCredentialsChangedEventHandler } from '../Domain/Handler/UserCredentialsChangedEventHandler'
 
 export class WorkerContainerConfigLoader extends CommonContainerConfigLoader {
   private readonly DEFAULT_FILE_UPLOAD_PATH = `${__dirname}/../../uploads`
@@ -132,6 +133,16 @@ export class WorkerContainerConfigLoader extends CommonContainerConfigLoader {
         )
       })
 
+    container
+      .bind<UserCredentialsChangedEventHandler>(TYPES.UserCredentialsChangedEventHandler)
+      .toDynamicValue((context: interfaces.Context) => {
+        return new UserCredentialsChangedEventHandler(
+          context.container.get(TYPES.ContactRepository),
+          context.container.get(TYPES.GroupInviteRepository),
+          context.container.get(TYPES.Timer),
+        )
+      })
+
     // Services
     container.bind<ContentDecoder>(TYPES.ContentDecoder).toDynamicValue(() => new ContentDecoder())
     container.bind<AxiosInstance>(TYPES.HTTPClient).toDynamicValue(() => axios.create())
@@ -182,6 +193,7 @@ export class WorkerContainerConfigLoader extends CommonContainerConfigLoader {
           ['ACCOUNT_DELETION_REQUESTED', context.container.get(TYPES.AccountDeletionRequestedEventHandler)],
           ['EMAIL_BACKUP_REQUESTED', context.container.get(TYPES.EmailBackupRequestedEventHandler)],
           ['ITEM_REVISION_CREATION_REQUESTED', context.container.get(TYPES.ItemRevisionCreationRequestedEventHandler)],
+          ['USER_CREDENTIALS_CHANGED', container.get(TYPES.UserCredentialsChangedEventHandler)],
         ])
 
         const handler =
