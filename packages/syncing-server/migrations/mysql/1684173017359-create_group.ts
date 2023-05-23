@@ -26,6 +26,10 @@ export class CreateGroup1684173017359 implements MigrationInterface {
           isNullable: false,
         }),
         new TableColumn({
+          name: 'group_key_timestamp',
+          type: 'bigint',
+        }),
+        new TableColumn({
           name: 'created_at_timestamp',
           type: 'bigint',
         }),

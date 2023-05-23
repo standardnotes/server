@@ -1,9 +1,23 @@
 import { Group } from '../Model/Group'
 
-export interface GroupServiceInterface {
-  createGroup(dto: { userUuid: string; specifiedItemsKeyUuid: string }): Promise<Group | null>
+export type CreateGroupDTO = {
+  userUuid: string
+  groupUuid: string
+  groupKeyTimestamp: number
+  specifiedItemsKeyUuid: string
+}
 
-  updateGroup(dto: { groupUuid: string; originatorUuid: string; specifiedItemsKeyUuid: string }): Promise<Group | null>
+export type UpdateGroupDTO = {
+  originatorUuid: string
+  groupUuid: string
+  groupKeyTimestamp: number
+  specifiedItemsKeyUuid: string
+}
+
+export interface GroupServiceInterface {
+  createGroup(dto: CreateGroupDTO): Promise<Group | null>
+
+  updateGroup(dto: UpdateGroupDTO): Promise<Group | null>
 
   deleteGroup(dto: { groupUuid: string; originatorUuid: string }): Promise<boolean>
 

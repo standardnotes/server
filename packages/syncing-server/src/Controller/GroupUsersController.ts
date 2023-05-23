@@ -25,7 +25,7 @@ export class GroupUsersController extends BaseHttpController {
     })
 
     if (!result) {
-      return this.errorResponse(500, 'Could not get group users')
+      return this.errorResponse(400, 'Could not get group users')
     }
 
     const { users, isAdmin } = result
@@ -49,7 +49,7 @@ export class GroupUsersController extends BaseHttpController {
     })
 
     if (!result) {
-      return this.errorResponse(500, 'Could not delete user')
+      return this.errorResponse(400, 'Could not delete user')
     }
 
     return this.json({ success: true })

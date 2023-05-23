@@ -23,7 +23,7 @@ export class GroupInviteProjector implements ProjectorInterface<GroupInvite, Gro
       user_uuid: groupInvite.userUuid,
       inviter_uuid: groupInvite.inviterUuid,
       inviter_public_key: groupInvite.inviterPublicKey,
-      encrypted_group_key: groupInvite.encryptedGroupKey,
+      encrypted_group_data: groupInvite.encryptedGroupData,
       invite_type: groupInvite.inviteType,
       permissions: groupInvite.permissions,
       created_at_timestamp: groupInvite.createdAtTimestamp,

@@ -87,7 +87,6 @@ export class AuthMiddleware extends BaseMiddleware {
         })
       }
 
-      response.locals.publicKey = decodedToken.user.publicKey
       response.locals.userUuid = decodedToken.user.uuid
       response.locals.roles = decodedToken.roles
     } catch (error) {

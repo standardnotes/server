@@ -4,6 +4,6 @@ export type UpdateInviteDTO = {
   originatorUuid: string
   inviteUuid: string
   inviterPublicKey: string
-  encryptedGroupKey: string
+  encryptedGroupData: string
   permissions?: GroupUserPermission
 }

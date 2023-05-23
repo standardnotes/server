@@ -26,11 +26,13 @@ export class GroupsController extends BaseHttpController {
   public async createGroup(request: Request, response: Response): Promise<results.NotFoundResult | results.JsonResult> {
     const result = await this.groupService.createGroup({
       userUuid: response.locals.user.uuid,
+      groupUuid: request.body.group_uuid,
+      groupKeyTimestamp: request.body.group_key_timestamp,
       specifiedItemsKeyUuid: request.body.specified_items_key_uuid,
     })
 
     if (!result) {
-      return this.errorResponse(500, 'Could not create group')
+      return this.errorResponse(400, 'Could not create group')
     }
 
     const groupUser = await this.groupUserService.addGroupUser({
@@ -40,7 +42,7 @@ export class GroupsController extends BaseHttpController {
     })
 
     if (!groupUser) {
-      return this.errorResponse(500, 'Could not add user to group')
+      return this.errorResponse(400, 'Could not add user to group')
     }
 
     return this.json({
@@ -54,11 +56,12 @@ export class GroupsController extends BaseHttpController {
     const result = await this.groupService.updateGroup({
       groupUuid: request.params.groupUuid,
       originatorUuid: response.locals.user.uuid,
+      groupKeyTimestamp: request.body.group_key_timestamp,
       specifiedItemsKeyUuid: request.body.specified_items_key_uuid,
     })
 
     if (!result) {
-      return this.errorResponse(500, 'Could not update group')
+      return this.errorResponse(400, 'Could not update group')
     }
 
     return this.json({
@@ -74,7 +77,7 @@ export class GroupsController extends BaseHttpController {
     })
 
     if (!result) {
-      return this.errorResponse(500, 'Could not delete group')
+      return this.errorResponse(400, 'Could not delete group')
     }
 
     return this.json({ success: true })

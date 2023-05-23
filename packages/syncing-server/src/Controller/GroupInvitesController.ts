@@ -32,13 +32,13 @@ export class GroupInvitesController extends BaseHttpController {
       groupUuid: request.params.groupUuid,
       userUuid: request.body.invitee_uuid,
       inviterPublicKey: request.body.inviter_public_key,
-      encryptedGroupKey: request.body.encrypted_group_key,
+      encryptedGroupData: request.body.encrypted_group_data,
       inviteType: request.body.invite_type,
       permissions: request.body.permissions,
     })
 
     if (!result) {
-      return this.errorResponse(500, 'Could not create invite')
+      return this.errorResponse(400, 'Could not create invite')
     }
 
     return this.json({ invite: this.groupInviteProjector.projectFull(result) })
@@ -53,12 +53,12 @@ export class GroupInvitesController extends BaseHttpController {
       originatorUuid: response.locals.user.uuid,
       inviteUuid: request.params.inviteUuid,
       inviterPublicKey: request.body.inviter_public_key,
-      encryptedGroupKey: request.body.encrypted_group_key,
+      encryptedGroupData: request.body.encrypted_group_data,
       permissions: request.body.permissions,
     })
 
     if (!result) {
-      return this.errorResponse(500, 'Could not update invite')
+      return this.errorResponse(400, 'Could not update invite')
     }
 
     return this.json({ invite: this.groupInviteProjector.projectFull(result) })
@@ -75,7 +75,7 @@ export class GroupInvitesController extends BaseHttpController {
     })
 
     if (!result) {
-      return this.errorResponse(500, 'Could not accept invite')
+      return this.errorResponse(400, 'Could not accept invite')
     }
 
     return this.json({ success: true })
@@ -92,7 +92,7 @@ export class GroupInvitesController extends BaseHttpController {
     })
 
     if (!result) {
-      return this.errorResponse(500, 'Could not decline invite')
+      return this.errorResponse(400, 'Could not decline invite')
     }
 
     return this.json({ success: true })
@@ -108,7 +108,7 @@ export class GroupInvitesController extends BaseHttpController {
     })
 
     if (!result) {
-      return this.errorResponse(500, 'Could not get group invites')
+      return this.errorResponse(400, 'Could not get group invites')
     }
 
     const projected = result.map((invite) => this.groupInviteProjector.projectFull(invite))
@@ -126,7 +126,7 @@ export class GroupInvitesController extends BaseHttpController {
     })
 
     if (!result) {
-      return this.errorResponse(500, 'Could not get group invites')
+      return this.errorResponse(400, 'Could not get group invites')
     }
 
     const projected = result.map((invite) => this.groupInviteProjector.projectFull(invite))
@@ -145,7 +145,7 @@ export class GroupInvitesController extends BaseHttpController {
     })
 
     if (!result) {
-      return this.errorResponse(500, 'Could not get group invites')
+      return this.errorResponse(400, 'Could not get group invites')
     }
 
     const projected = result.map((invite) => this.groupInviteProjector.projectFull(invite))
@@ -165,7 +165,7 @@ export class GroupInvitesController extends BaseHttpController {
     })
 
     if (!result) {
-      return this.errorResponse(500, 'Could not delete invite')
+      return this.errorResponse(400, 'Could not delete invite')
     }
 
     return this.json({ success: true })

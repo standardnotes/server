@@ -19,6 +19,12 @@ export class Group {
   declare specifiedItemsKeyUuid: string
 
   @Column({
+    name: 'group_key_timestamp',
+    type: 'bigint',
+  })
+  declare groupKeyTimestamp: number
+
+  @Column({
     name: 'created_at_timestamp',
     type: 'bigint',
   })

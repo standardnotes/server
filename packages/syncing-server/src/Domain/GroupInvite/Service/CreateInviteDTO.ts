@@ -6,7 +6,7 @@ export type CreateInviteDTO = {
   groupUuid: string
   userUuid: string
   inviterPublicKey: string
-  encryptedGroupKey: string
+  encryptedGroupData: string
   inviteType: GroupInviteType
   permissions: GroupUserPermission
 }

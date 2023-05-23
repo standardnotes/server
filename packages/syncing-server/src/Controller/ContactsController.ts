@@ -28,7 +28,7 @@ export class ContactsController extends BaseHttpController {
     })
 
     if (!result) {
-      return this.errorResponse(500, 'Could not create contact')
+      return this.errorResponse(400, 'Could not create contact')
     }
 
     return this.json({
@@ -47,7 +47,7 @@ export class ContactsController extends BaseHttpController {
     })
 
     if (!result) {
-      return this.errorResponse(500, 'Could not delete contact')
+      return this.errorResponse(400, 'Could not delete contact')
     }
 
     return this.json({ success: true })

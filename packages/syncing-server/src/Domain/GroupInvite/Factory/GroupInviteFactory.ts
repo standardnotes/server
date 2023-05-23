@@ -13,7 +13,7 @@ export class GroupInviteFactory implements GroupInviteFactoryInterface {
     newGroupInvite.groupUuid = dto.group_uuid
     newGroupInvite.inviterUuid = dto.inviter_uuid
     newGroupInvite.inviterPublicKey = dto.inviter_public_key
-    newGroupInvite.encryptedGroupKey = dto.encrypted_group_key
+    newGroupInvite.encryptedGroupData = dto.encrypted_group_data
     newGroupInvite.inviteType = dto.invite_type
     newGroupInvite.permissions = dto.permissions
 

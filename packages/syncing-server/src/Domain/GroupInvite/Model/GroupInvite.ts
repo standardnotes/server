@@ -35,9 +35,9 @@ export class GroupInvite {
   declare inviterPublicKey: string
 
   @Column({
-    name: 'encrypted_group_key',
+    name: 'encrypted_group_data',
   })
-  declare encryptedGroupKey: string
+  declare encryptedGroupData: string
 
   @Column({
     name: 'permissions',

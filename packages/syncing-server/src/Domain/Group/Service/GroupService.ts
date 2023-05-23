@@ -1,9 +1,7 @@
-import { v4 as uuidv4 } from 'uuid'
 import { TimerInterface } from '@standardnotes/time'
-
 import { Group } from '../Model/Group'
 import { GroupsRepositoryInterface } from '../Repository/GroupRepositoryInterface'
-import { GroupServiceInterface } from './GroupServiceInterface'
+import { CreateGroupDTO, GroupServiceInterface, UpdateGroupDTO } from './GroupServiceInterface'
 import { GroupFactoryInterface } from '../Factory/GroupFactoryInterface'
 import { GroupUserServiceInterface } from '../../GroupUser/Service/GroupUserServiceInterface'
 import { GroupInviteServiceInterface } from '../../GroupInvite/Service/GroupInviteServiceInterface'
@@ -17,14 +15,20 @@ export class GroupService implements GroupServiceInterface {
     private timer: TimerInterface,
   ) {}
 
-  async createGroup(dto: { userUuid: string; specifiedItemsKeyUuid: string }): Promise<Group | null> {
+  async createGroup(dto: CreateGroupDTO): Promise<Group | null> {
+    const existingGroup = await this.groupRepository.findByUuid(dto.groupUuid)
+    if (existingGroup) {
+      return null
+    }
+
     const timestamp = this.timer.getTimestampInMicroseconds()
     const group = this.groupFactory.create({
       userUuid: dto.userUuid,
       groupHash: {
-        uuid: uuidv4(),
+        uuid: dto.groupUuid,
         user_uuid: dto.userUuid,
         specified_items_key_uuid: dto.specifiedItemsKeyUuid,
+        group_key_timestamp: dto.groupKeyTimestamp,
         created_at_timestamp: timestamp,
         updated_at_timestamp: timestamp,
       },
@@ -45,17 +49,18 @@ export class GroupService implements GroupServiceInterface {
     return this.groupRepository.findAll({ userUuid: dto.userUuid, lastSyncTime: dto.lastSyncTime })
   }
 
-  async updateGroup(dto: {
-    groupUuid: string
-    originatorUuid: string
-    specifiedItemsKeyUuid: string
-  }): Promise<Group | null> {
+  async updateGroup(dto: UpdateGroupDTO): Promise<Group | null> {
     const group = await this.groupRepository.findByUuid(dto.groupUuid)
     if (!group || group.userUuid !== dto.originatorUuid) {
       return null
     }
 
+    if (dto.groupKeyTimestamp < group.groupKeyTimestamp) {
+      return null
+    }
+
     group.specifiedItemsKeyUuid = dto.specifiedItemsKeyUuid
+    group.groupKeyTimestamp = dto.groupKeyTimestamp
     group.updatedAtTimestamp = this.timer.getTimestampInMicroseconds()
 
     const savedGroup = await this.groupRepository.save(group)

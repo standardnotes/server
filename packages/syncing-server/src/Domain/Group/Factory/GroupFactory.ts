@@ -11,6 +11,7 @@ export class GroupFactory implements GroupFactoryInterface {
     newGroup.uuid = dto.groupHash.uuid
     newGroup.userUuid = dto.userUuid
     newGroup.specifiedItemsKeyUuid = dto.groupHash.specified_items_key_uuid
+    newGroup.groupKeyTimestamp = dto.groupHash.group_key_timestamp
 
     const now = this.timer.getTimestampInMicroseconds()
     newGroup.updatedAtTimestamp = now
