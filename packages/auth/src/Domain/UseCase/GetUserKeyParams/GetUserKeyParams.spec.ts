@@ -35,9 +35,7 @@ describe('GetUserKeyParams', () => {
   })
 
   it('should get key params for an authenticated user - searching by email', async () => {
-    expect(
-      await createUseCase().execute({ email: 'test@test.te', authenticated: true, authenticatedUser: user }),
-    ).toEqual({
+    expect(await createUseCase().execute({ email: 'test@test.te', authenticated: true })).toEqual({
       keyParams: {
         foo: 'bar',
       },
@@ -63,7 +61,7 @@ describe('GetUserKeyParams', () => {
   })
 
   it('should get key params for an authenticated user - searching by uuid', async () => {
-    expect(await createUseCase().execute({ userUuid: '1-2-3', authenticated: true, authenticatedUser: user })).toEqual({
+    expect(await createUseCase().execute({ userUuid: '1-2-3', authenticated: true })).toEqual({
       keyParams: {
         foo: 'bar',
       },
