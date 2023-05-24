@@ -156,7 +156,7 @@ export class InversifyExpressUsersController extends BaseHttpController {
     return this.json(result, 400)
   }
 
-  @httpPut('/:userId/attributes/credentials', TYPES.Auth_AuthMiddleware)
+  @httpPut('/:userId/attributes/credentials', TYPES.Auth_ApiGatewayAuthMiddleware)
   async changeCredentials(request: Request, response: Response): Promise<results.JsonResult | void> {
     if (response.locals.readOnlyAccess) {
       return this.json(

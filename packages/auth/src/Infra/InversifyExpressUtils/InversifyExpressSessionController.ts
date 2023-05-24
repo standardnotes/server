@@ -31,7 +31,7 @@ export class InversifyExpressSessionController extends BaseHttpController {
     this.controllerContainer.register('auth.session.refresh', this.refresh.bind(this))
   }
 
-  @httpDelete('/', TYPES.Auth_AuthMiddleware, TYPES.Auth_SessionMiddleware)
+  @httpDelete('/', TYPES.Auth_ApiGatewayAuthMiddleware, TYPES.Auth_SessionMiddleware)
   async deleteSession(request: Request, response: Response): Promise<results.JsonResult | void> {
     if (response.locals.readOnlyAccess) {
       return this.json(
@@ -87,7 +87,7 @@ export class InversifyExpressSessionController extends BaseHttpController {
     response.status(204).send()
   }
 
-  @httpDelete('/all', TYPES.Auth_AuthMiddleware, TYPES.Auth_SessionMiddleware)
+  @httpDelete('/all', TYPES.Auth_ApiGatewayAuthMiddleware, TYPES.Auth_SessionMiddleware)
   async deleteAllSessions(_request: Request, response: Response): Promise<results.JsonResult | void> {
     if (response.locals.readOnlyAccess) {
       return this.json(

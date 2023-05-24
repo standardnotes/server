@@ -51,7 +51,6 @@ const TYPES = {
   Auth_ORMAuthenticatorChallengeRepository: Symbol.for('Auth_ORMAuthenticatorChallengeRepository'),
   Auth_ORMCacheEntryRepository: Symbol.for('Auth_ORMCacheEntryRepository'),
   // Middleware
-  Auth_AuthMiddleware: Symbol.for('Auth_AuthMiddleware'),
   Auth_ApiGatewayAuthMiddleware: Symbol.for('Auth_ApiGatewayAuthMiddleware'),
   Auth_ApiGatewayOfflineAuthMiddleware: Symbol.for('Auth_ApiGatewayOfflineAuthMiddleware'),
   Auth_OfflineUserAuthMiddleware: Symbol.for('Auth_OfflineUserAuthMiddleware'),

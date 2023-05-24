@@ -243,7 +243,6 @@ import { InversifyExpressSettingsController } from '../Infra/InversifyExpressUti
 import { SessionMiddleware } from '../Infra/InversifyExpressUtils/Middleware/SessionMiddleware'
 import { ApiGatewayAuthMiddleware } from '../Infra/InversifyExpressUtils/Middleware/ApiGatewayAuthMiddleware'
 import { ApiGatewayOfflineAuthMiddleware } from '../Infra/InversifyExpressUtils/Middleware/ApiGatewayOfflineAuthMiddleware'
-import { AuthMiddleware } from '../Infra/InversifyExpressUtils/Middleware/AuthMiddleware'
 import { OfflineUserAuthMiddleware } from '../Infra/InversifyExpressUtils/Middleware/OfflineUserAuthMiddleware'
 import { AuthMiddlewareWithoutResponse } from '../Infra/InversifyExpressUtils/Middleware/AuthMiddlewareWithoutResponse'
 import { LockMiddleware } from '../Infra/InversifyExpressUtils/Middleware/LockMiddleware'
@@ -448,7 +447,6 @@ export class ContainerConfigLoader {
       )
 
     // Middleware
-    container.bind<AuthMiddleware>(TYPES.Auth_AuthMiddleware).to(AuthMiddleware)
     container.bind<SessionMiddleware>(TYPES.Auth_SessionMiddleware).to(SessionMiddleware)
     container.bind<LockMiddleware>(TYPES.Auth_LockMiddleware).to(LockMiddleware)
     container
