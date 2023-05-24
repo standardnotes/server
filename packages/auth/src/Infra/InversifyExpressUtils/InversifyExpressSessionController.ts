@@ -26,9 +26,9 @@ export class InversifyExpressSessionController extends BaseHttpController {
   ) {
     super()
 
-    this.controllerContainer.register('auth.session.delete', this.deleteSession.bind(this))
-    this.controllerContainer.register('auth.session.deleteAll', this.deleteAllSessions.bind(this))
-    this.controllerContainer.register('auth.session.refresh', this.refresh.bind(this))
+    this.controllerContainer.register('auth.sessions.delete', this.deleteSession.bind(this))
+    this.controllerContainer.register('auth.sessions.deleteAll', this.deleteAllSessions.bind(this))
+    this.controllerContainer.register('auth.sessions.refresh', this.refresh.bind(this))
   }
 
   @httpDelete('/', TYPES.Auth_RequiredCrossServiceTokenMiddleware, TYPES.Auth_SessionMiddleware)
