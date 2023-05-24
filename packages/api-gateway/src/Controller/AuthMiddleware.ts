@@ -2,42 +2,32 @@ import { CrossServiceTokenData } from '@standardnotes/security'
 import { RoleName } from '@standardnotes/domain-core'
 import { TimerInterface } from '@standardnotes/time'
 import { NextFunction, Request, Response } from 'express'
-import { inject, injectable } from 'inversify'
 import { BaseMiddleware } from 'inversify-express-utils'
 import { verify } from 'jsonwebtoken'
 import { AxiosError } from 'axios'
 import { Logger } from 'winston'
 
-import { TYPES } from '../Bootstrap/Types'
 import { CrossServiceTokenCacheInterface } from '../Service/Cache/CrossServiceTokenCacheInterface'
 import { ServiceProxyInterface } from '../Service/Http/ServiceProxyInterface'
 
-@injectable()
-export class AuthMiddleware extends BaseMiddleware {
+export abstract class AuthMiddleware extends BaseMiddleware {
   constructor(
-    @inject(TYPES.ServiceProxy) private serviceProxy: ServiceProxyInterface,
-    @inject(TYPES.AUTH_JWT_SECRET) private jwtSecret: string,
-    @inject(TYPES.CROSS_SERVICE_TOKEN_CACHE_TTL) private crossServiceTokenCacheTTL: number,
-    @inject(TYPES.CrossServiceTokenCache) private crossServiceTokenCache: CrossServiceTokenCacheInterface,
-    @inject(TYPES.Timer) private timer: TimerInterface,
-    @inject(TYPES.Logger) private logger: Logger,
+    private serviceProxy: ServiceProxyInterface,
+    private jwtSecret: string,
+    private crossServiceTokenCacheTTL: number,
+    private crossServiceTokenCache: CrossServiceTokenCacheInterface,
+    private timer: TimerInterface,
+    private logger: Logger,
   ) {
     super()
   }
 
   async handler(request: Request, response: Response, next: NextFunction): Promise<void> {
-    const authHeaderValue = request.headers.authorization as string
-
-    if (!authHeaderValue) {
-      response.status(401).send({
-        error: {
-          tag: 'invalid-auth',
-          message: 'Invalid login credentials.',
-        },
-      })
-
+    if (!this.handleMissingAuthHeader(request.headers.authorization, response, next)) {
       return
     }
+
+    const authHeaderValue = request.headers.authorization as string
 
     try {
       let crossServiceTokenFetchedFromCache = true
@@ -49,10 +39,7 @@ export class AuthMiddleware extends BaseMiddleware {
       if (crossServiceToken === null) {
         const authResponse = await this.serviceProxy.validateSession(authHeaderValue)
 
-        if (authResponse.status > 200) {
-          response.setHeader('content-type', authResponse.headers.contentType)
-          response.status(authResponse.status).send(authResponse.data)
-
+        if (!this.handleSessionValidationResponse(authResponse, response, next)) {
           return
         }
 
@@ -105,6 +92,24 @@ export class AuthMiddleware extends BaseMiddleware {
 
     return next()
   }
+
+  protected abstract handleSessionValidationResponse(
+    authResponse: {
+      status: number
+      data: unknown
+      headers: {
+        contentType: string
+      }
+    },
+    response: Response,
+    next: NextFunction,
+  ): boolean
+
+  protected abstract handleMissingAuthHeader(
+    authHeaderValue: string | undefined,
+    response: Response,
+    next: NextFunction,
+  ): boolean
 
   private getCrossServiceTokenCacheExpireTimestamp(token: CrossServiceTokenData): number {
     const crossServiceTokenDefaultCacheExpiration = this.timer.getTimestampInSeconds() + this.crossServiceTokenCacheTTL

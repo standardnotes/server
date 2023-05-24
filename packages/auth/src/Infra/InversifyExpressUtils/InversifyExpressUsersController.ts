@@ -41,7 +41,7 @@ export class InversifyExpressUsersController extends BaseHttpController {
     this.controllerContainer.register('auth.users.updateCredentials', this.changeCredentials.bind(this))
   }
 
-  @httpPatch('/:userId', TYPES.Auth_ApiGatewayAuthMiddleware)
+  @httpPatch('/:userId', TYPES.Auth_RequiredCrossServiceTokenMiddleware)
   async update(request: Request, response: Response): Promise<results.JsonResult | void> {
     if (response.locals.readOnlyAccess) {
       return this.json(
@@ -132,7 +132,7 @@ export class InversifyExpressUsersController extends BaseHttpController {
     return this.json({ message: result.message }, result.responseCode)
   }
 
-  @httpGet('/:userUuid/subscription', TYPES.Auth_ApiGatewayAuthMiddleware)
+  @httpGet('/:userUuid/subscription', TYPES.Auth_RequiredCrossServiceTokenMiddleware)
   async getSubscription(request: Request, response: Response): Promise<results.JsonResult> {
     if (request.params.userUuid !== response.locals.user.uuid) {
       return this.json(
@@ -156,7 +156,7 @@ export class InversifyExpressUsersController extends BaseHttpController {
     return this.json(result, 400)
   }
 
-  @httpPut('/:userId/attributes/credentials', TYPES.Auth_ApiGatewayAuthMiddleware)
+  @httpPut('/:userId/attributes/credentials', TYPES.Auth_RequiredCrossServiceTokenMiddleware)
   async changeCredentials(request: Request, response: Response): Promise<results.JsonResult | void> {
     if (response.locals.readOnlyAccess) {
       return this.json(

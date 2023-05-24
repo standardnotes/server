@@ -14,7 +14,7 @@ export class SessionsController extends BaseHttpController {
     super()
   }
 
-  @httpGet('/', TYPES.AuthMiddleware)
+  @httpGet('/', TYPES.RequiredCrossServiceTokenMiddleware)
   async getSessions(request: Request, response: Response): Promise<void> {
     await this.httpService.callAuthServer(
       request,
@@ -23,7 +23,7 @@ export class SessionsController extends BaseHttpController {
     )
   }
 
-  @httpDelete('/:uuid', TYPES.AuthMiddleware)
+  @httpDelete('/:uuid', TYPES.RequiredCrossServiceTokenMiddleware)
   async deleteSession(request: Request, response: Response): Promise<void> {
     await this.httpService.callAuthServer(
       request,
@@ -35,7 +35,7 @@ export class SessionsController extends BaseHttpController {
     )
   }
 
-  @httpDelete('/', TYPES.AuthMiddleware)
+  @httpDelete('/', TYPES.RequiredCrossServiceTokenMiddleware)
   async deleteSessions(request: Request, response: Response): Promise<void> {
     await this.httpService.callAuthServer(
       request,

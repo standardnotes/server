@@ -51,10 +51,10 @@ const TYPES = {
   Auth_ORMAuthenticatorChallengeRepository: Symbol.for('Auth_ORMAuthenticatorChallengeRepository'),
   Auth_ORMCacheEntryRepository: Symbol.for('Auth_ORMCacheEntryRepository'),
   // Middleware
-  Auth_ApiGatewayAuthMiddleware: Symbol.for('Auth_ApiGatewayAuthMiddleware'),
+  Auth_RequiredCrossServiceTokenMiddleware: Symbol.for('Auth_RequiredCrossServiceTokenMiddleware'),
+  Auth_OptionalCrossServiceTokenMiddleware: Symbol.for('Auth_OptionalCrossServiceTokenMiddleware'),
   Auth_ApiGatewayOfflineAuthMiddleware: Symbol.for('Auth_ApiGatewayOfflineAuthMiddleware'),
   Auth_OfflineUserAuthMiddleware: Symbol.for('Auth_OfflineUserAuthMiddleware'),
-  Auth_AuthMiddlewareWithoutResponse: Symbol.for('Auth_AuthMiddlewareWithoutResponse'),
   Auth_LockMiddleware: Symbol.for('Auth_LockMiddleware'),
   Auth_SessionMiddleware: Symbol.for('Auth_SessionMiddleware'),
   // Projectors

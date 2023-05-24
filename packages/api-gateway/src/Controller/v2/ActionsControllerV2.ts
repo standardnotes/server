@@ -25,7 +25,7 @@ export class ActionsControllerV2 extends BaseHttpController {
     )
   }
 
-  @httpPost('/login-params')
+  @httpPost('/login-params', TYPES.OptionalCrossServiceTokenMiddleware)
   async loginParams(request: Request, response: Response): Promise<void> {
     await this.serviceProxy.callAuthServer(
       request,

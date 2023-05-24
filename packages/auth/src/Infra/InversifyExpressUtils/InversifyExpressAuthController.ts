@@ -44,7 +44,7 @@ export class InversifyExpressAuthController extends BaseHttpController {
     this.controllerContainer.register('auth.signOut', this.signOut.bind(this))
   }
 
-  @httpGet('/params', TYPES.Auth_AuthMiddlewareWithoutResponse)
+  @httpGet('/params', TYPES.Auth_OptionalCrossServiceTokenMiddleware)
   async params(request: Request, response: Response): Promise<results.JsonResult> {
     if (response.locals.session) {
       const result = await this.getUserKeyParams.execute({
@@ -155,7 +155,7 @@ export class InversifyExpressAuthController extends BaseHttpController {
     return this.json(signInResult.authResponse)
   }
 
-  @httpPost('/pkce_params', TYPES.Auth_AuthMiddlewareWithoutResponse)
+  @httpPost('/pkce_params', TYPES.Auth_OptionalCrossServiceTokenMiddleware)
   async pkceParams(request: Request, response: Response): Promise<results.JsonResult> {
     if (!request.body.code_challenge) {
       return this.json(
@@ -261,7 +261,7 @@ export class InversifyExpressAuthController extends BaseHttpController {
     return this.json(signInResult.authResponse)
   }
 
-  @httpPost('/recovery/codes', TYPES.Auth_ApiGatewayAuthMiddleware)
+  @httpPost('/recovery/codes', TYPES.Auth_RequiredCrossServiceTokenMiddleware)
   async generateRecoveryCodes(_request: Request, response: Response): Promise<results.JsonResult> {
     const result = await this.authController.generateRecoveryCodes({
       userUuid: response.locals.user.uuid,
@@ -296,7 +296,7 @@ export class InversifyExpressAuthController extends BaseHttpController {
     return this.json(result.data, result.status)
   }
 
-  @httpPost('/sign_out', TYPES.Auth_AuthMiddlewareWithoutResponse)
+  @httpPost('/sign_out', TYPES.Auth_OptionalCrossServiceTokenMiddleware)
   async signOut(request: Request, response: Response): Promise<results.JsonResult | void> {
     const result = await this.authController.signOut({
       readOnlyAccess: response.locals.readOnlyAccess,

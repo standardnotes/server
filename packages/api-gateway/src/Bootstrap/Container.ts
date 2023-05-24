@@ -8,7 +8,6 @@ import { Timer, TimerInterface } from '@standardnotes/time'
 
 import { Env } from './Env'
 import { TYPES } from './Types'
-import { AuthMiddleware } from '../Controller/AuthMiddleware'
 import { ServiceProxyInterface } from '../Service/Http/ServiceProxyInterface'
 import { HttpServiceProxy } from '../Service/Http/HttpServiceProxy'
 import { SubscriptionTokenAuthMiddleware } from '../Controller/SubscriptionTokenAuthMiddleware'
@@ -20,6 +19,8 @@ import { DirectCallServiceProxy } from '../Service/Proxy/DirectCallServiceProxy'
 import { ServiceContainerInterface } from '@standardnotes/domain-core'
 import { EndpointResolverInterface } from '../Service/Resolver/EndpointResolverInterface'
 import { EndpointResolver } from '../Service/Resolver/EndpointResolver'
+import { RequiredCrossServiceTokenMiddleware } from '../Controller/RequiredCrossServiceTokenMiddleware'
+import { OptionalCrossServiceTokenMiddleware } from '../Controller/OptionalCrossServiceTokenMiddleware'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -77,7 +78,12 @@ export class ContainerConfigLoader {
     container.bind(TYPES.CROSS_SERVICE_TOKEN_CACHE_TTL).toConstantValue(+env.get('CROSS_SERVICE_TOKEN_CACHE_TTL', true))
 
     // Middleware
-    container.bind<AuthMiddleware>(TYPES.AuthMiddleware).to(AuthMiddleware)
+    container
+      .bind<RequiredCrossServiceTokenMiddleware>(TYPES.RequiredCrossServiceTokenMiddleware)
+      .to(RequiredCrossServiceTokenMiddleware)
+    container
+      .bind<OptionalCrossServiceTokenMiddleware>(TYPES.OptionalCrossServiceTokenMiddleware)
+      .to(OptionalCrossServiceTokenMiddleware)
     container.bind<WebSocketAuthMiddleware>(TYPES.WebSocketAuthMiddleware).to(WebSocketAuthMiddleware)
     container
       .bind<SubscriptionTokenAuthMiddleware>(TYPES.SubscriptionTokenAuthMiddleware)

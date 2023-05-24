@@ -15,7 +15,8 @@ export const TYPES = {
   VERSION: Symbol.for('VERSION'),
   CROSS_SERVICE_TOKEN_CACHE_TTL: Symbol.for('CROSS_SERVICE_TOKEN_CACHE_TTL'),
   // Middleware
-  AuthMiddleware: Symbol.for('AuthMiddleware'),
+  RequiredCrossServiceTokenMiddleware: Symbol.for('RequiredCrossServiceTokenMiddleware'),
+  OptionalCrossServiceTokenMiddleware: Symbol.for('OptionalCrossServiceTokenMiddleware'),
   WebSocketAuthMiddleware: Symbol.for('WebSocketAuthMiddleware'),
   SubscriptionTokenAuthMiddleware: Symbol.for('SubscriptionTokenAuthMiddleware'),
   // Services

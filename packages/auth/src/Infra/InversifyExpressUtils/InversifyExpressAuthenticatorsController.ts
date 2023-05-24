@@ -37,7 +37,7 @@ export class InversifyExpressAuthenticatorsController extends BaseHttpController
     )
   }
 
-  @httpGet('/', TYPES.Auth_ApiGatewayAuthMiddleware)
+  @httpGet('/', TYPES.Auth_RequiredCrossServiceTokenMiddleware)
   async list(_request: Request, response: Response): Promise<results.JsonResult> {
     const result = await this.authenticatorsController.list({
       userUuid: response.locals.user.uuid,
@@ -46,7 +46,7 @@ export class InversifyExpressAuthenticatorsController extends BaseHttpController
     return this.json(result.data, result.status)
   }
 
-  @httpDelete('/:authenticatorId', TYPES.Auth_ApiGatewayAuthMiddleware)
+  @httpDelete('/:authenticatorId', TYPES.Auth_RequiredCrossServiceTokenMiddleware)
   async delete(request: Request, response: Response): Promise<results.JsonResult> {
     const result = await this.authenticatorsController.delete({
       userUuid: response.locals.user.uuid,
@@ -56,7 +56,7 @@ export class InversifyExpressAuthenticatorsController extends BaseHttpController
     return this.json(result.data, result.status)
   }
 
-  @httpGet('/generate-registration-options', TYPES.Auth_ApiGatewayAuthMiddleware)
+  @httpGet('/generate-registration-options', TYPES.Auth_RequiredCrossServiceTokenMiddleware)
   async generateRegistrationOptions(_request: Request, response: Response): Promise<results.JsonResult> {
     const result = await this.authenticatorsController.generateRegistrationOptions({
       username: response.locals.user.email,
@@ -66,7 +66,7 @@ export class InversifyExpressAuthenticatorsController extends BaseHttpController
     return this.json(result.data, result.status)
   }
 
-  @httpPost('/verify-registration', TYPES.Auth_ApiGatewayAuthMiddleware)
+  @httpPost('/verify-registration', TYPES.Auth_RequiredCrossServiceTokenMiddleware)
   async verifyRegistration(request: Request, response: Response): Promise<results.JsonResult> {
     const result = await this.authenticatorsController.verifyRegistrationResponse({
       userUuid: response.locals.user.uuid,

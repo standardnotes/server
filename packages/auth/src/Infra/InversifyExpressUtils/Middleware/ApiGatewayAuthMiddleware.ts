@@ -1,31 +1,16 @@
 import { CrossServiceTokenData, TokenDecoderInterface } from '@standardnotes/security'
 import { NextFunction, Request, Response } from 'express'
-import { inject, injectable } from 'inversify'
 import { BaseMiddleware } from 'inversify-express-utils'
 import { Logger } from 'winston'
-import TYPES from '../../../Bootstrap/Types'
 
-@injectable()
-export class ApiGatewayAuthMiddleware extends BaseMiddleware {
-  constructor(
-    @inject(TYPES.Auth_CrossServiceTokenDecoder) private tokenDecoder: TokenDecoderInterface<CrossServiceTokenData>,
-    @inject(TYPES.Auth_Logger) private logger: Logger,
-  ) {
+export abstract class ApiGatewayAuthMiddleware extends BaseMiddleware {
+  constructor(private tokenDecoder: TokenDecoderInterface<CrossServiceTokenData>, private logger: Logger) {
     super()
   }
 
   async handler(request: Request, response: Response, next: NextFunction): Promise<void> {
     try {
-      if (!request.headers['x-auth-token']) {
-        this.logger.debug('ApiGatewayAuthMiddleware missing x-auth-token header.')
-
-        response.status(401).send({
-          error: {
-            tag: 'invalid-auth',
-            message: 'Invalid login credentials.',
-          },
-        })
-
+      if (!this.handleMissingToken(request, response, next)) {
         return
       }
 
@@ -56,4 +41,6 @@ export class ApiGatewayAuthMiddleware extends BaseMiddleware {
       return next(error)
     }
   }
+
+  protected abstract handleMissingToken(request: Request, response: Response, next: NextFunction): boolean
 }

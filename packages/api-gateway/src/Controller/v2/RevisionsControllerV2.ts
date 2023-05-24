@@ -6,7 +6,7 @@ import { TYPES } from '../../Bootstrap/Types'
 import { ServiceProxyInterface } from '../../Service/Http/ServiceProxyInterface'
 import { EndpointResolverInterface } from '../../Service/Resolver/EndpointResolverInterface'
 
-@controller('/v2/items/:itemUuid/revisions', TYPES.AuthMiddleware)
+@controller('/v2/items/:itemUuid/revisions', TYPES.RequiredCrossServiceTokenMiddleware)
 export class RevisionsControllerV2 extends BaseHttpController {
   constructor(
     @inject(TYPES.ServiceProxy) private httpService: ServiceProxyInterface,

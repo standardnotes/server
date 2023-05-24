@@ -13,7 +13,7 @@ import { ControllerContainerInterface, Uuid } from '@standardnotes/domain-core'
 import TYPES from '../../Bootstrap/Types'
 import { CreateValetToken } from '../../Domain/UseCase/CreateValetToken/CreateValetToken'
 
-@controller('/valet-tokens', TYPES.Auth_ApiGatewayAuthMiddleware)
+@controller('/valet-tokens', TYPES.Auth_RequiredCrossServiceTokenMiddleware)
 export class InversifyExpressValetTokenController extends BaseHttpController {
   constructor(
     @inject(TYPES.Auth_CreateValetToken) private createValetKey: CreateValetToken,

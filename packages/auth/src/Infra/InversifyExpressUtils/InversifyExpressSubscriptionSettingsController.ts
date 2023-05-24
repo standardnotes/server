@@ -22,7 +22,7 @@ export class InversifyExpressSubscriptionSettingsController extends BaseHttpCont
     this.controllerContainer.register('auth.users.getSubscriptionSetting', this.getSubscriptionSetting.bind(this))
   }
 
-  @httpGet('/subscription-settings/:subscriptionSettingName', TYPES.Auth_ApiGatewayAuthMiddleware)
+  @httpGet('/subscription-settings/:subscriptionSettingName', TYPES.Auth_RequiredCrossServiceTokenMiddleware)
   async getSubscriptionSetting(request: Request, response: Response): Promise<results.JsonResult> {
     const result = await this.doGetSetting.execute({
       userUuid: response.locals.user.uuid,

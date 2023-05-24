@@ -15,7 +15,7 @@ export class TokensController extends BaseHttpController {
     super()
   }
 
-  @httpPost('/', TYPES.AuthMiddleware)
+  @httpPost('/', TYPES.RequiredCrossServiceTokenMiddleware)
   async createToken(request: Request, response: Response): Promise<void> {
     await this.httpService.callAuthServer(
       request,

@@ -31,7 +31,7 @@ export class InversifyExpressSubscriptionInvitesController extends BaseHttpContr
     this.controllerContainer.register('auth.subscriptionInvites.list', this.listInvites.bind(this))
   }
 
-  @httpPost('/:inviteUuid/accept', TYPES.Auth_ApiGatewayAuthMiddleware)
+  @httpPost('/:inviteUuid/accept', TYPES.Auth_RequiredCrossServiceTokenMiddleware)
   async acceptInvite(request: Request, response: Response): Promise<void> {
     const result = await this.subscriptionInvitesController.acceptInvite({
       api: request.query.api as ApiVersion,
@@ -52,7 +52,7 @@ export class InversifyExpressSubscriptionInvitesController extends BaseHttpContr
     return this.json(response.data, response.status)
   }
 
-  @httpPost('/', TYPES.Auth_ApiGatewayAuthMiddleware)
+  @httpPost('/', TYPES.Auth_RequiredCrossServiceTokenMiddleware)
   async inviteToSubscriptionSharing(request: Request, response: Response): Promise<results.JsonResult> {
     const result = await this.subscriptionInvitesController.invite({
       ...request.body,
@@ -64,7 +64,7 @@ export class InversifyExpressSubscriptionInvitesController extends BaseHttpContr
     return this.json(result.data, result.status)
   }
 
-  @httpDelete('/:inviteUuid', TYPES.Auth_ApiGatewayAuthMiddleware)
+  @httpDelete('/:inviteUuid', TYPES.Auth_RequiredCrossServiceTokenMiddleware)
   async cancelSubscriptionSharing(request: Request, response: Response): Promise<results.JsonResult> {
     const result = await this.subscriptionInvitesController.cancelInvite({
       ...request.body,
@@ -75,7 +75,7 @@ export class InversifyExpressSubscriptionInvitesController extends BaseHttpContr
     return this.json(result.data, result.status)
   }
 
-  @httpGet('/', TYPES.Auth_ApiGatewayAuthMiddleware)
+  @httpGet('/', TYPES.Auth_RequiredCrossServiceTokenMiddleware)
   async listInvites(request: Request, response: Response): Promise<results.JsonResult> {
     const result = await this.subscriptionInvitesController.listInvites({
       ...request.body,

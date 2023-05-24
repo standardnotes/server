@@ -15,7 +15,7 @@ export class SubscriptionInvitesController extends BaseHttpController {
     super()
   }
 
-  @httpPost('/', TYPES.AuthMiddleware)
+  @httpPost('/', TYPES.RequiredCrossServiceTokenMiddleware)
   async inviteToSubscriptionSharing(request: Request, response: Response): Promise<void> {
     await this.httpService.callAuthServer(
       request,
@@ -25,7 +25,7 @@ export class SubscriptionInvitesController extends BaseHttpController {
     )
   }
 
-  @httpGet('/', TYPES.AuthMiddleware)
+  @httpGet('/', TYPES.RequiredCrossServiceTokenMiddleware)
   async listInvites(request: Request, response: Response): Promise<void> {
     await this.httpService.callAuthServer(
       request,
@@ -35,7 +35,7 @@ export class SubscriptionInvitesController extends BaseHttpController {
     )
   }
 
-  @httpDelete('/:inviteUuid', TYPES.AuthMiddleware)
+  @httpDelete('/:inviteUuid', TYPES.RequiredCrossServiceTokenMiddleware)
   async cancelSubscriptionSharing(request: Request, response: Response): Promise<void> {
     await this.httpService.callAuthServer(
       request,
@@ -48,7 +48,7 @@ export class SubscriptionInvitesController extends BaseHttpController {
     )
   }
 
-  @httpPost('/:inviteUuid/accept', TYPES.AuthMiddleware)
+  @httpPost('/:inviteUuid/accept', TYPES.RequiredCrossServiceTokenMiddleware)
   async acceptInvite(request: Request, response: Response): Promise<void> {
     await this.httpService.callAuthServer(
       request,
