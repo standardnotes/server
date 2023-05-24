@@ -22,16 +22,6 @@ export class GetUserKeyParams implements UseCaseInterface {
   ) {}
 
   async execute(dto: GetUserKeyParamsDTO): Promise<GetUserKeyParamsResponse> {
-    if (dto.authenticatedUser) {
-      this.logger.debug(`Creating key params for authenticated user ${dto.authenticatedUser.email}`)
-
-      const keyParams = await this.createKeyParams(dto, dto.authenticatedUser, true)
-
-      return {
-        keyParams,
-      }
-    }
-
     let user: User | null = null
     if (dto.email !== undefined) {
       const usernameOrError = Username.create(dto.email)

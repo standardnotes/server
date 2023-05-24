@@ -50,7 +50,6 @@ export class InversifyExpressAuthController extends BaseHttpController {
       const result = await this.getUserKeyParams.execute({
         email: response.locals.user.email,
         authenticated: true,
-        authenticatedUser: response.locals.user,
       })
 
       return this.json(result.keyParams)
@@ -172,7 +171,6 @@ export class InversifyExpressAuthController extends BaseHttpController {
       const result = await this.getUserKeyParams.execute({
         email: response.locals.user.email,
         authenticated: true,
-        authenticatedUser: response.locals.user,
         codeChallenge: request.body.code_challenge as string,
       })
 
