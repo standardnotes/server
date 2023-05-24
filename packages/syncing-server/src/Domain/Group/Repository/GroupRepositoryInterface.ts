@@ -5,7 +5,8 @@ export type GroupQuery = {
 }
 
 export type UserGroupsQuery = {
-  userUuid: string
+  userUuid?: string
+  groupUuids?: string[]
   lastSyncTime?: number
 }
 

@@ -33,7 +33,17 @@ export class TypeORMGroupRepository implements GroupsRepositoryInterface {
   private createFindAllQueryBuilder(query: UserGroupsQuery): SelectQueryBuilder<Group> {
     const queryBuilder = this.ormRepository.createQueryBuilder('group')
 
-    queryBuilder.where('group.user_uuid = :userUuid', { userUuid: query.userUuid })
+    if (!query.userUuid && !query.groupUuids) {
+      throw new Error('Either userUuid or groupUuids must be provided')
+    }
+
+    if (query.userUuid) {
+      queryBuilder.where('group.user_uuid = :userUuid', { userUuid: query.userUuid })
+    }
+
+    if (query.groupUuids) {
+      queryBuilder.where('group.uuid IN (:...groupUuids)', { groupUuids: query.groupUuids })
+    }
 
     if (query.lastSyncTime) {
       queryBuilder.andWhere('group.updated_at_timestamp > :lastSyncTime', {

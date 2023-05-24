@@ -10,7 +10,7 @@ import { GroupInviteRepositoryInterface } from '../GroupInvite/Repository/GroupI
 export class UserCredentialsChangedEventHandler implements DomainEventHandlerInterface {
   constructor(
     private contactRepository: ContactsRepositoryInterface,
-    private groupInvitesRepository: GroupInviteRepositoryInterface,
+    private groupInviteRepository: GroupInviteRepositoryInterface,
     private timer: TimerInterface,
   ) {}
 
@@ -22,6 +22,9 @@ export class UserCredentialsChangedEventHandler implements DomainEventHandlerInt
   private async updatePublicKeyOfAllContacts(payload: UserCredentialsChangedEventPayload): Promise<void> {
     const contacts = await this.contactRepository.findAll({ contactUuid: payload.userUuid })
     for (const contact of contacts) {
+      if (contact.contactPublicKey === payload.newPublicKey) {
+        continue
+      }
       contact.contactPublicKey = payload.newPublicKey
       contact.updatedAtTimestamp = this.timer.getTimestampInMicroseconds()
       await this.contactRepository.save(contact)
@@ -29,12 +32,12 @@ export class UserCredentialsChangedEventHandler implements DomainEventHandlerInt
   }
 
   private async nullifyPendingInboundGroupInvites(payload: UserCredentialsChangedEventPayload): Promise<void> {
-    const inboundInvites = await this.groupInvitesRepository.findAll({
+    const inboundInvites = await this.groupInviteRepository.findAll({
       userUuid: payload.userUuid,
     })
 
     for (const invite of inboundInvites) {
-      await this.groupInvitesRepository.remove(invite)
+      await this.groupInviteRepository.remove(invite)
     }
   }
 }

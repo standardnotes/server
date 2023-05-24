@@ -70,6 +70,16 @@ export class GroupInviteService implements GroupInviteServiceInterface {
     })
   }
 
+  async deleteAllInboundInvites(dto: { userUuid: string }): Promise<void> {
+    const inboundInvites = await this.groupInviteRepository.findAll({
+      userUuid: dto.userUuid,
+    })
+
+    for (const invite of inboundInvites) {
+      await this.groupInviteRepository.remove(invite)
+    }
+  }
+
   async getInvitesForGroup(dto: { groupUuid: string; originatorUuid: string }): Promise<GroupInvite[] | undefined> {
     const group = await this.groupRepository.findByUuid(dto.groupUuid)
     if (!group) {

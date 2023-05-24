@@ -6,4 +6,6 @@ export interface ContactServiceInterface {
   deleteContact(dto: { contactUuid: string; originatorUuid: string }): Promise<boolean>
 
   getUserContacts(dto: { userUuid: string; lastSyncTime?: number }): Promise<Contact[]>
+
+  refreshAllContactsAfterPublicKeyChange(dto: { userUuid: string; publicKey: string }): Promise<void>
 }

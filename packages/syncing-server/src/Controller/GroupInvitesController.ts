@@ -98,6 +98,18 @@ export class GroupInvitesController extends BaseHttpController {
     return this.json({ success: true })
   }
 
+  @httpDelete('/invites/inbound', TYPES.AuthMiddleware)
+  public async deleteInboundUserInvites(
+    _request: Request,
+    response: Response,
+  ): Promise<results.NotFoundResult | results.JsonResult> {
+    await this.groupInviteService.deleteAllInboundInvites({
+      userUuid: response.locals.user.uuid,
+    })
+
+    return this.json({ success: true })
+  }
+
   @httpGet('/invites/outbound', TYPES.AuthMiddleware)
   public async getOutboundUserInvites(
     _request: Request,

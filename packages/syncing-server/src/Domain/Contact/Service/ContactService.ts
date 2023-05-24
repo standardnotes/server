@@ -47,6 +47,20 @@ export class ContactService implements ContactServiceInterface {
     return true
   }
 
+  async refreshAllContactsAfterPublicKeyChange(dto: { userUuid: string; publicKey: string }): Promise<void> {
+    const contacts = await this.contactRepository.findAll({ contactUuid: dto.userUuid })
+
+    for (const contact of contacts) {
+      if (contact.contactPublicKey === dto.publicKey) {
+        continue
+      }
+
+      contact.contactPublicKey = dto.publicKey
+      contact.updatedAtTimestamp = this.timer.getTimestampInMicroseconds()
+      await this.contactRepository.save(contact)
+    }
+  }
+
   async getUserContacts(dto: { userUuid: string; lastSyncTime?: number }): Promise<Contact[]> {
     return this.contactRepository.findAll({ userUuid: dto.userUuid, lastSyncTime: dto.lastSyncTime })
   }

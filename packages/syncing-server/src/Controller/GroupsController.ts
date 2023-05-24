@@ -1,7 +1,15 @@
 import { GroupUser } from '../Domain/GroupUser/Model/GroupUser'
 import { GroupServiceInterface } from './../Domain/Group/Service/GroupServiceInterface'
 import { Request, Response } from 'express'
-import { BaseHttpController, controller, httpPost, results, httpDelete, httpPatch } from 'inversify-express-utils'
+import {
+  BaseHttpController,
+  controller,
+  httpPost,
+  results,
+  httpDelete,
+  httpPatch,
+  httpGet,
+} from 'inversify-express-utils'
 import TYPES from '../Bootstrap/Types'
 import { inject } from 'inversify'
 import { ProjectorInterface } from '../Projection/ProjectorInterface'
@@ -20,6 +28,17 @@ export class GroupsController extends BaseHttpController {
     private groupUserProjector: ProjectorInterface<GroupUser, GroupUserProjection>,
   ) {
     super()
+  }
+
+  @httpGet('/', TYPES.AuthMiddleware)
+  public async getGroups(_request: Request, response: Response): Promise<results.JsonResult> {
+    const groups = await this.groupService.getGroups({
+      userUuid: response.locals.user.uuid,
+    })
+
+    return this.json({
+      groups: groups.map((group) => this.groupProjector.projectFull(group)),
+    })
   }
 
   @httpPost('/', TYPES.AuthMiddleware)

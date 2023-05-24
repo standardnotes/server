@@ -45,8 +45,18 @@ export class GroupService implements GroupServiceInterface {
     return group
   }
 
-  getGroups(dto: { userUuid: string; lastSyncTime?: number }): Promise<Group[]> {
-    return this.groupRepository.findAll({ userUuid: dto.userUuid, lastSyncTime: dto.lastSyncTime })
+  async getGroups(dto: { userUuid: string; lastSyncTime?: number }): Promise<Group[]> {
+    const groupUsers = await this.groupUserService.getAllGroupUsersForUser({
+      userUuid: dto.userUuid,
+    })
+
+    const groupUuids = groupUsers.map((groupUser) => groupUser.groupUuid)
+
+    if (groupUuids.length === 0) {
+      return []
+    }
+
+    return this.groupRepository.findAll({ groupUuids, lastSyncTime: dto.lastSyncTime })
   }
 
   async updateGroup(dto: UpdateGroupDTO): Promise<Group | null> {

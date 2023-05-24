@@ -36,6 +36,18 @@ export class ContactsController extends BaseHttpController {
     })
   }
 
+  @httpPost('/refresh-all')
+  public async refreshAll(_request: Request, response: Response): Promise<results.NotFoundResult | results.JsonResult> {
+    await this.contactService.refreshAllContactsAfterPublicKeyChange({
+      userUuid: response.locals.user.uuid,
+      publicKey: response.locals.user.publicKey,
+    })
+
+    return this.json({
+      success: true,
+    })
+  }
+
   @httpDelete('/:contactUuid')
   public async deleteContact(
     request: Request,

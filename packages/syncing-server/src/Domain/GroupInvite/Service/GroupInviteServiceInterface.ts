@@ -21,4 +21,6 @@ export interface GroupInviteServiceInterface {
   deleteInvite(dto: { originatorUuid: string; groupUuid: string; inviteUuid: string }): Promise<boolean>
 
   deleteAllInvitesForGroup(dto: { originatorUuid: string; groupUuid: string }): Promise<boolean>
+
+  deleteAllInboundInvites(dto: { userUuid: string }): Promise<void>
 }
