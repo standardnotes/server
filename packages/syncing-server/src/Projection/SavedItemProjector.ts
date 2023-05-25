@@ -28,6 +28,7 @@ export class SavedItemProjector implements ProjectorInterface<Item, SavedItemPro
       updated_at: this.timer.convertMicrosecondsToStringDate(item.updatedAtTimestamp),
       updated_at_timestamp: item.updatedAtTimestamp,
       group_uuid: item.groupUuid,
+      last_edited_by_uuid: item.lastEditedByUuid,
     }
   }
 }

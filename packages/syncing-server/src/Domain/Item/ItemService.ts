@@ -133,6 +133,7 @@ export class ItemService implements ItemServiceInterface {
           existingItem,
           itemHash,
           sessionUuid: dto.sessionUuid,
+          userUuid: dto.userUuid,
         })
         savedItems.push(updatedItem)
       } else {
@@ -201,10 +202,14 @@ export class ItemService implements ItemServiceInterface {
   private async updateExistingItem(dto: {
     existingItem: Item
     itemHash: ItemHash
+    userUuid: string
     sessionUuid: string | null
   }): Promise<Item> {
     dto.existingItem.updatedWithSession = dto.sessionUuid
     dto.existingItem.contentSize = 0
+    dto.existingItem.groupUuid = dto.itemHash.group_uuid ?? null
+    dto.existingItem.lastEditedByUuid = dto.userUuid
+
     if (dto.itemHash.content) {
       dto.existingItem.content = dto.itemHash.content
     }
@@ -214,8 +219,6 @@ export class ItemService implements ItemServiceInterface {
     if (dto.itemHash.deleted !== undefined) {
       dto.existingItem.deleted = dto.itemHash.deleted
     }
-
-    dto.existingItem.groupUuid = dto.itemHash.group_uuid ?? null
 
     let wasMarkedAsDuplicate = false
     if (dto.itemHash.duplicate_of) {

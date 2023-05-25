@@ -2,6 +2,7 @@ import { ContentType } from '@standardnotes/common'
 
 export type ItemHash = {
   uuid: string
+  user_uuid: string
   content?: string
   content_type: ContentType
   deleted?: boolean
@@ -10,6 +11,7 @@ export type ItemHash = {
   enc_item_key?: string
   items_key_id?: string
   group_uuid?: string
+  last_edited_by_uuid?: string | null
   created_at?: string
   created_at_timestamp?: number
   updated_at?: string

@@ -15,10 +15,7 @@ export class ItemProjector implements ProjectorInterface<Item, ItemProjection> {
   projectCustom(_projectionType: string, item: Item): ItemProjectionWithUser {
     const fullProjection = this.projectFull(item)
 
-    return {
-      ...fullProjection,
-      user_uuid: item.userUuid,
-    }
+    return fullProjection
   }
 
   projectFull(item: Item): ItemProjection {
@@ -37,6 +34,8 @@ export class ItemProjector implements ProjectorInterface<Item, ItemProjection> {
       updated_at_timestamp: item.updatedAtTimestamp,
       updated_with_session: item.updatedWithSession,
       group_uuid: item.groupUuid,
+      user_uuid: item.userUuid,
+      last_edited_by_uuid: item.lastEditedByUuid,
     }
   }
 }
