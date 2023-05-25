@@ -41,6 +41,7 @@ export class ItemsController extends BaseHttpController {
       limit: request.body.limit,
       contentType: request.body.content_type,
       apiVersion: request.body.api ?? ApiVersion.v20161215,
+      snjsVersion: <string>request.headers['x-snjs-version'],
       readOnlyAccess: response.locals.readOnlyAccess,
       sessionUuid: response.locals.session ? response.locals.session.uuid : null,
     })

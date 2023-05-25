@@ -4890,6 +4890,7 @@ const RAW_RUNTIME_STATE =
           ["@types/jsonwebtoken", "npm:9.0.2"],\
           ["@types/newrelic", "npm:9.13.0"],\
           ["@types/prettyjson", "npm:0.0.30"],\
+          ["@types/semver", "npm:7.5.0"],\
           ["@types/ua-parser-js", "npm:0.7.36"],\
           ["@types/uuid", "npm:8.3.4"],\
           ["@typescript-eslint/eslint-plugin", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:5.59.2"],\
@@ -4912,6 +4913,7 @@ const RAW_RUNTIME_STATE =
           ["prettier", "npm:2.8.8"],\
           ["prettyjson", "npm:1.2.5"],\
           ["reflect-metadata", "npm:0.1.13"],\
+          ["semver", "npm:7.5.1"],\
           ["sqlite3", "virtual:31b5a94a105c89c9294c3d524a7f8929fe63ee5a2efadf21951ca4c0cfd2ecf02e8f4ef5a066bbda091f1e3a56e57c6749069a080618c96b22e51131a330fc4a#npm:5.1.6"],\
           ["ts-jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.1.0"],\
           ["typeorm", "virtual:365b8c88cdf194291829ee28b79556e2328175d26a621363e703848100bea0042e9500db2a1206c9bbc3a4a76a1d169639ef774b2ea3a1a98584a9936b58c6be#npm:0.3.15"],\
@@ -5531,6 +5533,13 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/@types-semver-npm-7.3.13-56212b60da-a76156ff60.zip/node_modules/@types/semver/",\
         "packageDependencies": [\
           ["@types/semver", "npm:7.3.13"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["npm:7.5.0", {\
+        "packageLocation": "./.yarn/cache/@types-semver-npm-7.5.0-4823ff34be-dac255fae6.zip/node_modules/@types/semver/",\
+        "packageDependencies": [\
+          ["@types/semver", "npm:7.5.0"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -13806,6 +13815,14 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/semver-npm-7.5.0-160502ad5d-4cc7856258.zip/node_modules/semver/",\
         "packageDependencies": [\
           ["semver", "npm:7.5.0"],\
+          ["lru-cache", "npm:6.0.0"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["npm:7.5.1", {\
+        "packageLocation": "./.yarn/cache/semver-npm-7.5.1-0736382fb9-20fce78943.zip/node_modules/semver/",\
+        "packageDependencies": [\
+          ["semver", "npm:7.5.1"],\
           ["lru-cache", "npm:6.0.0"]\
         ],\
         "linkType": "HARD"\

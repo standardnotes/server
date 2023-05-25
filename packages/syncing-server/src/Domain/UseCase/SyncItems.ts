@@ -30,6 +30,7 @@ export class SyncItems implements UseCaseInterface {
       itemHashes: dto.itemHashes,
       userUuid: dto.userUuid,
       apiVersion: dto.apiVersion,
+      snjsVersion: dto.snjsVersion,
       readOnlyAccess: dto.readOnlyAccess,
       sessionUuid: dto.sessionUuid,
     })

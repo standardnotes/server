@@ -113,6 +113,7 @@ export class ItemService implements ItemServiceInterface {
       const processingResult = await this.itemSaveValidator.validate({
         userUuid: dto.userUuid,
         apiVersion: dto.apiVersion,
+        snjsVersion: dto.snjsVersion,
         itemHash,
         existingItem,
       })
@@ -213,9 +214,9 @@ export class ItemService implements ItemServiceInterface {
     if (dto.itemHash.deleted !== undefined) {
       dto.existingItem.deleted = dto.itemHash.deleted
     }
-    if (dto.itemHash.group_uuid != undefined) {
-      dto.existingItem.groupUuid = dto.itemHash.group_uuid
-    }
+
+    dto.existingItem.groupUuid = dto.itemHash.group_uuid ?? null
+
     let wasMarkedAsDuplicate = false
     if (dto.itemHash.duplicate_of) {
       wasMarkedAsDuplicate = !dto.existingItem.duplicateOf

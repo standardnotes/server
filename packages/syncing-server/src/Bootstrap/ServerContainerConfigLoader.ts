@@ -53,6 +53,7 @@ import { GroupInviteFactory } from '../Domain/GroupInvite/Factory/GroupInviteFac
 import { ContactServiceInterface } from '../Domain/Contact/Service/ContactServiceInterface'
 import { ContactService } from '../Domain/Contact/Service/ContactService'
 import { ContactFactoryInterface } from '../Domain/Contact/Factory/ContactFactoryInterface'
+import { SnjsVersionFilter } from '../Domain/Item/SaveRule/SnjsVersionFilter'
 
 export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
   private readonly DEFAULT_CONTENT_SIZE_TRANSFER_LIMIT = 10_000_000
@@ -258,6 +259,7 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
     container.bind<UuidFilter>(TYPES.UuidFilter).toDynamicValue(() => new UuidFilter())
     container.bind<ContentTypeFilter>(TYPES.ContentTypeFilter).toDynamicValue(() => new ContentTypeFilter())
     container.bind<ContentFilter>(TYPES.ContentFilter).toDynamicValue(() => new ContentFilter())
+    container.bind<SnjsVersionFilter>(TYPES.SnjsVersionFilter).toDynamicValue(() => new SnjsVersionFilter())
 
     container
       .bind<ItemSaveValidatorInterface>(TYPES.ItemSaveValidator)
@@ -268,6 +270,7 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
           context.container.get(TYPES.UuidFilter),
           context.container.get(TYPES.ContentTypeFilter),
           context.container.get(TYPES.ContentFilter),
+          context.container.get(TYPES.SnjsVersionFilter),
         ])
       })
 

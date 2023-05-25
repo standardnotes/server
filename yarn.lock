@@ -4053,6 +4053,7 @@ __metadata:
     "@types/jsonwebtoken": "npm:^9.0.1"
     "@types/newrelic": "npm:^9.13.0"
     "@types/prettyjson": "npm:^0.0.30"
+    "@types/semver": "npm:^7.5.0"
     "@types/ua-parser-js": "npm:^0.7.36"
     "@types/uuid": "npm:^8.3.0"
     "@typescript-eslint/eslint-plugin": "npm:^5.59.2"
@@ -4075,6 +4076,7 @@ __metadata:
     prettier: "npm:^2.8.8"
     prettyjson: "npm:^1.2.5"
     reflect-metadata: "npm:0.1.13"
+    semver: "npm:^7.5.1"
     sqlite3: "npm:^5.1.6"
     ts-jest: "npm:^29.1.0"
     typeorm: "npm:^0.3.15"
@@ -4611,6 +4613,13 @@ __metadata:
   version: 7.3.13
   resolution: "@types/semver@npm:7.3.13"
   checksum: a76156ff60ddbd17bf2120c09dca3cd8ac7db4f8d8c69614a9ebc5202f05d1044def7fd8cf77415f7284ea8edfa1092b6e04dac07dc17c94762904c69dd2c85b
+  languageName: node
+  linkType: hard
+
+"@types/semver@npm:^7.5.0":
+  version: 7.5.0
+  resolution: "@types/semver@npm:7.5.0"
+  checksum: dac255fae68157aec375fdb79d483a161c1b9c58e0ab9e18936dd1e9b89dd0ff85d64e482b1505de7e17455b404a0a530c4f9ddd6f21d333c2311c0068687b14
   languageName: node
   linkType: hard
 
@@ -11831,6 +11840,17 @@ __metadata:
   bin:
     semver: ./bin/semver.js
   checksum: 18f3d42ec70a542e9efc498ecc3d0b9b088099115e8658b49d2bfc6470b46a6144b294374dac3f343fe1600039cbd80d5e830dd356053fd5abd4f1af5118a928
+  languageName: node
+  linkType: hard
+
+"semver@npm:^7.5.1":
+  version: 7.5.1
+  resolution: "semver@npm:7.5.1"
+  dependencies:
+    lru-cache: "npm:^6.0.0"
+  bin:
+    semver: bin/semver.js
+  checksum: 20fce7894334634f553a64334b21fa2dc7cccd08a5f31122c187f1c1d3e45b8fc47d599d3fa52342c3fb3ee0bd139a8fbd41bc5b9e849ada8f7e7cc91b18a180
   languageName: node
   linkType: hard
 

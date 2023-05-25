@@ -10,6 +10,7 @@ export type SyncItemsDTO = {
   cursorToken?: string | null
   contentType?: string
   apiVersion: string
+  snjsVersion: string
   readOnlyAccess: boolean
   sessionUuid: string | null
 }

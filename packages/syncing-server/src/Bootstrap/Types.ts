@@ -101,6 +101,7 @@ const TYPES = {
   ItemBackupService: Symbol.for('ItemBackupService'),
   ItemSaveValidator: Symbol.for('ItemSaveValidator'),
   OwnershipFilter: Symbol.for('OwnershipFilter'),
+  SnjsVersionFilter: Symbol.for('SnjsVersionFilter'),
   TimeDifferenceFilter: Symbol.for('TimeDifferenceFilter'),
   UuidFilter: Symbol.for('UuidFilter'),
   ContentTypeFilter: Symbol.for('ContentTypeFilter'),
