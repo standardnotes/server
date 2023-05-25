@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.57.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.56.2...@standardnotes/api-gateway@1.57.0) (2023-05-25)
+
+### Features
+
+* refactor auth middleware to handle required and optional cross service token scenarios ([#612](https://github.com/standardnotes/api-gateway/issues/612)) ([1e4c7d0](https://github.com/standardnotes/api-gateway/commit/1e4c7d0f317d5c2d98065da12ffeb950b10ee5dc))
+
 ## [1.56.2](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.56.1...@standardnotes/api-gateway@1.56.2) (2023-05-18)
 
 ### Bug Fixes

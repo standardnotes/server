@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.110.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.109.2...@standardnotes/auth-server@1.110.0) (2023-05-25)
+
+### Features
+
+* refactor auth middleware to handle required and optional cross service token scenarios ([#612](https://github.com/standardnotes/server/issues/612)) ([1e4c7d0](https://github.com/standardnotes/server/commit/1e4c7d0f317d5c2d98065da12ffeb950b10ee5dc))
+
 ## [1.109.2](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.109.1...@standardnotes/auth-server@1.109.2) (2023-05-18)
 
 ### Bug Fixes
