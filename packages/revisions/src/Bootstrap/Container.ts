@@ -215,19 +215,6 @@ export class ContainerConfigLoader {
       .bind<MapperInterface<Revision, string>>(TYPES.Revisions_RevisionItemStringMapper)
       .toDynamicValue(() => new RevisionItemStringMapper())
 
-    container
-      .bind<DumpRepositoryInterface>(TYPES.Revisions_DumpRepository)
-      .toConstantValue(
-        env.get('S3_AWS_REGION', true)
-          ? new S3DumpRepository(
-              container.get(TYPES.Revisions_S3_BACKUP_BUCKET_NAME),
-              container.get(TYPES.Revisions_S3),
-              container.get(TYPES.Revisions_RevisionItemStringMapper),
-              container.get(TYPES.Revisions_Logger),
-            )
-          : new FSDumpRepository(container.get(TYPES.Revisions_RevisionItemStringMapper)),
-      )
-
     if (!isConfiguredForHomeServer) {
       // env vars
       container.bind(TYPES.Revisions_SQS_QUEUE_URL).toConstantValue(env.get('SQS_QUEUE_URL'))
@@ -267,6 +254,19 @@ export class ContainerConfigLoader {
         return s3Client
       })
     }
+
+    container
+      .bind<DumpRepositoryInterface>(TYPES.Revisions_DumpRepository)
+      .toConstantValue(
+        env.get('S3_AWS_REGION', true)
+          ? new S3DumpRepository(
+              container.get(TYPES.Revisions_S3_BACKUP_BUCKET_NAME),
+              container.get(TYPES.Revisions_S3),
+              container.get(TYPES.Revisions_RevisionItemStringMapper),
+              container.get(TYPES.Revisions_Logger),
+            )
+          : new FSDumpRepository(container.get(TYPES.Revisions_RevisionItemStringMapper)),
+      )
 
     // use cases
     container.bind<CopyRevisions>(TYPES.Revisions_CopyRevisions).toDynamicValue((context: interfaces.Context) => {
