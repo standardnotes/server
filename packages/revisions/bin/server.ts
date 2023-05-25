@@ -9,20 +9,20 @@ import * as winston from 'winston'
 import { InversifyExpressServer } from 'inversify-express-utils'
 import TYPES from '../src/Bootstrap/Types'
 import { Env } from '../src/Bootstrap/Env'
-import { ServerContainerConfigLoader } from '../src/Bootstrap/ServerContainerConfigLoader'
+import { ContainerConfigLoader } from '../src/Bootstrap/Container'
 
 import '../src/Infra/InversifyExpress/InversifyExpressRevisionsController'
 import '../src/Infra/InversifyExpress/InversifyExpressHealthCheckController'
 
-const container = new ServerContainerConfigLoader()
+const container = new ContainerConfigLoader()
 void container.load().then((container) => {
-  const env: Env = container.get(TYPES.Env)
+  const env: Env = container.get(TYPES.Revisions_Env)
 
   const server = new InversifyExpressServer(container)
 
   server.setConfig((app) => {
     app.use((_request: Request, response: Response, next: NextFunction) => {
-      response.setHeader('X-Revisions-Version', container.get(TYPES.VERSION))
+      response.setHeader('X-Revisions-Version', container.get(TYPES.Revisions_VERSION))
       next()
     })
     app.use(json())
@@ -30,7 +30,7 @@ void container.load().then((container) => {
     app.use(cors())
   })
 
-  const logger: winston.Logger = container.get(TYPES.Logger)
+  const logger: winston.Logger = container.get(TYPES.Revisions_Logger)
 
   server.setErrorConfig((app) => {
     app.use((error: Record<string, unknown>, _request: Request, response: Response, _next: NextFunction) => {

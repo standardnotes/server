@@ -32,7 +32,7 @@ export class InversifyExpressSessionController extends BaseHttpController {
   }
 
   @httpDelete('/', TYPES.Auth_RequiredCrossServiceTokenMiddleware, TYPES.Auth_SessionMiddleware)
-  async deleteSession(request: Request, response: Response): Promise<results.JsonResult | void> {
+  async deleteSession(request: Request, response: Response): Promise<results.JsonResult | results.StatusCodeResult> {
     if (response.locals.readOnlyAccess) {
       return this.json(
         {
@@ -84,11 +84,15 @@ export class InversifyExpressSessionController extends BaseHttpController {
     }
 
     response.setHeader('x-invalidate-cache', response.locals.user.uuid)
-    response.status(204).send()
+
+    return this.statusCode(204)
   }
 
   @httpDelete('/all', TYPES.Auth_RequiredCrossServiceTokenMiddleware, TYPES.Auth_SessionMiddleware)
-  async deleteAllSessions(_request: Request, response: Response): Promise<results.JsonResult | void> {
+  async deleteAllSessions(
+    _request: Request,
+    response: Response,
+  ): Promise<results.JsonResult | results.StatusCodeResult> {
     if (response.locals.readOnlyAccess) {
       return this.json(
         {
@@ -118,11 +122,12 @@ export class InversifyExpressSessionController extends BaseHttpController {
     })
 
     response.setHeader('x-invalidate-cache', response.locals.user.uuid)
-    response.status(204).send()
+
+    return this.statusCode(204)
   }
 
   @httpPost('/refresh')
-  async refresh(request: Request, response: Response): Promise<results.JsonResult | void> {
+  async refresh(request: Request, response: Response): Promise<results.JsonResult> {
     if (!request.body.access_token || !request.body.refresh_token) {
       return this.json(
         {
@@ -152,7 +157,7 @@ export class InversifyExpressSessionController extends BaseHttpController {
     }
 
     response.setHeader('x-invalidate-cache', result.userUuid as string)
-    response.send({
+    return this.json({
       session: result.sessionPayload,
     })
   }

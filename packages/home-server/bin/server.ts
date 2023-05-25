@@ -5,6 +5,7 @@ import { Service as ApiGatewayService, TYPES as ApiGatewayTYPES } from '@standar
 import { DirectCallDomainEventPublisher } from '@standardnotes/domain-events-infra'
 import { Service as AuthService } from '@standardnotes/auth-server'
 import { Service as SyncingService } from '@standardnotes/syncing-server'
+import { Service as RevisionsService } from '@standardnotes/revisions-server'
 import { Container } from 'inversify'
 import { InversifyExpressServer } from 'inversify-express-utils'
 import helmet from 'helmet'
@@ -24,11 +25,13 @@ const startServer = async (): Promise<void> => {
   const apiGatewayService = new ApiGatewayService(serviceContainer)
   const authService = new AuthService(serviceContainer, controllerContainer, directCallDomainEventPublisher)
   const syncingService = new SyncingService(serviceContainer, controllerContainer, directCallDomainEventPublisher)
+  const revisionsService = new RevisionsService(serviceContainer, controllerContainer, directCallDomainEventPublisher)
 
   const container = Container.merge(
     (await apiGatewayService.getContainer()) as Container,
     (await authService.getContainer()) as Container,
     (await syncingService.getContainer()) as Container,
+    (await revisionsService.getContainer()) as Container,
   )
 
   const env: Env = new Env()

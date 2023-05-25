@@ -66,7 +66,12 @@ export class DirectCallServiceProxy implements ServiceProxyInterface {
       throw new Error('Revisions service not found')
     }
 
-    await service.handleRequest(request, response, endpointOrMethodIdentifier)
+    const serviceResponse = (await service.handleRequest(request, response, endpointOrMethodIdentifier)) as {
+      statusCode: number
+      json: Record<string, unknown>
+    }
+
+    this.sendDecoratedResponse(response, serviceResponse)
   }
 
   async callSyncingServer(request: never, response: never, endpointOrMethodIdentifier: string): Promise<void> {

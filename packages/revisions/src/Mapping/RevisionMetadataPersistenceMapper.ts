@@ -12,7 +12,10 @@ export class RevisionMetadataPersistenceMapper implements MapperInterface<Revisi
     }
     const contentType = contentTypeOrError.getValue()
 
-    const datesOrError = Dates.create(projection.createdAt, projection.updatedAt)
+    const createdAt = projection.createdAt instanceof Date ? projection.createdAt : new Date(projection.createdAt)
+    const updatedAt = projection.updatedAt instanceof Date ? projection.updatedAt : new Date(projection.updatedAt)
+
+    const datesOrError = Dates.create(createdAt, updatedAt)
     if (datesOrError.isFailed()) {
       throw new Error(`Could not create dates: ${datesOrError.getError()}`)
     }

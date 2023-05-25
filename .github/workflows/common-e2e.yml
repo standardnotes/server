@@ -85,6 +85,7 @@ jobs:
         sed -i "s/PSEUDO_KEY_PARAMS_KEY=/PSEUDO_KEY_PARAMS_KEY=$(openssl rand -hex 32)/g" packages/home-server/.env
         echo "ACCESS_TOKEN_AGE=4" >> packages/home-server/.env
         echo "REFRESH_TOKEN_AGE=7" >> packages/home-server/.env
+        echo "REVISIONS_FREQUENCY=5" >> packages/home-server/.env
 
     - name: Run Server
       run: nohup yarn workspace @standardnotes/home-server start &
