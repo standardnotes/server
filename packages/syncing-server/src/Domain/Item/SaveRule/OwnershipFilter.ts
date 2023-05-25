@@ -55,7 +55,11 @@ export class OwnershipFilter implements ItemSaveRuleInterface {
       const isItemBeingDeleted = dto.itemHash.deleted === true
 
       if (isItemBeingRemovedFromGroup || isItemBeingDeleted) {
-        return groupAuthorization === 'admin' ? successValue : groupReadonlyFail
+        if (itemBelongsToADifferentUser) {
+          return groupAuthorization === 'admin' ? successValue : groupReadonlyFail
+        } else {
+          return successValue
+        }
       }
 
       if (dto.itemHash.content_type === ContentType.SharedItemsKey && groupAuthorization !== 'admin') {
