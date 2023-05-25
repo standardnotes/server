@@ -15,7 +15,7 @@ export class AuthenticatorsController extends BaseHttpController {
     super()
   }
 
-  @httpDelete('/:authenticatorId', TYPES.AuthMiddleware)
+  @httpDelete('/:authenticatorId', TYPES.RequiredCrossServiceTokenMiddleware)
   async delete(request: Request, response: Response): Promise<void> {
     await this.httpService.callAuthServer(
       request,
@@ -29,7 +29,7 @@ export class AuthenticatorsController extends BaseHttpController {
     )
   }
 
-  @httpGet('/', TYPES.AuthMiddleware)
+  @httpGet('/', TYPES.RequiredCrossServiceTokenMiddleware)
   async list(request: Request, response: Response): Promise<void> {
     await this.httpService.callAuthServer(
       request,
@@ -39,7 +39,7 @@ export class AuthenticatorsController extends BaseHttpController {
     )
   }
 
-  @httpGet('/generate-registration-options', TYPES.AuthMiddleware)
+  @httpGet('/generate-registration-options', TYPES.RequiredCrossServiceTokenMiddleware)
   async generateRegistrationOptions(request: Request, response: Response): Promise<void> {
     await this.httpService.callAuthServer(
       request,
@@ -59,7 +59,7 @@ export class AuthenticatorsController extends BaseHttpController {
     )
   }
 
-  @httpPost('/verify-registration', TYPES.AuthMiddleware)
+  @httpPost('/verify-registration', TYPES.RequiredCrossServiceTokenMiddleware)
   async verifyRegistration(request: Request, response: Response): Promise<void> {
     await this.httpService.callAuthServer(
       request,

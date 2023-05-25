@@ -241,17 +241,16 @@ import { InversifyExpressSubscriptionTokensController } from '../Infra/Inversify
 import { InversifyExpressSubscriptionSettingsController } from '../Infra/InversifyExpressUtils/InversifyExpressSubscriptionSettingsController'
 import { InversifyExpressSettingsController } from '../Infra/InversifyExpressUtils/InversifyExpressSettingsController'
 import { SessionMiddleware } from '../Infra/InversifyExpressUtils/Middleware/SessionMiddleware'
-import { ApiGatewayAuthMiddleware } from '../Infra/InversifyExpressUtils/Middleware/ApiGatewayAuthMiddleware'
 import { ApiGatewayOfflineAuthMiddleware } from '../Infra/InversifyExpressUtils/Middleware/ApiGatewayOfflineAuthMiddleware'
-import { AuthMiddleware } from '../Infra/InversifyExpressUtils/Middleware/AuthMiddleware'
 import { OfflineUserAuthMiddleware } from '../Infra/InversifyExpressUtils/Middleware/OfflineUserAuthMiddleware'
-import { AuthMiddlewareWithoutResponse } from '../Infra/InversifyExpressUtils/Middleware/AuthMiddlewareWithoutResponse'
 import { LockMiddleware } from '../Infra/InversifyExpressUtils/Middleware/LockMiddleware'
 import { InversifyExpressSessionController } from '../Infra/InversifyExpressUtils/InversifyExpressSessionController'
 import { InversifyExpressOfflineController } from '../Infra/InversifyExpressUtils/InversifyExpressOfflineController'
 import { InversifyExpressListedController } from '../Infra/InversifyExpressUtils/InversifyExpressListedController'
 import { InversifyExpressInternalController } from '../Infra/InversifyExpressUtils/InversifyExpressInternalController'
 import { InversifyExpressFeaturesController } from '../Infra/InversifyExpressUtils/InversifyExpressFeaturesController'
+import { RequiredCrossServiceTokenMiddleware } from '../Infra/InversifyExpressUtils/Middleware/RequiredCrossServiceTokenMiddleware'
+import { OptionalCrossServiceTokenMiddleware } from '../Infra/InversifyExpressUtils/Middleware/OptionalCrossServiceTokenMiddleware'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -448,13 +447,14 @@ export class ContainerConfigLoader {
       )
 
     // Middleware
-    container.bind<AuthMiddleware>(TYPES.Auth_AuthMiddleware).to(AuthMiddleware)
     container.bind<SessionMiddleware>(TYPES.Auth_SessionMiddleware).to(SessionMiddleware)
     container.bind<LockMiddleware>(TYPES.Auth_LockMiddleware).to(LockMiddleware)
     container
-      .bind<AuthMiddlewareWithoutResponse>(TYPES.Auth_AuthMiddlewareWithoutResponse)
-      .to(AuthMiddlewareWithoutResponse)
-    container.bind<ApiGatewayAuthMiddleware>(TYPES.Auth_ApiGatewayAuthMiddleware).to(ApiGatewayAuthMiddleware)
+      .bind<RequiredCrossServiceTokenMiddleware>(TYPES.Auth_RequiredCrossServiceTokenMiddleware)
+      .to(RequiredCrossServiceTokenMiddleware)
+    container
+      .bind<OptionalCrossServiceTokenMiddleware>(TYPES.Auth_OptionalCrossServiceTokenMiddleware)
+      .to(OptionalCrossServiceTokenMiddleware)
     container
       .bind<ApiGatewayOfflineAuthMiddleware>(TYPES.Auth_ApiGatewayOfflineAuthMiddleware)
       .to(ApiGatewayOfflineAuthMiddleware)

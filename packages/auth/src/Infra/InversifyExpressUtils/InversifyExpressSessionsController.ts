@@ -62,7 +62,7 @@ export class InversifyExpressSessionsController extends BaseHttpController {
     return this.json({ authToken: result.token })
   }
 
-  @httpGet('/', TYPES.Auth_AuthMiddleware, TYPES.Auth_SessionMiddleware)
+  @httpGet('/', TYPES.Auth_RequiredCrossServiceTokenMiddleware, TYPES.Auth_SessionMiddleware)
   async getSessions(_request: Request, response: Response): Promise<results.JsonResult> {
     if (response.locals.readOnlyAccess) {
       return this.json([])

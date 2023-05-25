@@ -18,7 +18,7 @@ export class InversifyExpressListedController extends BaseHttpController {
     this.controllerContainer.register('auth.users.createListedAccount', this.createListedAccount.bind(this))
   }
 
-  @httpPost('/', TYPES.Auth_ApiGatewayAuthMiddleware)
+  @httpPost('/', TYPES.Auth_RequiredCrossServiceTokenMiddleware)
   async createListedAccount(_request: Request, response: Response): Promise<results.JsonResult> {
     if (response.locals.readOnlyAccess) {
       return this.json(

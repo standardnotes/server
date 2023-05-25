@@ -24,7 +24,7 @@ export class ActionsController extends BaseHttpController {
     )
   }
 
-  @httpGet('/login-params')
+  @httpGet('/login-params', TYPES.OptionalCrossServiceTokenMiddleware)
   async loginParams(request: Request, response: Response): Promise<void> {
     await this.serviceProxy.callAuthServer(
       request,
@@ -34,7 +34,7 @@ export class ActionsController extends BaseHttpController {
     )
   }
 
-  @httpPost('/logout')
+  @httpPost('/logout', TYPES.OptionalCrossServiceTokenMiddleware)
   async logout(request: Request, response: Response): Promise<void> {
     await this.serviceProxy.callAuthServer(
       request,
@@ -54,7 +54,7 @@ export class ActionsController extends BaseHttpController {
     )
   }
 
-  @httpPost('/recovery/codes', TYPES.AuthMiddleware)
+  @httpPost('/recovery/codes', TYPES.RequiredCrossServiceTokenMiddleware)
   async recoveryCodes(request: Request, response: Response): Promise<void> {
     await this.serviceProxy.callAuthServer(
       request,

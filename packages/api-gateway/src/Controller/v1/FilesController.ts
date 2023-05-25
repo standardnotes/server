@@ -15,7 +15,7 @@ export class FilesController extends BaseHttpController {
     super()
   }
 
-  @httpPost('/valet-tokens', TYPES.AuthMiddleware)
+  @httpPost('/valet-tokens', TYPES.RequiredCrossServiceTokenMiddleware)
   async createToken(request: Request, response: Response): Promise<void> {
     await this.httpService.callAuthServer(
       request,

@@ -17,7 +17,7 @@ export class WebSocketsController extends BaseHttpController {
     super()
   }
 
-  @httpPost('/tokens', TYPES.AuthMiddleware)
+  @httpPost('/tokens', TYPES.RequiredCrossServiceTokenMiddleware)
   async createWebSocketConnectionToken(request: Request, response: Response): Promise<void> {
     await this.httpService.callWebSocketServer(
       request,

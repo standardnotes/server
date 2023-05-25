@@ -9,7 +9,7 @@ import { EndpointResolverInterface } from '../../Service/Resolver/EndpointResolv
 @controller('/v2')
 export class ActionsControllerV2 extends BaseHttpController {
   constructor(
-    @inject(TYPES.ServiceProxy) private httpService: ServiceProxyInterface,
+    @inject(TYPES.ServiceProxy) private serviceProxy: ServiceProxyInterface,
     @inject(TYPES.EndpointResolver) private endpointResolver: EndpointResolverInterface,
   ) {
     super()
@@ -17,7 +17,7 @@ export class ActionsControllerV2 extends BaseHttpController {
 
   @httpPost('/login')
   async login(request: Request, response: Response): Promise<void> {
-    await this.httpService.callAuthServer(
+    await this.serviceProxy.callAuthServer(
       request,
       response,
       this.endpointResolver.resolveEndpointOrMethodIdentifier('POST', 'auth/pkce_sign_in'),
@@ -25,9 +25,9 @@ export class ActionsControllerV2 extends BaseHttpController {
     )
   }
 
-  @httpPost('/login-params')
+  @httpPost('/login-params', TYPES.OptionalCrossServiceTokenMiddleware)
   async loginParams(request: Request, response: Response): Promise<void> {
-    await this.httpService.callAuthServer(
+    await this.serviceProxy.callAuthServer(
       request,
       response,
       this.endpointResolver.resolveEndpointOrMethodIdentifier('POST', 'auth/pkce_params'),

@@ -35,7 +35,7 @@ export class InversifyExpressSettingsController extends BaseHttpController {
     this.controllerContainer.register('auth.users.deleteSetting', this.deleteSetting.bind(this))
   }
 
-  @httpGet('/settings', TYPES.Auth_ApiGatewayAuthMiddleware)
+  @httpGet('/settings', TYPES.Auth_RequiredCrossServiceTokenMiddleware)
   async getSettings(request: Request, response: Response): Promise<results.JsonResult> {
     if (request.params.userUuid !== response.locals.user.uuid) {
       return this.json(
@@ -54,7 +54,7 @@ export class InversifyExpressSettingsController extends BaseHttpController {
     return this.json(result)
   }
 
-  @httpGet('/settings/:settingName', TYPES.Auth_ApiGatewayAuthMiddleware)
+  @httpGet('/settings/:settingName', TYPES.Auth_RequiredCrossServiceTokenMiddleware)
   async getSetting(request: Request, response: Response): Promise<results.JsonResult> {
     if (request.params.userUuid !== response.locals.user.uuid) {
       return this.json(
@@ -77,7 +77,7 @@ export class InversifyExpressSettingsController extends BaseHttpController {
     return this.json(result, 400)
   }
 
-  @httpPut('/settings', TYPES.Auth_ApiGatewayAuthMiddleware)
+  @httpPut('/settings', TYPES.Auth_RequiredCrossServiceTokenMiddleware)
   async updateSetting(request: Request, response: Response): Promise<results.JsonResult | results.StatusCodeResult> {
     if (response.locals.readOnlyAccess) {
       return this.json(
@@ -124,7 +124,7 @@ export class InversifyExpressSettingsController extends BaseHttpController {
     return this.json(result, result.statusCode)
   }
 
-  @httpDelete('/settings/:settingName', TYPES.Auth_ApiGatewayAuthMiddleware)
+  @httpDelete('/settings/:settingName', TYPES.Auth_RequiredCrossServiceTokenMiddleware)
   async deleteSetting(request: Request, response: Response): Promise<results.JsonResult> {
     if (response.locals.readOnlyAccess) {
       return this.json(

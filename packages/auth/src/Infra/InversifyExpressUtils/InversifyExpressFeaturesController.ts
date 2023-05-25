@@ -22,7 +22,7 @@ export class InversifyExpressFeaturesController extends BaseHttpController {
     this.controllerContainer.register('auth.users.getFeatures', this.getFeatures.bind(this))
   }
 
-  @httpGet('/', TYPES.Auth_ApiGatewayAuthMiddleware)
+  @httpGet('/', TYPES.Auth_RequiredCrossServiceTokenMiddleware)
   async getFeatures(request: Request, response: Response): Promise<results.JsonResult> {
     if (request.params.userUuid !== response.locals.user.uuid) {
       return this.json(

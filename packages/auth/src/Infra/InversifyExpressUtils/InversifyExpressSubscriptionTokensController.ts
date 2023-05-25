@@ -37,7 +37,7 @@ export class InversifyExpressSubscriptionTokensController extends BaseHttpContro
     this.controllerContainer.register('auth.subscription-tokens.create', this.createToken.bind(this))
   }
 
-  @httpPost('/', TYPES.Auth_ApiGatewayAuthMiddleware)
+  @httpPost('/', TYPES.Auth_RequiredCrossServiceTokenMiddleware)
   async createToken(_request: Request, response: Response): Promise<results.JsonResult> {
     if (response.locals.readOnlyAccess) {
       return this.json(

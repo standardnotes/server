@@ -26,12 +26,12 @@ export class InversifyExpressSessionController extends BaseHttpController {
   ) {
     super()
 
-    this.controllerContainer.register('auth.session.delete', this.deleteSession.bind(this))
-    this.controllerContainer.register('auth.session.deleteAll', this.deleteAllSessions.bind(this))
-    this.controllerContainer.register('auth.session.refresh', this.refresh.bind(this))
+    this.controllerContainer.register('auth.sessions.delete', this.deleteSession.bind(this))
+    this.controllerContainer.register('auth.sessions.deleteAll', this.deleteAllSessions.bind(this))
+    this.controllerContainer.register('auth.sessions.refresh', this.refresh.bind(this))
   }
 
-  @httpDelete('/', TYPES.Auth_AuthMiddleware, TYPES.Auth_SessionMiddleware)
+  @httpDelete('/', TYPES.Auth_RequiredCrossServiceTokenMiddleware, TYPES.Auth_SessionMiddleware)
   async deleteSession(request: Request, response: Response): Promise<results.JsonResult | void> {
     if (response.locals.readOnlyAccess) {
       return this.json(
@@ -87,7 +87,7 @@ export class InversifyExpressSessionController extends BaseHttpController {
     response.status(204).send()
   }
 
-  @httpDelete('/all', TYPES.Auth_AuthMiddleware, TYPES.Auth_SessionMiddleware)
+  @httpDelete('/all', TYPES.Auth_RequiredCrossServiceTokenMiddleware, TYPES.Auth_SessionMiddleware)
   async deleteAllSessions(_request: Request, response: Response): Promise<results.JsonResult | void> {
     if (response.locals.readOnlyAccess) {
       return this.json(

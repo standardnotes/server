@@ -17,7 +17,7 @@ export class InversifyExpressUserRequestsController extends BaseHttpController {
     this.controllerContainer.register('auth.users.createRequest', this.submitRequest.bind(this))
   }
 
-  @httpPost('/', TYPES.Auth_ApiGatewayAuthMiddleware)
+  @httpPost('/', TYPES.Auth_RequiredCrossServiceTokenMiddleware)
   async submitRequest(request: Request, response: Response): Promise<results.JsonResult> {
     const result = await this.userRequestsController.submitUserRequest({
       requestType: request.body.requestType,
