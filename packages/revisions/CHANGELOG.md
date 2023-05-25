@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.16.1](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.16.0...@standardnotes/revisions-server@1.16.1) (2023-05-25)
+
+### Bug Fixes
+
+* **revisions:** container bindings ([76b1cb0](https://github.com/standardnotes/server/commit/76b1cb0f5a01c547f7bd9ba3475c3988dcb9afdb))
+
 # [1.16.0](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.15.1...@standardnotes/revisions-server@1.16.0) (2023-05-25)
 
 ### Features
