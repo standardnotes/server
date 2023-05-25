@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.58.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.57.0...@standardnotes/api-gateway@1.58.0) (2023-05-25)
+
+### Features
+
+* add revisions service to home server ([#613](https://github.com/standardnotes/api-gateway/issues/613)) ([c70040f](https://github.com/standardnotes/api-gateway/commit/c70040fe5dfd35663b9811fbbaa9370bd0298482))
+
 # [1.57.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.56.2...@standardnotes/api-gateway@1.57.0) (2023-05-25)
 
 ### Features

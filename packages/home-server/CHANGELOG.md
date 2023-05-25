@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.5.0](https://github.com/standardnotes/server/compare/@standardnotes/home-server@1.4.4...@standardnotes/home-server@1.5.0) (2023-05-25)
+
+### Features
+
+* add revisions service to home server ([#613](https://github.com/standardnotes/server/issues/613)) ([c70040f](https://github.com/standardnotes/server/commit/c70040fe5dfd35663b9811fbbaa9370bd0298482))
+
 ## [1.4.4](https://github.com/standardnotes/server/compare/@standardnotes/home-server@1.4.3...@standardnotes/home-server@1.4.4) (2023-05-25)
 
 **Note:** Version bump only for package @standardnotes/home-server
