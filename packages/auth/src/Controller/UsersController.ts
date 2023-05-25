@@ -36,7 +36,7 @@ export class UsersController extends BaseHttpController {
     super()
   }
 
-  @httpPatch('/:userId', TYPES.ApiGatewayAuthMiddleware)
+  @httpPatch('/:userId', TYPES.AuthMiddleware)
   async update(request: Request, response: Response): Promise<results.JsonResult | void> {
     if (response.locals.readOnlyAccess) {
       return this.json(
@@ -65,17 +65,8 @@ export class UsersController extends BaseHttpController {
       user: response.locals.user,
       updatedWithUserAgent: <string>request.headers['user-agent'],
       apiVersion: request.body.api,
-      pwFunc: request.body.pw_func,
-      pwAlg: request.body.pw_alg,
-      pwCost: request.body.pw_cost,
-      pwKeySize: request.body.pw_key_size,
-      pwNonce: request.body.pw_nonce,
-      pwSalt: request.body.pw_salt,
-      kpOrigination: request.body.origination,
-      kpCreated: request.body.created,
-      version: request.body.version,
       publicKey: request.body.public_key,
-      encryptedPrivateKey: request.body.private_key,
+      encryptedPrivateKey: request.body.encrypted_private_key,
     })
 
     if (updateResult.success) {
@@ -88,7 +79,7 @@ export class UsersController extends BaseHttpController {
     return this.json(
       {
         error: {
-          message: 'Could not update user.',
+          message: updateResult.errorMessage as string,
         },
       },
       400,

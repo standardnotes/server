@@ -3,5 +3,6 @@ import { AuthResponse20200115 } from '../Auth/AuthResponse20200115'
 
 export type UpdateUserResponse = {
   success: boolean
+  errorMessage?: string
   authResponse?: AuthResponse20161215 | AuthResponse20200115
 }

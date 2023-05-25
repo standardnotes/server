@@ -17,25 +17,27 @@ export class UpdateUser implements UseCaseInterface {
   ) {}
 
   async execute(dto: UpdateUserDTO): Promise<UpdateUserResponse> {
-    const { user, apiVersion, ...updateFields } = dto
+    if (dto.user.publicKey || dto.user.encryptedPrivateKey) {
+      return {
+        success: false,
+        errorMessage:
+          'The keypair of a user with an existing keypair cannot be updated using this method. Instead, initiate a credentials change.',
+      }
+    }
 
-    Object.keys(updateFields).forEach(
-      (key) => (updateFields[key] === undefined || updateFields[key] === null) && delete updateFields[key],
-    )
+    dto.user.publicKey = dto.publicKey
+    dto.user.encryptedPrivateKey = dto.encryptedPrivateKey
+    dto.user.updatedAt = this.timer.getUTCDate()
 
-    Object.assign(user, updateFields)
+    const updatedUser = await this.userRepository.save(dto.user)
 
-    user.updatedAt = this.timer.getUTCDate()
-
-    await this.userRepository.save(user)
-
-    const authResponseFactory = this.authResponseFactoryResolver.resolveAuthResponseFactoryVersion(apiVersion)
+    const authResponseFactory = this.authResponseFactoryResolver.resolveAuthResponseFactoryVersion(dto.apiVersion)
 
     return {
       success: true,
       authResponse: await authResponseFactory.createResponse({
-        user,
-        apiVersion,
+        user: updatedUser,
+        apiVersion: dto.apiVersion,
         userAgent: dto.updatedWithUserAgent,
         ephemeralSession: false,
         readonlyAccess: false,

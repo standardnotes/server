@@ -12,9 +12,6 @@ export class OwnershipFilter implements ItemSaveRuleInterface {
   constructor(private groupService: GroupServiceInterface, private groupUserService: GroupUserServiceInterface) {}
 
   async check(dto: ItemSaveValidationDTO): Promise<ItemSaveRuleResult> {
-    const isItemBeingSetForGroup = dto.itemHash.group_uuid != null
-    const isItemBeingRemovedFromGroup =
-      dto.existingItem != null && dto.existingItem.groupUuid != null && dto.itemHash.group_uuid == null
     const itemBelongsToADifferentUser = dto.existingItem != null && dto.existingItem.userUuid !== dto.userUuid
 
     const successValue = {
@@ -29,22 +26,31 @@ export class OwnershipFilter implements ItemSaveRuleInterface {
       },
     }
 
-    if (itemBelongsToADifferentUser || isItemBeingSetForGroup || isItemBeingRemovedFromGroup) {
-      const groupAuthorization = await this.groupAuthorizationForItem(dto.userUuid, dto.itemHash)
+    const ownershipFail = {
+      passed: false,
+      conflict: {
+        unsavedItem: dto.itemHash,
+        type: ConflictType.UuidConflict,
+      },
+    }
+
+    const groupUuidInvolved = dto.existingItem?.groupUuid || dto.itemHash.group_uuid
+    if (itemBelongsToADifferentUser && !groupUuidInvolved) {
+      return ownershipFail
+    }
+
+    if (groupUuidInvolved) {
+      const groupAuthorization = await this.groupAuthorizationForItem(dto.userUuid, groupUuidInvolved)
       if (!groupAuthorization) {
-        return {
-          passed: false,
-          conflict: {
-            unsavedItem: dto.itemHash,
-            type: ConflictType.UuidConflict,
-          },
-        }
+        return ownershipFail
       }
 
       if (groupAuthorization === 'read') {
         return groupReadonlyFail
       }
 
+      const isItemBeingRemovedFromGroup =
+        dto.existingItem != null && dto.existingItem.groupUuid != null && dto.itemHash.group_uuid == null
       if (isItemBeingRemovedFromGroup) {
         return groupAuthorization === 'admin' ? successValue : groupReadonlyFail
       }
@@ -86,11 +92,11 @@ export class OwnershipFilter implements ItemSaveRuleInterface {
 
   private async groupAuthorizationForItem(
     userUuid: string,
-    itemHash: ItemHash,
+    groupUuid: string,
   ): Promise<GroupUserPermission | undefined> {
     const groupUser = await this.groupUserService.getUserForGroup({
       userUuid,
-      groupUuid: itemHash.group_uuid as string,
+      groupUuid: groupUuid,
     })
 
     if (groupUser) {
