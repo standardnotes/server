@@ -50,7 +50,7 @@ jobs:
       run: yarn dlx mocha-headless-chrome --timeout 1200000 -f http://localhost:9001/mocha/test.html
 
   e2e-home-server:
-    name: (WIP - Home Server) E2E Test Suite
+    name: (Home Server) E2E Test Suite
     runs-on: ubuntu-latest
 
     services:
@@ -85,6 +85,7 @@ jobs:
         sed -i "s/PSEUDO_KEY_PARAMS_KEY=/PSEUDO_KEY_PARAMS_KEY=$(openssl rand -hex 32)/g" packages/home-server/.env
         echo "ACCESS_TOKEN_AGE=4" >> packages/home-server/.env
         echo "REFRESH_TOKEN_AGE=7" >> packages/home-server/.env
+        echo "REVISIONS_FREQUENCY=5" >> packages/home-server/.env
 
     - name: Run Server
       run: nohup yarn workspace @standardnotes/home-server start &
@@ -95,5 +96,4 @@ jobs:
       run: docker/is-available.sh http://localhost:3123 $(pwd)/logs
 
     - name: Run E2E Test Suite
-      continue-on-error: true
       run: yarn dlx mocha-headless-chrome --timeout 1200000 -f http://localhost:9001/mocha/test.html?skip_paid_features=true

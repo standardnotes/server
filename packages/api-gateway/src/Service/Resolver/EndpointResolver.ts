@@ -58,6 +58,10 @@ export class EndpointResolver implements EndpointResolverInterface {
     ['[POST]:items/sync', 'sync.items.sync'],
     ['[POST]:items/check-integrity', 'sync.items.check_integrity'],
     ['[GET]:items/:uuid', 'sync.items.get_item'],
+    // Revisions Controller V2
+    ['[GET]:items/:itemUuid/revisions', 'revisions.revisions.getRevisions'],
+    ['[GET]:items/:itemUuid/revisions/:id', 'revisions.revisions.getRevision'],
+    ['[DELETE]:items/:itemUuid/revisions/:id', 'revisions.revisions.deleteRevision'],
   ])
 
   resolveEndpointOrMethodIdentifier(method: string, endpoint: string, ...params: string[]): string {

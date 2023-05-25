@@ -99,7 +99,8 @@ describe('InversifyExpressUsersController', () => {
 
     updateUser.execute = jest.fn().mockReturnValue({ success: true, authResponse: { foo: 'bar' } })
 
-    await createController().update(request, response)
+    const httpResponse = <results.JsonResult>await createController().update(request, response)
+    const result = await httpResponse.executeAsync()
 
     expect(updateUser.execute).toHaveBeenCalledWith({
       apiVersion: '20190520',
@@ -112,7 +113,7 @@ describe('InversifyExpressUsersController', () => {
       },
     })
 
-    expect(response.send).toHaveBeenCalledWith({ foo: 'bar' })
+    expect(await result.content.readAsStringAsync()).toEqual('{"foo":"bar"}')
   })
 
   it('should not update user if session has read only access', async () => {
@@ -310,7 +311,8 @@ describe('InversifyExpressUsersController', () => {
 
     changeCredentials.execute = jest.fn().mockReturnValue({ success: true, authResponse: { foo: 'bar' } })
 
-    await createController().changeCredentials(request, response)
+    const httpResponse = <results.JsonResult>await createController().changeCredentials(request, response)
+    const result = await httpResponse.executeAsync()
 
     expect(changeCredentials.execute).toHaveBeenCalledWith({
       apiVersion: '20190520',
@@ -326,7 +328,7 @@ describe('InversifyExpressUsersController', () => {
 
     expect(clearLoginAttempts.execute).toHaveBeenCalled()
 
-    expect(response.send).toHaveBeenCalledWith({ foo: 'bar' })
+    expect(await result.content.readAsStringAsync()).toEqual('{"foo":"bar"}')
   })
 
   it('should not change a password if session has read only access', async () => {

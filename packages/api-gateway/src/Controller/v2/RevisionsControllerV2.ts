@@ -28,7 +28,7 @@ export class RevisionsControllerV2 extends BaseHttpController {
     )
   }
 
-  @httpGet('/:id')
+  @httpGet('/:uuid')
   async getRevision(request: Request, response: Response): Promise<void> {
     await this.httpService.callRevisionsServer(
       request,
@@ -37,12 +37,12 @@ export class RevisionsControllerV2 extends BaseHttpController {
         'GET',
         'items/:itemUuid/revisions/:id',
         request.params.itemUuid,
-        request.params.id,
+        request.params.uuid,
       ),
     )
   }
 
-  @httpDelete('/:id')
+  @httpDelete('/:uuid')
   async deleteRevision(request: Request, response: Response): Promise<void> {
     await this.httpService.callRevisionsServer(
       request,
@@ -51,7 +51,7 @@ export class RevisionsControllerV2 extends BaseHttpController {
         'DELETE',
         'items/:itemUuid/revisions/:id',
         request.params.itemUuid,
-        request.params.id,
+        request.params.uuid,
       ),
     )
   }

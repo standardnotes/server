@@ -4249,6 +4249,7 @@ __metadata:
     "@standardnotes/auth-server": "workspace:^"
     "@standardnotes/domain-core": "workspace:^"
     "@standardnotes/domain-events-infra": "workspace:^"
+    "@standardnotes/revisions-server": "workspace:^"
     "@standardnotes/syncing-server": "workspace:^"
     "@types/cors": "npm:^2.8.9"
     "@types/express": "npm:^4.17.14"
@@ -4313,7 +4314,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@standardnotes/revisions-server@workspace:packages/revisions":
+"@standardnotes/revisions-server@workspace:^, @standardnotes/revisions-server@workspace:packages/revisions":
   version: 0.0.0-use.local
   resolution: "@standardnotes/revisions-server@workspace:packages/revisions"
   dependencies:

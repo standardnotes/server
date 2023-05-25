@@ -64,16 +64,12 @@ describe('InversifyExpressSessionController', () => {
       },
     })
 
-    await createController().refresh(request, response)
+    const httpResult = <results.JsonResult>await createController().refresh(request, response)
+    const result = await httpResult.executeAsync()
 
-    expect(response.send).toHaveBeenCalledWith({
-      session: {
-        access_token: '1231',
-        refresh_token: '2341',
-        access_expiration: 123123,
-        refresh_expiration: 123123,
-      },
-    })
+    expect(await result.content.readAsStringAsync()).toEqual(
+      '{"session":{"access_token":"1231","refresh_token":"2341","access_expiration":123123,"refresh_expiration":123123}}',
+    )
   })
 
   it('should return bad request if tokens are missing from refresh token request', async () => {
@@ -113,14 +109,15 @@ describe('InversifyExpressSessionController', () => {
     }
     request.body.uuid = '123'
 
-    await createController().deleteSession(request, response)
+    const httpResult = <results.JsonResult>await createController().deleteSession(request, response)
+    const result = await httpResult.executeAsync()
 
     expect(deleteSessionForUser.execute).toBeCalledWith({
       userUuid: '123',
       sessionUuid: '123',
     })
 
-    expect(response.status).toHaveBeenCalledWith(204)
+    expect(result.statusCode).toEqual(204)
   })
 
   it('should not delete a specific session is current session has read only access', async () => {
@@ -205,15 +202,16 @@ describe('InversifyExpressSessionController', () => {
         uuid: '234',
       },
     }
-    await createController().deleteAllSessions(request, response)
+
+    const httpResult = <results.JsonResult>await createController().deleteAllSessions(request, response)
+    const result = await httpResult.executeAsync()
 
     expect(deletePreviousSessionsForUser.execute).toHaveBeenCalledWith({
       userUuid: '123',
       currentSessionUuid: '234',
     })
 
-    expect(response.status).toHaveBeenCalledWith(204)
-    expect(response.send).toHaveBeenCalled()
+    expect(result.statusCode).toEqual(204)
   })
 
   it('should not delete all sessions if current sessions has read only access', async () => {

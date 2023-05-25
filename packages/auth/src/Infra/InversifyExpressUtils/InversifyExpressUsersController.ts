@@ -42,7 +42,7 @@ export class InversifyExpressUsersController extends BaseHttpController {
   }
 
   @httpPatch('/:userId', TYPES.Auth_RequiredCrossServiceTokenMiddleware)
-  async update(request: Request, response: Response): Promise<results.JsonResult | void> {
+  async update(request: Request, response: Response): Promise<results.JsonResult> {
     if (response.locals.readOnlyAccess) {
       return this.json(
         {
@@ -83,9 +83,8 @@ export class InversifyExpressUsersController extends BaseHttpController {
 
     if (updateResult.success) {
       response.setHeader('x-invalidate-cache', response.locals.user.uuid)
-      response.send(updateResult.authResponse)
 
-      return
+      return this.json(updateResult.authResponse)
     }
 
     return this.json(
@@ -157,7 +156,7 @@ export class InversifyExpressUsersController extends BaseHttpController {
   }
 
   @httpPut('/:userId/attributes/credentials', TYPES.Auth_RequiredCrossServiceTokenMiddleware)
-  async changeCredentials(request: Request, response: Response): Promise<results.JsonResult | void> {
+  async changeCredentials(request: Request, response: Response): Promise<results.JsonResult> {
     if (response.locals.readOnlyAccess) {
       return this.json(
         {
@@ -245,6 +244,7 @@ export class InversifyExpressUsersController extends BaseHttpController {
     await this.clearLoginAttempts.execute({ email: response.locals.user.email })
 
     response.setHeader('x-invalidate-cache', response.locals.user.uuid)
-    response.send(changeCredentialsResult.authResponse)
+
+    return this.json(changeCredentialsResult.authResponse)
   }
 }
