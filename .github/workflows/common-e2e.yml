@@ -50,7 +50,7 @@ jobs:
       run: yarn dlx mocha-headless-chrome --timeout 1200000 -f http://localhost:9001/mocha/test.html
 
   e2e-home-server:
-    name: (WIP - Home Server) E2E Test Suite
+    name: (Home Server) E2E Test Suite
     runs-on: ubuntu-latest
 
     services:
@@ -96,5 +96,4 @@ jobs:
       run: docker/is-available.sh http://localhost:3123 $(pwd)/logs
 
     - name: Run E2E Test Suite
-      continue-on-error: true
       run: yarn dlx mocha-headless-chrome --timeout 1200000 -f http://localhost:9001/mocha/test.html?skip_paid_features=true
