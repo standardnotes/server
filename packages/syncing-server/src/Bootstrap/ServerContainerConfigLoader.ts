@@ -265,12 +265,12 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
       .bind<ItemSaveValidatorInterface>(TYPES.ItemSaveValidator)
       .toDynamicValue((context: interfaces.Context) => {
         return new ItemSaveValidator([
+          context.container.get(TYPES.SnjsVersionFilter),
           context.container.get(TYPES.OwnershipFilter),
           context.container.get(TYPES.TimeDifferenceFilter),
           context.container.get(TYPES.UuidFilter),
           context.container.get(TYPES.ContentTypeFilter),
           context.container.get(TYPES.ContentFilter),
-          context.container.get(TYPES.SnjsVersionFilter),
         ])
       })
 
