@@ -10,8 +10,8 @@ import { MarkFilesToBeRemovedResponse } from './MarkFilesToBeRemovedResponse'
 @injectable()
 export class MarkFilesToBeRemoved implements UseCaseInterface {
   constructor(
-    @inject(TYPES.FileRemover) private fileRemover: FileRemoverInterface,
-    @inject(TYPES.Logger) private logger: Logger,
+    @inject(TYPES.Files_FileRemover) private fileRemover: FileRemoverInterface,
+    @inject(TYPES.Files_Logger) private logger: Logger,
   ) {}
 
   async execute(dto: MarkFilesToBeRemovedDTO): Promise<MarkFilesToBeRemovedResponse> {

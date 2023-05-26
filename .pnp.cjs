@@ -4626,6 +4626,7 @@ const RAW_RUNTIME_STATE =
           ["@standardnotes/auth-server", "workspace:packages/auth"],\
           ["@standardnotes/domain-core", "workspace:packages/domain-core"],\
           ["@standardnotes/domain-events-infra", "workspace:packages/domain-events-infra"],\
+          ["@standardnotes/files-server", "workspace:packages/files"],\
           ["@standardnotes/revisions-server", "workspace:packages/revisions"],\
           ["@standardnotes/syncing-server", "workspace:packages/syncing-server"],\
           ["@types/cors", "npm:2.8.13"],\

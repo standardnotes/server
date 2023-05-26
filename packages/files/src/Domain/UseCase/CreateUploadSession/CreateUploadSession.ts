@@ -11,9 +11,9 @@ import { UploadRepositoryInterface } from '../../Upload/UploadRepositoryInterfac
 @injectable()
 export class CreateUploadSession implements UseCaseInterface {
   constructor(
-    @inject(TYPES.FileUploader) private fileUploader: FileUploaderInterface,
-    @inject(TYPES.UploadRepository) private uploadRepository: UploadRepositoryInterface,
-    @inject(TYPES.Logger) private logger: Logger,
+    @inject(TYPES.Files_FileUploader) private fileUploader: FileUploaderInterface,
+    @inject(TYPES.Files_UploadRepository) private uploadRepository: UploadRepositoryInterface,
+    @inject(TYPES.Files_Logger) private logger: Logger,
   ) {}
 
   async execute(dto: CreateUploadSessionDTO): Promise<CreateUploadSessionResponse> {

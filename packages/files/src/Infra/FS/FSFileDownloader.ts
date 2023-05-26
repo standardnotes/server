@@ -7,7 +7,7 @@ import TYPES from '../../Bootstrap/Types'
 
 @injectable()
 export class FSFileDownloader implements FileDownloaderInterface {
-  constructor(@inject(TYPES.FILE_UPLOAD_PATH) private fileUploadPath: string) {}
+  constructor(@inject(TYPES.Files_FILE_UPLOAD_PATH) private fileUploadPath: string) {}
 
   async getFileSize(filePath: string): Promise<number> {
     return (await promises.stat(`${this.fileUploadPath}/${filePath}`)).size

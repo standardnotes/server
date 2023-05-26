@@ -13,11 +13,11 @@ import { DomainEventFactoryInterface } from '../../Event/DomainEventFactoryInter
 @injectable()
 export class FinishUploadSession implements UseCaseInterface {
   constructor(
-    @inject(TYPES.FileUploader) private fileUploader: FileUploaderInterface,
-    @inject(TYPES.UploadRepository) private uploadRepository: UploadRepositoryInterface,
-    @inject(TYPES.DomainEventPublisher) private domainEventPublisher: DomainEventPublisherInterface,
-    @inject(TYPES.DomainEventFactory) private domainEventFactory: DomainEventFactoryInterface,
-    @inject(TYPES.Logger) private logger: Logger,
+    @inject(TYPES.Files_FileUploader) private fileUploader: FileUploaderInterface,
+    @inject(TYPES.Files_UploadRepository) private uploadRepository: UploadRepositoryInterface,
+    @inject(TYPES.Files_DomainEventPublisher) private domainEventPublisher: DomainEventPublisherInterface,
+    @inject(TYPES.Files_DomainEventFactory) private domainEventFactory: DomainEventFactoryInterface,
+    @inject(TYPES.Files_Logger) private logger: Logger,
   ) {}
 
   async execute(dto: FinishUploadSessionDTO): Promise<FinishUploadSessionResponse> {

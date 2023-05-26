@@ -7,7 +7,7 @@ import { DomainEventFactoryInterface } from './DomainEventFactoryInterface'
 
 @injectable()
 export class DomainEventFactory implements DomainEventFactoryInterface {
-  constructor(@inject(TYPES.Timer) private timer: TimerInterface) {}
+  constructor(@inject(TYPES.Files_Timer) private timer: TimerInterface) {}
 
   createFileRemovedEvent(payload: {
     userUuid: string

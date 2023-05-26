@@ -12,10 +12,10 @@ import { RemoveFileResponse } from './RemoveFileResponse'
 @injectable()
 export class RemoveFile implements UseCaseInterface {
   constructor(
-    @inject(TYPES.FileRemover) private fileRemover: FileRemoverInterface,
-    @inject(TYPES.DomainEventPublisher) private domainEventPublisher: DomainEventPublisherInterface,
-    @inject(TYPES.DomainEventFactory) private domainEventFactory: DomainEventFactoryInterface,
-    @inject(TYPES.Logger) private logger: Logger,
+    @inject(TYPES.Files_FileRemover) private fileRemover: FileRemoverInterface,
+    @inject(TYPES.Files_DomainEventPublisher) private domainEventPublisher: DomainEventPublisherInterface,
+    @inject(TYPES.Files_DomainEventFactory) private domainEventFactory: DomainEventFactoryInterface,
+    @inject(TYPES.Files_Logger) private logger: Logger,
   ) {}
 
   async execute(dto: RemoveFileDTO): Promise<RemoveFileResponse> {

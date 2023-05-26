@@ -10,7 +10,7 @@ export class RedisUploadRepository implements UploadRepositoryInterface {
   private readonly UPLOAD_CHUNKS_PREFIX = 'upload-chunks'
   private readonly UPLOAD_SESSION_DEFAULT_TTL = 7200
 
-  constructor(@inject(TYPES.Redis) private redisClient: IORedis.Redis) {}
+  constructor(@inject(TYPES.Files_Redis) private redisClient: IORedis.Redis) {}
 
   async storeUploadSession(filePath: string, uploadId: string): Promise<void> {
     await this.redisClient.setex(`${this.UPLOAD_SESSION_PREFIX}:${filePath}`, this.UPLOAD_SESSION_DEFAULT_TTL, uploadId)

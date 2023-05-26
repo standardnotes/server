@@ -2,25 +2,25 @@ import { BaseHttpController, controller, httpDelete, httpGet, httpPost, results 
 import { Request, Response } from 'express'
 import { inject } from 'inversify'
 import { Writable } from 'stream'
-import TYPES from '../Bootstrap/Types'
-import { UploadFileChunk } from '../Domain/UseCase/UploadFileChunk/UploadFileChunk'
-import { StreamDownloadFile } from '../Domain/UseCase/StreamDownloadFile/StreamDownloadFile'
-import { CreateUploadSession } from '../Domain/UseCase/CreateUploadSession/CreateUploadSession'
-import { FinishUploadSession } from '../Domain/UseCase/FinishUploadSession/FinishUploadSession'
-import { GetFileMetadata } from '../Domain/UseCase/GetFileMetadata/GetFileMetadata'
-import { RemoveFile } from '../Domain/UseCase/RemoveFile/RemoveFile'
+import TYPES from '../../Bootstrap/Types'
+import { UploadFileChunk } from '../../Domain/UseCase/UploadFileChunk/UploadFileChunk'
+import { StreamDownloadFile } from '../../Domain/UseCase/StreamDownloadFile/StreamDownloadFile'
+import { CreateUploadSession } from '../../Domain/UseCase/CreateUploadSession/CreateUploadSession'
+import { FinishUploadSession } from '../../Domain/UseCase/FinishUploadSession/FinishUploadSession'
+import { GetFileMetadata } from '../../Domain/UseCase/GetFileMetadata/GetFileMetadata'
+import { RemoveFile } from '../../Domain/UseCase/RemoveFile/RemoveFile'
 import { ValetTokenOperation } from '@standardnotes/security'
 
-@controller('/v1/files', TYPES.ValetTokenAuthMiddleware)
-export class FilesController extends BaseHttpController {
+@controller('/v1/files', TYPES.Files_ValetTokenAuthMiddleware)
+export class InversifyExpressFilesController extends BaseHttpController {
   constructor(
-    @inject(TYPES.UploadFileChunk) private uploadFileChunk: UploadFileChunk,
-    @inject(TYPES.CreateUploadSession) private createUploadSession: CreateUploadSession,
-    @inject(TYPES.FinishUploadSession) private finishUploadSession: FinishUploadSession,
-    @inject(TYPES.StreamDownloadFile) private streamDownloadFile: StreamDownloadFile,
-    @inject(TYPES.GetFileMetadata) private getFileMetadata: GetFileMetadata,
-    @inject(TYPES.RemoveFile) private removeFile: RemoveFile,
-    @inject(TYPES.MAX_CHUNK_BYTES) private maxChunkBytes: number,
+    @inject(TYPES.Files_UploadFileChunk) private uploadFileChunk: UploadFileChunk,
+    @inject(TYPES.Files_CreateUploadSession) private createUploadSession: CreateUploadSession,
+    @inject(TYPES.Files_FinishUploadSession) private finishUploadSession: FinishUploadSession,
+    @inject(TYPES.Files_StreamDownloadFile) private streamDownloadFile: StreamDownloadFile,
+    @inject(TYPES.Files_GetFileMetadata) private getFileMetadata: GetFileMetadata,
+    @inject(TYPES.Files_RemoveFile) private removeFile: RemoveFile,
+    @inject(TYPES.Files_MAX_CHUNK_BYTES) private maxChunkBytes: number,
   ) {
     super()
   }

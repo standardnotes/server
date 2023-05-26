@@ -1,20 +1,20 @@
 import 'reflect-metadata'
 
-import { CreateUploadSession } from '../Domain/UseCase/CreateUploadSession/CreateUploadSession'
-import { FinishUploadSession } from '../Domain/UseCase/FinishUploadSession/FinishUploadSession'
-import { StreamDownloadFile } from '../Domain/UseCase/StreamDownloadFile/StreamDownloadFile'
-import { UploadFileChunk } from '../Domain/UseCase/UploadFileChunk/UploadFileChunk'
+import { CreateUploadSession } from '../../Domain/UseCase/CreateUploadSession/CreateUploadSession'
+import { FinishUploadSession } from '../../Domain/UseCase/FinishUploadSession/FinishUploadSession'
+import { StreamDownloadFile } from '../../Domain/UseCase/StreamDownloadFile/StreamDownloadFile'
+import { UploadFileChunk } from '../../Domain/UseCase/UploadFileChunk/UploadFileChunk'
 
 import { Request, Response } from 'express'
 import { Writable, Readable } from 'stream'
-import { FilesController } from './FilesController'
-import { GetFileMetadata } from '../Domain/UseCase/GetFileMetadata/GetFileMetadata'
+import { InversifyExpressFilesController } from './InversifyExpressFilesController'
+import { GetFileMetadata } from '../../Domain/UseCase/GetFileMetadata/GetFileMetadata'
 import { results } from 'inversify-express-utils'
-import { RemoveFile } from '../Domain/UseCase/RemoveFile/RemoveFile'
+import { RemoveFile } from '../../Domain/UseCase/RemoveFile/RemoveFile'
 import { ValetTokenOperation } from '@standardnotes/security'
 import { BadRequestErrorMessageResult } from 'inversify-express-utils/lib/results'
 
-describe('FilesController', () => {
+describe('InversifyExpressFilesController', () => {
   let uploadFileChunk: UploadFileChunk
   let createUploadSession: CreateUploadSession
   let finishUploadSession: FinishUploadSession
@@ -27,7 +27,7 @@ describe('FilesController', () => {
   const maxChunkBytes = 100_000
 
   const createController = () =>
-    new FilesController(
+    new InversifyExpressFilesController(
       uploadFileChunk,
       createUploadSession,
       finishUploadSession,
