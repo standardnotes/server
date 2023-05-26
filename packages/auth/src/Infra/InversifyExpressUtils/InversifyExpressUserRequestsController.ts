@@ -3,18 +3,12 @@ import { BaseHttpController, results, httpPost, controller } from 'inversify-exp
 
 import TYPES from '../../Bootstrap/Types'
 import { UserRequestsController } from '../../Controller/UserRequestsController'
-import { ControllerContainerInterface } from '@standardnotes/domain-core'
 import { inject } from 'inversify'
 
 @controller('/users/:userUuid/requests')
 export class InversifyExpressUserRequestsController extends BaseHttpController {
-  constructor(
-    @inject(TYPES.Auth_UserRequestsController) private userRequestsController: UserRequestsController,
-    @inject(TYPES.Auth_ControllerContainer) private controllerContainer: ControllerContainerInterface,
-  ) {
+  constructor(@inject(TYPES.Auth_UserRequestsController) protected userRequestsController: UserRequestsController) {
     super()
-
-    this.controllerContainer.register('auth.users.createRequest', this.submitRequest.bind(this))
   }
 
   @httpPost('/', TYPES.Auth_RequiredCrossServiceTokenMiddleware)

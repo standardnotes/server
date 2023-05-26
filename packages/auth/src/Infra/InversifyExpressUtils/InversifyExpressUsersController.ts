@@ -19,26 +19,20 @@ import { GetUserSubscription } from '../../Domain/UseCase/GetUserSubscription/Ge
 import { ClearLoginAttempts } from '../../Domain/UseCase/ClearLoginAttempts'
 import { IncreaseLoginAttempts } from '../../Domain/UseCase/IncreaseLoginAttempts'
 import { ChangeCredentials } from '../../Domain/UseCase/ChangeCredentials/ChangeCredentials'
-import { ControllerContainerInterface, Username } from '@standardnotes/domain-core'
+import { Username } from '@standardnotes/domain-core'
 
 @controller('/users')
 export class InversifyExpressUsersController extends BaseHttpController {
   constructor(
-    @inject(TYPES.Auth_UpdateUser) private updateUser: UpdateUser,
-    @inject(TYPES.Auth_GetUserKeyParams) private getUserKeyParams: GetUserKeyParams,
-    @inject(TYPES.Auth_DeleteAccount) private doDeleteAccount: DeleteAccount,
-    @inject(TYPES.Auth_GetUserSubscription) private doGetUserSubscription: GetUserSubscription,
-    @inject(TYPES.Auth_ClearLoginAttempts) private clearLoginAttempts: ClearLoginAttempts,
-    @inject(TYPES.Auth_IncreaseLoginAttempts) private increaseLoginAttempts: IncreaseLoginAttempts,
-    @inject(TYPES.Auth_ChangeCredentials) private changeCredentialsUseCase: ChangeCredentials,
-    @inject(TYPES.Auth_ControllerContainer) private controllerContainer: ControllerContainerInterface,
+    @inject(TYPES.Auth_UpdateUser) protected updateUser: UpdateUser,
+    @inject(TYPES.Auth_GetUserKeyParams) protected getUserKeyParams: GetUserKeyParams,
+    @inject(TYPES.Auth_DeleteAccount) protected doDeleteAccount: DeleteAccount,
+    @inject(TYPES.Auth_GetUserSubscription) protected doGetUserSubscription: GetUserSubscription,
+    @inject(TYPES.Auth_ClearLoginAttempts) protected clearLoginAttempts: ClearLoginAttempts,
+    @inject(TYPES.Auth_IncreaseLoginAttempts) protected increaseLoginAttempts: IncreaseLoginAttempts,
+    @inject(TYPES.Auth_ChangeCredentials) protected changeCredentialsUseCase: ChangeCredentials,
   ) {
     super()
-
-    this.controllerContainer.register('auth.users.update', this.update.bind(this))
-    this.controllerContainer.register('auth.users.getKeyParams', this.keyParams.bind(this))
-    this.controllerContainer.register('auth.users.getSubscription', this.getSubscription.bind(this))
-    this.controllerContainer.register('auth.users.updateCredentials', this.changeCredentials.bind(this))
   }
 
   @httpPatch('/:userId', TYPES.Auth_RequiredCrossServiceTokenMiddleware)

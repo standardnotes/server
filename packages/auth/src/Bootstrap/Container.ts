@@ -228,29 +228,28 @@ import { TypeORMEphemeralSessionRepository } from '../Infra/TypeORM/TypeORMEphem
 import { TypeORMOfflineSubscriptionTokenRepository } from '../Infra/TypeORM/TypeORMOfflineSubscriptionTokenRepository'
 import { TypeORMPKCERepository } from '../Infra/TypeORM/TypeORMPKCERepository'
 import { TypeORMSubscriptionTokenRepository } from '../Infra/TypeORM/TypeORMSubscriptionTokenRepository'
-import { InversifyExpressAuthController } from '../Infra/InversifyExpressUtils/InversifyExpressAuthController'
-import { InversifyExpressAuthenticatorsController } from '../Infra/InversifyExpressUtils/InversifyExpressAuthenticatorsController'
-import { InversifyExpressSubscriptionInvitesController } from '../Infra/InversifyExpressUtils/InversifyExpressSubscriptionInvitesController'
-import { InversifyExpressUserRequestsController } from '../Infra/InversifyExpressUtils/InversifyExpressUserRequestsController'
-import { InversifyExpressWebSocketsController } from '../Infra/InversifyExpressUtils/InversifyExpressWebSocketsController'
-import { InversifyExpressSessionsController } from '../Infra/InversifyExpressUtils/InversifyExpressSessionsController'
-import { InversifyExpressValetTokenController } from '../Infra/InversifyExpressUtils/InversifyExpressValetTokenController'
-import { InversifyExpressUsersController } from '../Infra/InversifyExpressUtils/InversifyExpressUsersController'
-import { InversifyExpressAdminController } from '../Infra/InversifyExpressUtils/InversifyExpressAdminController'
-import { InversifyExpressSubscriptionTokensController } from '../Infra/InversifyExpressUtils/InversifyExpressSubscriptionTokensController'
-import { InversifyExpressSubscriptionSettingsController } from '../Infra/InversifyExpressUtils/InversifyExpressSubscriptionSettingsController'
-import { InversifyExpressSettingsController } from '../Infra/InversifyExpressUtils/InversifyExpressSettingsController'
 import { SessionMiddleware } from '../Infra/InversifyExpressUtils/Middleware/SessionMiddleware'
 import { ApiGatewayOfflineAuthMiddleware } from '../Infra/InversifyExpressUtils/Middleware/ApiGatewayOfflineAuthMiddleware'
 import { OfflineUserAuthMiddleware } from '../Infra/InversifyExpressUtils/Middleware/OfflineUserAuthMiddleware'
 import { LockMiddleware } from '../Infra/InversifyExpressUtils/Middleware/LockMiddleware'
-import { InversifyExpressSessionController } from '../Infra/InversifyExpressUtils/InversifyExpressSessionController'
-import { InversifyExpressOfflineController } from '../Infra/InversifyExpressUtils/InversifyExpressOfflineController'
-import { InversifyExpressListedController } from '../Infra/InversifyExpressUtils/InversifyExpressListedController'
-import { InversifyExpressInternalController } from '../Infra/InversifyExpressUtils/InversifyExpressInternalController'
-import { InversifyExpressFeaturesController } from '../Infra/InversifyExpressUtils/InversifyExpressFeaturesController'
 import { RequiredCrossServiceTokenMiddleware } from '../Infra/InversifyExpressUtils/Middleware/RequiredCrossServiceTokenMiddleware'
 import { OptionalCrossServiceTokenMiddleware } from '../Infra/InversifyExpressUtils/Middleware/OptionalCrossServiceTokenMiddleware'
+import { HomeServerSettingsController } from '../Infra/HomeServer/HomeServerSettingsController'
+import { HomeServerAdminController } from '../Infra/InversifyExpressUtils/HomeServer/HomeServerAdminController'
+import { HomeServerAuthController } from '../Infra/InversifyExpressUtils/HomeServer/HomeServerAuthController'
+import { HomeServerAuthenticatorsController } from '../Infra/InversifyExpressUtils/HomeServer/HomeServerAuthenticatorsController'
+import { HomeServerFeaturesController } from '../Infra/InversifyExpressUtils/HomeServer/HomeServerFeaturesController'
+import { HomeServerListedController } from '../Infra/InversifyExpressUtils/HomeServer/HomeServerListedController'
+import { HomeServerOfflineController } from '../Infra/InversifyExpressUtils/HomeServer/HomeServerOfflineController'
+import { HomeServerSessionController } from '../Infra/InversifyExpressUtils/HomeServer/HomeServerSessionController'
+import { HomeServerSubscriptionInvitesController } from '../Infra/HomeServer/HomeServerSubscriptionInvitesController'
+import { HomeServerSubscriptionSettingsController } from '../Infra/HomeServer/HomeServerSubscriptionSettingsController'
+import { HomeServerSubscriptionTokensController } from '../Infra/HomeServer/HomeServerSubscriptionTokensController'
+import { HomeServerUserRequestsController } from '../Infra/HomeServer/HomeServerUserRequestsController'
+import { HomeServerUsersController } from '../Infra/HomeServer/HomeServerUsersController'
+import { HomeServerValetTokenController } from '../Infra/HomeServer/HomeServerValetTokenController'
+import { HomeServerWebSocketsController } from '../Infra/HomeServer/HomeServerWebSocketsController'
+import { HomeServerSessionsController } from '../Infra/InversifyExpressUtils/HomeServer/HomeServerSessionsController'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -1012,9 +1011,9 @@ export class ContainerConfigLoader {
     }
 
     container
-      .bind<InversifyExpressAuthController>(TYPES.Auth_InversifyExpressAuthController)
+      .bind<HomeServerAuthController>(TYPES.Auth_HomeServerAuthController)
       .toConstantValue(
-        new InversifyExpressAuthController(
+        new HomeServerAuthController(
           container.get(TYPES.Auth_VerifyMFA),
           container.get(TYPES.Auth_SignIn),
           container.get(TYPES.Auth_GetUserKeyParams),
@@ -1029,42 +1028,42 @@ export class ContainerConfigLoader {
     // Inversify Controllers
     if (isConfiguredForHomeServer) {
       container
-        .bind<InversifyExpressAuthenticatorsController>(TYPES.Auth_InversifyExpressAuthenticatorsController)
+        .bind<HomeServerAuthenticatorsController>(TYPES.Auth_HomeServerAuthenticatorsController)
         .toConstantValue(
-          new InversifyExpressAuthenticatorsController(
+          new HomeServerAuthenticatorsController(
             container.get(TYPES.Auth_AuthenticatorsController),
             container.get(TYPES.Auth_ControllerContainer),
           ),
         )
       container
-        .bind<InversifyExpressSubscriptionInvitesController>(TYPES.Auth_InversifyExpressSubscriptionInvitesController)
+        .bind<HomeServerSubscriptionInvitesController>(TYPES.Auth_HomeServerSubscriptionInvitesController)
         .toConstantValue(
-          new InversifyExpressSubscriptionInvitesController(
+          new HomeServerSubscriptionInvitesController(
             container.get(TYPES.Auth_SubscriptionInvitesController),
             container.get(TYPES.Auth_ControllerContainer),
           ),
         )
       container
-        .bind<InversifyExpressUserRequestsController>(TYPES.Auth_InversifyExpressUserRequestsController)
+        .bind<HomeServerUserRequestsController>(TYPES.Auth_HomeServerUserRequestsController)
         .toConstantValue(
-          new InversifyExpressUserRequestsController(
+          new HomeServerUserRequestsController(
             container.get(TYPES.Auth_UserRequestsController),
             container.get(TYPES.Auth_ControllerContainer),
           ),
         )
       container
-        .bind<InversifyExpressWebSocketsController>(TYPES.Auth_InversifyExpressWebSocketsController)
+        .bind<HomeServerWebSocketsController>(TYPES.Auth_HomeServerWebSocketsController)
         .toConstantValue(
-          new InversifyExpressWebSocketsController(
+          new HomeServerWebSocketsController(
             container.get(TYPES.Auth_CreateCrossServiceToken),
             container.get(TYPES.Auth_WebSocketConnectionTokenDecoder),
             container.get(TYPES.Auth_ControllerContainer),
           ),
         )
       container
-        .bind<InversifyExpressSessionsController>(TYPES.Auth_SessionsController)
+        .bind<HomeServerSessionsController>(TYPES.Auth_HomeServerSessionsController)
         .toConstantValue(
-          new InversifyExpressSessionsController(
+          new HomeServerSessionsController(
             container.get(TYPES.Auth_GetActiveSessionsForUser),
             container.get(TYPES.Auth_AuthenticateRequest),
             container.get(TYPES.Auth_SessionProjector),
@@ -1073,17 +1072,17 @@ export class ContainerConfigLoader {
           ),
         )
       container
-        .bind<InversifyExpressValetTokenController>(TYPES.Auth_InversifyExpressValetTokenController)
+        .bind<HomeServerValetTokenController>(TYPES.Auth_HomeServerValetTokenController)
         .toConstantValue(
-          new InversifyExpressValetTokenController(
+          new HomeServerValetTokenController(
             container.get(TYPES.Auth_CreateValetToken),
             container.get(TYPES.Auth_ControllerContainer),
           ),
         )
       container
-        .bind<InversifyExpressUsersController>(TYPES.Auth_InversifyExpressUsersController)
+        .bind<HomeServerUsersController>(TYPES.Auth_HomeServerUsersController)
         .toConstantValue(
-          new InversifyExpressUsersController(
+          new HomeServerUsersController(
             container.get(TYPES.Auth_UpdateUser),
             container.get(TYPES.Auth_GetUserKeyParams),
             container.get(TYPES.Auth_DeleteAccount),
@@ -1095,9 +1094,9 @@ export class ContainerConfigLoader {
           ),
         )
       container
-        .bind<InversifyExpressAdminController>(TYPES.Auth_InversifyExpressAdminController)
+        .bind<HomeServerAdminController>(TYPES.Auth_HomeServerAdminController)
         .toConstantValue(
-          new InversifyExpressAdminController(
+          new HomeServerAdminController(
             container.get(TYPES.Auth_DeleteSetting),
             container.get(TYPES.Auth_UserRepository),
             container.get(TYPES.Auth_CreateSubscriptionToken),
@@ -1106,9 +1105,9 @@ export class ContainerConfigLoader {
           ),
         )
       container
-        .bind<InversifyExpressSubscriptionTokensController>(TYPES.Auth_InversifyExpressSubscriptionTokensController)
+        .bind<HomeServerSubscriptionTokensController>(TYPES.Auth_HomeServerSubscriptionTokensController)
         .toConstantValue(
-          new InversifyExpressSubscriptionTokensController(
+          new HomeServerSubscriptionTokensController(
             container.get(TYPES.Auth_CreateSubscriptionToken),
             container.get(TYPES.Auth_AuthenticateSubscriptionToken),
             container.get(TYPES.Auth_SettingService),
@@ -1120,17 +1119,17 @@ export class ContainerConfigLoader {
           ),
         )
       container
-        .bind<InversifyExpressSubscriptionSettingsController>(TYPES.Auth_InversifyExpressSubscriptionSettingsController)
+        .bind<HomeServerSubscriptionSettingsController>(TYPES.Auth_HomeServerSubscriptionSettingsController)
         .toConstantValue(
-          new InversifyExpressSubscriptionSettingsController(
+          new HomeServerSubscriptionSettingsController(
             container.get(TYPES.Auth_GetSetting),
             container.get(TYPES.Auth_ControllerContainer),
           ),
         )
       container
-        .bind<InversifyExpressSettingsController>(TYPES.Auth_InversifyExpressSettingsController)
+        .bind<HomeServerSettingsController>(TYPES.Auth_HomeServerSettingsController)
         .toConstantValue(
-          new InversifyExpressSettingsController(
+          new HomeServerSettingsController(
             container.get(TYPES.Auth_GetSettings),
             container.get(TYPES.Auth_GetSetting),
             container.get(TYPES.Auth_UpdateSetting),
@@ -1139,9 +1138,9 @@ export class ContainerConfigLoader {
           ),
         )
       container
-        .bind<InversifyExpressSessionController>(TYPES.Auth_InversifyExpressSessionController)
+        .bind<HomeServerSessionController>(TYPES.Auth_HomeServerSessionController)
         .toConstantValue(
-          new InversifyExpressSessionController(
+          new HomeServerSessionController(
             container.get(TYPES.Auth_DeleteSessionForUser),
             container.get(TYPES.Auth_DeletePreviousSessionsForUser),
             container.get(TYPES.Auth_RefreshSessionToken),
@@ -1149,9 +1148,9 @@ export class ContainerConfigLoader {
           ),
         )
       container
-        .bind<InversifyExpressOfflineController>(TYPES.Auth_InversifyExpressOfflineController)
+        .bind<HomeServerOfflineController>(TYPES.Auth_HomeServerOfflineController)
         .toConstantValue(
-          new InversifyExpressOfflineController(
+          new HomeServerOfflineController(
             container.get(TYPES.Auth_GetUserFeatures),
             container.get(TYPES.Auth_GetUserOfflineSubscription),
             container.get(TYPES.Auth_CreateOfflineSubscriptionToken),
@@ -1163,25 +1162,17 @@ export class ContainerConfigLoader {
           ),
         )
       container
-        .bind<InversifyExpressListedController>(TYPES.Auth_InversifyExpressListedController)
+        .bind<HomeServerListedController>(TYPES.Auth_HomeServerListedController)
         .toConstantValue(
-          new InversifyExpressListedController(
+          new HomeServerListedController(
             container.get(TYPES.Auth_CreateListedAccount),
             container.get(TYPES.Auth_ControllerContainer),
           ),
         )
       container
-        .bind<InversifyExpressInternalController>(TYPES.Auth_InversifyExpressInternalController)
+        .bind<HomeServerFeaturesController>(TYPES.Auth_HomeServerFeaturesController)
         .toConstantValue(
-          new InversifyExpressInternalController(
-            container.get(TYPES.Auth_GetUserFeatures),
-            container.get(TYPES.Auth_GetSetting),
-          ),
-        )
-      container
-        .bind<InversifyExpressFeaturesController>(TYPES.Auth_InversifyExpressFeaturesController)
-        .toConstantValue(
-          new InversifyExpressFeaturesController(
+          new HomeServerFeaturesController(
             container.get(TYPES.Auth_GetUserFeatures),
             container.get(TYPES.Auth_ControllerContainer),
           ),

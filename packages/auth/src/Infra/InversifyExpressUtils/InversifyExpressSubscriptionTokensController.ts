@@ -18,23 +18,19 @@ import { AuthenticateSubscriptionToken } from '../../Domain/UseCase/Authenticate
 import { CreateSubscriptionToken } from '../../Domain/UseCase/CreateSubscriptionToken/CreateSubscriptionToken'
 import { User } from '../../Domain/User/User'
 import { ProjectorInterface } from '../../Projection/ProjectorInterface'
-import { ControllerContainerInterface } from '@standardnotes/domain-core'
 
 @controller('/subscription-tokens')
 export class InversifyExpressSubscriptionTokensController extends BaseHttpController {
   constructor(
-    @inject(TYPES.Auth_CreateSubscriptionToken) private createSubscriptionToken: CreateSubscriptionToken,
-    @inject(TYPES.Auth_AuthenticateSubscriptionToken) private authenticateToken: AuthenticateSubscriptionToken,
-    @inject(TYPES.Auth_SettingService) private settingService: SettingServiceInterface,
-    @inject(TYPES.Auth_UserProjector) private userProjector: ProjectorInterface<User>,
-    @inject(TYPES.Auth_RoleProjector) private roleProjector: ProjectorInterface<Role>,
-    @inject(TYPES.Auth_CrossServiceTokenEncoder) private tokenEncoder: TokenEncoderInterface<CrossServiceTokenData>,
-    @inject(TYPES.Auth_AUTH_JWT_TTL) private jwtTTL: number,
-    @inject(TYPES.Auth_ControllerContainer) private controllerContainer: ControllerContainerInterface,
+    @inject(TYPES.Auth_CreateSubscriptionToken) protected createSubscriptionToken: CreateSubscriptionToken,
+    @inject(TYPES.Auth_AuthenticateSubscriptionToken) protected authenticateToken: AuthenticateSubscriptionToken,
+    @inject(TYPES.Auth_SettingService) protected settingService: SettingServiceInterface,
+    @inject(TYPES.Auth_UserProjector) protected userProjector: ProjectorInterface<User>,
+    @inject(TYPES.Auth_RoleProjector) protected roleProjector: ProjectorInterface<Role>,
+    @inject(TYPES.Auth_CrossServiceTokenEncoder) protected tokenEncoder: TokenEncoderInterface<CrossServiceTokenData>,
+    @inject(TYPES.Auth_AUTH_JWT_TTL) protected jwtTTL: number,
   ) {
     super()
-
-    this.controllerContainer.register('auth.subscription-tokens.create', this.createToken.bind(this))
   }
 
   @httpPost('/', TYPES.Auth_RequiredCrossServiceTokenMiddleware)

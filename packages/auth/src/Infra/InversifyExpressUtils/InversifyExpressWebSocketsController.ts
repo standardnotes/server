@@ -9,21 +9,17 @@ import {
   results,
 } from 'inversify-express-utils'
 import { CreateCrossServiceToken } from '../../Domain/UseCase/CreateCrossServiceToken/CreateCrossServiceToken'
-import { ControllerContainerInterface } from '@standardnotes/domain-core'
 import { inject } from 'inversify'
 import TYPES from '../../Bootstrap/Types'
 
 @controller('/sockets')
 export class InversifyExpressWebSocketsController extends BaseHttpController {
   constructor(
-    @inject(TYPES.Auth_CreateCrossServiceToken) private createCrossServiceToken: CreateCrossServiceToken,
+    @inject(TYPES.Auth_CreateCrossServiceToken) protected createCrossServiceToken: CreateCrossServiceToken,
     @inject(TYPES.Auth_WebSocketConnectionTokenDecoder)
-    private tokenDecoder: TokenDecoderInterface<WebSocketConnectionTokenData>,
-    @inject(TYPES.Auth_ControllerContainer) private controllerContainer: ControllerContainerInterface,
+    protected tokenDecoder: TokenDecoderInterface<WebSocketConnectionTokenData>,
   ) {
     super()
-
-    this.controllerContainer.register('auth.webSockets.validateToken', this.validateToken.bind(this))
   }
 
   @httpPost('/tokens/validate')

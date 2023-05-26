@@ -10,25 +10,18 @@ import {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   results,
 } from 'inversify-express-utils'
+import { inject } from 'inversify'
+
 import TYPES from '../../Bootstrap/Types'
 import { SubscriptionInvitesController } from '../../Controller/SubscriptionInvitesController'
-import { ControllerContainerInterface } from '@standardnotes/domain-core'
-import { inject } from 'inversify'
 
 @controller('/subscription-invites')
 export class InversifyExpressSubscriptionInvitesController extends BaseHttpController {
   constructor(
     @inject(TYPES.Auth_SubscriptionInvitesController)
-    private subscriptionInvitesController: SubscriptionInvitesController,
-    @inject(TYPES.Auth_ControllerContainer) private controllerContainer: ControllerContainerInterface,
+    protected subscriptionInvitesController: SubscriptionInvitesController,
   ) {
     super()
-
-    this.controllerContainer.register('auth.subscriptionInvites.accept', this.acceptInvite.bind(this))
-    this.controllerContainer.register('auth.subscriptionInvites.declineInvite', this.declineInvite.bind(this))
-    this.controllerContainer.register('auth.subscriptionInvites.create', this.inviteToSubscriptionSharing.bind(this))
-    this.controllerContainer.register('auth.subscriptionInvites.delete', this.cancelSubscriptionSharing.bind(this))
-    this.controllerContainer.register('auth.subscriptionInvites.list', this.listInvites.bind(this))
   }
 
   @httpPost('/:inviteUuid/accept', TYPES.Auth_RequiredCrossServiceTokenMiddleware)
