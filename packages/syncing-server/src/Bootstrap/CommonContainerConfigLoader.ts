@@ -4,8 +4,6 @@ import { GroupInvite } from './../Domain/GroupInvite/Model/GroupInvite'
 import { GroupUser } from '../Domain/GroupUser/Model/GroupUser'
 import { Group } from './../Domain/Group/Model/Group'
 import { TypeORMGroupRepository } from './../Domain/Group/Repository/TypeORMGroupRepository'
-import { ItemLink } from '../Domain/ItemLink/Model/ItemLink'
-import { TypeORMItemLinkRepository } from '../Domain/ItemLink/Repository/TypeORMItemLinkRepository'
 import * as winston from 'winston'
 import { Container, interfaces } from 'inversify'
 
@@ -26,7 +24,6 @@ import { DomainEventFactory } from '../Domain/Event/DomainEventFactory'
 import { Timer, TimerInterface } from '@standardnotes/time'
 import { ItemTransferCalculatorInterface } from '../Domain/Item/ItemTransferCalculatorInterface'
 import { ItemTransferCalculator } from '../Domain/Item/ItemTransferCalculator'
-import { ItemLinksRepositoryInterface } from '../Domain/ItemLink/Repository/ItemLinkRepositoryInterface'
 import { GroupsRepositoryInterface } from '../Domain/Group/Repository/GroupRepositoryInterface'
 import { GroupUserRepositoryInterface } from '../Domain/GroupUser/Repository/GroupUserRepositoryInterface'
 import { TypeORMGroupUserRepository } from '../Domain/GroupUser/Repository/TypeORMGroupUserRepository'
@@ -99,11 +96,6 @@ export class CommonContainerConfigLoader {
     container.bind<ItemRepositoryInterface>(TYPES.ItemRepository).toDynamicValue((context: interfaces.Context) => {
       return new TypeORMItemRepository(context.container.get(TYPES.ORMItemRepository))
     })
-    container
-      .bind<ItemLinksRepositoryInterface>(TYPES.ItemLinkRepository)
-      .toDynamicValue((context: interfaces.Context) => {
-        return new TypeORMItemLinkRepository(context.container.get(TYPES.ORMItemLinkRepository))
-      })
     container.bind<GroupsRepositoryInterface>(TYPES.GroupRepository).toDynamicValue((context: interfaces.Context) => {
       return new TypeORMGroupRepository(context.container.get(TYPES.ORMGroupRepository))
     })
@@ -125,9 +117,6 @@ export class CommonContainerConfigLoader {
 
     // ORM
     container.bind<Repository<Item>>(TYPES.ORMItemRepository).toDynamicValue(() => AppDataSource.getRepository(Item))
-    container
-      .bind<Repository<ItemLink>>(TYPES.ORMItemLinkRepository)
-      .toDynamicValue(() => AppDataSource.getRepository(ItemLink))
     container.bind<Repository<Group>>(TYPES.ORMGroupRepository).toDynamicValue(() => AppDataSource.getRepository(Group))
     container
       .bind<Repository<GroupUser>>(TYPES.ORMGroupUserRepository)

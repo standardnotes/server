@@ -29,7 +29,6 @@ const TYPES = {
 
   // middleware
   ValetTokenAuthMiddleware: Symbol.for('ValetTokenAuthMiddleware'),
-  SharedValetTokenAuthMiddleware: Symbol.for('SharedValetTokenAuthMiddleware'),
   GroupValetTokenAuthMiddleware: Symbol.for('GroupValetTokenAuthMiddleware'),
 
   // env vars

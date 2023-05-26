@@ -4,8 +4,6 @@ import { ContactFactory } from './../Domain/Contact/Factory/ContactFactory'
 import { GroupServiceInterface } from './../Domain/Group/Service/GroupServiceInterface'
 import { GroupUserFactory } from '../Domain/GroupUser/Factory/GroupUserFactory'
 import { GroupFactoryInterface } from '../Domain/Group/Factory/GroupFactoryInterface'
-import { GetSharedItemUseCase } from '../Domain/UseCase/Links/GetSharedItemUseCase'
-import { ItemLinkServiceInterface } from '../Domain/ItemLink/Service/ItemLinkServiceInterface'
 import { Container, interfaces } from 'inversify'
 
 import { Env } from './Env'
@@ -37,13 +35,7 @@ import { SavedItemProjector } from '../Projection/SavedItemProjector'
 import { ItemConflict } from '../Domain/Item/ItemConflict'
 import { ItemConflictProjection } from '../Projection/ItemConflictProjection'
 import { CommonContainerConfigLoader } from './CommonContainerConfigLoader'
-import { ItemLinkService } from '../Domain/ItemLink/Service/ItemLinkService'
-import { ItemLinkFactory } from '../Domain/ItemLink/Factory/ItemLinkFactory'
-import { ShareItemUseCase } from '../Domain/UseCase/Links/ShareItemUseCase'
-import { GetUserItemLinksUseCase } from '../Domain/UseCase/Links/GetUserItemLinksUseCase'
 import { TokenEncoder, TokenEncoderInterface, ValetTokenData } from '@standardnotes/security'
-import { CreateSharedFileValetToken } from '../Domain/UseCase/CreateSharedFileValetToken/CreateSharedFileValetToken'
-import { ItemLinkFactoryInterface } from '../Domain/ItemLink/Factory/ItemLinkFactoryInterface'
 import { GroupFactory } from '../Domain/Group/Factory/GroupFactory'
 import { GroupService } from '../Domain/Group/Service/GroupService'
 import { GroupUserService } from '../Domain/GroupUser/Service/GroupUserService'
@@ -121,24 +113,7 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
     container.bind<GetGlobalItem>(TYPES.GetGlobalItem).toDynamicValue((context: interfaces.Context) => {
       return new GetGlobalItem(context.container.get(TYPES.ItemRepository))
     })
-    container.bind<ShareItemUseCase>(TYPES.ShareItem).toDynamicValue((context: interfaces.Context) => {
-      return new ShareItemUseCase(context.container.get(TYPES.ItemLinkService))
-    })
-    container.bind<GetSharedItemUseCase>(TYPES.GetSharedItem).toDynamicValue((context: interfaces.Context) => {
-      return new GetSharedItemUseCase(context.container.get(TYPES.ItemLinkService))
-    })
-    container.bind<GetUserItemLinksUseCase>(TYPES.GetUserItemLinks).toDynamicValue((context: interfaces.Context) => {
-      return new GetUserItemLinksUseCase(context.container.get(TYPES.ItemLinkService))
-    })
-    container
-      .bind<CreateSharedFileValetToken>(TYPES.CreateSharedFileValetToken)
-      .toDynamicValue((context: interfaces.Context) => {
-        return new CreateSharedFileValetToken(
-          context.container.get(TYPES.GetSharedItem),
-          context.container.get(TYPES.ValetTokenEncoder),
-          context.container.get(TYPES.VALET_TOKEN_TTL),
-        )
-      })
+
     container
       .bind<CreateGroupFileReadValetToken>(TYPES.CreateGroupFileReadValetToken)
       .toDynamicValue((context: interfaces.Context) => {
@@ -173,14 +148,6 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
       )
     })
     // Services
-    container.bind<ItemLinkServiceInterface>(TYPES.ItemLinkService).toDynamicValue((context: interfaces.Context) => {
-      return new ItemLinkService(
-        context.container.get(TYPES.ItemLinkRepository),
-        context.container.get(TYPES.ItemLinkFactory),
-        context.container.get(TYPES.GetItem),
-        context.container.get(TYPES.Timer),
-      )
-    })
     container.bind<GroupServiceInterface>(TYPES.GroupService).toDynamicValue((context: interfaces.Context) => {
       return new GroupService(
         context.container.get(TYPES.GroupRepository),
@@ -245,9 +212,6 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
 
     container.bind<ItemFactoryInterface>(TYPES.ItemFactory).toDynamicValue((context: interfaces.Context) => {
       return new ItemFactory(context.container.get(TYPES.Timer), context.container.get(TYPES.ItemProjector))
-    })
-    container.bind<ItemLinkFactoryInterface>(TYPES.ItemLinkFactory).toDynamicValue((context: interfaces.Context) => {
-      return new ItemLinkFactory(context.container.get(TYPES.Timer))
     })
     container.bind<GroupFactoryInterface>(TYPES.GroupFactory).toDynamicValue((context: interfaces.Context) => {
       return new GroupFactory(context.container.get(TYPES.Timer))

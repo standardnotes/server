@@ -6,7 +6,6 @@ import * as busboy from 'connect-busboy'
 
 import '../src/Controller/HealthCheckController'
 import '../src/Controller/FilesController'
-import '../src/Controller/SharedLinkFilesController'
 import '../src/Controller/GroupFilesController'
 
 import helmet from 'helmet'

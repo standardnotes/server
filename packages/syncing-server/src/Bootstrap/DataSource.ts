@@ -1,7 +1,6 @@
 import { Contact } from './../Domain/Contact/Model/Contact'
 import { GroupInvite } from './../Domain/GroupInvite/Model/GroupInvite'
 import { GroupUser } from '../Domain/GroupUser/Model/GroupUser'
-import { ItemLink } from '../Domain/ItemLink/Model/ItemLink'
 import { DataSource, LoggerOptions } from 'typeorm'
 import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions'
 import { Item } from '../Domain/Item/Item'
@@ -43,7 +42,7 @@ const replicationConfig = {
 
 const commonDataSourceOptions = {
   maxQueryExecutionTime,
-  entities: [Item, ItemLink, Group, GroupUser, GroupInvite, Contact],
+  entities: [Item, Group, GroupUser, GroupInvite, Contact],
   migrations: [`dist/migrations/${isConfiguredForMySQL ? 'mysql' : 'sqlite'}/*.js`],
   migrationsRun: true,
   logging: <LoggerOptions>env.get('DB_DEBUG_LEVEL'),

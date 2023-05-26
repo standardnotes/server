@@ -9,7 +9,6 @@ const TYPES = {
 
   // Repositories
   ItemRepository: Symbol.for('ItemRepository'),
-  ItemLinkRepository: Symbol.for('ItemLinkRepository'),
   GroupRepository: Symbol.for('GroupRepository'),
   GroupUserRepository: Symbol.for('GroupUserRepository'),
   ContactRepository: Symbol.for('ContactRepository'),
@@ -17,7 +16,6 @@ const TYPES = {
 
   // ORM
   ORMItemRepository: Symbol.for('ORMItemRepository'),
-  ORMItemLinkRepository: Symbol.for('ORMItemLinkRepository'),
   ORMGroupRepository: Symbol.for('ORMGroupRepository'),
   ORMGroupUserRepository: Symbol.for('ORMGroupUserRepository'),
   ORMContactRepository: Symbol.for('ORMContactRepository'),
@@ -43,7 +41,6 @@ const TYPES = {
 
   // Factories
   ItemFactory: Symbol.for('ItemFactory'),
-  ItemLinkFactory: Symbol.for('ItemLinkFactory'),
   GroupFactory: Symbol.for('GroupFactory'),
   GroupUserFactory: Symbol.for('GroupUserFactory'),
   ContactFactory: Symbol.for('ContactFactory'),
@@ -74,10 +71,6 @@ const TYPES = {
   CheckIntegrity: Symbol.for('CheckIntegrity'),
   GetItem: Symbol.for('GetItem'),
   GetGlobalItem: Symbol.for('GetGlobalItem'),
-  ShareItem: Symbol.for('ShareItem'),
-  GetSharedItem: Symbol.for('GetSharedItem'),
-  GetUserItemLinks: Symbol.for('GetUserItemLinks'),
-  CreateSharedFileValetToken: Symbol.for('CreateSharedFileValetToken'),
   CreateGroupFileReadValetToken: Symbol.for('CreateGroupFileReadValetToken'),
   // Handlers
   UserCredentialsChangedEventHandler: Symbol.for('UserCredentialsChangedEventHandler'),
@@ -93,7 +86,6 @@ const TYPES = {
   DomainEventMessageHandler: Symbol.for('DomainEventMessageHandler'),
   HTTPClient: Symbol.for('HTTPClient'),
   ItemService: Symbol.for('ItemService'),
-  ItemLinkService: Symbol.for('ItemLinkService'),
   Timer: Symbol.for('Timer'),
   SyncResponseFactory20161215: Symbol.for('SyncResponseFactory20161215'),
   SyncResponseFactory20200115: Symbol.for('SyncResponseFactory20200115'),
