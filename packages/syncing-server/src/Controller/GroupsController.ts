@@ -17,6 +17,7 @@ import { Group } from '../Domain/Group/Model/Group'
 import { GroupProjection } from '../Projection/GroupProjection'
 import { GroupUserProjection } from '../Projection/GroupUserProjection'
 import { GroupUserServiceInterface } from '../Domain/GroupUser/Service/GroupUserServiceInterface'
+import { CreateGroupFileReadValetToken } from '../Domain/UseCase/CreateGroupFileValetToken/CreateGroupFileReadValetToken'
 
 @controller('/groups')
 export class GroupsController extends BaseHttpController {
@@ -24,8 +25,8 @@ export class GroupsController extends BaseHttpController {
     @inject(TYPES.GroupService) private groupService: GroupServiceInterface,
     @inject(TYPES.GroupUserService) private groupUserService: GroupUserServiceInterface,
     @inject(TYPES.GroupProjector) private groupProjector: ProjectorInterface<Group, GroupProjection>,
-    @inject(TYPES.GroupUserProjector)
-    private groupUserProjector: ProjectorInterface<GroupUser, GroupUserProjection>,
+    @inject(TYPES.GroupUserProjector) private groupUserProjector: ProjectorInterface<GroupUser, GroupUserProjection>,
+    @inject(TYPES.CreateGroupFileReadValetToken) private createGroupFileReadValetToken: CreateGroupFileReadValetToken,
   ) {
     super()
   }
@@ -38,6 +39,27 @@ export class GroupsController extends BaseHttpController {
 
     return this.json({
       groups: groups.map((group) => this.groupProjector.projectFull(group)),
+    })
+  }
+
+  @httpPost('/:groupUuid/valet-tokens', TYPES.AuthMiddleware)
+  public async getValetTokenForGroupFile(
+    request: Request,
+    response: Response,
+  ): Promise<results.NotFoundResult | results.JsonResult> {
+    const valetTokenResult = await this.createGroupFileReadValetToken.execute({
+      userUuid: response.locals.user.uuid,
+      groupUuid: request.params.groupUuid,
+      fileUuid: request.body.file_uuid,
+      remoteIdentifier: request.body.remote_identifier,
+    })
+
+    if (valetTokenResult.success === false) {
+      return this.errorResponse(400, `Failed to create group valet token: ${valetTokenResult.reason}`)
+    }
+
+    return this.json({
+      valetToken: valetTokenResult.valetToken,
     })
   }
 

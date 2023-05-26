@@ -8,7 +8,7 @@ import { GetFileMetadata } from '../Domain/UseCase/GetFileMetadata/GetFileMetada
 import { SharedValetTokenData, ValetTokenOperation } from '@standardnotes/security'
 
 @controller('/v1/sharing/files', TYPES.SharedValetTokenAuthMiddleware)
-export class SharedFilesController extends BaseHttpController {
+export class SharedLinkFilesController extends BaseHttpController {
   constructor(
     @inject(TYPES.StreamDownloadFile) private streamDownloadFile: StreamDownloadFile,
     @inject(TYPES.GetFileMetadata) private getFileMetadata: GetFileMetadata,

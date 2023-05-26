@@ -1,3 +1,4 @@
+import { GetGlobalItem } from './../Domain/UseCase/GetGlobalItem/GetGlobalItem'
 import { ContactFactory } from './../Domain/Contact/Factory/ContactFactory'
 
 import { GroupServiceInterface } from './../Domain/Group/Service/GroupServiceInterface'
@@ -54,6 +55,7 @@ import { ContactServiceInterface } from '../Domain/Contact/Service/ContactServic
 import { ContactService } from '../Domain/Contact/Service/ContactService'
 import { ContactFactoryInterface } from '../Domain/Contact/Factory/ContactFactoryInterface'
 import { SnjsVersionFilter } from '../Domain/Item/SaveRule/SnjsVersionFilter'
+import { CreateGroupFileReadValetToken } from '../Domain/UseCase/CreateGroupFileValetToken/CreateGroupFileReadValetToken'
 
 export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
   private readonly DEFAULT_CONTENT_SIZE_TRANSFER_LIMIT = 10_000_000
@@ -116,6 +118,9 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
     container.bind<GetItem>(TYPES.GetItem).toDynamicValue((context: interfaces.Context) => {
       return new GetItem(context.container.get(TYPES.ItemRepository))
     })
+    container.bind<GetGlobalItem>(TYPES.GetGlobalItem).toDynamicValue((context: interfaces.Context) => {
+      return new GetGlobalItem(context.container.get(TYPES.ItemRepository))
+    })
     container.bind<ShareItemUseCase>(TYPES.ShareItem).toDynamicValue((context: interfaces.Context) => {
       return new ShareItemUseCase(context.container.get(TYPES.ItemLinkService))
     })
@@ -130,6 +135,16 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
       .toDynamicValue((context: interfaces.Context) => {
         return new CreateSharedFileValetToken(
           context.container.get(TYPES.GetSharedItem),
+          context.container.get(TYPES.ValetTokenEncoder),
+          context.container.get(TYPES.VALET_TOKEN_TTL),
+        )
+      })
+    container
+      .bind<CreateGroupFileReadValetToken>(TYPES.CreateGroupFileReadValetToken)
+      .toDynamicValue((context: interfaces.Context) => {
+        return new CreateGroupFileReadValetToken(
+          context.container.get(TYPES.GetGlobalItem),
+          context.container.get(TYPES.GroupUserService),
           context.container.get(TYPES.ValetTokenEncoder),
           context.container.get(TYPES.VALET_TOKEN_TTL),
         )

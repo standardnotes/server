@@ -73,10 +73,12 @@ const TYPES = {
   SyncItems: Symbol.for('SyncItems'),
   CheckIntegrity: Symbol.for('CheckIntegrity'),
   GetItem: Symbol.for('GetItem'),
+  GetGlobalItem: Symbol.for('GetGlobalItem'),
   ShareItem: Symbol.for('ShareItem'),
   GetSharedItem: Symbol.for('GetSharedItem'),
   GetUserItemLinks: Symbol.for('GetUserItemLinks'),
   CreateSharedFileValetToken: Symbol.for('CreateSharedFileValetToken'),
+  CreateGroupFileReadValetToken: Symbol.for('CreateGroupFileReadValetToken'),
   // Handlers
   UserCredentialsChangedEventHandler: Symbol.for('UserCredentialsChangedEventHandler'),
   AccountDeletionRequestedEventHandler: Symbol.for('AccountDeletionRequestedEventHandler'),
