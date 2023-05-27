@@ -80,7 +80,7 @@ export class GroupUserService implements GroupUserServiceInterface {
       return false
     }
 
-    const isAuthorized = group.userUuid === dto.originatorUuid
+    const isAuthorized = group.userUuid === dto.originatorUuid || dto.userUuid === dto.originatorUuid
     if (!isAuthorized) {
       return false
     }
