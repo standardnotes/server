@@ -7,12 +7,13 @@ import {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   results,
 } from 'inversify-express-utils'
-import { CreateValetTokenPayload, ErrorTag } from '@standardnotes/responses'
+import { ErrorTag } from '@standardnotes/responses'
 import { ValetTokenOperation } from '@standardnotes/security'
 import { Uuid } from '@standardnotes/domain-core'
 
 import TYPES from '../Bootstrap/Types'
 import { CreateValetToken } from '../Domain/UseCase/CreateValetToken/CreateValetToken'
+import { CreateValetTokenPayload } from '../Domain/ValetToken/CreateValetTokenPayload'
 
 @controller('/valet-tokens', TYPES.ApiGatewayAuthMiddleware)
 export class ValetTokenController extends BaseHttpController {

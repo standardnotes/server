@@ -1,4 +1,4 @@
-import { DomainEventHandlerInterface, FileUploadedEvent } from '@standardnotes/domain-events'
+import { DomainEventHandlerInterface, UserFileUploadedEvent } from '@standardnotes/domain-events'
 import { SettingName } from '@standardnotes/settings'
 import { inject, injectable } from 'inversify'
 import { Logger } from 'winston'
@@ -11,7 +11,7 @@ import { UserSubscriptionServiceInterface } from '../Subscription/UserSubscripti
 import { UserRepositoryInterface } from '../User/UserRepositoryInterface'
 
 @injectable()
-export class FileUploadedEventHandler implements DomainEventHandlerInterface {
+export class UserFileUploadedEventHandler implements DomainEventHandlerInterface {
   constructor(
     @inject(TYPES.UserRepository) private userRepository: UserRepositoryInterface,
     @inject(TYPES.UserSubscriptionService) private userSubscriptionService: UserSubscriptionServiceInterface,
@@ -19,7 +19,7 @@ export class FileUploadedEventHandler implements DomainEventHandlerInterface {
     @inject(TYPES.Logger) private logger: Logger,
   ) {}
 
-  async handle(event: FileUploadedEvent): Promise<void> {
+  async handle(event: UserFileUploadedEvent): Promise<void> {
     const user = await this.userRepository.findOneByUuid(event.payload.userUuid)
     if (user === null) {
       this.logger.warn(`Could not find user with uuid: ${event.payload.userUuid}`)

@@ -24,7 +24,7 @@ export class FinishUploadSession implements UseCaseInterface {
     try {
       this.logger.debug(`Finishing upload session for resource: ${dto.resourceRemoteIdentifier}`)
 
-      const filePath = `${dto.userUuid}/${dto.resourceRemoteIdentifier}`
+      const filePath = `${dto.ownerUuid}/${dto.resourceRemoteIdentifier}`
 
       const uploadId = await this.uploadRepository.retrieveUploadSessionId(filePath)
       if (uploadId === undefined) {
@@ -53,14 +53,25 @@ export class FinishUploadSession implements UseCaseInterface {
 
       await this.fileUploader.finishUploadSession(uploadId, filePath, uploadChunkResults)
 
-      await this.domainEventPublisher.publish(
-        this.domainEventFactory.createFileUploadedEvent({
-          userUuid: dto.userUuid,
-          filePath: `${dto.userUuid}/${dto.resourceRemoteIdentifier}`,
-          fileName: dto.resourceRemoteIdentifier,
-          fileByteSize: totalFileSize,
-        }),
-      )
+      if (dto.ownerType === 'user') {
+        await this.domainEventPublisher.publish(
+          this.domainEventFactory.createUserFileUploadedEvent({
+            userUuid: dto.ownerUuid,
+            filePath: `${dto.ownerUuid}/${dto.resourceRemoteIdentifier}`,
+            fileName: dto.resourceRemoteIdentifier,
+            fileByteSize: totalFileSize,
+          }),
+        )
+      } else {
+        await this.domainEventPublisher.publish(
+          this.domainEventFactory.createVaultFileUploadedEvent({
+            vaultUuid: dto.ownerUuid,
+            filePath: `${dto.ownerUuid}/${dto.resourceRemoteIdentifier}`,
+            fileName: dto.resourceRemoteIdentifier,
+            fileByteSize: totalFileSize,
+          }),
+        )
+      }
 
       return {
         success: true,

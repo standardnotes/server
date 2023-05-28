@@ -23,7 +23,7 @@ export class AccountDeletionRequestedEventHandler implements DomainEventHandlerI
     }
 
     const response = await this.markFilesToBeRemoved.execute({
-      userUuid: event.payload.userUuid,
+      ownerUuid: event.payload.userUuid,
     })
 
     if (!response.success) {
@@ -32,7 +32,7 @@ export class AccountDeletionRequestedEventHandler implements DomainEventHandlerI
 
     for (const fileRemoved of response.filesRemoved) {
       await this.domainEventPublisher.publish(
-        this.domainEventFactory.createFileRemovedEvent({
+        this.domainEventFactory.createUserFileRemovedEvent({
           regularSubscriptionUuid: event.payload.regularSubscriptionUuid,
           ...fileRemoved,
         }),

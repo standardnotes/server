@@ -47,7 +47,7 @@ import { ContactServiceInterface } from '../Domain/Contact/Service/ContactServic
 import { ContactService } from '../Domain/Contact/Service/ContactService'
 import { ContactFactoryInterface } from '../Domain/Contact/Factory/ContactFactoryInterface'
 import { SnjsVersionFilter } from '../Domain/Item/SaveRule/SnjsVersionFilter'
-import { CreateVaultFileReadValetToken } from '../Domain/UseCase/CreateVaultFileValetToken/CreateVaultFileReadValetToken'
+import { CreateVaultFileValetToken } from '../Domain/UseCase/CreateVaultFileValetToken/CreateVaultFileValetToken'
 
 export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
   private readonly DEFAULT_CONTENT_SIZE_TRANSFER_LIMIT = 10_000_000
@@ -115,10 +115,11 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
     })
 
     container
-      .bind<CreateVaultFileReadValetToken>(TYPES.CreateVaultFileReadValetToken)
+      .bind<CreateVaultFileValetToken>(TYPES.CreateVaultFileReadValetToken)
       .toDynamicValue((context: interfaces.Context) => {
-        return new CreateVaultFileReadValetToken(
+        return new CreateVaultFileValetToken(
           context.container.get(TYPES.GetGlobalItem),
+          context.container.get(TYPES.VaultService),
           context.container.get(TYPES.VaultUserService),
           context.container.get(TYPES.ValetTokenEncoder),
           context.container.get(TYPES.VALET_TOKEN_TTL),

@@ -6,7 +6,7 @@ import TYPES from '../../../Bootstrap/Types'
 import { DomainEventFactoryInterface } from '../../Event/DomainEventFactoryInterface'
 import { FileRemoverInterface } from '../../Services/FileRemoverInterface'
 import { UseCaseInterface } from '../UseCaseInterface'
-import { RemoveFileDTO } from './RemoveFileDTO'
+import { RemoveFileDTO, isRemoveUserFileDTO } from './RemoveFileDTO'
 import { RemoveFileResponse } from './RemoveFileResponse'
 
 @injectable()
@@ -22,19 +22,32 @@ export class RemoveFile implements UseCaseInterface {
     try {
       this.logger.debug(`Removing file: ${dto.resourceRemoteIdentifier}`)
 
-      const filePath = `${dto.userUuid}/${dto.resourceRemoteIdentifier}`
+      const ownerUuid = isRemoveUserFileDTO(dto) ? dto.userUuid : dto.vaultUuid
+
+      const filePath = `${ownerUuid}/${dto.resourceRemoteIdentifier}`
 
       const removedFileSize = await this.fileRemover.remove(filePath)
 
-      await this.domainEventPublisher.publish(
-        this.domainEventFactory.createFileRemovedEvent({
-          userUuid: dto.userUuid,
-          filePath: `${dto.userUuid}/${dto.resourceRemoteIdentifier}`,
-          fileName: dto.resourceRemoteIdentifier,
-          fileByteSize: removedFileSize,
-          regularSubscriptionUuid: dto.regularSubscriptionUuid,
-        }),
-      )
+      if (isRemoveUserFileDTO(dto)) {
+        await this.domainEventPublisher.publish(
+          this.domainEventFactory.createUserFileRemovedEvent({
+            userUuid: dto.userUuid,
+            filePath: `${dto.userUuid}/${dto.resourceRemoteIdentifier}`,
+            fileName: dto.resourceRemoteIdentifier,
+            fileByteSize: removedFileSize,
+            regularSubscriptionUuid: dto.regularSubscriptionUuid,
+          }),
+        )
+      } else {
+        await this.domainEventPublisher.publish(
+          this.domainEventFactory.createVaultFileRemovedEvent({
+            vaultUuid: dto.vaultUuid,
+            filePath: `${dto.vaultUuid}/${dto.resourceRemoteIdentifier}`,
+            fileName: dto.resourceRemoteIdentifier,
+            fileByteSize: removedFileSize,
+          }),
+        )
+      }
 
       return {
         success: true,

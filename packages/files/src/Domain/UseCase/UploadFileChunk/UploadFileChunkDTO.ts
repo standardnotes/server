@@ -3,7 +3,7 @@ import { ChunkId } from '../../Upload/ChunkId'
 export type UploadFileChunkDTO = {
   data: Uint8Array
   chunkId: ChunkId
-  userUuid: string
+  ownerUuid: string
   resourceRemoteIdentifier: string
   resourceUnencryptedFileSize: number
 }

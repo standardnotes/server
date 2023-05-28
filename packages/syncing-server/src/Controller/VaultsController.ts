@@ -17,7 +17,7 @@ import { Vault } from '../Domain/Vault/Model/Vault'
 import { VaultProjection } from '../Projection/VaultProjection'
 import { VaultUserProjection } from '../Projection/VaultUserProjection'
 import { VaultUserServiceInterface } from '../Domain/VaultUser/Service/VaultUserServiceInterface'
-import { CreateVaultFileReadValetToken } from '../Domain/UseCase/CreateVaultFileValetToken/CreateVaultFileReadValetToken'
+import { CreateVaultFileValetToken } from '../Domain/UseCase/CreateVaultFileValetToken/CreateVaultFileValetToken'
 
 @controller('/vaults')
 export class VaultsController extends BaseHttpController {
@@ -26,7 +26,7 @@ export class VaultsController extends BaseHttpController {
     @inject(TYPES.VaultUserService) private vaultUserService: VaultUserServiceInterface,
     @inject(TYPES.VaultProjector) private vaultProjector: ProjectorInterface<Vault, VaultProjection>,
     @inject(TYPES.VaultUserProjector) private vaultUserProjector: ProjectorInterface<VaultUser, VaultUserProjection>,
-    @inject(TYPES.CreateVaultFileReadValetToken) private createVaultFileReadValetToken: CreateVaultFileReadValetToken,
+    @inject(TYPES.CreateVaultFileReadValetToken) private createVaultFileReadValetToken: CreateVaultFileValetToken,
   ) {
     super()
   }
@@ -52,6 +52,8 @@ export class VaultsController extends BaseHttpController {
       vaultUuid: request.params.vaultUuid,
       fileUuid: request.body.file_uuid,
       remoteIdentifier: request.body.remote_identifier,
+      moveOperationType: request.body.move_operation_type,
+      operation: request.body.operation,
     })
 
     if (valetTokenResult.success === false) {

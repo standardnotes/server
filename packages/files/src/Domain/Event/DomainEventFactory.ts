@@ -1,4 +1,10 @@
-import { FileUploadedEvent, FileRemovedEvent, DomainEventService } from '@standardnotes/domain-events'
+import {
+  UserFileRemovedEvent,
+  UserFileUploadedEvent,
+  DomainEventService,
+  VaultFileUploadedEvent,
+  VaultFileRemovedEvent,
+} from '@standardnotes/domain-events'
 import { TimerInterface } from '@standardnotes/time'
 import { inject, injectable } from 'inversify'
 
@@ -9,15 +15,15 @@ import { DomainEventFactoryInterface } from './DomainEventFactoryInterface'
 export class DomainEventFactory implements DomainEventFactoryInterface {
   constructor(@inject(TYPES.Timer) private timer: TimerInterface) {}
 
-  createFileRemovedEvent(payload: {
+  createUserFileRemovedEvent(payload: {
     userUuid: string
     filePath: string
     fileName: string
     fileByteSize: number
     regularSubscriptionUuid: string
-  }): FileRemovedEvent {
+  }): UserFileRemovedEvent {
     return {
-      type: 'FILE_REMOVED',
+      type: 'USER_FILE_REMOVED',
       createdAt: this.timer.getUTCDate(),
       meta: {
         correlation: {
@@ -30,18 +36,58 @@ export class DomainEventFactory implements DomainEventFactoryInterface {
     }
   }
 
-  createFileUploadedEvent(payload: {
+  createUserFileUploadedEvent(payload: {
     userUuid: string
     filePath: string
     fileName: string
     fileByteSize: number
-  }): FileUploadedEvent {
+  }): UserFileUploadedEvent {
     return {
-      type: 'FILE_UPLOADED',
+      type: 'USER_FILE_UPLOADED',
       createdAt: this.timer.getUTCDate(),
       meta: {
         correlation: {
           userIdentifier: payload.userUuid,
+          userIdentifierType: 'uuid',
+        },
+        origin: DomainEventService.Files,
+      },
+      payload,
+    }
+  }
+
+  createVaultFileUploadedEvent(payload: {
+    vaultUuid: string
+    filePath: string
+    fileName: string
+    fileByteSize: number
+  }): VaultFileUploadedEvent {
+    return {
+      type: 'VAULT_FILE_UPLOADED',
+      createdAt: this.timer.getUTCDate(),
+      meta: {
+        correlation: {
+          userIdentifier: payload.vaultUuid,
+          userIdentifierType: 'uuid',
+        },
+        origin: DomainEventService.Files,
+      },
+      payload,
+    }
+  }
+
+  createVaultFileRemovedEvent(payload: {
+    vaultUuid: string
+    filePath: string
+    fileName: string
+    fileByteSize: number
+  }): VaultFileRemovedEvent {
+    return {
+      type: 'VAULT_FILE_REMOVED',
+      createdAt: this.timer.getUTCDate(),
+      meta: {
+        correlation: {
+          userIdentifier: payload.vaultUuid,
           userIdentifierType: 'uuid',
         },
         origin: DomainEventService.Files,

@@ -1,11 +1,11 @@
 import 'reflect-metadata'
 
-import { FileUploadedEvent } from '@standardnotes/domain-events'
+import { UserFileUploadedEvent } from '@standardnotes/domain-events'
 import { Logger } from 'winston'
 
 import { User } from '../User/User'
 import { UserRepositoryInterface } from '../User/UserRepositoryInterface'
-import { FileUploadedEventHandler } from './FileUploadedEventHandler'
+import { UserFileUploadedEventHandler } from './UserFileUploadedEventHandler'
 import { SubscriptionSettingServiceInterface } from '../Setting/SubscriptionSettingServiceInterface'
 import { UserSubscription } from '../Subscription/UserSubscription'
 import { UserSubscriptionServiceInterface } from '../Subscription/UserSubscriptionServiceInterface'
@@ -16,13 +16,13 @@ describe('FileUploadedEventHandler', () => {
   let userSubscriptionService: UserSubscriptionServiceInterface
   let logger: Logger
   let user: User
-  let event: FileUploadedEvent
+  let event: UserFileUploadedEvent
   let subscriptionSettingService: SubscriptionSettingServiceInterface
   let regularSubscription: UserSubscription
   let sharedSubscription: UserSubscription
 
   const createHandler = () =>
-    new FileUploadedEventHandler(userRepository, userSubscriptionService, subscriptionSettingService, logger)
+    new UserFileUploadedEventHandler(userRepository, userSubscriptionService, subscriptionSettingService, logger)
 
   beforeEach(() => {
     user = {
@@ -53,7 +53,7 @@ describe('FileUploadedEventHandler', () => {
     subscriptionSettingService.findSubscriptionSettingWithDecryptedValue = jest.fn().mockReturnValue(null)
     subscriptionSettingService.createOrReplace = jest.fn()
 
-    event = {} as jest.Mocked<FileUploadedEvent>
+    event = {} as jest.Mocked<UserFileUploadedEvent>
     event.createdAt = new Date(1)
     event.payload = {
       userUuid: '1-2-3',

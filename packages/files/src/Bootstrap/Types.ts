@@ -13,6 +13,7 @@ const TYPES = {
   FinishUploadSession: Symbol.for('FinishUploadSession'),
   GetFileMetadata: Symbol.for('GetFileMetadata'),
   RemoveFile: Symbol.for('RemoveFile'),
+  MoveFile: Symbol.for('MoveFile'),
   MarkFilesToBeRemoved: Symbol.for('MarkFilesToBeRemoved'),
 
   // services
@@ -23,6 +24,7 @@ const TYPES = {
   FileUploader: Symbol.for('FileUploader'),
   FileDownloader: Symbol.for('FileDownloader'),
   FileRemover: Symbol.for('FileRemover'),
+  FileMover: Symbol.for('FileMover'),
 
   // repositories
   UploadRepository: Symbol.for('UploadRepository'),

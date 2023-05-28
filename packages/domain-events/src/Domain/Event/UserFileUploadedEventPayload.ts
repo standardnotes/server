@@ -1,4 +1,4 @@
-export interface FileUploadedEventPayload {
+export interface UserFileUploadedEventPayload {
   userUuid: string
   fileByteSize: number
   filePath: string

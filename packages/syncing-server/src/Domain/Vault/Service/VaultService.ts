@@ -29,6 +29,8 @@ export class VaultService implements VaultServiceInterface {
         user_uuid: dto.userUuid,
         specified_items_key_uuid: dto.specifiedItemsKeyUuid,
         vault_key_timestamp: dto.vaultKeyTimestamp,
+        file_upload_bytes_limit: 1_000_000,
+        file_upload_bytes_used: 0,
         created_at_timestamp: timestamp,
         updated_at_timestamp: timestamp,
       },

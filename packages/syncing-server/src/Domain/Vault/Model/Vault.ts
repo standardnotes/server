@@ -25,6 +25,18 @@ export class Vault {
   declare vaultKeyTimestamp: number
 
   @Column({
+    name: 'file_upload_bytes_used',
+    type: 'bigint',
+  })
+  declare fileUploadBytesUsed: number
+
+  @Column({
+    name: 'file_upload_bytes_limit',
+    type: 'bigint',
+  })
+  declare fileUploadBytesLimit: number
+
+  @Column({
     name: 'created_at_timestamp',
     type: 'bigint',
   })

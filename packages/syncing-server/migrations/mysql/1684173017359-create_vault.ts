@@ -30,6 +30,14 @@ export class CreateVault1684173017359 implements MigrationInterface {
           type: 'bigint',
         }),
         new TableColumn({
+          name: 'file_upload_bytes_used',
+          type: 'bigint',
+        }),
+        new TableColumn({
+          name: 'file_upload_bytes_limit',
+          type: 'bigint',
+        }),
+        new TableColumn({
           name: 'created_at_timestamp',
           type: 'bigint',
         }),

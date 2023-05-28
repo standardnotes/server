@@ -64,6 +64,8 @@ export class VaultValetTokenAuthMiddleware extends BaseMiddleware {
         vaultUuid: valetTokenData.vaultUuid,
         remoteIdentifier: valetTokenData.remoteIdentifier,
         permittedOperation: valetTokenData.permittedOperation,
+        uploadBytesUsed: valetTokenData.uploadBytesUsed,
+        uploadBytesLimit: valetTokenData.uploadBytesLimit,
       }
 
       Object.assign(response.locals, whitelistedData)

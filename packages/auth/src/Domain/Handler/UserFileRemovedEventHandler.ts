@@ -1,4 +1,4 @@
-import { DomainEventHandlerInterface, FileRemovedEvent } from '@standardnotes/domain-events'
+import { DomainEventHandlerInterface, UserFileRemovedEvent } from '@standardnotes/domain-events'
 import { SettingName } from '@standardnotes/settings'
 import { inject, injectable } from 'inversify'
 import { Logger } from 'winston'
@@ -10,14 +10,14 @@ import { UserSubscription } from '../Subscription/UserSubscription'
 import { UserSubscriptionServiceInterface } from '../Subscription/UserSubscriptionServiceInterface'
 
 @injectable()
-export class FileRemovedEventHandler implements DomainEventHandlerInterface {
+export class UserFileRemovedEventHandler implements DomainEventHandlerInterface {
   constructor(
     @inject(TYPES.UserSubscriptionService) private userSubscriptionService: UserSubscriptionServiceInterface,
     @inject(TYPES.SubscriptionSettingService) private subscriptionSettingService: SubscriptionSettingServiceInterface,
     @inject(TYPES.Logger) private logger: Logger,
   ) {}
 
-  async handle(event: FileRemovedEvent): Promise<void> {
+  async handle(event: UserFileRemovedEvent): Promise<void> {
     const { regularSubscription, sharedSubscription } =
       await this.userSubscriptionService.findRegularSubscriptionForUserUuid(event.payload.userUuid)
     if (regularSubscription === null) {

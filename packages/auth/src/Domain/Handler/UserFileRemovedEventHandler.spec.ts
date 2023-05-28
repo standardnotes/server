@@ -1,25 +1,26 @@
 import 'reflect-metadata'
 
-import { FileRemovedEvent } from '@standardnotes/domain-events'
+import { UserFileRemovedEvent } from '@standardnotes/domain-events'
 import { Logger } from 'winston'
 
 import { User } from '../User/User'
-import { FileRemovedEventHandler } from './FileRemovedEventHandler'
+import { UserFileRemovedEventHandler } from './UserFileRemovedEventHandler'
 import { SubscriptionSettingServiceInterface } from '../Setting/SubscriptionSettingServiceInterface'
 import { UserSubscription } from '../Subscription/UserSubscription'
 import { UserSubscriptionType } from '../Subscription/UserSubscriptionType'
 import { UserSubscriptionServiceInterface } from '../Subscription/UserSubscriptionServiceInterface'
 
-describe('FileRemovedEventHandler', () => {
+describe('UserFileRemovedEventHandler', () => {
   let userSubscriptionService: UserSubscriptionServiceInterface
   let logger: Logger
   let user: User
-  let event: FileRemovedEvent
+  let event: UserFileRemovedEvent
   let subscriptionSettingService: SubscriptionSettingServiceInterface
   let regularSubscription: UserSubscription
   let sharedSubscription: UserSubscription
 
-  const createHandler = () => new FileRemovedEventHandler(userSubscriptionService, subscriptionSettingService, logger)
+  const createHandler = () =>
+    new UserFileRemovedEventHandler(userSubscriptionService, subscriptionSettingService, logger)
 
   beforeEach(() => {
     user = {
@@ -47,7 +48,7 @@ describe('FileRemovedEventHandler', () => {
     subscriptionSettingService.findSubscriptionSettingWithDecryptedValue = jest.fn().mockReturnValue(null)
     subscriptionSettingService.createOrReplace = jest.fn()
 
-    event = {} as jest.Mocked<FileRemovedEvent>
+    event = {} as jest.Mocked<UserFileRemovedEvent>
     event.createdAt = new Date(1)
     event.payload = {
       userUuid: '1-2-3',

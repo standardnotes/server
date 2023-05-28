@@ -16,16 +16,16 @@ export class MarkFilesToBeRemoved implements UseCaseInterface {
 
   async execute(dto: MarkFilesToBeRemovedDTO): Promise<MarkFilesToBeRemovedResponse> {
     try {
-      this.logger.debug(`Marking files for later removal for user: ${dto.userUuid}`)
+      this.logger.debug(`Marking files for later removal for user: ${dto.ownerUuid}`)
 
-      const filesRemoved = await this.fileRemover.markFilesToBeRemoved(dto.userUuid)
+      const filesRemoved = await this.fileRemover.markFilesToBeRemoved(dto.ownerUuid)
 
       return {
         success: true,
         filesRemoved,
       }
     } catch (error) {
-      this.logger.error(`Could not mark resources for removal: ${dto.userUuid} - ${(error as Error).message}`)
+      this.logger.error(`Could not mark resources for removal: ${dto.ownerUuid} - ${(error as Error).message}`)
 
       return {
         success: false,

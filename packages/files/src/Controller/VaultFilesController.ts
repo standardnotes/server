@@ -1,20 +1,127 @@
-import { BaseHttpController, controller, httpGet, results } from 'inversify-express-utils'
+import { BaseHttpController, controller, httpDelete, httpGet, httpPost, results } from 'inversify-express-utils'
 import { Request, Response } from 'express'
 import { inject } from 'inversify'
 import { Writable } from 'stream'
 import TYPES from '../Bootstrap/Types'
+import { UploadFileChunk } from '../Domain/UseCase/UploadFileChunk/UploadFileChunk'
 import { StreamDownloadFile } from '../Domain/UseCase/StreamDownloadFile/StreamDownloadFile'
+import { CreateUploadSession } from '../Domain/UseCase/CreateUploadSession/CreateUploadSession'
+import { FinishUploadSession } from '../Domain/UseCase/FinishUploadSession/FinishUploadSession'
 import { GetFileMetadata } from '../Domain/UseCase/GetFileMetadata/GetFileMetadata'
-import { VaultValetTokenData, ValetTokenOperation } from '@standardnotes/security'
+import { RemoveFile } from '../Domain/UseCase/RemoveFile/RemoveFile'
+import { ValetTokenOperation, VaultValetTokenData } from '@standardnotes/security'
 
 @controller('/v1/vault/files', TYPES.VaultValetTokenAuthMiddleware)
-export class VaultFilesController extends BaseHttpController {
+export class FilesController extends BaseHttpController {
   constructor(
+    @inject(TYPES.UploadFileChunk) private uploadFileChunk: UploadFileChunk,
+    @inject(TYPES.CreateUploadSession) private createUploadSession: CreateUploadSession,
+    @inject(TYPES.FinishUploadSession) private finishUploadSession: FinishUploadSession,
     @inject(TYPES.StreamDownloadFile) private streamDownloadFile: StreamDownloadFile,
     @inject(TYPES.GetFileMetadata) private getFileMetadata: GetFileMetadata,
+    @inject(TYPES.RemoveFile) private removeFile: RemoveFile,
     @inject(TYPES.MAX_CHUNK_BYTES) private maxChunkBytes: number,
   ) {
     super()
+  }
+
+  @httpPost('/upload/create-session')
+  async startUpload(
+    _request: Request,
+    response: Response,
+  ): Promise<results.BadRequestErrorMessageResult | results.JsonResult> {
+    const locals = response.locals as VaultValetTokenData
+    if (locals.permittedOperation !== ValetTokenOperation.Write) {
+      return this.badRequest('Not permitted for this operation')
+    }
+
+    const result = await this.createUploadSession.execute({
+      ownerUuid: locals.vaultUuid,
+      resourceRemoteIdentifier: locals.remoteIdentifier,
+    })
+
+    if (!result.success) {
+      return this.badRequest(result.message)
+    }
+
+    return this.json({ success: true, uploadId: result.uploadId })
+  }
+
+  @httpPost('/upload/chunk')
+  async uploadChunk(
+    request: Request,
+    response: Response,
+  ): Promise<results.BadRequestErrorMessageResult | results.JsonResult> {
+    const locals = response.locals as VaultValetTokenData
+    if (locals.permittedOperation !== ValetTokenOperation.Write) {
+      return this.badRequest('Not permitted for this operation')
+    }
+
+    const chunkId = +(request.headers['x-chunk-id'] as string)
+    if (!chunkId) {
+      return this.badRequest('Missing x-chunk-id header in request.')
+    }
+
+    const result = await this.uploadFileChunk.execute({
+      ownerUuid: locals.vaultUuid,
+      resourceRemoteIdentifier: locals.remoteIdentifier,
+      resourceUnencryptedFileSize: locals.unencryptedFileSize as number,
+      chunkId,
+      data: request.body,
+    })
+
+    if (!result.success) {
+      return this.badRequest(result.message)
+    }
+
+    return this.json({ success: true, message: 'Chunk uploaded successfully' })
+  }
+
+  @httpPost('/upload/close-session')
+  public async finishUpload(
+    _request: Request,
+    response: Response,
+  ): Promise<results.BadRequestErrorMessageResult | results.JsonResult> {
+    const locals = response.locals as VaultValetTokenData
+    if (locals.permittedOperation !== ValetTokenOperation.Write) {
+      return this.badRequest('Not permitted for this operation')
+    }
+
+    const result = await this.finishUploadSession.execute({
+      ownerUuid: locals.vaultUuid,
+      ownerType: 'vault',
+      resourceRemoteIdentifier: locals.remoteIdentifier,
+      uploadBytesLimit: locals.uploadBytesLimit,
+      uploadBytesUsed: locals.uploadBytesUsed,
+    })
+
+    if (!result.success) {
+      return this.badRequest(result.message)
+    }
+
+    return this.json({ success: true, message: 'File uploaded successfully' })
+  }
+
+  @httpDelete('/')
+  async remove(
+    _request: Request,
+    response: Response,
+  ): Promise<results.BadRequestErrorMessageResult | results.JsonResult> {
+    const locals = response.locals as VaultValetTokenData
+    if (locals.permittedOperation !== ValetTokenOperation.Delete) {
+      return this.badRequest('Not permitted for this operation')
+    }
+
+    const result = await this.removeFile.execute({
+      vaultUuid: locals.vaultUuid,
+      resourceRemoteIdentifier: locals.remoteIdentifier,
+    })
+
+    if (!result.success) {
+      return this.badRequest(result.message)
+    }
+
+    return this.json({ success: true, message: 'File removed successfully' })
   }
 
   @httpGet('/')
@@ -22,7 +129,8 @@ export class VaultFilesController extends BaseHttpController {
     request: Request,
     response: Response,
   ): Promise<results.BadRequestErrorMessageResult | (() => Writable)> {
-    if (response.locals.permittedOperation !== ValetTokenOperation.Read) {
+    const locals = response.locals as VaultValetTokenData
+    if (locals.permittedOperation !== ValetTokenOperation.Read) {
       return this.badRequest('Not permitted for this operation')
     }
 
@@ -36,10 +144,8 @@ export class VaultFilesController extends BaseHttpController {
       chunkSize = this.maxChunkBytes
     }
 
-    const locals = response.locals as VaultValetTokenData
-
     const fileMetadata = await this.getFileMetadata.execute({
-      vaultUuid: locals.vaultUuid,
+      ownerUuid: locals.vaultUuid,
       resourceRemoteIdentifier: locals.remoteIdentifier,
     })
 
@@ -60,7 +166,7 @@ export class VaultFilesController extends BaseHttpController {
     response.writeHead(206, headers)
 
     const result = await this.streamDownloadFile.execute({
-      vaultUuid: locals.vaultUuid,
+      ownerUuid: locals.vaultUuid,
       resourceRemoteIdentifier: locals.remoteIdentifier,
       startRange,
       endRange,

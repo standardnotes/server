@@ -20,7 +20,7 @@ export class CreateUploadSession implements UseCaseInterface {
     try {
       this.logger.debug(`Creating upload session for resource: ${dto.resourceRemoteIdentifier}`)
 
-      const filePath = `${dto.userUuid}/${dto.resourceRemoteIdentifier}`
+      const filePath = `${dto.ownerUuid}/${dto.resourceRemoteIdentifier}`
 
       const uploadId = await this.fileUploader.createUploadSession(filePath)
 

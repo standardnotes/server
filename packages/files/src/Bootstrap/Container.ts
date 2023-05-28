@@ -45,6 +45,10 @@ import { AccountDeletionRequestedEventHandler } from '../Domain/Handler/AccountD
 import { SharedSubscriptionInvitationCanceledEventHandler } from '../Domain/Handler/SharedSubscriptionInvitationCanceledEventHandler'
 import { InMemoryUploadRepository } from '../Infra/InMemory/InMemoryUploadRepository'
 import { VaultValetTokenAuthMiddleware } from '../Controller/VaultValetTokenAuthMiddleware'
+import { FileMoverInterface } from '../Domain/Services/FileMoverInterface'
+import { S3FileMover } from '../Infra/S3/S3FileMover'
+import { FSFileMover } from '../Infra/FS/FSFileMover'
+import { MoveFile } from '../Domain/UseCase/MoveFile/MoveFile'
 
 export class ContainerConfigLoader {
   async load(): Promise<Container> {
@@ -98,12 +102,14 @@ export class ContainerConfigLoader {
       container.bind<FileDownloaderInterface>(TYPES.FileDownloader).to(S3FileDownloader)
       container.bind<FileUploaderInterface>(TYPES.FileUploader).to(S3FileUploader)
       container.bind<FileRemoverInterface>(TYPES.FileRemover).to(S3FileRemover)
+      container.bind<FileMoverInterface>(TYPES.FileMover).to(S3FileMover)
     } else {
       container.bind<FileDownloaderInterface>(TYPES.FileDownloader).to(FSFileDownloader)
       container
         .bind<FileUploaderInterface>(TYPES.FileUploader)
         .toConstantValue(new FSFileUploader(container.get(TYPES.FILE_UPLOAD_PATH), container.get(TYPES.Logger)))
       container.bind<FileRemoverInterface>(TYPES.FileRemover).to(FSFileRemover)
+      container.bind<FileMoverInterface>(TYPES.FileMover).to(FSFileMover)
     }
 
     if (env.get('SNS_TOPIC_ARN', true)) {
@@ -146,6 +152,7 @@ export class ContainerConfigLoader {
     container.bind<FinishUploadSession>(TYPES.FinishUploadSession).to(FinishUploadSession)
     container.bind<GetFileMetadata>(TYPES.GetFileMetadata).to(GetFileMetadata)
     container.bind<RemoveFile>(TYPES.RemoveFile).to(RemoveFile)
+    container.bind<MoveFile>(TYPES.MoveFile).to(MoveFile)
     container.bind<MarkFilesToBeRemoved>(TYPES.MarkFilesToBeRemoved).to(MarkFilesToBeRemoved)
 
     // middleware

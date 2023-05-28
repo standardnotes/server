@@ -1,3 +1,3 @@
 export type MarkFilesToBeRemovedDTO = {
-  userUuid: string
+  ownerUuid: string
 }

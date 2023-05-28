@@ -1,4 +1,4 @@
-export interface FileRemovedEventPayload {
+export interface UserFileRemovedEventPayload {
   userUuid: string
   regularSubscriptionUuid: string
   fileByteSize: number

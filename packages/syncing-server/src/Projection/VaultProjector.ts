@@ -22,6 +22,8 @@ export class VaultProjector implements ProjectorInterface<Vault, VaultProjection
       user_uuid: vault.userUuid,
       specified_items_key_uuid: vault.specifiedItemsKeyUuid,
       vault_key_timestamp: vault.vaultKeyTimestamp,
+      file_upload_bytes_used: vault.fileUploadBytesUsed,
+      file_upload_bytes_limit: vault.fileUploadBytesLimit,
       created_at_timestamp: vault.createdAtTimestamp,
       updated_at_timestamp: vault.updatedAtTimestamp,
     }

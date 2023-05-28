@@ -139,12 +139,12 @@ import {
   ValetTokenData,
   WebSocketConnectionTokenData,
 } from '@standardnotes/security'
-import { FileUploadedEventHandler } from '../Domain/Handler/FileUploadedEventHandler'
+import { UserFileUploadedEventHandler } from '../Domain/Handler/UserFileUploadedEventHandler'
 import { CreateValetToken } from '../Domain/UseCase/CreateValetToken/CreateValetToken'
 import { CreateListedAccount } from '../Domain/UseCase/CreateListedAccount/CreateListedAccount'
 import { ListedAccountCreatedEventHandler } from '../Domain/Handler/ListedAccountCreatedEventHandler'
 import { ListedAccountDeletedEventHandler } from '../Domain/Handler/ListedAccountDeletedEventHandler'
-import { FileRemovedEventHandler } from '../Domain/Handler/FileRemovedEventHandler'
+import { UserFileRemovedEventHandler } from '../Domain/Handler/UserFileRemovedEventHandler'
 import { UserDisabledSessionUserAgentLoggingEventHandler } from '../Domain/Handler/UserDisabledSessionUserAgentLoggingEventHandler'
 import { SettingInterpreterInterface } from '../Domain/Setting/SettingInterpreterInterface'
 import { SettingInterpreter } from '../Domain/Setting/SettingInterpreter'
@@ -834,8 +834,8 @@ export class ContainerConfigLoader {
       .bind<SubscriptionReassignedEventHandler>(TYPES.SubscriptionReassignedEventHandler)
       .to(SubscriptionReassignedEventHandler)
     container.bind<UserEmailChangedEventHandler>(TYPES.UserEmailChangedEventHandler).to(UserEmailChangedEventHandler)
-    container.bind<FileUploadedEventHandler>(TYPES.FileUploadedEventHandler).to(FileUploadedEventHandler)
-    container.bind<FileRemovedEventHandler>(TYPES.FileRemovedEventHandler).to(FileRemovedEventHandler)
+    container.bind<UserFileUploadedEventHandler>(TYPES.UserFileUploadedEventHandler).to(UserFileUploadedEventHandler)
+    container.bind<UserFileRemovedEventHandler>(TYPES.UserFileRemovedEventHandler).to(UserFileRemovedEventHandler)
     container
       .bind<ListedAccountCreatedEventHandler>(TYPES.ListedAccountCreatedEventHandler)
       .to(ListedAccountCreatedEventHandler)
@@ -873,8 +873,8 @@ export class ContainerConfigLoader {
       ['EXTENSION_KEY_GRANTED', container.get(TYPES.ExtensionKeyGrantedEventHandler)],
       ['SUBSCRIPTION_REASSIGNED', container.get(TYPES.SubscriptionReassignedEventHandler)],
       ['USER_EMAIL_CHANGED', container.get(TYPES.UserEmailChangedEventHandler)],
-      ['FILE_UPLOADED', container.get(TYPES.FileUploadedEventHandler)],
-      ['FILE_REMOVED', container.get(TYPES.FileRemovedEventHandler)],
+      ['USER_FILE_UPLOADED', container.get(TYPES.UserFileUploadedEventHandler)],
+      ['USER_FILE_REMOVED', container.get(TYPES.UserFileRemovedEventHandler)],
       ['LISTED_ACCOUNT_CREATED', container.get(TYPES.ListedAccountCreatedEventHandler)],
       ['LISTED_ACCOUNT_DELETED', container.get(TYPES.ListedAccountDeletedEventHandler)],
       [
