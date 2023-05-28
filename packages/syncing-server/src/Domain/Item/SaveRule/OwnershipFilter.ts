@@ -62,7 +62,7 @@ export class OwnershipFilter implements ItemSaveRuleInterface {
         }
       }
 
-      if (dto.itemHash.content_type === ContentType.SharedItemsKey && vaultAuthorization !== 'admin') {
+      if (dto.itemHash.content_type === ContentType.VaultItemsKey && vaultAuthorization !== 'admin') {
         return vaultReadonlyFail
       }
 
@@ -83,7 +83,7 @@ export class OwnershipFilter implements ItemSaveRuleInterface {
   }
 
   private async vaultItemIsBeingSavedWithValidItemsKey(itemHash: ItemHash): Promise<boolean> {
-    const isItemNotEncryptedByItemsKey = itemHash.content_type === ContentType.SharedItemsKey
+    const isItemNotEncryptedByItemsKey = itemHash.content_type === ContentType.VaultItemsKey
     if (isItemNotEncryptedByItemsKey) {
       return true
     }
