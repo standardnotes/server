@@ -15,11 +15,11 @@ export class Item {
 
   @Column({
     type: 'varchar',
-    name: 'group_uuid',
+    name: 'vault_uuid',
     length: 255,
     nullable: true,
   })
-  declare groupUuid: string | null
+  declare vaultUuid: string | null
 
   @Column({
     type: 'varchar',
@@ -77,9 +77,11 @@ export class Item {
   @Column({
     name: 'user_uuid',
     length: 36,
+    type: 'varchar',
+    nullable: true,
   })
   @Index('index_items_on_user_uuid')
-  declare userUuid: string
+  declare userUuid: string | null
 
   @Column({
     name: 'last_edited_by_uuid',

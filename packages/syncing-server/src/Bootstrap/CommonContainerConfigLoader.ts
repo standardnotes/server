@@ -1,9 +1,9 @@
-import { TypeORMGroupInviteRepository } from './../Domain/GroupInvite/Repository/TypeORMGroupInviteRepository'
+import { TypeORMVaultInviteRepository } from '../Domain/VaultInvite/Repository/TypeORMVaultInviteRepository'
 import { Contact } from './../Domain/Contact/Model/Contact'
-import { GroupInvite } from './../Domain/GroupInvite/Model/GroupInvite'
-import { GroupUser } from '../Domain/GroupUser/Model/GroupUser'
-import { Group } from './../Domain/Group/Model/Group'
-import { TypeORMGroupRepository } from './../Domain/Group/Repository/TypeORMGroupRepository'
+import { VaultInvite } from '../Domain/VaultInvite/Model/VaultInvite'
+import { VaultUser } from '../Domain/VaultUser/Model/VaultUser'
+import { Vault } from '../Domain/Vault/Model/Vault'
+import { TypeORMVaultRepository } from '../Domain/Vault/Repository/TypeORMVaultRepository'
 import * as winston from 'winston'
 import { Container, interfaces } from 'inversify'
 
@@ -24,18 +24,18 @@ import { DomainEventFactory } from '../Domain/Event/DomainEventFactory'
 import { Timer, TimerInterface } from '@standardnotes/time'
 import { ItemTransferCalculatorInterface } from '../Domain/Item/ItemTransferCalculatorInterface'
 import { ItemTransferCalculator } from '../Domain/Item/ItemTransferCalculator'
-import { GroupsRepositoryInterface } from '../Domain/Group/Repository/GroupRepositoryInterface'
-import { GroupUserRepositoryInterface } from '../Domain/GroupUser/Repository/GroupUserRepositoryInterface'
-import { TypeORMGroupUserRepository } from '../Domain/GroupUser/Repository/TypeORMGroupUserRepository'
-import { GroupUserProjection } from '../Projection/GroupUserProjection'
-import { GroupUserProjector } from '../Projection/GroupUserProjector'
-import { GroupProjection } from '../Projection/GroupProjection'
-import { GroupProjector } from '../Projection/GroupProjector'
-import { GroupInviteProjection } from '../Projection/GroupInviteProjection'
-import { GroupInviteProjector } from '../Projection/GroupInviteProjector'
+import { VaultsRepositoryInterface } from '../Domain/Vault/Repository/VaultRepositoryInterface'
+import { VaultUserRepositoryInterface } from '../Domain/VaultUser/Repository/VaultUserRepositoryInterface'
+import { TypeORMVaultUserRepository } from '../Domain/VaultUser/Repository/TypeORMVaultUserRepository'
+import { VaultUserProjection } from '../Projection/VaultUserProjection'
+import { VaultUserProjector } from '../Projection/VaultUserProjector'
+import { VaultProjection } from '../Projection/VaultProjection'
+import { VaultProjector } from '../Projection/VaultProjector'
+import { VaultInviteProjection } from '../Projection/VaultInviteProjection'
+import { VaultInviteProjector } from '../Projection/VaultInviteProjector'
 import { ContactProjection } from '../Projection/ContactProjection'
 import { ContactProjector } from '../Projection/ContactProjector'
-import { GroupInviteRepositoryInterface } from '../Domain/GroupInvite/Repository/GroupInviteRepositoryInterface'
+import { VaultInviteRepositoryInterface } from '../Domain/VaultInvite/Repository/VaultInviteRepositoryInterface'
 import { ContactsRepositoryInterface } from '../Domain/Contact/Repository/ContactRepositoryInterface'
 import { TypeORMContactRepository } from '../Domain/Contact/Repository/TypeORMContactRepository'
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -96,18 +96,18 @@ export class CommonContainerConfigLoader {
     container.bind<ItemRepositoryInterface>(TYPES.ItemRepository).toDynamicValue((context: interfaces.Context) => {
       return new TypeORMItemRepository(context.container.get(TYPES.ORMItemRepository))
     })
-    container.bind<GroupsRepositoryInterface>(TYPES.GroupRepository).toDynamicValue((context: interfaces.Context) => {
-      return new TypeORMGroupRepository(context.container.get(TYPES.ORMGroupRepository))
+    container.bind<VaultsRepositoryInterface>(TYPES.VaultRepository).toDynamicValue((context: interfaces.Context) => {
+      return new TypeORMVaultRepository(context.container.get(TYPES.ORMVaultRepository))
     })
     container
-      .bind<GroupUserRepositoryInterface>(TYPES.GroupUserRepository)
+      .bind<VaultUserRepositoryInterface>(TYPES.VaultUserRepository)
       .toDynamicValue((context: interfaces.Context) => {
-        return new TypeORMGroupUserRepository(context.container.get(TYPES.ORMGroupUserRepository))
+        return new TypeORMVaultUserRepository(context.container.get(TYPES.ORMVaultUserRepository))
       })
     container
-      .bind<GroupInviteRepositoryInterface>(TYPES.GroupInviteRepository)
+      .bind<VaultInviteRepositoryInterface>(TYPES.VaultInviteRepository)
       .toDynamicValue((context: interfaces.Context) => {
-        return new TypeORMGroupInviteRepository(context.container.get(TYPES.ORMGroupInviteRepository))
+        return new TypeORMVaultInviteRepository(context.container.get(TYPES.ORMVaultInviteRepository))
       })
     container
       .bind<ContactsRepositoryInterface>(TYPES.ContactRepository)
@@ -117,13 +117,13 @@ export class CommonContainerConfigLoader {
 
     // ORM
     container.bind<Repository<Item>>(TYPES.ORMItemRepository).toDynamicValue(() => AppDataSource.getRepository(Item))
-    container.bind<Repository<Group>>(TYPES.ORMGroupRepository).toDynamicValue(() => AppDataSource.getRepository(Group))
+    container.bind<Repository<Vault>>(TYPES.ORMVaultRepository).toDynamicValue(() => AppDataSource.getRepository(Vault))
     container
-      .bind<Repository<GroupUser>>(TYPES.ORMGroupUserRepository)
-      .toDynamicValue(() => AppDataSource.getRepository(GroupUser))
+      .bind<Repository<VaultUser>>(TYPES.ORMVaultUserRepository)
+      .toDynamicValue(() => AppDataSource.getRepository(VaultUser))
     container
-      .bind<Repository<GroupInvite>>(TYPES.ORMGroupInviteRepository)
-      .toDynamicValue(() => AppDataSource.getRepository(GroupInvite))
+      .bind<Repository<VaultInvite>>(TYPES.ORMVaultInviteRepository)
+      .toDynamicValue(() => AppDataSource.getRepository(VaultInvite))
     container
       .bind<Repository<Contact>>(TYPES.ORMContactRepository)
       .toDynamicValue(() => AppDataSource.getRepository(Contact))
@@ -134,16 +134,16 @@ export class CommonContainerConfigLoader {
       .toDynamicValue((context: interfaces.Context) => {
         return new ItemProjector(context.container.get(TYPES.Timer))
       })
-    container.bind<ProjectorInterface<Group, GroupProjection>>(TYPES.GroupProjector).toDynamicValue(() => {
-      return new GroupProjector()
+    container.bind<ProjectorInterface<Vault, VaultProjection>>(TYPES.VaultProjector).toDynamicValue(() => {
+      return new VaultProjector()
     })
-    container.bind<ProjectorInterface<GroupUser, GroupUserProjection>>(TYPES.GroupUserProjector).toDynamicValue(() => {
-      return new GroupUserProjector()
+    container.bind<ProjectorInterface<VaultUser, VaultUserProjection>>(TYPES.VaultUserProjector).toDynamicValue(() => {
+      return new VaultUserProjector()
     })
     container
-      .bind<ProjectorInterface<GroupInvite, GroupInviteProjection>>(TYPES.GroupInviteProjector)
+      .bind<ProjectorInterface<VaultInvite, VaultInviteProjection>>(TYPES.VaultInviteProjector)
       .toDynamicValue(() => {
-        return new GroupInviteProjector()
+        return new VaultInviteProjector()
       })
     container.bind<ProjectorInterface<Contact, ContactProjection>>(TYPES.ContactProjector).toDynamicValue(() => {
       return new ContactProjector()

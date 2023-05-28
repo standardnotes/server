@@ -2,14 +2,14 @@ import { ItemSaveValidationDTO } from '../SaveValidator/ItemSaveValidationDTO'
 import { ItemSaveRuleResult } from './ItemSaveRuleResult'
 import { ItemSaveRuleInterface } from './ItemSaveRuleInterface'
 import { ConflictType } from '@standardnotes/responses'
-import { GroupUserServiceInterface } from '../../GroupUser/Service/GroupUserServiceInterface'
+import { VaultUserServiceInterface } from '../../VaultUser/Service/VaultUserServiceInterface'
 import { ItemHash } from '../ItemHash'
-import { GroupUserPermission } from '../../GroupUser/Model/GroupUserPermission'
-import { GroupServiceInterface } from '../../Group/Service/GroupServiceInterface'
+import { VaultUserPermission } from '../../VaultUser/Model/VaultUserPermission'
+import { VaultServiceInterface } from '../../Vault/Service/VaultServiceInterface'
 import { ContentType } from '@standardnotes/common'
 
 export class OwnershipFilter implements ItemSaveRuleInterface {
-  constructor(private groupService: GroupServiceInterface, private groupUserService: GroupUserServiceInterface) {}
+  constructor(private vaultService: VaultServiceInterface, private vaultUserService: VaultUserServiceInterface) {}
 
   async check(dto: ItemSaveValidationDTO): Promise<ItemSaveRuleResult> {
     const itemBelongsToADifferentUser = dto.existingItem != null && dto.existingItem.userUuid !== dto.userUuid
@@ -18,7 +18,7 @@ export class OwnershipFilter implements ItemSaveRuleInterface {
       passed: true,
     }
 
-    const groupReadonlyFail = {
+    const vaultReadonlyFail = {
       passed: false,
       conflict: {
         unsavedItem: dto.itemHash,
@@ -34,39 +34,39 @@ export class OwnershipFilter implements ItemSaveRuleInterface {
       },
     }
 
-    const groupUuidInvolved = dto.existingItem?.groupUuid || dto.itemHash.group_uuid
-    if (itemBelongsToADifferentUser && !groupUuidInvolved) {
+    const vaultUuidInvolved = dto.existingItem?.vaultUuid || dto.itemHash.vault_uuid
+    if (itemBelongsToADifferentUser && !vaultUuidInvolved) {
       return ownershipFail
     }
 
-    if (groupUuidInvolved) {
-      const groupAuthorization = await this.groupAuthorizationForItem(dto.userUuid, groupUuidInvolved)
-      if (!groupAuthorization) {
+    if (vaultUuidInvolved) {
+      const vaultAuthorization = await this.vaultAuthorizationForItem(dto.userUuid, vaultUuidInvolved)
+      if (!vaultAuthorization) {
         return ownershipFail
       }
 
-      if (groupAuthorization === 'read') {
-        return groupReadonlyFail
+      if (vaultAuthorization === 'read') {
+        return vaultReadonlyFail
       }
 
-      const isItemBeingRemovedFromGroup =
-        dto.existingItem != null && dto.existingItem.groupUuid != null && dto.itemHash.group_uuid == null
+      const isItemBeingRemovedFromVault =
+        dto.existingItem != null && dto.existingItem.vaultUuid != null && dto.itemHash.vault_uuid == null
 
       const isItemBeingDeleted = dto.itemHash.deleted === true
 
-      if (isItemBeingRemovedFromGroup || isItemBeingDeleted) {
+      if (isItemBeingRemovedFromVault || isItemBeingDeleted) {
         if (itemBelongsToADifferentUser) {
-          return groupAuthorization === 'admin' ? successValue : groupReadonlyFail
+          return vaultAuthorization === 'admin' ? successValue : vaultReadonlyFail
         } else {
           return successValue
         }
       }
 
-      if (dto.itemHash.content_type === ContentType.SharedItemsKey && groupAuthorization !== 'admin') {
-        return groupReadonlyFail
+      if (dto.itemHash.content_type === ContentType.SharedItemsKey && vaultAuthorization !== 'admin') {
+        return vaultReadonlyFail
       }
 
-      const usingValidKey = await this.groupItemIsBeingSavedWithValidItemsKey(dto.itemHash)
+      const usingValidKey = await this.vaultItemIsBeingSavedWithValidItemsKey(dto.itemHash)
 
       if (!usingValidKey) {
         return {
@@ -82,32 +82,32 @@ export class OwnershipFilter implements ItemSaveRuleInterface {
     return successValue
   }
 
-  private async groupItemIsBeingSavedWithValidItemsKey(itemHash: ItemHash): Promise<boolean> {
+  private async vaultItemIsBeingSavedWithValidItemsKey(itemHash: ItemHash): Promise<boolean> {
     const isItemNotEncryptedByItemsKey = itemHash.content_type === ContentType.SharedItemsKey
     if (isItemNotEncryptedByItemsKey) {
       return true
     }
 
-    const group = await this.groupService.getGroup({ groupUuid: itemHash.group_uuid as string })
+    const vault = await this.vaultService.getVault({ vaultUuid: itemHash.vault_uuid as string })
 
-    if (!group) {
+    if (!vault) {
       return false
     }
 
-    return itemHash.items_key_id === group.specifiedItemsKeyUuid
+    return itemHash.items_key_id === vault.specifiedItemsKeyUuid
   }
 
-  private async groupAuthorizationForItem(
+  private async vaultAuthorizationForItem(
     userUuid: string,
-    groupUuid: string,
-  ): Promise<GroupUserPermission | undefined> {
-    const groupUser = await this.groupUserService.getUserForGroup({
+    vaultUuid: string,
+  ): Promise<VaultUserPermission | undefined> {
+    const vaultUser = await this.vaultUserService.getUserForVault({
       userUuid,
-      groupUuid: groupUuid,
+      vaultUuid: vaultUuid,
     })
 
-    if (groupUser) {
-      return groupUser.permissions
+    if (vaultUser) {
+      return vaultUser.permissions
     }
 
     return undefined

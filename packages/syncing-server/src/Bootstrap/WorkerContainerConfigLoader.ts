@@ -138,7 +138,7 @@ export class WorkerContainerConfigLoader extends CommonContainerConfigLoader {
       .toDynamicValue((context: interfaces.Context) => {
         return new UserCredentialsChangedEventHandler(
           context.container.get(TYPES.ContactRepository),
-          context.container.get(TYPES.GroupInviteRepository),
+          context.container.get(TYPES.VaultInviteRepository),
           context.container.get(TYPES.Timer),
         )
       })

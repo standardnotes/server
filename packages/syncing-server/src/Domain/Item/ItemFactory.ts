@@ -40,8 +40,8 @@ export class ItemFactory implements ItemFactoryInterface {
     if (dto.itemHash.last_edited_by_uuid) {
       newItem.lastEditedByUuid = dto.itemHash.last_edited_by_uuid
     }
-    if (dto.itemHash.group_uuid) {
-      newItem.groupUuid = dto.itemHash.group_uuid
+    if (dto.itemHash.vault_uuid) {
+      newItem.vaultUuid = dto.itemHash.vault_uuid
     }
     if (dto.itemHash.content_type) {
       newItem.contentType = dto.itemHash.content_type

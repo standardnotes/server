@@ -3,7 +3,7 @@ import { Logger } from 'winston'
 import TYPES from '../../../Bootstrap/Types'
 import { FileDownloaderInterface } from '../../Services/FileDownloaderInterface'
 import { UseCaseInterface } from '../UseCaseInterface'
-import { StreamDownloadFileDTO } from './StreamDownloadFileDTO'
+import { StreamDownloadFileDTO, isStreamDownloadFileVaultOwned } from './StreamDownloadFileDTO'
 import { StreamDownloadFileResponse } from './StreamDownloadFileResponse'
 
 @injectable()
@@ -14,9 +14,10 @@ export class StreamDownloadFile implements UseCaseInterface {
   ) {}
 
   async execute(dto: StreamDownloadFileDTO): Promise<StreamDownloadFileResponse> {
+    const ownerUuid = isStreamDownloadFileVaultOwned(dto) ? dto.vaultUuid : dto.userUuid
     try {
       const readStream = await this.fileDownloader.createDownloadStream(
-        `${dto.userUuid}/${dto.resourceRemoteIdentifier}`,
+        `${ownerUuid}/${dto.resourceRemoteIdentifier}`,
         dto.startRange,
         dto.endRange,
       )
@@ -26,9 +27,7 @@ export class StreamDownloadFile implements UseCaseInterface {
         readStream,
       }
     } catch (error) {
-      this.logger.error(
-        `Could not create a download stream for resource: ${dto.userUuid}/${dto.resourceRemoteIdentifier}`,
-      )
+      this.logger.error(`Could not create a download stream for resource: ${ownerUuid}/${dto.resourceRemoteIdentifier}`)
 
       return {
         success: false,

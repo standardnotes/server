@@ -9,17 +9,17 @@ const TYPES = {
 
   // Repositories
   ItemRepository: Symbol.for('ItemRepository'),
-  GroupRepository: Symbol.for('GroupRepository'),
-  GroupUserRepository: Symbol.for('GroupUserRepository'),
+  VaultRepository: Symbol.for('VaultRepository'),
+  VaultUserRepository: Symbol.for('VaultUserRepository'),
   ContactRepository: Symbol.for('ContactRepository'),
-  GroupInviteRepository: Symbol.for('GroupInviteRepository'),
+  VaultInviteRepository: Symbol.for('VaultInviteRepository'),
 
   // ORM
   ORMItemRepository: Symbol.for('ORMItemRepository'),
-  ORMGroupRepository: Symbol.for('ORMGroupRepository'),
-  ORMGroupUserRepository: Symbol.for('ORMGroupUserRepository'),
+  ORMVaultRepository: Symbol.for('ORMVaultRepository'),
+  ORMVaultUserRepository: Symbol.for('ORMVaultUserRepository'),
   ORMContactRepository: Symbol.for('ORMContactRepository'),
-  ORMGroupInviteRepository: Symbol.for('ORMGroupInviteRepository'),
+  ORMVaultInviteRepository: Symbol.for('ORMVaultInviteRepository'),
 
   // Middleware
   AuthMiddleware: Symbol.for('AuthMiddleware'),
@@ -28,23 +28,23 @@ const TYPES = {
   ItemProjector: Symbol.for('ItemProjector'),
   SavedItemProjector: Symbol.for('SavedItemProjector'),
   ItemConflictProjector: Symbol.for('ItemConflictProjector'),
-  GroupProjector: Symbol.for('GroupProjector'),
-  GroupUserProjector: Symbol.for('GroupUserProjector'),
+  VaultProjector: Symbol.for('VaultProjector'),
+  VaultUserProjector: Symbol.for('VaultUserProjector'),
   ContactProjector: Symbol.for('ContactProjector'),
-  GroupInviteProjector: Symbol.for('GroupInviteProjector'),
+  VaultInviteProjector: Symbol.for('VaultInviteProjector'),
 
   // Services
-  GroupService: Symbol.for('GroupService'),
-  GroupUserService: Symbol.for('GroupUserService'),
+  VaultService: Symbol.for('VaultService'),
+  VaultUserService: Symbol.for('VaultUserService'),
   ContactService: Symbol.for('ContactService'),
-  GroupInviteService: Symbol.for('GroupInviteService'),
+  VaultInviteService: Symbol.for('VaultInviteService'),
 
   // Factories
   ItemFactory: Symbol.for('ItemFactory'),
-  GroupFactory: Symbol.for('GroupFactory'),
-  GroupUserFactory: Symbol.for('GroupUserFactory'),
+  VaultFactory: Symbol.for('VaultFactory'),
+  VaultUserFactory: Symbol.for('VaultUserFactory'),
   ContactFactory: Symbol.for('ContactFactory'),
-  GroupInviteFactory: Symbol.for('GroupInviteFactory'),
+  VaultInviteFactory: Symbol.for('VaultInviteFactory'),
 
   // env vars
   REDIS_URL: Symbol.for('REDIS_URL'),
@@ -71,7 +71,7 @@ const TYPES = {
   CheckIntegrity: Symbol.for('CheckIntegrity'),
   GetItem: Symbol.for('GetItem'),
   GetGlobalItem: Symbol.for('GetGlobalItem'),
-  CreateGroupFileReadValetToken: Symbol.for('CreateGroupFileReadValetToken'),
+  CreateVaultFileReadValetToken: Symbol.for('CreateVaultFileReadValetToken'),
   // Handlers
   UserCredentialsChangedEventHandler: Symbol.for('UserCredentialsChangedEventHandler'),
   AccountDeletionRequestedEventHandler: Symbol.for('AccountDeletionRequestedEventHandler'),

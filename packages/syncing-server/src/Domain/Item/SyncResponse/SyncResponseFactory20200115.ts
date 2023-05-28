@@ -1,4 +1,4 @@
-import { GroupInvite } from './../../GroupInvite/Model/GroupInvite'
+import { VaultInvite } from '../../VaultInvite/Model/VaultInvite'
 import { Contact } from './../../Contact/Model/Contact'
 import { ProjectorInterface } from '../../../Projection/ProjectorInterface'
 import { SyncItemsResponse } from '../../UseCase/SyncItemsResponse'
@@ -10,18 +10,18 @@ import { SyncResponse20200115 } from './SyncResponse20200115'
 import { SyncResponseFactoryInterface } from './SyncResponseFactoryInterface'
 import { SavedItemProjection } from '../../../Projection/SavedItemProjection'
 import { ContactProjection } from '../../../Projection/ContactProjection'
-import { GroupInviteProjection } from '../../../Projection/GroupInviteProjection'
-import { GroupProjection } from '../../../Projection/GroupProjection'
-import { Group } from '../../Group/Model/Group'
+import { VaultInviteProjection } from '../../../Projection/VaultInviteProjection'
+import { VaultProjection } from '../../../Projection/VaultProjection'
+import { Vault } from '../../Vault/Model/Vault'
 
 export class SyncResponseFactory20200115 implements SyncResponseFactoryInterface {
   constructor(
     private itemProjector: ProjectorInterface<Item, ItemProjection>,
     private itemConflictProjector: ProjectorInterface<ItemConflict, ItemConflictProjection>,
     private savedItemProjector: ProjectorInterface<Item, SavedItemProjection>,
-    private groupInviteProjector: ProjectorInterface<GroupInvite, GroupInviteProjection>,
+    private vaultInviteProjector: ProjectorInterface<VaultInvite, VaultInviteProjection>,
     private contactProjector: ProjectorInterface<Contact, ContactProjection>,
-    private groupProjector: ProjectorInterface<Group, GroupProjection>,
+    private vaultProjector: ProjectorInterface<Vault, VaultProjection>,
   ) {}
 
   async createResponse(syncItemsResponse: SyncItemsResponse): Promise<SyncResponse20200115> {
@@ -40,14 +40,14 @@ export class SyncResponseFactory20200115 implements SyncResponseFactoryInterface
       conflicts.push(this.itemConflictProjector.projectFull(itemConflict))
     }
 
-    const groups = []
-    for (const group of syncItemsResponse.groups) {
-      groups.push(this.groupProjector.projectFull(group))
+    const vaults = []
+    for (const vault of syncItemsResponse.vaults) {
+      vaults.push(this.vaultProjector.projectFull(vault))
     }
 
-    const groupInvites = []
-    for (const groupInvite of syncItemsResponse.groupInvites) {
-      groupInvites.push(this.groupInviteProjector.projectFull(groupInvite))
+    const vaultInvites = []
+    for (const vaultInvite of syncItemsResponse.vaultInvites) {
+      vaultInvites.push(this.vaultInviteProjector.projectFull(vaultInvite))
     }
 
     const contacts = []
@@ -61,8 +61,8 @@ export class SyncResponseFactory20200115 implements SyncResponseFactoryInterface
       conflicts,
       sync_token: syncItemsResponse.syncToken,
       cursor_token: syncItemsResponse.cursorToken,
-      groups,
-      group_invites: groupInvites,
+      vaults,
+      vault_invites: vaultInvites,
       contacts,
     }
   }

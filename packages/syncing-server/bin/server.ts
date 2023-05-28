@@ -4,9 +4,9 @@ import 'newrelic'
 
 import '../src/Controller/HealthCheckController'
 import '../src/Controller/ItemsController'
-import '../src/Controller/GroupsController'
-import '../src/Controller/GroupUsersController'
-import '../src/Controller/GroupInvitesController'
+import '../src/Controller/VaultsController'
+import '../src/Controller/VaultUsersController'
+import '../src/Controller/VaultInvitesController'
 import '../src/Controller/ContactsController'
 
 import helmet from 'helmet'

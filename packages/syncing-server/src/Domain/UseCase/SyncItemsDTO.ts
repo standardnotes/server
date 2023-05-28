@@ -5,7 +5,7 @@ export type SyncItemsDTO = {
   itemHashes: Array<ItemHash>
   computeIntegrityHash: boolean
   limit: number
-  groupUuids?: string[] | null
+  vaultUuids?: string[] | null
   syncToken?: string | null
   cursorToken?: string | null
   contentType?: string

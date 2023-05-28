@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from 'typeorm'
 
-export class removeGroups1665047863774 implements MigrationInterface {
-  name = 'removeGroups1665047863774'
+export class removeVaults1665047863774 implements MigrationInterface {
+  name = 'removeVaults1665047863774'
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query('ALTER TABLE `group_users` DROP FOREIGN KEY `FK_9d1bcb8c649eb05d7a2eb62114e`')

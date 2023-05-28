@@ -20,7 +20,7 @@ import { ConflictType } from '@standardnotes/responses'
 import { ItemTransferCalculatorInterface } from './ItemTransferCalculatorInterface'
 import { ProjectorInterface } from '../../Projection/ProjectorInterface'
 import { ItemProjection } from '../../Projection/ItemProjection'
-import { GroupUserRepositoryInterface } from '../GroupUser/Repository/GroupUserRepositoryInterface'
+import { VaultUserRepositoryInterface } from '../VaultUser/Repository/VaultUserRepositoryInterface'
 
 export class ItemService implements ItemServiceInterface {
   private readonly DEFAULT_ITEMS_LIMIT = 150
@@ -38,7 +38,7 @@ export class ItemService implements ItemServiceInterface {
     private timer: TimerInterface,
     private itemProjector: ProjectorInterface<Item, ItemProjection>,
     private maxItemsSyncLimit: number,
-    private groupUsersRepository: GroupUserRepositoryInterface,
+    private vaultUsersRepository: VaultUserRepositoryInterface,
     private logger: Logger,
   ) {}
 
@@ -48,16 +48,16 @@ export class ItemService implements ItemServiceInterface {
     const limit = dto.limit === undefined || dto.limit < 1 ? this.DEFAULT_ITEMS_LIMIT : dto.limit
     const upperBoundLimit = limit < this.maxItemsSyncLimit ? limit : this.maxItemsSyncLimit
 
-    const groupUsers = await this.groupUsersRepository.findAllForUser({ userUuid: dto.userUuid })
-    const userGroupUuids = groupUsers.map((groupUser) => groupUser.groupUuid)
-    const exclusiveGroupUuids = dto.groupUuids
-      ? dto.groupUuids.filter((groupUuid) => userGroupUuids.includes(groupUuid))
+    const vaultUsers = await this.vaultUsersRepository.findAllForUser({ userUuid: dto.userUuid })
+    const userVaultUuids = vaultUsers.map((vaultUser) => vaultUser.vaultUuid)
+    const exclusiveVaultUuids = dto.vaultUuids
+      ? dto.vaultUuids.filter((vaultUuid) => userVaultUuids.includes(vaultUuid))
       : undefined
 
     const itemQuery: ItemQuery = {
       userUuid: dto.userUuid,
-      includeGroupUuids: !dto.groupUuids ? userGroupUuids : undefined,
-      exclusiveGroupUuids: exclusiveGroupUuids,
+      includeVaultUuids: !dto.vaultUuids ? userVaultUuids : undefined,
+      exclusiveVaultUuids: exclusiveVaultUuids,
       lastSyncTime,
       syncTimeComparison,
       contentType: dto.contentType,
@@ -199,6 +199,28 @@ export class ItemService implements ItemServiceInterface {
     ).toString('base64')
   }
 
+  async addItemToVault(dto: {
+    userUuid: string
+    itemUuid: string
+    vaultUuid: string
+    sessionUuid: string | null
+  }): Promise<Item | null> {
+    const item = await this.itemRepository.findByUuid(dto.itemUuid)
+    if (!item || item.userUuid !== dto.userUuid) {
+      return null
+    }
+
+    // item.userUuid = null
+    item.vaultUuid = dto.vaultUuid
+    item.updatedWithSession = dto.sessionUuid
+    item.lastEditedByUuid = dto.userUuid
+    const updatedAt = this.timer.getTimestampInMicroseconds()
+    item.updatedAtTimestamp = updatedAt
+    item.updatedAt = this.timer.convertMicrosecondsToDate(updatedAt)
+    const savedItem = await this.itemRepository.save(item)
+    return savedItem
+  }
+
   private async updateExistingItem(dto: {
     existingItem: Item
     itemHash: ItemHash
@@ -207,7 +229,6 @@ export class ItemService implements ItemServiceInterface {
   }): Promise<Item> {
     dto.existingItem.updatedWithSession = dto.sessionUuid
     dto.existingItem.contentSize = 0
-    dto.existingItem.groupUuid = dto.itemHash.group_uuid ?? null
     dto.existingItem.lastEditedByUuid = dto.userUuid
 
     if (dto.itemHash.content) {
@@ -265,14 +286,14 @@ export class ItemService implements ItemServiceInterface {
     const savedItem = await this.itemRepository.save(dto.existingItem)
 
     if (secondsFromLastUpdate >= this.revisionFrequency) {
-      if ([ContentType.Note, ContentType.File].includes(savedItem.contentType as ContentType)) {
+      if ([ContentType.Note, ContentType.File].includes(savedItem.contentType as ContentType) && savedItem.userUuid) {
         await this.domainEventPublisher.publish(
           this.domainEventFactory.createItemRevisionCreationRequested(savedItem.uuid, savedItem.userUuid),
         )
       }
     }
 
-    if (wasMarkedAsDuplicate) {
+    if (wasMarkedAsDuplicate && savedItem.userUuid) {
       await this.domainEventPublisher.publish(
         this.domainEventFactory.createDuplicateItemSyncedEvent(savedItem.uuid, savedItem.userUuid),
       )
@@ -286,13 +307,13 @@ export class ItemService implements ItemServiceInterface {
 
     const savedItem = await this.itemRepository.save(newItem)
 
-    if ([ContentType.Note, ContentType.File].includes(savedItem.contentType as ContentType)) {
+    if ([ContentType.Note, ContentType.File].includes(savedItem.contentType as ContentType) && savedItem.userUuid) {
       await this.domainEventPublisher.publish(
         this.domainEventFactory.createItemRevisionCreationRequested(savedItem.uuid, savedItem.userUuid),
       )
     }
 
-    if (savedItem.duplicateOf) {
+    if (savedItem.duplicateOf && savedItem.userUuid) {
       await this.domainEventPublisher.publish(
         this.domainEventFactory.createDuplicateItemSyncedEvent(savedItem.uuid, savedItem.userUuid),
       )

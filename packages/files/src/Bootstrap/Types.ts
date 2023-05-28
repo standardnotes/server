@@ -29,7 +29,7 @@ const TYPES = {
 
   // middleware
   ValetTokenAuthMiddleware: Symbol.for('ValetTokenAuthMiddleware'),
-  GroupValetTokenAuthMiddleware: Symbol.for('GroupValetTokenAuthMiddleware'),
+  VaultValetTokenAuthMiddleware: Symbol.for('VaultValetTokenAuthMiddleware'),
 
   // env vars
   S3_ENDPOINT: Symbol.for('S3_ENDPOINT'),
