@@ -199,28 +199,6 @@ export class ItemService implements ItemServiceInterface {
     ).toString('base64')
   }
 
-  async addItemToVault(dto: {
-    userUuid: string
-    itemUuid: string
-    vaultUuid: string
-    sessionUuid: string | null
-  }): Promise<Item | null> {
-    const item = await this.itemRepository.findByUuid(dto.itemUuid)
-    if (!item || item.userUuid !== dto.userUuid) {
-      return null
-    }
-
-    // item.userUuid = null
-    item.vaultUuid = dto.vaultUuid
-    item.updatedWithSession = dto.sessionUuid
-    item.lastEditedByUuid = dto.userUuid
-    const updatedAt = this.timer.getTimestampInMicroseconds()
-    item.updatedAtTimestamp = updatedAt
-    item.updatedAt = this.timer.convertMicrosecondsToDate(updatedAt)
-    const savedItem = await this.itemRepository.save(item)
-    return savedItem
-  }
-
   private async updateExistingItem(dto: {
     existingItem: Item
     itemHash: ItemHash
@@ -230,6 +208,14 @@ export class ItemService implements ItemServiceInterface {
     dto.existingItem.updatedWithSession = dto.sessionUuid
     dto.existingItem.contentSize = 0
     dto.existingItem.lastEditedByUuid = dto.userUuid
+
+    if (dto.itemHash.vault_uuid) {
+      dto.existingItem.vaultUuid = dto.itemHash.vault_uuid
+      dto.existingItem.userUuid = null
+    } else {
+      dto.existingItem.vaultUuid = null
+      dto.existingItem.userUuid = dto.userUuid
+    }
 
     if (dto.itemHash.content) {
       dto.existingItem.content = dto.itemHash.content

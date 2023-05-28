@@ -9,6 +9,7 @@ export type ItemProjection = {
   auth_hash: string | null
   deleted: boolean
   user_uuid: string | null
+  created_by_uuid: string | null
   last_edited_by_uuid: string | null
   created_at: string
   created_at_timestamp: number

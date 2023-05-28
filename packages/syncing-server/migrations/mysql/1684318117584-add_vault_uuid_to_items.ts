@@ -16,6 +16,15 @@ export class AddVaultUuidToItems1684318117584 implements MigrationInterface {
     await queryRunner.addColumn(
       'items',
       new TableColumn({
+        name: 'created_by_uuid',
+        type: 'varchar',
+        length: '36',
+        isNullable: true,
+      }),
+    )
+    await queryRunner.addColumn(
+      'items',
+      new TableColumn({
         name: 'last_edited_by_uuid',
         type: 'varchar',
         length: '36',

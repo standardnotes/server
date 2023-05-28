@@ -90,6 +90,12 @@ export class Item {
   declare lastEditedByUuid: string
 
   @Column({
+    name: 'created_by_uuid',
+    length: 36,
+  })
+  declare createdByUuid: string
+
+  @Column({
     type: 'tinyint',
     precision: 1,
     nullable: true,

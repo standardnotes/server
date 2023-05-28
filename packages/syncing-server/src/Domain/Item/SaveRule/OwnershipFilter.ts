@@ -12,8 +12,6 @@ export class OwnershipFilter implements ItemSaveRuleInterface {
   constructor(private vaultService: VaultServiceInterface, private vaultUserService: VaultUserServiceInterface) {}
 
   async check(dto: ItemSaveValidationDTO): Promise<ItemSaveRuleResult> {
-    const itemBelongsToADifferentUser = dto.existingItem != null && dto.existingItem.userUuid !== dto.userUuid
-
     const successValue = {
       passed: true,
     }
@@ -34,52 +32,74 @@ export class OwnershipFilter implements ItemSaveRuleInterface {
       },
     }
 
+    const contentFail = {
+      passed: false,
+      conflict: {
+        unsavedItem: dto.itemHash,
+        type: ConflictType.ContentError,
+      },
+    }
+
     const vaultUuidInvolved = dto.existingItem?.vaultUuid || dto.itemHash.vault_uuid
-    if (itemBelongsToADifferentUser && !vaultUuidInvolved) {
+    if (vaultUuidInvolved) {
+      const result = await this.authorizationToSaveVaultInvolvedItem(dto)
+      if (result === 'ownership-fail') {
+        return ownershipFail
+      } else if (result === 'readonly-fail') {
+        return vaultReadonlyFail
+      } else if (result === 'content-fail') {
+        return contentFail
+      } else if (result === 'success') {
+        return successValue
+      } else {
+        throw new Error(`Unexpected vault authorization result: ${result}`)
+      }
+    }
+
+    const itemBelongsToADifferentUser =
+      dto.existingItem != null && dto.existingItem.userUuid && dto.existingItem.userUuid !== dto.userUuid
+    if (itemBelongsToADifferentUser) {
       return ownershipFail
     }
 
-    if (vaultUuidInvolved) {
-      const vaultAuthorization = await this.vaultAuthorizationForItem(dto.userUuid, vaultUuidInvolved)
-      if (!vaultAuthorization) {
-        return ownershipFail
-      }
+    return successValue
+  }
 
-      if (vaultAuthorization === 'read') {
-        return vaultReadonlyFail
-      }
-
-      const isItemBeingRemovedFromVault =
-        dto.existingItem != null && dto.existingItem.vaultUuid != null && dto.itemHash.vault_uuid == null
-
-      const isItemBeingDeleted = dto.itemHash.deleted === true
-
-      if (isItemBeingRemovedFromVault || isItemBeingDeleted) {
-        if (itemBelongsToADifferentUser) {
-          return vaultAuthorization === 'admin' ? successValue : vaultReadonlyFail
-        } else {
-          return successValue
-        }
-      }
-
-      if (dto.itemHash.content_type === ContentType.VaultItemsKey && vaultAuthorization !== 'admin') {
-        return vaultReadonlyFail
-      }
-
-      const usingValidKey = await this.vaultItemIsBeingSavedWithValidItemsKey(dto.itemHash)
-
-      if (!usingValidKey) {
-        return {
-          passed: false,
-          conflict: {
-            unsavedItem: dto.itemHash,
-            type: ConflictType.ContentError,
-          },
-        }
-      }
+  private async authorizationToSaveVaultInvolvedItem(
+    dto: ItemSaveValidationDTO,
+  ): Promise<'ownership-fail' | 'readonly-fail' | 'content-fail' | 'success'> {
+    const vaultUuidInvolved = dto.existingItem?.vaultUuid || dto.itemHash.vault_uuid
+    const vaultAuthorization = await this.vaultAuthorizationForItem(dto.userUuid, vaultUuidInvolved as string)
+    if (!vaultAuthorization) {
+      return 'ownership-fail'
     }
 
-    return successValue
+    if (vaultAuthorization === 'read') {
+      return 'readonly-fail'
+    }
+
+    const isItemBeingRemovedFromVault =
+      dto.existingItem != null && dto.existingItem.vaultUuid != null && dto.itemHash.vault_uuid == null
+
+    const isItemBeingDeleted = dto.itemHash.deleted === true
+
+    if (isItemBeingRemovedFromVault || isItemBeingDeleted) {
+      const doesHavePermissionToRemoveItemFromVault =
+        vaultAuthorization === 'admin' || dto.existingItem?.createdByUuid === dto.userUuid
+
+      return doesHavePermissionToRemoveItemFromVault ? 'success' : 'readonly-fail'
+    }
+
+    if (dto.itemHash.content_type === ContentType.VaultItemsKey && vaultAuthorization !== 'admin') {
+      return 'readonly-fail'
+    }
+
+    const usingValidKey = await this.vaultItemIsBeingSavedWithValidItemsKey(dto.itemHash)
+    if (!usingValidKey) {
+      return 'content-fail'
+    }
+
+    return 'success'
   }
 
   private async vaultItemIsBeingSavedWithValidItemsKey(itemHash: ItemHash): Promise<boolean> {
