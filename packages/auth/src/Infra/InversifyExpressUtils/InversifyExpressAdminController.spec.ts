@@ -8,7 +8,6 @@ import * as express from 'express'
 import { DeleteSetting } from '../../Domain/UseCase/DeleteSetting/DeleteSetting'
 import { CreateSubscriptionToken } from '../../Domain/UseCase/CreateSubscriptionToken/CreateSubscriptionToken'
 import { CreateOfflineSubscriptionToken } from '../../Domain/UseCase/CreateOfflineSubscriptionToken/CreateOfflineSubscriptionToken'
-import { ControllerContainerInterface } from '@standardnotes/domain-core'
 
 describe('InversifyExpressAdminController', () => {
   let deleteSetting: DeleteSetting
@@ -17,7 +16,6 @@ describe('InversifyExpressAdminController', () => {
   let createOfflineSubscriptionToken: CreateOfflineSubscriptionToken
   let request: express.Request
   let user: User
-  let controllerContainer: ControllerContainerInterface
 
   const createController = () =>
     new InversifyExpressAdminController(
@@ -25,7 +23,6 @@ describe('InversifyExpressAdminController', () => {
       userRepository,
       createSubscriptionToken,
       createOfflineSubscriptionToken,
-      controllerContainer,
     )
 
   beforeEach(() => {
@@ -58,9 +55,6 @@ describe('InversifyExpressAdminController', () => {
       body: {},
       params: {},
     } as jest.Mocked<express.Request>
-
-    controllerContainer = {} as jest.Mocked<ControllerContainerInterface>
-    controllerContainer.register = jest.fn()
   })
 
   it('should return error if missing email parameter', async () => {

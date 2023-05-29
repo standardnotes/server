@@ -4,7 +4,6 @@ import * as express from 'express'
 
 import { InversifyExpressSessionsController } from './InversifyExpressSessionsController'
 import { results } from 'inversify-express-utils'
-import { ControllerContainerInterface } from '@standardnotes/domain-core'
 import { User } from '@standardnotes/responses'
 
 import { AuthenticateRequest } from '../../Domain/UseCase/AuthenticateRequest'
@@ -22,7 +21,6 @@ describe('InversifyExpressSessionsController', () => {
   let response: express.Response
   let user: User
   let createCrossServiceToken: CreateCrossServiceToken
-  let controllerContainer: ControllerContainerInterface
 
   const createController = () =>
     new InversifyExpressSessionsController(
@@ -30,13 +28,9 @@ describe('InversifyExpressSessionsController', () => {
       authenticateRequest,
       sessionProjector,
       createCrossServiceToken,
-      controllerContainer,
     )
 
   beforeEach(() => {
-    controllerContainer = {} as jest.Mocked<ControllerContainerInterface>
-    controllerContainer.register = jest.fn()
-
     session = {} as jest.Mocked<Session>
 
     user = {} as jest.Mocked<User>

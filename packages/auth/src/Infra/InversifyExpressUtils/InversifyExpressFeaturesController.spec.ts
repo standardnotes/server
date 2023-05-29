@@ -6,7 +6,6 @@ import { InversifyExpressFeaturesController } from './InversifyExpressFeaturesCo
 import { results } from 'inversify-express-utils'
 import { User } from '../../Domain/User/User'
 import { GetUserFeatures } from '../../Domain/UseCase/GetUserFeatures/GetUserFeatures'
-import { ControllerContainerInterface } from '@standardnotes/domain-core'
 
 describe('InversifyExpressFeaturesController', () => {
   let getUserFeatures: GetUserFeatures
@@ -14,14 +13,10 @@ describe('InversifyExpressFeaturesController', () => {
   let request: express.Request
   let response: express.Response
   let user: User
-  let controllerContainer: ControllerContainerInterface
 
-  const createController = () => new InversifyExpressFeaturesController(getUserFeatures, controllerContainer)
+  const createController = () => new InversifyExpressFeaturesController(getUserFeatures)
 
   beforeEach(() => {
-    controllerContainer = {} as jest.Mocked<ControllerContainerInterface>
-    controllerContainer.register = jest.fn()
-
     user = {} as jest.Mocked<User>
     user.uuid = '123'
 

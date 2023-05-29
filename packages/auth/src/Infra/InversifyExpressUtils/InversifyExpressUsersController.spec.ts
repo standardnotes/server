@@ -4,7 +4,7 @@ import * as express from 'express'
 
 import { InversifyExpressUsersController } from './InversifyExpressUsersController'
 import { results } from 'inversify-express-utils'
-import { ControllerContainerInterface, Username } from '@standardnotes/domain-core'
+import { Username } from '@standardnotes/domain-core'
 import { DeleteAccount } from '../../Domain/UseCase/DeleteAccount/DeleteAccount'
 import { ChangeCredentials } from '../../Domain/UseCase/ChangeCredentials/ChangeCredentials'
 import { ClearLoginAttempts } from '../../Domain/UseCase/ClearLoginAttempts'
@@ -28,7 +28,6 @@ describe('InversifyExpressUsersController', () => {
   let request: express.Request
   let response: express.Response
   let user: User
-  let controllerContainer: ControllerContainerInterface
 
   const createController = () =>
     new InversifyExpressUsersController(
@@ -39,13 +38,9 @@ describe('InversifyExpressUsersController', () => {
       clearLoginAttempts,
       increaseLoginAttempts,
       changeCredentials,
-      controllerContainer,
     )
 
   beforeEach(() => {
-    controllerContainer = {} as jest.Mocked<ControllerContainerInterface>
-    controllerContainer.register = jest.fn()
-
     updateUser = {} as jest.Mocked<UpdateUser>
     updateUser.execute = jest.fn()
 
