@@ -4,13 +4,13 @@ import { NextFunction, Request, Response } from 'express'
 import { inject, injectable } from 'inversify'
 import { BaseMiddleware } from 'inversify-express-utils'
 import { Logger } from 'winston'
-import TYPES from '../Bootstrap/Types'
+import TYPES from '../../../Bootstrap/Types'
 
 @injectable()
 export class ValetTokenAuthMiddleware extends BaseMiddleware {
   constructor(
-    @inject(TYPES.ValetTokenDecoder) private tokenDecoder: TokenDecoderInterface<ValetTokenData>,
-    @inject(TYPES.Logger) private logger: Logger,
+    @inject(TYPES.Files_ValetTokenDecoder) private tokenDecoder: TokenDecoderInterface<ValetTokenData>,
+    @inject(TYPES.Files_Logger) private logger: Logger,
   ) {
     super()
   }

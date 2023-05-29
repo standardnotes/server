@@ -14,7 +14,6 @@ import { GetUserOfflineSubscription } from '../../Domain/UseCase/GetUserOfflineS
 import { OfflineUserTokenData, TokenEncoderInterface } from '@standardnotes/security'
 import { SubscriptionName } from '@standardnotes/common'
 import { Logger } from 'winston'
-import { ControllerContainerInterface } from '@standardnotes/domain-core'
 
 describe('InversifyExpressOfflineController', () => {
   let getUserFeatures: GetUserFeatures
@@ -29,8 +28,6 @@ describe('InversifyExpressOfflineController', () => {
   let response: express.Response
   let user: User
 
-  let controllerContainer: ControllerContainerInterface
-
   const createController = () =>
     new InversifyExpressOfflineController(
       getUserFeatures,
@@ -40,13 +37,9 @@ describe('InversifyExpressOfflineController', () => {
       tokenEncoder,
       jwtTTL,
       logger,
-      controllerContainer,
     )
 
   beforeEach(() => {
-    controllerContainer = {} as jest.Mocked<ControllerContainerInterface>
-    controllerContainer.register = jest.fn()
-
     user = {} as jest.Mocked<User>
     user.uuid = '123'
 

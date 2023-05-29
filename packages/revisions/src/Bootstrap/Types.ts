@@ -43,7 +43,7 @@ const TYPES = {
   Revisions_DomainEventMessageHandler: Symbol.for('Revisions_DomainEventMessageHandler'),
   Revisions_Timer: Symbol.for('Revisions_Timer'),
   // Inversify Express Controllers
-  Revisions_InversifyExpressRevisionsController: Symbol.for('Revisions_InversifyExpressRevisionsController'),
+  Revisions_HomeServerRevisionsController: Symbol.for('Revisions_HomeServerRevisionsController'),
 }
 
 export default TYPES

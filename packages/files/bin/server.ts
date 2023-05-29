@@ -4,8 +4,8 @@ import 'newrelic'
 
 import * as busboy from 'connect-busboy'
 
-import '../src/Controller/HealthCheckController'
-import '../src/Controller/FilesController'
+import '../src/Infra/InversifyExpress/InversifyExpressHealthCheckController'
+import '../src/Infra/InversifyExpress/InversifyExpressFilesController'
 
 import helmet from 'helmet'
 import * as cors from 'cors'
@@ -28,7 +28,7 @@ void container.load().then((container) => {
 
   server.setConfig((app) => {
     app.use((_request: Request, response: Response, next: NextFunction) => {
-      response.setHeader('X-Files-Version', container.get(TYPES.VERSION))
+      response.setHeader('X-Files-Version', container.get(TYPES.Files_VERSION))
       next()
     })
     app.use(
@@ -74,7 +74,7 @@ void container.load().then((container) => {
     )
   })
 
-  const logger: winston.Logger = container.get(TYPES.Logger)
+  const logger: winston.Logger = container.get(TYPES.Files_Logger)
 
   server.setErrorConfig((app) => {
     app.use((error: Record<string, unknown>, _request: Request, response: Response, _next: NextFunction) => {

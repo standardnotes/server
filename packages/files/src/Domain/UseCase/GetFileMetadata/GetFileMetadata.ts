@@ -9,8 +9,8 @@ import { GetFileMetadataResponse } from './GetFileMetadataResponse'
 @injectable()
 export class GetFileMetadata implements UseCaseInterface {
   constructor(
-    @inject(TYPES.FileDownloader) private fileDownloader: FileDownloaderInterface,
-    @inject(TYPES.Logger) private logger: Logger,
+    @inject(TYPES.Files_FileDownloader) private fileDownloader: FileDownloaderInterface,
+    @inject(TYPES.Files_Logger) private logger: Logger,
   ) {}
 
   async execute(dto: GetFileMetadataDTO): Promise<GetFileMetadataResponse> {

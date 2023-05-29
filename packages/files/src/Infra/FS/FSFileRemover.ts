@@ -7,7 +7,7 @@ import TYPES from '../../Bootstrap/Types'
 
 @injectable()
 export class FSFileRemover implements FileRemoverInterface {
-  constructor(@inject(TYPES.FILE_UPLOAD_PATH) private fileUploadPath: string) {}
+  constructor(@inject(TYPES.Files_FILE_UPLOAD_PATH) private fileUploadPath: string) {}
 
   async markFilesToBeRemoved(userUuid: string): Promise<Array<RemovedFileDescription>> {
     await promises.rmdir(`${this.fileUploadPath}/${userUuid}`)

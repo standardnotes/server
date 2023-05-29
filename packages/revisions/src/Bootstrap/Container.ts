@@ -45,7 +45,7 @@ import { CopyRevisions } from '../Domain/UseCase/CopyRevisions/CopyRevisions'
 import { FSDumpRepository } from '../Infra/FS/FSDumpRepository'
 import { S3DumpRepository } from '../Infra/S3/S3ItemDumpRepository'
 import { RevisionItemStringMapper } from '../Mapping/RevisionItemStringMapper'
-import { InversifyExpressRevisionsController } from '../Infra/InversifyExpress/InversifyExpressRevisionsController'
+import { HomeServerRevisionsController } from '../Infra/InversifyExpress/HomeServer/HomeServerRevisionsController'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -337,9 +337,9 @@ export class ContainerConfigLoader {
     // Inversify Controllers
     if (isConfiguredForHomeServer) {
       container
-        .bind<InversifyExpressRevisionsController>(TYPES.Revisions_InversifyExpressRevisionsController)
+        .bind<HomeServerRevisionsController>(TYPES.Revisions_HomeServerRevisionsController)
         .toConstantValue(
-          new InversifyExpressRevisionsController(
+          new HomeServerRevisionsController(
             container.get(TYPES.Revisions_RevisionsController),
             container.get(TYPES.Revisions_ControllerContainer),
           ),

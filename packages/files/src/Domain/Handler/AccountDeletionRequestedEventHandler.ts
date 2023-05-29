@@ -12,9 +12,9 @@ import { MarkFilesToBeRemoved } from '../UseCase/MarkFilesToBeRemoved/MarkFilesT
 @injectable()
 export class AccountDeletionRequestedEventHandler implements DomainEventHandlerInterface {
   constructor(
-    @inject(TYPES.MarkFilesToBeRemoved) private markFilesToBeRemoved: MarkFilesToBeRemoved,
-    @inject(TYPES.DomainEventPublisher) private domainEventPublisher: DomainEventPublisherInterface,
-    @inject(TYPES.DomainEventFactory) private domainEventFactory: DomainEventFactoryInterface,
+    @inject(TYPES.Files_MarkFilesToBeRemoved) private markFilesToBeRemoved: MarkFilesToBeRemoved,
+    @inject(TYPES.Files_DomainEventPublisher) private domainEventPublisher: DomainEventPublisherInterface,
+    @inject(TYPES.Files_DomainEventFactory) private domainEventFactory: DomainEventFactoryInterface,
   ) {}
 
   async handle(event: AccountDeletionRequestedEvent): Promise<void> {

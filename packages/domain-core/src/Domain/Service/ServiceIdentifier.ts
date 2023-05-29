@@ -8,6 +8,7 @@ export class ServiceIdentifier extends ValueObject<ServiceIdentifierProps> {
     Auth: 'Auth',
     SyncingServer: 'SyncingServer',
     Revisions: 'Revisions',
+    Files: 'Files',
   }
 
   get value(): string {

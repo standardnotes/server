@@ -22,6 +22,7 @@
     "@standardnotes/auth-server": "workspace:^",
     "@standardnotes/domain-core": "workspace:^",
     "@standardnotes/domain-events-infra": "workspace:^",
+    "@standardnotes/files-server": "workspace:^",
     "@standardnotes/revisions-server": "workspace:^",
     "@standardnotes/syncing-server": "workspace:^",
     "cors": "2.8.5",

@@ -4,7 +4,6 @@ import * as express from 'express'
 
 import { InversifyExpressSettingsController } from './InversifyExpressSettingsController'
 import { results } from 'inversify-express-utils'
-import { ControllerContainerInterface } from '@standardnotes/domain-core'
 import { EncryptionVersion } from '../../Domain/Encryption/EncryptionVersion'
 import { DeleteSetting } from '../../Domain/UseCase/DeleteSetting/DeleteSetting'
 import { GetSetting } from '../../Domain/UseCase/GetSetting/GetSetting'
@@ -21,15 +20,11 @@ describe('InversifyExpressSettingsController', () => {
   let request: express.Request
   let response: express.Response
   let user: User
-  let controllerContainer: ControllerContainerInterface
 
   const createController = () =>
-    new InversifyExpressSettingsController(getSettings, getSetting, updateSetting, deleteSetting, controllerContainer)
+    new InversifyExpressSettingsController(getSettings, getSetting, updateSetting, deleteSetting)
 
   beforeEach(() => {
-    controllerContainer = {} as jest.Mocked<ControllerContainerInterface>
-    controllerContainer.register = jest.fn()
-
     deleteSetting = {} as jest.Mocked<DeleteSetting>
     deleteSetting.execute = jest.fn().mockReturnValue({ success: true })
 

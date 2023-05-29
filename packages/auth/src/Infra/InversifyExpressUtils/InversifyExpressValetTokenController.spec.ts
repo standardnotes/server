@@ -4,20 +4,15 @@ import { Request, Response } from 'express'
 import { results } from 'inversify-express-utils'
 import { InversifyExpressValetTokenController } from './InversifyExpressValetTokenController'
 import { CreateValetToken } from '../../Domain/UseCase/CreateValetToken/CreateValetToken'
-import { ControllerContainerInterface } from '@standardnotes/domain-core'
 
 describe('InversifyExpressValetTokenController', () => {
   let createValetToken: CreateValetToken
   let request: Request
   let response: Response
-  let controllerContainer: ControllerContainerInterface
 
-  const createController = () => new InversifyExpressValetTokenController(createValetToken, controllerContainer)
+  const createController = () => new InversifyExpressValetTokenController(createValetToken)
 
   beforeEach(() => {
-    controllerContainer = {} as jest.Mocked<ControllerContainerInterface>
-    controllerContainer.register = jest.fn()
-
     createValetToken = {} as jest.Mocked<CreateValetToken>
     createValetToken.execute = jest.fn().mockReturnValue({ success: true, valetToken: 'foobar' })
 

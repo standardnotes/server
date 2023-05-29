@@ -8,8 +8,8 @@ import { FileDownloaderInterface } from '../../Domain/Services/FileDownloaderInt
 @injectable()
 export class S3FileDownloader implements FileDownloaderInterface {
   constructor(
-    @inject(TYPES.S3) private s3Client: S3Client,
-    @inject(TYPES.S3_BUCKET_NAME) private s3BuckeName: string,
+    @inject(TYPES.Files_S3) private s3Client: S3Client,
+    @inject(TYPES.Files_S3_BUCKET_NAME) private s3BuckeName: string,
   ) {}
 
   async createDownloadStream(filePath: string, startRange: number, endRange: number): Promise<Readable> {

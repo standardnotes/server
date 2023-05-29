@@ -2,6 +2,7 @@ import 'reflect-metadata'
 
 import { ControllerContainer, ServiceContainer } from '@standardnotes/domain-core'
 import { Service as ApiGatewayService, TYPES as ApiGatewayTYPES } from '@standardnotes/api-gateway'
+import { Service as FilesService } from '@standardnotes/files-server'
 import { DirectCallDomainEventPublisher } from '@standardnotes/domain-events-infra'
 import { Service as AuthService } from '@standardnotes/auth-server'
 import { Service as SyncingService } from '@standardnotes/syncing-server'
@@ -26,12 +27,14 @@ const startServer = async (): Promise<void> => {
   const authService = new AuthService(serviceContainer, controllerContainer, directCallDomainEventPublisher)
   const syncingService = new SyncingService(serviceContainer, controllerContainer, directCallDomainEventPublisher)
   const revisionsService = new RevisionsService(serviceContainer, controllerContainer, directCallDomainEventPublisher)
+  const filesService = new FilesService(serviceContainer, directCallDomainEventPublisher)
 
   const container = Container.merge(
     (await apiGatewayService.getContainer()) as Container,
     (await authService.getContainer()) as Container,
     (await syncingService.getContainer()) as Container,
     (await revisionsService.getContainer()) as Container,
+    (await filesService.getContainer()) as Container,
   )
 
   const env: Env = new Env()

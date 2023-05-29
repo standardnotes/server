@@ -71,7 +71,7 @@ import { FSItemBackupService } from '../Infra/FS/FSItemBackupService'
 import { AuthHttpService } from '../Infra/HTTP/AuthHttpService'
 import { S3ItemBackupService } from '../Infra/S3/S3ItemBackupService'
 import { ControllerContainer, ControllerContainerInterface } from '@standardnotes/domain-core'
-import { InversifyExpressItemsController } from '../Infra/InversifyExpressUtils/InversifyExpressItemsController'
+import { HomeServerItemsController } from '../Infra/InversifyExpressUtils/HomeServer/HomeServerItemsController'
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
 
@@ -499,9 +499,9 @@ export class ContainerConfigLoader {
 
     if (isConfiguredForHomeServer) {
       container
-        .bind<InversifyExpressItemsController>(TYPES.Sync_InversifyExpressItemsController)
+        .bind<HomeServerItemsController>(TYPES.Sync_HomeServerItemsController)
         .toConstantValue(
-          new InversifyExpressItemsController(
+          new HomeServerItemsController(
             container.get(TYPES.Sync_SyncItems),
             container.get(TYPES.Sync_CheckIntegrity),
             container.get(TYPES.Sync_GetItem),

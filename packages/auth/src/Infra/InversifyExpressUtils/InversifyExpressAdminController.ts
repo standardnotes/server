@@ -1,9 +1,6 @@
-import { ControllerContainerInterface, Username } from '@standardnotes/domain-core'
-import { SettingName } from '@standardnotes/settings'
 import { Request } from 'express'
 import { inject } from 'inversify'
 import {
-  BaseHttpController,
   controller,
   httpDelete,
   httpGet,
@@ -12,124 +9,48 @@ import {
   results,
 } from 'inversify-express-utils'
 import TYPES from '../../Bootstrap/Types'
+import { HomeServerAdminController } from './HomeServer/HomeServerAdminController'
 import { CreateOfflineSubscriptionToken } from '../../Domain/UseCase/CreateOfflineSubscriptionToken/CreateOfflineSubscriptionToken'
 import { CreateSubscriptionToken } from '../../Domain/UseCase/CreateSubscriptionToken/CreateSubscriptionToken'
 import { DeleteSetting } from '../../Domain/UseCase/DeleteSetting/DeleteSetting'
 import { UserRepositoryInterface } from '../../Domain/User/UserRepositoryInterface'
 
 @controller('/admin')
-export class InversifyExpressAdminController extends BaseHttpController {
+export class InversifyExpressAdminController extends HomeServerAdminController {
   constructor(
-    @inject(TYPES.Auth_DeleteSetting) private doDeleteSetting: DeleteSetting,
-    @inject(TYPES.Auth_UserRepository) private userRepository: UserRepositoryInterface,
-    @inject(TYPES.Auth_CreateSubscriptionToken) private createSubscriptionToken: CreateSubscriptionToken,
+    @inject(TYPES.Auth_DeleteSetting) override doDeleteSetting: DeleteSetting,
+    @inject(TYPES.Auth_UserRepository) override userRepository: UserRepositoryInterface,
+    @inject(TYPES.Auth_CreateSubscriptionToken) override createSubscriptionToken: CreateSubscriptionToken,
     @inject(TYPES.Auth_CreateOfflineSubscriptionToken)
-    private createOfflineSubscriptionToken: CreateOfflineSubscriptionToken,
-    @inject(TYPES.Auth_ControllerContainer) private controllerContainer: ControllerContainerInterface,
+    override createOfflineSubscriptionToken: CreateOfflineSubscriptionToken,
   ) {
-    super()
-
-    this.controllerContainer.register('admin.getUser', this.getUser.bind(this))
-    this.controllerContainer.register('admin.deleteMFASetting', this.deleteMFASetting.bind(this))
-    this.controllerContainer.register('admin.createToken', this.createToken.bind(this))
-    this.controllerContainer.register('admin.createOfflineToken', this.createOfflineToken.bind(this))
-    this.controllerContainer.register('admin.disableEmailBackups', this.disableEmailBackups.bind(this))
+    super(doDeleteSetting, userRepository, createSubscriptionToken, createOfflineSubscriptionToken)
   }
 
   @httpGet('/user/:email')
-  async getUser(request: Request): Promise<results.JsonResult> {
-    const usernameOrError = Username.create(request.params.email ?? '')
-    if (usernameOrError.isFailed()) {
-      return this.json(
-        {
-          error: {
-            message: 'Missing email parameter.',
-          },
-        },
-        400,
-      )
-    }
-    const username = usernameOrError.getValue()
-
-    const user = await this.userRepository.findOneByUsernameOrEmail(username)
-
-    if (!user) {
-      return this.json(
-        {
-          error: {
-            message: `No user with email '${username.value}'.`,
-          },
-        },
-        400,
-      )
-    }
-
-    return this.json({
-      uuid: user.uuid,
-    })
+  override async getUser(request: Request): Promise<results.JsonResult> {
+    return super.getUser(request)
   }
 
   @httpDelete('/users/:userUuid/mfa')
-  async deleteMFASetting(request: Request): Promise<results.JsonResult> {
-    const { userUuid } = request.params
-    const { uuid, updatedAt } = request.body
-
-    const result = await this.doDeleteSetting.execute({
-      uuid,
-      userUuid,
-      settingName: SettingName.NAMES.MfaSecret,
-      timestamp: updatedAt,
-      softDelete: true,
-    })
-
-    if (result.success) {
-      return this.json(result)
-    }
-
-    return this.json(result, 400)
+  override async deleteMFASetting(request: Request): Promise<results.JsonResult> {
+    return super.deleteMFASetting(request)
   }
 
   @httpPost('/users/:userUuid/subscription-token')
-  async createToken(request: Request): Promise<results.JsonResult> {
-    const { userUuid } = request.params
-    const result = await this.createSubscriptionToken.execute({
-      userUuid,
-    })
-
-    return this.json({
-      token: result.subscriptionToken.token,
-    })
+  override async createToken(request: Request): Promise<results.JsonResult> {
+    return super.createToken(request)
   }
 
   @httpPost('/users/:email/offline-subscription-token')
-  async createOfflineToken(request: Request): Promise<results.JsonResult | results.BadRequestResult> {
-    const { email } = request.params
-    const result = await this.createOfflineSubscriptionToken.execute({
-      userEmail: email,
-    })
-
-    if (!result.success) {
-      return this.badRequest()
-    }
-
-    return this.json({
-      token: result.offlineSubscriptionToken.token,
-    })
+  override async createOfflineToken(request: Request): Promise<results.JsonResult | results.BadRequestResult> {
+    return super.createOfflineToken(request)
   }
 
   @httpPost('/users/:userUuid/email-backups')
-  async disableEmailBackups(request: Request): Promise<results.BadRequestErrorMessageResult | results.OkResult> {
-    const { userUuid } = request.params
-
-    const result = await this.doDeleteSetting.execute({
-      userUuid,
-      settingName: SettingName.NAMES.EmailBackupFrequency,
-    })
-
-    if (result.success) {
-      return this.ok()
-    }
-
-    return this.badRequest('No email backups found')
+  override async disableEmailBackups(
+    request: Request,
+  ): Promise<results.BadRequestErrorMessageResult | results.OkResult> {
+    return super.disableEmailBackups(request)
   }
 }

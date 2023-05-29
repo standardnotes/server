@@ -13,8 +13,8 @@ export class FSFileUploader implements FileUploaderInterface {
   private inMemoryChunks: Map<string, Map<number, Uint8Array>>
 
   constructor(
-    @inject(TYPES.FILE_UPLOAD_PATH) private fileUploadPath: string,
-    @inject(TYPES.Logger) private logger: Logger,
+    @inject(TYPES.Files_FILE_UPLOAD_PATH) private fileUploadPath: string,
+    @inject(TYPES.Files_Logger) private logger: Logger,
   ) {
     this.inMemoryChunks = new Map<string, Map<number, Uint8Array>>()
   }

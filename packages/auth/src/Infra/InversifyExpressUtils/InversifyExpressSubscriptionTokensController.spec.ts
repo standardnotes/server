@@ -5,7 +5,7 @@ import { results } from 'inversify-express-utils'
 
 import { InversifyExpressSubscriptionTokensController } from './InversifyExpressSubscriptionTokensController'
 import { CrossServiceTokenData, TokenEncoderInterface } from '@standardnotes/security'
-import { ControllerContainerInterface } from '@standardnotes/domain-core'
+
 import { Setting } from '../../Domain/Setting/Setting'
 import { SettingServiceInterface } from '../../Domain/Setting/SettingServiceInterface'
 import { AuthenticateSubscriptionToken } from '../../Domain/UseCase/AuthenticateSubscriptionToken/AuthenticateSubscriptionToken'
@@ -30,8 +30,6 @@ describe('InversifyExpressSubscriptionTokensController', () => {
   let user: User
   let role: Role
 
-  let controllerContainer: ControllerContainerInterface
-
   const createController = () =>
     new InversifyExpressSubscriptionTokensController(
       createSubscriptionToken,
@@ -41,13 +39,9 @@ describe('InversifyExpressSubscriptionTokensController', () => {
       roleProjector,
       tokenEncoder,
       jwtTTL,
-      controllerContainer,
     )
 
   beforeEach(() => {
-    controllerContainer = {} as jest.Mocked<ControllerContainerInterface>
-    controllerContainer.register = jest.fn()
-
     user = {} as jest.Mocked<User>
     user.uuid = '123'
     user.roles = Promise.resolve([role])

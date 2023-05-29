@@ -18,6 +18,7 @@
     "setup:env": "cp .env.sample .env",
     "build": "tsc --build",
     "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint . --fix --ext .ts",
     "pretest": "yarn lint && yarn build",
     "test": "jest --coverage --config=./jest.config.js --maxWorkers=50%",
     "start": "yarn node dist/bin/server.js",

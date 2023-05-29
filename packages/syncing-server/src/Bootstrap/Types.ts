@@ -67,7 +67,7 @@ const TYPES = {
   Sync_ItemFactory: Symbol.for('Sync_ItemFactory'),
   Sync_ItemTransferCalculator: Symbol.for('Sync_ItemTransferCalculator'),
   Sync_ControllerContainer: Symbol.for('Sync_ControllerContainer'),
-  Sync_InversifyExpressItemsController: Symbol.for('Sync_InversifyExpressItemsController'),
+  Sync_HomeServerItemsController: Symbol.for('Sync_HomeServerItemsController'),
 }
 
 export default TYPES

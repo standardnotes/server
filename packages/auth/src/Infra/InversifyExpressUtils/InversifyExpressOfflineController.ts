@@ -1,7 +1,6 @@
 import { Request, Response } from 'express'
 import { inject } from 'inversify'
 import {
-  BaseHttpController,
   controller,
   httpGet,
   httpPost,
@@ -10,132 +9,54 @@ import {
 } from 'inversify-express-utils'
 import { Logger } from 'winston'
 import { OfflineUserTokenData, TokenEncoderInterface } from '@standardnotes/security'
-import { ControllerContainerInterface } from '@standardnotes/domain-core'
 import TYPES from '../../Bootstrap/Types'
 import { AuthenticateOfflineSubscriptionToken } from '../../Domain/UseCase/AuthenticateOfflineSubscriptionToken/AuthenticateOfflineSubscriptionToken'
 import { CreateOfflineSubscriptionToken } from '../../Domain/UseCase/CreateOfflineSubscriptionToken/CreateOfflineSubscriptionToken'
 import { GetUserFeatures } from '../../Domain/UseCase/GetUserFeatures/GetUserFeatures'
 import { GetUserOfflineSubscription } from '../../Domain/UseCase/GetUserOfflineSubscription/GetUserOfflineSubscription'
+import { HomeServerOfflineController } from './HomeServer/HomeServerOfflineController'
 
 @controller('/offline')
-export class InversifyExpressOfflineController extends BaseHttpController {
+export class InversifyExpressOfflineController extends HomeServerOfflineController {
   constructor(
-    @inject(TYPES.Auth_GetUserFeatures) private doGetUserFeatures: GetUserFeatures,
-    @inject(TYPES.Auth_GetUserOfflineSubscription) private getUserOfflineSubscription: GetUserOfflineSubscription,
+    @inject(TYPES.Auth_GetUserFeatures) override doGetUserFeatures: GetUserFeatures,
+    @inject(TYPES.Auth_GetUserOfflineSubscription) override getUserOfflineSubscription: GetUserOfflineSubscription,
     @inject(TYPES.Auth_CreateOfflineSubscriptionToken)
-    private createOfflineSubscriptionToken: CreateOfflineSubscriptionToken,
+    override createOfflineSubscriptionToken: CreateOfflineSubscriptionToken,
     @inject(TYPES.Auth_AuthenticateOfflineSubscriptionToken)
-    private authenticateToken: AuthenticateOfflineSubscriptionToken,
-    @inject(TYPES.Auth_OfflineUserTokenEncoder) private tokenEncoder: TokenEncoderInterface<OfflineUserTokenData>,
-    @inject(TYPES.Auth_AUTH_JWT_TTL) private jwtTTL: number,
-    @inject(TYPES.Auth_Logger) private logger: Logger,
-    @inject(TYPES.Auth_ControllerContainer) private controllerContainer: ControllerContainerInterface,
+    override authenticateToken: AuthenticateOfflineSubscriptionToken,
+    @inject(TYPES.Auth_OfflineUserTokenEncoder) override tokenEncoder: TokenEncoderInterface<OfflineUserTokenData>,
+    @inject(TYPES.Auth_AUTH_JWT_TTL) override jwtTTL: number,
+    @inject(TYPES.Auth_Logger) override logger: Logger,
   ) {
-    super()
-
-    this.controllerContainer.register('auth.offline.features', this.getOfflineFeatures.bind(this))
-    this.controllerContainer.register('auth.offline.subscriptionTokens.create', this.createToken.bind(this))
-    this.controllerContainer.register('auth.users.getOfflineSubscriptionByToken', this.getSubscription.bind(this))
+    super(
+      doGetUserFeatures,
+      getUserOfflineSubscription,
+      createOfflineSubscriptionToken,
+      authenticateToken,
+      tokenEncoder,
+      jwtTTL,
+      logger,
+    )
   }
 
   @httpGet('/features', TYPES.Auth_OfflineUserAuthMiddleware)
-  async getOfflineFeatures(_request: Request, response: Response): Promise<results.JsonResult> {
-    const result = await this.doGetUserFeatures.execute({
-      email: response.locals.offlineUserEmail,
-      offline: true,
-    })
-
-    if (result.success) {
-      return this.json(result)
-    }
-
-    return this.json(result, 400)
+  override async getOfflineFeatures(_request: Request, response: Response): Promise<results.JsonResult> {
+    return super.getOfflineFeatures(_request, response)
   }
 
   @httpPost('/subscription-tokens')
-  async createToken(request: Request): Promise<results.JsonResult> {
-    if (!request.body.email) {
-      return this.json(
-        {
-          error: {
-            tag: 'invalid-request',
-            message: 'Invalid request parameters.',
-          },
-        },
-        400,
-      )
-    }
-
-    const response = await this.createOfflineSubscriptionToken.execute({
-      userEmail: request.body.email,
-    })
-
-    if (!response.success) {
-      return this.json({ success: false, error: { tag: response.error } })
-    }
-
-    return this.json({ success: true })
+  override async createToken(request: Request): Promise<results.JsonResult> {
+    return super.createToken(request)
   }
 
   @httpPost('/subscription-tokens/:token/validate')
-  async validate(request: Request): Promise<results.JsonResult> {
-    if (!request.body.email) {
-      this.logger.debug('[Offline Subscription Token Validation] Missing email')
-
-      return this.json(
-        {
-          error: {
-            tag: 'invalid-request',
-            message: 'Invalid request parameters.',
-          },
-        },
-        400,
-      )
-    }
-
-    const authenticateTokenResponse = await this.authenticateToken.execute({
-      token: request.params.token,
-      userEmail: request.body.email,
-    })
-
-    if (!authenticateTokenResponse.success) {
-      this.logger.debug('[Offline Subscription Token Validation] invalid token')
-
-      return this.json(
-        {
-          error: {
-            tag: 'invalid-auth',
-            message: 'Invalid login credentials.',
-          },
-        },
-        401,
-      )
-    }
-
-    const offlineAuthTokenData: OfflineUserTokenData = {
-      userEmail: authenticateTokenResponse.email,
-      featuresToken: authenticateTokenResponse.featuresToken,
-    }
-
-    const authToken = this.tokenEncoder.encodeExpirableToken(offlineAuthTokenData, this.jwtTTL)
-
-    this.logger.debug(
-      `[Offline Subscription Token Validation] authenticated token for user ${authenticateTokenResponse.email}`,
-    )
-
-    return this.json({ authToken })
+  override async validate(request: Request): Promise<results.JsonResult> {
+    return super.validate(request)
   }
 
   @httpGet('/users/subscription', TYPES.Auth_ApiGatewayOfflineAuthMiddleware)
-  async getSubscription(_request: Request, response: Response): Promise<results.JsonResult> {
-    const result = await this.getUserOfflineSubscription.execute({
-      userEmail: response.locals.userEmail,
-    })
-
-    if (result.success) {
-      return this.json(result)
-    }
-
-    return this.json(result, 400)
+  override async getSubscription(_request: Request, response: Response): Promise<results.JsonResult> {
+    return super.getSubscription(_request, response)
   }
 }
