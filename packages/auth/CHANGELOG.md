@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.112.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.111.0...@standardnotes/auth-server@1.112.0) (2023-05-29)
+
+### Features
+
+* add files server as a service to home-server ([#614](https://github.com/standardnotes/server/issues/614)) ([c7d575a](https://github.com/standardnotes/server/commit/c7d575a0ffc7eb3e8799c3835da5727584f4f67b))
+
 # [1.111.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.110.0...@standardnotes/auth-server@1.111.0) (2023-05-25)
 
 ### Features

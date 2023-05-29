@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.59.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.58.0...@standardnotes/api-gateway@1.59.0) (2023-05-29)
+
+### Features
+
+* add files server as a service to home-server ([#614](https://github.com/standardnotes/api-gateway/issues/614)) ([c7d575a](https://github.com/standardnotes/api-gateway/commit/c7d575a0ffc7eb3e8799c3835da5727584f4f67b))
+
 # [1.58.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.57.0...@standardnotes/api-gateway@1.58.0) (2023-05-25)
 
 ### Features

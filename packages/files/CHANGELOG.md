@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.13.0](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.12.5...@standardnotes/files-server@1.13.0) (2023-05-29)
+
+### Features
+
+* add files server as a service to home-server ([#614](https://github.com/standardnotes/files/issues/614)) ([c7d575a](https://github.com/standardnotes/files/commit/c7d575a0ffc7eb3e8799c3835da5727584f4f67b))
+
 ## [1.12.5](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.12.4...@standardnotes/files-server@1.12.5) (2023-05-18)
 
 **Note:** Version bump only for package @standardnotes/files-server
