@@ -1,6 +1,5 @@
 export * from './AuthMiddleware'
 export * from './HealthCheckController'
-export * from './LegacyController'
 export * from './SubscriptionTokenAuthMiddleware'
 export * from './TokenAuthenticationMethod'
 export * from './WebSocketAuthMiddleware'
