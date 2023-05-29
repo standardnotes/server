@@ -1,19 +1,8 @@
-export type MoveFileDTO = MoveFileFromUserToVaultDTO | MoveFileFromVaultToUserDTO
+import { VaultMoveType } from '@standardnotes/security'
 
-export type MoveFileFromUserToVaultDTO = {
-  toVaultUuid: string
-  fromUserUuid: string
+export type MoveFileDTO = {
+  moveType: VaultMoveType
+  fromUuid: string
+  toUuid: string
   resourceRemoteIdentifier: string
-  regularSubscriptionUuid: string
-}
-
-export type MoveFileFromVaultToUserDTO = {
-  fromVaultUuid: string
-  toUserUuid: string
-  resourceRemoteIdentifier: string
-  regularSubscriptionUuid: string
-}
-
-export function isMoveFileFromUserToVaultDTO(dto: MoveFileDTO): dto is MoveFileFromUserToVaultDTO {
-  return (dto as MoveFileFromUserToVaultDTO).fromUserUuid !== undefined
 }

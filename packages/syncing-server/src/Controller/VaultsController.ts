@@ -52,9 +52,10 @@ export class VaultsController extends BaseHttpController {
       vaultUuid: request.params.vaultUuid,
       fileUuid: request.body.file_uuid,
       remoteIdentifier: request.body.remote_identifier,
-      moveOperationType: request.body.move_operation_type,
       operation: request.body.operation,
       unencryptedFileSize: request.body.unencrypted_file_size,
+      moveOperationType: request.body.move_operation_type,
+      vaultToVaultMoveTargetUuid: request.body.vault_to_vault_move_target_uuid,
     })
 
     if (valetTokenResult.success === false) {

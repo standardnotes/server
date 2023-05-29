@@ -10,6 +10,7 @@ import { FinishUploadSession } from '../Domain/UseCase/FinishUploadSession/Finis
 import { GetFileMetadata } from '../Domain/UseCase/GetFileMetadata/GetFileMetadata'
 import { RemoveFile } from '../Domain/UseCase/RemoveFile/RemoveFile'
 import { ValetTokenOperation, VaultValetTokenData } from '@standardnotes/security'
+import { MoveFile } from '../Domain/UseCase/MoveFile/MoveFile'
 
 @controller('/v1/vault/files', TYPES.VaultValetTokenAuthMiddleware)
 export class VaultFilesController extends BaseHttpController {
@@ -20,9 +21,39 @@ export class VaultFilesController extends BaseHttpController {
     @inject(TYPES.StreamDownloadFile) private streamDownloadFile: StreamDownloadFile,
     @inject(TYPES.GetFileMetadata) private getFileMetadata: GetFileMetadata,
     @inject(TYPES.RemoveFile) private removeFile: RemoveFile,
+    @inject(TYPES.MoveFile) private moveFile: MoveFile,
     @inject(TYPES.MAX_CHUNK_BYTES) private maxChunkBytes: number,
   ) {
     super()
+  }
+
+  @httpPost('/move')
+  async moveFileRequest(
+    _request: Request,
+    response: Response,
+  ): Promise<results.BadRequestErrorMessageResult | results.JsonResult> {
+    const locals = response.locals as VaultValetTokenData
+    if (locals.permittedOperation !== ValetTokenOperation.Move) {
+      return this.badRequest('Not permitted for this operation')
+    }
+
+    const moveOperation = locals.moveOperation
+    if (!moveOperation) {
+      return this.badRequest('Missing move operation data')
+    }
+
+    const result = await this.moveFile.execute({
+      moveType: moveOperation.type,
+      fromUuid: moveOperation.fromUuid,
+      toUuid: moveOperation.toUuid,
+      resourceRemoteIdentifier: locals.remoteIdentifier,
+    })
+
+    if (!result.success) {
+      return this.badRequest(result.message)
+    }
+
+    return this.json({ success: true })
   }
 
   @httpPost('/upload/create-session')

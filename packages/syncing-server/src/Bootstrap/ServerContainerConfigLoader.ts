@@ -118,7 +118,6 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
       .bind<CreateVaultFileValetToken>(TYPES.CreateVaultFileReadValetToken)
       .toDynamicValue((context: interfaces.Context) => {
         return new CreateVaultFileValetToken(
-          context.container.get(TYPES.GetGlobalItem),
           context.container.get(TYPES.VaultService),
           context.container.get(TYPES.VaultUserService),
           context.container.get(TYPES.ValetTokenEncoder),

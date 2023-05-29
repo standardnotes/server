@@ -4,7 +4,7 @@ import { Logger } from 'winston'
 import TYPES from '../../../Bootstrap/Types'
 import { FileMoverInterface } from '../../Services/FileMoverInterface'
 import { UseCaseInterface } from '../UseCaseInterface'
-import { MoveFileDTO, isMoveFileFromUserToVaultDTO } from './MoveFileDTO'
+import { MoveFileDTO } from './MoveFileDTO'
 import { MoveFileResponse } from './MoveFileResponse'
 
 @injectable()
@@ -16,15 +16,10 @@ export class MoveFile implements UseCaseInterface {
 
   async execute(dto: MoveFileDTO): Promise<MoveFileResponse> {
     try {
-      this.logger.debug(`Removing file: ${dto.resourceRemoteIdentifier}`)
+      const srcPath = `${dto.fromUuid}/${dto.resourceRemoteIdentifier}`
+      const destPath = `${dto.toUuid}/${dto.resourceRemoteIdentifier}`
 
-      const srcPath = isMoveFileFromUserToVaultDTO(dto)
-        ? `${dto.fromUserUuid}/${dto.resourceRemoteIdentifier}`
-        : `${dto.fromVaultUuid}/${dto.resourceRemoteIdentifier}`
-
-      const destPath = isMoveFileFromUserToVaultDTO(dto)
-        ? `${dto.toVaultUuid}/${dto.resourceRemoteIdentifier}`
-        : `${dto.toUserUuid}/${dto.resourceRemoteIdentifier}`
+      this.logger.debug(`Moving file from ${srcPath} to ${destPath}`)
 
       await this.fileMover.moveFile(srcPath, destPath)
 
@@ -32,11 +27,11 @@ export class MoveFile implements UseCaseInterface {
         success: true,
       }
     } catch (error) {
-      this.logger.error(`Could not remove resource: ${dto.resourceRemoteIdentifier} - ${(error as Error).message}`)
+      this.logger.error(`Could not move resource: ${dto.resourceRemoteIdentifier} - ${(error as Error).message}`)
 
       return {
         success: false,
-        message: 'Could not remove resource',
+        message: 'Could not move resource',
       }
     }
   }

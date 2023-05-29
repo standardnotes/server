@@ -66,6 +66,8 @@ export class VaultValetTokenAuthMiddleware extends BaseMiddleware {
         permittedOperation: valetTokenData.permittedOperation,
         uploadBytesUsed: valetTokenData.uploadBytesUsed,
         uploadBytesLimit: valetTokenData.uploadBytesLimit,
+        unencryptedFileSize: valetTokenData.unencryptedFileSize,
+        moveOperation: valetTokenData.moveOperation,
       }
 
       Object.assign(response.locals, whitelistedData)

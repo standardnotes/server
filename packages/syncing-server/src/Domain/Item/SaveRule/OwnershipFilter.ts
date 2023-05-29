@@ -68,7 +68,24 @@ export class OwnershipFilter implements ItemSaveRuleInterface {
   private async authorizationToSaveVaultInvolvedItem(
     dto: ItemSaveValidationDTO,
   ): Promise<'ownership-fail' | 'readonly-fail' | 'content-fail' | 'success'> {
-    const vaultUuidInvolved = dto.existingItem?.vaultUuid || dto.itemHash.vault_uuid
+    const existingItemVaultUuid = dto.existingItem?.vaultUuid
+    const targetItemVaultUuid = dto.itemHash.vault_uuid
+
+    const vaultUuidInvolved = existingItemVaultUuid || targetItemVaultUuid
+
+    const isMovingVaults = existingItemVaultUuid && targetItemVaultUuid && existingItemVaultUuid !== targetItemVaultUuid
+    if (isMovingVaults) {
+      const existingVaultAuthorization = await this.vaultAuthorizationForItem(dto.userUuid, existingItemVaultUuid)
+      const targetVaultAuthorization = await this.vaultAuthorizationForItem(dto.userUuid, targetItemVaultUuid)
+      if (!existingVaultAuthorization || !targetVaultAuthorization) {
+        return 'ownership-fail'
+      }
+
+      if (existingVaultAuthorization === 'read' || targetVaultAuthorization === 'read') {
+        return 'readonly-fail'
+      }
+    }
+
     const vaultAuthorization = await this.vaultAuthorizationForItem(dto.userUuid, vaultUuidInvolved as string)
     if (!vaultAuthorization) {
       return 'ownership-fail'

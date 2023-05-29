@@ -1,5 +1,6 @@
 import { inject, injectable } from 'inversify'
-import { promises } from 'fs'
+import { promises as fsPromises } from 'fs'
+import * as path from 'path'
 
 import { FileMoverInterface } from '../../Domain/Services/FileMoverInterface'
 import TYPES from '../../Bootstrap/Types'
@@ -12,6 +13,10 @@ export class FSFileMover implements FileMoverInterface {
     const sourceFullPath = `${this.fileUploadPath}/${sourcePath}`
     const destinationFullPath = `${this.fileUploadPath}/${destinationPath}`
 
-    await promises.rename(sourceFullPath, destinationFullPath)
+    const destinationDir = path.dirname(destinationFullPath)
+
+    await fsPromises.mkdir(destinationDir, { recursive: true })
+
+    await fsPromises.rename(sourceFullPath, destinationFullPath)
   }
 }

@@ -1,4 +1,4 @@
-import { ValetTokenOperation } from '@standardnotes/security'
+import { ValetTokenOperation, VaultMoveType } from '@standardnotes/security'
 
 export type CreateVaultFileValetTokenDTO = {
   userUuid: string
@@ -6,6 +6,7 @@ export type CreateVaultFileValetTokenDTO = {
   fileUuid?: string
   remoteIdentifier: string
   operation: ValetTokenOperation
-  moveOperationType?: 'vault-to-user' | 'user-to-vault'
   unencryptedFileSize?: number
+  moveOperationType?: VaultMoveType
+  vaultToVaultMoveTargetUuid?: string
 }

@@ -1,4 +1,5 @@
 import { ValetTokenOperation } from './ValetTokenOperation'
+import { VaultMoveType } from './VaultMoveType'
 
 export type VaultValetTokenData = {
   vaultUuid: string
@@ -8,7 +9,8 @@ export type VaultValetTokenData = {
   uploadBytesUsed: number
   uploadBytesLimit: number
   moveOperation?: {
-    type: 'vault-to-user' | 'user-to-vault'
-    userUuid: string
+    type: VaultMoveType
+    fromUuid: string
+    toUuid: string
   }
 }
