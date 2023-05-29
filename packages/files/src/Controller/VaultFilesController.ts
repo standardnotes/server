@@ -12,7 +12,7 @@ import { RemoveFile } from '../Domain/UseCase/RemoveFile/RemoveFile'
 import { ValetTokenOperation, VaultValetTokenData } from '@standardnotes/security'
 
 @controller('/v1/vault/files', TYPES.VaultValetTokenAuthMiddleware)
-export class FilesController extends BaseHttpController {
+export class VaultFilesController extends BaseHttpController {
   constructor(
     @inject(TYPES.UploadFileChunk) private uploadFileChunk: UploadFileChunk,
     @inject(TYPES.CreateUploadSession) private createUploadSession: CreateUploadSession,

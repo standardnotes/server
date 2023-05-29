@@ -54,6 +54,7 @@ export class VaultsController extends BaseHttpController {
       remoteIdentifier: request.body.remote_identifier,
       moveOperationType: request.body.move_operation_type,
       operation: request.body.operation,
+      unencryptedFileSize: request.body.unencrypted_file_size,
     })
 
     if (valetTokenResult.success === false) {

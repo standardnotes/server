@@ -12,6 +12,8 @@ export class VaultFactory implements VaultFactoryInterface {
     newVault.userUuid = dto.userUuid
     newVault.specifiedItemsKeyUuid = dto.vaultHash.specified_items_key_uuid
     newVault.vaultKeyTimestamp = dto.vaultHash.vault_key_timestamp
+    newVault.fileUploadBytesUsed = dto.vaultHash.file_upload_bytes_used
+    newVault.fileUploadBytesLimit = dto.vaultHash.file_upload_bytes_limit
 
     const now = this.timer.getTimestampInMicroseconds()
     newVault.updatedAtTimestamp = now

@@ -19,21 +19,26 @@ export class CreateVaultFileValetToken implements UseCaseInterface {
   ) {}
 
   async execute(dto: CreateVaultFileValetTokenDTO): Promise<CreateValetTokenResponseData> {
-    const itemResponse = await this.getGlobalItem.execute({
-      itemUuid: dto.fileUuid,
-    })
-
     const failValue: CreateValetTokenResponseData = {
       success: false,
       reason: 'invalid-parameters',
     }
 
-    if (itemResponse.success === false) {
-      return failValue
-    }
+    if (dto.operation !== 'write') {
+      if (!dto.fileUuid) {
+        throw new Error('File UUID is required for read, delete, and move operations')
+      }
+      const itemResponse = await this.getGlobalItem.execute({
+        itemUuid: dto.fileUuid,
+      })
 
-    if (!itemResponse.item.vaultUuid || itemResponse.item.vaultUuid !== dto.vaultUuid) {
-      return failValue
+      if (itemResponse.success === false) {
+        return failValue
+      }
+
+      if (!itemResponse.item.vaultUuid || itemResponse.item.vaultUuid !== dto.vaultUuid) {
+        return failValue
+      }
     }
 
     const vaultUser = await this.vaultUserService.getUserForVault({
@@ -42,6 +47,10 @@ export class CreateVaultFileValetToken implements UseCaseInterface {
     })
 
     if (!vaultUser) {
+      return failValue
+    }
+
+    if (vaultUser.permissions === 'read' && dto.operation !== 'read') {
       return failValue
     }
 
@@ -59,6 +68,7 @@ export class CreateVaultFileValetToken implements UseCaseInterface {
       remoteIdentifier: dto.remoteIdentifier,
       uploadBytesUsed: vault.fileUploadBytesUsed,
       uploadBytesLimit: vault.fileUploadBytesLimit,
+      unencryptedFileSize: dto.unencryptedFileSize,
     }
 
     if (dto.operation === ValetTokenOperation.Move) {
