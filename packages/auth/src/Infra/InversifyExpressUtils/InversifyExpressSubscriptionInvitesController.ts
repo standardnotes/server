@@ -1,8 +1,5 @@
-import { ApiVersion } from '@standardnotes/api'
-import { Role } from '@standardnotes/security'
 import { Request, Response } from 'express'
 import {
-  BaseHttpController,
   controller,
   httpDelete,
   httpGet,
@@ -14,68 +11,39 @@ import { inject } from 'inversify'
 
 import TYPES from '../../Bootstrap/Types'
 import { SubscriptionInvitesController } from '../../Controller/SubscriptionInvitesController'
+import { HomeServerSubscriptionInvitesController } from './HomeServer/HomeServerSubscriptionInvitesController'
 
 @controller('/subscription-invites')
-export class InversifyExpressSubscriptionInvitesController extends BaseHttpController {
+export class InversifyExpressSubscriptionInvitesController extends HomeServerSubscriptionInvitesController {
   constructor(
     @inject(TYPES.Auth_SubscriptionInvitesController)
-    protected subscriptionInvitesController: SubscriptionInvitesController,
+    override subscriptionInvitesController: SubscriptionInvitesController,
   ) {
-    super()
+    super(subscriptionInvitesController)
   }
 
   @httpPost('/:inviteUuid/accept', TYPES.Auth_RequiredCrossServiceTokenMiddleware)
-  async acceptInvite(request: Request, response: Response): Promise<results.JsonResult> {
-    const result = await this.subscriptionInvitesController.acceptInvite({
-      api: request.query.api as ApiVersion,
-      inviteUuid: request.params.inviteUuid,
-    })
-
-    response.setHeader('x-invalidate-cache', response.locals.user.uuid)
-
-    return this.json(result.data, result.status)
+  override async acceptInvite(request: Request, response: Response): Promise<results.JsonResult> {
+    return super.acceptInvite(request, response)
   }
 
   @httpGet('/:inviteUuid/decline')
-  async declineInvite(request: Request): Promise<results.JsonResult> {
-    const response = await this.subscriptionInvitesController.declineInvite({
-      api: request.query.api as ApiVersion,
-      inviteUuid: request.params.inviteUuid,
-    })
-
-    return this.json(response.data, response.status)
+  override async declineInvite(request: Request): Promise<results.JsonResult> {
+    return super.declineInvite(request)
   }
 
   @httpPost('/', TYPES.Auth_RequiredCrossServiceTokenMiddleware)
-  async inviteToSubscriptionSharing(request: Request, response: Response): Promise<results.JsonResult> {
-    const result = await this.subscriptionInvitesController.invite({
-      ...request.body,
-      inviterEmail: response.locals.user.email,
-      inviterUuid: response.locals.user.uuid,
-      inviterRoles: response.locals.roles.map((role: Role) => role.name),
-    })
-
-    return this.json(result.data, result.status)
+  override async inviteToSubscriptionSharing(request: Request, response: Response): Promise<results.JsonResult> {
+    return super.inviteToSubscriptionSharing(request, response)
   }
 
   @httpDelete('/:inviteUuid', TYPES.Auth_RequiredCrossServiceTokenMiddleware)
-  async cancelSubscriptionSharing(request: Request, response: Response): Promise<results.JsonResult> {
-    const result = await this.subscriptionInvitesController.cancelInvite({
-      ...request.body,
-      inviteUuid: request.params.inviteUuid,
-      inviterEmail: response.locals.user.email,
-    })
-
-    return this.json(result.data, result.status)
+  override async cancelSubscriptionSharing(request: Request, response: Response): Promise<results.JsonResult> {
+    return super.cancelSubscriptionSharing(request, response)
   }
 
   @httpGet('/', TYPES.Auth_RequiredCrossServiceTokenMiddleware)
-  async listInvites(request: Request, response: Response): Promise<results.JsonResult> {
-    const result = await this.subscriptionInvitesController.listInvites({
-      ...request.body,
-      inviterEmail: response.locals.user.email,
-    })
-
-    return this.json(result.data, result.status)
+  override async listInvites(request: Request, response: Response): Promise<results.JsonResult> {
+    return super.listInvites(request, response)
   }
 }

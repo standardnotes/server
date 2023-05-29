@@ -1,10 +1,7 @@
 import { CrossServiceTokenData, TokenEncoderInterface } from '@standardnotes/security'
-import { ErrorTag } from '@standardnotes/responses'
-import { SettingName } from '@standardnotes/settings'
 import { Request, Response } from 'express'
 import { inject } from 'inversify'
 import {
-  BaseHttpController,
   controller,
   httpPost,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -18,95 +15,37 @@ import { AuthenticateSubscriptionToken } from '../../Domain/UseCase/Authenticate
 import { CreateSubscriptionToken } from '../../Domain/UseCase/CreateSubscriptionToken/CreateSubscriptionToken'
 import { User } from '../../Domain/User/User'
 import { ProjectorInterface } from '../../Projection/ProjectorInterface'
+import { HomeServerSubscriptionTokensController } from './HomeServer/HomeServerSubscriptionTokensController'
 
 @controller('/subscription-tokens')
-export class InversifyExpressSubscriptionTokensController extends BaseHttpController {
+export class InversifyExpressSubscriptionTokensController extends HomeServerSubscriptionTokensController {
   constructor(
-    @inject(TYPES.Auth_CreateSubscriptionToken) protected createSubscriptionToken: CreateSubscriptionToken,
-    @inject(TYPES.Auth_AuthenticateSubscriptionToken) protected authenticateToken: AuthenticateSubscriptionToken,
-    @inject(TYPES.Auth_SettingService) protected settingService: SettingServiceInterface,
-    @inject(TYPES.Auth_UserProjector) protected userProjector: ProjectorInterface<User>,
-    @inject(TYPES.Auth_RoleProjector) protected roleProjector: ProjectorInterface<Role>,
-    @inject(TYPES.Auth_CrossServiceTokenEncoder) protected tokenEncoder: TokenEncoderInterface<CrossServiceTokenData>,
-    @inject(TYPES.Auth_AUTH_JWT_TTL) protected jwtTTL: number,
+    @inject(TYPES.Auth_CreateSubscriptionToken) override createSubscriptionToken: CreateSubscriptionToken,
+    @inject(TYPES.Auth_AuthenticateSubscriptionToken) override authenticateToken: AuthenticateSubscriptionToken,
+    @inject(TYPES.Auth_SettingService) override settingService: SettingServiceInterface,
+    @inject(TYPES.Auth_UserProjector) override userProjector: ProjectorInterface<User>,
+    @inject(TYPES.Auth_RoleProjector) override roleProjector: ProjectorInterface<Role>,
+    @inject(TYPES.Auth_CrossServiceTokenEncoder) override tokenEncoder: TokenEncoderInterface<CrossServiceTokenData>,
+    @inject(TYPES.Auth_AUTH_JWT_TTL) override jwtTTL: number,
   ) {
-    super()
+    super(
+      createSubscriptionToken,
+      authenticateToken,
+      settingService,
+      userProjector,
+      roleProjector,
+      tokenEncoder,
+      jwtTTL,
+    )
   }
 
   @httpPost('/', TYPES.Auth_RequiredCrossServiceTokenMiddleware)
-  async createToken(_request: Request, response: Response): Promise<results.JsonResult> {
-    if (response.locals.readOnlyAccess) {
-      return this.json(
-        {
-          error: {
-            tag: ErrorTag.ReadOnlyAccess,
-            message: 'Session has read-only access.',
-          },
-        },
-        401,
-      )
-    }
-
-    const result = await this.createSubscriptionToken.execute({
-      userUuid: response.locals.user.uuid,
-    })
-
-    return this.json({
-      token: result.subscriptionToken.token,
-    })
+  override async createToken(_request: Request, response: Response): Promise<results.JsonResult> {
+    return super.createToken(_request, response)
   }
 
   @httpPost('/:token/validate')
-  async validate(request: Request): Promise<results.JsonResult> {
-    const authenticateTokenResponse = await this.authenticateToken.execute({
-      token: request.params.token,
-    })
-
-    if (!authenticateTokenResponse.success) {
-      return this.json(
-        {
-          error: {
-            tag: 'invalid-auth',
-            message: 'Invalid login credentials.',
-          },
-        },
-        401,
-      )
-    }
-
-    const user = authenticateTokenResponse.user as User
-    let extensionKey = undefined
-    const extensionKeySetting = await this.settingService.findSettingWithDecryptedValue({
-      settingName: SettingName.create(SettingName.NAMES.ExtensionKey).getValue(),
-      userUuid: user.uuid,
-    })
-    if (extensionKeySetting !== null) {
-      extensionKey = extensionKeySetting.value as string
-    }
-
-    const roles = await user.roles
-
-    const authTokenData: CrossServiceTokenData = {
-      user: await this.projectUser(user),
-      roles: await this.projectRoles(roles),
-      extensionKey,
-    }
-
-    const authToken = this.tokenEncoder.encodeExpirableToken(authTokenData, this.jwtTTL)
-
-    return this.json({ authToken })
-  }
-
-  private async projectUser(user: User): Promise<{ uuid: string; email: string }> {
-    return <{ uuid: string; email: string }>await this.userProjector.projectSimple(user)
-  }
-
-  private async projectRoles(roles: Array<Role>): Promise<Array<{ uuid: string; name: string }>> {
-    const roleProjections = []
-    for (const role of roles) {
-      roleProjections.push(<{ uuid: string; name: string }>await this.roleProjector.projectSimple(role))
-    }
-
-    return roleProjections
+  override async validate(request: Request): Promise<results.JsonResult> {
+    return super.validate(request)
   }
 }

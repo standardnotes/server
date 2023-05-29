@@ -1,8 +1,6 @@
 import { Request, Response } from 'express'
 import { inject } from 'inversify'
-import { ErrorTag } from '@standardnotes/responses'
 import {
-  BaseHttpController,
   controller,
   httpDelete,
   httpGet,
@@ -19,226 +17,52 @@ import { GetUserSubscription } from '../../Domain/UseCase/GetUserSubscription/Ge
 import { ClearLoginAttempts } from '../../Domain/UseCase/ClearLoginAttempts'
 import { IncreaseLoginAttempts } from '../../Domain/UseCase/IncreaseLoginAttempts'
 import { ChangeCredentials } from '../../Domain/UseCase/ChangeCredentials/ChangeCredentials'
-import { Username } from '@standardnotes/domain-core'
+import { HomeServerUsersController } from './HomeServer/HomeServerUsersController'
 
 @controller('/users')
-export class InversifyExpressUsersController extends BaseHttpController {
+export class InversifyExpressUsersController extends HomeServerUsersController {
   constructor(
-    @inject(TYPES.Auth_UpdateUser) protected updateUser: UpdateUser,
-    @inject(TYPES.Auth_GetUserKeyParams) protected getUserKeyParams: GetUserKeyParams,
-    @inject(TYPES.Auth_DeleteAccount) protected doDeleteAccount: DeleteAccount,
-    @inject(TYPES.Auth_GetUserSubscription) protected doGetUserSubscription: GetUserSubscription,
-    @inject(TYPES.Auth_ClearLoginAttempts) protected clearLoginAttempts: ClearLoginAttempts,
-    @inject(TYPES.Auth_IncreaseLoginAttempts) protected increaseLoginAttempts: IncreaseLoginAttempts,
-    @inject(TYPES.Auth_ChangeCredentials) protected changeCredentialsUseCase: ChangeCredentials,
+    @inject(TYPES.Auth_UpdateUser) override updateUser: UpdateUser,
+    @inject(TYPES.Auth_GetUserKeyParams) override getUserKeyParams: GetUserKeyParams,
+    @inject(TYPES.Auth_DeleteAccount) override doDeleteAccount: DeleteAccount,
+    @inject(TYPES.Auth_GetUserSubscription) override doGetUserSubscription: GetUserSubscription,
+    @inject(TYPES.Auth_ClearLoginAttempts) override clearLoginAttempts: ClearLoginAttempts,
+    @inject(TYPES.Auth_IncreaseLoginAttempts) override increaseLoginAttempts: IncreaseLoginAttempts,
+    @inject(TYPES.Auth_ChangeCredentials) override changeCredentialsUseCase: ChangeCredentials,
   ) {
-    super()
-  }
-
-  @httpPatch('/:userId', TYPES.Auth_RequiredCrossServiceTokenMiddleware)
-  async update(request: Request, response: Response): Promise<results.JsonResult> {
-    if (response.locals.readOnlyAccess) {
-      return this.json(
-        {
-          error: {
-            tag: ErrorTag.ReadOnlyAccess,
-            message: 'Session has read-only access.',
-          },
-        },
-        401,
-      )
-    }
-
-    if (request.params.userId !== response.locals.user.uuid) {
-      return this.json(
-        {
-          error: {
-            message: 'Operation not allowed.',
-          },
-        },
-        401,
-      )
-    }
-
-    const updateResult = await this.updateUser.execute({
-      user: response.locals.user,
-      updatedWithUserAgent: <string>request.headers['user-agent'],
-      apiVersion: request.body.api,
-      pwFunc: request.body.pw_func,
-      pwAlg: request.body.pw_alg,
-      pwCost: request.body.pw_cost,
-      pwKeySize: request.body.pw_key_size,
-      pwNonce: request.body.pw_nonce,
-      pwSalt: request.body.pw_salt,
-      kpOrigination: request.body.origination,
-      kpCreated: request.body.created,
-      version: request.body.version,
-    })
-
-    if (updateResult.success) {
-      response.setHeader('x-invalidate-cache', response.locals.user.uuid)
-
-      return this.json(updateResult.authResponse)
-    }
-
-    return this.json(
-      {
-        error: {
-          message: 'Could not update user.',
-        },
-      },
-      400,
+    super(
+      updateUser,
+      getUserKeyParams,
+      doDeleteAccount,
+      doGetUserSubscription,
+      clearLoginAttempts,
+      increaseLoginAttempts,
+      changeCredentialsUseCase,
     )
   }
 
+  @httpPatch('/:userId', TYPES.Auth_RequiredCrossServiceTokenMiddleware)
+  override async update(request: Request, response: Response): Promise<results.JsonResult> {
+    return super.update(request, response)
+  }
+
   @httpGet('/params')
-  async keyParams(request: Request): Promise<results.JsonResult> {
-    const email = 'email' in request.query ? <string>request.query.email : undefined
-    const userUuid = 'uuid' in request.query ? <string>request.query.uuid : undefined
-
-    if (!email && !userUuid) {
-      return this.json(
-        {
-          error: {
-            message: 'Missing mandatory request query parameters.',
-          },
-        },
-        400,
-      )
-    }
-
-    const result = await this.getUserKeyParams.execute({
-      email,
-      userUuid,
-      authenticated: request.query.authenticated === 'true',
-    })
-
-    return this.json(result.keyParams)
+  override async keyParams(request: Request): Promise<results.JsonResult> {
+    return super.keyParams(request)
   }
 
   @httpDelete('/:email')
-  async deleteAccount(request: Request): Promise<results.JsonResult> {
-    const result = await this.doDeleteAccount.execute({
-      email: request.params.email,
-    })
-
-    return this.json({ message: result.message }, result.responseCode)
+  override async deleteAccount(request: Request): Promise<results.JsonResult> {
+    return super.deleteAccount(request)
   }
 
   @httpGet('/:userUuid/subscription', TYPES.Auth_RequiredCrossServiceTokenMiddleware)
-  async getSubscription(request: Request, response: Response): Promise<results.JsonResult> {
-    if (request.params.userUuid !== response.locals.user.uuid) {
-      return this.json(
-        {
-          error: {
-            message: 'Operation not allowed.',
-          },
-        },
-        401,
-      )
-    }
-
-    const result = await this.doGetUserSubscription.execute({
-      userUuid: request.params.userUuid,
-    })
-
-    if (result.success) {
-      return this.json(result)
-    }
-
-    return this.json(result, 400)
+  override async getSubscription(request: Request, response: Response): Promise<results.JsonResult> {
+    return super.getSubscription(request, response)
   }
 
   @httpPut('/:userId/attributes/credentials', TYPES.Auth_RequiredCrossServiceTokenMiddleware)
-  async changeCredentials(request: Request, response: Response): Promise<results.JsonResult> {
-    if (response.locals.readOnlyAccess) {
-      return this.json(
-        {
-          error: {
-            tag: ErrorTag.ReadOnlyAccess,
-            message: 'Session has read-only access.',
-          },
-        },
-        401,
-      )
-    }
-
-    if (!request.body.current_password) {
-      return this.json(
-        {
-          error: {
-            message:
-              'Your current password is required to change your password. Please update your application if you do not see this option.',
-          },
-        },
-        400,
-      )
-    }
-
-    if (!request.body.new_password) {
-      return this.json(
-        {
-          error: {
-            message: 'Your new password is required to change your password. Please try again.',
-          },
-        },
-        400,
-      )
-    }
-
-    if (!request.body.pw_nonce) {
-      return this.json(
-        {
-          error: {
-            message: 'The change password request is missing new auth parameters. Please try again.',
-          },
-        },
-        400,
-      )
-    }
-    const usernameOrError = Username.create(response.locals.user.email)
-    if (usernameOrError.isFailed()) {
-      return this.json(
-        {
-          error: {
-            message: 'Invalid username.',
-          },
-        },
-        400,
-      )
-    }
-    const username = usernameOrError.getValue()
-
-    const changeCredentialsResult = await this.changeCredentialsUseCase.execute({
-      username,
-      apiVersion: request.body.api,
-      currentPassword: request.body.current_password,
-      newPassword: request.body.new_password,
-      newEmail: request.body.new_email,
-      pwNonce: request.body.pw_nonce,
-      kpCreated: request.body.created,
-      kpOrigination: request.body.origination,
-      updatedWithUserAgent: <string>request.headers['user-agent'],
-      protocolVersion: request.body.version,
-    })
-
-    if (!changeCredentialsResult.success) {
-      await this.increaseLoginAttempts.execute({ email: response.locals.user.email })
-
-      return this.json(
-        {
-          error: {
-            message: changeCredentialsResult.errorMessage,
-          },
-        },
-        401,
-      )
-    }
-
-    await this.clearLoginAttempts.execute({ email: response.locals.user.email })
-
-    response.setHeader('x-invalidate-cache', response.locals.user.uuid)
-
-    return this.json(changeCredentialsResult.authResponse)
+  override async changeCredentials(request: Request, response: Response): Promise<results.JsonResult> {
+    return super.changeCredentials(request, response)
   }
 }
