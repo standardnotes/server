@@ -2,7 +2,7 @@ import 'reflect-metadata'
 
 import 'newrelic'
 
-import '../src/Infra/InversifyExpress/LegacyController'
+import '../src/Controller/LegacyController'
 import '../src/Controller/HealthCheckController'
 
 import '../src/Controller/v1/SessionsController'
