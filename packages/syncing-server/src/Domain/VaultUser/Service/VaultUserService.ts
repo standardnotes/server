@@ -1,3 +1,4 @@
+import { RemovedVaultUserServiceInterface } from './../../RemovedVaultUser/Service/RemovedVaultUserServiceInterface'
 import { TimerInterface } from '@standardnotes/time'
 import { VaultUser } from '../Model/VaultUser'
 import { VaultUserFactoryInterface } from '../Factory/VaultUserFactoryInterface'
@@ -13,6 +14,7 @@ export class VaultUserService implements VaultUserServiceInterface {
     private vaultRepository: VaultsRepositoryInterface,
     private vaultUserRepository: VaultUserRepositoryInterface,
     private vaultUserFactory: VaultUserFactoryInterface,
+    private removedVaultUserService: RemovedVaultUserServiceInterface,
     private timer: TimerInterface,
   ) {}
 
@@ -25,6 +27,11 @@ export class VaultUserService implements VaultUserServiceInterface {
     if (!vault) {
       return null
     }
+
+    await this.removedVaultUserService.deleteRemovedVaultUser({
+      vaultUuid: dto.vaultUuid,
+      userUuid: dto.userUuid,
+    })
 
     const timestamp = this.timer.getTimestampInMicroseconds()
     const vaultUser = this.vaultUserFactory.create({
@@ -91,6 +98,11 @@ export class VaultUserService implements VaultUserServiceInterface {
     }
 
     await this.vaultUserRepository.remove(vaultUser)
+    await this.removedVaultUserService.addRemovedVaultUser({
+      vaultUuid: dto.vaultUuid,
+      userUuid: dto.userUuid,
+      removedBy: dto.originatorUuid,
+    })
 
     return true
   }
@@ -104,6 +116,11 @@ export class VaultUserService implements VaultUserServiceInterface {
     const vaultUsers = await this.vaultUserRepository.findAllForVault({ vaultUuid: dto.vaultUuid })
     for (const vaultUser of vaultUsers) {
       await this.vaultUserRepository.remove(vaultUser)
+      await this.removedVaultUserService.addRemovedVaultUser({
+        vaultUuid: dto.vaultUuid,
+        userUuid: vaultUser.userUuid,
+        removedBy: dto.originatorUuid,
+      })
     }
 
     return true

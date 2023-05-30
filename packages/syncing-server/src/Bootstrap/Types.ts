@@ -11,6 +11,7 @@ const TYPES = {
   ItemRepository: Symbol.for('ItemRepository'),
   VaultRepository: Symbol.for('VaultRepository'),
   VaultUserRepository: Symbol.for('VaultUserRepository'),
+  RemovedVaultUserRepository: Symbol.for('RemovedVaultUserRepository'),
   ContactRepository: Symbol.for('ContactRepository'),
   VaultInviteRepository: Symbol.for('VaultInviteRepository'),
 
@@ -18,6 +19,7 @@ const TYPES = {
   ORMItemRepository: Symbol.for('ORMItemRepository'),
   ORMVaultRepository: Symbol.for('ORMVaultRepository'),
   ORMVaultUserRepository: Symbol.for('ORMVaultUserRepository'),
+  ORMRemovedVaultUserRepository: Symbol.for('ORMRemovedVaultUserRepository'),
   ORMContactRepository: Symbol.for('ORMContactRepository'),
   ORMVaultInviteRepository: Symbol.for('ORMVaultInviteRepository'),
 
@@ -36,6 +38,7 @@ const TYPES = {
   // Services
   VaultService: Symbol.for('VaultService'),
   VaultUserService: Symbol.for('VaultUserService'),
+  RemovedVaultUserService: Symbol.for('RemovedVaultUserService'),
   ContactService: Symbol.for('ContactService'),
   VaultInviteService: Symbol.for('VaultInviteService'),
 
@@ -43,6 +46,7 @@ const TYPES = {
   ItemFactory: Symbol.for('ItemFactory'),
   VaultFactory: Symbol.for('VaultFactory'),
   VaultUserFactory: Symbol.for('VaultUserFactory'),
+  RemovedVaultUserFactory: Symbol.for('RemovedVaultUserFactory'),
   ContactFactory: Symbol.for('ContactFactory'),
   VaultInviteFactory: Symbol.for('VaultInviteFactory'),
 

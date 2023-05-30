@@ -38,6 +38,9 @@ import { ContactProjector } from '../Projection/ContactProjector'
 import { VaultInviteRepositoryInterface } from '../Domain/VaultInvite/Repository/VaultInviteRepositoryInterface'
 import { ContactsRepositoryInterface } from '../Domain/Contact/Repository/ContactRepositoryInterface'
 import { TypeORMContactRepository } from '../Domain/Contact/Repository/TypeORMContactRepository'
+import { RemovedVaultUserRepositoryInterface } from '../Domain/RemovedVaultUser/Repository/RemovedVaultUserRepositoryInterface'
+import { TypeORMRemovedVaultUserRepository } from '../Domain/RemovedVaultUser/Repository/TypeORMRemovedVaultUserRepository'
+import { RemovedVaultUser } from '../Domain/RemovedVaultUser/Model/RemovedVaultUser'
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
 
@@ -105,6 +108,11 @@ export class CommonContainerConfigLoader {
         return new TypeORMVaultUserRepository(context.container.get(TYPES.ORMVaultUserRepository))
       })
     container
+      .bind<RemovedVaultUserRepositoryInterface>(TYPES.RemovedVaultUserRepository)
+      .toDynamicValue((context: interfaces.Context) => {
+        return new TypeORMRemovedVaultUserRepository(context.container.get(TYPES.ORMRemovedVaultUserRepository))
+      })
+    container
       .bind<VaultInviteRepositoryInterface>(TYPES.VaultInviteRepository)
       .toDynamicValue((context: interfaces.Context) => {
         return new TypeORMVaultInviteRepository(context.container.get(TYPES.ORMVaultInviteRepository))
@@ -121,6 +129,9 @@ export class CommonContainerConfigLoader {
     container
       .bind<Repository<VaultUser>>(TYPES.ORMVaultUserRepository)
       .toDynamicValue(() => AppDataSource.getRepository(VaultUser))
+    container
+      .bind<Repository<RemovedVaultUser>>(TYPES.ORMRemovedVaultUserRepository)
+      .toDynamicValue(() => AppDataSource.getRepository(RemovedVaultUser))
     container
       .bind<Repository<VaultInvite>>(TYPES.ORMVaultInviteRepository)
       .toDynamicValue(() => AppDataSource.getRepository(VaultInvite))

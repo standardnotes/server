@@ -49,6 +49,9 @@ import { ContactService } from '../Domain/Contact/Service/ContactService'
 import { ContactFactoryInterface } from '../Domain/Contact/Factory/ContactFactoryInterface'
 import { VaultSnjsVersionFilter } from '../Domain/Item/SaveRule/VaultSnjsVersionFilter'
 import { CreateVaultFileValetToken } from '../Domain/UseCase/CreateVaultFileValetToken/CreateVaultFileValetToken'
+import { RemovedVaultUserService } from '../Domain/RemovedVaultUser/Service/RemovedVaultUserService'
+import { RemovedVaultUserServiceInterface } from '../Domain/RemovedVaultUser/Service/RemovedVaultUserServiceInterface'
+import { RemovedVaultUserFactory } from '../Domain/RemovedVaultUser/Factory/RemovedVaultUserFactory'
 
 export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
   private readonly DEFAULT_CONTENT_SIZE_TRANSFER_LIMIT = 10_000_000
@@ -163,9 +166,20 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
         context.container.get(TYPES.VaultRepository),
         context.container.get(TYPES.VaultUserRepository),
         context.container.get(TYPES.VaultUserFactory),
+        context.container.get(TYPES.RemovedVaultUserService),
         context.container.get(TYPES.Timer),
       )
     })
+    container
+      .bind<RemovedVaultUserServiceInterface>(TYPES.RemovedVaultUserService)
+      .toDynamicValue((context: interfaces.Context) => {
+        return new RemovedVaultUserService(
+          context.container.get(TYPES.VaultRepository),
+          context.container.get(TYPES.RemovedVaultUserRepository),
+          context.container.get(TYPES.RemovedVaultUserFactory),
+          context.container.get(TYPES.Timer),
+        )
+      })
     container
       .bind<VaultInviteServiceInterface>(TYPES.VaultInviteService)
       .toDynamicValue((context: interfaces.Context) => {
@@ -220,6 +234,11 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
     container.bind<VaultUserFactory>(TYPES.VaultUserFactory).toDynamicValue((context: interfaces.Context) => {
       return new VaultUserFactory(context.container.get(TYPES.Timer))
     })
+    container
+      .bind<RemovedVaultUserFactory>(TYPES.RemovedVaultUserFactory)
+      .toDynamicValue((context: interfaces.Context) => {
+        return new RemovedVaultUserFactory(context.container.get(TYPES.Timer))
+      })
     container.bind<VaultInviteFactory>(TYPES.VaultInviteFactory).toDynamicValue((context: interfaces.Context) => {
       return new VaultInviteFactory(context.container.get(TYPES.Timer))
     })

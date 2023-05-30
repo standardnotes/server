@@ -1,3 +1,4 @@
+import { RemovedVaultUser } from './../Domain/RemovedVaultUser/Model/RemovedVaultUser'
 import { Contact } from './../Domain/Contact/Model/Contact'
 import { VaultInvite } from '../Domain/VaultInvite/Model/VaultInvite'
 import { VaultUser } from '../Domain/VaultUser/Model/VaultUser'
@@ -42,7 +43,7 @@ const replicationConfig = {
 
 const commonDataSourceOptions = {
   maxQueryExecutionTime,
-  entities: [Item, Vault, VaultUser, VaultInvite, Contact],
+  entities: [Item, Vault, VaultUser, RemovedVaultUser, VaultInvite, Contact],
   migrations: [`dist/migrations/${isConfiguredForMySQL ? 'mysql' : 'sqlite'}/*.js`],
   migrationsRun: true,
   logging: <LoggerOptions>env.get('DB_DEBUG_LEVEL'),

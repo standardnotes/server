@@ -1,9 +1,5 @@
 import { VaultUser } from '../Model/VaultUser'
 
-export type VaultUserQuery = {
-  userUuid: string
-}
-
 export type VaultUserFindAllForUserQuery = {
   userUuid: string
   lastSyncTime?: number

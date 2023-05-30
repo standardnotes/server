@@ -18,12 +18,14 @@ import { VaultProjection } from '../Projection/VaultProjection'
 import { VaultUserProjection } from '../Projection/VaultUserProjection'
 import { VaultUserServiceInterface } from '../Domain/VaultUser/Service/VaultUserServiceInterface'
 import { CreateVaultFileValetToken } from '../Domain/UseCase/CreateVaultFileValetToken/CreateVaultFileValetToken'
+import { RemovedVaultUserServiceInterface } from '../Domain/RemovedVaultUser/Service/RemovedVaultUserServiceInterface'
 
 @controller('/vaults')
 export class VaultsController extends BaseHttpController {
   constructor(
     @inject(TYPES.VaultService) private vaultService: VaultServiceInterface,
     @inject(TYPES.VaultUserService) private vaultUserService: VaultUserServiceInterface,
+    @inject(TYPES.RemovedVaultUserService) private removedVaultUserService: RemovedVaultUserServiceInterface,
     @inject(TYPES.VaultProjector) private vaultProjector: ProjectorInterface<Vault, VaultProjection>,
     @inject(TYPES.VaultUserProjector) private vaultUserProjector: ProjectorInterface<VaultUser, VaultUserProjection>,
     @inject(TYPES.CreateVaultFileReadValetToken) private createVaultFileReadValetToken: CreateVaultFileValetToken,
@@ -126,6 +128,29 @@ export class VaultsController extends BaseHttpController {
     }
 
     return this.json({ success: true })
+  }
+
+  @httpGet('/removed', TYPES.AuthMiddleware)
+  public async getAllRemovedFromVaultsForCurrentUser(
+    _request: Request,
+    response: Response,
+  ): Promise<results.NotFoundResult | results.JsonResult> {
+    const result = await this.removedVaultUserService.getAllRemovedVaultUsersForUser({
+      userUuid: response.locals.user.uuid,
+    })
+
+    if (!result) {
+      return this.errorResponse(400, 'Could not get vault users')
+    }
+
+    return this.json({
+      removedVaults: result.map((removedUser) => {
+        return {
+          vaultUuid: removedUser.vaultUuid,
+          removedAt: removedUser.createdAtTimestamp,
+        }
+      }),
+    })
   }
 
   private errorResponse(status: number, message?: string, tag?: string) {
