@@ -3,7 +3,7 @@ import { ContentType } from '@standardnotes/common'
 import { ItemSaveValidationDTO } from '../SaveValidator/ItemSaveValidationDTO'
 import { ItemSaveRuleResult } from './ItemSaveRuleResult'
 import { ItemSaveRuleInterface } from './ItemSaveRuleInterface'
-import { ConflictType } from '@standardnotes/responses'
+import { ConflictType } from '../../../Tmp/ConflictType'
 
 export class ContentTypeFilter implements ItemSaveRuleInterface {
   async check(dto: ItemSaveValidationDTO): Promise<ItemSaveRuleResult> {

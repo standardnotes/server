@@ -1,4 +1,4 @@
-import { ConflictType } from '@standardnotes/responses'
+import { ConflictType } from '../../Tmp/ConflictType'
 import { Item } from './Item'
 import { ItemHash } from './ItemHash'
 

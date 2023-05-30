@@ -20,6 +20,7 @@ import { SyncItems } from '../Domain/UseCase/SyncItems'
 import { ItemConflictProjector } from '../Projection/ItemConflictProjector'
 import { ItemSaveValidatorInterface } from '../Domain/Item/SaveValidator/ItemSaveValidatorInterface'
 import { ItemSaveValidator } from '../Domain/Item/SaveValidator/ItemSaveValidator'
+import { VaultFilter } from '../Domain/Item/SaveRule/VaultFilter'
 import { OwnershipFilter } from '../Domain/Item/SaveRule/OwnershipFilter'
 import { TimeDifferenceFilter } from '../Domain/Item/SaveRule/TimeDifferenceFilter'
 import { ItemFactoryInterface } from '../Domain/Item/ItemFactoryInterface'
@@ -46,7 +47,7 @@ import { VaultInviteFactory } from '../Domain/VaultInvite/Factory/VaultInviteFac
 import { ContactServiceInterface } from '../Domain/Contact/Service/ContactServiceInterface'
 import { ContactService } from '../Domain/Contact/Service/ContactService'
 import { ContactFactoryInterface } from '../Domain/Contact/Factory/ContactFactoryInterface'
-import { SnjsVersionFilter } from '../Domain/Item/SaveRule/SnjsVersionFilter'
+import { VaultSnjsVersionFilter } from '../Domain/Item/SaveRule/VaultSnjsVersionFilter'
 import { CreateVaultFileValetToken } from '../Domain/UseCase/CreateVaultFileValetToken/CreateVaultFileValetToken'
 
 export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
@@ -226,11 +227,12 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
       return new ContactFactory(context.container.get(TYPES.Timer))
     })
 
+    container.bind<OwnershipFilter>(TYPES.OwnershipFilter).toDynamicValue(() => new OwnershipFilter())
     container
-      .bind<OwnershipFilter>(TYPES.OwnershipFilter)
+      .bind<VaultFilter>(TYPES.VaultFilter)
       .toDynamicValue(
         (context: interfaces.Context) =>
-          new OwnershipFilter(context.container.get(TYPES.VaultService), context.container.get(TYPES.VaultUserService)),
+          new VaultFilter(context.container.get(TYPES.VaultService), context.container.get(TYPES.VaultUserService)),
       )
     container
       .bind<TimeDifferenceFilter>(TYPES.TimeDifferenceFilter)
@@ -238,14 +240,17 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
     container.bind<UuidFilter>(TYPES.UuidFilter).toDynamicValue(() => new UuidFilter())
     container.bind<ContentTypeFilter>(TYPES.ContentTypeFilter).toDynamicValue(() => new ContentTypeFilter())
     container.bind<ContentFilter>(TYPES.ContentFilter).toDynamicValue(() => new ContentFilter())
-    container.bind<SnjsVersionFilter>(TYPES.SnjsVersionFilter).toDynamicValue(() => new SnjsVersionFilter())
+    container
+      .bind<VaultSnjsVersionFilter>(TYPES.VaultSnjsVersionFilter)
+      .toDynamicValue(() => new VaultSnjsVersionFilter())
 
     container
       .bind<ItemSaveValidatorInterface>(TYPES.ItemSaveValidator)
       .toDynamicValue((context: interfaces.Context) => {
         return new ItemSaveValidator([
-          context.container.get(TYPES.SnjsVersionFilter),
           context.container.get(TYPES.OwnershipFilter),
+          context.container.get(TYPES.VaultFilter),
+          context.container.get(TYPES.VaultSnjsVersionFilter),
           context.container.get(TYPES.TimeDifferenceFilter),
           context.container.get(TYPES.UuidFilter),
           context.container.get(TYPES.ContentTypeFilter),

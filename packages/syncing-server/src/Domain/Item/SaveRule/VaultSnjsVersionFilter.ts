@@ -1,12 +1,12 @@
 import { ItemSaveValidationDTO } from '../SaveValidator/ItemSaveValidationDTO'
 import { ItemSaveRuleResult } from './ItemSaveRuleResult'
 import { ItemSaveRuleInterface } from './ItemSaveRuleInterface'
-import { ConflictType } from '@standardnotes/responses'
 import { lt } from 'semver'
+import { ConflictType } from '../../../Tmp/ConflictType'
 
 const MINIMUM_SNJS_VERSION_FOR_VAULT_OPERATIONS = '2.200.0'
 
-export class SnjsVersionFilter implements ItemSaveRuleInterface {
+export class VaultSnjsVersionFilter implements ItemSaveRuleInterface {
   async check(dto: ItemSaveValidationDTO): Promise<ItemSaveRuleResult> {
     const successValue = {
       passed: true,
@@ -18,13 +18,13 @@ export class SnjsVersionFilter implements ItemSaveRuleInterface {
     }
 
     const isClientSnjsVersionLessThanMinimum = lt(dto.snjsVersion, MINIMUM_SNJS_VERSION_FOR_VAULT_OPERATIONS)
-
     if (isClientSnjsVersionLessThanMinimum) {
       return {
         passed: false,
         conflict: {
           unsavedItem: dto.itemHash,
-          type: ConflictType.ContentError,
+          serverItem: dto.existingItem ?? undefined,
+          type: ConflictType.SnjsVersionError,
         },
       }
     }

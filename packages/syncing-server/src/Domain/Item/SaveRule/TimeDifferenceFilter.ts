@@ -5,7 +5,7 @@ import { ItemHash } from '../ItemHash'
 import { ItemSaveValidationDTO } from '../SaveValidator/ItemSaveValidationDTO'
 import { ItemSaveRuleResult } from './ItemSaveRuleResult'
 import { ItemSaveRuleInterface } from './ItemSaveRuleInterface'
-import { ConflictType } from '@standardnotes/responses'
+import { ConflictType } from '../../../Tmp/ConflictType'
 
 export class TimeDifferenceFilter implements ItemSaveRuleInterface {
   constructor(private timer: TimerInterface) {}

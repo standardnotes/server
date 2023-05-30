@@ -16,11 +16,11 @@ import { ItemServiceInterface } from './ItemServiceInterface'
 import { SaveItemsDTO } from './SaveItemsDTO'
 import { SaveItemsResult } from './SaveItemsResult'
 import { ItemSaveValidatorInterface } from './SaveValidator/ItemSaveValidatorInterface'
-import { ConflictType } from '@standardnotes/responses'
 import { ItemTransferCalculatorInterface } from './ItemTransferCalculatorInterface'
 import { ProjectorInterface } from '../../Projection/ProjectorInterface'
 import { ItemProjection } from '../../Projection/ItemProjection'
 import { VaultUserRepositoryInterface } from '../VaultUser/Repository/VaultUserRepositoryInterface'
+import { ConflictType } from '../../Tmp/ConflictType'
 
 export class ItemService implements ItemServiceInterface {
   private readonly DEFAULT_ITEMS_LIMIT = 150
@@ -100,16 +100,18 @@ export class ItemService implements ItemServiceInterface {
     const lastUpdatedTimestamp = this.timer.getTimestampInMicroseconds()
 
     for (const itemHash of dto.itemHashes) {
+      const existingItem = await this.itemRepository.findByUuid(itemHash.uuid)
+
       if (dto.readOnlyAccess) {
         conflicts.push({
           unsavedItem: itemHash,
+          serverItem: existingItem ?? undefined,
           type: ConflictType.ReadOnlyError,
         })
 
         continue
       }
 
-      const existingItem = await this.itemRepository.findByUuid(itemHash.uuid)
       const processingResult = await this.itemSaveValidator.validate({
         userUuid: dto.userUuid,
         apiVersion: dto.apiVersion,

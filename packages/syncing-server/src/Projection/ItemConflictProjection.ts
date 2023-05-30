@@ -1,6 +1,5 @@
-import { ConflictType } from '@standardnotes/responses'
-
 import { ItemHash } from '../Domain/Item/ItemHash'
+import { ConflictType } from '../Tmp/ConflictType'
 import { ItemProjection } from './ItemProjection'
 
 export type ItemConflictProjection = {
