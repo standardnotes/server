@@ -87,6 +87,10 @@ export class VaultUserService implements VaultUserServiceInterface {
       return false
     }
 
+    if (vault.userUuid === dto.userUuid) {
+      return false
+    }
+
     const isAuthorized = vault.userUuid === dto.originatorUuid || dto.userUuid === dto.originatorUuid
     if (!isAuthorized) {
       return false
