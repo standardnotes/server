@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.15.2](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.15.0...@standardnotes/files-server@1.15.2) (2023-05-30)
+
+### Bug Fixes
+
+* bump version manually to publish packages ([b0d01df](https://github.com/standardnotes/files/commit/b0d01dffd91557c67eac2940d9270bca208c1128))
+
 # [1.15.0](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.14.0...@standardnotes/files-server@1.15.0) (2023-05-30)
 
 ### Features
