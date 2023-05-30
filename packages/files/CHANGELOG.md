@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.15.0](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.14.0...@standardnotes/files-server@1.15.0) (2023-05-30)
+
+### Features
+
+* make home server components publishable ([#617](https://github.com/standardnotes/files/issues/617)) ([55fd873](https://github.com/standardnotes/files/commit/55fd873b375e204dc9b0477b2cc6ed4582e5b603))
+
 # [1.14.0](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.13.0...@standardnotes/files-server@1.14.0) (2023-05-30)
 
 ### Features

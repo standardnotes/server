@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.40.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.39.0...@standardnotes/syncing-server@1.40.0) (2023-05-30)
+
+### Features
+
+* make home server components publishable ([#617](https://github.com/standardnotes/syncing-server-js/issues/617)) ([55fd873](https://github.com/standardnotes/syncing-server-js/commit/55fd873b375e204dc9b0477b2cc6ed4582e5b603))
+
 # [1.39.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.38.0...@standardnotes/syncing-server@1.39.0) (2023-05-30)
 
 ### Features
