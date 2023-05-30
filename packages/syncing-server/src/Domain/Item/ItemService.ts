@@ -213,10 +213,8 @@ export class ItemService implements ItemServiceInterface {
 
     if (dto.itemHash.vault_uuid) {
       dto.existingItem.vaultUuid = dto.itemHash.vault_uuid
-      dto.existingItem.userUuid = null
     } else {
       dto.existingItem.vaultUuid = null
-      dto.existingItem.userUuid = dto.userUuid
     }
 
     if (dto.itemHash.content) {

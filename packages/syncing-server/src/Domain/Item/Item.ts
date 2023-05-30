@@ -78,10 +78,9 @@ export class Item {
     name: 'user_uuid',
     length: 36,
     type: 'varchar',
-    nullable: true,
   })
   @Index('index_items_on_user_uuid')
-  declare userUuid: string | null
+  declare userUuid: string
 
   @Column({
     name: 'last_edited_by_uuid',

@@ -15,6 +15,7 @@ import {
   SaveToVaultSaveOperation,
   CreateToVaultSaveOperation,
 } from './VaultSaveOperation'
+import { Item } from '../Item'
 
 export class VaultFilter implements ItemSaveRuleInterface {
   constructor(private vaultService: VaultServiceInterface, private vaultUserService: VaultUserServiceInterface) {}
@@ -116,11 +117,12 @@ export class VaultFilter implements ItemSaveRuleInterface {
     return true
   }
 
-  private buildFailResult(operation: VaultSaveOperation, type: ConflictType) {
+  private buildFailResult(operation: VaultSaveOperation, type: ConflictType, serverItem?: Item) {
     return {
       passed: false,
       conflict: {
         unsavedItem: operation.incomingItem,
+        serverItem,
         type,
       },
     }
@@ -156,7 +158,7 @@ export class VaultFilter implements ItemSaveRuleInterface {
 
     const usesValidKey = await this.incomingItemUsesValidItemsKey(operation.incomingItem)
     if (!usesValidKey) {
-      return this.buildFailResult(operation, ConflictType.VaultInvalidItemsKey)
+      return this.buildFailResult(operation, ConflictType.VaultInvalidItemsKey, operation.existingItem)
     }
 
     return this.buildSuccessValue()
@@ -172,6 +174,10 @@ export class VaultFilter implements ItemSaveRuleInterface {
       return this.buildFailResult(operation, ConflictType.VaultInvalidState)
     }
 
+    if (operation.existingItem.userUuid === operation.userUuid) {
+      return this.buildSuccessValue()
+    }
+
     if (!this.isAuthorizedToSaveContentType(operation.incomingItem.content_type, vaultPermissions)) {
       return this.buildFailResult(operation, ConflictType.VaultInsufficientPermissionsError)
     }
@@ -182,7 +188,7 @@ export class VaultFilter implements ItemSaveRuleInterface {
 
     const usesValidKey = await this.incomingItemUsesValidItemsKey(operation.incomingItem)
     if (!usesValidKey) {
-      return this.buildFailResult(operation, ConflictType.VaultInvalidItemsKey)
+      return this.buildFailResult(operation, ConflictType.VaultInvalidItemsKey, operation.existingItem)
     }
 
     return this.buildSuccessValue()
@@ -213,7 +219,7 @@ export class VaultFilter implements ItemSaveRuleInterface {
 
     const usesValidKey = await this.incomingItemUsesValidItemsKey(operation.incomingItem)
     if (!usesValidKey) {
-      return this.buildFailResult(operation, ConflictType.VaultInvalidItemsKey)
+      return this.buildFailResult(operation, ConflictType.VaultInvalidItemsKey, operation.existingItem)
     }
 
     return this.buildSuccessValue()
@@ -236,7 +242,7 @@ export class VaultFilter implements ItemSaveRuleInterface {
 
     const usesValidKey = await this.incomingItemUsesValidItemsKey(operation.incomingItem)
     if (!usesValidKey) {
-      return this.buildFailResult(operation, ConflictType.VaultInvalidItemsKey)
+      return this.buildFailResult(operation, ConflictType.VaultInvalidItemsKey, operation.existingItem)
     }
 
     return this.buildSuccessValue()
