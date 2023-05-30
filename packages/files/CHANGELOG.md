@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.15.3](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.15.2...@standardnotes/files-server@1.15.3) (2023-05-30)
+
+### Reverts
+
+* Revert "feat: make home server components publishable (#617)" ([1a8daef](https://github.com/standardnotes/files/commit/1a8daef79d55a8cdee1632b294b897176af64b26)), closes [#617](https://github.com/standardnotes/files/issues/617)
+
 ## [1.15.2](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.15.0...@standardnotes/files-server@1.15.2) (2023-05-30)
 
 ### Bug Fixes

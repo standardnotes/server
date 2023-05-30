@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.114.3](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.114.2...@standardnotes/auth-server@1.114.3) (2023-05-30)
+
+### Reverts
+
+* Revert "feat: make home server components publishable (#617)" ([1a8daef](https://github.com/standardnotes/server/commit/1a8daef79d55a8cdee1632b294b897176af64b26)), closes [#617](https://github.com/standardnotes/server/issues/617)
+
 ## [1.114.2](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.114.0...@standardnotes/auth-server@1.114.2) (2023-05-30)
 
 ### Bug Fixes
