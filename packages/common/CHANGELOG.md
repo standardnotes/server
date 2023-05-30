@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.48.0](https://github.com/standardnotes/server/compare/@standardnotes/common@1.47.1...@standardnotes/common@1.48.0) (2023-05-30)
+
+### Features
+
+* upgrade to node 20.2.0 ([#616](https://github.com/standardnotes/server/issues/616)) ([a6b062f](https://github.com/standardnotes/server/commit/a6b062f638595537e1ece28bc79bded41d875e18))
+
 ## [1.47.1](https://github.com/standardnotes/server/compare/@standardnotes/common@1.47.0...@standardnotes/common@1.47.1) (2023-05-09)
 
 ### Bug Fixes
