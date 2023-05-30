@@ -4,15 +4,13 @@
   "engines": {
     "node": ">=18.0.0 <21.0.0"
   },
+  "private": true,
   "description": "Revisions Server",
   "main": "dist/src/index.js",
   "typings": "dist/src/index.d.ts",
   "repository": "git@github.com:standardnotes/server.git",
   "author": "Karol Sójko <karolsojko@standardnotes.com>",
   "license": "AGPL-3.0-or-later",
-  "publishConfig": {
-    "access": "public"
-  },
   "scripts": {
     "clean": "rm -fr dist",
     "setup:env": "cp .env.sample .env",

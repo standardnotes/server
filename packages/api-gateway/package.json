@@ -4,6 +4,7 @@
   "engines": {
     "node": ">=18.0.0 <21.0.0"
   },
+  "private": true,
   "description": "API Gateway For Standard Notes Services",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
@@ -14,9 +15,6 @@
   "repository": "git@github.com:standardnotes/api-gateway.git",
   "author": "Karol Sójko <karolsojko@standardnotes.com>",
   "license": "AGPL-3.0-or-later",
-  "publishConfig": {
-    "access": "public"
-  },
   "scripts": {
     "clean": "rm -fr dist",
     "build": "tsc --build",
