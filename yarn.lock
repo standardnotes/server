@@ -3903,7 +3903,7 @@ __metadata:
     "@types/jest": "npm:^29.5.1"
     "@types/mixpanel": "npm:^2.14.4"
     "@types/newrelic": "npm:^9.13.0"
-    "@types/node": "npm:^20.1.0"
+    "@types/node": "npm:^20.2.0"
     "@typescript-eslint/eslint-plugin": "npm:^5.59.2"
     "@typescript-eslint/parser": "npm:^5.59.2"
     dayjs: "npm:^1.11.6"
@@ -4056,7 +4056,7 @@ __metadata:
   resolution: "@standardnotes/common@workspace:packages/common"
   dependencies:
     "@types/jest": "npm:^29.5.1"
-    "@types/node": "npm:^20.1.0"
+    "@types/node": "npm:^20.2.0"
     "@typescript-eslint/eslint-plugin": "npm:^5.59.2"
     "@typescript-eslint/parser": "npm:^5.59.2"
     eslint: "npm:^8.39.0"
@@ -4373,7 +4373,7 @@ __metadata:
     "@types/ioredis": "npm:^5.0.0"
     "@types/jest": "npm:^29.5.1"
     "@types/newrelic": "npm:^9.13.0"
-    "@types/node": "npm:^20.1.0"
+    "@types/node": "npm:^20.2.0"
     "@typescript-eslint/eslint-plugin": "npm:^5.59.2"
     "@typescript-eslint/parser": "npm:^5.59.2"
     dayjs: "npm:^1.11.6"
@@ -4426,7 +4426,7 @@ __metadata:
     "@lerna-lite/version": "npm:^2.3.0"
     "@types/jest": "npm:^29.5.1"
     "@types/newrelic": "npm:^9.13.0"
-    "@types/node": "npm:^20.1.0"
+    "@types/node": "npm:^20.2.0"
     eslint: "npm:^8.39.0"
     eslint-config-prettier: "npm:^8.8.0"
     ini: "npm:^3.0.0"
@@ -4470,7 +4470,7 @@ __metadata:
   dependencies:
     "@standardnotes/sncrypto-common": "npm:^1.9.0"
     "@types/jest": "npm:^29.5.1"
-    "@types/node": "npm:^20.1.0"
+    "@types/node": "npm:^20.2.0"
     "@typescript-eslint/eslint-plugin": "npm:^5.59.2"
     "@typescript-eslint/parser": "npm:^5.59.2"
     eslint: "npm:^8.39.0"
@@ -4988,7 +4988,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*, @types/node@npm:>=12.12.47, @types/node@npm:>=13.7.0, @types/node@npm:^20.1.0":
+"@types/node@npm:*, @types/node@npm:>=12.12.47, @types/node@npm:>=13.7.0":
   version: 20.1.0
   resolution: "@types/node@npm:20.1.0"
   checksum: 299fe2b03230b10367862b2b7f4b618671377e20846276f5f435262080d7b01231d45a2b3a08c5de31495fac2eda8048e977aebf06b3c1e26502f74fc021da63
@@ -4999,6 +4999,13 @@ __metadata:
   version: 18.16.4
   resolution: "@types/node@npm:18.16.4"
   checksum: a7a5662d6589016ff13c41bdab7dd1eab57284e51788c9f75a6f472f5e12085d221bfb11fd9abd18323619a102a26c9e27194105caff72bbbed842631adecb1e
+  languageName: node
+  linkType: hard
+
+"@types/node@npm:^20.2.0":
+  version: 20.2.5
+  resolution: "@types/node@npm:20.2.5"
+  checksum: 55e4f8d08e3c225e48e012e04458d6c1db5af6e4991e3abb003b82d3f10018a14742c0512b27991cb02e54768be560ea1fe4c17208e04273247132c9eb07499a
   languageName: node
   linkType: hard
 
