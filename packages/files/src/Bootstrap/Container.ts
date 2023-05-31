@@ -47,9 +47,13 @@ import { MarkFilesToBeRemoved } from '../Domain/UseCase/MarkFilesToBeRemoved/Mar
 import { AccountDeletionRequestedEventHandler } from '../Domain/Handler/AccountDeletionRequestedEventHandler'
 import { SharedSubscriptionInvitationCanceledEventHandler } from '../Domain/Handler/SharedSubscriptionInvitationCanceledEventHandler'
 import { InMemoryUploadRepository } from '../Infra/InMemory/InMemoryUploadRepository'
+import { Transform } from 'stream'
 
 export class ContainerConfigLoader {
-  async load(configuration?: { directCallDomainEventPublisher?: DirectCallDomainEventPublisher }): Promise<Container> {
+  async load(configuration?: {
+    directCallDomainEventPublisher?: DirectCallDomainEventPublisher
+    logger?: Transform
+  }): Promise<Container> {
     const directCallDomainEventPublisher =
       configuration?.directCallDomainEventPublisher ?? new DirectCallDomainEventPublisher()
 
@@ -60,8 +64,11 @@ export class ContainerConfigLoader {
 
     const isConfiguredForHomeServer = env.get('CACHE_TYPE') === 'memory'
 
-    const logger = this.createLogger({ env })
-    container.bind<winston.Logger>(TYPES.Files_Logger).toConstantValue(logger)
+    if (configuration?.logger) {
+      container.bind<winston.Logger>(TYPES.Files_Logger).toConstantValue(configuration.logger as winston.Logger)
+    } else {
+      container.bind<winston.Logger>(TYPES.Files_Logger).toConstantValue(this.createLogger({ env }))
+    }
 
     container.bind<TimerInterface>(TYPES.Files_Timer).toConstantValue(new Timer())
 

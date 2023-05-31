@@ -72,6 +72,7 @@ import { AuthHttpService } from '../Infra/HTTP/AuthHttpService'
 import { S3ItemBackupService } from '../Infra/S3/S3ItemBackupService'
 import { ControllerContainer, ControllerContainerInterface } from '@standardnotes/domain-core'
 import { HomeServerItemsController } from '../Infra/InversifyExpressUtils/HomeServer/HomeServerItemsController'
+import { Transform } from 'stream'
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
 
@@ -83,6 +84,7 @@ export class ContainerConfigLoader {
   async load(configuration?: {
     controllerConatiner?: ControllerContainerInterface
     directCallDomainEventPublisher?: DirectCallDomainEventPublisher
+    logger?: Transform
   }): Promise<Container> {
     const directCallDomainEventPublisher =
       configuration?.directCallDomainEventPublisher ?? new DirectCallDomainEventPublisher()
@@ -100,24 +102,28 @@ export class ContainerConfigLoader {
 
     container.bind<Env>(TYPES.Sync_Env).toConstantValue(env)
 
-    container.bind<winston.Logger>(TYPES.Sync_Logger).toDynamicValue((context: interfaces.Context) => {
-      const env: Env = context.container.get(TYPES.Sync_Env)
+    if (configuration?.logger) {
+      container.bind<winston.Logger>(TYPES.Sync_Logger).toConstantValue(configuration.logger as winston.Logger)
+    } else {
+      container.bind<winston.Logger>(TYPES.Sync_Logger).toDynamicValue((context: interfaces.Context) => {
+        const env: Env = context.container.get(TYPES.Sync_Env)
 
-      const newrelicWinstonFormatter = newrelicFormatter(winston)
-      const winstonFormatters = [winston.format.splat(), winston.format.json()]
-      if (env.get('NEW_RELIC_ENABLED', true) === 'true') {
-        winstonFormatters.push(newrelicWinstonFormatter())
-      }
+        const newrelicWinstonFormatter = newrelicFormatter(winston)
+        const winstonFormatters = [winston.format.splat(), winston.format.json()]
+        if (env.get('NEW_RELIC_ENABLED', true) === 'true') {
+          winstonFormatters.push(newrelicWinstonFormatter())
+        }
 
-      const logger = winston.createLogger({
-        level: env.get('LOG_LEVEL') || 'info',
-        format: winston.format.combine(...winstonFormatters),
-        transports: [new winston.transports.Console({ level: env.get('LOG_LEVEL') || 'info' })],
-        defaultMeta: { service: 'syncing-server' },
+        const logger = winston.createLogger({
+          level: env.get('LOG_LEVEL') || 'info',
+          format: winston.format.combine(...winstonFormatters),
+          transports: [new winston.transports.Console({ level: env.get('LOG_LEVEL') || 'info' })],
+          defaultMeta: { service: 'syncing-server' },
+        })
+
+        return logger
       })
-
-      return logger
-    })
+    }
 
     if (isConfiguredForHomeServer) {
       container

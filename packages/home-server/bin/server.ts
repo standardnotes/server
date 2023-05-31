@@ -1,4 +1,4 @@
-import { HomeServer } from '../src/Bootstrap/HomeServer'
+import { HomeServer } from '../src/Server/HomeServer'
 
 const homeServer = new HomeServer()
 

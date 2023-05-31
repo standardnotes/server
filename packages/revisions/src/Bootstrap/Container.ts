@@ -46,6 +46,7 @@ import { FSDumpRepository } from '../Infra/FS/FSDumpRepository'
 import { S3DumpRepository } from '../Infra/S3/S3ItemDumpRepository'
 import { RevisionItemStringMapper } from '../Mapping/RevisionItemStringMapper'
 import { HomeServerRevisionsController } from '../Infra/InversifyExpress/HomeServer/HomeServerRevisionsController'
+import { Transform } from 'stream'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
@@ -54,6 +55,7 @@ export class ContainerConfigLoader {
   async load(configuration?: {
     controllerConatiner?: ControllerContainerInterface
     directCallDomainEventPublisher?: DirectCallDomainEventPublisher
+    logger?: Transform
   }): Promise<Container> {
     const directCallDomainEventPublisher =
       configuration?.directCallDomainEventPublisher ?? new DirectCallDomainEventPublisher()
@@ -71,24 +73,28 @@ export class ContainerConfigLoader {
 
     container.bind<Env>(TYPES.Revisions_Env).toConstantValue(env)
 
-    container.bind<winston.Logger>(TYPES.Revisions_Logger).toDynamicValue((context: interfaces.Context) => {
-      const env: Env = context.container.get(TYPES.Revisions_Env)
+    if (configuration?.logger) {
+      container.bind<winston.Logger>(TYPES.Revisions_Logger).toConstantValue(configuration.logger as winston.Logger)
+    } else {
+      container.bind<winston.Logger>(TYPES.Revisions_Logger).toDynamicValue((context: interfaces.Context) => {
+        const env: Env = context.container.get(TYPES.Revisions_Env)
 
-      const newrelicWinstonFormatter = newrelicFormatter(winston)
-      const winstonFormatters = [winston.format.splat(), winston.format.json()]
-      if (env.get('NEW_RELIC_ENABLED', true) === 'true') {
-        winstonFormatters.push(newrelicWinstonFormatter())
-      }
+        const newrelicWinstonFormatter = newrelicFormatter(winston)
+        const winstonFormatters = [winston.format.splat(), winston.format.json()]
+        if (env.get('NEW_RELIC_ENABLED', true) === 'true') {
+          winstonFormatters.push(newrelicWinstonFormatter())
+        }
 
-      const logger = winston.createLogger({
-        level: env.get('LOG_LEVEL') || 'info',
-        format: winston.format.combine(...winstonFormatters),
-        transports: [new winston.transports.Console({ level: env.get('LOG_LEVEL') || 'info' })],
-        defaultMeta: { service: 'revisions' },
+        const logger = winston.createLogger({
+          level: env.get('LOG_LEVEL') || 'info',
+          format: winston.format.combine(...winstonFormatters),
+          transports: [new winston.transports.Console({ level: env.get('LOG_LEVEL') || 'info' })],
+          defaultMeta: { service: 'revisions' },
+        })
+
+        return logger
       })
-
-      return logger
-    })
+    }
 
     container.bind(TYPES.Revisions_NEW_RELIC_ENABLED).toConstantValue(env.get('NEW_RELIC_ENABLED', true))
     container.bind(TYPES.Revisions_VERSION).toConstantValue(env.get('VERSION'))

@@ -21,12 +21,13 @@ import { EndpointResolverInterface } from '../Service/Resolver/EndpointResolverI
 import { EndpointResolver } from '../Service/Resolver/EndpointResolver'
 import { RequiredCrossServiceTokenMiddleware } from '../Controller/RequiredCrossServiceTokenMiddleware'
 import { OptionalCrossServiceTokenMiddleware } from '../Controller/OptionalCrossServiceTokenMiddleware'
+import { Transform } from 'stream'
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
 
 export class ContainerConfigLoader {
-  async load(serviceContainer?: ServiceContainerInterface): Promise<Container> {
+  async load(configuration?: { serviceContainer?: ServiceContainerInterface; logger?: Transform }): Promise<Container> {
     const env: Env = new Env()
     env.load()
 
@@ -40,13 +41,17 @@ export class ContainerConfigLoader {
       winstonFormatters.push(newrelicWinstonFormatter())
     }
 
-    const logger = winston.createLogger({
-      level: env.get('LOG_LEVEL') || 'info',
-      format: winston.format.combine(...winstonFormatters),
-      transports: [new winston.transports.Console({ level: env.get('LOG_LEVEL') || 'info' })],
-      defaultMeta: { service: 'api-gateway' },
-    })
-    container.bind<winston.Logger>(TYPES.Logger).toConstantValue(logger)
+    if (configuration?.logger) {
+      container.bind<winston.Logger>(TYPES.Logger).toConstantValue(configuration.logger as winston.Logger)
+    } else {
+      const logger = winston.createLogger({
+        level: env.get('LOG_LEVEL') || 'info',
+        format: winston.format.combine(...winstonFormatters),
+        transports: [new winston.transports.Console({ level: env.get('LOG_LEVEL') || 'info' })],
+        defaultMeta: { service: 'api-gateway' },
+      })
+      container.bind<winston.Logger>(TYPES.Logger).toConstantValue(logger)
+    }
 
     if (!isConfiguredForHomeServer) {
       const redisUrl = env.get('REDIS_URL')
@@ -91,12 +96,14 @@ export class ContainerConfigLoader {
 
     // Services
     if (isConfiguredForHomeServer) {
-      if (!serviceContainer) {
+      if (!configuration?.serviceContainer) {
         throw new Error('Service container is required when configured for home server')
       }
       container
         .bind<ServiceProxyInterface>(TYPES.ServiceProxy)
-        .toConstantValue(new DirectCallServiceProxy(serviceContainer, container.get(TYPES.FILES_SERVER_URL)))
+        .toConstantValue(
+          new DirectCallServiceProxy(configuration.serviceContainer, container.get(TYPES.FILES_SERVER_URL)),
+        )
     } else {
       container.bind<ServiceProxyInterface>(TYPES.ServiceProxy).to(HttpServiceProxy)
     }
