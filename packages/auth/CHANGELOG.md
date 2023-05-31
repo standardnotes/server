@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.114.4](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.114.3...@standardnotes/auth-server@1.114.4) (2023-05-31)
+
+### Bug Fixes
+
+* **home-server:** make the package publishable ([56a312f](https://github.com/standardnotes/server/commit/56a312f21730b32b766c358a5ceb0865722bac46))
+
 ## [1.114.3](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.114.2...@standardnotes/auth-server@1.114.3) (2023-05-30)
 
 ### Reverts

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.9.2](https://github.com/standardnotes/server/compare/@standardnotes/event-store@1.9.1...@standardnotes/event-store@1.9.2) (2023-05-31)
+
+### Bug Fixes
+
+* **home-server:** make the package publishable ([56a312f](https://github.com/standardnotes/server/commit/56a312f21730b32b766c358a5ceb0865722bac46))
+
 ## [1.9.1](https://github.com/standardnotes/server/compare/@standardnotes/event-store@1.9.0...@standardnotes/event-store@1.9.1) (2023-05-30)
 
 **Note:** Version bump only for package @standardnotes/event-store

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.19.4](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.19.3...@standardnotes/revisions-server@1.19.4) (2023-05-31)
+
+### Bug Fixes
+
+* **home-server:** make the package publishable ([56a312f](https://github.com/standardnotes/server/commit/56a312f21730b32b766c358a5ceb0865722bac46))
+
 ## [1.19.3](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.19.2...@standardnotes/revisions-server@1.19.3) (2023-05-30)
 
 ### Reverts
