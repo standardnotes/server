@@ -4281,6 +4281,7 @@ __metadata:
     "@types/jest": "npm:^29.5.1"
     "@types/jsonwebtoken": "npm:^9.0.1"
     "@types/newrelic": "npm:^9.13.0"
+    "@types/node": "npm:^20.2.5"
     "@types/prettyjson": "npm:^0.0.30"
     "@typescript-eslint/eslint-plugin": "npm:^5.59.2"
     "@typescript-eslint/parser": "npm:^5.59.2"
@@ -4355,6 +4356,7 @@ __metadata:
     "@types/ioredis": "npm:^5.0.0"
     "@types/jest": "npm:^29.5.1"
     "@types/newrelic": "npm:^9.13.0"
+    "@types/node": "npm:^20.2.5"
     "@types/otplib": "npm:^10.0.0"
     "@types/prettyjson": "npm:^0.0.30"
     "@types/ua-parser-js": "npm:^0.7.36"
@@ -4414,6 +4416,7 @@ __metadata:
   resolution: "@standardnotes/domain-core@workspace:packages/domain-core"
   dependencies:
     "@types/jest": "npm:^29.5.1"
+    "@types/node": "npm:^20.2.5"
     "@types/uuid": "npm:^8.3.0"
     "@typescript-eslint/eslint-plugin": "npm:^5.59.2"
     "@typescript-eslint/parser": "npm:^5.59.2"
@@ -4549,6 +4552,7 @@ __metadata:
     "@types/jest": "npm:^29.5.1"
     "@types/jsonwebtoken": "npm:^9.0.1"
     "@types/newrelic": "npm:^9.13.0"
+    "@types/node": "npm:^20.2.5"
     "@types/prettyjson": "npm:^0.0.30"
     "@types/uuid": "npm:^8.3.0"
     "@typescript-eslint/eslint-plugin": "npm:^5.59.2"
@@ -4675,6 +4679,7 @@ __metadata:
     "@types/express": "npm:^4.17.14"
     "@types/jest": "npm:^29.5.1"
     "@types/newrelic": "npm:^9.13.0"
+    "@types/node": "npm:^20.2.5"
     "@typescript-eslint/eslint-plugin": "npm:^5.59.2"
     "@typescript-eslint/parser": "npm:^5.59.2"
     cors: "npm:2.8.5"
@@ -4850,6 +4855,7 @@ __metadata:
     "@types/jest": "npm:^29.5.1"
     "@types/jsonwebtoken": "npm:^9.0.1"
     "@types/newrelic": "npm:^9.13.0"
+    "@types/node": "npm:^20.2.5"
     "@types/prettyjson": "npm:^0.0.30"
     "@types/ua-parser-js": "npm:^0.7.36"
     "@types/uuid": "npm:^8.3.0"
@@ -5343,7 +5349,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^20.2.0":
+"@types/node@npm:^20.2.0, @types/node@npm:^20.2.5":
   version: 20.2.5
   resolution: "@types/node@npm:20.2.5"
   checksum: 55e4f8d08e3c225e48e012e04458d6c1db5af6e4991e3abb003b82d3f10018a14742c0512b27991cb02e54768be560ea1fe4c17208e04273247132c9eb07499a

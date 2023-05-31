@@ -4751,6 +4751,7 @@ const RAW_RUNTIME_STATE =
           ["@types/jest", "npm:29.5.1"],\
           ["@types/jsonwebtoken", "npm:9.0.2"],\
           ["@types/newrelic", "npm:9.13.0"],\
+          ["@types/node", "npm:20.2.5"],\
           ["@types/prettyjson", "npm:0.0.30"],\
           ["@typescript-eslint/eslint-plugin", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:5.59.2"],\
           ["@typescript-eslint/parser", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:5.59.2"],\
@@ -4811,6 +4812,7 @@ const RAW_RUNTIME_STATE =
           ["@types/ioredis", "npm:5.0.0"],\
           ["@types/jest", "npm:29.5.1"],\
           ["@types/newrelic", "npm:9.13.0"],\
+          ["@types/node", "npm:20.2.5"],\
           ["@types/otplib", "npm:10.0.0"],\
           ["@types/prettyjson", "npm:0.0.30"],\
           ["@types/ua-parser-js", "npm:0.7.36"],\
@@ -4874,6 +4876,7 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["@standardnotes/domain-core", "workspace:packages/domain-core"],\
           ["@types/jest", "npm:29.5.1"],\
+          ["@types/node", "npm:20.2.5"],\
           ["@types/uuid", "npm:8.3.4"],\
           ["@typescript-eslint/eslint-plugin", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:5.59.2"],\
           ["@typescript-eslint/parser", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:5.59.2"],\
@@ -5019,6 +5022,7 @@ const RAW_RUNTIME_STATE =
           ["@types/jest", "npm:29.5.1"],\
           ["@types/jsonwebtoken", "npm:9.0.2"],\
           ["@types/newrelic", "npm:9.13.0"],\
+          ["@types/node", "npm:20.2.5"],\
           ["@types/prettyjson", "npm:0.0.30"],\
           ["@types/uuid", "npm:8.3.4"],\
           ["@typescript-eslint/eslint-plugin", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:5.59.2"],\
@@ -5153,6 +5157,7 @@ const RAW_RUNTIME_STATE =
           ["@types/express", "npm:4.17.17"],\
           ["@types/jest", "npm:29.5.1"],\
           ["@types/newrelic", "npm:9.13.0"],\
+          ["@types/node", "npm:20.2.5"],\
           ["@typescript-eslint/eslint-plugin", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:5.59.2"],\
           ["@typescript-eslint/parser", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:5.59.2"],\
           ["cors", "npm:2.8.5"],\
@@ -5338,6 +5343,7 @@ const RAW_RUNTIME_STATE =
           ["@types/jest", "npm:29.5.1"],\
           ["@types/jsonwebtoken", "npm:9.0.2"],\
           ["@types/newrelic", "npm:9.13.0"],\
+          ["@types/node", "npm:20.2.5"],\
           ["@types/prettyjson", "npm:0.0.30"],\
           ["@types/ua-parser-js", "npm:0.7.36"],\
           ["@types/uuid", "npm:8.3.4"],\
