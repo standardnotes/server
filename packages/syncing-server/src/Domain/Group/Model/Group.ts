@@ -19,6 +19,12 @@ export class Group {
   declare specifiedItemsKeyUuid: string
 
   @Column({
+    name: 'vault_system_identifier',
+    length: 36,
+  })
+  declare vaultSystemIdentifier: string
+
+  @Column({
     name: 'file_upload_bytes_used',
     type: 'bigint',
   })

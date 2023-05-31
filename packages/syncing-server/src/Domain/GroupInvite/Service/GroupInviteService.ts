@@ -34,7 +34,7 @@ export class GroupInviteService implements GroupInviteServiceInterface {
       group_uuid: dto.groupUuid,
       inviter_uuid: dto.originatorUuid,
       inviter_public_key: dto.inviterPublicKey,
-      encrypted_group_data: dto.encryptedGroupData,
+      encrypted_vault_key_content: dto.encryptedVaultKeyContent,
       invite_type: dto.inviteType,
       permissions: dto.permissions,
       created_at_timestamp: timestamp,
@@ -51,7 +51,7 @@ export class GroupInviteService implements GroupInviteServiceInterface {
     }
 
     groupInvite.inviterPublicKey = dto.inviterPublicKey
-    groupInvite.encryptedGroupData = dto.encryptedGroupData
+    groupInvite.encryptedVaultKeyContent = dto.encryptedVaultKeyContent
     if (dto.permissions) {
       groupInvite.permissions = dto.permissions
     }

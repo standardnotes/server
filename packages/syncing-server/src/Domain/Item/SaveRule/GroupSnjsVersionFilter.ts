@@ -12,7 +12,7 @@ export class GroupSnjsVersionFilter implements ItemSaveRuleInterface {
       passed: true,
     }
 
-    const groupUuidInvolved = dto.existingItem?.groupUuid || dto.itemHash.group_uuid
+    const groupUuidInvolved = dto.existingItem?.groupUuid || dto.itemHash.vault_system_identifier
     if (!groupUuidInvolved) {
       return successValue
     }

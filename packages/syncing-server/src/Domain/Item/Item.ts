@@ -15,22 +15,6 @@ export class Item {
 
   @Column({
     type: 'varchar',
-    name: 'group_uuid',
-    length: 255,
-    nullable: true,
-  })
-  declare groupUuid: string | null
-
-  @Column({
-    type: 'varchar',
-    name: 'vault_identifier',
-    length: 255,
-    nullable: true,
-  })
-  declare vault_identifier: string | null
-
-  @Column({
-    type: 'varchar',
     name: 'duplicate_of',
     length: 36,
     nullable: true,
@@ -91,18 +75,6 @@ export class Item {
   declare userUuid: string
 
   @Column({
-    name: 'last_edited_by_uuid',
-    length: 36,
-  })
-  declare lastEditedByUuid: string
-
-  @Column({
-    name: 'created_by_uuid',
-    length: 36,
-  })
-  declare createdByUuid: string
-
-  @Column({
     type: 'tinyint',
     precision: 1,
     nullable: true,
@@ -110,6 +82,28 @@ export class Item {
   })
   @Index('index_items_on_deleted')
   declare deleted: boolean
+
+  @Column({
+    type: 'varchar',
+    name: 'vault_system_identifier',
+    length: 255,
+    nullable: true,
+  })
+  declare vaultSystemIdentifier: string | null
+
+  @Column({
+    type: 'varchar',
+    name: 'group_uuid',
+    length: 255,
+    nullable: true,
+  })
+  declare groupUuid: string | null
+
+  @Column({
+    name: 'last_edited_by_uuid',
+    length: 36,
+  })
+  declare lastEditedByUuid: string
 
   @Column({
     name: 'created_at',

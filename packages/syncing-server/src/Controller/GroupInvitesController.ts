@@ -32,7 +32,7 @@ export class GroupInvitesController extends BaseHttpController {
       groupUuid: request.params.groupUuid,
       userUuid: request.body.invitee_uuid,
       inviterPublicKey: request.body.inviter_public_key,
-      encryptedGroupData: request.body.encrypted_group_data,
+      encryptedVaultKeyContent: request.body.encrypted_vault_key_content,
       inviteType: request.body.invite_type,
       permissions: request.body.permissions,
     })
@@ -53,7 +53,7 @@ export class GroupInvitesController extends BaseHttpController {
       originatorUuid: response.locals.user.uuid,
       inviteUuid: request.params.inviteUuid,
       inviterPublicKey: request.body.inviter_public_key,
-      encryptedGroupData: request.body.encrypted_group_data,
+      encryptedVaultKeyContent: request.body.encrypted_vault_key_content,
       permissions: request.body.permissions,
     })
 

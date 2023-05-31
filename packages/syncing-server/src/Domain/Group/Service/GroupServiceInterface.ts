@@ -1,10 +1,11 @@
 import { GroupUser } from './../../GroupUser/Model/GroupUser'
 import { Group } from '../Model/Group'
+import { Item } from '../../Item/Item'
 
 export type CreateGroupDTO = {
   userUuid: string
-  groupUuid: string
   specifiedItemsKeyUuid: string
+  vaultSystemIdentifier: string
 }
 
 export type CreateGroupResult = {
@@ -19,13 +20,13 @@ export type UpdateGroupDTO = {
 }
 
 export interface GroupServiceInterface {
-  createGroup(dto: CreateGroupDTO): Promise<CreateGroupResult | null>
-
+  createGroup(dto: CreateGroupDTO): Promise<CreateGroupResult>
   updateGroup(dto: UpdateGroupDTO): Promise<Group | null>
-
   deleteGroup(dto: { groupUuid: string; originatorUuid: string }): Promise<boolean>
 
   getGroup(dto: { groupUuid: string }): Promise<Group | null>
-
   getGroups(dto: { userUuid: string; lastSyncTime?: number }): Promise<Group[]>
+
+  addItemToGroup(dto: { itemUuid: string; groupUuid: string; originatorUuid: string }): Promise<Item | null>
+  removeItemFromGroup(dto: { itemUuid: string; groupUuid: string; originatorUuid: string }): Promise<Item | null>
 }

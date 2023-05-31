@@ -18,6 +18,8 @@ import { GroupProjection } from '../Projection/GroupProjection'
 import { GroupUserProjection } from '../Projection/GroupUserProjection'
 import { CreateGroupFileValetToken } from '../Domain/UseCase/CreateGroupFileValetToken/CreateGroupFileValetToken'
 import { RemovedGroupUserServiceInterface } from '../Domain/RemovedGroupUser/Service/RemovedGroupUserServiceInterface'
+import { Item } from '../Domain/Item/Item'
+import { ItemProjection } from '../Projection/ItemProjection'
 
 @controller('/groups')
 export class GroupsController extends BaseHttpController {
@@ -27,6 +29,7 @@ export class GroupsController extends BaseHttpController {
     @inject(TYPES.GroupProjector) private groupProjector: ProjectorInterface<Group, GroupProjection>,
     @inject(TYPES.GroupUserProjector) private groupUserProjector: ProjectorInterface<GroupUser, GroupUserProjection>,
     @inject(TYPES.CreateGroupFileReadValetToken) private createGroupFileReadValetToken: CreateGroupFileValetToken,
+    @inject(TYPES.ItemProjector) private itemProjector: ProjectorInterface<Item, ItemProjection>,
   ) {
     super()
   }
@@ -42,36 +45,11 @@ export class GroupsController extends BaseHttpController {
     })
   }
 
-  @httpPost('/:groupUuid/valet-tokens', TYPES.AuthMiddleware)
-  public async getValetTokenForGroupFile(
-    request: Request,
-    response: Response,
-  ): Promise<results.NotFoundResult | results.JsonResult> {
-    const valetTokenResult = await this.createGroupFileReadValetToken.execute({
-      userUuid: response.locals.user.uuid,
-      groupUuid: request.params.groupUuid,
-      fileUuid: request.body.file_uuid,
-      remoteIdentifier: request.body.remote_identifier,
-      operation: request.body.operation,
-      unencryptedFileSize: request.body.unencrypted_file_size,
-      moveOperationType: request.body.move_operation_type,
-      groupToGroupMoveTargetUuid: request.body.group_to_group_move_target_uuid,
-    })
-
-    if (valetTokenResult.success === false) {
-      return this.errorResponse(400, `Failed to create group valet token: ${valetTokenResult.reason}`)
-    }
-
-    return this.json({
-      valetToken: valetTokenResult.valetToken,
-    })
-  }
-
   @httpPost('/', TYPES.AuthMiddleware)
   public async createGroup(request: Request, response: Response): Promise<results.NotFoundResult | results.JsonResult> {
     const result = await this.groupService.createGroup({
       userUuid: response.locals.user.uuid,
-      groupUuid: request.body.group_uuid,
+      vaultSystemIdentifier: request.body.vault_system_identifier,
       specifiedItemsKeyUuid: request.body.specified_items_key_uuid,
     })
 
@@ -116,6 +94,46 @@ export class GroupsController extends BaseHttpController {
     return this.json({ success: true })
   }
 
+  @httpPost('/:groupUuid/items', TYPES.AuthMiddleware)
+  public async addItemToGroup(
+    request: Request,
+    response: Response,
+  ): Promise<results.NotFoundResult | results.JsonResult> {
+    const result = await this.groupService.addItemToGroup({
+      groupUuid: request.params.groupUuid,
+      itemUuid: request.body.item_uuid,
+      originatorUuid: response.locals.user.uuid,
+    })
+
+    if (!result) {
+      return this.errorResponse(400, 'Could not add item to group')
+    }
+
+    return this.json({
+      item: this.itemProjector.projectFull(result),
+    })
+  }
+
+  @httpDelete('/:groupUuid/items', TYPES.AuthMiddleware)
+  public async removeItemFromGroup(
+    request: Request,
+    response: Response,
+  ): Promise<results.NotFoundResult | results.JsonResult> {
+    const result = await this.groupService.removeItemFromGroup({
+      groupUuid: request.params.groupUuid,
+      itemUuid: request.body.item_uuid,
+      originatorUuid: response.locals.user.uuid,
+    })
+
+    if (!result) {
+      return this.errorResponse(400, 'Could not remove item from group')
+    }
+
+    return this.json({
+      item: this.itemProjector.projectFull(result),
+    })
+  }
+
   @httpGet('/removed', TYPES.AuthMiddleware)
   public async getAllRemovedFromGroupsForCurrentUser(
     _request: Request,
@@ -136,6 +154,31 @@ export class GroupsController extends BaseHttpController {
           removedAt: removedUser.createdAtTimestamp,
         }
       }),
+    })
+  }
+
+  @httpPost('/:groupUuid/valet-tokens', TYPES.AuthMiddleware)
+  public async getValetTokenForGroupFile(
+    request: Request,
+    response: Response,
+  ): Promise<results.NotFoundResult | results.JsonResult> {
+    const valetTokenResult = await this.createGroupFileReadValetToken.execute({
+      userUuid: response.locals.user.uuid,
+      groupUuid: request.params.groupUuid,
+      fileUuid: request.body.file_uuid,
+      remoteIdentifier: request.body.remote_identifier,
+      operation: request.body.operation,
+      unencryptedFileSize: request.body.unencrypted_file_size,
+      moveOperationType: request.body.move_operation_type,
+      groupToGroupMoveTargetUuid: request.body.group_to_group_move_target_uuid,
+    })
+
+    if (valetTokenResult.success === false) {
+      return this.errorResponse(400, `Failed to create group valet token: ${valetTokenResult.reason}`)
+    }
+
+    return this.json({
+      valetToken: valetTokenResult.valetToken,
     })
   }
 

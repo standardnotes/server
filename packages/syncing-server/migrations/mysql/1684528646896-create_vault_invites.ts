@@ -44,7 +44,7 @@ export class CreateGroupInvites1684528646896 implements MigrationInterface {
           isNullable: false,
         }),
         new TableColumn({
-          name: 'encrypted_group_data',
+          name: 'encrypted_vault_key_content',
           type: 'text',
           isNullable: false,
         }),

@@ -11,6 +11,7 @@ export class GroupFactory implements GroupFactoryInterface {
     newGroup.uuid = dto.groupHash.uuid
     newGroup.userUuid = dto.userUuid
     newGroup.specifiedItemsKeyUuid = dto.groupHash.specified_items_key_uuid
+    newGroup.vaultSystemIdentifier = dto.groupHash.vault_system_identifier
     newGroup.fileUploadBytesUsed = dto.groupHash.file_upload_bytes_used
     newGroup.fileUploadBytesLimit = dto.groupHash.file_upload_bytes_limit
 

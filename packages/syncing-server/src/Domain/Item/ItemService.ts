@@ -21,7 +21,6 @@ import { ProjectorInterface } from '../../Projection/ProjectorInterface'
 import { ItemProjection } from '../../Projection/ItemProjection'
 import { GroupUserRepositoryInterface } from '../GroupUser/Repository/GroupUserRepositoryInterface'
 import { ConflictType } from '../../Tmp/ConflictType'
-import { GroupServiceInterface } from '../Group/Service/GroupServiceInterface'
 
 export class ItemService implements ItemServiceInterface {
   private readonly DEFAULT_ITEMS_LIMIT = 150
@@ -40,7 +39,6 @@ export class ItemService implements ItemServiceInterface {
     private itemProjector: ProjectorInterface<Item, ItemProjection>,
     private maxItemsSyncLimit: number,
     private groupUsersRepository: GroupUserRepositoryInterface,
-    private groupService: GroupServiceInterface,
     private logger: Logger,
   ) {}
 
@@ -98,8 +96,6 @@ export class ItemService implements ItemServiceInterface {
   async saveItems(dto: SaveItemsDTO): Promise<SaveItemsResult> {
     const savedItems: Array<Item> = []
     const conflicts: Array<ItemConflict> = []
-
-    await this.dynamicallyCreateGroupsBasedOnIncomingItems(dto)
 
     const lastUpdatedTimestamp = this.timer.getTimestampInMicroseconds()
 
@@ -187,30 +183,6 @@ export class ItemService implements ItemServiceInterface {
     return retrievedItems
   }
 
-  private async dynamicallyCreateGroupsBasedOnIncomingItems(dto: SaveItemsDTO): Promise<void> {
-    const processedGroupUuids = new Set()
-
-    for (const itemHash of dto.itemHashes) {
-      if (!itemHash.group_uuid || processedGroupUuids.has(itemHash.group_uuid)) {
-        continue
-      }
-
-      processedGroupUuids.add(itemHash.group_uuid)
-
-      const vaultItemsKeyUuid =
-        itemHash.content_type === ContentType.VaultItemsKey ? itemHash.uuid : itemHash.items_key_id
-      if (!vaultItemsKeyUuid) {
-        continue
-      }
-
-      await this.groupService.createGroup({
-        userUuid: dto.userUuid,
-        groupUuid: itemHash.group_uuid,
-        specifiedItemsKeyUuid: vaultItemsKeyUuid,
-      })
-    }
-  }
-
   private calculateSyncToken(lastUpdatedTimestamp: number, savedItems: Array<Item>): string {
     if (savedItems.length) {
       const sortedItems = savedItems.sort((itemA: Item, itemB: Item) => {
@@ -238,12 +210,7 @@ export class ItemService implements ItemServiceInterface {
     dto.existingItem.updatedWithSession = dto.sessionUuid
     dto.existingItem.contentSize = 0
     dto.existingItem.lastEditedByUuid = dto.userUuid
-
-    if (dto.itemHash.group_uuid) {
-      dto.existingItem.groupUuid = dto.itemHash.group_uuid
-    } else {
-      dto.existingItem.groupUuid = null
-    }
+    dto.existingItem.vaultSystemIdentifier = dto.itemHash.vault_system_identifier ?? null
 
     if (dto.itemHash.content) {
       dto.existingItem.content = dto.itemHash.content
@@ -359,5 +326,18 @@ export class ItemService implements ItemServiceInterface {
       default:
         throw Error('Sync token is missing version part')
     }
+  }
+
+  public async saveItem(item: Item): Promise<Item> {
+    const updatedAt = this.timer.getTimestampInMicroseconds()
+    item.updatedAtTimestamp = updatedAt
+    item.updatedAt = this.timer.convertMicrosecondsToDate(updatedAt)
+
+    const savedItem = await this.itemRepository.save(item)
+    return savedItem
+  }
+
+  public async getItem(dto: { itemUuid: string; userUuid: string }): Promise<Item | null> {
+    return this.itemRepository.findByUuidAndUserUuid(dto.itemUuid, dto.userUuid)
   }
 }
