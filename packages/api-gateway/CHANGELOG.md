@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.62.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.61.5...@standardnotes/api-gateway@1.62.0) (2023-05-31)
+
+### Features
+
+* **home-server:** add custom home server logs ([#619](https://github.com/standardnotes/api-gateway/issues/619)) ([bc63d0a](https://github.com/standardnotes/api-gateway/commit/bc63d0aeea86abbb4a144b2682b7070d7bdfe878))
+
 ## [1.61.5](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.61.4...@standardnotes/api-gateway@1.61.5) (2023-05-31)
 
 ### Reverts

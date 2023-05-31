@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.17.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.16.2...@standardnotes/domain-core@1.17.0) (2023-05-31)
+
+### Features
+
+* **home-server:** add custom home server logs ([#619](https://github.com/standardnotes/server/issues/619)) ([bc63d0a](https://github.com/standardnotes/server/commit/bc63d0aeea86abbb4a144b2682b7070d7bdfe878))
+
 ## [1.16.2](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.16.0...@standardnotes/domain-core@1.16.2) (2023-05-30)
 
 ### Bug Fixes
