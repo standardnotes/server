@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.40.5](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.40.4...@standardnotes/syncing-server@1.40.5) (2023-05-31)
+
+### Reverts
+
+* Revert "Revert "feat: make home server components publishable (#617)"" ([13c85d4](https://github.com/standardnotes/syncing-server-js/commit/13c85d43318caa0fb53726f13ea581ba4a5f816b)), closes [#617](https://github.com/standardnotes/syncing-server-js/issues/617)
+
 ## [1.40.4](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.40.3...@standardnotes/syncing-server@1.40.4) (2023-05-31)
 
 ### Bug Fixes

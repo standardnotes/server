@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.61.5](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.61.4...@standardnotes/api-gateway@1.61.5) (2023-05-31)
+
+### Reverts
+
+* Revert "Revert "feat: make home server components publishable (#617)"" ([13c85d4](https://github.com/standardnotes/api-gateway/commit/13c85d43318caa0fb53726f13ea581ba4a5f816b)), closes [#617](https://github.com/standardnotes/api-gateway/issues/617)
+
 ## [1.61.4](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.61.3...@standardnotes/api-gateway@1.61.4) (2023-05-31)
 
 ### Bug Fixes
