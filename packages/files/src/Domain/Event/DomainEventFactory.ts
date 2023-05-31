@@ -2,8 +2,8 @@ import {
   UserFileRemovedEvent,
   UserFileUploadedEvent,
   DomainEventService,
-  VaultFileUploadedEvent,
-  VaultFileRemovedEvent,
+  GroupFileUploadedEvent,
+  GroupFileRemovedEvent,
 } from '@standardnotes/domain-events'
 import { TimerInterface } from '@standardnotes/time'
 import { inject, injectable } from 'inversify'
@@ -56,18 +56,18 @@ export class DomainEventFactory implements DomainEventFactoryInterface {
     }
   }
 
-  createVaultFileUploadedEvent(payload: {
-    vaultUuid: string
+  createGroupFileUploadedEvent(payload: {
+    groupUuid: string
     filePath: string
     fileName: string
     fileByteSize: number
-  }): VaultFileUploadedEvent {
+  }): GroupFileUploadedEvent {
     return {
-      type: 'VAULT_FILE_UPLOADED',
+      type: 'GROUP_FILE_UPLOADED',
       createdAt: this.timer.getUTCDate(),
       meta: {
         correlation: {
-          userIdentifier: payload.vaultUuid,
+          userIdentifier: payload.groupUuid,
           userIdentifierType: 'uuid',
         },
         origin: DomainEventService.Files,
@@ -76,18 +76,18 @@ export class DomainEventFactory implements DomainEventFactoryInterface {
     }
   }
 
-  createVaultFileRemovedEvent(payload: {
-    vaultUuid: string
+  createGroupFileRemovedEvent(payload: {
+    groupUuid: string
     filePath: string
     fileName: string
     fileByteSize: number
-  }): VaultFileRemovedEvent {
+  }): GroupFileRemovedEvent {
     return {
-      type: 'VAULT_FILE_REMOVED',
+      type: 'GROUP_FILE_REMOVED',
       createdAt: this.timer.getUTCDate(),
       meta: {
         correlation: {
-          userIdentifier: payload.vaultUuid,
+          userIdentifier: payload.groupUuid,
           userIdentifierType: 'uuid',
         },
         origin: DomainEventService.Files,

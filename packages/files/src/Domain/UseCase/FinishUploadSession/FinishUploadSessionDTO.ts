@@ -1,6 +1,6 @@
 export type FinishUploadSessionDTO = {
   ownerUuid: string
-  ownerType: 'user' | 'vault'
+  ownerType: 'user' | 'group'
   resourceRemoteIdentifier: string
   uploadBytesUsed: number
   uploadBytesLimit: number

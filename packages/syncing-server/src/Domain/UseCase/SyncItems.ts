@@ -5,14 +5,14 @@ import { ItemServiceInterface } from '../Item/ItemServiceInterface'
 import { SyncItemsDTO } from './SyncItemsDTO'
 import { SyncItemsResponse } from './SyncItemsResponse'
 import { UseCaseInterface } from './UseCaseInterface'
-import { VaultInviteServiceInterface } from '../VaultInvite/Service/VaultInviteServiceInterface'
-import { VaultServiceInterface } from '../Vault/Service/VaultServiceInterface'
+import { GroupInviteServiceInterface } from '../GroupInvite/Service/GroupInviteServiceInterface'
+import { GroupServiceInterface } from '../Group/Service/GroupServiceInterface'
 
 export class SyncItems implements UseCaseInterface {
   constructor(
     private itemService: ItemServiceInterface,
-    private vaultService: VaultServiceInterface,
-    private vaultInviteService: VaultInviteServiceInterface,
+    private groupService: GroupServiceInterface,
+    private groupInviteService: GroupInviteServiceInterface,
     private contactService: ContactServiceInterface,
   ) {}
 
@@ -20,7 +20,7 @@ export class SyncItems implements UseCaseInterface {
     const getItemsResult = await this.itemService.getItems({
       userUuid: dto.userUuid,
       syncToken: dto.syncToken,
-      vaultUuids: dto.vaultUuids,
+      groupUuids: dto.groupUuids,
       cursorToken: dto.cursorToken,
       limit: dto.limit,
       contentType: dto.contentType,
@@ -36,8 +36,8 @@ export class SyncItems implements UseCaseInterface {
     })
 
     let retrievedItems = this.filterOutSyncConflictsForConsecutiveSyncs(getItemsResult.items, saveItemsResult.conflicts)
-    const isVaultExclusiveSync = dto.vaultUuids && dto.vaultUuids.length > 0
-    if (this.isFirstSync(dto) && !isVaultExclusiveSync) {
+    const isGroupExclusiveSync = dto.groupUuids && dto.groupUuids.length > 0
+    if (this.isFirstSync(dto) && !isGroupExclusiveSync) {
       retrievedItems = await this.itemService.frontLoadKeysItemsToTop(dto.userUuid, retrievedItems)
     }
 
@@ -46,12 +46,12 @@ export class SyncItems implements UseCaseInterface {
       cursorToken: dto.cursorToken,
     })
 
-    const vaults = await this.vaultService.getVaults({
+    const groups = await this.groupService.getGroups({
       userUuid: dto.userUuid,
       lastSyncTime,
     })
 
-    const vaultInvites = await this.vaultInviteService.getInvitesForUser({
+    const groupInvites = await this.groupInviteService.getInvitesForUser({
       userUuid: dto.userUuid,
       lastSyncTime,
     })
@@ -67,8 +67,8 @@ export class SyncItems implements UseCaseInterface {
       savedItems: saveItemsResult.savedItems,
       conflicts: saveItemsResult.conflicts,
       cursorToken: getItemsResult.cursorToken,
-      vaults,
-      vaultInvites,
+      groups,
+      groupInvites,
       contacts,
     }
 

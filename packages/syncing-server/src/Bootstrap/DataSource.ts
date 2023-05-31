@@ -1,13 +1,13 @@
-import { RemovedVaultUser } from './../Domain/RemovedVaultUser/Model/RemovedVaultUser'
+import { RemovedGroupUser } from './../Domain/RemovedGroupUser/Model/RemovedGroupUser'
 import { Contact } from './../Domain/Contact/Model/Contact'
-import { VaultInvite } from '../Domain/VaultInvite/Model/VaultInvite'
-import { VaultUser } from '../Domain/VaultUser/Model/VaultUser'
+import { GroupInvite } from '../Domain/GroupInvite/Model/GroupInvite'
+import { GroupUser } from '../Domain/GroupUser/Model/GroupUser'
 import { DataSource, LoggerOptions } from 'typeorm'
 import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions'
 import { Item } from '../Domain/Item/Item'
 import { Env } from './Env'
 import { SqliteConnectionOptions } from 'typeorm/driver/sqlite/SqliteConnectionOptions'
-import { Vault } from '../Domain/Vault/Model/Vault'
+import { Group } from '../Domain/Group/Model/Group'
 
 const env: Env = new Env()
 env.load()
@@ -43,7 +43,7 @@ const replicationConfig = {
 
 const commonDataSourceOptions = {
   maxQueryExecutionTime,
-  entities: [Item, Vault, VaultUser, RemovedVaultUser, VaultInvite, Contact],
+  entities: [Item, Group, GroupUser, RemovedGroupUser, GroupInvite, Contact],
   migrations: [`dist/migrations/${isConfiguredForMySQL ? 'mysql' : 'sqlite'}/*.js`],
   migrationsRun: true,
   logging: <LoggerOptions>env.get('DB_DEBUG_LEVEL'),

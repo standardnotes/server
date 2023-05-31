@@ -22,7 +22,7 @@ export class RemoveFile implements UseCaseInterface {
     try {
       this.logger.debug(`Removing file: ${dto.resourceRemoteIdentifier}`)
 
-      const ownerUuid = isRemoveUserFileDTO(dto) ? dto.userUuid : dto.vaultUuid
+      const ownerUuid = isRemoveUserFileDTO(dto) ? dto.userUuid : dto.groupUuid
 
       const filePath = `${ownerUuid}/${dto.resourceRemoteIdentifier}`
 
@@ -40,9 +40,9 @@ export class RemoveFile implements UseCaseInterface {
         )
       } else {
         await this.domainEventPublisher.publish(
-          this.domainEventFactory.createVaultFileRemovedEvent({
-            vaultUuid: dto.vaultUuid,
-            filePath: `${dto.vaultUuid}/${dto.resourceRemoteIdentifier}`,
+          this.domainEventFactory.createGroupFileRemovedEvent({
+            groupUuid: dto.groupUuid,
+            filePath: `${dto.groupUuid}/${dto.resourceRemoteIdentifier}`,
             fileName: dto.resourceRemoteIdentifier,
             fileByteSize: removedFileSize,
           }),

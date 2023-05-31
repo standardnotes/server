@@ -131,17 +131,17 @@ export class TypeORMItemRepository implements ItemRepositoryInterface {
       queryBuilder.orderBy(`item.${query.sortBy}`, query.sortOrder)
     }
 
-    if (query.includeVaultUuids != undefined && query.includeVaultUuids.length > 0) {
+    if (query.includeGroupUuids != undefined && query.includeGroupUuids.length > 0) {
       queryBuilder.where(
         new Brackets((qb) => {
-          qb.where('item.vault_uuid IN (:...vaultUuids)', { vaultUuids: query.includeVaultUuids })
+          qb.where('item.group_uuid IN (:...groupUuids)', { groupUuids: query.includeGroupUuids })
           if (query.userUuid) {
             qb.orWhere('item.user_uuid = :userUuid', { userUuid: query.userUuid })
           }
         }),
       )
-    } else if (query.exclusiveVaultUuids != undefined && query.exclusiveVaultUuids.length > 0) {
-      queryBuilder.andWhere('item.vault_uuid IN (:...vaultUuids)', { vaultUuids: query.exclusiveVaultUuids })
+    } else if (query.exclusiveGroupUuids != undefined && query.exclusiveGroupUuids.length > 0) {
+      queryBuilder.andWhere('item.group_uuid IN (:...groupUuids)', { groupUuids: query.exclusiveGroupUuids })
     } else if (query.userUuid !== undefined) {
       queryBuilder.where('item.user_uuid = :userUuid', { userUuid: query.userUuid })
     }

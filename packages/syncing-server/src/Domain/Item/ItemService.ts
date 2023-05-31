@@ -19,9 +19,9 @@ import { ItemSaveValidatorInterface } from './SaveValidator/ItemSaveValidatorInt
 import { ItemTransferCalculatorInterface } from './ItemTransferCalculatorInterface'
 import { ProjectorInterface } from '../../Projection/ProjectorInterface'
 import { ItemProjection } from '../../Projection/ItemProjection'
-import { VaultUserRepositoryInterface } from '../VaultUser/Repository/VaultUserRepositoryInterface'
+import { GroupUserRepositoryInterface } from '../GroupUser/Repository/GroupUserRepositoryInterface'
 import { ConflictType } from '../../Tmp/ConflictType'
-import { VaultServiceInterface } from '../Vault/Service/VaultServiceInterface'
+import { GroupServiceInterface } from '../Group/Service/GroupServiceInterface'
 
 export class ItemService implements ItemServiceInterface {
   private readonly DEFAULT_ITEMS_LIMIT = 150
@@ -39,8 +39,8 @@ export class ItemService implements ItemServiceInterface {
     private timer: TimerInterface,
     private itemProjector: ProjectorInterface<Item, ItemProjection>,
     private maxItemsSyncLimit: number,
-    private vaultUsersRepository: VaultUserRepositoryInterface,
-    private vaultService: VaultServiceInterface,
+    private groupUsersRepository: GroupUserRepositoryInterface,
+    private groupService: GroupServiceInterface,
     private logger: Logger,
   ) {}
 
@@ -50,16 +50,16 @@ export class ItemService implements ItemServiceInterface {
     const limit = dto.limit === undefined || dto.limit < 1 ? this.DEFAULT_ITEMS_LIMIT : dto.limit
     const upperBoundLimit = limit < this.maxItemsSyncLimit ? limit : this.maxItemsSyncLimit
 
-    const vaultUsers = await this.vaultUsersRepository.findAllForUser({ userUuid: dto.userUuid })
-    const userVaultUuids = vaultUsers.map((vaultUser) => vaultUser.vaultUuid)
-    const exclusiveVaultUuids = dto.vaultUuids
-      ? dto.vaultUuids.filter((vaultUuid) => userVaultUuids.includes(vaultUuid))
+    const groupUsers = await this.groupUsersRepository.findAllForUser({ userUuid: dto.userUuid })
+    const userGroupUuids = groupUsers.map((groupUser) => groupUser.groupUuid)
+    const exclusiveGroupUuids = dto.groupUuids
+      ? dto.groupUuids.filter((groupUuid) => userGroupUuids.includes(groupUuid))
       : undefined
 
     const itemQuery: ItemQuery = {
       userUuid: dto.userUuid,
-      includeVaultUuids: !dto.vaultUuids ? userVaultUuids : undefined,
-      exclusiveVaultUuids: exclusiveVaultUuids,
+      includeGroupUuids: !dto.groupUuids ? userGroupUuids : undefined,
+      exclusiveGroupUuids: exclusiveGroupUuids,
       lastSyncTime,
       syncTimeComparison,
       contentType: dto.contentType,
@@ -99,7 +99,7 @@ export class ItemService implements ItemServiceInterface {
     const savedItems: Array<Item> = []
     const conflicts: Array<ItemConflict> = []
 
-    await this.dynamicallyCreateVaultsBasedOnIncomingItems(dto)
+    await this.dynamicallyCreateGroupsBasedOnIncomingItems(dto)
 
     const lastUpdatedTimestamp = this.timer.getTimestampInMicroseconds()
 
@@ -187,15 +187,15 @@ export class ItemService implements ItemServiceInterface {
     return retrievedItems
   }
 
-  private async dynamicallyCreateVaultsBasedOnIncomingItems(dto: SaveItemsDTO): Promise<void> {
-    const processedVaultUuids = new Set()
+  private async dynamicallyCreateGroupsBasedOnIncomingItems(dto: SaveItemsDTO): Promise<void> {
+    const processedGroupUuids = new Set()
 
     for (const itemHash of dto.itemHashes) {
-      if (!itemHash.vault_uuid || processedVaultUuids.has(itemHash.vault_uuid)) {
+      if (!itemHash.group_uuid || processedGroupUuids.has(itemHash.group_uuid)) {
         continue
       }
 
-      processedVaultUuids.add(itemHash.vault_uuid)
+      processedGroupUuids.add(itemHash.group_uuid)
 
       const vaultItemsKeyUuid =
         itemHash.content_type === ContentType.VaultItemsKey ? itemHash.uuid : itemHash.items_key_id
@@ -203,9 +203,9 @@ export class ItemService implements ItemServiceInterface {
         continue
       }
 
-      await this.vaultService.createVault({
+      await this.groupService.createGroup({
         userUuid: dto.userUuid,
-        vaultUuid: itemHash.vault_uuid,
+        groupUuid: itemHash.group_uuid,
         specifiedItemsKeyUuid: vaultItemsKeyUuid,
       })
     }
@@ -239,10 +239,10 @@ export class ItemService implements ItemServiceInterface {
     dto.existingItem.contentSize = 0
     dto.existingItem.lastEditedByUuid = dto.userUuid
 
-    if (dto.itemHash.vault_uuid) {
-      dto.existingItem.vaultUuid = dto.itemHash.vault_uuid
+    if (dto.itemHash.group_uuid) {
+      dto.existingItem.groupUuid = dto.itemHash.group_uuid
     } else {
-      dto.existingItem.vaultUuid = null
+      dto.existingItem.groupUuid = null
     }
 
     if (dto.itemHash.content) {

@@ -4,5 +4,5 @@ export type GetItemsDTO = {
   cursorToken?: string | null
   limit?: number
   contentType?: string
-  vaultUuids?: string[] | null
+  groupUuids?: string[] | null
 }

@@ -31,8 +31,8 @@ import { ItemRevisionCreationRequestedEventHandler } from '../Domain/Handler/Ite
 import { FSItemBackupService } from '../Infra/FS/FSItemBackupService'
 import { CommonContainerConfigLoader } from './CommonContainerConfigLoader'
 import { UserCredentialsChangedEventHandler } from '../Domain/Handler/UserCredentialsChangedEventHandler'
-import { VaultFileUploadedEventHandler } from '../Domain/Handler/VaultFileUploadedEventHandler'
-import { VaultFileRemovedEventHandler } from '../Domain/Handler/VaultFileRemovedEventHandler'
+import { GroupFileUploadedEventHandler } from '../Domain/Handler/GroupFileUploadedEventHandler'
+import { GroupFileRemovedEventHandler } from '../Domain/Handler/GroupFileRemovedEventHandler'
 
 export class WorkerContainerConfigLoader extends CommonContainerConfigLoader {
   private readonly DEFAULT_FILE_UPLOAD_PATH = `${__dirname}/../../uploads`
@@ -140,13 +140,13 @@ export class WorkerContainerConfigLoader extends CommonContainerConfigLoader {
       .toDynamicValue((context: interfaces.Context) => {
         return new UserCredentialsChangedEventHandler(
           context.container.get(TYPES.ContactRepository),
-          context.container.get(TYPES.VaultInviteRepository),
+          context.container.get(TYPES.GroupInviteRepository),
           context.container.get(TYPES.Timer),
         )
       })
 
-    container.bind<VaultFileUploadedEventHandler>(TYPES.VaultFileUploadedEventHandler).to(VaultFileUploadedEventHandler)
-    container.bind<VaultFileRemovedEventHandler>(TYPES.VaultFileRemovedEventHandler).to(VaultFileRemovedEventHandler)
+    container.bind<GroupFileUploadedEventHandler>(TYPES.GroupFileUploadedEventHandler).to(GroupFileUploadedEventHandler)
+    container.bind<GroupFileRemovedEventHandler>(TYPES.GroupFileRemovedEventHandler).to(GroupFileRemovedEventHandler)
 
     // Services
     container.bind<ContentDecoder>(TYPES.ContentDecoder).toDynamicValue(() => new ContentDecoder())
@@ -199,8 +199,8 @@ export class WorkerContainerConfigLoader extends CommonContainerConfigLoader {
           ['EMAIL_BACKUP_REQUESTED', context.container.get(TYPES.EmailBackupRequestedEventHandler)],
           ['ITEM_REVISION_CREATION_REQUESTED', context.container.get(TYPES.ItemRevisionCreationRequestedEventHandler)],
           ['USER_CREDENTIALS_CHANGED', container.get(TYPES.UserCredentialsChangedEventHandler)],
-          ['VAULT_FILE_REMOVED', container.get(TYPES.VaultFileRemovedEventHandler)],
-          ['VAULT_FILE_UPLOADED', container.get(TYPES.VaultFileUploadedEventHandler)],
+          ['GROUP_FILE_REMOVED', container.get(TYPES.GroupFileRemovedEventHandler)],
+          ['GROUP_FILE_UPLOADED', container.get(TYPES.GroupFileUploadedEventHandler)],
         ])
 
         const handler =

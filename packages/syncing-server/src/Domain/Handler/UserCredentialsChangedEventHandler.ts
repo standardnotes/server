@@ -5,18 +5,18 @@ import {
 } from '@standardnotes/domain-events'
 import { TimerInterface } from '@standardnotes/time'
 import { ContactsRepositoryInterface } from '../Contact/Repository/ContactRepositoryInterface'
-import { VaultInviteRepositoryInterface } from '../VaultInvite/Repository/VaultInviteRepositoryInterface'
+import { GroupInviteRepositoryInterface } from '../GroupInvite/Repository/GroupInviteRepositoryInterface'
 
 export class UserCredentialsChangedEventHandler implements DomainEventHandlerInterface {
   constructor(
     private contactRepository: ContactsRepositoryInterface,
-    private vaultInviteRepository: VaultInviteRepositoryInterface,
+    private groupInviteRepository: GroupInviteRepositoryInterface,
     private timer: TimerInterface,
   ) {}
 
   async handle(event: UserCredentialsChangedEvent): Promise<void> {
     await this.updatePublicKeyOfAllContacts(event.payload)
-    await this.nullifyPendingInboundVaultInvites(event.payload)
+    await this.nullifyPendingInboundGroupInvites(event.payload)
   }
 
   private async updatePublicKeyOfAllContacts(payload: UserCredentialsChangedEventPayload): Promise<void> {
@@ -31,13 +31,13 @@ export class UserCredentialsChangedEventHandler implements DomainEventHandlerInt
     }
   }
 
-  private async nullifyPendingInboundVaultInvites(payload: UserCredentialsChangedEventPayload): Promise<void> {
-    const inboundInvites = await this.vaultInviteRepository.findAll({
+  private async nullifyPendingInboundGroupInvites(payload: UserCredentialsChangedEventPayload): Promise<void> {
+    const inboundInvites = await this.groupInviteRepository.findAll({
       userUuid: payload.userUuid,
     })
 
     for (const invite of inboundInvites) {
-      await this.vaultInviteRepository.remove(invite)
+      await this.groupInviteRepository.remove(invite)
     }
   }
 }

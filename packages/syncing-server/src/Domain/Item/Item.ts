@@ -15,11 +15,19 @@ export class Item {
 
   @Column({
     type: 'varchar',
-    name: 'vault_uuid',
+    name: 'group_uuid',
     length: 255,
     nullable: true,
   })
-  declare vaultUuid: string | null
+  declare groupUuid: string | null
+
+  @Column({
+    type: 'varchar',
+    name: 'vault_identifier',
+    length: 255,
+    nullable: true,
+  })
+  declare vault_identifier: string | null
 
   @Column({
     type: 'varchar',

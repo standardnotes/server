@@ -1,11 +1,11 @@
 import { MigrationInterface, QueryRunner, Table, TableColumn } from 'typeorm'
 
-export class CreateVault1684173017359 implements MigrationInterface {
-  name = 'createVault1684173017359'
+export class CreateGroup1684173017359 implements MigrationInterface {
+  name = 'createGroup1684173017359'
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     const table = new Table({
-      name: 'vaults',
+      name: 'groups',
       columns: [
         new TableColumn({
           name: 'uuid',
@@ -48,6 +48,6 @@ export class CreateVault1684173017359 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('vaults')
+    await queryRunner.dropTable('groups')
   }
 }

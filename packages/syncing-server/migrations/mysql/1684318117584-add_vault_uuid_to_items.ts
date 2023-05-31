@@ -1,13 +1,13 @@
 import { MigrationInterface, QueryRunner, TableColumn } from 'typeorm'
 
-export class AddVaultUuidToItems1684318117584 implements MigrationInterface {
-  name = 'addVaultUuidToItems1684318117584'
+export class AddGroupUuidToItems1684318117584 implements MigrationInterface {
+  name = 'addGroupUuidToItems1684318117584'
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.addColumn(
       'items',
       new TableColumn({
-        name: 'vault_uuid',
+        name: 'group_uuid',
         type: 'varchar',
         length: '36',
         isNullable: true,
@@ -34,7 +34,7 @@ export class AddVaultUuidToItems1684318117584 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropColumn('items', 'vault_uuid')
+    await queryRunner.dropColumn('items', 'group_uuid')
     await queryRunner.dropColumn('items', 'last_edited_by_uuid')
   }
 }

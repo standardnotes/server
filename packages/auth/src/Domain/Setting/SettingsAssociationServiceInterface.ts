@@ -6,7 +6,7 @@ import { SettingDescription } from './SettingDescription'
 
 export interface SettingsAssociationServiceInterface {
   getDefaultSettingsAndValuesForNewUser(): Map<string, SettingDescription>
-  getDefaultSettingsAndValuesForNewVaultAccount(): Map<string, SettingDescription>
+  getDefaultSettingsAndValuesForNewPrivateUsernameAccount(): Map<string, SettingDescription>
   getPermissionAssociatedWithSetting(settingName: SettingName): PermissionName | undefined
   getEncryptionVersionForSetting(settingName: SettingName): EncryptionVersion
   getSensitivityForSetting(settingName: SettingName): boolean
