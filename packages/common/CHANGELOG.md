@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.48.2](https://github.com/standardnotes/server/compare/@standardnotes/common@1.48.0...@standardnotes/common@1.48.2) (2023-05-31)
+
+### Bug Fixes
+
+* **common:** bump version ([74ac709](https://github.com/standardnotes/server/commit/74ac709bb5e78aa5a01db34592873a42674ce138))
+
 # [1.48.0](https://github.com/standardnotes/server/compare/@standardnotes/common@1.47.1...@standardnotes/common@1.48.0) (2023-05-30)
 
 ### Features
