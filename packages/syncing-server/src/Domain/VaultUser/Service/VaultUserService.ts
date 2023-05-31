@@ -22,10 +22,10 @@ export class VaultUserService implements VaultUserServiceInterface {
     vaultUuid: string
     userUuid: string
     permissions: VaultUserPermission
-  }): Promise<VaultUser | null> {
+  }): Promise<VaultUser> {
     const vault = await this.vaultRepository.findByUuid(dto.vaultUuid)
     if (!vault) {
-      return null
+      throw new Error('Attempting to add a vault user to a non-existent vault')
     }
 
     await this.removedVaultUserService.deleteRemovedVaultUser({

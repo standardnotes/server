@@ -16,7 +16,6 @@ import { ProjectorInterface } from '../Projection/ProjectorInterface'
 import { Vault } from '../Domain/Vault/Model/Vault'
 import { VaultProjection } from '../Projection/VaultProjection'
 import { VaultUserProjection } from '../Projection/VaultUserProjection'
-import { VaultUserServiceInterface } from '../Domain/VaultUser/Service/VaultUserServiceInterface'
 import { CreateVaultFileValetToken } from '../Domain/UseCase/CreateVaultFileValetToken/CreateVaultFileValetToken'
 import { RemovedVaultUserServiceInterface } from '../Domain/RemovedVaultUser/Service/RemovedVaultUserServiceInterface'
 
@@ -24,7 +23,6 @@ import { RemovedVaultUserServiceInterface } from '../Domain/RemovedVaultUser/Ser
 export class VaultsController extends BaseHttpController {
   constructor(
     @inject(TYPES.VaultService) private vaultService: VaultServiceInterface,
-    @inject(TYPES.VaultUserService) private vaultUserService: VaultUserServiceInterface,
     @inject(TYPES.RemovedVaultUserService) private removedVaultUserService: RemovedVaultUserServiceInterface,
     @inject(TYPES.VaultProjector) private vaultProjector: ProjectorInterface<Vault, VaultProjection>,
     @inject(TYPES.VaultUserProjector) private vaultUserProjector: ProjectorInterface<VaultUser, VaultUserProjection>,
@@ -74,7 +72,6 @@ export class VaultsController extends BaseHttpController {
     const result = await this.vaultService.createVault({
       userUuid: response.locals.user.uuid,
       vaultUuid: request.body.vault_uuid,
-      vaultKeyTimestamp: request.body.vault_key_timestamp,
       specifiedItemsKeyUuid: request.body.specified_items_key_uuid,
     })
 
@@ -82,19 +79,9 @@ export class VaultsController extends BaseHttpController {
       return this.errorResponse(400, 'Could not create vault')
     }
 
-    const vaultUser = await this.vaultUserService.addVaultUser({
-      vaultUuid: result.uuid,
-      userUuid: response.locals.user.uuid,
-      permissions: 'admin',
-    })
-
-    if (!vaultUser) {
-      return this.errorResponse(400, 'Could not add user to vault')
-    }
-
     return this.json({
-      vault: this.vaultProjector.projectFull(result),
-      vaultUser: this.vaultUserProjector.projectFull(vaultUser),
+      vault: this.vaultProjector.projectFull(result.vault),
+      vaultUser: this.vaultUserProjector.projectFull(result.vaultUser),
     })
   }
 
@@ -103,7 +90,6 @@ export class VaultsController extends BaseHttpController {
     const result = await this.vaultService.updateVault({
       vaultUuid: request.params.vaultUuid,
       originatorUuid: response.locals.user.uuid,
-      vaultKeyTimestamp: request.body.vault_key_timestamp,
       specifiedItemsKeyUuid: request.body.specified_items_key_uuid,
     })
 

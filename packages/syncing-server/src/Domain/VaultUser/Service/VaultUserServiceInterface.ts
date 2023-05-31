@@ -3,11 +3,7 @@ import { VaultUserPermission } from '../Model/VaultUserPermission'
 import { GetVaultUsersDTO } from './GetVaultUsersDTO'
 
 export interface VaultUserServiceInterface {
-  addVaultUser(dto: {
-    vaultUuid: string
-    userUuid: string
-    permissions: VaultUserPermission
-  }): Promise<VaultUser | null>
+  addVaultUser(dto: { vaultUuid: string; userUuid: string; permissions: VaultUserPermission }): Promise<VaultUser>
 
   getAllVaultUsersForUser(dto: GetVaultUsersDTO): Promise<VaultUser[]>
 

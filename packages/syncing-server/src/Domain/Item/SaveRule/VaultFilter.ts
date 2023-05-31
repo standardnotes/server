@@ -64,7 +64,7 @@ export class VaultFilter implements ItemSaveRuleInterface {
     ) {
       return {
         type: 'move-to-other-vault',
-        sourceVaultUuid: existingItemVaultUuid,
+        vaultUuid: existingItemVaultUuid,
         targetVaultUuid: targetItemVaultUuid,
         existingItem: dto.existingItem,
         ...common,
@@ -195,7 +195,7 @@ export class VaultFilter implements ItemSaveRuleInterface {
   }
 
   private async handleMoveToOtherVaultOperation(operation: MoveToOtherVaultSaveOperation): Promise<ItemSaveRuleResult> {
-    const sourceVaultPermissions = await this.getVaultPermissions(operation.userUuid, operation.sourceVaultUuid)
+    const sourceVaultPermissions = await this.getVaultPermissions(operation.userUuid, operation.vaultUuid)
     const targetVaultPermissions = await this.getVaultPermissions(operation.userUuid, operation.targetVaultUuid)
 
     if (!sourceVaultPermissions || !targetVaultPermissions) {

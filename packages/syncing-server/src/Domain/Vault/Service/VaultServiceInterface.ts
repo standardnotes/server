@@ -1,21 +1,25 @@
+import { VaultUser } from './../../VaultUser/Model/VaultUser'
 import { Vault } from '../Model/Vault'
 
 export type CreateVaultDTO = {
   userUuid: string
   vaultUuid: string
-  vaultKeyTimestamp: number
   specifiedItemsKeyUuid: string
+}
+
+export type CreateVaultResult = {
+  vault: Vault
+  vaultUser: VaultUser
 }
 
 export type UpdateVaultDTO = {
   originatorUuid: string
   vaultUuid: string
-  vaultKeyTimestamp: number
   specifiedItemsKeyUuid: string
 }
 
 export interface VaultServiceInterface {
-  createVault(dto: CreateVaultDTO): Promise<Vault | null>
+  createVault(dto: CreateVaultDTO): Promise<CreateVaultResult | null>
 
   updateVault(dto: UpdateVaultDTO): Promise<Vault | null>
 

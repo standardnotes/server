@@ -19,12 +19,6 @@ export class Vault {
   declare specifiedItemsKeyUuid: string
 
   @Column({
-    name: 'vault_key_timestamp',
-    type: 'bigint',
-  })
-  declare vaultKeyTimestamp: number
-
-  @Column({
     name: 'file_upload_bytes_used',
     type: 'bigint',
   })

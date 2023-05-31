@@ -148,6 +148,7 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
         context.container.get(TYPES.ItemProjector),
         context.container.get(TYPES.MAX_ITEMS_LIMIT),
         context.container.get(TYPES.VaultUserRepository),
+        context.container.get(TYPES.VaultService),
         context.container.get(TYPES.Logger),
       )
     })

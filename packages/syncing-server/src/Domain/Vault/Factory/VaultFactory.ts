@@ -11,7 +11,6 @@ export class VaultFactory implements VaultFactoryInterface {
     newVault.uuid = dto.vaultHash.uuid
     newVault.userUuid = dto.userUuid
     newVault.specifiedItemsKeyUuid = dto.vaultHash.specified_items_key_uuid
-    newVault.vaultKeyTimestamp = dto.vaultHash.vault_key_timestamp
     newVault.fileUploadBytesUsed = dto.vaultHash.file_upload_bytes_used
     newVault.fileUploadBytesLimit = dto.vaultHash.file_upload_bytes_limit
 

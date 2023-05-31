@@ -20,7 +20,7 @@ export type RemoveFromVaultSaveOperation = SaveOperationCommon & {
 
 export type MoveToOtherVaultSaveOperation = SaveOperationCommon & {
   type: 'move-to-other-vault'
-  sourceVaultUuid: string
+  vaultUuid: string
   targetVaultUuid: string
   existingItem: Item
 }

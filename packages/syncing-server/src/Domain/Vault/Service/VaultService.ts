@@ -1,7 +1,7 @@
 import { TimerInterface } from '@standardnotes/time'
 import { Vault } from '../Model/Vault'
 import { VaultsRepositoryInterface } from '../Repository/VaultRepositoryInterface'
-import { CreateVaultDTO, VaultServiceInterface, UpdateVaultDTO } from './VaultServiceInterface'
+import { CreateVaultDTO, VaultServiceInterface, UpdateVaultDTO, CreateVaultResult } from './VaultServiceInterface'
 import { VaultFactoryInterface } from '../Factory/VaultFactoryInterface'
 import { VaultUserServiceInterface } from '../../VaultUser/Service/VaultUserServiceInterface'
 import { VaultInviteServiceInterface } from '../../VaultInvite/Service/VaultInviteServiceInterface'
@@ -15,7 +15,7 @@ export class VaultService implements VaultServiceInterface {
     private timer: TimerInterface,
   ) {}
 
-  async createVault(dto: CreateVaultDTO): Promise<Vault | null> {
+  async createVault(dto: CreateVaultDTO): Promise<CreateVaultResult | null> {
     const existingVault = await this.vaultRepository.findByUuid(dto.vaultUuid)
     if (existingVault) {
       return null
@@ -28,7 +28,6 @@ export class VaultService implements VaultServiceInterface {
         uuid: dto.vaultUuid,
         user_uuid: dto.userUuid,
         specified_items_key_uuid: dto.specifiedItemsKeyUuid,
-        vault_key_timestamp: dto.vaultKeyTimestamp,
         file_upload_bytes_limit: 1_000_000,
         file_upload_bytes_used: 0,
         created_at_timestamp: timestamp,
@@ -38,7 +37,13 @@ export class VaultService implements VaultServiceInterface {
 
     const savedVault = await this.vaultRepository.create(vault)
 
-    return savedVault
+    const vaultUser = await this.vaultUserService.addVaultUser({
+      vaultUuid: savedVault.uuid,
+      userUuid: dto.userUuid,
+      permissions: 'admin',
+    })
+
+    return { vault, vaultUser }
   }
 
   async getVault(dto: { vaultUuid: string }): Promise<Vault | null> {
@@ -67,12 +72,7 @@ export class VaultService implements VaultServiceInterface {
       return null
     }
 
-    if (dto.vaultKeyTimestamp < vault.vaultKeyTimestamp) {
-      return null
-    }
-
     vault.specifiedItemsKeyUuid = dto.specifiedItemsKeyUuid
-    vault.vaultKeyTimestamp = dto.vaultKeyTimestamp
     vault.updatedAtTimestamp = this.timer.getTimestampInMicroseconds()
 
     const savedVault = await this.vaultRepository.save(vault)

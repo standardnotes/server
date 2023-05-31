@@ -26,10 +26,6 @@ export class CreateVault1684173017359 implements MigrationInterface {
           isNullable: false,
         }),
         new TableColumn({
-          name: 'vault_key_timestamp',
-          type: 'bigint',
-        }),
-        new TableColumn({
           name: 'file_upload_bytes_used',
           type: 'bigint',
         }),

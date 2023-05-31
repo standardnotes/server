@@ -21,6 +21,7 @@ import { ProjectorInterface } from '../../Projection/ProjectorInterface'
 import { ItemProjection } from '../../Projection/ItemProjection'
 import { VaultUserRepositoryInterface } from '../VaultUser/Repository/VaultUserRepositoryInterface'
 import { ConflictType } from '../../Tmp/ConflictType'
+import { VaultServiceInterface } from '../Vault/Service/VaultServiceInterface'
 
 export class ItemService implements ItemServiceInterface {
   private readonly DEFAULT_ITEMS_LIMIT = 150
@@ -39,6 +40,7 @@ export class ItemService implements ItemServiceInterface {
     private itemProjector: ProjectorInterface<Item, ItemProjection>,
     private maxItemsSyncLimit: number,
     private vaultUsersRepository: VaultUserRepositoryInterface,
+    private vaultService: VaultServiceInterface,
     private logger: Logger,
   ) {}
 
@@ -96,6 +98,8 @@ export class ItemService implements ItemServiceInterface {
   async saveItems(dto: SaveItemsDTO): Promise<SaveItemsResult> {
     const savedItems: Array<Item> = []
     const conflicts: Array<ItemConflict> = []
+
+    await this.dynamicallyCreateVaultsBasedOnIncomingItems(dto)
 
     const lastUpdatedTimestamp = this.timer.getTimestampInMicroseconds()
 
@@ -181,6 +185,30 @@ export class ItemService implements ItemServiceInterface {
     })
 
     return retrievedItems
+  }
+
+  private async dynamicallyCreateVaultsBasedOnIncomingItems(dto: SaveItemsDTO): Promise<void> {
+    const processedVaultUuids = new Set()
+
+    for (const itemHash of dto.itemHashes) {
+      if (!itemHash.vault_uuid || processedVaultUuids.has(itemHash.vault_uuid)) {
+        continue
+      }
+
+      processedVaultUuids.add(itemHash.vault_uuid)
+
+      const vaultItemsKeyUuid =
+        itemHash.content_type === ContentType.VaultItemsKey ? itemHash.uuid : itemHash.items_key_id
+      if (!vaultItemsKeyUuid) {
+        continue
+      }
+
+      await this.vaultService.createVault({
+        userUuid: dto.userUuid,
+        vaultUuid: itemHash.vault_uuid,
+        specifiedItemsKeyUuid: vaultItemsKeyUuid,
+      })
+    }
   }
 
   private calculateSyncToken(lastUpdatedTimestamp: number, savedItems: Array<Item>): string {
