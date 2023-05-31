@@ -3,5 +3,5 @@ export interface HomeServerInterface {
   stop(): Promise<void>
   restart(): Promise<void>
   isRunning(): Promise<boolean>
-  logs(): Promise<NodeJS.ReadableStream>
+  logs(): NodeJS.ReadableStream
 }

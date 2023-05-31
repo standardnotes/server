@@ -132,7 +132,7 @@ export class HomeServer implements HomeServerInterface {
     return this.serverInstance.address() !== null
   }
 
-  async logs(): Promise<NodeJS.ReadableStream> {
+  logs(): NodeJS.ReadableStream {
     const passThroughStream = new PassThrough()
 
     for (const logger of winston.loggers.loggers.values()) {
