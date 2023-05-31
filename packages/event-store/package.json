@@ -16,7 +16,7 @@
     "test": "jest --coverage --config=./jest.config.js --maxWorkers=50%",
     "worker": "yarn node dist/bin/worker.js"
   },
-  "author": "Karol Sójko <karolsojko@standardnotes.com>",
+  "author": "Karol Sójko <karol@standardnotes.com>",
   "license": "AGPL-3.0-or-later",
   "devDependencies": {
     "@types/ioredis": "^5.0.0",

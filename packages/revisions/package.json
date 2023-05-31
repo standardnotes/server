@@ -9,7 +9,7 @@
   "main": "dist/src/index.js",
   "typings": "dist/src/index.d.ts",
   "repository": "git@github.com:standardnotes/server.git",
-  "author": "Karol Sójko <karolsojko@standardnotes.com>",
+  "author": "Karol Sójko <karol@standardnotes.com>",
   "license": "AGPL-3.0-or-later",
   "scripts": {
     "clean": "rm -fr dist",
