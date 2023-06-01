@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.14.6](https://github.com/standardnotes/server/compare/@standardnotes/time@1.14.4...@standardnotes/time@1.14.6) (2023-06-01)
+
+### Bug Fixes
+
+* **time:** bump version ([4b40c59](https://github.com/standardnotes/server/commit/4b40c59e7e5935fbf5d5c94ad7dee1cbe3c183cb))
+
 ## [1.14.4](https://github.com/standardnotes/server/compare/@standardnotes/time@1.14.3...@standardnotes/time@1.14.4) (2023-05-09)
 
 ### Bug Fixes
