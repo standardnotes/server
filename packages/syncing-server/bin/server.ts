@@ -1,7 +1,5 @@
 import 'reflect-metadata'
 
-import 'newrelic'
-
 import '../src/Infra/InversifyExpressUtils/InversifyExpressHealthCheckController'
 import '../src/Infra/InversifyExpressUtils/InversifyExpressItemsController'
 

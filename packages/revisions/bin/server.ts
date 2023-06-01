@@ -1,7 +1,5 @@
 import 'reflect-metadata'
 
-import 'newrelic'
-
 import * as cors from 'cors'
 import { urlencoded, json, Request, Response, NextFunction } from 'express'
 import * as winston from 'winston'

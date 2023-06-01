@@ -1,6 +1,5 @@
 import { Logger } from 'winston'
 import * as zlib from 'zlib'
-import * as newrelic from 'newrelic'
 
 import {
   DomainEventHandlerInterface,
@@ -28,6 +27,8 @@ export class SQSNewRelicEventMessageHandler implements DomainEventMessageHandler
     }
 
     this.logger.debug(`Received event: ${domainEvent.type}`)
+
+    const newrelic = await import('newrelic')
 
     await newrelic.startBackgroundTransaction(
       domainEvent.type,

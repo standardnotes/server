@@ -1,5 +1,4 @@
 import { Logger } from 'winston'
-import * as newrelic from 'newrelic'
 
 import {
   DomainEventHandlerInterface,
@@ -49,6 +48,8 @@ export class SQSNewRelicBounceNotificiationHandler implements DomainEventMessage
       }
 
       this.logger.debug(`Received event: ${domainEvent.type}`)
+
+      const newrelic = await import('newrelic')
 
       await newrelic.startBackgroundTransaction(
         domainEvent.type,

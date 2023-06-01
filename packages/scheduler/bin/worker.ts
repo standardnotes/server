@@ -1,7 +1,5 @@
 import 'reflect-metadata'
 
-import 'newrelic'
-
 import { Logger } from 'winston'
 import { DomainEventSubscriberFactoryInterface } from '@standardnotes/domain-events'
 import * as dayjs from 'dayjs'

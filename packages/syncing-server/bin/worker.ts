@@ -1,7 +1,5 @@
 import 'reflect-metadata'
 
-import 'newrelic'
-
 import { Logger } from 'winston'
 
 import TYPES from '../src/Bootstrap/Types'

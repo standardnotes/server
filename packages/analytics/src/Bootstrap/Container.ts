@@ -58,9 +58,6 @@ import { SQSClient, SQSClientConfig } from '@aws-sdk/client-sqs'
 import { SessionCreatedEventHandler } from '../Domain/Handler/SessionCreatedEventHandler'
 import { SessionRefreshedEventHandler } from '../Domain/Handler/SessionRefreshedEventHandler'
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const newrelicFormatter = require('@newrelic/winston-enricher')
-
 export class ContainerConfigLoader {
   async load(): Promise<Container> {
     const env: Env = new Env()
@@ -81,9 +78,12 @@ export class ContainerConfigLoader {
 
     container.bind(TYPES.Redis).toConstantValue(redis)
 
-    const newrelicWinstonFormatter = newrelicFormatter(winston)
     const winstonFormatters = [winston.format.splat(), winston.format.json()]
     if (env.get('NEW_RELIC_ENABLED', true) === 'true') {
+      await import('newrelic')
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      const newrelicFormatter = require('@newrelic/winston-enricher')
+      const newrelicWinstonFormatter = newrelicFormatter(winston)
       winstonFormatters.push(newrelicWinstonFormatter())
     }
 

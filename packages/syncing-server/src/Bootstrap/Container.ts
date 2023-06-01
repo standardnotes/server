@@ -73,8 +73,6 @@ import { S3ItemBackupService } from '../Infra/S3/S3ItemBackupService'
 import { ControllerContainer, ControllerContainerInterface } from '@standardnotes/domain-core'
 import { HomeServerItemsController } from '../Infra/InversifyExpressUtils/HomeServer/HomeServerItemsController'
 import { Transform } from 'stream'
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const newrelicFormatter = require('@newrelic/winston-enricher')
 
 export class ContainerConfigLoader {
   private readonly DEFAULT_CONTENT_SIZE_TRANSFER_LIMIT = 10_000_000
@@ -105,24 +103,23 @@ export class ContainerConfigLoader {
     if (configuration?.logger) {
       container.bind<winston.Logger>(TYPES.Sync_Logger).toConstantValue(configuration.logger as winston.Logger)
     } else {
-      container.bind<winston.Logger>(TYPES.Sync_Logger).toDynamicValue((context: interfaces.Context) => {
-        const env: Env = context.container.get(TYPES.Sync_Env)
-
+      const winstonFormatters = [winston.format.splat(), winston.format.json()]
+      if (env.get('NEW_RELIC_ENABLED', true) === 'true') {
+        await import('newrelic')
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        const newrelicFormatter = require('@newrelic/winston-enricher')
         const newrelicWinstonFormatter = newrelicFormatter(winston)
-        const winstonFormatters = [winston.format.splat(), winston.format.json()]
-        if (env.get('NEW_RELIC_ENABLED', true) === 'true') {
-          winstonFormatters.push(newrelicWinstonFormatter())
-        }
+        winstonFormatters.push(newrelicWinstonFormatter())
+      }
 
-        const logger = winston.createLogger({
-          level: env.get('LOG_LEVEL') || 'info',
-          format: winston.format.combine(...winstonFormatters),
-          transports: [new winston.transports.Console({ level: env.get('LOG_LEVEL') || 'info' })],
-          defaultMeta: { service: 'syncing-server' },
-        })
-
-        return logger
+      const logger = winston.createLogger({
+        level: env.get('LOG_LEVEL') || 'info',
+        format: winston.format.combine(...winstonFormatters),
+        transports: [new winston.transports.Console({ level: env.get('LOG_LEVEL') || 'info' })],
+        defaultMeta: { service: 'syncing-server' },
       })
+
+      container.bind<winston.Logger>(TYPES.Sync_Logger).toConstantValue(logger)
     }
 
     if (isConfiguredForHomeServer) {

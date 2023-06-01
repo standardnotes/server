@@ -62,6 +62,10 @@ export class ContainerConfigLoader {
 
     const container = new Container()
 
+    if (env.get('NEW_RELIC_ENABLED', true) === 'true') {
+      await import('newrelic')
+    }
+
     const isConfiguredForHomeServer = env.get('CACHE_TYPE') === 'memory'
 
     if (configuration?.logger) {
