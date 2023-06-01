@@ -19,7 +19,7 @@ import { GroupUserProjection } from '../Projection/GroupUserProjection'
 import { CreateGroupFileValetToken } from '../Domain/UseCase/CreateGroupFileValetToken/CreateGroupFileValetToken'
 import { RemovedGroupUserServiceInterface } from '../Domain/RemovedGroupUser/Service/RemovedGroupUserServiceInterface'
 import { Item } from '../Domain/Item/Item'
-import { ItemProjection } from '../Projection/ItemProjection'
+import { SavedItemProjection } from '../Projection/SavedItemProjection'
 
 @controller('/groups')
 export class GroupsController extends BaseHttpController {
@@ -29,7 +29,7 @@ export class GroupsController extends BaseHttpController {
     @inject(TYPES.GroupProjector) private groupProjector: ProjectorInterface<Group, GroupProjection>,
     @inject(TYPES.GroupUserProjector) private groupUserProjector: ProjectorInterface<GroupUser, GroupUserProjection>,
     @inject(TYPES.CreateGroupFileReadValetToken) private createGroupFileReadValetToken: CreateGroupFileValetToken,
-    @inject(TYPES.ItemProjector) private itemProjector: ProjectorInterface<Item, ItemProjection>,
+    @inject(TYPES.SavedItemProjector) private savedItemProjector: ProjectorInterface<Item, SavedItemProjection>,
   ) {
     super()
   }
@@ -94,7 +94,7 @@ export class GroupsController extends BaseHttpController {
     return this.json({ success: true })
   }
 
-  @httpPost('/:groupUuid/items', TYPES.AuthMiddleware)
+  @httpPost('/:groupUuid/add-item', TYPES.AuthMiddleware)
   public async addItemToGroup(
     request: Request,
     response: Response,
@@ -110,11 +110,11 @@ export class GroupsController extends BaseHttpController {
     }
 
     return this.json({
-      item: this.itemProjector.projectFull(result),
+      item: this.savedItemProjector.projectFull(result),
     })
   }
 
-  @httpDelete('/:groupUuid/items', TYPES.AuthMiddleware)
+  @httpDelete('/:groupUuid/remove-item', TYPES.AuthMiddleware)
   public async removeItemFromGroup(
     request: Request,
     response: Response,
@@ -130,7 +130,7 @@ export class GroupsController extends BaseHttpController {
     }
 
     return this.json({
-      item: this.itemProjector.projectFull(result),
+      item: this.savedItemProjector.projectFull(result),
     })
   }
 

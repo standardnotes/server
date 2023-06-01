@@ -118,6 +118,10 @@ export class GroupService implements GroupServiceInterface {
       return null
     }
 
+    if (!itemResult.item.vaultSystemIdentifier) {
+      return null
+    }
+
     itemResult.item.groupUuid = dto.groupUuid
 
     const saveResult = await this.saveItem.execute({ item: itemResult.item })

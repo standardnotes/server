@@ -20,6 +20,7 @@ export class GroupProjector implements ProjectorInterface<Group, GroupProjection
     return {
       uuid: group.uuid,
       user_uuid: group.userUuid,
+      vault_system_identifier: group.vaultSystemIdentifier,
       specified_items_key_uuid: group.specifiedItemsKeyUuid,
       file_upload_bytes_used: group.fileUploadBytesUsed,
       file_upload_bytes_limit: group.fileUploadBytesLimit,
