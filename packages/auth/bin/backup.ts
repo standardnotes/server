@@ -1,7 +1,5 @@
 import 'reflect-metadata'
 
-import 'newrelic'
-
 import { Stream } from 'stream'
 
 import { Logger } from 'winston'

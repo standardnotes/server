@@ -1,7 +1,5 @@
 import 'reflect-metadata'
 
-import 'newrelic'
-
 import { Logger } from 'winston'
 
 import { ContainerConfigLoader } from '../src/Bootstrap/Container'

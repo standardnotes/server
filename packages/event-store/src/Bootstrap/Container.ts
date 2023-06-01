@@ -26,6 +26,10 @@ export class ContainerConfigLoader {
 
     const container = new Container()
 
+    if (env.get('NEW_RELIC_ENABLED', true) === 'true') {
+      await import('newrelic')
+    }
+
     await AppDataSource.initialize()
 
     if (env.get('SQS_QUEUE_URL', true)) {

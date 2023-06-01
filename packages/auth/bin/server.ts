@@ -1,7 +1,5 @@
 import 'reflect-metadata'
 
-import 'newrelic'
-
 import '../src/Infra/InversifyExpressUtils/InversifyExpressAuthController'
 import '../src/Infra/InversifyExpressUtils/InversifyExpressAuthenticatorsController'
 import '../src/Infra/InversifyExpressUtils/InversifyExpressSessionsController'

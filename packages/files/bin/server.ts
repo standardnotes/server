@@ -1,7 +1,5 @@
 import 'reflect-metadata'
 
-import 'newrelic'
-
 import * as busboy from 'connect-busboy'
 
 import '../src/Infra/InversifyExpress/InversifyExpressHealthCheckController'

@@ -23,9 +23,6 @@ import { RequiredCrossServiceTokenMiddleware } from '../Controller/RequiredCross
 import { OptionalCrossServiceTokenMiddleware } from '../Controller/OptionalCrossServiceTokenMiddleware'
 import { Transform } from 'stream'
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const newrelicFormatter = require('@newrelic/winston-enricher')
-
 export class ContainerConfigLoader {
   async load(configuration?: { serviceContainer?: ServiceContainerInterface; logger?: Transform }): Promise<Container> {
     const env: Env = new Env()
@@ -35,9 +32,12 @@ export class ContainerConfigLoader {
 
     const isConfiguredForHomeServer = env.get('CACHE_TYPE') === 'memory'
 
-    const newrelicWinstonFormatter = newrelicFormatter(winston)
     const winstonFormatters = [winston.format.splat(), winston.format.json()]
     if (env.get('NEW_RELIC_ENABLED', true) === 'true') {
+      await import('newrelic')
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      const newrelicFormatter = require('@newrelic/winston-enricher')
+      const newrelicWinstonFormatter = newrelicFormatter(winston)
       winstonFormatters.push(newrelicWinstonFormatter())
     }
 
