@@ -45,6 +45,6 @@
   },
   "optionalDependencies": {
     "@types/newrelic": "^9.13.0",
-    "newrelic": "^10.1.0"
+    "newrelic": "^10.1.2"
   }
 }
