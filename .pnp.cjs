@@ -12654,7 +12654,7 @@ const RAW_RUNTIME_STATE =
     ]],\
     ["newrelic", [\
       ["npm:10.1.0", {\
-        "packageLocation": "./.yarn/unplugged/newrelic-npm-10.1.0-6c0218eb35/node_modules/newrelic/",\
+        "packageLocation": "./.yarn/cache/newrelic-npm-10.1.0-6c0218eb35-4be5e5e0c1.zip/node_modules/newrelic/",\
         "packageDependencies": [\
           ["newrelic", "npm:10.1.0"],\
           ["@contrast/fn-inspect", "npm:3.3.1"],\

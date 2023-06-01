@@ -26,7 +26,6 @@
     "upgrade:snjs": "yarn ncu -u '@standardnotes/*'"
   },
   "dependencies": {
-    "@newrelic/winston-enricher": "^4.0.1",
     "@standardnotes/domain-core": "workspace:^",
     "@standardnotes/domain-events": "workspace:*",
     "@standardnotes/domain-events-infra": "workspace:*",
@@ -42,7 +41,6 @@
     "inversify-express-utils": "^6.4.3",
     "ioredis": "^5.2.4",
     "jsonwebtoken": "^9.0.0",
-    "newrelic": "^10.1.0",
     "prettyjson": "^1.2.5",
     "reflect-metadata": "0.1.13",
     "winston": "^3.8.1"
@@ -53,7 +51,6 @@
     "@types/ioredis": "^5.0.0",
     "@types/jest": "^29.5.1",
     "@types/jsonwebtoken": "^9.0.1",
-    "@types/newrelic": "^9.13.0",
     "@types/node": "^20.2.5",
     "@types/prettyjson": "^0.0.30",
     "@typescript-eslint/eslint-plugin": "^5.59.2",
@@ -66,5 +63,10 @@
     "prettier": "^2.8.8",
     "ts-jest": "^29.1.0",
     "typescript": "^5.0.4"
+  },
+  "optionalDependencies": {
+    "@newrelic/winston-enricher": "^4.0.1",
+    "@types/newrelic": "^9.13.0",
+    "newrelic": "^10.1.0"
   }
 }
