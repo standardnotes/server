@@ -37,6 +37,9 @@ jobs:
         registry-url: 'https://registry.npmjs.org'
         node-version-file: '.nvmrc'
 
+    - name: Install
+      run: yarn install --immutable
+
     - name: Run Server
       run: docker compose -f docker-compose.ci.yml up -d
       env:
