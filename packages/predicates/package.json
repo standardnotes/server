@@ -1,6 +1,6 @@
 {
   "name": "@standardnotes/predicates",
-  "version": "1.6.8",
+  "version": "1.6.9",
   "engines": {
     "node": ">=18.0.0 <21.0.0"
   },

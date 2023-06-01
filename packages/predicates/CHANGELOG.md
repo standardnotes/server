@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.6.9](https://github.com/standardnotes/server/compare/@standardnotes/predicates@1.6.7...@standardnotes/predicates@1.6.9) (2023-06-01)
+
+### Bug Fixes
+
+* **predicates:** bump version ([231194b](https://github.com/standardnotes/server/commit/231194bd539ae481d09709ce2bdb7e98d33b04ce))
+
 ## [1.6.7](https://github.com/standardnotes/server/compare/@standardnotes/predicates@1.6.6...@standardnotes/predicates@1.6.7) (2023-05-09)
 
 ### Bug Fixes
