@@ -1,4 +1,1 @@
-export type GetItemDTO = {
-  userUuid: string
-  itemUuid: string
-}
+export type GetItemDTO = { itemUuid: string } | { itemUuid: string; userUuid: string }

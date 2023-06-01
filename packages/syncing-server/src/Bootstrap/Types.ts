@@ -74,6 +74,7 @@ const TYPES = {
   SyncItems: Symbol.for('SyncItems'),
   CheckIntegrity: Symbol.for('CheckIntegrity'),
   GetItem: Symbol.for('GetItem'),
+  SaveItem: Symbol.for('SaveItem'),
   CreateGroupFileReadValetToken: Symbol.for('CreateGroupFileReadValetToken'),
   // Handlers
   UserCredentialsChangedEventHandler: Symbol.for('UserCredentialsChangedEventHandler'),

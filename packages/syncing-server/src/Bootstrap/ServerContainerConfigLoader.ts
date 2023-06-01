@@ -1,3 +1,4 @@
+import { SaveItem } from './../Domain/UseCase/SaveItem/SaveItem'
 import { ContactFactory } from './../Domain/Contact/Factory/ContactFactory'
 
 import { GroupServiceInterface } from '../Domain/Group/Service/GroupServiceInterface'
@@ -113,6 +114,9 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
     container.bind<GetItem>(TYPES.GetItem).toDynamicValue((context: interfaces.Context) => {
       return new GetItem(context.container.get(TYPES.ItemRepository))
     })
+    container.bind<SaveItem>(TYPES.SaveItem).toDynamicValue((context: interfaces.Context) => {
+      return new SaveItem(context.container.get(TYPES.ItemRepository), context.container.get(TYPES.Timer))
+    })
 
     container
       .bind<CreateGroupFileValetToken>(TYPES.CreateGroupFileReadValetToken)
@@ -154,7 +158,8 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
         context.container.get(TYPES.GroupFactory),
         context.container.get(TYPES.GroupUserService),
         context.container.get(TYPES.GroupInviteService),
-        context.container.get(TYPES.ItemService),
+        context.container.get(TYPES.GetItem),
+        context.container.get(TYPES.SaveItem),
         context.container.get(TYPES.Timer),
       )
     })

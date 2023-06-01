@@ -327,17 +327,4 @@ export class ItemService implements ItemServiceInterface {
         throw Error('Sync token is missing version part')
     }
   }
-
-  public async saveItem(item: Item): Promise<Item> {
-    const updatedAt = this.timer.getTimestampInMicroseconds()
-    item.updatedAtTimestamp = updatedAt
-    item.updatedAt = this.timer.convertMicrosecondsToDate(updatedAt)
-
-    const savedItem = await this.itemRepository.save(item)
-    return savedItem
-  }
-
-  public async getItem(dto: { itemUuid: string; userUuid: string }): Promise<Item | null> {
-    return this.itemRepository.findByUuidAndUserUuid(dto.itemUuid, dto.userUuid)
-  }
 }

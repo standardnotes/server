@@ -33,9 +33,9 @@ export class ItemProjector implements ProjectorInterface<Item, ItemProjection> {
       updated_at: this.timer.convertMicrosecondsToStringDate(item.updatedAtTimestamp),
       updated_at_timestamp: item.updatedAtTimestamp,
       updated_with_session: item.updatedWithSession,
+      vault_system_identifier: item.vaultSystemIdentifier,
       group_uuid: item.groupUuid,
       user_uuid: item.userUuid,
-      created_by_uuid: item.createdByUuid,
       last_edited_by_uuid: item.lastEditedByUuid,
     }
   }

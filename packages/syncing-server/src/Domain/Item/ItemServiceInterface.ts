@@ -9,6 +9,4 @@ export interface ItemServiceInterface {
   saveItems(dto: SaveItemsDTO): Promise<SaveItemsResult>
   frontLoadKeysItemsToTop(userUuid: string, retrievedItems: Array<Item>): Promise<Array<Item>>
   getLastSyncTime(dto: { syncToken?: string | null; cursorToken?: string | null }): number | undefined
-  getItem(dto: { itemUuid: string; userUuid: string }): Promise<Item | null>
-  saveItem(item: Item): Promise<Item>
 }

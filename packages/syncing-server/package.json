@@ -23,7 +23,7 @@
     "worker": "yarn node dist/bin/worker.js",
     "content-size": "yarn node dist/bin/content.js",
     "upgrade:snjs": "yarn ncu -u '@standardnotes/*'",
-    "migrate": "yarn build && yarn typeorm migration:run -d dist/src/Bootstrap/DataSource.js"
+    "migrate": "yarn clean && yarn build && yarn typeorm migration:run -d dist/src/Bootstrap/DataSource.js"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.328.0",

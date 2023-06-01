@@ -1,4 +1,4 @@
-import { ItemServiceInterface } from './../../Item/ItemServiceInterface'
+import { SaveItem } from './../../UseCase/SaveItem/SaveItem'
 import { TimerInterface } from '@standardnotes/time'
 import { Group } from '../Model/Group'
 import { GroupsRepositoryInterface } from '../Repository/GroupRepositoryInterface'
@@ -8,6 +8,7 @@ import { GroupUserServiceInterface } from '../../GroupUser/Service/GroupUserServ
 import { GroupInviteServiceInterface } from '../../GroupInvite/Service/GroupInviteServiceInterface'
 import { v4 as uuidv4 } from 'uuid'
 import { Item } from '../../Item/Item'
+import { GetItem } from '../../UseCase/GetItem/GetItem'
 
 export class GroupService implements GroupServiceInterface {
   constructor(
@@ -15,7 +16,8 @@ export class GroupService implements GroupServiceInterface {
     private groupFactory: GroupFactoryInterface,
     private groupUserService: GroupUserServiceInterface,
     private groupInviteService: GroupInviteServiceInterface,
-    private itemService: ItemServiceInterface,
+    private getItem: GetItem,
+    private saveItem: SaveItem,
     private timer: TimerInterface,
   ) {}
 
@@ -102,11 +104,6 @@ export class GroupService implements GroupServiceInterface {
   }
 
   async addItemToGroup(dto: { itemUuid: string; groupUuid: string; originatorUuid: string }): Promise<Item | null> {
-    const item = await this.itemService.getItem({ itemUuid: dto.itemUuid, userUuid: dto.originatorUuid })
-    if (!item) {
-      return null
-    }
-
     const groupUser = await this.groupUserService.getUserForGroup({
       userUuid: dto.originatorUuid,
       groupUuid: dto.groupUuid,
@@ -116,8 +113,15 @@ export class GroupService implements GroupServiceInterface {
       return null
     }
 
-    item.groupUuid = dto.groupUuid
-    return this.itemService.saveItem(item)
+    const itemResult = await this.getItem.execute({ itemUuid: dto.itemUuid, userUuid: dto.originatorUuid })
+    if (!itemResult.success) {
+      return null
+    }
+
+    itemResult.item.groupUuid = dto.groupUuid
+
+    const saveResult = await this.saveItem.execute({ item: itemResult.item })
+    return saveResult.savedItem
   }
 
   async removeItemFromGroup(dto: {
@@ -125,11 +129,6 @@ export class GroupService implements GroupServiceInterface {
     groupUuid: string
     originatorUuid: string
   }): Promise<Item | null> {
-    const item = await this.itemService.getItem({ itemUuid: dto.itemUuid, userUuid: dto.originatorUuid })
-    if (!item) {
-      return null
-    }
-
     const groupUser = await this.groupUserService.getUserForGroup({
       userUuid: dto.originatorUuid,
       groupUuid: dto.groupUuid,
@@ -139,7 +138,14 @@ export class GroupService implements GroupServiceInterface {
       return null
     }
 
-    item.groupUuid = null
-    return this.itemService.saveItem(item)
+    const itemResult = await this.getItem.execute({ itemUuid: dto.itemUuid, userUuid: dto.originatorUuid })
+    if (!itemResult.success) {
+      return null
+    }
+
+    itemResult.item.groupUuid = null
+
+    const saveResult = await this.saveItem.execute({ item: itemResult.item })
+    return saveResult.savedItem
   }
 }
