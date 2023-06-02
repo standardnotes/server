@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.8.3](https://github.com/standardnotes/server/compare/@standardnotes/home-server@1.8.2...@standardnotes/home-server@1.8.3) (2023-06-02)
+
+### Bug Fixes
+
+* **home-server:** add default for VERSION environment variable ([2f569d4](https://github.com/standardnotes/server/commit/2f569d41047a802eb72ef1a3618ffe4df28a709c))
+* **home-server:** displaying the port on which it is running ([1e62a37](https://github.com/standardnotes/server/commit/1e62a3760e3b9601478c851cf33db2f2b348d7fb))
+
 ## [1.8.2](https://github.com/standardnotes/server/compare/@standardnotes/home-server@1.8.1...@standardnotes/home-server@1.8.2) (2023-06-02)
 
 ### Bug Fixes

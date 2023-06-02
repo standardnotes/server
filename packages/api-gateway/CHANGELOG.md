@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.63.1](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.63.0...@standardnotes/api-gateway@1.63.1) (2023-06-02)
+
+### Bug Fixes
+
+* **home-server:** add default for VERSION environment variable ([2f569d4](https://github.com/standardnotes/api-gateway/commit/2f569d41047a802eb72ef1a3618ffe4df28a709c))
+
 # [1.63.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.62.4...@standardnotes/api-gateway@1.63.0) (2023-06-02)
 
 ### Features
