@@ -250,9 +250,9 @@ export class ContainerConfigLoader {
 
   createLogger({ env }: { env: Env }): winston.Logger {
     return winston.createLogger({
-      level: env.get('LOG_LEVEL') || 'info',
+      level: env.get('LOG_LEVEL', true) || 'info',
       format: winston.format.combine(winston.format.splat(), winston.format.json()),
-      transports: [new winston.transports.Console({ level: env.get('LOG_LEVEL') || 'info' })],
+      transports: [new winston.transports.Console({ level: env.get('LOG_LEVEL', true) || 'info' })],
       defaultMeta: { service: 'files' },
     })
   }

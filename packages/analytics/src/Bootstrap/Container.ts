@@ -88,9 +88,9 @@ export class ContainerConfigLoader {
     }
 
     const logger = winston.createLogger({
-      level: env.get('LOG_LEVEL') || 'info',
+      level: env.get('LOG_LEVEL', true) || 'info',
       format: winston.format.combine(...winstonFormatters),
-      transports: [new winston.transports.Console({ level: env.get('LOG_LEVEL') || 'info' })],
+      transports: [new winston.transports.Console({ level: env.get('LOG_LEVEL', true) || 'info' })],
     })
     container.bind<winston.Logger>(TYPES.Logger).toConstantValue(logger)
 

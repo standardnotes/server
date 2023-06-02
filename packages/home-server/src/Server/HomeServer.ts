@@ -24,6 +24,7 @@ import { HomeServerConfiguration } from './HomeServerConfiguration'
 
 export class HomeServer implements HomeServerInterface {
   private serverInstance: http.Server | undefined
+  private logStream: PassThrough = new PassThrough()
 
   async start(configuration?: HomeServerConfiguration): Promise<void> {
     const controllerContainer = new ControllerContainer()
@@ -150,17 +151,13 @@ export class HomeServer implements HomeServerInterface {
   }
 
   logs(): NodeJS.ReadableStream {
-    const passThroughStream = new PassThrough()
-
-    for (const logger of winston.loggers.loggers.values()) {
-      logger.stream({ start: -1 }).pipe(passThroughStream, { end: false })
-    }
-
-    return passThroughStream
+    return this.logStream
   }
 
   private configureLoggers(env: Env): void {
     const winstonFormatters = [winston.format.splat(), winston.format.json()]
+
+    const level = env.get('LOG_LEVEL', true) || 'info'
 
     for (const loggerName of [
       'auth-server',
@@ -171,9 +168,12 @@ export class HomeServer implements HomeServerInterface {
       'home-server',
     ]) {
       winston.loggers.add(loggerName, {
-        level: env.get('LOG_LEVEL') || 'info',
+        level,
         format: winston.format.combine(...winstonFormatters),
-        transports: [new winston.transports.Console({ level: env.get('LOG_LEVEL') || 'info' })],
+        transports: [new winston.transports.Stream({
+          level,
+          stream: this.logStream,
+        })],
         defaultMeta: { service: loggerName },
       })
     }
