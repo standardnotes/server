@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.42.1](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.42.0...@standardnotes/syncing-server@1.42.1) (2023-06-02)
+
+### Bug Fixes
+
+* initializing data source with already configured environment ([624b574](https://github.com/standardnotes/syncing-server-js/commit/624b574013157e9e044d4a8ed53cadb7fcc567ae))
+
 # [1.42.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.41.4...@standardnotes/syncing-server@1.42.0) (2023-06-02)
 
 ### Features

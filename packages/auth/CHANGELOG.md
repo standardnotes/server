@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.116.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.116.0...@standardnotes/auth-server@1.116.1) (2023-06-02)
+
+### Bug Fixes
+
+* initializing data source with already configured environment ([624b574](https://github.com/standardnotes/server/commit/624b574013157e9e044d4a8ed53cadb7fcc567ae))
+
 # [1.116.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.115.5...@standardnotes/auth-server@1.116.0) (2023-06-02)
 
 ### Features
