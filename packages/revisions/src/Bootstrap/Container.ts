@@ -95,7 +95,7 @@ export class ContainerConfigLoader {
     }
 
     container.bind(TYPES.Revisions_NEW_RELIC_ENABLED).toConstantValue(env.get('NEW_RELIC_ENABLED', true))
-    container.bind(TYPES.Revisions_VERSION).toConstantValue(env.get('VERSION'))
+    container.bind(TYPES.Revisions_VERSION).toConstantValue(env.get('VERSION', true) ?? 'development')
 
     // Map
     container
