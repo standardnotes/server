@@ -53,11 +53,12 @@ export class ContainerConfigLoader {
     controllerConatiner?: ControllerContainerInterface
     directCallDomainEventPublisher?: DirectCallDomainEventPublisher
     logger?: Transform
+    environmentOverrides?: { [name: string]: string }
   }): Promise<Container> {
     const directCallDomainEventPublisher =
       configuration?.directCallDomainEventPublisher ?? new DirectCallDomainEventPublisher()
 
-    const env: Env = new Env()
+    const env: Env = new Env(configuration?.environmentOverrides)
     env.load()
 
     const isConfiguredForHomeServer = env.get('DB_TYPE') === 'sqlite'

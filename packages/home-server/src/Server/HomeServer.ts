@@ -20,37 +20,48 @@ const robots = require('express-robots-txt')
 
 import { Env } from '../Bootstrap/Env'
 import { HomeServerInterface } from './HomeServerInterface'
+import { HomeServerConfiguration } from './HomeServerConfiguration'
 
 export class HomeServer implements HomeServerInterface {
   private serverInstance: http.Server | undefined
 
-  async start(): Promise<void> {
+  async start(configuration?: HomeServerConfiguration): Promise<void> {
     const controllerContainer = new ControllerContainer()
     const serviceContainer = new ServiceContainer()
     const directCallDomainEventPublisher = new DirectCallDomainEventPublisher()
 
-    const env: Env = new Env()
+    const env: Env = new Env(configuration?.environment)
     env.load()
 
     this.configureLoggers(env)
 
     const apiGatewayService = new ApiGatewayService(serviceContainer)
-    apiGatewayService.setLogger(winston.loggers.get('api-gateway'))
     const authService = new AuthService(serviceContainer, controllerContainer, directCallDomainEventPublisher)
-    authService.setLogger(winston.loggers.get('auth-server'))
     const syncingService = new SyncingService(serviceContainer, controllerContainer, directCallDomainEventPublisher)
-    syncingService.setLogger(winston.loggers.get('syncing-server'))
     const revisionsService = new RevisionsService(serviceContainer, controllerContainer, directCallDomainEventPublisher)
-    revisionsService.setLogger(winston.loggers.get('revisions-server'))
     const filesService = new FilesService(serviceContainer, directCallDomainEventPublisher)
-    filesService.setLogger(winston.loggers.get('files-server'))
 
     const container = Container.merge(
-      (await apiGatewayService.getContainer()) as Container,
-      (await authService.getContainer()) as Container,
-      (await syncingService.getContainer()) as Container,
-      (await revisionsService.getContainer()) as Container,
-      (await filesService.getContainer()) as Container,
+      (await apiGatewayService.getContainer({
+        logger: winston.loggers.get('api-gateway'),
+        environmentOverrides: configuration?.environment,
+      })) as Container,
+      (await authService.getContainer({
+        logger: winston.loggers.get('auth-server'),
+        environmentOverrides: configuration?.environment,
+      })) as Container,
+      (await syncingService.getContainer({
+        logger: winston.loggers.get('syncing-server'),
+        environmentOverrides: configuration?.environment,
+      })) as Container,
+      (await revisionsService.getContainer({
+        logger: winston.loggers.get('revisions-server'),
+        environmentOverrides: configuration?.environment,
+      })) as Container,
+      (await filesService.getContainer({
+        logger: winston.loggers.get('files-server'),
+        environmentOverrides: configuration?.environment,
+      })) as Container,
     )
 
     const server = new InversifyExpressServer(container)

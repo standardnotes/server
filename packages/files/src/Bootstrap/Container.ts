@@ -53,11 +53,12 @@ export class ContainerConfigLoader {
   async load(configuration?: {
     directCallDomainEventPublisher?: DirectCallDomainEventPublisher
     logger?: Transform
+    environmentOverrides?: { [name: string]: string }
   }): Promise<Container> {
     const directCallDomainEventPublisher =
       configuration?.directCallDomainEventPublisher ?? new DirectCallDomainEventPublisher()
 
-    const env: Env = new Env()
+    const env: Env = new Env(configuration?.environmentOverrides)
     env.load()
 
     const container = new Container()

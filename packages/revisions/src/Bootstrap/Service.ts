@@ -1,5 +1,6 @@
 import {
   ControllerContainerInterface,
+  ServiceConfiguration,
   ServiceContainerInterface,
   ServiceIdentifier,
   ServiceInterface,
@@ -7,21 +8,14 @@ import {
 
 import { ContainerConfigLoader } from './Container'
 import { DirectCallDomainEventPublisher } from '@standardnotes/domain-events-infra'
-import { Transform } from 'stream'
 
 export class Service implements ServiceInterface {
-  private logger: Transform | undefined
-
   constructor(
     private serviceContainer: ServiceContainerInterface,
     private controllerContainer: ControllerContainerInterface,
     private directCallDomainEventPublisher: DirectCallDomainEventPublisher,
   ) {
     this.serviceContainer.register(this.getId(), this)
-  }
-
-  setLogger(logger: Transform): void {
-    this.logger = logger
   }
 
   async handleRequest(request: never, response: never, endpointOrMethodIdentifier: string): Promise<unknown> {
@@ -34,13 +28,14 @@ export class Service implements ServiceInterface {
     return method(request, response)
   }
 
-  async getContainer(): Promise<unknown> {
+  async getContainer(configuration?: ServiceConfiguration): Promise<unknown> {
     const config = new ContainerConfigLoader()
 
     return config.load({
       controllerConatiner: this.controllerContainer,
       directCallDomainEventPublisher: this.directCallDomainEventPublisher,
-      logger: this.logger,
+      logger: configuration?.logger,
+      environmentOverrides: configuration?.environmentOverrides,
     })
   }
 

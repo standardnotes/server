@@ -24,8 +24,12 @@ import { OptionalCrossServiceTokenMiddleware } from '../Controller/OptionalCross
 import { Transform } from 'stream'
 
 export class ContainerConfigLoader {
-  async load(configuration?: { serviceContainer?: ServiceContainerInterface; logger?: Transform }): Promise<Container> {
-    const env: Env = new Env()
+  async load(configuration?: {
+    serviceContainer?: ServiceContainerInterface
+    logger?: Transform
+    environmentOverrides?: { [name: string]: string }
+  }): Promise<Container> {
+    const env: Env = new Env(configuration?.environmentOverrides)
     env.load()
 
     const container = new Container()
