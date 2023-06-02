@@ -30,7 +30,16 @@ export class HomeServer implements HomeServerInterface {
     const serviceContainer = new ServiceContainer()
     const directCallDomainEventPublisher = new DirectCallDomainEventPublisher()
 
-    const env: Env = new Env(configuration?.environment)
+    const environmentOverrides = {
+      ...configuration?.environment,
+      NEW_RELIC_ENABLED: 'false',
+      NEW_RELIC_APP_NAME: 'Home Server',
+      CACHE_TYPE: 'memory',
+      DB_TYPE: 'sqlite',
+      DB_DATABASE: 'home_server',
+    }
+
+    const env: Env = new Env(environmentOverrides)
     env.load()
 
     this.configureLoggers(env)
@@ -44,23 +53,23 @@ export class HomeServer implements HomeServerInterface {
     const container = Container.merge(
       (await apiGatewayService.getContainer({
         logger: winston.loggers.get('api-gateway'),
-        environmentOverrides: configuration?.environment,
+        environmentOverrides,
       })) as Container,
       (await authService.getContainer({
         logger: winston.loggers.get('auth-server'),
-        environmentOverrides: configuration?.environment,
+        environmentOverrides,
       })) as Container,
       (await syncingService.getContainer({
         logger: winston.loggers.get('syncing-server'),
-        environmentOverrides: configuration?.environment,
+        environmentOverrides,
       })) as Container,
       (await revisionsService.getContainer({
         logger: winston.loggers.get('revisions-server'),
-        environmentOverrides: configuration?.environment,
+        environmentOverrides,
       })) as Container,
       (await filesService.getContainer({
         logger: winston.loggers.get('files-server'),
-        environmentOverrides: configuration?.environment,
+        environmentOverrides,
       })) as Container,
     )
 
