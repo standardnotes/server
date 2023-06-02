@@ -1,5 +1,7 @@
+import { HomeServerConfiguration } from './HomeServerConfiguration'
+
 export interface HomeServerInterface {
-  start(): Promise<void>
+  start(configuration?: HomeServerConfiguration): Promise<void>
   stop(): Promise<void>
   restart(): Promise<void>
   isRunning(): Promise<boolean>

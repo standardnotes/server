@@ -37,8 +37,11 @@ export * from './DI/ControllerContainerInterface'
 export * from './Email/EmailLevel'
 export * from './Email/EmailLevelProps'
 
+export * from './Env/AbstractEnv'
+
 export * from './Mapping/MapperInterface'
 
+export * from './Service/ServiceConfiguration'
 export * from './Service/ServiceContainer'
 export * from './Service/ServiceContainerInterface'
 export * from './Service/ServiceIdentifier'

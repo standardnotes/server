@@ -4802,6 +4802,7 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["@standardnotes/event-store", "workspace:packages/event-store"],\
           ["@aws-sdk/client-sqs", "npm:3.342.0"],\
+          ["@standardnotes/domain-core", "workspace:packages/domain-core"],\
           ["@standardnotes/domain-events", "workspace:packages/domain-events"],\
           ["@standardnotes/domain-events-infra", "workspace:packages/domain-events-infra"],\
           ["@standardnotes/time", "workspace:packages/time"],\
