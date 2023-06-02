@@ -128,9 +128,11 @@ export class HomeServer implements HomeServerInterface {
       })
     })
 
-    this.serverInstance = server.build().listen(env.get('PORT', true) ? +env.get('PORT', true) : 3000)
+    const port = env.get('PORT', true) ? +env.get('PORT', true) : 3000
 
-    logger.info(`Server started on port ${process.env.PORT}`)
+    this.serverInstance = server.build().listen(port)
+
+    logger.info(`Server started on port ${port}`)
   }
 
   async stop(): Promise<void> {
