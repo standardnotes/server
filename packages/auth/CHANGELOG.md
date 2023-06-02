@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.116.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.115.5...@standardnotes/auth-server@1.116.0) (2023-06-02)
+
+### Features
+
+* **home-server:** add overriding environment variables in underlying services ([#621](https://github.com/standardnotes/server/issues/621)) ([f0cbec0](https://github.com/standardnotes/server/commit/f0cbec07b87d60dfad92072944553f76e0bea164))
+
 ## [1.115.5](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.115.4...@standardnotes/auth-server@1.115.5) (2023-06-01)
 
 **Note:** Version bump only for package @standardnotes/auth-server

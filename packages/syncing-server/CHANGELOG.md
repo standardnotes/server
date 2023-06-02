@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.42.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.41.4...@standardnotes/syncing-server@1.42.0) (2023-06-02)
+
+### Features
+
+* **home-server:** add overriding environment variables in underlying services ([#621](https://github.com/standardnotes/syncing-server-js/issues/621)) ([f0cbec0](https://github.com/standardnotes/syncing-server-js/commit/f0cbec07b87d60dfad92072944553f76e0bea164))
+
 ## [1.41.4](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.41.3...@standardnotes/syncing-server@1.41.4) (2023-06-01)
 
 **Note:** Version bump only for package @standardnotes/syncing-server

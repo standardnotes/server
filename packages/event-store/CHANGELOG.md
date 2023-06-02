@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.10.0](https://github.com/standardnotes/server/compare/@standardnotes/event-store@1.9.6...@standardnotes/event-store@1.10.0) (2023-06-02)
+
+### Features
+
+* **home-server:** add overriding environment variables in underlying services ([#621](https://github.com/standardnotes/server/issues/621)) ([f0cbec0](https://github.com/standardnotes/server/commit/f0cbec07b87d60dfad92072944553f76e0bea164))
+
 ## [1.9.6](https://github.com/standardnotes/server/compare/@standardnotes/event-store@1.9.5...@standardnotes/event-store@1.9.6) (2023-06-01)
 
 **Note:** Version bump only for package @standardnotes/event-store

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.18.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.17.0...@standardnotes/domain-core@1.18.0) (2023-06-02)
+
+### Features
+
+* **home-server:** add overriding environment variables in underlying services ([#621](https://github.com/standardnotes/server/issues/621)) ([f0cbec0](https://github.com/standardnotes/server/commit/f0cbec07b87d60dfad92072944553f76e0bea164))
+
 # [1.17.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.16.2...@standardnotes/domain-core@1.17.0) (2023-05-31)
 
 ### Features

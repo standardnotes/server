@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.24.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.23.7...@standardnotes/analytics@2.24.0) (2023-06-02)
+
+### Features
+
+* **home-server:** add overriding environment variables in underlying services ([#621](https://github.com/standardnotes/server/issues/621)) ([f0cbec0](https://github.com/standardnotes/server/commit/f0cbec07b87d60dfad92072944553f76e0bea164))
+
 ## [2.23.7](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.23.6...@standardnotes/analytics@2.23.7) (2023-06-01)
 
 **Note:** Version bump only for package @standardnotes/analytics
