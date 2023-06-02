@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.8.5](https://github.com/standardnotes/server/compare/@standardnotes/home-server@1.8.4...@standardnotes/home-server@1.8.5) (2023-06-02)
+
+### Bug Fixes
+
+* **home-server:** linter issues ([28cce39](https://github.com/standardnotes/server/commit/28cce39fe7a75fec035f920573271e1e56421818))
+* **home-server:** streaming logs ([a8b806a](https://github.com/standardnotes/server/commit/a8b806af084b3e3fe8707ff0cb041a74042ee049))
+
 ## [1.8.4](https://github.com/standardnotes/server/compare/@standardnotes/home-server@1.8.3...@standardnotes/home-server@1.8.4) (2023-06-02)
 
 ### Bug Fixes

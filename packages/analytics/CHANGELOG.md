@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.24.1](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.24.0...@standardnotes/analytics@2.24.1) (2023-06-02)
+
+### Bug Fixes
+
+* **home-server:** streaming logs ([a8b806a](https://github.com/standardnotes/server/commit/a8b806af084b3e3fe8707ff0cb041a74042ee049))
+
 # [2.24.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.23.7...@standardnotes/analytics@2.24.0) (2023-06-02)
 
 ### Features
