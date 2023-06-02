@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.8.2](https://github.com/standardnotes/server/compare/@standardnotes/home-server@1.8.1...@standardnotes/home-server@1.8.2) (2023-06-02)
+
+### Bug Fixes
+
+* **home-server:** default configuration variables ([e6e9a32](https://github.com/standardnotes/server/commit/e6e9a32f0385789e5e772e5cabcc0da0b8ccbb01))
+
 ## [1.8.1](https://github.com/standardnotes/server/compare/@standardnotes/home-server@1.8.0...@standardnotes/home-server@1.8.1) (2023-06-02)
 
 **Note:** Version bump only for package @standardnotes/home-server
