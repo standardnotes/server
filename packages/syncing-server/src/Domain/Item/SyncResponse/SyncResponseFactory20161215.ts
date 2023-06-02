@@ -28,7 +28,7 @@ export class SyncResponseFactory20161215 implements SyncResponseFactoryInterface
     for (const conflict of pickOutConflictsResult.unsavedItems) {
       unsaved.push({
         item: conflict.serverItem
-          ? <ItemProjection>await this.itemProjector.projectFull(conflict.serverItem)
+          ? <ItemProjection>this.itemProjector.projectFull(conflict.serverItem)
           : <ItemHash>conflict.unsavedItem,
         error: {
           tag: conflict.type,
@@ -38,12 +38,12 @@ export class SyncResponseFactory20161215 implements SyncResponseFactoryInterface
 
     const retrievedItems = []
     for (const item of pickOutConflictsResult.retrievedItems) {
-      retrievedItems.push(<ItemProjection>await this.itemProjector.projectFull(item))
+      retrievedItems.push(<ItemProjection>this.itemProjector.projectFull(item))
     }
 
     const savedItems = []
     for (const item of syncItemsResponse.savedItems) {
-      savedItems.push(<ItemProjection>await this.itemProjector.projectFull(item))
+      savedItems.push(<ItemProjection>this.itemProjector.projectFull(item))
     }
 
     return {

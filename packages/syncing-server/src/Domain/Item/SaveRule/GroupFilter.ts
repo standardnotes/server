@@ -55,7 +55,7 @@ export class GroupFilter implements ItemSaveRuleInterface {
       }
     }
 
-    const usesValidKey = await this.incomingItemUsesValidItemsKey(dto.itemHash)
+    const usesValidKey = await this.incomingItemUsesValidItemsKey(dto.itemHash, dto.existingItem.groupUuid)
     if (!usesValidKey) {
       return {
         passed: false,
@@ -80,14 +80,17 @@ export class GroupFilter implements ItemSaveRuleInterface {
     return true
   }
 
-  private async incomingItemUsesValidItemsKey(itemHash: ItemHash): Promise<boolean> {
+  private async incomingItemUsesValidItemsKey(itemHash: ItemHash, groupUuid: string): Promise<boolean> {
+    if (itemHash.deleted) {
+      return true
+    }
+
     const isItemNotEncryptedByItemsKey = itemHash.content_type === ContentType.VaultItemsKey
     if (isItemNotEncryptedByItemsKey) {
       return true
     }
 
-    const group = await this.groupService.getGroup({ groupUuid: itemHash.vault_system_identifier as string })
-
+    const group = await this.groupService.getGroup({ groupUuid: groupUuid })
     if (!group) {
       return false
     }
