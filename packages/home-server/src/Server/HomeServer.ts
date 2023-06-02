@@ -141,11 +141,6 @@ export class HomeServer implements HomeServerInterface {
     }
   }
 
-  async restart(): Promise<void> {
-    await this.stop()
-    await this.start()
-  }
-
   async isRunning(): Promise<boolean> {
     if (!this.serverInstance) {
       return false
