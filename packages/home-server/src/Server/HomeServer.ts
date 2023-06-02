@@ -170,10 +170,12 @@ export class HomeServer implements HomeServerInterface {
       winston.loggers.add(loggerName, {
         level,
         format: winston.format.combine(...winstonFormatters),
-        transports: [new winston.transports.Stream({
-          level,
-          stream: this.logStream,
-        })],
+        transports: [
+          new winston.transports.Stream({
+            level,
+            stream: this.logStream,
+          }),
+        ],
         defaultMeta: { service: loggerName },
       })
     }

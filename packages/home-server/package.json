@@ -17,6 +17,7 @@
     "clean": "rm -fr dist",
     "build": "tsc --build",
     "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint . --ext .ts --fix",
     "start": "yarn node dist/bin/server.js"
   },
   "dependencies": {
