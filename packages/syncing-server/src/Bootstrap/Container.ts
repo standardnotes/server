@@ -95,7 +95,8 @@ export class ContainerConfigLoader {
       defaultScope: 'Singleton',
     })
 
-    await AppDataSource.initialize()
+    const appDataSource = new AppDataSource(env)
+    await appDataSource.initialize()
 
     const isConfiguredForHomeServer = env.get('DB_TYPE') === 'sqlite'
 
@@ -206,7 +207,7 @@ export class ContainerConfigLoader {
     // ORM
     container
       .bind<Repository<Item>>(TYPES.Sync_ORMItemRepository)
-      .toDynamicValue(() => AppDataSource.getRepository(Item))
+      .toDynamicValue(() => appDataSource.getRepository(Item))
 
     // Projectors
     container

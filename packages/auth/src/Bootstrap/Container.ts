@@ -267,7 +267,8 @@ export class ContainerConfigLoader {
 
     const container = new Container()
 
-    await AppDataSource.initialize()
+    const appDataSource = new AppDataSource(env)
+    await appDataSource.initialize()
 
     const isConfiguredForHomeServer = env.get('DB_TYPE') === 'sqlite'
 
@@ -359,42 +360,42 @@ export class ContainerConfigLoader {
     // ORM
     container
       .bind<Repository<OfflineSetting>>(TYPES.Auth_ORMOfflineSettingRepository)
-      .toConstantValue(AppDataSource.getRepository(OfflineSetting))
+      .toConstantValue(appDataSource.getRepository(OfflineSetting))
     container
       .bind<Repository<OfflineUserSubscription>>(TYPES.Auth_ORMOfflineUserSubscriptionRepository)
-      .toConstantValue(AppDataSource.getRepository(OfflineUserSubscription))
+      .toConstantValue(appDataSource.getRepository(OfflineUserSubscription))
     container
       .bind<Repository<RevokedSession>>(TYPES.Auth_ORMRevokedSessionRepository)
-      .toConstantValue(AppDataSource.getRepository(RevokedSession))
-    container.bind<Repository<Role>>(TYPES.Auth_ORMRoleRepository).toConstantValue(AppDataSource.getRepository(Role))
+      .toConstantValue(appDataSource.getRepository(RevokedSession))
+    container.bind<Repository<Role>>(TYPES.Auth_ORMRoleRepository).toConstantValue(appDataSource.getRepository(Role))
     container
       .bind<Repository<Session>>(TYPES.Auth_ORMSessionRepository)
-      .toConstantValue(AppDataSource.getRepository(Session))
+      .toConstantValue(appDataSource.getRepository(Session))
     container
       .bind<Repository<Setting>>(TYPES.Auth_ORMSettingRepository)
-      .toConstantValue(AppDataSource.getRepository(Setting))
+      .toConstantValue(appDataSource.getRepository(Setting))
     container
       .bind<Repository<SharedSubscriptionInvitation>>(TYPES.Auth_ORMSharedSubscriptionInvitationRepository)
-      .toConstantValue(AppDataSource.getRepository(SharedSubscriptionInvitation))
+      .toConstantValue(appDataSource.getRepository(SharedSubscriptionInvitation))
     container
       .bind<Repository<SubscriptionSetting>>(TYPES.Auth_ORMSubscriptionSettingRepository)
-      .toConstantValue(AppDataSource.getRepository(SubscriptionSetting))
-    container.bind<Repository<User>>(TYPES.Auth_ORMUserRepository).toConstantValue(AppDataSource.getRepository(User))
+      .toConstantValue(appDataSource.getRepository(SubscriptionSetting))
+    container.bind<Repository<User>>(TYPES.Auth_ORMUserRepository).toConstantValue(appDataSource.getRepository(User))
     container
       .bind<Repository<UserSubscription>>(TYPES.Auth_ORMUserSubscriptionRepository)
-      .toConstantValue(AppDataSource.getRepository(UserSubscription))
+      .toConstantValue(appDataSource.getRepository(UserSubscription))
     container
       .bind<Repository<TypeORMSessionTrace>>(TYPES.Auth_ORMSessionTraceRepository)
-      .toConstantValue(AppDataSource.getRepository(TypeORMSessionTrace))
+      .toConstantValue(appDataSource.getRepository(TypeORMSessionTrace))
     container
       .bind<Repository<TypeORMAuthenticator>>(TYPES.Auth_ORMAuthenticatorRepository)
-      .toConstantValue(AppDataSource.getRepository(TypeORMAuthenticator))
+      .toConstantValue(appDataSource.getRepository(TypeORMAuthenticator))
     container
       .bind<Repository<TypeORMAuthenticatorChallenge>>(TYPES.Auth_ORMAuthenticatorChallengeRepository)
-      .toConstantValue(AppDataSource.getRepository(TypeORMAuthenticatorChallenge))
+      .toConstantValue(appDataSource.getRepository(TypeORMAuthenticatorChallenge))
     container
       .bind<Repository<TypeORMCacheEntry>>(TYPES.Auth_ORMCacheEntryRepository)
-      .toConstantValue(AppDataSource.getRepository(TypeORMCacheEntry))
+      .toConstantValue(appDataSource.getRepository(TypeORMCacheEntry))
 
     // Repositories
     container.bind<SessionRepositoryInterface>(TYPES.Auth_SessionRepository).to(TypeORMSessionRepository)

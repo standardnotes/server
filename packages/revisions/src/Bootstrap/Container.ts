@@ -67,7 +67,8 @@ export class ContainerConfigLoader {
       defaultScope: 'Singleton',
     })
 
-    await AppDataSource.initialize()
+    const appDataSource = new AppDataSource(env)
+    await appDataSource.initialize()
 
     container.bind<Env>(TYPES.Revisions_Env).toConstantValue(env)
 
@@ -107,7 +108,7 @@ export class ContainerConfigLoader {
     // ORM
     container
       .bind<Repository<TypeORMRevision>>(TYPES.Revisions_ORMRevisionRepository)
-      .toDynamicValue(() => AppDataSource.getRepository(TypeORMRevision))
+      .toDynamicValue(() => appDataSource.getRepository(TypeORMRevision))
 
     // Repositories
     container
