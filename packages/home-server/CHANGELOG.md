@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.8.4](https://github.com/standardnotes/server/compare/@standardnotes/home-server@1.8.3...@standardnotes/home-server@1.8.4) (2023-06-02)
+
+### Bug Fixes
+
+* **home-server:** remove redundant restart method ([58ab410](https://github.com/standardnotes/server/commit/58ab410b0afb1d811247cd65b2585d06f9c8807a))
+
 ## [1.8.3](https://github.com/standardnotes/server/compare/@standardnotes/home-server@1.8.2...@standardnotes/home-server@1.8.3) (2023-06-02)
 
 ### Bug Fixes
