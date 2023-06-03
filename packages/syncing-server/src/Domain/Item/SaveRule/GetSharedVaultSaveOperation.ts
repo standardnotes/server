@@ -2,13 +2,17 @@ import { Item } from '../Item'
 import { ItemHash } from '../ItemHash'
 import { SharedVaultSaveOperation } from './SharedVaultSaveOperation'
 
-export function GetSaveOperation(dto: {
+export function GetSharedVaultSaveOperation(dto: {
   userUuid: string
   itemHash: ItemHash
   existingItem: Item | null
-}): SharedVaultSaveOperation {
+}): SharedVaultSaveOperation | undefined {
   const existingItemSharedVaultUuid = dto.existingItem?.sharedVaultUuid
   const targetItemSharedVaultUuid = dto.itemHash.shared_vault_uuid
+
+  if (!existingItemSharedVaultUuid && !targetItemSharedVaultUuid) {
+    return undefined
+  }
 
   const common = {
     incomingItem: dto.itemHash,

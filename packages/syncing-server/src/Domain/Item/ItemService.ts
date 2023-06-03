@@ -21,7 +21,7 @@ import { ProjectorInterface } from '../../Projection/ProjectorInterface'
 import { ItemProjection } from '../../Projection/ItemProjection'
 import { SharedVaultUserRepositoryInterface } from '../SharedVaultUser/Repository/SharedVaultUserRepositoryInterface'
 import { ConflictType } from '../../Tmp/ConflictType'
-import { GetSaveOperation } from './SaveRule/GetSaveOperationType'
+import { GetSharedVaultSaveOperation } from './SaveRule/GetSharedVaultSaveOperation'
 import { UserEventServiceInterface } from '../UserEvent/Service/UserEventServiceInterface'
 
 export class ItemService implements ItemServiceInterface {
@@ -210,7 +210,7 @@ export class ItemService implements ItemServiceInterface {
     userUuid: string
     sessionUuid: string | null
   }): Promise<Item> {
-    const saveOperation = GetSaveOperation({
+    const sharedVaultSaveOperation = GetSharedVaultSaveOperation({
       existingItem: dto.existingItem,
       itemHash: dto.itemHash,
       userUuid: dto.userUuid,
@@ -290,17 +290,17 @@ export class ItemService implements ItemServiceInterface {
       )
     }
 
-    if (saveOperation.type === 'add-to-shared-vault') {
+    if (sharedVaultSaveOperation?.type === 'add-to-shared-vault') {
       await this.userEventService.removeUserEventsAfterItemIsAddedToSharedVault({
         userUuid: dto.userUuid,
         itemUuid: savedItem.uuid,
-        sharedVaultUuid: saveOperation.sharedVaultUuid,
+        sharedVaultUuid: sharedVaultSaveOperation.sharedVaultUuid,
       })
-    } else if (saveOperation.type === 'remove-from-shared-vault') {
+    } else if (sharedVaultSaveOperation?.type === 'remove-from-shared-vault') {
       await this.userEventService.createItemRemovedFromSharedVaultUserEvent({
         userUuid: dto.userUuid,
         itemUuid: savedItem.uuid,
-        sharedVaultUuid: saveOperation.sharedVaultUuid,
+        sharedVaultUuid: sharedVaultSaveOperation.sharedVaultUuid,
       })
     }
 

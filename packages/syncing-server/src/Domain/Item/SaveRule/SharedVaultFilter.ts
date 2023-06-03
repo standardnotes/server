@@ -16,7 +16,7 @@ import {
   CreateToSharedVaultSaveOperation,
 } from './SharedVaultSaveOperation'
 import { Item } from '../Item'
-import { GetSaveOperation } from './GetSaveOperationType'
+import { GetSharedVaultSaveOperation } from './GetSharedVaultSaveOperation'
 
 export class SharedVaultFilter implements ItemSaveRuleInterface {
   constructor(
@@ -25,13 +25,12 @@ export class SharedVaultFilter implements ItemSaveRuleInterface {
   ) {}
 
   async check(dto: ItemSaveValidationDTO): Promise<ItemSaveRuleResult> {
-    if (!dto.existingItem?.sharedVaultUuid && !dto.itemHash.shared_vault_uuid) {
+    const operation = GetSharedVaultSaveOperation(dto)
+    if (!operation) {
       return {
         passed: true,
       }
     }
-
-    const operation = GetSaveOperation(dto)
 
     if (dto.itemHash.shared_vault_uuid && !dto.itemHash.key_system_identifier) {
       return this.buildFailResult(operation, ConflictType.SharedVaultInvalidState)
