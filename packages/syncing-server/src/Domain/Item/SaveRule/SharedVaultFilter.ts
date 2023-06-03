@@ -16,6 +16,7 @@ import {
   CreateToSharedVaultSaveOperation,
 } from './SharedVaultSaveOperation'
 import { Item } from '../Item'
+import { GetSaveOperation } from './GetSaveOperationType'
 
 export class SharedVaultFilter implements ItemSaveRuleInterface {
   constructor(
@@ -30,7 +31,7 @@ export class SharedVaultFilter implements ItemSaveRuleInterface {
       }
     }
 
-    const operation = this.getSaveOperationType(dto)
+    const operation = GetSaveOperation(dto)
 
     if (dto.itemHash.shared_vault_uuid && !dto.itemHash.key_system_identifier) {
       return this.buildFailResult(operation, ConflictType.SharedVaultInvalidState)
@@ -53,68 +54,6 @@ export class SharedVaultFilter implements ItemSaveRuleInterface {
     }
 
     throw new Error(`Unsupported sharedvault operation: ${operation}`)
-  }
-
-  private getSaveOperationType(dto: ItemSaveValidationDTO): SharedVaultSaveOperation {
-    const existingItemSharedVaultUuid = dto.existingItem?.sharedVaultUuid
-    const targetItemSharedVaultUuid = dto.itemHash.shared_vault_uuid
-
-    const common = {
-      incomingItem: dto.itemHash,
-      userUuid: dto.userUuid,
-    }
-
-    if (
-      dto.existingItem &&
-      existingItemSharedVaultUuid &&
-      targetItemSharedVaultUuid &&
-      existingItemSharedVaultUuid !== targetItemSharedVaultUuid
-    ) {
-      return {
-        type: 'move-to-other-shared-vault',
-        sharedVaultUuid: existingItemSharedVaultUuid,
-        targetSharedVaultUuid: targetItemSharedVaultUuid,
-        existingItem: dto.existingItem,
-        ...common,
-      }
-    }
-
-    if (dto.existingItem && existingItemSharedVaultUuid && !targetItemSharedVaultUuid) {
-      return {
-        type: 'remove-from-shared-vault',
-        sharedVaultUuid: existingItemSharedVaultUuid,
-        existingItem: dto.existingItem,
-        ...common,
-      }
-    }
-
-    if (dto.existingItem && !existingItemSharedVaultUuid && targetItemSharedVaultUuid) {
-      return {
-        type: 'add-to-shared-vault',
-        sharedVaultUuid: targetItemSharedVaultUuid,
-        existingItem: dto.existingItem,
-        ...common,
-      }
-    }
-
-    if (dto.existingItem && existingItemSharedVaultUuid && existingItemSharedVaultUuid === targetItemSharedVaultUuid) {
-      return {
-        type: 'save-to-shared-vault',
-        sharedVaultUuid: existingItemSharedVaultUuid,
-        existingItem: dto.existingItem,
-        ...common,
-      }
-    }
-
-    if (!dto.existingItem && targetItemSharedVaultUuid) {
-      return {
-        type: 'create-to-shared-vault',
-        sharedVaultUuid: targetItemSharedVaultUuid,
-        ...common,
-      }
-    }
-
-    throw new Error('Invalid save operation')
   }
 
   private isAuthorizedToSaveContentType(contentType: ContentType, permissions: SharedVaultUserPermission): boolean {

@@ -3,7 +3,11 @@ import { SharedVaultUserPermission } from '../Model/SharedVaultUserPermission'
 import { GetSharedVaultUsersDTO } from './GetSharedVaultUsersDTO'
 
 export interface SharedVaultUserServiceInterface {
-  addSharedVaultUser(dto: { sharedVaultUuid: string; userUuid: string; permissions: SharedVaultUserPermission }): Promise<SharedVaultUser>
+  addSharedVaultUser(dto: {
+    sharedVaultUuid: string
+    userUuid: string
+    permissions: SharedVaultUserPermission
+  }): Promise<SharedVaultUser>
 
   getAllSharedVaultUsersForUser(dto: GetSharedVaultUsersDTO): Promise<SharedVaultUser[]>
 

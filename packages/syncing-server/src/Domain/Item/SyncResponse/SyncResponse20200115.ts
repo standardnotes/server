@@ -4,6 +4,7 @@ import { SharedVaultProjection } from '../../../Projection/SharedVaultProjection
 import { ItemConflictProjection } from '../../../Projection/ItemConflictProjection'
 import { ItemProjection } from '../../../Projection/ItemProjection'
 import { SavedItemProjection } from '../../../Projection/SavedItemProjection'
+import { UserEventProjection } from '../../../Projection/UserEventProjection'
 
 export type SyncResponse20200115 = {
   retrieved_items: Array<ItemProjection>
@@ -14,4 +15,5 @@ export type SyncResponse20200115 = {
   contacts: Array<ContactProjection>
   shared_vaults: Array<SharedVaultProjection>
   shared_vault_invites: Array<SharedVaultInviteProjection>
+  user_events: Array<UserEventProjection>
 }

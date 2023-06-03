@@ -21,6 +21,8 @@ import { ProjectorInterface } from '../../Projection/ProjectorInterface'
 import { ItemProjection } from '../../Projection/ItemProjection'
 import { SharedVaultUserRepositoryInterface } from '../SharedVaultUser/Repository/SharedVaultUserRepositoryInterface'
 import { ConflictType } from '../../Tmp/ConflictType'
+import { GetSaveOperation } from './SaveRule/GetSaveOperationType'
+import { UserEventServiceInterface } from '../UserEvent/Service/UserEventServiceInterface'
 
 export class ItemService implements ItemServiceInterface {
   private readonly DEFAULT_ITEMS_LIMIT = 150
@@ -39,6 +41,7 @@ export class ItemService implements ItemServiceInterface {
     private itemProjector: ProjectorInterface<Item, ItemProjection>,
     private maxItemsSyncLimit: number,
     private sharedVaultUsersRepository: SharedVaultUserRepositoryInterface,
+    private userEventService: UserEventServiceInterface,
     private logger: Logger,
   ) {}
 
@@ -207,6 +210,12 @@ export class ItemService implements ItemServiceInterface {
     userUuid: string
     sessionUuid: string | null
   }): Promise<Item> {
+    const saveOperation = GetSaveOperation({
+      existingItem: dto.existingItem,
+      itemHash: dto.itemHash,
+      userUuid: dto.userUuid,
+    })
+
     dto.existingItem.updatedWithSession = dto.sessionUuid
     dto.existingItem.contentSize = 0
     dto.existingItem.lastEditedByUuid = dto.userUuid
@@ -279,6 +288,20 @@ export class ItemService implements ItemServiceInterface {
       await this.domainEventPublisher.publish(
         this.domainEventFactory.createDuplicateItemSyncedEvent(savedItem.uuid, savedItem.userUuid),
       )
+    }
+
+    if (saveOperation.type === 'add-to-shared-vault') {
+      await this.userEventService.removeUserEventsAfterItemIsAddedToSharedVault({
+        userUuid: dto.userUuid,
+        itemUuid: savedItem.uuid,
+        sharedVaultUuid: saveOperation.sharedVaultUuid,
+      })
+    } else if (saveOperation.type === 'remove-from-shared-vault') {
+      await this.userEventService.createItemRemovedFromSharedVaultUserEvent({
+        userUuid: dto.userUuid,
+        itemUuid: savedItem.uuid,
+        sharedVaultUuid: saveOperation.sharedVaultUuid,
+      })
     }
 
     return savedItem

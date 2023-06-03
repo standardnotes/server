@@ -13,6 +13,8 @@ import { ContactProjection } from '../../../Projection/ContactProjection'
 import { SharedVaultInviteProjection } from '../../../Projection/SharedVaultInviteProjection'
 import { SharedVaultProjection } from '../../../Projection/SharedVaultProjection'
 import { SharedVault } from '../../SharedVault/Model/SharedVault'
+import { UserEventProjection } from '../../../Projection/UserEventProjection'
+import { UserEvent } from '../../UserEvent/Model/UserEvent'
 
 export class SyncResponseFactory20200115 implements SyncResponseFactoryInterface {
   constructor(
@@ -22,6 +24,7 @@ export class SyncResponseFactory20200115 implements SyncResponseFactoryInterface
     private sharedVaultInviteProjector: ProjectorInterface<SharedVaultInvite, SharedVaultInviteProjection>,
     private contactProjector: ProjectorInterface<Contact, ContactProjection>,
     private sharedVaultProjector: ProjectorInterface<SharedVault, SharedVaultProjection>,
+    private userEventProjector: ProjectorInterface<UserEvent, UserEventProjection>,
   ) {}
 
   async createResponse(syncItemsResponse: SyncItemsResponse): Promise<SyncResponse20200115> {
@@ -55,6 +58,11 @@ export class SyncResponseFactory20200115 implements SyncResponseFactoryInterface
       contacts.push(this.contactProjector.projectFull(contact))
     }
 
+    const userEvents = []
+    for (const userEvent of syncItemsResponse.userEvents) {
+      userEvents.push(this.userEventProjector.projectFull(userEvent))
+    }
+
     return {
       retrieved_items: retrievedItems,
       saved_items: savedItems,
@@ -63,6 +71,7 @@ export class SyncResponseFactory20200115 implements SyncResponseFactoryInterface
       cursor_token: syncItemsResponse.cursorToken,
       shared_vaults: sharedVaults,
       shared_vault_invites: sharedVaultInvites,
+      user_events: userEvents,
       contacts,
     }
   }

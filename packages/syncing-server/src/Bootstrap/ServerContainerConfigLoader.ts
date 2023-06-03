@@ -49,9 +49,6 @@ import { ContactService } from '../Domain/Contact/Service/ContactService'
 import { ContactFactoryInterface } from '../Domain/Contact/Factory/ContactFactoryInterface'
 import { SharedVaultSnjsVersionFilter } from '../Domain/Item/SaveRule/SharedVaultSnjsVersionFilter'
 import { CreateSharedVaultFileValetToken } from '../Domain/UseCase/CreateSharedVaultFileValetToken/CreateSharedVaultFileValetToken'
-import { RemovedSharedVaultUserService } from '../Domain/RemovedSharedVaultUser/Service/RemovedSharedVaultUserService'
-import { RemovedSharedVaultUserServiceInterface } from '../Domain/RemovedSharedVaultUser/Service/RemovedSharedVaultUserServiceInterface'
-import { RemovedSharedVaultUserFactory } from '../Domain/RemovedSharedVaultUser/Factory/RemovedSharedVaultUserFactory'
 import { UserEventServiceInterface } from '../Domain/UserEvent/Service/UserEventServiceInterface'
 import { UserEventService } from '../Domain/UserEvent/Service/UserEventService'
 import { UserEventFactoryInterface } from '../Domain/UserEvent/Factory/UserEventFactoryInterface'
@@ -110,6 +107,7 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
         context.container.get(TYPES.SharedVaultService),
         context.container.get(TYPES.SharedVaultInviteService),
         context.container.get(TYPES.ContactService),
+        context.container.get(TYPES.UserEventService),
       )
     })
     container.bind<CheckIntegrity>(TYPES.CheckIntegrity).toDynamicValue((context: interfaces.Context) => {
@@ -152,6 +150,7 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
         context.container.get(TYPES.ItemProjector),
         context.container.get(TYPES.MAX_ITEMS_LIMIT),
         context.container.get(TYPES.SharedVaultUserRepository),
+        context.container.get(TYPES.UserEventService),
         context.container.get(TYPES.Logger),
       )
     })
@@ -176,17 +175,7 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
           context.container.get(TYPES.SharedVaultRepository),
           context.container.get(TYPES.SharedVaultUserRepository),
           context.container.get(TYPES.SharedVaultUserFactory),
-          context.container.get(TYPES.RemovedSharedVaultUserService),
-          context.container.get(TYPES.Timer),
-        )
-      })
-    container
-      .bind<RemovedSharedVaultUserServiceInterface>(TYPES.RemovedSharedVaultUserService)
-      .toDynamicValue((context: interfaces.Context) => {
-        return new RemovedSharedVaultUserService(
-          context.container.get(TYPES.SharedVaultRepository),
-          context.container.get(TYPES.RemovedSharedVaultUserRepository),
-          context.container.get(TYPES.RemovedSharedVaultUserFactory),
+          context.container.get(TYPES.UserEventService),
           context.container.get(TYPES.Timer),
         )
       })
@@ -231,6 +220,7 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
           context.container.get(TYPES.SharedVaultInviteProjector),
           context.container.get(TYPES.ContactProjector),
           context.container.get(TYPES.SharedVaultProjector),
+          context.container.get(TYPES.UserEventProjector),
         )
       })
     container
@@ -254,11 +244,6 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
       .bind<SharedVaultUserFactory>(TYPES.SharedVaultUserFactory)
       .toDynamicValue((context: interfaces.Context) => {
         return new SharedVaultUserFactory(context.container.get(TYPES.Timer))
-      })
-    container
-      .bind<RemovedSharedVaultUserFactory>(TYPES.RemovedSharedVaultUserFactory)
-      .toDynamicValue((context: interfaces.Context) => {
-        return new RemovedSharedVaultUserFactory(context.container.get(TYPES.Timer))
       })
     container
       .bind<SharedVaultInviteFactory>(TYPES.SharedVaultInviteFactory)

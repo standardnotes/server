@@ -3,6 +3,7 @@ import { Contact } from '../Contact/Model/Contact'
 import { Item } from '../Item/Item'
 import { ItemConflict } from '../Item/ItemConflict'
 import { SharedVault } from '../SharedVault/Model/SharedVault'
+import { UserEvent } from '../UserEvent/Model/UserEvent'
 
 export type SyncItemsResponse = {
   retrievedItems: Array<Item>
@@ -10,6 +11,7 @@ export type SyncItemsResponse = {
   conflicts: Array<ItemConflict>
   sharedVaults: Array<SharedVault>
   sharedVaultInvites: Array<SharedVaultInvite>
+  userEvents: Array<UserEvent>
   contacts: Array<Contact>
   syncToken: string
   cursorToken?: string

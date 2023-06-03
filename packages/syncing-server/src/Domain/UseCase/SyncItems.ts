@@ -7,6 +7,7 @@ import { SyncItemsResponse } from './SyncItemsResponse'
 import { UseCaseInterface } from './UseCaseInterface'
 import { SharedVaultInviteServiceInterface } from '../SharedVaultInvite/Service/SharedVaultInviteServiceInterface'
 import { SharedVaultServiceInterface } from '../SharedVault/Service/SharedVaultServiceInterface'
+import { UserEventServiceInterface } from '../UserEvent/Service/UserEventServiceInterface'
 
 export class SyncItems implements UseCaseInterface {
   constructor(
@@ -14,6 +15,7 @@ export class SyncItems implements UseCaseInterface {
     private sharedVaultService: SharedVaultServiceInterface,
     private sharedVaultInviteService: SharedVaultInviteServiceInterface,
     private contactService: ContactServiceInterface,
+    private userEventService: UserEventServiceInterface,
   ) {}
 
   async execute(dto: SyncItemsDTO): Promise<SyncItemsResponse> {
@@ -61,6 +63,11 @@ export class SyncItems implements UseCaseInterface {
       lastSyncTime: lastSyncTime,
     })
 
+    const userEvents = await this.userEventService.getUserEvents({
+      userUuid: dto.userUuid,
+      lastSyncTime: lastSyncTime,
+    })
+
     const syncResponse: SyncItemsResponse = {
       retrievedItems,
       syncToken: saveItemsResult.syncToken,
@@ -69,6 +76,7 @@ export class SyncItems implements UseCaseInterface {
       cursorToken: getItemsResult.cursorToken,
       sharedVaults,
       sharedVaultInvites,
+      userEvents,
       contacts,
     }
 
