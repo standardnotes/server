@@ -52,6 +52,10 @@ import { CreateSharedVaultFileValetToken } from '../Domain/UseCase/CreateSharedV
 import { RemovedSharedVaultUserService } from '../Domain/RemovedSharedVaultUser/Service/RemovedSharedVaultUserService'
 import { RemovedSharedVaultUserServiceInterface } from '../Domain/RemovedSharedVaultUser/Service/RemovedSharedVaultUserServiceInterface'
 import { RemovedSharedVaultUserFactory } from '../Domain/RemovedSharedVaultUser/Factory/RemovedSharedVaultUserFactory'
+import { UserEventServiceInterface } from '../Domain/UserEvent/Service/UserEventServiceInterface'
+import { UserEventService } from '../Domain/UserEvent/Service/UserEventService'
+import { UserEventFactoryInterface } from '../Domain/UserEvent/Factory/UserEventFactoryInterface'
+import { UserEventFactory } from '../Domain/UserEvent/Factory/UserEventFactory'
 
 export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
   private readonly DEFAULT_CONTENT_SIZE_TRANSFER_LIMIT = 10_000_000
@@ -152,26 +156,30 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
       )
     })
     // Services
-    container.bind<SharedVaultServiceInterface>(TYPES.SharedVaultService).toDynamicValue((context: interfaces.Context) => {
-      return new SharedVaultService(
-        context.container.get(TYPES.SharedVaultRepository),
-        context.container.get(TYPES.SharedVaultFactory),
-        context.container.get(TYPES.SharedVaultUserService),
-        context.container.get(TYPES.SharedVaultInviteService),
-        context.container.get(TYPES.GetItem),
-        context.container.get(TYPES.SaveItem),
-        context.container.get(TYPES.Timer),
-      )
-    })
-    container.bind<SharedVaultUserServiceInterface>(TYPES.SharedVaultUserService).toDynamicValue((context: interfaces.Context) => {
-      return new SharedVaultUserService(
-        context.container.get(TYPES.SharedVaultRepository),
-        context.container.get(TYPES.SharedVaultUserRepository),
-        context.container.get(TYPES.SharedVaultUserFactory),
-        context.container.get(TYPES.RemovedSharedVaultUserService),
-        context.container.get(TYPES.Timer),
-      )
-    })
+    container
+      .bind<SharedVaultServiceInterface>(TYPES.SharedVaultService)
+      .toDynamicValue((context: interfaces.Context) => {
+        return new SharedVaultService(
+          context.container.get(TYPES.SharedVaultRepository),
+          context.container.get(TYPES.SharedVaultFactory),
+          context.container.get(TYPES.SharedVaultUserService),
+          context.container.get(TYPES.SharedVaultInviteService),
+          context.container.get(TYPES.GetItem),
+          context.container.get(TYPES.SaveItem),
+          context.container.get(TYPES.Timer),
+        )
+      })
+    container
+      .bind<SharedVaultUserServiceInterface>(TYPES.SharedVaultUserService)
+      .toDynamicValue((context: interfaces.Context) => {
+        return new SharedVaultUserService(
+          context.container.get(TYPES.SharedVaultRepository),
+          context.container.get(TYPES.SharedVaultUserRepository),
+          context.container.get(TYPES.SharedVaultUserFactory),
+          context.container.get(TYPES.RemovedSharedVaultUserService),
+          context.container.get(TYPES.Timer),
+        )
+      })
     container
       .bind<RemovedSharedVaultUserServiceInterface>(TYPES.RemovedSharedVaultUserService)
       .toDynamicValue((context: interfaces.Context) => {
@@ -197,6 +205,13 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
       return new ContactService(
         context.container.get(TYPES.ContactRepository),
         context.container.get(TYPES.ContactFactory),
+        context.container.get(TYPES.Timer),
+      )
+    })
+    container.bind<UserEventServiceInterface>(TYPES.UserEventService).toDynamicValue((context: interfaces.Context) => {
+      return new UserEventService(
+        context.container.get(TYPES.UserEventRepository),
+        context.container.get(TYPES.UserEventFactory),
         context.container.get(TYPES.Timer),
       )
     })
@@ -230,22 +245,31 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
     container.bind<ItemFactoryInterface>(TYPES.ItemFactory).toDynamicValue((context: interfaces.Context) => {
       return new ItemFactory(context.container.get(TYPES.Timer), context.container.get(TYPES.ItemProjector))
     })
-    container.bind<SharedVaultFactoryInterface>(TYPES.SharedVaultFactory).toDynamicValue((context: interfaces.Context) => {
-      return new SharedVaultFactory(context.container.get(TYPES.Timer))
-    })
-    container.bind<SharedVaultUserFactory>(TYPES.SharedVaultUserFactory).toDynamicValue((context: interfaces.Context) => {
-      return new SharedVaultUserFactory(context.container.get(TYPES.Timer))
-    })
+    container
+      .bind<SharedVaultFactoryInterface>(TYPES.SharedVaultFactory)
+      .toDynamicValue((context: interfaces.Context) => {
+        return new SharedVaultFactory(context.container.get(TYPES.Timer))
+      })
+    container
+      .bind<SharedVaultUserFactory>(TYPES.SharedVaultUserFactory)
+      .toDynamicValue((context: interfaces.Context) => {
+        return new SharedVaultUserFactory(context.container.get(TYPES.Timer))
+      })
     container
       .bind<RemovedSharedVaultUserFactory>(TYPES.RemovedSharedVaultUserFactory)
       .toDynamicValue((context: interfaces.Context) => {
         return new RemovedSharedVaultUserFactory(context.container.get(TYPES.Timer))
       })
-    container.bind<SharedVaultInviteFactory>(TYPES.SharedVaultInviteFactory).toDynamicValue((context: interfaces.Context) => {
-      return new SharedVaultInviteFactory(context.container.get(TYPES.Timer))
-    })
+    container
+      .bind<SharedVaultInviteFactory>(TYPES.SharedVaultInviteFactory)
+      .toDynamicValue((context: interfaces.Context) => {
+        return new SharedVaultInviteFactory(context.container.get(TYPES.Timer))
+      })
     container.bind<ContactFactoryInterface>(TYPES.ContactFactory).toDynamicValue((context: interfaces.Context) => {
       return new ContactFactory(context.container.get(TYPES.Timer))
+    })
+    container.bind<UserEventFactoryInterface>(TYPES.UserEventFactory).toDynamicValue((context: interfaces.Context) => {
+      return new UserEventFactory(context.container.get(TYPES.Timer))
     })
 
     container.bind<OwnershipFilter>(TYPES.OwnershipFilter).toDynamicValue(() => new OwnershipFilter())
@@ -253,7 +277,10 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
       .bind<SharedVaultFilter>(TYPES.SharedVaultFilter)
       .toDynamicValue(
         (context: interfaces.Context) =>
-          new SharedVaultFilter(context.container.get(TYPES.SharedVaultService), context.container.get(TYPES.SharedVaultUserService)),
+          new SharedVaultFilter(
+            context.container.get(TYPES.SharedVaultService),
+            context.container.get(TYPES.SharedVaultUserService),
+          ),
       )
     container
       .bind<TimeDifferenceFilter>(TYPES.TimeDifferenceFilter)

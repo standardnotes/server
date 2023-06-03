@@ -14,6 +14,7 @@ const TYPES = {
   RemovedSharedVaultUserRepository: Symbol.for('RemovedSharedVaultUserRepository'),
   ContactRepository: Symbol.for('ContactRepository'),
   SharedVaultInviteRepository: Symbol.for('SharedVaultInviteRepository'),
+  UserEventRepository: Symbol.for('UserEventRepository'),
 
   // ORM
   ORMItemRepository: Symbol.for('ORMItemRepository'),
@@ -22,6 +23,7 @@ const TYPES = {
   ORMRemovedSharedVaultUserRepository: Symbol.for('ORMRemovedSharedVaultUserRepository'),
   ORMContactRepository: Symbol.for('ORMContactRepository'),
   ORMSharedVaultInviteRepository: Symbol.for('ORMSharedVaultInviteRepository'),
+  ORMUserEventRepository: Symbol.for('ORMUserEventRepository'),
 
   // Middleware
   AuthMiddleware: Symbol.for('AuthMiddleware'),
@@ -34,6 +36,7 @@ const TYPES = {
   SharedVaultUserProjector: Symbol.for('SharedVaultUserProjector'),
   ContactProjector: Symbol.for('ContactProjector'),
   SharedVaultInviteProjector: Symbol.for('SharedVaultInviteProjector'),
+  UserEventProjector: Symbol.for('UserEventProjector'),
 
   // Services
   SharedVaultService: Symbol.for('SharedVaultService'),
@@ -41,6 +44,7 @@ const TYPES = {
   RemovedSharedVaultUserService: Symbol.for('RemovedSharedVaultUserService'),
   ContactService: Symbol.for('ContactService'),
   SharedVaultInviteService: Symbol.for('SharedVaultInviteService'),
+  UserEventService: Symbol.for('UserEventService'),
 
   // Factories
   ItemFactory: Symbol.for('ItemFactory'),
@@ -49,6 +53,7 @@ const TYPES = {
   RemovedSharedVaultUserFactory: Symbol.for('RemovedSharedVaultUserFactory'),
   ContactFactory: Symbol.for('ContactFactory'),
   SharedVaultInviteFactory: Symbol.for('SharedVaultInviteFactory'),
+  UserEventFactory: Symbol.for('UserEventFactory'),
 
   // env vars
   REDIS_URL: Symbol.for('REDIS_URL'),

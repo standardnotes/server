@@ -41,6 +41,11 @@ import { TypeORMContactRepository } from '../Domain/Contact/Repository/TypeORMCo
 import { RemovedSharedVaultUserRepositoryInterface } from '../Domain/RemovedSharedVaultUser/Repository/RemovedSharedVaultUserRepositoryInterface'
 import { TypeORMRemovedSharedVaultUserRepository } from '../Domain/RemovedSharedVaultUser/Repository/TypeORMRemovedSharedVaultUserRepository'
 import { RemovedSharedVaultUser } from '../Domain/RemovedSharedVaultUser/Model/RemovedSharedVaultUser'
+import { UserEventsRepositoryInterface } from '../Domain/UserEvent/Repository/UserEventRepositoryInterface'
+import { TypeORMUserEventRepository } from '../Domain/UserEvent/Repository/TypeORMUserEventRepository'
+import { UserEvent } from '../Domain/UserEvent/Model/UserEvent'
+import { UserEventProjection } from '../Projection/UserEventProjection'
+import { UserEventProjector } from '../Projection/UserEventProjector'
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
 
@@ -99,9 +104,11 @@ export class CommonContainerConfigLoader {
     container.bind<ItemRepositoryInterface>(TYPES.ItemRepository).toDynamicValue((context: interfaces.Context) => {
       return new TypeORMItemRepository(context.container.get(TYPES.ORMItemRepository))
     })
-    container.bind<SharedVaultsRepositoryInterface>(TYPES.SharedVaultRepository).toDynamicValue((context: interfaces.Context) => {
-      return new TypeORMSharedVaultRepository(context.container.get(TYPES.ORMSharedVaultRepository))
-    })
+    container
+      .bind<SharedVaultsRepositoryInterface>(TYPES.SharedVaultRepository)
+      .toDynamicValue((context: interfaces.Context) => {
+        return new TypeORMSharedVaultRepository(context.container.get(TYPES.ORMSharedVaultRepository))
+      })
     container
       .bind<SharedVaultUserRepositoryInterface>(TYPES.SharedVaultUserRepository)
       .toDynamicValue((context: interfaces.Context) => {
@@ -110,7 +117,9 @@ export class CommonContainerConfigLoader {
     container
       .bind<RemovedSharedVaultUserRepositoryInterface>(TYPES.RemovedSharedVaultUserRepository)
       .toDynamicValue((context: interfaces.Context) => {
-        return new TypeORMRemovedSharedVaultUserRepository(context.container.get(TYPES.ORMRemovedSharedVaultUserRepository))
+        return new TypeORMRemovedSharedVaultUserRepository(
+          context.container.get(TYPES.ORMRemovedSharedVaultUserRepository),
+        )
       })
     container
       .bind<SharedVaultInviteRepositoryInterface>(TYPES.SharedVaultInviteRepository)
@@ -122,10 +131,17 @@ export class CommonContainerConfigLoader {
       .toDynamicValue((context: interfaces.Context) => {
         return new TypeORMContactRepository(context.container.get(TYPES.ORMContactRepository))
       })
+    container
+      .bind<UserEventsRepositoryInterface>(TYPES.UserEventRepository)
+      .toDynamicValue((context: interfaces.Context) => {
+        return new TypeORMUserEventRepository(context.container.get(TYPES.ORMUserEventRepository))
+      })
 
     // ORM
     container.bind<Repository<Item>>(TYPES.ORMItemRepository).toDynamicValue(() => AppDataSource.getRepository(Item))
-    container.bind<Repository<SharedVault>>(TYPES.ORMSharedVaultRepository).toDynamicValue(() => AppDataSource.getRepository(SharedVault))
+    container
+      .bind<Repository<SharedVault>>(TYPES.ORMSharedVaultRepository)
+      .toDynamicValue(() => AppDataSource.getRepository(SharedVault))
     container
       .bind<Repository<SharedVaultUser>>(TYPES.ORMSharedVaultUserRepository)
       .toDynamicValue(() => AppDataSource.getRepository(SharedVaultUser))
@@ -138,6 +154,9 @@ export class CommonContainerConfigLoader {
     container
       .bind<Repository<Contact>>(TYPES.ORMContactRepository)
       .toDynamicValue(() => AppDataSource.getRepository(Contact))
+    container
+      .bind<Repository<UserEvent>>(TYPES.ORMUserEventRepository)
+      .toDynamicValue(() => AppDataSource.getRepository(UserEvent))
 
     // Projectors
     container
@@ -145,12 +164,16 @@ export class CommonContainerConfigLoader {
       .toDynamicValue((context: interfaces.Context) => {
         return new ItemProjector(context.container.get(TYPES.Timer))
       })
-    container.bind<ProjectorInterface<SharedVault, SharedVaultProjection>>(TYPES.SharedVaultProjector).toDynamicValue(() => {
-      return new SharedVaultProjector()
-    })
-    container.bind<ProjectorInterface<SharedVaultUser, SharedVaultUserProjection>>(TYPES.SharedVaultUserProjector).toDynamicValue(() => {
-      return new SharedVaultUserProjector()
-    })
+    container
+      .bind<ProjectorInterface<SharedVault, SharedVaultProjection>>(TYPES.SharedVaultProjector)
+      .toDynamicValue(() => {
+        return new SharedVaultProjector()
+      })
+    container
+      .bind<ProjectorInterface<SharedVaultUser, SharedVaultUserProjection>>(TYPES.SharedVaultUserProjector)
+      .toDynamicValue(() => {
+        return new SharedVaultUserProjector()
+      })
     container
       .bind<ProjectorInterface<SharedVaultInvite, SharedVaultInviteProjection>>(TYPES.SharedVaultInviteProjector)
       .toDynamicValue(() => {
@@ -158,6 +181,9 @@ export class CommonContainerConfigLoader {
       })
     container.bind<ProjectorInterface<Contact, ContactProjection>>(TYPES.ContactProjector).toDynamicValue(() => {
       return new ContactProjector()
+    })
+    container.bind<ProjectorInterface<UserEvent, UserEventProjection>>(TYPES.UserEventProjector).toDynamicValue(() => {
+      return new UserEventProjector()
     })
 
     // env vars
