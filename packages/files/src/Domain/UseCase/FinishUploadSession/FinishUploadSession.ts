@@ -64,8 +64,8 @@ export class FinishUploadSession implements UseCaseInterface {
         )
       } else {
         await this.domainEventPublisher.publish(
-          this.domainEventFactory.createGroupFileUploadedEvent({
-            groupUuid: dto.ownerUuid,
+          this.domainEventFactory.createSharedVaultFileUploadedEvent({
+            sharedVaultUuid: dto.ownerUuid,
             filePath: `${dto.ownerUuid}/${dto.resourceRemoteIdentifier}`,
             fileName: dto.resourceRemoteIdentifier,
             fileByteSize: totalFileSize,

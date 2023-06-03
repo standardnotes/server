@@ -1,9 +1,9 @@
 import { SaveItem } from './../Domain/UseCase/SaveItem/SaveItem'
 import { ContactFactory } from './../Domain/Contact/Factory/ContactFactory'
 
-import { GroupServiceInterface } from '../Domain/Group/Service/GroupServiceInterface'
-import { GroupUserFactory } from '../Domain/GroupUser/Factory/GroupUserFactory'
-import { GroupFactoryInterface } from '../Domain/Group/Factory/GroupFactoryInterface'
+import { SharedVaultServiceInterface } from '../Domain/SharedVault/Service/SharedVaultServiceInterface'
+import { SharedVaultUserFactory } from '../Domain/SharedVaultUser/Factory/SharedVaultUserFactory'
+import { SharedVaultFactoryInterface } from '../Domain/SharedVault/Factory/SharedVaultFactoryInterface'
 import { Container, interfaces } from 'inversify'
 
 import { Env } from './Env'
@@ -20,7 +20,7 @@ import { SyncItems } from '../Domain/UseCase/SyncItems'
 import { ItemConflictProjector } from '../Projection/ItemConflictProjector'
 import { ItemSaveValidatorInterface } from '../Domain/Item/SaveValidator/ItemSaveValidatorInterface'
 import { ItemSaveValidator } from '../Domain/Item/SaveValidator/ItemSaveValidator'
-import { GroupFilter } from '../Domain/Item/SaveRule/GroupFilter'
+import { SharedVaultFilter } from '../Domain/Item/SaveRule/SharedVaultFilter'
 import { OwnershipFilter } from '../Domain/Item/SaveRule/OwnershipFilter'
 import { TimeDifferenceFilter } from '../Domain/Item/SaveRule/TimeDifferenceFilter'
 import { ItemFactoryInterface } from '../Domain/Item/ItemFactoryInterface'
@@ -37,21 +37,21 @@ import { ItemConflict } from '../Domain/Item/ItemConflict'
 import { ItemConflictProjection } from '../Projection/ItemConflictProjection'
 import { CommonContainerConfigLoader } from './CommonContainerConfigLoader'
 import { TokenEncoder, TokenEncoderInterface, ValetTokenData } from '@standardnotes/security'
-import { GroupFactory } from '../Domain/Group/Factory/GroupFactory'
-import { GroupService } from '../Domain/Group/Service/GroupService'
-import { GroupUserService } from '../Domain/GroupUser/Service/GroupUserService'
-import { GroupUserServiceInterface } from '../Domain/GroupUser/Service/GroupUserServiceInterface'
-import { GroupInviteServiceInterface } from '../Domain/GroupInvite/Service/GroupInviteServiceInterface'
-import { GroupInviteService } from '../Domain/GroupInvite/Service/GroupInviteService'
-import { GroupInviteFactory } from '../Domain/GroupInvite/Factory/GroupInviteFactory'
+import { SharedVaultFactory } from '../Domain/SharedVault/Factory/SharedVaultFactory'
+import { SharedVaultService } from '../Domain/SharedVault/Service/SharedVaultService'
+import { SharedVaultUserService } from '../Domain/SharedVaultUser/Service/SharedVaultUserService'
+import { SharedVaultUserServiceInterface } from '../Domain/SharedVaultUser/Service/SharedVaultUserServiceInterface'
+import { SharedVaultInviteServiceInterface } from '../Domain/SharedVaultInvite/Service/SharedVaultInviteServiceInterface'
+import { SharedVaultInviteService } from '../Domain/SharedVaultInvite/Service/SharedVaultInviteService'
+import { SharedVaultInviteFactory } from '../Domain/SharedVaultInvite/Factory/SharedVaultInviteFactory'
 import { ContactServiceInterface } from '../Domain/Contact/Service/ContactServiceInterface'
 import { ContactService } from '../Domain/Contact/Service/ContactService'
 import { ContactFactoryInterface } from '../Domain/Contact/Factory/ContactFactoryInterface'
-import { GroupSnjsVersionFilter } from '../Domain/Item/SaveRule/GroupSnjsVersionFilter'
-import { CreateGroupFileValetToken } from '../Domain/UseCase/CreateGroupFileValetToken/CreateGroupFileValetToken'
-import { RemovedGroupUserService } from '../Domain/RemovedGroupUser/Service/RemovedGroupUserService'
-import { RemovedGroupUserServiceInterface } from '../Domain/RemovedGroupUser/Service/RemovedGroupUserServiceInterface'
-import { RemovedGroupUserFactory } from '../Domain/RemovedGroupUser/Factory/RemovedGroupUserFactory'
+import { SharedVaultSnjsVersionFilter } from '../Domain/Item/SaveRule/SharedVaultSnjsVersionFilter'
+import { CreateSharedVaultFileValetToken } from '../Domain/UseCase/CreateSharedVaultFileValetToken/CreateSharedVaultFileValetToken'
+import { RemovedSharedVaultUserService } from '../Domain/RemovedSharedVaultUser/Service/RemovedSharedVaultUserService'
+import { RemovedSharedVaultUserServiceInterface } from '../Domain/RemovedSharedVaultUser/Service/RemovedSharedVaultUserServiceInterface'
+import { RemovedSharedVaultUserFactory } from '../Domain/RemovedSharedVaultUser/Factory/RemovedSharedVaultUserFactory'
 
 export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
   private readonly DEFAULT_CONTENT_SIZE_TRANSFER_LIMIT = 10_000_000
@@ -103,8 +103,8 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
     container.bind<SyncItems>(TYPES.SyncItems).toDynamicValue((context: interfaces.Context) => {
       return new SyncItems(
         context.container.get(TYPES.ItemService),
-        context.container.get(TYPES.GroupService),
-        context.container.get(TYPES.GroupInviteService),
+        context.container.get(TYPES.SharedVaultService),
+        context.container.get(TYPES.SharedVaultInviteService),
         context.container.get(TYPES.ContactService),
       )
     })
@@ -119,11 +119,11 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
     })
 
     container
-      .bind<CreateGroupFileValetToken>(TYPES.CreateGroupFileReadValetToken)
+      .bind<CreateSharedVaultFileValetToken>(TYPES.CreateSharedVaultFileReadValetToken)
       .toDynamicValue((context: interfaces.Context) => {
-        return new CreateGroupFileValetToken(
-          context.container.get(TYPES.GroupService),
-          context.container.get(TYPES.GroupUserService),
+        return new CreateSharedVaultFileValetToken(
+          context.container.get(TYPES.SharedVaultService),
+          context.container.get(TYPES.SharedVaultUserService),
           context.container.get(TYPES.ValetTokenEncoder),
           context.container.get(TYPES.VALET_TOKEN_TTL),
         )
@@ -147,49 +147,49 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
         context.container.get(TYPES.Timer),
         context.container.get(TYPES.ItemProjector),
         context.container.get(TYPES.MAX_ITEMS_LIMIT),
-        context.container.get(TYPES.GroupUserRepository),
+        context.container.get(TYPES.SharedVaultUserRepository),
         context.container.get(TYPES.Logger),
       )
     })
     // Services
-    container.bind<GroupServiceInterface>(TYPES.GroupService).toDynamicValue((context: interfaces.Context) => {
-      return new GroupService(
-        context.container.get(TYPES.GroupRepository),
-        context.container.get(TYPES.GroupFactory),
-        context.container.get(TYPES.GroupUserService),
-        context.container.get(TYPES.GroupInviteService),
+    container.bind<SharedVaultServiceInterface>(TYPES.SharedVaultService).toDynamicValue((context: interfaces.Context) => {
+      return new SharedVaultService(
+        context.container.get(TYPES.SharedVaultRepository),
+        context.container.get(TYPES.SharedVaultFactory),
+        context.container.get(TYPES.SharedVaultUserService),
+        context.container.get(TYPES.SharedVaultInviteService),
         context.container.get(TYPES.GetItem),
         context.container.get(TYPES.SaveItem),
         context.container.get(TYPES.Timer),
       )
     })
-    container.bind<GroupUserServiceInterface>(TYPES.GroupUserService).toDynamicValue((context: interfaces.Context) => {
-      return new GroupUserService(
-        context.container.get(TYPES.GroupRepository),
-        context.container.get(TYPES.GroupUserRepository),
-        context.container.get(TYPES.GroupUserFactory),
-        context.container.get(TYPES.RemovedGroupUserService),
+    container.bind<SharedVaultUserServiceInterface>(TYPES.SharedVaultUserService).toDynamicValue((context: interfaces.Context) => {
+      return new SharedVaultUserService(
+        context.container.get(TYPES.SharedVaultRepository),
+        context.container.get(TYPES.SharedVaultUserRepository),
+        context.container.get(TYPES.SharedVaultUserFactory),
+        context.container.get(TYPES.RemovedSharedVaultUserService),
         context.container.get(TYPES.Timer),
       )
     })
     container
-      .bind<RemovedGroupUserServiceInterface>(TYPES.RemovedGroupUserService)
+      .bind<RemovedSharedVaultUserServiceInterface>(TYPES.RemovedSharedVaultUserService)
       .toDynamicValue((context: interfaces.Context) => {
-        return new RemovedGroupUserService(
-          context.container.get(TYPES.GroupRepository),
-          context.container.get(TYPES.RemovedGroupUserRepository),
-          context.container.get(TYPES.RemovedGroupUserFactory),
+        return new RemovedSharedVaultUserService(
+          context.container.get(TYPES.SharedVaultRepository),
+          context.container.get(TYPES.RemovedSharedVaultUserRepository),
+          context.container.get(TYPES.RemovedSharedVaultUserFactory),
           context.container.get(TYPES.Timer),
         )
       })
     container
-      .bind<GroupInviteServiceInterface>(TYPES.GroupInviteService)
+      .bind<SharedVaultInviteServiceInterface>(TYPES.SharedVaultInviteService)
       .toDynamicValue((context: interfaces.Context) => {
-        return new GroupInviteService(
-          context.container.get(TYPES.GroupRepository),
-          context.container.get(TYPES.GroupInviteRepository),
-          context.container.get(TYPES.GroupInviteFactory),
-          context.container.get(TYPES.GroupUserService),
+        return new SharedVaultInviteService(
+          context.container.get(TYPES.SharedVaultRepository),
+          context.container.get(TYPES.SharedVaultInviteRepository),
+          context.container.get(TYPES.SharedVaultInviteFactory),
+          context.container.get(TYPES.SharedVaultUserService),
           context.container.get(TYPES.Timer),
         )
       })
@@ -213,9 +213,9 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
           context.container.get(TYPES.ItemProjector),
           context.container.get(TYPES.ItemConflictProjector),
           context.container.get(TYPES.SavedItemProjector),
-          context.container.get(TYPES.GroupInviteProjector),
+          context.container.get(TYPES.SharedVaultInviteProjector),
           context.container.get(TYPES.ContactProjector),
-          context.container.get(TYPES.GroupProjector),
+          context.container.get(TYPES.SharedVaultProjector),
         )
       })
     container
@@ -230,19 +230,19 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
     container.bind<ItemFactoryInterface>(TYPES.ItemFactory).toDynamicValue((context: interfaces.Context) => {
       return new ItemFactory(context.container.get(TYPES.Timer), context.container.get(TYPES.ItemProjector))
     })
-    container.bind<GroupFactoryInterface>(TYPES.GroupFactory).toDynamicValue((context: interfaces.Context) => {
-      return new GroupFactory(context.container.get(TYPES.Timer))
+    container.bind<SharedVaultFactoryInterface>(TYPES.SharedVaultFactory).toDynamicValue((context: interfaces.Context) => {
+      return new SharedVaultFactory(context.container.get(TYPES.Timer))
     })
-    container.bind<GroupUserFactory>(TYPES.GroupUserFactory).toDynamicValue((context: interfaces.Context) => {
-      return new GroupUserFactory(context.container.get(TYPES.Timer))
+    container.bind<SharedVaultUserFactory>(TYPES.SharedVaultUserFactory).toDynamicValue((context: interfaces.Context) => {
+      return new SharedVaultUserFactory(context.container.get(TYPES.Timer))
     })
     container
-      .bind<RemovedGroupUserFactory>(TYPES.RemovedGroupUserFactory)
+      .bind<RemovedSharedVaultUserFactory>(TYPES.RemovedSharedVaultUserFactory)
       .toDynamicValue((context: interfaces.Context) => {
-        return new RemovedGroupUserFactory(context.container.get(TYPES.Timer))
+        return new RemovedSharedVaultUserFactory(context.container.get(TYPES.Timer))
       })
-    container.bind<GroupInviteFactory>(TYPES.GroupInviteFactory).toDynamicValue((context: interfaces.Context) => {
-      return new GroupInviteFactory(context.container.get(TYPES.Timer))
+    container.bind<SharedVaultInviteFactory>(TYPES.SharedVaultInviteFactory).toDynamicValue((context: interfaces.Context) => {
+      return new SharedVaultInviteFactory(context.container.get(TYPES.Timer))
     })
     container.bind<ContactFactoryInterface>(TYPES.ContactFactory).toDynamicValue((context: interfaces.Context) => {
       return new ContactFactory(context.container.get(TYPES.Timer))
@@ -250,10 +250,10 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
 
     container.bind<OwnershipFilter>(TYPES.OwnershipFilter).toDynamicValue(() => new OwnershipFilter())
     container
-      .bind<GroupFilter>(TYPES.GroupFilter)
+      .bind<SharedVaultFilter>(TYPES.SharedVaultFilter)
       .toDynamicValue(
         (context: interfaces.Context) =>
-          new GroupFilter(context.container.get(TYPES.GroupService), context.container.get(TYPES.GroupUserService)),
+          new SharedVaultFilter(context.container.get(TYPES.SharedVaultService), context.container.get(TYPES.SharedVaultUserService)),
       )
     container
       .bind<TimeDifferenceFilter>(TYPES.TimeDifferenceFilter)
@@ -262,16 +262,16 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
     container.bind<ContentTypeFilter>(TYPES.ContentTypeFilter).toDynamicValue(() => new ContentTypeFilter())
     container.bind<ContentFilter>(TYPES.ContentFilter).toDynamicValue(() => new ContentFilter())
     container
-      .bind<GroupSnjsVersionFilter>(TYPES.GroupSnjsVersionFilter)
-      .toDynamicValue(() => new GroupSnjsVersionFilter())
+      .bind<SharedVaultSnjsVersionFilter>(TYPES.SharedVaultSnjsVersionFilter)
+      .toDynamicValue(() => new SharedVaultSnjsVersionFilter())
 
     container
       .bind<ItemSaveValidatorInterface>(TYPES.ItemSaveValidator)
       .toDynamicValue((context: interfaces.Context) => {
         return new ItemSaveValidator([
           context.container.get(TYPES.OwnershipFilter),
-          context.container.get(TYPES.GroupFilter),
-          context.container.get(TYPES.GroupSnjsVersionFilter),
+          context.container.get(TYPES.SharedVaultFilter),
+          context.container.get(TYPES.SharedVaultSnjsVersionFilter),
           context.container.get(TYPES.TimeDifferenceFilter),
           context.container.get(TYPES.UuidFilter),
           context.container.get(TYPES.ContentTypeFilter),

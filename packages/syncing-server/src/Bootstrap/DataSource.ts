@@ -1,13 +1,13 @@
-import { RemovedGroupUser } from './../Domain/RemovedGroupUser/Model/RemovedGroupUser'
+import { RemovedSharedVaultUser } from './../Domain/RemovedSharedVaultUser/Model/RemovedSharedVaultUser'
 import { Contact } from './../Domain/Contact/Model/Contact'
-import { GroupInvite } from '../Domain/GroupInvite/Model/GroupInvite'
-import { GroupUser } from '../Domain/GroupUser/Model/GroupUser'
+import { SharedVaultInvite } from '../Domain/SharedVaultInvite/Model/SharedVaultInvite'
+import { SharedVaultUser } from '../Domain/SharedVaultUser/Model/SharedVaultUser'
 import { DataSource, LoggerOptions } from 'typeorm'
 import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions'
 import { Item } from '../Domain/Item/Item'
 import { Env } from './Env'
 import { SqliteConnectionOptions } from 'typeorm/driver/sqlite/SqliteConnectionOptions'
-import { Group } from '../Domain/Group/Model/Group'
+import { SharedVault } from '../Domain/SharedVault/Model/SharedVault'
 
 const env: Env = new Env()
 env.load()
@@ -43,7 +43,7 @@ const replicationConfig = {
 
 const commonDataSourceOptions = {
   maxQueryExecutionTime,
-  entities: [Item, Group, GroupUser, RemovedGroupUser, GroupInvite, Contact],
+  entities: [Item, SharedVault, SharedVaultUser, RemovedSharedVaultUser, SharedVaultInvite, Contact],
   migrations: [`dist/migrations/${isConfiguredForMySQL ? 'mysql' : 'sqlite'}/*.js`],
   migrationsRun: true,
   logging: <LoggerOptions>env.get('DB_DEBUG_LEVEL'),

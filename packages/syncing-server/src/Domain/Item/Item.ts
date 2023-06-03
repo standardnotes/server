@@ -85,19 +85,19 @@ export class Item {
 
   @Column({
     type: 'varchar',
-    name: 'vault_system_identifier',
+    name: 'key_system_identifier',
     length: 255,
     nullable: true,
   })
-  declare vaultSystemIdentifier: string | null
+  declare keySystemIdentifier: string | null
 
   @Column({
     type: 'varchar',
-    name: 'group_uuid',
+    name: 'shared_vault_uuid',
     length: 255,
     nullable: true,
   })
-  declare groupUuid: string | null
+  declare sharedVaultUuid: string | null
 
   @Column({
     name: 'last_edited_by_uuid',

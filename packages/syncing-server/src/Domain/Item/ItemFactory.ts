@@ -34,7 +34,7 @@ export class ItemFactory implements ItemFactoryInterface {
     newItem.contentSize = 0
     newItem.userUuid = dto.userUuid
 
-    newItem.vaultSystemIdentifier = dto.itemHash.vault_system_identifier ?? null
+    newItem.keySystemIdentifier = dto.itemHash.key_system_identifier ?? null
 
     if (dto.itemHash.content) {
       newItem.content = dto.itemHash.content

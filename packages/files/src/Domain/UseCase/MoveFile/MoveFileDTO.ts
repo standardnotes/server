@@ -1,7 +1,7 @@
-import { GroupMoveType } from '@standardnotes/security'
+import { SharedVaultMoveType } from '@standardnotes/security'
 
 export type MoveFileDTO = {
-  moveType: GroupMoveType
+  moveType: SharedVaultMoveType
   fromUuid: string
   toUuid: string
   resourceRemoteIdentifier: string

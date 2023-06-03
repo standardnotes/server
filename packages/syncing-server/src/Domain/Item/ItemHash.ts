@@ -10,7 +10,7 @@ export type ItemHash = {
   auth_hash?: string
   enc_item_key?: string
   items_key_id?: string
-  vault_system_identifier?: string
+  key_system_identifier?: string
   last_edited_by_uuid?: string | null
   created_at?: string
   created_at_timestamp?: number

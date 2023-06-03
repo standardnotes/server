@@ -1,4 +1,4 @@
-export type RemoveFileDTO = RemoveUserFileDTO | RemoveGroupFileDTO
+export type RemoveFileDTO = RemoveUserFileDTO | RemoveSharedVaultFileDTO
 
 export type RemoveUserFileDTO = {
   userUuid: string
@@ -6,8 +6,8 @@ export type RemoveUserFileDTO = {
   regularSubscriptionUuid: string
 }
 
-export type RemoveGroupFileDTO = {
-  groupUuid: string
+export type RemoveSharedVaultFileDTO = {
+  sharedVaultUuid: string
   resourceRemoteIdentifier: string
 }
 

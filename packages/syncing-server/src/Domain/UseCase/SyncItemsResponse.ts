@@ -1,15 +1,15 @@
-import { GroupInvite } from '../GroupInvite/Model/GroupInvite'
+import { SharedVaultInvite } from '../SharedVaultInvite/Model/SharedVaultInvite'
 import { Contact } from '../Contact/Model/Contact'
 import { Item } from '../Item/Item'
 import { ItemConflict } from '../Item/ItemConflict'
-import { Group } from '../Group/Model/Group'
+import { SharedVault } from '../SharedVault/Model/SharedVault'
 
 export type SyncItemsResponse = {
   retrievedItems: Array<Item>
   savedItems: Array<Item>
   conflicts: Array<ItemConflict>
-  groups: Array<Group>
-  groupInvites: Array<GroupInvite>
+  shared_vaults: Array<SharedVault>
+  sharedVaultInvites: Array<SharedVaultInvite>
   contacts: Array<Contact>
   syncToken: string
   cursorToken?: string

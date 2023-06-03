@@ -1,6 +1,6 @@
 import { ContactProjection } from '../../../Projection/ContactProjection'
-import { GroupInviteProjection } from '../../../Projection/GroupInviteProjection'
-import { GroupProjection } from '../../../Projection/GroupProjection'
+import { SharedVaultInviteProjection } from '../../../Projection/SharedVaultInviteProjection'
+import { SharedVaultProjection } from '../../../Projection/SharedVaultProjection'
 import { ItemConflictProjection } from '../../../Projection/ItemConflictProjection'
 import { ItemProjection } from '../../../Projection/ItemProjection'
 import { SavedItemProjection } from '../../../Projection/SavedItemProjection'
@@ -12,6 +12,6 @@ export type SyncResponse20200115 = {
   sync_token: string
   cursor_token?: string
   contacts: Array<ContactProjection>
-  groups: Array<GroupProjection>
-  group_invites: Array<GroupInviteProjection>
+  shared_vaults: Array<SharedVaultProjection>
+  shared_vault_invites: Array<SharedVaultInviteProjection>
 }

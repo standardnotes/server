@@ -44,7 +44,7 @@ import { MarkFilesToBeRemoved } from '../Domain/UseCase/MarkFilesToBeRemoved/Mar
 import { AccountDeletionRequestedEventHandler } from '../Domain/Handler/AccountDeletionRequestedEventHandler'
 import { SharedSubscriptionInvitationCanceledEventHandler } from '../Domain/Handler/SharedSubscriptionInvitationCanceledEventHandler'
 import { InMemoryUploadRepository } from '../Infra/InMemory/InMemoryUploadRepository'
-import { GroupValetTokenAuthMiddleware } from '../Controller/GroupValetTokenAuthMiddleware'
+import { SharedVaultValetTokenAuthMiddleware } from '../Controller/SharedVaultValetTokenAuthMiddleware'
 import { FileMoverInterface } from '../Domain/Services/FileMoverInterface'
 import { S3FileMover } from '../Infra/S3/S3FileMover'
 import { FSFileMover } from '../Infra/FS/FSFileMover'
@@ -157,7 +157,7 @@ export class ContainerConfigLoader {
 
     // middleware
     container.bind<ValetTokenAuthMiddleware>(TYPES.ValetTokenAuthMiddleware).to(ValetTokenAuthMiddleware)
-    container.bind<GroupValetTokenAuthMiddleware>(TYPES.GroupValetTokenAuthMiddleware).to(GroupValetTokenAuthMiddleware)
+    container.bind<SharedVaultValetTokenAuthMiddleware>(TYPES.SharedVaultValetTokenAuthMiddleware).to(SharedVaultValetTokenAuthMiddleware)
 
     // services
     container

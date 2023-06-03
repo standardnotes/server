@@ -131,17 +131,17 @@ export class TypeORMItemRepository implements ItemRepositoryInterface {
       queryBuilder.orderBy(`item.${query.sortBy}`, query.sortOrder)
     }
 
-    if (query.includeGroupUuids != undefined && query.includeGroupUuids.length > 0) {
+    if (query.includeSharedVaultUuids != undefined && query.includeSharedVaultUuids.length > 0) {
       queryBuilder.where(
         new Brackets((qb) => {
-          qb.where('item.group_uuid IN (:...groupUuids)', { groupUuids: query.includeGroupUuids })
+          qb.where('item.shared_vault_uuid IN (:...sharedVaultUuids)', { sharedVaultUuids: query.includeSharedVaultUuids })
           if (query.userUuid) {
             qb.orWhere('item.user_uuid = :userUuid', { userUuid: query.userUuid })
           }
         }),
       )
-    } else if (query.exclusiveGroupUuids != undefined && query.exclusiveGroupUuids.length > 0) {
-      queryBuilder.andWhere('item.group_uuid IN (:...groupUuids)', { groupUuids: query.exclusiveGroupUuids })
+    } else if (query.exclusiveSharedVaultUuids != undefined && query.exclusiveSharedVaultUuids.length > 0) {
+      queryBuilder.andWhere('item.shared_vault_uuid IN (:...sharedVaultUuids)', { sharedVaultUuids: query.exclusiveSharedVaultUuids })
     } else if (query.userUuid !== undefined) {
       queryBuilder.where('item.user_uuid = :userUuid', { userUuid: query.userUuid })
     }

@@ -19,7 +19,7 @@ import { ItemSaveValidatorInterface } from './SaveValidator/ItemSaveValidatorInt
 import { ItemTransferCalculatorInterface } from './ItemTransferCalculatorInterface'
 import { ProjectorInterface } from '../../Projection/ProjectorInterface'
 import { ItemProjection } from '../../Projection/ItemProjection'
-import { GroupUserRepositoryInterface } from '../GroupUser/Repository/GroupUserRepositoryInterface'
+import { SharedVaultUserRepositoryInterface } from '../SharedVaultUser/Repository/SharedVaultUserRepositoryInterface'
 import { ConflictType } from '../../Tmp/ConflictType'
 
 export class ItemService implements ItemServiceInterface {
@@ -38,7 +38,7 @@ export class ItemService implements ItemServiceInterface {
     private timer: TimerInterface,
     private itemProjector: ProjectorInterface<Item, ItemProjection>,
     private maxItemsSyncLimit: number,
-    private groupUsersRepository: GroupUserRepositoryInterface,
+    private sharedVaultUsersRepository: SharedVaultUserRepositoryInterface,
     private logger: Logger,
   ) {}
 
@@ -48,16 +48,16 @@ export class ItemService implements ItemServiceInterface {
     const limit = dto.limit === undefined || dto.limit < 1 ? this.DEFAULT_ITEMS_LIMIT : dto.limit
     const upperBoundLimit = limit < this.maxItemsSyncLimit ? limit : this.maxItemsSyncLimit
 
-    const groupUsers = await this.groupUsersRepository.findAllForUser({ userUuid: dto.userUuid })
-    const userGroupUuids = groupUsers.map((groupUser) => groupUser.groupUuid)
-    const exclusiveGroupUuids = dto.groupUuids
-      ? dto.groupUuids.filter((groupUuid) => userGroupUuids.includes(groupUuid))
+    const sharedVaultUsers = await this.sharedVaultUsersRepository.findAllForUser({ userUuid: dto.userUuid })
+    const userSharedVaultUuids = sharedVaultUsers.map((sharedVaultUser) => sharedVaultUser.sharedVaultUuid)
+    const exclusiveSharedVaultUuids = dto.sharedVaultUuids
+      ? dto.sharedVaultUuids.filter((sharedVaultUuid) => userSharedVaultUuids.includes(sharedVaultUuid))
       : undefined
 
     const itemQuery: ItemQuery = {
       userUuid: dto.userUuid,
-      includeGroupUuids: !dto.groupUuids ? userGroupUuids : undefined,
-      exclusiveGroupUuids: exclusiveGroupUuids,
+      includeSharedVaultUuids: !dto.sharedVaultUuids ? userSharedVaultUuids : undefined,
+      exclusiveSharedVaultUuids: exclusiveSharedVaultUuids,
       lastSyncTime,
       syncTimeComparison,
       contentType: dto.contentType,
@@ -210,7 +210,7 @@ export class ItemService implements ItemServiceInterface {
     dto.existingItem.updatedWithSession = dto.sessionUuid
     dto.existingItem.contentSize = 0
     dto.existingItem.lastEditedByUuid = dto.userUuid
-    dto.existingItem.vaultSystemIdentifier = dto.itemHash.vault_system_identifier ?? null
+    dto.existingItem.keySystemIdentifier = dto.itemHash.key_system_identifier ?? null
 
     if (dto.itemHash.content) {
       dto.existingItem.content = dto.itemHash.content
