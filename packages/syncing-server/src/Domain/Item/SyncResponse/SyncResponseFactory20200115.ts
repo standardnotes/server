@@ -40,9 +40,9 @@ export class SyncResponseFactory20200115 implements SyncResponseFactoryInterface
       conflicts.push(this.itemConflictProjector.projectFull(itemConflict))
     }
 
-    const shared_vaults = []
-    for (const sharedVault of syncItemsResponse.shared_vaults) {
-      shared_vaults.push(this.sharedVaultProjector.projectFull(sharedVault))
+    const sharedVaults = []
+    for (const sharedVault of syncItemsResponse.sharedVaults) {
+      sharedVaults.push(this.sharedVaultProjector.projectFull(sharedVault))
     }
 
     const sharedVaultInvites = []
@@ -61,7 +61,7 @@ export class SyncResponseFactory20200115 implements SyncResponseFactoryInterface
       conflicts,
       sync_token: syncItemsResponse.syncToken,
       cursor_token: syncItemsResponse.cursorToken,
-      shared_vaults,
+      shared_vaults: sharedVaults,
       shared_vault_invites: sharedVaultInvites,
       contacts,
     }

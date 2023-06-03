@@ -8,7 +8,7 @@ export type SyncItemsResponse = {
   retrievedItems: Array<Item>
   savedItems: Array<Item>
   conflicts: Array<ItemConflict>
-  shared_vaults: Array<SharedVault>
+  sharedVaults: Array<SharedVault>
   sharedVaultInvites: Array<SharedVaultInvite>
   contacts: Array<Contact>
   syncToken: string

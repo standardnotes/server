@@ -210,7 +210,8 @@ export class ItemService implements ItemServiceInterface {
     dto.existingItem.updatedWithSession = dto.sessionUuid
     dto.existingItem.contentSize = 0
     dto.existingItem.lastEditedByUuid = dto.userUuid
-    dto.existingItem.keySystemIdentifier = dto.itemHash.key_system_identifier ?? null
+    dto.existingItem.keySystemIdentifier = dto.itemHash.key_system_identifier
+    dto.existingItem.sharedVaultUuid = dto.itemHash.shared_vault_uuid
 
     if (dto.itemHash.content) {
       dto.existingItem.content = dto.itemHash.content

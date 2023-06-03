@@ -5,7 +5,7 @@ import { inject } from 'inversify'
 import { SharedVaultUserServiceInterface } from '../Domain/SharedVaultUser/Service/SharedVaultUserServiceInterface'
 import { SharedVaultUserProjector } from '../Projection/SharedVaultUserProjector'
 
-@controller('/shared_vaults/:sharedVaultUuid/users')
+@controller('/shared-vaults/:sharedVaultUuid/users')
 export class SharedVaultUsersController extends BaseHttpController {
   constructor(
     @inject(TYPES.SharedVaultUserService) private sharedVaultUserService: SharedVaultUserServiceInterface,

@@ -21,7 +21,7 @@ import { RemovedSharedVaultUserServiceInterface } from '../Domain/RemovedSharedV
 import { Item } from '../Domain/Item/Item'
 import { SavedItemProjection } from '../Projection/SavedItemProjection'
 
-@controller('/shared_vaults')
+@controller('/shared-vaults')
 export class SharedVaultsController extends BaseHttpController {
   constructor(
     @inject(TYPES.SharedVaultService) private sharedVaultService: SharedVaultServiceInterface,
@@ -40,12 +40,12 @@ export class SharedVaultsController extends BaseHttpController {
 
   @httpGet('/', TYPES.AuthMiddleware)
   public async getSharedVaults(_request: Request, response: Response): Promise<results.JsonResult> {
-    const shared_vaults = await this.sharedVaultService.getSharedVaults({
+    const sharedVaults = await this.sharedVaultService.getSharedVaults({
       userUuid: response.locals.user.uuid,
     })
 
     return this.json({
-      shared_vaults: shared_vaults.map((sharedVault) => this.sharedVaultProjector.projectFull(sharedVault)),
+      sharedVaults: sharedVaults.map((sharedVault) => this.sharedVaultProjector.projectFull(sharedVault)),
     })
   }
 

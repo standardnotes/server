@@ -46,7 +46,7 @@ export class SyncItems implements UseCaseInterface {
       cursorToken: dto.cursorToken,
     })
 
-    const shared_vaults = await this.sharedVaultService.getSharedVaults({
+    const sharedVaults = await this.sharedVaultService.getSharedVaults({
       userUuid: dto.userUuid,
       lastSyncTime,
     })
@@ -67,7 +67,7 @@ export class SyncItems implements UseCaseInterface {
       savedItems: saveItemsResult.savedItems,
       conflicts: saveItemsResult.conflicts,
       cursorToken: getItemsResult.cursorToken,
-      shared_vaults,
+      sharedVaults,
       sharedVaultInvites,
       contacts,
     }

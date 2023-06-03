@@ -13,7 +13,7 @@ import { inject } from 'inversify'
 import { SharedVaultInviteServiceInterface } from '../Domain/SharedVaultInvite/Service/SharedVaultInviteServiceInterface'
 import { SharedVaultInviteProjector } from '../Projection/SharedVaultInviteProjector'
 
-@controller('/shared_vaults')
+@controller('/shared-vaults')
 export class SharedVaultInvitesController extends BaseHttpController {
   constructor(
     @inject(TYPES.SharedVaultInviteService) private sharedVaultInviteService: SharedVaultInviteServiceInterface,

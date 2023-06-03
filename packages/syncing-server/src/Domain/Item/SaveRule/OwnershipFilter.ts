@@ -5,7 +5,7 @@ import { ConflictType } from '../../../Tmp/ConflictType'
 
 export class OwnershipFilter implements ItemSaveRuleInterface {
   async check(dto: ItemSaveValidationDTO): Promise<ItemSaveRuleResult> {
-    const deferToSharedVaultFilter = dto.existingItem?.sharedVaultUuid
+    const deferToSharedVaultFilter = dto.existingItem?.sharedVaultUuid || dto.itemHash.shared_vault_uuid
     if (deferToSharedVaultFilter) {
       return {
         passed: true,

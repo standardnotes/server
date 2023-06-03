@@ -7,72 +7,114 @@ import { SharedVaultUserPermission } from '../../SharedVaultUser/Model/SharedVau
 import { SharedVaultServiceInterface } from '../../SharedVault/Service/SharedVaultServiceInterface'
 import { ContentType } from '@standardnotes/common'
 import { ConflictType } from '../../../Tmp/ConflictType'
+import {
+  SharedVaultSaveOperation,
+  AddToSharedVaultSaveOperation,
+  RemoveFromSharedVaultSaveOperation,
+  MoveToOtherSharedVaultSaveOperation,
+  SaveToSharedVaultSaveOperation,
+  CreateToSharedVaultSaveOperation,
+} from './SharedVaultSaveOperation'
+import { Item } from '../Item'
 
 export class SharedVaultFilter implements ItemSaveRuleInterface {
   constructor(
-    private sharedVaultService: SharedVaultServiceInterface,
-    private sharedVaultUserService: SharedVaultUserServiceInterface,
+    private sharedvaultService: SharedVaultServiceInterface,
+    private sharedvaultUserService: SharedVaultUserServiceInterface,
   ) {}
 
   async check(dto: ItemSaveValidationDTO): Promise<ItemSaveRuleResult> {
-    if (!dto.existingItem?.sharedVaultUuid) {
+    if (!dto.existingItem?.sharedVaultUuid && !dto.itemHash.shared_vault_uuid) {
       return {
         passed: true,
       }
     }
 
-    const sharedVaultUser = await this.sharedVaultUserService.getUserForSharedVault({
+    const operation = this.getSaveOperationType(dto)
+
+    if (dto.itemHash.shared_vault_uuid && !dto.itemHash.key_system_identifier) {
+      return this.buildFailResult(operation, ConflictType.SharedVaultInvalidState)
+    }
+
+    return this.getResultForOperation(operation)
+  }
+
+  private async getResultForOperation(operation: SharedVaultSaveOperation): Promise<ItemSaveRuleResult> {
+    if (operation.type === 'add-to-shared-vault') {
+      return this.handleAddToSharedVaultOperation(operation)
+    } else if (operation.type === 'remove-from-shared-vault') {
+      return this.handleRemoveFromSharedVaultOperation(operation)
+    } else if (operation.type === 'move-to-other-shared-vault') {
+      return this.handleMoveToOtherSharedVaultOperation(operation)
+    } else if (operation.type === 'save-to-shared-vault') {
+      return this.handleSaveToSharedVaultOperation(operation)
+    } else if (operation.type === 'create-to-shared-vault') {
+      return this.handleCreateToSharedVaultOperation(operation)
+    }
+
+    throw new Error(`Unsupported sharedvault operation: ${operation}`)
+  }
+
+  private getSaveOperationType(dto: ItemSaveValidationDTO): SharedVaultSaveOperation {
+    const existingItemSharedVaultUuid = dto.existingItem?.sharedVaultUuid
+    const targetItemSharedVaultUuid = dto.itemHash.shared_vault_uuid
+
+    const common = {
+      incomingItem: dto.itemHash,
       userUuid: dto.userUuid,
-      sharedVaultUuid: dto.existingItem.sharedVaultUuid,
-    })
+    }
 
-    if (!sharedVaultUser) {
+    if (
+      dto.existingItem &&
+      existingItemSharedVaultUuid &&
+      targetItemSharedVaultUuid &&
+      existingItemSharedVaultUuid !== targetItemSharedVaultUuid
+    ) {
       return {
-        passed: false,
-        conflict: {
-          unsavedItem: dto.itemHash,
-          type: ConflictType.SharedVaultNotMemberError,
-        },
+        type: 'move-to-other-shared-vault',
+        sharedVaultUuid: existingItemSharedVaultUuid,
+        targetSharedVaultUuid: targetItemSharedVaultUuid,
+        existingItem: dto.existingItem,
+        ...common,
       }
     }
 
-    if (sharedVaultUser.permissions === 'read') {
+    if (dto.existingItem && existingItemSharedVaultUuid && !targetItemSharedVaultUuid) {
       return {
-        passed: false,
-        conflict: {
-          unsavedItem: dto.itemHash,
-          serverItem: dto.existingItem,
-          type: ConflictType.SharedVaultInsufficientPermissionsError,
-        },
+        type: 'remove-from-shared-vault',
+        sharedVaultUuid: existingItemSharedVaultUuid,
+        existingItem: dto.existingItem,
+        ...common,
       }
     }
 
-    if (!this.isAuthorizedToSaveContentType(dto.itemHash.content_type, sharedVaultUser.permissions)) {
+    if (dto.existingItem && !existingItemSharedVaultUuid && targetItemSharedVaultUuid) {
       return {
-        passed: false,
-        conflict: {
-          unsavedItem: dto.itemHash,
-          serverItem: dto.existingItem,
-          type: ConflictType.SharedVaultInsufficientPermissionsError,
-        },
+        type: 'add-to-shared-vault',
+        sharedVaultUuid: targetItemSharedVaultUuid,
+        existingItem: dto.existingItem,
+        ...common,
       }
     }
 
-    const usesValidKey = await this.incomingItemUsesValidItemsKey(dto.itemHash, dto.existingItem.sharedVaultUuid)
-    if (!usesValidKey) {
+    if (dto.existingItem && existingItemSharedVaultUuid && existingItemSharedVaultUuid === targetItemSharedVaultUuid) {
       return {
-        passed: false,
-        conflict: {
-          unsavedItem: dto.itemHash,
-          serverItem: dto.existingItem,
-          type: ConflictType.SharedVaultInvalidItemsKey,
-        },
+        type: 'save-to-shared-vault',
+        sharedVaultUuid: existingItemSharedVaultUuid,
+        existingItem: dto.existingItem,
+        ...common,
       }
     }
 
-    return {
-      passed: true,
+    if (!dto.existingItem && targetItemSharedVaultUuid) {
+      return {
+        type: 'create-to-shared-vault',
+        sharedVaultUuid: targetItemSharedVaultUuid,
+        ...common,
+      }
     }
+
+    throw new Error('Invalid save operation')
   }
 
   private isAuthorizedToSaveContentType(contentType: ContentType, permissions: SharedVaultUserPermission): boolean {
@@ -83,21 +125,204 @@ export class SharedVaultFilter implements ItemSaveRuleInterface {
     return true
   }
 
-  private async incomingItemUsesValidItemsKey(itemHash: ItemHash, sharedVaultUuid: string): Promise<boolean> {
-    if (itemHash.deleted) {
-      return true
+  private buildFailResult(operation: SharedVaultSaveOperation, type: ConflictType, serverItem?: Item) {
+    return {
+      passed: false,
+      conflict: {
+        unsavedItem: operation.incomingItem,
+        serverItem,
+        type,
+      },
+    }
+  }
+
+  private buildSuccessValue(): ItemSaveRuleResult {
+    return {
+      passed: true,
+    }
+  }
+
+  private async handleAddToSharedVaultOperation(operation: AddToSharedVaultSaveOperation): Promise<ItemSaveRuleResult> {
+    const sharedvaultPermissions = await this.getSharedVaultPermissions(operation.userUuid, operation.sharedVaultUuid)
+    if (!sharedvaultPermissions) {
+      return this.buildFailResult(operation, ConflictType.SharedVaultNotMemberError)
     }
 
+    if (operation.existingItem.deleted || operation.incomingItem.deleted) {
+      return this.buildFailResult(operation, ConflictType.SharedVaultInvalidState)
+    }
+
+    if (!this.isAuthorizedToSaveContentType(operation.incomingItem.content_type, sharedvaultPermissions)) {
+      return this.buildFailResult(operation, ConflictType.SharedVaultInsufficientPermissionsError)
+    }
+
+    if (sharedvaultPermissions === 'read') {
+      return this.buildFailResult(operation, ConflictType.SharedVaultInsufficientPermissionsError)
+    }
+
+    if (operation.existingItem.userUuid !== operation.userUuid) {
+      return this.buildFailResult(operation, ConflictType.UuidConflict)
+    }
+
+    const usesValidKey = await this.incomingItemUsesValidItemsKey(operation.incomingItem)
+    if (!usesValidKey) {
+      return this.buildFailResult(operation, ConflictType.SharedVaultInvalidItemsKey, operation.existingItem)
+    }
+
+    return this.buildSuccessValue()
+  }
+
+  private async handleRemoveFromSharedVaultOperation(
+    operation: RemoveFromSharedVaultSaveOperation,
+  ): Promise<ItemSaveRuleResult> {
+    const sharedvaultPermissions = await this.getSharedVaultPermissions(operation.userUuid, operation.sharedVaultUuid)
+    if (!sharedvaultPermissions) {
+      return this.buildFailResult(operation, ConflictType.SharedVaultNotMemberError)
+    }
+
+    if (operation.existingItem.deleted || operation.incomingItem.deleted) {
+      return this.buildFailResult(operation, ConflictType.SharedVaultInvalidState)
+    }
+
+    if (operation.existingItem.userUuid === operation.userUuid) {
+      return this.buildSuccessValue()
+    }
+
+    if (!this.isAuthorizedToSaveContentType(operation.incomingItem.content_type, sharedvaultPermissions)) {
+      return this.buildFailResult(operation, ConflictType.SharedVaultInsufficientPermissionsError)
+    }
+
+    if (sharedvaultPermissions === 'read') {
+      return this.buildFailResult(operation, ConflictType.SharedVaultInsufficientPermissionsError)
+    }
+
+    const usesValidKey = await this.incomingItemUsesValidItemsKey(operation.incomingItem)
+    if (!usesValidKey) {
+      return this.buildFailResult(operation, ConflictType.SharedVaultInvalidItemsKey, operation.existingItem)
+    }
+
+    return this.buildSuccessValue()
+  }
+
+  private async handleMoveToOtherSharedVaultOperation(
+    operation: MoveToOtherSharedVaultSaveOperation,
+  ): Promise<ItemSaveRuleResult> {
+    const sourceSharedVaultPermissions = await this.getSharedVaultPermissions(
+      operation.userUuid,
+      operation.sharedVaultUuid,
+    )
+    const targetSharedVaultPermissions = await this.getSharedVaultPermissions(
+      operation.userUuid,
+      operation.targetSharedVaultUuid,
+    )
+
+    if (!sourceSharedVaultPermissions || !targetSharedVaultPermissions) {
+      return this.buildFailResult(operation, ConflictType.SharedVaultNotMemberError)
+    }
+
+    if (operation.existingItem.deleted || operation.incomingItem.deleted) {
+      return this.buildFailResult(operation, ConflictType.SharedVaultInvalidState)
+    }
+
+    if (sourceSharedVaultPermissions === 'read' || targetSharedVaultPermissions === 'read') {
+      return this.buildFailResult(operation, ConflictType.SharedVaultInsufficientPermissionsError)
+    }
+
+    if (
+      !this.isAuthorizedToSaveContentType(operation.incomingItem.content_type, sourceSharedVaultPermissions) ||
+      !this.isAuthorizedToSaveContentType(operation.incomingItem.content_type, targetSharedVaultPermissions)
+    ) {
+      return this.buildFailResult(operation, ConflictType.SharedVaultInsufficientPermissionsError)
+    }
+
+    const usesValidKey = await this.incomingItemUsesValidItemsKey(operation.incomingItem)
+    if (!usesValidKey) {
+      return this.buildFailResult(operation, ConflictType.SharedVaultInvalidItemsKey, operation.existingItem)
+    }
+
+    return this.buildSuccessValue()
+  }
+
+  private async handleSaveToSharedVaultOperation(
+    operation: SaveToSharedVaultSaveOperation,
+  ): Promise<ItemSaveRuleResult> {
+    const sharedvaultPermissions = await this.getSharedVaultPermissions(operation.userUuid, operation.sharedVaultUuid)
+
+    if (!sharedvaultPermissions) {
+      return this.buildFailResult(operation, ConflictType.SharedVaultNotMemberError)
+    }
+
+    if (!this.isAuthorizedToSaveContentType(operation.incomingItem.content_type, sharedvaultPermissions)) {
+      return this.buildFailResult(operation, ConflictType.SharedVaultInsufficientPermissionsError)
+    }
+
+    if (sharedvaultPermissions === 'read') {
+      return this.buildFailResult(operation, ConflictType.SharedVaultInsufficientPermissionsError)
+    }
+
+    const usesValidKey = await this.incomingItemUsesValidItemsKey(operation.incomingItem)
+    if (!usesValidKey) {
+      return this.buildFailResult(operation, ConflictType.SharedVaultInvalidItemsKey, operation.existingItem)
+    }
+
+    return this.buildSuccessValue()
+  }
+
+  private async handleCreateToSharedVaultOperation(
+    operation: CreateToSharedVaultSaveOperation,
+  ): Promise<ItemSaveRuleResult> {
+    const sharedvaultPermissions = await this.getSharedVaultPermissions(operation.userUuid, operation.sharedVaultUuid)
+
+    if (!sharedvaultPermissions) {
+      return this.buildFailResult(operation, ConflictType.SharedVaultNotMemberError)
+    }
+
+    if (!this.isAuthorizedToSaveContentType(operation.incomingItem.content_type, sharedvaultPermissions)) {
+      return this.buildFailResult(operation, ConflictType.SharedVaultInsufficientPermissionsError)
+    }
+
+    if (sharedvaultPermissions === 'read') {
+      return this.buildFailResult(operation, ConflictType.SharedVaultInsufficientPermissionsError)
+    }
+
+    const usesValidKey = await this.incomingItemUsesValidItemsKey(operation.incomingItem)
+    if (!usesValidKey) {
+      return this.buildFailResult(operation, ConflictType.SharedVaultInvalidItemsKey)
+    }
+
+    return this.buildSuccessValue()
+  }
+
+  private async incomingItemUsesValidItemsKey(itemHash: ItemHash): Promise<boolean> {
     const isItemNotEncryptedByItemsKey = itemHash.content_type === ContentType.VaultItemsKey
     if (isItemNotEncryptedByItemsKey) {
       return true
     }
 
-    const sharedVault = await this.sharedVaultService.getSharedVault({ sharedVaultUuid: sharedVaultUuid })
-    if (!sharedVault) {
+    const sharedvault = await this.sharedvaultService.getSharedVault({
+      sharedVaultUuid: itemHash.shared_vault_uuid as string,
+    })
+
+    if (!sharedvault) {
       return false
     }
 
-    return itemHash.items_key_id === sharedVault.specifiedItemsKeyUuid
+    return itemHash.items_key_id === sharedvault.specifiedItemsKeyUuid
+  }
+
+  private async getSharedVaultPermissions(
+    userUuid: string,
+    sharedVaultUuid: string,
+  ): Promise<SharedVaultUserPermission | undefined> {
+    const sharedvaultUser = await this.sharedvaultUserService.getUserForSharedVault({
+      userUuid,
+      sharedVaultUuid: sharedVaultUuid,
+    })
+
+    if (sharedvaultUser) {
+      return sharedvaultUser.permissions
+    }
+
+    return undefined
   }
 }
