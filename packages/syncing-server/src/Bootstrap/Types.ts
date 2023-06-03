@@ -84,6 +84,7 @@ const TYPES = {
   EmailBackupRequestedEventHandler: Symbol.for('EmailBackupRequestedEventHandler'),
   ItemRevisionCreationRequestedEventHandler: Symbol.for('ItemRevisionCreationRequestedEventHandler'),
   SharedVaultFileUploadedEventHandler: Symbol.for('SharedVaultFileUploadedEventHandler'),
+  SharedVaultFileRemovedEventHandler: Symbol.for('SharedVaultFileRemovedEventHandler'),
 
   ContentDecoder: Symbol.for('ContentDecoder'),
   DomainEventPublisher: Symbol.for('DomainEventPublisher'),

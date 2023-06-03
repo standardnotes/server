@@ -38,9 +38,6 @@ import { ContactProjector } from '../Projection/ContactProjector'
 import { SharedVaultInviteRepositoryInterface } from '../Domain/SharedVaultInvite/Repository/SharedVaultInviteRepositoryInterface'
 import { ContactsRepositoryInterface } from '../Domain/Contact/Repository/ContactRepositoryInterface'
 import { TypeORMContactRepository } from '../Domain/Contact/Repository/TypeORMContactRepository'
-import { RemovedSharedVaultUserRepositoryInterface } from '../Domain/RemovedSharedVaultUser/Repository/RemovedSharedVaultUserRepositoryInterface'
-import { TypeORMRemovedSharedVaultUserRepository } from '../Domain/RemovedSharedVaultUser/Repository/TypeORMRemovedSharedVaultUserRepository'
-import { RemovedSharedVaultUser } from '../Domain/RemovedSharedVaultUser/Model/RemovedSharedVaultUser'
 import { UserEventsRepositoryInterface } from '../Domain/UserEvent/Repository/UserEventRepositoryInterface'
 import { TypeORMUserEventRepository } from '../Domain/UserEvent/Repository/TypeORMUserEventRepository'
 import { UserEvent } from '../Domain/UserEvent/Model/UserEvent'
@@ -115,13 +112,6 @@ export class CommonContainerConfigLoader {
         return new TypeORMSharedVaultUserRepository(context.container.get(TYPES.ORMSharedVaultUserRepository))
       })
     container
-      .bind<RemovedSharedVaultUserRepositoryInterface>(TYPES.RemovedSharedVaultUserRepository)
-      .toDynamicValue((context: interfaces.Context) => {
-        return new TypeORMRemovedSharedVaultUserRepository(
-          context.container.get(TYPES.ORMRemovedSharedVaultUserRepository),
-        )
-      })
-    container
       .bind<SharedVaultInviteRepositoryInterface>(TYPES.SharedVaultInviteRepository)
       .toDynamicValue((context: interfaces.Context) => {
         return new TypeORMSharedVaultInviteRepository(context.container.get(TYPES.ORMSharedVaultInviteRepository))
@@ -145,9 +135,6 @@ export class CommonContainerConfigLoader {
     container
       .bind<Repository<SharedVaultUser>>(TYPES.ORMSharedVaultUserRepository)
       .toDynamicValue(() => AppDataSource.getRepository(SharedVaultUser))
-    container
-      .bind<Repository<RemovedSharedVaultUser>>(TYPES.ORMRemovedSharedVaultUserRepository)
-      .toDynamicValue(() => AppDataSource.getRepository(RemovedSharedVaultUser))
     container
       .bind<Repository<SharedVaultInvite>>(TYPES.ORMSharedVaultInviteRepository)
       .toDynamicValue(() => AppDataSource.getRepository(SharedVaultInvite))

@@ -57,7 +57,7 @@ export class SharedVaultFilter implements ItemSaveRuleInterface {
   }
 
   private isAuthorizedToSaveContentType(contentType: ContentType, permissions: SharedVaultUserPermission): boolean {
-    if (contentType === ContentType.VaultItemsKey) {
+    if (contentType === ContentType.KeySystemItemsKey) {
       return permissions === 'admin'
     }
 
@@ -233,7 +233,7 @@ export class SharedVaultFilter implements ItemSaveRuleInterface {
   }
 
   private async incomingItemUsesValidItemsKey(itemHash: ItemHash): Promise<boolean> {
-    const isItemNotEncryptedByItemsKey = itemHash.content_type === ContentType.VaultItemsKey
+    const isItemNotEncryptedByItemsKey = itemHash.content_type === ContentType.KeySystemItemsKey
     if (isItemNotEncryptedByItemsKey) {
       return true
     }

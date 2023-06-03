@@ -1,4 +1,4 @@
-import { RemovedSharedVaultUser } from './../Domain/RemovedSharedVaultUser/Model/RemovedSharedVaultUser'
+import { UserEvent } from './../Domain/UserEvent/Model/UserEvent'
 import { Contact } from './../Domain/Contact/Model/Contact'
 import { SharedVaultInvite } from '../Domain/SharedVaultInvite/Model/SharedVaultInvite'
 import { SharedVaultUser } from '../Domain/SharedVaultUser/Model/SharedVaultUser'
@@ -43,7 +43,7 @@ const replicationConfig = {
 
 const commonDataSourceOptions = {
   maxQueryExecutionTime,
-  entities: [Item, SharedVault, SharedVaultUser, RemovedSharedVaultUser, SharedVaultInvite, Contact],
+  entities: [Item, SharedVault, SharedVaultUser, SharedVaultInvite, Contact, UserEvent],
   migrations: [`dist/migrations/${isConfiguredForMySQL ? 'mysql' : 'sqlite'}/*.js`],
   migrationsRun: true,
   logging: <LoggerOptions>env.get('DB_DEBUG_LEVEL'),

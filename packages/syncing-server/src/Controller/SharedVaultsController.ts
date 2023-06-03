@@ -17,23 +17,17 @@ import { SharedVault } from '../Domain/SharedVault/Model/SharedVault'
 import { SharedVaultProjection } from '../Projection/SharedVaultProjection'
 import { SharedVaultUserProjection } from '../Projection/SharedVaultUserProjection'
 import { CreateSharedVaultFileValetToken } from '../Domain/UseCase/CreateSharedVaultFileValetToken/CreateSharedVaultFileValetToken'
-import { RemovedSharedVaultUserServiceInterface } from '../Domain/RemovedSharedVaultUser/Service/RemovedSharedVaultUserServiceInterface'
-import { Item } from '../Domain/Item/Item'
-import { SavedItemProjection } from '../Projection/SavedItemProjection'
 
 @controller('/shared-vaults')
 export class SharedVaultsController extends BaseHttpController {
   constructor(
     @inject(TYPES.SharedVaultService) private sharedVaultService: SharedVaultServiceInterface,
-    @inject(TYPES.RemovedSharedVaultUserService)
-    private removedSharedVaultUserService: RemovedSharedVaultUserServiceInterface,
     @inject(TYPES.SharedVaultProjector)
     private sharedVaultProjector: ProjectorInterface<SharedVault, SharedVaultProjection>,
     @inject(TYPES.SharedVaultUserProjector)
     private sharedVaultUserProjector: ProjectorInterface<SharedVaultUser, SharedVaultUserProjection>,
     @inject(TYPES.CreateSharedVaultFileReadValetToken)
     private createSharedVaultFileReadValetToken: CreateSharedVaultFileValetToken,
-    @inject(TYPES.SavedItemProjector) private savedItemProjector: ProjectorInterface<Item, SavedItemProjection>,
   ) {
     super()
   }
@@ -105,69 +99,6 @@ export class SharedVaultsController extends BaseHttpController {
     }
 
     return this.json({ success: true })
-  }
-
-  @httpPost('/:sharedVaultUuid/add-item', TYPES.AuthMiddleware)
-  public async addItemToSharedVault(
-    request: Request,
-    response: Response,
-  ): Promise<results.NotFoundResult | results.JsonResult> {
-    const result = await this.sharedVaultService.addItemToSharedVault({
-      sharedVaultUuid: request.params.sharedVaultUuid,
-      itemUuid: request.body.item_uuid,
-      originatorUuid: response.locals.user.uuid,
-    })
-
-    if (!result) {
-      return this.errorResponse(400, 'Could not add item to shared vault')
-    }
-
-    return this.json({
-      item: this.savedItemProjector.projectFull(result),
-    })
-  }
-
-  @httpDelete('/:sharedVaultUuid/remove-item', TYPES.AuthMiddleware)
-  public async removeItemFromSharedVault(
-    request: Request,
-    response: Response,
-  ): Promise<results.NotFoundResult | results.JsonResult> {
-    const result = await this.sharedVaultService.removeItemFromSharedVault({
-      sharedVaultUuid: request.params.sharedVaultUuid,
-      itemUuid: request.body.item_uuid,
-      originatorUuid: response.locals.user.uuid,
-    })
-
-    if (!result) {
-      return this.errorResponse(400, 'Could not remove item from shared vault')
-    }
-
-    return this.json({
-      item: this.savedItemProjector.projectFull(result),
-    })
-  }
-
-  @httpGet('/removed', TYPES.AuthMiddleware)
-  public async getAllRemovedFromSharedVaultsForCurrentUser(
-    _request: Request,
-    response: Response,
-  ): Promise<results.NotFoundResult | results.JsonResult> {
-    const result = await this.removedSharedVaultUserService.getAllRemovedSharedVaultUsersForUser({
-      userUuid: response.locals.user.uuid,
-    })
-
-    if (!result) {
-      return this.errorResponse(400, 'Could not get shared vault users')
-    }
-
-    return this.json({
-      removedSharedVaults: result.map((removedUser) => {
-        return {
-          sharedVaultUuid: removedUser.sharedVaultUuid,
-          removedAt: removedUser.createdAtTimestamp,
-        }
-      }),
-    })
   }
 
   @httpPost('/:sharedVaultUuid/valet-tokens', TYPES.AuthMiddleware)

@@ -145,8 +145,12 @@ export class WorkerContainerConfigLoader extends CommonContainerConfigLoader {
         )
       })
 
-    container.bind<SharedVaultFileUploadedEventHandler>(TYPES.SharedVaultFileUploadedEventHandler).to(SharedVaultFileUploadedEventHandler)
-    container.bind<SharedVaultFileRemovedEventHandler>(TYPES.SharedVaultFileRemovedEventHandler).to(SharedVaultFileRemovedEventHandler)
+    container
+      .bind<SharedVaultFileUploadedEventHandler>(TYPES.SharedVaultFileUploadedEventHandler)
+      .to(SharedVaultFileUploadedEventHandler)
+    container
+      .bind<SharedVaultFileRemovedEventHandler>(TYPES.SharedVaultFileRemovedEventHandler)
+      .to(SharedVaultFileRemovedEventHandler)
 
     // Services
     container.bind<ContentDecoder>(TYPES.ContentDecoder).toDynamicValue(() => new ContentDecoder())

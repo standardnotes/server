@@ -1,4 +1,3 @@
-import { SaveItem } from './../../UseCase/SaveItem/SaveItem'
 import { TimerInterface } from '@standardnotes/time'
 import { SharedVault } from '../Model/SharedVault'
 import { SharedVaultsRepositoryInterface } from '../Repository/SharedVaultRepositoryInterface'
@@ -12,8 +11,6 @@ import { SharedVaultFactoryInterface } from '../Factory/SharedVaultFactoryInterf
 import { SharedVaultUserServiceInterface } from '../../SharedVaultUser/Service/SharedVaultUserServiceInterface'
 import { SharedVaultInviteServiceInterface } from '../../SharedVaultInvite/Service/SharedVaultInviteServiceInterface'
 import { v4 as uuidv4 } from 'uuid'
-import { Item } from '../../Item/Item'
-import { GetItem } from '../../UseCase/GetItem/GetItem'
 
 export class SharedVaultService implements SharedVaultServiceInterface {
   constructor(
@@ -21,8 +18,6 @@ export class SharedVaultService implements SharedVaultServiceInterface {
     private sharedVaultFactory: SharedVaultFactoryInterface,
     private sharedVaultUserService: SharedVaultUserServiceInterface,
     private sharedVaultInviteService: SharedVaultInviteServiceInterface,
-    private getItem: GetItem,
-    private saveItem: SaveItem,
     private timer: TimerInterface,
   ) {}
 
@@ -106,59 +101,5 @@ export class SharedVaultService implements SharedVaultServiceInterface {
     })
 
     return true
-  }
-
-  async addItemToSharedVault(dto: {
-    itemUuid: string
-    sharedVaultUuid: string
-    originatorUuid: string
-  }): Promise<Item | null> {
-    const sharedVaultUser = await this.sharedVaultUserService.getUserForSharedVault({
-      userUuid: dto.originatorUuid,
-      sharedVaultUuid: dto.sharedVaultUuid,
-    })
-
-    if (!sharedVaultUser || sharedVaultUser.permissions === 'read') {
-      return null
-    }
-
-    const itemResult = await this.getItem.execute({ itemUuid: dto.itemUuid, userUuid: dto.originatorUuid })
-    if (!itemResult.success) {
-      return null
-    }
-
-    if (!itemResult.item.keySystemIdentifier) {
-      return null
-    }
-
-    itemResult.item.sharedVaultUuid = dto.sharedVaultUuid
-
-    const saveResult = await this.saveItem.execute({ item: itemResult.item })
-    return saveResult.savedItem
-  }
-
-  async removeItemFromSharedVault(dto: {
-    itemUuid: string
-    sharedVaultUuid: string
-    originatorUuid: string
-  }): Promise<Item | null> {
-    const sharedVaultUser = await this.sharedVaultUserService.getUserForSharedVault({
-      userUuid: dto.originatorUuid,
-      sharedVaultUuid: dto.sharedVaultUuid,
-    })
-
-    if (!sharedVaultUser || sharedVaultUser.permissions === 'read') {
-      return null
-    }
-
-    const itemResult = await this.getItem.execute({ itemUuid: dto.itemUuid, userUuid: dto.originatorUuid })
-    if (!itemResult.success) {
-      return null
-    }
-
-    itemResult.item.sharedVaultUuid = null
-
-    const saveResult = await this.saveItem.execute({ item: itemResult.item })
-    return saveResult.savedItem
   }
 }

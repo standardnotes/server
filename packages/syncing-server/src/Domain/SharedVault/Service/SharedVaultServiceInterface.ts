@@ -1,6 +1,5 @@
 import { SharedVaultUser } from './../../SharedVaultUser/Model/SharedVaultUser'
 import { SharedVault } from '../Model/SharedVault'
-import { Item } from '../../Item/Item'
 
 export type CreateSharedVaultDTO = {
   userUuid: string
@@ -26,7 +25,4 @@ export interface SharedVaultServiceInterface {
 
   getSharedVault(dto: { sharedVaultUuid: string }): Promise<SharedVault | null>
   getSharedVaults(dto: { userUuid: string; lastSyncTime?: number }): Promise<SharedVault[]>
-
-  addItemToSharedVault(dto: { itemUuid: string; sharedVaultUuid: string; originatorUuid: string }): Promise<Item | null>
-  removeItemFromSharedVault(dto: { itemUuid: string; sharedVaultUuid: string; originatorUuid: string }): Promise<Item | null>
 }
