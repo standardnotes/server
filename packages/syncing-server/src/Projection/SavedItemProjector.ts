@@ -30,6 +30,7 @@ export class SavedItemProjector implements ProjectorInterface<Item, SavedItemPro
       shared_vault_uuid: item.sharedVaultUuid,
       key_system_identifier: item.keySystemIdentifier,
       last_edited_by_uuid: item.lastEditedByUuid,
+      user_uuid: item.userUuid,
     }
   }
 }

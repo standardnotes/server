@@ -35,8 +35,8 @@ export class ItemProjector implements ProjectorInterface<Item, ItemProjection> {
       updated_with_session: item.updatedWithSession,
       key_system_identifier: item.keySystemIdentifier,
       shared_vault_uuid: item.sharedVaultUuid,
-      user_uuid: item.userUuid,
       last_edited_by_uuid: item.lastEditedByUuid,
+      user_uuid: item.userUuid,
     }
   }
 }

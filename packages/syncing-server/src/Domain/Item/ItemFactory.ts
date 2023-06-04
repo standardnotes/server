@@ -33,8 +33,8 @@ export class ItemFactory implements ItemFactoryInterface {
     newItem.updatedWithSession = dto.sessionUuid
     newItem.contentSize = 0
     newItem.userUuid = dto.userUuid
-
-    newItem.keySystemIdentifier = dto.itemHash.key_system_identifier ?? null
+    newItem.keySystemIdentifier = dto.itemHash.key_system_identifier
+    newItem.sharedVaultUuid = dto.itemHash.shared_vault_uuid
 
     if (dto.itemHash.content) {
       newItem.content = dto.itemHash.content

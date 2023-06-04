@@ -11,7 +11,7 @@ export class UserEventFactory implements UserEventFactoryInterface {
     newUserEvent.uuid = dto.userEventHash.uuid
     newUserEvent.userUuid = dto.userUuid
     newUserEvent.eventType = dto.userEventHash.event_type
-    newUserEvent.eventPayload = dto.userEventHash.event_payload
+    newUserEvent.eventPayload = JSON.stringify(dto.userEventHash.event_payload)
 
     const now = this.timer.getTimestampInMicroseconds()
     newUserEvent.updatedAtTimestamp = now

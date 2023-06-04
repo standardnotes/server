@@ -11,4 +11,5 @@ export type SavedItemProjection = {
   shared_vault_uuid: string | null
   key_system_identifier: string | null
   last_edited_by_uuid: string | null
+  user_uuid: string
 }

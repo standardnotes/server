@@ -1,6 +1,5 @@
 import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm'
 import { UserEventType } from './UserEventType'
-import { UserEventPayload } from './UserEventPayload'
 
 @Entity({ name: 'user_events' })
 export class UserEvent {
@@ -24,7 +23,7 @@ export class UserEvent {
     name: 'event_payload',
     type: 'text',
   })
-  declare eventPayload: UserEventPayload
+  declare eventPayload: string
 
   @Column({
     name: 'created_at_timestamp',

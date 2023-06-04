@@ -198,9 +198,11 @@ export class SharedVaultFilter implements ItemSaveRuleInterface {
       return this.buildFailResult(operation, ConflictType.SharedVaultInsufficientPermissionsError)
     }
 
-    const usesValidKey = await this.incomingItemUsesValidItemsKey(operation.incomingItem)
-    if (!usesValidKey) {
-      return this.buildFailResult(operation, ConflictType.SharedVaultInvalidItemsKey, operation.existingItem)
+    if (!operation.incomingItem.deleted) {
+      const usesValidKey = await this.incomingItemUsesValidItemsKey(operation.incomingItem)
+      if (!usesValidKey) {
+        return this.buildFailResult(operation, ConflictType.SharedVaultInvalidItemsKey, operation.existingItem)
+      }
     }
 
     return this.buildSuccessValue()
