@@ -28,7 +28,6 @@ export class SharedVaultService implements SharedVaultServiceInterface {
       sharedVaultHash: {
         uuid: uuidv4(),
         user_uuid: dto.userUuid,
-        key_system_identifier: dto.keySystemIdentifier,
         specified_items_key_uuid: dto.specifiedItemsKeyUuid,
         file_upload_bytes_limit: 1_000_000,
         file_upload_bytes_used: 0,

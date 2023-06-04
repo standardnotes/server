@@ -50,7 +50,6 @@ export class SharedVaultsController extends BaseHttpController {
   ): Promise<results.NotFoundResult | results.JsonResult> {
     const result = await this.sharedVaultService.createSharedVault({
       userUuid: response.locals.user.uuid,
-      keySystemIdentifier: request.body.key_system_identifier,
       specifiedItemsKeyUuid: request.body.specified_items_key_uuid,
     })
 

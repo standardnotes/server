@@ -4,7 +4,6 @@ import { SharedVault } from '../Model/SharedVault'
 export type CreateSharedVaultDTO = {
   userUuid: string
   specifiedItemsKeyUuid: string
-  keySystemIdentifier: string
 }
 
 export type CreateSharedVaultResult = {
