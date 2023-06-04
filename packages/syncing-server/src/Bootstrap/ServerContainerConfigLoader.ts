@@ -163,6 +163,7 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
           context.container.get(TYPES.SharedVaultFactory),
           context.container.get(TYPES.SharedVaultUserService),
           context.container.get(TYPES.SharedVaultInviteService),
+          context.container.get(TYPES.UserEventService),
           context.container.get(TYPES.Timer),
         )
       })

@@ -11,6 +11,7 @@ import { SharedVaultFactoryInterface } from '../Factory/SharedVaultFactoryInterf
 import { SharedVaultUserServiceInterface } from '../../SharedVaultUser/Service/SharedVaultUserServiceInterface'
 import { SharedVaultInviteServiceInterface } from '../../SharedVaultInvite/Service/SharedVaultInviteServiceInterface'
 import { v4 as uuidv4 } from 'uuid'
+import { UserEventServiceInterface } from '../../UserEvent/Service/UserEventServiceInterface'
 
 export class SharedVaultService implements SharedVaultServiceInterface {
   constructor(
@@ -18,6 +19,7 @@ export class SharedVaultService implements SharedVaultServiceInterface {
     private sharedVaultFactory: SharedVaultFactoryInterface,
     private sharedVaultUserService: SharedVaultUserServiceInterface,
     private sharedVaultInviteService: SharedVaultInviteServiceInterface,
+    private userEventService: UserEventServiceInterface,
     private timer: TimerInterface,
   ) {}
 
@@ -88,6 +90,20 @@ export class SharedVaultService implements SharedVaultServiceInterface {
     }
 
     await this.sharedVaultRepository.remove(sharedVault)
+
+    const vaultUsersResult = await this.sharedVaultUserService.getSharedVaultUsersForSharedVault({
+      sharedVaultUuid: dto.sharedVaultUuid,
+      originatorUuid: dto.originatorUuid,
+    })
+
+    if (vaultUsersResult) {
+      for (const user of vaultUsersResult.users) {
+        await this.userEventService.createUserRemovedFromSharedVaultUserEvent({
+          sharedVaultUuid: dto.sharedVaultUuid,
+          userUuid: user.userUuid,
+        })
+      }
+    }
 
     await this.sharedVaultUserService.deleteAllSharedVaultUsersForSharedVault({
       sharedVaultUuid: dto.sharedVaultUuid,
