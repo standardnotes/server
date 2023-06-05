@@ -160,7 +160,7 @@ export class ContainerConfigLoader {
       .bind(TYPES.Files_FILE_UPLOAD_PATH)
       .toConstantValue(env.get('FILE_UPLOAD_PATH', true) ?? `${__dirname}/../../uploads`)
 
-    if (!isConfiguredForHomeServer) {
+    if (!isConfiguredForHomeServer || env.get('S3_AWS_REGION', true) || env.get('S3_ENDPOINT', true)) {
       const s3Opts: S3ClientConfig = {
         apiVersion: 'latest',
       }
