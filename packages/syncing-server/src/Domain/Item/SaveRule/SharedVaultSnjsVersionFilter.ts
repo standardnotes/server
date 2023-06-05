@@ -24,7 +24,7 @@ export class SharedVaultSnjsVersionFilter implements ItemSaveRuleInterface {
         conflict: {
           unsavedItem: dto.itemHash,
           serverItem: dto.existingItem ?? undefined,
-          type: ConflictType.SnjsVersionError,
+          type: ConflictType.SharedVaultSnjsVersionError,
         },
       }
     }
