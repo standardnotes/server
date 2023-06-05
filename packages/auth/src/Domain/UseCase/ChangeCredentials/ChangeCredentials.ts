@@ -79,6 +79,14 @@ export class ChangeCredentials implements UseCaseInterface {
       dto.user.encryptedPrivateKey = dto.encryptedPrivateKey
     }
 
+    if (dto.signingPublicKey) {
+      dto.user.signingPublicKey = dto.signingPublicKey
+    }
+
+    if (dto.encryptedSigningPrivateKey) {
+      dto.user.encryptedSigningPrivateKey = dto.encryptedSigningPrivateKey
+    }
+
     dto.user.pwNonce = dto.pwNonce
     if (dto.protocolVersion) {
       dto.user.version = dto.protocolVersion

@@ -315,7 +315,11 @@ export class DomainEventFactory implements DomainEventFactoryInterface {
     }
   }
 
-  createUserCredentialsChangedEvent(userUuid: string, newPublicKey: string): UserCredentialsChangedEvent {
+  createUserCredentialsChangedEvent(
+    userUuid: string,
+    newPublicKey: string,
+    newSigningPublicKey: string,
+  ): UserCredentialsChangedEvent {
     return {
       type: 'USER_CREDENTIALS_CHANGED',
       createdAt: this.timer.getUTCDate(),
@@ -329,6 +333,7 @@ export class DomainEventFactory implements DomainEventFactoryInterface {
       payload: {
         userUuid,
         newPublicKey,
+        newSigningPublicKey,
       },
     }
   }

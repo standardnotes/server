@@ -48,7 +48,11 @@ export interface DomainEventFactoryInterface {
     regularSubscriptionUuid: string | undefined
   }): AccountDeletionRequestedEvent
   createUserRolesChangedEvent(userUuid: string, email: string, currentRoles: string[]): UserRolesChangedEvent
-  createUserCredentialsChangedEvent(userUuid: string, newPublicKey: string): UserCredentialsChangedEvent
+  createUserCredentialsChangedEvent(
+    userUuid: string,
+    newPublicKey: string,
+    newSigningPublicKey: string,
+  ): UserCredentialsChangedEvent
   createUserEmailChangedEvent(userUuid: string, fromEmail: string, toEmail: string): UserEmailChangedEvent
   createUserDisabledSessionUserAgentLoggingEvent(dto: {
     userUuid: string

@@ -69,6 +69,10 @@ export class AuthController implements UserServerInterface {
       publicKey: (params as any).public_key,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       encryptedPrivateKey: (params as any).encrypted_private_key,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      signingPublicKey: (params as any).signing_key_public,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      encryptedSigningPrivateKey: (params as any).encrypted_signing_private_key,
     })
 
     if (!registerResult.success) {

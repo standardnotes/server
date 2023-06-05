@@ -12,4 +12,6 @@ export type RegisterDTO = {
   version?: string
   publicKey?: string
   encryptedPrivateKey?: string
+  signingPublicKey?: string
+  encryptedSigningPrivateKey?: string
 }
