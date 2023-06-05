@@ -32,12 +32,13 @@ export class HomeServer implements HomeServerInterface {
     const directCallDomainEventPublisher = new DirectCallDomainEventPublisher()
 
     const environmentOverrides = {
+      DB_TYPE: 'sqlite',
+      CACHE_TYPE: 'memory',
+      DB_DATABASE: 'home_server',
       ...configuration?.environment,
+      MODE: 'home-server',
       NEW_RELIC_ENABLED: 'false',
       NEW_RELIC_APP_NAME: 'Home Server',
-      CACHE_TYPE: 'memory',
-      DB_TYPE: 'sqlite',
-      DB_DATABASE: 'home_server',
     }
 
     const env: Env = new Env(environmentOverrides)

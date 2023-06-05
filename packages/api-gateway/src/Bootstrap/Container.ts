@@ -34,7 +34,8 @@ export class ContainerConfigLoader {
 
     const container = new Container()
 
-    const isConfiguredForHomeServer = env.get('CACHE_TYPE') === 'memory'
+    const isConfiguredForHomeServer = env.get('MODE', true) === 'home-server'
+    const isConfiguredForInMemoryCache = env.get('CACHE_TYPE', true) === 'memory'
 
     const winstonFormatters = [winston.format.splat(), winston.format.json()]
     if (env.get('NEW_RELIC_ENABLED', true) === 'true') {
@@ -57,7 +58,7 @@ export class ContainerConfigLoader {
       container.bind<winston.Logger>(TYPES.Logger).toConstantValue(logger)
     }
 
-    if (!isConfiguredForHomeServer) {
+    if (!isConfiguredForInMemoryCache) {
       const redisUrl = env.get('REDIS_URL')
       const isRedisInClusterMode = redisUrl.indexOf(',') > 0
       let redis
