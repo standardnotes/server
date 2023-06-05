@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.64.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.63.2...@standardnotes/api-gateway@1.64.0) (2023-06-05)
+
+### Features
+
+* **home-server:** allow running the home server with a mysql and redis configuration ([#622](https://github.com/standardnotes/api-gateway/issues/622)) ([d6e531d](https://github.com/standardnotes/api-gateway/commit/d6e531d4b6c1c80a894f6d7ec93632595268dd64))
+
 ## [1.63.2](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.63.1...@standardnotes/api-gateway@1.63.2) (2023-06-02)
 
 ### Bug Fixes

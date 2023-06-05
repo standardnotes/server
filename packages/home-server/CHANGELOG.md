@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.9.0](https://github.com/standardnotes/server/compare/@standardnotes/home-server@1.8.5...@standardnotes/home-server@1.9.0) (2023-06-05)
+
+### Features
+
+* **home-server:** allow running the home server with a mysql and redis configuration ([#622](https://github.com/standardnotes/server/issues/622)) ([d6e531d](https://github.com/standardnotes/server/commit/d6e531d4b6c1c80a894f6d7ec93632595268dd64))
+
 ## [1.8.5](https://github.com/standardnotes/server/compare/@standardnotes/home-server@1.8.4...@standardnotes/home-server@1.8.5) (2023-06-02)
 
 ### Bug Fixes

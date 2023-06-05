@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.43.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.42.2...@standardnotes/syncing-server@1.43.0) (2023-06-05)
+
+### Features
+
+* **home-server:** allow running the home server with a mysql and redis configuration ([#622](https://github.com/standardnotes/syncing-server-js/issues/622)) ([d6e531d](https://github.com/standardnotes/syncing-server-js/commit/d6e531d4b6c1c80a894f6d7ec93632595268dd64))
+
 ## [1.42.2](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.42.1...@standardnotes/syncing-server@1.42.2) (2023-06-02)
 
 ### Bug Fixes
