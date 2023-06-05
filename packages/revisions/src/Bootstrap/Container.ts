@@ -61,7 +61,7 @@ export class ContainerConfigLoader {
     const env: Env = new Env(configuration?.environmentOverrides)
     env.load()
 
-    const isConfiguredForHomeServer = env.get('DB_TYPE') === 'sqlite'
+    const isConfiguredForHomeServer = env.get('MODE', true) === 'home-server'
 
     const container = new Container({
       defaultScope: 'Singleton',

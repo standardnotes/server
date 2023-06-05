@@ -98,7 +98,7 @@ export class ContainerConfigLoader {
     const appDataSource = new AppDataSource(env)
     await appDataSource.initialize()
 
-    const isConfiguredForHomeServer = env.get('DB_TYPE') === 'sqlite'
+    const isConfiguredForHomeServer = env.get('MODE', true) === 'home-server'
 
     container.bind<Env>(TYPES.Sync_Env).toConstantValue(env)
 

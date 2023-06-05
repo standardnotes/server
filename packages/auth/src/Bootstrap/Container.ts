@@ -270,9 +270,10 @@ export class ContainerConfigLoader {
     const appDataSource = new AppDataSource(env)
     await appDataSource.initialize()
 
-    const isConfiguredForHomeServer = env.get('DB_TYPE') === 'sqlite'
+    const isConfiguredForHomeServer = env.get('MODE', true) === 'home-server'
+    const isConfiguredForInMemoryCache = env.get('CACHE_TYPE', true) === 'memory'
 
-    if (!isConfiguredForHomeServer) {
+    if (!isConfiguredForInMemoryCache) {
       const redisUrl = env.get('REDIS_URL')
       const isRedisInClusterMode = redisUrl.indexOf(',') > 0
       let redis
@@ -550,7 +551,16 @@ export class ContainerConfigLoader {
       .bind(TYPES.Auth_READONLY_USERS)
       .toConstantValue(env.get('READONLY_USERS', true) ? env.get('READONLY_USERS', true).split(',') : [])
 
-    if (isConfiguredForHomeServer) {
+    if (isConfiguredForInMemoryCache) {
+      container
+        .bind<PKCERepositoryInterface>(TYPES.Auth_PKCERepository)
+        .toConstantValue(
+          new TypeORMPKCERepository(
+            container.get(TYPES.Auth_CacheEntryRepository),
+            container.get(TYPES.Auth_Logger),
+            container.get(TYPES.Auth_Timer),
+          ),
+        )
       container
         .bind<LockRepositoryInterface>(TYPES.Auth_LockRepository)
         .toConstantValue(
@@ -575,15 +585,6 @@ export class ContainerConfigLoader {
         .toConstantValue(
           new TypeORMOfflineSubscriptionTokenRepository(
             container.get(TYPES.Auth_CacheEntryRepository),
-            container.get(TYPES.Auth_Timer),
-          ),
-        )
-      container
-        .bind<PKCERepositoryInterface>(TYPES.Auth_PKCERepository)
-        .toConstantValue(
-          new TypeORMPKCERepository(
-            container.get(TYPES.Auth_CacheEntryRepository),
-            container.get(TYPES.Auth_Logger),
             container.get(TYPES.Auth_Timer),
           ),
         )

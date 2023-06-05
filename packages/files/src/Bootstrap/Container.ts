@@ -67,7 +67,8 @@ export class ContainerConfigLoader {
       await import('newrelic')
     }
 
-    const isConfiguredForHomeServer = env.get('CACHE_TYPE') === 'memory'
+    const isConfiguredForHomeServer = env.get('MODE', true) === 'home-server'
+    const isConfiguredForInMemoryCache = env.get('CACHE_TYPE', true) === 'memory'
 
     if (configuration?.logger) {
       container.bind<winston.Logger>(TYPES.Files_Logger).toConstantValue(configuration.logger as winston.Logger)
@@ -77,20 +78,11 @@ export class ContainerConfigLoader {
 
     container.bind<TimerInterface>(TYPES.Files_Timer).toConstantValue(new Timer())
 
-    if (isConfiguredForHomeServer) {
+    if (isConfiguredForInMemoryCache) {
       container
         .bind<UploadRepositoryInterface>(TYPES.Files_UploadRepository)
         .toConstantValue(new InMemoryUploadRepository(container.get(TYPES.Files_Timer)))
-
-      container
-        .bind<DomainEventPublisherInterface>(TYPES.Files_DomainEventPublisher)
-        .toConstantValue(directCallDomainEventPublisher)
     } else {
-      container.bind(TYPES.Files_S3_BUCKET_NAME).toConstantValue(env.get('S3_BUCKET_NAME', true))
-      container.bind(TYPES.Files_S3_AWS_REGION).toConstantValue(env.get('S3_AWS_REGION', true))
-      container.bind(TYPES.Files_SNS_TOPIC_ARN).toConstantValue(env.get('SNS_TOPIC_ARN'))
-      container.bind(TYPES.Files_SNS_AWS_REGION).toConstantValue(env.get('SNS_AWS_REGION', true))
-      container.bind(TYPES.Files_SQS_QUEUE_URL).toConstantValue(env.get('SQS_QUEUE_URL'))
       container.bind(TYPES.Files_REDIS_URL).toConstantValue(env.get('REDIS_URL'))
 
       const redisUrl = container.get(TYPES.Files_REDIS_URL) as string
@@ -103,6 +95,20 @@ export class ContainerConfigLoader {
       }
 
       container.bind(TYPES.Files_Redis).toConstantValue(redis)
+
+      container.bind<UploadRepositoryInterface>(TYPES.Files_UploadRepository).to(RedisUploadRepository)
+    }
+
+    if (isConfiguredForHomeServer) {
+      container
+        .bind<DomainEventPublisherInterface>(TYPES.Files_DomainEventPublisher)
+        .toConstantValue(directCallDomainEventPublisher)
+    } else {
+      container.bind(TYPES.Files_S3_BUCKET_NAME).toConstantValue(env.get('S3_BUCKET_NAME', true))
+      container.bind(TYPES.Files_S3_AWS_REGION).toConstantValue(env.get('S3_AWS_REGION', true))
+      container.bind(TYPES.Files_SNS_TOPIC_ARN).toConstantValue(env.get('SNS_TOPIC_ARN'))
+      container.bind(TYPES.Files_SNS_AWS_REGION).toConstantValue(env.get('SNS_AWS_REGION', true))
+      container.bind(TYPES.Files_SQS_QUEUE_URL).toConstantValue(env.get('SQS_QUEUE_URL'))
 
       if (env.get('SNS_TOPIC_ARN', true)) {
         const snsConfig: SNSClientConfig = {
@@ -137,8 +143,6 @@ export class ContainerConfigLoader {
         container.bind<SQSClient>(TYPES.Files_SQS).toConstantValue(new SQSClient(sqsConfig))
       }
 
-      container.bind<UploadRepositoryInterface>(TYPES.Files_UploadRepository).to(RedisUploadRepository)
-
       container
         .bind<DomainEventPublisherInterface>(TYPES.Files_DomainEventPublisher)
         .toConstantValue(
@@ -156,7 +160,7 @@ export class ContainerConfigLoader {
       .bind(TYPES.Files_FILE_UPLOAD_PATH)
       .toConstantValue(env.get('FILE_UPLOAD_PATH', true) ?? `${__dirname}/../../uploads`)
 
-    if (env.get('S3_AWS_REGION', true) || env.get('S3_ENDPOINT', true)) {
+    if (!isConfiguredForHomeServer) {
       const s3Opts: S3ClientConfig = {
         apiVersion: 'latest',
       }
