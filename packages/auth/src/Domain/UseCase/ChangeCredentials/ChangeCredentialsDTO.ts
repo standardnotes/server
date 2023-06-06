@@ -12,7 +12,5 @@ export type ChangeCredentialsDTO = {
   kpOrigination?: string
   kpCreated?: string
   publicKey?: string
-  encryptedPrivateKey?: string
   signingPublicKey?: string
-  encryptedSigningPrivateKey?: string
 }

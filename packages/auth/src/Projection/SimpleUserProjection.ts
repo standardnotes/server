@@ -3,5 +3,5 @@ export type SimpleUserProjection = {
   email: string
   protocolVersion: string
   publicKey?: string
-  encryptedPrivateKey?: string
+  signingPublicKey?: string
 }

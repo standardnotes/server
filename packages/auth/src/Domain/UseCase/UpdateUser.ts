@@ -17,7 +17,7 @@ export class UpdateUser implements UseCaseInterface {
   ) {}
 
   async execute(dto: UpdateUserDTO): Promise<UpdateUserResponse> {
-    if (dto.user.publicKey || dto.user.encryptedPrivateKey) {
+    if (dto.user.publicKey) {
       return {
         success: false,
         errorMessage:
@@ -26,9 +26,7 @@ export class UpdateUser implements UseCaseInterface {
     }
 
     dto.user.publicKey = dto.publicKey
-    dto.user.encryptedPrivateKey = dto.encryptedPrivateKey
     dto.user.signingPublicKey = dto.signingPublicKey
-    dto.user.encryptedSigningPrivateKey = dto.encryptedSigningPrivateKey
     dto.user.updatedAt = this.timer.getUTCDate()
 
     const updatedUser = await this.userRepository.save(dto.user)

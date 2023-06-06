@@ -66,9 +66,7 @@ export class UsersController extends BaseHttpController {
       updatedWithUserAgent: <string>request.headers['user-agent'],
       apiVersion: request.body.api,
       publicKey: request.body.public_key,
-      encryptedPrivateKey: request.body.encrypted_private_key,
       signingPublicKey: request.body.signing_public_key,
-      encryptedSigningPrivateKey: request.body.encrypted_signing_private_key,
     })
 
     if (updateResult.success) {
@@ -171,9 +169,7 @@ export class UsersController extends BaseHttpController {
       uuid: result.user.uuid,
       email: result.user.email,
       public_key: result.user.publicKey,
-      encrypted_private_key: result.user.encryptedPrivateKey,
       signing_public_key: result.user.signingPublicKey,
-      encrypted_signing_private_key: result.user.encryptedSigningPrivateKey,
     })
   }
 
@@ -237,9 +233,7 @@ export class UsersController extends BaseHttpController {
       updatedWithUserAgent: <string>request.headers['user-agent'],
       protocolVersion: request.body.version,
       publicKey: request.body.new_public_key,
-      encryptedPrivateKey: request.body.new_encrypted_private_key,
       signingPublicKey: request.body.new_signing_public_key,
-      encryptedSigningPrivateKey: request.body.new_encrypted_signing_private_key,
     })
 
     if (!changeCredentialsResult.success) {

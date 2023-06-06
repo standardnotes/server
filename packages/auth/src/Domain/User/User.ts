@@ -51,28 +51,12 @@ export class User {
   declare publicKey: string | null
 
   @Column({
-    name: 'encrypted_private_key',
-    length: 255,
-    type: 'varchar',
-    nullable: true,
-  })
-  declare encryptedPrivateKey: string | null
-
-  @Column({
     name: 'signing_public_key',
     length: 255,
     type: 'varchar',
     nullable: true,
   })
   declare signingPublicKey: string | null
-
-  @Column({
-    name: 'encrypted_signing_private_key',
-    length: 255,
-    type: 'varchar',
-    nullable: true,
-  })
-  declare encryptedSigningPrivateKey: string | null
 
   @Column({
     name: 'server_encryption_version',
