@@ -16,6 +16,7 @@ export class UserCredentialsChangedEventHandler implements DomainEventHandlerInt
 
   async handle(event: UserCredentialsChangedEvent): Promise<void> {
     await this.updatePublicKeyOfAllContacts(event.payload)
+
     await this.nullifyPendingInboundSharedVaultInvites(event.payload)
   }
 
@@ -25,8 +26,12 @@ export class UserCredentialsChangedEventHandler implements DomainEventHandlerInt
       if (contact.contactPublicKey === payload.newPublicKey) {
         continue
       }
+
       contact.contactPublicKey = payload.newPublicKey
+      contact.contactSigningPublicKey = payload.newSigningPublicKey
+
       contact.updatedAtTimestamp = this.timer.getTimestampInMicroseconds()
+
       await this.contactRepository.save(contact)
     }
   }

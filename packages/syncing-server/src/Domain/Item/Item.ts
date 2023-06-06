@@ -103,7 +103,7 @@ export class Item {
     name: 'last_edited_by_uuid',
     length: 36,
   })
-  declare lastEditedByUuid: string
+  declare lastEditedByUuid: string | null
 
   @Column({
     name: 'created_at',

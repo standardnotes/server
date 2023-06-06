@@ -67,20 +67,26 @@ export class ChangeCredentials implements UseCaseInterface {
     }
 
     let userCredentialsChangedEvent: UserCredentialsChangedEvent | undefined = undefined
+
     if (dto.publicKey && dto.user.publicKey !== dto.publicKey) {
+      if (!dto.signingPublicKey) {
+        return {
+          success: false,
+          errorMessage: 'Signing public key is required',
+        }
+      }
+
       dto.user.publicKey = dto.publicKey
+      dto.user.signingPublicKey = dto.signingPublicKey
       userCredentialsChangedEvent = this.domainEventFactory.createUserCredentialsChangedEvent(
         dto.user.uuid,
         dto.publicKey,
+        dto.signingPublicKey,
       )
     }
 
     if (dto.encryptedPrivateKey) {
       dto.user.encryptedPrivateKey = dto.encryptedPrivateKey
-    }
-
-    if (dto.signingPublicKey) {
-      dto.user.signingPublicKey = dto.signingPublicKey
     }
 
     if (dto.encryptedSigningPrivateKey) {

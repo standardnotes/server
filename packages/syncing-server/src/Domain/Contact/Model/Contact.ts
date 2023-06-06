@@ -23,6 +23,11 @@ export class Contact {
   declare contactPublicKey: string
 
   @Column({
+    name: 'contact_signing_public_key',
+  })
+  declare contactSigningPublicKey: string
+
+  @Column({
     name: 'created_at_timestamp',
     type: 'bigint',
   })

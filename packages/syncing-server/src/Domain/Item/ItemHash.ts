@@ -12,7 +12,6 @@ export type ItemHash = {
   items_key_id?: string
   key_system_identifier: string | null
   shared_vault_uuid: string | null
-  last_edited_by_uuid?: string | null
   created_at?: string
   created_at_timestamp?: number
   updated_at?: string

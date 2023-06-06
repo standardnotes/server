@@ -32,6 +32,12 @@ export class CreateContacts1684503299320 implements MigrationInterface {
           isNullable: false,
         }),
         new TableColumn({
+          name: 'contact_signing_public_key',
+          type: 'varchar',
+          length: '255',
+          isNullable: false,
+        }),
+        new TableColumn({
           name: 'created_at_timestamp',
           type: 'bigint',
         }),

@@ -216,17 +216,15 @@ export class ItemService implements ItemServiceInterface {
       userUuid: dto.userUuid,
     })
 
+    dto.existingItem.contentType = dto.itemHash.content_type
     dto.existingItem.updatedWithSession = dto.sessionUuid
     dto.existingItem.contentSize = 0
-    dto.existingItem.lastEditedByUuid = dto.userUuid
     dto.existingItem.keySystemIdentifier = dto.itemHash.key_system_identifier
     dto.existingItem.sharedVaultUuid = dto.itemHash.shared_vault_uuid
+    dto.existingItem.lastEditedByUuid = dto.userUuid
 
     if (dto.itemHash.content) {
       dto.existingItem.content = dto.itemHash.content
-    }
-    if (dto.itemHash.content_type) {
-      dto.existingItem.contentType = dto.itemHash.content_type
     }
     if (dto.itemHash.deleted !== undefined) {
       dto.existingItem.deleted = dto.itemHash.deleted

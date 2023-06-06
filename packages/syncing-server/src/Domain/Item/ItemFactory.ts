@@ -30,20 +30,16 @@ export class ItemFactory implements ItemFactoryInterface {
   create(dto: { userUuid: string; itemHash: ItemHash; sessionUuid: string | null }): Item {
     const newItem = new Item()
     newItem.uuid = dto.itemHash.uuid
+    newItem.contentType = dto.itemHash.content_type
     newItem.updatedWithSession = dto.sessionUuid
     newItem.contentSize = 0
     newItem.userUuid = dto.userUuid
     newItem.keySystemIdentifier = dto.itemHash.key_system_identifier
     newItem.sharedVaultUuid = dto.itemHash.shared_vault_uuid
+    newItem.lastEditedByUuid = dto.userUuid
 
     if (dto.itemHash.content) {
       newItem.content = dto.itemHash.content
-    }
-    if (dto.itemHash.last_edited_by_uuid) {
-      newItem.lastEditedByUuid = dto.itemHash.last_edited_by_uuid
-    }
-    if (dto.itemHash.content_type) {
-      newItem.contentType = dto.itemHash.content_type
     }
     if (dto.itemHash.enc_item_key) {
       newItem.encItemKey = dto.itemHash.enc_item_key
