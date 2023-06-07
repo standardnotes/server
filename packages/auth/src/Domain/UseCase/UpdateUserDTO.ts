@@ -4,6 +4,4 @@ export type UpdateUserDTO = {
   user: User
   apiVersion: string
   updatedWithUserAgent: string
-  publicKey: string
-  signingPublicKey: string
 }

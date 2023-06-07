@@ -65,8 +65,6 @@ export class UsersController extends BaseHttpController {
       user: response.locals.user,
       updatedWithUserAgent: <string>request.headers['user-agent'],
       apiVersion: request.body.api,
-      publicKey: request.body.public_key,
-      signingPublicKey: request.body.signing_public_key,
     })
 
     if (updateResult.success) {
@@ -168,8 +166,6 @@ export class UsersController extends BaseHttpController {
     return this.json({
       uuid: result.user.uuid,
       email: result.user.email,
-      public_key: result.user.publicKey,
-      signing_public_key: result.user.signingPublicKey,
     })
   }
 
@@ -232,8 +228,6 @@ export class UsersController extends BaseHttpController {
       kpOrigination: request.body.origination,
       updatedWithUserAgent: <string>request.headers['user-agent'],
       protocolVersion: request.body.version,
-      publicKey: request.body.new_public_key,
-      signingPublicKey: request.body.new_signing_public_key,
     })
 
     if (!changeCredentialsResult.success) {

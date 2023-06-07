@@ -9,11 +9,7 @@ import { ChangeCredentialsDTO } from './ChangeCredentialsDTO'
 import { ChangeCredentialsResponse } from './ChangeCredentialsResponse'
 import { UseCaseInterface } from '../UseCaseInterface'
 import { DomainEventFactoryInterface } from '../../Event/DomainEventFactoryInterface'
-import {
-  DomainEventPublisherInterface,
-  UserCredentialsChangedEvent,
-  UserEmailChangedEvent,
-} from '@standardnotes/domain-events'
+import { DomainEventPublisherInterface, UserEmailChangedEvent } from '@standardnotes/domain-events'
 import { TimerInterface } from '@standardnotes/time'
 import { Username } from '@standardnotes/domain-core'
 
@@ -66,25 +62,6 @@ export class ChangeCredentials implements UseCaseInterface {
       dto.user.email = newUsername.value
     }
 
-    let userCredentialsChangedEvent: UserCredentialsChangedEvent | undefined = undefined
-
-    if (dto.publicKey && dto.user.publicKey !== dto.publicKey) {
-      if (!dto.signingPublicKey) {
-        return {
-          success: false,
-          errorMessage: 'Signing public key is required',
-        }
-      }
-
-      dto.user.publicKey = dto.publicKey
-      dto.user.signingPublicKey = dto.signingPublicKey
-      userCredentialsChangedEvent = this.domainEventFactory.createUserCredentialsChangedEvent(
-        dto.user.uuid,
-        dto.publicKey,
-        dto.signingPublicKey,
-      )
-    }
-
     dto.user.pwNonce = dto.pwNonce
     if (dto.protocolVersion) {
       dto.user.version = dto.protocolVersion
@@ -101,10 +78,6 @@ export class ChangeCredentials implements UseCaseInterface {
 
     if (userEmailChangedEvent !== undefined) {
       await this.domainEventPublisher.publish(userEmailChangedEvent)
-    }
-
-    if (userCredentialsChangedEvent != undefined) {
-      await this.domainEventPublisher.publish(userCredentialsChangedEvent)
     }
 
     const authResponseFactory = this.authResponseFactoryResolver.resolveAuthResponseFactoryVersion(dto.apiVersion)

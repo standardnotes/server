@@ -43,22 +43,6 @@ export class User {
   declare encryptedServerKey: string | null
 
   @Column({
-    name: 'public_key',
-    length: 255,
-    type: 'varchar',
-    nullable: true,
-  })
-  declare publicKey: string | null
-
-  @Column({
-    name: 'signing_public_key',
-    length: 255,
-    type: 'varchar',
-    nullable: true,
-  })
-  declare signingPublicKey: string | null
-
-  @Column({
     name: 'server_encryption_version',
     type: 'tinyint',
     default: 0,

@@ -18,7 +18,6 @@ import {
   StatisticPersistenceRequestedEvent,
   SessionCreatedEvent,
   SessionRefreshedEvent,
-  UserCredentialsChangedEvent,
 } from '@standardnotes/domain-events'
 import { InviteeIdentifierType } from '../SharedSubscription/InviteeIdentifierType'
 
@@ -48,11 +47,6 @@ export interface DomainEventFactoryInterface {
     regularSubscriptionUuid: string | undefined
   }): AccountDeletionRequestedEvent
   createUserRolesChangedEvent(userUuid: string, email: string, currentRoles: string[]): UserRolesChangedEvent
-  createUserCredentialsChangedEvent(
-    userUuid: string,
-    newPublicKey: string,
-    newSigningPublicKey: string,
-  ): UserCredentialsChangedEvent
   createUserEmailChangedEvent(userUuid: string, fromEmail: string, toEmail: string): UserEmailChangedEvent
   createUserDisabledSessionUserAgentLoggingEvent(dto: {
     userUuid: string

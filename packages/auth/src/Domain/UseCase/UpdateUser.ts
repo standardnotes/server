@@ -25,8 +25,6 @@ export class UpdateUser implements UseCaseInterface {
       }
     }
 
-    dto.user.publicKey = dto.publicKey
-    dto.user.signingPublicKey = dto.signingPublicKey
     dto.user.updatedAt = this.timer.getUTCDate()
 
     const updatedUser = await this.userRepository.save(dto.user)
