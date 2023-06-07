@@ -26,7 +26,7 @@ export class HomeServer implements HomeServerInterface {
   private serverInstance: http.Server | undefined
   private logStream: PassThrough = new PassThrough()
 
-  async start(configuration?: HomeServerConfiguration): Promise<void> {
+  async start(configuration: HomeServerConfiguration): Promise<void> {
     const controllerContainer = new ControllerContainer()
     const serviceContainer = new ServiceContainer()
     const directCallDomainEventPublisher = new DirectCallDomainEventPublisher()
@@ -34,8 +34,9 @@ export class HomeServer implements HomeServerInterface {
     const environmentOverrides = {
       DB_TYPE: 'sqlite',
       CACHE_TYPE: 'memory',
-      DB_DATABASE: 'data/home_server.sqlite',
-      ...configuration?.environment,
+      DB_DATABASE: `${configuration.dataDirectoryPath}/database/home_server.sqlite`,
+      FILE_UPLOAD_PATH: `${configuration.dataDirectoryPath}/uploads`,
+      ...configuration.environment,
       MODE: 'home-server',
       NEW_RELIC_ENABLED: 'false',
       NEW_RELIC_APP_NAME: 'Home Server',

@@ -1,3 +1,4 @@
 export interface HomeServerConfiguration {
-  environment: { [name: string]: string }
+  dataDirectoryPath: string
+  environment?: { [name: string]: string }
 }
