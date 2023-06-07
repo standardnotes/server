@@ -2,7 +2,7 @@ import { HomeServer } from '../src/Server/HomeServer'
 
 const homeServer = new HomeServer()
 
-Promise.resolve(homeServer.start())
+Promise.resolve(homeServer.start({ dataDirectoryPath: `${__dirname}/../data` }))
   .then(() => {
     const logStream = homeServer.logs()
 
