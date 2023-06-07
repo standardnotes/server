@@ -38,13 +38,13 @@ export class CreateSharedVaultInvites1684528646896 implements MigrationInterface
           isNullable: false,
         }),
         new TableColumn({
-          name: 'inviter_public_key',
+          name: 'sender_public_key',
           type: 'varchar',
           length: '255',
           isNullable: false,
         }),
         new TableColumn({
-          name: 'encrypted_vault_key_content',
+          name: 'encrypted_message',
           type: 'text',
           isNullable: false,
         }),

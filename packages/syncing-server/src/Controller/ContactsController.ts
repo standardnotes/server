@@ -25,6 +25,7 @@ export class ContactsController extends BaseHttpController {
       userUuid: response.locals.user.uuid,
       contactUuid: request.body.contact_uuid,
       contactPublicKey: request.body.contact_public_key,
+      contactSigningPublicKey: request.body.contact_signing_public_key,
     })
 
     if (!result) {

@@ -31,8 +31,8 @@ export class SharedVaultInvitesController extends BaseHttpController {
       originatorUuid: response.locals.user.uuid,
       sharedVaultUuid: request.params.sharedVaultUuid,
       userUuid: request.body.invitee_uuid,
-      inviterPublicKey: request.body.inviter_public_key,
-      encryptedVaultKeyContent: request.body.encrypted_vault_key_content,
+      inviterPublicKey: request.body.sender_public_key,
+      encryptedVaultKeyContent: request.body.encrypted_message,
       inviteType: request.body.invite_type,
       permissions: request.body.permissions,
     })
@@ -52,8 +52,8 @@ export class SharedVaultInvitesController extends BaseHttpController {
     const result = await this.sharedVaultInviteService.updateInvite({
       originatorUuid: response.locals.user.uuid,
       inviteUuid: request.params.inviteUuid,
-      inviterPublicKey: request.body.inviter_public_key,
-      encryptedVaultKeyContent: request.body.encrypted_vault_key_content,
+      inviterPublicKey: request.body.sender_public_key,
+      encryptedVaultKeyContent: request.body.encrypted_message,
       permissions: request.body.permissions,
     })
 

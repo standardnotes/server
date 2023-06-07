@@ -30,12 +30,12 @@ export class SharedVaultInvite {
   declare inviteType: SharedVaultInviteType
 
   @Column({
-    name: 'inviter_public_key',
+    name: 'sender_public_key',
   })
   declare inviterPublicKey: string
 
   @Column({
-    name: 'encrypted_vault_key_content',
+    name: 'encrypted_message',
   })
   declare encryptedVaultKeyContent: string
 

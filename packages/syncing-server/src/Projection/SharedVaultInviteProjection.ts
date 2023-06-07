@@ -5,8 +5,8 @@ export type SharedVaultInviteProjection = {
   shared_vault_uuid: string
   user_uuid: string
   inviter_uuid: string
-  inviter_public_key: string
-  encrypted_vault_key_content: string
+  sender_public_key: string
+  encrypted_message: string
   invite_type: SharedVaultInviteType
   permissions: string
   created_at_timestamp: number

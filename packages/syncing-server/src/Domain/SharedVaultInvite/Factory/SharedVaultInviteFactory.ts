@@ -12,8 +12,8 @@ export class SharedVaultInviteFactory implements SharedVaultInviteFactoryInterfa
     newSharedVaultInvite.userUuid = dto.user_uuid
     newSharedVaultInvite.sharedVaultUuid = dto.shared_vault_uuid
     newSharedVaultInvite.inviterUuid = dto.inviter_uuid
-    newSharedVaultInvite.inviterPublicKey = dto.inviter_public_key
-    newSharedVaultInvite.encryptedVaultKeyContent = dto.encrypted_vault_key_content
+    newSharedVaultInvite.inviterPublicKey = dto.sender_public_key
+    newSharedVaultInvite.encryptedVaultKeyContent = dto.encrypted_message
     newSharedVaultInvite.inviteType = dto.invite_type
     newSharedVaultInvite.permissions = dto.permissions
 

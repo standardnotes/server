@@ -1,7 +1,12 @@
 import { Contact } from '../Model/Contact'
 
 export interface ContactServiceInterface {
-  createContact(dto: { userUuid: string; contactUuid: string; contactPublicKey: string }): Promise<Contact | null>
+  createContact(dto: {
+    userUuid: string
+    contactUuid: string
+    contactPublicKey: string
+    contactSigningPublicKey: string
+  }): Promise<Contact | null>
 
   deleteContact(dto: { contactUuid: string; originatorUuid: string }): Promise<boolean>
 

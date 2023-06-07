@@ -17,6 +17,7 @@ export class ContactService implements ContactServiceInterface {
     userUuid: string
     contactUuid: string
     contactPublicKey: string
+    contactSigningPublicKey: string
   }): Promise<Contact | null> {
     const timestamp = this.timer.getTimestampInMicroseconds()
     const contact = this.contactFactory.create({
@@ -26,6 +27,7 @@ export class ContactService implements ContactServiceInterface {
         user_uuid: dto.userUuid,
         contact_uuid: dto.contactUuid,
         contact_public_key: dto.contactPublicKey,
+        contact_signing_public_key: dto.contactSigningPublicKey,
         created_at_timestamp: timestamp,
         updated_at_timestamp: timestamp,
       },

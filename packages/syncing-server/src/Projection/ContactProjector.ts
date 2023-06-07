@@ -22,6 +22,7 @@ export class ContactProjector implements ProjectorInterface<Contact, ContactProj
       user_uuid: contact.userUuid,
       contact_uuid: contact.contactUuid,
       contact_public_key: contact.contactPublicKey,
+      contact_signing_public_key: contact.contactSigningPublicKey,
       created_at_timestamp: contact.createdAtTimestamp,
       updated_at_timestamp: contact.updatedAtTimestamp,
     }
