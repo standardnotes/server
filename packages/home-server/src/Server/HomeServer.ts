@@ -34,7 +34,7 @@ export class HomeServer implements HomeServerInterface {
     const environmentOverrides = {
       DB_TYPE: 'sqlite',
       CACHE_TYPE: 'memory',
-      DB_DATABASE: 'home_server',
+      DB_DATABASE: 'data/home_server.sqlite',
       ...configuration?.environment,
       MODE: 'home-server',
       NEW_RELIC_ENABLED: 'false',
