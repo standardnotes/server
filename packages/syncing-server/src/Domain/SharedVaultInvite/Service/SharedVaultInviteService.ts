@@ -7,7 +7,6 @@ import { SharedVaultInviteServiceInterface } from './SharedVaultInviteServiceInt
 import { GetUserSharedVaultInvitesDTO } from './GetUserSharedVaultInvitesDTO'
 import { SharedVaultsRepositoryInterface } from '../../SharedVault/Repository/SharedVaultRepositoryInterface'
 import { SharedVaultUserServiceInterface } from '../../SharedVaultUser/Service/SharedVaultUserServiceInterface'
-import { SharedVaultInviteType } from '../Model/SharedVaultInviteType'
 import { CreateInviteDTO } from './CreateInviteDTO'
 import { UpdateInviteDTO } from './UpdateInviteDTO'
 
@@ -35,7 +34,6 @@ export class SharedVaultInviteService implements SharedVaultInviteServiceInterfa
       inviter_uuid: dto.originatorUuid,
       sender_public_key: dto.inviterPublicKey,
       encrypted_message: dto.encryptedVaultKeyContent,
-      invite_type: dto.inviteType,
       permissions: dto.permissions,
       created_at_timestamp: timestamp,
       updated_at_timestamp: timestamp,
@@ -110,16 +108,14 @@ export class SharedVaultInviteService implements SharedVaultInviteServiceInterfa
       return false
     }
 
-    if (invite.inviteType === SharedVaultInviteType.Join) {
-      const addedUser = await this.sharedVaultUserService.addSharedVaultUser({
-        userUuid: dto.originatorUuid,
-        sharedVaultUuid: invite.sharedVaultUuid,
-        permissions: invite.permissions,
-      })
+    const addedUser = await this.sharedVaultUserService.addSharedVaultUser({
+      userUuid: dto.originatorUuid,
+      sharedVaultUuid: invite.sharedVaultUuid,
+      permissions: invite.permissions,
+    })
 
-      if (!addedUser) {
-        return false
-      }
+    if (!addedUser) {
+      return false
     }
 
     await this.sharedVaultInviteRepository.remove(invite)

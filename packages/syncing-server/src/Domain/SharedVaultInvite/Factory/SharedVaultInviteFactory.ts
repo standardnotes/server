@@ -14,7 +14,6 @@ export class SharedVaultInviteFactory implements SharedVaultInviteFactoryInterfa
     newSharedVaultInvite.inviterUuid = dto.inviter_uuid
     newSharedVaultInvite.inviterPublicKey = dto.sender_public_key
     newSharedVaultInvite.encryptedVaultKeyContent = dto.encrypted_message
-    newSharedVaultInvite.inviteType = dto.invite_type
     newSharedVaultInvite.permissions = dto.permissions
 
     const now = this.timer.getTimestampInMicroseconds()

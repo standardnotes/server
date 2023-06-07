@@ -33,7 +33,6 @@ export class SharedVaultInvitesController extends BaseHttpController {
       userUuid: request.body.invitee_uuid,
       inviterPublicKey: request.body.sender_public_key,
       encryptedVaultKeyContent: request.body.encrypted_message,
-      inviteType: request.body.invite_type,
       permissions: request.body.permissions,
     })
 

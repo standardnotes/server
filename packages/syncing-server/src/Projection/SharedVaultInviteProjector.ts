@@ -24,7 +24,6 @@ export class SharedVaultInviteProjector implements ProjectorInterface<SharedVaul
       inviter_uuid: sharedVaultInvite.inviterUuid,
       sender_public_key: sharedVaultInvite.inviterPublicKey,
       encrypted_message: sharedVaultInvite.encryptedVaultKeyContent,
-      invite_type: sharedVaultInvite.inviteType,
       permissions: sharedVaultInvite.permissions,
       created_at_timestamp: sharedVaultInvite.createdAtTimestamp,
       updated_at_timestamp: sharedVaultInvite.updatedAtTimestamp,

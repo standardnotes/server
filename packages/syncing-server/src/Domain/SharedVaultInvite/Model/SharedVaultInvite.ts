@@ -1,5 +1,4 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
-import { SharedVaultInviteType } from './SharedVaultInviteType'
 import { SharedVaultUserPermission } from '../../SharedVaultUser/Model/SharedVaultUserPermission'
 
 @Entity({ name: 'shared_vault_invites' })
@@ -23,11 +22,6 @@ export class SharedVaultInvite {
     name: 'inviter_uuid',
   })
   declare inviterUuid: string
-
-  @Column({
-    name: 'invite_type',
-  })
-  declare inviteType: SharedVaultInviteType
 
   @Column({
     name: 'sender_public_key',

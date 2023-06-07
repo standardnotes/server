@@ -9,7 +9,10 @@ export interface SharedVaultInviteServiceInterface {
   acceptInvite(dto: { originatorUuid: string; inviteUuid: string }): Promise<boolean>
 
   getInvitesForUser(dto: GetUserSharedVaultInvitesDTO): Promise<SharedVaultInvite[]>
-  getInvitesForSharedVault(dto: { sharedVaultUuid: string; originatorUuid: string }): Promise<SharedVaultInvite[] | undefined>
+  getInvitesForSharedVault(dto: {
+    sharedVaultUuid: string
+    originatorUuid: string
+  }): Promise<SharedVaultInvite[] | undefined>
   getOutboundInvitesForUser(dto: { userUuid: string }): Promise<SharedVaultInvite[]>
 
   declineInvite(dto: { originatorUuid: string; inviteUuid: string }): Promise<boolean>

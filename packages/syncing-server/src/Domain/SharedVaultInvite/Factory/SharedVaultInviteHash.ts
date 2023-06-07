@@ -1,5 +1,4 @@
 import { SharedVaultUserPermission } from '../../SharedVaultUser/Model/SharedVaultUserPermission'
-import { SharedVaultInviteType } from '../Model/SharedVaultInviteType'
 
 export type SharedVaultInviteHash = {
   uuid: string
@@ -8,7 +7,6 @@ export type SharedVaultInviteHash = {
   inviter_uuid: string
   sender_public_key: string
   encrypted_message: string
-  invite_type: SharedVaultInviteType
   permissions: SharedVaultUserPermission
   created_at_timestamp?: number
   updated_at_timestamp?: number

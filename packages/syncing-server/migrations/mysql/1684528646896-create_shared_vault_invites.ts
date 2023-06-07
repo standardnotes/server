@@ -32,12 +32,6 @@ export class CreateSharedVaultInvites1684528646896 implements MigrationInterface
           isNullable: false,
         }),
         new TableColumn({
-          name: 'invite_type',
-          type: 'varchar',
-          length: '255',
-          isNullable: false,
-        }),
-        new TableColumn({
           name: 'sender_public_key',
           type: 'varchar',
           length: '255',

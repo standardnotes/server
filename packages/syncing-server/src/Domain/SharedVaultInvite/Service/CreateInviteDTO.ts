@@ -1,4 +1,3 @@
-import { SharedVaultInviteType } from '../Model/SharedVaultInviteType'
 import { SharedVaultUserPermission } from '../../SharedVaultUser/Model/SharedVaultUserPermission'
 
 export type CreateInviteDTO = {
@@ -7,6 +6,5 @@ export type CreateInviteDTO = {
   userUuid: string
   inviterPublicKey: string
   encryptedVaultKeyContent: string
-  inviteType: SharedVaultInviteType
   permissions: SharedVaultUserPermission
 }
