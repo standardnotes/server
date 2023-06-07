@@ -28,11 +28,11 @@ export class SharedVaultInvitesController extends BaseHttpController {
     response: Response,
   ): Promise<results.NotFoundResult | results.JsonResult> {
     const result = await this.sharedVaultInviteService.createInvite({
-      originatorUuid: response.locals.user.uuid,
+      senderUuid: response.locals.user.uuid,
       sharedVaultUuid: request.params.sharedVaultUuid,
       userUuid: request.body.invitee_uuid,
-      inviterPublicKey: request.body.sender_public_key,
-      encryptedVaultKeyContent: request.body.encrypted_message,
+      senderPublicKey: request.body.sender_public_key,
+      encryptedMessage: request.body.encrypted_message,
       permissions: request.body.permissions,
     })
 
@@ -49,10 +49,10 @@ export class SharedVaultInvitesController extends BaseHttpController {
     response: Response,
   ): Promise<results.NotFoundResult | results.JsonResult> {
     const result = await this.sharedVaultInviteService.updateInvite({
-      originatorUuid: response.locals.user.uuid,
+      senderUuid: response.locals.user.uuid,
       inviteUuid: request.params.inviteUuid,
-      inviterPublicKey: request.body.sender_public_key,
-      encryptedVaultKeyContent: request.body.encrypted_message,
+      senderPublicKey: request.body.sender_public_key,
+      encryptedMessage: request.body.encrypted_message,
       permissions: request.body.permissions,
     })
 

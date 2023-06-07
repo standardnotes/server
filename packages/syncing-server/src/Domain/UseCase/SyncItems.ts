@@ -1,4 +1,3 @@
-import { ContactServiceInterface } from './../Contact/Service/ContactServiceInterface'
 import { Item } from '../Item/Item'
 import { ItemConflict } from '../Item/ItemConflict'
 import { ItemServiceInterface } from '../Item/ItemServiceInterface'
@@ -8,13 +7,14 @@ import { UseCaseInterface } from './UseCaseInterface'
 import { SharedVaultInviteServiceInterface } from '../SharedVaultInvite/Service/SharedVaultInviteServiceInterface'
 import { SharedVaultServiceInterface } from '../SharedVault/Service/SharedVaultServiceInterface'
 import { UserEventServiceInterface } from '../UserEvent/Service/UserEventServiceInterface'
+import { AsymmetricMessageServiceInterface } from '../AsymmetricMessage/Service/AsymmetricMessageServiceInterface'
 
 export class SyncItems implements UseCaseInterface {
   constructor(
     private itemService: ItemServiceInterface,
     private sharedVaultService: SharedVaultServiceInterface,
     private sharedVaultInviteService: SharedVaultInviteServiceInterface,
-    private contactService: ContactServiceInterface,
+    private asymmetricMessageService: AsymmetricMessageServiceInterface,
     private userEventService: UserEventServiceInterface,
   ) {}
 
@@ -58,7 +58,7 @@ export class SyncItems implements UseCaseInterface {
       lastSyncTime,
     })
 
-    const contacts = await this.contactService.getUserContacts({
+    const asymmetricMessages = await this.asymmetricMessageService.getMessagesForUser({
       userUuid: dto.userUuid,
       lastSyncTime: lastSyncTime,
     })
@@ -77,7 +77,7 @@ export class SyncItems implements UseCaseInterface {
       sharedVaults,
       sharedVaultInvites,
       userEvents,
-      contacts,
+      asymmetricMessages,
     }
 
     return syncResponse

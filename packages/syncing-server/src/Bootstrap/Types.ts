@@ -11,7 +11,7 @@ const TYPES = {
   ItemRepository: Symbol.for('ItemRepository'),
   SharedVaultRepository: Symbol.for('SharedVaultRepository'),
   SharedVaultUserRepository: Symbol.for('SharedVaultUserRepository'),
-  ContactRepository: Symbol.for('ContactRepository'),
+  AsymmetricMessageRepository: Symbol.for('AsymmetricMessageRepository'),
   SharedVaultInviteRepository: Symbol.for('SharedVaultInviteRepository'),
   UserEventRepository: Symbol.for('UserEventRepository'),
 
@@ -19,7 +19,7 @@ const TYPES = {
   ORMItemRepository: Symbol.for('ORMItemRepository'),
   ORMSharedVaultRepository: Symbol.for('ORMSharedVaultRepository'),
   ORMSharedVaultUserRepository: Symbol.for('ORMSharedVaultUserRepository'),
-  ORMContactRepository: Symbol.for('ORMContactRepository'),
+  ORMAsymmetricMessageRepository: Symbol.for('ORMAsymmetricMessageRepository'),
   ORMSharedVaultInviteRepository: Symbol.for('ORMSharedVaultInviteRepository'),
   ORMUserEventRepository: Symbol.for('ORMUserEventRepository'),
 
@@ -32,14 +32,14 @@ const TYPES = {
   ItemConflictProjector: Symbol.for('ItemConflictProjector'),
   SharedVaultProjector: Symbol.for('SharedVaultProjector'),
   SharedVaultUserProjector: Symbol.for('SharedVaultUserProjector'),
-  ContactProjector: Symbol.for('ContactProjector'),
+  AsymmetricMessageProjector: Symbol.for('AsymmetricMessageProjector'),
   SharedVaultInviteProjector: Symbol.for('SharedVaultInviteProjector'),
   UserEventProjector: Symbol.for('UserEventProjector'),
 
   // Services
   SharedVaultService: Symbol.for('SharedVaultService'),
   SharedVaultUserService: Symbol.for('SharedVaultUserService'),
-  ContactService: Symbol.for('ContactService'),
+  AsymmetricMessageService: Symbol.for('AsymmetricMessageService'),
   SharedVaultInviteService: Symbol.for('SharedVaultInviteService'),
   UserEventService: Symbol.for('UserEventService'),
 
@@ -47,7 +47,7 @@ const TYPES = {
   ItemFactory: Symbol.for('ItemFactory'),
   SharedVaultFactory: Symbol.for('SharedVaultFactory'),
   SharedVaultUserFactory: Symbol.for('SharedVaultUserFactory'),
-  ContactFactory: Symbol.for('ContactFactory'),
+  AsymmetricMessageFactory: Symbol.for('AsymmetricMessageFactory'),
   SharedVaultInviteFactory: Symbol.for('SharedVaultInviteFactory'),
   UserEventFactory: Symbol.for('UserEventFactory'),
 
@@ -78,7 +78,6 @@ const TYPES = {
   SaveItem: Symbol.for('SaveItem'),
   CreateSharedVaultFileReadValetToken: Symbol.for('CreateSharedVaultFileReadValetToken'),
   // Handlers
-  UserCredentialsChangedEventHandler: Symbol.for('UserCredentialsChangedEventHandler'),
   AccountDeletionRequestedEventHandler: Symbol.for('AccountDeletionRequestedEventHandler'),
   DuplicateItemSyncedEventHandler: Symbol.for('DuplicateItemSyncedEventHandler'),
   EmailBackupRequestedEventHandler: Symbol.for('EmailBackupRequestedEventHandler'),

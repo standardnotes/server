@@ -1,5 +1,5 @@
 import { TypeORMSharedVaultInviteRepository } from '../Domain/SharedVaultInvite/Repository/TypeORMSharedVaultInviteRepository'
-import { Contact } from './../Domain/Contact/Model/Contact'
+import { AsymmetricMessage } from './../Domain/AsymmetricMessage/Model/AsymmetricMessage'
 import { SharedVaultInvite } from '../Domain/SharedVaultInvite/Model/SharedVaultInvite'
 import { SharedVaultUser } from '../Domain/SharedVaultUser/Model/SharedVaultUser'
 import { SharedVault } from '../Domain/SharedVault/Model/SharedVault'
@@ -33,16 +33,16 @@ import { SharedVaultProjection } from '../Projection/SharedVaultProjection'
 import { SharedVaultProjector } from '../Projection/SharedVaultProjector'
 import { SharedVaultInviteProjection } from '../Projection/SharedVaultInviteProjection'
 import { SharedVaultInviteProjector } from '../Projection/SharedVaultInviteProjector'
-import { ContactProjection } from '../Projection/ContactProjection'
-import { ContactProjector } from '../Projection/ContactProjector'
+import { AsymmetricMessageProjection } from '../Projection/AsymmetricMessageProjection'
+import { AsymmetricMessageProjector } from '../Projection/AsymmetricMessageProjector'
 import { SharedVaultInviteRepositoryInterface } from '../Domain/SharedVaultInvite/Repository/SharedVaultInviteRepositoryInterface'
-import { ContactsRepositoryInterface } from '../Domain/Contact/Repository/ContactRepositoryInterface'
-import { TypeORMContactRepository } from '../Domain/Contact/Repository/TypeORMContactRepository'
+import { TypeORMAsymmetricMessageRepository } from '../Domain/AsymmetricMessage/Repository/TypeORMAsymmetricMessageRepository'
 import { UserEventsRepositoryInterface } from '../Domain/UserEvent/Repository/UserEventRepositoryInterface'
 import { TypeORMUserEventRepository } from '../Domain/UserEvent/Repository/TypeORMUserEventRepository'
 import { UserEvent } from '../Domain/UserEvent/Model/UserEvent'
 import { UserEventProjection } from '../Projection/UserEventProjection'
 import { UserEventProjector } from '../Projection/UserEventProjector'
+import { AsymmetricMessageRepositoryInterface } from '../Domain/AsymmetricMessage/Repository/AsymmetricMessageRepositoryInterface'
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const newrelicFormatter = require('@newrelic/winston-enricher')
 
@@ -117,9 +117,9 @@ export class CommonContainerConfigLoader {
         return new TypeORMSharedVaultInviteRepository(context.container.get(TYPES.ORMSharedVaultInviteRepository))
       })
     container
-      .bind<ContactsRepositoryInterface>(TYPES.ContactRepository)
+      .bind<AsymmetricMessageRepositoryInterface>(TYPES.AsymmetricMessageRepository)
       .toDynamicValue((context: interfaces.Context) => {
-        return new TypeORMContactRepository(context.container.get(TYPES.ORMContactRepository))
+        return new TypeORMAsymmetricMessageRepository(context.container.get(TYPES.ORMAsymmetricMessageRepository))
       })
     container
       .bind<UserEventsRepositoryInterface>(TYPES.UserEventRepository)
@@ -139,8 +139,8 @@ export class CommonContainerConfigLoader {
       .bind<Repository<SharedVaultInvite>>(TYPES.ORMSharedVaultInviteRepository)
       .toDynamicValue(() => AppDataSource.getRepository(SharedVaultInvite))
     container
-      .bind<Repository<Contact>>(TYPES.ORMContactRepository)
-      .toDynamicValue(() => AppDataSource.getRepository(Contact))
+      .bind<Repository<AsymmetricMessage>>(TYPES.ORMAsymmetricMessageRepository)
+      .toDynamicValue(() => AppDataSource.getRepository(AsymmetricMessage))
     container
       .bind<Repository<UserEvent>>(TYPES.ORMUserEventRepository)
       .toDynamicValue(() => AppDataSource.getRepository(UserEvent))
@@ -166,9 +166,11 @@ export class CommonContainerConfigLoader {
       .toDynamicValue(() => {
         return new SharedVaultInviteProjector()
       })
-    container.bind<ProjectorInterface<Contact, ContactProjection>>(TYPES.ContactProjector).toDynamicValue(() => {
-      return new ContactProjector()
-    })
+    container
+      .bind<ProjectorInterface<AsymmetricMessage, AsymmetricMessageProjection>>(TYPES.AsymmetricMessageProjector)
+      .toDynamicValue(() => {
+        return new AsymmetricMessageProjector()
+      })
     container.bind<ProjectorInterface<UserEvent, UserEventProjection>>(TYPES.UserEventProjector).toDynamicValue(() => {
       return new UserEventProjector()
     })

@@ -7,7 +7,7 @@ import '../src/Controller/ItemsController'
 import '../src/Controller/SharedVaultsController'
 import '../src/Controller/SharedVaultUsersController'
 import '../src/Controller/SharedVaultInvitesController'
-import '../src/Controller/ContactsController'
+import '../src/Controller/AsymmetricMessagesController'
 
 import helmet from 'helmet'
 import * as cors from 'cors'

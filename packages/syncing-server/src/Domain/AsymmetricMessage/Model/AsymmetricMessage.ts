@@ -1,16 +1,9 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
-import { SharedVaultUserPermission } from '../../SharedVaultUser/Model/SharedVaultUserPermission'
 
-@Entity({ name: 'shared_vault_invites' })
-export class SharedVaultInvite {
+@Entity({ name: 'asymmetric_messages' })
+export class AsymmetricMessage {
   @PrimaryGeneratedColumn('uuid')
   declare uuid: string
-
-  @Column({
-    name: 'shared_vault_uuid',
-    length: 36,
-  })
-  declare sharedVaultUuid: string
 
   @Column({
     name: 'user_uuid',
@@ -32,11 +25,6 @@ export class SharedVaultInvite {
     name: 'encrypted_message',
   })
   declare encryptedMessage: string
-
-  @Column({
-    name: 'permissions',
-  })
-  declare permissions: SharedVaultUserPermission
 
   @Column({
     name: 'created_at_timestamp',

@@ -54,9 +54,9 @@ export class TypeORMSharedVaultInviteRepository implements SharedVaultInviteRepo
 
     if (query.userUuid) {
       queryBuilder.where('shared_vault_invite.user_uuid = :userUuid', { userUuid: query.userUuid })
-    } else if (query.inviterUuid) {
-      queryBuilder.where('shared_vault_invite.inviter_uuid = :inviterUuid', {
-        inviterUuid: query.inviterUuid,
+    } else if (query.senderUuid) {
+      queryBuilder.where('shared_vault_invite.sender_uuid = :senderUuid', {
+        senderUuid: query.senderUuid,
       })
     }
 

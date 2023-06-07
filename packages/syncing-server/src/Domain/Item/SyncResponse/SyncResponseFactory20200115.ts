@@ -1,5 +1,6 @@
+import { AsymmetricMessageProjection } from './../../../Projection/AsymmetricMessageProjection'
+import { AsymmetricMessage } from './../../AsymmetricMessage/Model/AsymmetricMessage'
 import { SharedVaultInvite } from '../../SharedVaultInvite/Model/SharedVaultInvite'
-import { Contact } from './../../Contact/Model/Contact'
 import { ProjectorInterface } from '../../../Projection/ProjectorInterface'
 import { SyncItemsResponse } from '../../UseCase/SyncItemsResponse'
 import { Item } from '../Item'
@@ -9,7 +10,6 @@ import { ItemProjection } from '../../../Projection/ItemProjection'
 import { SyncResponse20200115 } from './SyncResponse20200115'
 import { SyncResponseFactoryInterface } from './SyncResponseFactoryInterface'
 import { SavedItemProjection } from '../../../Projection/SavedItemProjection'
-import { ContactProjection } from '../../../Projection/ContactProjection'
 import { SharedVaultInviteProjection } from '../../../Projection/SharedVaultInviteProjection'
 import { SharedVaultProjection } from '../../../Projection/SharedVaultProjection'
 import { SharedVault } from '../../SharedVault/Model/SharedVault'
@@ -22,7 +22,7 @@ export class SyncResponseFactory20200115 implements SyncResponseFactoryInterface
     private itemConflictProjector: ProjectorInterface<ItemConflict, ItemConflictProjection>,
     private savedItemProjector: ProjectorInterface<Item, SavedItemProjection>,
     private sharedVaultInviteProjector: ProjectorInterface<SharedVaultInvite, SharedVaultInviteProjection>,
-    private contactProjector: ProjectorInterface<Contact, ContactProjection>,
+    private asymmetricMessageProjector: ProjectorInterface<AsymmetricMessage, AsymmetricMessageProjection>,
     private sharedVaultProjector: ProjectorInterface<SharedVault, SharedVaultProjection>,
     private userEventProjector: ProjectorInterface<UserEvent, UserEventProjection>,
   ) {}
@@ -53,9 +53,9 @@ export class SyncResponseFactory20200115 implements SyncResponseFactoryInterface
       sharedVaultInvites.push(this.sharedVaultInviteProjector.projectFull(sharedVaultInvite))
     }
 
-    const contacts = []
-    for (const contact of syncItemsResponse.contacts) {
-      contacts.push(this.contactProjector.projectFull(contact))
+    const asymmetricMessages = []
+    for (const contact of syncItemsResponse.asymmetricMessages) {
+      asymmetricMessages.push(this.asymmetricMessageProjector.projectFull(contact))
     }
 
     const userEvents = []
@@ -69,10 +69,10 @@ export class SyncResponseFactory20200115 implements SyncResponseFactoryInterface
       conflicts,
       sync_token: syncItemsResponse.syncToken,
       cursor_token: syncItemsResponse.cursorToken,
+      asymmetric_messages: asymmetricMessages,
+      user_events: userEvents,
       shared_vaults: sharedVaults,
       shared_vault_invites: sharedVaultInvites,
-      user_events: userEvents,
-      contacts,
     }
   }
 }

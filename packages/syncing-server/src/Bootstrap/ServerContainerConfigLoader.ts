@@ -1,5 +1,5 @@
 import { SaveItem } from './../Domain/UseCase/SaveItem/SaveItem'
-import { ContactFactory } from './../Domain/Contact/Factory/ContactFactory'
+import { AsymmetricMessageFactory } from './../Domain/AsymmetricMessage/Factory/AsymmetricMessageFactory'
 
 import { SharedVaultServiceInterface } from '../Domain/SharedVault/Service/SharedVaultServiceInterface'
 import { SharedVaultUserFactory } from '../Domain/SharedVaultUser/Factory/SharedVaultUserFactory'
@@ -44,9 +44,9 @@ import { SharedVaultUserServiceInterface } from '../Domain/SharedVaultUser/Servi
 import { SharedVaultInviteServiceInterface } from '../Domain/SharedVaultInvite/Service/SharedVaultInviteServiceInterface'
 import { SharedVaultInviteService } from '../Domain/SharedVaultInvite/Service/SharedVaultInviteService'
 import { SharedVaultInviteFactory } from '../Domain/SharedVaultInvite/Factory/SharedVaultInviteFactory'
-import { ContactServiceInterface } from '../Domain/Contact/Service/ContactServiceInterface'
-import { ContactService } from '../Domain/Contact/Service/ContactService'
-import { ContactFactoryInterface } from '../Domain/Contact/Factory/ContactFactoryInterface'
+import { AsymmetricMessageServiceInterface } from '../Domain/AsymmetricMessage/Service/AsymmetricMessageServiceInterface'
+import { AsymmetricMessageService } from '../Domain/AsymmetricMessage/Service/AsymmetricMessageService'
+import { AsymmetricMessageFactoryInterface } from '../Domain/AsymmetricMessage/Factory/AsymmetricMessageFactoryInterface'
 import { SharedVaultSnjsVersionFilter } from '../Domain/Item/SaveRule/SharedVaultSnjsVersionFilter'
 import { CreateSharedVaultFileValetToken } from '../Domain/UseCase/CreateSharedVaultFileValetToken/CreateSharedVaultFileValetToken'
 import { UserEventServiceInterface } from '../Domain/UserEvent/Service/UserEventServiceInterface'
@@ -106,7 +106,7 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
         context.container.get(TYPES.ItemService),
         context.container.get(TYPES.SharedVaultService),
         context.container.get(TYPES.SharedVaultInviteService),
-        context.container.get(TYPES.ContactService),
+        context.container.get(TYPES.AsymmetricMessageService),
         context.container.get(TYPES.UserEventService),
       )
     })
@@ -189,13 +189,15 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
           context.container.get(TYPES.Timer),
         )
       })
-    container.bind<ContactServiceInterface>(TYPES.ContactService).toDynamicValue((context: interfaces.Context) => {
-      return new ContactService(
-        context.container.get(TYPES.ContactRepository),
-        context.container.get(TYPES.ContactFactory),
-        context.container.get(TYPES.Timer),
-      )
-    })
+    container
+      .bind<AsymmetricMessageServiceInterface>(TYPES.AsymmetricMessageService)
+      .toDynamicValue((context: interfaces.Context) => {
+        return new AsymmetricMessageService(
+          context.container.get(TYPES.AsymmetricMessageRepository),
+          context.container.get(TYPES.AsymmetricMessageFactory),
+          context.container.get(TYPES.Timer),
+        )
+      })
     container.bind<UserEventServiceInterface>(TYPES.UserEventService).toDynamicValue((context: interfaces.Context) => {
       return new UserEventService(
         context.container.get(TYPES.UserEventRepository),
@@ -217,7 +219,7 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
           context.container.get(TYPES.ItemConflictProjector),
           context.container.get(TYPES.SavedItemProjector),
           context.container.get(TYPES.SharedVaultInviteProjector),
-          context.container.get(TYPES.ContactProjector),
+          context.container.get(TYPES.AsymmetricMessageProjector),
           context.container.get(TYPES.SharedVaultProjector),
           context.container.get(TYPES.UserEventProjector),
         )
@@ -249,9 +251,11 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
       .toDynamicValue((context: interfaces.Context) => {
         return new SharedVaultInviteFactory(context.container.get(TYPES.Timer))
       })
-    container.bind<ContactFactoryInterface>(TYPES.ContactFactory).toDynamicValue((context: interfaces.Context) => {
-      return new ContactFactory(context.container.get(TYPES.Timer))
-    })
+    container
+      .bind<AsymmetricMessageFactoryInterface>(TYPES.AsymmetricMessageFactory)
+      .toDynamicValue((context: interfaces.Context) => {
+        return new AsymmetricMessageFactory(context.container.get(TYPES.Timer))
+      })
     container.bind<UserEventFactoryInterface>(TYPES.UserEventFactory).toDynamicValue((context: interfaces.Context) => {
       return new UserEventFactory(context.container.get(TYPES.Timer))
     })

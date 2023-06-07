@@ -1,5 +1,5 @@
+import { AsymmetricMessage } from './../Domain/AsymmetricMessage/Model/AsymmetricMessage'
 import { UserEvent } from './../Domain/UserEvent/Model/UserEvent'
-import { Contact } from './../Domain/Contact/Model/Contact'
 import { SharedVaultInvite } from '../Domain/SharedVaultInvite/Model/SharedVaultInvite'
 import { SharedVaultUser } from '../Domain/SharedVaultUser/Model/SharedVaultUser'
 import { DataSource, LoggerOptions } from 'typeorm'
@@ -43,7 +43,7 @@ const replicationConfig = {
 
 const commonDataSourceOptions = {
   maxQueryExecutionTime,
-  entities: [Item, SharedVault, SharedVaultUser, SharedVaultInvite, Contact, UserEvent],
+  entities: [Item, SharedVault, SharedVaultUser, SharedVaultInvite, AsymmetricMessage, UserEvent],
   migrations: [`dist/migrations/${isConfiguredForMySQL ? 'mysql' : 'sqlite'}/*.js`],
   migrationsRun: true,
   logging: <LoggerOptions>env.get('DB_DEBUG_LEVEL'),

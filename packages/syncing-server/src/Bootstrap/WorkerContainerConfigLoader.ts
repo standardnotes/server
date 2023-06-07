@@ -30,7 +30,6 @@ import { EmailBackupRequestedEventHandler } from '../Domain/Handler/EmailBackupR
 import { ItemRevisionCreationRequestedEventHandler } from '../Domain/Handler/ItemRevisionCreationRequestedEventHandler'
 import { FSItemBackupService } from '../Infra/FS/FSItemBackupService'
 import { CommonContainerConfigLoader } from './CommonContainerConfigLoader'
-import { UserCredentialsChangedEventHandler } from '../Domain/Handler/UserCredentialsChangedEventHandler'
 import { SharedVaultFileUploadedEventHandler } from '../Domain/Handler/SharedVaultFileUploadedEventHandler'
 import { SharedVaultFileRemovedEventHandler } from '../Domain/Handler/SharedVaultFileRemovedEventHandler'
 
@@ -136,16 +135,6 @@ export class WorkerContainerConfigLoader extends CommonContainerConfigLoader {
       })
 
     container
-      .bind<UserCredentialsChangedEventHandler>(TYPES.UserCredentialsChangedEventHandler)
-      .toDynamicValue((context: interfaces.Context) => {
-        return new UserCredentialsChangedEventHandler(
-          context.container.get(TYPES.ContactRepository),
-          context.container.get(TYPES.SharedVaultInviteRepository),
-          context.container.get(TYPES.Timer),
-        )
-      })
-
-    container
       .bind<SharedVaultFileUploadedEventHandler>(TYPES.SharedVaultFileUploadedEventHandler)
       .to(SharedVaultFileUploadedEventHandler)
     container
@@ -202,7 +191,6 @@ export class WorkerContainerConfigLoader extends CommonContainerConfigLoader {
           ['ACCOUNT_DELETION_REQUESTED', context.container.get(TYPES.AccountDeletionRequestedEventHandler)],
           ['EMAIL_BACKUP_REQUESTED', context.container.get(TYPES.EmailBackupRequestedEventHandler)],
           ['ITEM_REVISION_CREATION_REQUESTED', context.container.get(TYPES.ItemRevisionCreationRequestedEventHandler)],
-          ['USER_CREDENTIALS_CHANGED', container.get(TYPES.UserCredentialsChangedEventHandler)],
           ['SHARED_VAULT_FILE_REMOVED', container.get(TYPES.SharedVaultFileRemovedEventHandler)],
           ['SHARED_VAULT_FILE_UPLOADED', container.get(TYPES.SharedVaultFileUploadedEventHandler)],
         ])

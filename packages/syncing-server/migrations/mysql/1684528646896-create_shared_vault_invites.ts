@@ -26,7 +26,7 @@ export class CreateSharedVaultInvites1684528646896 implements MigrationInterface
           isNullable: false,
         }),
         new TableColumn({
-          name: 'inviter_uuid',
+          name: 'sender_uuid',
           type: 'varchar',
           length: '255',
           isNullable: false,

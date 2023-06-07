@@ -1,4 +1,4 @@
-import { ContactProjection } from '../../../Projection/ContactProjection'
+import { AsymmetricMessageProjection } from './../../../Projection/AsymmetricMessageProjection'
 import { SharedVaultInviteProjection } from '../../../Projection/SharedVaultInviteProjection'
 import { SharedVaultProjection } from '../../../Projection/SharedVaultProjection'
 import { ItemConflictProjection } from '../../../Projection/ItemConflictProjection'
@@ -12,7 +12,7 @@ export type SyncResponse20200115 = {
   conflicts: Array<ItemConflictProjection>
   sync_token: string
   cursor_token?: string
-  contacts: Array<ContactProjection>
+  asymmetric_messages: Array<AsymmetricMessageProjection>
   shared_vaults: Array<SharedVaultProjection>
   shared_vault_invites: Array<SharedVaultInviteProjection>
   user_events: Array<UserEventProjection>

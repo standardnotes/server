@@ -21,7 +21,7 @@ export class SharedVaultInviteService implements SharedVaultInviteServiceInterfa
 
   async createInvite(dto: CreateInviteDTO): Promise<SharedVaultInvite | null> {
     const sharedVault = await this.sharedVaultRepository.findByUuid(dto.sharedVaultUuid)
-    if (!sharedVault || sharedVault.userUuid !== dto.originatorUuid) {
+    if (!sharedVault || sharedVault.userUuid !== dto.senderUuid) {
       return null
     }
 
@@ -31,9 +31,9 @@ export class SharedVaultInviteService implements SharedVaultInviteServiceInterfa
       uuid: uuidv4(),
       user_uuid: dto.userUuid,
       shared_vault_uuid: dto.sharedVaultUuid,
-      inviter_uuid: dto.originatorUuid,
-      sender_public_key: dto.inviterPublicKey,
-      encrypted_message: dto.encryptedVaultKeyContent,
+      sender_uuid: dto.senderUuid,
+      sender_public_key: dto.senderPublicKey,
+      encrypted_message: dto.encryptedMessage,
       permissions: dto.permissions,
       created_at_timestamp: timestamp,
       updated_at_timestamp: timestamp,
@@ -44,12 +44,12 @@ export class SharedVaultInviteService implements SharedVaultInviteServiceInterfa
 
   async updateInvite(dto: UpdateInviteDTO): Promise<SharedVaultInvite | null> {
     const sharedVaultInvite = await this.sharedVaultInviteRepository.findByUuid(dto.inviteUuid)
-    if (!sharedVaultInvite || sharedVaultInvite.inviterUuid !== dto.originatorUuid) {
+    if (!sharedVaultInvite || sharedVaultInvite.senderUuid !== dto.senderUuid) {
       return null
     }
 
-    sharedVaultInvite.inviterPublicKey = dto.inviterPublicKey
-    sharedVaultInvite.encryptedVaultKeyContent = dto.encryptedVaultKeyContent
+    sharedVaultInvite.senderPublicKey = dto.senderPublicKey
+    sharedVaultInvite.encryptedMessage = dto.encryptedMessage
     if (dto.permissions) {
       sharedVaultInvite.permissions = dto.permissions
     }
@@ -64,7 +64,7 @@ export class SharedVaultInviteService implements SharedVaultInviteServiceInterfa
 
   getOutboundInvitesForUser(dto: { userUuid: string }): Promise<SharedVaultInvite[]> {
     return this.sharedVaultInviteRepository.findAll({
-      inviterUuid: dto.userUuid,
+      senderUuid: dto.userUuid,
     })
   }
 
@@ -145,7 +145,7 @@ export class SharedVaultInviteService implements SharedVaultInviteServiceInterfa
       return false
     }
 
-    const isAuthorized = invite.inviterUuid === dto.originatorUuid || invite.userUuid === dto.originatorUuid
+    const isAuthorized = invite.senderUuid === dto.originatorUuid || invite.userUuid === dto.originatorUuid
     if (!isAuthorized) {
       return false
     }

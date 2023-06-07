@@ -7,7 +7,7 @@ export type SharedVaultInviteQuery = {
 export type SharedVaultInviteFindAllForUserQuery = {
   userUuid?: string
   lastSyncTime?: number
-  inviterUuid?: string
+  senderUuid?: string
 }
 
 export type SharedVaultInviteFindAllForSharedVault = {

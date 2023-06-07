@@ -1,5 +1,5 @@
+import { AsymmetricMessage } from './../AsymmetricMessage/Model/AsymmetricMessage'
 import { SharedVaultInvite } from '../SharedVaultInvite/Model/SharedVaultInvite'
-import { Contact } from '../Contact/Model/Contact'
 import { Item } from '../Item/Item'
 import { ItemConflict } from '../Item/ItemConflict'
 import { SharedVault } from '../SharedVault/Model/SharedVault'
@@ -12,7 +12,7 @@ export type SyncItemsResponse = {
   sharedVaults: Array<SharedVault>
   sharedVaultInvites: Array<SharedVaultInvite>
   userEvents: Array<UserEvent>
-  contacts: Array<Contact>
+  asymmetricMessages: Array<AsymmetricMessage>
   syncToken: string
   cursorToken?: string
 }
