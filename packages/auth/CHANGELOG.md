@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.118.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.117.0...@standardnotes/auth-server@1.118.0) (2023-06-07)
+
+### Features
+
+* configurable path for uploads and db ([#623](https://github.com/standardnotes/server/issues/623)) ([af8feaa](https://github.com/standardnotes/server/commit/af8feaadfe2dd58baab4cca217d6307b4a221326))
+
 # [1.117.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.116.2...@standardnotes/auth-server@1.117.0) (2023-06-05)
 
 ### Features

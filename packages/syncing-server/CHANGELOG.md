@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.44.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.43.0...@standardnotes/syncing-server@1.44.0) (2023-06-07)
+
+### Features
+
+* configurable path for uploads and db ([#623](https://github.com/standardnotes/syncing-server-js/issues/623)) ([af8feaa](https://github.com/standardnotes/syncing-server-js/commit/af8feaadfe2dd58baab4cca217d6307b4a221326))
+
 # [1.43.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.42.2...@standardnotes/syncing-server@1.43.0) (2023-06-05)
 
 ### Features
