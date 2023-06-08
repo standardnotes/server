@@ -149,6 +149,7 @@ const TYPES = {
   Auth_ListAuthenticators: Symbol.for('Auth_ListAuthenticators'),
   Auth_DeleteAuthenticator: Symbol.for('Auth_DeleteAuthenticator'),
   Auth_GenerateRecoveryCodes: Symbol.for('Auth_GenerateRecoveryCodes'),
+  Auth_ActivatePremiumFeatures: Symbol.for('Auth_ActivatePremiumFeatures'),
   Auth_SignInWithRecoveryCodes: Symbol.for('Auth_SignInWithRecoveryCodes'),
   Auth_GetUserKeyParamsRecovery: Symbol.for('Auth_GetUserKeyParamsRecovery'),
   // Handlers
