@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.18.1](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.18.0...@standardnotes/files-server@1.18.1) (2023-06-09)
+
+### Bug Fixes
+
+* **files:** add debug logs for checking chunks upon finishing upload session ([5f0929c](https://github.com/standardnotes/files/commit/5f0929c1aa7b83661fb102bad34644db69ddf7eb))
+
 # [1.18.0](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.17.1...@standardnotes/files-server@1.18.0) (2023-06-05)
 
 ### Features
