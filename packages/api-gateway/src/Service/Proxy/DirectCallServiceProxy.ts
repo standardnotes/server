@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
+import { ServiceContainerInterface, ServiceIdentifier } from '@standardnotes/domain-core'
 
 import { ServiceProxyInterface } from '../Http/ServiceProxyInterface'
-import { ServiceContainerInterface, ServiceIdentifier } from '@standardnotes/domain-core'
 
 export class DirectCallServiceProxy implements ServiceProxyInterface {
   constructor(private serviceContainer: ServiceContainerInterface, private filesServerUrl: string) {}
@@ -34,8 +34,12 @@ export class DirectCallServiceProxy implements ServiceProxyInterface {
     }
   }
 
-  async callEmailServer(_request: Request, _response: Response, _endpointOrMethodIdentifier: string): Promise<void> {
-    throw new Error('Email server is not available.')
+  async callEmailServer(_request: Request, response: Response, _endpointOrMethodIdentifier: string): Promise<void> {
+    response.status(400).send({
+      error: {
+        message: 'Email server is not available.',
+      },
+    })
   }
 
   async callAuthServer(request: never, response: never, endpointOrMethodIdentifier: string): Promise<void> {
@@ -54,10 +58,14 @@ export class DirectCallServiceProxy implements ServiceProxyInterface {
 
   async callAuthServerWithLegacyFormat(
     _request: Request,
-    _response: Response,
+    response: Response,
     _endpointOrMethodIdentifier: string,
   ): Promise<void> {
-    throw new Error('Legacy auth endpoints are no longer available.')
+    response.status(400).send({
+      error: {
+        message: 'Legacy auth endpoints are no longer available.',
+      },
+    })
   }
 
   async callRevisionsServer(request: never, response: never, endpointOrMethodIdentifier: string): Promise<void> {
@@ -92,22 +100,30 @@ export class DirectCallServiceProxy implements ServiceProxyInterface {
 
   async callLegacySyncingServer(
     _request: Request,
-    _response: Response,
+    response: Response,
     _endpointOrMethodIdentifier: string,
   ): Promise<void> {
-    throw new Error('Legacy syncing server endpoints are no longer available.')
+    response.status(400).send({
+      error: {
+        message: 'Legacy syncing server endpoints are no longer available.',
+      },
+    })
   }
 
-  async callPaymentsServer(_request: Request, _response: Response, _endpointOrMethodIdentifier: string): Promise<void> {
-    throw new Error('Payments server is not available.')
+  async callPaymentsServer(_request: Request, response: Response, _endpointOrMethodIdentifier: string): Promise<void> {
+    response.status(400).send({
+      error: {
+        message: 'Payments server is not available.',
+      },
+    })
   }
 
-  async callWebSocketServer(
-    _request: Request,
-    _response: Response,
-    _endpointOrMethodIdentifier: string,
-  ): Promise<void> {
-    throw new Error('Websockets server is not available.')
+  async callWebSocketServer(_request: Request, response: Response, _endpointOrMethodIdentifier: string): Promise<void> {
+    response.status(400).send({
+      error: {
+        message: 'Websockets server is not available.',
+      },
+    })
   }
 
   private sendDecoratedResponse(
