@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.119.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.119.0...@standardnotes/auth-server@1.119.1) (2023-06-09)
+
+### Bug Fixes
+
+* **home-server:** add default value for valet token ttl ([c201ee4](https://github.com/standardnotes/server/commit/c201ee42a00d9e5402afea2f2c5848a362c1529e))
+
 # [1.119.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.118.0...@standardnotes/auth-server@1.119.0) (2023-06-09)
 
 ### Features

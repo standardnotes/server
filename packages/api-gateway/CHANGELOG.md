@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.64.1](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.64.0...@standardnotes/api-gateway@1.64.1) (2023-06-09)
+
+### Bug Fixes
+
+* **api-gateway:** direct call service proxy to return 400 responses instead of throwing errors ([e6a4cc3](https://github.com/standardnotes/api-gateway/commit/e6a4cc3098bdf84fc9d48ed0d9098ebb52afb0e7))
+
 # [1.64.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.63.2...@standardnotes/api-gateway@1.64.0) (2023-06-05)
 
 ### Features
