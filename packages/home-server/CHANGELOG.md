@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.11.0](https://github.com/standardnotes/server/compare/@standardnotes/home-server@1.10.0...@standardnotes/home-server@1.11.0) (2023-06-09)
+
+### Features
+
+* **home-server:** add activating premium features ([#624](https://github.com/standardnotes/server/issues/624)) ([72ce190](https://github.com/standardnotes/server/commit/72ce1909960fbd2ec6a47b8dbdfbe53a4f10e776))
+
 # [1.10.0](https://github.com/standardnotes/server/compare/@standardnotes/home-server@1.9.0...@standardnotes/home-server@1.10.0) (2023-06-07)
 
 ### Features

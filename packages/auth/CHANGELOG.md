@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.119.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.118.0...@standardnotes/auth-server@1.119.0) (2023-06-09)
+
+### Features
+
+* **home-server:** add activating premium features ([#624](https://github.com/standardnotes/server/issues/624)) ([72ce190](https://github.com/standardnotes/server/commit/72ce1909960fbd2ec6a47b8dbdfbe53a4f10e776))
+
 # [1.118.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.117.0...@standardnotes/auth-server@1.118.0) (2023-06-07)
 
 ### Features
