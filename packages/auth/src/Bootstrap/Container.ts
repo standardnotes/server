@@ -251,6 +251,7 @@ import { HomeServerValetTokenController } from '../Infra/InversifyExpressUtils/H
 import { HomeServerWebSocketsController } from '../Infra/InversifyExpressUtils/HomeServer/HomeServerWebSocketsController'
 import { HomeServerSessionsController } from '../Infra/InversifyExpressUtils/HomeServer/HomeServerSessionsController'
 import { Transform } from 'stream'
+import { ActivatePremiumFeatures } from '../Domain/UseCase/ActivatePremiumFeatures/ActivatePremiumFeatures'
 
 export class ContainerConfigLoader {
   async load(configuration?: {
@@ -779,6 +780,16 @@ export class ContainerConfigLoader {
           container.get(TYPES.Auth_UserRepository),
           container.get(TYPES.Auth_SettingService),
           container.get(TYPES.Auth_CryptoNode),
+        ),
+      )
+    container
+      .bind<ActivatePremiumFeatures>(TYPES.Auth_ActivatePremiumFeatures)
+      .toConstantValue(
+        new ActivatePremiumFeatures(
+          container.get(TYPES.Auth_UserRepository),
+          container.get(TYPES.Auth_UserSubscriptionRepository),
+          container.get(TYPES.Auth_RoleService),
+          container.get(TYPES.Auth_Timer),
         ),
       )
 

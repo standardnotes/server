@@ -1,10 +1,10 @@
 import 'reflect-metadata'
 
-import { ControllerContainer, ServiceContainer } from '@standardnotes/domain-core'
+import { ControllerContainer, Result, ServiceContainer } from '@standardnotes/domain-core'
 import { Service as ApiGatewayService } from '@standardnotes/api-gateway'
 import { Service as FilesService } from '@standardnotes/files-server'
 import { DirectCallDomainEventPublisher } from '@standardnotes/domain-events-infra'
-import { Service as AuthService } from '@standardnotes/auth-server'
+import { Service as AuthService, AuthServiceInterface } from '@standardnotes/auth-server'
 import { Service as SyncingService } from '@standardnotes/syncing-server'
 import { Service as RevisionsService } from '@standardnotes/revisions-server'
 import { Container } from 'inversify'
@@ -24,6 +24,7 @@ import { HomeServerConfiguration } from './HomeServerConfiguration'
 
 export class HomeServer implements HomeServerInterface {
   private serverInstance: http.Server | undefined
+  private authService: AuthServiceInterface | undefined
   private logStream: PassThrough = new PassThrough()
 
   async start(configuration: HomeServerConfiguration): Promise<void> {
@@ -49,6 +50,7 @@ export class HomeServer implements HomeServerInterface {
 
     const apiGatewayService = new ApiGatewayService(serviceContainer)
     const authService = new AuthService(serviceContainer, controllerContainer, directCallDomainEventPublisher)
+    this.authService = authService
     const syncingService = new SyncingService(serviceContainer, controllerContainer, directCallDomainEventPublisher)
     const revisionsService = new RevisionsService(serviceContainer, controllerContainer, directCallDomainEventPublisher)
     const filesService = new FilesService(serviceContainer, directCallDomainEventPublisher)
@@ -150,6 +152,14 @@ export class HomeServer implements HomeServerInterface {
     }
 
     return this.serverInstance.address() !== null
+  }
+
+  async activatePremiumFeatures(username: string): Promise<Result<string>> {
+    if (!this.isRunning() || !this.authService) {
+      return Result.fail('Home server is not running.')
+    }
+
+    return this.authService.activatePremiumFeatures(username)
   }
 
   logs(): NodeJS.ReadableStream {
