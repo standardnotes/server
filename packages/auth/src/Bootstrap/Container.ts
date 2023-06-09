@@ -490,7 +490,9 @@ export class ContainerConfigLoader {
       .bind(TYPES.Auth_AUTH_JWT_TTL)
       .toConstantValue(env.get('AUTH_JWT_TTL', true) ? +env.get('AUTH_JWT_TTL') : 60_000)
     container.bind(TYPES.Auth_VALET_TOKEN_SECRET).toConstantValue(env.get('VALET_TOKEN_SECRET', true))
-    container.bind(TYPES.Auth_VALET_TOKEN_TTL).toConstantValue(+env.get('VALET_TOKEN_TTL', true))
+    container
+      .bind(TYPES.Auth_VALET_TOKEN_TTL)
+      .toConstantValue(env.get('VALET_TOKEN_TTL', true) ? +env.get('VALET_TOKEN_TTL', true) : 7200)
     container
       .bind(TYPES.Auth_WEB_SOCKET_CONNECTION_TOKEN_SECRET)
       .toConstantValue(env.get('WEB_SOCKET_CONNECTION_TOKEN_SECRET', true))
