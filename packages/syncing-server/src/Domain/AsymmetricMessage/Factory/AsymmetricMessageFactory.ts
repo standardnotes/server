@@ -11,7 +11,6 @@ export class AsymmetricMessageFactory implements AsymmetricMessageFactoryInterfa
     newAsymmetricMessage.uuid = dto.uuid
     newAsymmetricMessage.userUuid = dto.user_uuid
     newAsymmetricMessage.senderUuid = dto.sender_uuid
-    newAsymmetricMessage.senderPublicKey = dto.sender_public_key
     newAsymmetricMessage.encryptedMessage = dto.encrypted_message
 
     const now = this.timer.getTimestampInMicroseconds()

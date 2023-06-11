@@ -5,7 +5,6 @@ export type SharedVaultInviteHash = {
   user_uuid: string
   shared_vault_uuid: string
   sender_uuid: string
-  sender_public_key: string
   encrypted_message: string
   permissions: SharedVaultUserPermission
   created_at_timestamp?: number

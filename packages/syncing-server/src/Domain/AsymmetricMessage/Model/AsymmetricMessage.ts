@@ -17,11 +17,6 @@ export class AsymmetricMessage {
   declare senderUuid: string
 
   @Column({
-    name: 'sender_public_key',
-  })
-  declare senderPublicKey: string
-
-  @Column({
     name: 'encrypted_message',
   })
   declare encryptedMessage: string

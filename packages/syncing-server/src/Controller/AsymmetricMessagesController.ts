@@ -48,7 +48,6 @@ export class AsymmetricMessagesController extends BaseHttpController {
     const result = await this.asymmetricMessageService.createMessage({
       senderUuid: response.locals.user.uuid,
       userUuid: request.body.messagee_uuid,
-      senderPublicKey: request.body.sender_public_key,
       encryptedMessage: request.body.encrypted_message,
     })
 
@@ -67,7 +66,6 @@ export class AsymmetricMessagesController extends BaseHttpController {
     const result = await this.asymmetricMessageService.updateMessage({
       senderUuid: response.locals.user.uuid,
       messageUuid: request.params.messageUuid,
-      senderPublicKey: request.body.sender_public_key,
       encryptedMessage: request.body.encrypted_message,
     })
 

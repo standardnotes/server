@@ -29,10 +29,9 @@ export class SharedVaultInviteService implements SharedVaultInviteServiceInterfa
 
     const sharedVaultInvite = this.sharedVaultInviteFactory.create({
       uuid: uuidv4(),
-      user_uuid: dto.userUuid,
+      user_uuid: dto.recipientUuid,
       shared_vault_uuid: dto.sharedVaultUuid,
       sender_uuid: dto.senderUuid,
-      sender_public_key: dto.senderPublicKey,
       encrypted_message: dto.encryptedMessage,
       permissions: dto.permissions,
       created_at_timestamp: timestamp,
@@ -48,7 +47,6 @@ export class SharedVaultInviteService implements SharedVaultInviteServiceInterfa
       return null
     }
 
-    sharedVaultInvite.senderPublicKey = dto.senderPublicKey
     sharedVaultInvite.encryptedMessage = dto.encryptedMessage
     if (dto.permissions) {
       sharedVaultInvite.permissions = dto.permissions

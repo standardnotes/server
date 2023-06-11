@@ -3,7 +3,6 @@ import { SharedVaultUserPermission } from '../../SharedVaultUser/Model/SharedVau
 export type UpdateInviteDTO = {
   inviteUuid: string
   senderUuid: string
-  senderPublicKey: string
   encryptedMessage: string
   permissions?: SharedVaultUserPermission
 }

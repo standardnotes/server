@@ -22,7 +22,6 @@ export class AsymmetricMessageService implements AsymmetricMessageServiceInterfa
       uuid: uuidv4(),
       user_uuid: dto.userUuid,
       sender_uuid: dto.senderUuid,
-      sender_public_key: dto.senderPublicKey,
       encrypted_message: dto.encryptedMessage,
       created_at_timestamp: timestamp,
       updated_at_timestamp: timestamp,
@@ -37,7 +36,6 @@ export class AsymmetricMessageService implements AsymmetricMessageServiceInterfa
       return null
     }
 
-    asymmetricMessage.senderPublicKey = dto.senderPublicKey
     asymmetricMessage.encryptedMessage = dto.encryptedMessage
     asymmetricMessage.updatedAtTimestamp = this.timer.getTimestampInMicroseconds()
 
