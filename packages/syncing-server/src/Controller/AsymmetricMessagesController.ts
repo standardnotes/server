@@ -47,7 +47,7 @@ export class AsymmetricMessagesController extends BaseHttpController {
   ): Promise<results.NotFoundResult | results.JsonResult> {
     const result = await this.asymmetricMessageService.createMessage({
       senderUuid: response.locals.user.uuid,
-      userUuid: request.body.messagee_uuid,
+      userUuid: request.body.recipient_uuid,
       encryptedMessage: request.body.encrypted_message,
     })
 

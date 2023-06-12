@@ -11,7 +11,7 @@ import '../src/Controller/v1/ActionsController'
 import '../src/Controller/v1/InvoicesController'
 import '../src/Controller/v1/RevisionsController'
 import '../src/Controller/v1/ItemsController'
-import '../src/Controller/v1/ContactsController'
+import '../src/Controller/v1/AsymmetricMessagesController'
 import '../src/Controller/v1/SharedVaultsController'
 import '../src/Controller/v1/PaymentsController'
 import '../src/Controller/v1/WebSocketsController'
@@ -50,26 +50,28 @@ void container.load().then((container) => {
       next()
     })
     /* eslint-disable */
-    app.use(helmet({
-      contentSecurityPolicy: {
-        directives: {
-          defaultSrc: ["https: 'self'"],
-          baseUri: ["'self'"],
-          childSrc: ["*", "blob:"],
-          connectSrc: ["*"],
-          fontSrc: ["*", "'self'"],
-          formAction: ["'self'"],
-          frameAncestors: ["*", "*.standardnotes.org", "*.standardnotes.com"],
-          frameSrc: ["*", "blob:"],
-          imgSrc: ["'self'", "*", "data:"],
-          manifestSrc: ["'self'"],
-          mediaSrc: ["'self'"],
-          objectSrc: ["'self'"],
-          scriptSrc: ["'self'"],
-          styleSrc: ["'self'"]
-        }
-      }
-    }))
+    app.use(
+      helmet({
+        contentSecurityPolicy: {
+          directives: {
+            defaultSrc: ["https: 'self'"],
+            baseUri: ["'self'"],
+            childSrc: ['*', 'blob:'],
+            connectSrc: ['*'],
+            fontSrc: ['*', "'self'"],
+            formAction: ["'self'"],
+            frameAncestors: ['*', '*.standardnotes.org', '*.standardnotes.com'],
+            frameSrc: ['*', 'blob:'],
+            imgSrc: ["'self'", '*', 'data:'],
+            manifestSrc: ["'self'"],
+            mediaSrc: ["'self'"],
+            objectSrc: ["'self'"],
+            scriptSrc: ["'self'"],
+            styleSrc: ["'self'"],
+          },
+        },
+      }),
+    )
     /* eslint-enable */
     app.use(json({ limit: '50mb' }))
     app.use(
