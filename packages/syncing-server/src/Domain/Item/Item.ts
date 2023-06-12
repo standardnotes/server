@@ -100,8 +100,10 @@ export class Item {
   declare sharedVaultUuid: string | null
 
   @Column({
+    type: 'varchar',
     name: 'last_edited_by_uuid',
     length: 36,
+    nullable: true,
   })
   declare lastEditedByUuid: string | null
 
