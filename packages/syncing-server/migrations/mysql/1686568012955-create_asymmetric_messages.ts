@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner, Table, TableColumn } from 'typeorm'
 
 export class CreateAsymmetricMessages1686568012955 implements MigrationInterface {
-  name = 'CreateAsymmetricMessages1686568012955'
+  name = 'createAsymmetricMessages1686568012955'
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     const table = new Table({
@@ -29,6 +29,12 @@ export class CreateAsymmetricMessages1686568012955 implements MigrationInterface
           name: 'encrypted_message',
           type: 'text',
           isNullable: false,
+        }),
+        new TableColumn({
+          name: 'replaceability_identifier',
+          type: 'varchar',
+          length: '255',
+          isNullable: true,
         }),
         new TableColumn({
           name: 'created_at_timestamp',

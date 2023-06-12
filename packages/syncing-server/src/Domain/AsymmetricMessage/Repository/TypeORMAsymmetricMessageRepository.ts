@@ -25,6 +25,21 @@ export class TypeORMAsymmetricMessageRepository implements AsymmetricMessageRepo
       .getOne()
   }
 
+  findByUserAndReplaceabilityIdentifier(
+    userUuid: string,
+    replaceabilityIdentifier: string,
+  ): Promise<AsymmetricMessage | null> {
+    return this.ormRepository
+      .createQueryBuilder('asymmetric_message')
+      .where('asymmetric_message.user_uuid = :userUuid', {
+        userUuid,
+      })
+      .andWhere('asymmetric_message.replaceability_identifier = :replaceabilityIdentifier', {
+        replaceabilityIdentifier,
+      })
+      .getOne()
+  }
+
   async remove(asymmetricMessage: AsymmetricMessage): Promise<AsymmetricMessage> {
     return this.ormRepository.remove(asymmetricMessage)
   }

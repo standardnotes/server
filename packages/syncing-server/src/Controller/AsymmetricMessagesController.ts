@@ -1,13 +1,5 @@
 import { Request, Response } from 'express'
-import {
-  BaseHttpController,
-  controller,
-  httpPost,
-  results,
-  httpDelete,
-  httpGet,
-  httpPatch,
-} from 'inversify-express-utils'
+import { BaseHttpController, controller, httpPost, results, httpDelete, httpGet } from 'inversify-express-utils'
 import TYPES from '../Bootstrap/Types'
 import { inject } from 'inversify'
 import { AsymmetricMessageServiceInterface } from '../Domain/AsymmetricMessage/Service/AsymmetricMessageServiceInterface'
@@ -49,28 +41,11 @@ export class AsymmetricMessagesController extends BaseHttpController {
       senderUuid: response.locals.user.uuid,
       userUuid: request.body.recipient_uuid,
       encryptedMessage: request.body.encrypted_message,
+      replaceabilityIdentifier: request.body.replaceability_identifier,
     })
 
     if (!result) {
       return this.errorResponse(400, 'Could not create message')
-    }
-
-    return this.json({ message: this.asymmetricMessageProjector.projectFull(result) })
-  }
-
-  @httpPatch('/:messageUuid', TYPES.AuthMiddleware)
-  public async updateAsymmetricMessage(
-    request: Request,
-    response: Response,
-  ): Promise<results.NotFoundResult | results.JsonResult> {
-    const result = await this.asymmetricMessageService.updateMessage({
-      senderUuid: response.locals.user.uuid,
-      messageUuid: request.params.messageUuid,
-      encryptedMessage: request.body.encrypted_message,
-    })
-
-    if (!result) {
-      return this.errorResponse(400, 'Could not update message')
     }
 
     return this.json({ message: this.asymmetricMessageProjector.projectFull(result) })

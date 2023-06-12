@@ -16,4 +16,8 @@ export interface AsymmetricMessageRepositoryInterface {
   save(asymmetricMessage: AsymmetricMessage): Promise<AsymmetricMessage>
   remove(sharedVault: AsymmetricMessage): Promise<AsymmetricMessage>
   findAll(query: AsymmetricMessageFindAllForUserQuery): Promise<AsymmetricMessage[]>
+  findByUserAndReplaceabilityIdentifier(
+    userUuid: string,
+    replaceabilityIdentifier: string,
+  ): Promise<AsymmetricMessage | null>
 }

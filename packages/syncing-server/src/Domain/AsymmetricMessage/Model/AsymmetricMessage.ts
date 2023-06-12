@@ -22,6 +22,11 @@ export class AsymmetricMessage {
   declare encryptedMessage: string
 
   @Column({
+    name: 'replaceability_identifier',
+  })
+  declare replaceabilityIdentifier?: string
+
+  @Column({
     name: 'created_at_timestamp',
     type: 'bigint',
   })

@@ -1,4 +1,3 @@
-import { UpdateAsymmetricMessageDTO } from './UpdateAsymmetricMessageDTO'
 import { TimerInterface } from '@standardnotes/time'
 import { AsymmetricMessage } from '../Model/AsymmetricMessage'
 import { AsymmetricMessageFactoryInterface } from '../Factory/AsymmetricMessageFactoryInterface'
@@ -18,28 +17,28 @@ export class AsymmetricMessageService implements AsymmetricMessageServiceInterfa
   async createMessage(dto: CreateAsymmetricMessageDTO): Promise<AsymmetricMessage | null> {
     const timestamp = this.timer.getTimestampInMicroseconds()
 
+    if (dto.replaceabilityIdentifier) {
+      const existingMessage = await this.asymmetricMessageRepository.findByUserAndReplaceabilityIdentifier(
+        dto.userUuid,
+        dto.replaceabilityIdentifier,
+      )
+
+      if (existingMessage) {
+        await this.asymmetricMessageRepository.remove(existingMessage)
+      }
+    }
+
     const asymmetricMessage = this.asymmetricMessageFactory.create({
       uuid: uuidv4(),
       user_uuid: dto.userUuid,
       sender_uuid: dto.senderUuid,
       encrypted_message: dto.encryptedMessage,
+      replaceability_identifier: dto.replaceabilityIdentifier,
       created_at_timestamp: timestamp,
       updated_at_timestamp: timestamp,
     })
 
     return this.asymmetricMessageRepository.create(asymmetricMessage)
-  }
-
-  async updateMessage(dto: UpdateAsymmetricMessageDTO): Promise<AsymmetricMessage | null> {
-    const asymmetricMessage = await this.asymmetricMessageRepository.findByUuid(dto.messageUuid)
-    if (!asymmetricMessage || asymmetricMessage.senderUuid !== dto.senderUuid) {
-      return null
-    }
-
-    asymmetricMessage.encryptedMessage = dto.encryptedMessage
-    asymmetricMessage.updatedAtTimestamp = this.timer.getTimestampInMicroseconds()
-
-    return this.asymmetricMessageRepository.save(asymmetricMessage)
   }
 
   getMessagesForUser(dto: GetUserAsymmetricMessagesDTO): Promise<AsymmetricMessage[]> {
