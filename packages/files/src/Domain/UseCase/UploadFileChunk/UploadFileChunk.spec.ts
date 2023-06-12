@@ -26,6 +26,24 @@ describe('UploadFileChunk', () => {
     logger.warn = jest.fn()
   })
 
+  it('should not upload a data chunk with 0 bytes', async () => {
+    expect(
+      await createUseCase().execute({
+        chunkId: 2,
+        data: new Uint8Array([]),
+        resourceRemoteIdentifier: '2-3-4',
+        resourceUnencryptedFileSize: 123,
+        userUuid: '1-2-3',
+      }),
+    ).toEqual({
+      success: false,
+      message: 'Empty file chunk',
+    })
+
+    expect(fileUploader.uploadFileChunk).not.toHaveBeenCalled()
+    expect(uploadRepository.storeUploadChunkResult).not.toHaveBeenCalled()
+  })
+
   it('should not upload a data chunk to a non existing file upload session', async () => {
     uploadRepository.retrieveUploadSessionId = jest.fn().mockReturnValue(undefined)
 
