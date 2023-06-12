@@ -18,6 +18,17 @@ export class UploadFileChunk implements UseCaseInterface {
 
   async execute(dto: UploadFileChunkDTO): Promise<UploadFileChunkResponse> {
     try {
+      if (!dto.data.byteLength || dto.data.byteLength === 0) {
+        this.logger.debug(
+          `Skipping upload file chunk ${dto.chunkId} with 0 bytes for resource: ${dto.resourceRemoteIdentifier}`,
+        )
+
+        return {
+          success: false,
+          message: 'Empty file chunk',
+        }
+      }
+
       this.logger.debug(
         `Starting upload file chunk ${dto.chunkId} with ${dto.data.byteLength} bytes for resource: ${dto.resourceRemoteIdentifier}`,
       )
