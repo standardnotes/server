@@ -11,8 +11,6 @@ export class UserProjector implements ProjectorInterface<User> {
       uuid: user.uuid,
       email: user.email,
       protocolVersion: user.version,
-      publicKey: user.publicKey ?? undefined,
-      signingPublicKey: user.signingPublicKey ?? undefined,
     }
   }
 

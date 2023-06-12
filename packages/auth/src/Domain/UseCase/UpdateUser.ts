@@ -17,14 +17,6 @@ export class UpdateUser implements UseCaseInterface {
   ) {}
 
   async execute(dto: UpdateUserDTO): Promise<UpdateUserResponse> {
-    if (dto.user.publicKey) {
-      return {
-        success: false,
-        errorMessage:
-          'The keypair of a user with an existing keypair cannot be updated using this method. Instead, initiate a credentials change.',
-      }
-    }
-
     dto.user.updatedAt = this.timer.getUTCDate()
 
     const updatedUser = await this.userRepository.save(dto.user)
