@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.18.2](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.18.1...@standardnotes/files-server@1.18.2) (2023-06-12)
+
+### Bug Fixes
+
+* **home-server:** accept application/octet-stream requests for files ([#625](https://github.com/standardnotes/files/issues/625)) ([c8974b7](https://github.com/standardnotes/files/commit/c8974b7fa229ff4f1e026e1ebff50d1081cc5f8b))
+
 ## [1.18.1](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.18.0...@standardnotes/files-server@1.18.1) (2023-06-09)
 
 ### Bug Fixes
