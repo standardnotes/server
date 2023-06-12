@@ -39,7 +39,9 @@ export class FSFileUploader implements FileUploaderInterface {
       )
     }
 
-    this.logger.debug(`FS storing file chunk ${dto.chunkId} in memory for ${dto.uploadId}`)
+    this.logger.debug(
+      `FS storing file chunk ${dto.chunkId} in memory for ${dto.uploadId}: ${dto.data}, ${dto.data.byteLength}`,
+    )
 
     fileChunks.set(dto.chunkId, dto.data)
 
@@ -61,11 +63,12 @@ export class FSFileUploader implements FileUploaderInterface {
     const orderedKeys = [...fileChunks.keys()].sort((a, b) => a - b)
     for (const orderedKey of orderedKeys) {
       const chunk = fileChunks.get(orderedKey)
-      if (!chunk) {
+      if (!chunk || chunk.byteLength === 0) {
         throw new Error(`Could not find chunk ${orderedKey} for upload ${uploadId}`)
       }
 
-      this.logger.debug(`FS writing chunk ${orderedKey} for ${uploadId}: ${JSON.stringify(chunk)}`)
+      this.logger.debug(`FS writing chunk ${orderedKey} for ${uploadId}: ${chunk.toString()} ${chunk.byteLength}}`)
+
       await promises.appendFile(`${this.fileUploadPath}/${filePath}`, chunk)
     }
 

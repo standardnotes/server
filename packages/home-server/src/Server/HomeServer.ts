@@ -12,7 +12,7 @@ import { InversifyExpressServer } from 'inversify-express-utils'
 import helmet from 'helmet'
 import * as cors from 'cors'
 import * as http from 'http'
-import { text, json, Request, Response, NextFunction } from 'express'
+import { text, json, Request, Response, NextFunction, raw } from 'express'
 import * as winston from 'winston'
 import { PassThrough } from 'stream'
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -104,12 +104,17 @@ export class HomeServer implements HomeServerInterface {
       }))
       /* eslint-enable */
       app.use(json({ limit: '50mb' }))
+      app.use(raw({ limit: '50mb', type: 'application/octet-stream' }))
       app.use(
         text({
           type: ['text/plain', 'application/x-www-form-urlencoded', 'application/x-www-form-urlencoded; charset=utf-8'],
         }),
       )
-      app.use(cors())
+      app.use(
+        cors({
+          exposedHeaders: ['Content-Range', 'Accept-Ranges'],
+        }),
+      )
       app.use(
         robots({
           UserAgent: '*',
