@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.11.4](https://github.com/standardnotes/server/compare/@standardnotes/home-server@1.11.3...@standardnotes/home-server@1.11.4) (2023-06-13)
+
+### Bug Fixes
+
+* **home-server:** encapsulate starting the server with a result return ([90a4f21](https://github.com/standardnotes/server/commit/90a4f2111f9e050e5fb500261c3e43eacc5622e4))
+
 ## [1.11.3](https://github.com/standardnotes/server/compare/@standardnotes/home-server@1.11.2...@standardnotes/home-server@1.11.3) (2023-06-12)
 
 ### Bug Fixes
