@@ -27,122 +27,136 @@ export class HomeServer implements HomeServerInterface {
   private authService: AuthServiceInterface | undefined
   private logStream: PassThrough = new PassThrough()
 
-  async start(configuration: HomeServerConfiguration): Promise<void> {
-    const controllerContainer = new ControllerContainer()
-    const serviceContainer = new ServiceContainer()
-    const directCallDomainEventPublisher = new DirectCallDomainEventPublisher()
+  async start(configuration: HomeServerConfiguration): Promise<Result<string>> {
+    try {
+      const controllerContainer = new ControllerContainer()
+      const serviceContainer = new ServiceContainer()
+      const directCallDomainEventPublisher = new DirectCallDomainEventPublisher()
 
-    const environmentOverrides = {
-      DB_TYPE: 'sqlite',
-      CACHE_TYPE: 'memory',
-      DB_DATABASE: `${configuration.dataDirectoryPath}/database/home_server.sqlite`,
-      FILE_UPLOAD_PATH: `${configuration.dataDirectoryPath}/uploads`,
-      ...configuration.environment,
-      MODE: 'home-server',
-      NEW_RELIC_ENABLED: 'false',
-      NEW_RELIC_APP_NAME: 'Home Server',
-    }
+      const environmentOverrides = {
+        DB_TYPE: 'sqlite',
+        CACHE_TYPE: 'memory',
+        DB_DATABASE: `${configuration.dataDirectoryPath}/database/home_server.sqlite`,
+        FILE_UPLOAD_PATH: `${configuration.dataDirectoryPath}/uploads`,
+        ...configuration.environment,
+        MODE: 'home-server',
+        NEW_RELIC_ENABLED: 'false',
+        NEW_RELIC_APP_NAME: 'Home Server',
+      }
 
-    const env: Env = new Env(environmentOverrides)
-    env.load()
+      const env: Env = new Env(environmentOverrides)
+      env.load()
 
-    this.configureLoggers(env)
+      this.configureLoggers(env)
 
-    const apiGatewayService = new ApiGatewayService(serviceContainer)
-    const authService = new AuthService(serviceContainer, controllerContainer, directCallDomainEventPublisher)
-    this.authService = authService
-    const syncingService = new SyncingService(serviceContainer, controllerContainer, directCallDomainEventPublisher)
-    const revisionsService = new RevisionsService(serviceContainer, controllerContainer, directCallDomainEventPublisher)
-    const filesService = new FilesService(serviceContainer, directCallDomainEventPublisher)
+      const apiGatewayService = new ApiGatewayService(serviceContainer)
+      const authService = new AuthService(serviceContainer, controllerContainer, directCallDomainEventPublisher)
+      this.authService = authService
+      const syncingService = new SyncingService(serviceContainer, controllerContainer, directCallDomainEventPublisher)
+      const revisionsService = new RevisionsService(
+        serviceContainer,
+        controllerContainer,
+        directCallDomainEventPublisher,
+      )
+      const filesService = new FilesService(serviceContainer, directCallDomainEventPublisher)
 
-    const container = Container.merge(
-      (await apiGatewayService.getContainer({
-        logger: winston.loggers.get('api-gateway'),
-        environmentOverrides,
-      })) as Container,
-      (await authService.getContainer({
-        logger: winston.loggers.get('auth-server'),
-        environmentOverrides,
-      })) as Container,
-      (await syncingService.getContainer({
-        logger: winston.loggers.get('syncing-server'),
-        environmentOverrides,
-      })) as Container,
-      (await revisionsService.getContainer({
-        logger: winston.loggers.get('revisions-server'),
-        environmentOverrides,
-      })) as Container,
-      (await filesService.getContainer({
-        logger: winston.loggers.get('files-server'),
-        environmentOverrides,
-      })) as Container,
-    )
+      const container = Container.merge(
+        (await apiGatewayService.getContainer({
+          logger: winston.loggers.get('api-gateway'),
+          environmentOverrides,
+        })) as Container,
+        (await authService.getContainer({
+          logger: winston.loggers.get('auth-server'),
+          environmentOverrides,
+        })) as Container,
+        (await syncingService.getContainer({
+          logger: winston.loggers.get('syncing-server'),
+          environmentOverrides,
+        })) as Container,
+        (await revisionsService.getContainer({
+          logger: winston.loggers.get('revisions-server'),
+          environmentOverrides,
+        })) as Container,
+        (await filesService.getContainer({
+          logger: winston.loggers.get('files-server'),
+          environmentOverrides,
+        })) as Container,
+      )
 
-    const server = new InversifyExpressServer(container)
+      const server = new InversifyExpressServer(container)
 
-    server.setConfig((app) => {
-      /* eslint-disable */
-      app.use(helmet({
-        contentSecurityPolicy: {
-          directives: {
-            defaultSrc: ["https: 'self'"],
-            baseUri: ["'self'"],
-            childSrc: ["*", "blob:"],
-            connectSrc: ["*"],
-            fontSrc: ["*", "'self'"],
-            formAction: ["'self'"],
-            frameAncestors: ["*", "*.standardnotes.org", "*.standardnotes.com"],
-            frameSrc: ["*", "blob:"],
-            imgSrc: ["'self'", "*", "data:"],
-            manifestSrc: ["'self'"],
-            mediaSrc: ["'self'"],
-            objectSrc: ["'self'"],
-            scriptSrc: ["'self'"],
-            styleSrc: ["'self'"]
+      server.setConfig((app) => {
+        /* eslint-disable */
+        app.use(helmet({
+          contentSecurityPolicy: {
+            directives: {
+              defaultSrc: ["https: 'self'"],
+              baseUri: ["'self'"],
+              childSrc: ["*", "blob:"],
+              connectSrc: ["*"],
+              fontSrc: ["*", "'self'"],
+              formAction: ["'self'"],
+              frameAncestors: ["*", "*.standardnotes.org", "*.standardnotes.com"],
+              frameSrc: ["*", "blob:"],
+              imgSrc: ["'self'", "*", "data:"],
+              manifestSrc: ["'self'"],
+              mediaSrc: ["'self'"],
+              objectSrc: ["'self'"],
+              scriptSrc: ["'self'"],
+              styleSrc: ["'self'"]
+            }
           }
-        }
-      }))
-      /* eslint-enable */
-      app.use(json({ limit: '50mb' }))
-      app.use(raw({ limit: '50mb', type: 'application/octet-stream' }))
-      app.use(
-        text({
-          type: ['text/plain', 'application/x-www-form-urlencoded', 'application/x-www-form-urlencoded; charset=utf-8'],
-        }),
-      )
-      app.use(
-        cors({
-          exposedHeaders: ['Content-Range', 'Accept-Ranges'],
-        }),
-      )
-      app.use(
-        robots({
-          UserAgent: '*',
-          Disallow: '/',
-        }),
-      )
-    })
+        }))
+        /* eslint-enable */
+        app.use(json({ limit: '50mb' }))
+        app.use(raw({ limit: '50mb', type: 'application/octet-stream' }))
+        app.use(
+          text({
+            type: [
+              'text/plain',
+              'application/x-www-form-urlencoded',
+              'application/x-www-form-urlencoded; charset=utf-8',
+            ],
+          }),
+        )
+        app.use(
+          cors({
+            exposedHeaders: ['Content-Range', 'Accept-Ranges'],
+          }),
+        )
+        app.use(
+          robots({
+            UserAgent: '*',
+            Disallow: '/',
+          }),
+        )
+      })
 
-    const logger: winston.Logger = winston.loggers.get('home-server')
+      const logger: winston.Logger = winston.loggers.get('home-server')
 
-    server.setErrorConfig((app) => {
-      app.use((error: Record<string, unknown>, _request: Request, response: Response, _next: NextFunction) => {
-        logger.error(error.stack)
+      server.setErrorConfig((app) => {
+        app.use((error: Record<string, unknown>, _request: Request, response: Response, _next: NextFunction) => {
+          logger.error(error.stack)
 
-        response.status(500).send({
-          error: {
-            message:
-              "Unfortunately, we couldn't handle your request. Please try again or contact our support if the error persists.",
-          },
+          response.status(500).send({
+            error: {
+              message:
+                "Unfortunately, we couldn't handle your request. Please try again or contact our support if the error persists.",
+            },
+          })
         })
       })
-    })
 
-    const port = env.get('PORT', true) ? +env.get('PORT', true) : 3000
+      const port = env.get('PORT', true) ? +env.get('PORT', true) : 3000
 
-    this.serverInstance = server.build().listen(port)
+      this.serverInstance = server.build().listen(port)
 
-    logger.info(`Server started on port ${port}`)
+      logger.info(`Server started on port ${port}`)
+
+      return Result.ok('Server started.')
+    } catch (error) {
+      return Result.fail((error as Error).message)
+    }
   }
 
   async stop(): Promise<void> {
