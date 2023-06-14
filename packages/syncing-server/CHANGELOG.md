@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.44.1](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.44.0...@standardnotes/syncing-server@1.44.1) (2023-06-14)
+
+### Bug Fixes
+
+* **home-server:** env var determining the sqlite database location ([#626](https://github.com/standardnotes/syncing-server-js/issues/626)) ([0cb5e36](https://github.com/standardnotes/syncing-server-js/commit/0cb5e36b20d9b095ea0edbcd877387e6c0069856))
+
 # [1.44.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.43.0...@standardnotes/syncing-server@1.44.0) (2023-06-07)
 
 ### Features

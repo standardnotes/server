@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.119.2](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.119.1...@standardnotes/auth-server@1.119.2) (2023-06-14)
+
+### Bug Fixes
+
+* **home-server:** env var determining the sqlite database location ([#626](https://github.com/standardnotes/server/issues/626)) ([0cb5e36](https://github.com/standardnotes/server/commit/0cb5e36b20d9b095ea0edbcd877387e6c0069856))
+
 ## [1.119.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.119.0...@standardnotes/auth-server@1.119.1) (2023-06-09)
 
 ### Bug Fixes
