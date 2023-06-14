@@ -36,7 +36,7 @@ export class HomeServer implements HomeServerInterface {
       const environmentOverrides = {
         DB_TYPE: 'sqlite',
         CACHE_TYPE: 'memory',
-        DB_DATABASE: `${configuration.dataDirectoryPath}/database/home_server.sqlite`,
+        DB_SQLITE_DATABASE_PATH: `${configuration.dataDirectoryPath}/database/home_server.sqlite`,
         FILE_UPLOAD_PATH: `${configuration.dataDirectoryPath}/uploads`,
         ...configuration.environment,
         MODE: 'home-server',
