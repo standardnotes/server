@@ -79,7 +79,7 @@ export class AppDataSource {
       const sqliteDataSourceOptions: SqliteConnectionOptions = {
         ...commonDataSourceOptions,
         type: 'sqlite',
-        database: this.env.get('DB_DATABASE'),
+        database: this.env.get('DB_SQLITE_DATABASE_PATH'),
       }
 
       this.dataSource = new DataSource(sqliteDataSourceOptions)
