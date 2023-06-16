@@ -25,6 +25,15 @@ export class SharedVaultInviteService implements SharedVaultInviteServiceInterfa
       return null
     }
 
+    const existingInvite = await this.sharedVaultInviteRepository.findByUserUuidAndSharedVaultUuid(
+      dto.recipientUuid,
+      dto.sharedVaultUuid,
+    )
+
+    if (existingInvite) {
+      await this.sharedVaultInviteRepository.remove(existingInvite)
+    }
+
     const timestamp = this.timer.getTimestampInMicroseconds()
 
     const sharedVaultInvite = this.sharedVaultInviteFactory.create({
@@ -162,6 +171,7 @@ export class SharedVaultInviteService implements SharedVaultInviteServiceInterfa
     const sharedVaultInvites = await this.sharedVaultInviteRepository.findAllForSharedVault({
       sharedVaultUuid: dto.sharedVaultUuid,
     })
+
     for (const sharedVaultInvite of sharedVaultInvites) {
       await this.sharedVaultInviteRepository.remove(sharedVaultInvite)
     }

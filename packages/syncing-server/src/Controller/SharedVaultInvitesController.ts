@@ -180,6 +180,23 @@ export class SharedVaultInvitesController extends BaseHttpController {
     return this.json({ success: true })
   }
 
+  @httpDelete('/:sharedVaultUuid/invites', TYPES.AuthMiddleware)
+  public async deleteAllSharedVaultInvites(
+    request: Request,
+    response: Response,
+  ): Promise<results.NotFoundResult | results.JsonResult> {
+    const result = await this.sharedVaultInviteService.deleteAllInvitesForSharedVault({
+      originatorUuid: response.locals.user.uuid,
+      sharedVaultUuid: request.params.sharedVaultUuid,
+    })
+
+    if (!result) {
+      return this.errorResponse(400, 'Could not delete invite')
+    }
+
+    return this.json({ success: true })
+  }
+
   private errorResponse(status: number, message?: string, tag?: string) {
     return this.json(
       {

@@ -5,6 +5,7 @@ export enum ContentType {
   KeySystemItemsKey = 'SN|KeySystemItemsKey',
   KeySystemRootKey = 'SN|KeySystemRootKey',
   TrustedContact = 'SN|TrustedContact',
+  VaultListing = 'SN|VaultListing',
   RootKey = 'SN|RootKey|NoSync',
   ItemsKey = 'SN|ItemsKey',
   EncryptedStorage = 'SN|EncryptedStorage',
