@@ -159,9 +159,20 @@ export class HomeServer implements HomeServerInterface {
     }
   }
 
-  async stop(): Promise<void> {
-    if (this.serverInstance) {
+  async stop(): Promise<Result<string>> {
+    try {
+      if (!this.serverInstance) {
+        return Result.fail('Home server is not running.')
+      }
+
       this.serverInstance.close()
+      this.serverInstance.unref()
+
+      this.serverInstance = undefined
+
+      return Result.ok('Server stopped.')
+    } catch (error) {
+      return Result.fail((error as Error).message)
     }
   }
 
