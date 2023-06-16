@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.11.6](https://github.com/standardnotes/server/compare/@standardnotes/home-server@1.11.5...@standardnotes/home-server@1.11.6) (2023-06-16)
+
+### Bug Fixes
+
+* **home-server:** unref the server instance when stopping the home server ([5ef90cc](https://github.com/standardnotes/server/commit/5ef90cc75b44133bf8065ce16f36d5b347c68122))
+
 ## [1.11.5](https://github.com/standardnotes/server/compare/@standardnotes/home-server@1.11.4...@standardnotes/home-server@1.11.5) (2023-06-14)
 
 ### Bug Fixes
