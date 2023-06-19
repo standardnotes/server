@@ -13,11 +13,10 @@ import {
   SaveToSharedVaultSaveOperation,
   CreateToSharedVaultSaveOperation,
 } from './SharedVaultSaveOperation'
-import { Item } from '../Item'
 import { GetSharedVaultSaveOperation } from './GetSharedVaultSaveOperation'
 
 export class SharedVaultFilter implements ItemSaveRuleInterface {
-  constructor(private sharedvaultUserService: SharedVaultUserServiceInterface) {}
+  constructor(private sharedVaultUserService: SharedVaultUserServiceInterface) {}
 
   async check(dto: ItemSaveValidationDTO): Promise<ItemSaveRuleResult> {
     const operation = GetSharedVaultSaveOperation(dto)
@@ -47,7 +46,7 @@ export class SharedVaultFilter implements ItemSaveRuleInterface {
       return this.handleCreateToSharedVaultOperation(operation)
     }
 
-    throw new Error(`Unsupported sharedvault operation: ${operation}`)
+    throw new Error(`Unsupported sharedVault operation: ${operation}`)
   }
 
   private isAuthorizedToSaveContentType(contentType: ContentType, permissions: SharedVaultUserPermission): boolean {
@@ -58,12 +57,17 @@ export class SharedVaultFilter implements ItemSaveRuleInterface {
     return true
   }
 
-  private buildFailResult(operation: SharedVaultSaveOperation, type: ConflictType, serverItem?: Item) {
+  private buildFailResult(operation: SharedVaultSaveOperation, type: ConflictType) {
+    const includeServerItem = [
+      ConflictType.SharedVaultInvalidState,
+      ConflictType.SharedVaultInsufficientPermissionsError,
+    ].includes(type)
+
     return {
       passed: false,
       conflict: {
         unsavedItem: operation.incomingItem,
-        serverItem,
+        serverItem: includeServerItem ? operation.existingItem : undefined,
         type,
       },
     }
@@ -76,8 +80,8 @@ export class SharedVaultFilter implements ItemSaveRuleInterface {
   }
 
   private async handleAddToSharedVaultOperation(operation: AddToSharedVaultSaveOperation): Promise<ItemSaveRuleResult> {
-    const sharedvaultPermissions = await this.getSharedVaultPermissions(operation.userUuid, operation.sharedVaultUuid)
-    if (!sharedvaultPermissions) {
+    const sharedVaultPermissions = await this.getSharedVaultPermissions(operation.userUuid, operation.sharedVaultUuid)
+    if (!sharedVaultPermissions) {
       return this.buildFailResult(operation, ConflictType.SharedVaultNotMemberError)
     }
 
@@ -85,11 +89,11 @@ export class SharedVaultFilter implements ItemSaveRuleInterface {
       return this.buildFailResult(operation, ConflictType.SharedVaultInvalidState)
     }
 
-    if (!this.isAuthorizedToSaveContentType(operation.incomingItem.content_type, sharedvaultPermissions)) {
+    if (!this.isAuthorizedToSaveContentType(operation.incomingItem.content_type, sharedVaultPermissions)) {
       return this.buildFailResult(operation, ConflictType.SharedVaultInsufficientPermissionsError)
     }
 
-    if (sharedvaultPermissions === 'read') {
+    if (sharedVaultPermissions === 'read') {
       return this.buildFailResult(operation, ConflictType.SharedVaultInsufficientPermissionsError)
     }
 
@@ -103,8 +107,8 @@ export class SharedVaultFilter implements ItemSaveRuleInterface {
   private async handleRemoveFromSharedVaultOperation(
     operation: RemoveFromSharedVaultSaveOperation,
   ): Promise<ItemSaveRuleResult> {
-    const sharedvaultPermissions = await this.getSharedVaultPermissions(operation.userUuid, operation.sharedVaultUuid)
-    if (!sharedvaultPermissions) {
+    const sharedVaultPermissions = await this.getSharedVaultPermissions(operation.userUuid, operation.sharedVaultUuid)
+    if (!sharedVaultPermissions) {
       return this.buildFailResult(operation, ConflictType.SharedVaultNotMemberError)
     }
 
@@ -112,15 +116,15 @@ export class SharedVaultFilter implements ItemSaveRuleInterface {
       return this.buildFailResult(operation, ConflictType.SharedVaultInvalidState)
     }
 
-    if (operation.existingItem.userUuid === operation.userUuid) {
-      return this.buildSuccessValue()
-    }
-
-    if (!this.isAuthorizedToSaveContentType(operation.incomingItem.content_type, sharedvaultPermissions)) {
+    if (operation.existingItem.userUuid !== operation.userUuid) {
       return this.buildFailResult(operation, ConflictType.SharedVaultInsufficientPermissionsError)
     }
 
-    if (sharedvaultPermissions === 'read') {
+    if (!this.isAuthorizedToSaveContentType(operation.incomingItem.content_type, sharedVaultPermissions)) {
+      return this.buildFailResult(operation, ConflictType.SharedVaultInsufficientPermissionsError)
+    }
+
+    if (sharedVaultPermissions === 'read') {
       return this.buildFailResult(operation, ConflictType.SharedVaultInsufficientPermissionsError)
     }
 
@@ -164,17 +168,17 @@ export class SharedVaultFilter implements ItemSaveRuleInterface {
   private async handleSaveToSharedVaultOperation(
     operation: SaveToSharedVaultSaveOperation,
   ): Promise<ItemSaveRuleResult> {
-    const sharedvaultPermissions = await this.getSharedVaultPermissions(operation.userUuid, operation.sharedVaultUuid)
+    const sharedVaultPermissions = await this.getSharedVaultPermissions(operation.userUuid, operation.sharedVaultUuid)
 
-    if (!sharedvaultPermissions) {
+    if (!sharedVaultPermissions) {
       return this.buildFailResult(operation, ConflictType.SharedVaultNotMemberError)
     }
 
-    if (!this.isAuthorizedToSaveContentType(operation.incomingItem.content_type, sharedvaultPermissions)) {
+    if (!this.isAuthorizedToSaveContentType(operation.incomingItem.content_type, sharedVaultPermissions)) {
       return this.buildFailResult(operation, ConflictType.SharedVaultInsufficientPermissionsError)
     }
 
-    if (sharedvaultPermissions === 'read') {
+    if (sharedVaultPermissions === 'read') {
       return this.buildFailResult(operation, ConflictType.SharedVaultInsufficientPermissionsError)
     }
 
@@ -184,17 +188,17 @@ export class SharedVaultFilter implements ItemSaveRuleInterface {
   private async handleCreateToSharedVaultOperation(
     operation: CreateToSharedVaultSaveOperation,
   ): Promise<ItemSaveRuleResult> {
-    const sharedvaultPermissions = await this.getSharedVaultPermissions(operation.userUuid, operation.sharedVaultUuid)
+    const sharedVaultPermissions = await this.getSharedVaultPermissions(operation.userUuid, operation.sharedVaultUuid)
 
-    if (!sharedvaultPermissions) {
+    if (!sharedVaultPermissions) {
       return this.buildFailResult(operation, ConflictType.SharedVaultNotMemberError)
     }
 
-    if (!this.isAuthorizedToSaveContentType(operation.incomingItem.content_type, sharedvaultPermissions)) {
+    if (!this.isAuthorizedToSaveContentType(operation.incomingItem.content_type, sharedVaultPermissions)) {
       return this.buildFailResult(operation, ConflictType.SharedVaultInsufficientPermissionsError)
     }
 
-    if (sharedvaultPermissions === 'read') {
+    if (sharedVaultPermissions === 'read') {
       return this.buildFailResult(operation, ConflictType.SharedVaultInsufficientPermissionsError)
     }
 
@@ -205,13 +209,13 @@ export class SharedVaultFilter implements ItemSaveRuleInterface {
     userUuid: string,
     sharedVaultUuid: string,
   ): Promise<SharedVaultUserPermission | undefined> {
-    const sharedvaultUser = await this.sharedvaultUserService.getUserForSharedVault({
+    const sharedVaultUser = await this.sharedVaultUserService.getUserForSharedVault({
       userUuid,
       sharedVaultUuid: sharedVaultUuid,
     })
 
-    if (sharedvaultUser) {
-      return sharedvaultUser.permissions
+    if (sharedVaultUser) {
+      return sharedVaultUser.permissions
     }
 
     return undefined

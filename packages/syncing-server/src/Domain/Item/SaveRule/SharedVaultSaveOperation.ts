@@ -4,6 +4,7 @@ import { Item } from '../Item'
 type SaveOperationCommon = {
   incomingItem: ItemHash
   userUuid: string
+  existingItem?: Item
 }
 
 export type AddToSharedVaultSaveOperation = SaveOperationCommon & {
