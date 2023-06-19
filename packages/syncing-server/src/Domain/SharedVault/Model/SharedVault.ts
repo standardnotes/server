@@ -13,12 +13,6 @@ export class SharedVault {
   declare userUuid: string
 
   @Column({
-    name: 'specified_items_key_uuid',
-    length: 36,
-  })
-  declare specifiedItemsKeyUuid: string
-
-  @Column({
     name: 'file_upload_bytes_used',
     type: 'bigint',
   })

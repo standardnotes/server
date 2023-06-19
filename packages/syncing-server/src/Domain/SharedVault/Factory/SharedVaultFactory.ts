@@ -10,7 +10,6 @@ export class SharedVaultFactory implements SharedVaultFactoryInterface {
     const newSharedVault = new SharedVault()
     newSharedVault.uuid = dto.sharedVaultHash.uuid
     newSharedVault.userUuid = dto.userUuid
-    newSharedVault.specifiedItemsKeyUuid = dto.sharedVaultHash.specified_items_key_uuid
     newSharedVault.fileUploadBytesUsed = dto.sharedVaultHash.file_upload_bytes_used
     newSharedVault.fileUploadBytesLimit = dto.sharedVaultHash.file_upload_bytes_limit
 

@@ -1,15 +1,7 @@
 import { SharedVaultUser } from '../Domain/SharedVaultUser/Model/SharedVaultUser'
 import { SharedVaultServiceInterface } from '../Domain/SharedVault/Service/SharedVaultServiceInterface'
 import { Request, Response } from 'express'
-import {
-  BaseHttpController,
-  controller,
-  httpPost,
-  results,
-  httpDelete,
-  httpPatch,
-  httpGet,
-} from 'inversify-express-utils'
+import { BaseHttpController, controller, httpPost, results, httpDelete, httpGet } from 'inversify-express-utils'
 import TYPES from '../Bootstrap/Types'
 import { inject } from 'inversify'
 import { ProjectorInterface } from '../Projection/ProjectorInterface'
@@ -45,12 +37,11 @@ export class SharedVaultsController extends BaseHttpController {
 
   @httpPost('/', TYPES.AuthMiddleware)
   public async createSharedVault(
-    request: Request,
+    _request: Request,
     response: Response,
   ): Promise<results.NotFoundResult | results.JsonResult> {
     const result = await this.sharedVaultService.createSharedVault({
       userUuid: response.locals.user.uuid,
-      specifiedItemsKeyUuid: request.body.specified_items_key_uuid,
     })
 
     if (!result) {
@@ -60,26 +51,6 @@ export class SharedVaultsController extends BaseHttpController {
     return this.json({
       sharedVault: this.sharedVaultProjector.projectFull(result.sharedVault),
       sharedVaultUser: this.sharedVaultUserProjector.projectFull(result.sharedVaultUser),
-    })
-  }
-
-  @httpPatch('/:sharedVaultUuid', TYPES.AuthMiddleware)
-  public async updateSharedVault(
-    request: Request,
-    response: Response,
-  ): Promise<results.NotFoundResult | results.JsonResult> {
-    const result = await this.sharedVaultService.updateSharedVault({
-      sharedVaultUuid: request.params.sharedVaultUuid,
-      originatorUuid: response.locals.user.uuid,
-      specifiedItemsKeyUuid: request.body.specified_items_key_uuid,
-    })
-
-    if (!result) {
-      return this.errorResponse(400, 'Could not update shared vault')
-    }
-
-    return this.json({
-      sharedVault: this.sharedVaultProjector.projectFull(result),
     })
   }
 

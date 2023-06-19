@@ -20,12 +20,6 @@ export class CreateSharedVault1684173017359 implements MigrationInterface {
           isNullable: false,
         }),
         new TableColumn({
-          name: 'specified_items_key_uuid',
-          type: 'varchar',
-          length: '36',
-          isNullable: false,
-        }),
-        new TableColumn({
           name: 'file_upload_bytes_used',
           type: 'bigint',
         }),

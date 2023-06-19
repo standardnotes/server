@@ -20,7 +20,6 @@ export class SharedVaultProjector implements ProjectorInterface<SharedVault, Sha
     return {
       uuid: sharedVault.uuid,
       user_uuid: sharedVault.userUuid,
-      specified_items_key_uuid: sharedVault.specifiedItemsKeyUuid,
       file_upload_bytes_used: sharedVault.fileUploadBytesUsed,
       file_upload_bytes_limit: sharedVault.fileUploadBytesLimit,
       created_at_timestamp: sharedVault.createdAtTimestamp,

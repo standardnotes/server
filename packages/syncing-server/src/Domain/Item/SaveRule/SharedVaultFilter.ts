@@ -2,9 +2,7 @@ import { ItemSaveValidationDTO } from '../SaveValidator/ItemSaveValidationDTO'
 import { ItemSaveRuleResult } from './ItemSaveRuleResult'
 import { ItemSaveRuleInterface } from './ItemSaveRuleInterface'
 import { SharedVaultUserServiceInterface } from '../../SharedVaultUser/Service/SharedVaultUserServiceInterface'
-import { ItemHash } from '../ItemHash'
 import { SharedVaultUserPermission } from '../../SharedVaultUser/Model/SharedVaultUserPermission'
-import { SharedVaultServiceInterface } from '../../SharedVault/Service/SharedVaultServiceInterface'
 import { ContentType } from '@standardnotes/common'
 import { ConflictType } from '../../../Tmp/ConflictType'
 import {
@@ -19,10 +17,7 @@ import { Item } from '../Item'
 import { GetSharedVaultSaveOperation } from './GetSharedVaultSaveOperation'
 
 export class SharedVaultFilter implements ItemSaveRuleInterface {
-  constructor(
-    private sharedvaultService: SharedVaultServiceInterface,
-    private sharedvaultUserService: SharedVaultUserServiceInterface,
-  ) {}
+  constructor(private sharedvaultUserService: SharedVaultUserServiceInterface) {}
 
   async check(dto: ItemSaveValidationDTO): Promise<ItemSaveRuleResult> {
     const operation = GetSharedVaultSaveOperation(dto)
@@ -102,11 +97,6 @@ export class SharedVaultFilter implements ItemSaveRuleInterface {
       return this.buildFailResult(operation, ConflictType.UuidConflict)
     }
 
-    const usesValidKey = await this.incomingItemUsesValidItemsKey(operation.incomingItem)
-    if (!usesValidKey) {
-      return this.buildFailResult(operation, ConflictType.SharedVaultInvalidItemsKey, operation.existingItem)
-    }
-
     return this.buildSuccessValue()
   }
 
@@ -132,11 +122,6 @@ export class SharedVaultFilter implements ItemSaveRuleInterface {
 
     if (sharedvaultPermissions === 'read') {
       return this.buildFailResult(operation, ConflictType.SharedVaultInsufficientPermissionsError)
-    }
-
-    const usesValidKey = await this.incomingItemUsesValidItemsKey(operation.incomingItem)
-    if (!usesValidKey) {
-      return this.buildFailResult(operation, ConflictType.SharedVaultInvalidItemsKey, operation.existingItem)
     }
 
     return this.buildSuccessValue()
@@ -173,11 +158,6 @@ export class SharedVaultFilter implements ItemSaveRuleInterface {
       return this.buildFailResult(operation, ConflictType.SharedVaultInsufficientPermissionsError)
     }
 
-    const usesValidKey = await this.incomingItemUsesValidItemsKey(operation.incomingItem)
-    if (!usesValidKey) {
-      return this.buildFailResult(operation, ConflictType.SharedVaultInvalidItemsKey, operation.existingItem)
-    }
-
     return this.buildSuccessValue()
   }
 
@@ -196,13 +176,6 @@ export class SharedVaultFilter implements ItemSaveRuleInterface {
 
     if (sharedvaultPermissions === 'read') {
       return this.buildFailResult(operation, ConflictType.SharedVaultInsufficientPermissionsError)
-    }
-
-    if (!operation.incomingItem.deleted) {
-      const usesValidKey = await this.incomingItemUsesValidItemsKey(operation.incomingItem)
-      if (!usesValidKey) {
-        return this.buildFailResult(operation, ConflictType.SharedVaultInvalidItemsKey, operation.existingItem)
-      }
     }
 
     return this.buildSuccessValue()
@@ -225,29 +198,7 @@ export class SharedVaultFilter implements ItemSaveRuleInterface {
       return this.buildFailResult(operation, ConflictType.SharedVaultInsufficientPermissionsError)
     }
 
-    const usesValidKey = await this.incomingItemUsesValidItemsKey(operation.incomingItem)
-    if (!usesValidKey) {
-      return this.buildFailResult(operation, ConflictType.SharedVaultInvalidItemsKey)
-    }
-
     return this.buildSuccessValue()
-  }
-
-  private async incomingItemUsesValidItemsKey(itemHash: ItemHash): Promise<boolean> {
-    const isItemNotEncryptedByItemsKey = itemHash.content_type === ContentType.KeySystemItemsKey
-    if (isItemNotEncryptedByItemsKey) {
-      return true
-    }
-
-    const sharedvault = await this.sharedvaultService.getSharedVault({
-      sharedVaultUuid: itemHash.shared_vault_uuid as string,
-    })
-
-    if (!sharedvault) {
-      return false
-    }
-
-    return itemHash.items_key_id === sharedvault.specifiedItemsKeyUuid
   }
 
   private async getSharedVaultPermissions(

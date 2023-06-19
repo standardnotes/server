@@ -264,11 +264,7 @@ export class ServerContainerConfigLoader extends CommonContainerConfigLoader {
     container
       .bind<SharedVaultFilter>(TYPES.SharedVaultFilter)
       .toDynamicValue(
-        (context: interfaces.Context) =>
-          new SharedVaultFilter(
-            context.container.get(TYPES.SharedVaultService),
-            context.container.get(TYPES.SharedVaultUserService),
-          ),
+        (context: interfaces.Context) => new SharedVaultFilter(context.container.get(TYPES.SharedVaultUserService)),
       )
     container
       .bind<TimeDifferenceFilter>(TYPES.TimeDifferenceFilter)

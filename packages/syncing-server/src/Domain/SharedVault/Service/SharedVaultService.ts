@@ -4,7 +4,6 @@ import { SharedVaultsRepositoryInterface } from '../Repository/SharedVaultReposi
 import {
   CreateSharedVaultDTO,
   SharedVaultServiceInterface,
-  UpdateSharedVaultDTO,
   CreateSharedVaultResult,
 } from './SharedVaultServiceInterface'
 import { SharedVaultFactoryInterface } from '../Factory/SharedVaultFactoryInterface'
@@ -30,7 +29,6 @@ export class SharedVaultService implements SharedVaultServiceInterface {
       sharedVaultHash: {
         uuid: uuidv4(),
         user_uuid: dto.userUuid,
-        specified_items_key_uuid: dto.specifiedItemsKeyUuid,
         file_upload_bytes_limit: 1_000_000,
         file_upload_bytes_used: 0,
         created_at_timestamp: timestamp,
@@ -67,20 +65,6 @@ export class SharedVaultService implements SharedVaultServiceInterface {
     }
 
     return this.sharedVaultRepository.findAll({ sharedVaultUuids, lastSyncTime: dto.lastSyncTime })
-  }
-
-  async updateSharedVault(dto: UpdateSharedVaultDTO): Promise<SharedVault | null> {
-    const sharedVault = await this.sharedVaultRepository.findByUuid(dto.sharedVaultUuid)
-    if (!sharedVault || sharedVault.userUuid !== dto.originatorUuid) {
-      return null
-    }
-
-    sharedVault.specifiedItemsKeyUuid = dto.specifiedItemsKeyUuid
-    sharedVault.updatedAtTimestamp = this.timer.getTimestampInMicroseconds()
-
-    const savedSharedVault = await this.sharedVaultRepository.save(sharedVault)
-
-    return savedSharedVault
   }
 
   async deleteSharedVault(dto: { sharedVaultUuid: string; originatorUuid: string }): Promise<boolean> {

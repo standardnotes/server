@@ -3,7 +3,6 @@ import { SharedVault } from '../Model/SharedVault'
 
 export type CreateSharedVaultDTO = {
   userUuid: string
-  specifiedItemsKeyUuid: string
 }
 
 export type CreateSharedVaultResult = {
@@ -11,15 +10,8 @@ export type CreateSharedVaultResult = {
   sharedVaultUser: SharedVaultUser
 }
 
-export type UpdateSharedVaultDTO = {
-  originatorUuid: string
-  sharedVaultUuid: string
-  specifiedItemsKeyUuid: string
-}
-
 export interface SharedVaultServiceInterface {
   createSharedVault(dto: CreateSharedVaultDTO): Promise<CreateSharedVaultResult>
-  updateSharedVault(dto: UpdateSharedVaultDTO): Promise<SharedVault | null>
   deleteSharedVault(dto: { sharedVaultUuid: string; originatorUuid: string }): Promise<boolean>
 
   getSharedVault(dto: { sharedVaultUuid: string }): Promise<SharedVault | null>
