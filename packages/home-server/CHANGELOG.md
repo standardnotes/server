@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.11.7](https://github.com/standardnotes/server/compare/@standardnotes/home-server@1.11.6...@standardnotes/home-server@1.11.7) (2023-06-22)
+
+### Bug Fixes
+
+* **home-server:** add default log level to overrides ([c078bc9](https://github.com/standardnotes/server/commit/c078bc958d96e856f6e607406d5d817d422572fb))
+* **home-server:** add log leve information to starting the home server information ([49c2792](https://github.com/standardnotes/server/commit/49c27924eafa50c164854946053fd95e6429df9e))
+
 ## [1.11.6](https://github.com/standardnotes/server/compare/@standardnotes/home-server@1.11.5...@standardnotes/home-server@1.11.6) (2023-06-16)
 
 ### Bug Fixes
