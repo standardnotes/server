@@ -47,7 +47,7 @@ export class HomeServer implements HomeServerInterface {
       const env: Env = new Env(environmentOverrides)
       env.load()
 
-      this.configureLoggers(env)
+      this.configureLoggers(env, configuration)
 
       const apiGatewayService = new ApiGatewayService(serviceContainer)
       const authService = new AuthService(serviceContainer, controllerContainer, directCallDomainEventPublisher)
@@ -170,6 +170,10 @@ export class HomeServer implements HomeServerInterface {
 
       this.serverInstance = undefined
 
+      if (this.logStream) {
+        this.logStream.end()
+      }
+
       return Result.ok('Server stopped.')
     } catch (error) {
       return Result.fail((error as Error).message)
@@ -192,12 +196,12 @@ export class HomeServer implements HomeServerInterface {
     return this.authService.activatePremiumFeatures(username)
   }
 
-  logs(): NodeJS.ReadableStream | undefined {
-    return this.logStream
-  }
-
-  private configureLoggers(env: Env): void {
+  private configureLoggers(env: Env, configuration: HomeServerConfiguration): void {
     this.logStream = new PassThrough()
+
+    if (configuration.logStreamCallback) {
+      this.logStream.on('data', configuration.logStreamCallback)
+    }
 
     const winstonFormatters = [winston.format.splat(), winston.format.json()]
 
