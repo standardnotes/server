@@ -6,5 +6,5 @@ export interface HomeServerInterface {
   activatePremiumFeatures(username: string): Promise<Result<string>>
   stop(): Promise<Result<string>>
   isRunning(): Promise<boolean>
-  logs(): NodeJS.ReadableStream
+  logs(): NodeJS.ReadableStream | undefined
 }

@@ -25,7 +25,7 @@ import { HomeServerConfiguration } from './HomeServerConfiguration'
 export class HomeServer implements HomeServerInterface {
   private serverInstance: http.Server | undefined
   private authService: AuthServiceInterface | undefined
-  private logStream: PassThrough = new PassThrough()
+  private logStream: PassThrough | undefined
 
   async start(configuration: HomeServerConfiguration): Promise<Result<string>> {
     try {
@@ -192,11 +192,13 @@ export class HomeServer implements HomeServerInterface {
     return this.authService.activatePremiumFeatures(username)
   }
 
-  logs(): NodeJS.ReadableStream {
+  logs(): NodeJS.ReadableStream | undefined {
     return this.logStream
   }
 
   private configureLoggers(env: Env): void {
+    this.logStream = new PassThrough()
+
     const winstonFormatters = [winston.format.splat(), winston.format.json()]
 
     const level = env.get('LOG_LEVEL', true) || 'info'
