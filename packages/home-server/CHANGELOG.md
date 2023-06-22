@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.11.9](https://github.com/standardnotes/server/compare/@standardnotes/home-server@1.11.8...@standardnotes/home-server@1.11.9) (2023-06-22)
+
+### Bug Fixes
+
+* **home-server:** listening on log stream ([e38a164](https://github.com/standardnotes/server/commit/e38a16404c1b335ab0ef4d8383f6f644e51934ad))
+* **home-server:** passthrough stream for loggers ([f17a1f8](https://github.com/standardnotes/server/commit/f17a1f875cd087115b06c8224342f6d102042767))
+
 ## [1.11.8](https://github.com/standardnotes/server/compare/@standardnotes/home-server@1.11.7...@standardnotes/home-server@1.11.8) (2023-06-22)
 
 ### Bug Fixes
