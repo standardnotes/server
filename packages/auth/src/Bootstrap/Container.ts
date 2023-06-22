@@ -268,8 +268,32 @@ export class ContainerConfigLoader {
 
     const container = new Container()
 
+    const winstonFormatters = [winston.format.splat(), winston.format.json()]
+    if (env.get('NEW_RELIC_ENABLED', true) === 'true') {
+      await import('newrelic')
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      const newrelicFormatter = require('@newrelic/winston-enricher')
+      const newrelicWinstonFormatter = newrelicFormatter(winston)
+      winstonFormatters.push(newrelicWinstonFormatter())
+    }
+
+    let logger: winston.Logger
+    if (configuration?.logger) {
+      logger = configuration.logger as winston.Logger
+    } else {
+      logger = winston.createLogger({
+        level: env.get('LOG_LEVEL', true) || 'info',
+        format: winston.format.combine(...winstonFormatters),
+        transports: [new winston.transports.Console({ level: env.get('LOG_LEVEL', true) || 'info' })],
+        defaultMeta: { service: 'auth' },
+      })
+    }
+    container.bind<winston.Logger>(TYPES.Auth_Logger).toConstantValue(logger)
+
     const appDataSource = new AppDataSource(env)
     await appDataSource.initialize()
+
+    logger.debug('Database initialized')
 
     const isConfiguredForHomeServer = env.get('MODE', true) === 'home-server'
     const isConfiguredForInMemoryCache = env.get('CACHE_TYPE', true) === 'memory'
@@ -285,27 +309,6 @@ export class ContainerConfigLoader {
       }
 
       container.bind(TYPES.Auth_Redis).toConstantValue(redis)
-    }
-
-    const winstonFormatters = [winston.format.splat(), winston.format.json()]
-    if (env.get('NEW_RELIC_ENABLED', true) === 'true') {
-      await import('newrelic')
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
-      const newrelicFormatter = require('@newrelic/winston-enricher')
-      const newrelicWinstonFormatter = newrelicFormatter(winston)
-      winstonFormatters.push(newrelicWinstonFormatter())
-    }
-
-    if (configuration?.logger) {
-      container.bind<winston.Logger>(TYPES.Auth_Logger).toConstantValue(configuration.logger as winston.Logger)
-    } else {
-      const logger = winston.createLogger({
-        level: env.get('LOG_LEVEL', true) || 'info',
-        format: winston.format.combine(...winstonFormatters),
-        transports: [new winston.transports.Console({ level: env.get('LOG_LEVEL', true) || 'info' })],
-        defaultMeta: { service: 'auth' },
-      })
-      container.bind<winston.Logger>(TYPES.Auth_Logger).toConstantValue(logger)
     }
 
     container.bind<TimerInterface>(TYPES.Auth_Timer).toConstantValue(new Timer())
@@ -1200,6 +1203,8 @@ export class ContainerConfigLoader {
           ),
         )
     }
+
+    logger.debug('Configuration complete')
 
     return container
   }

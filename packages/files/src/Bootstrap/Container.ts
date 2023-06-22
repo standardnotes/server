@@ -70,11 +70,13 @@ export class ContainerConfigLoader {
     const isConfiguredForHomeServer = env.get('MODE', true) === 'home-server'
     const isConfiguredForInMemoryCache = env.get('CACHE_TYPE', true) === 'memory'
 
+    let logger: winston.Logger
     if (configuration?.logger) {
-      container.bind<winston.Logger>(TYPES.Files_Logger).toConstantValue(configuration.logger as winston.Logger)
+      logger = configuration.logger as winston.Logger
     } else {
-      container.bind<winston.Logger>(TYPES.Files_Logger).toConstantValue(this.createLogger({ env }))
+      logger = this.createLogger({ env })
     }
+    container.bind<winston.Logger>(TYPES.Files_Logger).toConstantValue(logger)
 
     container.bind<TimerInterface>(TYPES.Files_Timer).toConstantValue(new Timer())
 
@@ -248,6 +250,8 @@ export class ContainerConfigLoader {
           ),
         )
     }
+
+    logger.debug('Configuration complete')
 
     return container
   }

@@ -67,13 +67,9 @@ export class ContainerConfigLoader {
       defaultScope: 'Singleton',
     })
 
-    const appDataSource = new AppDataSource(env)
-    await appDataSource.initialize()
-
-    container.bind<Env>(TYPES.Revisions_Env).toConstantValue(env)
-
+    let logger: winston.Logger
     if (configuration?.logger) {
-      container.bind<winston.Logger>(TYPES.Revisions_Logger).toConstantValue(configuration.logger as winston.Logger)
+      logger = configuration.logger as winston.Logger
     } else {
       const winstonFormatters = [winston.format.splat(), winston.format.json()]
       if (env.get('NEW_RELIC_ENABLED', true) === 'true') {
@@ -84,15 +80,21 @@ export class ContainerConfigLoader {
         winstonFormatters.push(newrelicWinstonFormatter())
       }
 
-      const logger = winston.createLogger({
+      logger = winston.createLogger({
         level: env.get('LOG_LEVEL', true) || 'info',
         format: winston.format.combine(...winstonFormatters),
         transports: [new winston.transports.Console({ level: env.get('LOG_LEVEL', true) || 'info' })],
         defaultMeta: { service: 'revisions' },
       })
-
-      container.bind<winston.Logger>(TYPES.Revisions_Logger).toConstantValue(logger)
     }
+    container.bind<winston.Logger>(TYPES.Revisions_Logger).toConstantValue(logger)
+
+    const appDataSource = new AppDataSource(env)
+    await appDataSource.initialize()
+
+    logger.debug('Database initialized')
+
+    container.bind<Env>(TYPES.Revisions_Env).toConstantValue(env)
 
     container.bind(TYPES.Revisions_NEW_RELIC_ENABLED).toConstantValue(env.get('NEW_RELIC_ENABLED', true))
     container.bind(TYPES.Revisions_VERSION).toConstantValue(env.get('VERSION', true) ?? 'development')
@@ -349,6 +351,8 @@ export class ContainerConfigLoader {
           ),
         )
     }
+
+    logger.debug('Configuration complete')
 
     return container
   }

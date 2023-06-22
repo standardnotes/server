@@ -38,7 +38,6 @@ export class HomeServer implements HomeServerInterface {
         CACHE_TYPE: 'memory',
         DB_SQLITE_DATABASE_PATH: `${configuration.dataDirectoryPath}/database/home_server.sqlite`,
         FILE_UPLOAD_PATH: `${configuration.dataDirectoryPath}/uploads`,
-        LOG_LEVEL: 'info',
         ...configuration.environment,
         MODE: 'home-server',
         NEW_RELIC_ENABLED: 'false',

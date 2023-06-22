@@ -46,17 +46,18 @@ export class ContainerConfigLoader {
       winstonFormatters.push(newrelicWinstonFormatter())
     }
 
+    let logger: winston.Logger
     if (configuration?.logger) {
-      container.bind<winston.Logger>(TYPES.Logger).toConstantValue(configuration.logger as winston.Logger)
+      logger = configuration.logger as winston.Logger
     } else {
-      const logger = winston.createLogger({
+      logger = winston.createLogger({
         level: env.get('LOG_LEVEL', true) || 'info',
         format: winston.format.combine(...winstonFormatters),
         transports: [new winston.transports.Console({ level: env.get('LOG_LEVEL', true) || 'info' })],
         defaultMeta: { service: 'api-gateway' },
       })
-      container.bind<winston.Logger>(TYPES.Logger).toConstantValue(logger)
     }
+    container.bind<winston.Logger>(TYPES.Logger).toConstantValue(logger)
 
     if (!isConfiguredForInMemoryCache) {
       const redisUrl = env.get('REDIS_URL')
@@ -124,6 +125,8 @@ export class ContainerConfigLoader {
     container
       .bind<EndpointResolverInterface>(TYPES.EndpointResolver)
       .toConstantValue(new EndpointResolver(isConfiguredForHomeServer))
+
+    logger.debug('Configuration complete')
 
     return container
   }
