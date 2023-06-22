@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.11.8](https://github.com/standardnotes/server/compare/@standardnotes/home-server@1.11.7...@standardnotes/home-server@1.11.8) (2023-06-22)
+
+### Bug Fixes
+
+* **home-server:** add debug logs about container initalizations ([0df4715](https://github.com/standardnotes/server/commit/0df471585fd5b4626ec2972f3b9a3e33b2830e65))
+
 ## [1.11.7](https://github.com/standardnotes/server/compare/@standardnotes/home-server@1.11.6...@standardnotes/home-server@1.11.7) (2023-06-22)
 
 ### Bug Fixes

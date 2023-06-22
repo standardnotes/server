@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.44.2](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.44.1...@standardnotes/syncing-server@1.44.2) (2023-06-22)
+
+### Bug Fixes
+
+* **home-server:** add debug logs about container initalizations ([0df4715](https://github.com/standardnotes/syncing-server-js/commit/0df471585fd5b4626ec2972f3b9a3e33b2830e65))
+
 ## [1.44.1](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.44.0...@standardnotes/syncing-server@1.44.1) (2023-06-14)
 
 ### Bug Fixes

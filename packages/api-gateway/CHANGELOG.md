@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.64.2](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.64.1...@standardnotes/api-gateway@1.64.2) (2023-06-22)
+
+### Bug Fixes
+
+* **home-server:** add debug logs about container initalizations ([0df4715](https://github.com/standardnotes/api-gateway/commit/0df471585fd5b4626ec2972f3b9a3e33b2830e65))
+
 ## [1.64.1](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.64.0...@standardnotes/api-gateway@1.64.1) (2023-06-09)
 
 ### Bug Fixes
