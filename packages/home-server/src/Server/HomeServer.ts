@@ -26,6 +26,14 @@ export class HomeServer implements HomeServerInterface {
   private serverInstance: http.Server | undefined
   private authService: AuthServiceInterface | undefined
   private logStream: PassThrough | undefined
+  private readonly loggerNames = [
+    'auth-server',
+    'syncing-server',
+    'revisions-server',
+    'files-server',
+    'api-gateway',
+    'home-server',
+  ]
 
   async start(configuration: HomeServerConfiguration): Promise<Result<string>> {
     try {
@@ -165,14 +173,18 @@ export class HomeServer implements HomeServerInterface {
         return Result.fail('Home server is not running.')
       }
 
-      this.serverInstance.close()
-      this.serverInstance.unref()
-
-      this.serverInstance = undefined
+      for (const loggerName of this.loggerNames) {
+        winston.loggers.close(loggerName)
+      }
 
       if (this.logStream) {
         this.logStream.end()
       }
+
+      this.serverInstance.close()
+      this.serverInstance.unref()
+
+      this.serverInstance = undefined
 
       return Result.ok('Server stopped.')
     } catch (error) {
@@ -207,14 +219,7 @@ export class HomeServer implements HomeServerInterface {
 
     const level = env.get('LOG_LEVEL', true) || 'info'
 
-    for (const loggerName of [
-      'auth-server',
-      'syncing-server',
-      'revisions-server',
-      'files-server',
-      'api-gateway',
-      'home-server',
-    ]) {
+    for (const loggerName of this.loggerNames) {
       winston.loggers.add(loggerName, {
         level,
         format: winston.format.combine(...winstonFormatters),
