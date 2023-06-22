@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.11.11](https://github.com/standardnotes/server/compare/@standardnotes/home-server@1.11.10...@standardnotes/home-server@1.11.11) (2023-06-22)
+
+### Bug Fixes
+
+* **home-server:** destroy winston loggers upon server shutdown ([c7a394c](https://github.com/standardnotes/server/commit/c7a394cd1a696305796362cca25fea93e695a86a))
+
 ## [1.11.10](https://github.com/standardnotes/server/compare/@standardnotes/home-server@1.11.9...@standardnotes/home-server@1.11.10) (2023-06-22)
 
 ### Bug Fixes
