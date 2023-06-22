@@ -151,7 +151,7 @@ export class HomeServer implements HomeServerInterface {
 
       this.serverInstance = server.build().listen(port)
 
-      logger.info(`Server started on port ${port}`)
+      logger.info(`Server started on port ${port}. Log level: ${env.get('LOG_LEVEL', true)}.`)
 
       return Result.ok('Server started.')
     } catch (error) {
