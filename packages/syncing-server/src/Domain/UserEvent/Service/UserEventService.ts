@@ -5,7 +5,7 @@ import { CreateUserEventDTO, UserEventServiceInterface } from './UserEventServic
 import { UserEventFactoryInterface } from '../Factory/UserEventFactoryInterface'
 import { v4 as uuidv4 } from 'uuid'
 import { UserEventType } from '../Model/UserEventType'
-import { UserEventPaylaodV1 } from '../Model/UserEventPayload'
+import { UserEventPayloadV1 } from '../Model/UserEventPayload'
 
 export class UserEventService implements UserEventServiceInterface {
   constructor(
@@ -48,7 +48,7 @@ export class UserEventService implements UserEventServiceInterface {
       eventPayload: {
         sharedVaultUuid: params.sharedVaultUuid,
         eventType: UserEventType.RemovedFromSharedVault,
-        version: UserEventPaylaodV1,
+        version: UserEventPayloadV1,
       },
     })
   }
@@ -64,7 +64,7 @@ export class UserEventService implements UserEventServiceInterface {
         eventType: UserEventType.SharedVaultItemRemoved,
         sharedVaultUuid: params.sharedVaultUuid,
         itemUuid: params.itemUuid,
-        version: UserEventPaylaodV1,
+        version: UserEventPayloadV1,
       },
     })
   }

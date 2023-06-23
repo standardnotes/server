@@ -22,6 +22,13 @@ export class CreateSharedVaultFileValetToken implements UseCaseInterface {
       reason: 'invalid-parameters',
     }
 
+    const sharedVault = await this.sharedVaultService.getSharedVault({
+      sharedVaultUuid: dto.sharedVaultUuid,
+    })
+    if (!sharedVault) {
+      return failValue
+    }
+
     const sharedVaultUser = await this.sharedVaultUserService.getUserForSharedVault({
       userUuid: dto.userUuid,
       sharedVaultUuid: dto.sharedVaultUuid,
@@ -29,14 +36,8 @@ export class CreateSharedVaultFileValetToken implements UseCaseInterface {
     if (!sharedVaultUser) {
       return failValue
     }
-    if (sharedVaultUser.permissions === 'read' && dto.operation !== 'read') {
-      return failValue
-    }
 
-    const sharedVault = await this.sharedVaultService.getSharedVault({
-      sharedVaultUuid: dto.sharedVaultUuid,
-    })
-    if (!sharedVault) {
+    if (sharedVaultUser.permissions === 'read' && dto.operation !== 'read') {
       return failValue
     }
 

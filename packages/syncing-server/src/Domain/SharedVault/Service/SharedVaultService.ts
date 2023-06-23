@@ -73,8 +73,6 @@ export class SharedVaultService implements SharedVaultServiceInterface {
       return false
     }
 
-    await this.sharedVaultRepository.remove(sharedVault)
-
     const vaultUsersResult = await this.sharedVaultUserService.getSharedVaultUsersForSharedVault({
       sharedVaultUuid: dto.sharedVaultUuid,
       originatorUuid: dto.originatorUuid,
@@ -98,6 +96,8 @@ export class SharedVaultService implements SharedVaultServiceInterface {
       sharedVaultUuid: dto.sharedVaultUuid,
       originatorUuid: dto.originatorUuid,
     })
+
+    await this.sharedVaultRepository.remove(sharedVault)
 
     return true
   }

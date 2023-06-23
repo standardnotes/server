@@ -1,6 +1,6 @@
 import { UserEventType } from './UserEventType'
 
-export const UserEventPaylaodV1 = '1.0'
+export const UserEventPayloadV1 = '1.0'
 
 export type UserEventPayload =
   | {
