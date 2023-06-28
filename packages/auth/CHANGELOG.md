@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.119.6](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.119.5...@standardnotes/auth-server@1.119.6) (2023-06-28)
+
+### Bug Fixes
+
+* **auth:** add debug logs for authentication method resolver ([d220ec5](https://github.com/standardnotes/server/commit/d220ec5bf7509f9eb19dcda71c3667aaf388a35b))
+
 ## [1.119.5](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.119.4...@standardnotes/auth-server@1.119.5) (2023-06-28)
 
 ### Bug Fixes
