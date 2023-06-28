@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.119.5](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.119.4...@standardnotes/auth-server@1.119.5) (2023-06-28)
+
+### Bug Fixes
+
+* add debug logs for invalid-auth responses ([d5a8409](https://github.com/standardnotes/server/commit/d5a8409bb5d35b9caf410a36ea0d5cb747129e8d))
+
 ## [1.119.4](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.119.3...@standardnotes/auth-server@1.119.4) (2023-06-28)
 
 **Note:** Version bump only for package @standardnotes/auth-server

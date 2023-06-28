@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.44.4](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.44.3...@standardnotes/syncing-server@1.44.4) (2023-06-28)
+
+### Bug Fixes
+
+* add debug logs for invalid-auth responses ([d5a8409](https://github.com/standardnotes/syncing-server-js/commit/d5a8409bb5d35b9caf410a36ea0d5cb747129e8d))
+
 ## [1.44.3](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.44.2...@standardnotes/syncing-server@1.44.3) (2023-06-28)
 
 **Note:** Version bump only for package @standardnotes/syncing-server

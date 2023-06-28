@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.64.3](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.64.2...@standardnotes/api-gateway@1.64.3) (2023-06-28)
+
+### Bug Fixes
+
+* add debug logs for invalid-auth responses ([d5a8409](https://github.com/standardnotes/api-gateway/commit/d5a8409bb5d35b9caf410a36ea0d5cb747129e8d))
+
 ## [1.64.2](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.64.1...@standardnotes/api-gateway@1.64.2) (2023-06-22)
 
 ### Bug Fixes
