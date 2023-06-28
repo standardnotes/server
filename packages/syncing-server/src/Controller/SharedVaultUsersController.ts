@@ -49,7 +49,7 @@ export class SharedVaultUsersController extends BaseHttpController {
     })
 
     if (!result) {
-      return this.errorResponse(400, 'Could not delete user')
+      return this.errorResponse(400, 'Could not delete shared vault user')
     }
 
     return this.json({ success: true })
