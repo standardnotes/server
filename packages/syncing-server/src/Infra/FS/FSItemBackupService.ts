@@ -22,7 +22,7 @@ export class FSItemBackupService implements ItemBackupServiceInterface {
 
   async dump(item: Item): Promise<string> {
     const contents = JSON.stringify({
-      item: await this.itemProjector.projectCustom('dump', item),
+      item: this.itemProjector.projectCustom('dump', item),
     })
 
     const path = `${this.fileUploadPath}/dumps/${uuid.v4()}`

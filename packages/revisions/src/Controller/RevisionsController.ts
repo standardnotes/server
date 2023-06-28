@@ -26,6 +26,8 @@ export class RevisionsController {
         content: string | null
         contentType: string
         itemsKeyId: string | null
+        keySystemIdentifier: string | null
+        sharedVaultUuid: string | null
         encItemKey: string | null
         authHash: string | null
         createAt: string

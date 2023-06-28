@@ -29,7 +29,7 @@ export class S3ItemBackupService implements ItemBackupServiceInterface {
         Bucket: this.s3BackupBucketName,
         Key: s3Key,
         Body: JSON.stringify({
-          item: await this.itemProjector.projectCustom('dump', item),
+          item: this.itemProjector.projectCustom('dump', item),
         }),
       }),
     )

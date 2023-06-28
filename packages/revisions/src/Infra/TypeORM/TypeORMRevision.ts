@@ -22,6 +22,22 @@ export class TypeORMRevision {
   declare userUuid: string | null
 
   @Column({
+    type: 'varchar',
+    name: 'key_system_identifier',
+    length: 255,
+    nullable: true,
+  })
+  declare keySystemIdentifier: string | null
+
+  @Column({
+    type: 'varchar',
+    name: 'shared_vault_uuid',
+    length: 255,
+    nullable: true,
+  })
+  declare sharedVaultUuid: string | null
+
+  @Column({
     type: 'text',
     nullable: true,
   })
