@@ -42,6 +42,8 @@ export class RequiredCrossServiceTokenMiddleware extends AuthMiddleware {
     _next: NextFunction,
   ): boolean {
     if (!authHeaderValue) {
+      this.logger.debug('Missing auth header')
+
       response.status(401).send({
         error: {
           tag: 'invalid-auth',

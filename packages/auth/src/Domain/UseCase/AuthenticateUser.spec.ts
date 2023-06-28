@@ -7,6 +7,7 @@ import { AuthenticateUser } from './AuthenticateUser'
 import { RevokedSession } from '../Session/RevokedSession'
 import { AuthenticationMethodResolverInterface } from '../Auth/AuthenticationMethodResolverInterface'
 import { TimerInterface } from '@standardnotes/time'
+import { Logger } from 'winston'
 
 describe('AuthenticateUser', () => {
   let user: User
@@ -14,11 +15,15 @@ describe('AuthenticateUser', () => {
   let revokedSession: RevokedSession
   let authenticationMethodResolver: AuthenticationMethodResolverInterface
   let timer: TimerInterface
+  let logger: Logger
   const accessTokenAge = 3600
 
-  const createUseCase = () => new AuthenticateUser(authenticationMethodResolver, timer, accessTokenAge)
+  const createUseCase = () => new AuthenticateUser(authenticationMethodResolver, timer, accessTokenAge, logger)
 
   beforeEach(() => {
+    logger = {} as jest.Mocked<Logger>
+    logger.debug = jest.fn()
+
     user = {} as jest.Mocked<User>
     user.supportsSessions = jest.fn().mockReturnValue(false)
 

@@ -17,7 +17,7 @@ export abstract class AuthMiddleware extends BaseMiddleware {
     private crossServiceTokenCacheTTL: number,
     private crossServiceTokenCache: CrossServiceTokenCacheInterface,
     private timer: TimerInterface,
-    private logger: Logger,
+    protected logger: Logger,
   ) {
     super()
   }

@@ -13,6 +13,8 @@ export class InversifyExpressAuthMiddleware extends BaseMiddleware {
   async handler(request: Request, response: Response, next: NextFunction): Promise<void> {
     try {
       if (!request.header('X-Auth-Token')) {
+        this.logger.debug('Missing X-Auth-Token header')
+
         return this.sendInvalidAuthResponse(response)
       }
 

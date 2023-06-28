@@ -9,6 +9,7 @@ import { Session } from '../Session/Session'
 import { AuthenticateUserDTO } from './AuthenticateUserDTO'
 import { AuthenticateUserResponse } from './AuthenticateUserResponse'
 import { UseCaseInterface } from './UseCaseInterface'
+import { Logger } from 'winston'
 
 @injectable()
 export class AuthenticateUser implements UseCaseInterface {
@@ -17,11 +18,14 @@ export class AuthenticateUser implements UseCaseInterface {
     private authenticationMethodResolver: AuthenticationMethodResolverInterface,
     @inject(TYPES.Auth_Timer) private timer: TimerInterface,
     @inject(TYPES.Auth_ACCESS_TOKEN_AGE) private accessTokenAge: number,
+    @inject(TYPES.Auth_Logger) private logger: Logger,
   ) {}
 
   async execute(dto: AuthenticateUserDTO): Promise<AuthenticateUserResponse> {
     const authenticationMethod = await this.authenticationMethodResolver.resolve(dto.token)
     if (!authenticationMethod) {
+      this.logger.debug('No authentication method found for token.')
+
       return {
         success: false,
         failureType: 'INVALID_AUTH',
@@ -37,6 +41,8 @@ export class AuthenticateUser implements UseCaseInterface {
 
     const user = authenticationMethod.user
     if (!user) {
+      this.logger.debug('No user found for authentication method.')
+
       return {
         success: false,
         failureType: 'INVALID_AUTH',
@@ -44,6 +50,8 @@ export class AuthenticateUser implements UseCaseInterface {
     }
 
     if (authenticationMethod.type == 'jwt' && user.supportsSessions()) {
+      this.logger.debug('User supports sessions but is trying to authenticate with a JWT.')
+
       return {
         success: false,
         failureType: 'INVALID_AUTH',
@@ -56,6 +64,8 @@ export class AuthenticateUser implements UseCaseInterface {
         const encryptedPasswordDigest = crypto.createHash('sha256').update(user.encryptedPassword).digest('hex')
 
         if (!pwHash || !crypto.timingSafeEqual(Buffer.from(pwHash), Buffer.from(encryptedPasswordDigest))) {
+          this.logger.debug('Password hash does not match.')
+
           return {
             success: false,
             failureType: 'INVALID_AUTH',
@@ -66,6 +76,8 @@ export class AuthenticateUser implements UseCaseInterface {
       case 'session_token': {
         const session = authenticationMethod.session
         if (!session) {
+          this.logger.debug('No session found for authentication method.')
+
           return {
             success: false,
             failureType: 'INVALID_AUTH',
@@ -73,6 +85,8 @@ export class AuthenticateUser implements UseCaseInterface {
         }
 
         if (session.refreshExpiration < this.timer.getUTCDate()) {
+          this.logger.debug('Session refresh token has expired.')
+
           return {
             success: false,
             failureType: 'INVALID_AUTH',

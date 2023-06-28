@@ -16,6 +16,8 @@ export class AuthenticateRequest implements UseCaseInterface {
 
   async execute(dto: AuthenticateRequestDTO): Promise<AuthenticateRequestResponse> {
     if (!dto.authorizationHeader) {
+      this.logger.debug('Authorization header not provided.')
+
       return {
         success: false,
         responseCode: 401,
