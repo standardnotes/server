@@ -9,6 +9,7 @@ import { User } from '../User/User'
 import { UserRepositoryInterface } from '../User/UserRepositoryInterface'
 
 import { AuthenticationMethodResolver } from './AuthenticationMethodResolver'
+import { Logger } from 'winston'
 
 describe('AuthenticationMethodResolver', () => {
   let userRepository: UserRepositoryInterface
@@ -18,11 +19,15 @@ describe('AuthenticationMethodResolver', () => {
   let user: User
   let session: Session
   let revokedSession: RevokedSession
+  let logger: Logger
 
   const createResolver = () =>
-    new AuthenticationMethodResolver(userRepository, sessionService, sessionTokenDecoder, fallbackTokenDecoder)
+    new AuthenticationMethodResolver(userRepository, sessionService, sessionTokenDecoder, fallbackTokenDecoder, logger)
 
   beforeEach(() => {
+    logger = {} as jest.Mocked<Logger>
+    logger.debug = jest.fn()
+
     user = {} as jest.Mocked<User>
 
     session = {} as jest.Mocked<Session>
