@@ -2,7 +2,7 @@ import { inject, injectable } from 'inversify'
 import { SubscriptionName } from '@standardnotes/common'
 import { TimerInterface } from '@standardnotes/time'
 import { TokenEncoderInterface, ValetTokenData } from '@standardnotes/security'
-import { CreateValetTokenPayload, CreateValetTokenResponseData } from '@standardnotes/responses'
+import { CreateValetTokenResponseData } from '@standardnotes/responses'
 import { SettingName } from '@standardnotes/settings'
 
 import TYPES from '../../../Bootstrap/Types'
@@ -12,6 +12,7 @@ import { SubscriptionSettingServiceInterface } from '../../Setting/SubscriptionS
 import { CreateValetTokenDTO } from './CreateValetTokenDTO'
 import { SubscriptionSettingsAssociationServiceInterface } from '../../Setting/SubscriptionSettingsAssociationServiceInterface'
 import { UserSubscriptionServiceInterface } from '../../Subscription/UserSubscriptionServiceInterface'
+import { CreateValetTokenPayload } from '../../ValetToken/CreateValetTokenPayload'
 
 @injectable()
 export class CreateValetToken implements UseCaseInterface {

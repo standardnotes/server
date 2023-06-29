@@ -23,7 +23,7 @@ export class SharedSubscriptionInvitationCanceledEventHandler implements DomainE
     }
 
     const response = await this.markFilesToBeRemoved.execute({
-      userUuid: event.payload.inviteeIdentifier,
+      ownerUuid: event.payload.inviteeIdentifier,
     })
 
     if (!response.success) {

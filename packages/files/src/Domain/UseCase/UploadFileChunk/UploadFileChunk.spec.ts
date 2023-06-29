@@ -33,7 +33,7 @@ describe('UploadFileChunk', () => {
         data: new Uint8Array([]),
         resourceRemoteIdentifier: '2-3-4',
         resourceUnencryptedFileSize: 123,
-        userUuid: '1-2-3',
+        ownerUuid: '1-2-3',
       }),
     ).toEqual({
       success: false,
@@ -52,7 +52,7 @@ describe('UploadFileChunk', () => {
       data: new Uint8Array([123]),
       resourceRemoteIdentifier: '2-3-4',
       resourceUnencryptedFileSize: 123,
-      userUuid: '1-2-3',
+      ownerUuid: '1-2-3',
     })
 
     expect(fileUploader.uploadFileChunk).not.toHaveBeenCalled()
@@ -70,7 +70,7 @@ describe('UploadFileChunk', () => {
         data: new Uint8Array([123]),
         resourceRemoteIdentifier: '2-3-4',
         resourceUnencryptedFileSize: 123,
-        userUuid: '1-2-3',
+        ownerUuid: '1-2-3',
       }),
     ).toEqual({
       success: false,
@@ -87,7 +87,7 @@ describe('UploadFileChunk', () => {
       data: new Uint8Array([123]),
       resourceRemoteIdentifier: '2-3-4',
       resourceUnencryptedFileSize: 123,
-      userUuid: '1-2-3',
+      ownerUuid: '1-2-3',
     })
 
     expect(fileUploader.uploadFileChunk).toHaveBeenCalledWith({

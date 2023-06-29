@@ -21,7 +21,7 @@ describe('MarkFilesToBeRemoved', () => {
   })
 
   it('should mark files for being removed', async () => {
-    expect(await createUseCase().execute({ userUuid: '1-2-3' })).toEqual({ success: true })
+    expect(await createUseCase().execute({ ownerUuid: '1-2-3' })).toEqual({ success: true })
 
     expect(fileRemover.markFilesToBeRemoved).toHaveBeenCalledWith('1-2-3')
   })
@@ -31,7 +31,7 @@ describe('MarkFilesToBeRemoved', () => {
       throw new Error('Oops')
     })
 
-    expect(await createUseCase().execute({ userUuid: '1-2-3' })).toEqual({
+    expect(await createUseCase().execute({ ownerUuid: '1-2-3' })).toEqual({
       success: false,
       message: 'Could not mark resources for removal',
     })

@@ -44,7 +44,7 @@ describe('AccountDeletionRequestedEventHandler', () => {
   it('should mark files to be remove for user', async () => {
     await createHandler().handle(event)
 
-    expect(markFilesToBeRemoved.execute).toHaveBeenCalledWith({ userUuid: '1-2-3' })
+    expect(markFilesToBeRemoved.execute).toHaveBeenCalledWith({ ownerUuid: '1-2-3' })
 
     expect(domainEventPublisher.publish).toHaveBeenCalled()
   })
@@ -66,7 +66,7 @@ describe('AccountDeletionRequestedEventHandler', () => {
 
     await createHandler().handle(event)
 
-    expect(markFilesToBeRemoved.execute).toHaveBeenCalledWith({ userUuid: '1-2-3' })
+    expect(markFilesToBeRemoved.execute).toHaveBeenCalledWith({ ownerUuid: '1-2-3' })
 
     expect(domainEventPublisher.publish).not.toHaveBeenCalled()
   })

@@ -60,15 +60,6 @@ export class HomeServerUsersController extends BaseHttpController {
       user: response.locals.user,
       updatedWithUserAgent: <string>request.headers['user-agent'],
       apiVersion: request.body.api,
-      pwFunc: request.body.pw_func,
-      pwAlg: request.body.pw_alg,
-      pwCost: request.body.pw_cost,
-      pwKeySize: request.body.pw_key_size,
-      pwNonce: request.body.pw_nonce,
-      pwSalt: request.body.pw_salt,
-      kpOrigination: request.body.origination,
-      kpCreated: request.body.created,
-      version: request.body.version,
     })
 
     if (updateResult.success) {

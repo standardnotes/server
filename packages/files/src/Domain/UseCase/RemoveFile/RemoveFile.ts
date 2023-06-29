@@ -5,12 +5,11 @@ import { Logger } from 'winston'
 import TYPES from '../../../Bootstrap/Types'
 import { DomainEventFactoryInterface } from '../../Event/DomainEventFactoryInterface'
 import { FileRemoverInterface } from '../../Services/FileRemoverInterface'
-import { UseCaseInterface } from '../UseCaseInterface'
 import { RemoveFileDTO } from './RemoveFileDTO'
-import { RemoveFileResponse } from './RemoveFileResponse'
+import { Result, UseCaseInterface } from '@standardnotes/domain-core'
 
 @injectable()
-export class RemoveFile implements UseCaseInterface {
+export class RemoveFile implements UseCaseInterface<boolean> {
   constructor(
     @inject(TYPES.Files_FileRemover) private fileRemover: FileRemoverInterface,
     @inject(TYPES.Files_DomainEventPublisher) private domainEventPublisher: DomainEventPublisherInterface,
@@ -18,34 +17,46 @@ export class RemoveFile implements UseCaseInterface {
     @inject(TYPES.Files_Logger) private logger: Logger,
   ) {}
 
-  async execute(dto: RemoveFileDTO): Promise<RemoveFileResponse> {
-    try {
-      this.logger.debug(`Removing file: ${dto.resourceRemoteIdentifier}`)
+  async execute(dto: RemoveFileDTO): Promise<Result<boolean>> {
+    const resourceUuid = dto.userInput?.resourceRemoteIdentifier ?? dto.vaultInput?.resourceRemoteIdentifier
 
-      const filePath = `${dto.userUuid}/${dto.resourceRemoteIdentifier}`
+    const ownerUuid = dto.userInput?.userUuid ?? dto.vaultInput?.sharedVaultUuid
+
+    try {
+      this.logger.debug(`Removing file: ${resourceUuid}`)
+
+      const filePath = `${ownerUuid}/${resourceUuid}`
 
       const removedFileSize = await this.fileRemover.remove(filePath)
 
-      await this.domainEventPublisher.publish(
-        this.domainEventFactory.createFileRemovedEvent({
-          userUuid: dto.userUuid,
-          filePath: `${dto.userUuid}/${dto.resourceRemoteIdentifier}`,
-          fileName: dto.resourceRemoteIdentifier,
-          fileByteSize: removedFileSize,
-          regularSubscriptionUuid: dto.regularSubscriptionUuid,
-        }),
-      )
-
-      return {
-        success: true,
+      if (dto.userInput !== undefined) {
+        await this.domainEventPublisher.publish(
+          this.domainEventFactory.createFileRemovedEvent({
+            userUuid: dto.userInput.userUuid,
+            filePath: `${dto.userInput.userUuid}/${dto.userInput.resourceRemoteIdentifier}`,
+            fileName: dto.userInput.resourceRemoteIdentifier,
+            fileByteSize: removedFileSize,
+            regularSubscriptionUuid: dto.userInput.regularSubscriptionUuid,
+          }),
+        )
+      } else if (dto.vaultInput !== undefined) {
+        await this.domainEventPublisher.publish(
+          this.domainEventFactory.createSharedVaultFileRemovedEvent({
+            sharedVaultUuid: dto.vaultInput.sharedVaultUuid,
+            filePath: `${dto.vaultInput.sharedVaultUuid}/${dto.vaultInput.resourceRemoteIdentifier}`,
+            fileName: dto.vaultInput.resourceRemoteIdentifier,
+            fileByteSize: removedFileSize,
+          }),
+        )
+      } else {
+        return Result.fail('Could not remove file')
       }
+
+      return Result.ok()
     } catch (error) {
-      this.logger.error(`Could not remove resource: ${dto.resourceRemoteIdentifier} - ${(error as Error).message}`)
+      this.logger.error(`Could not remove resource: ${resourceUuid} - ${(error as Error).message}`)
 
-      return {
-        success: false,
-        message: 'Could not remove resource',
-      }
+      return Result.fail('Could not remove resource')
     }
   }
 }

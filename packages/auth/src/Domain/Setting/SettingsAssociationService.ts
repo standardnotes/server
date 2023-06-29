@@ -66,7 +66,7 @@ export class SettingsAssociationService implements SettingsAssociationServiceInt
     ],
   ])
 
-  private readonly vaultAccountDefaultSettingsOverwrites = new Map<string, SettingDescription>([
+  private readonly privateUsernameAccountDefaultSettingsOverwrites = new Map<string, SettingDescription>([
     [
       SettingName.NAMES.LogSessionUserAgent,
       {
@@ -114,16 +114,18 @@ export class SettingsAssociationService implements SettingsAssociationServiceInt
     return this.defaultSettings
   }
 
-  getDefaultSettingsAndValuesForNewVaultAccount(): Map<string, SettingDescription> {
-    const defaultVaultSettings = new Map(this.defaultSettings)
+  getDefaultSettingsAndValuesForNewPrivateUsernameAccount(): Map<string, SettingDescription> {
+    const defaultPrivateUsernameSettings = new Map(this.defaultSettings)
 
-    for (const vaultAccountDefaultSettingOverwriteKey of this.vaultAccountDefaultSettingsOverwrites.keys()) {
-      defaultVaultSettings.set(
-        vaultAccountDefaultSettingOverwriteKey,
-        this.vaultAccountDefaultSettingsOverwrites.get(vaultAccountDefaultSettingOverwriteKey) as SettingDescription,
+    for (const privateUsernameAccountDefaultSettingOverwriteKey of this.privateUsernameAccountDefaultSettingsOverwrites.keys()) {
+      defaultPrivateUsernameSettings.set(
+        privateUsernameAccountDefaultSettingOverwriteKey,
+        this.privateUsernameAccountDefaultSettingsOverwrites.get(
+          privateUsernameAccountDefaultSettingOverwriteKey,
+        ) as SettingDescription,
       )
     }
 
-    return defaultVaultSettings
+    return defaultPrivateUsernameSettings
   }
 }

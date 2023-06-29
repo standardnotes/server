@@ -15,14 +15,14 @@ export class GetFileMetadata implements UseCaseInterface {
 
   async execute(dto: GetFileMetadataDTO): Promise<GetFileMetadataResponse> {
     try {
-      const size = await this.fileDownloader.getFileSize(`${dto.userUuid}/${dto.resourceRemoteIdentifier}`)
+      const size = await this.fileDownloader.getFileSize(`${dto.ownerUuid}/${dto.resourceRemoteIdentifier}`)
 
       return {
         success: true,
         size,
       }
     } catch (error) {
-      this.logger.error(`Could not get file metadata for resource: ${dto.userUuid}/${dto.resourceRemoteIdentifier}`)
+      this.logger.error(`Could not get file metadata for resource: ${dto.ownerUuid}/${dto.resourceRemoteIdentifier}`)
       return {
         success: false,
         message: 'Could not get file metadata.',

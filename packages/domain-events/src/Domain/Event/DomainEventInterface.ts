@@ -7,7 +7,7 @@ export interface DomainEventInterface {
   meta: {
     correlation: {
       userIdentifier: string
-      userIdentifierType: 'uuid' | 'email'
+      userIdentifierType: 'uuid' | 'email' | 'shared-vault-uuid'
     }
     origin: DomainEventService
     target?: DomainEventService

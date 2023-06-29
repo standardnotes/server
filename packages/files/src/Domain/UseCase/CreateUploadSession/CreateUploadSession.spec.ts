@@ -33,7 +33,7 @@ describe('CreateUploadSession', () => {
     expect(
       await createUseCase().execute({
         resourceRemoteIdentifier: '2-3-4',
-        userUuid: '1-2-3',
+        ownerUuid: '1-2-3',
       }),
     ).toEqual({
       success: false,
@@ -44,7 +44,7 @@ describe('CreateUploadSession', () => {
   it('should create an upload session', async () => {
     await createUseCase().execute({
       resourceRemoteIdentifier: '2-3-4',
-      userUuid: '1-2-3',
+      ownerUuid: '1-2-3',
     })
 
     expect(fileUploader.createUploadSession).toHaveBeenCalledWith('1-2-3/2-3-4')

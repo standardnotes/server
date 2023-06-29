@@ -28,8 +28,9 @@ export class SettingService implements SettingServiceInterface {
 
   async applyDefaultSettingsUponRegistration(user: User): Promise<void> {
     let defaultSettingsWithValues = this.settingsAssociationService.getDefaultSettingsAndValuesForNewUser()
-    if (user.isPotentiallyAVaultAccount()) {
-      defaultSettingsWithValues = this.settingsAssociationService.getDefaultSettingsAndValuesForNewVaultAccount()
+    if (user.isPotentiallyAPrivateUsernameAccount()) {
+      defaultSettingsWithValues =
+        this.settingsAssociationService.getDefaultSettingsAndValuesForNewPrivateUsernameAccount()
     }
 
     for (const settingName of defaultSettingsWithValues.keys()) {

@@ -1,6 +1,10 @@
 import 'reflect-metadata'
 
-import { DomainEventPublisherInterface, FileRemovedEvent } from '@standardnotes/domain-events'
+import {
+  DomainEventPublisherInterface,
+  FileRemovedEvent,
+  SharedVaultFileRemovedEvent,
+} from '@standardnotes/domain-events'
 import { Logger } from 'winston'
 import { DomainEventFactoryInterface } from '../../Event/DomainEventFactoryInterface'
 
@@ -24,6 +28,9 @@ describe('RemoveFile', () => {
 
     domainEventFactory = {} as jest.Mocked<DomainEventFactoryInterface>
     domainEventFactory.createFileRemovedEvent = jest.fn().mockReturnValue({} as jest.Mocked<FileRemovedEvent>)
+    domainEventFactory.createSharedVaultFileRemovedEvent = jest
+      .fn()
+      .mockReturnValue({} as jest.Mocked<SharedVaultFileRemovedEvent>)
 
     logger = {} as jest.Mocked<Logger>
     logger.debug = jest.fn()
@@ -36,25 +43,44 @@ describe('RemoveFile', () => {
       throw new Error('oops')
     })
 
-    expect(
-      await createUseCase().execute({
+    const result = await createUseCase().execute({
+      userInput: {
         resourceRemoteIdentifier: '2-3-4',
         userUuid: '1-2-3',
         regularSubscriptionUuid: '3-4-5',
-      }),
-    ).toEqual({
-      success: false,
-      message: 'Could not remove resource',
+      },
     })
+    expect(result.isFailed()).toEqual(true)
 
     expect(domainEventPublisher.publish).not.toHaveBeenCalled()
   })
 
-  it('should remove a file', async () => {
+  it('should indicate of an error of no proper input', async () => {
+    const result = await createUseCase().execute({})
+    expect(result.isFailed()).toEqual(true)
+
+    expect(domainEventPublisher.publish).not.toHaveBeenCalled()
+  })
+
+  it('should remove a file for user', async () => {
     await createUseCase().execute({
-      resourceRemoteIdentifier: '2-3-4',
-      userUuid: '1-2-3',
-      regularSubscriptionUuid: '3-4-5',
+      userInput: {
+        resourceRemoteIdentifier: '2-3-4',
+        userUuid: '1-2-3',
+        regularSubscriptionUuid: '3-4-5',
+      },
+    })
+
+    expect(fileRemover.remove).toHaveBeenCalledWith('1-2-3/2-3-4')
+    expect(domainEventPublisher.publish).toHaveBeenCalled()
+  })
+
+  it('should remove a file for shared vault', async () => {
+    await createUseCase().execute({
+      vaultInput: {
+        resourceRemoteIdentifier: '2-3-4',
+        sharedVaultUuid: '1-2-3',
+      },
     })
 
     expect(fileRemover.remove).toHaveBeenCalledWith('1-2-3/2-3-4')

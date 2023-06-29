@@ -37,7 +37,7 @@ describe('SettingService', () => {
     user = {
       uuid: '4-5-6',
     } as jest.Mocked<User>
-    user.isPotentiallyAVaultAccount = jest.fn().mockReturnValue(false)
+    user.isPotentiallyAPrivateUsernameAccount = jest.fn().mockReturnValue(false)
 
     setting = {
       name: SettingName.NAMES.DropboxBackupToken,
@@ -66,7 +66,7 @@ describe('SettingService', () => {
       ]),
     )
 
-    settingsAssociationService.getDefaultSettingsAndValuesForNewVaultAccount = jest.fn().mockReturnValue(
+    settingsAssociationService.getDefaultSettingsAndValuesForNewPrivateUsernameAccount = jest.fn().mockReturnValue(
       new Map([
         [
           SettingName.NAMES.LogSessionUserAgent,
@@ -98,7 +98,7 @@ describe('SettingService', () => {
   })
 
   it('should create default settings for a newly registered vault account', async () => {
-    user.isPotentiallyAVaultAccount = jest.fn().mockReturnValue(true)
+    user.isPotentiallyAPrivateUsernameAccount = jest.fn().mockReturnValue(true)
 
     await createService().applyDefaultSettingsUponRegistration(user)
 

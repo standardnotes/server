@@ -99,9 +99,7 @@ describe('InversifyExpressUsersController', () => {
 
     expect(updateUser.execute).toHaveBeenCalledWith({
       apiVersion: '20190520',
-      kpOrigination: 'test',
       updatedWithUserAgent: 'Google Chrome',
-      version: '002',
       user: {
         uuid: '123',
         email: 'test@test.te',
@@ -143,9 +141,7 @@ describe('InversifyExpressUsersController', () => {
 
     expect(updateUser.execute).toHaveBeenCalledWith({
       apiVersion: '20190520',
-      kpOrigination: 'test',
       updatedWithUserAgent: 'Google Chrome',
-      version: '002',
       user: {
         uuid: '123',
         email: 'test@test.te',

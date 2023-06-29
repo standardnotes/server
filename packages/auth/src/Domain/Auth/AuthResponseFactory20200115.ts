@@ -4,13 +4,13 @@ import {
   TokenEncoderInterface,
 } from '@standardnotes/security'
 import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
-import { ProtocolVersion } from '@standardnotes/common'
 import { SessionBody } from '@standardnotes/responses'
 import { inject, injectable } from 'inversify'
 import { Logger } from 'winston'
 
 import TYPES from '../../Bootstrap/Types'
 import { ProjectorInterface } from '../../Projection/ProjectorInterface'
+import { SimpleUserProjection } from '../../Projection/SimpleUserProjection'
 import { SessionServiceInterface } from '../Session/SessionServiceInterface'
 import { KeyParamsFactoryInterface } from '../User/KeyParamsFactoryInterface'
 import { User } from '../User/User'
@@ -54,11 +54,7 @@ export class AuthResponseFactory20200115 extends AuthResponseFactory20190520 {
     return {
       session: sessionPayload,
       key_params: this.keyParamsFactory.create(dto.user, true),
-      user: this.userProjector.projectSimple(dto.user) as {
-        uuid: string
-        email: string
-        protocolVersion: ProtocolVersion
-      },
+      user: this.userProjector.projectSimple(dto.user) as SimpleUserProjection,
     }
   }
 

@@ -22,7 +22,7 @@ describe('StreamDownloadFile', () => {
 
   it('should stream download file contents from S3', async () => {
     const result = await createUseCase().execute({
-      userUuid: '2-3-4',
+      ownerUuid: '2-3-4',
       resourceRemoteIdentifier: '1-2-3',
       startRange: 0,
       endRange: 200,
@@ -37,7 +37,7 @@ describe('StreamDownloadFile', () => {
     })
 
     const result = await createUseCase().execute({
-      userUuid: '2-3-4',
+      ownerUuid: '2-3-4',
       resourceRemoteIdentifier: '1-2-3',
       startRange: 0,
       endRange: 200,

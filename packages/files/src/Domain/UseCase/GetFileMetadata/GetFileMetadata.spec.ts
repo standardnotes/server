@@ -19,7 +19,7 @@ describe('GetFileMetadata', () => {
   })
 
   it('should return the file metadata', async () => {
-    expect(await createUseCase().execute({ resourceRemoteIdentifier: '1-2-3', userUuid: '2-3-4' })).toEqual({
+    expect(await createUseCase().execute({ resourceRemoteIdentifier: '1-2-3', ownerUuid: '2-3-4' })).toEqual({
       success: true,
       size: 123,
     })
@@ -30,7 +30,7 @@ describe('GetFileMetadata', () => {
       throw new Error('ooops')
     })
 
-    expect(await createUseCase().execute({ resourceRemoteIdentifier: '1-2-3', userUuid: '2-3-4' })).toEqual({
+    expect(await createUseCase().execute({ resourceRemoteIdentifier: '1-2-3', ownerUuid: '2-3-4' })).toEqual({
       success: false,
       message: 'Could not get file metadata.',
     })
