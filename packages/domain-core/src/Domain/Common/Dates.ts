@@ -20,7 +20,7 @@ export class Dates extends ValueObject<DatesProps> {
       return Result.fail<Dates>(`Could not create Dates. Creation date should be a date object, given: ${createdAt}`)
     }
     if (!(updatedAt instanceof Date)) {
-      return Result.fail<Dates>(`Could not create Dates. Update date should be a date object, given: ${createdAt}`)
+      return Result.fail<Dates>(`Could not create Dates. Update date should be a date object, given: ${updatedAt}`)
     }
 
     return Result.ok<Dates>(new Dates({ createdAt, updatedAt }))
