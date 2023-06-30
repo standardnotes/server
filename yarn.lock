@@ -4088,6 +4088,7 @@ __metadata:
     "@standardnotes/responses": "npm:^1.13.9"
     "@standardnotes/security": "workspace:*"
     "@standardnotes/settings": "workspace:*"
+    "@standardnotes/sncrypto-node": "workspace:*"
     "@standardnotes/time": "workspace:*"
     "@types/cors": "npm:^2.8.9"
     "@types/dotenv": "npm:^8.2.0"
@@ -4097,6 +4098,7 @@ __metadata:
     "@types/newrelic": "npm:^9.13.0"
     "@types/node": "npm:^20.2.5"
     "@types/prettyjson": "npm:^0.0.30"
+    "@types/semver": "npm:^7.5.0"
     "@types/ua-parser-js": "npm:^0.7.36"
     "@types/uuid": "npm:^8.3.0"
     "@typescript-eslint/eslint-plugin": "npm:^5.59.2"
@@ -4119,6 +4121,7 @@ __metadata:
     prettier: "npm:^2.8.8"
     prettyjson: "npm:^1.2.5"
     reflect-metadata: "npm:0.1.13"
+    semver: "npm:^7.5.1"
     sqlite3: "npm:^5.1.6"
     ts-jest: "npm:^29.1.0"
     typeorm: "npm:^0.3.15"
@@ -4656,7 +4659,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/semver@npm:^7.3.12":
+"@types/semver@npm:^7.3.12, @types/semver@npm:^7.5.0":
   version: 7.5.0
   resolution: "@types/semver@npm:7.5.0"
   checksum: dac255fae68157aec375fdb79d483a161c1b9c58e0ab9e18936dd1e9b89dd0ff85d64e482b1505de7e17455b404a0a530c4f9ddd6f21d333c2311c0068687b14
