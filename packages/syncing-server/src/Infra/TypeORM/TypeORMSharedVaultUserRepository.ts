@@ -1,0 +1,38 @@
+import { Repository } from 'typeorm'
+import { MapperInterface, Uuid } from '@standardnotes/domain-core'
+
+import { TypeORMSharedVaultUser } from './TypeORMSharedVaultUser'
+import { SharedVaultUser } from '../../Domain/SharedVault/User/SharedVaultUser'
+import { SharedVaultUserRepositoryInterface } from '../../Domain/SharedVault/User/SharedVaultUserRepositoryInterface'
+
+export class TypeORMSharedVaultUserRepository implements SharedVaultUserRepositoryInterface {
+  constructor(
+    private ormRepository: Repository<TypeORMSharedVaultUser>,
+    private mapper: MapperInterface<SharedVaultUser, TypeORMSharedVaultUser>,
+  ) {}
+
+  async save(sharedVaultUser: SharedVaultUser): Promise<void> {
+    const persistence = this.mapper.toProjection(sharedVaultUser)
+
+    await this.ormRepository.save(persistence)
+  }
+
+  async findByUuid(uuid: Uuid): Promise<SharedVaultUser | null> {
+    const persistence = await this.ormRepository
+      .createQueryBuilder('shared_vault_user')
+      .where('shared_vault_user.uuid = :uuid', {
+        uuid: uuid.toString(),
+      })
+      .getOne()
+
+    if (persistence === null) {
+      return null
+    }
+
+    return this.mapper.toDomain(persistence)
+  }
+
+  async remove(sharedVaultUser: SharedVaultUser): Promise<void> {
+    await this.ormRepository.remove(this.mapper.toProjection(sharedVaultUser))
+  }
+}

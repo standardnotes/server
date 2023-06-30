@@ -1,11 +1,11 @@
 import { Repository } from 'typeorm'
-import { MapperInterface } from '@standardnotes/domain-core'
+import { MapperInterface, Uuid } from '@standardnotes/domain-core'
 
-import { SharedVaultsRepositoryInterface } from '../../Domain/SharedVault/SharedVaultsRepositoryInterface'
+import { SharedVaultRepositoryInterface } from '../../Domain/SharedVault/SharedVaultRepositoryInterface'
 import { TypeORMSharedVault } from './TypeORMSharedVault'
 import { SharedVault } from '../../Domain/SharedVault/SharedVault'
 
-export class TypeORMSharedVaultRepository implements SharedVaultsRepositoryInterface {
+export class TypeORMSharedVaultRepository implements SharedVaultRepositoryInterface {
   constructor(
     private ormRepository: Repository<TypeORMSharedVault>,
     private mapper: MapperInterface<SharedVault, TypeORMSharedVault>,
@@ -17,11 +17,11 @@ export class TypeORMSharedVaultRepository implements SharedVaultsRepositoryInter
     await this.ormRepository.save(persistence)
   }
 
-  async findByUuid(uuid: string): Promise<SharedVault | null> {
+  async findByUuid(uuid: Uuid): Promise<SharedVault | null> {
     const persistence = await this.ormRepository
       .createQueryBuilder('shared_vault')
       .where('shared_vault.uuid = :uuid', {
-        uuid,
+        uuid: uuid.toString(),
       })
       .getOne()
 
