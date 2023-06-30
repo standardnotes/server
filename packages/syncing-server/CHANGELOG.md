@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.45.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.44.6...@standardnotes/syncing-server@1.45.0) (2023-06-30)
+
+### Features
+
+* add shared vaults model. ([#631](https://github.com/standardnotes/syncing-server-js/issues/631)) ([38e77f0](https://github.com/standardnotes/syncing-server-js/commit/38e77f04be441b7506c3390fb0d9894b34119c3e))
+
 ## [1.44.6](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.44.5...@standardnotes/syncing-server@1.44.6) (2023-06-30)
 
 **Note:** Version bump only for package @standardnotes/syncing-server

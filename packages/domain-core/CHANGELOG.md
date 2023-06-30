@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.19.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.18.0...@standardnotes/domain-core@1.19.0) (2023-06-30)
+
+### Features
+
+* add shared vaults model. ([#631](https://github.com/standardnotes/server/issues/631)) ([38e77f0](https://github.com/standardnotes/server/commit/38e77f04be441b7506c3390fb0d9894b34119c3e))
+
 # [1.18.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.17.0...@standardnotes/domain-core@1.18.0) (2023-06-02)
 
 ### Features
