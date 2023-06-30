@@ -33,7 +33,7 @@ export class UploadFileChunk implements UseCaseInterface {
         `Starting upload file chunk ${dto.chunkId} with ${dto.data.byteLength} bytes for resource: ${dto.resourceRemoteIdentifier}`,
       )
 
-      const filePath = `${dto.userUuid}/${dto.resourceRemoteIdentifier}`
+      const filePath = `${dto.ownerUuid}/${dto.resourceRemoteIdentifier}`
 
       const uploadId = await this.uploadRepository.retrieveUploadSessionId(filePath)
       if (uploadId === undefined) {

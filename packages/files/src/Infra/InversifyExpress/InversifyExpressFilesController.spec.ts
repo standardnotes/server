@@ -13,6 +13,7 @@ import { results } from 'inversify-express-utils'
 import { RemoveFile } from '../../Domain/UseCase/RemoveFile/RemoveFile'
 import { ValetTokenOperation } from '@standardnotes/security'
 import { BadRequestErrorMessageResult } from 'inversify-express-utils/lib/results'
+import { Result } from '@standardnotes/domain-core'
 
 describe('InversifyExpressFilesController', () => {
   let uploadFileChunk: UploadFileChunk
@@ -57,7 +58,7 @@ describe('InversifyExpressFilesController', () => {
     getFileMetadata.execute = jest.fn().mockReturnValue({ success: true, size: 555_555 })
 
     removeFile = {} as jest.Mocked<RemoveFile>
-    removeFile.execute = jest.fn().mockReturnValue({ success: true })
+    removeFile.execute = jest.fn().mockReturnValue(Result.ok())
 
     request = {
       body: {},
@@ -202,7 +203,7 @@ describe('InversifyExpressFilesController', () => {
 
     expect(createUploadSession.execute).toHaveBeenCalledWith({
       resourceRemoteIdentifier: '2-3-4',
-      userUuid: '1-2-3',
+      ownerUuid: '1-2-3',
     })
   })
 
@@ -232,7 +233,8 @@ describe('InversifyExpressFilesController', () => {
 
     expect(finishUploadSession.execute).toHaveBeenCalledWith({
       resourceRemoteIdentifier: '2-3-4',
-      userUuid: '1-2-3',
+      ownerType: 'user',
+      ownerUuid: '1-2-3',
     })
   })
 
@@ -261,15 +263,17 @@ describe('InversifyExpressFilesController', () => {
     await createController().remove(request, response)
 
     expect(removeFile.execute).toHaveBeenCalledWith({
-      resourceRemoteIdentifier: '2-3-4',
-      userUuid: '1-2-3',
+      userInput: {
+        resourceRemoteIdentifier: '2-3-4',
+        userUuid: '1-2-3',
+      },
     })
   })
 
   it('should return bad request if file removal could not be completed', async () => {
     response.locals.permittedOperation = ValetTokenOperation.Delete
 
-    removeFile.execute = jest.fn().mockReturnValue({ success: false })
+    removeFile.execute = jest.fn().mockReturnValue(Result.fail('error'))
 
     const httpResponse = await createController().remove(request, response)
     const result = await httpResponse.executeAsync()
@@ -299,7 +303,7 @@ describe('InversifyExpressFilesController', () => {
       data: Buffer.from([123]),
       resourceRemoteIdentifier: '2-3-4',
       resourceUnencryptedFileSize: 123,
-      userUuid: '1-2-3',
+      ownerUuid: '1-2-3',
     })
   })
 

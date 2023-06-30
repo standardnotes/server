@@ -1,4 +1,4 @@
 export type CreateUploadSessionDTO = {
-  userUuid: string
+  ownerUuid: string
   resourceRemoteIdentifier: string
 }

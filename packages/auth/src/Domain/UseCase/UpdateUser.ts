@@ -17,25 +17,17 @@ export class UpdateUser implements UseCaseInterface {
   ) {}
 
   async execute(dto: UpdateUserDTO): Promise<UpdateUserResponse> {
-    const { user, apiVersion, ...updateFields } = dto
+    dto.user.updatedAt = this.timer.getUTCDate()
 
-    Object.keys(updateFields).forEach(
-      (key) => (updateFields[key] === undefined || updateFields[key] === null) && delete updateFields[key],
-    )
+    const updatedUser = await this.userRepository.save(dto.user)
 
-    Object.assign(user, updateFields)
-
-    user.updatedAt = this.timer.getUTCDate()
-
-    await this.userRepository.save(user)
-
-    const authResponseFactory = this.authResponseFactoryResolver.resolveAuthResponseFactoryVersion(apiVersion)
+    const authResponseFactory = this.authResponseFactoryResolver.resolveAuthResponseFactoryVersion(dto.apiVersion)
 
     return {
       success: true,
       authResponse: await authResponseFactory.createResponse({
-        user,
-        apiVersion,
+        user: updatedUser,
+        apiVersion: dto.apiVersion,
         userAgent: dto.updatedWithUserAgent,
         ephemeralSession: false,
         readonlyAccess: false,

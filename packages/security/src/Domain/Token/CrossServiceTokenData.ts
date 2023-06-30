@@ -4,6 +4,7 @@ export type CrossServiceTokenData = {
   user: {
     uuid: string
     email: string
+    publicKey?: string
   }
   roles: Array<Role>
   session?: {

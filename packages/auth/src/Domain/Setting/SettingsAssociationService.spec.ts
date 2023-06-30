@@ -55,7 +55,7 @@ describe('SettingsAssociationService', () => {
   })
 
   it('should return the default set of settings for a newly registered vault account', () => {
-    const settings = createService().getDefaultSettingsAndValuesForNewVaultAccount()
+    const settings = createService().getDefaultSettingsAndValuesForNewPrivateUsernameAccount()
     const flatSettings = [...(settings as Map<string, SettingDescription>).keys()]
     expect(flatSettings).toEqual(['MUTE_MARKETING_EMAILS', 'LOG_SESSION_USER_AGENT'])
 

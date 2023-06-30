@@ -35,7 +35,7 @@ export class InversifyExpressFilesController extends BaseHttpController {
     }
 
     const result = await this.createUploadSession.execute({
-      userUuid: response.locals.userUuid,
+      ownerUuid: response.locals.userUuid,
       resourceRemoteIdentifier: response.locals.permittedResources[0].remoteIdentifier,
     })
 
@@ -61,7 +61,7 @@ export class InversifyExpressFilesController extends BaseHttpController {
     }
 
     const result = await this.uploadFileChunk.execute({
-      userUuid: response.locals.userUuid,
+      ownerUuid: response.locals.userUuid,
       resourceRemoteIdentifier: response.locals.permittedResources[0].remoteIdentifier,
       resourceUnencryptedFileSize: response.locals.permittedResources[0].unencryptedFileSize,
       chunkId,
@@ -85,7 +85,8 @@ export class InversifyExpressFilesController extends BaseHttpController {
     }
 
     const result = await this.finishUploadSession.execute({
-      userUuid: response.locals.userUuid,
+      ownerUuid: response.locals.userUuid,
+      ownerType: 'user',
       resourceRemoteIdentifier: response.locals.permittedResources[0].remoteIdentifier,
       uploadBytesLimit: response.locals.uploadBytesLimit,
       uploadBytesUsed: response.locals.uploadBytesUsed,
@@ -108,13 +109,15 @@ export class InversifyExpressFilesController extends BaseHttpController {
     }
 
     const result = await this.removeFile.execute({
-      userUuid: response.locals.userUuid,
-      resourceRemoteIdentifier: response.locals.permittedResources[0].remoteIdentifier,
-      regularSubscriptionUuid: response.locals.regularSubscriptionUuid,
+      userInput: {
+        userUuid: response.locals.userUuid,
+        resourceRemoteIdentifier: response.locals.permittedResources[0].remoteIdentifier,
+        regularSubscriptionUuid: response.locals.regularSubscriptionUuid,
+      },
     })
 
-    if (!result.success) {
-      return this.badRequest(result.message)
+    if (result.isFailed()) {
+      return this.badRequest(result.getError())
     }
 
     return this.json({ success: true, message: 'File removed successfully' })
@@ -140,7 +143,7 @@ export class InversifyExpressFilesController extends BaseHttpController {
     }
 
     const fileMetadata = await this.getFileMetadata.execute({
-      userUuid: response.locals.userUuid,
+      ownerUuid: response.locals.userUuid,
       resourceRemoteIdentifier: response.locals.permittedResources[0].remoteIdentifier,
     })
 
@@ -161,7 +164,7 @@ export class InversifyExpressFilesController extends BaseHttpController {
     response.writeHead(206, headers)
 
     const result = await this.streamDownloadFile.execute({
-      userUuid: response.locals.userUuid,
+      ownerUuid: response.locals.userUuid,
       resourceRemoteIdentifier: response.locals.permittedResources[0].remoteIdentifier,
       startRange,
       endRange,

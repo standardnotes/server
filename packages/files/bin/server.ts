@@ -4,6 +4,7 @@ import * as busboy from 'connect-busboy'
 
 import '../src/Infra/InversifyExpress/InversifyExpressHealthCheckController'
 import '../src/Infra/InversifyExpress/InversifyExpressFilesController'
+import '../src/Infra/InversifyExpress/InversifyExpressSharedVaultFilesController'
 
 import helmet from 'helmet'
 import * as cors from 'cors'

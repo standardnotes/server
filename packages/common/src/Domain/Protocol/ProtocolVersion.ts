@@ -3,7 +3,6 @@ export enum ProtocolVersion {
   V002 = '002',
   V003 = '003',
   V004 = '004',
-  V005 = '005',
 }
 
 export const ProtocolVersionLatest = ProtocolVersion.V004

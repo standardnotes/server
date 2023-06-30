@@ -14,6 +14,60 @@ describe('DomainEventFactory', () => {
     timer.getUTCDate = jest.fn().mockReturnValue(new Date(1))
   })
 
+  it('should create a SHARED_VAULT_FILE_UPLOADED event', () => {
+    expect(
+      createFactory().createSharedVaultFileUploadedEvent({
+        sharedVaultUuid: '1-2-3',
+        filePath: 'foo/bar',
+        fileName: 'baz',
+        fileByteSize: 123,
+      }),
+    ).toEqual({
+      createdAt: new Date(1),
+      meta: {
+        correlation: {
+          userIdentifier: '1-2-3',
+          userIdentifierType: 'shared-vault-uuid',
+        },
+        origin: 'files',
+      },
+      payload: {
+        sharedVaultUuid: '1-2-3',
+        filePath: 'foo/bar',
+        fileName: 'baz',
+        fileByteSize: 123,
+      },
+      type: 'SHARED_VAULT_FILE_UPLOADED',
+    })
+  })
+
+  it('should create a SHARED_VAULT_FILE_REMOVED event', () => {
+    expect(
+      createFactory().createSharedVaultFileRemovedEvent({
+        sharedVaultUuid: '1-2-3',
+        filePath: 'foo/bar',
+        fileName: 'baz',
+        fileByteSize: 123,
+      }),
+    ).toEqual({
+      createdAt: new Date(1),
+      meta: {
+        correlation: {
+          userIdentifier: '1-2-3',
+          userIdentifierType: 'shared-vault-uuid',
+        },
+        origin: 'files',
+      },
+      payload: {
+        sharedVaultUuid: '1-2-3',
+        filePath: 'foo/bar',
+        fileName: 'baz',
+        fileByteSize: 123,
+      },
+      type: 'SHARED_VAULT_FILE_REMOVED',
+    })
+  })
+
   it('should create a FILE_UPLOADED event', () => {
     expect(
       createFactory().createFileUploadedEvent({

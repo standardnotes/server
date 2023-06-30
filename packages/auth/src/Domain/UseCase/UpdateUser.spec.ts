@@ -44,21 +44,13 @@ describe('UpdateUser', () => {
         user,
         updatedWithUserAgent: 'Mozilla',
         apiVersion: '20190520',
-        version: '004',
-        pwCost: 11,
-        pwSalt: 'qweqwe',
-        pwNonce: undefined,
       }),
     ).toEqual({ success: true, authResponse: { foo: 'bar' } })
 
     expect(userRepository.save).toHaveBeenCalledWith({
       createdAt: new Date(1),
-      pwCost: 11,
       email: 'test@test.te',
-      pwSalt: 'qweqwe',
-      updatedWithUserAgent: 'Mozilla',
       uuid: '123',
-      version: '004',
       updatedAt: new Date(1),
     })
   })

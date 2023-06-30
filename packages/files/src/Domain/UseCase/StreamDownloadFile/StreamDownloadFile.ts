@@ -16,7 +16,7 @@ export class StreamDownloadFile implements UseCaseInterface {
   async execute(dto: StreamDownloadFileDTO): Promise<StreamDownloadFileResponse> {
     try {
       const readStream = await this.fileDownloader.createDownloadStream(
-        `${dto.userUuid}/${dto.resourceRemoteIdentifier}`,
+        `${dto.ownerUuid}/${dto.resourceRemoteIdentifier}`,
         dto.startRange,
         dto.endRange,
       )
@@ -27,7 +27,7 @@ export class StreamDownloadFile implements UseCaseInterface {
       }
     } catch (error) {
       this.logger.error(
-        `Could not create a download stream for resource: ${dto.userUuid}/${dto.resourceRemoteIdentifier}`,
+        `Could not create a download stream for resource: ${dto.ownerUuid}/${dto.resourceRemoteIdentifier}`,
       )
 
       return {

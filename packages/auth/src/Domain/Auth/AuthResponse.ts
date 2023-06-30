@@ -1,9 +1,5 @@
-import { ProtocolVersion } from '@standardnotes/common'
+import { SimpleUserProjection } from '../../Projection/SimpleUserProjection'
 
 export interface AuthResponse {
-  user: {
-    uuid: string
-    email: string
-    protocolVersion: ProtocolVersion
-  }
+  user: SimpleUserProjection
 }

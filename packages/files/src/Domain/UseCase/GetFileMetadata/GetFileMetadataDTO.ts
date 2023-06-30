@@ -1,4 +1,4 @@
 export type GetFileMetadataDTO = {
-  userUuid: string
+  ownerUuid: string
   resourceRemoteIdentifier: string
 }

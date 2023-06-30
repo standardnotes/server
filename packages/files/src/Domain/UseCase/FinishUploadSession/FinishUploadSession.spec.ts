@@ -1,6 +1,10 @@
 import 'reflect-metadata'
 
-import { DomainEventPublisherInterface, FileUploadedEvent } from '@standardnotes/domain-events'
+import {
+  DomainEventPublisherInterface,
+  FileUploadedEvent,
+  SharedVaultFileUploadedEvent,
+} from '@standardnotes/domain-events'
 import { Logger } from 'winston'
 import { DomainEventFactoryInterface } from '../../Event/DomainEventFactoryInterface'
 import { FileUploaderInterface } from '../../Services/FileUploaderInterface'
@@ -31,6 +35,9 @@ describe('FinishUploadSession', () => {
 
     domainEventFactory = {} as jest.Mocked<DomainEventFactoryInterface>
     domainEventFactory.createFileUploadedEvent = jest.fn().mockReturnValue({} as jest.Mocked<FileUploadedEvent>)
+    domainEventFactory.createSharedVaultFileUploadedEvent = jest
+      .fn()
+      .mockReturnValue({} as jest.Mocked<SharedVaultFileUploadedEvent>)
 
     logger = {} as jest.Mocked<Logger>
     logger.debug = jest.fn()
@@ -43,7 +50,8 @@ describe('FinishUploadSession', () => {
 
     await createUseCase().execute({
       resourceRemoteIdentifier: '2-3-4',
-      userUuid: '1-2-3',
+      ownerUuid: '1-2-3',
+      ownerType: 'user',
       uploadBytesLimit: 100,
       uploadBytesUsed: 0,
     })
@@ -60,7 +68,8 @@ describe('FinishUploadSession', () => {
     expect(
       await createUseCase().execute({
         resourceRemoteIdentifier: '2-3-4',
-        userUuid: '1-2-3',
+        ownerUuid: '1-2-3',
+        ownerType: 'user',
         uploadBytesLimit: 100,
         uploadBytesUsed: 0,
       }),
@@ -76,7 +85,23 @@ describe('FinishUploadSession', () => {
   it('should finish an upload session', async () => {
     await createUseCase().execute({
       resourceRemoteIdentifier: '2-3-4',
-      userUuid: '1-2-3',
+      ownerUuid: '1-2-3',
+      ownerType: 'user',
+      uploadBytesLimit: 100,
+      uploadBytesUsed: 0,
+    })
+
+    expect(fileUploader.finishUploadSession).toHaveBeenCalledWith('123', '1-2-3/2-3-4', [
+      { tag: '123', chunkId: 1, chunkSize: 1 },
+    ])
+    expect(domainEventPublisher.publish).toHaveBeenCalled()
+  })
+
+  it('should finish an upload session for a vault shared file', async () => {
+    await createUseCase().execute({
+      resourceRemoteIdentifier: '2-3-4',
+      ownerUuid: '1-2-3',
+      ownerType: 'shared-vault',
       uploadBytesLimit: 100,
       uploadBytesUsed: 0,
     })
@@ -97,7 +122,8 @@ describe('FinishUploadSession', () => {
     expect(
       await createUseCase().execute({
         resourceRemoteIdentifier: '2-3-4',
-        userUuid: '1-2-3',
+        ownerUuid: '1-2-3',
+        ownerType: 'user',
         uploadBytesLimit: 100,
         uploadBytesUsed: 20,
       }),

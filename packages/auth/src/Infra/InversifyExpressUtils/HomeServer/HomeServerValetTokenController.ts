@@ -1,10 +1,11 @@
 import { ControllerContainerInterface, Uuid } from '@standardnotes/domain-core'
 import { Request, Response } from 'express'
 import { BaseHttpController, results } from 'inversify-express-utils'
+import { ErrorTag } from '@standardnotes/responses'
+import { ValetTokenOperation } from '@standardnotes/security'
 
 import { CreateValetToken } from '../../../Domain/UseCase/CreateValetToken/CreateValetToken'
-import { CreateValetTokenPayload, ErrorTag } from '@standardnotes/responses'
-import { ValetTokenOperation } from '@standardnotes/security'
+import { CreateValetTokenPayload } from '../../../Domain/ValetToken/CreateValetTokenPayload'
 
 export class HomeServerValetTokenController extends BaseHttpController {
   constructor(protected createValetKey: CreateValetToken, private controllerContainer?: ControllerContainerInterface) {

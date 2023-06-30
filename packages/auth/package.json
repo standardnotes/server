@@ -32,7 +32,8 @@
     "weekly-backup:email": "yarn node dist/bin/backup.js email weekly",
     "content-recalculation": "yarn node dist/bin/content.js",
     "typeorm": "typeorm-ts-node-commonjs",
-    "upgrade:snjs": "yarn ncu -u '@standardnotes/*'"
+    "upgrade:snjs": "yarn ncu -u '@standardnotes/*'",
+    "migrate": "yarn build && yarn typeorm migration:run -d dist/src/Bootstrap/DataSource.js"
   },
   "dependencies": {
     "@aws-sdk/client-sns": "^3.332.0",

@@ -16,6 +16,8 @@ import '../src/Controller/v1/OfflineController'
 import '../src/Controller/v1/FilesController'
 import '../src/Controller/v1/SubscriptionInvitesController'
 import '../src/Controller/v1/AuthenticatorsController'
+import '../src/Controller/v1/AsymmetricMessagesController'
+import '../src/Controller/v1/SharedVaultsController'
 
 import '../src/Controller/v2/PaymentsControllerV2'
 import '../src/Controller/v2/ActionsControllerV2'
@@ -45,28 +47,29 @@ void container.load().then((container) => {
       response.setHeader('X-API-Gateway-Version', container.get(TYPES.VERSION))
       next()
     })
-    /* eslint-disable */
-    app.use(helmet({
-      contentSecurityPolicy: {
-        directives: {
-          defaultSrc: ["https: 'self'"],
-          baseUri: ["'self'"],
-          childSrc: ["*", "blob:"],
-          connectSrc: ["*"],
-          fontSrc: ["*", "'self'"],
-          formAction: ["'self'"],
-          frameAncestors: ["*", "*.standardnotes.org", "*.standardnotes.com"],
-          frameSrc: ["*", "blob:"],
-          imgSrc: ["'self'", "*", "data:"],
-          manifestSrc: ["'self'"],
-          mediaSrc: ["'self'"],
-          objectSrc: ["'self'"],
-          scriptSrc: ["'self'"],
-          styleSrc: ["'self'"]
-        }
-      }
-    }))
-    /* eslint-enable */
+    app.use(
+      helmet({
+        contentSecurityPolicy: {
+          directives: {
+            defaultSrc: ["https: 'self'"],
+            baseUri: ["'self'"],
+            childSrc: ['*', 'blob:'],
+            connectSrc: ['*'],
+            fontSrc: ['*', "'self'"],
+            formAction: ["'self'"],
+            frameAncestors: ['*', '*.standardnotes.org', '*.standardnotes.com'],
+            frameSrc: ['*', 'blob:'],
+            imgSrc: ["'self'", '*', 'data:'],
+            manifestSrc: ["'self'"],
+            mediaSrc: ["'self'"],
+            objectSrc: ["'self'"],
+            scriptSrc: ["'self'"],
+            styleSrc: ["'self'"],
+          },
+        },
+      }),
+    )
+
     app.use(json({ limit: '50mb' }))
     app.use(
       text({

@@ -1,4 +1,9 @@
-import { FileUploadedEvent, FileRemovedEvent } from '@standardnotes/domain-events'
+import {
+  FileUploadedEvent,
+  FileRemovedEvent,
+  SharedVaultFileRemovedEvent,
+  SharedVaultFileUploadedEvent,
+} from '@standardnotes/domain-events'
 
 export interface DomainEventFactoryInterface {
   createFileUploadedEvent(payload: {
@@ -14,4 +19,16 @@ export interface DomainEventFactoryInterface {
     fileByteSize: number
     regularSubscriptionUuid: string
   }): FileRemovedEvent
+  createSharedVaultFileUploadedEvent(payload: {
+    sharedVaultUuid: string
+    filePath: string
+    fileName: string
+    fileByteSize: number
+  }): SharedVaultFileUploadedEvent
+  createSharedVaultFileRemovedEvent(payload: {
+    sharedVaultUuid: string
+    filePath: string
+    fileName: string
+    fileByteSize: number
+  }): SharedVaultFileRemovedEvent
 }

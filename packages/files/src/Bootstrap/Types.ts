@@ -13,6 +13,7 @@ const TYPES = {
   Files_FinishUploadSession: Symbol.for('Files_FinishUploadSession'),
   Files_GetFileMetadata: Symbol.for('Files_GetFileMetadata'),
   Files_RemoveFile: Symbol.for('Files_RemoveFile'),
+  Files_MoveFile: Symbol.for('Files_MoveFile'),
   Files_MarkFilesToBeRemoved: Symbol.for('Files_MarkFilesToBeRemoved'),
 
   // services
@@ -23,12 +24,14 @@ const TYPES = {
   Files_FileUploader: Symbol.for('Files_FileUploader'),
   Files_FileDownloader: Symbol.for('Files_FileDownloader'),
   Files_FileRemover: Symbol.for('Files_FileRemover'),
+  Files_FileMover: Symbol.for('Files_FileMover'),
 
   // repositories
   Files_UploadRepository: Symbol.for('Files_UploadRepository'),
 
   // middleware
   Files_ValetTokenAuthMiddleware: Symbol.for('Files_ValetTokenAuthMiddleware'),
+  Files_SharedVaultValetTokenAuthMiddleware: Symbol.for('Files_SharedVaultValetTokenAuthMiddleware'),
 
   // env vars
   Files_S3_ENDPOINT: Symbol.for('Files_S3_ENDPOINT'),

@@ -69,7 +69,7 @@ export class InviteToSharedSubscription implements UseCaseInterface {
     sharedSubscriptionInvition.inviterIdentifier = dto.inviterEmail
     sharedSubscriptionInvition.inviterIdentifierType = InviterIdentifierType.Email
     sharedSubscriptionInvition.inviteeIdentifier = dto.inviteeIdentifier
-    sharedSubscriptionInvition.inviteeIdentifierType = this.isInviteeIdentifierPotentiallyAVaultAccount(
+    sharedSubscriptionInvition.inviteeIdentifierType = this.isInviteeIdentifierPotentiallyAPrivateUsernameAccount(
       dto.inviteeIdentifier,
     )
       ? InviteeIdentifierType.Hash
@@ -107,7 +107,7 @@ export class InviteToSharedSubscription implements UseCaseInterface {
     }
   }
 
-  private isInviteeIdentifierPotentiallyAVaultAccount(identifier: string): boolean {
+  private isInviteeIdentifierPotentiallyAPrivateUsernameAccount(identifier: string): boolean {
     return identifier.length === 64 && !identifier.includes('@')
   }
 }

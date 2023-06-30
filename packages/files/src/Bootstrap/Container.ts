@@ -48,6 +48,11 @@ import { AccountDeletionRequestedEventHandler } from '../Domain/Handler/AccountD
 import { SharedSubscriptionInvitationCanceledEventHandler } from '../Domain/Handler/SharedSubscriptionInvitationCanceledEventHandler'
 import { InMemoryUploadRepository } from '../Infra/InMemory/InMemoryUploadRepository'
 import { Transform } from 'stream'
+import { FileMoverInterface } from '../Domain/Services/FileMoverInterface'
+import { S3FileMover } from '../Infra/S3/S3FileMover'
+import { FSFileMover } from '../Infra/FS/FSFileMover'
+import { MoveFile } from '../Domain/UseCase/MoveFile/MoveFile'
+import { SharedVaultValetTokenAuthMiddleware } from '../Infra/InversifyExpress/Middleware/SharedVaultValetTokenAuthMiddleware'
 
 export class ContainerConfigLoader {
   async load(configuration?: {
@@ -177,6 +182,7 @@ export class ContainerConfigLoader {
       container.bind<FileDownloaderInterface>(TYPES.Files_FileDownloader).to(S3FileDownloader)
       container.bind<FileUploaderInterface>(TYPES.Files_FileUploader).to(S3FileUploader)
       container.bind<FileRemoverInterface>(TYPES.Files_FileRemover).to(S3FileRemover)
+      container.bind<FileMoverInterface>(TYPES.Files_FileMover).to(S3FileMover)
     } else {
       container.bind<FileDownloaderInterface>(TYPES.Files_FileDownloader).to(FSFileDownloader)
       container
@@ -185,6 +191,7 @@ export class ContainerConfigLoader {
           new FSFileUploader(container.get(TYPES.Files_FILE_UPLOAD_PATH), container.get(TYPES.Files_Logger)),
         )
       container.bind<FileRemoverInterface>(TYPES.Files_FileRemover).to(FSFileRemover)
+      container.bind<FileMoverInterface>(TYPES.Files_FileMover).to(FSFileMover)
     }
 
     // use cases
@@ -194,10 +201,14 @@ export class ContainerConfigLoader {
     container.bind<FinishUploadSession>(TYPES.Files_FinishUploadSession).to(FinishUploadSession)
     container.bind<GetFileMetadata>(TYPES.Files_GetFileMetadata).to(GetFileMetadata)
     container.bind<RemoveFile>(TYPES.Files_RemoveFile).to(RemoveFile)
+    container.bind<MoveFile>(TYPES.Files_MoveFile).to(MoveFile)
     container.bind<MarkFilesToBeRemoved>(TYPES.Files_MarkFilesToBeRemoved).to(MarkFilesToBeRemoved)
 
     // middleware
     container.bind<ValetTokenAuthMiddleware>(TYPES.Files_ValetTokenAuthMiddleware).to(ValetTokenAuthMiddleware)
+    container
+      .bind<SharedVaultValetTokenAuthMiddleware>(TYPES.Files_SharedVaultValetTokenAuthMiddleware)
+      .to(SharedVaultValetTokenAuthMiddleware)
 
     // services
     container

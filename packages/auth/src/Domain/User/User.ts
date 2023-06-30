@@ -202,7 +202,7 @@ export class User {
     return parseInt(this.version) >= parseInt(ProtocolVersion.V004)
   }
 
-  isPotentiallyAVaultAccount(): boolean {
+  isPotentiallyAPrivateUsernameAccount(): boolean {
     return this.email.length === 64 && !this.email.includes('@')
   }
 }
