@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.8.1](https://github.com/standardnotes/server/compare/@standardnotes/security@1.8.0...@standardnotes/security@1.8.1) (2023-06-30)
+
+**Note:** Version bump only for package @standardnotes/security
+
 # [1.8.0](https://github.com/standardnotes/server/compare/@standardnotes/security@1.7.10...@standardnotes/security@1.8.0) (2023-06-30)
 
 ### Features
