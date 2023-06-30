@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.65.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.64.3...@standardnotes/api-gateway@1.65.0) (2023-06-30)
+
+### Features
+
+* shared vaults functionality in api-gateway,auth,files,common,security,domain-events. ([#629](https://github.com/standardnotes/api-gateway/issues/629)) ([fa7fbe2](https://github.com/standardnotes/api-gateway/commit/fa7fbe26e7b0707fc21d71e04af76870f5248baf))
+
 ## [1.64.3](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.64.2...@standardnotes/api-gateway@1.64.3) (2023-06-28)
 
 ### Bug Fixes

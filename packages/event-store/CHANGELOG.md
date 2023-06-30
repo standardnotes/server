@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.11.0](https://github.com/standardnotes/server/compare/@standardnotes/event-store@1.10.1...@standardnotes/event-store@1.11.0) (2023-06-30)
+
+### Features
+
+* shared vaults functionality in api-gateway,auth,files,common,security,domain-events. ([#629](https://github.com/standardnotes/server/issues/629)) ([fa7fbe2](https://github.com/standardnotes/server/commit/fa7fbe26e7b0707fc21d71e04af76870f5248baf))
+
 ## [1.10.1](https://github.com/standardnotes/server/compare/@standardnotes/event-store@1.10.0...@standardnotes/event-store@1.10.1) (2023-06-02)
 
 ### Bug Fixes

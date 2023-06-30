@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.120.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.119.6...@standardnotes/auth-server@1.120.0) (2023-06-30)
+
+### Features
+
+* shared vaults functionality in api-gateway,auth,files,common,security,domain-events. ([#629](https://github.com/standardnotes/server/issues/629)) ([fa7fbe2](https://github.com/standardnotes/server/commit/fa7fbe26e7b0707fc21d71e04af76870f5248baf))
+
 ## [1.119.6](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.119.5...@standardnotes/auth-server@1.119.6) (2023-06-28)
 
 ### Bug Fixes

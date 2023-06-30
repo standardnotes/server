@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.19.0](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.18.3...@standardnotes/files-server@1.19.0) (2023-06-30)
+
+### Features
+
+* shared vaults functionality in api-gateway,auth,files,common,security,domain-events. ([#629](https://github.com/standardnotes/files/issues/629)) ([fa7fbe2](https://github.com/standardnotes/files/commit/fa7fbe26e7b0707fc21d71e04af76870f5248baf))
+
 ## [1.18.3](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.18.2...@standardnotes/files-server@1.18.3) (2023-06-22)
 
 ### Bug Fixes

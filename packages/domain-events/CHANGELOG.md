@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.112.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.111.4...@standardnotes/domain-events@2.112.0) (2023-06-30)
+
+### Features
+
+* shared vaults functionality in api-gateway,auth,files,common,security,domain-events. ([#629](https://github.com/standardnotes/server/issues/629)) ([fa7fbe2](https://github.com/standardnotes/server/commit/fa7fbe26e7b0707fc21d71e04af76870f5248baf))
+
 ## [2.111.4](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.111.3...@standardnotes/domain-events@2.111.4) (2023-06-01)
 
 **Note:** Version bump only for package @standardnotes/domain-events

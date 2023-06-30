@@ -1,6 +1,6 @@
 {
   "name": "@standardnotes/files-server",
-  "version": "1.18.3",
+  "version": "1.19.0",
   "engines": {
     "node": ">=18.0.0 <21.0.0"
   },
