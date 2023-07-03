@@ -11,6 +11,27 @@ export class TypeORMSharedVaultUserRepository implements SharedVaultUserReposito
     private mapper: MapperInterface<SharedVaultUser, TypeORMSharedVaultUser>,
   ) {}
 
+  async findByUserUuidAndSharedVaultUuid(dto: {
+    userUuid: Uuid
+    sharedVaultUuid: Uuid
+  }): Promise<SharedVaultUser | null> {
+    const persistence = await this.ormRepository
+      .createQueryBuilder('shared_vault_user')
+      .where('shared_vault_user.user_uuid = :userUuid', {
+        userUuid: dto.userUuid.value,
+      })
+      .andWhere('shared_vault_user.shared_vault_uuid = :sharedVaultUuid', {
+        sharedVaultUuid: dto.sharedVaultUuid.value,
+      })
+      .getOne()
+
+    if (persistence === null) {
+      return null
+    }
+
+    return this.mapper.toDomain(persistence)
+  }
+
   async save(sharedVaultUser: SharedVaultUser): Promise<void> {
     const persistence = this.mapper.toProjection(sharedVaultUser)
 
@@ -21,7 +42,7 @@ export class TypeORMSharedVaultUserRepository implements SharedVaultUserReposito
     const persistence = await this.ormRepository
       .createQueryBuilder('shared_vault_user')
       .where('shared_vault_user.uuid = :uuid', {
-        uuid: uuid.toString(),
+        uuid: uuid.value,
       })
       .getOne()
 

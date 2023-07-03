@@ -21,7 +21,7 @@ export class TypeORMSharedVaultRepository implements SharedVaultRepositoryInterf
     const persistence = await this.ormRepository
       .createQueryBuilder('shared_vault')
       .where('shared_vault.uuid = :uuid', {
-        uuid: uuid.toString(),
+        uuid: uuid.value,
       })
       .getOne()
 
