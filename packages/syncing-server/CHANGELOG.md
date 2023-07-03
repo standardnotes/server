@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.49.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.48.0...@standardnotes/syncing-server@1.49.0) (2023-07-03)
+
+### Features
+
+* add creating shared vault file valet tokens. ([#635](https://github.com/standardnotes/syncing-server-js/issues/635)) ([04b3bb0](https://github.com/standardnotes/syncing-server-js/commit/04b3bb034fb5bf6f9d00d5b2e8a1abc4832c5417))
+
 # [1.48.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.47.0...@standardnotes/syncing-server@1.48.0) (2023-07-03)
 
 ### Features
