@@ -3,6 +3,12 @@ import { Result, ValueObject } from '@standardnotes/domain-core'
 import { SharedVaultUserPermissionProps } from './SharedVaultUserPermissionProps'
 
 export class SharedVaultUserPermission extends ValueObject<SharedVaultUserPermissionProps> {
+  static readonly PERMISSIONS = {
+    Read: 'read',
+    Write: 'write',
+    Admin: 'admin',
+  }
+
   get value(): string {
     return this.props.value
   }
@@ -12,7 +18,8 @@ export class SharedVaultUserPermission extends ValueObject<SharedVaultUserPermis
   }
 
   static create(sharedVaultUserPermission: string): Result<SharedVaultUserPermission> {
-    if (!['read', 'write', 'admin'].includes(sharedVaultUserPermission)) {
+    const isValidPermission = Object.values(this.PERMISSIONS).includes(sharedVaultUserPermission)
+    if (!isValidPermission) {
       return Result.fail<SharedVaultUserPermission>(`Invalid shared vault user permission ${sharedVaultUserPermission}`)
     } else {
       return Result.ok<SharedVaultUserPermission>(new SharedVaultUserPermission({ value: sharedVaultUserPermission }))
