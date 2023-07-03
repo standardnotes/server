@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.50.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.49.0...@standardnotes/syncing-server@1.50.0) (2023-07-03)
+
+### Features
+
+* add invite users to a shared vault. ([#636](https://github.com/standardnotes/syncing-server-js/issues/636)) ([5dc5507](https://github.com/standardnotes/syncing-server-js/commit/5dc5507039c0dfb9df82a85377846651fef73c57))
+
 # [1.49.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.48.0...@standardnotes/syncing-server@1.49.0) (2023-07-03)
 
 ### Features
