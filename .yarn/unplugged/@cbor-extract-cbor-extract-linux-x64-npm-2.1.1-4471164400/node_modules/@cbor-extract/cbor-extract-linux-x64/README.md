@@ -1,0 +1,1 @@
+Platform specific binary for cbor-extract on linux OS with x64 architecture

@@ -40,5 +40,22 @@
   "optionalDependencies": {
     "@types/newrelic": "^9.13.0",
     "newrelic": "^10.1.2"
+  },
+  "dependenciesMeta": {
+    "@contrast/fn-inspect@3.3.1": {
+      "unplugged": true
+    },
+    "@newrelic/native-metrics@9.0.0": {
+      "unplugged": true
+    },
+    "cbor-extract@2.1.1": {
+      "unplugged": true
+    },
+    "microtime@3.1.1": {
+      "unplugged": true
+    },
+    "sqlite3@5.1.6": {
+      "unplugged": true
+    }
   }
 }
