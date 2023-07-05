@@ -18,21 +18,26 @@ import { TypeORMEmergencyAccessInvitation } from '../Infra/TypeORM/TypeORMEmerge
 import { TypeORMSessionTrace } from '../Infra/TypeORM/TypeORMSessionTrace'
 import { Env } from './Env'
 import { SqliteConnectionOptions } from 'typeorm/driver/sqlite/SqliteConnectionOptions'
+import { TypeORMNotification } from '../Infra/TypeORM/TypeORMNotification'
 
 export class AppDataSource {
-  private dataSource: DataSource | undefined
+  private _dataSource: DataSource | undefined
 
   constructor(private env: Env) {}
 
   getRepository<Entity extends ObjectLiteral>(target: EntityTarget<Entity>): Repository<Entity> {
-    if (!this.dataSource) {
+    if (!this._dataSource) {
       throw new Error('DataSource not initialized')
     }
 
-    return this.dataSource.getRepository(target)
+    return this._dataSource.getRepository(target)
   }
 
   async initialize(): Promise<void> {
+    await this.dataSource.initialize()
+  }
+
+  get dataSource(): DataSource {
     this.env.load()
 
     const isConfiguredForMySQL = this.env.get('DB_TYPE') === 'mysql'
@@ -60,6 +65,7 @@ export class AppDataSource {
         TypeORMAuthenticatorChallenge,
         TypeORMEmergencyAccessInvitation,
         TypeORMCacheEntry,
+        TypeORMNotification,
       ],
       migrations: [`${__dirname}/../../migrations/${isConfiguredForMySQL ? 'mysql' : 'sqlite'}/*.js`],
       migrationsRun: true,
@@ -104,7 +110,7 @@ export class AppDataSource {
         database: inReplicaMode ? undefined : this.env.get('DB_DATABASE'),
       }
 
-      this.dataSource = new DataSource(mySQLDataSourceOptions)
+      this._dataSource = new DataSource(mySQLDataSourceOptions)
     } else {
       const sqliteDataSourceOptions: SqliteConnectionOptions = {
         ...commonDataSourceOptions,
@@ -112,9 +118,9 @@ export class AppDataSource {
         database: this.env.get('DB_SQLITE_DATABASE_PATH'),
       }
 
-      this.dataSource = new DataSource(sqliteDataSourceOptions)
+      this._dataSource = new DataSource(sqliteDataSourceOptions)
     }
 
-    await this.dataSource.initialize()
+    return this._dataSource
   }
 }
