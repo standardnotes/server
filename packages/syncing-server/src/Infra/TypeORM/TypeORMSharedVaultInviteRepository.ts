@@ -11,6 +11,15 @@ export class TypeORMSharedVaultInviteRepository implements SharedVaultInviteRepo
     private mapper: MapperInterface<SharedVaultInvite, TypeORMSharedVaultInvite>,
   ) {}
 
+  async removeBySharedVaultUuid(sharedVaultUuid: Uuid): Promise<void> {
+    await this.ormRepository
+      .createQueryBuilder('shared_vault_invite')
+      .delete()
+      .from('shared_vault_invites')
+      .where('shared_vault_uuid = :sharedVaultUuid', { sharedVaultUuid: sharedVaultUuid.value })
+      .execute()
+  }
+
   async findByUserUuidAndSharedVaultUuid(dto: {
     userUuid: Uuid
     sharedVaultUuid: Uuid
