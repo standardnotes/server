@@ -3,10 +3,12 @@ import {
   EmailRequestedEvent,
   ItemDumpedEvent,
   ItemRevisionCreationRequestedEvent,
+  NotificationRequestedEvent,
   RevisionsCopyRequestedEvent,
 } from '@standardnotes/domain-events'
 
 export interface DomainEventFactoryInterface {
+  createNotificationRequestedEvent(dto: { userUuid: string; type: string; payload: string }): NotificationRequestedEvent
   createEmailRequestedEvent(dto: {
     userEmail: string
     messageIdentifier: string

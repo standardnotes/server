@@ -11,6 +11,26 @@ export class TypeORMSharedVaultUserRepository implements SharedVaultUserReposito
     private mapper: MapperInterface<SharedVaultUser, TypeORMSharedVaultUser>,
   ) {}
 
+  async removeBySharedVaultUuid(sharedVaultUuid: Uuid): Promise<void> {
+    await this.ormRepository
+      .createQueryBuilder('shared_vault_user')
+      .delete()
+      .from('shared_vault_users')
+      .where('shared_vault_uuid = :sharedVaultUuid', { sharedVaultUuid: sharedVaultUuid.value })
+      .execute()
+  }
+
+  async findBySharedVaultUuid(sharedVaultUuid: Uuid): Promise<SharedVaultUser[]> {
+    const persistence = await this.ormRepository
+      .createQueryBuilder('shared_vault_user')
+      .where('shared_vault_user.shared_vault_uuid = :sharedVaultUuid', {
+        sharedVaultUuid: sharedVaultUuid.value,
+      })
+      .getMany()
+
+    return persistence.map((p) => this.mapper.toDomain(p))
+  }
+
   async findByUserUuid(userUuid: Uuid): Promise<SharedVaultUser[]> {
     const persistence = await this.ormRepository
       .createQueryBuilder('shared_vault_user')

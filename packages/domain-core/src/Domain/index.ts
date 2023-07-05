@@ -43,6 +43,9 @@ export * from './Env/AbstractEnv'
 
 export * from './Mapping/MapperInterface'
 
+export * from './Notification/NotificationType'
+export * from './Notification/NotificationTypeProps'
+
 export * from './Service/ServiceConfiguration'
 export * from './Service/ServiceContainer'
 export * from './Service/ServiceContainerInterface'
