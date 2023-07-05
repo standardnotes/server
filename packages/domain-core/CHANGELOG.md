@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.20.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.19.0...@standardnotes/domain-core@1.20.0) (2023-07-05)
+
+### Features
+
+* deleting shared vaults. ([#640](https://github.com/standardnotes/server/issues/640)) ([f3161c2](https://github.com/standardnotes/server/commit/f3161c271296159331639814b2dbb2e566cc54c9))
+
 # [1.19.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.18.0...@standardnotes/domain-core@1.19.0) (2023-06-30)
 
 ### Features
