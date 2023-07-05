@@ -38,6 +38,10 @@ const TYPES = {
   Sync_SyncItems: Symbol.for('Sync_SyncItems'),
   Sync_CheckIntegrity: Symbol.for('Sync_CheckIntegrity'),
   Sync_GetItem: Symbol.for('Sync_GetItem'),
+  Sync_GetSharedVaults: Symbol.for('Sync_GetSharedVaults'),
+  Sync_CreateSharedVault: Symbol.for('Sync_CreateSharedVault'),
+  Sync_DeleteSharedVault: Symbol.for('Sync_DeleteSharedVault'),
+  Sync_CreateSharedVaultFileValetToken: Symbol.for('Sync_CreateSharedVaultFileValetToken'),
   // Handlers
   Sync_AccountDeletionRequestedEventHandler: Symbol.for('Sync_AccountDeletionRequestedEventHandler'),
   Sync_DuplicateItemSyncedEventHandler: Symbol.for('Sync_DuplicateItemSyncedEventHandler'),
@@ -68,6 +72,9 @@ const TYPES = {
   Sync_ItemTransferCalculator: Symbol.for('Sync_ItemTransferCalculator'),
   Sync_ControllerContainer: Symbol.for('Sync_ControllerContainer'),
   Sync_HomeServerItemsController: Symbol.for('Sync_HomeServerItemsController'),
+  // Mapping
+  Sync_SharedVaultHttpMapper: Symbol.for('Sync_SharedVaultHttpMapper'),
+  Sync_SharedVaultUserHttpMapper: Symbol.for('Sync_SharedVaultUserHttpMapper'),
 }
 
 export default TYPES

@@ -1,7 +1,7 @@
 import { Timestamps, MapperInterface, UniqueEntityId, Uuid } from '@standardnotes/domain-core'
 
-import { SharedVault } from '../Domain/SharedVault/SharedVault'
-import { TypeORMSharedVault } from '../Infra/TypeORM/TypeORMSharedVault'
+import { SharedVault } from '../../Domain/SharedVault/SharedVault'
+import { TypeORMSharedVault } from '../../Infra/TypeORM/TypeORMSharedVault'
 
 export class SharedVaultPersistenceMapper implements MapperInterface<SharedVault, TypeORMSharedVault> {
   toDomain(projection: TypeORMSharedVault): SharedVault {
