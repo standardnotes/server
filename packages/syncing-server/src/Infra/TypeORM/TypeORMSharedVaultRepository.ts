@@ -11,6 +11,20 @@ export class TypeORMSharedVaultRepository implements SharedVaultRepositoryInterf
     private mapper: MapperInterface<SharedVault, TypeORMSharedVault>,
   ) {}
 
+  async findByUuids(uuids: Uuid[], lastSyncTime?: number | undefined): Promise<SharedVault[]> {
+    const queryBuilder = await this.ormRepository
+      .createQueryBuilder('shared_vault')
+      .where('shared_vault.uuid IN (:...sharedVaultUuids)', { sharedVaultUuids: uuids.map((uuid) => uuid.value) })
+
+    if (lastSyncTime !== undefined) {
+      queryBuilder.andWhere('shared_vault.updated_at_timestamp > :lastSyncTime', { lastSyncTime })
+    }
+
+    const persistence = await queryBuilder.getMany()
+
+    return persistence.map((p) => this.mapper.toDomain(p))
+  }
+
   async save(sharedVault: SharedVault): Promise<void> {
     const persistence = this.mapper.toProjection(sharedVault)
 

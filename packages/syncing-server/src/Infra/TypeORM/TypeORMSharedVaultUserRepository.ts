@@ -11,6 +11,17 @@ export class TypeORMSharedVaultUserRepository implements SharedVaultUserReposito
     private mapper: MapperInterface<SharedVaultUser, TypeORMSharedVaultUser>,
   ) {}
 
+  async findByUserUuid(userUuid: Uuid): Promise<SharedVaultUser[]> {
+    const persistence = await this.ormRepository
+      .createQueryBuilder('shared_vault_user')
+      .where('shared_vault_user.user_uuid = :userUuid', {
+        userUuid: userUuid.value,
+      })
+      .getMany()
+
+    return persistence.map((p) => this.mapper.toDomain(p))
+  }
+
   async findByUserUuidAndSharedVaultUuid(dto: {
     userUuid: Uuid
     sharedVaultUuid: Uuid
