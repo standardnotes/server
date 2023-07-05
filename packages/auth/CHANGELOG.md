@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.121.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.120.2...@standardnotes/auth-server@1.121.0) (2023-07-05)
+
+### Features
+
+* **auth:** add notifications model ([#638](https://github.com/standardnotes/server/issues/638)) ([fecfd54](https://github.com/standardnotes/server/commit/fecfd5472824b5adae708db95d351e4ad65ee87b))
+
 ## [1.120.2](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.120.1...@standardnotes/auth-server@1.120.2) (2023-06-30)
 
 **Note:** Version bump only for package @standardnotes/auth-server
