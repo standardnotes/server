@@ -41,7 +41,9 @@ export class CreateSharedVaultFileValetToken implements UseCaseInterface<string>
     }
 
     if (
-      sharedVaultUser.props.permission.value === SharedVaultUserPermission.PERMISSIONS.Read &&
+      sharedVaultUser.props.permission.equals(
+        SharedVaultUserPermission.create(SharedVaultUserPermission.PERMISSIONS.Read).getValue(),
+      ) &&
       dto.operation !== ValetTokenOperation.Read
     ) {
       return Result.fail('User does not have permission to perform this operation')
@@ -72,7 +74,11 @@ export class CreateSharedVaultFileValetToken implements UseCaseInterface<string>
           return Result.fail('Shared vault target user not found')
         }
 
-        if (toSharedVaultUser.props.permission.value === SharedVaultUserPermission.PERMISSIONS.Read) {
+        if (
+          toSharedVaultUser.props.permission.equals(
+            SharedVaultUserPermission.create(SharedVaultUserPermission.PERMISSIONS.Read).getValue(),
+          )
+        ) {
           return Result.fail('User does not have permission to perform this operation')
         }
       }

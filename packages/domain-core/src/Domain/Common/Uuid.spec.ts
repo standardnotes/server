@@ -13,4 +13,25 @@ describe('Uuid', () => {
 
     expect(valueOrError.isFailed()).toBeTruthy()
   })
+
+  it('should check equality between two value objects', () => {
+    const uuid1 = Uuid.create('84c0f8e8-544a-4c7e-9adf-26209303bc1d').getValue()
+    const uuid2 = Uuid.create('84c0f8e8-544a-4c7e-9adf-26209303bc1d').getValue()
+
+    expect(uuid1.equals(uuid2)).toBeTruthy()
+  })
+
+  it('should check inequality between two value objects', () => {
+    const uuid1 = Uuid.create('84c0f8e8-544a-4c7e-9adf-26209303bc1d').getValue()
+    const uuid2 = Uuid.create('84c0f8e8-544a-4c7e-9adf-26209303bc1e').getValue()
+
+    expect(uuid1.equals(uuid2)).toBeFalsy()
+  })
+
+  it('should check inequality between two value objects of different types', () => {
+    const uuid1 = Uuid.create('84c0f8e8-544a-4c7e-9adf-26209303bc1d').getValue()
+
+    expect(uuid1.equals(null as unknown as Uuid)).toBeFalsy()
+    expect(uuid1.equals(undefined as unknown as Uuid)).toBeFalsy()
+  })
 })
