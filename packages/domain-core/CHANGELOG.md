@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.21.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.20.0...@standardnotes/domain-core@1.21.0) (2023-07-06)
+
+### Features
+
+* getting shared vault users and removing shared vault user ([#642](https://github.com/standardnotes/server/issues/642)) ([e905128](https://github.com/standardnotes/server/commit/e905128d45eaadb34d3465d4480dfb3a2c5f3f79))
+
 # [1.20.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.19.0...@standardnotes/domain-core@1.20.0) (2023-07-05)
 
 ### Features
