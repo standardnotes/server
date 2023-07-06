@@ -12,7 +12,7 @@ import { CreateSharedVaultFileValetToken } from '../../Domain/UseCase/CreateShar
 import { DeleteSharedVault } from '../../Domain/UseCase/DeleteSharedVault/DeleteSharedVault'
 import { GetSharedVaults } from '../../Domain/UseCase/GetSharedVaults/GetSharedVaults'
 import { SharedVaultHttpRepresentation } from '../../Mapping/Http/SharedVaultHttpRepresentation'
-import { SharedVaultUserHttpRepresentation } from '../../Mapping/Http/SharedVaultUserHttpRepresentation copy'
+import { SharedVaultUserHttpRepresentation } from '../../Mapping/Http/SharedVaultUserHttpRepresentation'
 
 @controller('/shared-vaults', TYPES.Sync_AuthMiddleware)
 export class InversifyExpressSharedVaultsController extends HomeServerSharedVaultsController {

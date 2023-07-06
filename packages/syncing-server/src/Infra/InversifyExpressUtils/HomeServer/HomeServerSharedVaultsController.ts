@@ -8,7 +8,7 @@ import { SharedVault } from '../../../Domain/SharedVault/SharedVault'
 import { SharedVaultHttpRepresentation } from '../../../Mapping/Http/SharedVaultHttpRepresentation'
 import { CreateSharedVault } from '../../../Domain/UseCase/CreateSharedVault/CreateSharedVault'
 import { SharedVaultUser } from '../../../Domain/SharedVault/User/SharedVaultUser'
-import { SharedVaultUserHttpRepresentation } from '../../../Mapping/Http/SharedVaultUserHttpRepresentation copy'
+import { SharedVaultUserHttpRepresentation } from '../../../Mapping/Http/SharedVaultUserHttpRepresentation'
 import { DeleteSharedVault } from '../../../Domain/UseCase/DeleteSharedVault/DeleteSharedVault'
 import { CreateSharedVaultFileValetToken } from '../../../Domain/UseCase/CreateSharedVaultFileValetToken/CreateSharedVaultFileValetToken'
 
