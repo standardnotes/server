@@ -28,7 +28,7 @@ export class RoleNameCollection extends ValueObject<RoleNameCollectionProps> {
     return false
   }
 
-  equals(roleNameCollection: RoleNameCollection): boolean {
+  override equals(roleNameCollection: RoleNameCollection): boolean {
     if (this.props.value.length !== roleNameCollection.value.length) {
       return false
     }
