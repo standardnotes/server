@@ -1,7 +1,7 @@
 import { MapperInterface } from '@standardnotes/domain-core'
 
 import { SharedVaultUser } from '../../Domain/SharedVault/User/SharedVaultUser'
-import { SharedVaultUserHttpRepresentation } from './SharedVaultUserHttpRepresentation copy'
+import { SharedVaultUserHttpRepresentation } from './SharedVaultUserHttpRepresentation'
 
 export class SharedVaultUserHttpMapper implements MapperInterface<SharedVaultUser, SharedVaultUserHttpRepresentation> {
   toDomain(_projection: SharedVaultUserHttpRepresentation): SharedVaultUser {

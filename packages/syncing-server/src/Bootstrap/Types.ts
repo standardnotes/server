@@ -42,6 +42,8 @@ const TYPES = {
   Sync_CreateSharedVault: Symbol.for('Sync_CreateSharedVault'),
   Sync_DeleteSharedVault: Symbol.for('Sync_DeleteSharedVault'),
   Sync_CreateSharedVaultFileValetToken: Symbol.for('Sync_CreateSharedVaultFileValetToken'),
+  Sync_GetSharedVaultUsers: Symbol.for('Sync_GetSharedVaultUsers'),
+  Sync_RemoveSharedVaultUser: Symbol.for('Sync_RemoveSharedVaultUser'),
   // Handlers
   Sync_AccountDeletionRequestedEventHandler: Symbol.for('Sync_AccountDeletionRequestedEventHandler'),
   Sync_DuplicateItemSyncedEventHandler: Symbol.for('Sync_DuplicateItemSyncedEventHandler'),
