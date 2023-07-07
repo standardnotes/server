@@ -1,17 +1,16 @@
-import { NotificationType, Result, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
+import { Result, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
 
 import { RemoveUserFromSharedVaultDTO } from './RemoveUserFromSharedVaultDTO'
 import { SharedVaultRepositoryInterface } from '../../SharedVault/SharedVaultRepositoryInterface'
 import { SharedVaultUserRepositoryInterface } from '../../SharedVault/User/SharedVaultUserRepositoryInterface'
-import { DomainEventFactoryInterface } from '../../Event/DomainEventFactoryInterface'
-import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
+import { AddNotificationForUser } from '../AddNotificationForUser/AddNotificationForUser'
+import { NotificationType } from '../../Notifications/NotificationType'
 
 export class RemoveUserFromSharedVault implements UseCaseInterface<void> {
   constructor(
     private sharedVaultUsersRepository: SharedVaultUserRepositoryInterface,
     private sharedVaultRepository: SharedVaultRepositoryInterface,
-    private domainEventFactory: DomainEventFactoryInterface,
-    private domainEventPublisher: DomainEventPublisherInterface,
+    private addNotificationForUser: AddNotificationForUser,
   ) {}
 
   async execute(dto: RemoveUserFromSharedVaultDTO): Promise<Result<void>> {
@@ -58,16 +57,17 @@ export class RemoveUserFromSharedVault implements UseCaseInterface<void> {
 
     await this.sharedVaultUsersRepository.remove(sharedVaultUser)
 
-    await this.domainEventPublisher.publish(
-      this.domainEventFactory.createNotificationRequestedEvent({
-        type: NotificationType.TYPES.RemovedFromSharedVault,
-        userUuid: sharedVaultUser.props.userUuid.value,
-        payload: JSON.stringify({
-          sharedVaultUuid: sharedVault.id.toString(),
-          version: '1.0',
-        }),
+    const result = await this.addNotificationForUser.execute({
+      userUuid: sharedVaultUser.props.userUuid.value,
+      type: NotificationType.TYPES.RemovedFromSharedVault,
+      payload: JSON.stringify({
+        sharedVaultUuid: sharedVault.id.toString(),
       }),
-    )
+      version: '1.0',
+    })
+    if (result.isFailed()) {
+      return Result.fail(result.getError())
+    }
 
     return Result.ok()
   }
