@@ -10,4 +10,5 @@ export interface SharedVaultInviteRepositoryInterface {
   findByUserUuid(userUuid: Uuid): Promise<SharedVaultInvite[]>
   findBySenderUuid(senderUuid: Uuid): Promise<SharedVaultInvite[]>
   findByUserUuidAndSharedVaultUuid(dto: { userUuid: Uuid; sharedVaultUuid: Uuid }): Promise<SharedVaultInvite | null>
+  findBySenderUuidAndSharedVaultUuid(dto: { senderUuid: Uuid; sharedVaultUuid: Uuid }): Promise<SharedVaultInvite[]>
 }

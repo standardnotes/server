@@ -3,13 +3,13 @@ import { Uuid, Timestamps } from '@standardnotes/domain-core'
 import { SharedVaultInvite } from '../../SharedVault/User/Invite/SharedVaultInvite'
 import { SharedVaultInviteRepositoryInterface } from '../../SharedVault/User/Invite/SharedVaultInviteRepositoryInterface'
 import { SharedVaultUserPermission } from '../../SharedVault/User/SharedVaultUserPermission'
-import { GetSharedVaultInvitesSentByUser } from './GetSharedVaultInvitesSentByUser'
+import { GetSharedVaultInvitesSentToUser } from './GetSharedVaultInvitesSentToUser'
 
-describe('GetSharedVaultInvitesSentByUser', () => {
+describe('GetSharedVaultInvitesSentToUser', () => {
   let sharedVaultInviteRepository: SharedVaultInviteRepositoryInterface
   let invite: SharedVaultInvite
 
-  const createUseCase = () => new GetSharedVaultInvitesSentByUser(sharedVaultInviteRepository)
+  const createUseCase = () => new GetSharedVaultInvitesSentToUser(sharedVaultInviteRepository)
 
   beforeEach(() => {
     invite = SharedVaultInvite.create({
@@ -22,14 +22,14 @@ describe('GetSharedVaultInvitesSentByUser', () => {
     }).getValue()
 
     sharedVaultInviteRepository = {} as jest.Mocked<SharedVaultInviteRepositoryInterface>
-    sharedVaultInviteRepository.findBySenderUuid = jest.fn().mockResolvedValue([invite])
+    sharedVaultInviteRepository.findByUserUuid = jest.fn().mockResolvedValue([invite])
   })
 
-  it('should return invites sent by user', async () => {
+  it('should return invites sent to user', async () => {
     const useCase = createUseCase()
 
     const result = await useCase.execute({
-      senderUuid: '00000000-0000-0000-0000-000000000000',
+      userUuid: '00000000-0000-0000-0000-000000000000',
     })
 
     expect(result.getValue()).toEqual([invite])
@@ -38,10 +38,10 @@ describe('GetSharedVaultInvitesSentByUser', () => {
   it('should return empty array if no invites found', async () => {
     const useCase = createUseCase()
 
-    sharedVaultInviteRepository.findBySenderUuid = jest.fn().mockResolvedValue([])
+    sharedVaultInviteRepository.findByUserUuid = jest.fn().mockReturnValue([])
 
     const result = await useCase.execute({
-      senderUuid: '00000000-0000-0000-0000-000000000000',
+      userUuid: '00000000-0000-0000-0000-000000000000',
     })
 
     expect(result.getValue()).toEqual([])
@@ -51,31 +51,7 @@ describe('GetSharedVaultInvitesSentByUser', () => {
     const useCase = createUseCase()
 
     const result = await useCase.execute({
-      senderUuid: 'invalid-uuid',
-    })
-
-    expect(result.isFailed()).toBeTruthy()
-  })
-
-  it('should return invites sent by user for specific shared vault', async () => {
-    const useCase = createUseCase()
-
-    sharedVaultInviteRepository.findBySenderUuidAndSharedVaultUuid = jest.fn().mockResolvedValue([invite])
-
-    const result = await useCase.execute({
-      senderUuid: '00000000-0000-0000-0000-000000000000',
-      sharedVaultUuid: '00000000-0000-0000-0000-000000000000',
-    })
-
-    expect(result.getValue()).toEqual([invite])
-  })
-
-  it('should fail if shared vault uuid is invalid', async () => {
-    const useCase = createUseCase()
-
-    const result = await useCase.execute({
-      senderUuid: '00000000-0000-0000-0000-000000000000',
-      sharedVaultUuid: 'invalid-uuid',
+      userUuid: 'invalid-uuid',
     })
 
     expect(result.isFailed()).toBeTruthy()

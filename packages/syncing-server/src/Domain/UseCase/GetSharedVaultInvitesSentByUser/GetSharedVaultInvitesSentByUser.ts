@@ -13,8 +13,24 @@ export class GetSharedVaultInvitesSentByUser implements UseCaseInterface<SharedV
     }
     const senderUuid = senderUuidOrError.getValue()
 
-    const invites = await this.sharedVaultInviteRepository.findBySenderUuid(senderUuid)
+    let sharedVaultUuid: Uuid | undefined
+    if (dto.sharedVaultUuid) {
+      const sharedVaultUuidOrError = Uuid.create(dto.sharedVaultUuid)
+      if (sharedVaultUuidOrError.isFailed()) {
+        return Result.fail(sharedVaultUuidOrError.getError())
+      }
+      sharedVaultUuid = sharedVaultUuidOrError.getValue()
+    }
 
-    return Result.ok(invites)
+    if (sharedVaultUuid) {
+      return Result.ok(
+        await this.sharedVaultInviteRepository.findBySenderUuidAndSharedVaultUuid({
+          senderUuid,
+          sharedVaultUuid,
+        }),
+      )
+    }
+
+    return Result.ok(await this.sharedVaultInviteRepository.findBySenderUuid(senderUuid))
   }
 }
