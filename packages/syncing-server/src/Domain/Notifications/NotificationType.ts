@@ -1,5 +1,4 @@
-import { Result } from '../Core/Result'
-import { ValueObject } from '../Core/ValueObject'
+import { ValueObject, Result } from '@standardnotes/domain-core'
 
 import { NotificationTypeProps } from './NotificationTypeProps'
 

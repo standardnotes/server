@@ -1,6 +1,7 @@
-import { NotificationType, Timestamps, Uuid } from '@standardnotes/domain-core'
+import { Timestamps, Uuid } from '@standardnotes/domain-core'
 
 import { Notification } from './Notification'
+import { NotificationType } from './NotificationType'
 
 describe('Notification', () => {
   it('should create an entity', () => {

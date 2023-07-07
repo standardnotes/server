@@ -1,4 +1,6 @@
-import { NotificationType, Timestamps, Uuid } from '@standardnotes/domain-core'
+import { Timestamps, Uuid } from '@standardnotes/domain-core'
+
+import { NotificationType } from './NotificationType'
 
 export interface NotificationProps {
   userUuid: Uuid
