@@ -4,14 +4,15 @@ import { SharedVaultInviteRepositoryInterface } from '../../SharedVault/User/Inv
 import { UpdateSharedVaultInviteDTO } from './UpdateSharedVaultInviteDTO'
 import { SharedVaultUserPermission } from '../../SharedVault/User/SharedVaultUserPermission'
 import { TimerInterface } from '@standardnotes/time'
+import { SharedVaultInvite } from '../../SharedVault/User/Invite/SharedVaultInvite'
 
-export class UpdateSharedVaultInvite implements UseCaseInterface<void> {
+export class UpdateSharedVaultInvite implements UseCaseInterface<SharedVaultInvite> {
   constructor(
     private sharedVaultInviteRepository: SharedVaultInviteRepositoryInterface,
     private timer: TimerInterface,
   ) {}
 
-  async execute(dto: UpdateSharedVaultInviteDTO): Promise<Result<void>> {
+  async execute(dto: UpdateSharedVaultInviteDTO): Promise<Result<SharedVaultInvite>> {
     const inviteUuidOrError = Uuid.create(dto.inviteUuid)
     if (inviteUuidOrError.isFailed()) {
       return Result.fail(inviteUuidOrError.getError())
@@ -57,6 +58,6 @@ export class UpdateSharedVaultInvite implements UseCaseInterface<void> {
 
     await this.sharedVaultInviteRepository.save(invite)
 
-    return Result.ok()
+    return Result.ok(invite)
   }
 }

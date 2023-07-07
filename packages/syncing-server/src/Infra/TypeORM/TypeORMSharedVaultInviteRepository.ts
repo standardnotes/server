@@ -11,6 +11,34 @@ export class TypeORMSharedVaultInviteRepository implements SharedVaultInviteRepo
     private mapper: MapperInterface<SharedVaultInvite, TypeORMSharedVaultInvite>,
   ) {}
 
+  async findBySenderUuidAndSharedVaultUuid(dto: {
+    senderUuid: Uuid
+    sharedVaultUuid: Uuid
+  }): Promise<SharedVaultInvite[]> {
+    const persistence = await this.ormRepository
+      .createQueryBuilder('shared_vault_invite')
+      .where('shared_vault_invite.sender_uuid = :uuid', {
+        senderUuid: dto.senderUuid.value,
+      })
+      .andWhere('shared_vault_invite.shared_vault_uuid = :sharedVaultUuid', {
+        sharedVaultUuid: dto.sharedVaultUuid.value,
+      })
+      .getMany()
+
+    return persistence.map((p) => this.mapper.toDomain(p))
+  }
+
+  async findBySenderUuid(senderUuid: Uuid): Promise<SharedVaultInvite[]> {
+    const persistence = await this.ormRepository
+      .createQueryBuilder('shared_vault_invite')
+      .where('shared_vault_invite.sender_uuid = :senderUuid', {
+        senderUuid: senderUuid.value,
+      })
+      .getMany()
+
+    return persistence.map((p) => this.mapper.toDomain(p))
+  }
+
   async findByUserUuid(userUuid: Uuid): Promise<SharedVaultInvite[]> {
     const persistence = await this.ormRepository
       .createQueryBuilder('shared_vault_invite')
