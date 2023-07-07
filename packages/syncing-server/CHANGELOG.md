@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.58.1](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.58.0...@standardnotes/syncing-server@1.58.1) (2023-07-07)
+
+### Bug Fixes
+
+* transfer notifications from auth to syncing-server. ([#648](https://github.com/standardnotes/syncing-server-js/issues/648)) ([c288e5d](https://github.com/standardnotes/syncing-server-js/commit/c288e5d8dc54778a96a9fc33e3c9cae00583fade))
+
 # [1.58.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.57.0...@standardnotes/syncing-server@1.58.0) (2023-07-07)
 
 ### Features

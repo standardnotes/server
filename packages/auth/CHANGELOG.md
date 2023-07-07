@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.122.2](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.122.1...@standardnotes/auth-server@1.122.2) (2023-07-07)
+
+### Bug Fixes
+
+* transfer notifications from auth to syncing-server. ([#648](https://github.com/standardnotes/server/issues/648)) ([c288e5d](https://github.com/standardnotes/server/commit/c288e5d8dc54778a96a9fc33e3c9cae00583fade))
+
 ## [1.122.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.122.0...@standardnotes/auth-server@1.122.1) (2023-07-06)
 
 **Note:** Version bump only for package @standardnotes/auth-server
