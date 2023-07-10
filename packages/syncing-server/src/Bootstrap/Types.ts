@@ -52,7 +52,11 @@ const TYPES = {
   Sync_DeleteSharedVaultInvitesSentByUser: Symbol.for('Sync_DeleteSharedVaultInvitesSentByUser'),
   Sync_GetSharedVaultInvitesSentByUser: Symbol.for('Sync_GetSharedVaultInvitesSentByUser'),
   Sync_GetSharedVaultInvitesSentToUser: Symbol.for('Sync_GetSharedVaultInvitesSentToUser'),
-  Sync_SharedVaultInviteHttpMapper: Symbol.for('Sync_SharedVaultInviteHttpMapper'),
+  Sync_GetMessagesSentToUser: Symbol.for('Sync_GetMessagesSentToUser'),
+  Sync_GetMessagesSentByUser: Symbol.for('Sync_GetMessagesSentByUser'),
+  Sync_SendMessageToUser: Symbol.for('Sync_SendMessageToUser'),
+  Sync_DeleteAllMessagesSentToUser: Symbol.for('Sync_DeleteAllMessagesSentToUser'),
+  Sync_DeleteMessage: Symbol.for('Sync_DeleteMessage'),
   // Handlers
   Sync_AccountDeletionRequestedEventHandler: Symbol.for('Sync_AccountDeletionRequestedEventHandler'),
   Sync_DuplicateItemSyncedEventHandler: Symbol.for('Sync_DuplicateItemSyncedEventHandler'),
@@ -86,6 +90,8 @@ const TYPES = {
   // Mapping
   Sync_SharedVaultHttpMapper: Symbol.for('Sync_SharedVaultHttpMapper'),
   Sync_SharedVaultUserHttpMapper: Symbol.for('Sync_SharedVaultUserHttpMapper'),
+  Sync_SharedVaultInviteHttpMapper: Symbol.for('Sync_SharedVaultInviteHttpMapper'),
+  Sync_MessageHttpMapper: Symbol.for('Sync_MessageHttpMapper'),
 }
 
 export default TYPES
