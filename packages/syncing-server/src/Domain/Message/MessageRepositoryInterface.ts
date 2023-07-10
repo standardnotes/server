@@ -4,6 +4,8 @@ import { Message } from './Message'
 
 export interface MessageRepositoryInterface {
   findByUuid: (uuid: Uuid) => Promise<Message | null>
+  findByRecipientUuid: (uuid: Uuid) => Promise<Message[]>
+  findBySenderUuid: (uuid: Uuid) => Promise<Message[]>
   findByRecipientUuidAndReplaceabilityIdentifier: (dto: {
     recipientUuid: Uuid
     replaceabilityIdentifier: string
