@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.62.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.61.0...@standardnotes/syncing-server@1.62.0) (2023-07-10)
+
+### Features
+
+* messages controller. ([#653](https://github.com/standardnotes/syncing-server-js/issues/653)) ([18d07d4](https://github.com/standardnotes/syncing-server-js/commit/18d07d431f08dc17a276f84c0724935d9014a4fd))
+
 # [1.61.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.60.0...@standardnotes/syncing-server@1.61.0) (2023-07-10)
 
 ### Features
