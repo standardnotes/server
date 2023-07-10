@@ -11,6 +11,27 @@ export class TypeORMMessageRepository implements MessageRepositoryInterface {
     private mapper: MapperInterface<Message, TypeORMMessage>,
   ) {}
 
+  async findByRecipientUuidAndReplaceabilityIdentifier(dto: {
+    recipientUuid: Uuid
+    replaceabilityIdentifier: string
+  }): Promise<Message | null> {
+    const persistence = await this.ormRepository
+      .createQueryBuilder('message')
+      .where('message.recipientUuid = :recipientUuid', {
+        recipientUuid: dto.recipientUuid.value,
+      })
+      .andWhere('message.replaceabilityIdentifier = :replaceabilityIdentifier', {
+        replaceabilityIdentifier: dto.replaceabilityIdentifier,
+      })
+      .getOne()
+
+    if (persistence === null) {
+      return null
+    }
+
+    return this.mapper.toDomain(persistence)
+  }
+
   async findByUuid(uuid: Uuid): Promise<Message | null> {
     const persistence = await this.ormRepository
       .createQueryBuilder('message')
