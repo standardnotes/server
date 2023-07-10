@@ -1,4 +1,4 @@
-import { SyncItemsResponse } from '../../UseCase/SyncItemsResponse'
+import { SyncItemsResponse } from '../../UseCase/Syncing/SyncItems/SyncItemsResponse'
 import { SyncResponse20161215 } from './SyncResponse20161215'
 import { SyncResponse20200115 } from './SyncResponse20200115'
 

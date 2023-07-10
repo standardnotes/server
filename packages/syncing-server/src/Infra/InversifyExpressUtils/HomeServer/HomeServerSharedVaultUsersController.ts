@@ -5,8 +5,8 @@ import { ControllerContainerInterface, MapperInterface } from '@standardnotes/do
 
 import { SharedVaultUser } from '../../../Domain/SharedVault/User/SharedVaultUser'
 import { SharedVaultUserHttpRepresentation } from '../../../Mapping/Http/SharedVaultUserHttpRepresentation'
-import { GetSharedVaultUsers } from '../../../Domain/UseCase/GetSharedVaultUsers/GetSharedVaultUsers'
-import { RemoveUserFromSharedVault } from '../../../Domain/UseCase/RemoveUserFromSharedVault/RemoveUserFromSharedVault'
+import { GetSharedVaultUsers } from '../../../Domain/UseCase/SharedVaults/GetSharedVaultUsers/GetSharedVaultUsers'
+import { RemoveUserFromSharedVault } from '../../../Domain/UseCase/SharedVaults/RemoveUserFromSharedVault/RemoveUserFromSharedVault'
 
 export class HomeServerSharedVaultUsersController extends BaseHttpController {
   constructor(

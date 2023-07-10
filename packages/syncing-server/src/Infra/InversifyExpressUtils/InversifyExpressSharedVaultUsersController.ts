@@ -7,8 +7,8 @@ import { HomeServerSharedVaultUsersController } from './HomeServer/HomeServerSha
 import TYPES from '../../Bootstrap/Types'
 import { SharedVaultUser } from '../../Domain/SharedVault/User/SharedVaultUser'
 import { SharedVaultUserHttpRepresentation } from '../../Mapping/Http/SharedVaultUserHttpRepresentation'
-import { GetSharedVaultUsers } from '../../Domain/UseCase/GetSharedVaultUsers/GetSharedVaultUsers'
-import { RemoveUserFromSharedVault } from '../../Domain/UseCase/RemoveUserFromSharedVault/RemoveUserFromSharedVault'
+import { GetSharedVaultUsers } from '../../Domain/UseCase/SharedVaults/GetSharedVaultUsers/GetSharedVaultUsers'
+import { RemoveUserFromSharedVault } from '../../Domain/UseCase/SharedVaults/RemoveUserFromSharedVault/RemoveUserFromSharedVault'
 
 @controller('/shared-vaults/:sharedVaultUuid/users', TYPES.Sync_AuthMiddleware)
 export class InversifyExpressSharedVaultUsersController extends HomeServerSharedVaultUsersController {

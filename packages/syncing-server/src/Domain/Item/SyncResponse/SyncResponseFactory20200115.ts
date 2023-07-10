@@ -1,5 +1,4 @@
 import { ProjectorInterface } from '../../../Projection/ProjectorInterface'
-import { SyncItemsResponse } from '../../UseCase/SyncItemsResponse'
 import { Item } from '../Item'
 import { ItemConflict } from '../ItemConflict'
 import { ItemConflictProjection } from '../../../Projection/ItemConflictProjection'
@@ -7,6 +6,7 @@ import { ItemProjection } from '../../../Projection/ItemProjection'
 import { SyncResponse20200115 } from './SyncResponse20200115'
 import { SyncResponseFactoryInterface } from './SyncResponseFactoryInterface'
 import { SavedItemProjection } from '../../../Projection/SavedItemProjection'
+import { SyncItemsResponse } from '../../UseCase/Syncing/SyncItems/SyncItemsResponse'
 
 export class SyncResponseFactory20200115 implements SyncResponseFactoryInterface {
   constructor(
