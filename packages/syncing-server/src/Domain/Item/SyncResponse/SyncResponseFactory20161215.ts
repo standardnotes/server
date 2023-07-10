@@ -1,12 +1,13 @@
+import { ConflictType } from '@standardnotes/responses'
+
 import { ProjectorInterface } from '../../../Projection/ProjectorInterface'
-import { SyncItemsResponse } from '../../UseCase/SyncItemsResponse'
 import { Item } from '../Item'
 import { ItemConflict } from '../ItemConflict'
 import { ItemHash } from '../ItemHash'
 import { ItemProjection } from '../../../Projection/ItemProjection'
 import { SyncResponse20161215 } from './SyncResponse20161215'
 import { SyncResponseFactoryInterface } from './SyncResponseFactoryInterface'
-import { ConflictType } from '@standardnotes/responses'
+import { SyncItemsResponse } from '../../UseCase/Syncing/SyncItems/SyncItemsResponse'
 
 export class SyncResponseFactory20161215 implements SyncResponseFactoryInterface {
   private readonly LEGACY_MIN_CONFLICT_INTERVAL = 20_000_000

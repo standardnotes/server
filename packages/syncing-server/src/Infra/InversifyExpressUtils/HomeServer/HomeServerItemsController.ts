@@ -4,12 +4,12 @@ import { Request, Response } from 'express'
 
 import { Item } from '../../../Domain/Item/Item'
 import { SyncResponseFactoryResolverInterface } from '../../../Domain/Item/SyncResponse/SyncResponseFactoryResolverInterface'
-import { CheckIntegrity } from '../../../Domain/UseCase/CheckIntegrity/CheckIntegrity'
-import { GetItem } from '../../../Domain/UseCase/GetItem/GetItem'
-import { SyncItems } from '../../../Domain/UseCase/SyncItems'
+import { CheckIntegrity } from '../../../Domain/UseCase/Syncing/CheckIntegrity/CheckIntegrity'
+import { GetItem } from '../../../Domain/UseCase/Syncing/GetItem/GetItem'
 import { ItemProjection } from '../../../Projection/ItemProjection'
 import { ProjectorInterface } from '../../../Projection/ProjectorInterface'
 import { ApiVersion } from '../../../Domain/Api/ApiVersion'
+import { SyncItems } from '../../../Domain/UseCase/Syncing/SyncItems/SyncItems'
 
 export class HomeServerItemsController extends BaseHttpController {
   constructor(

@@ -12,9 +12,9 @@ import { ApiVersion } from '../../Domain/Api/ApiVersion'
 import { SyncResponse20200115 } from '../../Domain/Item/SyncResponse/SyncResponse20200115'
 import { SyncResponseFactoryInterface } from '../../Domain/Item/SyncResponse/SyncResponseFactoryInterface'
 import { SyncResponseFactoryResolverInterface } from '../../Domain/Item/SyncResponse/SyncResponseFactoryResolverInterface'
-import { CheckIntegrity } from '../../Domain/UseCase/CheckIntegrity/CheckIntegrity'
-import { GetItem } from '../../Domain/UseCase/GetItem/GetItem'
-import { SyncItems } from '../../Domain/UseCase/SyncItems'
+import { CheckIntegrity } from '../../Domain/UseCase/Syncing/CheckIntegrity/CheckIntegrity'
+import { GetItem } from '../../Domain/UseCase/Syncing/GetItem/GetItem'
+import { SyncItems } from '../../Domain/UseCase/Syncing/SyncItems/SyncItems'
 
 describe('InversifyExpressItemsController', () => {
   let syncItems: SyncItems

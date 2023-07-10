@@ -3,14 +3,14 @@ import { BaseHttpController, results } from 'inversify-express-utils'
 import { HttpStatusCode } from '@standardnotes/responses'
 import { ControllerContainerInterface, MapperInterface } from '@standardnotes/domain-core'
 
-import { GetSharedVaults } from '../../../Domain/UseCase/GetSharedVaults/GetSharedVaults'
+import { GetSharedVaults } from '../../../Domain/UseCase/SharedVaults/GetSharedVaults/GetSharedVaults'
 import { SharedVault } from '../../../Domain/SharedVault/SharedVault'
 import { SharedVaultHttpRepresentation } from '../../../Mapping/Http/SharedVaultHttpRepresentation'
-import { CreateSharedVault } from '../../../Domain/UseCase/CreateSharedVault/CreateSharedVault'
+import { CreateSharedVault } from '../../../Domain/UseCase/SharedVaults/CreateSharedVault/CreateSharedVault'
 import { SharedVaultUser } from '../../../Domain/SharedVault/User/SharedVaultUser'
 import { SharedVaultUserHttpRepresentation } from '../../../Mapping/Http/SharedVaultUserHttpRepresentation'
-import { DeleteSharedVault } from '../../../Domain/UseCase/DeleteSharedVault/DeleteSharedVault'
-import { CreateSharedVaultFileValetToken } from '../../../Domain/UseCase/CreateSharedVaultFileValetToken/CreateSharedVaultFileValetToken'
+import { DeleteSharedVault } from '../../../Domain/UseCase/SharedVaults/DeleteSharedVault/DeleteSharedVault'
+import { CreateSharedVaultFileValetToken } from '../../../Domain/UseCase/SharedVaults/CreateSharedVaultFileValetToken/CreateSharedVaultFileValetToken'
 
 export class HomeServerSharedVaultsController extends BaseHttpController {
   constructor(
