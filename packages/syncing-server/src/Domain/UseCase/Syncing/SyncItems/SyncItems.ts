@@ -1,14 +1,14 @@
+import { Result, UseCaseInterface } from '@standardnotes/domain-core'
 import { Item } from '../../../Item/Item'
 import { ItemConflict } from '../../../Item/ItemConflict'
 import { ItemServiceInterface } from '../../../Item/ItemServiceInterface'
-import { UseCaseInterface } from '../../UseCaseInterface'
 import { SyncItemsDTO } from './SyncItemsDTO'
 import { SyncItemsResponse } from './SyncItemsResponse'
 
-export class SyncItems implements UseCaseInterface {
+export class SyncItems implements UseCaseInterface<SyncItemsResponse> {
   constructor(private itemService: ItemServiceInterface) {}
 
-  async execute(dto: SyncItemsDTO): Promise<SyncItemsResponse> {
+  async execute(dto: SyncItemsDTO): Promise<Result<SyncItemsResponse>> {
     const getItemsResult = await this.itemService.getItems({
       userUuid: dto.userUuid,
       syncToken: dto.syncToken,
@@ -38,7 +38,7 @@ export class SyncItems implements UseCaseInterface {
       cursorToken: getItemsResult.cursorToken,
     }
 
-    return syncResponse
+    return Result.ok(syncResponse)
   }
 
   private isFirstSync(dto: SyncItemsDTO): boolean {

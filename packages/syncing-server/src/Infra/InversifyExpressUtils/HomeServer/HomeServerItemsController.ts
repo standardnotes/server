@@ -10,6 +10,7 @@ import { ItemProjection } from '../../../Projection/ItemProjection'
 import { ProjectorInterface } from '../../../Projection/ProjectorInterface'
 import { ApiVersion } from '../../../Domain/Api/ApiVersion'
 import { SyncItems } from '../../../Domain/UseCase/Syncing/SyncItems/SyncItems'
+import { HttpStatusCode } from '@standardnotes/responses'
 
 export class HomeServerItemsController extends BaseHttpController {
   constructor(
@@ -41,16 +42,21 @@ export class HomeServerItemsController extends BaseHttpController {
       computeIntegrityHash: request.body.compute_integrity === true,
       syncToken: request.body.sync_token,
       cursorToken: request.body.cursor_token,
+      sharedVaultUuids: request.body.shared_vault_uuids,
       limit: request.body.limit,
       contentType: request.body.content_type,
       apiVersion: request.body.api ?? ApiVersion.v20161215,
+      snjsVersion: <string>request.headers['x-snjs-version'],
       readOnlyAccess: response.locals.readOnlyAccess,
       sessionUuid: response.locals.session ? response.locals.session.uuid : null,
     })
+    if (syncResult.isFailed()) {
+      return this.json({ error: { message: syncResult.getError() } }, HttpStatusCode.BadRequest)
+    }
 
     const syncResponse = await this.syncResponseFactoryResolver
       .resolveSyncResponseFactoryVersion(request.body.api)
-      .createResponse(syncResult)
+      .createResponse(syncResult.getValue())
 
     return this.json(syncResponse)
   }
@@ -67,19 +73,25 @@ export class HomeServerItemsController extends BaseHttpController {
       freeUser: response.locals.freeUser,
     })
 
-    return this.json(result)
+    if (result.isFailed()) {
+      return this.json({ error: { message: result.getError() } }, HttpStatusCode.BadRequest)
+    }
+
+    return this.json({
+      mismatches: result.getValue(),
+    })
   }
 
-  async getSingleItem(request: Request, response: Response): Promise<results.NotFoundResult | results.JsonResult> {
+  async getSingleItem(request: Request, response: Response): Promise<results.JsonResult> {
     const result = await this.getItem.execute({
       userUuid: response.locals.user.uuid,
       itemUuid: request.params.uuid,
     })
 
-    if (!result.success) {
-      return this.notFound()
+    if (result.isFailed()) {
+      return this.json({ error: { message: result.getError() } }, 404)
     }
 
-    return this.json({ item: await this.itemProjector.projectFull(result.item) })
+    return this.json({ item: await this.itemProjector.projectFull(result.getValue()) })
   }
 }

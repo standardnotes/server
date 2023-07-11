@@ -2,9 +2,10 @@ import 'reflect-metadata'
 
 import * as express from 'express'
 import { ContentType } from '@standardnotes/common'
+import { Result } from '@standardnotes/domain-core'
+import { results } from 'inversify-express-utils'
 
 import { InversifyExpressItemsController } from './InversifyExpressItemsController'
-import { results } from 'inversify-express-utils'
 import { Item } from '../../Domain/Item/Item'
 import { ItemProjection } from '../../Projection/ItemProjection'
 import { ProjectorInterface } from '../../Projection/ProjectorInterface'
@@ -35,13 +36,13 @@ describe('InversifyExpressItemsController', () => {
     itemProjector.projectFull = jest.fn().mockReturnValue({ foo: 'bar' })
 
     syncItems = {} as jest.Mocked<SyncItems>
-    syncItems.execute = jest.fn().mockReturnValue({ foo: 'bar' })
+    syncItems.execute = jest.fn().mockReturnValue(Result.ok({ foo: 'bar' }))
 
     checkIntegrity = {} as jest.Mocked<CheckIntegrity>
-    checkIntegrity.execute = jest.fn().mockReturnValue({ mismatches: [{ uuid: '1-2-3', updated_at_timestamp: 2 }] })
+    checkIntegrity.execute = jest.fn().mockReturnValue(Result.ok([{ uuid: '1-2-3', updated_at_timestamp: 2 }]))
 
     getItem = {} as jest.Mocked<GetItem>
-    getItem.execute = jest.fn().mockReturnValue({ success: true, item: {} as jest.Mocked<Item> })
+    getItem.execute = jest.fn().mockReturnValue(Result.ok({} as jest.Mocked<Item>))
 
     request = {
       headers: {},
@@ -100,7 +101,7 @@ describe('InversifyExpressItemsController', () => {
 
   it('should return 404 on a missing single item', async () => {
     request.params.uuid = '1-2-3'
-    getItem.execute = jest.fn().mockReturnValue({ success: false })
+    getItem.execute = jest.fn().mockReturnValue(Result.fail('Oops'))
 
     const httpResponse = <results.NotFoundResult>await createController().getSingleItem(request, response)
     const result = await httpResponse.executeAsync()

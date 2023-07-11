@@ -36,10 +36,7 @@ export class InversifyExpressItemsController extends HomeServerItemsController {
   }
 
   @httpGet('/:uuid')
-  override async getSingleItem(
-    request: Request,
-    response: Response,
-  ): Promise<results.NotFoundResult | results.JsonResult> {
+  override async getSingleItem(request: Request, response: Response): Promise<results.JsonResult> {
     return super.getSingleItem(request, response)
   }
 }

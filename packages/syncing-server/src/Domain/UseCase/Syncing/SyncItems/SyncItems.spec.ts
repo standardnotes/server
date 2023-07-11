@@ -54,20 +54,20 @@ describe('SyncItems', () => {
   })
 
   it('should sync items', async () => {
-    expect(
-      await createUseCase().execute({
-        userUuid: '1-2-3',
-        itemHashes: [itemHash],
-        computeIntegrityHash: false,
-        syncToken: 'foo',
-        cursorToken: 'bar',
-        limit: 10,
-        readOnlyAccess: false,
-        contentType: 'Note',
-        apiVersion: ApiVersion.v20200115,
-        sessionUuid: null,
-      }),
-    ).toEqual({
+    const result = await createUseCase().execute({
+      userUuid: '1-2-3',
+      itemHashes: [itemHash],
+      computeIntegrityHash: false,
+      syncToken: 'foo',
+      cursorToken: 'bar',
+      limit: 10,
+      readOnlyAccess: false,
+      contentType: 'Note',
+      apiVersion: ApiVersion.v20200115,
+      sessionUuid: null,
+      snjsVersion: '1.2.3',
+    })
+    expect(result.getValue()).toEqual({
       conflicts: [],
       cursorToken: 'asdzxc',
       retrievedItems: [item1],
@@ -93,18 +93,18 @@ describe('SyncItems', () => {
   })
 
   it('should sync items and return items keys on top for first sync', async () => {
-    expect(
-      await createUseCase().execute({
-        userUuid: '1-2-3',
-        itemHashes: [itemHash],
-        computeIntegrityHash: false,
-        limit: 10,
-        readOnlyAccess: false,
-        sessionUuid: '2-3-4',
-        contentType: 'Note',
-        apiVersion: ApiVersion.v20200115,
-      }),
-    ).toEqual({
+    const result = await createUseCase().execute({
+      userUuid: '1-2-3',
+      itemHashes: [itemHash],
+      computeIntegrityHash: false,
+      limit: 10,
+      readOnlyAccess: false,
+      sessionUuid: '2-3-4',
+      contentType: 'Note',
+      apiVersion: ApiVersion.v20200115,
+      snjsVersion: '1.2.3',
+    })
+    expect(result.getValue()).toEqual({
       conflicts: [],
       cursorToken: 'asdzxc',
       retrievedItems: [item3, item1],
@@ -134,20 +134,21 @@ describe('SyncItems', () => {
       syncToken: 'qwerty',
     })
 
-    expect(
-      await createUseCase().execute({
-        userUuid: '1-2-3',
-        itemHashes: [itemHash],
-        computeIntegrityHash: false,
-        syncToken: 'foo',
-        readOnlyAccess: false,
-        sessionUuid: '2-3-4',
-        cursorToken: 'bar',
-        limit: 10,
-        contentType: 'Note',
-        apiVersion: ApiVersion.v20200115,
-      }),
-    ).toEqual({
+    const result = await createUseCase().execute({
+      userUuid: '1-2-3',
+      itemHashes: [itemHash],
+      computeIntegrityHash: false,
+      syncToken: 'foo',
+      readOnlyAccess: false,
+      sessionUuid: '2-3-4',
+      cursorToken: 'bar',
+      limit: 10,
+      contentType: 'Note',
+      apiVersion: ApiVersion.v20200115,
+      snjsVersion: '1.2.3',
+    })
+
+    expect(result.getValue()).toEqual({
       conflicts: [
         {
           serverItem: item2,

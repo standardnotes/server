@@ -1,16 +1,15 @@
 import { IntegrityPayload } from '@standardnotes/responses'
+import { Result, UseCaseInterface } from '@standardnotes/domain-core'
 import { ContentType } from '@standardnotes/common'
 
 import { ItemRepositoryInterface } from '../../../Item/ItemRepositoryInterface'
-import { UseCaseInterface } from '../../UseCaseInterface'
 import { CheckIntegrityDTO } from './CheckIntegrityDTO'
-import { CheckIntegrityResponse } from './CheckIntegrityResponse'
 import { ExtendedIntegrityPayload } from '../../../Item/ExtendedIntegrityPayload'
 
-export class CheckIntegrity implements UseCaseInterface {
+export class CheckIntegrity implements UseCaseInterface<IntegrityPayload[]> {
   constructor(private itemRepository: ItemRepositoryInterface) {}
 
-  async execute(dto: CheckIntegrityDTO): Promise<CheckIntegrityResponse> {
+  async execute(dto: CheckIntegrityDTO): Promise<Result<IntegrityPayload[]>> {
     const serverItemIntegrityPayloads = await this.itemRepository.findItemsForComputingIntegrityPayloads(dto.userUuid)
 
     const serverItemIntegrityPayloadsMap = new Map<string, ExtendedIntegrityPayload>()
@@ -59,8 +58,6 @@ export class CheckIntegrity implements UseCaseInterface {
       }
     }
 
-    return {
-      mismatches,
-    }
+    return Result.ok(mismatches)
   }
 }
