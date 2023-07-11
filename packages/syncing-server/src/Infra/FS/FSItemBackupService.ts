@@ -1,4 +1,5 @@
 import { KeyParamsData } from '@standardnotes/responses'
+import { MapperInterface } from '@standardnotes/domain-core'
 import { promises } from 'fs'
 import * as uuid from 'uuid'
 import { Logger } from 'winston'
@@ -6,13 +7,12 @@ import { dirname } from 'path'
 
 import { Item } from '../../Domain/Item/Item'
 import { ItemBackupServiceInterface } from '../../Domain/Item/ItemBackupServiceInterface'
-import { ItemProjection } from '../../Projection/ItemProjection'
-import { ProjectorInterface } from '../../Projection/ProjectorInterface'
+import { ItemBackupRepresentation } from '../../Mapping/Backup/ItemBackupRepresentation'
 
 export class FSItemBackupService implements ItemBackupServiceInterface {
   constructor(
     private fileUploadPath: string,
-    private itemProjector: ProjectorInterface<Item, ItemProjection>,
+    private mapper: MapperInterface<Item, ItemBackupRepresentation>,
     private logger: Logger,
   ) {}
 
@@ -22,12 +22,12 @@ export class FSItemBackupService implements ItemBackupServiceInterface {
 
   async dump(item: Item): Promise<string> {
     const contents = JSON.stringify({
-      item: await this.itemProjector.projectCustom('dump', item),
+      item: this.mapper.toProjection(item),
     })
 
     const path = `${this.fileUploadPath}/dumps/${uuid.v4()}`
 
-    this.logger.debug(`Dumping item ${item.uuid} to ${path}`)
+    this.logger.debug(`Dumping item ${item.id.toString()} to ${path}`)
 
     await promises.mkdir(dirname(path), { recursive: true })
 

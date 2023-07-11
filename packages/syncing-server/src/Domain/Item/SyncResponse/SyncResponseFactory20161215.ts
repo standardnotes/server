@@ -1,18 +1,18 @@
 import { ConflictType } from '@standardnotes/responses'
+import { MapperInterface } from '@standardnotes/domain-core'
 
-import { ProjectorInterface } from '../../../Projection/ProjectorInterface'
 import { Item } from '../Item'
 import { ItemConflict } from '../ItemConflict'
 import { ItemHash } from '../ItemHash'
-import { ItemProjection } from '../../../Projection/ItemProjection'
 import { SyncResponse20161215 } from './SyncResponse20161215'
 import { SyncResponseFactoryInterface } from './SyncResponseFactoryInterface'
 import { SyncItemsResponse } from '../../UseCase/Syncing/SyncItems/SyncItemsResponse'
+import { ItemHttpRepresentation } from '../../../Mapping/Http/ItemHttpRepresentation'
 
 export class SyncResponseFactory20161215 implements SyncResponseFactoryInterface {
   private readonly LEGACY_MIN_CONFLICT_INTERVAL = 20_000_000
 
-  constructor(private itemProjector: ProjectorInterface<Item, ItemProjection>) {}
+  constructor(private mapper: MapperInterface<Item, ItemHttpRepresentation>) {}
 
   async createResponse(syncItemsResponse: SyncItemsResponse): Promise<SyncResponse20161215> {
     const conflicts = syncItemsResponse.conflicts.filter(
@@ -28,9 +28,7 @@ export class SyncResponseFactory20161215 implements SyncResponseFactoryInterface
     const unsaved = []
     for (const conflict of pickOutConflictsResult.unsavedItems) {
       unsaved.push({
-        item: conflict.serverItem
-          ? <ItemProjection>await this.itemProjector.projectFull(conflict.serverItem)
-          : <ItemHash>conflict.unsavedItem,
+        item: conflict.serverItem ? this.mapper.toProjection(conflict.serverItem) : <ItemHash>conflict.unsavedItem,
         error: {
           tag: conflict.type,
         },
@@ -39,12 +37,12 @@ export class SyncResponseFactory20161215 implements SyncResponseFactoryInterface
 
     const retrievedItems = []
     for (const item of pickOutConflictsResult.retrievedItems) {
-      retrievedItems.push(<ItemProjection>await this.itemProjector.projectFull(item))
+      retrievedItems.push(this.mapper.toProjection(item))
     }
 
     const savedItems = []
     for (const item of syncItemsResponse.savedItems) {
-      savedItems.push(<ItemProjection>await this.itemProjector.projectFull(item))
+      savedItems.push(this.mapper.toProjection(item))
     }
 
     return {
@@ -64,16 +62,16 @@ export class SyncResponseFactory20161215 implements SyncResponseFactoryInterface
     unsavedItems: Array<ItemConflict>
     retrievedItems: Array<Item>
   } {
-    const savedIds: Array<string> = savedItems.map((savedItem: Item) => savedItem.uuid)
-    const retrievedIds: Array<string> = retrievedItems.map((retrievedItem: Item) => retrievedItem.uuid)
+    const savedIds: Array<string> = savedItems.map((savedItem: Item) => savedItem.id.toString())
+    const retrievedIds: Array<string> = retrievedItems.map((retrievedItem: Item) => retrievedItem.id.toString())
 
     const conflictingIds = savedIds.filter((savedId) => retrievedIds.includes(savedId))
 
     for (const conflictingId of conflictingIds) {
-      const savedItem = <Item>savedItems.find((item) => item.uuid === conflictingId)
-      const conflictedItem = <Item>retrievedItems.find((item) => item.uuid === conflictingId)
+      const savedItem = <Item>savedItems.find((item) => item.id.toString() === conflictingId)
+      const conflictedItem = <Item>retrievedItems.find((item) => item.id.toString() === conflictingId)
 
-      const difference = savedItem.updatedAtTimestamp - conflictedItem.updatedAtTimestamp
+      const difference = savedItem.props.timestamps.updatedAt - conflictedItem.props.timestamps.updatedAt
 
       if (Math.abs(difference) > this.LEGACY_MIN_CONFLICT_INTERVAL) {
         unsavedItems.push({
@@ -82,7 +80,7 @@ export class SyncResponseFactory20161215 implements SyncResponseFactoryInterface
         })
       }
 
-      retrievedItems = retrievedItems.filter((retrievedItem: Item) => retrievedItem.uuid !== conflictingId)
+      retrievedItems = retrievedItems.filter((retrievedItem: Item) => retrievedItem.id.toString() !== conflictingId)
     }
 
     return {

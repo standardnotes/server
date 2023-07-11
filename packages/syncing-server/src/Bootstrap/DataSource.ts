@@ -1,9 +1,9 @@
 import { DataSource, EntityTarget, LoggerOptions, ObjectLiteral, Repository } from 'typeorm'
 import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions'
-import { Item } from '../Domain/Item/Item'
-import { Notification } from '../Domain/Notifications/Notification'
 import { Env } from './Env'
 import { SqliteConnectionOptions } from 'typeorm/driver/sqlite/SqliteConnectionOptions'
+import { TypeORMItem } from '../Infra/TypeORM/TypeORMItem'
+import { TypeORMNotification } from '../Infra/TypeORM/TypeORMNotification'
 
 export class AppDataSource {
   private _dataSource: DataSource | undefined
@@ -33,7 +33,7 @@ export class AppDataSource {
 
     const commonDataSourceOptions = {
       maxQueryExecutionTime,
-      entities: [Item, Notification],
+      entities: [TypeORMItem, TypeORMNotification],
       migrations: [`${__dirname}/../../migrations/${isConfiguredForMySQL ? 'mysql' : 'sqlite'}/*.js`],
       migrationsRun: true,
       logging: <LoggerOptions>this.env.get('DB_DEBUG_LEVEL', true) ?? 'info',

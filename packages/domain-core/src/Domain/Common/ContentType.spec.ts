@@ -5,11 +5,11 @@ describe('ContentType', () => {
     const valueOrError = ContentType.create(ContentType.TYPES.Component)
 
     expect(valueOrError.isFailed()).toBeFalsy()
-    expect(valueOrError.getValue().value).toEqual('SIGN_IN')
+    expect(valueOrError.getValue().value).toEqual('SN|Component')
   })
 
   it('should not create an invalid value object', () => {
-    for (const value of ['', undefined, null, 0, 'FOOBAR']) {
+    for (const value of ['', undefined, 0, 'FOOBAR']) {
       const valueOrError = ContentType.create(value as string)
 
       expect(valueOrError.isFailed()).toBeTruthy()
@@ -28,5 +28,12 @@ describe('ContentType', () => {
 
     expect(valueOrError.isFailed()).toBeFalsy()
     expect(valueOrError.getValue().getDisplayName()).toBeNull()
+  })
+
+  it('should fallback to the value if the display name is not found', () => {
+    const valueOrError = ContentType.create(ContentType.TYPES.Unknown)
+
+    expect(valueOrError.isFailed()).toBeFalsy()
+    expect(valueOrError.getValue().getDisplayName()).toEqual('Unknown')
   })
 })

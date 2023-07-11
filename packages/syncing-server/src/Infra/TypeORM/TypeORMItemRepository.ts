@@ -1,19 +1,24 @@
+import { ReadStream } from 'fs'
 import { Repository, SelectQueryBuilder } from 'typeorm'
+import { MapperInterface } from '@standardnotes/domain-core'
+
 import { Item } from '../../Domain/Item/Item'
 import { ItemQuery } from '../../Domain/Item/ItemQuery'
 import { ItemRepositoryInterface } from '../../Domain/Item/ItemRepositoryInterface'
-import { ReadStream } from 'fs'
 import { ExtendedIntegrityPayload } from '../../Domain/Item/ExtendedIntegrityPayload'
+import { TypeORMItem } from './TypeORMItem'
 
 export class TypeORMItemRepository implements ItemRepositoryInterface {
-  constructor(private ormRepository: Repository<Item>) {}
+  constructor(private ormRepository: Repository<TypeORMItem>, private mapper: MapperInterface<Item, TypeORMItem>) {}
 
-  async save(item: Item): Promise<Item> {
-    return this.ormRepository.save(item)
+  async save(item: Item): Promise<void> {
+    const persistence = this.mapper.toProjection(item)
+
+    await this.ormRepository.save(persistence)
   }
 
-  async remove(item: Item): Promise<Item> {
-    return this.ormRepository.remove(item)
+  async remove(item: Item): Promise<void> {
+    await this.ormRepository.remove(this.mapper.toProjection(item))
   }
 
   async updateContentSize(itemUuid: string, contentSize: number): Promise<void> {
@@ -51,12 +56,18 @@ export class TypeORMItemRepository implements ItemRepositoryInterface {
   }
 
   async findByUuid(uuid: string): Promise<Item | null> {
-    return this.ormRepository
+    const persistence = await this.ormRepository
       .createQueryBuilder('item')
       .where('item.uuid = :uuid', {
         uuid,
       })
       .getOne()
+
+    if (persistence === null) {
+      return null
+    }
+
+    return this.mapper.toDomain(persistence)
   }
 
   async findDatesForComputingIntegrityHash(userUuid: string): Promise<Array<{ updated_at_timestamp: number }>> {
@@ -84,17 +95,25 @@ export class TypeORMItemRepository implements ItemRepositoryInterface {
   }
 
   async findByUuidAndUserUuid(uuid: string, userUuid: string): Promise<Item | null> {
-    return this.ormRepository
+    const persistence = await this.ormRepository
       .createQueryBuilder('item')
       .where('item.uuid = :uuid AND item.user_uuid = :userUuid', {
         uuid,
         userUuid,
       })
       .getOne()
+
+    if (persistence === null) {
+      return null
+    }
+
+    return this.mapper.toDomain(persistence)
   }
 
   async findAll(query: ItemQuery): Promise<Item[]> {
-    return this.createFindAllQueryBuilder(query).getMany()
+    const persistence = await this.createFindAllQueryBuilder(query).getMany()
+
+    return persistence.map((p) => this.mapper.toDomain(p))
   }
 
   async findAllRaw<T>(query: ItemQuery): Promise<T[]> {
@@ -126,7 +145,7 @@ export class TypeORMItemRepository implements ItemRepositoryInterface {
       .execute()
   }
 
-  private createFindAllQueryBuilder(query: ItemQuery): SelectQueryBuilder<Item> {
+  private createFindAllQueryBuilder(query: ItemQuery): SelectQueryBuilder<TypeORMItem> {
     const queryBuilder = this.ormRepository.createQueryBuilder('item')
 
     if (query.sortBy !== undefined && query.sortOrder !== undefined) {

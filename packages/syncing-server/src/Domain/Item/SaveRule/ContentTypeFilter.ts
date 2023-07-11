@@ -1,15 +1,14 @@
-import { ContentType } from '@standardnotes/common'
+import { ConflictType } from '@standardnotes/responses'
+import { ContentType } from '@standardnotes/domain-core'
 
 import { ItemSaveValidationDTO } from '../SaveValidator/ItemSaveValidationDTO'
 import { ItemSaveRuleResult } from './ItemSaveRuleResult'
 import { ItemSaveRuleInterface } from './ItemSaveRuleInterface'
-import { ConflictType } from '@standardnotes/responses'
 
 export class ContentTypeFilter implements ItemSaveRuleInterface {
   async check(dto: ItemSaveValidationDTO): Promise<ItemSaveRuleResult> {
-    const validContentType = Object.values(ContentType).includes(dto.itemHash.content_type as ContentType)
-
-    if (!validContentType) {
+    const contentTypeOrError = ContentType.create(dto.itemHash.content_type)
+    if (contentTypeOrError.isFailed()) {
       return {
         passed: false,
         conflict: {

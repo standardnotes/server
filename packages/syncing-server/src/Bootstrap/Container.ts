@@ -9,9 +9,6 @@ import { ItemRepositoryInterface } from '../Domain/Item/ItemRepositoryInterface'
 import { TypeORMItemRepository } from '../Infra/TypeORM/TypeORMItemRepository'
 import { Repository } from 'typeorm'
 import { Item } from '../Domain/Item/Item'
-import { ItemProjection } from '../Projection/ItemProjection'
-import { ProjectorInterface } from '../Projection/ProjectorInterface'
-import { ItemProjector } from '../Projection/ItemProjector'
 import {
   DirectCallDomainEventPublisher,
   DirectCallEventMessageHandler,
@@ -26,15 +23,12 @@ import { Timer, TimerInterface } from '@standardnotes/time'
 import { ItemTransferCalculatorInterface } from '../Domain/Item/ItemTransferCalculatorInterface'
 import { ItemTransferCalculator } from '../Domain/Item/ItemTransferCalculator'
 import { ItemConflict } from '../Domain/Item/ItemConflict'
-import { ItemFactory } from '../Domain/Item/ItemFactory'
-import { ItemFactoryInterface } from '../Domain/Item/ItemFactoryInterface'
 import { ItemService } from '../Domain/Item/ItemService'
 import { ItemServiceInterface } from '../Domain/Item/ItemServiceInterface'
 import { ContentFilter } from '../Domain/Item/SaveRule/ContentFilter'
 import { ContentTypeFilter } from '../Domain/Item/SaveRule/ContentTypeFilter'
 import { OwnershipFilter } from '../Domain/Item/SaveRule/OwnershipFilter'
 import { TimeDifferenceFilter } from '../Domain/Item/SaveRule/TimeDifferenceFilter'
-import { UuidFilter } from '../Domain/Item/SaveRule/UuidFilter'
 import { ItemSaveValidator } from '../Domain/Item/SaveValidator/ItemSaveValidator'
 import { ItemSaveValidatorInterface } from '../Domain/Item/SaveValidator/ItemSaveValidatorInterface'
 import { SyncResponseFactory20161215 } from '../Domain/Item/SyncResponse/SyncResponseFactory20161215'
@@ -45,10 +39,6 @@ import { CheckIntegrity } from '../Domain/UseCase/Syncing/CheckIntegrity/CheckIn
 import { GetItem } from '../Domain/UseCase/Syncing/GetItem/GetItem'
 import { SyncItems } from '../Domain/UseCase/Syncing/SyncItems/SyncItems'
 import { InversifyExpressAuthMiddleware } from '../Infra/InversifyExpressUtils/Middleware/InversifyExpressAuthMiddleware'
-import { ItemConflictProjection } from '../Projection/ItemConflictProjection'
-import { ItemConflictProjector } from '../Projection/ItemConflictProjector'
-import { SavedItemProjection } from '../Projection/SavedItemProjection'
-import { SavedItemProjector } from '../Projection/SavedItemProjector'
 import { S3Client } from '@aws-sdk/client-s3'
 import { SQSClient, SQSClientConfig } from '@aws-sdk/client-sqs'
 import { ContentDecoder } from '@standardnotes/common'
@@ -70,9 +60,21 @@ import { ItemBackupServiceInterface } from '../Domain/Item/ItemBackupServiceInte
 import { FSItemBackupService } from '../Infra/FS/FSItemBackupService'
 import { AuthHttpService } from '../Infra/HTTP/AuthHttpService'
 import { S3ItemBackupService } from '../Infra/S3/S3ItemBackupService'
-import { ControllerContainer, ControllerContainerInterface } from '@standardnotes/domain-core'
+import { ControllerContainer, ControllerContainerInterface, MapperInterface } from '@standardnotes/domain-core'
 import { HomeServerItemsController } from '../Infra/InversifyExpressUtils/HomeServer/HomeServerItemsController'
 import { Transform } from 'stream'
+import { TypeORMItem } from '../Infra/TypeORM/TypeORMItem'
+import { ItemPersistenceMapper } from '../Mapping/Persistence/ItemPersistenceMapper'
+import { ItemHttpRepresentation } from '../Mapping/Http/ItemHttpRepresentation'
+import { ItemHttpMapper } from '../Mapping/Http/ItemHttpMapper'
+import { SavedItemHttpRepresentation } from '../Mapping/Http/SavedItemHttpRepresentation'
+import { SavedItemHttpMapper } from '../Mapping/Http/SavedItemHttpMapper'
+import { ItemConflictHttpRepresentation } from '../Mapping/Http/ItemConflictHttpRepresentation'
+import { ItemConflictHttpMapper } from '../Mapping/Http/ItemConflictHttpMapper'
+import { ItemBackupRepresentation } from '../Mapping/Backup/ItemBackupRepresentation'
+import { ItemBackupMapper } from '../Mapping/Backup/ItemBackupMapper'
+import { SaveNewItem } from '../Domain/UseCase/Syncing/SaveNewItem/SaveNewItem'
+import { UpdateExistingItem } from '../Domain/UseCase/Syncing/UpdateExistingItem/UpdateExistingItem'
 
 export class ContainerConfigLoader {
   private readonly DEFAULT_CONTENT_SIZE_TRANSFER_LIMIT = 10_000_000
@@ -121,6 +123,8 @@ export class ContainerConfigLoader {
     await appDataSource.initialize()
 
     logger.debug('Database initialized')
+
+    container.bind<TimerInterface>(TYPES.Sync_Timer).toConstantValue(new Timer())
 
     const isConfiguredForHomeServer = env.get('MODE', true) === 'home-server'
 
@@ -201,24 +205,37 @@ export class ContainerConfigLoader {
       })
     }
 
-    // Repositories
-    container.bind<ItemRepositoryInterface>(TYPES.Sync_ItemRepository).toDynamicValue((context: interfaces.Context) => {
-      return new TypeORMItemRepository(context.container.get(TYPES.Sync_ORMItemRepository))
-    })
+    // Mapping
+    container
+      .bind<MapperInterface<Item, TypeORMItem>>(TYPES.Sync_ItemPersistenceMapper)
+      .toConstantValue(new ItemPersistenceMapper())
+    container
+      .bind<MapperInterface<Item, ItemHttpRepresentation>>(TYPES.Sync_ItemHttpMapper)
+      .toConstantValue(new ItemHttpMapper(container.get(TYPES.Sync_Timer)))
+    container
+      .bind<MapperInterface<Item, SavedItemHttpRepresentation>>(TYPES.Sync_SavedItemHttpMapper)
+      .toConstantValue(new SavedItemHttpMapper(container.get(TYPES.Sync_Timer)))
+    container
+      .bind<MapperInterface<ItemConflict, ItemConflictHttpRepresentation>>(TYPES.Sync_ItemConflictHttpMapper)
+      .toConstantValue(new ItemConflictHttpMapper(container.get(TYPES.Sync_ItemHttpMapper)))
+    container
+      .bind<MapperInterface<Item, ItemBackupRepresentation>>(TYPES.Sync_ItemBackupMapper)
+      .toConstantValue(new ItemBackupMapper(container.get(TYPES.Sync_Timer)))
 
     // ORM
     container
-      .bind<Repository<Item>>(TYPES.Sync_ORMItemRepository)
-      .toDynamicValue(() => appDataSource.getRepository(Item))
+      .bind<Repository<TypeORMItem>>(TYPES.Sync_ORMItemRepository)
+      .toDynamicValue(() => appDataSource.getRepository(TypeORMItem))
 
-    // Projectors
+    // Repositories
     container
-      .bind<ProjectorInterface<Item, ItemProjection>>(TYPES.Sync_ItemProjector)
-      .toDynamicValue((context: interfaces.Context) => {
-        return new ItemProjector(context.container.get(TYPES.Sync_Timer))
-      })
-
-    container.bind<TimerInterface>(TYPES.Sync_Timer).toDynamicValue(() => new Timer())
+      .bind<ItemRepositoryInterface>(TYPES.Sync_ItemRepository)
+      .toConstantValue(
+        new TypeORMItemRepository(
+          container.get(TYPES.Sync_ORMItemRepository),
+          container.get(TYPES.Sync_ItemPersistenceMapper),
+        ),
+      )
 
     container
       .bind<DomainEventFactoryInterface>(TYPES.Sync_DomainEventFactory)
@@ -243,18 +260,6 @@ export class ContainerConfigLoader {
           context.container.get(TYPES.Sync_AUTH_JWT_SECRET),
           context.container.get(TYPES.Sync_Logger),
         )
-      })
-
-    // Projectors
-    container
-      .bind<ProjectorInterface<Item, SavedItemProjection>>(TYPES.Sync_SavedItemProjector)
-      .toDynamicValue((context: interfaces.Context) => {
-        return new SavedItemProjector(context.container.get(TYPES.Sync_Timer))
-      })
-    container
-      .bind<ProjectorInterface<ItemConflict, ItemConflictProjection>>(TYPES.Sync_ItemConflictProjector)
-      .toDynamicValue((context: interfaces.Context) => {
-        return new ItemConflictProjector(context.container.get(TYPES.Sync_ItemProjector))
       })
 
     // env vars
@@ -287,38 +292,56 @@ export class ContainerConfigLoader {
     container.bind<GetItem>(TYPES.Sync_GetItem).toDynamicValue((context: interfaces.Context) => {
       return new GetItem(context.container.get(TYPES.Sync_ItemRepository))
     })
+    container
+      .bind<SaveNewItem>(TYPES.Sync_SaveNewItem)
+      .toConstantValue(
+        new SaveNewItem(
+          container.get(TYPES.Sync_ItemRepository),
+          container.get(TYPES.Sync_Timer),
+          container.get(TYPES.Sync_DomainEventPublisher),
+          container.get(TYPES.Sync_DomainEventFactory),
+        ),
+      )
+    container
+      .bind<UpdateExistingItem>(TYPES.Sync_UpdateExistingItem)
+      .toConstantValue(
+        new UpdateExistingItem(
+          container.get(TYPES.Sync_ItemRepository),
+          container.get(TYPES.Sync_Timer),
+          container.get(TYPES.Sync_DomainEventPublisher),
+          container.get(TYPES.Sync_DomainEventFactory),
+          container.get(TYPES.Sync_REVISIONS_FREQUENCY),
+        ),
+      )
 
     // Services
-    container.bind<ItemServiceInterface>(TYPES.Sync_ItemService).toDynamicValue((context: interfaces.Context) => {
-      return new ItemService(
-        context.container.get(TYPES.Sync_ItemSaveValidator),
-        context.container.get(TYPES.Sync_ItemFactory),
-        context.container.get(TYPES.Sync_ItemRepository),
-        context.container.get(TYPES.Sync_DomainEventPublisher),
-        context.container.get(TYPES.Sync_DomainEventFactory),
-        context.container.get(TYPES.Sync_REVISIONS_FREQUENCY),
-        context.container.get(TYPES.Sync_CONTENT_SIZE_TRANSFER_LIMIT),
-        context.container.get(TYPES.Sync_ItemTransferCalculator),
-        context.container.get(TYPES.Sync_Timer),
-        context.container.get(TYPES.Sync_ItemProjector),
-        context.container.get(TYPES.Sync_MAX_ITEMS_LIMIT),
-        context.container.get(TYPES.Sync_Logger),
+    container
+      .bind<ItemServiceInterface>(TYPES.Sync_ItemService)
+      .toConstantValue(
+        new ItemService(
+          container.get(TYPES.Sync_ItemSaveValidator),
+          container.get(TYPES.Sync_ItemRepository),
+          container.get(TYPES.Sync_CONTENT_SIZE_TRANSFER_LIMIT),
+          container.get(TYPES.Sync_ItemTransferCalculator),
+          container.get(TYPES.Sync_Timer),
+          container.get(TYPES.Sync_MAX_ITEMS_LIMIT),
+          container.get(TYPES.Sync_SaveNewItem),
+          container.get(TYPES.Sync_UpdateExistingItem),
+          container.get(TYPES.Sync_Logger),
+        ),
       )
-    })
     container
       .bind<SyncResponseFactory20161215>(TYPES.Sync_SyncResponseFactory20161215)
-      .toDynamicValue((context: interfaces.Context) => {
-        return new SyncResponseFactory20161215(context.container.get(TYPES.Sync_ItemProjector))
-      })
+      .toConstantValue(new SyncResponseFactory20161215(container.get(TYPES.Sync_ItemHttpMapper)))
     container
       .bind<SyncResponseFactory20200115>(TYPES.Sync_SyncResponseFactory20200115)
-      .toDynamicValue((context: interfaces.Context) => {
-        return new SyncResponseFactory20200115(
-          context.container.get(TYPES.Sync_ItemProjector),
-          context.container.get(TYPES.Sync_ItemConflictProjector),
-          context.container.get(TYPES.Sync_SavedItemProjector),
-        )
-      })
+      .toConstantValue(
+        new SyncResponseFactory20200115(
+          container.get(TYPES.Sync_ItemHttpMapper),
+          container.get(TYPES.Sync_ItemConflictHttpMapper),
+          container.get(TYPES.Sync_SavedItemHttpMapper),
+        ),
+      )
     container
       .bind<SyncResponseFactoryResolverInterface>(TYPES.Sync_SyncResponseFactoryResolver)
       .toDynamicValue((context: interfaces.Context) => {
@@ -328,17 +351,12 @@ export class ContainerConfigLoader {
         )
       })
 
-    container.bind<ItemFactoryInterface>(TYPES.Sync_ItemFactory).toDynamicValue((context: interfaces.Context) => {
-      return new ItemFactory(context.container.get(TYPES.Sync_Timer), context.container.get(TYPES.Sync_ItemProjector))
-    })
-
     container.bind<OwnershipFilter>(TYPES.Sync_OwnershipFilter).toDynamicValue(() => new OwnershipFilter())
     container
       .bind<TimeDifferenceFilter>(TYPES.Sync_TimeDifferenceFilter)
       .toDynamicValue(
         (context: interfaces.Context) => new TimeDifferenceFilter(context.container.get(TYPES.Sync_Timer)),
       )
-    container.bind<UuidFilter>(TYPES.Sync_UuidFilter).toDynamicValue(() => new UuidFilter())
     container.bind<ContentTypeFilter>(TYPES.Sync_ContentTypeFilter).toDynamicValue(() => new ContentTypeFilter())
     container.bind<ContentFilter>(TYPES.Sync_ContentFilter).toDynamicValue(() => new ContentFilter())
 
@@ -348,7 +366,6 @@ export class ContainerConfigLoader {
         return new ItemSaveValidator([
           context.container.get(TYPES.Sync_OwnershipFilter),
           context.container.get(TYPES.Sync_TimeDifferenceFilter),
-          context.container.get(TYPES.Sync_UuidFilter),
           context.container.get(TYPES.Sync_ContentTypeFilter),
           context.container.get(TYPES.Sync_ContentFilter),
         ])
@@ -421,14 +438,15 @@ export class ContainerConfigLoader {
         if (env.get('S3_AWS_REGION', true)) {
           return new S3ItemBackupService(
             context.container.get(TYPES.Sync_S3_BACKUP_BUCKET_NAME),
-            context.container.get(TYPES.Sync_ItemProjector),
+            context.container.get(TYPES.Sync_ItemBackupMapper),
+            context.container.get(TYPES.Sync_ItemHttpMapper),
             context.container.get(TYPES.Sync_Logger),
             context.container.get(TYPES.Sync_S3),
           )
         } else {
           return new FSItemBackupService(
             context.container.get(TYPES.Sync_FILE_UPLOAD_PATH),
-            context.container.get(TYPES.Sync_ItemProjector),
+            context.container.get(TYPES.Sync_ItemBackupMapper),
             context.container.get(TYPES.Sync_Logger),
           )
         }
@@ -512,7 +530,7 @@ export class ContainerConfigLoader {
             container.get(TYPES.Sync_SyncItems),
             container.get(TYPES.Sync_CheckIntegrity),
             container.get(TYPES.Sync_GetItem),
-            container.get(TYPES.Sync_ItemProjector),
+            container.get(TYPES.Sync_ItemHttpMapper),
             container.get(TYPES.Sync_SyncResponseFactoryResolver),
             container.get(TYPES.Sync_ControllerContainer),
           ),

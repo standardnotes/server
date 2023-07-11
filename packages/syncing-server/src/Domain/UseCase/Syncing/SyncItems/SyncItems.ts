@@ -1,4 +1,5 @@
 import { Result, UseCaseInterface } from '@standardnotes/domain-core'
+
 import { Item } from '../../../Item/Item'
 import { ItemConflict } from '../../../Item/ItemConflict'
 import { ItemServiceInterface } from '../../../Item/ItemServiceInterface'
@@ -52,10 +53,10 @@ export class SyncItems implements UseCaseInterface<SyncItemsResponse> {
     const syncConflictIds: Array<string> = []
     conflicts.forEach((conflict: ItemConflict) => {
       if (conflict.type === 'sync_conflict' && conflict.serverItem) {
-        syncConflictIds.push(conflict.serverItem.uuid)
+        syncConflictIds.push(conflict.serverItem.id.toString())
       }
     })
 
-    return retrievedItems.filter((item: Item) => syncConflictIds.indexOf(item.uuid) === -1)
+    return retrievedItems.filter((item: Item) => syncConflictIds.indexOf(item.id.toString()) === -1)
   }
 }

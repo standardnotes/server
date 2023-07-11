@@ -1,11 +1,10 @@
 import 'reflect-metadata'
 
-import { ContentType } from '@standardnotes/common'
-
 import { ApiVersion } from '../../Api/ApiVersion'
 import { Item } from '../Item'
 
 import { ContentFilter } from './ContentFilter'
+import { ContentType } from '@standardnotes/domain-core'
 
 describe('ContentFilter', () => {
   let existingItem: Item
@@ -21,7 +20,7 @@ describe('ContentFilter', () => {
         itemHash: {
           uuid: '123e4567-e89b-12d3-a456-426655440000',
           content: invalidContent as unknown as string,
-          content_type: ContentType.Note,
+          content_type: ContentType.TYPES.Note,
         },
         existingItem: null,
       })
@@ -32,7 +31,7 @@ describe('ContentFilter', () => {
           unsavedItem: {
             uuid: '123e4567-e89b-12d3-a456-426655440000',
             content: invalidContent,
-            content_type: ContentType.Note,
+            content_type: ContentType.TYPES.Note,
           },
           type: 'content_error',
         },
@@ -50,7 +49,7 @@ describe('ContentFilter', () => {
         itemHash: {
           uuid: '123e4567-e89b-12d3-a456-426655440000',
           content: validContent as unknown as string,
-          content_type: ContentType.Note,
+          content_type: ContentType.TYPES.Note,
         },
         existingItem,
       })

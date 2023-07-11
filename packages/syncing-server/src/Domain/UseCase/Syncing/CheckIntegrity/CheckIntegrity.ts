@@ -1,6 +1,5 @@
 import { IntegrityPayload } from '@standardnotes/responses'
-import { Result, UseCaseInterface } from '@standardnotes/domain-core'
-import { ContentType } from '@standardnotes/common'
+import { ContentType, Result, UseCaseInterface } from '@standardnotes/domain-core'
 
 import { ItemRepositoryInterface } from '../../../Item/ItemRepositoryInterface'
 import { CheckIntegrityDTO } from './CheckIntegrityDTO'
@@ -33,7 +32,7 @@ export class CheckIntegrity implements UseCaseInterface<IntegrityPayload[]> {
       ) as ExtendedIntegrityPayload
 
       if (!clientItemIntegrityPayloadsMap.has(serverItemIntegrityPayloadUuid)) {
-        if (serverItemIntegrityPayload.content_type !== ContentType.ItemsKey) {
+        if (serverItemIntegrityPayload.content_type !== ContentType.TYPES.ItemsKey) {
           mismatches.unshift({
             uuid: serverItemIntegrityPayloadUuid,
             updated_at_timestamp: serverItemIntegrityPayload.updated_at_timestamp,
@@ -49,7 +48,7 @@ export class CheckIntegrity implements UseCaseInterface<IntegrityPayload[]> {
       ) as number
       if (
         serverItemIntegrityPayloadUpdatedAtTimestamp !== clientItemIntegrityPayloadUpdatedAtTimestamp &&
-        serverItemIntegrityPayload.content_type !== ContentType.ItemsKey
+        serverItemIntegrityPayload.content_type !== ContentType.TYPES.ItemsKey
       ) {
         mismatches.unshift({
           uuid: serverItemIntegrityPayloadUuid,

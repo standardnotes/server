@@ -24,22 +24,22 @@ export class DuplicateItemSyncedEventHandler implements DomainEventHandlerInterf
       return
     }
 
-    if (!item.duplicateOf) {
+    if (!item.props.duplicateOf) {
       this.logger.warn(`Item ${event.payload.itemUuid} does not point to any duplicate`)
 
       return
     }
 
     const existingOriginalItem = await this.itemRepository.findByUuidAndUserUuid(
-      item.duplicateOf,
+      item.props.duplicateOf.value,
       event.payload.userUuid,
     )
 
     if (existingOriginalItem !== null) {
       await this.domainEventPublisher.publish(
         this.domainEventFactory.createRevisionsCopyRequestedEvent(event.payload.userUuid, {
-          originalItemUuid: existingOriginalItem.uuid,
-          newItemUuid: item.uuid,
+          originalItemUuid: existingOriginalItem.id.toString(),
+          newItemUuid: item.id.toString(),
         }),
       )
     }

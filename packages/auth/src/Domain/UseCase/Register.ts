@@ -1,6 +1,5 @@
 import * as bcrypt from 'bcryptjs'
 import { RoleName, Username } from '@standardnotes/domain-core'
-import { ApiVersion } from '@standardnotes/api'
 
 import { v4 as uuidv4 } from 'uuid'
 import { inject, injectable } from 'inversify'
@@ -16,6 +15,7 @@ import { TimerInterface } from '@standardnotes/time'
 import { SettingServiceInterface } from '../Setting/SettingServiceInterface'
 import { AuthResponseFactory20200115 } from '../Auth/AuthResponseFactory20200115'
 import { AuthResponse20200115 } from '../Auth/AuthResponse20200115'
+import { ApiVersion } from '../Api/ApiVersion'
 
 @injectable()
 export class Register implements UseCaseInterface {
@@ -39,7 +39,7 @@ export class Register implements UseCaseInterface {
 
     const { email, password, apiVersion, ephemeralSession, ...registrationFields } = dto
 
-    if (apiVersion !== ApiVersion.v0) {
+    if (apiVersion !== ApiVersion.v20200115) {
       return {
         success: false,
         errorMessage: `Unsupported api version: ${apiVersion}`,

@@ -1,43 +1,44 @@
 import 'reflect-metadata'
-import { ProjectorInterface } from '../../../Projection/ProjectorInterface'
+
+import { MapperInterface } from '@standardnotes/domain-core'
+
 import { Item } from '../Item'
 import { ItemConflict } from '../ItemConflict'
-import { ItemConflictProjection } from '../../../Projection/ItemConflictProjection'
-import { ItemProjection } from '../../../Projection/ItemProjection'
-
 import { SyncResponseFactory20200115 } from './SyncResponseFactory20200115'
-import { SavedItemProjection } from '../../../Projection/SavedItemProjection'
+import { ItemHttpRepresentation } from '../../../Mapping/Http/ItemHttpRepresentation'
+import { SavedItemHttpRepresentation } from '../../../Mapping/Http/SavedItemHttpRepresentation'
+import { ItemConflictHttpRepresentation } from '../../../Mapping/Http/ItemConflictHttpRepresentation'
 
 describe('SyncResponseFactory20200115', () => {
-  let itemProjector: ProjectorInterface<Item, ItemProjection>
-  let savedItemProjector: ProjectorInterface<Item, SavedItemProjection>
-  let itemConflictProjector: ProjectorInterface<ItemConflict, ItemConflictProjection>
-  let itemProjection: ItemProjection
-  let savedItemProjection: SavedItemProjection
-  let itemConflictProjection: ItemConflictProjection
+  let itemMapper: MapperInterface<Item, ItemHttpRepresentation>
+  let savedItemMapper: MapperInterface<Item, SavedItemHttpRepresentation>
+  let itemConflictMapper: MapperInterface<ItemConflict, ItemConflictHttpRepresentation>
+  let itemProjection: ItemHttpRepresentation
+  let savedItemHttpRepresentation: SavedItemHttpRepresentation
+  let itemConflictProjection: ItemConflictHttpRepresentation
   let item1: Item
   let item2: Item
   let itemConflict: ItemConflict
 
-  const createFactory = () => new SyncResponseFactory20200115(itemProjector, itemConflictProjector, savedItemProjector)
+  const createFactory = () => new SyncResponseFactory20200115(itemMapper, itemConflictMapper, savedItemMapper)
 
   beforeEach(() => {
     itemProjection = {
       uuid: '2-3-4',
-    } as jest.Mocked<ItemProjection>
+    } as jest.Mocked<ItemHttpRepresentation>
 
-    itemProjector = {} as jest.Mocked<ProjectorInterface<Item, ItemProjection>>
-    itemProjector.projectFull = jest.fn().mockReturnValue(itemProjection)
+    itemMapper = {} as jest.Mocked<MapperInterface<Item, ItemHttpRepresentation>>
+    itemMapper.toProjection = jest.fn().mockReturnValue(itemProjection)
 
-    itemConflictProjector = {} as jest.Mocked<ProjectorInterface<ItemConflict, ItemConflictProjection>>
-    itemConflictProjector.projectFull = jest.fn().mockReturnValue(itemConflictProjection)
+    itemConflictMapper = {} as jest.Mocked<MapperInterface<ItemConflict, ItemConflictHttpRepresentation>>
+    itemConflictMapper.toProjection = jest.fn().mockReturnValue(itemConflictProjection)
 
-    savedItemProjection = {
+    savedItemHttpRepresentation = {
       uuid: '1-2-3',
-    } as jest.Mocked<SavedItemProjection>
+    } as jest.Mocked<SavedItemHttpRepresentation>
 
-    savedItemProjector = {} as jest.Mocked<ProjectorInterface<Item, SavedItemProjection>>
-    savedItemProjector.projectFull = jest.fn().mockReturnValue(savedItemProjection)
+    savedItemMapper = {} as jest.Mocked<MapperInterface<Item, SavedItemHttpRepresentation>>
+    savedItemMapper.toProjection = jest.fn().mockReturnValue(savedItemHttpRepresentation)
 
     item1 = {} as jest.Mocked<Item>
 
@@ -57,7 +58,7 @@ describe('SyncResponseFactory20200115', () => {
       }),
     ).toEqual({
       retrieved_items: [itemProjection],
-      saved_items: [savedItemProjection],
+      saved_items: [savedItemHttpRepresentation],
       conflicts: [itemConflictProjection],
       sync_token: 'sync-test',
       cursor_token: 'cursor-test',

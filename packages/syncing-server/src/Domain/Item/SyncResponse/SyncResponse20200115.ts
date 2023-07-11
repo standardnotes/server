@@ -1,11 +1,11 @@
-import { ItemConflictProjection } from '../../../Projection/ItemConflictProjection'
-import { ItemProjection } from '../../../Projection/ItemProjection'
-import { SavedItemProjection } from '../../../Projection/SavedItemProjection'
+import { ItemConflictHttpRepresentation } from '../../../Mapping/Http/ItemConflictHttpRepresentation'
+import { ItemHttpRepresentation } from '../../../Mapping/Http/ItemHttpRepresentation'
+import { SavedItemHttpRepresentation } from '../../../Mapping/Http/SavedItemHttpRepresentation'
 
 export type SyncResponse20200115 = {
-  retrieved_items: Array<ItemProjection>
-  saved_items: Array<SavedItemProjection>
-  conflicts: Array<ItemConflictProjection>
+  retrieved_items: Array<ItemHttpRepresentation>
+  saved_items: Array<SavedItemHttpRepresentation>
+  conflicts: Array<ItemConflictHttpRepresentation>
   sync_token: string
   cursor_token?: string
 }

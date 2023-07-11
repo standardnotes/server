@@ -1,16 +1,16 @@
 import 'reflect-metadata'
-import { ProjectorInterface } from '../../../Projection/ProjectorInterface'
 
 import { Item } from '../Item'
 import { ItemHash } from '../ItemHash'
-import { ItemProjection } from '../../../Projection/ItemProjection'
 import { SyncResponseFactory20161215 } from './SyncResponseFactory20161215'
 import { ConflictType } from '@standardnotes/responses'
+import { ContentType, Dates, MapperInterface, Timestamps, UniqueEntityId, Uuid } from '@standardnotes/domain-core'
+import { ItemHttpRepresentation } from '../../../Mapping/Http/ItemHttpRepresentation'
 
 describe('SyncResponseFactory20161215', () => {
-  let itemProjector: ProjectorInterface<Item, ItemProjection>
-  let item1Projection: ItemProjection
-  let item2Projection: ItemProjection
+  let itemProjector: MapperInterface<Item, ItemHttpRepresentation>
+  let item1Projection: ItemHttpRepresentation
+  let item2Projection: ItemHttpRepresentation
   let item1: Item
   let item2: Item
 
@@ -19,30 +19,55 @@ describe('SyncResponseFactory20161215', () => {
   beforeEach(() => {
     item1Projection = {
       uuid: '1-2-3',
-    } as jest.Mocked<ItemProjection>
+    } as jest.Mocked<ItemHttpRepresentation>
     item2Projection = {
       uuid: '2-3-4',
-    } as jest.Mocked<ItemProjection>
+    } as jest.Mocked<ItemHttpRepresentation>
 
-    itemProjector = {} as jest.Mocked<ProjectorInterface<Item, ItemProjection>>
-    itemProjector.projectFull = jest.fn().mockImplementation((item: Item) => {
-      if (item.uuid === '1-2-3') {
+    itemProjector = {} as jest.Mocked<MapperInterface<Item, ItemHttpRepresentation>>
+    itemProjector.toProjection = jest.fn().mockImplementation((item: Item) => {
+      if (item.id.toString() === '00000000-0000-0000-0000-000000000000') {
         return item1Projection
-      } else if (item.uuid === '2-3-4') {
+      } else if (item.id.toString() === '00000000-0000-0000-0000-000000000001') {
         return item2Projection
       }
 
       return undefined
     })
 
-    item1 = {
-      uuid: '1-2-3',
-      updatedAtTimestamp: 100,
-    } as jest.Mocked<Item>
+    item1 = Item.create(
+      {
+        userUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+        updatedWithSession: null,
+        content: 'foobar',
+        contentType: ContentType.create(ContentType.TYPES.Note).getValue(),
+        encItemKey: null,
+        authHash: null,
+        itemsKeyId: null,
+        duplicateOf: null,
+        deleted: false,
+        dates: Dates.create(new Date(1616164633241311), new Date(1616164633241311)).getValue(),
+        timestamps: Timestamps.create(1616164633241311, 1616164633241311).getValue(),
+      },
+      new UniqueEntityId('00000000-0000-0000-0000-000000000000'),
+    ).getValue()
 
-    item2 = {
-      uuid: '2-3-4',
-    } as jest.Mocked<Item>
+    item2 = Item.create(
+      {
+        userUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+        updatedWithSession: null,
+        content: 'foobar',
+        contentType: ContentType.create(ContentType.TYPES.Note).getValue(),
+        encItemKey: null,
+        authHash: null,
+        itemsKeyId: null,
+        duplicateOf: null,
+        deleted: false,
+        dates: Dates.create(new Date(1616164633241311), new Date(1616164633241311)).getValue(),
+        timestamps: Timestamps.create(1616164633241311, 1616164633241311).getValue(),
+      },
+      new UniqueEntityId('00000000-0000-0000-0000-000000000001'),
+    ).getValue()
   })
 
   it('should turn sync items response into a sync response for API Version 20161215', async () => {
@@ -83,10 +108,18 @@ describe('SyncResponseFactory20161215', () => {
   it('should pick out conflicts between saved and retrieved items and remove them from the later', async () => {
     const itemHash1 = {} as jest.Mocked<ItemHash>
 
-    const duplicateItem1 = Object.assign({}, item1)
-    duplicateItem1.updatedAtTimestamp = item1.updatedAtTimestamp + 21_000_000
+    const duplicateItem1 = Item.create(
+      {
+        ...item1.props,
+        timestamps: Timestamps.create(
+          item1.props.timestamps.createdAt,
+          item1.props.timestamps.updatedAt + 21_000_000,
+        ).getValue(),
+      },
+      item1.id,
+    ).getValue()
 
-    const duplicateItem2 = Object.assign({}, item2)
+    const duplicateItem2 = Item.create({ ...item2.props }).getValue()
 
     expect(
       await createFactory().createResponse({

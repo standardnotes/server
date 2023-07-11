@@ -57,7 +57,7 @@ export class ContentType extends ValueObject<ContentTypeProps> {
   }
 
   static create(type: string | null): Result<ContentType> {
-    if (!type) {
+    if (type === null) {
       return Result.ok<ContentType>(new ContentType({ value: null }))
     }
 

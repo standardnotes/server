@@ -1,14 +1,11 @@
 import 'reflect-metadata'
 
 import * as express from 'express'
-import { ContentType } from '@standardnotes/common'
-import { Result } from '@standardnotes/domain-core'
+import { ContentType, MapperInterface, Result } from '@standardnotes/domain-core'
 import { results } from 'inversify-express-utils'
 
 import { InversifyExpressItemsController } from './InversifyExpressItemsController'
 import { Item } from '../../Domain/Item/Item'
-import { ItemProjection } from '../../Projection/ItemProjection'
-import { ProjectorInterface } from '../../Projection/ProjectorInterface'
 import { ApiVersion } from '../../Domain/Api/ApiVersion'
 import { SyncResponse20200115 } from '../../Domain/Item/SyncResponse/SyncResponse20200115'
 import { SyncResponseFactoryInterface } from '../../Domain/Item/SyncResponse/SyncResponseFactoryInterface'
@@ -16,12 +13,13 @@ import { SyncResponseFactoryResolverInterface } from '../../Domain/Item/SyncResp
 import { CheckIntegrity } from '../../Domain/UseCase/Syncing/CheckIntegrity/CheckIntegrity'
 import { GetItem } from '../../Domain/UseCase/Syncing/GetItem/GetItem'
 import { SyncItems } from '../../Domain/UseCase/Syncing/SyncItems/SyncItems'
+import { ItemHttpRepresentation } from '../../Mapping/Http/ItemHttpRepresentation'
 
 describe('InversifyExpressItemsController', () => {
   let syncItems: SyncItems
   let checkIntegrity: CheckIntegrity
   let getItem: GetItem
-  let itemProjector: ProjectorInterface<Item, ItemProjection>
+  let mapper: MapperInterface<Item, ItemHttpRepresentation>
   let request: express.Request
   let response: express.Response
   let syncResponceFactoryResolver: SyncResponseFactoryResolverInterface
@@ -29,11 +27,11 @@ describe('InversifyExpressItemsController', () => {
   let syncResponse: SyncResponse20200115
 
   const createController = () =>
-    new InversifyExpressItemsController(syncItems, checkIntegrity, getItem, itemProjector, syncResponceFactoryResolver)
+    new InversifyExpressItemsController(syncItems, checkIntegrity, getItem, mapper, syncResponceFactoryResolver)
 
   beforeEach(() => {
-    itemProjector = {} as jest.Mocked<ProjectorInterface<Item, ItemProjection>>
-    itemProjector.projectFull = jest.fn().mockReturnValue({ foo: 'bar' })
+    mapper = {} as jest.Mocked<MapperInterface<Item, ItemHttpRepresentation>>
+    mapper.toProjection = jest.fn().mockReturnValue({ foo: 'bar' })
 
     syncItems = {} as jest.Mocked<SyncItems>
     syncItems.execute = jest.fn().mockReturnValue(Result.ok({ foo: 'bar' }))
@@ -58,7 +56,7 @@ describe('InversifyExpressItemsController', () => {
     request.body.items = [
       {
         content: 'test',
-        content_type: ContentType.Note,
+        content_type: ContentType.TYPES.Note,
         created_at: '2021-02-19T11:35:45.655Z',
         deleted: false,
         duplicate_of: null,

@@ -1,4 +1,4 @@
-import { ControllerContainerInterface } from '@standardnotes/domain-core'
+import { ControllerContainerInterface, MapperInterface } from '@standardnotes/domain-core'
 import { BaseHttpController, results } from 'inversify-express-utils'
 import { Request, Response } from 'express'
 
@@ -6,18 +6,17 @@ import { Item } from '../../../Domain/Item/Item'
 import { SyncResponseFactoryResolverInterface } from '../../../Domain/Item/SyncResponse/SyncResponseFactoryResolverInterface'
 import { CheckIntegrity } from '../../../Domain/UseCase/Syncing/CheckIntegrity/CheckIntegrity'
 import { GetItem } from '../../../Domain/UseCase/Syncing/GetItem/GetItem'
-import { ItemProjection } from '../../../Projection/ItemProjection'
-import { ProjectorInterface } from '../../../Projection/ProjectorInterface'
 import { ApiVersion } from '../../../Domain/Api/ApiVersion'
 import { SyncItems } from '../../../Domain/UseCase/Syncing/SyncItems/SyncItems'
 import { HttpStatusCode } from '@standardnotes/responses'
+import { ItemHttpRepresentation } from '../../../Mapping/Http/ItemHttpRepresentation'
 
 export class HomeServerItemsController extends BaseHttpController {
   constructor(
     protected syncItems: SyncItems,
     protected checkIntegrity: CheckIntegrity,
     protected getItem: GetItem,
-    protected itemProjector: ProjectorInterface<Item, ItemProjection>,
+    protected itemHttpMapper: MapperInterface<Item, ItemHttpRepresentation>,
     protected syncResponseFactoryResolver: SyncResponseFactoryResolverInterface,
     private controllerContainer?: ControllerContainerInterface,
   ) {
@@ -92,6 +91,6 @@ export class HomeServerItemsController extends BaseHttpController {
       return this.json({ error: { message: result.getError() } }, 404)
     }
 
-    return this.json({ item: await this.itemProjector.projectFull(result.getValue()) })
+    return this.json({ item: this.itemHttpMapper.toProjection(result.getValue()) })
   }
 }

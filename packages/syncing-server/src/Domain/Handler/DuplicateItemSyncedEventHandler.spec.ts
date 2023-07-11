@@ -10,6 +10,7 @@ import { Item } from '../Item/Item'
 import { ItemRepositoryInterface } from '../Item/ItemRepositoryInterface'
 import { DuplicateItemSyncedEventHandler } from './DuplicateItemSyncedEventHandler'
 import { DomainEventFactoryInterface } from '../Event/DomainEventFactoryInterface'
+import { Uuid, ContentType, Dates, Timestamps, UniqueEntityId } from '@standardnotes/domain-core'
 
 describe('DuplicateItemSyncedEventHandler', () => {
   let itemRepository: ItemRepositoryInterface
@@ -24,14 +25,39 @@ describe('DuplicateItemSyncedEventHandler', () => {
     new DuplicateItemSyncedEventHandler(itemRepository, domainEventFactory, domainEventPublisher, logger)
 
   beforeEach(() => {
-    originalItem = {
-      uuid: '1-2-3',
-    } as jest.Mocked<Item>
+    originalItem = Item.create(
+      {
+        userUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+        updatedWithSession: null,
+        content: 'foobar',
+        contentType: ContentType.create(ContentType.TYPES.Note).getValue(),
+        encItemKey: null,
+        authHash: null,
+        itemsKeyId: null,
+        duplicateOf: null,
+        deleted: false,
+        dates: Dates.create(new Date(1616164633241311), new Date(1616164633241311)).getValue(),
+        timestamps: Timestamps.create(1616164633241311, 1616164633241311).getValue(),
+      },
+      new UniqueEntityId('00000000-0000-0000-0000-000000000000'),
+    ).getValue()
 
-    duplicateItem = {
-      uuid: '2-3-4',
-      duplicateOf: '1-2-3',
-    } as jest.Mocked<Item>
+    duplicateItem = Item.create(
+      {
+        userUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+        updatedWithSession: null,
+        content: 'foobar',
+        contentType: ContentType.create(ContentType.TYPES.Note).getValue(),
+        encItemKey: null,
+        authHash: null,
+        itemsKeyId: null,
+        duplicateOf: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+        deleted: false,
+        dates: Dates.create(new Date(1616164633241311), new Date(1616164633241311)).getValue(),
+        timestamps: Timestamps.create(1616164633241311, 1616164633241311).getValue(),
+      },
+      new UniqueEntityId('00000000-0000-0000-0000-000000000001'),
+    ).getValue()
 
     itemRepository = {} as jest.Mocked<ItemRepositoryInterface>
     itemRepository.findByUuidAndUserUuid = jest
@@ -81,7 +107,7 @@ describe('DuplicateItemSyncedEventHandler', () => {
   })
 
   it('should not copy revisions if duplicate item is not pointing to duplicate anything', async () => {
-    duplicateItem.duplicateOf = null
+    duplicateItem.props.duplicateOf = null
     await createHandler().handle(event)
 
     expect(domainEventPublisher.publish).not.toHaveBeenCalled()

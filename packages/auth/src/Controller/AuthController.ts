@@ -1,6 +1,5 @@
 import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
 import {
-  ApiVersion,
   UserRegistrationRequestParams,
   UserServerInterface,
   UserDeletionResponseBody,
@@ -23,6 +22,7 @@ import { GenerateRecoveryCodes } from '../Domain/UseCase/GenerateRecoveryCodes/G
 import { GenerateRecoveryCodesRequestParams } from '../Infra/Http/Request/GenerateRecoveryCodesRequestParams'
 import { Logger } from 'winston'
 import { SessionServiceInterface } from '../Domain/Session/SessionServiceInterface'
+import { ApiVersion } from '../Domain/Api/ApiVersion'
 
 export class AuthController implements UserServerInterface {
   constructor(
@@ -121,7 +121,7 @@ export class AuthController implements UserServerInterface {
   async signInWithRecoveryCodes(
     params: SignInWithRecoveryCodesRequestParams,
   ): Promise<HttpResponse<SignInWithRecoveryCodesResponseBody>> {
-    if (params.apiVersion !== ApiVersion.v0) {
+    if (params.apiVersion !== ApiVersion.v20200115) {
       return {
         status: HttpStatusCode.BadRequest,
         data: {
@@ -162,7 +162,7 @@ export class AuthController implements UserServerInterface {
   async recoveryKeyParams(
     params: RecoveryKeyParamsRequestParams,
   ): Promise<HttpResponse<RecoveryKeyParamsResponseBody>> {
-    if (params.apiVersion !== ApiVersion.v0) {
+    if (params.apiVersion !== ApiVersion.v20200115) {
       return {
         status: HttpStatusCode.BadRequest,
         data: {

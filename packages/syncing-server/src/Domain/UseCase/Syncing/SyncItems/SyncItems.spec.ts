@@ -1,13 +1,12 @@
 import 'reflect-metadata'
 
-import { ContentType } from '@standardnotes/common'
-
 import { ApiVersion } from '../../../Api/ApiVersion'
 import { Item } from '../../../Item/Item'
 import { ItemHash } from '../../../Item/ItemHash'
 import { ItemServiceInterface } from '../../../Item/ItemServiceInterface'
 
 import { SyncItems } from './SyncItems'
+import { ContentType, Dates, Timestamps, UniqueEntityId, Uuid } from '@standardnotes/domain-core'
 
 describe('SyncItems', () => {
   let itemService: ItemServiceInterface
@@ -19,20 +18,59 @@ describe('SyncItems', () => {
   const createUseCase = () => new SyncItems(itemService)
 
   beforeEach(() => {
-    item1 = {
-      uuid: '1-2-3',
-    } as jest.Mocked<Item>
-    item2 = {
-      uuid: '2-3-4',
-    } as jest.Mocked<Item>
-    item3 = {
-      uuid: '3-4-5',
-    } as jest.Mocked<Item>
+    item1 = Item.create(
+      {
+        userUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+        updatedWithSession: null,
+        content: 'foobar',
+        contentType: ContentType.create(ContentType.TYPES.Note).getValue(),
+        encItemKey: null,
+        authHash: null,
+        itemsKeyId: null,
+        duplicateOf: null,
+        deleted: false,
+        dates: Dates.create(new Date(1616164633241311), new Date(1616164633241311)).getValue(),
+        timestamps: Timestamps.create(1616164633241311, 1616164633241311).getValue(),
+      },
+      new UniqueEntityId('00000000-0000-0000-0000-000000000001'),
+    ).getValue()
+    item2 = Item.create(
+      {
+        userUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+        updatedWithSession: null,
+        content: 'foobar',
+        contentType: ContentType.create(ContentType.TYPES.Note).getValue(),
+        encItemKey: null,
+        authHash: null,
+        itemsKeyId: null,
+        duplicateOf: null,
+        deleted: false,
+        dates: Dates.create(new Date(1616164633241311), new Date(1616164633241311)).getValue(),
+        timestamps: Timestamps.create(1616164633241311, 1616164633241311).getValue(),
+      },
+      new UniqueEntityId('00000000-0000-0000-0000-000000000002'),
+    ).getValue()
+    item3 = Item.create(
+      {
+        userUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+        updatedWithSession: null,
+        content: 'foobar',
+        contentType: ContentType.create(ContentType.TYPES.Note).getValue(),
+        encItemKey: null,
+        authHash: null,
+        itemsKeyId: null,
+        duplicateOf: null,
+        deleted: false,
+        dates: Dates.create(new Date(1616164633241311), new Date(1616164633241311)).getValue(),
+        timestamps: Timestamps.create(1616164633241311, 1616164633241311).getValue(),
+      },
+      new UniqueEntityId('00000000-0000-0000-0000-000000000003'),
+    ).getValue()
 
     itemHash = {
       uuid: '2-3-4',
       content: 'asdqwe',
-      content_type: ContentType.Note,
+      content_type: ContentType.TYPES.Note,
       duplicate_of: null,
       enc_item_key: 'qweqwe',
       items_key_id: 'asdasd',

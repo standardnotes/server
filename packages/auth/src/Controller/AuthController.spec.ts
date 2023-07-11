@@ -8,12 +8,12 @@ import { User } from '../Domain/User/User'
 import { Register } from '../Domain/UseCase/Register'
 import { DomainEventFactoryInterface } from '../Domain/Event/DomainEventFactoryInterface'
 import { KeyParamsOrigination, ProtocolVersion } from '@standardnotes/common'
-import { ApiVersion } from '@standardnotes/api'
 import { SignInWithRecoveryCodes } from '../Domain/UseCase/SignInWithRecoveryCodes/SignInWithRecoveryCodes'
 import { GetUserKeyParamsRecovery } from '../Domain/UseCase/GetUserKeyParamsRecovery/GetUserKeyParamsRecovery'
 import { GenerateRecoveryCodes } from '../Domain/UseCase/GenerateRecoveryCodes/GenerateRecoveryCodes'
 import { Logger } from 'winston'
 import { SessionServiceInterface } from '../Domain/Session/SessionServiceInterface'
+import { ApiVersion } from '@standardnotes/api'
 
 describe('AuthController', () => {
   let clearLoginAttempts: ClearLoginAttempts
@@ -73,7 +73,7 @@ describe('AuthController', () => {
       email: 'test@test.te',
       password: 'asdzxc',
       version: ProtocolVersion.V004,
-      api: ApiVersion.v0,
+      api: '20200115' as ApiVersion,
       origination: KeyParamsOrigination.Registration,
       userAgent: 'Google Chrome',
       identifier: 'test@test.te',
