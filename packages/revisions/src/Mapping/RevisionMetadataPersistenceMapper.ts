@@ -1,6 +1,5 @@
-import { MapperInterface, Dates, UniqueEntityId } from '@standardnotes/domain-core'
+import { MapperInterface, Dates, UniqueEntityId, ContentType } from '@standardnotes/domain-core'
 
-import { ContentType } from '../Domain/Revision/ContentType'
 import { RevisionMetadata } from '../Domain/Revision/RevisionMetadata'
 import { TypeORMRevision } from '../Infra/TypeORM/TypeORMRevision'
 

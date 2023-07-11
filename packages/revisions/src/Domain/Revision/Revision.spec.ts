@@ -1,5 +1,5 @@
-import { Dates, Uuid } from '@standardnotes/domain-core'
-import { ContentType } from './ContentType'
+import { ContentType, Dates, Uuid } from '@standardnotes/domain-core'
+
 import { Revision } from './Revision'
 
 describe('Revision', () => {
