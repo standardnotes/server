@@ -13,7 +13,7 @@ import { GetUserKeyParamsRecovery } from '../Domain/UseCase/GetUserKeyParamsReco
 import { GenerateRecoveryCodes } from '../Domain/UseCase/GenerateRecoveryCodes/GenerateRecoveryCodes'
 import { Logger } from 'winston'
 import { SessionServiceInterface } from '../Domain/Session/SessionServiceInterface'
-import { ApiVersion } from '@standardnotes/api'
+import { ApiVersion } from '../Domain/Api/ApiVersion'
 
 describe('AuthController', () => {
   let clearLoginAttempts: ClearLoginAttempts
@@ -73,7 +73,7 @@ describe('AuthController', () => {
       email: 'test@test.te',
       password: 'asdzxc',
       version: ProtocolVersion.V004,
-      api: '20200115' as ApiVersion,
+      api: ApiVersion.v20200115,
       origination: KeyParamsOrigination.Registration,
       userAgent: 'Google Chrome',
       identifier: 'test@test.te',
@@ -103,7 +103,7 @@ describe('AuthController', () => {
       email: 'test@test.te',
       password: '',
       version: ProtocolVersion.V004,
-      api: ApiVersion.v0,
+      api: ApiVersion.v20200115,
       origination: KeyParamsOrigination.Registration,
       userAgent: 'Google Chrome',
       identifier: 'test@test.te',
@@ -123,7 +123,7 @@ describe('AuthController', () => {
       email: 'test@test.te',
       password: 'test',
       version: ProtocolVersion.V004,
-      api: ApiVersion.v0,
+      api: ApiVersion.v20200115,
       origination: KeyParamsOrigination.Registration,
       userAgent: 'Google Chrome',
       identifier: 'test@test.te',

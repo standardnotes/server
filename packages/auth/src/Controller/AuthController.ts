@@ -4,6 +4,7 @@ import {
   UserServerInterface,
   UserDeletionResponseBody,
   UserRegistrationResponseBody,
+  UserUpdateRequestParams,
 } from '@standardnotes/api'
 import { ErrorTag, HttpResponse, HttpStatusCode } from '@standardnotes/responses'
 import { ProtocolVersion } from '@standardnotes/common'
@@ -23,6 +24,7 @@ import { GenerateRecoveryCodesRequestParams } from '../Infra/Http/Request/Genera
 import { Logger } from 'winston'
 import { SessionServiceInterface } from '../Domain/Session/SessionServiceInterface'
 import { ApiVersion } from '../Domain/Api/ApiVersion'
+import { UserUpdateResponse } from '@standardnotes/api/dist/Domain/Response/User/UserUpdateResponse'
 
 export class AuthController implements UserServerInterface {
   constructor(
@@ -36,6 +38,10 @@ export class AuthController implements UserServerInterface {
     private logger: Logger,
     private sessionService: SessionServiceInterface,
   ) {}
+
+  async update(_params: UserUpdateRequestParams): Promise<HttpResponse<UserUpdateResponse>> {
+    throw new Error('Method not implemented.')
+  }
 
   async deleteAccount(_params: never): Promise<HttpResponse<UserDeletionResponseBody>> {
     throw new Error('This method is implemented on the payments server.')
