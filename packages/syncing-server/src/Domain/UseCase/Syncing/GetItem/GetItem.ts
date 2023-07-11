@@ -1,24 +1,19 @@
-import { ItemRepositoryInterface } from '../../../Item/ItemRepositoryInterface'
-import { UseCaseInterface } from '../../UseCaseInterface'
-import { GetItemDTO } from './GetItemDTO'
-import { GetItemResponse } from './GetItemResponse'
+import { Result, UseCaseInterface } from '@standardnotes/domain-core'
 
-export class GetItem implements UseCaseInterface {
+import { ItemRepositoryInterface } from '../../../Item/ItemRepositoryInterface'
+import { GetItemDTO } from './GetItemDTO'
+import { Item } from '../../../Item/Item'
+
+export class GetItem implements UseCaseInterface<Item> {
   constructor(private itemRepository: ItemRepositoryInterface) {}
 
-  async execute(dto: GetItemDTO): Promise<GetItemResponse> {
+  async execute(dto: GetItemDTO): Promise<Result<Item>> {
     const item = await this.itemRepository.findByUuidAndUserUuid(dto.itemUuid, dto.userUuid)
 
     if (item === null) {
-      return {
-        success: false,
-        message: `Could not find item with uuid ${dto.itemUuid}`,
-      }
+      return Result.fail(`Could not find item with uuid ${dto.itemUuid}`)
     }
 
-    return {
-      success: true,
-      item,
-    }
+    return Result.ok(item)
   }
 }

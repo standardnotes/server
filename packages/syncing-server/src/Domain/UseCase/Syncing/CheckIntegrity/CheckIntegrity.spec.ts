@@ -42,95 +42,86 @@ describe('CheckIntegrity', () => {
   })
 
   it('should return an empty result if there are no integrity mismatches', async () => {
-    expect(
-      await createUseCase().execute({
-        userUuid: '1-2-3',
-        freeUser: false,
-        integrityPayloads: [
-          {
-            uuid: '1-2-3',
-            updated_at_timestamp: 1,
-          },
-          {
-            uuid: '2-3-4',
-            updated_at_timestamp: 2,
-          },
-          {
-            uuid: '3-4-5',
-            updated_at_timestamp: 3,
-          },
-          {
-            uuid: '5-6-7',
-            updated_at_timestamp: 5,
-          },
-        ],
-      }),
-    ).toEqual({
-      mismatches: [],
-    })
-  })
-
-  it('should return a mismatch item that has a different update at timemstap', async () => {
-    expect(
-      await createUseCase().execute({
-        userUuid: '1-2-3',
-        freeUser: false,
-        integrityPayloads: [
-          {
-            uuid: '1-2-3',
-            updated_at_timestamp: 1,
-          },
-          {
-            uuid: '2-3-4',
-            updated_at_timestamp: 1,
-          },
-          {
-            uuid: '3-4-5',
-            updated_at_timestamp: 3,
-          },
-          {
-            uuid: '5-6-7',
-            updated_at_timestamp: 5,
-          },
-        ],
-      }),
-    ).toEqual({
-      mismatches: [
+    const result = await createUseCase().execute({
+      userUuid: '1-2-3',
+      freeUser: false,
+      integrityPayloads: [
+        {
+          uuid: '1-2-3',
+          updated_at_timestamp: 1,
+        },
         {
           uuid: '2-3-4',
           updated_at_timestamp: 2,
         },
-      ],
-    })
-  })
-
-  it('should return a mismatch item that is missing on the client side', async () => {
-    expect(
-      await createUseCase().execute({
-        userUuid: '1-2-3',
-        freeUser: false,
-        integrityPayloads: [
-          {
-            uuid: '1-2-3',
-            updated_at_timestamp: 1,
-          },
-          {
-            uuid: '2-3-4',
-            updated_at_timestamp: 2,
-          },
-          {
-            uuid: '5-6-7',
-            updated_at_timestamp: 5,
-          },
-        ],
-      }),
-    ).toEqual({
-      mismatches: [
         {
           uuid: '3-4-5',
           updated_at_timestamp: 3,
         },
+        {
+          uuid: '5-6-7',
+          updated_at_timestamp: 5,
+        },
       ],
     })
+    expect(result.getValue()).toEqual([])
+  })
+
+  it('should return a mismatch item that has a different update at timemstap', async () => {
+    const result = await createUseCase().execute({
+      userUuid: '1-2-3',
+      freeUser: false,
+      integrityPayloads: [
+        {
+          uuid: '1-2-3',
+          updated_at_timestamp: 1,
+        },
+        {
+          uuid: '2-3-4',
+          updated_at_timestamp: 1,
+        },
+        {
+          uuid: '3-4-5',
+          updated_at_timestamp: 3,
+        },
+        {
+          uuid: '5-6-7',
+          updated_at_timestamp: 5,
+        },
+      ],
+    })
+    expect(result.getValue()).toEqual([
+      {
+        uuid: '2-3-4',
+        updated_at_timestamp: 2,
+      },
+    ])
+  })
+
+  it('should return a mismatch item that is missing on the client side', async () => {
+    const result = await createUseCase().execute({
+      userUuid: '1-2-3',
+      freeUser: false,
+      integrityPayloads: [
+        {
+          uuid: '1-2-3',
+          updated_at_timestamp: 1,
+        },
+        {
+          uuid: '2-3-4',
+          updated_at_timestamp: 2,
+        },
+        {
+          uuid: '5-6-7',
+          updated_at_timestamp: 5,
+        },
+      ],
+    })
+    expect(result.getValue()).toEqual([
+      {
+        uuid: '3-4-5',
+        updated_at_timestamp: 3,
+      },
+    ])
   })
 })
