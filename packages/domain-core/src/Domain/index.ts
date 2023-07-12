@@ -9,6 +9,8 @@ export * from './Cache/CacheEntry'
 export * from './Cache/CacheEntryProps'
 export * from './Cache/CacheEntryRepositoryInterface'
 
+export * from './Common/ContentType'
+export * from './Common/ContentTypeProps'
 export * from './Common/Dates'
 export * from './Common/DatesProps'
 export * from './Common/Email'

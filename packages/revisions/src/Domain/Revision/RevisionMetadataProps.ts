@@ -1,6 +1,4 @@
-import { Dates } from '@standardnotes/domain-core'
-
-import { ContentType } from './ContentType'
+import { ContentType, Dates } from '@standardnotes/domain-core'
 
 export interface RevisionMetadataProps {
   contentType: ContentType

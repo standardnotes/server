@@ -1,9 +1,7 @@
-import { ContentType } from '@standardnotes/common'
-
 export type ItemHash = {
   uuid: string
   content?: string
-  content_type: ContentType
+  content_type: string | null
   deleted?: boolean
   duplicate_of?: string | null
   auth_hash?: string

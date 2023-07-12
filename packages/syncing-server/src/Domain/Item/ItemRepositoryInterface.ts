@@ -16,8 +16,8 @@ export interface ItemRepositoryInterface {
   findItemsForComputingIntegrityPayloads(userUuid: string): Promise<ExtendedIntegrityPayload[]>
   findByUuidAndUserUuid(uuid: string, userUuid: string): Promise<Item | null>
   findByUuid(uuid: string): Promise<Item | null>
-  remove(item: Item): Promise<Item>
-  save(item: Item): Promise<Item>
+  remove(item: Item): Promise<void>
+  save(item: Item): Promise<void>
   markItemsAsDeleted(itemUuids: Array<string>, updatedAtTimestamp: number): Promise<void>
   updateContentSize(itemUuid: string, contentSize: number): Promise<void>
 }

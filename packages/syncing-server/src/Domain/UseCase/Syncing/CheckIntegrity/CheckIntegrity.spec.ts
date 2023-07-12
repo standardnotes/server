@@ -1,9 +1,10 @@
 import 'reflect-metadata'
 
+import { ContentType } from '@standardnotes/domain-core'
+
 import { ItemRepositoryInterface } from '../../../Item/ItemRepositoryInterface'
 
 import { CheckIntegrity } from './CheckIntegrity'
-import { ContentType } from '@standardnotes/common'
 
 describe('CheckIntegrity', () => {
   let itemRepository: ItemRepositoryInterface
@@ -16,27 +17,27 @@ describe('CheckIntegrity', () => {
       {
         uuid: '1-2-3',
         updated_at_timestamp: 1,
-        content_type: ContentType.Note,
+        content_type: ContentType.TYPES.Note,
       },
       {
         uuid: '2-3-4',
         updated_at_timestamp: 2,
-        content_type: ContentType.Note,
+        content_type: ContentType.TYPES.Note,
       },
       {
         uuid: '3-4-5',
         updated_at_timestamp: 3,
-        content_type: ContentType.Note,
+        content_type: ContentType.TYPES.Note,
       },
       {
         uuid: '4-5-6',
         updated_at_timestamp: 4,
-        content_type: ContentType.ItemsKey,
+        content_type: ContentType.TYPES.ItemsKey,
       },
       {
         uuid: '5-6-7',
         updated_at_timestamp: 5,
-        content_type: ContentType.File,
+        content_type: ContentType.TYPES.File,
       },
     ])
   })

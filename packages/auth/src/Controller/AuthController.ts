@@ -1,10 +1,10 @@
 import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
 import {
-  ApiVersion,
   UserRegistrationRequestParams,
   UserServerInterface,
   UserDeletionResponseBody,
   UserRegistrationResponseBody,
+  UserUpdateRequestParams,
 } from '@standardnotes/api'
 import { ErrorTag, HttpResponse, HttpStatusCode } from '@standardnotes/responses'
 import { ProtocolVersion } from '@standardnotes/common'
@@ -23,6 +23,8 @@ import { GenerateRecoveryCodes } from '../Domain/UseCase/GenerateRecoveryCodes/G
 import { GenerateRecoveryCodesRequestParams } from '../Infra/Http/Request/GenerateRecoveryCodesRequestParams'
 import { Logger } from 'winston'
 import { SessionServiceInterface } from '../Domain/Session/SessionServiceInterface'
+import { ApiVersion } from '../Domain/Api/ApiVersion'
+import { UserUpdateResponse } from '@standardnotes/api/dist/Domain/Response/User/UserUpdateResponse'
 
 export class AuthController implements UserServerInterface {
   constructor(
@@ -36,6 +38,10 @@ export class AuthController implements UserServerInterface {
     private logger: Logger,
     private sessionService: SessionServiceInterface,
   ) {}
+
+  async update(_params: UserUpdateRequestParams): Promise<HttpResponse<UserUpdateResponse>> {
+    throw new Error('Method not implemented.')
+  }
 
   async deleteAccount(_params: never): Promise<HttpResponse<UserDeletionResponseBody>> {
     throw new Error('This method is implemented on the payments server.')
@@ -121,7 +127,7 @@ export class AuthController implements UserServerInterface {
   async signInWithRecoveryCodes(
     params: SignInWithRecoveryCodesRequestParams,
   ): Promise<HttpResponse<SignInWithRecoveryCodesResponseBody>> {
-    if (params.apiVersion !== ApiVersion.v0) {
+    if (params.apiVersion !== ApiVersion.v20200115) {
       return {
         status: HttpStatusCode.BadRequest,
         data: {
@@ -162,7 +168,7 @@ export class AuthController implements UserServerInterface {
   async recoveryKeyParams(
     params: RecoveryKeyParamsRequestParams,
   ): Promise<HttpResponse<RecoveryKeyParamsResponseBody>> {
-    if (params.apiVersion !== ApiVersion.v0) {
+    if (params.apiVersion !== ApiVersion.v20200115) {
       return {
         status: HttpStatusCode.BadRequest,
         data: {

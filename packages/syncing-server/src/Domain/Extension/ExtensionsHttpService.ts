@@ -140,11 +140,11 @@ export class ExtensionsHttpService implements ExtensionsHttpServiceInterface {
     email: string,
   ): Promise<DomainEventInterface> {
     const extension = await this.itemRepository.findByUuidAndUserUuid(extensionId, userUuid)
-    if (extension === null || !extension.content) {
+    if (extension === null || !extension.props.content) {
       throw Error(`Could not find extensions with id ${extensionId}`)
     }
 
-    const content = this.contentDecoder.decode(extension.content)
+    const content = this.contentDecoder.decode(extension.props.content)
     switch (this.getExtensionName(content)) {
       case ExtensionName.Dropbox:
         return this.createCloudBackupFailedEventBasedOnProvider('DROPBOX', email)

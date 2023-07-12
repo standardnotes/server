@@ -31,7 +31,7 @@ export class TimeDifferenceFilter implements ItemSaveRuleInterface {
       }
     }
 
-    const ourUpdatedAtTimestamp = dto.existingItem.updatedAtTimestamp
+    const ourUpdatedAtTimestamp = dto.existingItem.props.timestamps.updatedAt
     const difference = incomingUpdatedAtTimestamp - ourUpdatedAtTimestamp
 
     if (this.itemHashHasMicrosecondsPrecision(dto.itemHash)) {

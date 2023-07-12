@@ -1,6 +1,4 @@
-import { Dates, Uuid } from '@standardnotes/domain-core'
-
-import { ContentType } from './ContentType'
+import { ContentType, Dates, Uuid } from '@standardnotes/domain-core'
 
 export interface RevisionProps {
   itemUuid: Uuid

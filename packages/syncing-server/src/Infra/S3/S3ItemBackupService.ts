@@ -5,13 +5,15 @@ import { Logger } from 'winston'
 
 import { Item } from '../../Domain/Item/Item'
 import { ItemBackupServiceInterface } from '../../Domain/Item/ItemBackupServiceInterface'
-import { ProjectorInterface } from '../../Projection/ProjectorInterface'
-import { ItemProjection } from '../../Projection/ItemProjection'
+import { MapperInterface } from '@standardnotes/domain-core'
+import { ItemBackupRepresentation } from '../../Mapping/Backup/ItemBackupRepresentation'
+import { ItemHttpRepresentation } from '../../Mapping/Http/ItemHttpRepresentation'
 
 export class S3ItemBackupService implements ItemBackupServiceInterface {
   constructor(
     private s3BackupBucketName: string,
-    private itemProjector: ProjectorInterface<Item, ItemProjection>,
+    private backupMapper: MapperInterface<Item, ItemBackupRepresentation>,
+    private httpMapper: MapperInterface<Item, ItemHttpRepresentation>,
     private logger: Logger,
     private s3Client?: S3Client,
   ) {}
@@ -29,7 +31,7 @@ export class S3ItemBackupService implements ItemBackupServiceInterface {
         Bucket: this.s3BackupBucketName,
         Key: s3Key,
         Body: JSON.stringify({
-          item: await this.itemProjector.projectCustom('dump', item),
+          item: this.backupMapper.toProjection(item),
         }),
       }),
     )
@@ -45,10 +47,10 @@ export class S3ItemBackupService implements ItemBackupServiceInterface {
     }
 
     const fileNames = []
-    let itemProjections: Array<ItemProjection> = []
+    let itemProjections: Array<ItemHttpRepresentation> = []
     let contentSizeCounter = 0
     for (const item of items) {
-      const itemProjection = await this.itemProjector.projectFull(item)
+      const itemProjection = this.httpMapper.toProjection(item)
 
       if (contentSizeLimit === undefined) {
         itemProjections.push(itemProjection)
@@ -79,7 +81,10 @@ export class S3ItemBackupService implements ItemBackupServiceInterface {
     return fileNames
   }
 
-  private async createBackupFile(itemProjections: ItemProjection[], authParams: KeyParamsData): Promise<string> {
+  private async createBackupFile(
+    itemRepresentations: ItemHttpRepresentation[],
+    authParams: KeyParamsData,
+  ): Promise<string> {
     const fileName = uuid.v4()
 
     await (this.s3Client as S3Client).send(
@@ -87,7 +92,7 @@ export class S3ItemBackupService implements ItemBackupServiceInterface {
         Bucket: this.s3BackupBucketName,
         Key: fileName,
         Body: JSON.stringify({
-          items: itemProjections,
+          items: itemRepresentations,
           auth_params: authParams,
         }),
       }),

@@ -1,7 +1,6 @@
 import * as bcrypt from 'bcryptjs'
 import { Result, UseCaseInterface, Username, Uuid, Validator } from '@standardnotes/domain-core'
 import { SettingName } from '@standardnotes/settings'
-import { ApiVersion } from '@standardnotes/api'
 
 import { AuthResponse20200115 } from '../../Auth/AuthResponse20200115'
 import { SettingServiceInterface } from '../../Setting/SettingServiceInterface'
@@ -16,6 +15,7 @@ import { IncreaseLoginAttempts } from '../IncreaseLoginAttempts'
 import { ClearLoginAttempts } from '../ClearLoginAttempts'
 import { DeleteSetting } from '../DeleteSetting/DeleteSetting'
 import { AuthenticatorRepositoryInterface } from '../../Authenticator/AuthenticatorRepositoryInterface'
+import { ApiVersion } from '../../Api/ApiVersion'
 
 export class SignInWithRecoveryCodes implements UseCaseInterface<AuthResponse20200115> {
   constructor(
@@ -100,7 +100,7 @@ export class SignInWithRecoveryCodes implements UseCaseInterface<AuthResponse202
 
     const authResponse = await this.authResponseFactory.createResponse({
       user,
-      apiVersion: ApiVersion.v0,
+      apiVersion: ApiVersion.v20200115,
       userAgent: dto.userAgent,
       ephemeralSession: false,
       readonlyAccess: false,

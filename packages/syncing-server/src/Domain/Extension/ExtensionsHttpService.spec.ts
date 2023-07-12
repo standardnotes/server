@@ -9,6 +9,7 @@ import { ItemRepositoryInterface } from '../Item/ItemRepositoryInterface'
 import { ExtensionsHttpService } from './ExtensionsHttpService'
 import { DomainEventFactoryInterface } from '../Event/DomainEventFactoryInterface'
 import { AxiosInstance } from 'axios'
+import { Uuid, ContentType, Dates, Timestamps, UniqueEntityId } from '@standardnotes/domain-core'
 
 describe('ExtensionsHttpService', () => {
   let httpClient: AxiosInstance
@@ -34,9 +35,22 @@ describe('ExtensionsHttpService', () => {
     httpClient = {} as jest.Mocked<AxiosInstance>
     httpClient.request = jest.fn().mockReturnValue({ status: 200, data: { foo: 'bar' } })
 
-    item = {
-      content: 'test',
-    } as jest.Mocked<Item>
+    item = Item.create(
+      {
+        userUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+        updatedWithSession: null,
+        content: 'foobar',
+        contentType: ContentType.create(ContentType.TYPES.Note).getValue(),
+        encItemKey: null,
+        authHash: null,
+        itemsKeyId: null,
+        duplicateOf: null,
+        deleted: false,
+        dates: Dates.create(new Date(1616164633241311), new Date(1616164633241311)).getValue(),
+        timestamps: Timestamps.create(1616164633241311, 1616164633241311).getValue(),
+      },
+      new UniqueEntityId('00000000-0000-0000-0000-000000000000'),
+    ).getValue()
 
     authParams = {} as jest.Mocked<KeyParamsData>
 

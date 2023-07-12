@@ -1,8 +1,7 @@
 import 'reflect-metadata'
 
-import { ContentType } from '@standardnotes/common'
-
 import { Time, Timer, TimerInterface } from '@standardnotes/time'
+import { ContentType, Dates, Timestamps, UniqueEntityId, Uuid } from '@standardnotes/domain-core'
 
 import { ApiVersion } from '../../Api/ApiVersion'
 
@@ -26,28 +25,36 @@ describe('TimeDifferenceFilter', () => {
       .fn()
       .mockImplementation((date: string) => timeHelper.convertStringDateToMicroseconds(date))
 
-    existingItem = {
-      uuid: '1-2-3',
-      userUuid: '1-2-3',
-      createdAt: new Date(1616164633241311),
-      createdAtTimestamp: 1616164633241311,
-      updatedAt: new Date(1616164633241311),
-      updatedAtTimestamp: 1616164633241311,
-    } as jest.Mocked<Item>
+    existingItem = Item.create(
+      {
+        userUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+        updatedWithSession: null,
+        content: 'foobar',
+        contentType: ContentType.create(ContentType.TYPES.Note).getValue(),
+        encItemKey: null,
+        authHash: null,
+        itemsKeyId: null,
+        duplicateOf: null,
+        deleted: false,
+        dates: Dates.create(new Date(1616164633241311), new Date(1616164633241311)).getValue(),
+        timestamps: Timestamps.create(1616164633241311, 1616164633241311).getValue(),
+      },
+      new UniqueEntityId('00000000-0000-0000-0000-000000000000'),
+    ).getValue()
 
     itemHash = {
       uuid: '1-2-3',
       content: 'asdqwe1',
-      content_type: ContentType.Note,
+      content_type: ContentType.TYPES.Note,
       duplicate_of: null,
       enc_item_key: 'qweqwe1',
       items_key_id: 'asdasd1',
       created_at: timeHelper.formatDate(
-        timeHelper.convertMicrosecondsToDate(existingItem.createdAtTimestamp),
+        timeHelper.convertMicrosecondsToDate(existingItem.props.timestamps.createdAt),
         'YYYY-MM-DDTHH:mm:ss.SSS[Z]',
       ),
       updated_at: timeHelper.formatDate(
-        timeHelper.convertMicrosecondsToDate(existingItem.updatedAtTimestamp + 1),
+        timeHelper.convertMicrosecondsToDate(existingItem.props.timestamps.updatedAt + 1),
         'YYYY-MM-DDTHH:mm:ss.SSS[Z]',
       ),
     } as jest.Mocked<ItemHash>
@@ -83,7 +90,7 @@ describe('TimeDifferenceFilter', () => {
   })
 
   it('should filter out items having update at timestamp different in microseconds precision', async () => {
-    itemHash.updated_at_timestamp = existingItem.updatedAtTimestamp + 1
+    itemHash.updated_at_timestamp = existingItem.props.timestamps.updatedAt + 1
 
     const result = await createFilter().check({
       userUuid: '1-2-3',
@@ -102,7 +109,7 @@ describe('TimeDifferenceFilter', () => {
   })
 
   it('should leave items having update at timestamp same in microseconds precision', async () => {
-    itemHash.updated_at_timestamp = existingItem.updatedAtTimestamp
+    itemHash.updated_at_timestamp = existingItem.props.timestamps.updatedAt
 
     const result = await createFilter().check({
       userUuid: '1-2-3',
@@ -119,7 +126,9 @@ describe('TimeDifferenceFilter', () => {
   it('should filter out items having update at timestamp different by a second for legacy clients', async () => {
     itemHash.updated_at = timeHelper.formatDate(
       new Date(
-        timeHelper.convertMicrosecondsToMilliseconds(existingItem.updatedAtTimestamp) + Time.MicrosecondsInASecond + 1,
+        timeHelper.convertMicrosecondsToMilliseconds(existingItem.props.timestamps.updatedAt) +
+          Time.MicrosecondsInASecond +
+          1,
       ),
       'YYYY-MM-DDTHH:mm:ss.SSS[Z]',
     )
@@ -142,7 +151,7 @@ describe('TimeDifferenceFilter', () => {
 
   it('should leave items having update at timestamp different by less then a second for legacy clients', async () => {
     itemHash.updated_at = timeHelper.formatDate(
-      timeHelper.convertMicrosecondsToDate(existingItem.updatedAtTimestamp),
+      timeHelper.convertMicrosecondsToDate(existingItem.props.timestamps.updatedAt),
       'YYYY-MM-DDTHH:mm:ss.SSS[Z]',
     )
 
@@ -161,7 +170,7 @@ describe('TimeDifferenceFilter', () => {
   it('should filter out items having update at timestamp different by a millisecond', async () => {
     itemHash.updated_at = timeHelper.formatDate(
       new Date(
-        timeHelper.convertMicrosecondsToMilliseconds(existingItem.updatedAtTimestamp) +
+        timeHelper.convertMicrosecondsToMilliseconds(existingItem.props.timestamps.updatedAt) +
           Time.MicrosecondsInAMillisecond +
           1,
       ),
@@ -186,7 +195,7 @@ describe('TimeDifferenceFilter', () => {
 
   it('should leave items having update at timestamp different by less than a millisecond', async () => {
     itemHash.updated_at = timeHelper.formatDate(
-      timeHelper.convertMicrosecondsToDate(existingItem.updatedAtTimestamp),
+      timeHelper.convertMicrosecondsToDate(existingItem.props.timestamps.updatedAt),
       'YYYY-MM-DDTHH:mm:ss.SSS[Z]',
     )
 

@@ -11,6 +11,7 @@ import { ItemRepositoryInterface } from '../Item/ItemRepositoryInterface'
 import { ItemRevisionCreationRequestedEventHandler } from './ItemRevisionCreationRequestedEventHandler'
 import { ItemBackupServiceInterface } from '../Item/ItemBackupServiceInterface'
 import { DomainEventFactoryInterface } from '../Event/DomainEventFactoryInterface'
+import { Uuid, ContentType, Dates, Timestamps, UniqueEntityId } from '@standardnotes/domain-core'
 
 describe('ItemRevisionCreationRequestedEventHandler', () => {
   let itemRepository: ItemRepositoryInterface
@@ -29,10 +30,22 @@ describe('ItemRevisionCreationRequestedEventHandler', () => {
     )
 
   beforeEach(() => {
-    item = {
-      uuid: '1-2-3',
-      content: 'test',
-    } as jest.Mocked<Item>
+    item = Item.create(
+      {
+        userUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+        updatedWithSession: null,
+        content: 'foobar1',
+        contentType: ContentType.create(ContentType.TYPES.Note).getValue(),
+        encItemKey: null,
+        authHash: null,
+        itemsKeyId: null,
+        duplicateOf: null,
+        deleted: false,
+        dates: Dates.create(new Date(1616164633241311), new Date(1616164633241311)).getValue(),
+        timestamps: Timestamps.create(1616164633241311, 1616164633241311).getValue(),
+      },
+      new UniqueEntityId('00000000-0000-0000-0000-000000000000'),
+    ).getValue()
 
     itemRepository = {} as jest.Mocked<ItemRepositoryInterface>
     itemRepository.findByUuid = jest.fn().mockReturnValue(item)

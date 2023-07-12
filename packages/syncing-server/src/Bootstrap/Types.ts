@@ -12,10 +12,6 @@ const TYPES = {
   Sync_ORMItemRepository: Symbol.for('Sync_ORMItemRepository'),
   // Middleware
   Sync_AuthMiddleware: Symbol.for('Sync_AuthMiddleware'),
-  // Projectors
-  Sync_ItemProjector: Symbol.for('Sync_ItemProjector'),
-  Sync_SavedItemProjector: Symbol.for('Sync_SavedItemProjector'),
-  Sync_ItemConflictProjector: Symbol.for('Sync_ItemConflictProjector'),
   // env vars
   Sync_REDIS_URL: Symbol.for('Sync_REDIS_URL'),
   Sync_SNS_TOPIC_ARN: Symbol.for('Sync_SNS_TOPIC_ARN'),
@@ -57,6 +53,8 @@ const TYPES = {
   Sync_SendMessageToUser: Symbol.for('Sync_SendMessageToUser'),
   Sync_DeleteAllMessagesSentToUser: Symbol.for('Sync_DeleteAllMessagesSentToUser'),
   Sync_DeleteMessage: Symbol.for('Sync_DeleteMessage'),
+  Sync_SaveNewItem: Symbol.for('Sync_SaveNewItem'),
+  Sync_UpdateExistingItem: Symbol.for('Sync_UpdateExistingItem'),
   // Handlers
   Sync_AccountDeletionRequestedEventHandler: Symbol.for('Sync_AccountDeletionRequestedEventHandler'),
   Sync_DuplicateItemSyncedEventHandler: Symbol.for('Sync_DuplicateItemSyncedEventHandler'),
@@ -80,10 +78,8 @@ const TYPES = {
   Sync_ItemSaveValidator: Symbol.for('Sync_ItemSaveValidator'),
   Sync_OwnershipFilter: Symbol.for('Sync_OwnershipFilter'),
   Sync_TimeDifferenceFilter: Symbol.for('Sync_TimeDifferenceFilter'),
-  Sync_UuidFilter: Symbol.for('Sync_UuidFilter'),
   Sync_ContentTypeFilter: Symbol.for('Sync_ContentTypeFilter'),
   Sync_ContentFilter: Symbol.for('Sync_ContentFilter'),
-  Sync_ItemFactory: Symbol.for('Sync_ItemFactory'),
   Sync_ItemTransferCalculator: Symbol.for('Sync_ItemTransferCalculator'),
   Sync_ControllerContainer: Symbol.for('Sync_ControllerContainer'),
   Sync_HomeServerItemsController: Symbol.for('Sync_HomeServerItemsController'),
@@ -92,6 +88,11 @@ const TYPES = {
   Sync_SharedVaultUserHttpMapper: Symbol.for('Sync_SharedVaultUserHttpMapper'),
   Sync_SharedVaultInviteHttpMapper: Symbol.for('Sync_SharedVaultInviteHttpMapper'),
   Sync_MessageHttpMapper: Symbol.for('Sync_MessageHttpMapper'),
+  Sync_ItemPersistenceMapper: Symbol.for('Sync_ItemPersistenceMapper'),
+  Sync_ItemHttpMapper: Symbol.for('Sync_ItemHttpMapper'),
+  Sync_SavedItemHttpMapper: Symbol.for('Sync_SavedItemHttpMapper'),
+  Sync_ItemConflictHttpMapper: Symbol.for('Sync_ItemConflictHttpMapper'),
+  Sync_ItemBackupMapper: Symbol.for('Sync_ItemBackupMapper'),
 }
 
 export default TYPES
