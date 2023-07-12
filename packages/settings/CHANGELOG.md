@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.21.13](https://github.com/standardnotes/server/compare/@standardnotes/settings@1.21.12...@standardnotes/settings@1.21.13) (2023-07-12)
+
+**Note:** Version bump only for package @standardnotes/settings
+
 ## [1.21.12](https://github.com/standardnotes/server/compare/@standardnotes/settings@1.21.11...@standardnotes/settings@1.21.12) (2023-07-07)
 
 **Note:** Version bump only for package @standardnotes/settings

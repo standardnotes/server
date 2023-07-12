@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.50.0](https://github.com/standardnotes/server/compare/@standardnotes/common@1.49.0...@standardnotes/common@1.50.0) (2023-07-12)
+
+### Features
+
+* domain items ([#655](https://github.com/standardnotes/server/issues/655)) ([a0af8f0](https://github.com/standardnotes/server/commit/a0af8f00252e1219e58cb7e066c11a8e71692e9d))
+
 # [1.49.0](https://github.com/standardnotes/server/compare/@standardnotes/common@1.48.3...@standardnotes/common@1.49.0) (2023-06-30)
 
 ### Features
