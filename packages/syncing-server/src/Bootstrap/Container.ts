@@ -315,6 +315,24 @@ export class ContainerConfigLoader {
       )
 
     // Services
+    container.bind<OwnershipFilter>(TYPES.Sync_OwnershipFilter).toConstantValue(new OwnershipFilter())
+    container
+      .bind<TimeDifferenceFilter>(TYPES.Sync_TimeDifferenceFilter)
+      .toConstantValue(new TimeDifferenceFilter(container.get(TYPES.Sync_Timer)))
+    container.bind<ContentTypeFilter>(TYPES.Sync_ContentTypeFilter).toConstantValue(new ContentTypeFilter())
+    container.bind<ContentFilter>(TYPES.Sync_ContentFilter).toConstantValue(new ContentFilter())
+
+    container
+      .bind<ItemSaveValidatorInterface>(TYPES.Sync_ItemSaveValidator)
+      .toDynamicValue((context: interfaces.Context) => {
+        return new ItemSaveValidator([
+          context.container.get(TYPES.Sync_OwnershipFilter),
+          context.container.get(TYPES.Sync_TimeDifferenceFilter),
+          context.container.get(TYPES.Sync_ContentTypeFilter),
+          context.container.get(TYPES.Sync_ContentFilter),
+        ])
+      })
+
     container
       .bind<ItemServiceInterface>(TYPES.Sync_ItemService)
       .toConstantValue(
@@ -349,26 +367,6 @@ export class ContainerConfigLoader {
           context.container.get(TYPES.Sync_SyncResponseFactory20161215),
           context.container.get(TYPES.Sync_SyncResponseFactory20200115),
         )
-      })
-
-    container.bind<OwnershipFilter>(TYPES.Sync_OwnershipFilter).toDynamicValue(() => new OwnershipFilter())
-    container
-      .bind<TimeDifferenceFilter>(TYPES.Sync_TimeDifferenceFilter)
-      .toDynamicValue(
-        (context: interfaces.Context) => new TimeDifferenceFilter(context.container.get(TYPES.Sync_Timer)),
-      )
-    container.bind<ContentTypeFilter>(TYPES.Sync_ContentTypeFilter).toDynamicValue(() => new ContentTypeFilter())
-    container.bind<ContentFilter>(TYPES.Sync_ContentFilter).toDynamicValue(() => new ContentFilter())
-
-    container
-      .bind<ItemSaveValidatorInterface>(TYPES.Sync_ItemSaveValidator)
-      .toDynamicValue((context: interfaces.Context) => {
-        return new ItemSaveValidator([
-          context.container.get(TYPES.Sync_OwnershipFilter),
-          context.container.get(TYPES.Sync_TimeDifferenceFilter),
-          context.container.get(TYPES.Sync_ContentTypeFilter),
-          context.container.get(TYPES.Sync_ContentFilter),
-        ])
       })
 
     // env vars
