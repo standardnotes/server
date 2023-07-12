@@ -4639,7 +4639,7 @@ const RAW_RUNTIME_STATE =
           ["@standardnotes/domain-core", "workspace:packages/domain-core"],\
           ["@standardnotes/domain-events", "workspace:packages/domain-events"],\
           ["@standardnotes/domain-events-infra", "workspace:packages/domain-events-infra"],\
-          ["@standardnotes/features", "npm:1.59.5"],\
+          ["@standardnotes/features", "npm:1.59.6"],\
           ["@standardnotes/predicates", "workspace:packages/predicates"],\
           ["@standardnotes/responses", "npm:1.13.24"],\
           ["@standardnotes/security", "workspace:packages/security"],\
