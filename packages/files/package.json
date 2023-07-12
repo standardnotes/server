@@ -35,7 +35,7 @@
     "@standardnotes/domain-events": "workspace:*",
     "@standardnotes/domain-events-infra": "workspace:*",
     "@standardnotes/security": "workspace:*",
-    "@standardnotes/sncrypto-common": "^1.9.0",
+    "@standardnotes/sncrypto-common": "^1.13.4",
     "@standardnotes/sncrypto-node": "workspace:*",
     "@standardnotes/time": "workspace:*",
     "connect-busboy": "^1.0.0",

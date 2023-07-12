@@ -23,7 +23,7 @@
     "test": "jest spec"
   },
   "dependencies": {
-    "@standardnotes/sncrypto-common": "^1.9.0",
+    "@standardnotes/sncrypto-common": "^1.13.4",
     "reflect-metadata": "^0.1.13"
   },
   "devDependencies": {
