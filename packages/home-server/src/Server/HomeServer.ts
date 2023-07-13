@@ -138,6 +138,18 @@ export class HomeServer implements HomeServerInterface {
             Disallow: '/',
           }),
         )
+
+        if (env.get('E2E_TESTING', true) === 'true') {
+          app.post('/e2e/activate-premium', (request: Request, response: Response) => {
+            void this.activatePremiumFeatures(request.body.username).then((result) => {
+              if (result.isFailed()) {
+                response.status(400).send({ error: { message: result.getError() } })
+              } else {
+                response.status(200).send({ message: result.getValue() })
+              }
+            })
+          })
+        }
       })
 
       const logger: winston.Logger = winston.loggers.get('home-server')
