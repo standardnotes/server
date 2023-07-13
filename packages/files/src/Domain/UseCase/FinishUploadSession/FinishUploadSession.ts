@@ -43,8 +43,9 @@ export class FinishUploadSession implements UseCaseInterface {
         totalFileSize += uploadChunkResult.chunkSize
       }
 
+      const userHasUnlimitedStorage = dto.uploadBytesLimit === -1
       const remainingSpaceLeft = dto.uploadBytesLimit - dto.uploadBytesUsed
-      if (remainingSpaceLeft < totalFileSize) {
+      if (!userHasUnlimitedStorage && remainingSpaceLeft < totalFileSize) {
         return {
           success: false,
           message: 'Could not finish upload session. You are out of space.',

@@ -135,4 +135,27 @@ describe('FinishUploadSession', () => {
     expect(fileUploader.finishUploadSession).not.toHaveBeenCalled()
     expect(domainEventPublisher.publish).not.toHaveBeenCalled()
   })
+
+  it('should ignore the storage quota if user has unlimited storage', async () => {
+    uploadRepository.retrieveUploadChunkResults = jest.fn().mockReturnValue([
+      { tag: '123', chunkId: 1, chunkSize: 60 },
+      { tag: '234', chunkId: 2, chunkSize: 10 },
+      { tag: '345', chunkId: 3, chunkSize: 20 },
+    ])
+
+    expect(
+      await createUseCase().execute({
+        resourceRemoteIdentifier: '2-3-4',
+        ownerUuid: '1-2-3',
+        ownerType: 'user',
+        uploadBytesLimit: -1,
+        uploadBytesUsed: 20,
+      }),
+    ).toEqual({
+      success: true,
+    })
+
+    expect(fileUploader.finishUploadSession).toHaveBeenCalled()
+    expect(domainEventPublisher.publish).toHaveBeenCalled()
+  })
 })
