@@ -50,11 +50,14 @@ services:
   db:
     image: mysql:8
     container_name: db_self_hosted
+    user: "${UID}:${GID}"
     environment:
+      - LANG=C.UTF-8
       - MYSQL_DATABASE=standard_notes_db
       - MYSQL_USER=std_notes_user
       - MYSQL_ROOT_PASSWORD=changeme123
       - MYSQL_PASSWORD=changeme123
+      - MYSQL_INITDB_CHARSET=utf8mb4
     expose:
       - 3306
     volumes:
@@ -78,6 +81,7 @@ services:
   cache:
     image: redis:7
     container_name: cache_self_hosted
+    user: "${UID}:${GID}"
     volumes:
       - ./data/redis/:/data
     expose:
