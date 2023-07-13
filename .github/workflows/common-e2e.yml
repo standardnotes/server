@@ -115,6 +115,7 @@ jobs:
         echo "DB_TYPE=${{ matrix.db_type }}" >> packages/home-server/.env
         echo "REDIS_URL=redis://cache" >> packages/home-server/.env
         echo "CACHE_TYPE=${{ matrix.cache_type }}" >> packages/home-server/.env
+        echo "E2E_TESTING=true" >> packages/home-server/.env
 
     - name: Run Server
       run: nohup yarn workspace @standardnotes/home-server start &
