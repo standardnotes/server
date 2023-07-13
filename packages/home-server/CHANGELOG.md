@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.12.0](https://github.com/standardnotes/server/compare/@standardnotes/home-server@1.11.41...@standardnotes/home-server@1.12.0) (2023-07-13)
+
+### Features
+
+* **home-server:** add activating premium features during an e2e test suite run ([2f0903e](https://github.com/standardnotes/server/commit/2f0903e0ebba95bcf0ece45045dc18e8a988b930))
+
 ## [1.11.41](https://github.com/standardnotes/server/compare/@standardnotes/home-server@1.11.40...@standardnotes/home-server@1.11.41) (2023-07-12)
 
 **Note:** Version bump only for package @standardnotes/home-server
