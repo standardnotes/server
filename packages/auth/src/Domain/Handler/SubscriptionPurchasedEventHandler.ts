@@ -66,11 +66,7 @@ export class SubscriptionPurchasedEventHandler implements DomainEventHandlerInte
 
     await this.addUserRole(user, event.payload.subscriptionName)
 
-    await this.subscriptionSettingService.applyDefaultSubscriptionSettingsForSubscription(
-      userSubscription,
-      event.payload.subscriptionName,
-      user.uuid,
-    )
+    await this.subscriptionSettingService.applyDefaultSubscriptionSettingsForSubscription(userSubscription)
   }
 
   private async addUserRole(user: User, subscriptionName: string): Promise<void> {

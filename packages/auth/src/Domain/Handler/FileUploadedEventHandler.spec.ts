@@ -76,6 +76,7 @@ describe('FileUploadedEventHandler', () => {
         unencryptedValue: '123',
         serverEncryptionVersion: 0,
       },
+      user,
       userSubscription: {
         uuid: '1-2-3',
         subscriptionType: 'regular',
@@ -118,6 +119,7 @@ describe('FileUploadedEventHandler', () => {
         unencryptedValue: '468',
         serverEncryptionVersion: 0,
       },
+      user,
       userSubscription: {
         uuid: '1-2-3',
         subscriptionType: 'regular',
@@ -143,6 +145,7 @@ describe('FileUploadedEventHandler', () => {
         unencryptedValue: '468',
         serverEncryptionVersion: 0,
       },
+      user,
       userSubscription: {
         uuid: '1-2-3',
         subscriptionType: 'regular',
@@ -157,6 +160,7 @@ describe('FileUploadedEventHandler', () => {
         unencryptedValue: '468',
         serverEncryptionVersion: 0,
       },
+      user,
       userSubscription: {
         uuid: '2-3-4',
         subscriptionType: 'shared',

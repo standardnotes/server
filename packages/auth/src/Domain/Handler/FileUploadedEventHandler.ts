@@ -9,6 +9,7 @@ import { SubscriptionSettingServiceInterface } from '../Setting/SubscriptionSett
 import { UserSubscription } from '../Subscription/UserSubscription'
 import { UserSubscriptionServiceInterface } from '../Subscription/UserSubscriptionServiceInterface'
 import { UserRepositoryInterface } from '../User/UserRepositoryInterface'
+import { User } from '../User/User'
 
 @injectable()
 export class FileUploadedEventHandler implements DomainEventHandlerInterface {
@@ -36,14 +37,18 @@ export class FileUploadedEventHandler implements DomainEventHandlerInterface {
       return
     }
 
-    await this.updateUploadBytesUsedSetting(regularSubscription, event.payload.fileByteSize)
+    await this.updateUploadBytesUsedSetting(regularSubscription, user, event.payload.fileByteSize)
 
     if (sharedSubscription !== null) {
-      await this.updateUploadBytesUsedSetting(sharedSubscription, event.payload.fileByteSize)
+      await this.updateUploadBytesUsedSetting(sharedSubscription, user, event.payload.fileByteSize)
     }
   }
 
-  private async updateUploadBytesUsedSetting(subscription: UserSubscription, byteSize: number): Promise<void> {
+  private async updateUploadBytesUsedSetting(
+    subscription: UserSubscription,
+    user: User,
+    byteSize: number,
+  ): Promise<void> {
     let bytesUsed = '0'
     const bytesUsedSetting = await this.subscriptionSettingService.findSubscriptionSettingWithDecryptedValue({
       userUuid: (await subscription.user).uuid,
@@ -56,6 +61,7 @@ export class FileUploadedEventHandler implements DomainEventHandlerInterface {
 
     await this.subscriptionSettingService.createOrReplace({
       userSubscription: subscription,
+      user,
       props: {
         name: SettingName.NAMES.FileUploadBytesUsed,
         unencryptedValue: (+bytesUsed + byteSize).toString(),

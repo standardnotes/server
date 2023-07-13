@@ -95,11 +95,7 @@ export class SubscriptionSyncRequestedEventHandler implements DomainEventHandler
 
     await this.roleService.addUserRole(user, event.payload.subscriptionName)
 
-    await this.subscriptionSettingService.applyDefaultSubscriptionSettingsForSubscription(
-      userSubscription,
-      event.payload.subscriptionName,
-      user.uuid,
-    )
+    await this.subscriptionSettingService.applyDefaultSubscriptionSettingsForSubscription(userSubscription)
 
     await this.settingService.createOrReplace({
       user,

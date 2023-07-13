@@ -7,11 +7,14 @@ import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'
 import { UserSubscription } from '../../Subscription/UserSubscription'
 import { UserSubscriptionType } from '../../Subscription/UserSubscriptionType'
 import { ActivatePremiumFeaturesDTO } from './ActivatePremiumFeaturesDTO'
+import { SubscriptionSettingServiceInterface } from '../../Setting/SubscriptionSettingServiceInterface'
+import { SettingName } from '@standardnotes/settings'
 
 export class ActivatePremiumFeatures implements UseCaseInterface<string> {
   constructor(
     private userRepository: UserRepositoryInterface,
     private userSubscriptionRepository: UserSubscriptionRepositoryInterface,
+    private subscriptionSettingService: SubscriptionSettingServiceInterface,
     private roleService: RoleServiceInterface,
     private timer: TimerInterface,
   ) {}
@@ -43,6 +46,11 @@ export class ActivatePremiumFeatures implements UseCaseInterface<string> {
     await this.userSubscriptionRepository.save(subscription)
 
     await this.roleService.addUserRole(user, SubscriptionPlanName.NAMES.ProPlan)
+
+    await this.subscriptionSettingService.applyDefaultSubscriptionSettingsForSubscription(
+      subscription,
+      new Map([[SettingName.NAMES.FileUploadBytesLimit, '0']]),
+    )
 
     return Result.ok('Premium features activated.')
   }

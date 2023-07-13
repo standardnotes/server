@@ -793,6 +793,7 @@ export class ContainerConfigLoader {
         new ActivatePremiumFeatures(
           container.get(TYPES.Auth_UserRepository),
           container.get(TYPES.Auth_UserSubscriptionRepository),
+          container.get(TYPES.Auth_SubscriptionSettingService),
           container.get(TYPES.Auth_RoleService),
           container.get(TYPES.Auth_Timer),
         ),

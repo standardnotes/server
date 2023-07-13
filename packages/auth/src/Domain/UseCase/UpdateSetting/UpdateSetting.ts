@@ -91,6 +91,7 @@ export class UpdateSetting implements UseCaseInterface {
 
       const response = await this.subscriptionSettingService.createOrReplace({
         userSubscription: subscription,
+        user,
         props,
       })
 

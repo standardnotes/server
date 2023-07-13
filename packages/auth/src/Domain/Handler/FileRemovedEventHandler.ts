@@ -51,6 +51,7 @@ export class FileRemovedEventHandler implements DomainEventHandlerInterface {
 
     await this.subscriptionSettingService.createOrReplace({
       userSubscription: subscription,
+      user,
       props: {
         name: SettingName.NAMES.FileUploadBytesUsed,
         unencryptedValue: (+bytesUsed - byteSize).toString(),
