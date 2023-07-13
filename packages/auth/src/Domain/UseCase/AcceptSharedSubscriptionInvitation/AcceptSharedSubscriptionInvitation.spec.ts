@@ -106,8 +106,6 @@ describe('AcceptSharedSubscriptionInvitation', () => {
     expect(roleService.addUserRole).toHaveBeenCalledWith(invitee, 'PLUS_PLAN')
     expect(subscriptionSettingService.applyDefaultSubscriptionSettingsForSubscription).toHaveBeenCalledWith(
       inviteeSubscription,
-      'PLUS_PLAN',
-      '123',
     )
   })
 
@@ -148,8 +146,6 @@ describe('AcceptSharedSubscriptionInvitation', () => {
     expect(roleService.addUserRole).toHaveBeenCalledWith(invitee, 'PLUS_PLAN')
     expect(subscriptionSettingService.applyDefaultSubscriptionSettingsForSubscription).toHaveBeenCalledWith(
       inviteeSubscription,
-      'PLUS_PLAN',
-      '123',
     )
   })
 

@@ -92,11 +92,7 @@ export class AcceptSharedSubscriptionInvitation implements UseCaseInterface {
 
     await this.addUserRole(invitee, inviterUserSubscription.planName as SubscriptionName)
 
-    await this.subscriptionSettingService.applyDefaultSubscriptionSettingsForSubscription(
-      inviteeSubscription,
-      inviteeSubscription.planName as SubscriptionName,
-      invitee.uuid,
-    )
+    await this.subscriptionSettingService.applyDefaultSubscriptionSettingsForSubscription(inviteeSubscription)
 
     return {
       success: true,

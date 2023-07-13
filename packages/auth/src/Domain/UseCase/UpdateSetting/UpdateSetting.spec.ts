@@ -268,6 +268,7 @@ describe('UpdateSetting', () => {
           serverEncryptionVersion: 1,
           sensitive: false,
         },
+        user,
         userSubscription: regularSubscription,
       })
 
@@ -303,6 +304,7 @@ describe('UpdateSetting', () => {
           serverEncryptionVersion: 1,
           sensitive: false,
         },
+        user,
         userSubscription: sharedSubscription,
       })
 

@@ -1,4 +1,3 @@
-import { SubscriptionName } from '@standardnotes/common'
 import { inject, injectable } from 'inversify'
 import { Logger } from 'winston'
 
@@ -36,16 +35,19 @@ export class SubscriptionSettingService implements SubscriptionSettingServiceInt
 
   async applyDefaultSubscriptionSettingsForSubscription(
     userSubscription: UserSubscription,
-    subscriptionName: SubscriptionName,
-    userUuid: string,
+    overrides?: Map<string, string>,
   ): Promise<void> {
     const defaultSettingsWithValues =
-      await this.subscriptionSettingAssociationService.getDefaultSettingsAndValuesForSubscriptionName(subscriptionName)
+      await this.subscriptionSettingAssociationService.getDefaultSettingsAndValuesForSubscriptionName(
+        userSubscription.planName,
+      )
     if (defaultSettingsWithValues === undefined) {
-      this.logger.warn(`Could not find settings for subscription: ${subscriptionName}`)
+      this.logger.warn(`Could not find settings for subscription: ${userSubscription.planName}`)
 
       return
     }
+
+    const user = await userSubscription.user
 
     for (const settingNameString of defaultSettingsWithValues.keys()) {
       const settingNameOrError = SettingName.create(settingNameString)
@@ -59,7 +61,11 @@ export class SubscriptionSettingService implements SubscriptionSettingServiceInt
 
       const setting = defaultSettingsWithValues.get(settingName.value) as SettingDescription
       if (!setting.replaceable) {
-        const existingSetting = await this.findPreviousSubscriptionSetting(settingName, userSubscription.uuid, userUuid)
+        const existingSetting = await this.findPreviousSubscriptionSetting(
+          settingName,
+          userSubscription.uuid,
+          user.uuid,
+        )
         if (existingSetting !== null) {
           existingSetting.userSubscription = Promise.resolve(userSubscription)
           await this.subscriptionSettingRepository.save(existingSetting)
@@ -68,11 +74,17 @@ export class SubscriptionSettingService implements SubscriptionSettingServiceInt
         }
       }
 
+      let unencryptedValue = setting.value
+      if (overrides && overrides.has(settingName.value)) {
+        unencryptedValue = overrides.get(settingName.value) as string
+      }
+
       await this.createOrReplace({
         userSubscription,
+        user,
         props: {
           name: settingName.value,
-          unencryptedValue: setting.value,
+          unencryptedValue,
           serverEncryptionVersion: setting.serverEncryptionVersion,
           sensitive: setting.sensitive,
         },
@@ -109,7 +121,7 @@ export class SubscriptionSettingService implements SubscriptionSettingServiceInt
   async createOrReplace(
     dto: CreateOrReplaceSubscriptionSettingDTO,
   ): Promise<CreateOrReplaceSubscriptionSettingResponse> {
-    const { userSubscription, props } = dto
+    const { userSubscription, user, props } = dto
 
     const settingNameOrError = SettingName.create(props.name)
     if (settingNameOrError.isFailed()) {
@@ -121,7 +133,6 @@ export class SubscriptionSettingService implements SubscriptionSettingServiceInt
       throw new Error(`Setting ${settingName.value} is not a subscription setting`)
     }
 
-    const user = await userSubscription.user
     const existing = await this.findSubscriptionSettingWithDecryptedValue({
       userUuid: user.uuid,
       userSubscriptionUuid: userSubscription.uuid,

@@ -45,6 +45,7 @@ describe('SubscriptionSettingService', () => {
     userSubscription = {
       uuid: '1-2-3',
       user: Promise.resolve(user),
+      planName: SubscriptionName.PlusPlan,
     } as jest.Mocked<UserSubscription>
 
     setting = {
@@ -97,13 +98,68 @@ describe('SubscriptionSettingService', () => {
   })
 
   it('should create default settings for a subscription', async () => {
-    await createService().applyDefaultSubscriptionSettingsForSubscription(
-      userSubscription,
-      SubscriptionName.PlusPlan,
-      '1-2-3',
-    )
+    await createService().applyDefaultSubscriptionSettingsForSubscription(userSubscription)
 
     expect(subscriptionSettingRepository.save).toHaveBeenCalledWith(setting)
+  })
+
+  it('should create default settings for a subscription with overrides', async () => {
+    subscriptionSettingsAssociationService.getDefaultSettingsAndValuesForSubscriptionName = jest.fn().mockReturnValue(
+      new Map([
+        [
+          SettingName.NAMES.FileUploadBytesUsed,
+          {
+            value: '0',
+            sensitive: 0,
+            serverEncryptionVersion: EncryptionVersion.Unencrypted,
+            replaceable: false,
+          },
+        ],
+        [
+          SettingName.NAMES.FileUploadBytesLimit,
+          {
+            value: '345',
+            sensitive: 0,
+            serverEncryptionVersion: EncryptionVersion.Unencrypted,
+            replaceable: true,
+          },
+        ],
+      ]),
+    )
+
+    await createService().applyDefaultSubscriptionSettingsForSubscription(
+      userSubscription,
+      new Map([[SettingName.NAMES.FileUploadBytesLimit, '123']]),
+    )
+
+    expect(factory.createSubscriptionSetting).toHaveBeenNthCalledWith(
+      1,
+      {
+        name: SettingName.NAMES.FileUploadBytesUsed,
+        sensitive: 0,
+        serverEncryptionVersion: EncryptionVersion.Unencrypted,
+        unencryptedValue: '0',
+      },
+      {
+        planName: SubscriptionName.PlusPlan,
+        user: Promise.resolve(user),
+        uuid: '1-2-3',
+      },
+    )
+    expect(factory.createSubscriptionSetting).toHaveBeenNthCalledWith(
+      2,
+      {
+        name: SettingName.NAMES.FileUploadBytesLimit,
+        sensitive: 0,
+        serverEncryptionVersion: EncryptionVersion.Unencrypted,
+        unencryptedValue: '123',
+      },
+      {
+        planName: SubscriptionName.PlusPlan,
+        user: Promise.resolve(user),
+        uuid: '1-2-3',
+      },
+    )
   })
 
   it('should throw error if subscription setting is invalid', async () => {
@@ -121,13 +177,7 @@ describe('SubscriptionSettingService', () => {
       ]),
     )
 
-    await expect(
-      createService().applyDefaultSubscriptionSettingsForSubscription(
-        userSubscription,
-        SubscriptionName.PlusPlan,
-        '1-2-3',
-      ),
-    ).rejects.toThrow()
+    await expect(createService().applyDefaultSubscriptionSettingsForSubscription(userSubscription)).rejects.toThrow()
   })
 
   it('should throw error if setting name is not a subscription setting when applying defaults', async () => {
@@ -145,13 +195,7 @@ describe('SubscriptionSettingService', () => {
       ]),
     )
 
-    await expect(
-      createService().applyDefaultSubscriptionSettingsForSubscription(
-        userSubscription,
-        SubscriptionName.PlusPlan,
-        '1-2-3',
-      ),
-    ).rejects.toThrow()
+    await expect(createService().applyDefaultSubscriptionSettingsForSubscription(userSubscription)).rejects.toThrow()
   })
 
   it('should reassign existing default settings for a subscription if it is not replaceable', async () => {
@@ -170,11 +214,7 @@ describe('SubscriptionSettingService', () => {
     )
     subscriptionSettingRepository.findLastByNameAndUserSubscriptionUuid = jest.fn().mockReturnValue(setting)
 
-    await createService().applyDefaultSubscriptionSettingsForSubscription(
-      userSubscription,
-      SubscriptionName.PlusPlan,
-      '1-2-3',
-    )
+    await createService().applyDefaultSubscriptionSettingsForSubscription(userSubscription)
 
     expect(subscriptionSettingRepository.save).toHaveBeenCalled()
   })
@@ -195,11 +235,7 @@ describe('SubscriptionSettingService', () => {
     )
     subscriptionSettingRepository.findLastByNameAndUserSubscriptionUuid = jest.fn().mockReturnValue(null)
 
-    await createService().applyDefaultSubscriptionSettingsForSubscription(
-      userSubscription,
-      SubscriptionName.PlusPlan,
-      '1-2-3',
-    )
+    await createService().applyDefaultSubscriptionSettingsForSubscription(userSubscription)
 
     expect(subscriptionSettingRepository.save).toHaveBeenCalledWith(setting)
   })
@@ -225,11 +261,7 @@ describe('SubscriptionSettingService', () => {
       } as jest.Mocked<UserSubscription>,
     ])
 
-    await createService().applyDefaultSubscriptionSettingsForSubscription(
-      userSubscription,
-      SubscriptionName.PlusPlan,
-      '1-2-3',
-    )
+    await createService().applyDefaultSubscriptionSettingsForSubscription(userSubscription)
 
     expect(subscriptionSettingRepository.save).toHaveBeenCalledWith(setting)
   })
@@ -239,11 +271,7 @@ describe('SubscriptionSettingService', () => {
       .fn()
       .mockReturnValue(undefined)
 
-    await createService().applyDefaultSubscriptionSettingsForSubscription(
-      userSubscription,
-      SubscriptionName.PlusPlan,
-      '1-2-3',
-    )
+    await createService().applyDefaultSubscriptionSettingsForSubscription(userSubscription)
 
     expect(subscriptionSettingRepository.save).not.toHaveBeenCalled()
   })
@@ -251,6 +279,7 @@ describe('SubscriptionSettingService', () => {
   it("should create setting if it doesn't exist", async () => {
     const result = await createService().createOrReplace({
       userSubscription,
+      user,
       props: {
         name: SettingName.NAMES.FileUploadBytesLimit,
         unencryptedValue: 'value',
@@ -266,6 +295,7 @@ describe('SubscriptionSettingService', () => {
     await expect(
       createService().createOrReplace({
         userSubscription,
+        user,
         props: {
           name: 'invalid',
           unencryptedValue: 'value',
@@ -280,6 +310,7 @@ describe('SubscriptionSettingService', () => {
     await expect(
       createService().createOrReplace({
         userSubscription,
+        user,
         props: {
           name: SettingName.NAMES.DropboxBackupFrequency,
           unencryptedValue: 'value',
@@ -295,6 +326,7 @@ describe('SubscriptionSettingService', () => {
 
     const result = await createService().createOrReplace({
       userSubscription,
+      user,
       props: {
         uuid: '1-2-3',
         name: SettingName.NAMES.FileUploadBytesLimit,
@@ -312,6 +344,7 @@ describe('SubscriptionSettingService', () => {
 
     const result = await createService().createOrReplace({
       userSubscription,
+      user,
       props: {
         ...setting,
         unencryptedValue: 'value',
@@ -327,6 +360,7 @@ describe('SubscriptionSettingService', () => {
 
     const result = await createService().createOrReplace({
       userSubscription,
+      user,
       props: {
         ...setting,
         uuid: '1-2-3',

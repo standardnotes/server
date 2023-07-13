@@ -4,7 +4,7 @@ import { SettingDescription } from './SettingDescription'
 
 export interface SubscriptionSettingsAssociationServiceInterface {
   getDefaultSettingsAndValuesForSubscriptionName(
-    subscriptionName: SubscriptionName,
+    subscriptionName: string,
   ): Promise<Map<string, SettingDescription> | undefined>
   getFileUploadLimit(subscriptionName: SubscriptionName): Promise<number>
 }

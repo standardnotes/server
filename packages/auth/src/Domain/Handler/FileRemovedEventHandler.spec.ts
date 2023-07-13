@@ -13,7 +13,8 @@ import { UserSubscriptionServiceInterface } from '../Subscription/UserSubscripti
 describe('FileRemovedEventHandler', () => {
   let userSubscriptionService: UserSubscriptionServiceInterface
   let logger: Logger
-  let user: User
+  let regularUser: User
+  let sharedUser: User
   let event: FileRemovedEvent
   let subscriptionSettingService: SubscriptionSettingServiceInterface
   let regularSubscription: UserSubscription
@@ -22,20 +23,24 @@ describe('FileRemovedEventHandler', () => {
   const createHandler = () => new FileRemovedEventHandler(userSubscriptionService, subscriptionSettingService, logger)
 
   beforeEach(() => {
-    user = {
+    regularUser = {
       uuid: '123',
+    } as jest.Mocked<User>
+
+    sharedUser = {
+      uuid: '234',
     } as jest.Mocked<User>
 
     regularSubscription = {
       uuid: '1-2-3',
       subscriptionType: UserSubscriptionType.Regular,
-      user: Promise.resolve(user),
+      user: Promise.resolve(regularUser),
     } as jest.Mocked<UserSubscription>
 
     sharedSubscription = {
       uuid: '2-3-4',
       subscriptionType: UserSubscriptionType.Shared,
-      user: Promise.resolve(user),
+      user: Promise.resolve(sharedUser),
     } as jest.Mocked<UserSubscription>
 
     userSubscriptionService = {} as jest.Mocked<UserSubscriptionServiceInterface>
@@ -93,10 +98,11 @@ describe('FileRemovedEventHandler', () => {
         unencryptedValue: '222',
         serverEncryptionVersion: 0,
       },
+      user: regularUser,
       userSubscription: {
         uuid: '1-2-3',
         subscriptionType: 'regular',
-        user: Promise.resolve(user),
+        user: Promise.resolve(regularUser),
       },
     })
   })
@@ -118,10 +124,11 @@ describe('FileRemovedEventHandler', () => {
         unencryptedValue: '222',
         serverEncryptionVersion: 0,
       },
+      user: regularUser,
       userSubscription: {
         uuid: '1-2-3',
         subscriptionType: 'regular',
-        user: Promise.resolve(user),
+        user: Promise.resolve(regularUser),
       },
     })
 
@@ -132,10 +139,11 @@ describe('FileRemovedEventHandler', () => {
         unencryptedValue: '222',
         serverEncryptionVersion: 0,
       },
+      user: sharedUser,
       userSubscription: {
         uuid: '2-3-4',
         subscriptionType: 'shared',
-        user: Promise.resolve(user),
+        user: Promise.resolve(sharedUser),
       },
     })
   })
