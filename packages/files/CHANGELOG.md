@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.19.8](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.19.7...@standardnotes/files-server@1.19.8) (2023-07-13)
+
+### Bug Fixes
+
+* **files:** handling unlimited storage quota on home server ([9be3517](https://github.com/standardnotes/files/commit/9be3517093f8dd7bbdd7507c1e2ff059e6c9a889))
+
 ## [1.19.7](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.19.6...@standardnotes/files-server@1.19.7) (2023-07-12)
 
 **Note:** Version bump only for package @standardnotes/files-server
