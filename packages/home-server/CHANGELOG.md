@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.12.3](https://github.com/standardnotes/server/compare/@standardnotes/home-server@1.12.2...@standardnotes/home-server@1.12.3) (2023-07-14)
+
+### Bug Fixes
+
+* **home-server:** allow custom atributtes for activating premium features ([f7190c0](https://github.com/standardnotes/server/commit/f7190c0c9c2d105f97d1cf980ce6a4f0dae34805))
+
 ## [1.12.2](https://github.com/standardnotes/server/compare/@standardnotes/home-server@1.12.1...@standardnotes/home-server@1.12.2) (2023-07-13)
 
 **Note:** Version bump only for package @standardnotes/home-server
