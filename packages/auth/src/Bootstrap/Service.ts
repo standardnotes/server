@@ -24,14 +24,18 @@ export class Service implements AuthServiceInterface {
     this.serviceContainer.register(this.getId(), this)
   }
 
-  async activatePremiumFeatures(username: string): Promise<Result<string>> {
+  async activatePremiumFeatures(dto: {
+    username: string
+    subscriptionPlanName?: string
+    endsAt?: Date
+  }): Promise<Result<string>> {
     if (!this.container) {
       return Result.fail('Container not initialized')
     }
 
     const activatePremiumFeatures = this.container.get(TYPES.Auth_ActivatePremiumFeatures) as ActivatePremiumFeatures
 
-    return activatePremiumFeatures.execute({ username })
+    return activatePremiumFeatures.execute(dto)
   }
 
   async handleRequest(request: never, response: never, endpointOrMethodIdentifier: string): Promise<unknown> {

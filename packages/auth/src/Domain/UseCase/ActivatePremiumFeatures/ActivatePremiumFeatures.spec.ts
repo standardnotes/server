@@ -75,4 +75,28 @@ describe('ActivatePremiumFeatures', () => {
     expect(userSubscriptionRepository.save).toHaveBeenCalled()
     expect(roleService.addUserRole).toHaveBeenCalled()
   })
+
+  it('should save a subscription with custom plan name and endsAt', async () => {
+    const useCase = createUseCase()
+
+    const result = await useCase.execute({
+      username: 'test@test.te',
+      subscriptionPlanName: 'PRO_PLAN',
+      endsAt: new Date('2024-01-01T00:00:00.000Z'),
+    })
+
+    expect(result.isFailed()).toBe(false)
+  })
+
+  it('should fail when subscription plan name is invalid', async () => {
+    const useCase = createUseCase()
+
+    const result = await useCase.execute({
+      username: 'test@test.te',
+      subscriptionPlanName: 'some invalid plan name',
+      endsAt: new Date('2024-01-01T00:00:00.000Z'),
+    })
+
+    expect(result.isFailed()).toBe(true)
+  })
 })

@@ -141,7 +141,11 @@ export class HomeServer implements HomeServerInterface {
 
         if (env.get('E2E_TESTING', true) === 'true') {
           app.post('/e2e/activate-premium', (request: Request, response: Response) => {
-            void this.activatePremiumFeatures(request.body.username).then((result) => {
+            void this.activatePremiumFeatures({
+              username: request.body.username,
+              subscriptionPlanName: request.body.subscriptionPlanName,
+              endsAt: request.body.endsAt ? new Date(request.body.endsAt) : undefined,
+            }).then((result) => {
               if (result.isFailed()) {
                 response.status(400).send({ error: { message: result.getError() } })
               } else {
@@ -212,12 +216,16 @@ export class HomeServer implements HomeServerInterface {
     return this.serverInstance.address() !== null
   }
 
-  async activatePremiumFeatures(username: string): Promise<Result<string>> {
+  async activatePremiumFeatures(dto: {
+    username: string
+    subscriptionPlanName?: string
+    endsAt?: Date
+  }): Promise<Result<string>> {
     if (!this.isRunning() || !this.authService) {
       return Result.fail('Home server is not running.')
     }
 
-    return this.authService.activatePremiumFeatures(username)
+    return this.authService.activatePremiumFeatures(dto)
   }
 
   private configureLoggers(env: Env, configuration: HomeServerConfiguration): void {

@@ -30,22 +30,30 @@ export class ActivatePremiumFeatures implements UseCaseInterface<string> {
     if (user === null) {
       return Result.fail(`User not found with username: ${username.value}`)
     }
+    const subscriptionPlanNameString = dto.subscriptionPlanName ?? SubscriptionPlanName.NAMES.ProPlan
+    const subscriptionPlanNameOrError = SubscriptionPlanName.create(subscriptionPlanNameString)
+    if (subscriptionPlanNameOrError.isFailed()) {
+      return Result.fail(subscriptionPlanNameOrError.getError())
+    }
+    const subscriptionPlanName = subscriptionPlanNameOrError.getValue()
 
     const timestamp = this.timer.getTimestampInMicroseconds()
 
+    const endsAt = dto.endsAt ?? this.timer.getUTCDateNDaysAhead(365)
+
     const subscription = new UserSubscription()
-    subscription.planName = SubscriptionPlanName.NAMES.ProPlan
+    subscription.planName = subscriptionPlanName.value
     subscription.user = Promise.resolve(user)
     subscription.createdAt = timestamp
     subscription.updatedAt = timestamp
-    subscription.endsAt = this.timer.convertDateToMicroseconds(this.timer.getUTCDateNDaysAhead(365))
+    subscription.endsAt = this.timer.convertDateToMicroseconds(endsAt)
     subscription.cancelled = false
     subscription.subscriptionId = 1
     subscription.subscriptionType = UserSubscriptionType.Regular
 
     await this.userSubscriptionRepository.save(subscription)
 
-    await this.roleService.addUserRole(user, SubscriptionPlanName.NAMES.ProPlan)
+    await this.roleService.addUserRole(user, subscriptionPlanName.value)
 
     await this.subscriptionSettingService.applyDefaultSubscriptionSettingsForSubscription(
       subscription,
