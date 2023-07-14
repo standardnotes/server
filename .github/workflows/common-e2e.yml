@@ -127,4 +127,4 @@ jobs:
       run: for i in {1..30}; do curl -s http://localhost:3123/healthcheck && break || sleep 1; done
 
     - name: Run E2E Test Suite
-      run: yarn dlx mocha-headless-chrome --timeout 1200000 -f http://localhost:9001/mocha/test.html?skip_paid_features=true
+      run: yarn dlx mocha-headless-chrome --timeout 1200000 -f http://localhost:9001/mocha/test.html
