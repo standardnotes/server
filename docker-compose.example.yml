@@ -1,5 +1,3 @@
-version: '3.9'
-
 services:
   server:
     image: standardnotes/server
@@ -20,11 +18,6 @@ services:
         condition: service_healthy
     networks:
       - standardnotes_self_hosted
-    healthcheck:
-      test: curl -s http://localhost:3000
-      timeout: 10s
-      interval: 5s
-      start_period: 10s
     restart: unless-stopped
 
   localstack:
@@ -79,7 +72,7 @@ services:
     restart: unless-stopped
 
   cache:
-    image: redis:7
+    image: redis:6
     container_name: cache_self_hosted
     user: "${UID}:${GID}"
     volumes:
