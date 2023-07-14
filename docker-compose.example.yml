@@ -72,7 +72,7 @@ services:
     restart: unless-stopped
 
   cache:
-    image: redis:6
+    image: redis:6-alpine
     container_name: cache_self_hosted
     user: "${UID}:${GID}"
     volumes:
