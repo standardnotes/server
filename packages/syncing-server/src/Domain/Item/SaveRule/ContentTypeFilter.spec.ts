@@ -4,6 +4,7 @@ import { ApiVersion } from '../../Api/ApiVersion'
 import { Item } from '../Item'
 
 import { ContentTypeFilter } from './ContentTypeFilter'
+import { ItemHash } from '../ItemHash'
 
 describe('ContentTypeFilter', () => {
   let existingItem: Item
@@ -22,23 +23,24 @@ describe('ContentTypeFilter', () => {
     ]
 
     for (const invalidContentType of invalidContentTypes) {
+      const itemHash = ItemHash.create({
+        uuid: '123e4567-e89b-12d3-a456-426655440000',
+        content_type: invalidContentType,
+        user_uuid: '1-2-3',
+        key_system_identifier: null,
+        shared_vault_uuid: null,
+      }).getValue()
       const result = await createFilter().check({
         userUuid: '1-2-3',
         apiVersion: ApiVersion.v20200115,
-        itemHash: {
-          uuid: '123e4567-e89b-12d3-a456-426655440000',
-          content_type: invalidContentType,
-        },
+        itemHash,
         existingItem: null,
       })
 
       expect(result).toEqual({
         passed: false,
         conflict: {
-          unsavedItem: {
-            uuid: '123e4567-e89b-12d3-a456-426655440000',
-            content_type: invalidContentType,
-          },
+          unsavedItem: itemHash,
           type: 'content_type_error',
         },
       })
@@ -49,13 +51,18 @@ describe('ContentTypeFilter', () => {
     const validContentTypes = ['Note', 'SN|ItemsKey', 'SN|Component', 'SN|Editor', 'SN|ExtensionRepo', 'Tag']
 
     for (const validContentType of validContentTypes) {
+      const itemHash = ItemHash.create({
+        uuid: '123e4567-e89b-12d3-a456-426655440000',
+        content_type: validContentType,
+        user_uuid: '1-2-3',
+        key_system_identifier: null,
+        shared_vault_uuid: null,
+      }).getValue()
+
       const result = await createFilter().check({
         userUuid: '1-2-3',
         apiVersion: ApiVersion.v20200115,
-        itemHash: {
-          uuid: '123e4567-e89b-12d3-a456-426655440000',
-          content_type: validContentType,
-        },
+        itemHash,
         existingItem,
       })
 

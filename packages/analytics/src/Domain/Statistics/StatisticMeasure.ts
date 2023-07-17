@@ -3,10 +3,6 @@ import { Result, Entity, UniqueEntityId } from '@standardnotes/domain-core'
 import { StatisticMeasureProps } from './StatisticMeasureProps'
 
 export class StatisticMeasure extends Entity<StatisticMeasureProps> {
-  get id(): UniqueEntityId {
-    return this._id
-  }
-
   get name(): string {
     return this.props.name.value
   }

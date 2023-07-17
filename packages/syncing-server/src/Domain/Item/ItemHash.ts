@@ -1,14 +1,13 @@
-export type ItemHash = {
-  uuid: string
-  content?: string
-  content_type: string | null
-  deleted?: boolean
-  duplicate_of?: string | null
-  auth_hash?: string
-  enc_item_key?: string
-  items_key_id?: string
-  created_at?: string
-  created_at_timestamp?: number
-  updated_at?: string
-  updated_at_timestamp?: number
+import { Result, ValueObject } from '@standardnotes/domain-core'
+
+import { ItemHashProps } from './ItemHashProps'
+
+export class ItemHash extends ValueObject<ItemHashProps> {
+  private constructor(props: ItemHashProps) {
+    super(props)
+  }
+
+  static create(props: ItemHashProps): Result<ItemHash> {
+    return Result.ok<ItemHash>(new ItemHash(props))
+  }
 }

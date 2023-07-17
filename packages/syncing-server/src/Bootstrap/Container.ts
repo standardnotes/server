@@ -23,8 +23,6 @@ import { Timer, TimerInterface } from '@standardnotes/time'
 import { ItemTransferCalculatorInterface } from '../Domain/Item/ItemTransferCalculatorInterface'
 import { ItemTransferCalculator } from '../Domain/Item/ItemTransferCalculator'
 import { ItemConflict } from '../Domain/Item/ItemConflict'
-import { ItemService } from '../Domain/Item/ItemService'
-import { ItemServiceInterface } from '../Domain/Item/ItemServiceInterface'
 import { ContentFilter } from '../Domain/Item/SaveRule/ContentFilter'
 import { ContentTypeFilter } from '../Domain/Item/SaveRule/ContentTypeFilter'
 import { OwnershipFilter } from '../Domain/Item/SaveRule/OwnershipFilter'
@@ -75,6 +73,8 @@ import { ItemBackupRepresentation } from '../Mapping/Backup/ItemBackupRepresenta
 import { ItemBackupMapper } from '../Mapping/Backup/ItemBackupMapper'
 import { SaveNewItem } from '../Domain/UseCase/Syncing/SaveNewItem/SaveNewItem'
 import { UpdateExistingItem } from '../Domain/UseCase/Syncing/UpdateExistingItem/UpdateExistingItem'
+import { GetItems } from '../Domain/UseCase/Syncing/GetItems/GetItems'
+import { SaveItems } from '../Domain/UseCase/Syncing/SaveItems/SaveItems'
 
 export class ContainerConfigLoader {
   private readonly DEFAULT_CONTENT_SIZE_TRANSFER_LIMIT = 10_000_000
@@ -282,16 +282,35 @@ export class ContainerConfigLoader {
         env.get('MAX_ITEMS_LIMIT', true) ? +env.get('MAX_ITEMS_LIMIT', true) : this.DEFAULT_MAX_ITEMS_LIMIT,
       )
 
+    container.bind<OwnershipFilter>(TYPES.Sync_OwnershipFilter).toConstantValue(new OwnershipFilter())
+    container
+      .bind<TimeDifferenceFilter>(TYPES.Sync_TimeDifferenceFilter)
+      .toConstantValue(new TimeDifferenceFilter(container.get(TYPES.Sync_Timer)))
+    container.bind<ContentTypeFilter>(TYPES.Sync_ContentTypeFilter).toConstantValue(new ContentTypeFilter())
+    container.bind<ContentFilter>(TYPES.Sync_ContentFilter).toConstantValue(new ContentFilter())
+    container
+      .bind<ItemSaveValidatorInterface>(TYPES.Sync_ItemSaveValidator)
+      .toConstantValue(
+        new ItemSaveValidator([
+          container.get(TYPES.Sync_OwnershipFilter),
+          container.get(TYPES.Sync_TimeDifferenceFilter),
+          container.get(TYPES.Sync_ContentTypeFilter),
+          container.get(TYPES.Sync_ContentFilter),
+        ]),
+      )
+
     // use cases
-    container.bind<SyncItems>(TYPES.Sync_SyncItems).toDynamicValue((context: interfaces.Context) => {
-      return new SyncItems(context.container.get(TYPES.Sync_ItemService))
-    })
-    container.bind<CheckIntegrity>(TYPES.Sync_CheckIntegrity).toDynamicValue((context: interfaces.Context) => {
-      return new CheckIntegrity(context.container.get(TYPES.Sync_ItemRepository))
-    })
-    container.bind<GetItem>(TYPES.Sync_GetItem).toDynamicValue((context: interfaces.Context) => {
-      return new GetItem(context.container.get(TYPES.Sync_ItemRepository))
-    })
+    container
+      .bind<GetItems>(TYPES.Sync_GetItems)
+      .toConstantValue(
+        new GetItems(
+          container.get(TYPES.Sync_ItemRepository),
+          container.get(TYPES.Sync_CONTENT_SIZE_TRANSFER_LIMIT),
+          container.get(TYPES.Sync_ItemTransferCalculator),
+          container.get(TYPES.Sync_Timer),
+          container.get(TYPES.Sync_MAX_ITEMS_LIMIT),
+        ),
+      )
     container
       .bind<SaveNewItem>(TYPES.Sync_SaveNewItem)
       .toConstantValue(
@@ -313,41 +332,35 @@ export class ContainerConfigLoader {
           container.get(TYPES.Sync_REVISIONS_FREQUENCY),
         ),
       )
-
-    // Services
-    container.bind<OwnershipFilter>(TYPES.Sync_OwnershipFilter).toConstantValue(new OwnershipFilter())
     container
-      .bind<TimeDifferenceFilter>(TYPES.Sync_TimeDifferenceFilter)
-      .toConstantValue(new TimeDifferenceFilter(container.get(TYPES.Sync_Timer)))
-    container.bind<ContentTypeFilter>(TYPES.Sync_ContentTypeFilter).toConstantValue(new ContentTypeFilter())
-    container.bind<ContentFilter>(TYPES.Sync_ContentFilter).toConstantValue(new ContentFilter())
-
-    container
-      .bind<ItemSaveValidatorInterface>(TYPES.Sync_ItemSaveValidator)
-      .toDynamicValue((context: interfaces.Context) => {
-        return new ItemSaveValidator([
-          context.container.get(TYPES.Sync_OwnershipFilter),
-          context.container.get(TYPES.Sync_TimeDifferenceFilter),
-          context.container.get(TYPES.Sync_ContentTypeFilter),
-          context.container.get(TYPES.Sync_ContentFilter),
-        ])
-      })
-
-    container
-      .bind<ItemServiceInterface>(TYPES.Sync_ItemService)
+      .bind<SaveItems>(TYPES.Sync_SaveItems)
       .toConstantValue(
-        new ItemService(
+        new SaveItems(
           container.get(TYPES.Sync_ItemSaveValidator),
           container.get(TYPES.Sync_ItemRepository),
-          container.get(TYPES.Sync_CONTENT_SIZE_TRANSFER_LIMIT),
-          container.get(TYPES.Sync_ItemTransferCalculator),
           container.get(TYPES.Sync_Timer),
-          container.get(TYPES.Sync_MAX_ITEMS_LIMIT),
           container.get(TYPES.Sync_SaveNewItem),
           container.get(TYPES.Sync_UpdateExistingItem),
           container.get(TYPES.Sync_Logger),
         ),
       )
+    container
+      .bind<SyncItems>(TYPES.Sync_SyncItems)
+      .toConstantValue(
+        new SyncItems(
+          container.get(TYPES.Sync_ItemRepository),
+          container.get(TYPES.Sync_GetItems),
+          container.get(TYPES.Sync_SaveItems),
+        ),
+      )
+    container.bind<CheckIntegrity>(TYPES.Sync_CheckIntegrity).toDynamicValue((context: interfaces.Context) => {
+      return new CheckIntegrity(context.container.get(TYPES.Sync_ItemRepository))
+    })
+    container.bind<GetItem>(TYPES.Sync_GetItem).toDynamicValue((context: interfaces.Context) => {
+      return new GetItem(context.container.get(TYPES.Sync_ItemRepository))
+    })
+
+    // Services
     container
       .bind<SyncResponseFactory20161215>(TYPES.Sync_SyncResponseFactory20161215)
       .toConstantValue(new SyncResponseFactory20161215(container.get(TYPES.Sync_ItemHttpMapper)))

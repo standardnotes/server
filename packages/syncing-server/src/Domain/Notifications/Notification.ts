@@ -3,10 +3,6 @@ import { Entity, Result, UniqueEntityId } from '@standardnotes/domain-core'
 import { NotificationProps } from './NotificationProps'
 
 export class Notification extends Entity<NotificationProps> {
-  get id(): UniqueEntityId {
-    return this._id
-  }
-
   private constructor(props: NotificationProps, id?: UniqueEntityId) {
     super(props, id)
   }

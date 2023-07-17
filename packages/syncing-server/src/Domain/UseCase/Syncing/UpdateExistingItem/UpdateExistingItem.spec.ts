@@ -37,8 +37,11 @@ describe('UpdateExistingItem', () => {
       new UniqueEntityId('00000000-0000-0000-0000-000000000000'),
     ).getValue()
 
-    itemHash1 = {
+    itemHash1 = ItemHash.create({
       uuid: '1-2-3',
+      user_uuid: '00000000-0000-0000-0000-000000000000',
+      key_system_identifier: null,
+      shared_vault_uuid: null,
       content: 'asdqwe1',
       content_type: ContentType.TYPES.Note,
       duplicate_of: null,
@@ -53,7 +56,7 @@ describe('UpdateExistingItem', () => {
         new Date(timeHelper.convertMicrosecondsToMilliseconds(item1.props.timestamps.updatedAt) + 1),
         'YYYY-MM-DDTHH:mm:ss.SSS[Z]',
       ),
-    } as jest.Mocked<ItemHash>
+    }).getValue()
 
     itemRepository = {} as jest.Mocked<ItemRepositoryInterface>
     itemRepository.save = jest.fn()
@@ -107,10 +110,10 @@ describe('UpdateExistingItem', () => {
 
     const result = await useCase.execute({
       existingItem: item1,
-      itemHash: {
-        ...itemHash1,
+      itemHash: ItemHash.create({
+        ...itemHash1.props,
         content_type: 'invalid',
-      },
+      }).getValue(),
       sessionUuid: '00000000-0000-0000-0000-000000000000',
     })
 
@@ -122,10 +125,10 @@ describe('UpdateExistingItem', () => {
 
     const result = await useCase.execute({
       existingItem: item1,
-      itemHash: {
-        ...itemHash1,
+      itemHash: ItemHash.create({
+        ...itemHash1.props,
         deleted: true,
-      },
+      }).getValue(),
       sessionUuid: '00000000-0000-0000-0000-000000000000',
     })
 
@@ -144,10 +147,10 @@ describe('UpdateExistingItem', () => {
 
     const result = await useCase.execute({
       existingItem: item1,
-      itemHash: {
-        ...itemHash1,
+      itemHash: ItemHash.create({
+        ...itemHash1.props,
         duplicate_of: '00000000-0000-0000-0000-000000000001',
-      },
+      }).getValue(),
       sessionUuid: '00000000-0000-0000-0000-000000000000',
     })
 
@@ -161,10 +164,10 @@ describe('UpdateExistingItem', () => {
 
     const result = await useCase.execute({
       existingItem: item1,
-      itemHash: {
-        ...itemHash1,
+      itemHash: ItemHash.create({
+        ...itemHash1.props,
         duplicate_of: 'invalid-uuid',
-      },
+      }).getValue(),
       sessionUuid: '00000000-0000-0000-0000-000000000000',
     })
 
@@ -176,11 +179,11 @@ describe('UpdateExistingItem', () => {
 
     const result = await useCase.execute({
       existingItem: item1,
-      itemHash: {
-        ...itemHash1,
+      itemHash: ItemHash.create({
+        ...itemHash1.props,
         updated_at_timestamp: 123,
         created_at_timestamp: 123,
-      },
+      }).getValue(),
       sessionUuid: '00000000-0000-0000-0000-000000000000',
     })
 
@@ -193,11 +196,11 @@ describe('UpdateExistingItem', () => {
 
     const result = await useCase.execute({
       existingItem: item1,
-      itemHash: {
-        ...itemHash1,
+      itemHash: ItemHash.create({
+        ...itemHash1.props,
         created_at: undefined,
         created_at_timestamp: undefined,
-      },
+      }).getValue(),
       sessionUuid: '00000000-0000-0000-0000-000000000000',
     })
 
@@ -214,11 +217,11 @@ describe('UpdateExistingItem', () => {
 
     const result = await useCase.execute({
       existingItem: item1,
-      itemHash: {
-        ...itemHash1,
+      itemHash: ItemHash.create({
+        ...itemHash1.props,
         created_at_timestamp: 123,
         updated_at_timestamp: 123,
-      },
+      }).getValue(),
       sessionUuid: '00000000-0000-0000-0000-000000000000',
     })
 
@@ -237,11 +240,11 @@ describe('UpdateExistingItem', () => {
 
     const result = await useCase.execute({
       existingItem: item1,
-      itemHash: {
-        ...itemHash1,
+      itemHash: ItemHash.create({
+        ...itemHash1.props,
         created_at_timestamp: 123,
         updated_at_timestamp: 123,
-      },
+      }).getValue(),
       sessionUuid: '00000000-0000-0000-0000-000000000000',
     })
 

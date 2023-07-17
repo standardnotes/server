@@ -3,19 +3,23 @@ import 'reflect-metadata'
 import { ApiVersion } from '../../../Api/ApiVersion'
 import { Item } from '../../../Item/Item'
 import { ItemHash } from '../../../Item/ItemHash'
-import { ItemServiceInterface } from '../../../Item/ItemServiceInterface'
 
 import { SyncItems } from './SyncItems'
-import { ContentType, Dates, Timestamps, UniqueEntityId, Uuid } from '@standardnotes/domain-core'
+import { ContentType, Dates, Result, Timestamps, UniqueEntityId, Uuid } from '@standardnotes/domain-core'
+import { GetItems } from '../GetItems/GetItems'
+import { SaveItems } from '../SaveItems/SaveItems'
+import { ItemRepositoryInterface } from '../../../Item/ItemRepositoryInterface'
 
 describe('SyncItems', () => {
-  let itemService: ItemServiceInterface
+  let getItemsUseCase: GetItems
+  let saveItemsUseCase: SaveItems
+  let itemRepository: ItemRepositoryInterface
   let item1: Item
   let item2: Item
   let item3: Item
   let itemHash: ItemHash
 
-  const createUseCase = () => new SyncItems(itemService)
+  const createUseCase = () => new SyncItems(itemRepository, getItemsUseCase, saveItemsUseCase)
 
   beforeEach(() => {
     item1 = Item.create(
@@ -67,8 +71,11 @@ describe('SyncItems', () => {
       new UniqueEntityId('00000000-0000-0000-0000-000000000003'),
     ).getValue()
 
-    itemHash = {
+    itemHash = ItemHash.create({
       uuid: '2-3-4',
+      user_uuid: '1-2-3',
+      key_system_identifier: null,
+      shared_vault_uuid: null,
       content: 'asdqwe',
       content_type: ContentType.TYPES.Note,
       duplicate_of: null,
@@ -76,19 +83,27 @@ describe('SyncItems', () => {
       items_key_id: 'asdasd',
       created_at: '2021-02-19T11:35:45.655Z',
       updated_at: '2021-03-25T09:37:37.944Z',
-    }
+    }).getValue()
 
-    itemService = {} as jest.Mocked<ItemServiceInterface>
-    itemService.getItems = jest.fn().mockReturnValue({
-      items: [item1],
-      cursorToken: 'asdzxc',
-    })
-    itemService.saveItems = jest.fn().mockReturnValue({
-      savedItems: [item2],
-      conflicts: [],
-      syncToken: 'qwerty',
-    })
-    itemService.frontLoadKeysItemsToTop = jest.fn().mockReturnValue([item3, item1])
+    getItemsUseCase = {} as jest.Mocked<GetItems>
+    getItemsUseCase.execute = jest.fn().mockReturnValue(
+      Result.ok({
+        items: [item1],
+        cursorToken: 'asdzxc',
+      }),
+    )
+
+    saveItemsUseCase = {} as jest.Mocked<SaveItems>
+    saveItemsUseCase.execute = jest.fn().mockReturnValue(
+      Result.ok({
+        savedItems: [item2],
+        conflicts: [],
+        syncToken: 'qwerty',
+      }),
+    )
+
+    itemRepository = {} as jest.Mocked<ItemRepositoryInterface>
+    itemRepository.findAll = jest.fn().mockReturnValue([item3, item1])
   })
 
   it('should sync items', async () => {
@@ -113,15 +128,14 @@ describe('SyncItems', () => {
       syncToken: 'qwerty',
     })
 
-    expect(itemService.frontLoadKeysItemsToTop).not.toHaveBeenCalled()
-    expect(itemService.getItems).toHaveBeenCalledWith({
+    expect(getItemsUseCase.execute).toHaveBeenCalledWith({
       contentType: 'Note',
       cursorToken: 'bar',
       limit: 10,
       syncToken: 'foo',
       userUuid: '1-2-3',
     })
-    expect(itemService.saveItems).toHaveBeenCalledWith({
+    expect(saveItemsUseCase.execute).toHaveBeenCalledWith({
       itemHashes: [itemHash],
       userUuid: '1-2-3',
       apiVersion: '20200115',
@@ -152,25 +166,29 @@ describe('SyncItems', () => {
   })
 
   it('should sync items and return filtered out sync conflicts for consecutive sync operations', async () => {
-    itemService.getItems = jest.fn().mockReturnValue({
-      items: [item1, item2],
-      cursorToken: 'asdzxc',
-    })
+    getItemsUseCase.execute = jest.fn().mockReturnValue(
+      Result.ok({
+        items: [item1, item2],
+        cursorToken: 'asdzxc',
+      }),
+    )
 
-    itemService.saveItems = jest.fn().mockReturnValue({
-      savedItems: [],
-      conflicts: [
-        {
-          serverItem: item2,
-          type: 'sync_conflict',
-        },
-        {
-          serverItem: undefined,
-          type: 'sync_conflict',
-        },
-      ],
-      syncToken: 'qwerty',
-    })
+    saveItemsUseCase.execute = jest.fn().mockReturnValue(
+      Result.ok({
+        savedItems: [],
+        conflicts: [
+          {
+            serverItem: item2,
+            type: 'sync_conflict',
+          },
+          {
+            serverItem: undefined,
+            type: 'sync_conflict',
+          },
+        ],
+        syncToken: 'qwerty',
+      }),
+    )
 
     const result = await createUseCase().execute({
       userUuid: '1-2-3',
@@ -202,5 +220,45 @@ describe('SyncItems', () => {
       savedItems: [],
       syncToken: 'qwerty',
     })
+  })
+
+  it('should return error if get items fails', async () => {
+    getItemsUseCase.execute = jest.fn().mockReturnValue(Result.fail('error'))
+
+    const result = await createUseCase().execute({
+      userUuid: '1-2-3',
+      itemHashes: [itemHash],
+      computeIntegrityHash: false,
+      syncToken: 'foo',
+      readOnlyAccess: false,
+      sessionUuid: '2-3-4',
+      cursorToken: 'bar',
+      limit: 10,
+      contentType: 'Note',
+      apiVersion: ApiVersion.v20200115,
+      snjsVersion: '1.2.3',
+    })
+
+    expect(result.isFailed()).toBeTruthy()
+  })
+
+  it('should return error if save items fails', async () => {
+    saveItemsUseCase.execute = jest.fn().mockReturnValue(Result.fail('error'))
+
+    const result = await createUseCase().execute({
+      userUuid: '1-2-3',
+      itemHashes: [itemHash],
+      computeIntegrityHash: false,
+      syncToken: 'foo',
+      readOnlyAccess: false,
+      sessionUuid: '2-3-4',
+      cursorToken: 'bar',
+      limit: 10,
+      contentType: 'Note',
+      apiVersion: ApiVersion.v20200115,
+      snjsVersion: '1.2.3',
+    })
+
+    expect(result.isFailed()).toBeTruthy()
   })
 })

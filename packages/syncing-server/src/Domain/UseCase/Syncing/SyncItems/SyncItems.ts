@@ -1,34 +1,48 @@
-import { Result, UseCaseInterface } from '@standardnotes/domain-core'
+import { ContentType, Result, UseCaseInterface } from '@standardnotes/domain-core'
 
 import { Item } from '../../../Item/Item'
 import { ItemConflict } from '../../../Item/ItemConflict'
-import { ItemServiceInterface } from '../../../Item/ItemServiceInterface'
 import { SyncItemsDTO } from './SyncItemsDTO'
 import { SyncItemsResponse } from './SyncItemsResponse'
+import { ItemRepositoryInterface } from '../../../Item/ItemRepositoryInterface'
+import { GetItems } from '../GetItems/GetItems'
+import { SaveItems } from '../SaveItems/SaveItems'
 
 export class SyncItems implements UseCaseInterface<SyncItemsResponse> {
-  constructor(private itemService: ItemServiceInterface) {}
+  constructor(
+    private itemRepository: ItemRepositoryInterface,
+    private getItemsUseCase: GetItems,
+    private saveItemsUseCase: SaveItems,
+  ) {}
 
   async execute(dto: SyncItemsDTO): Promise<Result<SyncItemsResponse>> {
-    const getItemsResult = await this.itemService.getItems({
+    const getItemsResultOrError = await this.getItemsUseCase.execute({
       userUuid: dto.userUuid,
       syncToken: dto.syncToken,
       cursorToken: dto.cursorToken,
       limit: dto.limit,
       contentType: dto.contentType,
     })
+    if (getItemsResultOrError.isFailed()) {
+      return Result.fail(getItemsResultOrError.getError())
+    }
+    const getItemsResult = getItemsResultOrError.getValue()
 
-    const saveItemsResult = await this.itemService.saveItems({
+    const saveItemsResultOrError = await this.saveItemsUseCase.execute({
       itemHashes: dto.itemHashes,
       userUuid: dto.userUuid,
       apiVersion: dto.apiVersion,
       readOnlyAccess: dto.readOnlyAccess,
       sessionUuid: dto.sessionUuid,
     })
+    if (saveItemsResultOrError.isFailed()) {
+      return Result.fail(saveItemsResultOrError.getError())
+    }
+    const saveItemsResult = saveItemsResultOrError.getValue()
 
     let retrievedItems = this.filterOutSyncConflictsForConsecutiveSyncs(getItemsResult.items, saveItemsResult.conflicts)
     if (this.isFirstSync(dto)) {
-      retrievedItems = await this.itemService.frontLoadKeysItemsToTop(dto.userUuid, retrievedItems)
+      retrievedItems = await this.frontLoadKeysItemsToTop(dto.userUuid, retrievedItems)
     }
 
     const syncResponse: SyncItemsResponse = {
@@ -58,5 +72,24 @@ export class SyncItems implements UseCaseInterface<SyncItemsResponse> {
     })
 
     return retrievedItems.filter((item: Item) => syncConflictIds.indexOf(item.id.toString()) === -1)
+  }
+
+  private async frontLoadKeysItemsToTop(userUuid: string, retrievedItems: Array<Item>): Promise<Array<Item>> {
+    const itemsKeys = await this.itemRepository.findAll({
+      userUuid,
+      contentType: ContentType.TYPES.ItemsKey,
+      sortBy: 'updated_at_timestamp',
+      sortOrder: 'ASC',
+    })
+
+    const retrievedItemsIds: Array<string> = retrievedItems.map((item: Item) => item.id.toString())
+
+    itemsKeys.forEach((itemKey: Item) => {
+      if (retrievedItemsIds.indexOf(itemKey.id.toString()) === -1) {
+        retrievedItems.unshift(itemKey)
+      }
+    })
+
+    return retrievedItems
   }
 }

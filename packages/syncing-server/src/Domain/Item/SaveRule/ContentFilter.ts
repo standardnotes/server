@@ -5,13 +5,13 @@ import { ConflictType } from '@standardnotes/responses'
 
 export class ContentFilter implements ItemSaveRuleInterface {
   async check(dto: ItemSaveValidationDTO): Promise<ItemSaveRuleResult> {
-    if (dto.itemHash.content === undefined || dto.itemHash.content === null) {
+    if (dto.itemHash.props.content === undefined || dto.itemHash.props.content === null) {
       return {
         passed: true,
       }
     }
 
-    const validContent = typeof dto.itemHash.content === 'string'
+    const validContent = typeof dto.itemHash.props.content === 'string'
 
     if (!validContent) {
       return {

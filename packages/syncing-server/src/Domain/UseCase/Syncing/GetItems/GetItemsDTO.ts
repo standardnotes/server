@@ -1,4 +1,4 @@
-export type GetItemsDTO = {
+export interface GetItemsDTO {
   userUuid: string
   syncToken?: string | null
   cursorToken?: string | null
