@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.25.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.24.9...@standardnotes/analytics@2.25.0) (2023-07-17)
+
+### Features
+
+* **syncing-server:** refactor syncing to decouple getting and saving items ([#659](https://github.com/standardnotes/server/issues/659)) ([cb74b23](https://github.com/standardnotes/server/commit/cb74b23e45b207136e299ce8a3db2c04dc87e21e))
+
 ## [2.24.9](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.24.8...@standardnotes/analytics@2.24.9) (2023-07-12)
 
 **Note:** Version bump only for package @standardnotes/analytics

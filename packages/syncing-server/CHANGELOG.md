@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.64.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.63.1...@standardnotes/syncing-server@1.64.0) (2023-07-17)
+
+### Features
+
+* **syncing-server:** refactor syncing to decouple getting and saving items ([#659](https://github.com/standardnotes/syncing-server-js/issues/659)) ([cb74b23](https://github.com/standardnotes/syncing-server-js/commit/cb74b23e45b207136e299ce8a3db2c04dc87e21e))
+
 ## [1.63.1](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.63.0...@standardnotes/syncing-server@1.63.1) (2023-07-12)
 
 **Note:** Version bump only for package @standardnotes/syncing-server

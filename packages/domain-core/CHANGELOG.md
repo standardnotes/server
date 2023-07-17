@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.23.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.22.0...@standardnotes/domain-core@1.23.0) (2023-07-17)
+
+### Features
+
+* **syncing-server:** refactor syncing to decouple getting and saving items ([#659](https://github.com/standardnotes/server/issues/659)) ([cb74b23](https://github.com/standardnotes/server/commit/cb74b23e45b207136e299ce8a3db2c04dc87e21e))
+
 # [1.22.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.21.1...@standardnotes/domain-core@1.22.0) (2023-07-12)
 
 ### Features
