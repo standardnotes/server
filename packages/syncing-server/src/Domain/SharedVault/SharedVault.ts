@@ -1,12 +1,8 @@
-import { Entity, Result, UniqueEntityId } from '@standardnotes/domain-core'
+import { Aggregate, Result, UniqueEntityId } from '@standardnotes/domain-core'
 
 import { SharedVaultProps } from './SharedVaultProps'
 
-export class SharedVault extends Entity<SharedVaultProps> {
-  get id(): UniqueEntityId {
-    return this._id
-  }
-
+export class SharedVault extends Aggregate<SharedVaultProps> {
   private constructor(props: SharedVaultProps, id?: UniqueEntityId) {
     super(props, id)
   }

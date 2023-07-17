@@ -3,10 +3,6 @@ import { Entity, Result, UniqueEntityId } from '@standardnotes/domain-core'
 import { SubscriptionProps } from './SubscriptionProps'
 
 export class Subscription extends Entity<SubscriptionProps> {
-  get id(): UniqueEntityId {
-    return this._id
-  }
-
   private constructor(props: SubscriptionProps, id?: UniqueEntityId) {
     super(props, id)
   }

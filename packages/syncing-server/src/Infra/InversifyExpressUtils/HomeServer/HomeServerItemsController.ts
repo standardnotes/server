@@ -10,6 +10,7 @@ import { ApiVersion } from '../../../Domain/Api/ApiVersion'
 import { SyncItems } from '../../../Domain/UseCase/Syncing/SyncItems/SyncItems'
 import { HttpStatusCode } from '@standardnotes/responses'
 import { ItemHttpRepresentation } from '../../../Mapping/Http/ItemHttpRepresentation'
+import { ItemHash } from '../../../Domain/Item/ItemHash'
 
 export class HomeServerItemsController extends BaseHttpController {
   constructor(
@@ -30,9 +31,22 @@ export class HomeServerItemsController extends BaseHttpController {
   }
 
   async sync(request: Request, response: Response): Promise<results.JsonResult> {
-    let itemHashes = []
+    const itemHashes: ItemHash[] = []
     if ('items' in request.body) {
-      itemHashes = request.body.items
+      for (const itemHashInput of request.body.items) {
+        const itemHashOrError = ItemHash.create({
+          ...itemHashInput,
+          user_uuid: response.locals.user.uuid,
+          key_system_identifier: itemHashInput.key_system_identifier ?? null,
+          shared_vault_uuid: itemHashInput.shared_vault_uuid ?? null,
+        })
+
+        if (itemHashOrError.isFailed()) {
+          return this.json({ error: { message: itemHashOrError.getError() } }, HttpStatusCode.BadRequest)
+        }
+
+        itemHashes.push(itemHashOrError.getValue())
+      }
     }
 
     const syncResult = await this.syncItems.execute({

@@ -17,11 +17,11 @@ export class TimeDifferenceFilter implements ItemSaveRuleInterface {
       }
     }
 
-    let incomingUpdatedAtTimestamp = dto.itemHash.updated_at_timestamp
+    let incomingUpdatedAtTimestamp = dto.itemHash.props.updated_at_timestamp
     if (incomingUpdatedAtTimestamp === undefined) {
       incomingUpdatedAtTimestamp =
-        dto.itemHash.updated_at !== undefined
-          ? this.timer.convertStringDateToMicroseconds(dto.itemHash.updated_at)
+        dto.itemHash.props.updated_at !== undefined
+          ? this.timer.convertStringDateToMicroseconds(dto.itemHash.props.updated_at)
           : this.timer.convertStringDateToMicroseconds(new Date(0).toString())
     }
 
@@ -66,7 +66,7 @@ export class TimeDifferenceFilter implements ItemSaveRuleInterface {
   }
 
   private itemHashHasMicrosecondsPrecision(itemHash: ItemHash) {
-    return itemHash.updated_at_timestamp !== undefined
+    return itemHash.props.updated_at_timestamp !== undefined
   }
 
   private getMinimalConflictIntervalMicroseconds(apiVersion?: string): number {

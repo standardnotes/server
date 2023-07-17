@@ -3,10 +3,6 @@ import { Entity, Result, UniqueEntityId } from '@standardnotes/domain-core'
 import { ItemProps } from './ItemProps'
 
 export class Item extends Entity<ItemProps> {
-  get id(): UniqueEntityId {
-    return this._id
-  }
-
   private constructor(props: ItemProps, id?: UniqueEntityId) {
     super(props, id)
   }

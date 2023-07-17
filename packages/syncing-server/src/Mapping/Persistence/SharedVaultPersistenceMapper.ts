@@ -23,6 +23,7 @@ export class SharedVaultPersistenceMapper implements MapperInterface<SharedVault
         fileUploadBytesUsed: projection.fileUploadBytesUsed,
         fileUploadBytesLimit: projection.fileUploadBytesLimit,
         timestamps,
+        sharedVaultItems: [],
       },
       new UniqueEntityId(projection.uuid),
     )

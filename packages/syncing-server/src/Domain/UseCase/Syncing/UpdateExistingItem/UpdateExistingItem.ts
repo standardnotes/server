@@ -27,12 +27,12 @@ export class UpdateExistingItem implements UseCaseInterface<Item> {
     }
     dto.existingItem.props.updatedWithSession = sessionUuid
 
-    if (dto.itemHash.content) {
-      dto.existingItem.props.content = dto.itemHash.content
+    if (dto.itemHash.props.content) {
+      dto.existingItem.props.content = dto.itemHash.props.content
     }
 
-    if (dto.itemHash.content_type) {
-      const contentTypeOrError = ContentType.create(dto.itemHash.content_type)
+    if (dto.itemHash.props.content_type) {
+      const contentTypeOrError = ContentType.create(dto.itemHash.props.content_type)
       if (contentTypeOrError.isFailed()) {
         return Result.fail(contentTypeOrError.getError())
       }
@@ -40,13 +40,13 @@ export class UpdateExistingItem implements UseCaseInterface<Item> {
       dto.existingItem.props.contentType = contentType
     }
 
-    if (dto.itemHash.deleted !== undefined) {
-      dto.existingItem.props.deleted = dto.itemHash.deleted
+    if (dto.itemHash.props.deleted !== undefined) {
+      dto.existingItem.props.deleted = dto.itemHash.props.deleted
     }
 
     let wasMarkedAsDuplicate = false
-    if (dto.itemHash.duplicate_of) {
-      const duplicateOfOrError = Uuid.create(dto.itemHash.duplicate_of)
+    if (dto.itemHash.props.duplicate_of) {
+      const duplicateOfOrError = Uuid.create(dto.itemHash.props.duplicate_of)
       if (duplicateOfOrError.isFailed()) {
         return Result.fail(duplicateOfOrError.getError())
       }
@@ -54,14 +54,14 @@ export class UpdateExistingItem implements UseCaseInterface<Item> {
       dto.existingItem.props.duplicateOf = duplicateOfOrError.getValue()
     }
 
-    if (dto.itemHash.auth_hash) {
-      dto.existingItem.props.authHash = dto.itemHash.auth_hash
+    if (dto.itemHash.props.auth_hash) {
+      dto.existingItem.props.authHash = dto.itemHash.props.auth_hash
     }
-    if (dto.itemHash.enc_item_key) {
-      dto.existingItem.props.encItemKey = dto.itemHash.enc_item_key
+    if (dto.itemHash.props.enc_item_key) {
+      dto.existingItem.props.encItemKey = dto.itemHash.props.enc_item_key
     }
-    if (dto.itemHash.items_key_id) {
-      dto.existingItem.props.itemsKeyId = dto.itemHash.items_key_id
+    if (dto.itemHash.props.items_key_id) {
+      dto.existingItem.props.itemsKeyId = dto.itemHash.props.items_key_id
     }
 
     const updatedAtTimestamp = this.timer.getTimestampInMicroseconds()
@@ -72,12 +72,12 @@ export class UpdateExistingItem implements UseCaseInterface<Item> {
 
     let createdAtTimestamp: number
     let createdAtDate: Date
-    if (dto.itemHash.created_at_timestamp) {
-      createdAtTimestamp = dto.itemHash.created_at_timestamp
+    if (dto.itemHash.props.created_at_timestamp) {
+      createdAtTimestamp = dto.itemHash.props.created_at_timestamp
       createdAtDate = this.timer.convertMicrosecondsToDate(createdAtTimestamp)
-    } else if (dto.itemHash.created_at) {
-      createdAtTimestamp = this.timer.convertStringDateToMicroseconds(dto.itemHash.created_at)
-      createdAtDate = this.timer.convertStringDateToDate(dto.itemHash.created_at)
+    } else if (dto.itemHash.props.created_at) {
+      createdAtTimestamp = this.timer.convertStringDateToMicroseconds(dto.itemHash.props.created_at)
+      createdAtDate = this.timer.convertStringDateToDate(dto.itemHash.props.created_at)
     } else {
       return Result.fail('Created at timestamp is required.')
     }
@@ -96,7 +96,7 @@ export class UpdateExistingItem implements UseCaseInterface<Item> {
 
     dto.existingItem.props.contentSize = Buffer.byteLength(JSON.stringify(dto.existingItem))
 
-    if (dto.itemHash.deleted === true) {
+    if (dto.itemHash.props.deleted === true) {
       dto.existingItem.props.deleted = true
       dto.existingItem.props.content = null
       dto.existingItem.props.contentSize = 0

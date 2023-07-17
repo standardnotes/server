@@ -1,10 +1,10 @@
 import { ConflictType } from '@standardnotes/responses'
 
-import { ItemHash } from '../../Domain/Item/ItemHash'
 import { ItemHttpRepresentation } from './ItemHttpRepresentation'
+import { ItemHashHttpRepresentation } from './ItemHashHttpRepresentation'
 
 export interface ItemConflictHttpRepresentation {
   server_item?: ItemHttpRepresentation
-  unsaved_item?: ItemHash
+  unsaved_item?: ItemHashHttpRepresentation
   type: ConflictType
 }

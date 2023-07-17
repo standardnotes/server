@@ -37,8 +37,11 @@ describe('SaveNewItem', () => {
       new UniqueEntityId('00000000-0000-0000-0000-000000000000'),
     ).getValue()
 
-    itemHash1 = {
+    itemHash1 = ItemHash.create({
       uuid: '1-2-3',
+      user_uuid: '00000000-0000-0000-0000-000000000000',
+      key_system_identifier: null,
+      shared_vault_uuid: null,
       content: 'asdqwe1',
       content_type: ContentType.TYPES.Note,
       duplicate_of: null,
@@ -52,7 +55,7 @@ describe('SaveNewItem', () => {
         new Date(timeHelper.convertMicrosecondsToMilliseconds(item1.props.timestamps.updatedAt) + 1),
         'YYYY-MM-DDTHH:mm:ss.SSS[Z]',
       ),
-    } as jest.Mocked<ItemHash>
+    }).getValue()
 
     itemRepository = {} as jest.Mocked<ItemRepositoryInterface>
     itemRepository.save = jest.fn()
@@ -91,10 +94,13 @@ describe('SaveNewItem', () => {
   it('saves a new empty item', async () => {
     const useCase = createUseCase()
 
-    itemHash1.content = undefined
-    itemHash1.content_type = null
-    itemHash1.enc_item_key = undefined
-    itemHash1.items_key_id = undefined
+    itemHash1 = ItemHash.create({
+      ...itemHash1.props,
+      content: undefined,
+      content_type: null,
+      enc_item_key: undefined,
+      items_key_id: undefined,
+    }).getValue()
 
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
@@ -109,8 +115,11 @@ describe('SaveNewItem', () => {
   it('saves a new item with given timestamps', async () => {
     const useCase = createUseCase()
 
-    itemHash1.created_at_timestamp = 123
-    itemHash1.updated_at_timestamp = 123
+    itemHash1 = ItemHash.create({
+      ...itemHash1.props,
+      created_at_timestamp: 123,
+      updated_at_timestamp: 123,
+    }).getValue()
 
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
@@ -124,7 +133,10 @@ describe('SaveNewItem', () => {
   it('publishes a duplicate item synced event if the item is a duplicate', async () => {
     const useCase = createUseCase()
 
-    itemHash1.duplicate_of = '00000000-0000-0000-0000-000000000003'
+    itemHash1 = ItemHash.create({
+      ...itemHash1.props,
+      duplicate_of: '00000000-0000-0000-0000-000000000003',
+    }).getValue()
 
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
@@ -140,7 +152,10 @@ describe('SaveNewItem', () => {
   it('publishes a item revision creation requested event if the item is a revision', async () => {
     const useCase = createUseCase()
 
-    itemHash1.updated_at = '2021-03-19T17:17:13.241Z'
+    itemHash1 = ItemHash.create({
+      ...itemHash1.props,
+      updated_at: '2021-03-19T17:17:13.241Z',
+    }).getValue()
 
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
@@ -199,7 +214,10 @@ describe('SaveNewItem', () => {
   it('returns a failure if the content type is invalid', async () => {
     const useCase = createUseCase()
 
-    itemHash1.content_type = 'invalid'
+    itemHash1 = ItemHash.create({
+      ...itemHash1.props,
+      content_type: 'invalid',
+    }).getValue()
 
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
@@ -213,7 +231,10 @@ describe('SaveNewItem', () => {
   it('returns a failure if the duplicate uuid is invalid', async () => {
     const useCase = createUseCase()
 
-    itemHash1.duplicate_of = 'invalid'
+    itemHash1 = ItemHash.create({
+      ...itemHash1.props,
+      duplicate_of: 'invalid',
+    }).getValue()
 
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',

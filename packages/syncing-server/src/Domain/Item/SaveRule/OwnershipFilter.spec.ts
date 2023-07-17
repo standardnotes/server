@@ -5,6 +5,7 @@ import { Item } from '../Item'
 
 import { OwnershipFilter } from './OwnershipFilter'
 import { Uuid, ContentType, Dates, Timestamps, UniqueEntityId } from '@standardnotes/domain-core'
+import { ItemHash } from '../ItemHash'
 
 describe('OwnershipFilter', () => {
   let existingItem: Item
@@ -30,23 +31,29 @@ describe('OwnershipFilter', () => {
   })
 
   it('should filter out items belonging to a different user', async () => {
+    const itemHash = ItemHash.create({
+      uuid: '2-3-4',
+      content_type: ContentType.TYPES.Note,
+      user_uuid: '00000000-0000-0000-0000-000000000000',
+      content: 'foobar',
+      created_at: '2020-01-01T00:00:00.000Z',
+      updated_at: '2020-01-01T00:00:00.000Z',
+      created_at_timestamp: 123,
+      updated_at_timestamp: 123,
+      key_system_identifier: null,
+      shared_vault_uuid: null,
+    }).getValue()
     const result = await createFilter().check({
       userUuid: '00000000-0000-0000-0000-000000000001',
       apiVersion: ApiVersion.v20200115,
-      itemHash: {
-        uuid: '2-3-4',
-        content_type: ContentType.TYPES.Note,
-      },
+      itemHash,
       existingItem,
     })
 
     expect(result).toEqual({
       passed: false,
       conflict: {
-        unsavedItem: {
-          uuid: '2-3-4',
-          content_type: ContentType.TYPES.Note,
-        },
+        unsavedItem: itemHash,
         type: 'uuid_conflict',
       },
     })
@@ -56,10 +63,18 @@ describe('OwnershipFilter', () => {
     const result = await createFilter().check({
       userUuid: '00000000-0000-0000-0000-000000000000',
       apiVersion: ApiVersion.v20200115,
-      itemHash: {
+      itemHash: ItemHash.create({
         uuid: '2-3-4',
         content_type: ContentType.TYPES.Note,
-      },
+        user_uuid: '00000000-0000-0000-0000-000000000000',
+        content: 'foobar',
+        created_at: '2020-01-01T00:00:00.000Z',
+        updated_at: '2020-01-01T00:00:00.000Z',
+        created_at_timestamp: 123,
+        updated_at_timestamp: 123,
+        key_system_identifier: null,
+        shared_vault_uuid: null,
+      }).getValue(),
       existingItem,
     })
 
@@ -72,10 +87,18 @@ describe('OwnershipFilter', () => {
     const result = await createFilter().check({
       userUuid: '00000000-0000-0000-0000-000000000000',
       apiVersion: ApiVersion.v20200115,
-      itemHash: {
+      itemHash: ItemHash.create({
         uuid: '2-3-4',
         content_type: ContentType.TYPES.Note,
-      },
+        user_uuid: '00000000-0000-0000-0000-000000000000',
+        content: 'foobar',
+        created_at: '2020-01-01T00:00:00.000Z',
+        updated_at: '2020-01-01T00:00:00.000Z',
+        created_at_timestamp: 123,
+        updated_at_timestamp: 123,
+        key_system_identifier: null,
+        shared_vault_uuid: null,
+      }).getValue(),
       existingItem: null,
     })
 
@@ -85,23 +108,29 @@ describe('OwnershipFilter', () => {
   })
 
   it('should return an error if the user uuid is invalid', async () => {
+    const itemHash = ItemHash.create({
+      uuid: '2-3-4',
+      content_type: ContentType.TYPES.Note,
+      user_uuid: '00000000-0000-0000-0000-000000000000',
+      content: 'foobar',
+      created_at: '2020-01-01T00:00:00.000Z',
+      updated_at: '2020-01-01T00:00:00.000Z',
+      created_at_timestamp: 123,
+      updated_at_timestamp: 123,
+      key_system_identifier: null,
+      shared_vault_uuid: null,
+    }).getValue()
     const result = await createFilter().check({
       userUuid: 'invalid',
       apiVersion: ApiVersion.v20200115,
-      itemHash: {
-        uuid: '2-3-4',
-        content_type: ContentType.TYPES.Note,
-      },
+      itemHash,
       existingItem,
     })
 
     expect(result).toEqual({
       passed: false,
       conflict: {
-        unsavedItem: {
-          uuid: '2-3-4',
-          content_type: ContentType.TYPES.Note,
-        },
+        unsavedItem: itemHash,
         type: 'uuid_error',
       },
     })

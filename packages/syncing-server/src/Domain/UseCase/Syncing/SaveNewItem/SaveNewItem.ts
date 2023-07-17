@@ -38,15 +38,15 @@ export class SaveNewItem implements UseCaseInterface<Item> {
     }
     const userUuid = userUuidOrError.getValue()
 
-    const contentTypeOrError = ContentType.create(dto.itemHash.content_type)
+    const contentTypeOrError = ContentType.create(dto.itemHash.props.content_type)
     if (contentTypeOrError.isFailed()) {
       return Result.fail(contentTypeOrError.getError())
     }
     const contentType = contentTypeOrError.getValue()
 
     let duplicateOf = null
-    if (dto.itemHash.duplicate_of) {
-      const duplicateOfOrError = Uuid.create(dto.itemHash.duplicate_of)
+    if (dto.itemHash.props.duplicate_of) {
+      const duplicateOfOrError = Uuid.create(dto.itemHash.props.duplicate_of)
       if (duplicateOfOrError.isFailed()) {
         return Result.fail(duplicateOfOrError.getError())
       }
@@ -58,12 +58,12 @@ export class SaveNewItem implements UseCaseInterface<Item> {
 
     let createdAtDate = nowDate
     let createdAtTimestamp = now
-    if (dto.itemHash.created_at_timestamp) {
-      createdAtTimestamp = dto.itemHash.created_at_timestamp
+    if (dto.itemHash.props.created_at_timestamp) {
+      createdAtTimestamp = dto.itemHash.props.created_at_timestamp
       createdAtDate = this.timer.convertMicrosecondsToDate(createdAtTimestamp)
-    } else if (dto.itemHash.created_at) {
-      createdAtTimestamp = this.timer.convertStringDateToMicroseconds(dto.itemHash.created_at)
-      createdAtDate = this.timer.convertStringDateToDate(dto.itemHash.created_at)
+    } else if (dto.itemHash.props.created_at) {
+      createdAtTimestamp = this.timer.convertStringDateToMicroseconds(dto.itemHash.props.created_at)
+      createdAtDate = this.timer.convertStringDateToDate(dto.itemHash.props.created_at)
     }
 
     const datesOrError = Dates.create(createdAtDate, nowDate)
@@ -81,18 +81,18 @@ export class SaveNewItem implements UseCaseInterface<Item> {
     const itemOrError = Item.create(
       {
         updatedWithSession,
-        content: dto.itemHash.content ?? null,
+        content: dto.itemHash.props.content ?? null,
         userUuid,
         contentType,
-        encItemKey: dto.itemHash.enc_item_key ?? null,
-        authHash: dto.itemHash.auth_hash ?? null,
-        itemsKeyId: dto.itemHash.items_key_id ?? null,
+        encItemKey: dto.itemHash.props.enc_item_key ?? null,
+        authHash: dto.itemHash.props.auth_hash ?? null,
+        itemsKeyId: dto.itemHash.props.items_key_id ?? null,
         duplicateOf,
-        deleted: dto.itemHash.deleted ?? false,
+        deleted: dto.itemHash.props.deleted ?? false,
         dates,
         timestamps,
       },
-      new UniqueEntityId(dto.itemHash.uuid),
+      new UniqueEntityId(dto.itemHash.props.uuid),
     )
     if (itemOrError.isFailed()) {
       return Result.fail(itemOrError.getError())

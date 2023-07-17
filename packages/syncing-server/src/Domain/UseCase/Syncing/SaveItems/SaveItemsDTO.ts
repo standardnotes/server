@@ -1,6 +1,6 @@
-import { ItemHash } from './ItemHash'
+import { ItemHash } from '../../../Item/ItemHash'
 
-export type SaveItemsDTO = {
+export interface SaveItemsDTO {
   itemHashes: ItemHash[]
   userUuid: string
   apiVersion: string

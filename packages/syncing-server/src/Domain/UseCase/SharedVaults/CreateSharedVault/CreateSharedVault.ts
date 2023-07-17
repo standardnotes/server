@@ -32,6 +32,7 @@ export class CreateSharedVault implements UseCaseInterface<CreateSharedVaultResu
       fileUploadBytesUsed: 0,
       userUuid,
       timestamps,
+      sharedVaultItems: [],
     })
     if (sharedVaultOrError.isFailed()) {
       return Result.fail(sharedVaultOrError.getError())

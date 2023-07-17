@@ -3,10 +3,6 @@ import { Entity, Result, UniqueEntityId } from '@standardnotes/domain-core'
 import { SharedVaultUserProps } from './SharedVaultUserProps'
 
 export class SharedVaultUser extends Entity<SharedVaultUserProps> {
-  get id(): UniqueEntityId {
-    return this._id
-  }
-
   private constructor(props: SharedVaultUserProps, id?: UniqueEntityId) {
     super(props, id)
   }
