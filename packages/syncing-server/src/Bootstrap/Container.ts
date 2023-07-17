@@ -75,6 +75,9 @@ import { SaveNewItem } from '../Domain/UseCase/Syncing/SaveNewItem/SaveNewItem'
 import { UpdateExistingItem } from '../Domain/UseCase/Syncing/UpdateExistingItem/UpdateExistingItem'
 import { GetItems } from '../Domain/UseCase/Syncing/GetItems/GetItems'
 import { SaveItems } from '../Domain/UseCase/Syncing/SaveItems/SaveItems'
+import { ItemHashHttpMapper } from '../Mapping/Http/ItemHashHttpMapper'
+import { ItemHash } from '../Domain/Item/ItemHash'
+import { ItemHashHttpRepresentation } from '../Mapping/Http/ItemHashHttpRepresentation'
 
 export class ContainerConfigLoader {
   private readonly DEFAULT_CONTENT_SIZE_TRANSFER_LIMIT = 10_000_000
@@ -210,6 +213,9 @@ export class ContainerConfigLoader {
       .bind<MapperInterface<Item, TypeORMItem>>(TYPES.Sync_ItemPersistenceMapper)
       .toConstantValue(new ItemPersistenceMapper())
     container
+      .bind<MapperInterface<ItemHash, ItemHashHttpRepresentation>>(TYPES.Sync_ItemHashHttpMapper)
+      .toConstantValue(new ItemHashHttpMapper())
+    container
       .bind<MapperInterface<Item, ItemHttpRepresentation>>(TYPES.Sync_ItemHttpMapper)
       .toConstantValue(new ItemHttpMapper(container.get(TYPES.Sync_Timer)))
     container
@@ -217,7 +223,12 @@ export class ContainerConfigLoader {
       .toConstantValue(new SavedItemHttpMapper(container.get(TYPES.Sync_Timer)))
     container
       .bind<MapperInterface<ItemConflict, ItemConflictHttpRepresentation>>(TYPES.Sync_ItemConflictHttpMapper)
-      .toConstantValue(new ItemConflictHttpMapper(container.get(TYPES.Sync_ItemHttpMapper)))
+      .toConstantValue(
+        new ItemConflictHttpMapper(
+          container.get(TYPES.Sync_ItemHttpMapper),
+          container.get(TYPES.Sync_ItemHashHttpMapper),
+        ),
+      )
     container
       .bind<MapperInterface<Item, ItemBackupRepresentation>>(TYPES.Sync_ItemBackupMapper)
       .toConstantValue(new ItemBackupMapper(container.get(TYPES.Sync_Timer)))
