@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.66.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.65.0...@standardnotes/syncing-server@1.66.0) (2023-07-18)
+
+### Features
+
+* **syncing-server:** associating existing items with key systems and shared vaults ([#661](https://github.com/standardnotes/syncing-server-js/issues/661)) ([3b804e2](https://github.com/standardnotes/syncing-server-js/commit/3b804e2321f9d8444722f1d336689e12598121ca))
+
 # [1.65.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.64.0...@standardnotes/syncing-server@1.65.0) (2023-07-18)
 
 ### Features
