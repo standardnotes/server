@@ -6,6 +6,8 @@ import { ItemHash } from '../../../Item/ItemHash'
 import { ItemRepositoryInterface } from '../../../Item/ItemRepositoryInterface'
 import { UpdateExistingItem } from './UpdateExistingItem'
 import { Uuid, ContentType, Dates, Timestamps, UniqueEntityId, Result } from '@standardnotes/domain-core'
+import { SharedVaultAssociation } from '../../../SharedVault/SharedVaultAssociation'
+import { KeySystemAssociation } from '../../../KeySystem/KeySystemAssociation'
 
 describe('UpdateExistingItem', () => {
   let itemRepository: ItemRepositoryInterface
@@ -87,6 +89,7 @@ describe('UpdateExistingItem', () => {
       existingItem: item1,
       itemHash: itemHash1,
       sessionUuid: '00000000-0000-0000-0000-000000000000',
+      performingUserUuid: '00000000-0000-0000-0000-000000000000',
     })
 
     expect(result.isFailed()).toBeFalsy()
@@ -100,6 +103,7 @@ describe('UpdateExistingItem', () => {
       existingItem: item1,
       itemHash: itemHash1,
       sessionUuid: 'invalid-uuid',
+      performingUserUuid: '00000000-0000-0000-0000-000000000000',
     })
 
     expect(result.isFailed()).toBeTruthy()
@@ -115,6 +119,7 @@ describe('UpdateExistingItem', () => {
         content_type: 'invalid',
       }).getValue(),
       sessionUuid: '00000000-0000-0000-0000-000000000000',
+      performingUserUuid: '00000000-0000-0000-0000-000000000000',
     })
 
     expect(result.isFailed()).toBeTruthy()
@@ -130,6 +135,7 @@ describe('UpdateExistingItem', () => {
         deleted: true,
       }).getValue(),
       sessionUuid: '00000000-0000-0000-0000-000000000000',
+      performingUserUuid: '00000000-0000-0000-0000-000000000000',
     })
 
     expect(result.isFailed()).toBeFalsy()
@@ -152,6 +158,7 @@ describe('UpdateExistingItem', () => {
         duplicate_of: '00000000-0000-0000-0000-000000000001',
       }).getValue(),
       sessionUuid: '00000000-0000-0000-0000-000000000000',
+      performingUserUuid: '00000000-0000-0000-0000-000000000000',
     })
 
     expect(result.isFailed()).toBeFalsy()
@@ -169,6 +176,7 @@ describe('UpdateExistingItem', () => {
         duplicate_of: 'invalid-uuid',
       }).getValue(),
       sessionUuid: '00000000-0000-0000-0000-000000000000',
+      performingUserUuid: '00000000-0000-0000-0000-000000000000',
     })
 
     expect(result.isFailed()).toBeTruthy()
@@ -185,6 +193,7 @@ describe('UpdateExistingItem', () => {
         created_at_timestamp: 123,
       }).getValue(),
       sessionUuid: '00000000-0000-0000-0000-000000000000',
+      performingUserUuid: '00000000-0000-0000-0000-000000000000',
     })
 
     expect(result.isFailed()).toBeFalsy()
@@ -202,6 +211,7 @@ describe('UpdateExistingItem', () => {
         created_at_timestamp: undefined,
       }).getValue(),
       sessionUuid: '00000000-0000-0000-0000-000000000000',
+      performingUserUuid: '00000000-0000-0000-0000-000000000000',
     })
 
     expect(result.isFailed()).toBeTruthy()
@@ -223,6 +233,7 @@ describe('UpdateExistingItem', () => {
         updated_at_timestamp: 123,
       }).getValue(),
       sessionUuid: '00000000-0000-0000-0000-000000000000',
+      performingUserUuid: '00000000-0000-0000-0000-000000000000',
     })
 
     expect(result.isFailed()).toBeTruthy()
@@ -246,9 +257,203 @@ describe('UpdateExistingItem', () => {
         updated_at_timestamp: 123,
       }).getValue(),
       sessionUuid: '00000000-0000-0000-0000-000000000000',
+      performingUserUuid: '00000000-0000-0000-0000-000000000000',
     })
 
     expect(result.isFailed()).toBeTruthy()
     mock.mockRestore()
+  })
+
+  it('should return error if performing user uuid is invalid', async () => {
+    const useCase = createUseCase()
+
+    const result = await useCase.execute({
+      existingItem: item1,
+      itemHash: itemHash1,
+      sessionUuid: '00000000-0000-0000-0000-000000000000',
+      performingUserUuid: 'invalid-uuid',
+    })
+    expect(result.isFailed()).toBeTruthy()
+  })
+
+  describe('when item is associated to a shared vault', () => {
+    it('should add a shared vault association if item hash represents a shared vault item and the existing item is not already associated to the shared vault', async () => {
+      const useCase = createUseCase()
+
+      const itemHash = ItemHash.create({
+        ...itemHash1.props,
+        shared_vault_uuid: '00000000-0000-0000-0000-000000000000',
+      }).getValue()
+
+      const result = await useCase.execute({
+        existingItem: item1,
+        itemHash,
+        sessionUuid: '00000000-0000-0000-0000-000000000000',
+        performingUserUuid: '00000000-0000-0000-0000-000000000000',
+      })
+      expect(result.isFailed()).toBeFalsy()
+      expect(item1.props.sharedVaultAssociation).not.toBeUndefined()
+      expect(item1.props.sharedVaultAssociation?.props.sharedVaultUuid.value).toBe(
+        '00000000-0000-0000-0000-000000000000',
+      )
+    })
+
+    it('should not add a shared vault association if item hash represents a shared vault item and the existing item is already associated to the shared vault', async () => {
+      const useCase = createUseCase()
+
+      const itemHash = ItemHash.create({
+        ...itemHash1.props,
+        shared_vault_uuid: '00000000-0000-0000-0000-000000000000',
+      }).getValue()
+
+      item1.props.sharedVaultAssociation = SharedVaultAssociation.create({
+        itemUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+        sharedVaultUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+        lastEditedBy: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+        timestamps: Timestamps.create(123, 123).getValue(),
+      }).getValue()
+      const idBefore = item1.props.sharedVaultAssociation?.id.toString()
+
+      const result = await useCase.execute({
+        existingItem: item1,
+        itemHash,
+        sessionUuid: '00000000-0000-0000-0000-000000000000',
+        performingUserUuid: '00000000-0000-0000-0000-000000000000',
+      })
+
+      expect(result.isFailed()).toBeFalsy()
+
+      expect(item1.props.sharedVaultAssociation).not.toBeUndefined()
+      expect(item1.props.sharedVaultAssociation.id.toString()).toEqual(idBefore)
+    })
+
+    it('should return error if shared vault uuid is invalid', async () => {
+      const useCase = createUseCase()
+
+      const itemHash = ItemHash.create({
+        ...itemHash1.props,
+        shared_vault_uuid: 'invalid-uuid',
+      }).getValue()
+
+      const result = await useCase.execute({
+        existingItem: item1,
+        itemHash,
+        sessionUuid: '00000000-0000-0000-0000-000000000000',
+        performingUserUuid: '00000000-0000-0000-0000-000000000000',
+      })
+      expect(result.isFailed()).toBeTruthy()
+    })
+
+    it('should return error if shared vault association could not be created', async () => {
+      const useCase = createUseCase()
+
+      const itemHash = ItemHash.create({
+        ...itemHash1.props,
+        shared_vault_uuid: '00000000-0000-0000-0000-000000000000',
+      }).getValue()
+
+      const mock = jest.spyOn(SharedVaultAssociation, 'create')
+      mock.mockImplementation(() => {
+        return Result.fail('Oops')
+      })
+
+      const result = await useCase.execute({
+        existingItem: item1,
+        itemHash,
+        sessionUuid: '00000000-0000-0000-0000-000000000000',
+        performingUserUuid: '00000000-0000-0000-0000-000000000000',
+      })
+      expect(result.isFailed()).toBeTruthy()
+      mock.mockRestore()
+    })
+  })
+
+  describe('when item is associated to a key system', () => {
+    it('should add a key system association if item hash has a dedicated key system and the existing item is not already associated to the key system', async () => {
+      const useCase = createUseCase()
+
+      const itemHash = ItemHash.create({
+        ...itemHash1.props,
+        key_system_identifier: '00000000-0000-0000-0000-000000000000',
+      }).getValue()
+
+      const result = await useCase.execute({
+        existingItem: item1,
+        itemHash,
+        sessionUuid: '00000000-0000-0000-0000-000000000000',
+        performingUserUuid: '00000000-0000-0000-0000-000000000000',
+      })
+      expect(result.isFailed()).toBeFalsy()
+      expect(item1.props.keySystemAssociation).not.toBeUndefined()
+      expect(item1.props.keySystemAssociation?.props.keySystemUuid.value).toBe('00000000-0000-0000-0000-000000000000')
+    })
+
+    it('should not add a key system association if item hash has a dedicated key system and the existing item is already associated to the key system', async () => {
+      const useCase = createUseCase()
+
+      const itemHash = ItemHash.create({
+        ...itemHash1.props,
+        key_system_identifier: '00000000-0000-0000-0000-000000000000',
+      }).getValue()
+
+      item1.props.keySystemAssociation = KeySystemAssociation.create({
+        itemUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+        keySystemUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+        timestamps: Timestamps.create(123, 123).getValue(),
+      }).getValue()
+      const idBefore = item1.props.keySystemAssociation?.id.toString()
+
+      const result = await useCase.execute({
+        existingItem: item1,
+        itemHash,
+        sessionUuid: '00000000-0000-0000-0000-000000000000',
+        performingUserUuid: '00000000-0000-0000-0000-000000000000',
+      })
+
+      expect(result.isFailed()).toBeFalsy()
+
+      expect(item1.props.keySystemAssociation).not.toBeUndefined()
+      expect(item1.props.keySystemAssociation.id.toString()).toEqual(idBefore)
+    })
+
+    it('should return error if key system uuid is invalid', async () => {
+      const useCase = createUseCase()
+
+      const itemHash = ItemHash.create({
+        ...itemHash1.props,
+        key_system_identifier: 'invalid-uuid',
+      }).getValue()
+
+      const result = await useCase.execute({
+        existingItem: item1,
+        itemHash,
+        sessionUuid: '00000000-0000-0000-0000-000000000000',
+        performingUserUuid: '00000000-0000-0000-0000-000000000000',
+      })
+      expect(result.isFailed()).toBeTruthy()
+    })
+
+    it('should return error if key system association could not be created', async () => {
+      const useCase = createUseCase()
+
+      const itemHash = ItemHash.create({
+        ...itemHash1.props,
+        key_system_identifier: '00000000-0000-0000-0000-000000000000',
+      }).getValue()
+
+      const mock = jest.spyOn(KeySystemAssociation, 'create')
+      mock.mockImplementation(() => {
+        return Result.fail('Oops')
+      })
+
+      const result = await useCase.execute({
+        existingItem: item1,
+        itemHash,
+        sessionUuid: '00000000-0000-0000-0000-000000000000',
+        performingUserUuid: '00000000-0000-0000-0000-000000000000',
+      })
+      expect(result.isFailed()).toBeTruthy()
+      mock.mockRestore()
+    })
   })
 })

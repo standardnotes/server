@@ -1,6 +1,6 @@
 import { ReadStream } from 'fs'
 import { Repository, SelectQueryBuilder } from 'typeorm'
-import { MapperInterface } from '@standardnotes/domain-core'
+import { MapperInterface, Uuid } from '@standardnotes/domain-core'
 
 import { Item } from '../../Domain/Item/Item'
 import { ItemQuery } from '../../Domain/Item/ItemQuery'
@@ -78,11 +78,11 @@ export class TypeORMItemRepository implements ItemRepositoryInterface {
       .execute()
   }
 
-  async findByUuid(uuid: string): Promise<Item | null> {
+  async findByUuid(uuid: Uuid): Promise<Item | null> {
     const persistence = await this.ormRepository
       .createQueryBuilder('item')
       .where('item.uuid = :uuid', {
-        uuid,
+        uuid: uuid.value,
       })
       .getOne()
 
@@ -90,7 +90,19 @@ export class TypeORMItemRepository implements ItemRepositoryInterface {
       return null
     }
 
-    return this.mapper.toDomain(persistence)
+    const item = this.mapper.toDomain(persistence)
+
+    const keySystemAssociation = await this.keySystemAssociationRepository.findByItemUuid(uuid)
+    if (keySystemAssociation) {
+      item.props.keySystemAssociation = keySystemAssociation
+    }
+
+    const sharedVaultAssociation = await this.sharedVaultAssociationRepository.findByItemUuid(uuid)
+    if (sharedVaultAssociation) {
+      item.props.sharedVaultAssociation = sharedVaultAssociation
+    }
+
+    return item
   }
 
   async findDatesForComputingIntegrityHash(userUuid: string): Promise<Array<{ updated_at_timestamp: number }>> {

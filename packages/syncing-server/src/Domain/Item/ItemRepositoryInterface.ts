@@ -1,6 +1,8 @@
+import { Uuid } from '@standardnotes/domain-core'
+import { ReadStream } from 'fs'
+
 import { Item } from './Item'
 import { ItemQuery } from './ItemQuery'
-import { ReadStream } from 'fs'
 import { ExtendedIntegrityPayload } from './ExtendedIntegrityPayload'
 
 export interface ItemRepositoryInterface {
@@ -15,7 +17,7 @@ export interface ItemRepositoryInterface {
   findDatesForComputingIntegrityHash(userUuid: string): Promise<Array<{ updated_at_timestamp: number }>>
   findItemsForComputingIntegrityPayloads(userUuid: string): Promise<ExtendedIntegrityPayload[]>
   findByUuidAndUserUuid(uuid: string, userUuid: string): Promise<Item | null>
-  findByUuid(uuid: string): Promise<Item | null>
+  findByUuid(uuid: Uuid): Promise<Item | null>
   remove(item: Item): Promise<void>
   save(item: Item): Promise<void>
   markItemsAsDeleted(itemUuids: Array<string>, updatedAtTimestamp: number): Promise<void>

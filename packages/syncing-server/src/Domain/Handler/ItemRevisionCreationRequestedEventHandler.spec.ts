@@ -53,7 +53,7 @@ describe('ItemRevisionCreationRequestedEventHandler', () => {
     event = {} as jest.Mocked<ItemRevisionCreationRequestedEvent>
     event.createdAt = new Date(1)
     event.payload = {
-      itemUuid: '2-3-4',
+      itemUuid: '00000000-0000-0000-0000-000000000000',
     }
     event.meta = {
       correlation: {
@@ -90,6 +90,15 @@ describe('ItemRevisionCreationRequestedEventHandler', () => {
 
   it('should not create a revision for an item if the dump was not created', async () => {
     itemBackupService.dump = jest.fn().mockReturnValue('')
+
+    await createHandler().handle(event)
+
+    expect(domainEventPublisher.publish).not.toHaveBeenCalled()
+    expect(domainEventFactory.createItemDumpedEvent).not.toHaveBeenCalled()
+  })
+
+  it('should not create a revision if the item uuid is invalid', async () => {
+    event.payload.itemUuid = 'invalid-uuid'
 
     await createHandler().handle(event)
 

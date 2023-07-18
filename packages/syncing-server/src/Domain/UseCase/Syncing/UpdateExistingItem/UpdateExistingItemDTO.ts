@@ -5,4 +5,5 @@ export interface UpdateExistingItemDTO {
   existingItem: Item
   itemHash: ItemHash
   sessionUuid: string | null
+  performingUserUuid: string
 }

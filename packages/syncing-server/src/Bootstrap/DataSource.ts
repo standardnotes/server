@@ -6,6 +6,9 @@ import { TypeORMItem } from '../Infra/TypeORM/TypeORMItem'
 import { TypeORMNotification } from '../Infra/TypeORM/TypeORMNotification'
 import { TypeORMSharedVaultAssociation } from '../Infra/TypeORM/TypeORMSharedVaultAssociation'
 import { TypeORMKeySystemAssociation } from '../Infra/TypeORM/TypeORMKeySystemAssociation'
+import { TypeORMSharedVault } from '../Infra/TypeORM/TypeORMSharedVault'
+import { TypeORMSharedVaultUser } from '../Infra/TypeORM/TypeORMSharedVaultUser'
+import { TypeORMSharedVaultInvite } from '../Infra/TypeORM/TypeORMSharedVaultInvite'
 
 export class AppDataSource {
   private _dataSource: DataSource | undefined
@@ -35,7 +38,15 @@ export class AppDataSource {
 
     const commonDataSourceOptions = {
       maxQueryExecutionTime,
-      entities: [TypeORMItem, TypeORMNotification, TypeORMSharedVaultAssociation, TypeORMKeySystemAssociation],
+      entities: [
+        TypeORMItem,
+        TypeORMNotification,
+        TypeORMSharedVaultAssociation,
+        TypeORMKeySystemAssociation,
+        TypeORMSharedVault,
+        TypeORMSharedVaultUser,
+        TypeORMSharedVaultInvite,
+      ],
       migrations: [`${__dirname}/../../migrations/${isConfiguredForMySQL ? 'mysql' : 'sqlite'}/*.js`],
       migrationsRun: true,
       logging: <LoggerOptions>this.env.get('DB_DEBUG_LEVEL', true) ?? 'info',

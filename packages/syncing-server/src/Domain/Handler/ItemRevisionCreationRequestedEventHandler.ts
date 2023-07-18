@@ -3,6 +3,7 @@ import {
   DomainEventHandlerInterface,
   DomainEventPublisherInterface,
 } from '@standardnotes/domain-events'
+import { Uuid } from '@standardnotes/domain-core'
 
 import { DomainEventFactoryInterface } from '../Event/DomainEventFactoryInterface'
 import { ItemBackupServiceInterface } from '../Item/ItemBackupServiceInterface'
@@ -17,7 +18,13 @@ export class ItemRevisionCreationRequestedEventHandler implements DomainEventHan
   ) {}
 
   async handle(event: ItemRevisionCreationRequestedEvent): Promise<void> {
-    const item = await this.itemRepository.findByUuid(event.payload.itemUuid)
+    const itemUuidOrError = Uuid.create(event.payload.itemUuid)
+    if (itemUuidOrError.isFailed()) {
+      return
+    }
+    const itemUuid = itemUuidOrError.getValue()
+
+    const item = await this.itemRepository.findByUuid(itemUuid)
     if (item === null) {
       return
     }
