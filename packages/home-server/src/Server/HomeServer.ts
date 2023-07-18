@@ -179,6 +179,8 @@ export class HomeServer implements HomeServerInterface {
 
       return Result.ok('Server started.')
     } catch (error) {
+      console.error((error as Error).stack)
+
       return Result.fail((error as Error).message)
     }
   }

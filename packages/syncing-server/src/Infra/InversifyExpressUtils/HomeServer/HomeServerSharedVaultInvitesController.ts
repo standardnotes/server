@@ -44,6 +44,10 @@ export class HomeServerSharedVaultInvitesController extends BaseHttpController {
       )
       this.controllerContainer.register('sync.shared-vault-invites.get-user-invites', this.getUserInvites.bind(this))
       this.controllerContainer.register(
+        'sync.shared-vault-invites.get-vault-invites',
+        this.getSharedVaultInvites.bind(this),
+      )
+      this.controllerContainer.register(
         'sync.shared-vault-invites.delete-invite',
         this.deleteSharedVaultInvite.bind(this),
       )

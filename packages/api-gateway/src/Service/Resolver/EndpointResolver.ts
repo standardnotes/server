@@ -62,6 +62,31 @@ export class EndpointResolver implements EndpointResolverInterface {
     ['[GET]:items/:itemUuid/revisions', 'revisions.revisions.getRevisions'],
     ['[GET]:items/:itemUuid/revisions/:id', 'revisions.revisions.getRevision'],
     ['[DELETE]:items/:itemUuid/revisions/:id', 'revisions.revisions.deleteRevision'],
+    // Messages Controller
+    ['[GET]:messages/', 'sync.messages.get-received'],
+    ['[GET]:messages/outbound', 'sync.messages.get-sent'],
+    ['[POST]:messages/', 'sync.messages.send'],
+    ['[DELETE]:messages/inbound', 'sync.messages.delete-all'],
+    ['[DELETE]:messages/:messageUuid', 'sync.messages.delete'],
+    // Shared Vaults Controller
+    ['[GET]:shared-vaults/', 'sync.shared-vaults.get-vaults'],
+    ['[POST]:shared-vaults/', 'sync.shared-vaults.create-vault'],
+    ['[DELETE]:shared-vaults/:sharedVaultUuid', 'sync.shared-vaults.delete-vault'],
+    ['[POST]:shared-vaults/:sharedVaultUuid/valet-tokens', 'sync.shared-vaults.create-file-valet-token'],
+    // Shared Vault Invites Controller
+    ['[POST]:shared-vaults/:sharedVaultUuid/invites', 'sync.shared-vault-invites.create'],
+    ['[PATCH]:shared-vaults/:sharedVaultUuid/invites/:inviteUuid', 'sync.shared-vault-invites.update'],
+    ['[POST]:shared-vaults/:sharedVaultUuid/invites/:inviteUuid/accept', 'sync.shared-vault-invites.accept'],
+    ['[POST]:shared-vaults/:sharedVaultUuid/invites/:inviteUuid/decline', 'sync.shared-vault-invites.decline'],
+    ['[DELETE]:shared-vaults/invites/inbound', 'sync.shared-vault-invites.delete-inbound'],
+    ['[GET]:shared-vaults/invites/outbound', 'sync.shared-vault-invites.get-outbound'],
+    ['[GET]:shared-vaults/invites', 'sync.shared-vault-invites.get-user-invites'],
+    ['[GET]:shared-vaults/:sharedVaultUuid/invites', 'sync.shared-vault-invites.get-vault-invites'],
+    ['[DELETE]:shared-vaults/:sharedVaultUuid/invites/:inviteUuid', 'sync.shared-vault-invites.delete-invite'],
+    ['[DELETE]:shared-vaults/:sharedVaultUuid/invites', 'sync.shared-vault-invites.delete-all'],
+    // Shared Vault Users Controller
+    ['[GET]:shared-vaults/:sharedVaultUuid/users', 'sync.shared-vault-users.get-users'],
+    ['[DELETE]:shared-vaults/:sharedVaultUuid/users/:userUuid', 'sync.shared-vault-users.remove-user'],
   ])
 
   resolveEndpointOrMethodIdentifier(method: string, endpoint: string, ...params: string[]): string {

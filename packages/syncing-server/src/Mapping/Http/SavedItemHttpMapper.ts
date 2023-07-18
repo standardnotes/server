@@ -22,6 +22,16 @@ export class SavedItemHttpMapper implements MapperInterface<Item, SavedItemHttpR
       created_at_timestamp: domain.props.timestamps.createdAt,
       updated_at: this.timer.convertMicrosecondsToStringDate(domain.props.timestamps.updatedAt),
       updated_at_timestamp: domain.props.timestamps.updatedAt,
+      key_system_identifier: domain.props.keySystemAssociation
+        ? domain.props.keySystemAssociation.props.keySystemUuid.value
+        : null,
+      shared_vault_uuid: domain.props.sharedVaultAssociation
+        ? domain.props.sharedVaultAssociation.props.sharedVaultUuid.value
+        : null,
+      user_uuid: domain.props.userUuid.value,
+      last_edited_by_uuid: domain.props.sharedVaultAssociation
+        ? domain.props.sharedVaultAssociation.props.lastEditedBy.value
+        : null,
     }
   }
 }
