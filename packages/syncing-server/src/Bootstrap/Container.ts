@@ -78,6 +78,16 @@ import { SaveItems } from '../Domain/UseCase/Syncing/SaveItems/SaveItems'
 import { ItemHashHttpMapper } from '../Mapping/Http/ItemHashHttpMapper'
 import { ItemHash } from '../Domain/Item/ItemHash'
 import { ItemHashHttpRepresentation } from '../Mapping/Http/ItemHashHttpRepresentation'
+import { TypeORMKeySystemAssociation } from '../Infra/TypeORM/TypeORMKeySystemAssociation'
+import { SharedVaultAssociation } from '../Domain/SharedVault/SharedVaultAssociation'
+import { TypeORMSharedVaultAssociation } from '../Infra/TypeORM/TypeORMSharedVaultAssociation'
+import { SharedVaultAssociationPersistenceMapper } from '../Mapping/Persistence/SharedVaultAssociationPersistenceMapper'
+import { TypeORMKeySystemAssociationRepository } from '../Infra/TypeORM/TypeORMKeySystemAssociationRepository'
+import { SharedVaultAssociationRepositoryInterface } from '../Domain/SharedVault/SharedVaultAssociationRepositoryInterface'
+import { TypeORMSharedVaultAssociationRepository } from '../Infra/TypeORM/TypeORMSharedVaultAssociationRepository'
+import { KeySystemAssociation } from '../Domain/KeySystem/KeySystemAssociation'
+import { KeySystemAssociationRepositoryInterface } from '../Domain/KeySystem/KeySystemAssociationRepositoryInterface'
+import { KeySystemAssociationPersistenceMapper } from '../Mapping/Persistence/KeySystemAssociationPersistenceMapper'
 
 export class ContainerConfigLoader {
   private readonly DEFAULT_CONTENT_SIZE_TRANSFER_LIMIT = 10_000_000
@@ -232,19 +242,54 @@ export class ContainerConfigLoader {
     container
       .bind<MapperInterface<Item, ItemBackupRepresentation>>(TYPES.Sync_ItemBackupMapper)
       .toConstantValue(new ItemBackupMapper(container.get(TYPES.Sync_Timer)))
+    container
+      .bind<MapperInterface<KeySystemAssociation, TypeORMKeySystemAssociation>>(
+        TYPES.Sync_KeySystemAssociationPersistenceMapper,
+      )
+      .toConstantValue(new KeySystemAssociationPersistenceMapper())
+    container
+      .bind<MapperInterface<SharedVaultAssociation, TypeORMSharedVaultAssociation>>(
+        TYPES.Sync_SharedVaultAssociationPersistenceMapper,
+      )
+      .toConstantValue(new SharedVaultAssociationPersistenceMapper())
 
     // ORM
     container
       .bind<Repository<TypeORMItem>>(TYPES.Sync_ORMItemRepository)
       .toDynamicValue(() => appDataSource.getRepository(TypeORMItem))
+    container
+      .bind<Repository<TypeORMSharedVaultAssociation>>(TYPES.Sync_ORMSharedVaultAssociationRepository)
+      .toConstantValue(appDataSource.getRepository(TypeORMSharedVaultAssociation))
+    container
+      .bind<Repository<TypeORMKeySystemAssociation>>(TYPES.Sync_ORMKeySystemAssociationRepository)
+      .toConstantValue(appDataSource.getRepository(TypeORMKeySystemAssociation))
 
     // Repositories
+    container
+      .bind<KeySystemAssociationRepositoryInterface>(TYPES.Sync_KeySystemAssociationRepository)
+      .toConstantValue(
+        new TypeORMKeySystemAssociationRepository(
+          container.get(TYPES.Sync_ORMKeySystemAssociationRepository),
+          container.get(TYPES.Sync_KeySystemAssociationPersistenceMapper),
+        ),
+      )
+    container
+      .bind<SharedVaultAssociationRepositoryInterface>(TYPES.Sync_SharedVaultAssociationRepository)
+      .toConstantValue(
+        new TypeORMSharedVaultAssociationRepository(
+          container.get(TYPES.Sync_ORMSharedVaultAssociationRepository),
+          container.get(TYPES.Sync_SharedVaultAssociationPersistenceMapper),
+        ),
+      )
+
     container
       .bind<ItemRepositoryInterface>(TYPES.Sync_ItemRepository)
       .toConstantValue(
         new TypeORMItemRepository(
           container.get(TYPES.Sync_ORMItemRepository),
           container.get(TYPES.Sync_ItemPersistenceMapper),
+          container.get(TYPES.Sync_KeySystemAssociationRepository),
+          container.get(TYPES.Sync_SharedVaultAssociationRepository),
         ),
       )
 

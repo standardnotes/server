@@ -14,6 +14,8 @@ import { Item } from '../../../Item/Item'
 import { SaveNewItemDTO } from './SaveNewItemDTO'
 import { ItemRepositoryInterface } from '../../../Item/ItemRepositoryInterface'
 import { DomainEventFactoryInterface } from '../../../Event/DomainEventFactoryInterface'
+import { SharedVaultAssociation } from '../../../SharedVault/SharedVaultAssociation'
+import { KeySystemAssociation } from '../../../KeySystem/KeySystemAssociation'
 
 export class SaveNewItem implements UseCaseInterface<Item> {
   constructor(
@@ -24,6 +26,12 @@ export class SaveNewItem implements UseCaseInterface<Item> {
   ) {}
 
   async execute(dto: SaveNewItemDTO): Promise<Result<Item>> {
+    const uuidOrError = Uuid.create(dto.itemHash.props.uuid)
+    if (uuidOrError.isFailed()) {
+      return Result.fail(uuidOrError.getError())
+    }
+    const uuid = uuidOrError.getValue()
+
     let updatedWithSession = null
     if (dto.sessionUuid) {
       const sessionUuidOrError = Uuid.create(dto.sessionUuid)
@@ -78,6 +86,51 @@ export class SaveNewItem implements UseCaseInterface<Item> {
     }
     const timestamps = timestampsOrError.getValue()
 
+    let sharedVaultAssociation = undefined
+    if (dto.itemHash.representsASharedVaultItem()) {
+      const sharedVaultUuidOrError = Uuid.create(dto.itemHash.props.shared_vault_uuid as string)
+      if (sharedVaultUuidOrError.isFailed()) {
+        return Result.fail(sharedVaultUuidOrError.getError())
+      }
+      const sharedVaultUuid = sharedVaultUuidOrError.getValue()
+
+      const sharedVaultAssociationOrError = SharedVaultAssociation.create({
+        lastEditedBy: userUuid,
+        sharedVaultUuid,
+        timestamps: Timestamps.create(
+          this.timer.getTimestampInMicroseconds(),
+          this.timer.getTimestampInMicroseconds(),
+        ).getValue(),
+        itemUuid: uuid,
+      })
+      if (sharedVaultAssociationOrError.isFailed()) {
+        return Result.fail(sharedVaultAssociationOrError.getError())
+      }
+      sharedVaultAssociation = sharedVaultAssociationOrError.getValue()
+    }
+
+    let keySystemAssociation = undefined
+    if (dto.itemHash.hasDedicatedKeySystemAssociation()) {
+      const keySystemUuidOrError = Uuid.create(dto.itemHash.props.key_system_identifier as string)
+      if (keySystemUuidOrError.isFailed()) {
+        return Result.fail(keySystemUuidOrError.getError())
+      }
+      const keySystemUuid = keySystemUuidOrError.getValue()
+
+      const keySystemAssociationOrError = KeySystemAssociation.create({
+        itemUuid: uuid,
+        timestamps: Timestamps.create(
+          this.timer.getTimestampInMicroseconds(),
+          this.timer.getTimestampInMicroseconds(),
+        ).getValue(),
+        keySystemUuid,
+      })
+      if (keySystemAssociationOrError.isFailed()) {
+        return Result.fail(keySystemAssociationOrError.getError())
+      }
+      keySystemAssociation = keySystemAssociationOrError.getValue()
+    }
+
     const itemOrError = Item.create(
       {
         updatedWithSession,
@@ -91,8 +144,10 @@ export class SaveNewItem implements UseCaseInterface<Item> {
         deleted: dto.itemHash.props.deleted ?? false,
         dates,
         timestamps,
+        keySystemAssociation,
+        sharedVaultAssociation,
       },
-      new UniqueEntityId(dto.itemHash.props.uuid),
+      new UniqueEntityId(uuid.value),
     )
     if (itemOrError.isFailed()) {
       return Result.fail(itemOrError.getError())

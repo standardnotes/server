@@ -4,12 +4,10 @@ import { MapperInterface, Uuid } from '@standardnotes/domain-core'
 import { SharedVaultRepositoryInterface } from '../../Domain/SharedVault/SharedVaultRepositoryInterface'
 import { TypeORMSharedVault } from './TypeORMSharedVault'
 import { SharedVault } from '../../Domain/SharedVault/SharedVault'
-import { SharedVaultItemRepositoryInterface } from '../../Domain/SharedVault/Item/SharedVaultItemRepositoryInterface'
 
 export class TypeORMSharedVaultRepository implements SharedVaultRepositoryInterface {
   constructor(
     private ormRepository: Repository<TypeORMSharedVault>,
-    private sharedVaultItemRepository: SharedVaultItemRepositoryInterface,
     private mapper: MapperInterface<SharedVault, TypeORMSharedVault>,
   ) {}
 
@@ -28,10 +26,6 @@ export class TypeORMSharedVaultRepository implements SharedVaultRepositoryInterf
   }
 
   async save(sharedVault: SharedVault): Promise<void> {
-    for (const item of sharedVault.props.sharedVaultItems) {
-      await this.sharedVaultItemRepository.save(item)
-    }
-
     const persistence = this.mapper.toProjection(sharedVault)
 
     await this.ormRepository.save(persistence)

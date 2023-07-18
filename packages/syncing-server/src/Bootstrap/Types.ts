@@ -8,8 +8,12 @@ const TYPES = {
   Sync_Env: Symbol.for('Sync_Env'),
   // Repositories
   Sync_ItemRepository: Symbol.for('Sync_ItemRepository'),
+  Sync_KeySystemAssociationRepository: Symbol.for('Sync_KeySystemAssociationRepository'),
+  Sync_SharedVaultAssociationRepository: Symbol.for('Sync_SharedVaultAssociationRepository'),
   // ORM
   Sync_ORMItemRepository: Symbol.for('Sync_ORMItemRepository'),
+  Sync_ORMSharedVaultAssociationRepository: Symbol.for('Sync_ORMSharedVaultAssociationRepository'),
+  Sync_ORMKeySystemAssociationRepository: Symbol.for('Sync_ORMKeySystemAssociationRepository'),
   // Middleware
   Sync_AuthMiddleware: Symbol.for('Sync_AuthMiddleware'),
   // env vars
@@ -95,6 +99,8 @@ const TYPES = {
   Sync_SavedItemHttpMapper: Symbol.for('Sync_SavedItemHttpMapper'),
   Sync_ItemConflictHttpMapper: Symbol.for('Sync_ItemConflictHttpMapper'),
   Sync_ItemBackupMapper: Symbol.for('Sync_ItemBackupMapper'),
+  Sync_KeySystemAssociationPersistenceMapper: Symbol.for('Sync_KeySystemAssociationPersistenceMapper'),
+  Sync_SharedVaultAssociationPersistenceMapper: Symbol.for('Sync_SharedVaultAssociationPersistenceMapper'),
 }
 
 export default TYPES

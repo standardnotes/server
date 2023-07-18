@@ -1,7 +1,7 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm'
 
-@Entity({ name: 'shared_vault_items' })
-export class TypeORMSharedVaultItem {
+@Entity({ name: 'shared_vault_associations' })
+export class TypeORMSharedVaultAssociation {
   @PrimaryGeneratedColumn('uuid')
   declare uuid: string
 
@@ -9,20 +9,15 @@ export class TypeORMSharedVaultItem {
     name: 'shared_vault_uuid',
     length: 36,
   })
+  @Index('shared_vault_uuid_on_shared_vault_associations')
   declare sharedVaultUuid: string
 
   @Column({
     name: 'item_uuid',
     length: 36,
   })
+  @Index('item_uuid_on_shared_vault_associations')
   declare itemUuid: string
-
-  @Column({
-    name: 'key_system_identifier',
-    type: 'varchar',
-    length: 36,
-  })
-  declare keySystemIdentifier: string
 
   @Column({
     name: 'last_edited_by',

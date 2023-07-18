@@ -12,4 +12,8 @@ export interface ItemHttpRepresentation {
   updated_at: string
   updated_at_timestamp: number
   updated_with_session: string | null
+  key_system_identifier: string | null
+  shared_vault_uuid: string | null
+  user_uuid: string | null
+  last_edited_by_uuid: string | null
 }

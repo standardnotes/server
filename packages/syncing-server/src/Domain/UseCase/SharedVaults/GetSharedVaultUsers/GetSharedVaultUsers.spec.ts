@@ -20,7 +20,6 @@ describe('GetSharedVaultUsers', () => {
       fileUploadBytesUsed: 2,
       userUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
       timestamps: Timestamps.create(123, 123).getValue(),
-      sharedVaultItems: [],
     }).getValue()
 
     sharedVaultUser = SharedVaultUser.create({
@@ -67,7 +66,6 @@ describe('GetSharedVaultUsers', () => {
       fileUploadBytesUsed: 2,
       userUuid: Uuid.create('00000000-0000-0000-0000-000000000001').getValue(),
       timestamps: Timestamps.create(123, 123).getValue(),
-      sharedVaultItems: [],
     }).getValue()
     sharedVaultRepository.findByUuid = jest.fn().mockResolvedValue(sharedVault)
 
