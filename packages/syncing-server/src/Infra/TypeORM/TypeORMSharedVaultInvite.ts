@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm'
 
 @Entity({ name: 'shared_vault_invites' })
 export class TypeORMSharedVaultInvite {
@@ -9,18 +9,21 @@ export class TypeORMSharedVaultInvite {
     name: 'shared_vault_uuid',
     length: 36,
   })
+  @Index('shared_vault_uuid_on_shared_vault_invites')
   declare sharedVaultUuid: string
 
   @Column({
     name: 'user_uuid',
     length: 36,
   })
+  @Index('user_uuid_on_shared_vault_invites')
   declare userUuid: string
 
   @Column({
     name: 'sender_uuid',
     length: 36,
   })
+  @Index('sender_uuid_on_shared_vault_invites')
   declare senderUuid: string
 
   @Column({

@@ -9,7 +9,7 @@ export class TypeORMSharedVault {
     name: 'user_uuid',
     length: 36,
   })
-  @Index('index_shared_vaults_on_user_uuid')
+  @Index('user_uuid_on_shared_vaults')
   declare userUuid: string
 
   @Column({
