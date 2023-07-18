@@ -56,7 +56,7 @@ describe('SaveItems', () => {
     logger.error = jest.fn()
 
     itemHash1 = ItemHash.create({
-      uuid: 'item-uuid',
+      uuid: '00000000-0000-0000-0000-000000000000',
       user_uuid: 'user-uuid',
       content: 'content',
       content_type: ContentType.TYPES.Note,
@@ -197,7 +197,7 @@ describe('SaveItems', () => {
 
     const result = await useCase.execute({
       itemHashes: [itemHash1],
-      userUuid: 'user-uuid',
+      userUuid: '00000000-0000-0000-0000-000000000000',
       apiVersion: '1',
       readOnlyAccess: false,
       sessionUuid: 'session-uuid',
@@ -208,6 +208,7 @@ describe('SaveItems', () => {
       itemHash: itemHash1,
       existingItem: savedItem,
       sessionUuid: 'session-uuid',
+      performingUserUuid: '00000000-0000-0000-0000-000000000000',
     })
   })
 
@@ -229,6 +230,29 @@ describe('SaveItems', () => {
     expect(result.getValue().conflicts).toEqual([
       {
         unsavedItem: itemHash1,
+        type: 'uuid_conflict',
+      },
+    ])
+  })
+
+  it('should mark items as conflict if the item uuid is invalid', async () => {
+    const useCase = createUseCase()
+
+    itemRepository.findByUuid = jest.fn().mockResolvedValue(savedItem)
+    updateExistingItem.execute = jest.fn().mockResolvedValue(Result.fail('error'))
+
+    const result = await useCase.execute({
+      itemHashes: [ItemHash.create({ ...itemHash1.props, uuid: 'invalid-uuid' }).getValue()],
+      userUuid: 'user-uuid',
+      apiVersion: '1',
+      readOnlyAccess: false,
+      sessionUuid: 'session-uuid',
+    })
+
+    expect(result.isFailed()).toBeFalsy()
+    expect(result.getValue().conflicts).toEqual([
+      {
+        unsavedItem: ItemHash.create({ ...itemHash1.props, uuid: 'invalid-uuid' }).getValue(),
         type: 'uuid_conflict',
       },
     ])
@@ -260,8 +284,8 @@ describe('SaveItems', () => {
     const result = await useCase.execute({
       itemHashes: [
         itemHash1,
-        ItemHash.create({ ...itemHash1.props, uuid: 'item-uuid-2' }).getValue(),
-        ItemHash.create({ ...itemHash1.props, uuid: 'item-uuid-2' }).getValue(),
+        ItemHash.create({ ...itemHash1.props, uuid: '00000000-0000-0000-0000-000000000002' }).getValue(),
+        ItemHash.create({ ...itemHash1.props, uuid: '00000000-0000-0000-0000-000000000003' }).getValue(),
       ],
       userUuid: 'user-uuid',
       apiVersion: '2',

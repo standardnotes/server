@@ -6,6 +6,9 @@ import { Item } from '../../../Item/Item'
 import { UpdateExistingItemDTO } from './UpdateExistingItemDTO'
 import { ItemRepositoryInterface } from '../../../Item/ItemRepositoryInterface'
 import { DomainEventFactoryInterface } from '../../../Event/DomainEventFactoryInterface'
+import { SharedVaultAssociation } from '../../../SharedVault/SharedVaultAssociation'
+import { KeySystemAssociation } from '../../../KeySystem/KeySystemAssociation'
+import { ItemHash } from '../../../Item/ItemHash'
 
 export class UpdateExistingItem implements UseCaseInterface<Item> {
   constructor(
@@ -26,6 +29,12 @@ export class UpdateExistingItem implements UseCaseInterface<Item> {
       sessionUuid = sessionUuidOrError.getValue()
     }
     dto.existingItem.props.updatedWithSession = sessionUuid
+
+    const userUuidOrError = Uuid.create(dto.performingUserUuid)
+    if (userUuidOrError.isFailed()) {
+      return Result.fail(userUuidOrError.getError())
+    }
+    const userUuid = userUuidOrError.getValue()
 
     if (dto.itemHash.props.content) {
       dto.existingItem.props.content = dto.itemHash.props.content
@@ -96,6 +105,57 @@ export class UpdateExistingItem implements UseCaseInterface<Item> {
 
     dto.existingItem.props.contentSize = Buffer.byteLength(JSON.stringify(dto.existingItem))
 
+    if (
+      dto.itemHash.representsASharedVaultItem() &&
+      !this.itemIsAlreadyAssociatedWithTheSharedVault(dto.existingItem, dto.itemHash)
+    ) {
+      const sharedVaultUuidOrError = Uuid.create(dto.itemHash.props.shared_vault_uuid as string)
+      if (sharedVaultUuidOrError.isFailed()) {
+        return Result.fail(sharedVaultUuidOrError.getError())
+      }
+      const sharedVaultUuid = sharedVaultUuidOrError.getValue()
+
+      const sharedVaultAssociationOrError = SharedVaultAssociation.create({
+        lastEditedBy: userUuid,
+        sharedVaultUuid,
+        timestamps: Timestamps.create(
+          this.timer.getTimestampInMicroseconds(),
+          this.timer.getTimestampInMicroseconds(),
+        ).getValue(),
+        itemUuid: Uuid.create(dto.existingItem.id.toString()).getValue(),
+      })
+      if (sharedVaultAssociationOrError.isFailed()) {
+        return Result.fail(sharedVaultAssociationOrError.getError())
+      }
+
+      dto.existingItem.props.sharedVaultAssociation = sharedVaultAssociationOrError.getValue()
+    }
+
+    if (
+      dto.itemHash.hasDedicatedKeySystemAssociation() &&
+      !this.itemIsAlreadyAssociatedWithTheKeySystem(dto.existingItem, dto.itemHash)
+    ) {
+      const keySystemUuidOrError = Uuid.create(dto.itemHash.props.key_system_identifier as string)
+      if (keySystemUuidOrError.isFailed()) {
+        return Result.fail(keySystemUuidOrError.getError())
+      }
+      const keySystemUuid = keySystemUuidOrError.getValue()
+
+      const keySystemAssociationOrError = KeySystemAssociation.create({
+        itemUuid: Uuid.create(dto.existingItem.id.toString()).getValue(),
+        timestamps: Timestamps.create(
+          this.timer.getTimestampInMicroseconds(),
+          this.timer.getTimestampInMicroseconds(),
+        ).getValue(),
+        keySystemUuid,
+      })
+      if (keySystemAssociationOrError.isFailed()) {
+        return Result.fail(keySystemAssociationOrError.getError())
+      }
+
+      dto.existingItem.props.keySystemAssociation = keySystemAssociationOrError.getValue()
+    }
+
     if (dto.itemHash.props.deleted === true) {
       dto.existingItem.props.deleted = true
       dto.existingItem.props.content = null
@@ -131,5 +191,19 @@ export class UpdateExistingItem implements UseCaseInterface<Item> {
     }
 
     return Result.ok(dto.existingItem)
+  }
+
+  private itemIsAlreadyAssociatedWithTheSharedVault(item: Item, itemHash: ItemHash): boolean {
+    return (
+      item.props.sharedVaultAssociation !== undefined &&
+      item.props.sharedVaultAssociation.props.sharedVaultUuid.value === itemHash.props.shared_vault_uuid
+    )
+  }
+
+  private itemIsAlreadyAssociatedWithTheKeySystem(item: Item, itemHash: ItemHash): boolean {
+    return (
+      item.props.keySystemAssociation !== undefined &&
+      item.props.keySystemAssociation.props.keySystemUuid.value === itemHash.props.key_system_identifier
+    )
   }
 }

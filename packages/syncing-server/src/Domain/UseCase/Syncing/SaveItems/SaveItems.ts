@@ -1,4 +1,4 @@
-import { Result, UseCaseInterface } from '@standardnotes/domain-core'
+import { Result, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
 
 import { SaveItemsResult } from './SaveItemsResult'
 import { SaveItemsDTO } from './SaveItemsDTO'
@@ -40,7 +40,18 @@ export class SaveItems implements UseCaseInterface<SaveItemsResult> {
         continue
       }
 
-      const existingItem = await this.itemRepository.findByUuid(itemHash.props.uuid)
+      const itemUuidOrError = Uuid.create(itemHash.props.uuid)
+      if (itemUuidOrError.isFailed()) {
+        conflicts.push({
+          unsavedItem: itemHash,
+          type: ConflictType.UuidConflict,
+        })
+
+        continue
+      }
+      const itemUuid = itemUuidOrError.getValue()
+
+      const existingItem = await this.itemRepository.findByUuid(itemUuid)
       const processingResult = await this.itemSaveValidator.validate({
         userUuid: dto.userUuid,
         apiVersion: dto.apiVersion,
@@ -63,6 +74,7 @@ export class SaveItems implements UseCaseInterface<SaveItemsResult> {
           existingItem,
           itemHash,
           sessionUuid: dto.sessionUuid,
+          performingUserUuid: dto.userUuid,
         })
         if (udpatedItemOrError.isFailed()) {
           this.logger.error(
