@@ -6,6 +6,8 @@ import { DomainEventFactoryInterface } from '../../../Event/DomainEventFactoryIn
 import { ItemHash } from '../../../Item/ItemHash'
 import { ContentType, Dates, Result, Timestamps, UniqueEntityId, Uuid } from '@standardnotes/domain-core'
 import { Item } from '../../../Item/Item'
+import { SharedVaultAssociation } from '../../../SharedVault/SharedVaultAssociation'
+import { KeySystemAssociation } from '../../../KeySystem/KeySystemAssociation'
 
 describe('SaveNewItem', () => {
   let itemRepository: ItemRepositoryInterface
@@ -38,7 +40,7 @@ describe('SaveNewItem', () => {
     ).getValue()
 
     itemHash1 = ItemHash.create({
-      uuid: '1-2-3',
+      uuid: '00000000-0000-0000-0000-000000000000',
       user_uuid: '00000000-0000-0000-0000-000000000000',
       key_system_identifier: null,
       shared_vault_uuid: null,
@@ -281,5 +283,150 @@ describe('SaveNewItem', () => {
     expect(result.isFailed()).toBeTruthy()
 
     mock.mockRestore()
+  })
+
+  it('returns a failure if the item hash has an invalid uuid', async () => {
+    const useCase = createUseCase()
+
+    itemHash1 = ItemHash.create({
+      ...itemHash1.props,
+      uuid: '1-2-3',
+    }).getValue()
+
+    const result = await useCase.execute({
+      userUuid: '00000000-0000-0000-0000-00000000000',
+      sessionUuid: '00000000-0000-0000-0000-000000000001',
+      itemHash: itemHash1,
+    })
+
+    expect(result.isFailed()).toBeTruthy()
+  })
+
+  describe('when item hash represents a shared vault item', () => {
+    it('returns a failure if the shared vault uuid is invalid', async () => {
+      const useCase = createUseCase()
+
+      itemHash1 = ItemHash.create({
+        ...itemHash1.props,
+        shared_vault_uuid: '1-2-3',
+      }).getValue()
+
+      const result = await useCase.execute({
+        userUuid: '00000000-0000-0000-0000-000000000000',
+        sessionUuid: '00000000-0000-0000-0000-000000000001',
+        itemHash: itemHash1,
+      })
+
+      expect(result.isFailed()).toBeTruthy()
+    })
+
+    it('should create a shared vault association between the item and the shared vault', async () => {
+      const useCase = createUseCase()
+
+      itemHash1 = ItemHash.create({
+        ...itemHash1.props,
+        shared_vault_uuid: '00000000-0000-0000-0000-000000000001',
+      }).getValue()
+
+      const result = await useCase.execute({
+        userUuid: '00000000-0000-0000-0000-000000000000',
+        sessionUuid: '00000000-0000-0000-0000-000000000001',
+        itemHash: itemHash1,
+      })
+
+      expect(result.isFailed()).toBeFalsy()
+      expect(result.getValue().props.sharedVaultAssociation?.props.lastEditedBy.value).toEqual(
+        '00000000-0000-0000-0000-000000000000',
+      )
+      expect(itemRepository.save).toHaveBeenCalled()
+    })
+
+    it('should return a failure if it fails to create a shared vault association', async () => {
+      const mock = jest.spyOn(SharedVaultAssociation, 'create')
+      mock.mockImplementation(() => {
+        return Result.fail('Oops')
+      })
+
+      const useCase = createUseCase()
+
+      itemHash1 = ItemHash.create({
+        ...itemHash1.props,
+        shared_vault_uuid: '00000000-0000-0000-0000-000000000001',
+      }).getValue()
+
+      const result = await useCase.execute({
+        userUuid: '00000000-0000-0000-0000-000000000000',
+        sessionUuid: '00000000-0000-0000-0000-000000000001',
+        itemHash: itemHash1,
+      })
+
+      expect(result.isFailed()).toBeTruthy()
+
+      mock.mockRestore()
+    })
+  })
+
+  describe('when item hash has a dedicated key system', () => {
+    it('should create a key system for the item if the item hash has information about a key system used for encryption', async () => {
+      const useCase = createUseCase()
+
+      itemHash1 = ItemHash.create({
+        ...itemHash1.props,
+        key_system_identifier: '00000000-0000-0000-0000-000000000001',
+      }).getValue()
+
+      const result = await useCase.execute({
+        userUuid: '00000000-0000-0000-0000-000000000000',
+        sessionUuid: '00000000-0000-0000-0000-000000000001',
+        itemHash: itemHash1,
+      })
+
+      expect(result.isFailed()).toBeFalsy()
+      expect(result.getValue().props.keySystemAssociation?.props.itemUuid.value).toEqual(
+        '00000000-0000-0000-0000-000000000000',
+      )
+      expect(itemRepository.save).toHaveBeenCalled()
+    })
+
+    it('should return a failure if the item hash has an invalid key system uuid', async () => {
+      const useCase = createUseCase()
+
+      itemHash1 = ItemHash.create({
+        ...itemHash1.props,
+        key_system_identifier: '1-2-3',
+      }).getValue()
+
+      const result = await useCase.execute({
+        userUuid: '00000000-0000-0000-0000-000000000000',
+        sessionUuid: '00000000-0000-0000-0000-000000000001',
+        itemHash: itemHash1,
+      })
+
+      expect(result.isFailed()).toBeTruthy()
+    })
+
+    it('should return a failure if it fails to create a key system', async () => {
+      const mock = jest.spyOn(KeySystemAssociation, 'create')
+      mock.mockImplementation(() => {
+        return Result.fail('Oops')
+      })
+
+      const useCase = createUseCase()
+
+      itemHash1 = ItemHash.create({
+        ...itemHash1.props,
+        key_system_identifier: '00000000-0000-0000-0000-000000000001',
+      }).getValue()
+
+      const result = await useCase.execute({
+        userUuid: '00000000-0000-0000-0000-000000000000',
+        sessionUuid: '00000000-0000-0000-0000-000000000001',
+        itemHash: itemHash1,
+      })
+
+      expect(result.isFailed()).toBeTruthy()
+
+      mock.mockRestore()
+    })
   })
 })

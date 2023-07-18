@@ -1,5 +1,8 @@
 import { ContentType, Dates, Timestamps, Uuid } from '@standardnotes/domain-core'
 
+import { KeySystemAssociation } from '../KeySystem/KeySystemAssociation'
+import { SharedVaultAssociation } from '../SharedVault/SharedVaultAssociation'
+
 export interface ItemProps {
   duplicateOf: Uuid | null
   itemsKeyId: string | null
@@ -13,4 +16,6 @@ export interface ItemProps {
   dates: Dates
   timestamps: Timestamps
   contentSize?: number
+  sharedVaultAssociation?: SharedVaultAssociation
+  keySystemAssociation?: KeySystemAssociation
 }

@@ -1,8 +1,8 @@
-import { Entity, Result, UniqueEntityId } from '@standardnotes/domain-core'
+import { Aggregate, Result, UniqueEntityId } from '@standardnotes/domain-core'
 
 import { ItemProps } from './ItemProps'
 
-export class Item extends Entity<ItemProps> {
+export class Item extends Aggregate<ItemProps> {
   private constructor(props: ItemProps, id?: UniqueEntityId) {
     super(props, id)
   }

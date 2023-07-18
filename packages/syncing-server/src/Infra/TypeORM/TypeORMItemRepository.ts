@@ -7,17 +7,40 @@ import { ItemQuery } from '../../Domain/Item/ItemQuery'
 import { ItemRepositoryInterface } from '../../Domain/Item/ItemRepositoryInterface'
 import { ExtendedIntegrityPayload } from '../../Domain/Item/ExtendedIntegrityPayload'
 import { TypeORMItem } from './TypeORMItem'
+import { KeySystemAssociationRepositoryInterface } from '../../Domain/KeySystem/KeySystemAssociationRepositoryInterface'
+import { SharedVaultAssociationRepositoryInterface } from '../../Domain/SharedVault/SharedVaultAssociationRepositoryInterface'
 
 export class TypeORMItemRepository implements ItemRepositoryInterface {
-  constructor(private ormRepository: Repository<TypeORMItem>, private mapper: MapperInterface<Item, TypeORMItem>) {}
+  constructor(
+    private ormRepository: Repository<TypeORMItem>,
+    private mapper: MapperInterface<Item, TypeORMItem>,
+    private keySystemAssociationRepository: KeySystemAssociationRepositoryInterface,
+    private sharedVaultAssociationRepository: SharedVaultAssociationRepositoryInterface,
+  ) {}
 
   async save(item: Item): Promise<void> {
     const persistence = this.mapper.toProjection(item)
 
     await this.ormRepository.save(persistence)
+
+    if (item.props.sharedVaultAssociation) {
+      await this.sharedVaultAssociationRepository.save(item.props.sharedVaultAssociation)
+    }
+
+    if (item.props.keySystemAssociation) {
+      await this.keySystemAssociationRepository.save(item.props.keySystemAssociation)
+    }
   }
 
   async remove(item: Item): Promise<void> {
+    if (item.props.keySystemAssociation) {
+      await this.keySystemAssociationRepository.remove(item.props.keySystemAssociation)
+    }
+
+    if (item.props.sharedVaultAssociation) {
+      await this.sharedVaultAssociationRepository.remove(item.props.sharedVaultAssociation)
+    }
+
     await this.ormRepository.remove(this.mapper.toProjection(item))
   }
 
