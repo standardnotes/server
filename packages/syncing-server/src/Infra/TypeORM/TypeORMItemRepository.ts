@@ -82,7 +82,7 @@ export class TypeORMItemRepository implements ItemRepositoryInterface {
     const persistence = await this.ormRepository
       .createQueryBuilder('item')
       .where('item.uuid = :uuid', {
-        uuid,
+        uuid: uuid.value,
       })
       .getOne()
 
