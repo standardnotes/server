@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.13.0](https://github.com/standardnotes/server/compare/@standardnotes/home-server@1.12.6...@standardnotes/home-server@1.13.0) (2023-07-19)
+
+### Features
+
+* **syncing-server:** add persistence of shared vaults with users and invites + controllers ([#662](https://github.com/standardnotes/server/issues/662)) ([3f21a35](https://github.com/standardnotes/server/commit/3f21a358d24d70daf541aa62dc86cd9e29500e62))
+
 ## [1.12.6](https://github.com/standardnotes/server/compare/@standardnotes/home-server@1.12.5...@standardnotes/home-server@1.12.6) (2023-07-18)
 
 **Note:** Version bump only for package @standardnotes/home-server

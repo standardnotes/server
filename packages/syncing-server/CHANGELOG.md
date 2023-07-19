@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.67.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.66.0...@standardnotes/syncing-server@1.67.0) (2023-07-19)
+
+### Bug Fixes
+
+* **syncing-server:** add missing messages and key system identifier sql representations ([#663](https://github.com/standardnotes/syncing-server-js/issues/663)) ([d026152](https://github.com/standardnotes/syncing-server-js/commit/d026152ac8cb2ecda2eee8d3f7385d655b210938))
+
+### Features
+
+* **syncing-server:** add persistence of shared vaults with users and invites + controllers ([#662](https://github.com/standardnotes/syncing-server-js/issues/662)) ([3f21a35](https://github.com/standardnotes/syncing-server-js/commit/3f21a358d24d70daf541aa62dc86cd9e29500e62))
+
 # [1.66.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.65.0...@standardnotes/syncing-server@1.66.0) (2023-07-18)
 
 ### Features

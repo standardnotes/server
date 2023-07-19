@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.23.1](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.23.0...@standardnotes/domain-core@1.23.1) (2023-07-19)
+
+### Bug Fixes
+
+* **syncing-server:** add missing messages and key system identifier sql representations ([#663](https://github.com/standardnotes/server/issues/663)) ([d026152](https://github.com/standardnotes/server/commit/d026152ac8cb2ecda2eee8d3f7385d655b210938))
+
 # [1.23.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.22.0...@standardnotes/domain-core@1.23.0) (2023-07-17)
 
 ### Features
