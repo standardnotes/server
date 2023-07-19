@@ -88,6 +88,65 @@ import { TypeORMSharedVaultAssociationRepository } from '../Infra/TypeORM/TypeOR
 import { KeySystemAssociation } from '../Domain/KeySystem/KeySystemAssociation'
 import { KeySystemAssociationRepositoryInterface } from '../Domain/KeySystem/KeySystemAssociationRepositoryInterface'
 import { KeySystemAssociationPersistenceMapper } from '../Mapping/Persistence/KeySystemAssociationPersistenceMapper'
+import { HomeServerSharedVaultInvitesController } from '../Infra/InversifyExpressUtils/HomeServer/HomeServerSharedVaultInvitesController'
+import { InviteUserToSharedVault } from '../Domain/UseCase/SharedVaults/InviteUserToSharedVault/InviteUserToSharedVault'
+import { TypeORMSharedVaultRepository } from '../Infra/TypeORM/TypeORMSharedVaultRepository'
+import { TypeORMSharedVault } from '../Infra/TypeORM/TypeORMSharedVault'
+import { TypeORMSharedVaultInvite } from '../Infra/TypeORM/TypeORMSharedVaultInvite'
+import { TypeORMSharedVaultUser } from '../Infra/TypeORM/TypeORMSharedVaultUser'
+import { SharedVaultRepositoryInterface } from '../Domain/SharedVault/SharedVaultRepositoryInterface'
+import { SharedVaultPersistenceMapper } from '../Mapping/Persistence/SharedVaultPersistenceMapper'
+import { SharedVault } from '../Domain/SharedVault/SharedVault'
+import { SharedVaultUser } from '../Domain/SharedVault/User/SharedVaultUser'
+import { SharedVaultUserPersistenceMapper } from '../Mapping/Persistence/SharedVaultUserPersistenceMapper'
+import { SharedVaultInvite } from '../Domain/SharedVault/User/Invite/SharedVaultInvite'
+import { SharedVaultInvitePersistenceMapper } from '../Mapping/Persistence/SharedVaultInvitePersistenceMapper'
+import { SharedVaultUserRepositoryInterface } from '../Domain/SharedVault/User/SharedVaultUserRepositoryInterface'
+import { TypeORMSharedVaultUserRepository } from '../Infra/TypeORM/TypeORMSharedVaultUserRepository'
+import { SharedVaultInviteRepositoryInterface } from '../Domain/SharedVault/User/Invite/SharedVaultInviteRepositoryInterface'
+import { TypeORMSharedVaultInviteRepository } from '../Infra/TypeORM/TypeORMSharedVaultInviteRepository'
+import { UpdateSharedVaultInvite } from '../Domain/UseCase/SharedVaults/UpdateSharedVaultInvite/UpdateSharedVaultInvite'
+import { AcceptInviteToSharedVault } from '../Domain/UseCase/SharedVaults/AcceptInviteToSharedVault/AcceptInviteToSharedVault'
+import { AddUserToSharedVault } from '../Domain/UseCase/SharedVaults/AddUserToSharedVault/AddUserToSharedVault'
+import { DeclineInviteToSharedVault } from '../Domain/UseCase/SharedVaults/DeclineInviteToSharedVault/DeclineInviteToSharedVault'
+import { DeleteSharedVaultInvitesToUser } from '../Domain/UseCase/SharedVaults/DeleteSharedVaultInvitesToUser/DeleteSharedVaultInvitesToUser'
+import { DeleteSharedVaultInvitesSentByUser } from '../Domain/UseCase/SharedVaults/DeleteSharedVaultInvitesSentByUser/DeleteSharedVaultInvitesSentByUser'
+import { GetSharedVaultInvitesSentByUser } from '../Domain/UseCase/SharedVaults/GetSharedVaultInvitesSentByUser/GetSharedVaultInvitesSentByUser'
+import { GetSharedVaultInvitesSentToUser } from '../Domain/UseCase/SharedVaults/GetSharedVaultInvitesSentToUser/GetSharedVaultInvitesSentToUser'
+import { HomeServerSharedVaultUsersController } from '../Infra/InversifyExpressUtils/HomeServer/HomeServerSharedVaultUsersController'
+import { GetSharedVaultUsers } from '../Domain/UseCase/SharedVaults/GetSharedVaultUsers/GetSharedVaultUsers'
+import { RemoveUserFromSharedVault } from '../Domain/UseCase/SharedVaults/RemoveUserFromSharedVault/RemoveUserFromSharedVault'
+import { AddNotificationForUser } from '../Domain/UseCase/Messaging/AddNotificationForUser/AddNotificationForUser'
+import { TypeORMNotification } from '../Infra/TypeORM/TypeORMNotification'
+import { NotificationRepositoryInterface } from '../Domain/Notifications/NotificationRepositoryInterface'
+import { TypeORMNotificationRepository } from '../Infra/TypeORM/TypeORMNotificationRepository'
+import { NotificationPersistenceMapper } from '../Mapping/Persistence/NotificationPersistenceMapper'
+import { Notification } from '../Domain/Notifications/Notification'
+import { SharedVaultUserHttpRepresentation } from '../Mapping/Http/SharedVaultUserHttpRepresentation'
+import { SharedVaultUserHttpMapper } from '../Mapping/Http/SharedVaultUserHttpMapper'
+import { HomeServerSharedVaultsController } from '../Infra/InversifyExpressUtils/HomeServer/HomeServerSharedVaultsController'
+import { GetSharedVaults } from '../Domain/UseCase/SharedVaults/GetSharedVaults/GetSharedVaults'
+import { CreateSharedVault } from '../Domain/UseCase/SharedVaults/CreateSharedVault/CreateSharedVault'
+import { DeleteSharedVault } from '../Domain/UseCase/SharedVaults/DeleteSharedVault/DeleteSharedVault'
+import { CreateSharedVaultFileValetToken } from '../Domain/UseCase/SharedVaults/CreateSharedVaultFileValetToken/CreateSharedVaultFileValetToken'
+import { SharedVaultValetTokenData, TokenEncoder, TokenEncoderInterface } from '@standardnotes/security'
+import { SharedVaultHttpRepresentation } from '../Mapping/Http/SharedVaultHttpRepresentation'
+import { SharedVaultHttpMapper } from '../Mapping/Http/SharedVaultHttpMapper'
+import { SharedVaultInviteHttpRepresentation } from '../Mapping/Http/SharedVaultInviteHttpRepresentation'
+import { SharedVaultInviteHttpMapper } from '../Mapping/Http/SharedVaultInviteHttpMapper'
+import { HomeServerMessagesController } from '../Infra/InversifyExpressUtils/HomeServer/HomeServerMessagesController'
+import { GetMessagesSentToUser } from '../Domain/UseCase/Messaging/GetMessagesSentToUser/GetMessagesSentToUser'
+import { TypeORMMessage } from '../Infra/TypeORM/TypeORMMessage'
+import { MessageRepositoryInterface } from '../Domain/Message/MessageRepositoryInterface'
+import { TypeORMMessageRepository } from '../Infra/TypeORM/TypeORMMessageRepository'
+import { Message } from '../Domain/Message/Message'
+import { MessagePersistenceMapper } from '../Mapping/Persistence/MessagePersistenceMapper'
+import { GetMessagesSentByUser } from '../Domain/UseCase/Messaging/GetMessagesSentByUser/GetMessagesSentByUser'
+import { SendMessageToUser } from '../Domain/UseCase/Messaging/SendMessageToUser/SendMessageToUser'
+import { DeleteAllMessagesSentToUser } from '../Domain/UseCase/Messaging/DeleteAllMessagesSentToUser/DeleteAllMessagesSentToUser'
+import { DeleteMessage } from '../Domain/UseCase/Messaging/DeleteMessage/DeleteMessage'
+import { MessageHttpRepresentation } from '../Mapping/Http/MessageHttpRepresentation'
+import { MessageHttpMapper } from '../Mapping/Http/MessageHttpMapper'
 
 export class ContainerConfigLoader {
   private readonly DEFAULT_CONTENT_SIZE_TRANSFER_LIMIT = 10_000_000
@@ -252,6 +311,35 @@ export class ContainerConfigLoader {
         TYPES.Sync_SharedVaultAssociationPersistenceMapper,
       )
       .toConstantValue(new SharedVaultAssociationPersistenceMapper())
+    container
+      .bind<MapperInterface<SharedVault, TypeORMSharedVault>>(TYPES.Sync_SharedVaultPersistenceMapper)
+      .toConstantValue(new SharedVaultPersistenceMapper())
+    container
+      .bind<MapperInterface<SharedVaultUser, TypeORMSharedVaultUser>>(TYPES.Sync_SharedVaultUserPersistenceMapper)
+      .toConstantValue(new SharedVaultUserPersistenceMapper())
+    container
+      .bind<MapperInterface<SharedVaultInvite, TypeORMSharedVaultInvite>>(TYPES.Sync_SharedVaultInvitePersistenceMapper)
+      .toConstantValue(new SharedVaultInvitePersistenceMapper())
+    container
+      .bind<MapperInterface<Notification, TypeORMNotification>>(TYPES.Sync_NotificationPersistenceMapper)
+      .toConstantValue(new NotificationPersistenceMapper())
+    container
+      .bind<MapperInterface<SharedVaultUser, SharedVaultUserHttpRepresentation>>(TYPES.Sync_SharedVaultUserHttpMapper)
+      .toConstantValue(new SharedVaultUserHttpMapper())
+    container
+      .bind<MapperInterface<SharedVault, SharedVaultHttpRepresentation>>(TYPES.Sync_SharedVaultHttpMapper)
+      .toConstantValue(new SharedVaultHttpMapper())
+    container
+      .bind<MapperInterface<SharedVaultInvite, SharedVaultInviteHttpRepresentation>>(
+        TYPES.Sync_SharedVaultInviteHttpMapper,
+      )
+      .toConstantValue(new SharedVaultInviteHttpMapper())
+    container
+      .bind<MapperInterface<Message, TypeORMMessage>>(TYPES.Sync_MessagePersistenceMapper)
+      .toConstantValue(new MessagePersistenceMapper())
+    container
+      .bind<MapperInterface<Message, MessageHttpRepresentation>>(TYPES.Sync_MessageHttpMapper)
+      .toConstantValue(new MessageHttpMapper())
 
     // ORM
     container
@@ -263,6 +351,21 @@ export class ContainerConfigLoader {
     container
       .bind<Repository<TypeORMKeySystemAssociation>>(TYPES.Sync_ORMKeySystemAssociationRepository)
       .toConstantValue(appDataSource.getRepository(TypeORMKeySystemAssociation))
+    container
+      .bind<Repository<TypeORMSharedVault>>(TYPES.Sync_ORMSharedVaultRepository)
+      .toConstantValue(appDataSource.getRepository(TypeORMSharedVault))
+    container
+      .bind<Repository<TypeORMSharedVaultInvite>>(TYPES.Sync_ORMSharedVaultInviteRepository)
+      .toConstantValue(appDataSource.getRepository(TypeORMSharedVaultInvite))
+    container
+      .bind<Repository<TypeORMSharedVaultUser>>(TYPES.Sync_ORMSharedVaultUserRepository)
+      .toConstantValue(appDataSource.getRepository(TypeORMSharedVaultUser))
+    container
+      .bind<Repository<TypeORMNotification>>(TYPES.Sync_ORMNotificationRepository)
+      .toConstantValue(appDataSource.getRepository(TypeORMNotification))
+    container
+      .bind<Repository<TypeORMMessage>>(TYPES.Sync_ORMMessageRepository)
+      .toConstantValue(appDataSource.getRepository(TypeORMMessage))
 
     // Repositories
     container
@@ -281,7 +384,6 @@ export class ContainerConfigLoader {
           container.get(TYPES.Sync_SharedVaultAssociationPersistenceMapper),
         ),
       )
-
     container
       .bind<ItemRepositoryInterface>(TYPES.Sync_ItemRepository)
       .toConstantValue(
@@ -290,6 +392,46 @@ export class ContainerConfigLoader {
           container.get(TYPES.Sync_ItemPersistenceMapper),
           container.get(TYPES.Sync_KeySystemAssociationRepository),
           container.get(TYPES.Sync_SharedVaultAssociationRepository),
+        ),
+      )
+    container
+      .bind<SharedVaultRepositoryInterface>(TYPES.Sync_SharedVaultRepository)
+      .toConstantValue(
+        new TypeORMSharedVaultRepository(
+          container.get(TYPES.Sync_ORMSharedVaultRepository),
+          container.get(TYPES.Sync_SharedVaultPersistenceMapper),
+        ),
+      )
+    container
+      .bind<SharedVaultUserRepositoryInterface>(TYPES.Sync_SharedVaultUserRepository)
+      .toConstantValue(
+        new TypeORMSharedVaultUserRepository(
+          container.get(TYPES.Sync_ORMSharedVaultUserRepository),
+          container.get(TYPES.Sync_SharedVaultUserPersistenceMapper),
+        ),
+      )
+    container
+      .bind<SharedVaultInviteRepositoryInterface>(TYPES.Sync_SharedVaultInviteRepository)
+      .toConstantValue(
+        new TypeORMSharedVaultInviteRepository(
+          container.get(TYPES.Sync_ORMSharedVaultInviteRepository),
+          container.get(TYPES.Sync_SharedVaultInvitePersistenceMapper),
+        ),
+      )
+    container
+      .bind<NotificationRepositoryInterface>(TYPES.Sync_NotificationRepository)
+      .toConstantValue(
+        new TypeORMNotificationRepository(
+          container.get(TYPES.Sync_ORMNotificationRepository),
+          container.get(TYPES.Sync_NotificationPersistenceMapper),
+        ),
+      )
+    container
+      .bind<MessageRepositoryInterface>(TYPES.Sync_MessageRepository)
+      .toConstantValue(
+        new TypeORMMessageRepository(
+          container.get(TYPES.Sync_ORMMessageRepository),
+          container.get(TYPES.Sync_MessagePersistenceMapper),
         ),
       )
 
@@ -337,6 +479,14 @@ export class ContainerConfigLoader {
       .toConstantValue(
         env.get('MAX_ITEMS_LIMIT', true) ? +env.get('MAX_ITEMS_LIMIT', true) : this.DEFAULT_MAX_ITEMS_LIMIT,
       )
+    container.bind(TYPES.Sync_VALET_TOKEN_SECRET).toConstantValue(env.get('VALET_TOKEN_SECRET', true))
+    container
+      .bind(TYPES.Sync_VALET_TOKEN_TTL)
+      .toConstantValue(env.get('VALET_TOKEN_TTL', true) ? +env.get('VALET_TOKEN_TTL', true) : 7200)
+
+    container
+      .bind<TokenEncoderInterface<SharedVaultValetTokenData>>(TYPES.Sync_SharedVaultValetTokenEncoder)
+      .toConstantValue(new TokenEncoder<SharedVaultValetTokenData>(container.get(TYPES.Sync_VALET_TOKEN_SECRET)))
 
     container.bind<OwnershipFilter>(TYPES.Sync_OwnershipFilter).toConstantValue(new OwnershipFilter())
     container
@@ -415,6 +565,146 @@ export class ContainerConfigLoader {
     container.bind<GetItem>(TYPES.Sync_GetItem).toDynamicValue((context: interfaces.Context) => {
       return new GetItem(context.container.get(TYPES.Sync_ItemRepository))
     })
+    container
+      .bind<InviteUserToSharedVault>(TYPES.Sync_InviteUserToSharedVault)
+      .toConstantValue(
+        new InviteUserToSharedVault(
+          container.get(TYPES.Sync_SharedVaultRepository),
+          container.get(TYPES.Sync_SharedVaultInviteRepository),
+          container.get(TYPES.Sync_Timer),
+        ),
+      )
+    container
+      .bind<UpdateSharedVaultInvite>(TYPES.Sync_UpdateSharedVaultInvite)
+      .toConstantValue(
+        new UpdateSharedVaultInvite(
+          container.get(TYPES.Sync_SharedVaultInviteRepository),
+          container.get(TYPES.Sync_Timer),
+        ),
+      )
+    container
+      .bind<AddUserToSharedVault>(TYPES.Sync_AddUserToSharedVault)
+      .toConstantValue(
+        new AddUserToSharedVault(
+          container.get(TYPES.Sync_SharedVaultRepository),
+          container.get(TYPES.Sync_SharedVaultUserRepository),
+          container.get(TYPES.Sync_Timer),
+        ),
+      )
+    container
+      .bind<AcceptInviteToSharedVault>(TYPES.Sync_AcceptInviteToSharedVault)
+      .toConstantValue(
+        new AcceptInviteToSharedVault(
+          container.get(TYPES.Sync_AddUserToSharedVault),
+          container.get(TYPES.Sync_SharedVaultInviteRepository),
+        ),
+      )
+    container
+      .bind<DeclineInviteToSharedVault>(TYPES.Sync_DeclineInviteToSharedVault)
+      .toConstantValue(new DeclineInviteToSharedVault(container.get(TYPES.Sync_SharedVaultInviteRepository)))
+    container
+      .bind<DeleteSharedVaultInvitesToUser>(TYPES.Sync_DeleteSharedVaultInvitesToUser)
+      .toConstantValue(
+        new DeleteSharedVaultInvitesToUser(
+          container.get(TYPES.Sync_SharedVaultInviteRepository),
+          container.get(TYPES.Sync_DeclineInviteToSharedVault),
+        ),
+      )
+    container
+      .bind<DeleteSharedVaultInvitesSentByUser>(TYPES.Sync_DeleteSharedVaultInvitesSentByUser)
+      .toConstantValue(
+        new DeleteSharedVaultInvitesSentByUser(
+          container.get(TYPES.Sync_SharedVaultInviteRepository),
+          container.get(TYPES.Sync_DeclineInviteToSharedVault),
+        ),
+      )
+    container
+      .bind<GetSharedVaultInvitesSentByUser>(TYPES.Sync_GetSharedVaultInvitesSentByUser)
+      .toConstantValue(new GetSharedVaultInvitesSentByUser(container.get(TYPES.Sync_SharedVaultInviteRepository)))
+    container
+      .bind<GetSharedVaultInvitesSentToUser>(TYPES.Sync_GetSharedVaultInvitesSentToUser)
+      .toConstantValue(new GetSharedVaultInvitesSentToUser(container.get(TYPES.Sync_SharedVaultInviteRepository)))
+    container
+      .bind<GetSharedVaultUsers>(TYPES.Sync_GetSharedVaultUsers)
+      .toConstantValue(
+        new GetSharedVaultUsers(
+          container.get(TYPES.Sync_SharedVaultUserRepository),
+          container.get(TYPES.Sync_SharedVaultRepository),
+        ),
+      )
+    container
+      .bind<AddNotificationForUser>(TYPES.Sync_AddNotificationForUser)
+      .toConstantValue(
+        new AddNotificationForUser(container.get(TYPES.Sync_NotificationRepository), container.get(TYPES.Sync_Timer)),
+      )
+    container
+      .bind<RemoveUserFromSharedVault>(TYPES.Sync_RemoveSharedVaultUser)
+      .toConstantValue(
+        new RemoveUserFromSharedVault(
+          container.get(TYPES.Sync_SharedVaultUserRepository),
+          container.get(TYPES.Sync_SharedVaultRepository),
+          container.get(TYPES.Sync_AddNotificationForUser),
+        ),
+      )
+    container
+      .bind<GetSharedVaults>(TYPES.Sync_GetSharedVaults)
+      .toConstantValue(
+        new GetSharedVaults(
+          container.get(TYPES.Sync_SharedVaultUserRepository),
+          container.get(TYPES.Sync_SharedVaultRepository),
+        ),
+      )
+    container
+      .bind<CreateSharedVault>(TYPES.Sync_CreateSharedVault)
+      .toConstantValue(
+        new CreateSharedVault(
+          container.get(TYPES.Sync_AddUserToSharedVault),
+          container.get(TYPES.Sync_SharedVaultRepository),
+          container.get(TYPES.Sync_Timer),
+        ),
+      )
+    container
+      .bind<DeleteSharedVault>(TYPES.Sync_DeleteSharedVault)
+      .toConstantValue(
+        new DeleteSharedVault(
+          container.get(TYPES.Sync_SharedVaultRepository),
+          container.get(TYPES.Sync_SharedVaultUserRepository),
+          container.get(TYPES.Sync_SharedVaultInviteRepository),
+          container.get(TYPES.Sync_RemoveSharedVaultUser),
+        ),
+      )
+    container
+      .bind<CreateSharedVaultFileValetToken>(TYPES.Sync_CreateSharedVaultFileValetToken)
+      .toConstantValue(
+        new CreateSharedVaultFileValetToken(
+          container.get(TYPES.Sync_SharedVaultRepository),
+          container.get(TYPES.Sync_SharedVaultUserRepository),
+          container.get(TYPES.Sync_SharedVaultValetTokenEncoder),
+          container.get(TYPES.Sync_VALET_TOKEN_TTL),
+        ),
+      )
+    container
+      .bind<GetMessagesSentToUser>(TYPES.Sync_GetMessagesSentToUser)
+      .toConstantValue(new GetMessagesSentToUser(container.get(TYPES.Sync_MessageRepository)))
+    container
+      .bind<GetMessagesSentByUser>(TYPES.Sync_GetMessagesSentByUser)
+      .toConstantValue(new GetMessagesSentByUser(container.get(TYPES.Sync_MessageRepository)))
+    container
+      .bind<SendMessageToUser>(TYPES.Sync_SendMessageToUser)
+      .toConstantValue(
+        new SendMessageToUser(container.get(TYPES.Sync_MessageRepository), container.get(TYPES.Sync_Timer)),
+      )
+    container
+      .bind<DeleteMessage>(TYPES.Sync_DeleteMessage)
+      .toConstantValue(new DeleteMessage(container.get(TYPES.Sync_MessageRepository)))
+    container
+      .bind<DeleteAllMessagesSentToUser>(TYPES.Sync_DeleteAllMessagesSentToUser)
+      .toConstantValue(
+        new DeleteAllMessagesSentToUser(
+          container.get(TYPES.Sync_MessageRepository),
+          container.get(TYPES.Sync_DeleteMessage),
+        ),
+      )
 
     // Services
     container
@@ -599,6 +889,58 @@ export class ContainerConfigLoader {
             container.get(TYPES.Sync_GetItem),
             container.get(TYPES.Sync_ItemHttpMapper),
             container.get(TYPES.Sync_SyncResponseFactoryResolver),
+            container.get(TYPES.Sync_ControllerContainer),
+          ),
+        )
+      container
+        .bind<HomeServerSharedVaultInvitesController>(TYPES.Sync_HomeServerSharedVaultInvitesController)
+        .toConstantValue(
+          new HomeServerSharedVaultInvitesController(
+            container.get(TYPES.Sync_InviteUserToSharedVault),
+            container.get(TYPES.Sync_UpdateSharedVaultInvite),
+            container.get(TYPES.Sync_AcceptInviteToSharedVault),
+            container.get(TYPES.Sync_DeclineInviteToSharedVault),
+            container.get(TYPES.Sync_DeleteSharedVaultInvitesToUser),
+            container.get(TYPES.Sync_DeleteSharedVaultInvitesSentByUser),
+            container.get(TYPES.Sync_GetSharedVaultInvitesSentByUser),
+            container.get(TYPES.Sync_GetSharedVaultInvitesSentToUser),
+            container.get(TYPES.Sync_SharedVaultInviteHttpMapper),
+            container.get(TYPES.Sync_ControllerContainer),
+          ),
+        )
+      container
+        .bind<HomeServerSharedVaultUsersController>(TYPES.Sync_HomeServerSharedVaultUsersController)
+        .toConstantValue(
+          new HomeServerSharedVaultUsersController(
+            container.get(TYPES.Sync_GetSharedVaultUsers),
+            container.get(TYPES.Sync_RemoveSharedVaultUser),
+            container.get(TYPES.Sync_SharedVaultUserHttpMapper),
+            container.get(TYPES.Sync_ControllerContainer),
+          ),
+        )
+      container
+        .bind<HomeServerSharedVaultsController>(TYPES.Sync_HomeServerSharedVaultsController)
+        .toConstantValue(
+          new HomeServerSharedVaultsController(
+            container.get(TYPES.Sync_GetSharedVaults),
+            container.get(TYPES.Sync_CreateSharedVault),
+            container.get(TYPES.Sync_DeleteSharedVault),
+            container.get(TYPES.Sync_CreateSharedVaultFileValetToken),
+            container.get(TYPES.Sync_SharedVaultHttpMapper),
+            container.get(TYPES.Sync_SharedVaultUserHttpMapper),
+            container.get(TYPES.Sync_ControllerContainer),
+          ),
+        )
+      container
+        .bind<HomeServerMessagesController>(TYPES.Sync_HomeServerMessagesController)
+        .toConstantValue(
+          new HomeServerMessagesController(
+            container.get(TYPES.Sync_GetMessagesSentToUser),
+            container.get(TYPES.Sync_GetMessagesSentByUser),
+            container.get(TYPES.Sync_SendMessageToUser),
+            container.get(TYPES.Sync_DeleteAllMessagesSentToUser),
+            container.get(TYPES.Sync_DeleteMessage),
+            container.get(TYPES.Sync_MessageHttpMapper),
             container.get(TYPES.Sync_ControllerContainer),
           ),
         )

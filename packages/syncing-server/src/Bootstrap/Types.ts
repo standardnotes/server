@@ -10,10 +10,20 @@ const TYPES = {
   Sync_ItemRepository: Symbol.for('Sync_ItemRepository'),
   Sync_KeySystemAssociationRepository: Symbol.for('Sync_KeySystemAssociationRepository'),
   Sync_SharedVaultAssociationRepository: Symbol.for('Sync_SharedVaultAssociationRepository'),
+  Sync_SharedVaultRepository: Symbol.for('Sync_SharedVaultRepository'),
+  Sync_SharedVaultInviteRepository: Symbol.for('Sync_SharedVaultInviteRepository'),
+  Sync_SharedVaultUserRepository: Symbol.for('Sync_SharedVaultUserRepository'),
+  Sync_NotificationRepository: Symbol.for('Sync_NotificationRepository'),
+  Sync_MessageRepository: Symbol.for('Sync_MessageRepository'),
   // ORM
   Sync_ORMItemRepository: Symbol.for('Sync_ORMItemRepository'),
   Sync_ORMSharedVaultAssociationRepository: Symbol.for('Sync_ORMSharedVaultAssociationRepository'),
   Sync_ORMKeySystemAssociationRepository: Symbol.for('Sync_ORMKeySystemAssociationRepository'),
+  Sync_ORMSharedVaultRepository: Symbol.for('Sync_ORMSharedVaultRepository'),
+  Sync_ORMSharedVaultInviteRepository: Symbol.for('Sync_ORMSharedVaultInviteRepository'),
+  Sync_ORMSharedVaultUserRepository: Symbol.for('Sync_ORMSharedVaultUserRepository'),
+  Sync_ORMNotificationRepository: Symbol.for('Sync_ORMNotificationRepository'),
+  Sync_ORMMessageRepository: Symbol.for('Sync_ORMMessageRepository'),
   // Middleware
   Sync_AuthMiddleware: Symbol.for('Sync_AuthMiddleware'),
   // env vars
@@ -34,6 +44,8 @@ const TYPES = {
   Sync_CONTENT_SIZE_TRANSFER_LIMIT: Symbol.for('Sync_CONTENT_SIZE_TRANSFER_LIMIT'),
   Sync_MAX_ITEMS_LIMIT: Symbol.for('Sync_MAX_ITEMS_LIMIT'),
   Sync_FILE_UPLOAD_PATH: Symbol.for('Sync_FILE_UPLOAD_PATH'),
+  Sync_VALET_TOKEN_SECRET: Symbol.for('Sync_VALET_TOKEN_SECRET'),
+  Sync_VALET_TOKEN_TTL: Symbol.for('Sync_VALET_TOKEN_TTL'),
   // use cases
   Sync_SyncItems: Symbol.for('Sync_SyncItems'),
   Sync_CheckIntegrity: Symbol.for('Sync_CheckIntegrity'),
@@ -43,6 +55,8 @@ const TYPES = {
   Sync_DeleteSharedVault: Symbol.for('Sync_DeleteSharedVault'),
   Sync_CreateSharedVaultFileValetToken: Symbol.for('Sync_CreateSharedVaultFileValetToken'),
   Sync_GetSharedVaultUsers: Symbol.for('Sync_GetSharedVaultUsers'),
+  Sync_AddUserToSharedVault: Symbol.for('Sync_AddUserToSharedVault'),
+  Sync_AddNotificationForUser: Symbol.for('Sync_AddNotificationForUser'),
   Sync_RemoveSharedVaultUser: Symbol.for('Sync_RemoveSharedVaultUser'),
   Sync_InviteUserToSharedVault: Symbol.for('Sync_InviteUserToSharedVault'),
   Sync_UpdateSharedVaultInvite: Symbol.for('Sync_UpdateSharedVaultInvite'),
@@ -74,6 +88,7 @@ const TYPES = {
   Sync_DomainEventMessageHandler: Symbol.for('Sync_DomainEventMessageHandler'),
   Sync_HTTPClient: Symbol.for('Sync_HTTPClient'),
   Sync_Timer: Symbol.for('Sync_Timer'),
+  Sync_SharedVaultValetTokenEncoder: Symbol.for('Sync_SharedVaultValetTokenEncoder'),
   Sync_SyncResponseFactory20161215: Symbol.for('Sync_SyncResponseFactory20161215'),
   Sync_SyncResponseFactory20200115: Symbol.for('Sync_SyncResponseFactory20200115'),
   Sync_SyncResponseFactoryResolver: Symbol.for('Sync_SyncResponseFactoryResolver'),
@@ -88,10 +103,15 @@ const TYPES = {
   Sync_ItemTransferCalculator: Symbol.for('Sync_ItemTransferCalculator'),
   Sync_ControllerContainer: Symbol.for('Sync_ControllerContainer'),
   Sync_HomeServerItemsController: Symbol.for('Sync_HomeServerItemsController'),
+  Sync_HomeServerSharedVaultInvitesController: Symbol.for('Sync_HomeServerSharedVaultInvitesController'),
+  Sync_HomeServerSharedVaultUsersController: Symbol.for('Sync_HomeServerSharedVaultUsersController'),
+  Sync_HomeServerSharedVaultsController: Symbol.for('Sync_HomeServerSharedVaultsController'),
+  Sync_HomeServerMessagesController: Symbol.for('Sync_HomeServerMessagesController'),
   // Mapping
   Sync_SharedVaultHttpMapper: Symbol.for('Sync_SharedVaultHttpMapper'),
   Sync_SharedVaultUserHttpMapper: Symbol.for('Sync_SharedVaultUserHttpMapper'),
   Sync_SharedVaultInviteHttpMapper: Symbol.for('Sync_SharedVaultInviteHttpMapper'),
+  Sync_MessagePersistenceMapper: Symbol.for('Sync_MessagePersistenceMapper'),
   Sync_MessageHttpMapper: Symbol.for('Sync_MessageHttpMapper'),
   Sync_ItemPersistenceMapper: Symbol.for('Sync_ItemPersistenceMapper'),
   Sync_ItemHttpMapper: Symbol.for('Sync_ItemHttpMapper'),
@@ -101,6 +121,10 @@ const TYPES = {
   Sync_ItemBackupMapper: Symbol.for('Sync_ItemBackupMapper'),
   Sync_KeySystemAssociationPersistenceMapper: Symbol.for('Sync_KeySystemAssociationPersistenceMapper'),
   Sync_SharedVaultAssociationPersistenceMapper: Symbol.for('Sync_SharedVaultAssociationPersistenceMapper'),
+  Sync_SharedVaultPersistenceMapper: Symbol.for('Sync_SharedVaultPersistenceMapper'),
+  Sync_SharedVaultUserPersistenceMapper: Symbol.for('Sync_SharedVaultUserPersistenceMapper'),
+  Sync_SharedVaultInvitePersistenceMapper: Symbol.for('Sync_SharedVaultInvitePersistenceMapper'),
+  Sync_NotificationPersistenceMapper: Symbol.for('Sync_NotificationPersistenceMapper'),
 }
 
 export default TYPES
