@@ -7,7 +7,7 @@ describe('KeySystemAssociation', () => {
     const entityOrError = KeySystemAssociation.create({
       timestamps: Timestamps.create(123456789, 123456789).getValue(),
       itemUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
-      keySystemUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+      keySystemIdentifier: '00000000-0000-0000-0000-000000000000',
     })
 
     expect(entityOrError.isFailed()).toBeFalsy()

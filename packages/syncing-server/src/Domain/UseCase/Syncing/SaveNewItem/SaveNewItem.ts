@@ -6,6 +6,7 @@ import {
   UniqueEntityId,
   UseCaseInterface,
   Uuid,
+  Validator,
 } from '@standardnotes/domain-core'
 import { TimerInterface } from '@standardnotes/time'
 import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
@@ -111,11 +112,11 @@ export class SaveNewItem implements UseCaseInterface<Item> {
 
     let keySystemAssociation = undefined
     if (dto.itemHash.hasDedicatedKeySystemAssociation()) {
-      const keySystemUuidOrError = Uuid.create(dto.itemHash.props.key_system_identifier as string)
-      if (keySystemUuidOrError.isFailed()) {
-        return Result.fail(keySystemUuidOrError.getError())
+      const keySystemIdentifiedValidationResult = Validator.isNotEmptyString(dto.itemHash.props.key_system_identifier)
+      if (keySystemIdentifiedValidationResult.isFailed()) {
+        return Result.fail(keySystemIdentifiedValidationResult.getError())
       }
-      const keySystemUuid = keySystemUuidOrError.getValue()
+      const keySystemIdentifier = dto.itemHash.props.key_system_identifier as string
 
       const keySystemAssociationOrError = KeySystemAssociation.create({
         itemUuid: uuid,
@@ -123,7 +124,7 @@ export class SaveNewItem implements UseCaseInterface<Item> {
           this.timer.getTimestampInMicroseconds(),
           this.timer.getTimestampInMicroseconds(),
         ).getValue(),
-        keySystemUuid,
+        keySystemIdentifier,
       })
       if (keySystemAssociationOrError.isFailed()) {
         return Result.fail(keySystemAssociationOrError.getError())

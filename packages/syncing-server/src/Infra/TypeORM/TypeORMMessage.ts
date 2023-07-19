@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm'
 
 @Entity({ name: 'messages' })
 export class TypeORMMessage {
@@ -9,12 +9,14 @@ export class TypeORMMessage {
     name: 'recipient_uuid',
     length: 36,
   })
+  @Index('recipient_uuid_on_messages')
   declare recipientUuid: string
 
   @Column({
     name: 'sender_uuid',
     length: 36,
   })
+  @Index('sender_uuid_on_messages')
   declare senderUuid: string
 
   @Column({

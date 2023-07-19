@@ -42,4 +42,18 @@ export class Validator {
 
     return Result.ok()
   }
+
+  static isNotEmptyString(value: unknown): Result<string> {
+    const isStringResult = Validator.isString(value)
+    if (isStringResult.isFailed()) {
+      return isStringResult
+    }
+
+    const isNotEmptyResult = Validator.isNotEmpty(value)
+    if (isNotEmptyResult.isFailed()) {
+      return isNotEmptyResult
+    }
+
+    return Result.ok()
+  }
 }

@@ -9,6 +9,7 @@ import { TypeORMKeySystemAssociation } from '../Infra/TypeORM/TypeORMKeySystemAs
 import { TypeORMSharedVault } from '../Infra/TypeORM/TypeORMSharedVault'
 import { TypeORMSharedVaultUser } from '../Infra/TypeORM/TypeORMSharedVaultUser'
 import { TypeORMSharedVaultInvite } from '../Infra/TypeORM/TypeORMSharedVaultInvite'
+import { TypeORMMessage } from '../Infra/TypeORM/TypeORMMessage'
 
 export class AppDataSource {
   private _dataSource: DataSource | undefined
@@ -46,6 +47,7 @@ export class AppDataSource {
         TypeORMSharedVault,
         TypeORMSharedVaultUser,
         TypeORMSharedVaultInvite,
+        TypeORMMessage,
       ],
       migrations: [`${__dirname}/../../migrations/${isConfiguredForMySQL ? 'mysql' : 'sqlite'}/*.js`],
       migrationsRun: true,

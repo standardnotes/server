@@ -388,12 +388,12 @@ describe('SaveNewItem', () => {
       expect(itemRepository.save).toHaveBeenCalled()
     })
 
-    it('should return a failure if the item hash has an invalid key system uuid', async () => {
+    it('should return a failure if the item hash has an invalid key system identifier', async () => {
       const useCase = createUseCase()
 
       itemHash1 = ItemHash.create({
         ...itemHash1.props,
-        key_system_identifier: '1-2-3',
+        key_system_identifier: 123 as unknown as string,
       }).getValue()
 
       const result = await useCase.execute({

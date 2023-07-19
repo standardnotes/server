@@ -6,11 +6,11 @@ export class TypeORMKeySystemAssociation {
   declare uuid: string
 
   @Column({
-    name: 'key_system_uuid',
+    name: 'key_system_identifier',
     length: 36,
   })
-  @Index('key_system_uuid_on_key_system_associations')
-  declare keySystemUuid: string
+  @Index('key_system_identifier_on_key_system_associations')
+  declare keySystemIdentifier: string
 
   @Column({
     name: 'item_uuid',

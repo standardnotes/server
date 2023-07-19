@@ -1,4 +1,4 @@
-import { MapperInterface, Timestamps, UniqueEntityId, Uuid } from '@standardnotes/domain-core'
+import { MapperInterface, Timestamps, UniqueEntityId, Uuid, Validator } from '@standardnotes/domain-core'
 
 import { KeySystemAssociation } from '../../Domain/KeySystem/KeySystemAssociation'
 
@@ -14,11 +14,10 @@ export class KeySystemAssociationPersistenceMapper
     }
     const itemUuid = itemUuidOrError.getValue()
 
-    const keySystemUuidOrError = Uuid.create(projection.keySystemUuid)
-    if (keySystemUuidOrError.isFailed()) {
-      throw new Error(`Failed to create key system from projection: ${keySystemUuidOrError.getError()}`)
+    const keySystemIdentifiedValidationResult = Validator.isNotEmptyString(projection.keySystemIdentifier)
+    if (keySystemIdentifiedValidationResult.isFailed()) {
+      throw new Error(`Failed to create key system from projection: ${keySystemIdentifiedValidationResult.getError()}`)
     }
-    const keySystemUuid = keySystemUuidOrError.getValue()
 
     const timestampsOrError = Timestamps.create(projection.createdAtTimestamp, projection.updatedAtTimestamp)
     if (timestampsOrError.isFailed()) {
@@ -30,7 +29,7 @@ export class KeySystemAssociationPersistenceMapper
       {
         itemUuid,
         timestamps,
-        keySystemUuid,
+        keySystemIdentifier: projection.keySystemIdentifier,
       },
       new UniqueEntityId(projection.uuid),
     )
@@ -48,7 +47,7 @@ export class KeySystemAssociationPersistenceMapper
 
     typeorm.uuid = domain.id.toString()
     typeorm.itemUuid = domain.props.itemUuid.value
-    typeorm.keySystemUuid = domain.props.keySystemUuid.value
+    typeorm.keySystemIdentifier = domain.props.keySystemIdentifier
     typeorm.createdAtTimestamp = domain.props.timestamps.createdAt
     typeorm.updatedAtTimestamp = domain.props.timestamps.updatedAt
 
