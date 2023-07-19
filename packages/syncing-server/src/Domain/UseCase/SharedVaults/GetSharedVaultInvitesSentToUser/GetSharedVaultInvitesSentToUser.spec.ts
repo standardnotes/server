@@ -23,6 +23,7 @@ describe('GetSharedVaultInvitesSentToUser', () => {
 
     sharedVaultInviteRepository = {} as jest.Mocked<SharedVaultInviteRepositoryInterface>
     sharedVaultInviteRepository.findByUserUuid = jest.fn().mockResolvedValue([invite])
+    sharedVaultInviteRepository.findByUserUuidUpdatedAfter = jest.fn().mockResolvedValue([invite])
   })
 
   it('should return invites sent to user', async () => {
@@ -30,6 +31,17 @@ describe('GetSharedVaultInvitesSentToUser', () => {
 
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
+    })
+
+    expect(result.getValue()).toEqual([invite])
+  })
+
+  it('should return invites sent to user updated after given time', async () => {
+    const useCase = createUseCase()
+
+    const result = await useCase.execute({
+      userUuid: '00000000-0000-0000-0000-000000000000',
+      lastSyncTime: 123,
     })
 
     expect(result.getValue()).toEqual([invite])

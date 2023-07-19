@@ -7,12 +7,20 @@ import { SyncItemsResponse } from './SyncItemsResponse'
 import { ItemRepositoryInterface } from '../../../Item/ItemRepositoryInterface'
 import { GetItems } from '../GetItems/GetItems'
 import { SaveItems } from '../SaveItems/SaveItems'
+import { GetSharedVaults } from '../../SharedVaults/GetSharedVaults/GetSharedVaults'
+import { GetSharedVaultInvitesSentToUser } from '../../SharedVaults/GetSharedVaultInvitesSentToUser/GetSharedVaultInvitesSentToUser'
+import { GetMessagesSentToUser } from '../../Messaging/GetMessagesSentToUser/GetMessagesSentToUser'
+import { GetUserNotifications } from '../../Messaging/GetUserNotifications/GetUserNotifications'
 
 export class SyncItems implements UseCaseInterface<SyncItemsResponse> {
   constructor(
     private itemRepository: ItemRepositoryInterface,
     private getItemsUseCase: GetItems,
     private saveItemsUseCase: SaveItems,
+    private getSharedVaultsUseCase: GetSharedVaults,
+    private getSharedVaultInvitesSentToUserUseCase: GetSharedVaultInvitesSentToUser,
+    private getMessagesSentToUser: GetMessagesSentToUser,
+    private getUserNotifications: GetUserNotifications,
   ) {}
 
   async execute(dto: SyncItemsDTO): Promise<Result<SyncItemsResponse>> {
@@ -45,12 +53,52 @@ export class SyncItems implements UseCaseInterface<SyncItemsResponse> {
       retrievedItems = await this.frontLoadKeysItemsToTop(dto.userUuid, retrievedItems)
     }
 
+    const sharedVaultsOrError = await this.getSharedVaultsUseCase.execute({
+      userUuid: dto.userUuid,
+      lastSyncTime: getItemsResult.lastSyncTime ?? undefined,
+    })
+    if (sharedVaultsOrError.isFailed()) {
+      return Result.fail(sharedVaultsOrError.getError())
+    }
+    const sharedVaults = sharedVaultsOrError.getValue()
+
+    const sharedVaultInvitesOrError = await this.getSharedVaultInvitesSentToUserUseCase.execute({
+      userUuid: dto.userUuid,
+      lastSyncTime: getItemsResult.lastSyncTime ?? undefined,
+    })
+    if (sharedVaultInvitesOrError.isFailed()) {
+      return Result.fail(sharedVaultInvitesOrError.getError())
+    }
+    const sharedVaultInvites = sharedVaultInvitesOrError.getValue()
+
+    const messagesOrError = await this.getMessagesSentToUser.execute({
+      recipientUuid: dto.userUuid,
+      lastSyncTime: getItemsResult.lastSyncTime ?? undefined,
+    })
+    if (messagesOrError.isFailed()) {
+      return Result.fail(messagesOrError.getError())
+    }
+    const messages = messagesOrError.getValue()
+
+    const notificationsOrError = await this.getUserNotifications.execute({
+      userUuid: dto.userUuid,
+      lastSyncTime: getItemsResult.lastSyncTime ?? undefined,
+    })
+    if (notificationsOrError.isFailed()) {
+      return Result.fail(notificationsOrError.getError())
+    }
+    const notifications = notificationsOrError.getValue()
+
     const syncResponse: SyncItemsResponse = {
       retrievedItems,
       syncToken: saveItemsResult.syncToken,
       savedItems: saveItemsResult.savedItems,
       conflicts: saveItemsResult.conflicts,
       cursorToken: getItemsResult.cursorToken,
+      sharedVaultInvites,
+      sharedVaults,
+      messages,
+      notifications,
     }
 
     return Result.ok(syncResponse)

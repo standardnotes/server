@@ -13,6 +13,10 @@ export class GetSharedVaultInvitesSentToUser implements UseCaseInterface<SharedV
     }
     const userUuid = userUuidOrError.getValue()
 
+    if (dto.lastSyncTime) {
+      return Result.ok(await this.sharedVaultInviteRepository.findByUserUuidUpdatedAfter(userUuid, dto.lastSyncTime))
+    }
+
     return Result.ok(await this.sharedVaultInviteRepository.findByUserUuid(userUuid))
   }
 }

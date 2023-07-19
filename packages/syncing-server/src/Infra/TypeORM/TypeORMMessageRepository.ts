@@ -11,6 +11,20 @@ export class TypeORMMessageRepository implements MessageRepositoryInterface {
     private mapper: MapperInterface<Message, TypeORMMessage>,
   ) {}
 
+  async findByRecipientUuidUpdatedAfter(uuid: Uuid, updatedAtTimestamp: number): Promise<Message[]> {
+    const persistence = await this.ormRepository
+      .createQueryBuilder('message')
+      .where('message.recipient_uuid = :recipientUuid', {
+        recipientUuid: uuid.value,
+      })
+      .andWhere('message.updated_at_timestamp > :updatedAtTimestamp', {
+        updatedAtTimestamp,
+      })
+      .getMany()
+
+    return persistence.map((p) => this.mapper.toDomain(p))
+  }
+
   async findByRecipientUuid(uuid: Uuid): Promise<Message[]> {
     const persistence = await this.ormRepository
       .createQueryBuilder('message')

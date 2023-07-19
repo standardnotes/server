@@ -100,7 +100,7 @@ export class EndpointResolver implements EndpointResolverInterface {
     const identifier = this.endpointToIdentifierMap.get(`[${method}]:${endpoint}`)
 
     if (!identifier) {
-      throw new Error(`Endpoint ${endpoint} not found`)
+      throw new Error(`Endpoint [${method}]:${endpoint} not found`)
     }
 
     return identifier

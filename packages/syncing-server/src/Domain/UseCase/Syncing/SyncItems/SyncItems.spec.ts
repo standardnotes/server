@@ -9,6 +9,10 @@ import { ContentType, Dates, Result, Timestamps, UniqueEntityId, Uuid } from '@s
 import { GetItems } from '../GetItems/GetItems'
 import { SaveItems } from '../SaveItems/SaveItems'
 import { ItemRepositoryInterface } from '../../../Item/ItemRepositoryInterface'
+import { GetSharedVaults } from '../../SharedVaults/GetSharedVaults/GetSharedVaults'
+import { GetMessagesSentToUser } from '../../Messaging/GetMessagesSentToUser/GetMessagesSentToUser'
+import { GetUserNotifications } from '../../Messaging/GetUserNotifications/GetUserNotifications'
+import { GetSharedVaultInvitesSentToUser } from '../../SharedVaults/GetSharedVaultInvitesSentToUser/GetSharedVaultInvitesSentToUser'
 
 describe('SyncItems', () => {
   let getItemsUseCase: GetItems
@@ -18,8 +22,21 @@ describe('SyncItems', () => {
   let item2: Item
   let item3: Item
   let itemHash: ItemHash
+  let getSharedVaultsUseCase: GetSharedVaults
+  let getSharedVaultInvitesSentToUserUseCase: GetSharedVaultInvitesSentToUser
+  let getMessagesSentToUser: GetMessagesSentToUser
+  let getUserNotifications: GetUserNotifications
 
-  const createUseCase = () => new SyncItems(itemRepository, getItemsUseCase, saveItemsUseCase)
+  const createUseCase = () =>
+    new SyncItems(
+      itemRepository,
+      getItemsUseCase,
+      saveItemsUseCase,
+      getSharedVaultsUseCase,
+      getSharedVaultInvitesSentToUserUseCase,
+      getMessagesSentToUser,
+      getUserNotifications,
+    )
 
   beforeEach(() => {
     item1 = Item.create(
@@ -104,6 +121,18 @@ describe('SyncItems', () => {
 
     itemRepository = {} as jest.Mocked<ItemRepositoryInterface>
     itemRepository.findAll = jest.fn().mockReturnValue([item3, item1])
+
+    getSharedVaultsUseCase = {} as jest.Mocked<GetSharedVaults>
+    getSharedVaultsUseCase.execute = jest.fn().mockReturnValue(Result.ok([]))
+
+    getSharedVaultInvitesSentToUserUseCase = {} as jest.Mocked<GetSharedVaultInvitesSentToUser>
+    getSharedVaultInvitesSentToUserUseCase.execute = jest.fn().mockReturnValue(Result.ok([]))
+
+    getMessagesSentToUser = {} as jest.Mocked<GetMessagesSentToUser>
+    getMessagesSentToUser.execute = jest.fn().mockReturnValue(Result.ok([]))
+
+    getUserNotifications = {} as jest.Mocked<GetUserNotifications>
+    getUserNotifications.execute = jest.fn().mockReturnValue(Result.ok([]))
   })
 
   it('should sync items', async () => {
@@ -126,6 +155,10 @@ describe('SyncItems', () => {
       retrievedItems: [item1],
       savedItems: [item2],
       syncToken: 'qwerty',
+      sharedVaults: [],
+      sharedVaultInvites: [],
+      notifications: [],
+      messages: [],
     })
 
     expect(getItemsUseCase.execute).toHaveBeenCalledWith({
@@ -162,6 +195,10 @@ describe('SyncItems', () => {
       retrievedItems: [item3, item1],
       savedItems: [item2],
       syncToken: 'qwerty',
+      sharedVaults: [],
+      sharedVaultInvites: [],
+      notifications: [],
+      messages: [],
     })
   })
 
@@ -219,6 +256,10 @@ describe('SyncItems', () => {
       retrievedItems: [item1],
       savedItems: [],
       syncToken: 'qwerty',
+      sharedVaults: [],
+      sharedVaultInvites: [],
+      notifications: [],
+      messages: [],
     })
   })
 
@@ -244,6 +285,86 @@ describe('SyncItems', () => {
 
   it('should return error if save items fails', async () => {
     saveItemsUseCase.execute = jest.fn().mockReturnValue(Result.fail('error'))
+
+    const result = await createUseCase().execute({
+      userUuid: '1-2-3',
+      itemHashes: [itemHash],
+      computeIntegrityHash: false,
+      syncToken: 'foo',
+      readOnlyAccess: false,
+      sessionUuid: '2-3-4',
+      cursorToken: 'bar',
+      limit: 10,
+      contentType: 'Note',
+      apiVersion: ApiVersion.v20200115,
+      snjsVersion: '1.2.3',
+    })
+
+    expect(result.isFailed()).toBeTruthy()
+  })
+
+  it('should return error if get shared vaults fails', async () => {
+    getSharedVaultsUseCase.execute = jest.fn().mockReturnValue(Result.fail('error'))
+
+    const result = await createUseCase().execute({
+      userUuid: '1-2-3',
+      itemHashes: [itemHash],
+      computeIntegrityHash: false,
+      syncToken: 'foo',
+      readOnlyAccess: false,
+      sessionUuid: '2-3-4',
+      cursorToken: 'bar',
+      limit: 10,
+      contentType: 'Note',
+      apiVersion: ApiVersion.v20200115,
+      snjsVersion: '1.2.3',
+    })
+
+    expect(result.isFailed()).toBeTruthy()
+  })
+
+  it('should return error if get shared vault invites fails', async () => {
+    getSharedVaultInvitesSentToUserUseCase.execute = jest.fn().mockReturnValue(Result.fail('error'))
+
+    const result = await createUseCase().execute({
+      userUuid: '1-2-3',
+      itemHashes: [itemHash],
+      computeIntegrityHash: false,
+      syncToken: 'foo',
+      readOnlyAccess: false,
+      sessionUuid: '2-3-4',
+      cursorToken: 'bar',
+      limit: 10,
+      contentType: 'Note',
+      apiVersion: ApiVersion.v20200115,
+      snjsVersion: '1.2.3',
+    })
+
+    expect(result.isFailed()).toBeTruthy()
+  })
+
+  it('should return error if get messages fails', async () => {
+    getMessagesSentToUser.execute = jest.fn().mockReturnValue(Result.fail('error'))
+
+    const result = await createUseCase().execute({
+      userUuid: '1-2-3',
+      itemHashes: [itemHash],
+      computeIntegrityHash: false,
+      syncToken: 'foo',
+      readOnlyAccess: false,
+      sessionUuid: '2-3-4',
+      cursorToken: 'bar',
+      limit: 10,
+      contentType: 'Note',
+      apiVersion: ApiVersion.v20200115,
+      snjsVersion: '1.2.3',
+    })
+
+    expect(result.isFailed()).toBeTruthy()
+  })
+
+  it('should return error if get user notifications fails', async () => {
+    getUserNotifications.execute = jest.fn().mockReturnValue(Result.fail('error'))
 
     const result = await createUseCase().execute({
       userUuid: '1-2-3',

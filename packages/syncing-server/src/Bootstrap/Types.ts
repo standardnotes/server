@@ -75,6 +75,7 @@ const TYPES = {
   Sync_UpdateExistingItem: Symbol.for('Sync_UpdateExistingItem'),
   Sync_GetItems: Symbol.for('Sync_GetItems'),
   Sync_SaveItems: Symbol.for('Sync_SaveItems'),
+  Sync_GetUserNotifications: Symbol.for('Sync_GetUserNotifications'),
   // Handlers
   Sync_AccountDeletionRequestedEventHandler: Symbol.for('Sync_AccountDeletionRequestedEventHandler'),
   Sync_DuplicateItemSyncedEventHandler: Symbol.for('Sync_DuplicateItemSyncedEventHandler'),
@@ -113,6 +114,7 @@ const TYPES = {
   Sync_SharedVaultInviteHttpMapper: Symbol.for('Sync_SharedVaultInviteHttpMapper'),
   Sync_MessagePersistenceMapper: Symbol.for('Sync_MessagePersistenceMapper'),
   Sync_MessageHttpMapper: Symbol.for('Sync_MessageHttpMapper'),
+  Sync_NotificationHttpMapper: Symbol.for('Sync_NotificationHttpMapper'),
   Sync_ItemPersistenceMapper: Symbol.for('Sync_ItemPersistenceMapper'),
   Sync_ItemHttpMapper: Symbol.for('Sync_ItemHttpMapper'),
   Sync_ItemHashHttpMapper: Symbol.for('Sync_ItemHashHttpMapper'),

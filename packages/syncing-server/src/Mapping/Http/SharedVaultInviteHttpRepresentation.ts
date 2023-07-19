@@ -4,7 +4,7 @@ export interface SharedVaultInviteHttpRepresentation {
   user_uuid: string
   sender_uuid: string
   encrypted_message: string
-  permissions: string
+  permission: string
   created_at_timestamp: number
   updated_at_timestamp: number
 }
