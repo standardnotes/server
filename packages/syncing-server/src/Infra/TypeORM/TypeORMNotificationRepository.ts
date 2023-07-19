@@ -23,7 +23,7 @@ export class TypeORMNotificationRepository implements NotificationRepositoryInte
       .where('notification.user_uuid = :userUuid', {
         userUuid: uuid.value,
       })
-      .andWhere('message.updated_at_timestamp > :updatedAtTimestamp', {
+      .andWhere('notification.updated_at_timestamp > :updatedAtTimestamp', {
         updatedAtTimestamp,
       })
       .getMany()
