@@ -27,7 +27,7 @@ export class ItemHttpMapper implements MapperInterface<Item, ItemHttpRepresentat
       updated_at_timestamp: domain.props.timestamps.updatedAt,
       updated_with_session: domain.props.updatedWithSession ? domain.props.updatedWithSession.value : null,
       key_system_identifier: domain.props.keySystemAssociation
-        ? domain.props.keySystemAssociation.props.keySystemUuid.value
+        ? domain.props.keySystemAssociation.props.keySystemIdentifier
         : null,
       shared_vault_uuid: domain.props.sharedVaultAssociation
         ? domain.props.sharedVaultAssociation.props.sharedVaultUuid.value

@@ -385,7 +385,7 @@ describe('UpdateExistingItem', () => {
       })
       expect(result.isFailed()).toBeFalsy()
       expect(item1.props.keySystemAssociation).not.toBeUndefined()
-      expect(item1.props.keySystemAssociation?.props.keySystemUuid.value).toBe('00000000-0000-0000-0000-000000000000')
+      expect(item1.props.keySystemAssociation?.props.keySystemIdentifier).toBe('00000000-0000-0000-0000-000000000000')
     })
 
     it('should not add a key system association if item hash has a dedicated key system and the existing item is already associated to the key system', async () => {
@@ -398,7 +398,7 @@ describe('UpdateExistingItem', () => {
 
       item1.props.keySystemAssociation = KeySystemAssociation.create({
         itemUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
-        keySystemUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+        keySystemIdentifier: '00000000-0000-0000-0000-000000000000',
         timestamps: Timestamps.create(123, 123).getValue(),
       }).getValue()
       const idBefore = item1.props.keySystemAssociation?.id.toString()
@@ -416,12 +416,12 @@ describe('UpdateExistingItem', () => {
       expect(item1.props.keySystemAssociation.id.toString()).toEqual(idBefore)
     })
 
-    it('should return error if key system uuid is invalid', async () => {
+    it('should return error if key system identifier is invalid', async () => {
       const useCase = createUseCase()
 
       const itemHash = ItemHash.create({
         ...itemHash1.props,
-        key_system_identifier: 'invalid-uuid',
+        key_system_identifier: 123 as unknown as string,
       }).getValue()
 
       const result = await useCase.execute({

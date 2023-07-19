@@ -1,4 +1,4 @@
-import { ContentType, Dates, Result, Timestamps, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
+import { ContentType, Dates, Result, Timestamps, UseCaseInterface, Uuid, Validator } from '@standardnotes/domain-core'
 import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
 import { TimerInterface } from '@standardnotes/time'
 
@@ -135,11 +135,11 @@ export class UpdateExistingItem implements UseCaseInterface<Item> {
       dto.itemHash.hasDedicatedKeySystemAssociation() &&
       !this.itemIsAlreadyAssociatedWithTheKeySystem(dto.existingItem, dto.itemHash)
     ) {
-      const keySystemUuidOrError = Uuid.create(dto.itemHash.props.key_system_identifier as string)
-      if (keySystemUuidOrError.isFailed()) {
-        return Result.fail(keySystemUuidOrError.getError())
+      const keySystemIdentifiedValidationResult = Validator.isNotEmptyString(dto.itemHash.props.key_system_identifier)
+      if (keySystemIdentifiedValidationResult.isFailed()) {
+        return Result.fail(keySystemIdentifiedValidationResult.getError())
       }
-      const keySystemUuid = keySystemUuidOrError.getValue()
+      const keySystemIdentifier = dto.itemHash.props.key_system_identifier as string
 
       const keySystemAssociationOrError = KeySystemAssociation.create({
         itemUuid: Uuid.create(dto.existingItem.id.toString()).getValue(),
@@ -147,7 +147,7 @@ export class UpdateExistingItem implements UseCaseInterface<Item> {
           this.timer.getTimestampInMicroseconds(),
           this.timer.getTimestampInMicroseconds(),
         ).getValue(),
-        keySystemUuid,
+        keySystemIdentifier,
       })
       if (keySystemAssociationOrError.isFailed()) {
         return Result.fail(keySystemAssociationOrError.getError())
@@ -203,7 +203,7 @@ export class UpdateExistingItem implements UseCaseInterface<Item> {
   private itemIsAlreadyAssociatedWithTheKeySystem(item: Item, itemHash: ItemHash): boolean {
     return (
       item.props.keySystemAssociation !== undefined &&
-      item.props.keySystemAssociation.props.keySystemUuid.value === itemHash.props.key_system_identifier
+      item.props.keySystemAssociation.props.keySystemIdentifier === itemHash.props.key_system_identifier
     )
   }
 }

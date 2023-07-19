@@ -78,4 +78,18 @@ describe('Validator', () => {
       expect(Validator.isNotEmpty(value).isFailed()).toBeTruthy()
     }
   })
+
+  describe('is not empty string', () => {
+    it('should not validate invalid string', () => {
+      expect(Validator.isNotEmptyString(123 as unknown as string).isFailed()).toBeTruthy()
+    })
+
+    it('should not validate an empty string', () => {
+      expect(Validator.isNotEmptyString('').isFailed()).toBeTruthy()
+    })
+
+    it('should validate a string', () => {
+      expect(Validator.isNotEmptyString('foo').isFailed()).toBeFalsy()
+    })
+  })
 })
