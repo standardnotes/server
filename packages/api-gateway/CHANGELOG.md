@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.66.1](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.66.0...@standardnotes/api-gateway@1.66.1) (2023-07-19)
+
+### Bug Fixes
+
+* add missing imports and exports for controllers ([#664](https://github.com/standardnotes/api-gateway/issues/664)) ([aee6e60](https://github.com/standardnotes/api-gateway/commit/aee6e6058359e2b5231cc13387656f837699300f))
+
 # [1.66.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.65.7...@standardnotes/api-gateway@1.66.0) (2023-07-19)
 
 ### Features
