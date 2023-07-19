@@ -2,6 +2,10 @@ import 'reflect-metadata'
 
 import '../src/Infra/InversifyExpressUtils/InversifyExpressHealthCheckController'
 import '../src/Infra/InversifyExpressUtils/InversifyExpressItemsController'
+import '../src/Infra/InversifyExpressUtils/InversifyExpressMessagesController'
+import '../src/Infra/InversifyExpressUtils/InversifyExpressSharedVaultInvitesController'
+import '../src/Infra/InversifyExpressUtils/InversifyExpressSharedVaultUsersController'
+import '../src/Infra/InversifyExpressUtils/InversifyExpressSharedVaultsController'
 
 import helmet from 'helmet'
 import * as cors from 'cors'
