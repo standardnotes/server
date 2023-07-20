@@ -65,6 +65,7 @@ export class GetItems implements UseCaseInterface<GetItemsResult> {
     return Result.ok({
       items,
       cursorToken,
+      lastSyncTime,
     })
   }
 

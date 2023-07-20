@@ -88,6 +88,10 @@ describe('SyncResponseFactory20161215', () => {
         ],
         syncToken: 'sync-test',
         cursorToken: 'cursor-test',
+        sharedVaults: [],
+        sharedVaultInvites: [],
+        messages: [],
+        notifications: [],
       }),
     ).toEqual({
       retrieved_items: [item1Projection],
@@ -133,6 +137,10 @@ describe('SyncResponseFactory20161215', () => {
         ],
         syncToken: 'sync-test',
         cursorToken: 'cursor-test',
+        sharedVaults: [],
+        sharedVaultInvites: [],
+        messages: [],
+        notifications: [],
       }),
     ).toEqual({
       retrieved_items: [],

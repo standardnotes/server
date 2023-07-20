@@ -11,6 +11,20 @@ export class TypeORMSharedVaultInviteRepository implements SharedVaultInviteRepo
     private mapper: MapperInterface<SharedVaultInvite, TypeORMSharedVaultInvite>,
   ) {}
 
+  async findByUserUuidUpdatedAfter(userUuid: Uuid, updatedAtTimestamp: number): Promise<SharedVaultInvite[]> {
+    const persistence = await this.ormRepository
+      .createQueryBuilder('shared_vault_invite')
+      .where('shared_vault_invite.user_uuid = :userUuid', {
+        userUuid: userUuid.value,
+      })
+      .andWhere('shared_vault_invite.updated_at_timestamp > :updatedAtTimestamp', {
+        updatedAtTimestamp,
+      })
+      .getMany()
+
+    return persistence.map((p) => this.mapper.toDomain(p))
+  }
+
   async findBySenderUuidAndSharedVaultUuid(dto: {
     senderUuid: Uuid
     sharedVaultUuid: Uuid

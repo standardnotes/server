@@ -17,7 +17,7 @@ export class SharedVaultInviteHttpMapper
       user_uuid: domain.props.userUuid.value,
       sender_uuid: domain.props.senderUuid.value,
       encrypted_message: domain.props.encryptedMessage,
-      permissions: domain.props.permission.value,
+      permission: domain.props.permission.value,
       created_at_timestamp: domain.props.timestamps.createdAt,
       updated_at_timestamp: domain.props.timestamps.updatedAt,
     }

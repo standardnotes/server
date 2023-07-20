@@ -57,6 +57,7 @@ describe('GetItems', () => {
     expect(result.getValue()).toEqual({
       items: [item],
       cursorToken: undefined,
+      lastSyncTime: null,
     })
   })
 
@@ -76,6 +77,7 @@ describe('GetItems', () => {
     expect(result.getValue()).toEqual({
       items: [item],
       cursorToken: 'MjowLjAwMDEyMw==',
+      lastSyncTime: null,
     })
   })
 
@@ -93,6 +95,7 @@ describe('GetItems', () => {
     expect(result.getValue()).toEqual({
       items: [item],
       cursorToken: undefined,
+      lastSyncTime: 123.00000000000001,
     })
   })
 
@@ -113,6 +116,7 @@ describe('GetItems', () => {
     expect(result.getValue()).toEqual({
       items: [item],
       cursorToken: undefined,
+      lastSyncTime: 123,
     })
   })
 
@@ -147,6 +151,7 @@ describe('GetItems', () => {
     expect(result.getValue()).toEqual({
       items: [item],
       cursorToken: undefined,
+      lastSyncTime: null,
     })
   })
 })

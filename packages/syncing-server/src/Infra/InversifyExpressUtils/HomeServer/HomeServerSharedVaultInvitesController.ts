@@ -62,7 +62,7 @@ export class HomeServerSharedVaultInvitesController extends BaseHttpController {
     const result = await this.inviteUserToSharedVaultUseCase.execute({
       sharedVaultUuid: request.params.sharedVaultUuid,
       senderUuid: response.locals.user.uuid,
-      recipientUuid: request.body.recipient_uid,
+      recipientUuid: request.body.recipient_uuid,
       encryptedMessage: request.body.encrypted_message,
       permission: request.body.permission,
     })

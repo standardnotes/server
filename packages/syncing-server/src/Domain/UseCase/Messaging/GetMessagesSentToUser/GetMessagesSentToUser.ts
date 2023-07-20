@@ -14,8 +14,10 @@ export class GetMessagesSentToUser implements UseCaseInterface<Message[]> {
     }
     const recipientUuid = recipientUuidOrError.getValue()
 
-    const messages = await this.messageRepository.findByRecipientUuid(recipientUuid)
+    if (dto.lastSyncTime) {
+      return Result.ok(await this.messageRepository.findByRecipientUuidUpdatedAfter(recipientUuid, dto.lastSyncTime))
+    }
 
-    return Result.ok(messages)
+    return Result.ok(await this.messageRepository.findByRecipientUuid(recipientUuid))
   }
 }

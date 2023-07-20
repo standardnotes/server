@@ -9,12 +9,23 @@ describe('GetMessagesSentToUser', () => {
   beforeEach(() => {
     messageRepository = {} as jest.Mocked<MessageRepositoryInterface>
     messageRepository.findByRecipientUuid = jest.fn().mockReturnValue([])
+    messageRepository.findByRecipientUuidUpdatedAfter = jest.fn().mockReturnValue([])
   })
 
   it('should return messages sent to user', async () => {
     const useCase = createUseCase()
     const result = await useCase.execute({
       recipientUuid: '00000000-0000-0000-0000-000000000000',
+    })
+
+    expect(result.getValue()).toEqual([])
+  })
+
+  it('should return messages sent to user updated after given time', async () => {
+    const useCase = createUseCase()
+    const result = await useCase.execute({
+      recipientUuid: '00000000-0000-0000-0000-000000000000',
+      lastSyncTime: 123,
     })
 
     expect(result.getValue()).toEqual([])

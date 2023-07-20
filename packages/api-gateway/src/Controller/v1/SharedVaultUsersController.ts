@@ -21,7 +21,7 @@ export class SharedVaultUsersController extends BaseHttpController {
       response,
       this.endpointResolver.resolveEndpointOrMethodIdentifier(
         'GET',
-        '/shared-vaults/:sharedVaultUuid/users',
+        'shared-vaults/:sharedVaultUuid/users',
         request.params.sharedVaultUuid,
       ),
       request.body,
@@ -35,7 +35,7 @@ export class SharedVaultUsersController extends BaseHttpController {
       response,
       this.endpointResolver.resolveEndpointOrMethodIdentifier(
         'DELETE',
-        '/shared-vaults/:sharedVaultUuid/users/:userUuid',
+        'shared-vaults/:sharedVaultUuid/users/:userUuid',
         request.params.sharedVaultUuid,
         request.params.userUuid,
       ),

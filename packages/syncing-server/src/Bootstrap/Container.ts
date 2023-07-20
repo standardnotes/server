@@ -147,6 +147,9 @@ import { DeleteAllMessagesSentToUser } from '../Domain/UseCase/Messaging/DeleteA
 import { DeleteMessage } from '../Domain/UseCase/Messaging/DeleteMessage/DeleteMessage'
 import { MessageHttpRepresentation } from '../Mapping/Http/MessageHttpRepresentation'
 import { MessageHttpMapper } from '../Mapping/Http/MessageHttpMapper'
+import { GetUserNotifications } from '../Domain/UseCase/Messaging/GetUserNotifications/GetUserNotifications'
+import { NotificationHttpMapper } from '../Mapping/Http/NotificationHttpMapper'
+import { NotificationHttpRepresentation } from '../Mapping/Http/NotificationHttpRepresentation'
 
 export class ContainerConfigLoader {
   private readonly DEFAULT_CONTENT_SIZE_TRANSFER_LIMIT = 10_000_000
@@ -340,6 +343,9 @@ export class ContainerConfigLoader {
     container
       .bind<MapperInterface<Message, MessageHttpRepresentation>>(TYPES.Sync_MessageHttpMapper)
       .toConstantValue(new MessageHttpMapper())
+    container
+      .bind<MapperInterface<Notification, NotificationHttpRepresentation>>(TYPES.Sync_NotificationHttpMapper)
+      .toConstantValue(new NotificationHttpMapper())
 
     // ORM
     container
@@ -551,12 +557,34 @@ export class ContainerConfigLoader {
         ),
       )
     container
+      .bind<GetUserNotifications>(TYPES.Sync_GetUserNotifications)
+      .toConstantValue(new GetUserNotifications(container.get(TYPES.Sync_NotificationRepository)))
+    container
+      .bind<GetSharedVaults>(TYPES.Sync_GetSharedVaults)
+      .toConstantValue(
+        new GetSharedVaults(
+          container.get(TYPES.Sync_SharedVaultUserRepository),
+          container.get(TYPES.Sync_SharedVaultRepository),
+        ),
+      )
+    container
+      .bind<GetSharedVaultInvitesSentToUser>(TYPES.Sync_GetSharedVaultInvitesSentToUser)
+      .toConstantValue(new GetSharedVaultInvitesSentToUser(container.get(TYPES.Sync_SharedVaultInviteRepository)))
+    container
+      .bind<GetMessagesSentToUser>(TYPES.Sync_GetMessagesSentToUser)
+      .toConstantValue(new GetMessagesSentToUser(container.get(TYPES.Sync_MessageRepository)))
+
+    container
       .bind<SyncItems>(TYPES.Sync_SyncItems)
       .toConstantValue(
         new SyncItems(
           container.get(TYPES.Sync_ItemRepository),
           container.get(TYPES.Sync_GetItems),
           container.get(TYPES.Sync_SaveItems),
+          container.get(TYPES.Sync_GetSharedVaults),
+          container.get(TYPES.Sync_GetSharedVaultInvitesSentToUser),
+          container.get(TYPES.Sync_GetMessagesSentToUser),
+          container.get(TYPES.Sync_GetUserNotifications),
         ),
       )
     container.bind<CheckIntegrity>(TYPES.Sync_CheckIntegrity).toDynamicValue((context: interfaces.Context) => {
@@ -622,9 +650,6 @@ export class ContainerConfigLoader {
       .bind<GetSharedVaultInvitesSentByUser>(TYPES.Sync_GetSharedVaultInvitesSentByUser)
       .toConstantValue(new GetSharedVaultInvitesSentByUser(container.get(TYPES.Sync_SharedVaultInviteRepository)))
     container
-      .bind<GetSharedVaultInvitesSentToUser>(TYPES.Sync_GetSharedVaultInvitesSentToUser)
-      .toConstantValue(new GetSharedVaultInvitesSentToUser(container.get(TYPES.Sync_SharedVaultInviteRepository)))
-    container
       .bind<GetSharedVaultUsers>(TYPES.Sync_GetSharedVaultUsers)
       .toConstantValue(
         new GetSharedVaultUsers(
@@ -644,14 +669,6 @@ export class ContainerConfigLoader {
           container.get(TYPES.Sync_SharedVaultUserRepository),
           container.get(TYPES.Sync_SharedVaultRepository),
           container.get(TYPES.Sync_AddNotificationForUser),
-        ),
-      )
-    container
-      .bind<GetSharedVaults>(TYPES.Sync_GetSharedVaults)
-      .toConstantValue(
-        new GetSharedVaults(
-          container.get(TYPES.Sync_SharedVaultUserRepository),
-          container.get(TYPES.Sync_SharedVaultRepository),
         ),
       )
     container
@@ -684,9 +701,6 @@ export class ContainerConfigLoader {
         ),
       )
     container
-      .bind<GetMessagesSentToUser>(TYPES.Sync_GetMessagesSentToUser)
-      .toConstantValue(new GetMessagesSentToUser(container.get(TYPES.Sync_MessageRepository)))
-    container
       .bind<GetMessagesSentByUser>(TYPES.Sync_GetMessagesSentByUser)
       .toConstantValue(new GetMessagesSentByUser(container.get(TYPES.Sync_MessageRepository)))
     container
@@ -717,6 +731,10 @@ export class ContainerConfigLoader {
           container.get(TYPES.Sync_ItemHttpMapper),
           container.get(TYPES.Sync_ItemConflictHttpMapper),
           container.get(TYPES.Sync_SavedItemHttpMapper),
+          container.get(TYPES.Sync_SharedVaultHttpMapper),
+          container.get(TYPES.Sync_SharedVaultInviteHttpMapper),
+          container.get(TYPES.Sync_MessageHttpMapper),
+          container.get(TYPES.Sync_NotificationHttpMapper),
         ),
       )
     container
