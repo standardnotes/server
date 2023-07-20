@@ -31,15 +31,6 @@ export class SaveItems implements UseCaseInterface<SaveItemsResult> {
     const lastUpdatedTimestamp = this.timer.getTimestampInMicroseconds()
 
     for (const itemHash of dto.itemHashes) {
-      if (dto.readOnlyAccess) {
-        conflicts.push({
-          unsavedItem: itemHash,
-          type: ConflictType.ReadOnlyError,
-        })
-
-        continue
-      }
-
       const itemUuidOrError = Uuid.create(itemHash.props.uuid)
       if (itemUuidOrError.isFailed()) {
         conflicts.push({
@@ -52,6 +43,17 @@ export class SaveItems implements UseCaseInterface<SaveItemsResult> {
       const itemUuid = itemUuidOrError.getValue()
 
       const existingItem = await this.itemRepository.findByUuid(itemUuid)
+
+      if (dto.readOnlyAccess) {
+        conflicts.push({
+          unsavedItem: itemHash,
+          serverItem: existingItem ?? undefined,
+          type: ConflictType.ReadOnlyError,
+        })
+
+        continue
+      }
+
       const processingResult = await this.itemSaveValidator.validate({
         userUuid: dto.userUuid,
         apiVersion: dto.apiVersion,

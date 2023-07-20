@@ -4,4 +4,5 @@ export interface GetItemsDTO {
   cursorToken?: string | null
   limit?: number
   contentType?: string
+  sharedVaultUuids?: string[]
 }

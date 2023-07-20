@@ -4,6 +4,7 @@ import { ItemTransferCalculatorInterface } from '../../../Item/ItemTransferCalcu
 import { GetItems } from './GetItems'
 import { Item } from '../../../Item/Item'
 import { ContentType, Dates, Timestamps, Uuid } from '@standardnotes/domain-core'
+import { SharedVaultUserRepositoryInterface } from '../../../SharedVault/User/SharedVaultUserRepositoryInterface'
 
 describe('GetItems', () => {
   let itemRepository: ItemRepositoryInterface
@@ -12,9 +13,17 @@ describe('GetItems', () => {
   let timer: TimerInterface
   const maxItemsSyncLimit = 100
   let item: Item
+  let sharedVaultUserRepository: SharedVaultUserRepositoryInterface
 
   const createUseCase = () =>
-    new GetItems(itemRepository, contentSizeTransferLimit, itemTransferCalculator, timer, maxItemsSyncLimit)
+    new GetItems(
+      itemRepository,
+      sharedVaultUserRepository,
+      contentSizeTransferLimit,
+      itemTransferCalculator,
+      timer,
+      maxItemsSyncLimit,
+    )
 
   beforeEach(() => {
     item = Item.create({
@@ -41,13 +50,16 @@ describe('GetItems', () => {
     timer = {} as jest.Mocked<TimerInterface>
     timer.getTimestampInMicroseconds = jest.fn().mockReturnValue(123)
     timer.convertStringDateToMicroseconds = jest.fn().mockReturnValue(123)
+
+    sharedVaultUserRepository = {} as jest.Mocked<SharedVaultUserRepositoryInterface>
+    sharedVaultUserRepository.findByUserUuid = jest.fn().mockResolvedValue([])
   })
 
   it('returns items', async () => {
     const useCase = createUseCase()
 
     const result = await useCase.execute({
-      userUuid: 'user-uuid',
+      userUuid: '00000000-0000-0000-0000-000000000000',
       cursorToken: undefined,
       contentType: undefined,
       limit: 10,
@@ -67,7 +79,7 @@ describe('GetItems', () => {
     const useCase = createUseCase()
 
     const result = await useCase.execute({
-      userUuid: 'user-uuid',
+      userUuid: '00000000-0000-0000-0000-000000000000',
       cursorToken: undefined,
       contentType: undefined,
       limit: undefined,
@@ -85,7 +97,7 @@ describe('GetItems', () => {
     const useCase = createUseCase()
 
     const result = await useCase.execute({
-      userUuid: 'user-uuid',
+      userUuid: '00000000-0000-0000-0000-000000000000',
       cursorToken: 'MjowLjAwMDEyMw==',
       contentType: undefined,
       limit: undefined,
@@ -106,7 +118,7 @@ describe('GetItems', () => {
     const syncToken = Buffer.from(syncTokenData, 'utf-8').toString('base64')
 
     const result = await useCase.execute({
-      userUuid: 'user-uuid',
+      userUuid: '00000000-0000-0000-0000-000000000000',
       syncToken,
       contentType: undefined,
       limit: undefined,
@@ -127,7 +139,7 @@ describe('GetItems', () => {
     const syncToken = Buffer.from(syncTokenData, 'utf-8').toString('base64')
 
     const result = await useCase.execute({
-      userUuid: 'user-uuid',
+      userUuid: '00000000-0000-0000-0000-000000000000',
       syncToken,
       contentType: undefined,
       limit: undefined,
@@ -141,10 +153,51 @@ describe('GetItems', () => {
     const useCase = createUseCase()
 
     const result = await useCase.execute({
-      userUuid: 'user-uuid',
+      userUuid: '00000000-0000-0000-0000-000000000000',
       cursorToken: undefined,
       contentType: undefined,
       limit: 200,
+    })
+
+    expect(result.isFailed()).toBeFalsy()
+    expect(result.getValue()).toEqual({
+      items: [item],
+      cursorToken: undefined,
+      lastSyncTime: null,
+    })
+  })
+
+  it('should return error for invalid user uuid', async () => {
+    const useCase = createUseCase()
+
+    const result = await useCase.execute({
+      userUuid: 'invalid',
+      cursorToken: undefined,
+      contentType: undefined,
+      limit: undefined,
+    })
+
+    expect(result.isFailed()).toBeTruthy()
+    expect(result.getError()).toEqual('Given value is not a valid uuid: invalid')
+  })
+
+  it('should filter shared vault uuids user wants to sync with the ones it has access to', async () => {
+    sharedVaultUserRepository.findByUserUuid = jest.fn().mockResolvedValue([
+      {
+        props: {
+          sharedVaultUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+        },
+      },
+    ])
+
+    const useCase = createUseCase()
+
+    const result = await useCase.execute({
+      userUuid: '00000000-0000-0000-0000-000000000000',
+      cursorToken: undefined,
+      contentType: undefined,
+      limit: undefined,
+      sharedVaultUuids: ['00000000-0000-0000-0000-000000000000', '11111111-1111-1111-1111-111111111111'],
     })
 
     expect(result.isFailed()).toBeFalsy()

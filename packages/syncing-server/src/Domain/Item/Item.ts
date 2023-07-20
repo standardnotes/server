@@ -1,8 +1,17 @@
-import { Aggregate, Result, UniqueEntityId } from '@standardnotes/domain-core'
+import { Aggregate, Result, UniqueEntityId, Uuid } from '@standardnotes/domain-core'
 
 import { ItemProps } from './ItemProps'
 
 export class Item extends Aggregate<ItemProps> {
+  get uuid(): Uuid {
+    const uuidOrError = Uuid.create(this._id.toString())
+    if (uuidOrError.isFailed()) {
+      throw new Error(uuidOrError.getError())
+    }
+
+    return uuidOrError.getValue()
+  }
+
   private constructor(props: ItemProps, id?: UniqueEntityId) {
     super(props, id)
   }

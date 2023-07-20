@@ -1,4 +1,4 @@
-import { ControllerContainerInterface, MapperInterface } from '@standardnotes/domain-core'
+import { ControllerContainerInterface, MapperInterface, Validator } from '@standardnotes/domain-core'
 import { BaseHttpController, results } from 'inversify-express-utils'
 import { Request, Response } from 'express'
 
@@ -49,19 +49,27 @@ export class HomeServerItemsController extends BaseHttpController {
       }
     }
 
+    let sharedVaultUuids: string[] | undefined = undefined
+    if ('shared_vault_uuids' in request.body) {
+      const sharedVaultUuidsValidation = Validator.isNotEmpty(sharedVaultUuids)
+      if (!sharedVaultUuidsValidation.isFailed()) {
+        sharedVaultUuids = request.body.shared_vault_uuids
+      }
+    }
+
     const syncResult = await this.syncItems.execute({
       userUuid: response.locals.user.uuid,
       itemHashes,
       computeIntegrityHash: request.body.compute_integrity === true,
       syncToken: request.body.sync_token,
       cursorToken: request.body.cursor_token,
-      sharedVaultUuids: request.body.shared_vault_uuids,
       limit: request.body.limit,
       contentType: request.body.content_type,
       apiVersion: request.body.api ?? ApiVersion.v20161215,
       snjsVersion: <string>request.headers['x-snjs-version'],
       readOnlyAccess: response.locals.readOnlyAccess,
       sessionUuid: response.locals.session ? response.locals.session.uuid : null,
+      sharedVaultUuids,
     })
     if (syncResult.isFailed()) {
       return this.json({ error: { message: syncResult.getError() } }, HttpStatusCode.BadRequest)
@@ -102,7 +110,12 @@ export class HomeServerItemsController extends BaseHttpController {
     })
 
     if (result.isFailed()) {
-      return this.json({ error: { message: result.getError() } }, 404)
+      return this.json(
+        {
+          error: { message: 'Item not found' },
+        },
+        404,
+      )
     }
 
     return this.json({ item: this.itemHttpMapper.toProjection(result.getValue()) })

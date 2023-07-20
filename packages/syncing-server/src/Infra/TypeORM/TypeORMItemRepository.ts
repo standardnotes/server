@@ -9,6 +9,7 @@ import { ExtendedIntegrityPayload } from '../../Domain/Item/ExtendedIntegrityPay
 import { TypeORMItem } from './TypeORMItem'
 import { KeySystemAssociationRepositoryInterface } from '../../Domain/KeySystem/KeySystemAssociationRepositoryInterface'
 import { SharedVaultAssociationRepositoryInterface } from '../../Domain/SharedVault/SharedVaultAssociationRepositoryInterface'
+import { TypeORMSharedVaultAssociation } from './TypeORMSharedVaultAssociation'
 
 export class TypeORMItemRepository implements ItemRepositoryInterface {
   constructor(
@@ -92,15 +93,7 @@ export class TypeORMItemRepository implements ItemRepositoryInterface {
 
     const item = this.mapper.toDomain(persistence)
 
-    const keySystemAssociation = await this.keySystemAssociationRepository.findByItemUuid(uuid)
-    if (keySystemAssociation) {
-      item.props.keySystemAssociation = keySystemAssociation
-    }
-
-    const sharedVaultAssociation = await this.sharedVaultAssociationRepository.findByItemUuid(uuid)
-    if (sharedVaultAssociation) {
-      item.props.sharedVaultAssociation = sharedVaultAssociation
-    }
+    await this.decorateItemWithAssociations(item)
 
     return item
   }
@@ -142,13 +135,21 @@ export class TypeORMItemRepository implements ItemRepositoryInterface {
       return null
     }
 
-    return this.mapper.toDomain(persistence)
+    const item = this.mapper.toDomain(persistence)
+
+    await this.decorateItemWithAssociations(item)
+
+    return item
   }
 
   async findAll(query: ItemQuery): Promise<Item[]> {
     const persistence = await this.createFindAllQueryBuilder(query).getMany()
 
-    return persistence.map((p) => this.mapper.toDomain(p))
+    const domainItems = persistence.map((p) => this.mapper.toDomain(p))
+
+    await Promise.all(domainItems.map((item) => this.decorateItemWithAssociations(item)))
+
+    return domainItems
   }
 
   async findAllRaw<T>(query: ItemQuery): Promise<T[]> {
@@ -187,11 +188,36 @@ export class TypeORMItemRepository implements ItemRepositoryInterface {
       queryBuilder.orderBy(`item.${query.sortBy}`, query.sortOrder)
     }
 
+    if (query.includeSharedVaultUuids !== undefined && query.includeSharedVaultUuids.length > 0) {
+      queryBuilder
+        .leftJoin(
+          TypeORMSharedVaultAssociation,
+          'sharedVaultAssociation',
+          'sharedVaultAssociation.itemUuid = item.uuid',
+        )
+        .where('sharedVaultAssociation.sharedVaultUuid IN (:...sharedVaultUuids)', {
+          sharedVaultUuids: query.includeSharedVaultUuids,
+        })
+
+      if (query.userUuid) {
+        queryBuilder.orWhere('item.user_uuid = :userUuid', { userUuid: query.userUuid })
+      }
+    } else if (query.exclusiveSharedVaultUuids !== undefined && query.exclusiveSharedVaultUuids.length > 0) {
+      queryBuilder
+        .innerJoin(
+          TypeORMSharedVaultAssociation,
+          'sharedVaultAssociation',
+          'sharedVaultAssociation.itemUuid = item.uuid',
+        )
+        .where('sharedVaultAssociation.sharedVaultUuid IN (:...sharedVaultUuids)', {
+          sharedVaultUuids: query.exclusiveSharedVaultUuids,
+        })
+    } else if (query.userUuid !== undefined) {
+      queryBuilder.where('item.user_uuid = :userUuid', { userUuid: query.userUuid })
+    }
+
     if (query.selectString !== undefined) {
       queryBuilder.select(query.selectString)
-    }
-    if (query.userUuid !== undefined) {
-      queryBuilder.where('item.user_uuid = :userUuid', { userUuid: query.userUuid })
     }
     if (query.uuids && query.uuids.length > 0) {
       queryBuilder.andWhere('item.uuid IN (:...uuids)', { uuids: query.uuids })
@@ -225,5 +251,26 @@ export class TypeORMItemRepository implements ItemRepositoryInterface {
     }
 
     return queryBuilder
+  }
+
+  private async decorateItemWithAssociations(item: Item): Promise<void> {
+    await Promise.all([
+      this.decorateItemWithKeySystemAssociation(item),
+      this.decorateItemWithSharedVaultAssociation(item),
+    ])
+  }
+
+  private async decorateItemWithKeySystemAssociation(item: Item): Promise<void> {
+    const keySystemAssociation = await this.keySystemAssociationRepository.findByItemUuid(item.uuid)
+    if (keySystemAssociation) {
+      item.props.keySystemAssociation = keySystemAssociation
+    }
+  }
+
+  private async decorateItemWithSharedVaultAssociation(item: Item): Promise<void> {
+    const sharedVaultAssociation = await this.sharedVaultAssociationRepository.findByItemUuid(item.uuid)
+    if (sharedVaultAssociation) {
+      item.props.sharedVaultAssociation = sharedVaultAssociation
+    }
   }
 }
