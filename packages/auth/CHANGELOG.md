@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.126.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.125.1...@standardnotes/auth-server@1.126.0) (2023-07-20)
+
+### Features
+
+* **syncing-server:** add shared vaults, invites, messages and notifications to sync response ([#665](https://github.com/standardnotes/server/issues/665)) ([efa4d7f](https://github.com/standardnotes/server/commit/efa4d7fc6007ef668e3de3b04853ac11b2d13c30))
+
 ## [1.125.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.125.0...@standardnotes/auth-server@1.125.1) (2023-07-19)
 
 **Note:** Version bump only for package @standardnotes/auth-server

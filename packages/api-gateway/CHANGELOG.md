@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.67.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.66.1...@standardnotes/api-gateway@1.67.0) (2023-07-20)
+
+### Features
+
+* **syncing-server:** add shared vaults, invites, messages and notifications to sync response ([#665](https://github.com/standardnotes/api-gateway/issues/665)) ([efa4d7f](https://github.com/standardnotes/api-gateway/commit/efa4d7fc6007ef668e3de3b04853ac11b2d13c30))
+
 ## [1.66.1](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.66.0...@standardnotes/api-gateway@1.66.1) (2023-07-19)
 
 ### Bug Fixes
