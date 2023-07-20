@@ -11,4 +11,6 @@ export type ItemQuery = {
   limit?: number
   createdBetween?: Date[]
   selectString?: string
+  includeSharedVaultUuids?: string[]
+  exclusiveSharedVaultUuids?: string[]
 }

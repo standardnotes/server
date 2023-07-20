@@ -517,6 +517,7 @@ export class ContainerConfigLoader {
       .toConstantValue(
         new GetItems(
           container.get(TYPES.Sync_ItemRepository),
+          container.get(TYPES.Sync_SharedVaultUserRepository),
           container.get(TYPES.Sync_CONTENT_SIZE_TRANSFER_LIMIT),
           container.get(TYPES.Sync_ItemTransferCalculator),
           container.get(TYPES.Sync_Timer),

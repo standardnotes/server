@@ -30,6 +30,7 @@ export class SyncItems implements UseCaseInterface<SyncItemsResponse> {
       cursorToken: dto.cursorToken,
       limit: dto.limit,
       contentType: dto.contentType,
+      sharedVaultUuids: dto.sharedVaultUuids,
     })
     if (getItemsResultOrError.isFailed()) {
       return Result.fail(getItemsResultOrError.getError())
