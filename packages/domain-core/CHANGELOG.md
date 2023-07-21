@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.23.3](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.23.2...@standardnotes/domain-core@1.23.3) (2023-07-21)
+
+### Bug Fixes
+
+* **domain-core:** notification payload creation from string ([1708c3f](https://github.com/standardnotes/server/commit/1708c3f8a00897369585e1ef8022950a7c3c610e))
+
 ## [1.23.2](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.23.1...@standardnotes/domain-core@1.23.2) (2023-07-21)
 
 ### Bug Fixes
