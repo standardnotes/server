@@ -1,10 +1,9 @@
-import { Result, Timestamps, UseCaseInterface, Uuid, Validator } from '@standardnotes/domain-core'
+import { NotificationType, Result, Timestamps, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
 import { TimerInterface } from '@standardnotes/time'
 
 import { AddNotificationForUserDTO } from './AddNotificationForUserDTO'
 import { NotificationRepositoryInterface } from '../../../Notifications/NotificationRepositoryInterface'
 import { Notification } from '../../../Notifications/Notification'
-import { NotificationType } from '../../../Notifications/NotificationType'
 
 export class AddNotificationForUser implements UseCaseInterface<Notification> {
   constructor(private notificationRepository: NotificationRepositoryInterface, private timer: TimerInterface) {}
@@ -21,11 +20,6 @@ export class AddNotificationForUser implements UseCaseInterface<Notification> {
       return Result.fail(typeOrError.getError())
     }
     const type = typeOrError.getValue()
-
-    const paylodNotEmptyValidationResult = Validator.isNotEmpty(dto.payload)
-    if (paylodNotEmptyValidationResult.isFailed()) {
-      return Result.fail(paylodNotEmptyValidationResult.getError())
-    }
 
     const notificationOrError = Notification.create({
       userUuid,

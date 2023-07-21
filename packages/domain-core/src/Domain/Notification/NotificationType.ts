@@ -1,5 +1,5 @@
-import { ValueObject, Result } from '@standardnotes/domain-core'
-
+import { Result } from '../Core/Result'
+import { ValueObject } from '../Core/ValueObject'
 import { NotificationTypeProps } from './NotificationTypeProps'
 
 export class NotificationType extends ValueObject<NotificationTypeProps> {
@@ -17,9 +17,9 @@ export class NotificationType extends ValueObject<NotificationTypeProps> {
   }
 
   static create(notificationType: string): Result<NotificationType> {
-    const isValidPermission = Object.values(this.TYPES).includes(notificationType)
-    if (!isValidPermission) {
-      return Result.fail<NotificationType>(`Invalid shared vault user permission ${notificationType}`)
+    const isValidType = Object.values(this.TYPES).includes(notificationType)
+    if (!isValidType) {
+      return Result.fail<NotificationType>(`Invalid notification type: ${notificationType}`)
     } else {
       return Result.ok<NotificationType>(new NotificationType({ value: notificationType }))
     }

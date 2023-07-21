@@ -1,9 +1,8 @@
-import { Result, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
+import { NotificationPayload, NotificationType, Result, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
 
 import { RemoveUserFromSharedVaultDTO } from './RemoveUserFromSharedVaultDTO'
 import { SharedVaultRepositoryInterface } from '../../../SharedVault/SharedVaultRepositoryInterface'
 import { SharedVaultUserRepositoryInterface } from '../../../SharedVault/User/SharedVaultUserRepositoryInterface'
-import { NotificationType } from '../../../Notifications/NotificationType'
 import { AddNotificationForUser } from '../../Messaging/AddNotificationForUser/AddNotificationForUser'
 
 export class RemoveUserFromSharedVault implements UseCaseInterface<void> {
@@ -57,12 +56,20 @@ export class RemoveUserFromSharedVault implements UseCaseInterface<void> {
 
     await this.sharedVaultUsersRepository.remove(sharedVaultUser)
 
+    const notificationPayloadOrError = NotificationPayload.create({
+      sharedVaultUuid: sharedVault.uuid,
+      type: NotificationType.create(NotificationType.TYPES.RemovedFromSharedVault).getValue(),
+      version: '1.0',
+    })
+    if (notificationPayloadOrError.isFailed()) {
+      return Result.fail(notificationPayloadOrError.getError())
+    }
+    const notificationPayload = notificationPayloadOrError.getValue()
+
     const result = await this.addNotificationForUser.execute({
       userUuid: sharedVaultUser.props.userUuid.value,
       type: NotificationType.TYPES.RemovedFromSharedVault,
-      payload: JSON.stringify({
-        sharedVaultUuid: sharedVault.id.toString(),
-      }),
+      payload: notificationPayload,
       version: '1.0',
     })
     if (result.isFailed()) {
