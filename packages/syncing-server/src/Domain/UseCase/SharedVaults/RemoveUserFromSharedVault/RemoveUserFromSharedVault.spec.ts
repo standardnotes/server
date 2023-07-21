@@ -1,4 +1,4 @@
-import { Uuid, Timestamps, Result } from '@standardnotes/domain-core'
+import { Uuid, Timestamps, Result, NotificationPayload } from '@standardnotes/domain-core'
 
 import { SharedVault } from '../../../SharedVault/SharedVault'
 import { SharedVaultRepositoryInterface } from '../../../SharedVault/SharedVaultRepositoryInterface'
@@ -172,5 +172,20 @@ describe('RemoveUserFromSharedVault', () => {
     })
 
     expect(result.isFailed()).toBe(true)
+  })
+
+  it('should return error if notification payload could not be created', async () => {
+    const mock = jest.spyOn(NotificationPayload, 'create')
+    mock.mockReturnValue(Result.fail('Oops'))
+
+    const useCase = createUseCase()
+    const result = await useCase.execute({
+      originatorUuid: '00000000-0000-0000-0000-000000000000',
+      sharedVaultUuid: '00000000-0000-0000-0000-000000000000',
+      userUuid: '00000000-0000-0000-0000-000000000001',
+    })
+
+    expect(result.isFailed()).toBe(true)
+    expect(result.getError()).toBe('Oops')
   })
 })

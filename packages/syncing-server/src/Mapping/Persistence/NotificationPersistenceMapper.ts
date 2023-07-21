@@ -1,9 +1,15 @@
-import { Timestamps, MapperInterface, UniqueEntityId, Uuid } from '@standardnotes/domain-core'
+import {
+  Timestamps,
+  MapperInterface,
+  UniqueEntityId,
+  Uuid,
+  NotificationType,
+  NotificationPayload,
+} from '@standardnotes/domain-core'
 
 import { Notification } from '../../Domain/Notifications/Notification'
 
 import { TypeORMNotification } from '../../Infra/TypeORM/TypeORMNotification'
-import { NotificationType } from '../../Domain/Notifications/NotificationType'
 
 export class NotificationPersistenceMapper implements MapperInterface<Notification, TypeORMNotification> {
   toDomain(projection: TypeORMNotification): Notification {
@@ -25,10 +31,16 @@ export class NotificationPersistenceMapper implements MapperInterface<Notificati
     }
     const type = typeOrError.getValue()
 
+    const payloadOrError = NotificationPayload.createFromString(projection.payload)
+    if (payloadOrError.isFailed()) {
+      throw new Error(`Failed to create notification from projection: ${payloadOrError.getError()}`)
+    }
+    const payload = payloadOrError.getValue()
+
     const notificationOrError = Notification.create(
       {
         userUuid,
-        payload: projection.payload,
+        payload,
         type,
         timestamps,
       },
@@ -47,7 +59,7 @@ export class NotificationPersistenceMapper implements MapperInterface<Notificati
 
     typeorm.uuid = domain.id.toString()
     typeorm.userUuid = domain.props.userUuid.value
-    typeorm.payload = domain.props.payload
+    typeorm.payload = domain.props.payload.toString()
     typeorm.type = domain.props.type.value
     typeorm.createdAtTimestamp = domain.props.timestamps.createdAt
     typeorm.updatedAtTimestamp = domain.props.timestamps.updatedAt

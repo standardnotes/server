@@ -13,7 +13,7 @@ export class NotificationHttpMapper implements MapperInterface<Notification, Not
       uuid: domain.id.toString(),
       user_uuid: domain.props.userUuid.value,
       type: domain.props.type.value,
-      payload: domain.props.payload,
+      payload: domain.props.payload.toString(),
       created_at_timestamp: domain.props.timestamps.createdAt,
       updated_at_timestamp: domain.props.timestamps.updatedAt,
     }
