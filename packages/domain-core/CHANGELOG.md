@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.23.2](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.23.1...@standardnotes/domain-core@1.23.2) (2023-07-21)
+
+### Bug Fixes
+
+* user notifications structure ([#667](https://github.com/standardnotes/server/issues/667)) ([1bbb639](https://github.com/standardnotes/server/commit/1bbb639c83922ec09e3778f85419d76669d36ae3))
+
 ## [1.23.1](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.23.0...@standardnotes/domain-core@1.23.1) (2023-07-19)
 
 ### Bug Fixes
