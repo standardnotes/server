@@ -22,6 +22,7 @@ export class AsymmetricMessageProjector implements ProjectorInterface<Asymmetric
       user_uuid: asymmetricMessage.userUuid,
       sender_uuid: asymmetricMessage.senderUuid,
       encrypted_message: asymmetricMessage.encryptedMessage,
+      replaceability_identifier: asymmetricMessage.replaceabilityIdentifier,
       created_at_timestamp: asymmetricMessage.createdAtTimestamp,
       updated_at_timestamp: asymmetricMessage.updatedAtTimestamp,
     }

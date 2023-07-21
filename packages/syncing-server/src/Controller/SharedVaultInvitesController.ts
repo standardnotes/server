@@ -169,7 +169,6 @@ export class SharedVaultInvitesController extends BaseHttpController {
   ): Promise<results.NotFoundResult | results.JsonResult> {
     const result = await this.sharedVaultInviteService.deleteInvite({
       originatorUuid: response.locals.user.uuid,
-      sharedVaultUuid: request.params.sharedVaultUuid,
       inviteUuid: request.params.inviteUuid,
     })
 

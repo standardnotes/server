@@ -16,7 +16,7 @@ export interface SharedVaultInviteServiceInterface {
   getOutboundInvitesForUser(dto: { userUuid: string }): Promise<SharedVaultInvite[]>
 
   declineInvite(dto: { originatorUuid: string; inviteUuid: string }): Promise<boolean>
-  deleteInvite(dto: { originatorUuid: string; sharedVaultUuid: string; inviteUuid: string }): Promise<boolean>
+  deleteInvite(dto: { originatorUuid: string; inviteUuid: string }): Promise<boolean>
   deleteAllInvitesForSharedVault(dto: { originatorUuid: string; sharedVaultUuid: string }): Promise<boolean>
   deleteAllInboundInvites(dto: { userUuid: string }): Promise<void>
 }
