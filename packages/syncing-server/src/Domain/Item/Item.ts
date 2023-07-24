@@ -12,6 +12,31 @@ export class Item extends Aggregate<ItemProps> {
     return uuidOrError.getValue()
   }
 
+  get sharedVaultUuid(): Uuid | null {
+    if (!this.props.sharedVaultAssociation) {
+      return null
+    }
+
+    return this.props.sharedVaultAssociation.props.sharedVaultUuid
+  }
+
+  isAssociatedWithSharedVault(sharedVaultUuid: Uuid): boolean {
+    const associatedSharedVaultUuid = this.sharedVaultUuid
+    if (!associatedSharedVaultUuid) {
+      return false
+    }
+
+    return associatedSharedVaultUuid.equals(sharedVaultUuid)
+  }
+
+  isAssociatedWithKeySystem(keySystemIdentifier: string): boolean {
+    if (!this.props.keySystemAssociation) {
+      return false
+    }
+
+    return this.props.keySystemAssociation.props.keySystemIdentifier === keySystemIdentifier
+  }
+
   private constructor(props: ItemProps, id?: UniqueEntityId) {
     super(props, id)
   }
