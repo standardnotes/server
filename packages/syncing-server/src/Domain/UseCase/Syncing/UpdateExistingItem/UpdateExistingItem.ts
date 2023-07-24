@@ -1,4 +1,13 @@
-import { ContentType, Dates, Result, Timestamps, UseCaseInterface, Uuid, Validator } from '@standardnotes/domain-core'
+import {
+  ContentType,
+  Dates,
+  Result,
+  Timestamps,
+  UniqueEntityId,
+  UseCaseInterface,
+  Uuid,
+  Validator,
+} from '@standardnotes/domain-core'
 import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
 import { TimerInterface } from '@standardnotes/time'
 
@@ -8,7 +17,6 @@ import { ItemRepositoryInterface } from '../../../Item/ItemRepositoryInterface'
 import { DomainEventFactoryInterface } from '../../../Event/DomainEventFactoryInterface'
 import { SharedVaultAssociation } from '../../../SharedVault/SharedVaultAssociation'
 import { KeySystemAssociation } from '../../../KeySystem/KeySystemAssociation'
-import { ItemHash } from '../../../Item/ItemHash'
 
 export class UpdateExistingItem implements UseCaseInterface<Item> {
   constructor(
@@ -105,25 +113,26 @@ export class UpdateExistingItem implements UseCaseInterface<Item> {
 
     dto.existingItem.props.contentSize = Buffer.byteLength(JSON.stringify(dto.existingItem))
 
-    if (
-      dto.itemHash.representsASharedVaultItem() &&
-      !this.itemIsAlreadyAssociatedWithTheSharedVault(dto.existingItem, dto.itemHash)
-    ) {
-      const sharedVaultUuidOrError = Uuid.create(dto.itemHash.props.shared_vault_uuid as string)
-      if (sharedVaultUuidOrError.isFailed()) {
-        return Result.fail(sharedVaultUuidOrError.getError())
-      }
-      const sharedVaultUuid = sharedVaultUuidOrError.getValue()
+    if (dto.itemHash.representsASharedVaultItem()) {
+      const sharedVaultAssociationOrError = SharedVaultAssociation.create(
+        {
+          lastEditedBy: userUuid,
+          sharedVaultUuid: dto.itemHash.sharedVaultUuid as Uuid,
+          timestamps: Timestamps.create(
+            dto.existingItem.props.sharedVaultAssociation
+              ? dto.existingItem.props.sharedVaultAssociation.props.timestamps.createdAt
+              : this.timer.getTimestampInMicroseconds(),
+            this.timer.getTimestampInMicroseconds(),
+          ).getValue(),
+          itemUuid: Uuid.create(dto.existingItem.id.toString()).getValue(),
+        },
+        new UniqueEntityId(
+          dto.existingItem.props.sharedVaultAssociation
+            ? dto.existingItem.props.sharedVaultAssociation.id.toString()
+            : undefined,
+        ),
+      )
 
-      const sharedVaultAssociationOrError = SharedVaultAssociation.create({
-        lastEditedBy: userUuid,
-        sharedVaultUuid,
-        timestamps: Timestamps.create(
-          this.timer.getTimestampInMicroseconds(),
-          this.timer.getTimestampInMicroseconds(),
-        ).getValue(),
-        itemUuid: Uuid.create(dto.existingItem.id.toString()).getValue(),
-      })
       if (sharedVaultAssociationOrError.isFailed()) {
         return Result.fail(sharedVaultAssociationOrError.getError())
       }
@@ -133,7 +142,7 @@ export class UpdateExistingItem implements UseCaseInterface<Item> {
 
     if (
       dto.itemHash.hasDedicatedKeySystemAssociation() &&
-      !this.itemIsAlreadyAssociatedWithTheKeySystem(dto.existingItem, dto.itemHash)
+      !dto.existingItem.isAssociatedWithKeySystem(dto.itemHash.props.key_system_identifier as string)
     ) {
       const keySystemIdentifiedValidationResult = Validator.isNotEmptyString(dto.itemHash.props.key_system_identifier)
       if (keySystemIdentifiedValidationResult.isFailed()) {
@@ -191,19 +200,5 @@ export class UpdateExistingItem implements UseCaseInterface<Item> {
     }
 
     return Result.ok(dto.existingItem)
-  }
-
-  private itemIsAlreadyAssociatedWithTheSharedVault(item: Item, itemHash: ItemHash): boolean {
-    return (
-      item.props.sharedVaultAssociation !== undefined &&
-      item.props.sharedVaultAssociation.props.sharedVaultUuid.value === itemHash.props.shared_vault_uuid
-    )
-  }
-
-  private itemIsAlreadyAssociatedWithTheKeySystem(item: Item, itemHash: ItemHash): boolean {
-    return (
-      item.props.keySystemAssociation !== undefined &&
-      item.props.keySystemAssociation.props.keySystemIdentifier === itemHash.props.key_system_identifier
-    )
   }
 }

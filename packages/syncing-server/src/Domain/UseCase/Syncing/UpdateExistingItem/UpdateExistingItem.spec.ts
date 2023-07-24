@@ -327,23 +327,6 @@ describe('UpdateExistingItem', () => {
       expect(item1.props.sharedVaultAssociation.id.toString()).toEqual(idBefore)
     })
 
-    it('should return error if shared vault uuid is invalid', async () => {
-      const useCase = createUseCase()
-
-      const itemHash = ItemHash.create({
-        ...itemHash1.props,
-        shared_vault_uuid: 'invalid-uuid',
-      }).getValue()
-
-      const result = await useCase.execute({
-        existingItem: item1,
-        itemHash,
-        sessionUuid: '00000000-0000-0000-0000-000000000000',
-        performingUserUuid: '00000000-0000-0000-0000-000000000000',
-      })
-      expect(result.isFailed()).toBeTruthy()
-    })
-
     it('should return error if shared vault association could not be created', async () => {
       const useCase = createUseCase()
 

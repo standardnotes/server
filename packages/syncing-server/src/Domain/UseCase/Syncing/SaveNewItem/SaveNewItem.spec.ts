@@ -303,23 +303,6 @@ describe('SaveNewItem', () => {
   })
 
   describe('when item hash represents a shared vault item', () => {
-    it('returns a failure if the shared vault uuid is invalid', async () => {
-      const useCase = createUseCase()
-
-      itemHash1 = ItemHash.create({
-        ...itemHash1.props,
-        shared_vault_uuid: '1-2-3',
-      }).getValue()
-
-      const result = await useCase.execute({
-        userUuid: '00000000-0000-0000-0000-000000000000',
-        sessionUuid: '00000000-0000-0000-0000-000000000001',
-        itemHash: itemHash1,
-      })
-
-      expect(result.isFailed()).toBeTruthy()
-    })
-
     it('should create a shared vault association between the item and the shared vault', async () => {
       const useCase = createUseCase()
 

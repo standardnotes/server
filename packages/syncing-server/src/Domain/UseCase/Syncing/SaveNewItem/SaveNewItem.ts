@@ -89,15 +89,9 @@ export class SaveNewItem implements UseCaseInterface<Item> {
 
     let sharedVaultAssociation = undefined
     if (dto.itemHash.representsASharedVaultItem()) {
-      const sharedVaultUuidOrError = Uuid.create(dto.itemHash.props.shared_vault_uuid as string)
-      if (sharedVaultUuidOrError.isFailed()) {
-        return Result.fail(sharedVaultUuidOrError.getError())
-      }
-      const sharedVaultUuid = sharedVaultUuidOrError.getValue()
-
       const sharedVaultAssociationOrError = SharedVaultAssociation.create({
         lastEditedBy: userUuid,
-        sharedVaultUuid,
+        sharedVaultUuid: dto.itemHash.sharedVaultUuid as Uuid,
         timestamps: Timestamps.create(
           this.timer.getTimestampInMicroseconds(),
           this.timer.getTimestampInMicroseconds(),
