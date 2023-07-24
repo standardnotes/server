@@ -42,6 +42,7 @@ export class DeleteSharedVault implements UseCaseInterface<void> {
         originatorUuid: originatorUuid.value,
         sharedVaultUuid: sharedVaultUuid.value,
         userUuid: sharedVaultUser.props.userUuid.value,
+        forceRemoveOwner: true,
       })
 
       if (result.isFailed()) {

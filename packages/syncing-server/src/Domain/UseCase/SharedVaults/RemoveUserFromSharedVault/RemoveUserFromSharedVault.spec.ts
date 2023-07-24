@@ -102,6 +102,26 @@ describe('RemoveUserFromSharedVault', () => {
     expect(result.getError()).toBe('Only owner can remove users from shared vault')
   })
 
+  it('should remove shared vault user if user is owner and is being force removed', async () => {
+    sharedVault = SharedVault.create({
+      fileUploadBytesLimit: 100,
+      fileUploadBytesUsed: 2,
+      userUuid: Uuid.create('00000000-0000-0000-0000-000000000002').getValue(),
+      timestamps: Timestamps.create(123, 123).getValue(),
+    }).getValue()
+    sharedVaultRepository.findByUuid = jest.fn().mockResolvedValue(sharedVault)
+
+    const useCase = createUseCase()
+    await useCase.execute({
+      originatorUuid: '00000000-0000-0000-0000-000000000002',
+      sharedVaultUuid: '00000000-0000-0000-0000-000000000000',
+      userUuid: '00000000-0000-0000-0000-000000000001',
+      forceRemoveOwner: true,
+    })
+
+    expect(sharedVaultUserRepository.remove).toHaveBeenCalledWith(sharedVaultUser)
+  })
+
   it('should return error when user is owner of shared vault', async () => {
     const useCase = createUseCase()
     const result = await useCase.execute({

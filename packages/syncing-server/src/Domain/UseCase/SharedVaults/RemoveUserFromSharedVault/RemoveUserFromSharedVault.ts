@@ -42,7 +42,7 @@ export class RemoveUserFromSharedVault implements UseCaseInterface<void> {
     }
 
     const removingOwner = sharedVault.props.userUuid.equals(userUuid)
-    if (removingOwner) {
+    if (removingOwner && !dto.forceRemoveOwner) {
       return Result.fail('Owner cannot be removed from shared vault')
     }
 
