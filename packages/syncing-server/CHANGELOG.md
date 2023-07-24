@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.68.4](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.68.3...@standardnotes/syncing-server@1.68.4) (2023-07-24)
+
+### Bug Fixes
+
+* **syncing-server:** force remove shared vault owner when removing shared vault ([f77e29d](https://github.com/standardnotes/syncing-server-js/commit/f77e29d3c9c9a28be3c5624d2c9bf0ffd6348377))
+
 ## [1.68.3](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.68.2...@standardnotes/syncing-server@1.68.3) (2023-07-21)
 
 **Note:** Version bump only for package @standardnotes/syncing-server
