@@ -152,6 +152,7 @@ import { NotificationHttpMapper } from '../Mapping/Http/NotificationHttpMapper'
 import { NotificationHttpRepresentation } from '../Mapping/Http/NotificationHttpRepresentation'
 import { DetermineSharedVaultOperationOnItem } from '../Domain/UseCase/SharedVaults/DetermineSharedVaultOperationOnItem/DetermineSharedVaultOperationOnItem'
 import { SharedVaultFilter } from '../Domain/Item/SaveRule/SharedVaultFilter'
+import { RemoveNotificationsForUser } from '../Domain/UseCase/Messaging/RemoveNotificationsForUser/RemoveNotificationsForUser'
 
 export class ContainerConfigLoader {
   private readonly DEFAULT_CONTENT_SIZE_TRANSFER_LIMIT = 10_000_000
@@ -550,6 +551,14 @@ export class ContainerConfigLoader {
         ),
       )
     container
+      .bind<AddNotificationForUser>(TYPES.Sync_AddNotificationForUser)
+      .toConstantValue(
+        new AddNotificationForUser(container.get(TYPES.Sync_NotificationRepository), container.get(TYPES.Sync_Timer)),
+      )
+    container
+      .bind<RemoveNotificationsForUser>(TYPES.Sync_RemoveNotificationsForUser)
+      .toConstantValue(new RemoveNotificationsForUser(container.get(TYPES.Sync_NotificationRepository)))
+    container
       .bind<UpdateExistingItem>(TYPES.Sync_UpdateExistingItem)
       .toConstantValue(
         new UpdateExistingItem(
@@ -558,6 +567,9 @@ export class ContainerConfigLoader {
           container.get(TYPES.Sync_DomainEventPublisher),
           container.get(TYPES.Sync_DomainEventFactory),
           container.get(TYPES.Sync_REVISIONS_FREQUENCY),
+          container.get(TYPES.Sync_DetermineSharedVaultOperationOnItem),
+          container.get(TYPES.Sync_AddNotificationForUser),
+          container.get(TYPES.Sync_RemoveNotificationsForUser),
         ),
       )
     container
@@ -672,11 +684,6 @@ export class ContainerConfigLoader {
           container.get(TYPES.Sync_SharedVaultUserRepository),
           container.get(TYPES.Sync_SharedVaultRepository),
         ),
-      )
-    container
-      .bind<AddNotificationForUser>(TYPES.Sync_AddNotificationForUser)
-      .toConstantValue(
-        new AddNotificationForUser(container.get(TYPES.Sync_NotificationRepository), container.get(TYPES.Sync_Timer)),
       )
     container
       .bind<RemoveUserFromSharedVault>(TYPES.Sync_RemoveSharedVaultUser)

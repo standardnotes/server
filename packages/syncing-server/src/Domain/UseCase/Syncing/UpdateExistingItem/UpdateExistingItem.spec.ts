@@ -5,9 +5,21 @@ import { Item } from '../../../Item/Item'
 import { ItemHash } from '../../../Item/ItemHash'
 import { ItemRepositoryInterface } from '../../../Item/ItemRepositoryInterface'
 import { UpdateExistingItem } from './UpdateExistingItem'
-import { Uuid, ContentType, Dates, Timestamps, UniqueEntityId, Result } from '@standardnotes/domain-core'
+import {
+  Uuid,
+  ContentType,
+  Dates,
+  Timestamps,
+  UniqueEntityId,
+  Result,
+  NotificationPayload,
+} from '@standardnotes/domain-core'
 import { SharedVaultAssociation } from '../../../SharedVault/SharedVaultAssociation'
 import { KeySystemAssociation } from '../../../KeySystem/KeySystemAssociation'
+import { DetermineSharedVaultOperationOnItem } from '../../SharedVaults/DetermineSharedVaultOperationOnItem/DetermineSharedVaultOperationOnItem'
+import { AddNotificationForUser } from '../../Messaging/AddNotificationForUser/AddNotificationForUser'
+import { RemoveNotificationsForUser } from '../../Messaging/RemoveNotificationsForUser/RemoveNotificationsForUser'
+import { SharedVaultOperationOnItem } from '../../../SharedVault/SharedVaultOperationOnItem'
 
 describe('UpdateExistingItem', () => {
   let itemRepository: ItemRepositoryInterface
@@ -16,8 +28,21 @@ describe('UpdateExistingItem', () => {
   let domainEventFactory: DomainEventFactoryInterface
   let itemHash1: ItemHash
   let item1: Item
+  let determineSharedVaultOperationOnItem: DetermineSharedVaultOperationOnItem
+  let addNotificationForUser: AddNotificationForUser
+  let removeNotificationsForUser: RemoveNotificationsForUser
 
-  const createUseCase = () => new UpdateExistingItem(itemRepository, timer, domainEventPublisher, domainEventFactory, 5)
+  const createUseCase = () =>
+    new UpdateExistingItem(
+      itemRepository,
+      timer,
+      domainEventPublisher,
+      domainEventFactory,
+      5,
+      determineSharedVaultOperationOnItem,
+      addNotificationForUser,
+      removeNotificationsForUser,
+    )
 
   beforeEach(() => {
     const timeHelper = new Timer()
@@ -80,6 +105,25 @@ describe('UpdateExistingItem', () => {
     domainEventFactory.createItemRevisionCreationRequested = jest
       .fn()
       .mockReturnValue({} as jest.Mocked<DomainEventInterface>)
+
+    determineSharedVaultOperationOnItem = {} as jest.Mocked<DetermineSharedVaultOperationOnItem>
+    determineSharedVaultOperationOnItem.execute = jest.fn().mockResolvedValue(
+      Result.ok(
+        SharedVaultOperationOnItem.create({
+          existingItem: item1,
+          incomingItemHash: itemHash1,
+          sharedVaultUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+          type: SharedVaultOperationOnItem.TYPES.AddToSharedVault,
+          userUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+        }).getValue(),
+      ),
+    )
+
+    addNotificationForUser = {} as jest.Mocked<AddNotificationForUser>
+    addNotificationForUser.execute = jest.fn().mockReturnValue(Result.ok())
+
+    removeNotificationsForUser = {} as jest.Mocked<RemoveNotificationsForUser>
+    removeNotificationsForUser.execute = jest.fn().mockReturnValue(Result.ok())
   })
 
   it('should update item', async () => {
@@ -348,6 +392,111 @@ describe('UpdateExistingItem', () => {
       })
       expect(result.isFailed()).toBeTruthy()
       mock.mockRestore()
+    })
+
+    it('should return error if it fails to determine the shared vault operation on item', async () => {
+      const useCase = createUseCase()
+
+      determineSharedVaultOperationOnItem.execute = jest.fn().mockReturnValue(Result.fail('Oops'))
+
+      const itemHash = ItemHash.create({
+        ...itemHash1.props,
+        shared_vault_uuid: '00000000-0000-0000-0000-000000000000',
+      }).getValue()
+
+      const result = await useCase.execute({
+        existingItem: item1,
+        itemHash,
+        sessionUuid: '00000000-0000-0000-0000-000000000000',
+        performingUserUuid: '00000000-0000-0000-0000-000000000000',
+      })
+      expect(result.isFailed()).toBeTruthy()
+    })
+
+    it('should return error if it fails to add notification for user', async () => {
+      determineSharedVaultOperationOnItem.execute = jest.fn().mockReturnValue(
+        Result.ok(
+          SharedVaultOperationOnItem.create({
+            existingItem: item1,
+            incomingItemHash: itemHash1,
+            sharedVaultUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+            type: SharedVaultOperationOnItem.TYPES.RemoveFromSharedVault,
+            userUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+          }).getValue(),
+        ),
+      )
+
+      addNotificationForUser.execute = jest.fn().mockReturnValue(Result.fail('Oops'))
+
+      const useCase = createUseCase()
+
+      const itemHash = ItemHash.create({
+        ...itemHash1.props,
+        shared_vault_uuid: '00000000-0000-0000-0000-000000000000',
+      }).getValue()
+
+      const result = await useCase.execute({
+        existingItem: item1,
+        itemHash,
+        sessionUuid: '00000000-0000-0000-0000-000000000000',
+        performingUserUuid: '00000000-0000-0000-0000-000000000000',
+      })
+      expect(result.isFailed()).toBeTruthy()
+    })
+
+    it('should return error if it fails to create notification payload for user', async () => {
+      determineSharedVaultOperationOnItem.execute = jest.fn().mockReturnValue(
+        Result.ok(
+          SharedVaultOperationOnItem.create({
+            existingItem: item1,
+            incomingItemHash: itemHash1,
+            sharedVaultUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+            type: SharedVaultOperationOnItem.TYPES.RemoveFromSharedVault,
+            userUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+          }).getValue(),
+        ),
+      )
+
+      const mock = jest.spyOn(NotificationPayload, 'create')
+      mock.mockImplementation(() => {
+        return Result.fail('Oops')
+      })
+
+      const useCase = createUseCase()
+
+      const itemHash = ItemHash.create({
+        ...itemHash1.props,
+        shared_vault_uuid: '00000000-0000-0000-0000-000000000000',
+      }).getValue()
+
+      const result = await useCase.execute({
+        existingItem: item1,
+        itemHash,
+        sessionUuid: '00000000-0000-0000-0000-000000000000',
+        performingUserUuid: '00000000-0000-0000-0000-000000000000',
+      })
+      expect(result.isFailed()).toBeTruthy()
+
+      mock.mockRestore()
+    })
+
+    it('should return error if it fails to remove notifications for user', async () => {
+      const useCase = createUseCase()
+
+      removeNotificationsForUser.execute = jest.fn().mockReturnValue(Result.fail('Oops'))
+
+      const itemHash = ItemHash.create({
+        ...itemHash1.props,
+        shared_vault_uuid: '00000000-0000-0000-0000-000000000000',
+      }).getValue()
+
+      const result = await useCase.execute({
+        existingItem: item1,
+        itemHash,
+        sessionUuid: '00000000-0000-0000-0000-000000000000',
+        performingUserUuid: '00000000-0000-0000-0000-000000000000',
+      })
+      expect(result.isFailed()).toBeTruthy()
     })
   })
 

@@ -1,6 +1,8 @@
 import {
   ContentType,
   Dates,
+  NotificationPayload,
+  NotificationType,
   Result,
   Timestamps,
   UniqueEntityId,
@@ -17,6 +19,10 @@ import { ItemRepositoryInterface } from '../../../Item/ItemRepositoryInterface'
 import { DomainEventFactoryInterface } from '../../../Event/DomainEventFactoryInterface'
 import { SharedVaultAssociation } from '../../../SharedVault/SharedVaultAssociation'
 import { KeySystemAssociation } from '../../../KeySystem/KeySystemAssociation'
+import { DetermineSharedVaultOperationOnItem } from '../../SharedVaults/DetermineSharedVaultOperationOnItem/DetermineSharedVaultOperationOnItem'
+import { SharedVaultOperationOnItem } from '../../../SharedVault/SharedVaultOperationOnItem'
+import { AddNotificationForUser } from '../../Messaging/AddNotificationForUser/AddNotificationForUser'
+import { RemoveNotificationsForUser } from '../../Messaging/RemoveNotificationsForUser/RemoveNotificationsForUser'
 
 export class UpdateExistingItem implements UseCaseInterface<Item> {
   constructor(
@@ -25,6 +31,9 @@ export class UpdateExistingItem implements UseCaseInterface<Item> {
     private domainEventPublisher: DomainEventPublisherInterface,
     private domainEventFactory: DomainEventFactoryInterface,
     private revisionFrequency: number,
+    private determineSharedVaultOperationOnItem: DetermineSharedVaultOperationOnItem,
+    private addNotificationForUser: AddNotificationForUser,
+    private removeNotificationsForUser: RemoveNotificationsForUser,
   ) {}
 
   async execute(dto: UpdateExistingItemDTO): Promise<Result<Item>> {
@@ -113,6 +122,7 @@ export class UpdateExistingItem implements UseCaseInterface<Item> {
 
     dto.existingItem.props.contentSize = Buffer.byteLength(JSON.stringify(dto.existingItem))
 
+    let sharedVaultOperation: SharedVaultOperationOnItem | null = null
     if (dto.itemHash.representsASharedVaultItem()) {
       const sharedVaultAssociationOrError = SharedVaultAssociation.create(
         {
@@ -138,6 +148,16 @@ export class UpdateExistingItem implements UseCaseInterface<Item> {
       }
 
       dto.existingItem.props.sharedVaultAssociation = sharedVaultAssociationOrError.getValue()
+
+      const sharedVaultOperationOrError = await this.determineSharedVaultOperationOnItem.execute({
+        existingItem: dto.existingItem,
+        itemHash: dto.itemHash,
+        userUuid: userUuid.value,
+      })
+      if (sharedVaultOperationOrError.isFailed()) {
+        return Result.fail(sharedVaultOperationOrError.getError())
+      }
+      sharedVaultOperation = sharedVaultOperationOrError.getValue()
     }
 
     if (
@@ -199,6 +219,55 @@ export class UpdateExistingItem implements UseCaseInterface<Item> {
       )
     }
 
+    const notificationsResult = await this.addNotifications(dto.existingItem.uuid, userUuid, sharedVaultOperation)
+    if (notificationsResult.isFailed()) {
+      return Result.fail(notificationsResult.getError())
+    }
+
     return Result.ok(dto.existingItem)
+  }
+
+  private async addNotifications(
+    itemUuid: Uuid,
+    userUuid: Uuid,
+    sharedVaultOperation: SharedVaultOperationOnItem | null,
+  ): Promise<Result<void>> {
+    if (
+      sharedVaultOperation &&
+      sharedVaultOperation.props.type === SharedVaultOperationOnItem.TYPES.RemoveFromSharedVault
+    ) {
+      const notificationPayloadOrError = NotificationPayload.create({
+        sharedVaultUuid: sharedVaultOperation.props.sharedVaultUuid,
+        type: NotificationType.create(NotificationType.TYPES.SharedVaultItemRemoved).getValue(),
+        itemUuid: itemUuid,
+        version: '1.0',
+      })
+      if (notificationPayloadOrError.isFailed()) {
+        return Result.fail(notificationPayloadOrError.getError())
+      }
+      const payload = notificationPayloadOrError.getValue()
+
+      const result = await this.addNotificationForUser.execute({
+        payload,
+        type: NotificationType.TYPES.SharedVaultItemRemoved,
+        userUuid: userUuid.value,
+        version: '1.0',
+      })
+      if (result.isFailed()) {
+        return Result.fail(result.getError())
+      }
+    }
+
+    if (sharedVaultOperation && sharedVaultOperation.props.type === SharedVaultOperationOnItem.TYPES.AddToSharedVault) {
+      const result = await this.removeNotificationsForUser.execute({
+        type: NotificationType.TYPES.SharedVaultItemRemoved,
+        userUuid: userUuid.value,
+      })
+      if (result.isFailed()) {
+        return Result.fail(result.getError())
+      }
+    }
+
+    return Result.ok()
   }
 }

@@ -1,5 +1,5 @@
 import { Repository } from 'typeorm'
-import { MapperInterface, Uuid } from '@standardnotes/domain-core'
+import { MapperInterface, NotificationType, Uuid } from '@standardnotes/domain-core'
 
 import { NotificationRepositoryInterface } from '../../Domain/Notifications/NotificationRepositoryInterface'
 import { TypeORMNotification } from './TypeORMNotification'
@@ -10,6 +10,24 @@ export class TypeORMNotificationRepository implements NotificationRepositoryInte
     private ormRepository: Repository<TypeORMNotification>,
     private mapper: MapperInterface<Notification, TypeORMNotification>,
   ) {}
+
+  async findByUserUuidAndType(userUuid: Uuid, type: NotificationType): Promise<Notification[]> {
+    const persistence = await this.ormRepository
+      .createQueryBuilder('notification')
+      .where('notification.user_uuid = :userUuid', {
+        userUuid: userUuid.value,
+      })
+      .andWhere('notification.type = :type', {
+        type: type.value,
+      })
+      .getMany()
+
+    return persistence.map((p) => this.mapper.toDomain(p))
+  }
+
+  async remove(notification: Notification): Promise<void> {
+    await this.ormRepository.remove(this.mapper.toProjection(notification))
+  }
 
   async save(sharedVault: Notification): Promise<void> {
     const persistence = this.mapper.toProjection(sharedVault)
