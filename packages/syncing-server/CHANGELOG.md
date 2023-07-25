@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.70.1](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.70.0...@standardnotes/syncing-server@1.70.1) (2023-07-25)
+
+### Bug Fixes
+
+* **syncing-server:** allow sender to decline the invite ([#671](https://github.com/standardnotes/syncing-server-js/issues/671)) ([46c4947](https://github.com/standardnotes/syncing-server-js/commit/46c4947871f342f0a07c68562b0e3e77e7e114d4))
+
 # [1.70.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.69.0...@standardnotes/syncing-server@1.70.0) (2023-07-25)
 
 ### Features
