@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.70.2](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.70.1...@standardnotes/syncing-server@1.70.2) (2023-07-25)
+
+### Bug Fixes
+
+* **syncing-server:** remove notifications after adding item to vault ([#672](https://github.com/standardnotes/syncing-server-js/issues/672)) ([8f88a87](https://github.com/standardnotes/syncing-server-js/commit/8f88a87c93e21f52a029167f2408ff061e2a4e93))
+
 ## [1.70.1](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.70.0...@standardnotes/syncing-server@1.70.1) (2023-07-25)
 
 ### Bug Fixes
