@@ -76,6 +76,7 @@ const TYPES = {
   Sync_GetItems: Symbol.for('Sync_GetItems'),
   Sync_SaveItems: Symbol.for('Sync_SaveItems'),
   Sync_GetUserNotifications: Symbol.for('Sync_GetUserNotifications'),
+  Sync_DetermineSharedVaultOperationOnItem: Symbol.for('Sync_DetermineSharedVaultOperationOnItem'),
   // Handlers
   Sync_AccountDeletionRequestedEventHandler: Symbol.for('Sync_AccountDeletionRequestedEventHandler'),
   Sync_DuplicateItemSyncedEventHandler: Symbol.for('Sync_DuplicateItemSyncedEventHandler'),
@@ -98,6 +99,7 @@ const TYPES = {
   Sync_ItemBackupService: Symbol.for('Sync_ItemBackupService'),
   Sync_ItemSaveValidator: Symbol.for('Sync_ItemSaveValidator'),
   Sync_OwnershipFilter: Symbol.for('Sync_OwnershipFilter'),
+  Sync_SharedVaultFilter: Symbol.for('Sync_SharedVaultFilter'),
   Sync_TimeDifferenceFilter: Symbol.for('Sync_TimeDifferenceFilter'),
   Sync_ContentTypeFilter: Symbol.for('Sync_ContentTypeFilter'),
   Sync_ContentFilter: Symbol.for('Sync_ContentFilter'),

@@ -39,41 +39,41 @@ export class DetermineSharedVaultOperationOnItem implements UseCaseInterface<Sha
     if (isMovingToOtherSharedVault) {
       operationOrError = SharedVaultOperationOnItem.create({
         existingItem: dto.existingItem as Item,
-        sharedVaultUuid: (existingItemSharedVaultUuid as Uuid).value,
-        targetSharedVaultUuid: targetItemSharedVaultUuid.value,
+        sharedVaultUuid: existingItemSharedVaultUuid as Uuid,
+        targetSharedVaultUuid: targetItemSharedVaultUuid,
         incomingItemHash: dto.itemHash,
-        userUuid: userUuid.value,
+        userUuid: userUuid,
         type: SharedVaultOperationOnItem.TYPES.MoveToOtherSharedVault,
       })
     } else if (isRemovingFromSharedVault) {
       operationOrError = SharedVaultOperationOnItem.create({
         existingItem: dto.existingItem as Item,
-        sharedVaultUuid: (existingItemSharedVaultUuid as Uuid).value,
+        sharedVaultUuid: existingItemSharedVaultUuid as Uuid,
         incomingItemHash: dto.itemHash,
-        userUuid: userUuid.value,
+        userUuid: userUuid,
         type: SharedVaultOperationOnItem.TYPES.RemoveFromSharedVault,
       })
     } else if (isAddingToSharedVault) {
       operationOrError = SharedVaultOperationOnItem.create({
         existingItem: dto.existingItem as Item,
-        sharedVaultUuid: targetItemSharedVaultUuid.value,
+        sharedVaultUuid: targetItemSharedVaultUuid,
         incomingItemHash: dto.itemHash,
-        userUuid: userUuid.value,
+        userUuid: userUuid,
         type: SharedVaultOperationOnItem.TYPES.AddToSharedVault,
       })
     } else if (isSavingToSharedVault) {
       operationOrError = SharedVaultOperationOnItem.create({
         existingItem: dto.existingItem as Item,
-        sharedVaultUuid: (existingItemSharedVaultUuid as Uuid).value,
+        sharedVaultUuid: existingItemSharedVaultUuid as Uuid,
         incomingItemHash: dto.itemHash,
-        userUuid: userUuid.value,
+        userUuid: userUuid,
         type: SharedVaultOperationOnItem.TYPES.SaveToSharedVault,
       })
     } else {
       operationOrError = SharedVaultOperationOnItem.create({
-        sharedVaultUuid: (targetItemSharedVaultUuid as Uuid).value,
+        sharedVaultUuid: targetItemSharedVaultUuid as Uuid,
         incomingItemHash: dto.itemHash,
-        userUuid: userUuid.value,
+        userUuid: userUuid,
         type: SharedVaultOperationOnItem.TYPES.CreateToSharedVault,
       })
     }

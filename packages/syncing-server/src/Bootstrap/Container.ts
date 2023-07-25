@@ -150,6 +150,8 @@ import { MessageHttpMapper } from '../Mapping/Http/MessageHttpMapper'
 import { GetUserNotifications } from '../Domain/UseCase/Messaging/GetUserNotifications/GetUserNotifications'
 import { NotificationHttpMapper } from '../Mapping/Http/NotificationHttpMapper'
 import { NotificationHttpRepresentation } from '../Mapping/Http/NotificationHttpRepresentation'
+import { DetermineSharedVaultOperationOnItem } from '../Domain/UseCase/SharedVaults/DetermineSharedVaultOperationOnItem/DetermineSharedVaultOperationOnItem'
+import { SharedVaultFilter } from '../Domain/Item/SaveRule/SharedVaultFilter'
 
 export class ContainerConfigLoader {
   private readonly DEFAULT_CONTENT_SIZE_TRANSFER_LIMIT = 10_000_000
@@ -494,12 +496,24 @@ export class ContainerConfigLoader {
       .bind<TokenEncoderInterface<SharedVaultValetTokenData>>(TYPES.Sync_SharedVaultValetTokenEncoder)
       .toConstantValue(new TokenEncoder<SharedVaultValetTokenData>(container.get(TYPES.Sync_VALET_TOKEN_SECRET)))
 
+    container
+      .bind<DetermineSharedVaultOperationOnItem>(TYPES.Sync_DetermineSharedVaultOperationOnItem)
+      .toConstantValue(new DetermineSharedVaultOperationOnItem())
+
     container.bind<OwnershipFilter>(TYPES.Sync_OwnershipFilter).toConstantValue(new OwnershipFilter())
     container
       .bind<TimeDifferenceFilter>(TYPES.Sync_TimeDifferenceFilter)
       .toConstantValue(new TimeDifferenceFilter(container.get(TYPES.Sync_Timer)))
     container.bind<ContentTypeFilter>(TYPES.Sync_ContentTypeFilter).toConstantValue(new ContentTypeFilter())
     container.bind<ContentFilter>(TYPES.Sync_ContentFilter).toConstantValue(new ContentFilter())
+    container
+      .bind<SharedVaultFilter>(TYPES.Sync_SharedVaultFilter)
+      .toConstantValue(
+        new SharedVaultFilter(
+          container.get(TYPES.Sync_DetermineSharedVaultOperationOnItem),
+          container.get(TYPES.Sync_SharedVaultUserRepository),
+        ),
+      )
     container
       .bind<ItemSaveValidatorInterface>(TYPES.Sync_ItemSaveValidator)
       .toConstantValue(
@@ -508,6 +522,7 @@ export class ContainerConfigLoader {
           container.get(TYPES.Sync_TimeDifferenceFilter),
           container.get(TYPES.Sync_ContentTypeFilter),
           container.get(TYPES.Sync_ContentFilter),
+          container.get(TYPES.Sync_SharedVaultFilter),
         ]),
       )
 

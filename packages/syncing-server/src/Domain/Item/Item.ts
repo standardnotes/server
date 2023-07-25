@@ -20,13 +20,16 @@ export class Item extends Aggregate<ItemProps> {
     return this.props.sharedVaultAssociation.props.sharedVaultUuid
   }
 
+  isAssociatedWithASharedVault(): boolean {
+    return this.sharedVaultUuid !== null
+  }
+
   isAssociatedWithSharedVault(sharedVaultUuid: Uuid): boolean {
-    const associatedSharedVaultUuid = this.sharedVaultUuid
-    if (!associatedSharedVaultUuid) {
+    if (!this.isAssociatedWithASharedVault()) {
       return false
     }
 
-    return associatedSharedVaultUuid.equals(sharedVaultUuid)
+    return (this.sharedVaultUuid as Uuid).equals(sharedVaultUuid)
   }
 
   isAssociatedWithKeySystem(keySystemIdentifier: string): boolean {

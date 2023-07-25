@@ -80,8 +80,8 @@ describe('DetermineSharedVaultOperationOnItem', () => {
 
     expect(result.isFailed()).toBeFalsy()
     expect(result.getValue().props.type).toEqual(SharedVaultOperationOnItem.TYPES.MoveToOtherSharedVault)
-    expect(result.getValue().props.sharedVaultUuid).toEqual('00000000-0000-0000-0000-000000000000')
-    expect(result.getValue().props.targetSharedVaultUuid).toEqual('00000000-0000-0000-0000-000000000001')
+    expect(result.getValue().props.sharedVaultUuid.value).toEqual('00000000-0000-0000-0000-000000000000')
+    expect(result.getValue().props.targetSharedVaultUuid?.value).toEqual('00000000-0000-0000-0000-000000000001')
   })
 
   it('should return an operation representing removing from shared vault', async () => {
@@ -108,7 +108,7 @@ describe('DetermineSharedVaultOperationOnItem', () => {
 
     expect(result.isFailed()).toBeFalsy()
     expect(result.getValue().props.type).toEqual(SharedVaultOperationOnItem.TYPES.RemoveFromSharedVault)
-    expect(result.getValue().props.sharedVaultUuid).toEqual('00000000-0000-0000-0000-000000000000')
+    expect(result.getValue().props.sharedVaultUuid.value).toEqual('00000000-0000-0000-0000-000000000000')
   })
 
   it('should return an operation representing adding to shared vault', async () => {
@@ -125,7 +125,7 @@ describe('DetermineSharedVaultOperationOnItem', () => {
 
     expect(result.isFailed()).toBeFalsy()
     expect(result.getValue().props.type).toEqual(SharedVaultOperationOnItem.TYPES.AddToSharedVault)
-    expect(result.getValue().props.sharedVaultUuid).toEqual('00000000-0000-0000-0000-000000000001')
+    expect(result.getValue().props.sharedVaultUuid.value).toEqual('00000000-0000-0000-0000-000000000001')
   })
 
   it('should return an operation representing saving to shared vault', async () => {
@@ -152,7 +152,7 @@ describe('DetermineSharedVaultOperationOnItem', () => {
 
     expect(result.isFailed()).toBeFalsy()
     expect(result.getValue().props.type).toEqual(SharedVaultOperationOnItem.TYPES.SaveToSharedVault)
-    expect(result.getValue().props.sharedVaultUuid).toEqual('00000000-0000-0000-0000-000000000000')
+    expect(result.getValue().props.sharedVaultUuid.value).toEqual('00000000-0000-0000-0000-000000000000')
   })
 
   it('should return an operation representing creating to shared vault', async () => {
@@ -169,7 +169,7 @@ describe('DetermineSharedVaultOperationOnItem', () => {
 
     expect(result.isFailed()).toBeFalsy()
     expect(result.getValue().props.type).toEqual(SharedVaultOperationOnItem.TYPES.CreateToSharedVault)
-    expect(result.getValue().props.sharedVaultUuid).toEqual('00000000-0000-0000-0000-000000000001')
+    expect(result.getValue().props.sharedVaultUuid.value).toEqual('00000000-0000-0000-0000-000000000001')
   })
 
   it('should return an error if both existing and incoming item hash do not have shared vault uuid', async () => {
