@@ -57,6 +57,7 @@ const TYPES = {
   Sync_GetSharedVaultUsers: Symbol.for('Sync_GetSharedVaultUsers'),
   Sync_AddUserToSharedVault: Symbol.for('Sync_AddUserToSharedVault'),
   Sync_AddNotificationForUser: Symbol.for('Sync_AddNotificationForUser'),
+  Sync_RemoveNotificationsForUser: Symbol.for('Sync_RemoveNotificationsForUser'),
   Sync_RemoveSharedVaultUser: Symbol.for('Sync_RemoveSharedVaultUser'),
   Sync_InviteUserToSharedVault: Symbol.for('Sync_InviteUserToSharedVault'),
   Sync_UpdateSharedVaultInvite: Symbol.for('Sync_UpdateSharedVaultInvite'),
