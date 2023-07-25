@@ -20,7 +20,7 @@ export class DeleteSharedVaultInvitesToUser implements UseCaseInterface<void> {
     for (const invite of inboundInvites) {
       const result = await this.declineInviteToSharedVault.execute({
         inviteUuid: invite.id.toString(),
-        originatorUuid: userUuid.value,
+        userUuid: userUuid.value,
       })
       if (result.isFailed()) {
         return Result.fail(result.getError())

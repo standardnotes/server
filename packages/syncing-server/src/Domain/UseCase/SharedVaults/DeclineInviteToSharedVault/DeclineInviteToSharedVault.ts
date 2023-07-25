@@ -12,19 +12,19 @@ export class DeclineInviteToSharedVault implements UseCaseInterface<void> {
     }
     const inviteUuid = inviteUuidOrError.getValue()
 
-    const originatorUuidOrError = Uuid.create(dto.originatorUuid)
-    if (originatorUuidOrError.isFailed()) {
-      return Result.fail(originatorUuidOrError.getError())
+    const userUuidOrError = Uuid.create(dto.userUuid)
+    if (userUuidOrError.isFailed()) {
+      return Result.fail(userUuidOrError.getError())
     }
-    const originatorUuid = originatorUuidOrError.getValue()
+    const userUuid = userUuidOrError.getValue()
 
     const invite = await this.sharedVaultInviteRepository.findByUuid(inviteUuid)
     if (!invite) {
       return Result.fail('Invite not found')
     }
 
-    if (!invite.props.userUuid.equals(originatorUuid)) {
-      return Result.fail('Only the recipient of the invite can decline it')
+    if (!invite.props.userUuid.equals(userUuid) && !invite.props.senderUuid.equals(userUuid)) {
+      return Result.fail('Only the recipient or the sender can decline the invite')
     }
 
     await this.sharedVaultInviteRepository.remove(invite)

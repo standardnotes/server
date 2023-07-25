@@ -30,7 +30,7 @@ describe('DeclineInviteToSharedVault', () => {
 
     const result = await useCase.execute({
       inviteUuid: 'invalid',
-      originatorUuid: '00000000-0000-0000-0000-000000000000',
+      userUuid: '00000000-0000-0000-0000-000000000000',
     })
 
     expect(result.isFailed()).toBe(true)
@@ -42,7 +42,7 @@ describe('DeclineInviteToSharedVault', () => {
 
     const result = await useCase.execute({
       inviteUuid: '00000000-0000-0000-0000-000000000000',
-      originatorUuid: 'invalid',
+      userUuid: 'invalid',
     })
 
     expect(result.isFailed()).toBe(true)
@@ -56,7 +56,7 @@ describe('DeclineInviteToSharedVault', () => {
 
     const result = await useCase.execute({
       inviteUuid: '00000000-0000-0000-0000-000000000000',
-      originatorUuid: '00000000-0000-0000-0000-000000000000',
+      userUuid: '00000000-0000-0000-0000-000000000000',
     })
 
     expect(result.isFailed()).toBe(true)
@@ -68,11 +68,11 @@ describe('DeclineInviteToSharedVault', () => {
 
     const result = await useCase.execute({
       inviteUuid: '00000000-0000-0000-0000-000000000000',
-      originatorUuid: '00000000-0000-0000-0000-000000000001',
+      userUuid: '00000000-0000-0000-0000-000000000001',
     })
 
     expect(result.isFailed()).toBe(true)
-    expect(result.getError()).toBe('Only the recipient of the invite can decline it')
+    expect(result.getError()).toBe('Only the recipient or the sender can decline the invite')
   })
 
   it('should delete invite', async () => {
@@ -80,7 +80,7 @@ describe('DeclineInviteToSharedVault', () => {
 
     await useCase.execute({
       inviteUuid: '00000000-0000-0000-0000-000000000000',
-      originatorUuid: '00000000-0000-0000-0000-000000000000',
+      userUuid: '00000000-0000-0000-0000-000000000000',
     })
 
     expect(sharedVaultInviteRepository.remove).toHaveBeenCalled()

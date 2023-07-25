@@ -1,4 +1,4 @@
 export interface DeclineInviteToSharedVaultDTO {
   inviteUuid: string
-  originatorUuid: string
+  userUuid: string
 }
