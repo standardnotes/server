@@ -1,4 +1,4 @@
-import { ContentType } from '@standardnotes/domain-core'
+import { ContentType, Uuid } from '@standardnotes/domain-core'
 
 import { ItemHash } from '../Item/ItemHash'
 import { SharedVaultOperationOnItem } from './SharedVaultOperationOnItem'
@@ -24,58 +24,22 @@ describe('SharedVaultOperationOnItem', () => {
   it('should create a value object', () => {
     const valueOrError = SharedVaultOperationOnItem.create({
       incomingItemHash: itemHash,
-      sharedVaultUuid: '00000000-0000-0000-0000-000000000000',
-      targetSharedVaultUuid: '00000000-0000-0000-0000-000000000000',
+      sharedVaultUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+      targetSharedVaultUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
       type: SharedVaultOperationOnItem.TYPES.AddToSharedVault,
-      userUuid: '00000000-0000-0000-0000-000000000000',
+      userUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
     })
 
     expect(valueOrError.isFailed()).toBeFalsy()
   })
 
-  it('should return error if user uuid is not valid', () => {
-    const valueOrError = SharedVaultOperationOnItem.create({
-      incomingItemHash: itemHash,
-      sharedVaultUuid: '00000000-0000-0000-0000-000000000000',
-      targetSharedVaultUuid: '00000000-0000-0000-0000-000000000000',
-      type: SharedVaultOperationOnItem.TYPES.AddToSharedVault,
-      userUuid: 'invalid',
-    })
-
-    expect(valueOrError.isFailed()).toBeTruthy()
-  })
-
-  it('should return error if shared vault uuid is not valid', () => {
-    const valueOrError = SharedVaultOperationOnItem.create({
-      incomingItemHash: itemHash,
-      sharedVaultUuid: 'invalid',
-      targetSharedVaultUuid: '00000000-0000-0000-0000-000000000000',
-      type: SharedVaultOperationOnItem.TYPES.AddToSharedVault,
-      userUuid: '00000000-0000-0000-0000-000000000000',
-    })
-
-    expect(valueOrError.isFailed()).toBeTruthy()
-  })
-
   it('should return error if shared vault operation type is invalid', () => {
     const valueOrError = SharedVaultOperationOnItem.create({
       incomingItemHash: itemHash,
-      sharedVaultUuid: '00000000-0000-0000-0000-000000000000',
-      targetSharedVaultUuid: '00000000-0000-0000-0000-000000000000',
+      sharedVaultUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+      targetSharedVaultUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
       type: 'invalid',
-      userUuid: '00000000-0000-0000-0000-000000000000',
-    })
-
-    expect(valueOrError.isFailed()).toBeTruthy()
-  })
-
-  it('should return error if target shared vault uuid is not valid', () => {
-    const valueOrError = SharedVaultOperationOnItem.create({
-      incomingItemHash: itemHash,
-      sharedVaultUuid: '00000000-0000-0000-0000-000000000000',
-      targetSharedVaultUuid: 'invalid',
-      type: SharedVaultOperationOnItem.TYPES.AddToSharedVault,
-      userUuid: '00000000-0000-0000-0000-000000000000',
+      userUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
     })
 
     expect(valueOrError.isFailed()).toBeTruthy()
@@ -84,10 +48,10 @@ describe('SharedVaultOperationOnItem', () => {
   it('should return error if operation type is move to other shared vault and target shared vault uuid is not provided', () => {
     const valueOrError = SharedVaultOperationOnItem.create({
       incomingItemHash: itemHash,
-      sharedVaultUuid: '00000000-0000-0000-0000-000000000000',
+      sharedVaultUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
       targetSharedVaultUuid: undefined,
       type: SharedVaultOperationOnItem.TYPES.MoveToOtherSharedVault,
-      userUuid: '00000000-0000-0000-0000-000000000000',
+      userUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
     })
 
     expect(valueOrError.isFailed()).toBeTruthy()

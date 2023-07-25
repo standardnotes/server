@@ -59,6 +59,31 @@ describe('OwnershipFilter', () => {
     })
   })
 
+  it('should deffer to the shared vault filter if the item hash represents a shared vault item or existing item is a shared vault item', async () => {
+    const itemHash = ItemHash.create({
+      uuid: '2-3-4',
+      content_type: ContentType.TYPES.Note,
+      user_uuid: '00000000-0000-0000-0000-000000000000',
+      content: 'foobar',
+      created_at: '2020-01-01T00:00:00.000Z',
+      updated_at: '2020-01-01T00:00:00.000Z',
+      created_at_timestamp: 123,
+      updated_at_timestamp: 123,
+      key_system_identifier: null,
+      shared_vault_uuid: '00000000-0000-0000-0000-000000000000',
+    }).getValue()
+    const result = await createFilter().check({
+      userUuid: '00000000-0000-0000-0000-000000000001',
+      apiVersion: ApiVersion.v20200115,
+      itemHash,
+      existingItem,
+    })
+
+    expect(result).toEqual({
+      passed: true,
+    })
+  })
+
   it('should leave items belonging to the same user', async () => {
     const result = await createFilter().check({
       userUuid: '00000000-0000-0000-0000-000000000000',
