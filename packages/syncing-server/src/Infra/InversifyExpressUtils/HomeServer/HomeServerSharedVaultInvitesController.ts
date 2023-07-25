@@ -132,7 +132,7 @@ export class HomeServerSharedVaultInvitesController extends BaseHttpController {
   async declineSharedVaultInvite(request: Request, response: Response): Promise<results.JsonResult> {
     const result = await this.declineSharedVaultInviteUseCase.execute({
       inviteUuid: request.params.inviteUuid,
-      originatorUuid: response.locals.user.uuid,
+      userUuid: response.locals.user.uuid,
     })
 
     if (result.isFailed()) {
@@ -239,7 +239,7 @@ export class HomeServerSharedVaultInvitesController extends BaseHttpController {
   async deleteSharedVaultInvite(request: Request, response: Response): Promise<results.JsonResult> {
     const result = await this.declineSharedVaultInviteUseCase.execute({
       inviteUuid: request.params.inviteUuid,
-      originatorUuid: response.locals.user.uuid,
+      userUuid: response.locals.user.uuid,
     })
 
     if (result.isFailed()) {
