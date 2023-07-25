@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.70.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.69.0...@standardnotes/syncing-server@1.70.0) (2023-07-25)
+
+### Features
+
+* **syncing-server:** filtering items by shared vault permissions ([#670](https://github.com/standardnotes/syncing-server-js/issues/670)) ([5f7e768](https://github.com/standardnotes/syncing-server-js/commit/5f7e768e64da0452e6efcf70e36cb5e867291456))
+
 # [1.69.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.68.4...@standardnotes/syncing-server@1.69.0) (2023-07-24)
 
 ### Features
