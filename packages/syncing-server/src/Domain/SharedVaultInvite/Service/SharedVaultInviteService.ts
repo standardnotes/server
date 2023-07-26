@@ -85,6 +85,16 @@ export class SharedVaultInviteService implements SharedVaultInviteServiceInterfa
     }
   }
 
+  async deleteAllOutboundInvites(dto: { userUuid: string }): Promise<void> {
+    const outboundInvites = await this.sharedVaultInviteRepository.findAll({
+      senderUuid: dto.userUuid,
+    })
+
+    for (const invite of outboundInvites) {
+      await this.sharedVaultInviteRepository.remove(invite)
+    }
+  }
+
   async getInvitesForSharedVault(dto: {
     sharedVaultUuid: string
     originatorUuid: string

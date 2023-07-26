@@ -107,6 +107,18 @@ export class SharedVaultInvitesController extends BaseHttpController {
     return this.json({ success: true })
   }
 
+  @httpDelete('/invites/outbound', TYPES.AuthMiddleware)
+  public async deleteOutboundUserInvites(
+    _request: Request,
+    response: Response,
+  ): Promise<results.NotFoundResult | results.JsonResult> {
+    await this.sharedVaultInviteService.deleteAllOutboundInvites({
+      userUuid: response.locals.user.uuid,
+    })
+
+    return this.json({ success: true })
+  }
+
   @httpGet('/invites/outbound', TYPES.AuthMiddleware)
   public async getOutboundUserInvites(
     _request: Request,
