@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.70.4](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.70.3...@standardnotes/syncing-server@1.70.4) (2023-07-26)
+
+### Bug Fixes
+
+* **syncing-serve:** removing other users from shared vault ([6b2389c](https://github.com/standardnotes/syncing-server-js/commit/6b2389cdc3da6d522f9ce0ba3ddff3ef1e99674f))
+
 ## [1.70.3](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.70.2...@standardnotes/syncing-server@1.70.3) (2023-07-26)
 
 ### Bug Fixes
