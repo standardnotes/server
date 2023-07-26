@@ -87,7 +87,27 @@ export class SaveNewItem implements UseCaseInterface<Item> {
     }
     const timestamps = timestampsOrError.getValue()
 
-    let sharedVaultAssociation = undefined
+    const itemOrError = Item.create(
+      {
+        updatedWithSession,
+        content: dto.itemHash.props.content ?? null,
+        userUuid,
+        contentType,
+        encItemKey: dto.itemHash.props.enc_item_key ?? null,
+        authHash: dto.itemHash.props.auth_hash ?? null,
+        itemsKeyId: dto.itemHash.props.items_key_id ?? null,
+        duplicateOf,
+        deleted: dto.itemHash.props.deleted ?? false,
+        dates,
+        timestamps,
+      },
+      new UniqueEntityId(uuid.value),
+    )
+    if (itemOrError.isFailed()) {
+      return Result.fail(itemOrError.getError())
+    }
+    const newItem = itemOrError.getValue()
+
     if (dto.itemHash.representsASharedVaultItem()) {
       const sharedVaultAssociationOrError = SharedVaultAssociation.create({
         lastEditedBy: userUuid,
@@ -101,10 +121,9 @@ export class SaveNewItem implements UseCaseInterface<Item> {
       if (sharedVaultAssociationOrError.isFailed()) {
         return Result.fail(sharedVaultAssociationOrError.getError())
       }
-      sharedVaultAssociation = sharedVaultAssociationOrError.getValue()
+      newItem.setSharedVaultAssociation(sharedVaultAssociationOrError.getValue())
     }
 
-    let keySystemAssociation = undefined
     if (dto.itemHash.hasDedicatedKeySystemAssociation()) {
       const keySystemIdentifiedValidationResult = Validator.isNotEmptyString(dto.itemHash.props.key_system_identifier)
       if (keySystemIdentifiedValidationResult.isFailed()) {
@@ -123,31 +142,8 @@ export class SaveNewItem implements UseCaseInterface<Item> {
       if (keySystemAssociationOrError.isFailed()) {
         return Result.fail(keySystemAssociationOrError.getError())
       }
-      keySystemAssociation = keySystemAssociationOrError.getValue()
+      newItem.setKeySystemAssociation(keySystemAssociationOrError.getValue())
     }
-
-    const itemOrError = Item.create(
-      {
-        updatedWithSession,
-        content: dto.itemHash.props.content ?? null,
-        userUuid,
-        contentType,
-        encItemKey: dto.itemHash.props.enc_item_key ?? null,
-        authHash: dto.itemHash.props.auth_hash ?? null,
-        itemsKeyId: dto.itemHash.props.items_key_id ?? null,
-        duplicateOf,
-        deleted: dto.itemHash.props.deleted ?? false,
-        dates,
-        timestamps,
-        keySystemAssociation,
-        sharedVaultAssociation,
-      },
-      new UniqueEntityId(uuid.value),
-    )
-    if (itemOrError.isFailed()) {
-      return Result.fail(itemOrError.getError())
-    }
-    const newItem = itemOrError.getValue()
 
     await this.itemRepository.save(newItem)
 

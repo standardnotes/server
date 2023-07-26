@@ -1,6 +1,6 @@
 import { ReadStream } from 'fs'
 import { Repository, SelectQueryBuilder } from 'typeorm'
-import { MapperInterface, Uuid } from '@standardnotes/domain-core'
+import { Change, MapperInterface, Uuid } from '@standardnotes/domain-core'
 
 import { Item } from '../../Domain/Item/Item'
 import { ItemQuery } from '../../Domain/Item/ItemQuery'
@@ -10,6 +10,8 @@ import { TypeORMItem } from './TypeORMItem'
 import { KeySystemAssociationRepositoryInterface } from '../../Domain/KeySystem/KeySystemAssociationRepositoryInterface'
 import { SharedVaultAssociationRepositoryInterface } from '../../Domain/SharedVault/SharedVaultAssociationRepositoryInterface'
 import { TypeORMSharedVaultAssociation } from './TypeORMSharedVaultAssociation'
+import { SharedVaultAssociation } from '../../Domain/SharedVault/SharedVaultAssociation'
+import { KeySystemAssociation } from '../../Domain/KeySystem/KeySystemAssociation'
 
 export class TypeORMItemRepository implements ItemRepositoryInterface {
   constructor(
@@ -24,13 +26,7 @@ export class TypeORMItemRepository implements ItemRepositoryInterface {
 
     await this.ormRepository.save(persistence)
 
-    if (item.props.sharedVaultAssociation) {
-      await this.sharedVaultAssociationRepository.save(item.props.sharedVaultAssociation)
-    }
-
-    if (item.props.keySystemAssociation) {
-      await this.keySystemAssociationRepository.save(item.props.keySystemAssociation)
-    }
+    await this.persistAssociationChanges(item)
   }
 
   async remove(item: Item): Promise<void> {
@@ -272,5 +268,28 @@ export class TypeORMItemRepository implements ItemRepositoryInterface {
     if (sharedVaultAssociation) {
       item.props.sharedVaultAssociation = sharedVaultAssociation
     }
+  }
+
+  private async persistAssociationChanges(item: Item): Promise<void> {
+    for (const change of item.getChanges()) {
+      if (change.props.changeData instanceof SharedVaultAssociation) {
+        if ([Change.TYPES.Add, Change.TYPES.Modify].includes(change.props.changeType)) {
+          await this.sharedVaultAssociationRepository.save(change.props.changeData)
+        }
+        if (change.props.changeType === Change.TYPES.Remove) {
+          await this.sharedVaultAssociationRepository.remove(change.props.changeData)
+        }
+      }
+      if (change.props.changeData instanceof KeySystemAssociation) {
+        if ([Change.TYPES.Add, Change.TYPES.Modify].includes(change.props.changeType)) {
+          await this.keySystemAssociationRepository.save(change.props.changeData)
+        }
+        if (change.props.changeType === Change.TYPES.Remove) {
+          await this.keySystemAssociationRepository.remove(change.props.changeData)
+        }
+      }
+    }
+
+    item.flushChanges()
   }
 }

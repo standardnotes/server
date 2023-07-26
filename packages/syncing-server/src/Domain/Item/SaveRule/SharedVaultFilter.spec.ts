@@ -72,24 +72,11 @@ describe('SharedVaultFilter', () => {
       .mockResolvedValueOnce(null)
   })
 
-  it('should return as passed if the item hash does not represent a shared vault item', async () => {
+  it('should return as passed if the item hash does not represent a shared vault item and existing item is not a shared vault item', async () => {
     itemHash = ItemHash.create({
       ...itemHash.props,
       shared_vault_uuid: null,
     }).getValue()
-
-    const filter = createFilter()
-    const result = await filter.check({
-      apiVersion: '001',
-      existingItem: existingItem,
-      itemHash: itemHash,
-      userUuid: '00000000-0000-0000-0000-000000000000',
-    })
-
-    expect(result.passed).toBe(true)
-  })
-
-  it('should return as passed if the item is not a shared vault item', async () => {
     existingItem = Item.create({
       ...existingItem.props,
       sharedVaultAssociation: undefined,
