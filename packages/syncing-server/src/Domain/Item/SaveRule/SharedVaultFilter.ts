@@ -16,7 +16,7 @@ export class SharedVaultFilter implements ItemSaveRuleInterface {
   ) {}
 
   async check(dto: ItemSaveValidationDTO): Promise<ItemSaveRuleResult> {
-    if (!dto.itemHash.representsASharedVaultItem() || !dto.existingItem?.isAssociatedWithASharedVault()) {
+    if (!dto.itemHash.representsASharedVaultItem() && !dto.existingItem?.isAssociatedWithASharedVault()) {
       return {
         passed: true,
       }

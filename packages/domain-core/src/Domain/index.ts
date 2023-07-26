@@ -27,6 +27,8 @@ export * from './Common/Uuid'
 export * from './Common/UuidProps'
 
 export * from './Core/Aggregate'
+export * from './Core/Change'
+export * from './Core/ChangeProps'
 export * from './Core/Entity'
 export * from './Core/Id'
 export * from './Core/Result'

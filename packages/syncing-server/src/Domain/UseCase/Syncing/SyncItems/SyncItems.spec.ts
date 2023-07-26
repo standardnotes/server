@@ -177,7 +177,7 @@ describe('SyncItems', () => {
     })
   })
 
-  it('should sync items and return items keys on top for first sync', async () => {
+  it('should sync items and return items keys on top for first sync that is not a shared vault exclusive sync', async () => {
     const result = await createUseCase().execute({
       userUuid: '1-2-3',
       itemHashes: [itemHash],
@@ -193,6 +193,32 @@ describe('SyncItems', () => {
       conflicts: [],
       cursorToken: 'asdzxc',
       retrievedItems: [item3, item1],
+      savedItems: [item2],
+      syncToken: 'qwerty',
+      sharedVaults: [],
+      sharedVaultInvites: [],
+      notifications: [],
+      messages: [],
+    })
+  })
+
+  it('should sync items and not return items keys on top for first sync that is a shared vault exclusive sync', async () => {
+    const result = await createUseCase().execute({
+      userUuid: '1-2-3',
+      itemHashes: [itemHash],
+      computeIntegrityHash: false,
+      limit: 10,
+      readOnlyAccess: false,
+      sessionUuid: '2-3-4',
+      contentType: 'Note',
+      apiVersion: ApiVersion.v20200115,
+      snjsVersion: '1.2.3',
+      sharedVaultUuids: ['00000000-0000-0000-0000-000000000000'],
+    })
+    expect(result.getValue()).toEqual({
+      conflicts: [],
+      cursorToken: 'asdzxc',
+      retrievedItems: [item1],
       savedItems: [item2],
       syncToken: 'qwerty',
       sharedVaults: [],

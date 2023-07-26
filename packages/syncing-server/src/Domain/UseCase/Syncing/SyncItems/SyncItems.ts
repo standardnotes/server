@@ -50,7 +50,8 @@ export class SyncItems implements UseCaseInterface<SyncItemsResponse> {
     const saveItemsResult = saveItemsResultOrError.getValue()
 
     let retrievedItems = this.filterOutSyncConflictsForConsecutiveSyncs(getItemsResult.items, saveItemsResult.conflicts)
-    if (this.isFirstSync(dto)) {
+    const isSharedVaultExclusiveSync = dto.sharedVaultUuids && dto.sharedVaultUuids.length > 0
+    if (this.isFirstSync(dto) && !isSharedVaultExclusiveSync) {
       retrievedItems = await this.frontLoadKeysItemsToTop(dto.userUuid, retrievedItems)
     }
 
