@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.70.3](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.70.2...@standardnotes/syncing-server@1.70.3) (2023-07-26)
+
+### Bug Fixes
+
+* **syncing-server:** persisting aggregate changes from root ([#674](https://github.com/standardnotes/syncing-server-js/issues/674)) ([c34f548](https://github.com/standardnotes/syncing-server-js/commit/c34f548e45bbd8defb8d490936e90755fd284e78))
+
 ## [1.70.2](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.70.1...@standardnotes/syncing-server@1.70.2) (2023-07-25)
 
 ### Bug Fixes

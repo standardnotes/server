@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.23.4](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.23.3...@standardnotes/domain-core@1.23.4) (2023-07-26)
+
+### Bug Fixes
+
+* **syncing-server:** persisting aggregate changes from root ([#674](https://github.com/standardnotes/server/issues/674)) ([c34f548](https://github.com/standardnotes/server/commit/c34f548e45bbd8defb8d490936e90755fd284e78))
+
 ## [1.23.3](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.23.2...@standardnotes/domain-core@1.23.3) (2023-07-21)
 
 ### Bug Fixes
