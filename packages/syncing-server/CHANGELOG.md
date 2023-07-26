@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.70.5](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.70.4...@standardnotes/syncing-server@1.70.5) (2023-07-26)
+
+### Bug Fixes
+
+* **syncing-server:** uuid comparison when removing user ([886ccf8](https://github.com/standardnotes/syncing-server-js/commit/886ccf84c1f3b9309ce7d01354ca815af1424b72))
+
 ## [1.70.4](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.70.3...@standardnotes/syncing-server@1.70.4) (2023-07-26)
 
 ### Bug Fixes
