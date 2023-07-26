@@ -45,12 +45,13 @@ describe('RemoveUserFromSharedVault', () => {
 
   it('should remove user from shared vault', async () => {
     const useCase = createUseCase()
-    await useCase.execute({
+    const result = await useCase.execute({
       originatorUuid: '00000000-0000-0000-0000-000000000000',
       sharedVaultUuid: '00000000-0000-0000-0000-000000000000',
       userUuid: '00000000-0000-0000-0000-000000000001',
     })
 
+    expect(result.isFailed()).toBeFalsy()
     expect(sharedVaultUserRepository.remove).toHaveBeenCalledWith(sharedVaultUser)
   })
 
@@ -99,7 +100,7 @@ describe('RemoveUserFromSharedVault', () => {
     })
 
     expect(result.isFailed()).toBe(true)
-    expect(result.getError()).toBe('Only owner can remove users from shared vault')
+    expect(result.getError()).toBe('Only owner can remove other users from shared vault')
   })
 
   it('should remove shared vault user if user is owner and is being force removed', async () => {
