@@ -3,6 +3,7 @@ services:
     image: standardnotes/server
     env_file: .env
     container_name: server_self_hosted
+    restart: unless-stopped
     ports:
       - 3000:3000
       - 3125:3104
