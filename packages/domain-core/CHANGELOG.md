@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.24.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.23.4...@standardnotes/domain-core@1.24.0) (2023-07-26)
+
+### Features
+
+* extract shared vault user permission to domain-core ([e215ac4](https://github.com/standardnotes/server/commit/e215ac4343e9f8818f40004d31390d6ac23e369d))
+
 ## [1.23.4](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.23.3...@standardnotes/domain-core@1.23.4) (2023-07-26)
 
 ### Bug Fixes

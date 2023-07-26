@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.71.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.70.5...@standardnotes/syncing-server@1.71.0) (2023-07-26)
+
+### Features
+
+* extract shared vault user permission to domain-core ([e215ac4](https://github.com/standardnotes/syncing-server-js/commit/e215ac4343e9f8818f40004d31390d6ac23e369d))
+
 ## [1.70.5](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.70.4...@standardnotes/syncing-server@1.70.5) (2023-07-26)
 
 ### Bug Fixes
