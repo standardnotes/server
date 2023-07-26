@@ -1,9 +1,15 @@
-import { Result, Timestamps, UseCaseInterface, Uuid, Validator } from '@standardnotes/domain-core'
+import {
+  Result,
+  SharedVaultUserPermission,
+  Timestamps,
+  UseCaseInterface,
+  Uuid,
+  Validator,
+} from '@standardnotes/domain-core'
+import { TimerInterface } from '@standardnotes/time'
 
 import { SharedVaultInviteRepositoryInterface } from '../../../SharedVault/User/Invite/SharedVaultInviteRepositoryInterface'
 import { UpdateSharedVaultInviteDTO } from './UpdateSharedVaultInviteDTO'
-import { SharedVaultUserPermission } from '../../../SharedVault/User/SharedVaultUserPermission'
-import { TimerInterface } from '@standardnotes/time'
 import { SharedVaultInvite } from '../../../SharedVault/User/Invite/SharedVaultInvite'
 
 export class UpdateSharedVaultInvite implements UseCaseInterface<SharedVaultInvite> {

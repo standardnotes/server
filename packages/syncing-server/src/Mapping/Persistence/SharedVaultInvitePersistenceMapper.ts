@@ -1,8 +1,14 @@
-import { Timestamps, MapperInterface, UniqueEntityId, Uuid, Validator } from '@standardnotes/domain-core'
+import {
+  Timestamps,
+  MapperInterface,
+  UniqueEntityId,
+  Uuid,
+  Validator,
+  SharedVaultUserPermission,
+} from '@standardnotes/domain-core'
 
 import { SharedVaultInvite } from '../../Domain/SharedVault/User/Invite/SharedVaultInvite'
 import { TypeORMSharedVaultInvite } from '../../Infra/TypeORM/TypeORMSharedVaultInvite'
-import { SharedVaultUserPermission } from '../../Domain/SharedVault/User/SharedVaultUserPermission'
 
 export class SharedVaultInvitePersistenceMapper
   implements MapperInterface<SharedVaultInvite, TypeORMSharedVaultInvite>

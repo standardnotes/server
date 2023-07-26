@@ -1,12 +1,11 @@
 import { ConflictType } from '@standardnotes/responses'
-import { ContentType, Result, Uuid } from '@standardnotes/domain-core'
+import { ContentType, Result, SharedVaultUserPermission, Uuid } from '@standardnotes/domain-core'
 
 import { ItemSaveValidationDTO } from '../SaveValidator/ItemSaveValidationDTO'
 import { ItemSaveRuleResult } from './ItemSaveRuleResult'
 import { ItemSaveRuleInterface } from './ItemSaveRuleInterface'
 import { DetermineSharedVaultOperationOnItem } from '../../UseCase/SharedVaults/DetermineSharedVaultOperationOnItem/DetermineSharedVaultOperationOnItem'
 import { SharedVaultOperationOnItem } from '../../SharedVault/SharedVaultOperationOnItem'
-import { SharedVaultUserPermission } from '../../SharedVault/User/SharedVaultUserPermission'
 import { SharedVaultUserRepositoryInterface } from '../../SharedVault/User/SharedVaultUserRepositoryInterface'
 
 export class SharedVaultFilter implements ItemSaveRuleInterface {

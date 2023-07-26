@@ -1,8 +1,7 @@
-import { Timestamps, Uuid } from '@standardnotes/domain-core'
+import { SharedVaultUserPermission, Timestamps, Uuid } from '@standardnotes/domain-core'
 import { SharedVaultInviteRepositoryInterface } from '../../../SharedVault/User/Invite/SharedVaultInviteRepositoryInterface'
 import { DeclineInviteToSharedVault } from './DeclineInviteToSharedVault'
 import { SharedVaultInvite } from '../../../SharedVault/User/Invite/SharedVaultInvite'
-import { SharedVaultUserPermission } from '../../../SharedVault/User/SharedVaultUserPermission'
 
 describe('DeclineInviteToSharedVault', () => {
   let sharedVaultInviteRepository: SharedVaultInviteRepositoryInterface

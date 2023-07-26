@@ -1,6 +1,13 @@
-import { ContentType, Dates, Result, Timestamps, UniqueEntityId, Uuid } from '@standardnotes/domain-core'
+import {
+  ContentType,
+  Dates,
+  Result,
+  SharedVaultUserPermission,
+  Timestamps,
+  UniqueEntityId,
+  Uuid,
+} from '@standardnotes/domain-core'
 import { SharedVaultUser } from '../../SharedVault/User/SharedVaultUser'
-import { SharedVaultUserPermission } from '../../SharedVault/User/SharedVaultUserPermission'
 import { SharedVaultUserRepositoryInterface } from '../../SharedVault/User/SharedVaultUserRepositoryInterface'
 import { DetermineSharedVaultOperationOnItem } from '../../UseCase/SharedVaults/DetermineSharedVaultOperationOnItem/DetermineSharedVaultOperationOnItem'
 import { SharedVaultFilter } from './SharedVaultFilter'

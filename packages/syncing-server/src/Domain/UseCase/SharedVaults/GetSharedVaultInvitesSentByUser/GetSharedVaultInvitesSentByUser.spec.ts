@@ -1,8 +1,7 @@
-import { Uuid, Timestamps } from '@standardnotes/domain-core'
+import { Uuid, Timestamps, SharedVaultUserPermission } from '@standardnotes/domain-core'
 
 import { SharedVaultInvite } from '../../../SharedVault/User/Invite/SharedVaultInvite'
 import { SharedVaultInviteRepositoryInterface } from '../../../SharedVault/User/Invite/SharedVaultInviteRepositoryInterface'
-import { SharedVaultUserPermission } from '../../../SharedVault/User/SharedVaultUserPermission'
 import { GetSharedVaultInvitesSentByUser } from './GetSharedVaultInvitesSentByUser'
 
 describe('GetSharedVaultInvitesSentByUser', () => {

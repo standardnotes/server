@@ -4,8 +4,7 @@ import { SharedVaultUserRepositoryInterface } from '../../../SharedVault/User/Sh
 import { CreateSharedVaultFileValetToken } from './CreateSharedVaultFileValetToken'
 import { SharedVault } from '../../../SharedVault/SharedVault'
 import { SharedVaultUser } from '../../../SharedVault/User/SharedVaultUser'
-import { SharedVaultUserPermission } from '../../../SharedVault/User/SharedVaultUserPermission'
-import { Timestamps, Uuid } from '@standardnotes/domain-core'
+import { SharedVaultUserPermission, Timestamps, Uuid } from '@standardnotes/domain-core'
 
 describe('CreateSharedVaultFileValetToken', () => {
   let sharedVaultRepository: SharedVaultRepositoryInterface

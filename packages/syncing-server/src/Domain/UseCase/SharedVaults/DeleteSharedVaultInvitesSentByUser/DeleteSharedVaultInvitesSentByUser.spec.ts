@@ -1,9 +1,8 @@
-import { Result, Timestamps, Uuid } from '@standardnotes/domain-core'
+import { Result, SharedVaultUserPermission, Timestamps, Uuid } from '@standardnotes/domain-core'
 import { SharedVaultInviteRepositoryInterface } from '../../../SharedVault/User/Invite/SharedVaultInviteRepositoryInterface'
 import { DeclineInviteToSharedVault } from '../DeclineInviteToSharedVault/DeclineInviteToSharedVault'
 import { DeleteSharedVaultInvitesSentByUser } from './DeleteSharedVaultInvitesSentByUser'
 import { SharedVaultInvite } from '../../../SharedVault/User/Invite/SharedVaultInvite'
-import { SharedVaultUserPermission } from '../../../SharedVault/User/SharedVaultUserPermission'
 
 describe('DeleteSharedVaultInvitesSentByUser', () => {
   let sharedVaultInviteRepository: SharedVaultInviteRepositoryInterface

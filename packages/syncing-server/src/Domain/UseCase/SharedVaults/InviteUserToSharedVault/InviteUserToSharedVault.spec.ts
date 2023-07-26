@@ -1,11 +1,11 @@
 import { TimerInterface } from '@standardnotes/time'
+import { Uuid, Timestamps, Result, SharedVaultUserPermission } from '@standardnotes/domain-core'
+
 import { SharedVaultRepositoryInterface } from '../../../SharedVault/SharedVaultRepositoryInterface'
 import { SharedVaultInviteRepositoryInterface } from '../../../SharedVault/User/Invite/SharedVaultInviteRepositoryInterface'
 import { InviteUserToSharedVault } from './InviteUserToSharedVault'
 import { SharedVault } from '../../../SharedVault/SharedVault'
 import { SharedVaultInvite } from '../../../SharedVault/User/Invite/SharedVaultInvite'
-import { Uuid, Timestamps, Result } from '@standardnotes/domain-core'
-import { SharedVaultUserPermission } from '../../../SharedVault/User/SharedVaultUserPermission'
 
 describe('InviteUserToSharedVault', () => {
   let sharedVaultRepository: SharedVaultRepositoryInterface

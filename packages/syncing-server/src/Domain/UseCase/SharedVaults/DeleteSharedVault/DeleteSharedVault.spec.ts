@@ -1,4 +1,4 @@
-import { Uuid, Timestamps, Result } from '@standardnotes/domain-core'
+import { Uuid, Timestamps, Result, SharedVaultUserPermission } from '@standardnotes/domain-core'
 
 import { SharedVaultRepositoryInterface } from '../../../SharedVault/SharedVaultRepositoryInterface'
 import { SharedVaultInviteRepositoryInterface } from '../../../SharedVault/User/Invite/SharedVaultInviteRepositoryInterface'
@@ -6,7 +6,6 @@ import { SharedVaultUserRepositoryInterface } from '../../../SharedVault/User/Sh
 import { DeleteSharedVault } from './DeleteSharedVault'
 import { SharedVault } from '../../../SharedVault/SharedVault'
 import { SharedVaultUser } from '../../../SharedVault/User/SharedVaultUser'
-import { SharedVaultUserPermission } from '../../../SharedVault/User/SharedVaultUserPermission'
 import { RemoveUserFromSharedVault } from '../RemoveUserFromSharedVault/RemoveUserFromSharedVault'
 
 describe('DeleteSharedVault', () => {

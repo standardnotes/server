@@ -1,7 +1,6 @@
-import { Timestamps, Uuid } from '@standardnotes/domain-core'
+import { SharedVaultUserPermission, Timestamps, Uuid } from '@standardnotes/domain-core'
 
 import { SharedVaultInvite } from './SharedVaultInvite'
-import { SharedVaultUserPermission } from '../SharedVaultUserPermission'
 
 describe('SharedVaultInvite', () => {
   it('should create an entity', () => {

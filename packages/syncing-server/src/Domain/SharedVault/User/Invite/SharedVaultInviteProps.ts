@@ -1,5 +1,4 @@
-import { Timestamps, Uuid } from '@standardnotes/domain-core'
-import { SharedVaultUserPermission } from '../SharedVaultUserPermission'
+import { SharedVaultUserPermission, Timestamps, Uuid } from '@standardnotes/domain-core'
 
 export interface SharedVaultInviteProps {
   sharedVaultUuid: Uuid

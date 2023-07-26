@@ -1,10 +1,9 @@
 import { SharedVaultValetTokenData, TokenEncoderInterface, ValetTokenOperation } from '@standardnotes/security'
+import { Result, SharedVaultUserPermission, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
 
 import { SharedVaultRepositoryInterface } from '../../../SharedVault/SharedVaultRepositoryInterface'
-import { Result, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
 import { SharedVaultUserRepositoryInterface } from '../../../SharedVault/User/SharedVaultUserRepositoryInterface'
 import { CreateSharedVaultFileValetTokenDTO } from './CreateSharedVaultFileValetTokenDTO'
-import { SharedVaultUserPermission } from '../../../SharedVault/User/SharedVaultUserPermission'
 
 export class CreateSharedVaultFileValetToken implements UseCaseInterface<string> {
   constructor(
