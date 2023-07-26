@@ -37,7 +37,7 @@ export class RemoveUserFromSharedVault implements UseCaseInterface<void> {
     }
 
     const originatorIsOwner = sharedVault.props.userUuid.equals(originatorUuid)
-    const removingSomeoneElseWhenNotOwner = !originatorIsOwner && userUuid !== originatorUuid
+    const removingSomeoneElseWhenNotOwner = !originatorIsOwner && !userUuid.equals(originatorUuid)
     if (removingSomeoneElseWhenNotOwner) {
       return Result.fail('Only owner can remove other users from shared vault')
     }
