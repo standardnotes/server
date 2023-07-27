@@ -55,6 +55,7 @@ jobs:
   e2e-home-server:
     name: (Home Server) E2E Test Suite
     strategy:
+      fail-fast: false
       matrix:
         db_type: [mysql, sqlite]
         cache_type: [redis, memory]
