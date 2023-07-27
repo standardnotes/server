@@ -39,6 +39,10 @@ export class HomeServerSharedVaultInvitesController extends BaseHttpController {
         this.deleteInboundUserInvites.bind(this),
       )
       this.controllerContainer.register(
+        'sync.shared-vault-invites.delete-outbound',
+        this.deleteOutboundUserInvites.bind(this),
+      )
+      this.controllerContainer.register(
         'sync.shared-vault-invites.get-outbound',
         this.getOutboundUserInvites.bind(this),
       )
@@ -153,6 +157,27 @@ export class HomeServerSharedVaultInvitesController extends BaseHttpController {
 
   async deleteInboundUserInvites(_request: Request, response: Response): Promise<results.JsonResult> {
     const result = await this.deleteSharedVaultInvitesToUserUseCase.execute({
+      userUuid: response.locals.user.uuid,
+    })
+
+    if (result.isFailed()) {
+      return this.json(
+        {
+          error: {
+            message: result.getError(),
+          },
+        },
+        HttpStatusCode.BadRequest,
+      )
+    }
+
+    return this.json({
+      success: true,
+    })
+  }
+
+  async deleteOutboundUserInvites(_request: Request, response: Response): Promise<results.JsonResult> {
+    const result = await this.deleteSharedVaultInvitesSentByUserUseCase.execute({
       userUuid: response.locals.user.uuid,
     })
 

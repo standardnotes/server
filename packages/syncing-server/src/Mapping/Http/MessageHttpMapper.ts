@@ -14,6 +14,7 @@ export class MessageHttpMapper implements MapperInterface<Message, MessageHttpRe
       recipient_uuid: domain.props.recipientUuid.value,
       sender_uuid: domain.props.senderUuid.value,
       encrypted_message: domain.props.encryptedMessage,
+      replaceability_identifier: domain.props.replaceabilityIdentifier,
       created_at_timestamp: domain.props.timestamps.createdAt,
       updated_at_timestamp: domain.props.timestamps.updatedAt,
     }

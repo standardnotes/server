@@ -24,6 +24,7 @@ describe('DeleteSharedVaultInvitesSentByUser', () => {
 
     sharedVaultInviteRepository = {} as jest.Mocked<SharedVaultInviteRepositoryInterface>
     sharedVaultInviteRepository.findBySenderUuidAndSharedVaultUuid = jest.fn().mockReturnValue([sharedVaultInvite])
+    sharedVaultInviteRepository.findBySenderUuid = jest.fn().mockReturnValue([sharedVaultInvite])
 
     declineInviteToSharedVault = {} as jest.Mocked<DeclineInviteToSharedVault>
     declineInviteToSharedVault.execute = jest.fn().mockReturnValue(Result.ok())
@@ -74,5 +75,16 @@ describe('DeleteSharedVaultInvitesSentByUser', () => {
     })
 
     expect(result.isFailed()).toBeTruthy()
+  })
+
+  it('should decline all invites by user to all shared vaults', async () => {
+    const useCase = createUseCase()
+
+    const result = await useCase.execute({
+      userUuid: '00000000-0000-0000-0000-000000000000',
+    })
+
+    expect(result.isFailed()).toBeFalsy()
+    expect(declineInviteToSharedVault.execute).toHaveBeenCalled()
   })
 })

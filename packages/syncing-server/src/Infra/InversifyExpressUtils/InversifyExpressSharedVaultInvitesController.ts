@@ -72,6 +72,11 @@ export class InversifyExpressSharedVaultInvitesController extends HomeServerShar
     return super.deleteInboundUserInvites(request, response)
   }
 
+  @httpDelete('/invites/outbound')
+  override async deleteOutboundUserInvites(request: Request, response: Response): Promise<results.JsonResult> {
+    return super.deleteOutboundUserInvites(request, response)
+  }
+
   @httpGet('/invites/outbound')
   override async getOutboundUserInvites(request: Request, response: Response): Promise<results.JsonResult> {
     return super.getOutboundUserInvites(request, response)

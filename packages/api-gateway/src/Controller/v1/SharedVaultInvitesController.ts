@@ -83,6 +83,16 @@ export class SharedVaultInvitesController extends BaseHttpController {
     )
   }
 
+  @httpDelete('/invites/outbound')
+  async deleteOutboundUserInvites(request: Request, response: Response): Promise<void> {
+    await this.httpService.callSyncingServer(
+      request,
+      response,
+      this.endpointResolver.resolveEndpointOrMethodIdentifier('DELETE', 'shared-vaults/invites/outbound'),
+      request.body,
+    )
+  }
+
   @httpGet('/invites/outbound')
   async getOutboundUserInvites(request: Request, response: Response): Promise<void> {
     await this.httpService.callSyncingServer(

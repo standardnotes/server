@@ -16,16 +16,22 @@ export class DeleteSharedVaultInvitesSentByUser implements UseCaseInterface<void
     }
     const userUuid = userUuidOrError.getValue()
 
-    const sharedVaultUuidOrError = Uuid.create(dto.sharedVaultUuid)
-    if (sharedVaultUuidOrError.isFailed()) {
-      return Result.fail(sharedVaultUuidOrError.getError())
-    }
-    const sharedVaultUuid = sharedVaultUuidOrError.getValue()
+    let inboundInvites = []
+    if (dto.sharedVaultUuid !== undefined) {
+      const sharedVaultUuidOrError = Uuid.create(dto.sharedVaultUuid)
+      if (sharedVaultUuidOrError.isFailed()) {
+        return Result.fail(sharedVaultUuidOrError.getError())
+      }
+      const sharedVaultUuid = sharedVaultUuidOrError.getValue()
 
-    const inboundInvites = await this.sharedVaultInviteRepository.findBySenderUuidAndSharedVaultUuid({
-      senderUuid: userUuid,
-      sharedVaultUuid,
-    })
+      inboundInvites = await this.sharedVaultInviteRepository.findBySenderUuidAndSharedVaultUuid({
+        senderUuid: userUuid,
+        sharedVaultUuid,
+      })
+    } else {
+      inboundInvites = await this.sharedVaultInviteRepository.findBySenderUuid(userUuid)
+    }
+
     for (const invite of inboundInvites) {
       const result = await this.declineInviteToSharedVault.execute({
         inviteUuid: invite.id.toString(),

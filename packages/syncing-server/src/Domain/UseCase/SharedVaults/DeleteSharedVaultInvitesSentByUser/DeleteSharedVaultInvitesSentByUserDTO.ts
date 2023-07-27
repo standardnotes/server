@@ -1,4 +1,4 @@
 export interface DeleteSharedVaultInvitesSentByUserDTO {
   userUuid: string
-  sharedVaultUuid: string
+  sharedVaultUuid?: string
 }

@@ -79,6 +79,7 @@ export class EndpointResolver implements EndpointResolverInterface {
     ['[POST]:shared-vaults/:sharedVaultUuid/invites/:inviteUuid/accept', 'sync.shared-vault-invites.accept'],
     ['[POST]:shared-vaults/:sharedVaultUuid/invites/:inviteUuid/decline', 'sync.shared-vault-invites.decline'],
     ['[DELETE]:shared-vaults/invites/inbound', 'sync.shared-vault-invites.delete-inbound'],
+    ['[DELETE]:shared-vaults/invites/outbound', 'sync.shared-vault-invites.delete-outbound'],
     ['[GET]:shared-vaults/invites/outbound', 'sync.shared-vault-invites.get-outbound'],
     ['[GET]:shared-vaults/invites', 'sync.shared-vault-invites.get-user-invites'],
     ['[GET]:shared-vaults/:sharedVaultUuid/invites', 'sync.shared-vault-invites.get-vault-invites'],
