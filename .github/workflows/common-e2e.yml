@@ -118,9 +118,6 @@ jobs:
         echo "FILES_SERVER_URL=http://localhost:3123" >> packages/home-server/.env
         echo "E2E_TESTING=true" >> packages/home-server/.env
 
-    - name: Create logs directory
-      run: mkdir logs
-
     - name: Run Server
       run: nohup yarn workspace @standardnotes/home-server start > logs/output.log &
       env:
