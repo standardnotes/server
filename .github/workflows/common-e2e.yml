@@ -109,12 +109,12 @@ jobs:
         echo "ACCESS_TOKEN_AGE=4" >> packages/home-server/.env
         echo "REFRESH_TOKEN_AGE=7" >> packages/home-server/.env
         echo "REVISIONS_FREQUENCY=5" >> packages/home-server/.env
-        echo "DB_HOST=db" >> packages/home-server/.env
+        echo "DB_HOST=localhost" >> packages/home-server/.env
         echo "DB_PORT=3306" >> packages/home-server/.env
         echo "DB_USERNAME=standardnotes" >> packages/home-server/.env
         echo "DB_PASSWORD=standardnotes" >> packages/home-server/.env
         echo "DB_TYPE=${{ matrix.db_type }}" >> packages/home-server/.env
-        echo "REDIS_URL=redis://cache" >> packages/home-server/.env
+        echo "REDIS_URL=redis://localhost" >> packages/home-server/.env
         echo "CACHE_TYPE=${{ matrix.cache_type }}" >> packages/home-server/.env
         echo "FILES_SERVER_URL=http://localhost:3123" >> packages/home-server/.env
         echo "E2E_TESTING=true" >> packages/home-server/.env
