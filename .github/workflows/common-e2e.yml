@@ -111,6 +111,7 @@ jobs:
         echo "REVISIONS_FREQUENCY=5" >> packages/home-server/.env
         echo "DB_HOST=localhost" >> packages/home-server/.env
         echo "DB_PORT=3306" >> packages/home-server/.env
+        echo "DB_DATABASE=standardnotes" >> packages/home-server/.env
         echo "DB_USERNAME=standardnotes" >> packages/home-server/.env
         echo "DB_PASSWORD=standardnotes" >> packages/home-server/.env
         echo "DB_TYPE=${{ matrix.db_type }}" >> packages/home-server/.env
