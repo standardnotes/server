@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.13.16](https://github.com/standardnotes/server/compare/@standardnotes/home-server@1.13.15...@standardnotes/home-server@1.13.16) (2023-07-27)
+
+### Bug Fixes
+
+* add logging error stack on home server failure ([f747111](https://github.com/standardnotes/server/commit/f7471119e1c4107dd36d37dcda4660870931fc83))
+* setting env vars on home server in e2e environment ([f87036e](https://github.com/standardnotes/server/commit/f87036e3a8dc6b7784e74e5f32ffd220033724f5))
+
 ## [1.13.15](https://github.com/standardnotes/server/compare/@standardnotes/home-server@1.13.14...@standardnotes/home-server@1.13.15) (2023-07-27)
 
 **Note:** Version bump only for package @standardnotes/home-server

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.24.1](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.24.0...@standardnotes/domain-core@1.24.1) (2023-07-27)
+
+### Bug Fixes
+
+* setting env vars on home server in e2e environment ([f87036e](https://github.com/standardnotes/server/commit/f87036e3a8dc6b7784e74e5f32ffd220033724f5))
+
 # [1.24.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.23.4...@standardnotes/domain-core@1.24.0) (2023-07-26)
 
 ### Features
