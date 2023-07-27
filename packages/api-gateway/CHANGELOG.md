@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.68.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.67.4...@standardnotes/api-gateway@1.68.0) (2023-07-27)
+
+### Features
+
+* **syncing-server:** add deleting outbound messages ([e8ba49e](https://github.com/standardnotes/api-gateway/commit/e8ba49ecca38ab10c0ea0e1f4cf4db9fb17366db))
+
 ## [1.67.4](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.67.3...@standardnotes/api-gateway@1.67.4) (2023-07-26)
 
 **Note:** Version bump only for package @standardnotes/api-gateway

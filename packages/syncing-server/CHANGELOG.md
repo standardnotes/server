@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.72.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.71.0...@standardnotes/syncing-server@1.72.0) (2023-07-27)
+
+### Features
+
+* **syncing-server:** add deleting outbound messages ([e8ba49e](https://github.com/standardnotes/syncing-server-js/commit/e8ba49ecca38ab10c0ea0e1f4cf4db9fb17366db))
+
 # [1.71.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.70.5...@standardnotes/syncing-server@1.71.0) (2023-07-26)
 
 ### Features
