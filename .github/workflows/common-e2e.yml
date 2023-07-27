@@ -113,7 +113,7 @@ jobs:
         echo "DB_USERNAME=standardnotes" >> packages/home-server/.env
         echo "DB_PASSWORD=standardnotes" >> packages/home-server/.env
         echo "DB_TYPE=${{ matrix.db_type }}" >> packages/home-server/.env
-        echo "DB_SQLITE_DATABASE_PATH=$(pwd)/data/database/sqlite_${{ matrix.cache_type }}/db.sqlite
+        echo "DB_SQLITE_DATABASE_PATH=$(pwd)/data/database/sqlite_${{ matrix.cache_type }}/db.sqlite" >> packages/home-server/.env
         echo "REDIS_URL=redis://cache" >> packages/home-server/.env
         echo "CACHE_TYPE=${{ matrix.cache_type }}" >> packages/home-server/.env
         echo "FILES_SERVER_URL=http://localhost:3123" >> packages/home-server/.env
