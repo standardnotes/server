@@ -107,7 +107,7 @@ jobs:
         sed -i "s/PSEUDO_KEY_PARAMS_KEY=/PSEUDO_KEY_PARAMS_KEY=$(openssl rand -hex 32)/g" packages/home-server/.env
         sed -i "s/VALET_TOKEN_SECRET=/VALET_TOKEN_SECRET=$(openssl rand -hex 32)/g" packages/home-server/.env
         echo "ACCESS_TOKEN_AGE=4" >> packages/home-server/.env
-        echo "REFRESH_TOKEN_AGE=7" >> packages/home-server/.env
+        echo "REFRESH_TOKEN_AGE=10" >> packages/home-server/.env
         echo "REVISIONS_FREQUENCY=5" >> packages/home-server/.env
         echo "DB_HOST=localhost" >> packages/home-server/.env
         echo "DB_PORT=3306" >> packages/home-server/.env
