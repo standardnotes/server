@@ -119,7 +119,7 @@ jobs:
         echo "E2E_TESTING=true" >> packages/home-server/.env
 
     - name: Run Server
-      run: nohup yarn workspace @standardnotes/home-server start > logs/output.log &
+      run: nohup yarn workspace @standardnotes/home-server start > logs/output.log 2>&1 &
       env:
         PORT: 3123
 
