@@ -128,3 +128,9 @@ jobs:
 
     - name: Run E2E Test Suite
       run: yarn dlx mocha-headless-chrome --timeout 1200000 -f http://localhost:9001/mocha/test.html
+
+    - name: Show logs on failure
+      if: ${{ failure()}}
+      run: |
+        tail -n 100 logs/*.err
+        tail -n 100 logs/*.log
