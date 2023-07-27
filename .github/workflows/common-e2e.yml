@@ -118,8 +118,11 @@ jobs:
         echo "FILES_SERVER_URL=http://localhost:3123" >> packages/home-server/.env
         echo "E2E_TESTING=true" >> packages/home-server/.env
 
+    - name: Create logs directory
+      run: mkdir logs
+
     - name: Run Server
-      run: nohup yarn workspace @standardnotes/home-server start &
+      run: nohup yarn workspace @standardnotes/home-server start > logs/output.log &
       env:
         PORT: 3123
 
@@ -130,7 +133,5 @@ jobs:
       run: yarn dlx mocha-headless-chrome --timeout 1200000 -f http://localhost:9001/mocha/test.html
 
     - name: Show logs on failure
-      if: ${{ failure()}}
-      run: |
-        tail -n 100 logs/*.err
-        tail -n 100 logs/*.log
+      if: ${{ failure() }}
+      run: tail -n 500 logs/output.log
