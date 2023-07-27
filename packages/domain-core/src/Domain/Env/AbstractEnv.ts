@@ -23,4 +23,12 @@ export abstract class AbstractEnv {
 
     return <string>process.env[key]
   }
+
+  getAll(): { [key: string]: string } {
+    if (!this.env) {
+      this.load()
+    }
+
+    return this.env as { [key: string]: string }
+  }
 }

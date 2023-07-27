@@ -1,6 +1,10 @@
+import { Env } from '../src/Bootstrap/Env'
 import { HomeServer } from '../src/Server/HomeServer'
 
 const homeServer = new HomeServer()
+
+const env: Env = new Env()
+env.load()
 
 Promise.resolve(
   homeServer.start({
@@ -9,6 +13,7 @@ Promise.resolve(
       // eslint-disable-next-line no-console
       console.log(chunk.toString())
     },
+    environment: env.getAll(),
   }),
 ).catch((error) => {
   // eslint-disable-next-line no-console
