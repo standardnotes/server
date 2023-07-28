@@ -54,7 +54,11 @@ jobs:
 
     - name: Show logs on failure
       if: ${{ failure() }}
-      run: docker compose -f docker-compose.ci.yml logs -n 500
+      run: |
+        echo "# Errors:"
+        tail -n 100 logs/*.err
+        echo "# Logs:"
+        tail -n 100 logs/*.log
 
   e2e-home-server:
     name: (Home Server) E2E Test Suite
