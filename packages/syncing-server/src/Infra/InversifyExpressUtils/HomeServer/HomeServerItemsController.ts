@@ -51,7 +51,7 @@ export class HomeServerItemsController extends BaseHttpController {
 
     let sharedVaultUuids: string[] | undefined = undefined
     if ('shared_vault_uuids' in request.body) {
-      const sharedVaultUuidsValidation = Validator.isNotEmpty(sharedVaultUuids)
+      const sharedVaultUuidsValidation = Validator.isNotEmpty(request.body.shared_vault_uuids)
       if (!sharedVaultUuidsValidation.isFailed()) {
         sharedVaultUuids = request.body.shared_vault_uuids
       }
