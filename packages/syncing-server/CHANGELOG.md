@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.72.2](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.72.1...@standardnotes/syncing-server@1.72.2) (2023-07-30)
+
+### Bug Fixes
+
+* missing var reference and brackets ([#675](https://github.com/standardnotes/syncing-server-js/issues/675)) ([053852b](https://github.com/standardnotes/syncing-server-js/commit/053852b46c0c7fad4674a7d05c748c573251607a))
+
 ## [1.72.1](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.72.0...@standardnotes/syncing-server@1.72.1) (2023-07-27)
 
 **Note:** Version bump only for package @standardnotes/syncing-server
