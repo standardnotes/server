@@ -1,5 +1,5 @@
 import { ReadStream } from 'fs'
-import { Repository, SelectQueryBuilder } from 'typeorm'
+import { Repository, SelectQueryBuilder, Brackets } from 'typeorm'
 import { Change, MapperInterface, Uuid } from '@standardnotes/domain-core'
 
 import { Item } from '../../Domain/Item/Item'
@@ -191,13 +191,17 @@ export class TypeORMItemRepository implements ItemRepositoryInterface {
           'sharedVaultAssociation',
           'sharedVaultAssociation.itemUuid = item.uuid',
         )
-        .where('sharedVaultAssociation.sharedVaultUuid IN (:...sharedVaultUuids)', {
-          sharedVaultUuids: query.includeSharedVaultUuids,
-        })
+        .where(
+          new Brackets((qb) => {
+            qb.where('sharedVaultAssociation.sharedVaultUuid IN (:...sharedVaultUuids)', {
+              sharedVaultUuids: query.includeSharedVaultUuids,
+            })
 
-      if (query.userUuid) {
-        queryBuilder.orWhere('item.user_uuid = :userUuid', { userUuid: query.userUuid })
-      }
+            if (query.userUuid) {
+              qb.orWhere('item.user_uuid = :userUuid', { userUuid: query.userUuid })
+            }
+          }),
+        )
     } else if (query.exclusiveSharedVaultUuids !== undefined && query.exclusiveSharedVaultUuids.length > 0) {
       queryBuilder
         .innerJoin(
