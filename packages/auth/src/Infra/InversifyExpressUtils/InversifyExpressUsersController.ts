@@ -51,7 +51,7 @@ export class InversifyExpressUsersController extends HomeServerUsersController {
     return super.keyParams(request)
   }
 
-  @httpDelete('/:userUuid')
+  @httpDelete('/:userUuid', TYPES.Auth_RequiredCrossServiceTokenMiddleware)
   override async deleteAccount(request: Request, response: Response): Promise<results.JsonResult> {
     return super.deleteAccount(request, response)
   }
