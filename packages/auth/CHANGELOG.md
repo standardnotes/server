@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.127.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.127.0...@standardnotes/auth-server@1.127.1) (2023-07-31)
+
+### Bug Fixes
+
+* **auth:** auth middleware on delete account ([318af57](https://github.com/standardnotes/server/commit/318af5757d6c42f580157647b22112a9936765e7))
+
 # [1.127.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.126.5...@standardnotes/auth-server@1.127.0) (2023-07-31)
 
 ### Features
