@@ -11,17 +11,17 @@ import { ServiceProxyInterface } from './ServiceProxyInterface'
 @injectable()
 export class HttpServiceProxy implements ServiceProxyInterface {
   constructor(
-    @inject(TYPES.HTTPClient) private httpClient: AxiosInstance,
-    @inject(TYPES.AUTH_SERVER_URL) private authServerUrl: string,
-    @inject(TYPES.SYNCING_SERVER_JS_URL) private syncingServerJsUrl: string,
-    @inject(TYPES.PAYMENTS_SERVER_URL) private paymentsServerUrl: string,
-    @inject(TYPES.FILES_SERVER_URL) private filesServerUrl: string,
-    @inject(TYPES.WEB_SOCKET_SERVER_URL) private webSocketServerUrl: string,
-    @inject(TYPES.REVISIONS_SERVER_URL) private revisionsServerUrl: string,
-    @inject(TYPES.EMAIL_SERVER_URL) private emailServerUrl: string,
-    @inject(TYPES.HTTP_CALL_TIMEOUT) private httpCallTimeout: number,
-    @inject(TYPES.CrossServiceTokenCache) private crossServiceTokenCache: CrossServiceTokenCacheInterface,
-    @inject(TYPES.Logger) private logger: Logger,
+    @inject(TYPES.ApiGateway_HTTPClient) private httpClient: AxiosInstance,
+    @inject(TYPES.ApiGateway_AUTH_SERVER_URL) private authServerUrl: string,
+    @inject(TYPES.ApiGateway_SYNCING_SERVER_JS_URL) private syncingServerJsUrl: string,
+    @inject(TYPES.ApiGateway_PAYMENTS_SERVER_URL) private paymentsServerUrl: string,
+    @inject(TYPES.ApiGateway_FILES_SERVER_URL) private filesServerUrl: string,
+    @inject(TYPES.ApiGateway_WEB_SOCKET_SERVER_URL) private webSocketServerUrl: string,
+    @inject(TYPES.ApiGateway_REVISIONS_SERVER_URL) private revisionsServerUrl: string,
+    @inject(TYPES.ApiGateway_EMAIL_SERVER_URL) private emailServerUrl: string,
+    @inject(TYPES.ApiGateway_HTTP_CALL_TIMEOUT) private httpCallTimeout: number,
+    @inject(TYPES.ApiGateway_CrossServiceTokenCache) private crossServiceTokenCache: CrossServiceTokenCacheInterface,
+    @inject(TYPES.ApiGateway_Logger) private logger: Logger,
   ) {}
 
   async validateSession(

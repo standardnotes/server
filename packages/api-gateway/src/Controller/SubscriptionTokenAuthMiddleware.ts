@@ -11,10 +11,10 @@ import { TokenAuthenticationMethod } from './TokenAuthenticationMethod'
 @injectable()
 export class SubscriptionTokenAuthMiddleware extends BaseMiddleware {
   constructor(
-    @inject(TYPES.HTTPClient) private httpClient: AxiosInstance,
-    @inject(TYPES.AUTH_SERVER_URL) private authServerUrl: string,
-    @inject(TYPES.AUTH_JWT_SECRET) private jwtSecret: string,
-    @inject(TYPES.Logger) private logger: Logger,
+    @inject(TYPES.ApiGateway_HTTPClient) private httpClient: AxiosInstance,
+    @inject(TYPES.ApiGateway_AUTH_SERVER_URL) private authServerUrl: string,
+    @inject(TYPES.ApiGateway_AUTH_JWT_SECRET) private jwtSecret: string,
+    @inject(TYPES.ApiGateway_Logger) private logger: Logger,
   ) {
     super()
   }

@@ -57,7 +57,7 @@ export class ContainerConfigLoader {
         defaultMeta: { service: 'api-gateway' },
       })
     }
-    container.bind<winston.Logger>(TYPES.Logger).toConstantValue(logger)
+    container.bind<winston.Logger>(TYPES.ApiGateway_Logger).toConstantValue(logger)
 
     if (!isConfiguredForInMemoryCache) {
       const redisUrl = env.get('REDIS_URL')
@@ -68,36 +68,38 @@ export class ContainerConfigLoader {
       } else {
         redis = new Redis(redisUrl)
       }
-      container.bind(TYPES.Redis).toConstantValue(redis)
+      container.bind(TYPES.ApiGateway_Redis).toConstantValue(redis)
     }
 
-    container.bind<AxiosInstance>(TYPES.HTTPClient).toConstantValue(axios.create())
+    container.bind<AxiosInstance>(TYPES.ApiGateway_HTTPClient).toConstantValue(axios.create())
 
     // env vars
-    container.bind(TYPES.SYNCING_SERVER_JS_URL).toConstantValue(env.get('SYNCING_SERVER_JS_URL', true))
-    container.bind(TYPES.AUTH_SERVER_URL).toConstantValue(env.get('AUTH_SERVER_URL', true))
-    container.bind(TYPES.REVISIONS_SERVER_URL).toConstantValue(env.get('REVISIONS_SERVER_URL', true))
-    container.bind(TYPES.EMAIL_SERVER_URL).toConstantValue(env.get('EMAIL_SERVER_URL', true))
-    container.bind(TYPES.PAYMENTS_SERVER_URL).toConstantValue(env.get('PAYMENTS_SERVER_URL', true))
-    container.bind(TYPES.FILES_SERVER_URL).toConstantValue(env.get('FILES_SERVER_URL', true))
-    container.bind(TYPES.WEB_SOCKET_SERVER_URL).toConstantValue(env.get('WEB_SOCKET_SERVER_URL', true))
-    container.bind(TYPES.AUTH_JWT_SECRET).toConstantValue(env.get('AUTH_JWT_SECRET'))
+    container.bind(TYPES.ApiGateway_SYNCING_SERVER_JS_URL).toConstantValue(env.get('SYNCING_SERVER_JS_URL', true))
+    container.bind(TYPES.ApiGateway_AUTH_SERVER_URL).toConstantValue(env.get('AUTH_SERVER_URL', true))
+    container.bind(TYPES.ApiGateway_REVISIONS_SERVER_URL).toConstantValue(env.get('REVISIONS_SERVER_URL', true))
+    container.bind(TYPES.ApiGateway_EMAIL_SERVER_URL).toConstantValue(env.get('EMAIL_SERVER_URL', true))
+    container.bind(TYPES.ApiGateway_PAYMENTS_SERVER_URL).toConstantValue(env.get('PAYMENTS_SERVER_URL', true))
+    container.bind(TYPES.ApiGateway_FILES_SERVER_URL).toConstantValue(env.get('FILES_SERVER_URL', true))
+    container.bind(TYPES.ApiGateway_WEB_SOCKET_SERVER_URL).toConstantValue(env.get('WEB_SOCKET_SERVER_URL', true))
+    container.bind(TYPES.ApiGateway_AUTH_JWT_SECRET).toConstantValue(env.get('AUTH_JWT_SECRET'))
     container
-      .bind(TYPES.HTTP_CALL_TIMEOUT)
+      .bind(TYPES.ApiGateway_HTTP_CALL_TIMEOUT)
       .toConstantValue(env.get('HTTP_CALL_TIMEOUT', true) ? +env.get('HTTP_CALL_TIMEOUT', true) : 60_000)
-    container.bind(TYPES.VERSION).toConstantValue(env.get('VERSION', true) ?? 'development')
-    container.bind(TYPES.CROSS_SERVICE_TOKEN_CACHE_TTL).toConstantValue(+env.get('CROSS_SERVICE_TOKEN_CACHE_TTL', true))
+    container.bind(TYPES.ApiGateway_VERSION).toConstantValue(env.get('VERSION', true) ?? 'development')
+    container
+      .bind(TYPES.ApiGateway_CROSS_SERVICE_TOKEN_CACHE_TTL)
+      .toConstantValue(+env.get('CROSS_SERVICE_TOKEN_CACHE_TTL', true))
 
     // Middleware
     container
-      .bind<RequiredCrossServiceTokenMiddleware>(TYPES.RequiredCrossServiceTokenMiddleware)
+      .bind<RequiredCrossServiceTokenMiddleware>(TYPES.ApiGateway_RequiredCrossServiceTokenMiddleware)
       .to(RequiredCrossServiceTokenMiddleware)
     container
-      .bind<OptionalCrossServiceTokenMiddleware>(TYPES.OptionalCrossServiceTokenMiddleware)
+      .bind<OptionalCrossServiceTokenMiddleware>(TYPES.ApiGateway_OptionalCrossServiceTokenMiddleware)
       .to(OptionalCrossServiceTokenMiddleware)
-    container.bind<WebSocketAuthMiddleware>(TYPES.WebSocketAuthMiddleware).to(WebSocketAuthMiddleware)
+    container.bind<WebSocketAuthMiddleware>(TYPES.ApiGateway_WebSocketAuthMiddleware).to(WebSocketAuthMiddleware)
     container
-      .bind<SubscriptionTokenAuthMiddleware>(TYPES.SubscriptionTokenAuthMiddleware)
+      .bind<SubscriptionTokenAuthMiddleware>(TYPES.ApiGateway_SubscriptionTokenAuthMiddleware)
       .to(SubscriptionTokenAuthMiddleware)
 
     // Services
@@ -106,24 +108,26 @@ export class ContainerConfigLoader {
         throw new Error('Service container is required when configured for home server')
       }
       container
-        .bind<ServiceProxyInterface>(TYPES.ServiceProxy)
+        .bind<ServiceProxyInterface>(TYPES.ApiGateway_ServiceProxy)
         .toConstantValue(
-          new DirectCallServiceProxy(configuration.serviceContainer, container.get(TYPES.FILES_SERVER_URL)),
+          new DirectCallServiceProxy(configuration.serviceContainer, container.get(TYPES.ApiGateway_FILES_SERVER_URL)),
         )
     } else {
-      container.bind<ServiceProxyInterface>(TYPES.ServiceProxy).to(HttpServiceProxy)
+      container.bind<ServiceProxyInterface>(TYPES.ApiGateway_ServiceProxy).to(HttpServiceProxy)
     }
-    container.bind<TimerInterface>(TYPES.Timer).toConstantValue(new Timer())
+    container.bind<TimerInterface>(TYPES.ApiGateway_Timer).toConstantValue(new Timer())
 
     if (isConfiguredForHomeServer) {
       container
-        .bind<CrossServiceTokenCacheInterface>(TYPES.CrossServiceTokenCache)
-        .toConstantValue(new InMemoryCrossServiceTokenCache(container.get(TYPES.Timer)))
+        .bind<CrossServiceTokenCacheInterface>(TYPES.ApiGateway_CrossServiceTokenCache)
+        .toConstantValue(new InMemoryCrossServiceTokenCache(container.get(TYPES.ApiGateway_Timer)))
     } else {
-      container.bind<CrossServiceTokenCacheInterface>(TYPES.CrossServiceTokenCache).to(RedisCrossServiceTokenCache)
+      container
+        .bind<CrossServiceTokenCacheInterface>(TYPES.ApiGateway_CrossServiceTokenCache)
+        .to(RedisCrossServiceTokenCache)
     }
     container
-      .bind<EndpointResolverInterface>(TYPES.EndpointResolver)
+      .bind<EndpointResolverInterface>(TYPES.ApiGateway_EndpointResolver)
       .toConstantValue(new EndpointResolver(isConfiguredForHomeServer))
 
     logger.debug('Configuration complete')

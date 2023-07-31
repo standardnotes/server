@@ -9,13 +9,13 @@ import { EndpointResolverInterface } from '../../Service/Resolver/EndpointResolv
 @controller('/v1/subscription-invites')
 export class SubscriptionInvitesController extends BaseHttpController {
   constructor(
-    @inject(TYPES.ServiceProxy) private httpService: ServiceProxyInterface,
-    @inject(TYPES.EndpointResolver) private endpointResolver: EndpointResolverInterface,
+    @inject(TYPES.ApiGateway_ServiceProxy) private httpService: ServiceProxyInterface,
+    @inject(TYPES.ApiGateway_EndpointResolver) private endpointResolver: EndpointResolverInterface,
   ) {
     super()
   }
 
-  @httpPost('/', TYPES.RequiredCrossServiceTokenMiddleware)
+  @httpPost('/', TYPES.ApiGateway_RequiredCrossServiceTokenMiddleware)
   async inviteToSubscriptionSharing(request: Request, response: Response): Promise<void> {
     await this.httpService.callAuthServer(
       request,
@@ -25,7 +25,7 @@ export class SubscriptionInvitesController extends BaseHttpController {
     )
   }
 
-  @httpGet('/', TYPES.RequiredCrossServiceTokenMiddleware)
+  @httpGet('/', TYPES.ApiGateway_RequiredCrossServiceTokenMiddleware)
   async listInvites(request: Request, response: Response): Promise<void> {
     await this.httpService.callAuthServer(
       request,
@@ -35,7 +35,7 @@ export class SubscriptionInvitesController extends BaseHttpController {
     )
   }
 
-  @httpDelete('/:inviteUuid', TYPES.RequiredCrossServiceTokenMiddleware)
+  @httpDelete('/:inviteUuid', TYPES.ApiGateway_RequiredCrossServiceTokenMiddleware)
   async cancelSubscriptionSharing(request: Request, response: Response): Promise<void> {
     await this.httpService.callAuthServer(
       request,
@@ -48,7 +48,7 @@ export class SubscriptionInvitesController extends BaseHttpController {
     )
   }
 
-  @httpPost('/:inviteUuid/accept', TYPES.RequiredCrossServiceTokenMiddleware)
+  @httpPost('/:inviteUuid/accept', TYPES.ApiGateway_RequiredCrossServiceTokenMiddleware)
   async acceptInvite(request: Request, response: Response): Promise<void> {
     await this.httpService.callAuthServer(
       request,

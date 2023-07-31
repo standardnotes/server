@@ -9,13 +9,13 @@ import { EndpointResolverInterface } from '../../Service/Resolver/EndpointResolv
 @controller('/v1/subscription-tokens')
 export class TokensController extends BaseHttpController {
   constructor(
-    @inject(TYPES.ServiceProxy) private httpService: ServiceProxyInterface,
-    @inject(TYPES.EndpointResolver) private endpointResolver: EndpointResolverInterface,
+    @inject(TYPES.ApiGateway_ServiceProxy) private httpService: ServiceProxyInterface,
+    @inject(TYPES.ApiGateway_EndpointResolver) private endpointResolver: EndpointResolverInterface,
   ) {
     super()
   }
 
-  @httpPost('/', TYPES.RequiredCrossServiceTokenMiddleware)
+  @httpPost('/', TYPES.ApiGateway_RequiredCrossServiceTokenMiddleware)
   async createToken(request: Request, response: Response): Promise<void> {
     await this.httpService.callAuthServer(
       request,

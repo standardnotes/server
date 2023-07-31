@@ -1,7 +1,7 @@
 import { BaseHttpController, controller, httpDelete, httpGet, results } from 'inversify-express-utils'
 import { TYPES } from '../../Bootstrap/Types'
 
-@controller('/v1/items/:item_id/revisions', TYPES.RequiredCrossServiceTokenMiddleware)
+@controller('/v1/items/:item_id/revisions', TYPES.ApiGateway_RequiredCrossServiceTokenMiddleware)
 export class RevisionsController extends BaseHttpController {
   @httpGet('/')
   async getRevisions(): Promise<results.JsonResult> {

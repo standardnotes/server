@@ -10,14 +10,14 @@ import { EndpointResolverInterface } from '../../Service/Resolver/EndpointResolv
 @controller('/v1/sockets')
 export class WebSocketsController extends BaseHttpController {
   constructor(
-    @inject(TYPES.ServiceProxy) private httpService: ServiceProxyInterface,
-    @inject(TYPES.EndpointResolver) private endpointResolver: EndpointResolverInterface,
-    @inject(TYPES.Logger) private logger: Logger,
+    @inject(TYPES.ApiGateway_ServiceProxy) private httpService: ServiceProxyInterface,
+    @inject(TYPES.ApiGateway_EndpointResolver) private endpointResolver: EndpointResolverInterface,
+    @inject(TYPES.ApiGateway_Logger) private logger: Logger,
   ) {
     super()
   }
 
-  @httpPost('/tokens', TYPES.RequiredCrossServiceTokenMiddleware)
+  @httpPost('/tokens', TYPES.ApiGateway_RequiredCrossServiceTokenMiddleware)
   async createWebSocketConnectionToken(request: Request, response: Response): Promise<void> {
     await this.httpService.callWebSocketServer(
       request,
@@ -27,7 +27,7 @@ export class WebSocketsController extends BaseHttpController {
     )
   }
 
-  @httpPost('/connections', TYPES.WebSocketAuthMiddleware)
+  @httpPost('/connections', TYPES.ApiGateway_WebSocketAuthMiddleware)
   async createWebSocketConnection(request: Request, response: Response): Promise<void> {
     if (!request.headers.connectionid) {
       this.logger.error('Could not create a websocket connection. Missing connection id header.')

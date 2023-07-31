@@ -9,13 +9,13 @@ import { EndpointResolverInterface } from '../../Service/Resolver/EndpointResolv
 @controller('/v1/authenticators')
 export class AuthenticatorsController extends BaseHttpController {
   constructor(
-    @inject(TYPES.ServiceProxy) private httpService: ServiceProxyInterface,
-    @inject(TYPES.EndpointResolver) private endpointResolver: EndpointResolverInterface,
+    @inject(TYPES.ApiGateway_ServiceProxy) private httpService: ServiceProxyInterface,
+    @inject(TYPES.ApiGateway_EndpointResolver) private endpointResolver: EndpointResolverInterface,
   ) {
     super()
   }
 
-  @httpDelete('/:authenticatorId', TYPES.RequiredCrossServiceTokenMiddleware)
+  @httpDelete('/:authenticatorId', TYPES.ApiGateway_RequiredCrossServiceTokenMiddleware)
   async delete(request: Request, response: Response): Promise<void> {
     await this.httpService.callAuthServer(
       request,
@@ -29,7 +29,7 @@ export class AuthenticatorsController extends BaseHttpController {
     )
   }
 
-  @httpGet('/', TYPES.RequiredCrossServiceTokenMiddleware)
+  @httpGet('/', TYPES.ApiGateway_RequiredCrossServiceTokenMiddleware)
   async list(request: Request, response: Response): Promise<void> {
     await this.httpService.callAuthServer(
       request,
@@ -39,7 +39,7 @@ export class AuthenticatorsController extends BaseHttpController {
     )
   }
 
-  @httpGet('/generate-registration-options', TYPES.RequiredCrossServiceTokenMiddleware)
+  @httpGet('/generate-registration-options', TYPES.ApiGateway_RequiredCrossServiceTokenMiddleware)
   async generateRegistrationOptions(request: Request, response: Response): Promise<void> {
     await this.httpService.callAuthServer(
       request,
@@ -59,7 +59,7 @@ export class AuthenticatorsController extends BaseHttpController {
     )
   }
 
-  @httpPost('/verify-registration', TYPES.RequiredCrossServiceTokenMiddleware)
+  @httpPost('/verify-registration', TYPES.ApiGateway_RequiredCrossServiceTokenMiddleware)
   async verifyRegistration(request: Request, response: Response): Promise<void> {
     await this.httpService.callAuthServer(
       request,

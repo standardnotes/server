@@ -9,8 +9,8 @@ import { EndpointResolverInterface } from '../../Service/Resolver/EndpointResolv
 @controller('/v2')
 export class ActionsControllerV2 extends BaseHttpController {
   constructor(
-    @inject(TYPES.ServiceProxy) private serviceProxy: ServiceProxyInterface,
-    @inject(TYPES.EndpointResolver) private endpointResolver: EndpointResolverInterface,
+    @inject(TYPES.ApiGateway_ServiceProxy) private serviceProxy: ServiceProxyInterface,
+    @inject(TYPES.ApiGateway_EndpointResolver) private endpointResolver: EndpointResolverInterface,
   ) {
     super()
   }
@@ -25,7 +25,7 @@ export class ActionsControllerV2 extends BaseHttpController {
     )
   }
 
-  @httpPost('/login-params', TYPES.OptionalCrossServiceTokenMiddleware)
+  @httpPost('/login-params', TYPES.ApiGateway_OptionalCrossServiceTokenMiddleware)
   async loginParams(request: Request, response: Response): Promise<void> {
     await this.serviceProxy.callAuthServer(
       request,

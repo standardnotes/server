@@ -9,7 +9,7 @@ export class RedisCrossServiceTokenCache implements CrossServiceTokenCacheInterf
   private readonly PREFIX = 'cst'
   private readonly USER_CST_PREFIX = 'user-cst'
 
-  constructor(@inject(TYPES.Redis) private redisClient: IORedis.Redis) {}
+  constructor(@inject(TYPES.ApiGateway_Redis) private redisClient: IORedis.Redis) {}
 
   async set(dto: {
     authorizationHeaderValue: string

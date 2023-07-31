@@ -8,13 +8,13 @@ import { EndpointResolverInterface } from '../../Service/Resolver/EndpointResolv
 @controller('/v1/sessions')
 export class SessionsController extends BaseHttpController {
   constructor(
-    @inject(TYPES.ServiceProxy) private httpService: ServiceProxyInterface,
-    @inject(TYPES.EndpointResolver) private endpointResolver: EndpointResolverInterface,
+    @inject(TYPES.ApiGateway_ServiceProxy) private httpService: ServiceProxyInterface,
+    @inject(TYPES.ApiGateway_EndpointResolver) private endpointResolver: EndpointResolverInterface,
   ) {
     super()
   }
 
-  @httpGet('/', TYPES.RequiredCrossServiceTokenMiddleware)
+  @httpGet('/', TYPES.ApiGateway_RequiredCrossServiceTokenMiddleware)
   async getSessions(request: Request, response: Response): Promise<void> {
     await this.httpService.callAuthServer(
       request,
@@ -23,7 +23,7 @@ export class SessionsController extends BaseHttpController {
     )
   }
 
-  @httpDelete('/:uuid', TYPES.RequiredCrossServiceTokenMiddleware)
+  @httpDelete('/:uuid', TYPES.ApiGateway_RequiredCrossServiceTokenMiddleware)
   async deleteSession(request: Request, response: Response): Promise<void> {
     await this.httpService.callAuthServer(
       request,
@@ -35,7 +35,7 @@ export class SessionsController extends BaseHttpController {
     )
   }
 
-  @httpDelete('/', TYPES.RequiredCrossServiceTokenMiddleware)
+  @httpDelete('/', TYPES.ApiGateway_RequiredCrossServiceTokenMiddleware)
   async deleteSessions(request: Request, response: Response): Promise<void> {
     await this.httpService.callAuthServer(
       request,

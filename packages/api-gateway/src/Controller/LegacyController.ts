@@ -9,7 +9,7 @@ export class LegacyController extends BaseHttpController {
   private AUTH_ROUTES: Map<string, string>
   private PARAMETRIZED_AUTH_ROUTES: Map<string, string>
 
-  constructor(@inject(TYPES.ServiceProxy) private httpService: ServiceProxyInterface) {
+  constructor(@inject(TYPES.ApiGateway_ServiceProxy) private httpService: ServiceProxyInterface) {
     super()
 
     this.AUTH_ROUTES = new Map([
@@ -29,17 +29,17 @@ export class LegacyController extends BaseHttpController {
     ])
   }
 
-  @httpPost('/items/sync', TYPES.RequiredCrossServiceTokenMiddleware)
+  @httpPost('/items/sync', TYPES.ApiGateway_RequiredCrossServiceTokenMiddleware)
   async legacyItemsSync(request: Request, response: Response): Promise<void> {
     await this.httpService.callLegacySyncingServer(request, response, request.path.substring(1), request.body)
   }
 
-  @httpGet('/items/:item_id/revisions', TYPES.RequiredCrossServiceTokenMiddleware)
+  @httpGet('/items/:item_id/revisions', TYPES.ApiGateway_RequiredCrossServiceTokenMiddleware)
   async legacyGetRevisions(request: Request, response: Response): Promise<void> {
     await this.httpService.callLegacySyncingServer(request, response, request.path.substring(1), request.body)
   }
 
-  @httpGet('/items/:item_id/revisions/:id', TYPES.RequiredCrossServiceTokenMiddleware)
+  @httpGet('/items/:item_id/revisions/:id', TYPES.ApiGateway_RequiredCrossServiceTokenMiddleware)
   async legacyGetRevision(request: Request, response: Response): Promise<void> {
     await this.httpService.callLegacySyncingServer(request, response, request.path.substring(1), request.body)
   }
