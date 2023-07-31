@@ -82,6 +82,7 @@ describe('SaveItems', () => {
       apiVersion: '1',
       readOnlyAccess: false,
       sessionUuid: 'session-uuid',
+      snjsVersion: '2.200.0',
     })
 
     expect(result.isFailed()).toBeFalsy()
@@ -104,6 +105,7 @@ describe('SaveItems', () => {
       apiVersion: '1',
       readOnlyAccess: false,
       sessionUuid: 'session-uuid',
+      snjsVersion: '2.200.0',
     })
 
     expect(result.isFailed()).toBeFalsy()
@@ -126,6 +128,7 @@ describe('SaveItems', () => {
       apiVersion: '1',
       readOnlyAccess: false,
       sessionUuid: 'session-uuid',
+      snjsVersion: '2.200.0',
     })
 
     expect(result.isFailed()).toBeFalsy()
@@ -146,6 +149,7 @@ describe('SaveItems', () => {
       apiVersion: '1',
       readOnlyAccess: true,
       sessionUuid: 'session-uuid',
+      snjsVersion: '2.200.0',
     })
 
     expect(result.isFailed()).toBeFalsy()
@@ -167,6 +171,7 @@ describe('SaveItems', () => {
       apiVersion: '1',
       readOnlyAccess: false,
       sessionUuid: 'session-uuid',
+      snjsVersion: '2.200.0',
     })
 
     expect(result.isFailed()).toBeFalsy()
@@ -184,6 +189,7 @@ describe('SaveItems', () => {
       apiVersion: '1',
       readOnlyAccess: false,
       sessionUuid: 'session-uuid',
+      snjsVersion: '2.200.0',
     })
 
     expect(result.isFailed()).toBeFalsy()
@@ -201,6 +207,7 @@ describe('SaveItems', () => {
       apiVersion: '1',
       readOnlyAccess: false,
       sessionUuid: 'session-uuid',
+      snjsVersion: '2.200.0',
     })
 
     expect(result.isFailed()).toBeFalsy()
@@ -224,6 +231,7 @@ describe('SaveItems', () => {
       apiVersion: '1',
       readOnlyAccess: false,
       sessionUuid: 'session-uuid',
+      snjsVersion: '2.200.0',
     })
 
     expect(result.isFailed()).toBeFalsy()
@@ -247,6 +255,7 @@ describe('SaveItems', () => {
       apiVersion: '1',
       readOnlyAccess: false,
       sessionUuid: 'session-uuid',
+      snjsVersion: '2.200.0',
     })
 
     expect(result.isFailed()).toBeFalsy()
@@ -291,6 +300,7 @@ describe('SaveItems', () => {
       apiVersion: '2',
       readOnlyAccess: false,
       sessionUuid: 'session-uuid',
+      snjsVersion: '2.200.0',
     })
 
     expect(result.isFailed()).toBeFalsy()

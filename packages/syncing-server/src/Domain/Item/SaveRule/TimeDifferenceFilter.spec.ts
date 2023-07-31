@@ -67,6 +67,7 @@ describe('TimeDifferenceFilter', () => {
     const result = await createFilter().check({
       userUuid: '1-2-3',
       apiVersion: ApiVersion.v20200115,
+      snjsVersion: '2.200.0',
       itemHash,
       existingItem: null,
     })
@@ -86,6 +87,7 @@ describe('TimeDifferenceFilter', () => {
     const result = await createFilter().check({
       userUuid: '1-2-3',
       apiVersion: ApiVersion.v20161215,
+      snjsVersion: '2.200.0',
       itemHash,
       existingItem,
     })
@@ -104,6 +106,7 @@ describe('TimeDifferenceFilter', () => {
     const result = await createFilter().check({
       userUuid: '1-2-3',
       apiVersion: ApiVersion.v20200115,
+      snjsVersion: '2.200.0',
       itemHash,
       existingItem,
     })
@@ -126,6 +129,7 @@ describe('TimeDifferenceFilter', () => {
     const result = await createFilter().check({
       userUuid: '1-2-3',
       apiVersion: ApiVersion.v20200115,
+      snjsVersion: '2.200.0',
       itemHash,
       existingItem,
     })
@@ -153,6 +157,7 @@ describe('TimeDifferenceFilter', () => {
       apiVersion: ApiVersion.v20161215,
       itemHash,
       existingItem,
+      snjsVersion: '2.200.0',
     })
 
     expect(result).toEqual({
@@ -178,6 +183,7 @@ describe('TimeDifferenceFilter', () => {
       apiVersion: ApiVersion.v20161215,
       itemHash,
       existingItem,
+      snjsVersion: '2.200.0',
     })
 
     expect(result).toEqual({
@@ -201,6 +207,7 @@ describe('TimeDifferenceFilter', () => {
     const result = await createFilter().check({
       userUuid: '1-2-3',
       apiVersion: ApiVersion.v20200115,
+      snjsVersion: '2.200.0',
       itemHash,
       existingItem,
     })
@@ -226,6 +233,7 @@ describe('TimeDifferenceFilter', () => {
     const result = await createFilter().check({
       userUuid: '1-2-3',
       apiVersion: ApiVersion.v20200115,
+      snjsVersion: '2.200.0',
       itemHash,
       existingItem,
     })

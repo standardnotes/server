@@ -59,6 +59,7 @@ export class SaveItems implements UseCaseInterface<SaveItemsResult> {
         apiVersion: dto.apiVersion,
         itemHash,
         existingItem,
+        snjsVersion: dto.snjsVersion,
       })
       if (!processingResult.passed) {
         if (processingResult.conflict) {

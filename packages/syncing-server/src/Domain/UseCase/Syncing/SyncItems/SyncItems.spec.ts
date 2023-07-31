@@ -172,6 +172,7 @@ describe('SyncItems', () => {
       itemHashes: [itemHash],
       userUuid: '1-2-3',
       apiVersion: '20200115',
+      snjsVersion: '1.2.3',
       readOnlyAccess: false,
       sessionUuid: null,
     })

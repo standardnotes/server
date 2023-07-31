@@ -95,6 +95,7 @@ describe('SharedVaultFilter', () => {
       existingItem: existingItem,
       itemHash: itemHash,
       userUuid: '00000000-0000-0000-0000-000000000000',
+      snjsVersion: '2.200.0',
     })
 
     expect(result.passed).toBe(true)
@@ -109,6 +110,7 @@ describe('SharedVaultFilter', () => {
       existingItem: existingItem,
       itemHash: itemHash,
       userUuid: '00000000-0000-0000-0000-000000000000',
+      snjsVersion: '2.200.0',
     })
 
     expect(result.passed).toBe(false)
@@ -145,6 +147,7 @@ describe('SharedVaultFilter', () => {
       existingItem: existingItem,
       itemHash: itemHash,
       userUuid: '00000000-0000-0000-0000-000000000000',
+      snjsVersion: '2.200.0',
     })
 
     expect(result.passed).toBe(false)
@@ -179,6 +182,7 @@ describe('SharedVaultFilter', () => {
         existingItem: existingItem,
         itemHash: itemHash,
         userUuid: '00000000-0000-0000-0000-000000000000',
+        snjsVersion: '2.200.0',
       })
 
       expect(result.passed).toBe(false)
@@ -196,6 +200,7 @@ describe('SharedVaultFilter', () => {
         existingItem: existingItem,
         itemHash: itemHash,
         userUuid: '00000000-0000-0000-0000-000000000000',
+        snjsVersion: '2.200.0',
       })
 
       expect(result.passed).toBe(false)
@@ -210,6 +215,7 @@ describe('SharedVaultFilter', () => {
         existingItem: existingItem,
         itemHash: itemHash,
         userUuid: '00000000-0000-0000-0000-000000000000',
+        snjsVersion: '2.200.0',
       })
 
       expect(result.passed).toBe(true)
@@ -227,6 +233,7 @@ describe('SharedVaultFilter', () => {
         existingItem: existingItem,
         itemHash: itemHash,
         userUuid: '00000000-0000-0000-0000-000000000000',
+        snjsVersion: '2.200.0',
       })
 
       expect(result.passed).toBe(false)
@@ -274,6 +281,7 @@ describe('SharedVaultFilter', () => {
         existingItem: existingItem,
         itemHash: itemHash,
         userUuid: '00000000-0000-0000-0000-000000000000',
+        snjsVersion: '2.200.0',
       })
 
       expect(result.passed).toBe(false)
@@ -313,6 +321,7 @@ describe('SharedVaultFilter', () => {
         existingItem: existingItem,
         itemHash: itemHash,
         userUuid: '00000000-0000-0000-0000-000000000000',
+        snjsVersion: '2.200.0',
       })
 
       expect(result.passed).toBe(false)
@@ -351,6 +360,7 @@ describe('SharedVaultFilter', () => {
         existingItem: existingItem,
         itemHash: itemHash,
         userUuid: '00000000-0000-0000-0000-000000000000',
+        snjsVersion: '2.200.0',
       })
 
       expect(result.passed).toBe(false)
@@ -381,6 +391,7 @@ describe('SharedVaultFilter', () => {
         existingItem: existingItem,
         itemHash: itemHash,
         userUuid: '00000000-0000-0000-0000-000000000000',
+        snjsVersion: '2.200.0',
       })
 
       expect(result.passed).toBe(false)
@@ -395,6 +406,7 @@ describe('SharedVaultFilter', () => {
         existingItem: existingItem,
         itemHash: itemHash,
         userUuid: '00000000-0000-0000-0000-000000000000',
+        snjsVersion: '2.200.0',
       })
 
       expect(result.passed).toBe(true)
@@ -441,6 +453,7 @@ describe('SharedVaultFilter', () => {
         existingItem: existingItem,
         itemHash: itemHash,
         userUuid: '00000000-0000-0000-0000-000000000000',
+        snjsVersion: '2.200.0',
       })
 
       expect(result.passed).toBe(false)
@@ -470,6 +483,7 @@ describe('SharedVaultFilter', () => {
         existingItem: existingItem,
         itemHash: itemHash,
         userUuid: '00000000-0000-0000-0000-000000000001',
+        snjsVersion: '2.200.0',
       })
 
       expect(result.passed).toBe(false)
@@ -508,6 +522,7 @@ describe('SharedVaultFilter', () => {
         existingItem: existingItem,
         itemHash: itemHash,
         userUuid: '00000000-0000-0000-0000-000000000000',
+        snjsVersion: '2.200.0',
       })
 
       expect(result.passed).toBe(false)
@@ -538,6 +553,7 @@ describe('SharedVaultFilter', () => {
         existingItem: existingItem,
         itemHash: itemHash,
         userUuid: '00000000-0000-0000-0000-000000000000',
+        snjsVersion: '2.200.0',
       })
 
       expect(result.passed).toBe(false)
@@ -552,6 +568,7 @@ describe('SharedVaultFilter', () => {
         existingItem: existingItem,
         itemHash: itemHash,
         userUuid: '00000000-0000-0000-0000-000000000000',
+        snjsVersion: '2.200.0',
       })
 
       expect(result.passed).toBe(true)
@@ -598,6 +615,7 @@ describe('SharedVaultFilter', () => {
         existingItem: existingItem,
         itemHash: itemHash,
         userUuid: '00000000-0000-0000-0000-000000000000',
+        snjsVersion: '2.200.0',
       })
 
       expect(result.passed).toBe(false)
@@ -627,6 +645,7 @@ describe('SharedVaultFilter', () => {
         existingItem: existingItem,
         itemHash: itemHash,
         userUuid: '00000000-0000-0000-0000-000000000001',
+        snjsVersion: '2.200.0',
       })
 
       expect(result.passed).toBe(false)
@@ -665,6 +684,7 @@ describe('SharedVaultFilter', () => {
         existingItem: existingItem,
         itemHash: itemHash,
         userUuid: '00000000-0000-0000-0000-000000000000',
+        snjsVersion: '2.200.0',
       })
 
       expect(result.passed).toBe(false)
@@ -695,6 +715,7 @@ describe('SharedVaultFilter', () => {
         existingItem: existingItem,
         itemHash: itemHash,
         userUuid: '00000000-0000-0000-0000-000000000000',
+        snjsVersion: '2.200.0',
       })
 
       expect(result.passed).toBe(false)
@@ -709,6 +730,7 @@ describe('SharedVaultFilter', () => {
         existingItem: existingItem,
         itemHash: itemHash,
         userUuid: '00000000-0000-0000-0000-000000000000',
+        snjsVersion: '2.200.0',
       })
 
       expect(result.passed).toBe(true)
@@ -730,6 +752,7 @@ describe('SharedVaultFilter', () => {
         existingItem: existingItem,
         itemHash: itemHash,
         userUuid: '00000000-0000-0000-0000-000000000000',
+        snjsVersion: '2.200.0',
       })
 
       expect(result.passed).toBe(false)
@@ -760,6 +783,7 @@ describe('SharedVaultFilter', () => {
         existingItem: existingItem,
         itemHash: itemHash,
         userUuid: '00000000-0000-0000-0000-000000000000',
+        snjsVersion: '2.200.0',
       })
 
       expect(result.passed).toBe(false)
@@ -774,6 +798,7 @@ describe('SharedVaultFilter', () => {
         existingItem: existingItem,
         itemHash: itemHash,
         userUuid: '00000000-0000-0000-0000-000000000000',
+        snjsVersion: '2.200.0',
       })
 
       expect(result.passed).toBe(true)
@@ -811,6 +836,7 @@ describe('SharedVaultFilter', () => {
         existingItem: existingItem,
         itemHash: itemHash,
         userUuid: '00000000-0000-0000-0000-000000000000',
+        snjsVersion: '2.200.0',
       })
 
       expect(result.passed).toBe(false)
