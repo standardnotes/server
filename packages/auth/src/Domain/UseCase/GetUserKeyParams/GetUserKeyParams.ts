@@ -10,7 +10,7 @@ import { User } from '../../User/User'
 import { PKCERepositoryInterface } from '../../User/PKCERepositoryInterface'
 import { GetUserKeyParamsDTOV2Challenged } from './GetUserKeyParamsDTOV2Challenged'
 import { KeyParamsData } from '@standardnotes/responses'
-import { Username } from '@standardnotes/domain-core'
+import { Username, Uuid } from '@standardnotes/domain-core'
 
 @injectable()
 export class GetUserKeyParams implements UseCaseInterface {
@@ -39,7 +39,13 @@ export class GetUserKeyParams implements UseCaseInterface {
         }
       }
     } else if (dto.userUuid) {
-      user = await this.userRepository.findOneByUuid(dto.userUuid)
+      const userUuidOrError = Uuid.create(dto.userUuid)
+      if (userUuidOrError.isFailed()) {
+        throw Error(userUuidOrError.getError())
+      }
+      const userUuid = userUuidOrError.getValue()
+
+      user = await this.userRepository.findOneByUuid(userUuid)
     }
 
     if (!user) {

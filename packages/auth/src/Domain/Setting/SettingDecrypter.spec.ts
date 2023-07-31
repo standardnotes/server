@@ -32,7 +32,9 @@ describe('SettingDecrypter', () => {
       serverEncryptionVersion: EncryptionVersion.Default,
     } as jest.Mocked<Setting>
 
-    expect(await createDecrypter().decryptSettingValue(setting, '1-2-3')).toEqual('decrypted')
+    expect(await createDecrypter().decryptSettingValue(setting, '00000000-0000-0000-0000-000000000000')).toEqual(
+      'decrypted',
+    )
   })
 
   it('should return null if the setting value is null', async () => {
@@ -41,7 +43,7 @@ describe('SettingDecrypter', () => {
       serverEncryptionVersion: EncryptionVersion.Default,
     } as jest.Mocked<Setting>
 
-    expect(await createDecrypter().decryptSettingValue(setting, '1-2-3')).toBeNull()
+    expect(await createDecrypter().decryptSettingValue(setting, '00000000-0000-0000-0000-000000000000')).toBeNull()
   })
 
   it('should return unencrypted value if the setting value is unencrypted', async () => {
@@ -50,7 +52,7 @@ describe('SettingDecrypter', () => {
       serverEncryptionVersion: EncryptionVersion.Unencrypted,
     } as jest.Mocked<Setting>
 
-    expect(await createDecrypter().decryptSettingValue(setting, '1-2-3')).toEqual('test')
+    expect(await createDecrypter().decryptSettingValue(setting, '00000000-0000-0000-0000-000000000000')).toEqual('test')
   })
 
   it('should throw if the user could not be found', async () => {
@@ -62,7 +64,23 @@ describe('SettingDecrypter', () => {
 
     let caughtError = null
     try {
-      await createDecrypter().decryptSettingValue(setting, '1-2-3')
+      await createDecrypter().decryptSettingValue(setting, '00000000-0000-0000-0000-000000000000')
+    } catch (error) {
+      caughtError = error
+    }
+
+    expect(caughtError).not.toBeNull()
+  })
+
+  it('should throw if the user uuid is invalid', async () => {
+    const setting = {
+      value: 'encrypted',
+      serverEncryptionVersion: EncryptionVersion.Default,
+    } as jest.Mocked<Setting>
+
+    let caughtError = null
+    try {
+      await createDecrypter().decryptSettingValue(setting, 'invalid')
     } catch (error) {
       caughtError = error
     }

@@ -10,6 +10,7 @@ import { UserSubscription } from '../Subscription/UserSubscription'
 import { UserSubscriptionServiceInterface } from '../Subscription/UserSubscriptionServiceInterface'
 import { UserRepositoryInterface } from '../User/UserRepositoryInterface'
 import { User } from '../User/User'
+import { Uuid } from '@standardnotes/domain-core'
 
 @injectable()
 export class FileUploadedEventHandler implements DomainEventHandlerInterface {
@@ -22,17 +23,25 @@ export class FileUploadedEventHandler implements DomainEventHandlerInterface {
   ) {}
 
   async handle(event: FileUploadedEvent): Promise<void> {
-    const user = await this.userRepository.findOneByUuid(event.payload.userUuid)
+    const userUuidOrError = Uuid.create(event.payload.userUuid)
+    if (userUuidOrError.isFailed()) {
+      this.logger.warn(userUuidOrError.getError())
+
+      return
+    }
+    const userUuid = userUuidOrError.getValue()
+
+    const user = await this.userRepository.findOneByUuid(userUuid)
     if (user === null) {
-      this.logger.warn(`Could not find user with uuid: ${event.payload.userUuid}`)
+      this.logger.warn(`Could not find user with uuid: ${userUuid.value}`)
 
       return
     }
 
     const { regularSubscription, sharedSubscription } =
-      await this.userSubscriptionService.findRegularSubscriptionForUserUuid(event.payload.userUuid)
+      await this.userSubscriptionService.findRegularSubscriptionForUserUuid(userUuid.value)
     if (regularSubscription === null) {
-      this.logger.warn(`Could not find regular user subscription for user with uuid: ${event.payload.userUuid}`)
+      this.logger.warn(`Could not find regular user subscription for user with uuid: ${userUuid.value}`)
 
       return
     }

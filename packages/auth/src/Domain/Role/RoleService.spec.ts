@@ -214,13 +214,25 @@ describe('RoleService', () => {
     })
 
     it('should indicate if a user has given permission', async () => {
-      const userHasPermission = await createService().userHasPermission('1-2-3', PermissionName.DailyEmailBackup)
+      const userHasPermission = await createService().userHasPermission(
+        '00000000-0000-0000-0000-000000000000',
+        PermissionName.DailyEmailBackup,
+      )
 
       expect(userHasPermission).toBeTruthy()
     })
 
+    it('should not indiciate if a user has permission if the user uuid is invalid', async () => {
+      const userHasPermission = await createService().userHasPermission('invalid', PermissionName.DailyEmailBackup)
+
+      expect(userHasPermission).toBeFalsy()
+    })
+
     it('should indicate if a user does not have a given permission', async () => {
-      const userHasPermission = await createService().userHasPermission('1-2-3', PermissionName.MarkdownProEditor)
+      const userHasPermission = await createService().userHasPermission(
+        '00000000-0000-0000-0000-000000000000',
+        PermissionName.MarkdownProEditor,
+      )
 
       expect(userHasPermission).toBeFalsy()
     })
@@ -228,7 +240,10 @@ describe('RoleService', () => {
     it('should indicate user does not have a permission if user could not be found', async () => {
       userRepository.findOneByUuid = jest.fn().mockReturnValue(null)
 
-      const userHasPermission = await createService().userHasPermission('1-2-3', PermissionName.MarkdownProEditor)
+      const userHasPermission = await createService().userHasPermission(
+        '00000000-0000-0000-0000-000000000000',
+        PermissionName.MarkdownProEditor,
+      )
 
       expect(userHasPermission).toBeFalsy()
     })

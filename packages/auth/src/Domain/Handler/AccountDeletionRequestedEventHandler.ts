@@ -6,6 +6,7 @@ import { EphemeralSessionRepositoryInterface } from '../Session/EphemeralSession
 import { RevokedSessionRepositoryInterface } from '../Session/RevokedSessionRepositoryInterface'
 import { SessionRepositoryInterface } from '../Session/SessionRepositoryInterface'
 import { UserRepositoryInterface } from '../User/UserRepositoryInterface'
+import { Uuid } from '@standardnotes/domain-core'
 
 @injectable()
 export class AccountDeletionRequestedEventHandler implements DomainEventHandlerInterface {
@@ -19,19 +20,27 @@ export class AccountDeletionRequestedEventHandler implements DomainEventHandlerI
   ) {}
 
   async handle(event: AccountDeletionRequestedEvent): Promise<void> {
-    const user = await this.userRepository.findOneByUuid(event.payload.userUuid)
-
-    if (user === null) {
+    const userUuidOrError = Uuid.create(event.payload.userUuid)
+    if (userUuidOrError.isFailed()) {
       this.logger.warn(`Could not find user with uuid: ${event.payload.userUuid}`)
 
       return
     }
+    const userUuid = userUuidOrError.getValue()
 
-    await this.removeSessions(event.payload.userUuid)
+    const user = await this.userRepository.findOneByUuid(userUuid)
+
+    if (user === null) {
+      this.logger.warn(`Could not find user with uuid: ${userUuid.value}`)
+
+      return
+    }
+
+    await this.removeSessions(userUuid.value)
 
     await this.userRepository.remove(user)
 
-    this.logger.info(`Finished account cleanup for user: ${event.payload.userUuid}`)
+    this.logger.info(`Finished account cleanup for user: ${userUuid.value}`)
   }
 
   private async removeSessions(userUuid: string): Promise<void> {

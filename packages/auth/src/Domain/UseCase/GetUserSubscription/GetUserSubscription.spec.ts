@@ -15,7 +15,10 @@ describe('GetUserSubscription', () => {
   const createUseCase = () => new GetUserSubscription(userRepository, userSubscriptionRepository)
 
   beforeEach(() => {
-    user = { uuid: 'user-1-1-1', email: 'user-1-1-1@example.com' } as jest.Mocked<User>
+    user = {
+      uuid: '00000000-0000-0000-0000-000000000000',
+      email: '00000000-0000-0000-0000-000000000000@example.com',
+    } as jest.Mocked<User>
     userRepository = {} as jest.Mocked<UserRepositoryInterface>
     userRepository.findOneByUuid = jest.fn().mockReturnValue(user)
 
@@ -29,18 +32,27 @@ describe('GetUserSubscription', () => {
   it('should fail if a user is not found', async () => {
     userRepository.findOneByUuid = jest.fn().mockReturnValue(null)
 
-    expect(await createUseCase().execute({ userUuid: 'user-1-1-1' })).toEqual({
+    expect(await createUseCase().execute({ userUuid: '00000000-0000-0000-0000-000000000000' })).toEqual({
       success: false,
       error: {
-        message: 'User user-1-1-1 not found.',
+        message: 'User 00000000-0000-0000-0000-000000000000 not found.',
+      },
+    })
+  })
+
+  it('should fail if a user uuid is invalid', async () => {
+    expect(await createUseCase().execute({ userUuid: 'invalid' })).toEqual({
+      success: false,
+      error: {
+        message: 'Given value is not a valid uuid: invalid',
       },
     })
   })
 
   it('should return user subscription', async () => {
-    expect(await createUseCase().execute({ userUuid: 'user-1-1-1' })).toEqual({
+    expect(await createUseCase().execute({ userUuid: '00000000-0000-0000-0000-000000000000' })).toEqual({
       success: true,
-      user: { uuid: 'user-1-1-1', email: 'user-1-1-1@example.com' },
+      user: { uuid: '00000000-0000-0000-0000-000000000000', email: '00000000-0000-0000-0000-000000000000@example.com' },
       subscription: {
         planName: SubscriptionName.ProPlan,
       },

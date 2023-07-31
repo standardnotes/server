@@ -170,15 +170,32 @@ describe('InversifyExpressUsersController', () => {
   })
 
   it('should delete user', async () => {
-    request.params.email = 'test@test.te'
+    request.params.userUuid = '1-2-3'
+    response.locals.user = {
+      uuid: '1-2-3',
+    }
 
-    const httpResponse = <results.JsonResult>await createController().deleteAccount(request)
+    const httpResponse = <results.JsonResult>await createController().deleteAccount(request, response)
     const result = await httpResponse.executeAsync()
 
-    expect(deleteAccount.execute).toHaveBeenCalledWith({ email: 'test@test.te' })
+    expect(deleteAccount.execute).toHaveBeenCalledWith({ userUuid: '1-2-3' })
 
     expect(result.statusCode).toEqual(200)
     expect(await result.content.readAsStringAsync()).toEqual('{"message":"A OK"}')
+  })
+
+  it('should not delete user if user uuid is different than the one in the session', async () => {
+    request.params.userUuid = '1-2-3'
+    response.locals.user = {
+      uuid: '2-3-4',
+    }
+
+    const httpResponse = <results.JsonResult>await createController().deleteAccount(request, response)
+    const result = await httpResponse.executeAsync()
+
+    expect(deleteAccount.execute).not.toHaveBeenCalled()
+
+    expect(result.statusCode).toEqual(401)
   })
 
   it('should get user key params', async () => {

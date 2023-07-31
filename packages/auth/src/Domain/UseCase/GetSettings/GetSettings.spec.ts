@@ -45,6 +45,10 @@ describe('GetSettings', () => {
     )
 
   beforeEach(() => {
+    user = {
+      uuid: '00000000-0000-0000-0000-000000000000',
+    } as jest.Mocked<User>
+
     setting = new Setting()
     setting.name = 'test'
     setting.updatedAt = 345
@@ -90,8 +94,6 @@ describe('GetSettings', () => {
     subscriptionSettingProjector = {} as jest.Mocked<SubscriptionSettingProjector>
     subscriptionSettingProjector.projectSimple = jest.fn().mockReturnValue({ foo: 'sub-bar' })
 
-    user = {} as jest.Mocked<User>
-
     userRepository = {} as jest.Mocked<UserRepositoryInterface>
     userRepository.findOneByUuid = jest.fn().mockReturnValue(user)
 
@@ -103,18 +105,27 @@ describe('GetSettings', () => {
     it('should fail if a user is not found', async () => {
       userRepository.findOneByUuid = jest.fn().mockReturnValue(null)
 
-      expect(await createUseCase().execute({ userUuid: '1-2-3' })).toEqual({
+      expect(await createUseCase().execute({ userUuid: '00000000-0000-0000-0000-000000000000' })).toEqual({
         success: false,
         error: {
-          message: 'User 1-2-3 not found.',
+          message: 'User 00000000-0000-0000-0000-000000000000 not found.',
+        },
+      })
+    })
+
+    it('should fail if a user uuid is invalid', async () => {
+      expect(await createUseCase().execute({ userUuid: 'invalid' })).toEqual({
+        success: false,
+        error: {
+          message: 'Given value is not a valid uuid: invalid',
         },
       })
     })
 
     it('should return all user settings except mfa', async () => {
-      expect(await createUseCase().execute({ userUuid: '1-2-3' })).toEqual({
+      expect(await createUseCase().execute({ userUuid: '00000000-0000-0000-0000-000000000000' })).toEqual({
         success: true,
-        userUuid: '1-2-3',
+        userUuid: '00000000-0000-0000-0000-000000000000',
         settings: [{ foo: 'bar' }],
       })
 
@@ -131,9 +142,9 @@ describe('GetSettings', () => {
       } as jest.Mocked<Setting>
       settingRepository.findAllByUserUuid = jest.fn().mockReturnValue([setting])
 
-      expect(await createUseCase().execute({ userUuid: '1-2-3' })).toEqual({
+      expect(await createUseCase().execute({ userUuid: '00000000-0000-0000-0000-000000000000' })).toEqual({
         success: true,
-        userUuid: '1-2-3',
+        userUuid: '00000000-0000-0000-0000-000000000000',
         settings: [{ foo: 'bar' }],
       })
 
@@ -147,10 +158,14 @@ describe('GetSettings', () => {
 
     it('should return all user settings of certain name', async () => {
       expect(
-        await createUseCase().execute({ userUuid: '1-2-3', settingName: 'test', allowSensitiveRetrieval: true }),
+        await createUseCase().execute({
+          userUuid: '00000000-0000-0000-0000-000000000000',
+          settingName: 'test',
+          allowSensitiveRetrieval: true,
+        }),
       ).toEqual({
         success: true,
-        userUuid: '1-2-3',
+        userUuid: '00000000-0000-0000-0000-000000000000',
         settings: [{ foo: 'bar' }],
       })
 
@@ -159,10 +174,14 @@ describe('GetSettings', () => {
 
     it('should return all user settings updated after', async () => {
       expect(
-        await createUseCase().execute({ userUuid: '1-2-3', allowSensitiveRetrieval: true, updatedAfter: 123 }),
+        await createUseCase().execute({
+          userUuid: '00000000-0000-0000-0000-000000000000',
+          allowSensitiveRetrieval: true,
+          updatedAfter: 123,
+        }),
       ).toEqual({
         success: true,
-        userUuid: '1-2-3',
+        userUuid: '00000000-0000-0000-0000-000000000000',
         settings: [{ foo: 'bar' }],
       })
 
@@ -170,9 +189,14 @@ describe('GetSettings', () => {
     })
 
     it('should return all sensitive user settings if explicit', async () => {
-      expect(await createUseCase().execute({ userUuid: '1-2-3', allowSensitiveRetrieval: true })).toEqual({
+      expect(
+        await createUseCase().execute({
+          userUuid: '00000000-0000-0000-0000-000000000000',
+          allowSensitiveRetrieval: true,
+        }),
+      ).toEqual({
         success: true,
-        userUuid: '1-2-3',
+        userUuid: '00000000-0000-0000-0000-000000000000',
         settings: [{ foo: 'bar' }, { foo: 'bar' }],
       })
 
@@ -190,9 +214,9 @@ describe('GetSettings', () => {
     })
 
     it('should return all user settings except mfa', async () => {
-      expect(await createUseCase().execute({ userUuid: '1-2-3' })).toEqual({
+      expect(await createUseCase().execute({ userUuid: '00000000-0000-0000-0000-000000000000' })).toEqual({
         success: true,
-        userUuid: '1-2-3',
+        userUuid: '00000000-0000-0000-0000-000000000000',
         settings: [{ foo: 'bar' }, { foo: 'sub-bar' }],
       })
 
@@ -210,9 +234,9 @@ describe('GetSettings', () => {
     })
 
     it('should return all user settings except mfa', async () => {
-      expect(await createUseCase().execute({ userUuid: '1-2-3' })).toEqual({
+      expect(await createUseCase().execute({ userUuid: '00000000-0000-0000-0000-000000000000' })).toEqual({
         success: true,
-        userUuid: '1-2-3',
+        userUuid: '00000000-0000-0000-0000-000000000000',
         settings: [{ foo: 'bar' }, { foo: 'sub-bar' }],
       })
 

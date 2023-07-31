@@ -14,6 +14,7 @@ export const TYPES = {
   ApiGateway_HTTP_CALL_TIMEOUT: Symbol.for('ApiGateway_HTTP_CALL_TIMEOUT'),
   ApiGateway_VERSION: Symbol.for('ApiGateway_VERSION'),
   ApiGateway_CROSS_SERVICE_TOKEN_CACHE_TTL: Symbol.for('ApiGateway_CROSS_SERVICE_TOKEN_CACHE_TTL'),
+  ApiGateway_IS_CONFIGURED_FOR_HOME_SERVER: Symbol.for('ApiGateway_IS_CONFIGURED_FOR_HOME_SERVER'),
   // Middleware
   ApiGateway_RequiredCrossServiceTokenMiddleware: Symbol.for('ApiGateway_RequiredCrossServiceTokenMiddleware'),
   ApiGateway_OptionalCrossServiceTokenMiddleware: Symbol.for('ApiGateway_OptionalCrossServiceTokenMiddleware'),

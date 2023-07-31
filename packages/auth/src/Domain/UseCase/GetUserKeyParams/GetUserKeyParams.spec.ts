@@ -61,7 +61,9 @@ describe('GetUserKeyParams', () => {
   })
 
   it('should get key params for an authenticated user - searching by uuid', async () => {
-    expect(await createUseCase().execute({ userUuid: '1-2-3', authenticated: true })).toEqual({
+    expect(
+      await createUseCase().execute({ userUuid: '00000000-0000-0000-0000-000000000000', authenticated: true }),
+    ).toEqual({
       keyParams: {
         foo: 'bar',
       },
@@ -71,7 +73,9 @@ describe('GetUserKeyParams', () => {
   })
 
   it('should get key params for an unauthenticated user - searching by uuid', async () => {
-    expect(await createUseCase().execute({ userUuid: '1-2-3', authenticated: false })).toEqual({
+    expect(
+      await createUseCase().execute({ userUuid: '00000000-0000-0000-0000-000000000000', authenticated: false }),
+    ).toEqual({
       keyParams: {
         foo: 'bar',
       },
@@ -81,7 +85,13 @@ describe('GetUserKeyParams', () => {
   })
 
   it("should get key params for an unauthenticated user and store it's code challenge", async () => {
-    expect(await createUseCase().execute({ userUuid: '1-2-3', authenticated: false, codeChallenge: 'test' })).toEqual({
+    expect(
+      await createUseCase().execute({
+        userUuid: '00000000-0000-0000-0000-000000000000',
+        authenticated: false,
+        codeChallenge: 'test',
+      }),
+    ).toEqual({
       keyParams: {
         foo: 'bar',
       },
@@ -107,7 +117,18 @@ describe('GetUserKeyParams', () => {
 
     let error = null
     try {
-      await createUseCase().execute({ userUuid: '1-2-3', authenticated: false })
+      await createUseCase().execute({ userUuid: '00000000-0000-0000-0000-000000000000', authenticated: false })
+    } catch (e) {
+      error = e
+    }
+
+    expect(error).not.toBeNull()
+  })
+
+  it('should throw error for an invalid user uuid', async () => {
+    let error = null
+    try {
+      await createUseCase().execute({ userUuid: 'invalid', authenticated: false })
     } catch (e) {
       error = e
     }

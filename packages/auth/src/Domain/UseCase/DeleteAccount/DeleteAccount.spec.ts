@@ -34,7 +34,7 @@ describe('DeleteAccount', () => {
     } as jest.Mocked<UserSubscription>
 
     userRepository = {} as jest.Mocked<UserRepositoryInterface>
-    userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue(user)
+    userRepository.findOneByUuid = jest.fn().mockReturnValue(user)
 
     userSubscriptionService = {} as jest.Mocked<UserSubscriptionServiceInterface>
     userSubscriptionService.findRegularSubscriptionForUserUuid = jest
@@ -58,7 +58,7 @@ describe('DeleteAccount', () => {
       .fn()
       .mockReturnValue({ regularSubscription: null, sharedSubscription: null })
 
-    expect(await createUseCase().execute({ email: 'test@test.te' })).toEqual({
+    expect(await createUseCase().execute({ userUuid: '00000000-0000-0000-0000-000000000000' })).toEqual({
       message: 'Successfully deleted user',
       responseCode: 200,
       success: true,
@@ -77,7 +77,7 @@ describe('DeleteAccount', () => {
       .fn()
       .mockReturnValue({ regularSubscription, sharedSubscription: null })
 
-    expect(await createUseCase().execute({ email: 'test@test.te' })).toEqual({
+    expect(await createUseCase().execute({ userUuid: '00000000-0000-0000-0000-000000000000' })).toEqual({
       message: 'Successfully deleted user',
       responseCode: 200,
       success: true,
@@ -92,9 +92,9 @@ describe('DeleteAccount', () => {
   })
 
   it('should not trigger account deletion if user is not found', async () => {
-    userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue(null)
+    userRepository.findOneByUuid = jest.fn().mockReturnValue(null)
 
-    expect(await createUseCase().execute({ email: 'test@test.te' })).toEqual({
+    expect(await createUseCase().execute({ userUuid: '00000000-0000-0000-0000-000000000000' })).toEqual({
       message: 'User not found',
       responseCode: 404,
       success: false,
@@ -104,9 +104,9 @@ describe('DeleteAccount', () => {
     expect(domainEventFactory.createAccountDeletionRequestedEvent).not.toHaveBeenCalled()
   })
 
-  it('should not trigger account deletion if username is invalid', async () => {
-    expect(await createUseCase().execute({ email: '' })).toEqual({
-      message: 'Username cannot be empty',
+  it('should not trigger account deletion if user uuid is invalid', async () => {
+    expect(await createUseCase().execute({ userUuid: '' })).toEqual({
+      message: 'Given value is not a valid uuid: ',
       responseCode: 400,
       success: false,
     })

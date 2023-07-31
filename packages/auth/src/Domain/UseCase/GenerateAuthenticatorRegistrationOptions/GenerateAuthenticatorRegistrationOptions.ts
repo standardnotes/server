@@ -37,7 +37,7 @@ export class GenerateAuthenticatorRegistrationOptions
     }
     const username = usernameOrError.getValue()
 
-    const user = await this.userRepository.findOneByUuid(userUuid.value)
+    const user = await this.userRepository.findOneByUuid(userUuid)
     if (user === null) {
       return Result.fail('Could not generate authenticator registration options: user not found.')
     }

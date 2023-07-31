@@ -89,6 +89,7 @@ export class ContainerConfigLoader {
     container
       .bind(TYPES.ApiGateway_CROSS_SERVICE_TOKEN_CACHE_TTL)
       .toConstantValue(+env.get('CROSS_SERVICE_TOKEN_CACHE_TTL', true))
+    container.bind(TYPES.ApiGateway_IS_CONFIGURED_FOR_HOME_SERVER).toConstantValue(isConfiguredForHomeServer)
 
     // Middleware
     container

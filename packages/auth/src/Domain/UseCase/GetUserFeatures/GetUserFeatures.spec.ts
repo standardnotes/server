@@ -31,23 +31,36 @@ describe('GetUserFeatures', () => {
   it('should fail if a user is not found', async () => {
     userRepository.findOneByUuid = jest.fn().mockReturnValue(null)
 
-    expect(await createUseCase().execute({ userUuid: 'user-1-1-1', offline: false })).toEqual({
-      success: false,
-      error: {
-        message: 'User user-1-1-1 not found.',
+    expect(await createUseCase().execute({ userUuid: '00000000-0000-0000-0000-000000000000', offline: false })).toEqual(
+      {
+        success: false,
+        error: {
+          message: 'User 00000000-0000-0000-0000-000000000000 not found.',
+        },
       },
-    })
+    )
   })
 
   it('should return user features', async () => {
-    expect(await createUseCase().execute({ userUuid: 'user-1-1-1', offline: false })).toEqual({
-      success: true,
-      userUuid: 'user-1-1-1',
-      features: [
-        {
-          name: 'foobar',
-        },
-      ],
+    expect(await createUseCase().execute({ userUuid: '00000000-0000-0000-0000-000000000000', offline: false })).toEqual(
+      {
+        success: true,
+        userUuid: '00000000-0000-0000-0000-000000000000',
+        features: [
+          {
+            name: 'foobar',
+          },
+        ],
+      },
+    )
+  })
+
+  it('should fail if a user uuid is invalid', async () => {
+    expect(await createUseCase().execute({ userUuid: 'invalid', offline: false })).toEqual({
+      success: false,
+      error: {
+        message: 'Given value is not a valid uuid: invalid',
+      },
     })
   })
 

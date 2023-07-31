@@ -29,6 +29,7 @@ export class HomeServerUsersController extends BaseHttpController {
       this.controllerContainer.register('auth.users.getKeyParams', this.keyParams.bind(this))
       this.controllerContainer.register('auth.users.getSubscription', this.getSubscription.bind(this))
       this.controllerContainer.register('auth.users.updateCredentials', this.changeCredentials.bind(this))
+      this.controllerContainer.register('auth.users.delete', this.deleteAccount.bind(this))
     }
   }
 
@@ -102,9 +103,20 @@ export class HomeServerUsersController extends BaseHttpController {
     return this.json(result.keyParams)
   }
 
-  async deleteAccount(request: Request): Promise<results.JsonResult> {
+  async deleteAccount(request: Request, response: Response): Promise<results.JsonResult> {
+    if (request.params.userUuid !== response.locals.user.uuid) {
+      return this.json(
+        {
+          error: {
+            message: 'Operation not allowed.',
+          },
+        },
+        401,
+      )
+    }
+
     const result = await this.doDeleteAccount.execute({
-      email: request.params.email,
+      userUuid: request.params.userUuid,
     })
 
     return this.json({ message: result.message }, result.responseCode)

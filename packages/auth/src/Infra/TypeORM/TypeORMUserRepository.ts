@@ -1,4 +1,4 @@
-import { Email, Username } from '@standardnotes/domain-core'
+import { Email, Username, Uuid } from '@standardnotes/domain-core'
 import { ReadStream } from 'fs'
 import { inject, injectable } from 'inversify'
 import { Repository } from 'typeorm'
@@ -40,11 +40,11 @@ export class TypeORMUserRepository implements UserRepositoryInterface {
     return queryBuilder.stream()
   }
 
-  async findOneByUuid(uuid: string): Promise<User | null> {
+  async findOneByUuid(uuid: Uuid): Promise<User | null> {
     return this.ormRepository
       .createQueryBuilder('user')
-      .where('user.uuid = :uuid', { uuid })
-      .cache(`user_uuid_${uuid}`, 60000)
+      .where('user.uuid = :uuid', { uuid: uuid.value })
+      .cache(`user_uuid_${uuid.value}`, 60000)
       .getOne()
   }
 

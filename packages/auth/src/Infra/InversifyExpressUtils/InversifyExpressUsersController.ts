@@ -51,9 +51,9 @@ export class InversifyExpressUsersController extends HomeServerUsersController {
     return super.keyParams(request)
   }
 
-  @httpDelete('/:email')
-  override async deleteAccount(request: Request): Promise<results.JsonResult> {
-    return super.deleteAccount(request)
+  @httpDelete('/:userUuid')
+  override async deleteAccount(request: Request, response: Response): Promise<results.JsonResult> {
+    return super.deleteAccount(request, response)
   }
 
   @httpGet('/:userUuid/subscription', TYPES.Auth_RequiredCrossServiceTokenMiddleware)

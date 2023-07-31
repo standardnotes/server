@@ -1,3 +1,3 @@
 export type DeleteAccountDTO = {
-  email: string
+  userUuid: string
 }

@@ -5,6 +5,7 @@ import { GetUserSubscriptionDto } from './GetUserSubscriptionDto'
 import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'
 import { GetUserSubscriptionResponse } from './GetUserSubscriptionResponse'
 import { UserSubscriptionRepositoryInterface } from '../../Subscription/UserSubscriptionRepositoryInterface'
+import { Uuid } from '@standardnotes/domain-core'
 
 @injectable()
 export class GetUserSubscription implements UseCaseInterface {
@@ -15,7 +16,16 @@ export class GetUserSubscription implements UseCaseInterface {
   ) {}
 
   async execute(dto: GetUserSubscriptionDto): Promise<GetUserSubscriptionResponse> {
-    const { userUuid } = dto
+    const userUuidOrError = Uuid.create(dto.userUuid)
+    if (userUuidOrError.isFailed()) {
+      return {
+        success: false,
+        error: {
+          message: userUuidOrError.getError(),
+        },
+      }
+    }
+    const userUuid = userUuidOrError.getValue()
 
     const user = await this.userRepository.findOneByUuid(userUuid)
 
@@ -23,12 +33,12 @@ export class GetUserSubscription implements UseCaseInterface {
       return {
         success: false,
         error: {
-          message: `User ${userUuid} not found.`,
+          message: `User ${userUuid.value} not found.`,
         },
       }
     }
 
-    const userSubscription = await this.userSubscriptionRepository.findOneByUserUuid(userUuid)
+    const userSubscription = await this.userSubscriptionRepository.findOneByUserUuid(userUuid.value)
 
     return {
       success: true,

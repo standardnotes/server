@@ -42,7 +42,8 @@ export interface ServiceProxyInterface {
     response: Response,
     endpointOrMethodIdentifier: string,
     payload?: Record<string, unknown> | string,
-  ): Promise<void>
+    returnRawResponse?: boolean,
+  ): Promise<void | Response<unknown, Record<string, unknown>>>
   callWebSocketServer(
     request: Request,
     response: Response,
