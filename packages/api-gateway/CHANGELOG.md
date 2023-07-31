@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.69.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.68.1...@standardnotes/api-gateway@1.69.0) (2023-07-31)
+
+### Features
+
+* refactor deleting account ([#676](https://github.com/standardnotes/api-gateway/issues/676)) ([0d5dcdd](https://github.com/standardnotes/api-gateway/commit/0d5dcdd8ec2336e41e7604c4157f79a89163ed29))
+
 ## [1.68.1](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.68.0...@standardnotes/api-gateway@1.68.1) (2023-07-27)
 
 **Note:** Version bump only for package @standardnotes/api-gateway

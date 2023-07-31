@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.127.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.126.5...@standardnotes/auth-server@1.127.0) (2023-07-31)
+
+### Features
+
+* refactor deleting account ([#676](https://github.com/standardnotes/server/issues/676)) ([0d5dcdd](https://github.com/standardnotes/server/commit/0d5dcdd8ec2336e41e7604c4157f79a89163ed29))
+
 ## [1.126.5](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.126.4...@standardnotes/auth-server@1.126.5) (2023-07-27)
 
 **Note:** Version bump only for package @standardnotes/auth-server
