@@ -21,6 +21,7 @@
     "clean": "rm -fr dist",
     "build": "tsc --build",
     "lint": "eslint . --ext .ts",
+    "lint:fix": "eslint . --fix --ext .ts",
     "setup:env": "cp .env.sample .env",
     "start": "yarn node dist/bin/server.js",
     "upgrade:snjs": "yarn ncu -u '@standardnotes/*'"

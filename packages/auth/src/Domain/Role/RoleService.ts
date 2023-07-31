@@ -13,6 +13,7 @@ import { RoleToSubscriptionMapInterface } from './RoleToSubscriptionMapInterface
 import { OfflineUserSubscriptionRepositoryInterface } from '../Subscription/OfflineUserSubscriptionRepositoryInterface'
 import { Role } from './Role'
 import { OfflineUserSubscription } from '../Subscription/OfflineUserSubscription'
+import { Uuid } from '@standardnotes/domain-core'
 
 @injectable()
 export class RoleService implements RoleServiceInterface {
@@ -26,10 +27,16 @@ export class RoleService implements RoleServiceInterface {
     @inject(TYPES.Auth_Logger) private logger: Logger,
   ) {}
 
-  async userHasPermission(userUuid: string, permissionName: PermissionName): Promise<boolean> {
+  async userHasPermission(userUuidString: string, permissionName: PermissionName): Promise<boolean> {
+    const userUuidOrError = Uuid.create(userUuidString)
+    if (userUuidOrError.isFailed()) {
+      return false
+    }
+    const userUuid = userUuidOrError.getValue()
+
     const user = await this.userRepository.findOneByUuid(userUuid)
     if (user === null) {
-      this.logger.warn(`Could not find user with uuid ${userUuid} for permissions check`)
+      this.logger.warn(`Could not find user with uuid ${userUuid.value} for permissions check`)
 
       return false
     }

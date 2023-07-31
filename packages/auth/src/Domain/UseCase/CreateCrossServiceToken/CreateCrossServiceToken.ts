@@ -11,6 +11,7 @@ import { UseCaseInterface } from '../UseCaseInterface'
 
 import { CreateCrossServiceTokenDTO } from './CreateCrossServiceTokenDTO'
 import { CreateCrossServiceTokenResponse } from './CreateCrossServiceTokenResponse'
+import { Uuid } from '@standardnotes/domain-core'
 
 @injectable()
 export class CreateCrossServiceToken implements UseCaseInterface {
@@ -26,7 +27,13 @@ export class CreateCrossServiceToken implements UseCaseInterface {
   async execute(dto: CreateCrossServiceTokenDTO): Promise<CreateCrossServiceTokenResponse> {
     let user: User | undefined | null = dto.user
     if (user === undefined && dto.userUuid !== undefined) {
-      user = await this.userRepository.findOneByUuid(dto.userUuid)
+      const userUuidOrError = Uuid.create(dto.userUuid)
+      if (userUuidOrError.isFailed()) {
+        throw new Error(userUuidOrError.getError())
+      }
+      const userUuid = userUuidOrError.getValue()
+
+      user = await this.userRepository.findOneByUuid(userUuid)
     }
 
     if (!user) {

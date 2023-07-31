@@ -50,7 +50,7 @@ describe('AccountDeletionRequestedEventHandler', () => {
 
     ephemeralSession = {
       uuid: '2-3-4',
-      userUuid: '1-2-3',
+      userUuid: '00000000-0000-0000-0000-000000000000',
     } as jest.Mocked<EphemeralSession>
 
     ephemeralSessionRepository = {} as jest.Mocked<EphemeralSessionRepositoryInterface>
@@ -68,7 +68,7 @@ describe('AccountDeletionRequestedEventHandler', () => {
     event = {} as jest.Mocked<AccountDeletionRequestedEvent>
     event.createdAt = new Date(1)
     event.payload = {
-      userUuid: '1-2-3',
+      userUuid: '00000000-0000-0000-0000-000000000000',
       userCreatedAtTimestamp: 1,
       regularSubscriptionUuid: '2-3-4',
     }
@@ -82,6 +82,14 @@ describe('AccountDeletionRequestedEventHandler', () => {
     await createHandler().handle(event)
 
     expect(userRepository.remove).toHaveBeenCalledWith(user)
+  })
+
+  it('should not remove a user with invalid uuid', async () => {
+    event.payload.userUuid = 'invalid'
+
+    await createHandler().handle(event)
+
+    expect(userRepository.remove).not.toHaveBeenCalled()
   })
 
   it('should not remove a user if one does not exist', async () => {
@@ -100,6 +108,6 @@ describe('AccountDeletionRequestedEventHandler', () => {
 
     expect(sessionRepository.remove).toHaveBeenCalledWith(session)
     expect(revokedSessionRepository.remove).toHaveBeenCalledWith(revokedSession)
-    expect(ephemeralSessionRepository.deleteOne).toHaveBeenCalledWith('2-3-4', '1-2-3')
+    expect(ephemeralSessionRepository.deleteOne).toHaveBeenCalledWith('2-3-4', '00000000-0000-0000-0000-000000000000')
   })
 })

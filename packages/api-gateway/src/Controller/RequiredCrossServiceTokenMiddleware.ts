@@ -11,12 +11,12 @@ import { AuthMiddleware } from './AuthMiddleware'
 @injectable()
 export class RequiredCrossServiceTokenMiddleware extends AuthMiddleware {
   constructor(
-    @inject(TYPES.ServiceProxy) serviceProxy: ServiceProxyInterface,
-    @inject(TYPES.AUTH_JWT_SECRET) jwtSecret: string,
-    @inject(TYPES.CROSS_SERVICE_TOKEN_CACHE_TTL) crossServiceTokenCacheTTL: number,
-    @inject(TYPES.CrossServiceTokenCache) crossServiceTokenCache: CrossServiceTokenCacheInterface,
-    @inject(TYPES.Timer) timer: TimerInterface,
-    @inject(TYPES.Logger) logger: Logger,
+    @inject(TYPES.ApiGateway_ServiceProxy) serviceProxy: ServiceProxyInterface,
+    @inject(TYPES.ApiGateway_AUTH_JWT_SECRET) jwtSecret: string,
+    @inject(TYPES.ApiGateway_CROSS_SERVICE_TOKEN_CACHE_TTL) crossServiceTokenCacheTTL: number,
+    @inject(TYPES.ApiGateway_CrossServiceTokenCache) crossServiceTokenCache: CrossServiceTokenCacheInterface,
+    @inject(TYPES.ApiGateway_Timer) timer: TimerInterface,
+    @inject(TYPES.ApiGateway_Logger) logger: Logger,
   ) {
     super(serviceProxy, jwtSecret, crossServiceTokenCacheTTL, crossServiceTokenCache, timer, logger)
   }

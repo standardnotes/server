@@ -16,6 +16,7 @@ import { SubscriptionSettingServiceInterface } from '../../Setting/SubscriptionS
 import { UserSubscriptionServiceInterface } from '../../Subscription/UserSubscriptionServiceInterface'
 import { CreateOrReplaceSubscriptionSettingResponse } from '../../Setting/CreateOrReplaceSubscriptionSettingResponse'
 import { SubscriptionSettingProjector } from '../../../Projection/SubscriptionSettingProjector'
+import { Uuid } from '@standardnotes/domain-core'
 
 @injectable()
 export class UpdateSetting implements UseCaseInterface {
@@ -48,7 +49,17 @@ export class UpdateSetting implements UseCaseInterface {
 
     this.logger.debug('[%s] Updating setting: %O', dto.userUuid, dto)
 
-    const { userUuid, props } = dto
+    const userUuidOrError = Uuid.create(dto.userUuid)
+    if (userUuidOrError.isFailed()) {
+      return {
+        success: false,
+        error: {
+          message: userUuidOrError.getError(),
+        },
+        statusCode: 400,
+      }
+    }
+    const userUuid = userUuidOrError.getValue()
 
     const user = await this.userRepository.findOneByUuid(userUuid)
 
@@ -56,7 +67,7 @@ export class UpdateSetting implements UseCaseInterface {
       return {
         success: false,
         error: {
-          message: `User ${userUuid} not found.`,
+          message: `User ${userUuid.value} not found.`,
         },
         statusCode: 404,
       }
@@ -66,14 +77,14 @@ export class UpdateSetting implements UseCaseInterface {
       return {
         success: false,
         error: {
-          message: `User ${userUuid} is not permitted to change the setting.`,
+          message: `User ${userUuid.value} is not permitted to change the setting.`,
         },
         statusCode: 401,
       }
     }
 
-    props.serverEncryptionVersion = this.settingsAssociationService.getEncryptionVersionForSetting(settingName)
-    props.sensitive = this.settingsAssociationService.getSensitivityForSetting(settingName)
+    dto.props.serverEncryptionVersion = this.settingsAssociationService.getEncryptionVersionForSetting(settingName)
+    dto.props.sensitive = this.settingsAssociationService.getSensitivityForSetting(settingName)
 
     if (settingName.isASubscriptionSetting()) {
       const { regularSubscription, sharedSubscription } =
@@ -83,7 +94,7 @@ export class UpdateSetting implements UseCaseInterface {
         return {
           success: false,
           error: {
-            message: `User ${userUuid} has no subscription to change a subscription setting.`,
+            message: `User ${userUuid.value} has no subscription to change a subscription setting.`,
           },
           statusCode: 400,
         }
@@ -92,7 +103,7 @@ export class UpdateSetting implements UseCaseInterface {
       const response = await this.subscriptionSettingService.createOrReplace({
         userSubscription: subscription,
         user,
-        props,
+        props: dto.props,
       })
 
       return {
@@ -104,7 +115,7 @@ export class UpdateSetting implements UseCaseInterface {
 
     const response = await this.settingService.createOrReplace({
       user,
-      props,
+      props: dto.props,
     })
 
     return {

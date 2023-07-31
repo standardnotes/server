@@ -6,7 +6,7 @@ import { ServiceProxyInterface } from '../../Service/Http/ServiceProxyInterface'
 
 @controller('/v2')
 export class PaymentsControllerV2 extends BaseHttpController {
-  constructor(@inject(TYPES.ServiceProxy) private httpService: ServiceProxyInterface) {
+  constructor(@inject(TYPES.ApiGateway_ServiceProxy) private httpService: ServiceProxyInterface) {
     super()
   }
 
@@ -15,22 +15,22 @@ export class PaymentsControllerV2 extends BaseHttpController {
     await this.httpService.callPaymentsServer(request, response, 'api/subscriptions/features', request.body)
   }
 
-  @httpGet('/subscriptions/tailored', TYPES.SubscriptionTokenAuthMiddleware)
+  @httpGet('/subscriptions/tailored', TYPES.ApiGateway_SubscriptionTokenAuthMiddleware)
   async getTailoredSubscriptionsWithFeatures(request: Request, response: Response): Promise<void> {
     await this.httpService.callPaymentsServer(request, response, 'api/subscriptions/features', request.body)
   }
 
-  @httpGet('/subscriptions/deltas', TYPES.SubscriptionTokenAuthMiddleware)
+  @httpGet('/subscriptions/deltas', TYPES.ApiGateway_SubscriptionTokenAuthMiddleware)
   async getSubscriptionDeltasForChangingPlan(request: Request, response: Response): Promise<void> {
     await this.httpService.callPaymentsServer(request, response, 'api/subscriptions/deltas', request.body)
   }
 
-  @httpPost('/subscriptions/deltas/apply', TYPES.SubscriptionTokenAuthMiddleware)
+  @httpPost('/subscriptions/deltas/apply', TYPES.ApiGateway_SubscriptionTokenAuthMiddleware)
   async applySubscriptionDelta(request: Request, response: Response): Promise<void> {
     await this.httpService.callPaymentsServer(request, response, 'api/subscriptions/deltas/apply', request.body)
   }
 
-  @httpPost('/subscriptions/change-payment-method', TYPES.SubscriptionTokenAuthMiddleware)
+  @httpPost('/subscriptions/change-payment-method', TYPES.ApiGateway_SubscriptionTokenAuthMiddleware)
   async changePaymentMethod(request: Request, response: Response): Promise<void> {
     await this.httpService.callPaymentsServer(
       request,
@@ -40,7 +40,7 @@ export class PaymentsControllerV2 extends BaseHttpController {
     )
   }
 
-  @httpGet('/subscriptions/:subscriptionId', TYPES.SubscriptionTokenAuthMiddleware)
+  @httpGet('/subscriptions/:subscriptionId', TYPES.ApiGateway_SubscriptionTokenAuthMiddleware)
   async getSubscription(request: Request, response: Response): Promise<void> {
     await this.httpService.callPaymentsServer(
       request,
@@ -50,7 +50,7 @@ export class PaymentsControllerV2 extends BaseHttpController {
     )
   }
 
-  @httpDelete('/subscriptions/:subscriptionId', TYPES.SubscriptionTokenAuthMiddleware)
+  @httpDelete('/subscriptions/:subscriptionId', TYPES.ApiGateway_SubscriptionTokenAuthMiddleware)
   async cancelSubscription(request: Request, response: Response): Promise<void> {
     await this.httpService.callPaymentsServer(
       request,
@@ -60,7 +60,7 @@ export class PaymentsControllerV2 extends BaseHttpController {
     )
   }
 
-  @httpPatch('/subscriptions/:subscriptionId', TYPES.SubscriptionTokenAuthMiddleware)
+  @httpPatch('/subscriptions/:subscriptionId', TYPES.ApiGateway_SubscriptionTokenAuthMiddleware)
   async updateSubscription(request: Request, response: Response): Promise<void> {
     await this.httpService.callPaymentsServer(
       request,

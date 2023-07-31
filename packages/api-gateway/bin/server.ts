@@ -46,7 +46,7 @@ void container.load().then((container) => {
 
   server.setConfig((app) => {
     app.use((_request: Request, response: Response, next: NextFunction) => {
-      response.setHeader('X-API-Gateway-Version', container.get(TYPES.VERSION))
+      response.setHeader('X-API-Gateway-Version', container.get(TYPES.ApiGateway_VERSION))
       next()
     })
     app.use(
@@ -87,7 +87,7 @@ void container.load().then((container) => {
     )
   })
 
-  const logger: winston.Logger = container.get(TYPES.Logger)
+  const logger: winston.Logger = container.get(TYPES.ApiGateway_Logger)
 
   server.setErrorConfig((app) => {
     app.use((error: Record<string, unknown>, _request: Request, response: Response, _next: NextFunction) => {

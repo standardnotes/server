@@ -30,7 +30,9 @@ describe('AuthenticationMethodResolver', () => {
 
     user = {} as jest.Mocked<User>
 
-    session = {} as jest.Mocked<Session>
+    session = {
+      userUuid: '00000000-0000-0000-0000-000000000000',
+    } as jest.Mocked<Session>
 
     revokedSession = {} as jest.Mocked<RevokedSession>
 
@@ -50,15 +52,21 @@ describe('AuthenticationMethodResolver', () => {
   })
 
   it('should resolve jwt authentication method', async () => {
-    sessionTokenDecoder.decodeToken = jest.fn().mockReturnValue({ user_uuid: '123' })
+    sessionTokenDecoder.decodeToken = jest.fn().mockReturnValue({ user_uuid: '00000000-0000-0000-0000-000000000000' })
 
     expect(await createResolver().resolve('test')).toEqual({
       claims: {
-        user_uuid: '123',
+        user_uuid: '00000000-0000-0000-0000-000000000000',
       },
       type: 'jwt',
       user,
     })
+  })
+
+  it('should not resolve jwt authentication method with invalid user uuid', async () => {
+    sessionTokenDecoder.decodeToken = jest.fn().mockReturnValue({ user_uuid: 'invalid' })
+
+    expect(await createResolver().resolve('test')).toBeUndefined
   })
 
   it('should resolve session authentication method', async () => {
@@ -69,6 +77,12 @@ describe('AuthenticationMethodResolver', () => {
       type: 'session_token',
       user,
     })
+  })
+
+  it('should not resolve session authentication method with invalid user uuid on session', async () => {
+    sessionService.getSessionFromToken = jest.fn().mockReturnValue({ userUuid: 'invalid' })
+
+    expect(await createResolver().resolve('test')).toBeUndefined
   })
 
   it('should resolve archvied session authentication method', async () => {

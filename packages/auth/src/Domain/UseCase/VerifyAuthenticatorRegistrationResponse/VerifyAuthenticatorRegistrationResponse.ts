@@ -27,7 +27,7 @@ export class VerifyAuthenticatorRegistrationResponse implements UseCaseInterface
     }
     const userUuid = userUuidOrError.getValue()
 
-    const user = await this.userRepository.findOneByUuid(userUuid.value)
+    const user = await this.userRepository.findOneByUuid(userUuid)
     if (user === null) {
       return Result.fail('Could not verify authenticator registration response: user not found.')
     }

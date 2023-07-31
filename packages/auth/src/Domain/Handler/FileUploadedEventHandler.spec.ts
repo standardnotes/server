@@ -33,7 +33,7 @@ describe('FileUploadedEventHandler', () => {
     userRepository.findOneByUuid = jest.fn().mockReturnValue(user)
 
     regularSubscription = {
-      uuid: '1-2-3',
+      uuid: '00000000-0000-0000-0000-000000000000',
       subscriptionType: UserSubscriptionType.Regular,
       user: Promise.resolve(user),
     } as jest.Mocked<UserSubscription>
@@ -56,9 +56,9 @@ describe('FileUploadedEventHandler', () => {
     event = {} as jest.Mocked<FileUploadedEvent>
     event.createdAt = new Date(1)
     event.payload = {
-      userUuid: '1-2-3',
+      userUuid: '00000000-0000-0000-0000-000000000000',
       fileByteSize: 123,
-      filePath: '1-2-3/2-3-4',
+      filePath: '00000000-0000-0000-0000-000000000000/2-3-4',
       fileName: '2-3-4',
     }
 
@@ -78,11 +78,19 @@ describe('FileUploadedEventHandler', () => {
       },
       user,
       userSubscription: {
-        uuid: '1-2-3',
+        uuid: '00000000-0000-0000-0000-000000000000',
         subscriptionType: 'regular',
         user: Promise.resolve(user),
       },
     })
+  })
+
+  it('should not do anything if a user uuid is invalid', async () => {
+    event.payload.userUuid = 'invalid'
+
+    await createHandler().handle(event)
+
+    expect(subscriptionSettingService.createOrReplace).not.toHaveBeenCalled()
   })
 
   it('should not do anything if a user is not found', async () => {
@@ -121,7 +129,7 @@ describe('FileUploadedEventHandler', () => {
       },
       user,
       userSubscription: {
-        uuid: '1-2-3',
+        uuid: '00000000-0000-0000-0000-000000000000',
         subscriptionType: 'regular',
         user: Promise.resolve(user),
       },
@@ -147,7 +155,7 @@ describe('FileUploadedEventHandler', () => {
       },
       user,
       userSubscription: {
-        uuid: '1-2-3',
+        uuid: '00000000-0000-0000-0000-000000000000',
         subscriptionType: 'regular',
         user: Promise.resolve(user),
       },

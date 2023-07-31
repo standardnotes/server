@@ -5,6 +5,7 @@ import { GetUserFeaturesDto } from './GetUserFeaturesDto'
 import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'
 import { GetUserFeaturesResponse } from './GetUserFeaturesResponse'
 import { FeatureServiceInterface } from '../../Feature/FeatureServiceInterface'
+import { Uuid } from '@standardnotes/domain-core'
 
 @injectable()
 export class GetUserFeatures implements UseCaseInterface {
@@ -24,13 +25,24 @@ export class GetUserFeatures implements UseCaseInterface {
       }
     }
 
-    const user = await this.userRepository.findOneByUuid(dto.userUuid)
+    const userUuidOrError = Uuid.create(dto.userUuid)
+    if (userUuidOrError.isFailed()) {
+      return {
+        success: false,
+        error: {
+          message: userUuidOrError.getError(),
+        },
+      }
+    }
+    const userUuid = userUuidOrError.getValue()
+
+    const user = await this.userRepository.findOneByUuid(userUuid)
 
     if (user === null) {
       return {
         success: false,
         error: {
-          message: `User ${dto.userUuid} not found.`,
+          message: `User ${userUuid.value} not found.`,
         },
       }
     }
@@ -39,7 +51,7 @@ export class GetUserFeatures implements UseCaseInterface {
 
     return {
       success: true,
-      userUuid: dto.userUuid,
+      userUuid: userUuid.value,
       features: userFeatures,
     }
   }

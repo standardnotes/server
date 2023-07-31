@@ -6,6 +6,7 @@ import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'
 import { UseCaseInterface } from '../UseCaseInterface'
 import { AuthenticateSubscriptionTokenDTO } from './AuthenticateSubscriptionTokenDTO'
 import { AuthenticateSubscriptionTokenResponse } from './AuthenticateSubscriptionTokenResponse'
+import { Uuid } from '@standardnotes/domain-core'
 
 @injectable()
 export class AuthenticateSubscriptionToken implements UseCaseInterface {
@@ -16,12 +17,14 @@ export class AuthenticateSubscriptionToken implements UseCaseInterface {
   ) {}
 
   async execute(dto: AuthenticateSubscriptionTokenDTO): Promise<AuthenticateSubscriptionTokenResponse> {
-    const userUuid = await this.subscriptionTokenRepository.getUserUuidByToken(dto.token)
-    if (userUuid === undefined) {
+    const userUuidString = await this.subscriptionTokenRepository.getUserUuidByToken(dto.token)
+    const userUuidOrError = Uuid.create(userUuidString as string)
+    if (userUuidOrError.isFailed()) {
       return {
         success: false,
       }
     }
+    const userUuid = userUuidOrError.getValue()
 
     const user = await this.userRepository.findOneByUuid(userUuid)
     if (user === null) {

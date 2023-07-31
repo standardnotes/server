@@ -6,7 +6,7 @@ import { ServiceProxyInterface } from '../../Service/Http/ServiceProxyInterface'
 
 @controller('/v1')
 export class PaymentsController extends BaseHttpController {
-  constructor(@inject(TYPES.ServiceProxy) private httpService: ServiceProxyInterface) {
+  constructor(@inject(TYPES.ApiGateway_ServiceProxy) private httpService: ServiceProxyInterface) {
     super()
   }
 
@@ -40,12 +40,12 @@ export class PaymentsController extends BaseHttpController {
     await this.httpService.callPaymentsServer(request, response, 'api/extensions', request.body)
   }
 
-  @httpPost('/subscriptions/tiered', TYPES.SubscriptionTokenAuthMiddleware)
+  @httpPost('/subscriptions/tiered', TYPES.ApiGateway_SubscriptionTokenAuthMiddleware)
   async createTieredSubscription(request: Request, response: Response): Promise<void> {
     await this.httpService.callPaymentsServer(request, response, 'api/subscriptions/tiered', request.body)
   }
 
-  @httpPost('/subscriptions/apple_iap_confirm', TYPES.SubscriptionTokenAuthMiddleware)
+  @httpPost('/subscriptions/apple_iap_confirm', TYPES.ApiGateway_SubscriptionTokenAuthMiddleware)
   async appleIAPConfirm(request: Request, response: Response): Promise<void> {
     await this.httpService.callPaymentsServer(request, response, 'api/subscriptions/apple_iap_confirm', request.body)
   }
@@ -140,7 +140,7 @@ export class PaymentsController extends BaseHttpController {
     )
   }
 
-  @httpPost('/payments/stripe-setup-intent', TYPES.SubscriptionTokenAuthMiddleware)
+  @httpPost('/payments/stripe-setup-intent', TYPES.ApiGateway_SubscriptionTokenAuthMiddleware)
   async createStripeSetupIntent(request: Request, response: Response): Promise<void> {
     await this.httpService.callPaymentsServer(request, response, 'api/pro_users/stripe-setup-intent', request.body)
   }

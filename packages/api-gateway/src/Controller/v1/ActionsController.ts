@@ -8,8 +8,8 @@ import { EndpointResolverInterface } from '../../Service/Resolver/EndpointResolv
 @controller('/v1')
 export class ActionsController extends BaseHttpController {
   constructor(
-    @inject(TYPES.ServiceProxy) private serviceProxy: ServiceProxyInterface,
-    @inject(TYPES.EndpointResolver) private endpointResolver: EndpointResolverInterface,
+    @inject(TYPES.ApiGateway_ServiceProxy) private serviceProxy: ServiceProxyInterface,
+    @inject(TYPES.ApiGateway_EndpointResolver) private endpointResolver: EndpointResolverInterface,
   ) {
     super()
   }
@@ -24,7 +24,7 @@ export class ActionsController extends BaseHttpController {
     )
   }
 
-  @httpGet('/login-params', TYPES.OptionalCrossServiceTokenMiddleware)
+  @httpGet('/login-params', TYPES.ApiGateway_OptionalCrossServiceTokenMiddleware)
   async loginParams(request: Request, response: Response): Promise<void> {
     await this.serviceProxy.callAuthServer(
       request,
@@ -34,7 +34,7 @@ export class ActionsController extends BaseHttpController {
     )
   }
 
-  @httpPost('/logout', TYPES.OptionalCrossServiceTokenMiddleware)
+  @httpPost('/logout', TYPES.ApiGateway_OptionalCrossServiceTokenMiddleware)
   async logout(request: Request, response: Response): Promise<void> {
     await this.serviceProxy.callAuthServer(
       request,
@@ -54,7 +54,7 @@ export class ActionsController extends BaseHttpController {
     )
   }
 
-  @httpPost('/recovery/codes', TYPES.RequiredCrossServiceTokenMiddleware)
+  @httpPost('/recovery/codes', TYPES.ApiGateway_RequiredCrossServiceTokenMiddleware)
   async recoveryCodes(request: Request, response: Response): Promise<void> {
     await this.serviceProxy.callAuthServer(
       request,

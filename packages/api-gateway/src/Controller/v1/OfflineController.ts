@@ -9,8 +9,8 @@ import { EndpointResolverInterface } from '../../Service/Resolver/EndpointResolv
 @controller('/v1/offline')
 export class OfflineController extends BaseHttpController {
   constructor(
-    @inject(TYPES.ServiceProxy) private httpService: ServiceProxyInterface,
-    @inject(TYPES.EndpointResolver) private endpointResolver: EndpointResolverInterface,
+    @inject(TYPES.ApiGateway_ServiceProxy) private httpService: ServiceProxyInterface,
+    @inject(TYPES.ApiGateway_EndpointResolver) private endpointResolver: EndpointResolverInterface,
   ) {
     super()
   }

@@ -6,6 +6,7 @@ import { UserRepositoryInterface } from '../User/UserRepositoryInterface'
 import { AuthenticationMethod } from './AuthenticationMethod'
 import { AuthenticationMethodResolverInterface } from './AuthenticationMethodResolverInterface'
 import { Logger } from 'winston'
+import { Uuid } from '@standardnotes/domain-core'
 
 @injectable()
 export class AuthenticationMethodResolver implements AuthenticationMethodResolverInterface {
@@ -29,9 +30,15 @@ export class AuthenticationMethodResolver implements AuthenticationMethodResolve
     if (decodedToken) {
       this.logger.debug('Token decoded successfully. User found.')
 
+      const userUuidOrError = Uuid.create(decodedToken.user_uuid as string)
+      if (userUuidOrError.isFailed()) {
+        return undefined
+      }
+      const userUuid = userUuidOrError.getValue()
+
       return {
         type: 'jwt',
-        user: await this.userRepository.findOneByUuid(<string>decodedToken.user_uuid),
+        user: await this.userRepository.findOneByUuid(userUuid),
         claims: decodedToken,
       }
     }
@@ -40,9 +47,15 @@ export class AuthenticationMethodResolver implements AuthenticationMethodResolve
     if (session) {
       this.logger.debug('Token decoded successfully. Session found.')
 
+      const userUuidOrError = Uuid.create(session.userUuid)
+      if (userUuidOrError.isFailed()) {
+        return undefined
+      }
+      const userUuid = userUuidOrError.getValue()
+
       return {
         type: 'session_token',
-        user: await this.userRepository.findOneByUuid(session.userUuid),
+        user: await this.userRepository.findOneByUuid(userUuid),
         session: session,
       }
     }

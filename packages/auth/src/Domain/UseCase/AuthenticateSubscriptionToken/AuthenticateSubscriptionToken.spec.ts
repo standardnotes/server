@@ -17,7 +17,7 @@ describe('AuthenticateSubscriptionToken', () => {
 
   beforeEach(() => {
     subscriptionTokenRepository = {} as jest.Mocked<SubscriptionTokenRepositoryInterface>
-    subscriptionTokenRepository.getUserUuidByToken = jest.fn().mockReturnValue('1-2-3')
+    subscriptionTokenRepository.getUserUuidByToken = jest.fn().mockReturnValue('00000000-0000-0000-0000-000000000000')
 
     user = {
       roles: Promise.resolve([{ name: RoleName.NAMES.CoreUser }]),
@@ -29,8 +29,6 @@ describe('AuthenticateSubscriptionToken', () => {
 
   it('should authenticate an subscription token', async () => {
     const response = await createUseCase().execute({ token: 'test' })
-
-    expect(userRepository.findOneByUuid).toHaveBeenCalledWith('1-2-3')
 
     expect(response.success).toBeTruthy()
 

@@ -5,11 +5,11 @@ import { TYPES } from '../../Bootstrap/Types'
 import { ServiceProxyInterface } from '../../Service/Http/ServiceProxyInterface'
 import { EndpointResolverInterface } from '../../Service/Resolver/EndpointResolverInterface'
 
-@controller('/v1/messages', TYPES.RequiredCrossServiceTokenMiddleware)
+@controller('/v1/messages', TYPES.ApiGateway_RequiredCrossServiceTokenMiddleware)
 export class MessagesController extends BaseHttpController {
   constructor(
-    @inject(TYPES.ServiceProxy) private httpService: ServiceProxyInterface,
-    @inject(TYPES.EndpointResolver) private endpointResolver: EndpointResolverInterface,
+    @inject(TYPES.ApiGateway_ServiceProxy) private httpService: ServiceProxyInterface,
+    @inject(TYPES.ApiGateway_EndpointResolver) private endpointResolver: EndpointResolverInterface,
   ) {
     super()
   }

@@ -11,17 +11,17 @@ import { ServiceProxyInterface } from './ServiceProxyInterface'
 @injectable()
 export class HttpServiceProxy implements ServiceProxyInterface {
   constructor(
-    @inject(TYPES.HTTPClient) private httpClient: AxiosInstance,
-    @inject(TYPES.AUTH_SERVER_URL) private authServerUrl: string,
-    @inject(TYPES.SYNCING_SERVER_JS_URL) private syncingServerJsUrl: string,
-    @inject(TYPES.PAYMENTS_SERVER_URL) private paymentsServerUrl: string,
-    @inject(TYPES.FILES_SERVER_URL) private filesServerUrl: string,
-    @inject(TYPES.WEB_SOCKET_SERVER_URL) private webSocketServerUrl: string,
-    @inject(TYPES.REVISIONS_SERVER_URL) private revisionsServerUrl: string,
-    @inject(TYPES.EMAIL_SERVER_URL) private emailServerUrl: string,
-    @inject(TYPES.HTTP_CALL_TIMEOUT) private httpCallTimeout: number,
-    @inject(TYPES.CrossServiceTokenCache) private crossServiceTokenCache: CrossServiceTokenCacheInterface,
-    @inject(TYPES.Logger) private logger: Logger,
+    @inject(TYPES.ApiGateway_HTTPClient) private httpClient: AxiosInstance,
+    @inject(TYPES.ApiGateway_AUTH_SERVER_URL) private authServerUrl: string,
+    @inject(TYPES.ApiGateway_SYNCING_SERVER_JS_URL) private syncingServerJsUrl: string,
+    @inject(TYPES.ApiGateway_PAYMENTS_SERVER_URL) private paymentsServerUrl: string,
+    @inject(TYPES.ApiGateway_FILES_SERVER_URL) private filesServerUrl: string,
+    @inject(TYPES.ApiGateway_WEB_SOCKET_SERVER_URL) private webSocketServerUrl: string,
+    @inject(TYPES.ApiGateway_REVISIONS_SERVER_URL) private revisionsServerUrl: string,
+    @inject(TYPES.ApiGateway_EMAIL_SERVER_URL) private emailServerUrl: string,
+    @inject(TYPES.ApiGateway_HTTP_CALL_TIMEOUT) private httpCallTimeout: number,
+    @inject(TYPES.ApiGateway_CrossServiceTokenCache) private crossServiceTokenCache: CrossServiceTokenCacheInterface,
+    @inject(TYPES.ApiGateway_Logger) private logger: Logger,
   ) {}
 
   async validateSession(
@@ -130,19 +130,29 @@ export class HttpServiceProxy implements ServiceProxyInterface {
     response: Response,
     endpointOrMethodIdentifier: string,
     payload?: Record<string, unknown> | string,
-  ): Promise<void> {
+    returnRawResponse?: boolean,
+  ): Promise<void | Response<unknown, Record<string, unknown>>> {
     if (!this.paymentsServerUrl) {
       this.logger.debug('Payments Server URL not defined. Skipped request to Payments API.')
 
       return
     }
-    await this.callServerWithLegacyFormat(
+
+    const requestDuplicate = Object.assign({}, request)
+    const responseDuplicate = Object.assign({}, response)
+
+    const rawResponse = await this.callServerWithLegacyFormat(
       this.paymentsServerUrl,
-      request,
-      response,
+      returnRawResponse ? requestDuplicate : request,
+      returnRawResponse ? responseDuplicate : response,
       endpointOrMethodIdentifier,
       payload,
+      returnRawResponse,
     )
+
+    if (returnRawResponse) {
+      return rawResponse
+    }
   }
 
   async callAuthServerWithLegacyFormat(
@@ -279,7 +289,8 @@ export class HttpServiceProxy implements ServiceProxyInterface {
     response: Response,
     endpointOrMethodIdentifier: string,
     payload?: Record<string, unknown> | string,
-  ): Promise<void> {
+    returnRawResponse?: boolean,
+  ): Promise<void | Response<unknown, Record<string, unknown>>> {
     const serviceResponse = await this.getServerResponse(
       serverUrl,
       request,
@@ -295,9 +306,21 @@ export class HttpServiceProxy implements ServiceProxyInterface {
     this.applyResponseHeaders(serviceResponse, response)
 
     if (serviceResponse.request._redirectable._redirectCount > 0) {
-      response.status(302).redirect(serviceResponse.request.res.responseUrl)
+      response.status(302)
+
+      if (returnRawResponse) {
+        return response
+      }
+
+      response.redirect(serviceResponse.request.res.responseUrl)
     } else {
-      response.status(serviceResponse.status).send(serviceResponse.data)
+      response.status(serviceResponse.status)
+
+      if (returnRawResponse) {
+        return response
+      }
+
+      response.send(serviceResponse.data)
     }
   }
 

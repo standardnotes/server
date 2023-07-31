@@ -20,9 +20,10 @@ import { EndpointResolverInterface } from '../../Service/Resolver/EndpointResolv
 @controller('/v1/users')
 export class UsersController extends BaseHttpController {
   constructor(
-    @inject(TYPES.ServiceProxy) private httpService: ServiceProxyInterface,
-    @inject(TYPES.EndpointResolver) private endpointResolver: EndpointResolverInterface,
-    @inject(TYPES.Logger) private logger: Logger,
+    @inject(TYPES.ApiGateway_ServiceProxy) private httpService: ServiceProxyInterface,
+    @inject(TYPES.ApiGateway_EndpointResolver) private endpointResolver: EndpointResolverInterface,
+    @inject(TYPES.ApiGateway_Logger) private logger: Logger,
+    @inject(TYPES.ApiGateway_IS_CONFIGURED_FOR_HOME_SERVER) private isConfiguredForHomeServer: boolean,
   ) {
     super()
   }
@@ -32,12 +33,12 @@ export class UsersController extends BaseHttpController {
     await this.httpService.callPaymentsServer(request, response, 'api/pro_users/claim-account', request.body)
   }
 
-  @httpPost('/send-activation-code', TYPES.SubscriptionTokenAuthMiddleware)
+  @httpPost('/send-activation-code', TYPES.ApiGateway_SubscriptionTokenAuthMiddleware)
   async sendActivationCode(request: Request, response: Response): Promise<void> {
     await this.httpService.callPaymentsServer(request, response, 'api/pro_users/send-activation-code', request.body)
   }
 
-  @httpPatch('/:userId', TYPES.RequiredCrossServiceTokenMiddleware)
+  @httpPatch('/:userId', TYPES.ApiGateway_RequiredCrossServiceTokenMiddleware)
   async updateUser(request: Request, response: Response): Promise<void> {
     await this.httpService.callAuthServer(
       request,
@@ -47,7 +48,7 @@ export class UsersController extends BaseHttpController {
     )
   }
 
-  @httpPut('/:userUuid/password', TYPES.RequiredCrossServiceTokenMiddleware)
+  @httpPut('/:userUuid/password', TYPES.ApiGateway_RequiredCrossServiceTokenMiddleware)
   async changePassword(request: Request, response: Response): Promise<void> {
     this.logger.debug(
       '[DEPRECATED] use endpoint /v1/users/:userUuid/attributes/credentials instead of /v1/users/:userUuid/password',
@@ -65,7 +66,7 @@ export class UsersController extends BaseHttpController {
     )
   }
 
-  @httpPut('/:userUuid/attributes/credentials', TYPES.RequiredCrossServiceTokenMiddleware)
+  @httpPut('/:userUuid/attributes/credentials', TYPES.ApiGateway_RequiredCrossServiceTokenMiddleware)
   async changeCredentials(request: Request, response: Response): Promise<void> {
     await this.httpService.callAuthServer(
       request,
@@ -79,7 +80,7 @@ export class UsersController extends BaseHttpController {
     )
   }
 
-  @httpGet('/:userId/params', TYPES.RequiredCrossServiceTokenMiddleware)
+  @httpGet('/:userId/params', TYPES.ApiGateway_RequiredCrossServiceTokenMiddleware)
   async getKeyParams(request: Request, response: Response): Promise<void> {
     await this.httpService.callAuthServer(
       request,
@@ -88,12 +89,12 @@ export class UsersController extends BaseHttpController {
     )
   }
 
-  @all('/:userId/mfa', TYPES.RequiredCrossServiceTokenMiddleware)
+  @all('/:userId/mfa', TYPES.ApiGateway_RequiredCrossServiceTokenMiddleware)
   async blockMFA(): Promise<results.StatusCodeResult> {
     return this.statusCode(401)
   }
 
-  @httpPost('/:userUuid/integrations/listed', TYPES.RequiredCrossServiceTokenMiddleware)
+  @httpPost('/:userUuid/integrations/listed', TYPES.ApiGateway_RequiredCrossServiceTokenMiddleware)
   async createListedAccount(request: Request, response: Response): Promise<void> {
     await this.httpService.callAuthServer(
       request,
@@ -113,7 +114,7 @@ export class UsersController extends BaseHttpController {
     )
   }
 
-  @httpGet('/:userUuid/settings', TYPES.RequiredCrossServiceTokenMiddleware)
+  @httpGet('/:userUuid/settings', TYPES.ApiGateway_RequiredCrossServiceTokenMiddleware)
   async listSettings(request: Request, response: Response): Promise<void> {
     await this.httpService.callAuthServer(
       request,
@@ -126,7 +127,7 @@ export class UsersController extends BaseHttpController {
     )
   }
 
-  @httpPut('/:userUuid/settings', TYPES.RequiredCrossServiceTokenMiddleware)
+  @httpPut('/:userUuid/settings', TYPES.ApiGateway_RequiredCrossServiceTokenMiddleware)
   async putSetting(request: Request, response: Response): Promise<void> {
     await this.httpService.callAuthServer(
       request,
@@ -140,7 +141,7 @@ export class UsersController extends BaseHttpController {
     )
   }
 
-  @httpGet('/:userUuid/settings/:settingName', TYPES.RequiredCrossServiceTokenMiddleware)
+  @httpGet('/:userUuid/settings/:settingName', TYPES.ApiGateway_RequiredCrossServiceTokenMiddleware)
   async getSetting(request: Request, response: Response): Promise<void> {
     await this.httpService.callAuthServer(
       request,
@@ -154,7 +155,7 @@ export class UsersController extends BaseHttpController {
     )
   }
 
-  @httpDelete('/:userUuid/settings/:settingName', TYPES.RequiredCrossServiceTokenMiddleware)
+  @httpDelete('/:userUuid/settings/:settingName', TYPES.ApiGateway_RequiredCrossServiceTokenMiddleware)
   async deleteSetting(request: Request, response: Response): Promise<void> {
     await this.httpService.callAuthServer(
       request,
@@ -169,7 +170,10 @@ export class UsersController extends BaseHttpController {
     )
   }
 
-  @httpGet('/:userUuid/subscription-settings/:subscriptionSettingName', TYPES.RequiredCrossServiceTokenMiddleware)
+  @httpGet(
+    '/:userUuid/subscription-settings/:subscriptionSettingName',
+    TYPES.ApiGateway_RequiredCrossServiceTokenMiddleware,
+  )
   async getSubscriptionSetting(request: Request, response: Response): Promise<void> {
     await this.httpService.callAuthServer(
       request,
@@ -183,7 +187,7 @@ export class UsersController extends BaseHttpController {
     )
   }
 
-  @httpGet('/:userUuid/features', TYPES.RequiredCrossServiceTokenMiddleware)
+  @httpGet('/:userUuid/features', TYPES.ApiGateway_RequiredCrossServiceTokenMiddleware)
   async getFeatures(request: Request, response: Response): Promise<void> {
     await this.httpService.callAuthServer(
       request,
@@ -196,7 +200,7 @@ export class UsersController extends BaseHttpController {
     )
   }
 
-  @httpGet('/:userUuid/subscription', TYPES.RequiredCrossServiceTokenMiddleware)
+  @httpGet('/:userUuid/subscription', TYPES.ApiGateway_RequiredCrossServiceTokenMiddleware)
   async getSubscription(request: Request, response: Response): Promise<void> {
     await this.httpService.callAuthServer(
       request,
@@ -209,7 +213,7 @@ export class UsersController extends BaseHttpController {
     )
   }
 
-  @httpGet('/subscription', TYPES.SubscriptionTokenAuthMiddleware)
+  @httpGet('/subscription', TYPES.ApiGateway_SubscriptionTokenAuthMiddleware)
   async getSubscriptionBySubscriptionToken(request: Request, response: Response): Promise<void> {
     if (response.locals.tokenAuthenticationMethod === TokenAuthenticationMethod.OfflineSubscriptionToken) {
       await this.httpService.callAuthServer(
@@ -232,12 +236,20 @@ export class UsersController extends BaseHttpController {
     )
   }
 
-  @httpDelete('/:userUuid', TYPES.RequiredCrossServiceTokenMiddleware)
+  @httpDelete('/:userUuid', TYPES.ApiGateway_RequiredCrossServiceTokenMiddleware)
   async deleteUser(request: Request, response: Response): Promise<void> {
-    await this.httpService.callPaymentsServer(request, response, 'api/account', request.body)
+    if (!this.isConfiguredForHomeServer) {
+      await this.httpService.callPaymentsServer(request, response, 'api/account', request.body, true)
+    }
+
+    await this.httpService.callAuthServer(
+      request,
+      response,
+      this.endpointResolver.resolveEndpointOrMethodIdentifier('DELETE', 'users/:userUuid', request.params.userUuid),
+    )
   }
 
-  @httpPost('/:userUuid/requests', TYPES.RequiredCrossServiceTokenMiddleware)
+  @httpPost('/:userUuid/requests', TYPES.ApiGateway_RequiredCrossServiceTokenMiddleware)
   async submitRequest(request: Request, response: Response): Promise<void> {
     await this.httpService.callAuthServer(
       request,

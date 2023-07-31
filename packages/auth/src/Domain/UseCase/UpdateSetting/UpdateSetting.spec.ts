@@ -62,7 +62,7 @@ describe('UpdateSetting', () => {
     settingProjector.projectSimple = jest.fn().mockReturnValue(settingProjection)
 
     regularSubscription = {
-      uuid: '1-2-3',
+      uuid: '00000000-0000-0000-0000-000000000000',
       subscriptionType: UserSubscriptionType.Regular,
       user: Promise.resolve(user),
     } as jest.Mocked<UserSubscription>
@@ -109,7 +109,7 @@ describe('UpdateSetting', () => {
         sensitive: false,
       }
 
-      const response = await createUseCase().execute({ props, userUuid: '1-2-3' })
+      const response = await createUseCase().execute({ props, userUuid: '00000000-0000-0000-0000-000000000000' })
 
       expect(settingService.createOrReplace).toHaveBeenCalledWith({
         props: {
@@ -138,16 +138,37 @@ describe('UpdateSetting', () => {
         sensitive: false,
       }
 
-      const response = await createUseCase().execute({ props, userUuid: '1-2-3' })
+      const response = await createUseCase().execute({ props, userUuid: '00000000-0000-0000-0000-000000000000' })
 
       expect(settingService.createOrReplace).not.toHaveBeenCalled()
 
       expect(response).toEqual({
         success: false,
         error: {
-          message: 'User 1-2-3 not found.',
+          message: 'User 00000000-0000-0000-0000-000000000000 not found.',
         },
         statusCode: 404,
+      })
+    })
+
+    it('should not create a setting if user uuid is invalid', async () => {
+      const props = {
+        name: SettingName.NAMES.ExtensionKey,
+        unencryptedValue: 'test-setting-value',
+        serverEncryptionVersion: EncryptionVersion.Unencrypted,
+        sensitive: false,
+      }
+
+      const response = await createUseCase().execute({ props, userUuid: 'invalid' })
+
+      expect(settingService.createOrReplace).not.toHaveBeenCalled()
+
+      expect(response).toEqual({
+        success: false,
+        error: {
+          message: 'Given value is not a valid uuid: invalid',
+        },
+        statusCode: 400,
       })
     })
 
@@ -159,14 +180,14 @@ describe('UpdateSetting', () => {
         sensitive: false,
       }
 
-      const response = await createUseCase().execute({ props, userUuid: '1-2-3' })
+      const response = await createUseCase().execute({ props, userUuid: '00000000-0000-0000-0000-000000000000' })
 
       expect(settingService.createOrReplace).not.toHaveBeenCalled()
 
       expect(response).toEqual({
         success: false,
         error: {
-          message: 'User 1-2-3 has no subscription to change a subscription setting.',
+          message: 'User 00000000-0000-0000-0000-000000000000 has no subscription to change a subscription setting.',
         },
         statusCode: 400,
       })
@@ -180,7 +201,7 @@ describe('UpdateSetting', () => {
         sensitive: false,
       }
 
-      const response = await createUseCase().execute({ props, userUuid: '1-2-3' })
+      const response = await createUseCase().execute({ props, userUuid: '00000000-0000-0000-0000-000000000000' })
 
       expect(settingService.createOrReplace).not.toHaveBeenCalled()
 
@@ -207,14 +228,14 @@ describe('UpdateSetting', () => {
         sensitive: false,
       }
 
-      const response = await createUseCase().execute({ props, userUuid: '1-2-3' })
+      const response = await createUseCase().execute({ props, userUuid: '00000000-0000-0000-0000-000000000000' })
 
       expect(settingService.createOrReplace).not.toHaveBeenCalled()
 
       expect(response).toEqual({
         success: false,
         error: {
-          message: 'User 1-2-3 is not permitted to change the setting.',
+          message: 'User 00000000-0000-0000-0000-000000000000 is not permitted to change the setting.',
         },
         statusCode: 401,
       })
@@ -230,14 +251,14 @@ describe('UpdateSetting', () => {
         sensitive: false,
       }
 
-      const response = await createUseCase().execute({ props, userUuid: '1-2-3' })
+      const response = await createUseCase().execute({ props, userUuid: '00000000-0000-0000-0000-000000000000' })
 
       expect(settingService.createOrReplace).not.toHaveBeenCalled()
 
       expect(response).toEqual({
         success: false,
         error: {
-          message: 'User 1-2-3 is not permitted to change the setting.',
+          message: 'User 00000000-0000-0000-0000-000000000000 is not permitted to change the setting.',
         },
         statusCode: 401,
       })
@@ -259,7 +280,7 @@ describe('UpdateSetting', () => {
         sensitive: false,
       }
 
-      const response = await createUseCase().execute({ props, userUuid: '1-2-3' })
+      const response = await createUseCase().execute({ props, userUuid: '00000000-0000-0000-0000-000000000000' })
 
       expect(subscriptionSettingService.createOrReplace).toHaveBeenCalledWith({
         props: {
@@ -295,7 +316,7 @@ describe('UpdateSetting', () => {
         sensitive: false,
       }
 
-      const response = await createUseCase().execute({ props, userUuid: '1-2-3' })
+      const response = await createUseCase().execute({ props, userUuid: '00000000-0000-0000-0000-000000000000' })
 
       expect(subscriptionSettingService.createOrReplace).toHaveBeenCalledWith({
         props: {

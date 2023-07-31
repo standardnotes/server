@@ -15,6 +15,7 @@ import { SubscriptionSetting } from '../../Setting/SubscriptionSetting'
 import { SimpleSetting } from '../../Setting/SimpleSetting'
 import { SimpleSubscriptionSetting } from '../../Setting/SimpleSubscriptionSetting'
 import { SubscriptionSettingProjector } from '../../../Projection/SubscriptionSettingProjector'
+import { Uuid } from '@standardnotes/domain-core'
 
 @injectable()
 export class GetSettings implements UseCaseInterface {
@@ -30,7 +31,16 @@ export class GetSettings implements UseCaseInterface {
   ) {}
 
   async execute(dto: GetSettingsDto): Promise<GetSettingsResponse> {
-    const { userUuid } = dto
+    const userUuidOrError = Uuid.create(dto.userUuid)
+    if (userUuidOrError.isFailed()) {
+      return {
+        success: false,
+        error: {
+          message: userUuidOrError.getError(),
+        },
+      }
+    }
+    const userUuid = userUuidOrError.getValue()
 
     const user = await this.userRepository.findOneByUuid(userUuid)
 
@@ -38,13 +48,13 @@ export class GetSettings implements UseCaseInterface {
       return {
         success: false,
         error: {
-          message: `User ${userUuid} not found.`,
+          message: `User ${userUuid.value} not found.`,
         },
       }
     }
 
     let settings: Array<Setting | SubscriptionSetting>
-    settings = await this.settingRepository.findAllByUserUuid(userUuid)
+    settings = await this.settingRepository.findAllByUserUuid(user.uuid)
 
     const { regularSubscription, sharedSubscription } =
       await this.userSubscriptionService.findRegularSubscriptionForUserUuid(user.uuid)
@@ -83,7 +93,7 @@ export class GetSettings implements UseCaseInterface {
 
     return {
       success: true,
-      userUuid,
+      userUuid: user.uuid,
       settings: simpleSettings,
     }
   }

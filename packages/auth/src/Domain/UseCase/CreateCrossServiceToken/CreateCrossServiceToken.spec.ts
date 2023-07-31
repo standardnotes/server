@@ -28,13 +28,15 @@ describe('CreateCrossServiceToken', () => {
     session = {} as jest.Mocked<Session>
 
     user = {
-      uuid: '1-2-3',
+      uuid: '00000000-0000-0000-0000-000000000000',
       email: 'test@test.te',
     } as jest.Mocked<User>
     user.roles = Promise.resolve([role])
 
     userProjector = {} as jest.Mocked<ProjectorInterface<User>>
-    userProjector.projectSimple = jest.fn().mockReturnValue({ uuid: '1-2-3', email: 'test@test.te' })
+    userProjector.projectSimple = jest
+      .fn()
+      .mockReturnValue({ uuid: '00000000-0000-0000-0000-000000000000', email: 'test@test.te' })
 
     roleProjector = {} as jest.Mocked<ProjectorInterface<Role>>
     roleProjector.projectSimple = jest.fn().mockReturnValue({ name: 'role1', uuid: '1-3-4' })
@@ -69,7 +71,7 @@ describe('CreateCrossServiceToken', () => {
         },
         user: {
           email: 'test@test.te',
-          uuid: '1-2-3',
+          uuid: '00000000-0000-0000-0000-000000000000',
         },
       },
       60,
@@ -91,7 +93,7 @@ describe('CreateCrossServiceToken', () => {
         ],
         user: {
           email: 'test@test.te',
-          uuid: '1-2-3',
+          uuid: '00000000-0000-0000-0000-000000000000',
         },
       },
       60,
@@ -100,7 +102,7 @@ describe('CreateCrossServiceToken', () => {
 
   it('should create a cross service token for user by user uuid', async () => {
     await createUseCase().execute({
-      userUuid: '1-2-3',
+      userUuid: '00000000-0000-0000-0000-000000000000',
     })
 
     expect(tokenEncoder.encodeExpirableToken).toHaveBeenCalledWith(
@@ -113,7 +115,7 @@ describe('CreateCrossServiceToken', () => {
         ],
         user: {
           email: 'test@test.te',
-          uuid: '1-2-3',
+          uuid: '00000000-0000-0000-0000-000000000000',
         },
       },
       60,
@@ -126,7 +128,20 @@ describe('CreateCrossServiceToken', () => {
     let caughtError = null
     try {
       await createUseCase().execute({
-        userUuid: '1-2-3',
+        userUuid: '00000000-0000-0000-0000-000000000000',
+      })
+    } catch (error) {
+      caughtError = error
+    }
+
+    expect(caughtError).not.toBeNull()
+  })
+
+  it('should throw an error if user uuid is invalid', async () => {
+    let caughtError = null
+    try {
+      await createUseCase().execute({
+        userUuid: 'invalid',
       })
     } catch (error) {
       caughtError = error
