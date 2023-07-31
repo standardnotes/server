@@ -138,13 +138,10 @@ export class HttpServiceProxy implements ServiceProxyInterface {
       return
     }
 
-    const requestDuplicate = Object.assign({}, request)
-    const responseDuplicate = Object.assign({}, response)
-
     const rawResponse = await this.callServerWithLegacyFormat(
       this.paymentsServerUrl,
-      returnRawResponse ? requestDuplicate : request,
-      returnRawResponse ? responseDuplicate : response,
+      request,
+      response,
       endpointOrMethodIdentifier,
       payload,
       returnRawResponse,
