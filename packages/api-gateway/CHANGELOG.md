@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.69.1](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.69.0...@standardnotes/api-gateway@1.69.1) (2023-07-31)
+
+### Bug Fixes
+
+* **api-gateway:** remove duplicating req/res objects on return raw response from payments ([79d71ca](https://github.com/standardnotes/api-gateway/commit/79d71ca161cc18135fcd1a83b021662e189b3ddb))
+
 # [1.69.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.68.1...@standardnotes/api-gateway@1.69.0) (2023-07-31)
 
 ### Features
