@@ -14,10 +14,10 @@ import { CreateCrossServiceToken } from '../../Domain/UseCase/CreateCrossService
 import { GetActiveSessionsForUser } from '../../Domain/UseCase/GetActiveSessionsForUser'
 import { ProjectorInterface } from '../../Projection/ProjectorInterface'
 import { Session } from '../../Domain/Session/Session'
-import { HomeServerSessionsController } from './HomeServer/HomeServerSessionsController'
+import { BaseSessionsController } from './Base/BaseSessionsController'
 
 @controller('/sessions')
-export class InversifyExpressSessionsController extends HomeServerSessionsController {
+export class InversifyExpressSessionsController extends BaseSessionsController {
   constructor(
     @inject(TYPES.Auth_GetActiveSessionsForUser) override getActiveSessionsForUser: GetActiveSessionsForUser,
     @inject(TYPES.Auth_AuthenticateRequest) override authenticateRequest: AuthenticateRequest,

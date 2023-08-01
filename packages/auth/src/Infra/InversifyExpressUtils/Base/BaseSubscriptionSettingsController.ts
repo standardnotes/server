@@ -4,7 +4,7 @@ import { Request, Response } from 'express'
 
 import { GetSetting } from '../../../Domain/UseCase/GetSetting/GetSetting'
 
-export class HomeServerSubscriptionSettingsController extends BaseHttpController {
+export class BaseSubscriptionSettingsController extends BaseHttpController {
   constructor(protected doGetSetting: GetSetting, private controllerContainer?: ControllerContainerInterface) {
     super()
 

@@ -4,7 +4,7 @@ import { Request, Response } from 'express'
 
 import { UserRequestsController } from '../../../Controller/UserRequestsController'
 
-export class HomeServerUserRequestsController extends BaseHttpController {
+export class BaseUserRequestsController extends BaseHttpController {
   constructor(
     protected userRequestsController: UserRequestsController,
     private controllerContainer?: ControllerContainerInterface,

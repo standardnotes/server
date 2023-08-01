@@ -12,7 +12,7 @@ import { HttpStatusCode } from '@standardnotes/responses'
 import { ItemHttpRepresentation } from '../../../Mapping/Http/ItemHttpRepresentation'
 import { ItemHash } from '../../../Domain/Item/ItemHash'
 
-export class HomeServerItemsController extends BaseHttpController {
+export class BaseItemsController extends BaseHttpController {
   constructor(
     protected syncItems: SyncItems,
     protected checkIntegrity: CheckIntegrity,

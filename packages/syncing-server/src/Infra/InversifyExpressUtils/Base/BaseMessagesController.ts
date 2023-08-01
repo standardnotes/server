@@ -10,7 +10,7 @@ import { DeleteAllMessagesSentToUser } from '../../../Domain/UseCase/Messaging/D
 import { DeleteMessage } from '../../../Domain/UseCase/Messaging/DeleteMessage/DeleteMessage'
 import { GetMessagesSentByUser } from '../../../Domain/UseCase/Messaging/GetMessagesSentByUser/GetMessagesSentByUser'
 
-export class HomeServerMessagesController extends BaseHttpController {
+export class BaseMessagesController extends BaseHttpController {
   constructor(
     protected getMessageSentToUserUseCase: GetMessagesSentToUser,
     protected getMessagesSentByUserUseCase: GetMessagesSentByUser,

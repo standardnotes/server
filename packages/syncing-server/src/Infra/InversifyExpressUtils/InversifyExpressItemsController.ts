@@ -8,12 +8,12 @@ import { SyncResponseFactoryResolverInterface } from '../../Domain/Item/SyncResp
 import { CheckIntegrity } from '../../Domain/UseCase/Syncing/CheckIntegrity/CheckIntegrity'
 import { GetItem } from '../../Domain/UseCase/Syncing/GetItem/GetItem'
 import { SyncItems } from '../../Domain/UseCase/Syncing/SyncItems/SyncItems'
-import { HomeServerItemsController } from './HomeServer/HomeServerItemsController'
+import { BaseItemsController } from './Base/BaseItemsController'
 import { MapperInterface } from '@standardnotes/domain-core'
 import { ItemHttpRepresentation } from '../../Mapping/Http/ItemHttpRepresentation'
 
 @controller('/items', TYPES.Sync_AuthMiddleware)
-export class InversifyExpressItemsController extends HomeServerItemsController {
+export class InversifyExpressItemsController extends BaseItemsController {
   constructor(
     @inject(TYPES.Sync_SyncItems) override syncItems: SyncItems,
     @inject(TYPES.Sync_CheckIntegrity) override checkIntegrity: CheckIntegrity,

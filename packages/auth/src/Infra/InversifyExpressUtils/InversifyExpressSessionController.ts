@@ -11,10 +11,10 @@ import TYPES from '../../Bootstrap/Types'
 import { DeletePreviousSessionsForUser } from '../../Domain/UseCase/DeletePreviousSessionsForUser'
 import { DeleteSessionForUser } from '../../Domain/UseCase/DeleteSessionForUser'
 import { RefreshSessionToken } from '../../Domain/UseCase/RefreshSessionToken'
-import { HomeServerSessionController } from './HomeServer/HomeServerSessionController'
+import { BaseSessionController } from './Base/BaseSessionController'
 
 @controller('/session')
-export class InversifyExpressSessionController extends HomeServerSessionController {
+export class InversifyExpressSessionController extends BaseSessionController {
   constructor(
     @inject(TYPES.Auth_DeleteSessionForUser) override deleteSessionForUser: DeleteSessionForUser,
     @inject(TYPES.Auth_DeletePreviousSessionsForUser)

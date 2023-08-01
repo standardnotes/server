@@ -9,10 +9,10 @@ import {
 import { CreateCrossServiceToken } from '../../Domain/UseCase/CreateCrossServiceToken/CreateCrossServiceToken'
 import { inject } from 'inversify'
 import TYPES from '../../Bootstrap/Types'
-import { HomeServerWebSocketsController } from './HomeServer/HomeServerWebSocketsController'
+import { BaseWebSocketsController } from './Base/BaseWebSocketsController'
 
 @controller('/sockets')
-export class InversifyExpressWebSocketsController extends HomeServerWebSocketsController {
+export class InversifyExpressWebSocketsController extends BaseWebSocketsController {
   constructor(
     @inject(TYPES.Auth_CreateCrossServiceToken) override createCrossServiceToken: CreateCrossServiceToken,
     @inject(TYPES.Auth_WebSocketConnectionTokenDecoder)

@@ -4,7 +4,7 @@ import { MapperInterface } from '@standardnotes/domain-core'
 import { Request, Response } from 'express'
 
 import TYPES from '../../Bootstrap/Types'
-import { HomeServerMessagesController } from './HomeServer/HomeServerMessagesController'
+import { BaseMessagesController } from './Base/BaseMessagesController'
 import { GetMessagesSentToUser } from '../../Domain/UseCase/Messaging/GetMessagesSentToUser/GetMessagesSentToUser'
 import { DeleteAllMessagesSentToUser } from '../../Domain/UseCase/Messaging/DeleteAllMessagesSentToUser/DeleteAllMessagesSentToUser'
 import { DeleteMessage } from '../../Domain/UseCase/Messaging/DeleteMessage/DeleteMessage'
@@ -14,7 +14,7 @@ import { Message } from '../../Domain/Message/Message'
 import { GetMessagesSentByUser } from '../../Domain/UseCase/Messaging/GetMessagesSentByUser/GetMessagesSentByUser'
 
 @controller('/messages', TYPES.Sync_AuthMiddleware)
-export class InversifyExpressMessagesController extends HomeServerMessagesController {
+export class InversifyExpressMessagesController extends BaseMessagesController {
   constructor(
     @inject(TYPES.Sync_GetMessagesSentToUser) override getMessageSentToUserUseCase: GetMessagesSentToUser,
     @inject(TYPES.Sync_GetMessagesSentByUser) override getMessagesSentByUserUseCase: GetMessagesSentByUser,

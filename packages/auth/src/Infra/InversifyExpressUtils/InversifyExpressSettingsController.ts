@@ -13,10 +13,10 @@ import { DeleteSetting } from '../../Domain/UseCase/DeleteSetting/DeleteSetting'
 import { GetSetting } from '../../Domain/UseCase/GetSetting/GetSetting'
 import { GetSettings } from '../../Domain/UseCase/GetSettings/GetSettings'
 import { UpdateSetting } from '../../Domain/UseCase/UpdateSetting/UpdateSetting'
-import { HomeServerSettingsController } from './HomeServer/HomeServerSettingsController'
+import { BaseSettingsController } from './Base/BaseSettingsController'
 
 @controller('/users/:userUuid')
-export class InversifyExpressSettingsController extends HomeServerSettingsController {
+export class InversifyExpressSettingsController extends BaseSettingsController {
   constructor(
     @inject(TYPES.Auth_GetSettings) override doGetSettings: GetSettings,
     @inject(TYPES.Auth_GetSetting) override doGetSetting: GetSetting,

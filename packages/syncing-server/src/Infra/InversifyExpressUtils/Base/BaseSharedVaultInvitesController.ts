@@ -14,7 +14,7 @@ import { GetSharedVaultInvitesSentByUser } from '../../../Domain/UseCase/SharedV
 import { DeleteSharedVaultInvitesSentByUser } from '../../../Domain/UseCase/SharedVaults/DeleteSharedVaultInvitesSentByUser/DeleteSharedVaultInvitesSentByUser'
 import { GetSharedVaultInvitesSentToUser } from '../../../Domain/UseCase/SharedVaults/GetSharedVaultInvitesSentToUser/GetSharedVaultInvitesSentToUser'
 
-export class HomeServerSharedVaultInvitesController extends BaseHttpController {
+export class BaseSharedVaultInvitesController extends BaseHttpController {
   constructor(
     protected inviteUserToSharedVaultUseCase: InviteUserToSharedVault,
     protected updateSharedVaultInviteUseCase: UpdateSharedVaultInvite,

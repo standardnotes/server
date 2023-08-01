@@ -12,12 +12,12 @@ import { GetSharedVaultInvitesSentByUser } from '../../Domain/UseCase/SharedVaul
 import { InviteUserToSharedVault } from '../../Domain/UseCase/SharedVaults/InviteUserToSharedVault/InviteUserToSharedVault'
 import { UpdateSharedVaultInvite } from '../../Domain/UseCase/SharedVaults/UpdateSharedVaultInvite/UpdateSharedVaultInvite'
 import { SharedVaultInviteHttpRepresentation } from '../../Mapping/Http/SharedVaultInviteHttpRepresentation'
-import { HomeServerSharedVaultInvitesController } from './HomeServer/HomeServerSharedVaultInvitesController'
+import { BaseSharedVaultInvitesController } from './Base/BaseSharedVaultInvitesController'
 import { GetSharedVaultInvitesSentToUser } from '../../Domain/UseCase/SharedVaults/GetSharedVaultInvitesSentToUser/GetSharedVaultInvitesSentToUser'
 import { inject } from 'inversify'
 
 @controller('/shared-vaults', TYPES.Sync_AuthMiddleware)
-export class InversifyExpressSharedVaultInvitesController extends HomeServerSharedVaultInvitesController {
+export class InversifyExpressSharedVaultInvitesController extends BaseSharedVaultInvitesController {
   constructor(
     @inject(TYPES.Sync_InviteUserToSharedVault) override inviteUserToSharedVaultUseCase: InviteUserToSharedVault,
     @inject(TYPES.Sync_UpdateSharedVaultInvite) override updateSharedVaultInviteUseCase: UpdateSharedVaultInvite,

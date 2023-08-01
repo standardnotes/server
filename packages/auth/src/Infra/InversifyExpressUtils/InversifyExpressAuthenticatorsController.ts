@@ -10,10 +10,10 @@ import {
 import TYPES from '../../Bootstrap/Types'
 import { AuthenticatorsController } from '../../Controller/AuthenticatorsController'
 import { inject } from 'inversify'
-import { HomeServerAuthenticatorsController } from './HomeServer/HomeServerAuthenticatorsController'
+import { BaseAuthenticatorsController } from './Base/BaseAuthenticatorsController'
 
 @controller('/authenticators')
-export class InversifyExpressAuthenticatorsController extends HomeServerAuthenticatorsController {
+export class InversifyExpressAuthenticatorsController extends BaseAuthenticatorsController {
   constructor(
     @inject(TYPES.Auth_AuthenticatorsController) override authenticatorsController: AuthenticatorsController,
   ) {

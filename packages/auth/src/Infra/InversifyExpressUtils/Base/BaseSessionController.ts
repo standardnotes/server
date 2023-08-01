@@ -7,7 +7,7 @@ import { DeletePreviousSessionsForUser } from '../../../Domain/UseCase/DeletePre
 import { DeleteSessionForUser } from '../../../Domain/UseCase/DeleteSessionForUser'
 import { RefreshSessionToken } from '../../../Domain/UseCase/RefreshSessionToken'
 
-export class HomeServerSessionController extends BaseHttpController {
+export class BaseSessionController extends BaseHttpController {
   constructor(
     protected deleteSessionForUser: DeleteSessionForUser,
     protected deletePreviousSessionsForUser: DeletePreviousSessionsForUser,

@@ -5,7 +5,7 @@ import { Request, Response } from 'express'
 import { CreateListedAccount } from '../../../Domain/UseCase/CreateListedAccount/CreateListedAccount'
 import { BaseHttpController, results } from 'inversify-express-utils'
 
-export class HomeServerListedController extends BaseHttpController {
+export class BaseListedController extends BaseHttpController {
   constructor(
     protected doCreateListedAccount: CreateListedAccount,
     private controllerContainer?: ControllerContainerInterface,

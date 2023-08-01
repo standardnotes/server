@@ -9,14 +9,14 @@ import {
   results,
 } from 'inversify-express-utils'
 import TYPES from '../../Bootstrap/Types'
-import { HomeServerAdminController } from './HomeServer/HomeServerAdminController'
+import { BaseAdminController } from './Base/BaseAdminController'
 import { CreateOfflineSubscriptionToken } from '../../Domain/UseCase/CreateOfflineSubscriptionToken/CreateOfflineSubscriptionToken'
 import { CreateSubscriptionToken } from '../../Domain/UseCase/CreateSubscriptionToken/CreateSubscriptionToken'
 import { DeleteSetting } from '../../Domain/UseCase/DeleteSetting/DeleteSetting'
 import { UserRepositoryInterface } from '../../Domain/User/UserRepositoryInterface'
 
 @controller('/admin')
-export class InversifyExpressAdminController extends HomeServerAdminController {
+export class InversifyExpressAdminController extends BaseAdminController {
   constructor(
     @inject(TYPES.Auth_DeleteSetting) override doDeleteSetting: DeleteSetting,
     @inject(TYPES.Auth_UserRepository) override userRepository: UserRepositoryInterface,

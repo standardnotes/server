@@ -9,7 +9,7 @@ import { CreateOfflineSubscriptionToken } from '../../../Domain/UseCase/CreateOf
 import { GetUserFeatures } from '../../../Domain/UseCase/GetUserFeatures/GetUserFeatures'
 import { GetUserOfflineSubscription } from '../../../Domain/UseCase/GetUserOfflineSubscription/GetUserOfflineSubscription'
 
-export class HomeServerOfflineController extends BaseHttpController {
+export class BaseOfflineController extends BaseHttpController {
   constructor(
     protected doGetUserFeatures: GetUserFeatures,
     protected getUserOfflineSubscription: GetUserOfflineSubscription,

@@ -4,7 +4,7 @@ import { Request, Response } from 'express'
 import { AuthenticatorsController } from '../../../Controller/AuthenticatorsController'
 import { BaseHttpController, results } from 'inversify-express-utils'
 
-export class HomeServerAuthenticatorsController extends BaseHttpController {
+export class BaseAuthenticatorsController extends BaseHttpController {
   constructor(
     protected authenticatorsController: AuthenticatorsController,
     private controllerContainer?: ControllerContainerInterface,

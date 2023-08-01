@@ -4,7 +4,7 @@ import { Request, Response } from 'express'
 import { GetUserFeatures } from '../../../Domain/UseCase/GetUserFeatures/GetUserFeatures'
 import { BaseHttpController, results } from 'inversify-express-utils'
 
-export class HomeServerFeaturesController extends BaseHttpController {
+export class BaseFeaturesController extends BaseHttpController {
   constructor(
     protected doGetUserFeatures: GetUserFeatures,
     private controllerContainer?: ControllerContainerInterface,

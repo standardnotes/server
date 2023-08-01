@@ -4,10 +4,10 @@ import { controller, httpPost, results } from 'inversify-express-utils'
 import { Request, Response } from 'express'
 import TYPES from '../../Bootstrap/Types'
 import { CreateListedAccount } from '../../Domain/UseCase/CreateListedAccount/CreateListedAccount'
-import { HomeServerListedController } from './HomeServer/HomeServerListedController'
+import { BaseListedController } from './Base/BaseListedController'
 
 @controller('/listed')
-export class InversifyExpressListedController extends HomeServerListedController {
+export class InversifyExpressListedController extends BaseListedController {
   constructor(@inject(TYPES.Auth_CreateListedAccount) override doCreateListedAccount: CreateListedAccount) {
     super(doCreateListedAccount)
   }

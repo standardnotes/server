@@ -8,10 +8,10 @@ import {
 } from 'inversify-express-utils'
 import TYPES from '../../Bootstrap/Types'
 import { GetSetting } from '../../Domain/UseCase/GetSetting/GetSetting'
-import { HomeServerSubscriptionSettingsController } from './HomeServer/HomeServerSubscriptionSettingsController'
+import { BaseSubscriptionSettingsController } from './Base/BaseSubscriptionSettingsController'
 
 @controller('/users/:userUuid')
-export class InversifyExpressSubscriptionSettingsController extends HomeServerSubscriptionSettingsController {
+export class InversifyExpressSubscriptionSettingsController extends BaseSubscriptionSettingsController {
   constructor(@inject(TYPES.Auth_GetSetting) override doGetSetting: GetSetting) {
     super(doGetSetting)
   }

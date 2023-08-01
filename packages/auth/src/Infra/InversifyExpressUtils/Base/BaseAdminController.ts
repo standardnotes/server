@@ -8,7 +8,7 @@ import { CreateSubscriptionToken } from '../../../Domain/UseCase/CreateSubscript
 import { DeleteSetting } from '../../../Domain/UseCase/DeleteSetting/DeleteSetting'
 import { UserRepositoryInterface } from '../../../Domain/User/UserRepositoryInterface'
 
-export class HomeServerAdminController extends BaseHttpController {
+export class BaseAdminController extends BaseHttpController {
   constructor(
     protected doDeleteSetting: DeleteSetting,
     protected userRepository: UserRepositoryInterface,

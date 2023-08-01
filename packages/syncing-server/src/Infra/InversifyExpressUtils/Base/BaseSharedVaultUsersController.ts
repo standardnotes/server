@@ -8,7 +8,7 @@ import { SharedVaultUserHttpRepresentation } from '../../../Mapping/Http/SharedV
 import { GetSharedVaultUsers } from '../../../Domain/UseCase/SharedVaults/GetSharedVaultUsers/GetSharedVaultUsers'
 import { RemoveUserFromSharedVault } from '../../../Domain/UseCase/SharedVaults/RemoveUserFromSharedVault/RemoveUserFromSharedVault'
 
-export class HomeServerSharedVaultUsersController extends BaseHttpController {
+export class BaseSharedVaultUsersController extends BaseHttpController {
   constructor(
     protected getSharedVaultUsersUseCase: GetSharedVaultUsers,
     protected removeUserFromSharedVaultUseCase: RemoveUserFromSharedVault,

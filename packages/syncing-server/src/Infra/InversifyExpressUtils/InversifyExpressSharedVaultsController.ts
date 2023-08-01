@@ -3,7 +3,7 @@ import { inject } from 'inversify'
 import { MapperInterface } from '@standardnotes/domain-core'
 import { Request, Response } from 'express'
 
-import { HomeServerSharedVaultsController } from './HomeServer/HomeServerSharedVaultsController'
+import { BaseSharedVaultsController } from './Base/BaseSharedVaultsController'
 import TYPES from '../../Bootstrap/Types'
 import { SharedVault } from '../../Domain/SharedVault/SharedVault'
 import { SharedVaultUser } from '../../Domain/SharedVault/User/SharedVaultUser'
@@ -15,7 +15,7 @@ import { SharedVaultHttpRepresentation } from '../../Mapping/Http/SharedVaultHtt
 import { SharedVaultUserHttpRepresentation } from '../../Mapping/Http/SharedVaultUserHttpRepresentation'
 
 @controller('/shared-vaults', TYPES.Sync_AuthMiddleware)
-export class InversifyExpressSharedVaultsController extends HomeServerSharedVaultsController {
+export class InversifyExpressSharedVaultsController extends BaseSharedVaultsController {
   constructor(
     @inject(TYPES.Sync_GetSharedVaults) override getSharedVaultsUseCase: GetSharedVaults,
     @inject(TYPES.Sync_CreateSharedVault) override createSharedVaultUseCase: CreateSharedVault,

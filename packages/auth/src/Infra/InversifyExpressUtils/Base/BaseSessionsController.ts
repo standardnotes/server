@@ -10,7 +10,7 @@ import { BaseHttpController, results } from 'inversify-express-utils'
 import { User } from '../../../Domain/User/User'
 import { SessionProjector } from '../../../Projection/SessionProjector'
 
-export class HomeServerSessionsController extends BaseHttpController {
+export class BaseSessionsController extends BaseHttpController {
   constructor(
     protected getActiveSessionsForUser: GetActiveSessionsForUser,
     protected authenticateRequest: AuthenticateRequest,

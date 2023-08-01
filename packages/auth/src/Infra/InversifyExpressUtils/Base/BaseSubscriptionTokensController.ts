@@ -11,7 +11,7 @@ import { ProjectorInterface } from '../../../Projection/ProjectorInterface'
 import { SettingName } from '@standardnotes/settings'
 import { User } from '../../../Domain/User/User'
 
-export class HomeServerSubscriptionTokensController extends BaseHttpController {
+export class BaseSubscriptionTokensController extends BaseHttpController {
   constructor(
     protected createSubscriptionToken: CreateSubscriptionToken,
     protected authenticateToken: AuthenticateSubscriptionToken,

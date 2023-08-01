@@ -9,7 +9,7 @@ import { UpdateSetting } from '../../../Domain/UseCase/UpdateSetting/UpdateSetti
 import { BaseHttpController, results } from 'inversify-express-utils'
 import { EncryptionVersion } from '../../../Domain/Encryption/EncryptionVersion'
 
-export class HomeServerSettingsController extends BaseHttpController {
+export class BaseSettingsController extends BaseHttpController {
   constructor(
     protected doGetSettings: GetSettings,
     protected doGetSetting: GetSetting,

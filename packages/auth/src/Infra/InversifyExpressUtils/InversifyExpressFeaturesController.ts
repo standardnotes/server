@@ -8,10 +8,10 @@ import {
 } from 'inversify-express-utils'
 import TYPES from '../../Bootstrap/Types'
 import { GetUserFeatures } from '../../Domain/UseCase/GetUserFeatures/GetUserFeatures'
-import { HomeServerFeaturesController } from './HomeServer/HomeServerFeaturesController'
+import { BaseFeaturesController } from './Base/BaseFeaturesController'
 
 @controller('/users/:userUuid/features')
-export class InversifyExpressFeaturesController extends HomeServerFeaturesController {
+export class InversifyExpressFeaturesController extends BaseFeaturesController {
   constructor(@inject(TYPES.Auth_GetUserFeatures) override doGetUserFeatures: GetUserFeatures) {
     super(doGetUserFeatures)
   }

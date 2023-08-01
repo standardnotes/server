@@ -4,7 +4,7 @@ import { ControllerContainerInterface } from '@standardnotes/domain-core'
 
 import { RevisionsController } from '../../../Controller/RevisionsController'
 
-export class HomeServerRevisionsController extends BaseHttpController {
+export class BaseRevisionsController extends BaseHttpController {
   constructor(
     protected revisionsController: RevisionsController,
     private controllerContainer?: ControllerContainerInterface,

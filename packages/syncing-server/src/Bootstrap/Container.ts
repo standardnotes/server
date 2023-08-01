@@ -59,7 +59,7 @@ import { FSItemBackupService } from '../Infra/FS/FSItemBackupService'
 import { AuthHttpService } from '../Infra/HTTP/AuthHttpService'
 import { S3ItemBackupService } from '../Infra/S3/S3ItemBackupService'
 import { ControllerContainer, ControllerContainerInterface, MapperInterface } from '@standardnotes/domain-core'
-import { HomeServerItemsController } from '../Infra/InversifyExpressUtils/HomeServer/HomeServerItemsController'
+import { BaseItemsController } from '../Infra/InversifyExpressUtils/Base/BaseItemsController'
 import { Transform } from 'stream'
 import { TypeORMItem } from '../Infra/TypeORM/TypeORMItem'
 import { ItemPersistenceMapper } from '../Mapping/Persistence/ItemPersistenceMapper'
@@ -88,7 +88,7 @@ import { TypeORMSharedVaultAssociationRepository } from '../Infra/TypeORM/TypeOR
 import { KeySystemAssociation } from '../Domain/KeySystem/KeySystemAssociation'
 import { KeySystemAssociationRepositoryInterface } from '../Domain/KeySystem/KeySystemAssociationRepositoryInterface'
 import { KeySystemAssociationPersistenceMapper } from '../Mapping/Persistence/KeySystemAssociationPersistenceMapper'
-import { HomeServerSharedVaultInvitesController } from '../Infra/InversifyExpressUtils/HomeServer/HomeServerSharedVaultInvitesController'
+import { BaseSharedVaultInvitesController } from '../Infra/InversifyExpressUtils/Base/BaseSharedVaultInvitesController'
 import { InviteUserToSharedVault } from '../Domain/UseCase/SharedVaults/InviteUserToSharedVault/InviteUserToSharedVault'
 import { TypeORMSharedVaultRepository } from '../Infra/TypeORM/TypeORMSharedVaultRepository'
 import { TypeORMSharedVault } from '../Infra/TypeORM/TypeORMSharedVault'
@@ -113,7 +113,7 @@ import { DeleteSharedVaultInvitesToUser } from '../Domain/UseCase/SharedVaults/D
 import { DeleteSharedVaultInvitesSentByUser } from '../Domain/UseCase/SharedVaults/DeleteSharedVaultInvitesSentByUser/DeleteSharedVaultInvitesSentByUser'
 import { GetSharedVaultInvitesSentByUser } from '../Domain/UseCase/SharedVaults/GetSharedVaultInvitesSentByUser/GetSharedVaultInvitesSentByUser'
 import { GetSharedVaultInvitesSentToUser } from '../Domain/UseCase/SharedVaults/GetSharedVaultInvitesSentToUser/GetSharedVaultInvitesSentToUser'
-import { HomeServerSharedVaultUsersController } from '../Infra/InversifyExpressUtils/HomeServer/HomeServerSharedVaultUsersController'
+import { BaseSharedVaultUsersController } from '../Infra/InversifyExpressUtils/Base/BaseSharedVaultUsersController'
 import { GetSharedVaultUsers } from '../Domain/UseCase/SharedVaults/GetSharedVaultUsers/GetSharedVaultUsers'
 import { RemoveUserFromSharedVault } from '../Domain/UseCase/SharedVaults/RemoveUserFromSharedVault/RemoveUserFromSharedVault'
 import { AddNotificationForUser } from '../Domain/UseCase/Messaging/AddNotificationForUser/AddNotificationForUser'
@@ -124,7 +124,7 @@ import { NotificationPersistenceMapper } from '../Mapping/Persistence/Notificati
 import { Notification } from '../Domain/Notifications/Notification'
 import { SharedVaultUserHttpRepresentation } from '../Mapping/Http/SharedVaultUserHttpRepresentation'
 import { SharedVaultUserHttpMapper } from '../Mapping/Http/SharedVaultUserHttpMapper'
-import { HomeServerSharedVaultsController } from '../Infra/InversifyExpressUtils/HomeServer/HomeServerSharedVaultsController'
+import { BaseSharedVaultsController } from '../Infra/InversifyExpressUtils/Base/BaseSharedVaultsController'
 import { GetSharedVaults } from '../Domain/UseCase/SharedVaults/GetSharedVaults/GetSharedVaults'
 import { CreateSharedVault } from '../Domain/UseCase/SharedVaults/CreateSharedVault/CreateSharedVault'
 import { DeleteSharedVault } from '../Domain/UseCase/SharedVaults/DeleteSharedVault/DeleteSharedVault'
@@ -134,7 +134,7 @@ import { SharedVaultHttpRepresentation } from '../Mapping/Http/SharedVaultHttpRe
 import { SharedVaultHttpMapper } from '../Mapping/Http/SharedVaultHttpMapper'
 import { SharedVaultInviteHttpRepresentation } from '../Mapping/Http/SharedVaultInviteHttpRepresentation'
 import { SharedVaultInviteHttpMapper } from '../Mapping/Http/SharedVaultInviteHttpMapper'
-import { HomeServerMessagesController } from '../Infra/InversifyExpressUtils/HomeServer/HomeServerMessagesController'
+import { BaseMessagesController } from '../Infra/InversifyExpressUtils/Base/BaseMessagesController'
 import { GetMessagesSentToUser } from '../Domain/UseCase/Messaging/GetMessagesSentToUser/GetMessagesSentToUser'
 import { TypeORMMessage } from '../Infra/TypeORM/TypeORMMessage'
 import { MessageRepositoryInterface } from '../Domain/Message/MessageRepositoryInterface'
@@ -925,9 +925,9 @@ export class ContainerConfigLoader {
 
     if (isConfiguredForHomeServer) {
       container
-        .bind<HomeServerItemsController>(TYPES.Sync_HomeServerItemsController)
+        .bind<BaseItemsController>(TYPES.Sync_BaseItemsController)
         .toConstantValue(
-          new HomeServerItemsController(
+          new BaseItemsController(
             container.get(TYPES.Sync_SyncItems),
             container.get(TYPES.Sync_CheckIntegrity),
             container.get(TYPES.Sync_GetItem),
@@ -937,9 +937,9 @@ export class ContainerConfigLoader {
           ),
         )
       container
-        .bind<HomeServerSharedVaultInvitesController>(TYPES.Sync_HomeServerSharedVaultInvitesController)
+        .bind<BaseSharedVaultInvitesController>(TYPES.Sync_BaseSharedVaultInvitesController)
         .toConstantValue(
-          new HomeServerSharedVaultInvitesController(
+          new BaseSharedVaultInvitesController(
             container.get(TYPES.Sync_InviteUserToSharedVault),
             container.get(TYPES.Sync_UpdateSharedVaultInvite),
             container.get(TYPES.Sync_AcceptInviteToSharedVault),
@@ -953,9 +953,9 @@ export class ContainerConfigLoader {
           ),
         )
       container
-        .bind<HomeServerSharedVaultUsersController>(TYPES.Sync_HomeServerSharedVaultUsersController)
+        .bind<BaseSharedVaultUsersController>(TYPES.Sync_BaseSharedVaultUsersController)
         .toConstantValue(
-          new HomeServerSharedVaultUsersController(
+          new BaseSharedVaultUsersController(
             container.get(TYPES.Sync_GetSharedVaultUsers),
             container.get(TYPES.Sync_RemoveSharedVaultUser),
             container.get(TYPES.Sync_SharedVaultUserHttpMapper),
@@ -963,9 +963,9 @@ export class ContainerConfigLoader {
           ),
         )
       container
-        .bind<HomeServerSharedVaultsController>(TYPES.Sync_HomeServerSharedVaultsController)
+        .bind<BaseSharedVaultsController>(TYPES.Sync_BaseSharedVaultsController)
         .toConstantValue(
-          new HomeServerSharedVaultsController(
+          new BaseSharedVaultsController(
             container.get(TYPES.Sync_GetSharedVaults),
             container.get(TYPES.Sync_CreateSharedVault),
             container.get(TYPES.Sync_DeleteSharedVault),
@@ -976,9 +976,9 @@ export class ContainerConfigLoader {
           ),
         )
       container
-        .bind<HomeServerMessagesController>(TYPES.Sync_HomeServerMessagesController)
+        .bind<BaseMessagesController>(TYPES.Sync_BaseMessagesController)
         .toConstantValue(
-          new HomeServerMessagesController(
+          new BaseMessagesController(
             container.get(TYPES.Sync_GetMessagesSentToUser),
             container.get(TYPES.Sync_GetMessagesSentByUser),
             container.get(TYPES.Sync_SendMessageToUser),

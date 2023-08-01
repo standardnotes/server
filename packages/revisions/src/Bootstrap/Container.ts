@@ -45,7 +45,7 @@ import { CopyRevisions } from '../Domain/UseCase/CopyRevisions/CopyRevisions'
 import { FSDumpRepository } from '../Infra/FS/FSDumpRepository'
 import { S3DumpRepository } from '../Infra/S3/S3ItemDumpRepository'
 import { RevisionItemStringMapper } from '../Mapping/RevisionItemStringMapper'
-import { HomeServerRevisionsController } from '../Infra/InversifyExpress/HomeServer/HomeServerRevisionsController'
+import { BaseRevisionsController } from '../Infra/InversifyExpress/Base/BaseRevisionsController'
 import { Transform } from 'stream'
 
 export class ContainerConfigLoader {
@@ -343,9 +343,9 @@ export class ContainerConfigLoader {
     // Inversify Controllers
     if (isConfiguredForHomeServer) {
       container
-        .bind<HomeServerRevisionsController>(TYPES.Revisions_HomeServerRevisionsController)
+        .bind<BaseRevisionsController>(TYPES.Revisions_BaseRevisionsController)
         .toConstantValue(
-          new HomeServerRevisionsController(
+          new BaseRevisionsController(
             container.get(TYPES.Revisions_RevisionsController),
             container.get(TYPES.Revisions_ControllerContainer),
           ),

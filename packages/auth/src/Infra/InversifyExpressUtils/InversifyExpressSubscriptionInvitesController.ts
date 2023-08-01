@@ -11,10 +11,10 @@ import { inject } from 'inversify'
 
 import TYPES from '../../Bootstrap/Types'
 import { SubscriptionInvitesController } from '../../Controller/SubscriptionInvitesController'
-import { HomeServerSubscriptionInvitesController } from './HomeServer/HomeServerSubscriptionInvitesController'
+import { BaseSubscriptionInvitesController } from './Base/BaseSubscriptionInvitesController'
 
 @controller('/subscription-invites')
-export class InversifyExpressSubscriptionInvitesController extends HomeServerSubscriptionInvitesController {
+export class InversifyExpressSubscriptionInvitesController extends BaseSubscriptionInvitesController {
   constructor(
     @inject(TYPES.Auth_SubscriptionInvitesController)
     override subscriptionInvitesController: SubscriptionInvitesController,

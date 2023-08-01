@@ -16,10 +16,10 @@ import { Logger } from 'winston'
 import { GetUserKeyParams } from '../../Domain/UseCase/GetUserKeyParams/GetUserKeyParams'
 import { AuthController } from '../../Controller/AuthController'
 import { inject } from 'inversify'
-import { HomeServerAuthController } from './HomeServer/HomeServerAuthController'
+import { BaseAuthController } from './Base/BaseAuthController'
 
 @controller('/auth')
-export class InversifyExpressAuthController extends HomeServerAuthController {
+export class InversifyExpressAuthController extends BaseAuthController {
   constructor(
     @inject(TYPES.Auth_VerifyMFA) override verifyMFA: VerifyMFA,
     @inject(TYPES.Auth_SignIn) override signInUseCase: SignIn,

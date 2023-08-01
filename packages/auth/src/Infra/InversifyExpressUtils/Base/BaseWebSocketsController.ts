@@ -6,7 +6,7 @@ import { BaseHttpController, results } from 'inversify-express-utils'
 import { CreateCrossServiceToken } from '../../../Domain/UseCase/CreateCrossServiceToken/CreateCrossServiceToken'
 import { ErrorTag } from '@standardnotes/responses'
 
-export class HomeServerWebSocketsController extends BaseHttpController {
+export class BaseWebSocketsController extends BaseHttpController {
   constructor(
     protected createCrossServiceToken: CreateCrossServiceToken,
     protected tokenDecoder: TokenDecoderInterface<WebSocketConnectionTokenData>,

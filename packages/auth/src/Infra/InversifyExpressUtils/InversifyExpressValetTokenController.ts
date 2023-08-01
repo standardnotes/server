@@ -8,10 +8,10 @@ import {
 } from 'inversify-express-utils'
 import TYPES from '../../Bootstrap/Types'
 import { CreateValetToken } from '../../Domain/UseCase/CreateValetToken/CreateValetToken'
-import { HomeServerValetTokenController } from './HomeServer/HomeServerValetTokenController'
+import { BaseValetTokenController } from './Base/BaseValetTokenController'
 
 @controller('/valet-tokens', TYPES.Auth_RequiredCrossServiceTokenMiddleware)
-export class InversifyExpressValetTokenController extends HomeServerValetTokenController {
+export class InversifyExpressValetTokenController extends BaseValetTokenController {
   constructor(@inject(TYPES.Auth_CreateValetToken) override createValetKey: CreateValetToken) {
     super(createValetKey)
   }

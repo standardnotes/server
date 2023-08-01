@@ -4,10 +4,10 @@ import { inject } from 'inversify'
 
 import TYPES from '../../Bootstrap/Types'
 import { RevisionsController } from '../../Controller/RevisionsController'
-import { HomeServerRevisionsController } from './HomeServer/HomeServerRevisionsController'
+import { BaseRevisionsController } from './Base/BaseRevisionsController'
 
 @controller('/items/:itemUuid/revisions', TYPES.Revisions_ApiGatewayAuthMiddleware)
-export class InversifyExpressRevisionsController extends HomeServerRevisionsController {
+export class InversifyExpressRevisionsController extends BaseRevisionsController {
   constructor(@inject(TYPES.Revisions_RevisionsController) override revisionsController: RevisionsController) {
     super(revisionsController)
   }

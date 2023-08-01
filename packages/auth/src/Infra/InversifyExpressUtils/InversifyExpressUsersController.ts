@@ -17,10 +17,10 @@ import { GetUserSubscription } from '../../Domain/UseCase/GetUserSubscription/Ge
 import { ClearLoginAttempts } from '../../Domain/UseCase/ClearLoginAttempts'
 import { IncreaseLoginAttempts } from '../../Domain/UseCase/IncreaseLoginAttempts'
 import { ChangeCredentials } from '../../Domain/UseCase/ChangeCredentials/ChangeCredentials'
-import { HomeServerUsersController } from './HomeServer/HomeServerUsersController'
+import { BaseUsersController } from './Base/BaseUsersController'
 
 @controller('/users')
-export class InversifyExpressUsersController extends HomeServerUsersController {
+export class InversifyExpressUsersController extends BaseUsersController {
   constructor(
     @inject(TYPES.Auth_UpdateUser) override updateUser: UpdateUser,
     @inject(TYPES.Auth_GetUserKeyParams) override getUserKeyParams: GetUserKeyParams,

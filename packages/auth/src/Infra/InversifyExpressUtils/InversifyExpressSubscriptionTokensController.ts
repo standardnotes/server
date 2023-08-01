@@ -15,10 +15,10 @@ import { AuthenticateSubscriptionToken } from '../../Domain/UseCase/Authenticate
 import { CreateSubscriptionToken } from '../../Domain/UseCase/CreateSubscriptionToken/CreateSubscriptionToken'
 import { User } from '../../Domain/User/User'
 import { ProjectorInterface } from '../../Projection/ProjectorInterface'
-import { HomeServerSubscriptionTokensController } from './HomeServer/HomeServerSubscriptionTokensController'
+import { BaseSubscriptionTokensController } from './Base/BaseSubscriptionTokensController'
 
 @controller('/subscription-tokens')
-export class InversifyExpressSubscriptionTokensController extends HomeServerSubscriptionTokensController {
+export class InversifyExpressSubscriptionTokensController extends BaseSubscriptionTokensController {
   constructor(
     @inject(TYPES.Auth_CreateSubscriptionToken) override createSubscriptionToken: CreateSubscriptionToken,
     @inject(TYPES.Auth_AuthenticateSubscriptionToken) override authenticateToken: AuthenticateSubscriptionToken,

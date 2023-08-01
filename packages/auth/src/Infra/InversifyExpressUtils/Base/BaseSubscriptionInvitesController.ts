@@ -6,7 +6,7 @@ import { ApiVersion } from '@standardnotes/api'
 import { SubscriptionInvitesController } from '../../../Controller/SubscriptionInvitesController'
 import { Role } from '../../../Domain/Role/Role'
 
-export class HomeServerSubscriptionInvitesController extends BaseHttpController {
+export class BaseSubscriptionInvitesController extends BaseHttpController {
   constructor(
     protected subscriptionInvitesController: SubscriptionInvitesController,
     private controllerContainer?: ControllerContainerInterface,

@@ -11,7 +11,7 @@ import { IncreaseLoginAttempts } from '../../../Domain/UseCase/IncreaseLoginAtte
 import { UpdateUser } from '../../../Domain/UseCase/UpdateUser'
 import { ErrorTag } from '@standardnotes/responses'
 
-export class HomeServerUsersController extends BaseHttpController {
+export class BaseUsersController extends BaseHttpController {
   constructor(
     protected updateUser: UpdateUser,
     protected getUserKeyParams: GetUserKeyParams,

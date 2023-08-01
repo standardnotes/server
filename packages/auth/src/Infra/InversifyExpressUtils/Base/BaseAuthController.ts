@@ -10,7 +10,7 @@ import { VerifyMFA } from '../../../Domain/UseCase/VerifyMFA'
 import { AuthController } from '../../../Controller/AuthController'
 import { BaseHttpController, results } from 'inversify-express-utils'
 
-export class HomeServerAuthController extends BaseHttpController {
+export class BaseAuthController extends BaseHttpController {
   constructor(
     protected verifyMFA: VerifyMFA,
     protected signInUseCase: SignIn,

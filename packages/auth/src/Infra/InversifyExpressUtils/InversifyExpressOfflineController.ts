@@ -14,10 +14,10 @@ import { AuthenticateOfflineSubscriptionToken } from '../../Domain/UseCase/Authe
 import { CreateOfflineSubscriptionToken } from '../../Domain/UseCase/CreateOfflineSubscriptionToken/CreateOfflineSubscriptionToken'
 import { GetUserFeatures } from '../../Domain/UseCase/GetUserFeatures/GetUserFeatures'
 import { GetUserOfflineSubscription } from '../../Domain/UseCase/GetUserOfflineSubscription/GetUserOfflineSubscription'
-import { HomeServerOfflineController } from './HomeServer/HomeServerOfflineController'
+import { BaseOfflineController } from './Base/BaseOfflineController'
 
 @controller('/offline')
-export class InversifyExpressOfflineController extends HomeServerOfflineController {
+export class InversifyExpressOfflineController extends BaseOfflineController {
   constructor(
     @inject(TYPES.Auth_GetUserFeatures) override doGetUserFeatures: GetUserFeatures,
     @inject(TYPES.Auth_GetUserOfflineSubscription) override getUserOfflineSubscription: GetUserOfflineSubscription,

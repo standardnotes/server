@@ -12,7 +12,7 @@ import { SharedVaultUserHttpRepresentation } from '../../../Mapping/Http/SharedV
 import { DeleteSharedVault } from '../../../Domain/UseCase/SharedVaults/DeleteSharedVault/DeleteSharedVault'
 import { CreateSharedVaultFileValetToken } from '../../../Domain/UseCase/SharedVaults/CreateSharedVaultFileValetToken/CreateSharedVaultFileValetToken'
 
-export class HomeServerSharedVaultsController extends BaseHttpController {
+export class BaseSharedVaultsController extends BaseHttpController {
   constructor(
     protected getSharedVaultsUseCase: GetSharedVaults,
     protected createSharedVaultUseCase: CreateSharedVault,
