@@ -234,22 +234,22 @@ import { OfflineUserAuthMiddleware } from '../Infra/InversifyExpressUtils/Middle
 import { LockMiddleware } from '../Infra/InversifyExpressUtils/Middleware/LockMiddleware'
 import { RequiredCrossServiceTokenMiddleware } from '../Infra/InversifyExpressUtils/Middleware/RequiredCrossServiceTokenMiddleware'
 import { OptionalCrossServiceTokenMiddleware } from '../Infra/InversifyExpressUtils/Middleware/OptionalCrossServiceTokenMiddleware'
-import { HomeServerSettingsController } from '../Infra/InversifyExpressUtils/HomeServer/HomeServerSettingsController'
-import { HomeServerAdminController } from '../Infra/InversifyExpressUtils/HomeServer/HomeServerAdminController'
-import { HomeServerAuthController } from '../Infra/InversifyExpressUtils/HomeServer/HomeServerAuthController'
-import { HomeServerAuthenticatorsController } from '../Infra/InversifyExpressUtils/HomeServer/HomeServerAuthenticatorsController'
-import { HomeServerFeaturesController } from '../Infra/InversifyExpressUtils/HomeServer/HomeServerFeaturesController'
-import { HomeServerListedController } from '../Infra/InversifyExpressUtils/HomeServer/HomeServerListedController'
-import { HomeServerOfflineController } from '../Infra/InversifyExpressUtils/HomeServer/HomeServerOfflineController'
-import { HomeServerSessionController } from '../Infra/InversifyExpressUtils/HomeServer/HomeServerSessionController'
-import { HomeServerSubscriptionInvitesController } from '../Infra/InversifyExpressUtils/HomeServer/HomeServerSubscriptionInvitesController'
-import { HomeServerSubscriptionSettingsController } from '../Infra/InversifyExpressUtils/HomeServer/HomeServerSubscriptionSettingsController'
-import { HomeServerSubscriptionTokensController } from '../Infra/InversifyExpressUtils/HomeServer/HomeServerSubscriptionTokensController'
-import { HomeServerUserRequestsController } from '../Infra/InversifyExpressUtils/HomeServer/HomeServerUserRequestsController'
-import { HomeServerUsersController } from '../Infra/InversifyExpressUtils/HomeServer/HomeServerUsersController'
-import { HomeServerValetTokenController } from '../Infra/InversifyExpressUtils/HomeServer/HomeServerValetTokenController'
-import { HomeServerWebSocketsController } from '../Infra/InversifyExpressUtils/HomeServer/HomeServerWebSocketsController'
-import { HomeServerSessionsController } from '../Infra/InversifyExpressUtils/HomeServer/HomeServerSessionsController'
+import { BaseSettingsController } from '../Infra/InversifyExpressUtils/Base/BaseSettingsController'
+import { BaseAdminController } from '../Infra/InversifyExpressUtils/Base/BaseAdminController'
+import { BaseAuthController } from '../Infra/InversifyExpressUtils/Base/BaseAuthController'
+import { BaseAuthenticatorsController } from '../Infra/InversifyExpressUtils/Base/BaseAuthenticatorsController'
+import { BaseFeaturesController } from '../Infra/InversifyExpressUtils/Base/BaseFeaturesController'
+import { BaseListedController } from '../Infra/InversifyExpressUtils/Base/BaseListedController'
+import { BaseOfflineController } from '../Infra/InversifyExpressUtils/Base/BaseOfflineController'
+import { BaseSessionController } from '../Infra/InversifyExpressUtils/Base/BaseSessionController'
+import { BaseSubscriptionInvitesController } from '../Infra/InversifyExpressUtils/Base/BaseSubscriptionInvitesController'
+import { BaseSubscriptionSettingsController } from '../Infra/InversifyExpressUtils/Base/BaseSubscriptionSettingsController'
+import { BaseSubscriptionTokensController } from '../Infra/InversifyExpressUtils/Base/BaseSubscriptionTokensController'
+import { BaseUserRequestsController } from '../Infra/InversifyExpressUtils/Base/BaseUserRequestsController'
+import { BaseUsersController } from '../Infra/InversifyExpressUtils/Base/BaseUsersController'
+import { BaseValetTokenController } from '../Infra/InversifyExpressUtils/Base/BaseValetTokenController'
+import { BaseWebSocketsController } from '../Infra/InversifyExpressUtils/Base/BaseWebSocketsController'
+import { BaseSessionsController } from '../Infra/InversifyExpressUtils/Base/BaseSessionsController'
 import { Transform } from 'stream'
 import { ActivatePremiumFeatures } from '../Domain/UseCase/ActivatePremiumFeatures/ActivatePremiumFeatures'
 
@@ -1037,9 +1037,9 @@ export class ContainerConfigLoader {
     }
 
     container
-      .bind<HomeServerAuthController>(TYPES.Auth_HomeServerAuthController)
+      .bind<BaseAuthController>(TYPES.Auth_BaseAuthController)
       .toConstantValue(
-        new HomeServerAuthController(
+        new BaseAuthController(
           container.get(TYPES.Auth_VerifyMFA),
           container.get(TYPES.Auth_SignIn),
           container.get(TYPES.Auth_GetUserKeyParams),
@@ -1054,42 +1054,42 @@ export class ContainerConfigLoader {
     // Inversify Controllers
     if (isConfiguredForHomeServer) {
       container
-        .bind<HomeServerAuthenticatorsController>(TYPES.Auth_HomeServerAuthenticatorsController)
+        .bind<BaseAuthenticatorsController>(TYPES.Auth_BaseAuthenticatorsController)
         .toConstantValue(
-          new HomeServerAuthenticatorsController(
+          new BaseAuthenticatorsController(
             container.get(TYPES.Auth_AuthenticatorsController),
             container.get(TYPES.Auth_ControllerContainer),
           ),
         )
       container
-        .bind<HomeServerSubscriptionInvitesController>(TYPES.Auth_HomeServerSubscriptionInvitesController)
+        .bind<BaseSubscriptionInvitesController>(TYPES.Auth_BaseSubscriptionInvitesController)
         .toConstantValue(
-          new HomeServerSubscriptionInvitesController(
+          new BaseSubscriptionInvitesController(
             container.get(TYPES.Auth_SubscriptionInvitesController),
             container.get(TYPES.Auth_ControllerContainer),
           ),
         )
       container
-        .bind<HomeServerUserRequestsController>(TYPES.Auth_HomeServerUserRequestsController)
+        .bind<BaseUserRequestsController>(TYPES.Auth_BaseUserRequestsController)
         .toConstantValue(
-          new HomeServerUserRequestsController(
+          new BaseUserRequestsController(
             container.get(TYPES.Auth_UserRequestsController),
             container.get(TYPES.Auth_ControllerContainer),
           ),
         )
       container
-        .bind<HomeServerWebSocketsController>(TYPES.Auth_HomeServerWebSocketsController)
+        .bind<BaseWebSocketsController>(TYPES.Auth_BaseWebSocketsController)
         .toConstantValue(
-          new HomeServerWebSocketsController(
+          new BaseWebSocketsController(
             container.get(TYPES.Auth_CreateCrossServiceToken),
             container.get(TYPES.Auth_WebSocketConnectionTokenDecoder),
             container.get(TYPES.Auth_ControllerContainer),
           ),
         )
       container
-        .bind<HomeServerSessionsController>(TYPES.Auth_HomeServerSessionsController)
+        .bind<BaseSessionsController>(TYPES.Auth_BaseSessionsController)
         .toConstantValue(
-          new HomeServerSessionsController(
+          new BaseSessionsController(
             container.get(TYPES.Auth_GetActiveSessionsForUser),
             container.get(TYPES.Auth_AuthenticateRequest),
             container.get(TYPES.Auth_SessionProjector),
@@ -1098,17 +1098,17 @@ export class ContainerConfigLoader {
           ),
         )
       container
-        .bind<HomeServerValetTokenController>(TYPES.Auth_HomeServerValetTokenController)
+        .bind<BaseValetTokenController>(TYPES.Auth_BaseValetTokenController)
         .toConstantValue(
-          new HomeServerValetTokenController(
+          new BaseValetTokenController(
             container.get(TYPES.Auth_CreateValetToken),
             container.get(TYPES.Auth_ControllerContainer),
           ),
         )
       container
-        .bind<HomeServerUsersController>(TYPES.Auth_HomeServerUsersController)
+        .bind<BaseUsersController>(TYPES.Auth_BaseUsersController)
         .toConstantValue(
-          new HomeServerUsersController(
+          new BaseUsersController(
             container.get(TYPES.Auth_UpdateUser),
             container.get(TYPES.Auth_GetUserKeyParams),
             container.get(TYPES.Auth_DeleteAccount),
@@ -1120,9 +1120,9 @@ export class ContainerConfigLoader {
           ),
         )
       container
-        .bind<HomeServerAdminController>(TYPES.Auth_HomeServerAdminController)
+        .bind<BaseAdminController>(TYPES.Auth_BaseAdminController)
         .toConstantValue(
-          new HomeServerAdminController(
+          new BaseAdminController(
             container.get(TYPES.Auth_DeleteSetting),
             container.get(TYPES.Auth_UserRepository),
             container.get(TYPES.Auth_CreateSubscriptionToken),
@@ -1131,9 +1131,9 @@ export class ContainerConfigLoader {
           ),
         )
       container
-        .bind<HomeServerSubscriptionTokensController>(TYPES.Auth_HomeServerSubscriptionTokensController)
+        .bind<BaseSubscriptionTokensController>(TYPES.Auth_BaseSubscriptionTokensController)
         .toConstantValue(
-          new HomeServerSubscriptionTokensController(
+          new BaseSubscriptionTokensController(
             container.get(TYPES.Auth_CreateSubscriptionToken),
             container.get(TYPES.Auth_AuthenticateSubscriptionToken),
             container.get(TYPES.Auth_SettingService),
@@ -1145,17 +1145,17 @@ export class ContainerConfigLoader {
           ),
         )
       container
-        .bind<HomeServerSubscriptionSettingsController>(TYPES.Auth_HomeServerSubscriptionSettingsController)
+        .bind<BaseSubscriptionSettingsController>(TYPES.Auth_BaseSubscriptionSettingsController)
         .toConstantValue(
-          new HomeServerSubscriptionSettingsController(
+          new BaseSubscriptionSettingsController(
             container.get(TYPES.Auth_GetSetting),
             container.get(TYPES.Auth_ControllerContainer),
           ),
         )
       container
-        .bind<HomeServerSettingsController>(TYPES.Auth_HomeServerSettingsController)
+        .bind<BaseSettingsController>(TYPES.Auth_BaseSettingsController)
         .toConstantValue(
-          new HomeServerSettingsController(
+          new BaseSettingsController(
             container.get(TYPES.Auth_GetSettings),
             container.get(TYPES.Auth_GetSetting),
             container.get(TYPES.Auth_UpdateSetting),
@@ -1164,9 +1164,9 @@ export class ContainerConfigLoader {
           ),
         )
       container
-        .bind<HomeServerSessionController>(TYPES.Auth_HomeServerSessionController)
+        .bind<BaseSessionController>(TYPES.Auth_BaseSessionController)
         .toConstantValue(
-          new HomeServerSessionController(
+          new BaseSessionController(
             container.get(TYPES.Auth_DeleteSessionForUser),
             container.get(TYPES.Auth_DeletePreviousSessionsForUser),
             container.get(TYPES.Auth_RefreshSessionToken),
@@ -1174,9 +1174,9 @@ export class ContainerConfigLoader {
           ),
         )
       container
-        .bind<HomeServerOfflineController>(TYPES.Auth_HomeServerOfflineController)
+        .bind<BaseOfflineController>(TYPES.Auth_BaseOfflineController)
         .toConstantValue(
-          new HomeServerOfflineController(
+          new BaseOfflineController(
             container.get(TYPES.Auth_GetUserFeatures),
             container.get(TYPES.Auth_GetUserOfflineSubscription),
             container.get(TYPES.Auth_CreateOfflineSubscriptionToken),
@@ -1188,17 +1188,17 @@ export class ContainerConfigLoader {
           ),
         )
       container
-        .bind<HomeServerListedController>(TYPES.Auth_HomeServerListedController)
+        .bind<BaseListedController>(TYPES.Auth_BaseListedController)
         .toConstantValue(
-          new HomeServerListedController(
+          new BaseListedController(
             container.get(TYPES.Auth_CreateListedAccount),
             container.get(TYPES.Auth_ControllerContainer),
           ),
         )
       container
-        .bind<HomeServerFeaturesController>(TYPES.Auth_HomeServerFeaturesController)
+        .bind<BaseFeaturesController>(TYPES.Auth_BaseFeaturesController)
         .toConstantValue(
-          new HomeServerFeaturesController(
+          new BaseFeaturesController(
             container.get(TYPES.Auth_GetUserFeatures),
             container.get(TYPES.Auth_ControllerContainer),
           ),

@@ -1,11 +1,11 @@
 import 'reflect-metadata'
 
-import '../src/Infra/InversifyExpressUtils/InversifyExpressHealthCheckController'
-import '../src/Infra/InversifyExpressUtils/InversifyExpressItemsController'
-import '../src/Infra/InversifyExpressUtils/InversifyExpressMessagesController'
-import '../src/Infra/InversifyExpressUtils/InversifyExpressSharedVaultInvitesController'
-import '../src/Infra/InversifyExpressUtils/InversifyExpressSharedVaultUsersController'
-import '../src/Infra/InversifyExpressUtils/InversifyExpressSharedVaultsController'
+import '../src/Infra/InversifyExpressUtils/AnnotatedHealthCheckController'
+import '../src/Infra/InversifyExpressUtils/AnnotatedItemsController'
+import '../src/Infra/InversifyExpressUtils/AnnotatedMessagesController'
+import '../src/Infra/InversifyExpressUtils/AnnotatedSharedVaultInvitesController'
+import '../src/Infra/InversifyExpressUtils/AnnotatedSharedVaultUsersController'
+import '../src/Infra/InversifyExpressUtils/AnnotatedSharedVaultsController'
 
 import helmet from 'helmet'
 import * as cors from 'cors'

@@ -2,9 +2,9 @@ import 'reflect-metadata'
 
 import * as busboy from 'connect-busboy'
 
-import '../src/Infra/InversifyExpress/InversifyExpressHealthCheckController'
-import '../src/Infra/InversifyExpress/InversifyExpressFilesController'
-import '../src/Infra/InversifyExpress/InversifyExpressSharedVaultFilesController'
+import '../src/Infra/InversifyExpress/AnnotatedHealthCheckController'
+import '../src/Infra/InversifyExpress/AnnotatedFilesController'
+import '../src/Infra/InversifyExpress/AnnotatedSharedVaultFilesController'
 
 import helmet from 'helmet'
 import * as cors from 'cors'
