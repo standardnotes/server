@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.19.16](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.19.15...@standardnotes/files-server@1.19.16) (2023-08-01)
+
+### Bug Fixes
+
+* controller naming ([#678](https://github.com/standardnotes/files/issues/678)) ([56f0aef](https://github.com/standardnotes/files/commit/56f0aef21d3fcec7ac7e968cb1c1b071becbbe26))
+
 ## [1.19.15](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.19.14...@standardnotes/files-server@1.19.15) (2023-07-27)
 
 **Note:** Version bump only for package @standardnotes/files-server

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.9](https://github.com/standardnotes/server/compare/@standardnotes/websockets-server@1.10.8...@standardnotes/websockets-server@1.10.9) (2023-08-01)
+
+### Bug Fixes
+
+* controller naming ([#678](https://github.com/standardnotes/server/issues/678)) ([56f0aef](https://github.com/standardnotes/server/commit/56f0aef21d3fcec7ac7e968cb1c1b071becbbe26))
+
 ## [1.10.8](https://github.com/standardnotes/server/compare/@standardnotes/websockets-server@1.10.7...@standardnotes/websockets-server@1.10.8) (2023-07-27)
 
 **Note:** Version bump only for package @standardnotes/websockets-server
