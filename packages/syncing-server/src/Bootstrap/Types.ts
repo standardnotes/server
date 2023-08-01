@@ -101,6 +101,7 @@ const TYPES = {
   Sync_ItemSaveValidator: Symbol.for('Sync_ItemSaveValidator'),
   Sync_OwnershipFilter: Symbol.for('Sync_OwnershipFilter'),
   Sync_SharedVaultFilter: Symbol.for('Sync_SharedVaultFilter'),
+  Sync_SharedVaultSnjsFilter: Symbol.for('Sync_SharedVaultSnjsFilter'),
   Sync_TimeDifferenceFilter: Symbol.for('Sync_TimeDifferenceFilter'),
   Sync_ContentTypeFilter: Symbol.for('Sync_ContentTypeFilter'),
   Sync_ContentFilter: Symbol.for('Sync_ContentFilter'),

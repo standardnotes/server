@@ -24,6 +24,7 @@ describe('ItemSaveValidator', () => {
       userUuid: '1-2-3',
       itemHash,
       existingItem: null,
+      snjsVersion: '2.200.0',
     })
 
     expect(result).toEqual({
@@ -39,6 +40,7 @@ describe('ItemSaveValidator', () => {
       userUuid: '1-2-3',
       itemHash,
       existingItem: null,
+      snjsVersion: '2.200.0',
     })
 
     expect(result).toEqual({

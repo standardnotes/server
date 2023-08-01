@@ -6,4 +6,5 @@ export interface SaveItemsDTO {
   apiVersion: string
   readOnlyAccess: boolean
   sessionUuid: string | null
+  snjsVersion: string
 }

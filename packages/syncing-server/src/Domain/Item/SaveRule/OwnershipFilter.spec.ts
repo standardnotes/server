@@ -48,6 +48,7 @@ describe('OwnershipFilter', () => {
       apiVersion: ApiVersion.v20200115,
       itemHash,
       existingItem,
+      snjsVersion: '2.200.0',
     })
 
     expect(result).toEqual({
@@ -77,6 +78,7 @@ describe('OwnershipFilter', () => {
       apiVersion: ApiVersion.v20200115,
       itemHash,
       existingItem,
+      snjsVersion: '2.200.0',
     })
 
     expect(result).toEqual({
@@ -101,6 +103,7 @@ describe('OwnershipFilter', () => {
         shared_vault_uuid: null,
       }).getValue(),
       existingItem,
+      snjsVersion: '2.200.0',
     })
 
     expect(result).toEqual({
@@ -125,6 +128,7 @@ describe('OwnershipFilter', () => {
         shared_vault_uuid: null,
       }).getValue(),
       existingItem: null,
+      snjsVersion: '2.200.0',
     })
 
     expect(result).toEqual({
@@ -150,6 +154,7 @@ describe('OwnershipFilter', () => {
       apiVersion: ApiVersion.v20200115,
       itemHash,
       existingItem,
+      snjsVersion: '2.200.0',
     })
 
     expect(result).toEqual({

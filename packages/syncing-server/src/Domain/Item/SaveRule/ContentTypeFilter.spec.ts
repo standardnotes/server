@@ -35,6 +35,7 @@ describe('ContentTypeFilter', () => {
         apiVersion: ApiVersion.v20200115,
         itemHash,
         existingItem: null,
+        snjsVersion: '2.200.0',
       })
 
       expect(result).toEqual({
@@ -64,6 +65,7 @@ describe('ContentTypeFilter', () => {
         apiVersion: ApiVersion.v20200115,
         itemHash,
         existingItem,
+        snjsVersion: '2.200.0',
       })
 
       expect(result).toEqual({

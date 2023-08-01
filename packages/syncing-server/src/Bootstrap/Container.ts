@@ -153,6 +153,7 @@ import { NotificationHttpRepresentation } from '../Mapping/Http/NotificationHttp
 import { DetermineSharedVaultOperationOnItem } from '../Domain/UseCase/SharedVaults/DetermineSharedVaultOperationOnItem/DetermineSharedVaultOperationOnItem'
 import { SharedVaultFilter } from '../Domain/Item/SaveRule/SharedVaultFilter'
 import { RemoveNotificationsForUser } from '../Domain/UseCase/Messaging/RemoveNotificationsForUser/RemoveNotificationsForUser'
+import { SharedVaultSnjsFilter } from '../Domain/Item/SaveRule/SharedVaultSnjsFilter'
 
 export class ContainerConfigLoader {
   private readonly DEFAULT_CONTENT_SIZE_TRANSFER_LIMIT = 10_000_000
@@ -515,6 +516,7 @@ export class ContainerConfigLoader {
           container.get(TYPES.Sync_SharedVaultUserRepository),
         ),
       )
+    container.bind<SharedVaultSnjsFilter>(TYPES.Sync_SharedVaultSnjsFilter).toConstantValue(new SharedVaultSnjsFilter())
     container
       .bind<ItemSaveValidatorInterface>(TYPES.Sync_ItemSaveValidator)
       .toConstantValue(
@@ -524,6 +526,7 @@ export class ContainerConfigLoader {
           container.get(TYPES.Sync_ContentTypeFilter),
           container.get(TYPES.Sync_ContentFilter),
           container.get(TYPES.Sync_SharedVaultFilter),
+          container.get(TYPES.Sync_SharedVaultSnjsFilter),
         ]),
       )
 

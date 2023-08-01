@@ -43,6 +43,7 @@ export class SyncItems implements UseCaseInterface<SyncItemsResponse> {
       apiVersion: dto.apiVersion,
       readOnlyAccess: dto.readOnlyAccess,
       sessionUuid: dto.sessionUuid,
+      snjsVersion: dto.snjsVersion,
     })
     if (saveItemsResultOrError.isFailed()) {
       return Result.fail(saveItemsResultOrError.getError())
