@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.74.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.73.1...@standardnotes/syncing-server@1.74.0) (2023-08-01)
+
+### Features
+
+* **syncing-server:** remove legacy privileges items ([#679](https://github.com/standardnotes/syncing-server-js/issues/679)) ([e9bba6f](https://github.com/standardnotes/syncing-server-js/commit/e9bba6fd3acfde62c3063160ba3ec3aa83c45b31))
+
 ## [1.73.1](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.73.0...@standardnotes/syncing-server@1.73.1) (2023-08-01)
 
 ### Bug Fixes
