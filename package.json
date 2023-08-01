@@ -12,6 +12,7 @@
   },
   "scripts": {
     "lint": "yarn workspaces foreach -p -j 10 --verbose run lint",
+    "lint:fix": "yarn workspaces foreach -p -j 10 --verbose run lint:fix",
     "clean": "yarn workspaces foreach -p --verbose run clean",
     "setup:env": "cp .env.sample .env && yarn workspaces foreach -p --verbose run setup:env",
     "release": "lerna version --conventional-graduate --conventional-commits --yes -m \"chore(release): publish new version\"",

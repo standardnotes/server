@@ -1,1 +1,2 @@
-export * from './InversifyExpressFilesController'
+export * from './AnnotatedFilesController'
+export * from './AnnotatedSharedVaultFilesController'

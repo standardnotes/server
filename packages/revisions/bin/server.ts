@@ -9,8 +9,8 @@ import TYPES from '../src/Bootstrap/Types'
 import { Env } from '../src/Bootstrap/Env'
 import { ContainerConfigLoader } from '../src/Bootstrap/Container'
 
-import '../src/Infra/InversifyExpress/InversifyExpressRevisionsController'
-import '../src/Infra/InversifyExpress/InversifyExpressHealthCheckController'
+import '../src/Infra/InversifyExpress/AnnotatedRevisionsController'
+import '../src/Infra/InversifyExpress/AnnotatedHealthCheckController'
 
 const container = new ContainerConfigLoader()
 void container.load().then((container) => {
