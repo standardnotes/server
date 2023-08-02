@@ -11,7 +11,9 @@ export class DeletePrivileges1690901030484 implements MigrationInterface {
     const batchCount = Math.ceil(itemsWithPrivilegesContentTypeCount / batchSize)
 
     for (let batchIndex = 0; batchIndex < batchCount; batchIndex++) {
+      await queryRunner.startTransaction()
       await queryRunner.manager.query(`DELETE FROM items WHERE content_type = "SN|Privileges" LIMIT ${batchSize}`)
+      await queryRunner.commitTransaction()
     }
   }
 
