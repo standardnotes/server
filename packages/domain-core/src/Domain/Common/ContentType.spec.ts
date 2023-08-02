@@ -31,9 +31,9 @@ describe('ContentType', () => {
   })
 
   it('should fallback to the value if the display name is not found', () => {
-    const valueOrError = ContentType.create(ContentType.TYPES.Unknown)
+    const valueOrError = ContentType.create(ContentType.TYPES.EncryptedStorage)
 
     expect(valueOrError.isFailed()).toBeFalsy()
-    expect(valueOrError.getValue().getDisplayName()).toEqual('Unknown')
+    expect(valueOrError.getValue().getDisplayName()).toEqual('SN|EncryptedStorage')
   })
 })

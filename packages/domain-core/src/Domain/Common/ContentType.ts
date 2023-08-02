@@ -14,7 +14,6 @@ export class ContentType extends ValueObject<ContentTypeProps> {
     RootKey: 'SN|RootKey|NoSync',
     ItemsKey: 'SN|ItemsKey',
     EncryptedStorage: 'SN|EncryptedStorage',
-    Privileges: 'SN|Privileges',
     Note: 'Note',
     Tag: 'Tag',
     SmartView: 'SN|SmartTag',
@@ -29,7 +28,6 @@ export class ContentType extends ValueObject<ContentTypeProps> {
     FilesafeFileMetadata: 'SN|FileSafe|FileMetadata',
     FilesafeIntegration: 'SN|FileSafe|Integration',
     ExtensionRepo: 'SN|ExtensionRepo',
-    Unknown: 'Unknown',
   }
 
   private readonly displayNamesMap: Partial<Record<string, string>> = {
