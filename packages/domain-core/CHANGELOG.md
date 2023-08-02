@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.24.2](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.24.1...@standardnotes/domain-core@1.24.2) (2023-08-02)
+
+### Bug Fixes
+
+* **domain-core:** remove unused content types ([71624f1](https://github.com/standardnotes/server/commit/71624f18979ed9254fafeeced733e598cd66cbeb))
+
 ## [1.24.1](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.24.0...@standardnotes/domain-core@1.24.1) (2023-07-27)
 
 ### Bug Fixes
