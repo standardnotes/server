@@ -5259,7 +5259,6 @@ const RAW_RUNTIME_STATE =
           ["@standardnotes/domain-events-infra", "workspace:packages/domain-events-infra"],\
           ["@standardnotes/responses", "npm:1.13.27"],\
           ["@standardnotes/security", "workspace:packages/security"],\
-          ["@standardnotes/utils", "npm:1.17.5"],\
           ["@types/cors", "npm:2.8.13"],\
           ["@types/express", "npm:4.17.17"],\
           ["@types/ioredis", "npm:5.0.0"],\
