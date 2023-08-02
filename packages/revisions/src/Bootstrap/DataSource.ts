@@ -80,6 +80,8 @@ export class AppDataSource {
         ...commonDataSourceOptions,
         type: 'sqlite',
         database: this.env.get('DB_SQLITE_DATABASE_PATH'),
+        enableWAL: true,
+        busyErrorRetry: 2000,
       }
 
       this.dataSource = new DataSource(sqliteDataSourceOptions)
