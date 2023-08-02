@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.128.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.127.2...@standardnotes/auth-server@1.128.0) (2023-08-02)
+
+### Features
+
+* enable Write Ahead Log mode for SQLite ([#681](https://github.com/standardnotes/server/issues/681)) ([8cd7a13](https://github.com/standardnotes/server/commit/8cd7a138ab56f6a2b0d6c06ef6041ab9b85ae540))
+
 ## [1.127.2](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.127.1...@standardnotes/auth-server@1.127.2) (2023-08-01)
 
 ### Bug Fixes

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.75.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.74.1...@standardnotes/syncing-server@1.75.0) (2023-08-02)
+
+### Features
+
+* enable Write Ahead Log mode for SQLite ([#681](https://github.com/standardnotes/syncing-server-js/issues/681)) ([8cd7a13](https://github.com/standardnotes/syncing-server-js/commit/8cd7a138ab56f6a2b0d6c06ef6041ab9b85ae540))
+
 ## [1.74.1](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.74.0...@standardnotes/syncing-server@1.74.1) (2023-08-02)
 
 ### Bug Fixes
