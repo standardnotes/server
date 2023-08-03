@@ -1,6 +1,7 @@
 import { ReadStream } from 'fs'
 import { Repository, SelectQueryBuilder, Brackets } from 'typeorm'
 import { Change, MapperInterface, Uuid } from '@standardnotes/domain-core'
+import { Logger } from 'winston'
 
 import { Item } from '../../Domain/Item/Item'
 import { ItemQuery } from '../../Domain/Item/ItemQuery'
@@ -19,6 +20,7 @@ export class TypeORMItemRepository implements ItemRepositoryInterface {
     private mapper: MapperInterface<Item, TypeORMItem>,
     private keySystemAssociationRepository: KeySystemAssociationRepositoryInterface,
     private sharedVaultAssociationRepository: SharedVaultAssociationRepositoryInterface,
+    private logger: Logger,
   ) {}
 
   async save(item: Item): Promise<void> {
@@ -87,11 +89,17 @@ export class TypeORMItemRepository implements ItemRepositoryInterface {
       return null
     }
 
-    const item = this.mapper.toDomain(persistence)
+    try {
+      const item = this.mapper.toDomain(persistence)
 
-    await this.decorateItemWithAssociations(item)
+      await this.decorateItemWithAssociations(item)
 
-    return item
+      return item
+    } catch (error) {
+      this.logger.error(`Failed to find item ${uuid.value} by uuid: ${(error as Error).message}`)
+
+      return null
+    }
   }
 
   async findDatesForComputingIntegrityHash(userUuid: string): Promise<Array<{ updated_at_timestamp: number }>> {
@@ -131,17 +139,30 @@ export class TypeORMItemRepository implements ItemRepositoryInterface {
       return null
     }
 
-    const item = this.mapper.toDomain(persistence)
+    try {
+      const item = this.mapper.toDomain(persistence)
 
-    await this.decorateItemWithAssociations(item)
+      await this.decorateItemWithAssociations(item)
 
-    return item
+      return item
+    } catch (error) {
+      this.logger.error(`Failed to find item ${uuid} by uuid and userUuid: ${(error as Error).message}`)
+
+      return null
+    }
   }
 
   async findAll(query: ItemQuery): Promise<Item[]> {
     const persistence = await this.createFindAllQueryBuilder(query).getMany()
 
-    const domainItems = persistence.map((p) => this.mapper.toDomain(p))
+    const domainItems: Item[] = []
+    for (const persistencItem of persistence) {
+      try {
+        domainItems.push(this.mapper.toDomain(persistencItem))
+      } catch (error) {
+        this.logger.error(`Failed to map item ${persistencItem.uuid} to domain: ${(error as Error).message}`)
+      }
+    }
 
     await Promise.all(domainItems.map((item) => this.decorateItemWithAssociations(item)))
 
