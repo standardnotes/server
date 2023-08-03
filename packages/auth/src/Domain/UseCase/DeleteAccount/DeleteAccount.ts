@@ -1,4 +1,4 @@
-import { Uuid } from '@standardnotes/domain-core'
+import { Result, UseCaseInterface, Username, Uuid } from '@standardnotes/domain-core'
 import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
 import { TimerInterface } from '@standardnotes/time'
 import { inject, injectable } from 'inversify'
@@ -7,13 +7,12 @@ import TYPES from '../../../Bootstrap/Types'
 import { DomainEventFactoryInterface } from '../../Event/DomainEventFactoryInterface'
 import { UserSubscriptionServiceInterface } from '../../Subscription/UserSubscriptionServiceInterface'
 import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'
-import { UseCaseInterface } from '../UseCaseInterface'
 
 import { DeleteAccountDTO } from './DeleteAccountDTO'
-import { DeleteAccountResponse } from './DeleteAccountResponse'
+import { User } from '../../User/User'
 
 @injectable()
-export class DeleteAccount implements UseCaseInterface {
+export class DeleteAccount implements UseCaseInterface<string> {
   constructor(
     @inject(TYPES.Auth_UserRepository) private userRepository: UserRepositoryInterface,
     @inject(TYPES.Auth_UserSubscriptionService) private userSubscriptionService: UserSubscriptionServiceInterface,
@@ -22,25 +21,30 @@ export class DeleteAccount implements UseCaseInterface {
     @inject(TYPES.Auth_Timer) private timer: TimerInterface,
   ) {}
 
-  async execute(dto: DeleteAccountDTO): Promise<DeleteAccountResponse> {
-    const uuidOrError = Uuid.create(dto.userUuid)
-    if (uuidOrError.isFailed()) {
-      return {
-        success: false,
-        responseCode: 400,
-        message: uuidOrError.getError(),
+  async execute(dto: DeleteAccountDTO): Promise<Result<string>> {
+    let user: User | null = null
+    if (dto.userUuid !== undefined) {
+      const uuidOrError = Uuid.create(dto.userUuid)
+      if (uuidOrError.isFailed()) {
+        return Result.fail(uuidOrError.getError())
       }
-    }
-    const uuid = uuidOrError.getValue()
+      const uuid = uuidOrError.getValue()
 
-    const user = await this.userRepository.findOneByUuid(uuid)
+      user = await this.userRepository.findOneByUuid(uuid)
+    } else if (dto.username !== undefined) {
+      const usernameOrError = Username.create(dto.username)
+      if (usernameOrError.isFailed()) {
+        return Result.fail(usernameOrError.getError())
+      }
+      const username = usernameOrError.getValue()
+
+      user = await this.userRepository.findOneByUsernameOrEmail(username)
+    } else {
+      return Result.fail('Either userUuid or username must be provided.')
+    }
 
     if (user === null) {
-      return {
-        success: false,
-        responseCode: 404,
-        message: 'User not found',
-      }
+      return Result.ok('User already deleted.')
     }
 
     let regularSubscriptionUuid = undefined
@@ -57,10 +61,6 @@ export class DeleteAccount implements UseCaseInterface {
       }),
     )
 
-    return {
-      success: true,
-      message: 'Successfully deleted user',
-      responseCode: 200,
-    }
+    return Result.ok('Successfully deleted account.')
   }
 }

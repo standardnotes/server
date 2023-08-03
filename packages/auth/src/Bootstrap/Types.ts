@@ -176,6 +176,7 @@ const TYPES = {
   ),
   Auth_PredicateVerificationRequestedEventHandler: Symbol.for('Auth_PredicateVerificationRequestedEventHandler'),
   Auth_EmailSubscriptionUnsubscribedEventHandler: Symbol.for('Auth_EmailSubscriptionUnsubscribedEventHandler'),
+  Auth_PaymentsAccountDeletedEventHandler: Symbol.for('Auth_PaymentsAccountDeletedEventHandler'),
   // Services
   Auth_DeviceDetector: Symbol.for('Auth_DeviceDetector'),
   Auth_SessionService: Symbol.for('Auth_SessionService'),

@@ -35,6 +35,7 @@ describe('DeleteAccount', () => {
 
     userRepository = {} as jest.Mocked<UserRepositoryInterface>
     userRepository.findOneByUuid = jest.fn().mockReturnValue(user)
+    userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue(user)
 
     userSubscriptionService = {} as jest.Mocked<UserSubscriptionServiceInterface>
     userSubscriptionService.findRegularSubscriptionForUserUuid = jest
@@ -53,65 +54,124 @@ describe('DeleteAccount', () => {
     timer.convertDateToMicroseconds = jest.fn().mockReturnValue(1)
   })
 
-  it('should trigger account deletion - no subscription', async () => {
-    userSubscriptionService.findRegularSubscriptionForUserUuid = jest
-      .fn()
-      .mockReturnValue({ regularSubscription: null, sharedSubscription: null })
+  describe('when user uuid is provided', () => {
+    it('should trigger account deletion - no subscription', async () => {
+      userSubscriptionService.findRegularSubscriptionForUserUuid = jest
+        .fn()
+        .mockReturnValue({ regularSubscription: null, sharedSubscription: null })
 
-    expect(await createUseCase().execute({ userUuid: '00000000-0000-0000-0000-000000000000' })).toEqual({
-      message: 'Successfully deleted user',
-      responseCode: 200,
-      success: true,
+      const result = await createUseCase().execute({ userUuid: '00000000-0000-0000-0000-000000000000' })
+
+      expect(result.isFailed()).toBeFalsy()
+      expect(domainEventPublisher.publish).toHaveBeenCalledTimes(1)
+      expect(domainEventFactory.createAccountDeletionRequestedEvent).toHaveBeenLastCalledWith({
+        userUuid: '1-2-3',
+        userCreatedAtTimestamp: 1,
+        regularSubscriptionUuid: undefined,
+      })
     })
 
-    expect(domainEventPublisher.publish).toHaveBeenCalledTimes(1)
-    expect(domainEventFactory.createAccountDeletionRequestedEvent).toHaveBeenLastCalledWith({
-      userUuid: '1-2-3',
-      userCreatedAtTimestamp: 1,
-      regularSubscriptionUuid: undefined,
+    it('should trigger account deletion - subscription present', async () => {
+      userSubscriptionService.findRegularSubscriptionForUserUuid = jest
+        .fn()
+        .mockReturnValue({ regularSubscription, sharedSubscription: null })
+
+      const result = await createUseCase().execute({ userUuid: '00000000-0000-0000-0000-000000000000' })
+
+      expect(result.isFailed()).toBeFalsy()
+
+      expect(domainEventPublisher.publish).toHaveBeenCalledTimes(1)
+      expect(domainEventFactory.createAccountDeletionRequestedEvent).toHaveBeenLastCalledWith({
+        userUuid: '1-2-3',
+        userCreatedAtTimestamp: 1,
+        regularSubscriptionUuid: '1-2-3',
+      })
+    })
+
+    it('should not trigger account deletion if user is not found', async () => {
+      userRepository.findOneByUuid = jest.fn().mockReturnValue(null)
+
+      const result = await createUseCase().execute({ userUuid: '00000000-0000-0000-0000-000000000000' })
+
+      expect(result.isFailed()).toBeFalsy()
+
+      expect(domainEventPublisher.publish).not.toHaveBeenCalled()
+      expect(domainEventFactory.createAccountDeletionRequestedEvent).not.toHaveBeenCalled()
+    })
+
+    it('should not trigger account deletion if user uuid is invalid', async () => {
+      const result = await createUseCase().execute({ userUuid: 'invalid' })
+
+      expect(result.isFailed()).toBeTruthy()
+
+      expect(domainEventPublisher.publish).not.toHaveBeenCalled()
+      expect(domainEventFactory.createAccountDeletionRequestedEvent).not.toHaveBeenCalled()
     })
   })
 
-  it('should trigger account deletion - subscription present', async () => {
-    userSubscriptionService.findRegularSubscriptionForUserUuid = jest
-      .fn()
-      .mockReturnValue({ regularSubscription, sharedSubscription: null })
+  describe('when username is provided', () => {
+    it('should trigger account deletion - no subscription', async () => {
+      userSubscriptionService.findRegularSubscriptionForUserUuid = jest
+        .fn()
+        .mockReturnValue({ regularSubscription: null, sharedSubscription: null })
 
-    expect(await createUseCase().execute({ userUuid: '00000000-0000-0000-0000-000000000000' })).toEqual({
-      message: 'Successfully deleted user',
-      responseCode: 200,
-      success: true,
+      const result = await createUseCase().execute({ username: 'test@test.te' })
+
+      expect(result.isFailed()).toBeFalsy()
+      expect(domainEventPublisher.publish).toHaveBeenCalledTimes(1)
+      expect(domainEventFactory.createAccountDeletionRequestedEvent).toHaveBeenLastCalledWith({
+        userUuid: '1-2-3',
+        userCreatedAtTimestamp: 1,
+        regularSubscriptionUuid: undefined,
+      })
     })
 
-    expect(domainEventPublisher.publish).toHaveBeenCalledTimes(1)
-    expect(domainEventFactory.createAccountDeletionRequestedEvent).toHaveBeenLastCalledWith({
-      userUuid: '1-2-3',
-      userCreatedAtTimestamp: 1,
-      regularSubscriptionUuid: '1-2-3',
+    it('should trigger account deletion - subscription present', async () => {
+      userSubscriptionService.findRegularSubscriptionForUserUuid = jest
+        .fn()
+        .mockReturnValue({ regularSubscription, sharedSubscription: null })
+
+      const result = await createUseCase().execute({ username: 'test@test.te' })
+
+      expect(result.isFailed()).toBeFalsy()
+
+      expect(domainEventPublisher.publish).toHaveBeenCalledTimes(1)
+      expect(domainEventFactory.createAccountDeletionRequestedEvent).toHaveBeenLastCalledWith({
+        userUuid: '1-2-3',
+        userCreatedAtTimestamp: 1,
+        regularSubscriptionUuid: '1-2-3',
+      })
+    })
+
+    it('should not trigger account deletion if user is not found', async () => {
+      userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue(null)
+
+      const result = await createUseCase().execute({ username: 'test@test.te' })
+
+      expect(result.isFailed()).toBeFalsy()
+
+      expect(domainEventPublisher.publish).not.toHaveBeenCalled()
+      expect(domainEventFactory.createAccountDeletionRequestedEvent).not.toHaveBeenCalled()
+    })
+
+    it('should not trigger account deletion if username is invalid', async () => {
+      const result = await createUseCase().execute({ username: '' })
+
+      expect(result.isFailed()).toBeTruthy()
+
+      expect(domainEventPublisher.publish).not.toHaveBeenCalled()
+      expect(domainEventFactory.createAccountDeletionRequestedEvent).not.toHaveBeenCalled()
     })
   })
 
-  it('should not trigger account deletion if user is not found', async () => {
-    userRepository.findOneByUuid = jest.fn().mockReturnValue(null)
+  describe('when neither user uuid nor username is provided', () => {
+    it('should not trigger account deletion', async () => {
+      const result = await createUseCase().execute({})
 
-    expect(await createUseCase().execute({ userUuid: '00000000-0000-0000-0000-000000000000' })).toEqual({
-      message: 'User not found',
-      responseCode: 404,
-      success: false,
+      expect(result.isFailed()).toBeTruthy()
+
+      expect(domainEventPublisher.publish).not.toHaveBeenCalled()
+      expect(domainEventFactory.createAccountDeletionRequestedEvent).not.toHaveBeenCalled()
     })
-
-    expect(domainEventPublisher.publish).not.toHaveBeenCalled()
-    expect(domainEventFactory.createAccountDeletionRequestedEvent).not.toHaveBeenCalled()
-  })
-
-  it('should not trigger account deletion if user uuid is invalid', async () => {
-    expect(await createUseCase().execute({ userUuid: '' })).toEqual({
-      message: 'Given value is not a valid uuid: ',
-      responseCode: 400,
-      success: false,
-    })
-
-    expect(domainEventPublisher.publish).not.toHaveBeenCalled()
-    expect(domainEventFactory.createAccountDeletionRequestedEvent).not.toHaveBeenCalled()
   })
 })
