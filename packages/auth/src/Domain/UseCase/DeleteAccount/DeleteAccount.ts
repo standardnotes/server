@@ -44,7 +44,7 @@ export class DeleteAccount implements UseCaseInterface<string> {
     }
 
     if (user === null) {
-      return Result.fail('User not found.')
+      return Result.ok('User already deleted.')
     }
 
     let regularSubscriptionUuid = undefined

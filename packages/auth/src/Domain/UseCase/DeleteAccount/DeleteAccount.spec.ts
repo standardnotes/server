@@ -93,7 +93,7 @@ describe('DeleteAccount', () => {
 
       const result = await createUseCase().execute({ userUuid: '00000000-0000-0000-0000-000000000000' })
 
-      expect(result.isFailed()).toBeTruthy()
+      expect(result.isFailed()).toBeFalsy()
 
       expect(domainEventPublisher.publish).not.toHaveBeenCalled()
       expect(domainEventFactory.createAccountDeletionRequestedEvent).not.toHaveBeenCalled()
@@ -148,7 +148,7 @@ describe('DeleteAccount', () => {
 
       const result = await createUseCase().execute({ username: 'test@test.te' })
 
-      expect(result.isFailed()).toBeTruthy()
+      expect(result.isFailed()).toBeFalsy()
 
       expect(domainEventPublisher.publish).not.toHaveBeenCalled()
       expect(domainEventFactory.createAccountDeletionRequestedEvent).not.toHaveBeenCalled()
