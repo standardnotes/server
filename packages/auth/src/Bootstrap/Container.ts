@@ -252,6 +252,7 @@ import { BaseWebSocketsController } from '../Infra/InversifyExpressUtils/Base/Ba
 import { BaseSessionsController } from '../Infra/InversifyExpressUtils/Base/BaseSessionsController'
 import { Transform } from 'stream'
 import { ActivatePremiumFeatures } from '../Domain/UseCase/ActivatePremiumFeatures/ActivatePremiumFeatures'
+import { PaymentsAccountDeletedEventHandler } from '../Domain/Handler/PaymentsAccountDeletedEventHandler'
 
 export class ContainerConfigLoader {
   async load(configuration?: {
@@ -978,6 +979,14 @@ export class ContainerConfigLoader {
           container.get(TYPES.Auth_SettingService),
         ),
       )
+    container
+      .bind<PaymentsAccountDeletedEventHandler>(TYPES.Auth_PaymentsAccountDeletedEventHandler)
+      .toConstantValue(
+        new PaymentsAccountDeletedEventHandler(
+          container.get(TYPES.Auth_DeleteAccount),
+          container.get(TYPES.Auth_Logger),
+        ),
+      )
 
     const eventHandlers: Map<string, DomainEventHandlerInterface> = new Map([
       ['USER_REGISTERED', container.get(TYPES.Auth_UserRegisteredEventHandler)],
@@ -1005,6 +1014,7 @@ export class ContainerConfigLoader {
       ],
       ['PREDICATE_VERIFICATION_REQUESTED', container.get(TYPES.Auth_PredicateVerificationRequestedEventHandler)],
       ['EMAIL_SUBSCRIPTION_UNSUBSCRIBED', container.get(TYPES.Auth_EmailSubscriptionUnsubscribedEventHandler)],
+      ['PAYMENTS_ACCOUNT_DELETED', container.get(TYPES.Auth_PaymentsAccountDeletedEventHandler)],
     ])
 
     if (isConfiguredForHomeServer) {

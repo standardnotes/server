@@ -4,7 +4,7 @@ import * as express from 'express'
 
 import { AnnotatedUsersController } from './AnnotatedUsersController'
 import { results } from 'inversify-express-utils'
-import { Username } from '@standardnotes/domain-core'
+import { Result, Username } from '@standardnotes/domain-core'
 import { DeleteAccount } from '../../Domain/UseCase/DeleteAccount/DeleteAccount'
 import { ChangeCredentials } from '../../Domain/UseCase/ChangeCredentials/ChangeCredentials'
 import { ClearLoginAttempts } from '../../Domain/UseCase/ClearLoginAttempts'
@@ -45,7 +45,7 @@ describe('AnnotatedUsersController', () => {
     updateUser.execute = jest.fn()
 
     deleteAccount = {} as jest.Mocked<DeleteAccount>
-    deleteAccount.execute = jest.fn().mockReturnValue({ success: true, message: 'A OK', responseCode: 200 })
+    deleteAccount.execute = jest.fn().mockReturnValue(Result.ok('success'))
 
     user = {} as jest.Mocked<User>
     user.uuid = '123'
@@ -181,7 +181,22 @@ describe('AnnotatedUsersController', () => {
     expect(deleteAccount.execute).toHaveBeenCalledWith({ userUuid: '1-2-3' })
 
     expect(result.statusCode).toEqual(200)
-    expect(await result.content.readAsStringAsync()).toEqual('{"message":"A OK"}')
+  })
+
+  it('should indicate failure when deleting user', async () => {
+    request.params.userUuid = '1-2-3'
+    response.locals.user = {
+      uuid: '1-2-3',
+    }
+
+    deleteAccount.execute = jest.fn().mockReturnValue(Result.fail('Something bad happened'))
+
+    const httpResponse = <results.JsonResult>await createController().deleteAccount(request, response)
+    const result = await httpResponse.executeAsync()
+
+    expect(deleteAccount.execute).toHaveBeenCalledWith({ userUuid: '1-2-3' })
+
+    expect(result.statusCode).toEqual(400)
   })
 
   it('should not delete user if user uuid is different than the one in the session', async () => {

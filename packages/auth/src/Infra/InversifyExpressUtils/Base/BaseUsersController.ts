@@ -119,7 +119,18 @@ export class BaseUsersController extends BaseHttpController {
       userUuid: request.params.userUuid,
     })
 
-    return this.json({ message: result.message }, result.responseCode)
+    if (result.isFailed()) {
+      return this.json(
+        {
+          error: {
+            message: result.getError(),
+          },
+        },
+        400,
+      )
+    }
+
+    return this.json({ message: result.getValue() }, 200)
   }
 
   async getSubscription(request: Request, response: Response): Promise<results.JsonResult> {
