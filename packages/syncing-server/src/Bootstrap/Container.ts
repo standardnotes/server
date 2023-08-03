@@ -402,6 +402,7 @@ export class ContainerConfigLoader {
           container.get(TYPES.Sync_ItemPersistenceMapper),
           container.get(TYPES.Sync_KeySystemAssociationRepository),
           container.get(TYPES.Sync_SharedVaultAssociationRepository),
+          container.get(TYPES.Sync_Logger),
         ),
       )
     container

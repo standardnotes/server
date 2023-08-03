@@ -6,6 +6,12 @@ import { TypeORMItem } from '../../Infra/TypeORM/TypeORMItem'
 
 export class ItemPersistenceMapper implements MapperInterface<Item, TypeORMItem> {
   toDomain(projection: TypeORMItem): Item {
+    const uuidOrError = Uuid.create(projection.uuid)
+    if (uuidOrError.isFailed()) {
+      throw new Error(`Failed to create item from projection: ${uuidOrError.getError()}`)
+    }
+    const uuid = uuidOrError.getValue()
+
     let duplicateOf = null
     if (projection.duplicateOf) {
       const duplicateOfOrError = Uuid.create(projection.duplicateOf)
@@ -63,7 +69,7 @@ export class ItemPersistenceMapper implements MapperInterface<Item, TypeORMItem>
         timestamps,
         updatedWithSession,
       },
-      new UniqueEntityId(projection.uuid),
+      new UniqueEntityId(uuid.value),
     )
     if (itemOrError.isFailed()) {
       throw new Error(`Failed to create item from projection: ${itemOrError.getError()}`)
