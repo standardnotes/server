@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.75.4](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.75.3...@standardnotes/syncing-server@1.75.4) (2023-08-03)
+
+### Bug Fixes
+
+* **syncing-server:** skip retrieval of items with invalid uuids ([#683](https://github.com/standardnotes/syncing-server-js/issues/683)) ([0036d52](https://github.com/standardnotes/syncing-server-js/commit/0036d527bd31cd81eda59e918b5f897f24cfa340))
+
 ## [1.75.3](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.75.2...@standardnotes/syncing-server@1.75.3) (2023-08-03)
 
 **Note:** Version bump only for package @standardnotes/syncing-server
