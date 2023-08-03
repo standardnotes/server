@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.129.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.128.1...@standardnotes/auth-server@1.129.0) (2023-08-03)
+
+### Features
+
+* **auth:** add handling payments account deleted events STA-1769 ([#682](https://github.com/standardnotes/server/issues/682)) ([8e35dfa](https://github.com/standardnotes/server/commit/8e35dfa4b77256f4c0a3294b296a5526fd1020ad))
+
 ## [1.128.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.128.0...@standardnotes/auth-server@1.128.1) (2023-08-02)
 
 **Note:** Version bump only for package @standardnotes/auth-server

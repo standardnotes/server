@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.114.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.113.1...@standardnotes/domain-events@2.114.0) (2023-08-03)
+
+### Features
+
+* **auth:** add handling payments account deleted events STA-1769 ([#682](https://github.com/standardnotes/server/issues/682)) ([8e35dfa](https://github.com/standardnotes/server/commit/8e35dfa4b77256f4c0a3294b296a5526fd1020ad))
+
 ## [2.113.1](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.113.0...@standardnotes/domain-events@2.113.1) (2023-07-07)
 
 ### Bug Fixes
