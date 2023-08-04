@@ -13,6 +13,7 @@ import { DomainEventFactoryInterface } from '../../Event/DomainEventFactoryInter
 import { DeleteOtherSessionsForUser } from '../DeleteOtherSessionsForUser'
 import { AuthResponse20161215 } from '../../Auth/AuthResponse20161215'
 import { AuthResponse20200115 } from '../../Auth/AuthResponse20200115'
+import { ApiVersion } from '../../Api/ApiVersion'
 
 @injectable()
 export class ChangeCredentials implements UseCaseInterface<AuthResponse20161215 | AuthResponse20200115> {
@@ -95,13 +96,18 @@ export class ChangeCredentials implements UseCaseInterface<AuthResponse20161215 
   }
 
   private async deleteOtherSessionsForUserIfNeeded(userUuid: string, dto: ChangeCredentialsDTO): Promise<void> {
+    const theCallIsFromALegacyClient = dto.currentSessionUuid === undefined || dto.apiVersion !== ApiVersion.v20200115
+    if (theCallIsFromALegacyClient) {
+      return
+    }
+
     const passwordHasChanged = dto.newPassword !== dto.currentPassword
     const userEmailChanged = dto.newEmail !== undefined
 
     if (passwordHasChanged || userEmailChanged) {
       await this.deleteOtherSessionsForUserUseCase.execute({
         userUuid,
-        currentSessionUuid: dto.currentSessionUuid,
+        currentSessionUuid: dto.currentSessionUuid as string,
         markAsRevoked: false,
       })
     }

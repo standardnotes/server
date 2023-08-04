@@ -13,6 +13,7 @@ import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'
 import { ChangeCredentials } from './ChangeCredentials'
 import { Result, Username } from '@standardnotes/domain-core'
 import { DeleteOtherSessionsForUser } from '../DeleteOtherSessionsForUser'
+import { ApiVersion } from '../../Api/ApiVersion'
 
 describe('ChangeCredentials', () => {
   let userRepository: UserRepositoryInterface
@@ -66,7 +67,7 @@ describe('ChangeCredentials', () => {
   it('should change password', async () => {
     const result = await createUseCase().execute({
       username: Username.create('test@test.te').getValue(),
-      apiVersion: '20190520',
+      apiVersion: ApiVersion.v20200115,
       currentPassword: 'qweqwe123123',
       newPassword: 'test234',
       pwNonce: 'asdzxc',
@@ -97,7 +98,7 @@ describe('ChangeCredentials', () => {
 
     const result = await createUseCase().execute({
       username: Username.create('test@test.te').getValue(),
-      apiVersion: '20190520',
+      apiVersion: ApiVersion.v20200115,
       currentPassword: 'qweqwe123123',
       newPassword: 'test234',
       newEmail: 'new@test.te',
@@ -131,7 +132,7 @@ describe('ChangeCredentials', () => {
 
     const result = await createUseCase().execute({
       username: Username.create('test@test.te').getValue(),
-      apiVersion: '20190520',
+      apiVersion: ApiVersion.v20200115,
       currentPassword: 'qweqwe123123',
       newPassword: 'test234',
       newEmail: 'new@test.te',
@@ -152,7 +153,7 @@ describe('ChangeCredentials', () => {
   it('should not change email if the new email is invalid', async () => {
     const result = await createUseCase().execute({
       username: Username.create('test@test.te').getValue(),
-      apiVersion: '20190520',
+      apiVersion: ApiVersion.v20200115,
       currentPassword: 'qweqwe123123',
       newPassword: 'test234',
       newEmail: '',
@@ -175,7 +176,7 @@ describe('ChangeCredentials', () => {
 
     const result = await createUseCase().execute({
       username: Username.create('test@test.te').getValue(),
-      apiVersion: '20190520',
+      apiVersion: ApiVersion.v20200115,
       currentPassword: 'qweqwe123123',
       newPassword: 'test234',
       newEmail: '',
@@ -197,7 +198,7 @@ describe('ChangeCredentials', () => {
   it('should not change password if current password is incorrect', async () => {
     const result = await createUseCase().execute({
       username: Username.create('test@test.te').getValue(),
-      apiVersion: '20190520',
+      apiVersion: ApiVersion.v20200115,
       currentPassword: 'test123',
       newPassword: 'test234',
       pwNonce: 'asdzxc',
@@ -213,7 +214,7 @@ describe('ChangeCredentials', () => {
   it('should update protocol version while changing password', async () => {
     const result = await createUseCase().execute({
       username: Username.create('test@test.te').getValue(),
-      apiVersion: '20190520',
+      apiVersion: ApiVersion.v20200115,
       currentPassword: 'qweqwe123123',
       newPassword: 'test234',
       pwNonce: 'asdzxc',
@@ -238,7 +239,7 @@ describe('ChangeCredentials', () => {
 
     const result = await createUseCase().execute({
       username: Username.create('test@test.te').getValue(),
-      apiVersion: '20190520',
+      apiVersion: ApiVersion.v20200115,
       currentPassword: 'qweqwe123123',
       newPassword: 'qweqwe123123',
       newEmail: undefined,
@@ -261,6 +262,34 @@ describe('ChangeCredentials', () => {
     })
     expect(domainEventFactory.createUserEmailChangedEvent).not.toHaveBeenCalled()
     expect(domainEventPublisher.publish).not.toHaveBeenCalled()
+    expect(deleteOtherSessionsForUser.execute).not.toHaveBeenCalled()
+  })
+
+  it('should not delete other sessions for user if the caller does not support sessions', async () => {
+    const result = await createUseCase().execute({
+      username: Username.create('test@test.te').getValue(),
+      apiVersion: ApiVersion.v20200115,
+      currentPassword: 'qweqwe123123',
+      newPassword: 'test234',
+      pwNonce: 'asdzxc',
+      updatedWithUserAgent: 'Google Chrome',
+      kpCreated: '123',
+      kpOrigination: 'password-change',
+      currentSessionUuid: undefined,
+    })
+
+    expect(result.isFailed()).toBeFalsy()
+
+    expect(userRepository.save).toHaveBeenCalledWith({
+      encryptedPassword: expect.any(String),
+      pwNonce: 'asdzxc',
+      kpCreated: '123',
+      email: 'test@test.te',
+      uuid: '1-2-3',
+      kpOrigination: 'password-change',
+      updatedAt: new Date(1),
+    })
+
     expect(deleteOtherSessionsForUser.execute).not.toHaveBeenCalled()
   })
 })
