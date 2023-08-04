@@ -95,15 +95,17 @@ export class SignIn implements UseCaseInterface {
 
     await this.sendSignInEmailNotification(user, dto.userAgent)
 
+    const result = await authResponseFactory.createResponse({
+      user,
+      apiVersion: dto.apiVersion,
+      userAgent: dto.userAgent,
+      ephemeralSession: dto.ephemeralSession,
+      readonlyAccess: false,
+    })
+
     return {
       success: true,
-      authResponse: await authResponseFactory.createResponse({
-        user,
-        apiVersion: dto.apiVersion,
-        userAgent: dto.userAgent,
-        ephemeralSession: dto.ephemeralSession,
-        readonlyAccess: false,
-      }),
+      authResponse: result.response,
     }
   }
 

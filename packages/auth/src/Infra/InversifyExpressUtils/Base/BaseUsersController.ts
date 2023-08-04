@@ -226,7 +226,6 @@ export class BaseUsersController extends BaseHttpController {
       kpOrigination: request.body.origination,
       updatedWithUserAgent: <string>request.headers['user-agent'],
       protocolVersion: request.body.version,
-      currentSessionUuid: response.locals.session ? response.locals.session.uuid : undefined,
     })
 
     if (changeCredentialsResult.isFailed()) {

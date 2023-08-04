@@ -13,6 +13,7 @@ import { SignIn } from './SignIn'
 import { PKCERepositoryInterface } from '../User/PKCERepositoryInterface'
 import { CrypterInterface } from '../Encryption/CrypterInterface'
 import { ProtocolVersion } from '@standardnotes/common'
+import { Session } from '../Session/Session'
 
 describe('SignIn', () => {
   let user: User
@@ -50,7 +51,9 @@ describe('SignIn', () => {
     userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue(user)
 
     authResponseFactory = {} as jest.Mocked<AuthResponseFactoryInterface>
-    authResponseFactory.createResponse = jest.fn().mockReturnValue({ foo: 'bar' })
+    authResponseFactory.createResponse = jest
+      .fn()
+      .mockReturnValue({ response: { foo: 'bar' }, session: {} as jest.Mocked<Session> })
 
     authResponseFactoryResolver = {} as jest.Mocked<AuthResponseFactoryResolverInterface>
     authResponseFactoryResolver.resolveAuthResponseFactoryVersion = jest.fn().mockReturnValue(authResponseFactory)

@@ -124,7 +124,7 @@ export class SignInWithRecoveryCodes implements UseCaseInterface<AuthResponse202
 
     await this.clearLoginAttempts.execute({ email: username.value })
 
-    return Result.ok(authResponse as AuthResponse20200115)
+    return Result.ok(authResponse.response as AuthResponse20200115)
   }
 
   private async validateCodeVerifier(codeVerifier: string): Promise<boolean> {

@@ -154,7 +154,7 @@ describe('SessionService', () => {
     const user = {} as jest.Mocked<User>
     user.uuid = '123'
 
-    const sessionPayload = await createService().createNewSessionForUser({
+    const result = await createService().createNewSessionForUser({
       user,
       apiVersion: '003',
       userAgent: 'Google Chrome',
@@ -176,7 +176,7 @@ describe('SessionService', () => {
       readonlyAccess: false,
     })
 
-    expect(sessionPayload).toEqual({
+    expect(result.sessionHttpRepresentation).toEqual({
       access_expiration: 123,
       access_token: expect.any(String),
       refresh_expiration: 123,
@@ -190,7 +190,7 @@ describe('SessionService', () => {
     user.email = 'demo@standardnotes.com'
     user.uuid = '123'
 
-    const sessionPayload = await createService().createNewSessionForUser({
+    const result = await createService().createNewSessionForUser({
       user,
       apiVersion: '003',
       userAgent: 'Google Chrome',
@@ -212,7 +212,7 @@ describe('SessionService', () => {
       readonlyAccess: true,
     })
 
-    expect(sessionPayload).toEqual({
+    expect(result.sessionHttpRepresentation).toEqual({
       access_expiration: 123,
       access_token: expect.any(String),
       refresh_expiration: 123,
@@ -229,7 +229,7 @@ describe('SessionService', () => {
       value: LogSessionUserAgentOption.Disabled,
     } as jest.Mocked<Setting>)
 
-    const sessionPayload = await createService().createNewSessionForUser({
+    const result = await createService().createNewSessionForUser({
       user,
       apiVersion: '003',
       userAgent: 'Google Chrome',
@@ -250,7 +250,7 @@ describe('SessionService', () => {
       readonlyAccess: false,
     })
 
-    expect(sessionPayload).toEqual({
+    expect(result.sessionHttpRepresentation).toEqual({
       access_expiration: 123,
       access_token: expect.any(String),
       refresh_expiration: 123,
@@ -305,7 +305,7 @@ describe('SessionService', () => {
     user.uuid = '123'
     user.email = 'test@test.te'
 
-    const sessionPayload = await createService().createNewSessionForUser({
+    const result = await createService().createNewSessionForUser({
       user,
       apiVersion: '003',
       userAgent: 'Google Chrome',
@@ -317,7 +317,7 @@ describe('SessionService', () => {
       username: 'test@test.te',
       subscriptionPlanName: null,
     })
-    expect(sessionPayload).toEqual({
+    expect(result.sessionHttpRepresentation).toEqual({
       access_expiration: 123,
       access_token: expect.any(String),
       refresh_expiration: 123,
@@ -333,7 +333,7 @@ describe('SessionService', () => {
     user.uuid = '123'
     user.email = 'test@test.te'
 
-    const sessionPayload = await createService().createNewSessionForUser({
+    const result = await createService().createNewSessionForUser({
       user,
       apiVersion: '003',
       userAgent: 'Google Chrome',
@@ -345,7 +345,7 @@ describe('SessionService', () => {
       username: 'test@test.te',
       subscriptionPlanName: null,
     })
-    expect(sessionPayload).toEqual({
+    expect(result.sessionHttpRepresentation).toEqual({
       access_expiration: 123,
       access_token: expect.any(String),
       refresh_expiration: 123,
@@ -361,7 +361,7 @@ describe('SessionService', () => {
     user.uuid = '123'
     user.email = 'test@test.te'
 
-    const sessionPayload = await createService().createNewSessionForUser({
+    const result = await createService().createNewSessionForUser({
       user,
       apiVersion: '003',
       userAgent: 'Google Chrome',
@@ -373,7 +373,7 @@ describe('SessionService', () => {
       username: 'test@test.te',
       subscriptionPlanName: null,
     })
-    expect(sessionPayload).toEqual({
+    expect(result.sessionHttpRepresentation).toEqual({
       access_expiration: 123,
       access_token: expect.any(String),
       refresh_expiration: 123,
@@ -386,7 +386,7 @@ describe('SessionService', () => {
     const user = {} as jest.Mocked<User>
     user.uuid = '123'
 
-    const sessionPayload = await createService().createNewEphemeralSessionForUser({
+    const result = await createService().createNewEphemeralSessionForUser({
       user,
       apiVersion: '003',
       userAgent: 'Google Chrome',
@@ -408,7 +408,7 @@ describe('SessionService', () => {
       readonlyAccess: false,
     })
 
-    expect(sessionPayload).toEqual({
+    expect(result.sessionHttpRepresentation).toEqual({
       access_expiration: 123,
       access_token: expect.any(String),
       refresh_expiration: 123,

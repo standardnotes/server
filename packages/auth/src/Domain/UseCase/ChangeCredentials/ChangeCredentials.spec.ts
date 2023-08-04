@@ -14,6 +14,7 @@ import { ChangeCredentials } from './ChangeCredentials'
 import { Result, Username } from '@standardnotes/domain-core'
 import { DeleteOtherSessionsForUser } from '../DeleteOtherSessionsForUser'
 import { ApiVersion } from '../../Api/ApiVersion'
+import { Session } from '../../Session/Session'
 
 describe('ChangeCredentials', () => {
   let userRepository: UserRepositoryInterface
@@ -37,7 +38,9 @@ describe('ChangeCredentials', () => {
 
   beforeEach(() => {
     authResponseFactory = {} as jest.Mocked<AuthResponseFactoryInterface>
-    authResponseFactory.createResponse = jest.fn().mockReturnValue({ foo: 'bar' })
+    authResponseFactory.createResponse = jest
+      .fn()
+      .mockReturnValue({ response: { foo: 'bar' }, session: { uuid: '1-2-3' } as jest.Mocked<Session> })
 
     authResponseFactoryResolver = {} as jest.Mocked<AuthResponseFactoryResolverInterface>
     authResponseFactoryResolver.resolveAuthResponseFactoryVersion = jest.fn().mockReturnValue(authResponseFactory)
@@ -74,7 +77,6 @@ describe('ChangeCredentials', () => {
       updatedWithUserAgent: 'Google Chrome',
       kpCreated: '123',
       kpOrigination: 'password-change',
-      currentSessionUuid: '1-2-3',
     })
 
     expect(result.isFailed()).toBeFalsy()
@@ -106,7 +108,6 @@ describe('ChangeCredentials', () => {
       updatedWithUserAgent: 'Google Chrome',
       kpCreated: '123',
       kpOrigination: 'password-change',
-      currentSessionUuid: '1-2-3',
     })
     expect(result.isFailed()).toBeFalsy()
 
@@ -140,7 +141,6 @@ describe('ChangeCredentials', () => {
       updatedWithUserAgent: 'Google Chrome',
       kpCreated: '123',
       kpOrigination: 'password-change',
-      currentSessionUuid: '1-2-3',
     })
     expect(result.isFailed()).toBeTruthy()
     expect(result.getError()).toEqual('The email you entered is already taken. Please try again.')
@@ -161,7 +161,6 @@ describe('ChangeCredentials', () => {
       updatedWithUserAgent: 'Google Chrome',
       kpCreated: '123',
       kpOrigination: 'password-change',
-      currentSessionUuid: '1-2-3',
     })
     expect(result.isFailed()).toBeTruthy()
     expect(result.getError()).toEqual('Username cannot be empty')
@@ -184,7 +183,6 @@ describe('ChangeCredentials', () => {
       updatedWithUserAgent: 'Google Chrome',
       kpCreated: '123',
       kpOrigination: 'password-change',
-      currentSessionUuid: '1-2-3',
     })
 
     expect(result.isFailed()).toBeTruthy()
@@ -203,7 +201,6 @@ describe('ChangeCredentials', () => {
       newPassword: 'test234',
       pwNonce: 'asdzxc',
       updatedWithUserAgent: 'Google Chrome',
-      currentSessionUuid: '1-2-3',
     })
     expect(result.isFailed()).toBeTruthy()
     expect(result.getError()).toEqual('The current password you entered is incorrect. Please try again.')
@@ -220,7 +217,6 @@ describe('ChangeCredentials', () => {
       pwNonce: 'asdzxc',
       updatedWithUserAgent: 'Google Chrome',
       protocolVersion: '004',
-      currentSessionUuid: '1-2-3',
     })
     expect(result.isFailed()).toBeFalsy()
 
@@ -247,7 +243,6 @@ describe('ChangeCredentials', () => {
       updatedWithUserAgent: 'Google Chrome',
       kpCreated: '123',
       kpOrigination: 'password-change',
-      currentSessionUuid: '1-2-3',
     })
     expect(result.isFailed()).toBeFalsy()
 
@@ -266,6 +261,8 @@ describe('ChangeCredentials', () => {
   })
 
   it('should not delete other sessions for user if the caller does not support sessions', async () => {
+    authResponseFactory.createResponse = jest.fn().mockReturnValue({ response: { foo: 'bar' } })
+
     const result = await createUseCase().execute({
       username: Username.create('test@test.te').getValue(),
       apiVersion: ApiVersion.v20200115,
@@ -275,7 +272,6 @@ describe('ChangeCredentials', () => {
       updatedWithUserAgent: 'Google Chrome',
       kpCreated: '123',
       kpOrigination: 'password-change',
-      currentSessionUuid: undefined,
     })
 
     expect(result.isFailed()).toBeFalsy()

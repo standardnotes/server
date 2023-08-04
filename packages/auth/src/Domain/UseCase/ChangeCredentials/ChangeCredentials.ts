@@ -13,7 +13,7 @@ import { DomainEventFactoryInterface } from '../../Event/DomainEventFactoryInter
 import { DeleteOtherSessionsForUser } from '../DeleteOtherSessionsForUser'
 import { AuthResponse20161215 } from '../../Auth/AuthResponse20161215'
 import { AuthResponse20200115 } from '../../Auth/AuthResponse20200115'
-import { ApiVersion } from '../../Api/ApiVersion'
+import { Session } from '../../Session/Session'
 
 @injectable()
 export class ChangeCredentials implements UseCaseInterface<AuthResponse20161215 | AuthResponse20200115> {
@@ -80,8 +80,6 @@ export class ChangeCredentials implements UseCaseInterface<AuthResponse20161215 
       await this.domainEventPublisher.publish(userEmailChangedEvent)
     }
 
-    await this.deleteOtherSessionsForUserIfNeeded(user.uuid, dto)
-
     const authResponseFactory = this.authResponseFactoryResolver.resolveAuthResponseFactoryVersion(dto.apiVersion)
 
     const authResponse = await authResponseFactory.createResponse({
@@ -92,22 +90,25 @@ export class ChangeCredentials implements UseCaseInterface<AuthResponse20161215 
       readonlyAccess: false,
     })
 
-    return Result.ok(authResponse)
-  }
-
-  private async deleteOtherSessionsForUserIfNeeded(userUuid: string, dto: ChangeCredentialsDTO): Promise<void> {
-    const theCallIsFromALegacyClient = dto.currentSessionUuid === undefined || dto.apiVersion !== ApiVersion.v20200115
-    if (theCallIsFromALegacyClient) {
-      return
+    if (authResponse.session) {
+      await this.deleteOtherSessionsForUserIfNeeded(user.uuid, authResponse.session, dto)
     }
 
+    return Result.ok(authResponse.response)
+  }
+
+  private async deleteOtherSessionsForUserIfNeeded(
+    userUuid: string,
+    session: Session,
+    dto: ChangeCredentialsDTO,
+  ): Promise<void> {
     const passwordHasChanged = dto.newPassword !== dto.currentPassword
     const userEmailChanged = dto.newEmail !== undefined
 
     if (passwordHasChanged || userEmailChanged) {
       await this.deleteOtherSessionsForUserUseCase.execute({
         userUuid,
-        currentSessionUuid: dto.currentSessionUuid as string,
+        currentSessionUuid: session.uuid,
         markAsRevoked: false,
       })
     }

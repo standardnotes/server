@@ -23,15 +23,17 @@ export class UpdateUser implements UseCaseInterface {
 
     const authResponseFactory = this.authResponseFactoryResolver.resolveAuthResponseFactoryVersion(dto.apiVersion)
 
+    const result = await authResponseFactory.createResponse({
+      user: updatedUser,
+      apiVersion: dto.apiVersion,
+      userAgent: dto.updatedWithUserAgent,
+      ephemeralSession: false,
+      readonlyAccess: false,
+    })
+
     return {
       success: true,
-      authResponse: await authResponseFactory.createResponse({
-        user: updatedUser,
-        apiVersion: dto.apiVersion,
-        userAgent: dto.updatedWithUserAgent,
-        ephemeralSession: false,
-        readonlyAccess: false,
-      }),
+      authResponse: result.response,
     }
   }
 }

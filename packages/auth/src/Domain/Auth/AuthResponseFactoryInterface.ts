@@ -1,3 +1,4 @@
+import { Session } from '../Session/Session'
 import { User } from '../User/User'
 import { AuthResponse20161215 } from './AuthResponse20161215'
 import { AuthResponse20200115 } from './AuthResponse20200115'
@@ -9,5 +10,5 @@ export interface AuthResponseFactoryInterface {
     userAgent: string
     ephemeralSession: boolean
     readonlyAccess: boolean
-  }): Promise<AuthResponse20161215 | AuthResponse20200115>
+  }): Promise<{ response: AuthResponse20161215 | AuthResponse20200115; session?: Session }>
 }
