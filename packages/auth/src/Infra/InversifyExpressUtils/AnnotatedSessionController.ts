@@ -8,7 +8,7 @@ import {
   results,
 } from 'inversify-express-utils'
 import TYPES from '../../Bootstrap/Types'
-import { DeletePreviousSessionsForUser } from '../../Domain/UseCase/DeletePreviousSessionsForUser'
+import { DeleteOtherSessionsForUser } from '../../Domain/UseCase/DeleteOtherSessionsForUser'
 import { DeleteSessionForUser } from '../../Domain/UseCase/DeleteSessionForUser'
 import { RefreshSessionToken } from '../../Domain/UseCase/RefreshSessionToken'
 import { BaseSessionController } from './Base/BaseSessionController'
@@ -17,11 +17,11 @@ import { BaseSessionController } from './Base/BaseSessionController'
 export class AnnotatedSessionController extends BaseSessionController {
   constructor(
     @inject(TYPES.Auth_DeleteSessionForUser) override deleteSessionForUser: DeleteSessionForUser,
-    @inject(TYPES.Auth_DeletePreviousSessionsForUser)
-    override deletePreviousSessionsForUser: DeletePreviousSessionsForUser,
+    @inject(TYPES.Auth_DeleteOtherSessionsForUser)
+    override deleteOtherSessionsForUser: DeleteOtherSessionsForUser,
     @inject(TYPES.Auth_RefreshSessionToken) override refreshSessionToken: RefreshSessionToken,
   ) {
-    super(deleteSessionForUser, deletePreviousSessionsForUser, refreshSessionToken)
+    super(deleteSessionForUser, deleteOtherSessionsForUser, refreshSessionToken)
   }
 
   @httpDelete('/', TYPES.Auth_RequiredCrossServiceTokenMiddleware, TYPES.Auth_SessionMiddleware)

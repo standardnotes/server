@@ -3,14 +3,14 @@ import { Request, Response } from 'express'
 import { BaseHttpController, results } from 'inversify-express-utils'
 import { ErrorTag } from '@standardnotes/responses'
 
-import { DeletePreviousSessionsForUser } from '../../../Domain/UseCase/DeletePreviousSessionsForUser'
+import { DeleteOtherSessionsForUser } from '../../../Domain/UseCase/DeleteOtherSessionsForUser'
 import { DeleteSessionForUser } from '../../../Domain/UseCase/DeleteSessionForUser'
 import { RefreshSessionToken } from '../../../Domain/UseCase/RefreshSessionToken'
 
 export class BaseSessionController extends BaseHttpController {
   constructor(
     protected deleteSessionForUser: DeleteSessionForUser,
-    protected deletePreviousSessionsForUser: DeletePreviousSessionsForUser,
+    protected deleteOtherSessionsForUser: DeleteOtherSessionsForUser,
     protected refreshSessionToken: RefreshSessionToken,
     private controllerContainer?: ControllerContainerInterface,
   ) {
@@ -106,9 +106,10 @@ export class BaseSessionController extends BaseHttpController {
       )
     }
 
-    await this.deletePreviousSessionsForUser.execute({
+    await this.deleteOtherSessionsForUser.execute({
       userUuid: response.locals.user.uuid,
       currentSessionUuid: response.locals.session.uuid,
+      markAsRevoked: true,
     })
 
     response.setHeader('x-invalidate-cache', response.locals.user.uuid)

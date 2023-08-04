@@ -226,15 +226,16 @@ export class BaseUsersController extends BaseHttpController {
       kpOrigination: request.body.origination,
       updatedWithUserAgent: <string>request.headers['user-agent'],
       protocolVersion: request.body.version,
+      currentSessionUuid: response.locals.session.uuid,
     })
 
-    if (!changeCredentialsResult.success) {
+    if (changeCredentialsResult.isFailed()) {
       await this.increaseLoginAttempts.execute({ email: response.locals.user.email })
 
       return this.json(
         {
           error: {
-            message: changeCredentialsResult.errorMessage,
+            message: changeCredentialsResult.getError(),
           },
         },
         401,
@@ -245,6 +246,6 @@ export class BaseUsersController extends BaseHttpController {
 
     response.setHeader('x-invalidate-cache', response.locals.user.uuid)
 
-    return this.json(changeCredentialsResult.authResponse)
+    return this.json(changeCredentialsResult.getValue())
   }
 }

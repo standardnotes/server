@@ -1,20 +1,21 @@
 import * as bcrypt from 'bcryptjs'
 import { inject, injectable } from 'inversify'
+import { DomainEventPublisherInterface, UserEmailChangedEvent } from '@standardnotes/domain-events'
+import { TimerInterface } from '@standardnotes/time'
+import { Result, UseCaseInterface, Username } from '@standardnotes/domain-core'
+
 import TYPES from '../../../Bootstrap/Types'
 import { AuthResponseFactoryResolverInterface } from '../../Auth/AuthResponseFactoryResolverInterface'
-
 import { User } from '../../User/User'
 import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'
 import { ChangeCredentialsDTO } from './ChangeCredentialsDTO'
-import { ChangeCredentialsResponse } from './ChangeCredentialsResponse'
-import { UseCaseInterface } from '../UseCaseInterface'
 import { DomainEventFactoryInterface } from '../../Event/DomainEventFactoryInterface'
-import { DomainEventPublisherInterface, UserEmailChangedEvent } from '@standardnotes/domain-events'
-import { TimerInterface } from '@standardnotes/time'
-import { Username } from '@standardnotes/domain-core'
+import { DeleteOtherSessionsForUser } from '../DeleteOtherSessionsForUser'
+import { AuthResponse20161215 } from '../../Auth/AuthResponse20161215'
+import { AuthResponse20200115 } from '../../Auth/AuthResponse20200115'
 
 @injectable()
-export class ChangeCredentials implements UseCaseInterface {
+export class ChangeCredentials implements UseCaseInterface<AuthResponse20161215 | AuthResponse20200115> {
   constructor(
     @inject(TYPES.Auth_UserRepository) private userRepository: UserRepositoryInterface,
     @inject(TYPES.Auth_AuthResponseFactoryResolver)
@@ -22,22 +23,18 @@ export class ChangeCredentials implements UseCaseInterface {
     @inject(TYPES.Auth_DomainEventPublisher) private domainEventPublisher: DomainEventPublisherInterface,
     @inject(TYPES.Auth_DomainEventFactory) private domainEventFactory: DomainEventFactoryInterface,
     @inject(TYPES.Auth_Timer) private timer: TimerInterface,
+    @inject(TYPES.Auth_DeleteOtherSessionsForUser)
+    private deleteOtherSessionsForUserUseCase: DeleteOtherSessionsForUser,
   ) {}
 
-  async execute(dto: ChangeCredentialsDTO): Promise<ChangeCredentialsResponse> {
+  async execute(dto: ChangeCredentialsDTO): Promise<Result<AuthResponse20161215 | AuthResponse20200115>> {
     const user = await this.userRepository.findOneByUsernameOrEmail(dto.username)
     if (!user) {
-      return {
-        success: false,
-        errorMessage: 'User not found.',
-      }
+      return Result.fail('User not found.')
     }
 
     if (!(await bcrypt.compare(dto.currentPassword, user.encryptedPassword))) {
-      return {
-        success: false,
-        errorMessage: 'The current password you entered is incorrect. Please try again.',
-      }
+      return Result.fail('The current password you entered is incorrect. Please try again.')
     }
 
     user.encryptedPassword = await bcrypt.hash(dto.newPassword, User.PASSWORD_HASH_COST)
@@ -46,19 +43,13 @@ export class ChangeCredentials implements UseCaseInterface {
     if (dto.newEmail !== undefined) {
       const newUsernameOrError = Username.create(dto.newEmail)
       if (newUsernameOrError.isFailed()) {
-        return {
-          success: false,
-          errorMessage: newUsernameOrError.getError(),
-        }
+        return Result.fail(newUsernameOrError.getError())
       }
       const newUsername = newUsernameOrError.getValue()
 
       const existingUser = await this.userRepository.findOneByUsernameOrEmail(newUsername)
       if (existingUser !== null) {
-        return {
-          success: false,
-          errorMessage: 'The email you entered is already taken. Please try again.',
-        }
+        return Result.fail('The email you entered is already taken. Please try again.')
       }
 
       userEmailChangedEvent = this.domainEventFactory.createUserEmailChangedEvent(
@@ -88,17 +79,31 @@ export class ChangeCredentials implements UseCaseInterface {
       await this.domainEventPublisher.publish(userEmailChangedEvent)
     }
 
+    await this.deleteOtherSessionsForUserIfNeeded(user.uuid, dto)
+
     const authResponseFactory = this.authResponseFactoryResolver.resolveAuthResponseFactoryVersion(dto.apiVersion)
 
-    return {
-      success: true,
-      authResponse: await authResponseFactory.createResponse({
-        user: updatedUser,
-        apiVersion: dto.apiVersion,
-        userAgent: dto.updatedWithUserAgent,
-        ephemeralSession: false,
-        readonlyAccess: false,
-      }),
+    const authResponse = await authResponseFactory.createResponse({
+      user: updatedUser,
+      apiVersion: dto.apiVersion,
+      userAgent: dto.updatedWithUserAgent,
+      ephemeralSession: false,
+      readonlyAccess: false,
+    })
+
+    return Result.ok(authResponse)
+  }
+
+  private async deleteOtherSessionsForUserIfNeeded(userUuid: string, dto: ChangeCredentialsDTO): Promise<void> {
+    const passwordHasChanged = dto.newPassword !== dto.currentPassword
+    const userEmailChanged = dto.newEmail !== undefined
+
+    if (passwordHasChanged || userEmailChanged) {
+      await this.deleteOtherSessionsForUserUseCase.execute({
+        userUuid,
+        currentSessionUuid: dto.currentSessionUuid,
+        markAsRevoked: false,
+      })
     }
   }
 }

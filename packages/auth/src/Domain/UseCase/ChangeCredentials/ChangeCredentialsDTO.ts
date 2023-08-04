@@ -5,6 +5,7 @@ export type ChangeCredentialsDTO = {
   apiVersion: string
   currentPassword: string
   newPassword: string
+  currentSessionUuid: string
   newEmail?: string
   pwNonce: string
   updatedWithUserAgent: string

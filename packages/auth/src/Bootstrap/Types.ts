@@ -113,7 +113,7 @@ const TYPES = {
   Auth_UpdateUser: Symbol.for('Auth_UpdateUser'),
   Auth_Register: Symbol.for('Auth_Register'),
   Auth_GetActiveSessionsForUser: Symbol.for('Auth_GetActiveSessionsForUser'),
-  Auth_DeletePreviousSessionsForUser: Symbol.for('Auth_DeletePreviousSessionsForUser'),
+  Auth_DeleteOtherSessionsForUser: Symbol.for('Auth_DeleteOtherSessionsForUser'),
   Auth_DeleteSessionForUser: Symbol.for('Auth_DeleteSessionForUser'),
   Auth_ChangeCredentials: Symbol.for('Auth_ChangePassword'),
   Auth_GetSettings: Symbol.for('Auth_GetSettings'),
