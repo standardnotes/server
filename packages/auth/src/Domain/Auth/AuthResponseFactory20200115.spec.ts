@@ -11,6 +11,7 @@ import { User } from '../User/User'
 import { AuthResponseFactory20200115 } from './AuthResponseFactory20200115'
 import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
 import { DomainEventFactoryInterface } from '../Event/DomainEventFactoryInterface'
+import { Session } from '../Session/Session'
 
 describe('AuthResponseFactory20200115', () => {
   let sessionService: SessionServiceInterface
@@ -48,8 +49,12 @@ describe('AuthResponseFactory20200115', () => {
     }
 
     sessionService = {} as jest.Mocked<SessionServiceInterface>
-    sessionService.createNewSessionForUser = jest.fn().mockReturnValue(sessionPayload)
-    sessionService.createNewEphemeralSessionForUser = jest.fn().mockReturnValue(sessionPayload)
+    sessionService.createNewSessionForUser = jest
+      .fn()
+      .mockReturnValue({ sessionHttpRepresentation: sessionPayload, session: {} as jest.Mocked<Session> })
+    sessionService.createNewEphemeralSessionForUser = jest
+      .fn()
+      .mockReturnValue({ sessionHttpRepresentation: sessionPayload, session: {} as jest.Mocked<Session> })
 
     keyParamsFactory = {} as jest.Mocked<KeyParamsFactoryInterface>
     keyParamsFactory.create = jest.fn().mockReturnValue({
@@ -76,7 +81,7 @@ describe('AuthResponseFactory20200115', () => {
   it('should create a 20161215 auth response if user does not support sessions', async () => {
     user.supportsSessions = jest.fn().mockReturnValue(false)
 
-    const response = await createFactory().createResponse({
+    const result = await createFactory().createResponse({
       user,
       apiVersion: '20161215',
       userAgent: 'Google Chrome',
@@ -84,7 +89,7 @@ describe('AuthResponseFactory20200115', () => {
       readonlyAccess: false,
     })
 
-    expect(response).toEqual({
+    expect(result.response).toEqual({
       user: { foo: 'bar' },
       token: expect.any(String),
     })
@@ -93,7 +98,7 @@ describe('AuthResponseFactory20200115', () => {
   it('should create a 20200115 auth response', async () => {
     user.supportsSessions = jest.fn().mockReturnValue(true)
 
-    const response = await createFactory().createResponse({
+    const result = await createFactory().createResponse({
       user,
       apiVersion: '20200115',
       userAgent: 'Google Chrome',
@@ -101,7 +106,7 @@ describe('AuthResponseFactory20200115', () => {
       readonlyAccess: false,
     })
 
-    expect(response).toEqual({
+    expect(result.response).toEqual({
       key_params: {
         key1: 'value1',
         key2: 'value2',
@@ -124,7 +129,7 @@ describe('AuthResponseFactory20200115', () => {
     domainEventPublisher.publish = jest.fn().mockRejectedValue(new Error('test'))
     user.supportsSessions = jest.fn().mockReturnValue(true)
 
-    const response = await createFactory().createResponse({
+    const result = await createFactory().createResponse({
       user,
       apiVersion: '20200115',
       userAgent: 'Google Chrome',
@@ -132,7 +137,7 @@ describe('AuthResponseFactory20200115', () => {
       readonlyAccess: false,
     })
 
-    expect(response).toEqual({
+    expect(result.response).toEqual({
       key_params: {
         key1: 'value1',
         key2: 'value2',
@@ -153,7 +158,7 @@ describe('AuthResponseFactory20200115', () => {
   it('should create a 20200115 auth response with an ephemeral session', async () => {
     user.supportsSessions = jest.fn().mockReturnValue(true)
 
-    const response = await createFactory().createResponse({
+    const result = await createFactory().createResponse({
       user,
       apiVersion: '20200115',
       userAgent: 'Google Chrome',
@@ -161,7 +166,7 @@ describe('AuthResponseFactory20200115', () => {
       readonlyAccess: false,
     })
 
-    expect(response).toEqual({
+    expect(result.response).toEqual({
       key_params: {
         key1: 'value1',
         key2: 'value2',
@@ -183,11 +188,14 @@ describe('AuthResponseFactory20200115', () => {
     user.supportsSessions = jest.fn().mockReturnValue(true)
 
     sessionService.createNewSessionForUser = jest.fn().mockReturnValue({
-      ...sessionPayload,
-      readonly_access: true,
+      sessionHttpRepresentation: {
+        ...sessionPayload,
+        readonly_access: true,
+      },
+      session: {} as jest.Mocked<Session>,
     })
 
-    const response = await createFactory().createResponse({
+    const result = await createFactory().createResponse({
       user,
       apiVersion: '20200115',
       userAgent: 'Google Chrome',
@@ -195,7 +203,7 @@ describe('AuthResponseFactory20200115', () => {
       readonlyAccess: true,
     })
 
-    expect(response).toEqual({
+    expect(result.response).toEqual({
       key_params: {
         key1: 'value1',
         key2: 'value2',

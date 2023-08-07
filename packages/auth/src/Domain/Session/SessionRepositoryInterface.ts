@@ -1,3 +1,5 @@
+import { Uuid } from '@standardnotes/domain-core'
+
 import { Session } from './Session'
 
 export interface SessionRepositoryInterface {
@@ -5,7 +7,7 @@ export interface SessionRepositoryInterface {
   findOneByUuidAndUserUuid(uuid: string, userUuid: string): Promise<Session | null>
   findAllByRefreshExpirationAndUserUuid(userUuid: string): Promise<Array<Session>>
   findAllByUserUuid(userUuid: string): Promise<Array<Session>>
-  deleteAllByUserUuid(userUuid: string, currentSessionUuid: string): Promise<void>
+  deleteAllByUserUuidExceptOne(dto: { userUuid: Uuid; currentSessionUuid: Uuid }): Promise<void>
   deleteOneByUuid(uuid: string): Promise<void>
   updateHashedTokens(uuid: string, hashedAccessToken: string, hashedRefreshToken: string): Promise<void>
   updatedTokenExpirationDates(uuid: string, accessExpiration: Date, refreshExpiration: Date): Promise<void>

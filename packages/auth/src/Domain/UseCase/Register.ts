@@ -83,15 +83,17 @@ export class Register implements UseCaseInterface {
 
     await this.settingService.applyDefaultSettingsUponRegistration(user)
 
+    const result = await this.authResponseFactory20200115.createResponse({
+      user,
+      apiVersion,
+      userAgent: dto.updatedWithUserAgent,
+      ephemeralSession,
+      readonlyAccess: false,
+    })
+
     return {
       success: true,
-      authResponse: (await this.authResponseFactory20200115.createResponse({
-        user,
-        apiVersion,
-        userAgent: dto.updatedWithUserAgent,
-        ephemeralSession,
-        readonlyAccess: false,
-      })) as AuthResponse20200115,
+      authResponse: result.response as AuthResponse20200115,
     }
   }
 }

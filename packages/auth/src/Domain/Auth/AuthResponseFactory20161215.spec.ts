@@ -30,7 +30,7 @@ describe('AuthResponseFactory20161215', () => {
   })
 
   it('should create a 20161215 auth response', async () => {
-    const response = await createFactory().createResponse({
+    const result = await createFactory().createResponse({
       user,
       apiVersion: '20161215',
       userAgent: 'Google Chrome',
@@ -38,7 +38,7 @@ describe('AuthResponseFactory20161215', () => {
       readonlyAccess: false,
     })
 
-    expect(response).toEqual({
+    expect(result.response).toEqual({
       user: { foo: 'bar' },
       token: 'foobar',
     })

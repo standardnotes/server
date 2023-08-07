@@ -8,6 +8,7 @@ import { AuthResponseFactoryInterface } from '../Auth/AuthResponseFactoryInterfa
 import { AuthResponseFactoryResolverInterface } from '../Auth/AuthResponseFactoryResolverInterface'
 
 import { UpdateUser } from './UpdateUser'
+import { Session } from '../Session/Session'
 
 describe('UpdateUser', () => {
   let userRepository: UserRepositoryInterface
@@ -24,7 +25,9 @@ describe('UpdateUser', () => {
     userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue(undefined)
 
     authResponseFactory = {} as jest.Mocked<AuthResponseFactoryInterface>
-    authResponseFactory.createResponse = jest.fn().mockReturnValue({ foo: 'bar' })
+    authResponseFactory.createResponse = jest
+      .fn()
+      .mockReturnValue({ response: { foo: 'bar' }, session: {} as jest.Mocked<Session> })
 
     authResponseFactoryResolver = {} as jest.Mocked<AuthResponseFactoryResolverInterface>
     authResponseFactoryResolver.resolveAuthResponseFactoryVersion = jest.fn().mockReturnValue(authResponseFactory)

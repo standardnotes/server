@@ -10,6 +10,7 @@ import { UserRepositoryInterface } from '../User/UserRepositoryInterface'
 import { Register } from './Register'
 import { SettingServiceInterface } from '../Setting/SettingServiceInterface'
 import { AuthResponseFactory20200115 } from '../Auth/AuthResponseFactory20200115'
+import { Session } from '../Session/Session'
 
 describe('Register', () => {
   let userRepository: UserRepositoryInterface
@@ -32,7 +33,9 @@ describe('Register', () => {
     roleRepository.findOneByName = jest.fn().mockReturnValue(null)
 
     authResponseFactory = {} as jest.Mocked<AuthResponseFactory20200115>
-    authResponseFactory.createResponse = jest.fn().mockReturnValue({ foo: 'bar' })
+    authResponseFactory.createResponse = jest
+      .fn()
+      .mockReturnValue({ response: { foo: 'bar' }, session: {} as jest.Mocked<Session> })
 
     crypter = {} as jest.Mocked<CrypterInterface>
     crypter.generateEncryptedUserServerKey = jest.fn().mockReturnValue('test')

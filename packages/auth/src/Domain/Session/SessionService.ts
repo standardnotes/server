@@ -49,7 +49,7 @@ export class SessionService implements SessionServiceInterface {
     apiVersion: string
     userAgent: string
     readonlyAccess: boolean
-  }): Promise<SessionBody> {
+  }): Promise<{ sessionHttpRepresentation: SessionBody; session: Session }> {
     const session = await this.createSession({
       ephemeral: false,
       ...dto,
@@ -73,7 +73,10 @@ export class SessionService implements SessionServiceInterface {
       this.logger.error(`Could not trace session while creating cross service token.: ${(error as Error).message}`)
     }
 
-    return sessionPayload
+    return {
+      sessionHttpRepresentation: sessionPayload,
+      session,
+    }
   }
 
   async createNewEphemeralSessionForUser(dto: {
@@ -81,7 +84,7 @@ export class SessionService implements SessionServiceInterface {
     apiVersion: string
     userAgent: string
     readonlyAccess: boolean
-  }): Promise<SessionBody> {
+  }): Promise<{ sessionHttpRepresentation: SessionBody; session: Session }> {
     const ephemeralSession = await this.createSession({
       ephemeral: true,
       ...dto,
@@ -91,7 +94,10 @@ export class SessionService implements SessionServiceInterface {
 
     await this.ephemeralSessionRepository.save(ephemeralSession)
 
-    return sessionPayload
+    return {
+      sessionHttpRepresentation: sessionPayload,
+      session: ephemeralSession,
+    }
   }
 
   async refreshTokens(session: Session): Promise<SessionBody> {

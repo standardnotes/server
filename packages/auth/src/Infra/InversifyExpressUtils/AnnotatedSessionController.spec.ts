@@ -4,26 +4,26 @@ import * as express from 'express'
 
 import { AnnotatedSessionController } from './AnnotatedSessionController'
 import { results } from 'inversify-express-utils'
-import { DeletePreviousSessionsForUser } from '../../Domain/UseCase/DeletePreviousSessionsForUser'
+import { DeleteOtherSessionsForUser } from '../../Domain/UseCase/DeleteOtherSessionsForUser'
 import { DeleteSessionForUser } from '../../Domain/UseCase/DeleteSessionForUser'
 import { RefreshSessionToken } from '../../Domain/UseCase/RefreshSessionToken'
 
 describe('AnnotatedSessionController', () => {
   let deleteSessionForUser: DeleteSessionForUser
-  let deletePreviousSessionsForUser: DeletePreviousSessionsForUser
+  let deleteOtherSessionsForUser: DeleteOtherSessionsForUser
   let refreshSessionToken: RefreshSessionToken
   let request: express.Request
   let response: express.Response
 
   const createController = () =>
-    new AnnotatedSessionController(deleteSessionForUser, deletePreviousSessionsForUser, refreshSessionToken)
+    new AnnotatedSessionController(deleteSessionForUser, deleteOtherSessionsForUser, refreshSessionToken)
 
   beforeEach(() => {
     deleteSessionForUser = {} as jest.Mocked<DeleteSessionForUser>
     deleteSessionForUser.execute = jest.fn().mockReturnValue({ success: true })
 
-    deletePreviousSessionsForUser = {} as jest.Mocked<DeletePreviousSessionsForUser>
-    deletePreviousSessionsForUser.execute = jest.fn()
+    deleteOtherSessionsForUser = {} as jest.Mocked<DeleteOtherSessionsForUser>
+    deleteOtherSessionsForUser.execute = jest.fn()
 
     refreshSessionToken = {} as jest.Mocked<RefreshSessionToken>
     refreshSessionToken.execute = jest.fn()
@@ -196,9 +196,10 @@ describe('AnnotatedSessionController', () => {
     const httpResult = <results.JsonResult>await createController().deleteAllSessions(request, response)
     const result = await httpResult.executeAsync()
 
-    expect(deletePreviousSessionsForUser.execute).toHaveBeenCalledWith({
+    expect(deleteOtherSessionsForUser.execute).toHaveBeenCalledWith({
       userUuid: '123',
       currentSessionUuid: '234',
+      markAsRevoked: true,
     })
 
     expect(result.statusCode).toEqual(204)
@@ -218,7 +219,7 @@ describe('AnnotatedSessionController', () => {
     const httpResponse = <results.JsonResult>await createController().deleteAllSessions(request, response)
     const result = await httpResponse.executeAsync()
 
-    expect(deletePreviousSessionsForUser.execute).not.toHaveBeenCalled()
+    expect(deleteOtherSessionsForUser.execute).not.toHaveBeenCalled()
 
     expect(result.statusCode).toEqual(401)
   })

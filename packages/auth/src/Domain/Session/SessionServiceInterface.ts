@@ -9,13 +9,13 @@ export interface SessionServiceInterface {
     apiVersion: string
     userAgent: string
     readonlyAccess: boolean
-  }): Promise<SessionBody>
+  }): Promise<{ sessionHttpRepresentation: SessionBody; session: Session }>
   createNewEphemeralSessionForUser(dto: {
     user: User
     apiVersion: string
     userAgent: string
     readonlyAccess: boolean
-  }): Promise<SessionBody>
+  }): Promise<{ sessionHttpRepresentation: SessionBody; session: Session }>
   refreshTokens(session: Session): Promise<SessionBody>
   getSessionFromToken(token: string): Promise<Session | undefined>
   getRevokedSessionFromToken(token: string): Promise<RevokedSession | null>

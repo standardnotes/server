@@ -38,7 +38,7 @@ import { GetUserKeyParams } from '../Domain/UseCase/GetUserKeyParams/GetUserKeyP
 import { UpdateUser } from '../Domain/UseCase/UpdateUser'
 import { RedisEphemeralSessionRepository } from '../Infra/Redis/RedisEphemeralSessionRepository'
 import { GetActiveSessionsForUser } from '../Domain/UseCase/GetActiveSessionsForUser'
-import { DeletePreviousSessionsForUser } from '../Domain/UseCase/DeletePreviousSessionsForUser'
+import { DeleteOtherSessionsForUser } from '../Domain/UseCase/DeleteOtherSessionsForUser'
 import { DeleteSessionForUser } from '../Domain/UseCase/DeleteSessionForUser'
 import { Register } from '../Domain/UseCase/Register'
 import { LockRepository } from '../Infra/Redis/LockRepository'
@@ -827,9 +827,7 @@ export class ContainerConfigLoader {
     container.bind<UpdateUser>(TYPES.Auth_UpdateUser).to(UpdateUser)
     container.bind<Register>(TYPES.Auth_Register).to(Register)
     container.bind<GetActiveSessionsForUser>(TYPES.Auth_GetActiveSessionsForUser).to(GetActiveSessionsForUser)
-    container
-      .bind<DeletePreviousSessionsForUser>(TYPES.Auth_DeletePreviousSessionsForUser)
-      .to(DeletePreviousSessionsForUser)
+    container.bind<DeleteOtherSessionsForUser>(TYPES.Auth_DeleteOtherSessionsForUser).to(DeleteOtherSessionsForUser)
     container.bind<DeleteSessionForUser>(TYPES.Auth_DeleteSessionForUser).to(DeleteSessionForUser)
     container.bind<ChangeCredentials>(TYPES.Auth_ChangeCredentials).to(ChangeCredentials)
     container.bind<GetSettings>(TYPES.Auth_GetSettings).to(GetSettings)
@@ -1178,7 +1176,7 @@ export class ContainerConfigLoader {
         .toConstantValue(
           new BaseSessionController(
             container.get(TYPES.Auth_DeleteSessionForUser),
-            container.get(TYPES.Auth_DeletePreviousSessionsForUser),
+            container.get(TYPES.Auth_DeleteOtherSessionsForUser),
             container.get(TYPES.Auth_RefreshSessionToken),
             container.get(TYPES.Auth_ControllerContainer),
           ),

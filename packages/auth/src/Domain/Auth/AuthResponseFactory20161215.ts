@@ -11,6 +11,7 @@ import { User } from '../User/User'
 import { AuthResponse20161215 } from './AuthResponse20161215'
 import { AuthResponse20200115 } from './AuthResponse20200115'
 import { AuthResponseFactoryInterface } from './AuthResponseFactoryInterface'
+import { Session } from '../Session/Session'
 
 @injectable()
 export class AuthResponseFactory20161215 implements AuthResponseFactoryInterface {
@@ -26,7 +27,7 @@ export class AuthResponseFactory20161215 implements AuthResponseFactoryInterface
     userAgent: string
     ephemeralSession: boolean
     readonlyAccess: boolean
-  }): Promise<AuthResponse20161215 | AuthResponse20200115> {
+  }): Promise<{ response: AuthResponse20161215 | AuthResponse20200115; session?: Session }> {
     this.logger.debug(`Creating JWT auth response for user ${dto.user.uuid}`)
 
     const data: SessionTokenData = {
@@ -39,12 +40,14 @@ export class AuthResponseFactory20161215 implements AuthResponseFactoryInterface
     this.logger.debug(`Created JWT token for user ${dto.user.uuid}: ${token}`)
 
     return {
-      user: this.userProjector.projectSimple(dto.user) as {
-        uuid: string
-        email: string
-        protocolVersion: ProtocolVersion
+      response: {
+        user: this.userProjector.projectSimple(dto.user) as {
+          uuid: string
+          email: string
+          protocolVersion: ProtocolVersion
+        },
+        token,
       },
-      token,
     }
   }
 }

@@ -7,6 +7,7 @@ import TYPES from '../../Bootstrap/Types'
 
 import { Session } from '../../Domain/Session/Session'
 import { SessionRepositoryInterface } from '../../Domain/Session/SessionRepositoryInterface'
+import { Uuid } from '@standardnotes/domain-core'
 
 @injectable()
 export class TypeORMSessionRepository implements SessionRepositoryInterface {
@@ -100,13 +101,13 @@ export class TypeORMSessionRepository implements SessionRepositoryInterface {
       .getMany()
   }
 
-  async deleteAllByUserUuid(userUuid: string, currentSessionUuid: string): Promise<void> {
+  async deleteAllByUserUuidExceptOne(dto: { userUuid: Uuid; currentSessionUuid: Uuid }): Promise<void> {
     await this.ormRepository
       .createQueryBuilder('session')
       .delete()
       .where('user_uuid = :user_uuid AND uuid != :current_session_uuid', {
-        user_uuid: userUuid,
-        current_session_uuid: currentSessionUuid,
+        user_uuid: dto.userUuid.value,
+        current_session_uuid: dto.currentSessionUuid.value,
       })
       .execute()
   }

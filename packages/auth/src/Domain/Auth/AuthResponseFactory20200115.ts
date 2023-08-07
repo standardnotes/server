@@ -19,6 +19,7 @@ import { DomainEventFactoryInterface } from '../Event/DomainEventFactoryInterfac
 
 import { AuthResponse20161215 } from './AuthResponse20161215'
 import { AuthResponse20200115 } from './AuthResponse20200115'
+import { Session } from '../Session/Session'
 
 @injectable()
 export class AuthResponseFactory20200115 extends AuthResponseFactory20190520 {
@@ -40,21 +41,28 @@ export class AuthResponseFactory20200115 extends AuthResponseFactory20190520 {
     userAgent: string
     ephemeralSession: boolean
     readonlyAccess: boolean
-  }): Promise<AuthResponse20161215 | AuthResponse20200115> {
+  }): Promise<{ response: AuthResponse20161215 | AuthResponse20200115; session?: Session }> {
     if (!dto.user.supportsSessions()) {
       this.logger.debug(`User ${dto.user.uuid} does not support sessions. Falling back to JWT auth response`)
 
       return super.createResponse(dto)
     }
 
-    const sessionPayload = await this.createSession(dto)
+    const sessionCreationResult = await this.createSession(dto)
 
-    this.logger.debug('Created session payload for user %s: %O', dto.user.uuid, sessionPayload)
+    this.logger.debug(
+      'Created session payload for user %s: %O',
+      dto.user.uuid,
+      sessionCreationResult.sessionHttpRepresentation,
+    )
 
     return {
-      session: sessionPayload,
-      key_params: this.keyParamsFactory.create(dto.user, true),
-      user: this.userProjector.projectSimple(dto.user) as SimpleUserProjection,
+      response: {
+        session: sessionCreationResult.sessionHttpRepresentation,
+        key_params: this.keyParamsFactory.create(dto.user, true),
+        user: this.userProjector.projectSimple(dto.user) as SimpleUserProjection,
+      },
+      session: sessionCreationResult.session,
     }
   }
 
@@ -64,12 +72,12 @@ export class AuthResponseFactory20200115 extends AuthResponseFactory20190520 {
     userAgent: string
     ephemeralSession: boolean
     readonlyAccess: boolean
-  }): Promise<SessionBody> {
+  }): Promise<{ sessionHttpRepresentation: SessionBody; session: Session }> {
     if (dto.ephemeralSession) {
       return this.sessionService.createNewEphemeralSessionForUser(dto)
     }
 
-    const session = this.sessionService.createNewSessionForUser(dto)
+    const sessionCreationResult = await this.sessionService.createNewSessionForUser(dto)
 
     try {
       await this.domainEventPublisher.publish(
@@ -79,6 +87,6 @@ export class AuthResponseFactory20200115 extends AuthResponseFactory20190520 {
       this.logger.error(`Failed to publish session created event: ${(error as Error).message}`)
     }
 
-    return session
+    return sessionCreationResult
   }
 }

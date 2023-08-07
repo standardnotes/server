@@ -332,7 +332,7 @@ describe('AnnotatedUsersController', () => {
     request.headers['user-agent'] = 'Google Chrome'
     response.locals.user = user
 
-    changeCredentials.execute = jest.fn().mockReturnValue({ success: true, authResponse: { foo: 'bar' } })
+    changeCredentials.execute = jest.fn().mockReturnValue(Result.ok({ foo: 'bar' }))
 
     const httpResponse = <results.JsonResult>await createController().changeCredentials(request, response)
     const result = await httpResponse.executeAsync()
@@ -346,6 +346,7 @@ describe('AnnotatedUsersController', () => {
       kpOrigination: 'change-password',
       pwNonce: 'asdzxc',
       protocolVersion: '004',
+      newEmail: undefined,
       username: Username.create('test@test.te').getValue(),
     })
 
@@ -385,7 +386,7 @@ describe('AnnotatedUsersController', () => {
     request.headers['user-agent'] = 'Google Chrome'
     response.locals.user = user
 
-    changeCredentials.execute = jest.fn().mockReturnValue({ success: false, errorMessage: 'Something bad happened' })
+    changeCredentials.execute = jest.fn().mockReturnValue(Result.fail('Something bad happened'))
 
     const httpResponse = <results.JsonResult>await createController().changeCredentials(request, response)
     const result = await httpResponse.executeAsync()
