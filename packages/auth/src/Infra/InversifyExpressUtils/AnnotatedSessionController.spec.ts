@@ -30,6 +30,7 @@ describe('AnnotatedSessionController', () => {
 
     request = {
       body: {},
+      headers: {},
     } as jest.Mocked<express.Request>
 
     response = {
@@ -70,6 +71,7 @@ describe('AnnotatedSessionController', () => {
   it('should return bad request upon failed tokens refreshing', async () => {
     request.body.access_token = '123'
     request.body.refresh_token = '234'
+    request.headers['user-agent'] = 'Google Chrome'
 
     refreshSessionToken.execute = jest.fn().mockReturnValue({
       success: false,

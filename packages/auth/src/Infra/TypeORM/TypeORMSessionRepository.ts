@@ -18,6 +18,8 @@ export class TypeORMSessionRepository implements SessionRepositoryInterface {
   ) {}
 
   async save(session: Session): Promise<Session> {
+    session.updatedAt = this.timer.getUTCDate()
+
     return this.ormRepository.save(session)
   }
 
@@ -38,32 +40,6 @@ export class TypeORMSessionRepository implements SessionRepositoryInterface {
         updatedAt: this.timer.getUTCDate(),
       })
       .where('user_uuid = :userUuid', { userUuid })
-      .execute()
-  }
-
-  async updateHashedTokens(uuid: string, hashedAccessToken: string, hashedRefreshToken: string): Promise<void> {
-    await this.ormRepository
-      .createQueryBuilder('session')
-      .update()
-      .set({
-        hashedAccessToken,
-        hashedRefreshToken,
-        updatedAt: this.timer.getUTCDate(),
-      })
-      .where('uuid = :uuid', { uuid })
-      .execute()
-  }
-
-  async updatedTokenExpirationDates(uuid: string, accessExpiration: Date, refreshExpiration: Date): Promise<void> {
-    await this.ormRepository
-      .createQueryBuilder('session')
-      .update()
-      .set({
-        accessExpiration,
-        refreshExpiration,
-        updatedAt: this.timer.getUTCDate(),
-      })
-      .where('uuid = :uuid', { uuid })
       .execute()
   }
 

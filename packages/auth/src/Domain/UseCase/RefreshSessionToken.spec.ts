@@ -26,7 +26,7 @@ describe('RefreshSessionToken', () => {
 
     sessionService = {} as jest.Mocked<SessionServiceInterface>
     sessionService.isRefreshTokenMatchingHashedSessionToken = jest.fn().mockReturnValue(true)
-    sessionService.getSessionFromToken = jest.fn().mockReturnValue(session)
+    sessionService.getSessionFromToken = jest.fn().mockReturnValue({ session, isEphemeral: false })
     sessionService.refreshTokens = jest.fn().mockReturnValue({
       access_token: 'token1',
       refresh_token: 'token2',
@@ -51,9 +51,10 @@ describe('RefreshSessionToken', () => {
     const result = await createUseCase().execute({
       accessToken: '123',
       refreshToken: '234',
+      userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)',
     })
 
-    expect(sessionService.refreshTokens).toHaveBeenCalledWith(session)
+    expect(sessionService.refreshTokens).toHaveBeenCalledWith({ session, isEphemeral: false })
 
     expect(result).toEqual({
       success: true,
@@ -74,9 +75,10 @@ describe('RefreshSessionToken', () => {
     const result = await createUseCase().execute({
       accessToken: '123',
       refreshToken: '234',
+      userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)',
     })
 
-    expect(sessionService.refreshTokens).toHaveBeenCalledWith(session)
+    expect(sessionService.refreshTokens).toHaveBeenCalledWith({ session, isEphemeral: false })
 
     expect(result).toEqual({
       success: true,
@@ -90,11 +92,12 @@ describe('RefreshSessionToken', () => {
   })
 
   it('should not refresh a session token if session is not found', async () => {
-    sessionService.getSessionFromToken = jest.fn().mockReturnValue(null)
+    sessionService.getSessionFromToken = jest.fn().mockReturnValue({ session: undefined, isEphemeral: false })
 
     const result = await createUseCase().execute({
       accessToken: '123',
       refreshToken: '234',
+      userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)',
     })
 
     expect(result).toEqual({
@@ -110,6 +113,7 @@ describe('RefreshSessionToken', () => {
     const result = await createUseCase().execute({
       accessToken: '123',
       refreshToken: '234',
+      userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)',
     })
 
     expect(result).toEqual({
@@ -125,6 +129,7 @@ describe('RefreshSessionToken', () => {
     const result = await createUseCase().execute({
       accessToken: '123',
       refreshToken: '234',
+      userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)',
     })
 
     expect(result).toEqual({

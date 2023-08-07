@@ -24,8 +24,8 @@ describe('SessionService', () => {
   let sessionRepository: SessionRepositoryInterface
   let ephemeralSessionRepository: EphemeralSessionRepositoryInterface
   let revokedSessionRepository: RevokedSessionRepositoryInterface
-  let session: Session
-  let ephemeralSession: EphemeralSession
+  let existingSession: Session
+  let existingEphemeralSession: EphemeralSession
   let revokedSession: RevokedSession
   let settingService: SettingServiceInterface
   let deviceDetector: UAParser
@@ -54,14 +54,14 @@ describe('SessionService', () => {
     )
 
   beforeEach(() => {
-    session = {} as jest.Mocked<Session>
-    session.uuid = '2e1e43'
-    session.userUuid = '1-2-3'
-    session.userAgent = 'Chrome'
-    session.apiVersion = ApiVersion.v20200115
-    session.hashedAccessToken = '4e07408562bedb8b60ce05c1decfe3ad16b72230967de01f640b7e4729b49fce'
-    session.hashedRefreshToken = '4e07408562bedb8b60ce05c1decfe3ad16b72230967de01f640b7e4729b49fce'
-    session.readonlyAccess = false
+    existingSession = {} as jest.Mocked<Session>
+    existingSession.uuid = '2e1e43'
+    existingSession.userUuid = '1-2-3'
+    existingSession.userAgent = 'Chrome'
+    existingSession.apiVersion = ApiVersion.v20200115
+    existingSession.hashedAccessToken = '4e07408562bedb8b60ce05c1decfe3ad16b72230967de01f640b7e4729b49fce'
+    existingSession.hashedRefreshToken = '4e07408562bedb8b60ce05c1decfe3ad16b72230967de01f640b7e4729b49fce'
+    existingSession.readonlyAccess = false
 
     revokedSession = {} as jest.Mocked<RevokedSession>
     revokedSession.uuid = '2e1e43'
@@ -69,9 +69,7 @@ describe('SessionService', () => {
     sessionRepository = {} as jest.Mocked<SessionRepositoryInterface>
     sessionRepository.findOneByUuid = jest.fn().mockReturnValue(null)
     sessionRepository.deleteOneByUuid = jest.fn()
-    sessionRepository.save = jest.fn().mockReturnValue(session)
-    sessionRepository.updateHashedTokens = jest.fn()
-    sessionRepository.updatedTokenExpirationDates = jest.fn()
+    sessionRepository.save = jest.fn().mockReturnValue(existingSession)
 
     settingService = {} as jest.Mocked<SettingServiceInterface>
     settingService.findSettingWithDecryptedValue = jest.fn().mockReturnValue(null)
@@ -79,17 +77,18 @@ describe('SessionService', () => {
     ephemeralSessionRepository = {} as jest.Mocked<EphemeralSessionRepositoryInterface>
     ephemeralSessionRepository.save = jest.fn()
     ephemeralSessionRepository.findOneByUuid = jest.fn()
-    ephemeralSessionRepository.updateTokensAndExpirationDates = jest.fn()
     ephemeralSessionRepository.deleteOne = jest.fn()
 
     revokedSessionRepository = {} as jest.Mocked<RevokedSessionRepositoryInterface>
     revokedSessionRepository.save = jest.fn()
 
-    ephemeralSession = {} as jest.Mocked<EphemeralSession>
-    ephemeralSession.uuid = '2-3-4'
-    ephemeralSession.userAgent = 'Mozilla Firefox'
-    ephemeralSession.hashedAccessToken = '4e07408562bedb8b60ce05c1decfe3ad16b72230967de01f640b7e4729b49fce'
-    ephemeralSession.hashedRefreshToken = '4e07408562bedb8b60ce05c1decfe3ad16b72230967de01f640b7e4729b49fce'
+    existingEphemeralSession = {} as jest.Mocked<EphemeralSession>
+    existingEphemeralSession.uuid = '2-3-4'
+    existingEphemeralSession.userUuid = '1-2-3'
+    existingEphemeralSession.userAgent = 'Mozilla Firefox'
+    existingEphemeralSession.hashedAccessToken = '4e07408562bedb8b60ce05c1decfe3ad16b72230967de01f640b7e4729b49fce'
+    existingEphemeralSession.hashedRefreshToken = '4e07408562bedb8b60ce05c1decfe3ad16b72230967de01f640b7e4729b49fce'
+    existingEphemeralSession.readonlyAccess = false
 
     timer = {} as jest.Mocked<TimerInterface>
     timer.convertStringDateToMilliseconds = jest.fn().mockReturnValue(123)
@@ -138,7 +137,7 @@ describe('SessionService', () => {
   })
 
   it('should refresh access and refresh tokens for a session', async () => {
-    expect(await createService().refreshTokens(session)).toEqual({
+    expect(await createService().refreshTokens({ session: existingSession, isEphemeral: false })).toEqual({
       access_expiration: 123,
       access_token: expect.any(String),
       refresh_token: expect.any(String),
@@ -146,8 +145,21 @@ describe('SessionService', () => {
       readonly_access: false,
     })
 
-    expect(sessionRepository.updateHashedTokens).toHaveBeenCalled()
-    expect(sessionRepository.updatedTokenExpirationDates).toHaveBeenCalled()
+    expect(sessionRepository.save).toHaveBeenCalled()
+    expect(ephemeralSessionRepository.save).not.toHaveBeenCalled()
+  })
+
+  it('should refresh access and refresh tokens for an ephemeral session', async () => {
+    expect(await createService().refreshTokens({ session: existingEphemeralSession, isEphemeral: true })).toEqual({
+      access_expiration: 123,
+      access_token: expect.any(String),
+      refresh_token: expect.any(String),
+      refresh_expiration: 123,
+      readonly_access: false,
+    })
+
+    expect(sessionRepository.save).not.toHaveBeenCalled()
+    expect(ephemeralSessionRepository.save).toHaveBeenCalled()
   })
 
   it('should create new session for a user', async () => {
@@ -420,7 +432,7 @@ describe('SessionService', () => {
   it('should delete a session by token', async () => {
     sessionRepository.findOneByUuid = jest.fn().mockImplementation((uuid) => {
       if (uuid === '2') {
-        return session
+        return existingSession
       }
 
       return null
@@ -429,13 +441,28 @@ describe('SessionService', () => {
     await createService().deleteSessionByToken('1:2:3')
 
     expect(sessionRepository.deleteOneByUuid).toHaveBeenCalledWith('2e1e43')
-    expect(ephemeralSessionRepository.deleteOne).toHaveBeenCalledWith('2e1e43', '1-2-3')
+    expect(ephemeralSessionRepository.deleteOne).not.toHaveBeenCalled()
+  })
+
+  it('should delete an ephemeral session by token', async () => {
+    ephemeralSessionRepository.findOneByUuid = jest.fn().mockImplementation((uuid) => {
+      if (uuid === '2') {
+        return existingEphemeralSession
+      }
+
+      return null
+    })
+
+    await createService().deleteSessionByToken('1:2:3')
+
+    expect(sessionRepository.deleteOneByUuid).not.toHaveBeenCalled()
+    expect(ephemeralSessionRepository.deleteOne).toHaveBeenCalledWith('2-3-4', '1-2-3')
   })
 
   it('should not delete a session by token if session is not found', async () => {
     sessionRepository.findOneByUuid = jest.fn().mockImplementation((uuid) => {
       if (uuid === '2') {
-        return session
+        return existingSession
       }
 
       return null
@@ -448,13 +475,13 @@ describe('SessionService', () => {
   })
 
   it('should determine if a refresh token is valid', async () => {
-    expect(createService().isRefreshTokenMatchingHashedSessionToken(session, '1:2:3')).toBeTruthy()
-    expect(createService().isRefreshTokenMatchingHashedSessionToken(session, '1:2:4')).toBeFalsy()
-    expect(createService().isRefreshTokenMatchingHashedSessionToken(session, '1:2')).toBeFalsy()
+    expect(createService().isRefreshTokenMatchingHashedSessionToken(existingSession, '1:2:3')).toBeTruthy()
+    expect(createService().isRefreshTokenMatchingHashedSessionToken(existingSession, '1:2:4')).toBeFalsy()
+    expect(createService().isRefreshTokenMatchingHashedSessionToken(existingSession, '1:2')).toBeFalsy()
   })
 
   it('should return device info based on user agent', () => {
-    expect(createService().getDeviceInfo(session)).toEqual('Chrome 69.0 on Mac 10.13')
+    expect(createService().getDeviceInfo(existingSession)).toEqual('Chrome 69.0 on Mac 10.13')
   })
 
   it('should return device info based on undefined user agent', () => {
@@ -463,7 +490,7 @@ describe('SessionService', () => {
       browser: { name: undefined, version: undefined },
       os: { name: undefined, version: undefined },
     })
-    expect(createService().getDeviceInfo(session)).toEqual('Unknown Client on Unknown OS')
+    expect(createService().getDeviceInfo(existingSession)).toEqual('Unknown Client on Unknown OS')
   })
 
   it('should return a shorter info based on lack of client in user agent', () => {
@@ -473,7 +500,7 @@ describe('SessionService', () => {
       os: { name: 'iOS', version: '10.3' },
     })
 
-    expect(createService().getDeviceInfo(session)).toEqual('iOS 10.3')
+    expect(createService().getDeviceInfo(existingSession)).toEqual('iOS 10.3')
   })
 
   it('should return a shorter info based on lack of os in user agent', () => {
@@ -483,13 +510,13 @@ describe('SessionService', () => {
       os: { name: '', version: '' },
     })
 
-    expect(createService().getDeviceInfo(session)).toEqual('Chrome 69.0')
+    expect(createService().getDeviceInfo(existingSession)).toEqual('Chrome 69.0')
   })
 
   it('should return unknown client and os if user agent is cleaned out', () => {
-    session.userAgent = null
+    existingSession.userAgent = null
 
-    expect(createService().getDeviceInfo(session)).toEqual('Unknown Client on Unknown OS')
+    expect(createService().getDeviceInfo(existingSession)).toEqual('Unknown Client on Unknown OS')
   })
 
   it('should return a shorter info based on partial os in user agent', () => {
@@ -499,7 +526,7 @@ describe('SessionService', () => {
       os: { name: 'Windows', version: '' },
     })
 
-    expect(createService().getDeviceInfo(session)).toEqual('Chrome 69.0 on Windows')
+    expect(createService().getDeviceInfo(existingSession)).toEqual('Chrome 69.0 on Windows')
 
     deviceDetector.getResult = jest.fn().mockReturnValue({
       ua: 'dummy-data',
@@ -507,7 +534,7 @@ describe('SessionService', () => {
       os: { name: '', version: '7' },
     })
 
-    expect(createService().getDeviceInfo(session)).toEqual('Chrome 69.0 on 7')
+    expect(createService().getDeviceInfo(existingSession)).toEqual('Chrome 69.0 on 7')
   })
 
   it('should return a shorter info based on partial client in user agent', () => {
@@ -517,7 +544,7 @@ describe('SessionService', () => {
       os: { name: 'Windows', version: '7' },
     })
 
-    expect(createService().getDeviceInfo(session)).toEqual('69.0 on Windows 7')
+    expect(createService().getDeviceInfo(existingSession)).toEqual('69.0 on Windows 7')
 
     deviceDetector.getResult = jest.fn().mockReturnValue({
       ua: 'dummy-data',
@@ -525,7 +552,7 @@ describe('SessionService', () => {
       os: { name: 'Windows', version: '7' },
     })
 
-    expect(createService().getDeviceInfo(session)).toEqual('Chrome on Windows 7')
+    expect(createService().getDeviceInfo(existingSession)).toEqual('Chrome on Windows 7')
   })
 
   it('should return a shorter info based on iOS agent', () => {
@@ -538,7 +565,7 @@ describe('SessionService', () => {
       cpu: { architecture: undefined },
     })
 
-    expect(createService().getDeviceInfo(session)).toEqual('iOS')
+    expect(createService().getDeviceInfo(existingSession)).toEqual('iOS')
   })
 
   it('should return a shorter info based on partial client and partial os in user agent', () => {
@@ -548,7 +575,7 @@ describe('SessionService', () => {
       os: { name: 'Windows', version: '' },
     })
 
-    expect(createService().getDeviceInfo(session)).toEqual('69.0 on Windows')
+    expect(createService().getDeviceInfo(existingSession)).toEqual('69.0 on Windows')
 
     deviceDetector.getResult = jest.fn().mockReturnValue({
       ua: 'dummy-data',
@@ -556,7 +583,7 @@ describe('SessionService', () => {
       os: { name: '', version: '7' },
     })
 
-    expect(createService().getDeviceInfo(session)).toEqual('Chrome on 7')
+    expect(createService().getDeviceInfo(existingSession)).toEqual('Chrome on 7')
   })
 
   it('should return only Android os for okHttp client', () => {
@@ -569,7 +596,7 @@ describe('SessionService', () => {
       cpu: { architecture: undefined },
     })
 
-    expect(createService().getDeviceInfo(session)).toEqual('Android')
+    expect(createService().getDeviceInfo(existingSession)).toEqual('Android')
   })
 
   it('should detect the StandardNotes app in user agent', () => {
@@ -582,7 +609,7 @@ describe('SessionService', () => {
       cpu: { architecture: undefined },
     })
 
-    expect(createService().getDeviceInfo(session)).toEqual('Standard Notes Desktop 3.5.18 on Mac OS 10.16.0')
+    expect(createService().getDeviceInfo(existingSession)).toEqual('Standard Notes Desktop 3.5.18 on Mac OS 10.16.0')
   })
 
   it('should return unknown device info as fallback', () => {
@@ -590,70 +617,72 @@ describe('SessionService', () => {
       throw new Error('something bad happened')
     })
 
-    expect(createService().getDeviceInfo(session)).toEqual('Unknown Client on Unknown OS')
+    expect(createService().getDeviceInfo(existingSession)).toEqual('Unknown Client on Unknown OS')
   })
 
   it('should retrieve a session from a session token', async () => {
     sessionRepository.findOneByUuid = jest.fn().mockImplementation((uuid) => {
       if (uuid === '2') {
-        return session
+        return existingSession
       }
 
       return null
     })
 
-    const result = await createService().getSessionFromToken('1:2:3')
+    const { session, isEphemeral } = await createService().getSessionFromToken('1:2:3')
 
-    expect(result).toEqual(session)
+    expect(session).toEqual(session)
+    expect(isEphemeral).toBeFalsy()
   })
 
   it('should retrieve an ephemeral session from a session token', async () => {
-    ephemeralSessionRepository.findOneByUuid = jest.fn().mockReturnValue(ephemeralSession)
+    ephemeralSessionRepository.findOneByUuid = jest.fn().mockReturnValue(existingEphemeralSession)
     sessionRepository.findOneByUuid = jest.fn().mockReturnValue(null)
 
-    const result = await createService().getSessionFromToken('1:2:3')
+    const { session, isEphemeral } = await createService().getSessionFromToken('1:2:3')
 
-    expect(result).toEqual(ephemeralSession)
+    expect(session).toEqual(existingEphemeralSession)
+    expect(isEphemeral).toBeTruthy()
   })
 
   it('should not retrieve a session from a session token that has access token missing', async () => {
     sessionRepository.findOneByUuid = jest.fn().mockImplementation((uuid) => {
       if (uuid === '2') {
-        return session
+        return existingSession
       }
 
       return null
     })
 
-    const result = await createService().getSessionFromToken('1:2')
+    const { session } = await createService().getSessionFromToken('1:2')
 
-    expect(result).toBeUndefined()
+    expect(session).toBeUndefined()
   })
 
   it('should not retrieve a session that is missing', async () => {
     sessionRepository.findOneByUuid = jest.fn().mockReturnValue(null)
 
-    const result = await createService().getSessionFromToken('1:2:3')
+    const { session } = await createService().getSessionFromToken('1:2:3')
 
-    expect(result).toBeUndefined()
+    expect(session).toBeUndefined()
   })
 
   it('should not retrieve a session from a session token that has invalid access token', async () => {
     sessionRepository.findOneByUuid = jest.fn().mockImplementation((uuid) => {
       if (uuid === '2') {
-        return session
+        return existingSession
       }
 
       return null
     })
 
-    const result = await createService().getSessionFromToken('1:2:4')
+    const { session } = await createService().getSessionFromToken('1:2:4')
 
-    expect(result).toBeUndefined()
+    expect(session).toBeUndefined()
   })
 
   it('should revoked a session', async () => {
-    await createService().createRevokedSession(session)
+    await createService().createRevokedSession(existingSession)
 
     expect(revokedSessionRepository.save).toHaveBeenCalledWith({
       uuid: '2e1e43',

@@ -132,6 +132,7 @@ export class BaseSessionController extends BaseHttpController {
     const result = await this.refreshSessionToken.execute({
       accessToken: request.body.access_token,
       refreshToken: request.body.refresh_token,
+      userAgent: <string>request.headers['user-agent'],
     })
 
     if (!result.success) {

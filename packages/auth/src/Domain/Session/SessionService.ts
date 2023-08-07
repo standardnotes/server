@@ -100,24 +100,14 @@ export class SessionService implements SessionServiceInterface {
     }
   }
 
-  async refreshTokens(session: Session): Promise<SessionBody> {
-    const sessionPayload = await this.createTokens(session)
+  async refreshTokens(dto: { session: Session; isEphemeral: boolean }): Promise<SessionBody> {
+    const sessionPayload = await this.createTokens(dto.session)
 
-    await this.sessionRepository.updateHashedTokens(session.uuid, session.hashedAccessToken, session.hashedRefreshToken)
-
-    await this.sessionRepository.updatedTokenExpirationDates(
-      session.uuid,
-      session.accessExpiration,
-      session.refreshExpiration,
-    )
-
-    await this.ephemeralSessionRepository.updateTokensAndExpirationDates(
-      session.uuid,
-      session.hashedAccessToken,
-      session.hashedRefreshToken,
-      session.accessExpiration,
-      session.refreshExpiration,
-    )
+    if (dto.isEphemeral) {
+      await this.ephemeralSessionRepository.save(dto.session)
+    } else {
+      await this.sessionRepository.save(dto.session)
+    }
 
     return sessionPayload
   }
@@ -196,25 +186,25 @@ export class SessionService implements SessionServiceInterface {
     return `${browserInfo} on ${osInfo}`
   }
 
-  async getSessionFromToken(token: string): Promise<Session | undefined> {
+  async getSessionFromToken(token: string): Promise<{ session: Session | undefined; isEphemeral: boolean }> {
     const tokenParts = token.split(':')
     const sessionUuid = tokenParts[1]
     const accessToken = tokenParts[2]
     if (!accessToken) {
-      return undefined
+      return { session: undefined, isEphemeral: false }
     }
 
-    const session = await this.getSession(sessionUuid)
+    const { session, isEphemeral } = await this.getSession(sessionUuid)
     if (!session) {
-      return undefined
+      return { session: undefined, isEphemeral: false }
     }
 
     const hashedAccessToken = crypto.createHash('sha256').update(accessToken).digest('hex')
     if (crypto.timingSafeEqual(Buffer.from(session.hashedAccessToken), Buffer.from(hashedAccessToken))) {
-      return session
+      return { session, isEphemeral }
     }
 
-    return undefined
+    return { session: undefined, isEphemeral: false }
   }
 
   async getRevokedSessionFromToken(token: string): Promise<RevokedSession | null> {
@@ -235,11 +225,14 @@ export class SessionService implements SessionServiceInterface {
   }
 
   async deleteSessionByToken(token: string): Promise<string | null> {
-    const session = await this.getSessionFromToken(token)
+    const { session, isEphemeral } = await this.getSessionFromToken(token)
 
     if (session) {
-      await this.sessionRepository.deleteOneByUuid(session.uuid)
-      await this.ephemeralSessionRepository.deleteOne(session.uuid, session.userUuid)
+      if (isEphemeral) {
+        await this.ephemeralSessionRepository.deleteOne(session.uuid, session.userUuid)
+      } else {
+        await this.sessionRepository.deleteOneByUuid(session.uuid)
+      }
 
       return session.userUuid
     }
@@ -284,14 +277,19 @@ export class SessionService implements SessionServiceInterface {
     return session
   }
 
-  private async getSession(uuid: string): Promise<Session | null> {
+  private async getSession(uuid: string): Promise<{
+    session: Session | null
+    isEphemeral: boolean
+  }> {
     let session = await this.ephemeralSessionRepository.findOneByUuid(uuid)
+    let isEphemeral = true
 
     if (!session) {
       session = await this.sessionRepository.findOneByUuid(uuid)
+      isEphemeral = false
     }
 
-    return session
+    return { session, isEphemeral }
   }
 
   private async createTokens(session: Session): Promise<SessionBody> {

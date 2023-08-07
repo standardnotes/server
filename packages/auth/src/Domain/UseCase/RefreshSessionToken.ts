@@ -21,7 +21,7 @@ export class RefreshSessionToken {
   ) {}
 
   async execute(dto: RefreshSessionTokenDTO): Promise<RefreshSessionTokenResponse> {
-    const session = await this.sessionService.getSessionFromToken(dto.accessToken)
+    const { session, isEphemeral } = await this.sessionService.getSessionFromToken(dto.accessToken)
     if (!session) {
       return {
         success: false,
@@ -46,7 +46,9 @@ export class RefreshSessionToken {
       }
     }
 
-    const sessionPayload = await this.sessionService.refreshTokens(session)
+    session.userAgent = dto.userAgent
+
+    const sessionPayload = await this.sessionService.refreshTokens({ session, isEphemeral })
 
     try {
       await this.domainEventPublisher.publish(

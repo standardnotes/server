@@ -29,26 +29,6 @@ export class TypeORMEphemeralSessionRepository implements EphemeralSessionReposi
     }
   }
 
-  async updateTokensAndExpirationDates(
-    uuid: string,
-    hashedAccessToken: string,
-    hashedRefreshToken: string,
-    accessExpiration: Date,
-    refreshExpiration: Date,
-  ): Promise<void> {
-    const session = await this.findOneByUuid(uuid)
-    if (!session) {
-      return
-    }
-
-    session.hashedAccessToken = hashedAccessToken
-    session.hashedRefreshToken = hashedRefreshToken
-    session.accessExpiration = accessExpiration
-    session.refreshExpiration = refreshExpiration
-
-    await this.save(session)
-  }
-
   async findAllByUserUuid(userUuid: string): Promise<Array<EphemeralSession>> {
     const ephemeralSessionUuidsJSON = await this.cacheEntryRepository.findUnexpiredOneByKey(
       `${this.USER_SESSIONS_PREFIX}:${userUuid}`,
@@ -93,6 +73,8 @@ export class TypeORMEphemeralSessionRepository implements EphemeralSessionReposi
 
   async save(ephemeralSession: EphemeralSession): Promise<void> {
     const ttl = this.ephemeralSessionAge
+
+    ephemeralSession.updatedAt = this.timer.getUTCDate()
 
     const stringifiedSession = JSON.stringify(ephemeralSession)
 
