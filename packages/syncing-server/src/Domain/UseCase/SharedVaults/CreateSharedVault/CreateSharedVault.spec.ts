@@ -36,6 +36,18 @@ describe('CreateSharedVault', () => {
     expect(result.getError()).toBe('Given value is not a valid uuid: invalid-uuid')
   })
 
+  it('should return a failure result if the user role names are empty', async () => {
+    const useCase = createUseCase()
+
+    const result = await useCase.execute({
+      userUuid: '00000000-0000-0000-0000-000000000000',
+      userRoleNames: [],
+    })
+
+    expect(result.isFailed()).toBe(true)
+    expect(result.getError()).toBe('Given value is empty: ')
+  })
+
   it('should return a failure result if the shared vault could not be created', async () => {
     const useCase = createUseCase()
 

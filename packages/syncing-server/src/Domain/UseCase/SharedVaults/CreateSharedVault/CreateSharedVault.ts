@@ -1,4 +1,4 @@
-import { Result, RoleName, Timestamps, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
+import { Result, RoleName, Timestamps, UseCaseInterface, Uuid, Validator } from '@standardnotes/domain-core'
 import { CreateSharedVaultResult } from './CreateSharedVaultResult'
 import { CreateSharedVaultDTO } from './CreateSharedVaultDTO'
 import { TimerInterface } from '@standardnotes/time'
@@ -21,6 +21,11 @@ export class CreateSharedVault implements UseCaseInterface<CreateSharedVaultResu
       return Result.fail(userUuidOrError.getError())
     }
     const userUuid = userUuidOrError.getValue()
+
+    const userRoleNamesValidationResult = Validator.isNotEmpty(dto.userRoleNames)
+    if (userRoleNamesValidationResult.isFailed()) {
+      return Result.fail(userRoleNamesValidationResult.getError())
+    }
 
     const userSharedVaultLimit = this.getUserSharedVaultLimit(dto.userRoleNames)
     if (userSharedVaultLimit !== undefined) {
