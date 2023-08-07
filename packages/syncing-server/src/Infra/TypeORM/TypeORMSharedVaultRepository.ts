@@ -11,6 +11,17 @@ export class TypeORMSharedVaultRepository implements SharedVaultRepositoryInterf
     private mapper: MapperInterface<SharedVault, TypeORMSharedVault>,
   ) {}
 
+  async countByUserUuid(userUuid: Uuid): Promise<number> {
+    const count = await this.ormRepository
+      .createQueryBuilder('shared_vault')
+      .where('shared_vault.user_uuid = :userUuid', {
+        userUuid: userUuid.value,
+      })
+      .getCount()
+
+    return count
+  }
+
   async findByUuids(uuids: Uuid[], lastSyncTime?: number | undefined): Promise<SharedVault[]> {
     const queryBuilder = this.ormRepository
       .createQueryBuilder('shared_vault')

@@ -59,6 +59,7 @@ export class BaseSharedVaultsController extends BaseHttpController {
   async createSharedVault(_request: Request, response: Response): Promise<results.JsonResult> {
     const result = await this.createSharedVaultUseCase.execute({
       userUuid: response.locals.user.uuid,
+      userRoleNames: response.locals.roleNames,
     })
 
     if (result.isFailed()) {
