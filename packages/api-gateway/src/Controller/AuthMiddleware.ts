@@ -1,5 +1,4 @@
 import { CrossServiceTokenData } from '@standardnotes/security'
-import { RoleName } from '@standardnotes/domain-core'
 import { TimerInterface } from '@standardnotes/time'
 import { NextFunction, Request, Response } from 'express'
 import { BaseMiddleware } from 'inversify-express-utils'
@@ -50,10 +49,6 @@ export abstract class AuthMiddleware extends BaseMiddleware {
       response.locals.authToken = crossServiceToken
 
       const decodedToken = <CrossServiceTokenData>verify(crossServiceToken, this.jwtSecret, { algorithms: ['HS256'] })
-
-      response.locals.freeUser =
-        decodedToken.roles.length === 1 &&
-        decodedToken.roles.find((role) => role.name === RoleName.NAMES.CoreUser) !== undefined
 
       if (this.crossServiceTokenCacheTTL && !crossServiceTokenFetchedFromCache) {
         await this.crossServiceTokenCache.set({

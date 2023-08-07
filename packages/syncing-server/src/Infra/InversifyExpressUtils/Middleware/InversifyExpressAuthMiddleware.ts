@@ -3,7 +3,6 @@ import { BaseMiddleware } from 'inversify-express-utils'
 import { verify } from 'jsonwebtoken'
 import { CrossServiceTokenData } from '@standardnotes/security'
 import * as winston from 'winston'
-import { RoleName } from '@standardnotes/domain-core'
 
 export class InversifyExpressAuthMiddleware extends BaseMiddleware {
   constructor(private authJWTSecret: string, private logger: winston.Logger) {
@@ -23,9 +22,7 @@ export class InversifyExpressAuthMiddleware extends BaseMiddleware {
       const decodedToken = <CrossServiceTokenData>verify(authToken, this.authJWTSecret, { algorithms: ['HS256'] })
 
       response.locals.user = decodedToken.user
-      response.locals.roleNames = decodedToken.roles.map((role) => role.name)
-      response.locals.freeUser =
-        response.locals.roleNames.length === 1 && response.locals.roleNames[0] === RoleName.NAMES.CoreUser
+      response.locals.roles = decodedToken.roles
       response.locals.session = decodedToken.session
       response.locals.readOnlyAccess = decodedToken.session?.readonly_access ?? false
 

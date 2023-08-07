@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import { BaseHttpController, results } from 'inversify-express-utils'
 import { HttpStatusCode } from '@standardnotes/responses'
 import { ControllerContainerInterface, MapperInterface } from '@standardnotes/domain-core'
+import { Role } from '@standardnotes/security'
 
 import { GetSharedVaults } from '../../../Domain/UseCase/SharedVaults/GetSharedVaults/GetSharedVaults'
 import { SharedVault } from '../../../Domain/SharedVault/SharedVault'
@@ -59,7 +60,7 @@ export class BaseSharedVaultsController extends BaseHttpController {
   async createSharedVault(_request: Request, response: Response): Promise<results.JsonResult> {
     const result = await this.createSharedVaultUseCase.execute({
       userUuid: response.locals.user.uuid,
-      userRoleNames: response.locals.roleNames,
+      userRoleNames: response.locals.roles.map((role: Role) => role.name),
     })
 
     if (result.isFailed()) {

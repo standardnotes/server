@@ -91,7 +91,6 @@ export class BaseItemsController extends BaseHttpController {
     const result = await this.checkIntegrity.execute({
       userUuid: response.locals.user.uuid,
       integrityPayloads,
-      freeUser: response.locals.freeUser,
     })
 
     if (result.isFailed()) {

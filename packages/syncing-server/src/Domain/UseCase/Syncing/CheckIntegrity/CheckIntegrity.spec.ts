@@ -45,7 +45,6 @@ describe('CheckIntegrity', () => {
   it('should return an empty result if there are no integrity mismatches', async () => {
     const result = await createUseCase().execute({
       userUuid: '1-2-3',
-      freeUser: false,
       integrityPayloads: [
         {
           uuid: '1-2-3',
@@ -71,7 +70,6 @@ describe('CheckIntegrity', () => {
   it('should return a mismatch item that has a different update at timemstap', async () => {
     const result = await createUseCase().execute({
       userUuid: '1-2-3',
-      freeUser: false,
       integrityPayloads: [
         {
           uuid: '1-2-3',
@@ -102,7 +100,6 @@ describe('CheckIntegrity', () => {
   it('should return a mismatch item that is missing on the client side', async () => {
     const result = await createUseCase().execute({
       userUuid: '1-2-3',
-      freeUser: false,
       integrityPayloads: [
         {
           uuid: '1-2-3',
