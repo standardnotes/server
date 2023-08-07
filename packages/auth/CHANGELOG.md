@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.130.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.130.0...@standardnotes/auth-server@1.130.1) (2023-08-07)
+
+### Bug Fixes
+
+* **auth:** update user agent upon refreshing session token ([#685](https://github.com/standardnotes/server/issues/685)) ([bd5f492](https://github.com/standardnotes/server/commit/bd5f492a733f783c64fa4bc5840b4a9f5c913d3d))
+
 # [1.130.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.129.0...@standardnotes/auth-server@1.130.0) (2023-08-07)
 
 ### Features
