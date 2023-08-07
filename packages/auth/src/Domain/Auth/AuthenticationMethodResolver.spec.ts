@@ -40,7 +40,7 @@ describe('AuthenticationMethodResolver', () => {
     userRepository.findOneByUuid = jest.fn().mockReturnValue(user)
 
     sessionService = {} as jest.Mocked<SessionServiceInterface>
-    sessionService.getSessionFromToken = jest.fn()
+    sessionService.getSessionFromToken = jest.fn().mockReturnValue({ session: undefined, isEphemeral: false })
     sessionService.getRevokedSessionFromToken = jest.fn()
     sessionService.markRevokedSessionAsReceived = jest.fn().mockReturnValue(revokedSession)
 
@@ -70,7 +70,7 @@ describe('AuthenticationMethodResolver', () => {
   })
 
   it('should resolve session authentication method', async () => {
-    sessionService.getSessionFromToken = jest.fn().mockReturnValue(session)
+    sessionService.getSessionFromToken = jest.fn().mockReturnValue({ session, isEphemeral: false })
 
     expect(await createResolver().resolve('test')).toEqual({
       session,
@@ -80,7 +80,9 @@ describe('AuthenticationMethodResolver', () => {
   })
 
   it('should not resolve session authentication method with invalid user uuid on session', async () => {
-    sessionService.getSessionFromToken = jest.fn().mockReturnValue({ userUuid: 'invalid' })
+    sessionService.getSessionFromToken = jest
+      .fn()
+      .mockReturnValue({ session: { userUuid: 'invalid' }, isEphemeral: false })
 
     expect(await createResolver().resolve('test')).toBeUndefined
   })

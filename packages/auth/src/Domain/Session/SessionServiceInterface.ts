@@ -16,8 +16,8 @@ export interface SessionServiceInterface {
     userAgent: string
     readonlyAccess: boolean
   }): Promise<{ sessionHttpRepresentation: SessionBody; session: Session }>
-  refreshTokens(session: Session): Promise<SessionBody>
-  getSessionFromToken(token: string): Promise<Session | undefined>
+  refreshTokens(dto: { session: Session; isEphemeral: boolean }): Promise<SessionBody>
+  getSessionFromToken(token: string): Promise<{ session: Session | undefined; isEphemeral: boolean }>
   getRevokedSessionFromToken(token: string): Promise<RevokedSession | null>
   markRevokedSessionAsReceived(revokedSession: RevokedSession): Promise<RevokedSession>
   deleteSessionByToken(token: string): Promise<string | null>

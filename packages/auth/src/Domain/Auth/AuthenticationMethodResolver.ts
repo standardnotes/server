@@ -43,7 +43,7 @@ export class AuthenticationMethodResolver implements AuthenticationMethodResolve
       }
     }
 
-    const session = await this.sessionService.getSessionFromToken(token)
+    const { session } = await this.sessionService.getSessionFromToken(token)
     if (session) {
       this.logger.debug('Token decoded successfully. Session found.')
 
