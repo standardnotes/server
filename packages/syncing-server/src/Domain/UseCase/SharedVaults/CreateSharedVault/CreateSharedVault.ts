@@ -1,4 +1,4 @@
-import { Result, Timestamps, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
+import { Result, RoleName, Timestamps, UseCaseInterface, Uuid, Validator } from '@standardnotes/domain-core'
 import { CreateSharedVaultResult } from './CreateSharedVaultResult'
 import { CreateSharedVaultDTO } from './CreateSharedVaultDTO'
 import { TimerInterface } from '@standardnotes/time'
@@ -21,6 +21,19 @@ export class CreateSharedVault implements UseCaseInterface<CreateSharedVaultResu
       return Result.fail(userUuidOrError.getError())
     }
     const userUuid = userUuidOrError.getValue()
+
+    const userRoleNamesValidationResult = Validator.isNotEmpty(dto.userRoleNames)
+    if (userRoleNamesValidationResult.isFailed()) {
+      return Result.fail(userRoleNamesValidationResult.getError())
+    }
+
+    const userSharedVaultLimit = this.getUserSharedVaultLimit(dto.userRoleNames)
+    if (userSharedVaultLimit !== undefined) {
+      const userSharedVaultCount = await this.sharedVaultRepository.countByUserUuid(userUuid)
+      if (userSharedVaultCount >= userSharedVaultLimit) {
+        return Result.fail('You have reached the limit of shared vaults for your account.')
+      }
+    }
 
     const timestamps = Timestamps.create(
       this.timer.getTimestampInMicroseconds(),
@@ -51,5 +64,17 @@ export class CreateSharedVault implements UseCaseInterface<CreateSharedVaultResu
     const sharedVaultUser = sharedVaultUserOrError.getValue()
 
     return Result.ok({ sharedVault, sharedVaultUser })
+  }
+
+  private getUserSharedVaultLimit(userRoleNames: string[]): number | undefined {
+    if (userRoleNames.includes(RoleName.NAMES.ProUser)) {
+      return undefined
+    }
+
+    if (userRoleNames.includes(RoleName.NAMES.PlusUser)) {
+      return 3
+    }
+
+    return 1
   }
 }

@@ -1,5 +1,5 @@
 import { TimerInterface } from '@standardnotes/time'
-import { Result } from '@standardnotes/domain-core'
+import { Result, RoleName } from '@standardnotes/domain-core'
 
 import { SharedVaultRepositoryInterface } from '../../../SharedVault/SharedVaultRepositoryInterface'
 import { AddUserToSharedVault } from '../AddUserToSharedVault/AddUserToSharedVault'
@@ -29,10 +29,23 @@ describe('CreateSharedVault', () => {
 
     const result = await useCase.execute({
       userUuid: 'invalid-uuid',
+      userRoleNames: [RoleName.NAMES.ProUser],
     })
 
     expect(result.isFailed()).toBe(true)
     expect(result.getError()).toBe('Given value is not a valid uuid: invalid-uuid')
+  })
+
+  it('should return a failure result if the user role names are empty', async () => {
+    const useCase = createUseCase()
+
+    const result = await useCase.execute({
+      userUuid: '00000000-0000-0000-0000-000000000000',
+      userRoleNames: [],
+    })
+
+    expect(result.isFailed()).toBe(true)
+    expect(result.getError()).toBe('Given value is empty: ')
   })
 
   it('should return a failure result if the shared vault could not be created', async () => {
@@ -45,6 +58,7 @@ describe('CreateSharedVault', () => {
 
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
+      userRoleNames: [RoleName.NAMES.ProUser],
     })
 
     expect(result.isFailed()).toBe(true)
@@ -60,6 +74,7 @@ describe('CreateSharedVault', () => {
 
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
+      userRoleNames: [RoleName.NAMES.ProUser],
     })
 
     expect(result.isFailed()).toBe(true)
@@ -71,6 +86,7 @@ describe('CreateSharedVault', () => {
 
     await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
+      userRoleNames: [RoleName.NAMES.ProUser],
     })
 
     expect(addUserToSharedVault.execute).toHaveBeenCalledWith({
@@ -79,5 +95,33 @@ describe('CreateSharedVault', () => {
       permission: 'admin',
     })
     expect(sharedVaultRepository.save).toHaveBeenCalled()
+  })
+
+  it('should return a failure result if a plus user has reached the limit of shared vaults', async () => {
+    const useCase = createUseCase()
+
+    sharedVaultRepository.countByUserUuid = jest.fn().mockResolvedValue(3)
+
+    const result = await useCase.execute({
+      userUuid: '00000000-0000-0000-0000-000000000000',
+      userRoleNames: [RoleName.NAMES.PlusUser],
+    })
+
+    expect(result.isFailed()).toBe(true)
+    expect(result.getError()).toBe('You have reached the limit of shared vaults for your account.')
+  })
+
+  it('should return a failure result if a core user has reached the limit of shared vaults', async () => {
+    const useCase = createUseCase()
+
+    sharedVaultRepository.countByUserUuid = jest.fn().mockResolvedValue(1)
+
+    const result = await useCase.execute({
+      userUuid: '00000000-0000-0000-0000-000000000000',
+      userRoleNames: [RoleName.NAMES.CoreUser],
+    })
+
+    expect(result.isFailed()).toBe(true)
+    expect(result.getError()).toBe('You have reached the limit of shared vaults for your account.')
   })
 })

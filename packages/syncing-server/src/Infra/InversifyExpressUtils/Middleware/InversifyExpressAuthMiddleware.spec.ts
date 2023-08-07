@@ -61,10 +61,12 @@ describe('InversifyExpressAuthMiddleware', () => {
     await createMiddleware().handler(request, response, next)
 
     expect(response.locals.user).toEqual({ uuid: '123' })
-    expect(response.locals.roleNames).toEqual(['CORE_USER', 'PRO_USER'])
+    expect(response.locals.roles).toEqual([
+      { uuid: '1-2-3', name: RoleName.NAMES.CoreUser },
+      { uuid: '2-3-4', name: RoleName.NAMES.ProUser },
+    ])
     expect(response.locals.session).toEqual({ uuid: '234' })
     expect(response.locals.readOnlyAccess).toBeFalsy()
-    expect(response.locals.freeUser).toEqual(false)
 
     expect(next).toHaveBeenCalled()
   })
@@ -89,8 +91,6 @@ describe('InversifyExpressAuthMiddleware', () => {
     request.header = jest.fn().mockReturnValue(authToken)
 
     await createMiddleware().handler(request, response, next)
-
-    expect(response.locals.freeUser).toEqual(true)
 
     expect(next).toHaveBeenCalled()
   })
@@ -124,7 +124,10 @@ describe('InversifyExpressAuthMiddleware', () => {
     await createMiddleware().handler(request, response, next)
 
     expect(response.locals.user).toEqual({ uuid: '123' })
-    expect(response.locals.roleNames).toEqual(['CORE_USER', 'PRO_USER'])
+    expect(response.locals.roles).toEqual([
+      { uuid: '1-2-3', name: RoleName.NAMES.CoreUser },
+      { uuid: '2-3-4', name: RoleName.NAMES.ProUser },
+    ])
     expect(response.locals.session).toEqual({ uuid: '234', readonly_access: true })
     expect(response.locals.readOnlyAccess).toBeTruthy()
 
