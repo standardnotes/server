@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.130.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.129.0...@standardnotes/auth-server@1.130.0) (2023-08-07)
+
+### Features
+
+* **auth:** invalidate other sessions for user if the email or password are changed ([#684](https://github.com/standardnotes/server/issues/684)) ([f39d3ac](https://github.com/standardnotes/server/commit/f39d3aca5b7bb9e5f9c1c24cbe2359f30dea835c))
+
 # [1.129.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.128.1...@standardnotes/auth-server@1.129.0) (2023-08-03)
 
 ### Features
