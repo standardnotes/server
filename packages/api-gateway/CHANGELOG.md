@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.70.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.69.3...@standardnotes/api-gateway@1.70.0) (2023-08-07)
+
+### Features
+
+* **syncing-server:** limit shared vaults creation based on role ([#687](https://github.com/standardnotes/api-gateway/issues/687)) ([19b8921](https://github.com/standardnotes/api-gateway/commit/19b8921f286ff8f88c427e8ddd4512a8d61edb4f))
+
 ## [1.69.3](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.69.2...@standardnotes/api-gateway@1.69.3) (2023-08-03)
 
 **Note:** Version bump only for package @standardnotes/api-gateway

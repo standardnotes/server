@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.76.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.75.4...@standardnotes/syncing-server@1.76.0) (2023-08-07)
+
+### Features
+
+* **syncing-server:** limit shared vaults creation based on role ([#687](https://github.com/standardnotes/syncing-server-js/issues/687)) ([19b8921](https://github.com/standardnotes/syncing-server-js/commit/19b8921f286ff8f88c427e8ddd4512a8d61edb4f))
+
 ## [1.75.4](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.75.3...@standardnotes/syncing-server@1.75.4) (2023-08-03)
 
 ### Bug Fixes
