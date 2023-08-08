@@ -93,6 +93,7 @@ describe('CreateSharedVault', () => {
       sharedVaultUuid: expect.any(String),
       userUuid: '00000000-0000-0000-0000-000000000000',
       permission: 'admin',
+      skipSharedVaultExistenceCheck: true,
     })
     expect(sharedVaultRepository.save).toHaveBeenCalled()
   })

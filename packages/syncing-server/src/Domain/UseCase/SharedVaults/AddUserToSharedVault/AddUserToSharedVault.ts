@@ -20,9 +20,11 @@ export class AddUserToSharedVault implements UseCaseInterface<SharedVaultUser> {
     }
     const sharedVaultUuid = sharedVaultUuidOrError.getValue()
 
-    const sharedVault = await this.sharedVaultRepository.findByUuid(sharedVaultUuid)
-    if (!sharedVault) {
-      return Result.fail('Attempting to add a shared vault user to a non-existent shared vault')
+    if (!dto.skipSharedVaultExistenceCheck) {
+      const sharedVault = await this.sharedVaultRepository.findByUuid(sharedVaultUuid)
+      if (!sharedVault) {
+        return Result.fail('Attempting to add a shared vault user to a non-existent shared vault')
+      }
     }
 
     const userUuidOrError = Uuid.create(dto.userUuid)

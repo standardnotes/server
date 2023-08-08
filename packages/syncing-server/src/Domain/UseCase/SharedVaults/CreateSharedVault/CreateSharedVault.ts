@@ -1,4 +1,12 @@
-import { Result, RoleName, Timestamps, UseCaseInterface, Uuid, Validator } from '@standardnotes/domain-core'
+import {
+  Result,
+  RoleName,
+  SharedVaultUserPermission,
+  Timestamps,
+  UseCaseInterface,
+  Uuid,
+  Validator,
+} from '@standardnotes/domain-core'
 import { CreateSharedVaultResult } from './CreateSharedVaultResult'
 import { CreateSharedVaultDTO } from './CreateSharedVaultDTO'
 import { TimerInterface } from '@standardnotes/time'
@@ -56,7 +64,8 @@ export class CreateSharedVault implements UseCaseInterface<CreateSharedVaultResu
     const sharedVaultUserOrError = await this.addUserToSharedVault.execute({
       sharedVaultUuid: sharedVault.id.toString(),
       userUuid: dto.userUuid,
-      permission: 'admin',
+      permission: SharedVaultUserPermission.PERMISSIONS.Admin,
+      skipSharedVaultExistenceCheck: true,
     })
     if (sharedVaultUserOrError.isFailed()) {
       return Result.fail(sharedVaultUserOrError.getError())
