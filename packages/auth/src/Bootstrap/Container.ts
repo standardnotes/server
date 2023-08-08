@@ -890,7 +890,7 @@ export class ContainerConfigLoader {
       .toConstantValue(
         new UpdateStorageQuotaUsedForUser(
           container.get(TYPES.Auth_UserRepository),
-          container.get(TYPES.Auth_UserSubscriptionRepository),
+          container.get(TYPES.Auth_UserSubscriptionService),
           container.get(TYPES.Auth_SubscriptionSettingService),
         ),
       )
