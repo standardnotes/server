@@ -6,14 +6,19 @@ import { SharedVaultInviteRepositoryInterface } from '../../../SharedVault/User/
 import { InviteUserToSharedVault } from './InviteUserToSharedVault'
 import { SharedVault } from '../../../SharedVault/SharedVault'
 import { SharedVaultInvite } from '../../../SharedVault/User/Invite/SharedVaultInvite'
+import { SharedVaultUserRepositoryInterface } from '../../../SharedVault/User/SharedVaultUserRepositoryInterface'
+import { SharedVaultUser } from '../../../SharedVault/User/SharedVaultUser'
 
 describe('InviteUserToSharedVault', () => {
   let sharedVaultRepository: SharedVaultRepositoryInterface
   let sharedVaultInviteRepository: SharedVaultInviteRepositoryInterface
+  let sharedVaultUserRepository: SharedVaultUserRepositoryInterface
   let timer: TimerInterface
   let sharedVault: SharedVault
+  let sharedVaultUser: SharedVaultUser
 
-  const createUseCase = () => new InviteUserToSharedVault(sharedVaultRepository, sharedVaultInviteRepository, timer)
+  const createUseCase = () =>
+    new InviteUserToSharedVault(sharedVaultRepository, sharedVaultInviteRepository, sharedVaultUserRepository, timer)
 
   beforeEach(() => {
     sharedVault = SharedVault.create({
@@ -29,6 +34,16 @@ describe('InviteUserToSharedVault', () => {
     sharedVaultInviteRepository.findByUserUuidAndSharedVaultUuid = jest.fn().mockResolvedValue(null)
     sharedVaultInviteRepository.save = jest.fn()
     sharedVaultInviteRepository.remove = jest.fn()
+
+    sharedVaultUser = SharedVaultUser.create({
+      sharedVaultUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+      userUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+      permission: SharedVaultUserPermission.create(SharedVaultUserPermission.PERMISSIONS.Read).getValue(),
+      timestamps: Timestamps.create(123, 123).getValue(),
+    }).getValue()
+
+    sharedVaultUserRepository = {} as jest.Mocked<SharedVaultUserRepositoryInterface>
+    sharedVaultUserRepository.findByUserUuid = jest.fn().mockResolvedValue(null)
 
     timer = {} as jest.Mocked<TimerInterface>
     timer.getTimestampInMicroseconds = jest.fn().mockReturnValue(123)
@@ -112,6 +127,22 @@ describe('InviteUserToSharedVault', () => {
 
     expect(result.isFailed()).toBe(false)
     expect(sharedVaultInviteRepository.remove).toHaveBeenCalled()
+  })
+
+  it('should return failure if the shared vault user is already a member of the shared vault', async () => {
+    const useCase = createUseCase()
+    sharedVaultUserRepository.findByUserUuid = jest.fn().mockResolvedValue(sharedVaultUser)
+
+    const result = await useCase.execute({
+      sharedVaultUuid: '00000000-0000-0000-0000-000000000000',
+      senderUuid: '00000000-0000-0000-0000-000000000000',
+      recipientUuid: '00000000-0000-0000-0000-000000000000',
+      permission: SharedVaultUserPermission.PERMISSIONS.Read,
+      encryptedMessage: 'encryptedMessage',
+    })
+
+    expect(result.isFailed()).toBe(true)
+    expect(result.getError()).toBe('User is already a member of this shared vault')
   })
 
   it('should create a shared vault invite', async () => {

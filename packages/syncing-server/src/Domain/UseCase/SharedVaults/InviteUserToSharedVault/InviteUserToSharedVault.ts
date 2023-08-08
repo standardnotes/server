@@ -5,11 +5,13 @@ import { SharedVaultInvite } from '../../../SharedVault/User/Invite/SharedVaultI
 import { SharedVaultRepositoryInterface } from '../../../SharedVault/SharedVaultRepositoryInterface'
 import { InviteUserToSharedVaultDTO } from './InviteUserToSharedVaultDTO'
 import { SharedVaultInviteRepositoryInterface } from '../../../SharedVault/User/Invite/SharedVaultInviteRepositoryInterface'
+import { SharedVaultUserRepositoryInterface } from '../../../SharedVault/User/SharedVaultUserRepositoryInterface'
 
 export class InviteUserToSharedVault implements UseCaseInterface<SharedVaultInvite> {
   constructor(
     private sharedVaultRepository: SharedVaultRepositoryInterface,
     private sharedVaultInviteRepository: SharedVaultInviteRepositoryInterface,
+    private sharedVaultUserRepository: SharedVaultUserRepositoryInterface,
     private timer: TimerInterface,
   ) {}
   async execute(dto: InviteUserToSharedVaultDTO): Promise<Result<SharedVaultInvite>> {
@@ -44,6 +46,11 @@ export class InviteUserToSharedVault implements UseCaseInterface<SharedVaultInvi
 
     if (sharedVault.props.userUuid.value !== senderUuid.value) {
       return Result.fail('Only the owner of a shared vault can invite users to it')
+    }
+
+    const alreadyExistingMember = await this.sharedVaultUserRepository.findByUserUuid(recipientUuid)
+    if (alreadyExistingMember) {
+      return Result.fail('User is already a member of this shared vault')
     }
 
     const existingInvite = await this.sharedVaultInviteRepository.findByUserUuidAndSharedVaultUuid({

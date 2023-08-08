@@ -631,6 +631,7 @@ export class ContainerConfigLoader {
         new InviteUserToSharedVault(
           container.get(TYPES.Sync_SharedVaultRepository),
           container.get(TYPES.Sync_SharedVaultInviteRepository),
+          container.get(TYPES.Sync_SharedVaultUserRepository),
           container.get(TYPES.Sync_Timer),
         ),
       )
