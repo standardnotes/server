@@ -58,6 +58,7 @@ export class DomainEventFactory implements DomainEventFactoryInterface {
 
   createSharedVaultFileUploadedEvent(payload: {
     sharedVaultUuid: string
+    vaultOwnerUuid: string
     filePath: string
     fileName: string
     fileByteSize: number
@@ -78,6 +79,7 @@ export class DomainEventFactory implements DomainEventFactoryInterface {
 
   createSharedVaultFileRemovedEvent(payload: {
     sharedVaultUuid: string
+    vaultOwnerUuid: string
     filePath: string
     fileName: string
     fileByteSize: number

@@ -3,6 +3,7 @@ import { Request, Response } from 'express'
 import { inject } from 'inversify'
 import { Writable } from 'stream'
 import { SharedVaultValetTokenData, ValetTokenOperation } from '@standardnotes/security'
+import { Logger } from 'winston'
 
 import TYPES from '../../Bootstrap/Types'
 import { CreateUploadSession } from '../../Domain/UseCase/CreateUploadSession/CreateUploadSession'
@@ -24,6 +25,7 @@ export class AnnotatedSharedVaultFilesController extends BaseHttpController {
     @inject(TYPES.Files_RemoveFile) private removeFile: RemoveFile,
     @inject(TYPES.Files_MoveFile) private moveFile: MoveFile,
     @inject(TYPES.Files_MAX_CHUNK_BYTES) private maxChunkBytes: number,
+    @inject(TYPES.Files_Logger) private logger: Logger,
   ) {
     super()
   }
@@ -120,15 +122,17 @@ export class AnnotatedSharedVaultFilesController extends BaseHttpController {
     }
 
     const result = await this.finishUploadSession.execute({
-      ownerUuid: locals.sharedVaultUuid,
-      ownerType: 'shared-vault',
+      userUuid: locals.vaultOwnerUuid,
+      sharedVaultUuid: locals.sharedVaultUuid,
       resourceRemoteIdentifier: locals.remoteIdentifier,
       uploadBytesLimit: locals.uploadBytesLimit,
       uploadBytesUsed: locals.uploadBytesUsed,
     })
 
-    if (!result.success) {
-      return this.badRequest(result.message)
+    if (result.isFailed()) {
+      this.logger.error(result.getError())
+
+      return this.badRequest(result.getError())
     }
 
     return this.json({ success: true, message: 'File uploaded successfully' })
@@ -147,6 +151,7 @@ export class AnnotatedSharedVaultFilesController extends BaseHttpController {
     const result = await this.removeFile.execute({
       vaultInput: {
         sharedVaultUuid: locals.sharedVaultUuid,
+        vaultOwnerUuid: locals.vaultOwnerUuid,
         resourceRemoteIdentifier: locals.remoteIdentifier,
       },
     })

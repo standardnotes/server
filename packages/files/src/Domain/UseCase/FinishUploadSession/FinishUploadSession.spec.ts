@@ -1,11 +1,9 @@
-import 'reflect-metadata'
-
 import {
   DomainEventPublisherInterface,
   FileUploadedEvent,
   SharedVaultFileUploadedEvent,
 } from '@standardnotes/domain-events'
-import { Logger } from 'winston'
+
 import { DomainEventFactoryInterface } from '../../Event/DomainEventFactoryInterface'
 import { FileUploaderInterface } from '../../Services/FileUploaderInterface'
 import { UploadRepositoryInterface } from '../../Upload/UploadRepositoryInterface'
@@ -17,10 +15,9 @@ describe('FinishUploadSession', () => {
   let uploadRepository: UploadRepositoryInterface
   let domainEventPublisher: DomainEventPublisherInterface
   let domainEventFactory: DomainEventFactoryInterface
-  let logger: Logger
 
   const createUseCase = () =>
-    new FinishUploadSession(fileUploader, uploadRepository, domainEventPublisher, domainEventFactory, logger)
+    new FinishUploadSession(fileUploader, uploadRepository, domainEventPublisher, domainEventFactory)
 
   beforeEach(() => {
     fileUploader = {} as jest.Mocked<FileUploaderInterface>
@@ -38,11 +35,6 @@ describe('FinishUploadSession', () => {
     domainEventFactory.createSharedVaultFileUploadedEvent = jest
       .fn()
       .mockReturnValue({} as jest.Mocked<SharedVaultFileUploadedEvent>)
-
-    logger = {} as jest.Mocked<Logger>
-    logger.debug = jest.fn()
-    logger.error = jest.fn()
-    logger.warn = jest.fn()
   })
 
   it('should not finish an upload session if non existing', async () => {
@@ -50,12 +42,24 @@ describe('FinishUploadSession', () => {
 
     await createUseCase().execute({
       resourceRemoteIdentifier: '2-3-4',
-      ownerUuid: '1-2-3',
-      ownerType: 'user',
+      userUuid: '00000000-0000-0000-0000-000000000000',
       uploadBytesLimit: 100,
       uploadBytesUsed: 0,
     })
 
+    expect(fileUploader.finishUploadSession).not.toHaveBeenCalled()
+    expect(domainEventPublisher.publish).not.toHaveBeenCalled()
+  })
+
+  it('should not finish an upload session user uuid is invalid', async () => {
+    const result = await createUseCase().execute({
+      resourceRemoteIdentifier: '2-3-4',
+      userUuid: 'invalid',
+      uploadBytesLimit: 100,
+      uploadBytesUsed: 0,
+    })
+
+    expect(result.isFailed()).toBeTruthy()
     expect(fileUploader.finishUploadSession).not.toHaveBeenCalled()
     expect(domainEventPublisher.publish).not.toHaveBeenCalled()
   })
@@ -65,18 +69,14 @@ describe('FinishUploadSession', () => {
       throw new Error('oops')
     })
 
-    expect(
-      await createUseCase().execute({
-        resourceRemoteIdentifier: '2-3-4',
-        ownerUuid: '1-2-3',
-        ownerType: 'user',
-        uploadBytesLimit: 100,
-        uploadBytesUsed: 0,
-      }),
-    ).toEqual({
-      success: false,
-      message: 'Could not finish upload session',
+    const result = await createUseCase().execute({
+      resourceRemoteIdentifier: '2-3-4',
+      userUuid: '00000000-0000-0000-0000-000000000000',
+      uploadBytesLimit: 100,
+      uploadBytesUsed: 0,
     })
+
+    expect(result.getError()).toEqual('Could not finish upload session')
 
     expect(fileUploader.finishUploadSession).not.toHaveBeenCalled()
     expect(domainEventPublisher.publish).not.toHaveBeenCalled()
@@ -85,13 +85,12 @@ describe('FinishUploadSession', () => {
   it('should finish an upload session', async () => {
     await createUseCase().execute({
       resourceRemoteIdentifier: '2-3-4',
-      ownerUuid: '1-2-3',
-      ownerType: 'user',
+      userUuid: '00000000-0000-0000-0000-000000000000',
       uploadBytesLimit: 100,
       uploadBytesUsed: 0,
     })
 
-    expect(fileUploader.finishUploadSession).toHaveBeenCalledWith('123', '1-2-3/2-3-4', [
+    expect(fileUploader.finishUploadSession).toHaveBeenCalledWith('123', '00000000-0000-0000-0000-000000000000/2-3-4', [
       { tag: '123', chunkId: 1, chunkSize: 1 },
     ])
     expect(domainEventPublisher.publish).toHaveBeenCalled()
@@ -100,16 +99,30 @@ describe('FinishUploadSession', () => {
   it('should finish an upload session for a vault shared file', async () => {
     await createUseCase().execute({
       resourceRemoteIdentifier: '2-3-4',
-      ownerUuid: '1-2-3',
-      ownerType: 'shared-vault',
+      userUuid: '00000000-0000-0000-0000-000000000000',
+      sharedVaultUuid: '00000000-0000-0000-0000-000000000000',
       uploadBytesLimit: 100,
       uploadBytesUsed: 0,
     })
 
-    expect(fileUploader.finishUploadSession).toHaveBeenCalledWith('123', '1-2-3/2-3-4', [
+    expect(fileUploader.finishUploadSession).toHaveBeenCalledWith('123', '00000000-0000-0000-0000-000000000000/2-3-4', [
       { tag: '123', chunkId: 1, chunkSize: 1 },
     ])
     expect(domainEventPublisher.publish).toHaveBeenCalled()
+  })
+
+  it('should not finish an upload session for a vault shared file if shared vault uuid is invalid', async () => {
+    const result = await createUseCase().execute({
+      resourceRemoteIdentifier: '2-3-4',
+      userUuid: '00000000-0000-0000-0000-000000000000',
+      sharedVaultUuid: 'invalid',
+      uploadBytesLimit: 100,
+      uploadBytesUsed: 0,
+    })
+
+    expect(result.isFailed()).toBeTruthy()
+    expect(fileUploader.finishUploadSession).not.toHaveBeenCalled()
+    expect(domainEventPublisher.publish).not.toHaveBeenCalled()
   })
 
   it('should not finish an upload session if the file size exceeds storage quota', async () => {
@@ -119,18 +132,13 @@ describe('FinishUploadSession', () => {
       { tag: '345', chunkId: 3, chunkSize: 20 },
     ])
 
-    expect(
-      await createUseCase().execute({
-        resourceRemoteIdentifier: '2-3-4',
-        ownerUuid: '1-2-3',
-        ownerType: 'user',
-        uploadBytesLimit: 100,
-        uploadBytesUsed: 20,
-      }),
-    ).toEqual({
-      success: false,
-      message: 'Could not finish upload session. You are out of space.',
+    const result = await createUseCase().execute({
+      resourceRemoteIdentifier: '2-3-4',
+      userUuid: '00000000-0000-0000-0000-000000000000',
+      uploadBytesLimit: 100,
+      uploadBytesUsed: 20,
     })
+    expect(result.getError()).toEqual('Could not finish upload session. You are out of space.')
 
     expect(fileUploader.finishUploadSession).not.toHaveBeenCalled()
     expect(domainEventPublisher.publish).not.toHaveBeenCalled()
@@ -143,17 +151,13 @@ describe('FinishUploadSession', () => {
       { tag: '345', chunkId: 3, chunkSize: 20 },
     ])
 
-    expect(
-      await createUseCase().execute({
-        resourceRemoteIdentifier: '2-3-4',
-        ownerUuid: '1-2-3',
-        ownerType: 'user',
-        uploadBytesLimit: -1,
-        uploadBytesUsed: 20,
-      }),
-    ).toEqual({
-      success: true,
+    const result = await createUseCase().execute({
+      resourceRemoteIdentifier: '2-3-4',
+      userUuid: '00000000-0000-0000-0000-000000000000',
+      uploadBytesLimit: -1,
+      uploadBytesUsed: 20,
     })
+    expect(result.isFailed()).toBeFalsy()
 
     expect(fileUploader.finishUploadSession).toHaveBeenCalled()
     expect(domainEventPublisher.publish).toHaveBeenCalled()

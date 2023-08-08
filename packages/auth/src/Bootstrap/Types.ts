@@ -152,6 +152,7 @@ const TYPES = {
   Auth_ActivatePremiumFeatures: Symbol.for('Auth_ActivatePremiumFeatures'),
   Auth_SignInWithRecoveryCodes: Symbol.for('Auth_SignInWithRecoveryCodes'),
   Auth_GetUserKeyParamsRecovery: Symbol.for('Auth_GetUserKeyParamsRecovery'),
+  Auth_UpdateStorageQuotaUsedForUser: Symbol.for('Auth_UpdateStorageQuotaUsedForUser'),
   // Handlers
   Auth_UserRegisteredEventHandler: Symbol.for('Auth_UserRegisteredEventHandler'),
   Auth_AccountDeletionRequestedEventHandler: Symbol.for('Auth_AccountDeletionRequestedEventHandler'),
@@ -165,7 +166,9 @@ const TYPES = {
   Auth_ExtensionKeyGrantedEventHandler: Symbol.for('Auth_ExtensionKeyGrantedEventHandler'),
   Auth_UserEmailChangedEventHandler: Symbol.for('Auth_UserEmailChangedEventHandler'),
   Auth_FileUploadedEventHandler: Symbol.for('Auth_FileUploadedEventHandler'),
+  Auth_SharedVaultFileUploadedEventHandler: Symbol.for('Auth_SharedVaultFileUploadedEventHandler'),
   Auth_FileRemovedEventHandler: Symbol.for('Auth_FileRemovedEventHandler'),
+  Auth_SharedVaultFileRemovedEventHandler: Symbol.for('Auth_SharedVaultFileRemovedEventHandler'),
   Auth_ListedAccountCreatedEventHandler: Symbol.for('Auth_ListedAccountCreatedEventHandler'),
   Auth_ListedAccountDeletedEventHandler: Symbol.for('Auth_ListedAccountDeletedEventHandler'),
   Auth_UserDisabledSessionUserAgentLoggingEventHandler: Symbol.for(

@@ -1,28 +1,22 @@
-import 'reflect-metadata'
+import { UpdateStorageQuotaUsedForUser } from './UpdateStorageQuotaUsedForUser'
 
-import { FileUploadedEvent } from '@standardnotes/domain-events'
-import { Logger } from 'winston'
+import { SubscriptionSettingServiceInterface } from '../../Setting/SubscriptionSettingServiceInterface'
+import { UserSubscription } from '../../Subscription/UserSubscription'
+import { UserSubscriptionServiceInterface } from '../../Subscription/UserSubscriptionServiceInterface'
+import { UserSubscriptionType } from '../../Subscription/UserSubscriptionType'
+import { User } from '../../User/User'
+import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'
 
-import { User } from '../User/User'
-import { UserRepositoryInterface } from '../User/UserRepositoryInterface'
-import { FileUploadedEventHandler } from './FileUploadedEventHandler'
-import { SubscriptionSettingServiceInterface } from '../Setting/SubscriptionSettingServiceInterface'
-import { UserSubscription } from '../Subscription/UserSubscription'
-import { UserSubscriptionServiceInterface } from '../Subscription/UserSubscriptionServiceInterface'
-import { UserSubscriptionType } from '../Subscription/UserSubscriptionType'
-
-describe('FileUploadedEventHandler', () => {
+describe('UpdateStorageQuotaUsedForUser', () => {
   let userRepository: UserRepositoryInterface
   let userSubscriptionService: UserSubscriptionServiceInterface
-  let logger: Logger
   let user: User
-  let event: FileUploadedEvent
   let subscriptionSettingService: SubscriptionSettingServiceInterface
   let regularSubscription: UserSubscription
   let sharedSubscription: UserSubscription
 
-  const createHandler = () =>
-    new FileUploadedEventHandler(userRepository, userSubscriptionService, subscriptionSettingService, logger)
+  const createUseCase = () =>
+    new UpdateStorageQuotaUsedForUser(userRepository, userSubscriptionService, subscriptionSettingService)
 
   beforeEach(() => {
     user = {
@@ -52,23 +46,15 @@ describe('FileUploadedEventHandler', () => {
     subscriptionSettingService = {} as jest.Mocked<SubscriptionSettingServiceInterface>
     subscriptionSettingService.findSubscriptionSettingWithDecryptedValue = jest.fn().mockReturnValue(null)
     subscriptionSettingService.createOrReplace = jest.fn()
-
-    event = {} as jest.Mocked<FileUploadedEvent>
-    event.createdAt = new Date(1)
-    event.payload = {
-      userUuid: '00000000-0000-0000-0000-000000000000',
-      fileByteSize: 123,
-      filePath: '00000000-0000-0000-0000-000000000000/2-3-4',
-      fileName: '2-3-4',
-    }
-
-    logger = {} as jest.Mocked<Logger>
-    logger.warn = jest.fn()
   })
 
   it('should create a bytes used setting if one does not exist', async () => {
-    await createHandler().handle(event)
+    const result = await createUseCase().execute({
+      userUuid: '00000000-0000-0000-0000-000000000000',
+      bytesUsed: 123,
+    })
 
+    expect(result.isFailed()).toBeFalsy()
     expect(subscriptionSettingService.createOrReplace).toHaveBeenCalledWith({
       props: {
         name: 'FILE_UPLOAD_BYTES_USED',
@@ -86,9 +72,11 @@ describe('FileUploadedEventHandler', () => {
   })
 
   it('should not do anything if a user uuid is invalid', async () => {
-    event.payload.userUuid = 'invalid'
-
-    await createHandler().handle(event)
+    const result = await createUseCase().execute({
+      userUuid: 'invalid',
+      bytesUsed: 123,
+    })
+    expect(result.isFailed()).toBeTruthy()
 
     expect(subscriptionSettingService.createOrReplace).not.toHaveBeenCalled()
   })
@@ -96,7 +84,11 @@ describe('FileUploadedEventHandler', () => {
   it('should not do anything if a user is not found', async () => {
     userRepository.findOneByUuid = jest.fn().mockReturnValue(null)
 
-    await createHandler().handle(event)
+    const result = await createUseCase().execute({
+      userUuid: '00000000-0000-0000-0000-000000000000',
+      bytesUsed: 123,
+    })
+    expect(result.isFailed()).toBeTruthy()
 
     expect(subscriptionSettingService.createOrReplace).not.toHaveBeenCalled()
   })
@@ -109,22 +101,56 @@ describe('FileUploadedEventHandler', () => {
       .fn()
       .mockReturnValue({ regularSubscription: null, sharedSubscription: null })
 
-    await createHandler().handle(event)
+    const result = await createUseCase().execute({
+      userUuid: '00000000-0000-0000-0000-000000000000',
+      bytesUsed: 123,
+    })
+    expect(result.isFailed()).toBeTruthy()
 
     expect(subscriptionSettingService.createOrReplace).not.toHaveBeenCalled()
   })
 
-  it('should update a bytes used setting if one does exist', async () => {
+  it('should add bytes used setting if one does exist', async () => {
     subscriptionSettingService.findSubscriptionSettingWithDecryptedValue = jest.fn().mockReturnValue({
       value: 345,
     })
-    await createHandler().handle(event)
+    const result = await createUseCase().execute({
+      userUuid: '00000000-0000-0000-0000-000000000000',
+      bytesUsed: 123,
+    })
+    expect(result.isFailed()).toBeFalsy()
 
     expect(subscriptionSettingService.createOrReplace).toHaveBeenCalledWith({
       props: {
         name: 'FILE_UPLOAD_BYTES_USED',
         sensitive: false,
         unencryptedValue: '468',
+        serverEncryptionVersion: 0,
+      },
+      user,
+      userSubscription: {
+        uuid: '00000000-0000-0000-0000-000000000000',
+        subscriptionType: 'regular',
+        user: Promise.resolve(user),
+      },
+    })
+  })
+
+  it('should subtract bytes used setting if one does exist', async () => {
+    subscriptionSettingService.findSubscriptionSettingWithDecryptedValue = jest.fn().mockReturnValue({
+      value: 345,
+    })
+    const result = await createUseCase().execute({
+      userUuid: '00000000-0000-0000-0000-000000000000',
+      bytesUsed: -123,
+    })
+    expect(result.isFailed()).toBeFalsy()
+
+    expect(subscriptionSettingService.createOrReplace).toHaveBeenCalledWith({
+      props: {
+        name: 'FILE_UPLOAD_BYTES_USED',
+        sensitive: false,
+        unencryptedValue: '222',
         serverEncryptionVersion: 0,
       },
       user,
@@ -144,7 +170,11 @@ describe('FileUploadedEventHandler', () => {
     subscriptionSettingService.findSubscriptionSettingWithDecryptedValue = jest.fn().mockReturnValue({
       value: 345,
     })
-    await createHandler().handle(event)
+    const result = await createUseCase().execute({
+      userUuid: '00000000-0000-0000-0000-000000000000',
+      bytesUsed: 123,
+    })
+    expect(result.isFailed()).toBeFalsy()
 
     expect(subscriptionSettingService.createOrReplace).toHaveBeenCalledWith({
       props: {

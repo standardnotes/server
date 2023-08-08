@@ -85,6 +85,7 @@ export class CreateSharedVaultFileValetToken implements UseCaseInterface<string>
 
     const tokenData: SharedVaultValetTokenData = {
       sharedVaultUuid: dto.sharedVaultUuid,
+      vaultOwnerUuid: sharedVault.props.userUuid.value,
       permittedOperation: dto.operation,
       remoteIdentifier: dto.remoteIdentifier,
       uploadBytesUsed: sharedVault.props.fileUploadBytesUsed,

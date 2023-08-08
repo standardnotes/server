@@ -63,6 +63,7 @@ export class SharedVaultValetTokenAuthMiddleware extends BaseMiddleware {
 
       const whitelistedData: SharedVaultValetTokenData = {
         sharedVaultUuid: valetTokenData.sharedVaultUuid,
+        vaultOwnerUuid: valetTokenData.vaultOwnerUuid,
         remoteIdentifier: valetTokenData.remoteIdentifier,
         permittedOperation: valetTokenData.permittedOperation,
         uploadBytesUsed: valetTokenData.uploadBytesUsed,

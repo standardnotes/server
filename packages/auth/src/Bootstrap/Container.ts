@@ -253,6 +253,9 @@ import { BaseSessionsController } from '../Infra/InversifyExpressUtils/Base/Base
 import { Transform } from 'stream'
 import { ActivatePremiumFeatures } from '../Domain/UseCase/ActivatePremiumFeatures/ActivatePremiumFeatures'
 import { PaymentsAccountDeletedEventHandler } from '../Domain/Handler/PaymentsAccountDeletedEventHandler'
+import { UpdateStorageQuotaUsedForUser } from '../Domain/UseCase/UpdateStorageQuotaUsedForUser/UpdateStorageQuotaUsedForUser'
+import { SharedVaultFileUploadedEventHandler } from '../Domain/Handler/SharedVaultFileUploadedEventHandler'
+import { SharedVaultFileRemovedEventHandler } from '../Domain/Handler/SharedVaultFileRemovedEventHandler'
 
 export class ContainerConfigLoader {
   async load(configuration?: {
@@ -882,6 +885,15 @@ export class ContainerConfigLoader {
     container.bind<VerifyPredicate>(TYPES.Auth_VerifyPredicate).to(VerifyPredicate)
     container.bind<CreateCrossServiceToken>(TYPES.Auth_CreateCrossServiceToken).to(CreateCrossServiceToken)
     container.bind<ProcessUserRequest>(TYPES.Auth_ProcessUserRequest).to(ProcessUserRequest)
+    container
+      .bind<UpdateStorageQuotaUsedForUser>(TYPES.Auth_UpdateStorageQuotaUsedForUser)
+      .toConstantValue(
+        new UpdateStorageQuotaUsedForUser(
+          container.get(TYPES.Auth_UserRepository),
+          container.get(TYPES.Auth_UserSubscriptionRepository),
+          container.get(TYPES.Auth_SubscriptionSettingService),
+        ),
+      )
 
     // Controller
     container
@@ -951,8 +963,38 @@ export class ContainerConfigLoader {
     container
       .bind<UserEmailChangedEventHandler>(TYPES.Auth_UserEmailChangedEventHandler)
       .to(UserEmailChangedEventHandler)
-    container.bind<FileUploadedEventHandler>(TYPES.Auth_FileUploadedEventHandler).to(FileUploadedEventHandler)
-    container.bind<FileRemovedEventHandler>(TYPES.Auth_FileRemovedEventHandler).to(FileRemovedEventHandler)
+    container
+      .bind<FileUploadedEventHandler>(TYPES.Auth_FileUploadedEventHandler)
+      .toConstantValue(
+        new FileUploadedEventHandler(
+          container.get(TYPES.Auth_UpdateStorageQuotaUsedForUser),
+          container.get(TYPES.Auth_Logger),
+        ),
+      )
+    container
+      .bind<SharedVaultFileUploadedEventHandler>(TYPES.Auth_SharedVaultFileUploadedEventHandler)
+      .toConstantValue(
+        new SharedVaultFileUploadedEventHandler(
+          container.get(TYPES.Auth_UpdateStorageQuotaUsedForUser),
+          container.get(TYPES.Auth_Logger),
+        ),
+      )
+    container
+      .bind<FileRemovedEventHandler>(TYPES.Auth_FileRemovedEventHandler)
+      .toConstantValue(
+        new FileRemovedEventHandler(
+          container.get(TYPES.Auth_UpdateStorageQuotaUsedForUser),
+          container.get(TYPES.Auth_Logger),
+        ),
+      )
+    container
+      .bind<SharedVaultFileRemovedEventHandler>(TYPES.Auth_SharedVaultFileRemovedEventHandler)
+      .toConstantValue(
+        new SharedVaultFileRemovedEventHandler(
+          container.get(TYPES.Auth_UpdateStorageQuotaUsedForUser),
+          container.get(TYPES.Auth_Logger),
+        ),
+      )
     container
       .bind<ListedAccountCreatedEventHandler>(TYPES.Auth_ListedAccountCreatedEventHandler)
       .to(ListedAccountCreatedEventHandler)
@@ -999,7 +1041,9 @@ export class ContainerConfigLoader {
       ['SUBSCRIPTION_REASSIGNED', container.get(TYPES.Auth_SubscriptionReassignedEventHandler)],
       ['USER_EMAIL_CHANGED', container.get(TYPES.Auth_UserEmailChangedEventHandler)],
       ['FILE_UPLOADED', container.get(TYPES.Auth_FileUploadedEventHandler)],
+      ['SHARED_VAULT_FILE_UPLOADED', container.get(TYPES.Auth_SharedVaultFileUploadedEventHandler)],
       ['FILE_REMOVED', container.get(TYPES.Auth_FileRemovedEventHandler)],
+      ['SHARED_VAULT_FILE_REMOVED', container.get(TYPES.Auth_SharedVaultFileRemovedEventHandler)],
       ['LISTED_ACCOUNT_CREATED', container.get(TYPES.Auth_ListedAccountCreatedEventHandler)],
       ['LISTED_ACCOUNT_DELETED', container.get(TYPES.Auth_ListedAccountDeletedEventHandler)],
       [

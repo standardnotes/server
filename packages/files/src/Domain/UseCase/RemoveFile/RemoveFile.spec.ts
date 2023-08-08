@@ -80,6 +80,7 @@ describe('RemoveFile', () => {
       vaultInput: {
         resourceRemoteIdentifier: '2-3-4',
         sharedVaultUuid: '1-2-3',
+        vaultOwnerUuid: '3-4-5',
       },
     })
 

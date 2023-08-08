@@ -1,39 +1,41 @@
-import { inject, injectable } from 'inversify'
-import { Logger } from 'winston'
+import { Result, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
+import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
 
-import TYPES from '../../../Bootstrap/Types'
-import { UseCaseInterface } from '../UseCaseInterface'
 import { FinishUploadSessionDTO } from './FinishUploadSessionDTO'
-import { FinishUploadSessionResponse } from './FinishUploadSessionResponse'
 import { FileUploaderInterface } from '../../Services/FileUploaderInterface'
 import { UploadRepositoryInterface } from '../../Upload/UploadRepositoryInterface'
-import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
 import { DomainEventFactoryInterface } from '../../Event/DomainEventFactoryInterface'
 
-@injectable()
-export class FinishUploadSession implements UseCaseInterface {
+export class FinishUploadSession implements UseCaseInterface<void> {
   constructor(
-    @inject(TYPES.Files_FileUploader) private fileUploader: FileUploaderInterface,
-    @inject(TYPES.Files_UploadRepository) private uploadRepository: UploadRepositoryInterface,
-    @inject(TYPES.Files_DomainEventPublisher) private domainEventPublisher: DomainEventPublisherInterface,
-    @inject(TYPES.Files_DomainEventFactory) private domainEventFactory: DomainEventFactoryInterface,
-    @inject(TYPES.Files_Logger) private logger: Logger,
+    private fileUploader: FileUploaderInterface,
+    private uploadRepository: UploadRepositoryInterface,
+    private domainEventPublisher: DomainEventPublisherInterface,
+    private domainEventFactory: DomainEventFactoryInterface,
   ) {}
 
-  async execute(dto: FinishUploadSessionDTO): Promise<FinishUploadSessionResponse> {
+  async execute(dto: FinishUploadSessionDTO): Promise<Result<void>> {
     try {
-      this.logger.debug(`Finishing upload session for resource: ${dto.resourceRemoteIdentifier}`)
+      const userUuidOrError = Uuid.create(dto.userUuid)
+      if (userUuidOrError.isFailed()) {
+        return Result.fail(userUuidOrError.getError())
+      }
+      const userUuid = userUuidOrError.getValue()
 
-      const filePath = `${dto.ownerUuid}/${dto.resourceRemoteIdentifier}`
+      let sharedVaultUuid: Uuid | undefined
+      if (dto.sharedVaultUuid !== undefined) {
+        const sharedVaultUuidOrError = Uuid.create(dto.sharedVaultUuid)
+        if (sharedVaultUuidOrError.isFailed()) {
+          return Result.fail(sharedVaultUuidOrError.getError())
+        }
+        sharedVaultUuid = sharedVaultUuidOrError.getValue()
+      }
+
+      const filePath = `${sharedVaultUuid ? sharedVaultUuid.value : userUuid.value}/${dto.resourceRemoteIdentifier}`
 
       const uploadId = await this.uploadRepository.retrieveUploadSessionId(filePath)
       if (uploadId === undefined) {
-        this.logger.warn(`Could not find upload session for file path: ${filePath}`)
-
-        return {
-          success: false,
-          message: 'Could not finish upload session',
-        }
+        return Result.fail('Could not finish upload session')
       }
 
       const uploadChunkResults = await this.uploadRepository.retrieveUploadChunkResults(uploadId)
@@ -46,46 +48,35 @@ export class FinishUploadSession implements UseCaseInterface {
       const userHasUnlimitedStorage = dto.uploadBytesLimit === -1
       const remainingSpaceLeft = dto.uploadBytesLimit - dto.uploadBytesUsed
       if (!userHasUnlimitedStorage && remainingSpaceLeft < totalFileSize) {
-        return {
-          success: false,
-          message: 'Could not finish upload session. You are out of space.',
-        }
+        return Result.fail('Could not finish upload session. You are out of space.')
       }
 
       await this.fileUploader.finishUploadSession(uploadId, filePath, uploadChunkResults)
 
-      if (dto.ownerType === 'user') {
+      if (sharedVaultUuid !== undefined) {
         await this.domainEventPublisher.publish(
-          this.domainEventFactory.createFileUploadedEvent({
-            userUuid: dto.ownerUuid,
-            filePath: `${dto.ownerUuid}/${dto.resourceRemoteIdentifier}`,
+          this.domainEventFactory.createSharedVaultFileUploadedEvent({
+            sharedVaultUuid: sharedVaultUuid.value,
+            vaultOwnerUuid: userUuid.value,
+            filePath,
             fileName: dto.resourceRemoteIdentifier,
             fileByteSize: totalFileSize,
           }),
         )
       } else {
         await this.domainEventPublisher.publish(
-          this.domainEventFactory.createSharedVaultFileUploadedEvent({
-            sharedVaultUuid: dto.ownerUuid,
-            filePath: `${dto.ownerUuid}/${dto.resourceRemoteIdentifier}`,
+          this.domainEventFactory.createFileUploadedEvent({
+            userUuid: userUuid.value,
+            filePath,
             fileName: dto.resourceRemoteIdentifier,
             fileByteSize: totalFileSize,
           }),
         )
       }
 
-      return {
-        success: true,
-      }
+      return Result.ok()
     } catch (error) {
-      this.logger.error(
-        `Could not finish upload session for resource: ${dto.resourceRemoteIdentifier} - ${(error as Error).message}`,
-      )
-
-      return {
-        success: false,
-        message: 'Could not finish upload session',
-      }
+      return Result.fail('Could not finish upload session')
     }
   }
 }

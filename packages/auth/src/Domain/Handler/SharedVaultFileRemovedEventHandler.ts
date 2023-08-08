@@ -1,15 +1,15 @@
-import { DomainEventHandlerInterface, FileUploadedEvent } from '@standardnotes/domain-events'
+import { DomainEventHandlerInterface, SharedVaultFileRemovedEvent } from '@standardnotes/domain-events'
 import { Logger } from 'winston'
 
 import { UpdateStorageQuotaUsedForUser } from '../UseCase/UpdateStorageQuotaUsedForUser/UpdateStorageQuotaUsedForUser'
 
-export class FileUploadedEventHandler implements DomainEventHandlerInterface {
+export class SharedVaultFileRemovedEventHandler implements DomainEventHandlerInterface {
   constructor(private updateStorageQuotaUsedForUserUseCase: UpdateStorageQuotaUsedForUser, private logger: Logger) {}
 
-  async handle(event: FileUploadedEvent): Promise<void> {
+  async handle(event: SharedVaultFileRemovedEvent): Promise<void> {
     const result = await this.updateStorageQuotaUsedForUserUseCase.execute({
-      userUuid: event.payload.userUuid,
-      bytesUsed: event.payload.fileByteSize,
+      userUuid: event.payload.vaultOwnerUuid,
+      bytesUsed: -event.payload.fileByteSize,
     })
 
     if (result.isFailed()) {
