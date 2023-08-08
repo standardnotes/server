@@ -115,4 +115,20 @@ describe('AddUserToSharedVault', () => {
     expect(result.isFailed()).toBe(false)
     expect(sharedVaultUserRepository.save).toHaveBeenCalled()
   })
+
+  it('should add a user to a shared vault and skip checking if shared vault exists to avoid race conditions', async () => {
+    sharedVaultRepository.findByUuid = jest.fn().mockResolvedValueOnce(null)
+
+    const useCase = createUseCase()
+
+    const result = await useCase.execute({
+      sharedVaultUuid: validUuid,
+      userUuid: validUuid,
+      permission: 'read',
+      skipSharedVaultExistenceCheck: true,
+    })
+
+    expect(result.isFailed()).toBe(false)
+    expect(sharedVaultUserRepository.save).toHaveBeenCalled()
+  })
 })
