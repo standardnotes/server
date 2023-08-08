@@ -43,7 +43,7 @@ describe('InviteUserToSharedVault', () => {
     }).getValue()
 
     sharedVaultUserRepository = {} as jest.Mocked<SharedVaultUserRepositoryInterface>
-    sharedVaultUserRepository.findByUserUuid = jest.fn().mockResolvedValue(null)
+    sharedVaultUserRepository.findByUserUuidAndSharedVaultUuid = jest.fn().mockResolvedValue(null)
 
     timer = {} as jest.Mocked<TimerInterface>
     timer.getTimestampInMicroseconds = jest.fn().mockReturnValue(123)
@@ -131,7 +131,7 @@ describe('InviteUserToSharedVault', () => {
 
   it('should return failure if the shared vault user is already a member of the shared vault', async () => {
     const useCase = createUseCase()
-    sharedVaultUserRepository.findByUserUuid = jest.fn().mockResolvedValue(sharedVaultUser)
+    sharedVaultUserRepository.findByUserUuidAndSharedVaultUuid = jest.fn().mockResolvedValue(sharedVaultUser)
 
     const result = await useCase.execute({
       sharedVaultUuid: '00000000-0000-0000-0000-000000000000',

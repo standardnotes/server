@@ -48,7 +48,10 @@ export class InviteUserToSharedVault implements UseCaseInterface<SharedVaultInvi
       return Result.fail('Only the owner of a shared vault can invite users to it')
     }
 
-    const alreadyExistingMember = await this.sharedVaultUserRepository.findByUserUuid(recipientUuid)
+    const alreadyExistingMember = await this.sharedVaultUserRepository.findByUserUuidAndSharedVaultUuid({
+      userUuid: recipientUuid,
+      sharedVaultUuid,
+    })
     if (alreadyExistingMember) {
       return Result.fail('User is already a member of this shared vault')
     }
