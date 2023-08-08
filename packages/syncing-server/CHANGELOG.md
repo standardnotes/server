@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.76.1](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.76.0...@standardnotes/syncing-server@1.76.1) (2023-08-08)
+
+### Bug Fixes
+
+* **syncing-server:** race condition when adding admin user to newly created shared vault ([#688](https://github.com/standardnotes/syncing-server-js/issues/688)) ([3bd1547](https://github.com/standardnotes/syncing-server-js/commit/3bd1547ce3f599306f3942ce0a46f98cebfd33a4))
+
 # [1.76.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.75.4...@standardnotes/syncing-server@1.76.0) (2023-08-07)
 
 ### Features
