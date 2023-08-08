@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.70.1](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.70.0...@standardnotes/api-gateway@1.70.1) (2023-08-08)
+
+**Note:** Version bump only for package @standardnotes/api-gateway
+
 # [1.70.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.69.3...@standardnotes/api-gateway@1.70.0) (2023-08-07)
 
 ### Features

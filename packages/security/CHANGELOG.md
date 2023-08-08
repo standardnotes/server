@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.9.0](https://github.com/standardnotes/server/compare/@standardnotes/security@1.8.1...@standardnotes/security@1.9.0) (2023-08-08)
+
+### Features
+
+* update storage quota used for user based on shared vault files ([#689](https://github.com/standardnotes/server/issues/689)) ([5311e74](https://github.com/standardnotes/server/commit/5311e7426617da6fc75593dd0fcbff589ca4fc22))
+
 ## [1.8.1](https://github.com/standardnotes/server/compare/@standardnotes/security@1.8.0...@standardnotes/security@1.8.1) (2023-06-30)
 
 **Note:** Version bump only for package @standardnotes/security

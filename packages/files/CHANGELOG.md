@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.20.0](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.19.18...@standardnotes/files-server@1.20.0) (2023-08-08)
+
+### Features
+
+* update storage quota used for user based on shared vault files ([#689](https://github.com/standardnotes/files/issues/689)) ([5311e74](https://github.com/standardnotes/files/commit/5311e7426617da6fc75593dd0fcbff589ca4fc22))
+
 ## [1.19.18](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.19.17...@standardnotes/files-server@1.19.18) (2023-08-03)
 
 **Note:** Version bump only for package @standardnotes/files-server
