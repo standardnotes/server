@@ -43,6 +43,7 @@ export class RemoveFile implements UseCaseInterface<boolean> {
         await this.domainEventPublisher.publish(
           this.domainEventFactory.createSharedVaultFileRemovedEvent({
             sharedVaultUuid: dto.vaultInput.sharedVaultUuid,
+            vaultOwnerUuid: dto.vaultInput.vaultOwnerUuid,
             filePath: `${dto.vaultInput.sharedVaultUuid}/${dto.vaultInput.resourceRemoteIdentifier}`,
             fileName: dto.vaultInput.resourceRemoteIdentifier,
             fileByteSize: removedFileSize,

@@ -1,19 +1,20 @@
 import 'reflect-metadata'
 
+import { ValetTokenOperation } from '@standardnotes/security'
+import { BadRequestErrorMessageResult } from 'inversify-express-utils/lib/results'
+import { Result } from '@standardnotes/domain-core'
+import { Logger } from 'winston'
+import { Request, Response } from 'express'
+import { Writable, Readable } from 'stream'
+import { results } from 'inversify-express-utils'
+
 import { CreateUploadSession } from '../../Domain/UseCase/CreateUploadSession/CreateUploadSession'
 import { FinishUploadSession } from '../../Domain/UseCase/FinishUploadSession/FinishUploadSession'
 import { StreamDownloadFile } from '../../Domain/UseCase/StreamDownloadFile/StreamDownloadFile'
 import { UploadFileChunk } from '../../Domain/UseCase/UploadFileChunk/UploadFileChunk'
-
-import { Request, Response } from 'express'
-import { Writable, Readable } from 'stream'
 import { AnnotatedFilesController } from './AnnotatedFilesController'
 import { GetFileMetadata } from '../../Domain/UseCase/GetFileMetadata/GetFileMetadata'
-import { results } from 'inversify-express-utils'
 import { RemoveFile } from '../../Domain/UseCase/RemoveFile/RemoveFile'
-import { ValetTokenOperation } from '@standardnotes/security'
-import { BadRequestErrorMessageResult } from 'inversify-express-utils/lib/results'
-import { Result } from '@standardnotes/domain-core'
 
 describe('AnnotatedFilesController', () => {
   let uploadFileChunk: UploadFileChunk
@@ -26,6 +27,7 @@ describe('AnnotatedFilesController', () => {
   let response: Response
   let readStream: Readable
   const maxChunkBytes = 100_000
+  let logger: Logger
 
   const createController = () =>
     new AnnotatedFilesController(
@@ -36,9 +38,13 @@ describe('AnnotatedFilesController', () => {
       getFileMetadata,
       removeFile,
       maxChunkBytes,
+      logger,
     )
 
   beforeEach(() => {
+    logger = {} as jest.Mocked<Logger>
+    logger.error = jest.fn()
+
     readStream = {} as jest.Mocked<Readable>
     readStream.pipe = jest.fn().mockReturnValue(new Writable())
 
@@ -52,7 +58,7 @@ describe('AnnotatedFilesController', () => {
     createUploadSession.execute = jest.fn().mockReturnValue({ success: true, uploadId: '123' })
 
     finishUploadSession = {} as jest.Mocked<FinishUploadSession>
-    finishUploadSession.execute = jest.fn().mockReturnValue({ success: true })
+    finishUploadSession.execute = jest.fn().mockReturnValue(Result.ok())
 
     getFileMetadata = {} as jest.Mocked<GetFileMetadata>
     getFileMetadata.execute = jest.fn().mockReturnValue({ success: true, size: 555_555 })
@@ -233,8 +239,7 @@ describe('AnnotatedFilesController', () => {
 
     expect(finishUploadSession.execute).toHaveBeenCalledWith({
       resourceRemoteIdentifier: '2-3-4',
-      ownerType: 'user',
-      ownerUuid: '1-2-3',
+      userUuid: '1-2-3',
     })
   })
 
@@ -249,7 +254,7 @@ describe('AnnotatedFilesController', () => {
   it('should return bad request if upload session could not be finished', async () => {
     response.locals.permittedOperation = ValetTokenOperation.Write
 
-    finishUploadSession.execute = jest.fn().mockReturnValue({ success: false })
+    finishUploadSession.execute = jest.fn().mockReturnValue(Result.fail('Oops'))
 
     const httpResponse = await createController().finishUpload(request, response)
     const result = await httpResponse.executeAsync()

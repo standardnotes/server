@@ -72,6 +72,16 @@ export class ContainerConfigLoader {
       await import('newrelic')
     }
 
+    // env vars
+    container.bind(TYPES.Files_VALET_TOKEN_SECRET).toConstantValue(env.get('VALET_TOKEN_SECRET'))
+    container
+      .bind(TYPES.Files_MAX_CHUNK_BYTES)
+      .toConstantValue(env.get('MAX_CHUNK_BYTES', true) ? +env.get('MAX_CHUNK_BYTES', true) : 100000000)
+    container.bind(TYPES.Files_VERSION).toConstantValue(env.get('VERSION', true) ?? 'development')
+    container
+      .bind(TYPES.Files_FILE_UPLOAD_PATH)
+      .toConstantValue(env.get('FILE_UPLOAD_PATH', true) ?? `${__dirname}/../../uploads`)
+
     const isConfiguredForHomeServer = env.get('MODE', true) === 'home-server'
     const isConfiguredForInMemoryCache = env.get('CACHE_TYPE', true) === 'memory'
 
@@ -84,6 +94,12 @@ export class ContainerConfigLoader {
     container.bind<winston.Logger>(TYPES.Files_Logger).toConstantValue(logger)
 
     container.bind<TimerInterface>(TYPES.Files_Timer).toConstantValue(new Timer())
+
+    // services
+    container
+      .bind<TokenDecoderInterface<ValetTokenData>>(TYPES.Files_ValetTokenDecoder)
+      .toConstantValue(new TokenDecoder<ValetTokenData>(container.get(TYPES.Files_VALET_TOKEN_SECRET)))
+    container.bind<DomainEventFactoryInterface>(TYPES.Files_DomainEventFactory).to(DomainEventFactory)
 
     if (isConfiguredForInMemoryCache) {
       container
@@ -157,16 +173,6 @@ export class ContainerConfigLoader {
         )
     }
 
-    // env vars
-    container.bind(TYPES.Files_VALET_TOKEN_SECRET).toConstantValue(env.get('VALET_TOKEN_SECRET'))
-    container
-      .bind(TYPES.Files_MAX_CHUNK_BYTES)
-      .toConstantValue(env.get('MAX_CHUNK_BYTES', true) ? +env.get('MAX_CHUNK_BYTES', true) : 100000000)
-    container.bind(TYPES.Files_VERSION).toConstantValue(env.get('VERSION', true) ?? 'development')
-    container
-      .bind(TYPES.Files_FILE_UPLOAD_PATH)
-      .toConstantValue(env.get('FILE_UPLOAD_PATH', true) ?? `${__dirname}/../../uploads`)
-
     if (!isConfiguredForHomeServer && (env.get('S3_AWS_REGION', true) || env.get('S3_ENDPOINT', true))) {
       const s3Opts: S3ClientConfig = {
         apiVersion: 'latest',
@@ -198,7 +204,16 @@ export class ContainerConfigLoader {
     container.bind<UploadFileChunk>(TYPES.Files_UploadFileChunk).to(UploadFileChunk)
     container.bind<StreamDownloadFile>(TYPES.Files_StreamDownloadFile).to(StreamDownloadFile)
     container.bind<CreateUploadSession>(TYPES.Files_CreateUploadSession).to(CreateUploadSession)
-    container.bind<FinishUploadSession>(TYPES.Files_FinishUploadSession).to(FinishUploadSession)
+    container
+      .bind<FinishUploadSession>(TYPES.Files_FinishUploadSession)
+      .toConstantValue(
+        new FinishUploadSession(
+          container.get(TYPES.Files_FileUploader),
+          container.get(TYPES.Files_UploadRepository),
+          container.get(TYPES.Files_DomainEventPublisher),
+          container.get(TYPES.Files_DomainEventFactory),
+        ),
+      )
     container.bind<GetFileMetadata>(TYPES.Files_GetFileMetadata).to(GetFileMetadata)
     container.bind<RemoveFile>(TYPES.Files_RemoveFile).to(RemoveFile)
     container.bind<MoveFile>(TYPES.Files_MoveFile).to(MoveFile)
@@ -209,12 +224,6 @@ export class ContainerConfigLoader {
     container
       .bind<SharedVaultValetTokenAuthMiddleware>(TYPES.Files_SharedVaultValetTokenAuthMiddleware)
       .to(SharedVaultValetTokenAuthMiddleware)
-
-    // services
-    container
-      .bind<TokenDecoderInterface<ValetTokenData>>(TYPES.Files_ValetTokenDecoder)
-      .toConstantValue(new TokenDecoder<ValetTokenData>(container.get(TYPES.Files_VALET_TOKEN_SECRET)))
-    container.bind<DomainEventFactoryInterface>(TYPES.Files_DomainEventFactory).to(DomainEventFactory)
 
     // Handlers
     container

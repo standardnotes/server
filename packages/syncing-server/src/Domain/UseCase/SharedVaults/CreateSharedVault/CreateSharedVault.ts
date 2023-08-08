@@ -15,7 +15,7 @@ import { AddUserToSharedVault } from '../AddUserToSharedVault/AddUserToSharedVau
 import { SharedVault } from '../../../SharedVault/SharedVault'
 
 export class CreateSharedVault implements UseCaseInterface<CreateSharedVaultResult> {
-  private readonly FILE_UPLOAD_BYTES_LIMIT = 1_000_000
+  private readonly FILE_UPLOAD_BYTES_LIMIT = 1_000_000_000
 
   constructor(
     private addUserToSharedVault: AddUserToSharedVault,

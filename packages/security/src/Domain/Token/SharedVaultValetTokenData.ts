@@ -3,6 +3,7 @@ import { SharedVaultMoveType } from './SharedVaultMoveType'
 
 export interface SharedVaultValetTokenData {
   sharedVaultUuid: string
+  vaultOwnerUuid: string
   permittedOperation: ValetTokenOperation
   remoteIdentifier: string
   unencryptedFileSize?: number

@@ -6,6 +6,7 @@ export interface RemoveFileDTO {
   }
   vaultInput?: {
     sharedVaultUuid: string
+    vaultOwnerUuid: string
     resourceRemoteIdentifier: string
   }
 }

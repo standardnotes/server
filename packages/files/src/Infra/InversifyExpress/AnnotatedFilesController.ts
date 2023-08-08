@@ -2,6 +2,9 @@ import { BaseHttpController, controller, httpDelete, httpGet, httpPost, results 
 import { Request, Response } from 'express'
 import { inject } from 'inversify'
 import { Writable } from 'stream'
+import { ValetTokenOperation } from '@standardnotes/security'
+import { Logger } from 'winston'
+
 import TYPES from '../../Bootstrap/Types'
 import { UploadFileChunk } from '../../Domain/UseCase/UploadFileChunk/UploadFileChunk'
 import { StreamDownloadFile } from '../../Domain/UseCase/StreamDownloadFile/StreamDownloadFile'
@@ -9,7 +12,6 @@ import { CreateUploadSession } from '../../Domain/UseCase/CreateUploadSession/Cr
 import { FinishUploadSession } from '../../Domain/UseCase/FinishUploadSession/FinishUploadSession'
 import { GetFileMetadata } from '../../Domain/UseCase/GetFileMetadata/GetFileMetadata'
 import { RemoveFile } from '../../Domain/UseCase/RemoveFile/RemoveFile'
-import { ValetTokenOperation } from '@standardnotes/security'
 
 @controller('/v1/files', TYPES.Files_ValetTokenAuthMiddleware)
 export class AnnotatedFilesController extends BaseHttpController {
@@ -21,6 +23,7 @@ export class AnnotatedFilesController extends BaseHttpController {
     @inject(TYPES.Files_GetFileMetadata) private getFileMetadata: GetFileMetadata,
     @inject(TYPES.Files_RemoveFile) private removeFile: RemoveFile,
     @inject(TYPES.Files_MAX_CHUNK_BYTES) private maxChunkBytes: number,
+    @inject(TYPES.Files_Logger) private logger: Logger,
   ) {
     super()
   }
@@ -85,15 +88,16 @@ export class AnnotatedFilesController extends BaseHttpController {
     }
 
     const result = await this.finishUploadSession.execute({
-      ownerUuid: response.locals.userUuid,
-      ownerType: 'user',
+      userUuid: response.locals.userUuid,
       resourceRemoteIdentifier: response.locals.permittedResources[0].remoteIdentifier,
       uploadBytesLimit: response.locals.uploadBytesLimit,
       uploadBytesUsed: response.locals.uploadBytesUsed,
     })
 
-    if (!result.success) {
-      return this.badRequest(result.message)
+    if (result.isFailed()) {
+      this.logger.error(result.getError())
+
+      return this.badRequest(result.getError())
     }
 
     return this.json({ success: true, message: 'File uploaded successfully' })

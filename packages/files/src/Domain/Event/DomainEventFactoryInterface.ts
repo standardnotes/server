@@ -21,12 +21,14 @@ export interface DomainEventFactoryInterface {
   }): FileRemovedEvent
   createSharedVaultFileUploadedEvent(payload: {
     sharedVaultUuid: string
+    vaultOwnerUuid: string
     filePath: string
     fileName: string
     fileByteSize: number
   }): SharedVaultFileUploadedEvent
   createSharedVaultFileRemovedEvent(payload: {
     sharedVaultUuid: string
+    vaultOwnerUuid: string
     filePath: string
     fileName: string
     fileByteSize: number
