@@ -752,7 +752,11 @@ export class ContainerConfigLoader {
       )
     container
       .bind<UpdateStorageQuotaUsedInSharedVault>(TYPES.Sync_UpdateStorageQuotaUsedInSharedVault)
-      .toConstantValue(new UpdateStorageQuotaUsedInSharedVault(container.get(TYPES.Sync_SharedVaultRepository)))
+      .toConstantValue(
+        new UpdateStorageQuotaUsedInSharedVault(
+          container.get<SharedVaultRepositoryInterface>(TYPES.Sync_SharedVaultRepository),
+        ),
+      )
 
     // Services
     container
@@ -826,16 +830,16 @@ export class ContainerConfigLoader {
       .bind<SharedVaultFileUploadedEventHandler>(TYPES.Sync_SharedVaultFileUploadedEventHandler)
       .toConstantValue(
         new SharedVaultFileUploadedEventHandler(
-          container.get(TYPES.Sync_UpdateStorageQuotaUsedInSharedVault),
-          container.get(TYPES.Sync_Logger),
+          container.get<UpdateStorageQuotaUsedInSharedVault>(TYPES.Sync_UpdateStorageQuotaUsedInSharedVault),
+          container.get<winston.Logger>(TYPES.Sync_Logger),
         ),
       )
     container
       .bind<SharedVaultFileRemovedEventHandler>(TYPES.Sync_SharedVaultFileRemovedEventHandler)
       .toConstantValue(
         new SharedVaultFileRemovedEventHandler(
-          container.get(TYPES.Sync_UpdateStorageQuotaUsedInSharedVault),
-          container.get(TYPES.Sync_Logger),
+          container.get<UpdateStorageQuotaUsedInSharedVault>(TYPES.Sync_UpdateStorageQuotaUsedInSharedVault),
+          container.get<winston.Logger>(TYPES.Sync_Logger),
         ),
       )
 
@@ -881,8 +885,14 @@ export class ContainerConfigLoader {
       ['DUPLICATE_ITEM_SYNCED', container.get(TYPES.Sync_DuplicateItemSyncedEventHandler)],
       ['ACCOUNT_DELETION_REQUESTED', container.get(TYPES.Sync_AccountDeletionRequestedEventHandler)],
       ['ITEM_REVISION_CREATION_REQUESTED', container.get(TYPES.Sync_ItemRevisionCreationRequestedEventHandler)],
-      ['SHARED_VAULT_FILE_UPLOADED', container.get(TYPES.Sync_SharedVaultFileUploadedEventHandler)],
-      ['SHARED_VAULT_FILE_REMOVED', container.get(TYPES.Sync_SharedVaultFileRemovedEventHandler)],
+      [
+        'SHARED_VAULT_FILE_UPLOADED',
+        container.get<SharedVaultFileUploadedEventHandler>(TYPES.Sync_SharedVaultFileUploadedEventHandler),
+      ],
+      [
+        'SHARED_VAULT_FILE_REMOVED',
+        container.get<SharedVaultFileRemovedEventHandler>(TYPES.Sync_SharedVaultFileRemovedEventHandler),
+      ],
     ])
     if (!isConfiguredForHomeServer) {
       container.bind(TYPES.Sync_AUTH_SERVER_URL).toConstantValue(env.get('AUTH_SERVER_URL'))
