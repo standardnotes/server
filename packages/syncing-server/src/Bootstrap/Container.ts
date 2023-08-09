@@ -154,6 +154,9 @@ import { DetermineSharedVaultOperationOnItem } from '../Domain/UseCase/SharedVau
 import { SharedVaultFilter } from '../Domain/Item/SaveRule/SharedVaultFilter'
 import { RemoveNotificationsForUser } from '../Domain/UseCase/Messaging/RemoveNotificationsForUser/RemoveNotificationsForUser'
 import { SharedVaultSnjsFilter } from '../Domain/Item/SaveRule/SharedVaultSnjsFilter'
+import { UpdateStorageQuotaUsedInSharedVault } from '../Domain/UseCase/SharedVaults/UpdateStorageQuotaUsedInSharedVault/UpdateStorageQuotaUsedInSharedVault'
+import { SharedVaultFileUploadedEventHandler } from '../Domain/Handler/SharedVaultFileUploadedEventHandler'
+import { SharedVaultFileRemovedEventHandler } from '../Domain/Handler/SharedVaultFileRemovedEventHandler'
 
 export class ContainerConfigLoader {
   private readonly DEFAULT_CONTENT_SIZE_TRANSFER_LIMIT = 10_000_000
@@ -747,6 +750,9 @@ export class ContainerConfigLoader {
           container.get(TYPES.Sync_DeleteMessage),
         ),
       )
+    container
+      .bind<UpdateStorageQuotaUsedInSharedVault>(TYPES.Sync_UpdateStorageQuotaUsedInSharedVault)
+      .toConstantValue(new UpdateStorageQuotaUsedInSharedVault(container.get(TYPES.Sync_SharedVaultRepository)))
 
     // Services
     container
@@ -816,6 +822,22 @@ export class ContainerConfigLoader {
           context.container.get(TYPES.Sync_DomainEventPublisher),
         )
       })
+    container
+      .bind<SharedVaultFileUploadedEventHandler>(TYPES.Sync_SharedVaultFileUploadedEventHandler)
+      .toConstantValue(
+        new SharedVaultFileUploadedEventHandler(
+          container.get(TYPES.Sync_UpdateStorageQuotaUsedInSharedVault),
+          container.get(TYPES.Sync_Logger),
+        ),
+      )
+    container
+      .bind<SharedVaultFileRemovedEventHandler>(TYPES.Sync_SharedVaultFileRemovedEventHandler)
+      .toConstantValue(
+        new SharedVaultFileRemovedEventHandler(
+          container.get(TYPES.Sync_UpdateStorageQuotaUsedInSharedVault),
+          container.get(TYPES.Sync_Logger),
+        ),
+      )
 
     // Services
     container.bind<ContentDecoder>(TYPES.Sync_ContentDecoder).toDynamicValue(() => new ContentDecoder())
@@ -859,6 +881,8 @@ export class ContainerConfigLoader {
       ['DUPLICATE_ITEM_SYNCED', container.get(TYPES.Sync_DuplicateItemSyncedEventHandler)],
       ['ACCOUNT_DELETION_REQUESTED', container.get(TYPES.Sync_AccountDeletionRequestedEventHandler)],
       ['ITEM_REVISION_CREATION_REQUESTED', container.get(TYPES.Sync_ItemRevisionCreationRequestedEventHandler)],
+      ['SHARED_VAULT_FILE_UPLOADED', container.get(TYPES.Sync_SharedVaultFileUploadedEventHandler)],
+      ['SHARED_VAULT_FILE_REMOVED', container.get(TYPES.Sync_SharedVaultFileRemovedEventHandler)],
     ])
     if (!isConfiguredForHomeServer) {
       container.bind(TYPES.Sync_AUTH_SERVER_URL).toConstantValue(env.get('AUTH_SERVER_URL'))
