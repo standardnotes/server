@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.78.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.77.2...@standardnotes/syncing-server@1.78.0) (2023-08-09)
+
+### Features
+
+* **syncing-server:** notify shared vault users upon file uploads or removals ([#692](https://github.com/standardnotes/syncing-server-js/issues/692)) ([46867c1](https://github.com/standardnotes/syncing-server-js/commit/46867c1a4dd310c1971ff37e1bdf380c10e478fd))
+
 ## [1.77.2](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.77.1...@standardnotes/syncing-server@1.77.2) (2023-08-09)
 
 ### Bug Fixes
