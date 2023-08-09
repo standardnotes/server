@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.78.2](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.78.1...@standardnotes/syncing-server@1.78.2) (2023-08-09)
+
+### Reverts
+
+* Revert "feat(syncing-server): notify shared vault users upon file uploads or removals (#692)" ([d261c81](https://github.com/standardnotes/syncing-server-js/commit/d261c81cd0bdbb9001c8589224f007ed2d338903)), closes [#692](https://github.com/standardnotes/syncing-server-js/issues/692)
+
 ## [1.78.1](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.78.0...@standardnotes/syncing-server@1.78.1) (2023-08-09)
 
 **Note:** Version bump only for package @standardnotes/syncing-server
