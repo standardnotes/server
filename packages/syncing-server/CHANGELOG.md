@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.78.5](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.78.4...@standardnotes/syncing-server@1.78.5) (2023-08-09)
+
+### Reverts
+
+* Revert "tmp: disable fetching shared vault items" ([0eb86c0](https://github.com/standardnotes/syncing-server-js/commit/0eb86c009678a468bf9a7d0079dac58eff48f4d7))
+* Revert "Revert "feat(syncing-server): notify shared vault users upon file uploads or removals (#692)"" ([1c3ff52](https://github.com/standardnotes/syncing-server-js/commit/1c3ff526b7c4885f71f019f6c01142f522a6f8ad)), closes [#692](https://github.com/standardnotes/syncing-server-js/issues/692)
+
 ## [1.78.4](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.78.3...@standardnotes/syncing-server@1.78.4) (2023-08-09)
 
 ### Bug Fixes

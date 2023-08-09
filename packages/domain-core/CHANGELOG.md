@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.25.2](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.25.1...@standardnotes/domain-core@1.25.2) (2023-08-09)
+
+### Reverts
+
+* Revert "Revert "feat(syncing-server): notify shared vault users upon file uploads or removals (#692)"" ([1c3ff52](https://github.com/standardnotes/server/commit/1c3ff526b7c4885f71f019f6c01142f522a6f8ad)), closes [#692](https://github.com/standardnotes/server/issues/692)
+
 ## [1.25.1](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.25.0...@standardnotes/domain-core@1.25.1) (2023-08-09)
 
 ### Reverts
