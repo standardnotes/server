@@ -157,7 +157,6 @@ import { SharedVaultSnjsFilter } from '../Domain/Item/SaveRule/SharedVaultSnjsFi
 import { UpdateStorageQuotaUsedInSharedVault } from '../Domain/UseCase/SharedVaults/UpdateStorageQuotaUsedInSharedVault/UpdateStorageQuotaUsedInSharedVault'
 import { SharedVaultFileUploadedEventHandler } from '../Domain/Handler/SharedVaultFileUploadedEventHandler'
 import { SharedVaultFileRemovedEventHandler } from '../Domain/Handler/SharedVaultFileRemovedEventHandler'
-import { AddNotificationsForUsers } from '../Domain/UseCase/Messaging/AddNotificationsForUsers/AddNotificationsForUsers'
 
 export class ContainerConfigLoader {
   private readonly DEFAULT_CONTENT_SIZE_TRANSFER_LIMIT = 10_000_000
@@ -564,14 +563,6 @@ export class ContainerConfigLoader {
         new AddNotificationForUser(container.get(TYPES.Sync_NotificationRepository), container.get(TYPES.Sync_Timer)),
       )
     container
-      .bind<AddNotificationsForUsers>(TYPES.Sync_AddNotificationsForUsers)
-      .toConstantValue(
-        new AddNotificationsForUsers(
-          container.get(TYPES.Sync_SharedVaultUserRepository),
-          container.get(TYPES.Sync_AddNotificationForUser),
-        ),
-      )
-    container
       .bind<RemoveNotificationsForUser>(TYPES.Sync_RemoveNotificationsForUser)
       .toConstantValue(new RemoveNotificationsForUser(container.get(TYPES.Sync_NotificationRepository)))
     container
@@ -836,7 +827,6 @@ export class ContainerConfigLoader {
       .toConstantValue(
         new SharedVaultFileUploadedEventHandler(
           container.get(TYPES.Sync_UpdateStorageQuotaUsedInSharedVault),
-          container.get(TYPES.Sync_AddNotificationsForUsers),
           container.get(TYPES.Sync_Logger),
         ),
       )
@@ -845,7 +835,6 @@ export class ContainerConfigLoader {
       .toConstantValue(
         new SharedVaultFileRemovedEventHandler(
           container.get(TYPES.Sync_UpdateStorageQuotaUsedInSharedVault),
-          container.get(TYPES.Sync_AddNotificationsForUsers),
           container.get(TYPES.Sync_Logger),
         ),
       )

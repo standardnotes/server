@@ -79,7 +79,6 @@ const TYPES = {
   Sync_GetUserNotifications: Symbol.for('Sync_GetUserNotifications'),
   Sync_DetermineSharedVaultOperationOnItem: Symbol.for('Sync_DetermineSharedVaultOperationOnItem'),
   Sync_UpdateStorageQuotaUsedInSharedVault: Symbol.for('Sync_UpdateStorageQuotaUsedInSharedVault'),
-  Sync_AddNotificationsForUsers: Symbol.for('Sync_AddNotificationsForUsers'),
   // Handlers
   Sync_AccountDeletionRequestedEventHandler: Symbol.for('Sync_AccountDeletionRequestedEventHandler'),
   Sync_DuplicateItemSyncedEventHandler: Symbol.for('Sync_DuplicateItemSyncedEventHandler'),
