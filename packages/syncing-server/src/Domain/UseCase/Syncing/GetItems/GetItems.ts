@@ -45,6 +45,7 @@ export class GetItems implements UseCaseInterface<GetItemsResult> {
     const exclusiveSharedVaultUuids = dto.sharedVaultUuids
       ? dto.sharedVaultUuids.filter((sharedVaultUuid) => userSharedVaultUuids.includes(sharedVaultUuid))
       : undefined
+    void exclusiveSharedVaultUuids
 
     const itemQuery: ItemQuery = {
       userUuid: userUuid.value,
@@ -55,8 +56,8 @@ export class GetItems implements UseCaseInterface<GetItemsResult> {
       sortBy: 'updated_at_timestamp',
       sortOrder: 'ASC',
       limit: upperBoundLimit,
-      includeSharedVaultUuids: !dto.sharedVaultUuids ? userSharedVaultUuids : undefined,
-      exclusiveSharedVaultUuids,
+      includeSharedVaultUuids: undefined,
+      exclusiveSharedVaultUuids: undefined,
     }
 
     const itemUuidsToFetch = await this.itemTransferCalculator.computeItemUuidsToFetch(
