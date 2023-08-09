@@ -78,11 +78,14 @@ const TYPES = {
   Sync_SaveItems: Symbol.for('Sync_SaveItems'),
   Sync_GetUserNotifications: Symbol.for('Sync_GetUserNotifications'),
   Sync_DetermineSharedVaultOperationOnItem: Symbol.for('Sync_DetermineSharedVaultOperationOnItem'),
+  Sync_UpdateStorageQuotaUsedInSharedVault: Symbol.for('Sync_UpdateStorageQuotaUsedInSharedVault'),
   // Handlers
   Sync_AccountDeletionRequestedEventHandler: Symbol.for('Sync_AccountDeletionRequestedEventHandler'),
   Sync_DuplicateItemSyncedEventHandler: Symbol.for('Sync_DuplicateItemSyncedEventHandler'),
   Sync_EmailBackupRequestedEventHandler: Symbol.for('Sync_EmailBackupRequestedEventHandler'),
   Sync_ItemRevisionCreationRequestedEventHandler: Symbol.for('Sync_ItemRevisionCreationRequestedEventHandler'),
+  Sync_SharedVaultFileRemovedEventHandler: Symbol.for('Sync_SharedVaultFileRemovedEventHandler'),
+  Sync_SharedVaultFileUploadedEventHandler: Symbol.for('Sync_SharedVaultFileUploadedEventHandler'),
   // Services
   Sync_ContentDecoder: Symbol.for('Sync_ContentDecoder'),
   Sync_DomainEventPublisher: Symbol.for('Sync_DomainEventPublisher'),
