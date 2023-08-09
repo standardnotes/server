@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.78.3](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.78.2...@standardnotes/syncing-server@1.78.3) (2023-08-09)
+
+### Reverts
+
+* Revert "fix(syncing-server): update storage quota used in a shared vault (#691)" ([66f9352](https://github.com/standardnotes/syncing-server-js/commit/66f9352a062f45b5c66e7aae9681a56ca3ec6084)), closes [#691](https://github.com/standardnotes/syncing-server-js/issues/691)
+
 ## [1.78.2](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.78.1...@standardnotes/syncing-server@1.78.2) (2023-08-09)
 
 ### Reverts
