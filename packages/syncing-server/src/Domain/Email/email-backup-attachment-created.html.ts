@@ -2,7 +2,7 @@ export const html = (email: string) => `
 <p>
   Your encrypted data backup is attached for ${email}. You can import this file using
   the Standard Notes web or desktop app, or by using the offline decryption script available at
-  <a style="text-decoration:none !important; text-decoration:none;">standardnotes.org/offline</a>.
+  <a style="text-decoration:none !important; text-decoration:none;">standardnotes.com/offline</a>.
 </p>
 
 <p>
