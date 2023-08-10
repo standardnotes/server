@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.78.6](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.78.5...@standardnotes/syncing-server@1.78.6) (2023-08-10)
+
+### Bug Fixes
+
+* **syncing-server:** setting user uuid in notifications ([56f4975](https://github.com/standardnotes/syncing-server-js/commit/56f49752b43fa1d3dff4f1e3a8f07cd7739516a9))
+
 ## [1.78.5](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.78.4...@standardnotes/syncing-server@1.78.5) (2023-08-09)
 
 ### Reverts
