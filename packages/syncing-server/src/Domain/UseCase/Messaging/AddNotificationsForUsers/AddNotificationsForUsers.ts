@@ -20,7 +20,7 @@ export class AddNotificationsForUsers implements UseCaseInterface<void> {
     const sharedVaultUsers = await this.sharedVaultUserRepository.findBySharedVaultUuid(sharedVaultUuid)
     for (const sharedVaultUser of sharedVaultUsers) {
       const result = await this.addNotificationForUser.execute({
-        userUuid: sharedVaultUser.id.toString(),
+        userUuid: sharedVaultUser.props.userUuid.value,
         type: dto.type,
         payload: dto.payload,
         version: dto.version,
