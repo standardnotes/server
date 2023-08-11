@@ -24,7 +24,7 @@ export class ItemRevisionCreationRequestedEventHandler implements DomainEventHan
     }
     const itemUuid = itemUuidOrError.getValue()
 
-    const item = await this.itemRepository.findByUuid(itemUuid)
+    const item = await this.itemRepository.findByUuid(itemUuid, true)
     if (item === null) {
       return
     }

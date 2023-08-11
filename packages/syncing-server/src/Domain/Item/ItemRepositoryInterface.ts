@@ -17,7 +17,7 @@ export interface ItemRepositoryInterface {
   findDatesForComputingIntegrityHash(userUuid: string): Promise<Array<{ updated_at_timestamp: number }>>
   findItemsForComputingIntegrityPayloads(userUuid: string): Promise<ExtendedIntegrityPayload[]>
   findByUuidAndUserUuid(uuid: string, userUuid: string): Promise<Item | null>
-  findByUuid(uuid: Uuid): Promise<Item | null>
+  findByUuid(uuid: Uuid, noAssociations: boolean): Promise<Item | null>
   remove(item: Item): Promise<void>
   save(item: Item): Promise<void>
   markItemsAsDeleted(itemUuids: Array<string>, updatedAtTimestamp: number): Promise<void>
