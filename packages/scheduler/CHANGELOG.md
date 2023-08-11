@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.20.22](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.20.21...@standardnotes/scheduler-server@1.20.22) (2023-08-11)
+
+### Bug Fixes
+
+* **scheduler:** adjust email backups encouraging email schedule ([#695](https://github.com/standardnotes/server/issues/695)) ([091e2a5](https://github.com/standardnotes/server/commit/091e2a57e81bb335286807bba4b0fcfc04a086bb))
+
 ## [1.20.21](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.20.20...@standardnotes/scheduler-server@1.20.21) (2023-08-09)
 
 **Note:** Version bump only for package @standardnotes/scheduler-server
