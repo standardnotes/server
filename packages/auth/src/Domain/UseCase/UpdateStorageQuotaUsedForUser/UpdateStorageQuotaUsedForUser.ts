@@ -7,7 +7,6 @@ import { UserSubscription } from '../../Subscription/UserSubscription'
 import { UserSubscriptionServiceInterface } from '../../Subscription/UserSubscriptionServiceInterface'
 import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'
 import { UpdateStorageQuotaUsedForUserDTO } from './UpdateStorageQuotaUsedForUserDTO'
-import { User } from '../../User/User'
 
 export class UpdateStorageQuotaUsedForUser implements UseCaseInterface<void> {
   constructor(
@@ -34,23 +33,20 @@ export class UpdateStorageQuotaUsedForUser implements UseCaseInterface<void> {
       return Result.fail(`Could not find regular user subscription for user with uuid: ${userUuid.value}`)
     }
 
-    await this.updateUploadBytesUsedSetting(regularSubscription, user, dto.bytesUsed)
+    await this.updateUploadBytesUsedSetting(regularSubscription, dto.bytesUsed)
 
     if (sharedSubscription !== null) {
-      await this.updateUploadBytesUsedSetting(sharedSubscription, user, dto.bytesUsed)
+      await this.updateUploadBytesUsedSetting(sharedSubscription, dto.bytesUsed)
     }
 
     return Result.ok()
   }
 
-  private async updateUploadBytesUsedSetting(
-    subscription: UserSubscription,
-    user: User,
-    bytesUsed: number,
-  ): Promise<void> {
+  private async updateUploadBytesUsedSetting(subscription: UserSubscription, bytesUsed: number): Promise<void> {
     let bytesAlreadyUsed = '0'
+    const subscriptionUser = await subscription.user
     const bytesUsedSetting = await this.subscriptionSettingService.findSubscriptionSettingWithDecryptedValue({
-      userUuid: (await subscription.user).uuid,
+      userUuid: subscriptionUser.uuid,
       userSubscriptionUuid: subscription.uuid,
       subscriptionSettingName: SettingName.create(SettingName.NAMES.FileUploadBytesUsed).getValue(),
     })
@@ -60,7 +56,7 @@ export class UpdateStorageQuotaUsedForUser implements UseCaseInterface<void> {
 
     await this.subscriptionSettingService.createOrReplace({
       userSubscription: subscription,
-      user,
+      user: subscriptionUser,
       props: {
         name: SettingName.NAMES.FileUploadBytesUsed,
         unencryptedValue: (+bytesAlreadyUsed + bytesUsed).toString(),
