@@ -53,14 +53,11 @@ export class EmailBackupRequestedEventHandler implements DomainEventHandlerInter
 
     const backupFileNames: string[] = []
     for (const itemUuidBundle of itemUuidBundles) {
-      const items = await this.itemRepository.findAll(
-        {
-          uuids: itemUuidBundle,
-          sortBy: 'updated_at_timestamp',
-          sortOrder: 'ASC',
-        },
-        true,
-      )
+      const items = await this.itemRepository.findAll({
+        uuids: itemUuidBundle,
+        sortBy: 'updated_at_timestamp',
+        sortOrder: 'ASC',
+      })
 
       const bundleBackupFileNames = await this.itemBackupService.backup(
         items,

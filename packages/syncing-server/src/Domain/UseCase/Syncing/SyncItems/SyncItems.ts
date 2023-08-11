@@ -126,15 +126,12 @@ export class SyncItems implements UseCaseInterface<SyncItemsResponse> {
   }
 
   private async frontLoadKeysItemsToTop(userUuid: string, retrievedItems: Array<Item>): Promise<Array<Item>> {
-    const itemsKeys = await this.itemRepository.findAll(
-      {
-        userUuid,
-        contentType: ContentType.TYPES.ItemsKey,
-        sortBy: 'updated_at_timestamp',
-        sortOrder: 'ASC',
-      },
-      true,
-    )
+    const itemsKeys = await this.itemRepository.findAll({
+      userUuid,
+      contentType: ContentType.TYPES.ItemsKey,
+      sortBy: 'updated_at_timestamp',
+      sortOrder: 'ASC',
+    })
 
     const retrievedItemsIds: Array<string> = retrievedItems.map((item: Item) => item.id.toString())
 

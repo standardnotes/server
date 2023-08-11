@@ -42,7 +42,7 @@ export class SaveItems implements UseCaseInterface<SaveItemsResult> {
       }
       const itemUuid = itemUuidOrError.getValue()
 
-      const existingItem = await this.itemRepository.findByUuid(itemUuid, true)
+      const existingItem = await this.itemRepository.findByUuid(itemUuid, false)
 
       if (dto.readOnlyAccess) {
         conflicts.push({

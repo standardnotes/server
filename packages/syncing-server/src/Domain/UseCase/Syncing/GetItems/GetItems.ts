@@ -56,14 +56,11 @@ export class GetItems implements UseCaseInterface<GetItemsResult> {
     )
     let items: Array<Item> = []
     if (itemUuidsToFetch.length > 0) {
-      items = await this.itemRepository.findAll(
-        {
-          uuids: itemUuidsToFetch,
-          sortBy: 'updated_at_timestamp',
-          sortOrder: 'ASC',
-        },
-        true,
-      )
+      items = await this.itemRepository.findAll({
+        uuids: itemUuidsToFetch,
+        sortBy: 'updated_at_timestamp',
+        sortOrder: 'ASC',
+      })
     }
     const totalItemsCount = await this.itemRepository.countAll(itemQuery)
 

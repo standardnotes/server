@@ -130,7 +130,7 @@ export class TypeORMItemRepository implements ItemRepositoryInterface {
     return items.sort((itemA, itemB) => itemB.updated_at_timestamp - itemA.updated_at_timestamp)
   }
 
-  async findByUuidAndUserUuid(uuid: string, userUuid: string, noAssociations: boolean): Promise<Item | null> {
+  async findByUuidAndUserUuid(uuid: string, userUuid: string): Promise<Item | null> {
     const persistence = await this.ormRepository
       .createQueryBuilder('item')
       .where('item.uuid = :uuid AND item.user_uuid = :userUuid', {
@@ -146,10 +146,6 @@ export class TypeORMItemRepository implements ItemRepositoryInterface {
     try {
       const item = this.mapper.toDomain(persistence)
 
-      if (noAssociations) {
-        return item
-      }
-
       await this.decorateItemWithAssociations(item)
 
       return item
@@ -160,7 +156,7 @@ export class TypeORMItemRepository implements ItemRepositoryInterface {
     }
   }
 
-  async findAll(query: ItemQuery, noAssociations: boolean): Promise<Item[]> {
+  async findAll(query: ItemQuery): Promise<Item[]> {
     const persistence = await this.createFindAllQueryBuilder(query).getMany()
 
     const domainItems: Item[] = []
@@ -170,10 +166,6 @@ export class TypeORMItemRepository implements ItemRepositoryInterface {
       } catch (error) {
         this.logger.error(`Failed to map item ${persistencItem.uuid} to domain: ${(error as Error).message}`)
       }
-    }
-
-    if (noAssociations) {
-      return domainItems
     }
 
     await Promise.all(domainItems.map((item) => this.decorateItemWithAssociations(item)))
