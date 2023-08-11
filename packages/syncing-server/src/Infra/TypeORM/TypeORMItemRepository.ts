@@ -77,7 +77,7 @@ export class TypeORMItemRepository implements ItemRepositoryInterface {
       .execute()
   }
 
-  async findByUuid(uuid: Uuid, noAssociations: boolean): Promise<Item | null> {
+  async findByUuid(uuid: Uuid): Promise<Item | null> {
     const persistence = await this.ormRepository
       .createQueryBuilder('item')
       .where('item.uuid = :uuid', {
@@ -91,10 +91,6 @@ export class TypeORMItemRepository implements ItemRepositoryInterface {
 
     try {
       const item = this.mapper.toDomain(persistence)
-
-      if (noAssociations) {
-        return item
-      }
 
       await this.decorateItemWithAssociations(item)
 
