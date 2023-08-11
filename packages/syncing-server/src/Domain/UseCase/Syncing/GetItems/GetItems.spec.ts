@@ -16,7 +16,14 @@ describe('GetItems', () => {
   let sharedVaultUserRepository: SharedVaultUserRepositoryInterface
 
   const createUseCase = () =>
-    new GetItems(itemRepository, contentSizeTransferLimit, itemTransferCalculator, timer, maxItemsSyncLimit)
+    new GetItems(
+      itemRepository,
+      sharedVaultUserRepository,
+      contentSizeTransferLimit,
+      itemTransferCalculator,
+      timer,
+      maxItemsSyncLimit,
+    )
 
   beforeEach(() => {
     item = Item.create({

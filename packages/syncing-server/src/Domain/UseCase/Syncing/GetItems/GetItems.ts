@@ -7,6 +7,7 @@ import { ItemQuery } from '../../../Item/ItemQuery'
 import { ItemRepositoryInterface } from '../../../Item/ItemRepositoryInterface'
 import { ItemTransferCalculatorInterface } from '../../../Item/ItemTransferCalculatorInterface'
 import { GetItemsDTO } from './GetItemsDTO'
+import { SharedVaultUserRepositoryInterface } from '../../../SharedVault/User/SharedVaultUserRepositoryInterface'
 
 export class GetItems implements UseCaseInterface<GetItemsResult> {
   private readonly DEFAULT_ITEMS_LIMIT = 150
@@ -14,6 +15,7 @@ export class GetItems implements UseCaseInterface<GetItemsResult> {
 
   constructor(
     private itemRepository: ItemRepositoryInterface,
+    private sharedVaultUserRepository: SharedVaultUserRepositoryInterface,
     private contentSizeTransferLimit: number,
     private itemTransferCalculator: ItemTransferCalculatorInterface,
     private timer: TimerInterface,
@@ -37,6 +39,13 @@ export class GetItems implements UseCaseInterface<GetItemsResult> {
     const limit = dto.limit === undefined || dto.limit < 1 ? this.DEFAULT_ITEMS_LIMIT : dto.limit
     const upperBoundLimit = limit < this.maxItemsSyncLimit ? limit : this.maxItemsSyncLimit
 
+    const sharedVaultUsers = await this.sharedVaultUserRepository.findByUserUuid(userUuid)
+    const userSharedVaultUuids = sharedVaultUsers.map((sharedVaultUser) => sharedVaultUser.props.sharedVaultUuid.value)
+
+    const exclusiveSharedVaultUuids = dto.sharedVaultUuids
+      ? dto.sharedVaultUuids.filter((sharedVaultUuid) => userSharedVaultUuids.includes(sharedVaultUuid))
+      : undefined
+
     const itemQuery: ItemQuery = {
       userUuid: userUuid.value,
       lastSyncTime: lastSyncTime ?? undefined,
@@ -46,8 +55,8 @@ export class GetItems implements UseCaseInterface<GetItemsResult> {
       sortBy: 'updated_at_timestamp',
       sortOrder: 'ASC',
       limit: upperBoundLimit,
-      includeSharedVaultUuids: undefined,
-      exclusiveSharedVaultUuids: undefined,
+      includeSharedVaultUuids: !dto.sharedVaultUuids ? userSharedVaultUuids : undefined,
+      exclusiveSharedVaultUuids,
     }
 
     const itemUuidsToFetch = await this.itemTransferCalculator.computeItemUuidsToFetch(
