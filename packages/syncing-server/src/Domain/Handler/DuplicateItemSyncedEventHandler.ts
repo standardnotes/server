@@ -16,7 +16,7 @@ export class DuplicateItemSyncedEventHandler implements DomainEventHandlerInterf
   ) {}
 
   async handle(event: DuplicateItemSyncedEvent): Promise<void> {
-    const item = await this.itemRepository.findByUuidAndUserUuid(event.payload.itemUuid, event.payload.userUuid)
+    const item = await this.itemRepository.findByUuidAndUserUuid(event.payload.itemUuid, event.payload.userUuid, true)
 
     if (item === null) {
       this.logger.warn(`Could not find item with uuid ${event.payload.itemUuid}`)
@@ -33,6 +33,7 @@ export class DuplicateItemSyncedEventHandler implements DomainEventHandlerInterf
     const existingOriginalItem = await this.itemRepository.findByUuidAndUserUuid(
       item.props.duplicateOf.value,
       event.payload.userUuid,
+      true,
     )
 
     if (existingOriginalItem !== null) {

@@ -139,7 +139,7 @@ export class ExtensionsHttpService implements ExtensionsHttpServiceInterface {
     userUuid: string,
     email: string,
   ): Promise<DomainEventInterface> {
-    const extension = await this.itemRepository.findByUuidAndUserUuid(extensionId, userUuid)
+    const extension = await this.itemRepository.findByUuidAndUserUuid(extensionId, userUuid, true)
     if (extension === null || !extension.props.content) {
       throw Error(`Could not find extensions with id ${extensionId}`)
     }
