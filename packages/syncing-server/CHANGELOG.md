@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.78.11](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.78.10...@standardnotes/syncing-server@1.78.11) (2023-08-11)
+
+### Reverts
+
+* Revert "tmp: disable shared vaults" ([d02124f](https://github.com/standardnotes/syncing-server-js/commit/d02124f4e505e4f7e7510637c461fdd0552c381a))
+* Revert "tmp: disable decorating with associations on revisions" ([ad4b85b](https://github.com/standardnotes/syncing-server-js/commit/ad4b85b095a8539955f7b47d51643121d33eed6a))
+* Revert "tmp: disable decorating items completely" ([0bf7d8b](https://github.com/standardnotes/syncing-server-js/commit/0bf7d8beae2de1b86d95711a4e15e84b8bf5e9c0))
+
 ## [1.78.10](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.78.9...@standardnotes/syncing-server@1.78.10) (2023-08-11)
 
 **Note:** Version bump only for package @standardnotes/syncing-server
