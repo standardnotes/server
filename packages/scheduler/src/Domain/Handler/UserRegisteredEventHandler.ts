@@ -33,7 +33,7 @@ export class UserRegisteredEventHandler implements DomainEventHandlerInterface {
   private async scheduleEncourageEmailBackupsJob(event: UserRegisteredEvent): Promise<void> {
     const job = new Job()
     job.name = JobName.ENCOURAGE_EMAIL_BACKUPS
-    job.scheduledAt = this.timer.convertDateToMicroseconds(this.timer.getUTCDateNDaysAhead(7))
+    job.scheduledAt = this.timer.convertDateToMicroseconds(this.timer.getUTCDateNDaysAhead(2))
     job.createdAt = this.timer.getTimestampInMicroseconds()
     job.status = JobStatus.Pending
     job.userIdentifier = event.payload.email
