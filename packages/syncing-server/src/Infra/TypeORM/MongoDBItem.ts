@@ -4,112 +4,52 @@ import { Column, Entity, Index, ObjectIdColumn } from 'typeorm'
 @Index('index_items_on_user_uuid_and_content_type', ['userUuid', 'contentType'])
 @Index('user_uuid_and_deleted', ['userUuid', 'deleted'])
 export class MongoDBItem {
-  @ObjectIdColumn({
-    type: 'uuid',
-  })
+  @ObjectIdColumn()
   declare uuid: string
 
-  @Column({
-    type: 'varchar',
-    name: 'duplicate_of',
-    length: 36,
-    nullable: true,
-  })
+  @Column()
   declare duplicateOf: string | null
 
-  @Column({
-    type: 'varchar',
-    name: 'items_key_id',
-    length: 255,
-    nullable: true,
-  })
+  @Column()
   declare itemsKeyId: string | null
 
-  @Column({
-    type: 'text',
-    nullable: true,
-  })
+  @Column()
   declare content: string | null
 
-  @Column({
-    name: 'content_type',
-    type: 'varchar',
-    length: 255,
-    nullable: true,
-  })
+  @Column()
   @Index('index_items_on_content_type')
   declare contentType: string | null
 
-  @Column({
-    name: 'content_size',
-    type: 'int',
-    nullable: true,
-  })
+  @Column()
   declare contentSize: number | null
 
-  @Column({
-    name: 'enc_item_key',
-    type: 'text',
-    nullable: true,
-  })
+  @Column()
   declare encItemKey: string | null
 
-  @Column({
-    name: 'auth_hash',
-    type: 'varchar',
-    length: 255,
-    nullable: true,
-  })
+  @Column()
   declare authHash: string | null
 
-  @Column({
-    name: 'user_uuid',
-    length: 36,
-  })
+  @Column()
   @Index('index_items_on_user_uuid')
   declare userUuid: string
 
-  @Column({
-    type: 'tinyint',
-    precision: 1,
-    nullable: true,
-    default: 0,
-  })
+  @Column()
   @Index('index_items_on_deleted')
   declare deleted: boolean
 
-  @Column({
-    name: 'created_at',
-    type: 'datetime',
-    precision: 6,
-  })
+  @Column()
   declare createdAt: Date
 
-  @Column({
-    name: 'updated_at',
-    type: 'datetime',
-    precision: 6,
-  })
+  @Column()
   declare updatedAt: Date
 
-  @Column({
-    name: 'created_at_timestamp',
-    type: 'bigint',
-  })
+  @Column()
   declare createdAtTimestamp: number
 
-  @Column({
-    name: 'updated_at_timestamp',
-    type: 'bigint',
-  })
+  @Column()
   @Index('updated_at_timestamp')
   declare updatedAtTimestamp: number
 
-  @Column({
-    name: 'updated_with_session',
-    type: 'varchar',
-    length: 36,
-    nullable: true,
-  })
+  @Column()
   declare updatedWithSession: string | null
 }
