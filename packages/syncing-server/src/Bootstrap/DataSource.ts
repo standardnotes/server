@@ -10,9 +10,11 @@ import { TypeORMSharedVault } from '../Infra/TypeORM/TypeORMSharedVault'
 import { TypeORMSharedVaultUser } from '../Infra/TypeORM/TypeORMSharedVaultUser'
 import { TypeORMSharedVaultInvite } from '../Infra/TypeORM/TypeORMSharedVaultInvite'
 import { TypeORMMessage } from '../Infra/TypeORM/TypeORMMessage'
+import { MongoDBItem } from '../Infra/TypeORM/MongoDBItem'
 
 export class AppDataSource {
   private _dataSource: DataSource | undefined
+  private _secondaryDataSource: DataSource | undefined
 
   constructor(private env: Env) {}
 
@@ -26,6 +28,31 @@ export class AppDataSource {
 
   async initialize(): Promise<void> {
     await this.dataSource.initialize()
+    const secondaryDataSource = this.secondaryDataSource
+    if (secondaryDataSource) {
+      await secondaryDataSource.initialize()
+    }
+  }
+
+  get secondaryDataSource(): DataSource | undefined {
+    this.env.load()
+
+    if (this.env.get('SECONDARY_DB_ENABLED', true) !== 'true') {
+      return undefined
+    }
+
+    this._secondaryDataSource = new DataSource({
+      type: 'mongodb',
+      host: this.env.get('MONGO_HOST'),
+      port: parseInt(this.env.get('MONGO_PORT')),
+      username: this.env.get('MONGO_USERNAME'),
+      password: this.env.get('MONGO_PASSWORD', true),
+      database: this.env.get('MONGO_DATABASE'),
+      entities: [MongoDBItem],
+      synchronize: true,
+    })
+
+    return this._secondaryDataSource
   }
 
   get dataSource(): DataSource {
