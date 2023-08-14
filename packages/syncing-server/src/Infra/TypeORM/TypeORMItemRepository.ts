@@ -237,9 +237,6 @@ export class TypeORMItemRepository implements ItemRepositoryInterface {
       queryBuilder.where('item.user_uuid = :userUuid', { userUuid: query.userUuid })
     }
 
-    if (query.selectString !== undefined) {
-      queryBuilder.select(query.selectString)
-    }
     if (query.uuids && query.uuids.length > 0) {
       queryBuilder.andWhere('item.uuid IN (:...uuids)', { uuids: query.uuids })
     }
