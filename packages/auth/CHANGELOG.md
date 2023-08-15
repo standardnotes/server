@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.131.5](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.131.4...@standardnotes/auth-server@1.131.5) (2023-08-15)
+
+### Bug Fixes
+
+* **auth:** passing the invalidate cache header ([#697](https://github.com/standardnotes/server/issues/697)) ([83ad069](https://github.com/standardnotes/server/commit/83ad069c5dd9afa3a6db881f0d8a55a58d0642aa))
+
 ## [1.131.4](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.131.3...@standardnotes/auth-server@1.131.4) (2023-08-11)
 
 **Note:** Version bump only for package @standardnotes/auth-server
