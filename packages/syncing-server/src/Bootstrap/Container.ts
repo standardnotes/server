@@ -213,7 +213,7 @@ export class ContainerConfigLoader {
     container.bind<TimerInterface>(TYPES.Sync_Timer).toConstantValue(new Timer())
 
     const isConfiguredForHomeServer = env.get('MODE', true) === 'home-server'
-    const isSecondaryDatabaseEnabled = env.get('SECONDARY_DATABASE_ENABLED', true) === 'true'
+    const isSecondaryDatabaseEnabled = env.get('SECONDARY_DB_ENABLED', true) === 'true'
 
     container.bind<Env>(TYPES.Sync_Env).toConstantValue(env)
 
