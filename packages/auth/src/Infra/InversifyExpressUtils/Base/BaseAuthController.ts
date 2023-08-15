@@ -285,6 +285,10 @@ export class BaseAuthController extends BaseHttpController {
       authorizationHeader: <string>request.headers.authorization,
     })
 
+    if (result.headers?.has('x-invalidate-cache')) {
+      response.setHeader('x-invalidate-cache', result.headers.get('x-invalidate-cache') as string)
+    }
+
     return this.json(result.data, result.status)
   }
 
