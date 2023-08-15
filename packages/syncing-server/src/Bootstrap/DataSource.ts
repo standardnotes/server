@@ -1,4 +1,4 @@
-import { DataSource, EntityTarget, LoggerOptions, ObjectLiteral, Repository } from 'typeorm'
+import { DataSource, EntityTarget, LoggerOptions, MongoRepository, ObjectLiteral, Repository } from 'typeorm'
 import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions'
 import { Env } from './Env'
 import { SqliteConnectionOptions } from 'typeorm/driver/sqlite/SqliteConnectionOptions'
@@ -24,6 +24,14 @@ export class AppDataSource {
     }
 
     return this._dataSource.getRepository(target)
+  }
+
+  getMongoRepository<Entity extends ObjectLiteral>(target: EntityTarget<Entity>): MongoRepository<Entity> {
+    if (!this._secondaryDataSource) {
+      throw new Error('Secondary DataSource not initialized')
+    }
+
+    return this._secondaryDataSource.getMongoRepository(target)
   }
 
   async initialize(): Promise<void> {

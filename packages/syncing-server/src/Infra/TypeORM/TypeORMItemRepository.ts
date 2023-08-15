@@ -1,4 +1,3 @@
-import { ReadStream } from 'fs'
 import { Repository, SelectQueryBuilder, Brackets } from 'typeorm'
 import { Change, MapperInterface, Uuid } from '@standardnotes/domain-core'
 import { Logger } from 'winston'
@@ -167,14 +166,6 @@ export class TypeORMItemRepository implements ItemRepositoryInterface {
     await Promise.all(domainItems.map((item) => this.decorateItemWithAssociations(item)))
 
     return domainItems
-  }
-
-  async findAllRaw<T>(query: ItemQuery): Promise<T[]> {
-    return this.createFindAllQueryBuilder(query).getRawMany<T>()
-  }
-
-  async streamAll(query: ItemQuery): Promise<ReadStream> {
-    return this.createFindAllQueryBuilder(query).stream()
   }
 
   async countAll(query: ItemQuery): Promise<number> {

@@ -1,5 +1,4 @@
 import { Uuid } from '@standardnotes/domain-core'
-import { ReadStream } from 'fs'
 
 import { Item } from './Item'
 import { ItemQuery } from './ItemQuery'
@@ -8,8 +7,6 @@ import { ExtendedIntegrityPayload } from './ExtendedIntegrityPayload'
 export interface ItemRepositoryInterface {
   deleteByUserUuid(userUuid: string): Promise<void>
   findAll(query: ItemQuery): Promise<Item[]>
-  findAllRaw<T>(query: ItemQuery): Promise<T[]>
-  streamAll(query: ItemQuery): Promise<ReadStream>
   countAll(query: ItemQuery): Promise<number>
   findContentSizeForComputingTransferLimit(
     query: ItemQuery,

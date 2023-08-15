@@ -1,45 +1,51 @@
 import { MapperInterface, Uuid } from '@standardnotes/domain-core'
-import { ReadStream } from 'fs'
+import { FilterOperators, FindManyOptions, MongoRepository } from 'typeorm'
+import { Logger } from 'winston'
+
 import { ExtendedIntegrityPayload } from '../../Domain/Item/ExtendedIntegrityPayload'
 import { Item } from '../../Domain/Item/Item'
 import { ItemQuery } from '../../Domain/Item/ItemQuery'
 import { ItemRepositoryInterface } from '../../Domain/Item/ItemRepositoryInterface'
-import { FilterOperators, FindOptionsWhere, MongoRepository } from 'typeorm'
 import { MongoDBItem } from './MongoDBItem'
-import { TypeORMItem } from './TypeORMItem'
 
 export class MongoDBItemRepository implements ItemRepositoryInterface {
   constructor(
     private mongoRepository: MongoRepository<MongoDBItem>,
-    private mapper: MapperInterface<Item, TypeORMItem>,
+    private mapper: MapperInterface<Item, MongoDBItem>,
+    private logger: Logger,
   ) {}
 
   async deleteByUserUuid(userUuid: string): Promise<void> {
     await this.mongoRepository.deleteMany({ where: { userUuid } })
   }
 
-  findAll(query: ItemQuery): Promise<Item[]> {
-    throw new Error('Method not implemented.')
+  async findAll(query: ItemQuery): Promise<Item[]> {
+    const options = this.createFindOptions(query)
+    const persistence = await this.mongoRepository.find(options)
+
+    const domainItems: Item[] = []
+    for (const persistencItem of persistence) {
+      try {
+        domainItems.push(this.mapper.toDomain(persistencItem))
+      } catch (error) {
+        this.logger.error(`Failed to map item ${persistencItem.uuid} to domain: ${(error as Error).message}`)
+      }
+    }
+
+    return domainItems
   }
-  findAllRaw<T>(query: ItemQuery): Promise<T[]> {
-    throw new Error('Method not implemented.')
-  }
-  streamAll(query: ItemQuery): Promise<ReadStream> {
-    throw new Error('Method not implemented.')
-  }
-  countAll(query: ItemQuery): Promise<number> {
-    throw new Error('Method not implemented.')
+
+  async countAll(query: ItemQuery): Promise<number> {
+    return this.mongoRepository.count(this.createFindOptions(query))
   }
 
   async findContentSizeForComputingTransferLimit(
     query: ItemQuery,
   ): Promise<{ uuid: string; contentSize: number | null }[]> {
+    const options = this.createFindOptions(query)
     const rawItems = await this.mongoRepository.find({
       select: ['uuid', 'contentSize'],
-      // where: this.createFindAllQueryBuilder(query),
-      where: {
-        $and: [{ uuid: { $in: query.uuids } }, { deleted: { $eq: false } }],
-      },
+      ...options,
     })
 
     const items = rawItems.map((item) => {
@@ -135,15 +141,56 @@ export class MongoDBItemRepository implements ItemRepositoryInterface {
     await this.mongoRepository.updateOne({ where: { uuid: { $eq: itemUuid } } }, { contentSize })
   }
 
-  private createFindAllQueryBuilder(
+  private createFindOptions(
     query: ItemQuery,
-  ): FindOptionsWhere<MongoDBItem>[] | FindOptionsWhere<MongoDBItem> | FilterOperators<MongoDBItem> {
-    let options: FindOptionsWhere<MongoDBItem>[] | FindOptionsWhere<MongoDBItem> | FilterOperators<MongoDBItem>
+  ): FindManyOptions<MongoDBItem> | Partial<MongoDBItem> | FilterOperators<MongoDBItem> {
+    const options: FindManyOptions<MongoDBItem> | Partial<MongoDBItem> | FilterOperators<MongoDBItem> = {
+      order: undefined,
+      where: undefined,
+    }
+    if (query.sortBy !== undefined && query.sortOrder !== undefined) {
+      options.order = { [query.sortBy]: query.sortOrder }
+    }
+
+    if (query.userUuid !== undefined) {
+      options.where = { ...options.where, userUuid: { $eq: query.userUuid } }
+    }
+
     if (query.uuids && query.uuids.length > 0) {
-      // queryBuilder.andWhere('item.uuid IN (:...uuids)', { uuids: query.uuids })
-      options = {
-        $and: [{ uuid: { $in: query.uuids } }, { deleted: { $eq: false } }],
+      options.where = { ...options.where, uuid: { $in: query.uuids } }
+    }
+    if (query.deleted !== undefined) {
+      options.where = { ...options.where, deleted: { $eq: query.deleted } }
+    }
+    if (query.contentType) {
+      if (Array.isArray(query.contentType)) {
+        options.where = { ...options.where, contentType: { $in: query.contentType } }
+      } else {
+        options.where = { ...options.where, contentType: { $eq: query.contentType } }
       }
+    }
+    if (query.lastSyncTime && query.syncTimeComparison) {
+      const mongoComparisonOperator = query.syncTimeComparison === '>' ? '$gt' : '$gte'
+      options.where = {
+        ...options.where,
+        updatedAtTimestamp: { [mongoComparisonOperator]: query.lastSyncTime },
+      }
+    }
+    if (query.createdBetween !== undefined) {
+      options.where = {
+        ...options.where,
+        createdAt: {
+          $gte: query.createdBetween[0].toISOString(),
+          $lte: query.createdBetween[1].toISOString(),
+        },
+      }
+    }
+
+    if (query.offset !== undefined) {
+      options.skip = query.offset
+    }
+    if (query.limit !== undefined) {
+      options.take = query.limit
     }
 
     return options

@@ -24,6 +24,8 @@ const TYPES = {
   Sync_ORMSharedVaultUserRepository: Symbol.for('Sync_ORMSharedVaultUserRepository'),
   Sync_ORMNotificationRepository: Symbol.for('Sync_ORMNotificationRepository'),
   Sync_ORMMessageRepository: Symbol.for('Sync_ORMMessageRepository'),
+  // Mongo
+  Sync_MongoItemRepository: Symbol.for('Sync_MongoItemRepository'),
   // Middleware
   Sync_AuthMiddleware: Symbol.for('Sync_AuthMiddleware'),
   // env vars
