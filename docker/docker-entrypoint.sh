@@ -63,6 +63,9 @@ fi
 if [ -z "$CACHE_TYPE" ]; then
   export CACHE_TYPE="redis"
 fi
+if [ -z "$SECONDARY_DB_ENABLED" ]; then
+  export SECONDARY_DB_ENABLED=false
+fi
 export DB_MIGRATIONS_PATH="dist/migrations/*.js"
 
 #########
