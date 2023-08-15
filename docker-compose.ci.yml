@@ -70,7 +70,7 @@ services:
     restart: unless-stopped
     volumes:
       - ./data/mongo:/data/db
-    env:
+    environment:
       MONGO_INITDB_ROOT_USERNAME: standardnotes
       MONGO_INITDB_ROOT_PASSWORD: standardnotes
       MONGO_INITDB_DATABASE: standardnotes
