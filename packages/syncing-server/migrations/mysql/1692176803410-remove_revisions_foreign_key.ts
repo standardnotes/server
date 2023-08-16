@@ -7,13 +7,11 @@ export class RemoveRevisionsForeignKey1692176803410 implements MigrationInterfac
     )
     const revisionsTableExists = revisionsTableExistsQueryResult[0].count === 1
     if (revisionsTableExists) {
-      const foreignKeyRevisionsOnItemUuid = await queryRunner.manager.query(
-        'SHOW INDEX FROM `revisions` where `key_name` = "FK_ab3b92e54701fe3010022a31d90"',
-      )
-      const foreignKeyRevisionsOnItemUuidExists =
-        foreignKeyRevisionsOnItemUuid && foreignKeyRevisionsOnItemUuid.length > 0
-      if (foreignKeyRevisionsOnItemUuidExists) {
+      try {
         await queryRunner.query('ALTER TABLE `revisions` DROP FOREIGN KEY `FK_ab3b92e54701fe3010022a31d90`')
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.log('Error dropping foreign key: ', (error as Error).message)
       }
     }
   }
