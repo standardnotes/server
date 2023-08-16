@@ -7,7 +7,7 @@ import { AppDataSource } from './DataSource'
 import { SNSClient, SNSClientConfig } from '@aws-sdk/client-sns'
 import { ItemRepositoryInterface } from '../Domain/Item/ItemRepositoryInterface'
 import { TypeORMItemRepository } from '../Infra/TypeORM/TypeORMItemRepository'
-import { Repository } from 'typeorm'
+import { MongoRepository, Repository } from 'typeorm'
 import { Item } from '../Domain/Item/Item'
 import {
   DirectCallDomainEventPublisher,
@@ -158,6 +158,9 @@ import { UpdateStorageQuotaUsedInSharedVault } from '../Domain/UseCase/SharedVau
 import { SharedVaultFileUploadedEventHandler } from '../Domain/Handler/SharedVaultFileUploadedEventHandler'
 import { SharedVaultFileRemovedEventHandler } from '../Domain/Handler/SharedVaultFileRemovedEventHandler'
 import { AddNotificationsForUsers } from '../Domain/UseCase/Messaging/AddNotificationsForUsers/AddNotificationsForUsers'
+import { MongoDBItem } from '../Infra/TypeORM/MongoDBItem'
+import { MongoDBItemRepository } from '../Infra/TypeORM/MongoDBItemRepository'
+import { MongoDBItemPersistenceMapper } from '../Mapping/Persistence/MongoDB/MongoDBItemPersistenceMapper'
 
 export class ContainerConfigLoader {
   private readonly DEFAULT_CONTENT_SIZE_TRANSFER_LIMIT = 10_000_000
@@ -210,6 +213,7 @@ export class ContainerConfigLoader {
     container.bind<TimerInterface>(TYPES.Sync_Timer).toConstantValue(new Timer())
 
     const isConfiguredForHomeServer = env.get('MODE', true) === 'home-server'
+    const isSecondaryDatabaseEnabled = env.get('SECONDARY_DB_ENABLED', true) === 'true'
 
     container.bind<Env>(TYPES.Sync_Env).toConstantValue(env)
 
@@ -381,6 +385,17 @@ export class ContainerConfigLoader {
       .bind<Repository<TypeORMMessage>>(TYPES.Sync_ORMMessageRepository)
       .toConstantValue(appDataSource.getRepository(TypeORMMessage))
 
+    // Mongo
+    if (isSecondaryDatabaseEnabled) {
+      container
+        .bind<MapperInterface<Item, MongoDBItem>>(TYPES.Sync_MongoDBItemPersistenceMapper)
+        .toConstantValue(new MongoDBItemPersistenceMapper())
+
+      container
+        .bind<MongoRepository<MongoDBItem>>(TYPES.Sync_MongoItemRepository)
+        .toConstantValue(appDataSource.getMongoRepository(MongoDBItem))
+    }
+
     // Repositories
     container
       .bind<KeySystemAssociationRepositoryInterface>(TYPES.Sync_KeySystemAssociationRepository)
@@ -401,13 +416,19 @@ export class ContainerConfigLoader {
     container
       .bind<ItemRepositoryInterface>(TYPES.Sync_ItemRepository)
       .toConstantValue(
-        new TypeORMItemRepository(
-          container.get(TYPES.Sync_ORMItemRepository),
-          container.get(TYPES.Sync_ItemPersistenceMapper),
-          container.get(TYPES.Sync_KeySystemAssociationRepository),
-          container.get(TYPES.Sync_SharedVaultAssociationRepository),
-          container.get(TYPES.Sync_Logger),
-        ),
+        isSecondaryDatabaseEnabled
+          ? new MongoDBItemRepository(
+              container.get(TYPES.Sync_MongoItemRepository),
+              container.get(TYPES.Sync_MongoDBItemPersistenceMapper),
+              container.get(TYPES.Sync_Logger),
+            )
+          : new TypeORMItemRepository(
+              container.get(TYPES.Sync_ORMItemRepository),
+              container.get(TYPES.Sync_ItemPersistenceMapper),
+              container.get(TYPES.Sync_KeySystemAssociationRepository),
+              container.get(TYPES.Sync_SharedVaultAssociationRepository),
+              container.get(TYPES.Sync_Logger),
+            ),
       )
     container
       .bind<SharedVaultRepositoryInterface>(TYPES.Sync_SharedVaultRepository)

@@ -10,7 +10,6 @@ export type ItemQuery = {
   offset?: number
   limit?: number
   createdBetween?: Date[]
-  selectString?: string
   includeSharedVaultUuids?: string[]
   exclusiveSharedVaultUuids?: string[]
 }

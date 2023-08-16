@@ -24,6 +24,8 @@ const TYPES = {
   Sync_ORMSharedVaultUserRepository: Symbol.for('Sync_ORMSharedVaultUserRepository'),
   Sync_ORMNotificationRepository: Symbol.for('Sync_ORMNotificationRepository'),
   Sync_ORMMessageRepository: Symbol.for('Sync_ORMMessageRepository'),
+  // Mongo
+  Sync_MongoItemRepository: Symbol.for('Sync_MongoItemRepository'),
   // Middleware
   Sync_AuthMiddleware: Symbol.for('Sync_AuthMiddleware'),
   // env vars
@@ -124,6 +126,7 @@ const TYPES = {
   Sync_MessageHttpMapper: Symbol.for('Sync_MessageHttpMapper'),
   Sync_NotificationHttpMapper: Symbol.for('Sync_NotificationHttpMapper'),
   Sync_ItemPersistenceMapper: Symbol.for('Sync_ItemPersistenceMapper'),
+  Sync_MongoDBItemPersistenceMapper: Symbol.for('Sync_MongoDBItemPersistenceMapper'),
   Sync_ItemHttpMapper: Symbol.for('Sync_ItemHttpMapper'),
   Sync_ItemHashHttpMapper: Symbol.for('Sync_ItemHashHttpMapper'),
   Sync_SavedItemHttpMapper: Symbol.for('Sync_SavedItemHttpMapper'),

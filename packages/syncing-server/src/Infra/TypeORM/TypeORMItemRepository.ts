@@ -1,4 +1,3 @@
-import { ReadStream } from 'fs'
 import { Repository, SelectQueryBuilder, Brackets } from 'typeorm'
 import { Change, MapperInterface, Uuid } from '@standardnotes/domain-core'
 import { Logger } from 'winston'
@@ -169,14 +168,6 @@ export class TypeORMItemRepository implements ItemRepositoryInterface {
     return domainItems
   }
 
-  async findAllRaw<T>(query: ItemQuery): Promise<T[]> {
-    return this.createFindAllQueryBuilder(query).getRawMany<T>()
-  }
-
-  async streamAll(query: ItemQuery): Promise<ReadStream> {
-    return this.createFindAllQueryBuilder(query).stream()
-  }
-
   async countAll(query: ItemQuery): Promise<number> {
     return this.createFindAllQueryBuilder(query).getCount()
   }
@@ -237,9 +228,6 @@ export class TypeORMItemRepository implements ItemRepositoryInterface {
       queryBuilder.where('item.user_uuid = :userUuid', { userUuid: query.userUuid })
     }
 
-    if (query.selectString !== undefined) {
-      queryBuilder.select(query.selectString)
-    }
     if (query.uuids && query.uuids.length > 0) {
       queryBuilder.andWhere('item.uuid IN (:...uuids)', { uuids: query.uuids })
     }
