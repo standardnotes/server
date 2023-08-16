@@ -1,6 +1,7 @@
 import { MapperInterface, Uuid } from '@standardnotes/domain-core'
 import { FilterOperators, FindManyOptions, MongoRepository } from 'typeorm'
 import { Logger } from 'winston'
+import { BSON } from 'mongodb'
 
 import { ExtendedIntegrityPayload } from '../../Domain/Item/ExtendedIntegrityPayload'
 import { Item } from '../../Domain/Item/Item'
@@ -28,7 +29,9 @@ export class MongoDBItemRepository implements ItemRepositoryInterface {
       try {
         domainItems.push(this.mapper.toDomain(persistencItem))
       } catch (error) {
-        this.logger.error(`Failed to map item ${persistencItem.uuid} to domain: ${(error as Error).message}`)
+        this.logger.error(
+          `Failed to map item ${persistencItem._id.toHexString()} to domain: ${(error as Error).message}`,
+        )
       }
     }
 
@@ -50,7 +53,7 @@ export class MongoDBItemRepository implements ItemRepositoryInterface {
 
     const items = rawItems.map((item) => {
       return {
-        uuid: item.uuid,
+        uuid: item._id.toHexString(),
         contentSize: item.contentSize,
       }
     })
@@ -85,7 +88,7 @@ export class MongoDBItemRepository implements ItemRepositoryInterface {
 
     const integrityPayloads = items.map((item) => {
       return {
-        uuid: item.uuid,
+        uuid: item._id.toHexString(),
         updated_at_timestamp: item.updatedAtTimestamp,
         content_type: item.contentType,
         user_uuid: item.userUuid,
@@ -99,7 +102,7 @@ export class MongoDBItemRepository implements ItemRepositoryInterface {
   async findByUuidAndUserUuid(uuid: string, userUuid: string): Promise<Item | null> {
     const persistence = await this.mongoRepository.findOne({
       where: {
-        $and: [{ uuid: { $eq: uuid } }, { userUuid: { $eq: userUuid } }],
+        $and: [{ _id: { $eq: BSON.UUID.createFromHexString(uuid) } }, { userUuid: { $eq: userUuid } }],
       },
     })
 
@@ -111,7 +114,9 @@ export class MongoDBItemRepository implements ItemRepositoryInterface {
   }
 
   async findByUuid(uuid: Uuid): Promise<Item | null> {
-    const persistence = await this.mongoRepository.findOne({ where: { uuid: { $eq: uuid } } })
+    const persistence = await this.mongoRepository.findOne({
+      where: { _id: { $eq: BSON.UUID.createFromHexString(uuid.value) } },
+    })
 
     if (persistence === null) {
       return null
@@ -121,7 +126,7 @@ export class MongoDBItemRepository implements ItemRepositoryInterface {
   }
 
   async remove(item: Item): Promise<void> {
-    await this.mongoRepository.deleteOne({ where: { uuid: { $eq: item.uuid } } })
+    await this.mongoRepository.deleteOne({ where: { _id: { $eq: BSON.UUID.createFromHexString(item.uuid.value) } } })
   }
 
   async save(item: Item): Promise<void> {
@@ -132,13 +137,16 @@ export class MongoDBItemRepository implements ItemRepositoryInterface {
 
   async markItemsAsDeleted(itemUuids: string[], updatedAtTimestamp: number): Promise<void> {
     await this.mongoRepository.updateMany(
-      { where: { uuid: { $in: itemUuids } } },
+      { where: { _id: { $in: itemUuids.map((uuid) => BSON.UUID.createFromHexString(uuid)) } } },
       { deleted: true, content: null, encItemKey: null, authHash: null, updatedAtTimestamp },
     )
   }
 
   async updateContentSize(itemUuid: string, contentSize: number): Promise<void> {
-    await this.mongoRepository.updateOne({ where: { uuid: { $eq: itemUuid } } }, { contentSize })
+    await this.mongoRepository.updateOne(
+      { where: { _id: { $eq: BSON.UUID.createFromHexString(itemUuid) } } },
+      { contentSize },
+    )
   }
 
   private createFindOptions(
@@ -157,7 +165,10 @@ export class MongoDBItemRepository implements ItemRepositoryInterface {
     }
 
     if (query.uuids && query.uuids.length > 0) {
-      options.where = { ...options.where, uuid: { $in: query.uuids } }
+      options.where = {
+        ...options.where,
+        _id: { $in: query.uuids.map((uuid) => BSON.UUID.createFromHexString(uuid)) },
+      }
     }
     if (query.deleted !== undefined) {
       options.where = { ...options.where, deleted: { $eq: query.deleted } }

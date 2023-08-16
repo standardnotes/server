@@ -1,3 +1,4 @@
+import { BSON } from 'mongodb'
 import { Column, Entity, Index, ObjectIdColumn } from 'typeorm'
 
 @Entity({ name: 'items' })
@@ -5,7 +6,7 @@ import { Column, Entity, Index, ObjectIdColumn } from 'typeorm'
 @Index('user_uuid_and_deleted', ['userUuid', 'deleted'])
 export class MongoDBItem {
   @ObjectIdColumn()
-  declare uuid: string
+  declare _id: BSON.UUID
 
   @Column()
   declare duplicateOf: string | null

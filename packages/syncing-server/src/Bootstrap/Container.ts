@@ -295,7 +295,7 @@ export class ContainerConfigLoader {
     // Mapping
     container
       .bind<MapperInterface<Item, TypeORMItem>>(TYPES.Sync_ItemPersistenceMapper)
-      .toConstantValue(isSecondaryDatabaseEnabled ? new MongoDBItemPersistenceMapper() : new ItemPersistenceMapper())
+      .toConstantValue(new ItemPersistenceMapper())
     container
       .bind<MapperInterface<ItemHash, ItemHashHttpRepresentation>>(TYPES.Sync_ItemHashHttpMapper)
       .toConstantValue(new ItemHashHttpMapper())
@@ -388,6 +388,10 @@ export class ContainerConfigLoader {
     // Mongo
     if (isSecondaryDatabaseEnabled) {
       container
+        .bind<MapperInterface<Item, MongoDBItem>>(TYPES.Sync_MongoDBItemPersistenceMapper)
+        .toConstantValue(new MongoDBItemPersistenceMapper())
+
+      container
         .bind<MongoRepository<MongoDBItem>>(TYPES.Sync_MongoItemRepository)
         .toConstantValue(appDataSource.getMongoRepository(MongoDBItem))
     }
@@ -415,7 +419,7 @@ export class ContainerConfigLoader {
         isSecondaryDatabaseEnabled
           ? new MongoDBItemRepository(
               container.get(TYPES.Sync_MongoItemRepository),
-              container.get(TYPES.Sync_ItemPersistenceMapper),
+              container.get(TYPES.Sync_MongoDBItemPersistenceMapper),
               container.get(TYPES.Sync_Logger),
             )
           : new TypeORMItemRepository(
