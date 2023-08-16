@@ -132,7 +132,15 @@ export class MongoDBItemRepository implements ItemRepositoryInterface {
   async save(item: Item): Promise<void> {
     const persistence = this.mapper.toProjection(item)
 
-    await this.mongoRepository.save(persistence)
+    const { _id, ...rest } = persistence
+
+    await this.mongoRepository.updateOne(
+      { _id: { $eq: _id } },
+      {
+        $set: rest,
+      },
+      { upsert: true },
+    )
   }
 
   async markItemsAsDeleted(itemUuids: string[], updatedAtTimestamp: number): Promise<void> {
