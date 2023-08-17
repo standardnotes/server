@@ -54,8 +54,17 @@ jobs:
     - name: Wait for server to start
       run: docker/is-available.sh http://localhost:3123 $(pwd)/logs
 
+    - name: Define if vaults are enabled based on secondary db enabled parameter
+      id: vaults
+      run: |
+        if [ "${{ matrix.secondary_db_enabled }}" = "true" ]; then
+          echo "vault-tests=enabled" >> $GITHUB_OUTPUT
+        else
+          echo "vault-tests=disabled" >> $GITHUB_OUTPUT
+        fi
+
     - name: Run E2E Test Suite
-      run: yarn dlx mocha-headless-chrome --timeout 1800000 -f http://localhost:9001/mocha/test.html
+      run: yarn dlx mocha-headless-chrome --timeout 1800000 -f http://localhost:9001/mocha/test.html?vaults=${{ steps.vaults.outputs.vault-tests }}}
 
     - name: Show logs on failure
       if: ${{ failure() }}
@@ -157,8 +166,17 @@ jobs:
     - name: Wait for server to start
       run: for i in {1..30}; do curl -s http://localhost:3123/healthcheck && break || sleep 1; done
 
+    - name: Define if vaults are enabled based on secondary db enabled parameter
+      id: vaults
+      run: |
+        if [ "${{ matrix.secondary_db_enabled }}" = "true" ]; then
+          echo "vault-tests=enabled" >> $GITHUB_OUTPUT
+        else
+          echo "vault-tests=disabled" >> $GITHUB_OUTPUT
+        fi
+
     - name: Run E2E Test Suite
-      run: yarn dlx mocha-headless-chrome --timeout 1800000 -f http://localhost:9001/mocha/test.html
+      run: yarn dlx mocha-headless-chrome --timeout 1800000 -f http://localhost:9001/mocha/test.html?vaults=${{ steps.vaults.outputs.vault-tests }}}
 
     - name: Show logs on failure
       if: ${{ failure() }}
