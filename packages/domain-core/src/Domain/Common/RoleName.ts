@@ -8,6 +8,7 @@ export class RoleName extends ValueObject<RoleNameProps> {
     PlusUser: 'PLUS_USER',
     ProUser: 'PRO_USER',
     InternalTeamUser: 'INTERNAL_TEAM_USER',
+    TransitionUser: 'TRANSITION_USER',
   }
 
   get value(): string {
@@ -19,11 +20,19 @@ export class RoleName extends ValueObject<RoleNameProps> {
       case RoleName.NAMES.InternalTeamUser:
         return true
       case RoleName.NAMES.ProUser:
-        return [RoleName.NAMES.CoreUser, RoleName.NAMES.PlusUser, RoleName.NAMES.ProUser].includes(roleName.value)
+        return [
+          RoleName.NAMES.CoreUser,
+          RoleName.NAMES.PlusUser,
+          RoleName.NAMES.ProUser,
+          RoleName.NAMES.TransitionUser,
+        ].includes(roleName.value)
       case RoleName.NAMES.PlusUser:
-        return [RoleName.NAMES.CoreUser, RoleName.NAMES.PlusUser].includes(roleName.value)
+        return [RoleName.NAMES.CoreUser, RoleName.NAMES.PlusUser, RoleName.NAMES.TransitionUser].includes(
+          roleName.value,
+        )
       case RoleName.NAMES.CoreUser:
-        return [RoleName.NAMES.CoreUser].includes(roleName.value)
+      case RoleName.NAMES.TransitionUser:
+        return [RoleName.NAMES.CoreUser, RoleName.NAMES.TransitionUser].includes(roleName.value)
       /*istanbul ignore next*/
       default:
         throw new Error(`Invalid role name: ${this.value}`)
