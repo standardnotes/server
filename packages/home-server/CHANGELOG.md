@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.13.51](https://github.com/standardnotes/server/compare/@standardnotes/home-server@1.13.50...@standardnotes/home-server@1.13.51) (2023-08-17)
+
+### Bug Fixes
+
+* **home-server:** add default env values for secondary database ([916e989](https://github.com/standardnotes/server/commit/916e98936a276a3960d949c5b70803214c945686))
+
 ## [1.13.50](https://github.com/standardnotes/server/compare/@standardnotes/home-server@1.13.49...@standardnotes/home-server@1.13.50) (2023-08-16)
 
 **Note:** Version bump only for package @standardnotes/home-server
