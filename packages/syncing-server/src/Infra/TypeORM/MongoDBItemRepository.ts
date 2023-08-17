@@ -39,7 +39,9 @@ export class MongoDBItemRepository implements ItemRepositoryInterface {
   }
 
   async countAll(query: ItemQuery): Promise<number> {
-    return this.mongoRepository.count(this.createFindOptions(query))
+    const options = this.createFindOptions(query)
+
+    return this.mongoRepository.count((options as FindManyOptions<MongoDBItem>).where)
   }
 
   async findContentSizeForComputingTransferLimit(
@@ -168,10 +170,6 @@ export class MongoDBItemRepository implements ItemRepositoryInterface {
       options.order = { [query.sortBy]: query.sortOrder }
     }
 
-    if (query.userUuid !== undefined) {
-      options.where = { ...options.where, userUuid: { $eq: query.userUuid } }
-    }
-
     if (query.uuids && query.uuids.length > 0) {
       options.where = {
         ...options.where,
@@ -203,6 +201,35 @@ export class MongoDBItemRepository implements ItemRepositoryInterface {
           $lte: query.createdBetween[1].toISOString(),
         },
       }
+    }
+
+    if (query.includeSharedVaultUuids !== undefined && query.includeSharedVaultUuids.length > 0) {
+      if (query.userUuid) {
+        options.where = {
+          $and: [
+            { ...options.where },
+            {
+              $or: [{ sharedVaultUuid: { $in: query.includeSharedVaultUuids } }, { userUuid: { $eq: query.userUuid } }],
+            },
+          ],
+        }
+      } else {
+        options.where = {
+          $and: [
+            { ...options.where },
+            {
+              $or: [{ sharedVaultUuid: { $in: query.includeSharedVaultUuids } }],
+            },
+          ],
+        }
+      }
+    } else if (query.exclusiveSharedVaultUuids !== undefined && query.exclusiveSharedVaultUuids.length > 0) {
+      options.where = {
+        ...options.where,
+        sharedVaultUuid: { $in: query.exclusiveSharedVaultUuids },
+      }
+    } else if (query.userUuid !== undefined) {
+      options.where = { ...options.where, userUuid: { $eq: query.userUuid } }
     }
 
     if (query.offset !== undefined) {

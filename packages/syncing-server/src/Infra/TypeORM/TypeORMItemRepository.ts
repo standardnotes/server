@@ -1,5 +1,5 @@
-import { Repository, SelectQueryBuilder, Brackets } from 'typeorm'
-import { Change, MapperInterface, Uuid } from '@standardnotes/domain-core'
+import { Repository, SelectQueryBuilder } from 'typeorm'
+import { MapperInterface, Uuid } from '@standardnotes/domain-core'
 import { Logger } from 'winston'
 
 import { Item } from '../../Domain/Item/Item'
@@ -7,18 +7,11 @@ import { ItemQuery } from '../../Domain/Item/ItemQuery'
 import { ItemRepositoryInterface } from '../../Domain/Item/ItemRepositoryInterface'
 import { ExtendedIntegrityPayload } from '../../Domain/Item/ExtendedIntegrityPayload'
 import { TypeORMItem } from './TypeORMItem'
-import { KeySystemAssociationRepositoryInterface } from '../../Domain/KeySystem/KeySystemAssociationRepositoryInterface'
-import { SharedVaultAssociationRepositoryInterface } from '../../Domain/SharedVault/SharedVaultAssociationRepositoryInterface'
-import { TypeORMSharedVaultAssociation } from './TypeORMSharedVaultAssociation'
-import { SharedVaultAssociation } from '../../Domain/SharedVault/SharedVaultAssociation'
-import { KeySystemAssociation } from '../../Domain/KeySystem/KeySystemAssociation'
 
 export class TypeORMItemRepository implements ItemRepositoryInterface {
   constructor(
     private ormRepository: Repository<TypeORMItem>,
     private mapper: MapperInterface<Item, TypeORMItem>,
-    private keySystemAssociationRepository: KeySystemAssociationRepositoryInterface,
-    private sharedVaultAssociationRepository: SharedVaultAssociationRepositoryInterface,
     private logger: Logger,
   ) {}
 
@@ -26,19 +19,9 @@ export class TypeORMItemRepository implements ItemRepositoryInterface {
     const persistence = this.mapper.toProjection(item)
 
     await this.ormRepository.save(persistence)
-
-    await this.persistAssociationChanges(item)
   }
 
   async remove(item: Item): Promise<void> {
-    if (item.props.keySystemAssociation) {
-      await this.keySystemAssociationRepository.remove(item.props.keySystemAssociation)
-    }
-
-    if (item.props.sharedVaultAssociation) {
-      await this.sharedVaultAssociationRepository.remove(item.props.sharedVaultAssociation)
-    }
-
     await this.ormRepository.remove(this.mapper.toProjection(item))
   }
 
@@ -91,8 +74,6 @@ export class TypeORMItemRepository implements ItemRepositoryInterface {
     try {
       const item = this.mapper.toDomain(persistence)
 
-      await this.decorateItemWithAssociations(item)
-
       return item
     } catch (error) {
       this.logger.error(`Failed to find item ${uuid.value} by uuid: ${(error as Error).message}`)
@@ -141,8 +122,6 @@ export class TypeORMItemRepository implements ItemRepositoryInterface {
     try {
       const item = this.mapper.toDomain(persistence)
 
-      await this.decorateItemWithAssociations(item)
-
       return item
     } catch (error) {
       this.logger.error(`Failed to find item ${uuid} by uuid and userUuid: ${(error as Error).message}`)
@@ -162,8 +141,6 @@ export class TypeORMItemRepository implements ItemRepositoryInterface {
         this.logger.error(`Failed to map item ${persistencItem.uuid} to domain: ${(error as Error).message}`)
       }
     }
-
-    await Promise.all(domainItems.map((item) => this.decorateItemWithAssociations(item)))
 
     return domainItems
   }
@@ -196,35 +173,7 @@ export class TypeORMItemRepository implements ItemRepositoryInterface {
       queryBuilder.orderBy(`item.${query.sortBy}`, query.sortOrder)
     }
 
-    if (query.includeSharedVaultUuids !== undefined && query.includeSharedVaultUuids.length > 0) {
-      queryBuilder
-        .leftJoin(
-          TypeORMSharedVaultAssociation,
-          'sharedVaultAssociation',
-          'sharedVaultAssociation.itemUuid = item.uuid',
-        )
-        .where(
-          new Brackets((qb) => {
-            qb.where('sharedVaultAssociation.sharedVaultUuid IN (:...sharedVaultUuids)', {
-              sharedVaultUuids: query.includeSharedVaultUuids,
-            })
-
-            if (query.userUuid) {
-              qb.orWhere('item.user_uuid = :userUuid', { userUuid: query.userUuid })
-            }
-          }),
-        )
-    } else if (query.exclusiveSharedVaultUuids !== undefined && query.exclusiveSharedVaultUuids.length > 0) {
-      queryBuilder
-        .innerJoin(
-          TypeORMSharedVaultAssociation,
-          'sharedVaultAssociation',
-          'sharedVaultAssociation.itemUuid = item.uuid',
-        )
-        .where('sharedVaultAssociation.sharedVaultUuid IN (:...sharedVaultUuids)', {
-          sharedVaultUuids: query.exclusiveSharedVaultUuids,
-        })
-    } else if (query.userUuid !== undefined) {
+    if (query.userUuid !== undefined) {
       queryBuilder.where('item.user_uuid = :userUuid', { userUuid: query.userUuid })
     }
 
@@ -260,49 +209,5 @@ export class TypeORMItemRepository implements ItemRepositoryInterface {
     }
 
     return queryBuilder
-  }
-
-  private async decorateItemWithAssociations(item: Item): Promise<void> {
-    await Promise.all([
-      this.decorateItemWithKeySystemAssociation(item),
-      this.decorateItemWithSharedVaultAssociation(item),
-    ])
-  }
-
-  private async decorateItemWithKeySystemAssociation(item: Item): Promise<void> {
-    const keySystemAssociation = await this.keySystemAssociationRepository.findByItemUuid(item.uuid)
-    if (keySystemAssociation) {
-      item.props.keySystemAssociation = keySystemAssociation
-    }
-  }
-
-  private async decorateItemWithSharedVaultAssociation(item: Item): Promise<void> {
-    const sharedVaultAssociation = await this.sharedVaultAssociationRepository.findByItemUuid(item.uuid)
-    if (sharedVaultAssociation) {
-      item.props.sharedVaultAssociation = sharedVaultAssociation
-    }
-  }
-
-  private async persistAssociationChanges(item: Item): Promise<void> {
-    for (const change of item.getChanges()) {
-      if (change.props.changeData instanceof SharedVaultAssociation) {
-        if ([Change.TYPES.Add, Change.TYPES.Modify].includes(change.props.changeType)) {
-          await this.sharedVaultAssociationRepository.save(change.props.changeData)
-        }
-        if (change.props.changeType === Change.TYPES.Remove) {
-          await this.sharedVaultAssociationRepository.remove(change.props.changeData)
-        }
-      }
-      if (change.props.changeData instanceof KeySystemAssociation) {
-        if ([Change.TYPES.Add, Change.TYPES.Modify].includes(change.props.changeType)) {
-          await this.keySystemAssociationRepository.save(change.props.changeData)
-        }
-        if (change.props.changeType === Change.TYPES.Remove) {
-          await this.keySystemAssociationRepository.remove(change.props.changeData)
-        }
-      }
-    }
-
-    item.flushChanges()
   }
 }

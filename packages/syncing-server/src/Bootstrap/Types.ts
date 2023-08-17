@@ -8,8 +8,6 @@ const TYPES = {
   Sync_Env: Symbol.for('Sync_Env'),
   // Repositories
   Sync_ItemRepository: Symbol.for('Sync_ItemRepository'),
-  Sync_KeySystemAssociationRepository: Symbol.for('Sync_KeySystemAssociationRepository'),
-  Sync_SharedVaultAssociationRepository: Symbol.for('Sync_SharedVaultAssociationRepository'),
   Sync_SharedVaultRepository: Symbol.for('Sync_SharedVaultRepository'),
   Sync_SharedVaultInviteRepository: Symbol.for('Sync_SharedVaultInviteRepository'),
   Sync_SharedVaultUserRepository: Symbol.for('Sync_SharedVaultUserRepository'),
@@ -132,8 +130,6 @@ const TYPES = {
   Sync_SavedItemHttpMapper: Symbol.for('Sync_SavedItemHttpMapper'),
   Sync_ItemConflictHttpMapper: Symbol.for('Sync_ItemConflictHttpMapper'),
   Sync_ItemBackupMapper: Symbol.for('Sync_ItemBackupMapper'),
-  Sync_KeySystemAssociationPersistenceMapper: Symbol.for('Sync_KeySystemAssociationPersistenceMapper'),
-  Sync_SharedVaultAssociationPersistenceMapper: Symbol.for('Sync_SharedVaultAssociationPersistenceMapper'),
   Sync_SharedVaultPersistenceMapper: Symbol.for('Sync_SharedVaultPersistenceMapper'),
   Sync_SharedVaultUserPersistenceMapper: Symbol.for('Sync_SharedVaultUserPersistenceMapper'),
   Sync_SharedVaultInvitePersistenceMapper: Symbol.for('Sync_SharedVaultInvitePersistenceMapper'),

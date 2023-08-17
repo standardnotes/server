@@ -53,4 +53,13 @@ export class MongoDBItem {
 
   @Column()
   declare updatedWithSession: string | null
+
+  @Column()
+  declare lastEditedBy: string | null
+
+  @Column()
+  declare sharedVaultUuid: string | null
+
+  @Column()
+  declare keySystemIdentifier: string | null
 }

@@ -112,11 +112,6 @@ export class SaveNewItem implements UseCaseInterface<Item> {
       const sharedVaultAssociationOrError = SharedVaultAssociation.create({
         lastEditedBy: userUuid,
         sharedVaultUuid: dto.itemHash.sharedVaultUuid as Uuid,
-        timestamps: Timestamps.create(
-          this.timer.getTimestampInMicroseconds(),
-          this.timer.getTimestampInMicroseconds(),
-        ).getValue(),
-        itemUuid: uuid,
       })
       if (sharedVaultAssociationOrError.isFailed()) {
         return Result.fail(sharedVaultAssociationOrError.getError())
@@ -132,11 +127,6 @@ export class SaveNewItem implements UseCaseInterface<Item> {
       const keySystemIdentifier = dto.itemHash.props.key_system_identifier as string
 
       const keySystemAssociationOrError = KeySystemAssociation.create({
-        itemUuid: uuid,
-        timestamps: Timestamps.create(
-          this.timer.getTimestampInMicroseconds(),
-          this.timer.getTimestampInMicroseconds(),
-        ).getValue(),
         keySystemIdentifier,
       })
       if (keySystemAssociationOrError.isFailed()) {

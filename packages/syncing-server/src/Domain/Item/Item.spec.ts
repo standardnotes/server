@@ -61,10 +61,8 @@ describe('Item', () => {
       dates: Dates.create(new Date(123), new Date(123)).getValue(),
       timestamps: Timestamps.create(123, 123).getValue(),
       sharedVaultAssociation: SharedVaultAssociation.create({
-        itemUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
         sharedVaultUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
         lastEditedBy: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
-        timestamps: Timestamps.create(123, 123).getValue(),
       }).getValue(),
     })
 
@@ -113,9 +111,7 @@ describe('Item', () => {
       dates: Dates.create(new Date(123), new Date(123)).getValue(),
       timestamps: Timestamps.create(123, 123).getValue(),
       keySystemAssociation: KeySystemAssociation.create({
-        itemUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
         keySystemIdentifier: 'key-system-identifier',
-        timestamps: Timestamps.create(123, 123).getValue(),
       }).getValue(),
     })
 
@@ -144,10 +140,8 @@ describe('Item', () => {
 
   it('should set shared vault association', () => {
     const sharedVaultAssociation = SharedVaultAssociation.create({
-      itemUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
       sharedVaultUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
       lastEditedBy: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
-      timestamps: Timestamps.create(123, 123).getValue(),
     }).getValue()
 
     const entity = Item.create({
@@ -184,10 +178,8 @@ describe('Item', () => {
       dates: Dates.create(new Date(123), new Date(123)).getValue(),
       timestamps: Timestamps.create(123, 123).getValue(),
       sharedVaultAssociation: SharedVaultAssociation.create({
-        itemUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
         sharedVaultUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
         lastEditedBy: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
-        timestamps: Timestamps.create(123, 123).getValue(),
       }).getValue(),
     }).getValue()
 
@@ -199,9 +191,7 @@ describe('Item', () => {
 
   it('should set key system association', () => {
     const keySystemAssociation = KeySystemAssociation.create({
-      itemUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
       keySystemIdentifier: 'key-system-identifier',
-      timestamps: Timestamps.create(123, 123).getValue(),
     }).getValue()
 
     const entity = Item.create({
@@ -238,9 +228,7 @@ describe('Item', () => {
       dates: Dates.create(new Date(123), new Date(123)).getValue(),
       timestamps: Timestamps.create(123, 123).getValue(),
       keySystemAssociation: KeySystemAssociation.create({
-        itemUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
         keySystemIdentifier: 'key-system-identifier',
-        timestamps: Timestamps.create(123, 123).getValue(),
       }).getValue(),
     }).getValue()
 

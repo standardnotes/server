@@ -365,9 +365,6 @@ describe('SaveNewItem', () => {
       })
 
       expect(result.isFailed()).toBeFalsy()
-      expect(result.getValue().props.keySystemAssociation?.props.itemUuid.value).toEqual(
-        '00000000-0000-0000-0000-000000000000',
-      )
       expect(itemRepository.save).toHaveBeenCalled()
     })
 
