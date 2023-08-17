@@ -40,10 +40,8 @@ describe('SharedVaultFilter', () => {
         dates: Dates.create(new Date(1616164633241311), new Date(1616164633241311)).getValue(),
         timestamps: Timestamps.create(1616164633241311, 1616164633241311).getValue(),
         sharedVaultAssociation: SharedVaultAssociation.create({
-          itemUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
           lastEditedBy: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
           sharedVaultUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
-          timestamps: Timestamps.create(123, 123).getValue(),
         }).getValue(),
       },
       new UniqueEntityId('00000000-0000-0000-0000-000000000000'),
@@ -254,10 +252,8 @@ describe('SharedVaultFilter', () => {
           dates: Dates.create(new Date(1616164633241311), new Date(1616164633241311)).getValue(),
           timestamps: Timestamps.create(1616164633241311, 1616164633241311).getValue(),
           sharedVaultAssociation: SharedVaultAssociation.create({
-            itemUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
             lastEditedBy: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
             sharedVaultUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
-            timestamps: Timestamps.create(123, 123).getValue(),
           }).getValue(),
         },
         new UniqueEntityId('00000000-0000-0000-0000-000000000000'),
@@ -427,10 +423,8 @@ describe('SharedVaultFilter', () => {
           dates: Dates.create(new Date(1616164633241311), new Date(1616164633241311)).getValue(),
           timestamps: Timestamps.create(1616164633241311, 1616164633241311).getValue(),
           sharedVaultAssociation: SharedVaultAssociation.create({
-            itemUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
             lastEditedBy: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
             sharedVaultUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
-            timestamps: Timestamps.create(123, 123).getValue(),
           }).getValue(),
         },
         new UniqueEntityId('00000000-0000-0000-0000-000000000000'),
@@ -589,10 +583,8 @@ describe('SharedVaultFilter', () => {
           dates: Dates.create(new Date(1616164633241311), new Date(1616164633241311)).getValue(),
           timestamps: Timestamps.create(1616164633241311, 1616164633241311).getValue(),
           sharedVaultAssociation: SharedVaultAssociation.create({
-            itemUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
             lastEditedBy: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
             sharedVaultUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
-            timestamps: Timestamps.create(123, 123).getValue(),
           }).getValue(),
         },
         new UniqueEntityId('00000000-0000-0000-0000-000000000000'),

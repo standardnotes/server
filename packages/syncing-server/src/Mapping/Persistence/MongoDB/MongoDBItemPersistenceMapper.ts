@@ -1,8 +1,10 @@
 import { ContentType, Dates, MapperInterface, Timestamps, UniqueEntityId, Uuid } from '@standardnotes/domain-core'
+import { BSON } from 'mongodb'
 
 import { MongoDBItem } from '../../../Infra/TypeORM/MongoDBItem'
 import { Item } from '../../../Domain/Item/Item'
-import { BSON } from 'mongodb'
+import { SharedVaultAssociation } from '../../../Domain/SharedVault/SharedVaultAssociation'
+import { KeySystemAssociation } from '../../../Domain/KeySystem/KeySystemAssociation'
 
 export class MongoDBItemPersistenceMapper implements MapperInterface<Item, MongoDBItem> {
   toDomain(projection: MongoDBItem): Item {
@@ -45,6 +47,41 @@ export class MongoDBItemPersistenceMapper implements MapperInterface<Item, Mongo
     }
     const timestamps = timestampsOrError.getValue()
 
+    let sharedVaultAssociation: SharedVaultAssociation | undefined = undefined
+    if (projection.sharedVaultUuid && projection.lastEditedBy) {
+      const sharedVaultUuidOrError = Uuid.create(projection.sharedVaultUuid)
+      if (sharedVaultUuidOrError.isFailed()) {
+        throw new Error(`Failed to create item from projection: ${sharedVaultUuidOrError.getError()}`)
+      }
+      const sharedVaultUuid = sharedVaultUuidOrError.getValue()
+
+      const lastEditedByOrError = Uuid.create(projection.lastEditedBy)
+      if (lastEditedByOrError.isFailed()) {
+        throw new Error(`Failed to create item from projection: ${lastEditedByOrError.getError()}`)
+      }
+      const lastEditedBy = lastEditedByOrError.getValue()
+
+      const sharedVaultAssociationOrError = SharedVaultAssociation.create({
+        sharedVaultUuid,
+        lastEditedBy,
+      })
+      if (sharedVaultAssociationOrError.isFailed()) {
+        throw new Error(`Failed to create item from projection: ${sharedVaultAssociationOrError.getError()}`)
+      }
+      sharedVaultAssociation = sharedVaultAssociationOrError.getValue()
+    }
+
+    let keySystemAssociation: KeySystemAssociation | undefined = undefined
+    if (projection.keySystemIdentifier) {
+      const keySystemAssociationOrError = KeySystemAssociation.create({
+        keySystemIdentifier: projection.keySystemIdentifier,
+      })
+      if (keySystemAssociationOrError.isFailed()) {
+        throw new Error(`Failed to create item from projection: ${keySystemAssociationOrError.getError()}`)
+      }
+      keySystemAssociation = keySystemAssociationOrError.getValue()
+    }
+
     let updatedWithSession = null
     if (projection.updatedWithSession) {
       const updatedWithSessionOrError = Uuid.create(projection.updatedWithSession)
@@ -68,6 +105,8 @@ export class MongoDBItemPersistenceMapper implements MapperInterface<Item, Mongo
         dates,
         timestamps,
         updatedWithSession,
+        sharedVaultAssociation,
+        keySystemAssociation,
       },
       new UniqueEntityId(uuid.value),
     )
@@ -96,6 +135,15 @@ export class MongoDBItemPersistenceMapper implements MapperInterface<Item, Mongo
     mongoDbItem.createdAtTimestamp = domain.props.timestamps.createdAt
     mongoDbItem.updatedAtTimestamp = domain.props.timestamps.updatedAt
     mongoDbItem.updatedWithSession = domain.props.updatedWithSession ? domain.props.updatedWithSession.value : null
+    mongoDbItem.lastEditedBy = domain.props.sharedVaultAssociation
+      ? domain.props.sharedVaultAssociation.props.lastEditedBy.value
+      : null
+    mongoDbItem.sharedVaultUuid = domain.props.sharedVaultAssociation
+      ? domain.props.sharedVaultAssociation.props.sharedVaultUuid.value
+      : null
+    mongoDbItem.keySystemIdentifier = domain.props.keySystemAssociation
+      ? domain.props.keySystemAssociation.props.keySystemIdentifier
+      : null
 
     return mongoDbItem
   }

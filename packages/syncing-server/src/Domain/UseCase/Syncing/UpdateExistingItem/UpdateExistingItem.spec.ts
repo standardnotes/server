@@ -352,10 +352,8 @@ describe('UpdateExistingItem', () => {
 
       item1.setSharedVaultAssociation(
         SharedVaultAssociation.create({
-          itemUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
           sharedVaultUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
           lastEditedBy: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
-          timestamps: Timestamps.create(123, 123).getValue(),
         }).getValue(),
       )
       const idBefore = item1.props.sharedVaultAssociation?.id.toString()
@@ -532,9 +530,7 @@ describe('UpdateExistingItem', () => {
 
       item1.setKeySystemAssociation(
         KeySystemAssociation.create({
-          itemUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
           keySystemIdentifier: '00000000-0000-0000-0000-000000000000',
-          timestamps: Timestamps.create(123, 123).getValue(),
         }).getValue(),
       )
       const idBefore = item1.props.keySystemAssociation?.id.toString()

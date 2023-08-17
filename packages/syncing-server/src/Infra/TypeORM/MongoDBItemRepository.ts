@@ -168,7 +168,24 @@ export class MongoDBItemRepository implements ItemRepositoryInterface {
       options.order = { [query.sortBy]: query.sortOrder }
     }
 
-    if (query.userUuid !== undefined) {
+    if (query.includeSharedVaultUuids !== undefined && query.includeSharedVaultUuids.length > 0) {
+      if (query.userUuid) {
+        options.where = {
+          ...options.where,
+          $or: [{ sharedVaultUuid: { $in: query.includeSharedVaultUuids } }, { userUuid: { $eq: query.userUuid } }],
+        }
+      } else {
+        options.where = {
+          ...options.where,
+          $or: [{ sharedVaultUuid: { $in: query.includeSharedVaultUuids } }],
+        }
+      }
+    } else if (query.exclusiveSharedVaultUuids !== undefined && query.exclusiveSharedVaultUuids.length > 0) {
+      options.where = {
+        ...options.where,
+        sharedVaultUuid: { $nin: query.exclusiveSharedVaultUuids },
+      }
+    } else if (query.userUuid !== undefined) {
       options.where = { ...options.where, userUuid: { $eq: query.userUuid } }
     }
 

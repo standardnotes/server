@@ -128,13 +128,6 @@ export class UpdateExistingItem implements UseCaseInterface<Item> {
         {
           lastEditedBy: userUuid,
           sharedVaultUuid: dto.itemHash.sharedVaultUuid as Uuid,
-          timestamps: Timestamps.create(
-            dto.existingItem.props.sharedVaultAssociation
-              ? dto.existingItem.props.sharedVaultAssociation.props.timestamps.createdAt
-              : this.timer.getTimestampInMicroseconds(),
-            this.timer.getTimestampInMicroseconds(),
-          ).getValue(),
-          itemUuid: Uuid.create(dto.existingItem.id.toString()).getValue(),
         },
         new UniqueEntityId(
           dto.existingItem.props.sharedVaultAssociation
@@ -171,11 +164,6 @@ export class UpdateExistingItem implements UseCaseInterface<Item> {
 
       const keySystemAssociationOrError = KeySystemAssociation.create(
         {
-          itemUuid: Uuid.create(dto.existingItem.id.toString()).getValue(),
-          timestamps: Timestamps.create(
-            this.timer.getTimestampInMicroseconds(),
-            this.timer.getTimestampInMicroseconds(),
-          ).getValue(),
           keySystemIdentifier,
         },
         new UniqueEntityId(

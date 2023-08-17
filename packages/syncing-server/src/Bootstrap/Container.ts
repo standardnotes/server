@@ -79,15 +79,7 @@ import { ItemHashHttpMapper } from '../Mapping/Http/ItemHashHttpMapper'
 import { ItemHash } from '../Domain/Item/ItemHash'
 import { ItemHashHttpRepresentation } from '../Mapping/Http/ItemHashHttpRepresentation'
 import { TypeORMKeySystemAssociation } from '../Infra/TypeORM/TypeORMKeySystemAssociation'
-import { SharedVaultAssociation } from '../Domain/SharedVault/SharedVaultAssociation'
 import { TypeORMSharedVaultAssociation } from '../Infra/TypeORM/TypeORMSharedVaultAssociation'
-import { SharedVaultAssociationPersistenceMapper } from '../Mapping/Persistence/SharedVaultAssociationPersistenceMapper'
-import { TypeORMKeySystemAssociationRepository } from '../Infra/TypeORM/TypeORMKeySystemAssociationRepository'
-import { SharedVaultAssociationRepositoryInterface } from '../Domain/SharedVault/SharedVaultAssociationRepositoryInterface'
-import { TypeORMSharedVaultAssociationRepository } from '../Infra/TypeORM/TypeORMSharedVaultAssociationRepository'
-import { KeySystemAssociation } from '../Domain/KeySystem/KeySystemAssociation'
-import { KeySystemAssociationRepositoryInterface } from '../Domain/KeySystem/KeySystemAssociationRepositoryInterface'
-import { KeySystemAssociationPersistenceMapper } from '../Mapping/Persistence/KeySystemAssociationPersistenceMapper'
 import { BaseSharedVaultInvitesController } from '../Infra/InversifyExpressUtils/Base/BaseSharedVaultInvitesController'
 import { InviteUserToSharedVault } from '../Domain/UseCase/SharedVaults/InviteUserToSharedVault/InviteUserToSharedVault'
 import { TypeORMSharedVaultRepository } from '../Infra/TypeORM/TypeORMSharedVaultRepository'
@@ -317,16 +309,6 @@ export class ContainerConfigLoader {
       .bind<MapperInterface<Item, ItemBackupRepresentation>>(TYPES.Sync_ItemBackupMapper)
       .toConstantValue(new ItemBackupMapper(container.get(TYPES.Sync_Timer)))
     container
-      .bind<MapperInterface<KeySystemAssociation, TypeORMKeySystemAssociation>>(
-        TYPES.Sync_KeySystemAssociationPersistenceMapper,
-      )
-      .toConstantValue(new KeySystemAssociationPersistenceMapper())
-    container
-      .bind<MapperInterface<SharedVaultAssociation, TypeORMSharedVaultAssociation>>(
-        TYPES.Sync_SharedVaultAssociationPersistenceMapper,
-      )
-      .toConstantValue(new SharedVaultAssociationPersistenceMapper())
-    container
       .bind<MapperInterface<SharedVault, TypeORMSharedVault>>(TYPES.Sync_SharedVaultPersistenceMapper)
       .toConstantValue(new SharedVaultPersistenceMapper())
     container
@@ -398,22 +380,6 @@ export class ContainerConfigLoader {
 
     // Repositories
     container
-      .bind<KeySystemAssociationRepositoryInterface>(TYPES.Sync_KeySystemAssociationRepository)
-      .toConstantValue(
-        new TypeORMKeySystemAssociationRepository(
-          container.get(TYPES.Sync_ORMKeySystemAssociationRepository),
-          container.get(TYPES.Sync_KeySystemAssociationPersistenceMapper),
-        ),
-      )
-    container
-      .bind<SharedVaultAssociationRepositoryInterface>(TYPES.Sync_SharedVaultAssociationRepository)
-      .toConstantValue(
-        new TypeORMSharedVaultAssociationRepository(
-          container.get(TYPES.Sync_ORMSharedVaultAssociationRepository),
-          container.get(TYPES.Sync_SharedVaultAssociationPersistenceMapper),
-        ),
-      )
-    container
       .bind<ItemRepositoryInterface>(TYPES.Sync_ItemRepository)
       .toConstantValue(
         isSecondaryDatabaseEnabled
@@ -425,8 +391,6 @@ export class ContainerConfigLoader {
           : new TypeORMItemRepository(
               container.get(TYPES.Sync_ORMItemRepository),
               container.get(TYPES.Sync_ItemPersistenceMapper),
-              container.get(TYPES.Sync_KeySystemAssociationRepository),
-              container.get(TYPES.Sync_SharedVaultAssociationRepository),
               container.get(TYPES.Sync_Logger),
             ),
       )
