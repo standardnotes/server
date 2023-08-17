@@ -1,4 +1,4 @@
-import { Repository, SelectQueryBuilder, Brackets } from 'typeorm'
+import { Repository, SelectQueryBuilder } from 'typeorm'
 import { MapperInterface, Uuid } from '@standardnotes/domain-core'
 import { Logger } from 'winston'
 
@@ -7,7 +7,6 @@ import { ItemQuery } from '../../Domain/Item/ItemQuery'
 import { ItemRepositoryInterface } from '../../Domain/Item/ItemRepositoryInterface'
 import { ExtendedIntegrityPayload } from '../../Domain/Item/ExtendedIntegrityPayload'
 import { TypeORMItem } from './TypeORMItem'
-import { TypeORMSharedVaultAssociation } from './TypeORMSharedVaultAssociation'
 
 export class TypeORMItemRepository implements ItemRepositoryInterface {
   constructor(
@@ -174,35 +173,7 @@ export class TypeORMItemRepository implements ItemRepositoryInterface {
       queryBuilder.orderBy(`item.${query.sortBy}`, query.sortOrder)
     }
 
-    if (query.includeSharedVaultUuids !== undefined && query.includeSharedVaultUuids.length > 0) {
-      queryBuilder
-        .leftJoin(
-          TypeORMSharedVaultAssociation,
-          'sharedVaultAssociation',
-          'sharedVaultAssociation.itemUuid = item.uuid',
-        )
-        .where(
-          new Brackets((qb) => {
-            qb.where('sharedVaultAssociation.sharedVaultUuid IN (:...sharedVaultUuids)', {
-              sharedVaultUuids: query.includeSharedVaultUuids,
-            })
-
-            if (query.userUuid) {
-              qb.orWhere('item.user_uuid = :userUuid', { userUuid: query.userUuid })
-            }
-          }),
-        )
-    } else if (query.exclusiveSharedVaultUuids !== undefined && query.exclusiveSharedVaultUuids.length > 0) {
-      queryBuilder
-        .innerJoin(
-          TypeORMSharedVaultAssociation,
-          'sharedVaultAssociation',
-          'sharedVaultAssociation.itemUuid = item.uuid',
-        )
-        .where('sharedVaultAssociation.sharedVaultUuid IN (:...sharedVaultUuids)', {
-          sharedVaultUuids: query.exclusiveSharedVaultUuids,
-        })
-    } else if (query.userUuid !== undefined) {
+    if (query.userUuid !== undefined) {
       queryBuilder.where('item.user_uuid = :userUuid', { userUuid: query.userUuid })
     }
 
