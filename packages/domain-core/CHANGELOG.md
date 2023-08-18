@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.26.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.25.2...@standardnotes/domain-core@1.26.0) (2023-08-18)
+
+### Features
+
+* add mechanism for determining if a user should use the primary or secondary items database ([#700](https://github.com/standardnotes/server/issues/700)) ([302b624](https://github.com/standardnotes/server/commit/302b624504f4c87fd7c3ddfee77cbdc14a61018b))
+
 ## [1.25.2](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.25.1...@standardnotes/domain-core@1.25.2) (2023-08-09)
 
 ### Reverts

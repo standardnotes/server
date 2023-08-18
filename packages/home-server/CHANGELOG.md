@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.14.0](https://github.com/standardnotes/server/compare/@standardnotes/home-server@1.13.51...@standardnotes/home-server@1.14.0) (2023-08-18)
+
+### Features
+
+* add mechanism for determining if a user should use the primary or secondary items database ([#700](https://github.com/standardnotes/server/issues/700)) ([302b624](https://github.com/standardnotes/server/commit/302b624504f4c87fd7c3ddfee77cbdc14a61018b))
+
 ## [1.13.51](https://github.com/standardnotes/server/compare/@standardnotes/home-server@1.13.50...@standardnotes/home-server@1.13.51) (2023-08-17)
 
 ### Bug Fixes
