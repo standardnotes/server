@@ -46,7 +46,16 @@ export class RoleNameCollection extends ValueObject<RoleNameCollectionProps> {
     super(props)
   }
 
-  static create(roleName: RoleName[]): Result<RoleNameCollection> {
-    return Result.ok<RoleNameCollection>(new RoleNameCollection({ value: roleName }))
+  static create(roleNameStrings: string[]): Result<RoleNameCollection> {
+    const roleNames: RoleName[] = []
+    for (const roleNameString of roleNameStrings) {
+      const roleNameOrError = RoleName.create(roleNameString)
+      if (roleNameOrError.isFailed()) {
+        return Result.fail<RoleNameCollection>(roleNameOrError.getError())
+      }
+      roleNames.push(roleNameOrError.getValue())
+    }
+
+    return Result.ok<RoleNameCollection>(new RoleNameCollection({ value: roleNames }))
   }
 }

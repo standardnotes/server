@@ -8,12 +8,14 @@ import { AccountDeletionRequestedEventHandler } from './AccountDeletionRequested
 import { Uuid, ContentType, Dates, Timestamps, UniqueEntityId } from '@standardnotes/domain-core'
 
 describe('AccountDeletionRequestedEventHandler', () => {
-  let itemRepository: ItemRepositoryInterface
+  let primaryItemRepository: ItemRepositoryInterface
+  let secondaryItemRepository: ItemRepositoryInterface | null
   let logger: Logger
   let event: AccountDeletionRequestedEvent
   let item: Item
 
-  const createHandler = () => new AccountDeletionRequestedEventHandler(itemRepository, logger)
+  const createHandler = () =>
+    new AccountDeletionRequestedEventHandler(primaryItemRepository, secondaryItemRepository, logger)
 
   beforeEach(() => {
     item = Item.create(
@@ -33,9 +35,9 @@ describe('AccountDeletionRequestedEventHandler', () => {
       new UniqueEntityId('00000000-0000-0000-0000-000000000000'),
     ).getValue()
 
-    itemRepository = {} as jest.Mocked<ItemRepositoryInterface>
-    itemRepository.findAll = jest.fn().mockReturnValue([item])
-    itemRepository.deleteByUserUuid = jest.fn()
+    primaryItemRepository = {} as jest.Mocked<ItemRepositoryInterface>
+    primaryItemRepository.findAll = jest.fn().mockReturnValue([item])
+    primaryItemRepository.deleteByUserUuid = jest.fn()
 
     logger = {} as jest.Mocked<Logger>
     logger.info = jest.fn()
@@ -52,6 +54,17 @@ describe('AccountDeletionRequestedEventHandler', () => {
   it('should remove all items for a user', async () => {
     await createHandler().handle(event)
 
-    expect(itemRepository.deleteByUserUuid).toHaveBeenCalledWith('2-3-4')
+    expect(primaryItemRepository.deleteByUserUuid).toHaveBeenCalledWith('2-3-4')
+  })
+
+  it('should remove all items for a user from secondary repository', async () => {
+    secondaryItemRepository = {} as jest.Mocked<ItemRepositoryInterface>
+    secondaryItemRepository.deleteByUserUuid = jest.fn()
+
+    await createHandler().handle(event)
+
+    expect(secondaryItemRepository.deleteByUserUuid).toHaveBeenCalledWith('2-3-4')
+
+    secondaryItemRepository = null
   })
 })

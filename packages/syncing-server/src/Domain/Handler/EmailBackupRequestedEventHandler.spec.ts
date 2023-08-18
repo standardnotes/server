@@ -13,9 +13,11 @@ import { ItemBackupServiceInterface } from '../Item/ItemBackupServiceInterface'
 import { ItemRepositoryInterface } from '../Item/ItemRepositoryInterface'
 import { EmailBackupRequestedEventHandler } from './EmailBackupRequestedEventHandler'
 import { ItemTransferCalculatorInterface } from '../Item/ItemTransferCalculatorInterface'
+import { ItemContentSizeDescriptor } from '../Item/ItemContentSizeDescriptor'
 
 describe('EmailBackupRequestedEventHandler', () => {
-  let itemRepository: ItemRepositoryInterface
+  let primaryItemRepository: ItemRepositoryInterface
+  let secondaryItemRepository: ItemRepositoryInterface | null
   let authHttpService: AuthHttpServiceInterface
   let itemBackupService: ItemBackupServiceInterface
   let domainEventPublisher: DomainEventPublisherInterface
@@ -28,7 +30,8 @@ describe('EmailBackupRequestedEventHandler', () => {
 
   const createHandler = () =>
     new EmailBackupRequestedEventHandler(
-      itemRepository,
+      primaryItemRepository,
+      secondaryItemRepository,
       authHttpService,
       itemBackupService,
       domainEventPublisher,
@@ -42,8 +45,11 @@ describe('EmailBackupRequestedEventHandler', () => {
   beforeEach(() => {
     item = {} as jest.Mocked<Item>
 
-    itemRepository = {} as jest.Mocked<ItemRepositoryInterface>
-    itemRepository.findAll = jest.fn().mockReturnValue([item])
+    primaryItemRepository = {} as jest.Mocked<ItemRepositoryInterface>
+    primaryItemRepository.findAll = jest.fn().mockReturnValue([item])
+    primaryItemRepository.findContentSizeForComputingTransferLimit = jest
+      .fn()
+      .mockResolvedValue([ItemContentSizeDescriptor.create('00000000-0000-0000-0000-000000000000', 20).getValue()])
 
     authHttpService = {} as jest.Mocked<AuthHttpServiceInterface>
     authHttpService.getUserKeyParams = jest.fn().mockReturnValue({ identifier: 'test@test.com' })
@@ -79,6 +85,21 @@ describe('EmailBackupRequestedEventHandler', () => {
 
     expect(domainEventPublisher.publish).toHaveBeenCalledTimes(1)
     expect(domainEventFactory.createEmailRequestedEvent).toHaveBeenCalled()
+  })
+
+  it('should inform that backup attachment for email was created in the secondary repository', async () => {
+    secondaryItemRepository = {} as jest.Mocked<ItemRepositoryInterface>
+    secondaryItemRepository.findAll = jest.fn().mockReturnValue([item])
+    secondaryItemRepository.findContentSizeForComputingTransferLimit = jest
+      .fn()
+      .mockResolvedValue([ItemContentSizeDescriptor.create('00000000-0000-0000-0000-000000000000', 20).getValue()])
+
+    await createHandler().handle(event)
+
+    expect(domainEventPublisher.publish).toHaveBeenCalledTimes(2)
+    expect(domainEventFactory.createEmailRequestedEvent).toHaveBeenCalledTimes(2)
+
+    secondaryItemRepository = null
   })
 
   it('should inform that multipart backup attachment for email was created', async () => {

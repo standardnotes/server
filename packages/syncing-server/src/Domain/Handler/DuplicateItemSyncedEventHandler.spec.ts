@@ -13,7 +13,8 @@ import { DomainEventFactoryInterface } from '../Event/DomainEventFactoryInterfac
 import { Uuid, ContentType, Dates, Timestamps, UniqueEntityId } from '@standardnotes/domain-core'
 
 describe('DuplicateItemSyncedEventHandler', () => {
-  let itemRepository: ItemRepositoryInterface
+  let primaryItemRepository: ItemRepositoryInterface
+  let secondaryItemRepository: ItemRepositoryInterface | null
   let logger: Logger
   let duplicateItem: Item
   let originalItem: Item
@@ -22,7 +23,13 @@ describe('DuplicateItemSyncedEventHandler', () => {
   let domainEventPublisher: DomainEventPublisherInterface
 
   const createHandler = () =>
-    new DuplicateItemSyncedEventHandler(itemRepository, domainEventFactory, domainEventPublisher, logger)
+    new DuplicateItemSyncedEventHandler(
+      primaryItemRepository,
+      secondaryItemRepository,
+      domainEventFactory,
+      domainEventPublisher,
+      logger,
+    )
 
   beforeEach(() => {
     originalItem = Item.create(
@@ -59,8 +66,8 @@ describe('DuplicateItemSyncedEventHandler', () => {
       new UniqueEntityId('00000000-0000-0000-0000-000000000001'),
     ).getValue()
 
-    itemRepository = {} as jest.Mocked<ItemRepositoryInterface>
-    itemRepository.findByUuidAndUserUuid = jest
+    primaryItemRepository = {} as jest.Mocked<ItemRepositoryInterface>
+    primaryItemRepository.findByUuidAndUserUuid = jest
       .fn()
       .mockReturnValueOnce(duplicateItem)
       .mockReturnValueOnce(originalItem)
@@ -90,8 +97,22 @@ describe('DuplicateItemSyncedEventHandler', () => {
     expect(domainEventPublisher.publish).toHaveBeenCalled()
   })
 
+  it('should copy revisions from original item to the duplicate item in the secondary repository', async () => {
+    secondaryItemRepository = {} as jest.Mocked<ItemRepositoryInterface>
+    secondaryItemRepository.findByUuidAndUserUuid = jest
+      .fn()
+      .mockReturnValueOnce(duplicateItem)
+      .mockReturnValueOnce(originalItem)
+
+    await createHandler().handle(event)
+
+    expect(domainEventPublisher.publish).toHaveBeenCalledTimes(2)
+
+    secondaryItemRepository = null
+  })
+
   it('should not copy revisions if original item does not exist', async () => {
-    itemRepository.findByUuidAndUserUuid = jest.fn().mockReturnValueOnce(duplicateItem).mockReturnValueOnce(null)
+    primaryItemRepository.findByUuidAndUserUuid = jest.fn().mockReturnValueOnce(duplicateItem).mockReturnValueOnce(null)
 
     await createHandler().handle(event)
 
@@ -99,7 +120,7 @@ describe('DuplicateItemSyncedEventHandler', () => {
   })
 
   it('should not copy revisions if duplicate item does not exist', async () => {
-    itemRepository.findByUuidAndUserUuid = jest.fn().mockReturnValueOnce(null).mockReturnValueOnce(originalItem)
+    primaryItemRepository.findByUuidAndUserUuid = jest.fn().mockReturnValueOnce(null).mockReturnValueOnce(originalItem)
 
     await createHandler().handle(event)
 

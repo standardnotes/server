@@ -560,6 +560,9 @@ export class ContainerConfigLoader {
     container
       .bind(TYPES.Auth_READONLY_USERS)
       .toConstantValue(env.get('READONLY_USERS', true) ? env.get('READONLY_USERS', true).split(',') : [])
+    container
+      .bind(TYPES.Auth_TRANSITION_MODE_ENABLED)
+      .toConstantValue(env.get('TRANSITION_MODE_ENABLED', true) === 'true')
 
     if (isConfiguredForInMemoryCache) {
       container

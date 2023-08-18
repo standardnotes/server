@@ -4,20 +4,22 @@ import { SaveNewItem } from './SaveNewItem'
 import { DomainEventInterface, DomainEventPublisherInterface } from '@standardnotes/domain-events'
 import { DomainEventFactoryInterface } from '../../../Event/DomainEventFactoryInterface'
 import { ItemHash } from '../../../Item/ItemHash'
-import { ContentType, Dates, Result, Timestamps, UniqueEntityId, Uuid } from '@standardnotes/domain-core'
+import { ContentType, Dates, Result, RoleName, Timestamps, UniqueEntityId, Uuid } from '@standardnotes/domain-core'
 import { Item } from '../../../Item/Item'
 import { SharedVaultAssociation } from '../../../SharedVault/SharedVaultAssociation'
 import { KeySystemAssociation } from '../../../KeySystem/KeySystemAssociation'
+import { ItemRepositoryResolverInterface } from '../../../Item/ItemRepositoryResolverInterface'
 
 describe('SaveNewItem', () => {
   let itemRepository: ItemRepositoryInterface
+  let itemRepositoryResolver: ItemRepositoryResolverInterface
   let timer: TimerInterface
   let domainEventPublisher: DomainEventPublisherInterface
   let domainEventFactory: DomainEventFactoryInterface
   let itemHash1: ItemHash
   let item1: Item
 
-  const createUseCase = () => new SaveNewItem(itemRepository, timer, domainEventPublisher, domainEventFactory)
+  const createUseCase = () => new SaveNewItem(itemRepositoryResolver, timer, domainEventPublisher, domainEventFactory)
 
   beforeEach(() => {
     const timeHelper = new Timer()
@@ -62,6 +64,9 @@ describe('SaveNewItem', () => {
     itemRepository = {} as jest.Mocked<ItemRepositoryInterface>
     itemRepository.save = jest.fn()
 
+    itemRepositoryResolver = {} as jest.Mocked<ItemRepositoryResolverInterface>
+    itemRepositoryResolver.resolve = jest.fn().mockReturnValue(itemRepository)
+
     timer = {} as jest.Mocked<TimerInterface>
     timer.getTimestampInMicroseconds = jest.fn().mockReturnValue(123456789)
     timer.convertMicrosecondsToDate = jest.fn().mockReturnValue(new Date(123456789))
@@ -85,6 +90,7 @@ describe('SaveNewItem', () => {
 
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
+      roleNames: [RoleName.NAMES.CoreUser],
       sessionUuid: '00000000-0000-0000-0000-000000000001',
       itemHash: itemHash1,
     })
@@ -106,6 +112,7 @@ describe('SaveNewItem', () => {
 
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
+      roleNames: [RoleName.NAMES.CoreUser],
       sessionUuid: '00000000-0000-0000-0000-000000000001',
       itemHash: itemHash1,
     })
@@ -125,6 +132,7 @@ describe('SaveNewItem', () => {
 
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
+      roleNames: [RoleName.NAMES.CoreUser],
       sessionUuid: '00000000-0000-0000-0000-000000000001',
       itemHash: itemHash1,
     })
@@ -142,6 +150,7 @@ describe('SaveNewItem', () => {
 
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
+      roleNames: [RoleName.NAMES.CoreUser],
       sessionUuid: '00000000-0000-0000-0000-000000000001',
       itemHash: itemHash1,
     })
@@ -161,6 +170,7 @@ describe('SaveNewItem', () => {
 
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
+      roleNames: [RoleName.NAMES.CoreUser],
       sessionUuid: '00000000-0000-0000-0000-000000000001',
       itemHash: itemHash1,
     })
@@ -180,6 +190,7 @@ describe('SaveNewItem', () => {
 
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
+      roleNames: [RoleName.NAMES.CoreUser],
       sessionUuid: '00000000-0000-0000-0000-000000000001',
       itemHash: itemHash1,
     })
@@ -196,6 +207,20 @@ describe('SaveNewItem', () => {
       userUuid: '00000000-0000-0000-0000-00000000000',
       sessionUuid: '00000000-0000-0000-0000-000000000001',
       itemHash: itemHash1,
+      roleNames: [RoleName.NAMES.CoreUser],
+    })
+
+    expect(result.isFailed()).toBeTruthy()
+  })
+
+  it('returns a failure if the role names are invalid', async () => {
+    const useCase = createUseCase()
+
+    const result = await useCase.execute({
+      userUuid: '00000000-0000-0000-0000-000000000000',
+      sessionUuid: '00000000-0000-0000-0000-000000000001',
+      itemHash: itemHash1,
+      roleNames: ['invalid'],
     })
 
     expect(result.isFailed()).toBeTruthy()
@@ -206,6 +231,7 @@ describe('SaveNewItem', () => {
 
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
+      roleNames: [RoleName.NAMES.CoreUser],
       sessionUuid: '00000000-0000-0000-0000-00000000000',
       itemHash: itemHash1,
     })
@@ -223,6 +249,7 @@ describe('SaveNewItem', () => {
 
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
+      roleNames: [RoleName.NAMES.CoreUser],
       sessionUuid: '00000000-0000-0000-0000-000000000001',
       itemHash: itemHash1,
     })
@@ -240,6 +267,7 @@ describe('SaveNewItem', () => {
 
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
+      roleNames: [RoleName.NAMES.CoreUser],
       sessionUuid: '00000000-0000-0000-0000-000000000001',
       itemHash: itemHash1,
     })
@@ -257,6 +285,7 @@ describe('SaveNewItem', () => {
 
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
+      roleNames: [RoleName.NAMES.CoreUser],
       sessionUuid: '00000000-0000-0000-0000-000000000001',
       itemHash: itemHash1,
     })
@@ -276,6 +305,7 @@ describe('SaveNewItem', () => {
 
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
+      roleNames: [RoleName.NAMES.CoreUser],
       sessionUuid: '00000000-0000-0000-0000-000000000001',
       itemHash: itemHash1,
     })
@@ -297,6 +327,7 @@ describe('SaveNewItem', () => {
       userUuid: '00000000-0000-0000-0000-00000000000',
       sessionUuid: '00000000-0000-0000-0000-000000000001',
       itemHash: itemHash1,
+      roleNames: [RoleName.NAMES.CoreUser],
     })
 
     expect(result.isFailed()).toBeTruthy()
@@ -313,6 +344,7 @@ describe('SaveNewItem', () => {
 
       const result = await useCase.execute({
         userUuid: '00000000-0000-0000-0000-000000000000',
+        roleNames: [RoleName.NAMES.CoreUser],
         sessionUuid: '00000000-0000-0000-0000-000000000001',
         itemHash: itemHash1,
       })
@@ -339,6 +371,7 @@ describe('SaveNewItem', () => {
 
       const result = await useCase.execute({
         userUuid: '00000000-0000-0000-0000-000000000000',
+        roleNames: [RoleName.NAMES.CoreUser],
         sessionUuid: '00000000-0000-0000-0000-000000000001',
         itemHash: itemHash1,
       })
@@ -360,6 +393,7 @@ describe('SaveNewItem', () => {
 
       const result = await useCase.execute({
         userUuid: '00000000-0000-0000-0000-000000000000',
+        roleNames: [RoleName.NAMES.CoreUser],
         sessionUuid: '00000000-0000-0000-0000-000000000001',
         itemHash: itemHash1,
       })
@@ -378,6 +412,7 @@ describe('SaveNewItem', () => {
 
       const result = await useCase.execute({
         userUuid: '00000000-0000-0000-0000-000000000000',
+        roleNames: [RoleName.NAMES.CoreUser],
         sessionUuid: '00000000-0000-0000-0000-000000000001',
         itemHash: itemHash1,
       })
@@ -400,6 +435,7 @@ describe('SaveNewItem', () => {
 
       const result = await useCase.execute({
         userUuid: '00000000-0000-0000-0000-000000000000',
+        roleNames: [RoleName.NAMES.CoreUser],
         sessionUuid: '00000000-0000-0000-0000-000000000001',
         itemHash: itemHash1,
       })

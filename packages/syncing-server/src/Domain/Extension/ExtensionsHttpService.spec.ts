@@ -13,7 +13,8 @@ import { Uuid, ContentType, Dates, Timestamps, UniqueEntityId } from '@standardn
 
 describe('ExtensionsHttpService', () => {
   let httpClient: AxiosInstance
-  let itemRepository: ItemRepositoryInterface
+  let primaryItemRepository: ItemRepositoryInterface
+  let secondaryItemRepository: ItemRepositoryInterface | null
   let contentDecoder: ContentDecoderInterface
   let domainEventPublisher: DomainEventPublisherInterface
   let domainEventFactory: DomainEventFactoryInterface
@@ -24,7 +25,8 @@ describe('ExtensionsHttpService', () => {
   const createService = () =>
     new ExtensionsHttpService(
       httpClient,
-      itemRepository,
+      primaryItemRepository,
+      secondaryItemRepository,
       contentDecoder,
       domainEventPublisher,
       domainEventFactory,
@@ -54,8 +56,8 @@ describe('ExtensionsHttpService', () => {
 
     authParams = {} as jest.Mocked<KeyParamsData>
 
-    itemRepository = {} as jest.Mocked<ItemRepositoryInterface>
-    itemRepository.findByUuidAndUserUuid = jest.fn().mockReturnValue(item)
+    primaryItemRepository = {} as jest.Mocked<ItemRepositoryInterface>
+    primaryItemRepository.findByUuidAndUserUuid = jest.fn().mockReturnValue(item)
 
     logger = {} as jest.Mocked<Logger>
     logger.error = jest.fn()
@@ -191,6 +193,31 @@ describe('ExtensionsHttpService', () => {
     expect(domainEventFactory.createEmailRequestedEvent).toHaveBeenCalled()
   })
 
+  it('should publish a failed backup event if the extension is in the secondary repository', async () => {
+    primaryItemRepository.findByUuidAndUserUuid = jest.fn().mockReturnValue(null)
+    secondaryItemRepository = {} as jest.Mocked<ItemRepositoryInterface>
+    secondaryItemRepository.findByUuidAndUserUuid = jest.fn().mockReturnValue(item)
+
+    httpClient.request = jest.fn().mockImplementation(() => {
+      throw new Error('Could not reach the extensions server')
+    })
+
+    await createService().sendItemsToExtensionsServer({
+      userUuid: '1-2-3',
+      extensionId: '2-3-4',
+      extensionsServerUrl: '',
+      forceMute: false,
+      items: [item],
+      backupFilename: 'backup-file',
+      authParams,
+    })
+
+    expect(domainEventPublisher.publish).toHaveBeenCalled()
+    expect(domainEventFactory.createEmailRequestedEvent).toHaveBeenCalled()
+
+    secondaryItemRepository = null
+  })
+
   it('should publish a failed Dropbox backup event if request was sent and extensions server responded not ok', async () => {
     contentDecoder.decode = jest.fn().mockReturnValue({ name: 'Dropbox' })
 
@@ -273,7 +300,7 @@ describe('ExtensionsHttpService', () => {
   })
 
   it('should throw an error if the extension to post to is not found', async () => {
-    itemRepository.findByUuidAndUserUuid = jest.fn().mockReturnValue(null)
+    primaryItemRepository.findByUuidAndUserUuid = jest.fn().mockReturnValue(null)
 
     httpClient.request = jest.fn().mockImplementation(() => {
       throw new Error('Could not reach the extensions server')
@@ -299,7 +326,7 @@ describe('ExtensionsHttpService', () => {
 
   it('should throw an error if the extension to post to has no content', async () => {
     item = {} as jest.Mocked<Item>
-    itemRepository.findByUuidAndUserUuid = jest.fn().mockReturnValue(item)
+    primaryItemRepository.findByUuidAndUserUuid = jest.fn().mockReturnValue(item)
 
     httpClient.request = jest.fn().mockImplementation(() => {
       throw new Error('Could not reach the extensions server')

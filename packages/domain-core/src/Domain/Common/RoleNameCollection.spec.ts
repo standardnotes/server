@@ -3,32 +3,24 @@ import { RoleNameCollection } from './RoleNameCollection'
 
 describe('RoleNameCollection', () => {
   it('should create a value object', () => {
-    const role1 = RoleName.create(RoleName.NAMES.ProUser).getValue()
-
-    const valueOrError = RoleNameCollection.create([role1])
+    const valueOrError = RoleNameCollection.create([RoleName.NAMES.ProUser])
 
     expect(valueOrError.isFailed()).toBeFalsy()
-    expect(valueOrError.getValue().value).toEqual([role1])
+    expect(valueOrError.getValue().value[0].value).toEqual('PRO_USER')
   })
 
   it('should tell if collections are not equal', () => {
-    const roles1 = [
-      RoleName.create(RoleName.NAMES.ProUser).getValue(),
-      RoleName.create(RoleName.NAMES.PlusUser).getValue(),
-    ]
+    const roles1 = [RoleName.NAMES.ProUser, RoleName.NAMES.PlusUser]
 
-    let roles2 = RoleNameCollection.create([
-      RoleName.create(RoleName.NAMES.ProUser).getValue(),
-      RoleName.create(RoleName.NAMES.CoreUser).getValue(),
-    ]).getValue()
+    let roles2 = RoleNameCollection.create([RoleName.NAMES.ProUser, RoleName.NAMES.CoreUser]).getValue()
 
     let valueOrError = RoleNameCollection.create(roles1)
     expect(valueOrError.getValue().equals(roles2)).toBeFalsy()
 
     roles2 = RoleNameCollection.create([
-      RoleName.create(RoleName.NAMES.ProUser).getValue(),
-      RoleName.create(RoleName.NAMES.PlusUser).getValue(),
-      RoleName.create(RoleName.NAMES.CoreUser).getValue(),
+      RoleName.NAMES.ProUser,
+      RoleName.NAMES.PlusUser,
+      RoleName.NAMES.CoreUser,
     ]).getValue()
 
     valueOrError = RoleNameCollection.create(roles1)
@@ -36,42 +28,30 @@ describe('RoleNameCollection', () => {
   })
 
   it('should tell if collections are equal', () => {
-    const roles1 = [
-      RoleName.create(RoleName.NAMES.ProUser).getValue(),
-      RoleName.create(RoleName.NAMES.PlusUser).getValue(),
-    ]
+    const roles1 = [RoleName.NAMES.ProUser, RoleName.NAMES.PlusUser]
 
-    const roles2 = RoleNameCollection.create([
-      RoleName.create(RoleName.NAMES.ProUser).getValue(),
-      RoleName.create(RoleName.NAMES.PlusUser).getValue(),
-    ]).getValue()
+    const roles2 = RoleNameCollection.create([RoleName.NAMES.ProUser, RoleName.NAMES.PlusUser]).getValue()
 
     const valueOrError = RoleNameCollection.create(roles1)
     expect(valueOrError.getValue().equals(roles2)).toBeTruthy()
   })
 
   it('should tell if collection includes element', () => {
-    const roles1 = [
-      RoleName.create(RoleName.NAMES.ProUser).getValue(),
-      RoleName.create(RoleName.NAMES.PlusUser).getValue(),
-    ]
+    const roles1 = [RoleName.NAMES.ProUser, RoleName.NAMES.PlusUser]
 
     const valueOrError = RoleNameCollection.create(roles1)
     expect(valueOrError.getValue().includes(RoleName.create(RoleName.NAMES.ProUser).getValue())).toBeTruthy()
   })
 
   it('should tell if collection does not includes element', () => {
-    const roles1 = [
-      RoleName.create(RoleName.NAMES.ProUser).getValue(),
-      RoleName.create(RoleName.NAMES.PlusUser).getValue(),
-    ]
+    const roles1 = [RoleName.NAMES.ProUser, RoleName.NAMES.PlusUser]
 
     const valueOrError = RoleNameCollection.create(roles1)
     expect(valueOrError.getValue().includes(RoleName.create(RoleName.NAMES.CoreUser).getValue())).toBeFalsy()
   })
 
   it('should tell if collection has a role with more or equal power to', () => {
-    let roles = [RoleName.create(RoleName.NAMES.CoreUser).getValue()]
+    let roles = [RoleName.NAMES.CoreUser]
     let valueOrError = RoleNameCollection.create(roles)
     let roleNames = valueOrError.getValue()
 
@@ -83,7 +63,7 @@ describe('RoleNameCollection', () => {
       roleNames.hasARoleNameWithMoreOrEqualPowerTo(RoleName.create(RoleName.NAMES.CoreUser).getValue()),
     ).toBeTruthy()
 
-    roles = [RoleName.create(RoleName.NAMES.CoreUser).getValue(), RoleName.create(RoleName.NAMES.PlusUser).getValue()]
+    roles = [RoleName.NAMES.CoreUser, RoleName.NAMES.PlusUser]
     valueOrError = RoleNameCollection.create(roles)
     roleNames = valueOrError.getValue()
 
@@ -95,7 +75,7 @@ describe('RoleNameCollection', () => {
       roleNames.hasARoleNameWithMoreOrEqualPowerTo(RoleName.create(RoleName.NAMES.CoreUser).getValue()),
     ).toBeTruthy()
 
-    roles = [RoleName.create(RoleName.NAMES.ProUser).getValue(), RoleName.create(RoleName.NAMES.PlusUser).getValue()]
+    roles = [RoleName.NAMES.ProUser, RoleName.NAMES.PlusUser]
     valueOrError = RoleNameCollection.create(roles)
     roleNames = valueOrError.getValue()
 
@@ -108,5 +88,12 @@ describe('RoleNameCollection', () => {
     expect(
       roleNames.hasARoleNameWithMoreOrEqualPowerTo(RoleName.create(RoleName.NAMES.CoreUser).getValue()),
     ).toBeTruthy()
+  })
+
+  it('should fail to create a collection if a role name is invalid', () => {
+    const valueOrError = RoleNameCollection.create(['invalid-role-name'])
+
+    expect(valueOrError.isFailed()).toBeTruthy()
+    expect(valueOrError.getError()).toEqual('Invalid role name: invalid-role-name')
   })
 })

@@ -1,27 +1,28 @@
 import { Logger } from 'winston'
 
 import { ItemTransferCalculatorInterface } from './ItemTransferCalculatorInterface'
-import { ItemQuery } from './ItemQuery'
-import { ItemRepositoryInterface } from './ItemRepositoryInterface'
+import { ItemContentSizeDescriptor } from './ItemContentSizeDescriptor'
 
 export class ItemTransferCalculator implements ItemTransferCalculatorInterface {
-  constructor(private itemRepository: ItemRepositoryInterface, private logger: Logger) {}
+  constructor(private logger: Logger) {}
 
-  async computeItemUuidsToFetch(itemQuery: ItemQuery, bytesTransferLimit: number): Promise<Array<string>> {
+  async computeItemUuidsToFetch(
+    itemContentSizeDescriptors: ItemContentSizeDescriptor[],
+    bytesTransferLimit: number,
+  ): Promise<Array<string>> {
     const itemUuidsToFetch = []
-    const itemContentSizes = await this.itemRepository.findContentSizeForComputingTransferLimit(itemQuery)
     let totalContentSizeInBytes = 0
-    for (const itemContentSize of itemContentSizes) {
-      const contentSize = itemContentSize.contentSize ?? 0
+    for (const itemContentSize of itemContentSizeDescriptors) {
+      const contentSize = itemContentSize.props.contentSize ?? 0
 
-      itemUuidsToFetch.push(itemContentSize.uuid)
+      itemUuidsToFetch.push(itemContentSize.props.uuid.value)
       totalContentSizeInBytes += contentSize
 
       const transferLimitBreached = this.isTransferLimitBreached({
         totalContentSizeInBytes,
         bytesTransferLimit,
         itemUuidsToFetch,
-        itemContentSizes,
+        itemContentSizeDescriptors,
       })
 
       if (transferLimitBreached) {
@@ -32,22 +33,24 @@ export class ItemTransferCalculator implements ItemTransferCalculatorInterface {
     return itemUuidsToFetch
   }
 
-  async computeItemUuidBundlesToFetch(itemQuery: ItemQuery, bytesTransferLimit: number): Promise<Array<Array<string>>> {
+  async computeItemUuidBundlesToFetch(
+    itemContentSizeDescriptors: ItemContentSizeDescriptor[],
+    bytesTransferLimit: number,
+  ): Promise<Array<Array<string>>> {
     let itemUuidsToFetch = []
-    const itemContentSizes = await this.itemRepository.findContentSizeForComputingTransferLimit(itemQuery)
     let totalContentSizeInBytes = 0
     const bundles = []
-    for (const itemContentSize of itemContentSizes) {
-      const contentSize = itemContentSize.contentSize ?? 0
+    for (const itemContentSize of itemContentSizeDescriptors) {
+      const contentSize = itemContentSize.props.contentSize ?? 0
 
-      itemUuidsToFetch.push(itemContentSize.uuid)
+      itemUuidsToFetch.push(itemContentSize.props.uuid.value)
       totalContentSizeInBytes += contentSize
 
       const transferLimitBreached = this.isTransferLimitBreached({
         totalContentSizeInBytes,
         bytesTransferLimit,
         itemUuidsToFetch,
-        itemContentSizes,
+        itemContentSizeDescriptors,
       })
 
       if (transferLimitBreached) {
@@ -68,11 +71,11 @@ export class ItemTransferCalculator implements ItemTransferCalculatorInterface {
     totalContentSizeInBytes: number
     bytesTransferLimit: number
     itemUuidsToFetch: Array<string>
-    itemContentSizes: Array<{ uuid: string; contentSize: number | null }>
+    itemContentSizeDescriptors: ItemContentSizeDescriptor[]
   }): boolean {
     const transferLimitBreached = dto.totalContentSizeInBytes >= dto.bytesTransferLimit
     const transferLimitBreachedAtFirstItem =
-      transferLimitBreached && dto.itemUuidsToFetch.length === 1 && dto.itemContentSizes.length > 1
+      transferLimitBreached && dto.itemUuidsToFetch.length === 1 && dto.itemContentSizeDescriptors.length > 1
 
     if (transferLimitBreachedAtFirstItem) {
       this.logger.warn(

@@ -9,14 +9,26 @@ import { ItemRepositoryInterface } from '../Item/ItemRepositoryInterface'
 
 export class DuplicateItemSyncedEventHandler implements DomainEventHandlerInterface {
   constructor(
-    private itemRepository: ItemRepositoryInterface,
+    private primaryItemRepository: ItemRepositoryInterface,
+    private secondaryItemRepository: ItemRepositoryInterface | null,
     private domainEventFactory: DomainEventFactoryInterface,
     private domainEventPublisher: DomainEventPublisherInterface,
     private logger: Logger,
   ) {}
 
   async handle(event: DuplicateItemSyncedEvent): Promise<void> {
-    const item = await this.itemRepository.findByUuidAndUserUuid(event.payload.itemUuid, event.payload.userUuid)
+    await this.requestRevisionsCopy(event, this.primaryItemRepository)
+
+    if (this.secondaryItemRepository) {
+      await this.requestRevisionsCopy(event, this.secondaryItemRepository)
+    }
+  }
+
+  private async requestRevisionsCopy(
+    event: DuplicateItemSyncedEvent,
+    itemRepository: ItemRepositoryInterface,
+  ): Promise<void> {
+    const item = await itemRepository.findByUuidAndUserUuid(event.payload.itemUuid, event.payload.userUuid)
 
     if (item === null) {
       this.logger.warn(`Could not find item with uuid ${event.payload.itemUuid}`)
@@ -30,7 +42,7 @@ export class DuplicateItemSyncedEventHandler implements DomainEventHandlerInterf
       return
     }
 
-    const existingOriginalItem = await this.itemRepository.findByUuidAndUserUuid(
+    const existingOriginalItem = await itemRepository.findByUuidAndUserUuid(
       item.props.duplicateOf.value,
       event.payload.userUuid,
     )
