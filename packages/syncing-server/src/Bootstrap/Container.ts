@@ -379,6 +379,16 @@ export class ContainerConfigLoader {
       container
         .bind<MongoRepository<MongoDBItem>>(TYPES.Sync_ORMMongoItemRepository)
         .toConstantValue(appDataSource.getMongoRepository(MongoDBItem))
+
+      container
+        .bind<ItemRepositoryInterface>(TYPES.Sync_MongoDBItemRepository)
+        .toConstantValue(
+          new MongoDBItemRepository(
+            container.get<MongoRepository<MongoDBItem>>(TYPES.Sync_ORMMongoItemRepository),
+            container.get<MapperInterface<Item, MongoDBItem>>(TYPES.Sync_MongoDBItemPersistenceMapper),
+            container.get<Logger>(TYPES.Sync_Logger),
+          ),
+        )
     }
 
     // Repositories
@@ -392,22 +402,11 @@ export class ContainerConfigLoader {
         ),
       )
     container
-      .bind<ItemRepositoryInterface | null>(TYPES.Sync_MongoDBItemRepository)
-      .toConstantValue(
-        isSecondaryDatabaseEnabled
-          ? new MongoDBItemRepository(
-              container.get<MongoRepository<MongoDBItem>>(TYPES.Sync_ORMMongoItemRepository),
-              container.get<MapperInterface<Item, MongoDBItem>>(TYPES.Sync_MongoDBItemPersistenceMapper),
-              container.get<Logger>(TYPES.Sync_Logger),
-            )
-          : null,
-      )
-    container
       .bind<ItemRepositoryResolverInterface>(TYPES.Sync_ItemRepositoryResolver)
       .toConstantValue(
         new TypeORMItemRepositoryResolver(
           container.get<ItemRepositoryInterface>(TYPES.Sync_MySQLItemRepository),
-          container.get<ItemRepositoryInterface | null>(TYPES.Sync_MongoDBItemRepository),
+          isSecondaryDatabaseEnabled ? container.get<ItemRepositoryInterface>(TYPES.Sync_MongoDBItemRepository) : null,
         ),
       )
     container
@@ -807,35 +806,35 @@ export class ContainerConfigLoader {
     // Handlers
     container
       .bind<DuplicateItemSyncedEventHandler>(TYPES.Sync_DuplicateItemSyncedEventHandler)
-      .toDynamicValue((context: interfaces.Context) => {
-        return new DuplicateItemSyncedEventHandler(
-          context.container.get<ItemRepositoryInterface>(TYPES.Sync_MySQLItemRepository),
-          context.container.get<ItemRepositoryInterface | null>(TYPES.Sync_MongoDBItemRepository),
-          context.container.get<DomainEventFactoryInterface>(TYPES.Sync_DomainEventFactory),
-          context.container.get<DomainEventPublisherInterface>(TYPES.Sync_DomainEventPublisher),
-          context.container.get<Logger>(TYPES.Sync_Logger),
-        )
-      })
+      .toConstantValue(
+        new DuplicateItemSyncedEventHandler(
+          container.get<ItemRepositoryInterface>(TYPES.Sync_MySQLItemRepository),
+          isSecondaryDatabaseEnabled ? container.get<ItemRepositoryInterface>(TYPES.Sync_MongoDBItemRepository) : null,
+          container.get<DomainEventFactoryInterface>(TYPES.Sync_DomainEventFactory),
+          container.get<DomainEventPublisherInterface>(TYPES.Sync_DomainEventPublisher),
+          container.get<Logger>(TYPES.Sync_Logger),
+        ),
+      )
     container
       .bind<AccountDeletionRequestedEventHandler>(TYPES.Sync_AccountDeletionRequestedEventHandler)
-      .toDynamicValue((context: interfaces.Context) => {
-        return new AccountDeletionRequestedEventHandler(
-          context.container.get<ItemRepositoryInterface>(TYPES.Sync_MySQLItemRepository),
-          context.container.get<ItemRepositoryInterface | null>(TYPES.Sync_MongoDBItemRepository),
-          context.container.get<Logger>(TYPES.Sync_Logger),
-        )
-      })
+      .toConstantValue(
+        new AccountDeletionRequestedEventHandler(
+          container.get<ItemRepositoryInterface>(TYPES.Sync_MySQLItemRepository),
+          isSecondaryDatabaseEnabled ? container.get<ItemRepositoryInterface>(TYPES.Sync_MongoDBItemRepository) : null,
+          container.get<Logger>(TYPES.Sync_Logger),
+        ),
+      )
     container
       .bind<ItemRevisionCreationRequestedEventHandler>(TYPES.Sync_ItemRevisionCreationRequestedEventHandler)
-      .toDynamicValue((context: interfaces.Context) => {
-        return new ItemRevisionCreationRequestedEventHandler(
-          context.container.get<ItemRepositoryInterface>(TYPES.Sync_MySQLItemRepository),
-          context.container.get<ItemRepositoryInterface | null>(TYPES.Sync_MongoDBItemRepository),
-          context.container.get<ItemBackupServiceInterface>(TYPES.Sync_ItemBackupService),
-          context.container.get<DomainEventFactoryInterface>(TYPES.Sync_DomainEventFactory),
-          context.container.get<DomainEventPublisherInterface>(TYPES.Sync_DomainEventPublisher),
-        )
-      })
+      .toConstantValue(
+        new ItemRevisionCreationRequestedEventHandler(
+          container.get<ItemRepositoryInterface>(TYPES.Sync_MySQLItemRepository),
+          isSecondaryDatabaseEnabled ? container.get<ItemRepositoryInterface>(TYPES.Sync_MongoDBItemRepository) : null,
+          container.get<ItemBackupServiceInterface>(TYPES.Sync_ItemBackupService),
+          container.get<DomainEventFactoryInterface>(TYPES.Sync_DomainEventFactory),
+          container.get<DomainEventPublisherInterface>(TYPES.Sync_DomainEventPublisher),
+        ),
+      )
     container
       .bind<SharedVaultFileUploadedEventHandler>(TYPES.Sync_SharedVaultFileUploadedEventHandler)
       .toConstantValue(
@@ -860,17 +859,17 @@ export class ContainerConfigLoader {
     container.bind<AxiosInstance>(TYPES.Sync_HTTPClient).toDynamicValue(() => axios.create())
     container
       .bind<ExtensionsHttpServiceInterface>(TYPES.Sync_ExtensionsHttpService)
-      .toDynamicValue((context: interfaces.Context) => {
-        return new ExtensionsHttpService(
-          context.container.get<AxiosInstance>(TYPES.Sync_HTTPClient),
-          context.container.get<ItemRepositoryInterface>(TYPES.Sync_MySQLItemRepository),
-          context.container.get<ItemRepositoryInterface | null>(TYPES.Sync_MongoDBItemRepository),
-          context.container.get<ContentDecoderInterface>(TYPES.Sync_ContentDecoder),
-          context.container.get<DomainEventPublisherInterface>(TYPES.Sync_DomainEventPublisher),
-          context.container.get<DomainEventFactoryInterface>(TYPES.Sync_DomainEventFactory),
-          context.container.get<Logger>(TYPES.Sync_Logger),
-        )
-      })
+      .toConstantValue(
+        new ExtensionsHttpService(
+          container.get<AxiosInstance>(TYPES.Sync_HTTPClient),
+          container.get<ItemRepositoryInterface>(TYPES.Sync_MySQLItemRepository),
+          isSecondaryDatabaseEnabled ? container.get<ItemRepositoryInterface>(TYPES.Sync_MongoDBItemRepository) : null,
+          container.get<ContentDecoderInterface>(TYPES.Sync_ContentDecoder),
+          container.get<DomainEventPublisherInterface>(TYPES.Sync_DomainEventPublisher),
+          container.get<DomainEventFactoryInterface>(TYPES.Sync_DomainEventFactory),
+          container.get<Logger>(TYPES.Sync_Logger),
+        ),
+      )
 
     container
       .bind<ItemBackupServiceInterface>(TYPES.Sync_ItemBackupService)
@@ -921,20 +920,22 @@ export class ContainerConfigLoader {
 
       container
         .bind<EmailBackupRequestedEventHandler>(TYPES.Sync_EmailBackupRequestedEventHandler)
-        .toDynamicValue((context: interfaces.Context) => {
-          return new EmailBackupRequestedEventHandler(
-            context.container.get<ItemRepositoryInterface>(TYPES.Sync_MySQLItemRepository),
-            context.container.get<ItemRepositoryInterface | null>(TYPES.Sync_MongoDBItemRepository),
-            context.container.get<AuthHttpServiceInterface>(TYPES.Sync_AuthHttpService),
-            context.container.get<ItemBackupServiceInterface>(TYPES.Sync_ItemBackupService),
-            context.container.get<DomainEventPublisherInterface>(TYPES.Sync_DomainEventPublisher),
-            context.container.get<DomainEventFactoryInterface>(TYPES.Sync_DomainEventFactory),
-            context.container.get<number>(TYPES.Sync_EMAIL_ATTACHMENT_MAX_BYTE_SIZE),
-            context.container.get<ItemTransferCalculatorInterface>(TYPES.Sync_ItemTransferCalculator),
-            context.container.get<string>(TYPES.Sync_S3_BACKUP_BUCKET_NAME),
-            context.container.get<Logger>(TYPES.Sync_Logger),
-          )
-        })
+        .toConstantValue(
+          new EmailBackupRequestedEventHandler(
+            container.get<ItemRepositoryInterface>(TYPES.Sync_MySQLItemRepository),
+            isSecondaryDatabaseEnabled
+              ? container.get<ItemRepositoryInterface>(TYPES.Sync_MongoDBItemRepository)
+              : null,
+            container.get<AuthHttpServiceInterface>(TYPES.Sync_AuthHttpService),
+            container.get<ItemBackupServiceInterface>(TYPES.Sync_ItemBackupService),
+            container.get<DomainEventPublisherInterface>(TYPES.Sync_DomainEventPublisher),
+            container.get<DomainEventFactoryInterface>(TYPES.Sync_DomainEventFactory),
+            container.get<number>(TYPES.Sync_EMAIL_ATTACHMENT_MAX_BYTE_SIZE),
+            container.get<ItemTransferCalculatorInterface>(TYPES.Sync_ItemTransferCalculator),
+            container.get<string>(TYPES.Sync_S3_BACKUP_BUCKET_NAME),
+            container.get<Logger>(TYPES.Sync_Logger),
+          ),
+        )
 
       eventHandlers.set('EMAIL_BACKUP_REQUESTED', container.get(TYPES.Sync_EmailBackupRequestedEventHandler))
     }
