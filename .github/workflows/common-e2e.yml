@@ -66,7 +66,7 @@ jobs:
         fi
 
     - name: Run E2E Test Suite
-      run: yarn dlx mocha-headless-chrome --timeout 1800000 -f http://localhost:9001/mocha/test.html?vaults=${{ steps.vaults.outputs.vault-tests }}}
+      run: yarn dlx mocha-headless-chrome --timeout 1800000 -f http://localhost:9001/mocha/test.html?vaults=${{ steps.vaults.outputs.vault-tests }}
 
     - name: Show logs on failure
       if: ${{ failure() }}
@@ -180,7 +180,7 @@ jobs:
         fi
 
     - name: Run E2E Test Suite
-      run: yarn dlx mocha-headless-chrome --timeout 1800000 -f http://localhost:9001/mocha/test.html?vaults=${{ steps.vaults.outputs.vault-tests }}}
+      run: yarn dlx mocha-headless-chrome --timeout 1800000 -f http://localhost:9001/mocha/test.html?vaults=${{ steps.vaults.outputs.vault-tests }}
 
     - name: Show logs on failure
       if: ${{ failure() }}
