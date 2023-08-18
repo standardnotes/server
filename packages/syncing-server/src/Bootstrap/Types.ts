@@ -82,6 +82,9 @@ const TYPES = {
   Sync_DetermineSharedVaultOperationOnItem: Symbol.for('Sync_DetermineSharedVaultOperationOnItem'),
   Sync_UpdateStorageQuotaUsedInSharedVault: Symbol.for('Sync_UpdateStorageQuotaUsedInSharedVault'),
   Sync_AddNotificationsForUsers: Symbol.for('Sync_AddNotificationsForUsers'),
+  Sync_TransitionItemsFromPrimaryToSecondaryDatabaseForUser: Symbol.for(
+    'Sync_TransitionItemsFromPrimaryToSecondaryDatabaseForUser',
+  ),
   // Handlers
   Sync_AccountDeletionRequestedEventHandler: Symbol.for('Sync_AccountDeletionRequestedEventHandler'),
   Sync_DuplicateItemSyncedEventHandler: Symbol.for('Sync_DuplicateItemSyncedEventHandler'),

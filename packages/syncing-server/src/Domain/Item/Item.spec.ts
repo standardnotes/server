@@ -237,4 +237,118 @@ describe('Item', () => {
     expect(entity.props.keySystemAssociation).toBeUndefined()
     expect(entity.getChanges()).toHaveLength(1)
   })
+
+  it('should tell if an item is identical to another item', () => {
+    const entity = Item.create(
+      {
+        duplicateOf: null,
+        itemsKeyId: 'items-key-id',
+        content: 'content',
+        contentType: ContentType.create(ContentType.TYPES.Note).getValue(),
+        encItemKey: 'enc-item-key',
+        authHash: 'auth-hash',
+        userUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+        deleted: false,
+        updatedWithSession: null,
+        dates: Dates.create(new Date(123), new Date(123)).getValue(),
+        timestamps: Timestamps.create(123, 123).getValue(),
+      },
+      new UniqueEntityId('00000000-0000-0000-0000-000000000000'),
+    ).getValue()
+
+    const otherEntity = Item.create(
+      {
+        duplicateOf: null,
+        itemsKeyId: 'items-key-id',
+        content: 'content',
+        contentType: ContentType.create(ContentType.TYPES.Note).getValue(),
+        encItemKey: 'enc-item-key',
+        authHash: 'auth-hash',
+        userUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+        deleted: false,
+        updatedWithSession: null,
+        dates: Dates.create(new Date(123), new Date(123)).getValue(),
+        timestamps: Timestamps.create(123, 123).getValue(),
+      },
+      new UniqueEntityId('00000000-0000-0000-0000-000000000000'),
+    ).getValue()
+
+    expect(entity.isIdenticalTo(otherEntity)).toBeTruthy()
+  })
+
+  it('should tell that an item is not identical to another item', () => {
+    const entity = Item.create(
+      {
+        duplicateOf: null,
+        itemsKeyId: 'items-key-id',
+        content: 'content',
+        contentType: ContentType.create(ContentType.TYPES.Note).getValue(),
+        encItemKey: 'enc-item-key',
+        authHash: 'auth-hash',
+        userUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+        deleted: false,
+        updatedWithSession: null,
+        dates: Dates.create(new Date(123), new Date(123)).getValue(),
+        timestamps: Timestamps.create(123, 123).getValue(),
+      },
+      new UniqueEntityId('00000000-0000-0000-0000-000000000000'),
+    ).getValue()
+
+    const otherEntity = Item.create(
+      {
+        duplicateOf: null,
+        itemsKeyId: 'items-key-id',
+        content: 'content',
+        contentType: ContentType.create(ContentType.TYPES.Note).getValue(),
+        encItemKey: 'enc-item-key',
+        authHash: 'auth-hash',
+        userUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+        deleted: false,
+        updatedWithSession: null,
+        dates: Dates.create(new Date(123), new Date(124)).getValue(),
+        timestamps: Timestamps.create(123, 123).getValue(),
+      },
+      new UniqueEntityId('00000000-0000-0000-0000-000000000000'),
+    ).getValue()
+
+    expect(entity.isIdenticalTo(otherEntity)).toBeFalsy()
+  })
+
+  it('should tell that an item is not identical to another item if their ids are different', () => {
+    const entity = Item.create(
+      {
+        duplicateOf: null,
+        itemsKeyId: 'items-key-id',
+        content: 'content',
+        contentType: ContentType.create(ContentType.TYPES.Note).getValue(),
+        encItemKey: 'enc-item-key',
+        authHash: 'auth-hash',
+        userUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+        deleted: false,
+        updatedWithSession: null,
+        dates: Dates.create(new Date(123), new Date(123)).getValue(),
+        timestamps: Timestamps.create(123, 123).getValue(),
+      },
+      new UniqueEntityId('00000000-0000-0000-0000-000000000000'),
+    ).getValue()
+
+    const otherEntity = Item.create(
+      {
+        duplicateOf: null,
+        itemsKeyId: 'items-key-id',
+        content: 'content',
+        contentType: ContentType.create(ContentType.TYPES.Note).getValue(),
+        encItemKey: 'enc-item-key',
+        authHash: 'auth-hash',
+        userUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+        deleted: false,
+        updatedWithSession: null,
+        dates: Dates.create(new Date(123), new Date(124)).getValue(),
+        timestamps: Timestamps.create(123, 123).getValue(),
+      },
+      new UniqueEntityId('00000000-0000-0000-0000-000000000001'),
+    ).getValue()
+
+    expect(entity.isIdenticalTo(otherEntity)).toBeFalsy()
+  })
 })
