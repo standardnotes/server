@@ -108,4 +108,18 @@ export class Item extends Aggregate<ItemProps> {
     )
     this.props.keySystemAssociation = undefined
   }
+
+  isIdenticalTo(item: Item): boolean {
+    if (this._id.toString() !== item._id.toString()) {
+      return false
+    }
+
+    const stringifiedThis = JSON.stringify(this.props)
+    const stringifiedItem = JSON.stringify(item.props)
+
+    const base64This = Buffer.from(stringifiedThis).toString('base64')
+    const base64Item = Buffer.from(stringifiedItem).toString('base64')
+
+    return base64This === base64Item
+  }
 }

@@ -156,6 +156,7 @@ import { MongoDBItemPersistenceMapper } from '../Mapping/Persistence/MongoDB/Mon
 import { Logger } from 'winston'
 import { ItemRepositoryResolverInterface } from '../Domain/Item/ItemRepositoryResolverInterface'
 import { TypeORMItemRepositoryResolver } from '../Infra/TypeORM/TypeORMItemRepositoryResolver'
+import { TransitionItemsFromPrimaryToSecondaryDatabaseForUser } from '../Domain/UseCase/Transition/TransitionItemsFromPrimaryToSecondaryDatabaseForUser/TransitionItemsFromPrimaryToSecondaryDatabaseForUser'
 
 export class ContainerConfigLoader {
   private readonly DEFAULT_CONTENT_SIZE_TRANSFER_LIMIT = 10_000_000
@@ -773,6 +774,15 @@ export class ContainerConfigLoader {
       .toConstantValue(
         new UpdateStorageQuotaUsedInSharedVault(
           container.get<SharedVaultRepositoryInterface>(TYPES.Sync_SharedVaultRepository),
+        ),
+      )
+    container
+      .bind(TransitionItemsFromPrimaryToSecondaryDatabaseForUser)
+      .toConstantValue(
+        new TransitionItemsFromPrimaryToSecondaryDatabaseForUser(
+          container.get<ItemRepositoryInterface>(TYPES.Sync_MySQLItemRepository),
+          isSecondaryDatabaseEnabled ? container.get<ItemRepositoryInterface>(TYPES.Sync_MongoDBItemRepository) : null,
+          container.get<Logger>(TYPES.Sync_Logger),
         ),
       )
 
