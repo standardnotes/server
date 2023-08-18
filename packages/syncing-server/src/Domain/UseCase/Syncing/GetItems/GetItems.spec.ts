@@ -3,11 +3,14 @@ import { ItemRepositoryInterface } from '../../../Item/ItemRepositoryInterface'
 import { ItemTransferCalculatorInterface } from '../../../Item/ItemTransferCalculatorInterface'
 import { GetItems } from './GetItems'
 import { Item } from '../../../Item/Item'
-import { ContentType, Dates, Timestamps, Uuid } from '@standardnotes/domain-core'
+import { ContentType, Dates, RoleName, Timestamps, Uuid } from '@standardnotes/domain-core'
 import { SharedVaultUserRepositoryInterface } from '../../../SharedVault/User/SharedVaultUserRepositoryInterface'
+import { ItemRepositoryResolverInterface } from '../../../Item/ItemRepositoryResolverInterface'
+import { ItemContentSizeDescriptor } from '../../../Item/ItemContentSizeDescriptor'
 
 describe('GetItems', () => {
   let itemRepository: ItemRepositoryInterface
+  let itemRepositoryResolver: ItemRepositoryResolverInterface
   const contentSizeTransferLimit = 100
   let itemTransferCalculator: ItemTransferCalculatorInterface
   let timer: TimerInterface
@@ -17,7 +20,7 @@ describe('GetItems', () => {
 
   const createUseCase = () =>
     new GetItems(
-      itemRepository,
+      itemRepositoryResolver,
       sharedVaultUserRepository,
       contentSizeTransferLimit,
       itemTransferCalculator,
@@ -43,6 +46,12 @@ describe('GetItems', () => {
     itemRepository = {} as jest.Mocked<ItemRepositoryInterface>
     itemRepository.findAll = jest.fn().mockResolvedValue([item])
     itemRepository.countAll = jest.fn().mockResolvedValue(1)
+    itemRepository.findContentSizeForComputingTransferLimit = jest
+      .fn()
+      .mockResolvedValue([ItemContentSizeDescriptor.create('00000000-0000-0000-0000-000000000000', 20).getValue()])
+
+    itemRepositoryResolver = {} as jest.Mocked<ItemRepositoryResolverInterface>
+    itemRepositoryResolver.resolve = jest.fn().mockReturnValue(itemRepository)
 
     itemTransferCalculator = {} as jest.Mocked<ItemTransferCalculatorInterface>
     itemTransferCalculator.computeItemUuidsToFetch = jest.fn().mockResolvedValue(['item-uuid'])
@@ -60,6 +69,7 @@ describe('GetItems', () => {
 
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
+      roleNames: [RoleName.NAMES.CoreUser],
       cursorToken: undefined,
       contentType: undefined,
       limit: 10,
@@ -80,6 +90,7 @@ describe('GetItems', () => {
 
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
+      roleNames: [RoleName.NAMES.CoreUser],
       cursorToken: undefined,
       contentType: undefined,
       limit: undefined,
@@ -98,6 +109,7 @@ describe('GetItems', () => {
 
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
+      roleNames: [RoleName.NAMES.CoreUser],
       cursorToken: 'MjowLjAwMDEyMw==',
       contentType: undefined,
       limit: undefined,
@@ -119,6 +131,7 @@ describe('GetItems', () => {
 
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
+      roleNames: [RoleName.NAMES.CoreUser],
       syncToken,
       contentType: undefined,
       limit: undefined,
@@ -140,6 +153,7 @@ describe('GetItems', () => {
 
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
+      roleNames: [RoleName.NAMES.CoreUser],
       syncToken,
       contentType: undefined,
       limit: undefined,
@@ -154,6 +168,7 @@ describe('GetItems', () => {
 
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
+      roleNames: [RoleName.NAMES.CoreUser],
       cursorToken: undefined,
       contentType: undefined,
       limit: 200,
@@ -172,6 +187,7 @@ describe('GetItems', () => {
 
     const result = await useCase.execute({
       userUuid: 'invalid',
+      roleNames: [RoleName.NAMES.CoreUser],
       cursorToken: undefined,
       contentType: undefined,
       limit: undefined,
@@ -179,6 +195,21 @@ describe('GetItems', () => {
 
     expect(result.isFailed()).toBeTruthy()
     expect(result.getError()).toEqual('Given value is not a valid uuid: invalid')
+  })
+
+  it('should return error for invalid role names', async () => {
+    const useCase = createUseCase()
+
+    const result = await useCase.execute({
+      userUuid: '00000000-0000-0000-0000-000000000000',
+      roleNames: ['invalid'],
+      cursorToken: undefined,
+      contentType: undefined,
+      limit: undefined,
+    })
+
+    expect(result.isFailed()).toBeTruthy()
+    expect(result.getError()).toEqual('Invalid role name: invalid')
   })
 
   it('should filter shared vault uuids user wants to sync with the ones it has access to', async () => {
@@ -194,6 +225,7 @@ describe('GetItems', () => {
 
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
+      roleNames: [RoleName.NAMES.CoreUser],
       cursorToken: undefined,
       contentType: undefined,
       limit: undefined,

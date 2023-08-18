@@ -1,6 +1,8 @@
 import { ControllerContainerInterface, MapperInterface, Validator } from '@standardnotes/domain-core'
 import { BaseHttpController, results } from 'inversify-express-utils'
 import { Request, Response } from 'express'
+import { HttpStatusCode } from '@standardnotes/responses'
+import { Role } from '@standardnotes/security'
 
 import { Item } from '../../../Domain/Item/Item'
 import { SyncResponseFactoryResolverInterface } from '../../../Domain/Item/SyncResponse/SyncResponseFactoryResolverInterface'
@@ -8,7 +10,6 @@ import { CheckIntegrity } from '../../../Domain/UseCase/Syncing/CheckIntegrity/C
 import { GetItem } from '../../../Domain/UseCase/Syncing/GetItem/GetItem'
 import { ApiVersion } from '../../../Domain/Api/ApiVersion'
 import { SyncItems } from '../../../Domain/UseCase/Syncing/SyncItems/SyncItems'
-import { HttpStatusCode } from '@standardnotes/responses'
 import { ItemHttpRepresentation } from '../../../Mapping/Http/ItemHttpRepresentation'
 import { ItemHash } from '../../../Domain/Item/ItemHash'
 
@@ -59,6 +60,7 @@ export class BaseItemsController extends BaseHttpController {
 
     const syncResult = await this.syncItems.execute({
       userUuid: response.locals.user.uuid,
+      roleNames: response.locals.user.roles.map((role: Role) => role.name),
       itemHashes,
       computeIntegrityHash: request.body.compute_integrity === true,
       syncToken: request.body.sync_token,
@@ -91,6 +93,7 @@ export class BaseItemsController extends BaseHttpController {
     const result = await this.checkIntegrity.execute({
       userUuid: response.locals.user.uuid,
       integrityPayloads,
+      roleNames: response.locals.user.roles.map((role: Role) => role.name),
     })
 
     if (result.isFailed()) {
@@ -106,6 +109,7 @@ export class BaseItemsController extends BaseHttpController {
     const result = await this.getItem.execute({
       userUuid: response.locals.user.uuid,
       itemUuid: request.params.uuid,
+      roleNames: response.locals.user.roles.map((role: Role) => role.name),
     })
 
     if (result.isFailed()) {

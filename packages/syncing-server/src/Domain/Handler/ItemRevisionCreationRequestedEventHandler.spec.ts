@@ -14,7 +14,8 @@ import { DomainEventFactoryInterface } from '../Event/DomainEventFactoryInterfac
 import { Uuid, ContentType, Dates, Timestamps, UniqueEntityId } from '@standardnotes/domain-core'
 
 describe('ItemRevisionCreationRequestedEventHandler', () => {
-  let itemRepository: ItemRepositoryInterface
+  let primaryItemRepository: ItemRepositoryInterface
+  let secondaryItemRepository: ItemRepositoryInterface | null
   let event: ItemRevisionCreationRequestedEvent
   let item: Item
   let itemBackupService: ItemBackupServiceInterface
@@ -23,7 +24,8 @@ describe('ItemRevisionCreationRequestedEventHandler', () => {
 
   const createHandler = () =>
     new ItemRevisionCreationRequestedEventHandler(
-      itemRepository,
+      primaryItemRepository,
+      secondaryItemRepository,
       itemBackupService,
       domainEventFactory,
       domainEventPublisher,
@@ -47,8 +49,8 @@ describe('ItemRevisionCreationRequestedEventHandler', () => {
       new UniqueEntityId('00000000-0000-0000-0000-000000000000'),
     ).getValue()
 
-    itemRepository = {} as jest.Mocked<ItemRepositoryInterface>
-    itemRepository.findByUuid = jest.fn().mockReturnValue(item)
+    primaryItemRepository = {} as jest.Mocked<ItemRepositoryInterface>
+    primaryItemRepository.findByUuid = jest.fn().mockReturnValue(item)
 
     event = {} as jest.Mocked<ItemRevisionCreationRequestedEvent>
     event.createdAt = new Date(1)
@@ -80,8 +82,20 @@ describe('ItemRevisionCreationRequestedEventHandler', () => {
     expect(domainEventFactory.createItemDumpedEvent).toHaveBeenCalled()
   })
 
+  it('should create a revision for an item in the secondary repository', async () => {
+    secondaryItemRepository = {} as jest.Mocked<ItemRepositoryInterface>
+    secondaryItemRepository.findByUuid = jest.fn().mockReturnValue(item)
+
+    await createHandler().handle(event)
+
+    expect(domainEventPublisher.publish).toHaveBeenCalled()
+    expect(domainEventFactory.createItemDumpedEvent).toHaveBeenCalled()
+
+    secondaryItemRepository = null
+  })
+
   it('should not create a revision for an item that does not exist', async () => {
-    itemRepository.findByUuid = jest.fn().mockReturnValue(null)
+    primaryItemRepository.findByUuid = jest.fn().mockReturnValue(null)
 
     await createHandler().handle(event)
 

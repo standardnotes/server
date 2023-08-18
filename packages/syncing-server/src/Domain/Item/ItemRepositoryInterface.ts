@@ -3,14 +3,13 @@ import { Uuid } from '@standardnotes/domain-core'
 import { Item } from './Item'
 import { ItemQuery } from './ItemQuery'
 import { ExtendedIntegrityPayload } from './ExtendedIntegrityPayload'
+import { ItemContentSizeDescriptor } from './ItemContentSizeDescriptor'
 
 export interface ItemRepositoryInterface {
   deleteByUserUuid(userUuid: string): Promise<void>
   findAll(query: ItemQuery): Promise<Item[]>
   countAll(query: ItemQuery): Promise<number>
-  findContentSizeForComputingTransferLimit(
-    query: ItemQuery,
-  ): Promise<Array<{ uuid: string; contentSize: number | null }>>
+  findContentSizeForComputingTransferLimit(query: ItemQuery): Promise<Array<ItemContentSizeDescriptor>>
   findDatesForComputingIntegrityHash(userUuid: string): Promise<Array<{ updated_at_timestamp: number }>>
   findItemsForComputingIntegrityPayloads(userUuid: string): Promise<ExtendedIntegrityPayload[]>
   findByUuidAndUserUuid(uuid: string, userUuid: string): Promise<Item | null>

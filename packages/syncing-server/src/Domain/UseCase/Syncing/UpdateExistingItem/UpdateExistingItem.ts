@@ -4,6 +4,7 @@ import {
   NotificationPayload,
   NotificationType,
   Result,
+  RoleNameCollection,
   Timestamps,
   UniqueEntityId,
   UseCaseInterface,
@@ -15,7 +16,6 @@ import { TimerInterface } from '@standardnotes/time'
 
 import { Item } from '../../../Item/Item'
 import { UpdateExistingItemDTO } from './UpdateExistingItemDTO'
-import { ItemRepositoryInterface } from '../../../Item/ItemRepositoryInterface'
 import { DomainEventFactoryInterface } from '../../../Event/DomainEventFactoryInterface'
 import { SharedVaultAssociation } from '../../../SharedVault/SharedVaultAssociation'
 import { KeySystemAssociation } from '../../../KeySystem/KeySystemAssociation'
@@ -23,10 +23,11 @@ import { DetermineSharedVaultOperationOnItem } from '../../SharedVaults/Determin
 import { SharedVaultOperationOnItem } from '../../../SharedVault/SharedVaultOperationOnItem'
 import { AddNotificationForUser } from '../../Messaging/AddNotificationForUser/AddNotificationForUser'
 import { RemoveNotificationsForUser } from '../../Messaging/RemoveNotificationsForUser/RemoveNotificationsForUser'
+import { ItemRepositoryResolverInterface } from '../../../Item/ItemRepositoryResolverInterface'
 
 export class UpdateExistingItem implements UseCaseInterface<Item> {
   constructor(
-    private itemRepository: ItemRepositoryInterface,
+    private itemRepositoryResolver: ItemRepositoryResolverInterface,
     private timer: TimerInterface,
     private domainEventPublisher: DomainEventPublisherInterface,
     private domainEventFactory: DomainEventFactoryInterface,
@@ -52,6 +53,12 @@ export class UpdateExistingItem implements UseCaseInterface<Item> {
       return Result.fail(userUuidOrError.getError())
     }
     const userUuid = userUuidOrError.getValue()
+
+    const roleNamesOrError = RoleNameCollection.create(dto.roleNames)
+    if (roleNamesOrError.isFailed()) {
+      return Result.fail(roleNamesOrError.getError())
+    }
+    const roleNames = roleNamesOrError.getValue()
 
     if (dto.itemHash.props.content) {
       dto.existingItem.props.content = dto.itemHash.props.content
@@ -190,7 +197,9 @@ export class UpdateExistingItem implements UseCaseInterface<Item> {
       dto.existingItem.props.itemsKeyId = null
     }
 
-    await this.itemRepository.save(dto.existingItem)
+    const itemRepository = this.itemRepositoryResolver.resolve(roleNames)
+
+    await itemRepository.save(dto.existingItem)
 
     if (secondsFromLastUpdate >= this.revisionFrequency) {
       if (

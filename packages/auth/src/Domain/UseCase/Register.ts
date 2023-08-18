@@ -1,8 +1,9 @@
 import * as bcrypt from 'bcryptjs'
 import { RoleName, Username } from '@standardnotes/domain-core'
-
 import { v4 as uuidv4 } from 'uuid'
 import { inject, injectable } from 'inversify'
+import { TimerInterface } from '@standardnotes/time'
+
 import TYPES from '../../Bootstrap/Types'
 import { User } from '../User/User'
 import { UserRepositoryInterface } from '../User/UserRepositoryInterface'
@@ -11,7 +12,6 @@ import { RegisterResponse } from './RegisterResponse'
 import { UseCaseInterface } from './UseCaseInterface'
 import { RoleRepositoryInterface } from '../Role/RoleRepositoryInterface'
 import { CrypterInterface } from '../Encryption/CrypterInterface'
-import { TimerInterface } from '@standardnotes/time'
 import { SettingServiceInterface } from '../Setting/SettingServiceInterface'
 import { AuthResponseFactory20200115 } from '../Auth/AuthResponseFactory20200115'
 import { AuthResponse20200115 } from '../Auth/AuthResponse20200115'
@@ -27,6 +27,7 @@ export class Register implements UseCaseInterface {
     @inject(TYPES.Auth_DISABLE_USER_REGISTRATION) private disableUserRegistration: boolean,
     @inject(TYPES.Auth_SettingService) private settingService: SettingServiceInterface,
     @inject(TYPES.Auth_Timer) private timer: TimerInterface,
+    @inject(TYPES.Auth_TRANSITION_MODE_ENABLED) private transitionModeEnabled: boolean,
   ) {}
 
   async execute(dto: RegisterDTO): Promise<RegisterResponse> {
@@ -72,10 +73,18 @@ export class Register implements UseCaseInterface {
     user.encryptedServerKey = await this.crypter.generateEncryptedUserServerKey()
     user.serverEncryptionVersion = User.DEFAULT_ENCRYPTION_VERSION
 
+    const roles = []
     const defaultRole = await this.roleRepository.findOneByName(RoleName.NAMES.CoreUser)
     if (defaultRole) {
-      user.roles = Promise.resolve([defaultRole])
+      roles.push(defaultRole)
     }
+    if (this.transitionModeEnabled) {
+      const transitionRole = await this.roleRepository.findOneByName(RoleName.NAMES.TransitionUser)
+      if (transitionRole) {
+        roles.push(transitionRole)
+      }
+    }
+    user.roles = Promise.resolve(roles)
 
     Object.assign(user, registrationFields)
 

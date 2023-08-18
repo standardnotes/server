@@ -39,7 +39,7 @@ import { SyncItems } from '../Domain/UseCase/Syncing/SyncItems/SyncItems'
 import { InversifyExpressAuthMiddleware } from '../Infra/InversifyExpressUtils/Middleware/InversifyExpressAuthMiddleware'
 import { S3Client } from '@aws-sdk/client-s3'
 import { SQSClient, SQSClientConfig } from '@aws-sdk/client-sqs'
-import { ContentDecoder } from '@standardnotes/common'
+import { ContentDecoder, ContentDecoderInterface } from '@standardnotes/common'
 import {
   DomainEventMessageHandlerInterface,
   DomainEventHandlerInterface,
@@ -153,6 +153,9 @@ import { AddNotificationsForUsers } from '../Domain/UseCase/Messaging/AddNotific
 import { MongoDBItem } from '../Infra/TypeORM/MongoDBItem'
 import { MongoDBItemRepository } from '../Infra/TypeORM/MongoDBItemRepository'
 import { MongoDBItemPersistenceMapper } from '../Mapping/Persistence/MongoDB/MongoDBItemPersistenceMapper'
+import { Logger } from 'winston'
+import { ItemRepositoryResolverInterface } from '../Domain/Item/ItemRepositoryResolverInterface'
+import { TypeORMItemRepositoryResolver } from '../Infra/TypeORM/TypeORMItemRepositoryResolver'
 
 export class ContainerConfigLoader {
   private readonly DEFAULT_CONTENT_SIZE_TRANSFER_LIMIT = 10_000_000
@@ -374,25 +377,38 @@ export class ContainerConfigLoader {
         .toConstantValue(new MongoDBItemPersistenceMapper())
 
       container
-        .bind<MongoRepository<MongoDBItem>>(TYPES.Sync_MongoItemRepository)
+        .bind<MongoRepository<MongoDBItem>>(TYPES.Sync_ORMMongoItemRepository)
         .toConstantValue(appDataSource.getMongoRepository(MongoDBItem))
     }
 
     // Repositories
     container
-      .bind<ItemRepositoryInterface>(TYPES.Sync_ItemRepository)
+      .bind<ItemRepositoryInterface>(TYPES.Sync_MySQLItemRepository)
+      .toConstantValue(
+        new TypeORMItemRepository(
+          container.get<Repository<TypeORMItem>>(TYPES.Sync_ORMItemRepository),
+          container.get<MapperInterface<Item, TypeORMItem>>(TYPES.Sync_ItemPersistenceMapper),
+          container.get<Logger>(TYPES.Sync_Logger),
+        ),
+      )
+    container
+      .bind<ItemRepositoryInterface | null>(TYPES.Sync_MongoDBItemRepository)
       .toConstantValue(
         isSecondaryDatabaseEnabled
           ? new MongoDBItemRepository(
-              container.get(TYPES.Sync_MongoItemRepository),
-              container.get(TYPES.Sync_MongoDBItemPersistenceMapper),
-              container.get(TYPES.Sync_Logger),
+              container.get<MongoRepository<MongoDBItem>>(TYPES.Sync_ORMMongoItemRepository),
+              container.get<MapperInterface<Item, MongoDBItem>>(TYPES.Sync_MongoDBItemPersistenceMapper),
+              container.get<Logger>(TYPES.Sync_Logger),
             )
-          : new TypeORMItemRepository(
-              container.get(TYPES.Sync_ORMItemRepository),
-              container.get(TYPES.Sync_ItemPersistenceMapper),
-              container.get(TYPES.Sync_Logger),
-            ),
+          : null,
+      )
+    container
+      .bind<ItemRepositoryResolverInterface>(TYPES.Sync_ItemRepositoryResolver)
+      .toConstantValue(
+        new TypeORMItemRepositoryResolver(
+          container.get<ItemRepositoryInterface>(TYPES.Sync_MySQLItemRepository),
+          container.get<ItemRepositoryInterface | null>(TYPES.Sync_MongoDBItemRepository),
+        ),
       )
     container
       .bind<SharedVaultRepositoryInterface>(TYPES.Sync_SharedVaultRepository)
@@ -444,10 +460,7 @@ export class ContainerConfigLoader {
     container
       .bind<ItemTransferCalculatorInterface>(TYPES.Sync_ItemTransferCalculator)
       .toDynamicValue((context: interfaces.Context) => {
-        return new ItemTransferCalculator(
-          context.container.get(TYPES.Sync_ItemRepository),
-          context.container.get(TYPES.Sync_Logger),
-        )
+        return new ItemTransferCalculator(context.container.get<Logger>(TYPES.Sync_Logger))
       })
 
     // Middleware
@@ -525,7 +538,7 @@ export class ContainerConfigLoader {
       .bind<GetItems>(TYPES.Sync_GetItems)
       .toConstantValue(
         new GetItems(
-          container.get(TYPES.Sync_ItemRepository),
+          container.get(TYPES.Sync_ItemRepositoryResolver),
           container.get(TYPES.Sync_SharedVaultUserRepository),
           container.get(TYPES.Sync_CONTENT_SIZE_TRANSFER_LIMIT),
           container.get(TYPES.Sync_ItemTransferCalculator),
@@ -537,7 +550,7 @@ export class ContainerConfigLoader {
       .bind<SaveNewItem>(TYPES.Sync_SaveNewItem)
       .toConstantValue(
         new SaveNewItem(
-          container.get(TYPES.Sync_ItemRepository),
+          container.get(TYPES.Sync_ItemRepositoryResolver),
           container.get(TYPES.Sync_Timer),
           container.get(TYPES.Sync_DomainEventPublisher),
           container.get(TYPES.Sync_DomainEventFactory),
@@ -563,7 +576,7 @@ export class ContainerConfigLoader {
       .bind<UpdateExistingItem>(TYPES.Sync_UpdateExistingItem)
       .toConstantValue(
         new UpdateExistingItem(
-          container.get(TYPES.Sync_ItemRepository),
+          container.get(TYPES.Sync_ItemRepositoryResolver),
           container.get(TYPES.Sync_Timer),
           container.get(TYPES.Sync_DomainEventPublisher),
           container.get(TYPES.Sync_DomainEventFactory),
@@ -578,7 +591,7 @@ export class ContainerConfigLoader {
       .toConstantValue(
         new SaveItems(
           container.get(TYPES.Sync_ItemSaveValidator),
-          container.get(TYPES.Sync_ItemRepository),
+          container.get(TYPES.Sync_ItemRepositoryResolver),
           container.get(TYPES.Sync_Timer),
           container.get(TYPES.Sync_SaveNewItem),
           container.get(TYPES.Sync_UpdateExistingItem),
@@ -607,7 +620,7 @@ export class ContainerConfigLoader {
       .bind<SyncItems>(TYPES.Sync_SyncItems)
       .toConstantValue(
         new SyncItems(
-          container.get(TYPES.Sync_ItemRepository),
+          container.get(TYPES.Sync_ItemRepositoryResolver),
           container.get(TYPES.Sync_GetItems),
           container.get(TYPES.Sync_SaveItems),
           container.get(TYPES.Sync_GetSharedVaults),
@@ -617,10 +630,10 @@ export class ContainerConfigLoader {
         ),
       )
     container.bind<CheckIntegrity>(TYPES.Sync_CheckIntegrity).toDynamicValue((context: interfaces.Context) => {
-      return new CheckIntegrity(context.container.get(TYPES.Sync_ItemRepository))
+      return new CheckIntegrity(context.container.get(TYPES.Sync_ItemRepositoryResolver))
     })
     container.bind<GetItem>(TYPES.Sync_GetItem).toDynamicValue((context: interfaces.Context) => {
-      return new GetItem(context.container.get(TYPES.Sync_ItemRepository))
+      return new GetItem(context.container.get(TYPES.Sync_ItemRepositoryResolver))
     })
     container
       .bind<InviteUserToSharedVault>(TYPES.Sync_InviteUserToSharedVault)
@@ -796,28 +809,31 @@ export class ContainerConfigLoader {
       .bind<DuplicateItemSyncedEventHandler>(TYPES.Sync_DuplicateItemSyncedEventHandler)
       .toDynamicValue((context: interfaces.Context) => {
         return new DuplicateItemSyncedEventHandler(
-          context.container.get(TYPES.Sync_ItemRepository),
-          context.container.get(TYPES.Sync_DomainEventFactory),
-          context.container.get(TYPES.Sync_DomainEventPublisher),
-          context.container.get(TYPES.Sync_Logger),
+          context.container.get<ItemRepositoryInterface>(TYPES.Sync_MySQLItemRepository),
+          context.container.get<ItemRepositoryInterface | null>(TYPES.Sync_MongoDBItemRepository),
+          context.container.get<DomainEventFactoryInterface>(TYPES.Sync_DomainEventFactory),
+          context.container.get<DomainEventPublisherInterface>(TYPES.Sync_DomainEventPublisher),
+          context.container.get<Logger>(TYPES.Sync_Logger),
         )
       })
     container
       .bind<AccountDeletionRequestedEventHandler>(TYPES.Sync_AccountDeletionRequestedEventHandler)
       .toDynamicValue((context: interfaces.Context) => {
         return new AccountDeletionRequestedEventHandler(
-          context.container.get(TYPES.Sync_ItemRepository),
-          context.container.get(TYPES.Sync_Logger),
+          context.container.get<ItemRepositoryInterface>(TYPES.Sync_MySQLItemRepository),
+          context.container.get<ItemRepositoryInterface | null>(TYPES.Sync_MongoDBItemRepository),
+          context.container.get<Logger>(TYPES.Sync_Logger),
         )
       })
     container
       .bind<ItemRevisionCreationRequestedEventHandler>(TYPES.Sync_ItemRevisionCreationRequestedEventHandler)
       .toDynamicValue((context: interfaces.Context) => {
         return new ItemRevisionCreationRequestedEventHandler(
-          context.container.get(TYPES.Sync_ItemRepository),
-          context.container.get(TYPES.Sync_ItemBackupService),
-          context.container.get(TYPES.Sync_DomainEventFactory),
-          context.container.get(TYPES.Sync_DomainEventPublisher),
+          context.container.get<ItemRepositoryInterface>(TYPES.Sync_MySQLItemRepository),
+          context.container.get<ItemRepositoryInterface | null>(TYPES.Sync_MongoDBItemRepository),
+          context.container.get<ItemBackupServiceInterface>(TYPES.Sync_ItemBackupService),
+          context.container.get<DomainEventFactoryInterface>(TYPES.Sync_DomainEventFactory),
+          context.container.get<DomainEventPublisherInterface>(TYPES.Sync_DomainEventPublisher),
         )
       })
     container
@@ -846,12 +862,13 @@ export class ContainerConfigLoader {
       .bind<ExtensionsHttpServiceInterface>(TYPES.Sync_ExtensionsHttpService)
       .toDynamicValue((context: interfaces.Context) => {
         return new ExtensionsHttpService(
-          context.container.get(TYPES.Sync_HTTPClient),
-          context.container.get(TYPES.Sync_ItemRepository),
-          context.container.get(TYPES.Sync_ContentDecoder),
-          context.container.get(TYPES.Sync_DomainEventPublisher),
-          context.container.get(TYPES.Sync_DomainEventFactory),
-          context.container.get(TYPES.Sync_Logger),
+          context.container.get<AxiosInstance>(TYPES.Sync_HTTPClient),
+          context.container.get<ItemRepositoryInterface>(TYPES.Sync_MySQLItemRepository),
+          context.container.get<ItemRepositoryInterface | null>(TYPES.Sync_MongoDBItemRepository),
+          context.container.get<ContentDecoderInterface>(TYPES.Sync_ContentDecoder),
+          context.container.get<DomainEventPublisherInterface>(TYPES.Sync_DomainEventPublisher),
+          context.container.get<DomainEventFactoryInterface>(TYPES.Sync_DomainEventFactory),
+          context.container.get<Logger>(TYPES.Sync_Logger),
         )
       })
 
@@ -906,15 +923,16 @@ export class ContainerConfigLoader {
         .bind<EmailBackupRequestedEventHandler>(TYPES.Sync_EmailBackupRequestedEventHandler)
         .toDynamicValue((context: interfaces.Context) => {
           return new EmailBackupRequestedEventHandler(
-            context.container.get(TYPES.Sync_ItemRepository),
-            context.container.get(TYPES.Sync_AuthHttpService),
-            context.container.get(TYPES.Sync_ItemBackupService),
-            context.container.get(TYPES.Sync_DomainEventPublisher),
-            context.container.get(TYPES.Sync_DomainEventFactory),
-            context.container.get(TYPES.Sync_EMAIL_ATTACHMENT_MAX_BYTE_SIZE),
-            context.container.get(TYPES.Sync_ItemTransferCalculator),
-            context.container.get(TYPES.Sync_S3_BACKUP_BUCKET_NAME),
-            context.container.get(TYPES.Sync_Logger),
+            context.container.get<ItemRepositoryInterface>(TYPES.Sync_MySQLItemRepository),
+            context.container.get<ItemRepositoryInterface | null>(TYPES.Sync_MongoDBItemRepository),
+            context.container.get<AuthHttpServiceInterface>(TYPES.Sync_AuthHttpService),
+            context.container.get<ItemBackupServiceInterface>(TYPES.Sync_ItemBackupService),
+            context.container.get<DomainEventPublisherInterface>(TYPES.Sync_DomainEventPublisher),
+            context.container.get<DomainEventFactoryInterface>(TYPES.Sync_DomainEventFactory),
+            context.container.get<number>(TYPES.Sync_EMAIL_ATTACHMENT_MAX_BYTE_SIZE),
+            context.container.get<ItemTransferCalculatorInterface>(TYPES.Sync_ItemTransferCalculator),
+            context.container.get<string>(TYPES.Sync_S3_BACKUP_BUCKET_NAME),
+            context.container.get<Logger>(TYPES.Sync_Logger),
           )
         })
 

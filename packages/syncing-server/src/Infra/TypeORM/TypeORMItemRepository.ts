@@ -7,6 +7,7 @@ import { ItemQuery } from '../../Domain/Item/ItemQuery'
 import { ItemRepositoryInterface } from '../../Domain/Item/ItemRepositoryInterface'
 import { ExtendedIntegrityPayload } from '../../Domain/Item/ExtendedIntegrityPayload'
 import { TypeORMItem } from './TypeORMItem'
+import { ItemContentSizeDescriptor } from '../../Domain/Item/ItemContentSizeDescriptor'
 
 export class TypeORMItemRepository implements ItemRepositoryInterface {
   constructor(
@@ -38,16 +39,28 @@ export class TypeORMItemRepository implements ItemRepositoryInterface {
       .execute()
   }
 
-  async findContentSizeForComputingTransferLimit(
-    query: ItemQuery,
-  ): Promise<{ uuid: string; contentSize: number | null }[]> {
+  async findContentSizeForComputingTransferLimit(query: ItemQuery): Promise<ItemContentSizeDescriptor[]> {
     const queryBuilder = this.createFindAllQueryBuilder(query)
     queryBuilder.select('item.uuid', 'uuid')
     queryBuilder.addSelect('item.content_size', 'contentSize')
 
     const items = await queryBuilder.getRawMany()
 
-    return items
+    const itemContentSizeDescriptors: ItemContentSizeDescriptor[] = []
+    for (const item of items) {
+      const ItemContentSizeDescriptorOrError = ItemContentSizeDescriptor.create(item.uuid, item.contentSize)
+      if (ItemContentSizeDescriptorOrError.isFailed()) {
+        this.logger.error(
+          `Failed to create ItemContentSizeDescriptor for item ${
+            item.uuid
+          }: ${ItemContentSizeDescriptorOrError.getError()}`,
+        )
+        continue
+      }
+      itemContentSizeDescriptors.push(ItemContentSizeDescriptorOrError.getValue())
+    }
+
+    return itemContentSizeDescriptors
   }
 
   async deleteByUserUuid(userUuid: string): Promise<void> {

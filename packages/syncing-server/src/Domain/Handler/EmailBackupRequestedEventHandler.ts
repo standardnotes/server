@@ -16,7 +16,8 @@ import { getBody, getSubject } from '../Email/EmailBackupAttachmentCreated'
 
 export class EmailBackupRequestedEventHandler implements DomainEventHandlerInterface {
   constructor(
-    private itemRepository: ItemRepositoryInterface,
+    private primaryItemRepository: ItemRepositoryInterface,
+    private secondaryItemRepository: ItemRepositoryInterface | null,
     private authHttpService: AuthHttpServiceInterface,
     private itemBackupService: ItemBackupServiceInterface,
     private domainEventPublisher: DomainEventPublisherInterface,
@@ -28,6 +29,17 @@ export class EmailBackupRequestedEventHandler implements DomainEventHandlerInter
   ) {}
 
   async handle(event: EmailBackupRequestedEvent): Promise<void> {
+    await this.requestEmailWithBackupFile(event, this.primaryItemRepository)
+
+    if (this.secondaryItemRepository) {
+      await this.requestEmailWithBackupFile(event, this.secondaryItemRepository)
+    }
+  }
+
+  private async requestEmailWithBackupFile(
+    event: EmailBackupRequestedEvent,
+    itemRepository: ItemRepositoryInterface,
+  ): Promise<void> {
     let authParams: KeyParamsData
     try {
       authParams = await this.authHttpService.getUserKeyParams({
@@ -46,14 +58,15 @@ export class EmailBackupRequestedEventHandler implements DomainEventHandlerInter
       sortOrder: 'ASC',
       deleted: false,
     }
+    const itemContentSizeDescriptors = await itemRepository.findContentSizeForComputingTransferLimit(itemQuery)
     const itemUuidBundles = await this.itemTransferCalculator.computeItemUuidBundlesToFetch(
-      itemQuery,
+      itemContentSizeDescriptors,
       this.emailAttachmentMaxByteSize,
     )
 
     const backupFileNames: string[] = []
     for (const itemUuidBundle of itemUuidBundles) {
-      const items = await this.itemRepository.findAll({
+      const items = await itemRepository.findAll({
         uuids: itemUuidBundle,
         sortBy: 'updated_at_timestamp',
         sortOrder: 'ASC',

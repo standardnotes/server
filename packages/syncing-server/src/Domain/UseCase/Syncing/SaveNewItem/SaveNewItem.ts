@@ -2,6 +2,7 @@ import {
   ContentType,
   Dates,
   Result,
+  RoleNameCollection,
   Timestamps,
   UniqueEntityId,
   UseCaseInterface,
@@ -13,14 +14,14 @@ import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
 
 import { Item } from '../../../Item/Item'
 import { SaveNewItemDTO } from './SaveNewItemDTO'
-import { ItemRepositoryInterface } from '../../../Item/ItemRepositoryInterface'
 import { DomainEventFactoryInterface } from '../../../Event/DomainEventFactoryInterface'
 import { SharedVaultAssociation } from '../../../SharedVault/SharedVaultAssociation'
 import { KeySystemAssociation } from '../../../KeySystem/KeySystemAssociation'
+import { ItemRepositoryResolverInterface } from '../../../Item/ItemRepositoryResolverInterface'
 
 export class SaveNewItem implements UseCaseInterface<Item> {
   constructor(
-    private itemRepository: ItemRepositoryInterface,
+    private itemRepositoryResolver: ItemRepositoryResolverInterface,
     private timer: TimerInterface,
     private domainEventPublisher: DomainEventPublisherInterface,
     private domainEventFactory: DomainEventFactoryInterface,
@@ -46,6 +47,12 @@ export class SaveNewItem implements UseCaseInterface<Item> {
       return Result.fail(userUuidOrError.getError())
     }
     const userUuid = userUuidOrError.getValue()
+
+    const roleNamesOrError = RoleNameCollection.create(dto.roleNames)
+    if (roleNamesOrError.isFailed()) {
+      return Result.fail(roleNamesOrError.getError())
+    }
+    const roleNames = roleNamesOrError.getValue()
 
     const contentTypeOrError = ContentType.create(dto.itemHash.props.content_type)
     if (contentTypeOrError.isFailed()) {
@@ -135,7 +142,9 @@ export class SaveNewItem implements UseCaseInterface<Item> {
       newItem.setKeySystemAssociation(keySystemAssociationOrError.getValue())
     }
 
-    await this.itemRepository.save(newItem)
+    const itemRepository = this.itemRepositoryResolver.resolve(roleNames)
+
+    await itemRepository.save(newItem)
 
     if (contentType.value !== null && [ContentType.TYPES.Note, ContentType.TYPES.File].includes(contentType.value)) {
       await this.domainEventPublisher.publish(

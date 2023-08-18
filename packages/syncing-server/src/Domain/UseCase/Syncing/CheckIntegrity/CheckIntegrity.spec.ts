@@ -1,15 +1,17 @@
 import 'reflect-metadata'
 
-import { ContentType } from '@standardnotes/domain-core'
+import { ContentType, RoleName } from '@standardnotes/domain-core'
 
 import { ItemRepositoryInterface } from '../../../Item/ItemRepositoryInterface'
 
 import { CheckIntegrity } from './CheckIntegrity'
+import { ItemRepositoryResolverInterface } from '../../../Item/ItemRepositoryResolverInterface'
 
 describe('CheckIntegrity', () => {
   let itemRepository: ItemRepositoryInterface
+  let itemRepositoryResolver: ItemRepositoryResolverInterface
 
-  const createUseCase = () => new CheckIntegrity(itemRepository)
+  const createUseCase = () => new CheckIntegrity(itemRepositoryResolver)
 
   beforeEach(() => {
     itemRepository = {} as jest.Mocked<ItemRepositoryInterface>
@@ -40,6 +42,9 @@ describe('CheckIntegrity', () => {
         content_type: ContentType.TYPES.File,
       },
     ])
+
+    itemRepositoryResolver = {} as jest.Mocked<ItemRepositoryResolverInterface>
+    itemRepositoryResolver.resolve = jest.fn().mockReturnValue(itemRepository)
   })
 
   it('should return an empty result if there are no integrity mismatches', async () => {
@@ -63,6 +68,7 @@ describe('CheckIntegrity', () => {
           updated_at_timestamp: 5,
         },
       ],
+      roleNames: [RoleName.NAMES.CoreUser],
     })
     expect(result.getValue()).toEqual([])
   })
@@ -88,6 +94,7 @@ describe('CheckIntegrity', () => {
           updated_at_timestamp: 5,
         },
       ],
+      roleNames: [RoleName.NAMES.CoreUser],
     })
     expect(result.getValue()).toEqual([
       {
@@ -114,6 +121,7 @@ describe('CheckIntegrity', () => {
           updated_at_timestamp: 5,
         },
       ],
+      roleNames: [RoleName.NAMES.CoreUser],
     })
     expect(result.getValue()).toEqual([
       {
@@ -121,5 +129,28 @@ describe('CheckIntegrity', () => {
         updated_at_timestamp: 3,
       },
     ])
+  })
+
+  it('should return error if the role names are invalid', async () => {
+    const result = await createUseCase().execute({
+      userUuid: '1-2-3',
+      integrityPayloads: [
+        {
+          uuid: '1-2-3',
+          updated_at_timestamp: 1,
+        },
+        {
+          uuid: '2-3-4',
+          updated_at_timestamp: 2,
+        },
+        {
+          uuid: '5-6-7',
+          updated_at_timestamp: 5,
+        },
+      ],
+      roleNames: ['invalid-role-name'],
+    })
+    expect(result.isFailed()).toBeTruthy()
+    expect(result.getError()).toEqual('Invalid role name: invalid-role-name')
   })
 })

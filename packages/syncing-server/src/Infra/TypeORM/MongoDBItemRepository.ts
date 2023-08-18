@@ -8,6 +8,7 @@ import { Item } from '../../Domain/Item/Item'
 import { ItemQuery } from '../../Domain/Item/ItemQuery'
 import { ItemRepositoryInterface } from '../../Domain/Item/ItemRepositoryInterface'
 import { MongoDBItem } from './MongoDBItem'
+import { ItemContentSizeDescriptor } from '../../Domain/Item/ItemContentSizeDescriptor'
 
 export class MongoDBItemRepository implements ItemRepositoryInterface {
   constructor(
@@ -44,23 +45,30 @@ export class MongoDBItemRepository implements ItemRepositoryInterface {
     return this.mongoRepository.count((options as FindManyOptions<MongoDBItem>).where)
   }
 
-  async findContentSizeForComputingTransferLimit(
-    query: ItemQuery,
-  ): Promise<{ uuid: string; contentSize: number | null }[]> {
+  async findContentSizeForComputingTransferLimit(query: ItemQuery): Promise<ItemContentSizeDescriptor[]> {
     const options = this.createFindOptions(query)
     const rawItems = await this.mongoRepository.find({
       select: ['uuid', 'contentSize'],
       ...options,
     })
 
-    const items = rawItems.map((item) => {
-      return {
-        uuid: item._id.toHexString(),
-        contentSize: item.contentSize,
-      }
-    })
+    const itemContentSizeDescriptors: ItemContentSizeDescriptor[] = []
 
-    return items
+    for (const rawItem of rawItems) {
+      const itemContentSizeDescriptorOrError = ItemContentSizeDescriptor.create(
+        rawItem._id.toHexString(),
+        rawItem.contentSize,
+      )
+      if (itemContentSizeDescriptorOrError.isFailed()) {
+        this.logger.error(
+          `Failed to create ItemContentSizeDescriptor for item ${rawItem._id.toHexString()}: ${itemContentSizeDescriptorOrError.getError()}`,
+        )
+        continue
+      }
+      itemContentSizeDescriptors.push(itemContentSizeDescriptorOrError.getValue())
+    }
+
+    return itemContentSizeDescriptors
   }
 
   async findDatesForComputingIntegrityHash(userUuid: string): Promise<{ updated_at_timestamp: number }[]> {

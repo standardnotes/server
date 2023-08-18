@@ -1,6 +1,12 @@
-import { ItemQuery } from './ItemQuery'
+import { ItemContentSizeDescriptor } from './ItemContentSizeDescriptor'
 
 export interface ItemTransferCalculatorInterface {
-  computeItemUuidsToFetch(itemQuery: ItemQuery, bytesTransferLimit: number): Promise<Array<string>>
-  computeItemUuidBundlesToFetch(itemQuery: ItemQuery, bytesTransferLimit: number): Promise<Array<Array<string>>>
+  computeItemUuidsToFetch(
+    itemContentSizeDescriptors: ItemContentSizeDescriptor[],
+    bytesTransferLimit: number,
+  ): Promise<Array<string>>
+  computeItemUuidBundlesToFetch(
+    itemContentSizeDescriptors: ItemContentSizeDescriptor[],
+    bytesTransferLimit: number,
+  ): Promise<Array<Array<string>>>
 }

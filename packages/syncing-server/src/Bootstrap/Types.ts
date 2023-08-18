@@ -7,7 +7,9 @@ const TYPES = {
   Sync_S3: Symbol.for('Sync_S3'),
   Sync_Env: Symbol.for('Sync_Env'),
   // Repositories
-  Sync_ItemRepository: Symbol.for('Sync_ItemRepository'),
+  Sync_ItemRepositoryResolver: Symbol.for('Sync_ItemRepositoryResolver'),
+  Sync_MySQLItemRepository: Symbol.for('Sync_MySQLItemRepository'),
+  Sync_MongoDBItemRepository: Symbol.for('Sync_MongoDBItemRepository'),
   Sync_SharedVaultRepository: Symbol.for('Sync_SharedVaultRepository'),
   Sync_SharedVaultInviteRepository: Symbol.for('Sync_SharedVaultInviteRepository'),
   Sync_SharedVaultUserRepository: Symbol.for('Sync_SharedVaultUserRepository'),
@@ -23,7 +25,7 @@ const TYPES = {
   Sync_ORMNotificationRepository: Symbol.for('Sync_ORMNotificationRepository'),
   Sync_ORMMessageRepository: Symbol.for('Sync_ORMMessageRepository'),
   // Mongo
-  Sync_MongoItemRepository: Symbol.for('Sync_MongoItemRepository'),
+  Sync_ORMMongoItemRepository: Symbol.for('Sync_ORMMongoItemRepository'),
   // Middleware
   Sync_AuthMiddleware: Symbol.for('Sync_AuthMiddleware'),
   // env vars

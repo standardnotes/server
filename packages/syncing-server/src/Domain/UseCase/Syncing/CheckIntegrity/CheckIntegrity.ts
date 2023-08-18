@@ -1,15 +1,22 @@
 import { IntegrityPayload } from '@standardnotes/responses'
-import { ContentType, Result, UseCaseInterface } from '@standardnotes/domain-core'
+import { ContentType, Result, RoleNameCollection, UseCaseInterface } from '@standardnotes/domain-core'
 
-import { ItemRepositoryInterface } from '../../../Item/ItemRepositoryInterface'
 import { CheckIntegrityDTO } from './CheckIntegrityDTO'
 import { ExtendedIntegrityPayload } from '../../../Item/ExtendedIntegrityPayload'
+import { ItemRepositoryResolverInterface } from '../../../Item/ItemRepositoryResolverInterface'
 
 export class CheckIntegrity implements UseCaseInterface<IntegrityPayload[]> {
-  constructor(private itemRepository: ItemRepositoryInterface) {}
+  constructor(private itemRepositoryResolver: ItemRepositoryResolverInterface) {}
 
   async execute(dto: CheckIntegrityDTO): Promise<Result<IntegrityPayload[]>> {
-    const serverItemIntegrityPayloads = await this.itemRepository.findItemsForComputingIntegrityPayloads(dto.userUuid)
+    const roleNamesOrError = RoleNameCollection.create(dto.roleNames)
+    if (roleNamesOrError.isFailed()) {
+      return Result.fail(roleNamesOrError.getError())
+    }
+    const roleNames = roleNamesOrError.getValue()
+
+    const itemRepository = this.itemRepositoryResolver.resolve(roleNames)
+    const serverItemIntegrityPayloads = await itemRepository.findItemsForComputingIntegrityPayloads(dto.userUuid)
 
     const serverItemIntegrityPayloadsMap = new Map<string, ExtendedIntegrityPayload>()
     for (const serverItemIntegrityPayload of serverItemIntegrityPayloads) {

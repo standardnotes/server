@@ -13,6 +13,7 @@ import {
   UniqueEntityId,
   Result,
   NotificationPayload,
+  RoleName,
 } from '@standardnotes/domain-core'
 import { SharedVaultAssociation } from '../../../SharedVault/SharedVaultAssociation'
 import { KeySystemAssociation } from '../../../KeySystem/KeySystemAssociation'
@@ -20,9 +21,11 @@ import { DetermineSharedVaultOperationOnItem } from '../../SharedVaults/Determin
 import { AddNotificationForUser } from '../../Messaging/AddNotificationForUser/AddNotificationForUser'
 import { RemoveNotificationsForUser } from '../../Messaging/RemoveNotificationsForUser/RemoveNotificationsForUser'
 import { SharedVaultOperationOnItem } from '../../../SharedVault/SharedVaultOperationOnItem'
+import { ItemRepositoryResolverInterface } from '../../../Item/ItemRepositoryResolverInterface'
 
 describe('UpdateExistingItem', () => {
   let itemRepository: ItemRepositoryInterface
+  let itemRepositoryResolver: ItemRepositoryResolverInterface
   let timer: TimerInterface
   let domainEventPublisher: DomainEventPublisherInterface
   let domainEventFactory: DomainEventFactoryInterface
@@ -34,7 +37,7 @@ describe('UpdateExistingItem', () => {
 
   const createUseCase = () =>
     new UpdateExistingItem(
-      itemRepository,
+      itemRepositoryResolver,
       timer,
       domainEventPublisher,
       domainEventFactory,
@@ -88,6 +91,9 @@ describe('UpdateExistingItem', () => {
     itemRepository = {} as jest.Mocked<ItemRepositoryInterface>
     itemRepository.save = jest.fn()
 
+    itemRepositoryResolver = {} as jest.Mocked<ItemRepositoryResolverInterface>
+    itemRepositoryResolver.resolve = jest.fn().mockReturnValue(itemRepository)
+
     timer = {} as jest.Mocked<TimerInterface>
     timer.getTimestampInMicroseconds = jest.fn().mockReturnValue(123456789)
     timer.convertMicrosecondsToDate = jest.fn().mockReturnValue(new Date(123456789))
@@ -134,6 +140,7 @@ describe('UpdateExistingItem', () => {
       itemHash: itemHash1,
       sessionUuid: '00000000-0000-0000-0000-000000000000',
       performingUserUuid: '00000000-0000-0000-0000-000000000000',
+      roleNames: [RoleName.NAMES.CoreUser],
     })
 
     expect(result.isFailed()).toBeFalsy()
@@ -148,6 +155,21 @@ describe('UpdateExistingItem', () => {
       itemHash: itemHash1,
       sessionUuid: 'invalid-uuid',
       performingUserUuid: '00000000-0000-0000-0000-000000000000',
+      roleNames: [RoleName.NAMES.CoreUser],
+    })
+
+    expect(result.isFailed()).toBeTruthy()
+  })
+
+  it('should return error if role names are invalid', async () => {
+    const useCase = createUseCase()
+
+    const result = await useCase.execute({
+      existingItem: item1,
+      itemHash: itemHash1,
+      sessionUuid: '00000000-0000-0000-0000-000000000000',
+      performingUserUuid: '00000000-0000-0000-0000-000000000000',
+      roleNames: ['invalid-role'],
     })
 
     expect(result.isFailed()).toBeTruthy()
@@ -164,6 +186,7 @@ describe('UpdateExistingItem', () => {
       }).getValue(),
       sessionUuid: '00000000-0000-0000-0000-000000000000',
       performingUserUuid: '00000000-0000-0000-0000-000000000000',
+      roleNames: [RoleName.NAMES.CoreUser],
     })
 
     expect(result.isFailed()).toBeTruthy()
@@ -180,6 +203,7 @@ describe('UpdateExistingItem', () => {
       }).getValue(),
       sessionUuid: '00000000-0000-0000-0000-000000000000',
       performingUserUuid: '00000000-0000-0000-0000-000000000000',
+      roleNames: [RoleName.NAMES.CoreUser],
     })
 
     expect(result.isFailed()).toBeFalsy()
@@ -203,6 +227,7 @@ describe('UpdateExistingItem', () => {
       }).getValue(),
       sessionUuid: '00000000-0000-0000-0000-000000000000',
       performingUserUuid: '00000000-0000-0000-0000-000000000000',
+      roleNames: [RoleName.NAMES.CoreUser],
     })
 
     expect(result.isFailed()).toBeFalsy()
@@ -221,6 +246,7 @@ describe('UpdateExistingItem', () => {
       }).getValue(),
       sessionUuid: '00000000-0000-0000-0000-000000000000',
       performingUserUuid: '00000000-0000-0000-0000-000000000000',
+      roleNames: [RoleName.NAMES.CoreUser],
     })
 
     expect(result.isFailed()).toBeTruthy()
@@ -238,6 +264,7 @@ describe('UpdateExistingItem', () => {
       }).getValue(),
       sessionUuid: '00000000-0000-0000-0000-000000000000',
       performingUserUuid: '00000000-0000-0000-0000-000000000000',
+      roleNames: [RoleName.NAMES.CoreUser],
     })
 
     expect(result.isFailed()).toBeFalsy()
@@ -256,6 +283,7 @@ describe('UpdateExistingItem', () => {
       }).getValue(),
       sessionUuid: '00000000-0000-0000-0000-000000000000',
       performingUserUuid: '00000000-0000-0000-0000-000000000000',
+      roleNames: [RoleName.NAMES.CoreUser],
     })
 
     expect(result.isFailed()).toBeTruthy()
@@ -278,6 +306,7 @@ describe('UpdateExistingItem', () => {
       }).getValue(),
       sessionUuid: '00000000-0000-0000-0000-000000000000',
       performingUserUuid: '00000000-0000-0000-0000-000000000000',
+      roleNames: [RoleName.NAMES.CoreUser],
     })
 
     expect(result.isFailed()).toBeTruthy()
@@ -302,6 +331,7 @@ describe('UpdateExistingItem', () => {
       }).getValue(),
       sessionUuid: '00000000-0000-0000-0000-000000000000',
       performingUserUuid: '00000000-0000-0000-0000-000000000000',
+      roleNames: [RoleName.NAMES.CoreUser],
     })
 
     expect(result.isFailed()).toBeTruthy()
@@ -316,6 +346,7 @@ describe('UpdateExistingItem', () => {
       itemHash: itemHash1,
       sessionUuid: '00000000-0000-0000-0000-000000000000',
       performingUserUuid: 'invalid-uuid',
+      roleNames: [RoleName.NAMES.CoreUser],
     })
     expect(result.isFailed()).toBeTruthy()
   })
@@ -334,6 +365,7 @@ describe('UpdateExistingItem', () => {
         itemHash,
         sessionUuid: '00000000-0000-0000-0000-000000000000',
         performingUserUuid: '00000000-0000-0000-0000-000000000000',
+        roleNames: [RoleName.NAMES.CoreUser],
       })
       expect(result.isFailed()).toBeFalsy()
       expect(item1.props.sharedVaultAssociation).not.toBeUndefined()
@@ -363,6 +395,7 @@ describe('UpdateExistingItem', () => {
         itemHash,
         sessionUuid: '00000000-0000-0000-0000-000000000000',
         performingUserUuid: '00000000-0000-0000-0000-000000000000',
+        roleNames: [RoleName.NAMES.CoreUser],
       })
 
       expect(result.isFailed()).toBeFalsy()
@@ -389,6 +422,7 @@ describe('UpdateExistingItem', () => {
         itemHash,
         sessionUuid: '00000000-0000-0000-0000-000000000000',
         performingUserUuid: '00000000-0000-0000-0000-000000000000',
+        roleNames: [RoleName.NAMES.CoreUser],
       })
       expect(result.isFailed()).toBeTruthy()
       mock.mockRestore()
@@ -409,6 +443,7 @@ describe('UpdateExistingItem', () => {
         itemHash,
         sessionUuid: '00000000-0000-0000-0000-000000000000',
         performingUserUuid: '00000000-0000-0000-0000-000000000000',
+        roleNames: [RoleName.NAMES.CoreUser],
       })
       expect(result.isFailed()).toBeTruthy()
     })
@@ -440,6 +475,7 @@ describe('UpdateExistingItem', () => {
         itemHash,
         sessionUuid: '00000000-0000-0000-0000-000000000000',
         performingUserUuid: '00000000-0000-0000-0000-000000000000',
+        roleNames: [RoleName.NAMES.CoreUser],
       })
       expect(result.isFailed()).toBeTruthy()
     })
@@ -474,6 +510,7 @@ describe('UpdateExistingItem', () => {
         itemHash,
         sessionUuid: '00000000-0000-0000-0000-000000000000',
         performingUserUuid: '00000000-0000-0000-0000-000000000000',
+        roleNames: [RoleName.NAMES.CoreUser],
       })
       expect(result.isFailed()).toBeTruthy()
 
@@ -495,6 +532,7 @@ describe('UpdateExistingItem', () => {
         itemHash,
         sessionUuid: '00000000-0000-0000-0000-000000000000',
         performingUserUuid: '00000000-0000-0000-0000-000000000000',
+        roleNames: [RoleName.NAMES.CoreUser],
       })
       expect(result.isFailed()).toBeTruthy()
     })
@@ -514,6 +552,7 @@ describe('UpdateExistingItem', () => {
         itemHash,
         sessionUuid: '00000000-0000-0000-0000-000000000000',
         performingUserUuid: '00000000-0000-0000-0000-000000000000',
+        roleNames: [RoleName.NAMES.CoreUser],
       })
       expect(result.isFailed()).toBeFalsy()
       expect(item1.props.keySystemAssociation).not.toBeUndefined()
@@ -540,6 +579,7 @@ describe('UpdateExistingItem', () => {
         itemHash,
         sessionUuid: '00000000-0000-0000-0000-000000000000',
         performingUserUuid: '00000000-0000-0000-0000-000000000000',
+        roleNames: [RoleName.NAMES.CoreUser],
       })
 
       expect(result.isFailed()).toBeFalsy()
@@ -561,6 +601,7 @@ describe('UpdateExistingItem', () => {
         itemHash,
         sessionUuid: '00000000-0000-0000-0000-000000000000',
         performingUserUuid: '00000000-0000-0000-0000-000000000000',
+        roleNames: [RoleName.NAMES.CoreUser],
       })
       expect(result.isFailed()).toBeTruthy()
     })
@@ -583,6 +624,7 @@ describe('UpdateExistingItem', () => {
         itemHash,
         sessionUuid: '00000000-0000-0000-0000-000000000000',
         performingUserUuid: '00000000-0000-0000-0000-000000000000',
+        roleNames: [RoleName.NAMES.CoreUser],
       })
       expect(result.isFailed()).toBeTruthy()
       mock.mockRestore()

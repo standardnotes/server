@@ -101,6 +101,7 @@ const TYPES = {
   Auth_U2F_EXPECTED_ORIGIN: Symbol.for('Auth_U2F_EXPECTED_ORIGIN'),
   Auth_U2F_REQUIRE_USER_VERIFICATION: Symbol.for('Auth_U2F_REQUIRE_USER_VERIFICATION'),
   Auth_READONLY_USERS: Symbol.for('Auth_READONLY_USERS'),
+  Auth_TRANSITION_MODE_ENABLED: Symbol.for('Auth_TRANSITION_MODE_ENABLED'),
   // use cases
   Auth_AuthenticateUser: Symbol.for('Auth_AuthenticateUser'),
   Auth_AuthenticateRequest: Symbol.for('Auth_AuthenticateRequest'),

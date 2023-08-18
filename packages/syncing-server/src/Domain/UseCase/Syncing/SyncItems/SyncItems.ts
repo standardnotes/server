@@ -1,20 +1,20 @@
-import { ContentType, Result, UseCaseInterface } from '@standardnotes/domain-core'
+import { ContentType, Result, RoleNameCollection, UseCaseInterface } from '@standardnotes/domain-core'
 
 import { Item } from '../../../Item/Item'
 import { ItemConflict } from '../../../Item/ItemConflict'
 import { SyncItemsDTO } from './SyncItemsDTO'
 import { SyncItemsResponse } from './SyncItemsResponse'
-import { ItemRepositoryInterface } from '../../../Item/ItemRepositoryInterface'
 import { GetItems } from '../GetItems/GetItems'
 import { SaveItems } from '../SaveItems/SaveItems'
 import { GetSharedVaults } from '../../SharedVaults/GetSharedVaults/GetSharedVaults'
 import { GetSharedVaultInvitesSentToUser } from '../../SharedVaults/GetSharedVaultInvitesSentToUser/GetSharedVaultInvitesSentToUser'
 import { GetMessagesSentToUser } from '../../Messaging/GetMessagesSentToUser/GetMessagesSentToUser'
 import { GetUserNotifications } from '../../Messaging/GetUserNotifications/GetUserNotifications'
+import { ItemRepositoryResolverInterface } from '../../../Item/ItemRepositoryResolverInterface'
 
 export class SyncItems implements UseCaseInterface<SyncItemsResponse> {
   constructor(
-    private itemRepository: ItemRepositoryInterface,
+    private itemRepositoryResolver: ItemRepositoryResolverInterface,
     private getItemsUseCase: GetItems,
     private saveItemsUseCase: SaveItems,
     private getSharedVaultsUseCase: GetSharedVaults,
@@ -24,6 +24,12 @@ export class SyncItems implements UseCaseInterface<SyncItemsResponse> {
   ) {}
 
   async execute(dto: SyncItemsDTO): Promise<Result<SyncItemsResponse>> {
+    const roleNamesOrError = RoleNameCollection.create(dto.roleNames)
+    if (roleNamesOrError.isFailed()) {
+      return Result.fail(roleNamesOrError.getError())
+    }
+    const roleNames = roleNamesOrError.getValue()
+
     const getItemsResultOrError = await this.getItemsUseCase.execute({
       userUuid: dto.userUuid,
       syncToken: dto.syncToken,
@@ -31,6 +37,7 @@ export class SyncItems implements UseCaseInterface<SyncItemsResponse> {
       limit: dto.limit,
       contentType: dto.contentType,
       sharedVaultUuids: dto.sharedVaultUuids,
+      roleNames: dto.roleNames,
     })
     if (getItemsResultOrError.isFailed()) {
       return Result.fail(getItemsResultOrError.getError())
@@ -44,6 +51,7 @@ export class SyncItems implements UseCaseInterface<SyncItemsResponse> {
       readOnlyAccess: dto.readOnlyAccess,
       sessionUuid: dto.sessionUuid,
       snjsVersion: dto.snjsVersion,
+      roleNames: dto.roleNames,
     })
     if (saveItemsResultOrError.isFailed()) {
       return Result.fail(saveItemsResultOrError.getError())
@@ -53,7 +61,7 @@ export class SyncItems implements UseCaseInterface<SyncItemsResponse> {
     let retrievedItems = this.filterOutSyncConflictsForConsecutiveSyncs(getItemsResult.items, saveItemsResult.conflicts)
     const isSharedVaultExclusiveSync = dto.sharedVaultUuids && dto.sharedVaultUuids.length > 0
     if (this.isFirstSync(dto) && !isSharedVaultExclusiveSync) {
-      retrievedItems = await this.frontLoadKeysItemsToTop(dto.userUuid, retrievedItems)
+      retrievedItems = await this.frontLoadKeysItemsToTop(dto.userUuid, roleNames, retrievedItems)
     }
 
     const sharedVaultsOrError = await this.getSharedVaultsUseCase.execute({
@@ -125,8 +133,13 @@ export class SyncItems implements UseCaseInterface<SyncItemsResponse> {
     return retrievedItems.filter((item: Item) => syncConflictIds.indexOf(item.id.toString()) === -1)
   }
 
-  private async frontLoadKeysItemsToTop(userUuid: string, retrievedItems: Array<Item>): Promise<Array<Item>> {
-    const itemsKeys = await this.itemRepository.findAll({
+  private async frontLoadKeysItemsToTop(
+    userUuid: string,
+    roleNames: RoleNameCollection,
+    retrievedItems: Array<Item>,
+  ): Promise<Array<Item>> {
+    const itemRepository = this.itemRepositoryResolver.resolve(roleNames)
+    const itemsKeys = await itemRepository.findAll({
       userUuid,
       contentType: ContentType.TYPES.ItemsKey,
       sortBy: 'updated_at_timestamp',
