@@ -24,6 +24,7 @@ jobs:
       fail-fast: false
       matrix:
         secondary_db_enabled: [true, false]
+        transition_mode_enabled: [true, false]
     runs-on: ubuntu-latest
 
     services:
@@ -50,14 +51,15 @@ jobs:
         DB_TYPE: mysql
         CACHE_TYPE: redis
         SECONDARY_DB_ENABLED: ${{ matrix.secondary_db_enabled }}
+        TRANSITION_MODE_ENABLED: ${{ matrix.transition_mode_enabled }}
 
     - name: Wait for server to start
       run: docker/is-available.sh http://localhost:3123 $(pwd)/logs
 
-    - name: Define if vaults are enabled based on secondary db enabled parameter
+    - name: Define if vault tests are enabled
       id: vaults
       run: |
-        if [ "${{ matrix.secondary_db_enabled }}" = "true" ]; then
+        if [ "${{ matrix.secondary_db_enabled }}" = "true" ] && [ "${{ matrix.transition_mode_enabled }}" = "true" ]; then
           echo "vault-tests=enabled" >> $GITHUB_OUTPUT
         else
           echo "vault-tests=disabled" >> $GITHUB_OUTPUT
@@ -82,6 +84,7 @@ jobs:
         db_type: [mysql, sqlite]
         cache_type: [redis, memory]
         secondary_db_enabled: [true, false]
+        transition_mode_enabled: [true, false]
 
     runs-on: ubuntu-latest
 
@@ -150,6 +153,7 @@ jobs:
         echo "REDIS_URL=redis://localhost:6379" >> packages/home-server/.env
         echo "CACHE_TYPE=${{ matrix.cache_type }}" >> packages/home-server/.env
         echo "SECONDARY_DB_ENABLED=${{ matrix.secondary_db_enabled }}" >> packages/home-server/.env
+        echo "TRANSITION_MODE_ENABLED=${{ matrix.transition_mode_enabled }}" >> packages/home-server/.env
         echo "MONGO_HOST=localhost" >> packages/home-server/.env
         echo "MONGO_PORT=27017" >> packages/home-server/.env
         echo "MONGO_DATABASE=standardnotes" >> packages/home-server/.env
@@ -166,10 +170,10 @@ jobs:
     - name: Wait for server to start
       run: for i in {1..30}; do curl -s http://localhost:3123/healthcheck && break || sleep 1; done
 
-    - name: Define if vaults are enabled based on secondary db enabled parameter
+    - name: Define if vault tests are enabled
       id: vaults
       run: |
-        if [ "${{ matrix.secondary_db_enabled }}" = "true" ]; then
+        if [ "${{ matrix.secondary_db_enabled }}" = "true" ] && [ "${{ matrix.transition_mode_enabled }}" = "true" ]; then
           echo "vault-tests=enabled" >> $GITHUB_OUTPUT
         else
           echo "vault-tests=disabled" >> $GITHUB_OUTPUT
