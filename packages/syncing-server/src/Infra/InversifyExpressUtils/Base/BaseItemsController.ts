@@ -60,7 +60,7 @@ export class BaseItemsController extends BaseHttpController {
 
     const syncResult = await this.syncItems.execute({
       userUuid: response.locals.user.uuid,
-      roleNames: response.locals.user.roles.map((role: Role) => role.name),
+      roleNames: response.locals.roles.map((role: Role) => role.name),
       itemHashes,
       computeIntegrityHash: request.body.compute_integrity === true,
       syncToken: request.body.sync_token,
@@ -93,7 +93,7 @@ export class BaseItemsController extends BaseHttpController {
     const result = await this.checkIntegrity.execute({
       userUuid: response.locals.user.uuid,
       integrityPayloads,
-      roleNames: response.locals.user.roles.map((role: Role) => role.name),
+      roleNames: response.locals.roles.map((role: Role) => role.name),
     })
 
     if (result.isFailed()) {
@@ -109,7 +109,7 @@ export class BaseItemsController extends BaseHttpController {
     const result = await this.getItem.execute({
       userUuid: response.locals.user.uuid,
       itemUuid: request.params.uuid,
-      roleNames: response.locals.user.roles.map((role: Role) => role.name),
+      roleNames: response.locals.roles.map((role: Role) => role.name),
     })
 
     if (result.isFailed()) {
