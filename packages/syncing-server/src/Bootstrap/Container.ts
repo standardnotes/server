@@ -287,6 +287,18 @@ export class ContainerConfigLoader {
       })
     }
 
+    container
+      .bind(TYPES.Sync_EMAIL_ATTACHMENT_MAX_BYTE_SIZE)
+      .toConstantValue(
+        env.get('EMAIL_ATTACHMENT_MAX_BYTE_SIZE', true) ? +env.get('EMAIL_ATTACHMENT_MAX_BYTE_SIZE', true) : 10485760,
+      )
+    container.bind(TYPES.Sync_NEW_RELIC_ENABLED).toConstantValue(env.get('NEW_RELIC_ENABLED', true))
+    container
+      .bind(TYPES.Sync_FILE_UPLOAD_PATH)
+      .toConstantValue(
+        env.get('FILE_UPLOAD_PATH', true) ? env.get('FILE_UPLOAD_PATH', true) : this.DEFAULT_FILE_UPLOAD_PATH,
+      )
+
     // Mapping
     container
       .bind<MapperInterface<Item, TypeORMItem>>(TYPES.Sync_ItemPersistenceMapper)
@@ -790,17 +802,22 @@ export class ContainerConfigLoader {
         )
       })
 
-    // env vars
     container
-      .bind(TYPES.Sync_EMAIL_ATTACHMENT_MAX_BYTE_SIZE)
+      .bind<ItemBackupServiceInterface>(TYPES.Sync_ItemBackupService)
       .toConstantValue(
-        env.get('EMAIL_ATTACHMENT_MAX_BYTE_SIZE', true) ? +env.get('EMAIL_ATTACHMENT_MAX_BYTE_SIZE', true) : 10485760,
-      )
-    container.bind(TYPES.Sync_NEW_RELIC_ENABLED).toConstantValue(env.get('NEW_RELIC_ENABLED', true))
-    container
-      .bind(TYPES.Sync_FILE_UPLOAD_PATH)
-      .toConstantValue(
-        env.get('FILE_UPLOAD_PATH', true) ? env.get('FILE_UPLOAD_PATH', true) : this.DEFAULT_FILE_UPLOAD_PATH,
+        env.get('S3_AWS_REGION', true)
+          ? new S3ItemBackupService(
+              container.get(TYPES.Sync_S3_BACKUP_BUCKET_NAME),
+              container.get(TYPES.Sync_ItemBackupMapper),
+              container.get(TYPES.Sync_ItemHttpMapper),
+              container.get(TYPES.Sync_Logger),
+              container.get(TYPES.Sync_S3),
+            )
+          : new FSItemBackupService(
+              container.get(TYPES.Sync_FILE_UPLOAD_PATH),
+              container.get(TYPES.Sync_ItemBackupMapper),
+              container.get(TYPES.Sync_Logger),
+            ),
       )
 
     // Handlers
@@ -870,28 +887,6 @@ export class ContainerConfigLoader {
           container.get<Logger>(TYPES.Sync_Logger),
         ),
       )
-
-    container
-      .bind<ItemBackupServiceInterface>(TYPES.Sync_ItemBackupService)
-      .toDynamicValue((context: interfaces.Context) => {
-        const env: Env = context.container.get(TYPES.Sync_Env)
-
-        if (env.get('S3_AWS_REGION', true)) {
-          return new S3ItemBackupService(
-            context.container.get(TYPES.Sync_S3_BACKUP_BUCKET_NAME),
-            context.container.get(TYPES.Sync_ItemBackupMapper),
-            context.container.get(TYPES.Sync_ItemHttpMapper),
-            context.container.get(TYPES.Sync_Logger),
-            context.container.get(TYPES.Sync_S3),
-          )
-        } else {
-          return new FSItemBackupService(
-            context.container.get(TYPES.Sync_FILE_UPLOAD_PATH),
-            context.container.get(TYPES.Sync_ItemBackupMapper),
-            context.container.get(TYPES.Sync_Logger),
-          )
-        }
-      })
 
     const eventHandlers: Map<string, DomainEventHandlerInterface> = new Map([
       ['DUPLICATE_ITEM_SYNCED', container.get(TYPES.Sync_DuplicateItemSyncedEventHandler)],
