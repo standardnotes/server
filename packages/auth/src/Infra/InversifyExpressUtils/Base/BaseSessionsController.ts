@@ -47,13 +47,23 @@ export class BaseSessionsController extends BaseHttpController {
 
     const sharedVaultOwnerContext = request.headers['x-shared-vault-owner-context'] as string | undefined
 
-    const result = await this.createCrossServiceToken.execute({
+    const resultOrError = await this.createCrossServiceToken.execute({
       user,
       session: authenticateRequestResponse.session,
       sharedVaultOwnerContext,
     })
+    if (resultOrError.isFailed()) {
+      return this.json(
+        {
+          error: {
+            message: resultOrError.getError(),
+          },
+        },
+        400,
+      )
+    }
 
-    return this.json({ authToken: result.token })
+    return this.json({ authToken: resultOrError.getValue() })
   }
 
   async getSessions(_request: Request, response: Response): Promise<results.JsonResult> {

@@ -1,6 +1,6 @@
 import { TokenEncoderInterface, CrossServiceTokenData } from '@standardnotes/security'
 import { inject, injectable } from 'inversify'
-import { Uuid } from '@standardnotes/domain-core'
+import { Result, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
 
 import TYPES from '../../../Bootstrap/Types'
 import { ProjectorInterface } from '../../../Projection/ProjectorInterface'
@@ -8,15 +8,13 @@ import { Role } from '../../Role/Role'
 import { Session } from '../../Session/Session'
 import { User } from '../../User/User'
 import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'
-import { UseCaseInterface } from '../UseCaseInterface'
 
 import { CreateCrossServiceTokenDTO } from './CreateCrossServiceTokenDTO'
-import { CreateCrossServiceTokenResponse } from './CreateCrossServiceTokenResponse'
 import { GetSetting } from '../GetSetting/GetSetting'
 import { SettingName } from '@standardnotes/settings'
 
 @injectable()
-export class CreateCrossServiceToken implements UseCaseInterface {
+export class CreateCrossServiceToken implements UseCaseInterface<string> {
   constructor(
     @inject(TYPES.Auth_UserProjector) private userProjector: ProjectorInterface<User>,
     @inject(TYPES.Auth_SessionProjector) private sessionProjector: ProjectorInterface<Session>,
@@ -28,12 +26,12 @@ export class CreateCrossServiceToken implements UseCaseInterface {
     private getSettingUseCase: GetSetting,
   ) {}
 
-  async execute(dto: CreateCrossServiceTokenDTO): Promise<CreateCrossServiceTokenResponse> {
+  async execute(dto: CreateCrossServiceTokenDTO): Promise<Result<string>> {
     let user: User | undefined | null = dto.user
     if (user === undefined && dto.userUuid !== undefined) {
       const userUuidOrError = Uuid.create(dto.userUuid)
       if (userUuidOrError.isFailed()) {
-        throw new Error(userUuidOrError.getError())
+        return Result.fail(userUuidOrError.getError())
       }
       const userUuid = userUuidOrError.getValue()
 
@@ -41,7 +39,7 @@ export class CreateCrossServiceToken implements UseCaseInterface {
     }
 
     if (!user) {
-      throw new Error(`Could not find user with uuid ${dto.userUuid}`)
+      return Result.fail(`Could not find user with uuid ${dto.userUuid}`)
     }
 
     const roles = await user.roles
@@ -58,11 +56,11 @@ export class CreateCrossServiceToken implements UseCaseInterface {
         userUuid: dto.sharedVaultOwnerContext,
       })
       if (uploadBytesLimitSettingOrError.isFailed()) {
-        throw new Error(uploadBytesLimitSettingOrError.getError())
+        return Result.fail(uploadBytesLimitSettingOrError.getError())
       }
       const uploadBytesLimitSetting = uploadBytesLimitSettingOrError.getValue()
       if (uploadBytesLimitSetting.sensitive) {
-        throw new Error('Shared vault owner upload bytes limit setting is sensitive!')
+        return Result.fail('Shared vault owner upload bytes limit setting is sensitive!')
       }
       const uploadBytesLimit = parseInt(uploadBytesLimitSetting.setting.value as string)
 
@@ -75,9 +73,7 @@ export class CreateCrossServiceToken implements UseCaseInterface {
       authTokenData.session = this.projectSession(dto.session)
     }
 
-    return {
-      token: this.tokenEncoder.encodeExpirableToken(authTokenData, this.jwtTTL),
-    }
+    return Result.ok(this.tokenEncoder.encodeExpirableToken(authTokenData, this.jwtTTL))
   }
 
   private projectUser(user: User): { uuid: string; email: string } {

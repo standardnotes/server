@@ -139,29 +139,19 @@ describe('CreateCrossServiceToken', () => {
   it('should throw an error if user does not exist', async () => {
     userRepository.findOneByUuid = jest.fn().mockReturnValue(null)
 
-    let caughtError = null
-    try {
-      await createUseCase().execute({
-        userUuid: '00000000-0000-0000-0000-000000000000',
-      })
-    } catch (error) {
-      caughtError = error
-    }
+    const result = await createUseCase().execute({
+      userUuid: '00000000-0000-0000-0000-000000000000',
+    })
 
-    expect(caughtError).not.toBeNull()
+    expect(result.isFailed()).toBeTruthy()
   })
 
   it('should throw an error if user uuid is invalid', async () => {
-    let caughtError = null
-    try {
-      await createUseCase().execute({
-        userUuid: 'invalid',
-      })
-    } catch (error) {
-      caughtError = error
-    }
+    const result = await createUseCase().execute({
+      userUuid: 'invalid',
+    })
 
-    expect(caughtError).not.toBeNull()
+    expect(result.isFailed()).toBeTruthy()
   })
 
   describe('shared vault context', () => {
@@ -198,35 +188,25 @@ describe('CreateCrossServiceToken', () => {
     it('should throw an error if shared vault owner context is sensitive', async () => {
       getSettingUseCase.execute = jest.fn().mockReturnValue(Result.ok({ sensitive: true }))
 
-      let caughtError = null
-      try {
-        await createUseCase().execute({
-          user,
-          session,
-          sharedVaultOwnerContext: '00000000-0000-0000-0000-000000000000',
-        })
-      } catch (error) {
-        caughtError = error
-      }
+      const result = await createUseCase().execute({
+        user,
+        session,
+        sharedVaultOwnerContext: '00000000-0000-0000-0000-000000000000',
+      })
 
-      expect(caughtError).not.toBeNull()
+      expect(result.isFailed()).toBeTruthy()
     })
 
     it('should throw an error if it fails to retrieve shared vault owner setting', async () => {
       getSettingUseCase.execute = jest.fn().mockReturnValue(Result.fail('Oops'))
 
-      let caughtError = null
-      try {
-        await createUseCase().execute({
-          user,
-          session,
-          sharedVaultOwnerContext: '00000000-0000-0000-0000-000000000000',
-        })
-      } catch (error) {
-        caughtError = error
-      }
+      const result = await createUseCase().execute({
+        user,
+        session,
+        sharedVaultOwnerContext: '00000000-0000-0000-0000-000000000000',
+      })
 
-      expect(caughtError).not.toBeNull()
+      expect(result.isFailed()).toBeTruthy()
     })
   })
 })

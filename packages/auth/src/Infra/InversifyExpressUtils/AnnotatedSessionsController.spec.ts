@@ -11,6 +11,7 @@ import { CreateCrossServiceToken } from '../../Domain/UseCase/CreateCrossService
 import { GetActiveSessionsForUser } from '../../Domain/UseCase/GetActiveSessionsForUser'
 import { ProjectorInterface } from '../../Projection/ProjectorInterface'
 import { Session } from '../../Domain/Session/Session'
+import { Result } from '@standardnotes/domain-core'
 
 describe('AnnotatedSessionsController', () => {
   let getActiveSessionsForUser: GetActiveSessionsForUser
@@ -45,7 +46,7 @@ describe('AnnotatedSessionsController', () => {
     sessionProjector.projectCustom = jest.fn().mockReturnValue({ foo: 'bar' })
 
     createCrossServiceToken = {} as jest.Mocked<CreateCrossServiceToken>
-    createCrossServiceToken.execute = jest.fn().mockReturnValue({ token: 'foobar' })
+    createCrossServiceToken.execute = jest.fn().mockReturnValue(Result.ok('foobar'))
 
     request = {
       params: {},
