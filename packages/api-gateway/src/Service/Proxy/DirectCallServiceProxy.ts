@@ -6,9 +6,10 @@ import { ServiceProxyInterface } from '../Http/ServiceProxyInterface'
 export class DirectCallServiceProxy implements ServiceProxyInterface {
   constructor(private serviceContainer: ServiceContainerInterface, private filesServerUrl: string) {}
 
-  async validateSession(
-    authorizationHeaderValue: string,
-  ): Promise<{ status: number; data: unknown; headers: { contentType: string } }> {
+  async validateSession(headers: {
+    authorization: string
+    sharedVaultOwnerContext?: string
+  }): Promise<{ status: number; data: unknown; headers: { contentType: string } }> {
     const authService = this.serviceContainer.get(ServiceIdentifier.create(ServiceIdentifier.NAMES.Auth).getValue())
     if (!authService) {
       throw new Error('Auth service not found')
@@ -17,7 +18,8 @@ export class DirectCallServiceProxy implements ServiceProxyInterface {
     const serviceResponse = (await authService.handleRequest(
       {
         headers: {
-          authorization: authorizationHeaderValue,
+          authorization: headers.authorization,
+          'x-shared-vault-owner-context': headers.sharedVaultOwnerContext,
         },
       } as never,
       {} as never,

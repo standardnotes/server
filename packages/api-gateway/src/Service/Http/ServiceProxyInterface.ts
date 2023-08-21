@@ -50,7 +50,7 @@ export interface ServiceProxyInterface {
     endpointOrMethodIdentifier: string,
     payload?: Record<string, unknown> | string,
   ): Promise<void>
-  validateSession(authorizationHeaderValue: string): Promise<{
+  validateSession(headers: { authorization: string; sharedVaultOwnerContext?: string }): Promise<{
     status: number
     data: unknown
     headers: {

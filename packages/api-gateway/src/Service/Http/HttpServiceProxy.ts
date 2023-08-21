@@ -24,13 +24,14 @@ export class HttpServiceProxy implements ServiceProxyInterface {
     @inject(TYPES.ApiGateway_Logger) private logger: Logger,
   ) {}
 
-  async validateSession(
-    authorizationHeaderValue: string,
-  ): Promise<{ status: number; data: unknown; headers: { contentType: string } }> {
+  async validateSession(headers: {
+    authorization: string
+    sharedVaultOwnerContext?: string
+  }): Promise<{ status: number; data: unknown; headers: { contentType: string } }> {
     const authResponse = await this.httpClient.request({
       method: 'POST',
       headers: {
-        Authorization: authorizationHeaderValue,
+        Authorization: headers.authorization,
         Accept: 'application/json',
       },
       validateStatus: (status: number) => {

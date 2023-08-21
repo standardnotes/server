@@ -27,6 +27,7 @@ export abstract class AuthMiddleware extends BaseMiddleware {
     }
 
     const authHeaderValue = request.headers.authorization as string
+    const sharedVaultOwnerContextHeaderValue = request.headers['x-shared-vault-owner-context'] as string | undefined
 
     try {
       let crossServiceTokenFetchedFromCache = true
@@ -36,7 +37,10 @@ export abstract class AuthMiddleware extends BaseMiddleware {
       }
 
       if (crossServiceToken === null) {
-        const authResponse = await this.serviceProxy.validateSession(authHeaderValue)
+        const authResponse = await this.serviceProxy.validateSession({
+          authorization: authHeaderValue,
+          sharedVaultOwnerContext: sharedVaultOwnerContextHeaderValue,
+        })
 
         if (!this.handleSessionValidationResponse(authResponse, response, next)) {
           return
