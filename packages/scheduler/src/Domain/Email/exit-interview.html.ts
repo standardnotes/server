@@ -15,8 +15,6 @@ export const html = `<div>
     are willing to pay for a product is most crucial for us as we continue to evolve and iterate on Standard
     Notes.
   </p>
-  <p>If you have a minute, please fill out this brief exit interview: </p>
-  <a href="https://standardnotes.typeform.com/to/dX5lzPtm">Short Exit Interview →</a>
   <p>
     Our team reads every single response, and your feedback will be shared with the relevant department within our
     team.
