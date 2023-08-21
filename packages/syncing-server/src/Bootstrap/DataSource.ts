@@ -58,6 +58,7 @@ export class AppDataSource {
       password: this.env.get('MONGO_PASSWORD', true),
       database: this.env.get('MONGO_DATABASE'),
       entities: [MongoDBItem],
+      retryWrites: false,
       synchronize: true,
     })
 
