@@ -52,12 +52,13 @@ export class AppDataSource {
     this._secondaryDataSource = new DataSource({
       type: 'mongodb',
       host: this.env.get('MONGO_HOST'),
-      authSource: 'admin',
+      authSource: 'DEFAULT',
       port: parseInt(this.env.get('MONGO_PORT')),
       username: this.env.get('MONGO_USERNAME'),
       password: this.env.get('MONGO_PASSWORD', true),
       database: this.env.get('MONGO_DATABASE'),
       entities: [MongoDBItem],
+      retryWrites: false,
       synchronize: true,
     })
 
