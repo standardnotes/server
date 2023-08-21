@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.81.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.80.0...@standardnotes/syncing-server@1.81.0) (2023-08-21)
+
+### Bug Fixes
+
+* **syncing-server:** DocumentDB retry writes support ([#703](https://github.com/standardnotes/syncing-server-js/issues/703)) ([15a7f0e](https://github.com/standardnotes/syncing-server-js/commit/15a7f0e71ac2f6c355fb73208559a8fd822773aa))
+
+### Features
+
+* **syncing-server:** add use case for migrating items from one database to another ([#701](https://github.com/standardnotes/syncing-server-js/issues/701)) ([032fcb9](https://github.com/standardnotes/syncing-server-js/commit/032fcb938d9f81381dd9879af4bda9254ee8c499))
+
 # [1.80.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.79.1...@standardnotes/syncing-server@1.80.0) (2023-08-18)
 
 ### Features

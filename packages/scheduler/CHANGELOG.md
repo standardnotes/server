@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.20.24](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.20.23...@standardnotes/scheduler-server@1.20.24) (2023-08-21)
+
+### Bug Fixes
+
+* **scheduler:** remove exit interview form link ([#702](https://github.com/standardnotes/server/issues/702)) ([3e56243](https://github.com/standardnotes/server/commit/3e56243d6f72f5ac86d4fb2191349ec3a589bc83))
+
 ## [1.20.23](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.20.22...@standardnotes/scheduler-server@1.20.23) (2023-08-18)
 
 **Note:** Version bump only for package @standardnotes/scheduler-server
