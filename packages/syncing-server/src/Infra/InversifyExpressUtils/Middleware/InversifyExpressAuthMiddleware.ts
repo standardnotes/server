@@ -25,6 +25,7 @@ export class InversifyExpressAuthMiddleware extends BaseMiddleware {
       response.locals.roles = decodedToken.roles
       response.locals.session = decodedToken.session
       response.locals.readOnlyAccess = decodedToken.session?.readonly_access ?? false
+      response.locals.sharedVaultOwnerContext = decodedToken.shared_vault_owner_context
 
       return next()
     } catch (error) {

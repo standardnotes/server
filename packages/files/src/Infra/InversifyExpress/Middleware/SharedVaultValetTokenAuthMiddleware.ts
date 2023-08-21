@@ -1,4 +1,4 @@
-import { SharedVaultValetTokenData, TokenDecoderInterface } from '@standardnotes/security'
+import { SharedVaultValetTokenData, TokenDecoderInterface, ValetTokenOperation } from '@standardnotes/security'
 import { Uuid } from '@standardnotes/domain-core'
 import { NextFunction, Request, Response } from 'express'
 import { inject, injectable } from 'inversify'
@@ -61,6 +61,17 @@ export class SharedVaultValetTokenAuthMiddleware extends BaseMiddleware {
         return
       }
 
+      if (this.userHasNoSpaceToUpload(valetTokenData)) {
+        response.status(403).send({
+          error: {
+            tag: 'no-space',
+            message: 'The file you are trying to upload is too big. Please ask the vault owner to upgrade subscription',
+          },
+        })
+
+        return
+      }
+
       const whitelistedData: SharedVaultValetTokenData = {
         sharedVaultUuid: valetTokenData.sharedVaultUuid,
         vaultOwnerUuid: valetTokenData.vaultOwnerUuid,
@@ -78,5 +89,25 @@ export class SharedVaultValetTokenAuthMiddleware extends BaseMiddleware {
     } catch (error) {
       return next(error)
     }
+  }
+
+  private userHasNoSpaceToUpload(valetTokenData: SharedVaultValetTokenData) {
+    if (![ValetTokenOperation.Write, ValetTokenOperation.Move].includes(valetTokenData.permittedOperation)) {
+      return false
+    }
+
+    if (valetTokenData.uploadBytesLimit === -1) {
+      return false
+    }
+
+    if (valetTokenData.uploadBytesLimit === undefined) {
+      return true
+    }
+
+    const remainingUploadSpace = valetTokenData.uploadBytesLimit - valetTokenData.uploadBytesUsed
+
+    const consideredUploadSize = valetTokenData.unencryptedFileSize as number
+
+    return remainingUploadSpace - consideredUploadSize <= 0
   }
 }

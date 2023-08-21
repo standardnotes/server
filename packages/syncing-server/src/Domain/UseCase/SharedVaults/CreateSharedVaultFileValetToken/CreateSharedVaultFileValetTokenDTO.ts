@@ -3,6 +3,7 @@ import { SharedVaultMoveType, ValetTokenOperation } from '@standardnotes/securit
 export interface CreateSharedVaultFileValetTokenDTO {
   userUuid: string
   sharedVaultUuid: string
+  sharedVaultOwnerUploadBytesLimit?: number
   fileUuid?: string
   remoteIdentifier: string
   operation: ValetTokenOperation

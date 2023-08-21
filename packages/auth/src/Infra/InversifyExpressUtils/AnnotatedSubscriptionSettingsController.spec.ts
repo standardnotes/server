@@ -6,6 +6,7 @@ import { results } from 'inversify-express-utils'
 import { AnnotatedSubscriptionSettingsController } from './AnnotatedSubscriptionSettingsController'
 import { User } from '../../Domain/User/User'
 import { GetSetting } from '../../Domain/UseCase/GetSetting/GetSetting'
+import { Result } from '@standardnotes/domain-core'
 
 describe('AnnotatedSubscriptionSettingsController', () => {
   let getSetting: GetSetting
@@ -41,7 +42,7 @@ describe('AnnotatedSubscriptionSettingsController', () => {
       uuid: '1-2-3',
     }
 
-    getSetting.execute = jest.fn().mockReturnValue({ success: true })
+    getSetting.execute = jest.fn().mockReturnValue(Result.ok())
 
     const httpResponse = <results.JsonResult>await createController().getSubscriptionSetting(request, response)
     const result = await httpResponse.executeAsync()
@@ -58,7 +59,7 @@ describe('AnnotatedSubscriptionSettingsController', () => {
       uuid: '1-2-3',
     }
 
-    getSetting.execute = jest.fn().mockReturnValue({ success: false })
+    getSetting.execute = jest.fn().mockReturnValue(Result.fail('Oops'))
 
     const httpResponse = <results.JsonResult>await createController().getSubscriptionSetting(request, response)
     const result = await httpResponse.executeAsync()

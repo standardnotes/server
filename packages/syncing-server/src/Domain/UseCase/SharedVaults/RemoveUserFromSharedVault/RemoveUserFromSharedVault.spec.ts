@@ -19,7 +19,6 @@ describe('RemoveUserFromSharedVault', () => {
 
   beforeEach(() => {
     sharedVault = SharedVault.create({
-      fileUploadBytesLimit: 100,
       fileUploadBytesUsed: 2,
       userUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
       timestamps: Timestamps.create(123, 123).getValue(),
@@ -84,7 +83,6 @@ describe('RemoveUserFromSharedVault', () => {
 
   it('should return error when user is not owner of shared vault', async () => {
     sharedVault = SharedVault.create({
-      fileUploadBytesLimit: 100,
       fileUploadBytesUsed: 2,
       userUuid: Uuid.create('00000000-0000-0000-0000-000000000002').getValue(),
       timestamps: Timestamps.create(123, 123).getValue(),
@@ -104,7 +102,6 @@ describe('RemoveUserFromSharedVault', () => {
 
   it('should remove shared vault user if user is owner and is being force removed', async () => {
     sharedVault = SharedVault.create({
-      fileUploadBytesLimit: 100,
       fileUploadBytesUsed: 2,
       userUuid: Uuid.create('00000000-0000-0000-0000-000000000002').getValue(),
       timestamps: Timestamps.create(123, 123).getValue(),

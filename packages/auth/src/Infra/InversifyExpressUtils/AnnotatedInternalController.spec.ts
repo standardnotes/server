@@ -7,6 +7,7 @@ import { results } from 'inversify-express-utils'
 import { User } from '../../Domain/User/User'
 import { GetUserFeatures } from '../../Domain/UseCase/GetUserFeatures/GetUserFeatures'
 import { GetSetting } from '../../Domain/UseCase/GetSetting/GetSetting'
+import { Result } from '@standardnotes/domain-core'
 
 describe('AnnotatedInternalController', () => {
   let getUserFeatures: GetUserFeatures
@@ -73,7 +74,7 @@ describe('AnnotatedInternalController', () => {
     request.params.userUuid = '1-2-3'
     request.params.settingName = 'foobar'
 
-    getSetting.execute = jest.fn().mockReturnValue({ success: true })
+    getSetting.execute = jest.fn().mockReturnValue(Result.ok())
 
     const httpResponse = <results.JsonResult>await createController().getSetting(request)
     const result = await httpResponse.executeAsync()
@@ -91,7 +92,7 @@ describe('AnnotatedInternalController', () => {
     request.params.userUuid = '1-2-3'
     request.params.settingName = 'foobar'
 
-    getSetting.execute = jest.fn().mockReturnValue({ success: false })
+    getSetting.execute = jest.fn().mockReturnValue(Result.fail('Oops'))
 
     const httpResponse = <results.JsonResult>await createController().getSetting(request)
     const result = await httpResponse.executeAsync()

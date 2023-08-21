@@ -14,15 +14,25 @@ export class BaseSubscriptionSettingsController extends BaseHttpController {
   }
 
   async getSubscriptionSetting(request: Request, response: Response): Promise<results.JsonResult> {
-    const result = await this.doGetSetting.execute({
+    const resultOrError = await this.doGetSetting.execute({
       userUuid: response.locals.user.uuid,
       settingName: request.params.subscriptionSettingName.toUpperCase(),
     })
 
-    if (result.success) {
-      return this.json(result)
+    if (resultOrError.isFailed()) {
+      return this.json(
+        {
+          error: {
+            message: resultOrError.getError(),
+          },
+        },
+        400,
+      )
     }
 
-    return this.json(result, 400)
+    return this.json({
+      success: true,
+      ...resultOrError.getValue(),
+    })
   }
 }

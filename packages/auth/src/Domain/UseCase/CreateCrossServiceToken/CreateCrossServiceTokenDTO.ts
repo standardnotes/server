@@ -6,6 +6,7 @@ export type CreateCrossServiceTokenDTO = Either<
   {
     user: User
     session?: Session
+    sharedVaultOwnerContext?: string
   },
   {
     userUuid: string

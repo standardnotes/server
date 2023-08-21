@@ -8,7 +8,7 @@ export interface SharedVaultValetTokenData {
   remoteIdentifier: string
   unencryptedFileSize?: number
   uploadBytesUsed: number
-  uploadBytesLimit: number
+  uploadBytesLimit?: number
   moveOperation?: {
     type: SharedVaultMoveType
     fromUuid: string

@@ -1,7 +1,7 @@
 import { SettingName } from '@standardnotes/settings'
 import { inject, injectable } from 'inversify'
+import { Result, UseCaseInterface } from '@standardnotes/domain-core'
 
-import { UseCaseInterface } from '../UseCaseInterface'
 import TYPES from '../../../Bootstrap/Types'
 import { SettingProjector } from '../../../Projection/SettingProjector'
 import { SettingServiceInterface } from '../../Setting/SettingServiceInterface'
@@ -14,7 +14,7 @@ import { GetSettingResponse } from './GetSettingResponse'
 import { UserSubscription } from '../../Subscription/UserSubscription'
 
 @injectable()
-export class GetSetting implements UseCaseInterface {
+export class GetSetting implements UseCaseInterface<GetSettingResponse> {
   constructor(
     @inject(TYPES.Auth_SettingProjector) private settingProjector: SettingProjector,
     @inject(TYPES.Auth_SubscriptionSettingProjector) private subscriptionSettingProjector: SubscriptionSettingProjector,
@@ -24,15 +24,10 @@ export class GetSetting implements UseCaseInterface {
     @inject(TYPES.Auth_UserSubscriptionService) private userSubscriptionService: UserSubscriptionServiceInterface,
   ) {}
 
-  async execute(dto: GetSettingDto): Promise<GetSettingResponse> {
+  async execute(dto: GetSettingDto): Promise<Result<GetSettingResponse>> {
     const settingNameOrError = SettingName.create(dto.settingName)
     if (settingNameOrError.isFailed()) {
-      return {
-        success: false,
-        error: {
-          message: settingNameOrError.getError(),
-        },
-      }
+      return Result.fail(settingNameOrError.getError())
     }
     const settingName = settingNameOrError.getValue()
 
@@ -47,12 +42,7 @@ export class GetSetting implements UseCaseInterface {
       }
 
       if (!subscription) {
-        return {
-          success: false,
-          error: {
-            message: 'No subscription found.',
-          },
-        }
+        return Result.fail('No subscription found.')
       }
 
       const subscriptionSetting = await this.subscriptionSettingService.findSubscriptionSettingWithDecryptedValue({
@@ -62,28 +52,21 @@ export class GetSetting implements UseCaseInterface {
       })
 
       if (subscriptionSetting === null) {
-        return {
-          success: false,
-          error: {
-            message: `Subscription setting ${settingName.value} for user ${dto.userUuid} not found!`,
-          },
-        }
+        return Result.fail(`Subscription setting ${settingName.value} for user ${dto.userUuid} not found!`)
       }
 
       if (subscriptionSetting.sensitive && !dto.allowSensitiveRetrieval) {
-        return {
-          success: true,
+        return Result.ok({
           sensitive: true,
-        }
+        })
       }
 
       const simpleSubscriptionSetting = await this.subscriptionSettingProjector.projectSimple(subscriptionSetting)
 
-      return {
-        success: true,
+      return Result.ok({
         userUuid: dto.userUuid,
         setting: simpleSubscriptionSetting,
-      }
+      })
     }
 
     const setting = await this.settingService.findSettingWithDecryptedValue({
@@ -92,27 +75,20 @@ export class GetSetting implements UseCaseInterface {
     })
 
     if (setting === null) {
-      return {
-        success: false,
-        error: {
-          message: `Setting ${settingName.value} for user ${dto.userUuid} not found!`,
-        },
-      }
+      return Result.fail(`Setting ${settingName.value} for user ${dto.userUuid} not found!`)
     }
 
     if (setting.sensitive && !dto.allowSensitiveRetrieval) {
-      return {
-        success: true,
+      return Result.ok({
         sensitive: true,
-      }
+      })
     }
 
     const simpleSetting = await this.settingProjector.projectSimple(setting)
 
-    return {
-      success: true,
+    return Result.ok({
       userUuid: dto.userUuid,
       setting: simpleSetting,
-    }
+    })
   }
 }

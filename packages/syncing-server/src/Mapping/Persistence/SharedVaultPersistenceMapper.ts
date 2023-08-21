@@ -21,7 +21,6 @@ export class SharedVaultPersistenceMapper implements MapperInterface<SharedVault
       {
         userUuid,
         fileUploadBytesUsed: projection.fileUploadBytesUsed,
-        fileUploadBytesLimit: projection.fileUploadBytesLimit,
         timestamps,
       },
       new UniqueEntityId(projection.uuid),
@@ -40,7 +39,6 @@ export class SharedVaultPersistenceMapper implements MapperInterface<SharedVault
     typeorm.uuid = domain.id.toString()
     typeorm.userUuid = domain.props.userUuid.value
     typeorm.fileUploadBytesUsed = domain.props.fileUploadBytesUsed
-    typeorm.fileUploadBytesLimit = domain.props.fileUploadBytesLimit
     typeorm.createdAtTimestamp = domain.props.timestamps.createdAt
     typeorm.updatedAtTimestamp = domain.props.timestamps.updatedAt
 

@@ -1,5 +1,6 @@
 import { TokenEncoderInterface, CrossServiceTokenData } from '@standardnotes/security'
 import { inject, injectable } from 'inversify'
+import { Uuid } from '@standardnotes/domain-core'
 
 import TYPES from '../../../Bootstrap/Types'
 import { ProjectorInterface } from '../../../Projection/ProjectorInterface'
@@ -11,7 +12,8 @@ import { UseCaseInterface } from '../UseCaseInterface'
 
 import { CreateCrossServiceTokenDTO } from './CreateCrossServiceTokenDTO'
 import { CreateCrossServiceTokenResponse } from './CreateCrossServiceTokenResponse'
-import { Uuid } from '@standardnotes/domain-core'
+import { GetSetting } from '../GetSetting/GetSetting'
+import { SettingName } from '@standardnotes/settings'
 
 @injectable()
 export class CreateCrossServiceToken implements UseCaseInterface {
@@ -22,6 +24,8 @@ export class CreateCrossServiceToken implements UseCaseInterface {
     @inject(TYPES.Auth_CrossServiceTokenEncoder) private tokenEncoder: TokenEncoderInterface<CrossServiceTokenData>,
     @inject(TYPES.Auth_UserRepository) private userRepository: UserRepositoryInterface,
     @inject(TYPES.Auth_AUTH_JWT_TTL) private jwtTTL: number,
+    @inject(TYPES.Auth_GetSetting)
+    private getSettingUseCase: GetSetting,
   ) {}
 
   async execute(dto: CreateCrossServiceTokenDTO): Promise<CreateCrossServiceTokenResponse> {
@@ -45,6 +49,26 @@ export class CreateCrossServiceToken implements UseCaseInterface {
     const authTokenData: CrossServiceTokenData = {
       user: this.projectUser(user),
       roles: this.projectRoles(roles),
+      shared_vault_owner_context: undefined,
+    }
+
+    if (dto.sharedVaultOwnerContext !== undefined) {
+      const uploadBytesLimitSettingOrError = await this.getSettingUseCase.execute({
+        settingName: SettingName.NAMES.FileUploadBytesLimit,
+        userUuid: dto.sharedVaultOwnerContext,
+      })
+      if (uploadBytesLimitSettingOrError.isFailed()) {
+        throw new Error(uploadBytesLimitSettingOrError.getError())
+      }
+      const uploadBytesLimitSetting = uploadBytesLimitSettingOrError.getValue()
+      if (uploadBytesLimitSetting.sensitive) {
+        throw new Error('Shared vault owner upload bytes limit setting is sensitive!')
+      }
+      const uploadBytesLimit = parseInt(uploadBytesLimitSetting.setting.value as string)
+
+      authTokenData.shared_vault_owner_context = {
+        upload_bytes_limit: uploadBytesLimit,
+      }
     }
 
     if (dto.session !== undefined) {
