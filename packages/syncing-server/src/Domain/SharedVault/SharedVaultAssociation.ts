@@ -1,13 +1,13 @@
-import { Aggregate, Result, UniqueEntityId } from '@standardnotes/domain-core'
+import { Result, ValueObject } from '@standardnotes/domain-core'
 
 import { SharedVaultAssociationProps } from './SharedVaultAssociationProps'
 
-export class SharedVaultAssociation extends Aggregate<SharedVaultAssociationProps> {
-  private constructor(props: SharedVaultAssociationProps, id?: UniqueEntityId) {
-    super(props, id)
+export class SharedVaultAssociation extends ValueObject<SharedVaultAssociationProps> {
+  private constructor(props: SharedVaultAssociationProps) {
+    super(props)
   }
 
-  static create(props: SharedVaultAssociationProps, id?: UniqueEntityId): Result<SharedVaultAssociation> {
-    return Result.ok<SharedVaultAssociation>(new SharedVaultAssociation(props, id))
+  static create(props: SharedVaultAssociationProps): Result<SharedVaultAssociation> {
+    return Result.ok<SharedVaultAssociation>(new SharedVaultAssociation(props))
   }
 }

@@ -1,8 +1,6 @@
-import { Aggregate, Change, Result, UniqueEntityId, Uuid } from '@standardnotes/domain-core'
+import { Aggregate, Result, UniqueEntityId, Uuid } from '@standardnotes/domain-core'
 
 import { ItemProps } from './ItemProps'
-import { SharedVaultAssociation } from '../SharedVault/SharedVaultAssociation'
-import { KeySystemAssociation } from '../KeySystem/KeySystemAssociation'
 
 export class Item extends Aggregate<ItemProps> {
   private constructor(props: ItemProps, id?: UniqueEntityId) {
@@ -53,60 +51,6 @@ export class Item extends Aggregate<ItemProps> {
     }
 
     return this.props.keySystemAssociation.props.keySystemIdentifier === keySystemIdentifier
-  }
-
-  setSharedVaultAssociation(sharedVaultAssociation: SharedVaultAssociation): void {
-    this.addChange(
-      Change.create({
-        aggregateRootUuid: this.uuid.value,
-        changeType: this.props.sharedVaultAssociation ? Change.TYPES.Modify : Change.TYPES.Add,
-        changeData: sharedVaultAssociation,
-      }).getValue(),
-    )
-
-    this.props.sharedVaultAssociation = sharedVaultAssociation
-  }
-
-  unsetSharedVaultAssociation(): void {
-    if (!this.props.sharedVaultAssociation) {
-      return
-    }
-
-    this.addChange(
-      Change.create({
-        aggregateRootUuid: this.uuid.value,
-        changeType: Change.TYPES.Remove,
-        changeData: this.props.sharedVaultAssociation,
-      }).getValue(),
-    )
-    this.props.sharedVaultAssociation = undefined
-  }
-
-  setKeySystemAssociation(keySystemAssociation: KeySystemAssociation): void {
-    this.addChange(
-      Change.create({
-        aggregateRootUuid: this.uuid.value,
-        changeType: this.props.keySystemAssociation ? Change.TYPES.Modify : Change.TYPES.Add,
-        changeData: keySystemAssociation,
-      }).getValue(),
-    )
-
-    this.props.keySystemAssociation = keySystemAssociation
-  }
-
-  unsetKeySystemAssociation(): void {
-    if (!this.props.keySystemAssociation) {
-      return
-    }
-
-    this.addChange(
-      Change.create({
-        aggregateRootUuid: this.uuid.value,
-        changeType: Change.TYPES.Remove,
-        changeData: this.props.keySystemAssociation,
-      }).getValue(),
-    )
-    this.props.keySystemAssociation = undefined
   }
 
   isIdenticalTo(item: Item): boolean {

@@ -78,8 +78,6 @@ import { SaveItems } from '../Domain/UseCase/Syncing/SaveItems/SaveItems'
 import { ItemHashHttpMapper } from '../Mapping/Http/ItemHashHttpMapper'
 import { ItemHash } from '../Domain/Item/ItemHash'
 import { ItemHashHttpRepresentation } from '../Mapping/Http/ItemHashHttpRepresentation'
-import { TypeORMKeySystemAssociation } from '../Infra/TypeORM/TypeORMKeySystemAssociation'
-import { TypeORMSharedVaultAssociation } from '../Infra/TypeORM/TypeORMSharedVaultAssociation'
 import { BaseSharedVaultInvitesController } from '../Infra/InversifyExpressUtils/Base/BaseSharedVaultInvitesController'
 import { InviteUserToSharedVault } from '../Domain/UseCase/SharedVaults/InviteUserToSharedVault/InviteUserToSharedVault'
 import { TypeORMSharedVaultRepository } from '../Infra/TypeORM/TypeORMSharedVaultRepository'
@@ -361,12 +359,6 @@ export class ContainerConfigLoader {
     container
       .bind<Repository<TypeORMItem>>(TYPES.Sync_ORMItemRepository)
       .toDynamicValue(() => appDataSource.getRepository(TypeORMItem))
-    container
-      .bind<Repository<TypeORMSharedVaultAssociation>>(TYPES.Sync_ORMSharedVaultAssociationRepository)
-      .toConstantValue(appDataSource.getRepository(TypeORMSharedVaultAssociation))
-    container
-      .bind<Repository<TypeORMKeySystemAssociation>>(TYPES.Sync_ORMKeySystemAssociationRepository)
-      .toConstantValue(appDataSource.getRepository(TypeORMKeySystemAssociation))
     container
       .bind<Repository<TypeORMSharedVault>>(TYPES.Sync_ORMSharedVaultRepository)
       .toConstantValue(appDataSource.getRepository(TypeORMSharedVault))

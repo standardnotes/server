@@ -73,9 +73,7 @@ export class MongoDBItemPersistenceMapper implements MapperInterface<Item, Mongo
 
     let keySystemAssociation: KeySystemAssociation | undefined = undefined
     if (projection.keySystemIdentifier) {
-      const keySystemAssociationOrError = KeySystemAssociation.create({
-        keySystemIdentifier: projection.keySystemIdentifier,
-      })
+      const keySystemAssociationOrError = KeySystemAssociation.create(projection.keySystemIdentifier)
       if (keySystemAssociationOrError.isFailed()) {
         throw new Error(`Failed to create item from projection: ${keySystemAssociationOrError.getError()}`)
       }
