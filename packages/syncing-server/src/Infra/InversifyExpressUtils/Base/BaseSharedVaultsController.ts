@@ -101,21 +101,10 @@ export class BaseSharedVaultsController extends BaseHttpController {
   }
 
   async createValetTokenForSharedVaultFile(request: Request, response: Response): Promise<results.JsonResult> {
-    if (response.locals.sharedVaultOwnerContext === undefined) {
-      return this.json(
-        {
-          error: {
-            message: 'Shared vault owner context is missing.',
-          },
-        },
-        HttpStatusCode.BadRequest,
-      )
-    }
-
     const result = await this.createSharedVaultFileValetTokenUseCase.execute({
       userUuid: response.locals.user.uuid,
       sharedVaultUuid: request.params.sharedVaultUuid,
-      sharedVaultOwnerUploadBytesLimit: response.locals.sharedVaultOwnerContext.upload_bytes_limit,
+      sharedVaultOwnerUploadBytesLimit: response.locals.sharedVaultOwnerContext?.upload_bytes_limit,
       fileUuid: request.body.file_uuid,
       remoteIdentifier: request.body.remote_identifier,
       operation: request.body.operation,

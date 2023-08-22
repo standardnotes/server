@@ -100,6 +100,14 @@ export class SharedVaultValetTokenAuthMiddleware extends BaseMiddleware {
       return false
     }
 
+    const isMovingToNonSharedVault =
+      valetTokenData.permittedOperation === ValetTokenOperation.Move &&
+      valetTokenData.moveOperation?.type === 'shared-vault-to-user'
+
+    if (isMovingToNonSharedVault) {
+      return false
+    }
+
     if (valetTokenData.uploadBytesLimit === undefined) {
       return true
     }

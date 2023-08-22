@@ -12,29 +12,29 @@ export class InMemoryCrossServiceTokenCache implements CrossServiceTokenCacheInt
   constructor(private timer: TimerInterface) {}
 
   async set(dto: {
-    authorizationHeaderValue: string
+    key: string
     encodedCrossServiceToken: string
     expiresAtInSeconds: number
     userUuid: string
   }): Promise<void> {
-    let userAuthHeaders = []
-    const userAuthHeadersJSON = this.crossServiceTokenCache.get(`${this.USER_CST_PREFIX}:${dto.userUuid}`)
-    if (userAuthHeadersJSON) {
-      userAuthHeaders = JSON.parse(userAuthHeadersJSON)
+    let userKeys = []
+    const userKeysJSON = this.crossServiceTokenCache.get(`${this.USER_CST_PREFIX}:${dto.userUuid}`)
+    if (userKeysJSON) {
+      userKeys = JSON.parse(userKeysJSON)
     }
-    userAuthHeaders.push(dto.authorizationHeaderValue)
+    userKeys.push(dto.key)
 
-    this.crossServiceTokenCache.set(`${this.USER_CST_PREFIX}:${dto.userUuid}`, JSON.stringify(userAuthHeaders))
+    this.crossServiceTokenCache.set(`${this.USER_CST_PREFIX}:${dto.userUuid}`, JSON.stringify(userKeys))
     this.crossServiceTokenTTLCache.set(`${this.USER_CST_PREFIX}:${dto.userUuid}`, dto.expiresAtInSeconds)
 
-    this.crossServiceTokenCache.set(`${this.PREFIX}:${dto.authorizationHeaderValue}`, dto.encodedCrossServiceToken)
-    this.crossServiceTokenTTLCache.set(`${this.PREFIX}:${dto.authorizationHeaderValue}`, dto.expiresAtInSeconds)
+    this.crossServiceTokenCache.set(`${this.PREFIX}:${dto.key}`, dto.encodedCrossServiceToken)
+    this.crossServiceTokenTTLCache.set(`${this.PREFIX}:${dto.key}`, dto.expiresAtInSeconds)
   }
 
-  async get(authorizationHeaderValue: string): Promise<string | null> {
+  async get(key: string): Promise<string | null> {
     this.invalidateExpiredTokens()
 
-    const cachedToken = this.crossServiceTokenCache.get(`${this.PREFIX}:${authorizationHeaderValue}`)
+    const cachedToken = this.crossServiceTokenCache.get(`${this.PREFIX}:${key}`)
     if (!cachedToken) {
       return null
     }
@@ -43,15 +43,15 @@ export class InMemoryCrossServiceTokenCache implements CrossServiceTokenCacheInt
   }
 
   async invalidate(userUuid: string): Promise<void> {
-    let userAuthorizationHeaderValues = []
-    const userAuthHeadersJSON = this.crossServiceTokenCache.get(`${this.USER_CST_PREFIX}:${userUuid}`)
-    if (userAuthHeadersJSON) {
-      userAuthorizationHeaderValues = JSON.parse(userAuthHeadersJSON)
+    let userKeyValues = []
+    const userKeysJSON = this.crossServiceTokenCache.get(`${this.USER_CST_PREFIX}:${userUuid}`)
+    if (userKeysJSON) {
+      userKeyValues = JSON.parse(userKeysJSON)
     }
 
-    for (const authorizationHeaderValue of userAuthorizationHeaderValues) {
-      this.crossServiceTokenCache.delete(`${this.PREFIX}:${authorizationHeaderValue}`)
-      this.crossServiceTokenTTLCache.delete(`${this.PREFIX}:${authorizationHeaderValue}`)
+    for (const key of userKeyValues) {
+      this.crossServiceTokenCache.delete(`${this.PREFIX}:${key}`)
+      this.crossServiceTokenTTLCache.delete(`${this.PREFIX}:${key}`)
     }
     this.crossServiceTokenCache.delete(`${this.USER_CST_PREFIX}:${userUuid}`)
     this.crossServiceTokenTTLCache.delete(`${this.USER_CST_PREFIX}:${userUuid}`)
