@@ -1,32 +1,20 @@
-import { inject, injectable } from 'inversify'
 import { Logger } from 'winston'
-import TYPES from '../../../Bootstrap/Types'
 import { FileDownloaderInterface } from '../../Services/FileDownloaderInterface'
-import { UseCaseInterface } from '../UseCaseInterface'
 import { GetFileMetadataDTO } from './GetFileMetadataDTO'
-import { GetFileMetadataResponse } from './GetFileMetadataResponse'
+import { Result, UseCaseInterface } from '@standardnotes/domain-core'
 
-@injectable()
-export class GetFileMetadata implements UseCaseInterface {
-  constructor(
-    @inject(TYPES.Files_FileDownloader) private fileDownloader: FileDownloaderInterface,
-    @inject(TYPES.Files_Logger) private logger: Logger,
-  ) {}
+export class GetFileMetadata implements UseCaseInterface<number> {
+  constructor(private fileDownloader: FileDownloaderInterface, private logger: Logger) {}
 
-  async execute(dto: GetFileMetadataDTO): Promise<GetFileMetadataResponse> {
+  async execute(dto: GetFileMetadataDTO): Promise<Result<number>> {
     try {
       const size = await this.fileDownloader.getFileSize(`${dto.ownerUuid}/${dto.resourceRemoteIdentifier}`)
 
-      return {
-        success: true,
-        size,
-      }
+      return Result.ok(size)
     } catch (error) {
       this.logger.error(`Could not get file metadata for resource: ${dto.ownerUuid}/${dto.resourceRemoteIdentifier}`)
-      return {
-        success: false,
-        message: 'Could not get file metadata.',
-      }
+
+      return Result.fail('Could not get file metadata')
     }
   }
 }

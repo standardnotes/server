@@ -2,7 +2,13 @@ import { SharedVaultMoveType } from '@standardnotes/security'
 
 export interface MoveFileDTO {
   moveType: SharedVaultMoveType
-  fromUuid: string
-  toUuid: string
+  from: {
+    sharedVaultUuid?: string
+    ownerUuid: string
+  }
+  to: {
+    sharedVaultUuid?: string
+    ownerUuid: string
+  }
   resourceRemoteIdentifier: string
 }

@@ -155,6 +155,7 @@ import { Logger } from 'winston'
 import { ItemRepositoryResolverInterface } from '../Domain/Item/ItemRepositoryResolverInterface'
 import { TypeORMItemRepositoryResolver } from '../Infra/TypeORM/TypeORMItemRepositoryResolver'
 import { TransitionItemsFromPrimaryToSecondaryDatabaseForUser } from '../Domain/UseCase/Transition/TransitionItemsFromPrimaryToSecondaryDatabaseForUser/TransitionItemsFromPrimaryToSecondaryDatabaseForUser'
+import { SharedVaultFileMovedEventHandler } from '../Domain/Handler/SharedVaultFileMovedEventHandler'
 
 export class ContainerConfigLoader {
   private readonly DEFAULT_CONTENT_SIZE_TRANSFER_LIMIT = 10_000_000
@@ -872,6 +873,15 @@ export class ContainerConfigLoader {
           container.get<winston.Logger>(TYPES.Sync_Logger),
         ),
       )
+    container
+      .bind<SharedVaultFileMovedEventHandler>(TYPES.Sync_SharedVaultFileMovedEventHandler)
+      .toConstantValue(
+        new SharedVaultFileMovedEventHandler(
+          container.get<UpdateStorageQuotaUsedInSharedVault>(TYPES.Sync_UpdateStorageQuotaUsedInSharedVault),
+          container.get<AddNotificationsForUsers>(TYPES.Sync_AddNotificationsForUsers),
+          container.get<winston.Logger>(TYPES.Sync_Logger),
+        ),
+      )
 
     // Services
     container.bind<ContentDecoder>(TYPES.Sync_ContentDecoder).toDynamicValue(() => new ContentDecoder())
@@ -901,6 +911,10 @@ export class ContainerConfigLoader {
       [
         'SHARED_VAULT_FILE_REMOVED',
         container.get<SharedVaultFileRemovedEventHandler>(TYPES.Sync_SharedVaultFileRemovedEventHandler),
+      ],
+      [
+        'SHARED_VAULT_FILE_MOVED',
+        container.get<SharedVaultFileMovedEventHandler>(TYPES.Sync_SharedVaultFileMovedEventHandler),
       ],
     ])
     if (!isConfiguredForHomeServer) {

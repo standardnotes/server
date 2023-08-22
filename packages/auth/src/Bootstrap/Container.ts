@@ -256,6 +256,7 @@ import { PaymentsAccountDeletedEventHandler } from '../Domain/Handler/PaymentsAc
 import { UpdateStorageQuotaUsedForUser } from '../Domain/UseCase/UpdateStorageQuotaUsedForUser/UpdateStorageQuotaUsedForUser'
 import { SharedVaultFileUploadedEventHandler } from '../Domain/Handler/SharedVaultFileUploadedEventHandler'
 import { SharedVaultFileRemovedEventHandler } from '../Domain/Handler/SharedVaultFileRemovedEventHandler'
+import { SharedVaultFileMovedEventHandler } from '../Domain/Handler/SharedVaultFileMovedEventHandler'
 
 export class ContainerConfigLoader {
   async load(configuration?: {
@@ -978,6 +979,14 @@ export class ContainerConfigLoader {
       .bind<SharedVaultFileUploadedEventHandler>(TYPES.Auth_SharedVaultFileUploadedEventHandler)
       .toConstantValue(
         new SharedVaultFileUploadedEventHandler(
+          container.get(TYPES.Auth_UpdateStorageQuotaUsedForUser),
+          container.get(TYPES.Auth_Logger),
+        ),
+      )
+    container
+      .bind<SharedVaultFileMovedEventHandler>(TYPES.Auth_SharedVaultFileMovedEventHandler)
+      .toConstantValue(
+        new SharedVaultFileMovedEventHandler(
           container.get(TYPES.Auth_UpdateStorageQuotaUsedForUser),
           container.get(TYPES.Auth_Logger),
         ),

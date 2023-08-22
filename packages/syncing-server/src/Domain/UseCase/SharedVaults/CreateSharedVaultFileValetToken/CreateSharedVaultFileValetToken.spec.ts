@@ -256,6 +256,23 @@ describe('CreateSharedVaultFileValetToken', () => {
       expect(result.getError()).toBe('User does not have permission to perform this operation')
     })
 
+    it('should return error when target shared vault does not exist for shared-vault-to-shared-vault move operation', async () => {
+      sharedVaultRepository.findByUuid = jest.fn().mockResolvedValueOnce(sharedVault).mockResolvedValueOnce(null)
+
+      const useCase = createUseCase()
+      const result = await useCase.execute({
+        userUuid: '00000000-0000-0000-0000-000000000000',
+        sharedVaultUuid: '00000000-0000-0000-0000-000000000000',
+        remoteIdentifier: 'remote-identifier',
+        operation: ValetTokenOperation.Move,
+        moveOperationType: 'shared-vault-to-shared-vault',
+        sharedVaultToSharedVaultMoveTargetUuid: '00000000-0000-0000-0000-000000000000',
+      })
+
+      expect(result.isFailed()).toBe(true)
+      expect(result.getError()).toBe('Target shared vault not found')
+    })
+
     it('should create move valet token for shared-vault-to-shared-vault operation', async () => {
       sharedVaultUserRepository.findByUserUuidAndSharedVaultUuid = jest
         .fn()

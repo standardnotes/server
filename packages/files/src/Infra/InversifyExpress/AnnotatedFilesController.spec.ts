@@ -61,7 +61,7 @@ describe('AnnotatedFilesController', () => {
     finishUploadSession.execute = jest.fn().mockReturnValue(Result.ok())
 
     getFileMetadata = {} as jest.Mocked<GetFileMetadata>
-    getFileMetadata.execute = jest.fn().mockReturnValue({ success: true, size: 555_555 })
+    getFileMetadata.execute = jest.fn().mockReturnValue(Result.ok(555_555))
 
     removeFile = {} as jest.Mocked<RemoveFile>
     removeFile.execute = jest.fn().mockReturnValue(Result.ok())
@@ -183,7 +183,7 @@ describe('AnnotatedFilesController', () => {
 
     request.headers['range'] = 'bytes=0-'
 
-    getFileMetadata.execute = jest.fn().mockReturnValue({ success: false, message: 'error' })
+    getFileMetadata.execute = jest.fn().mockReturnValue(Result.fail('error'))
 
     const httpResponse = await createController().download(request, response)
 

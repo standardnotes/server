@@ -4,16 +4,14 @@ import {
   DomainEventService,
   SharedVaultFileUploadedEvent,
   SharedVaultFileRemovedEvent,
+  SharedVaultFileMovedEvent,
 } from '@standardnotes/domain-events'
 import { TimerInterface } from '@standardnotes/time'
-import { inject, injectable } from 'inversify'
 
-import TYPES from '../../Bootstrap/Types'
 import { DomainEventFactoryInterface } from './DomainEventFactoryInterface'
 
-@injectable()
 export class DomainEventFactory implements DomainEventFactoryInterface {
-  constructor(@inject(TYPES.Files_Timer) private timer: TimerInterface) {}
+  constructor(private timer: TimerInterface) {}
 
   createFileRemovedEvent(payload: {
     userUuid: string
@@ -49,6 +47,34 @@ export class DomainEventFactory implements DomainEventFactoryInterface {
         correlation: {
           userIdentifier: payload.userUuid,
           userIdentifierType: 'uuid',
+        },
+        origin: DomainEventService.Files,
+      },
+      payload,
+    }
+  }
+
+  createSharedVaultFileMovedEvent(payload: {
+    fileByteSize: number
+    fileName: string
+    from: {
+      sharedVaultUuid?: string
+      ownerUuid: string
+      filePath: string
+    }
+    to: {
+      sharedVaultUuid?: string
+      ownerUuid: string
+      filePath: string
+    }
+  }): SharedVaultFileMovedEvent {
+    return {
+      type: 'SHARED_VAULT_FILE_MOVED',
+      createdAt: this.timer.getUTCDate(),
+      meta: {
+        correlation: {
+          userIdentifier: payload.from.sharedVaultUuid ?? payload.from.ownerUuid,
+          userIdentifierType: payload.from.sharedVaultUuid ? 'shared-vault-uuid' : 'uuid',
         },
         origin: DomainEventService.Files,
       },

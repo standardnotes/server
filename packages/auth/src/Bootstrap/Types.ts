@@ -168,6 +168,7 @@ const TYPES = {
   Auth_UserEmailChangedEventHandler: Symbol.for('Auth_UserEmailChangedEventHandler'),
   Auth_FileUploadedEventHandler: Symbol.for('Auth_FileUploadedEventHandler'),
   Auth_SharedVaultFileUploadedEventHandler: Symbol.for('Auth_SharedVaultFileUploadedEventHandler'),
+  Auth_SharedVaultFileMovedEventHandler: Symbol.for('Auth_SharedVaultFileMovedEventHandler'),
   Auth_FileRemovedEventHandler: Symbol.for('Auth_FileRemovedEventHandler'),
   Auth_SharedVaultFileRemovedEventHandler: Symbol.for('Auth_SharedVaultFileRemovedEventHandler'),
   Auth_ListedAccountCreatedEventHandler: Symbol.for('Auth_ListedAccountCreatedEventHandler'),

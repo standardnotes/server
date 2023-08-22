@@ -10,4 +10,5 @@ export interface CreateSharedVaultFileValetTokenDTO {
   unencryptedFileSize?: number
   moveOperationType?: SharedVaultMoveType
   sharedVaultToSharedVaultMoveTargetUuid?: string
+  sharedVaultToSharedVaultMoveTargetOwnerUuid?: string
 }
