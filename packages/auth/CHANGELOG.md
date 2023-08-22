@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.133.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.132.0...@standardnotes/auth-server@1.133.0) (2023-08-22)
+
+### Features
+
+* consider shared vault owner quota when uploading files to shared vault ([#704](https://github.com/standardnotes/server/issues/704)) ([34085ac](https://github.com/standardnotes/server/commit/34085ac6fb7e61d471bd3b4ae8e72112df25c3ee))
+
 # [1.132.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.131.5...@standardnotes/auth-server@1.132.0) (2023-08-18)
 
 ### Features

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.21.0](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.20.4...@standardnotes/files-server@1.21.0) (2023-08-22)
+
+### Features
+
+* consider shared vault owner quota when uploading files to shared vault ([#704](https://github.com/standardnotes/files/issues/704)) ([34085ac](https://github.com/standardnotes/files/commit/34085ac6fb7e61d471bd3b4ae8e72112df25c3ee))
+
 ## [1.20.4](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.20.3...@standardnotes/files-server@1.20.4) (2023-08-18)
 
 **Note:** Version bump only for package @standardnotes/files-server

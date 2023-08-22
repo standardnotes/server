@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.82.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.81.0...@standardnotes/syncing-server@1.82.0) (2023-08-22)
+
+### Features
+
+* consider shared vault owner quota when uploading files to shared vault ([#704](https://github.com/standardnotes/syncing-server-js/issues/704)) ([34085ac](https://github.com/standardnotes/syncing-server-js/commit/34085ac6fb7e61d471bd3b4ae8e72112df25c3ee))
+
 # [1.81.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.80.0...@standardnotes/syncing-server@1.81.0) (2023-08-21)
 
 ### Bug Fixes
