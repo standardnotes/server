@@ -19,12 +19,6 @@ export class TypeORMSharedVault {
   declare fileUploadBytesUsed: number
 
   @Column({
-    name: 'file_upload_bytes_limit',
-    type: 'int',
-  })
-  declare fileUploadBytesLimit: number
-
-  @Column({
     name: 'created_at_timestamp',
     type: 'bigint',
   })

@@ -27,16 +27,23 @@ export abstract class AuthMiddleware extends BaseMiddleware {
     }
 
     const authHeaderValue = request.headers.authorization as string
+    const sharedVaultOwnerContextHeaderValue = request.headers['x-shared-vault-owner-context'] as string | undefined
+    const cacheKey = `${authHeaderValue}${
+      sharedVaultOwnerContextHeaderValue ? `:${sharedVaultOwnerContextHeaderValue}` : ''
+    }`
 
     try {
       let crossServiceTokenFetchedFromCache = true
       let crossServiceToken = null
       if (this.crossServiceTokenCacheTTL) {
-        crossServiceToken = await this.crossServiceTokenCache.get(authHeaderValue)
+        crossServiceToken = await this.crossServiceTokenCache.get(cacheKey)
       }
 
       if (crossServiceToken === null) {
-        const authResponse = await this.serviceProxy.validateSession(authHeaderValue)
+        const authResponse = await this.serviceProxy.validateSession({
+          authorization: authHeaderValue,
+          sharedVaultOwnerContext: sharedVaultOwnerContextHeaderValue,
+        })
 
         if (!this.handleSessionValidationResponse(authResponse, response, next)) {
           return
@@ -52,7 +59,7 @@ export abstract class AuthMiddleware extends BaseMiddleware {
 
       if (this.crossServiceTokenCacheTTL && !crossServiceTokenFetchedFromCache) {
         await this.crossServiceTokenCache.set({
-          authorizationHeaderValue: authHeaderValue,
+          key: cacheKey,
           encodedCrossServiceToken: crossServiceToken,
           expiresAtInSeconds: this.getCrossServiceTokenCacheExpireTimestamp(decodedToken),
           userUuid: decodedToken.user.uuid,
@@ -62,6 +69,7 @@ export abstract class AuthMiddleware extends BaseMiddleware {
       response.locals.user = decodedToken.user
       response.locals.session = decodedToken.session
       response.locals.roles = decodedToken.roles
+      response.locals.sharedVaultOwnerContext = decodedToken.shared_vault_owner_context
     } catch (error) {
       const errorMessage = (error as AxiosError).isAxiosError
         ? JSON.stringify((error as AxiosError).response?.data)

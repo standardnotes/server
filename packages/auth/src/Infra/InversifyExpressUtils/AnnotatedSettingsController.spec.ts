@@ -10,6 +10,7 @@ import { GetSetting } from '../../Domain/UseCase/GetSetting/GetSetting'
 import { GetSettings } from '../../Domain/UseCase/GetSettings/GetSettings'
 import { UpdateSetting } from '../../Domain/UseCase/UpdateSetting/UpdateSetting'
 import { User } from '../../Domain/User/User'
+import { Result } from '@standardnotes/domain-core'
 
 describe('AnnotatedSettingsController', () => {
   let deleteSetting: DeleteSetting
@@ -85,7 +86,7 @@ describe('AnnotatedSettingsController', () => {
       uuid: '1-2-3',
     }
 
-    getSetting.execute = jest.fn().mockReturnValue({ success: true })
+    getSetting.execute = jest.fn().mockReturnValue(Result.ok())
 
     const httpResponse = <results.JsonResult>await createController().getSetting(request, response)
     const result = await httpResponse.executeAsync()
@@ -119,7 +120,7 @@ describe('AnnotatedSettingsController', () => {
       uuid: '1-2-3',
     }
 
-    getSetting.execute = jest.fn().mockReturnValue({ success: false })
+    getSetting.execute = jest.fn().mockReturnValue(Result.fail('Oops'))
 
     const httpResponse = <results.JsonResult>await createController().getSetting(request, response)
     const result = await httpResponse.executeAsync()

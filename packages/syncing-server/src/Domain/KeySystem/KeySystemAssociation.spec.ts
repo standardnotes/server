@@ -1,12 +1,15 @@
 import { KeySystemAssociation } from './KeySystemAssociation'
 
 describe('KeySystemAssociation', () => {
-  it('should create an entity', () => {
-    const entityOrError = KeySystemAssociation.create({
-      keySystemIdentifier: '00000000-0000-0000-0000-000000000000',
-    })
+  it('should create a value object', () => {
+    const entityOrError = KeySystemAssociation.create('00000000-0000-0000-0000-000000000000')
 
     expect(entityOrError.isFailed()).toBeFalsy()
-    expect(entityOrError.getValue().id).not.toBeNull()
+  })
+
+  it('should fail to create a value object with an empty key system identifier', () => {
+    const entityOrError = KeySystemAssociation.create('')
+
+    expect(entityOrError.isFailed()).toBeTruthy()
   })
 })

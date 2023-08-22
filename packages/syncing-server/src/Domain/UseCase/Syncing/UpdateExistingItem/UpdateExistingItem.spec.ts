@@ -382,13 +382,10 @@ describe('UpdateExistingItem', () => {
         shared_vault_uuid: '00000000-0000-0000-0000-000000000000',
       }).getValue()
 
-      item1.setSharedVaultAssociation(
-        SharedVaultAssociation.create({
-          sharedVaultUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
-          lastEditedBy: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
-        }).getValue(),
-      )
-      const idBefore = item1.props.sharedVaultAssociation?.id.toString()
+      item1.props.sharedVaultAssociation = SharedVaultAssociation.create({
+        sharedVaultUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+        lastEditedBy: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+      }).getValue()
 
       const result = await useCase.execute({
         existingItem: item1,
@@ -401,7 +398,6 @@ describe('UpdateExistingItem', () => {
       expect(result.isFailed()).toBeFalsy()
 
       expect(item1.props.sharedVaultAssociation).not.toBeUndefined()
-      expect((item1.props.sharedVaultAssociation as SharedVaultAssociation).id.toString()).toEqual(idBefore)
     })
 
     it('should return error if shared vault association could not be created', async () => {
@@ -567,12 +563,7 @@ describe('UpdateExistingItem', () => {
         key_system_identifier: '00000000-0000-0000-0000-000000000000',
       }).getValue()
 
-      item1.setKeySystemAssociation(
-        KeySystemAssociation.create({
-          keySystemIdentifier: '00000000-0000-0000-0000-000000000000',
-        }).getValue(),
-      )
-      const idBefore = item1.props.keySystemAssociation?.id.toString()
+      item1.props.keySystemAssociation = KeySystemAssociation.create('00000000-0000-0000-0000-000000000000').getValue()
 
       const result = await useCase.execute({
         existingItem: item1,
@@ -585,7 +576,6 @@ describe('UpdateExistingItem', () => {
       expect(result.isFailed()).toBeFalsy()
 
       expect(item1.props.keySystemAssociation).not.toBeUndefined()
-      expect((item1.props.keySystemAssociation as KeySystemAssociation).id.toString()).toEqual(idBefore)
     })
 
     it('should return error if key system identifier is invalid', async () => {

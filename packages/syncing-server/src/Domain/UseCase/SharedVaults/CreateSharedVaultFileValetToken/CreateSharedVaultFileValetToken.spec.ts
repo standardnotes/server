@@ -19,7 +19,6 @@ describe('CreateSharedVaultFileValetToken', () => {
 
   beforeEach(() => {
     sharedVault = SharedVault.create({
-      fileUploadBytesLimit: 100,
       fileUploadBytesUsed: 2,
       userUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
       timestamps: Timestamps.create(123, 123).getValue(),

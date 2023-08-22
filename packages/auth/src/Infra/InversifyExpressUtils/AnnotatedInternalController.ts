@@ -36,16 +36,26 @@ export class AnnotatedInternalController extends BaseHttpController {
 
   @httpGet('/users/:userUuid/settings/:settingName')
   async getSetting(request: Request): Promise<results.JsonResult> {
-    const result = await this.doGetSetting.execute({
+    const resultOrError = await this.doGetSetting.execute({
       userUuid: request.params.userUuid,
       settingName: request.params.settingName,
       allowSensitiveRetrieval: true,
     })
 
-    if (result.success) {
-      return this.json(result)
+    if (resultOrError.isFailed()) {
+      return this.json(
+        {
+          error: {
+            message: resultOrError.getError(),
+          },
+        },
+        400,
+      )
     }
 
-    return this.json(result, 400)
+    return this.json({
+      success: true,
+      ...resultOrError.getValue(),
+    })
   }
 }

@@ -26,7 +26,6 @@ describe('GetSharedVaults', () => {
     sharedVault = SharedVault.create({
       userUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
       timestamps: Timestamps.create(123, 123).getValue(),
-      fileUploadBytesLimit: 123,
       fileUploadBytesUsed: 123,
     }).getValue()
     sharedVaultRepository = {} as jest.Mocked<SharedVaultRepositoryInterface>

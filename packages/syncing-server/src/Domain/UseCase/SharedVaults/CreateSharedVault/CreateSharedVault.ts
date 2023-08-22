@@ -7,16 +7,15 @@ import {
   Uuid,
   Validator,
 } from '@standardnotes/domain-core'
+import { TimerInterface } from '@standardnotes/time'
+
 import { CreateSharedVaultResult } from './CreateSharedVaultResult'
 import { CreateSharedVaultDTO } from './CreateSharedVaultDTO'
-import { TimerInterface } from '@standardnotes/time'
 import { SharedVaultRepositoryInterface } from '../../../SharedVault/SharedVaultRepositoryInterface'
 import { AddUserToSharedVault } from '../AddUserToSharedVault/AddUserToSharedVault'
 import { SharedVault } from '../../../SharedVault/SharedVault'
 
 export class CreateSharedVault implements UseCaseInterface<CreateSharedVaultResult> {
-  private readonly FILE_UPLOAD_BYTES_LIMIT = 1_000_000_000
-
   constructor(
     private addUserToSharedVault: AddUserToSharedVault,
     private sharedVaultRepository: SharedVaultRepositoryInterface,
@@ -49,7 +48,6 @@ export class CreateSharedVault implements UseCaseInterface<CreateSharedVaultResu
     ).getValue()
 
     const sharedVaultOrError = SharedVault.create({
-      fileUploadBytesLimit: this.FILE_UPLOAD_BYTES_LIMIT,
       fileUploadBytesUsed: 0,
       userUuid,
       timestamps,

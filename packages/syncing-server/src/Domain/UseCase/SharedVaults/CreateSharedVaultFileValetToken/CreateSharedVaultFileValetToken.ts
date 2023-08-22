@@ -89,7 +89,7 @@ export class CreateSharedVaultFileValetToken implements UseCaseInterface<string>
       permittedOperation: dto.operation,
       remoteIdentifier: dto.remoteIdentifier,
       uploadBytesUsed: sharedVault.props.fileUploadBytesUsed,
-      uploadBytesLimit: sharedVault.props.fileUploadBytesLimit,
+      uploadBytesLimit: dto.sharedVaultOwnerUploadBytesLimit,
       unencryptedFileSize: dto.unencryptedFileSize,
       moveOperation: this.createMoveOperationData(dto),
     }

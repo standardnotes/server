@@ -104,6 +104,7 @@ export class BaseSharedVaultsController extends BaseHttpController {
     const result = await this.createSharedVaultFileValetTokenUseCase.execute({
       userUuid: response.locals.user.uuid,
       sharedVaultUuid: request.params.sharedVaultUuid,
+      sharedVaultOwnerUploadBytesLimit: response.locals.sharedVaultOwnerContext?.upload_bytes_limit,
       fileUuid: request.body.file_uuid,
       remoteIdentifier: request.body.remote_identifier,
       operation: request.body.operation,

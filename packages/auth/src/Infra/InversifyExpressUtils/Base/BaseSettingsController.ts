@@ -58,13 +58,22 @@ export class BaseSettingsController extends BaseHttpController {
     }
 
     const { userUuid, settingName } = request.params
-    const result = await this.doGetSetting.execute({ userUuid, settingName: settingName.toUpperCase() })
-
-    if (result.success) {
-      return this.json(result)
+    const resultOrError = await this.doGetSetting.execute({ userUuid, settingName: settingName.toUpperCase() })
+    if (resultOrError.isFailed()) {
+      return this.json(
+        {
+          error: {
+            message: resultOrError.getError(),
+          },
+        },
+        400,
+      )
     }
 
-    return this.json(result, 400)
+    return this.json({
+      success: true,
+      ...resultOrError.getValue(),
+    })
   }
 
   async updateSetting(request: Request, response: Response): Promise<results.JsonResult | results.StatusCodeResult> {

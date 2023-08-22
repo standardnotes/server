@@ -121,6 +121,10 @@ export class AnnotatedSharedVaultFilesController extends BaseHttpController {
       return this.badRequest('Not permitted for this operation')
     }
 
+    if (locals.uploadBytesLimit === undefined) {
+      return this.badRequest('Missing upload bytes limit')
+    }
+
     const result = await this.finishUploadSession.execute({
       userUuid: locals.vaultOwnerUuid,
       sharedVaultUuid: locals.sharedVaultUuid,

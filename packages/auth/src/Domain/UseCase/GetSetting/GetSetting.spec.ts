@@ -73,35 +73,30 @@ describe('GetSetting', () => {
 
   describe('no subscription', () => {
     it('should find a setting for user', async () => {
-      expect(
-        await createUseCase().execute({ userUuid: '1-2-3', settingName: SettingName.NAMES.DropboxBackupFrequency }),
-      ).toEqual({
-        success: true,
+      const result = await createUseCase().execute({
+        userUuid: '1-2-3',
+        settingName: SettingName.NAMES.DropboxBackupFrequency,
+      })
+      expect(result.isFailed()).toBeFalsy()
+      expect(result.getValue()).toEqual({
         userUuid: '1-2-3',
         setting: { foo: 'bar' },
       })
     })
 
     it('should not find a setting if the setting name is invalid', async () => {
-      expect(await createUseCase().execute({ userUuid: '1-2-3', settingName: 'invalid' })).toEqual({
-        success: false,
-        error: {
-          message: 'Invalid setting name: invalid',
-        },
-      })
+      const result = await createUseCase().execute({ userUuid: '1-2-3', settingName: 'invalid' })
+      expect(result.isFailed()).toBeTruthy()
     })
 
     it('should not get a setting for user if it does not exist', async () => {
       settingService.findSettingWithDecryptedValue = jest.fn().mockReturnValue(null)
 
-      expect(
-        await createUseCase().execute({ userUuid: '1-2-3', settingName: SettingName.NAMES.DropboxBackupFrequency }),
-      ).toEqual({
-        success: false,
-        error: {
-          message: 'Setting DROPBOX_BACKUP_FREQUENCY for user 1-2-3 not found!',
-        },
+      const result = await createUseCase().execute({
+        userUuid: '1-2-3',
+        settingName: SettingName.NAMES.DropboxBackupFrequency,
       })
+      expect(result.isFailed()).toBeTruthy()
     })
 
     it('should not retrieve a sensitive setting for user', async () => {
@@ -112,21 +107,19 @@ describe('GetSetting', () => {
 
       settingService.findSettingWithDecryptedValue = jest.fn().mockReturnValue(setting)
 
-      expect(await createUseCase().execute({ userUuid: '1-2-3', settingName: SettingName.NAMES.MfaSecret })).toEqual({
-        success: true,
+      const result = await createUseCase().execute({ userUuid: '1-2-3', settingName: SettingName.NAMES.MfaSecret })
+      expect(result.isFailed()).toBeFalsy()
+      expect(result.getValue()).toEqual({
         sensitive: true,
       })
     })
 
     it('should not retrieve a subscription setting for user', async () => {
-      expect(
-        await createUseCase().execute({ userUuid: '1-2-3', settingName: SettingName.NAMES.MuteSignInEmails }),
-      ).toEqual({
-        success: false,
-        error: {
-          message: 'No subscription found.',
-        },
+      const result = await createUseCase().execute({
+        userUuid: '1-2-3',
+        settingName: SettingName.NAMES.MuteSignInEmails,
       })
+      expect(result.isFailed()).toBeTruthy()
     })
 
     it('should retrieve a sensitive setting for user if explicitly told to', async () => {
@@ -137,14 +130,13 @@ describe('GetSetting', () => {
 
       settingService.findSettingWithDecryptedValue = jest.fn().mockReturnValue(setting)
 
-      expect(
-        await createUseCase().execute({
-          userUuid: '1-2-3',
-          settingName: SettingName.NAMES.MfaSecret,
-          allowSensitiveRetrieval: true,
-        }),
-      ).toEqual({
-        success: true,
+      const result = await createUseCase().execute({
+        userUuid: '1-2-3',
+        settingName: SettingName.NAMES.MfaSecret,
+        allowSensitiveRetrieval: true,
+      })
+      expect(result.isFailed()).toBeFalsy()
+      expect(result.getValue()).toEqual({
         userUuid: '1-2-3',
         setting: { foo: 'bar' },
       })
@@ -159,10 +151,12 @@ describe('GetSetting', () => {
     })
 
     it('should find a setting for user', async () => {
-      expect(
-        await createUseCase().execute({ userUuid: '1-2-3', settingName: SettingName.NAMES.MuteSignInEmails }),
-      ).toEqual({
-        success: true,
+      const result = await createUseCase().execute({
+        userUuid: '1-2-3',
+        settingName: SettingName.NAMES.MuteSignInEmails,
+      })
+      expect(result.isFailed()).toBeFalsy()
+      expect(result.getValue()).toEqual({
         userUuid: '1-2-3',
         setting: { foo: 'sub-bar' },
       })
@@ -171,14 +165,11 @@ describe('GetSetting', () => {
     it('should not get a suscription setting for user if it does not exist', async () => {
       subscriptionSettingService.findSubscriptionSettingWithDecryptedValue = jest.fn().mockReturnValue(null)
 
-      expect(
-        await createUseCase().execute({ userUuid: '1-2-3', settingName: SettingName.NAMES.MuteSignInEmails }),
-      ).toEqual({
-        success: false,
-        error: {
-          message: 'Subscription setting MUTE_SIGN_IN_EMAILS for user 1-2-3 not found!',
-        },
+      const result = await createUseCase().execute({
+        userUuid: '1-2-3',
+        settingName: SettingName.NAMES.MuteSignInEmails,
       })
+      expect(result.isFailed()).toBeTruthy()
     })
 
     it('should not retrieve a sensitive subscription setting for user', async () => {
@@ -188,10 +179,12 @@ describe('GetSetting', () => {
         .fn()
         .mockReturnValue(subscriptionSetting)
 
-      expect(
-        await createUseCase().execute({ userUuid: '1-2-3', settingName: SettingName.NAMES.MuteSignInEmails }),
-      ).toEqual({
-        success: true,
+      const result = await createUseCase().execute({
+        userUuid: '1-2-3',
+        settingName: SettingName.NAMES.MuteSignInEmails,
+      })
+      expect(result.isFailed()).toBeFalsy()
+      expect(result.getValue()).toEqual({
         sensitive: true,
       })
     })
@@ -205,10 +198,12 @@ describe('GetSetting', () => {
     })
 
     it('should find a setting for user', async () => {
-      expect(
-        await createUseCase().execute({ userUuid: '1-2-3', settingName: SettingName.NAMES.MuteSignInEmails }),
-      ).toEqual({
-        success: true,
+      const result = await createUseCase().execute({
+        userUuid: '1-2-3',
+        settingName: SettingName.NAMES.MuteSignInEmails,
+      })
+      expect(result.isFailed()).toBeFalsy()
+      expect(result.getValue()).toEqual({
         userUuid: '1-2-3',
         setting: { foo: 'sub-bar' },
       })
@@ -221,10 +216,12 @@ describe('GetSetting', () => {
     })
 
     it('should find a regular subscription only setting for user', async () => {
-      expect(
-        await createUseCase().execute({ userUuid: '1-2-3', settingName: SettingName.NAMES.FileUploadBytesLimit }),
-      ).toEqual({
-        success: true,
+      const result = await createUseCase().execute({
+        userUuid: '1-2-3',
+        settingName: SettingName.NAMES.FileUploadBytesLimit,
+      })
+      expect(result.isFailed()).toBeFalsy()
+      expect(result.getValue()).toEqual({
         userUuid: '1-2-3',
         setting: { foo: 'sub-bar' },
       })

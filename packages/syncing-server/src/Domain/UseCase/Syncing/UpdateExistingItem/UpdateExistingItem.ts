@@ -6,7 +6,6 @@ import {
   Result,
   RoleNameCollection,
   Timestamps,
-  UniqueEntityId,
   UseCaseInterface,
   Uuid,
   Validator,
@@ -131,23 +130,16 @@ export class UpdateExistingItem implements UseCaseInterface<Item> {
 
     let sharedVaultOperation: SharedVaultOperationOnItem | null = null
     if (dto.itemHash.representsASharedVaultItem()) {
-      const sharedVaultAssociationOrError = SharedVaultAssociation.create(
-        {
-          lastEditedBy: userUuid,
-          sharedVaultUuid: dto.itemHash.sharedVaultUuid as Uuid,
-        },
-        new UniqueEntityId(
-          dto.existingItem.props.sharedVaultAssociation
-            ? dto.existingItem.props.sharedVaultAssociation.id.toString()
-            : undefined,
-        ),
-      )
+      const sharedVaultAssociationOrError = SharedVaultAssociation.create({
+        lastEditedBy: userUuid,
+        sharedVaultUuid: dto.itemHash.sharedVaultUuid as Uuid,
+      })
 
       if (sharedVaultAssociationOrError.isFailed()) {
         return Result.fail(sharedVaultAssociationOrError.getError())
       }
 
-      dto.existingItem.setSharedVaultAssociation(sharedVaultAssociationOrError.getValue())
+      dto.existingItem.props.sharedVaultAssociation = sharedVaultAssociationOrError.getValue()
 
       const sharedVaultOperationOrError = await this.determineSharedVaultOperationOnItem.execute({
         existingItem: dto.existingItem,
@@ -159,7 +151,7 @@ export class UpdateExistingItem implements UseCaseInterface<Item> {
       }
       sharedVaultOperation = sharedVaultOperationOrError.getValue()
     } else {
-      dto.existingItem.unsetSharedVaultAssociation()
+      dto.existingItem.props.sharedVaultAssociation = undefined
     }
 
     if (dto.itemHash.hasDedicatedKeySystemAssociation()) {
@@ -169,23 +161,14 @@ export class UpdateExistingItem implements UseCaseInterface<Item> {
       }
       const keySystemIdentifier = dto.itemHash.props.key_system_identifier as string
 
-      const keySystemAssociationOrError = KeySystemAssociation.create(
-        {
-          keySystemIdentifier,
-        },
-        new UniqueEntityId(
-          dto.existingItem.props.keySystemAssociation
-            ? dto.existingItem.props.keySystemAssociation.id.toString()
-            : undefined,
-        ),
-      )
+      const keySystemAssociationOrError = KeySystemAssociation.create(keySystemIdentifier)
       if (keySystemAssociationOrError.isFailed()) {
         return Result.fail(keySystemAssociationOrError.getError())
       }
 
-      dto.existingItem.setKeySystemAssociation(keySystemAssociationOrError.getValue())
+      dto.existingItem.props.keySystemAssociation = keySystemAssociationOrError.getValue()
     } else {
-      dto.existingItem.unsetKeySystemAssociation()
+      dto.existingItem.props.keySystemAssociation = undefined
     }
 
     if (dto.itemHash.props.deleted === true) {

@@ -17,8 +17,6 @@ const TYPES = {
   Sync_MessageRepository: Symbol.for('Sync_MessageRepository'),
   // ORM
   Sync_ORMItemRepository: Symbol.for('Sync_ORMItemRepository'),
-  Sync_ORMSharedVaultAssociationRepository: Symbol.for('Sync_ORMSharedVaultAssociationRepository'),
-  Sync_ORMKeySystemAssociationRepository: Symbol.for('Sync_ORMKeySystemAssociationRepository'),
   Sync_ORMSharedVaultRepository: Symbol.for('Sync_ORMSharedVaultRepository'),
   Sync_ORMSharedVaultInviteRepository: Symbol.for('Sync_ORMSharedVaultInviteRepository'),
   Sync_ORMSharedVaultUserRepository: Symbol.for('Sync_ORMSharedVaultUserRepository'),

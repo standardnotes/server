@@ -4,8 +4,6 @@ import { Env } from './Env'
 import { SqliteConnectionOptions } from 'typeorm/driver/sqlite/SqliteConnectionOptions'
 import { TypeORMItem } from '../Infra/TypeORM/TypeORMItem'
 import { TypeORMNotification } from '../Infra/TypeORM/TypeORMNotification'
-import { TypeORMSharedVaultAssociation } from '../Infra/TypeORM/TypeORMSharedVaultAssociation'
-import { TypeORMKeySystemAssociation } from '../Infra/TypeORM/TypeORMKeySystemAssociation'
 import { TypeORMSharedVault } from '../Infra/TypeORM/TypeORMSharedVault'
 import { TypeORMSharedVaultUser } from '../Infra/TypeORM/TypeORMSharedVaultUser'
 import { TypeORMSharedVaultInvite } from '../Infra/TypeORM/TypeORMSharedVaultInvite'
@@ -79,8 +77,6 @@ export class AppDataSource {
       entities: [
         TypeORMItem,
         TypeORMNotification,
-        TypeORMSharedVaultAssociation,
-        TypeORMKeySystemAssociation,
         TypeORMSharedVault,
         TypeORMSharedVaultUser,
         TypeORMSharedVaultInvite,

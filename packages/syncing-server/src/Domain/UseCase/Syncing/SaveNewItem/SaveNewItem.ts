@@ -123,7 +123,7 @@ export class SaveNewItem implements UseCaseInterface<Item> {
       if (sharedVaultAssociationOrError.isFailed()) {
         return Result.fail(sharedVaultAssociationOrError.getError())
       }
-      newItem.setSharedVaultAssociation(sharedVaultAssociationOrError.getValue())
+      newItem.props.sharedVaultAssociation = sharedVaultAssociationOrError.getValue()
     }
 
     if (dto.itemHash.hasDedicatedKeySystemAssociation()) {
@@ -133,13 +133,11 @@ export class SaveNewItem implements UseCaseInterface<Item> {
       }
       const keySystemIdentifier = dto.itemHash.props.key_system_identifier as string
 
-      const keySystemAssociationOrError = KeySystemAssociation.create({
-        keySystemIdentifier,
-      })
+      const keySystemAssociationOrError = KeySystemAssociation.create(keySystemIdentifier)
       if (keySystemAssociationOrError.isFailed()) {
         return Result.fail(keySystemAssociationOrError.getError())
       }
-      newItem.setKeySystemAssociation(keySystemAssociationOrError.getValue())
+      newItem.props.keySystemAssociation = keySystemAssociationOrError.getValue()
     }
 
     const itemRepository = this.itemRepositoryResolver.resolve(roleNames)

@@ -12,32 +12,32 @@ export class RedisCrossServiceTokenCache implements CrossServiceTokenCacheInterf
   constructor(@inject(TYPES.ApiGateway_Redis) private redisClient: IORedis.Redis) {}
 
   async set(dto: {
-    authorizationHeaderValue: string
+    key: string
     encodedCrossServiceToken: string
     expiresAtInSeconds: number
     userUuid: string
   }): Promise<void> {
     const pipeline = this.redisClient.pipeline()
 
-    pipeline.sadd(`${this.USER_CST_PREFIX}:${dto.userUuid}`, dto.authorizationHeaderValue)
+    pipeline.sadd(`${this.USER_CST_PREFIX}:${dto.userUuid}`, dto.key)
     pipeline.expireat(`${this.USER_CST_PREFIX}:${dto.userUuid}`, dto.expiresAtInSeconds)
 
-    pipeline.set(`${this.PREFIX}:${dto.authorizationHeaderValue}`, dto.encodedCrossServiceToken)
-    pipeline.expireat(`${this.PREFIX}:${dto.authorizationHeaderValue}`, dto.expiresAtInSeconds)
+    pipeline.set(`${this.PREFIX}:${dto.key}`, dto.encodedCrossServiceToken)
+    pipeline.expireat(`${this.PREFIX}:${dto.key}`, dto.expiresAtInSeconds)
 
     await pipeline.exec()
   }
 
-  async get(authorizationHeaderValue: string): Promise<string | null> {
-    return this.redisClient.get(`${this.PREFIX}:${authorizationHeaderValue}`)
+  async get(key: string): Promise<string | null> {
+    return this.redisClient.get(`${this.PREFIX}:${key}`)
   }
 
   async invalidate(userUuid: string): Promise<void> {
-    const userAuthorizationHeaderValues = await this.redisClient.smembers(`${this.USER_CST_PREFIX}:${userUuid}`)
+    const userKeyValues = await this.redisClient.smembers(`${this.USER_CST_PREFIX}:${userUuid}`)
 
     const pipeline = this.redisClient.pipeline()
-    for (const authorizationHeaderValue of userAuthorizationHeaderValues) {
-      pipeline.del(`${this.PREFIX}:${authorizationHeaderValue}`)
+    for (const key of userKeyValues) {
+      pipeline.del(`${this.PREFIX}:${key}`)
     }
     pipeline.del(`${this.USER_CST_PREFIX}:${userUuid}`)
 

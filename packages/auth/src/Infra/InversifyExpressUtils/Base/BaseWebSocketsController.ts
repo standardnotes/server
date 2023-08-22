@@ -46,10 +46,20 @@ export class BaseWebSocketsController extends BaseHttpController {
       )
     }
 
-    const result = await this.createCrossServiceToken.execute({
+    const resultOrError = await this.createCrossServiceToken.execute({
       userUuid: token.userUuid,
     })
+    if (resultOrError.isFailed()) {
+      return this.json(
+        {
+          error: {
+            message: resultOrError.getError(),
+          },
+        },
+        400,
+      )
+    }
 
-    return this.json({ authToken: result.token })
+    return this.json({ authToken: resultOrError.getValue() })
   }
 }

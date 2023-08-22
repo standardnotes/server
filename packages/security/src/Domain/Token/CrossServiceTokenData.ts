@@ -5,6 +5,9 @@ export type CrossServiceTokenData = {
     uuid: string
     email: string
   }
+  shared_vault_owner_context?: {
+    upload_bytes_limit: number
+  }
   roles: Array<Role>
   session?: {
     uuid: string
