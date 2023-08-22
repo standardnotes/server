@@ -33,6 +33,7 @@ export class HttpServiceProxy implements ServiceProxyInterface {
       headers: {
         Authorization: headers.authorization,
         Accept: 'application/json',
+        'x-shared-vault-owner-context': headers.sharedVaultOwnerContext,
       },
       validateStatus: (status: number) => {
         return status >= 200 && status < 500
