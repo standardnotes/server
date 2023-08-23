@@ -1054,6 +1054,7 @@ export class ContainerConfigLoader {
       ['USER_EMAIL_CHANGED', container.get(TYPES.Auth_UserEmailChangedEventHandler)],
       ['FILE_UPLOADED', container.get(TYPES.Auth_FileUploadedEventHandler)],
       ['SHARED_VAULT_FILE_UPLOADED', container.get(TYPES.Auth_SharedVaultFileUploadedEventHandler)],
+      ['SHARED_VAULT_FILE_MOVED', container.get(TYPES.Auth_SharedVaultFileMovedEventHandler)],
       ['FILE_REMOVED', container.get(TYPES.Auth_FileRemovedEventHandler)],
       ['SHARED_VAULT_FILE_REMOVED', container.get(TYPES.Auth_SharedVaultFileRemovedEventHandler)],
       ['LISTED_ACCOUNT_CREATED', container.get(TYPES.Auth_ListedAccountCreatedEventHandler)],
