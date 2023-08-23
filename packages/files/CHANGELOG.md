@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.22.0](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.21.0...@standardnotes/files-server@1.22.0) (2023-08-23)
+
+### Features
+
+* add handling file moving and updating storage quota ([#705](https://github.com/standardnotes/files/issues/705)) ([205a1ed](https://github.com/standardnotes/files/commit/205a1ed637b626be13fc656276508f3c7791024f))
+
 # [1.21.0](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.20.4...@standardnotes/files-server@1.21.0) (2023-08-22)
 
 ### Features
