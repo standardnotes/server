@@ -27,6 +27,7 @@ export class Service implements AuthServiceInterface {
   async activatePremiumFeatures(dto: {
     username: string
     subscriptionPlanName?: string
+    uploadBytesLimit?: number
     endsAt?: Date
   }): Promise<Result<string>> {
     if (!this.container) {

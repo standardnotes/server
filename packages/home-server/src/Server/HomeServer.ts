@@ -144,6 +144,7 @@ export class HomeServer implements HomeServerInterface {
             void this.activatePremiumFeatures({
               username: request.body.username,
               subscriptionPlanName: request.body.subscriptionPlanName,
+              uploadBytesLimit: request.body.uploadBytesLimit,
               endsAt: request.body.endsAt ? new Date(request.body.endsAt) : undefined,
             }).then((result) => {
               if (result.isFailed()) {
@@ -221,6 +222,7 @@ export class HomeServer implements HomeServerInterface {
   async activatePremiumFeatures(dto: {
     username: string
     subscriptionPlanName?: string
+    uploadBytesLimit?: number
     endsAt?: Date
   }): Promise<Result<string>> {
     if (!this.isRunning() || !this.authService) {

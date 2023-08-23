@@ -256,6 +256,7 @@ import { PaymentsAccountDeletedEventHandler } from '../Domain/Handler/PaymentsAc
 import { UpdateStorageQuotaUsedForUser } from '../Domain/UseCase/UpdateStorageQuotaUsedForUser/UpdateStorageQuotaUsedForUser'
 import { SharedVaultFileUploadedEventHandler } from '../Domain/Handler/SharedVaultFileUploadedEventHandler'
 import { SharedVaultFileRemovedEventHandler } from '../Domain/Handler/SharedVaultFileRemovedEventHandler'
+import { SharedVaultFileMovedEventHandler } from '../Domain/Handler/SharedVaultFileMovedEventHandler'
 
 export class ContainerConfigLoader {
   async load(configuration?: {
@@ -983,6 +984,14 @@ export class ContainerConfigLoader {
         ),
       )
     container
+      .bind<SharedVaultFileMovedEventHandler>(TYPES.Auth_SharedVaultFileMovedEventHandler)
+      .toConstantValue(
+        new SharedVaultFileMovedEventHandler(
+          container.get(TYPES.Auth_UpdateStorageQuotaUsedForUser),
+          container.get(TYPES.Auth_Logger),
+        ),
+      )
+    container
       .bind<FileRemovedEventHandler>(TYPES.Auth_FileRemovedEventHandler)
       .toConstantValue(
         new FileRemovedEventHandler(
@@ -1045,6 +1054,7 @@ export class ContainerConfigLoader {
       ['USER_EMAIL_CHANGED', container.get(TYPES.Auth_UserEmailChangedEventHandler)],
       ['FILE_UPLOADED', container.get(TYPES.Auth_FileUploadedEventHandler)],
       ['SHARED_VAULT_FILE_UPLOADED', container.get(TYPES.Auth_SharedVaultFileUploadedEventHandler)],
+      ['SHARED_VAULT_FILE_MOVED', container.get(TYPES.Auth_SharedVaultFileMovedEventHandler)],
       ['FILE_REMOVED', container.get(TYPES.Auth_FileRemovedEventHandler)],
       ['SHARED_VAULT_FILE_REMOVED', container.get(TYPES.Auth_SharedVaultFileRemovedEventHandler)],
       ['LISTED_ACCOUNT_CREATED', container.get(TYPES.Auth_ListedAccountCreatedEventHandler)],

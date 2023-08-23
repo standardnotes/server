@@ -11,7 +11,13 @@ export interface SharedVaultValetTokenData {
   uploadBytesLimit?: number
   moveOperation?: {
     type: SharedVaultMoveType
-    fromUuid: string
-    toUuid: string
+    from: {
+      sharedVaultUuid?: string
+      ownerUuid: string
+    }
+    to: {
+      sharedVaultUuid?: string
+      ownerUuid: string
+    }
   }
 }

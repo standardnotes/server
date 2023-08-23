@@ -6,6 +6,7 @@ export interface HomeServerInterface {
   activatePremiumFeatures(dto: {
     username: string
     subscriptionPlanName?: string
+    uploadBytesLimit?: number
     endsAt?: Date
   }): Promise<Result<string>>
   stop(): Promise<Result<string>>

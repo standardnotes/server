@@ -57,7 +57,7 @@ export class ActivatePremiumFeatures implements UseCaseInterface<string> {
 
     await this.subscriptionSettingService.applyDefaultSubscriptionSettingsForSubscription(
       subscription,
-      new Map([[SettingName.NAMES.FileUploadBytesLimit, '-1']]),
+      new Map([[SettingName.NAMES.FileUploadBytesLimit, `${dto.uploadBytesLimit ?? -1}`]]),
     )
 
     return Result.ok('Premium features activated.')

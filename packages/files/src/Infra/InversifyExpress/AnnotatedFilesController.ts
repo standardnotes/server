@@ -146,20 +146,21 @@ export class AnnotatedFilesController extends BaseHttpController {
       chunkSize = this.maxChunkBytes
     }
 
-    const fileMetadata = await this.getFileMetadata.execute({
+    const fileMetadataOrError = await this.getFileMetadata.execute({
       ownerUuid: response.locals.userUuid,
       resourceRemoteIdentifier: response.locals.permittedResources[0].remoteIdentifier,
     })
 
-    if (!fileMetadata.success) {
-      return this.badRequest(fileMetadata.message)
+    if (fileMetadataOrError.isFailed()) {
+      return this.badRequest(fileMetadataOrError.getError())
     }
+    const fileSize = fileMetadataOrError.getValue()
 
     const startRange = Number(range.replace(/\D/g, ''))
-    const endRange = Math.min(startRange + chunkSize - 1, fileMetadata.size - 1)
+    const endRange = Math.min(startRange + chunkSize - 1, fileSize - 1)
 
     const headers = {
-      'Content-Range': `bytes ${startRange}-${endRange}/${fileMetadata.size}`,
+      'Content-Range': `bytes ${startRange}-${endRange}/${fileSize}`,
       'Accept-Ranges': 'bytes',
       'Content-Length': endRange - startRange + 1,
       'Content-Type': 'application/octet-stream',

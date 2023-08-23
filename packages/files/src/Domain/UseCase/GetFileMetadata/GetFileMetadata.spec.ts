@@ -1,4 +1,3 @@
-import 'reflect-metadata'
 import { Logger } from 'winston'
 import { FileDownloaderInterface } from '../../Services/FileDownloaderInterface'
 
@@ -19,10 +18,8 @@ describe('GetFileMetadata', () => {
   })
 
   it('should return the file metadata', async () => {
-    expect(await createUseCase().execute({ resourceRemoteIdentifier: '1-2-3', ownerUuid: '2-3-4' })).toEqual({
-      success: true,
-      size: 123,
-    })
+    const result = await createUseCase().execute({ resourceRemoteIdentifier: '1-2-3', ownerUuid: '2-3-4' })
+    expect(result.getValue()).toEqual(123)
   })
 
   it('should not return the file metadata if it fails', async () => {
@@ -30,9 +27,8 @@ describe('GetFileMetadata', () => {
       throw new Error('ooops')
     })
 
-    expect(await createUseCase().execute({ resourceRemoteIdentifier: '1-2-3', ownerUuid: '2-3-4' })).toEqual({
-      success: false,
-      message: 'Could not get file metadata.',
-    })
+    const result = await createUseCase().execute({ resourceRemoteIdentifier: '1-2-3', ownerUuid: '2-3-4' })
+
+    expect(result.isFailed()).toBe(true)
   })
 })

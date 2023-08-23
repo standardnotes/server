@@ -1,9 +1,15 @@
-import { SharedVaultValetTokenData, TokenEncoderInterface, ValetTokenOperation } from '@standardnotes/security'
+import {
+  SharedVaultMoveType,
+  SharedVaultValetTokenData,
+  TokenEncoderInterface,
+  ValetTokenOperation,
+} from '@standardnotes/security'
 import { Result, SharedVaultUserPermission, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
 
 import { SharedVaultRepositoryInterface } from '../../../SharedVault/SharedVaultRepositoryInterface'
 import { SharedVaultUserRepositoryInterface } from '../../../SharedVault/User/SharedVaultUserRepositoryInterface'
 import { CreateSharedVaultFileValetTokenDTO } from './CreateSharedVaultFileValetTokenDTO'
+import { SharedVault } from '../../../SharedVault/SharedVault'
 
 export class CreateSharedVaultFileValetToken implements UseCaseInterface<string> {
   constructor(
@@ -48,6 +54,7 @@ export class CreateSharedVaultFileValetToken implements UseCaseInterface<string>
       return Result.fail('User does not have permission to perform this operation')
     }
 
+    let targetSharedVault: SharedVault | null = null
     if (dto.operation === ValetTokenOperation.Move) {
       if (!dto.moveOperationType) {
         return Result.fail('Move operation type is required')
@@ -63,6 +70,11 @@ export class CreateSharedVaultFileValetToken implements UseCaseInterface<string>
           return Result.fail(sharedVaultTargetUuidOrError.getError())
         }
         const sharedVaultTargetUuid = sharedVaultTargetUuidOrError.getValue()
+
+        targetSharedVault = await this.sharedVaultRepository.findByUuid(sharedVaultTargetUuid)
+        if (!targetSharedVault) {
+          return Result.fail('Target shared vault not found')
+        }
 
         const toSharedVaultUser = await this.sharedVaultUserRepository.findByUserUuidAndSharedVaultUuid({
           userUuid: userUuid,
@@ -83,6 +95,28 @@ export class CreateSharedVaultFileValetToken implements UseCaseInterface<string>
       }
     }
 
+    const fromSharedVaultUuid = ['shared-vault-to-user', 'shared-vault-to-shared-vault'].includes(
+      dto.moveOperationType as string,
+    )
+      ? sharedVaultUuid.value
+      : undefined
+
+    const fromOwnerUuid =
+      dto.moveOperationType === 'user-to-shared-vault' ? userUuid.value : sharedVault.props.userUuid.value
+
+    const toSharedVaultUuid = targetSharedVault
+      ? targetSharedVault.id.toString()
+      : dto.moveOperationType === 'shared-vault-to-user'
+      ? undefined
+      : sharedVaultUuid.value
+
+    const toOwnerUuid =
+      dto.moveOperationType === 'user-to-shared-vault'
+        ? sharedVault.props.userUuid.value
+        : targetSharedVault
+        ? targetSharedVault.props.userUuid.value
+        : userUuid.value
+
     const tokenData: SharedVaultValetTokenData = {
       sharedVaultUuid: dto.sharedVaultUuid,
       vaultOwnerUuid: sharedVault.props.userUuid.value,
@@ -91,40 +125,21 @@ export class CreateSharedVaultFileValetToken implements UseCaseInterface<string>
       uploadBytesUsed: sharedVault.props.fileUploadBytesUsed,
       uploadBytesLimit: dto.sharedVaultOwnerUploadBytesLimit,
       unencryptedFileSize: dto.unencryptedFileSize,
-      moveOperation: this.createMoveOperationData(dto),
+      moveOperation: {
+        type: dto.moveOperationType as SharedVaultMoveType,
+        from: {
+          sharedVaultUuid: fromSharedVaultUuid,
+          ownerUuid: fromOwnerUuid,
+        },
+        to: {
+          sharedVaultUuid: toSharedVaultUuid,
+          ownerUuid: toOwnerUuid,
+        },
+      },
     }
 
     const valetToken = this.tokenEncoder.encodeExpirableToken(tokenData, this.valetTokenTTL)
 
     return Result.ok(valetToken)
-  }
-
-  private createMoveOperationData(dto: CreateSharedVaultFileValetTokenDTO): SharedVaultValetTokenData['moveOperation'] {
-    if (!dto.moveOperationType) {
-      return undefined
-    }
-
-    let fromUuid: string
-    let toUuid: string
-    switch (dto.moveOperationType) {
-      case 'shared-vault-to-user':
-        fromUuid = dto.sharedVaultUuid
-        toUuid = dto.userUuid
-        break
-      case 'user-to-shared-vault':
-        fromUuid = dto.userUuid
-        toUuid = dto.sharedVaultUuid
-        break
-      case 'shared-vault-to-shared-vault':
-        fromUuid = dto.sharedVaultUuid
-        toUuid = dto.sharedVaultToSharedVaultMoveTargetUuid as string
-        break
-    }
-
-    return {
-      type: dto.moveOperationType,
-      fromUuid,
-      toUuid,
-    }
   }
 }

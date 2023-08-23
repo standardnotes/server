@@ -99,7 +99,9 @@ export class ContainerConfigLoader {
     container
       .bind<TokenDecoderInterface<ValetTokenData>>(TYPES.Files_ValetTokenDecoder)
       .toConstantValue(new TokenDecoder<ValetTokenData>(container.get(TYPES.Files_VALET_TOKEN_SECRET)))
-    container.bind<DomainEventFactoryInterface>(TYPES.Files_DomainEventFactory).to(DomainEventFactory)
+    container
+      .bind<DomainEventFactoryInterface>(TYPES.Files_DomainEventFactory)
+      .toConstantValue(new DomainEventFactory(container.get<TimerInterface>(TYPES.Files_Timer)))
 
     if (isConfiguredForInMemoryCache) {
       container
@@ -214,9 +216,26 @@ export class ContainerConfigLoader {
           container.get(TYPES.Files_DomainEventFactory),
         ),
       )
-    container.bind<GetFileMetadata>(TYPES.Files_GetFileMetadata).to(GetFileMetadata)
+    container
+      .bind<GetFileMetadata>(TYPES.Files_GetFileMetadata)
+      .toConstantValue(
+        new GetFileMetadata(
+          container.get<FileDownloaderInterface>(TYPES.Files_FileDownloader),
+          container.get<winston.Logger>(TYPES.Files_Logger),
+        ),
+      )
     container.bind<RemoveFile>(TYPES.Files_RemoveFile).to(RemoveFile)
-    container.bind<MoveFile>(TYPES.Files_MoveFile).to(MoveFile)
+    container
+      .bind<MoveFile>(TYPES.Files_MoveFile)
+      .toConstantValue(
+        new MoveFile(
+          container.get<GetFileMetadata>(TYPES.Files_GetFileMetadata),
+          container.get<FileMoverInterface>(TYPES.Files_FileMover),
+          container.get<DomainEventPublisherInterface>(TYPES.Files_DomainEventPublisher),
+          container.get<DomainEventFactoryInterface>(TYPES.Files_DomainEventFactory),
+          container.get<winston.Logger>(TYPES.Files_Logger),
+        ),
+      )
     container.bind<MarkFilesToBeRemoved>(TYPES.Files_MarkFilesToBeRemoved).to(MarkFilesToBeRemoved)
 
     // middleware
