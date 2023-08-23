@@ -206,4 +206,34 @@ describe('MoveFile', () => {
     )
     expect(result.isFailed()).toEqual(false)
   })
+
+  it('should fail if moving from shared vault to user without shared vault uuid', async () => {
+    const result = await createUseCase().execute({
+      resourceRemoteIdentifier: '2-3-4',
+      from: {
+        ownerUuid: '00000000-0000-0000-0000-000000000000',
+      },
+      to: {
+        ownerUuid: '00000000-0000-0000-0000-000000000000',
+      },
+      moveType: 'shared-vault-to-user',
+    })
+
+    expect(result.isFailed()).toEqual(true)
+  })
+
+  it('should fail if moving from user to shared vault without shared vault uuid', async () => {
+    const result = await createUseCase().execute({
+      resourceRemoteIdentifier: '2-3-4',
+      from: {
+        ownerUuid: '00000000-0000-0000-0000-000000000000',
+      },
+      to: {
+        ownerUuid: '00000000-0000-0000-0000-000000000000',
+      },
+      moveType: 'user-to-shared-vault',
+    })
+
+    expect(result.isFailed()).toEqual(true)
+  })
 })

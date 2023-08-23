@@ -48,23 +48,30 @@ export class MoveFile implements UseCaseInterface<boolean> {
       }
       const toOwnerUuid = toOwnerUuidOrError.getValue()
 
+      if (['shared-vault-to-shared-vault', 'shared-vault-to-user'].includes(dto.moveType) && !fromSharedVaultUuid) {
+        return Result.fail('Source shared vault UUID is required')
+      }
+
+      if (['user-to-shared-vault', 'shared-vault-to-shared-vault'].includes(dto.moveType) && !toSharedVaultUuid) {
+        return Result.fail('Target shared vault UUID is required')
+      }
+
+      const fromUuid = dto.moveType === 'user-to-shared-vault' ? fromOwnerUuid.value : fromSharedVaultUuid?.value
+      const toUuid = dto.moveType === 'shared-vault-to-user' ? toOwnerUuid.value : toSharedVaultUuid?.value
+
+      const srcPath = `${fromUuid}/${dto.resourceRemoteIdentifier}`
+      const destPath = `${toUuid}/${dto.resourceRemoteIdentifier}`
+
+      this.logger.debug(`Moving file from ${srcPath} to ${destPath}`)
+
       const metadataResultOrError = await this.getFileMetadataUseCase.execute({
         resourceRemoteIdentifier: dto.resourceRemoteIdentifier,
-        ownerUuid: fromOwnerUuid.value,
+        ownerUuid: fromUuid as string,
       })
       if (metadataResultOrError.isFailed()) {
         return Result.fail(metadataResultOrError.getError())
       }
       const fileSize = metadataResultOrError.getValue()
-
-      const srcPath = `${fromSharedVaultUuid ? fromSharedVaultUuid.value : fromOwnerUuid.value}/${
-        dto.resourceRemoteIdentifier
-      }`
-      const destPath = `${toSharedVaultUuid ? toSharedVaultUuid.value : toOwnerUuid.value}/${
-        dto.resourceRemoteIdentifier
-      }`
-
-      this.logger.debug(`Moving file from ${srcPath} to ${destPath}`)
 
       await this.fileMover.moveFile(srcPath, destPath)
 
