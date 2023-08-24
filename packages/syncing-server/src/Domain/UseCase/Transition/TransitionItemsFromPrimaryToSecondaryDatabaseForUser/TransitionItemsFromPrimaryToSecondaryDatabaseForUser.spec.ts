@@ -4,6 +4,7 @@ import { ItemRepositoryInterface } from '../../../Item/ItemRepositoryInterface'
 import { TransitionItemsFromPrimaryToSecondaryDatabaseForUser } from './TransitionItemsFromPrimaryToSecondaryDatabaseForUser'
 import { Item } from '../../../Item/Item'
 import { ContentType, Dates, Timestamps, UniqueEntityId, Uuid } from '@standardnotes/domain-core'
+import { TimerInterface } from '@standardnotes/time'
 
 describe('TransitionItemsFromPrimaryToSecondaryDatabaseForUser', () => {
   let primaryItemRepository: ItemRepositoryInterface
@@ -13,9 +14,15 @@ describe('TransitionItemsFromPrimaryToSecondaryDatabaseForUser', () => {
   let primaryItem2: Item
   let secondaryItem1: Item
   let secondaryItem2: Item
+  let timer: TimerInterface
 
   const createUseCase = () =>
-    new TransitionItemsFromPrimaryToSecondaryDatabaseForUser(primaryItemRepository, secondaryItemRepository, logger)
+    new TransitionItemsFromPrimaryToSecondaryDatabaseForUser(
+      primaryItemRepository,
+      secondaryItemRepository,
+      timer,
+      logger,
+    )
 
   beforeEach(() => {
     primaryItem1 = Item.create(
@@ -107,6 +114,17 @@ describe('TransitionItemsFromPrimaryToSecondaryDatabaseForUser', () => {
 
     logger = {} as jest.Mocked<Logger>
     logger.error = jest.fn()
+    logger.info = jest.fn()
+
+    timer = {} as jest.Mocked<TimerInterface>
+    timer.getTimestampInMicroseconds = jest.fn().mockReturnValue(123)
+    timer.convertMicrosecondsToTimeStructure = jest.fn().mockReturnValue({
+      days: 0,
+      hours: 0,
+      minutes: 0,
+      seconds: 0,
+      milliseconds: 0,
+    })
   })
 
   describe('successfull transition', () => {

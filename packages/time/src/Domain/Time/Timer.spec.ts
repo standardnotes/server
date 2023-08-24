@@ -122,6 +122,7 @@ describe('Timer', () => {
       hours: 1,
       minutes: 50,
       seconds: 50,
+      milliseconds: 982,
     })
   })
 })

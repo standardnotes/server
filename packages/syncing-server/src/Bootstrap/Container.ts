@@ -779,6 +779,7 @@ export class ContainerConfigLoader {
         new TransitionItemsFromPrimaryToSecondaryDatabaseForUser(
           container.get<ItemRepositoryInterface>(TYPES.Sync_MySQLItemRepository),
           isSecondaryDatabaseEnabled ? container.get<ItemRepositoryInterface>(TYPES.Sync_MongoDBItemRepository) : null,
+          container.get<TimerInterface>(TYPES.Sync_Timer),
           container.get<Logger>(TYPES.Sync_Logger),
         ),
       )

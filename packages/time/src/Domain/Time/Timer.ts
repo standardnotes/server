@@ -26,11 +26,15 @@ export class Timer implements TimerInterface {
     const secondsLeftOver = microseconds % Time.MicrosecondsInAMinute
     const seconds = Math.floor(secondsLeftOver / Time.MicrosecondsInASecond)
 
+    const millisecondsLeftOver = microseconds % Time.MicrosecondsInASecond
+    const milliseconds = Math.floor(millisecondsLeftOver / Time.MicrosecondsInAMillisecond)
+
     return {
       days,
       hours,
       minutes,
       seconds,
+      milliseconds,
     }
   }
 
