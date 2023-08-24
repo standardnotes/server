@@ -100,7 +100,7 @@ export class AcceptSharedSubscriptionInvitation implements UseCaseInterface {
   }
 
   private async addUserRole(user: User, subscriptionName: SubscriptionName): Promise<void> {
-    await this.roleService.addUserRole(user, subscriptionName)
+    await this.roleService.addUserRoleBasedOnSubscription(user, subscriptionName)
   }
 
   private async createSharedSubscription(

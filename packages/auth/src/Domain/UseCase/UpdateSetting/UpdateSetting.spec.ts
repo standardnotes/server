@@ -93,7 +93,7 @@ describe('UpdateSetting', () => {
     settingsAssociationService.isSettingMutableByClient = jest.fn().mockReturnValue(true)
 
     roleService = {} as jest.Mocked<RoleServiceInterface>
-    roleService.addUserRole = jest.fn()
+    roleService.addUserRoleBasedOnSubscription = jest.fn()
 
     logger = {} as jest.Mocked<Logger>
     logger.debug = jest.fn()

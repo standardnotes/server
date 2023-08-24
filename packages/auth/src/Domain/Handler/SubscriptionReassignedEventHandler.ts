@@ -67,7 +67,7 @@ export class SubscriptionReassignedEventHandler implements DomainEventHandlerInt
   }
 
   private async addUserRole(user: User, subscriptionName: string): Promise<void> {
-    await this.roleService.addUserRole(user, subscriptionName)
+    await this.roleService.addUserRoleBasedOnSubscription(user, subscriptionName)
   }
 
   private async createSubscription(

@@ -69,7 +69,7 @@ describe('AcceptSharedSubscriptionInvitation', () => {
     userSubscriptionRepository.save = jest.fn().mockReturnValue(inviteeSubscription)
 
     roleService = {} as jest.Mocked<RoleServiceInterface>
-    roleService.addUserRole = jest.fn()
+    roleService.addUserRoleBasedOnSubscription = jest.fn()
 
     subscriptionSettingService = {} as jest.Mocked<SubscriptionSettingServiceInterface>
     subscriptionSettingService.applyDefaultSubscriptionSettingsForSubscription = jest.fn()
@@ -103,7 +103,7 @@ describe('AcceptSharedSubscriptionInvitation', () => {
       updatedAt: 1,
       user: Promise.resolve(invitee),
     })
-    expect(roleService.addUserRole).toHaveBeenCalledWith(invitee, 'PLUS_PLAN')
+    expect(roleService.addUserRoleBasedOnSubscription).toHaveBeenCalledWith(invitee, 'PLUS_PLAN')
     expect(subscriptionSettingService.applyDefaultSubscriptionSettingsForSubscription).toHaveBeenCalledWith(
       inviteeSubscription,
     )
@@ -143,7 +143,7 @@ describe('AcceptSharedSubscriptionInvitation', () => {
       updatedAt: 3,
       user: Promise.resolve(invitee),
     })
-    expect(roleService.addUserRole).toHaveBeenCalledWith(invitee, 'PLUS_PLAN')
+    expect(roleService.addUserRoleBasedOnSubscription).toHaveBeenCalledWith(invitee, 'PLUS_PLAN')
     expect(subscriptionSettingService.applyDefaultSubscriptionSettingsForSubscription).toHaveBeenCalledWith(
       inviteeSubscription,
     )
@@ -162,7 +162,7 @@ describe('AcceptSharedSubscriptionInvitation', () => {
 
     expect(sharedSubscriptionInvitationRepository.save).not.toHaveBeenCalled()
     expect(userSubscriptionRepository.save).not.toHaveBeenCalled()
-    expect(roleService.addUserRole).not.toHaveBeenCalled()
+    expect(roleService.addUserRoleBasedOnSubscription).not.toHaveBeenCalled()
     expect(subscriptionSettingService.applyDefaultSubscriptionSettingsForSubscription).not.toHaveBeenCalled()
   })
 
@@ -180,7 +180,7 @@ describe('AcceptSharedSubscriptionInvitation', () => {
 
     expect(sharedSubscriptionInvitationRepository.save).not.toHaveBeenCalled()
     expect(userSubscriptionRepository.save).not.toHaveBeenCalled()
-    expect(roleService.addUserRole).not.toHaveBeenCalled()
+    expect(roleService.addUserRoleBasedOnSubscription).not.toHaveBeenCalled()
     expect(subscriptionSettingService.applyDefaultSubscriptionSettingsForSubscription).not.toHaveBeenCalled()
   })
 
@@ -202,7 +202,7 @@ describe('AcceptSharedSubscriptionInvitation', () => {
 
     expect(sharedSubscriptionInvitationRepository.save).not.toHaveBeenCalled()
     expect(userSubscriptionRepository.save).not.toHaveBeenCalled()
-    expect(roleService.addUserRole).not.toHaveBeenCalled()
+    expect(roleService.addUserRoleBasedOnSubscription).not.toHaveBeenCalled()
     expect(subscriptionSettingService.applyDefaultSubscriptionSettingsForSubscription).not.toHaveBeenCalled()
   })
 
@@ -219,7 +219,7 @@ describe('AcceptSharedSubscriptionInvitation', () => {
 
     expect(sharedSubscriptionInvitationRepository.save).not.toHaveBeenCalled()
     expect(userSubscriptionRepository.save).not.toHaveBeenCalled()
-    expect(roleService.addUserRole).not.toHaveBeenCalled()
+    expect(roleService.addUserRoleBasedOnSubscription).not.toHaveBeenCalled()
     expect(subscriptionSettingService.applyDefaultSubscriptionSettingsForSubscription).not.toHaveBeenCalled()
   })
 
@@ -244,7 +244,7 @@ describe('AcceptSharedSubscriptionInvitation', () => {
 
     expect(sharedSubscriptionInvitationRepository.save).not.toHaveBeenCalled()
     expect(userSubscriptionRepository.save).not.toHaveBeenCalled()
-    expect(roleService.addUserRole).not.toHaveBeenCalled()
+    expect(roleService.addUserRoleBasedOnSubscription).not.toHaveBeenCalled()
     expect(subscriptionSettingService.applyDefaultSubscriptionSettingsForSubscription).not.toHaveBeenCalled()
   })
 })

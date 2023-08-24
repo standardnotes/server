@@ -73,7 +73,7 @@ export class SubscriptionRenewedEventHandler implements DomainEventHandlerInterf
     for (const userSubscription of userSubscriptions) {
       const user = await userSubscription.user
 
-      await this.roleService.addUserRole(user, subscriptionName)
+      await this.roleService.addUserRoleBasedOnSubscription(user, subscriptionName)
     }
   }
 

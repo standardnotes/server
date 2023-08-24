@@ -67,7 +67,7 @@ describe('SubscriptionRenewedEventHandler', () => {
     offlineUserSubscriptionRepository.save = jest.fn().mockReturnValue(offlineUserSubscription)
 
     roleService = {} as jest.Mocked<RoleServiceInterface>
-    roleService.addUserRole = jest.fn()
+    roleService.addUserRoleBasedOnSubscription = jest.fn()
     roleService.setOfflineUserRole = jest.fn()
 
     timestamp = dayjs.utc().valueOf()
@@ -107,7 +107,7 @@ describe('SubscriptionRenewedEventHandler', () => {
   it('should update the user role', async () => {
     await createHandler().handle(event)
 
-    expect(roleService.addUserRole).toHaveBeenCalledWith(user, SubscriptionName.ProPlan)
+    expect(roleService.addUserRoleBasedOnSubscription).toHaveBeenCalledWith(user, SubscriptionName.ProPlan)
   })
 
   it('should update the offline user role', async () => {
@@ -123,7 +123,7 @@ describe('SubscriptionRenewedEventHandler', () => {
 
     await createHandler().handle(event)
 
-    expect(roleService.addUserRole).not.toHaveBeenCalled()
+    expect(roleService.addUserRoleBasedOnSubscription).not.toHaveBeenCalled()
     expect(userSubscriptionRepository.save).not.toHaveBeenCalled()
   })
 
@@ -132,7 +132,7 @@ describe('SubscriptionRenewedEventHandler', () => {
 
     await createHandler().handle(event)
 
-    expect(roleService.addUserRole).not.toHaveBeenCalled()
+    expect(roleService.addUserRoleBasedOnSubscription).not.toHaveBeenCalled()
     expect(userSubscriptionRepository.save).not.toHaveBeenCalled()
   })
 
@@ -143,7 +143,7 @@ describe('SubscriptionRenewedEventHandler', () => {
 
     await createHandler().handle(event)
 
-    expect(roleService.addUserRole).not.toHaveBeenCalled()
+    expect(roleService.addUserRoleBasedOnSubscription).not.toHaveBeenCalled()
     expect(userSubscriptionRepository.save).not.toHaveBeenCalled()
   })
 })

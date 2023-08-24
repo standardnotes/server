@@ -60,7 +60,7 @@ describe('SubscriptionExpiredEventHandler', () => {
     offlineUserSubscriptionRepository.updateEndsAt = jest.fn()
 
     roleService = {} as jest.Mocked<RoleServiceInterface>
-    roleService.removeUserRole = jest.fn()
+    roleService.removeUserRoleBasedOnSubscription = jest.fn()
 
     timestamp = dayjs.utc().valueOf()
 
@@ -86,7 +86,7 @@ describe('SubscriptionExpiredEventHandler', () => {
   it('should update the user role', async () => {
     await createHandler().handle(event)
 
-    expect(roleService.removeUserRole).toHaveBeenCalledWith(user, SubscriptionName.PlusPlan)
+    expect(roleService.removeUserRoleBasedOnSubscription).toHaveBeenCalledWith(user, SubscriptionName.PlusPlan)
   })
 
   it('should update subscription ends at', async () => {
@@ -108,7 +108,7 @@ describe('SubscriptionExpiredEventHandler', () => {
 
     await createHandler().handle(event)
 
-    expect(roleService.removeUserRole).not.toHaveBeenCalled()
+    expect(roleService.removeUserRoleBasedOnSubscription).not.toHaveBeenCalled()
     expect(userSubscriptionRepository.updateEndsAt).not.toHaveBeenCalled()
   })
 
@@ -117,7 +117,7 @@ describe('SubscriptionExpiredEventHandler', () => {
 
     await createHandler().handle(event)
 
-    expect(roleService.removeUserRole).not.toHaveBeenCalled()
+    expect(roleService.removeUserRoleBasedOnSubscription).not.toHaveBeenCalled()
     expect(userSubscriptionRepository.updateEndsAt).not.toHaveBeenCalled()
   })
 })

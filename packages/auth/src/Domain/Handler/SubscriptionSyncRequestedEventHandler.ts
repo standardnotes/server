@@ -93,7 +93,7 @@ export class SubscriptionSyncRequestedEventHandler implements DomainEventHandler
       event.payload.timestamp,
     )
 
-    await this.roleService.addUserRole(user, event.payload.subscriptionName)
+    await this.roleService.addUserRoleBasedOnSubscription(user, event.payload.subscriptionName)
 
     await this.subscriptionSettingService.applyDefaultSubscriptionSettingsForSubscription(userSubscription)
 

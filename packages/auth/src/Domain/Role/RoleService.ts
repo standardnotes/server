@@ -54,7 +54,7 @@ export class RoleService implements RoleServiceInterface {
     return false
   }
 
-  async addUserRole(user: User, subscriptionName: SubscriptionName): Promise<void> {
+  async addUserRoleBasedOnSubscription(user: User, subscriptionName: SubscriptionName): Promise<void> {
     const roleName = this.roleToSubscriptionMap.getRoleNameForSubscriptionName(subscriptionName)
 
     if (roleName === undefined) {
@@ -107,7 +107,7 @@ export class RoleService implements RoleServiceInterface {
     await this.offlineUserSubscriptionRepository.save(offlineUserSubscription)
   }
 
-  async removeUserRole(user: User, subscriptionName: SubscriptionName): Promise<void> {
+  async removeUserRoleBasedOnSubscription(user: User, subscriptionName: SubscriptionName): Promise<void> {
     const roleName = this.roleToSubscriptionMap.getRoleNameForSubscriptionName(subscriptionName)
 
     if (roleName === undefined) {
