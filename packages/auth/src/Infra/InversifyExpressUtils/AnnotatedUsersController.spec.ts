@@ -14,6 +14,7 @@ import { IncreaseLoginAttempts } from '../../Domain/UseCase/IncreaseLoginAttempt
 import { InviteToSharedSubscription } from '../../Domain/UseCase/InviteToSharedSubscription/InviteToSharedSubscription'
 import { UpdateUser } from '../../Domain/UseCase/UpdateUser'
 import { User } from '../../Domain/User/User'
+import { GetTransitionStatus } from '../../Domain/UseCase/GetTransitionStatus/GetTransitionStatus'
 
 describe('AnnotatedUsersController', () => {
   let updateUser: UpdateUser
@@ -24,6 +25,7 @@ describe('AnnotatedUsersController', () => {
   let increaseLoginAttempts: IncreaseLoginAttempts
   let changeCredentials: ChangeCredentials
   let inviteToSharedSubscription: InviteToSharedSubscription
+  let getTransitionStatus: GetTransitionStatus
 
   let request: express.Request
   let response: express.Response
@@ -38,6 +40,7 @@ describe('AnnotatedUsersController', () => {
       clearLoginAttempts,
       increaseLoginAttempts,
       changeCredentials,
+      getTransitionStatus,
     )
 
   beforeEach(() => {
@@ -68,6 +71,9 @@ describe('AnnotatedUsersController', () => {
 
     inviteToSharedSubscription = {} as jest.Mocked<InviteToSharedSubscription>
     inviteToSharedSubscription.execute = jest.fn()
+
+    getTransitionStatus = {} as jest.Mocked<GetTransitionStatus>
+    getTransitionStatus.execute = jest.fn()
 
     request = {
       headers: {},

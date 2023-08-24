@@ -12,12 +12,14 @@ import { ApiVersion } from '../../../Domain/Api/ApiVersion'
 import { SyncItems } from '../../../Domain/UseCase/Syncing/SyncItems/SyncItems'
 import { ItemHttpRepresentation } from '../../../Mapping/Http/ItemHttpRepresentation'
 import { ItemHash } from '../../../Domain/Item/ItemHash'
+import { TriggerTransitionFromPrimaryToSecondaryDatabaseForUser } from '../../../Domain/UseCase/Transition/TriggerTransitionFromPrimaryToSecondaryDatabaseForUser/TriggerTransitionFromPrimaryToSecondaryDatabaseForUser'
 
 export class BaseItemsController extends BaseHttpController {
   constructor(
     protected syncItems: SyncItems,
     protected checkIntegrity: CheckIntegrity,
     protected getItem: GetItem,
+    protected triggerTransitionFromPrimaryToSecondaryDatabaseForUser: TriggerTransitionFromPrimaryToSecondaryDatabaseForUser,
     protected itemHttpMapper: MapperInterface<Item, ItemHttpRepresentation>,
     protected syncResponseFactoryResolver: SyncResponseFactoryResolverInterface,
     private controllerContainer?: ControllerContainerInterface,
@@ -28,6 +30,7 @@ export class BaseItemsController extends BaseHttpController {
       this.controllerContainer.register('sync.items.sync', this.sync.bind(this))
       this.controllerContainer.register('sync.items.check_integrity', this.checkItemsIntegrity.bind(this))
       this.controllerContainer.register('sync.items.get_item', this.getSingleItem.bind(this))
+      this.controllerContainer.register('sync.items.transition', this.transition.bind(this))
     }
   }
 
@@ -103,6 +106,23 @@ export class BaseItemsController extends BaseHttpController {
     return this.json({
       mismatches: result.getValue(),
     })
+  }
+
+  async transition(_request: Request, response: Response): Promise<results.JsonResult> {
+    const result = await this.triggerTransitionFromPrimaryToSecondaryDatabaseForUser.execute({
+      userUuid: response.locals.user.uuid,
+    })
+
+    if (result.isFailed()) {
+      return this.json(
+        {
+          error: { message: result.getError() },
+        },
+        400,
+      )
+    }
+
+    return this.json({ success: true })
   }
 
   async getSingleItem(request: Request, response: Response): Promise<results.JsonResult> {

@@ -257,6 +257,12 @@ import { UpdateStorageQuotaUsedForUser } from '../Domain/UseCase/UpdateStorageQu
 import { SharedVaultFileUploadedEventHandler } from '../Domain/Handler/SharedVaultFileUploadedEventHandler'
 import { SharedVaultFileRemovedEventHandler } from '../Domain/Handler/SharedVaultFileRemovedEventHandler'
 import { SharedVaultFileMovedEventHandler } from '../Domain/Handler/SharedVaultFileMovedEventHandler'
+import { TransitionStatusRepositoryInterface } from '../Domain/Transition/TransitionStatusRepositoryInterface'
+import { RedisTransitionStatusRepository } from '../Infra/Redis/RedisTransitionStatusRepository'
+import { InMemoryTransitionStatusRepository } from '../Infra/InMemory/InMemoryTransitionStatusRepository'
+import { TransitionStatusUpdatedEventHandler } from '../Domain/Handler/TransitionStatusUpdatedEventHandler'
+import { UpdateTransitionStatus } from '../Domain/UseCase/UpdateTransitionStatus/UpdateTransitionStatus'
+import { GetTransitionStatus } from '../Domain/UseCase/GetTransitionStatus/GetTransitionStatus'
 
 export class ContainerConfigLoader {
   async load(configuration?: {
@@ -610,6 +616,9 @@ export class ContainerConfigLoader {
             container.get(TYPES.Auth_Timer),
           ),
         )
+      container
+        .bind<TransitionStatusRepositoryInterface>(TYPES.Auth_TransitionStatusRepository)
+        .toConstantValue(new InMemoryTransitionStatusRepository())
     } else {
       container.bind<PKCERepositoryInterface>(TYPES.Auth_PKCERepository).to(RedisPKCERepository)
       container.bind<LockRepositoryInterface>(TYPES.Auth_LockRepository).to(LockRepository)
@@ -622,6 +631,9 @@ export class ContainerConfigLoader {
       container
         .bind<SubscriptionTokenRepositoryInterface>(TYPES.Auth_SubscriptionTokenRepository)
         .to(RedisSubscriptionTokenRepository)
+      container
+        .bind<TransitionStatusRepositoryInterface>(TYPES.Auth_TransitionStatusRepository)
+        .toConstantValue(new RedisTransitionStatusRepository(container.get<Redis>(TYPES.Auth_Redis)))
     }
 
     // Services
@@ -898,6 +910,22 @@ export class ContainerConfigLoader {
           container.get(TYPES.Auth_SubscriptionSettingService),
         ),
       )
+    container
+      .bind<UpdateTransitionStatus>(TYPES.Auth_UpdateTransitionStatus)
+      .toConstantValue(
+        new UpdateTransitionStatus(
+          container.get<TransitionStatusRepositoryInterface>(TYPES.Auth_TransitionStatusRepository),
+          container.get<RoleServiceInterface>(TYPES.Auth_RoleService),
+        ),
+      )
+    container
+      .bind<GetTransitionStatus>(TYPES.Auth_GetTransitionStatus)
+      .toConstantValue(
+        new GetTransitionStatus(
+          container.get<TransitionStatusRepositoryInterface>(TYPES.Auth_TransitionStatusRepository),
+          container.get<UserRepositoryInterface>(TYPES.Auth_UserRepository),
+        ),
+      )
 
     // Controller
     container
@@ -1039,6 +1067,14 @@ export class ContainerConfigLoader {
           container.get(TYPES.Auth_Logger),
         ),
       )
+    container
+      .bind<TransitionStatusUpdatedEventHandler>(TYPES.Auth_TransitionStatusUpdatedEventHandler)
+      .toConstantValue(
+        new TransitionStatusUpdatedEventHandler(
+          container.get<UpdateTransitionStatus>(TYPES.Auth_UpdateTransitionStatus),
+          container.get<winston.Logger>(TYPES.Auth_Logger),
+        ),
+      )
 
     const eventHandlers: Map<string, DomainEventHandlerInterface> = new Map([
       ['USER_REGISTERED', container.get(TYPES.Auth_UserRegisteredEventHandler)],
@@ -1070,6 +1106,7 @@ export class ContainerConfigLoader {
       ['PREDICATE_VERIFICATION_REQUESTED', container.get(TYPES.Auth_PredicateVerificationRequestedEventHandler)],
       ['EMAIL_SUBSCRIPTION_UNSUBSCRIBED', container.get(TYPES.Auth_EmailSubscriptionUnsubscribedEventHandler)],
       ['PAYMENTS_ACCOUNT_DELETED', container.get(TYPES.Auth_PaymentsAccountDeletedEventHandler)],
+      ['TRANSITION_STATUS_UPDATED', container.get(TYPES.Auth_TransitionStatusUpdatedEventHandler)],
     ])
 
     if (isConfiguredForHomeServer) {

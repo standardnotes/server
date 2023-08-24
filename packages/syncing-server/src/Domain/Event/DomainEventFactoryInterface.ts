@@ -4,9 +4,14 @@ import {
   ItemDumpedEvent,
   ItemRevisionCreationRequestedEvent,
   RevisionsCopyRequestedEvent,
+  TransitionStatusUpdatedEvent,
 } from '@standardnotes/domain-events'
 
 export interface DomainEventFactoryInterface {
+  createTransitionStatusUpdatedEvent(
+    userUuid: string,
+    status: 'STARTED' | 'FAILED' | 'FINISHED',
+  ): TransitionStatusUpdatedEvent
   createEmailRequestedEvent(dto: {
     userEmail: string
     messageIdentifier: string

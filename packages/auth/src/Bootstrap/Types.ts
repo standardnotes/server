@@ -35,6 +35,7 @@ const TYPES = {
   Auth_AuthenticatorRepository: Symbol.for('Auth_AuthenticatorRepository'),
   Auth_AuthenticatorChallengeRepository: Symbol.for('Auth_AuthenticatorChallengeRepository'),
   Auth_CacheEntryRepository: Symbol.for('Auth_CacheEntryRepository'),
+  Auth_TransitionStatusRepository: Symbol.for('Auth_TransitionStatusRepository'),
   // ORM
   Auth_ORMOfflineSettingRepository: Symbol.for('Auth_ORMOfflineSettingRepository'),
   Auth_ORMOfflineUserSubscriptionRepository: Symbol.for('Auth_ORMOfflineUserSubscriptionRepository'),
@@ -154,6 +155,8 @@ const TYPES = {
   Auth_SignInWithRecoveryCodes: Symbol.for('Auth_SignInWithRecoveryCodes'),
   Auth_GetUserKeyParamsRecovery: Symbol.for('Auth_GetUserKeyParamsRecovery'),
   Auth_UpdateStorageQuotaUsedForUser: Symbol.for('Auth_UpdateStorageQuotaUsedForUser'),
+  Auth_UpdateTransitionStatus: Symbol.for('Auth_UpdateTransitionStatus'),
+  Auth_GetTransitionStatus: Symbol.for('Auth_GetTransitionStatus'),
   // Handlers
   Auth_UserRegisteredEventHandler: Symbol.for('Auth_UserRegisteredEventHandler'),
   Auth_AccountDeletionRequestedEventHandler: Symbol.for('Auth_AccountDeletionRequestedEventHandler'),
@@ -182,6 +185,7 @@ const TYPES = {
   Auth_PredicateVerificationRequestedEventHandler: Symbol.for('Auth_PredicateVerificationRequestedEventHandler'),
   Auth_EmailSubscriptionUnsubscribedEventHandler: Symbol.for('Auth_EmailSubscriptionUnsubscribedEventHandler'),
   Auth_PaymentsAccountDeletedEventHandler: Symbol.for('Auth_PaymentsAccountDeletedEventHandler'),
+  Auth_TransitionStatusUpdatedEventHandler: Symbol.for('Auth_TransitionStatusUpdatedEventHandler'),
   // Services
   Auth_DeviceDetector: Symbol.for('Auth_DeviceDetector'),
   Auth_SessionService: Symbol.for('Auth_SessionService'),

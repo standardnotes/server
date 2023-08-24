@@ -5,7 +5,7 @@ import { User } from '../User/User'
 import { UserRepositoryInterface } from '../User/UserRepositoryInterface'
 import { RoleRepositoryInterface } from '../Role/RoleRepositoryInterface'
 import { SubscriptionName } from '@standardnotes/common'
-import { RoleName } from '@standardnotes/domain-core'
+import { RoleName, Uuid } from '@standardnotes/domain-core'
 import { Role } from '../Role/Role'
 
 import { ClientServiceInterface } from '../Client/ClientServiceInterface'
@@ -81,9 +81,44 @@ describe('RoleService', () => {
     logger = {} as jest.Mocked<Logger>
     logger.info = jest.fn()
     logger.warn = jest.fn()
+    logger.error = jest.fn()
   })
 
   describe('adding roles', () => {
+    beforeEach(() => {
+      user = {
+        uuid: '123',
+        email: 'test@test.com',
+        roles: Promise.resolve([basicRole]),
+      } as jest.Mocked<User>
+
+      userRepository.findOneByUuid = jest.fn().mockReturnValue(user)
+      userRepository.save = jest.fn().mockReturnValue(user)
+    })
+
+    it('should add a role to a user', async () => {
+      await createService().addRoleToUser(
+        Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+        RoleName.create(RoleName.NAMES.ProUser).getValue(),
+      )
+
+      user.roles = Promise.resolve([basicRole, proRole])
+      expect(userRepository.save).toHaveBeenCalledWith(user)
+    })
+
+    it('should not add a role to a user if the user could not be found', async () => {
+      userRepository.findOneByUuid = jest.fn().mockReturnValue(null)
+
+      await createService().addRoleToUser(
+        Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+        RoleName.create(RoleName.NAMES.ProUser).getValue(),
+      )
+
+      expect(userRepository.save).not.toHaveBeenCalled()
+    })
+  })
+
+  describe('adding roles based on subscription', () => {
     beforeEach(() => {
       user = {
         uuid: '123',
@@ -169,7 +204,7 @@ describe('RoleService', () => {
     })
   })
 
-  describe('removing roles', () => {
+  describe('removing roles based on subscription', () => {
     beforeEach(() => {
       user = {
         uuid: '123',

@@ -156,6 +156,8 @@ import { ItemRepositoryResolverInterface } from '../Domain/Item/ItemRepositoryRe
 import { TypeORMItemRepositoryResolver } from '../Infra/TypeORM/TypeORMItemRepositoryResolver'
 import { TransitionItemsFromPrimaryToSecondaryDatabaseForUser } from '../Domain/UseCase/Transition/TransitionItemsFromPrimaryToSecondaryDatabaseForUser/TransitionItemsFromPrimaryToSecondaryDatabaseForUser'
 import { SharedVaultFileMovedEventHandler } from '../Domain/Handler/SharedVaultFileMovedEventHandler'
+import { TransitionStatusUpdatedEventHandler } from '../Domain/Handler/TransitionStatusUpdatedEventHandler'
+import { TriggerTransitionFromPrimaryToSecondaryDatabaseForUser } from '../Domain/UseCase/Transition/TriggerTransitionFromPrimaryToSecondaryDatabaseForUser/TriggerTransitionFromPrimaryToSecondaryDatabaseForUser'
 
 export class ContainerConfigLoader {
   private readonly DEFAULT_CONTENT_SIZE_TRANSFER_LIMIT = 10_000_000
@@ -770,12 +772,24 @@ export class ContainerConfigLoader {
         ),
       )
     container
-      .bind(TransitionItemsFromPrimaryToSecondaryDatabaseForUser)
+      .bind<TransitionItemsFromPrimaryToSecondaryDatabaseForUser>(
+        TYPES.Sync_TransitionItemsFromPrimaryToSecondaryDatabaseForUser,
+      )
       .toConstantValue(
         new TransitionItemsFromPrimaryToSecondaryDatabaseForUser(
           container.get<ItemRepositoryInterface>(TYPES.Sync_MySQLItemRepository),
           isSecondaryDatabaseEnabled ? container.get<ItemRepositoryInterface>(TYPES.Sync_MongoDBItemRepository) : null,
           container.get<Logger>(TYPES.Sync_Logger),
+        ),
+      )
+    container
+      .bind<TriggerTransitionFromPrimaryToSecondaryDatabaseForUser>(
+        TYPES.Sync_TriggerTransitionFromPrimaryToSecondaryDatabaseForUser,
+      )
+      .toConstantValue(
+        new TriggerTransitionFromPrimaryToSecondaryDatabaseForUser(
+          container.get<DomainEventPublisherInterface>(TYPES.Sync_DomainEventPublisher),
+          container.get<DomainEventFactoryInterface>(TYPES.Sync_DomainEventFactory),
         ),
       )
 
@@ -882,6 +896,18 @@ export class ContainerConfigLoader {
           container.get<winston.Logger>(TYPES.Sync_Logger),
         ),
       )
+    container
+      .bind<TransitionStatusUpdatedEventHandler>(TYPES.Sync_TransitionStatusUpdatedEventHandler)
+      .toConstantValue(
+        new TransitionStatusUpdatedEventHandler(
+          container.get<TransitionItemsFromPrimaryToSecondaryDatabaseForUser>(
+            TYPES.Sync_TransitionItemsFromPrimaryToSecondaryDatabaseForUser,
+          ),
+          container.get<DomainEventPublisherInterface>(TYPES.Sync_DomainEventPublisher),
+          container.get<DomainEventFactoryInterface>(TYPES.Sync_DomainEventFactory),
+          container.get<Logger>(TYPES.Sync_Logger),
+        ),
+      )
 
     // Services
     container.bind<ContentDecoder>(TYPES.Sync_ContentDecoder).toDynamicValue(() => new ContentDecoder())
@@ -915,6 +941,10 @@ export class ContainerConfigLoader {
       [
         'SHARED_VAULT_FILE_MOVED',
         container.get<SharedVaultFileMovedEventHandler>(TYPES.Sync_SharedVaultFileMovedEventHandler),
+      ],
+      [
+        'TRANSITION_STATUS_UPDATED',
+        container.get<TransitionStatusUpdatedEventHandler>(TYPES.Sync_TransitionStatusUpdatedEventHandler),
       ],
     ])
     if (!isConfiguredForHomeServer) {

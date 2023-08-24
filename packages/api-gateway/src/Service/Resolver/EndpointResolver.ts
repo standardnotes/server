@@ -42,7 +42,8 @@ export class EndpointResolver implements EndpointResolverInterface {
     // Users Controller
     ['[PATCH]:users/:userId', 'auth.users.update'],
     ['[PUT]:users/:userUuid/attributes/credentials', 'auth.users.updateCredentials'],
-    ['[PUT]:auth/params', 'auth.users.getKeyParams'],
+    ['[GET]:users/params', 'auth.users.getKeyParams'],
+    ['[GET]:users/transition-status', 'auth.users.transition-status'],
     ['[DELETE]:users/:userUuid', 'auth.users.delete'],
     ['[POST]:listed', 'auth.users.createListedAccount'],
     ['[POST]:auth', 'auth.users.register'],
@@ -58,6 +59,7 @@ export class EndpointResolver implements EndpointResolverInterface {
     // Syncing Server
     ['[POST]:items/sync', 'sync.items.sync'],
     ['[POST]:items/check-integrity', 'sync.items.check_integrity'],
+    ['[POST]:items/transition', 'sync.items.transition'],
     ['[GET]:items/:uuid', 'sync.items.get_item'],
     // Revisions Controller V2
     ['[GET]:items/:itemUuid/revisions', 'revisions.revisions.getRevisions'],
