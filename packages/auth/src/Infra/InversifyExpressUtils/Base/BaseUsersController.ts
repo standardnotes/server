@@ -122,6 +122,8 @@ export class BaseUsersController extends BaseHttpController {
       )
     }
 
+    response.setHeader('x-invalidate-cache', response.locals.user.uuid)
+
     return this.json({
       status: result.getValue(),
     })

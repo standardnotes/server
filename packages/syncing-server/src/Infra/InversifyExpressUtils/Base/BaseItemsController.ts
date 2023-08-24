@@ -35,6 +35,10 @@ export class BaseItemsController extends BaseHttpController {
   }
 
   async sync(request: Request, response: Response): Promise<results.JsonResult> {
+    if (response.locals.ongoingTransition === true) {
+      throw new Error('Cannot sync during transition')
+    }
+
     const itemHashes: ItemHash[] = []
     if ('items' in request.body) {
       for (const itemHashInput of request.body.items) {
@@ -121,6 +125,8 @@ export class BaseItemsController extends BaseHttpController {
         400,
       )
     }
+
+    response.setHeader('x-invalidate-cache', response.locals.user.uuid)
 
     return this.json({ success: true })
   }

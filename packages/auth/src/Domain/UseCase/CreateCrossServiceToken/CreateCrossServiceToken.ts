@@ -12,6 +12,7 @@ import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'
 import { CreateCrossServiceTokenDTO } from './CreateCrossServiceTokenDTO'
 import { GetSetting } from '../GetSetting/GetSetting'
 import { SettingName } from '@standardnotes/settings'
+import { TransitionStatusRepositoryInterface } from '../../Transition/TransitionStatusRepositoryInterface'
 
 @injectable()
 export class CreateCrossServiceToken implements UseCaseInterface<string> {
@@ -24,6 +25,8 @@ export class CreateCrossServiceToken implements UseCaseInterface<string> {
     @inject(TYPES.Auth_AUTH_JWT_TTL) private jwtTTL: number,
     @inject(TYPES.Auth_GetSetting)
     private getSettingUseCase: GetSetting,
+    @inject(TYPES.Auth_TransitionStatusRepository)
+    private transitionStatusRepository: TransitionStatusRepositoryInterface,
   ) {}
 
   async execute(dto: CreateCrossServiceTokenDTO): Promise<Result<string>> {
@@ -42,12 +45,15 @@ export class CreateCrossServiceToken implements UseCaseInterface<string> {
       return Result.fail(`Could not find user with uuid ${dto.userUuid}`)
     }
 
+    const transitionStatus = await this.transitionStatusRepository.getStatus(user.uuid)
+
     const roles = await user.roles
 
     const authTokenData: CrossServiceTokenData = {
       user: this.projectUser(user),
       roles: this.projectRoles(roles),
       shared_vault_owner_context: undefined,
+      ongoing_transition: transitionStatus === 'STARTED',
     }
 
     if (dto.sharedVaultOwnerContext !== undefined) {

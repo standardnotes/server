@@ -39,7 +39,7 @@ export abstract class AuthMiddleware extends BaseMiddleware {
         crossServiceToken = await this.crossServiceTokenCache.get(cacheKey)
       }
 
-      if (crossServiceToken === null) {
+      if (this.crossServiceTokenIsEmptyOrRequiresRevalidation(crossServiceToken)) {
         const authResponse = await this.serviceProxy.validateSession({
           authorization: authHeaderValue,
           sharedVaultOwnerContext: sharedVaultOwnerContextHeaderValue,
@@ -55,12 +55,14 @@ export abstract class AuthMiddleware extends BaseMiddleware {
 
       response.locals.authToken = crossServiceToken
 
-      const decodedToken = <CrossServiceTokenData>verify(crossServiceToken, this.jwtSecret, { algorithms: ['HS256'] })
+      const decodedToken = <CrossServiceTokenData>(
+        verify(response.locals.authToken, this.jwtSecret, { algorithms: ['HS256'] })
+      )
 
       if (this.crossServiceTokenCacheTTL && !crossServiceTokenFetchedFromCache) {
         await this.crossServiceTokenCache.set({
           key: cacheKey,
-          encodedCrossServiceToken: crossServiceToken,
+          encodedCrossServiceToken: response.locals.authToken,
           expiresAtInSeconds: this.getCrossServiceTokenCacheExpireTimestamp(decodedToken),
           userUuid: decodedToken.user.uuid,
         })
@@ -125,5 +127,15 @@ export abstract class AuthMiddleware extends BaseMiddleware {
     const sessionRefreshExpiration = this.timer.convertStringDateToSeconds(token.session.refresh_expiration)
 
     return Math.min(crossServiceTokenDefaultCacheExpiration, sessionAccessExpiration, sessionRefreshExpiration)
+  }
+
+  private crossServiceTokenIsEmptyOrRequiresRevalidation(crossServiceToken: string | null) {
+    if (crossServiceToken === null) {
+      return true
+    }
+
+    const decodedToken = <CrossServiceTokenData>verify(crossServiceToken, this.jwtSecret, { algorithms: ['HS256'] })
+
+    return decodedToken.ongoing_transition === true
   }
 }
