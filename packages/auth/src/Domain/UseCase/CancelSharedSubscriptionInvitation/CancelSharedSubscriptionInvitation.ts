@@ -90,7 +90,10 @@ export class CancelSharedSubscriptionInvitation implements UseCaseInterface {
     if (invitee !== null) {
       await this.removeSharedSubscription(sharedSubscriptionInvitation.subscriptionId, invitee)
 
-      await this.roleService.removeUserRole(invitee, inviterUserSubscription.planName as SubscriptionName)
+      await this.roleService.removeUserRoleBasedOnSubscription(
+        invitee,
+        inviterUserSubscription.planName as SubscriptionName,
+      )
 
       await this.domainEventPublisher.publish(
         this.domainEventFactory.createSharedSubscriptionInvitationCanceledEvent({

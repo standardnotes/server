@@ -13,7 +13,7 @@ import { RoleToSubscriptionMapInterface } from './RoleToSubscriptionMapInterface
 import { OfflineUserSubscriptionRepositoryInterface } from '../Subscription/OfflineUserSubscriptionRepositoryInterface'
 import { Role } from './Role'
 import { OfflineUserSubscription } from '../Subscription/OfflineUserSubscription'
-import { Uuid } from '@standardnotes/domain-core'
+import { RoleName, Uuid } from '@standardnotes/domain-core'
 
 @injectable()
 export class RoleService implements RoleServiceInterface {
@@ -54,7 +54,18 @@ export class RoleService implements RoleServiceInterface {
     return false
   }
 
-  async addUserRole(user: User, subscriptionName: SubscriptionName): Promise<void> {
+  async addRoleToUser(userUuid: Uuid, roleName: RoleName): Promise<void> {
+    const user = await this.userRepository.findOneByUuid(userUuid)
+    if (user === null) {
+      this.logger.error(`Could not find user with uuid ${userUuid.value} to add role ${roleName.value}`)
+
+      return
+    }
+
+    await this.addToExistingRoles(user, roleName.value)
+  }
+
+  async addUserRoleBasedOnSubscription(user: User, subscriptionName: SubscriptionName): Promise<void> {
     const roleName = this.roleToSubscriptionMap.getRoleNameForSubscriptionName(subscriptionName)
 
     if (roleName === undefined) {
@@ -62,25 +73,7 @@ export class RoleService implements RoleServiceInterface {
       return
     }
 
-    const role = await this.roleRepository.findOneByName(roleName)
-
-    if (role === null) {
-      this.logger.warn(`Could not find role for role name: ${roleName}`)
-      return
-    }
-
-    const rolesMap = new Map<string, Role>()
-    const currentRoles = await user.roles
-    for (const currentRole of currentRoles) {
-      rolesMap.set(currentRole.name, currentRole)
-    }
-    if (!rolesMap.has(role.name)) {
-      rolesMap.set(role.name, role)
-    }
-
-    user.roles = Promise.resolve([...rolesMap.values()])
-    await this.userRepository.save(user)
-    await this.webSocketsClientService.sendUserRolesChangedEvent(user)
+    await this.addToExistingRoles(user, roleName)
   }
 
   async setOfflineUserRole(offlineUserSubscription: OfflineUserSubscription): Promise<void> {
@@ -107,7 +100,7 @@ export class RoleService implements RoleServiceInterface {
     await this.offlineUserSubscriptionRepository.save(offlineUserSubscription)
   }
 
-  async removeUserRole(user: User, subscriptionName: SubscriptionName): Promise<void> {
+  async removeUserRoleBasedOnSubscription(user: User, subscriptionName: SubscriptionName): Promise<void> {
     const roleName = this.roleToSubscriptionMap.getRoleNameForSubscriptionName(subscriptionName)
 
     if (roleName === undefined) {
@@ -117,6 +110,29 @@ export class RoleService implements RoleServiceInterface {
 
     const currentRoles = await user.roles
     user.roles = Promise.resolve(currentRoles.filter((role) => role.name !== roleName))
+    await this.userRepository.save(user)
+    await this.webSocketsClientService.sendUserRolesChangedEvent(user)
+  }
+
+  private async addToExistingRoles(user: User, roleNameString: string): Promise<void> {
+    const role = await this.roleRepository.findOneByName(roleNameString)
+
+    if (role === null) {
+      this.logger.warn(`Could not find role for role name: ${roleNameString}`)
+
+      return
+    }
+
+    const rolesMap = new Map<string, Role>()
+    const currentRoles = await user.roles
+    for (const currentRole of currentRoles) {
+      rolesMap.set(currentRole.name, currentRole)
+    }
+    if (!rolesMap.has(role.name)) {
+      rolesMap.set(role.name, role)
+    }
+
+    user.roles = Promise.resolve([...rolesMap.values()])
     await this.userRepository.save(user)
     await this.webSocketsClientService.sendUserRolesChangedEvent(user)
   }

@@ -34,7 +34,7 @@ describe('ActivatePremiumFeatures', () => {
     userSubscriptionRepository.save = jest.fn()
 
     roleService = {} as jest.Mocked<RoleServiceInterface>
-    roleService.addUserRole = jest.fn()
+    roleService.addUserRoleBasedOnSubscription = jest.fn()
 
     timer = {} as jest.Mocked<TimerInterface>
     timer.getTimestampInMicroseconds = jest.fn().mockReturnValue(123456789)
@@ -73,7 +73,7 @@ describe('ActivatePremiumFeatures', () => {
     expect(result.isFailed()).toBe(false)
 
     expect(userSubscriptionRepository.save).toHaveBeenCalled()
-    expect(roleService.addUserRole).toHaveBeenCalled()
+    expect(roleService.addUserRoleBasedOnSubscription).toHaveBeenCalled()
   })
 
   it('should save a subscription with custom plan name and endsAt', async () => {

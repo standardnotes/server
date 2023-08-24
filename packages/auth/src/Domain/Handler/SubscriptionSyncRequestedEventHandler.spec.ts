@@ -88,7 +88,7 @@ describe('SubscriptionSyncRequestedEventHandler', () => {
     })
 
     roleService = {} as jest.Mocked<RoleServiceInterface>
-    roleService.addUserRole = jest.fn()
+    roleService.addUserRoleBasedOnSubscription = jest.fn()
     roleService.setOfflineUserRole = jest.fn()
 
     subscriptionExpiresAt = timestamp + 365 * 1000
@@ -121,7 +121,7 @@ describe('SubscriptionSyncRequestedEventHandler', () => {
   it('should update the user role', async () => {
     await createHandler().handle(event)
 
-    expect(roleService.addUserRole).toHaveBeenCalledWith(user, SubscriptionName.ProPlan)
+    expect(roleService.addUserRoleBasedOnSubscription).toHaveBeenCalledWith(user, SubscriptionName.ProPlan)
   })
 
   it('should update user default settings', async () => {
@@ -243,7 +243,7 @@ describe('SubscriptionSyncRequestedEventHandler', () => {
 
     await createHandler().handle(event)
 
-    expect(roleService.addUserRole).not.toHaveBeenCalled()
+    expect(roleService.addUserRoleBasedOnSubscription).not.toHaveBeenCalled()
     expect(userSubscriptionRepository.save).not.toHaveBeenCalled()
   })
 
@@ -252,7 +252,7 @@ describe('SubscriptionSyncRequestedEventHandler', () => {
 
     await createHandler().handle(event)
 
-    expect(roleService.addUserRole).not.toHaveBeenCalled()
+    expect(roleService.addUserRoleBasedOnSubscription).not.toHaveBeenCalled()
     expect(userSubscriptionRepository.save).not.toHaveBeenCalled()
   })
 })

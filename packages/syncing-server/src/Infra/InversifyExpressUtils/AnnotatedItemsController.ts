@@ -11,6 +11,7 @@ import { SyncItems } from '../../Domain/UseCase/Syncing/SyncItems/SyncItems'
 import { BaseItemsController } from './Base/BaseItemsController'
 import { MapperInterface } from '@standardnotes/domain-core'
 import { ItemHttpRepresentation } from '../../Mapping/Http/ItemHttpRepresentation'
+import { TriggerTransitionFromPrimaryToSecondaryDatabaseForUser } from '../../Domain/UseCase/Transition/TriggerTransitionFromPrimaryToSecondaryDatabaseForUser/TriggerTransitionFromPrimaryToSecondaryDatabaseForUser'
 
 @controller('/items', TYPES.Sync_AuthMiddleware)
 export class AnnotatedItemsController extends BaseItemsController {
@@ -18,11 +19,20 @@ export class AnnotatedItemsController extends BaseItemsController {
     @inject(TYPES.Sync_SyncItems) override syncItems: SyncItems,
     @inject(TYPES.Sync_CheckIntegrity) override checkIntegrity: CheckIntegrity,
     @inject(TYPES.Sync_GetItem) override getItem: GetItem,
+    @inject(TYPES.Sync_TriggerTransitionFromPrimaryToSecondaryDatabaseForUser)
+    override triggerTransitionFromPrimaryToSecondaryDatabaseForUser: TriggerTransitionFromPrimaryToSecondaryDatabaseForUser,
     @inject(TYPES.Sync_ItemHttpMapper) override itemHttpMapper: MapperInterface<Item, ItemHttpRepresentation>,
     @inject(TYPES.Sync_SyncResponseFactoryResolver)
     override syncResponseFactoryResolver: SyncResponseFactoryResolverInterface,
   ) {
-    super(syncItems, checkIntegrity, getItem, itemHttpMapper, syncResponseFactoryResolver)
+    super(
+      syncItems,
+      checkIntegrity,
+      getItem,
+      triggerTransitionFromPrimaryToSecondaryDatabaseForUser,
+      itemHttpMapper,
+      syncResponseFactoryResolver,
+    )
   }
 
   @httpPost('/sync')
@@ -33,6 +43,11 @@ export class AnnotatedItemsController extends BaseItemsController {
   @httpPost('/check-integrity')
   override async checkItemsIntegrity(request: Request, response: Response): Promise<results.JsonResult> {
     return super.checkItemsIntegrity(request, response)
+  }
+
+  @httpPost('/transition')
+  override async transition(request: Request, response: Response): Promise<results.JsonResult> {
+    return super.transition(request, response)
   }
 
   @httpGet('/:uuid')

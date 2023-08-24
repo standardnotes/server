@@ -152,10 +152,11 @@ LINKING_RESULT=$(link_queue_and_topic $FILES_TOPIC_ARN $SYNCING_SERVER_QUEUE_ARN
 echo "linking done:"
 echo "$LINKING_RESULT"
 
-echo "linking topic $SYNCING_SERVER_TOPIC_ARN to queue $SYNCING_SERVER_QUEUE_ARN"
-LINKING_RESULT=$(link_queue_and_topic $SYNCING_SERVER_TOPIC_ARN $SYNCING_SERVER_QUEUE_ARN)
+echo "linking topic $SYNCING_SERVER_TOPIC_ARN to queue $AUTH_QUEUE_ARN"
+LINKING_RESULT=$(link_queue_and_topic $SYNCING_SERVER_TOPIC_ARN $AUTH_QUEUE_ARN)
 echo "linking done:"
 echo "$LINKING_RESULT"
+
 echo "linking topic $AUTH_TOPIC_ARN to queue $SYNCING_SERVER_QUEUE_ARN"
 LINKING_RESULT=$(link_queue_and_topic $AUTH_TOPIC_ARN $SYNCING_SERVER_QUEUE_ARN)
 echo "linking done:"

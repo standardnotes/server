@@ -80,6 +80,15 @@ export class UsersController extends BaseHttpController {
     )
   }
 
+  @httpGet('/transition-status', TYPES.ApiGateway_RequiredCrossServiceTokenMiddleware)
+  async getTransitionStatus(request: Request, response: Response): Promise<void> {
+    await this.httpService.callAuthServer(
+      request,
+      response,
+      this.endpointResolver.resolveEndpointOrMethodIdentifier('GET', 'users/transition-status'),
+    )
+  }
+
   @httpGet('/:userId/params', TYPES.ApiGateway_RequiredCrossServiceTokenMiddleware)
   async getKeyParams(request: Request, response: Response): Promise<void> {
     await this.httpService.callAuthServer(

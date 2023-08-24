@@ -6,12 +6,31 @@ import {
   ItemDumpedEvent,
   ItemRevisionCreationRequestedEvent,
   RevisionsCopyRequestedEvent,
+  TransitionStatusUpdatedEvent,
 } from '@standardnotes/domain-events'
 import { TimerInterface } from '@standardnotes/time'
 import { DomainEventFactoryInterface } from './DomainEventFactoryInterface'
 
 export class DomainEventFactory implements DomainEventFactoryInterface {
   constructor(private timer: TimerInterface) {}
+
+  createTransitionStatusUpdatedEvent(userUuid: string, status: 'FINISHED' | 'FAILED'): TransitionStatusUpdatedEvent {
+    return {
+      type: 'TRANSITION_STATUS_UPDATED',
+      createdAt: this.timer.getUTCDate(),
+      meta: {
+        correlation: {
+          userIdentifier: userUuid,
+          userIdentifierType: 'uuid',
+        },
+        origin: DomainEventService.SyncingServer,
+      },
+      payload: {
+        userUuid,
+        status,
+      },
+    }
+  }
 
   createRevisionsCopyRequestedEvent(
     userUuid: string,

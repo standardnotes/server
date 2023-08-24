@@ -4,11 +4,13 @@ import { Logger } from 'winston'
 import { TransitionItemsFromPrimaryToSecondaryDatabaseForUserDTO } from './TransitionItemsFromPrimaryToSecondaryDatabaseForUserDTO'
 import { ItemRepositoryInterface } from '../../../Item/ItemRepositoryInterface'
 import { ItemQuery } from '../../../Item/ItemQuery'
+import { TimerInterface } from '@standardnotes/time'
 
 export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements UseCaseInterface<void> {
   constructor(
     private primaryItemRepository: ItemRepositoryInterface,
     private secondaryItemRepository: ItemRepositoryInterface | null,
+    private timer: TimerInterface,
     private logger: Logger,
   ) {}
 
@@ -22,6 +24,8 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
       return Result.fail(userUuidOrError.getError())
     }
     const userUuid = userUuidOrError.getValue()
+
+    const migrationTimeStart = this.timer.getTimestampInMicroseconds()
 
     const migrationResult = await this.migrateItemsForUser(userUuid)
     if (migrationResult.isFailed()) {
@@ -53,6 +57,15 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
         `Failed to clean up primary database items for user ${userUuid.value}: ${cleanupResult.getError()}`,
       )
     }
+
+    const migrationTimeEnd = this.timer.getTimestampInMicroseconds()
+
+    const migrationDuration = migrationTimeEnd - migrationTimeStart
+    const migrationDurationTimeStructure = this.timer.convertMicrosecondsToTimeStructure(migrationDuration)
+
+    this.logger.info(
+      `Transitioned items for user ${userUuid.value} in ${migrationDurationTimeStructure.hours}h ${migrationDurationTimeStructure.minutes}m ${migrationDurationTimeStructure.seconds}s ${migrationDurationTimeStructure.milliseconds}ms`,
+    )
 
     return Result.ok()
   }

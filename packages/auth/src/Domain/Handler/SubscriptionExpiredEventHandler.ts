@@ -48,7 +48,7 @@ export class SubscriptionExpiredEventHandler implements DomainEventHandlerInterf
   private async removeRoleFromSubscriptionUsers(subscriptionId: number, subscriptionName: string): Promise<void> {
     const userSubscriptions = await this.userSubscriptionRepository.findBySubscriptionId(subscriptionId)
     for (const userSubscription of userSubscriptions) {
-      await this.roleService.removeUserRole(await userSubscription.user, subscriptionName)
+      await this.roleService.removeUserRoleBasedOnSubscription(await userSubscription.user, subscriptionName)
     }
   }
 

@@ -3,4 +3,5 @@ export type TimeStructure = {
   hours: number
   minutes: number
   seconds: number
+  milliseconds: number
 }

@@ -53,7 +53,7 @@ export class ActivatePremiumFeatures implements UseCaseInterface<string> {
 
     await this.userSubscriptionRepository.save(subscription)
 
-    await this.roleService.addUserRole(user, subscriptionPlanName.value)
+    await this.roleService.addUserRoleBasedOnSubscription(user, subscriptionPlanName.value)
 
     await this.subscriptionSettingService.applyDefaultSubscriptionSettingsForSubscription(
       subscription,
