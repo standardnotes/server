@@ -1211,14 +1211,15 @@ export class ContainerConfigLoader {
         .bind<BaseUsersController>(TYPES.Auth_BaseUsersController)
         .toConstantValue(
           new BaseUsersController(
-            container.get(TYPES.Auth_UpdateUser),
-            container.get(TYPES.Auth_GetUserKeyParams),
-            container.get(TYPES.Auth_DeleteAccount),
-            container.get(TYPES.Auth_GetUserSubscription),
-            container.get(TYPES.Auth_ClearLoginAttempts),
-            container.get(TYPES.Auth_IncreaseLoginAttempts),
-            container.get(TYPES.Auth_ChangeCredentials),
-            container.get(TYPES.Auth_ControllerContainer),
+            container.get<UpdateUser>(TYPES.Auth_UpdateUser),
+            container.get<GetUserKeyParams>(TYPES.Auth_GetUserKeyParams),
+            container.get<DeleteAccount>(TYPES.Auth_DeleteAccount),
+            container.get<GetUserSubscription>(TYPES.Auth_GetUserSubscription),
+            container.get<ClearLoginAttempts>(TYPES.Auth_ClearLoginAttempts),
+            container.get<IncreaseLoginAttempts>(TYPES.Auth_IncreaseLoginAttempts),
+            container.get<ChangeCredentials>(TYPES.Auth_ChangeCredentials),
+            container.get<GetTransitionStatus>(TYPES.Auth_GetTransitionStatus),
+            container.get<ControllerContainerInterface>(TYPES.Auth_ControllerContainer),
           ),
         )
       container
