@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.84.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.83.0...@standardnotes/syncing-server@1.84.0) (2023-08-24)
+
+### Features
+
+* add trigerring items transition and checking status of it ([#707](https://github.com/standardnotes/syncing-server-js/issues/707)) ([05bb12c](https://github.com/standardnotes/syncing-server-js/commit/05bb12c97899824f06e6d01d105dec75fc328440))
+
 # [1.83.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.82.0...@standardnotes/syncing-server@1.83.0) (2023-08-23)
 
 ### Features

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.15.0](https://github.com/standardnotes/server/compare/@standardnotes/time@1.14.6...@standardnotes/time@1.15.0) (2023-08-24)
+
+### Features
+
+* add trigerring items transition and checking status of it ([#707](https://github.com/standardnotes/server/issues/707)) ([05bb12c](https://github.com/standardnotes/server/commit/05bb12c97899824f06e6d01d105dec75fc328440))
+
 ## [1.14.6](https://github.com/standardnotes/server/compare/@standardnotes/time@1.14.4...@standardnotes/time@1.14.6) (2023-06-01)
 
 ### Bug Fixes

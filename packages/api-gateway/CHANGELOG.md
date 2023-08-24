@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.72.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.71.1...@standardnotes/api-gateway@1.72.0) (2023-08-24)
+
+### Features
+
+* add trigerring items transition and checking status of it ([#707](https://github.com/standardnotes/api-gateway/issues/707)) ([05bb12c](https://github.com/standardnotes/api-gateway/commit/05bb12c97899824f06e6d01d105dec75fc328440))
+
 ## [1.71.1](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.71.0...@standardnotes/api-gateway@1.71.1) (2023-08-23)
 
 **Note:** Version bump only for package @standardnotes/api-gateway
