@@ -48,33 +48,33 @@ export class VerifyMFA implements UseCaseInterface {
 
       const user = await this.userRepository.findOneByUsernameOrEmail(username)
       if (user == null) {
-        const mfaSelectorHash = crypto
+        const secondFactorSelectorHash = crypto
           .createHash('sha256')
-          .update(`mfa-selector-${dto.email}${this.pseudoKeyParamsKey}`)
-          .digest('hex')
-        const u2fSelectorHash = crypto
-          .createHash('sha256')
-          .update(`u2f-selector-${dto.email}${this.pseudoKeyParamsKey}`)
+          .update(`second-factor-selector-${dto.email}${this.pseudoKeyParamsKey}`)
           .digest('hex')
 
-        const isPseudoMFARequired = this.booleanSelector.select(mfaSelectorHash, [true, false])
+        const isPseudoSecondFactorRequired = this.booleanSelector.select(secondFactorSelectorHash, [true, false])
+        if (isPseudoSecondFactorRequired) {
+          const u2fSelectorHash = crypto
+            .createHash('sha256')
+            .update(`u2f-selector-${dto.email}${this.pseudoKeyParamsKey}`)
+            .digest('hex')
 
-        const isPseudoU2FRequired = this.booleanSelector.select(u2fSelectorHash, [true, false])
+          const isPseudoU2FRequired = this.booleanSelector.select(u2fSelectorHash, [true, false])
 
-        if (isPseudoMFARequired) {
-          return {
-            success: false,
-            errorTag: ErrorTag.MfaRequired,
-            errorMessage: 'Please enter your two-factor authentication code.',
-            errorPayload: { mfa_key: `mfa_${uuidv4()}` },
-          }
-        }
-
-        if (isPseudoU2FRequired) {
-          return {
-            success: false,
-            errorTag: ErrorTag.U2FRequired,
-            errorMessage: 'Please authenticate with your U2F device.',
+          if (isPseudoU2FRequired) {
+            return {
+              success: false,
+              errorTag: ErrorTag.U2FRequired,
+              errorMessage: 'Please authenticate with your U2F device.',
+            }
+          } else {
+            return {
+              success: false,
+              errorTag: ErrorTag.MfaRequired,
+              errorMessage: 'Please enter your two-factor authentication code.',
+              errorPayload: { mfa_key: `mfa_${uuidv4()}` },
+            }
           }
         }
 
