@@ -48,7 +48,7 @@ export class MongoDBItemRepository implements ItemRepositoryInterface {
   async findContentSizeForComputingTransferLimit(query: ItemQuery): Promise<ItemContentSizeDescriptor[]> {
     const options = this.createFindOptions(query)
     const rawItems = await this.mongoRepository.find({
-      select: ['uuid', 'contentSize'],
+      select: ['_id', 'contentSize'],
       ...options,
     })
 
@@ -185,7 +185,9 @@ export class MongoDBItemRepository implements ItemRepositoryInterface {
       }
     }
     if (query.deleted !== undefined) {
-      options.where = { ...options.where, deleted: { $eq: query.deleted } }
+      const deletedMixedValues = query.deleted === true ? [true, 1] : [false, 0]
+
+      options.where = { ...options.where, deleted: { $in: deletedMixedValues } }
     }
     if (query.contentType) {
       if (Array.isArray(query.contentType)) {

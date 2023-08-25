@@ -99,7 +99,7 @@ export class MongoDBItemPersistenceMapper implements MapperInterface<Item, Mongo
         encItemKey: projection.encItemKey,
         authHash: projection.authHash,
         userUuid,
-        deleted: projection.deleted,
+        deleted: !!projection.deleted,
         dates,
         timestamps,
         updatedWithSession,
@@ -127,7 +127,7 @@ export class MongoDBItemPersistenceMapper implements MapperInterface<Item, Mongo
     mongoDbItem.encItemKey = domain.props.encItemKey
     mongoDbItem.authHash = domain.props.authHash
     mongoDbItem.userUuid = domain.props.userUuid.value
-    mongoDbItem.deleted = domain.props.deleted
+    mongoDbItem.deleted = !!domain.props.deleted
     mongoDbItem.createdAt = domain.props.dates.createdAt
     mongoDbItem.updatedAt = domain.props.dates.updatedAt
     mongoDbItem.createdAtTimestamp = domain.props.timestamps.createdAt
