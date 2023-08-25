@@ -257,7 +257,7 @@ describe('VerifyMFA', () => {
     })
 
     it('should not pass if user is not found and pseudo u2f is required', async () => {
-      booleanSelector.select = jest.fn().mockReturnValueOnce(false).mockReturnValueOnce(true)
+      booleanSelector.select = jest.fn().mockReturnValueOnce(true).mockReturnValueOnce(true)
       userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue(null)
 
       expect(
