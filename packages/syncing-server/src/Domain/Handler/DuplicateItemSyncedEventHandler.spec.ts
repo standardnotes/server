@@ -74,6 +74,7 @@ describe('DuplicateItemSyncedEventHandler', () => {
 
     logger = {} as jest.Mocked<Logger>
     logger.warn = jest.fn()
+    logger.debug = jest.fn()
 
     event = {} as jest.Mocked<DuplicateItemSyncedEvent>
     event.createdAt = new Date(1)

@@ -31,13 +31,13 @@ export class DuplicateItemSyncedEventHandler implements DomainEventHandlerInterf
     const item = await itemRepository.findByUuidAndUserUuid(event.payload.itemUuid, event.payload.userUuid)
 
     if (item === null) {
-      this.logger.warn(`Could not find item with uuid ${event.payload.itemUuid}`)
+      this.logger.debug(`Could not find item with uuid ${event.payload.itemUuid}`)
 
       return
     }
 
     if (!item.props.duplicateOf) {
-      this.logger.warn(`Item ${event.payload.itemUuid} does not point to any duplicate`)
+      this.logger.debug(`Item ${event.payload.itemUuid} does not point to any duplicate`)
 
       return
     }
