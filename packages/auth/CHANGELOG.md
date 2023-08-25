@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.135.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.135.0...@standardnotes/auth-server@1.135.1) (2023-08-25)
+
+### Bug Fixes
+
+* **auth:** account enumeration with pseudo u2f and mfa ([#709](https://github.com/standardnotes/server/issues/709)) ([bbb35d1](https://github.com/standardnotes/server/commit/bbb35d16fc4f6a57fe774a648fbda13ec64a8865))
+
 # [1.135.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.134.0...@standardnotes/auth-server@1.135.0) (2023-08-24)
 
 ### Features

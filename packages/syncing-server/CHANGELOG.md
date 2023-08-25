@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.84.2](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.84.1...@standardnotes/syncing-server@1.84.2) (2023-08-25)
+
+### Bug Fixes
+
+* **syncing-server:** items sorting in MongoDB ([#710](https://github.com/standardnotes/syncing-server-js/issues/710)) ([152a5cb](https://github.com/standardnotes/syncing-server-js/commit/152a5cbd27375adbad8b070d1778b256a6dce1f4))
+* **syncing-server:** logs severity on creating duplicates ([1488763](https://github.com/standardnotes/syncing-server-js/commit/14887631153b78117ec7433353bb32709209a617))
+
 ## [1.84.1](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.84.0...@standardnotes/syncing-server@1.84.1) (2023-08-25)
 
 ### Bug Fixes
