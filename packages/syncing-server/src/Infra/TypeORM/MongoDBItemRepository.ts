@@ -175,7 +175,11 @@ export class MongoDBItemRepository implements ItemRepositoryInterface {
       where: undefined,
     }
     if (query.sortBy !== undefined && query.sortOrder !== undefined) {
-      options.order = { [query.sortBy]: query.sortOrder }
+      const sortBySnakeToCamelCase = query.sortBy
+        .toLowerCase()
+        .replace(/([-_][a-z])/g, (group) => group.toUpperCase().replace('-', '').replace('_', ''))
+
+      options.order = { [sortBySnakeToCamelCase]: query.sortOrder }
     }
 
     if (query.uuids && query.uuids.length > 0) {
