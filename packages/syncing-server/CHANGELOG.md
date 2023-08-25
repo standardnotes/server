@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.84.1](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.84.0...@standardnotes/syncing-server@1.84.1) (2023-08-25)
+
+### Bug Fixes
+
+* **syncing-server:** handling mixed values of deleted flag in MongoDB ([#708](https://github.com/standardnotes/syncing-server-js/issues/708)) ([3ba673b](https://github.com/standardnotes/syncing-server-js/commit/3ba673b424ae3bb6b64b2360323d7373636c6cd5))
+
 # [1.84.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.83.0...@standardnotes/syncing-server@1.84.0) (2023-08-24)
 
 ### Features
