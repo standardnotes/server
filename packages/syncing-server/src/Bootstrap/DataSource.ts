@@ -9,6 +9,7 @@ import { TypeORMSharedVaultUser } from '../Infra/TypeORM/TypeORMSharedVaultUser'
 import { TypeORMSharedVaultInvite } from '../Infra/TypeORM/TypeORMSharedVaultInvite'
 import { TypeORMMessage } from '../Infra/TypeORM/TypeORMMessage'
 import { MongoDBItem } from '../Infra/TypeORM/MongoDBItem'
+import { SQLItem } from '../Infra/TypeORM/SQLItem'
 
 export class AppDataSource {
   private _dataSource: DataSource | undefined
@@ -67,22 +68,29 @@ export class AppDataSource {
     this.env.load()
 
     const isConfiguredForMySQL = this.env.get('DB_TYPE') === 'mysql'
+    const isConfiguredForHomeServer = this.env.get('MODE', true) === 'home-server'
 
     const maxQueryExecutionTime = this.env.get('DB_MAX_QUERY_EXECUTION_TIME', true)
       ? +this.env.get('DB_MAX_QUERY_EXECUTION_TIME', true)
       : 45_000
 
+    const migrationsSourceDirectoryName = isConfiguredForMySQL
+      ? isConfiguredForHomeServer
+        ? 'mysql'
+        : 'mysql-legacy'
+      : 'sqlite'
+
     const commonDataSourceOptions = {
       maxQueryExecutionTime,
       entities: [
-        SQLLegacyItem,
+        isConfiguredForHomeServer ? SQLItem : SQLLegacyItem,
         TypeORMNotification,
         TypeORMSharedVault,
         TypeORMSharedVaultUser,
         TypeORMSharedVaultInvite,
         TypeORMMessage,
       ],
-      migrations: [`${__dirname}/../../migrations/${isConfiguredForMySQL ? 'mysql' : 'sqlite'}/*.js`],
+      migrations: [`${__dirname}/../../migrations/${migrationsSourceDirectoryName}/*.js`],
       migrationsRun: true,
       logging: <LoggerOptions>this.env.get('DB_DEBUG_LEVEL', true) ?? 'info',
     }

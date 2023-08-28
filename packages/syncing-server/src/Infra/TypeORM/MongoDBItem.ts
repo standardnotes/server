@@ -58,6 +58,7 @@ export class MongoDBItem {
   declare lastEditedBy: string | null
 
   @Column()
+  @Index('index_items_on_shared_vault_uuid')
   declare sharedVaultUuid: string | null
 
   @Column()
