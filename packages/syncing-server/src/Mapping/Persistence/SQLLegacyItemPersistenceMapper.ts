@@ -2,17 +2,10 @@ import { Timestamps, MapperInterface, UniqueEntityId, Uuid, ContentType, Dates }
 
 import { Item } from '../../Domain/Item/Item'
 
-<<<<<<<< HEAD:packages/syncing-server/src/Mapping/Persistence/SQLLegacyItemPersistenceMapper.ts
 import { SQLLegacyItem } from '../../Infra/TypeORM/SQLLegacyItem'
 
 export class SQLLegacyItemPersistenceMapper implements MapperInterface<Item, SQLLegacyItem> {
   toDomain(projection: SQLLegacyItem): Item {
-========
-import { MySQLLegacyItem } from '../../Infra/TypeORM/MySQLLegacyItem'
-
-export class MySQLLegacyItemPersistenceMapper implements MapperInterface<Item, MySQLLegacyItem> {
-  toDomain(projection: MySQLLegacyItem): Item {
->>>>>>>> 46feaaf6 (feat(syncing-server): turn mysql items model into legacy):packages/syncing-server/src/Mapping/Persistence/MySQLLegacyItemPersistenceMapper.ts
     const uuidOrError = Uuid.create(projection.uuid)
     if (uuidOrError.isFailed()) {
       throw new Error(`Failed to create item from projection: ${uuidOrError.getError()}`)
@@ -85,13 +78,8 @@ export class MySQLLegacyItemPersistenceMapper implements MapperInterface<Item, M
     return itemOrError.getValue()
   }
 
-<<<<<<<< HEAD:packages/syncing-server/src/Mapping/Persistence/SQLLegacyItemPersistenceMapper.ts
   toProjection(domain: Item): SQLLegacyItem {
     const typeorm = new SQLLegacyItem()
-========
-  toProjection(domain: Item): MySQLLegacyItem {
-    const typeorm = new MySQLLegacyItem()
->>>>>>>> 46feaaf6 (feat(syncing-server): turn mysql items model into legacy):packages/syncing-server/src/Mapping/Persistence/MySQLLegacyItemPersistenceMapper.ts
 
     typeorm.uuid = domain.id.toString()
     typeorm.duplicateOf = domain.props.duplicateOf ? domain.props.duplicateOf.value : null
