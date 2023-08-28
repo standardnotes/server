@@ -2,17 +2,12 @@ import { Timestamps, MapperInterface, UniqueEntityId, Uuid, ContentType, Dates }
 
 import { Item } from '../../Domain/Item/Item'
 
-<<<<<<<< HEAD:packages/syncing-server/src/Mapping/Persistence/SQLLegacyItemPersistenceMapper.ts
-import { SQLLegacyItem } from '../../Infra/TypeORM/SQLLegacyItem'
+import { MySQLItem } from '../../Infra/TypeORM/MySQLItem'
+import { KeySystemAssociation } from '../../Domain/KeySystem/KeySystemAssociation'
+import { SharedVaultAssociation } from '../../Domain/SharedVault/SharedVaultAssociation'
 
-export class SQLLegacyItemPersistenceMapper implements MapperInterface<Item, SQLLegacyItem> {
-  toDomain(projection: SQLLegacyItem): Item {
-========
-import { MySQLLegacyItem } from '../../Infra/TypeORM/MySQLLegacyItem'
-
-export class MySQLLegacyItemPersistenceMapper implements MapperInterface<Item, MySQLLegacyItem> {
-  toDomain(projection: MySQLLegacyItem): Item {
->>>>>>>> 46feaaf6 (feat(syncing-server): turn mysql items model into legacy):packages/syncing-server/src/Mapping/Persistence/MySQLLegacyItemPersistenceMapper.ts
+export class MySQLItemPersistenceMapper implements MapperInterface<Item, MySQLItem> {
+  toDomain(projection: MySQLItem): Item {
     const uuidOrError = Uuid.create(projection.uuid)
     if (uuidOrError.isFailed()) {
       throw new Error(`Failed to create item from projection: ${uuidOrError.getError()}`)
@@ -61,6 +56,39 @@ export class MySQLLegacyItemPersistenceMapper implements MapperInterface<Item, M
       updatedWithSession = updatedWithSessionOrError.getValue()
     }
 
+    let sharedVaultAssociation: SharedVaultAssociation | undefined = undefined
+    if (projection.sharedVaultUuid && projection.lastEditedBy) {
+      const sharedVaultUuidOrError = Uuid.create(projection.sharedVaultUuid)
+      if (sharedVaultUuidOrError.isFailed()) {
+        throw new Error(`Failed to create item from projection: ${sharedVaultUuidOrError.getError()}`)
+      }
+      const sharedVaultUuid = sharedVaultUuidOrError.getValue()
+
+      const lastEditedByOrError = Uuid.create(projection.lastEditedBy)
+      if (lastEditedByOrError.isFailed()) {
+        throw new Error(`Failed to create item from projection: ${lastEditedByOrError.getError()}`)
+      }
+      const lastEditedBy = lastEditedByOrError.getValue()
+
+      const sharedVaultAssociationOrError = SharedVaultAssociation.create({
+        sharedVaultUuid,
+        lastEditedBy,
+      })
+      if (sharedVaultAssociationOrError.isFailed()) {
+        throw new Error(`Failed to create item from projection: ${sharedVaultAssociationOrError.getError()}`)
+      }
+      sharedVaultAssociation = sharedVaultAssociationOrError.getValue()
+    }
+
+    let keySystemAssociation: KeySystemAssociation | undefined = undefined
+    if (projection.keySystemIdentifier) {
+      const keySystemAssociationOrError = KeySystemAssociation.create(projection.keySystemIdentifier)
+      if (keySystemAssociationOrError.isFailed()) {
+        throw new Error(`Failed to create item from projection: ${keySystemAssociationOrError.getError()}`)
+      }
+      keySystemAssociation = keySystemAssociationOrError.getValue()
+    }
+
     const itemOrError = Item.create(
       {
         duplicateOf,
@@ -75,6 +103,8 @@ export class MySQLLegacyItemPersistenceMapper implements MapperInterface<Item, M
         dates,
         timestamps,
         updatedWithSession,
+        sharedVaultAssociation,
+        keySystemAssociation,
       },
       new UniqueEntityId(uuid.value),
     )
@@ -85,13 +115,8 @@ export class MySQLLegacyItemPersistenceMapper implements MapperInterface<Item, M
     return itemOrError.getValue()
   }
 
-<<<<<<<< HEAD:packages/syncing-server/src/Mapping/Persistence/SQLLegacyItemPersistenceMapper.ts
-  toProjection(domain: Item): SQLLegacyItem {
-    const typeorm = new SQLLegacyItem()
-========
-  toProjection(domain: Item): MySQLLegacyItem {
-    const typeorm = new MySQLLegacyItem()
->>>>>>>> 46feaaf6 (feat(syncing-server): turn mysql items model into legacy):packages/syncing-server/src/Mapping/Persistence/MySQLLegacyItemPersistenceMapper.ts
+  toProjection(domain: Item): MySQLItem {
+    const typeorm = new MySQLItem()
 
     typeorm.uuid = domain.id.toString()
     typeorm.duplicateOf = domain.props.duplicateOf ? domain.props.duplicateOf.value : null
@@ -108,6 +133,15 @@ export class MySQLLegacyItemPersistenceMapper implements MapperInterface<Item, M
     typeorm.createdAtTimestamp = domain.props.timestamps.createdAt
     typeorm.updatedAtTimestamp = domain.props.timestamps.updatedAt
     typeorm.updatedWithSession = domain.props.updatedWithSession ? domain.props.updatedWithSession.value : null
+    typeorm.lastEditedBy = domain.props.sharedVaultAssociation
+      ? domain.props.sharedVaultAssociation.props.lastEditedBy.value
+      : null
+    typeorm.sharedVaultUuid = domain.props.sharedVaultAssociation
+      ? domain.props.sharedVaultAssociation.props.sharedVaultUuid.value
+      : null
+    typeorm.keySystemIdentifier = domain.props.keySystemAssociation
+      ? domain.props.keySystemAssociation.props.keySystemIdentifier
+      : null
 
     return typeorm
   }

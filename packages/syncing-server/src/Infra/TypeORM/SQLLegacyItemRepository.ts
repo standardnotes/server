@@ -179,7 +179,11 @@ export class SQLLegacyItemRepository implements ItemRepositoryInterface {
       .execute()
   }
 
+<<<<<<<< HEAD:packages/syncing-server/src/Infra/TypeORM/SQLLegacyItemRepository.ts
   protected createFindAllQueryBuilder(query: ItemQuery): SelectQueryBuilder<SQLLegacyItem> {
+========
+  protected createFindAllQueryBuilder(query: ItemQuery): SelectQueryBuilder<MySQLLegacyItem> {
+>>>>>>>> 46feaaf6 (feat(syncing-server): turn mysql items model into legacy):packages/syncing-server/src/Infra/TypeORM/MySQLLegacyItemRepository.ts
     const queryBuilder = this.ormRepository.createQueryBuilder('item')
 
     if (query.sortBy !== undefined && query.sortOrder !== undefined) {
