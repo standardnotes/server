@@ -68,14 +68,15 @@ export class AppDataSource {
     this.env.load()
 
     const isConfiguredForMySQL = this.env.get('DB_TYPE') === 'mysql'
-    const isConfiguredForHomeServer = this.env.get('MODE', true) === 'home-server'
+    const isConfiguredForHomeServerOrSelfHosting =
+      this.env.get('MODE', true) === 'home-server' || this.env.get('MODE', true) === 'self-hosted'
 
     const maxQueryExecutionTime = this.env.get('DB_MAX_QUERY_EXECUTION_TIME', true)
       ? +this.env.get('DB_MAX_QUERY_EXECUTION_TIME', true)
       : 45_000
 
     const migrationsSourceDirectoryName = isConfiguredForMySQL
-      ? isConfiguredForHomeServer
+      ? isConfiguredForHomeServerOrSelfHosting
         ? 'mysql'
         : 'mysql-legacy'
       : 'sqlite'
@@ -83,7 +84,7 @@ export class AppDataSource {
     const commonDataSourceOptions = {
       maxQueryExecutionTime,
       entities: [
-        isConfiguredForHomeServer ? SQLItem : SQLLegacyItem,
+        isConfiguredForHomeServerOrSelfHosting ? SQLItem : SQLLegacyItem,
         TypeORMNotification,
         TypeORMSharedVault,
         TypeORMSharedVaultUser,
