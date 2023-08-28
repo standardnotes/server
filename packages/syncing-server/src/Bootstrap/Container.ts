@@ -6,7 +6,7 @@ import TYPES from './Types'
 import { AppDataSource } from './DataSource'
 import { SNSClient, SNSClientConfig } from '@aws-sdk/client-sns'
 import { ItemRepositoryInterface } from '../Domain/Item/ItemRepositoryInterface'
-import { TypeORMItemRepository } from '../Infra/TypeORM/TypeORMItemRepository'
+import { MySQLLegacyItemRepository } from '../Infra/TypeORM/MySQLLegacyItemRepository'
 import { MongoRepository, Repository } from 'typeorm'
 import { Item } from '../Domain/Item/Item'
 import {
@@ -61,8 +61,8 @@ import { S3ItemBackupService } from '../Infra/S3/S3ItemBackupService'
 import { ControllerContainer, ControllerContainerInterface, MapperInterface } from '@standardnotes/domain-core'
 import { BaseItemsController } from '../Infra/InversifyExpressUtils/Base/BaseItemsController'
 import { Transform } from 'stream'
-import { TypeORMItem } from '../Infra/TypeORM/TypeORMItem'
-import { ItemPersistenceMapper } from '../Mapping/Persistence/ItemPersistenceMapper'
+import { MySQLLegacyItem } from '../Infra/TypeORM/MySQLLegacyItem'
+import { MySQLLegacyItemPersistenceMapper } from '../Mapping/Persistence/MySQLLegacyItemPersistenceMapper'
 import { ItemHttpRepresentation } from '../Mapping/Http/ItemHttpRepresentation'
 import { ItemHttpMapper } from '../Mapping/Http/ItemHttpMapper'
 import { SavedItemHttpRepresentation } from '../Mapping/Http/SavedItemHttpRepresentation'
@@ -303,8 +303,8 @@ export class ContainerConfigLoader {
 
     // Mapping
     container
-      .bind<MapperInterface<Item, TypeORMItem>>(TYPES.Sync_ItemPersistenceMapper)
-      .toConstantValue(new ItemPersistenceMapper())
+      .bind<MapperInterface<Item, MySQLLegacyItem>>(TYPES.Sync_MySQLLegacyItemPersistenceMapper)
+      .toConstantValue(new MySQLLegacyItemPersistenceMapper())
     container
       .bind<MapperInterface<ItemHash, ItemHashHttpRepresentation>>(TYPES.Sync_ItemHashHttpMapper)
       .toConstantValue(new ItemHashHttpMapper())
@@ -360,8 +360,8 @@ export class ContainerConfigLoader {
 
     // ORM
     container
-      .bind<Repository<TypeORMItem>>(TYPES.Sync_ORMItemRepository)
-      .toDynamicValue(() => appDataSource.getRepository(TypeORMItem))
+      .bind<Repository<MySQLLegacyItem>>(TYPES.Sync_ORMLegacyItemRepository)
+      .toDynamicValue(() => appDataSource.getRepository(MySQLLegacyItem))
     container
       .bind<Repository<TypeORMSharedVault>>(TYPES.Sync_ORMSharedVaultRepository)
       .toConstantValue(appDataSource.getRepository(TypeORMSharedVault))
@@ -401,11 +401,11 @@ export class ContainerConfigLoader {
 
     // Repositories
     container
-      .bind<ItemRepositoryInterface>(TYPES.Sync_MySQLItemRepository)
+      .bind<ItemRepositoryInterface>(TYPES.Sync_MySQLLegacyItemRepository)
       .toConstantValue(
-        new TypeORMItemRepository(
-          container.get<Repository<TypeORMItem>>(TYPES.Sync_ORMItemRepository),
-          container.get<MapperInterface<Item, TypeORMItem>>(TYPES.Sync_ItemPersistenceMapper),
+        new MySQLLegacyItemRepository(
+          container.get<Repository<MySQLLegacyItem>>(TYPES.Sync_ORMLegacyItemRepository),
+          container.get<MapperInterface<Item, MySQLLegacyItem>>(TYPES.Sync_MySQLLegacyItemPersistenceMapper),
           container.get<Logger>(TYPES.Sync_Logger),
         ),
       )
@@ -413,7 +413,7 @@ export class ContainerConfigLoader {
       .bind<ItemRepositoryResolverInterface>(TYPES.Sync_ItemRepositoryResolver)
       .toConstantValue(
         new TypeORMItemRepositoryResolver(
-          container.get<ItemRepositoryInterface>(TYPES.Sync_MySQLItemRepository),
+          container.get<ItemRepositoryInterface>(TYPES.Sync_MySQLLegacyItemRepository),
           isSecondaryDatabaseEnabled ? container.get<ItemRepositoryInterface>(TYPES.Sync_MongoDBItemRepository) : null,
         ),
       )
@@ -777,7 +777,7 @@ export class ContainerConfigLoader {
       )
       .toConstantValue(
         new TransitionItemsFromPrimaryToSecondaryDatabaseForUser(
-          container.get<ItemRepositoryInterface>(TYPES.Sync_MySQLItemRepository),
+          container.get<ItemRepositoryInterface>(TYPES.Sync_MySQLLegacyItemRepository),
           isSecondaryDatabaseEnabled ? container.get<ItemRepositoryInterface>(TYPES.Sync_MongoDBItemRepository) : null,
           container.get<TimerInterface>(TYPES.Sync_Timer),
           container.get<Logger>(TYPES.Sync_Logger),
@@ -843,7 +843,7 @@ export class ContainerConfigLoader {
       .bind<DuplicateItemSyncedEventHandler>(TYPES.Sync_DuplicateItemSyncedEventHandler)
       .toConstantValue(
         new DuplicateItemSyncedEventHandler(
-          container.get<ItemRepositoryInterface>(TYPES.Sync_MySQLItemRepository),
+          container.get<ItemRepositoryInterface>(TYPES.Sync_MySQLLegacyItemRepository),
           isSecondaryDatabaseEnabled ? container.get<ItemRepositoryInterface>(TYPES.Sync_MongoDBItemRepository) : null,
           container.get<DomainEventFactoryInterface>(TYPES.Sync_DomainEventFactory),
           container.get<DomainEventPublisherInterface>(TYPES.Sync_DomainEventPublisher),
@@ -854,7 +854,7 @@ export class ContainerConfigLoader {
       .bind<AccountDeletionRequestedEventHandler>(TYPES.Sync_AccountDeletionRequestedEventHandler)
       .toConstantValue(
         new AccountDeletionRequestedEventHandler(
-          container.get<ItemRepositoryInterface>(TYPES.Sync_MySQLItemRepository),
+          container.get<ItemRepositoryInterface>(TYPES.Sync_MySQLLegacyItemRepository),
           isSecondaryDatabaseEnabled ? container.get<ItemRepositoryInterface>(TYPES.Sync_MongoDBItemRepository) : null,
           container.get<Logger>(TYPES.Sync_Logger),
         ),
@@ -863,7 +863,7 @@ export class ContainerConfigLoader {
       .bind<ItemRevisionCreationRequestedEventHandler>(TYPES.Sync_ItemRevisionCreationRequestedEventHandler)
       .toConstantValue(
         new ItemRevisionCreationRequestedEventHandler(
-          container.get<ItemRepositoryInterface>(TYPES.Sync_MySQLItemRepository),
+          container.get<ItemRepositoryInterface>(TYPES.Sync_MySQLLegacyItemRepository),
           isSecondaryDatabaseEnabled ? container.get<ItemRepositoryInterface>(TYPES.Sync_MongoDBItemRepository) : null,
           container.get<ItemBackupServiceInterface>(TYPES.Sync_ItemBackupService),
           container.get<DomainEventFactoryInterface>(TYPES.Sync_DomainEventFactory),
@@ -918,7 +918,7 @@ export class ContainerConfigLoader {
       .toConstantValue(
         new ExtensionsHttpService(
           container.get<AxiosInstance>(TYPES.Sync_HTTPClient),
-          container.get<ItemRepositoryInterface>(TYPES.Sync_MySQLItemRepository),
+          container.get<ItemRepositoryInterface>(TYPES.Sync_MySQLLegacyItemRepository),
           isSecondaryDatabaseEnabled ? container.get<ItemRepositoryInterface>(TYPES.Sync_MongoDBItemRepository) : null,
           container.get<ContentDecoderInterface>(TYPES.Sync_ContentDecoder),
           container.get<DomainEventPublisherInterface>(TYPES.Sync_DomainEventPublisher),
@@ -964,7 +964,7 @@ export class ContainerConfigLoader {
         .bind<EmailBackupRequestedEventHandler>(TYPES.Sync_EmailBackupRequestedEventHandler)
         .toConstantValue(
           new EmailBackupRequestedEventHandler(
-            container.get<ItemRepositoryInterface>(TYPES.Sync_MySQLItemRepository),
+            container.get<ItemRepositoryInterface>(TYPES.Sync_MySQLLegacyItemRepository),
             isSecondaryDatabaseEnabled
               ? container.get<ItemRepositoryInterface>(TYPES.Sync_MongoDBItemRepository)
               : null,
