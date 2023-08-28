@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.72.1](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.72.0...@standardnotes/api-gateway@1.72.1) (2023-08-28)
+
+### Bug Fixes
+
+* allow self hosted to use new model of items ([#714](https://github.com/standardnotes/api-gateway/issues/714)) ([aef9254](https://github.com/standardnotes/api-gateway/commit/aef9254713560c00a90a3e84e3cd94417e8f30d2))
+
 # [1.72.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.71.1...@standardnotes/api-gateway@1.72.0) (2023-08-24)
 
 ### Features

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.22.2](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.22.1...@standardnotes/files-server@1.22.2) (2023-08-28)
+
+### Bug Fixes
+
+* allow self hosted to use new model of items ([#714](https://github.com/standardnotes/files/issues/714)) ([aef9254](https://github.com/standardnotes/files/commit/aef9254713560c00a90a3e84e3cd94417e8f30d2))
+
 ## [1.22.1](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.22.0...@standardnotes/files-server@1.22.1) (2023-08-24)
 
 **Note:** Version bump only for package @standardnotes/files-server

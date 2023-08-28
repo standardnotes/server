@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.26.12](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.26.11...@standardnotes/revisions-server@1.26.12) (2023-08-28)
+
+### Bug Fixes
+
+* allow self hosted to use new model of items ([#714](https://github.com/standardnotes/server/issues/714)) ([aef9254](https://github.com/standardnotes/server/commit/aef9254713560c00a90a3e84e3cd94417e8f30d2))
+
 ## [1.26.11](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.26.10...@standardnotes/revisions-server@1.26.11) (2023-08-24)
 
 **Note:** Version bump only for package @standardnotes/revisions-server

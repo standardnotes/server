@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.85.1](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.85.0...@standardnotes/syncing-server@1.85.1) (2023-08-28)
+
+### Bug Fixes
+
+* allow self hosted to use new model of items ([#714](https://github.com/standardnotes/syncing-server-js/issues/714)) ([aef9254](https://github.com/standardnotes/syncing-server-js/commit/aef9254713560c00a90a3e84e3cd94417e8f30d2))
+
 # [1.85.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.84.2...@standardnotes/syncing-server@1.85.0) (2023-08-28)
 
 ### Features
