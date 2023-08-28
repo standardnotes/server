@@ -1,4 +1,5 @@
-import { Column, Entity } from 'typeorm'
+import { Column, Entity, Index } from 'typeorm'
+
 import { SQLLegacyItem } from './SQLLegacyItem'
 
 @Entity({ name: 'items' })
@@ -17,6 +18,7 @@ export class SQLItem extends SQLLegacyItem {
     length: 36,
     nullable: true,
   })
+  @Index('index_items_on_shared_vault_uuid')
   declare sharedVaultUuid: string | null
 
   @Column({

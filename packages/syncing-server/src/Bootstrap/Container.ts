@@ -158,6 +158,9 @@ import { TransitionItemsFromPrimaryToSecondaryDatabaseForUser } from '../Domain/
 import { SharedVaultFileMovedEventHandler } from '../Domain/Handler/SharedVaultFileMovedEventHandler'
 import { TransitionStatusUpdatedEventHandler } from '../Domain/Handler/TransitionStatusUpdatedEventHandler'
 import { TriggerTransitionFromPrimaryToSecondaryDatabaseForUser } from '../Domain/UseCase/Transition/TriggerTransitionFromPrimaryToSecondaryDatabaseForUser/TriggerTransitionFromPrimaryToSecondaryDatabaseForUser'
+import { SQLItem } from '../Infra/TypeORM/SQLItem'
+import { SQLItemPersistenceMapper } from '../Mapping/Persistence/SQLItemPersistenceMapper'
+import { SQLItemRepository } from '../Infra/TypeORM/SQLItemRepository'
 
 export class ContainerConfigLoader {
   private readonly DEFAULT_CONTENT_SIZE_TRANSFER_LIMIT = 10_000_000
@@ -306,6 +309,9 @@ export class ContainerConfigLoader {
       .bind<MapperInterface<Item, SQLLegacyItem>>(TYPES.Sync_SQLLegacyItemPersistenceMapper)
       .toConstantValue(new SQLLegacyItemPersistenceMapper())
     container
+      .bind<MapperInterface<Item, SQLItem>>(TYPES.Sync_SQLItemPersistenceMapper)
+      .toConstantValue(new SQLItemPersistenceMapper())
+    container
       .bind<MapperInterface<ItemHash, ItemHashHttpRepresentation>>(TYPES.Sync_ItemHashHttpMapper)
       .toConstantValue(new ItemHashHttpMapper())
     container
@@ -363,6 +369,9 @@ export class ContainerConfigLoader {
       .bind<Repository<SQLLegacyItem>>(TYPES.Sync_ORMLegacyItemRepository)
       .toDynamicValue(() => appDataSource.getRepository(SQLLegacyItem))
     container
+      .bind<Repository<SQLItem>>(TYPES.Sync_ORMItemRepository)
+      .toConstantValue(appDataSource.getRepository(SQLItem))
+    container
       .bind<Repository<TypeORMSharedVault>>(TYPES.Sync_ORMSharedVaultRepository)
       .toConstantValue(appDataSource.getRepository(TypeORMSharedVault))
     container
@@ -401,19 +410,25 @@ export class ContainerConfigLoader {
 
     // Repositories
     container
-      .bind<ItemRepositoryInterface>(TYPES.Sync_SQLLegacyItemRepository)
+      .bind<ItemRepositoryInterface>(TYPES.Sync_SQLItemRepository)
       .toConstantValue(
-        new SQLLegacyItemRepository(
-          container.get<Repository<SQLLegacyItem>>(TYPES.Sync_ORMLegacyItemRepository),
-          container.get<MapperInterface<Item, SQLLegacyItem>>(TYPES.Sync_SQLLegacyItemPersistenceMapper),
-          container.get<Logger>(TYPES.Sync_Logger),
-        ),
+        isConfiguredForHomeServer
+          ? new SQLItemRepository(
+              container.get<Repository<SQLItem>>(TYPES.Sync_ORMItemRepository),
+              container.get<MapperInterface<Item, SQLItem>>(TYPES.Sync_SQLItemPersistenceMapper),
+              container.get<Logger>(TYPES.Sync_Logger),
+            )
+          : new SQLLegacyItemRepository(
+              container.get<Repository<SQLLegacyItem>>(TYPES.Sync_ORMLegacyItemRepository),
+              container.get<MapperInterface<Item, SQLLegacyItem>>(TYPES.Sync_SQLLegacyItemPersistenceMapper),
+              container.get<Logger>(TYPES.Sync_Logger),
+            ),
       )
     container
       .bind<ItemRepositoryResolverInterface>(TYPES.Sync_ItemRepositoryResolver)
       .toConstantValue(
         new TypeORMItemRepositoryResolver(
-          container.get<ItemRepositoryInterface>(TYPES.Sync_SQLLegacyItemRepository),
+          container.get<ItemRepositoryInterface>(TYPES.Sync_SQLItemRepository),
           isSecondaryDatabaseEnabled ? container.get<ItemRepositoryInterface>(TYPES.Sync_MongoDBItemRepository) : null,
         ),
       )
@@ -777,7 +792,7 @@ export class ContainerConfigLoader {
       )
       .toConstantValue(
         new TransitionItemsFromPrimaryToSecondaryDatabaseForUser(
-          container.get<ItemRepositoryInterface>(TYPES.Sync_SQLLegacyItemRepository),
+          container.get<ItemRepositoryInterface>(TYPES.Sync_SQLItemRepository),
           isSecondaryDatabaseEnabled ? container.get<ItemRepositoryInterface>(TYPES.Sync_MongoDBItemRepository) : null,
           container.get<TimerInterface>(TYPES.Sync_Timer),
           container.get<Logger>(TYPES.Sync_Logger),
@@ -843,7 +858,7 @@ export class ContainerConfigLoader {
       .bind<DuplicateItemSyncedEventHandler>(TYPES.Sync_DuplicateItemSyncedEventHandler)
       .toConstantValue(
         new DuplicateItemSyncedEventHandler(
-          container.get<ItemRepositoryInterface>(TYPES.Sync_SQLLegacyItemRepository),
+          container.get<ItemRepositoryInterface>(TYPES.Sync_SQLItemRepository),
           isSecondaryDatabaseEnabled ? container.get<ItemRepositoryInterface>(TYPES.Sync_MongoDBItemRepository) : null,
           container.get<DomainEventFactoryInterface>(TYPES.Sync_DomainEventFactory),
           container.get<DomainEventPublisherInterface>(TYPES.Sync_DomainEventPublisher),
@@ -854,7 +869,7 @@ export class ContainerConfigLoader {
       .bind<AccountDeletionRequestedEventHandler>(TYPES.Sync_AccountDeletionRequestedEventHandler)
       .toConstantValue(
         new AccountDeletionRequestedEventHandler(
-          container.get<ItemRepositoryInterface>(TYPES.Sync_SQLLegacyItemRepository),
+          container.get<ItemRepositoryInterface>(TYPES.Sync_SQLItemRepository),
           isSecondaryDatabaseEnabled ? container.get<ItemRepositoryInterface>(TYPES.Sync_MongoDBItemRepository) : null,
           container.get<Logger>(TYPES.Sync_Logger),
         ),
@@ -863,7 +878,7 @@ export class ContainerConfigLoader {
       .bind<ItemRevisionCreationRequestedEventHandler>(TYPES.Sync_ItemRevisionCreationRequestedEventHandler)
       .toConstantValue(
         new ItemRevisionCreationRequestedEventHandler(
-          container.get<ItemRepositoryInterface>(TYPES.Sync_SQLLegacyItemRepository),
+          container.get<ItemRepositoryInterface>(TYPES.Sync_SQLItemRepository),
           isSecondaryDatabaseEnabled ? container.get<ItemRepositoryInterface>(TYPES.Sync_MongoDBItemRepository) : null,
           container.get<ItemBackupServiceInterface>(TYPES.Sync_ItemBackupService),
           container.get<DomainEventFactoryInterface>(TYPES.Sync_DomainEventFactory),
@@ -918,7 +933,7 @@ export class ContainerConfigLoader {
       .toConstantValue(
         new ExtensionsHttpService(
           container.get<AxiosInstance>(TYPES.Sync_HTTPClient),
-          container.get<ItemRepositoryInterface>(TYPES.Sync_SQLLegacyItemRepository),
+          container.get<ItemRepositoryInterface>(TYPES.Sync_SQLItemRepository),
           isSecondaryDatabaseEnabled ? container.get<ItemRepositoryInterface>(TYPES.Sync_MongoDBItemRepository) : null,
           container.get<ContentDecoderInterface>(TYPES.Sync_ContentDecoder),
           container.get<DomainEventPublisherInterface>(TYPES.Sync_DomainEventPublisher),
@@ -964,7 +979,7 @@ export class ContainerConfigLoader {
         .bind<EmailBackupRequestedEventHandler>(TYPES.Sync_EmailBackupRequestedEventHandler)
         .toConstantValue(
           new EmailBackupRequestedEventHandler(
-            container.get<ItemRepositoryInterface>(TYPES.Sync_SQLLegacyItemRepository),
+            container.get<ItemRepositoryInterface>(TYPES.Sync_SQLItemRepository),
             isSecondaryDatabaseEnabled
               ? container.get<ItemRepositoryInterface>(TYPES.Sync_MongoDBItemRepository)
               : null,

@@ -5,13 +5,13 @@ import { ItemRepositoryResolverInterface } from '../../Domain/Item/ItemRepositor
 
 export class TypeORMItemRepositoryResolver implements ItemRepositoryResolverInterface {
   constructor(
-    private SQLItemRepository: ItemRepositoryInterface,
+    private sqlItemRepository: ItemRepositoryInterface,
     private mongoDbItemRepository: ItemRepositoryInterface | null,
   ) {}
 
   resolve(roleNames: RoleNameCollection): ItemRepositoryInterface {
     if (!this.mongoDbItemRepository) {
-      return this.SQLItemRepository
+      return this.sqlItemRepository
     }
 
     const transitionRoleName = RoleName.create(RoleName.NAMES.TransitionUser).getValue()
@@ -20,6 +20,6 @@ export class TypeORMItemRepositoryResolver implements ItemRepositoryResolverInte
       return this.mongoDbItemRepository
     }
 
-    return this.SQLItemRepository
+    return this.sqlItemRepository
   }
 }
