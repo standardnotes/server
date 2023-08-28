@@ -2,7 +2,7 @@ import { Timestamps, MapperInterface, UniqueEntityId, Uuid, ContentType, Dates }
 
 import { Item } from '../../Domain/Item/Item'
 
-import { MySQLItem } from '../../Infra/TypeORM/MySQLItem'
+import { MySQLItem } from '../../Infra/TypeORM/SQLItem'
 import { KeySystemAssociation } from '../../Domain/KeySystem/KeySystemAssociation'
 import { SharedVaultAssociation } from '../../Domain/SharedVault/SharedVaultAssociation'
 

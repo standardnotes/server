@@ -8,7 +8,7 @@ import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm'
   'createdAtTimestamp',
 ])
 @Index('user_uuid_and_deleted', ['userUuid', 'deleted'])
-export class MySQLLegacyItem {
+export class SQLLegacyItem {
   @PrimaryGeneratedColumn('uuid')
   declare uuid: string
 

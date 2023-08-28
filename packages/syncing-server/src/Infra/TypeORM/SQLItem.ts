@@ -1,8 +1,8 @@
 import { Column, Entity } from 'typeorm'
-import { MySQLLegacyItem } from './MySQLLegacyItem'
+import { SQLLegacyItem } from './SQLLegacyItem'
 
 @Entity({ name: 'items' })
-export class MySQLItem extends MySQLLegacyItem {
+export class MySQLItem extends SQLLegacyItem {
   @Column({
     type: 'varchar',
     name: 'last_edited_by',

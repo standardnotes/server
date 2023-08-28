@@ -2,10 +2,10 @@ import { Timestamps, MapperInterface, UniqueEntityId, Uuid, ContentType, Dates }
 
 import { Item } from '../../Domain/Item/Item'
 
-import { MySQLLegacyItem } from '../../Infra/TypeORM/MySQLLegacyItem'
+import { SQLLegacyItem } from '../../Infra/TypeORM/SQLLegacyItem'
 
-export class MySQLLegacyItemPersistenceMapper implements MapperInterface<Item, MySQLLegacyItem> {
-  toDomain(projection: MySQLLegacyItem): Item {
+export class SQLLegacyItemPersistenceMapper implements MapperInterface<Item, SQLLegacyItem> {
+  toDomain(projection: SQLLegacyItem): Item {
     const uuidOrError = Uuid.create(projection.uuid)
     if (uuidOrError.isFailed()) {
       throw new Error(`Failed to create item from projection: ${uuidOrError.getError()}`)
@@ -78,8 +78,8 @@ export class MySQLLegacyItemPersistenceMapper implements MapperInterface<Item, M
     return itemOrError.getValue()
   }
 
-  toProjection(domain: Item): MySQLLegacyItem {
-    const typeorm = new MySQLLegacyItem()
+  toProjection(domain: Item): SQLLegacyItem {
+    const typeorm = new SQLLegacyItem()
 
     typeorm.uuid = domain.id.toString()
     typeorm.duplicateOf = domain.props.duplicateOf ? domain.props.duplicateOf.value : null

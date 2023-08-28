@@ -2,7 +2,7 @@ import { DataSource, EntityTarget, LoggerOptions, MongoRepository, ObjectLiteral
 import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions'
 import { Env } from './Env'
 import { SqliteConnectionOptions } from 'typeorm/driver/sqlite/SqliteConnectionOptions'
-import { MySQLLegacyItem } from '../Infra/TypeORM/MySQLLegacyItem'
+import { SQLLegacyItem } from '../Infra/TypeORM/SQLLegacyItem'
 import { TypeORMNotification } from '../Infra/TypeORM/TypeORMNotification'
 import { TypeORMSharedVault } from '../Infra/TypeORM/TypeORMSharedVault'
 import { TypeORMSharedVaultUser } from '../Infra/TypeORM/TypeORMSharedVaultUser'
@@ -75,7 +75,7 @@ export class AppDataSource {
     const commonDataSourceOptions = {
       maxQueryExecutionTime,
       entities: [
-        MySQLLegacyItem,
+        SQLLegacyItem,
         TypeORMNotification,
         TypeORMSharedVault,
         TypeORMSharedVaultUser,

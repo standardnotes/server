@@ -6,13 +6,13 @@ import { Item } from '../../Domain/Item/Item'
 import { ItemQuery } from '../../Domain/Item/ItemQuery'
 import { ItemRepositoryInterface } from '../../Domain/Item/ItemRepositoryInterface'
 import { ExtendedIntegrityPayload } from '../../Domain/Item/ExtendedIntegrityPayload'
-import { MySQLLegacyItem } from './MySQLLegacyItem'
+import { SQLLegacyItem } from './SQLLegacyItem'
 import { ItemContentSizeDescriptor } from '../../Domain/Item/ItemContentSizeDescriptor'
 
-export class MySQLLegacyItemRepository implements ItemRepositoryInterface {
+export class SQLLegacyItemRepository implements ItemRepositoryInterface {
   constructor(
-    protected ormRepository: Repository<MySQLLegacyItem>,
-    protected mapper: MapperInterface<Item, MySQLLegacyItem>,
+    protected ormRepository: Repository<SQLLegacyItem>,
+    protected mapper: MapperInterface<Item, SQLLegacyItem>,
     protected logger: Logger,
   ) {}
 
@@ -179,7 +179,7 @@ export class MySQLLegacyItemRepository implements ItemRepositoryInterface {
       .execute()
   }
 
-  protected createFindAllQueryBuilder(query: ItemQuery): SelectQueryBuilder<MySQLLegacyItem> {
+  protected createFindAllQueryBuilder(query: ItemQuery): SelectQueryBuilder<SQLLegacyItem> {
     const queryBuilder = this.ormRepository.createQueryBuilder('item')
 
     if (query.sortBy !== undefined && query.sortOrder !== undefined) {

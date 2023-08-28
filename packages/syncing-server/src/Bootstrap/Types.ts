@@ -8,7 +8,7 @@ const TYPES = {
   Sync_Env: Symbol.for('Sync_Env'),
   // Repositories
   Sync_ItemRepositoryResolver: Symbol.for('Sync_ItemRepositoryResolver'),
-  Sync_MySQLLegacyItemRepository: Symbol.for('Sync_MySQLLegacyItemRepository'),
+  Sync_SQLLegacyItemRepository: Symbol.for('Sync_SQLLegacyItemRepository'),
   Sync_MongoDBItemRepository: Symbol.for('Sync_MongoDBItemRepository'),
   Sync_SharedVaultRepository: Symbol.for('Sync_SharedVaultRepository'),
   Sync_SharedVaultInviteRepository: Symbol.for('Sync_SharedVaultInviteRepository'),
@@ -131,7 +131,7 @@ const TYPES = {
   Sync_MessagePersistenceMapper: Symbol.for('Sync_MessagePersistenceMapper'),
   Sync_MessageHttpMapper: Symbol.for('Sync_MessageHttpMapper'),
   Sync_NotificationHttpMapper: Symbol.for('Sync_NotificationHttpMapper'),
-  Sync_MySQLLegacyItemPersistenceMapper: Symbol.for('Sync_MySQLLegacyItemPersistenceMapper'),
+  Sync_SQLLegacyItemPersistenceMapper: Symbol.for('Sync_SQLLegacyItemPersistenceMapper'),
   Sync_MongoDBItemPersistenceMapper: Symbol.for('Sync_MongoDBItemPersistenceMapper'),
   Sync_ItemHttpMapper: Symbol.for('Sync_ItemHttpMapper'),
   Sync_ItemHashHttpMapper: Symbol.for('Sync_ItemHashHttpMapper'),
