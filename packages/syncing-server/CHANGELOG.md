@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.85.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.84.2...@standardnotes/syncing-server@1.85.0) (2023-08-28)
+
+### Features
+
+* **syncing-server:** distinguish between legacy and current items model usage ([#712](https://github.com/standardnotes/syncing-server-js/issues/712)) ([bf8f91f](https://github.com/standardnotes/syncing-server-js/commit/bf8f91f83d9d206ebfbcd9b2c9318786bd0040da))
+* **syncing-server:** turn mysql items model into legacy ([#711](https://github.com/standardnotes/syncing-server-js/issues/711)) ([effdfeb](https://github.com/standardnotes/syncing-server-js/commit/effdfebc193c66d830bb4d516d408a9c126f3d62))
+
 ## [1.84.2](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.84.1...@standardnotes/syncing-server@1.84.2) (2023-08-25)
 
 ### Bug Fixes
