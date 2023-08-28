@@ -6,14 +6,14 @@ import { Item } from '../../Domain/Item/Item'
 import { ItemQuery } from '../../Domain/Item/ItemQuery'
 import { ItemRepositoryInterface } from '../../Domain/Item/ItemRepositoryInterface'
 import { ExtendedIntegrityPayload } from '../../Domain/Item/ExtendedIntegrityPayload'
-import { TypeORMItem } from './TypeORMItem'
+import { SQLLegacyItem } from './SQLLegacyItem'
 import { ItemContentSizeDescriptor } from '../../Domain/Item/ItemContentSizeDescriptor'
 
-export class TypeORMItemRepository implements ItemRepositoryInterface {
+export class SQLLegacyItemRepository implements ItemRepositoryInterface {
   constructor(
-    private ormRepository: Repository<TypeORMItem>,
-    private mapper: MapperInterface<Item, TypeORMItem>,
-    private logger: Logger,
+    protected ormRepository: Repository<SQLLegacyItem>,
+    protected mapper: MapperInterface<Item, SQLLegacyItem>,
+    protected logger: Logger,
   ) {}
 
   async save(item: Item): Promise<void> {
@@ -179,7 +179,7 @@ export class TypeORMItemRepository implements ItemRepositoryInterface {
       .execute()
   }
 
-  private createFindAllQueryBuilder(query: ItemQuery): SelectQueryBuilder<TypeORMItem> {
+  protected createFindAllQueryBuilder(query: ItemQuery): SelectQueryBuilder<SQLLegacyItem> {
     const queryBuilder = this.ormRepository.createQueryBuilder('item')
 
     if (query.sortBy !== undefined && query.sortOrder !== undefined) {
