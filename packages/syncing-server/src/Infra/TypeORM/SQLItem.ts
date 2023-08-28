@@ -2,7 +2,7 @@ import { Column, Entity } from 'typeorm'
 import { SQLLegacyItem } from './SQLLegacyItem'
 
 @Entity({ name: 'items' })
-export class MySQLItem extends SQLLegacyItem {
+export class SQLItem extends SQLLegacyItem {
   @Column({
     type: 'varchar',
     name: 'last_edited_by',

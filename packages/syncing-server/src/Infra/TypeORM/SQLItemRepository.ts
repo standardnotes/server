@@ -7,7 +7,7 @@ import { SQLLegacyItem } from './SQLLegacyItem'
 import { SQLLegacyItemRepository } from './SQLLegacyItemRepository'
 import { ItemQuery } from '../../Domain/Item/ItemQuery'
 
-export class MySQLItemRepository extends SQLLegacyItemRepository {
+export class SQLItemRepository extends SQLLegacyItemRepository {
   constructor(
     protected override ormRepository: Repository<SQLLegacyItem>,
     protected override mapper: MapperInterface<Item, SQLLegacyItem>,
