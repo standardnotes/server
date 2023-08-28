@@ -19,7 +19,7 @@ on:
 
 jobs:
   e2e:
-    name: (Docker) E2E Test Suite
+    name: (Self Hosting) E2E Test Suite
     strategy:
       fail-fast: false
       matrix:
