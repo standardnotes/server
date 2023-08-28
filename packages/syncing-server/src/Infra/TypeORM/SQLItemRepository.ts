@@ -3,20 +3,20 @@ import { MapperInterface } from '@standardnotes/domain-core'
 import { Logger } from 'winston'
 
 import { Item } from '../../Domain/Item/Item'
-import { SQLLegacyItem } from './SQLLegacyItem'
+import { SQLItem } from './SQLItem'
 import { SQLLegacyItemRepository } from './SQLLegacyItemRepository'
 import { ItemQuery } from '../../Domain/Item/ItemQuery'
 
 export class SQLItemRepository extends SQLLegacyItemRepository {
   constructor(
-    protected override ormRepository: Repository<SQLLegacyItem>,
-    protected override mapper: MapperInterface<Item, SQLLegacyItem>,
+    protected override ormRepository: Repository<SQLItem>,
+    protected override mapper: MapperInterface<Item, SQLItem>,
     protected override logger: Logger,
   ) {
     super(ormRepository, mapper, logger)
   }
 
-  protected override createFindAllQueryBuilder(query: ItemQuery): SelectQueryBuilder<SQLLegacyItem> {
+  protected override createFindAllQueryBuilder(query: ItemQuery): SelectQueryBuilder<SQLItem> {
     const queryBuilder = this.ormRepository.createQueryBuilder('item')
 
     if (query.sortBy !== undefined && query.sortOrder !== undefined) {

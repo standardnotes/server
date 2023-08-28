@@ -2,6 +2,8 @@
 
 # Setup environment variables
 
+export MODE="self-hosted"
+
 #########
 # PORTS #
 #########

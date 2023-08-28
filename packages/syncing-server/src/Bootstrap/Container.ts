@@ -213,6 +213,8 @@ export class ContainerConfigLoader {
     container.bind<TimerInterface>(TYPES.Sync_Timer).toConstantValue(new Timer())
 
     const isConfiguredForHomeServer = env.get('MODE', true) === 'home-server'
+    const isConfiguredForSelfHosting = env.get('MODE', true) === 'self-hosted'
+    const isConfiguredForHomeServerOrSelfHosting = isConfiguredForHomeServer || isConfiguredForSelfHosting
     const isSecondaryDatabaseEnabled = env.get('SECONDARY_DB_ENABLED', true) === 'true'
 
     container.bind<Env>(TYPES.Sync_Env).toConstantValue(env)
@@ -412,7 +414,7 @@ export class ContainerConfigLoader {
     container
       .bind<ItemRepositoryInterface>(TYPES.Sync_SQLItemRepository)
       .toConstantValue(
-        isConfiguredForHomeServer
+        isConfiguredForHomeServerOrSelfHosting
           ? new SQLItemRepository(
               container.get<Repository<SQLItem>>(TYPES.Sync_ORMItemRepository),
               container.get<MapperInterface<Item, SQLItem>>(TYPES.Sync_SQLItemPersistenceMapper),
