@@ -9,6 +9,7 @@ export class RevisionsCopyRequestedEventHandler implements DomainEventHandlerInt
     const result = await this.copyRevisions.execute({
       newItemUuid: event.payload.newItemUuid,
       originalItemUuid: event.payload.originalItemUuid,
+      roleNames: event.payload.roleNames,
     })
 
     if (result.isFailed()) {

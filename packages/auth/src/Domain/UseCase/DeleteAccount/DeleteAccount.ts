@@ -47,6 +47,8 @@ export class DeleteAccount implements UseCaseInterface<string> {
       return Result.ok('User already deleted.')
     }
 
+    const roles = await user.roles
+
     let regularSubscriptionUuid = undefined
     const { regularSubscription } = await this.userSubscriptionService.findRegularSubscriptionForUserUuid(user.uuid)
     if (regularSubscription !== null) {
@@ -58,6 +60,7 @@ export class DeleteAccount implements UseCaseInterface<string> {
         userUuid: user.uuid,
         userCreatedAtTimestamp: this.timer.convertDateToMicroseconds(user.createdAt),
         regularSubscriptionUuid,
+        roleNames: roles.map((role) => role.name),
       }),
     )
 

@@ -3,27 +3,31 @@ import {
   DomainEventHandlerInterface,
   DomainEventPublisherInterface,
 } from '@standardnotes/domain-events'
-import { Uuid } from '@standardnotes/domain-core'
+import { RoleNameCollection, Uuid } from '@standardnotes/domain-core'
 
 import { DomainEventFactoryInterface } from '../Event/DomainEventFactoryInterface'
 import { ItemBackupServiceInterface } from '../Item/ItemBackupServiceInterface'
 import { ItemRepositoryInterface } from '../Item/ItemRepositoryInterface'
+import { ItemRepositoryResolverInterface } from '../Item/ItemRepositoryResolverInterface'
 
 export class ItemRevisionCreationRequestedEventHandler implements DomainEventHandlerInterface {
   constructor(
-    private primaryItemRepository: ItemRepositoryInterface,
-    private secondaryItemRepository: ItemRepositoryInterface | null,
+    private itemRepositoryResolver: ItemRepositoryResolverInterface,
     private itemBackupService: ItemBackupServiceInterface,
     private domainEventFactory: DomainEventFactoryInterface,
     private domainEventPublisher: DomainEventPublisherInterface,
   ) {}
 
   async handle(event: ItemRevisionCreationRequestedEvent): Promise<void> {
-    await this.createItemDump(event, this.primaryItemRepository)
-
-    if (this.secondaryItemRepository) {
-      await this.createItemDump(event, this.secondaryItemRepository)
+    const roleNamesOrError = RoleNameCollection.create(event.payload.roleNames)
+    if (roleNamesOrError.isFailed()) {
+      return
     }
+    const roleNames = roleNamesOrError.getValue()
+
+    const itemRepository = this.itemRepositoryResolver.resolve(roleNames)
+
+    await this.createItemDump(event, itemRepository)
   }
 
   private async createItemDump(
@@ -44,7 +48,11 @@ export class ItemRevisionCreationRequestedEventHandler implements DomainEventHan
     const fileDumpPath = await this.itemBackupService.dump(item)
     if (fileDumpPath) {
       await this.domainEventPublisher.publish(
-        this.domainEventFactory.createItemDumpedEvent(fileDumpPath, event.meta.correlation.userIdentifier),
+        this.domainEventFactory.createItemDumpedEvent({
+          fileDumpPath,
+          userUuid: event.meta.correlation.userIdentifier,
+          roleNames: event.payload.roleNames,
+        }),
       )
     }
   }

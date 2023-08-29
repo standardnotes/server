@@ -1,19 +1,22 @@
 import { AccountDeletionRequestedEvent, DomainEventHandlerInterface } from '@standardnotes/domain-events'
+import { RoleNameCollection } from '@standardnotes/domain-core'
 import { Logger } from 'winston'
-import { ItemRepositoryInterface } from '../Item/ItemRepositoryInterface'
+
+import { ItemRepositoryResolverInterface } from '../Item/ItemRepositoryResolverInterface'
 
 export class AccountDeletionRequestedEventHandler implements DomainEventHandlerInterface {
-  constructor(
-    private primaryItemRepository: ItemRepositoryInterface,
-    private secondaryItemRepository: ItemRepositoryInterface | null,
-    private logger: Logger,
-  ) {}
+  constructor(private itemRepositoryResolver: ItemRepositoryResolverInterface, private logger: Logger) {}
 
   async handle(event: AccountDeletionRequestedEvent): Promise<void> {
-    await this.primaryItemRepository.deleteByUserUuid(event.payload.userUuid)
-    if (this.secondaryItemRepository) {
-      await this.secondaryItemRepository.deleteByUserUuid(event.payload.userUuid)
+    const roleNamesOrError = RoleNameCollection.create(event.payload.roleNames)
+    if (roleNamesOrError.isFailed()) {
+      return
     }
+    const roleNames = roleNamesOrError.getValue()
+
+    const itemRepository = this.itemRepositoryResolver.resolve(roleNames)
+
+    await itemRepository.deleteByUserUuid(event.payload.userUuid)
 
     this.logger.info(`Finished account cleanup for user: ${event.payload.userUuid}`)
   }

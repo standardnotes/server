@@ -23,6 +23,7 @@ describe('RevisionsCopyRequestedEventHandler', () => {
     event.payload = {
       newItemUuid: '1-2-3',
       originalItemUuid: '2-3-4',
+      roleNames: ['CORE_USER'],
     }
   })
 

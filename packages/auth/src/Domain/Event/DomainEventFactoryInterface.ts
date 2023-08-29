@@ -45,6 +45,7 @@ export interface DomainEventFactoryInterface {
     userUuid: string
     userCreatedAtTimestamp: number
     regularSubscriptionUuid: string | undefined
+    roleNames: string[]
   }): AccountDeletionRequestedEvent
   createUserRolesChangedEvent(userUuid: string, email: string, currentRoles: string[]): UserRolesChangedEvent
   createUserEmailChangedEvent(userUuid: string, fromEmail: string, toEmail: string): UserEmailChangedEvent

@@ -12,10 +12,11 @@ import { ItemRevisionCreationRequestedEventHandler } from './ItemRevisionCreatio
 import { ItemBackupServiceInterface } from '../Item/ItemBackupServiceInterface'
 import { DomainEventFactoryInterface } from '../Event/DomainEventFactoryInterface'
 import { Uuid, ContentType, Dates, Timestamps, UniqueEntityId } from '@standardnotes/domain-core'
+import { ItemRepositoryResolverInterface } from '../Item/ItemRepositoryResolverInterface'
 
 describe('ItemRevisionCreationRequestedEventHandler', () => {
-  let primaryItemRepository: ItemRepositoryInterface
-  let secondaryItemRepository: ItemRepositoryInterface | null
+  let itemRepositoryResolver: ItemRepositoryResolverInterface
+  let itemRepository: ItemRepositoryInterface
   let event: ItemRevisionCreationRequestedEvent
   let item: Item
   let itemBackupService: ItemBackupServiceInterface
@@ -24,8 +25,7 @@ describe('ItemRevisionCreationRequestedEventHandler', () => {
 
   const createHandler = () =>
     new ItemRevisionCreationRequestedEventHandler(
-      primaryItemRepository,
-      secondaryItemRepository,
+      itemRepositoryResolver,
       itemBackupService,
       domainEventFactory,
       domainEventPublisher,
@@ -49,13 +49,17 @@ describe('ItemRevisionCreationRequestedEventHandler', () => {
       new UniqueEntityId('00000000-0000-0000-0000-000000000000'),
     ).getValue()
 
-    primaryItemRepository = {} as jest.Mocked<ItemRepositoryInterface>
-    primaryItemRepository.findByUuid = jest.fn().mockReturnValue(item)
+    itemRepository = {} as jest.Mocked<ItemRepositoryInterface>
+    itemRepository.findByUuid = jest.fn().mockReturnValue(item)
+
+    itemRepositoryResolver = {} as jest.Mocked<ItemRepositoryResolverInterface>
+    itemRepositoryResolver.resolve = jest.fn().mockReturnValue(itemRepository)
 
     event = {} as jest.Mocked<ItemRevisionCreationRequestedEvent>
     event.createdAt = new Date(1)
     event.payload = {
       itemUuid: '00000000-0000-0000-0000-000000000000',
+      roleNames: ['CORE_USER'],
     }
     event.meta = {
       correlation: {
@@ -82,20 +86,19 @@ describe('ItemRevisionCreationRequestedEventHandler', () => {
     expect(domainEventFactory.createItemDumpedEvent).toHaveBeenCalled()
   })
 
-  it('should create a revision for an item in the secondary repository', async () => {
-    secondaryItemRepository = {} as jest.Mocked<ItemRepositoryInterface>
-    secondaryItemRepository.findByUuid = jest.fn().mockReturnValue(item)
+  it('should do nothing if roles names are not valid', async () => {
+    event.payload.roleNames = ['INVALID_ROLE_NAME']
 
     await createHandler().handle(event)
 
-    expect(domainEventPublisher.publish).toHaveBeenCalled()
-    expect(domainEventFactory.createItemDumpedEvent).toHaveBeenCalled()
-
-    secondaryItemRepository = null
+    expect(domainEventPublisher.publish).not.toHaveBeenCalled()
+    expect(domainEventFactory.createItemDumpedEvent).not.toHaveBeenCalled()
   })
 
   it('should not create a revision for an item that does not exist', async () => {
-    primaryItemRepository.findByUuid = jest.fn().mockReturnValue(null)
+    itemRepository.findByUuid = jest.fn().mockReturnValue(null)
+
+    itemRepositoryResolver.resolve = jest.fn().mockReturnValue(itemRepository)
 
     await createHandler().handle(event)
 

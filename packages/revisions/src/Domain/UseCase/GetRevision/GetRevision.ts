@@ -1,11 +1,11 @@
-import { Result, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
+import { Result, RoleNameCollection, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
 
 import { Revision } from '../../Revision/Revision'
-import { RevisionRepositoryInterface } from '../../Revision/RevisionRepositoryInterface'
 import { GetRevisionDTO } from './GetRevisionDTO'
+import { RevisionRepositoryResolverInterface } from '../../Revision/RevisionRepositoryResolverInterface'
 
 export class GetRevision implements UseCaseInterface<Revision> {
-  constructor(private revisionRepository: RevisionRepositoryInterface) {}
+  constructor(private revisionRepositoryResolver: RevisionRepositoryResolverInterface) {}
 
   async execute(dto: GetRevisionDTO): Promise<Result<Revision>> {
     const revisionUuidOrError = Uuid.create(dto.revisionUuid)
@@ -20,7 +20,15 @@ export class GetRevision implements UseCaseInterface<Revision> {
     }
     const userUuid = userUuidOrError.getValue()
 
-    const revision = await this.revisionRepository.findOneByUuid(revisionUuid, userUuid)
+    const roleNamesOrError = RoleNameCollection.create(dto.roleNames)
+    if (roleNamesOrError.isFailed()) {
+      return Result.fail(roleNamesOrError.getError())
+    }
+    const roleNames = roleNamesOrError.getValue()
+
+    const revisionRepository = this.revisionRepositoryResolver.resolve(roleNames)
+
+    const revision = await revisionRepository.findOneByUuid(revisionUuid, userUuid)
 
     if (revision === null) {
       return Result.fail<Revision>(`Could not find revision with uuid: ${revisionUuid.value}`)

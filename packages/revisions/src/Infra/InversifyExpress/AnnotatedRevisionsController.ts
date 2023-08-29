@@ -3,27 +3,42 @@ import { controller, httpDelete, httpGet, results } from 'inversify-express-util
 import { inject } from 'inversify'
 
 import TYPES from '../../Bootstrap/Types'
-import { RevisionsController } from '../../Controller/RevisionsController'
 import { BaseRevisionsController } from './Base/BaseRevisionsController'
+import { GetRevisionsMetada } from '../../Domain/UseCase/GetRevisionsMetada/GetRevisionsMetada'
+import { GetRevision } from '../../Domain/UseCase/GetRevision/GetRevision'
+import { DeleteRevision } from '../../Domain/UseCase/DeleteRevision/DeleteRevision'
+import { MapperInterface } from '@standardnotes/domain-core'
+import { Revision } from '../../Domain/Revision/Revision'
+import { RevisionMetadata } from '../../Domain/Revision/RevisionMetadata'
+import { RevisionHttpRepresentation } from '../../Mapping/Http/RevisionHttpRepresentation'
+import { RevisionMetadataHttpRepresentation } from '../../Mapping/Http/RevisionMetadataHttpRepresentation'
 
 @controller('/items/:itemUuid/revisions', TYPES.Revisions_ApiGatewayAuthMiddleware)
 export class AnnotatedRevisionsController extends BaseRevisionsController {
-  constructor(@inject(TYPES.Revisions_RevisionsController) override revisionsController: RevisionsController) {
-    super(revisionsController)
+  constructor(
+    @inject(TYPES.Revisions_GetRevisionsMetada) override getRevisionsMetadata: GetRevisionsMetada,
+    @inject(TYPES.Revisions_GetRevision) override doGetRevision: GetRevision,
+    @inject(TYPES.Revisions_DeleteRevision) override doDeleteRevision: DeleteRevision,
+    @inject(TYPES.Revisions_RevisionHttpMapper)
+    override revisionHttpMapper: MapperInterface<Revision, RevisionHttpRepresentation>,
+    @inject(TYPES.Revisions_RevisionMetadataHttpMapper)
+    override revisionMetadataHttpMapper: MapperInterface<RevisionMetadata, RevisionMetadataHttpRepresentation>,
+  ) {
+    super(getRevisionsMetadata, doGetRevision, doDeleteRevision, revisionHttpMapper, revisionMetadataHttpMapper)
   }
 
   @httpGet('/')
-  override async getRevisions(req: Request, response: Response): Promise<results.JsonResult> {
-    return super.getRevisions(req, response)
+  override async getRevisions(request: Request, response: Response): Promise<results.JsonResult> {
+    return super.getRevisions(request, response)
   }
 
   @httpGet('/:uuid')
-  override async getRevision(req: Request, response: Response): Promise<results.JsonResult> {
-    return super.getRevision(req, response)
+  override async getRevision(request: Request, response: Response): Promise<results.JsonResult> {
+    return super.getRevision(request, response)
   }
 
   @httpDelete('/:uuid')
-  override async deleteRevision(req: Request, response: Response): Promise<results.JsonResult> {
-    return super.deleteRevision(req, response)
+  override async deleteRevision(request: Request, response: Response): Promise<results.JsonResult> {
+    return super.deleteRevision(request, response)
   }
 }

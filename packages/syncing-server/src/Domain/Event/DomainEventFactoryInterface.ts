@@ -26,11 +26,19 @@ export interface DomainEventFactoryInterface {
       attachmentContentType: string
     }>
   }): EmailRequestedEvent
-  createDuplicateItemSyncedEvent(itemUuid: string, userUuid: string): DuplicateItemSyncedEvent
-  createItemRevisionCreationRequested(itemUuid: string, userUuid: string): ItemRevisionCreationRequestedEvent
-  createItemDumpedEvent(fileDumpPath: string, userUuid: string): ItemDumpedEvent
+  createDuplicateItemSyncedEvent(dto: {
+    itemUuid: string
+    userUuid: string
+    roleNames: string[]
+  }): DuplicateItemSyncedEvent
+  createItemRevisionCreationRequested(dto: {
+    itemUuid: string
+    userUuid: string
+    roleNames: string[]
+  }): ItemRevisionCreationRequestedEvent
+  createItemDumpedEvent(dto: { fileDumpPath: string; userUuid: string; roleNames: string[] }): ItemDumpedEvent
   createRevisionsCopyRequestedEvent(
     userUuid: string,
-    dto: { originalItemUuid: string; newItemUuid: string },
+    dto: { originalItemUuid: string; newItemUuid: string; roleNames: string[] },
   ): RevisionsCopyRequestedEvent
 }

@@ -2,16 +2,16 @@ import { MapperInterface, Uuid } from '@standardnotes/domain-core'
 import { Repository } from 'typeorm'
 import { Logger } from 'winston'
 
-import { Revision } from '../../Domain/Revision/Revision'
-import { RevisionMetadata } from '../../Domain/Revision/RevisionMetadata'
-import { RevisionRepositoryInterface } from '../../Domain/Revision/RevisionRepositoryInterface'
-import { TypeORMRevision } from './SQLRevision'
+import { Revision } from '../../../Domain/Revision/Revision'
+import { RevisionMetadata } from '../../../Domain/Revision/RevisionMetadata'
+import { RevisionRepositoryInterface } from '../../../Domain/Revision/RevisionRepositoryInterface'
+import { SQLRevision } from './SQLRevision'
 
-export class TypeORMRevisionRepository implements RevisionRepositoryInterface {
+export class SQLRevisionRepository implements RevisionRepositoryInterface {
   constructor(
-    private ormRepository: Repository<TypeORMRevision>,
-    private revisionMetadataMapper: MapperInterface<RevisionMetadata, TypeORMRevision>,
-    private revisionMapper: MapperInterface<Revision, TypeORMRevision>,
+    private ormRepository: Repository<SQLRevision>,
+    private revisionMetadataMapper: MapperInterface<RevisionMetadata, SQLRevision>,
+    private revisionMapper: MapperInterface<Revision, SQLRevision>,
     private logger: Logger,
   ) {}
 
@@ -27,13 +27,13 @@ export class TypeORMRevisionRepository implements RevisionRepositoryInterface {
   }
 
   async findByItemUuid(itemUuid: Uuid): Promise<Revision[]> {
-    const typeormRevisions = await this.ormRepository
+    const SQLRevisions = await this.ormRepository
       .createQueryBuilder()
       .where('item_uuid = :itemUuid', { itemUuid: itemUuid.value })
       .getMany()
 
     const revisions = []
-    for (const revision of typeormRevisions) {
+    for (const revision of SQLRevisions) {
       revisions.push(this.revisionMapper.toDomain(revision))
     }
 
@@ -62,23 +62,23 @@ export class TypeORMRevisionRepository implements RevisionRepositoryInterface {
   }
 
   async findOneByUuid(revisionUuid: Uuid, userUuid: Uuid): Promise<Revision | null> {
-    const typeormRevision = await this.ormRepository
+    const SQLRevision = await this.ormRepository
       .createQueryBuilder()
       .where('uuid = :revisionUuid', { revisionUuid: revisionUuid.value })
       .andWhere('user_uuid = :userUuid', { userUuid: userUuid.value })
       .getOne()
 
-    if (typeormRevision === null) {
+    if (SQLRevision === null) {
       return null
     }
 
-    return this.revisionMapper.toDomain(typeormRevision)
+    return this.revisionMapper.toDomain(SQLRevision)
   }
 
   async save(revision: Revision): Promise<Revision> {
-    const typeormRevision = this.revisionMapper.toProjection(revision)
+    const SQLRevision = this.revisionMapper.toProjection(revision)
 
-    await this.ormRepository.save(typeormRevision)
+    await this.ormRepository.save(SQLRevision)
 
     return revision
   }

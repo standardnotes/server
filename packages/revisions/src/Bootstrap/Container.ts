@@ -6,15 +6,14 @@ import * as winston from 'winston'
 import { Revision } from '../Domain/Revision/Revision'
 import { RevisionMetadata } from '../Domain/Revision/RevisionMetadata'
 import { RevisionRepositoryInterface } from '../Domain/Revision/RevisionRepositoryInterface'
-import { TypeORMRevisionRepository } from '../Infra/TypeORM/SQLRevisionRepository'
-import { TypeORMRevision } from '../Infra/TypeORM/SQLRevision'
+import { SQLRevisionRepository } from '../Infra/TypeORM/SQL/SQLRevisionRepository'
+import { SQLRevision } from '../Infra/TypeORM/SQL/SQLRevision'
 import { AppDataSource } from './DataSource'
 import { Env } from './Env'
 import TYPES from './Types'
 import { TokenDecoderInterface, CrossServiceTokenData, TokenDecoder } from '@standardnotes/security'
 import { TimerInterface, Timer } from '@standardnotes/time'
 import { ApiGatewayAuthMiddleware } from '../Infra/InversifyExpress/Middleware/ApiGatewayAuthMiddleware'
-import { RevisionsController } from '../Controller/RevisionsController'
 import { DeleteRevision } from '../Domain/UseCase/DeleteRevision/DeleteRevision'
 import { GetRequiredRoleToViewRevision } from '../Domain/UseCase/GetRequiredRoleToViewRevision/GetRequiredRoleToViewRevision'
 import { GetRevision } from '../Domain/UseCase/GetRevision/GetRevision'
@@ -51,6 +50,10 @@ import { SQLRevisionPersistenceMapper } from '../Mapping/Persistence/SQL/SQLRevi
 import { MongoDBRevisionMetadataPersistenceMapper } from '../Mapping/Persistence/MongoDB/MongoDBRevisionMetadataPersistenceMapper'
 import { MongoDBRevisionPersistenceMapper } from '../Mapping/Persistence/MongoDB/MongoDBRevisionPersistenceMapper'
 import { RevisionHttpMapper } from '../Mapping/Http/RevisionHttpMapper'
+import { RevisionRepositoryResolverInterface } from '../Domain/Revision/RevisionRepositoryResolverInterface'
+import { TypeORMRevisionRepositoryResolver } from '../Infra/TypeORM/TypeORMRevisionRepositoryResolver'
+import { RevisionMetadataHttpRepresentation } from '../Mapping/Http/RevisionMetadataHttpRepresentation'
+import { RevisionHttpRepresentation } from '../Mapping/Http/RevisionHttpRepresentation'
 
 export class ContainerConfigLoader {
   async load(configuration?: {
@@ -106,10 +109,10 @@ export class ContainerConfigLoader {
 
     // Map
     container
-      .bind<MapperInterface<RevisionMetadata, TypeORMRevision>>(TYPES.Revisions_SQLRevisionMetadataPersistenceMapper)
+      .bind<MapperInterface<RevisionMetadata, SQLRevision>>(TYPES.Revisions_SQLRevisionMetadataPersistenceMapper)
       .toConstantValue(new SQLRevisionMetadataPersistenceMapper())
     container
-      .bind<MapperInterface<Revision, TypeORMRevision>>(TYPES.Revisions_SQLRevisionPersistenceMapper)
+      .bind<MapperInterface<Revision, SQLRevision>>(TYPES.Revisions_SQLRevisionPersistenceMapper)
       .toConstantValue(new SQLRevisionPersistenceMapper())
     container
       .bind<MapperInterface<RevisionMetadata, MongoDBRevision>>(
@@ -122,19 +125,19 @@ export class ContainerConfigLoader {
 
     // ORM
     container
-      .bind<Repository<TypeORMRevision>>(TYPES.Revisions_ORMRevisionRepository)
-      .toDynamicValue(() => appDataSource.getRepository(TypeORMRevision))
+      .bind<Repository<SQLRevision>>(TYPES.Revisions_ORMRevisionRepository)
+      .toDynamicValue(() => appDataSource.getRepository(SQLRevision))
 
     // Repositories
     container
-      .bind<RevisionRepositoryInterface>(TYPES.Revisions_RevisionRepository)
+      .bind<RevisionRepositoryInterface>(TYPES.Revisions_SQLRevisionRepository)
       .toConstantValue(
-        new TypeORMRevisionRepository(
-          container.get<Repository<TypeORMRevision>>(TYPES.Revisions_ORMRevisionRepository),
-          container.get<MapperInterface<RevisionMetadata, TypeORMRevision>>(
+        new SQLRevisionRepository(
+          container.get<Repository<SQLRevision>>(TYPES.Revisions_ORMRevisionRepository),
+          container.get<MapperInterface<RevisionMetadata, SQLRevision>>(
             TYPES.Revisions_SQLRevisionMetadataPersistenceMapper,
           ),
-          container.get<MapperInterface<Revision, TypeORMRevision>>(TYPES.Revisions_SQLRevisionPersistenceMapper),
+          container.get<MapperInterface<Revision, SQLRevision>>(TYPES.Revisions_SQLRevisionPersistenceMapper),
           container.get<winston.Logger>(TYPES.Revisions_Logger),
         ),
       )
@@ -158,6 +161,17 @@ export class ContainerConfigLoader {
         )
     }
 
+    container
+      .bind<RevisionRepositoryResolverInterface>(TYPES.Revisions_RevisionRepositoryResolver)
+      .toConstantValue(
+        new TypeORMRevisionRepositoryResolver(
+          container.get<RevisionRepositoryInterface>(TYPES.Revisions_SQLRevisionRepository),
+          isSecondaryDatabaseEnabled
+            ? container.get<RevisionRepositoryInterface>(TYPES.Revisions_MongoDBRevisionRepository)
+            : null,
+        ),
+      )
+
     container.bind<TimerInterface>(TYPES.Revisions_Timer).toDynamicValue(() => new Timer())
 
     container
@@ -168,35 +182,12 @@ export class ContainerConfigLoader {
 
     // Map
     container
-      .bind<
-        MapperInterface<
-          Revision,
-          {
-            uuid: string
-            item_uuid: string
-            content: string | null
-            content_type: string
-            items_key_id: string | null
-            enc_item_key: string | null
-            auth_hash: string | null
-            created_at: string
-            updated_at: string
-          }
-        >
-      >(TYPES.Revisions_RevisionHttpMapper)
+      .bind<MapperInterface<Revision, RevisionHttpRepresentation>>(TYPES.Revisions_RevisionHttpMapper)
       .toDynamicValue(() => new RevisionHttpMapper())
     container
-      .bind<
-        MapperInterface<
-          RevisionMetadata,
-          {
-            uuid: string
-            content_type: string
-            created_at: string
-            updated_at: string
-          }
-        >
-      >(TYPES.Revisions_RevisionMetadataHttpMapper)
+      .bind<MapperInterface<RevisionMetadata, RevisionMetadataHttpRepresentation>>(
+        TYPES.Revisions_RevisionMetadataHttpMapper,
+      )
       .toDynamicValue((context: interfaces.Context) => {
         return new RevisionMetadataHttpMapper(context.container.get(TYPES.Revisions_GetRequiredRoleToViewRevision))
       })
@@ -204,15 +195,30 @@ export class ContainerConfigLoader {
     // use cases
     container
       .bind<GetRevisionsMetada>(TYPES.Revisions_GetRevisionsMetada)
-      .toDynamicValue((context: interfaces.Context) => {
-        return new GetRevisionsMetada(context.container.get(TYPES.Revisions_RevisionRepository))
-      })
-    container.bind<GetRevision>(TYPES.Revisions_GetRevision).toDynamicValue((context: interfaces.Context) => {
-      return new GetRevision(context.container.get(TYPES.Revisions_RevisionRepository))
-    })
-    container.bind<DeleteRevision>(TYPES.Revisions_DeleteRevision).toDynamicValue((context: interfaces.Context) => {
-      return new DeleteRevision(context.container.get(TYPES.Revisions_RevisionRepository))
-    })
+      .toConstantValue(
+        new GetRevisionsMetada(
+          container.get<RevisionRepositoryResolverInterface>(TYPES.Revisions_RevisionRepositoryResolver),
+        ),
+      )
+    container
+      .bind<GetRevision>(TYPES.Revisions_GetRevision)
+      .toConstantValue(
+        new GetRevision(container.get<RevisionRepositoryResolverInterface>(TYPES.Revisions_RevisionRepositoryResolver)),
+      )
+    container
+      .bind<DeleteRevision>(TYPES.Revisions_DeleteRevision)
+      .toConstantValue(
+        new DeleteRevision(
+          container.get<RevisionRepositoryResolverInterface>(TYPES.Revisions_RevisionRepositoryResolver),
+        ),
+      )
+    container
+      .bind<CopyRevisions>(TYPES.Revisions_CopyRevisions)
+      .toConstantValue(
+        new CopyRevisions(
+          container.get<RevisionRepositoryResolverInterface>(TYPES.Revisions_RevisionRepositoryResolver),
+        ),
+      )
 
     // env vars
     container.bind(TYPES.Revisions_AUTH_JWT_SECRET).toConstantValue(env.get('AUTH_JWT_SECRET'))
@@ -221,19 +227,6 @@ export class ContainerConfigLoader {
     container
       .bind<ControllerContainerInterface>(TYPES.Revisions_ControllerContainer)
       .toConstantValue(configuration?.controllerConatiner ?? new ControllerContainer())
-
-    container
-      .bind<RevisionsController>(TYPES.Revisions_RevisionsController)
-      .toDynamicValue((context: interfaces.Context) => {
-        return new RevisionsController(
-          context.container.get(TYPES.Revisions_GetRevisionsMetada),
-          context.container.get(TYPES.Revisions_GetRevision),
-          context.container.get(TYPES.Revisions_DeleteRevision),
-          context.container.get(TYPES.Revisions_RevisionHttpMapper),
-          context.container.get(TYPES.Revisions_RevisionMetadataHttpMapper),
-          context.container.get(TYPES.Revisions_Logger),
-        )
-      })
 
     container
       .bind<TokenDecoderInterface<CrossServiceTokenData>>(TYPES.Revisions_CrossServiceTokenDecoder)
@@ -308,25 +301,20 @@ export class ContainerConfigLoader {
           : new FSDumpRepository(container.get(TYPES.Revisions_RevisionItemStringMapper)),
       )
 
-    // use cases
-    container.bind<CopyRevisions>(TYPES.Revisions_CopyRevisions).toDynamicValue((context: interfaces.Context) => {
-      return new CopyRevisions(context.container.get(TYPES.Revisions_RevisionRepository))
-    })
-
     // Handlers
     container
       .bind<ItemDumpedEventHandler>(TYPES.Revisions_ItemDumpedEventHandler)
       .toDynamicValue((context: interfaces.Context) => {
         return new ItemDumpedEventHandler(
           context.container.get(TYPES.Revisions_DumpRepository),
-          context.container.get(TYPES.Revisions_RevisionRepository),
+          context.container.get(TYPES.Revisions_SQLRevisionRepository),
         )
       })
     container
       .bind<AccountDeletionRequestedEventHandler>(TYPES.Revisions_AccountDeletionRequestedEventHandler)
       .toDynamicValue((context: interfaces.Context) => {
         return new AccountDeletionRequestedEventHandler(
-          context.container.get(TYPES.Revisions_RevisionRepository),
+          context.container.get(TYPES.Revisions_SQLRevisionRepository),
           context.container.get(TYPES.Revisions_Logger),
         )
       })
@@ -380,8 +368,12 @@ export class ContainerConfigLoader {
         .bind<BaseRevisionsController>(TYPES.Revisions_BaseRevisionsController)
         .toConstantValue(
           new BaseRevisionsController(
-            container.get(TYPES.Revisions_RevisionsController),
-            container.get(TYPES.Revisions_ControllerContainer),
+            container.get<GetRevisionsMetada>(TYPES.Revisions_GetRevisionsMetada),
+            container.get<GetRevision>(TYPES.Revisions_GetRevision),
+            container.get<DeleteRevision>(TYPES.Revisions_DeleteRevision),
+            container.get<RevisionHttpMapper>(TYPES.Revisions_RevisionHttpMapper),
+            container.get<RevisionMetadataHttpMapper>(TYPES.Revisions_RevisionMetadataHttpMapper),
+            container.get<ControllerContainerInterface>(TYPES.Revisions_ControllerContainer),
           ),
         )
     }

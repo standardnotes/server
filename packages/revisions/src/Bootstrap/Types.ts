@@ -17,9 +17,10 @@ const TYPES = {
   // Mongo
   Revisions_ORMMongoRevisionRepository: Symbol.for('Revisions_ORMMongoRevisionRepository'),
   // Repositories
-  Revisions_RevisionRepository: Symbol.for('Revisions_RevisionRepository'),
+  Revisions_SQLRevisionRepository: Symbol.for('Revisions_SQLRevisionRepository'),
   Revisions_MongoDBRevisionRepository: Symbol.for('Revisions_MongoDBRevisionRepository'),
   Revisions_DumpRepository: Symbol.for('Revisions_DumpRepository'),
+  Revisions_RevisionRepositoryResolver: Symbol.for('Revisions_RevisionRepositoryResolver'),
   // env vars
   Revisions_AUTH_JWT_SECRET: Symbol.for('Revisions_AUTH_JWT_SECRET'),
   Revisions_SQS_QUEUE_URL: Symbol.for('Revisions_SQS_QUEUE_URL'),

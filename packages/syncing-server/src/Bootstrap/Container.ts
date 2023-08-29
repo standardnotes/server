@@ -860,8 +860,7 @@ export class ContainerConfigLoader {
       .bind<DuplicateItemSyncedEventHandler>(TYPES.Sync_DuplicateItemSyncedEventHandler)
       .toConstantValue(
         new DuplicateItemSyncedEventHandler(
-          container.get<ItemRepositoryInterface>(TYPES.Sync_SQLItemRepository),
-          isSecondaryDatabaseEnabled ? container.get<ItemRepositoryInterface>(TYPES.Sync_MongoDBItemRepository) : null,
+          container.get<ItemRepositoryResolverInterface>(TYPES.Sync_ItemRepositoryResolver),
           container.get<DomainEventFactoryInterface>(TYPES.Sync_DomainEventFactory),
           container.get<DomainEventPublisherInterface>(TYPES.Sync_DomainEventPublisher),
           container.get<Logger>(TYPES.Sync_Logger),
@@ -871,8 +870,7 @@ export class ContainerConfigLoader {
       .bind<AccountDeletionRequestedEventHandler>(TYPES.Sync_AccountDeletionRequestedEventHandler)
       .toConstantValue(
         new AccountDeletionRequestedEventHandler(
-          container.get<ItemRepositoryInterface>(TYPES.Sync_SQLItemRepository),
-          isSecondaryDatabaseEnabled ? container.get<ItemRepositoryInterface>(TYPES.Sync_MongoDBItemRepository) : null,
+          container.get<ItemRepositoryResolverInterface>(TYPES.Sync_ItemRepositoryResolver),
           container.get<Logger>(TYPES.Sync_Logger),
         ),
       )
@@ -880,8 +878,7 @@ export class ContainerConfigLoader {
       .bind<ItemRevisionCreationRequestedEventHandler>(TYPES.Sync_ItemRevisionCreationRequestedEventHandler)
       .toConstantValue(
         new ItemRevisionCreationRequestedEventHandler(
-          container.get<ItemRepositoryInterface>(TYPES.Sync_SQLItemRepository),
-          isSecondaryDatabaseEnabled ? container.get<ItemRepositoryInterface>(TYPES.Sync_MongoDBItemRepository) : null,
+          container.get<ItemRepositoryResolverInterface>(TYPES.Sync_ItemRepositoryResolver),
           container.get<ItemBackupServiceInterface>(TYPES.Sync_ItemBackupService),
           container.get<DomainEventFactoryInterface>(TYPES.Sync_DomainEventFactory),
           container.get<DomainEventPublisherInterface>(TYPES.Sync_DomainEventPublisher),
