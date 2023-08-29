@@ -1,25 +1,66 @@
-import { DataSource, EntityTarget, LoggerOptions, ObjectLiteral, Repository } from 'typeorm'
+import { DataSource, EntityTarget, LoggerOptions, MongoRepository, ObjectLiteral, Repository } from 'typeorm'
 import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions'
 
-import { TypeORMRevision } from '../Infra/TypeORM/TypeORMRevision'
+import { TypeORMRevision } from '../Infra/TypeORM/SQLRevision'
 
 import { Env } from './Env'
 import { SqliteConnectionOptions } from 'typeorm/driver/sqlite/SqliteConnectionOptions'
+import { MongoDBRevision } from '../Infra/TypeORM/MongoDB/MongoDBRevision'
 
 export class AppDataSource {
-  private dataSource: DataSource | undefined
+  private _dataSource: DataSource | undefined
+  private _secondaryDataSource: DataSource | undefined
 
   constructor(private env: Env) {}
 
   getRepository<Entity extends ObjectLiteral>(target: EntityTarget<Entity>): Repository<Entity> {
-    if (!this.dataSource) {
+    if (!this._dataSource) {
       throw new Error('DataSource not initialized')
     }
 
-    return this.dataSource.getRepository(target)
+    return this._dataSource.getRepository(target)
+  }
+
+  getMongoRepository<Entity extends ObjectLiteral>(target: EntityTarget<Entity>): MongoRepository<Entity> {
+    if (!this._secondaryDataSource) {
+      throw new Error('Secondary DataSource not initialized')
+    }
+
+    return this._secondaryDataSource.getMongoRepository(target)
   }
 
   async initialize(): Promise<void> {
+    await this.dataSource.initialize()
+    const secondaryDataSource = this.secondaryDataSource
+    if (secondaryDataSource) {
+      await secondaryDataSource.initialize()
+    }
+  }
+
+  get secondaryDataSource(): DataSource | undefined {
+    this.env.load()
+
+    if (this.env.get('SECONDARY_DB_ENABLED', true) !== 'true') {
+      return undefined
+    }
+
+    this._secondaryDataSource = new DataSource({
+      type: 'mongodb',
+      host: this.env.get('MONGO_HOST'),
+      authSource: 'admin',
+      port: parseInt(this.env.get('MONGO_PORT')),
+      username: this.env.get('MONGO_USERNAME'),
+      password: this.env.get('MONGO_PASSWORD', true),
+      database: this.env.get('MONGO_DATABASE'),
+      entities: [MongoDBRevision],
+      retryWrites: false,
+      synchronize: true,
+    })
+
+    return this._secondaryDataSource
+  }
+
+  get dataSource(): DataSource {
     this.env.load()
 
     const isConfiguredForMySQL = this.env.get('DB_TYPE') === 'mysql'
@@ -74,7 +115,7 @@ export class AppDataSource {
         database: inReplicaMode ? undefined : this.env.get('DB_DATABASE'),
       }
 
-      this.dataSource = new DataSource(mySQLDataSourceOptions)
+      this._dataSource = new DataSource(mySQLDataSourceOptions)
     } else {
       const sqliteDataSourceOptions: SqliteConnectionOptions = {
         ...commonDataSourceOptions,
@@ -84,9 +125,9 @@ export class AppDataSource {
         busyErrorRetry: 2000,
       }
 
-      this.dataSource = new DataSource(sqliteDataSourceOptions)
+      this._dataSource = new DataSource(sqliteDataSourceOptions)
     }
 
-    await this.dataSource.initialize()
+    return this._dataSource
   }
 }

@@ -1,6 +1,6 @@
 import { MapperInterface, SyncUseCaseInterface } from '@standardnotes/domain-core'
 
-import { RevisionMetadata } from '../Domain/Revision/RevisionMetadata'
+import { RevisionMetadata } from '../../Domain/Revision/RevisionMetadata'
 
 export class RevisionMetadataHttpMapper
   implements

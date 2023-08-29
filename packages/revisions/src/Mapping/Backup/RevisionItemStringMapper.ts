@@ -1,6 +1,6 @@
 import { MapperInterface, Dates, Uuid, ContentType } from '@standardnotes/domain-core'
 
-import { Revision } from '../Domain/Revision/Revision'
+import { Revision } from '../../Domain/Revision/Revision'
 
 export class RevisionItemStringMapper implements MapperInterface<Revision, string> {
   toDomain(projection: string): Revision {

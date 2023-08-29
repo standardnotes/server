@@ -5,15 +5,20 @@ const TYPES = {
   Revisions_S3: Symbol.for('Revisions_S3'),
   Revisions_Env: Symbol.for('Revisions_Env'),
   // Map
-  Revisions_RevisionMetadataPersistenceMapper: Symbol.for('Revisions_RevisionMetadataPersistenceMapper'),
-  Revisions_RevisionPersistenceMapper: Symbol.for('Revisions_RevisionPersistenceMapper'),
+  Revisions_SQLRevisionMetadataPersistenceMapper: Symbol.for('Revisions_SQLRevisionMetadataPersistenceMapper'),
+  Revisions_SQLRevisionPersistenceMapper: Symbol.for('Revisions_SQLRevisionPersistenceMapper'),
+  Revisions_MongoDBRevisionMetadataPersistenceMapper: Symbol.for('Revisions_MongoDBRevisionMetadataPersistenceMapper'),
+  Revisions_MongoDBRevisionPersistenceMapper: Symbol.for('Revisions_MongoDBRevisionPersistenceMapper'),
   Revisions_RevisionItemStringMapper: Symbol.for('Revisions_RevisionItemStringMapper'),
   Revisions_RevisionHttpMapper: Symbol.for('Revisions_RevisionHttpMapper'),
   Revisions_RevisionMetadataHttpMapper: Symbol.for('Revisions_RevisionMetadataHttpMapper'),
   // ORM
   Revisions_ORMRevisionRepository: Symbol.for('Revisions_ORMRevisionRepository'),
+  // Mongo
+  Revisions_ORMMongoRevisionRepository: Symbol.for('Revisions_ORMMongoRevisionRepository'),
   // Repositories
   Revisions_RevisionRepository: Symbol.for('Revisions_RevisionRepository'),
+  Revisions_MongoDBRevisionRepository: Symbol.for('Revisions_MongoDBRevisionRepository'),
   Revisions_DumpRepository: Symbol.for('Revisions_DumpRepository'),
   // env vars
   Revisions_AUTH_JWT_SECRET: Symbol.for('Revisions_AUTH_JWT_SECRET'),

@@ -1,9 +1,11 @@
 import { MapperInterface, Dates, UniqueEntityId, Uuid, ContentType } from '@standardnotes/domain-core'
-import { Revision } from '../Domain/Revision/Revision'
-import { TypeORMRevision } from '../Infra/TypeORM/TypeORMRevision'
 
-export class RevisionPersistenceMapper implements MapperInterface<Revision, TypeORMRevision> {
-  toDomain(projection: TypeORMRevision): Revision {
+import { MongoDBRevision } from '../../../Infra/TypeORM/MongoDB/MongoDBRevision'
+import { Revision } from '../../../Domain/Revision/Revision'
+import { BSON } from 'typeorm'
+
+export class MongoDBRevisionPersistenceMapper implements MapperInterface<Revision, MongoDBRevision> {
+  toDomain(projection: MongoDBRevision): Revision {
     const contentTypeOrError = ContentType.create(projection.contentType)
     if (contentTypeOrError.isFailed()) {
       throw new Error(`Could not map typeorm revision to domain revision: ${contentTypeOrError.getError()}`)
@@ -43,7 +45,7 @@ export class RevisionPersistenceMapper implements MapperInterface<Revision, Type
         userUuid,
         dates,
       },
-      new UniqueEntityId(projection.uuid),
+      new UniqueEntityId(projection._id.toHexString()),
     )
     if (revisionOrError.isFailed()) {
       throw new Error(`Could not map typeorm revision to domain revision: ${revisionOrError.getError()}`)
@@ -52,21 +54,21 @@ export class RevisionPersistenceMapper implements MapperInterface<Revision, Type
     return revisionOrError.getValue()
   }
 
-  toProjection(domain: Revision): TypeORMRevision {
-    const typeormRevision = new TypeORMRevision()
+  toProjection(domain: Revision): MongoDBRevision {
+    const mongoDBRevision = new MongoDBRevision()
 
-    typeormRevision.authHash = domain.props.authHash
-    typeormRevision.content = domain.props.content
-    typeormRevision.contentType = domain.props.contentType.value
-    typeormRevision.createdAt = domain.props.dates.createdAt
-    typeormRevision.updatedAt = domain.props.dates.updatedAt
-    typeormRevision.creationDate = domain.props.creationDate
-    typeormRevision.encItemKey = domain.props.encItemKey
-    typeormRevision.itemUuid = domain.props.itemUuid.value
-    typeormRevision.itemsKeyId = domain.props.itemsKeyId
-    typeormRevision.userUuid = domain.props.userUuid ? domain.props.userUuid.value : null
-    typeormRevision.uuid = domain.id.toString()
+    mongoDBRevision.authHash = domain.props.authHash
+    mongoDBRevision.content = domain.props.content
+    mongoDBRevision.contentType = domain.props.contentType.value
+    mongoDBRevision.createdAt = domain.props.dates.createdAt
+    mongoDBRevision.updatedAt = domain.props.dates.updatedAt
+    mongoDBRevision.creationDate = domain.props.creationDate
+    mongoDBRevision.encItemKey = domain.props.encItemKey
+    mongoDBRevision.itemUuid = domain.props.itemUuid.value
+    mongoDBRevision.itemsKeyId = domain.props.itemsKeyId
+    mongoDBRevision.userUuid = domain.props.userUuid ? domain.props.userUuid.value : null
+    mongoDBRevision._id = BSON.UUID.createFromHexString(domain.id.toString())
 
-    return typeormRevision
+    return mongoDBRevision
   }
 }
