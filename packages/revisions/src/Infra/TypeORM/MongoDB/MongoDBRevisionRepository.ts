@@ -1,5 +1,6 @@
 import { MapperInterface, Uuid } from '@standardnotes/domain-core'
-import { BSON, MongoRepository } from 'typeorm'
+import { MongoRepository } from 'typeorm'
+import { BSON } from 'mongodb'
 import { Logger } from 'winston'
 
 import { MongoDBRevision } from './MongoDBRevision'

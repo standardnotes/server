@@ -2,7 +2,7 @@ import { MapperInterface, Dates, UniqueEntityId, Uuid, ContentType } from '@stan
 
 import { MongoDBRevision } from '../../../Infra/TypeORM/MongoDB/MongoDBRevision'
 import { Revision } from '../../../Domain/Revision/Revision'
-import { BSON } from 'typeorm'
+import { BSON } from 'mongodb'
 
 export class MongoDBRevisionPersistenceMapper implements MapperInterface<Revision, MongoDBRevision> {
   toDomain(projection: MongoDBRevision): Revision {
