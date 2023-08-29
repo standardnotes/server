@@ -1,6 +1,6 @@
 import { MapperInterface } from '@standardnotes/domain-core'
 
-import { Revision } from '../Domain/Revision/Revision'
+import { Revision } from '../../Domain/Revision/Revision'
 
 export class RevisionHttpMapper
   implements

@@ -1,15 +1,13 @@
 import { ControllerContainer, ControllerContainerInterface, MapperInterface } from '@standardnotes/domain-core'
 import { Container, interfaces } from 'inversify'
-import { Repository } from 'typeorm'
+import { MongoRepository, Repository } from 'typeorm'
 import * as winston from 'winston'
 
 import { Revision } from '../Domain/Revision/Revision'
 import { RevisionMetadata } from '../Domain/Revision/RevisionMetadata'
 import { RevisionRepositoryInterface } from '../Domain/Revision/RevisionRepositoryInterface'
-import { TypeORMRevisionRepository } from '../Infra/TypeORM/TypeORMRevisionRepository'
-import { TypeORMRevision } from '../Infra/TypeORM/TypeORMRevision'
-import { RevisionMetadataPersistenceMapper } from '../Mapping/RevisionMetadataPersistenceMapper'
-import { RevisionPersistenceMapper } from '../Mapping/RevisionPersistenceMapper'
+import { TypeORMRevisionRepository } from '../Infra/TypeORM/SQLRevisionRepository'
+import { TypeORMRevision } from '../Infra/TypeORM/SQLRevision'
 import { AppDataSource } from './DataSource'
 import { Env } from './Env'
 import TYPES from './Types'
@@ -21,8 +19,7 @@ import { DeleteRevision } from '../Domain/UseCase/DeleteRevision/DeleteRevision'
 import { GetRequiredRoleToViewRevision } from '../Domain/UseCase/GetRequiredRoleToViewRevision/GetRequiredRoleToViewRevision'
 import { GetRevision } from '../Domain/UseCase/GetRevision/GetRevision'
 import { GetRevisionsMetada } from '../Domain/UseCase/GetRevisionsMetada/GetRevisionsMetada'
-import { RevisionHttpMapper } from '../Mapping/RevisionHttpMapper'
-import { RevisionMetadataHttpMapper } from '../Mapping/RevisionMetadataHttpMapper'
+import { RevisionMetadataHttpMapper } from '../Mapping/Http/RevisionMetadataHttpMapper'
 import { S3Client } from '@aws-sdk/client-s3'
 import { SQSClient, SQSClientConfig } from '@aws-sdk/client-sqs'
 import {
@@ -44,9 +41,16 @@ import { RevisionsCopyRequestedEventHandler } from '../Domain/Handler/RevisionsC
 import { CopyRevisions } from '../Domain/UseCase/CopyRevisions/CopyRevisions'
 import { FSDumpRepository } from '../Infra/FS/FSDumpRepository'
 import { S3DumpRepository } from '../Infra/S3/S3ItemDumpRepository'
-import { RevisionItemStringMapper } from '../Mapping/RevisionItemStringMapper'
+import { RevisionItemStringMapper } from '../Mapping/Backup/RevisionItemStringMapper'
 import { BaseRevisionsController } from '../Infra/InversifyExpress/Base/BaseRevisionsController'
 import { Transform } from 'stream'
+import { MongoDBRevision } from '../Infra/TypeORM/MongoDB/MongoDBRevision'
+import { MongoDBRevisionRepository } from '../Infra/TypeORM/MongoDB/MongoDBRevisionRepository'
+import { SQLRevisionMetadataPersistenceMapper } from '../Mapping/Persistence/SQL/SQLRevisionMetadataPersistenceMapper'
+import { SQLRevisionPersistenceMapper } from '../Mapping/Persistence/SQL/SQLRevisionPersistenceMapper'
+import { MongoDBRevisionMetadataPersistenceMapper } from '../Mapping/Persistence/MongoDB/MongoDBRevisionMetadataPersistenceMapper'
+import { MongoDBRevisionPersistenceMapper } from '../Mapping/Persistence/MongoDB/MongoDBRevisionPersistenceMapper'
+import { RevisionHttpMapper } from '../Mapping/Http/RevisionHttpMapper'
 
 export class ContainerConfigLoader {
   async load(configuration?: {
@@ -62,6 +66,7 @@ export class ContainerConfigLoader {
     env.load()
 
     const isConfiguredForHomeServer = env.get('MODE', true) === 'home-server'
+    const isSecondaryDatabaseEnabled = env.get('SECONDARY_DB_ENABLED', true) === 'true'
 
     const container = new Container({
       defaultScope: 'Singleton',
@@ -101,11 +106,19 @@ export class ContainerConfigLoader {
 
     // Map
     container
-      .bind<MapperInterface<RevisionMetadata, TypeORMRevision>>(TYPES.Revisions_RevisionMetadataPersistenceMapper)
-      .toDynamicValue(() => new RevisionMetadataPersistenceMapper())
+      .bind<MapperInterface<RevisionMetadata, TypeORMRevision>>(TYPES.Revisions_SQLRevisionMetadataPersistenceMapper)
+      .toConstantValue(new SQLRevisionMetadataPersistenceMapper())
     container
-      .bind<MapperInterface<Revision, TypeORMRevision>>(TYPES.Revisions_RevisionPersistenceMapper)
-      .toDynamicValue(() => new RevisionPersistenceMapper())
+      .bind<MapperInterface<Revision, TypeORMRevision>>(TYPES.Revisions_SQLRevisionPersistenceMapper)
+      .toConstantValue(new SQLRevisionPersistenceMapper())
+    container
+      .bind<MapperInterface<RevisionMetadata, MongoDBRevision>>(
+        TYPES.Revisions_MongoDBRevisionMetadataPersistenceMapper,
+      )
+      .toConstantValue(new MongoDBRevisionMetadataPersistenceMapper())
+    container
+      .bind<MapperInterface<Revision, MongoDBRevision>>(TYPES.Revisions_MongoDBRevisionPersistenceMapper)
+      .toConstantValue(new MongoDBRevisionPersistenceMapper())
 
     // ORM
     container
@@ -115,14 +128,35 @@ export class ContainerConfigLoader {
     // Repositories
     container
       .bind<RevisionRepositoryInterface>(TYPES.Revisions_RevisionRepository)
-      .toDynamicValue((context: interfaces.Context) => {
-        return new TypeORMRevisionRepository(
-          context.container.get(TYPES.Revisions_ORMRevisionRepository),
-          context.container.get(TYPES.Revisions_RevisionMetadataPersistenceMapper),
-          context.container.get(TYPES.Revisions_RevisionPersistenceMapper),
-          context.container.get(TYPES.Revisions_Logger),
+      .toConstantValue(
+        new TypeORMRevisionRepository(
+          container.get<Repository<TypeORMRevision>>(TYPES.Revisions_ORMRevisionRepository),
+          container.get<MapperInterface<RevisionMetadata, TypeORMRevision>>(
+            TYPES.Revisions_SQLRevisionMetadataPersistenceMapper,
+          ),
+          container.get<MapperInterface<Revision, TypeORMRevision>>(TYPES.Revisions_SQLRevisionPersistenceMapper),
+          container.get<winston.Logger>(TYPES.Revisions_Logger),
+        ),
+      )
+
+    if (isSecondaryDatabaseEnabled) {
+      container
+        .bind<MongoRepository<MongoDBRevision>>(TYPES.Revisions_ORMMongoRevisionRepository)
+        .toConstantValue(appDataSource.getMongoRepository(MongoDBRevision))
+
+      container
+        .bind<RevisionRepositoryInterface>(TYPES.Revisions_MongoDBRevisionRepository)
+        .toConstantValue(
+          new MongoDBRevisionRepository(
+            container.get<MongoRepository<MongoDBRevision>>(TYPES.Revisions_ORMMongoRevisionRepository),
+            container.get<MapperInterface<RevisionMetadata, MongoDBRevision>>(
+              TYPES.Revisions_MongoDBRevisionMetadataPersistenceMapper,
+            ),
+            container.get<MapperInterface<Revision, MongoDBRevision>>(TYPES.Revisions_MongoDBRevisionPersistenceMapper),
+            container.get<winston.Logger>(TYPES.Revisions_Logger),
+          ),
         )
-      })
+    }
 
     container.bind<TimerInterface>(TYPES.Revisions_Timer).toDynamicValue(() => new Timer())
 

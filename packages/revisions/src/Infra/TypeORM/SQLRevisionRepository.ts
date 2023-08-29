@@ -5,7 +5,7 @@ import { Logger } from 'winston'
 import { Revision } from '../../Domain/Revision/Revision'
 import { RevisionMetadata } from '../../Domain/Revision/RevisionMetadata'
 import { RevisionRepositoryInterface } from '../../Domain/Revision/RevisionRepositoryInterface'
-import { TypeORMRevision } from './TypeORMRevision'
+import { TypeORMRevision } from './SQLRevision'
 
 export class TypeORMRevisionRepository implements RevisionRepositoryInterface {
   constructor(
