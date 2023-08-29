@@ -304,28 +304,28 @@ export class ContainerConfigLoader {
     // Handlers
     container
       .bind<ItemDumpedEventHandler>(TYPES.Revisions_ItemDumpedEventHandler)
-      .toDynamicValue((context: interfaces.Context) => {
-        return new ItemDumpedEventHandler(
-          context.container.get(TYPES.Revisions_DumpRepository),
-          context.container.get(TYPES.Revisions_SQLRevisionRepository),
-        )
-      })
+      .toConstantValue(
+        new ItemDumpedEventHandler(
+          container.get<DumpRepositoryInterface>(TYPES.Revisions_DumpRepository),
+          container.get<RevisionRepositoryResolverInterface>(TYPES.Revisions_RevisionRepositoryResolver),
+        ),
+      )
     container
       .bind<AccountDeletionRequestedEventHandler>(TYPES.Revisions_AccountDeletionRequestedEventHandler)
-      .toDynamicValue((context: interfaces.Context) => {
-        return new AccountDeletionRequestedEventHandler(
-          context.container.get(TYPES.Revisions_SQLRevisionRepository),
-          context.container.get(TYPES.Revisions_Logger),
-        )
-      })
+      .toConstantValue(
+        new AccountDeletionRequestedEventHandler(
+          container.get<RevisionRepositoryResolverInterface>(TYPES.Revisions_RevisionRepositoryResolver),
+          container.get<winston.Logger>(TYPES.Revisions_Logger),
+        ),
+      )
     container
       .bind<RevisionsCopyRequestedEventHandler>(TYPES.Revisions_RevisionsCopyRequestedEventHandler)
-      .toDynamicValue((context: interfaces.Context) => {
-        return new RevisionsCopyRequestedEventHandler(
-          context.container.get(TYPES.Revisions_CopyRevisions),
-          context.container.get(TYPES.Revisions_Logger),
-        )
-      })
+      .toConstantValue(
+        new RevisionsCopyRequestedEventHandler(
+          container.get<CopyRevisions>(TYPES.Revisions_CopyRevisions),
+          container.get<winston.Logger>(TYPES.Revisions_Logger),
+        ),
+      )
 
     const eventHandlers: Map<string, DomainEventHandlerInterface> = new Map([
       ['ITEM_DUMPED', container.get(TYPES.Revisions_ItemDumpedEventHandler)],
