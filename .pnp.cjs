@@ -3602,6 +3602,16 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["@mongodb-js/saslprep", [\
+      ["npm:1.1.0", {\
+        "packageLocation": "./.yarn/cache/@mongodb-js-saslprep-npm-1.1.0-3906c025b8-2cf6d124d4.zip/node_modules/@mongodb-js/saslprep/",\
+        "packageDependencies": [\
+          ["@mongodb-js/saslprep", "npm:1.1.0"],\
+          ["sparse-bitfield", "npm:3.0.3"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["@mrleebo/prisma-ast", [\
       ["npm:0.5.2", {\
         "packageLocation": "./.yarn/cache/@mrleebo-prisma-ast-npm-0.5.2-538c9d793e-69a7f3c188.zip/node_modules/@mrleebo/prisma-ast/",\
@@ -4997,6 +5007,7 @@ const RAW_RUNTIME_STATE =
           ["inversify", "npm:6.0.1"],\
           ["inversify-express-utils", "npm:6.4.3"],\
           ["jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.5.0"],\
+          ["mongodb", "virtual:365b8c88cdf194291829ee28b79556e2328175d26a621363e703848100bea0042e9500db2a1206c9bbc3a4a76a1d169639ef774b2ea3a1a98584a9936b58c6be#npm:6.0.0"],\
           ["mysql2", "npm:3.3.3"],\
           ["newrelic", "npm:10.1.2"],\
           ["npm-check-updates", "npm:16.10.12"],\
@@ -5191,7 +5202,7 @@ const RAW_RUNTIME_STATE =
           ["inversify-express-utils", "npm:6.4.3"],\
           ["jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.5.0"],\
           ["jsonwebtoken", "npm:9.0.0"],\
-          ["mongodb", "virtual:67ad3a1ca34e24ce4821cc48979e98af0c3e5dd7aabc7ad0b5d22d1d977d6f943f81c9f141a420105ebdc61ef777e508a96c7946081decd98f8c30543d468b33#npm:5.7.0"],\
+          ["mongodb", "virtual:365b8c88cdf194291829ee28b79556e2328175d26a621363e703848100bea0042e9500db2a1206c9bbc3a4a76a1d169639ef774b2ea3a1a98584a9936b58c6be#npm:6.0.0"],\
           ["mysql2", "npm:3.3.3"],\
           ["newrelic", "npm:10.1.2"],\
           ["nodemon", "npm:2.0.22"],\
@@ -5202,7 +5213,7 @@ const RAW_RUNTIME_STATE =
           ["semver", "npm:7.5.1"],\
           ["sqlite3", "virtual:31b5a94a105c89c9294c3d524a7f8929fe63ee5a2efadf21951ca4c0cfd2ecf02e8f4ef5a066bbda091f1e3a56e57c6749069a080618c96b22e51131a330fc4a#npm:5.1.6"],\
           ["ts-jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.1.0"],\
-          ["typeorm", "virtual:67ad3a1ca34e24ce4821cc48979e98af0c3e5dd7aabc7ad0b5d22d1d977d6f943f81c9f141a420105ebdc61ef777e508a96c7946081decd98f8c30543d468b33#npm:0.3.16"],\
+          ["typeorm", "virtual:365b8c88cdf194291829ee28b79556e2328175d26a621363e703848100bea0042e9500db2a1206c9bbc3a4a76a1d169639ef774b2ea3a1a98584a9936b58c6be#npm:0.3.16"],\
           ["typescript", "patch:typescript@npm%3A5.0.4#optional!builtin<compat/typescript>::version=5.0.4&hash=b5f058"],\
           ["ua-parser-js", "npm:1.0.35"],\
           ["uuid", "npm:9.0.0"],\
@@ -7096,10 +7107,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["bson", [\
-      ["npm:5.4.0", {\
-        "packageLocation": "./.yarn/cache/bson-npm-5.4.0-2f854c8216-2c913a45c0.zip/node_modules/bson/",\
+      ["npm:6.0.0", {\
+        "packageLocation": "./.yarn/cache/bson-npm-6.0.0-7b3cba060e-7290998ee8.zip/node_modules/bson/",\
         "packageDependencies": [\
-          ["bson", "npm:5.4.0"]\
+          ["bson", "npm:6.0.0"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -12330,43 +12341,50 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["mongodb", [\
-      ["npm:5.7.0", {\
-        "packageLocation": "./.yarn/cache/mongodb-npm-5.7.0-c5e415a2e7-23a291ffe7.zip/node_modules/mongodb/",\
+      ["npm:6.0.0", {\
+        "packageLocation": "./.yarn/cache/mongodb-npm-6.0.0-7c1e74de91-daec6dc9dc.zip/node_modules/mongodb/",\
         "packageDependencies": [\
-          ["mongodb", "npm:5.7.0"]\
+          ["mongodb", "npm:6.0.0"]\
         ],\
         "linkType": "SOFT"\
       }],\
-      ["virtual:67ad3a1ca34e24ce4821cc48979e98af0c3e5dd7aabc7ad0b5d22d1d977d6f943f81c9f141a420105ebdc61ef777e508a96c7946081decd98f8c30543d468b33#npm:5.7.0", {\
-        "packageLocation": "./.yarn/__virtual__/mongodb-virtual-eb0cd47e23/0/cache/mongodb-npm-5.7.0-c5e415a2e7-23a291ffe7.zip/node_modules/mongodb/",\
+      ["virtual:365b8c88cdf194291829ee28b79556e2328175d26a621363e703848100bea0042e9500db2a1206c9bbc3a4a76a1d169639ef774b2ea3a1a98584a9936b58c6be#npm:6.0.0", {\
+        "packageLocation": "./.yarn/__virtual__/mongodb-virtual-789f2eaaac/0/cache/mongodb-npm-6.0.0-7c1e74de91-daec6dc9dc.zip/node_modules/mongodb/",\
         "packageDependencies": [\
-          ["mongodb", "virtual:67ad3a1ca34e24ce4821cc48979e98af0c3e5dd7aabc7ad0b5d22d1d977d6f943f81c9f141a420105ebdc61ef777e508a96c7946081decd98f8c30543d468b33#npm:5.7.0"],\
+          ["mongodb", "virtual:365b8c88cdf194291829ee28b79556e2328175d26a621363e703848100bea0042e9500db2a1206c9bbc3a4a76a1d169639ef774b2ea3a1a98584a9936b58c6be#npm:6.0.0"],\
           ["@aws-sdk/credential-providers", null],\
+          ["@mongodb-js/saslprep", "npm:1.1.0"],\
           ["@mongodb-js/zstd", null],\
           ["@types/aws-sdk__credential-providers", null],\
+          ["@types/gcp-metadata", null],\
           ["@types/kerberos", null],\
           ["@types/mongodb-client-encryption", null],\
           ["@types/mongodb-js__zstd", null],\
           ["@types/snappy", null],\
-          ["bson", "npm:5.4.0"],\
+          ["@types/socks", null],\
+          ["bson", "npm:6.0.0"],\
+          ["gcp-metadata", null],\
           ["kerberos", null],\
           ["mongodb-client-encryption", null],\
           ["mongodb-connection-string-url", "npm:2.6.0"],\
-          ["saslprep", "npm:1.0.3"],\
           ["snappy", null],\
-          ["socks", "npm:2.7.1"]\
+          ["socks", null]\
         ],\
         "packagePeers": [\
           "@aws-sdk/credential-providers",\
           "@mongodb-js/zstd",\
           "@types/aws-sdk__credential-providers",\
+          "@types/gcp-metadata",\
           "@types/kerberos",\
           "@types/mongodb-client-encryption",\
           "@types/mongodb-js__zstd",\
           "@types/snappy",\
+          "@types/socks",\
+          "gcp-metadata",\
           "kerberos",\
           "mongodb-client-encryption",\
-          "snappy"\
+          "snappy",\
+          "socks"\
         ],\
         "linkType": "HARD"\
       }]\
@@ -14341,16 +14359,6 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
-    ["saslprep", [\
-      ["npm:1.0.3", {\
-        "packageLocation": "./.yarn/cache/saslprep-npm-1.0.3-8db649c346-23ebcda091.zip/node_modules/saslprep/",\
-        "packageDependencies": [\
-          ["saslprep", "npm:1.0.3"],\
-          ["sparse-bitfield", "npm:3.0.3"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
     ["schema-utils", [\
       ["npm:3.1.2", {\
         "packageLocation": "./.yarn/cache/schema-utils-npm-3.1.2-d97c6dc247-11d35f997e.zip/node_modules/schema-utils/",\
@@ -15821,99 +15829,7 @@ const RAW_RUNTIME_STATE =
           ["hdb-pool", null],\
           ["ioredis", null],\
           ["mkdirp", "npm:2.1.6"],\
-          ["mongodb", null],\
-          ["mssql", null],\
-          ["mysql2", "npm:3.3.3"],\
-          ["oracledb", null],\
-          ["pg", null],\
-          ["pg-native", null],\
-          ["pg-query-stream", null],\
-          ["redis", null],\
-          ["reflect-metadata", "npm:0.1.13"],\
-          ["sha.js", "npm:2.4.11"],\
-          ["sql.js", null],\
-          ["sqlite3", "virtual:31b5a94a105c89c9294c3d524a7f8929fe63ee5a2efadf21951ca4c0cfd2ecf02e8f4ef5a066bbda091f1e3a56e57c6749069a080618c96b22e51131a330fc4a#npm:5.1.6"],\
-          ["ts-node", null],\
-          ["tslib", "npm:2.5.2"],\
-          ["typeorm-aurora-data-api-driver", null],\
-          ["uuid", "npm:9.0.0"],\
-          ["yargs", "npm:17.7.2"]\
-        ],\
-        "packagePeers": [\
-          "@google-cloud/spanner",\
-          "@sap/hana-client",\
-          "@types/better-sqlite3",\
-          "@types/google-cloud__spanner",\
-          "@types/hdb-pool",\
-          "@types/ioredis",\
-          "@types/mongodb",\
-          "@types/mssql",\
-          "@types/mysql2",\
-          "@types/oracledb",\
-          "@types/pg-native",\
-          "@types/pg-query-stream",\
-          "@types/pg",\
-          "@types/redis",\
-          "@types/sap__hana-client",\
-          "@types/sql.js",\
-          "@types/sqlite3",\
-          "@types/ts-node",\
-          "@types/typeorm-aurora-data-api-driver",\
-          "better-sqlite3",\
-          "hdb-pool",\
-          "ioredis",\
-          "mongodb",\
-          "mssql",\
-          "mysql2",\
-          "oracledb",\
-          "pg-native",\
-          "pg-query-stream",\
-          "pg",\
-          "redis",\
-          "sql.js",\
-          "sqlite3",\
-          "ts-node",\
-          "typeorm-aurora-data-api-driver"\
-        ],\
-        "linkType": "HARD"\
-      }],\
-      ["virtual:67ad3a1ca34e24ce4821cc48979e98af0c3e5dd7aabc7ad0b5d22d1d977d6f943f81c9f141a420105ebdc61ef777e508a96c7946081decd98f8c30543d468b33#npm:0.3.16", {\
-        "packageLocation": "./.yarn/__virtual__/typeorm-virtual-13b6364fde/0/cache/typeorm-npm-0.3.16-5ac12a7afc-19803f935e.zip/node_modules/typeorm/",\
-        "packageDependencies": [\
-          ["typeorm", "virtual:67ad3a1ca34e24ce4821cc48979e98af0c3e5dd7aabc7ad0b5d22d1d977d6f943f81c9f141a420105ebdc61ef777e508a96c7946081decd98f8c30543d468b33#npm:0.3.16"],\
-          ["@google-cloud/spanner", null],\
-          ["@sap/hana-client", null],\
-          ["@sqltools/formatter", "npm:1.2.5"],\
-          ["@types/better-sqlite3", null],\
-          ["@types/google-cloud__spanner", null],\
-          ["@types/hdb-pool", null],\
-          ["@types/ioredis", null],\
-          ["@types/mongodb", null],\
-          ["@types/mssql", null],\
-          ["@types/mysql2", null],\
-          ["@types/oracledb", null],\
-          ["@types/pg", null],\
-          ["@types/pg-native", null],\
-          ["@types/pg-query-stream", null],\
-          ["@types/redis", null],\
-          ["@types/sap__hana-client", null],\
-          ["@types/sql.js", null],\
-          ["@types/sqlite3", null],\
-          ["@types/ts-node", null],\
-          ["@types/typeorm-aurora-data-api-driver", null],\
-          ["app-root-path", "npm:3.1.0"],\
-          ["better-sqlite3", null],\
-          ["buffer", "npm:6.0.3"],\
-          ["chalk", "npm:4.1.2"],\
-          ["cli-highlight", "npm:2.1.11"],\
-          ["date-fns", "npm:2.30.0"],\
-          ["debug", "virtual:ac3d8e680759ce54399273724d44e041d6c9b73454d191d411a8c44bb27e22f02aaf6ed9d3ad0ac1c298eac4833cff369c9c7b84c573016112c4f84be2cd8543#npm:4.3.4"],\
-          ["dotenv", "npm:16.1.3"],\
-          ["glob", "npm:8.1.0"],\
-          ["hdb-pool", null],\
-          ["ioredis", null],\
-          ["mkdirp", "npm:2.1.6"],\
-          ["mongodb", "virtual:67ad3a1ca34e24ce4821cc48979e98af0c3e5dd7aabc7ad0b5d22d1d977d6f943f81c9f141a420105ebdc61ef777e508a96c7946081decd98f8c30543d468b33#npm:5.7.0"],\
+          ["mongodb", "virtual:365b8c88cdf194291829ee28b79556e2328175d26a621363e703848100bea0042e9500db2a1206c9bbc3a4a76a1d169639ef774b2ea3a1a98584a9936b58c6be#npm:6.0.0"],\
           ["mssql", null],\
           ["mysql2", "npm:3.3.3"],\
           ["oracledb", null],\

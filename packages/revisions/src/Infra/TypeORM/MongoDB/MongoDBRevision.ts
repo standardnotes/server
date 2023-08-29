@@ -1,4 +1,5 @@
-import { BSON, Column, Entity, Index, ObjectIdColumn } from 'typeorm'
+import { BSON } from 'mongodb'
+import { Column, Entity, Index, ObjectIdColumn } from 'typeorm'
 
 @Entity({ name: 'revisions' })
 export class MongoDBRevision {
