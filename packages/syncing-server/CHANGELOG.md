@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.86.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.85.1...@standardnotes/syncing-server@1.86.0) (2023-08-29)
+
+### Features
+
+* **revisions:** add MongoDB support ([#715](https://github.com/standardnotes/syncing-server-js/issues/715)) ([2646b75](https://github.com/standardnotes/syncing-server-js/commit/2646b756a95c425bd406622bfe3a9aa4c490d537))
+
 ## [1.85.1](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.85.0...@standardnotes/syncing-server@1.85.1) (2023-08-28)
 
 ### Bug Fixes
