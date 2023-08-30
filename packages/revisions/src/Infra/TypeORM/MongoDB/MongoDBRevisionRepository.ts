@@ -39,7 +39,7 @@ export class MongoDBRevisionRepository implements RevisionRepositoryInterface {
   }
 
   async removeByUserUuid(userUuid: Uuid): Promise<void> {
-    await this.mongoRepository.deleteMany({ where: { userUuid: userUuid.value } })
+    await this.mongoRepository.deleteMany({ userUuid: userUuid.value })
   }
 
   async removeOneByUuid(revisionUuid: Uuid, userUuid: Uuid): Promise<void> {

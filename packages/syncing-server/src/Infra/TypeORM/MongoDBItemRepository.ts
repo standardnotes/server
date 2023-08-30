@@ -18,7 +18,7 @@ export class MongoDBItemRepository implements ItemRepositoryInterface {
   ) {}
 
   async deleteByUserUuid(userUuid: string): Promise<void> {
-    await this.mongoRepository.deleteMany({ where: { userUuid } })
+    await this.mongoRepository.deleteMany({ userUuid })
   }
 
   async findAll(query: ItemQuery): Promise<Item[]> {
