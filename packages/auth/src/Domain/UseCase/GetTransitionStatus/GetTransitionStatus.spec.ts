@@ -39,6 +39,7 @@ describe('GetTransitionStatus', () => {
 
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
+      transitionType: 'items',
     })
 
     expect(result.isFailed()).toBeFalsy()
@@ -52,6 +53,7 @@ describe('GetTransitionStatus', () => {
 
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
+      transitionType: 'items',
     })
 
     expect(result.isFailed()).toBeFalsy()
@@ -63,6 +65,7 @@ describe('GetTransitionStatus', () => {
 
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
+      transitionType: 'items',
     })
 
     expect(result.isFailed()).toBeFalsy()
@@ -76,6 +79,7 @@ describe('GetTransitionStatus', () => {
 
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
+      transitionType: 'items',
     })
 
     expect(result.isFailed()).toBeFalsy()
@@ -87,6 +91,7 @@ describe('GetTransitionStatus', () => {
 
     const result = await useCase.execute({
       userUuid: 'invalid',
+      transitionType: 'items',
     })
 
     expect(result.isFailed()).toBeTruthy()
@@ -100,6 +105,7 @@ describe('GetTransitionStatus', () => {
 
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
+      transitionType: 'items',
     })
 
     expect(result.isFailed()).toBeTruthy()

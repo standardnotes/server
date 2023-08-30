@@ -10,4 +10,18 @@ export class Revision extends Entity<RevisionProps> {
   static create(props: RevisionProps, id?: UniqueEntityId): Result<Revision> {
     return Result.ok<Revision>(new Revision(props, id))
   }
+
+  isIdenticalTo(revision: Revision): boolean {
+    if (this._id.toString() !== revision._id.toString()) {
+      return false
+    }
+
+    const stringifiedThis = JSON.stringify(this.props)
+    const stringifiedRevision = JSON.stringify(revision.props)
+
+    const base64This = Buffer.from(stringifiedThis).toString('base64')
+    const base64Item = Buffer.from(stringifiedRevision).toString('base64')
+
+    return base64This === base64Item
+  }
 }

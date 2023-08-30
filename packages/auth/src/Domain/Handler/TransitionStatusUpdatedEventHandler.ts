@@ -9,6 +9,7 @@ export class TransitionStatusUpdatedEventHandler implements DomainEventHandlerIn
     const result = await this.updateTransitionStatusUseCase.execute({
       status: event.payload.status,
       userUuid: event.payload.userUuid,
+      transitionType: event.payload.transitionType,
     })
 
     if (result.isFailed()) {

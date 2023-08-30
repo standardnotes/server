@@ -29,7 +29,7 @@ export class GetTransitionStatus implements UseCaseInterface<'TO-DO' | 'STARTED'
       }
     }
 
-    const transitionStatus = await this.transitionStatusRepository.getStatus(userUuid.value)
+    const transitionStatus = await this.transitionStatusRepository.getStatus(userUuid.value, dto.transitionType)
     if (transitionStatus === null) {
       return Result.ok('TO-DO')
     }

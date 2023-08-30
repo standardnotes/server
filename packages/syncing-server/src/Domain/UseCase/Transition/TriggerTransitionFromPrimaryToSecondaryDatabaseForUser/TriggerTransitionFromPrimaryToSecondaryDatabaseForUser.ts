@@ -11,7 +11,11 @@ export class TriggerTransitionFromPrimaryToSecondaryDatabaseForUser implements U
   ) {}
 
   async execute(dto: TriggerTransitionFromPrimaryToSecondaryDatabaseForUserDTO): Promise<Result<void>> {
-    const event = this.domainEventFactory.createTransitionStatusUpdatedEvent(dto.userUuid, 'STARTED')
+    const event = this.domainEventFactory.createTransitionStatusUpdatedEvent({
+      userUuid: dto.userUuid,
+      status: 'STARTED',
+      transitionType: 'items',
+    })
 
     await this.domainEventPubliser.publish(event)
 

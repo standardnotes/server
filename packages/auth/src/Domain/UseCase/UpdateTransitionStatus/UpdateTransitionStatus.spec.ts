@@ -25,10 +25,14 @@ describe('UpdateTransitionStatus', () => {
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
       status: 'FINISHED',
+      transitionType: 'items',
     })
 
     expect(result.isFailed()).toBeFalsy()
-    expect(transitionStatusRepository.removeStatus).toHaveBeenCalledWith('00000000-0000-0000-0000-000000000000')
+    expect(transitionStatusRepository.removeStatus).toHaveBeenCalledWith(
+      '00000000-0000-0000-0000-000000000000',
+      'items',
+    )
     expect(roleService.addRoleToUser).toHaveBeenCalledWith(
       Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
       RoleName.create(RoleName.NAMES.TransitionUser).getValue(),
@@ -41,11 +45,13 @@ describe('UpdateTransitionStatus', () => {
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
       status: 'STARTED',
+      transitionType: 'items',
     })
 
     expect(result.isFailed()).toBeFalsy()
     expect(transitionStatusRepository.updateStatus).toHaveBeenCalledWith(
       '00000000-0000-0000-0000-000000000000',
+      'items',
       'STARTED',
     )
   })
@@ -56,6 +62,7 @@ describe('UpdateTransitionStatus', () => {
     const result = await useCase.execute({
       userUuid: 'invalid',
       status: 'STARTED',
+      transitionType: 'items',
     })
 
     expect(result.isFailed()).toBeTruthy()

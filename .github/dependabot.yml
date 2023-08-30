@@ -31,6 +31,11 @@ updates:
       interval: "daily"
 
   - package-ecosystem: "npm"
+    directory: "/packages/domain-core"
+    schedule:
+      interval: "daily"
+
+  - package-ecosystem: "npm"
     directory: "/packages/domain-events"
     schedule:
       interval: "daily"
@@ -47,6 +52,11 @@ updates:
 
   - package-ecosystem: "npm"
     directory: "/packages/files"
+    schedule:
+      interval: "daily"
+
+  - package-ecosystem: "npm"
+    directory: "/packages/home-server"
     schedule:
       interval: "daily"
 

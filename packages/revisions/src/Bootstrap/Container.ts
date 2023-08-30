@@ -54,6 +54,7 @@ import { RevisionRepositoryResolverInterface } from '../Domain/Revision/Revision
 import { TypeORMRevisionRepositoryResolver } from '../Infra/TypeORM/TypeORMRevisionRepositoryResolver'
 import { RevisionMetadataHttpRepresentation } from '../Mapping/Http/RevisionMetadataHttpRepresentation'
 import { RevisionHttpRepresentation } from '../Mapping/Http/RevisionHttpRepresentation'
+import { TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser } from '../Domain/UseCase/Transition/TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser/TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser'
 
 export class ContainerConfigLoader {
   async load(configuration?: {
@@ -217,6 +218,20 @@ export class ContainerConfigLoader {
       .toConstantValue(
         new CopyRevisions(
           container.get<RevisionRepositoryResolverInterface>(TYPES.Revisions_RevisionRepositoryResolver),
+        ),
+      )
+    container
+      .bind<TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser>(
+        TYPES.Revisions_TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser,
+      )
+      .toConstantValue(
+        new TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser(
+          container.get<RevisionRepositoryInterface>(TYPES.Revisions_SQLRevisionRepository),
+          isSecondaryDatabaseEnabled
+            ? container.get<RevisionRepositoryInterface>(TYPES.Revisions_MongoDBRevisionRepository)
+            : null,
+          container.get<TimerInterface>(TYPES.Revisions_Timer),
+          container.get<winston.Logger>(TYPES.Revisions_Logger),
         ),
       )
 
