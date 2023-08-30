@@ -11,6 +11,7 @@ import { GetRevision } from '../../../Domain/UseCase/GetRevision/GetRevision'
 import { GetRevisionsMetada } from '../../../Domain/UseCase/GetRevisionsMetada/GetRevisionsMetada'
 import { RevisionHttpRepresentation } from '../../../Mapping/Http/RevisionHttpRepresentation'
 import { RevisionMetadataHttpRepresentation } from '../../../Mapping/Http/RevisionMetadataHttpRepresentation'
+import { TriggerTransitionFromPrimaryToSecondaryDatabaseForUser } from '../../../Domain/UseCase/Transition/TriggerTransitionFromPrimaryToSecondaryDatabaseForUser/TriggerTransitionFromPrimaryToSecondaryDatabaseForUser'
 
 export class BaseRevisionsController extends BaseHttpController {
   constructor(
@@ -19,6 +20,7 @@ export class BaseRevisionsController extends BaseHttpController {
     protected doDeleteRevision: DeleteRevision,
     protected revisionHttpMapper: MapperInterface<Revision, RevisionHttpRepresentation>,
     protected revisionMetadataHttpMapper: MapperInterface<RevisionMetadata, RevisionMetadataHttpRepresentation>,
+    protected triggerTransitionFromPrimaryToSecondaryDatabaseForUser: TriggerTransitionFromPrimaryToSecondaryDatabaseForUser,
     private controllerContainer?: ControllerContainerInterface,
   ) {
     super()
@@ -27,6 +29,7 @@ export class BaseRevisionsController extends BaseHttpController {
       this.controllerContainer.register('revisions.revisions.getRevisions', this.getRevisions.bind(this))
       this.controllerContainer.register('revisions.revisions.getRevision', this.getRevision.bind(this))
       this.controllerContainer.register('revisions.revisions.deleteRevision', this.deleteRevision.bind(this))
+      this.controllerContainer.register('revisions.revisions.transition', this.transition.bind(this))
     }
   }
 
@@ -98,5 +101,24 @@ export class BaseRevisionsController extends BaseHttpController {
     return this.json({
       message: revisionOrError.getValue(),
     })
+  }
+
+  async transition(_request: Request, response: Response): Promise<results.JsonResult> {
+    const result = await this.triggerTransitionFromPrimaryToSecondaryDatabaseForUser.execute({
+      userUuid: response.locals.user.uuid,
+    })
+
+    if (result.isFailed()) {
+      return this.json(
+        {
+          error: { message: result.getError() },
+        },
+        400,
+      )
+    }
+
+    response.setHeader('x-invalidate-cache', response.locals.user.uuid)
+
+    return this.json({ success: true })
   }
 }

@@ -2,6 +2,7 @@ const TYPES = {
   Revisions_DBConnection: Symbol.for('Revisions_DBConnection'),
   Revisions_Logger: Symbol.for('Revisions_Logger'),
   Revisions_SQS: Symbol.for('Revisions_SQS'),
+  Revisions_SNS: Symbol.for('Revisions_SNS'),
   Revisions_S3: Symbol.for('Revisions_S3'),
   Revisions_Env: Symbol.for('Revisions_Env'),
   // Map
@@ -27,6 +28,8 @@ const TYPES = {
   Revisions_SQS_AWS_REGION: Symbol.for('Revisions_SQS_AWS_REGION'),
   Revisions_S3_AWS_REGION: Symbol.for('Revisions_S3_AWS_REGION'),
   Revisions_S3_BACKUP_BUCKET_NAME: Symbol.for('Revisions_S3_BACKUP_BUCKET_NAME'),
+  Revisions_SNS_TOPIC_ARN: Symbol.for('Revisions_SNS_TOPIC_ARN'),
+  Revisions_SNS_AWS_REGION: Symbol.for('Revisions_SNS_AWS_REGION'),
   Revisions_NEW_RELIC_ENABLED: Symbol.for('Revisions_NEW_RELIC_ENABLED'),
   Revisions_VERSION: Symbol.for('Revisions_VERSION'),
   // use cases
@@ -38,6 +41,9 @@ const TYPES = {
   Revisions_TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser: Symbol.for(
     'Revisions_TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser',
   ),
+  Revisions_TriggerTransitionFromPrimaryToSecondaryDatabaseForUser: Symbol.for(
+    'Revisions_TriggerTransitionFromPrimaryToSecondaryDatabaseForUser',
+  ),
   // Controller
   Revisions_ControllerContainer: Symbol.for('Revisions_ControllerContainer'),
   Revisions_RevisionsController: Symbol.for('Revisions_RevisionsController'),
@@ -46,10 +52,13 @@ const TYPES = {
   Revisions_ItemDumpedEventHandler: Symbol.for('Revisions_ItemDumpedEventHandler'),
   Revisions_AccountDeletionRequestedEventHandler: Symbol.for('Revisions_AccountDeletionRequestedEventHandler'),
   Revisions_RevisionsCopyRequestedEventHandler: Symbol.for('Revisions_RevisionsCopyRequestedEventHandler'),
+  Revisions_TransitionStatusUpdatedEventHandler: Symbol.for('Revisions_TransitionStatusUpdatedEventHandler'),
   // Services
   Revisions_CrossServiceTokenDecoder: Symbol.for('Revisions_CrossServiceTokenDecoder'),
   Revisions_DomainEventSubscriberFactory: Symbol.for('Revisions_DomainEventSubscriberFactory'),
   Revisions_DomainEventMessageHandler: Symbol.for('Revisions_DomainEventMessageHandler'),
+  Revisions_DomainEventPublisher: Symbol.for('Revisions_DomainEventPublisher'),
+  Revisions_DomainEventFactory: Symbol.for('Revisions_DomainEventFactory'),
   Revisions_Timer: Symbol.for('Revisions_Timer'),
   // Inversify Express Controllers
   Revisions_BaseRevisionsController: Symbol.for('Revisions_BaseRevisionsController'),

@@ -65,6 +65,7 @@ export class EndpointResolver implements EndpointResolverInterface {
     ['[GET]:items/:itemUuid/revisions', 'revisions.revisions.getRevisions'],
     ['[GET]:items/:itemUuid/revisions/:id', 'revisions.revisions.getRevision'],
     ['[DELETE]:items/:itemUuid/revisions/:id', 'revisions.revisions.deleteRevision'],
+    ['[POST]:revisions/transition', 'revisions.revisions.transition'],
     // Messages Controller
     ['[GET]:messages/', 'sync.messages.get-received'],
     ['[GET]:messages/outbound', 'sync.messages.get-sent'],

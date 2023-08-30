@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { controller, httpDelete, httpGet, results } from 'inversify-express-utils'
+import { controller, httpDelete, httpGet, httpPost, results } from 'inversify-express-utils'
 import { inject } from 'inversify'
 
 import TYPES from '../../Bootstrap/Types'
@@ -12,8 +12,9 @@ import { Revision } from '../../Domain/Revision/Revision'
 import { RevisionMetadata } from '../../Domain/Revision/RevisionMetadata'
 import { RevisionHttpRepresentation } from '../../Mapping/Http/RevisionHttpRepresentation'
 import { RevisionMetadataHttpRepresentation } from '../../Mapping/Http/RevisionMetadataHttpRepresentation'
+import { TriggerTransitionFromPrimaryToSecondaryDatabaseForUser } from '../../Domain/UseCase/Transition/TriggerTransitionFromPrimaryToSecondaryDatabaseForUser/TriggerTransitionFromPrimaryToSecondaryDatabaseForUser'
 
-@controller('/items/:itemUuid/revisions', TYPES.Revisions_ApiGatewayAuthMiddleware)
+@controller('', TYPES.Revisions_ApiGatewayAuthMiddleware)
 export class AnnotatedRevisionsController extends BaseRevisionsController {
   constructor(
     @inject(TYPES.Revisions_GetRevisionsMetada) override getRevisionsMetadata: GetRevisionsMetada,
@@ -23,22 +24,36 @@ export class AnnotatedRevisionsController extends BaseRevisionsController {
     override revisionHttpMapper: MapperInterface<Revision, RevisionHttpRepresentation>,
     @inject(TYPES.Revisions_RevisionMetadataHttpMapper)
     override revisionMetadataHttpMapper: MapperInterface<RevisionMetadata, RevisionMetadataHttpRepresentation>,
+    @inject(TYPES.Revisions_TriggerTransitionFromPrimaryToSecondaryDatabaseForUser)
+    override triggerTransitionFromPrimaryToSecondaryDatabaseForUser: TriggerTransitionFromPrimaryToSecondaryDatabaseForUser,
   ) {
-    super(getRevisionsMetadata, doGetRevision, doDeleteRevision, revisionHttpMapper, revisionMetadataHttpMapper)
+    super(
+      getRevisionsMetadata,
+      doGetRevision,
+      doDeleteRevision,
+      revisionHttpMapper,
+      revisionMetadataHttpMapper,
+      triggerTransitionFromPrimaryToSecondaryDatabaseForUser,
+    )
   }
 
-  @httpGet('/')
+  @httpGet('/items/:itemUuid/revisions')
   override async getRevisions(request: Request, response: Response): Promise<results.JsonResult> {
     return super.getRevisions(request, response)
   }
 
-  @httpGet('/:uuid')
+  @httpGet('/items/:itemUuid/revisions/:uuid')
   override async getRevision(request: Request, response: Response): Promise<results.JsonResult> {
     return super.getRevision(request, response)
   }
 
-  @httpDelete('/:uuid')
+  @httpDelete('/items/:itemUuid/revisions/:uuid')
   override async deleteRevision(request: Request, response: Response): Promise<results.JsonResult> {
     return super.deleteRevision(request, response)
+  }
+
+  @httpPost('/revisions/transition')
+  override async transition(request: Request, response: Response): Promise<results.JsonResult> {
+    return super.transition(request, response)
   }
 }
