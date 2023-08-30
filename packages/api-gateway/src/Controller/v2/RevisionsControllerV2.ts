@@ -58,7 +58,7 @@ export class RevisionsControllerV2 extends BaseHttpController {
 
   @httpPost('/revisions/transition')
   async transition(request: Request, response: Response): Promise<void> {
-    await this.serviceProxy.callSyncingServer(
+    await this.serviceProxy.callRevisionsServer(
       request,
       response,
       this.endpointResolver.resolveEndpointOrMethodIdentifier('POST', 'revisions/transition'),
