@@ -178,6 +178,11 @@ LINKING_RESULT=$(link_queue_and_topic $SYNCING_SERVER_TOPIC_ARN $REVISIONS_QUEUE
 echo "linking done:"
 echo "$LINKING_RESULT"
 
+echo "linking topic $REVISIONS_TOPIC_ARN to queue $REVISIONS_QUEUE_ARN"
+LINKING_RESULT=$(link_queue_and_topic $REVISIONS_TOPIC_ARN $REVISIONS_QUEUE_ARN)
+echo "linking done:"
+echo "$LINKING_RESULT"
+
 QUEUE_NAME="scheduler-local-queue"
 
 echo "creating queue $QUEUE_NAME"
