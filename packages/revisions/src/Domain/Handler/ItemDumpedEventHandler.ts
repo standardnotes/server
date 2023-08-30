@@ -1,12 +1,13 @@
 import { DomainEventHandlerInterface, ItemDumpedEvent } from '@standardnotes/domain-events'
 
 import { DumpRepositoryInterface } from '../Dump/DumpRepositoryInterface'
-import { RevisionRepositoryInterface } from '../Revision/RevisionRepositoryInterface'
+import { RevisionRepositoryResolverInterface } from '../Revision/RevisionRepositoryResolverInterface'
+import { RoleNameCollection } from '@standardnotes/domain-core'
 
 export class ItemDumpedEventHandler implements DomainEventHandlerInterface {
   constructor(
     private dumpRepository: DumpRepositoryInterface,
-    private revisionRepository: RevisionRepositoryInterface,
+    private revisionRepositoryResolver: RevisionRepositoryResolverInterface,
   ) {}
 
   async handle(event: ItemDumpedEvent): Promise<void> {
@@ -17,7 +18,17 @@ export class ItemDumpedEventHandler implements DomainEventHandlerInterface {
       return
     }
 
-    await this.revisionRepository.save(revision)
+    const roleNamesOrError = RoleNameCollection.create(event.payload.roleNames)
+    if (roleNamesOrError.isFailed()) {
+      await this.dumpRepository.removeDump(event.payload.fileDumpPath)
+
+      return
+    }
+    const roleNames = roleNamesOrError.getValue()
+
+    const revisionRepository = this.revisionRepositoryResolver.resolve(roleNames)
+
+    await revisionRepository.save(revision)
 
     await this.dumpRepository.removeDump(event.payload.fileDumpPath)
   }

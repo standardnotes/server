@@ -1,7 +1,7 @@
 import { DataSource, EntityTarget, LoggerOptions, MongoRepository, ObjectLiteral, Repository } from 'typeorm'
 import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions'
 
-import { TypeORMRevision } from '../Infra/TypeORM/SQLRevision'
+import { SQLRevision } from '../Infra/TypeORM/SQL/SQLRevision'
 
 import { Env } from './Env'
 import { SqliteConnectionOptions } from 'typeorm/driver/sqlite/SqliteConnectionOptions'
@@ -71,7 +71,7 @@ export class AppDataSource {
 
     const commonDataSourceOptions = {
       maxQueryExecutionTime,
-      entities: [TypeORMRevision],
+      entities: [SQLRevision],
       migrations: [`${__dirname}/../../migrations/${isConfiguredForMySQL ? 'mysql' : 'sqlite'}/*.js`],
       migrationsRun: true,
       logging: <LoggerOptions>this.env.get('DB_DEBUG_LEVEL', true) ?? 'info',

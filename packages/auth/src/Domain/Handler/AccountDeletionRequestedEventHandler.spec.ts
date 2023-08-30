@@ -71,6 +71,7 @@ describe('AccountDeletionRequestedEventHandler', () => {
       userUuid: '00000000-0000-0000-0000-000000000000',
       userCreatedAtTimestamp: 1,
       regularSubscriptionUuid: '2-3-4',
+      roleNames: ['CORE_USER'],
     }
 
     logger = {} as jest.Mocked<Logger>

@@ -1,10 +1,10 @@
-import { Result, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
+import { Result, RoleNameCollection, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
 
-import { RevisionRepositoryInterface } from '../../Revision/RevisionRepositoryInterface'
 import { DeleteRevisionDTO } from './DeleteRevisionDTO'
+import { RevisionRepositoryResolverInterface } from '../../Revision/RevisionRepositoryResolverInterface'
 
 export class DeleteRevision implements UseCaseInterface<string> {
-  constructor(private revisionRepository: RevisionRepositoryInterface) {}
+  constructor(private revisionRepositoryResolver: RevisionRepositoryResolverInterface) {}
 
   async execute(dto: DeleteRevisionDTO): Promise<Result<string>> {
     const revisionUuidOrError = Uuid.create(dto.revisionUuid)
@@ -19,7 +19,15 @@ export class DeleteRevision implements UseCaseInterface<string> {
     }
     const userUuid = userUuidOrError.getValue()
 
-    await this.revisionRepository.removeOneByUuid(revisionUuid, userUuid)
+    const roleNamesOrError = RoleNameCollection.create(dto.roleNames)
+    if (roleNamesOrError.isFailed()) {
+      return Result.fail(roleNamesOrError.getError())
+    }
+    const roleNames = roleNamesOrError.getValue()
+
+    const revisionRepository = this.revisionRepositoryResolver.resolve(roleNames)
+
+    await revisionRepository.removeOneByUuid(revisionUuid, userUuid)
 
     return Result.ok<string>('Revision removed')
   }

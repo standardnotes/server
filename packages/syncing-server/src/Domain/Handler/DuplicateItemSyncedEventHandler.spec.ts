@@ -11,10 +11,11 @@ import { ItemRepositoryInterface } from '../Item/ItemRepositoryInterface'
 import { DuplicateItemSyncedEventHandler } from './DuplicateItemSyncedEventHandler'
 import { DomainEventFactoryInterface } from '../Event/DomainEventFactoryInterface'
 import { Uuid, ContentType, Dates, Timestamps, UniqueEntityId } from '@standardnotes/domain-core'
+import { ItemRepositoryResolverInterface } from '../Item/ItemRepositoryResolverInterface'
 
 describe('DuplicateItemSyncedEventHandler', () => {
-  let primaryItemRepository: ItemRepositoryInterface
-  let secondaryItemRepository: ItemRepositoryInterface | null
+  let itemRepositoryResolver: ItemRepositoryResolverInterface
+  let itemRepository: ItemRepositoryInterface
   let logger: Logger
   let duplicateItem: Item
   let originalItem: Item
@@ -23,13 +24,7 @@ describe('DuplicateItemSyncedEventHandler', () => {
   let domainEventPublisher: DomainEventPublisherInterface
 
   const createHandler = () =>
-    new DuplicateItemSyncedEventHandler(
-      primaryItemRepository,
-      secondaryItemRepository,
-      domainEventFactory,
-      domainEventPublisher,
-      logger,
-    )
+    new DuplicateItemSyncedEventHandler(itemRepositoryResolver, domainEventFactory, domainEventPublisher, logger)
 
   beforeEach(() => {
     originalItem = Item.create(
@@ -66,11 +61,14 @@ describe('DuplicateItemSyncedEventHandler', () => {
       new UniqueEntityId('00000000-0000-0000-0000-000000000001'),
     ).getValue()
 
-    primaryItemRepository = {} as jest.Mocked<ItemRepositoryInterface>
-    primaryItemRepository.findByUuidAndUserUuid = jest
+    itemRepository = {} as jest.Mocked<ItemRepositoryInterface>
+    itemRepository.findByUuidAndUserUuid = jest
       .fn()
       .mockReturnValueOnce(duplicateItem)
       .mockReturnValueOnce(originalItem)
+
+    itemRepositoryResolver = {} as jest.Mocked<ItemRepositoryResolverInterface>
+    itemRepositoryResolver.resolve = jest.fn().mockReturnValue(itemRepository)
 
     logger = {} as jest.Mocked<Logger>
     logger.warn = jest.fn()
@@ -81,6 +79,7 @@ describe('DuplicateItemSyncedEventHandler', () => {
     event.payload = {
       userUuid: '1-2-3',
       itemUuid: '2-3-4',
+      roleNames: ['CORE_USER'],
     }
 
     domainEventFactory = {} as jest.Mocked<DomainEventFactoryInterface>
@@ -98,22 +97,17 @@ describe('DuplicateItemSyncedEventHandler', () => {
     expect(domainEventPublisher.publish).toHaveBeenCalled()
   })
 
-  it('should copy revisions from original item to the duplicate item in the secondary repository', async () => {
-    secondaryItemRepository = {} as jest.Mocked<ItemRepositoryInterface>
-    secondaryItemRepository.findByUuidAndUserUuid = jest
-      .fn()
-      .mockReturnValueOnce(duplicateItem)
-      .mockReturnValueOnce(originalItem)
+  it('should do nothing if role names are not valid', async () => {
+    event.payload.roleNames = ['INVALID_ROLE_NAME']
 
     await createHandler().handle(event)
 
-    expect(domainEventPublisher.publish).toHaveBeenCalledTimes(2)
-
-    secondaryItemRepository = null
+    expect(domainEventPublisher.publish).not.toHaveBeenCalled()
   })
 
   it('should not copy revisions if original item does not exist', async () => {
-    primaryItemRepository.findByUuidAndUserUuid = jest.fn().mockReturnValueOnce(duplicateItem).mockReturnValueOnce(null)
+    itemRepository.findByUuidAndUserUuid = jest.fn().mockReturnValueOnce(duplicateItem).mockReturnValueOnce(null)
+    itemRepositoryResolver.resolve = jest.fn().mockReturnValue(itemRepository)
 
     await createHandler().handle(event)
 
@@ -121,7 +115,8 @@ describe('DuplicateItemSyncedEventHandler', () => {
   })
 
   it('should not copy revisions if duplicate item does not exist', async () => {
-    primaryItemRepository.findByUuidAndUserUuid = jest.fn().mockReturnValueOnce(null).mockReturnValueOnce(originalItem)
+    itemRepository.findByUuidAndUserUuid = jest.fn().mockReturnValueOnce(null).mockReturnValueOnce(originalItem)
+    itemRepositoryResolver.resolve = jest.fn().mockReturnValue(itemRepository)
 
     await createHandler().handle(event)
 

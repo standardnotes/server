@@ -6,22 +6,27 @@ import {
 import { Logger } from 'winston'
 import { DomainEventFactoryInterface } from '../Event/DomainEventFactoryInterface'
 import { ItemRepositoryInterface } from '../Item/ItemRepositoryInterface'
+import { ItemRepositoryResolverInterface } from '../Item/ItemRepositoryResolverInterface'
+import { RoleNameCollection } from '@standardnotes/domain-core'
 
 export class DuplicateItemSyncedEventHandler implements DomainEventHandlerInterface {
   constructor(
-    private primaryItemRepository: ItemRepositoryInterface,
-    private secondaryItemRepository: ItemRepositoryInterface | null,
+    private itemRepositoryResolver: ItemRepositoryResolverInterface,
     private domainEventFactory: DomainEventFactoryInterface,
     private domainEventPublisher: DomainEventPublisherInterface,
     private logger: Logger,
   ) {}
 
   async handle(event: DuplicateItemSyncedEvent): Promise<void> {
-    await this.requestRevisionsCopy(event, this.primaryItemRepository)
-
-    if (this.secondaryItemRepository) {
-      await this.requestRevisionsCopy(event, this.secondaryItemRepository)
+    const roleNamesOrError = RoleNameCollection.create(event.payload.roleNames)
+    if (roleNamesOrError.isFailed()) {
+      return
     }
+    const roleNames = roleNamesOrError.getValue()
+
+    const itemRepository = this.itemRepositoryResolver.resolve(roleNames)
+
+    await this.requestRevisionsCopy(event, itemRepository)
   }
 
   private async requestRevisionsCopy(
@@ -52,6 +57,7 @@ export class DuplicateItemSyncedEventHandler implements DomainEventHandlerInterf
         this.domainEventFactory.createRevisionsCopyRequestedEvent(event.payload.userUuid, {
           originalItemUuid: existingOriginalItem.id.toString(),
           newItemUuid: item.id.toString(),
+          roleNames: event.payload.roleNames,
         }),
       )
     }

@@ -6,16 +6,16 @@ import { Item } from '../Item/Item'
 import { ItemRepositoryInterface } from '../Item/ItemRepositoryInterface'
 import { AccountDeletionRequestedEventHandler } from './AccountDeletionRequestedEventHandler'
 import { Uuid, ContentType, Dates, Timestamps, UniqueEntityId } from '@standardnotes/domain-core'
+import { ItemRepositoryResolverInterface } from '../Item/ItemRepositoryResolverInterface'
 
 describe('AccountDeletionRequestedEventHandler', () => {
-  let primaryItemRepository: ItemRepositoryInterface
-  let secondaryItemRepository: ItemRepositoryInterface | null
+  let itemRepositoryResolver: ItemRepositoryResolverInterface
+  let itemRepository: ItemRepositoryInterface
   let logger: Logger
   let event: AccountDeletionRequestedEvent
   let item: Item
 
-  const createHandler = () =>
-    new AccountDeletionRequestedEventHandler(primaryItemRepository, secondaryItemRepository, logger)
+  const createHandler = () => new AccountDeletionRequestedEventHandler(itemRepositoryResolver, logger)
 
   beforeEach(() => {
     item = Item.create(
@@ -35,9 +35,12 @@ describe('AccountDeletionRequestedEventHandler', () => {
       new UniqueEntityId('00000000-0000-0000-0000-000000000000'),
     ).getValue()
 
-    primaryItemRepository = {} as jest.Mocked<ItemRepositoryInterface>
-    primaryItemRepository.findAll = jest.fn().mockReturnValue([item])
-    primaryItemRepository.deleteByUserUuid = jest.fn()
+    itemRepository = {} as jest.Mocked<ItemRepositoryInterface>
+    itemRepository.findAll = jest.fn().mockReturnValue([item])
+    itemRepository.deleteByUserUuid = jest.fn()
+
+    itemRepositoryResolver = {} as jest.Mocked<ItemRepositoryResolverInterface>
+    itemRepositoryResolver.resolve = jest.fn().mockReturnValue(itemRepository)
 
     logger = {} as jest.Mocked<Logger>
     logger.info = jest.fn()
@@ -48,23 +51,21 @@ describe('AccountDeletionRequestedEventHandler', () => {
       userUuid: '2-3-4',
       userCreatedAtTimestamp: 1,
       regularSubscriptionUuid: '1-2-3',
+      roleNames: ['CORE_USER'],
     }
   })
 
   it('should remove all items for a user', async () => {
     await createHandler().handle(event)
 
-    expect(primaryItemRepository.deleteByUserUuid).toHaveBeenCalledWith('2-3-4')
+    expect(itemRepository.deleteByUserUuid).toHaveBeenCalledWith('2-3-4')
   })
 
-  it('should remove all items for a user from secondary repository', async () => {
-    secondaryItemRepository = {} as jest.Mocked<ItemRepositoryInterface>
-    secondaryItemRepository.deleteByUserUuid = jest.fn()
+  it('should do nothing if role names are not valid', async () => {
+    event.payload.roleNames = ['INVALID_ROLE_NAME']
 
     await createHandler().handle(event)
 
-    expect(secondaryItemRepository.deleteByUserUuid).toHaveBeenCalledWith('2-3-4')
-
-    secondaryItemRepository = null
+    expect(itemRepository.deleteByUserUuid).not.toHaveBeenCalled()
   })
 })

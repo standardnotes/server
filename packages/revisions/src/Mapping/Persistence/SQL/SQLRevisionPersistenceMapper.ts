@@ -1,10 +1,10 @@
 import { MapperInterface, Dates, UniqueEntityId, Uuid, ContentType } from '@standardnotes/domain-core'
 
 import { Revision } from '../../../Domain/Revision/Revision'
-import { TypeORMRevision } from '../../../Infra/TypeORM/SQLRevision'
+import { SQLRevision } from '../../../Infra/TypeORM/SQL/SQLRevision'
 
-export class SQLRevisionPersistenceMapper implements MapperInterface<Revision, TypeORMRevision> {
-  toDomain(projection: TypeORMRevision): Revision {
+export class SQLRevisionPersistenceMapper implements MapperInterface<Revision, SQLRevision> {
+  toDomain(projection: SQLRevision): Revision {
     const contentTypeOrError = ContentType.create(projection.contentType)
     if (contentTypeOrError.isFailed()) {
       throw new Error(`Could not map typeorm revision to domain revision: ${contentTypeOrError.getError()}`)
@@ -53,21 +53,21 @@ export class SQLRevisionPersistenceMapper implements MapperInterface<Revision, T
     return revisionOrError.getValue()
   }
 
-  toProjection(domain: Revision): TypeORMRevision {
-    const typeormRevision = new TypeORMRevision()
+  toProjection(domain: Revision): SQLRevision {
+    const sqlRevision = new SQLRevision()
 
-    typeormRevision.authHash = domain.props.authHash
-    typeormRevision.content = domain.props.content
-    typeormRevision.contentType = domain.props.contentType.value
-    typeormRevision.createdAt = domain.props.dates.createdAt
-    typeormRevision.updatedAt = domain.props.dates.updatedAt
-    typeormRevision.creationDate = domain.props.creationDate
-    typeormRevision.encItemKey = domain.props.encItemKey
-    typeormRevision.itemUuid = domain.props.itemUuid.value
-    typeormRevision.itemsKeyId = domain.props.itemsKeyId
-    typeormRevision.userUuid = domain.props.userUuid ? domain.props.userUuid.value : null
-    typeormRevision.uuid = domain.id.toString()
+    sqlRevision.authHash = domain.props.authHash
+    sqlRevision.content = domain.props.content
+    sqlRevision.contentType = domain.props.contentType.value
+    sqlRevision.createdAt = domain.props.dates.createdAt
+    sqlRevision.updatedAt = domain.props.dates.updatedAt
+    sqlRevision.creationDate = domain.props.creationDate
+    sqlRevision.encItemKey = domain.props.encItemKey
+    sqlRevision.itemUuid = domain.props.itemUuid.value
+    sqlRevision.itemsKeyId = domain.props.itemsKeyId
+    sqlRevision.userUuid = domain.props.userUuid ? domain.props.userUuid.value : null
+    sqlRevision.uuid = domain.id.toString()
 
-    return typeormRevision
+    return sqlRevision
   }
 }

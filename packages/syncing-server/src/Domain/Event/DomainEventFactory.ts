@@ -37,6 +37,7 @@ export class DomainEventFactory implements DomainEventFactoryInterface {
     dto: {
       originalItemUuid: string
       newItemUuid: string
+      roleNames: string[]
     },
   ): RevisionsCopyRequestedEvent {
     return {
@@ -53,55 +54,62 @@ export class DomainEventFactory implements DomainEventFactoryInterface {
     }
   }
 
-  createItemDumpedEvent(fileDumpPath: string, userUuid: string): ItemDumpedEvent {
+  createItemDumpedEvent(dto: { fileDumpPath: string; userUuid: string; roleNames: string[] }): ItemDumpedEvent {
     return {
       type: 'ITEM_DUMPED',
       createdAt: this.timer.getUTCDate(),
       meta: {
         correlation: {
-          userIdentifier: userUuid,
+          userIdentifier: dto.userUuid,
           userIdentifierType: 'uuid',
         },
         origin: DomainEventService.SyncingServer,
       },
       payload: {
-        fileDumpPath,
+        fileDumpPath: dto.fileDumpPath,
+        roleNames: dto.roleNames,
       },
     }
   }
 
-  createItemRevisionCreationRequested(itemUuid: string, userUuid: string): ItemRevisionCreationRequestedEvent {
+  createItemRevisionCreationRequested(dto: {
+    itemUuid: string
+    userUuid: string
+    roleNames: string[]
+  }): ItemRevisionCreationRequestedEvent {
     return {
       type: 'ITEM_REVISION_CREATION_REQUESTED',
       createdAt: this.timer.getUTCDate(),
       meta: {
         correlation: {
-          userIdentifier: userUuid,
+          userIdentifier: dto.userUuid,
           userIdentifierType: 'uuid',
         },
         origin: DomainEventService.SyncingServer,
       },
       payload: {
-        itemUuid,
+        itemUuid: dto.itemUuid,
+        roleNames: dto.roleNames,
       },
     }
   }
 
-  createDuplicateItemSyncedEvent(itemUuid: string, userUuid: string): DuplicateItemSyncedEvent {
+  createDuplicateItemSyncedEvent(dto: {
+    itemUuid: string
+    userUuid: string
+    roleNames: string[]
+  }): DuplicateItemSyncedEvent {
     return {
       type: 'DUPLICATE_ITEM_SYNCED',
       createdAt: this.timer.getUTCDate(),
       meta: {
         correlation: {
-          userIdentifier: userUuid,
+          userIdentifier: dto.userUuid,
           userIdentifierType: 'uuid',
         },
         origin: DomainEventService.SyncingServer,
       },
-      payload: {
-        itemUuid,
-        userUuid,
-      },
+      payload: dto,
     }
   }
 

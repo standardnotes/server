@@ -190,20 +190,22 @@ export class UpdateExistingItem implements UseCaseInterface<Item> {
         [ContentType.TYPES.Note, ContentType.TYPES.File].includes(dto.existingItem.props.contentType.value)
       ) {
         await this.domainEventPublisher.publish(
-          this.domainEventFactory.createItemRevisionCreationRequested(
-            dto.existingItem.id.toString(),
-            dto.existingItem.props.userUuid.value,
-          ),
+          this.domainEventFactory.createItemRevisionCreationRequested({
+            itemUuid: dto.existingItem.id.toString(),
+            userUuid: dto.existingItem.props.userUuid.value,
+            roleNames: dto.roleNames,
+          }),
         )
       }
     }
 
     if (wasMarkedAsDuplicate) {
       await this.domainEventPublisher.publish(
-        this.domainEventFactory.createDuplicateItemSyncedEvent(
-          dto.existingItem.id.toString(),
-          dto.existingItem.props.userUuid.value,
-        ),
+        this.domainEventFactory.createDuplicateItemSyncedEvent({
+          itemUuid: dto.existingItem.id.toString(),
+          userUuid: dto.existingItem.props.userUuid.value,
+          roleNames: dto.roleNames,
+        }),
       )
     }
 

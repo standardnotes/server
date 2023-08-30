@@ -1,12 +1,24 @@
+import { HttpStatusCode } from '@standardnotes/responses'
+import { Role } from '@standardnotes/security'
 import { BaseHttpController, results } from 'inversify-express-utils'
 import { Request, Response } from 'express'
-import { ControllerContainerInterface } from '@standardnotes/domain-core'
+import { ControllerContainerInterface, MapperInterface } from '@standardnotes/domain-core'
 
-import { RevisionsController } from '../../../Controller/RevisionsController'
+import { Revision } from '../../../Domain/Revision/Revision'
+import { RevisionMetadata } from '../../../Domain/Revision/RevisionMetadata'
+import { DeleteRevision } from '../../../Domain/UseCase/DeleteRevision/DeleteRevision'
+import { GetRevision } from '../../../Domain/UseCase/GetRevision/GetRevision'
+import { GetRevisionsMetada } from '../../../Domain/UseCase/GetRevisionsMetada/GetRevisionsMetada'
+import { RevisionHttpRepresentation } from '../../../Mapping/Http/RevisionHttpRepresentation'
+import { RevisionMetadataHttpRepresentation } from '../../../Mapping/Http/RevisionMetadataHttpRepresentation'
 
 export class BaseRevisionsController extends BaseHttpController {
   constructor(
-    protected revisionsController: RevisionsController,
+    protected getRevisionsMetadata: GetRevisionsMetada,
+    protected doGetRevision: GetRevision,
+    protected doDeleteRevision: DeleteRevision,
+    protected revisionHttpMapper: MapperInterface<Revision, RevisionHttpRepresentation>,
+    protected revisionMetadataHttpMapper: MapperInterface<RevisionMetadata, RevisionMetadataHttpRepresentation>,
     private controllerContainer?: ControllerContainerInterface,
   ) {
     super()
@@ -18,30 +30,73 @@ export class BaseRevisionsController extends BaseHttpController {
     }
   }
 
-  async getRevisions(req: Request, response: Response): Promise<results.JsonResult> {
-    const result = await this.revisionsController.getRevisions({
-      itemUuid: req.params.itemUuid,
+  async getRevisions(request: Request, response: Response): Promise<results.JsonResult> {
+    const revisionMetadataOrError = await this.getRevisionsMetadata.execute({
+      itemUuid: request.params.itemUuid,
       userUuid: response.locals.user.uuid,
+      roleNames: response.locals.roles.map((role: Role) => role.name),
     })
 
-    return this.json(result.data, result.status)
+    if (revisionMetadataOrError.isFailed()) {
+      return this.json(
+        {
+          error: {
+            message: 'Could not retrieve revisions.',
+          },
+        },
+        HttpStatusCode.BadRequest,
+      )
+    }
+    const revisions = revisionMetadataOrError.getValue()
+
+    return this.json({
+      revisions: revisions.map((revision) => this.revisionMetadataHttpMapper.toProjection(revision)),
+    })
   }
 
-  async getRevision(req: Request, response: Response): Promise<results.JsonResult> {
-    const result = await this.revisionsController.getRevision({
-      revisionUuid: req.params.uuid,
+  async getRevision(request: Request, response: Response): Promise<results.JsonResult> {
+    const revisionOrError = await this.doGetRevision.execute({
+      revisionUuid: request.params.uuid,
       userUuid: response.locals.user.uuid,
+      roleNames: response.locals.roles.map((role: Role) => role.name),
     })
 
-    return this.json(result.data, result.status)
+    if (revisionOrError.isFailed()) {
+      return this.json(
+        {
+          error: {
+            message: 'Could not retrieve revision.',
+          },
+        },
+        HttpStatusCode.BadRequest,
+      )
+    }
+
+    return this.json({
+      revision: this.revisionHttpMapper.toProjection(revisionOrError.getValue()),
+    })
   }
 
-  async deleteRevision(req: Request, response: Response): Promise<results.JsonResult> {
-    const result = await this.revisionsController.deleteRevision({
-      revisionUuid: req.params.uuid,
+  async deleteRevision(request: Request, response: Response): Promise<results.JsonResult> {
+    const revisionOrError = await this.doDeleteRevision.execute({
+      revisionUuid: request.params.uuid,
       userUuid: response.locals.user.uuid,
+      roleNames: response.locals.roles.map((role: Role) => role.name),
     })
 
-    return this.json(result.data, result.status)
+    if (revisionOrError.isFailed()) {
+      return this.json(
+        {
+          error: {
+            message: 'Could not delete revision.',
+          },
+        },
+        HttpStatusCode.BadRequest,
+      )
+    }
+
+    return this.json({
+      message: revisionOrError.getValue(),
+    })
   }
 }

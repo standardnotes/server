@@ -9,6 +9,8 @@ import { UserSubscription } from '../../Subscription/UserSubscription'
 import { UserSubscriptionType } from '../../Subscription/UserSubscriptionType'
 import { UserSubscriptionServiceInterface } from '../../Subscription/UserSubscriptionServiceInterface'
 import { TimerInterface } from '@standardnotes/time'
+import { RoleName } from '@standardnotes/domain-core'
+import { Role } from '../../Role/Role'
 
 describe('DeleteAccount', () => {
   let userRepository: UserRepositoryInterface
@@ -26,6 +28,7 @@ describe('DeleteAccount', () => {
     user = {
       uuid: '1-2-3',
     } as jest.Mocked<User>
+    user.roles = Promise.resolve([{ name: RoleName.NAMES.CoreUser } as jest.Mocked<Role>])
 
     regularSubscription = {
       uuid: '1-2-3',
@@ -68,6 +71,7 @@ describe('DeleteAccount', () => {
         userUuid: '1-2-3',
         userCreatedAtTimestamp: 1,
         regularSubscriptionUuid: undefined,
+        roleNames: ['CORE_USER'],
       })
     })
 
@@ -85,6 +89,7 @@ describe('DeleteAccount', () => {
         userUuid: '1-2-3',
         userCreatedAtTimestamp: 1,
         regularSubscriptionUuid: '1-2-3',
+        roleNames: ['CORE_USER'],
       })
     })
 
@@ -123,6 +128,7 @@ describe('DeleteAccount', () => {
         userUuid: '1-2-3',
         userCreatedAtTimestamp: 1,
         regularSubscriptionUuid: undefined,
+        roleNames: ['CORE_USER'],
       })
     })
 
@@ -140,6 +146,7 @@ describe('DeleteAccount', () => {
         userUuid: '1-2-3',
         userCreatedAtTimestamp: 1,
         regularSubscriptionUuid: '1-2-3',
+        roleNames: ['CORE_USER'],
       })
     })
 

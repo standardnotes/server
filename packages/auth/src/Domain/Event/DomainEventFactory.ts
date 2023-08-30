@@ -280,6 +280,7 @@ export class DomainEventFactory implements DomainEventFactoryInterface {
     userUuid: string
     userCreatedAtTimestamp: number
     regularSubscriptionUuid: string | undefined
+    roleNames: string[]
   }): AccountDeletionRequestedEvent {
     return {
       type: 'ACCOUNT_DELETION_REQUESTED',
