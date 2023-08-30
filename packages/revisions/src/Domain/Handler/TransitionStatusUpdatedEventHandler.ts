@@ -34,7 +34,7 @@ export class TransitionStatusUpdatedEventHandler implements DomainEventHandlerIn
       })
 
       if (result.isFailed()) {
-        this.logger.error(`Failed to transition items for user ${event.payload.userUuid}: ${result.getError()}`)
+        this.logger.error(`Failed to transition revisions for user ${event.payload.userUuid}: ${result.getError()}`)
 
         await this.domainEventPublisher.publish(
           this.domainEventFactory.createTransitionStatusUpdatedEvent({
