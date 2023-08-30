@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.30.3](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.30.2...@standardnotes/revisions-server@1.30.3) (2023-08-30)
+
+### Bug Fixes
+
+* mongo delete queries ([ec35f46](https://github.com/standardnotes/server/commit/ec35f46d457ec5a5125dc1d0f1a14fb262012caa))
+
 ## [1.30.2](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.30.1...@standardnotes/revisions-server@1.30.2) (2023-08-30)
 
 ### Bug Fixes

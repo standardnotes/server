@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.88.1](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.88.0...@standardnotes/syncing-server@1.88.1) (2023-08-30)
+
+### Bug Fixes
+
+* mongo delete queries ([ec35f46](https://github.com/standardnotes/syncing-server-js/commit/ec35f46d457ec5a5125dc1d0f1a14fb262012caa))
+
 # [1.88.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.87.0...@standardnotes/syncing-server@1.88.0) (2023-08-30)
 
 ### Features
