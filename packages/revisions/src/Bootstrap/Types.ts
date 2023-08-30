@@ -35,6 +35,9 @@ const TYPES = {
   Revisions_DeleteRevision: Symbol.for('Revisions_DeleteRevision'),
   Revisions_CopyRevisions: Symbol.for('Revisions_CopyRevisions'),
   Revisions_GetRequiredRoleToViewRevision: Symbol.for('Revisions_GetRequiredRoleToViewRevision'),
+  Revisions_TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser: Symbol.for(
+    'Revisions_TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser',
+  ),
   // Controller
   Revisions_ControllerContainer: Symbol.for('Revisions_ControllerContainer'),
   Revisions_RevisionsController: Symbol.for('Revisions_RevisionsController'),

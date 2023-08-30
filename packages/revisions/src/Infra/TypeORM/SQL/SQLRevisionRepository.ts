@@ -15,6 +15,37 @@ export class SQLRevisionRepository implements RevisionRepositoryInterface {
     private logger: Logger,
   ) {}
 
+  async countByUserUuid(userUuid: Uuid): Promise<number> {
+    return this.ormRepository
+      .createQueryBuilder()
+      .where('user_uuid = :userUuid', { userUuid: userUuid.value })
+      .getCount()
+  }
+
+  async findByUserUuid(dto: { userUuid: Uuid; offset?: number; limit?: number }): Promise<Revision[]> {
+    const queryBuilder = this.ormRepository
+      .createQueryBuilder()
+      .where('user_uuid = :userUuid', { userUuid: dto.userUuid.value })
+      .orderBy('created_at', 'ASC')
+
+    if (dto.offset !== undefined) {
+      queryBuilder.skip(dto.offset)
+    }
+
+    if (dto.limit !== undefined) {
+      queryBuilder.take(dto.limit)
+    }
+
+    const sqlRevisions = await queryBuilder.getMany()
+
+    const revisions = []
+    for (const sqlRevision of sqlRevisions) {
+      revisions.push(this.revisionMapper.toDomain(sqlRevision))
+    }
+
+    return revisions
+  }
+
   async updateUserUuid(itemUuid: Uuid, userUuid: Uuid): Promise<void> {
     await this.ormRepository
       .createQueryBuilder()

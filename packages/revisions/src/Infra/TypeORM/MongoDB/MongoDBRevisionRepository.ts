@@ -16,6 +16,28 @@ export class MongoDBRevisionRepository implements RevisionRepositoryInterface {
     private logger: Logger,
   ) {}
 
+  async countByUserUuid(userUuid: Uuid): Promise<number> {
+    return this.mongoRepository.count({ where: { userUuid: { $eq: userUuid.value } } })
+  }
+
+  async findByUserUuid(dto: { userUuid: Uuid; offset?: number; limit?: number }): Promise<Revision[]> {
+    const mongoRevisions = await this.mongoRepository.find({
+      where: { userUuid: { $eq: dto.userUuid.value } },
+      order: {
+        createdAt: 'ASC',
+      },
+      skip: dto.offset,
+      take: dto.limit,
+    })
+
+    const revisions = []
+    for (const mongoRevision of mongoRevisions) {
+      revisions.push(this.revisionMapper.toDomain(mongoRevision))
+    }
+
+    return revisions
+  }
+
   async removeByUserUuid(userUuid: Uuid): Promise<void> {
     await this.mongoRepository.deleteMany({ where: { userUuid: { $eq: userUuid.value } } })
   }
