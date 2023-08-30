@@ -28,7 +28,7 @@
     "@types/ioredis": "^5.0.0",
     "@types/jest": "^29.5.1",
     "@types/mixpanel": "^2.14.4",
-    "@types/node": "^20.2.0",
+    "@types/node": "^20.5.7",
     "@typescript-eslint/eslint-plugin": "^5.59.2",
     "@typescript-eslint/parser": "^5.59.2",
     "eslint": "^8.39.0",
@@ -58,7 +58,7 @@
   },
   "optionalDependencies": {
     "@newrelic/winston-enricher": "^4.0.1",
-    "@types/newrelic": "^9.13.0",
-    "newrelic": "^10.1.2"
+    "@types/newrelic": "^9.14.0",
+    "newrelic": "^11.0.0"
   }
 }

@@ -31,17 +31,17 @@
     "@lerna-lite/run": "^2.3.0",
     "@lerna-lite/version": "^2.3.0",
     "@types/jest": "^29.5.1",
-    "@types/node": "^20.2.0",
+    "@types/node": "^20.5.7",
     "eslint": "^8.39.0",
     "eslint-config-prettier": "^8.8.0",
-    "ini": "^3.0.0",
-    "npm-check-updates": "^16.0.1",
+    "ini": "^4.1.1",
+    "npm-check-updates": "^16.13.2",
     "ts-node": "^10.9.1",
     "typescript": "^5.0.4"
   },
   "packageManager": "yarn@4.0.0-rc.43",
   "optionalDependencies": {
-    "@types/newrelic": "^9.13.0",
-    "newrelic": "^10.1.2"
+    "@types/newrelic": "^9.14.0",
+    "newrelic": "^11.0.0"
   }
 }
