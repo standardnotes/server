@@ -161,6 +161,7 @@ import { TriggerTransitionFromPrimaryToSecondaryDatabaseForUser } from '../Domai
 import { SQLItem } from '../Infra/TypeORM/SQLItem'
 import { SQLItemPersistenceMapper } from '../Mapping/Persistence/SQLItemPersistenceMapper'
 import { SQLItemRepository } from '../Infra/TypeORM/SQLItemRepository'
+import { SendEventToClient } from '../Domain/UseCase/Syncing/SendEventToClient/SendEventToClient'
 
 export class ContainerConfigLoader {
   private readonly DEFAULT_CONTENT_SIZE_TRANSFER_LIMIT = 10_000_000
@@ -581,9 +582,23 @@ export class ContainerConfigLoader {
         ),
       )
     container
+      .bind<SendEventToClient>(TYPES.Sync_SendEventToClient)
+      .toConstantValue(
+        new SendEventToClient(
+          container.get<DomainEventFactoryInterface>(TYPES.Sync_DomainEventFactory),
+          container.get<DomainEventPublisherInterface>(TYPES.Sync_DomainEventPublisher),
+        ),
+      )
+    container
       .bind<AddNotificationForUser>(TYPES.Sync_AddNotificationForUser)
       .toConstantValue(
-        new AddNotificationForUser(container.get(TYPES.Sync_NotificationRepository), container.get(TYPES.Sync_Timer)),
+        new AddNotificationForUser(
+          container.get<NotificationRepositoryInterface>(TYPES.Sync_NotificationRepository),
+          container.get<TimerInterface>(TYPES.Sync_Timer),
+          container.get<DomainEventFactoryInterface>(TYPES.Sync_DomainEventFactory),
+          container.get<SendEventToClient>(TYPES.Sync_SendEventToClient),
+          container.get<Logger>(TYPES.Sync_Logger),
+        ),
       )
     container
       .bind<AddNotificationsForUsers>(TYPES.Sync_AddNotificationsForUsers)

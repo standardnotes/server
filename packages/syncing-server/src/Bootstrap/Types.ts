@@ -87,6 +87,7 @@ const TYPES = {
   Sync_TriggerTransitionFromPrimaryToSecondaryDatabaseForUser: Symbol.for(
     'Sync_TriggerTransitionFromPrimaryToSecondaryDatabaseForUser',
   ),
+  Sync_SendEventToClient: Symbol.for('Sync_SendEventToClient'),
   // Handlers
   Sync_AccountDeletionRequestedEventHandler: Symbol.for('Sync_AccountDeletionRequestedEventHandler'),
   Sync_DuplicateItemSyncedEventHandler: Symbol.for('Sync_DuplicateItemSyncedEventHandler'),
