@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.119.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.118.0...@standardnotes/domain-events@2.119.0) (2023-08-30)
+
+### Features
+
+* **revisions:** add procedure for transitioning data from primary to secondary database ([#787](https://github.com/standardnotes/server/issues/787)) ([fe273a9](https://github.com/standardnotes/server/commit/fe273a9107585b5953c8de1d0f8afb951f891bca))
+
 # [2.118.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.117.0...@standardnotes/domain-events@2.118.0) (2023-08-30)
 
 ### Features

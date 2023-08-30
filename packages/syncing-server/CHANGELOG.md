@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.88.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.87.0...@standardnotes/syncing-server@1.88.0) (2023-08-30)
+
+### Features
+
+* **revisions:** add procedure for transitioning data from primary to secondary database ([#787](https://github.com/standardnotes/syncing-server-js/issues/787)) ([fe273a9](https://github.com/standardnotes/syncing-server-js/commit/fe273a9107585b5953c8de1d0f8afb951f891bca))
+
 # [1.87.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.86.0...@standardnotes/syncing-server@1.87.0) (2023-08-30)
 
 ### Features
