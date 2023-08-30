@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.73.1](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.73.0...@standardnotes/api-gateway@1.73.1) (2023-08-30)
+
+### Bug Fixes
+
+* **api-gateway:** transition triggering endpoint call for revisions ([ee656b8](https://github.com/standardnotes/api-gateway/commit/ee656b868b8ebcd63b568b48a450803c80fa78a6))
+
 # [1.73.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.72.3...@standardnotes/api-gateway@1.73.0) (2023-08-30)
 
 ### Features
