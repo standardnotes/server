@@ -2,6 +2,7 @@ import { ControllerContainer, ControllerContainerInterface, MapperInterface } fr
 import { Container, interfaces } from 'inversify'
 import { MongoRepository, Repository } from 'typeorm'
 import * as winston from 'winston'
+import { SNSClient, SNSClientConfig } from '@aws-sdk/client-sns'
 
 import { Revision } from '../Domain/Revision/Revision'
 import { RevisionMetadata } from '../Domain/Revision/RevisionMetadata'
@@ -25,6 +26,7 @@ import {
   DomainEventMessageHandlerInterface,
   DomainEventHandlerInterface,
   DomainEventSubscriberFactoryInterface,
+  DomainEventPublisherInterface,
 } from '@standardnotes/domain-events'
 import {
   SQSNewRelicEventMessageHandler,
@@ -32,6 +34,7 @@ import {
   SQSDomainEventSubscriberFactory,
   DirectCallEventMessageHandler,
   DirectCallDomainEventPublisher,
+  SNSDomainEventPublisher,
 } from '@standardnotes/domain-events-infra'
 import { DumpRepositoryInterface } from '../Domain/Dump/DumpRepositoryInterface'
 import { AccountDeletionRequestedEventHandler } from '../Domain/Handler/AccountDeletionRequestedEventHandler'
@@ -55,6 +58,10 @@ import { TypeORMRevisionRepositoryResolver } from '../Infra/TypeORM/TypeORMRevis
 import { RevisionMetadataHttpRepresentation } from '../Mapping/Http/RevisionMetadataHttpRepresentation'
 import { RevisionHttpRepresentation } from '../Mapping/Http/RevisionHttpRepresentation'
 import { TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser } from '../Domain/UseCase/Transition/TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser/TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser'
+import { DomainEventFactoryInterface } from '../Domain/Event/DomainEventFactoryInterface'
+import { DomainEventFactory } from '../Domain/Event/DomainEventFactory'
+import { TransitionStatusUpdatedEventHandler } from '../Domain/Handler/TransitionStatusUpdatedEventHandler'
+import { TriggerTransitionFromPrimaryToSecondaryDatabaseForUser } from '../Domain/UseCase/Transition/TriggerTransitionFromPrimaryToSecondaryDatabaseForUser/TriggerTransitionFromPrimaryToSecondaryDatabaseForUser'
 
 export class ContainerConfigLoader {
   async load(configuration?: {
@@ -98,6 +105,8 @@ export class ContainerConfigLoader {
     }
     container.bind<winston.Logger>(TYPES.Revisions_Logger).toConstantValue(logger)
 
+    container.bind<TimerInterface>(TYPES.Revisions_Timer).toDynamicValue(() => new Timer())
+
     const appDataSource = new AppDataSource(env)
     await appDataSource.initialize()
 
@@ -107,6 +116,85 @@ export class ContainerConfigLoader {
 
     container.bind(TYPES.Revisions_NEW_RELIC_ENABLED).toConstantValue(env.get('NEW_RELIC_ENABLED', true))
     container.bind(TYPES.Revisions_VERSION).toConstantValue(env.get('VERSION', true) ?? 'development')
+
+    if (!isConfiguredForHomeServer) {
+      // env vars
+      container.bind(TYPES.Revisions_SNS_TOPIC_ARN).toConstantValue(env.get('SNS_TOPIC_ARN'))
+      container.bind(TYPES.Revisions_SNS_AWS_REGION).toConstantValue(env.get('SNS_AWS_REGION', true))
+      container.bind(TYPES.Revisions_SQS_QUEUE_URL).toConstantValue(env.get('SQS_QUEUE_URL'))
+      container.bind(TYPES.Revisions_S3_AWS_REGION).toConstantValue(env.get('S3_AWS_REGION', true))
+      container.bind(TYPES.Revisions_S3_BACKUP_BUCKET_NAME).toConstantValue(env.get('S3_BACKUP_BUCKET_NAME', true))
+
+      container.bind<SNSClient>(TYPES.Revisions_SNS).toDynamicValue((context: interfaces.Context) => {
+        const env: Env = context.container.get(TYPES.Revisions_Env)
+
+        const snsConfig: SNSClientConfig = {
+          apiVersion: 'latest',
+          region: env.get('SNS_AWS_REGION', true),
+        }
+        if (env.get('SNS_ENDPOINT', true)) {
+          snsConfig.endpoint = env.get('SNS_ENDPOINT', true)
+        }
+        if (env.get('SNS_ACCESS_KEY_ID', true) && env.get('SNS_SECRET_ACCESS_KEY', true)) {
+          snsConfig.credentials = {
+            accessKeyId: env.get('SNS_ACCESS_KEY_ID', true),
+            secretAccessKey: env.get('SNS_SECRET_ACCESS_KEY', true),
+          }
+        }
+
+        return new SNSClient(snsConfig)
+      })
+
+      container
+        .bind<DomainEventPublisherInterface>(TYPES.Revisions_DomainEventPublisher)
+        .toDynamicValue((context: interfaces.Context) => {
+          return new SNSDomainEventPublisher(
+            context.container.get(TYPES.Revisions_SNS),
+            context.container.get(TYPES.Revisions_SNS_TOPIC_ARN),
+          )
+        })
+
+      container.bind<SQSClient>(TYPES.Revisions_SQS).toDynamicValue((context: interfaces.Context) => {
+        const env: Env = context.container.get(TYPES.Revisions_Env)
+
+        const sqsConfig: SQSClientConfig = {
+          region: env.get('SQS_AWS_REGION'),
+        }
+        if (env.get('SQS_ENDPOINT', true)) {
+          sqsConfig.endpoint = env.get('SQS_ENDPOINT', true)
+        }
+        if (env.get('SQS_ACCESS_KEY_ID', true) && env.get('SQS_SECRET_ACCESS_KEY', true)) {
+          sqsConfig.credentials = {
+            accessKeyId: env.get('SQS_ACCESS_KEY_ID', true),
+            secretAccessKey: env.get('SQS_SECRET_ACCESS_KEY', true),
+          }
+        }
+
+        return new SQSClient(sqsConfig)
+      })
+
+      container.bind<S3Client | undefined>(TYPES.Revisions_S3).toDynamicValue((context: interfaces.Context) => {
+        const env: Env = context.container.get(TYPES.Revisions_Env)
+
+        let s3Client = undefined
+        if (env.get('S3_AWS_REGION', true)) {
+          s3Client = new S3Client({
+            apiVersion: 'latest',
+            region: env.get('S3_AWS_REGION', true),
+          })
+        }
+
+        return s3Client
+      })
+    } else {
+      container
+        .bind<DomainEventPublisherInterface>(TYPES.Revisions_DomainEventPublisher)
+        .toConstantValue(directCallDomainEventPublisher)
+    }
+
+    container
+      .bind<DomainEventFactoryInterface>(TYPES.Revisions_DomainEventFactory)
+      .toConstantValue(new DomainEventFactory(container.get(TYPES.Revisions_Timer)))
 
     // Map
     container
@@ -173,8 +261,6 @@ export class ContainerConfigLoader {
         ),
       )
 
-    container.bind<TimerInterface>(TYPES.Revisions_Timer).toDynamicValue(() => new Timer())
-
     container
       .bind<GetRequiredRoleToViewRevision>(TYPES.Revisions_GetRequiredRoleToViewRevision)
       .toDynamicValue((context: interfaces.Context) => {
@@ -234,6 +320,16 @@ export class ContainerConfigLoader {
           container.get<winston.Logger>(TYPES.Revisions_Logger),
         ),
       )
+    container
+      .bind<TriggerTransitionFromPrimaryToSecondaryDatabaseForUser>(
+        TYPES.Revisions_TriggerTransitionFromPrimaryToSecondaryDatabaseForUser,
+      )
+      .toConstantValue(
+        new TriggerTransitionFromPrimaryToSecondaryDatabaseForUser(
+          container.get<DomainEventPublisherInterface>(TYPES.Revisions_DomainEventPublisher),
+          container.get<DomainEventFactoryInterface>(TYPES.Revisions_DomainEventFactory),
+        ),
+      )
 
     // env vars
     container.bind(TYPES.Revisions_AUTH_JWT_SECRET).toConstantValue(env.get('AUTH_JWT_SECRET'))
@@ -262,46 +358,6 @@ export class ContainerConfigLoader {
     container
       .bind<MapperInterface<Revision, string>>(TYPES.Revisions_RevisionItemStringMapper)
       .toDynamicValue(() => new RevisionItemStringMapper())
-
-    if (!isConfiguredForHomeServer) {
-      // env vars
-      container.bind(TYPES.Revisions_SQS_QUEUE_URL).toConstantValue(env.get('SQS_QUEUE_URL'))
-      container.bind(TYPES.Revisions_S3_AWS_REGION).toConstantValue(env.get('S3_AWS_REGION', true))
-      container.bind(TYPES.Revisions_S3_BACKUP_BUCKET_NAME).toConstantValue(env.get('S3_BACKUP_BUCKET_NAME', true))
-
-      container.bind<SQSClient>(TYPES.Revisions_SQS).toDynamicValue((context: interfaces.Context) => {
-        const env: Env = context.container.get(TYPES.Revisions_Env)
-
-        const sqsConfig: SQSClientConfig = {
-          region: env.get('SQS_AWS_REGION'),
-        }
-        if (env.get('SQS_ENDPOINT', true)) {
-          sqsConfig.endpoint = env.get('SQS_ENDPOINT', true)
-        }
-        if (env.get('SQS_ACCESS_KEY_ID', true) && env.get('SQS_SECRET_ACCESS_KEY', true)) {
-          sqsConfig.credentials = {
-            accessKeyId: env.get('SQS_ACCESS_KEY_ID', true),
-            secretAccessKey: env.get('SQS_SECRET_ACCESS_KEY', true),
-          }
-        }
-
-        return new SQSClient(sqsConfig)
-      })
-
-      container.bind<S3Client | undefined>(TYPES.Revisions_S3).toDynamicValue((context: interfaces.Context) => {
-        const env: Env = context.container.get(TYPES.Revisions_Env)
-
-        let s3Client = undefined
-        if (env.get('S3_AWS_REGION', true)) {
-          s3Client = new S3Client({
-            apiVersion: 'latest',
-            region: env.get('S3_AWS_REGION', true),
-          })
-        }
-
-        return s3Client
-      })
-    }
 
     container
       .bind<DumpRepositoryInterface>(TYPES.Revisions_DumpRepository)
@@ -341,11 +397,24 @@ export class ContainerConfigLoader {
           container.get<winston.Logger>(TYPES.Revisions_Logger),
         ),
       )
+    container
+      .bind<TransitionStatusUpdatedEventHandler>(TYPES.Revisions_TransitionStatusUpdatedEventHandler)
+      .toConstantValue(
+        new TransitionStatusUpdatedEventHandler(
+          container.get<TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser>(
+            TYPES.Revisions_TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser,
+          ),
+          container.get<DomainEventPublisherInterface>(TYPES.Revisions_DomainEventPublisher),
+          container.get<DomainEventFactoryInterface>(TYPES.Revisions_DomainEventFactory),
+          container.get<winston.Logger>(TYPES.Revisions_Logger),
+        ),
+      )
 
     const eventHandlers: Map<string, DomainEventHandlerInterface> = new Map([
       ['ITEM_DUMPED', container.get(TYPES.Revisions_ItemDumpedEventHandler)],
       ['ACCOUNT_DELETION_REQUESTED', container.get(TYPES.Revisions_AccountDeletionRequestedEventHandler)],
       ['REVISIONS_COPY_REQUESTED', container.get(TYPES.Revisions_RevisionsCopyRequestedEventHandler)],
+      ['TRANSITION_STATUS_UPDATED', container.get(TYPES.Revisions_TransitionStatusUpdatedEventHandler)],
     ])
 
     if (isConfiguredForHomeServer) {
@@ -388,6 +457,9 @@ export class ContainerConfigLoader {
             container.get<DeleteRevision>(TYPES.Revisions_DeleteRevision),
             container.get<RevisionHttpMapper>(TYPES.Revisions_RevisionHttpMapper),
             container.get<RevisionMetadataHttpMapper>(TYPES.Revisions_RevisionMetadataHttpMapper),
+            container.get<TriggerTransitionFromPrimaryToSecondaryDatabaseForUser>(
+              TYPES.Revisions_TriggerTransitionFromPrimaryToSecondaryDatabaseForUser,
+            ),
             container.get<ControllerContainerInterface>(TYPES.Revisions_ControllerContainer),
           ),
         )

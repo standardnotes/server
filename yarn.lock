@@ -4738,6 +4738,7 @@ __metadata:
   resolution: "@standardnotes/revisions-server@workspace:packages/revisions"
   dependencies:
     "@aws-sdk/client-s3": "npm:^3.332.0"
+    "@aws-sdk/client-sns": "npm:^3.332.0"
     "@aws-sdk/client-sqs": "npm:^3.332.0"
     "@newrelic/winston-enricher": "npm:^4.0.1"
     "@standardnotes/api": "npm:^1.26.26"

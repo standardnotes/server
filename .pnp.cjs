@@ -5861,6 +5861,7 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["@standardnotes/revisions-server", "workspace:packages/revisions"],\
           ["@aws-sdk/client-s3", "npm:3.342.0"],\
+          ["@aws-sdk/client-sns", "npm:3.342.0"],\
           ["@aws-sdk/client-sqs", "npm:3.342.0"],\
           ["@newrelic/winston-enricher", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:4.0.1"],\
           ["@standardnotes/api", "npm:1.26.26"],\
