@@ -8,10 +8,11 @@ import {
 } from '@standardnotes/domain-events'
 
 export interface DomainEventFactoryInterface {
-  createTransitionStatusUpdatedEvent(
-    userUuid: string,
-    status: 'STARTED' | 'FAILED' | 'FINISHED',
-  ): TransitionStatusUpdatedEvent
+  createTransitionStatusUpdatedEvent(dto: {
+    userUuid: string
+    transitionType: 'items' | 'revisions'
+    status: 'STARTED' | 'FAILED' | 'FINISHED'
+  }): TransitionStatusUpdatedEvent
   createEmailRequestedEvent(dto: {
     userEmail: string
     messageIdentifier: string

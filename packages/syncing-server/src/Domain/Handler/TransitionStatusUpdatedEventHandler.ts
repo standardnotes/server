@@ -16,7 +16,7 @@ export class TransitionStatusUpdatedEventHandler implements DomainEventHandlerIn
   ) {}
 
   async handle(event: TransitionStatusUpdatedEvent): Promise<void> {
-    if (event.payload.status === 'STARTED') {
+    if (event.payload.status === 'STARTED' && event.payload.transitionType === 'items') {
       const result = await this.transitionItemsFromPrimaryToSecondaryDatabaseForUser.execute({
         userUuid: event.payload.userUuid,
       })
@@ -25,14 +25,22 @@ export class TransitionStatusUpdatedEventHandler implements DomainEventHandlerIn
         this.logger.error(`Failed to transition items for user ${event.payload.userUuid}: ${result.getError()}`)
 
         await this.domainEventPublisher.publish(
-          this.domainEventFactory.createTransitionStatusUpdatedEvent(event.payload.userUuid, 'FAILED'),
+          this.domainEventFactory.createTransitionStatusUpdatedEvent({
+            userUuid: event.payload.userUuid,
+            status: 'FAILED',
+            transitionType: 'items',
+          }),
         )
 
         return
       }
 
       await this.domainEventPublisher.publish(
-        this.domainEventFactory.createTransitionStatusUpdatedEvent(event.payload.userUuid, 'FINISHED'),
+        this.domainEventFactory.createTransitionStatusUpdatedEvent({
+          userUuid: event.payload.userUuid,
+          status: 'FINISHED',
+          transitionType: 'items',
+        }),
       )
     }
   }

@@ -122,6 +122,10 @@ echo "linking topic $FILES_TOPIC_ARN to queue $AUTH_QUEUE_ARN"
 LINKING_RESULT=$(link_queue_and_topic $FILES_TOPIC_ARN $AUTH_QUEUE_ARN)
 echo "linking done:"
 echo "$LINKING_RESULT"
+echo "linking topic $REVISIONS_TOPIC_ARN to queue $AUTH_QUEUE_ARN"
+LINKING_RESULT=$(link_queue_and_topic $REVISIONS_TOPIC_ARN $AUTH_QUEUE_ARN)
+echo "linking done:"
+echo "$LINKING_RESULT"
 
 QUEUE_NAME="files-local-queue"
 

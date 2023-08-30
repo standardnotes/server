@@ -45,7 +45,7 @@ export class CreateCrossServiceToken implements UseCaseInterface<string> {
       return Result.fail(`Could not find user with uuid ${dto.userUuid}`)
     }
 
-    const transitionStatus = await this.transitionStatusRepository.getStatus(user.uuid)
+    const transitionStatus = await this.transitionStatusRepository.getStatus(user.uuid, 'items')
 
     const roles = await user.roles
 

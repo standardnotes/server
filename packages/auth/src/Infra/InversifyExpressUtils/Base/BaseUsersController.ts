@@ -109,6 +109,7 @@ export class BaseUsersController extends BaseHttpController {
   async transitionStatus(_request: Request, response: Response): Promise<results.JsonResult> {
     const result = await this.getTransitionStatusUseCase.execute({
       userUuid: response.locals.user.uuid,
+      transitionType: 'items',
     })
 
     if (result.isFailed()) {
