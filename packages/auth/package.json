@@ -41,7 +41,7 @@
     "@cbor-extract/cbor-extract-linux-arm64": "^2.1.1",
     "@cbor-extract/cbor-extract-linux-x64": "^2.1.1",
     "@simplewebauthn/server": "^7.2.0",
-    "@simplewebauthn/typescript-types": "^7.0.0",
+    "@simplewebauthn/typescript-types": "^8.0.0",
     "@standardnotes/api": "^1.26.26",
     "@standardnotes/common": "workspace:*",
     "@standardnotes/domain-core": "workspace:^",
