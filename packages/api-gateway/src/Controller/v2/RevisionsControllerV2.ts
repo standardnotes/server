@@ -15,7 +15,7 @@ export class RevisionsControllerV2 extends BaseHttpController {
     super()
   }
 
-  @httpGet('/items/:itemUuid/revisions/')
+  @httpGet('/items/:itemUuid/revisions')
   async getRevisions(request: Request, response: Response): Promise<void> {
     await this.serviceProxy.callRevisionsServer(
       request,

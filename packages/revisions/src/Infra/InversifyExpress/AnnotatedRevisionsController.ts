@@ -14,7 +14,7 @@ import { RevisionHttpRepresentation } from '../../Mapping/Http/RevisionHttpRepre
 import { RevisionMetadataHttpRepresentation } from '../../Mapping/Http/RevisionMetadataHttpRepresentation'
 import { TriggerTransitionFromPrimaryToSecondaryDatabaseForUser } from '../../Domain/UseCase/Transition/TriggerTransitionFromPrimaryToSecondaryDatabaseForUser/TriggerTransitionFromPrimaryToSecondaryDatabaseForUser'
 
-@controller('/', TYPES.Revisions_ApiGatewayAuthMiddleware)
+@controller('', TYPES.Revisions_ApiGatewayAuthMiddleware)
 export class AnnotatedRevisionsController extends BaseRevisionsController {
   constructor(
     @inject(TYPES.Revisions_GetRevisionsMetada) override getRevisionsMetadata: GetRevisionsMetada,
@@ -37,7 +37,7 @@ export class AnnotatedRevisionsController extends BaseRevisionsController {
     )
   }
 
-  @httpGet('/items/:itemUuid/revisions/')
+  @httpGet('/items/:itemUuid/revisions')
   override async getRevisions(request: Request, response: Response): Promise<results.JsonResult> {
     return super.getRevisions(request, response)
   }
