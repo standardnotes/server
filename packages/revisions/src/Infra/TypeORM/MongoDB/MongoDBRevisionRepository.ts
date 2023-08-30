@@ -17,7 +17,7 @@ export class MongoDBRevisionRepository implements RevisionRepositoryInterface {
   ) {}
 
   async countByUserUuid(userUuid: Uuid): Promise<number> {
-    return this.mongoRepository.count({ where: { userUuid: { $eq: userUuid.value } } })
+    return this.mongoRepository.count({ userUuid: { $eq: userUuid.value } })
   }
 
   async findByUserUuid(dto: { userUuid: Uuid; offset?: number; limit?: number }): Promise<Revision[]> {
@@ -39,7 +39,7 @@ export class MongoDBRevisionRepository implements RevisionRepositoryInterface {
   }
 
   async removeByUserUuid(userUuid: Uuid): Promise<void> {
-    await this.mongoRepository.deleteMany({ where: { userUuid: { $eq: userUuid.value } } })
+    await this.mongoRepository.deleteMany({ where: { userUuid: userUuid.value } })
   }
 
   async removeOneByUuid(revisionUuid: Uuid, userUuid: Uuid): Promise<void> {
