@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.30.0](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.29.0...@standardnotes/revisions-server@1.30.0) (2023-08-30)
+
+### Features
+
+* add a way to trigger transition procedure for revisions ([#798](https://github.com/standardnotes/server/issues/798)) ([25ffd6b](https://github.com/standardnotes/server/commit/25ffd6b8036117b33584c6d948bb0867b637ae65))
+
 # [1.29.0](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.28.0...@standardnotes/revisions-server@1.29.0) (2023-08-30)
 
 ### Features

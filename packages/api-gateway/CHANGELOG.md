@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.73.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.72.3...@standardnotes/api-gateway@1.73.0) (2023-08-30)
+
+### Features
+
+* add a way to trigger transition procedure for revisions ([#798](https://github.com/standardnotes/api-gateway/issues/798)) ([25ffd6b](https://github.com/standardnotes/api-gateway/commit/25ffd6b8036117b33584c6d948bb0867b637ae65))
+
 ## [1.72.3](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.72.2...@standardnotes/api-gateway@1.72.3) (2023-08-30)
 
 **Note:** Version bump only for package @standardnotes/api-gateway
