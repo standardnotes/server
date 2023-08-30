@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.136.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.135.2...@standardnotes/auth-server@1.136.0) (2023-08-30)
+
+### Features
+
+* choose primary or secondary revisions database based on transition role ([#716](https://github.com/standardnotes/server/issues/716)) ([62d231a](https://github.com/standardnotes/server/commit/62d231ae41a75fcfc49cef0f5f17b647af2b6f45))
+
 ## [1.135.2](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.135.1...@standardnotes/auth-server@1.135.2) (2023-08-28)
 
 ### Bug Fixes
