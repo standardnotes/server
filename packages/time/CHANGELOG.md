@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.15.1](https://github.com/standardnotes/server/compare/@standardnotes/time@1.15.0...@standardnotes/time@1.15.1) (2023-08-31)
+
+### Bug Fixes
+
+* transitionining revisions ([#801](https://github.com/standardnotes/server/issues/801)) ([596a0f1](https://github.com/standardnotes/server/commit/596a0f1a0221ab0636c4c04d17a28c57fe74b620))
+
 # [1.15.0](https://github.com/standardnotes/server/compare/@standardnotes/time@1.14.6...@standardnotes/time@1.15.0) (2023-08-24)
 
 ### Features
