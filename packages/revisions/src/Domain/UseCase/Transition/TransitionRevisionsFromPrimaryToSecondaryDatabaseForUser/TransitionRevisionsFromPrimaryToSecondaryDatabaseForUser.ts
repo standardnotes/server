@@ -38,6 +38,8 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
       return Result.fail(migrationResult.getError())
     }
 
+    await this.allowForSecondaryDatabaseToCatchUp()
+
     const integrityCheckResult = await this.checkIntegrityBetweenPrimaryAndSecondaryDatabase(userUuid)
     if (integrityCheckResult.isFailed()) {
       const cleanupResult = await this.deleteRevisionsForUser(userUuid, this.secondRevisionsRepository)
@@ -72,9 +74,15 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
   private async migrateRevisionsForUser(userUuid: Uuid): Promise<Result<void>> {
     try {
       const totalRevisionsCountForUser = await this.primaryRevisionsRepository.countByUserUuid(userUuid)
+      this.logger.info(`Total revisions count for user ${userUuid.value} is ${totalRevisionsCountForUser}`)
+
       const pageSize = 1
       const totalPages = Math.ceil(totalRevisionsCountForUser / pageSize)
+      this.logger.info(`Total pages to migrate for user ${userUuid.value} is ${totalPages}`)
+
       for (let currentPage = 1; currentPage <= totalPages; currentPage++) {
+        this.logger.info(`Migrating page ${currentPage} of ${totalPages} for user ${userUuid.value}`)
+
         const query = {
           userUuid: userUuid,
           offset: (currentPage - 1) * pageSize,
@@ -82,6 +90,8 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
         }
 
         const revisions = await this.primaryRevisionsRepository.findByUserUuid(query)
+
+        this.logger.info(`Migrating ${revisions.length} revisions for user ${userUuid.value}`)
 
         for (const revision of revisions) {
           await (this.secondRevisionsRepository as RevisionRepositoryInterface).save(revision)
@@ -105,6 +115,11 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
     } catch (error) {
       return Result.fail((error as Error).message)
     }
+  }
+
+  private async allowForSecondaryDatabaseToCatchUp(): Promise<void> {
+    const twoSecondsInMilliseconds = 2_000
+    await this.timer.sleep(twoSecondsInMilliseconds)
   }
 
   private async checkIntegrityBetweenPrimaryAndSecondaryDatabase(userUuid: Uuid): Promise<Result<boolean>> {

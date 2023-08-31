@@ -39,6 +39,8 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
       return Result.fail(migrationResult.getError())
     }
 
+    await this.allowForSecondaryDatabaseToCatchUp()
+
     const integrityCheckResult = await this.checkIntegrityBetweenPrimaryAndSecondaryDatabase(userUuid)
     if (integrityCheckResult.isFailed()) {
       const cleanupResult = await this.deleteItemsForUser(userUuid, this.secondaryItemRepository)
@@ -68,6 +70,11 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
     )
 
     return Result.ok()
+  }
+
+  private async allowForSecondaryDatabaseToCatchUp(): Promise<void> {
+    const twoSecondsInMilliseconds = 2_000
+    await this.timer.sleep(twoSecondsInMilliseconds)
   }
 
   private async migrateItemsForUser(userUuid: Uuid): Promise<Result<void>> {

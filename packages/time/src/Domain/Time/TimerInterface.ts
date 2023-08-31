@@ -23,4 +23,5 @@ export interface TimerInterface {
   convertMicrosecondsToTimeStructure(microseconds: number): TimeStructure
   formatDate(date: Date, format: string): string
   dateWasNDaysAgo(date: Date): number
+  sleep(milliseconds: number): Promise<void>
 }
