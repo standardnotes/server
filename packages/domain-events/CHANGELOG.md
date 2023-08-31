@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.120.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.119.0...@standardnotes/domain-events@2.120.0) (2023-08-31)
+
+### Features
+
+* add sending notifications to user via websockets ([#799](https://github.com/standardnotes/server/issues/799)) ([c0722b1](https://github.com/standardnotes/server/commit/c0722b173b71d696568d8e8c5095a22fd219bef6))
+
 # [2.119.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.118.0...@standardnotes/domain-events@2.119.0) (2023-08-30)
 
 ### Features

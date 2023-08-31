@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.89.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.88.3...@standardnotes/syncing-server@1.89.0) (2023-08-31)
+
+### Features
+
+* add sending notifications to user via websockets ([#799](https://github.com/standardnotes/syncing-server-js/issues/799)) ([c0722b1](https://github.com/standardnotes/syncing-server-js/commit/c0722b173b71d696568d8e8c5095a22fd219bef6))
+
 ## [1.88.3](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.88.2...@standardnotes/syncing-server@1.88.3) (2023-08-31)
 
 ### Bug Fixes
