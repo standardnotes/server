@@ -17,19 +17,21 @@ export class DomainEventFactory implements DomainEventFactoryInterface {
   constructor(private timer: TimerInterface) {}
 
   createNotificationAddedForUserEvent(dto: {
-    uuid: string
-    userUuid: string
-    type: string
-    payload: string
-    createdAtTimestamp: number
-    updatedAtTimestamp: number
+    notification: {
+      uuid: string
+      user_uuid: string
+      type: string
+      payload: string
+      created_at_timestamp: number
+      updated_at_timestamp: number
+    }
   }): NotificationAddedForUserEvent {
     return {
       type: 'NOTIFICATION_ADDED_FOR_USER',
       createdAt: this.timer.getUTCDate(),
       meta: {
         correlation: {
-          userIdentifier: dto.userUuid,
+          userIdentifier: dto.notification.user_uuid,
           userIdentifierType: 'uuid',
         },
         origin: DomainEventService.SyncingServer,

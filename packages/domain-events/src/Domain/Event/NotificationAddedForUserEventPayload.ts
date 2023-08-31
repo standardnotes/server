@@ -1,8 +1,10 @@
 export interface NotificationAddedForUserEventPayload {
-  uuid: string
-  userUuid: string
-  type: string
-  payload: string
-  createdAtTimestamp: number
-  updatedAtTimestamp: number
+  notification: {
+    uuid: string
+    user_uuid: string
+    type: string
+    payload: string
+    created_at_timestamp: number
+    updated_at_timestamp: number
+  }
 }

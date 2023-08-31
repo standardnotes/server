@@ -47,12 +47,14 @@ export class AddNotificationForUser implements UseCaseInterface<Notification> {
     await this.notificationRepository.save(notification)
 
     const event = this.domainEventFactory.createNotificationAddedForUserEvent({
-      uuid: notification.id.toString(),
-      userUuid: notification.props.userUuid.value,
-      type: notification.props.type.value,
-      payload: notification.props.payload.toString(),
-      createdAtTimestamp: notification.props.timestamps.createdAt,
-      updatedAtTimestamp: notification.props.timestamps.updatedAt,
+      notification: {
+        uuid: notification.id.toString(),
+        user_uuid: notification.props.userUuid.value,
+        type: notification.props.type.value,
+        payload: notification.props.payload.toString(),
+        created_at_timestamp: notification.props.timestamps.createdAt,
+        updated_at_timestamp: notification.props.timestamps.updatedAt,
+      },
     })
 
     const result = await this.sendEventToClientUseCase.execute({
