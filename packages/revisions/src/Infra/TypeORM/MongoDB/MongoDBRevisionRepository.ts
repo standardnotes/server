@@ -123,12 +123,12 @@ export class MongoDBRevisionRepository implements RevisionRepositoryInterface {
     )
   }
 
-  async save(revision: Revision): Promise<Revision> {
+  async save(revision: Revision): Promise<boolean> {
     const persistence = this.revisionMapper.toProjection(revision)
 
     const { _id, ...rest } = persistence
 
-    await this.mongoRepository.updateOne(
+    const updateResult = await this.mongoRepository.updateOne(
       { _id: { $eq: _id } },
       {
         $set: rest,
@@ -136,6 +136,6 @@ export class MongoDBRevisionRepository implements RevisionRepositoryInterface {
       { upsert: true },
     )
 
-    return revision
+    return updateResult.acknowledged
   }
 }

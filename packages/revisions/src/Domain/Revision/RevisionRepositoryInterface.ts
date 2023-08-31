@@ -12,5 +12,5 @@ export interface RevisionRepositoryInterface {
   findMetadataByItemId(itemUuid: Uuid, userUuid: Uuid): Promise<Array<RevisionMetadata>>
   updateUserUuid(itemUuid: Uuid, userUuid: Uuid): Promise<void>
   findByUserUuid(dto: { userUuid: Uuid; offset?: number; limit?: number }): Promise<Array<Revision>>
-  save(revision: Revision): Promise<Revision>
+  save(revision: Revision): Promise<boolean>
 }

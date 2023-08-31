@@ -96,7 +96,7 @@ describe('TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser', () => {
     primaryRevisionRepository.removeByUserUuid = jest.fn().mockResolvedValue(undefined)
 
     secondaryRevisionRepository = {} as jest.Mocked<RevisionRepositoryInterface>
-    secondaryRevisionRepository.save = jest.fn().mockResolvedValue(undefined)
+    secondaryRevisionRepository.save = jest.fn().mockResolvedValue(true)
     secondaryRevisionRepository.removeByUserUuid = jest.fn().mockResolvedValue(undefined)
     secondaryRevisionRepository.countByUserUuid = jest.fn().mockResolvedValue(2)
     secondaryRevisionRepository.findOneByUuid = jest
@@ -369,6 +369,24 @@ describe('TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser', () => {
 
       expect(result.isFailed()).toBeTruthy()
       expect(result.getError()).toEqual('error')
+
+      expect(primaryRevisionRepository.removeByUserUuid).not.toHaveBeenCalled()
+      expect((secondaryRevisionRepository as RevisionRepositoryInterface).removeByUserUuid).toHaveBeenCalledTimes(1)
+    })
+
+    it('should fail if a revisions did not save in the secondary database', async () => {
+      ;(secondaryRevisionRepository as RevisionRepositoryInterface).save = jest.fn().mockResolvedValue(false)
+
+      const useCase = createUseCase()
+
+      const result = await useCase.execute({
+        userUuid: '00000000-0000-0000-0000-000000000000',
+      })
+
+      expect(result.isFailed()).toBeTruthy()
+      expect(result.getError()).toEqual(
+        'Failed to save revision 00000000-0000-0000-0000-000000000000 to secondary database',
+      )
 
       expect(primaryRevisionRepository.removeByUserUuid).not.toHaveBeenCalled()
       expect((secondaryRevisionRepository as RevisionRepositoryInterface).removeByUserUuid).toHaveBeenCalledTimes(1)

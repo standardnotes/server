@@ -74,15 +74,9 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
   private async migrateRevisionsForUser(userUuid: Uuid): Promise<Result<void>> {
     try {
       const totalRevisionsCountForUser = await this.primaryRevisionsRepository.countByUserUuid(userUuid)
-      this.logger.info(`Total revisions count for user ${userUuid.value} is ${totalRevisionsCountForUser}`)
-
       const pageSize = 1
       const totalPages = Math.ceil(totalRevisionsCountForUser / pageSize)
-      this.logger.info(`Total pages to migrate for user ${userUuid.value} is ${totalPages}`)
-
       for (let currentPage = 1; currentPage <= totalPages; currentPage++) {
-        this.logger.info(`Migrating page ${currentPage} of ${totalPages} for user ${userUuid.value}`)
-
         const query = {
           userUuid: userUuid,
           offset: (currentPage - 1) * pageSize,
@@ -91,10 +85,11 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
 
         const revisions = await this.primaryRevisionsRepository.findByUserUuid(query)
 
-        this.logger.info(`Migrating ${revisions.length} revisions for user ${userUuid.value}`)
-
         for (const revision of revisions) {
-          await (this.secondRevisionsRepository as RevisionRepositoryInterface).save(revision)
+          const didSave = await (this.secondRevisionsRepository as RevisionRepositoryInterface).save(revision)
+          if (!didSave) {
+            return Result.fail(`Failed to save revision ${revision.id.toString()} to secondary database`)
+          }
         }
       }
 
