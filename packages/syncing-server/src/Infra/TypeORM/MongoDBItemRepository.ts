@@ -189,9 +189,7 @@ export class MongoDBItemRepository implements ItemRepositoryInterface {
       }
     }
     if (query.deleted !== undefined) {
-      const deletedMixedValues = query.deleted === true ? [true, 1] : [false, 0]
-
-      options.where = { ...options.where, deleted: { $in: deletedMixedValues } }
+      options.where = { ...options.where, deleted: { $eq: query.deleted } }
     }
     if (query.contentType) {
       if (Array.isArray(query.contentType)) {

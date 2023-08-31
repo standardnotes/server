@@ -64,7 +64,7 @@ export class SQLLegacyItemPersistenceMapper implements MapperInterface<Item, SQL
         encItemKey: projection.encItemKey,
         authHash: projection.authHash,
         userUuid,
-        deleted: projection.deleted,
+        deleted: !!projection.deleted,
         dates,
         timestamps,
         updatedWithSession,
@@ -90,7 +90,7 @@ export class SQLLegacyItemPersistenceMapper implements MapperInterface<Item, SQL
     typeorm.encItemKey = domain.props.encItemKey
     typeorm.authHash = domain.props.authHash
     typeorm.userUuid = domain.props.userUuid.value
-    typeorm.deleted = domain.props.deleted
+    typeorm.deleted = !!domain.props.deleted
     typeorm.createdAt = domain.props.dates.createdAt
     typeorm.updatedAt = domain.props.dates.updatedAt
     typeorm.createdAtTimestamp = domain.props.timestamps.createdAt
