@@ -120,15 +120,6 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
   private async checkIntegrityBetweenPrimaryAndSecondaryDatabase(userUuid: Uuid): Promise<Result<boolean>> {
     try {
       const totalRevisionsCountForUserInPrimary = await this.primaryRevisionsRepository.countByUserUuid(userUuid)
-      const totalRevisionsCountForUserInSecondary = await (
-        this.secondRevisionsRepository as RevisionRepositoryInterface
-      ).countByUserUuid(userUuid)
-
-      if (totalRevisionsCountForUserInPrimary !== totalRevisionsCountForUserInSecondary) {
-        return Result.fail(
-          `Total revisions count for user ${userUuid.value} in primary database (${totalRevisionsCountForUserInPrimary}) does not match total revisions count in secondary database (${totalRevisionsCountForUserInSecondary})`,
-        )
-      }
 
       const pageSize = 1
       const totalPages = Math.ceil(totalRevisionsCountForUserInPrimary / pageSize)
@@ -160,6 +151,16 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
             return Result.fail(`Revision ${revision.id.toString()} is not identical in primary and secondary database`)
           }
         }
+      }
+
+      const totalRevisionsCountForUserInSecondary = await (
+        this.secondRevisionsRepository as RevisionRepositoryInterface
+      ).countByUserUuid(userUuid)
+
+      if (totalRevisionsCountForUserInPrimary !== totalRevisionsCountForUserInSecondary) {
+        return Result.fail(
+          `Total revisions count for user ${userUuid.value} in primary database (${totalRevisionsCountForUserInPrimary}) does not match total revisions count in secondary database (${totalRevisionsCountForUserInSecondary})`,
+        )
       }
 
       return Result.ok()

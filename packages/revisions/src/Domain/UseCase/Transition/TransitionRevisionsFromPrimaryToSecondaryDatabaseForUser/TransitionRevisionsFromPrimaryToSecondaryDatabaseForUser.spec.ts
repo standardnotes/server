@@ -351,7 +351,7 @@ describe('TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser', () => {
       expect(primaryRevisionRepository.countByUserUuid).toHaveBeenCalledWith(
         Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
       )
-      expect((secondaryRevisionRepository as RevisionRepositoryInterface).countByUserUuid).toHaveBeenCalledTimes(1)
+      expect((secondaryRevisionRepository as RevisionRepositoryInterface).countByUserUuid).not.toHaveBeenCalled()
       expect(primaryRevisionRepository.removeByUserUuid).not.toHaveBeenCalled()
       expect((secondaryRevisionRepository as RevisionRepositoryInterface).removeByUserUuid).toHaveBeenCalledTimes(1)
     })
