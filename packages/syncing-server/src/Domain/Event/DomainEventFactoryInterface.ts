@@ -3,11 +3,24 @@ import {
   EmailRequestedEvent,
   ItemDumpedEvent,
   ItemRevisionCreationRequestedEvent,
+  NotificationAddedForUserEvent,
   RevisionsCopyRequestedEvent,
   TransitionStatusUpdatedEvent,
+  WebSocketMessageRequestedEvent,
 } from '@standardnotes/domain-events'
 
 export interface DomainEventFactoryInterface {
+  createWebSocketMessageRequestedEvent(dto: { userUuid: string; message: string }): WebSocketMessageRequestedEvent
+  createNotificationAddedForUserEvent(dto: {
+    notification: {
+      uuid: string
+      user_uuid: string
+      type: string
+      payload: string
+      created_at_timestamp: number
+      updated_at_timestamp: number
+    }
+  }): NotificationAddedForUserEvent
   createTransitionStatusUpdatedEvent(dto: {
     userUuid: string
     transitionType: 'items' | 'revisions'

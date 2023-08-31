@@ -4,9 +4,18 @@ import { TimerInterface } from '@standardnotes/time'
 import { AddNotificationForUserDTO } from './AddNotificationForUserDTO'
 import { NotificationRepositoryInterface } from '../../../Notifications/NotificationRepositoryInterface'
 import { Notification } from '../../../Notifications/Notification'
+import { SendEventToClient } from '../../Syncing/SendEventToClient/SendEventToClient'
+import { DomainEventFactoryInterface } from '../../../Event/DomainEventFactoryInterface'
+import { Logger } from 'winston'
 
 export class AddNotificationForUser implements UseCaseInterface<Notification> {
-  constructor(private notificationRepository: NotificationRepositoryInterface, private timer: TimerInterface) {}
+  constructor(
+    private notificationRepository: NotificationRepositoryInterface,
+    private timer: TimerInterface,
+    private domainEventFactory: DomainEventFactoryInterface,
+    private sendEventToClientUseCase: SendEventToClient,
+    private logger: Logger,
+  ) {}
 
   async execute(dto: AddNotificationForUserDTO): Promise<Result<Notification>> {
     const userUuidOrError = Uuid.create(dto.userUuid)
@@ -36,6 +45,27 @@ export class AddNotificationForUser implements UseCaseInterface<Notification> {
     const notification = notificationOrError.getValue()
 
     await this.notificationRepository.save(notification)
+
+    const event = this.domainEventFactory.createNotificationAddedForUserEvent({
+      notification: {
+        uuid: notification.id.toString(),
+        user_uuid: notification.props.userUuid.value,
+        type: notification.props.type.value,
+        payload: notification.props.payload.toString(),
+        created_at_timestamp: notification.props.timestamps.createdAt,
+        updated_at_timestamp: notification.props.timestamps.updatedAt,
+      },
+    })
+
+    const result = await this.sendEventToClientUseCase.execute({
+      userUuid: userUuid.value,
+      event,
+    })
+    if (result.isFailed()) {
+      this.logger.error(
+        `Failed to send notification added event to client for user ${userUuid.value}: ${result.getError()}`,
+      )
+    }
 
     return Result.ok(notification)
   }

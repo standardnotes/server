@@ -5,14 +5,55 @@ import {
   EmailRequestedEvent,
   ItemDumpedEvent,
   ItemRevisionCreationRequestedEvent,
+  NotificationAddedForUserEvent,
   RevisionsCopyRequestedEvent,
   TransitionStatusUpdatedEvent,
+  WebSocketMessageRequestedEvent,
 } from '@standardnotes/domain-events'
 import { TimerInterface } from '@standardnotes/time'
 import { DomainEventFactoryInterface } from './DomainEventFactoryInterface'
 
 export class DomainEventFactory implements DomainEventFactoryInterface {
   constructor(private timer: TimerInterface) {}
+
+  createNotificationAddedForUserEvent(dto: {
+    notification: {
+      uuid: string
+      user_uuid: string
+      type: string
+      payload: string
+      created_at_timestamp: number
+      updated_at_timestamp: number
+    }
+  }): NotificationAddedForUserEvent {
+    return {
+      type: 'NOTIFICATION_ADDED_FOR_USER',
+      createdAt: this.timer.getUTCDate(),
+      meta: {
+        correlation: {
+          userIdentifier: dto.notification.user_uuid,
+          userIdentifierType: 'uuid',
+        },
+        origin: DomainEventService.SyncingServer,
+      },
+      payload: dto,
+    }
+  }
+
+  createWebSocketMessageRequestedEvent(dto: { userUuid: string; message: string }): WebSocketMessageRequestedEvent {
+    return {
+      type: 'WEB_SOCKET_MESSAGE_REQUESTED',
+      createdAt: this.timer.getUTCDate(),
+      meta: {
+        correlation: {
+          userIdentifier: dto.userUuid,
+          userIdentifierType: 'uuid',
+        },
+        origin: DomainEventService.SyncingServer,
+      },
+      payload: dto,
+    }
+  }
 
   createTransitionStatusUpdatedEvent(dto: {
     userUuid: string
