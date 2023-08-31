@@ -117,6 +117,7 @@ describe('TransitionItemsFromPrimaryToSecondaryDatabaseForUser', () => {
     logger.info = jest.fn()
 
     timer = {} as jest.Mocked<TimerInterface>
+    timer.sleep = jest.fn()
     timer.getTimestampInMicroseconds = jest.fn().mockReturnValue(123)
     timer.convertMicrosecondsToTimeStructure = jest.fn().mockReturnValue({
       days: 0,

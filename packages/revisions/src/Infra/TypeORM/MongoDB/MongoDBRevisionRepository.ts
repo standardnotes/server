@@ -44,12 +44,8 @@ export class MongoDBRevisionRepository implements RevisionRepositoryInterface {
 
   async removeOneByUuid(revisionUuid: Uuid, userUuid: Uuid): Promise<void> {
     await this.mongoRepository.deleteOne({
-      where: {
-        $and: [
-          { _id: { $eq: BSON.UUID.createFromHexString(revisionUuid.value) } },
-          { userUuid: { $eq: userUuid.value } },
-        ],
-      },
+      _id: { $eq: BSON.UUID.createFromHexString(revisionUuid.value) },
+      userUuid: { $eq: userUuid.value },
     })
   }
 

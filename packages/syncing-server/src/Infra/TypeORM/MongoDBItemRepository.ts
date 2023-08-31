@@ -136,7 +136,7 @@ export class MongoDBItemRepository implements ItemRepositoryInterface {
   }
 
   async remove(item: Item): Promise<void> {
-    await this.mongoRepository.deleteOne({ where: { _id: { $eq: BSON.UUID.createFromHexString(item.uuid.value) } } })
+    await this.mongoRepository.deleteOne({ _id: { $eq: BSON.UUID.createFromHexString(item.uuid.value) } })
   }
 
   async save(item: Item): Promise<void> {

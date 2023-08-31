@@ -38,6 +38,8 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
       return Result.fail(migrationResult.getError())
     }
 
+    await this.allowForSecondaryDatabaseToCatchUp()
+
     const integrityCheckResult = await this.checkIntegrityBetweenPrimaryAndSecondaryDatabase(userUuid)
     if (integrityCheckResult.isFailed()) {
       const cleanupResult = await this.deleteRevisionsForUser(userUuid, this.secondRevisionsRepository)
@@ -105,6 +107,11 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
     } catch (error) {
       return Result.fail((error as Error).message)
     }
+  }
+
+  private async allowForSecondaryDatabaseToCatchUp(): Promise<void> {
+    const twoSecondsInMilliseconds = 2_000
+    await this.timer.sleep(twoSecondsInMilliseconds)
   }
 
   private async checkIntegrityBetweenPrimaryAndSecondaryDatabase(userUuid: Uuid): Promise<Result<boolean>> {
