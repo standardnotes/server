@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.30.5](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.30.4...@standardnotes/revisions-server@1.30.5) (2023-08-31)
+
+### Bug Fixes
+
+* **revisions:** indiciate if revision did not save ([a6039bd](https://github.com/standardnotes/server/commit/a6039bd99ac37cc5ee4487336fa42412722c7815))
+
 ## [1.30.4](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.30.3...@standardnotes/revisions-server@1.30.4) (2023-08-31)
 
 ### Bug Fixes
