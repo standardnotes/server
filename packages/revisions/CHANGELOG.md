@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.30.7](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.30.6...@standardnotes/revisions-server@1.30.7) (2023-08-31)
+
+### Bug Fixes
+
+* **revisions:** add more verbose messages about failures in revision transitioning ([a4929af](https://github.com/standardnotes/server/commit/a4929af2ee3df4db9f57c2b0fb250b6828095421))
+* **revisions:** revisions transition check for total count at the end ([095811d](https://github.com/standardnotes/server/commit/095811dda929e6947af36e096a659f18f1b5f8b8))
+
 ## [1.30.6](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.30.5...@standardnotes/revisions-server@1.30.6) (2023-08-31)
 
 **Note:** Version bump only for package @standardnotes/revisions-server
