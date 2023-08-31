@@ -86,16 +86,24 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
         const revisions = await this.primaryRevisionsRepository.findByUserUuid(query)
 
         for (const revision of revisions) {
-          const didSave = await (this.secondRevisionsRepository as RevisionRepositoryInterface).save(revision)
-          if (!didSave) {
-            return Result.fail(`Failed to save revision ${revision.id.toString()} to secondary database`)
+          try {
+            const didSave = await (this.secondRevisionsRepository as RevisionRepositoryInterface).save(revision)
+            if (!didSave) {
+              return Result.fail(`Failed to save revision ${revision.id.toString()} to secondary database`)
+            }
+          } catch (error) {
+            return Result.fail(
+              `Errored when saving revision ${revision.id.toString()} to secondary database: ${
+                (error as Error).message
+              }`,
+            )
           }
         }
       }
 
       return Result.ok()
     } catch (error) {
-      return Result.fail((error as Error).message)
+      return Result.fail(`Errored when migrating revisions for user ${userUuid.value}: ${(error as Error).message}`)
     }
   }
 
@@ -108,7 +116,7 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
 
       return Result.ok()
     } catch (error) {
-      return Result.fail((error as Error).message)
+      return Result.fail(`Errored when deleting revisions for user ${userUuid.value}: ${(error as Error).message}`)
     }
   }
 
@@ -165,7 +173,9 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
 
       return Result.ok()
     } catch (error) {
-      return Result.fail((error as Error).message)
+      return Result.fail(
+        `Errored when checking integrity between primary and secondary database: ${(error as Error).message}`,
+      )
     }
   }
 }

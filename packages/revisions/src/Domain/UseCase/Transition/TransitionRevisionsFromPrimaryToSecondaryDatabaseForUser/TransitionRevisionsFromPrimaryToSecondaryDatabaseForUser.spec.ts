@@ -175,7 +175,7 @@ describe('TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser', () => {
 
       expect(logger.error).toHaveBeenCalledTimes(1)
       expect(logger.error).toHaveBeenCalledWith(
-        'Failed to clean up primary database revisions for user 00000000-0000-0000-0000-000000000000: error',
+        'Failed to clean up primary database revisions for user 00000000-0000-0000-0000-000000000000: Errored when deleting revisions for user 00000000-0000-0000-0000-000000000000: error',
       )
     })
   })
@@ -220,10 +220,30 @@ describe('TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser', () => {
       })
 
       expect(result.isFailed()).toBeTruthy()
-      expect(result.getError()).toEqual('error')
+      expect(result.getError()).toEqual(
+        'Errored when migrating revisions for user 00000000-0000-0000-0000-000000000000: error',
+      )
 
       expect((secondaryRevisionRepository as RevisionRepositoryInterface).removeByUserUuid).toHaveBeenCalledTimes(1)
       expect(primaryRevisionRepository.removeByUserUuid).not.toHaveBeenCalled()
+    })
+
+    it('should return an error for a specific revision if it errors when saving to secondary database', async () => {
+      ;(secondaryRevisionRepository as RevisionRepositoryInterface).save = jest
+        .fn()
+        .mockResolvedValueOnce(true)
+        .mockRejectedValueOnce(new Error('error'))
+
+      const useCase = createUseCase()
+
+      const result = await useCase.execute({
+        userUuid: '84c0f8e8-544a-4c7e-9adf-26209303bc1d',
+      })
+
+      expect(result.isFailed()).toBeTruthy()
+      expect(result.getError()).toEqual(
+        'Errored when saving revision 00000000-0000-0000-0000-000000000001 to secondary database: error',
+      )
     })
 
     it('should log an error if deleting Revisions from secondary database fails upon migration failure', async () => {
@@ -245,7 +265,7 @@ describe('TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser', () => {
 
       expect(logger.error).toHaveBeenCalledTimes(1)
       expect(logger.error).toHaveBeenCalledWith(
-        'Failed to clean up secondary database revisions for user 00000000-0000-0000-0000-000000000000: error',
+        'Failed to clean up secondary database revisions for user 00000000-0000-0000-0000-000000000000: Errored when deleting revisions for user 00000000-0000-0000-0000-000000000000: error',
       )
     })
 
@@ -273,7 +293,7 @@ describe('TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser', () => {
 
       expect(logger.error).toHaveBeenCalledTimes(1)
       expect(logger.error).toHaveBeenCalledWith(
-        'Failed to clean up secondary database revisions for user 00000000-0000-0000-0000-000000000000: error',
+        'Failed to clean up secondary database revisions for user 00000000-0000-0000-0000-000000000000: Errored when deleting revisions for user 00000000-0000-0000-0000-000000000000: error',
       )
     })
 
@@ -368,7 +388,7 @@ describe('TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser', () => {
       })
 
       expect(result.isFailed()).toBeTruthy()
-      expect(result.getError()).toEqual('error')
+      expect(result.getError()).toEqual('Errored when checking integrity between primary and secondary database: error')
 
       expect(primaryRevisionRepository.removeByUserUuid).not.toHaveBeenCalled()
       expect((secondaryRevisionRepository as RevisionRepositoryInterface).removeByUserUuid).toHaveBeenCalledTimes(1)
