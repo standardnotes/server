@@ -5,7 +5,10 @@ import { UniqueEntityId } from './UniqueEntityId'
 export abstract class Entity<T> {
   protected readonly _id: UniqueEntityId
 
-  constructor(public readonly props: T, id?: UniqueEntityId) {
+  constructor(
+    public readonly props: T,
+    id?: UniqueEntityId,
+  ) {
     this._id = id ? id : new UniqueEntityId()
   }
 

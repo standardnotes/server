@@ -10,7 +10,10 @@ import {
 export class SQSNewRelicBounceNotificiationHandler implements DomainEventMessageHandlerInterface {
   private readonly ALLOWED_NOTIFICATION_TYPES = ['Bounce']
 
-  constructor(private handlers: Map<string, DomainEventHandlerInterface>, private logger: Logger) {}
+  constructor(
+    private handlers: Map<string, DomainEventHandlerInterface>,
+    private logger: Logger,
+  ) {}
 
   async handleMessage(message: string): Promise<void> {
     const messageParsed = JSON.parse(JSON.parse(message).Message)
