@@ -85,7 +85,7 @@
     "@types/prettyjson": "^0.0.30",
     "@types/ua-parser-js": "^0.7.36",
     "@types/uuid": "^9.0.2",
-    "@typescript-eslint/eslint-plugin": "^5.59.2",
+    "@typescript-eslint/eslint-plugin": "^6.5.0",
     "@typescript-eslint/parser": "^6.5.0",
     "eslint": "^8.39.0",
     "eslint-plugin-prettier": "^5.0.0",
