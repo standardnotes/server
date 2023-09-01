@@ -7,11 +7,24 @@ import {
   NotificationAddedForUserEvent,
   RevisionsCopyRequestedEvent,
   TransitionStatusUpdatedEvent,
+  UserInvitedToSharedVaultEvent,
   WebSocketMessageRequestedEvent,
 } from '@standardnotes/domain-events'
 
 export interface DomainEventFactoryInterface {
   createWebSocketMessageRequestedEvent(dto: { userUuid: string; message: string }): WebSocketMessageRequestedEvent
+  createUserInvitedToSharedVaultEvent(dto: {
+    invite: {
+      uuid: string
+      shared_vault_uuid: string
+      user_uuid: string
+      sender_uuid: string
+      encrypted_message: string
+      permission: string
+      created_at_timestamp: number
+      updated_at_timestamp: number
+    }
+  }): UserInvitedToSharedVaultEvent
   createMessageSentToUserEvent(dto: {
     message: {
       uuid: string

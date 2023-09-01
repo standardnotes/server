@@ -6,6 +6,9 @@ import { SharedVaultRepositoryInterface } from '../../../SharedVault/SharedVault
 import { InviteUserToSharedVaultDTO } from './InviteUserToSharedVaultDTO'
 import { SharedVaultInviteRepositoryInterface } from '../../../SharedVault/User/Invite/SharedVaultInviteRepositoryInterface'
 import { SharedVaultUserRepositoryInterface } from '../../../SharedVault/User/SharedVaultUserRepositoryInterface'
+import { Logger } from 'winston'
+import { DomainEventFactoryInterface } from '../../../Event/DomainEventFactoryInterface'
+import { SendEventToClient } from '../../Syncing/SendEventToClient/SendEventToClient'
 
 export class InviteUserToSharedVault implements UseCaseInterface<SharedVaultInvite> {
   constructor(
@@ -13,6 +16,9 @@ export class InviteUserToSharedVault implements UseCaseInterface<SharedVaultInvi
     private sharedVaultInviteRepository: SharedVaultInviteRepositoryInterface,
     private sharedVaultUserRepository: SharedVaultUserRepositoryInterface,
     private timer: TimerInterface,
+    private domainEventFactory: DomainEventFactoryInterface,
+    private sendEventToClientUseCase: SendEventToClient,
+    private logger: Logger,
   ) {}
   async execute(dto: InviteUserToSharedVaultDTO): Promise<Result<SharedVaultInvite>> {
     const sharedVaultUuidOrError = Uuid.create(dto.sharedVaultUuid)
@@ -81,6 +87,31 @@ export class InviteUserToSharedVault implements UseCaseInterface<SharedVaultInvi
     const sharedVaultInvite = sharedVaultInviteOrError.getValue()
 
     await this.sharedVaultInviteRepository.save(sharedVaultInvite)
+
+    const event = this.domainEventFactory.createUserInvitedToSharedVaultEvent({
+      invite: {
+        uuid: sharedVaultInvite.id.toString(),
+        shared_vault_uuid: sharedVaultInvite.props.sharedVaultUuid.value,
+        user_uuid: sharedVaultInvite.props.userUuid.value,
+        sender_uuid: sharedVaultInvite.props.senderUuid.value,
+        encrypted_message: sharedVaultInvite.props.encryptedMessage,
+        permission: sharedVaultInvite.props.permission.value,
+        created_at_timestamp: sharedVaultInvite.props.timestamps.createdAt,
+        updated_at_timestamp: sharedVaultInvite.props.timestamps.updatedAt,
+      },
+    })
+
+    const result = await this.sendEventToClientUseCase.execute({
+      userUuid: sharedVaultInvite.props.userUuid.value,
+      event,
+    })
+    if (result.isFailed()) {
+      this.logger.error(
+        `Failed to send user invited to shared vault event to client for user ${
+          sharedVaultInvite.props.userUuid.value
+        }: ${result.getError()}`,
+      )
+    }
 
     return Result.ok(sharedVaultInvite)
   }

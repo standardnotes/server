@@ -678,10 +678,13 @@ export class ContainerConfigLoader {
       .bind<InviteUserToSharedVault>(TYPES.Sync_InviteUserToSharedVault)
       .toConstantValue(
         new InviteUserToSharedVault(
-          container.get(TYPES.Sync_SharedVaultRepository),
-          container.get(TYPES.Sync_SharedVaultInviteRepository),
-          container.get(TYPES.Sync_SharedVaultUserRepository),
-          container.get(TYPES.Sync_Timer),
+          container.get<SharedVaultRepositoryInterface>(TYPES.Sync_SharedVaultRepository),
+          container.get<SharedVaultInviteRepositoryInterface>(TYPES.Sync_SharedVaultInviteRepository),
+          container.get<SharedVaultUserRepositoryInterface>(TYPES.Sync_SharedVaultUserRepository),
+          container.get<TimerInterface>(TYPES.Sync_Timer),
+          container.get<DomainEventFactoryInterface>(TYPES.Sync_DomainEventFactory),
+          container.get<SendEventToClient>(TYPES.Sync_SendEventToClient),
+          container.get<Logger>(TYPES.Sync_Logger),
         ),
       )
     container

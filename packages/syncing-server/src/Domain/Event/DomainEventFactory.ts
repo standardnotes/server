@@ -9,6 +9,7 @@ import {
   NotificationAddedForUserEvent,
   RevisionsCopyRequestedEvent,
   TransitionStatusUpdatedEvent,
+  UserInvitedToSharedVaultEvent,
   WebSocketMessageRequestedEvent,
 } from '@standardnotes/domain-events'
 import { TimerInterface } from '@standardnotes/time'
@@ -16,6 +17,32 @@ import { DomainEventFactoryInterface } from './DomainEventFactoryInterface'
 
 export class DomainEventFactory implements DomainEventFactoryInterface {
   constructor(private timer: TimerInterface) {}
+
+  createUserInvitedToSharedVaultEvent(dto: {
+    invite: {
+      uuid: string
+      shared_vault_uuid: string
+      user_uuid: string
+      sender_uuid: string
+      encrypted_message: string
+      permission: string
+      created_at_timestamp: number
+      updated_at_timestamp: number
+    }
+  }): UserInvitedToSharedVaultEvent {
+    return {
+      type: 'USER_INVITED_TO_SHARED_VAULT',
+      createdAt: this.timer.getUTCDate(),
+      meta: {
+        correlation: {
+          userIdentifier: dto.invite.user_uuid,
+          userIdentifierType: 'uuid',
+        },
+        origin: DomainEventService.SyncingServer,
+      },
+      payload: dto,
+    }
+  }
 
   createMessageSentToUserEvent(dto: {
     message: {
