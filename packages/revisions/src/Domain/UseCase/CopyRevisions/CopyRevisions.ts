@@ -43,7 +43,7 @@ export class CopyRevisions implements UseCaseInterface<string> {
 
       const revisionCopy = revisionCopyOrError.getValue()
 
-      await revisionRepository.save(revisionCopy)
+      await revisionRepository.insert(revisionCopy)
     }
 
     return Result.ok<string>('Revisions copied')

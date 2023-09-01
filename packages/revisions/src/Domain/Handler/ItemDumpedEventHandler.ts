@@ -28,7 +28,7 @@ export class ItemDumpedEventHandler implements DomainEventHandlerInterface {
 
     const revisionRepository = this.revisionRepositoryResolver.resolve(roleNames)
 
-    await revisionRepository.save(revision)
+    await revisionRepository.insert(revision)
 
     await this.dumpRepository.removeDump(event.payload.fileDumpPath)
   }
