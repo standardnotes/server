@@ -24,6 +24,4 @@ void container.load().then((container) => {
     TYPES.Files_DomainEventSubscriberFactory,
   )
   subscriberFactory.create().start()
-
-  setInterval(() => logger.info('Alive and kicking!'), 20 * 60 * 1000)
 })

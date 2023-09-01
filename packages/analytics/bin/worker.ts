@@ -22,6 +22,4 @@ void container.load().then((container) => {
 
   const subscriberFactory: DomainEventSubscriberFactoryInterface = container.get(TYPES.DomainEventSubscriberFactory)
   subscriberFactory.create().start()
-
-  setInterval(() => logger.info('Alive and kicking!'), 20 * 60 * 1000)
 })
