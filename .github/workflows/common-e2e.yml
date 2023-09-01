@@ -21,7 +21,7 @@ jobs:
   e2e:
     name: (Self Hosting) E2E Test Suite
     strategy:
-      fail-fast: false
+      fail-fast: true
       matrix:
         secondary_db_enabled: [true, false]
         transition_mode_enabled: [true, false]
@@ -70,7 +70,7 @@ jobs:
   e2e-home-server:
     name: (Home Server) E2E Test Suite
     strategy:
-      fail-fast: false
+      fail-fast: true
       matrix:
         db_type: [mysql, sqlite]
         cache_type: [redis, memory]
