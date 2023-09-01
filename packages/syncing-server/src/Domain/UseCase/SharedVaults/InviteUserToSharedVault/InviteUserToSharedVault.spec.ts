@@ -1,5 +1,6 @@
 import { TimerInterface } from '@standardnotes/time'
 import { Uuid, Timestamps, Result, SharedVaultUserPermission } from '@standardnotes/domain-core'
+import { Logger } from 'winston'
 
 import { SharedVaultRepositoryInterface } from '../../../SharedVault/SharedVaultRepositoryInterface'
 import { SharedVaultInviteRepositoryInterface } from '../../../SharedVault/User/Invite/SharedVaultInviteRepositoryInterface'
@@ -8,6 +9,9 @@ import { SharedVault } from '../../../SharedVault/SharedVault'
 import { SharedVaultInvite } from '../../../SharedVault/User/Invite/SharedVaultInvite'
 import { SharedVaultUserRepositoryInterface } from '../../../SharedVault/User/SharedVaultUserRepositoryInterface'
 import { SharedVaultUser } from '../../../SharedVault/User/SharedVaultUser'
+import { DomainEventFactoryInterface } from '../../../Event/DomainEventFactoryInterface'
+import { SendEventToClient } from '../../Syncing/SendEventToClient/SendEventToClient'
+import { UserInvitedToSharedVaultEvent } from '@standardnotes/domain-events'
 
 describe('InviteUserToSharedVault', () => {
   let sharedVaultRepository: SharedVaultRepositoryInterface
@@ -16,9 +20,20 @@ describe('InviteUserToSharedVault', () => {
   let timer: TimerInterface
   let sharedVault: SharedVault
   let sharedVaultUser: SharedVaultUser
+  let domainEventFactory: DomainEventFactoryInterface
+  let sendEventToClientUseCase: SendEventToClient
+  let logger: Logger
 
   const createUseCase = () =>
-    new InviteUserToSharedVault(sharedVaultRepository, sharedVaultInviteRepository, sharedVaultUserRepository, timer)
+    new InviteUserToSharedVault(
+      sharedVaultRepository,
+      sharedVaultInviteRepository,
+      sharedVaultUserRepository,
+      timer,
+      domainEventFactory,
+      sendEventToClientUseCase,
+      logger,
+    )
 
   beforeEach(() => {
     sharedVault = SharedVault.create({
@@ -46,6 +61,17 @@ describe('InviteUserToSharedVault', () => {
 
     timer = {} as jest.Mocked<TimerInterface>
     timer.getTimestampInMicroseconds = jest.fn().mockReturnValue(123)
+
+    domainEventFactory = {} as jest.Mocked<DomainEventFactoryInterface>
+    domainEventFactory.createUserInvitedToSharedVaultEvent = jest.fn().mockReturnValue({
+      type: 'USER_INVITED_TO_SHARED_VAULT',
+    } as jest.Mocked<UserInvitedToSharedVaultEvent>)
+
+    sendEventToClientUseCase = {} as jest.Mocked<SendEventToClient>
+    sendEventToClientUseCase.execute = jest.fn().mockReturnValue(Result.ok())
+
+    logger = {} as jest.Mocked<Logger>
+    logger.error = jest.fn()
   })
 
   it('should return a failure result if the shared vault uuid is invalid', async () => {
@@ -216,5 +242,22 @@ describe('InviteUserToSharedVault', () => {
     expect(result.getError()).toBe('Oops')
 
     mockSharedVaultInvite.mockRestore()
+  })
+
+  it('should log error if event could not be sent to user', async () => {
+    sendEventToClientUseCase.execute = jest.fn().mockReturnValue(Result.fail('Oops'))
+
+    const useCase = createUseCase()
+
+    const result = await useCase.execute({
+      sharedVaultUuid: '00000000-0000-0000-0000-000000000000',
+      senderUuid: '00000000-0000-0000-0000-000000000000',
+      recipientUuid: '00000000-0000-0000-0000-000000000000',
+      permission: SharedVaultUserPermission.PERMISSIONS.Read,
+      encryptedMessage: 'encryptedMessage',
+    })
+
+    expect(result.isFailed()).toBe(false)
+    expect(logger.error).toHaveBeenCalled()
   })
 })
