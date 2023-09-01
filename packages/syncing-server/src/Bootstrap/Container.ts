@@ -783,7 +783,13 @@ export class ContainerConfigLoader {
     container
       .bind<SendMessageToUser>(TYPES.Sync_SendMessageToUser)
       .toConstantValue(
-        new SendMessageToUser(container.get(TYPES.Sync_MessageRepository), container.get(TYPES.Sync_Timer)),
+        new SendMessageToUser(
+          container.get<MessageRepositoryInterface>(TYPES.Sync_MessageRepository),
+          container.get<TimerInterface>(TYPES.Sync_Timer),
+          container.get<DomainEventFactoryInterface>(TYPES.Sync_DomainEventFactory),
+          container.get<SendEventToClient>(TYPES.Sync_SendEventToClient),
+          container.get<Logger>(TYPES.Sync_Logger),
+        ),
       )
     container
       .bind<DeleteMessage>(TYPES.Sync_DeleteMessage)

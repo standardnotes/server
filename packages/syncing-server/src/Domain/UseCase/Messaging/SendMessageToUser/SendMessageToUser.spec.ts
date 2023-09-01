@@ -3,13 +3,21 @@ import { MessageRepositoryInterface } from '../../../Message/MessageRepositoryIn
 import { SendMessageToUser } from './SendMessageToUser'
 import { Message } from '../../../Message/Message'
 import { Result } from '@standardnotes/domain-core'
+import { Logger } from 'winston'
+import { DomainEventFactoryInterface } from '../../../Event/DomainEventFactoryInterface'
+import { SendEventToClient } from '../../Syncing/SendEventToClient/SendEventToClient'
+import { MessageSentToUserEvent } from '@standardnotes/domain-events'
 
 describe('SendMessageToUser', () => {
   let messageRepository: MessageRepositoryInterface
   let timer: TimerInterface
   let existingMessage: Message
+  let domainEventFactory: DomainEventFactoryInterface
+  let sendEventToClientUseCase: SendEventToClient
+  let logger: Logger
 
-  const createUseCase = () => new SendMessageToUser(messageRepository, timer)
+  const createUseCase = () =>
+    new SendMessageToUser(messageRepository, timer, domainEventFactory, sendEventToClientUseCase, logger)
 
   beforeEach(() => {
     existingMessage = {} as jest.Mocked<Message>
@@ -21,6 +29,17 @@ describe('SendMessageToUser', () => {
 
     timer = {} as jest.Mocked<TimerInterface>
     timer.getTimestampInMicroseconds = jest.fn().mockReturnValue(123456789)
+
+    domainEventFactory = {} as jest.Mocked<DomainEventFactoryInterface>
+    domainEventFactory.createMessageSentToUserEvent = jest.fn().mockReturnValue({
+      type: 'MESSAGE_SENT_TO_USER',
+    } as jest.Mocked<MessageSentToUserEvent>)
+
+    sendEventToClientUseCase = {} as jest.Mocked<SendEventToClient>
+    sendEventToClientUseCase.execute = jest.fn().mockReturnValue(Result.ok())
+
+    logger = {} as jest.Mocked<Logger>
+    logger.error = jest.fn()
   })
 
   it('saves a new message', async () => {
@@ -103,5 +122,20 @@ describe('SendMessageToUser', () => {
     expect(result.isFailed()).toBeTruthy()
 
     mock.mockRestore()
+  })
+
+  it('should log error if event could not be sent to user', async () => {
+    sendEventToClientUseCase.execute = jest.fn().mockReturnValue(Result.fail('Oops'))
+
+    const useCase = createUseCase()
+
+    const result = await useCase.execute({
+      recipientUuid: '00000000-0000-0000-0000-000000000000',
+      senderUuid: '00000000-0000-0000-0000-000000000000',
+      encryptedMessage: 'encrypted-message',
+    })
+
+    expect(result.isFailed()).toBeFalsy()
+    expect(logger.error).toHaveBeenCalled()
   })
 })

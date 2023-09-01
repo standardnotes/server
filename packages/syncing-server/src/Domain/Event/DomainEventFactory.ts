@@ -5,6 +5,7 @@ import {
   EmailRequestedEvent,
   ItemDumpedEvent,
   ItemRevisionCreationRequestedEvent,
+  MessageSentToUserEvent,
   NotificationAddedForUserEvent,
   RevisionsCopyRequestedEvent,
   TransitionStatusUpdatedEvent,
@@ -15,6 +16,31 @@ import { DomainEventFactoryInterface } from './DomainEventFactoryInterface'
 
 export class DomainEventFactory implements DomainEventFactoryInterface {
   constructor(private timer: TimerInterface) {}
+
+  createMessageSentToUserEvent(dto: {
+    message: {
+      uuid: string
+      recipient_uuid: string
+      sender_uuid: string
+      encrypted_message: string
+      replaceability_identifier: string | null
+      created_at_timestamp: number
+      updated_at_timestamp: number
+    }
+  }): MessageSentToUserEvent {
+    return {
+      type: 'MESSAGE_SENT_TO_USER',
+      createdAt: this.timer.getUTCDate(),
+      meta: {
+        correlation: {
+          userIdentifier: dto.message.recipient_uuid,
+          userIdentifierType: 'uuid',
+        },
+        origin: DomainEventService.SyncingServer,
+      },
+      payload: dto,
+    }
+  }
 
   createNotificationAddedForUserEvent(dto: {
     notification: {
