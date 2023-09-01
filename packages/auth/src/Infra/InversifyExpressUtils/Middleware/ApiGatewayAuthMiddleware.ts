@@ -4,7 +4,10 @@ import { BaseMiddleware } from 'inversify-express-utils'
 import { Logger } from 'winston'
 
 export abstract class ApiGatewayAuthMiddleware extends BaseMiddleware {
-  constructor(private tokenDecoder: TokenDecoderInterface<CrossServiceTokenData>, private logger: Logger) {
+  constructor(
+    private tokenDecoder: TokenDecoderInterface<CrossServiceTokenData>,
+    private logger: Logger,
+  ) {
     super()
   }
 

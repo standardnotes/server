@@ -3,7 +3,10 @@ import { UpdateTransitionStatus } from '../UseCase/UpdateTransitionStatus/Update
 import { Logger } from 'winston'
 
 export class TransitionStatusUpdatedEventHandler implements DomainEventHandlerInterface {
-  constructor(private updateTransitionStatusUseCase: UpdateTransitionStatus, private logger: Logger) {}
+  constructor(
+    private updateTransitionStatusUseCase: UpdateTransitionStatus,
+    private logger: Logger,
+  ) {}
 
   async handle(event: TransitionStatusUpdatedEvent): Promise<void> {
     const result = await this.updateTransitionStatusUseCase.execute({

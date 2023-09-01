@@ -4,7 +4,10 @@ import { AxiosInstance } from 'axios'
 import { AuthHttpServiceInterface } from '../../Domain/Auth/AuthHttpServiceInterface'
 
 export class AuthHttpService implements AuthHttpServiceInterface {
-  constructor(private httpClient: AxiosInstance, private authServerUrl: string) {}
+  constructor(
+    private httpClient: AxiosInstance,
+    private authServerUrl: string,
+  ) {}
 
   async getUserKeyParams(dto: { email?: string; uuid?: string; authenticated: boolean }): Promise<KeyParamsData> {
     const keyParamsResponse = await this.httpClient.request({

@@ -4,7 +4,10 @@ import { DeleteMessage } from '../DeleteMessage/DeleteMessage'
 import { MessageRepositoryInterface } from '../../../Message/MessageRepositoryInterface'
 
 export class DeleteAllMessagesSentToUser implements UseCaseInterface<void> {
-  constructor(private messageRepository: MessageRepositoryInterface, private deleteMessageUseCase: DeleteMessage) {}
+  constructor(
+    private messageRepository: MessageRepositoryInterface,
+    private deleteMessageUseCase: DeleteMessage,
+  ) {}
 
   async execute(dto: DeleteAllMessagesSentToUserDTO): Promise<Result<void>> {
     const recipientUuidOrError = Uuid.create(dto.recipientUuid)

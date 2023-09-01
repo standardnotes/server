@@ -4,7 +4,10 @@ import { Logger } from 'winston'
 import { UpdateStorageQuotaUsedForUser } from '../UseCase/UpdateStorageQuotaUsedForUser/UpdateStorageQuotaUsedForUser'
 
 export class SharedVaultFileMovedEventHandler implements DomainEventHandlerInterface {
-  constructor(private updateStorageQuotaUsedForUserUseCase: UpdateStorageQuotaUsedForUser, private logger: Logger) {}
+  constructor(
+    private updateStorageQuotaUsedForUserUseCase: UpdateStorageQuotaUsedForUser,
+    private logger: Logger,
+  ) {}
 
   async handle(event: SharedVaultFileMovedEvent): Promise<void> {
     const subtractResult = await this.updateStorageQuotaUsedForUserUseCase.execute({

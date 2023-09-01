@@ -6,7 +6,10 @@ import { AnalyticsActivity } from '../../Domain/Analytics/AnalyticsActivity'
 import { AnalyticsStoreInterface } from '../../Domain/Analytics/AnalyticsStoreInterface'
 
 export class RedisAnalyticsStore implements AnalyticsStoreInterface {
-  constructor(private periodKeyGenerator: PeriodKeyGeneratorInterface, private redisClient: IORedis.Redis) {}
+  constructor(
+    private periodKeyGenerator: PeriodKeyGeneratorInterface,
+    private redisClient: IORedis.Redis,
+  ) {}
 
   async calculateActivityTotalCountOverTime(activity: AnalyticsActivity, period: Period): Promise<number> {
     if (

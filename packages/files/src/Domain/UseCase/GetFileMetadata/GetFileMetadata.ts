@@ -4,7 +4,10 @@ import { GetFileMetadataDTO } from './GetFileMetadataDTO'
 import { Result, UseCaseInterface } from '@standardnotes/domain-core'
 
 export class GetFileMetadata implements UseCaseInterface<number> {
-  constructor(private fileDownloader: FileDownloaderInterface, private logger: Logger) {}
+  constructor(
+    private fileDownloader: FileDownloaderInterface,
+    private logger: Logger,
+  ) {}
 
   async execute(dto: GetFileMetadataDTO): Promise<Result<number>> {
     try {

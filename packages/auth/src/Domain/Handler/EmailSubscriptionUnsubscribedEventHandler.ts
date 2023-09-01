@@ -6,7 +6,10 @@ import { SettingServiceInterface } from '../Setting/SettingServiceInterface'
 import { UserRepositoryInterface } from '../User/UserRepositoryInterface'
 
 export class EmailSubscriptionUnsubscribedEventHandler implements DomainEventHandlerInterface {
-  constructor(private userRepository: UserRepositoryInterface, private settingsService: SettingServiceInterface) {}
+  constructor(
+    private userRepository: UserRepositoryInterface,
+    private settingsService: SettingServiceInterface,
+  ) {}
 
   async handle(event: EmailSubscriptionUnsubscribedEvent): Promise<void> {
     const usernameOrError = Username.create(event.payload.userEmail)

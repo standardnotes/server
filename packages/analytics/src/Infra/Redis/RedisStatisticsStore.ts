@@ -8,7 +8,10 @@ import { Period } from '../../Domain/Time/Period'
 import { PeriodKeyGeneratorInterface } from '../../Domain/Time/PeriodKeyGeneratorInterface'
 
 export class RedisStatisticsStore implements StatisticsStoreInterface, StatisticMeasureRepositoryInterface {
-  constructor(private periodKeyGenerator: PeriodKeyGeneratorInterface, private redisClient: IORedis.Redis) {}
+  constructor(
+    private periodKeyGenerator: PeriodKeyGeneratorInterface,
+    private redisClient: IORedis.Redis,
+  ) {}
 
   async save(statisticMeasure: StatisticMeasure): Promise<void> {
     const periodKey = this.periodKeyGenerator.getDailyKey(statisticMeasure.props.date)
