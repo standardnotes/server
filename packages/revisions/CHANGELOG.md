@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.30.8](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.30.7...@standardnotes/revisions-server@1.30.8) (2023-09-01)
+
+### Bug Fixes
+
+* **revisions:** add transition start info ([a1ee491](https://github.com/standardnotes/server/commit/a1ee491dc5835bfe9521b34f449085d2f13d5c68))
+* **revisions:** info logs on total revisions transitioned count ([e5c118c](https://github.com/standardnotes/server/commit/e5c118c262535971b42177db2a5a70d959b1c5d7))
+
 ## [1.30.7](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.30.6...@standardnotes/revisions-server@1.30.7) (2023-08-31)
 
 ### Bug Fixes

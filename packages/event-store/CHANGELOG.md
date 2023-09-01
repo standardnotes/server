@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.11.28](https://github.com/standardnotes/server/compare/@standardnotes/event-store@1.11.27...@standardnotes/event-store@1.11.28) (2023-09-01)
+
+### Bug Fixes
+
+* remove the alive and kicking info logs on workers ([1bef127](https://github.com/standardnotes/server/commit/1bef1279e6dbf3cbdfa87e44aa9108ed6dbb3b0f))
+
 ## [1.11.27](https://github.com/standardnotes/server/compare/@standardnotes/event-store@1.11.26...@standardnotes/event-store@1.11.27) (2023-08-31)
 
 **Note:** Version bump only for package @standardnotes/event-store

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.22.7](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.22.6...@standardnotes/files-server@1.22.7) (2023-09-01)
+
+### Bug Fixes
+
+* remove the alive and kicking info logs on workers ([1bef127](https://github.com/standardnotes/files/commit/1bef1279e6dbf3cbdfa87e44aa9108ed6dbb3b0f))
+
 ## [1.22.6](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.22.5...@standardnotes/files-server@1.22.6) (2023-08-31)
 
 **Note:** Version bump only for package @standardnotes/files-server

@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.90.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.89.0...@standardnotes/syncing-server@1.90.0) (2023-09-01)
+
+### Bug Fixes
+
+* remove the alive and kicking info logs on workers ([1bef127](https://github.com/standardnotes/syncing-server-js/commit/1bef1279e6dbf3cbdfa87e44aa9108ed6dbb3b0f))
+
+### Features
+
+* send websocket event to user when a message is sent ([#802](https://github.com/standardnotes/syncing-server-js/issues/802)) ([9a568b0](https://github.com/standardnotes/syncing-server-js/commit/9a568b0f73078ab74d4771bac469903a124e67da))
+
 # [1.89.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.88.3...@standardnotes/syncing-server@1.89.0) (2023-08-31)
 
 ### Features

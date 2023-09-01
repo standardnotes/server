@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.25](https://github.com/standardnotes/server/compare/@standardnotes/websockets-server@1.10.24...@standardnotes/websockets-server@1.10.25) (2023-09-01)
+
+### Bug Fixes
+
+* remove the alive and kicking info logs on workers ([1bef127](https://github.com/standardnotes/server/commit/1bef1279e6dbf3cbdfa87e44aa9108ed6dbb3b0f))
+
 ## [1.10.24](https://github.com/standardnotes/server/compare/@standardnotes/websockets-server@1.10.23...@standardnotes/websockets-server@1.10.24) (2023-08-31)
 
 **Note:** Version bump only for package @standardnotes/websockets-server
