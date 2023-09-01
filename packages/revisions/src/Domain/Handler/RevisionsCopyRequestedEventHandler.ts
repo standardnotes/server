@@ -3,7 +3,10 @@ import { Logger } from 'winston'
 import { CopyRevisions } from '../UseCase/CopyRevisions/CopyRevisions'
 
 export class RevisionsCopyRequestedEventHandler implements DomainEventHandlerInterface {
-  constructor(private copyRevisions: CopyRevisions, private logger: Logger) {}
+  constructor(
+    private copyRevisions: CopyRevisions,
+    private logger: Logger,
+  ) {}
 
   async handle(event: RevisionsCopyRequestedEvent): Promise<void> {
     const result = await this.copyRevisions.execute({

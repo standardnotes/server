@@ -5,7 +5,10 @@ import { Logger } from 'winston'
 import { RevisionRepositoryResolverInterface } from '../Revision/RevisionRepositoryResolverInterface'
 
 export class AccountDeletionRequestedEventHandler implements DomainEventHandlerInterface {
-  constructor(private revisionRepositoryResolver: RevisionRepositoryResolverInterface, private logger: Logger) {}
+  constructor(
+    private revisionRepositoryResolver: RevisionRepositoryResolverInterface,
+    private logger: Logger,
+  ) {}
 
   async handle(event: AccountDeletionRequestedEvent): Promise<void> {
     const userUuidOrError = Uuid.create(event.payload.userUuid)

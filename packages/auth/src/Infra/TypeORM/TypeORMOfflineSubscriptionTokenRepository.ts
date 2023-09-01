@@ -7,7 +7,10 @@ import { OfflineSubscriptionTokenRepositoryInterface } from '../../Domain/Auth/O
 export class TypeORMOfflineSubscriptionTokenRepository implements OfflineSubscriptionTokenRepositoryInterface {
   private readonly PREFIX = 'offline-subscription-token'
 
-  constructor(private cacheEntryRepository: CacheEntryRepositoryInterface, private timer: TimerInterface) {}
+  constructor(
+    private cacheEntryRepository: CacheEntryRepositoryInterface,
+    private timer: TimerInterface,
+  ) {}
 
   async getUserEmailByToken(token: string): Promise<string | undefined> {
     const userUuid = await this.cacheEntryRepository.findUnexpiredOneByKey(`${this.PREFIX}:${token}`)

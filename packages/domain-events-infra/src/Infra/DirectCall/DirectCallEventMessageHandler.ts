@@ -7,7 +7,10 @@ import {
 } from '@standardnotes/domain-events'
 
 export class DirectCallEventMessageHandler implements DomainEventMessageHandlerInterface {
-  constructor(private handlers: Map<string, DomainEventHandlerInterface>, private logger: Logger) {}
+  constructor(
+    private handlers: Map<string, DomainEventHandlerInterface>,
+    private logger: Logger,
+  ) {}
 
   async handleMessage(messageOrEvent: string | DomainEventInterface): Promise<void> {
     if (typeof messageOrEvent === 'string') {

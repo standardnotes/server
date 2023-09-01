@@ -8,7 +8,10 @@ import { CreateValetToken } from '../../../Domain/UseCase/CreateValetToken/Creat
 import { CreateValetTokenPayload } from '../../../Domain/ValetToken/CreateValetTokenPayload'
 
 export class BaseValetTokenController extends BaseHttpController {
-  constructor(protected createValetKey: CreateValetToken, private controllerContainer?: ControllerContainerInterface) {
+  constructor(
+    protected createValetKey: CreateValetToken,
+    private controllerContainer?: ControllerContainerInterface,
+  ) {
     super()
 
     if (this.controllerContainer !== undefined) {

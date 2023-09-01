@@ -4,7 +4,10 @@ import { MessageAttributeValue, PublishCommand, PublishCommandInput, SNSClient }
 import { DomainEventInterface, DomainEventPublisherInterface } from '@standardnotes/domain-events'
 
 export class SNSDomainEventPublisher implements DomainEventPublisherInterface {
-  constructor(private snsClient: SNSClient, private topicArn: string) {}
+  constructor(
+    private snsClient: SNSClient,
+    private topicArn: string,
+  ) {}
 
   async publish(event: DomainEventInterface): Promise<void> {
     const message: PublishCommandInput = {

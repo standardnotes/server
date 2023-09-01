@@ -1,7 +1,11 @@
 /* istanbul ignore file */
 
 export class Result<T> {
-  constructor(private isSuccess: boolean, private error?: string, private value?: T) {
+  constructor(
+    private isSuccess: boolean,
+    private error?: string,
+    private value?: T,
+  ) {
     Object.freeze(this)
   }
 

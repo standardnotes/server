@@ -8,7 +8,10 @@ import {
 } from '@standardnotes/domain-events'
 
 export class RedisEventMessageHandler implements DomainEventMessageHandlerInterface {
-  constructor(private handlers: Map<string, DomainEventHandlerInterface>, private logger: Logger) {}
+  constructor(
+    private handlers: Map<string, DomainEventHandlerInterface>,
+    private logger: Logger,
+  ) {}
 
   async handleMessage(message: string): Promise<void> {
     try {

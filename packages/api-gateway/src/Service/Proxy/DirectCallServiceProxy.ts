@@ -4,7 +4,10 @@ import { ServiceContainerInterface, ServiceIdentifier } from '@standardnotes/dom
 import { ServiceProxyInterface } from '../Http/ServiceProxyInterface'
 
 export class DirectCallServiceProxy implements ServiceProxyInterface {
-  constructor(private serviceContainer: ServiceContainerInterface, private filesServerUrl: string) {}
+  constructor(
+    private serviceContainer: ServiceContainerInterface,
+    private filesServerUrl: string,
+  ) {}
 
   async validateSession(headers: {
     authorization: string

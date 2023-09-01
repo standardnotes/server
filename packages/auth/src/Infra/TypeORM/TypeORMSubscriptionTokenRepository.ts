@@ -7,7 +7,10 @@ import { SubscriptionTokenRepositoryInterface } from '../../Domain/Subscription/
 export class TypeORMSubscriptionTokenRepository implements SubscriptionTokenRepositoryInterface {
   private readonly PREFIX = 'subscription-token'
 
-  constructor(private cacheEntryRepository: CacheEntryRepositoryInterface, private timer: TimerInterface) {}
+  constructor(
+    private cacheEntryRepository: CacheEntryRepositoryInterface,
+    private timer: TimerInterface,
+  ) {}
 
   async getUserUuidByToken(token: string): Promise<string | undefined> {
     const userUuid = await this.cacheEntryRepository.findUnexpiredOneByKey(`${this.PREFIX}:${token}`)

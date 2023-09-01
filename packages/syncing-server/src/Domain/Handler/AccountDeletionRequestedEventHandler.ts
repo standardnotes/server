@@ -5,7 +5,10 @@ import { Logger } from 'winston'
 import { ItemRepositoryResolverInterface } from '../Item/ItemRepositoryResolverInterface'
 
 export class AccountDeletionRequestedEventHandler implements DomainEventHandlerInterface {
-  constructor(private itemRepositoryResolver: ItemRepositoryResolverInterface, private logger: Logger) {}
+  constructor(
+    private itemRepositoryResolver: ItemRepositoryResolverInterface,
+    private logger: Logger,
+  ) {}
 
   async handle(event: AccountDeletionRequestedEvent): Promise<void> {
     const roleNamesOrError = RoleNameCollection.create(event.payload.roleNames)

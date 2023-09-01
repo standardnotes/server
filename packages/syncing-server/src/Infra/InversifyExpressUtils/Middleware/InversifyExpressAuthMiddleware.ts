@@ -5,7 +5,10 @@ import { CrossServiceTokenData } from '@standardnotes/security'
 import * as winston from 'winston'
 
 export class InversifyExpressAuthMiddleware extends BaseMiddleware {
-  constructor(private authJWTSecret: string, private logger: winston.Logger) {
+  constructor(
+    private authJWTSecret: string,
+    private logger: winston.Logger,
+  ) {
     super()
   }
 
