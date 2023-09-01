@@ -106,10 +106,10 @@ export class SQLRevisionRepository implements RevisionRepositoryInterface {
     return this.revisionMapper.toDomain(SQLRevision)
   }
 
-  async save(revision: Revision): Promise<boolean> {
+  async insert(revision: Revision): Promise<boolean> {
     const SQLRevision = this.revisionMapper.toProjection(revision)
 
-    await this.ormRepository.save(SQLRevision)
+    await this.ormRepository.insert(SQLRevision)
 
     return true
   }

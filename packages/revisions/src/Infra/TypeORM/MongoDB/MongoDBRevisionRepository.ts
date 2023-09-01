@@ -123,19 +123,11 @@ export class MongoDBRevisionRepository implements RevisionRepositoryInterface {
     )
   }
 
-  async save(revision: Revision): Promise<boolean> {
+  async insert(revision: Revision): Promise<boolean> {
     const persistence = this.revisionMapper.toProjection(revision)
 
-    const { _id, ...rest } = persistence
+    const insertResult = await this.mongoRepository.insertOne(persistence)
 
-    const updateResult = await this.mongoRepository.updateOne(
-      { _id: { $eq: _id } },
-      {
-        $set: rest,
-      },
-      { upsert: true },
-    )
-
-    return updateResult.acknowledged
+    return insertResult.acknowledged
   }
 }

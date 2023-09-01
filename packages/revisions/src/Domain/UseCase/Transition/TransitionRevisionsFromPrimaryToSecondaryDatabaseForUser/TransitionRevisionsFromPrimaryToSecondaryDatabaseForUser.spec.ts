@@ -96,7 +96,7 @@ describe('TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser', () => {
     primaryRevisionRepository.removeByUserUuid = jest.fn().mockResolvedValue(undefined)
 
     secondaryRevisionRepository = {} as jest.Mocked<RevisionRepositoryInterface>
-    secondaryRevisionRepository.save = jest.fn().mockResolvedValue(true)
+    secondaryRevisionRepository.insert = jest.fn().mockResolvedValue(true)
     secondaryRevisionRepository.removeByUserUuid = jest.fn().mockResolvedValue(undefined)
     secondaryRevisionRepository.countByUserUuid = jest.fn().mockResolvedValue(2)
     secondaryRevisionRepository.findOneByUuid = jest
@@ -155,9 +155,9 @@ describe('TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser', () => {
         limit: 1,
         offset: 1,
       })
-      expect((secondaryRevisionRepository as RevisionRepositoryInterface).save).toHaveBeenCalledTimes(2)
-      expect((secondaryRevisionRepository as RevisionRepositoryInterface).save).toHaveBeenCalledWith(primaryRevision1)
-      expect((secondaryRevisionRepository as RevisionRepositoryInterface).save).toHaveBeenCalledWith(primaryRevision2)
+      expect((secondaryRevisionRepository as RevisionRepositoryInterface).insert).toHaveBeenCalledTimes(2)
+      expect((secondaryRevisionRepository as RevisionRepositoryInterface).insert).toHaveBeenCalledWith(primaryRevision1)
+      expect((secondaryRevisionRepository as RevisionRepositoryInterface).insert).toHaveBeenCalledWith(primaryRevision2)
       expect((secondaryRevisionRepository as RevisionRepositoryInterface).removeByUserUuid).not.toHaveBeenCalled()
       expect(primaryRevisionRepository.removeByUserUuid).toHaveBeenCalledTimes(1)
     })
@@ -229,7 +229,7 @@ describe('TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser', () => {
     })
 
     it('should return an error for a specific revision if it errors when saving to secondary database', async () => {
-      ;(secondaryRevisionRepository as RevisionRepositoryInterface).save = jest
+      ;(secondaryRevisionRepository as RevisionRepositoryInterface).insert = jest
         .fn()
         .mockResolvedValueOnce(true)
         .mockRejectedValueOnce(new Error('error'))
@@ -395,7 +395,7 @@ describe('TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser', () => {
     })
 
     it('should fail if a revisions did not save in the secondary database', async () => {
-      ;(secondaryRevisionRepository as RevisionRepositoryInterface).save = jest.fn().mockResolvedValue(false)
+      ;(secondaryRevisionRepository as RevisionRepositoryInterface).insert = jest.fn().mockResolvedValue(false)
 
       const useCase = createUseCase()
 

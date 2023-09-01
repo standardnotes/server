@@ -4309,7 +4309,7 @@ __metadata:
     prettier: "npm:^2.8.8"
     reflect-metadata: "npm:^0.1.13"
     ts-jest: "npm:^29.1.0"
-    typeorm: "npm:^0.3.15"
+    typeorm: "npm:^0.3.17"
     typescript: "npm:^5.0.4"
     winston: "npm:^3.8.1"
   dependenciesMeta:
@@ -4448,7 +4448,7 @@ __metadata:
     reflect-metadata: "npm:0.1.13"
     sqlite3: "npm:^5.1.6"
     ts-jest: "npm:^29.1.0"
-    typeorm: "npm:^0.3.15"
+    typeorm: "npm:^0.3.17"
     typescript: "npm:^5.0.4"
     ua-parser-js: "npm:^1.0.35"
     uuid: "npm:^9.0.0"
@@ -4575,7 +4575,7 @@ __metadata:
     prettier: "npm:^2.8.8"
     reflect-metadata: "npm:0.1.13"
     ts-jest: "npm:^29.1.0"
-    typeorm: "npm:^0.3.15"
+    typeorm: "npm:^0.3.17"
     typescript: "npm:^5.0.4"
     winston: "npm:^3.8.1"
   dependenciesMeta:
@@ -4773,7 +4773,7 @@ __metadata:
     reflect-metadata: "npm:0.1.13"
     sqlite3: "npm:^5.1.6"
     ts-jest: "npm:^29.1.0"
-    typeorm: "npm:^0.3.15"
+    typeorm: "npm:^0.3.17"
     typescript: "npm:^5.0.4"
     winston: "npm:^3.8.1"
   dependenciesMeta:
@@ -4817,7 +4817,7 @@ __metadata:
     prettier: "npm:^2.8.8"
     reflect-metadata: "npm:^0.1.13"
     ts-jest: "npm:^29.1.0"
-    typeorm: "npm:^0.3.15"
+    typeorm: "npm:^0.3.17"
     typescript: "npm:^5.0.4"
     winston: "npm:^3.8.1"
   dependenciesMeta:
@@ -4977,7 +4977,7 @@ __metadata:
     semver: "npm:^7.5.1"
     sqlite3: "npm:^5.1.6"
     ts-jest: "npm:^29.1.0"
-    typeorm: "npm:^0.3.15"
+    typeorm: "npm:^0.3.17"
     typescript: "npm:^5.0.4"
     ua-parser-js: "npm:^1.0.35"
     uuid: "npm:^9.0.0"
@@ -5059,7 +5059,7 @@ __metadata:
     prettier: "npm:^2.8.8"
     reflect-metadata: "npm:0.1.13"
     ts-jest: "npm:^29.1.0"
-    typeorm: "npm:^0.3.15"
+    typeorm: "npm:^0.3.17"
     typescript: "npm:^5.0.4"
     winston: "npm:^3.8.1"
   dependenciesMeta:
@@ -14508,9 +14508,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typeorm@npm:^0.3.15":
-  version: 0.3.16
-  resolution: "typeorm@npm:0.3.16"
+"typeorm@npm:^0.3.17":
+  version: 0.3.17
+  resolution: "typeorm@npm:0.3.17"
   dependencies:
     "@sqltools/formatter": "npm:^1.2.5"
     app-root-path: "npm:^3.1.0"
@@ -14584,7 +14584,7 @@ __metadata:
     typeorm: cli.js
     typeorm-ts-node-commonjs: cli-ts-node-commonjs.js
     typeorm-ts-node-esm: cli-ts-node-esm.js
-  checksum: 19803f935e2733982d04d505226092aa6aa109d233b5616f7c87d2acc578647590514c1580ff611499846bdfb90d901f388fd1700717bf0d4d36482fcdfa4304
+  checksum: bae071e0974f5befaec4238be2056f6c27858ac68713118be242759cc3321f469da55b544f0b16306fe48cc4d178ce4ba86628853dfb5403fb23c37b8a935817
   languageName: node
   linkType: hard
 

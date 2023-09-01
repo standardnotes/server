@@ -53,7 +53,7 @@
     "mixpanel": "^0.17.0",
     "mysql2": "^3.0.1",
     "reflect-metadata": "^0.1.13",
-    "typeorm": "^0.3.15",
+    "typeorm": "^0.3.17",
     "winston": "^3.8.1"
   },
   "optionalDependencies": {
