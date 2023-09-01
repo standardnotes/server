@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.122.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.121.0...@standardnotes/domain-events@2.122.0) (2023-09-01)
+
+### Features
+
+* **syncing-server:** add sending invites via websockets ([#804](https://github.com/standardnotes/server/issues/804)) ([dc3a41e](https://github.com/standardnotes/server/commit/dc3a41e4bb3f3541f812b938fd42a6192e3e20f8))
+
 # [2.121.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.120.0...@standardnotes/domain-events@2.121.0) (2023-09-01)
 
 ### Features

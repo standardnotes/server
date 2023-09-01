@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.137.4](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.137.3...@standardnotes/auth-server@1.137.4) (2023-09-01)
+
+### Bug Fixes
+
+* inserting revisions instead of upsert ([#803](https://github.com/standardnotes/server/issues/803)) ([27ff25b](https://github.com/standardnotes/server/commit/27ff25b70e6b65dfe89aa35582422dce682a4105))
+
 ## [1.137.3](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.137.2...@standardnotes/auth-server@1.137.3) (2023-09-01)
 
 ### Bug Fixes

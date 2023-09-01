@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.91.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.90.0...@standardnotes/syncing-server@1.91.0) (2023-09-01)
+
+### Bug Fixes
+
+* inserting revisions instead of upsert ([#803](https://github.com/standardnotes/syncing-server-js/issues/803)) ([27ff25b](https://github.com/standardnotes/syncing-server-js/commit/27ff25b70e6b65dfe89aa35582422dce682a4105))
+
+### Features
+
+* **syncing-server:** add sending invites via websockets ([#804](https://github.com/standardnotes/syncing-server-js/issues/804)) ([dc3a41e](https://github.com/standardnotes/syncing-server-js/commit/dc3a41e4bb3f3541f812b938fd42a6192e3e20f8))
+
 # [1.90.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.89.0...@standardnotes/syncing-server@1.90.0) (2023-09-01)
 
 ### Bug Fixes
