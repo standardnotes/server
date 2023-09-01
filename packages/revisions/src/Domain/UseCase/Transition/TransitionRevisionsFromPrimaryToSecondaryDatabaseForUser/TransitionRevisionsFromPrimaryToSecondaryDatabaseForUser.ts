@@ -26,6 +26,8 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
 
     const migrationTimeStart = this.timer.getTimestampInMicroseconds()
 
+    this.logger.info(`Transitioning revisions for user ${userUuid.value}`)
+
     const migrationResult = await this.migrateRevisionsForUser(userUuid)
     if (migrationResult.isFailed()) {
       const cleanupResult = await this.deleteRevisionsForUser(userUuid, this.secondRevisionsRepository)
