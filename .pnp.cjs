@@ -6067,7 +6067,7 @@ const RAW_RUNTIME_STATE =
           ["@types/newrelic", "npm:9.14.0"],\
           ["@types/node", "npm:20.5.7"],\
           ["@types/prettyjson", "npm:0.0.30"],\
-          ["@types/semver", "npm:7.5.0"],\
+          ["@types/semver", "npm:7.5.1"],\
           ["@types/ua-parser-js", "npm:0.7.36"],\
           ["@types/uuid", "npm:9.0.2"],\
           ["@typescript-eslint/eslint-plugin", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:5.59.8"],\
@@ -6091,7 +6091,7 @@ const RAW_RUNTIME_STATE =
           ["prettier", "npm:2.8.8"],\
           ["prettyjson", "npm:1.2.5"],\
           ["reflect-metadata", "npm:0.1.13"],\
-          ["semver", "npm:7.5.1"],\
+          ["semver", "npm:7.5.4"],\
           ["sqlite3", "virtual:31b5a94a105c89c9294c3d524a7f8929fe63ee5a2efadf21951ca4c0cfd2ecf02e8f4ef5a066bbda091f1e3a56e57c6749069a080618c96b22e51131a330fc4a#npm:5.1.6"],\
           ["ts-jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.1.0"],\
           ["typeorm", "virtual:365b8c88cdf194291829ee28b79556e2328175d26a621363e703848100bea0042e9500db2a1206c9bbc3a4a76a1d169639ef774b2ea3a1a98584a9936b58c6be#npm:0.3.17"],\
@@ -6741,6 +6741,13 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/@types-semver-npm-7.5.0-4823ff34be-dac255fae6.zip/node_modules/@types/semver/",\
         "packageDependencies": [\
           ["@types/semver", "npm:7.5.0"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["npm:7.5.1", {\
+        "packageLocation": "./.yarn/cache/@types-semver-npm-7.5.1-cda240741c-6bb8541017.zip/node_modules/@types/semver/",\
+        "packageDependencies": [\
+          ["@types/semver", "npm:7.5.1"]\
         ],\
         "linkType": "HARD"\
       }]\
