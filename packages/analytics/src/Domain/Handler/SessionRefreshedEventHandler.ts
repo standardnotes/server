@@ -13,7 +13,11 @@ export class SessionRefreshedEventHandler implements DomainEventHandlerInterface
   ) {}
 
   async handle(event: SessionRefreshedEvent): Promise<void> {
-    const { analyticsId } = await this.getUserAnalyticsId.execute({ userUuid: event.payload.userUuid })
+    const analyticsMetadataOrError = await this.getUserAnalyticsId.execute({ userUuid: event.payload.userUuid })
+    if (analyticsMetadataOrError.isFailed()) {
+      return
+    }
+    const { analyticsId } = analyticsMetadataOrError.getValue()
 
     if (this.mixpanelClient !== null) {
       this.mixpanelClient.track(event.type, {

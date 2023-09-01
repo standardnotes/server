@@ -26,7 +26,11 @@ export class SubscriptionRenewedEventHandler implements DomainEventHandlerInterf
   ) {}
 
   async handle(event: SubscriptionRenewedEvent): Promise<void> {
-    const { analyticsId, userUuid } = await this.getUserAnalyticsId.execute({ userEmail: event.payload.userEmail })
+    const analyticsMetadataOrError = await this.getUserAnalyticsId.execute({ userEmail: event.payload.userEmail })
+    if (analyticsMetadataOrError.isFailed()) {
+      return
+    }
+    const { analyticsId, userUuid } = analyticsMetadataOrError.getValue()
     await this.analyticsStore.markActivity([AnalyticsActivity.SubscriptionRenewed], analyticsId, [
       Period.Today,
       Period.ThisWeek,

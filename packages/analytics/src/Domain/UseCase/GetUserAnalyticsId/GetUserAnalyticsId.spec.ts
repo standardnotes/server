@@ -24,23 +24,18 @@ describe('GetUserAnalyticsId', () => {
   })
 
   it('should return analytics id for a user by uuid', async () => {
-    expect((await createUseCase().execute({ userUuid: '1-2-3' })).analyticsId).toEqual(123)
+    expect((await createUseCase().execute({ userUuid: '1-2-3' })).getValue().analyticsId).toEqual(123)
   })
 
   it('should return analytics id for a user by email', async () => {
-    expect((await createUseCase().execute({ userEmail: 'test@test.te' })).analyticsId).toEqual(123)
+    expect((await createUseCase().execute({ userEmail: 'test@test.te' })).getValue().analyticsId).toEqual(123)
   })
 
   it('should throw error if user is missing analytics entity', async () => {
     analyticsEntityRepository.findOneByUserUuid = jest.fn().mockReturnValue(null)
-    let error = null
 
-    try {
-      await createUseCase().execute({ userUuid: '1-2-3' })
-    } catch (caughtError) {
-      error = caughtError
-    }
+    const result = await createUseCase().execute({ userUuid: '1-2-3' })
 
-    expect(error).not.toBeNull()
+    expect(result.isFailed()).toEqual(true)
   })
 })

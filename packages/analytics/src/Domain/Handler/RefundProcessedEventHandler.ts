@@ -17,8 +17,11 @@ export class RefundProcessedEventHandler implements DomainEventHandlerInterface 
   ) {}
 
   async handle(event: RefundProcessedEvent): Promise<void> {
-    const { analyticsId } = await this.getUserAnalyticsId.execute({ userEmail: event.payload.userEmail })
-
+    const analyticsMetadataOrError = await this.getUserAnalyticsId.execute({ userEmail: event.payload.userEmail })
+    if (analyticsMetadataOrError.isFailed()) {
+      return
+    }
+    const { analyticsId } = analyticsMetadataOrError.getValue()
     await this.statisticsStore.incrementMeasure(StatisticMeasureName.NAMES.Refunds, event.payload.amount, [
       Period.Today,
       Period.ThisWeek,

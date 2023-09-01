@@ -29,7 +29,11 @@ export class SubscriptionPurchasedEventHandler implements DomainEventHandlerInte
   ) {}
 
   async handle(event: SubscriptionPurchasedEvent): Promise<void> {
-    const { analyticsId, userUuid } = await this.getUserAnalyticsId.execute({ userEmail: event.payload.userEmail })
+    const analyticsMetadataOrError = await this.getUserAnalyticsId.execute({ userEmail: event.payload.userEmail })
+    if (analyticsMetadataOrError.isFailed()) {
+      return
+    }
+    const { analyticsId, userUuid } = analyticsMetadataOrError.getValue()
     await this.analyticsStore.markActivity([AnalyticsActivity.SubscriptionPurchased], analyticsId, [
       Period.Today,
       Period.ThisWeek,

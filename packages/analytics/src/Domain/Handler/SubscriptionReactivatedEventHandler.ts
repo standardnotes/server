@@ -19,7 +19,11 @@ export class SubscriptionReactivatedEventHandler implements DomainEventHandlerIn
   ) {}
 
   async handle(event: SubscriptionReactivatedEvent): Promise<void> {
-    const { analyticsId } = await this.getUserAnalyticsId.execute({ userEmail: event.payload.userEmail })
+    const analyticsMetadataOrError = await this.getUserAnalyticsId.execute({ userEmail: event.payload.userEmail })
+    if (analyticsMetadataOrError.isFailed()) {
+      return
+    }
+    const { analyticsId } = analyticsMetadataOrError.getValue()
     await this.analyticsStore.markActivity([AnalyticsActivity.SubscriptionReactivated], analyticsId, [
       Period.Today,
       Period.ThisWeek,

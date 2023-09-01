@@ -27,7 +27,11 @@ export class SubscriptionRefundedEventHandler implements DomainEventHandlerInter
   ) {}
 
   async handle(event: SubscriptionRefundedEvent): Promise<void> {
-    const { analyticsId, userUuid } = await this.getUserAnalyticsId.execute({ userEmail: event.payload.userEmail })
+    const analyticsMetadataOrError = await this.getUserAnalyticsId.execute({ userEmail: event.payload.userEmail })
+    if (analyticsMetadataOrError.isFailed()) {
+      return
+    }
+    const { analyticsId, userUuid } = analyticsMetadataOrError.getValue()
     await this.analyticsStore.markActivity([AnalyticsActivity.SubscriptionRefunded], analyticsId, [
       Period.Today,
       Period.ThisWeek,

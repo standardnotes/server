@@ -17,7 +17,11 @@ export class PaymentFailedEventHandler implements DomainEventHandlerInterface {
   ) {}
 
   async handle(event: PaymentFailedEvent): Promise<void> {
-    const { analyticsId } = await this.getUserAnalyticsId.execute({ userEmail: event.payload.userEmail })
+    const analyticsMetadataOrError = await this.getUserAnalyticsId.execute({ userEmail: event.payload.userEmail })
+    if (analyticsMetadataOrError.isFailed()) {
+      return
+    }
+    const { analyticsId } = analyticsMetadataOrError.getValue()
     await this.analyticsStore.markActivity([AnalyticsActivity.PaymentFailed], analyticsId, [
       Period.Today,
       Period.ThisWeek,
