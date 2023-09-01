@@ -13,7 +13,7 @@ describe('CopyRevisions', () => {
   beforeEach(() => {
     revisionRepository = {} as jest.Mocked<RevisionRepositoryInterface>
     revisionRepository.findByItemUuid = jest.fn().mockReturnValue([{} as jest.Mocked<Revision>])
-    revisionRepository.save = jest.fn()
+    revisionRepository.insert = jest.fn()
 
     revisionRepositoryResolver = {} as jest.Mocked<RevisionRepositoryResolverInterface>
     revisionRepositoryResolver.resolve = jest.fn().mockReturnValue(revisionRepository)
@@ -52,7 +52,7 @@ describe('CopyRevisions', () => {
     })
 
     expect(result.isFailed()).toBeFalsy()
-    expect(revisionRepository.save).toHaveBeenCalled()
+    expect(revisionRepository.insert).toHaveBeenCalled()
     expect(result.getValue()).toEqual('Revisions copied')
   })
 

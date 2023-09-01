@@ -22,7 +22,7 @@ describe('ItemDumpedEventHandler', () => {
     dumpRepository.removeDump = jest.fn()
 
     revisionRepository = {} as jest.Mocked<RevisionRepositoryInterface>
-    revisionRepository.save = jest.fn()
+    revisionRepository.insert = jest.fn()
 
     revisionRepositoryResolver = {} as jest.Mocked<RevisionRepositoryResolverInterface>
     revisionRepositoryResolver.resolve = jest.fn().mockReturnValue(revisionRepository)
@@ -37,7 +37,7 @@ describe('ItemDumpedEventHandler', () => {
   it('should save a revision from file dump', async () => {
     await createHandler().handle(event)
 
-    expect(revisionRepository.save).toHaveBeenCalled()
+    expect(revisionRepository.insert).toHaveBeenCalled()
     expect(dumpRepository.removeDump).toHaveBeenCalled()
   })
 
@@ -46,7 +46,7 @@ describe('ItemDumpedEventHandler', () => {
 
     await createHandler().handle(event)
 
-    expect(revisionRepository.save).not.toHaveBeenCalled()
+    expect(revisionRepository.insert).not.toHaveBeenCalled()
     expect(dumpRepository.removeDump).toHaveBeenCalled()
   })
 
@@ -55,7 +55,7 @@ describe('ItemDumpedEventHandler', () => {
 
     await createHandler().handle(event)
 
-    expect(revisionRepository.save).not.toHaveBeenCalled()
+    expect(revisionRepository.insert).not.toHaveBeenCalled()
     expect(dumpRepository.removeDump).toHaveBeenCalled()
   })
 })
