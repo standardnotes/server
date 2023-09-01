@@ -3,6 +3,7 @@ import {
   EmailRequestedEvent,
   ItemDumpedEvent,
   ItemRevisionCreationRequestedEvent,
+  MessageSentToUserEvent,
   NotificationAddedForUserEvent,
   RevisionsCopyRequestedEvent,
   TransitionStatusUpdatedEvent,
@@ -11,6 +12,17 @@ import {
 
 export interface DomainEventFactoryInterface {
   createWebSocketMessageRequestedEvent(dto: { userUuid: string; message: string }): WebSocketMessageRequestedEvent
+  createMessageSentToUserEvent(dto: {
+    message: {
+      uuid: string
+      recipient_uuid: string
+      sender_uuid: string
+      encrypted_message: string
+      replaceability_identifier: string | null
+      created_at_timestamp: number
+      updated_at_timestamp: number
+    }
+  }): MessageSentToUserEvent
   createNotificationAddedForUserEvent(dto: {
     notification: {
       uuid: string
