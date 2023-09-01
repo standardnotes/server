@@ -41,13 +41,13 @@ export class AccountDeletionRequestedEventHandler implements DomainEventHandlerI
       Period.ThisMonth,
     ])
 
-    await this.analyticsEntityRepository.remove(analyticsEntity)
-
     if (this.mixpanelClient !== null) {
       this.mixpanelClient.track(event.type, {
         distinct_id: analyticsEntity.id.toString(),
         user_created_at: this.timer.convertMicrosecondsToDate(event.payload.userCreatedAtTimestamp),
       })
     }
+
+    await this.analyticsEntityRepository.remove(analyticsEntity)
   }
 }
