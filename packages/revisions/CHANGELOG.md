@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.30.14](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.30.13...@standardnotes/revisions-server@1.30.14) (2023-09-04)
+
+### Bug Fixes
+
+* prevent doubling transitions ([d9ee2c5](https://github.com/standardnotes/server/commit/d9ee2c5be2d81c729c829e6078846df624d500bd))
+
 ## [1.30.13](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.30.12...@standardnotes/revisions-server@1.30.13) (2023-09-04)
 
 ### Bug Fixes

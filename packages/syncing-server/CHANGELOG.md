@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.91.3](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.91.2...@standardnotes/syncing-server@1.91.3) (2023-09-04)
+
+### Bug Fixes
+
+* prevent doubling transitions ([d9ee2c5](https://github.com/standardnotes/syncing-server-js/commit/d9ee2c5be2d81c729c829e6078846df624d500bd))
+
 ## [1.91.2](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.91.1...@standardnotes/syncing-server@1.91.2) (2023-09-04)
 
 **Note:** Version bump only for package @standardnotes/syncing-server
