@@ -131,7 +131,7 @@ describe('TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser', () => {
 
       expect(result.isFailed()).toBeFalsy()
 
-      expect(primaryRevisionRepository.countByUserUuid).toHaveBeenCalledTimes(2)
+      expect(primaryRevisionRepository.countByUserUuid).toHaveBeenCalledTimes(3)
       expect(primaryRevisionRepository.countByUserUuid).toHaveBeenCalledWith(
         Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
       )
@@ -344,7 +344,7 @@ describe('TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser', () => {
         'Total revisions count for user 00000000-0000-0000-0000-000000000000 in primary database (2) does not match total revisions count in secondary database (1)',
       )
 
-      expect(primaryRevisionRepository.countByUserUuid).toHaveBeenCalledTimes(2)
+      expect(primaryRevisionRepository.countByUserUuid).toHaveBeenCalledTimes(3)
       expect(primaryRevisionRepository.countByUserUuid).toHaveBeenCalledWith(
         Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
       )
@@ -368,7 +368,7 @@ describe('TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser', () => {
       expect(result.isFailed()).toBeTruthy()
       expect(result.getError()).toEqual('Revision 00000000-0000-0000-0000-000000000001 not found in secondary database')
 
-      expect(primaryRevisionRepository.countByUserUuid).toHaveBeenCalledTimes(2)
+      expect(primaryRevisionRepository.countByUserUuid).toHaveBeenCalledTimes(3)
       expect(primaryRevisionRepository.countByUserUuid).toHaveBeenCalledWith(
         Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
       )
@@ -412,5 +412,26 @@ describe('TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser', () => {
       expect(primaryRevisionRepository.removeByUserUuid).not.toHaveBeenCalled()
       expect((secondaryRevisionRepository as RevisionRepositoryInterface).removeByUserUuid).toHaveBeenCalledTimes(1)
     })
+  })
+
+  it('should not migrate revisions if there are no revisions in the primary database', async () => {
+    primaryRevisionRepository.countByUserUuid = jest.fn().mockResolvedValue(0)
+
+    const useCase = createUseCase()
+
+    const result = await useCase.execute({
+      userUuid: '00000000-0000-0000-0000-000000000000',
+    })
+
+    expect(result.isFailed()).toBeFalsy()
+
+    expect(primaryRevisionRepository.countByUserUuid).toHaveBeenCalledTimes(1)
+    expect(primaryRevisionRepository.countByUserUuid).toHaveBeenCalledWith(
+      Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+    )
+    expect(primaryRevisionRepository.findByUserUuid).not.toHaveBeenCalled()
+    expect((secondaryRevisionRepository as RevisionRepositoryInterface).insert).not.toHaveBeenCalled()
+    expect(primaryRevisionRepository.removeByUserUuid).not.toHaveBeenCalled()
+    expect((secondaryRevisionRepository as RevisionRepositoryInterface).removeByUserUuid).not.toHaveBeenCalled()
   })
 })

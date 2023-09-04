@@ -138,7 +138,7 @@ describe('TransitionItemsFromPrimaryToSecondaryDatabaseForUser', () => {
 
       expect(result.isFailed()).toBeFalsy()
 
-      expect(primaryItemRepository.countAll).toHaveBeenCalledTimes(2)
+      expect(primaryItemRepository.countAll).toHaveBeenCalledTimes(3)
       expect(primaryItemRepository.countAll).toHaveBeenCalledWith({ userUuid: '00000000-0000-0000-0000-000000000000' })
       expect(primaryItemRepository.findAll).toHaveBeenCalledTimes(4)
       expect(primaryItemRepository.findAll).toHaveBeenNthCalledWith(1, {
@@ -329,7 +329,7 @@ describe('TransitionItemsFromPrimaryToSecondaryDatabaseForUser', () => {
         'Total items count for user 00000000-0000-0000-0000-000000000000 in primary database (2) does not match total items count in secondary database (1)',
       )
 
-      expect(primaryItemRepository.countAll).toHaveBeenCalledTimes(2)
+      expect(primaryItemRepository.countAll).toHaveBeenCalledTimes(3)
       expect(primaryItemRepository.countAll).toHaveBeenCalledWith({ userUuid: '00000000-0000-0000-0000-000000000000' })
       expect((secondaryItemRepository as ItemRepositoryInterface).countAll).toHaveBeenCalledTimes(1)
       expect(primaryItemRepository.deleteByUserUuid).not.toHaveBeenCalled()
@@ -351,7 +351,7 @@ describe('TransitionItemsFromPrimaryToSecondaryDatabaseForUser', () => {
       expect(result.isFailed()).toBeTruthy()
       expect(result.getError()).toEqual('Item 00000000-0000-0000-0000-000000000001 not found in secondary database')
 
-      expect(primaryItemRepository.countAll).toHaveBeenCalledTimes(2)
+      expect(primaryItemRepository.countAll).toHaveBeenCalledTimes(3)
       expect(primaryItemRepository.countAll).toHaveBeenCalledWith({ userUuid: '00000000-0000-0000-0000-000000000000' })
       expect((secondaryItemRepository as ItemRepositoryInterface).countAll).toHaveBeenCalledTimes(1)
       expect(primaryItemRepository.deleteByUserUuid).not.toHaveBeenCalled()
@@ -373,5 +373,24 @@ describe('TransitionItemsFromPrimaryToSecondaryDatabaseForUser', () => {
       expect(primaryItemRepository.deleteByUserUuid).not.toHaveBeenCalled()
       expect((secondaryItemRepository as ItemRepositoryInterface).deleteByUserUuid).toHaveBeenCalledTimes(1)
     })
+  })
+
+  it('should not migrate items if there are no items in the primary database', async () => {
+    primaryItemRepository.countAll = jest.fn().mockResolvedValue(0)
+
+    const useCase = createUseCase()
+
+    const result = await useCase.execute({
+      userUuid: '00000000-0000-0000-0000-000000000000',
+    })
+
+    expect(result.isFailed()).toBeFalsy()
+
+    expect(primaryItemRepository.countAll).toHaveBeenCalledTimes(1)
+    expect(primaryItemRepository.countAll).toHaveBeenCalledWith({ userUuid: '00000000-0000-0000-0000-000000000000' })
+    expect(primaryItemRepository.findAll).not.toHaveBeenCalled()
+    expect((secondaryItemRepository as ItemRepositoryInterface).save).not.toHaveBeenCalled()
+    expect(primaryItemRepository.deleteByUserUuid).not.toHaveBeenCalled()
+    expect((secondaryItemRepository as ItemRepositoryInterface).deleteByUserUuid).not.toHaveBeenCalled()
   })
 })

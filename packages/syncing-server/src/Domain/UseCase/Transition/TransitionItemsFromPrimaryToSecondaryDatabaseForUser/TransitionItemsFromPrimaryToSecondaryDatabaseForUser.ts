@@ -25,6 +25,12 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
     }
     const userUuid = userUuidOrError.getValue()
 
+    if (await this.isAlreadyMigrated(userUuid)) {
+      this.logger.info(`Items for user ${userUuid.value} are already migrated`)
+
+      return Result.ok()
+    }
+
     const migrationTimeStart = this.timer.getTimestampInMicroseconds()
 
     const migrationResult = await this.migrateItemsForUser(userUuid)
@@ -70,6 +76,12 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
     )
 
     return Result.ok()
+  }
+
+  private async isAlreadyMigrated(userUuid: Uuid): Promise<boolean> {
+    const totalItemsCountForUser = await this.primaryItemRepository.countAll({ userUuid: userUuid.value })
+
+    return totalItemsCountForUser === 0
   }
 
   private async allowForSecondaryDatabaseToCatchUp(): Promise<void> {

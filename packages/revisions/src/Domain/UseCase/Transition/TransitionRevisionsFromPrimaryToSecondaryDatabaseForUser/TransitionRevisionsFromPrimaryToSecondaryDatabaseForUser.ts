@@ -24,6 +24,12 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
     }
     const userUuid = userUuidOrError.getValue()
 
+    if (await this.isAlreadyMigrated(userUuid)) {
+      this.logger.info(`Revisions for user ${userUuid.value} are already migrated`)
+
+      return Result.ok()
+    }
+
     const migrationTimeStart = this.timer.getTimestampInMicroseconds()
 
     this.logger.debug(`Transitioning revisions for user ${userUuid.value}`)
@@ -135,6 +141,12 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
   private async allowForSecondaryDatabaseToCatchUp(): Promise<void> {
     const twoSecondsInMilliseconds = 2_000
     await this.timer.sleep(twoSecondsInMilliseconds)
+  }
+
+  private async isAlreadyMigrated(userUuid: Uuid): Promise<boolean> {
+    const totalRevisionsCountForUserInPrimary = await this.primaryRevisionsRepository.countByUserUuid(userUuid)
+
+    return totalRevisionsCountForUserInPrimary === 0
   }
 
   private async checkIntegrityBetweenPrimaryAndSecondaryDatabase(userUuid: Uuid): Promise<Result<boolean>> {
