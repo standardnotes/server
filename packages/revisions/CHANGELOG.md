@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.30.13](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.30.12...@standardnotes/revisions-server@1.30.13) (2023-09-04)
+
+### Bug Fixes
+
+* **revisions:** change logs severity in the transition process ([45b5506](https://github.com/standardnotes/server/commit/45b55068f9b60447e92f0fe0667f884d1690be9b))
+
 ## [1.30.12](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.30.11...@standardnotes/revisions-server@1.30.12) (2023-09-04)
 
 ### Bug Fixes

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.30](https://github.com/standardnotes/server/compare/@standardnotes/websockets-server@1.10.29...@standardnotes/websockets-server@1.10.30) (2023-09-04)
+
+### Bug Fixes
+
+* **websockets:** stringify response from the AWS Api Gateway ([002074e](https://github.com/standardnotes/server/commit/002074e4d126e103294d0aaea1f22afc3edbfc96))
+
 ## [1.10.29](https://github.com/standardnotes/server/compare/@standardnotes/websockets-server@1.10.28...@standardnotes/websockets-server@1.10.29) (2023-09-04)
 
 ### Bug Fixes
