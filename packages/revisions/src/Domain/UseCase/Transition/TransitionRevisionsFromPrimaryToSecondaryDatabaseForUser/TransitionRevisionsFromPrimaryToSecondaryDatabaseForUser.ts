@@ -26,7 +26,7 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
 
     const migrationTimeStart = this.timer.getTimestampInMicroseconds()
 
-    this.logger.info(`Transitioning revisions for user ${userUuid.value}`)
+    this.logger.debug(`Transitioning revisions for user ${userUuid.value}`)
 
     const migrationResult = await this.migrateRevisionsForUser(userUuid)
     if (migrationResult.isFailed()) {
@@ -90,7 +90,7 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
 
         for (const revision of revisions) {
           try {
-            this.logger.info(
+            this.logger.debug(
               `Transitioning revision #${
                 totalRevisionsCountTransitionedToSecondary + 1
               }: ${revision.id.toString()} to secondary database`,
@@ -111,7 +111,7 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
         }
       }
 
-      this.logger.info(`Transitioned ${totalRevisionsCountTransitionedToSecondary} revisions to secondary database`)
+      this.logger.debug(`Transitioned ${totalRevisionsCountTransitionedToSecondary} revisions to secondary database`)
 
       return Result.ok()
     } catch (error) {

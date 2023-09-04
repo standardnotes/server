@@ -107,6 +107,7 @@ describe('TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser', () => {
     logger = {} as jest.Mocked<Logger>
     logger.error = jest.fn()
     logger.info = jest.fn()
+    logger.debug = jest.fn()
 
     timer = {} as jest.Mocked<TimerInterface>
     timer.sleep = jest.fn()
