@@ -4444,7 +4444,7 @@ __metadata:
     "@types/otplib": "npm:^10.0.0"
     "@types/prettyjson": "npm:^0.0.30"
     "@types/ua-parser-js": "npm:^0.7.36"
-    "@types/uuid": "npm:^9.0.2"
+    "@types/uuid": "npm:^9.0.3"
     "@typescript-eslint/eslint-plugin": "npm:^6.5.0"
     "@typescript-eslint/parser": "npm:^6.5.0"
     axios: "npm:^1.1.3"
@@ -4508,7 +4508,7 @@ __metadata:
   dependencies:
     "@types/jest": "npm:^29.5.1"
     "@types/node": "npm:^20.5.7"
-    "@types/uuid": "npm:^9.0.2"
+    "@types/uuid": "npm:^9.0.3"
     "@typescript-eslint/eslint-plugin": "npm:^6.5.0"
     "@typescript-eslint/parser": "npm:^6.5.0"
     eslint: "npm:^8.39.0"
@@ -4642,7 +4642,7 @@ __metadata:
     "@types/newrelic": "npm:^9.14.0"
     "@types/node": "npm:^20.5.7"
     "@types/prettyjson": "npm:^0.0.30"
-    "@types/uuid": "npm:^9.0.2"
+    "@types/uuid": "npm:^9.0.3"
     "@typescript-eslint/eslint-plugin": "npm:^6.5.0"
     "@typescript-eslint/parser": "npm:^6.5.0"
     connect-busboy: "npm:^1.0.0"
@@ -4973,7 +4973,7 @@ __metadata:
     "@types/prettyjson": "npm:^0.0.30"
     "@types/semver": "npm:^7.5.1"
     "@types/ua-parser-js": "npm:^0.7.36"
-    "@types/uuid": "npm:^9.0.2"
+    "@types/uuid": "npm:^9.0.3"
     "@typescript-eslint/eslint-plugin": "npm:^6.5.0"
     "@typescript-eslint/parser": "npm:^6.5.0"
     axios: "npm:^1.1.3"
@@ -5619,10 +5619,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/uuid@npm:^9.0.2":
-  version: 9.0.2
-  resolution: "@types/uuid@npm:9.0.2"
-  checksum: dfb80ebf6fadb343b05f12e7f162bad47b19d290194b0a074a4b16c115272345b27501a3abce3f9fd2cb392a645b171f7cf7008cf25029c1a270fae050450d71
+"@types/uuid@npm:^9.0.3":
+  version: 9.0.3
+  resolution: "@types/uuid@npm:9.0.3"
+  checksum: a5357c644754ce647380b80a961cfc6dcab97561a1e6f6182d68dabb8b0befa0d5e741086fe016a783960159cbe85bb4d10b37dc2d81edb29577b5d649ace080
   languageName: node
   linkType: hard
 
