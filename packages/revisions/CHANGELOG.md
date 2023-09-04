@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.30.11](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.30.10...@standardnotes/revisions-server@1.30.11) (2023-09-04)
+
+### Bug Fixes
+
+* **revisions:** add more verbose logs to the transition ([df20dd4](https://github.com/standardnotes/server/commit/df20dd46db3c0370ede065c900501bf7025f3894))
+
 ## [1.30.10](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.30.9...@standardnotes/revisions-server@1.30.10) (2023-09-01)
 
 **Note:** Version bump only for package @standardnotes/revisions-server
