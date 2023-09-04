@@ -24,9 +24,9 @@ export class SQLRevisionRepository implements RevisionRepositoryInterface {
 
   async findByUserUuid(dto: { userUuid: Uuid; offset?: number; limit?: number }): Promise<Revision[]> {
     const queryBuilder = this.ormRepository
-      .createQueryBuilder()
-      .where('user_uuid = :userUuid', { userUuid: dto.userUuid.value })
-      .orderBy('created_at', 'ASC')
+      .createQueryBuilder('revision')
+      .where('revision.user_uuid = :userUuid', { userUuid: dto.userUuid.value })
+      .orderBy('revision.created_at', 'ASC')
 
     if (dto.offset !== undefined) {
       queryBuilder.skip(dto.offset)

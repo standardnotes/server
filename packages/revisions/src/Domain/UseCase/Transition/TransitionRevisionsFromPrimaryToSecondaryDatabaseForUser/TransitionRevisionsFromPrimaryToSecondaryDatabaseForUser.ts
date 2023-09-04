@@ -90,6 +90,12 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
 
         for (const revision of revisions) {
           try {
+            this.logger.info(
+              `Transitioning revision #${
+                totalRevisionsCountTransitionedToSecondary + 1
+              }: ${revision.id.toString()} to secondary database`,
+            )
+
             const didSave = await (this.secondRevisionsRepository as RevisionRepositoryInterface).insert(revision)
             if (!didSave) {
               return Result.fail(`Failed to save revision ${revision.id.toString()} to secondary database`)
