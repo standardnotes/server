@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.30.12](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.30.11...@standardnotes/revisions-server@1.30.12) (2023-09-04)
+
+### Bug Fixes
+
+* **revisions:** change order field for transition of revisions ([a7a9349](https://github.com/standardnotes/server/commit/a7a93497e87679fdc910d3621a8d1c374e1fa796))
+
 ## [1.30.11](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.30.10...@standardnotes/revisions-server@1.30.11) (2023-09-04)
 
 ### Bug Fixes

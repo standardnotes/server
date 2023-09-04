@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.29](https://github.com/standardnotes/server/compare/@standardnotes/websockets-server@1.10.28...@standardnotes/websockets-server@1.10.29) (2023-09-04)
+
+### Bug Fixes
+
+* **websockets:** add response debug on websockets sending ([8f96f0e](https://github.com/standardnotes/server/commit/8f96f0ed7a7f7e43f31c6163b9b6801f5896eece))
+
 ## [1.10.28](https://github.com/standardnotes/server/compare/@standardnotes/websockets-server@1.10.27...@standardnotes/websockets-server@1.10.28) (2023-09-04)
 
 ### Bug Fixes
