@@ -26,7 +26,7 @@ export class SQLRevisionRepository implements RevisionRepositoryInterface {
     const queryBuilder = this.ormRepository
       .createQueryBuilder('revision')
       .where('revision.user_uuid = :userUuid', { userUuid: dto.userUuid.value })
-      .orderBy('revision.created_at', 'ASC')
+      .orderBy('revision.uuid', 'ASC')
 
     if (dto.offset !== undefined) {
       queryBuilder.skip(dto.offset)
