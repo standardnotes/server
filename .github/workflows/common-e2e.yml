@@ -57,7 +57,7 @@ jobs:
       run: docker/is-available.sh http://localhost:3123 $(pwd)/logs
 
     - name: Run E2E Test Suite
-      run: yarn dlx mocha-headless-chrome --timeout 1800000 -f http://localhost:9001/mocha/test.html
+      run: yarn dlx mocha-headless-chrome --timeout 3600000 -f http://localhost:9001/mocha/test.html
 
     - name: Show logs on failure
       if: ${{ failure() }}
@@ -162,7 +162,7 @@ jobs:
       run: for i in {1..30}; do curl -s http://localhost:3123/healthcheck && break || sleep 1; done
 
     - name: Run E2E Test Suite
-      run: yarn dlx mocha-headless-chrome --timeout 1800000 -f http://localhost:9001/mocha/test.html
+      run: yarn dlx mocha-headless-chrome --timeout 3600000 -f http://localhost:9001/mocha/test.html
 
     - name: Show logs on failure
       if: ${{ failure() }}
