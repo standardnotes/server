@@ -1,5 +1,8 @@
 import { ContentType, Dates, Uuid } from '@standardnotes/domain-core'
 
+import { SharedVaultAssociation } from '../SharedVault/SharedVaultAssociation'
+import { KeySystemAssociation } from '../KeySystem/KeySystemAssociation'
+
 export interface RevisionProps {
   itemUuid: Uuid
   userUuid: Uuid | null
@@ -10,4 +13,6 @@ export interface RevisionProps {
   authHash: string | null
   creationDate: Date
   dates: Dates
+  sharedVaultAssociation?: SharedVaultAssociation
+  keySystemAssociation?: KeySystemAssociation
 }
