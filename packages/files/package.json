@@ -50,7 +50,6 @@
     "inversify-express-utils": "^6.4.3",
     "ioredis": "^5.2.4",
     "jsonwebtoken": "^9.0.0",
-    "nodemon": "^2.0.19",
     "prettyjson": "^1.2.5",
     "reflect-metadata": "^0.1.13",
     "winston": "^3.8.1"
@@ -70,7 +69,6 @@
     "eslint": "^8.39.0",
     "eslint-plugin-prettier": "^5.0.0",
     "jest": "^29.5.0",
-    "nodemon": "^2.0.19",
     "npm-check-updates": "^16.13.2",
     "prettier": "^3.0.3",
     "ts-jest": "^29.1.0",

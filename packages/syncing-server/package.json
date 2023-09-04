@@ -51,7 +51,6 @@
     "jsonwebtoken": "^9.0.0",
     "mongodb": "^6.0.0",
     "mysql2": "^3.0.1",
-    "nodemon": "^2.0.19",
     "prettyjson": "^1.2.5",
     "reflect-metadata": "0.1.13",
     "semver": "^7.5.4",
