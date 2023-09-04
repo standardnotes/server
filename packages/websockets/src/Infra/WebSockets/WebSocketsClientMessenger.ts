@@ -1,4 +1,4 @@
-import { AxiosInstance } from 'axios'
+import { ApiGatewayManagementApiClient, PostToConnectionCommand } from '@aws-sdk/client-apigatewaymanagementapi'
 import { Logger } from 'winston'
 import { inject, injectable } from 'inversify'
 
@@ -11,8 +11,8 @@ export class WebSocketsClientMessenger implements ClientMessengerInterface {
   constructor(
     @inject(TYPES.WebSocketsConnectionRepository)
     private webSocketsConnectionRepository: WebSocketsConnectionRepositoryInterface,
-    @inject(TYPES.HTTPClient) private httpClient: AxiosInstance,
-    @inject(TYPES.WEBSOCKETS_API_URL) private webSocketsApiUrl: string,
+    @inject(TYPES.WebSockets_ApiGatewayManagementApiClient)
+    private apiGatewayManagementClient: ApiGatewayManagementApiClient,
     @inject(TYPES.Logger) private logger: Logger,
   ) {}
 
@@ -21,23 +21,27 @@ export class WebSocketsClientMessenger implements ClientMessengerInterface {
 
     for (const connectionUuid of userConnections) {
       this.logger.debug(`Sending message to connection ${connectionUuid} for user ${userUuid}`)
-      const response = await this.httpClient.request({
-        method: 'POST',
-        url: `${this.webSocketsApiUrl}/${connectionUuid}`,
-        headers: {
-          Accept: 'text/plain',
-          'Content-Type': 'text/plain',
-        },
-        data: message,
-        validateStatus:
-          /* istanbul ignore next */
-          (status: number) => status >= 200 && status < 500,
-      })
-      if (response.status !== 200) {
+
+      const requestParams = {
+        ConnectionId: connectionUuid,
+        Data: message,
+      }
+
+      const command = new PostToConnectionCommand(requestParams)
+
+      try {
+        const response = await this.apiGatewayManagementClient.send(command)
+
+        if (response.$metadata.httpStatusCode !== 200) {
+          this.logger.error(
+            `Could not send message to connection ${connectionUuid} for user ${userUuid}. Response status code: ${response.$metadata.httpStatusCode}`,
+          )
+        }
+      } catch (error) {
         this.logger.error(
-          `Could not send message to connection ${connectionUuid} for user ${userUuid}. Response status code: ${
-            response.status
-          }. Response body: ${JSON.stringify(response.data)}`,
+          `Could not send message to connection ${connectionUuid} for user ${userUuid}. Error: ${
+            (error as Error).message
+          }`,
         )
       }
     }

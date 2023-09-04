@@ -2,6 +2,7 @@ const TYPES = {
   Logger: Symbol.for('Logger'),
   Redis: Symbol.for('Redis'),
   SQS: Symbol.for('SQS'),
+  WebSockets_ApiGatewayManagementApiClient: Symbol.for('WebSockets_ApiGatewayManagementApiClient'),
   // Controller
   WebSocketsController: Symbol.for('WebSocketsController'),
   // Repositories
