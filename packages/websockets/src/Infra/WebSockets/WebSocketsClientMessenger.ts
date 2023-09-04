@@ -35,7 +35,9 @@ export class WebSocketsClientMessenger implements ClientMessengerInterface {
       })
       if (response.status !== 200) {
         this.logger.error(
-          `Could not send message to connection ${connectionUuid} for user ${userUuid}. Response status code: ${response.status}. Response body: ${response.data}`,
+          `Could not send message to connection ${connectionUuid} for user ${userUuid}. Response status code: ${
+            response.status
+          }. Response body: ${JSON.stringify(response.data)}`,
         )
       }
     }
