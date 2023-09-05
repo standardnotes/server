@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.31](https://github.com/standardnotes/server/compare/@standardnotes/websockets-server@1.10.30...@standardnotes/websockets-server@1.10.31) (2023-09-05)
+
+### Bug Fixes
+
+* **websockets:** issue with sending messages to active websocket connections ([#806](https://github.com/standardnotes/server/issues/806)) ([72ab08a](https://github.com/standardnotes/server/commit/72ab08a0d09a18700298544c136ba3d202962d07))
+
 ## [1.10.30](https://github.com/standardnotes/server/compare/@standardnotes/websockets-server@1.10.29...@standardnotes/websockets-server@1.10.30) (2023-09-04)
 
 ### Bug Fixes
