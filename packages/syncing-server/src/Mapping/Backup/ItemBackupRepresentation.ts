@@ -13,4 +13,7 @@ export interface ItemBackupRepresentation {
   updated_at_timestamp: number
   updated_with_session: string | null
   user_uuid: string
+  key_system_identifier: string | null
+  shared_vault_uuid: string | null
+  last_edited_by: string | null
 }

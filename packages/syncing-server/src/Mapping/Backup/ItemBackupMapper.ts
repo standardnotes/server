@@ -27,6 +27,15 @@ export class ItemBackupMapper implements MapperInterface<Item, ItemBackupReprese
       updated_at_timestamp: domain.props.timestamps.updatedAt,
       updated_with_session: domain.props.updatedWithSession ? domain.props.updatedWithSession.value : null,
       user_uuid: domain.props.userUuid.value,
+      key_system_identifier: domain.props.keySystemAssociation
+        ? domain.props.keySystemAssociation.props.keySystemIdentifier
+        : null,
+      shared_vault_uuid: domain.props.sharedVaultAssociation
+        ? domain.props.sharedVaultAssociation.props.sharedVaultUuid.value
+        : null,
+      last_edited_by: domain.props.sharedVaultAssociation
+        ? domain.props.sharedVaultAssociation.props.lastEditedBy.value
+        : null,
     }
   }
 }
