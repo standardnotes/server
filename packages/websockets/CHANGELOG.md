@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.32](https://github.com/standardnotes/server/compare/@standardnotes/websockets-server@1.10.31...@standardnotes/websockets-server@1.10.32) (2023-09-05)
+
+### Bug Fixes
+
+* **websockets:** add missing region parameter in api gateway client ([6bb44af](https://github.com/standardnotes/server/commit/6bb44afd91b030facec486c128f80d533996e98b))
+
 ## [1.10.31](https://github.com/standardnotes/server/compare/@standardnotes/websockets-server@1.10.30...@standardnotes/websockets-server@1.10.31) (2023-09-05)
 
 ### Bug Fixes
