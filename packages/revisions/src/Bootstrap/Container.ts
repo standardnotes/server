@@ -81,6 +81,8 @@ export class ContainerConfigLoader {
     env.load()
 
     const isConfiguredForHomeServer = env.get('MODE', true) === 'home-server'
+    const isConfiguredForSelfHosting = env.get('MODE', true) === 'self-hosted'
+    const isConfiguredForHomeServerOrSelfHosting = isConfiguredForHomeServer || isConfiguredForSelfHosting
     const isSecondaryDatabaseEnabled = env.get('SECONDARY_DB_ENABLED', true) === 'true'
 
     const container = new Container({
@@ -234,30 +236,27 @@ export class ContainerConfigLoader {
 
     // Repositories
     container
-      .bind<RevisionRepositoryInterface>(TYPES.Revisions_SQLLegacyRevisionRepository)
-      .toConstantValue(
-        new SQLLegacyRevisionRepository(
-          container.get<Repository<SQLLegacyRevision>>(TYPES.Revisions_ORMLegacyRevisionRepository),
-          container.get<MapperInterface<RevisionMetadata, SQLLegacyRevision>>(
-            TYPES.Revisions_SQLLegacyRevisionMetadataPersistenceMapper,
-          ),
-          container.get<MapperInterface<Revision, SQLLegacyRevision>>(
-            TYPES.Revisions_SQLLegacyRevisionPersistenceMapper,
-          ),
-          container.get<winston.Logger>(TYPES.Revisions_Logger),
-        ),
-      )
-    container
       .bind<RevisionRepositoryInterface>(TYPES.Revisions_SQLRevisionRepository)
       .toConstantValue(
-        new SQLRevisionRepository(
-          container.get<Repository<SQLRevision>>(TYPES.Revisions_ORMRevisionRepository),
-          container.get<MapperInterface<RevisionMetadata, SQLRevision>>(
-            TYPES.Revisions_SQLRevisionMetadataPersistenceMapper,
-          ),
-          container.get<MapperInterface<Revision, SQLRevision>>(TYPES.Revisions_SQLRevisionPersistenceMapper),
-          container.get<winston.Logger>(TYPES.Revisions_Logger),
-        ),
+        isConfiguredForHomeServerOrSelfHosting
+          ? new SQLRevisionRepository(
+              container.get<Repository<SQLRevision>>(TYPES.Revisions_ORMRevisionRepository),
+              container.get<MapperInterface<RevisionMetadata, SQLRevision>>(
+                TYPES.Revisions_SQLRevisionMetadataPersistenceMapper,
+              ),
+              container.get<MapperInterface<Revision, SQLRevision>>(TYPES.Revisions_SQLRevisionPersistenceMapper),
+              container.get<winston.Logger>(TYPES.Revisions_Logger),
+            )
+          : new SQLLegacyRevisionRepository(
+              container.get<Repository<SQLLegacyRevision>>(TYPES.Revisions_ORMLegacyRevisionRepository),
+              container.get<MapperInterface<RevisionMetadata, SQLLegacyRevision>>(
+                TYPES.Revisions_SQLLegacyRevisionMetadataPersistenceMapper,
+              ),
+              container.get<MapperInterface<Revision, SQLLegacyRevision>>(
+                TYPES.Revisions_SQLLegacyRevisionPersistenceMapper,
+              ),
+              container.get<winston.Logger>(TYPES.Revisions_Logger),
+            ),
       )
 
     if (isSecondaryDatabaseEnabled) {
@@ -283,7 +282,7 @@ export class ContainerConfigLoader {
       .bind<RevisionRepositoryResolverInterface>(TYPES.Revisions_RevisionRepositoryResolver)
       .toConstantValue(
         new TypeORMRevisionRepositoryResolver(
-          container.get<RevisionRepositoryInterface>(TYPES.Revisions_SQLLegacyRevisionRepository),
+          container.get<RevisionRepositoryInterface>(TYPES.Revisions_SQLRevisionRepository),
           isSecondaryDatabaseEnabled
             ? container.get<RevisionRepositoryInterface>(TYPES.Revisions_MongoDBRevisionRepository)
             : null,
@@ -341,7 +340,7 @@ export class ContainerConfigLoader {
       )
       .toConstantValue(
         new TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser(
-          container.get<RevisionRepositoryInterface>(TYPES.Revisions_SQLLegacyRevisionRepository),
+          container.get<RevisionRepositoryInterface>(TYPES.Revisions_SQLRevisionRepository),
           isSecondaryDatabaseEnabled
             ? container.get<RevisionRepositoryInterface>(TYPES.Revisions_MongoDBRevisionRepository)
             : null,

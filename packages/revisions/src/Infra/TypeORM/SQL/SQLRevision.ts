@@ -18,7 +18,7 @@ export class SQLRevision extends SQLLegacyRevision {
     length: 36,
     nullable: true,
   })
-  @Index('index_items_on_shared_vault_uuid')
+  @Index('index_revisions_on_shared_vault_uuid')
   declare sharedVaultUuid: string | null
 
   @Column({

@@ -23,7 +23,6 @@ const TYPES = {
   // Mongo
   Revisions_ORMMongoRevisionRepository: Symbol.for('Revisions_ORMMongoRevisionRepository'),
   // Repositories
-  Revisions_SQLLegacyRevisionRepository: Symbol.for('Revisions_SQLLegacyRevisionRepository'),
   Revisions_SQLRevisionRepository: Symbol.for('Revisions_SQLRevisionRepository'),
   Revisions_MongoDBRevisionRepository: Symbol.for('Revisions_MongoDBRevisionRepository'),
   Revisions_DumpRepository: Symbol.for('Revisions_DumpRepository'),
