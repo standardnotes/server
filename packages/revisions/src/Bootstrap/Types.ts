@@ -9,7 +9,9 @@ const TYPES = {
   Revisions_SQLLegacyRevisionMetadataPersistenceMapper: Symbol.for(
     'Revisions_SQLLegacyRevisionMetadataPersistenceMapper',
   ),
+  Revisions_SQLRevisionMetadataPersistenceMapper: Symbol.for('Revisions_SQLRevisionMetadataPersistenceMapper'),
   Revisions_SQLLegacyRevisionPersistenceMapper: Symbol.for('Revisions_SQLLegacyRevisionPersistenceMapper'),
+  Revisions_SQLRevisionPersistenceMapper: Symbol.for('Revisions_SQLRevisionPersistenceMapper'),
   Revisions_MongoDBRevisionMetadataPersistenceMapper: Symbol.for('Revisions_MongoDBRevisionMetadataPersistenceMapper'),
   Revisions_MongoDBRevisionPersistenceMapper: Symbol.for('Revisions_MongoDBRevisionPersistenceMapper'),
   Revisions_RevisionItemStringMapper: Symbol.for('Revisions_RevisionItemStringMapper'),
@@ -17,10 +19,12 @@ const TYPES = {
   Revisions_RevisionMetadataHttpMapper: Symbol.for('Revisions_RevisionMetadataHttpMapper'),
   // ORM
   Revisions_ORMRevisionRepository: Symbol.for('Revisions_ORMRevisionRepository'),
+  Revisions_ORMLegacyRevisionRepository: Symbol.for('Revisions_ORMLegacyRevisionRepository'),
   // Mongo
   Revisions_ORMMongoRevisionRepository: Symbol.for('Revisions_ORMMongoRevisionRepository'),
   // Repositories
   Revisions_SQLLegacyRevisionRepository: Symbol.for('Revisions_SQLLegacyRevisionRepository'),
+  Revisions_SQLRevisionRepository: Symbol.for('Revisions_SQLRevisionRepository'),
   Revisions_MongoDBRevisionRepository: Symbol.for('Revisions_MongoDBRevisionRepository'),
   Revisions_DumpRepository: Symbol.for('Revisions_DumpRepository'),
   Revisions_RevisionRepositoryResolver: Symbol.for('Revisions_RevisionRepositoryResolver'),

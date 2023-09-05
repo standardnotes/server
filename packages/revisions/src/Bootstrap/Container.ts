@@ -62,6 +62,10 @@ import { DomainEventFactoryInterface } from '../Domain/Event/DomainEventFactoryI
 import { DomainEventFactory } from '../Domain/Event/DomainEventFactory'
 import { TransitionStatusUpdatedEventHandler } from '../Domain/Handler/TransitionStatusUpdatedEventHandler'
 import { TriggerTransitionFromPrimaryToSecondaryDatabaseForUser } from '../Domain/UseCase/Transition/TriggerTransitionFromPrimaryToSecondaryDatabaseForUser/TriggerTransitionFromPrimaryToSecondaryDatabaseForUser'
+import { SQLRevision } from '../Infra/TypeORM/SQL/SQLRevision'
+import { SQLRevisionRepository } from '../Infra/TypeORM/SQL/SQLRevisionRepository'
+import { SQLRevisionMetadataPersistenceMapper } from '../Mapping/Persistence/SQL/SQLRevisionMetadataPersistenceMapper'
+import { SQLRevisionPersistenceMapper } from '../Mapping/Persistence/SQL/SQLRevisionPersistenceMapper'
 
 export class ContainerConfigLoader {
   async load(configuration?: {
@@ -203,8 +207,14 @@ export class ContainerConfigLoader {
       )
       .toConstantValue(new SQLLegacyRevisionMetadataPersistenceMapper())
     container
+      .bind<MapperInterface<RevisionMetadata, SQLRevision>>(TYPES.Revisions_SQLRevisionMetadataPersistenceMapper)
+      .toConstantValue(new SQLRevisionMetadataPersistenceMapper())
+    container
       .bind<MapperInterface<Revision, SQLLegacyRevision>>(TYPES.Revisions_SQLLegacyRevisionPersistenceMapper)
       .toConstantValue(new SQLLegacyRevisionPersistenceMapper())
+    container
+      .bind<MapperInterface<Revision, SQLRevision>>(TYPES.Revisions_SQLRevisionPersistenceMapper)
+      .toConstantValue(new SQLRevisionPersistenceMapper())
     container
       .bind<MapperInterface<RevisionMetadata, MongoDBRevision>>(
         TYPES.Revisions_MongoDBRevisionMetadataPersistenceMapper,
@@ -216,21 +226,36 @@ export class ContainerConfigLoader {
 
     // ORM
     container
-      .bind<Repository<SQLLegacyRevision>>(TYPES.Revisions_ORMRevisionRepository)
+      .bind<Repository<SQLLegacyRevision>>(TYPES.Revisions_ORMLegacyRevisionRepository)
       .toDynamicValue(() => appDataSource.getRepository(SQLLegacyRevision))
+    container
+      .bind<Repository<SQLRevision>>(TYPES.Revisions_ORMRevisionRepository)
+      .toConstantValue(appDataSource.getRepository(SQLRevision))
 
     // Repositories
     container
       .bind<RevisionRepositoryInterface>(TYPES.Revisions_SQLLegacyRevisionRepository)
       .toConstantValue(
         new SQLLegacyRevisionRepository(
-          container.get<Repository<SQLLegacyRevision>>(TYPES.Revisions_ORMRevisionRepository),
+          container.get<Repository<SQLLegacyRevision>>(TYPES.Revisions_ORMLegacyRevisionRepository),
           container.get<MapperInterface<RevisionMetadata, SQLLegacyRevision>>(
             TYPES.Revisions_SQLLegacyRevisionMetadataPersistenceMapper,
           ),
           container.get<MapperInterface<Revision, SQLLegacyRevision>>(
             TYPES.Revisions_SQLLegacyRevisionPersistenceMapper,
           ),
+          container.get<winston.Logger>(TYPES.Revisions_Logger),
+        ),
+      )
+    container
+      .bind<RevisionRepositoryInterface>(TYPES.Revisions_SQLRevisionRepository)
+      .toConstantValue(
+        new SQLRevisionRepository(
+          container.get<Repository<SQLRevision>>(TYPES.Revisions_ORMRevisionRepository),
+          container.get<MapperInterface<RevisionMetadata, SQLRevision>>(
+            TYPES.Revisions_SQLRevisionMetadataPersistenceMapper,
+          ),
+          container.get<MapperInterface<Revision, SQLRevision>>(TYPES.Revisions_SQLRevisionPersistenceMapper),
           container.get<winston.Logger>(TYPES.Revisions_Logger),
         ),
       )

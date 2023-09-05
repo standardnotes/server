@@ -9,10 +9,10 @@ import { SQLLegacyRevision } from './SQLLegacyRevision'
 
 export class SQLLegacyRevisionRepository implements RevisionRepositoryInterface {
   constructor(
-    private ormRepository: Repository<SQLLegacyRevision>,
-    private revisionMetadataMapper: MapperInterface<RevisionMetadata, SQLLegacyRevision>,
-    private revisionMapper: MapperInterface<Revision, SQLLegacyRevision>,
-    private logger: Logger,
+    protected ormRepository: Repository<SQLLegacyRevision>,
+    protected revisionMetadataMapper: MapperInterface<RevisionMetadata, SQLLegacyRevision>,
+    protected revisionMapper: MapperInterface<Revision, SQLLegacyRevision>,
+    protected logger: Logger,
   ) {}
 
   async countByUserUuid(userUuid: Uuid): Promise<number> {
