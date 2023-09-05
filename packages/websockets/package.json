@@ -22,6 +22,7 @@
     "typeorm": "typeorm-ts-node-commonjs"
   },
   "dependencies": {
+    "@aws-sdk/client-apigatewaymanagementapi": "^3.405.0",
     "@aws-sdk/client-sqs": "^3.332.0",
     "@standardnotes/api": "^1.26.26",
     "@standardnotes/common": "workspace:^",

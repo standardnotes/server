@@ -4,6 +4,7 @@ const axios = require('axios')
 import { AxiosInstance } from 'axios'
 import Redis from 'ioredis'
 import { SQSClient, SQSClientConfig } from '@aws-sdk/client-sqs'
+import { ApiGatewayManagementApiClient } from '@aws-sdk/client-apigatewaymanagementapi'
 import { Container } from 'inversify'
 import {
   DomainEventHandlerInterface,
@@ -88,6 +89,14 @@ export class ContainerConfigLoader {
       container.bind<SQSClient>(TYPES.SQS).toConstantValue(new SQSClient(sqsConfig))
     }
 
+    container.bind(TYPES.WEBSOCKETS_API_URL).toConstantValue(env.get('WEBSOCKETS_API_URL', true))
+
+    container.bind<ApiGatewayManagementApiClient>(TYPES.WebSockets_ApiGatewayManagementApiClient).toConstantValue(
+      new ApiGatewayManagementApiClient({
+        endpoint: container.get(TYPES.WEBSOCKETS_API_URL),
+      }),
+    )
+
     // Controller
     container.bind<WebSocketServerInterface>(TYPES.WebSocketsController).to(WebSocketsController)
 
@@ -110,7 +119,6 @@ export class ContainerConfigLoader {
     container.bind(TYPES.REDIS_URL).toConstantValue(env.get('REDIS_URL'))
     container.bind(TYPES.SQS_QUEUE_URL).toConstantValue(env.get('SQS_QUEUE_URL'))
     container.bind(TYPES.NEW_RELIC_ENABLED).toConstantValue(env.get('NEW_RELIC_ENABLED', true))
-    container.bind(TYPES.WEBSOCKETS_API_URL).toConstantValue(env.get('WEBSOCKETS_API_URL', true))
     container.bind(TYPES.VERSION).toConstantValue(env.get('VERSION'))
 
     // use cases
