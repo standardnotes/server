@@ -94,6 +94,7 @@ export class ContainerConfigLoader {
     container.bind<ApiGatewayManagementApiClient>(TYPES.WebSockets_ApiGatewayManagementApiClient).toConstantValue(
       new ApiGatewayManagementApiClient({
         endpoint: container.get(TYPES.WEBSOCKETS_API_URL),
+        region: env.get('API_GATEWAY_AWS_REGION', true) ?? 'us-east-1',
       }),
     )
 
