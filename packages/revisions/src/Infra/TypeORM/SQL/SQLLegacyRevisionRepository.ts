@@ -5,13 +5,13 @@ import { Logger } from 'winston'
 import { Revision } from '../../../Domain/Revision/Revision'
 import { RevisionMetadata } from '../../../Domain/Revision/RevisionMetadata'
 import { RevisionRepositoryInterface } from '../../../Domain/Revision/RevisionRepositoryInterface'
-import { SQLRevision } from './SQLRevision'
+import { SQLLegacyRevision } from './SQLLegacyRevision'
 
-export class SQLRevisionRepository implements RevisionRepositoryInterface {
+export class SQLLegacyRevisionRepository implements RevisionRepositoryInterface {
   constructor(
-    private ormRepository: Repository<SQLRevision>,
-    private revisionMetadataMapper: MapperInterface<RevisionMetadata, SQLRevision>,
-    private revisionMapper: MapperInterface<Revision, SQLRevision>,
+    private ormRepository: Repository<SQLLegacyRevision>,
+    private revisionMetadataMapper: MapperInterface<RevisionMetadata, SQLLegacyRevision>,
+    private revisionMapper: MapperInterface<Revision, SQLLegacyRevision>,
     private logger: Logger,
   ) {}
 
@@ -58,13 +58,13 @@ export class SQLRevisionRepository implements RevisionRepositoryInterface {
   }
 
   async findByItemUuid(itemUuid: Uuid): Promise<Revision[]> {
-    const SQLRevisions = await this.ormRepository
+    const SQLLegacyRevisions = await this.ormRepository
       .createQueryBuilder()
       .where('item_uuid = :itemUuid', { itemUuid: itemUuid.value })
       .getMany()
 
     const revisions = []
-    for (const revision of SQLRevisions) {
+    for (const revision of SQLLegacyRevisions) {
       revisions.push(this.revisionMapper.toDomain(revision))
     }
 
@@ -93,23 +93,23 @@ export class SQLRevisionRepository implements RevisionRepositoryInterface {
   }
 
   async findOneByUuid(revisionUuid: Uuid, userUuid: Uuid): Promise<Revision | null> {
-    const SQLRevision = await this.ormRepository
+    const SQLLegacyRevision = await this.ormRepository
       .createQueryBuilder()
       .where('uuid = :revisionUuid', { revisionUuid: revisionUuid.value })
       .andWhere('user_uuid = :userUuid', { userUuid: userUuid.value })
       .getOne()
 
-    if (SQLRevision === null) {
+    if (SQLLegacyRevision === null) {
       return null
     }
 
-    return this.revisionMapper.toDomain(SQLRevision)
+    return this.revisionMapper.toDomain(SQLLegacyRevision)
   }
 
   async insert(revision: Revision): Promise<boolean> {
-    const SQLRevision = this.revisionMapper.toProjection(revision)
+    const SQLLegacyRevision = this.revisionMapper.toProjection(revision)
 
-    await this.ormRepository.insert(SQLRevision)
+    await this.ormRepository.insert(SQLLegacyRevision)
 
     return true
   }

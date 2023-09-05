@@ -1,10 +1,10 @@
 import { MapperInterface, Dates, UniqueEntityId, Uuid, ContentType } from '@standardnotes/domain-core'
 
 import { Revision } from '../../../Domain/Revision/Revision'
-import { SQLRevision } from '../../../Infra/TypeORM/SQL/SQLRevision'
+import { SQLLegacyRevision } from '../../../Infra/TypeORM/SQL/SQLLegacyRevision'
 
-export class SQLRevisionPersistenceMapper implements MapperInterface<Revision, SQLRevision> {
-  toDomain(projection: SQLRevision): Revision {
+export class SQLLegacyRevisionPersistenceMapper implements MapperInterface<Revision, SQLLegacyRevision> {
+  toDomain(projection: SQLLegacyRevision): Revision {
     const contentTypeOrError = ContentType.create(projection.contentType)
     if (contentTypeOrError.isFailed()) {
       throw new Error(`Could not map typeorm revision to domain revision: ${contentTypeOrError.getError()}`)
@@ -53,8 +53,8 @@ export class SQLRevisionPersistenceMapper implements MapperInterface<Revision, S
     return revisionOrError.getValue()
   }
 
-  toProjection(domain: Revision): SQLRevision {
-    const sqlRevision = new SQLRevision()
+  toProjection(domain: Revision): SQLLegacyRevision {
+    const sqlRevision = new SQLLegacyRevision()
 
     sqlRevision.authHash = domain.props.authHash
     sqlRevision.content = domain.props.content

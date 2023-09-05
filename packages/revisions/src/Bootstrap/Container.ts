@@ -7,8 +7,8 @@ import { SNSClient, SNSClientConfig } from '@aws-sdk/client-sns'
 import { Revision } from '../Domain/Revision/Revision'
 import { RevisionMetadata } from '../Domain/Revision/RevisionMetadata'
 import { RevisionRepositoryInterface } from '../Domain/Revision/RevisionRepositoryInterface'
-import { SQLRevisionRepository } from '../Infra/TypeORM/SQL/SQLRevisionRepository'
-import { SQLRevision } from '../Infra/TypeORM/SQL/SQLRevision'
+import { SQLLegacyRevisionRepository } from '../Infra/TypeORM/SQL/SQLLegacyRevisionRepository'
+import { SQLLegacyRevision } from '../Infra/TypeORM/SQL/SQLLegacyRevision'
 import { AppDataSource } from './DataSource'
 import { Env } from './Env'
 import TYPES from './Types'
@@ -48,8 +48,8 @@ import { BaseRevisionsController } from '../Infra/InversifyExpress/Base/BaseRevi
 import { Transform } from 'stream'
 import { MongoDBRevision } from '../Infra/TypeORM/MongoDB/MongoDBRevision'
 import { MongoDBRevisionRepository } from '../Infra/TypeORM/MongoDB/MongoDBRevisionRepository'
-import { SQLRevisionMetadataPersistenceMapper } from '../Mapping/Persistence/SQL/SQLRevisionMetadataPersistenceMapper'
-import { SQLRevisionPersistenceMapper } from '../Mapping/Persistence/SQL/SQLRevisionPersistenceMapper'
+import { SQLLegacyRevisionMetadataPersistenceMapper } from '../Mapping/Persistence/SQL/SQLLegacyRevisionMetadataPersistenceMapper'
+import { SQLLegacyRevisionPersistenceMapper } from '../Mapping/Persistence/SQL/SQLLegacyRevisionPersistenceMapper'
 import { MongoDBRevisionMetadataPersistenceMapper } from '../Mapping/Persistence/MongoDB/MongoDBRevisionMetadataPersistenceMapper'
 import { MongoDBRevisionPersistenceMapper } from '../Mapping/Persistence/MongoDB/MongoDBRevisionPersistenceMapper'
 import { RevisionHttpMapper } from '../Mapping/Http/RevisionHttpMapper'
@@ -198,11 +198,13 @@ export class ContainerConfigLoader {
 
     // Map
     container
-      .bind<MapperInterface<RevisionMetadata, SQLRevision>>(TYPES.Revisions_SQLRevisionMetadataPersistenceMapper)
-      .toConstantValue(new SQLRevisionMetadataPersistenceMapper())
+      .bind<MapperInterface<RevisionMetadata, SQLLegacyRevision>>(
+        TYPES.Revisions_SQLLegacyRevisionMetadataPersistenceMapper,
+      )
+      .toConstantValue(new SQLLegacyRevisionMetadataPersistenceMapper())
     container
-      .bind<MapperInterface<Revision, SQLRevision>>(TYPES.Revisions_SQLRevisionPersistenceMapper)
-      .toConstantValue(new SQLRevisionPersistenceMapper())
+      .bind<MapperInterface<Revision, SQLLegacyRevision>>(TYPES.Revisions_SQLLegacyRevisionPersistenceMapper)
+      .toConstantValue(new SQLLegacyRevisionPersistenceMapper())
     container
       .bind<MapperInterface<RevisionMetadata, MongoDBRevision>>(
         TYPES.Revisions_MongoDBRevisionMetadataPersistenceMapper,
@@ -214,19 +216,21 @@ export class ContainerConfigLoader {
 
     // ORM
     container
-      .bind<Repository<SQLRevision>>(TYPES.Revisions_ORMRevisionRepository)
-      .toDynamicValue(() => appDataSource.getRepository(SQLRevision))
+      .bind<Repository<SQLLegacyRevision>>(TYPES.Revisions_ORMRevisionRepository)
+      .toDynamicValue(() => appDataSource.getRepository(SQLLegacyRevision))
 
     // Repositories
     container
-      .bind<RevisionRepositoryInterface>(TYPES.Revisions_SQLRevisionRepository)
+      .bind<RevisionRepositoryInterface>(TYPES.Revisions_SQLLegacyRevisionRepository)
       .toConstantValue(
-        new SQLRevisionRepository(
-          container.get<Repository<SQLRevision>>(TYPES.Revisions_ORMRevisionRepository),
-          container.get<MapperInterface<RevisionMetadata, SQLRevision>>(
-            TYPES.Revisions_SQLRevisionMetadataPersistenceMapper,
+        new SQLLegacyRevisionRepository(
+          container.get<Repository<SQLLegacyRevision>>(TYPES.Revisions_ORMRevisionRepository),
+          container.get<MapperInterface<RevisionMetadata, SQLLegacyRevision>>(
+            TYPES.Revisions_SQLLegacyRevisionMetadataPersistenceMapper,
           ),
-          container.get<MapperInterface<Revision, SQLRevision>>(TYPES.Revisions_SQLRevisionPersistenceMapper),
+          container.get<MapperInterface<Revision, SQLLegacyRevision>>(
+            TYPES.Revisions_SQLLegacyRevisionPersistenceMapper,
+          ),
           container.get<winston.Logger>(TYPES.Revisions_Logger),
         ),
       )
@@ -254,7 +258,7 @@ export class ContainerConfigLoader {
       .bind<RevisionRepositoryResolverInterface>(TYPES.Revisions_RevisionRepositoryResolver)
       .toConstantValue(
         new TypeORMRevisionRepositoryResolver(
-          container.get<RevisionRepositoryInterface>(TYPES.Revisions_SQLRevisionRepository),
+          container.get<RevisionRepositoryInterface>(TYPES.Revisions_SQLLegacyRevisionRepository),
           isSecondaryDatabaseEnabled
             ? container.get<RevisionRepositoryInterface>(TYPES.Revisions_MongoDBRevisionRepository)
             : null,
@@ -312,7 +316,7 @@ export class ContainerConfigLoader {
       )
       .toConstantValue(
         new TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser(
-          container.get<RevisionRepositoryInterface>(TYPES.Revisions_SQLRevisionRepository),
+          container.get<RevisionRepositoryInterface>(TYPES.Revisions_SQLLegacyRevisionRepository),
           isSecondaryDatabaseEnabled
             ? container.get<RevisionRepositoryInterface>(TYPES.Revisions_MongoDBRevisionRepository)
             : null,

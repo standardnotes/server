@@ -1,7 +1,7 @@
 import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm'
 
 @Entity({ name: 'revisions' })
-export class SQLRevision {
+export class SQLLegacyRevision {
   @PrimaryGeneratedColumn('uuid')
   declare uuid: string
 

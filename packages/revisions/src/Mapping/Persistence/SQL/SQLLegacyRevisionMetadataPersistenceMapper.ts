@@ -1,10 +1,12 @@
 import { MapperInterface, Dates, UniqueEntityId, ContentType } from '@standardnotes/domain-core'
 
 import { RevisionMetadata } from '../../../Domain/Revision/RevisionMetadata'
-import { SQLRevision } from '../../../Infra/TypeORM/SQL/SQLRevision'
+import { SQLLegacyRevision } from '../../../Infra/TypeORM/SQL/SQLLegacyRevision'
 
-export class SQLRevisionMetadataPersistenceMapper implements MapperInterface<RevisionMetadata, SQLRevision> {
-  toDomain(projection: SQLRevision): RevisionMetadata {
+export class SQLLegacyRevisionMetadataPersistenceMapper
+  implements MapperInterface<RevisionMetadata, SQLLegacyRevision>
+{
+  toDomain(projection: SQLLegacyRevision): RevisionMetadata {
     const contentTypeOrError = ContentType.create(projection.contentType)
     if (contentTypeOrError.isFailed()) {
       throw new Error(`Could not create content type: ${contentTypeOrError.getError()}`)
@@ -35,7 +37,7 @@ export class SQLRevisionMetadataPersistenceMapper implements MapperInterface<Rev
     return revisionMetadataOrError.getValue()
   }
 
-  toProjection(_domain: RevisionMetadata): SQLRevision {
+  toProjection(_domain: RevisionMetadata): SQLLegacyRevision {
     throw new Error('Method not implemented.')
   }
 }
