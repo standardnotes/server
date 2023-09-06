@@ -114,7 +114,11 @@ export class SQLLegacyRevisionRepository implements RevisionRepositoryInterface 
     return true
   }
 
-  async findMetadataByItemId(itemUuid: Uuid, userUuid: Uuid): Promise<Array<RevisionMetadata>> {
+  async findMetadataByItemId(
+    itemUuid: Uuid,
+    userUuid: Uuid,
+    _sharedVaultUuids: Uuid[],
+  ): Promise<Array<RevisionMetadata>> {
     const queryBuilder = this.ormRepository
       .createQueryBuilder()
       .select('uuid', 'uuid')

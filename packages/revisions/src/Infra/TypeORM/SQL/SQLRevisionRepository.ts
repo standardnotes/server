@@ -1,4 +1,4 @@
-import { MapperInterface } from '@standardnotes/domain-core'
+import { MapperInterface, Uuid } from '@standardnotes/domain-core'
 import { Repository } from 'typeorm'
 import { Logger } from 'winston'
 
@@ -15,5 +15,41 @@ export class SQLRevisionRepository extends SQLLegacyRevisionRepository {
     protected override logger: Logger,
   ) {
     super(ormRepository, revisionMetadataMapper, revisionMapper, logger)
+  }
+
+  override async findMetadataByItemId(
+    itemUuid: Uuid,
+    userUuid: Uuid,
+    sharedVaultUuids: Uuid[],
+  ): Promise<Array<RevisionMetadata>> {
+    const queryBuilder = this.ormRepository
+      .createQueryBuilder()
+      .select('uuid', 'uuid')
+      .addSelect('content_type', 'contentType')
+      .addSelect('created_at', 'createdAt')
+      .addSelect('updated_at', 'updatedAt')
+      .where('item_uuid = :itemUuid AND user_uuid = :userUuid', { itemUuid: itemUuid.value, userUuid: userUuid.value })
+      .orderBy('created_at', 'DESC')
+
+    if (sharedVaultUuids.length > 0) {
+      queryBuilder.orWhere('item_uuid = :itemUuid AND shared_vault_uuid IN (:...sharedVaultUuids)', {
+        itemUuid: itemUuid.value,
+        sharedVaultUuids: sharedVaultUuids.map((uuid) => uuid.value),
+      })
+    }
+
+    const simplifiedRevisions = await queryBuilder.getRawMany()
+
+    this.logger.debug(
+      `Found ${simplifiedRevisions.length} revisions entries for item ${itemUuid.value}`,
+      simplifiedRevisions,
+    )
+
+    const metadata = []
+    for (const simplifiedRevision of simplifiedRevisions) {
+      metadata.push(this.revisionMetadataMapper.toDomain(simplifiedRevision))
+    }
+
+    return metadata
   }
 }

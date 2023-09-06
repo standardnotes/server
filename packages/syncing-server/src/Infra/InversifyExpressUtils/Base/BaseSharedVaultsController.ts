@@ -73,6 +73,8 @@ export class BaseSharedVaultsController extends BaseHttpController {
       )
     }
 
+    response.setHeader('x-invalidate-cache', response.locals.user.uuid)
+
     return this.json({
       sharedVault: this.sharedVaultHttpMapper.toProjection(result.getValue().sharedVault),
       sharedVaultUser: this.sharedVaultUserHttpMapper.toProjection(result.getValue().sharedVaultUser),
@@ -95,6 +97,8 @@ export class BaseSharedVaultsController extends BaseHttpController {
         HttpStatusCode.BadRequest,
       )
     }
+
+    response.setHeader('x-invalidate-cache', response.locals.user.uuid)
 
     return this.json({ success: true })
   }

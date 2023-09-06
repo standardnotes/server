@@ -22,10 +22,22 @@ describe('GetRevisionsMetada', () => {
       itemUuid: '84c0f8e8-544a-4c7e-9adf-26209303bc1d',
       userUuid: '84c0f8e8-544a-4c7e-9adf-26209303bc1d',
       roleNames: ['CORE_USER'],
+      sharedVaultUuids: ['84c0f8e8-544a-4c7e-9adf-26209303bc1d'],
     })
 
     expect(result.isFailed()).toBeFalsy()
     expect(result.getValue().length).toEqual(1)
+  })
+
+  it('should not return revisions metadata for an invalid shared vault uuid', async () => {
+    const result = await createUseCase().execute({
+      itemUuid: '84c0f8e8-544a-4c7e-9adf-26209303bc1d',
+      userUuid: '84c0f8e8-544a-4c7e-9adf-26209303bc1d',
+      roleNames: ['CORE_USER'],
+      sharedVaultUuids: ['1-2-3'],
+    })
+
+    expect(result.isFailed()).toBeTruthy()
   })
 
   it('should not return revisions metadata for a an invalid item uuid', async () => {
@@ -33,6 +45,7 @@ describe('GetRevisionsMetada', () => {
       itemUuid: '1-2-3',
       userUuid: '84c0f8e8-544a-4c7e-9adf-26209303bc1d',
       roleNames: ['CORE_USER'],
+      sharedVaultUuids: [],
     })
 
     expect(result.isFailed()).toBeTruthy()
@@ -43,6 +56,7 @@ describe('GetRevisionsMetada', () => {
       userUuid: '1-2-3',
       itemUuid: '84c0f8e8-544a-4c7e-9adf-26209303bc1d',
       roleNames: ['CORE_USER'],
+      sharedVaultUuids: [],
     })
 
     expect(result.isFailed()).toBeTruthy()
@@ -53,6 +67,7 @@ describe('GetRevisionsMetada', () => {
       itemUuid: '84c0f8e8-544a-4c7e-9adf-26209303bc1d',
       userUuid: '84c0f8e8-544a-4c7e-9adf-26209303bc1d',
       roleNames: ['INVALID_ROLE_NAME'],
+      sharedVaultUuids: [],
     })
 
     expect(result.isFailed()).toBeTruthy()

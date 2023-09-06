@@ -86,16 +86,36 @@ export class MongoDBRevisionRepository implements RevisionRepositoryInterface {
     return revisions
   }
 
-  async findMetadataByItemId(itemUuid: Uuid, userUuid: Uuid): Promise<RevisionMetadata[]> {
-    const persistence = await this.mongoRepository.find({
-      select: ['_id', 'contentType', 'createdAt', 'updatedAt'],
-      where: {
-        $and: [{ itemUuid: { $eq: itemUuid.value } }, { userUuid: { $eq: userUuid.value } }],
-      },
-      order: {
-        createdAt: 'DESC',
-      },
-    })
+  async findMetadataByItemId(
+    itemUuid: Uuid,
+    userUuid: Uuid,
+    sharedVaultUuids: Uuid[],
+  ): Promise<Array<RevisionMetadata>> {
+    let persistence = []
+    if (sharedVaultUuids.length > 0) {
+      persistence = await this.mongoRepository.find({
+        select: ['_id', 'contentType', 'createdAt', 'updatedAt'],
+        where: {
+          $and: [
+            { itemUuid: { $eq: itemUuid.value } },
+            { sharedVaultUuid: { $in: sharedVaultUuids.map((uuid) => uuid.value) } },
+          ],
+        },
+        order: {
+          createdAt: 'DESC',
+        },
+      })
+    } else {
+      persistence = await this.mongoRepository.find({
+        select: ['_id', 'contentType', 'createdAt', 'updatedAt'],
+        where: {
+          $and: [{ itemUuid: { $eq: itemUuid.value } }, { userUuid: { $eq: userUuid.value } }],
+        },
+        order: {
+          createdAt: 'DESC',
+        },
+      })
+    }
 
     const revisions: RevisionMetadata[] = []
 

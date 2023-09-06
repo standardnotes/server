@@ -19,6 +19,15 @@ export class GetRevisionsMetada implements UseCaseInterface<RevisionMetadata[]> 
       return Result.fail<RevisionMetadata[]>(`Could not get revisions: ${userUuidOrError.getError()}`)
     }
 
+    const sharedVaultUuids = []
+    for (const sharedVaultUuid of dto.sharedVaultUuids) {
+      const sharedVaultUuidOrError = Uuid.create(sharedVaultUuid)
+      if (sharedVaultUuidOrError.isFailed()) {
+        return Result.fail<RevisionMetadata[]>(`Could not get revisions: ${sharedVaultUuidOrError.getError()}`)
+      }
+      sharedVaultUuids.push(sharedVaultUuidOrError.getValue())
+    }
+
     const roleNamesOrError = RoleNameCollection.create(dto.roleNames)
     if (roleNamesOrError.isFailed()) {
       return Result.fail(roleNamesOrError.getError())
@@ -30,6 +39,7 @@ export class GetRevisionsMetada implements UseCaseInterface<RevisionMetadata[]> 
     const revisionsMetdata = await revisionRepository.findMetadataByItemId(
       itemUuidOrError.getValue(),
       userUuidOrError.getValue(),
+      sharedVaultUuids,
     )
 
     return Result.ok<RevisionMetadata[]>(revisionsMetdata)

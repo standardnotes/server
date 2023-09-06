@@ -72,6 +72,7 @@ export abstract class AuthMiddleware extends BaseMiddleware {
       response.locals.session = decodedToken.session
       response.locals.roles = decodedToken.roles
       response.locals.sharedVaultOwnerContext = decodedToken.shared_vault_owner_context
+      response.locals.belongsToSharedVaults = decodedToken.belongs_to_shared_vaults ?? []
     } catch (error) {
       const errorMessage = (error as AxiosError).isAxiosError
         ? JSON.stringify((error as AxiosError).response?.data)
