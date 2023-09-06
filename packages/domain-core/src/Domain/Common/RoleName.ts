@@ -9,6 +9,7 @@ export class RoleName extends ValueObject<RoleNameProps> {
     ProUser: 'PRO_USER',
     InternalTeamUser: 'INTERNAL_TEAM_USER',
     TransitionUser: 'TRANSITION_USER',
+    VaultsUser: 'VAULTS_USER',
   }
 
   get value(): string {
@@ -17,6 +18,8 @@ export class RoleName extends ValueObject<RoleNameProps> {
 
   hasMoreOrEqualPowerTo(roleName: RoleName): boolean {
     switch (this.value) {
+      case RoleName.NAMES.VaultsUser:
+        return true
       case RoleName.NAMES.InternalTeamUser:
         return true
       case RoleName.NAMES.ProUser:
