@@ -37,4 +37,14 @@ export class MongoDBRevision {
 
   @Column()
   declare updatedAt: Date
+
+  @Column()
+  declare editedBy: string | null
+
+  @Column()
+  @Index('index_revisions_on_shared_vault_uuid')
+  declare sharedVaultUuid: string | null
+
+  @Column()
+  declare keySystemIdentifier: string | null
 }

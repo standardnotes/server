@@ -9,8 +9,9 @@ import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'
 
 import { CreateCrossServiceToken } from './CreateCrossServiceToken'
 import { GetSetting } from '../GetSetting/GetSetting'
-import { Result } from '@standardnotes/domain-core'
+import { Result, SharedVaultUser, SharedVaultUserPermission, Timestamps, Uuid } from '@standardnotes/domain-core'
 import { TransitionStatusRepositoryInterface } from '../../Transition/TransitionStatusRepositoryInterface'
+import { SharedVaultUserRepositoryInterface } from '../../SharedVault/SharedVaultUserRepositoryInterface'
 
 describe('CreateCrossServiceToken', () => {
   let userProjector: ProjectorInterface<User>
@@ -20,6 +21,7 @@ describe('CreateCrossServiceToken', () => {
   let userRepository: UserRepositoryInterface
   let getSettingUseCase: GetSetting
   let transitionStatusRepository: TransitionStatusRepositoryInterface
+  let sharedVaultUserRepository: SharedVaultUserRepositoryInterface
   const jwtTTL = 60
 
   let session: Session
@@ -36,6 +38,7 @@ describe('CreateCrossServiceToken', () => {
       jwtTTL,
       getSettingUseCase,
       transitionStatusRepository,
+      sharedVaultUserRepository,
     )
 
   beforeEach(() => {
@@ -70,6 +73,16 @@ describe('CreateCrossServiceToken', () => {
 
     transitionStatusRepository = {} as jest.Mocked<TransitionStatusRepositoryInterface>
     transitionStatusRepository.getStatus = jest.fn().mockReturnValue('TO-DO')
+
+    sharedVaultUserRepository = {} as jest.Mocked<SharedVaultUserRepositoryInterface>
+    sharedVaultUserRepository.findByUserUuid = jest.fn().mockReturnValue([
+      SharedVaultUser.create({
+        permission: SharedVaultUserPermission.create('read').getValue(),
+        sharedVaultUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+        timestamps: Timestamps.create(123456789, 123456789).getValue(),
+        userUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+      }).getValue(),
+    ])
   })
 
   it('should create a cross service token for user', async () => {
@@ -84,6 +97,12 @@ describe('CreateCrossServiceToken', () => {
           {
             name: 'role1',
             uuid: '1-3-4',
+          },
+        ],
+        belongs_to_shared_vaults: [
+          {
+            shared_vault_uuid: '00000000-0000-0000-0000-000000000000',
+            permission: 'read',
           },
         ],
         session: {
@@ -115,6 +134,12 @@ describe('CreateCrossServiceToken', () => {
             uuid: '1-3-4',
           },
         ],
+        belongs_to_shared_vaults: [
+          {
+            shared_vault_uuid: '00000000-0000-0000-0000-000000000000',
+            permission: 'read',
+          },
+        ],
         session: {
           test: 'test',
         },
@@ -141,6 +166,12 @@ describe('CreateCrossServiceToken', () => {
             uuid: '1-3-4',
           },
         ],
+        belongs_to_shared_vaults: [
+          {
+            shared_vault_uuid: '00000000-0000-0000-0000-000000000000',
+            permission: 'read',
+          },
+        ],
         user: {
           email: 'test@test.te',
           uuid: '00000000-0000-0000-0000-000000000000',
@@ -162,6 +193,12 @@ describe('CreateCrossServiceToken', () => {
           {
             name: 'role1',
             uuid: '1-3-4',
+          },
+        ],
+        belongs_to_shared_vaults: [
+          {
+            shared_vault_uuid: '00000000-0000-0000-0000-000000000000',
+            permission: 'read',
           },
         ],
         user: {
@@ -206,6 +243,12 @@ describe('CreateCrossServiceToken', () => {
             {
               name: 'role1',
               uuid: '1-3-4',
+            },
+          ],
+          belongs_to_shared_vaults: [
+            {
+              shared_vault_uuid: '00000000-0000-0000-0000-000000000000',
+              permission: 'read',
             },
           ],
           session: {

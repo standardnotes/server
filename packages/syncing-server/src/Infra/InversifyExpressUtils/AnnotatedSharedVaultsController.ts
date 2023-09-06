@@ -1,12 +1,11 @@
 import { controller, httpDelete, httpGet, httpPost, results } from 'inversify-express-utils'
 import { inject } from 'inversify'
-import { MapperInterface } from '@standardnotes/domain-core'
+import { MapperInterface, SharedVaultUser } from '@standardnotes/domain-core'
 import { Request, Response } from 'express'
 
 import { BaseSharedVaultsController } from './Base/BaseSharedVaultsController'
 import TYPES from '../../Bootstrap/Types'
 import { SharedVault } from '../../Domain/SharedVault/SharedVault'
-import { SharedVaultUser } from '../../Domain/SharedVault/User/SharedVaultUser'
 import { CreateSharedVault } from '../../Domain/UseCase/SharedVaults/CreateSharedVault/CreateSharedVault'
 import { CreateSharedVaultFileValetToken } from '../../Domain/UseCase/SharedVaults/CreateSharedVaultFileValetToken/CreateSharedVaultFileValetToken'
 import { DeleteSharedVault } from '../../Domain/UseCase/SharedVaults/DeleteSharedVault/DeleteSharedVault'

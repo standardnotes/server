@@ -1,6 +1,4 @@
-import { Uuid } from '@standardnotes/domain-core'
-
-import { SharedVaultUser } from './SharedVaultUser'
+import { SharedVaultUser, Uuid } from '@standardnotes/domain-core'
 
 export interface SharedVaultUserRepositoryInterface {
   findByUuid(sharedVaultUserUuid: Uuid): Promise<SharedVaultUser | null>

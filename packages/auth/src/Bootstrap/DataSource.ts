@@ -18,6 +18,7 @@ import { TypeORMEmergencyAccessInvitation } from '../Infra/TypeORM/TypeORMEmerge
 import { TypeORMSessionTrace } from '../Infra/TypeORM/TypeORMSessionTrace'
 import { Env } from './Env'
 import { SqliteConnectionOptions } from 'typeorm/driver/sqlite/SqliteConnectionOptions'
+import { TypeORMSharedVaultUser } from '../Infra/TypeORM/TypeORMSharedVaultUser'
 
 export class AppDataSource {
   private _dataSource: DataSource | undefined
@@ -64,6 +65,7 @@ export class AppDataSource {
         TypeORMAuthenticatorChallenge,
         TypeORMEmergencyAccessInvitation,
         TypeORMCacheEntry,
+        TypeORMSharedVaultUser,
       ],
       migrations: [`${__dirname}/../../migrations/${isConfiguredForMySQL ? 'mysql' : 'sqlite'}/*.js`],
       migrationsRun: true,

@@ -4,9 +4,9 @@ import {
   UniqueEntityId,
   Uuid,
   SharedVaultUserPermission,
+  SharedVaultUser,
 } from '@standardnotes/domain-core'
 
-import { SharedVaultUser } from '../../Domain/SharedVault/User/SharedVaultUser'
 import { TypeORMSharedVaultUser } from '../../Infra/TypeORM/TypeORMSharedVaultUser'
 
 export class SharedVaultUserPersistenceMapper implements MapperInterface<SharedVaultUser, TypeORMSharedVaultUser> {

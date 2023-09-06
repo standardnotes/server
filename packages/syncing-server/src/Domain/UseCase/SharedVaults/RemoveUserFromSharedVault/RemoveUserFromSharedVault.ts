@@ -1,15 +1,19 @@
 import { NotificationPayload, NotificationType, Result, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
+import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
 
 import { RemoveUserFromSharedVaultDTO } from './RemoveUserFromSharedVaultDTO'
 import { SharedVaultRepositoryInterface } from '../../../SharedVault/SharedVaultRepositoryInterface'
 import { SharedVaultUserRepositoryInterface } from '../../../SharedVault/User/SharedVaultUserRepositoryInterface'
 import { AddNotificationForUser } from '../../Messaging/AddNotificationForUser/AddNotificationForUser'
+import { DomainEventFactoryInterface } from '../../../Event/DomainEventFactoryInterface'
 
 export class RemoveUserFromSharedVault implements UseCaseInterface<void> {
   constructor(
     private sharedVaultUsersRepository: SharedVaultUserRepositoryInterface,
     private sharedVaultRepository: SharedVaultRepositoryInterface,
     private addNotificationForUser: AddNotificationForUser,
+    private domainEventFactory: DomainEventFactoryInterface,
+    private domainEventPublisher: DomainEventPublisherInterface,
   ) {}
 
   async execute(dto: RemoveUserFromSharedVaultDTO): Promise<Result<void>> {
@@ -76,6 +80,13 @@ export class RemoveUserFromSharedVault implements UseCaseInterface<void> {
     if (result.isFailed()) {
       return Result.fail(result.getError())
     }
+
+    await this.domainEventPublisher.publish(
+      this.domainEventFactory.createUserRemovedFromSharedVaultEvent({
+        sharedVaultUuid: dto.sharedVaultUuid,
+        userUuid: dto.userUuid,
+      }),
+    )
 
     return Result.ok()
   }

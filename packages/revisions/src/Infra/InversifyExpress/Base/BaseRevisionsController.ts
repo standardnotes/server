@@ -38,6 +38,9 @@ export class BaseRevisionsController extends BaseHttpController {
       itemUuid: request.params.itemUuid,
       userUuid: response.locals.user.uuid,
       roleNames: response.locals.roles.map((role: Role) => role.name),
+      sharedVaultUuids: response.locals.belongsToSharedVaults.map(
+        (association: { shared_vault_uuid: string; permission: string }) => association.shared_vault_uuid,
+      ),
     })
 
     if (revisionMetadataOrError.isFailed()) {

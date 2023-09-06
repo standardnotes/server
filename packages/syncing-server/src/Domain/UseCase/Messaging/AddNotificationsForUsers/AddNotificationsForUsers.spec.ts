@@ -5,8 +5,8 @@ import {
   Result,
   NotificationPayload,
   NotificationType,
+  SharedVaultUser,
 } from '@standardnotes/domain-core'
-import { SharedVaultUser } from '../../../SharedVault/User/SharedVaultUser'
 import { SharedVaultUserRepositoryInterface } from '../../../SharedVault/User/SharedVaultUserRepositoryInterface'
 import { AddNotificationForUser } from '../AddNotificationForUser/AddNotificationForUser'
 import { AddNotificationsForUsers } from './AddNotificationsForUsers'

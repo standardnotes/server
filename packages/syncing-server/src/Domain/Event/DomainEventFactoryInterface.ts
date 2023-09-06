@@ -7,7 +7,9 @@ import {
   NotificationAddedForUserEvent,
   RevisionsCopyRequestedEvent,
   TransitionStatusUpdatedEvent,
+  UserAddedToSharedVaultEvent,
   UserInvitedToSharedVaultEvent,
+  UserRemovedFromSharedVaultEvent,
   WebSocketMessageRequestedEvent,
 } from '@standardnotes/domain-events'
 
@@ -80,4 +82,15 @@ export interface DomainEventFactoryInterface {
     userUuid: string,
     dto: { originalItemUuid: string; newItemUuid: string; roleNames: string[] },
   ): RevisionsCopyRequestedEvent
+  createUserAddedToSharedVaultEvent(dto: {
+    sharedVaultUuid: string
+    userUuid: string
+    permission: string
+    createdAt: number
+    updatedAt: number
+  }): UserAddedToSharedVaultEvent
+  createUserRemovedFromSharedVaultEvent(dto: {
+    sharedVaultUuid: string
+    userUuid: string
+  }): UserRemovedFromSharedVaultEvent
 }

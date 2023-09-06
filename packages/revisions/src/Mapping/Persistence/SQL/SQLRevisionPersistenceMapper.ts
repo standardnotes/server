@@ -2,6 +2,8 @@ import { MapperInterface, Dates, UniqueEntityId, Uuid, ContentType } from '@stan
 
 import { Revision } from '../../../Domain/Revision/Revision'
 import { SQLRevision } from '../../../Infra/TypeORM/SQL/SQLRevision'
+import { SharedVaultAssociation } from '../../../Domain/SharedVault/SharedVaultAssociation'
+import { KeySystemAssociation } from '../../../Domain/KeySystem/KeySystemAssociation'
 
 export class SQLRevisionPersistenceMapper implements MapperInterface<Revision, SQLRevision> {
   toDomain(projection: SQLRevision): Revision {
@@ -32,6 +34,39 @@ export class SQLRevisionPersistenceMapper implements MapperInterface<Revision, S
       userUuid = userUuidOrError.getValue()
     }
 
+    let sharedVaultAssociation: SharedVaultAssociation | undefined = undefined
+    if (projection.sharedVaultUuid && projection.editedBy) {
+      const sharedVaultUuidOrError = Uuid.create(projection.sharedVaultUuid)
+      if (sharedVaultUuidOrError.isFailed()) {
+        throw new Error(`Failed to create revision from projection: ${sharedVaultUuidOrError.getError()}`)
+      }
+      const sharedVaultUuid = sharedVaultUuidOrError.getValue()
+
+      const lastEditedByOrError = Uuid.create(projection.editedBy)
+      if (lastEditedByOrError.isFailed()) {
+        throw new Error(`Failed to create revision from projection: ${lastEditedByOrError.getError()}`)
+      }
+      const lastEditedBy = lastEditedByOrError.getValue()
+
+      const sharedVaultAssociationOrError = SharedVaultAssociation.create({
+        sharedVaultUuid,
+        editedBy: lastEditedBy,
+      })
+      if (sharedVaultAssociationOrError.isFailed()) {
+        throw new Error(`Failed to create revision from projection: ${sharedVaultAssociationOrError.getError()}`)
+      }
+      sharedVaultAssociation = sharedVaultAssociationOrError.getValue()
+    }
+
+    let keySystemAssociation: KeySystemAssociation | undefined = undefined
+    if (projection.keySystemIdentifier) {
+      const keySystemAssociationOrError = KeySystemAssociation.create(projection.keySystemIdentifier)
+      if (keySystemAssociationOrError.isFailed()) {
+        throw new Error(`Failed to create revision from projection: ${keySystemAssociationOrError.getError()}`)
+      }
+      keySystemAssociation = keySystemAssociationOrError.getValue()
+    }
+
     const revisionOrError = Revision.create(
       {
         authHash: projection.authHash,
@@ -43,6 +78,8 @@ export class SQLRevisionPersistenceMapper implements MapperInterface<Revision, S
         itemUuid,
         userUuid,
         dates,
+        sharedVaultAssociation,
+        keySystemAssociation,
       },
       new UniqueEntityId(projection.uuid),
     )
@@ -67,6 +104,15 @@ export class SQLRevisionPersistenceMapper implements MapperInterface<Revision, S
     sqlRevision.itemsKeyId = domain.props.itemsKeyId
     sqlRevision.userUuid = domain.props.userUuid ? domain.props.userUuid.value : null
     sqlRevision.uuid = domain.id.toString()
+    sqlRevision.sharedVaultUuid = domain.props.sharedVaultAssociation
+      ? domain.props.sharedVaultAssociation.props.sharedVaultUuid.value
+      : null
+    sqlRevision.editedBy = domain.props.sharedVaultAssociation
+      ? domain.props.sharedVaultAssociation.props.editedBy.value
+      : null
+    sqlRevision.keySystemIdentifier = domain.props.keySystemAssociation
+      ? domain.props.keySystemAssociation.props.keySystemIdentifier
+      : null
 
     return sqlRevision
   }

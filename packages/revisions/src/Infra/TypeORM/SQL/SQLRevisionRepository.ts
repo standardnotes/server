@@ -4,126 +4,39 @@ import { Logger } from 'winston'
 
 import { Revision } from '../../../Domain/Revision/Revision'
 import { RevisionMetadata } from '../../../Domain/Revision/RevisionMetadata'
-import { RevisionRepositoryInterface } from '../../../Domain/Revision/RevisionRepositoryInterface'
+import { SQLLegacyRevisionRepository } from './SQLLegacyRevisionRepository'
 import { SQLRevision } from './SQLRevision'
 
-export class SQLRevisionRepository implements RevisionRepositoryInterface {
+export class SQLRevisionRepository extends SQLLegacyRevisionRepository {
   constructor(
-    private ormRepository: Repository<SQLRevision>,
-    private revisionMetadataMapper: MapperInterface<RevisionMetadata, SQLRevision>,
-    private revisionMapper: MapperInterface<Revision, SQLRevision>,
-    private logger: Logger,
-  ) {}
-
-  async countByUserUuid(userUuid: Uuid): Promise<number> {
-    return this.ormRepository
-      .createQueryBuilder()
-      .where('user_uuid = :userUuid', { userUuid: userUuid.value })
-      .getCount()
+    protected override ormRepository: Repository<SQLRevision>,
+    protected override revisionMetadataMapper: MapperInterface<RevisionMetadata, SQLRevision>,
+    protected override revisionMapper: MapperInterface<Revision, SQLRevision>,
+    protected override logger: Logger,
+  ) {
+    super(ormRepository, revisionMetadataMapper, revisionMapper, logger)
   }
 
-  async findByUserUuid(dto: { userUuid: Uuid; offset?: number; limit?: number }): Promise<Revision[]> {
-    const queryBuilder = this.ormRepository
-      .createQueryBuilder('revision')
-      .where('revision.user_uuid = :userUuid', { userUuid: dto.userUuid.value })
-      .orderBy('revision.uuid', 'ASC')
-
-    if (dto.offset !== undefined) {
-      queryBuilder.skip(dto.offset)
-    }
-
-    if (dto.limit !== undefined) {
-      queryBuilder.take(dto.limit)
-    }
-
-    const sqlRevisions = await queryBuilder.getMany()
-
-    const revisions = []
-    for (const sqlRevision of sqlRevisions) {
-      revisions.push(this.revisionMapper.toDomain(sqlRevision))
-    }
-
-    return revisions
-  }
-
-  async updateUserUuid(itemUuid: Uuid, userUuid: Uuid): Promise<void> {
-    await this.ormRepository
-      .createQueryBuilder()
-      .update()
-      .set({
-        userUuid: userUuid.value,
-      })
-      .where('item_uuid = :itemUuid', { itemUuid: itemUuid.value })
-      .execute()
-  }
-
-  async findByItemUuid(itemUuid: Uuid): Promise<Revision[]> {
-    const SQLRevisions = await this.ormRepository
-      .createQueryBuilder()
-      .where('item_uuid = :itemUuid', { itemUuid: itemUuid.value })
-      .getMany()
-
-    const revisions = []
-    for (const revision of SQLRevisions) {
-      revisions.push(this.revisionMapper.toDomain(revision))
-    }
-
-    return revisions
-  }
-
-  async removeByUserUuid(userUuid: Uuid): Promise<void> {
-    await this.ormRepository
-      .createQueryBuilder()
-      .delete()
-      .from('revisions')
-      .where('user_uuid = :userUuid', { userUuid: userUuid.value })
-      .execute()
-  }
-
-  async removeOneByUuid(revisionUuid: Uuid, userUuid: Uuid): Promise<void> {
-    await this.ormRepository
-      .createQueryBuilder()
-      .delete()
-      .from('revisions')
-      .where('uuid = :revisionUuid AND user_uuid = :userUuid', {
-        userUuid: userUuid.value,
-        revisionUuid: revisionUuid.value,
-      })
-      .execute()
-  }
-
-  async findOneByUuid(revisionUuid: Uuid, userUuid: Uuid): Promise<Revision | null> {
-    const SQLRevision = await this.ormRepository
-      .createQueryBuilder()
-      .where('uuid = :revisionUuid', { revisionUuid: revisionUuid.value })
-      .andWhere('user_uuid = :userUuid', { userUuid: userUuid.value })
-      .getOne()
-
-    if (SQLRevision === null) {
-      return null
-    }
-
-    return this.revisionMapper.toDomain(SQLRevision)
-  }
-
-  async insert(revision: Revision): Promise<boolean> {
-    const SQLRevision = this.revisionMapper.toProjection(revision)
-
-    await this.ormRepository.insert(SQLRevision)
-
-    return true
-  }
-
-  async findMetadataByItemId(itemUuid: Uuid, userUuid: Uuid): Promise<Array<RevisionMetadata>> {
+  override async findMetadataByItemId(
+    itemUuid: Uuid,
+    userUuid: Uuid,
+    sharedVaultUuids: Uuid[],
+  ): Promise<Array<RevisionMetadata>> {
     const queryBuilder = this.ormRepository
       .createQueryBuilder()
       .select('uuid', 'uuid')
       .addSelect('content_type', 'contentType')
       .addSelect('created_at', 'createdAt')
       .addSelect('updated_at', 'updatedAt')
-      .where('item_uuid = :itemUuid', { itemUuid: itemUuid.value })
-      .andWhere('user_uuid = :userUuid', { userUuid: userUuid.value })
+      .where('item_uuid = :itemUuid AND user_uuid = :userUuid', { itemUuid: itemUuid.value, userUuid: userUuid.value })
       .orderBy('created_at', 'DESC')
+
+    if (sharedVaultUuids.length > 0) {
+      queryBuilder.orWhere('item_uuid = :itemUuid AND shared_vault_uuid IN (:...sharedVaultUuids)', {
+        itemUuid: itemUuid.value,
+        sharedVaultUuids: sharedVaultUuids.map((uuid) => uuid.value),
+      })
+    }
 
     const simplifiedRevisions = await queryBuilder.getRawMany()
 

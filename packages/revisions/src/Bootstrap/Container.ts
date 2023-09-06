@@ -7,8 +7,8 @@ import { SNSClient, SNSClientConfig } from '@aws-sdk/client-sns'
 import { Revision } from '../Domain/Revision/Revision'
 import { RevisionMetadata } from '../Domain/Revision/RevisionMetadata'
 import { RevisionRepositoryInterface } from '../Domain/Revision/RevisionRepositoryInterface'
-import { SQLRevisionRepository } from '../Infra/TypeORM/SQL/SQLRevisionRepository'
-import { SQLRevision } from '../Infra/TypeORM/SQL/SQLRevision'
+import { SQLLegacyRevisionRepository } from '../Infra/TypeORM/SQL/SQLLegacyRevisionRepository'
+import { SQLLegacyRevision } from '../Infra/TypeORM/SQL/SQLLegacyRevision'
 import { AppDataSource } from './DataSource'
 import { Env } from './Env'
 import TYPES from './Types'
@@ -48,8 +48,8 @@ import { BaseRevisionsController } from '../Infra/InversifyExpress/Base/BaseRevi
 import { Transform } from 'stream'
 import { MongoDBRevision } from '../Infra/TypeORM/MongoDB/MongoDBRevision'
 import { MongoDBRevisionRepository } from '../Infra/TypeORM/MongoDB/MongoDBRevisionRepository'
-import { SQLRevisionMetadataPersistenceMapper } from '../Mapping/Persistence/SQL/SQLRevisionMetadataPersistenceMapper'
-import { SQLRevisionPersistenceMapper } from '../Mapping/Persistence/SQL/SQLRevisionPersistenceMapper'
+import { SQLLegacyRevisionMetadataPersistenceMapper } from '../Mapping/Persistence/SQL/SQLLegacyRevisionMetadataPersistenceMapper'
+import { SQLLegacyRevisionPersistenceMapper } from '../Mapping/Persistence/SQL/SQLLegacyRevisionPersistenceMapper'
 import { MongoDBRevisionMetadataPersistenceMapper } from '../Mapping/Persistence/MongoDB/MongoDBRevisionMetadataPersistenceMapper'
 import { MongoDBRevisionPersistenceMapper } from '../Mapping/Persistence/MongoDB/MongoDBRevisionPersistenceMapper'
 import { RevisionHttpMapper } from '../Mapping/Http/RevisionHttpMapper'
@@ -62,6 +62,10 @@ import { DomainEventFactoryInterface } from '../Domain/Event/DomainEventFactoryI
 import { DomainEventFactory } from '../Domain/Event/DomainEventFactory'
 import { TransitionStatusUpdatedEventHandler } from '../Domain/Handler/TransitionStatusUpdatedEventHandler'
 import { TriggerTransitionFromPrimaryToSecondaryDatabaseForUser } from '../Domain/UseCase/Transition/TriggerTransitionFromPrimaryToSecondaryDatabaseForUser/TriggerTransitionFromPrimaryToSecondaryDatabaseForUser'
+import { SQLRevision } from '../Infra/TypeORM/SQL/SQLRevision'
+import { SQLRevisionRepository } from '../Infra/TypeORM/SQL/SQLRevisionRepository'
+import { SQLRevisionMetadataPersistenceMapper } from '../Mapping/Persistence/SQL/SQLRevisionMetadataPersistenceMapper'
+import { SQLRevisionPersistenceMapper } from '../Mapping/Persistence/SQL/SQLRevisionPersistenceMapper'
 
 export class ContainerConfigLoader {
   async load(configuration?: {
@@ -77,6 +81,8 @@ export class ContainerConfigLoader {
     env.load()
 
     const isConfiguredForHomeServer = env.get('MODE', true) === 'home-server'
+    const isConfiguredForSelfHosting = env.get('MODE', true) === 'self-hosted'
+    const isConfiguredForHomeServerOrSelfHosting = isConfiguredForHomeServer || isConfiguredForSelfHosting
     const isSecondaryDatabaseEnabled = env.get('SECONDARY_DB_ENABLED', true) === 'true'
 
     const container = new Container({
@@ -198,8 +204,16 @@ export class ContainerConfigLoader {
 
     // Map
     container
+      .bind<MapperInterface<RevisionMetadata, SQLLegacyRevision>>(
+        TYPES.Revisions_SQLLegacyRevisionMetadataPersistenceMapper,
+      )
+      .toConstantValue(new SQLLegacyRevisionMetadataPersistenceMapper())
+    container
       .bind<MapperInterface<RevisionMetadata, SQLRevision>>(TYPES.Revisions_SQLRevisionMetadataPersistenceMapper)
       .toConstantValue(new SQLRevisionMetadataPersistenceMapper())
+    container
+      .bind<MapperInterface<Revision, SQLLegacyRevision>>(TYPES.Revisions_SQLLegacyRevisionPersistenceMapper)
+      .toConstantValue(new SQLLegacyRevisionPersistenceMapper())
     container
       .bind<MapperInterface<Revision, SQLRevision>>(TYPES.Revisions_SQLRevisionPersistenceMapper)
       .toConstantValue(new SQLRevisionPersistenceMapper())
@@ -214,21 +228,35 @@ export class ContainerConfigLoader {
 
     // ORM
     container
+      .bind<Repository<SQLLegacyRevision>>(TYPES.Revisions_ORMLegacyRevisionRepository)
+      .toDynamicValue(() => appDataSource.getRepository(SQLLegacyRevision))
+    container
       .bind<Repository<SQLRevision>>(TYPES.Revisions_ORMRevisionRepository)
-      .toDynamicValue(() => appDataSource.getRepository(SQLRevision))
+      .toConstantValue(appDataSource.getRepository(SQLRevision))
 
     // Repositories
     container
       .bind<RevisionRepositoryInterface>(TYPES.Revisions_SQLRevisionRepository)
       .toConstantValue(
-        new SQLRevisionRepository(
-          container.get<Repository<SQLRevision>>(TYPES.Revisions_ORMRevisionRepository),
-          container.get<MapperInterface<RevisionMetadata, SQLRevision>>(
-            TYPES.Revisions_SQLRevisionMetadataPersistenceMapper,
-          ),
-          container.get<MapperInterface<Revision, SQLRevision>>(TYPES.Revisions_SQLRevisionPersistenceMapper),
-          container.get<winston.Logger>(TYPES.Revisions_Logger),
-        ),
+        isConfiguredForHomeServerOrSelfHosting
+          ? new SQLRevisionRepository(
+              container.get<Repository<SQLRevision>>(TYPES.Revisions_ORMRevisionRepository),
+              container.get<MapperInterface<RevisionMetadata, SQLRevision>>(
+                TYPES.Revisions_SQLRevisionMetadataPersistenceMapper,
+              ),
+              container.get<MapperInterface<Revision, SQLRevision>>(TYPES.Revisions_SQLRevisionPersistenceMapper),
+              container.get<winston.Logger>(TYPES.Revisions_Logger),
+            )
+          : new SQLLegacyRevisionRepository(
+              container.get<Repository<SQLLegacyRevision>>(TYPES.Revisions_ORMLegacyRevisionRepository),
+              container.get<MapperInterface<RevisionMetadata, SQLLegacyRevision>>(
+                TYPES.Revisions_SQLLegacyRevisionMetadataPersistenceMapper,
+              ),
+              container.get<MapperInterface<Revision, SQLLegacyRevision>>(
+                TYPES.Revisions_SQLLegacyRevisionPersistenceMapper,
+              ),
+              container.get<winston.Logger>(TYPES.Revisions_Logger),
+            ),
       )
 
     if (isSecondaryDatabaseEnabled) {

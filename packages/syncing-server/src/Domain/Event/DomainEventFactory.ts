@@ -9,7 +9,9 @@ import {
   NotificationAddedForUserEvent,
   RevisionsCopyRequestedEvent,
   TransitionStatusUpdatedEvent,
+  UserAddedToSharedVaultEvent,
   UserInvitedToSharedVaultEvent,
+  UserRemovedFromSharedVaultEvent,
   WebSocketMessageRequestedEvent,
 } from '@standardnotes/domain-events'
 import { TimerInterface } from '@standardnotes/time'
@@ -17,6 +19,44 @@ import { DomainEventFactoryInterface } from './DomainEventFactoryInterface'
 
 export class DomainEventFactory implements DomainEventFactoryInterface {
   constructor(private timer: TimerInterface) {}
+
+  createUserRemovedFromSharedVaultEvent(dto: {
+    sharedVaultUuid: string
+    userUuid: string
+  }): UserRemovedFromSharedVaultEvent {
+    return {
+      type: 'USER_REMOVED_FROM_SHARED_VAULT',
+      createdAt: this.timer.getUTCDate(),
+      meta: {
+        correlation: {
+          userIdentifier: dto.userUuid,
+          userIdentifierType: 'uuid',
+        },
+        origin: DomainEventService.SyncingServer,
+      },
+      payload: dto,
+    }
+  }
+  createUserAddedToSharedVaultEvent(dto: {
+    sharedVaultUuid: string
+    userUuid: string
+    permission: string
+    createdAt: number
+    updatedAt: number
+  }): UserAddedToSharedVaultEvent {
+    return {
+      type: 'USER_ADDED_TO_SHARED_VAULT',
+      createdAt: this.timer.getUTCDate(),
+      meta: {
+        correlation: {
+          userIdentifier: dto.userUuid,
+          userIdentifierType: 'uuid',
+        },
+        origin: DomainEventService.SyncingServer,
+      },
+      payload: dto,
+    }
+  }
 
   createUserInvitedToSharedVaultEvent(dto: {
     invite: {

@@ -13,6 +13,7 @@ import { CreateCrossServiceTokenDTO } from './CreateCrossServiceTokenDTO'
 import { GetSetting } from '../GetSetting/GetSetting'
 import { SettingName } from '@standardnotes/settings'
 import { TransitionStatusRepositoryInterface } from '../../Transition/TransitionStatusRepositoryInterface'
+import { SharedVaultUserRepositoryInterface } from '../../SharedVault/SharedVaultUserRepositoryInterface'
 
 @injectable()
 export class CreateCrossServiceToken implements UseCaseInterface<string> {
@@ -27,6 +28,7 @@ export class CreateCrossServiceToken implements UseCaseInterface<string> {
     private getSettingUseCase: GetSetting,
     @inject(TYPES.Auth_TransitionStatusRepository)
     private transitionStatusRepository: TransitionStatusRepositoryInterface,
+    @inject(TYPES.Auth_SharedVaultUserRepository) private sharedVaultUserRepository: SharedVaultUserRepositoryInterface,
   ) {}
 
   async execute(dto: CreateCrossServiceTokenDTO): Promise<Result<string>> {
@@ -49,11 +51,19 @@ export class CreateCrossServiceToken implements UseCaseInterface<string> {
 
     const roles = await user.roles
 
+    const sharedVaultAssociations = await this.sharedVaultUserRepository.findByUserUuid(
+      Uuid.create(user.uuid).getValue(),
+    )
+
     const authTokenData: CrossServiceTokenData = {
       user: this.projectUser(user),
       roles: this.projectRoles(roles),
       shared_vault_owner_context: undefined,
       ongoing_transition: transitionStatus === 'STARTED',
+      belongs_to_shared_vaults: sharedVaultAssociations.map((association) => ({
+        shared_vault_uuid: association.props.sharedVaultUuid.value,
+        permission: association.props.permission.value,
+      })),
     }
 
     if (dto.sharedVaultOwnerContext !== undefined) {

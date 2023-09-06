@@ -1,9 +1,8 @@
 import { Request, Response } from 'express'
 import { BaseHttpController, results } from 'inversify-express-utils'
 import { HttpStatusCode } from '@standardnotes/responses'
-import { ControllerContainerInterface, MapperInterface } from '@standardnotes/domain-core'
+import { ControllerContainerInterface, MapperInterface, SharedVaultUser } from '@standardnotes/domain-core'
 
-import { SharedVaultUser } from '../../../Domain/SharedVault/User/SharedVaultUser'
 import { SharedVaultUserHttpRepresentation } from '../../../Mapping/Http/SharedVaultUserHttpRepresentation'
 import { GetSharedVaultUsers } from '../../../Domain/UseCase/SharedVaults/GetSharedVaultUsers/GetSharedVaultUsers'
 import { RemoveUserFromSharedVault } from '../../../Domain/UseCase/SharedVaults/RemoveUserFromSharedVault/RemoveUserFromSharedVault'
@@ -65,6 +64,8 @@ export class BaseSharedVaultUsersController extends BaseHttpController {
         HttpStatusCode.BadRequest,
       )
     }
+
+    response.setHeader('x-invalidate-cache', response.locals.user.uuid)
 
     return this.json({
       success: true,

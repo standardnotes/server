@@ -16,12 +16,12 @@ export class Timestamps extends ValueObject<TimestampsProps> {
   }
 
   static create(createdAt: number, updatedAt: number): Result<Timestamps> {
-    if (isNaN(createdAt)) {
+    if (isNaN(createdAt) || typeof createdAt !== 'number') {
       return Result.fail<Timestamps>(
         `Could not create Timestamps. Creation date should be a number, given: ${createdAt}`,
       )
     }
-    if (isNaN(updatedAt)) {
+    if (isNaN(updatedAt) || typeof updatedAt !== 'number') {
       return Result.fail<Timestamps>(`Could not create Timestamps. Update date should be a number, given: ${updatedAt}`)
     }
 

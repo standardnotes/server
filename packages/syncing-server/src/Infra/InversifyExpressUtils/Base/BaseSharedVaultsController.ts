@@ -1,14 +1,13 @@
 import { Request, Response } from 'express'
 import { BaseHttpController, results } from 'inversify-express-utils'
 import { HttpStatusCode } from '@standardnotes/responses'
-import { ControllerContainerInterface, MapperInterface } from '@standardnotes/domain-core'
+import { ControllerContainerInterface, MapperInterface, SharedVaultUser } from '@standardnotes/domain-core'
 import { Role } from '@standardnotes/security'
 
 import { GetSharedVaults } from '../../../Domain/UseCase/SharedVaults/GetSharedVaults/GetSharedVaults'
 import { SharedVault } from '../../../Domain/SharedVault/SharedVault'
 import { SharedVaultHttpRepresentation } from '../../../Mapping/Http/SharedVaultHttpRepresentation'
 import { CreateSharedVault } from '../../../Domain/UseCase/SharedVaults/CreateSharedVault/CreateSharedVault'
-import { SharedVaultUser } from '../../../Domain/SharedVault/User/SharedVaultUser'
 import { SharedVaultUserHttpRepresentation } from '../../../Mapping/Http/SharedVaultUserHttpRepresentation'
 import { DeleteSharedVault } from '../../../Domain/UseCase/SharedVaults/DeleteSharedVault/DeleteSharedVault'
 import { CreateSharedVaultFileValetToken } from '../../../Domain/UseCase/SharedVaults/CreateSharedVaultFileValetToken/CreateSharedVaultFileValetToken'
@@ -74,6 +73,8 @@ export class BaseSharedVaultsController extends BaseHttpController {
       )
     }
 
+    response.setHeader('x-invalidate-cache', response.locals.user.uuid)
+
     return this.json({
       sharedVault: this.sharedVaultHttpMapper.toProjection(result.getValue().sharedVault),
       sharedVaultUser: this.sharedVaultUserHttpMapper.toProjection(result.getValue().sharedVaultUser),
@@ -96,6 +97,8 @@ export class BaseSharedVaultsController extends BaseHttpController {
         HttpStatusCode.BadRequest,
       )
     }
+
+    response.setHeader('x-invalidate-cache', response.locals.user.uuid)
 
     return this.json({ success: true })
   }

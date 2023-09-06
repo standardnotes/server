@@ -1,5 +1,5 @@
-import { Result, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
-import { SharedVaultUser } from '../../../SharedVault/User/SharedVaultUser'
+import { Result, SharedVaultUser, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
+
 import { GetSharedVaultUsersDTO } from './GetSharedVaultUsersDTO'
 import { SharedVaultUserRepositoryInterface } from '../../../SharedVault/User/SharedVaultUserRepositoryInterface'
 import { SharedVaultRepositoryInterface } from '../../../SharedVault/SharedVaultRepositoryInterface'

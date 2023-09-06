@@ -1,16 +1,26 @@
-import { Result, SharedVaultUserPermission, Timestamps, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
+import {
+  Result,
+  SharedVaultUser,
+  SharedVaultUserPermission,
+  Timestamps,
+  UseCaseInterface,
+  Uuid,
+} from '@standardnotes/domain-core'
 import { TimerInterface } from '@standardnotes/time'
+import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
 
 import { AddUserToSharedVaultDTO } from './AddUserToSharedVaultDTO'
 import { SharedVaultRepositoryInterface } from '../../../SharedVault/SharedVaultRepositoryInterface'
-import { SharedVaultUser } from '../../../SharedVault/User/SharedVaultUser'
 import { SharedVaultUserRepositoryInterface } from '../../../SharedVault/User/SharedVaultUserRepositoryInterface'
+import { DomainEventFactoryInterface } from '../../../Event/DomainEventFactoryInterface'
 
 export class AddUserToSharedVault implements UseCaseInterface<SharedVaultUser> {
   constructor(
     private sharedVaultRepository: SharedVaultRepositoryInterface,
     private sharedVaultUserRepository: SharedVaultUserRepositoryInterface,
     private timer: TimerInterface,
+    private domainEventFactory: DomainEventFactoryInterface,
+    private domainEventPublisher: DomainEventPublisherInterface,
   ) {}
 
   async execute(dto: AddUserToSharedVaultDTO): Promise<Result<SharedVaultUser>> {
@@ -56,6 +66,16 @@ export class AddUserToSharedVault implements UseCaseInterface<SharedVaultUser> {
     const sharedVaultUser = sharedVaultUserOrError.getValue()
 
     await this.sharedVaultUserRepository.save(sharedVaultUser)
+
+    await this.domainEventPublisher.publish(
+      this.domainEventFactory.createUserAddedToSharedVaultEvent({
+        sharedVaultUuid: sharedVaultUser.props.sharedVaultUuid.value,
+        userUuid: sharedVaultUser.props.userUuid.value,
+        permission: sharedVaultUser.props.permission.value,
+        createdAt: sharedVaultUser.props.timestamps.createdAt,
+        updatedAt: sharedVaultUser.props.timestamps.updatedAt,
+      }),
+    )
 
     return Result.ok(sharedVaultUser)
   }

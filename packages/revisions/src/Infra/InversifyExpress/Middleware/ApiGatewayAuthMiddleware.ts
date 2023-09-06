@@ -47,6 +47,7 @@ export class ApiGatewayAuthMiddleware extends BaseMiddleware {
       response.locals.roles = token.roles
       response.locals.session = token.session
       response.locals.readOnlyAccess = token.session?.readonly_access ?? false
+      response.locals.belongsToSharedVaults = token.belongs_to_shared_vaults ?? []
 
       return next()
     } catch (error) {

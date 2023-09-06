@@ -1,11 +1,12 @@
 import { DataSource, EntityTarget, LoggerOptions, MongoRepository, ObjectLiteral, Repository } from 'typeorm'
 import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions'
 
-import { SQLRevision } from '../Infra/TypeORM/SQL/SQLRevision'
+import { SQLLegacyRevision } from '../Infra/TypeORM/SQL/SQLLegacyRevision'
 
 import { Env } from './Env'
 import { SqliteConnectionOptions } from 'typeorm/driver/sqlite/SqliteConnectionOptions'
 import { MongoDBRevision } from '../Infra/TypeORM/MongoDB/MongoDBRevision'
+import { SQLRevision } from '../Infra/TypeORM/SQL/SQLRevision'
 
 export class AppDataSource {
   private _dataSource: DataSource | undefined
@@ -65,14 +66,23 @@ export class AppDataSource {
 
     const isConfiguredForMySQL = this.env.get('DB_TYPE') === 'mysql'
 
+    const isConfiguredForHomeServerOrSelfHosting =
+      this.env.get('MODE', true) === 'home-server' || this.env.get('MODE', true) === 'self-hosted'
+
     const maxQueryExecutionTime = this.env.get('DB_MAX_QUERY_EXECUTION_TIME', true)
       ? +this.env.get('DB_MAX_QUERY_EXECUTION_TIME', true)
       : 45_000
 
+    const migrationsSourceDirectoryName = isConfiguredForMySQL
+      ? isConfiguredForHomeServerOrSelfHosting
+        ? 'mysql'
+        : 'mysql-legacy'
+      : 'sqlite'
+
     const commonDataSourceOptions = {
       maxQueryExecutionTime,
-      entities: [SQLRevision],
-      migrations: [`${__dirname}/../../migrations/${isConfiguredForMySQL ? 'mysql' : 'sqlite'}/*.js`],
+      entities: [isConfiguredForHomeServerOrSelfHosting ? SQLRevision : SQLLegacyRevision],
+      migrations: [`${__dirname}/../../migrations/${migrationsSourceDirectoryName}/*.js`],
       migrationsRun: true,
       logging: <LoggerOptions>this.env.get('DB_DEBUG_LEVEL', true) ?? 'info',
     }
