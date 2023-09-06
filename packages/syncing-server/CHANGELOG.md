@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.92.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.91.3...@standardnotes/syncing-server@1.92.0) (2023-09-06)
+
+### Features
+
+* should be able to access shared item revisions as third party user ([#807](https://github.com/standardnotes/syncing-server-js/issues/807)) ([794cd87](https://github.com/standardnotes/syncing-server-js/commit/794cd8734acf89fb29f09dfb169a3f08f252bb6a))
+
 ## [1.91.3](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.91.2...@standardnotes/syncing-server@1.91.3) (2023-09-04)
 
 ### Bug Fixes

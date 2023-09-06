@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.123.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.122.2...@standardnotes/domain-events@2.123.0) (2023-09-06)
+
+### Features
+
+* should be able to access shared item revisions as third party user ([#807](https://github.com/standardnotes/server/issues/807)) ([794cd87](https://github.com/standardnotes/server/commit/794cd8734acf89fb29f09dfb169a3f08f252bb6a))
+
 ## [2.122.2](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.122.1...@standardnotes/domain-events@2.122.2) (2023-09-04)
 
 **Note:** Version bump only for package @standardnotes/domain-events
