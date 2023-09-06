@@ -703,9 +703,11 @@ export class ContainerConfigLoader {
       .bind<AddUserToSharedVault>(TYPES.Sync_AddUserToSharedVault)
       .toConstantValue(
         new AddUserToSharedVault(
-          container.get(TYPES.Sync_SharedVaultRepository),
-          container.get(TYPES.Sync_SharedVaultUserRepository),
-          container.get(TYPES.Sync_Timer),
+          container.get<SharedVaultRepositoryInterface>(TYPES.Sync_SharedVaultRepository),
+          container.get<SharedVaultUserRepositoryInterface>(TYPES.Sync_SharedVaultUserRepository),
+          container.get<TimerInterface>(TYPES.Sync_Timer),
+          container.get<DomainEventFactoryInterface>(TYPES.Sync_DomainEventFactory),
+          container.get<DomainEventPublisherInterface>(TYPES.Sync_DomainEventPublisher),
         ),
       )
     container
@@ -750,9 +752,11 @@ export class ContainerConfigLoader {
       .bind<RemoveUserFromSharedVault>(TYPES.Sync_RemoveSharedVaultUser)
       .toConstantValue(
         new RemoveUserFromSharedVault(
-          container.get(TYPES.Sync_SharedVaultUserRepository),
-          container.get(TYPES.Sync_SharedVaultRepository),
-          container.get(TYPES.Sync_AddNotificationForUser),
+          container.get<SharedVaultUserRepositoryInterface>(TYPES.Sync_SharedVaultUserRepository),
+          container.get<SharedVaultRepositoryInterface>(TYPES.Sync_SharedVaultRepository),
+          container.get<AddNotificationForUser>(TYPES.Sync_AddNotificationForUser),
+          container.get<DomainEventFactoryInterface>(TYPES.Sync_DomainEventFactory),
+          container.get<DomainEventPublisherInterface>(TYPES.Sync_DomainEventPublisher),
         ),
       )
     container

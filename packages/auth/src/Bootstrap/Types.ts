@@ -9,6 +9,7 @@ const TYPES = {
   Auth_AuthenticatorPersistenceMapper: Symbol.for('Auth_AuthenticatorPersistenceMapper'),
   Auth_AuthenticatorHttpMapper: Symbol.for('Auth_AuthenticatorHttpMapper'),
   Auth_CacheEntryPersistenceMapper: Symbol.for('Auth_CacheEntryPersistenceMapper'),
+  Auth_SharedVaultUserPersistenceMapper: Symbol.for('Auth_SharedVaultUserPersistenceMapper'),
   // Controller
   Auth_ControllerContainer: Symbol.for('Auth_ControllerContainer'),
   Auth_AuthController: Symbol.for('Auth_AuthController'),
@@ -36,6 +37,7 @@ const TYPES = {
   Auth_AuthenticatorChallengeRepository: Symbol.for('Auth_AuthenticatorChallengeRepository'),
   Auth_CacheEntryRepository: Symbol.for('Auth_CacheEntryRepository'),
   Auth_TransitionStatusRepository: Symbol.for('Auth_TransitionStatusRepository'),
+  Auth_SharedVaultUserRepository: Symbol.for('Auth_SharedVaultUserRepository'),
   // ORM
   Auth_ORMOfflineSettingRepository: Symbol.for('Auth_ORMOfflineSettingRepository'),
   Auth_ORMOfflineUserSubscriptionRepository: Symbol.for('Auth_ORMOfflineUserSubscriptionRepository'),
@@ -51,6 +53,7 @@ const TYPES = {
   Auth_ORMAuthenticatorRepository: Symbol.for('Auth_ORMAuthenticatorRepository'),
   Auth_ORMAuthenticatorChallengeRepository: Symbol.for('Auth_ORMAuthenticatorChallengeRepository'),
   Auth_ORMCacheEntryRepository: Symbol.for('Auth_ORMCacheEntryRepository'),
+  Auth_ORMSharedVaultUserRepository: Symbol.for('Auth_ORMSharedVaultUserRepository'),
   // Middleware
   Auth_RequiredCrossServiceTokenMiddleware: Symbol.for('Auth_RequiredCrossServiceTokenMiddleware'),
   Auth_OptionalCrossServiceTokenMiddleware: Symbol.for('Auth_OptionalCrossServiceTokenMiddleware'),
@@ -157,6 +160,8 @@ const TYPES = {
   Auth_UpdateStorageQuotaUsedForUser: Symbol.for('Auth_UpdateStorageQuotaUsedForUser'),
   Auth_UpdateTransitionStatus: Symbol.for('Auth_UpdateTransitionStatus'),
   Auth_GetTransitionStatus: Symbol.for('Auth_GetTransitionStatus'),
+  Auth_AddSharedVaultUser: Symbol.for('Auth_AddSharedVaultUser'),
+  Auth_RemoveSharedVaultUser: Symbol.for('Auth_RemoveSharedVaultUser'),
   // Handlers
   Auth_UserRegisteredEventHandler: Symbol.for('Auth_UserRegisteredEventHandler'),
   Auth_AccountDeletionRequestedEventHandler: Symbol.for('Auth_AccountDeletionRequestedEventHandler'),
@@ -186,6 +191,8 @@ const TYPES = {
   Auth_EmailSubscriptionUnsubscribedEventHandler: Symbol.for('Auth_EmailSubscriptionUnsubscribedEventHandler'),
   Auth_PaymentsAccountDeletedEventHandler: Symbol.for('Auth_PaymentsAccountDeletedEventHandler'),
   Auth_TransitionStatusUpdatedEventHandler: Symbol.for('Auth_TransitionStatusUpdatedEventHandler'),
+  Auth_UserAddedToSharedVaultEventHandler: Symbol.for('Auth_UserAddedToSharedVaultEventHandler'),
+  Auth_UserRemovedFromSharedVaultEventHandler: Symbol.for('Auth_UserRemovedFromSharedVaultEventHandler'),
   // Services
   Auth_DeviceDetector: Symbol.for('Auth_DeviceDetector'),
   Auth_SessionService: Symbol.for('Auth_SessionService'),

@@ -1,20 +1,31 @@
 import { TimerInterface } from '@standardnotes/time'
 import { Result, SharedVaultUser } from '@standardnotes/domain-core'
+import { DomainEventInterface, DomainEventPublisherInterface } from '@standardnotes/domain-events'
 
 import { SharedVaultRepositoryInterface } from '../../../SharedVault/SharedVaultRepositoryInterface'
 import { SharedVaultUserRepositoryInterface } from '../../../SharedVault/User/SharedVaultUserRepositoryInterface'
 import { AddUserToSharedVault } from './AddUserToSharedVault'
 import { SharedVault } from '../../../SharedVault/SharedVault'
+import { DomainEventFactoryInterface } from '../../../Event/DomainEventFactoryInterface'
 
 describe('AddUserToSharedVault', () => {
   let sharedVaultRepository: SharedVaultRepositoryInterface
   let sharedVaultUserRepository: SharedVaultUserRepositoryInterface
   let timer: TimerInterface
   let sharedVault: SharedVault
+  let domainEventFactory: DomainEventFactoryInterface
+  let domainEventPublisher: DomainEventPublisherInterface
 
   const validUuid = '00000000-0000-0000-0000-000000000000'
 
-  const createUseCase = () => new AddUserToSharedVault(sharedVaultRepository, sharedVaultUserRepository, timer)
+  const createUseCase = () =>
+    new AddUserToSharedVault(
+      sharedVaultRepository,
+      sharedVaultUserRepository,
+      timer,
+      domainEventFactory,
+      domainEventPublisher,
+    )
 
   beforeEach(() => {
     sharedVault = {} as jest.Mocked<SharedVault>
@@ -27,6 +38,14 @@ describe('AddUserToSharedVault', () => {
 
     timer = {} as jest.Mocked<TimerInterface>
     timer.getTimestampInMicroseconds = jest.fn().mockReturnValue(123456789)
+
+    domainEventFactory = {} as jest.Mocked<DomainEventFactoryInterface>
+    domainEventFactory.createUserAddedToSharedVaultEvent = jest
+      .fn()
+      .mockReturnValue({} as jest.Mocked<DomainEventInterface>)
+
+    domainEventPublisher = {} as jest.Mocked<DomainEventPublisherInterface>
+    domainEventPublisher.publish = jest.fn()
   })
 
   it('should return a failure result if the shared vault uuid is invalid', async () => {

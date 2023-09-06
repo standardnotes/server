@@ -189,6 +189,7 @@ import {
   ControllerContainer,
   ControllerContainerInterface,
   MapperInterface,
+  SharedVaultUser,
 } from '@standardnotes/domain-core'
 import { SessionTracePersistenceMapper } from '../Mapping/SessionTracePersistenceMapper'
 import { SessionTrace } from '../Domain/Session/SessionTrace'
@@ -263,6 +264,14 @@ import { InMemoryTransitionStatusRepository } from '../Infra/InMemory/InMemoryTr
 import { TransitionStatusUpdatedEventHandler } from '../Domain/Handler/TransitionStatusUpdatedEventHandler'
 import { UpdateTransitionStatus } from '../Domain/UseCase/UpdateTransitionStatus/UpdateTransitionStatus'
 import { GetTransitionStatus } from '../Domain/UseCase/GetTransitionStatus/GetTransitionStatus'
+import { TypeORMSharedVaultUser } from '../Infra/TypeORM/TypeORMSharedVaultUser'
+import { SharedVaultUserPersistenceMapper } from '../Mapping/SharedVaultUserPersistenceMapper'
+import { SharedVaultUserRepositoryInterface } from '../Domain/SharedVault/SharedVaultUserRepositoryInterface'
+import { TypeORMSharedVaultUserRepository } from '../Infra/TypeORM/TypeORMSharedVaultUserRepository'
+import { AddSharedVaultUser } from '../Domain/UseCase/AddSharedVaultUser/AddSharedVaultUser'
+import { RemoveSharedVaultUser } from '../Domain/UseCase/RemoveSharedVaultUser/RemoveSharedVaultUser'
+import { UserAddedToSharedVaultEventHandler } from '../Domain/Handler/UserAddedToSharedVaultEventHandler'
+import { UserRemovedFromSharedVaultEventHandler } from '../Domain/Handler/UserRemovedFromSharedVaultEventHandler'
 
 export class ContainerConfigLoader {
   async load(configuration?: {
@@ -372,6 +381,9 @@ export class ContainerConfigLoader {
     container
       .bind<MapperInterface<CacheEntry, TypeORMCacheEntry>>(TYPES.Auth_CacheEntryPersistenceMapper)
       .toConstantValue(new CacheEntryPersistenceMapper())
+    container
+      .bind<MapperInterface<SharedVaultUser, TypeORMSharedVaultUser>>(TYPES.Auth_SharedVaultUserPersistenceMapper)
+      .toConstantValue(new SharedVaultUserPersistenceMapper())
 
     // ORM
     container
@@ -412,6 +424,9 @@ export class ContainerConfigLoader {
     container
       .bind<Repository<TypeORMCacheEntry>>(TYPES.Auth_ORMCacheEntryRepository)
       .toConstantValue(appDataSource.getRepository(TypeORMCacheEntry))
+    container
+      .bind<Repository<TypeORMSharedVaultUser>>(TYPES.Auth_ORMSharedVaultUserRepository)
+      .toConstantValue(appDataSource.getRepository(TypeORMSharedVaultUser))
 
     // Repositories
     container.bind<SessionRepositoryInterface>(TYPES.Auth_SessionRepository).to(TypeORMSessionRepository)
@@ -466,6 +481,16 @@ export class ContainerConfigLoader {
         new TypeORMCacheEntryRepository(
           container.get(TYPES.Auth_ORMCacheEntryRepository),
           container.get(TYPES.Auth_CacheEntryPersistenceMapper),
+        ),
+      )
+    container
+      .bind<SharedVaultUserRepositoryInterface>(TYPES.Auth_SharedVaultUserRepository)
+      .toConstantValue(
+        new TypeORMSharedVaultUserRepository(
+          container.get<Repository<TypeORMSharedVaultUser>>(TYPES.Auth_ORMSharedVaultUserRepository),
+          container.get<MapperInterface<SharedVaultUser, TypeORMSharedVaultUser>>(
+            TYPES.Auth_SharedVaultUserPersistenceMapper,
+          ),
         ),
       )
 
@@ -926,6 +951,18 @@ export class ContainerConfigLoader {
           container.get<UserRepositoryInterface>(TYPES.Auth_UserRepository),
         ),
       )
+    container
+      .bind<AddSharedVaultUser>(TYPES.Auth_AddSharedVaultUser)
+      .toConstantValue(
+        new AddSharedVaultUser(container.get<SharedVaultUserRepositoryInterface>(TYPES.Auth_SharedVaultUserRepository)),
+      )
+    container
+      .bind<RemoveSharedVaultUser>(TYPES.Auth_RemoveSharedVaultUser)
+      .toConstantValue(
+        new RemoveSharedVaultUser(
+          container.get<SharedVaultUserRepositoryInterface>(TYPES.Auth_SharedVaultUserRepository),
+        ),
+      )
 
     // Controller
     container
@@ -1075,6 +1112,22 @@ export class ContainerConfigLoader {
           container.get<winston.Logger>(TYPES.Auth_Logger),
         ),
       )
+    container
+      .bind<UserAddedToSharedVaultEventHandler>(TYPES.Auth_UserAddedToSharedVaultEventHandler)
+      .toConstantValue(
+        new UserAddedToSharedVaultEventHandler(
+          container.get<AddSharedVaultUser>(TYPES.Auth_AddSharedVaultUser),
+          container.get<winston.Logger>(TYPES.Auth_Logger),
+        ),
+      )
+    container
+      .bind<UserRemovedFromSharedVaultEventHandler>(TYPES.Auth_UserRemovedFromSharedVaultEventHandler)
+      .toConstantValue(
+        new UserRemovedFromSharedVaultEventHandler(
+          container.get<RemoveSharedVaultUser>(TYPES.Auth_RemoveSharedVaultUser),
+          container.get<winston.Logger>(TYPES.Auth_Logger),
+        ),
+      )
 
     const eventHandlers: Map<string, DomainEventHandlerInterface> = new Map([
       ['USER_REGISTERED', container.get(TYPES.Auth_UserRegisteredEventHandler)],
@@ -1107,6 +1160,8 @@ export class ContainerConfigLoader {
       ['EMAIL_SUBSCRIPTION_UNSUBSCRIBED', container.get(TYPES.Auth_EmailSubscriptionUnsubscribedEventHandler)],
       ['PAYMENTS_ACCOUNT_DELETED', container.get(TYPES.Auth_PaymentsAccountDeletedEventHandler)],
       ['TRANSITION_STATUS_UPDATED', container.get(TYPES.Auth_TransitionStatusUpdatedEventHandler)],
+      ['USER_ADDED_TO_SHARED_VAULT', container.get(TYPES.Auth_UserAddedToSharedVaultEventHandler)],
+      ['USER_REMOVED_FROM_SHARED_VAULT', container.get(TYPES.Auth_UserRemovedFromSharedVaultEventHandler)],
     ])
 
     if (isConfiguredForHomeServer) {

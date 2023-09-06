@@ -5,6 +5,10 @@ export type CrossServiceTokenData = {
     uuid: string
     email: string
   }
+  belongs_to_shared_vaults?: Array<{
+    shared_vault_uuid: string
+    permission: string
+  }>
   shared_vault_owner_context?: {
     upload_bytes_limit: number
   }
