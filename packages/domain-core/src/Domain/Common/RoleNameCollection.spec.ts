@@ -51,9 +51,21 @@ describe('RoleNameCollection', () => {
   })
 
   it('should tell if collection has a role with more or equal power to', () => {
-    let roles = [RoleName.NAMES.CoreUser]
+    let roles = [RoleName.NAMES.VaultsUser]
     let valueOrError = RoleNameCollection.create(roles)
     let roleNames = valueOrError.getValue()
+
+    expect(
+      roleNames.hasARoleNameWithMoreOrEqualPowerTo(RoleName.create(RoleName.NAMES.PlusUser).getValue()),
+    ).toBeFalsy()
+    expect(roleNames.hasARoleNameWithMoreOrEqualPowerTo(RoleName.create(RoleName.NAMES.ProUser).getValue())).toBeFalsy()
+    expect(
+      roleNames.hasARoleNameWithMoreOrEqualPowerTo(RoleName.create(RoleName.NAMES.CoreUser).getValue()),
+    ).toBeTruthy()
+
+    roles = [RoleName.NAMES.CoreUser]
+    valueOrError = RoleNameCollection.create(roles)
+    roleNames = valueOrError.getValue()
 
     expect(
       roleNames.hasARoleNameWithMoreOrEqualPowerTo(RoleName.create(RoleName.NAMES.PlusUser).getValue()),

@@ -18,8 +18,6 @@ export class RoleName extends ValueObject<RoleNameProps> {
 
   hasMoreOrEqualPowerTo(roleName: RoleName): boolean {
     switch (this.value) {
-      case RoleName.NAMES.VaultsUser:
-        return true
       case RoleName.NAMES.InternalTeamUser:
         return true
       case RoleName.NAMES.ProUser:
@@ -35,6 +33,7 @@ export class RoleName extends ValueObject<RoleNameProps> {
         )
       case RoleName.NAMES.CoreUser:
       case RoleName.NAMES.TransitionUser:
+      case RoleName.NAMES.VaultsUser:
         return [RoleName.NAMES.CoreUser, RoleName.NAMES.TransitionUser].includes(roleName.value)
       /*istanbul ignore next*/
       default:
