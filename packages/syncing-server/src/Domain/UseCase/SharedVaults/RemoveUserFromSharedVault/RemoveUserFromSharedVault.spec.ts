@@ -1,8 +1,14 @@
-import { Uuid, Timestamps, Result, NotificationPayload, SharedVaultUserPermission } from '@standardnotes/domain-core'
+import {
+  Uuid,
+  Timestamps,
+  Result,
+  NotificationPayload,
+  SharedVaultUserPermission,
+  SharedVaultUser,
+} from '@standardnotes/domain-core'
 
 import { SharedVault } from '../../../SharedVault/SharedVault'
 import { SharedVaultRepositoryInterface } from '../../../SharedVault/SharedVaultRepositoryInterface'
-import { SharedVaultUser } from '../../../SharedVault/User/SharedVaultUser'
 import { SharedVaultUserRepositoryInterface } from '../../../SharedVault/User/SharedVaultUserRepositoryInterface'
 import { RemoveUserFromSharedVault } from './RemoveUserFromSharedVault'
 import { AddNotificationForUser } from '../../Messaging/AddNotificationForUser/AddNotificationForUser'

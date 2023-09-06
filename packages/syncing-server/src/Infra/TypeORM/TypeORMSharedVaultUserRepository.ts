@@ -1,8 +1,7 @@
 import { Repository } from 'typeorm'
-import { MapperInterface, Uuid } from '@standardnotes/domain-core'
+import { MapperInterface, SharedVaultUser, Uuid } from '@standardnotes/domain-core'
 
 import { TypeORMSharedVaultUser } from './TypeORMSharedVaultUser'
-import { SharedVaultUser } from '../../Domain/SharedVault/User/SharedVaultUser'
 import { SharedVaultUserRepositoryInterface } from '../../Domain/SharedVault/User/SharedVaultUserRepositoryInterface'
 
 export class TypeORMSharedVaultUserRepository implements SharedVaultUserRepositoryInterface {

@@ -1,10 +1,10 @@
 import { TimerInterface } from '@standardnotes/time'
+import { Result, SharedVaultUser } from '@standardnotes/domain-core'
+
 import { SharedVaultRepositoryInterface } from '../../../SharedVault/SharedVaultRepositoryInterface'
 import { SharedVaultUserRepositoryInterface } from '../../../SharedVault/User/SharedVaultUserRepositoryInterface'
 import { AddUserToSharedVault } from './AddUserToSharedVault'
-import { Result } from '@standardnotes/domain-core'
 import { SharedVault } from '../../../SharedVault/SharedVault'
-import { SharedVaultUser } from '../../../SharedVault/User/SharedVaultUser'
 
 describe('AddUserToSharedVault', () => {
   let sharedVaultRepository: SharedVaultRepositoryInterface

@@ -59,8 +59,10 @@ export * from './Service/ServiceIdentifier'
 export * from './Service/ServiceIdentifierProps'
 export * from './Service/ServiceInterface'
 
+export * from './SharedVault/SharedVaultUser'
 export * from './SharedVault/SharedVaultUserPermission'
 export * from './SharedVault/SharedVaultUserPermissionProps'
+export * from './SharedVault/SharedVaultUserProps'
 
 export * from './Subscription/SubscriptionPlanName'
 export * from './Subscription/SubscriptionPlanNameProps'

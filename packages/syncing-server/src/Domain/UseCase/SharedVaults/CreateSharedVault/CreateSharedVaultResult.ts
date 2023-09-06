@@ -1,5 +1,6 @@
+import { SharedVaultUser } from '@standardnotes/domain-core'
+
 import { SharedVault } from '../../../SharedVault/SharedVault'
-import { SharedVaultUser } from '../../../SharedVault/User/SharedVaultUser'
 
 export interface CreateSharedVaultResult {
   sharedVaultUser: SharedVaultUser

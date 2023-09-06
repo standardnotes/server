@@ -1,5 +1,6 @@
-import { Entity, Result, UniqueEntityId } from '@standardnotes/domain-core'
-
+import { Entity } from '../Core/Entity'
+import { Result } from '../Core/Result'
+import { UniqueEntityId } from '../Core/UniqueEntityId'
 import { SharedVaultUserProps } from './SharedVaultUserProps'
 
 export class SharedVaultUser extends Entity<SharedVaultUserProps> {

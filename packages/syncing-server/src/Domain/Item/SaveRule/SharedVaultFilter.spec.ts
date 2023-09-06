@@ -6,8 +6,8 @@ import {
   Timestamps,
   UniqueEntityId,
   Uuid,
+  SharedVaultUser,
 } from '@standardnotes/domain-core'
-import { SharedVaultUser } from '../../SharedVault/User/SharedVaultUser'
 import { SharedVaultUserRepositoryInterface } from '../../SharedVault/User/SharedVaultUserRepositoryInterface'
 import { DetermineSharedVaultOperationOnItem } from '../../UseCase/SharedVaults/DetermineSharedVaultOperationOnItem/DetermineSharedVaultOperationOnItem'
 import { SharedVaultFilter } from './SharedVaultFilter'

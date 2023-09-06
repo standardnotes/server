@@ -1,7 +1,7 @@
-import { SharedVaultUserPermission, Timestamps, Uuid } from '@standardnotes/domain-core'
+import { SharedVaultUser, SharedVaultUserPermission, Timestamps, Uuid } from '@standardnotes/domain-core'
+
 import { SharedVault } from '../../../SharedVault/SharedVault'
 import { SharedVaultRepositoryInterface } from '../../../SharedVault/SharedVaultRepositoryInterface'
-import { SharedVaultUser } from '../../../SharedVault/User/SharedVaultUser'
 import { SharedVaultUserRepositoryInterface } from '../../../SharedVault/User/SharedVaultUserRepositoryInterface'
 import { GetSharedVaults } from './GetSharedVaults'
 

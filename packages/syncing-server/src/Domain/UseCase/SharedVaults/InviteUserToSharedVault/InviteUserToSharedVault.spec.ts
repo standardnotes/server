@@ -1,5 +1,6 @@
 import { TimerInterface } from '@standardnotes/time'
-import { Uuid, Timestamps, Result, SharedVaultUserPermission } from '@standardnotes/domain-core'
+import { Uuid, Timestamps, Result, SharedVaultUserPermission, SharedVaultUser } from '@standardnotes/domain-core'
+import { UserInvitedToSharedVaultEvent } from '@standardnotes/domain-events'
 import { Logger } from 'winston'
 
 import { SharedVaultRepositoryInterface } from '../../../SharedVault/SharedVaultRepositoryInterface'
@@ -8,10 +9,8 @@ import { InviteUserToSharedVault } from './InviteUserToSharedVault'
 import { SharedVault } from '../../../SharedVault/SharedVault'
 import { SharedVaultInvite } from '../../../SharedVault/User/Invite/SharedVaultInvite'
 import { SharedVaultUserRepositoryInterface } from '../../../SharedVault/User/SharedVaultUserRepositoryInterface'
-import { SharedVaultUser } from '../../../SharedVault/User/SharedVaultUser'
 import { DomainEventFactoryInterface } from '../../../Event/DomainEventFactoryInterface'
 import { SendEventToClient } from '../../Syncing/SendEventToClient/SendEventToClient'
-import { UserInvitedToSharedVaultEvent } from '@standardnotes/domain-events'
 
 describe('InviteUserToSharedVault', () => {
   let sharedVaultRepository: SharedVaultRepositoryInterface

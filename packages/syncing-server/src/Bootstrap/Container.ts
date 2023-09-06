@@ -58,7 +58,12 @@ import { ItemBackupServiceInterface } from '../Domain/Item/ItemBackupServiceInte
 import { FSItemBackupService } from '../Infra/FS/FSItemBackupService'
 import { AuthHttpService } from '../Infra/HTTP/AuthHttpService'
 import { S3ItemBackupService } from '../Infra/S3/S3ItemBackupService'
-import { ControllerContainer, ControllerContainerInterface, MapperInterface } from '@standardnotes/domain-core'
+import {
+  ControllerContainer,
+  ControllerContainerInterface,
+  MapperInterface,
+  SharedVaultUser,
+} from '@standardnotes/domain-core'
 import { BaseItemsController } from '../Infra/InversifyExpressUtils/Base/BaseItemsController'
 import { Transform } from 'stream'
 import { SQLLegacyItem } from '../Infra/TypeORM/SQLLegacyItem'
@@ -87,7 +92,6 @@ import { TypeORMSharedVaultUser } from '../Infra/TypeORM/TypeORMSharedVaultUser'
 import { SharedVaultRepositoryInterface } from '../Domain/SharedVault/SharedVaultRepositoryInterface'
 import { SharedVaultPersistenceMapper } from '../Mapping/Persistence/SharedVaultPersistenceMapper'
 import { SharedVault } from '../Domain/SharedVault/SharedVault'
-import { SharedVaultUser } from '../Domain/SharedVault/User/SharedVaultUser'
 import { SharedVaultUserPersistenceMapper } from '../Mapping/Persistence/SharedVaultUserPersistenceMapper'
 import { SharedVaultInvite } from '../Domain/SharedVault/User/Invite/SharedVaultInvite'
 import { SharedVaultInvitePersistenceMapper } from '../Mapping/Persistence/SharedVaultInvitePersistenceMapper'
