@@ -65,7 +65,7 @@ export class BaseSharedVaultUsersController extends BaseHttpController {
       )
     }
 
-    response.setHeader('x-invalidate-cache', response.locals.user.uuid)
+    response.setHeader('x-invalidate-cache', request.params.userUuid)
 
     return this.json({
       success: true,
