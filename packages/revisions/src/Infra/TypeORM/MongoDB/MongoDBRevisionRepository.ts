@@ -16,6 +16,21 @@ export class MongoDBRevisionRepository implements RevisionRepositoryInterface {
     private logger: Logger,
   ) {}
 
+  async clearSharedVaultAndKeySystemAssociations(itemUuid: Uuid, sharedVaultUuid: Uuid): Promise<void> {
+    await this.mongoRepository.updateMany(
+      {
+        itemUuid: { $eq: itemUuid.value },
+        sharedVaultUuid: { $eq: sharedVaultUuid.value },
+      },
+      {
+        $set: {
+          sharedVaultUuid: null,
+          keySystemIdentifier: null,
+        },
+      },
+    )
+  }
+
   async countByUserUuid(userUuid: Uuid): Promise<number> {
     return this.mongoRepository.count({ userUuid: { $eq: userUuid.value } })
   }

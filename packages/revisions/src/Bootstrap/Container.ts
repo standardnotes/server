@@ -66,6 +66,8 @@ import { SQLRevision } from '../Infra/TypeORM/SQL/SQLRevision'
 import { SQLRevisionRepository } from '../Infra/TypeORM/SQL/SQLRevisionRepository'
 import { SQLRevisionMetadataPersistenceMapper } from '../Mapping/Persistence/SQL/SQLRevisionMetadataPersistenceMapper'
 import { SQLRevisionPersistenceMapper } from '../Mapping/Persistence/SQL/SQLRevisionPersistenceMapper'
+import { RemoveRevisionsFromSharedVault } from '../Domain/UseCase/RemoveRevisionsFromSharedVault/RemoveRevisionsFromSharedVault'
+import { ItemRemovedFromSharedVaultEventHandler } from '../Domain/Handler/ItemRemovedFromSharedVaultEventHandler'
 
 export class ContainerConfigLoader {
   async load(configuration?: {
@@ -358,6 +360,13 @@ export class ContainerConfigLoader {
           container.get<DomainEventFactoryInterface>(TYPES.Revisions_DomainEventFactory),
         ),
       )
+    container
+      .bind<RemoveRevisionsFromSharedVault>(TYPES.Revisions_RemoveRevisionsFromSharedVault)
+      .toConstantValue(
+        new RemoveRevisionsFromSharedVault(
+          container.get<RevisionRepositoryResolverInterface>(TYPES.Revisions_RevisionRepositoryResolver),
+        ),
+      )
 
     // env vars
     container.bind(TYPES.Revisions_AUTH_JWT_SECRET).toConstantValue(env.get('AUTH_JWT_SECRET'))
@@ -437,12 +446,21 @@ export class ContainerConfigLoader {
           container.get<winston.Logger>(TYPES.Revisions_Logger),
         ),
       )
+    container
+      .bind<ItemRemovedFromSharedVaultEventHandler>(TYPES.Revisions_ItemRemovedFromSharedVaultEventHandler)
+      .toConstantValue(
+        new ItemRemovedFromSharedVaultEventHandler(
+          container.get<RemoveRevisionsFromSharedVault>(TYPES.Revisions_RemoveRevisionsFromSharedVault),
+          container.get<winston.Logger>(TYPES.Revisions_Logger),
+        ),
+      )
 
     const eventHandlers: Map<string, DomainEventHandlerInterface> = new Map([
       ['ITEM_DUMPED', container.get(TYPES.Revisions_ItemDumpedEventHandler)],
       ['ACCOUNT_DELETION_REQUESTED', container.get(TYPES.Revisions_AccountDeletionRequestedEventHandler)],
       ['REVISIONS_COPY_REQUESTED', container.get(TYPES.Revisions_RevisionsCopyRequestedEventHandler)],
       ['TRANSITION_STATUS_UPDATED', container.get(TYPES.Revisions_TransitionStatusUpdatedEventHandler)],
+      ['ITEM_REMOVED_FROM_SHARED_VAULT', container.get(TYPES.Revisions_ItemRemovedFromSharedVaultEventHandler)],
     ])
 
     if (isConfiguredForHomeServer) {
