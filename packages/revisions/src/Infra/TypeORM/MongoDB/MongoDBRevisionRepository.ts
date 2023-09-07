@@ -98,7 +98,12 @@ export class MongoDBRevisionRepository implements RevisionRepositoryInterface {
         where: {
           $and: [
             { itemUuid: { $eq: itemUuid.value } },
-            { sharedVaultUuid: { $in: sharedVaultUuids.map((uuid) => uuid.value) } },
+            {
+              $or: [
+                { sharedVaultUuid: { $in: sharedVaultUuids.map((uuid) => uuid.value) } },
+                { userUuid: { $eq: userUuid.value } },
+              ],
+            },
           ],
         },
         order: {

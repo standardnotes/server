@@ -28,13 +28,21 @@ export class SQLRevisionRepository extends SQLLegacyRevisionRepository {
       .addSelect('content_type', 'contentType')
       .addSelect('created_at', 'createdAt')
       .addSelect('updated_at', 'updatedAt')
-      .where('item_uuid = :itemUuid AND user_uuid = :userUuid', { itemUuid: itemUuid.value, userUuid: userUuid.value })
       .orderBy('created_at', 'DESC')
 
     if (sharedVaultUuids.length > 0) {
-      queryBuilder.orWhere('item_uuid = :itemUuid AND shared_vault_uuid IN (:...sharedVaultUuids)', {
+      queryBuilder.where(
+        'item_uuid = :itemUuid AND (user_uuid = :userUuid OR shared_vault_uuid IN (:...sharedVaultUuids))',
+        {
+          itemUuid: itemUuid.value,
+          userUuid: userUuid.value,
+          sharedVaultUuids: sharedVaultUuids.map((uuid) => uuid.value),
+        },
+      )
+    } else {
+      queryBuilder.where('item_uuid = :itemUuid AND user_uuid = :userUuid', {
         itemUuid: itemUuid.value,
-        sharedVaultUuids: sharedVaultUuids.map((uuid) => uuid.value),
+        userUuid: userUuid.value,
       })
     }
 
