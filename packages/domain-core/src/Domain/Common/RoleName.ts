@@ -9,6 +9,7 @@ export class RoleName extends ValueObject<RoleNameProps> {
     ProUser: 'PRO_USER',
     InternalTeamUser: 'INTERNAL_TEAM_USER',
     TransitionUser: 'TRANSITION_USER',
+    VaultsUser: 'VAULTS_USER',
   }
 
   get value(): string {
@@ -32,6 +33,7 @@ export class RoleName extends ValueObject<RoleNameProps> {
         )
       case RoleName.NAMES.CoreUser:
       case RoleName.NAMES.TransitionUser:
+      case RoleName.NAMES.VaultsUser:
         return [RoleName.NAMES.CoreUser, RoleName.NAMES.TransitionUser].includes(roleName.value)
       /*istanbul ignore next*/
       default:
