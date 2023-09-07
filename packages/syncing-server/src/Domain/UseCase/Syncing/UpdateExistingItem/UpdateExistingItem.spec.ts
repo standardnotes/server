@@ -406,6 +406,11 @@ describe('UpdateExistingItem', () => {
     it('should remove a shared vault association and publish an event that item has been removed from shared vault', async () => {
       const useCase = createUseCase()
 
+      item1.props.sharedVaultAssociation = SharedVaultAssociation.create({
+        sharedVaultUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+        lastEditedBy: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+      }).getValue()
+
       const itemHash = ItemHash.create({
         ...itemHash1.props,
         shared_vault_uuid: null,

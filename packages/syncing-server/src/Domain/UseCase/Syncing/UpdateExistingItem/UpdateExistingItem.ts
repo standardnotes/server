@@ -37,16 +37,6 @@ export class UpdateExistingItem implements UseCaseInterface<Item> {
   ) {}
 
   async execute(dto: UpdateExistingItemDTO): Promise<Result<Item>> {
-    let sessionUuid = null
-    if (dto.sessionUuid) {
-      const sessionUuidOrError = Uuid.create(dto.sessionUuid)
-      if (sessionUuidOrError.isFailed()) {
-        return Result.fail(sessionUuidOrError.getError())
-      }
-      sessionUuid = sessionUuidOrError.getValue()
-    }
-    dto.existingItem.props.updatedWithSession = sessionUuid
-
     const userUuidOrError = Uuid.create(dto.performingUserUuid)
     if (userUuidOrError.isFailed()) {
       return Result.fail(userUuidOrError.getError())
@@ -58,6 +48,29 @@ export class UpdateExistingItem implements UseCaseInterface<Item> {
       return Result.fail(roleNamesOrError.getError())
     }
     const roleNames = roleNamesOrError.getValue()
+
+    let sharedVaultOperation: SharedVaultOperationOnItem | null = null
+    if (dto.itemHash.representsASharedVaultItem() || dto.existingItem.isAssociatedWithASharedVault()) {
+      const sharedVaultOperationOrError = await this.determineSharedVaultOperationOnItem.execute({
+        existingItem: dto.existingItem,
+        itemHash: dto.itemHash,
+        userUuid: userUuid.value,
+      })
+      if (sharedVaultOperationOrError.isFailed()) {
+        return Result.fail(sharedVaultOperationOrError.getError())
+      }
+      sharedVaultOperation = sharedVaultOperationOrError.getValue()
+    }
+
+    let sessionUuid = null
+    if (dto.sessionUuid) {
+      const sessionUuidOrError = Uuid.create(dto.sessionUuid)
+      if (sessionUuidOrError.isFailed()) {
+        return Result.fail(sessionUuidOrError.getError())
+      }
+      sessionUuid = sessionUuidOrError.getValue()
+    }
+    dto.existingItem.props.updatedWithSession = sessionUuid
 
     if (dto.itemHash.props.content) {
       dto.existingItem.props.content = dto.itemHash.props.content
@@ -128,15 +141,6 @@ export class UpdateExistingItem implements UseCaseInterface<Item> {
 
     dto.existingItem.props.contentSize = Buffer.byteLength(JSON.stringify(dto.existingItem))
 
-    const sharedVaultOperationOrError = await this.determineSharedVaultOperationOnItem.execute({
-      existingItem: dto.existingItem,
-      itemHash: dto.itemHash,
-      userUuid: userUuid.value,
-    })
-    if (sharedVaultOperationOrError.isFailed()) {
-      return Result.fail(sharedVaultOperationOrError.getError())
-    }
-    const sharedVaultOperation = sharedVaultOperationOrError.getValue()
     if (dto.itemHash.representsASharedVaultItem()) {
       const sharedVaultAssociationOrError = SharedVaultAssociation.create({
         lastEditedBy: userUuid,
