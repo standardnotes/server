@@ -65,13 +65,16 @@ export class BaseRevisionsController extends BaseHttpController {
       revisionUuid: request.params.uuid,
       userUuid: response.locals.user.uuid,
       roleNames: response.locals.roles.map((role: Role) => role.name),
+      sharedVaultUuids: response.locals.belongsToSharedVaults.map(
+        (association: { shared_vault_uuid: string; permission: string }) => association.shared_vault_uuid,
+      ),
     })
 
     if (revisionOrError.isFailed()) {
       return this.json(
         {
           error: {
-            message: 'Could not retrieve revision.',
+            message: revisionOrError.getError(),
           },
         },
         HttpStatusCode.BadRequest,

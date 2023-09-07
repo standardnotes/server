@@ -22,10 +22,22 @@ describe('GetRevision', () => {
       revisionUuid: '84c0f8e8-544a-4c7e-9adf-26209303bc1d',
       userUuid: '84c0f8e8-544a-4c7e-9adf-26209303bc1d',
       roleNames: ['CORE_USER'],
+      sharedVaultUuids: ['84c0f8e8-544a-4c7e-9adf-26209303bc1d'],
     })
 
     expect(result.isFailed()).toBeFalsy()
     expect(result.getValue()).not.toBeNull()
+  })
+
+  it('should do nothing if shared vault uuid is invalid', async () => {
+    const result = await createUseCase().execute({
+      revisionUuid: '84c0f8e8-544a-4c7e-9adf-26209303bc1d',
+      userUuid: '84c0f8e8-544a-4c7e-9adf-26209303bc1d',
+      roleNames: ['CORE_USER'],
+      sharedVaultUuids: ['INVALID_SHARED_VAULT_UUID'],
+    })
+
+    expect(result.isFailed()).toBeTruthy()
   })
 
   it('should do nothing if role names are not valid', async () => {
@@ -33,6 +45,7 @@ describe('GetRevision', () => {
       revisionUuid: '84c0f8e8-544a-4c7e-9adf-26209303bc1d',
       userUuid: '84c0f8e8-544a-4c7e-9adf-26209303bc1d',
       roleNames: ['INVALID_ROLE_NAME'],
+      sharedVaultUuids: ['84c0f8e8-544a-4c7e-9adf-26209303bc1d'],
     })
 
     expect(result.isFailed()).toBeTruthy()
@@ -45,6 +58,7 @@ describe('GetRevision', () => {
       revisionUuid: '84c0f8e8-544a-4c7e-9adf-26209303bc1d',
       userUuid: '84c0f8e8-544a-4c7e-9adf-26209303bc1d',
       roleNames: ['CORE_USER'],
+      sharedVaultUuids: ['84c0f8e8-544a-4c7e-9adf-26209303bc1d'],
     })
 
     expect(result.isFailed()).toBeTruthy()
@@ -55,6 +69,7 @@ describe('GetRevision', () => {
       revisionUuid: '1-2-3',
       userUuid: '84c0f8e8-544a-4c7e-9adf-26209303bc1d',
       roleNames: ['CORE_USER'],
+      sharedVaultUuids: ['84c0f8e8-544a-4c7e-9adf-26209303bc1d'],
     })
 
     expect(result.isFailed()).toBeTruthy()
@@ -65,6 +80,7 @@ describe('GetRevision', () => {
       userUuid: '1-2-3',
       revisionUuid: '84c0f8e8-544a-4c7e-9adf-26209303bc1d',
       roleNames: ['CORE_USER'],
+      sharedVaultUuids: ['84c0f8e8-544a-4c7e-9adf-26209303bc1d'],
     })
 
     expect(result.isFailed()).toBeTruthy()

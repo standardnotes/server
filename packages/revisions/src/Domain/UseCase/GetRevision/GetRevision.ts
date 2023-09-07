@@ -26,9 +26,18 @@ export class GetRevision implements UseCaseInterface<Revision> {
     }
     const roleNames = roleNamesOrError.getValue()
 
+    const sharedVaultUuids = []
+    for (const sharedVaultUuid of dto.sharedVaultUuids) {
+      const sharedVaultUuidOrError = Uuid.create(sharedVaultUuid)
+      if (sharedVaultUuidOrError.isFailed()) {
+        return Result.fail(`Could not get revision: ${sharedVaultUuidOrError.getError()}`)
+      }
+      sharedVaultUuids.push(sharedVaultUuidOrError.getValue())
+    }
+
     const revisionRepository = this.revisionRepositoryResolver.resolve(roleNames)
 
-    const revision = await revisionRepository.findOneByUuid(revisionUuid, userUuid)
+    const revision = await revisionRepository.findOneByUuid(revisionUuid, userUuid, sharedVaultUuids)
 
     if (revision === null) {
       return Result.fail<Revision>(`Could not find revision with uuid: ${revisionUuid.value}`)

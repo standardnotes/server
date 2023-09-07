@@ -174,7 +174,7 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
 
           const revisionInSecondary = await (
             this.secondRevisionsRepository as RevisionRepositoryInterface
-          ).findOneByUuid(revisionUuid, userUuid)
+          ).findOneByUuid(revisionUuid, userUuid, [])
           if (!revisionInSecondary) {
             return Result.fail(`Revision ${revision.id.toString()} not found in secondary database`)
           }
