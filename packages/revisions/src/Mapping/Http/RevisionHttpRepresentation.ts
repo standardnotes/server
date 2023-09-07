@@ -8,4 +8,8 @@ export interface RevisionHttpRepresentation {
   auth_hash: string | null
   created_at: string
   updated_at: string
+  key_system_identifier: string | null
+  shared_vault_uuid: string | null
+  user_uuid: string | null
+  last_edited_by_uuid: string | null
 }
