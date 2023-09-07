@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.93.1](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.93.0...@standardnotes/syncing-server@1.93.1) (2023-09-07)
+
+### Bug Fixes
+
+* **syncing-server:** invalidating cache for user removed from shared vault ([#812](https://github.com/standardnotes/syncing-server-js/issues/812)) ([c4a1502](https://github.com/standardnotes/syncing-server-js/commit/c4a1502f70e675da5c81c4005ee1eca578a7e3f4))
+
 # [1.93.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.92.1...@standardnotes/syncing-server@1.93.0) (2023-09-07)
 
 ### Features

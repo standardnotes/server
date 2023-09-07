@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.33.1](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.33.0...@standardnotes/revisions-server@1.33.1) (2023-09-07)
+
+### Bug Fixes
+
+* **revisions:** waiting for syncing-server on self-hosted setup ([27ad8e6](https://github.com/standardnotes/server/commit/27ad8e6959aeb9c2f11ee0fecba37514bf91dda8))
+
 # [1.33.0](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.32.0...@standardnotes/revisions-server@1.33.0) (2023-09-07)
 
 ### Features
