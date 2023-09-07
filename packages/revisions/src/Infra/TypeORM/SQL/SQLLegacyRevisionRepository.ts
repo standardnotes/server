@@ -92,7 +92,7 @@ export class SQLLegacyRevisionRepository implements RevisionRepositoryInterface 
       .execute()
   }
 
-  async findOneByUuid(revisionUuid: Uuid, userUuid: Uuid): Promise<Revision | null> {
+  async findOneByUuid(revisionUuid: Uuid, userUuid: Uuid, _sharedVaultUuids: Uuid[]): Promise<Revision | null> {
     const SQLLegacyRevision = await this.ormRepository
       .createQueryBuilder()
       .where('uuid = :revisionUuid', { revisionUuid: revisionUuid.value })

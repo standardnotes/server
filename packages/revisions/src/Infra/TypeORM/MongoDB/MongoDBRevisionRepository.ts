@@ -49,15 +49,32 @@ export class MongoDBRevisionRepository implements RevisionRepositoryInterface {
     })
   }
 
-  async findOneByUuid(revisionUuid: Uuid, userUuid: Uuid): Promise<Revision | null> {
-    const persistence = await this.mongoRepository.findOne({
-      where: {
-        $and: [
-          { _id: { $eq: BSON.UUID.createFromHexString(revisionUuid.value) } },
-          { userUuid: { $eq: userUuid.value } },
-        ],
-      },
-    })
+  async findOneByUuid(revisionUuid: Uuid, userUuid: Uuid, sharedVaultUuids: Uuid[]): Promise<Revision | null> {
+    let persistence = null
+    if (sharedVaultUuids.length > 0) {
+      persistence = await this.mongoRepository.findOne({
+        where: {
+          $and: [
+            { _id: { $eq: BSON.UUID.createFromHexString(revisionUuid.value) } },
+            {
+              $or: [
+                { sharedVaultUuid: { $in: sharedVaultUuids.map((uuid) => uuid.value) } },
+                { userUuid: { $eq: userUuid.value } },
+              ],
+            },
+          ],
+        },
+      })
+    } else {
+      persistence = await this.mongoRepository.findOne({
+        where: {
+          $and: [
+            { _id: { $eq: BSON.UUID.createFromHexString(revisionUuid.value) } },
+            { userUuid: { $eq: userUuid.value } },
+          ],
+        },
+      })
+    }
 
     if (persistence === null) {
       return null

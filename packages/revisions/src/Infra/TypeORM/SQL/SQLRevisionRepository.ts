@@ -17,6 +17,34 @@ export class SQLRevisionRepository extends SQLLegacyRevisionRepository {
     super(ormRepository, revisionMetadataMapper, revisionMapper, logger)
   }
 
+  override async findOneByUuid(revisionUuid: Uuid, userUuid: Uuid, sharedVaultUuids: Uuid[]): Promise<Revision | null> {
+    const queryBuilder = this.ormRepository.createQueryBuilder()
+
+    if (sharedVaultUuids.length > 0) {
+      queryBuilder.where(
+        'uuid = :revisionUuid AND (user_uuid = :userUuid OR shared_vault_uuid IN (:...sharedVaultUuids))',
+        {
+          revisionUuid: revisionUuid.value,
+          userUuid: userUuid.value,
+          sharedVaultUuids: sharedVaultUuids.map((uuid) => uuid.value),
+        },
+      )
+    } else {
+      queryBuilder.where('uuid = :revisionUuid AND user_uuid = :userUuid', {
+        revisionUuid: revisionUuid.value,
+        userUuid: userUuid.value,
+      })
+    }
+
+    const sqlRevision = await queryBuilder.getOne()
+
+    if (sqlRevision === null) {
+      return null
+    }
+
+    return this.revisionMapper.toDomain(sqlRevision)
+  }
+
   override async findMetadataByItemId(
     itemUuid: Uuid,
     userUuid: Uuid,

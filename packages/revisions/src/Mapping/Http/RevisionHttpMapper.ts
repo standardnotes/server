@@ -19,6 +19,16 @@ export class RevisionHttpMapper implements MapperInterface<Revision, RevisionHtt
       auth_hash: domain.props.authHash,
       created_at: domain.props.dates.createdAt.toISOString(),
       updated_at: domain.props.dates.updatedAt.toISOString(),
+      key_system_identifier: domain.props.keySystemAssociation
+        ? domain.props.keySystemAssociation.props.keySystemIdentifier
+        : null,
+      shared_vault_uuid: domain.props.sharedVaultAssociation
+        ? domain.props.sharedVaultAssociation.props.sharedVaultUuid.value
+        : null,
+      last_edited_by_uuid: domain.props.sharedVaultAssociation
+        ? domain.props.sharedVaultAssociation.props.editedBy.value
+        : null,
+      user_uuid: domain.props.userUuid ? domain.props.userUuid.value : null,
     }
   }
 }
