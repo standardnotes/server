@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.32.0](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.31.0...@standardnotes/revisions-server@1.32.0) (2023-09-07)
+
+### Bug Fixes
+
+* **revisions:** query for shared vault revisions ([7e11821](https://github.com/standardnotes/server/commit/7e11821021a663fcf452ad8bb03eda33c03fe221))
+
+### Features
+
+* **revisions:** fetching single revision in shared vault ([#810](https://github.com/standardnotes/server/issues/810)) ([e100c52](https://github.com/standardnotes/server/commit/e100c52bbc07447188af3b9a04f3744401dac0ab))
+
 # [1.31.0](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.30.14...@standardnotes/revisions-server@1.31.0) (2023-09-06)
 
 ### Features

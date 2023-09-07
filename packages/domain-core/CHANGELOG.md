@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.28.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.27.0...@standardnotes/domain-core@1.28.0) (2023-09-07)
+
+### Features
+
+* add VaultsUser role name ([#809](https://github.com/standardnotes/server/issues/809)) ([d4830de](https://github.com/standardnotes/server/commit/d4830dec018139ffaf93d0e91d6655c5dcc6be9c))
+
 # [1.27.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.26.3...@standardnotes/domain-core@1.27.0) (2023-09-06)
 
 ### Features
