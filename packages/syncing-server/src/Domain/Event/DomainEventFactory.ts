@@ -4,6 +4,7 @@ import {
   DuplicateItemSyncedEvent,
   EmailRequestedEvent,
   ItemDumpedEvent,
+  ItemRemovedFromSharedVaultEvent,
   ItemRevisionCreationRequestedEvent,
   MessageSentToUserEvent,
   NotificationAddedForUserEvent,
@@ -19,6 +20,26 @@ import { DomainEventFactoryInterface } from './DomainEventFactoryInterface'
 
 export class DomainEventFactory implements DomainEventFactoryInterface {
   constructor(private timer: TimerInterface) {}
+
+  createItemRemovedFromSharedVaultEvent(dto: {
+    sharedVaultUuid: string
+    itemUuid: string
+    userUuid: string
+    roleNames: string[]
+  }): ItemRemovedFromSharedVaultEvent {
+    return {
+      type: 'ITEM_REMOVED_FROM_SHARED_VAULT',
+      createdAt: this.timer.getUTCDate(),
+      meta: {
+        correlation: {
+          userIdentifier: dto.userUuid,
+          userIdentifierType: 'uuid',
+        },
+        origin: DomainEventService.SyncingServer,
+      },
+      payload: dto,
+    }
+  }
 
   createUserRemovedFromSharedVaultEvent(dto: {
     sharedVaultUuid: string

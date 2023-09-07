@@ -111,6 +111,9 @@ describe('UpdateExistingItem', () => {
     domainEventFactory.createItemRevisionCreationRequested = jest
       .fn()
       .mockReturnValue({} as jest.Mocked<DomainEventInterface>)
+    domainEventFactory.createItemRemovedFromSharedVaultEvent = jest
+      .fn()
+      .mockReturnValue({} as jest.Mocked<DomainEventInterface>)
 
     determineSharedVaultOperationOnItem = {} as jest.Mocked<DetermineSharedVaultOperationOnItem>
     determineSharedVaultOperationOnItem.execute = jest.fn().mockResolvedValue(
@@ -398,6 +401,42 @@ describe('UpdateExistingItem', () => {
       expect(result.isFailed()).toBeFalsy()
 
       expect(item1.props.sharedVaultAssociation).not.toBeUndefined()
+    })
+
+    it('should remove a shared vault association and publish an event that item has been removed from shared vault', async () => {
+      const useCase = createUseCase()
+
+      const itemHash = ItemHash.create({
+        ...itemHash1.props,
+        shared_vault_uuid: null,
+      }).getValue()
+
+      determineSharedVaultOperationOnItem.execute = jest.fn().mockReturnValue(
+        Result.ok(
+          SharedVaultOperationOnItem.create({
+            existingItem: item1,
+            incomingItemHash: itemHash1,
+            sharedVaultUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+            type: SharedVaultOperationOnItem.TYPES.RemoveFromSharedVault,
+            userUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+          }).getValue(),
+        ),
+      )
+
+      const result = await useCase.execute({
+        existingItem: item1,
+        itemHash,
+        sessionUuid: '00000000-0000-0000-0000-000000000000',
+        performingUserUuid: '00000000-0000-0000-0000-000000000000',
+        roleNames: [RoleName.NAMES.CoreUser],
+      })
+
+      expect(result.isFailed()).toBeFalsy()
+
+      expect(item1.props.sharedVaultAssociation).toBeUndefined()
+
+      expect(domainEventFactory.createItemRemovedFromSharedVaultEvent).toHaveBeenCalled()
+      expect(domainEventPublisher.publish).toHaveBeenCalled()
     })
 
     it('should return error if shared vault association could not be created', async () => {

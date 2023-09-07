@@ -45,6 +45,21 @@ export class SQLRevisionRepository extends SQLLegacyRevisionRepository {
     return this.revisionMapper.toDomain(sqlRevision)
   }
 
+  override async clearSharedVaultAndKeySystemAssociations(itemUuid: Uuid, sharedVaultUuid: Uuid): Promise<void> {
+    await this.ormRepository
+      .createQueryBuilder()
+      .update()
+      .set({
+        sharedVaultUuid: null,
+        keySystemIdentifier: null,
+      })
+      .where('item_uuid = :itemUuid AND shared_vault_uuid = :sharedVaultUuid', {
+        itemUuid: itemUuid.value,
+        sharedVaultUuid: sharedVaultUuid.value,
+      })
+      .execute()
+  }
+
   override async findMetadataByItemId(
     itemUuid: Uuid,
     userUuid: Uuid,

@@ -128,7 +128,15 @@ export class UpdateExistingItem implements UseCaseInterface<Item> {
 
     dto.existingItem.props.contentSize = Buffer.byteLength(JSON.stringify(dto.existingItem))
 
-    let sharedVaultOperation: SharedVaultOperationOnItem | null = null
+    const sharedVaultOperationOrError = await this.determineSharedVaultOperationOnItem.execute({
+      existingItem: dto.existingItem,
+      itemHash: dto.itemHash,
+      userUuid: userUuid.value,
+    })
+    if (sharedVaultOperationOrError.isFailed()) {
+      return Result.fail(sharedVaultOperationOrError.getError())
+    }
+    const sharedVaultOperation = sharedVaultOperationOrError.getValue()
     if (dto.itemHash.representsASharedVaultItem()) {
       const sharedVaultAssociationOrError = SharedVaultAssociation.create({
         lastEditedBy: userUuid,
@@ -140,16 +148,6 @@ export class UpdateExistingItem implements UseCaseInterface<Item> {
       }
 
       dto.existingItem.props.sharedVaultAssociation = sharedVaultAssociationOrError.getValue()
-
-      const sharedVaultOperationOrError = await this.determineSharedVaultOperationOnItem.execute({
-        existingItem: dto.existingItem,
-        itemHash: dto.itemHash,
-        userUuid: userUuid.value,
-      })
-      if (sharedVaultOperationOrError.isFailed()) {
-        return Result.fail(sharedVaultOperationOrError.getError())
-      }
-      sharedVaultOperation = sharedVaultOperationOrError.getValue()
     } else {
       dto.existingItem.props.sharedVaultAssociation = undefined
     }
@@ -209,7 +207,7 @@ export class UpdateExistingItem implements UseCaseInterface<Item> {
       )
     }
 
-    const notificationsResult = await this.addNotifications(dto.existingItem.uuid, userUuid, sharedVaultOperation)
+    const notificationsResult = await this.addNotificationsAndPublishEvents(userUuid, sharedVaultOperation, dto)
     if (notificationsResult.isFailed()) {
       return Result.fail(notificationsResult.getError())
     }
@@ -217,10 +215,10 @@ export class UpdateExistingItem implements UseCaseInterface<Item> {
     return Result.ok(dto.existingItem)
   }
 
-  private async addNotifications(
-    itemUuid: Uuid,
+  private async addNotificationsAndPublishEvents(
     userUuid: Uuid,
     sharedVaultOperation: SharedVaultOperationOnItem | null,
+    dto: UpdateExistingItemDTO,
   ): Promise<Result<void>> {
     if (
       sharedVaultOperation &&
@@ -229,7 +227,7 @@ export class UpdateExistingItem implements UseCaseInterface<Item> {
       const notificationPayloadOrError = NotificationPayload.create({
         sharedVaultUuid: sharedVaultOperation.props.sharedVaultUuid,
         type: NotificationType.create(NotificationType.TYPES.SharedVaultItemRemoved).getValue(),
-        itemUuid: itemUuid,
+        itemUuid: dto.existingItem.uuid,
         version: '1.0',
       })
       if (notificationPayloadOrError.isFailed()) {
@@ -246,6 +244,15 @@ export class UpdateExistingItem implements UseCaseInterface<Item> {
       if (result.isFailed()) {
         return Result.fail(result.getError())
       }
+
+      await this.domainEventPublisher.publish(
+        this.domainEventFactory.createItemRemovedFromSharedVaultEvent({
+          sharedVaultUuid: sharedVaultOperation.props.sharedVaultUuid.value,
+          itemUuid: dto.existingItem.uuid.value,
+          userUuid: userUuid.value,
+          roleNames: dto.roleNames,
+        }),
+      )
     }
 
     if (sharedVaultOperation && sharedVaultOperation.props.type === SharedVaultOperationOnItem.TYPES.AddToSharedVault) {

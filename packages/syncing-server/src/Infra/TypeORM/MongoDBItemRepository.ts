@@ -155,15 +155,23 @@ export class MongoDBItemRepository implements ItemRepositoryInterface {
 
   async markItemsAsDeleted(itemUuids: string[], updatedAtTimestamp: number): Promise<void> {
     await this.mongoRepository.updateMany(
-      { where: { _id: { $in: itemUuids.map((uuid) => BSON.UUID.createFromHexString(uuid)) } } },
-      { deleted: true, content: null, encItemKey: null, authHash: null, updatedAtTimestamp },
+      { _id: { $in: itemUuids.map((uuid) => BSON.UUID.createFromHexString(uuid)) } },
+      {
+        $set: {
+          deleted: true,
+          content: null,
+          encItemKey: null,
+          authHash: null,
+          updatedAtTimestamp,
+        },
+      },
     )
   }
 
   async updateContentSize(itemUuid: string, contentSize: number): Promise<void> {
     await this.mongoRepository.updateOne(
-      { where: { _id: { $eq: BSON.UUID.createFromHexString(itemUuid) } } },
-      { contentSize },
+      { _id: { $eq: BSON.UUID.createFromHexString(itemUuid) } },
+      { $set: { contentSize } },
     )
   }
 
