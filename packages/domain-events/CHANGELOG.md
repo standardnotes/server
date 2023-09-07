@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.124.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.123.0...@standardnotes/domain-events@2.124.0) (2023-09-07)
+
+### Features
+
+* add removing revisions from shared vaults ([#811](https://github.com/standardnotes/server/issues/811)) ([3bd63f7](https://github.com/standardnotes/server/commit/3bd63f767464baf9b9f1ffa52eea9eed4a4e11b5))
+
 # [2.123.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.122.2...@standardnotes/domain-events@2.123.0) (2023-09-06)
 
 ### Features

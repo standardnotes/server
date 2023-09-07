@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.93.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.92.1...@standardnotes/syncing-server@1.93.0) (2023-09-07)
+
+### Features
+
+* add removing revisions from shared vaults ([#811](https://github.com/standardnotes/syncing-server-js/issues/811)) ([3bd63f7](https://github.com/standardnotes/syncing-server-js/commit/3bd63f767464baf9b9f1ffa52eea9eed4a4e11b5))
+
 ## [1.92.1](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.92.0...@standardnotes/syncing-server@1.92.1) (2023-09-07)
 
 **Note:** Version bump only for package @standardnotes/syncing-server
