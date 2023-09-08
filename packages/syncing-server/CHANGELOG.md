@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.94.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.93.1...@standardnotes/syncing-server@1.94.0) (2023-09-08)
+
+### Features
+
+* **syncing-server:** add procedure to trigger transition for specific user ([8cb92d9](https://github.com/standardnotes/syncing-server-js/commit/8cb92d9678cffe9188fa2b038f1b5a9e0247551e))
+
 ## [1.93.1](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.93.0...@standardnotes/syncing-server@1.93.1) (2023-09-07)
 
 ### Bug Fixes
