@@ -27,6 +27,7 @@ describe('AuthController', () => {
   let doGenerateRecoveryCodes: GenerateRecoveryCodes
   let logger: Logger
   let sessionService: SessionServiceInterface
+  let transitionModeEnabled: boolean
 
   const createController = () =>
     new AuthController(
@@ -39,6 +40,7 @@ describe('AuthController', () => {
       doGenerateRecoveryCodes,
       logger,
       sessionService,
+      transitionModeEnabled,
     )
 
   beforeEach(() => {
@@ -64,6 +66,8 @@ describe('AuthController', () => {
 
     sessionService = {} as jest.Mocked<SessionServiceInterface>
     sessionService.deleteSessionByToken = jest.fn().mockReturnValue('1-2-3')
+
+    transitionModeEnabled = false
   })
 
   it('should register a user', async () => {
