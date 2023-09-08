@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.140.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.139.0...@standardnotes/auth-server@1.140.0) (2023-09-08)
+
+### Bug Fixes
+
+* **auth:** specs ([a164ba2](https://github.com/standardnotes/server/commit/a164ba291d4893b5a0bb4b39a8795d654212a1a6))
+* **auth:** transition users only when transition mode enabled ([610fba2](https://github.com/standardnotes/server/commit/610fba260150d0757020e01ac0c8967feeadd4d6))
+
+### Features
+
+* transition users after sign out ([398338c](https://github.com/standardnotes/server/commit/398338c8f81b12406c7ab3bf1654e60b94d7cfd0))
+
 # [1.139.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.138.2...@standardnotes/auth-server@1.139.0) (2023-09-08)
 
 ### Features

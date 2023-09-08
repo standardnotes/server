@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.125.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.124.0...@standardnotes/domain-events@2.125.0) (2023-09-08)
+
+### Features
+
+* transition users after sign out ([398338c](https://github.com/standardnotes/server/commit/398338c8f81b12406c7ab3bf1654e60b94d7cfd0))
+
 # [2.124.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.123.0...@standardnotes/domain-events@2.124.0) (2023-09-07)
 
 ### Features
