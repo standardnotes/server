@@ -1,8 +1,10 @@
 import { MapperInterface, Dates, UniqueEntityId, Uuid, ContentType } from '@standardnotes/domain-core'
+import { BSON } from 'mongodb'
 
 import { MongoDBRevision } from '../../../Infra/TypeORM/MongoDB/MongoDBRevision'
 import { Revision } from '../../../Domain/Revision/Revision'
-import { BSON } from 'mongodb'
+import { SharedVaultAssociation } from '../../../Domain/SharedVault/SharedVaultAssociation'
+import { KeySystemAssociation } from '../../../Domain/KeySystem/KeySystemAssociation'
 
 export class MongoDBRevisionPersistenceMapper implements MapperInterface<Revision, MongoDBRevision> {
   toDomain(projection: MongoDBRevision): Revision {
@@ -33,6 +35,39 @@ export class MongoDBRevisionPersistenceMapper implements MapperInterface<Revisio
       userUuid = userUuidOrError.getValue()
     }
 
+    let sharedVaultAssociation: SharedVaultAssociation | undefined = undefined
+    if (projection.sharedVaultUuid && projection.editedBy) {
+      const sharedVaultUuidOrError = Uuid.create(projection.sharedVaultUuid)
+      if (sharedVaultUuidOrError.isFailed()) {
+        throw new Error(`Failed to create revision from projection: ${sharedVaultUuidOrError.getError()}`)
+      }
+      const sharedVaultUuid = sharedVaultUuidOrError.getValue()
+
+      const lastEditedByOrError = Uuid.create(projection.editedBy)
+      if (lastEditedByOrError.isFailed()) {
+        throw new Error(`Failed to create revision from projection: ${lastEditedByOrError.getError()}`)
+      }
+      const lastEditedBy = lastEditedByOrError.getValue()
+
+      const sharedVaultAssociationOrError = SharedVaultAssociation.create({
+        sharedVaultUuid,
+        editedBy: lastEditedBy,
+      })
+      if (sharedVaultAssociationOrError.isFailed()) {
+        throw new Error(`Failed to create revision from projection: ${sharedVaultAssociationOrError.getError()}`)
+      }
+      sharedVaultAssociation = sharedVaultAssociationOrError.getValue()
+    }
+
+    let keySystemAssociation: KeySystemAssociation | undefined = undefined
+    if (projection.keySystemIdentifier) {
+      const keySystemAssociationOrError = KeySystemAssociation.create(projection.keySystemIdentifier)
+      if (keySystemAssociationOrError.isFailed()) {
+        throw new Error(`Failed to create revision from projection: ${keySystemAssociationOrError.getError()}`)
+      }
+      keySystemAssociation = keySystemAssociationOrError.getValue()
+    }
+
     const revisionOrError = Revision.create(
       {
         authHash: projection.authHash,
@@ -44,6 +79,8 @@ export class MongoDBRevisionPersistenceMapper implements MapperInterface<Revisio
         itemUuid,
         userUuid,
         dates,
+        sharedVaultAssociation,
+        keySystemAssociation,
       },
       new UniqueEntityId(projection._id.toHexString()),
     )
@@ -67,6 +104,15 @@ export class MongoDBRevisionPersistenceMapper implements MapperInterface<Revisio
     mongoDBRevision.itemUuid = domain.props.itemUuid.value
     mongoDBRevision.itemsKeyId = domain.props.itemsKeyId
     mongoDBRevision.userUuid = domain.props.userUuid ? domain.props.userUuid.value : null
+    mongoDBRevision.sharedVaultUuid = domain.props.sharedVaultAssociation
+      ? domain.props.sharedVaultAssociation.props.sharedVaultUuid.value
+      : null
+    mongoDBRevision.editedBy = domain.props.sharedVaultAssociation
+      ? domain.props.sharedVaultAssociation.props.editedBy.value
+      : null
+    mongoDBRevision.keySystemIdentifier = domain.props.keySystemAssociation
+      ? domain.props.keySystemAssociation.props.keySystemIdentifier
+      : null
     mongoDBRevision._id = BSON.UUID.createFromHexString(domain.id.toString())
 
     return mongoDBRevision
