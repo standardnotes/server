@@ -981,6 +981,7 @@ export class ContainerConfigLoader {
           container.get(TYPES.Auth_GenerateRecoveryCodes),
           container.get(TYPES.Auth_Logger),
           container.get(TYPES.Auth_SessionService),
+          container.get(TYPES.Auth_TRANSITION_MODE_ENABLED),
         ),
       )
     container
