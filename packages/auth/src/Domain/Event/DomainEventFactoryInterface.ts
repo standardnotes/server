@@ -18,6 +18,7 @@ import {
   StatisticPersistenceRequestedEvent,
   SessionCreatedEvent,
   SessionRefreshedEvent,
+  TransitionRequestedEvent,
 } from '@standardnotes/domain-events'
 import { InviteeIdentifierType } from '../SharedSubscription/InviteeIdentifierType'
 
@@ -89,4 +90,5 @@ export interface DomainEventFactoryInterface {
   }): StatisticPersistenceRequestedEvent
   createSessionCreatedEvent(dto: { userUuid: string }): SessionCreatedEvent
   createSessionRefreshedEvent(dto: { userUuid: string }): SessionRefreshedEvent
+  createTransitionRequestedEvent(dto: { userUuid: string }): TransitionRequestedEvent
 }

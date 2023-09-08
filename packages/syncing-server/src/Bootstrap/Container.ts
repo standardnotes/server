@@ -166,6 +166,7 @@ import { SQLItem } from '../Infra/TypeORM/SQLItem'
 import { SQLItemPersistenceMapper } from '../Mapping/Persistence/SQLItemPersistenceMapper'
 import { SQLItemRepository } from '../Infra/TypeORM/SQLItemRepository'
 import { SendEventToClient } from '../Domain/UseCase/Syncing/SendEventToClient/SendEventToClient'
+import { TransitionRequestedEventHandler } from '../Domain/Handler/TransitionRequestedEventHandler'
 
 export class ContainerConfigLoader {
   private readonly DEFAULT_CONTENT_SIZE_TRANSFER_LIMIT = 10_000_000
@@ -955,6 +956,16 @@ export class ContainerConfigLoader {
           container.get<Logger>(TYPES.Sync_Logger),
         ),
       )
+    container
+      .bind<TransitionRequestedEventHandler>(TYPES.Sync_TransitionRequestedEventHandler)
+      .toConstantValue(
+        new TransitionRequestedEventHandler(
+          container.get<TriggerTransitionFromPrimaryToSecondaryDatabaseForUser>(
+            TYPES.Sync_TriggerTransitionFromPrimaryToSecondaryDatabaseForUser,
+          ),
+          container.get<Logger>(TYPES.Sync_Logger),
+        ),
+      )
 
     // Services
     container.bind<ContentDecoder>(TYPES.Sync_ContentDecoder).toDynamicValue(() => new ContentDecoder())
@@ -992,6 +1003,10 @@ export class ContainerConfigLoader {
       [
         'TRANSITION_STATUS_UPDATED',
         container.get<TransitionStatusUpdatedEventHandler>(TYPES.Sync_TransitionStatusUpdatedEventHandler),
+      ],
+      [
+        'TRANSITION_REQUESTED',
+        container.get<TransitionRequestedEventHandler>(TYPES.Sync_TransitionRequestedEventHandler),
       ],
     ])
     if (!isConfiguredForHomeServer) {

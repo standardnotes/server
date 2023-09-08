@@ -226,6 +226,12 @@ export class AuthController implements UserServerInterface {
     let headers = undefined
     if (userUuid !== null) {
       headers = new Map([['x-invalidate-cache', userUuid]])
+
+      await this.domainEventPublisher.publish(
+        this.domainEventFactory.createTransitionRequestedEvent({
+          userUuid,
+        }),
+      )
     }
 
     return {
