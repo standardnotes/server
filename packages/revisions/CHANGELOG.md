@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.33.2](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.33.1...@standardnotes/revisions-server@1.33.2) (2023-09-08)
+
+### Bug Fixes
+
+* **revisions:** persistence mapper ([#814](https://github.com/standardnotes/server/issues/814)) ([76372fe](https://github.com/standardnotes/server/commit/76372fe3579a99bf44abfce9667fec134baafedf))
+
 ## [1.33.1](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.33.0...@standardnotes/revisions-server@1.33.1) (2023-09-07)
 
 ### Bug Fixes
