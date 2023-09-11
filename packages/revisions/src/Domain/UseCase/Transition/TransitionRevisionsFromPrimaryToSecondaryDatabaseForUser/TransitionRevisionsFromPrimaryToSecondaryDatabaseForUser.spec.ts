@@ -22,6 +22,7 @@ describe('TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser', () => {
       secondaryRevisionRepository,
       timer,
       logger,
+      1,
     )
 
   beforeEach(() => {

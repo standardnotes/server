@@ -22,6 +22,7 @@ describe('TransitionItemsFromPrimaryToSecondaryDatabaseForUser', () => {
       secondaryItemRepository,
       timer,
       logger,
+      1,
     )
 
   beforeEach(() => {

@@ -11,6 +11,7 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
     private secondRevisionsRepository: RevisionRepositoryInterface | null,
     private timer: TimerInterface,
     private logger: Logger,
+    private pageSize: number,
   ) {}
 
   async execute(dto: TransitionRevisionsFromPrimaryToSecondaryDatabaseForUserDTO): Promise<Result<void>> {
@@ -83,13 +84,12 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
     try {
       const totalRevisionsCountForUser = await this.primaryRevisionsRepository.countByUserUuid(userUuid)
       let totalRevisionsCountTransitionedToSecondary = 0
-      const pageSize = 100
-      const totalPages = Math.ceil(totalRevisionsCountForUser / pageSize)
+      const totalPages = Math.ceil(totalRevisionsCountForUser / this.pageSize)
       for (let currentPage = 1; currentPage <= totalPages; currentPage++) {
         const query = {
           userUuid: userUuid,
-          offset: (currentPage - 1) * pageSize,
-          limit: pageSize,
+          offset: (currentPage - 1) * this.pageSize,
+          limit: this.pageSize,
         }
 
         const revisions = await this.primaryRevisionsRepository.findByUserUuid(query)
@@ -153,13 +153,12 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
     try {
       const totalRevisionsCountForUserInPrimary = await this.primaryRevisionsRepository.countByUserUuid(userUuid)
 
-      const pageSize = 100
-      const totalPages = Math.ceil(totalRevisionsCountForUserInPrimary / pageSize)
+      const totalPages = Math.ceil(totalRevisionsCountForUserInPrimary / this.pageSize)
       for (let currentPage = 1; currentPage <= totalPages; currentPage++) {
         const query = {
           userUuid: userUuid,
-          offset: (currentPage - 1) * pageSize,
-          limit: pageSize,
+          offset: (currentPage - 1) * this.pageSize,
+          limit: this.pageSize,
         }
 
         const revisions = await this.primaryRevisionsRepository.findByUserUuid(query)

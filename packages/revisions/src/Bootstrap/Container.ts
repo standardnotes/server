@@ -350,6 +350,7 @@ export class ContainerConfigLoader {
             : null,
           container.get<TimerInterface>(TYPES.Revisions_Timer),
           container.get<winston.Logger>(TYPES.Revisions_Logger),
+          env.get('MIGRATION_BATCH_SIZE', true) ? +env.get('MIGRATION_BATCH_SIZE', true) : 100,
         ),
       )
     container

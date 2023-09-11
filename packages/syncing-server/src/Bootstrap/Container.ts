@@ -833,6 +833,7 @@ export class ContainerConfigLoader {
           isSecondaryDatabaseEnabled ? container.get<ItemRepositoryInterface>(TYPES.Sync_MongoDBItemRepository) : null,
           container.get<TimerInterface>(TYPES.Sync_Timer),
           container.get<Logger>(TYPES.Sync_Logger),
+          env.get('MIGRATION_BATCH_SIZE', true) ? +env.get('MIGRATION_BATCH_SIZE', true) : 100,
         ),
       )
     container
