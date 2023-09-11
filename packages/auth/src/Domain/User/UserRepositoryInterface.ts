@@ -8,6 +8,7 @@ export interface UserRepositoryInterface {
   streamTeam(memberEmail?: Email): Promise<ReadStream>
   findOneByUuid(uuid: Uuid): Promise<User | null>
   findOneByUsernameOrEmail(usernameOrEmail: Email | Username): Promise<User | null>
+  findAllCreatedBetween(start: Date, end: Date): Promise<User[]>
   save(user: User): Promise<User>
   remove(user: User): Promise<User>
 }
