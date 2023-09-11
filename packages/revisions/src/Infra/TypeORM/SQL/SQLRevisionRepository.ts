@@ -17,6 +17,27 @@ export class SQLRevisionRepository extends SQLLegacyRevisionRepository {
     super(ormRepository, revisionMetadataMapper, revisionMapper, logger)
   }
 
+  override async removeByUserUuid(userUuid: Uuid): Promise<void> {
+    await this.ormRepository
+      .createQueryBuilder()
+      .delete()
+      .from('revisions_revisions')
+      .where('user_uuid = :userUuid', { userUuid: userUuid.value })
+      .execute()
+  }
+
+  override async removeOneByUuid(revisionUuid: Uuid, userUuid: Uuid): Promise<void> {
+    await this.ormRepository
+      .createQueryBuilder()
+      .delete()
+      .from('revisions_revisions')
+      .where('uuid = :revisionUuid AND user_uuid = :userUuid', {
+        userUuid: userUuid.value,
+        revisionUuid: revisionUuid.value,
+      })
+      .execute()
+  }
+
   override async findOneByUuid(revisionUuid: Uuid, userUuid: Uuid, sharedVaultUuids: Uuid[]): Promise<Revision | null> {
     const queryBuilder = this.ormRepository.createQueryBuilder()
 
