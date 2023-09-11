@@ -12,6 +12,7 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
     private secondaryItemRepository: ItemRepositoryInterface | null,
     private timer: TimerInterface,
     private logger: Logger,
+    private pageSize: number,
   ) {}
 
   async execute(dto: TransitionItemsFromPrimaryToSecondaryDatabaseForUserDTO): Promise<Result<void>> {
@@ -92,14 +93,12 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
   private async migrateItemsForUser(userUuid: Uuid): Promise<Result<void>> {
     try {
       const totalItemsCountForUser = await this.primaryItemRepository.countAll({ userUuid: userUuid.value })
-      const pageSize = 1
-      const totalPages = totalItemsCountForUser
-      let currentPage = 1
-      for (currentPage; currentPage <= totalPages; currentPage++) {
+      const totalPages = Math.ceil(totalItemsCountForUser / this.pageSize)
+      for (let currentPage = 1; currentPage <= totalPages; currentPage++) {
         const query: ItemQuery = {
           userUuid: userUuid.value,
-          offset: currentPage - 1,
-          limit: pageSize,
+          offset: (currentPage - 1) * this.pageSize,
+          limit: this.pageSize,
         }
 
         const items = await this.primaryItemRepository.findAll(query)
@@ -140,14 +139,12 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
         )
       }
 
-      const pageSize = 1
-      const totalPages = totalItemsCountForUserInPrimary
-      let currentPage = 1
-      for (currentPage; currentPage <= totalPages; currentPage++) {
+      const totalPages = Math.ceil(totalItemsCountForUserInPrimary / this.pageSize)
+      for (let currentPage = 1; currentPage <= totalPages; currentPage++) {
         const query: ItemQuery = {
           userUuid: userUuid.value,
-          offset: currentPage - 1,
-          limit: pageSize,
+          offset: (currentPage - 1) * this.pageSize,
+          limit: this.pageSize,
         }
 
         const items = await this.primaryItemRepository.findAll(query)
