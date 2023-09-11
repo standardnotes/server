@@ -26,6 +26,7 @@ export class SQLLegacyRevisionMetadataPersistenceMapper
       {
         contentType,
         dates,
+        sharedVaultUuid: null,
       },
       new UniqueEntityId(projection.uuid),
     )

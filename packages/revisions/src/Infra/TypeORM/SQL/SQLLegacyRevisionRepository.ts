@@ -129,6 +129,7 @@ export class SQLLegacyRevisionRepository implements RevisionRepositoryInterface 
       .addSelect('content_type', 'contentType')
       .addSelect('created_at', 'createdAt')
       .addSelect('updated_at', 'updatedAt')
+      .addSelect('shared_vault_uuid', 'sharedVaultUuid')
       .where('item_uuid = :itemUuid', { itemUuid: itemUuid.value })
       .andWhere('user_uuid = :userUuid', { userUuid: userUuid.value })
       .orderBy('created_at', 'DESC')

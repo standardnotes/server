@@ -71,6 +71,7 @@ export class SQLRevisionRepository extends SQLLegacyRevisionRepository {
       .addSelect('content_type', 'contentType')
       .addSelect('created_at', 'createdAt')
       .addSelect('updated_at', 'updatedAt')
+      .addSelect('shared_vault_uuid', 'sharedVaultUuid')
       .orderBy('created_at', 'DESC')
 
     if (sharedVaultUuids.length > 0) {

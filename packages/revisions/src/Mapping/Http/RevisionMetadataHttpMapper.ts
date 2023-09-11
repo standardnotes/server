@@ -19,6 +19,7 @@ export class RevisionMetadataHttpMapper
       created_at: domain.props.dates.createdAt.toISOString(),
       updated_at: domain.props.dates.updatedAt.toISOString(),
       required_role: this.getRequiredRoleToViewRevision.execute({ createdAt: domain.props.dates.createdAt }).getValue(),
+      shared_vault_uuid: domain.props.sharedVaultUuid,
     }
   }
 }

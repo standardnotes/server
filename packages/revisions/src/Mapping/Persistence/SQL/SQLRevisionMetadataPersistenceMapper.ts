@@ -24,6 +24,7 @@ export class SQLRevisionMetadataPersistenceMapper implements MapperInterface<Rev
       {
         contentType,
         dates,
+        sharedVaultUuid: projection.sharedVaultUuid,
       },
       new UniqueEntityId(projection.uuid),
     )

@@ -24,6 +24,7 @@ export class MongoDBRevisionMetadataPersistenceMapper implements MapperInterface
       {
         contentType,
         dates,
+        sharedVaultUuid: projection.sharedVaultUuid,
       },
       new UniqueEntityId(projection._id.toHexString()),
     )
