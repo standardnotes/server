@@ -92,13 +92,12 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
   private async migrateItemsForUser(userUuid: Uuid): Promise<Result<void>> {
     try {
       const totalItemsCountForUser = await this.primaryItemRepository.countAll({ userUuid: userUuid.value })
-      const pageSize = 1
-      const totalPages = totalItemsCountForUser
-      let currentPage = 1
-      for (currentPage; currentPage <= totalPages; currentPage++) {
+      const pageSize = 100
+      const totalPages = Math.ceil(totalItemsCountForUser / pageSize)
+      for (let currentPage = 1; currentPage <= totalPages; currentPage++) {
         const query: ItemQuery = {
           userUuid: userUuid.value,
-          offset: currentPage - 1,
+          offset: (currentPage - 1) * pageSize,
           limit: pageSize,
         }
 
@@ -140,13 +139,12 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
         )
       }
 
-      const pageSize = 1
-      const totalPages = totalItemsCountForUserInPrimary
-      let currentPage = 1
-      for (currentPage; currentPage <= totalPages; currentPage++) {
+      const pageSize = 100
+      const totalPages = Math.ceil(totalItemsCountForUserInPrimary / pageSize)
+      for (let currentPage = 1; currentPage <= totalPages; currentPage++) {
         const query: ItemQuery = {
           userUuid: userUuid.value,
-          offset: currentPage - 1,
+          offset: (currentPage - 1) * pageSize,
           limit: pageSize,
         }
 

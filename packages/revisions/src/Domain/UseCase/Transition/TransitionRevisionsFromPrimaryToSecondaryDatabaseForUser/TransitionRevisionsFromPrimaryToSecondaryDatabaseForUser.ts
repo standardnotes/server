@@ -83,7 +83,7 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
     try {
       const totalRevisionsCountForUser = await this.primaryRevisionsRepository.countByUserUuid(userUuid)
       let totalRevisionsCountTransitionedToSecondary = 0
-      const pageSize = 1
+      const pageSize = 100
       const totalPages = Math.ceil(totalRevisionsCountForUser / pageSize)
       for (let currentPage = 1; currentPage <= totalPages; currentPage++) {
         const query = {
@@ -153,7 +153,7 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
     try {
       const totalRevisionsCountForUserInPrimary = await this.primaryRevisionsRepository.countByUserUuid(userUuid)
 
-      const pageSize = 1
+      const pageSize = 100
       const totalPages = Math.ceil(totalRevisionsCountForUserInPrimary / pageSize)
       for (let currentPage = 1; currentPage <= totalPages; currentPage++) {
         const query = {
