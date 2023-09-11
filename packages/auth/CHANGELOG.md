@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.141.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.141.0...@standardnotes/auth-server@1.141.1) (2023-09-11)
+
+### Bug Fixes
+
+* disable running migrations in worker mode of a given service ([a82b9a0](https://github.com/standardnotes/server/commit/a82b9a0c8a023ba8a450ff9e34bcd62f928fcab3))
+
 # [1.141.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.140.0...@standardnotes/auth-server@1.141.0) (2023-09-11)
 
 ### Features

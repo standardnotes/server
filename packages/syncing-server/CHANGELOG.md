@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.95.1](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.95.0...@standardnotes/syncing-server@1.95.1) (2023-09-11)
+
+### Bug Fixes
+
+* disable running migrations in worker mode of a given service ([a82b9a0](https://github.com/standardnotes/syncing-server-js/commit/a82b9a0c8a023ba8a450ff9e34bcd62f928fcab3))
+
 # [1.95.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.94.0...@standardnotes/syncing-server@1.95.0) (2023-09-08)
 
 ### Features
