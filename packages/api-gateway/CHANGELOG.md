@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.74.4](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.74.3...@standardnotes/api-gateway@1.74.4) (2023-09-11)
+
+### Bug Fixes
+
+* **api-gateway:** awaiting for other services to start ([0ab4701](https://github.com/standardnotes/api-gateway/commit/0ab47013f210dca7aa404966798011947fb5c362))
+
 ## [1.74.3](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.74.2...@standardnotes/api-gateway@1.74.3) (2023-09-08)
 
 **Note:** Version bump only for package @standardnotes/api-gateway

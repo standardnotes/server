@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.141.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.140.0...@standardnotes/auth-server@1.141.0) (2023-09-11)
+
+### Features
+
+* **auth:** add procedure to transition users created between dates ([#816](https://github.com/standardnotes/server/issues/816)) ([e95ba61](https://github.com/standardnotes/server/commit/e95ba61c7f769736698ebbc38179d6dc05a8cc5e))
+
 # [1.140.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.139.0...@standardnotes/auth-server@1.140.0) (2023-09-08)
 
 ### Bug Fixes

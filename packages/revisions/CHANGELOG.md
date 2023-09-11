@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.33.5](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.33.4...@standardnotes/revisions-server@1.33.5) (2023-09-11)
+
+### Bug Fixes
+
+* **revisions:** add item_uuid to revisions metadata http representation ([9676a25](https://github.com/standardnotes/server/commit/9676a2586cabc344f3c244a5a20d4e1d57ac4c35))
+* **revisions:** conflict with table naming ([ed671be](https://github.com/standardnotes/server/commit/ed671be9c56eb8d54b8dd52a69d5e30e07203aa4))
+* **revisions:** legacy table syncing and select for metadata ([b4bf11d](https://github.com/standardnotes/server/commit/b4bf11d9da44cc1d980b6922f532ff487fe582df))
+* **revisions:** removing queries ([117b7b4](https://github.com/standardnotes/server/commit/117b7b4b99e09aebfd081433646ec05c2ebf308f))
+* **revisions:** rename table only if exists ([836883b](https://github.com/standardnotes/server/commit/836883b82dd436d0e9b3ae3b70f734ceb508e227))
+
 ## [1.33.4](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.33.3...@standardnotes/revisions-server@1.33.4) (2023-09-11)
 
 ### Bug Fixes
