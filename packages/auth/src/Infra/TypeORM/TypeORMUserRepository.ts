@@ -14,6 +14,13 @@ export class TypeORMUserRepository implements UserRepositoryInterface {
     private ormRepository: Repository<User>,
   ) {}
 
+  async findAllCreatedBetween(start: Date, end: Date): Promise<User[]> {
+    return this.ormRepository
+      .createQueryBuilder('user')
+      .where('user.created_at BETWEEN :start AND :end', { start, end })
+      .getMany()
+  }
+
   async save(user: User): Promise<User> {
     return this.ormRepository.save(user)
   }
