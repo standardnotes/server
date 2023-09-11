@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.95.3](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.95.2...@standardnotes/syncing-server@1.95.3) (2023-09-11)
+
+### Bug Fixes
+
+* debug sync block ([1d751c0](https://github.com/standardnotes/syncing-server-js/commit/1d751c0fbe434f661466dde804a37849f23d9b1b))
+
 ## [1.95.2](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.95.1...@standardnotes/syncing-server@1.95.2) (2023-09-11)
 
 ### Bug Fixes
