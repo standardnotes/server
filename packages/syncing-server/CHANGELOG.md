@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.95.2](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.95.1...@standardnotes/syncing-server@1.95.2) (2023-09-11)
+
+### Bug Fixes
+
+* **auth:** remove transitioning upon sign out ([#819](https://github.com/standardnotes/syncing-server-js/issues/819)) ([330bff0](https://github.com/standardnotes/syncing-server-js/commit/330bff0124f5f49c3441304d166ea43c21fea7bc))
+
 ## [1.95.1](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.95.0...@standardnotes/syncing-server@1.95.1) (2023-09-11)
 
 ### Bug Fixes

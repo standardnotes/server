@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.33.7](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.33.6...@standardnotes/revisions-server@1.33.7) (2023-09-11)
+
+### Bug Fixes
+
+* **auth:** remove transitioning upon sign out ([#819](https://github.com/standardnotes/server/issues/819)) ([330bff0](https://github.com/standardnotes/server/commit/330bff0124f5f49c3441304d166ea43c21fea7bc))
+
 ## [1.33.6](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.33.5...@standardnotes/revisions-server@1.33.6) (2023-09-11)
 
 ### Bug Fixes
