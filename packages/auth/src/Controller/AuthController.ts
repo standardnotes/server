@@ -37,7 +37,6 @@ export class AuthController implements UserServerInterface {
     private doGenerateRecoveryCodes: GenerateRecoveryCodes,
     private logger: Logger,
     private sessionService: SessionServiceInterface,
-    private transitionModeEnabled: boolean,
   ) {}
 
   async update(_params: UserUpdateRequestParams): Promise<HttpResponse<UserUpdateResponse>> {
@@ -227,14 +226,6 @@ export class AuthController implements UserServerInterface {
     let headers = undefined
     if (userUuid !== null) {
       headers = new Map([['x-invalidate-cache', userUuid]])
-
-      if (this.transitionModeEnabled) {
-        await this.domainEventPublisher.publish(
-          this.domainEventFactory.createTransitionRequestedEvent({
-            userUuid,
-          }),
-        )
-      }
     }
 
     return {
