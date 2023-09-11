@@ -4,4 +4,4 @@ import { Env } from './Env'
 const env: Env = new Env()
 env.load()
 
-export const MigrationsDataSource = new AppDataSource(env).dataSource
+export const MigrationsDataSource = new AppDataSource({ env, runMigrations: true }).dataSource

@@ -18,7 +18,7 @@ const cleanup = async (
   await cleanupExpiredSessions.execute({ date })
 }
 
-const container = new ContainerConfigLoader()
+const container = new ContainerConfigLoader('worker')
 void container.load().then((container) => {
   const env: Env = new Env()
   env.load()

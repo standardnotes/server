@@ -274,6 +274,8 @@ import { UserAddedToSharedVaultEventHandler } from '../Domain/Handler/UserAddedT
 import { UserRemovedFromSharedVaultEventHandler } from '../Domain/Handler/UserRemovedFromSharedVaultEventHandler'
 
 export class ContainerConfigLoader {
+  constructor(private mode: 'server' | 'worker' = 'server') {}
+
   async load(configuration?: {
     controllerConatiner?: ControllerContainerInterface
     directCallDomainEventPublisher?: DirectCallDomainEventPublisher
@@ -310,7 +312,7 @@ export class ContainerConfigLoader {
     }
     container.bind<winston.Logger>(TYPES.Auth_Logger).toConstantValue(logger)
 
-    const appDataSource = new AppDataSource(env)
+    const appDataSource = new AppDataSource({ env, runMigrations: this.mode === 'server' })
     await appDataSource.initialize()
 
     logger.debug('Database initialized')

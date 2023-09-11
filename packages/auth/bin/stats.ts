@@ -8,7 +8,7 @@ import TYPES from '../src/Bootstrap/Types'
 import { Env } from '../src/Bootstrap/Env'
 import { PersistStatistics } from '../src/Domain/UseCase/PersistStatistics/PersistStatistics'
 
-const container = new ContainerConfigLoader()
+const container = new ContainerConfigLoader('worker')
 void container.load().then((container) => {
   const env: Env = new Env()
   env.load()

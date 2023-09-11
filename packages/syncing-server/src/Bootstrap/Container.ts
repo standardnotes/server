@@ -173,6 +173,8 @@ export class ContainerConfigLoader {
   private readonly DEFAULT_MAX_ITEMS_LIMIT = 300
   private readonly DEFAULT_FILE_UPLOAD_PATH = `${__dirname}/../../uploads`
 
+  constructor(private mode: 'server' | 'worker' = 'server') {}
+
   async load(configuration?: {
     controllerConatiner?: ControllerContainerInterface
     directCallDomainEventPublisher?: DirectCallDomainEventPublisher
@@ -211,7 +213,7 @@ export class ContainerConfigLoader {
     }
     container.bind<winston.Logger>(TYPES.Sync_Logger).toConstantValue(logger)
 
-    const appDataSource = new AppDataSource(env)
+    const appDataSource = new AppDataSource({ env, runMigrations: this.mode === 'server' })
     await appDataSource.initialize()
 
     logger.debug('Database initialized')

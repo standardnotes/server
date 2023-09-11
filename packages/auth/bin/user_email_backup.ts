@@ -63,7 +63,7 @@ const requestBackups = async (
   return
 }
 
-const container = new ContainerConfigLoader()
+const container = new ContainerConfigLoader('worker')
 void container.load().then((container) => {
   dayjs.extend(utc)
 

@@ -70,6 +70,8 @@ import { RemoveRevisionsFromSharedVault } from '../Domain/UseCase/RemoveRevision
 import { ItemRemovedFromSharedVaultEventHandler } from '../Domain/Handler/ItemRemovedFromSharedVaultEventHandler'
 
 export class ContainerConfigLoader {
+  constructor(private mode: 'server' | 'worker' = 'server') {}
+
   async load(configuration?: {
     controllerConatiner?: ControllerContainerInterface
     directCallDomainEventPublisher?: DirectCallDomainEventPublisher
@@ -115,7 +117,7 @@ export class ContainerConfigLoader {
 
     container.bind<TimerInterface>(TYPES.Revisions_Timer).toDynamicValue(() => new Timer())
 
-    const appDataSource = new AppDataSource(env)
+    const appDataSource = new AppDataSource({ env, runMigrations: this.mode === 'server' })
     await appDataSource.initialize()
 
     logger.debug('Database initialized')

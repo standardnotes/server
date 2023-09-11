@@ -15,7 +15,12 @@ export class AppDataSource {
   private _dataSource: DataSource | undefined
   private _secondaryDataSource: DataSource | undefined
 
-  constructor(private env: Env) {}
+  constructor(
+    private configuration: {
+      env: Env
+      runMigrations: boolean
+    },
+  ) {}
 
   getRepository<Entity extends ObjectLiteral>(target: EntityTarget<Entity>): Repository<Entity> {
     if (!this._dataSource) {
@@ -42,20 +47,20 @@ export class AppDataSource {
   }
 
   get secondaryDataSource(): DataSource | undefined {
-    this.env.load()
+    this.configuration.env.load()
 
-    if (this.env.get('SECONDARY_DB_ENABLED', true) !== 'true') {
+    if (this.configuration.env.get('SECONDARY_DB_ENABLED', true) !== 'true') {
       return undefined
     }
 
     this._secondaryDataSource = new DataSource({
       type: 'mongodb',
-      host: this.env.get('MONGO_HOST'),
+      host: this.configuration.env.get('MONGO_HOST'),
       authSource: 'admin',
-      port: parseInt(this.env.get('MONGO_PORT')),
-      username: this.env.get('MONGO_USERNAME'),
-      password: this.env.get('MONGO_PASSWORD', true),
-      database: this.env.get('MONGO_DATABASE'),
+      port: parseInt(this.configuration.env.get('MONGO_PORT')),
+      username: this.configuration.env.get('MONGO_USERNAME'),
+      password: this.configuration.env.get('MONGO_PASSWORD', true),
+      database: this.configuration.env.get('MONGO_DATABASE'),
       entities: [MongoDBItem],
       retryWrites: false,
       synchronize: true,
@@ -65,14 +70,15 @@ export class AppDataSource {
   }
 
   get dataSource(): DataSource {
-    this.env.load()
+    this.configuration.env.load()
 
-    const isConfiguredForMySQL = this.env.get('DB_TYPE') === 'mysql'
+    const isConfiguredForMySQL = this.configuration.env.get('DB_TYPE') === 'mysql'
     const isConfiguredForHomeServerOrSelfHosting =
-      this.env.get('MODE', true) === 'home-server' || this.env.get('MODE', true) === 'self-hosted'
+      this.configuration.env.get('MODE', true) === 'home-server' ||
+      this.configuration.env.get('MODE', true) === 'self-hosted'
 
-    const maxQueryExecutionTime = this.env.get('DB_MAX_QUERY_EXECUTION_TIME', true)
-      ? +this.env.get('DB_MAX_QUERY_EXECUTION_TIME', true)
+    const maxQueryExecutionTime = this.configuration.env.get('DB_MAX_QUERY_EXECUTION_TIME', true)
+      ? +this.configuration.env.get('DB_MAX_QUERY_EXECUTION_TIME', true)
       : 45_000
 
     const migrationsSourceDirectoryName = isConfiguredForMySQL
@@ -92,28 +98,28 @@ export class AppDataSource {
         TypeORMMessage,
       ],
       migrations: [`${__dirname}/../../migrations/${migrationsSourceDirectoryName}/*.js`],
-      migrationsRun: true,
-      logging: <LoggerOptions>this.env.get('DB_DEBUG_LEVEL', true) ?? 'info',
+      migrationsRun: this.configuration.runMigrations,
+      logging: <LoggerOptions>this.configuration.env.get('DB_DEBUG_LEVEL', true) ?? 'info',
     }
 
     if (isConfiguredForMySQL) {
-      const inReplicaMode = this.env.get('DB_REPLICA_HOST', true) ? true : false
+      const inReplicaMode = this.configuration.env.get('DB_REPLICA_HOST', true) ? true : false
 
       const replicationConfig = {
         master: {
-          host: this.env.get('DB_HOST'),
-          port: parseInt(this.env.get('DB_PORT')),
-          username: this.env.get('DB_USERNAME'),
-          password: this.env.get('DB_PASSWORD'),
-          database: this.env.get('DB_DATABASE'),
+          host: this.configuration.env.get('DB_HOST'),
+          port: parseInt(this.configuration.env.get('DB_PORT')),
+          username: this.configuration.env.get('DB_USERNAME'),
+          password: this.configuration.env.get('DB_PASSWORD'),
+          database: this.configuration.env.get('DB_DATABASE'),
         },
         slaves: [
           {
-            host: this.env.get('DB_REPLICA_HOST', true),
-            port: parseInt(this.env.get('DB_PORT')),
-            username: this.env.get('DB_USERNAME'),
-            password: this.env.get('DB_PASSWORD'),
-            database: this.env.get('DB_DATABASE'),
+            host: this.configuration.env.get('DB_REPLICA_HOST', true),
+            port: parseInt(this.configuration.env.get('DB_PORT')),
+            username: this.configuration.env.get('DB_USERNAME'),
+            password: this.configuration.env.get('DB_PASSWORD'),
+            database: this.configuration.env.get('DB_DATABASE'),
           },
         ],
         removeNodeErrorCount: 10,
@@ -127,11 +133,11 @@ export class AppDataSource {
         supportBigNumbers: true,
         bigNumberStrings: false,
         replication: inReplicaMode ? replicationConfig : undefined,
-        host: inReplicaMode ? undefined : this.env.get('DB_HOST'),
-        port: inReplicaMode ? undefined : parseInt(this.env.get('DB_PORT')),
-        username: inReplicaMode ? undefined : this.env.get('DB_USERNAME'),
-        password: inReplicaMode ? undefined : this.env.get('DB_PASSWORD'),
-        database: inReplicaMode ? undefined : this.env.get('DB_DATABASE'),
+        host: inReplicaMode ? undefined : this.configuration.env.get('DB_HOST'),
+        port: inReplicaMode ? undefined : parseInt(this.configuration.env.get('DB_PORT')),
+        username: inReplicaMode ? undefined : this.configuration.env.get('DB_USERNAME'),
+        password: inReplicaMode ? undefined : this.configuration.env.get('DB_PASSWORD'),
+        database: inReplicaMode ? undefined : this.configuration.env.get('DB_DATABASE'),
       }
 
       this._dataSource = new DataSource(mySQLDataSourceOptions)
@@ -139,7 +145,7 @@ export class AppDataSource {
       const sqliteDataSourceOptions: SqliteConnectionOptions = {
         ...commonDataSourceOptions,
         type: 'sqlite',
-        database: this.env.get('DB_SQLITE_DATABASE_PATH'),
+        database: this.configuration.env.get('DB_SQLITE_DATABASE_PATH'),
         enableWAL: true,
         busyErrorRetry: 2000,
       }
