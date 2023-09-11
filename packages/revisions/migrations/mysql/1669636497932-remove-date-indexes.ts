@@ -5,24 +5,24 @@ export class removeDateIndexes1669636497932 implements MigrationInterface {
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     const indexRevisionsOnCreatedAt = await queryRunner.manager.query(
-      'SHOW INDEX FROM `revisions` where `key_name` = "created_at"',
+      'SHOW INDEX FROM `revisions_revisions` where `key_name` = "created_at"',
     )
     const indexRevisionsOnCreatedAtExist = indexRevisionsOnCreatedAt && indexRevisionsOnCreatedAt.length > 0
     if (indexRevisionsOnCreatedAtExist) {
-      await queryRunner.query('DROP INDEX `created_at` ON `revisions`')
+      await queryRunner.query('DROP INDEX `created_at` ON `revisions_revisions`')
     }
 
     const indexRevisionsOnCreationDate = await queryRunner.manager.query(
-      'SHOW INDEX FROM `revisions` where `key_name` = "creation_date"',
+      'SHOW INDEX FROM `revisions_revisions` where `key_name` = "creation_date"',
     )
     const indexRevisionsOnCreationDateAtExist = indexRevisionsOnCreationDate && indexRevisionsOnCreationDate.length > 0
     if (indexRevisionsOnCreationDateAtExist) {
-      await queryRunner.query('DROP INDEX `creation_date` ON `revisions`')
+      await queryRunner.query('DROP INDEX `creation_date` ON `revisions_revisions`')
     }
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query('CREATE INDEX `creation_date` ON `revisions` (`creation_date`)')
-    await queryRunner.query('CREATE INDEX `created_at` ON `revisions` (`created_at`)')
+    await queryRunner.query('CREATE INDEX `creation_date` ON `revisions_revisions` (`creation_date`)')
+    await queryRunner.query('CREATE INDEX `created_at` ON `revisions_revisions` (`created_at`)')
   }
 }

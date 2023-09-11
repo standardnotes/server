@@ -2,7 +2,7 @@ import { Column, Entity, Index } from 'typeorm'
 
 import { SQLLegacyRevision } from './SQLLegacyRevision'
 
-@Entity({ name: 'revisions' })
+@Entity({ name: 'revisions_revisions' })
 export class SQLRevision extends SQLLegacyRevision {
   @Column({
     type: 'varchar',
