@@ -1,7 +1,8 @@
-import { ContentType, Dates } from '@standardnotes/domain-core'
+import { ContentType, Dates, Uuid } from '@standardnotes/domain-core'
 
 export interface RevisionMetadataProps {
   contentType: ContentType
-  sharedVaultUuid: string | null
+  itemUuid: Uuid
+  sharedVaultUuid: Uuid | null
   dates: Dates
 }

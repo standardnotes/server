@@ -1,4 +1,4 @@
-import { MapperInterface, Dates, UniqueEntityId, ContentType } from '@standardnotes/domain-core'
+import { MapperInterface, Dates, UniqueEntityId, ContentType, Uuid } from '@standardnotes/domain-core'
 
 import { RevisionMetadata } from '../../../Domain/Revision/RevisionMetadata'
 import { SQLLegacyRevision } from '../../../Infra/TypeORM/SQL/SQLLegacyRevision'
@@ -22,11 +22,18 @@ export class SQLLegacyRevisionMetadataPersistenceMapper
     }
     const dates = datesOrError.getValue()
 
+    const itemUuidOrError = Uuid.create(projection.itemUuid)
+    if (itemUuidOrError.isFailed()) {
+      throw new Error(`Could not create item uuid: ${itemUuidOrError.getError()}`)
+    }
+    const itemUuid = itemUuidOrError.getValue()
+
     const revisionMetadataOrError = RevisionMetadata.create(
       {
         contentType,
         dates,
         sharedVaultUuid: null,
+        itemUuid,
       },
       new UniqueEntityId(projection.uuid),
     )

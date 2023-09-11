@@ -126,7 +126,7 @@ export class MongoDBRevisionRepository implements RevisionRepositoryInterface {
     let persistence = []
     if (sharedVaultUuids.length > 0) {
       persistence = await this.mongoRepository.find({
-        select: ['_id', 'contentType', 'createdAt', 'updatedAt', 'sharedVaultUuid'],
+        select: ['_id', 'contentType', 'createdAt', 'updatedAt', 'sharedVaultUuid', 'itemUuid'],
         where: {
           $and: [
             { itemUuid: { $eq: itemUuid.value } },

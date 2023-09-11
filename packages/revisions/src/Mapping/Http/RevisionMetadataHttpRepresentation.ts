@@ -1,5 +1,6 @@
 export interface RevisionMetadataHttpRepresentation {
   uuid: string
+  item_uuid: string
   content_type: string
   created_at: string
   updated_at: string

@@ -1,4 +1,4 @@
-import { MapperInterface, Dates, UniqueEntityId, ContentType } from '@standardnotes/domain-core'
+import { MapperInterface, Dates, UniqueEntityId, ContentType, Uuid } from '@standardnotes/domain-core'
 
 import { RevisionMetadata } from '../../../Domain/Revision/RevisionMetadata'
 import { MongoDBRevision } from '../../../Infra/TypeORM/MongoDB/MongoDBRevision'
@@ -20,11 +20,27 @@ export class MongoDBRevisionMetadataPersistenceMapper implements MapperInterface
     }
     const dates = datesOrError.getValue()
 
+    let sharedVaultUuid = null
+    if (projection.sharedVaultUuid) {
+      const sharedVaultUuidOrError = Uuid.create(projection.sharedVaultUuid)
+      if (sharedVaultUuidOrError.isFailed()) {
+        throw new Error(`Could not create shared vault uuid: ${sharedVaultUuidOrError.getError()}`)
+      }
+      sharedVaultUuid = sharedVaultUuidOrError.getValue()
+    }
+
+    const itemUuidOrError = Uuid.create(projection.itemUuid)
+    if (itemUuidOrError.isFailed()) {
+      throw new Error(`Could not create item uuid: ${itemUuidOrError.getError()}`)
+    }
+    const itemUuid = itemUuidOrError.getValue()
+
     const revisionMetadataOrError = RevisionMetadata.create(
       {
         contentType,
         dates,
-        sharedVaultUuid: projection.sharedVaultUuid,
+        sharedVaultUuid,
+        itemUuid,
       },
       new UniqueEntityId(projection._id.toHexString()),
     )
