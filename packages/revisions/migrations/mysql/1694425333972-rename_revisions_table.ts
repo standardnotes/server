@@ -4,7 +4,13 @@ export class RenameRevisionsTable1694425333972 implements MigrationInterface {
   name = 'RenameRevisionsTable1694425333972'
 
   public async up(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query('RENAME TABLE `revisions` TO `revisions_revisions`')
+    const revisionsTableExistsQueryResult = await queryRunner.manager.query(
+      'SELECT COUNT(*) as count FROM information_schema.tables WHERE table_schema = DATABASE() AND table_name = "revisions"',
+    )
+    const revisionsTableExists = revisionsTableExistsQueryResult[0].count === 1
+    if (revisionsTableExists) {
+      await queryRunner.query('RENAME TABLE `revisions` TO `revisions_revisions`')
+    }
   }
 
   public async down(): Promise<void> {
