@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.33.4](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.33.3...@standardnotes/revisions-server@1.33.4) (2023-09-11)
+
+### Bug Fixes
+
+* **revisions:** add shared vault uuid to revision metadata http representation ([156fa7a](https://github.com/standardnotes/server/commit/156fa7a618b9f33a839580019d0398c1b838697d))
+
 ## [1.33.3](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.33.2...@standardnotes/revisions-server@1.33.3) (2023-09-08)
 
 **Note:** Version bump only for package @standardnotes/revisions-server
