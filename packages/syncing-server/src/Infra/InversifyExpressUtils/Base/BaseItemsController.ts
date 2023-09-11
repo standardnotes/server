@@ -36,7 +36,7 @@ export class BaseItemsController extends BaseHttpController {
 
   async sync(request: Request, response: Response): Promise<results.JsonResult> {
     if (response.locals.ongoingTransition === true) {
-      throw new Error('Cannot sync during transition')
+      throw new Error(`Cannot sync user ${response.locals.user.uuid} during transition`)
     }
 
     const itemHashes: ItemHash[] = []
