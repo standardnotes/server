@@ -12,7 +12,7 @@ export class Revision extends Entity<RevisionProps> {
   }
 
   isIdenticalTo(revision: Revision): boolean {
-    if (this._id.toString() !== revision._id.toString()) {
+    if (this._id.toString().toLowerCase() !== revision._id.toString().toLowerCase()) {
       return false
     }
 

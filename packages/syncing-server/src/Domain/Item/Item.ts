@@ -54,7 +54,7 @@ export class Item extends Aggregate<ItemProps> {
   }
 
   isIdenticalTo(item: Item): boolean {
-    if (this._id.toString() !== item._id.toString()) {
+    if (this._id.toString().toLowerCase() !== item._id.toString().toLowerCase()) {
       return false
     }
 

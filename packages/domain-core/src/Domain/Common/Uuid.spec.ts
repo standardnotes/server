@@ -8,6 +8,13 @@ describe('Uuid', () => {
     expect(valueOrError.getValue().value).toEqual('84c0f8e8-544a-4c7e-9adf-26209303bc1d')
   })
 
+  it('should create a value object on upper case', () => {
+    const valueOrError = Uuid.create('00B57455-B563-4B50-A2AA-B19762102219')
+
+    expect(valueOrError.isFailed()).toBeFalsy()
+    expect(valueOrError.getValue().value).toEqual('00B57455-B563-4B50-A2AA-B19762102219')
+  })
+
   it('should not create an invalid value object', () => {
     const valueOrError = Uuid.create('1-2-3')
 
