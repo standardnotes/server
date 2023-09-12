@@ -419,6 +419,7 @@ export class ContainerConfigLoader {
         new ItemDumpedEventHandler(
           container.get<DumpRepositoryInterface>(TYPES.Revisions_DumpRepository),
           container.get<RevisionRepositoryResolverInterface>(TYPES.Revisions_RevisionRepositoryResolver),
+          container.get<winston.Logger>(TYPES.Revisions_Logger),
         ),
       )
     container

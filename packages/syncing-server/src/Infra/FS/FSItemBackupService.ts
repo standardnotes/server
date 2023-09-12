@@ -33,6 +33,12 @@ export class FSItemBackupService implements ItemBackupServiceInterface {
 
     await promises.writeFile(path, contents)
 
+    const fileCreated = (await promises.stat(path)).isFile()
+
+    if (!fileCreated) {
+      throw new Error(`Could not create dump file ${path}`)
+    }
+
     return path
   }
 }

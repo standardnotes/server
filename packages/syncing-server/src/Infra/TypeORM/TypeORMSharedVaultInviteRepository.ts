@@ -32,7 +32,7 @@ export class TypeORMSharedVaultInviteRepository implements SharedVaultInviteRepo
     const persistence = await this.ormRepository
       .createQueryBuilder('shared_vault_invite')
       .where('shared_vault_invite.sender_uuid = :uuid', {
-        senderUuid: dto.senderUuid.value,
+        uuid: dto.senderUuid.value,
       })
       .andWhere('shared_vault_invite.shared_vault_uuid = :sharedVaultUuid', {
         sharedVaultUuid: dto.sharedVaultUuid.value,

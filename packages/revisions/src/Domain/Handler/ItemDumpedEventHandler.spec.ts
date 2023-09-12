@@ -1,4 +1,7 @@
 import { ItemDumpedEvent } from '@standardnotes/domain-events'
+import { Logger } from 'winston'
+import { Uuid, ContentType, Dates } from '@standardnotes/domain-core'
+
 import { DumpRepositoryInterface } from '../Dump/DumpRepositoryInterface'
 import { Revision } from '../Revision/Revision'
 import { RevisionRepositoryInterface } from '../Revision/RevisionRepositoryInterface'
@@ -11,11 +14,22 @@ describe('ItemDumpedEventHandler', () => {
   let revisionRepositoryResolver: RevisionRepositoryResolverInterface
   let revision: Revision
   let event: ItemDumpedEvent
+  let logger: Logger
 
-  const createHandler = () => new ItemDumpedEventHandler(dumpRepository, revisionRepositoryResolver)
+  const createHandler = () => new ItemDumpedEventHandler(dumpRepository, revisionRepositoryResolver, logger)
 
   beforeEach(() => {
-    revision = {} as jest.Mocked<Revision>
+    revision = Revision.create({
+      itemUuid: Uuid.create('84c0f8e8-544a-4c7e-9adf-26209303bc1d').getValue(),
+      userUuid: Uuid.create('84c0f8e8-544a-4c7e-9adf-26209303bc1d').getValue(),
+      content: 'test',
+      contentType: ContentType.create('Note').getValue(),
+      itemsKeyId: 'test',
+      encItemKey: 'test',
+      authHash: 'test',
+      creationDate: new Date(1),
+      dates: Dates.create(new Date(1), new Date(2)).getValue(),
+    }).getValue()
 
     dumpRepository = {} as jest.Mocked<DumpRepositoryInterface>
     dumpRepository.getRevisionFromDumpPath = jest.fn().mockReturnValue(revision)
@@ -32,6 +46,10 @@ describe('ItemDumpedEventHandler', () => {
       fileDumpPath: 'foobar',
       roleNames: ['CORE_USER'],
     }
+
+    logger = {} as jest.Mocked<Logger>
+    logger.debug = jest.fn()
+    logger.error = jest.fn()
   })
 
   it('should save a revision from file dump', async () => {

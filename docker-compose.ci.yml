@@ -53,7 +53,7 @@ services:
     image: mysql:8
     container_name: db-ci
     env_file: .github/ci.env
-    expose:
+    ports:
       - 3306
     restart: unless-stopped
     command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci
@@ -66,7 +66,7 @@ services:
   secondary_db:
     image: mongo:5.0
     container_name: secondary_db-ci
-    expose:
+    ports:
       - 27017
     restart: unless-stopped
     volumes:
@@ -83,7 +83,7 @@ services:
     container_name: cache-ci
     volumes:
       - ./data/redis/:/data
-    expose:
+    ports:
       - 6379
     restart: unless-stopped
     networks:
