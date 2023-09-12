@@ -17,6 +17,14 @@ export class TransitionStatusUpdatedEventHandler implements DomainEventHandlerIn
 
   async handle(event: TransitionStatusUpdatedEvent): Promise<void> {
     if (event.payload.status === 'STARTED' && event.payload.transitionType === 'items') {
+      await this.domainEventPublisher.publish(
+        this.domainEventFactory.createTransitionStatusUpdatedEvent({
+          userUuid: event.payload.userUuid,
+          status: 'IN_PROGRESS',
+          transitionType: 'items',
+        }),
+      )
+
       const result = await this.transitionItemsFromPrimaryToSecondaryDatabaseForUser.execute({
         userUuid: event.payload.userUuid,
       })

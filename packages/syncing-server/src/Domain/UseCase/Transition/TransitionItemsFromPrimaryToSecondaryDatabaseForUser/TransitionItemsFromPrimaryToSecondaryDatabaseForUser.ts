@@ -156,7 +156,13 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
           }
 
           if (!item.isIdenticalTo(itemInSecondary)) {
-            return Result.fail(`Item ${item.uuid.value} is not identical in primary and secondary database`)
+            return Result.fail(
+              `Item ${
+                item.uuid.value
+              } is not identical in primary and secondary database. Item in primary database: ${JSON.stringify(
+                item,
+              )}, item in secondary database: ${JSON.stringify(itemInSecondary)}`,
+            )
           }
         }
       }

@@ -4,13 +4,17 @@ import { GetTransitionStatusDTO } from './GetTransitionStatusDTO'
 import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'
 import { TransitionStatusRepositoryInterface } from '../../Transition/TransitionStatusRepositoryInterface'
 
-export class GetTransitionStatus implements UseCaseInterface<'TO-DO' | 'STARTED' | 'FINISHED' | 'FAILED'> {
+export class GetTransitionStatus
+  implements UseCaseInterface<'TO-DO' | 'STARTED' | 'IN_PROGRESS' | 'FINISHED' | 'FAILED'>
+{
   constructor(
     private transitionStatusRepository: TransitionStatusRepositoryInterface,
     private userRepository: UserRepositoryInterface,
   ) {}
 
-  async execute(dto: GetTransitionStatusDTO): Promise<Result<'TO-DO' | 'STARTED' | 'FINISHED' | 'FAILED'>> {
+  async execute(
+    dto: GetTransitionStatusDTO,
+  ): Promise<Result<'TO-DO' | 'STARTED' | 'IN_PROGRESS' | 'FINISHED' | 'FAILED'>> {
     const userUuidOrError = Uuid.create(dto.userUuid)
     if (userUuidOrError.isFailed()) {
       return Result.fail(userUuidOrError.getError())

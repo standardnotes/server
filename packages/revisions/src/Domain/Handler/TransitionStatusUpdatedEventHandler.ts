@@ -29,6 +29,14 @@ export class TransitionStatusUpdatedEventHandler implements DomainEventHandlerIn
     }
 
     if (event.payload.status === 'STARTED' && event.payload.transitionType === 'revisions') {
+      await this.domainEventPublisher.publish(
+        this.domainEventFactory.createTransitionStatusUpdatedEvent({
+          userUuid: event.payload.userUuid,
+          status: 'IN_PROGRESS',
+          transitionType: 'revisions',
+        }),
+      )
+
       const result = await this.transitionRevisionsFromPrimaryToSecondaryDatabaseForUser.execute({
         userUuid: event.payload.userUuid,
       })

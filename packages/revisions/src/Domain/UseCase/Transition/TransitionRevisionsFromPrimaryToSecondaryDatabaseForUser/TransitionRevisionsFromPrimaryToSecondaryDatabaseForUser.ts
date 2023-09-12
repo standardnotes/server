@@ -179,7 +179,11 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
           }
 
           if (!revision.isIdenticalTo(revisionInSecondary)) {
-            return Result.fail(`Revision ${revision.id.toString()} is not identical in primary and secondary database`)
+            return Result.fail(
+              `Revision ${revision.id.toString()} is not identical in primary and secondary database. Revision in primary database: ${JSON.stringify(
+                revision,
+              )}, revision in secondary database: ${JSON.stringify(revisionInSecondary)}`,
+            )
           }
         }
       }

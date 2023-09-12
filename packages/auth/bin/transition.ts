@@ -10,6 +10,7 @@ import { Env } from '../src/Bootstrap/Env'
 import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
 import { DomainEventFactoryInterface } from '../src/Domain/Event/DomainEventFactoryInterface'
 import { UserRepositoryInterface } from '../src/Domain/User/UserRepositoryInterface'
+import { RoleName } from '@standardnotes/domain-core'
 
 const inputArgs = process.argv.slice(2)
 const startDateString = inputArgs[0]
@@ -28,11 +29,24 @@ const requestTransition = async (
 
   logger.info(`Found ${users.length} users created between ${startDateString} and ${endDateString}`)
 
+  let usersTriggered = 0
   for (const user of users) {
+    const roles = await user.roles
+    const userHasTransitionUserRole = roles.some((role) => role.name === RoleName.NAMES.TransitionUser) === true
+    if (userHasTransitionUserRole === true) {
+      continue
+    }
+
     const transitionRequestedEvent = domainEventFactory.createTransitionRequestedEvent({ userUuid: user.uuid })
+
+    usersTriggered += 1
 
     await domainEventPublisher.publish(transitionRequestedEvent)
   }
+
+  logger.info(
+    `Triggered transition for ${usersTriggered} users created between ${startDateString} and ${endDateString}`,
+  )
 }
 
 const container = new ContainerConfigLoader('worker')

@@ -119,7 +119,7 @@ describe('CreateCrossServiceToken', () => {
   })
 
   it('should create a cross service token for user that has an ongoing transaction', async () => {
-    transitionStatusRepository.getStatus = jest.fn().mockReturnValue('STARTED')
+    transitionStatusRepository.getStatus = jest.fn().mockReturnValue('IN_PROGRESS')
 
     await createUseCase().execute({
       user,

@@ -19,9 +19,13 @@ export class RedisTransitionStatusRepository implements TransitionStatusReposito
     await this.redisClient.del(`${this.PREFIX}:${transitionType}:${userUuid}`)
   }
 
-  async getStatus(userUuid: string, transitionType: 'items' | 'revisions'): Promise<'STARTED' | 'FAILED' | null> {
+  async getStatus(
+    userUuid: string,
+    transitionType: 'items' | 'revisions',
+  ): Promise<'STARTED' | 'IN_PROGRESS' | 'FAILED' | null> {
     const status = (await this.redisClient.get(`${this.PREFIX}:${transitionType}:${userUuid}`)) as
       | 'STARTED'
+      | 'IN_PROGRESS'
       | 'FAILED'
       | null
 

@@ -206,9 +206,6 @@ describe('TransitionItemsFromPrimaryToSecondaryDatabaseForUser', () => {
       })
 
       expect(result.isFailed()).toBeTruthy()
-      expect(result.getError()).toEqual(
-        'Item 00000000-0000-0000-0000-000000000001 is not identical in primary and secondary database',
-      )
 
       expect((secondaryItemRepository as ItemRepositoryInterface).deleteByUserUuid).toHaveBeenCalledTimes(1)
       expect(primaryItemRepository.deleteByUserUuid).not.toHaveBeenCalled()

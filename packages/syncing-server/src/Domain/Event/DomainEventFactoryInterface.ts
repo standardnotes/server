@@ -52,7 +52,7 @@ export interface DomainEventFactoryInterface {
   createTransitionStatusUpdatedEvent(dto: {
     userUuid: string
     transitionType: 'items' | 'revisions'
-    status: 'STARTED' | 'FAILED' | 'FINISHED'
+    status: 'STARTED' | 'IN_PROGRESS' | 'FAILED' | 'FINISHED'
   }): TransitionStatusUpdatedEvent
   createEmailRequestedEvent(dto: {
     userEmail: string

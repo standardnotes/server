@@ -201,9 +201,6 @@ describe('TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser', () => {
       })
 
       expect(result.isFailed()).toBeTruthy()
-      expect(result.getError()).toEqual(
-        'Revision 00000000-0000-0000-0000-000000000001 is not identical in primary and secondary database',
-      )
 
       expect((secondaryRevisionRepository as RevisionRepositoryInterface).removeByUserUuid).toHaveBeenCalledTimes(1)
       expect(primaryRevisionRepository.removeByUserUuid).not.toHaveBeenCalled()

@@ -59,7 +59,7 @@ export class CreateCrossServiceToken implements UseCaseInterface<string> {
       user: this.projectUser(user),
       roles: this.projectRoles(roles),
       shared_vault_owner_context: undefined,
-      ongoing_transition: transitionStatus === 'STARTED',
+      ongoing_transition: transitionStatus === 'IN_PROGRESS',
       belongs_to_shared_vaults: sharedVaultAssociations.map((association) => ({
         shared_vault_uuid: association.props.sharedVaultUuid.value,
         permission: association.props.permission.value,
