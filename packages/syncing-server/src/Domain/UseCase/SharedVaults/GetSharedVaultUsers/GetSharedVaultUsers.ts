@@ -28,12 +28,14 @@ export class GetSharedVaultUsers implements UseCaseInterface<SharedVaultUser[]> 
       return Result.fail('Shared vault not found')
     }
 
-    const isOriginatorTheOwnerOfTheSharedVault = sharedVault.props.userUuid.equals(originatorUuid)
-    if (!isOriginatorTheOwnerOfTheSharedVault) {
-      return Result.fail('Only the owner can get shared vault users')
-    }
-
     const sharedVaultUsers = await this.sharedVaultUsersRepository.findBySharedVaultUuid(sharedVaultUuid)
+
+    const isOriginatorAMember = sharedVaultUsers.some((sharedVaultUser) =>
+      sharedVaultUser.props.userUuid.equals(originatorUuid),
+    )
+    if (!isOriginatorAMember) {
+      return Result.fail('Originator is not a member of the shared vault')
+    }
 
     return Result.ok(sharedVaultUsers)
   }
