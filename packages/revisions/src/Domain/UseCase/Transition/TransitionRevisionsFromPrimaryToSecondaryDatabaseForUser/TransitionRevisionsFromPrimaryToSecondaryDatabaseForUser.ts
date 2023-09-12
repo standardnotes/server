@@ -63,11 +63,13 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
 
     const migrationResult = await this.migrateRevisionsForUser(userUuid)
     if (migrationResult.isFailed()) {
-      const cleanupResult = await this.deleteRevisionsForUser(userUuid, this.secondRevisionsRepository)
-      if (cleanupResult.isFailed()) {
-        this.logger.error(
-          `Failed to clean up secondary database revisions for user ${userUuid.value}: ${cleanupResult.getError()}`,
-        )
+      if (newRevisionsInSecondaryCount === 0) {
+        const cleanupResult = await this.deleteRevisionsForUser(userUuid, this.secondRevisionsRepository)
+        if (cleanupResult.isFailed()) {
+          this.logger.error(
+            `Failed to clean up secondary database revisions for user ${userUuid.value}: ${cleanupResult.getError()}`,
+          )
+        }
       }
 
       return Result.fail(migrationResult.getError())
@@ -80,11 +82,13 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
       newRevisionsInSecondaryCount,
     )
     if (integrityCheckResult.isFailed()) {
-      const cleanupResult = await this.deleteRevisionsForUser(userUuid, this.secondRevisionsRepository)
-      if (cleanupResult.isFailed()) {
-        this.logger.error(
-          `Failed to clean up secondary database revisions for user ${userUuid.value}: ${cleanupResult.getError()}`,
-        )
+      if (newRevisionsInSecondaryCount === 0) {
+        const cleanupResult = await this.deleteRevisionsForUser(userUuid, this.secondRevisionsRepository)
+        if (cleanupResult.isFailed()) {
+          this.logger.error(
+            `Failed to clean up secondary database revisions for user ${userUuid.value}: ${cleanupResult.getError()}`,
+          )
+        }
       }
 
       return Result.fail(integrityCheckResult.getError())

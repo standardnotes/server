@@ -59,11 +59,13 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
 
     const migrationResult = await this.migrateItemsForUser(userUuid)
     if (migrationResult.isFailed()) {
-      const cleanupResult = await this.deleteItemsForUser(userUuid, this.secondaryItemRepository)
-      if (cleanupResult.isFailed()) {
-        this.logger.error(
-          `Failed to clean up secondary database items for user ${userUuid.value}: ${cleanupResult.getError()}`,
-        )
+      if (newItemsInSecondaryCount === 0) {
+        const cleanupResult = await this.deleteItemsForUser(userUuid, this.secondaryItemRepository)
+        if (cleanupResult.isFailed()) {
+          this.logger.error(
+            `Failed to clean up secondary database items for user ${userUuid.value}: ${cleanupResult.getError()}`,
+          )
+        }
       }
 
       return Result.fail(migrationResult.getError())
@@ -76,11 +78,13 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
       newItemsInSecondaryCount,
     )
     if (integrityCheckResult.isFailed()) {
-      const cleanupResult = await this.deleteItemsForUser(userUuid, this.secondaryItemRepository)
-      if (cleanupResult.isFailed()) {
-        this.logger.error(
-          `Failed to clean up secondary database items for user ${userUuid.value}: ${cleanupResult.getError()}`,
-        )
+      if (newItemsInSecondaryCount === 0) {
+        const cleanupResult = await this.deleteItemsForUser(userUuid, this.secondaryItemRepository)
+        if (cleanupResult.isFailed()) {
+          this.logger.error(
+            `Failed to clean up secondary database items for user ${userUuid.value}: ${cleanupResult.getError()}`,
+          )
+        }
       }
 
       return Result.fail(integrityCheckResult.getError())
