@@ -58,13 +58,8 @@ describe('GetSharedVaultUsers', () => {
     expect(result.getError()).toBe('Shared vault not found')
   })
 
-  it('returns error when originator is not the owner of the shared vault', async () => {
-    sharedVault = SharedVault.create({
-      fileUploadBytesUsed: 2,
-      userUuid: Uuid.create('00000000-0000-0000-0000-000000000001').getValue(),
-      timestamps: Timestamps.create(123, 123).getValue(),
-    }).getValue()
-    sharedVaultRepository.findByUuid = jest.fn().mockResolvedValue(sharedVault)
+  it('returns error when originator is not a member of the shared vault', async () => {
+    sharedVaultUsersRepository.findBySharedVaultUuid = jest.fn().mockResolvedValue([])
 
     const useCase = createUseCase()
     const result = await useCase.execute({
@@ -73,7 +68,7 @@ describe('GetSharedVaultUsers', () => {
     })
 
     expect(result.isFailed()).toBe(true)
-    expect(result.getError()).toBe('Only the owner can get shared vault users')
+    expect(result.getError()).toBe('Originator is not a member of the shared vault')
   })
 
   it('returns error when shared vault uuid is invalid', async () => {
