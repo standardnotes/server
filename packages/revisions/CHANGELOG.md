@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.33.15](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.33.14...@standardnotes/revisions-server@1.33.15) (2023-09-12)
+
+### Bug Fixes
+
+* sync between primary and secondary database with diff ([fab5d18](https://github.com/standardnotes/server/commit/fab5d180645e0a6fa0c9c67205d44f27c8a65c8b))
+
 ## [1.33.14](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.33.13...@standardnotes/revisions-server@1.33.14) (2023-09-12)
 
 ### Bug Fixes

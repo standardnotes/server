@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.141.8](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.141.7...@standardnotes/auth-server@1.141.8) (2023-09-12)
+
+### Bug Fixes
+
+* **auth:** add transition role only if the items transition has completed ([f055e52](https://github.com/standardnotes/server/commit/f055e52e06b6e93501abd340dfce214d5363bc30))
+* **auth:** remove the transition role constraint ([afe385a](https://github.com/standardnotes/server/commit/afe385aed4ba5ca53d8ef429ae4154f4ccf81419))
+* imports ([54113ab](https://github.com/standardnotes/server/commit/54113abe2a961720a3561e5ff3a0069046ea8d25))
+
 ## [1.141.7](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.141.6...@standardnotes/auth-server@1.141.7) (2023-09-12)
 
 ### Bug Fixes
