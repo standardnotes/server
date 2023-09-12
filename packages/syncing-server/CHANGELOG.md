@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.95.7](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.95.6...@standardnotes/syncing-server@1.95.7) (2023-09-12)
+
+### Bug Fixes
+
+* comparing uuids ([0a1d162](https://github.com/standardnotes/syncing-server-js/commit/0a1d1624e818000f2e951f29323a88e6e233c755))
+
 ## [1.95.6](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.95.5...@standardnotes/syncing-server@1.95.6) (2023-09-12)
 
 **Note:** Version bump only for package @standardnotes/syncing-server

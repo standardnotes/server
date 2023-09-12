@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.33.11](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.33.10...@standardnotes/revisions-server@1.33.11) (2023-09-12)
+
+### Bug Fixes
+
+* comparing uuids ([0a1d162](https://github.com/standardnotes/server/commit/0a1d1624e818000f2e951f29323a88e6e233c755))
+
 ## [1.33.10](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.33.9...@standardnotes/revisions-server@1.33.10) (2023-09-12)
 
 **Note:** Version bump only for package @standardnotes/revisions-server

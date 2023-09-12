@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.28.1](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.28.0...@standardnotes/domain-core@1.28.1) (2023-09-12)
+
+### Bug Fixes
+
+* comparing uuids ([0a1d162](https://github.com/standardnotes/server/commit/0a1d1624e818000f2e951f29323a88e6e233c755))
+
 # [1.28.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.27.0...@standardnotes/domain-core@1.28.0) (2023-09-07)
 
 ### Features
