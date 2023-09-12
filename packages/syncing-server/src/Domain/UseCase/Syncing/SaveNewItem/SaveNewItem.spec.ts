@@ -90,6 +90,7 @@ describe('SaveNewItem', () => {
 
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
+      onGoingRevisionsTransition: false,
       roleNames: [RoleName.NAMES.CoreUser],
       sessionUuid: '00000000-0000-0000-0000-000000000001',
       itemHash: itemHash1,
@@ -112,6 +113,7 @@ describe('SaveNewItem', () => {
 
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
+      onGoingRevisionsTransition: true,
       roleNames: [RoleName.NAMES.CoreUser],
       sessionUuid: '00000000-0000-0000-0000-000000000001',
       itemHash: itemHash1,
@@ -132,6 +134,7 @@ describe('SaveNewItem', () => {
 
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
+      onGoingRevisionsTransition: false,
       roleNames: [RoleName.NAMES.CoreUser],
       sessionUuid: '00000000-0000-0000-0000-000000000001',
       itemHash: itemHash1,
@@ -150,6 +153,7 @@ describe('SaveNewItem', () => {
 
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
+      onGoingRevisionsTransition: false,
       roleNames: [RoleName.NAMES.CoreUser],
       sessionUuid: '00000000-0000-0000-0000-000000000001',
       itemHash: itemHash1,
@@ -170,6 +174,7 @@ describe('SaveNewItem', () => {
 
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
+      onGoingRevisionsTransition: false,
       roleNames: [RoleName.NAMES.CoreUser],
       sessionUuid: '00000000-0000-0000-0000-000000000001',
       itemHash: itemHash1,
@@ -190,6 +195,7 @@ describe('SaveNewItem', () => {
 
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
+      onGoingRevisionsTransition: false,
       roleNames: [RoleName.NAMES.CoreUser],
       sessionUuid: '00000000-0000-0000-0000-000000000001',
       itemHash: itemHash1,
@@ -208,6 +214,7 @@ describe('SaveNewItem', () => {
       sessionUuid: '00000000-0000-0000-0000-000000000001',
       itemHash: itemHash1,
       roleNames: [RoleName.NAMES.CoreUser],
+      onGoingRevisionsTransition: false,
     })
 
     expect(result.isFailed()).toBeTruthy()
@@ -218,6 +225,7 @@ describe('SaveNewItem', () => {
 
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
+      onGoingRevisionsTransition: false,
       sessionUuid: '00000000-0000-0000-0000-000000000001',
       itemHash: itemHash1,
       roleNames: ['invalid'],
@@ -231,6 +239,7 @@ describe('SaveNewItem', () => {
 
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
+      onGoingRevisionsTransition: false,
       roleNames: [RoleName.NAMES.CoreUser],
       sessionUuid: '00000000-0000-0000-0000-00000000000',
       itemHash: itemHash1,
@@ -249,6 +258,7 @@ describe('SaveNewItem', () => {
 
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
+      onGoingRevisionsTransition: false,
       roleNames: [RoleName.NAMES.CoreUser],
       sessionUuid: '00000000-0000-0000-0000-000000000001',
       itemHash: itemHash1,
@@ -267,6 +277,7 @@ describe('SaveNewItem', () => {
 
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
+      onGoingRevisionsTransition: false,
       roleNames: [RoleName.NAMES.CoreUser],
       sessionUuid: '00000000-0000-0000-0000-000000000001',
       itemHash: itemHash1,
@@ -285,6 +296,7 @@ describe('SaveNewItem', () => {
 
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
+      onGoingRevisionsTransition: false,
       roleNames: [RoleName.NAMES.CoreUser],
       sessionUuid: '00000000-0000-0000-0000-000000000001',
       itemHash: itemHash1,
@@ -305,6 +317,7 @@ describe('SaveNewItem', () => {
 
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
+      onGoingRevisionsTransition: false,
       roleNames: [RoleName.NAMES.CoreUser],
       sessionUuid: '00000000-0000-0000-0000-000000000001',
       itemHash: itemHash1,
@@ -328,6 +341,7 @@ describe('SaveNewItem', () => {
       sessionUuid: '00000000-0000-0000-0000-000000000001',
       itemHash: itemHash1,
       roleNames: [RoleName.NAMES.CoreUser],
+      onGoingRevisionsTransition: false,
     })
 
     expect(result.isFailed()).toBeTruthy()
@@ -344,6 +358,7 @@ describe('SaveNewItem', () => {
 
       const result = await useCase.execute({
         userUuid: '00000000-0000-0000-0000-000000000000',
+        onGoingRevisionsTransition: false,
         roleNames: [RoleName.NAMES.CoreUser],
         sessionUuid: '00000000-0000-0000-0000-000000000001',
         itemHash: itemHash1,
@@ -371,6 +386,7 @@ describe('SaveNewItem', () => {
 
       const result = await useCase.execute({
         userUuid: '00000000-0000-0000-0000-000000000000',
+        onGoingRevisionsTransition: false,
         roleNames: [RoleName.NAMES.CoreUser],
         sessionUuid: '00000000-0000-0000-0000-000000000001',
         itemHash: itemHash1,
@@ -393,6 +409,7 @@ describe('SaveNewItem', () => {
 
       const result = await useCase.execute({
         userUuid: '00000000-0000-0000-0000-000000000000',
+        onGoingRevisionsTransition: false,
         roleNames: [RoleName.NAMES.CoreUser],
         sessionUuid: '00000000-0000-0000-0000-000000000001',
         itemHash: itemHash1,
@@ -412,6 +429,7 @@ describe('SaveNewItem', () => {
 
       const result = await useCase.execute({
         userUuid: '00000000-0000-0000-0000-000000000000',
+        onGoingRevisionsTransition: false,
         roleNames: [RoleName.NAMES.CoreUser],
         sessionUuid: '00000000-0000-0000-0000-000000000001',
         itemHash: itemHash1,
@@ -435,6 +453,7 @@ describe('SaveNewItem', () => {
 
       const result = await useCase.execute({
         userUuid: '00000000-0000-0000-0000-000000000000',
+        onGoingRevisionsTransition: false,
         roleNames: [RoleName.NAMES.CoreUser],
         sessionUuid: '00000000-0000-0000-0000-000000000001',
         itemHash: itemHash1,

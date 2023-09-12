@@ -8,4 +8,5 @@ export interface SaveItemsDTO {
   sessionUuid: string | null
   snjsVersion: string
   roleNames: string[]
+  onGoingRevisionsTransition: boolean
 }

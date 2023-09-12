@@ -48,6 +48,7 @@ export class CreateCrossServiceToken implements UseCaseInterface<string> {
     }
 
     const transitionStatus = await this.transitionStatusRepository.getStatus(user.uuid, 'items')
+    const revisionsTransitionStatus = await this.transitionStatusRepository.getStatus(user.uuid, 'revisions')
 
     const roles = await user.roles
 
@@ -60,6 +61,8 @@ export class CreateCrossServiceToken implements UseCaseInterface<string> {
       roles: this.projectRoles(roles),
       shared_vault_owner_context: undefined,
       ongoing_transition: transitionStatus === 'IN_PROGRESS',
+      ongoing_revisions_transition:
+        revisionsTransitionStatus === 'STARTED' || revisionsTransitionStatus === 'IN_PROGRESS',
       belongs_to_shared_vaults: sharedVaultAssociations.map((association) => ({
         shared_vault_uuid: association.props.sharedVaultUuid.value,
         permission: association.props.permission.value,

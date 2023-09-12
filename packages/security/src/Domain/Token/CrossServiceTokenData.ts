@@ -25,4 +25,5 @@ export type CrossServiceTokenData = {
   }
   extensionKey?: string
   ongoing_transition?: boolean
+  ongoing_revisions_transition?: boolean
 }

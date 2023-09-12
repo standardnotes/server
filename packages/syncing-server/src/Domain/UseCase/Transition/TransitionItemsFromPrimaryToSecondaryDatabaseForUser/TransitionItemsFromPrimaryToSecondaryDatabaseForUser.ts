@@ -16,6 +16,8 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
   ) {}
 
   async execute(dto: TransitionItemsFromPrimaryToSecondaryDatabaseForUserDTO): Promise<Result<void>> {
+    this.logger.info(`Transitioning items for user ${dto.userUuid}`)
+
     if (this.secondaryItemRepository === null) {
       return Result.fail('Secondary item repository is not set')
     }
@@ -30,6 +32,10 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
       this.logger.info(`Items for user ${userUuid.value} are already migrated`)
 
       return Result.ok()
+    }
+
+    if (await this.hasAlreadyDataInSecondaryDatabase(userUuid)) {
+      return Result.fail(`Items for user ${userUuid.value} already exist in secondary database`)
     }
 
     const migrationTimeStart = this.timer.getTimestampInMicroseconds()
@@ -77,6 +83,14 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
     )
 
     return Result.ok()
+  }
+
+  private async hasAlreadyDataInSecondaryDatabase(userUuid: Uuid): Promise<boolean> {
+    const totalItemsCountForUser = await (this.secondaryItemRepository as ItemRepositoryInterface).countAll({
+      userUuid: userUuid.value,
+    })
+
+    return totalItemsCountForUser > 0
   }
 
   private async isAlreadyMigrated(userUuid: Uuid): Promise<boolean> {

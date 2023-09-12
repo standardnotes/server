@@ -113,6 +113,7 @@ describe('CreateCrossServiceToken', () => {
           uuid: '00000000-0000-0000-0000-000000000000',
         },
         ongoing_transition: false,
+        ongoing_revisions_transition: false,
       },
       60,
     )
@@ -148,6 +149,7 @@ describe('CreateCrossServiceToken', () => {
           uuid: '00000000-0000-0000-0000-000000000000',
         },
         ongoing_transition: true,
+        ongoing_revisions_transition: true,
       },
       60,
     )
@@ -177,6 +179,7 @@ describe('CreateCrossServiceToken', () => {
           uuid: '00000000-0000-0000-0000-000000000000',
         },
         ongoing_transition: false,
+        ongoing_revisions_transition: false,
       },
       60,
     )
@@ -206,6 +209,7 @@ describe('CreateCrossServiceToken', () => {
           uuid: '00000000-0000-0000-0000-000000000000',
         },
         ongoing_transition: false,
+        ongoing_revisions_transition: false,
       },
       60,
     )
@@ -261,6 +265,7 @@ describe('CreateCrossServiceToken', () => {
             email: 'test@test.te',
             uuid: '00000000-0000-0000-0000-000000000000',
           },
+          ongoing_revisions_transition: false,
           ongoing_transition: false,
         },
         60,

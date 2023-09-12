@@ -10,9 +10,13 @@ export class RedisTransitionStatusRepository implements TransitionStatusReposito
   async updateStatus(
     userUuid: string,
     transitionType: 'items' | 'revisions',
-    status: 'STARTED' | 'FAILED',
+    status: 'STARTED' | 'IN_PROGRESS' | 'FAILED',
   ): Promise<void> {
-    await this.redisClient.set(`${this.PREFIX}:${transitionType}:${userUuid}`, status)
+    if (status === 'IN_PROGRESS') {
+      await this.redisClient.setex(`${this.PREFIX}:${transitionType}:${userUuid}`, 7200, status)
+    } else {
+      await this.redisClient.set(`${this.PREFIX}:${transitionType}:${userUuid}`, status)
+    }
   }
 
   async removeStatus(userUuid: string, transitionType: 'items' | 'revisions'): Promise<void> {

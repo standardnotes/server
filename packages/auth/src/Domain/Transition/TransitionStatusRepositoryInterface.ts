@@ -1,5 +1,9 @@
 export interface TransitionStatusRepositoryInterface {
-  updateStatus(userUuid: string, transitionType: 'items' | 'revisions', status: 'STARTED' | 'FAILED'): Promise<void>
+  updateStatus(
+    userUuid: string,
+    transitionType: 'items' | 'revisions',
+    status: 'STARTED' | 'IN_PROGRESS' | 'FAILED',
+  ): Promise<void>
   removeStatus(userUuid: string, transitionType: 'items' | 'revisions'): Promise<void>
   getStatus(
     userUuid: string,

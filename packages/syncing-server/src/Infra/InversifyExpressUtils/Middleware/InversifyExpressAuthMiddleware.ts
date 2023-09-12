@@ -30,6 +30,7 @@ export class InversifyExpressAuthMiddleware extends BaseMiddleware {
       response.locals.readOnlyAccess = decodedToken.session?.readonly_access ?? false
       response.locals.sharedVaultOwnerContext = decodedToken.shared_vault_owner_context
       response.locals.ongoingTransition = decodedToken.ongoing_transition
+      response.locals.onGoingRevisionsTransition = decodedToken.ongoing_revisions_transition
 
       return next()
     } catch (error) {

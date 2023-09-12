@@ -84,6 +84,7 @@ describe('SaveItems', () => {
     const result = await useCase.execute({
       itemHashes: [itemHash1],
       userUuid: 'user-uuid',
+      onGoingRevisionsTransition: false,
       apiVersion: '1',
       readOnlyAccess: false,
       sessionUuid: 'session-uuid',
@@ -96,6 +97,7 @@ describe('SaveItems', () => {
     expect(saveNewItem.execute).toHaveBeenCalledWith({
       itemHash: itemHash1,
       userUuid: 'user-uuid',
+      onGoingRevisionsTransition: false,
       sessionUuid: 'session-uuid',
       roleNames: ['CORE_USER'],
     })
@@ -109,6 +111,7 @@ describe('SaveItems', () => {
     const result = await useCase.execute({
       itemHashes: [itemHash1],
       userUuid: 'user-uuid',
+      onGoingRevisionsTransition: false,
       apiVersion: '1',
       readOnlyAccess: false,
       sessionUuid: 'session-uuid',
@@ -133,6 +136,7 @@ describe('SaveItems', () => {
     const result = await useCase.execute({
       itemHashes: [itemHash1],
       userUuid: 'user-uuid',
+      onGoingRevisionsTransition: false,
       apiVersion: '1',
       readOnlyAccess: false,
       sessionUuid: 'session-uuid',
@@ -155,6 +159,7 @@ describe('SaveItems', () => {
     const result = await useCase.execute({
       itemHashes: [itemHash1],
       userUuid: 'user-uuid',
+      onGoingRevisionsTransition: false,
       apiVersion: '1',
       readOnlyAccess: true,
       sessionUuid: 'session-uuid',
@@ -178,6 +183,7 @@ describe('SaveItems', () => {
     const result = await useCase.execute({
       itemHashes: [itemHash1],
       userUuid: 'user-uuid',
+      onGoingRevisionsTransition: false,
       apiVersion: '1',
       readOnlyAccess: false,
       sessionUuid: 'session-uuid',
@@ -197,6 +203,7 @@ describe('SaveItems', () => {
     const result = await useCase.execute({
       itemHashes: [itemHash1],
       userUuid: 'user-uuid',
+      onGoingRevisionsTransition: false,
       apiVersion: '1',
       readOnlyAccess: false,
       sessionUuid: 'session-uuid',
@@ -215,6 +222,7 @@ describe('SaveItems', () => {
 
     const result = await useCase.execute({
       itemHashes: [itemHash1],
+      onGoingRevisionsTransition: false,
       userUuid: '00000000-0000-0000-0000-000000000000',
       apiVersion: '1',
       readOnlyAccess: false,
@@ -229,6 +237,7 @@ describe('SaveItems', () => {
       existingItem: savedItem,
       sessionUuid: 'session-uuid',
       performingUserUuid: '00000000-0000-0000-0000-000000000000',
+      onGoingRevisionsTransition: false,
       roleNames: ['CORE_USER'],
     })
   })
@@ -242,6 +251,7 @@ describe('SaveItems', () => {
     const result = await useCase.execute({
       itemHashes: [itemHash1],
       userUuid: 'user-uuid',
+      onGoingRevisionsTransition: false,
       apiVersion: '1',
       readOnlyAccess: false,
       sessionUuid: 'session-uuid',
@@ -267,6 +277,7 @@ describe('SaveItems', () => {
     const result = await useCase.execute({
       itemHashes: [ItemHash.create({ ...itemHash1.props, uuid: 'invalid-uuid' }).getValue()],
       userUuid: 'user-uuid',
+      onGoingRevisionsTransition: false,
       apiVersion: '1',
       readOnlyAccess: false,
       sessionUuid: 'session-uuid',
@@ -313,6 +324,7 @@ describe('SaveItems', () => {
         ItemHash.create({ ...itemHash1.props, uuid: '00000000-0000-0000-0000-000000000003' }).getValue(),
       ],
       userUuid: 'user-uuid',
+      onGoingRevisionsTransition: false,
       apiVersion: '2',
       readOnlyAccess: false,
       sessionUuid: 'session-uuid',
@@ -330,6 +342,7 @@ describe('SaveItems', () => {
     const result = await useCase.execute({
       itemHashes: [itemHash1],
       userUuid: 'user-uuid',
+      onGoingRevisionsTransition: false,
       apiVersion: '2',
       readOnlyAccess: false,
       sessionUuid: 'session-uuid',

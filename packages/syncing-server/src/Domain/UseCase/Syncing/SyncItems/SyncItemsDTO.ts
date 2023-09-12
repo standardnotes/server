@@ -14,4 +14,5 @@ export type SyncItemsDTO = {
   snjsVersion: string
   readOnlyAccess: boolean
   sessionUuid: string | null
+  onGoingRevisionsTransition: boolean
 }

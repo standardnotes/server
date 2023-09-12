@@ -99,7 +99,7 @@ describe('TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser', () => {
     secondaryRevisionRepository = {} as jest.Mocked<RevisionRepositoryInterface>
     secondaryRevisionRepository.insert = jest.fn().mockResolvedValue(true)
     secondaryRevisionRepository.removeByUserUuid = jest.fn().mockResolvedValue(undefined)
-    secondaryRevisionRepository.countByUserUuid = jest.fn().mockResolvedValue(2)
+    secondaryRevisionRepository.countByUserUuid = jest.fn().mockResolvedValueOnce(0).mockResolvedValueOnce(2)
     secondaryRevisionRepository.findOneByUuid = jest
       .fn()
       .mockResolvedValueOnce(secondaryRevision1)
@@ -329,7 +329,10 @@ describe('TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser', () => {
     })
 
     it('should fail integrity check if the Revision count is not the same in both databases', async () => {
-      ;(secondaryRevisionRepository as RevisionRepositoryInterface).countByUserUuid = jest.fn().mockResolvedValue(1)
+      ;(secondaryRevisionRepository as RevisionRepositoryInterface).countByUserUuid = jest
+        .fn()
+        .mockResolvedValueOnce(0)
+        .mockResolvedValueOnce(1)
 
       const useCase = createUseCase()
 
@@ -346,7 +349,7 @@ describe('TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser', () => {
       expect(primaryRevisionRepository.countByUserUuid).toHaveBeenCalledWith(
         Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
       )
-      expect((secondaryRevisionRepository as RevisionRepositoryInterface).countByUserUuid).toHaveBeenCalledTimes(1)
+      expect((secondaryRevisionRepository as RevisionRepositoryInterface).countByUserUuid).toHaveBeenCalledTimes(2)
       expect(primaryRevisionRepository.removeByUserUuid).not.toHaveBeenCalled()
       expect((secondaryRevisionRepository as RevisionRepositoryInterface).removeByUserUuid).toHaveBeenCalledTimes(1)
     })
@@ -370,7 +373,6 @@ describe('TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser', () => {
       expect(primaryRevisionRepository.countByUserUuid).toHaveBeenCalledWith(
         Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
       )
-      expect((secondaryRevisionRepository as RevisionRepositoryInterface).countByUserUuid).not.toHaveBeenCalled()
       expect(primaryRevisionRepository.removeByUserUuid).not.toHaveBeenCalled()
       expect((secondaryRevisionRepository as RevisionRepositoryInterface).removeByUserUuid).toHaveBeenCalledTimes(1)
     })
@@ -378,6 +380,7 @@ describe('TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser', () => {
     it('should fail if an error is thrown during integrity check between primary and secondary database', async () => {
       ;(secondaryRevisionRepository as RevisionRepositoryInterface).countByUserUuid = jest
         .fn()
+        .mockReturnValueOnce(0)
         .mockRejectedValue(new Error('error'))
 
       const useCase = createUseCase()
@@ -427,6 +430,23 @@ describe('TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser', () => {
     expect(primaryRevisionRepository.countByUserUuid).toHaveBeenCalledWith(
       Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
     )
+    expect(primaryRevisionRepository.findByUserUuid).not.toHaveBeenCalled()
+    expect((secondaryRevisionRepository as RevisionRepositoryInterface).insert).not.toHaveBeenCalled()
+    expect(primaryRevisionRepository.removeByUserUuid).not.toHaveBeenCalled()
+    expect((secondaryRevisionRepository as RevisionRepositoryInterface).removeByUserUuid).not.toHaveBeenCalled()
+  })
+
+  it('should not migrate revisions if there are already revisions in the secondary database', async () => {
+    ;(secondaryRevisionRepository as RevisionRepositoryInterface).countByUserUuid = jest.fn().mockResolvedValueOnce(1)
+
+    const useCase = createUseCase()
+
+    const result = await useCase.execute({
+      userUuid: '00000000-0000-0000-0000-000000000000',
+    })
+
+    expect(result.isFailed()).toBeTruthy()
+
     expect(primaryRevisionRepository.findByUserUuid).not.toHaveBeenCalled()
     expect((secondaryRevisionRepository as RevisionRepositoryInterface).insert).not.toHaveBeenCalled()
     expect(primaryRevisionRepository.removeByUserUuid).not.toHaveBeenCalled()

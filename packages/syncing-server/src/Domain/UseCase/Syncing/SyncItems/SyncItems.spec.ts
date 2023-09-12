@@ -143,6 +143,7 @@ describe('SyncItems', () => {
   it('should sync items', async () => {
     const result = await createUseCase().execute({
       userUuid: '1-2-3',
+      onGoingRevisionsTransition: false,
       itemHashes: [itemHash],
       computeIntegrityHash: false,
       syncToken: 'foo',
@@ -178,6 +179,7 @@ describe('SyncItems', () => {
     expect(saveItemsUseCase.execute).toHaveBeenCalledWith({
       itemHashes: [itemHash],
       userUuid: '1-2-3',
+      onGoingRevisionsTransition: false,
       apiVersion: '20200115',
       snjsVersion: '1.2.3',
       roleNames: [RoleName.NAMES.CoreUser],
@@ -189,6 +191,7 @@ describe('SyncItems', () => {
   it('should sync items and return items keys on top for first sync that is not a shared vault exclusive sync', async () => {
     const result = await createUseCase().execute({
       userUuid: '1-2-3',
+      onGoingRevisionsTransition: false,
       itemHashes: [itemHash],
       computeIntegrityHash: false,
       limit: 10,
@@ -215,6 +218,7 @@ describe('SyncItems', () => {
   it('should sync items and not return items keys on top for first sync that is a shared vault exclusive sync', async () => {
     const result = await createUseCase().execute({
       userUuid: '1-2-3',
+      onGoingRevisionsTransition: false,
       itemHashes: [itemHash],
       computeIntegrityHash: false,
       limit: 10,
@@ -266,6 +270,7 @@ describe('SyncItems', () => {
 
     const result = await createUseCase().execute({
       userUuid: '1-2-3',
+      onGoingRevisionsTransition: false,
       itemHashes: [itemHash],
       computeIntegrityHash: false,
       syncToken: 'foo',
@@ -306,6 +311,7 @@ describe('SyncItems', () => {
 
     const result = await createUseCase().execute({
       userUuid: '1-2-3',
+      onGoingRevisionsTransition: false,
       itemHashes: [itemHash],
       computeIntegrityHash: false,
       syncToken: 'foo',
@@ -327,6 +333,7 @@ describe('SyncItems', () => {
 
     const result = await createUseCase().execute({
       userUuid: '1-2-3',
+      onGoingRevisionsTransition: false,
       itemHashes: [itemHash],
       computeIntegrityHash: false,
       syncToken: 'foo',
@@ -346,6 +353,7 @@ describe('SyncItems', () => {
   it('should return error if role names are invalid', async () => {
     const result = await createUseCase().execute({
       userUuid: '1-2-3',
+      onGoingRevisionsTransition: false,
       itemHashes: [itemHash],
       computeIntegrityHash: false,
       limit: 10,
@@ -365,6 +373,7 @@ describe('SyncItems', () => {
 
     const result = await createUseCase().execute({
       userUuid: '1-2-3',
+      onGoingRevisionsTransition: false,
       itemHashes: [itemHash],
       computeIntegrityHash: false,
       syncToken: 'foo',
@@ -386,6 +395,7 @@ describe('SyncItems', () => {
 
     const result = await createUseCase().execute({
       userUuid: '1-2-3',
+      onGoingRevisionsTransition: false,
       itemHashes: [itemHash],
       computeIntegrityHash: false,
       syncToken: 'foo',
@@ -407,6 +417,7 @@ describe('SyncItems', () => {
 
     const result = await createUseCase().execute({
       userUuid: '1-2-3',
+      onGoingRevisionsTransition: false,
       itemHashes: [itemHash],
       computeIntegrityHash: false,
       syncToken: 'foo',
@@ -428,6 +439,7 @@ describe('SyncItems', () => {
 
     const result = await createUseCase().execute({
       userUuid: '1-2-3',
+      onGoingRevisionsTransition: false,
       itemHashes: [itemHash],
       computeIntegrityHash: false,
       syncToken: 'foo',

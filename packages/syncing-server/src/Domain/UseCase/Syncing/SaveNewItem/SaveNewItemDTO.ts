@@ -5,4 +5,5 @@ export interface SaveNewItemDTO {
   roleNames: string[]
   itemHash: ItemHash
   sessionUuid: string | null
+  onGoingRevisionsTransition: boolean
 }

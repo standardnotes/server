@@ -15,6 +15,8 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
   ) {}
 
   async execute(dto: TransitionRevisionsFromPrimaryToSecondaryDatabaseForUserDTO): Promise<Result<void>> {
+    this.logger.info(`Transitioning revisions for user ${dto.userUuid}`)
+
     if (this.secondRevisionsRepository === null) {
       return Result.fail('Secondary revision repository is not set')
     }
@@ -29,6 +31,10 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
       this.logger.info(`Revisions for user ${userUuid.value} are already migrated`)
 
       return Result.ok()
+    }
+
+    if (await this.hasAlreadyDataInSecondaryDatabase(userUuid)) {
+      return Result.fail(`Revisions for user ${userUuid.value} already exist in secondary database`)
     }
 
     const migrationTimeStart = this.timer.getTimestampInMicroseconds()
@@ -141,6 +147,14 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
   private async allowForSecondaryDatabaseToCatchUp(): Promise<void> {
     const twoSecondsInMilliseconds = 2_000
     await this.timer.sleep(twoSecondsInMilliseconds)
+  }
+
+  private async hasAlreadyDataInSecondaryDatabase(userUuid: Uuid): Promise<boolean> {
+    const totalRevisionsCountForUserInSecondary = await (
+      this.secondRevisionsRepository as RevisionRepositoryInterface
+    ).countByUserUuid(userUuid)
+
+    return totalRevisionsCountForUserInSecondary > 0
   }
 
   private async isAlreadyMigrated(userUuid: Uuid): Promise<boolean> {

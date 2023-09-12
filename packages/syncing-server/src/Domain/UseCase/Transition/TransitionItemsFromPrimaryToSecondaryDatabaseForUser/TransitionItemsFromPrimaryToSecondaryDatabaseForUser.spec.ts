@@ -107,7 +107,7 @@ describe('TransitionItemsFromPrimaryToSecondaryDatabaseForUser', () => {
     secondaryItemRepository = {} as jest.Mocked<ItemRepositoryInterface>
     secondaryItemRepository.save = jest.fn().mockResolvedValue(undefined)
     secondaryItemRepository.deleteByUserUuid = jest.fn().mockResolvedValue(undefined)
-    secondaryItemRepository.countAll = jest.fn().mockResolvedValue(2)
+    secondaryItemRepository.countAll = jest.fn().mockReturnValueOnce(0).mockReturnValueOnce(2)
     secondaryItemRepository.findByUuid = jest
       .fn()
       .mockResolvedValueOnce(secondaryItem1)
@@ -314,7 +314,10 @@ describe('TransitionItemsFromPrimaryToSecondaryDatabaseForUser', () => {
     })
 
     it('should fail integrity check if the item count is not the same in both databases', async () => {
-      ;(secondaryItemRepository as ItemRepositoryInterface).countAll = jest.fn().mockResolvedValue(1)
+      ;(secondaryItemRepository as ItemRepositoryInterface).countAll = jest
+        .fn()
+        .mockResolvedValueOnce(0)
+        .mockResolvedValueOnce(1)
 
       const useCase = createUseCase()
 
@@ -329,7 +332,7 @@ describe('TransitionItemsFromPrimaryToSecondaryDatabaseForUser', () => {
 
       expect(primaryItemRepository.countAll).toHaveBeenCalledTimes(3)
       expect(primaryItemRepository.countAll).toHaveBeenCalledWith({ userUuid: '00000000-0000-0000-0000-000000000000' })
-      expect((secondaryItemRepository as ItemRepositoryInterface).countAll).toHaveBeenCalledTimes(1)
+      expect((secondaryItemRepository as ItemRepositoryInterface).countAll).toHaveBeenCalledTimes(2)
       expect(primaryItemRepository.deleteByUserUuid).not.toHaveBeenCalled()
       expect((secondaryItemRepository as ItemRepositoryInterface).deleteByUserUuid).toHaveBeenCalledTimes(1)
     })
@@ -351,13 +354,16 @@ describe('TransitionItemsFromPrimaryToSecondaryDatabaseForUser', () => {
 
       expect(primaryItemRepository.countAll).toHaveBeenCalledTimes(3)
       expect(primaryItemRepository.countAll).toHaveBeenCalledWith({ userUuid: '00000000-0000-0000-0000-000000000000' })
-      expect((secondaryItemRepository as ItemRepositoryInterface).countAll).toHaveBeenCalledTimes(1)
+      expect((secondaryItemRepository as ItemRepositoryInterface).countAll).toHaveBeenCalledTimes(2)
       expect(primaryItemRepository.deleteByUserUuid).not.toHaveBeenCalled()
       expect((secondaryItemRepository as ItemRepositoryInterface).deleteByUserUuid).toHaveBeenCalledTimes(1)
     })
 
     it('should fail if an error is thrown during integrity check between primary and secondary database', async () => {
-      ;(secondaryItemRepository as ItemRepositoryInterface).countAll = jest.fn().mockRejectedValue(new Error('error'))
+      ;(secondaryItemRepository as ItemRepositoryInterface).countAll = jest
+        .fn()
+        .mockReturnValueOnce(0)
+        .mockRejectedValue(new Error('error'))
 
       const useCase = createUseCase()
 
@@ -386,6 +392,23 @@ describe('TransitionItemsFromPrimaryToSecondaryDatabaseForUser', () => {
 
     expect(primaryItemRepository.countAll).toHaveBeenCalledTimes(1)
     expect(primaryItemRepository.countAll).toHaveBeenCalledWith({ userUuid: '00000000-0000-0000-0000-000000000000' })
+    expect(primaryItemRepository.findAll).not.toHaveBeenCalled()
+    expect((secondaryItemRepository as ItemRepositoryInterface).save).not.toHaveBeenCalled()
+    expect(primaryItemRepository.deleteByUserUuid).not.toHaveBeenCalled()
+    expect((secondaryItemRepository as ItemRepositoryInterface).deleteByUserUuid).not.toHaveBeenCalled()
+  })
+
+  it('should not migrate items if there are items in the secondary database', async () => {
+    ;(secondaryItemRepository as ItemRepositoryInterface).countAll = jest.fn().mockResolvedValue(1)
+
+    const useCase = createUseCase()
+
+    const result = await useCase.execute({
+      userUuid: '00000000-0000-0000-0000-000000000000',
+    })
+
+    expect(result.isFailed()).toBeTruthy()
+
     expect(primaryItemRepository.findAll).not.toHaveBeenCalled()
     expect((secondaryItemRepository as ItemRepositoryInterface).save).not.toHaveBeenCalled()
     expect(primaryItemRepository.deleteByUserUuid).not.toHaveBeenCalled()

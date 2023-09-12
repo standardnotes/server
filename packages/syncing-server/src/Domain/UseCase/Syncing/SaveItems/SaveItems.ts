@@ -86,6 +86,7 @@ export class SaveItems implements UseCaseInterface<SaveItemsResult> {
           sessionUuid: dto.sessionUuid,
           performingUserUuid: dto.userUuid,
           roleNames: dto.roleNames,
+          onGoingRevisionsTransition: dto.onGoingRevisionsTransition,
         })
         if (udpatedItemOrError.isFailed()) {
           this.logger.error(
@@ -109,6 +110,7 @@ export class SaveItems implements UseCaseInterface<SaveItemsResult> {
             itemHash,
             sessionUuid: dto.sessionUuid,
             roleNames: dto.roleNames,
+            onGoingRevisionsTransition: dto.onGoingRevisionsTransition,
           })
           if (newItemOrError.isFailed()) {
             this.logger.error(

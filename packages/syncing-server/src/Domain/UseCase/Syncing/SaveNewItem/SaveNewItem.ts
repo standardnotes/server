@@ -145,13 +145,15 @@ export class SaveNewItem implements UseCaseInterface<Item> {
     await itemRepository.save(newItem)
 
     if (contentType.value !== null && [ContentType.TYPES.Note, ContentType.TYPES.File].includes(contentType.value)) {
-      await this.domainEventPublisher.publish(
-        this.domainEventFactory.createItemRevisionCreationRequested({
-          itemUuid: newItem.id.toString(),
-          userUuid: newItem.props.userUuid.value,
-          roleNames: dto.roleNames,
-        }),
-      )
+      if (!dto.onGoingRevisionsTransition) {
+        await this.domainEventPublisher.publish(
+          this.domainEventFactory.createItemRevisionCreationRequested({
+            itemUuid: newItem.id.toString(),
+            userUuid: newItem.props.userUuid.value,
+            roleNames: dto.roleNames,
+          }),
+        )
+      }
     }
 
     if (duplicateOf) {

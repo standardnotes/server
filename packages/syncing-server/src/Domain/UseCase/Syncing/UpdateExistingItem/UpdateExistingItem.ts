@@ -191,13 +191,15 @@ export class UpdateExistingItem implements UseCaseInterface<Item> {
         dto.existingItem.props.contentType.value !== null &&
         [ContentType.TYPES.Note, ContentType.TYPES.File].includes(dto.existingItem.props.contentType.value)
       ) {
-        await this.domainEventPublisher.publish(
-          this.domainEventFactory.createItemRevisionCreationRequested({
-            itemUuid: dto.existingItem.id.toString(),
-            userUuid: dto.existingItem.props.userUuid.value,
-            roleNames: dto.roleNames,
-          }),
-        )
+        if (!dto.onGoingRevisionsTransition) {
+          await this.domainEventPublisher.publish(
+            this.domainEventFactory.createItemRevisionCreationRequested({
+              itemUuid: dto.existingItem.id.toString(),
+              userUuid: dto.existingItem.props.userUuid.value,
+              roleNames: dto.roleNames,
+            }),
+          )
+        }
       }
     }
 

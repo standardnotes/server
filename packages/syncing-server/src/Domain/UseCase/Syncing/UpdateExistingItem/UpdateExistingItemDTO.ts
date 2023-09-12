@@ -7,4 +7,5 @@ export interface UpdateExistingItemDTO {
   sessionUuid: string | null
   performingUserUuid: string
   roleNames: string[]
+  onGoingRevisionsTransition: boolean
 }

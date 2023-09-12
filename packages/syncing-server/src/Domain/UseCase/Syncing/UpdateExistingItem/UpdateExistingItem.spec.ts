@@ -140,6 +140,23 @@ describe('UpdateExistingItem', () => {
 
     const result = await useCase.execute({
       existingItem: item1,
+      onGoingRevisionsTransition: false,
+      itemHash: itemHash1,
+      sessionUuid: '00000000-0000-0000-0000-000000000000',
+      performingUserUuid: '00000000-0000-0000-0000-000000000000',
+      roleNames: [RoleName.NAMES.CoreUser],
+    })
+
+    expect(result.isFailed()).toBeFalsy()
+    expect(itemRepository.save).toHaveBeenCalled()
+  })
+
+  it('should not create a revision if user has an ongoin revisions transition', async () => {
+    const useCase = createUseCase()
+
+    const result = await useCase.execute({
+      existingItem: item1,
+      onGoingRevisionsTransition: true,
       itemHash: itemHash1,
       sessionUuid: '00000000-0000-0000-0000-000000000000',
       performingUserUuid: '00000000-0000-0000-0000-000000000000',
@@ -155,6 +172,7 @@ describe('UpdateExistingItem', () => {
 
     const result = await useCase.execute({
       existingItem: item1,
+      onGoingRevisionsTransition: false,
       itemHash: itemHash1,
       sessionUuid: 'invalid-uuid',
       performingUserUuid: '00000000-0000-0000-0000-000000000000',
@@ -169,6 +187,7 @@ describe('UpdateExistingItem', () => {
 
     const result = await useCase.execute({
       existingItem: item1,
+      onGoingRevisionsTransition: false,
       itemHash: itemHash1,
       sessionUuid: '00000000-0000-0000-0000-000000000000',
       performingUserUuid: '00000000-0000-0000-0000-000000000000',
@@ -183,6 +202,7 @@ describe('UpdateExistingItem', () => {
 
     const result = await useCase.execute({
       existingItem: item1,
+      onGoingRevisionsTransition: false,
       itemHash: ItemHash.create({
         ...itemHash1.props,
         content_type: 'invalid',
@@ -200,6 +220,7 @@ describe('UpdateExistingItem', () => {
 
     const result = await useCase.execute({
       existingItem: item1,
+      onGoingRevisionsTransition: false,
       itemHash: ItemHash.create({
         ...itemHash1.props,
         deleted: true,
@@ -224,6 +245,7 @@ describe('UpdateExistingItem', () => {
 
     const result = await useCase.execute({
       existingItem: item1,
+      onGoingRevisionsTransition: false,
       itemHash: ItemHash.create({
         ...itemHash1.props,
         duplicate_of: '00000000-0000-0000-0000-000000000001',
@@ -243,6 +265,7 @@ describe('UpdateExistingItem', () => {
 
     const result = await useCase.execute({
       existingItem: item1,
+      onGoingRevisionsTransition: false,
       itemHash: ItemHash.create({
         ...itemHash1.props,
         duplicate_of: 'invalid-uuid',
@@ -260,6 +283,7 @@ describe('UpdateExistingItem', () => {
 
     const result = await useCase.execute({
       existingItem: item1,
+      onGoingRevisionsTransition: false,
       itemHash: ItemHash.create({
         ...itemHash1.props,
         updated_at_timestamp: 123,
@@ -279,6 +303,7 @@ describe('UpdateExistingItem', () => {
 
     const result = await useCase.execute({
       existingItem: item1,
+      onGoingRevisionsTransition: false,
       itemHash: ItemHash.create({
         ...itemHash1.props,
         created_at: undefined,
@@ -302,6 +327,7 @@ describe('UpdateExistingItem', () => {
 
     const result = await useCase.execute({
       existingItem: item1,
+      onGoingRevisionsTransition: false,
       itemHash: ItemHash.create({
         ...itemHash1.props,
         created_at_timestamp: 123,
@@ -327,6 +353,7 @@ describe('UpdateExistingItem', () => {
 
     const result = await useCase.execute({
       existingItem: item1,
+      onGoingRevisionsTransition: false,
       itemHash: ItemHash.create({
         ...itemHash1.props,
         created_at_timestamp: 123,
@@ -346,6 +373,7 @@ describe('UpdateExistingItem', () => {
 
     const result = await useCase.execute({
       existingItem: item1,
+      onGoingRevisionsTransition: false,
       itemHash: itemHash1,
       sessionUuid: '00000000-0000-0000-0000-000000000000',
       performingUserUuid: 'invalid-uuid',
@@ -365,6 +393,7 @@ describe('UpdateExistingItem', () => {
 
       const result = await useCase.execute({
         existingItem: item1,
+        onGoingRevisionsTransition: false,
         itemHash,
         sessionUuid: '00000000-0000-0000-0000-000000000000',
         performingUserUuid: '00000000-0000-0000-0000-000000000000',
@@ -392,6 +421,7 @@ describe('UpdateExistingItem', () => {
 
       const result = await useCase.execute({
         existingItem: item1,
+        onGoingRevisionsTransition: false,
         itemHash,
         sessionUuid: '00000000-0000-0000-0000-000000000000',
         performingUserUuid: '00000000-0000-0000-0000-000000000000',
@@ -430,6 +460,7 @@ describe('UpdateExistingItem', () => {
 
       const result = await useCase.execute({
         existingItem: item1,
+        onGoingRevisionsTransition: false,
         itemHash,
         sessionUuid: '00000000-0000-0000-0000-000000000000',
         performingUserUuid: '00000000-0000-0000-0000-000000000000',
@@ -459,6 +490,7 @@ describe('UpdateExistingItem', () => {
 
       const result = await useCase.execute({
         existingItem: item1,
+        onGoingRevisionsTransition: false,
         itemHash,
         sessionUuid: '00000000-0000-0000-0000-000000000000',
         performingUserUuid: '00000000-0000-0000-0000-000000000000',
@@ -480,6 +512,7 @@ describe('UpdateExistingItem', () => {
 
       const result = await useCase.execute({
         existingItem: item1,
+        onGoingRevisionsTransition: false,
         itemHash,
         sessionUuid: '00000000-0000-0000-0000-000000000000',
         performingUserUuid: '00000000-0000-0000-0000-000000000000',
@@ -512,6 +545,7 @@ describe('UpdateExistingItem', () => {
 
       const result = await useCase.execute({
         existingItem: item1,
+        onGoingRevisionsTransition: false,
         itemHash,
         sessionUuid: '00000000-0000-0000-0000-000000000000',
         performingUserUuid: '00000000-0000-0000-0000-000000000000',
@@ -547,6 +581,7 @@ describe('UpdateExistingItem', () => {
 
       const result = await useCase.execute({
         existingItem: item1,
+        onGoingRevisionsTransition: false,
         itemHash,
         sessionUuid: '00000000-0000-0000-0000-000000000000',
         performingUserUuid: '00000000-0000-0000-0000-000000000000',
@@ -569,6 +604,7 @@ describe('UpdateExistingItem', () => {
 
       const result = await useCase.execute({
         existingItem: item1,
+        onGoingRevisionsTransition: false,
         itemHash,
         sessionUuid: '00000000-0000-0000-0000-000000000000',
         performingUserUuid: '00000000-0000-0000-0000-000000000000',
@@ -589,6 +625,7 @@ describe('UpdateExistingItem', () => {
 
       const result = await useCase.execute({
         existingItem: item1,
+        onGoingRevisionsTransition: false,
         itemHash,
         sessionUuid: '00000000-0000-0000-0000-000000000000',
         performingUserUuid: '00000000-0000-0000-0000-000000000000',
@@ -611,6 +648,7 @@ describe('UpdateExistingItem', () => {
 
       const result = await useCase.execute({
         existingItem: item1,
+        onGoingRevisionsTransition: false,
         itemHash,
         sessionUuid: '00000000-0000-0000-0000-000000000000',
         performingUserUuid: '00000000-0000-0000-0000-000000000000',
@@ -632,6 +670,7 @@ describe('UpdateExistingItem', () => {
 
       const result = await useCase.execute({
         existingItem: item1,
+        onGoingRevisionsTransition: false,
         itemHash,
         sessionUuid: '00000000-0000-0000-0000-000000000000',
         performingUserUuid: '00000000-0000-0000-0000-000000000000',
@@ -655,6 +694,7 @@ describe('UpdateExistingItem', () => {
 
       const result = await useCase.execute({
         existingItem: item1,
+        onGoingRevisionsTransition: false,
         itemHash,
         sessionUuid: '00000000-0000-0000-0000-000000000000',
         performingUserUuid: '00000000-0000-0000-0000-000000000000',
