@@ -33,12 +33,6 @@ const requestTransition = async (
 
   let usersTriggered = 0
   for (const user of users) {
-    const roles = await user.roles
-    const userHasTransitionUserRole = roles.some((role) => role.name === RoleName.NAMES.TransitionUser) === true
-    if (userHasTransitionUserRole === true) {
-      continue
-    }
-
     const transitionRequestedEvent = domainEventFactory.createTransitionRequestedEvent({
       userUuid: user.uuid,
       type: 'items',
