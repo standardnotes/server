@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.13.1](https://github.com/standardnotes/server/compare/@standardnotes/security@1.13.0...@standardnotes/security@1.13.1) (2023-09-12)
+
+### Bug Fixes
+
+* adjust transitions to not create revisions during ongoing revisions transition ([106d8f9](https://github.com/standardnotes/server/commit/106d8f9192f630794ca4ddc2c4503f2c6cd196e7))
+
 # [1.13.0](https://github.com/standardnotes/server/compare/@standardnotes/security@1.12.2...@standardnotes/security@1.13.0) (2023-09-06)
 
 ### Features
