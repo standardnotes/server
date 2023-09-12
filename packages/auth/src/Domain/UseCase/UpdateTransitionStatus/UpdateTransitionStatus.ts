@@ -19,7 +19,9 @@ export class UpdateTransitionStatus implements UseCaseInterface<void> {
     if (dto.status === 'FINISHED') {
       await this.transitionStatusRepository.removeStatus(dto.userUuid, dto.transitionType)
 
-      await this.roleService.addRoleToUser(userUuid, RoleName.create(RoleName.NAMES.TransitionUser).getValue())
+      if (dto.transitionType === 'items') {
+        await this.roleService.addRoleToUser(userUuid, RoleName.create(RoleName.NAMES.TransitionUser).getValue())
+      }
 
       return Result.ok()
     }

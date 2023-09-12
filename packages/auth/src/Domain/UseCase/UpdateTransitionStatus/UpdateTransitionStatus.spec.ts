@@ -39,6 +39,23 @@ describe('UpdateTransitionStatus', () => {
     )
   })
 
+  it('should remove transition status', async () => {
+    const useCase = createUseCase()
+
+    const result = await useCase.execute({
+      userUuid: '00000000-0000-0000-0000-000000000000',
+      status: 'FINISHED',
+      transitionType: 'revisions',
+    })
+
+    expect(result.isFailed()).toBeFalsy()
+    expect(transitionStatusRepository.removeStatus).toHaveBeenCalledWith(
+      '00000000-0000-0000-0000-000000000000',
+      'revisions',
+    )
+    expect(roleService.addRoleToUser).not.toHaveBeenCalled()
+  })
+
   it('should update transition status', async () => {
     const useCase = createUseCase()
 
