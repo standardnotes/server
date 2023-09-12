@@ -1,6 +1,6 @@
 {
   "name": "@standardnotes/websockets-server",
-  "version": "1.10.37",
+  "version": "1.10.38",
   "engines": {
     "node": ">=18.0.0 <21.0.0"
   },

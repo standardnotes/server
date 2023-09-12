@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.141.5](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.141.4...@standardnotes/auth-server@1.141.5) (2023-09-12)
+
+### Bug Fixes
+
+* domain event values ([f0abfe8](https://github.com/standardnotes/server/commit/f0abfe89fca0049c47131389683efe2f5aff23f8))
+
 ## [1.141.4](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.141.3...@standardnotes/auth-server@1.141.4) (2023-09-12)
 
 ### Bug Fixes
