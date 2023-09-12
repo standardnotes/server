@@ -9,4 +9,7 @@ export interface TransitionStatusRepositoryInterface {
     userUuid: string,
     transitionType: 'items' | 'revisions',
   ): Promise<'STARTED' | 'IN_PROGRESS' | 'FAILED' | null>
+  getStatuses(
+    transitionType: 'items' | 'revisions',
+  ): Promise<Array<{ userUuid: string; status: 'STARTED' | 'IN_PROGRESS' | 'FAILED' }>>
 }

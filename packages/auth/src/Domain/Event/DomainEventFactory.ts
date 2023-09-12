@@ -33,7 +33,7 @@ import { DomainEventFactoryInterface } from './DomainEventFactoryInterface'
 export class DomainEventFactory implements DomainEventFactoryInterface {
   constructor(@inject(TYPES.Auth_Timer) private timer: TimerInterface) {}
 
-  createTransitionRequestedEvent(dto: { userUuid: string }): TransitionRequestedEvent {
+  createTransitionRequestedEvent(dto: { userUuid: string; type: 'items' | 'revisions' }): TransitionRequestedEvent {
     return {
       type: 'TRANSITION_REQUESTED',
       createdAt: this.timer.getUTCDate(),

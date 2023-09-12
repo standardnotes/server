@@ -60,6 +60,7 @@ const TYPES = {
   Revisions_RevisionsCopyRequestedEventHandler: Symbol.for('Revisions_RevisionsCopyRequestedEventHandler'),
   Revisions_TransitionStatusUpdatedEventHandler: Symbol.for('Revisions_TransitionStatusUpdatedEventHandler'),
   Revisions_ItemRemovedFromSharedVaultEventHandler: Symbol.for('Revisions_ItemRemovedFromSharedVaultEventHandler'),
+  Revisions_TransitionRequestedEventHandler: Symbol.for('Revisions_TransitionRequestedEventHandler'),
   // Services
   Revisions_CrossServiceTokenDecoder: Symbol.for('Revisions_CrossServiceTokenDecoder'),
   Revisions_DomainEventSubscriberFactory: Symbol.for('Revisions_DomainEventSubscriberFactory'),

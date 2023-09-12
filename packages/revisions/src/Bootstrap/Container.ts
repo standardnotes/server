@@ -68,6 +68,7 @@ import { SQLRevisionMetadataPersistenceMapper } from '../Mapping/Persistence/SQL
 import { SQLRevisionPersistenceMapper } from '../Mapping/Persistence/SQL/SQLRevisionPersistenceMapper'
 import { RemoveRevisionsFromSharedVault } from '../Domain/UseCase/RemoveRevisionsFromSharedVault/RemoveRevisionsFromSharedVault'
 import { ItemRemovedFromSharedVaultEventHandler } from '../Domain/Handler/ItemRemovedFromSharedVaultEventHandler'
+import { TransitionRequestedEventHandler } from '../Domain/Handler/TransitionRequestedEventHandler'
 
 export class ContainerConfigLoader {
   constructor(private mode: 'server' | 'worker' = 'server') {}
@@ -458,6 +459,16 @@ export class ContainerConfigLoader {
           container.get<winston.Logger>(TYPES.Revisions_Logger),
         ),
       )
+    container
+      .bind<TransitionRequestedEventHandler>(TYPES.Revisions_TransitionRequestedEventHandler)
+      .toConstantValue(
+        new TransitionRequestedEventHandler(
+          container.get<TriggerTransitionFromPrimaryToSecondaryDatabaseForUser>(
+            TYPES.Revisions_TriggerTransitionFromPrimaryToSecondaryDatabaseForUser,
+          ),
+          container.get<winston.Logger>(TYPES.Revisions_Logger),
+        ),
+      )
 
     const eventHandlers: Map<string, DomainEventHandlerInterface> = new Map([
       ['ITEM_DUMPED', container.get(TYPES.Revisions_ItemDumpedEventHandler)],
@@ -465,6 +476,7 @@ export class ContainerConfigLoader {
       ['REVISIONS_COPY_REQUESTED', container.get(TYPES.Revisions_RevisionsCopyRequestedEventHandler)],
       ['TRANSITION_STATUS_UPDATED', container.get(TYPES.Revisions_TransitionStatusUpdatedEventHandler)],
       ['ITEM_REMOVED_FROM_SHARED_VAULT', container.get(TYPES.Revisions_ItemRemovedFromSharedVaultEventHandler)],
+      ['TRANSITION_REQUESTED', container.get(TYPES.Revisions_TransitionRequestedEventHandler)],
     ])
 
     if (isConfiguredForHomeServer) {

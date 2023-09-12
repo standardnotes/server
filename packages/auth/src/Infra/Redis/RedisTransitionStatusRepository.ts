@@ -7,6 +7,21 @@ export class RedisTransitionStatusRepository implements TransitionStatusReposito
 
   constructor(private redisClient: IORedis.Redis) {}
 
+  async getStatuses(
+    transitionType: 'items' | 'revisions',
+  ): Promise<{ userUuid: string; status: 'STARTED' | 'IN_PROGRESS' | 'FAILED' }[]> {
+    const keys = await this.redisClient.keys(`${this.PREFIX}:${transitionType}:*`)
+    const statuses = await Promise.all(
+      keys.map(async (key) => {
+        const userUuid = key.split(':')[2]
+        const status = (await this.redisClient.get(key)) as 'STARTED' | 'IN_PROGRESS' | 'FAILED'
+        return { userUuid, status }
+      }),
+    )
+
+    return statuses
+  }
+
   async updateStatus(
     userUuid: string,
     transitionType: 'items' | 'revisions',

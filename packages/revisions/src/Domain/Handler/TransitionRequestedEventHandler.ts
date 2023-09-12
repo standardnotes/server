@@ -10,7 +10,7 @@ export class TransitionRequestedEventHandler implements DomainEventHandlerInterf
   ) {}
 
   async handle(event: TransitionRequestedEvent): Promise<void> {
-    if (event.payload.type !== 'items') {
+    if (event.payload.type !== 'revisions') {
       return
     }
 
