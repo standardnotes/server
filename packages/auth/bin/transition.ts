@@ -10,7 +10,6 @@ import { Env } from '../src/Bootstrap/Env'
 import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
 import { DomainEventFactoryInterface } from '../src/Domain/Event/DomainEventFactoryInterface'
 import { UserRepositoryInterface } from '../src/Domain/User/UserRepositoryInterface'
-import { RoleName } from '@standardnotes/domain-core'
 import { TransitionStatusRepositoryInterface } from '../src/Domain/Transition/TransitionStatusRepositoryInterface'
 
 const inputArgs = process.argv.slice(2)
