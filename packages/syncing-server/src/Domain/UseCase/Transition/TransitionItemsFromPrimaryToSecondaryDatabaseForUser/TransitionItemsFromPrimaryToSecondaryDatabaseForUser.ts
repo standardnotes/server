@@ -53,6 +53,8 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
       newItemsInSecondaryCount = newItems.newItemsInSecondary.length
     }
 
+    await this.allowForSecondaryDatabaseToCatchUp()
+
     const migrationTimeStart = this.timer.getTimestampInMicroseconds()
 
     const migrationResult = await this.migrateItemsForUser(userUuid)
