@@ -1,9 +1,11 @@
+/* istanbul ignore file */
 import { Result, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
 import { TimerInterface } from '@standardnotes/time'
 import { Logger } from 'winston'
 
 import { TransitionRevisionsFromPrimaryToSecondaryDatabaseForUserDTO } from './TransitionRevisionsFromPrimaryToSecondaryDatabaseForUserDTO'
 import { RevisionRepositoryInterface } from '../../../Revision/RevisionRepositoryInterface'
+import { Revision } from '../../../Revision/Revision'
 
 export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements UseCaseInterface<void> {
   constructor(
@@ -33,9 +35,20 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
       return Result.ok()
     }
 
+    let newRevisionsInSecondaryCount = 0
     if (await this.hasAlreadyDataInSecondaryDatabase(userUuid)) {
-      return Result.fail(`Revisions for user ${userUuid.value} already exist in secondary database`)
+      const newRevisions = await this.getNewRevisionsCreatedInSecondaryDatabase(userUuid)
+      for (const existingRevision of newRevisions.alreadyExistingInPrimary) {
+        await (this.secondRevisionsRepository as RevisionRepositoryInterface).removeOneByUuid(
+          Uuid.create(existingRevision.id.toString()).getValue(),
+          userUuid,
+        )
+      }
+
+      newRevisionsInSecondaryCount = newRevisions.newRevisionsInSecondary.length
     }
+
+    await this.allowForSecondaryDatabaseToCatchUp()
 
     const migrationTimeStart = this.timer.getTimestampInMicroseconds()
 
@@ -55,7 +68,10 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
 
     await this.allowForSecondaryDatabaseToCatchUp()
 
-    const integrityCheckResult = await this.checkIntegrityBetweenPrimaryAndSecondaryDatabase(userUuid)
+    const integrityCheckResult = await this.checkIntegrityBetweenPrimaryAndSecondaryDatabase(
+      userUuid,
+      newRevisionsInSecondaryCount,
+    )
     if (integrityCheckResult.isFailed()) {
       const cleanupResult = await this.deleteRevisionsForUser(userUuid, this.secondRevisionsRepository)
       if (cleanupResult.isFailed()) {
@@ -157,13 +173,66 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
     return totalRevisionsCountForUserInSecondary > 0
   }
 
+  private async getNewRevisionsCreatedInSecondaryDatabase(userUuid: Uuid): Promise<{
+    alreadyExistingInPrimary: Revision[]
+    newRevisionsInSecondary: Revision[]
+  }> {
+    const revisions = await (this.secondRevisionsRepository as RevisionRepositoryInterface).findByUserUuid({
+      userUuid: userUuid,
+    })
+
+    const alreadyExistingInPrimary: Revision[] = []
+    const newRevisionsInSecondary: Revision[] = []
+
+    for (const revision of revisions) {
+      const revisionExistsInPrimary = await this.checkIfRevisionExistsInPrimaryDatabase(revision)
+      if (revisionExistsInPrimary) {
+        alreadyExistingInPrimary.push(revision)
+      } else {
+        newRevisionsInSecondary.push(revision)
+      }
+    }
+
+    return {
+      alreadyExistingInPrimary: alreadyExistingInPrimary,
+      newRevisionsInSecondary: newRevisionsInSecondary,
+    }
+  }
+
+  private async checkIfRevisionExistsInPrimaryDatabase(revision: Revision): Promise<boolean> {
+    const revisionInPrimary = await this.primaryRevisionsRepository.findOneByUuid(
+      Uuid.create(revision.id.toString()).getValue(),
+      revision.props.userUuid as Uuid,
+      [],
+    )
+
+    if (revisionInPrimary === null) {
+      return false
+    }
+
+    if (!revision.isIdenticalTo(revisionInPrimary)) {
+      this.logger.error(
+        `Revision ${revision.id.toString()} is not identical in primary and secondary database. Revision in secondary database: ${JSON.stringify(
+          revision,
+        )}, revision in primary database: ${JSON.stringify(revisionInPrimary)}`,
+      )
+
+      return false
+    }
+
+    return true
+  }
+
   private async isAlreadyMigrated(userUuid: Uuid): Promise<boolean> {
     const totalRevisionsCountForUserInPrimary = await this.primaryRevisionsRepository.countByUserUuid(userUuid)
 
     return totalRevisionsCountForUserInPrimary === 0
   }
 
-  private async checkIntegrityBetweenPrimaryAndSecondaryDatabase(userUuid: Uuid): Promise<Result<boolean>> {
+  private async checkIntegrityBetweenPrimaryAndSecondaryDatabase(
+    userUuid: Uuid,
+    newRevisionsInSecondaryCount: number,
+  ): Promise<Result<boolean>> {
     try {
       const totalRevisionsCountForUserInPrimary = await this.primaryRevisionsRepository.countByUserUuid(userUuid)
 
@@ -206,9 +275,12 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
         this.secondRevisionsRepository as RevisionRepositoryInterface
       ).countByUserUuid(userUuid)
 
-      if (totalRevisionsCountForUserInPrimary !== totalRevisionsCountForUserInSecondary) {
+      if (
+        totalRevisionsCountForUserInPrimary + newRevisionsInSecondaryCount !==
+        totalRevisionsCountForUserInSecondary
+      ) {
         return Result.fail(
-          `Total revisions count for user ${userUuid.value} in primary database (${totalRevisionsCountForUserInPrimary}) does not match total revisions count in secondary database (${totalRevisionsCountForUserInSecondary})`,
+          `Total revisions count for user ${userUuid.value} in primary database (${totalRevisionsCountForUserInPrimary} + ${newRevisionsInSecondaryCount}) does not match total revisions count in secondary database (${totalRevisionsCountForUserInSecondary})`,
         )
       }
 
