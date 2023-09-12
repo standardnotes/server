@@ -666,14 +666,14 @@ export class ContainerConfigLoader {
       .bind<SyncItems>(TYPES.Sync_SyncItems)
       .toConstantValue(
         new SyncItems(
-          container.get(TYPES.Sync_ItemRepositoryResolver),
-          container.get(TYPES.Sync_GetItems),
-          container.get(TYPES.Sync_SaveItems),
-          container.get(TYPES.Sync_GetSharedVaults),
-          container.get(TYPES.Sync_GetSharedVaultInvitesSentToUser),
-          container.get(TYPES.Sync_GetMessagesSentToUser),
-          container.get(TYPES.Sync_GetUserNotifications),
-          container.get(TYPES.Sync_Timer),
+          container.get<ItemRepositoryResolverInterface>(TYPES.Sync_ItemRepositoryResolver),
+          container.get<GetItems>(TYPES.Sync_GetItems),
+          container.get<SaveItems>(TYPES.Sync_SaveItems),
+          container.get<GetSharedVaults>(TYPES.Sync_GetSharedVaults),
+          container.get<GetSharedVaultInvitesSentToUser>(TYPES.Sync_GetSharedVaultInvitesSentToUser),
+          container.get<GetMessagesSentToUser>(TYPES.Sync_GetMessagesSentToUser),
+          container.get<GetUserNotifications>(TYPES.Sync_GetUserNotifications),
+          container.get<Logger>(TYPES.Sync_Logger),
         ),
       )
     container.bind<CheckIntegrity>(TYPES.Sync_CheckIntegrity).toDynamicValue((context: interfaces.Context) => {
