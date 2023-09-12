@@ -673,6 +673,7 @@ export class ContainerConfigLoader {
           container.get(TYPES.Sync_GetSharedVaultInvitesSentToUser),
           container.get(TYPES.Sync_GetMessagesSentToUser),
           container.get(TYPES.Sync_GetUserNotifications),
+          container.get(TYPES.Sync_Timer),
         ),
       )
     container.bind<CheckIntegrity>(TYPES.Sync_CheckIntegrity).toDynamicValue((context: interfaces.Context) => {

@@ -14,6 +14,7 @@ import { GetMessagesSentToUser } from '../../Messaging/GetMessagesSentToUser/Get
 import { GetUserNotifications } from '../../Messaging/GetUserNotifications/GetUserNotifications'
 import { GetSharedVaultInvitesSentToUser } from '../../SharedVaults/GetSharedVaultInvitesSentToUser/GetSharedVaultInvitesSentToUser'
 import { ItemRepositoryResolverInterface } from '../../../Item/ItemRepositoryResolverInterface'
+import { Logger } from 'winston'
 
 describe('SyncItems', () => {
   let getItemsUseCase: GetItems
@@ -28,6 +29,7 @@ describe('SyncItems', () => {
   let getSharedVaultInvitesSentToUserUseCase: GetSharedVaultInvitesSentToUser
   let getMessagesSentToUser: GetMessagesSentToUser
   let getUserNotifications: GetUserNotifications
+  let logger: Logger
 
   const createUseCase = () =>
     new SyncItems(
@@ -38,9 +40,15 @@ describe('SyncItems', () => {
       getSharedVaultInvitesSentToUserUseCase,
       getMessagesSentToUser,
       getUserNotifications,
+      logger,
     )
 
   beforeEach(() => {
+    logger = {} as jest.Mocked<Logger>
+    logger.info = jest.fn()
+    logger.debug = jest.fn()
+    logger.error = jest.fn()
+
     item1 = Item.create(
       {
         userUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
@@ -186,6 +194,35 @@ describe('SyncItems', () => {
       readOnlyAccess: false,
       sessionUuid: null,
     })
+  })
+
+  it('should log error if sync items throws an error', async () => {
+    getItemsUseCase.execute = jest.fn().mockImplementation(() => {
+      throw new Error('error')
+    })
+
+    let caughtError = null
+    try {
+      await createUseCase().execute({
+        userUuid: '1-2-3',
+        onGoingRevisionsTransition: false,
+        itemHashes: [itemHash],
+        computeIntegrityHash: false,
+        syncToken: 'foo',
+        cursorToken: 'bar',
+        limit: 10,
+        readOnlyAccess: false,
+        contentType: 'Note',
+        apiVersion: ApiVersion.v20200115,
+        sessionUuid: null,
+        snjsVersion: '1.2.3',
+        roleNames: [RoleName.NAMES.CoreUser],
+      })
+    } catch (error) {
+      caughtError = error
+    }
+
+    expect(caughtError).not.toBeNull()
   })
 
   it('should sync items and return items keys on top for first sync that is not a shared vault exclusive sync', async () => {
