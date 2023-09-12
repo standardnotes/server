@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.33.14](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.33.13...@standardnotes/revisions-server@1.33.14) (2023-09-12)
+
+### Bug Fixes
+
+* **revisions:** handle transitions with already existing data in secondary ([aa83526](https://github.com/standardnotes/server/commit/aa835268ea80e3aa74907e449d189e8b2774a859))
+
 ## [1.33.13](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.33.12...@standardnotes/revisions-server@1.33.13) (2023-09-12)
 
 ### Bug Fixes
