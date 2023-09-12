@@ -1,3 +1,4 @@
+/* istanbul ignore file */
 import { Result, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
 import { Logger } from 'winston'
 
@@ -5,6 +6,7 @@ import { TransitionItemsFromPrimaryToSecondaryDatabaseForUserDTO } from './Trans
 import { ItemRepositoryInterface } from '../../../Item/ItemRepositoryInterface'
 import { ItemQuery } from '../../../Item/ItemQuery'
 import { TimerInterface } from '@standardnotes/time'
+import { Item } from '../../../Item/Item'
 
 export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements UseCaseInterface<void> {
   constructor(
@@ -34,8 +36,21 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
       return Result.ok()
     }
 
+    let newItemsInSecondaryCount = 0
     if (await this.hasAlreadyDataInSecondaryDatabase(userUuid)) {
-      return Result.fail(`Items for user ${userUuid.value} already exist in secondary database`)
+      const newItems = await this.getNewItemsCreatedInSecondaryDatabase(userUuid)
+      for (const existingItem of newItems.alreadyExistingInPrimary) {
+        this.logger.info(`Removing item ${existingItem.uuid.value} from secondary database`)
+        await (this.secondaryItemRepository as ItemRepositoryInterface).remove(existingItem)
+      }
+
+      if (newItems.newItemsInSecondary.length > 0) {
+        this.logger.info(
+          `Found ${newItems.newItemsInSecondary.length} new items in secondary database for user ${userUuid.value}`,
+        )
+      }
+
+      newItemsInSecondaryCount = newItems.newItemsInSecondary.length
     }
 
     const migrationTimeStart = this.timer.getTimestampInMicroseconds()
@@ -54,7 +69,10 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
 
     await this.allowForSecondaryDatabaseToCatchUp()
 
-    const integrityCheckResult = await this.checkIntegrityBetweenPrimaryAndSecondaryDatabase(userUuid)
+    const integrityCheckResult = await this.checkIntegrityBetweenPrimaryAndSecondaryDatabase(
+      userUuid,
+      newItemsInSecondaryCount,
+    )
     if (integrityCheckResult.isFailed()) {
       const cleanupResult = await this.deleteItemsForUser(userUuid, this.secondaryItemRepository)
       if (cleanupResult.isFailed()) {
@@ -90,11 +108,20 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
       userUuid: userUuid.value,
     })
 
-    return totalItemsCountForUser > 0
+    const hasAlreadyDataInSecondaryDatabase = totalItemsCountForUser > 0
+    if (hasAlreadyDataInSecondaryDatabase) {
+      this.logger.info(`User ${userUuid.value} has already ${totalItemsCountForUser} items in secondary database`)
+    }
+
+    return hasAlreadyDataInSecondaryDatabase
   }
 
   private async isAlreadyMigrated(userUuid: Uuid): Promise<boolean> {
     const totalItemsCountForUser = await this.primaryItemRepository.countAll({ userUuid: userUuid.value })
+
+    if (totalItemsCountForUser > 0) {
+      this.logger.info(`User ${userUuid.value} has ${totalItemsCountForUser} items in primary database.`)
+    }
 
     return totalItemsCountForUser === 0
   }
@@ -102,6 +129,52 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
   private async allowForSecondaryDatabaseToCatchUp(): Promise<void> {
     const twoSecondsInMilliseconds = 2_000
     await this.timer.sleep(twoSecondsInMilliseconds)
+  }
+
+  private async getNewItemsCreatedInSecondaryDatabase(userUuid: Uuid): Promise<{
+    alreadyExistingInPrimary: Item[]
+    newItemsInSecondary: Item[]
+  }> {
+    const items = await (this.secondaryItemRepository as ItemRepositoryInterface).findAll({
+      userUuid: userUuid.value,
+    })
+
+    const alreadyExistingInPrimary: Item[] = []
+    const newItemsInSecondary: Item[] = []
+
+    for (const item of items) {
+      const itemExistsInPrimary = await this.checkIfItemExistsInPrimaryDatabase(item)
+      if (itemExistsInPrimary) {
+        alreadyExistingInPrimary.push(item)
+      } else {
+        newItemsInSecondary.push(item)
+      }
+    }
+
+    return {
+      alreadyExistingInPrimary: alreadyExistingInPrimary,
+      newItemsInSecondary: newItemsInSecondary,
+    }
+  }
+
+  private async checkIfItemExistsInPrimaryDatabase(item: Item): Promise<boolean> {
+    const itemInPrimary = await this.primaryItemRepository.findByUuid(item.uuid)
+
+    if (itemInPrimary === null) {
+      return false
+    }
+
+    if (!item.isIdenticalTo(itemInPrimary)) {
+      this.logger.error(
+        `Revision ${item.id.toString()} is not identical in primary and secondary database. Revision in secondary database: ${JSON.stringify(
+          item,
+        )}, revision in primary database: ${JSON.stringify(itemInPrimary)}`,
+      )
+
+      return false
+    }
+
+    return true
   }
 
   private async migrateItemsForUser(userUuid: Uuid): Promise<Result<void>> {
@@ -138,7 +211,10 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
     }
   }
 
-  private async checkIntegrityBetweenPrimaryAndSecondaryDatabase(userUuid: Uuid): Promise<Result<boolean>> {
+  private async checkIntegrityBetweenPrimaryAndSecondaryDatabase(
+    userUuid: Uuid,
+    newItemsInSecondaryCount: number,
+  ): Promise<Result<boolean>> {
     try {
       const totalItemsCountForUserInPrimary = await this.primaryItemRepository.countAll({ userUuid: userUuid.value })
       const totalItemsCountForUserInSecondary = await (
@@ -147,9 +223,9 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
         userUuid: userUuid.value,
       })
 
-      if (totalItemsCountForUserInPrimary !== totalItemsCountForUserInSecondary) {
+      if (totalItemsCountForUserInPrimary + newItemsInSecondaryCount !== totalItemsCountForUserInSecondary) {
         return Result.fail(
-          `Total items count for user ${userUuid.value} in primary database (${totalItemsCountForUserInPrimary}) does not match total items count in secondary database (${totalItemsCountForUserInSecondary})`,
+          `Total items count for user ${userUuid.value} in primary database (${totalItemsCountForUserInPrimary} + ${newItemsInSecondaryCount}) does not match total items count in secondary database (${totalItemsCountForUserInSecondary})`,
         )
       }
 

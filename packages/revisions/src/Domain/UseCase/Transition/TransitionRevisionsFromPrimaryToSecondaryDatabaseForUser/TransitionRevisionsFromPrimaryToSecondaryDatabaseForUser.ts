@@ -39,9 +39,16 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
     if (await this.hasAlreadyDataInSecondaryDatabase(userUuid)) {
       const newRevisions = await this.getNewRevisionsCreatedInSecondaryDatabase(userUuid)
       for (const existingRevision of newRevisions.alreadyExistingInPrimary) {
+        this.logger.info(`Removing revision ${existingRevision.id.toString()} from secondary database`)
         await (this.secondRevisionsRepository as RevisionRepositoryInterface).removeOneByUuid(
           Uuid.create(existingRevision.id.toString()).getValue(),
           userUuid,
+        )
+      }
+
+      if (newRevisions.newRevisionsInSecondary.length > 0) {
+        this.logger.info(
+          `Found ${newRevisions.newRevisionsInSecondary.length} new revisions in secondary database for user ${userUuid.value}`,
         )
       }
 
@@ -170,7 +177,14 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
       this.secondRevisionsRepository as RevisionRepositoryInterface
     ).countByUserUuid(userUuid)
 
-    return totalRevisionsCountForUserInSecondary > 0
+    const hasAlreadyDataInSecondaryDatabase = totalRevisionsCountForUserInSecondary > 0
+    if (hasAlreadyDataInSecondaryDatabase) {
+      this.logger.info(
+        `User ${userUuid.value} has already ${totalRevisionsCountForUserInSecondary} revisions in secondary database`,
+      )
+    }
+
+    return hasAlreadyDataInSecondaryDatabase
   }
 
   private async getNewRevisionsCreatedInSecondaryDatabase(userUuid: Uuid): Promise<{
@@ -225,6 +239,12 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
 
   private async isAlreadyMigrated(userUuid: Uuid): Promise<boolean> {
     const totalRevisionsCountForUserInPrimary = await this.primaryRevisionsRepository.countByUserUuid(userUuid)
+
+    if (totalRevisionsCountForUserInPrimary > 0) {
+      this.logger.info(
+        `User ${userUuid.value} has ${totalRevisionsCountForUserInPrimary} revisions in primary database.`,
+      )
+    }
 
     return totalRevisionsCountForUserInPrimary === 0
   }
