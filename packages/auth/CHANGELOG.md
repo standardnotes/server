@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.141.9](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.141.8...@standardnotes/auth-server@1.141.9) (2023-09-13)
+
+### Bug Fixes
+
+* display transition progress in logs ([38685c1](https://github.com/standardnotes/server/commit/38685c1861b13e398dd96aa39f2cf1aece2090fb))
+
 ## [1.141.8](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.141.7...@standardnotes/auth-server@1.141.8) (2023-09-12)
 
 ### Bug Fixes
