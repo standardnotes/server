@@ -20,15 +20,17 @@ export class CheckIntegrity implements UseCaseInterface<IntegrityPayload[]> {
 
     const serverItemIntegrityPayloadsMap = new Map<string, ExtendedIntegrityPayload>()
     for (const serverItemIntegrityPayload of serverItemIntegrityPayloads) {
-      serverItemIntegrityPayloadsMap.set(serverItemIntegrityPayload.uuid, serverItemIntegrityPayload)
+      serverItemIntegrityPayloadsMap.set(serverItemIntegrityPayload.uuid.toLowerCase(), serverItemIntegrityPayload)
     }
 
     const clientItemIntegrityPayloadsMap = new Map<string, number>()
+    const caseInsensitiveUuidsMap = new Map<string, string>()
     for (const clientItemIntegrityPayload of dto.integrityPayloads) {
       clientItemIntegrityPayloadsMap.set(
-        clientItemIntegrityPayload.uuid,
+        clientItemIntegrityPayload.uuid.toLowerCase(),
         clientItemIntegrityPayload.updated_at_timestamp,
       )
+      caseInsensitiveUuidsMap.set(clientItemIntegrityPayload.uuid.toLowerCase(), clientItemIntegrityPayload.uuid)
     }
 
     const mismatches: IntegrityPayload[] = []
@@ -58,7 +60,7 @@ export class CheckIntegrity implements UseCaseInterface<IntegrityPayload[]> {
         serverItemIntegrityPayload.content_type !== ContentType.TYPES.ItemsKey
       ) {
         mismatches.unshift({
-          uuid: serverItemIntegrityPayloadUuid,
+          uuid: caseInsensitiveUuidsMap.get(serverItemIntegrityPayloadUuid) as string,
           updated_at_timestamp: serverItemIntegrityPayloadUpdatedAtTimestamp,
         })
       }

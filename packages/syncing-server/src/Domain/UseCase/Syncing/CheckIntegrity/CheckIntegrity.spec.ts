@@ -22,7 +22,7 @@ describe('CheckIntegrity', () => {
         content_type: ContentType.TYPES.Note,
       },
       {
-        uuid: '2-3-4',
+        uuid: '2-3-4-a',
         updated_at_timestamp: 2,
         content_type: ContentType.TYPES.Note,
       },
@@ -56,7 +56,7 @@ describe('CheckIntegrity', () => {
           updated_at_timestamp: 1,
         },
         {
-          uuid: '2-3-4',
+          uuid: '2-3-4-A',
           updated_at_timestamp: 2,
         },
         {
@@ -82,7 +82,7 @@ describe('CheckIntegrity', () => {
           updated_at_timestamp: 1,
         },
         {
-          uuid: '2-3-4',
+          uuid: '2-3-4-A',
           updated_at_timestamp: 1,
         },
         {
@@ -98,7 +98,7 @@ describe('CheckIntegrity', () => {
     })
     expect(result.getValue()).toEqual([
       {
-        uuid: '2-3-4',
+        uuid: '2-3-4-A',
         updated_at_timestamp: 2,
       },
     ])
@@ -113,7 +113,7 @@ describe('CheckIntegrity', () => {
           updated_at_timestamp: 1,
         },
         {
-          uuid: '2-3-4',
+          uuid: '2-3-4-A',
           updated_at_timestamp: 2,
         },
         {
@@ -140,7 +140,7 @@ describe('CheckIntegrity', () => {
           updated_at_timestamp: 1,
         },
         {
-          uuid: '2-3-4',
+          uuid: '2-3-4-A',
           updated_at_timestamp: 2,
         },
         {
