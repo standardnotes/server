@@ -952,6 +952,7 @@ export class ContainerConfigLoader {
       .bind<TransitionStatusUpdatedEventHandler>(TYPES.Sync_TransitionStatusUpdatedEventHandler)
       .toConstantValue(
         new TransitionStatusUpdatedEventHandler(
+          container.get<ItemRepositoryInterface>(TYPES.Sync_SQLItemRepository),
           container.get<TransitionItemsFromPrimaryToSecondaryDatabaseForUser>(
             TYPES.Sync_TransitionItemsFromPrimaryToSecondaryDatabaseForUser,
           ),

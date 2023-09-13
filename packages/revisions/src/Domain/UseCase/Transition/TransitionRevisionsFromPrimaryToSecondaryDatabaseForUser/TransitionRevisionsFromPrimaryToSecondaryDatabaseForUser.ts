@@ -29,12 +29,6 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
     }
     const userUuid = userUuidOrError.getValue()
 
-    if (await this.isAlreadyMigrated(userUuid)) {
-      this.logger.info(`Revisions for user ${userUuid.value} are already migrated`)
-
-      return Result.ok()
-    }
-
     let newRevisionsInSecondaryCount = 0
     if (await this.hasAlreadyDataInSecondaryDatabase(userUuid)) {
       const newRevisions = await this.getNewRevisionsCreatedInSecondaryDatabase(userUuid)
@@ -239,18 +233,6 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
     }
 
     return true
-  }
-
-  private async isAlreadyMigrated(userUuid: Uuid): Promise<boolean> {
-    const totalRevisionsCountForUserInPrimary = await this.primaryRevisionsRepository.countByUserUuid(userUuid)
-
-    if (totalRevisionsCountForUserInPrimary > 0) {
-      this.logger.info(
-        `User ${userUuid.value} has ${totalRevisionsCountForUserInPrimary} revisions in primary database.`,
-      )
-    }
-
-    return totalRevisionsCountForUserInPrimary === 0
   }
 
   private async checkIntegrityBetweenPrimaryAndSecondaryDatabase(

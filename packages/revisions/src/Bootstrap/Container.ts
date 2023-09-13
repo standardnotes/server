@@ -443,6 +443,7 @@ export class ContainerConfigLoader {
       .bind<TransitionStatusUpdatedEventHandler>(TYPES.Revisions_TransitionStatusUpdatedEventHandler)
       .toConstantValue(
         new TransitionStatusUpdatedEventHandler(
+          container.get<RevisionRepositoryInterface>(TYPES.Revisions_SQLRevisionRepository),
           container.get<TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser>(
             TYPES.Revisions_TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser,
           ),

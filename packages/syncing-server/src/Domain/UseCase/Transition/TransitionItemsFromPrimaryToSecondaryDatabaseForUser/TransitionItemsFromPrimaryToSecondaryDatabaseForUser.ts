@@ -30,12 +30,6 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
     }
     const userUuid = userUuidOrError.getValue()
 
-    if (await this.isAlreadyMigrated(userUuid)) {
-      this.logger.info(`Items for user ${userUuid.value} are already migrated`)
-
-      return Result.ok()
-    }
-
     let newItemsInSecondaryCount = 0
     if (await this.hasAlreadyDataInSecondaryDatabase(userUuid)) {
       const newItems = await this.getNewItemsCreatedInSecondaryDatabase(userUuid)
@@ -120,16 +114,6 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
     }
 
     return hasAlreadyDataInSecondaryDatabase
-  }
-
-  private async isAlreadyMigrated(userUuid: Uuid): Promise<boolean> {
-    const totalItemsCountForUser = await this.primaryItemRepository.countAll({ userUuid: userUuid.value })
-
-    if (totalItemsCountForUser > 0) {
-      this.logger.info(`User ${userUuid.value} has ${totalItemsCountForUser} items in primary database.`)
-    }
-
-    return totalItemsCountForUser === 0
   }
 
   private async allowForSecondaryDatabaseToCatchUp(): Promise<void> {
