@@ -13,6 +13,7 @@ export class TransitionStatusUpdatedEventHandler implements DomainEventHandlerIn
       status: event.payload.status,
       userUuid: event.payload.userUuid,
       transitionType: event.payload.transitionType,
+      transitionTimestamp: event.payload.transitionTimestamp,
     })
 
     if (result.isFailed()) {

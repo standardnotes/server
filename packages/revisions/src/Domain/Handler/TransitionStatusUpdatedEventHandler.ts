@@ -49,8 +49,6 @@ export class TransitionStatusUpdatedEventHandler implements DomainEventHandlerIn
       }
 
       if (await this.isAlreadyMigrated(userUuidOrError.getValue())) {
-        this.logger.info(`Revisions for user ${event.payload.userUuid} are already migrated`)
-
         await this.domainEventPublisher.publish(
           this.domainEventFactory.createTransitionStatusUpdatedEvent({
             userUuid: event.payload.userUuid,

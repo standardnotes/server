@@ -943,6 +943,7 @@ export class ContainerConfigLoader {
         new UpdateTransitionStatus(
           container.get<TransitionStatusRepositoryInterface>(TYPES.Auth_TransitionStatusRepository),
           container.get<RoleServiceInterface>(TYPES.Auth_RoleService),
+          container.get<winston.Logger>(TYPES.Auth_Logger),
         ),
       )
     container

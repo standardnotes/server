@@ -3,17 +3,36 @@ import { RoleName, Uuid } from '@standardnotes/domain-core'
 import { RoleServiceInterface } from '../../Role/RoleServiceInterface'
 import { TransitionStatusRepositoryInterface } from '../../Transition/TransitionStatusRepositoryInterface'
 import { UpdateTransitionStatus } from './UpdateTransitionStatus'
+import { Logger } from 'winston'
 
 describe('UpdateTransitionStatus', () => {
   let transitionStatusRepository: TransitionStatusRepositoryInterface
   let roleService: RoleServiceInterface
+  let logger: Logger
 
-  const createUseCase = () => new UpdateTransitionStatus(transitionStatusRepository, roleService)
+  const createUseCase = () => new UpdateTransitionStatus(transitionStatusRepository, roleService, logger)
 
   beforeEach(() => {
+    logger = {} as jest.Mocked<Logger>
+    logger.info = jest.fn()
+
     transitionStatusRepository = {} as jest.Mocked<TransitionStatusRepositoryInterface>
     transitionStatusRepository.removeStatus = jest.fn()
     transitionStatusRepository.updateStatus = jest.fn()
+    transitionStatusRepository.getStatuses = jest.fn().mockResolvedValue([
+      {
+        userUuid: '00000000-0000-0000-0000-000000000000',
+        status: 'STARTED',
+      },
+      {
+        userUuid: '00000000-0000-0000-0000-000000000001',
+        status: 'IN_PROGRESS',
+      },
+      {
+        userUuid: '00000000-0000-0000-0000-000000000002',
+        status: 'FAILED',
+      },
+    ])
 
     roleService = {} as jest.Mocked<RoleServiceInterface>
     roleService.addRoleToUser = jest.fn()
@@ -26,6 +45,7 @@ describe('UpdateTransitionStatus', () => {
       userUuid: '00000000-0000-0000-0000-000000000000',
       status: 'FINISHED',
       transitionType: 'items',
+      transitionTimestamp: 123,
     })
 
     expect(result.isFailed()).toBeFalsy()
@@ -46,6 +66,7 @@ describe('UpdateTransitionStatus', () => {
       userUuid: '00000000-0000-0000-0000-000000000000',
       status: 'FINISHED',
       transitionType: 'revisions',
+      transitionTimestamp: 123,
     })
 
     expect(result.isFailed()).toBeFalsy()
@@ -63,6 +84,7 @@ describe('UpdateTransitionStatus', () => {
       userUuid: '00000000-0000-0000-0000-000000000000',
       status: 'STARTED',
       transitionType: 'items',
+      transitionTimestamp: 123,
     })
 
     expect(result.isFailed()).toBeFalsy()
@@ -80,6 +102,7 @@ describe('UpdateTransitionStatus', () => {
       userUuid: 'invalid',
       status: 'STARTED',
       transitionType: 'items',
+      transitionTimestamp: 123,
     })
 
     expect(result.isFailed()).toBeTruthy()

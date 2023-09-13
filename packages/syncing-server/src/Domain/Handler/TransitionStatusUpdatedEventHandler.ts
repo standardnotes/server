@@ -20,8 +20,6 @@ export class TransitionStatusUpdatedEventHandler implements DomainEventHandlerIn
   async handle(event: TransitionStatusUpdatedEvent): Promise<void> {
     if (event.payload.status === 'STARTED' && event.payload.transitionType === 'items') {
       if (await this.isAlreadyMigrated(event.payload.userUuid)) {
-        this.logger.info(`Items for user ${event.payload.userUuid} are already migrated`)
-
         await this.domainEventPublisher.publish(
           this.domainEventFactory.createTransitionStatusUpdatedEvent({
             userUuid: event.payload.userUuid,

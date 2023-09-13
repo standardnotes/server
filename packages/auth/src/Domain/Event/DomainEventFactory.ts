@@ -44,7 +44,10 @@ export class DomainEventFactory implements DomainEventFactoryInterface {
         },
         origin: DomainEventService.Auth,
       },
-      payload: dto,
+      payload: {
+        timestamp: this.timer.getTimestampInMicroseconds(),
+        ...dto,
+      },
     }
   }
 

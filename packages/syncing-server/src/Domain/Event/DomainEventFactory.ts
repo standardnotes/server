@@ -184,7 +184,10 @@ export class DomainEventFactory implements DomainEventFactoryInterface {
         },
         origin: DomainEventService.SyncingServer,
       },
-      payload: dto,
+      payload: {
+        transitionTimestamp: this.timer.getTimestampInMicroseconds(),
+        ...dto,
+      },
     }
   }
 
