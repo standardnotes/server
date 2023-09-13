@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.141.11](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.141.10...@standardnotes/auth-server@1.141.11) (2023-09-13)
+
+### Bug Fixes
+
+* **auth:** passing transition timestamp ([c164bde](https://github.com/standardnotes/server/commit/c164bde847b5974e74fd439f0d439526ad439443))
+
 ## [1.141.10](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.141.9...@standardnotes/auth-server@1.141.10) (2023-09-13)
 
 ### Bug Fixes
