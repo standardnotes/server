@@ -10,7 +10,6 @@ import { GetUserSubscription } from '../../../Domain/UseCase/GetUserSubscription
 import { IncreaseLoginAttempts } from '../../../Domain/UseCase/IncreaseLoginAttempts'
 import { UpdateUser } from '../../../Domain/UseCase/UpdateUser'
 import { ErrorTag } from '@standardnotes/responses'
-import { GetTransitionStatus } from '../../../Domain/UseCase/GetTransitionStatus/GetTransitionStatus'
 
 export class BaseUsersController extends BaseHttpController {
   constructor(
@@ -21,7 +20,6 @@ export class BaseUsersController extends BaseHttpController {
     protected clearLoginAttempts: ClearLoginAttempts,
     protected increaseLoginAttempts: IncreaseLoginAttempts,
     protected changeCredentialsUseCase: ChangeCredentials,
-    protected getTransitionStatusUseCase: GetTransitionStatus,
     private controllerContainer?: ControllerContainerInterface,
   ) {
     super()
@@ -32,7 +30,6 @@ export class BaseUsersController extends BaseHttpController {
       this.controllerContainer.register('auth.users.getSubscription', this.getSubscription.bind(this))
       this.controllerContainer.register('auth.users.updateCredentials', this.changeCredentials.bind(this))
       this.controllerContainer.register('auth.users.delete', this.deleteAccount.bind(this))
-      this.controllerContainer.register('auth.users.transition-status', this.transitionStatus.bind(this))
     }
   }
 
@@ -104,30 +101,6 @@ export class BaseUsersController extends BaseHttpController {
     })
 
     return this.json(result.keyParams)
-  }
-
-  async transitionStatus(_request: Request, response: Response): Promise<results.JsonResult> {
-    const result = await this.getTransitionStatusUseCase.execute({
-      userUuid: response.locals.user.uuid,
-      transitionType: 'items',
-    })
-
-    if (result.isFailed()) {
-      return this.json(
-        {
-          error: {
-            message: result.getError(),
-          },
-        },
-        400,
-      )
-    }
-
-    response.setHeader('x-invalidate-cache', response.locals.user.uuid)
-
-    return this.json({
-      status: result.getValue(),
-    })
   }
 
   async deleteAccount(request: Request, response: Response): Promise<results.JsonResult> {

@@ -23,6 +23,7 @@ describe('TriggerTransitionFromPrimaryToSecondaryDatabaseForUser', () => {
 
     await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
+      transitionTimestamp: 123,
     })
 
     expect(domainEventPubliser.publish).toHaveBeenCalled()

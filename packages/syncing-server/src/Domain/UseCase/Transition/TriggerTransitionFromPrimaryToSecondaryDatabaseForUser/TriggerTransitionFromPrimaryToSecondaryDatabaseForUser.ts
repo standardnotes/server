@@ -15,6 +15,7 @@ export class TriggerTransitionFromPrimaryToSecondaryDatabaseForUser implements U
       userUuid: dto.userUuid,
       status: 'STARTED',
       transitionType: 'items',
+      transitionTimestamp: dto.transitionTimestamp,
     })
 
     await this.domainEventPubliser.publish(event)

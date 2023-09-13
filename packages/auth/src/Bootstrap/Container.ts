@@ -1276,7 +1276,6 @@ export class ContainerConfigLoader {
             container.get<ClearLoginAttempts>(TYPES.Auth_ClearLoginAttempts),
             container.get<IncreaseLoginAttempts>(TYPES.Auth_IncreaseLoginAttempts),
             container.get<ChangeCredentials>(TYPES.Auth_ChangeCredentials),
-            container.get<GetTransitionStatus>(TYPES.Auth_GetTransitionStatus),
             container.get<ControllerContainerInterface>(TYPES.Auth_ControllerContainer),
           ),
         )

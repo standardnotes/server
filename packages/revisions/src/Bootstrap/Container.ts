@@ -520,9 +520,6 @@ export class ContainerConfigLoader {
             container.get<DeleteRevision>(TYPES.Revisions_DeleteRevision),
             container.get<RevisionHttpMapper>(TYPES.Revisions_RevisionHttpMapper),
             container.get<RevisionMetadataHttpMapper>(TYPES.Revisions_RevisionMetadataHttpMapper),
-            container.get<TriggerTransitionFromPrimaryToSecondaryDatabaseForUser>(
-              TYPES.Revisions_TriggerTransitionFromPrimaryToSecondaryDatabaseForUser,
-            ),
             container.get<ControllerContainerInterface>(TYPES.Revisions_ControllerContainer),
           ),
         )

@@ -18,6 +18,7 @@ export class TransitionRequestedEventHandler implements DomainEventHandlerInterf
 
     const result = await this.triggerTransitionFromPrimaryToSecondaryDatabaseForUser.execute({
       userUuid: event.payload.userUuid,
+      transitionTimestamp: event.payload.timestamp,
     })
 
     if (result.isFailed()) {

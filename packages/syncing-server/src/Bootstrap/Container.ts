@@ -1090,9 +1090,6 @@ export class ContainerConfigLoader {
             container.get<SyncItems>(TYPES.Sync_SyncItems),
             container.get<CheckIntegrity>(TYPES.Sync_CheckIntegrity),
             container.get<GetItem>(TYPES.Sync_GetItem),
-            container.get<TriggerTransitionFromPrimaryToSecondaryDatabaseForUser>(
-              TYPES.Sync_TriggerTransitionFromPrimaryToSecondaryDatabaseForUser,
-            ),
             container.get<MapperInterface<Item, ItemHttpRepresentation>>(TYPES.Sync_ItemHttpMapper),
             container.get<SyncResponseFactoryResolverInterface>(TYPES.Sync_SyncResponseFactoryResolver),
             container.get<ControllerContainerInterface>(TYPES.Sync_ControllerContainer),

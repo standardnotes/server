@@ -18,7 +18,6 @@ import { ClearLoginAttempts } from '../../Domain/UseCase/ClearLoginAttempts'
 import { IncreaseLoginAttempts } from '../../Domain/UseCase/IncreaseLoginAttempts'
 import { ChangeCredentials } from '../../Domain/UseCase/ChangeCredentials/ChangeCredentials'
 import { BaseUsersController } from './Base/BaseUsersController'
-import { GetTransitionStatus } from '../../Domain/UseCase/GetTransitionStatus/GetTransitionStatus'
 
 @controller('/users')
 export class AnnotatedUsersController extends BaseUsersController {
@@ -30,7 +29,6 @@ export class AnnotatedUsersController extends BaseUsersController {
     @inject(TYPES.Auth_ClearLoginAttempts) override clearLoginAttempts: ClearLoginAttempts,
     @inject(TYPES.Auth_IncreaseLoginAttempts) override increaseLoginAttempts: IncreaseLoginAttempts,
     @inject(TYPES.Auth_ChangeCredentials) override changeCredentialsUseCase: ChangeCredentials,
-    @inject(TYPES.Auth_GetTransitionStatus) override getTransitionStatusUseCase: GetTransitionStatus,
   ) {
     super(
       updateUser,
@@ -40,7 +38,6 @@ export class AnnotatedUsersController extends BaseUsersController {
       clearLoginAttempts,
       increaseLoginAttempts,
       changeCredentialsUseCase,
-      getTransitionStatusUseCase,
     )
   }
 
@@ -52,11 +49,6 @@ export class AnnotatedUsersController extends BaseUsersController {
   @httpGet('/params')
   override async keyParams(request: Request): Promise<results.JsonResult> {
     return super.keyParams(request)
-  }
-
-  @httpGet('/transition-status', TYPES.Auth_RequiredCrossServiceTokenMiddleware)
-  override async transitionStatus(request: Request, response: Response): Promise<results.JsonResult> {
-    return super.transitionStatus(request, response)
   }
 
   @httpDelete('/:userUuid', TYPES.Auth_RequiredCrossServiceTokenMiddleware)

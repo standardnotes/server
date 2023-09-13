@@ -25,6 +25,7 @@ export class TransitionStatusUpdatedEventHandler implements DomainEventHandlerIn
           userUuid: event.payload.userUuid,
           status: 'STARTED',
           transitionType: 'revisions',
+          transitionTimestamp: event.payload.transitionTimestamp,
         }),
       )
 
@@ -42,6 +43,7 @@ export class TransitionStatusUpdatedEventHandler implements DomainEventHandlerIn
             userUuid: event.payload.userUuid,
             status: 'FAILED',
             transitionType: 'revisions',
+            transitionTimestamp: event.payload.transitionTimestamp,
           }),
         )
 
@@ -54,6 +56,7 @@ export class TransitionStatusUpdatedEventHandler implements DomainEventHandlerIn
             userUuid: event.payload.userUuid,
             status: 'FINISHED',
             transitionType: 'revisions',
+            transitionTimestamp: event.payload.transitionTimestamp,
           }),
         )
 
@@ -65,6 +68,7 @@ export class TransitionStatusUpdatedEventHandler implements DomainEventHandlerIn
           userUuid: event.payload.userUuid,
           status: 'IN_PROGRESS',
           transitionType: 'revisions',
+          transitionTimestamp: event.payload.transitionTimestamp,
         }),
       )
 
@@ -80,6 +84,7 @@ export class TransitionStatusUpdatedEventHandler implements DomainEventHandlerIn
             userUuid: event.payload.userUuid,
             status: 'FAILED',
             transitionType: 'revisions',
+            transitionTimestamp: event.payload.transitionTimestamp,
           }),
         )
 
@@ -91,6 +96,7 @@ export class TransitionStatusUpdatedEventHandler implements DomainEventHandlerIn
           userUuid: event.payload.userUuid,
           status: 'FINISHED',
           transitionType: 'revisions',
+          transitionTimestamp: event.payload.transitionTimestamp,
         }),
       )
 

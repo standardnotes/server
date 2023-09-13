@@ -25,6 +25,7 @@ export class TransitionStatusUpdatedEventHandler implements DomainEventHandlerIn
             userUuid: event.payload.userUuid,
             status: 'FINISHED',
             transitionType: 'items',
+            transitionTimestamp: event.payload.transitionTimestamp,
           }),
         )
 
@@ -36,6 +37,7 @@ export class TransitionStatusUpdatedEventHandler implements DomainEventHandlerIn
           userUuid: event.payload.userUuid,
           status: 'IN_PROGRESS',
           transitionType: 'items',
+          transitionTimestamp: event.payload.transitionTimestamp,
         }),
       )
 
@@ -51,6 +53,7 @@ export class TransitionStatusUpdatedEventHandler implements DomainEventHandlerIn
             userUuid: event.payload.userUuid,
             status: 'FAILED',
             transitionType: 'items',
+            transitionTimestamp: event.payload.transitionTimestamp,
           }),
         )
 
@@ -62,6 +65,7 @@ export class TransitionStatusUpdatedEventHandler implements DomainEventHandlerIn
           userUuid: event.payload.userUuid,
           status: 'FINISHED',
           transitionType: 'items',
+          transitionTimestamp: event.payload.transitionTimestamp,
         }),
       )
     }

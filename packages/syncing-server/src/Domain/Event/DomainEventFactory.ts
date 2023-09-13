@@ -172,6 +172,7 @@ export class DomainEventFactory implements DomainEventFactoryInterface {
   createTransitionStatusUpdatedEvent(dto: {
     userUuid: string
     transitionType: 'items' | 'revisions'
+    transitionTimestamp: number
     status: 'STARTED' | 'FAILED' | 'FINISHED'
   }): TransitionStatusUpdatedEvent {
     return {
@@ -184,10 +185,7 @@ export class DomainEventFactory implements DomainEventFactoryInterface {
         },
         origin: DomainEventService.SyncingServer,
       },
-      payload: {
-        transitionTimestamp: this.timer.getTimestampInMicroseconds(),
-        ...dto,
-      },
+      payload: dto,
     }
   }
 

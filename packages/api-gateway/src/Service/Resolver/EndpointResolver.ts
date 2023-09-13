@@ -43,7 +43,6 @@ export class EndpointResolver implements EndpointResolverInterface {
     ['[PATCH]:users/:userId', 'auth.users.update'],
     ['[PUT]:users/:userUuid/attributes/credentials', 'auth.users.updateCredentials'],
     ['[GET]:users/params', 'auth.users.getKeyParams'],
-    ['[GET]:users/transition-status', 'auth.users.transition-status'],
     ['[DELETE]:users/:userUuid', 'auth.users.delete'],
     ['[POST]:listed', 'auth.users.createListedAccount'],
     ['[POST]:auth', 'auth.users.register'],
@@ -59,13 +58,11 @@ export class EndpointResolver implements EndpointResolverInterface {
     // Syncing Server
     ['[POST]:items/sync', 'sync.items.sync'],
     ['[POST]:items/check-integrity', 'sync.items.check_integrity'],
-    ['[POST]:items/transition', 'sync.items.transition'],
     ['[GET]:items/:uuid', 'sync.items.get_item'],
     // Revisions Controller V2
     ['[GET]:items/:itemUuid/revisions', 'revisions.revisions.getRevisions'],
     ['[GET]:items/:itemUuid/revisions/:id', 'revisions.revisions.getRevision'],
     ['[DELETE]:items/:itemUuid/revisions/:id', 'revisions.revisions.deleteRevision'],
-    ['[POST]:revisions/transition', 'revisions.revisions.transition'],
     // Messages Controller
     ['[GET]:messages/', 'sync.messages.get-received'],
     ['[GET]:messages/outbound', 'sync.messages.get-sent'],
