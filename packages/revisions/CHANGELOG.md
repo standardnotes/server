@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.33.17](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.33.16...@standardnotes/revisions-server@1.33.17) (2023-09-13)
+
+### Bug Fixes
+
+* setting status for already migrated users ([9be4c00](https://github.com/standardnotes/server/commit/9be4c002b755fea057489b6077b297162223aefe))
+
 ## [1.33.16](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.33.15...@standardnotes/revisions-server@1.33.16) (2023-09-13)
 
 ### Bug Fixes
