@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.33.20](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.33.19...@standardnotes/revisions-server@1.33.20) (2023-09-13)
+
+### Bug Fixes
+
+* adjust transition timestamps to be universal ([c7807d0](https://github.com/standardnotes/server/commit/c7807d0f9e69ce572c4c03ff606375d706f24d9f))
+
 ## [1.33.19](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.33.18...@standardnotes/revisions-server@1.33.19) (2023-09-13)
 
 ### Bug Fixes

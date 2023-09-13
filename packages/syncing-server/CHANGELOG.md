@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.95.17](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.95.16...@standardnotes/syncing-server@1.95.17) (2023-09-13)
+
+### Bug Fixes
+
+* adjust transition timestamps to be universal ([c7807d0](https://github.com/standardnotes/syncing-server-js/commit/c7807d0f9e69ce572c4c03ff606375d706f24d9f))
+
 ## [1.95.16](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.95.15...@standardnotes/syncing-server@1.95.16) (2023-09-13)
 
 ### Bug Fixes
