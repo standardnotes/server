@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.95.13](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.95.12...@standardnotes/syncing-server@1.95.13) (2023-09-13)
+
+### Bug Fixes
+
+* cleanup only for 0 new items ([b1d88b1](https://github.com/standardnotes/syncing-server-js/commit/b1d88b15be78a48224963e337a222fb675ed2692))
+* **syncing-server:** add catch up timeout for secondary db ([ff78285](https://github.com/standardnotes/syncing-server-js/commit/ff78285e43db849bdc44caa36f602150562b4d81))
+* **syncing-server:** case insensitive integrity check ([d5536f5](https://github.com/standardnotes/syncing-server-js/commit/d5536f54304e2aecd59dbece7650254f7c2101bb))
+
 ## [1.95.12](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.95.11...@standardnotes/syncing-server@1.95.12) (2023-09-12)
 
 ### Bug Fixes

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.33.16](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.33.15...@standardnotes/revisions-server@1.33.16) (2023-09-13)
+
+### Bug Fixes
+
+* cleanup only for 0 new items ([b1d88b1](https://github.com/standardnotes/server/commit/b1d88b15be78a48224963e337a222fb675ed2692))
+
 ## [1.33.15](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.33.14...@standardnotes/revisions-server@1.33.15) (2023-09-12)
 
 ### Bug Fixes
