@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.141.12](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.141.11...@standardnotes/auth-server@1.141.12) (2023-09-13)
+
+### Bug Fixes
+
+* **auth:** remove re-triggering revisions transition ([5984e4c](https://github.com/standardnotes/server/commit/5984e4c3e7e550e5ed53805bde1e6dabcbe54da8))
+
 ## [1.141.11](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.141.10...@standardnotes/auth-server@1.141.11) (2023-09-13)
 
 ### Bug Fixes
