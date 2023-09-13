@@ -11,6 +11,7 @@ import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
 import { DomainEventFactoryInterface } from '../src/Domain/Event/DomainEventFactoryInterface'
 import { UserRepositoryInterface } from '../src/Domain/User/UserRepositoryInterface'
 import { TransitionStatusRepositoryInterface } from '../src/Domain/Transition/TransitionStatusRepositoryInterface'
+import { TimerInterface } from '@standardnotes/time'
 
 const inputArgs = process.argv.slice(2)
 const startDateString = inputArgs[0]
@@ -22,19 +23,25 @@ const requestTransition = async (
   logger: Logger,
   domainEventFactory: DomainEventFactoryInterface,
   domainEventPublisher: DomainEventPublisherInterface,
+  timer: TimerInterface,
 ): Promise<void> => {
   const startDate = new Date(startDateString)
   const endDate = new Date(endDateString)
 
   const users = await userRepository.findAllCreatedBetween(startDate, endDate)
 
-  logger.info(`Found ${users.length} users created between ${startDateString} and ${endDateString}`)
+  const timestamp = timer.getTimestampInMicroseconds()
+
+  logger.info(
+    `[TRANSITION ${timestamp}] Found ${users.length} users created between ${startDateString} and ${endDateString}`,
+  )
 
   let usersTriggered = 0
   for (const user of users) {
     const transitionRequestedEvent = domainEventFactory.createTransitionRequestedEvent({
       userUuid: user.uuid,
       type: 'items',
+      timestamp,
     })
 
     usersTriggered += 1
@@ -43,18 +50,19 @@ const requestTransition = async (
   }
 
   logger.info(
-    `Triggered transition for ${usersTriggered} users created between ${startDateString} and ${endDateString}`,
+    `[TRANSITION ${timestamp}] Triggered transition for ${usersTriggered} users created between ${startDateString} and ${endDateString}`,
   )
 
   const revisionStatuses = await transitionStatusRepository.getStatuses('revisions')
   const failedStatuses = revisionStatuses.filter((status) => status.status === 'FAILED')
 
-  logger.info(`Found ${failedStatuses.length} failed revision transitions`)
+  logger.info(`[TRANSITION ${timestamp}] Found ${failedStatuses.length} failed revision transitions`)
 
   for (const status of failedStatuses) {
     const transitionRequestedEvent = domainEventFactory.createTransitionRequestedEvent({
       userUuid: status.userUuid,
       type: 'revisions',
+      timestamp,
     })
 
     await domainEventPublisher.publish(transitionRequestedEvent)
@@ -78,9 +86,17 @@ void container.load().then((container) => {
   const transitionStatusRepository: TransitionStatusRepositoryInterface = container.get(
     TYPES.Auth_TransitionStatusRepository,
   )
+  const timer = container.get<TimerInterface>(TYPES.Auth_Timer)
 
   Promise.resolve(
-    requestTransition(userRepository, transitionStatusRepository, logger, domainEventFactory, domainEventPublisher),
+    requestTransition(
+      userRepository,
+      transitionStatusRepository,
+      logger,
+      domainEventFactory,
+      domainEventPublisher,
+      timer,
+    ),
   )
     .then(() => {
       logger.info(`Finished transition request for users created between ${startDateString} and ${endDateString}`)

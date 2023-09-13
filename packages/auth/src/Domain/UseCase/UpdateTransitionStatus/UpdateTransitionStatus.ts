@@ -30,23 +30,29 @@ export class UpdateTransitionStatus implements UseCaseInterface<void> {
       await this.roleService.addRoleToUser(userUuid, RoleName.create(RoleName.NAMES.TransitionUser).getValue())
     }
 
-    const itemStatuses = await this.transitionStatusRepository.getStatuses('items')
-    const itemsStartedStatusesCount = itemStatuses.filter((status) => status.status === 'STARTED').length
-    const itemsInProgressStatusesCount = itemStatuses.filter((status) => status.status === 'IN_PROGRESS').length
-    const itemsFailedStatusesCount = itemStatuses.filter((status) => status.status === 'FAILED').length
+    if (dto.transitionType === 'items') {
+      const itemStatuses = await this.transitionStatusRepository.getStatuses('items')
+      const itemsStartedStatusesCount = itemStatuses.filter((status) => status.status === 'STARTED').length
+      const itemsInProgressStatusesCount = itemStatuses.filter((status) => status.status === 'IN_PROGRESS').length
+      const itemsFailedStatusesCount = itemStatuses.filter((status) => status.status === 'FAILED').length
 
-    this.logger.info(
-      `[TRANSITION ${dto.transitionTimestamp}] Items transition statuses: ${itemsStartedStatusesCount} started, ${itemsInProgressStatusesCount} in progress, ${itemsFailedStatusesCount} failed`,
-    )
+      this.logger.info(
+        `[TRANSITION ${dto.transitionTimestamp}] Items transition statuses: ${itemsStartedStatusesCount} started, ${itemsInProgressStatusesCount} in progress, ${itemsFailedStatusesCount} failed`,
+      )
+    }
 
-    const revisionStatuses = await this.transitionStatusRepository.getStatuses('revisions')
-    const revisionsStartedStatusesCount = revisionStatuses.filter((status) => status.status === 'STARTED').length
-    const revisionsInProgressStatusesCount = revisionStatuses.filter((status) => status.status === 'IN_PROGRESS').length
-    const revisionsFailedStatusesCount = revisionStatuses.filter((status) => status.status === 'FAILED').length
+    if (dto.transitionType === 'revisions') {
+      const revisionStatuses = await this.transitionStatusRepository.getStatuses('revisions')
+      const revisionsStartedStatusesCount = revisionStatuses.filter((status) => status.status === 'STARTED').length
+      const revisionsInProgressStatusesCount = revisionStatuses.filter(
+        (status) => status.status === 'IN_PROGRESS',
+      ).length
+      const revisionsFailedStatusesCount = revisionStatuses.filter((status) => status.status === 'FAILED').length
 
-    this.logger.info(
-      `[TRANSITION ${dto.transitionTimestamp}] Revisions transition statuses: ${revisionsStartedStatusesCount} started, ${revisionsInProgressStatusesCount} in progress, ${revisionsFailedStatusesCount} failed`,
-    )
+      this.logger.info(
+        `[TRANSITION ${dto.transitionTimestamp}] Revisions transition statuses: ${revisionsStartedStatusesCount} started, ${revisionsInProgressStatusesCount} in progress, ${revisionsFailedStatusesCount} failed`,
+      )
+    }
 
     return Result.ok()
   }

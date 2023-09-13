@@ -90,5 +90,9 @@ export interface DomainEventFactoryInterface {
   }): StatisticPersistenceRequestedEvent
   createSessionCreatedEvent(dto: { userUuid: string }): SessionCreatedEvent
   createSessionRefreshedEvent(dto: { userUuid: string }): SessionRefreshedEvent
-  createTransitionRequestedEvent(dto: { userUuid: string; type: 'items' | 'revisions' }): TransitionRequestedEvent
+  createTransitionRequestedEvent(dto: {
+    userUuid: string
+    type: 'items' | 'revisions'
+    timestamp: number
+  }): TransitionRequestedEvent
 }
