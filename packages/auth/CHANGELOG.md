@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.141.13](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.141.12...@standardnotes/auth-server@1.141.13) (2023-09-14)
+
+### Bug Fixes
+
+* **auth:** set ttl for started and not picked up transitions to 10h ([fe8ca82](https://github.com/standardnotes/server/commit/fe8ca828fb37306e0e5056627e67366885e86861))
+
 ## [1.141.12](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.141.11...@standardnotes/auth-server@1.141.12) (2023-09-13)
 
 ### Bug Fixes

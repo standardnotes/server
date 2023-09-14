@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.33.21](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.33.20...@standardnotes/revisions-server@1.33.21) (2023-09-14)
+
+### Bug Fixes
+
+* skip already updated items and revisions in integrity check ([#825](https://github.com/standardnotes/server/issues/825)) ([03a4a3f](https://github.com/standardnotes/server/commit/03a4a3f2abc0b4e09942ba39dbd227524068dfb6))
+
 ## [1.33.20](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.33.19...@standardnotes/revisions-server@1.33.20) (2023-09-13)
 
 ### Bug Fixes
