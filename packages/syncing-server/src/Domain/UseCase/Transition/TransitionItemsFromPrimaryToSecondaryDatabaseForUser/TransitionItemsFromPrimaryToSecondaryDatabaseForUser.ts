@@ -82,6 +82,7 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
     const integrityCheckResult = await this.checkIntegrityBetweenPrimaryAndSecondaryDatabase(
       userUuid,
       newItemsInSecondaryCount,
+      updatedItemsInSecondary,
     )
     if (integrityCheckResult.isFailed()) {
       if (newItemsInSecondaryCount === 0 && updatedItemsInSecondaryCount === 0) {
@@ -209,6 +210,8 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
 
         for (const item of items) {
           if (updatedItemsInSecondary.find((updatedItem) => updatedItem.uuid.equals(item.uuid))) {
+            this.logger.info(`Skipping saving item ${item.uuid.value} as it was updated in secondary database`)
+
             continue
           }
           await (this.secondaryItemRepository as ItemRepositoryInterface).save(item)
@@ -234,6 +237,7 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
   private async checkIntegrityBetweenPrimaryAndSecondaryDatabase(
     userUuid: Uuid,
     newItemsInSecondaryCount: number,
+    updatedItemsInSecondary: Item[],
   ): Promise<Result<boolean>> {
     try {
       const totalItemsCountForUserInPrimary = await this.primaryItemRepository.countAll({ userUuid: userUuid.value })
@@ -263,6 +267,13 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
           const itemInSecondary = await (this.secondaryItemRepository as ItemRepositoryInterface).findByUuid(item.uuid)
           if (!itemInSecondary) {
             return Result.fail(`Item ${item.uuid.value} not found in secondary database`)
+          }
+
+          if (updatedItemsInSecondary.find((updatedItem) => updatedItem.uuid.equals(item.uuid))) {
+            this.logger.info(
+              `Skipping integrity check for item ${item.uuid.value} as it was updated in secondary database`,
+            )
+            continue
           }
 
           if (!item.isIdenticalTo(itemInSecondary)) {

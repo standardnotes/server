@@ -87,6 +87,7 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
     const integrityCheckResult = await this.checkIntegrityBetweenPrimaryAndSecondaryDatabase(
       userUuid,
       newRevisionsInSecondaryCount,
+      updatedRevisionsInSecondary,
     )
     if (integrityCheckResult.isFailed()) {
       if (newRevisionsInSecondaryCount === 0 && updatedRevisionsInSecondaryCount === 0) {
@@ -144,6 +145,10 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
                 (updatedRevision) => updatedRevision.id.toString() === revision.id.toString(),
               )
             ) {
+              this.logger.info(
+                `Skipping saving revision ${revision.id.toString()} as it was updated in secondary database`,
+              )
+
               continue
             }
 
@@ -285,6 +290,7 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
   private async checkIntegrityBetweenPrimaryAndSecondaryDatabase(
     userUuid: Uuid,
     newRevisionsInSecondaryCount: number,
+    updatedRevisionsInSecondary: Revision[],
   ): Promise<Result<boolean>> {
     try {
       const totalRevisionsCountForUserInPrimary = await this.primaryRevisionsRepository.countByUserUuid(userUuid)
@@ -312,6 +318,17 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
           ).findOneByUuid(revisionUuid, userUuid, [])
           if (!revisionInSecondary) {
             return Result.fail(`Revision ${revision.id.toString()} not found in secondary database`)
+          }
+
+          if (
+            updatedRevisionsInSecondary.find(
+              (updatedRevision) => updatedRevision.id.toString() === revision.id.toString(),
+            )
+          ) {
+            this.logger.info(
+              `Skipping integrity check for revision ${revision.id.toString()} as it was updated in secondary database`,
+            )
+            continue
           }
 
           if (!revision.isIdenticalTo(revisionInSecondary)) {
