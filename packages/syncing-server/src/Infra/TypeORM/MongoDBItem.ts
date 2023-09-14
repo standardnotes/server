@@ -18,7 +18,6 @@ export class MongoDBItem {
   declare content: string | null
 
   @Column()
-  @Index('index_items_on_content_type')
   declare contentType: string | null
 
   @Column()
