@@ -298,7 +298,7 @@ describe('UpdateExistingItem', () => {
     expect(itemRepository.save).toHaveBeenCalled()
   })
 
-  it('should return error if created at time is not give in any form', async () => {
+  it('should fallback to updated at timestamp if created at time is not give in any form', async () => {
     const useCase = createUseCase()
 
     const result = await useCase.execute({
@@ -308,13 +308,59 @@ describe('UpdateExistingItem', () => {
         ...itemHash1.props,
         created_at: undefined,
         created_at_timestamp: undefined,
+        updated_at_timestamp: 123,
       }).getValue(),
       sessionUuid: '00000000-0000-0000-0000-000000000000',
       performingUserUuid: '00000000-0000-0000-0000-000000000000',
       roleNames: [RoleName.NAMES.CoreUser],
     })
 
-    expect(result.isFailed()).toBeTruthy()
+    expect(result.isFailed()).toBeFalsy()
+    expect(itemRepository.save).toHaveBeenCalled()
+  })
+
+  it('should fallback to updated at date if created at time is not give in any form', async () => {
+    const useCase = createUseCase()
+
+    const result = await useCase.execute({
+      existingItem: item1,
+      onGoingRevisionsTransition: false,
+      itemHash: ItemHash.create({
+        ...itemHash1.props,
+        created_at: undefined,
+        created_at_timestamp: undefined,
+        updated_at_timestamp: undefined,
+        updated_at: '2020-01-01T00:00:00.000Z',
+      }).getValue(),
+      sessionUuid: '00000000-0000-0000-0000-000000000000',
+      performingUserUuid: '00000000-0000-0000-0000-000000000000',
+      roleNames: [RoleName.NAMES.CoreUser],
+    })
+
+    expect(result.isFailed()).toBeFalsy()
+    expect(itemRepository.save).toHaveBeenCalled()
+  })
+
+  it('should fallback to 0 if created at and update at time is not give in any form', async () => {
+    const useCase = createUseCase()
+
+    const result = await useCase.execute({
+      existingItem: item1,
+      onGoingRevisionsTransition: false,
+      itemHash: ItemHash.create({
+        ...itemHash1.props,
+        created_at: undefined,
+        created_at_timestamp: undefined,
+        updated_at_timestamp: undefined,
+        updated_at: undefined,
+      }).getValue(),
+      sessionUuid: '00000000-0000-0000-0000-000000000000',
+      performingUserUuid: '00000000-0000-0000-0000-000000000000',
+      roleNames: [RoleName.NAMES.CoreUser],
+    })
+
+    expect(result.isFailed()).toBeFalsy()
+    expect(itemRepository.save).toHaveBeenCalled()
   })
 
   it('should return error if dates could not be created from timestamps', async () => {

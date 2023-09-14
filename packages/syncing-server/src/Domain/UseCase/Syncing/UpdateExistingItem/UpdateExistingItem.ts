@@ -23,6 +23,7 @@ import { SharedVaultOperationOnItem } from '../../../SharedVault/SharedVaultOper
 import { AddNotificationForUser } from '../../Messaging/AddNotificationForUser/AddNotificationForUser'
 import { RemoveNotificationsForUser } from '../../Messaging/RemoveNotificationsForUser/RemoveNotificationsForUser'
 import { ItemRepositoryResolverInterface } from '../../../Item/ItemRepositoryResolverInterface'
+import { ItemHash } from '../../../Item/ItemHash'
 
 export class UpdateExistingItem implements UseCaseInterface<Item> {
   constructor(
@@ -115,17 +116,7 @@ export class UpdateExistingItem implements UseCaseInterface<Item> {
     )
     const updatedAtDate = this.timer.convertMicrosecondsToDate(updatedAtTimestamp)
 
-    let createdAtTimestamp: number
-    let createdAtDate: Date
-    if (dto.itemHash.props.created_at_timestamp) {
-      createdAtTimestamp = dto.itemHash.props.created_at_timestamp
-      createdAtDate = this.timer.convertMicrosecondsToDate(createdAtTimestamp)
-    } else if (dto.itemHash.props.created_at) {
-      createdAtTimestamp = this.timer.convertStringDateToMicroseconds(dto.itemHash.props.created_at)
-      createdAtDate = this.timer.convertStringDateToDate(dto.itemHash.props.created_at)
-    } else {
-      return Result.fail('Created at timestamp is required.')
-    }
+    const { createdAtDate, createdAtTimestamp } = this.determineCreatedAt(dto.itemHash)
 
     const datesOrError = Dates.create(createdAtDate, updatedAtDate)
     if (datesOrError.isFailed()) {
@@ -219,6 +210,29 @@ export class UpdateExistingItem implements UseCaseInterface<Item> {
     }
 
     return Result.ok(dto.existingItem)
+  }
+
+  private determineCreatedAt(itemHash: ItemHash): { createdAtDate: Date; createdAtTimestamp: number } {
+    let createdAtTimestamp: number
+    let createdAtDate: Date
+    if (itemHash.props.created_at_timestamp) {
+      createdAtTimestamp = itemHash.props.created_at_timestamp
+      createdAtDate = this.timer.convertMicrosecondsToDate(createdAtTimestamp)
+    } else if (itemHash.props.created_at) {
+      createdAtTimestamp = this.timer.convertStringDateToMicroseconds(itemHash.props.created_at)
+      createdAtDate = this.timer.convertStringDateToDate(itemHash.props.created_at)
+    } else if (itemHash.props.updated_at_timestamp) {
+      createdAtTimestamp = itemHash.props.updated_at_timestamp
+      createdAtDate = this.timer.convertMicrosecondsToDate(itemHash.props.updated_at_timestamp)
+    } else if (itemHash.props.updated_at) {
+      createdAtTimestamp = this.timer.convertStringDateToMicroseconds(itemHash.props.updated_at)
+      createdAtDate = this.timer.convertStringDateToDate(itemHash.props.updated_at)
+    } else {
+      createdAtTimestamp = 0
+      createdAtDate = new Date(0)
+    }
+
+    return { createdAtDate, createdAtTimestamp }
   }
 
   private async addNotificationsAndPublishEvents(
