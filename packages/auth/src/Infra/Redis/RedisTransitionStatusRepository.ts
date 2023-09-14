@@ -28,7 +28,9 @@ export class RedisTransitionStatusRepository implements TransitionStatusReposito
     status: 'STARTED' | 'IN_PROGRESS' | 'FAILED',
   ): Promise<void> {
     if (status === 'IN_PROGRESS') {
-      await this.redisClient.setex(`${this.PREFIX}:${transitionType}:${userUuid}`, 7200, status)
+      await this.redisClient.setex(`${this.PREFIX}:${transitionType}:${userUuid}`, 7_200, status)
+    } else if (status === 'STARTED') {
+      await this.redisClient.setex(`${this.PREFIX}:${transitionType}:${userUuid}`, 36_000, status)
     } else {
       await this.redisClient.set(`${this.PREFIX}:${transitionType}:${userUuid}`, status)
     }
