@@ -135,7 +135,7 @@ const RAW_RUNTIME_STATE =
           ["eslint-config-prettier", "virtual:8859b278716fedf3e7458b5628625f7e35678c418626878559a0b816445001b7e24c55546f4677ba4c20b521aa0cf52cc33ac07deff171e383ada6eeab69933f#npm:8.8.0"],\
           ["ini", "npm:4.1.1"],\
           ["newrelic", "npm:11.0.0"],\
-          ["npm-check-updates", "npm:16.13.2"],\
+          ["npm-check-updates", "npm:16.14.2"],\
           ["ts-node", "virtual:8859b278716fedf3e7458b5628625f7e35678c418626878559a0b816445001b7e24c55546f4677ba4c20b521aa0cf52cc33ac07deff171e383ada6eeab69933f#npm:10.9.1"],\
           ["typescript", "patch:typescript@npm%3A5.0.4#optional!builtin<compat/typescript>::version=5.0.4&hash=b5f058"]\
         ],\
@@ -5843,7 +5843,7 @@ const RAW_RUNTIME_STATE =
           ["jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.5.0"],\
           ["jsonwebtoken", "npm:9.0.0"],\
           ["newrelic", "npm:11.0.0"],\
-          ["npm-check-updates", "npm:16.13.2"],\
+          ["npm-check-updates", "npm:16.14.2"],\
           ["prettier", "npm:3.0.3"],\
           ["prettyjson", "npm:1.2.5"],\
           ["reflect-metadata", "npm:0.1.13"],\
@@ -5906,7 +5906,7 @@ const RAW_RUNTIME_STATE =
           ["jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.5.0"],\
           ["mysql2", "npm:3.3.3"],\
           ["newrelic", "npm:11.0.0"],\
-          ["npm-check-updates", "npm:16.13.2"],\
+          ["npm-check-updates", "npm:16.14.2"],\
           ["otplib", "npm:12.0.1"],\
           ["prettier", "npm:3.0.3"],\
           ["prettyjson", "npm:1.2.5"],\
@@ -6101,7 +6101,7 @@ const RAW_RUNTIME_STATE =
           ["jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.5.0"],\
           ["jsonwebtoken", "npm:9.0.0"],\
           ["newrelic", "npm:11.0.0"],\
-          ["npm-check-updates", "npm:16.13.2"],\
+          ["npm-check-updates", "npm:16.14.2"],\
           ["prettier", "npm:3.0.3"],\
           ["prettyjson", "npm:1.2.5"],\
           ["reflect-metadata", "npm:0.1.13"],\
@@ -6231,7 +6231,7 @@ const RAW_RUNTIME_STATE =
           ["mongodb", "virtual:365b8c88cdf194291829ee28b79556e2328175d26a621363e703848100bea0042e9500db2a1206c9bbc3a4a76a1d169639ef774b2ea3a1a98584a9936b58c6be#npm:6.0.0"],\
           ["mysql2", "npm:3.3.3"],\
           ["newrelic", "npm:11.0.0"],\
-          ["npm-check-updates", "npm:16.13.2"],\
+          ["npm-check-updates", "npm:16.14.2"],\
           ["prettier", "npm:3.0.3"],\
           ["reflect-metadata", "npm:0.1.13"],\
           ["sqlite3", "virtual:31b5a94a105c89c9294c3d524a7f8929fe63ee5a2efadf21951ca4c0cfd2ecf02e8f4ef5a066bbda091f1e3a56e57c6749069a080618c96b22e51131a330fc4a#npm:5.1.6"],\
@@ -6271,7 +6271,7 @@ const RAW_RUNTIME_STATE =
           ["jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.5.0"],\
           ["mysql2", "npm:3.3.3"],\
           ["newrelic", "npm:11.0.0"],\
-          ["npm-check-updates", "npm:16.13.2"],\
+          ["npm-check-updates", "npm:16.14.2"],\
           ["prettier", "npm:3.0.3"],\
           ["reflect-metadata", "npm:0.1.13"],\
           ["ts-jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.1.0"],\
@@ -6322,7 +6322,7 @@ const RAW_RUNTIME_STATE =
           ["eslint-config-prettier", "virtual:8859b278716fedf3e7458b5628625f7e35678c418626878559a0b816445001b7e24c55546f4677ba4c20b521aa0cf52cc33ac07deff171e383ada6eeab69933f#npm:8.8.0"],\
           ["ini", "npm:4.1.1"],\
           ["newrelic", "npm:11.0.0"],\
-          ["npm-check-updates", "npm:16.13.2"],\
+          ["npm-check-updates", "npm:16.14.2"],\
           ["ts-node", "virtual:8859b278716fedf3e7458b5628625f7e35678c418626878559a0b816445001b7e24c55546f4677ba4c20b521aa0cf52cc33ac07deff171e383ada6eeab69933f#npm:10.9.1"],\
           ["typescript", "patch:typescript@npm%3A5.0.4#optional!builtin<compat/typescript>::version=5.0.4&hash=b5f058"]\
         ],\
@@ -6426,7 +6426,7 @@ const RAW_RUNTIME_STATE =
           ["mongodb", "virtual:365b8c88cdf194291829ee28b79556e2328175d26a621363e703848100bea0042e9500db2a1206c9bbc3a4a76a1d169639ef774b2ea3a1a98584a9936b58c6be#npm:6.0.0"],\
           ["mysql2", "npm:3.3.3"],\
           ["newrelic", "npm:11.0.0"],\
-          ["npm-check-updates", "npm:16.13.2"],\
+          ["npm-check-updates", "npm:16.14.2"],\
           ["prettier", "npm:3.0.3"],\
           ["prettyjson", "npm:1.2.5"],\
           ["reflect-metadata", "npm:0.1.13"],\
@@ -14361,10 +14361,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["npm-check-updates", [\
-      ["npm:16.13.2", {\
-        "packageLocation": "./.yarn/cache/npm-check-updates-npm-16.13.2-1a22b27f71-c99e0ceace.zip/node_modules/npm-check-updates/",\
+      ["npm:16.14.2", {\
+        "packageLocation": "./.yarn/cache/npm-check-updates-npm-16.14.2-b67f3266b5-fb6b0c3945.zip/node_modules/npm-check-updates/",\
         "packageDependencies": [\
-          ["npm-check-updates", "npm:16.13.2"],\
+          ["npm-check-updates", "npm:16.14.2"],\
           ["chalk", "npm:5.3.0"],\
           ["cli-table3", "npm:0.6.3"],\
           ["commander", "npm:10.0.1"],\
@@ -14393,6 +14393,7 @@ const RAW_RUNTIME_STATE =
           ["semver-utils", "npm:1.1.4"],\
           ["source-map-support", "npm:0.5.21"],\
           ["spawn-please", "npm:2.0.1"],\
+          ["strip-ansi", "npm:7.1.0"],\
           ["strip-json-comments", "npm:5.0.1"],\
           ["untildify", "npm:4.0.0"],\
           ["update-notifier", "npm:6.0.2"]\

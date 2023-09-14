@@ -12201,8 +12201,8 @@ __metadata:
   linkType: hard
 
 "npm-check-updates@npm:^16.13.2":
-  version: 16.13.2
-  resolution: "npm-check-updates@npm:16.13.2"
+  version: 16.14.2
+  resolution: "npm-check-updates@npm:16.14.2"
   dependencies:
     chalk: "npm:^5.3.0"
     cli-table3: "npm:^0.6.3"
@@ -12232,13 +12232,14 @@ __metadata:
     semver-utils: "npm:^1.1.4"
     source-map-support: "npm:^0.5.21"
     spawn-please: "npm:^2.0.1"
+    strip-ansi: "npm:^7.1.0"
     strip-json-comments: "npm:^5.0.1"
     untildify: "npm:^4.0.0"
     update-notifier: "npm:^6.0.2"
   bin:
     ncu: build/src/bin/cli.js
     npm-check-updates: build/src/bin/cli.js
-  checksum: c99e0ceaceec4858d8f376deb0f21979f537c405acaed0a348a907d7e7fc80e4e6e9e9c5541bfc5e68db5611fd69b08c6021c071d0d75f4cdcbfdd9a40b342ff
+  checksum: fb6b0c394551536212f166ae9f5f38f622885229008a7085cfd4cec092c26b7a1793ed61adca7ab57ba39b6c78e6864ff5e4bab8f3455ac228caba69bc28fc5a
   languageName: node
   linkType: hard
 
@@ -14246,7 +14247,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"strip-ansi@npm:^7.0.1":
+"strip-ansi@npm:^7.0.1, strip-ansi@npm:^7.1.0":
   version: 7.1.0
   resolution: "strip-ansi@npm:7.1.0"
   dependencies:
