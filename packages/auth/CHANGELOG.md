@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.142.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.142.0...@standardnotes/auth-server@1.142.1) (2023-09-15)
+
+### Bug Fixes
+
+* add debug logs for updating transition status on auth ([0477507](https://github.com/standardnotes/server/commit/0477507a6a951dc2bb904711c870e2c40a0664bd))
+
 # [1.142.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.141.14...@standardnotes/auth-server@1.142.0) (2023-09-15)
 
 ### Features
