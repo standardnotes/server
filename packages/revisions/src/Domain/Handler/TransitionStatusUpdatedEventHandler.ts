@@ -32,6 +32,10 @@ export class TransitionStatusUpdatedEventHandler implements DomainEventHandlerIn
       return
     }
 
+    this.logger.info(
+      `Received transition status updated event to ${event.payload.status} for user ${event.payload.userUuid}`,
+    )
+
     if (event.payload.status === 'STARTED' && event.payload.transitionType === 'revisions') {
       const userUuid = await this.getUserUuidFromEvent(event)
       if (userUuid === null) {
