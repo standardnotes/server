@@ -33,24 +33,12 @@ export class TransitionStatusUpdatedEventHandler implements DomainEventHandlerIn
     }
 
     if (event.payload.status === 'STARTED' && event.payload.transitionType === 'revisions') {
-      const userUuidOrError = Uuid.create(event.payload.userUuid)
-      if (userUuidOrError.isFailed()) {
-        this.logger.error(
-          `Failed to transition revisions for user ${event.payload.userUuid}: ${userUuidOrError.getError()}`,
-        )
-        await this.domainEventPublisher.publish(
-          this.domainEventFactory.createTransitionStatusUpdatedEvent({
-            userUuid: event.payload.userUuid,
-            status: 'FAILED',
-            transitionType: 'revisions',
-            transitionTimestamp: event.payload.transitionTimestamp,
-          }),
-        )
-
+      const userUuid = await this.getUserUuidFromEvent(event)
+      if (userUuid === null) {
         return
       }
 
-      if (await this.isAlreadyMigrated(userUuidOrError.getValue())) {
+      if (await this.isAlreadyMigrated(userUuid)) {
         await this.domainEventPublisher.publish(
           this.domainEventFactory.createTransitionStatusUpdatedEvent({
             userUuid: event.payload.userUuid,
@@ -102,6 +90,22 @@ export class TransitionStatusUpdatedEventHandler implements DomainEventHandlerIn
 
       return
     }
+
+    if (event.payload.status === 'FINISHED' && event.payload.transitionType === 'revisions') {
+      const userUuid = await this.getUserUuidFromEvent(event)
+      if (userUuid === null) {
+        return
+      }
+
+      if (await this.isAlreadyMigrated(userUuid)) {
+        this.domainEventFactory.createTransitionStatusUpdatedEvent({
+          userUuid: event.payload.userUuid,
+          status: 'VERIFIED',
+          transitionType: 'revisions',
+          transitionTimestamp: event.payload.transitionTimestamp,
+        })
+      }
+    }
   }
 
   private async isAlreadyMigrated(userUuid: Uuid): Promise<boolean> {
@@ -114,5 +118,26 @@ export class TransitionStatusUpdatedEventHandler implements DomainEventHandlerIn
     }
 
     return totalRevisionsCountForUserInPrimary === 0
+  }
+
+  private async getUserUuidFromEvent(event: TransitionStatusUpdatedEvent): Promise<Uuid | null> {
+    const userUuidOrError = Uuid.create(event.payload.userUuid)
+    if (userUuidOrError.isFailed()) {
+      this.logger.error(
+        `Failed to transition revisions for user ${event.payload.userUuid}: ${userUuidOrError.getError()}`,
+      )
+      await this.domainEventPublisher.publish(
+        this.domainEventFactory.createTransitionStatusUpdatedEvent({
+          userUuid: event.payload.userUuid,
+          status: 'FAILED',
+          transitionType: 'revisions',
+          transitionTimestamp: event.payload.transitionTimestamp,
+        }),
+      )
+
+      return null
+    }
+
+    return userUuidOrError.getValue()
   }
 }

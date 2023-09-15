@@ -4,24 +4,6 @@ export class InMemoryTransitionStatusRepository implements TransitionStatusRepos
   private itemStatuses: Map<string, 'STARTED' | 'FAILED'> = new Map()
   private revisionStatuses: Map<string, 'STARTED' | 'FAILED'> = new Map()
 
-  async getStatuses(
-    transitionType: 'items' | 'revisions',
-  ): Promise<{ userUuid: string; status: 'STARTED' | 'FAILED' | 'IN_PROGRESS' }[]> {
-    const statuses: { userUuid: string; status: 'STARTED' | 'FAILED' | 'IN_PROGRESS' }[] = []
-
-    if (transitionType === 'items') {
-      for (const [userUuid, status] of this.itemStatuses) {
-        statuses.push({ userUuid, status })
-      }
-    } else {
-      for (const [userUuid, status] of this.revisionStatuses) {
-        statuses.push({ userUuid, status })
-      }
-    }
-
-    return statuses
-  }
-
   async updateStatus(
     userUuid: string,
     transitionType: 'items' | 'revisions',

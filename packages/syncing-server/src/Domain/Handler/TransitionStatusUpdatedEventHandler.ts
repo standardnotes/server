@@ -18,7 +18,11 @@ export class TransitionStatusUpdatedEventHandler implements DomainEventHandlerIn
   ) {}
 
   async handle(event: TransitionStatusUpdatedEvent): Promise<void> {
-    if (event.payload.status === 'STARTED' && event.payload.transitionType === 'items') {
+    if (event.payload.transitionType !== 'items') {
+      return
+    }
+
+    if (event.payload.status === 'STARTED') {
       if (await this.isAlreadyMigrated(event.payload.userUuid)) {
         await this.domainEventPublisher.publish(
           this.domainEventFactory.createTransitionStatusUpdatedEvent({
@@ -68,6 +72,15 @@ export class TransitionStatusUpdatedEventHandler implements DomainEventHandlerIn
           transitionTimestamp: event.payload.transitionTimestamp,
         }),
       )
+    } else if (event.payload.status === 'FINISHED') {
+      if (await this.isAlreadyMigrated(event.payload.userUuid)) {
+        this.domainEventFactory.createTransitionStatusUpdatedEvent({
+          userUuid: event.payload.userUuid,
+          status: 'VERIFIED',
+          transitionType: 'items',
+          transitionTimestamp: event.payload.transitionTimestamp,
+        })
+      }
     }
   }
 

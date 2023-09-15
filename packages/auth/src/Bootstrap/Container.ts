@@ -263,7 +263,6 @@ import { RedisTransitionStatusRepository } from '../Infra/Redis/RedisTransitionS
 import { InMemoryTransitionStatusRepository } from '../Infra/InMemory/InMemoryTransitionStatusRepository'
 import { TransitionStatusUpdatedEventHandler } from '../Domain/Handler/TransitionStatusUpdatedEventHandler'
 import { UpdateTransitionStatus } from '../Domain/UseCase/UpdateTransitionStatus/UpdateTransitionStatus'
-import { GetTransitionStatus } from '../Domain/UseCase/GetTransitionStatus/GetTransitionStatus'
 import { TypeORMSharedVaultUser } from '../Infra/TypeORM/TypeORMSharedVaultUser'
 import { SharedVaultUserPersistenceMapper } from '../Mapping/SharedVaultUserPersistenceMapper'
 import { SharedVaultUserRepositoryInterface } from '../Domain/SharedVault/SharedVaultUserRepositoryInterface'
@@ -943,14 +942,6 @@ export class ContainerConfigLoader {
         new UpdateTransitionStatus(
           container.get<TransitionStatusRepositoryInterface>(TYPES.Auth_TransitionStatusRepository),
           container.get<RoleServiceInterface>(TYPES.Auth_RoleService),
-        ),
-      )
-    container
-      .bind<GetTransitionStatus>(TYPES.Auth_GetTransitionStatus)
-      .toConstantValue(
-        new GetTransitionStatus(
-          container.get<TransitionStatusRepositoryInterface>(TYPES.Auth_TransitionStatusRepository),
-          container.get<UserRepositoryInterface>(TYPES.Auth_UserRepository),
         ),
       )
     container

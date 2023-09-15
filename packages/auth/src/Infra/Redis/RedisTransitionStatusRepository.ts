@@ -7,49 +7,35 @@ export class RedisTransitionStatusRepository implements TransitionStatusReposito
 
   constructor(private redisClient: IORedis.Redis) {}
 
-  async getStatuses(
-    transitionType: 'items' | 'revisions',
-  ): Promise<{ userUuid: string; status: 'STARTED' | 'IN_PROGRESS' | 'FAILED' }[]> {
-    const keys = await this.redisClient.keys(`${this.PREFIX}:${transitionType}:*`)
-    const statuses = await Promise.all(
-      keys.map(async (key) => {
-        const userUuid = key.split(':')[2]
-        const status = (await this.redisClient.get(key)) as 'STARTED' | 'IN_PROGRESS' | 'FAILED'
-        return { userUuid, status }
-      }),
-    )
-
-    return statuses
-  }
-
   async updateStatus(
     userUuid: string,
     transitionType: 'items' | 'revisions',
-    status: 'STARTED' | 'IN_PROGRESS' | 'FAILED',
+    status: 'STARTED' | 'IN_PROGRESS' | 'FINISHED' | 'FAILED' | 'VERIFIED',
   ): Promise<void> {
-    if (status === 'IN_PROGRESS') {
-      await this.redisClient.setex(`${this.PREFIX}:${transitionType}:${userUuid}`, 7_200, status)
-    } else if (status === 'STARTED') {
-      await this.redisClient.setex(`${this.PREFIX}:${transitionType}:${userUuid}`, 36_000, status)
-    } else {
-      await this.redisClient.set(`${this.PREFIX}:${transitionType}:${userUuid}`, status)
+    switch (status) {
+      case 'FAILED':
+      case 'VERIFIED':
+        await this.redisClient.set(`${this.PREFIX}:${transitionType}:${userUuid}`, status)
+        break
+      case 'IN_PROGRESS': {
+        const ttl2Hourse = 7_200
+        await this.redisClient.setex(`${this.PREFIX}:${transitionType}:${userUuid}`, ttl2Hourse, status)
+        break
+      }
+      default: {
+        const ttl10Hours = 36_000
+        await this.redisClient.setex(`${this.PREFIX}:${transitionType}:${userUuid}`, ttl10Hours, status)
+        break
+      }
     }
-  }
-
-  async removeStatus(userUuid: string, transitionType: 'items' | 'revisions'): Promise<void> {
-    await this.redisClient.del(`${this.PREFIX}:${transitionType}:${userUuid}`)
   }
 
   async getStatus(
     userUuid: string,
     transitionType: 'items' | 'revisions',
-  ): Promise<'STARTED' | 'IN_PROGRESS' | 'FAILED' | null> {
-    const status = (await this.redisClient.get(`${this.PREFIX}:${transitionType}:${userUuid}`)) as
-      | 'STARTED'
-      | 'IN_PROGRESS'
-      | 'FAILED'
-      | null
+  ): Promise<'STARTED' | 'IN_PROGRESS' | 'FINISHED' | 'FAILED' | 'VERIFIED' | null> {
+    const status = await this.redisClient.get(`${this.PREFIX}:${transitionType}:${userUuid}`)
 
-    return status
+    return status as 'STARTED' | 'IN_PROGRESS' | 'FINISHED' | 'FAILED' | 'VERIFIED' | null
   }
 }

@@ -14,12 +14,6 @@ case "$COMMAND" in
     node docker/entrypoint-worker.js
     ;;
 
-  'transition' )
-    echo "[Docker] Starting transition Single User..."
-    USER_UUID=$1 && shift 1
-    node docker/entrypoint-transition.js $USER_UUID
-    ;;
-
    * )
     echo "[Docker] Unknown command"
     ;;
