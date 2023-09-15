@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.143.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.142.1...@standardnotes/auth-server@1.143.0) (2023-09-15)
+
+### Features
+
+* refactor transition to minimize status changes ([#828](https://github.com/standardnotes/server/issues/828)) ([36f07c6](https://github.com/standardnotes/server/commit/36f07c691afc213ecf817d6e98f885ddb19a6ed6))
+
 ## [1.142.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.142.0...@standardnotes/auth-server@1.142.1) (2023-09-15)
 
 ### Bug Fixes

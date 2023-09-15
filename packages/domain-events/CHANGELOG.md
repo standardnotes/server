@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.127.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.126.0...@standardnotes/domain-events@2.127.0) (2023-09-15)
+
+### Features
+
+* refactor transition to minimize status changes ([#828](https://github.com/standardnotes/server/issues/828)) ([36f07c6](https://github.com/standardnotes/server/commit/36f07c691afc213ecf817d6e98f885ddb19a6ed6))
+
 # [2.126.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.125.4...@standardnotes/domain-events@2.126.0) (2023-09-15)
 
 ### Features

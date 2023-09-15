@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.35.0](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.34.1...@standardnotes/revisions-server@1.35.0) (2023-09-15)
+
+### Features
+
+* refactor transition to minimize status changes ([#828](https://github.com/standardnotes/server/issues/828)) ([36f07c6](https://github.com/standardnotes/server/commit/36f07c691afc213ecf817d6e98f885ddb19a6ed6))
+
 ## [1.34.1](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.34.0...@standardnotes/revisions-server@1.34.1) (2023-09-15)
 
 ### Bug Fixes
