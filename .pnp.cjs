@@ -3326,10 +3326,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@hexagon/base64", [\
-      ["npm:1.1.26", {\
-        "packageLocation": "./.yarn/cache/@hexagon-base64-npm-1.1.26-dbfda05df8-e42582ed12.zip/node_modules/@hexagon/base64/",\
+      ["npm:1.1.27", {\
+        "packageLocation": "./.yarn/cache/@hexagon-base64-npm-1.1.27-df6f264962-899fffaf54.zip/node_modules/@hexagon/base64/",\
         "packageDependencies": [\
-          ["@hexagon/base64", "npm:1.1.26"]\
+          ["@hexagon/base64", "npm:1.1.27"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -5067,44 +5067,29 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
-    ["@simplewebauthn/iso-webcrypto", [\
-      ["npm:7.2.0", {\
-        "packageLocation": "./.yarn/cache/@simplewebauthn-iso-webcrypto-npm-7.2.0-db7b12b859-b57899d0ad.zip/node_modules/@simplewebauthn/iso-webcrypto/",\
-        "packageDependencies": [\
-          ["@simplewebauthn/iso-webcrypto", "npm:7.2.0"],\
-          ["@simplewebauthn/typescript-types", "npm:7.0.0"],\
-          ["@types/node", "npm:18.16.16"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
     ["@simplewebauthn/server", [\
-      ["npm:7.2.0", {\
-        "packageLocation": "./.yarn/cache/@simplewebauthn-server-npm-7.2.0-f1ed5fde8a-2e37c87edd.zip/node_modules/@simplewebauthn/server/",\
+      ["npm:8.1.1", {\
+        "packageLocation": "./.yarn/cache/@simplewebauthn-server-npm-8.1.1-106d3bd108-a07c2a067b.zip/node_modules/@simplewebauthn/server/",\
         "packageDependencies": [\
-          ["@simplewebauthn/server", "npm:7.2.0"],\
-          ["@hexagon/base64", "npm:1.1.26"],\
+          ["@simplewebauthn/server", "npm:8.1.1"],\
+          ["@hexagon/base64", "npm:1.1.27"],\
           ["@peculiar/asn1-android", "npm:2.3.6"],\
           ["@peculiar/asn1-ecc", "npm:2.3.6"],\
           ["@peculiar/asn1-rsa", "npm:2.3.6"],\
           ["@peculiar/asn1-schema", "npm:2.3.6"],\
           ["@peculiar/asn1-x509", "npm:2.3.6"],\
-          ["@simplewebauthn/iso-webcrypto", "npm:7.2.0"],\
-          ["@simplewebauthn/typescript-types", "npm:7.0.0"],\
-          ["@types/debug", "npm:4.1.8"],\
-          ["@types/node", "npm:18.16.16"],\
-          ["cbor-x", "npm:1.5.3"],\
-          ["cross-fetch", "npm:3.1.6"],\
-          ["debug", "virtual:ac3d8e680759ce54399273724d44e041d6c9b73454d191d411a8c44bb27e22f02aaf6ed9d3ad0ac1c298eac4833cff369c9c7b84c573016112c4f84be2cd8543#npm:4.3.4"]\
+          ["@simplewebauthn/typescript-types", "npm:8.0.0"],\
+          ["cbor-x", "npm:1.5.4"],\
+          ["cross-fetch", "npm:4.0.0"]\
         ],\
         "linkType": "HARD"\
       }]\
     ]],\
     ["@simplewebauthn/typescript-types", [\
-      ["npm:7.0.0", {\
-        "packageLocation": "./.yarn/cache/@simplewebauthn-typescript-types-npm-7.0.0-cc6ca20415-124238ea18.zip/node_modules/@simplewebauthn/typescript-types/",\
+      ["npm:8.0.0", {\
+        "packageLocation": "./.yarn/cache/@simplewebauthn-typescript-types-npm-8.0.0-f3b313c27b-21e0b13268.zip/node_modules/@simplewebauthn/typescript-types/",\
         "packageDependencies": [\
-          ["@simplewebauthn/typescript-types", "npm:7.0.0"]\
+          ["@simplewebauthn/typescript-types", "npm:8.0.0"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -5864,8 +5849,8 @@ const RAW_RUNTIME_STATE =
           ["@cbor-extract/cbor-extract-linux-arm64", "npm:2.1.1"],\
           ["@cbor-extract/cbor-extract-linux-x64", "npm:2.1.1"],\
           ["@newrelic/winston-enricher", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:4.0.1"],\
-          ["@simplewebauthn/server", "npm:7.2.0"],\
-          ["@simplewebauthn/typescript-types", "npm:7.0.0"],\
+          ["@simplewebauthn/server", "npm:8.1.1"],\
+          ["@simplewebauthn/typescript-types", "npm:8.0.0"],\
           ["@standardnotes/api", "npm:1.26.26"],\
           ["@standardnotes/common", "workspace:packages/common"],\
           ["@standardnotes/domain-core", "workspace:packages/domain-core"],\
@@ -6720,16 +6705,6 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
-    ["@types/debug", [\
-      ["npm:4.1.8", {\
-        "packageLocation": "./.yarn/cache/@types-debug-npm-4.1.8-a04e2ca136-9c190e8129.zip/node_modules/@types/debug/",\
-        "packageDependencies": [\
-          ["@types/debug", "npm:4.1.8"],\
-          ["@types/ms", "npm:0.7.31"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
     ["@types/dotenv", [\
       ["npm:8.2.0", {\
         "packageLocation": "./.yarn/cache/@types-dotenv-npm-8.2.0-f4d0e3d65b-13f90a36f7.zip/node_modules/@types/dotenv/",\
@@ -6956,15 +6931,6 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
-    ["@types/ms", [\
-      ["npm:0.7.31", {\
-        "packageLocation": "./.yarn/cache/@types-ms-npm-0.7.31-ea3b89342b-cccb52777b.zip/node_modules/@types/ms/",\
-        "packageDependencies": [\
-          ["@types/ms", "npm:0.7.31"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
     ["@types/newrelic", [\
       ["npm:9.14.0", {\
         "packageLocation": "./.yarn/cache/@types-newrelic-npm-9.14.0-4668da51a1-2ec951bd8f.zip/node_modules/@types/newrelic/",\
@@ -6979,13 +6945,6 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/@types-node-npm-10.17.60-63ac1f669f-40a5535f8a.zip/node_modules/@types/node/",\
         "packageDependencies": [\
           ["@types/node", "npm:10.17.60"]\
-        ],\
-        "linkType": "HARD"\
-      }],\
-      ["npm:18.16.16", {\
-        "packageLocation": "./.yarn/cache/@types-node-npm-18.16.16-8a41330dc3-946bd4d8e6.zip/node_modules/@types/node/",\
-        "packageDependencies": [\
-          ["@types/node", "npm:18.16.16"]\
         ],\
         "linkType": "HARD"\
       }],\
@@ -8706,10 +8665,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["cbor-x", [\
-      ["npm:1.5.3", {\
-        "packageLocation": "./.yarn/cache/cbor-x-npm-1.5.3-1d452dd267-d4df85b339.zip/node_modules/cbor-x/",\
+      ["npm:1.5.4", {\
+        "packageLocation": "./.yarn/cache/cbor-x-npm-1.5.4-2d5a649a4b-742aea498a.zip/node_modules/cbor-x/",\
         "packageDependencies": [\
-          ["cbor-x", "npm:1.5.3"],\
+          ["cbor-x", "npm:1.5.4"],\
           ["cbor-extract", "npm:2.1.1"]\
         ],\
         "linkType": "HARD"\
@@ -9434,11 +9393,11 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["cross-fetch", [\
-      ["npm:3.1.6", {\
-        "packageLocation": "./.yarn/cache/cross-fetch-npm-3.1.6-cdb982d446-a8989fca82.zip/node_modules/cross-fetch/",\
+      ["npm:4.0.0", {\
+        "packageLocation": "./.yarn/cache/cross-fetch-npm-4.0.0-9c67668db4-30e86b703a.zip/node_modules/cross-fetch/",\
         "packageDependencies": [\
-          ["cross-fetch", "npm:3.1.6"],\
-          ["node-fetch", "virtual:0f92dfe7f9dc4fd492639d4a5b7805c2b27442bf599fd4f370b22a7966ba078f5d4525e2a8e8af29369f20e1833ed084bd52be59679efaa6c1c6c10cdbcd8baa#npm:2.6.11"]\
+          ["cross-fetch", "npm:4.0.0"],\
+          ["node-fetch", "virtual:9c67668db478e95ba4d6a763bc55027eeff0d22eaf59478017ea07386fc33a3c7b7b625af78aa86a33991a9a500a7aa216e28632de568f02adefd662ef53a42d#npm:2.7.0"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -14174,6 +14133,13 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "SOFT"\
       }],\
+      ["npm:2.7.0", {\
+        "packageLocation": "./.yarn/cache/node-fetch-npm-2.7.0-587d57004e-a3ad788903.zip/node_modules/node-fetch/",\
+        "packageDependencies": [\
+          ["node-fetch", "npm:2.7.0"]\
+        ],\
+        "linkType": "SOFT"\
+      }],\
       ["npm:3.3.1", {\
         "packageLocation": "./.yarn/cache/node-fetch-npm-3.3.1-576511fc5a-1d0c635bdf.zip/node_modules/node-fetch/",\
         "packageDependencies": [\
@@ -14188,6 +14154,20 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/__virtual__/node-fetch-virtual-4ee7420f8b/0/cache/node-fetch-npm-2.6.11-160e4174c3-3e7af7c002.zip/node_modules/node-fetch/",\
         "packageDependencies": [\
           ["node-fetch", "virtual:0f92dfe7f9dc4fd492639d4a5b7805c2b27442bf599fd4f370b22a7966ba078f5d4525e2a8e8af29369f20e1833ed084bd52be59679efaa6c1c6c10cdbcd8baa#npm:2.6.11"],\
+          ["@types/encoding", null],\
+          ["encoding", null],\
+          ["whatwg-url", "npm:5.0.0"]\
+        ],\
+        "packagePeers": [\
+          "@types/encoding",\
+          "encoding"\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["virtual:9c67668db478e95ba4d6a763bc55027eeff0d22eaf59478017ea07386fc33a3c7b7b625af78aa86a33991a9a500a7aa216e28632de568f02adefd662ef53a42d#npm:2.7.0", {\
+        "packageLocation": "./.yarn/__virtual__/node-fetch-virtual-0ec1497d1c/0/cache/node-fetch-npm-2.7.0-587d57004e-a3ad788903.zip/node_modules/node-fetch/",\
+        "packageDependencies": [\
+          ["node-fetch", "virtual:9c67668db478e95ba4d6a763bc55027eeff0d22eaf59478017ea07386fc33a3c7b7b625af78aa86a33991a9a500a7aa216e28632de568f02adefd662ef53a42d#npm:2.7.0"],\
           ["@types/encoding", null],\
           ["encoding", null],\
           ["whatwg-url", "npm:5.0.0"]\

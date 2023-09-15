@@ -52,7 +52,7 @@ export class GenerateAuthenticatorRegistrationOptions
     }
 
     const authenticators = await this.authenticatorRepository.findByUserUuid(userUuid)
-    const options = generateRegistrationOptions({
+    const options = await generateRegistrationOptions({
       rpID: this.relyingPartyId,
       rpName: this.relyingPartyName,
       userID: userUuid.value,

@@ -2659,10 +2659,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@hexagon/base64@npm:^1.1.25":
-  version: 1.1.26
-  resolution: "@hexagon/base64@npm:1.1.26"
-  checksum: e42582ed12465bffaf96307c9d5b7dfd36166ec4dc41a1838b9a560c90c9d136d006099a205e1684fb0dc18002cc5af51a49dd7b81a7c4b86798372d6ee26af3
+"@hexagon/base64@npm:^1.1.27":
+  version: 1.1.27
+  resolution: "@hexagon/base64@npm:1.1.27"
+  checksum: 899fffaf54b291e1df997bf33dbf6e068fcfbd83155adc114e14bcb9c1e36c5f820dfaaee3d0c2409f7e84efa4352f51655eac8bec4c2432fca443bf179bce8d
   languageName: node
   linkType: hard
 
@@ -3793,7 +3793,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@peculiar/asn1-android@npm:^2.3.3":
+"@peculiar/asn1-android@npm:^2.3.6":
   version: 2.3.6
   resolution: "@peculiar/asn1-android@npm:2.3.6"
   dependencies:
@@ -3804,7 +3804,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@peculiar/asn1-ecc@npm:^2.3.4":
+"@peculiar/asn1-ecc@npm:^2.3.6":
   version: 2.3.6
   resolution: "@peculiar/asn1-ecc@npm:2.3.6"
   dependencies:
@@ -3816,7 +3816,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@peculiar/asn1-rsa@npm:^2.3.4":
+"@peculiar/asn1-rsa@npm:^2.3.6":
   version: 2.3.6
   resolution: "@peculiar/asn1-rsa@npm:2.3.6"
   dependencies:
@@ -3828,7 +3828,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@peculiar/asn1-schema@npm:^2.3.3, @peculiar/asn1-schema@npm:^2.3.6":
+"@peculiar/asn1-schema@npm:^2.3.6":
   version: 2.3.6
   resolution: "@peculiar/asn1-schema@npm:2.3.6"
   dependencies:
@@ -3839,7 +3839,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@peculiar/asn1-x509@npm:^2.3.4, @peculiar/asn1-x509@npm:^2.3.6":
+"@peculiar/asn1-x509@npm:^2.3.6":
   version: 2.3.6
   resolution: "@peculiar/asn1-x509@npm:2.3.6"
   dependencies:
@@ -3987,41 +3987,27 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@simplewebauthn/iso-webcrypto@npm:^7.2.0":
-  version: 7.2.0
-  resolution: "@simplewebauthn/iso-webcrypto@npm:7.2.0"
+"@simplewebauthn/server@npm:^8.1.1":
+  version: 8.1.1
+  resolution: "@simplewebauthn/server@npm:8.1.1"
   dependencies:
-    "@simplewebauthn/typescript-types": "npm:*"
-    "@types/node": "npm:^18.11.9"
-  checksum: b57899d0ada391507ce8f4601328ed62df5d09f75f6e91b018278631270a96f37ceab95f9e824c9555dd05820e5a99ac386ed067db7902d37bdb6d995fbd7eaf
+    "@hexagon/base64": "npm:^1.1.27"
+    "@peculiar/asn1-android": "npm:^2.3.6"
+    "@peculiar/asn1-ecc": "npm:^2.3.6"
+    "@peculiar/asn1-rsa": "npm:^2.3.6"
+    "@peculiar/asn1-schema": "npm:^2.3.6"
+    "@peculiar/asn1-x509": "npm:^2.3.6"
+    "@simplewebauthn/typescript-types": "npm:^8.0.0"
+    cbor-x: "npm:^1.5.2"
+    cross-fetch: "npm:^4.0.0"
+  checksum: a07c2a067b25b7f4afe215dcf81e0280aa5c382f5eb3cb1ef9327c6dc84c9618ed5774fc61bbc5717b8633dd5b8b4c41c7800cb32e83c6a4b1d2d1e1e50f5250
   languageName: node
   linkType: hard
 
-"@simplewebauthn/server@npm:^7.2.0":
-  version: 7.2.0
-  resolution: "@simplewebauthn/server@npm:7.2.0"
-  dependencies:
-    "@hexagon/base64": "npm:^1.1.25"
-    "@peculiar/asn1-android": "npm:^2.3.3"
-    "@peculiar/asn1-ecc": "npm:^2.3.4"
-    "@peculiar/asn1-rsa": "npm:^2.3.4"
-    "@peculiar/asn1-schema": "npm:^2.3.3"
-    "@peculiar/asn1-x509": "npm:^2.3.4"
-    "@simplewebauthn/iso-webcrypto": "npm:^7.2.0"
-    "@simplewebauthn/typescript-types": "npm:*"
-    "@types/debug": "npm:^4.1.7"
-    "@types/node": "npm:^18.11.9"
-    cbor-x: "npm:^1.4.1"
-    cross-fetch: "npm:^3.1.5"
-    debug: "npm:^4.3.2"
-  checksum: 2e37c87edd05abace8ba8c5b1f4e2cb4adb9ec4dcf0b237d25f375f35538d25e31cc0ae196029006cf5124c983216a3cf69127732942863d2960bd72ed5783c4
-  languageName: node
-  linkType: hard
-
-"@simplewebauthn/typescript-types@npm:*, @simplewebauthn/typescript-types@npm:^7.0.0":
-  version: 7.0.0
-  resolution: "@simplewebauthn/typescript-types@npm:7.0.0"
-  checksum: 124238ea1859c80761c4cdbf19107e2e8e96fdefa64affb55fb4fc67d1ac5e3354c3098c908729d2de439a633115d98da77ded7289286fe576559306fa933815
+"@simplewebauthn/typescript-types@npm:^8.0.0":
+  version: 8.0.0
+  resolution: "@simplewebauthn/typescript-types@npm:8.0.0"
+  checksum: 21e0b13268f237d7cd6ecdc6cdceb884ddcc85e18a3554b65d10da4f502056aefa810db94f504beaad96b4ac0c7861a022954dcc6aa8721d4215571c2c3dcdf5
   languageName: node
   linkType: hard
 
@@ -4744,8 +4730,8 @@ __metadata:
     "@cbor-extract/cbor-extract-linux-arm64": "npm:^2.1.1"
     "@cbor-extract/cbor-extract-linux-x64": "npm:^2.1.1"
     "@newrelic/winston-enricher": "npm:^4.0.1"
-    "@simplewebauthn/server": "npm:^7.2.0"
-    "@simplewebauthn/typescript-types": "npm:^7.0.0"
+    "@simplewebauthn/server": "npm:^8.1.1"
+    "@simplewebauthn/typescript-types": "npm:^8.0.0"
     "@standardnotes/api": "npm:^1.26.26"
     "@standardnotes/common": "workspace:*"
     "@standardnotes/domain-core": "workspace:^"
@@ -5589,15 +5575,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/debug@npm:^4.1.7":
-  version: 4.1.8
-  resolution: "@types/debug@npm:4.1.8"
-  dependencies:
-    "@types/ms": "npm:*"
-  checksum: 9c190e812984e0f6e02dfdfb0c7a3081a55cf3fc712a4e059336bd9f8329db70211eb851ce409311520876549cff2c4785ce48dd4c9fef8e48549c87bec29ded
-  languageName: node
-  linkType: hard
-
 "@types/dotenv@npm:^8.2.0":
   version: 8.2.0
   resolution: "@types/dotenv@npm:8.2.0"
@@ -5792,13 +5769,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/ms@npm:*":
-  version: 0.7.31
-  resolution: "@types/ms@npm:0.7.31"
-  checksum: cccb52777bb683c65ac5bab61351cd3910c9ce3512b1d903a591fc9694bb83afad6e48bf0beee5b47b6a8b620a05f5d82f8febfd55de05e7d9eb93586cc196c8
-  languageName: node
-  linkType: hard
-
 "@types/newrelic@npm:^9.14.0":
   version: 9.14.0
   resolution: "@types/newrelic@npm:9.14.0"
@@ -5817,13 +5787,6 @@ __metadata:
   version: 10.17.60
   resolution: "@types/node@npm:10.17.60"
   checksum: 40a5535f8a2d839799b41557a170a334415bab485ee73dd30534eefad9a63254d12d2faf61ce7cbce2521d736ed0570e18f75d780daad2129d6ca21e8d1811ef
-  languageName: node
-  linkType: hard
-
-"@types/node@npm:^18.11.9":
-  version: 18.16.16
-  resolution: "@types/node@npm:18.16.16"
-  checksum: 946bd4d8e6fa54220e4193bc594de8a2e138e6afebb6efb7d862d98e30ced25a19476a6f47c81e690b9ac77f616f64217e0bcf4811916ccd9b5935e5bea0e4a0
   languageName: node
   linkType: hard
 
@@ -7208,15 +7171,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cbor-x@npm:^1.4.1":
-  version: 1.5.3
-  resolution: "cbor-x@npm:1.5.3"
+"cbor-x@npm:^1.5.2":
+  version: 1.5.4
+  resolution: "cbor-x@npm:1.5.4"
   dependencies:
     cbor-extract: "npm:^2.1.1"
   dependenciesMeta:
     cbor-extract:
       optional: true
-  checksum: d4df85b33969826f4c96a4b4a8fbe03132fb0817fba876f16d41ad6d1a7d2668ec04c923f313220506029cc2b5ab212901ba24b4594d0115e0f527ef31506fbf
+  checksum: 742aea498abfe004a7ff4db2a1c0e00d9e9c1d89db4ad9aa94a9b886cd2ce10a133f20e32788c83696eef368e18c2b5bc82e4b1480c5af91937816a5630989d6
   languageName: node
   linkType: hard
 
@@ -7848,12 +7811,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cross-fetch@npm:^3.1.5":
-  version: 3.1.6
-  resolution: "cross-fetch@npm:3.1.6"
+"cross-fetch@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "cross-fetch@npm:4.0.0"
   dependencies:
-    node-fetch: "npm:^2.6.11"
-  checksum: a8989fca821cae97520976d00f85ce7c3ab8af7e00cc06c94fd94c49ada6847f4cdeabca8e0ebd4aa6c7343f70bea7e0c64d5910b846aab218136a450585aa61
+    node-fetch: "npm:^2.6.12"
+  checksum: 30e86b703a455baca17b7f2088fdd88b71193b39e7cb61f3385511dc6064b7741c816329c0abff8a74d306969455c8797131d056518a981fd4d2424ecd4ab451
   languageName: node
   linkType: hard
 
@@ -12007,7 +11970,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-fetch@npm:^2.6.11, node-fetch@npm:^2.6.7":
+"node-fetch@npm:^2.6.12":
+  version: 2.7.0
+  resolution: "node-fetch@npm:2.7.0"
+  dependencies:
+    whatwg-url: "npm:^5.0.0"
+  peerDependencies:
+    encoding: ^0.1.0
+  peerDependenciesMeta:
+    encoding:
+      optional: true
+  checksum: a3ad7889038bf6c49046272515d4f0e3167088b40fd37e1cc6eeea745f5a68cec798d55ac3210e2bc51891cb745e3dc30a734cc5f4b4df764f45886881b198b1
+  languageName: node
+  linkType: hard
+
+"node-fetch@npm:^2.6.7":
   version: 2.6.11
   resolution: "node-fetch@npm:2.6.11"
   dependencies:
