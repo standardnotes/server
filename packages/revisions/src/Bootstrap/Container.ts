@@ -60,8 +60,6 @@ import { RevisionHttpRepresentation } from '../Mapping/Http/RevisionHttpRepresen
 import { TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser } from '../Domain/UseCase/Transition/TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser/TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser'
 import { DomainEventFactoryInterface } from '../Domain/Event/DomainEventFactoryInterface'
 import { DomainEventFactory } from '../Domain/Event/DomainEventFactory'
-import { TransitionStatusUpdatedEventHandler } from '../Domain/Handler/TransitionStatusUpdatedEventHandler'
-import { TriggerTransitionFromPrimaryToSecondaryDatabaseForUser } from '../Domain/UseCase/Transition/TriggerTransitionFromPrimaryToSecondaryDatabaseForUser/TriggerTransitionFromPrimaryToSecondaryDatabaseForUser'
 import { SQLRevision } from '../Infra/TypeORM/SQL/SQLRevision'
 import { SQLRevisionRepository } from '../Infra/TypeORM/SQL/SQLRevisionRepository'
 import { SQLRevisionMetadataPersistenceMapper } from '../Mapping/Persistence/SQL/SQLRevisionMetadataPersistenceMapper'
@@ -355,16 +353,6 @@ export class ContainerConfigLoader {
         ),
       )
     container
-      .bind<TriggerTransitionFromPrimaryToSecondaryDatabaseForUser>(
-        TYPES.Revisions_TriggerTransitionFromPrimaryToSecondaryDatabaseForUser,
-      )
-      .toConstantValue(
-        new TriggerTransitionFromPrimaryToSecondaryDatabaseForUser(
-          container.get<DomainEventPublisherInterface>(TYPES.Revisions_DomainEventPublisher),
-          container.get<DomainEventFactoryInterface>(TYPES.Revisions_DomainEventFactory),
-        ),
-      )
-    container
       .bind<RemoveRevisionsFromSharedVault>(TYPES.Revisions_RemoveRevisionsFromSharedVault)
       .toConstantValue(
         new RemoveRevisionsFromSharedVault(
@@ -440,19 +428,6 @@ export class ContainerConfigLoader {
         ),
       )
     container
-      .bind<TransitionStatusUpdatedEventHandler>(TYPES.Revisions_TransitionStatusUpdatedEventHandler)
-      .toConstantValue(
-        new TransitionStatusUpdatedEventHandler(
-          container.get<RevisionRepositoryInterface>(TYPES.Revisions_SQLRevisionRepository),
-          container.get<TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser>(
-            TYPES.Revisions_TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser,
-          ),
-          container.get<DomainEventPublisherInterface>(TYPES.Revisions_DomainEventPublisher),
-          container.get<DomainEventFactoryInterface>(TYPES.Revisions_DomainEventFactory),
-          container.get<winston.Logger>(TYPES.Revisions_Logger),
-        ),
-      )
-    container
       .bind<ItemRemovedFromSharedVaultEventHandler>(TYPES.Revisions_ItemRemovedFromSharedVaultEventHandler)
       .toConstantValue(
         new ItemRemovedFromSharedVaultEventHandler(
@@ -464,9 +439,12 @@ export class ContainerConfigLoader {
       .bind<TransitionRequestedEventHandler>(TYPES.Revisions_TransitionRequestedEventHandler)
       .toConstantValue(
         new TransitionRequestedEventHandler(
-          container.get<TriggerTransitionFromPrimaryToSecondaryDatabaseForUser>(
-            TYPES.Revisions_TriggerTransitionFromPrimaryToSecondaryDatabaseForUser,
+          container.get<TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser>(
+            TYPES.Revisions_TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser,
           ),
+          container.get<RevisionRepositoryInterface>(TYPES.Revisions_SQLRevisionRepository),
+          container.get<DomainEventPublisherInterface>(TYPES.Revisions_DomainEventPublisher),
+          container.get<DomainEventFactoryInterface>(TYPES.Revisions_DomainEventFactory),
           container.get<winston.Logger>(TYPES.Revisions_Logger),
         ),
       )
@@ -475,7 +453,6 @@ export class ContainerConfigLoader {
       ['ITEM_DUMPED', container.get(TYPES.Revisions_ItemDumpedEventHandler)],
       ['ACCOUNT_DELETION_REQUESTED', container.get(TYPES.Revisions_AccountDeletionRequestedEventHandler)],
       ['REVISIONS_COPY_REQUESTED', container.get(TYPES.Revisions_RevisionsCopyRequestedEventHandler)],
-      ['TRANSITION_STATUS_UPDATED', container.get(TYPES.Revisions_TransitionStatusUpdatedEventHandler)],
       ['ITEM_REMOVED_FROM_SHARED_VAULT', container.get(TYPES.Revisions_ItemRemovedFromSharedVaultEventHandler)],
       ['TRANSITION_REQUESTED', container.get(TYPES.Revisions_TransitionRequestedEventHandler)],
     ])

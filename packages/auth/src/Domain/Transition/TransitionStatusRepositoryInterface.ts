@@ -1,11 +1,7 @@
+import { TransitionStatus } from '@standardnotes/domain-core'
+
 export interface TransitionStatusRepositoryInterface {
-  updateStatus(
-    userUuid: string,
-    transitionType: 'items' | 'revisions',
-    status: 'STARTED' | 'IN_PROGRESS' | 'FINISHED' | 'FAILED' | 'VERIFIED',
-  ): Promise<void>
-  getStatus(
-    userUuid: string,
-    transitionType: 'items' | 'revisions',
-  ): Promise<'STARTED' | 'IN_PROGRESS' | 'FINISHED' | 'FAILED' | 'VERIFIED' | null>
+  updateStatus(userUuid: string, transitionType: 'items' | 'revisions', status: TransitionStatus): Promise<void>
+  getStatus(userUuid: string, transitionType: 'items' | 'revisions'): Promise<TransitionStatus | null>
+  remove(userUuid: string, transitionType: 'items' | 'revisions'): Promise<void>
 }

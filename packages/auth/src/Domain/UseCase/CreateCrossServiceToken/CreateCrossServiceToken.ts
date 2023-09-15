@@ -1,6 +1,6 @@
 import { TokenEncoderInterface, CrossServiceTokenData } from '@standardnotes/security'
 import { inject, injectable } from 'inversify'
-import { Result, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
+import { Result, TransitionStatus, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
 
 import TYPES from '../../../Bootstrap/Types'
 import { ProjectorInterface } from '../../../Projection/ProjectorInterface'
@@ -60,9 +60,8 @@ export class CreateCrossServiceToken implements UseCaseInterface<string> {
       user: this.projectUser(user),
       roles: this.projectRoles(roles),
       shared_vault_owner_context: undefined,
-      ongoing_transition: transitionStatus === 'IN_PROGRESS',
-      ongoing_revisions_transition:
-        revisionsTransitionStatus === 'STARTED' || revisionsTransitionStatus === 'IN_PROGRESS',
+      ongoing_transition: transitionStatus?.value === TransitionStatus.STATUSES.InProgress,
+      ongoing_revisions_transition: revisionsTransitionStatus?.value === TransitionStatus.STATUSES.InProgress,
       belongs_to_shared_vaults: sharedVaultAssociations.map((association) => ({
         shared_vault_uuid: association.props.sharedVaultUuid.value,
         permission: association.props.permission.value,

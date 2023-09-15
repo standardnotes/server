@@ -89,7 +89,9 @@ export class SQLLegacyItemRepository implements ItemRepositoryInterface {
 
       return item
     } catch (error) {
-      this.logger.error(`Failed to find item ${uuid.value} by uuid: ${(error as Error).message}`)
+      this.logger.error(
+        `Failed to map item ${uuid.value} for user ${persistence.userUuid} by uuid: ${(error as Error).message}`,
+      )
 
       return null
     }
@@ -137,7 +139,9 @@ export class SQLLegacyItemRepository implements ItemRepositoryInterface {
 
       return item
     } catch (error) {
-      this.logger.error(`Failed to find item ${uuid} by uuid and userUuid: ${(error as Error).message}`)
+      this.logger.error(
+        `Failed to map item ${uuid} for user ${persistence.userUuid} by uuid and userUuid: ${(error as Error).message}`,
+      )
 
       return null
     }
@@ -151,7 +155,11 @@ export class SQLLegacyItemRepository implements ItemRepositoryInterface {
       try {
         domainItems.push(this.mapper.toDomain(persistencItem))
       } catch (error) {
-        this.logger.error(`Failed to map item ${persistencItem.uuid} to domain: ${(error as Error).message}`)
+        this.logger.error(
+          `Failed to map item ${persistencItem.uuid} for user ${persistencItem.userUuid} to domain: ${
+            (error as Error).message
+          }`,
+        )
       }
     }
 

@@ -1,22 +1,19 @@
+import { TransitionStatus } from '@standardnotes/domain-core'
 import { TransitionStatusRepositoryInterface } from '../../Domain/Transition/TransitionStatusRepositoryInterface'
 
 export class InMemoryTransitionStatusRepository implements TransitionStatusRepositoryInterface {
-  private itemStatuses: Map<string, 'STARTED' | 'FAILED'> = new Map()
-  private revisionStatuses: Map<string, 'STARTED' | 'FAILED'> = new Map()
+  private itemStatuses: Map<string, string> = new Map()
+  private revisionStatuses: Map<string, string> = new Map()
 
-  async updateStatus(
-    userUuid: string,
-    transitionType: 'items' | 'revisions',
-    status: 'STARTED' | 'FAILED',
-  ): Promise<void> {
+  async updateStatus(userUuid: string, transitionType: 'items' | 'revisions', status: TransitionStatus): Promise<void> {
     if (transitionType === 'items') {
-      this.itemStatuses.set(userUuid, status)
+      this.itemStatuses.set(userUuid, status.value)
     } else {
-      this.revisionStatuses.set(userUuid, status)
+      this.revisionStatuses.set(userUuid, status.value)
     }
   }
 
-  async removeStatus(userUuid: string, transitionType: 'items' | 'revisions'): Promise<void> {
+  async remove(userUuid: string, transitionType: 'items' | 'revisions'): Promise<void> {
     if (transitionType === 'items') {
       this.itemStatuses.delete(userUuid)
     } else {
@@ -24,8 +21,8 @@ export class InMemoryTransitionStatusRepository implements TransitionStatusRepos
     }
   }
 
-  async getStatus(userUuid: string, transitionType: 'items' | 'revisions'): Promise<'STARTED' | 'FAILED' | null> {
-    let status: 'STARTED' | 'FAILED' | null = null
+  async getStatus(userUuid: string, transitionType: 'items' | 'revisions'): Promise<TransitionStatus | null> {
+    let status: string | null
 
     if (transitionType === 'items') {
       status = this.itemStatuses.get(userUuid) ?? null
@@ -33,6 +30,10 @@ export class InMemoryTransitionStatusRepository implements TransitionStatusRepos
       status = this.revisionStatuses.get(userUuid) ?? null
     }
 
-    return status
+    if (status === null) {
+      return null
+    }
+
+    return TransitionStatus.create(status).getValue()
   }
 }

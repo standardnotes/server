@@ -12,7 +12,7 @@ import { DomainEventFactoryInterface } from '../src/Domain/Event/DomainEventFact
 import { UserRepositoryInterface } from '../src/Domain/User/UserRepositoryInterface'
 import { TimerInterface } from '@standardnotes/time'
 import { TransitionStatusRepositoryInterface } from '../src/Domain/Transition/TransitionStatusRepositoryInterface'
-import { RoleName } from '@standardnotes/domain-core'
+import { RoleName, TransitionStatus } from '@standardnotes/domain-core'
 
 const inputArgs = process.argv.slice(2)
 const startDateString = inputArgs[0]
@@ -46,21 +46,38 @@ const requestTransition = async (
 
     const userHasTransitionRole = userRoles.some((role) => role.name === RoleName.NAMES.TransitionUser)
     const bothTransitionStatusesAreVerified =
-      itemsTransitionStatus === 'VERIFIED' && revisionsTransitionStatus === 'VERIFIED'
+      itemsTransitionStatus?.value === TransitionStatus.STATUSES.Verified &&
+      revisionsTransitionStatus?.value === TransitionStatus.STATUSES.Verified
 
     if (userHasTransitionRole && bothTransitionStatusesAreVerified) {
       continue
     }
 
-    const transitionRequestedEvent = domainEventFactory.createTransitionRequestedEvent({
-      userUuid: user.uuid,
-      type: 'items',
-      timestamp,
-    })
+    if (itemsTransitionStatus?.value !== TransitionStatus.STATUSES.Verified) {
+      await transitionStatusRepository.remove(user.uuid, 'items')
+
+      await domainEventPublisher.publish(
+        domainEventFactory.createTransitionRequestedEvent({
+          userUuid: user.uuid,
+          type: 'items',
+          timestamp,
+        }),
+      )
+    }
+
+    if (revisionsTransitionStatus?.value !== TransitionStatus.STATUSES.Verified) {
+      await transitionStatusRepository.remove(user.uuid, 'revisions')
+
+      await domainEventPublisher.publish(
+        domainEventFactory.createTransitionRequestedEvent({
+          userUuid: user.uuid,
+          type: 'revisions',
+          timestamp,
+        }),
+      )
+    }
 
     usersTriggered += 1
-
-    await domainEventPublisher.publish(transitionRequestedEvent)
   }
 
   logger.info(

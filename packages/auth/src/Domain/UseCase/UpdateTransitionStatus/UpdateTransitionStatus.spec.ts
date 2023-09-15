@@ -1,4 +1,4 @@
-import { RoleName, Uuid } from '@standardnotes/domain-core'
+import { RoleName, TransitionStatus, Uuid } from '@standardnotes/domain-core'
 
 import { RoleServiceInterface } from '../../Role/RoleServiceInterface'
 import { TransitionStatusRepositoryInterface } from '../../Transition/TransitionStatusRepositoryInterface'
@@ -18,6 +18,7 @@ describe('UpdateTransitionStatus', () => {
 
     transitionStatusRepository = {} as jest.Mocked<TransitionStatusRepositoryInterface>
     transitionStatusRepository.updateStatus = jest.fn()
+    transitionStatusRepository.getStatus = jest.fn().mockResolvedValue(null)
 
     roleService = {} as jest.Mocked<RoleServiceInterface>
     roleService.addRoleToUser = jest.fn()
@@ -45,17 +46,13 @@ describe('UpdateTransitionStatus', () => {
 
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
-      status: 'STARTED',
+      status: TransitionStatus.STATUSES.InProgress,
       transitionType: 'items',
       transitionTimestamp: 123,
     })
 
     expect(result.isFailed()).toBeFalsy()
-    expect(transitionStatusRepository.updateStatus).toHaveBeenCalledWith(
-      '00000000-0000-0000-0000-000000000000',
-      'items',
-      'STARTED',
-    )
+    expect(transitionStatusRepository.updateStatus).toHaveBeenCalled()
   })
 
   it('should return error when user uuid is invalid', async () => {
@@ -70,5 +67,41 @@ describe('UpdateTransitionStatus', () => {
 
     expect(result.isFailed()).toBeTruthy()
     expect(result.getError()).toEqual('Given value is not a valid uuid: invalid')
+  })
+
+  it('should not update status if transition is already verified', async () => {
+    transitionStatusRepository.getStatus = jest
+      .fn()
+      .mockResolvedValue(TransitionStatus.create(TransitionStatus.STATUSES.Verified).getValue())
+
+    const useCase = createUseCase()
+
+    const result = await useCase.execute({
+      userUuid: '00000000-0000-0000-0000-000000000000',
+      status: TransitionStatus.STATUSES.InProgress,
+      transitionType: 'items',
+      transitionTimestamp: 123,
+    })
+
+    expect(result.isFailed()).toBeFalsy()
+    expect(transitionStatusRepository.updateStatus).not.toHaveBeenCalled()
+  })
+
+  it('should not update status if transition is already failed', async () => {
+    transitionStatusRepository.getStatus = jest
+      .fn()
+      .mockResolvedValue(TransitionStatus.create(TransitionStatus.STATUSES.Failed).getValue())
+
+    const useCase = createUseCase()
+
+    const result = await useCase.execute({
+      userUuid: '00000000-0000-0000-0000-000000000000',
+      status: TransitionStatus.STATUSES.InProgress,
+      transitionType: 'items',
+      transitionTimestamp: 123,
+    })
+
+    expect(result.isFailed()).toBeFalsy()
+    expect(transitionStatusRepository.updateStatus).not.toHaveBeenCalled()
   })
 })
