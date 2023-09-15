@@ -160,8 +160,6 @@ import { ItemRepositoryResolverInterface } from '../Domain/Item/ItemRepositoryRe
 import { TypeORMItemRepositoryResolver } from '../Infra/TypeORM/TypeORMItemRepositoryResolver'
 import { TransitionItemsFromPrimaryToSecondaryDatabaseForUser } from '../Domain/UseCase/Transition/TransitionItemsFromPrimaryToSecondaryDatabaseForUser/TransitionItemsFromPrimaryToSecondaryDatabaseForUser'
 import { SharedVaultFileMovedEventHandler } from '../Domain/Handler/SharedVaultFileMovedEventHandler'
-import { TransitionStatusUpdatedEventHandler } from '../Domain/Handler/TransitionStatusUpdatedEventHandler'
-import { TriggerTransitionFromPrimaryToSecondaryDatabaseForUser } from '../Domain/UseCase/Transition/TriggerTransitionFromPrimaryToSecondaryDatabaseForUser/TriggerTransitionFromPrimaryToSecondaryDatabaseForUser'
 import { SQLItem } from '../Infra/TypeORM/SQLItem'
 import { SQLItemPersistenceMapper } from '../Mapping/Persistence/SQLItemPersistenceMapper'
 import { SQLItemRepository } from '../Infra/TypeORM/SQLItemRepository'
@@ -837,16 +835,6 @@ export class ContainerConfigLoader {
           env.get('MIGRATION_BATCH_SIZE', true) ? +env.get('MIGRATION_BATCH_SIZE', true) : 100,
         ),
       )
-    container
-      .bind<TriggerTransitionFromPrimaryToSecondaryDatabaseForUser>(
-        TYPES.Sync_TriggerTransitionFromPrimaryToSecondaryDatabaseForUser,
-      )
-      .toConstantValue(
-        new TriggerTransitionFromPrimaryToSecondaryDatabaseForUser(
-          container.get<DomainEventPublisherInterface>(TYPES.Sync_DomainEventPublisher),
-          container.get<DomainEventFactoryInterface>(TYPES.Sync_DomainEventFactory),
-        ),
-      )
 
     // Services
     container
@@ -949,25 +937,15 @@ export class ContainerConfigLoader {
         ),
       )
     container
-      .bind<TransitionStatusUpdatedEventHandler>(TYPES.Sync_TransitionStatusUpdatedEventHandler)
+      .bind<TransitionRequestedEventHandler>(TYPES.Sync_TransitionRequestedEventHandler)
       .toConstantValue(
-        new TransitionStatusUpdatedEventHandler(
+        new TransitionRequestedEventHandler(
           container.get<ItemRepositoryInterface>(TYPES.Sync_SQLItemRepository),
           container.get<TransitionItemsFromPrimaryToSecondaryDatabaseForUser>(
             TYPES.Sync_TransitionItemsFromPrimaryToSecondaryDatabaseForUser,
           ),
           container.get<DomainEventPublisherInterface>(TYPES.Sync_DomainEventPublisher),
           container.get<DomainEventFactoryInterface>(TYPES.Sync_DomainEventFactory),
-          container.get<Logger>(TYPES.Sync_Logger),
-        ),
-      )
-    container
-      .bind<TransitionRequestedEventHandler>(TYPES.Sync_TransitionRequestedEventHandler)
-      .toConstantValue(
-        new TransitionRequestedEventHandler(
-          container.get<TriggerTransitionFromPrimaryToSecondaryDatabaseForUser>(
-            TYPES.Sync_TriggerTransitionFromPrimaryToSecondaryDatabaseForUser,
-          ),
           container.get<Logger>(TYPES.Sync_Logger),
         ),
       )
@@ -1004,10 +982,6 @@ export class ContainerConfigLoader {
       [
         'SHARED_VAULT_FILE_MOVED',
         container.get<SharedVaultFileMovedEventHandler>(TYPES.Sync_SharedVaultFileMovedEventHandler),
-      ],
-      [
-        'TRANSITION_STATUS_UPDATED',
-        container.get<TransitionStatusUpdatedEventHandler>(TYPES.Sync_TransitionStatusUpdatedEventHandler),
       ],
       [
         'TRANSITION_REQUESTED',

@@ -9,7 +9,14 @@ import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'
 
 import { CreateCrossServiceToken } from './CreateCrossServiceToken'
 import { GetSetting } from '../GetSetting/GetSetting'
-import { Result, SharedVaultUser, SharedVaultUserPermission, Timestamps, Uuid } from '@standardnotes/domain-core'
+import {
+  Result,
+  SharedVaultUser,
+  SharedVaultUserPermission,
+  Timestamps,
+  TransitionStatus,
+  Uuid,
+} from '@standardnotes/domain-core'
 import { TransitionStatusRepositoryInterface } from '../../Transition/TransitionStatusRepositoryInterface'
 import { SharedVaultUserRepositoryInterface } from '../../SharedVault/SharedVaultUserRepositoryInterface'
 
@@ -72,7 +79,9 @@ describe('CreateCrossServiceToken', () => {
     getSettingUseCase.execute = jest.fn().mockReturnValue(Result.ok({ setting: { value: '100' } }))
 
     transitionStatusRepository = {} as jest.Mocked<TransitionStatusRepositoryInterface>
-    transitionStatusRepository.getStatus = jest.fn().mockReturnValue('TO-DO')
+    transitionStatusRepository.getStatus = jest
+      .fn()
+      .mockReturnValue(TransitionStatus.create(TransitionStatus.STATUSES.Verified).getValue())
 
     sharedVaultUserRepository = {} as jest.Mocked<SharedVaultUserRepositoryInterface>
     sharedVaultUserRepository.findByUserUuid = jest.fn().mockReturnValue([
@@ -120,7 +129,9 @@ describe('CreateCrossServiceToken', () => {
   })
 
   it('should create a cross service token for user that has an ongoing transaction', async () => {
-    transitionStatusRepository.getStatus = jest.fn().mockReturnValue('IN_PROGRESS')
+    transitionStatusRepository.getStatus = jest
+      .fn()
+      .mockReturnValue(TransitionStatus.create(TransitionStatus.STATUSES.InProgress).getValue())
 
     await createUseCase().execute({
       user,

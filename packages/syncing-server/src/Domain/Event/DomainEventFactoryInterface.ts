@@ -53,7 +53,7 @@ export interface DomainEventFactoryInterface {
     userUuid: string
     transitionType: 'items' | 'revisions'
     transitionTimestamp: number
-    status: 'STARTED' | 'IN_PROGRESS' | 'FAILED' | 'FINISHED' | 'VERIFIED'
+    status: string
   }): TransitionStatusUpdatedEvent
   createEmailRequestedEvent(dto: {
     userEmail: string

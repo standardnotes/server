@@ -46,9 +46,6 @@ const TYPES = {
   Revisions_TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser: Symbol.for(
     'Revisions_TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser',
   ),
-  Revisions_TriggerTransitionFromPrimaryToSecondaryDatabaseForUser: Symbol.for(
-    'Revisions_TriggerTransitionFromPrimaryToSecondaryDatabaseForUser',
-  ),
   Revisions_RemoveRevisionsFromSharedVault: Symbol.for('Revisions_RemoveRevisionsFromSharedVault'),
   // Controller
   Revisions_ControllerContainer: Symbol.for('Revisions_ControllerContainer'),
@@ -58,7 +55,6 @@ const TYPES = {
   Revisions_ItemDumpedEventHandler: Symbol.for('Revisions_ItemDumpedEventHandler'),
   Revisions_AccountDeletionRequestedEventHandler: Symbol.for('Revisions_AccountDeletionRequestedEventHandler'),
   Revisions_RevisionsCopyRequestedEventHandler: Symbol.for('Revisions_RevisionsCopyRequestedEventHandler'),
-  Revisions_TransitionStatusUpdatedEventHandler: Symbol.for('Revisions_TransitionStatusUpdatedEventHandler'),
   Revisions_ItemRemovedFromSharedVaultEventHandler: Symbol.for('Revisions_ItemRemovedFromSharedVaultEventHandler'),
   Revisions_TransitionRequestedEventHandler: Symbol.for('Revisions_TransitionRequestedEventHandler'),
   // Services
