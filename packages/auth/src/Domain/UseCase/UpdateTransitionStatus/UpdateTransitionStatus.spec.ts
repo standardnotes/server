@@ -3,14 +3,19 @@ import { RoleName, Uuid } from '@standardnotes/domain-core'
 import { RoleServiceInterface } from '../../Role/RoleServiceInterface'
 import { TransitionStatusRepositoryInterface } from '../../Transition/TransitionStatusRepositoryInterface'
 import { UpdateTransitionStatus } from './UpdateTransitionStatus'
+import { Logger } from 'winston'
 
 describe('UpdateTransitionStatus', () => {
   let transitionStatusRepository: TransitionStatusRepositoryInterface
   let roleService: RoleServiceInterface
+  let logger: Logger
 
-  const createUseCase = () => new UpdateTransitionStatus(transitionStatusRepository, roleService)
+  const createUseCase = () => new UpdateTransitionStatus(transitionStatusRepository, roleService, logger)
 
   beforeEach(() => {
+    logger = {} as jest.Mocked<Logger>
+    logger.info = jest.fn()
+
     transitionStatusRepository = {} as jest.Mocked<TransitionStatusRepositoryInterface>
     transitionStatusRepository.updateStatus = jest.fn()
 
