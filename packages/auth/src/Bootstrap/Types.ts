@@ -159,7 +159,6 @@ const TYPES = {
   Auth_GetUserKeyParamsRecovery: Symbol.for('Auth_GetUserKeyParamsRecovery'),
   Auth_UpdateStorageQuotaUsedForUser: Symbol.for('Auth_UpdateStorageQuotaUsedForUser'),
   Auth_UpdateTransitionStatus: Symbol.for('Auth_UpdateTransitionStatus'),
-  Auth_GetTransitionStatus: Symbol.for('Auth_GetTransitionStatus'),
   Auth_AddSharedVaultUser: Symbol.for('Auth_AddSharedVaultUser'),
   Auth_RemoveSharedVaultUser: Symbol.for('Auth_RemoveSharedVaultUser'),
   // Handlers
