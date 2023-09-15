@@ -2,13 +2,11 @@ import { Result, RoleName, UseCaseInterface, Uuid } from '@standardnotes/domain-
 import { TransitionStatusRepositoryInterface } from '../../Transition/TransitionStatusRepositoryInterface'
 import { UpdateTransitionStatusDTO } from './UpdateTransitionStatusDTO'
 import { RoleServiceInterface } from '../../Role/RoleServiceInterface'
-import { Logger } from 'winston'
 
 export class UpdateTransitionStatus implements UseCaseInterface<void> {
   constructor(
     private transitionStatusRepository: TransitionStatusRepositoryInterface,
     private roleService: RoleServiceInterface,
-    private logger: Logger,
   ) {}
 
   async execute(dto: UpdateTransitionStatusDTO): Promise<Result<void>> {
@@ -28,30 +26,6 @@ export class UpdateTransitionStatus implements UseCaseInterface<void> {
 
     if (dto.transitionType === 'items') {
       await this.roleService.addRoleToUser(userUuid, RoleName.create(RoleName.NAMES.TransitionUser).getValue())
-    }
-
-    if (dto.transitionType === 'items') {
-      const itemStatuses = await this.transitionStatusRepository.getStatuses('items')
-      const itemsStartedStatusesCount = itemStatuses.filter((status) => status.status === 'STARTED').length
-      const itemsInProgressStatusesCount = itemStatuses.filter((status) => status.status === 'IN_PROGRESS').length
-      const itemsFailedStatusesCount = itemStatuses.filter((status) => status.status === 'FAILED').length
-
-      this.logger.info(
-        `[TRANSITION ${dto.transitionTimestamp}] Items transition statuses: ${itemsStartedStatusesCount} started, ${itemsInProgressStatusesCount} in progress, ${itemsFailedStatusesCount} failed`,
-      )
-    }
-
-    if (dto.transitionType === 'revisions') {
-      const revisionStatuses = await this.transitionStatusRepository.getStatuses('revisions')
-      const revisionsStartedStatusesCount = revisionStatuses.filter((status) => status.status === 'STARTED').length
-      const revisionsInProgressStatusesCount = revisionStatuses.filter(
-        (status) => status.status === 'IN_PROGRESS',
-      ).length
-      const revisionsFailedStatusesCount = revisionStatuses.filter((status) => status.status === 'FAILED').length
-
-      this.logger.info(
-        `[TRANSITION ${dto.transitionTimestamp}] Revisions transition statuses: ${revisionsStartedStatusesCount} started, ${revisionsInProgressStatusesCount} in progress, ${revisionsFailedStatusesCount} failed`,
-      )
     }
 
     return Result.ok()
