@@ -11,12 +11,15 @@ import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
 import { DomainEventFactoryInterface } from '../src/Domain/Event/DomainEventFactoryInterface'
 import { UserRepositoryInterface } from '../src/Domain/User/UserRepositoryInterface'
 import { TimerInterface } from '@standardnotes/time'
+import { TransitionStatusRepositoryInterface } from '../src/Domain/Transition/TransitionStatusRepositoryInterface'
+import { RoleName } from '@standardnotes/domain-core'
 
 const inputArgs = process.argv.slice(2)
 const startDateString = inputArgs[0]
 const endDateString = inputArgs[1]
 
 const requestTransition = async (
+  transitionStatusRepository: TransitionStatusRepositoryInterface,
   userRepository: UserRepositoryInterface,
   logger: Logger,
   domainEventFactory: DomainEventFactoryInterface,
@@ -36,6 +39,19 @@ const requestTransition = async (
 
   let usersTriggered = 0
   for (const user of users) {
+    const itemsTransitionStatus = await transitionStatusRepository.getStatus(user.uuid, 'items')
+    const revisionsTransitionStatus = await transitionStatusRepository.getStatus(user.uuid, 'revisions')
+
+    const userRoles = await user.roles
+
+    const userHasTransitionRole = userRoles.some((role) => role.name === RoleName.NAMES.TransitionUser)
+    const bothTransitionStatusesAreVerified =
+      itemsTransitionStatus === 'VERIFIED' && revisionsTransitionStatus === 'VERIFIED'
+
+    if (userHasTransitionRole && bothTransitionStatusesAreVerified) {
+      continue
+    }
+
     const transitionRequestedEvent = domainEventFactory.createTransitionRequestedEvent({
       userUuid: user.uuid,
       type: 'items',
@@ -67,8 +83,20 @@ void container.load().then((container) => {
   const domainEventFactory: DomainEventFactoryInterface = container.get(TYPES.Auth_DomainEventFactory)
   const domainEventPublisher: DomainEventPublisherInterface = container.get(TYPES.Auth_DomainEventPublisher)
   const timer = container.get<TimerInterface>(TYPES.Auth_Timer)
+  const transitionStatusRepository = container.get<TransitionStatusRepositoryInterface>(
+    TYPES.Auth_TransitionStatusRepository,
+  )
 
-  Promise.resolve(requestTransition(userRepository, logger, domainEventFactory, domainEventPublisher, timer))
+  Promise.resolve(
+    requestTransition(
+      transitionStatusRepository,
+      userRepository,
+      logger,
+      domainEventFactory,
+      domainEventPublisher,
+      timer,
+    ),
+  )
     .then(() => {
       logger.info(`Finished transition request for users created between ${startDateString} and ${endDateString}`)
 

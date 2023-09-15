@@ -10,7 +10,7 @@ export class DomainEventFactory implements DomainEventFactoryInterface {
     userUuid: string
     transitionType: 'items' | 'revisions'
     transitionTimestamp: number
-    status: 'STARTED' | 'FAILED' | 'FINISHED'
+    status: 'STARTED' | 'IN_PROGRESS' | 'FAILED' | 'FINISHED' | 'VERIFIED'
   }): TransitionStatusUpdatedEvent {
     return {
       type: 'TRANSITION_STATUS_UPDATED',
@@ -20,7 +20,7 @@ export class DomainEventFactory implements DomainEventFactoryInterface {
           userIdentifier: dto.userUuid,
           userIdentifierType: 'uuid',
         },
-        origin: DomainEventService.SyncingServer,
+        origin: DomainEventService.Revisions,
       },
       payload: dto,
     }

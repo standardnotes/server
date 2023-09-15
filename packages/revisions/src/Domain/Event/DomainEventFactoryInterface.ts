@@ -5,6 +5,6 @@ export interface DomainEventFactoryInterface {
     userUuid: string
     transitionType: 'items' | 'revisions'
     transitionTimestamp: number
-    status: 'STARTED' | 'IN_PROGRESS' | 'FAILED' | 'FINISHED'
+    status: 'STARTED' | 'IN_PROGRESS' | 'FAILED' | 'FINISHED' | 'VERIFIED'
   }): TransitionStatusUpdatedEvent
 }
