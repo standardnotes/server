@@ -33,6 +33,11 @@ export class RedisTransitionStatusRepository implements TransitionStatusReposito
       return null
     }
 
-    return TransitionStatus.create(status).getValue()
+    const transitionStatusOrError = TransitionStatus.create(status)
+    if (transitionStatusOrError.isFailed()) {
+      return null
+    }
+
+    return transitionStatusOrError.getValue()
   }
 }
