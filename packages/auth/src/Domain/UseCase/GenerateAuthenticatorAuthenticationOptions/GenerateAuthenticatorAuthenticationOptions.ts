@@ -35,7 +35,7 @@ export class GenerateAuthenticatorAuthenticationOptions
         .update(`u2f-selector-${dto.username}${this.pseudoKeyParamsKey}`)
         .digest('base64url')
 
-      const options = generateAuthenticationOptions({
+      const options = await generateAuthenticationOptions({
         allowCredentials: [
           {
             id: Buffer.from(credentialIdHash),
@@ -56,7 +56,7 @@ export class GenerateAuthenticatorAuthenticationOptions
     const userUuid = userUuidOrError.getValue()
 
     const authenticators = await this.authenticatorRepository.findByUserUuid(userUuid)
-    const options = generateAuthenticationOptions({
+    const options = await generateAuthenticationOptions({
       allowCredentials: authenticators.map((authenticator) => ({
         id: authenticator.props.credentialId,
         type: 'public-key',
