@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.95.19](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.95.18...@standardnotes/syncing-server@1.95.19) (2023-09-15)
+
+### Bug Fixes
+
+* **syncing-server:** remove unused index in mongodb ([9147ff5](https://github.com/standardnotes/syncing-server-js/commit/9147ff5d49c507d943f4f8c6775f7c1fff878b0f))
+
 ## [1.95.18](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.95.17...@standardnotes/syncing-server@1.95.18) (2023-09-14)
 
 ### Bug Fixes

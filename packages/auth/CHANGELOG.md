@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.141.14](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.141.13...@standardnotes/auth-server@1.141.14) (2023-09-15)
+
+### Bug Fixes
+
+* **auth:** remove extensive logs from updating transitions ([2a1859e](https://github.com/standardnotes/server/commit/2a1859e4beff4cc7c4348ebbff8357a8e061bf5e))
+* **auth:** upgrade simplewebauthn dependency ([#826](https://github.com/standardnotes/server/issues/826)) ([dd9a9c6](https://github.com/standardnotes/server/commit/dd9a9c68cb431a61700a8e5d8247eb1b505a9d62))
+
 ## [1.141.13](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.141.12...@standardnotes/auth-server@1.141.13) (2023-09-14)
 
 ### Bug Fixes
