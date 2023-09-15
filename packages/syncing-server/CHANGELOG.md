@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.96.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.95.19...@standardnotes/syncing-server@1.96.0) (2023-09-15)
+
+### Features
+
+* add skipping verified transitions ([#827](https://github.com/standardnotes/syncing-server-js/issues/827)) ([d4d4945](https://github.com/standardnotes/syncing-server-js/commit/d4d49454a68de0acdf440dc202fa14b9743905f6))
+
 ## [1.95.19](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.95.18...@standardnotes/syncing-server@1.95.19) (2023-09-15)
 
 ### Bug Fixes

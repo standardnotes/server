@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.34.0](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.33.21...@standardnotes/revisions-server@1.34.0) (2023-09-15)
+
+### Features
+
+* add skipping verified transitions ([#827](https://github.com/standardnotes/server/issues/827)) ([d4d4945](https://github.com/standardnotes/server/commit/d4d49454a68de0acdf440dc202fa14b9743905f6))
+
 ## [1.33.21](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.33.20...@standardnotes/revisions-server@1.33.21) (2023-09-14)
 
 ### Bug Fixes

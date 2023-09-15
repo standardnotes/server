@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.126.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.125.4...@standardnotes/domain-events@2.126.0) (2023-09-15)
+
+### Features
+
+* add skipping verified transitions ([#827](https://github.com/standardnotes/server/issues/827)) ([d4d4945](https://github.com/standardnotes/server/commit/d4d49454a68de0acdf440dc202fa14b9743905f6))
+
 ## [2.125.4](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.125.3...@standardnotes/domain-events@2.125.4) (2023-09-13)
 
 ### Bug Fixes
