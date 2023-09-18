@@ -11,14 +11,15 @@
     "node": ">=18.0.0 <21.0.0"
   },
   "scripts": {
-    "lint": "yarn workspaces foreach -p -j 10 --verbose run lint",
-    "lint:fix": "yarn workspaces foreach -p -j 10 --verbose run lint:fix",
-    "clean": "yarn workspaces foreach -p --verbose run clean",
-    "setup:env": "cp .env.sample .env && yarn workspaces foreach -p --verbose run setup:env",
+    "lint": "yarn workspaces foreach -ptA run lint",
+    "lint:fix": "yarn workspaces foreach -ptA run lint:fix",
+    "clean": "yarn workspaces foreach -ptA run clean",
+    "build": "yarn workspaces foreach -ptA run build",
+    "test": "yarn workspaces foreach -ptA run test",
+    "setup:env": "cp .env.sample .env && yarn workspaces foreach -ptA run setup:env",
     "release": "lerna version --conventional-graduate --conventional-commits --yes -m \"chore(release): publish new version\"",
     "publish": "lerna publish from-git --yes --no-verify-access --loglevel verbose",
     "postversion": "./scripts/push-tags-one-by-one.sh",
-    "upgrade:snjs": "yarn workspaces foreach --verbose run upgrade:snjs",
     "e2e": "yarn build packages/home-server && PORT=3123 yarn workspace @standardnotes/home-server start",
     "start": "yarn build packages/home-server && yarn workspace @standardnotes/home-server start"
   },
@@ -35,7 +36,6 @@
     "eslint": "^8.39.0",
     "eslint-config-prettier": "^8.8.0",
     "ini": "^4.1.1",
-    "npm-check-updates": "^16.13.2",
     "ts-node": "^10.9.1",
     "typescript": "^5.0.4"
   },

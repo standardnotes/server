@@ -24,8 +24,7 @@
     "pretest": "yarn lint && yarn build",
     "test": "jest --coverage --config=./jest.config.js --maxWorkers=50%",
     "start": "yarn node dist/bin/server.js",
-    "worker": "yarn node dist/bin/worker.js",
-    "upgrade:snjs": "yarn ncu -u '@standardnotes/*'"
+    "worker": "yarn node dist/bin/worker.js"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.332.0",
@@ -69,7 +68,6 @@
     "eslint": "^8.39.0",
     "eslint-plugin-prettier": "^5.0.0",
     "jest": "^29.5.0",
-    "npm-check-updates": "^16.13.2",
     "prettier": "^3.0.3",
     "ts-jest": "^29.1.0",
     "typescript": "^5.0.4",
