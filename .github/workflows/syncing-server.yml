@@ -16,7 +16,6 @@ jobs:
     uses: standardnotes/server/.github/workflows/common-server-application.yml@main
     with:
       service_name: syncing-server-js
-      workspace_name: "@standardnotes/syncing-server"
       package_path: packages/syncing-server
     secrets: inherit
 

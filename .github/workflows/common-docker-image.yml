@@ -9,9 +9,6 @@ on:
       package_path:
         required: true
         type: string
-      workspace_name:
-        required: true
-        type: string
     secrets:
       DOCKER_USERNAME:
         required: true
@@ -33,19 +30,6 @@ jobs:
       with:
         python-version: '3.11'
 
-    - name: Create Bundle Dir
-      id: bundle-dir
-      run: echo "temp_dir=$(mktemp -d -t ${{ inputs.service_name }}-${{ github.sha }}-XXXXXXX)" >> $GITHUB_OUTPUT
-
-    - name: Cache build
-      id: cache-build
-      uses: actions/cache@v3
-      with:
-        path: |
-          packages/**/dist
-          ${{ steps.bundle-dir.outputs.temp_dir }}
-        key: ${{ runner.os }}-${{ inputs.service_name }}-build-${{ github.sha }}
-
     - name: Set up Node
       uses: actions/setup-node@v3
       with:
@@ -54,14 +38,6 @@ jobs:
 
     - name: Install dependencies
       run: yarn install --immutable
-
-    - name: Build
-      if: steps.cache-build.outputs.cache-hit != 'true'
-      run: yarn build ${{ inputs.package_path }}
-
-    - name: Bundle
-      if: steps.cache-build.outputs.cache-hit != 'true'
-      run: yarn workspace ${{ inputs.workspace_name }} bundle --no-compress --output-directory ${{ steps.bundle-dir.outputs.temp_dir }}
 
     - name: Login to Docker Hub
       uses: docker/login-action@v2
@@ -93,8 +69,8 @@ jobs:
       uses: docker/build-push-action@v4
       with:
         builder: ${{ steps.buildx.outputs.name }}
-        context: ${{ steps.bundle-dir.outputs.temp_dir }}
-        file: ${{ steps.bundle-dir.outputs.temp_dir }}/${{ inputs.package_path }}/Dockerfile
+        context: .
+        file: ${{ inputs.package_path }}/Dockerfile
         platforms: linux/amd64,linux/arm64
         push: true
         tags: |

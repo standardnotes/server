@@ -16,7 +16,6 @@ jobs:
     uses: standardnotes/server/.github/workflows/common-server-application.yml@main
     with:
       service_name: analytics
-      workspace_name: "@standardnotes/analytics"
       deploy_web: false
       package_path: packages/analytics
     secrets: inherit

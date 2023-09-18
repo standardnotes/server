@@ -16,7 +16,6 @@ jobs:
     uses: standardnotes/server/.github/workflows/common-server-application.yml@main
     with:
       service_name: auth
-      workspace_name: "@standardnotes/auth-server"
       package_path: packages/auth
     secrets: inherit
 
