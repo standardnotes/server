@@ -4,14 +4,14 @@ import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
 import { RemoveUserFromSharedVaultDTO } from './RemoveUserFromSharedVaultDTO'
 import { SharedVaultRepositoryInterface } from '../../../SharedVault/SharedVaultRepositoryInterface'
 import { SharedVaultUserRepositoryInterface } from '../../../SharedVault/User/SharedVaultUserRepositoryInterface'
-import { AddNotificationForUser } from '../../Messaging/AddNotificationForUser/AddNotificationForUser'
 import { DomainEventFactoryInterface } from '../../../Event/DomainEventFactoryInterface'
+import { AddNotificationsForUsers } from '../../Messaging/AddNotificationsForUsers/AddNotificationsForUsers'
 
 export class RemoveUserFromSharedVault implements UseCaseInterface<void> {
   constructor(
     private sharedVaultUsersRepository: SharedVaultUserRepositoryInterface,
     private sharedVaultRepository: SharedVaultRepositoryInterface,
-    private addNotificationForUser: AddNotificationForUser,
+    private addNotificationForUsers: AddNotificationsForUsers,
     private domainEventFactory: DomainEventFactoryInterface,
     private domainEventPublisher: DomainEventPublisherInterface,
   ) {}
@@ -71,8 +71,8 @@ export class RemoveUserFromSharedVault implements UseCaseInterface<void> {
     }
     const notificationPayload = notificationPayloadOrError.getValue()
 
-    const result = await this.addNotificationForUser.execute({
-      userUuid: sharedVaultUser.props.userUuid.value,
+    const result = await this.addNotificationForUsers.execute({
+      sharedVaultUuid: sharedVault.id.toString(),
       type: NotificationType.TYPES.RemovedFromSharedVault,
       payload: notificationPayload,
       version: '1.0',

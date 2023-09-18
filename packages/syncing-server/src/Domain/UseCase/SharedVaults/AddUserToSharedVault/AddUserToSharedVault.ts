@@ -1,4 +1,6 @@
 import {
+  NotificationPayload,
+  NotificationType,
   Result,
   SharedVaultUser,
   SharedVaultUserPermission,
@@ -13,6 +15,7 @@ import { AddUserToSharedVaultDTO } from './AddUserToSharedVaultDTO'
 import { SharedVaultRepositoryInterface } from '../../../SharedVault/SharedVaultRepositoryInterface'
 import { SharedVaultUserRepositoryInterface } from '../../../SharedVault/User/SharedVaultUserRepositoryInterface'
 import { DomainEventFactoryInterface } from '../../../Event/DomainEventFactoryInterface'
+import { AddNotificationsForUsers } from '../../Messaging/AddNotificationsForUsers/AddNotificationsForUsers'
 
 export class AddUserToSharedVault implements UseCaseInterface<SharedVaultUser> {
   constructor(
@@ -21,6 +24,7 @@ export class AddUserToSharedVault implements UseCaseInterface<SharedVaultUser> {
     private timer: TimerInterface,
     private domainEventFactory: DomainEventFactoryInterface,
     private domainEventPublisher: DomainEventPublisherInterface,
+    private addNotificationForUsers: AddNotificationsForUsers,
   ) {}
 
   async execute(dto: AddUserToSharedVaultDTO): Promise<Result<SharedVaultUser>> {
@@ -66,6 +70,26 @@ export class AddUserToSharedVault implements UseCaseInterface<SharedVaultUser> {
     const sharedVaultUser = sharedVaultUserOrError.getValue()
 
     await this.sharedVaultUserRepository.save(sharedVaultUser)
+
+    const notificationPayloadOrError = NotificationPayload.create({
+      sharedVaultUuid: sharedVaultUuid,
+      type: NotificationType.create(NotificationType.TYPES.UserAddedToSharedVault).getValue(),
+      version: '1.0',
+    })
+    if (notificationPayloadOrError.isFailed()) {
+      return Result.fail(notificationPayloadOrError.getError())
+    }
+    const notificationPayload = notificationPayloadOrError.getValue()
+
+    const result = await this.addNotificationForUsers.execute({
+      sharedVaultUuid: sharedVaultUuid.value,
+      type: NotificationType.TYPES.UserAddedToSharedVault,
+      payload: notificationPayload,
+      version: '1.0',
+    })
+    if (result.isFailed()) {
+      return Result.fail(result.getError())
+    }
 
     await this.domainEventPublisher.publish(
       this.domainEventFactory.createUserAddedToSharedVaultEvent({
