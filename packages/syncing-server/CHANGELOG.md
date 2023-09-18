@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.98.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.97.0...@standardnotes/syncing-server@1.98.0) (2023-09-18)
+
+### Features
+
+* add publishing notifications for users when a user is added to vault ([#834](https://github.com/standardnotes/syncing-server-js/issues/834)) ([547a79e](https://github.com/standardnotes/syncing-server-js/commit/547a79e23174dab0a756e4e5bee218e4859b3b42))
+
 # [1.97.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.96.1...@standardnotes/syncing-server@1.97.0) (2023-09-15)
 
 ### Features
