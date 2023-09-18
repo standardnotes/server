@@ -11,14 +11,14 @@ import { SharedVault } from '../../../SharedVault/SharedVault'
 import { SharedVaultRepositoryInterface } from '../../../SharedVault/SharedVaultRepositoryInterface'
 import { SharedVaultUserRepositoryInterface } from '../../../SharedVault/User/SharedVaultUserRepositoryInterface'
 import { RemoveUserFromSharedVault } from './RemoveUserFromSharedVault'
-import { AddNotificationForUser } from '../../Messaging/AddNotificationForUser/AddNotificationForUser'
 import { DomainEventFactoryInterface } from '../../../Event/DomainEventFactoryInterface'
 import { DomainEventInterface, DomainEventPublisherInterface } from '@standardnotes/domain-events'
+import { AddNotificationsForUsers } from '../../Messaging/AddNotificationsForUsers/AddNotificationsForUsers'
 
 describe('RemoveUserFromSharedVault', () => {
   let sharedVaultRepository: SharedVaultRepositoryInterface
   let sharedVaultUserRepository: SharedVaultUserRepositoryInterface
-  let addNotificationForUser: AddNotificationForUser
+  let addNotificationsForUsers: AddNotificationsForUsers
   let sharedVault: SharedVault
   let sharedVaultUser: SharedVaultUser
   let domainEventFactory: DomainEventFactoryInterface
@@ -28,7 +28,7 @@ describe('RemoveUserFromSharedVault', () => {
     new RemoveUserFromSharedVault(
       sharedVaultUserRepository,
       sharedVaultRepository,
-      addNotificationForUser,
+      addNotificationsForUsers,
       domainEventFactory,
       domainEventPublisher,
     )
@@ -53,8 +53,8 @@ describe('RemoveUserFromSharedVault', () => {
     sharedVaultUserRepository.findByUserUuidAndSharedVaultUuid = jest.fn().mockResolvedValue(sharedVaultUser)
     sharedVaultUserRepository.remove = jest.fn()
 
-    addNotificationForUser = {} as jest.Mocked<AddNotificationForUser>
-    addNotificationForUser.execute = jest.fn().mockReturnValue(Result.ok())
+    addNotificationsForUsers = {} as jest.Mocked<AddNotificationsForUsers>
+    addNotificationsForUsers.execute = jest.fn().mockReturnValue(Result.ok())
 
     domainEventFactory = {} as jest.Mocked<DomainEventFactoryInterface>
     domainEventFactory.createUserRemovedFromSharedVaultEvent = jest
@@ -199,11 +199,11 @@ describe('RemoveUserFromSharedVault', () => {
       userUuid: '00000000-0000-0000-0000-000000000001',
     })
 
-    expect(addNotificationForUser.execute).toHaveBeenCalled()
+    expect(addNotificationsForUsers.execute).toHaveBeenCalled()
   })
 
   it('should return error if notification could not be added', async () => {
-    addNotificationForUser.execute = jest.fn().mockResolvedValue(Result.fail('Could not add notification'))
+    addNotificationsForUsers.execute = jest.fn().mockResolvedValue(Result.fail('Could not add notification'))
 
     const useCase = createUseCase()
     const result = await useCase.execute({
@@ -228,5 +228,7 @@ describe('RemoveUserFromSharedVault', () => {
 
     expect(result.isFailed()).toBe(true)
     expect(result.getError()).toBe('Oops')
+
+    mock.mockRestore()
   })
 })

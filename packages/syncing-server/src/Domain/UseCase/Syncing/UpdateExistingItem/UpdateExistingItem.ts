@@ -20,10 +20,10 @@ import { SharedVaultAssociation } from '../../../SharedVault/SharedVaultAssociat
 import { KeySystemAssociation } from '../../../KeySystem/KeySystemAssociation'
 import { DetermineSharedVaultOperationOnItem } from '../../SharedVaults/DetermineSharedVaultOperationOnItem/DetermineSharedVaultOperationOnItem'
 import { SharedVaultOperationOnItem } from '../../../SharedVault/SharedVaultOperationOnItem'
-import { AddNotificationForUser } from '../../Messaging/AddNotificationForUser/AddNotificationForUser'
 import { RemoveNotificationsForUser } from '../../Messaging/RemoveNotificationsForUser/RemoveNotificationsForUser'
 import { ItemRepositoryResolverInterface } from '../../../Item/ItemRepositoryResolverInterface'
 import { ItemHash } from '../../../Item/ItemHash'
+import { AddNotificationsForUsers } from '../../Messaging/AddNotificationsForUsers/AddNotificationsForUsers'
 
 export class UpdateExistingItem implements UseCaseInterface<Item> {
   constructor(
@@ -33,7 +33,7 @@ export class UpdateExistingItem implements UseCaseInterface<Item> {
     private domainEventFactory: DomainEventFactoryInterface,
     private revisionFrequency: number,
     private determineSharedVaultOperationOnItem: DetermineSharedVaultOperationOnItem,
-    private addNotificationForUser: AddNotificationForUser,
+    private addNotificationForUsers: AddNotificationsForUsers,
     private removeNotificationsForUser: RemoveNotificationsForUser,
   ) {}
 
@@ -255,10 +255,10 @@ export class UpdateExistingItem implements UseCaseInterface<Item> {
       }
       const payload = notificationPayloadOrError.getValue()
 
-      const result = await this.addNotificationForUser.execute({
+      const result = await this.addNotificationForUsers.execute({
         payload,
         type: NotificationType.TYPES.SharedVaultItemRemoved,
-        userUuid: userUuid.value,
+        sharedVaultUuid: sharedVaultOperation.props.sharedVaultUuid.value,
         version: '1.0',
       })
       if (result.isFailed()) {

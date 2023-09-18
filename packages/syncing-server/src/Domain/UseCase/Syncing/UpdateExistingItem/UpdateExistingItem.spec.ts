@@ -18,10 +18,10 @@ import {
 import { SharedVaultAssociation } from '../../../SharedVault/SharedVaultAssociation'
 import { KeySystemAssociation } from '../../../KeySystem/KeySystemAssociation'
 import { DetermineSharedVaultOperationOnItem } from '../../SharedVaults/DetermineSharedVaultOperationOnItem/DetermineSharedVaultOperationOnItem'
-import { AddNotificationForUser } from '../../Messaging/AddNotificationForUser/AddNotificationForUser'
 import { RemoveNotificationsForUser } from '../../Messaging/RemoveNotificationsForUser/RemoveNotificationsForUser'
 import { SharedVaultOperationOnItem } from '../../../SharedVault/SharedVaultOperationOnItem'
 import { ItemRepositoryResolverInterface } from '../../../Item/ItemRepositoryResolverInterface'
+import { AddNotificationsForUsers } from '../../Messaging/AddNotificationsForUsers/AddNotificationsForUsers'
 
 describe('UpdateExistingItem', () => {
   let itemRepository: ItemRepositoryInterface
@@ -32,7 +32,7 @@ describe('UpdateExistingItem', () => {
   let itemHash1: ItemHash
   let item1: Item
   let determineSharedVaultOperationOnItem: DetermineSharedVaultOperationOnItem
-  let addNotificationForUser: AddNotificationForUser
+  let addNotificationsForUsers: AddNotificationsForUsers
   let removeNotificationsForUser: RemoveNotificationsForUser
 
   const createUseCase = () =>
@@ -43,7 +43,7 @@ describe('UpdateExistingItem', () => {
       domainEventFactory,
       5,
       determineSharedVaultOperationOnItem,
-      addNotificationForUser,
+      addNotificationsForUsers,
       removeNotificationsForUser,
     )
 
@@ -128,8 +128,8 @@ describe('UpdateExistingItem', () => {
       ),
     )
 
-    addNotificationForUser = {} as jest.Mocked<AddNotificationForUser>
-    addNotificationForUser.execute = jest.fn().mockReturnValue(Result.ok())
+    addNotificationsForUsers = {} as jest.Mocked<AddNotificationsForUsers>
+    addNotificationsForUsers.execute = jest.fn().mockReturnValue(Result.ok())
 
     removeNotificationsForUser = {} as jest.Mocked<RemoveNotificationsForUser>
     removeNotificationsForUser.execute = jest.fn().mockReturnValue(Result.ok())
@@ -580,7 +580,7 @@ describe('UpdateExistingItem', () => {
         ),
       )
 
-      addNotificationForUser.execute = jest.fn().mockReturnValue(Result.fail('Oops'))
+      addNotificationsForUsers.execute = jest.fn().mockReturnValue(Result.fail('Oops'))
 
       const useCase = createUseCase()
 

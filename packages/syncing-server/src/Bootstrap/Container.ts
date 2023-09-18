@@ -620,14 +620,14 @@ export class ContainerConfigLoader {
       .bind<UpdateExistingItem>(TYPES.Sync_UpdateExistingItem)
       .toConstantValue(
         new UpdateExistingItem(
-          container.get(TYPES.Sync_ItemRepositoryResolver),
-          container.get(TYPES.Sync_Timer),
-          container.get(TYPES.Sync_DomainEventPublisher),
-          container.get(TYPES.Sync_DomainEventFactory),
-          container.get(TYPES.Sync_REVISIONS_FREQUENCY),
-          container.get(TYPES.Sync_DetermineSharedVaultOperationOnItem),
-          container.get(TYPES.Sync_AddNotificationForUser),
-          container.get(TYPES.Sync_RemoveNotificationsForUser),
+          container.get<ItemRepositoryResolverInterface>(TYPES.Sync_ItemRepositoryResolver),
+          container.get<TimerInterface>(TYPES.Sync_Timer),
+          container.get<DomainEventPublisherInterface>(TYPES.Sync_DomainEventPublisher),
+          container.get<DomainEventFactoryInterface>(TYPES.Sync_DomainEventFactory),
+          container.get<number>(TYPES.Sync_REVISIONS_FREQUENCY),
+          container.get<DetermineSharedVaultOperationOnItem>(TYPES.Sync_DetermineSharedVaultOperationOnItem),
+          container.get<AddNotificationsForUsers>(TYPES.Sync_AddNotificationsForUsers),
+          container.get<RemoveNotificationsForUser>(TYPES.Sync_RemoveNotificationsForUser),
         ),
       )
     container
@@ -710,6 +710,7 @@ export class ContainerConfigLoader {
           container.get<TimerInterface>(TYPES.Sync_Timer),
           container.get<DomainEventFactoryInterface>(TYPES.Sync_DomainEventFactory),
           container.get<DomainEventPublisherInterface>(TYPES.Sync_DomainEventPublisher),
+          container.get<AddNotificationsForUsers>(TYPES.Sync_AddNotificationsForUsers),
         ),
       )
     container
@@ -756,7 +757,7 @@ export class ContainerConfigLoader {
         new RemoveUserFromSharedVault(
           container.get<SharedVaultUserRepositoryInterface>(TYPES.Sync_SharedVaultUserRepository),
           container.get<SharedVaultRepositoryInterface>(TYPES.Sync_SharedVaultRepository),
-          container.get<AddNotificationForUser>(TYPES.Sync_AddNotificationForUser),
+          container.get<AddNotificationsForUsers>(TYPES.Sync_AddNotificationsForUsers),
           container.get<DomainEventFactoryInterface>(TYPES.Sync_DomainEventFactory),
           container.get<DomainEventPublisherInterface>(TYPES.Sync_DomainEventPublisher),
         ),
