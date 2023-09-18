@@ -319,7 +319,7 @@ if [ -z "$FILES_SERVER_SQS_ENDPOINT" ]; then
   export FILES_SERVER_SQS_ENDPOINT="http://localstack:4566"
 fi
 
-printenv | grep FILES_SERVER_ | sed 's/FILES_SERVER_//g' > /opt/server/files/packages/files/.env
+printenv | grep FILES_SERVER_ | sed 's/FILES_SERVER_//g' > /opt/server/packages/files/.env
 
 #############
 # REVISIONS #
