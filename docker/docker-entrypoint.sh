@@ -210,7 +210,7 @@ if [ -z "$AUTH_SERVER_U2F_REQUIRE_USER_VERIFICATION" ]; then
   export AUTH_SERVER_U2F_REQUIRE_USER_VERIFICATION=false
 fi
 
-printenv | grep AUTH_SERVER_ | sed 's/AUTH_SERVER_//g' > /opt/bundled/auth/packages/auth/.env
+printenv | grep AUTH_SERVER_ | sed 's/AUTH_SERVER_//g' > /opt/server/packages/auth/.env
 
 ##################
 # SYNCING SERVER #
@@ -269,7 +269,7 @@ export SYNCING_SERVER_NEW_RELIC_NO_CONFIG_FILE=true
 
 export SYNCING_SERVER_FILE_UPLOAD_PATH="/opt/shared/uploads"
 
-printenv | grep SYNCING_SERVER_ | sed 's/SYNCING_SERVER_//g' > /opt/bundled/syncing-server/packages/syncing-server/.env
+printenv | grep SYNCING_SERVER_ | sed 's/SYNCING_SERVER_//g' > /opt/server/packages/syncing-server/.env
 
 
 ################
@@ -319,7 +319,7 @@ if [ -z "$FILES_SERVER_SQS_ENDPOINT" ]; then
   export FILES_SERVER_SQS_ENDPOINT="http://localstack:4566"
 fi
 
-printenv | grep FILES_SERVER_ | sed 's/FILES_SERVER_//g' > /opt/bundled/files/packages/files/.env
+printenv | grep FILES_SERVER_ | sed 's/FILES_SERVER_//g' > /opt/server/files/packages/files/.env
 
 #############
 # REVISIONS #
@@ -365,7 +365,7 @@ if [ -z "$REVISIONS_SERVER_SQS_ENDPOINT" ]; then
   export REVISIONS_SERVER_SQS_ENDPOINT="http://localstack:4566"
 fi
 
-printenv | grep REVISIONS_SERVER_ | sed 's/REVISIONS_SERVER_//g' > /opt/bundled/revisions/packages/revisions/.env
+printenv | grep REVISIONS_SERVER_ | sed 's/REVISIONS_SERVER_//g' > /opt/server/packages/revisions/.env
 
 ###############
 # API GATEWAY #
@@ -389,7 +389,7 @@ if [ -z "$PUBLIC_FILES_SERVER_URL" ]; then
 fi
 export API_GATEWAY_FILES_SERVER_URL=$PUBLIC_FILES_SERVER_URL
 
-printenv | grep API_GATEWAY_ | sed 's/API_GATEWAY_//g' > /opt/bundled/api-gateway/packages/api-gateway/.env
+printenv | grep API_GATEWAY_ | sed 's/API_GATEWAY_//g' > /opt/server/packages/api-gateway/.env
 
 # Run supervisor
 

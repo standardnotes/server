@@ -26,22 +26,6 @@ RUN yarn install --immutable
 
 RUN CI=true yarn build
 
-RUN mkdir -p \
-  /opt/bundled/syncing-server \
-  /opt/bundled/auth \
-  /opt/bundled/files \
-  /opt/bundled/revisions \
-  /opt/bundled/api-gateway \
-  /opt/shared/uploads
-
-RUN yarn workspace @standardnotes/syncing-server bundle --no-compress --output-directory /opt/bundled/syncing-server
-RUN yarn workspace @standardnotes/auth-server bundle --no-compress --output-directory /opt/bundled/auth
-RUN yarn workspace @standardnotes/files-server bundle --no-compress --output-directory /opt/bundled/files
-RUN yarn workspace @standardnotes/revisions-server bundle --no-compress --output-directory /opt/bundled/revisions
-RUN yarn workspace @standardnotes/api-gateway bundle --no-compress --output-directory /opt/bundled/api-gateway
-
-WORKDIR /opt/bundled
-
-RUN rm -rf /opt/server
+RUN mkdir -p /opt/shared/uploads
 
 ENTRYPOINT ["docker-entrypoint.sh"]
