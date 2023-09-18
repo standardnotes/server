@@ -6,6 +6,9 @@ on:
       service_name:
         required: true
         type: string
+      workspace_name:
+        required: true
+        type: string
       deploy_web:
         required: false
         default: true
@@ -36,6 +39,7 @@ jobs:
     with:
       service_name: ${{ inputs.service_name }}
       package_path: ${{ inputs.package_path }}
+      workspace_name: ${{ inputs.workspace_name }}
     secrets: inherit
 
   deploy-web:

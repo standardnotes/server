@@ -16,6 +16,7 @@ jobs:
     uses: standardnotes/server/.github/workflows/common-server-application.yml@main
     with:
       service_name: api-gateway
+      workspace_name: "@standardnotes/api-gateway"
       deploy_worker: false
       package_path: packages/api-gateway
     secrets: inherit

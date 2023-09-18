@@ -16,6 +16,7 @@ jobs:
     uses: standardnotes/server/.github/workflows/common-server-application.yml@main
     with:
       service_name: revisions
+      workspace_name: "@standardnotes/revisions-server"
       package_path: packages/revisions
     secrets: inherit
 

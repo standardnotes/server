@@ -16,6 +16,7 @@ jobs:
     uses: standardnotes/server/.github/workflows/common-server-application.yml@main
     with:
       service_name: scheduler
+      workspace_name: "@standardnotes/scheduler-server"
       deploy_web: false
       package_path: packages/scheduler
     secrets: inherit

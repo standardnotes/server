@@ -16,6 +16,7 @@ jobs:
     uses: standardnotes/server/.github/workflows/common-server-application.yml@main
     with:
       service_name: files
+      workspace_name: "@standardnotes/files-server"
       package_path: packages/files
     secrets: inherit
 
