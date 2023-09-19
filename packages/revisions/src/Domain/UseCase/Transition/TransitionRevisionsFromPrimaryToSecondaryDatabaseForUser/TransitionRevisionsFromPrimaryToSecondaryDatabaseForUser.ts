@@ -216,6 +216,8 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
     newRevisionsInSecondary: string[]
     updatedInSecondary: string[]
   }> {
+    this.logger.info(`[${userUuid.value}] Checking for new revisions created in secondary database`)
+
     const totalRevisionsCountForUser = await (
       this.secondRevisionsRepository as RevisionRepositoryInterface
     ).countByUserUuid(userUuid)

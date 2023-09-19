@@ -138,6 +138,8 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
     newItemsInSecondary: string[]
     updatedInSecondary: string[]
   }> {
+    this.logger.info(`[${userUuid.value}] Checking for new items in secondary database`)
+
     const alreadyExistingInPrimary: string[] = []
     const updatedInSecondary: string[] = []
     const newItemsInSecondary: string[] = []
