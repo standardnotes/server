@@ -66,7 +66,7 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
 
     const migrationTimeStart = this.timer.getTimestampInMicroseconds()
 
-    this.logger.debug(`[${dto.userUuid}] Transitioning revisions`)
+    this.logger.info(`[${dto.userUuid}] Migrating revisions`)
 
     const migrationResult = await this.migrateRevisionsForUser(userUuid, updatedRevisionsInSecondary)
     if (migrationResult.isFailed()) {
@@ -122,7 +122,6 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
   private async migrateRevisionsForUser(userUuid: Uuid, updatedRevisionsInSecondary: string[]): Promise<Result<void>> {
     try {
       const totalRevisionsCountForUser = await this.primaryRevisionsRepository.countByUserUuid(userUuid)
-      let totalRevisionsCountTransitionedToSecondary = 0
       const totalPages = Math.ceil(totalRevisionsCountForUser / this.pageSize)
       for (let currentPage = 1; currentPage <= totalPages; currentPage++) {
         const query = {
@@ -147,17 +146,10 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
               continue
             }
 
-            this.logger.debug(
-              `[${userUuid.value}]Transitioning revision #${
-                totalRevisionsCountTransitionedToSecondary + 1
-              }: ${revision.id.toString()} to secondary database`,
-            )
-
             const didSave = await (this.secondRevisionsRepository as RevisionRepositoryInterface).insert(revision)
             if (!didSave) {
               return Result.fail(`Failed to save revision ${revision.id.toString()} to secondary database`)
             }
-            totalRevisionsCountTransitionedToSecondary++
           } catch (error) {
             return Result.fail(
               `Errored when saving revision ${revision.id.toString()} to secondary database: ${
@@ -167,10 +159,6 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
           }
         }
       }
-
-      this.logger.debug(
-        `[${userUuid.value}] Transitioned ${totalRevisionsCountTransitionedToSecondary} revisions to secondary database`,
-      )
 
       return Result.ok()
     } catch (error) {

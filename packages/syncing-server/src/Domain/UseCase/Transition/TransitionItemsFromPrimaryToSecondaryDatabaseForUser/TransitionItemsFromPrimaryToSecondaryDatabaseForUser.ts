@@ -64,6 +64,8 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
 
     const migrationTimeStart = this.timer.getTimestampInMicroseconds()
 
+    this.logger.info(`[${dto.userUuid}] Migrating items`)
+
     const migrationResult = await this.migrateItemsForUser(userUuid, updatedItemsInSecondary)
     if (migrationResult.isFailed()) {
       if (newItemsInSecondaryCount === 0 && updatedItemsInSecondaryCount === 0) {
