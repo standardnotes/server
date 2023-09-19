@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.98.5](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.98.4...@standardnotes/syncing-server@1.98.5) (2023-09-19)
+
+### Bug Fixes
+
+* increase timeout for secondary database to catch up for indexes to be rebuilt ([b265a39](https://github.com/standardnotes/syncing-server-js/commit/b265a39b635373c36ee8c3d8e09f0631159b3574))
+* logs verbosity during transitions ([e589029](https://github.com/standardnotes/syncing-server-js/commit/e589029722ab9f4debc8aa6cc78913f877eda2e3))
+
 ## [1.98.4](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.98.3...@standardnotes/syncing-server@1.98.4) (2023-09-19)
 
 ### Bug Fixes

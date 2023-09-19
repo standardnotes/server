@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.35.6](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.35.5...@standardnotes/revisions-server@1.35.6) (2023-09-19)
+
+### Bug Fixes
+
+* increase timeout for secondary database to catch up for indexes to be rebuilt ([b265a39](https://github.com/standardnotes/server/commit/b265a39b635373c36ee8c3d8e09f0631159b3574))
+* logs verbosity during transitions ([e589029](https://github.com/standardnotes/server/commit/e589029722ab9f4debc8aa6cc78913f877eda2e3))
+
 ## [1.35.5](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.35.4...@standardnotes/revisions-server@1.35.5) (2023-09-19)
 
 ### Bug Fixes
