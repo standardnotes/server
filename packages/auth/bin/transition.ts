@@ -53,7 +53,10 @@ const requestTransition = async (
       continue
     }
 
+    let wasTransitionRequested = false
+
     if (itemsTransitionStatus?.value !== TransitionStatus.STATUSES.Verified) {
+      wasTransitionRequested = true
       await transitionStatusRepository.remove(user.uuid, 'items')
 
       await domainEventPublisher.publish(
@@ -66,6 +69,7 @@ const requestTransition = async (
     }
 
     if (revisionsTransitionStatus?.value !== TransitionStatus.STATUSES.Verified) {
+      wasTransitionRequested = true
       await transitionStatusRepository.remove(user.uuid, 'revisions')
 
       await domainEventPublisher.publish(
@@ -78,6 +82,12 @@ const requestTransition = async (
     }
 
     usersTriggered += 1
+
+    if (wasTransitionRequested) {
+      logger.info(
+        `[TRANSITION ${timestamp}] Transition requested for user ${user.uuid} - items status: ${itemsTransitionStatus?.value}, revisions status: ${revisionsTransitionStatus?.value}, has transition role: ${userHasTransitionRole}`,
+      )
+    }
   }
 
   logger.info(
