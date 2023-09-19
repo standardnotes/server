@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.35.3](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.35.2...@standardnotes/revisions-server@1.35.3) (2023-09-19)
+
+### Bug Fixes
+
+* **syncing-server:** paging through already existing items ([e4fcd73](https://github.com/standardnotes/server/commit/e4fcd738c35a4dc96e57db6ca08383a5647d61ad))
+
 ## [1.35.2](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.35.1...@standardnotes/revisions-server@1.35.2) (2023-09-18)
 
 **Note:** Version bump only for package @standardnotes/revisions-server
