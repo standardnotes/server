@@ -36,8 +36,11 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
       const { alreadyExistingInPrimary, newItemsInSecondary, updatedInSecondary } =
         await this.getNewItemsCreatedInSecondaryDatabase(userUuid)
 
+      this.logger.info(
+        `[${dto.userUuid}] Removing ${alreadyExistingInPrimary.length} already existing items from secondary database.`,
+      )
+
       for (const existingItemUuid of alreadyExistingInPrimary) {
-        this.logger.info(`[${dto.userUuid}] Removing item ${existingItemUuid} from secondary database.`)
         await (this.secondaryItemRepository as ItemRepositoryInterface).removeByUuid(
           Uuid.create(existingItemUuid).getValue(),
         )
@@ -139,7 +142,9 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
     const updatedInSecondary: string[] = []
     const newItemsInSecondary: string[] = []
 
-    const totalItemsCountForUser = await this.primaryItemRepository.countAll({ userUuid: userUuid.value })
+    const totalItemsCountForUser = await (this.secondaryItemRepository as ItemRepositoryInterface).countAll({
+      userUuid: userUuid.value,
+    })
     const totalPages = Math.ceil(totalItemsCountForUser / this.pageSize)
     for (let currentPage = 1; currentPage <= totalPages; currentPage++) {
       const query: ItemQuery = {

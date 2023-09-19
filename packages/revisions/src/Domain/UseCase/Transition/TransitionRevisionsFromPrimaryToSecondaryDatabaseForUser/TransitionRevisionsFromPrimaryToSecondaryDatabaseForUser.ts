@@ -35,8 +35,10 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
       const { alreadyExistingInPrimary, newRevisionsInSecondary, updatedInSecondary } =
         await this.getNewRevisionsCreatedInSecondaryDatabase(userUuid)
 
+      this.logger.info(
+        `[${dto.userUuid}] Removing ${alreadyExistingInPrimary.length} already existing revisions from secondary database`,
+      )
       for (const existingRevisionUuid of alreadyExistingInPrimary) {
-        this.logger.info(`[${dto.userUuid}] Removing revision ${existingRevisionUuid} from secondary database`)
         await (this.secondRevisionsRepository as RevisionRepositoryInterface).removeOneByUuid(
           Uuid.create(existingRevisionUuid).getValue(),
           userUuid,
@@ -214,7 +216,9 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
     newRevisionsInSecondary: string[]
     updatedInSecondary: string[]
   }> {
-    const totalRevisionsCountForUser = await this.primaryRevisionsRepository.countByUserUuid(userUuid)
+    const totalRevisionsCountForUser = await (
+      this.secondRevisionsRepository as RevisionRepositoryInterface
+    ).countByUserUuid(userUuid)
     const totalPages = Math.ceil(totalRevisionsCountForUser / this.pageSize)
 
     const alreadyExistingInPrimary: string[] = []
