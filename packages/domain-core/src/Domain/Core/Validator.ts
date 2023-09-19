@@ -1,12 +1,13 @@
 import { Result } from './Result'
 
 export class Validator {
-  private static readonly UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}$/i
+  private static readonly UUID_ANY_VERSION_AND_VARIANT_REGEX =
+    /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
   private static readonly EMAIL_REGEX =
     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
   static isValidUuid(value: string): Result<string> {
-    const matchesUuidRegex = String(value).toLowerCase().match(Validator.UUID_REGEX) !== null
+    const matchesUuidRegex = String(value).toLowerCase().match(Validator.UUID_ANY_VERSION_AND_VARIANT_REGEX) !== null
     if (matchesUuidRegex) {
       return Result.ok()
     }

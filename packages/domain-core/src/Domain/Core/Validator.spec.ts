@@ -5,6 +5,7 @@ describe('Validator', () => {
     '2221101c-1da9-4d2b-9b32-b8be2a8d1c82',
     'c08f2f29-a74b-42b4-aefd-98af9832391c',
     'b453fa64-1493-443b-b5bb-bca7b9c696c7',
+    'fa7350b3-77cf-8c0c-40b2-6046b13254fe',
   ]
 
   const invalidUuids = [
