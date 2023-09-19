@@ -30,7 +30,7 @@ export class TransitionRequestedEventHandler implements DomainEventHandlerInterf
     }
 
     if (await this.isAlreadyMigrated(userUuid)) {
-      this.logger.info(`User ${event.payload.userUuid} already migrated.`)
+      this.logger.info(`[${event.payload.userUuid}] User already migrated.`)
 
       await this.domainEventPublisher.publish(
         this.domainEventFactory.createTransitionStatusUpdatedEvent({
@@ -44,7 +44,7 @@ export class TransitionRequestedEventHandler implements DomainEventHandlerInterf
       return
     }
 
-    this.logger.info(`Handling transition requested event for user ${event.payload.userUuid}`)
+    this.logger.info(`[${event.payload.userUuid}] Handling transition requested event`)
 
     await this.domainEventPublisher.publish(
       this.domainEventFactory.createTransitionStatusUpdatedEvent({
@@ -60,7 +60,7 @@ export class TransitionRequestedEventHandler implements DomainEventHandlerInterf
     })
 
     if (result.isFailed()) {
-      this.logger.error(`Failed to trigger transition for user ${event.payload.userUuid}`)
+      this.logger.error(`[${event.payload.userUuid}] Failed to trigger transition: ${result.getError()}`)
 
       await this.domainEventPublisher.publish(
         this.domainEventFactory.createTransitionStatusUpdatedEvent({
@@ -90,7 +90,7 @@ export class TransitionRequestedEventHandler implements DomainEventHandlerInterf
     })
 
     if (totalItemsCountForUserInPrimary > 0) {
-      this.logger.info(`User ${userUuid.value} has ${totalItemsCountForUserInPrimary} items in primary database.`)
+      this.logger.info(`[${userUuid.value}] User has ${totalItemsCountForUserInPrimary} items in primary database.`)
     }
 
     return totalItemsCountForUserInPrimary === 0
@@ -99,7 +99,7 @@ export class TransitionRequestedEventHandler implements DomainEventHandlerInterf
   private async getUserUuidFromEvent(event: TransitionRequestedEvent): Promise<Uuid | null> {
     const userUuidOrError = Uuid.create(event.payload.userUuid)
     if (userUuidOrError.isFailed()) {
-      this.logger.error(`Failed to transition items for user ${event.payload.userUuid}: ${userUuidOrError.getError()}`)
+      this.logger.error(`[${event.payload.userUuid}] Failed to transition items: ${userUuidOrError.getError()}`)
 
       await this.domainEventPublisher.publish(
         this.domainEventFactory.createTransitionStatusUpdatedEvent({

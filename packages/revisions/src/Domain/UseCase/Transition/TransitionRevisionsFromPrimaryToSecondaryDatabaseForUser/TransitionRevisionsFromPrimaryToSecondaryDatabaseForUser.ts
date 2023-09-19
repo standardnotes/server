@@ -17,7 +17,7 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
   ) {}
 
   async execute(dto: TransitionRevisionsFromPrimaryToSecondaryDatabaseForUserDTO): Promise<Result<void>> {
-    this.logger.info(`Transitioning revisions for user ${dto.userUuid}`)
+    this.logger.info(`[${dto.userUuid}] Transitioning revisions for user`)
 
     if (this.secondRevisionsRepository === null) {
       return Result.fail('Secondary revision repository is not set')
@@ -36,7 +36,7 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
         await this.getNewRevisionsCreatedInSecondaryDatabase(userUuid)
 
       for (const existingRevisionUuid of alreadyExistingInPrimary) {
-        this.logger.info(`Removing revision ${existingRevisionUuid} from secondary database`)
+        this.logger.info(`[${dto.userUuid}] Removing revision ${existingRevisionUuid} from secondary database`)
         await (this.secondRevisionsRepository as RevisionRepositoryInterface).removeOneByUuid(
           Uuid.create(existingRevisionUuid).getValue(),
           userUuid,
@@ -45,16 +45,14 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
 
       if (newRevisionsInSecondary.length > 0) {
         this.logger.info(
-          `Found ${newRevisionsInSecondary.length} new revisions in secondary database for user ${userUuid.value}`,
+          `[${dto.userUuid}] Found ${newRevisionsInSecondary.length} new revisions in secondary database`,
         )
       }
 
       newRevisionsInSecondaryCount = newRevisionsInSecondary.length
 
       if (updatedInSecondary.length > 0) {
-        this.logger.info(
-          `Found ${updatedInSecondary.length} updated revisions in secondary database for user ${userUuid.value}`,
-        )
+        this.logger.info(`[${dto.userUuid}] Found ${updatedInSecondary.length} updated revisions in secondary database`)
       }
 
       updatedRevisionsInSecondary = updatedInSecondary
@@ -66,7 +64,7 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
 
     const migrationTimeStart = this.timer.getTimestampInMicroseconds()
 
-    this.logger.debug(`Transitioning revisions for user ${userUuid.value}`)
+    this.logger.debug(`[${dto.userUuid}] Transitioning revisions`)
 
     const migrationResult = await this.migrateRevisionsForUser(userUuid, updatedRevisionsInSecondary)
     if (migrationResult.isFailed()) {
@@ -74,7 +72,7 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
         const cleanupResult = await this.deleteRevisionsForUser(userUuid, this.secondRevisionsRepository)
         if (cleanupResult.isFailed()) {
           this.logger.error(
-            `Failed to clean up secondary database revisions for user ${userUuid.value}: ${cleanupResult.getError()}`,
+            `[${dto.userUuid}] Failed to clean up secondary database revisions: ${cleanupResult.getError()}`,
           )
         }
       }
@@ -94,7 +92,7 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
         const cleanupResult = await this.deleteRevisionsForUser(userUuid, this.secondRevisionsRepository)
         if (cleanupResult.isFailed()) {
           this.logger.error(
-            `Failed to clean up secondary database revisions for user ${userUuid.value}: ${cleanupResult.getError()}`,
+            `[${dto.userUuid}] Failed to clean up secondary database revisions: ${cleanupResult.getError()}`,
           )
         }
       }
@@ -104,9 +102,7 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
 
     const cleanupResult = await this.deleteRevisionsForUser(userUuid, this.primaryRevisionsRepository)
     if (cleanupResult.isFailed()) {
-      this.logger.error(
-        `Failed to clean up primary database revisions for user ${userUuid.value}: ${cleanupResult.getError()}`,
-      )
+      this.logger.error(`[${dto.userUuid}] Failed to clean up primary database revisions: ${cleanupResult.getError()}`)
     }
 
     const migrationTimeEnd = this.timer.getTimestampInMicroseconds()
@@ -115,7 +111,7 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
     const migrationDurationTimeStructure = this.timer.convertMicrosecondsToTimeStructure(migrationDuration)
 
     this.logger.info(
-      `Transitioned revisions for user ${userUuid.value} in ${migrationDurationTimeStructure.hours}h ${migrationDurationTimeStructure.minutes}m ${migrationDurationTimeStructure.seconds}s ${migrationDurationTimeStructure.milliseconds}ms`,
+      `[${dto.userUuid}] Transitioned revisions in ${migrationDurationTimeStructure.hours}h ${migrationDurationTimeStructure.minutes}m ${migrationDurationTimeStructure.seconds}s ${migrationDurationTimeStructure.milliseconds}ms`,
     )
 
     return Result.ok()
@@ -141,14 +137,16 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
               updatedRevisionsInSecondary.find((updatedRevisionUuid) => updatedRevisionUuid === revision.id.toString())
             ) {
               this.logger.info(
-                `Skipping saving revision ${revision.id.toString()} as it was updated in secondary database`,
+                `[${
+                  userUuid.value
+                }] Skipping saving revision ${revision.id.toString()} as it was updated in secondary database`,
               )
 
               continue
             }
 
             this.logger.debug(
-              `Transitioning revision #${
+              `[${userUuid.value}]Transitioning revision #${
                 totalRevisionsCountTransitionedToSecondary + 1
               }: ${revision.id.toString()} to secondary database`,
             )
@@ -168,7 +166,9 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
         }
       }
 
-      this.logger.debug(`Transitioned ${totalRevisionsCountTransitionedToSecondary} revisions to secondary database`)
+      this.logger.debug(
+        `[${userUuid.value}] Transitioned ${totalRevisionsCountTransitionedToSecondary} revisions to secondary database`,
+      )
 
       return Result.ok()
     } catch (error) {
@@ -202,7 +202,7 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
     const hasAlreadyDataInSecondaryDatabase = totalRevisionsCountForUserInSecondary > 0
     if (hasAlreadyDataInSecondaryDatabase) {
       this.logger.info(
-        `User ${userUuid.value} has already ${totalRevisionsCountForUserInSecondary} revisions in secondary database`,
+        `[${userUuid.value}] User has already ${totalRevisionsCountForUserInSecondary} revisions in secondary database`,
       )
     }
 
@@ -272,7 +272,8 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
 
     if (!revision.isIdenticalTo(revisionInPrimary)) {
       this.logger.error(
-        `Revision ${revision.id.toString()} is not identical in primary and secondary database. Revision in secondary database: ${JSON.stringify(
+        `[${revision.props.userUuid
+          ?.value}] Revision ${revision.id.toString()} is not identical in primary and secondary database. Revision in secondary database: ${JSON.stringify(
           revision,
         )}, revision in primary database: ${JSON.stringify(revisionInPrimary)}`,
       )
@@ -327,7 +328,9 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
             updatedRevisionsInSecondary.find((updatedRevisionUuid) => updatedRevisionUuid === revision.id.toString())
           ) {
             this.logger.info(
-              `Skipping integrity check for revision ${revision.id.toString()} as it was updated in secondary database`,
+              `[${
+                userUuid.value
+              }] Skipping integrity check for revision ${revision.id.toString()} as it was updated in secondary database`,
             )
             continue
           }

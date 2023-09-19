@@ -18,7 +18,7 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
   ) {}
 
   async execute(dto: TransitionItemsFromPrimaryToSecondaryDatabaseForUserDTO): Promise<Result<void>> {
-    this.logger.info(`Transitioning items for user ${dto.userUuid}`)
+    this.logger.info(`[${dto.userUuid}] Transitioning items`)
 
     if (this.secondaryItemRepository === null) {
       return Result.fail('Secondary item repository is not set')
@@ -37,24 +37,20 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
         await this.getNewItemsCreatedInSecondaryDatabase(userUuid)
 
       for (const existingItemUuid of alreadyExistingInPrimary) {
-        this.logger.info(`Removing item ${existingItemUuid} from secondary database`)
+        this.logger.info(`[${dto.userUuid}] Removing item ${existingItemUuid} from secondary database.`)
         await (this.secondaryItemRepository as ItemRepositoryInterface).removeByUuid(
           Uuid.create(existingItemUuid).getValue(),
         )
       }
 
       if (newItemsInSecondary.length > 0) {
-        this.logger.info(
-          `Found ${newItemsInSecondary.length} new items in secondary database for user ${userUuid.value}`,
-        )
+        this.logger.info(`[${dto.userUuid}] Found ${newItemsInSecondary.length} new items in secondary database.`)
       }
 
       newItemsInSecondaryCount = newItemsInSecondary.length
 
       if (updatedInSecondary.length > 0) {
-        this.logger.info(
-          `Found ${updatedInSecondary.length} updated items in secondary database for user ${userUuid.value}`,
-        )
+        this.logger.info(`[${dto.userUuid}] Found ${updatedInSecondary.length} updated items in secondary database.`)
       }
 
       updatedItemsInSecondary = updatedInSecondary
@@ -71,7 +67,7 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
         const cleanupResult = await this.deleteItemsForUser(userUuid, this.secondaryItemRepository)
         if (cleanupResult.isFailed()) {
           this.logger.error(
-            `Failed to clean up secondary database items for user ${userUuid.value}: ${cleanupResult.getError()}`,
+            `[${dto.userUuid}] Failed to clean up secondary database items: ${cleanupResult.getError()}`,
           )
         }
       }
@@ -91,7 +87,7 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
         const cleanupResult = await this.deleteItemsForUser(userUuid, this.secondaryItemRepository)
         if (cleanupResult.isFailed()) {
           this.logger.error(
-            `Failed to clean up secondary database items for user ${userUuid.value}: ${cleanupResult.getError()}`,
+            `[${dto.userUuid}] Failed to clean up secondary database items: ${cleanupResult.getError()}`,
           )
         }
       }
@@ -101,9 +97,7 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
 
     const cleanupResult = await this.deleteItemsForUser(userUuid, this.primaryItemRepository)
     if (cleanupResult.isFailed()) {
-      this.logger.error(
-        `Failed to clean up primary database items for user ${userUuid.value}: ${cleanupResult.getError()}`,
-      )
+      this.logger.error(`[${dto.userUuid}] Failed to clean up primary database items: ${cleanupResult.getError()}`)
     }
 
     const migrationTimeEnd = this.timer.getTimestampInMicroseconds()
@@ -112,7 +106,7 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
     const migrationDurationTimeStructure = this.timer.convertMicrosecondsToTimeStructure(migrationDuration)
 
     this.logger.info(
-      `Transitioned items for user ${userUuid.value} in ${migrationDurationTimeStructure.hours}h ${migrationDurationTimeStructure.minutes}m ${migrationDurationTimeStructure.seconds}s ${migrationDurationTimeStructure.milliseconds}ms`,
+      `[${dto.userUuid}] Transitioned items in ${migrationDurationTimeStructure.hours}h ${migrationDurationTimeStructure.minutes}m ${migrationDurationTimeStructure.seconds}s ${migrationDurationTimeStructure.milliseconds}ms`,
     )
 
     return Result.ok()
@@ -125,7 +119,7 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
 
     const hasAlreadyDataInSecondaryDatabase = totalItemsCountForUser > 0
     if (hasAlreadyDataInSecondaryDatabase) {
-      this.logger.info(`User ${userUuid.value} has already ${totalItemsCountForUser} items in secondary database`)
+      this.logger.info(`[${userUuid.value}] User has already ${totalItemsCountForUser} items in secondary database`)
     }
 
     return hasAlreadyDataInSecondaryDatabase
@@ -192,9 +186,11 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
 
     if (!item.isIdenticalTo(itemInPrimary)) {
       this.logger.error(
-        `Revision ${item.id.toString()} is not identical in primary and secondary database. Revision in secondary database: ${JSON.stringify(
+        `[${
+          item.props.userUuid.value
+        }] Item ${item.id.toString()} is not identical in primary and secondary database. Item in secondary database: ${JSON.stringify(
           item,
-        )}, revision in primary database: ${JSON.stringify(itemInPrimary)}`,
+        )}, item in primary database: ${JSON.stringify(itemInPrimary)}`,
       )
 
       return {
@@ -223,7 +219,9 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
 
         for (const item of items) {
           if (updatedItemsInSecondary.find((updatedItemUuid) => item.uuid.value === updatedItemUuid)) {
-            this.logger.info(`Skipping saving item ${item.uuid.value} as it was updated in secondary database`)
+            this.logger.info(
+              `[${userUuid.value}] Skipping saving item ${item.uuid.value} as it was updated in secondary database`,
+            )
 
             continue
           }
@@ -286,7 +284,7 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
 
           if (updatedItemsInSecondary.find((updatedItemUuid) => item.uuid.value === updatedItemUuid)) {
             this.logger.info(
-              `Skipping integrity check for item ${item.uuid.value} as it was updated in secondary database`,
+              `[${userUuid.value}] Skipping integrity check for item ${item.uuid.value} as it was updated in secondary database`,
             )
             continue
           }
