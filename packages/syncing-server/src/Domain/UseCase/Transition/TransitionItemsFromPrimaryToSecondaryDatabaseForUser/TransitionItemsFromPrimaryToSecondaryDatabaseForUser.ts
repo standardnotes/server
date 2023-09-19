@@ -31,14 +31,16 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
     const userUuid = userUuidOrError.getValue()
 
     let newItemsInSecondaryCount = 0
-    let updatedItemsInSecondary: Item[] = []
+    let updatedItemsInSecondary: string[] = []
     if (await this.hasAlreadyDataInSecondaryDatabase(userUuid)) {
       const { alreadyExistingInPrimary, newItemsInSecondary, updatedInSecondary } =
         await this.getNewItemsCreatedInSecondaryDatabase(userUuid)
 
-      for (const existingItem of alreadyExistingInPrimary) {
-        this.logger.info(`Removing item ${existingItem.uuid.value} from secondary database`)
-        await (this.secondaryItemRepository as ItemRepositoryInterface).remove(existingItem)
+      for (const existingItemUuid of alreadyExistingInPrimary) {
+        this.logger.info(`Removing item ${existingItemUuid} from secondary database`)
+        await (this.secondaryItemRepository as ItemRepositoryInterface).removeByUuid(
+          Uuid.create(existingItemUuid).getValue(),
+        )
       }
 
       if (newItemsInSecondary.length > 0) {
@@ -135,31 +137,40 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
   }
 
   private async getNewItemsCreatedInSecondaryDatabase(userUuid: Uuid): Promise<{
-    alreadyExistingInPrimary: Item[]
-    newItemsInSecondary: Item[]
-    updatedInSecondary: Item[]
+    alreadyExistingInPrimary: string[]
+    newItemsInSecondary: string[]
+    updatedInSecondary: string[]
   }> {
-    const items = await (this.secondaryItemRepository as ItemRepositoryInterface).findAll({
-      userUuid: userUuid.value,
-    })
+    const alreadyExistingInPrimary: string[] = []
+    const updatedInSecondary: string[] = []
+    const newItemsInSecondary: string[] = []
 
-    const alreadyExistingInPrimary: Item[] = []
-    const updatedInSecondary: Item[] = []
-    const newItemsInSecondary: Item[] = []
+    const totalItemsCountForUser = await this.primaryItemRepository.countAll({ userUuid: userUuid.value })
+    const totalPages = Math.ceil(totalItemsCountForUser / this.pageSize)
+    for (let currentPage = 1; currentPage <= totalPages; currentPage++) {
+      const query: ItemQuery = {
+        userUuid: userUuid.value,
+        offset: (currentPage - 1) * this.pageSize,
+        limit: this.pageSize,
+        sortOrder: 'ASC',
+        sortBy: 'uuid',
+      }
 
-    for (const item of items) {
-      const { itemInPrimary, newerItemInSecondary } = await this.checkIfItemExistsInPrimaryDatabase(item)
-      if (itemInPrimary !== null) {
-        alreadyExistingInPrimary.push(item)
-        continue
-      }
-      if (newerItemInSecondary !== null) {
-        updatedInSecondary.push(newerItemInSecondary)
-        continue
-      }
-      if (itemInPrimary === null && newerItemInSecondary === null) {
-        newItemsInSecondary.push(item)
-        continue
+      const items = await (this.secondaryItemRepository as ItemRepositoryInterface).findAll(query)
+      for (const item of items) {
+        const { itemInPrimary, newerItemInSecondary } = await this.checkIfItemExistsInPrimaryDatabase(item)
+        if (itemInPrimary !== null) {
+          alreadyExistingInPrimary.push(item.id.toString())
+          continue
+        }
+        if (newerItemInSecondary !== null) {
+          updatedInSecondary.push(newerItemInSecondary.id.toString())
+          continue
+        }
+        if (itemInPrimary === null && newerItemInSecondary === null) {
+          newItemsInSecondary.push(item.id.toString())
+          continue
+        }
       }
     }
 
@@ -195,7 +206,7 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
     return { itemInPrimary: itemInPrimary, newerItemInSecondary: null }
   }
 
-  private async migrateItemsForUser(userUuid: Uuid, updatedItemsInSecondary: Item[]): Promise<Result<void>> {
+  private async migrateItemsForUser(userUuid: Uuid, updatedItemsInSecondary: string[]): Promise<Result<void>> {
     try {
       const totalItemsCountForUser = await this.primaryItemRepository.countAll({ userUuid: userUuid.value })
       const totalPages = Math.ceil(totalItemsCountForUser / this.pageSize)
@@ -204,12 +215,14 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
           userUuid: userUuid.value,
           offset: (currentPage - 1) * this.pageSize,
           limit: this.pageSize,
+          sortBy: 'uuid',
+          sortOrder: 'ASC',
         }
 
         const items = await this.primaryItemRepository.findAll(query)
 
         for (const item of items) {
-          if (updatedItemsInSecondary.find((updatedItem) => updatedItem.uuid.equals(item.uuid))) {
+          if (updatedItemsInSecondary.find((updatedItemUuid) => item.uuid.value === updatedItemUuid)) {
             this.logger.info(`Skipping saving item ${item.uuid.value} as it was updated in secondary database`)
 
             continue
@@ -237,7 +250,7 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
   private async checkIntegrityBetweenPrimaryAndSecondaryDatabase(
     userUuid: Uuid,
     newItemsInSecondaryCount: number,
-    updatedItemsInSecondary: Item[],
+    updatedItemsInSecondary: string[],
   ): Promise<Result<boolean>> {
     try {
       const totalItemsCountForUserInPrimary = await this.primaryItemRepository.countAll({ userUuid: userUuid.value })
@@ -259,6 +272,8 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
           userUuid: userUuid.value,
           offset: (currentPage - 1) * this.pageSize,
           limit: this.pageSize,
+          sortBy: 'uuid',
+          sortOrder: 'ASC',
         }
 
         const items = await this.primaryItemRepository.findAll(query)
@@ -269,7 +284,7 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
             return Result.fail(`Item ${item.uuid.value} not found in secondary database`)
           }
 
-          if (updatedItemsInSecondary.find((updatedItem) => updatedItem.uuid.equals(item.uuid))) {
+          if (updatedItemsInSecondary.find((updatedItemUuid) => item.uuid.value === updatedItemUuid)) {
             this.logger.info(
               `Skipping integrity check for item ${item.uuid.value} as it was updated in secondary database`,
             )

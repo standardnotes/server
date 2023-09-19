@@ -15,6 +15,7 @@ export interface ItemRepositoryInterface {
   findByUuidAndUserUuid(uuid: string, userUuid: string): Promise<Item | null>
   findByUuid(uuid: Uuid): Promise<Item | null>
   remove(item: Item): Promise<void>
+  removeByUuid(uuid: Uuid): Promise<void>
   save(item: Item): Promise<void>
   markItemsAsDeleted(itemUuids: Array<string>, updatedAtTimestamp: number): Promise<void>
   updateContentSize(itemUuid: string, contentSize: number): Promise<void>

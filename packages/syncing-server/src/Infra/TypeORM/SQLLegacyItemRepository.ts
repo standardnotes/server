@@ -16,6 +16,15 @@ export class SQLLegacyItemRepository implements ItemRepositoryInterface {
     protected logger: Logger,
   ) {}
 
+  async removeByUuid(uuid: Uuid): Promise<void> {
+    await this.ormRepository
+      .createQueryBuilder('item')
+      .delete()
+      .from('items')
+      .where('uuid = :uuid', { uuid: uuid.value })
+      .execute()
+  }
+
   async save(item: Item): Promise<void> {
     const persistence = this.mapper.toProjection(item)
 

@@ -17,6 +17,10 @@ export class MongoDBItemRepository implements ItemRepositoryInterface {
     private logger: Logger,
   ) {}
 
+  async removeByUuid(uuid: Uuid): Promise<void> {
+    await this.mongoRepository.deleteOne({ _id: { $eq: BSON.UUID.createFromHexString(uuid.value) } })
+  }
+
   async deleteByUserUuid(userUuid: string): Promise<void> {
     await this.mongoRepository.deleteMany({ userUuid })
   }
