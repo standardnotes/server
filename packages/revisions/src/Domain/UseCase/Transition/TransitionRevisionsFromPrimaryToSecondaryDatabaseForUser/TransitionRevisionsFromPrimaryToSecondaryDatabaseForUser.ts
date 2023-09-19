@@ -192,8 +192,8 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
   }
 
   private async allowForSecondaryDatabaseToCatchUp(): Promise<void> {
-    const twoSecondsInMilliseconds = 2_000
-    await this.timer.sleep(twoSecondsInMilliseconds)
+    const tenSecondsInMillisecondsToRebuildIndexes = 10_000
+    await this.timer.sleep(tenSecondsInMillisecondsToRebuildIndexes)
   }
 
   private async hasAlreadyDataInSecondaryDatabase(userUuid: Uuid): Promise<boolean> {

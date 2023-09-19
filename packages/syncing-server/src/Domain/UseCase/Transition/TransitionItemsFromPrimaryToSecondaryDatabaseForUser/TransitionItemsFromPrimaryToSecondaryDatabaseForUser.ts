@@ -129,8 +129,8 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
   }
 
   private async allowForSecondaryDatabaseToCatchUp(): Promise<void> {
-    const twoSecondsInMilliseconds = 2_000
-    await this.timer.sleep(twoSecondsInMilliseconds)
+    const tenSecondsInMillisecondsToRebuildIndexes = 10_000
+    await this.timer.sleep(tenSecondsInMillisecondsToRebuildIndexes)
   }
 
   private async getNewItemsCreatedInSecondaryDatabase(userUuid: Uuid): Promise<{
