@@ -1,13 +1,15 @@
-import { SharedVaultUserPermission, Timestamps, Uuid } from '@standardnotes/domain-core'
+import { NotificationPayload, Result, SharedVaultUserPermission, Timestamps, Uuid } from '@standardnotes/domain-core'
 import { SharedVaultInviteRepositoryInterface } from '../../../SharedVault/User/Invite/SharedVaultInviteRepositoryInterface'
 import { DeclineInviteToSharedVault } from './DeclineInviteToSharedVault'
 import { SharedVaultInvite } from '../../../SharedVault/User/Invite/SharedVaultInvite'
+import { AddNotificationForUser } from '../../Messaging/AddNotificationForUser/AddNotificationForUser'
 
 describe('DeclineInviteToSharedVault', () => {
   let sharedVaultInviteRepository: SharedVaultInviteRepositoryInterface
   let invite: SharedVaultInvite
+  let addNotificationForUser: AddNotificationForUser
 
-  const createUseCase = () => new DeclineInviteToSharedVault(sharedVaultInviteRepository)
+  const createUseCase = () => new DeclineInviteToSharedVault(sharedVaultInviteRepository, addNotificationForUser)
 
   beforeEach(() => {
     invite = SharedVaultInvite.create({
@@ -22,6 +24,9 @@ describe('DeclineInviteToSharedVault', () => {
     sharedVaultInviteRepository = {} as jest.Mocked<SharedVaultInviteRepositoryInterface>
     sharedVaultInviteRepository.findByUuid = jest.fn().mockResolvedValue(invite)
     sharedVaultInviteRepository.remove = jest.fn()
+
+    addNotificationForUser = {} as jest.Mocked<AddNotificationForUser>
+    addNotificationForUser.execute = jest.fn().mockReturnValue(Result.ok())
   })
 
   it('should fail if invite uuid is invalid', async () => {
@@ -34,6 +39,37 @@ describe('DeclineInviteToSharedVault', () => {
 
     expect(result.isFailed()).toBe(true)
     expect(result.getError()).toBe('Given value is not a valid uuid: invalid')
+  })
+
+  it('should fail if adding a notification for user fails', async () => {
+    addNotificationForUser.execute = jest.fn().mockReturnValue(Result.fail('Error'))
+
+    const useCase = createUseCase()
+
+    const result = await useCase.execute({
+      inviteUuid: '00000000-0000-0000-0000-000000000000',
+      userUuid: '00000000-0000-0000-0000-000000000000',
+    })
+
+    expect(result.isFailed()).toBe(true)
+    expect(result.getError()).toBe('Error')
+  })
+
+  it('should return error if notification payload could not be created', async () => {
+    const mock = jest.spyOn(NotificationPayload, 'create')
+    mock.mockReturnValue(Result.fail('Oops'))
+
+    const useCase = createUseCase()
+
+    const result = await useCase.execute({
+      inviteUuid: '00000000-0000-0000-0000-000000000000',
+      userUuid: '00000000-0000-0000-0000-000000000000',
+    })
+
+    expect(result.isFailed()).toBe(true)
+    expect(result.getError()).toBe('Oops')
+
+    mock.mockRestore()
   })
 
   it('should fail if originator uuid is invalid', async () => {

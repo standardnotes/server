@@ -723,7 +723,12 @@ export class ContainerConfigLoader {
       )
     container
       .bind<DeclineInviteToSharedVault>(TYPES.Sync_DeclineInviteToSharedVault)
-      .toConstantValue(new DeclineInviteToSharedVault(container.get(TYPES.Sync_SharedVaultInviteRepository)))
+      .toConstantValue(
+        new DeclineInviteToSharedVault(
+          container.get<SharedVaultInviteRepositoryInterface>(TYPES.Sync_SharedVaultInviteRepository),
+          container.get<AddNotificationForUser>(TYPES.Sync_AddNotificationForUser),
+        ),
+      )
     container
       .bind<DeleteSharedVaultInvitesToUser>(TYPES.Sync_DeleteSharedVaultInvitesToUser)
       .toConstantValue(

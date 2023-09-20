@@ -1,9 +1,14 @@
-import { Result, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
+import { NotificationPayload, NotificationType, Result, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
+
 import { DeclineInviteToSharedVaultDTO } from './DeclineInviteToSharedVaultDTO'
 import { SharedVaultInviteRepositoryInterface } from '../../../SharedVault/User/Invite/SharedVaultInviteRepositoryInterface'
+import { AddNotificationForUser } from '../../Messaging/AddNotificationForUser/AddNotificationForUser'
 
 export class DeclineInviteToSharedVault implements UseCaseInterface<void> {
-  constructor(private sharedVaultInviteRepository: SharedVaultInviteRepositoryInterface) {}
+  constructor(
+    private sharedVaultInviteRepository: SharedVaultInviteRepositoryInterface,
+    private addNotificationForUser: AddNotificationForUser,
+  ) {}
 
   async execute(dto: DeclineInviteToSharedVaultDTO): Promise<Result<void>> {
     const inviteUuidOrError = Uuid.create(dto.inviteUuid)
@@ -28,6 +33,26 @@ export class DeclineInviteToSharedVault implements UseCaseInterface<void> {
     }
 
     await this.sharedVaultInviteRepository.remove(invite)
+
+    const notificationPayloadOrError = NotificationPayload.create({
+      sharedVaultUuid: invite.props.sharedVaultUuid,
+      type: NotificationType.create(NotificationType.TYPES.SharedVaultInviteDeclined).getValue(),
+      version: '1.0',
+    })
+    if (notificationPayloadOrError.isFailed()) {
+      return Result.fail(notificationPayloadOrError.getError())
+    }
+    const notificationPayload = notificationPayloadOrError.getValue()
+
+    const result = await this.addNotificationForUser.execute({
+      userUuid: invite.props.userUuid.value,
+      type: NotificationType.TYPES.SharedVaultInviteDeclined,
+      payload: notificationPayload,
+      version: '1.0',
+    })
+    if (result.isFailed()) {
+      return Result.fail(result.getError())
+    }
 
     return Result.ok()
   }
