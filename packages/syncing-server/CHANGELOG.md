@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.101.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.100.0...@standardnotes/syncing-server@1.101.0) (2023-09-20)
+
+### Features
+
+* add unassigning items and revisions upon shared vault removal ([#839](https://github.com/standardnotes/syncing-server-js/issues/839)) ([378eced](https://github.com/standardnotes/syncing-server-js/commit/378ecedfcc4fb23475c2329fb37479edb3b48a39))
+* **syncing-server:** distinct notifications upon user removal from shared vault ([#840](https://github.com/standardnotes/syncing-server-js/issues/840)) ([41e2136](https://github.com/standardnotes/syncing-server-js/commit/41e2136bc07312974701a70652528d304105e0f9))
+
 # [1.100.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.99.0...@standardnotes/syncing-server@1.100.0) (2023-09-20)
 
 ### Features

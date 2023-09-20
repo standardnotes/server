@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.36.0](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.35.8...@standardnotes/revisions-server@1.36.0) (2023-09-20)
+
+### Features
+
+* add unassigning items and revisions upon shared vault removal ([#839](https://github.com/standardnotes/server/issues/839)) ([378eced](https://github.com/standardnotes/server/commit/378ecedfcc4fb23475c2329fb37479edb3b48a39))
+
 ## [1.35.8](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.35.7...@standardnotes/revisions-server@1.35.8) (2023-09-20)
 
 **Note:** Version bump only for package @standardnotes/revisions-server

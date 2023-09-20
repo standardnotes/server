@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.32.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.31.0...@standardnotes/domain-core@1.32.0) (2023-09-20)
+
+### Features
+
+* **syncing-server:** distinct notifications upon user removal from shared vault ([#840](https://github.com/standardnotes/server/issues/840)) ([41e2136](https://github.com/standardnotes/server/commit/41e2136bc07312974701a70652528d304105e0f9))
+
 # [1.31.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.30.1...@standardnotes/domain-core@1.31.0) (2023-09-20)
 
 ### Features
