@@ -100,7 +100,6 @@ export interface DomainEventFactoryInterface {
     sharedVaultUuid: string
     itemUuid: string
     userUuid: string
-    roleNames: string[]
   }): ItemRemovedFromSharedVaultEvent
   createSharedVaultRemovedEvent(dto: { sharedVaultUuid: string }): SharedVaultRemovedEvent
 }

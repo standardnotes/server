@@ -41,7 +41,6 @@ export class DomainEventFactory implements DomainEventFactoryInterface {
     sharedVaultUuid: string
     itemUuid: string
     userUuid: string
-    roleNames: string[]
   }): ItemRemovedFromSharedVaultEvent {
     return {
       type: 'ITEM_REMOVED_FROM_SHARED_VAULT',
