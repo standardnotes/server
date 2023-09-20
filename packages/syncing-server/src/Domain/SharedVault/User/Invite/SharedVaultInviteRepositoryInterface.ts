@@ -6,7 +6,7 @@ export interface SharedVaultInviteRepositoryInterface {
   findByUuid(sharedVaultInviteUuid: Uuid): Promise<SharedVaultInvite | null>
   save(sharedVaultInvite: SharedVaultInvite): Promise<void>
   remove(sharedVaultInvite: SharedVaultInvite): Promise<void>
-  removeBySharedVaultUuid(sharedVaultUuid: Uuid): Promise<void>
+  findBySharedVaultUuid(sharedVaultUuid: Uuid): Promise<SharedVaultInvite[]>
   findByUserUuid(userUuid: Uuid): Promise<SharedVaultInvite[]>
   findByUserUuidUpdatedAfter(userUuid: Uuid, updatedAtTimestamp: number): Promise<SharedVaultInvite[]>
   findBySenderUuid(senderUuid: Uuid): Promise<SharedVaultInvite[]>

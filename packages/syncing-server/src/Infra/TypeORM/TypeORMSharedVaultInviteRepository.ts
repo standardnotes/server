@@ -64,13 +64,13 @@ export class TypeORMSharedVaultInviteRepository implements SharedVaultInviteRepo
     return persistence.map((p) => this.mapper.toDomain(p))
   }
 
-  async removeBySharedVaultUuid(sharedVaultUuid: Uuid): Promise<void> {
-    await this.ormRepository
+  async findBySharedVaultUuid(sharedVaultUuid: Uuid): Promise<SharedVaultInvite[]> {
+    const persistence = await this.ormRepository
       .createQueryBuilder('shared_vault_invite')
-      .delete()
-      .from('shared_vault_invites')
-      .where('shared_vault_uuid = :sharedVaultUuid', { sharedVaultUuid: sharedVaultUuid.value })
-      .execute()
+      .where('shared_vault_invite.shared_vault_uuid = :sharedVaultUuid', { sharedVaultUuid: sharedVaultUuid.value })
+      .getMany()
+
+    return persistence.map((p) => this.mapper.toDomain(p))
   }
 
   async findByUserUuidAndSharedVaultUuid(dto: {

@@ -5,6 +5,7 @@ import { SharedVaultRepositoryInterface } from '../../../SharedVault/SharedVault
 import { SharedVaultUserRepositoryInterface } from '../../../SharedVault/User/SharedVaultUserRepositoryInterface'
 import { SharedVaultInviteRepositoryInterface } from '../../../SharedVault/User/Invite/SharedVaultInviteRepositoryInterface'
 import { RemoveUserFromSharedVault } from '../RemoveUserFromSharedVault/RemoveUserFromSharedVault'
+import { DeclineInviteToSharedVault } from '../DeclineInviteToSharedVault/DeclineInviteToSharedVault'
 
 export class DeleteSharedVault implements UseCaseInterface<void> {
   constructor(
@@ -12,6 +13,7 @@ export class DeleteSharedVault implements UseCaseInterface<void> {
     private sharedVaultUserRepository: SharedVaultUserRepositoryInterface,
     private sharedVaultInviteRepository: SharedVaultInviteRepositoryInterface,
     private removeUserFromSharedVault: RemoveUserFromSharedVault,
+    private declineInviteToSharedVault: DeclineInviteToSharedVault,
   ) {}
 
   async execute(dto: DeleteSharedVaultDTO): Promise<Result<void>> {
@@ -50,7 +52,17 @@ export class DeleteSharedVault implements UseCaseInterface<void> {
       }
     }
 
-    await this.sharedVaultInviteRepository.removeBySharedVaultUuid(sharedVaultUuid)
+    const sharedVaultInvites = await this.sharedVaultInviteRepository.findBySharedVaultUuid(sharedVaultUuid)
+    for (const sharedVaultInvite of sharedVaultInvites) {
+      const result = await this.declineInviteToSharedVault.execute({
+        inviteUuid: sharedVaultInvite.id.toString(),
+        userUuid: sharedVaultInvite.props.userUuid.value,
+      })
+
+      if (result.isFailed()) {
+        return Result.fail(result.getError())
+      }
+    }
 
     await this.sharedVaultRepository.remove(sharedVault)
 

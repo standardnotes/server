@@ -6,14 +6,18 @@ import { SharedVaultUserRepositoryInterface } from '../../../SharedVault/User/Sh
 import { DeleteSharedVault } from './DeleteSharedVault'
 import { SharedVault } from '../../../SharedVault/SharedVault'
 import { RemoveUserFromSharedVault } from '../RemoveUserFromSharedVault/RemoveUserFromSharedVault'
+import { DeclineInviteToSharedVault } from '../DeclineInviteToSharedVault/DeclineInviteToSharedVault'
+import { SharedVaultInvite } from '../../../SharedVault/User/Invite/SharedVaultInvite'
 
 describe('DeleteSharedVault', () => {
   let sharedVaultRepository: SharedVaultRepositoryInterface
   let sharedVaultUserRepository: SharedVaultUserRepositoryInterface
   let sharedVaultInviteRepository: SharedVaultInviteRepositoryInterface
   let removeUserFromSharedVault: RemoveUserFromSharedVault
+  let declineInviteToSharedVault: DeclineInviteToSharedVault
   let sharedVault: SharedVault
   let sharedVaultUser: SharedVaultUser
+  let sharedVaultInvite: SharedVaultInvite
 
   const createUseCase = () =>
     new DeleteSharedVault(
@@ -21,6 +25,7 @@ describe('DeleteSharedVault', () => {
       sharedVaultUserRepository,
       sharedVaultInviteRepository,
       removeUserFromSharedVault,
+      declineInviteToSharedVault,
     )
 
   beforeEach(() => {
@@ -42,8 +47,19 @@ describe('DeleteSharedVault', () => {
     sharedVaultUserRepository = {} as jest.Mocked<SharedVaultUserRepositoryInterface>
     sharedVaultUserRepository.findBySharedVaultUuid = jest.fn().mockResolvedValue([sharedVaultUser])
 
+    sharedVaultInvite = SharedVaultInvite.create({
+      encryptedMessage: 'test',
+      userUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+      sharedVaultUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+      senderUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+      permission: SharedVaultUserPermission.create(SharedVaultUserPermission.PERMISSIONS.Read).getValue(),
+      timestamps: Timestamps.create(123, 123).getValue(),
+    }).getValue()
     sharedVaultInviteRepository = {} as jest.Mocked<SharedVaultInviteRepositoryInterface>
-    sharedVaultInviteRepository.removeBySharedVaultUuid = jest.fn()
+    sharedVaultInviteRepository.findBySharedVaultUuid = jest.fn().mockReturnValue([sharedVaultInvite])
+
+    declineInviteToSharedVault = {} as jest.Mocked<DeclineInviteToSharedVault>
+    declineInviteToSharedVault.execute = jest.fn().mockReturnValue(Result.ok())
 
     removeUserFromSharedVault = {} as jest.Mocked<RemoveUserFromSharedVault>
     removeUserFromSharedVault.execute = jest.fn().mockReturnValue(Result.ok())
@@ -59,7 +75,7 @@ describe('DeleteSharedVault', () => {
 
     expect(result.isFailed()).toBeFalsy()
     expect(sharedVaultRepository.remove).toHaveBeenCalled()
-    expect(sharedVaultInviteRepository.removeBySharedVaultUuid).toHaveBeenCalled()
+    expect(declineInviteToSharedVault.execute).toHaveBeenCalled()
     expect(removeUserFromSharedVault.execute).toHaveBeenCalled()
   })
 
@@ -74,7 +90,7 @@ describe('DeleteSharedVault', () => {
 
     expect(result.isFailed()).toBeTruthy()
     expect(sharedVaultRepository.remove).not.toHaveBeenCalled()
-    expect(sharedVaultInviteRepository.removeBySharedVaultUuid).not.toHaveBeenCalled()
+    expect(declineInviteToSharedVault.execute).not.toHaveBeenCalled()
     expect(removeUserFromSharedVault.execute).not.toHaveBeenCalled()
   })
 
@@ -88,7 +104,7 @@ describe('DeleteSharedVault', () => {
 
     expect(result.isFailed()).toBeTruthy()
     expect(sharedVaultRepository.remove).not.toHaveBeenCalled()
-    expect(sharedVaultInviteRepository.removeBySharedVaultUuid).not.toHaveBeenCalled()
+    expect(declineInviteToSharedVault.execute).not.toHaveBeenCalled()
     expect(removeUserFromSharedVault.execute).not.toHaveBeenCalled()
   })
 
@@ -102,7 +118,7 @@ describe('DeleteSharedVault', () => {
 
     expect(result.isFailed()).toBeTruthy()
     expect(sharedVaultRepository.remove).not.toHaveBeenCalled()
-    expect(sharedVaultInviteRepository.removeBySharedVaultUuid).not.toHaveBeenCalled()
+    expect(declineInviteToSharedVault.execute).not.toHaveBeenCalled()
     expect(removeUserFromSharedVault.execute).not.toHaveBeenCalled()
   })
 
@@ -122,7 +138,7 @@ describe('DeleteSharedVault', () => {
 
     expect(result.isFailed()).toBeTruthy()
     expect(sharedVaultRepository.remove).not.toHaveBeenCalled()
-    expect(sharedVaultInviteRepository.removeBySharedVaultUuid).not.toHaveBeenCalled()
+    expect(declineInviteToSharedVault.execute).not.toHaveBeenCalled()
     expect(removeUserFromSharedVault.execute).not.toHaveBeenCalled()
   })
 
@@ -137,7 +153,22 @@ describe('DeleteSharedVault', () => {
 
     expect(result.isFailed()).toBeTruthy()
     expect(sharedVaultRepository.remove).not.toHaveBeenCalled()
-    expect(sharedVaultInviteRepository.removeBySharedVaultUuid).not.toHaveBeenCalled()
+    expect(declineInviteToSharedVault.execute).not.toHaveBeenCalled()
+    expect(removeUserFromSharedVault.execute).toHaveBeenCalled()
+  })
+
+  it('should return error if declining invite to shared vault fails', async () => {
+    declineInviteToSharedVault.execute = jest.fn().mockReturnValue(Result.fail('failed'))
+    const useCase = createUseCase()
+
+    const result = await useCase.execute({
+      sharedVaultUuid: '00000000-0000-0000-0000-000000000000',
+      originatorUuid: '00000000-0000-0000-0000-000000000000',
+    })
+
+    expect(result.isFailed()).toBeTruthy()
+    expect(sharedVaultRepository.remove).not.toHaveBeenCalled()
+    expect(declineInviteToSharedVault.execute).toHaveBeenCalled()
     expect(removeUserFromSharedVault.execute).toHaveBeenCalled()
   })
 })

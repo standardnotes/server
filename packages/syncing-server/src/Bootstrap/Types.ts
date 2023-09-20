@@ -54,6 +54,7 @@ const TYPES = {
   Sync_GetSharedVaults: Symbol.for('Sync_GetSharedVaults'),
   Sync_CreateSharedVault: Symbol.for('Sync_CreateSharedVault'),
   Sync_DeleteSharedVault: Symbol.for('Sync_DeleteSharedVault'),
+  Sync_DeleteSharedVaults: Symbol.for('Sync_DeleteSharedVaults'),
   Sync_CreateSharedVaultFileValetToken: Symbol.for('Sync_CreateSharedVaultFileValetToken'),
   Sync_GetSharedVaultUsers: Symbol.for('Sync_GetSharedVaultUsers'),
   Sync_AddUserToSharedVault: Symbol.for('Sync_AddUserToSharedVault'),
