@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.31.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.30.1...@standardnotes/domain-core@1.31.0) (2023-09-20)
+
+### Features
+
+* **syncing-server:** add notification for user upon declined shared vault invitation ([#837](https://github.com/standardnotes/server/issues/837)) ([31e7aaf](https://github.com/standardnotes/server/commit/31e7aaf253029a951d8b943d6cffd655cd5ca765))
+
 ## [1.30.1](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.30.0...@standardnotes/domain-core@1.30.1) (2023-09-19)
 
 ### Bug Fixes

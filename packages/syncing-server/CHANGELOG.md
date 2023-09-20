@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.99.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.98.6...@standardnotes/syncing-server@1.99.0) (2023-09-20)
+
+### Features
+
+* **syncing-server:** add notification for user upon declined shared vault invitation ([#837](https://github.com/standardnotes/syncing-server-js/issues/837)) ([31e7aaf](https://github.com/standardnotes/syncing-server-js/commit/31e7aaf253029a951d8b943d6cffd655cd5ca765))
+
 ## [1.98.6](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.98.5...@standardnotes/syncing-server@1.98.6) (2023-09-19)
 
 ### Bug Fixes
