@@ -7,6 +7,7 @@ import {
   MessageSentToUserEvent,
   NotificationAddedForUserEvent,
   RevisionsCopyRequestedEvent,
+  SharedVaultRemovedEvent,
   TransitionStatusUpdatedEvent,
   UserAddedToSharedVaultEvent,
   UserInvitedToSharedVaultEvent,
@@ -101,4 +102,5 @@ export interface DomainEventFactoryInterface {
     userUuid: string
     roleNames: string[]
   }): ItemRemovedFromSharedVaultEvent
+  createSharedVaultRemovedEvent(dto: { sharedVaultUuid: string }): SharedVaultRemovedEvent
 }

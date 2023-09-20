@@ -1,5 +1,5 @@
 import { MapperInterface, Uuid } from '@standardnotes/domain-core'
-import { MongoRepository } from 'typeorm'
+import { MongoRepository, ObjectLiteral } from 'typeorm'
 import { BSON } from 'mongodb'
 import { Logger } from 'winston'
 
@@ -16,19 +16,25 @@ export class MongoDBRevisionRepository implements RevisionRepositoryInterface {
     private logger: Logger,
   ) {}
 
-  async clearSharedVaultAndKeySystemAssociations(itemUuid: Uuid, sharedVaultUuid: Uuid): Promise<void> {
-    await this.mongoRepository.updateMany(
-      {
-        itemUuid: { $eq: itemUuid.value },
-        sharedVaultUuid: { $eq: sharedVaultUuid.value },
+  async clearSharedVaultAndKeySystemAssociations(dto: { itemUuid?: Uuid; sharedVaultUuid: Uuid }): Promise<void> {
+    let query: ObjectLiteral
+    if (dto.itemUuid !== undefined) {
+      query = {
+        itemUuid: { $eq: dto.itemUuid.value },
+        sharedVaultUuid: { $eq: dto.sharedVaultUuid.value },
+      }
+    } else {
+      query = {
+        sharedVaultUuid: { $eq: dto.sharedVaultUuid.value },
+      }
+    }
+
+    await this.mongoRepository.updateMany(query, {
+      $set: {
+        sharedVaultUuid: null,
+        keySystemIdentifier: null,
       },
-      {
-        $set: {
-          sharedVaultUuid: null,
-          keySystemIdentifier: null,
-        },
-      },
-    )
+    })
   }
 
   async countByUserUuid(userUuid: Uuid): Promise<number> {

@@ -17,6 +17,13 @@ export class MongoDBItemRepository implements ItemRepositoryInterface {
     private logger: Logger,
   ) {}
 
+  async unassignFromSharedVault(sharedVaultUuid: Uuid): Promise<void> {
+    await this.mongoRepository.updateMany(
+      { sharedVaultUuid: { $eq: sharedVaultUuid.value } },
+      { $set: { sharedVaultUuid: null } },
+    )
+  }
+
   async removeByUuid(uuid: Uuid): Promise<void> {
     await this.mongoRepository.deleteOne({ _id: { $eq: BSON.UUID.createFromHexString(uuid.value) } })
   }

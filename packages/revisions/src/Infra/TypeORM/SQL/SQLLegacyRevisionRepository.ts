@@ -15,7 +15,7 @@ export class SQLLegacyRevisionRepository implements RevisionRepositoryInterface 
     protected logger: Logger,
   ) {}
 
-  async clearSharedVaultAndKeySystemAssociations(_itemUuid: Uuid, _sharedVaultUuid: Uuid): Promise<void> {
+  async clearSharedVaultAndKeySystemAssociations(_dto: { itemUuid?: Uuid; sharedVaultUuid: Uuid }): Promise<void> {
     this.logger.error('Method clearSharedVaultAndKeySystemAssociations not implemented.')
   }
 

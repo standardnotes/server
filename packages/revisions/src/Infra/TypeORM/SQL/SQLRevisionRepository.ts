@@ -66,19 +66,27 @@ export class SQLRevisionRepository extends SQLLegacyRevisionRepository {
     return this.revisionMapper.toDomain(sqlRevision)
   }
 
-  override async clearSharedVaultAndKeySystemAssociations(itemUuid: Uuid, sharedVaultUuid: Uuid): Promise<void> {
-    await this.ormRepository
-      .createQueryBuilder()
-      .update()
-      .set({
-        sharedVaultUuid: null,
-        keySystemIdentifier: null,
+  override async clearSharedVaultAndKeySystemAssociations(dto: {
+    itemUuid?: Uuid
+    sharedVaultUuid: Uuid
+  }): Promise<void> {
+    const queryBuilder = this.ormRepository.createQueryBuilder().update().set({
+      sharedVaultUuid: null,
+      keySystemIdentifier: null,
+    })
+
+    if (dto.itemUuid !== undefined) {
+      queryBuilder.where('item_uuid = :itemUuid AND shared_vault_uuid = :sharedVaultUuid', {
+        itemUuid: dto.itemUuid.value,
+        sharedVaultUuid: dto.sharedVaultUuid.value,
       })
-      .where('item_uuid = :itemUuid AND shared_vault_uuid = :sharedVaultUuid', {
-        itemUuid: itemUuid.value,
-        sharedVaultUuid: sharedVaultUuid.value,
+    } else {
+      queryBuilder.where('shared_vault_uuid = :sharedVaultUuid', {
+        sharedVaultUuid: dto.sharedVaultUuid.value,
       })
-      .execute()
+    }
+
+    await queryBuilder.execute()
   }
 
   override async findMetadataByItemId(
