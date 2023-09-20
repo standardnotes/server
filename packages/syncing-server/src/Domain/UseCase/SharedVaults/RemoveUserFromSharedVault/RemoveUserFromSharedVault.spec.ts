@@ -14,11 +14,13 @@ import { RemoveUserFromSharedVault } from './RemoveUserFromSharedVault'
 import { DomainEventFactoryInterface } from '../../../Event/DomainEventFactoryInterface'
 import { DomainEventInterface, DomainEventPublisherInterface } from '@standardnotes/domain-events'
 import { AddNotificationsForUsers } from '../../Messaging/AddNotificationsForUsers/AddNotificationsForUsers'
+import { AddNotificationForUser } from '../../Messaging/AddNotificationForUser/AddNotificationForUser'
 
 describe('RemoveUserFromSharedVault', () => {
   let sharedVaultRepository: SharedVaultRepositoryInterface
   let sharedVaultUserRepository: SharedVaultUserRepositoryInterface
   let addNotificationsForUsers: AddNotificationsForUsers
+  let addNotificationForUser: AddNotificationForUser
   let sharedVault: SharedVault
   let sharedVaultUser: SharedVaultUser
   let domainEventFactory: DomainEventFactoryInterface
@@ -29,6 +31,7 @@ describe('RemoveUserFromSharedVault', () => {
       sharedVaultUserRepository,
       sharedVaultRepository,
       addNotificationsForUsers,
+      addNotificationForUser,
       domainEventFactory,
       domainEventPublisher,
     )
@@ -55,6 +58,9 @@ describe('RemoveUserFromSharedVault', () => {
 
     addNotificationsForUsers = {} as jest.Mocked<AddNotificationsForUsers>
     addNotificationsForUsers.execute = jest.fn().mockReturnValue(Result.ok())
+
+    addNotificationForUser = {} as jest.Mocked<AddNotificationForUser>
+    addNotificationForUser.execute = jest.fn().mockReturnValue(Result.ok())
 
     domainEventFactory = {} as jest.Mocked<DomainEventFactoryInterface>
     domainEventFactory.createUserRemovedFromSharedVaultEvent = jest
@@ -215,9 +221,39 @@ describe('RemoveUserFromSharedVault', () => {
     expect(result.isFailed()).toBe(true)
   })
 
+  it('should return error if notification could not be added for the user removed', async () => {
+    addNotificationForUser.execute = jest.fn().mockResolvedValue(Result.fail('Could not add notification'))
+
+    const useCase = createUseCase()
+    const result = await useCase.execute({
+      originatorUuid: '00000000-0000-0000-0000-000000000000',
+      sharedVaultUuid: '00000000-0000-0000-0000-000000000000',
+      userUuid: '00000000-0000-0000-0000-000000000001',
+    })
+
+    expect(result.isFailed()).toBe(true)
+  })
+
   it('should return error if notification payload could not be created', async () => {
     const mock = jest.spyOn(NotificationPayload, 'create')
     mock.mockReturnValue(Result.fail('Oops'))
+
+    const useCase = createUseCase()
+    const result = await useCase.execute({
+      originatorUuid: '00000000-0000-0000-0000-000000000000',
+      sharedVaultUuid: '00000000-0000-0000-0000-000000000000',
+      userUuid: '00000000-0000-0000-0000-000000000001',
+    })
+
+    expect(result.isFailed()).toBe(true)
+    expect(result.getError()).toBe('Oops')
+
+    mock.mockRestore()
+  })
+
+  it('should return error if self notification payload could not be created', async () => {
+    const mock = jest.spyOn(NotificationPayload, 'create')
+    mock.mockReturnValueOnce(Result.ok()).mockReturnValueOnce(Result.fail('Oops'))
 
     const useCase = createUseCase()
     const result = await useCase.execute({

@@ -6,12 +6,14 @@ import { SharedVaultRepositoryInterface } from '../../../SharedVault/SharedVault
 import { SharedVaultUserRepositoryInterface } from '../../../SharedVault/User/SharedVaultUserRepositoryInterface'
 import { DomainEventFactoryInterface } from '../../../Event/DomainEventFactoryInterface'
 import { AddNotificationsForUsers } from '../../Messaging/AddNotificationsForUsers/AddNotificationsForUsers'
+import { AddNotificationForUser } from '../../Messaging/AddNotificationForUser/AddNotificationForUser'
 
 export class RemoveUserFromSharedVault implements UseCaseInterface<void> {
   constructor(
     private sharedVaultUsersRepository: SharedVaultUserRepositoryInterface,
     private sharedVaultRepository: SharedVaultRepositoryInterface,
-    private addNotificationForUsers: AddNotificationsForUsers,
+    private addNotificationsForUsers: AddNotificationsForUsers,
+    private addNotificationForUser: AddNotificationForUser,
     private domainEventFactory: DomainEventFactoryInterface,
     private domainEventPublisher: DomainEventPublisherInterface,
   ) {}
@@ -63,7 +65,7 @@ export class RemoveUserFromSharedVault implements UseCaseInterface<void> {
 
     const notificationPayloadOrError = NotificationPayload.create({
       sharedVaultUuid: sharedVault.uuid,
-      type: NotificationType.create(NotificationType.TYPES.RemovedFromSharedVault).getValue(),
+      type: NotificationType.create(NotificationType.TYPES.UserRemovedFromSharedVault).getValue(),
       version: '1.0',
     })
     if (notificationPayloadOrError.isFailed()) {
@@ -71,14 +73,35 @@ export class RemoveUserFromSharedVault implements UseCaseInterface<void> {
     }
     const notificationPayload = notificationPayloadOrError.getValue()
 
-    const result = await this.addNotificationForUsers.execute({
+    const result = await this.addNotificationsForUsers.execute({
       sharedVaultUuid: sharedVault.id.toString(),
-      type: NotificationType.TYPES.RemovedFromSharedVault,
+      exceptUserUuid: userUuid.value,
+      type: NotificationType.TYPES.UserRemovedFromSharedVault,
       payload: notificationPayload,
       version: '1.0',
     })
     if (result.isFailed()) {
       return Result.fail(result.getError())
+    }
+
+    const selfNotificationPayloadOrError = NotificationPayload.create({
+      sharedVaultUuid: sharedVault.uuid,
+      type: NotificationType.create(NotificationType.TYPES.SelfRemovedFromSharedVault).getValue(),
+      version: '1.0',
+    })
+    if (selfNotificationPayloadOrError.isFailed()) {
+      return Result.fail(selfNotificationPayloadOrError.getError())
+    }
+    const selfNotificationPayload = selfNotificationPayloadOrError.getValue()
+
+    const selfResult = await this.addNotificationForUser.execute({
+      userUuid: userUuid.value,
+      type: NotificationType.TYPES.SelfRemovedFromSharedVault,
+      payload: selfNotificationPayload,
+      version: '1.0',
+    })
+    if (selfResult.isFailed()) {
+      return Result.fail(selfResult.getError())
     }
 
     await this.domainEventPublisher.publish(
