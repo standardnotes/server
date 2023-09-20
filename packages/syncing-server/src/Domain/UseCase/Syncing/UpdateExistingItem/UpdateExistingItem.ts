@@ -270,7 +270,6 @@ export class UpdateExistingItem implements UseCaseInterface<Item> {
           sharedVaultUuid: sharedVaultOperation.props.sharedVaultUuid.value,
           itemUuid: dto.existingItem.uuid.value,
           userUuid: userUuid.value,
-          roleNames: dto.roleNames,
         }),
       )
     }

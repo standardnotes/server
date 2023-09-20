@@ -166,6 +166,8 @@ import { SQLItemRepository } from '../Infra/TypeORM/SQLItemRepository'
 import { SendEventToClient } from '../Domain/UseCase/Syncing/SendEventToClient/SendEventToClient'
 import { TransitionRequestedEventHandler } from '../Domain/Handler/TransitionRequestedEventHandler'
 import { DeleteSharedVaults } from '../Domain/UseCase/SharedVaults/DeleteSharedVaults/DeleteSharedVaults'
+import { RemoveItemsFromSharedVault } from '../Domain/UseCase/SharedVaults/RemoveItemsFromSharedVault/RemoveItemsFromSharedVault'
+import { SharedVaultRemovedEventHandler } from '../Domain/Handler/SharedVaultRemovedEventHandler'
 
 export class ContainerConfigLoader {
   private readonly DEFAULT_CONTENT_SIZE_TRANSFER_LIMIT = 10_000_000
@@ -786,6 +788,8 @@ export class ContainerConfigLoader {
           container.get<SharedVaultInviteRepositoryInterface>(TYPES.Sync_SharedVaultInviteRepository),
           container.get<RemoveUserFromSharedVault>(TYPES.Sync_RemoveSharedVaultUser),
           container.get<DeclineInviteToSharedVault>(TYPES.Sync_DeclineInviteToSharedVault),
+          container.get<DomainEventFactoryInterface>(TYPES.Sync_DomainEventFactory),
+          container.get<DomainEventPublisherInterface>(TYPES.Sync_DomainEventPublisher),
         ),
       )
     container
@@ -849,6 +853,15 @@ export class ContainerConfigLoader {
           container.get<TimerInterface>(TYPES.Sync_Timer),
           container.get<Logger>(TYPES.Sync_Logger),
           env.get('MIGRATION_BATCH_SIZE', true) ? +env.get('MIGRATION_BATCH_SIZE', true) : 100,
+        ),
+      )
+    container
+      .bind<RemoveItemsFromSharedVault>(TYPES.Sync_RemoveItemsFromSharedVault)
+      .toConstantValue(
+        new RemoveItemsFromSharedVault(
+          isSecondaryDatabaseEnabled
+            ? container.get<ItemRepositoryInterface>(TYPES.Sync_MongoDBItemRepository)
+            : container.get<ItemRepositoryInterface>(TYPES.Sync_SQLItemRepository),
         ),
       )
 
@@ -966,6 +979,14 @@ export class ContainerConfigLoader {
           container.get<Logger>(TYPES.Sync_Logger),
         ),
       )
+    container
+      .bind<SharedVaultRemovedEventHandler>(TYPES.Sync_SharedVaultRemovedEventHandler)
+      .toConstantValue(
+        new SharedVaultRemovedEventHandler(
+          container.get<RemoveItemsFromSharedVault>(TYPES.Sync_RemoveItemsFromSharedVault),
+          container.get<Logger>(TYPES.Sync_Logger),
+        ),
+      )
 
     // Services
     container.bind<ContentDecoder>(TYPES.Sync_ContentDecoder).toDynamicValue(() => new ContentDecoder())
@@ -1003,6 +1024,10 @@ export class ContainerConfigLoader {
       [
         'TRANSITION_REQUESTED',
         container.get<TransitionRequestedEventHandler>(TYPES.Sync_TransitionRequestedEventHandler),
+      ],
+      [
+        'SHARED_VAULT_REMOVED',
+        container.get<SharedVaultRemovedEventHandler>(TYPES.Sync_SharedVaultRemovedEventHandler),
       ],
     ])
     if (!isConfiguredForHomeServer) {

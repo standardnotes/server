@@ -1,5 +1,5 @@
 import { Repository, SelectQueryBuilder } from 'typeorm'
-import { MapperInterface } from '@standardnotes/domain-core'
+import { MapperInterface, Uuid } from '@standardnotes/domain-core'
 import { Logger } from 'winston'
 
 import { Item } from '../../Domain/Item/Item'
@@ -14,6 +14,19 @@ export class SQLItemRepository extends SQLLegacyItemRepository {
     protected override logger: Logger,
   ) {
     super(ormRepository, mapper, logger)
+  }
+
+  override async unassignFromSharedVault(sharedVaultUuid: Uuid): Promise<void> {
+    await this.ormRepository
+      .createQueryBuilder('item')
+      .update()
+      .set({
+        sharedVaultUuid: null,
+      })
+      .where('shared_vault_uuid = :sharedVaultUuid', {
+        sharedVaultUuid: sharedVaultUuid.value,
+      })
+      .execute()
   }
 
   protected override createFindAllQueryBuilder(query: ItemQuery): SelectQueryBuilder<SQLItem> {

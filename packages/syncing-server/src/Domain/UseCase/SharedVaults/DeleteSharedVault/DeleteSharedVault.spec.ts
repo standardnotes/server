@@ -1,4 +1,5 @@
 import { Uuid, Timestamps, Result, SharedVaultUserPermission, SharedVaultUser } from '@standardnotes/domain-core'
+import { DomainEventInterface, DomainEventPublisherInterface } from '@standardnotes/domain-events'
 
 import { SharedVaultRepositoryInterface } from '../../../SharedVault/SharedVaultRepositoryInterface'
 import { SharedVaultInviteRepositoryInterface } from '../../../SharedVault/User/Invite/SharedVaultInviteRepositoryInterface'
@@ -8,6 +9,7 @@ import { SharedVault } from '../../../SharedVault/SharedVault'
 import { RemoveUserFromSharedVault } from '../RemoveUserFromSharedVault/RemoveUserFromSharedVault'
 import { DeclineInviteToSharedVault } from '../DeclineInviteToSharedVault/DeclineInviteToSharedVault'
 import { SharedVaultInvite } from '../../../SharedVault/User/Invite/SharedVaultInvite'
+import { DomainEventFactoryInterface } from '../../../Event/DomainEventFactoryInterface'
 
 describe('DeleteSharedVault', () => {
   let sharedVaultRepository: SharedVaultRepositoryInterface
@@ -18,6 +20,8 @@ describe('DeleteSharedVault', () => {
   let sharedVault: SharedVault
   let sharedVaultUser: SharedVaultUser
   let sharedVaultInvite: SharedVaultInvite
+  let domainEventFactory: DomainEventFactoryInterface
+  let domainEventPublisher: DomainEventPublisherInterface
 
   const createUseCase = () =>
     new DeleteSharedVault(
@@ -26,6 +30,8 @@ describe('DeleteSharedVault', () => {
       sharedVaultInviteRepository,
       removeUserFromSharedVault,
       declineInviteToSharedVault,
+      domainEventFactory,
+      domainEventPublisher,
     )
 
   beforeEach(() => {
@@ -63,6 +69,17 @@ describe('DeleteSharedVault', () => {
 
     removeUserFromSharedVault = {} as jest.Mocked<RemoveUserFromSharedVault>
     removeUserFromSharedVault.execute = jest.fn().mockReturnValue(Result.ok())
+
+    domainEventFactory = {} as jest.Mocked<DomainEventFactoryInterface>
+    domainEventFactory.createUserRemovedFromSharedVaultEvent = jest
+      .fn()
+      .mockReturnValue({} as jest.Mocked<DomainEventInterface>)
+    domainEventFactory.createSharedVaultRemovedEvent = jest
+      .fn()
+      .mockReturnValue({} as jest.Mocked<DomainEventInterface>)
+
+    domainEventPublisher = {} as jest.Mocked<DomainEventPublisherInterface>
+    domainEventPublisher.publish = jest.fn()
   })
 
   it('should remove shared vault', async () => {

@@ -86,6 +86,7 @@ const TYPES = {
     'Sync_TransitionItemsFromPrimaryToSecondaryDatabaseForUser',
   ),
   Sync_SendEventToClient: Symbol.for('Sync_SendEventToClient'),
+  Sync_RemoveItemsFromSharedVault: Symbol.for('Sync_RemoveItemsFromSharedVault'),
   // Handlers
   Sync_AccountDeletionRequestedEventHandler: Symbol.for('Sync_AccountDeletionRequestedEventHandler'),
   Sync_DuplicateItemSyncedEventHandler: Symbol.for('Sync_DuplicateItemSyncedEventHandler'),
@@ -95,6 +96,7 @@ const TYPES = {
   Sync_SharedVaultFileUploadedEventHandler: Symbol.for('Sync_SharedVaultFileUploadedEventHandler'),
   Sync_SharedVaultFileMovedEventHandler: Symbol.for('Sync_SharedVaultFileMovedEventHandler'),
   Sync_TransitionRequestedEventHandler: Symbol.for('Sync_TransitionRequestedEventHandler'),
+  Sync_SharedVaultRemovedEventHandler: Symbol.for('Sync_SharedVaultRemovedEventHandler'),
   // Services
   Sync_ContentDecoder: Symbol.for('Sync_ContentDecoder'),
   Sync_DomainEventPublisher: Symbol.for('Sync_DomainEventPublisher'),

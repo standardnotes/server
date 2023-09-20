@@ -9,10 +9,15 @@ export class ItemRemovedFromSharedVaultEventHandler implements DomainEventHandle
   ) {}
 
   async handle(event: ItemRemovedFromSharedVaultEvent): Promise<void> {
+    if (!event.payload.itemUuid) {
+      this.logger.error('ItemRemovedFromSharedVaultEvent is missing itemUuid')
+
+      return
+    }
+
     const result = await this.removeRevisionsFromSharedVault.execute({
       sharedVaultUuid: event.payload.sharedVaultUuid,
       itemUuid: event.payload.itemUuid,
-      roleNames: event.payload.roleNames,
     })
 
     if (result.isFailed()) {

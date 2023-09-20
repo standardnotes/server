@@ -16,6 +16,10 @@ export class SQLLegacyItemRepository implements ItemRepositoryInterface {
     protected logger: Logger,
   ) {}
 
+  async unassignFromSharedVault(_sharedVaultUuid: Uuid): Promise<void> {
+    this.logger.error('Method unassignFromSharedVault not supported.')
+  }
+
   async removeByUuid(uuid: Uuid): Promise<void> {
     await this.ormRepository
       .createQueryBuilder('item')

@@ -9,6 +9,7 @@ import {
   MessageSentToUserEvent,
   NotificationAddedForUserEvent,
   RevisionsCopyRequestedEvent,
+  SharedVaultRemovedEvent,
   TransitionStatusUpdatedEvent,
   UserAddedToSharedVaultEvent,
   UserInvitedToSharedVaultEvent,
@@ -21,11 +22,25 @@ import { DomainEventFactoryInterface } from './DomainEventFactoryInterface'
 export class DomainEventFactory implements DomainEventFactoryInterface {
   constructor(private timer: TimerInterface) {}
 
+  createSharedVaultRemovedEvent(dto: { sharedVaultUuid: string }): SharedVaultRemovedEvent {
+    return {
+      type: 'SHARED_VAULT_REMOVED',
+      createdAt: this.timer.getUTCDate(),
+      meta: {
+        correlation: {
+          userIdentifier: dto.sharedVaultUuid,
+          userIdentifierType: 'shared-vault-uuid',
+        },
+        origin: DomainEventService.SyncingServer,
+      },
+      payload: dto,
+    }
+  }
+
   createItemRemovedFromSharedVaultEvent(dto: {
     sharedVaultUuid: string
     itemUuid: string
     userUuid: string
-    roleNames: string[]
   }): ItemRemovedFromSharedVaultEvent {
     return {
       type: 'ITEM_REMOVED_FROM_SHARED_VAULT',

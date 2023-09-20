@@ -1,19 +1,14 @@
 import { RevisionRepositoryInterface } from '../../Revision/RevisionRepositoryInterface'
-import { RevisionRepositoryResolverInterface } from '../../Revision/RevisionRepositoryResolverInterface'
 import { RemoveRevisionsFromSharedVault } from './RemoveRevisionsFromSharedVault'
 
 describe('RemoveRevisionsFromSharedVault', () => {
-  let revisionRepositoryResolver: RevisionRepositoryResolverInterface
   let revisionRepository: RevisionRepositoryInterface
 
-  const createUseCase = () => new RemoveRevisionsFromSharedVault(revisionRepositoryResolver)
+  const createUseCase = () => new RemoveRevisionsFromSharedVault(revisionRepository)
 
   beforeEach(() => {
     revisionRepository = {} as jest.Mocked<RevisionRepositoryInterface>
     revisionRepository.clearSharedVaultAndKeySystemAssociations = jest.fn()
-
-    revisionRepositoryResolver = {} as jest.Mocked<RevisionRepositoryResolverInterface>
-    revisionRepositoryResolver.resolve = jest.fn().mockReturnValue(revisionRepository)
   })
 
   it('should clear shared vault and key system associations', async () => {
@@ -22,7 +17,16 @@ describe('RemoveRevisionsFromSharedVault', () => {
     await useCase.execute({
       itemUuid: '00000000-0000-0000-0000-000000000000',
       sharedVaultUuid: '00000000-0000-0000-0000-000000000001',
-      roleNames: ['CORE_USER'],
+    })
+
+    expect(revisionRepository.clearSharedVaultAndKeySystemAssociations).toHaveBeenCalled()
+  })
+
+  it('should clear shared vault and key system associations for all items in a vault when item uuid is not provided', async () => {
+    const useCase = createUseCase()
+
+    await useCase.execute({
+      sharedVaultUuid: '00000000-0000-0000-0000-000000000001',
     })
 
     expect(revisionRepository.clearSharedVaultAndKeySystemAssociations).toHaveBeenCalled()
@@ -34,7 +38,6 @@ describe('RemoveRevisionsFromSharedVault', () => {
     const result = await useCase.execute({
       itemUuid: '00000000-0000-0000-0000-000000000000',
       sharedVaultUuid: 'invalid',
-      roleNames: ['CORE_USER'],
     })
 
     expect(result.isFailed()).toBe(true)
@@ -46,19 +49,6 @@ describe('RemoveRevisionsFromSharedVault', () => {
     const result = await useCase.execute({
       itemUuid: 'invalid',
       sharedVaultUuid: '00000000-0000-0000-0000-000000000001',
-      roleNames: ['CORE_USER'],
-    })
-
-    expect(result.isFailed()).toBe(true)
-  })
-
-  it('should return error when role names are invalid', async () => {
-    const useCase = createUseCase()
-
-    const result = await useCase.execute({
-      itemUuid: '00000000-0000-0000-0000-000000000000',
-      sharedVaultUuid: '00000000-0000-0000-0000-000000000001',
-      roleNames: ['invalid'],
     })
 
     expect(result.isFailed()).toBe(true)

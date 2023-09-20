@@ -1,9 +1,10 @@
-import { Result, RoleNameCollection, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
-import { RevisionRepositoryResolverInterface } from '../../Revision/RevisionRepositoryResolverInterface'
+import { Result, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
+
 import { RemoveRevisionsFromSharedVaultDTO } from './RemoveRevisionsFromSharedVaultDTO'
+import { RevisionRepositoryInterface } from '../../Revision/RevisionRepositoryInterface'
 
 export class RemoveRevisionsFromSharedVault implements UseCaseInterface<void> {
-  constructor(private revisionRepositoryResolver: RevisionRepositoryResolverInterface) {}
+  constructor(private revisionRepository: RevisionRepositoryInterface) {}
 
   async execute(dto: RemoveRevisionsFromSharedVaultDTO): Promise<Result<void>> {
     const sharedVaultUuidOrError = Uuid.create(dto.sharedVaultUuid)
@@ -12,21 +13,19 @@ export class RemoveRevisionsFromSharedVault implements UseCaseInterface<void> {
     }
     const sharedVaultUuid = sharedVaultUuidOrError.getValue()
 
-    const itemUuidOrError = Uuid.create(dto.itemUuid)
-    if (itemUuidOrError.isFailed()) {
-      return Result.fail(itemUuidOrError.getError())
+    let itemUuid: Uuid | undefined
+    if (dto.itemUuid !== undefined) {
+      const itemUuidOrError = Uuid.create(dto.itemUuid)
+      if (itemUuidOrError.isFailed()) {
+        return Result.fail(itemUuidOrError.getError())
+      }
+      itemUuid = itemUuidOrError.getValue()
     }
-    const itemUuid = itemUuidOrError.getValue()
 
-    const roleNamesOrError = RoleNameCollection.create(dto.roleNames)
-    if (roleNamesOrError.isFailed()) {
-      return Result.fail(roleNamesOrError.getError())
-    }
-    const roleNames = roleNamesOrError.getValue()
-
-    const revisionRepository = this.revisionRepositoryResolver.resolve(roleNames)
-
-    await revisionRepository.clearSharedVaultAndKeySystemAssociations(itemUuid, sharedVaultUuid)
+    await this.revisionRepository.clearSharedVaultAndKeySystemAssociations({
+      itemUuid,
+      sharedVaultUuid,
+    })
 
     return Result.ok()
   }

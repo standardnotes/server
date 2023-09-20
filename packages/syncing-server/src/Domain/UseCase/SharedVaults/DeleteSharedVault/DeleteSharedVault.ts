@@ -1,4 +1,5 @@
 import { Result, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
+import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
 
 import { DeleteSharedVaultDTO } from './DeleteSharedVaultDTO'
 import { SharedVaultRepositoryInterface } from '../../../SharedVault/SharedVaultRepositoryInterface'
@@ -6,6 +7,7 @@ import { SharedVaultUserRepositoryInterface } from '../../../SharedVault/User/Sh
 import { SharedVaultInviteRepositoryInterface } from '../../../SharedVault/User/Invite/SharedVaultInviteRepositoryInterface'
 import { RemoveUserFromSharedVault } from '../RemoveUserFromSharedVault/RemoveUserFromSharedVault'
 import { DeclineInviteToSharedVault } from '../DeclineInviteToSharedVault/DeclineInviteToSharedVault'
+import { DomainEventFactoryInterface } from '../../../Event/DomainEventFactoryInterface'
 
 export class DeleteSharedVault implements UseCaseInterface<void> {
   constructor(
@@ -14,6 +16,8 @@ export class DeleteSharedVault implements UseCaseInterface<void> {
     private sharedVaultInviteRepository: SharedVaultInviteRepositoryInterface,
     private removeUserFromSharedVault: RemoveUserFromSharedVault,
     private declineInviteToSharedVault: DeclineInviteToSharedVault,
+    private domainEventFactory: DomainEventFactoryInterface,
+    private domainEventPublisher: DomainEventPublisherInterface,
   ) {}
 
   async execute(dto: DeleteSharedVaultDTO): Promise<Result<void>> {
@@ -65,6 +69,12 @@ export class DeleteSharedVault implements UseCaseInterface<void> {
     }
 
     await this.sharedVaultRepository.remove(sharedVault)
+
+    await this.domainEventPublisher.publish(
+      this.domainEventFactory.createSharedVaultRemovedEvent({
+        sharedVaultUuid: sharedVaultUuid.value,
+      }),
+    )
 
     return Result.ok()
   }
