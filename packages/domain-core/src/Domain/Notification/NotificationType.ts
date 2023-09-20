@@ -5,7 +5,8 @@ import { NotificationTypeProps } from './NotificationTypeProps'
 export class NotificationType extends ValueObject<NotificationTypeProps> {
   static readonly TYPES = {
     SharedVaultItemRemoved: 'shared_vault_item_removed',
-    RemovedFromSharedVault: 'removed_from_shared_vault',
+    SelfRemovedFromSharedVault: 'self_removed_from_shared_vault',
+    UserRemovedFromSharedVault: 'user_removed_from_shared_vault',
     UserAddedToSharedVault: 'user_added_to_shared_vault',
     SharedVaultInviteDeclined: 'shared_vault_invite_declined',
     SharedVaultFileUploaded: 'shared_vault_file_uploaded',

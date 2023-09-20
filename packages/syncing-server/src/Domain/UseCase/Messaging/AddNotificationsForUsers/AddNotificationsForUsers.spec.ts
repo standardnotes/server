@@ -54,6 +54,35 @@ describe('AddNotificationsForUsers', () => {
     expect(addNotificationForUser.execute).toHaveBeenCalledTimes(1)
   })
 
+  it('should not add notification for exceptUserUuid', async () => {
+    const useCase = createUseCase()
+
+    const result = await useCase.execute({
+      exceptUserUuid: '00000000-0000-0000-0000-000000000000',
+      sharedVaultUuid: '00000000-0000-0000-0000-000000000000',
+      type: 'test',
+      payload,
+      version: '1.0',
+    })
+
+    expect(result.isFailed()).toBeFalsy()
+    expect(addNotificationForUser.execute).toHaveBeenCalledTimes(0)
+  })
+
+  it('should return error if exceptUserUuid is invalid', async () => {
+    const useCase = createUseCase()
+
+    const result = await useCase.execute({
+      exceptUserUuid: 'invalid',
+      sharedVaultUuid: '00000000-0000-0000-0000-000000000000',
+      type: 'test',
+      payload,
+      version: '1.0',
+    })
+
+    expect(result.isFailed()).toBeTruthy()
+  })
+
   it('should return error if shared vault uuid is invalid', async () => {
     const useCase = createUseCase()
 

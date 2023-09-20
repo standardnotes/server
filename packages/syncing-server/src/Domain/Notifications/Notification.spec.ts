@@ -6,7 +6,7 @@ describe('Notification', () => {
   it('should create an entity', () => {
     const payload = NotificationPayload.create({
       sharedVaultUuid: Uuid.create('0e8c3c7e-3f1a-4f7a-9b5a-5b2b0a7d4b1e').getValue(),
-      type: NotificationType.create(NotificationType.TYPES.RemovedFromSharedVault).getValue(),
+      type: NotificationType.create(NotificationType.TYPES.SelfRemovedFromSharedVault).getValue(),
       version: '1.0',
     }).getValue()
 

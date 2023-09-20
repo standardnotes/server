@@ -766,6 +766,7 @@ export class ContainerConfigLoader {
           container.get<SharedVaultUserRepositoryInterface>(TYPES.Sync_SharedVaultUserRepository),
           container.get<SharedVaultRepositoryInterface>(TYPES.Sync_SharedVaultRepository),
           container.get<AddNotificationsForUsers>(TYPES.Sync_AddNotificationsForUsers),
+          container.get<AddNotificationForUser>(TYPES.Sync_AddNotificationForUser),
           container.get<DomainEventFactoryInterface>(TYPES.Sync_DomainEventFactory),
           container.get<DomainEventPublisherInterface>(TYPES.Sync_DomainEventPublisher),
         ),
