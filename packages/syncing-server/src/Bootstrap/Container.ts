@@ -165,6 +165,7 @@ import { SQLItemPersistenceMapper } from '../Mapping/Persistence/SQLItemPersiste
 import { SQLItemRepository } from '../Infra/TypeORM/SQLItemRepository'
 import { SendEventToClient } from '../Domain/UseCase/Syncing/SendEventToClient/SendEventToClient'
 import { TransitionRequestedEventHandler } from '../Domain/Handler/TransitionRequestedEventHandler'
+import { DeleteSharedVaults } from '../Domain/UseCase/SharedVaults/DeleteSharedVaults/DeleteSharedVaults'
 
 export class ContainerConfigLoader {
   private readonly DEFAULT_CONTENT_SIZE_TRANSFER_LIMIT = 10_000_000
@@ -780,10 +781,19 @@ export class ContainerConfigLoader {
       .bind<DeleteSharedVault>(TYPES.Sync_DeleteSharedVault)
       .toConstantValue(
         new DeleteSharedVault(
-          container.get(TYPES.Sync_SharedVaultRepository),
-          container.get(TYPES.Sync_SharedVaultUserRepository),
-          container.get(TYPES.Sync_SharedVaultInviteRepository),
-          container.get(TYPES.Sync_RemoveSharedVaultUser),
+          container.get<SharedVaultRepositoryInterface>(TYPES.Sync_SharedVaultRepository),
+          container.get<SharedVaultUserRepositoryInterface>(TYPES.Sync_SharedVaultUserRepository),
+          container.get<SharedVaultInviteRepositoryInterface>(TYPES.Sync_SharedVaultInviteRepository),
+          container.get<RemoveUserFromSharedVault>(TYPES.Sync_RemoveSharedVaultUser),
+          container.get<DeclineInviteToSharedVault>(TYPES.Sync_DeclineInviteToSharedVault),
+        ),
+      )
+    container
+      .bind<DeleteSharedVaults>(TYPES.Sync_DeleteSharedVaults)
+      .toConstantValue(
+        new DeleteSharedVaults(
+          container.get<SharedVaultRepositoryInterface>(TYPES.Sync_SharedVaultRepository),
+          container.get<DeleteSharedVault>(TYPES.Sync_DeleteSharedVault),
         ),
       )
     container
@@ -902,6 +912,7 @@ export class ContainerConfigLoader {
       .toConstantValue(
         new AccountDeletionRequestedEventHandler(
           container.get<ItemRepositoryResolverInterface>(TYPES.Sync_ItemRepositoryResolver),
+          container.get<DeleteSharedVaults>(TYPES.Sync_DeleteSharedVaults),
           container.get<Logger>(TYPES.Sync_Logger),
         ),
       )
