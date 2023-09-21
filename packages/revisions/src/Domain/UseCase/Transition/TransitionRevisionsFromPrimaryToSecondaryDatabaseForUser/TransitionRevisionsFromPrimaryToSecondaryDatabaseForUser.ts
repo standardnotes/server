@@ -59,8 +59,6 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
 
     const updatedRevisionsInSecondaryCount = updatedRevisionsInSecondary.length
 
-    await this.allowForSecondaryDatabaseToCatchUp()
-
     const migrationTimeStart = this.timer.getTimestampInMicroseconds()
 
     this.logger.info(`[${dto.userUuid}] Migrating revisions`)
@@ -194,8 +192,8 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
   }
 
   private async allowForSecondaryDatabaseToCatchUp(): Promise<void> {
-    const tenSecondsInMillisecondsToRebuildIndexes = 10_000
-    await this.timer.sleep(tenSecondsInMillisecondsToRebuildIndexes)
+    const twoSecondsInMilliseconds = 2_000
+    await this.timer.sleep(twoSecondsInMilliseconds)
   }
 
   private async hasAlreadyDataInSecondaryDatabase(userUuid: Uuid): Promise<boolean> {

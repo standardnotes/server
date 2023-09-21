@@ -57,8 +57,6 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
     }
     const updatedItemsInSecondaryCount = updatedItemsInSecondary.length
 
-    await this.allowForSecondaryDatabaseToCatchUp()
-
     const migrationTimeStart = this.timer.getTimestampInMicroseconds()
 
     this.logger.info(`[${dto.userUuid}] Migrating items`)
@@ -133,8 +131,8 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
   }
 
   private async allowForSecondaryDatabaseToCatchUp(): Promise<void> {
-    const tenSecondsInMillisecondsToRebuildIndexes = 10_000
-    await this.timer.sleep(tenSecondsInMillisecondsToRebuildIndexes)
+    const twoSecondsInMilliseconds = 2_000
+    await this.timer.sleep(twoSecondsInMilliseconds)
   }
 
   private async getNewItemsCreatedInSecondaryDatabase(userUuid: Uuid): Promise<{
