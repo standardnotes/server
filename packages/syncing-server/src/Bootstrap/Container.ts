@@ -1143,10 +1143,13 @@ export class ContainerConfigLoader {
         .bind<BaseSharedVaultUsersController>(TYPES.Sync_BaseSharedVaultUsersController)
         .toConstantValue(
           new BaseSharedVaultUsersController(
-            container.get(TYPES.Sync_GetSharedVaultUsers),
-            container.get(TYPES.Sync_RemoveSharedVaultUser),
-            container.get(TYPES.Sync_SharedVaultUserHttpMapper),
-            container.get(TYPES.Sync_ControllerContainer),
+            container.get<GetSharedVaultUsers>(TYPES.Sync_GetSharedVaultUsers),
+            container.get<RemoveUserFromSharedVault>(TYPES.Sync_RemoveSharedVaultUser),
+            container.get<DesignateSurvivor>(TYPES.Sync_DesignateSurvivor),
+            container.get<MapperInterface<SharedVaultUser, SharedVaultUserHttpRepresentation>>(
+              TYPES.Sync_SharedVaultUserHttpMapper,
+            ),
+            container.get<ControllerContainerInterface>(TYPES.Sync_ControllerContainer),
           ),
         )
       container
