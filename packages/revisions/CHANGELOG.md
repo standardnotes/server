@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.36.2](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.36.1...@standardnotes/revisions-server@1.36.2) (2023-09-21)
+
+### Bug Fixes
+
+* **revisions:** rename revisions table to all users stuck mid-migration process - fixes [#836](https://github.com/standardnotes/server/issues/836) ([#842](https://github.com/standardnotes/server/issues/842)) ([a621cf1](https://github.com/standardnotes/server/commit/a621cf1e3b891c450272e9762e4a71a199ea2932))
+
 ## [1.36.1](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.36.0...@standardnotes/revisions-server@1.36.1) (2023-09-21)
 
 ### Bug Fixes
