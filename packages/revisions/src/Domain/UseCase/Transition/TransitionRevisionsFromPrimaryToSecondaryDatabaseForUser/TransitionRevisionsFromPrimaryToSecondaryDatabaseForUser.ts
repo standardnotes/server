@@ -155,6 +155,12 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
                 (alreadyExistingRevisionUuid) => alreadyExistingRevisionUuid === revision.id.toString(),
               )
             ) {
+              this.logger.info(
+                `[${
+                  userUuid.value
+                }] Skipping saving revision ${revision.id.toString()} as it is already existing in primary and secondary database`,
+              )
+
               continue
             }
 
