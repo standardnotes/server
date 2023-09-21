@@ -27,6 +27,13 @@ export class TypeORMSharedVaultUser {
   declare permission: string
 
   @Column({
+    name: 'is_designated_survivor',
+    type: 'boolean',
+    default: false,
+  })
+  declare isDesignatedSurvivor: boolean
+
+  @Column({
     name: 'created_at_timestamp',
     type: 'bigint',
   })

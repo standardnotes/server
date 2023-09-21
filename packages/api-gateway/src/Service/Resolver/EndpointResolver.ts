@@ -89,6 +89,10 @@ export class EndpointResolver implements EndpointResolverInterface {
     // Shared Vault Users Controller
     ['[GET]:shared-vaults/:sharedVaultUuid/users', 'sync.shared-vault-users.get-users'],
     ['[DELETE]:shared-vaults/:sharedVaultUuid/users/:userUuid', 'sync.shared-vault-users.remove-user'],
+    [
+      '[POST]:shared-vaults/:sharedVaultUuid/users/:userUuid/designate-survivor',
+      'sync.shared-vault-users.designate-survivor',
+    ],
   ])
 
   resolveEndpointOrMethodIdentifier(method: string, endpoint: string, ...params: string[]): string {

@@ -161,6 +161,7 @@ const TYPES = {
   Auth_UpdateTransitionStatus: Symbol.for('Auth_UpdateTransitionStatus'),
   Auth_AddSharedVaultUser: Symbol.for('Auth_AddSharedVaultUser'),
   Auth_RemoveSharedVaultUser: Symbol.for('Auth_RemoveSharedVaultUser'),
+  Auth_DesignateSurvivor: Symbol.for('Auth_DesignateSurvivor'),
   // Handlers
   Auth_UserRegisteredEventHandler: Symbol.for('Auth_UserRegisteredEventHandler'),
   Auth_AccountDeletionRequestedEventHandler: Symbol.for('Auth_AccountDeletionRequestedEventHandler'),
@@ -192,6 +193,9 @@ const TYPES = {
   Auth_TransitionStatusUpdatedEventHandler: Symbol.for('Auth_TransitionStatusUpdatedEventHandler'),
   Auth_UserAddedToSharedVaultEventHandler: Symbol.for('Auth_UserAddedToSharedVaultEventHandler'),
   Auth_UserRemovedFromSharedVaultEventHandler: Symbol.for('Auth_UserRemovedFromSharedVaultEventHandler'),
+  Auth_UserDesignatedAsSurvivorInSharedVaultEventHandler: Symbol.for(
+    'Auth_UserDesignatedAsSurvivorInSharedVaultEventHandler',
+  ),
   // Services
   Auth_DeviceDetector: Symbol.for('Auth_DeviceDetector'),
   Auth_SessionService: Symbol.for('Auth_SessionService'),

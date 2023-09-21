@@ -6,11 +6,13 @@ import { ControllerContainerInterface, MapperInterface, SharedVaultUser } from '
 import { SharedVaultUserHttpRepresentation } from '../../../Mapping/Http/SharedVaultUserHttpRepresentation'
 import { GetSharedVaultUsers } from '../../../Domain/UseCase/SharedVaults/GetSharedVaultUsers/GetSharedVaultUsers'
 import { RemoveUserFromSharedVault } from '../../../Domain/UseCase/SharedVaults/RemoveUserFromSharedVault/RemoveUserFromSharedVault'
+import { DesignateSurvivor } from '../../../Domain/UseCase/SharedVaults/DesignateSurvivor/DesignateSurvivor'
 
 export class BaseSharedVaultUsersController extends BaseHttpController {
   constructor(
     protected getSharedVaultUsersUseCase: GetSharedVaultUsers,
     protected removeUserFromSharedVaultUseCase: RemoveUserFromSharedVault,
+    protected designateSurvivorUseCase: DesignateSurvivor,
     protected sharedVaultUserHttpMapper: MapperInterface<SharedVaultUser, SharedVaultUserHttpRepresentation>,
     private controllerContainer?: ControllerContainerInterface,
   ) {
@@ -22,6 +24,7 @@ export class BaseSharedVaultUsersController extends BaseHttpController {
         'sync.shared-vault-users.remove-user',
         this.removeUserFromSharedVault.bind(this),
       )
+      this.controllerContainer.register('sync.shared-vault-users.designate-survivor', this.designateSurvivor.bind(this))
     }
   }
 
@@ -66,6 +69,29 @@ export class BaseSharedVaultUsersController extends BaseHttpController {
     }
 
     response.setHeader('x-invalidate-cache', request.params.userUuid)
+
+    return this.json({
+      success: true,
+    })
+  }
+
+  async designateSurvivor(request: Request, response: Response): Promise<results.JsonResult> {
+    const result = await this.designateSurvivorUseCase.execute({
+      sharedVaultUuid: request.params.sharedVaultUuid,
+      userUuid: request.params.userUuid,
+      originatorUuid: response.locals.user.uuid,
+    })
+
+    if (result.isFailed()) {
+      return this.json(
+        {
+          error: {
+            message: result.getError(),
+          },
+        },
+        HttpStatusCode.BadRequest,
+      )
+    }
 
     return this.json({
       success: true,
