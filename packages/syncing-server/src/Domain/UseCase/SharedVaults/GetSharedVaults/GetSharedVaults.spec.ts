@@ -19,6 +19,7 @@ describe('GetSharedVaults', () => {
       sharedVaultUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
       permission: SharedVaultUserPermission.create(SharedVaultUserPermission.PERMISSIONS.Admin).getValue(),
       timestamps: Timestamps.create(123, 123).getValue(),
+      isDesignatedSurvivor: false,
     }).getValue()
     sharedVaultUserRepository = {} as jest.Mocked<SharedVaultUserRepositoryInterface>
     sharedVaultUserRepository.findByUserUuid = jest.fn().mockResolvedValue([sharedVaultUser])
