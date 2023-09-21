@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.36.1](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.36.0...@standardnotes/revisions-server@1.36.1) (2023-09-21)
+
+### Bug Fixes
+
+* secondary database catch up time ([880db10](https://github.com/standardnotes/server/commit/880db1038a39d4610a2593489a18e207487347a2))
+
 # [1.36.0](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.35.8...@standardnotes/revisions-server@1.36.0) (2023-09-20)
 
 ### Features
