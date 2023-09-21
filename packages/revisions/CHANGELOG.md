@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.36.4](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.36.3...@standardnotes/revisions-server@1.36.4) (2023-09-21)
+
+### Bug Fixes
+
+* **revisions:** add log info about skipping already existing revision ([d0dba1b](https://github.com/standardnotes/server/commit/d0dba1b66df0fb4ab64ede8f0d4e1c4e2a23ad3c))
+
 ## [1.36.3](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.36.2...@standardnotes/revisions-server@1.36.3) (2023-09-21)
 
 **Note:** Version bump only for package @standardnotes/revisions-server
