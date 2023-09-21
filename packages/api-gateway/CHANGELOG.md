@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.75.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.74.17...@standardnotes/api-gateway@1.75.0) (2023-09-21)
+
+### Features
+
+* add designating a survivor in shared vault ([#841](https://github.com/standardnotes/api-gateway/issues/841)) ([230c96d](https://github.com/standardnotes/api-gateway/commit/230c96dcf1d8faed9ce8fe288549226da70317e6))
+
 ## [1.74.17](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.74.16...@standardnotes/api-gateway@1.74.17) (2023-09-20)
 
 **Note:** Version bump only for package @standardnotes/api-gateway

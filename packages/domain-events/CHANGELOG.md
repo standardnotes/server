@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.129.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.128.0...@standardnotes/domain-events@2.129.0) (2023-09-21)
+
+### Features
+
+* add designating a survivor in shared vault ([#841](https://github.com/standardnotes/server/issues/841)) ([230c96d](https://github.com/standardnotes/server/commit/230c96dcf1d8faed9ce8fe288549226da70317e6))
+
 # [2.128.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.127.0...@standardnotes/domain-events@2.128.0) (2023-09-20)
 
 ### Features
