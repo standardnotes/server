@@ -12,6 +12,7 @@ import {
   SharedVaultRemovedEvent,
   TransitionStatusUpdatedEvent,
   UserAddedToSharedVaultEvent,
+  UserDesignatedAsSurvivorInSharedVaultEvent,
   UserInvitedToSharedVaultEvent,
   UserRemovedFromSharedVaultEvent,
   WebSocketMessageRequestedEvent,
@@ -21,6 +22,25 @@ import { DomainEventFactoryInterface } from './DomainEventFactoryInterface'
 
 export class DomainEventFactory implements DomainEventFactoryInterface {
   constructor(private timer: TimerInterface) {}
+
+  createUserDesignatedAsSurvivorInSharedVaultEvent(dto: {
+    sharedVaultUuid: string
+    userUuid: string
+    timestamp: number
+  }): UserDesignatedAsSurvivorInSharedVaultEvent {
+    return {
+      type: 'USER_DESIGNATED_AS_SURVIVOR_IN_SHARED_VAULT',
+      createdAt: this.timer.getUTCDate(),
+      meta: {
+        correlation: {
+          userIdentifier: dto.userUuid,
+          userIdentifierType: 'uuid',
+        },
+        origin: DomainEventService.SyncingServer,
+      },
+      payload: dto,
+    }
+  }
 
   createSharedVaultRemovedEvent(dto: { sharedVaultUuid: string }): SharedVaultRemovedEvent {
     return {

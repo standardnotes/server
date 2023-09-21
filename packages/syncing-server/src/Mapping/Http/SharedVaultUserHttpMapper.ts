@@ -13,6 +13,7 @@ export class SharedVaultUserHttpMapper implements MapperInterface<SharedVaultUse
       user_uuid: domain.props.userUuid.value,
       permission: domain.props.permission.value,
       shared_vault_uuid: domain.props.sharedVaultUuid.value,
+      is_designated_survivor: domain.props.isDesignatedSurvivor,
       created_at_timestamp: domain.props.timestamps.createdAt,
       updated_at_timestamp: domain.props.timestamps.updatedAt,
     }

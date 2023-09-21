@@ -6,5 +6,6 @@ export interface SharedVaultUserProps {
   sharedVaultUuid: Uuid
   userUuid: Uuid
   permission: SharedVaultUserPermission
+  isDesignatedSurvivor: boolean
   timestamps: Timestamps
 }

@@ -41,6 +41,7 @@ export class SharedVaultUserPersistenceMapper implements MapperInterface<SharedV
         sharedVaultUuid,
         permission,
         timestamps,
+        isDesignatedSurvivor: !!projection.isDesignatedSurvivor,
       },
       new UniqueEntityId(projection.uuid),
     )
@@ -61,6 +62,7 @@ export class SharedVaultUserPersistenceMapper implements MapperInterface<SharedV
     typeorm.permission = domain.props.permission.value
     typeorm.createdAtTimestamp = domain.props.timestamps.createdAt
     typeorm.updatedAtTimestamp = domain.props.timestamps.updatedAt
+    typeorm.isDesignatedSurvivor = !!domain.props.isDesignatedSurvivor
 
     return typeorm
   }

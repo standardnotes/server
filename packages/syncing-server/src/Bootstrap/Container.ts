@@ -168,6 +168,7 @@ import { TransitionRequestedEventHandler } from '../Domain/Handler/TransitionReq
 import { DeleteSharedVaults } from '../Domain/UseCase/SharedVaults/DeleteSharedVaults/DeleteSharedVaults'
 import { RemoveItemsFromSharedVault } from '../Domain/UseCase/SharedVaults/RemoveItemsFromSharedVault/RemoveItemsFromSharedVault'
 import { SharedVaultRemovedEventHandler } from '../Domain/Handler/SharedVaultRemovedEventHandler'
+import { DesignateSurvivor } from '../Domain/UseCase/SharedVaults/DesignateSurvivor/DesignateSurvivor'
 
 export class ContainerConfigLoader {
   private readonly DEFAULT_CONTENT_SIZE_TRANSFER_LIMIT = 10_000_000
@@ -863,6 +864,16 @@ export class ContainerConfigLoader {
           isSecondaryDatabaseEnabled
             ? container.get<ItemRepositoryInterface>(TYPES.Sync_MongoDBItemRepository)
             : container.get<ItemRepositoryInterface>(TYPES.Sync_SQLItemRepository),
+        ),
+      )
+    container
+      .bind<DesignateSurvivor>(TYPES.Sync_DesignateSurvivor)
+      .toConstantValue(
+        new DesignateSurvivor(
+          container.get<SharedVaultUserRepositoryInterface>(TYPES.Sync_SharedVaultUserRepository),
+          container.get<TimerInterface>(TYPES.Sync_Timer),
+          container.get<DomainEventFactoryInterface>(TYPES.Sync_DomainEventFactory),
+          container.get<DomainEventPublisherInterface>(TYPES.Sync_DomainEventPublisher),
         ),
       )
 

@@ -10,6 +10,24 @@ export class TypeORMSharedVaultUserRepository implements SharedVaultUserReposito
     private mapper: MapperInterface<SharedVaultUser, TypeORMSharedVaultUser>,
   ) {}
 
+  async findDesignatedSurvivorBySharedVaultUuid(sharedVaultUuid: Uuid): Promise<SharedVaultUser | null> {
+    const persistence = await this.ormRepository
+      .createQueryBuilder('shared_vault_user')
+      .where('shared_vault_user.shared_vault_uuid = :sharedVaultUuid', {
+        sharedVaultUuid: sharedVaultUuid.value,
+      })
+      .andWhere('shared_vault_user.is_designated_survivor = :isDesignatedSurvivor', {
+        isDesignatedSurvivor: true,
+      })
+      .getOne()
+
+    if (persistence === null) {
+      return null
+    }
+
+    return this.mapper.toDomain(persistence)
+  }
+
   async findByUserUuid(userUuid: Uuid): Promise<SharedVaultUser[]> {
     const persistence = await this.ormRepository
       .createQueryBuilder('shared_vault_user')

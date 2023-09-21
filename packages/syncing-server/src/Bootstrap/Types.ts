@@ -87,6 +87,7 @@ const TYPES = {
   ),
   Sync_SendEventToClient: Symbol.for('Sync_SendEventToClient'),
   Sync_RemoveItemsFromSharedVault: Symbol.for('Sync_RemoveItemsFromSharedVault'),
+  Sync_DesignateSurvivor: Symbol.for('Sync_DesignateSurvivor'),
   // Handlers
   Sync_AccountDeletionRequestedEventHandler: Symbol.for('Sync_AccountDeletionRequestedEventHandler'),
   Sync_DuplicateItemSyncedEventHandler: Symbol.for('Sync_DuplicateItemSyncedEventHandler'),

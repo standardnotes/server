@@ -65,6 +65,7 @@ describe('SharedVaultFilter', () => {
       sharedVaultUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
       userUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
       timestamps: Timestamps.create(123, 123).getValue(),
+      isDesignatedSurvivor: false,
     }).getValue()
 
     determineSharedVaultOperationOnItem = {} as jest.Mocked<DetermineSharedVaultOperationOnItem>
@@ -329,6 +330,7 @@ describe('SharedVaultFilter', () => {
         sharedVaultUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
         userUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
         timestamps: Timestamps.create(123, 123).getValue(),
+        isDesignatedSurvivor: false,
       }).getValue()
 
       itemHash = ItemHash.create({
@@ -489,6 +491,7 @@ describe('SharedVaultFilter', () => {
         sharedVaultUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
         userUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
         timestamps: Timestamps.create(123, 123).getValue(),
+        isDesignatedSurvivor: false,
       }).getValue()
 
       itemHash = ItemHash.create({
@@ -649,6 +652,7 @@ describe('SharedVaultFilter', () => {
         sharedVaultUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
         userUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
         timestamps: Timestamps.create(123, 123).getValue(),
+        isDesignatedSurvivor: false,
       }).getValue()
 
       itemHash = ItemHash.create({
@@ -734,6 +738,7 @@ describe('SharedVaultFilter', () => {
         sharedVaultUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
         userUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
         timestamps: Timestamps.create(123, 123).getValue(),
+        isDesignatedSurvivor: false,
       }).getValue()
 
       sharedVaultUserRepository.findByUserUuidAndSharedVaultUuid = jest.fn().mockResolvedValue(sharedVaultUser)
@@ -802,6 +807,7 @@ describe('SharedVaultFilter', () => {
         sharedVaultUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
         userUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
         timestamps: Timestamps.create(123, 123).getValue(),
+        isDesignatedSurvivor: false,
       }).getValue()
 
       itemHash = ItemHash.create({

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { inject } from 'inversify'
-import { BaseHttpController, controller, httpDelete, httpGet } from 'inversify-express-utils'
+import { BaseHttpController, controller, httpDelete, httpGet, httpPost } from 'inversify-express-utils'
 import { TYPES } from '../../Bootstrap/Types'
 import { ServiceProxyInterface } from '../../Service/Http/ServiceProxyInterface'
 import { EndpointResolverInterface } from '../../Service/Resolver/EndpointResolverInterface'
@@ -36,6 +36,21 @@ export class SharedVaultUsersController extends BaseHttpController {
       this.endpointResolver.resolveEndpointOrMethodIdentifier(
         'DELETE',
         'shared-vaults/:sharedVaultUuid/users/:userUuid',
+        request.params.sharedVaultUuid,
+        request.params.userUuid,
+      ),
+      request.body,
+    )
+  }
+
+  @httpPost('/:userUuid/designate-survivor')
+  async designateSurvivor(request: Request, response: Response): Promise<void> {
+    await this.httpService.callSyncingServer(
+      request,
+      response,
+      this.endpointResolver.resolveEndpointOrMethodIdentifier(
+        'POST',
+        'shared-vaults/:sharedVaultUuid/users/:userUuid/designate-survivor',
         request.params.sharedVaultUuid,
         request.params.userUuid,
       ),

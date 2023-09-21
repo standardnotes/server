@@ -271,6 +271,8 @@ import { AddSharedVaultUser } from '../Domain/UseCase/AddSharedVaultUser/AddShar
 import { RemoveSharedVaultUser } from '../Domain/UseCase/RemoveSharedVaultUser/RemoveSharedVaultUser'
 import { UserAddedToSharedVaultEventHandler } from '../Domain/Handler/UserAddedToSharedVaultEventHandler'
 import { UserRemovedFromSharedVaultEventHandler } from '../Domain/Handler/UserRemovedFromSharedVaultEventHandler'
+import { DesignateSurvivor } from '../Domain/UseCase/DesignateSurvivor/DesignateSurvivor'
+import { UserDesignatedAsSurvivorInSharedVaultEventHandler } from '../Domain/Handler/UserDesignatedAsSurvivorInSharedVaultEventHandler'
 
 export class ContainerConfigLoader {
   constructor(private mode: 'server' | 'worker' = 'server') {}
@@ -957,6 +959,14 @@ export class ContainerConfigLoader {
           container.get<SharedVaultUserRepositoryInterface>(TYPES.Auth_SharedVaultUserRepository),
         ),
       )
+    container
+      .bind<DesignateSurvivor>(TYPES.Auth_DesignateSurvivor)
+      .toConstantValue(
+        new DesignateSurvivor(
+          container.get<SharedVaultUserRepositoryInterface>(TYPES.Auth_SharedVaultUserRepository),
+          container.get<TimerInterface>(TYPES.Auth_Timer),
+        ),
+      )
 
     // Controller
     container
@@ -1122,6 +1132,16 @@ export class ContainerConfigLoader {
           container.get<winston.Logger>(TYPES.Auth_Logger),
         ),
       )
+    container
+      .bind<UserDesignatedAsSurvivorInSharedVaultEventHandler>(
+        TYPES.Auth_UserDesignatedAsSurvivorInSharedVaultEventHandler,
+      )
+      .toConstantValue(
+        new UserDesignatedAsSurvivorInSharedVaultEventHandler(
+          container.get<DesignateSurvivor>(TYPES.Auth_DesignateSurvivor),
+          container.get<winston.Logger>(TYPES.Auth_Logger),
+        ),
+      )
 
     const eventHandlers: Map<string, DomainEventHandlerInterface> = new Map([
       ['USER_REGISTERED', container.get(TYPES.Auth_UserRegisteredEventHandler)],
@@ -1156,6 +1176,10 @@ export class ContainerConfigLoader {
       ['TRANSITION_STATUS_UPDATED', container.get(TYPES.Auth_TransitionStatusUpdatedEventHandler)],
       ['USER_ADDED_TO_SHARED_VAULT', container.get(TYPES.Auth_UserAddedToSharedVaultEventHandler)],
       ['USER_REMOVED_FROM_SHARED_VAULT', container.get(TYPES.Auth_UserRemovedFromSharedVaultEventHandler)],
+      [
+        'USER_DESIGNATED_AS_SURVIVOR_IN_SHARED_VAULT',
+        container.get(TYPES.Auth_UserDesignatedAsSurvivorInSharedVaultEventHandler),
+      ],
     ])
 
     if (isConfiguredForHomeServer) {

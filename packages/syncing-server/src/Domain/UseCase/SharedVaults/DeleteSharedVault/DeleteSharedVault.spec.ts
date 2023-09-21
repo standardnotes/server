@@ -49,6 +49,7 @@ describe('DeleteSharedVault', () => {
       sharedVaultUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
       userUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
       timestamps: Timestamps.create(123, 123).getValue(),
+      isDesignatedSurvivor: false,
     }).getValue()
     sharedVaultUserRepository = {} as jest.Mocked<SharedVaultUserRepositoryInterface>
     sharedVaultUserRepository.findBySharedVaultUuid = jest.fn().mockResolvedValue([sharedVaultUser])

@@ -43,6 +43,7 @@ export class AddSharedVaultUser implements UseCaseInterface<void> {
       sharedVaultUuid,
       permission,
       timestamps,
+      isDesignatedSurvivor: false,
     })
     if (sharedVaultUserOrError.isFailed()) {
       return Result.fail(sharedVaultUserOrError.getError())

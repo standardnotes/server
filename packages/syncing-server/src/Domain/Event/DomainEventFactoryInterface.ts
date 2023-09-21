@@ -10,6 +10,7 @@ import {
   SharedVaultRemovedEvent,
   TransitionStatusUpdatedEvent,
   UserAddedToSharedVaultEvent,
+  UserDesignatedAsSurvivorInSharedVaultEvent,
   UserInvitedToSharedVaultEvent,
   UserRemovedFromSharedVaultEvent,
   WebSocketMessageRequestedEvent,
@@ -102,4 +103,9 @@ export interface DomainEventFactoryInterface {
     userUuid: string
   }): ItemRemovedFromSharedVaultEvent
   createSharedVaultRemovedEvent(dto: { sharedVaultUuid: string }): SharedVaultRemovedEvent
+  createUserDesignatedAsSurvivorInSharedVaultEvent(dto: {
+    sharedVaultUuid: string
+    userUuid: string
+    timestamp: number
+  }): UserDesignatedAsSurvivorInSharedVaultEvent
 }
