@@ -8,6 +8,7 @@ import { SharedVaultInviteRepositoryInterface } from '../../../SharedVault/User/
 import { RemoveUserFromSharedVault } from '../RemoveUserFromSharedVault/RemoveUserFromSharedVault'
 import { DeclineInviteToSharedVault } from '../DeclineInviteToSharedVault/DeclineInviteToSharedVault'
 import { DomainEventFactoryInterface } from '../../../Event/DomainEventFactoryInterface'
+import { TransferSharedVault } from '../TransferSharedVault/TransferSharedVault'
 
 export class DeleteSharedVault implements UseCaseInterface<void> {
   constructor(
@@ -18,6 +19,7 @@ export class DeleteSharedVault implements UseCaseInterface<void> {
     private declineInviteToSharedVault: DeclineInviteToSharedVault,
     private domainEventFactory: DomainEventFactoryInterface,
     private domainEventPublisher: DomainEventPublisherInterface,
+    private transferSharedVault: TransferSharedVault,
   ) {}
 
   async execute(dto: DeleteSharedVaultDTO): Promise<Result<void>> {
@@ -42,13 +44,11 @@ export class DeleteSharedVault implements UseCaseInterface<void> {
       return Result.fail('Shared vault does not belong to the user')
     }
 
-    const sharedVaultUsers = await this.sharedVaultUserRepository.findBySharedVaultUuid(sharedVaultUuid)
-    for (const sharedVaultUser of sharedVaultUsers) {
-      const result = await this.removeUserFromSharedVault.execute({
-        originatorUuid: originatorUuid.value,
-        sharedVaultUuid: sharedVaultUuid.value,
-        userUuid: sharedVaultUser.props.userUuid.value,
-        forceRemoveOwner: true,
+    const sharedVaultInvites = await this.sharedVaultInviteRepository.findBySharedVaultUuid(sharedVaultUuid)
+    for (const sharedVaultInvite of sharedVaultInvites) {
+      const result = await this.declineInviteToSharedVault.execute({
+        inviteUuid: sharedVaultInvite.id.toString(),
+        userUuid: sharedVaultInvite.props.userUuid.value,
       })
 
       if (result.isFailed()) {
@@ -56,11 +56,39 @@ export class DeleteSharedVault implements UseCaseInterface<void> {
       }
     }
 
-    const sharedVaultInvites = await this.sharedVaultInviteRepository.findBySharedVaultUuid(sharedVaultUuid)
-    for (const sharedVaultInvite of sharedVaultInvites) {
-      const result = await this.declineInviteToSharedVault.execute({
-        inviteUuid: sharedVaultInvite.id.toString(),
-        userUuid: sharedVaultInvite.props.userUuid.value,
+    const sharedVaultDesignatedSurvivor =
+      await this.sharedVaultUserRepository.findDesignatedSurvivorBySharedVaultUuid(sharedVaultUuid)
+    if (sharedVaultDesignatedSurvivor) {
+      const result = await this.transferSharedVault.execute({
+        sharedVaultUid: sharedVaultUuid.value,
+        fromUserUuid: originatorUuid.value,
+        toUserUuid: sharedVaultDesignatedSurvivor.props.userUuid.value,
+      })
+
+      if (result.isFailed()) {
+        return Result.fail(result.getError())
+      }
+
+      const removingOwnerFromSharedVaultResult = await this.removeUserFromSharedVault.execute({
+        originatorUuid: originatorUuid.value,
+        sharedVaultUuid: sharedVaultUuid.value,
+        userUuid: originatorUuid.value,
+        forceRemoveOwner: true,
+      })
+      if (removingOwnerFromSharedVaultResult.isFailed()) {
+        return Result.fail(removingOwnerFromSharedVaultResult.getError())
+      }
+
+      return Result.ok()
+    }
+
+    const sharedVaultUsers = await this.sharedVaultUserRepository.findBySharedVaultUuid(sharedVaultUuid)
+    for (const sharedVaultUser of sharedVaultUsers) {
+      const result = await this.removeUserFromSharedVault.execute({
+        originatorUuid: originatorUuid.value,
+        sharedVaultUuid: sharedVaultUuid.value,
+        userUuid: sharedVaultUser.props.userUuid.value,
+        forceRemoveOwner: true,
       })
 
       if (result.isFailed()) {

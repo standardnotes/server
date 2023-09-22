@@ -170,6 +170,7 @@ import { RemoveItemsFromSharedVault } from '../Domain/UseCase/SharedVaults/Remov
 import { SharedVaultRemovedEventHandler } from '../Domain/Handler/SharedVaultRemovedEventHandler'
 import { DesignateSurvivor } from '../Domain/UseCase/SharedVaults/DesignateSurvivor/DesignateSurvivor'
 import { RemoveUserFromSharedVaults } from '../Domain/UseCase/SharedVaults/RemoveUserFromSharedVaults/RemoveUserFromSharedVaults'
+import { TransferSharedVault } from '../Domain/UseCase/SharedVaults/TransferSharedVault/TransferSharedVault'
 
 export class ContainerConfigLoader {
   private readonly DEFAULT_CONTENT_SIZE_TRANSFER_LIMIT = 10_000_000
@@ -783,27 +784,6 @@ export class ContainerConfigLoader {
         ),
       )
     container
-      .bind<DeleteSharedVault>(TYPES.Sync_DeleteSharedVault)
-      .toConstantValue(
-        new DeleteSharedVault(
-          container.get<SharedVaultRepositoryInterface>(TYPES.Sync_SharedVaultRepository),
-          container.get<SharedVaultUserRepositoryInterface>(TYPES.Sync_SharedVaultUserRepository),
-          container.get<SharedVaultInviteRepositoryInterface>(TYPES.Sync_SharedVaultInviteRepository),
-          container.get<RemoveUserFromSharedVault>(TYPES.Sync_RemoveSharedVaultUser),
-          container.get<DeclineInviteToSharedVault>(TYPES.Sync_DeclineInviteToSharedVault),
-          container.get<DomainEventFactoryInterface>(TYPES.Sync_DomainEventFactory),
-          container.get<DomainEventPublisherInterface>(TYPES.Sync_DomainEventPublisher),
-        ),
-      )
-    container
-      .bind<DeleteSharedVaults>(TYPES.Sync_DeleteSharedVaults)
-      .toConstantValue(
-        new DeleteSharedVaults(
-          container.get<SharedVaultRepositoryInterface>(TYPES.Sync_SharedVaultRepository),
-          container.get<DeleteSharedVault>(TYPES.Sync_DeleteSharedVault),
-        ),
-      )
-    container
       .bind<CreateSharedVaultFileValetToken>(TYPES.Sync_CreateSharedVaultFileValetToken)
       .toConstantValue(
         new CreateSharedVaultFileValetToken(
@@ -885,6 +865,37 @@ export class ContainerConfigLoader {
           container.get<SharedVaultUserRepositoryInterface>(TYPES.Sync_SharedVaultUserRepository),
           container.get<RemoveUserFromSharedVault>(TYPES.Sync_RemoveSharedVaultUser),
           container.get<Logger>(TYPES.Sync_Logger),
+        ),
+      )
+    container
+      .bind<TransferSharedVault>(TYPES.Sync_TransferSharedVault)
+      .toConstantValue(
+        new TransferSharedVault(
+          container.get<SharedVaultRepositoryInterface>(TYPES.Sync_SharedVaultRepository),
+          container.get<SharedVaultUserRepositoryInterface>(TYPES.Sync_SharedVaultUserRepository),
+          container.get<TimerInterface>(TYPES.Sync_Timer),
+        ),
+      )
+    container
+      .bind<DeleteSharedVault>(TYPES.Sync_DeleteSharedVault)
+      .toConstantValue(
+        new DeleteSharedVault(
+          container.get<SharedVaultRepositoryInterface>(TYPES.Sync_SharedVaultRepository),
+          container.get<SharedVaultUserRepositoryInterface>(TYPES.Sync_SharedVaultUserRepository),
+          container.get<SharedVaultInviteRepositoryInterface>(TYPES.Sync_SharedVaultInviteRepository),
+          container.get<RemoveUserFromSharedVault>(TYPES.Sync_RemoveSharedVaultUser),
+          container.get<DeclineInviteToSharedVault>(TYPES.Sync_DeclineInviteToSharedVault),
+          container.get<DomainEventFactoryInterface>(TYPES.Sync_DomainEventFactory),
+          container.get<DomainEventPublisherInterface>(TYPES.Sync_DomainEventPublisher),
+          container.get<TransferSharedVault>(TYPES.Sync_TransferSharedVault),
+        ),
+      )
+    container
+      .bind<DeleteSharedVaults>(TYPES.Sync_DeleteSharedVaults)
+      .toConstantValue(
+        new DeleteSharedVaults(
+          container.get<SharedVaultRepositoryInterface>(TYPES.Sync_SharedVaultRepository),
+          container.get<DeleteSharedVault>(TYPES.Sync_DeleteSharedVault),
         ),
       )
 
