@@ -1,22 +1,21 @@
 import { AccountDeletionRequestedEvent, DomainEventHandlerInterface } from '@standardnotes/domain-events'
-import { inject, injectable } from 'inversify'
+import { Uuid } from '@standardnotes/domain-core'
 import { Logger } from 'winston'
-import TYPES from '../../Bootstrap/Types'
+
 import { EphemeralSessionRepositoryInterface } from '../Session/EphemeralSessionRepositoryInterface'
 import { RevokedSessionRepositoryInterface } from '../Session/RevokedSessionRepositoryInterface'
 import { SessionRepositoryInterface } from '../Session/SessionRepositoryInterface'
 import { UserRepositoryInterface } from '../User/UserRepositoryInterface'
-import { Uuid } from '@standardnotes/domain-core'
+import { RemoveSharedVaultUser } from '../UseCase/RemoveSharedVaultUser/RemoveSharedVaultUser'
 
-@injectable()
 export class AccountDeletionRequestedEventHandler implements DomainEventHandlerInterface {
   constructor(
-    @inject(TYPES.Auth_UserRepository) private userRepository: UserRepositoryInterface,
-    @inject(TYPES.Auth_SessionRepository) private sessionRepository: SessionRepositoryInterface,
-    @inject(TYPES.Auth_EphemeralSessionRepository)
+    private userRepository: UserRepositoryInterface,
+    private sessionRepository: SessionRepositoryInterface,
     private ephemeralSessionRepository: EphemeralSessionRepositoryInterface,
-    @inject(TYPES.Auth_RevokedSessionRepository) private revokedSessionRepository: RevokedSessionRepositoryInterface,
-    @inject(TYPES.Auth_Logger) private logger: Logger,
+    private revokedSessionRepository: RevokedSessionRepositoryInterface,
+    private removeSharedVaultUser: RemoveSharedVaultUser,
+    private logger: Logger,
   ) {}
 
   async handle(event: AccountDeletionRequestedEvent): Promise<void> {
@@ -37,6 +36,13 @@ export class AccountDeletionRequestedEventHandler implements DomainEventHandlerI
     }
 
     await this.removeSessions(userUuid.value)
+
+    const result = await this.removeSharedVaultUser.execute({
+      userUuid: userUuid.value,
+    })
+    if (result.isFailed()) {
+      this.logger.error(`Could not remove shared vault user: ${result.getError()}`)
+    }
 
     await this.userRepository.remove(user)
 

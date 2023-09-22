@@ -13,21 +13,31 @@ export class RemoveSharedVaultUser implements UseCaseInterface<void> {
     }
     const userUuid = userUuidOrError.getValue()
 
-    const sharedVaultUuidOrError = Uuid.create(dto.sharedVaultUuid)
-    if (sharedVaultUuidOrError.isFailed()) {
-      return Result.fail(sharedVaultUuidOrError.getError())
-    }
-    const sharedVaultUuid = sharedVaultUuidOrError.getValue()
-
-    const sharedVaultUser = await this.sharedVaultUserRepository.findByUserUuidAndSharedVaultUuid({
-      userUuid,
-      sharedVaultUuid,
-    })
-    if (!sharedVaultUser) {
-      return Result.fail('Shared vault user not found')
+    let sharedVaultUuid: Uuid | undefined
+    if (dto.sharedVaultUuid !== undefined) {
+      const sharedVaultUuidOrError = Uuid.create(dto.sharedVaultUuid)
+      if (sharedVaultUuidOrError.isFailed()) {
+        return Result.fail(sharedVaultUuidOrError.getError())
+      }
+      sharedVaultUuid = sharedVaultUuidOrError.getValue()
     }
 
-    await this.sharedVaultUserRepository.remove(sharedVaultUser)
+    if (sharedVaultUuid) {
+      const sharedVaultUser = await this.sharedVaultUserRepository.findByUserUuidAndSharedVaultUuid({
+        userUuid,
+        sharedVaultUuid,
+      })
+      if (!sharedVaultUser) {
+        return Result.fail('Shared vault user not found')
+      }
+
+      await this.sharedVaultUserRepository.remove(sharedVaultUser)
+    } else {
+      const sharedVaultUsers = await this.sharedVaultUserRepository.findByUserUuid(userUuid)
+      for (const sharedVaultUser of sharedVaultUsers) {
+        await this.sharedVaultUserRepository.remove(sharedVaultUser)
+      }
+    }
 
     return Result.ok()
   }

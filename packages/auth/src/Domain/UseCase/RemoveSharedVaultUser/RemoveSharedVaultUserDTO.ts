@@ -1,4 +1,4 @@
 export interface RemoveSharedVaultUserDTO {
-  sharedVaultUuid: string
+  sharedVaultUuid?: string
   userUuid: string
 }
