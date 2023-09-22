@@ -38,7 +38,11 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
     }
     const revisionsToSkipInIntegrityCheck = migrationResult.getValue()
 
+    this.logger.info(`[${dto.userUuid}] Revisions migrated`)
+
     await this.allowForSecondaryDatabaseToCatchUp()
+
+    this.logger.info(`[${dto.userUuid}] Checking integrity between primary and secondary database`)
 
     const integrityCheckResult = await this.checkIntegrityBetweenPrimaryAndSecondaryDatabase(
       userUuid,
