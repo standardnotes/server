@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.104.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.103.1...@standardnotes/syncing-server@1.104.0) (2023-09-22)
+
+### Features
+
+* **syncing-server:** add designated survivors in fetching shared vaults response ([#844](https://github.com/standardnotes/syncing-server-js/issues/844)) ([bcd95cd](https://github.com/standardnotes/syncing-server-js/commit/bcd95cdbe9054d4ca39d5dc0486b6a0c0b6f52da))
+
 ## [1.103.1](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.103.0...@standardnotes/syncing-server@1.103.1) (2023-09-22)
 
 ### Bug Fixes
