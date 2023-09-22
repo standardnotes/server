@@ -24,7 +24,6 @@ services:
       DB_TYPE: "${DB_TYPE}"
       CACHE_TYPE: "${CACHE_TYPE}"
       SECONDARY_DB_ENABLED: "${SECONDARY_DB_ENABLED}"
-      TRANSITION_MODE_ENABLED: "${TRANSITION_MODE_ENABLED}"
     container_name: server-ci
     ports:
       - 3123:3000

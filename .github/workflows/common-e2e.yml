@@ -24,7 +24,6 @@ jobs:
       fail-fast: false
       matrix:
         secondary_db_enabled: [true, false]
-        transition_mode_enabled: [true, false]
     runs-on: ubuntu-latest
 
     services:
@@ -51,7 +50,6 @@ jobs:
         DB_TYPE: mysql
         CACHE_TYPE: redis
         SECONDARY_DB_ENABLED: ${{ matrix.secondary_db_enabled }}
-        TRANSITION_MODE_ENABLED: ${{ matrix.transition_mode_enabled }}
 
     - name: Wait for server to start
       run: docker/is-available.sh http://localhost:3123 $(pwd)/logs
@@ -75,7 +73,6 @@ jobs:
         db_type: [mysql, sqlite]
         cache_type: [redis, memory]
         secondary_db_enabled: [true, false]
-        transition_mode_enabled: [true, false]
 
     runs-on: ubuntu-latest
 
@@ -145,7 +142,6 @@ jobs:
         echo "REDIS_URL=redis://localhost:6379" >> packages/home-server/.env
         echo "CACHE_TYPE=${{ matrix.cache_type }}" >> packages/home-server/.env
         echo "SECONDARY_DB_ENABLED=${{ matrix.secondary_db_enabled }}" >> packages/home-server/.env
-        echo "TRANSITION_MODE_ENABLED=${{ matrix.transition_mode_enabled }}" >> packages/home-server/.env
         echo "MONGO_HOST=localhost" >> packages/home-server/.env
         echo "MONGO_PORT=27017" >> packages/home-server/.env
         echo "MONGO_DATABASE=standardnotes" >> packages/home-server/.env

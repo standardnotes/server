@@ -27,7 +27,6 @@ export class Register implements UseCaseInterface {
     @inject(TYPES.Auth_DISABLE_USER_REGISTRATION) private disableUserRegistration: boolean,
     @inject(TYPES.Auth_SettingService) private settingService: SettingServiceInterface,
     @inject(TYPES.Auth_Timer) private timer: TimerInterface,
-    @inject(TYPES.Auth_TRANSITION_MODE_ENABLED) private transitionModeEnabled: boolean,
   ) {}
 
   async execute(dto: RegisterDTO): Promise<RegisterResponse> {
@@ -78,11 +77,9 @@ export class Register implements UseCaseInterface {
     if (defaultRole) {
       roles.push(defaultRole)
     }
-    if (this.transitionModeEnabled) {
-      const transitionRole = await this.roleRepository.findOneByName(RoleName.NAMES.TransitionUser)
-      if (transitionRole) {
-        roles.push(transitionRole)
-      }
+    const transitionRole = await this.roleRepository.findOneByName(RoleName.NAMES.TransitionUser)
+    if (transitionRole) {
+      roles.push(transitionRole)
     }
     user.roles = Promise.resolve(roles)
 
