@@ -21,19 +21,9 @@ describe('Register', () => {
   let user: User
   let crypter: CrypterInterface
   let timer: TimerInterface
-  let transitionModeEnabled = false
 
   const createUseCase = () =>
-    new Register(
-      userRepository,
-      roleRepository,
-      authResponseFactory,
-      crypter,
-      false,
-      settingService,
-      timer,
-      transitionModeEnabled,
-    )
+    new Register(userRepository, roleRepository, authResponseFactory, crypter, false, settingService, timer)
 
   beforeEach(() => {
     userRepository = {} as jest.Mocked<UserRepositoryInterface>
@@ -94,45 +84,7 @@ describe('Register', () => {
     expect(settingService.applyDefaultSettingsUponRegistration).toHaveBeenCalled()
   })
 
-  it('should register a new user with default role', async () => {
-    const role = new Role()
-    role.name = 'role1'
-    roleRepository.findOneByName = jest.fn().mockReturnValue(role)
-
-    expect(
-      await createUseCase().execute({
-        email: 'test@test.te',
-        password: 'asdzxc',
-        updatedWithUserAgent: 'Mozilla',
-        apiVersion: '20200115',
-        ephemeralSession: false,
-        version: '004',
-        pwCost: 11,
-        pwSalt: 'qweqwe',
-        pwNonce: undefined,
-      }),
-    ).toEqual({ success: true, authResponse: { foo: 'bar' } })
-
-    expect(userRepository.save).toHaveBeenCalledWith({
-      email: 'test@test.te',
-      encryptedPassword: expect.any(String),
-      encryptedServerKey: 'test',
-      serverEncryptionVersion: 1,
-      pwCost: 11,
-      pwNonce: undefined,
-      pwSalt: 'qweqwe',
-      updatedWithUserAgent: 'Mozilla',
-      uuid: expect.any(String),
-      version: '004',
-      createdAt: new Date(1),
-      updatedAt: new Date(1),
-      roles: Promise.resolve([role]),
-    })
-  })
-
   it('should register a new user with default role and transition role', async () => {
-    transitionModeEnabled = true
-
     const role = new Role()
     role.name = RoleName.NAMES.CoreUser
 
@@ -249,7 +201,6 @@ describe('Register', () => {
         true,
         settingService,
         timer,
-        transitionModeEnabled,
       ).execute({
         email: 'test@test.te',
         password: 'asdzxc',
