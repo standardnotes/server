@@ -20,7 +20,7 @@ export class MessagePersistenceMapper implements MapperInterface<Message, TypeOR
 
     const timestampsOrError = Timestamps.create(projection.createdAtTimestamp, projection.updatedAtTimestamp)
     if (timestampsOrError.isFailed()) {
-      throw new Error(`Failed to create notification from projection: ${timestampsOrError.getError()}`)
+      throw new Error(`Failed to create message from projection: ${timestampsOrError.getError()}`)
     }
     const timestamps = timestampsOrError.getValue()
 
