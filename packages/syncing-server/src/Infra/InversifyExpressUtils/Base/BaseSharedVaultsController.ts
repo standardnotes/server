@@ -36,23 +36,30 @@ export class BaseSharedVaultsController extends BaseHttpController {
   }
 
   async getSharedVaults(_request: Request, response: Response): Promise<results.JsonResult> {
-    const result = await this.getSharedVaultsUseCase.execute({
+    const resultOrError = await this.getSharedVaultsUseCase.execute({
       userUuid: response.locals.user.uuid,
+      includeDesignatedSurvivors: true,
     })
 
-    if (result.isFailed()) {
+    if (resultOrError.isFailed()) {
       return this.json(
         {
           error: {
-            message: result.getError(),
+            message: resultOrError.getError(),
           },
         },
         HttpStatusCode.BadRequest,
       )
     }
 
+    const result = resultOrError.getValue()
+
     return this.json({
-      sharedVaults: result.getValue().map((sharedVault) => this.sharedVaultHttpMapper.toProjection(sharedVault)),
+      sharedVaults: result.sharedVaults.map((sharedVault) => this.sharedVaultHttpMapper.toProjection(sharedVault)),
+      designatedSurvivors: result.designatedSurvivors.map((designatedSurvivor) => ({
+        sharedVaultUuid: designatedSurvivor.props.sharedVaultUuid.value,
+        userUuid: designatedSurvivor.props.userUuid.value,
+      })),
     })
   }
 

@@ -40,7 +40,7 @@ describe('GetSharedVaults', () => {
       userUuid: '00000000-0000-0000-0000-000000000000',
     })
 
-    expect(result.getValue()).toEqual([sharedVault])
+    expect(result.getValue().sharedVaults).toEqual([sharedVault])
   })
 
   it('returns empty array if no shared vaults found', async () => {
@@ -52,7 +52,7 @@ describe('GetSharedVaults', () => {
       userUuid: '00000000-0000-0000-0000-000000000000',
     })
 
-    expect(result.getValue()).toEqual([])
+    expect(result.getValue().sharedVaults).toEqual([])
   })
 
   it('returns error if user uuid is invalid', async () => {
@@ -63,5 +63,18 @@ describe('GetSharedVaults', () => {
     })
 
     expect(result.isFailed()).toBeTruthy()
+  })
+
+  it('should fetch designated survivors if includeDesignatedSurvivors is true', async () => {
+    sharedVaultUserRepository.findDesignatedSurvivorBySharedVaultUuid = jest.fn().mockResolvedValue(sharedVaultUser)
+
+    const useCase = createUseCase()
+
+    const result = await useCase.execute({
+      userUuid: '00000000-0000-0000-0000-000000000000',
+      includeDesignatedSurvivors: true,
+    })
+
+    expect(result.getValue().designatedSurvivors).toEqual([sharedVaultUser])
   })
 })

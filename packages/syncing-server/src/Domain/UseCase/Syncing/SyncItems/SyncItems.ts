@@ -73,12 +73,13 @@ export class SyncItems implements UseCaseInterface<SyncItemsResponse> {
 
       const sharedVaultsOrError = await this.getSharedVaultsUseCase.execute({
         userUuid: dto.userUuid,
+        includeDesignatedSurvivors: false,
         lastSyncTime: getItemsResult.lastSyncTime ?? undefined,
       })
       if (sharedVaultsOrError.isFailed()) {
         return Result.fail(sharedVaultsOrError.getError())
       }
-      const sharedVaults = sharedVaultsOrError.getValue()
+      const sharedVaultsResult = sharedVaultsOrError.getValue()
 
       const sharedVaultInvitesOrError = await this.getSharedVaultInvitesSentToUserUseCase.execute({
         userUuid: dto.userUuid,
@@ -114,7 +115,7 @@ export class SyncItems implements UseCaseInterface<SyncItemsResponse> {
         conflicts: saveItemsResult.conflicts,
         cursorToken: getItemsResult.cursorToken,
         sharedVaultInvites,
-        sharedVaults,
+        sharedVaults: sharedVaultsResult.sharedVaults,
         messages,
         notifications,
       }

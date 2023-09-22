@@ -136,7 +136,7 @@ describe('SyncItems', () => {
     itemRepositoryResolver.resolve = jest.fn().mockReturnValue(itemRepository)
 
     getSharedVaultsUseCase = {} as jest.Mocked<GetSharedVaults>
-    getSharedVaultsUseCase.execute = jest.fn().mockReturnValue(Result.ok([]))
+    getSharedVaultsUseCase.execute = jest.fn().mockReturnValue(Result.ok({ sharedVaults: [], designatedSurivors: [] }))
 
     getSharedVaultInvitesSentToUserUseCase = {} as jest.Mocked<GetSharedVaultInvitesSentToUser>
     getSharedVaultInvitesSentToUserUseCase.execute = jest.fn().mockReturnValue(Result.ok([]))

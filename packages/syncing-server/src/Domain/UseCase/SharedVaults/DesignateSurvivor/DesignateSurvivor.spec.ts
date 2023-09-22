@@ -5,8 +5,12 @@ import { DesignateSurvivor } from './DesignateSurvivor'
 import { TimerInterface } from '@standardnotes/time'
 import { DomainEventInterface, DomainEventPublisherInterface } from '@standardnotes/domain-events'
 import { DomainEventFactoryInterface } from '../../../Event/DomainEventFactoryInterface'
+import { SharedVault } from '../../../SharedVault/SharedVault'
+import { SharedVaultRepositoryInterface } from '../../../SharedVault/SharedVaultRepositoryInterface'
 
 describe('DesignateSurvivor', () => {
+  let sharedVault: SharedVault
+  let sharedVaultRepository: SharedVaultRepositoryInterface
   let sharedVaultUserRepository: SharedVaultUserRepositoryInterface
   let sharedVaultUser: SharedVaultUser
   let sharedVaultOwner: SharedVaultUser
@@ -15,9 +19,25 @@ describe('DesignateSurvivor', () => {
   let domainEventPublisher: DomainEventPublisherInterface
 
   const createUseCase = () =>
-    new DesignateSurvivor(sharedVaultUserRepository, timer, domainEventFactory, domainEventPublisher)
+    new DesignateSurvivor(
+      sharedVaultRepository,
+      sharedVaultUserRepository,
+      timer,
+      domainEventFactory,
+      domainEventPublisher,
+    )
 
   beforeEach(() => {
+    sharedVault = SharedVault.create({
+      userUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+      timestamps: Timestamps.create(123, 123).getValue(),
+      fileUploadBytesUsed: 123,
+    }).getValue()
+
+    sharedVaultRepository = {} as jest.Mocked<SharedVaultRepositoryInterface>
+    sharedVaultRepository.findByUuid = jest.fn().mockReturnValue(sharedVault)
+    sharedVaultRepository.save = jest.fn()
+
     timer = {} as jest.Mocked<TimerInterface>
     timer.getTimestampInMicroseconds = jest.fn().mockReturnValue(123)
 
@@ -81,6 +101,20 @@ describe('DesignateSurvivor', () => {
       sharedVaultUuid: '00000000-0000-0000-0000-000000000000',
       userUuid: '00000000-0000-0000-0000-000000000000',
       originatorUuid: 'invalid',
+    })
+
+    expect(result.isFailed()).toBe(true)
+  })
+
+  it('should fail if shared vault is not found', async () => {
+    sharedVaultRepository.findByUuid = jest.fn().mockReturnValue(null)
+
+    const useCase = createUseCase()
+
+    const result = await useCase.execute({
+      sharedVaultUuid: '00000000-0000-0000-0000-000000000000',
+      userUuid: '00000000-0000-0000-0000-000000000000',
+      originatorUuid: '00000000-0000-0000-0000-000000000002',
     })
 
     expect(result.isFailed()).toBe(true)

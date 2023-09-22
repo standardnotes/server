@@ -12,9 +12,11 @@ import {
 import { SharedVaultUserRepositoryInterface } from '../../../SharedVault/User/SharedVaultUserRepositoryInterface'
 import { DesignateSurvivorDTO } from './DesignateSurvivorDTO'
 import { DomainEventFactoryInterface } from '../../../Event/DomainEventFactoryInterface'
+import { SharedVaultRepositoryInterface } from '../../../SharedVault/SharedVaultRepositoryInterface'
 
 export class DesignateSurvivor implements UseCaseInterface<void> {
   constructor(
+    private sharedVaultRepository: SharedVaultRepositoryInterface,
     private sharedVaultUserRepository: SharedVaultUserRepositoryInterface,
     private timer: TimerInterface,
     private domainEventFactory: DomainEventFactoryInterface,
@@ -39,6 +41,11 @@ export class DesignateSurvivor implements UseCaseInterface<void> {
       return Result.fail(originatorUuidOrError.getError())
     }
     const originatorUuid = originatorUuidOrError.getValue()
+
+    const sharedVault = await this.sharedVaultRepository.findByUuid(sharedVaultUuid)
+    if (!sharedVault) {
+      return Result.fail('Shared vault not found')
+    }
 
     const sharedVaultUsers = await this.sharedVaultUserRepository.findBySharedVaultUuid(sharedVaultUuid)
     let sharedVaultExistingSurvivor: SharedVaultUser | undefined
@@ -91,6 +98,13 @@ export class DesignateSurvivor implements UseCaseInterface<void> {
         timestamp: this.timer.getTimestampInMicroseconds(),
       }),
     )
+
+    sharedVault.props.timestamps = Timestamps.create(
+      sharedVault.props.timestamps.createdAt,
+      this.timer.getTimestampInMicroseconds(),
+    ).getValue()
+
+    await this.sharedVaultRepository.save(sharedVault)
 
     return Result.ok()
   }
