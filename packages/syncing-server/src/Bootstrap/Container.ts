@@ -871,6 +871,7 @@ export class ContainerConfigLoader {
       .bind<DesignateSurvivor>(TYPES.Sync_DesignateSurvivor)
       .toConstantValue(
         new DesignateSurvivor(
+          container.get<SharedVaultRepositoryInterface>(TYPES.Sync_SharedVaultRepository),
           container.get<SharedVaultUserRepositoryInterface>(TYPES.Sync_SharedVaultUserRepository),
           container.get<TimerInterface>(TYPES.Sync_Timer),
           container.get<DomainEventFactoryInterface>(TYPES.Sync_DomainEventFactory),

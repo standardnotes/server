@@ -8,4 +8,5 @@ export interface SharedVaultUserRepositoryInterface {
   remove(sharedVault: SharedVaultUser): Promise<void>
   removeBySharedVaultUuid(sharedVaultUuid: Uuid): Promise<void>
   findByUserUuidAndSharedVaultUuid(dto: { userUuid: Uuid; sharedVaultUuid: Uuid }): Promise<SharedVaultUser | null>
+  findDesignatedSurvivorBySharedVaultUuid(sharedVaultUuid: Uuid): Promise<SharedVaultUser | null>
 }
