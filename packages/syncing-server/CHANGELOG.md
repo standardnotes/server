@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.103.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.102.2...@standardnotes/syncing-server@1.103.0) (2023-09-22)
+
+### Features
+
+* remove user from all shared vaults upon account deletion ([#843](https://github.com/standardnotes/syncing-server-js/issues/843)) ([dc77ff3](https://github.com/standardnotes/syncing-server-js/commit/dc77ff3e45983d231bc9c132802428e77b4be431))
+
 ## [1.102.2](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.102.1...@standardnotes/syncing-server@1.102.2) (2023-09-22)
 
 ### Bug Fixes

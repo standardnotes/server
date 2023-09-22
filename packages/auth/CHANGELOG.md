@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.145.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.144.0...@standardnotes/auth-server@1.145.0) (2023-09-22)
+
+### Features
+
+* remove user from all shared vaults upon account deletion ([#843](https://github.com/standardnotes/server/issues/843)) ([dc77ff3](https://github.com/standardnotes/server/commit/dc77ff3e45983d231bc9c132802428e77b4be431))
+
 # [1.144.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.143.9...@standardnotes/auth-server@1.144.0) (2023-09-21)
 
 ### Features
