@@ -163,7 +163,7 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
         this.secondRevisionsRepository as RevisionRepositoryInterface
       ).countByUserUuid(userUuid)
 
-      if (totalRevisionsCountForUserInPrimary < totalRevisionsCountForUserInSecondary) {
+      if (totalRevisionsCountForUserInPrimary > totalRevisionsCountForUserInSecondary) {
         return Result.fail(
           `Total revisions count for user ${userUuid.value} in primary database (${totalRevisionsCountForUserInPrimary}) does not match total revisions count in secondary database (${totalRevisionsCountForUserInSecondary})`,
         )

@@ -153,7 +153,7 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
         userUuid: userUuid.value,
       })
 
-      if (totalItemsCountForUserInPrimary < totalItemsCountForUserInSecondary) {
+      if (totalItemsCountForUserInPrimary > totalItemsCountForUserInSecondary) {
         return Result.fail(
           `Total items count for user ${userUuid.value} in primary database (${totalItemsCountForUserInPrimary}) does not match total items count in secondary database (${totalItemsCountForUserInSecondary})`,
         )
