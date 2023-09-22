@@ -95,7 +95,6 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
 
             if (itemInSecondary !== null) {
               if (itemInSecondary.isIdenticalTo(item)) {
-                this.logger.info(`[${userUuid.value}] Item ${item.uuid.value} already exists in secondary database`)
                 continue
               }
               if (itemInSecondary.props.timestamps.updatedAt > item.props.timestamps.updatedAt) {

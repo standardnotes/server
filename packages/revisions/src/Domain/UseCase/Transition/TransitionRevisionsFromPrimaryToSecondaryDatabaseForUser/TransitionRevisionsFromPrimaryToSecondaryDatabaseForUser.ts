@@ -86,9 +86,6 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
 
             if (revisionInSecondary !== null) {
               if (revisionInSecondary.isIdenticalTo(revision)) {
-                this.logger.info(
-                  `[${userUuid.value}] Revision ${revision.id.toString()} already exists in secondary database`,
-                )
                 continue
               }
               if (revisionInSecondary.props.dates.updatedAt > revision.props.dates.updatedAt) {
