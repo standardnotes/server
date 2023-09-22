@@ -55,7 +55,6 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
 
       updatedItemsInSecondary = updatedInSecondary
     }
-    const updatedItemsInSecondaryCount = updatedItemsInSecondary.length
 
     const migrationTimeStart = this.timer.getTimestampInMicroseconds()
 
@@ -67,15 +66,6 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
       alreadyIdenticalInSecondaryAndPrimary,
     )
     if (migrationResult.isFailed()) {
-      if (newItemsInSecondaryCount === 0 && updatedItemsInSecondaryCount === 0) {
-        const cleanupResult = await this.deleteItemsForUser(userUuid, this.secondaryItemRepository)
-        if (cleanupResult.isFailed()) {
-          this.logger.error(
-            `[${dto.userUuid}] Failed to clean up secondary database items: ${cleanupResult.getError()}`,
-          )
-        }
-      }
-
       return Result.fail(migrationResult.getError())
     }
 
@@ -88,15 +78,6 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
       alreadyIdenticalInSecondaryAndPrimary,
     )
     if (integrityCheckResult.isFailed()) {
-      if (newItemsInSecondaryCount === 0 && updatedItemsInSecondaryCount === 0) {
-        const cleanupResult = await this.deleteItemsForUser(userUuid, this.secondaryItemRepository)
-        if (cleanupResult.isFailed()) {
-          this.logger.error(
-            `[${dto.userUuid}] Failed to clean up secondary database items: ${cleanupResult.getError()}`,
-          )
-        }
-      }
-
       return Result.fail(integrityCheckResult.getError())
     }
 
@@ -254,6 +235,8 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
 
   private async deleteItemsForUser(userUuid: Uuid, itemRepository: ItemRepositoryInterface): Promise<Result<void>> {
     try {
+      this.logger.info(`[${userUuid.value}] Cleaning up primary database items`)
+
       await itemRepository.deleteByUserUuid(userUuid.value)
 
       return Result.ok()

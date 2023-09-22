@@ -57,8 +57,6 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
       updatedRevisionsInSecondary = updatedInSecondary
     }
 
-    const updatedRevisionsInSecondaryCount = updatedRevisionsInSecondary.length
-
     const migrationTimeStart = this.timer.getTimestampInMicroseconds()
 
     this.logger.info(`[${dto.userUuid}] Migrating revisions`)
@@ -69,15 +67,6 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
       alreadyIdenticalInSecondaryAndPrimary,
     )
     if (migrationResult.isFailed()) {
-      if (newRevisionsInSecondaryCount === 0 && updatedRevisionsInSecondaryCount === 0) {
-        const cleanupResult = await this.deleteRevisionsForUser(userUuid, this.secondRevisionsRepository)
-        if (cleanupResult.isFailed()) {
-          this.logger.error(
-            `[${dto.userUuid}] Failed to clean up secondary database revisions: ${cleanupResult.getError()}`,
-          )
-        }
-      }
-
       return Result.fail(migrationResult.getError())
     }
 
@@ -90,15 +79,6 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
       alreadyIdenticalInSecondaryAndPrimary,
     )
     if (integrityCheckResult.isFailed()) {
-      if (newRevisionsInSecondaryCount === 0 && updatedRevisionsInSecondaryCount === 0) {
-        const cleanupResult = await this.deleteRevisionsForUser(userUuid, this.secondRevisionsRepository)
-        if (cleanupResult.isFailed()) {
-          this.logger.error(
-            `[${dto.userUuid}] Failed to clean up secondary database revisions: ${cleanupResult.getError()}`,
-          )
-        }
-      }
-
       return Result.fail(integrityCheckResult.getError())
     }
 
@@ -189,6 +169,8 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
     revisionRepository: RevisionRepositoryInterface,
   ): Promise<Result<void>> {
     try {
+      this.logger.info(`[${userUuid.value}] Deleting all revisions from primary database`)
+
       await revisionRepository.removeByUserUuid(userUuid)
 
       return Result.ok()
