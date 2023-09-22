@@ -3,7 +3,7 @@ module.exports = {
   testEnvironment: 'node',
   testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.ts$',
   testTimeout: 20000,
-  coverageReporters: ['text-summary'],
+  coverageReporters: ['text'],
   reporters: ['summary'],
   coverageThreshold: {
     global: {

@@ -169,6 +169,7 @@ import { DeleteSharedVaults } from '../Domain/UseCase/SharedVaults/DeleteSharedV
 import { RemoveItemsFromSharedVault } from '../Domain/UseCase/SharedVaults/RemoveItemsFromSharedVault/RemoveItemsFromSharedVault'
 import { SharedVaultRemovedEventHandler } from '../Domain/Handler/SharedVaultRemovedEventHandler'
 import { DesignateSurvivor } from '../Domain/UseCase/SharedVaults/DesignateSurvivor/DesignateSurvivor'
+import { RemoveUserFromSharedVaults } from '../Domain/UseCase/SharedVaults/RemoveUserFromSharedVaults/RemoveUserFromSharedVaults'
 
 export class ContainerConfigLoader {
   private readonly DEFAULT_CONTENT_SIZE_TRANSFER_LIMIT = 10_000_000
@@ -876,6 +877,15 @@ export class ContainerConfigLoader {
           container.get<DomainEventPublisherInterface>(TYPES.Sync_DomainEventPublisher),
         ),
       )
+    container
+      .bind<RemoveUserFromSharedVaults>(TYPES.Sync_RemoveUserFromSharedVaults)
+      .toConstantValue(
+        new RemoveUserFromSharedVaults(
+          container.get<SharedVaultUserRepositoryInterface>(TYPES.Sync_SharedVaultUserRepository),
+          container.get<RemoveUserFromSharedVault>(TYPES.Sync_RemoveSharedVaultUser),
+          container.get<Logger>(TYPES.Sync_Logger),
+        ),
+      )
 
     // Services
     container
@@ -938,6 +948,7 @@ export class ContainerConfigLoader {
         new AccountDeletionRequestedEventHandler(
           container.get<ItemRepositoryResolverInterface>(TYPES.Sync_ItemRepositoryResolver),
           container.get<DeleteSharedVaults>(TYPES.Sync_DeleteSharedVaults),
+          container.get<RemoveUserFromSharedVaults>(TYPES.Sync_RemoveUserFromSharedVaults),
           container.get<Logger>(TYPES.Sync_Logger),
         ),
       )

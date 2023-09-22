@@ -13,6 +13,7 @@ describe('RemoveSharedVaultUser', () => {
     sharedVaultUserRepository.findByUserUuidAndSharedVaultUuid = jest
       .fn()
       .mockReturnValue({} as jest.Mocked<SharedVaultUser>)
+    sharedVaultUserRepository.findByUserUuid = jest.fn().mockReturnValue([{} as jest.Mocked<SharedVaultUser>])
     sharedVaultUserRepository.remove = jest.fn()
   })
 
@@ -22,6 +23,17 @@ describe('RemoveSharedVaultUser', () => {
     const result = await useCase.execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
       sharedVaultUuid: '00000000-0000-0000-0000-000000000000',
+    })
+
+    expect(result.isFailed()).toBeFalsy()
+    expect(sharedVaultUserRepository.remove).toHaveBeenCalled()
+  })
+
+  it('should remove all shared vault users', async () => {
+    const useCase = createUseCase()
+
+    const result = await useCase.execute({
+      userUuid: '00000000-0000-0000-0000-000000000000',
     })
 
     expect(result.isFailed()).toBeFalsy()

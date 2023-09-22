@@ -4,11 +4,13 @@ import { Logger } from 'winston'
 
 import { ItemRepositoryResolverInterface } from '../Item/ItemRepositoryResolverInterface'
 import { DeleteSharedVaults } from '../UseCase/SharedVaults/DeleteSharedVaults/DeleteSharedVaults'
+import { RemoveUserFromSharedVaults } from '../UseCase/SharedVaults/RemoveUserFromSharedVaults/RemoveUserFromSharedVaults'
 
 export class AccountDeletionRequestedEventHandler implements DomainEventHandlerInterface {
   constructor(
     private itemRepositoryResolver: ItemRepositoryResolverInterface,
     private deleteSharedVaults: DeleteSharedVaults,
+    private removeUserFromSharedVaults: RemoveUserFromSharedVaults,
     private logger: Logger,
   ) {}
 
@@ -23,13 +25,24 @@ export class AccountDeletionRequestedEventHandler implements DomainEventHandlerI
 
     await itemRepository.deleteByUserUuid(event.payload.userUuid)
 
-    const result = await this.deleteSharedVaults.execute({
+    const deletingVaultsResult = await this.deleteSharedVaults.execute({
       ownerUuid: event.payload.userUuid,
     })
-    if (result.isFailed()) {
-      this.logger.error(`Failed to delete shared vaults for user: ${event.payload.userUuid}: ${result.getError()}`)
+    if (deletingVaultsResult.isFailed()) {
+      this.logger.error(
+        `Failed to delete shared vaults for user: ${event.payload.userUuid}: ${deletingVaultsResult.getError()}`,
+      )
+    }
 
-      return
+    const deletingUserFromOtherVaultsResult = await this.removeUserFromSharedVaults.execute({
+      userUuid: event.payload.userUuid,
+    })
+    if (deletingUserFromOtherVaultsResult.isFailed()) {
+      this.logger.error(
+        `Failed to remove user: ${
+          event.payload.userUuid
+        } from shared vaults: ${deletingUserFromOtherVaultsResult.getError()}`,
+      )
     }
 
     this.logger.info(`Finished account cleanup for user: ${event.payload.userUuid}`)

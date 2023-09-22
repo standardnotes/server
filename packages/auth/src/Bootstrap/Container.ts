@@ -1008,7 +1008,16 @@ export class ContainerConfigLoader {
     container.bind<UserRegisteredEventHandler>(TYPES.Auth_UserRegisteredEventHandler).to(UserRegisteredEventHandler)
     container
       .bind<AccountDeletionRequestedEventHandler>(TYPES.Auth_AccountDeletionRequestedEventHandler)
-      .to(AccountDeletionRequestedEventHandler)
+      .toConstantValue(
+        new AccountDeletionRequestedEventHandler(
+          container.get<UserRepositoryInterface>(TYPES.Auth_UserRepository),
+          container.get<SessionRepositoryInterface>(TYPES.Auth_SessionRepository),
+          container.get<EphemeralSessionRepositoryInterface>(TYPES.Auth_EphemeralSessionRepository),
+          container.get<RevokedSessionRepositoryInterface>(TYPES.Auth_RevokedSessionRepository),
+          container.get<RemoveSharedVaultUser>(TYPES.Auth_RemoveSharedVaultUser),
+          container.get<winston.Logger>(TYPES.Auth_Logger),
+        ),
+      )
     container
       .bind<SubscriptionPurchasedEventHandler>(TYPES.Auth_SubscriptionPurchasedEventHandler)
       .to(SubscriptionPurchasedEventHandler)
