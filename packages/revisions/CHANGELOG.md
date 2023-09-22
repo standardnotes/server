@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.36.5](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.36.4...@standardnotes/revisions-server@1.36.5) (2023-09-22)
+
+### Bug Fixes
+
+* disable cleaning secondary database on transition ([4f4443a](https://github.com/standardnotes/server/commit/4f4443a882f69c2e76ef831ef36347c9c54f31cd))
+* integrity check during transition ([921c30f](https://github.com/standardnotes/server/commit/921c30f6415ef122a7d1af83ffa3f6840a42edba))
+* processing migration optimization ([22540ee](https://github.com/standardnotes/server/commit/22540ee83436b986949127a6923285a702162706))
+
 ## [1.36.4](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.36.3...@standardnotes/revisions-server@1.36.4) (2023-09-21)
 
 ### Bug Fixes
