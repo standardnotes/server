@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.16.0](https://github.com/standardnotes/server/compare/@standardnotes/home-server@1.15.80...@standardnotes/home-server@1.16.0) (2023-09-22)
+
+### Features
+
+* remove transition mode from code ([5001496](https://github.com/standardnotes/server/commit/5001496c7bc1df9e20c2d88ebf52ed77f868110c))
+
 ## [1.15.80](https://github.com/standardnotes/server/compare/@standardnotes/home-server@1.15.79...@standardnotes/home-server@1.15.80) (2023-09-22)
 
 **Note:** Version bump only for package @standardnotes/home-server

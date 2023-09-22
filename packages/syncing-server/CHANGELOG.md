@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.105.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.104.0...@standardnotes/syncing-server@1.105.0) (2023-09-22)
+
+### Bug Fixes
+
+* add more logs to transition process ([0562b0a](https://github.com/standardnotes/syncing-server-js/commit/0562b0a621eb878026fbdc0346b6170e815b64bf))
+* remove excessive logs ([15ed1fd](https://github.com/standardnotes/syncing-server-js/commit/15ed1fd789aba306cbec6a23e88d5c1f837dabc0))
+
+### Features
+
+* **syncing-server:** transfer shared vault ownership to designated survivor upon account deletion ([#845](https://github.com/standardnotes/syncing-server-js/issues/845)) ([0a1080c](https://github.com/standardnotes/syncing-server-js/commit/0a1080ce2a0fb021309a960de2c40193acab46eb))
+
 # [1.104.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.103.1...@standardnotes/syncing-server@1.104.0) (2023-09-22)
 
 ### Features

@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.146.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.145.0...@standardnotes/auth-server@1.146.0) (2023-09-22)
+
+### Bug Fixes
+
+* **auth:** register specs ([f9b1f40](https://github.com/standardnotes/server/commit/f9b1f40ddf2d733d106ea64b9a7c4b38c5ec43ce))
+
+### Features
+
+* remove transition mode from code ([5001496](https://github.com/standardnotes/server/commit/5001496c7bc1df9e20c2d88ebf52ed77f868110c))
+
 # [1.145.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.144.0...@standardnotes/auth-server@1.145.0) (2023-09-22)
 
 ### Features
