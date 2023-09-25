@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.108.1](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.108.0...@standardnotes/syncing-server@1.108.1) (2023-09-25)
+
+### Bug Fixes
+
+* refactor the structure of notifications ([#853](https://github.com/standardnotes/syncing-server-js/issues/853)) ([cebab59](https://github.com/standardnotes/syncing-server-js/commit/cebab59a026c6868886e0945787a8ddb0442fbc3))
+* **syncing-server:** another spec ([3d5e747](https://github.com/standardnotes/syncing-server-js/commit/3d5e7475901c5eb7741f461a35febdb996bcfd1d))
+* **syncing-server:** specs ([9446774](https://github.com/standardnotes/syncing-server-js/commit/94467747acca83b954129702111f903c3d1ceab8))
+
 # [1.108.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.107.0...@standardnotes/syncing-server@1.108.0) (2023-09-25)
 
 ### Features

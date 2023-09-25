@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.33.1](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.33.0...@standardnotes/domain-core@1.33.1) (2023-09-25)
+
+### Bug Fixes
+
+* refactor the structure of notifications ([#853](https://github.com/standardnotes/server/issues/853)) ([cebab59](https://github.com/standardnotes/server/commit/cebab59a026c6868886e0945787a8ddb0442fbc3))
+
 # [1.33.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.32.0...@standardnotes/domain-core@1.33.0) (2023-09-21)
 
 ### Features
