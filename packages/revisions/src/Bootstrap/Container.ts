@@ -1,4 +1,5 @@
 import { ControllerContainer, ControllerContainerInterface, MapperInterface } from '@standardnotes/domain-core'
+import Redis from 'ioredis'
 import { Container, interfaces } from 'inversify'
 import { MongoRepository, Repository } from 'typeorm'
 import * as winston from 'winston'
@@ -68,6 +69,8 @@ import { RemoveRevisionsFromSharedVault } from '../Domain/UseCase/RemoveRevision
 import { ItemRemovedFromSharedVaultEventHandler } from '../Domain/Handler/ItemRemovedFromSharedVaultEventHandler'
 import { TransitionRequestedEventHandler } from '../Domain/Handler/TransitionRequestedEventHandler'
 import { SharedVaultRemovedEventHandler } from '../Domain/Handler/SharedVaultRemovedEventHandler'
+import { TransitionRepositoryInterface } from '../Domain/Transition/TransitionRepositoryInterface'
+import { RedisTransitionRepository } from '../Infra/Redis/RedisTransitionRepository'
 
 export class ContainerConfigLoader {
   constructor(private mode: 'server' | 'worker' = 'server') {}
@@ -88,10 +91,27 @@ export class ContainerConfigLoader {
     const isConfiguredForSelfHosting = env.get('MODE', true) === 'self-hosted'
     const isConfiguredForHomeServerOrSelfHosting = isConfiguredForHomeServer || isConfiguredForSelfHosting
     const isSecondaryDatabaseEnabled = env.get('SECONDARY_DB_ENABLED', true) === 'true'
+    const isConfiguredForInMemoryCache = env.get('CACHE_TYPE', true) === 'memory'
 
     const container = new Container({
       defaultScope: 'Singleton',
     })
+
+    if (!isConfiguredForInMemoryCache) {
+      const redisUrl = env.get('REDIS_URL')
+      const isRedisInClusterMode = redisUrl.indexOf(',') > 0
+      let redis
+      if (isRedisInClusterMode) {
+        redis = new Redis.Cluster(redisUrl.split(','))
+      } else {
+        redis = new Redis(redisUrl)
+      }
+
+      container.bind(TYPES.Revisions_Redis).toConstantValue(redis)
+      container
+        .bind<TransitionRepositoryInterface>(TYPES.Revisions_TransitionStatusRepository)
+        .toConstantValue(new RedisTransitionRepository(container.get<Redis>(TYPES.Revisions_Redis)))
+    }
 
     let logger: winston.Logger
     if (configuration?.logger) {
@@ -348,6 +368,9 @@ export class ContainerConfigLoader {
           isSecondaryDatabaseEnabled
             ? container.get<RevisionRepositoryInterface>(TYPES.Revisions_MongoDBRevisionRepository)
             : null,
+          isConfiguredForInMemoryCache
+            ? null
+            : container.get<TransitionRepositoryInterface>(TYPES.Revisions_TransitionStatusRepository),
           container.get<TimerInterface>(TYPES.Revisions_Timer),
           container.get<winston.Logger>(TYPES.Revisions_Logger),
           env.get('MIGRATION_BATCH_SIZE', true) ? +env.get('MIGRATION_BATCH_SIZE', true) : 100,

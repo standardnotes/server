@@ -1,6 +1,7 @@
 const TYPES = {
   Revisions_DBConnection: Symbol.for('Revisions_DBConnection'),
   Revisions_Logger: Symbol.for('Revisions_Logger'),
+  Revisions_Redis: Symbol.for('Revisions_Redis'),
   Revisions_SQS: Symbol.for('Revisions_SQS'),
   Revisions_SNS: Symbol.for('Revisions_SNS'),
   Revisions_S3: Symbol.for('Revisions_S3'),
@@ -27,6 +28,7 @@ const TYPES = {
   Revisions_MongoDBRevisionRepository: Symbol.for('Revisions_MongoDBRevisionRepository'),
   Revisions_DumpRepository: Symbol.for('Revisions_DumpRepository'),
   Revisions_RevisionRepositoryResolver: Symbol.for('Revisions_RevisionRepositoryResolver'),
+  Revisions_TransitionStatusRepository: Symbol.for('Revisions_TransitionStatusRepository'),
   // env vars
   Revisions_AUTH_JWT_SECRET: Symbol.for('Revisions_AUTH_JWT_SECRET'),
   Revisions_SQS_QUEUE_URL: Symbol.for('Revisions_SQS_QUEUE_URL'),

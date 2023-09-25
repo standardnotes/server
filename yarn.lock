@@ -5045,6 +5045,7 @@ __metadata:
     "@types/cors": "npm:^2.8.9"
     "@types/dotenv": "npm:^8.2.0"
     "@types/express": "npm:^4.17.14"
+    "@types/ioredis": "npm:^5.0.0"
     "@types/jest": "npm:^29.5.1"
     "@types/newrelic": "npm:^9.14.0"
     "@types/node": "npm:^20.5.7"
@@ -5057,6 +5058,7 @@ __metadata:
     express: "npm:^4.18.2"
     inversify: "npm:^6.0.1"
     inversify-express-utils: "npm:^6.4.3"
+    ioredis: "npm:^5.3.2"
     jest: "npm:^29.5.0"
     mongodb: "npm:^6.0.0"
     mysql2: "npm:^3.0.1"
@@ -5235,6 +5237,7 @@ __metadata:
     "@types/cors": "npm:^2.8.9"
     "@types/dotenv": "npm:^8.2.0"
     "@types/express": "npm:^4.17.14"
+    "@types/ioredis": "npm:^5.0.0"
     "@types/jest": "npm:^29.5.1"
     "@types/jsonwebtoken": "npm:^9.0.1"
     "@types/newrelic": "npm:^9.14.0"
@@ -5254,6 +5257,7 @@ __metadata:
     helmet: "npm:^7.0.0"
     inversify: "npm:^6.0.1"
     inversify-express-utils: "npm:^6.4.3"
+    ioredis: "npm:^5.3.2"
     jest: "npm:^29.5.0"
     jsonwebtoken: "npm:^9.0.0"
     mongodb: "npm:^6.0.0"
@@ -9531,7 +9535,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ioredis@npm:*, ioredis@npm:^5.2.4":
+"ioredis@npm:*, ioredis@npm:^5.2.4, ioredis@npm:^5.3.2":
   version: 5.3.2
   resolution: "ioredis@npm:5.3.2"
   dependencies:

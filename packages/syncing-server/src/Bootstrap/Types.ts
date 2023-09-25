@@ -15,6 +15,7 @@ const TYPES = {
   Sync_SharedVaultUserRepository: Symbol.for('Sync_SharedVaultUserRepository'),
   Sync_NotificationRepository: Symbol.for('Sync_NotificationRepository'),
   Sync_MessageRepository: Symbol.for('Sync_MessageRepository'),
+  Sync_TransitionStatusRepository: Symbol.for('Sync_TransitionStatusRepository'),
   // ORM
   Sync_ORMItemRepository: Symbol.for('Sync_ORMItemRepository'),
   Sync_ORMLegacyItemRepository: Symbol.for('Sync_ORMLegacyItemRepository'),

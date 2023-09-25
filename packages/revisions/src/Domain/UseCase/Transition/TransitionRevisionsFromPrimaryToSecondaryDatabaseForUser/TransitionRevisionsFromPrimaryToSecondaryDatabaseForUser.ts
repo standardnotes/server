@@ -5,13 +5,13 @@ import { Logger } from 'winston'
 
 import { TransitionRevisionsFromPrimaryToSecondaryDatabaseForUserDTO } from './TransitionRevisionsFromPrimaryToSecondaryDatabaseForUserDTO'
 import { RevisionRepositoryInterface } from '../../../Revision/RevisionRepositoryInterface'
+import { TransitionRepositoryInterface } from '../../../Transition/TransitionRepositoryInterface'
 
 export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements UseCaseInterface<void> {
-  private readonly pagingProgress: Map<string, number> = new Map()
-
   constructor(
     private primaryRevisionsRepository: RevisionRepositoryInterface,
     private secondRevisionsRepository: RevisionRepositoryInterface | null,
+    private transitionStatusRepository: TransitionRepositoryInterface | null,
     private timer: TimerInterface,
     private logger: Logger,
     private pageSize: number,
@@ -22,6 +22,10 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
 
     if (this.secondRevisionsRepository === null) {
       return Result.fail('Secondary revision repository is not set')
+    }
+
+    if (this.transitionStatusRepository === null) {
+      return Result.fail('Transition status repository is not set')
     }
 
     const userUuidOrError = Uuid.create(dto.userUuid)
@@ -73,10 +77,9 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
 
   private async migrateRevisionsForUser(userUuid: Uuid): Promise<Result<string[]>> {
     try {
-      if (!this.pagingProgress.has(userUuid.value)) {
-        this.pagingProgress.set(userUuid.value, 1)
-      }
-      const initialPage = this.pagingProgress.get(userUuid.value) as number
+      const initialPage = await (this.transitionStatusRepository as TransitionRepositoryInterface).getPagingProgress(
+        userUuid.value,
+      )
 
       this.logger.info(`[${userUuid.value}] Migrating from page ${initialPage}`)
 
@@ -84,7 +87,10 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
       const totalPages = Math.ceil(totalRevisionsCountForUser / this.pageSize)
       const revisionsToSkipInIntegrityCheck = []
       for (let currentPage = initialPage; currentPage <= totalPages; currentPage++) {
-        this.pagingProgress.set(userUuid.value, currentPage)
+        await (this.transitionStatusRepository as TransitionRepositoryInterface).setPagingProgress(
+          userUuid.value,
+          currentPage,
+        )
 
         const query = {
           userUuid: userUuid,

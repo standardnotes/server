@@ -1,4 +1,5 @@
 import * as winston from 'winston'
+import Redis from 'ioredis'
 import { Container, interfaces } from 'inversify'
 
 import { Env } from './Env'
@@ -171,6 +172,8 @@ import { SharedVaultRemovedEventHandler } from '../Domain/Handler/SharedVaultRem
 import { DesignateSurvivor } from '../Domain/UseCase/SharedVaults/DesignateSurvivor/DesignateSurvivor'
 import { RemoveUserFromSharedVaults } from '../Domain/UseCase/SharedVaults/RemoveUserFromSharedVaults/RemoveUserFromSharedVaults'
 import { TransferSharedVault } from '../Domain/UseCase/SharedVaults/TransferSharedVault/TransferSharedVault'
+import { TransitionRepositoryInterface } from '../Domain/Transition/TransitionRepositoryInterface'
+import { RedisTransitionRepository } from '../Infra/Redis/RedisTransitionRepository'
 
 export class ContainerConfigLoader {
   private readonly DEFAULT_CONTENT_SIZE_TRANSFER_LIMIT = 10_000_000
@@ -228,6 +231,23 @@ export class ContainerConfigLoader {
     const isConfiguredForSelfHosting = env.get('MODE', true) === 'self-hosted'
     const isConfiguredForHomeServerOrSelfHosting = isConfiguredForHomeServer || isConfiguredForSelfHosting
     const isSecondaryDatabaseEnabled = env.get('SECONDARY_DB_ENABLED', true) === 'true'
+    const isConfiguredForInMemoryCache = env.get('CACHE_TYPE', true) === 'memory'
+
+    if (!isConfiguredForInMemoryCache) {
+      const redisUrl = env.get('REDIS_URL')
+      const isRedisInClusterMode = redisUrl.indexOf(',') > 0
+      let redis
+      if (isRedisInClusterMode) {
+        redis = new Redis.Cluster(redisUrl.split(','))
+      } else {
+        redis = new Redis(redisUrl)
+      }
+
+      container.bind(TYPES.Sync_Redis).toConstantValue(redis)
+      container
+        .bind<TransitionRepositoryInterface>(TYPES.Sync_TransitionStatusRepository)
+        .toConstantValue(new RedisTransitionRepository(container.get<Redis>(TYPES.Sync_Redis)))
+    }
 
     container.bind<Env>(TYPES.Sync_Env).toConstantValue(env)
 
@@ -833,6 +853,9 @@ export class ContainerConfigLoader {
         new TransitionItemsFromPrimaryToSecondaryDatabaseForUser(
           container.get<ItemRepositoryInterface>(TYPES.Sync_SQLItemRepository),
           isSecondaryDatabaseEnabled ? container.get<ItemRepositoryInterface>(TYPES.Sync_MongoDBItemRepository) : null,
+          isConfiguredForInMemoryCache
+            ? null
+            : container.get<TransitionRepositoryInterface>(TYPES.Sync_TransitionStatusRepository),
           container.get<TimerInterface>(TYPES.Sync_Timer),
           container.get<Logger>(TYPES.Sync_Logger),
           env.get('MIGRATION_BATCH_SIZE', true) ? +env.get('MIGRATION_BATCH_SIZE', true) : 100,

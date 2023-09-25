@@ -6,13 +6,13 @@ import { Logger } from 'winston'
 import { TransitionItemsFromPrimaryToSecondaryDatabaseForUserDTO } from './TransitionItemsFromPrimaryToSecondaryDatabaseForUserDTO'
 import { ItemRepositoryInterface } from '../../../Item/ItemRepositoryInterface'
 import { ItemQuery } from '../../../Item/ItemQuery'
+import { TransitionRepositoryInterface } from '../../../Transition/TransitionRepositoryInterface'
 
 export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements UseCaseInterface<void> {
-  private readonly pagingProgress: Map<string, number> = new Map()
-
   constructor(
     private primaryItemRepository: ItemRepositoryInterface,
     private secondaryItemRepository: ItemRepositoryInterface | null,
+    private transitionStatusRepository: TransitionRepositoryInterface | null,
     private timer: TimerInterface,
     private logger: Logger,
     private pageSize: number,
@@ -23,6 +23,10 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
 
     if (this.secondaryItemRepository === null) {
       return Result.fail('Secondary item repository is not set')
+    }
+
+    if (this.transitionStatusRepository === null) {
+      return Result.fail('Transition status repository is not set')
     }
 
     const userUuidOrError = Uuid.create(dto.userUuid)
@@ -79,10 +83,9 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
 
   private async migrateItemsForUser(userUuid: Uuid): Promise<Result<string[]>> {
     try {
-      if (!this.pagingProgress.has(userUuid.value)) {
-        this.pagingProgress.set(userUuid.value, 1)
-      }
-      const initialPage = this.pagingProgress.get(userUuid.value) as number
+      const initialPage = await (this.transitionStatusRepository as TransitionRepositoryInterface).getPagingProgress(
+        userUuid.value,
+      )
 
       this.logger.info(`[${userUuid.value}] Migrating from page ${initialPage}`)
 
@@ -90,7 +93,10 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
       const totalPages = Math.ceil(totalItemsCountForUser / this.pageSize)
       const itemsToSkipInIntegrityCheck = []
       for (let currentPage = initialPage; currentPage <= totalPages; currentPage++) {
-        this.pagingProgress.set(userUuid.value, currentPage)
+        await (this.transitionStatusRepository as TransitionRepositoryInterface).setPagingProgress(
+          userUuid.value,
+          currentPage,
+        )
 
         const query: ItemQuery = {
           userUuid: userUuid.value,

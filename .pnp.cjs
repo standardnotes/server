@@ -6156,6 +6156,7 @@ const RAW_RUNTIME_STATE =
           ["@types/cors", "npm:2.8.13"],\
           ["@types/dotenv", "npm:8.2.0"],\
           ["@types/express", "npm:4.17.17"],\
+          ["@types/ioredis", "npm:5.0.0"],\
           ["@types/jest", "npm:29.5.2"],\
           ["@types/newrelic", "npm:9.14.0"],\
           ["@types/node", "npm:20.5.7"],\
@@ -6168,6 +6169,7 @@ const RAW_RUNTIME_STATE =
           ["express", "npm:4.18.2"],\
           ["inversify", "npm:6.0.1"],\
           ["inversify-express-utils", "npm:6.4.3"],\
+          ["ioredis", "npm:5.3.2"],\
           ["jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.5.0"],\
           ["mongodb", "virtual:365b8c88cdf194291829ee28b79556e2328175d26a621363e703848100bea0042e9500db2a1206c9bbc3a4a76a1d169639ef774b2ea3a1a98584a9936b58c6be#npm:6.0.0"],\
           ["mysql2", "npm:3.3.3"],\
@@ -6340,6 +6342,7 @@ const RAW_RUNTIME_STATE =
           ["@types/cors", "npm:2.8.13"],\
           ["@types/dotenv", "npm:8.2.0"],\
           ["@types/express", "npm:4.17.17"],\
+          ["@types/ioredis", "npm:5.0.0"],\
           ["@types/jest", "npm:29.5.2"],\
           ["@types/jsonwebtoken", "npm:9.0.2"],\
           ["@types/newrelic", "npm:9.14.0"],\
@@ -6359,6 +6362,7 @@ const RAW_RUNTIME_STATE =
           ["helmet", "npm:7.0.0"],\
           ["inversify", "npm:6.0.1"],\
           ["inversify-express-utils", "npm:6.4.3"],\
+          ["ioredis", "npm:5.3.2"],\
           ["jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.5.0"],\
           ["jsonwebtoken", "npm:9.0.0"],\
           ["mongodb", "virtual:365b8c88cdf194291829ee28b79556e2328175d26a621363e703848100bea0042e9500db2a1206c9bbc3a4a76a1d169639ef774b2ea3a1a98584a9936b58c6be#npm:6.0.0"],\
@@ -16772,7 +16776,7 @@ const RAW_RUNTIME_STATE =
           ["@types/better-sqlite3", null],\
           ["@types/google-cloud__spanner", null],\
           ["@types/hdb-pool", null],\
-          ["@types/ioredis", null],\
+          ["@types/ioredis", "npm:5.0.0"],\
           ["@types/mongodb", null],\
           ["@types/mssql", null],\
           ["@types/mysql2", null],\
@@ -16796,7 +16800,7 @@ const RAW_RUNTIME_STATE =
           ["dotenv", "npm:16.1.3"],\
           ["glob", "npm:8.1.0"],\
           ["hdb-pool", null],\
-          ["ioredis", null],\
+          ["ioredis", "npm:5.3.2"],\
           ["mkdirp", "npm:2.1.6"],\
           ["mongodb", "virtual:365b8c88cdf194291829ee28b79556e2328175d26a621363e703848100bea0042e9500db2a1206c9bbc3a4a76a1d169639ef774b2ea3a1a98584a9936b58c6be#npm:6.0.0"],\
           ["mssql", null],\
