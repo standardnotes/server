@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.33.2](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.33.1...@standardnotes/domain-core@1.33.2) (2023-09-25)
+
+### Bug Fixes
+
+* **domain-core:** notification paylod to string casting ([a02a287](https://github.com/standardnotes/server/commit/a02a28774b6d500200043faefb9ebac3719e7661))
+
 ## [1.33.1](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.33.0...@standardnotes/domain-core@1.33.1) (2023-09-25)
 
 ### Bug Fixes
