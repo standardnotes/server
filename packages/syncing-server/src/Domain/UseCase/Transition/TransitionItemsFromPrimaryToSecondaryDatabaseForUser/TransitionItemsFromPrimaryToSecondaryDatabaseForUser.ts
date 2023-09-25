@@ -84,6 +84,8 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
       }
       const initialPage = this.pagingProgress.get(userUuid.value) as number
 
+      this.logger.info(`[${userUuid.value}] Migrating from page ${initialPage}`)
+
       const totalItemsCountForUser = await this.primaryItemRepository.countAll({ userUuid: userUuid.value })
       const totalPages = Math.ceil(totalItemsCountForUser / this.pageSize)
       const itemsToSkipInIntegrityCheck = []
