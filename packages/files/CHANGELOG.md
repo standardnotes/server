@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.23.0](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.22.28...@standardnotes/files-server@1.23.0) (2023-09-25)
+
+### Features
+
+* remove shared vault files upon shared vault removal ([#852](https://github.com/standardnotes/files/issues/852)) ([7b1eec2](https://github.com/standardnotes/files/commit/7b1eec21e54330bebbeebb80cec3ba4284112aab))
+
 ## [1.22.28](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.22.27...@standardnotes/files-server@1.22.28) (2023-09-25)
 
 **Note:** Version bump only for package @standardnotes/files-server
