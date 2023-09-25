@@ -15,10 +15,10 @@ export class NotificationPayload extends ValueObject<NotificationPayloadProps> {
     return JSON.stringify({
       version: this.props.version,
       type: this.props.type.value,
-      primaryIdentifier: this.props.primaryIdentifier,
-      primaryIndentifierType: this.props.primaryIndentifierType,
-      secondaryIdentifier: this.props.secondaryIdentifier,
-      secondaryIdentifierType: this.props.secondaryIdentifierType,
+      primaryIdentifier: this.props.primaryIdentifier.value,
+      primaryIndentifierType: this.props.primaryIndentifierType.value,
+      secondaryIdentifier: this.props.secondaryIdentifier?.value,
+      secondaryIdentifierType: this.props.secondaryIdentifierType?.value,
     })
   }
 
