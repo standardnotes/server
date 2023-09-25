@@ -4,11 +4,13 @@ import { TimerInterface } from '@standardnotes/time'
 import { SharedVaultRepositoryInterface } from '../../../SharedVault/SharedVaultRepositoryInterface'
 import { TransferSharedVaultDTO } from './TransferSharedVaultDTO'
 import { SharedVaultUserRepositoryInterface } from '../../../SharedVault/User/SharedVaultUserRepositoryInterface'
+import { TransferSharedVaultItems } from '../TransferSharedVaultItems/TransferSharedVaultItems'
 
 export class TransferSharedVault implements UseCaseInterface<void> {
   constructor(
     private sharedVaultRepository: SharedVaultRepositoryInterface,
     private sharedVaultUserRepository: SharedVaultUserRepositoryInterface,
+    private transferSharedVaultItems: TransferSharedVaultItems,
     private timer: TimerInterface,
   ) {}
 
@@ -46,6 +48,15 @@ export class TransferSharedVault implements UseCaseInterface<void> {
     })
     if (!newOwner) {
       return Result.fail('New owner is not a member of this shared vault')
+    }
+
+    const transferingItemsResult = await this.transferSharedVaultItems.execute({
+      fromUserUuid: fromUserUuid.value,
+      toUserUuid: toUserUuid.value,
+      sharedVaultUuid: sharedVaultUuid.value,
+    })
+    if (transferingItemsResult.isFailed()) {
+      return Result.fail(`Could not transfer items: ${transferingItemsResult.getError()}`)
     }
 
     newOwner.props.isDesignatedSurvivor = false

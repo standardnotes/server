@@ -91,6 +91,7 @@ const TYPES = {
   Sync_DesignateSurvivor: Symbol.for('Sync_DesignateSurvivor'),
   Sync_RemoveUserFromSharedVaults: Symbol.for('Sync_RemoveUserFromSharedVaults'),
   Sync_TransferSharedVault: Symbol.for('Sync_TransferSharedVault'),
+  Sync_TransferSharedVaultItems: Symbol.for('Sync_TransferSharedVaultItems'),
   // Handlers
   Sync_AccountDeletionRequestedEventHandler: Symbol.for('Sync_AccountDeletionRequestedEventHandler'),
   Sync_DuplicateItemSyncedEventHandler: Symbol.for('Sync_DuplicateItemSyncedEventHandler'),

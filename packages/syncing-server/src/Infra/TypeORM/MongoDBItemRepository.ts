@@ -17,6 +17,15 @@ export class MongoDBItemRepository implements ItemRepositoryInterface {
     private logger: Logger,
   ) {}
 
+  async updateSharedVaultOwner(dto: { sharedVaultUuid: Uuid; fromOwnerUuid: Uuid; toOwnerUuid: Uuid }): Promise<void> {
+    await this.mongoRepository.updateMany(
+      {
+        $and: [{ sharedVaultUuid: { $eq: dto.sharedVaultUuid.value } }, { userUuid: { $eq: dto.fromOwnerUuid.value } }],
+      },
+      { $set: { userUuid: dto.toOwnerUuid.value } },
+    )
+  }
+
   async unassignFromSharedVault(sharedVaultUuid: Uuid): Promise<void> {
     await this.mongoRepository.updateMany(
       { sharedVaultUuid: { $eq: sharedVaultUuid.value } },

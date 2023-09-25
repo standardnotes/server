@@ -174,6 +174,7 @@ import { RemoveUserFromSharedVaults } from '../Domain/UseCase/SharedVaults/Remov
 import { TransferSharedVault } from '../Domain/UseCase/SharedVaults/TransferSharedVault/TransferSharedVault'
 import { TransitionRepositoryInterface } from '../Domain/Transition/TransitionRepositoryInterface'
 import { RedisTransitionRepository } from '../Infra/Redis/RedisTransitionRepository'
+import { TransferSharedVaultItems } from '../Domain/UseCase/SharedVaults/TransferSharedVaultItems/TransferSharedVaultItems'
 
 export class ContainerConfigLoader {
   private readonly DEFAULT_CONTENT_SIZE_TRANSFER_LIMIT = 10_000_000
@@ -891,11 +892,21 @@ export class ContainerConfigLoader {
         ),
       )
     container
+      .bind<TransferSharedVaultItems>(TYPES.Sync_TransferSharedVaultItems)
+      .toConstantValue(
+        new TransferSharedVaultItems(
+          isSecondaryDatabaseEnabled
+            ? container.get<ItemRepositoryInterface>(TYPES.Sync_MongoDBItemRepository)
+            : container.get<ItemRepositoryInterface>(TYPES.Sync_SQLItemRepository),
+        ),
+      )
+    container
       .bind<TransferSharedVault>(TYPES.Sync_TransferSharedVault)
       .toConstantValue(
         new TransferSharedVault(
           container.get<SharedVaultRepositoryInterface>(TYPES.Sync_SharedVaultRepository),
           container.get<SharedVaultUserRepositoryInterface>(TYPES.Sync_SharedVaultUserRepository),
+          container.get<TransferSharedVaultItems>(TYPES.Sync_TransferSharedVaultItems),
           container.get<TimerInterface>(TYPES.Sync_Timer),
         ),
       )
