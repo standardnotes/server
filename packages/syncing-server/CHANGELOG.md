@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.106.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.105.1...@standardnotes/syncing-server@1.106.0) (2023-09-25)
+
+### Features
+
+* add storing paging progress in redis ([9759814](https://github.com/standardnotes/syncing-server-js/commit/9759814f637b8ae25b325e35bc7f5159747980b6))
+
 ## [1.105.1](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.105.0...@standardnotes/syncing-server@1.105.1) (2023-09-25)
 
 ### Bug Fixes

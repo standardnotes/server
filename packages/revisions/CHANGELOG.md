@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.37.0](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.36.7...@standardnotes/revisions-server@1.37.0) (2023-09-25)
+
+### Features
+
+* add storing paging progress in redis ([9759814](https://github.com/standardnotes/server/commit/9759814f637b8ae25b325e35bc7f5159747980b6))
+
 ## [1.36.7](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.36.6...@standardnotes/revisions-server@1.36.7) (2023-09-25)
 
 ### Bug Fixes
