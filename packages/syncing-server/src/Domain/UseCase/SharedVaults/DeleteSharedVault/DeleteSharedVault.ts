@@ -6,7 +6,7 @@ import { SharedVaultRepositoryInterface } from '../../../SharedVault/SharedVault
 import { SharedVaultUserRepositoryInterface } from '../../../SharedVault/User/SharedVaultUserRepositoryInterface'
 import { SharedVaultInviteRepositoryInterface } from '../../../SharedVault/User/Invite/SharedVaultInviteRepositoryInterface'
 import { RemoveUserFromSharedVault } from '../RemoveUserFromSharedVault/RemoveUserFromSharedVault'
-import { DeclineInviteToSharedVault } from '../DeclineInviteToSharedVault/DeclineInviteToSharedVault'
+import { CancelInviteToSharedVault } from '../CancelInviteToSharedVault/CancelInviteToSharedVault'
 import { DomainEventFactoryInterface } from '../../../Event/DomainEventFactoryInterface'
 import { TransferSharedVault } from '../TransferSharedVault/TransferSharedVault'
 
@@ -16,7 +16,7 @@ export class DeleteSharedVault implements UseCaseInterface<void> {
     private sharedVaultUserRepository: SharedVaultUserRepositoryInterface,
     private sharedVaultInviteRepository: SharedVaultInviteRepositoryInterface,
     private removeUserFromSharedVault: RemoveUserFromSharedVault,
-    private declineInviteToSharedVault: DeclineInviteToSharedVault,
+    private cancelInviteToSharedVault: CancelInviteToSharedVault,
     private domainEventFactory: DomainEventFactoryInterface,
     private domainEventPublisher: DomainEventPublisherInterface,
     private transferSharedVault: TransferSharedVault,
@@ -46,7 +46,7 @@ export class DeleteSharedVault implements UseCaseInterface<void> {
 
     const sharedVaultInvites = await this.sharedVaultInviteRepository.findBySharedVaultUuid(sharedVaultUuid)
     for (const sharedVaultInvite of sharedVaultInvites) {
-      const result = await this.declineInviteToSharedVault.execute({
+      const result = await this.cancelInviteToSharedVault.execute({
         inviteUuid: sharedVaultInvite.id.toString(),
         userUuid: sharedVaultInvite.props.userUuid.value,
       })

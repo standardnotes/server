@@ -2,6 +2,7 @@ import {
   ContentType,
   Dates,
   NotificationPayload,
+  NotificationPayloadIdentifierType,
   NotificationType,
   Result,
   RoleNameCollection,
@@ -245,9 +246,15 @@ export class UpdateExistingItem implements UseCaseInterface<Item> {
       sharedVaultOperation.props.type === SharedVaultOperationOnItem.TYPES.RemoveFromSharedVault
     ) {
       const notificationPayloadOrError = NotificationPayload.create({
-        sharedVaultUuid: sharedVaultOperation.props.sharedVaultUuid,
+        primaryIdentifier: sharedVaultOperation.props.sharedVaultUuid,
+        primaryIndentifierType: NotificationPayloadIdentifierType.create(
+          NotificationPayloadIdentifierType.TYPES.SharedVaultUuid,
+        ).getValue(),
         type: NotificationType.create(NotificationType.TYPES.SharedVaultItemRemoved).getValue(),
-        itemUuid: dto.existingItem.uuid,
+        secondaryIdentifier: dto.existingItem.uuid,
+        secondaryIdentifierType: NotificationPayloadIdentifierType.create(
+          NotificationPayloadIdentifierType.TYPES.ItemUuid,
+        ).getValue(),
         version: '1.0',
       })
       if (notificationPayloadOrError.isFailed()) {

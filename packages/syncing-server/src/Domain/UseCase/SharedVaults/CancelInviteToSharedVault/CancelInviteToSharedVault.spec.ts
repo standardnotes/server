@@ -1,15 +1,15 @@
 import { NotificationPayload, Result, SharedVaultUserPermission, Timestamps, Uuid } from '@standardnotes/domain-core'
 import { SharedVaultInviteRepositoryInterface } from '../../../SharedVault/User/Invite/SharedVaultInviteRepositoryInterface'
-import { DeclineInviteToSharedVault } from './DeclineInviteToSharedVault'
+import { CancelInviteToSharedVault } from './CancelInviteToSharedVault'
 import { SharedVaultInvite } from '../../../SharedVault/User/Invite/SharedVaultInvite'
 import { AddNotificationForUser } from '../../Messaging/AddNotificationForUser/AddNotificationForUser'
 
-describe('DeclineInviteToSharedVault', () => {
+describe('CancelInviteToSharedVault', () => {
   let sharedVaultInviteRepository: SharedVaultInviteRepositoryInterface
   let invite: SharedVaultInvite
   let addNotificationForUser: AddNotificationForUser
 
-  const createUseCase = () => new DeclineInviteToSharedVault(sharedVaultInviteRepository, addNotificationForUser)
+  const createUseCase = () => new CancelInviteToSharedVault(sharedVaultInviteRepository, addNotificationForUser)
 
   beforeEach(() => {
     invite = SharedVaultInvite.create({

@@ -103,7 +103,7 @@ import { TypeORMSharedVaultInviteRepository } from '../Infra/TypeORM/TypeORMShar
 import { UpdateSharedVaultInvite } from '../Domain/UseCase/SharedVaults/UpdateSharedVaultInvite/UpdateSharedVaultInvite'
 import { AcceptInviteToSharedVault } from '../Domain/UseCase/SharedVaults/AcceptInviteToSharedVault/AcceptInviteToSharedVault'
 import { AddUserToSharedVault } from '../Domain/UseCase/SharedVaults/AddUserToSharedVault/AddUserToSharedVault'
-import { DeclineInviteToSharedVault } from '../Domain/UseCase/SharedVaults/DeclineInviteToSharedVault/DeclineInviteToSharedVault'
+import { CancelInviteToSharedVault } from '../Domain/UseCase/SharedVaults/CancelInviteToSharedVault/CancelInviteToSharedVault'
 import { DeleteSharedVaultInvitesToUser } from '../Domain/UseCase/SharedVaults/DeleteSharedVaultInvitesToUser/DeleteSharedVaultInvitesToUser'
 import { DeleteSharedVaultInvitesSentByUser } from '../Domain/UseCase/SharedVaults/DeleteSharedVaultInvitesSentByUser/DeleteSharedVaultInvitesSentByUser'
 import { GetSharedVaultInvitesSentByUser } from '../Domain/UseCase/SharedVaults/GetSharedVaultInvitesSentByUser/GetSharedVaultInvitesSentByUser'
@@ -749,9 +749,9 @@ export class ContainerConfigLoader {
         ),
       )
     container
-      .bind<DeclineInviteToSharedVault>(TYPES.Sync_DeclineInviteToSharedVault)
+      .bind<CancelInviteToSharedVault>(TYPES.Sync_DeclineInviteToSharedVault)
       .toConstantValue(
-        new DeclineInviteToSharedVault(
+        new CancelInviteToSharedVault(
           container.get<SharedVaultInviteRepositoryInterface>(TYPES.Sync_SharedVaultInviteRepository),
           container.get<AddNotificationForUser>(TYPES.Sync_AddNotificationForUser),
         ),
@@ -918,7 +918,7 @@ export class ContainerConfigLoader {
           container.get<SharedVaultUserRepositoryInterface>(TYPES.Sync_SharedVaultUserRepository),
           container.get<SharedVaultInviteRepositoryInterface>(TYPES.Sync_SharedVaultInviteRepository),
           container.get<RemoveUserFromSharedVault>(TYPES.Sync_RemoveSharedVaultUser),
-          container.get<DeclineInviteToSharedVault>(TYPES.Sync_DeclineInviteToSharedVault),
+          container.get<CancelInviteToSharedVault>(TYPES.Sync_DeclineInviteToSharedVault),
           container.get<DomainEventFactoryInterface>(TYPES.Sync_DomainEventFactory),
           container.get<DomainEventPublisherInterface>(TYPES.Sync_DomainEventPublisher),
           container.get<TransferSharedVault>(TYPES.Sync_TransferSharedVault),

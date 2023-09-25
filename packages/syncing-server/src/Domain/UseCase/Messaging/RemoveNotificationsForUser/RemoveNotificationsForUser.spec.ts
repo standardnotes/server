@@ -1,4 +1,10 @@
-import { NotificationPayload, NotificationType, Timestamps, Uuid } from '@standardnotes/domain-core'
+import {
+  NotificationPayload,
+  NotificationPayloadIdentifierType,
+  NotificationType,
+  Timestamps,
+  Uuid,
+} from '@standardnotes/domain-core'
 
 import { NotificationRepositoryInterface } from '../../../Notifications/NotificationRepositoryInterface'
 import { RemoveNotificationsForUser } from './RemoveNotificationsForUser'
@@ -15,8 +21,14 @@ describe('RemoveNotificationsForUser', () => {
       userUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
       type: NotificationType.create(NotificationType.TYPES.SharedVaultItemRemoved).getValue(),
       payload: NotificationPayload.create({
-        itemUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
-        sharedVaultUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+        primaryIdentifier: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+        primaryIndentifierType: NotificationPayloadIdentifierType.create(
+          NotificationPayloadIdentifierType.TYPES.SharedVaultUuid,
+        ).getValue(),
+        secondaryIdentifier: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+        secondaryIdentifierType: NotificationPayloadIdentifierType.create(
+          NotificationPayloadIdentifierType.TYPES.ItemUuid,
+        ).getValue(),
         type: NotificationType.create(NotificationType.TYPES.SharedVaultItemRemoved).getValue(),
         version: '1.0',
       }).getValue(),

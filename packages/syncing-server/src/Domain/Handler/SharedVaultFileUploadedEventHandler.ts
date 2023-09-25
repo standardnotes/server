@@ -1,5 +1,10 @@
 import { DomainEventHandlerInterface, SharedVaultFileUploadedEvent } from '@standardnotes/domain-events'
-import { NotificationPayload, NotificationType, Uuid } from '@standardnotes/domain-core'
+import {
+  NotificationPayload,
+  NotificationPayloadIdentifierType,
+  NotificationType,
+  Uuid,
+} from '@standardnotes/domain-core'
 import { Logger } from 'winston'
 
 import { UpdateStorageQuotaUsedInSharedVault } from '../UseCase/SharedVaults/UpdateStorageQuotaUsedInSharedVault/UpdateStorageQuotaUsedInSharedVault'
@@ -33,7 +38,10 @@ export class SharedVaultFileUploadedEventHandler implements DomainEventHandlerIn
     }
 
     const notificationPayload = NotificationPayload.create({
-      sharedVaultUuid,
+      primaryIdentifier: sharedVaultUuid,
+      primaryIndentifierType: NotificationPayloadIdentifierType.create(
+        NotificationPayloadIdentifierType.TYPES.SharedVaultUuid,
+      ).getValue(),
       type: NotificationType.create(NotificationType.TYPES.SharedVaultFileUploaded).getValue(),
       version: '1.0',
     }).getValue()

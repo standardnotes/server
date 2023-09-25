@@ -1,4 +1,11 @@
-import { NotificationPayload, NotificationType, Result, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
+import {
+  NotificationPayload,
+  NotificationPayloadIdentifierType,
+  NotificationType,
+  Result,
+  UseCaseInterface,
+  Uuid,
+} from '@standardnotes/domain-core'
 import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
 
 import { RemoveUserFromSharedVaultDTO } from './RemoveUserFromSharedVaultDTO'
@@ -64,7 +71,10 @@ export class RemoveUserFromSharedVault implements UseCaseInterface<void> {
     await this.sharedVaultUsersRepository.remove(sharedVaultUser)
 
     const notificationPayloadOrError = NotificationPayload.create({
-      sharedVaultUuid: sharedVault.uuid,
+      primaryIdentifier: sharedVault.uuid,
+      primaryIndentifierType: NotificationPayloadIdentifierType.create(
+        NotificationPayloadIdentifierType.TYPES.SharedVaultUuid,
+      ).getValue(),
       type: NotificationType.create(NotificationType.TYPES.UserRemovedFromSharedVault).getValue(),
       version: '1.0',
     })
@@ -85,7 +95,10 @@ export class RemoveUserFromSharedVault implements UseCaseInterface<void> {
     }
 
     const selfNotificationPayloadOrError = NotificationPayload.create({
-      sharedVaultUuid: sharedVault.uuid,
+      primaryIdentifier: sharedVault.uuid,
+      primaryIndentifierType: NotificationPayloadIdentifierType.create(
+        NotificationPayloadIdentifierType.TYPES.SharedVaultUuid,
+      ).getValue(),
       type: NotificationType.create(NotificationType.TYPES.SelfRemovedFromSharedVault).getValue(),
       version: '1.0',
     })
