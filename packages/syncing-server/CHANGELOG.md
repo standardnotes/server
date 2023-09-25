@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.105.1](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.105.0...@standardnotes/syncing-server@1.105.1) (2023-09-25)
+
+### Bug Fixes
+
+* add paging progress log ([8cb33dc](https://github.com/standardnotes/syncing-server-js/commit/8cb33dc906391ee8b1ebd333937045c328e4fc06))
+* remember paging progress on transitioning ([1d73e4f](https://github.com/standardnotes/syncing-server-js/commit/1d73e4f0720d41029af4d4b2b7a10d101add6c82))
+
 # [1.105.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.104.0...@standardnotes/syncing-server@1.105.0) (2023-09-22)
 
 ### Bug Fixes

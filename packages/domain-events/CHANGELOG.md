@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.129.1](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.129.0...@standardnotes/domain-events@2.129.1) (2023-09-25)
+
+### Bug Fixes
+
+* remember paging progress on transitioning ([1d73e4f](https://github.com/standardnotes/server/commit/1d73e4f0720d41029af4d4b2b7a10d101add6c82))
+
 # [2.129.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.128.0...@standardnotes/domain-events@2.129.0) (2023-09-21)
 
 ### Features
