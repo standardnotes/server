@@ -1,5 +1,6 @@
 import {
   NotificationPayload,
+  NotificationPayloadIdentifierType,
   NotificationType,
   Result,
   SharedVaultUser,
@@ -73,7 +74,10 @@ export class AddUserToSharedVault implements UseCaseInterface<SharedVaultUser> {
     await this.sharedVaultUserRepository.save(sharedVaultUser)
 
     const notificationPayloadOrError = NotificationPayload.create({
-      sharedVaultUuid: sharedVaultUuid,
+      primaryIdentifier: sharedVaultUuid,
+      primaryIndentifierType: NotificationPayloadIdentifierType.create(
+        NotificationPayloadIdentifierType.TYPES.SharedVaultUuid,
+      ).getValue(),
       type: NotificationType.create(NotificationType.TYPES.UserAddedToSharedVault).getValue(),
       version: '1.0',
     })

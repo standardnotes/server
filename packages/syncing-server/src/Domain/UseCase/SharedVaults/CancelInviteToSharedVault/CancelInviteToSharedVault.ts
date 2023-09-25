@@ -1,16 +1,23 @@
-import { NotificationPayload, NotificationType, Result, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
+import {
+  NotificationPayload,
+  NotificationPayloadIdentifierType,
+  NotificationType,
+  Result,
+  UseCaseInterface,
+  Uuid,
+} from '@standardnotes/domain-core'
 
-import { DeclineInviteToSharedVaultDTO } from './DeclineInviteToSharedVaultDTO'
+import { CancelInviteToSharedVaultDTO } from './CancelInviteToSharedVaultDTO'
 import { SharedVaultInviteRepositoryInterface } from '../../../SharedVault/User/Invite/SharedVaultInviteRepositoryInterface'
 import { AddNotificationForUser } from '../../Messaging/AddNotificationForUser/AddNotificationForUser'
 
-export class DeclineInviteToSharedVault implements UseCaseInterface<void> {
+export class CancelInviteToSharedVault implements UseCaseInterface<void> {
   constructor(
     private sharedVaultInviteRepository: SharedVaultInviteRepositoryInterface,
     private addNotificationForUser: AddNotificationForUser,
   ) {}
 
-  async execute(dto: DeclineInviteToSharedVaultDTO): Promise<Result<void>> {
+  async execute(dto: CancelInviteToSharedVaultDTO): Promise<Result<void>> {
     const inviteUuidOrError = Uuid.create(dto.inviteUuid)
     if (inviteUuidOrError.isFailed()) {
       return Result.fail(inviteUuidOrError.getError())
@@ -35,8 +42,15 @@ export class DeclineInviteToSharedVault implements UseCaseInterface<void> {
     await this.sharedVaultInviteRepository.remove(invite)
 
     const notificationPayloadOrError = NotificationPayload.create({
-      sharedVaultUuid: invite.props.sharedVaultUuid,
-      type: NotificationType.create(NotificationType.TYPES.SharedVaultInviteDeclined).getValue(),
+      primaryIdentifier: Uuid.create(invite.id.toString()).getValue(),
+      primaryIndentifierType: NotificationPayloadIdentifierType.create(
+        NotificationPayloadIdentifierType.TYPES.SharedVaultInviteUuid,
+      ).getValue(),
+      secondaryIdentifier: invite.props.sharedVaultUuid,
+      secondaryIdentifierType: NotificationPayloadIdentifierType.create(
+        NotificationPayloadIdentifierType.TYPES.SharedVaultUuid,
+      ).getValue(),
+      type: NotificationType.create(NotificationType.TYPES.SharedVaultInviteCanceled).getValue(),
       version: '1.0',
     })
     if (notificationPayloadOrError.isFailed()) {
@@ -46,7 +60,7 @@ export class DeclineInviteToSharedVault implements UseCaseInterface<void> {
 
     const result = await this.addNotificationForUser.execute({
       userUuid: invite.props.userUuid.value,
-      type: NotificationType.TYPES.SharedVaultInviteDeclined,
+      type: NotificationType.TYPES.SharedVaultInviteCanceled,
       payload: notificationPayload,
       version: '1.0',
     })

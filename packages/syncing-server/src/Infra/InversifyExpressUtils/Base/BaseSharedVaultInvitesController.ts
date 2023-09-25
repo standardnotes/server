@@ -8,7 +8,7 @@ import { SharedVaultInvite } from '../../../Domain/SharedVault/User/Invite/Share
 import { SharedVaultInviteHttpRepresentation } from '../../../Mapping/Http/SharedVaultInviteHttpRepresentation'
 import { UpdateSharedVaultInvite } from '../../../Domain/UseCase/SharedVaults/UpdateSharedVaultInvite/UpdateSharedVaultInvite'
 import { AcceptInviteToSharedVault } from '../../../Domain/UseCase/SharedVaults/AcceptInviteToSharedVault/AcceptInviteToSharedVault'
-import { DeclineInviteToSharedVault } from '../../../Domain/UseCase/SharedVaults/DeclineInviteToSharedVault/DeclineInviteToSharedVault'
+import { CancelInviteToSharedVault } from '../../../Domain/UseCase/SharedVaults/CancelInviteToSharedVault/CancelInviteToSharedVault'
 import { DeleteSharedVaultInvitesToUser } from '../../../Domain/UseCase/SharedVaults/DeleteSharedVaultInvitesToUser/DeleteSharedVaultInvitesToUser'
 import { GetSharedVaultInvitesSentByUser } from '../../../Domain/UseCase/SharedVaults/GetSharedVaultInvitesSentByUser/GetSharedVaultInvitesSentByUser'
 import { DeleteSharedVaultInvitesSentByUser } from '../../../Domain/UseCase/SharedVaults/DeleteSharedVaultInvitesSentByUser/DeleteSharedVaultInvitesSentByUser'
@@ -19,7 +19,7 @@ export class BaseSharedVaultInvitesController extends BaseHttpController {
     protected inviteUserToSharedVaultUseCase: InviteUserToSharedVault,
     protected updateSharedVaultInviteUseCase: UpdateSharedVaultInvite,
     protected acceptSharedVaultInviteUseCase: AcceptInviteToSharedVault,
-    protected declineSharedVaultInviteUseCase: DeclineInviteToSharedVault,
+    protected declineSharedVaultInviteUseCase: CancelInviteToSharedVault,
     protected deleteSharedVaultInvitesToUserUseCase: DeleteSharedVaultInvitesToUser,
     protected deleteSharedVaultInvitesSentByUserUseCase: DeleteSharedVaultInvitesSentByUser,
     protected getSharedVaultInvitesSentByUserUseCase: GetSharedVaultInvitesSentByUser,

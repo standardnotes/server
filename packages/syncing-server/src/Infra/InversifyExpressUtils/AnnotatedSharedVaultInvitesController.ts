@@ -5,7 +5,7 @@ import { Request, Response } from 'express'
 import TYPES from '../../Bootstrap/Types'
 import { SharedVaultInvite } from '../../Domain/SharedVault/User/Invite/SharedVaultInvite'
 import { AcceptInviteToSharedVault } from '../../Domain/UseCase/SharedVaults/AcceptInviteToSharedVault/AcceptInviteToSharedVault'
-import { DeclineInviteToSharedVault } from '../../Domain/UseCase/SharedVaults/DeclineInviteToSharedVault/DeclineInviteToSharedVault'
+import { CancelInviteToSharedVault } from '../../Domain/UseCase/SharedVaults/CancelInviteToSharedVault/CancelInviteToSharedVault'
 import { DeleteSharedVaultInvitesSentByUser } from '../../Domain/UseCase/SharedVaults/DeleteSharedVaultInvitesSentByUser/DeleteSharedVaultInvitesSentByUser'
 import { DeleteSharedVaultInvitesToUser } from '../../Domain/UseCase/SharedVaults/DeleteSharedVaultInvitesToUser/DeleteSharedVaultInvitesToUser'
 import { GetSharedVaultInvitesSentByUser } from '../../Domain/UseCase/SharedVaults/GetSharedVaultInvitesSentByUser/GetSharedVaultInvitesSentByUser'
@@ -22,7 +22,7 @@ export class AnnotatedSharedVaultInvitesController extends BaseSharedVaultInvite
     @inject(TYPES.Sync_InviteUserToSharedVault) override inviteUserToSharedVaultUseCase: InviteUserToSharedVault,
     @inject(TYPES.Sync_UpdateSharedVaultInvite) override updateSharedVaultInviteUseCase: UpdateSharedVaultInvite,
     @inject(TYPES.Sync_AcceptInviteToSharedVault) override acceptSharedVaultInviteUseCase: AcceptInviteToSharedVault,
-    @inject(TYPES.Sync_DeclineInviteToSharedVault) override declineSharedVaultInviteUseCase: DeclineInviteToSharedVault,
+    @inject(TYPES.Sync_DeclineInviteToSharedVault) override declineSharedVaultInviteUseCase: CancelInviteToSharedVault,
     @inject(TYPES.Sync_DeleteSharedVaultInvitesToUser)
     override deleteSharedVaultInvitesToUserUseCase: DeleteSharedVaultInvitesToUser,
     @inject(TYPES.Sync_DeleteSharedVaultInvitesSentByUser)

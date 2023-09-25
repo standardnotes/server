@@ -4,6 +4,7 @@ import { Result } from '../Core/Result'
 import { NotificationPayloadProps } from './NotificationPayloadProps'
 import { NotificationType } from './NotificationType'
 import { Uuid } from '../Common/Uuid'
+import { NotificationPayloadIdentifierType } from './NotificationPayloadIdentifierType'
 
 export class NotificationPayload extends ValueObject<NotificationPayloadProps> {
   private constructor(props: NotificationPayloadProps) {
@@ -14,8 +15,10 @@ export class NotificationPayload extends ValueObject<NotificationPayloadProps> {
     return JSON.stringify({
       version: this.props.version,
       type: this.props.type.value,
-      sharedVaultUuid: this.props.sharedVaultUuid.value,
-      itemUuid: this.props.itemUuid ? this.props.itemUuid.value : undefined,
+      primaryIdentifier: this.props.primaryIdentifier,
+      primaryIndentifierType: this.props.primaryIndentifierType,
+      secondaryIdentifier: this.props.secondaryIdentifier,
+      secondaryIdentifierType: this.props.secondaryIdentifierType,
     })
   }
 
@@ -29,26 +32,43 @@ export class NotificationPayload extends ValueObject<NotificationPayloadProps> {
       }
       const type = typeOrError.getValue()
 
-      const sharedVaultUuidOrError = Uuid.create(props.sharedVaultUuid)
-      if (sharedVaultUuidOrError.isFailed()) {
-        return Result.fail<NotificationPayload>(sharedVaultUuidOrError.getError())
+      const primaryIdentifierOrError = Uuid.create(props.primaryIdentifier)
+      if (primaryIdentifierOrError.isFailed()) {
+        return Result.fail<NotificationPayload>(primaryIdentifierOrError.getError())
       }
-      const sharedVaultUuid = sharedVaultUuidOrError.getValue()
+      const primaryIdentifier = primaryIdentifierOrError.getValue()
 
-      let itemUuid: Uuid | undefined = undefined
-      if (props.itemUuid) {
-        const itemUuidOrError = Uuid.create(props.itemUuid)
-        if (itemUuidOrError.isFailed()) {
-          return Result.fail<NotificationPayload>(itemUuidOrError.getError())
+      const primaryIndentifierTypeOrError = NotificationPayloadIdentifierType.create(props.primaryIndentifierType)
+      if (primaryIndentifierTypeOrError.isFailed()) {
+        return Result.fail<NotificationPayload>(primaryIndentifierTypeOrError.getError())
+      }
+      const primaryIndentifierType = primaryIndentifierTypeOrError.getValue()
+
+      let secondaryIdentifier: Uuid | undefined
+      if (props.secondaryIdentifier) {
+        const secondaryIdentifierOrError = Uuid.create(props.secondaryIdentifier)
+        if (secondaryIdentifierOrError.isFailed()) {
+          return Result.fail<NotificationPayload>(secondaryIdentifierOrError.getError())
         }
-        itemUuid = itemUuidOrError.getValue()
+        secondaryIdentifier = secondaryIdentifierOrError.getValue()
+      }
+
+      let secondaryIdentifierType: NotificationPayloadIdentifierType | undefined
+      if (props.secondaryIdentifierType) {
+        const secondaryIdentifierTypeOrError = NotificationPayloadIdentifierType.create(props.secondaryIdentifierType)
+        if (secondaryIdentifierTypeOrError.isFailed()) {
+          return Result.fail<NotificationPayload>(secondaryIdentifierTypeOrError.getError())
+        }
+        secondaryIdentifierType = secondaryIdentifierTypeOrError.getValue()
       }
 
       return NotificationPayload.create({
         version: props.version,
         type,
-        sharedVaultUuid,
-        itemUuid,
+        primaryIdentifier,
+        primaryIndentifierType,
+        secondaryIdentifier,
+        secondaryIdentifierType,
       })
     } catch (error) {
       return Result.fail<NotificationPayload>((error as Error).message)
@@ -57,7 +77,7 @@ export class NotificationPayload extends ValueObject<NotificationPayloadProps> {
 
   static create(props: NotificationPayloadProps): Result<NotificationPayload> {
     if (
-      props.itemUuid === undefined &&
+      props.secondaryIdentifier === undefined &&
       props.type.equals(NotificationType.create(NotificationType.TYPES.SharedVaultItemRemoved).getValue())
     ) {
       return Result.fail<NotificationPayload>(

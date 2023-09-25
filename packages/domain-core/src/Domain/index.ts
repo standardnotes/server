@@ -48,6 +48,8 @@ export * from './Env/AbstractEnv'
 export * from './Mapping/MapperInterface'
 
 export * from './Notification/NotificationPayload'
+export * from './Notification/NotificationPayloadIdentifierType'
+export * from './Notification/NotificationPayloadIdentifierTypeProps'
 export * from './Notification/NotificationPayloadProps'
 export * from './Notification/NotificationType'
 export * from './Notification/NotificationTypeProps'

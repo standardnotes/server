@@ -1,16 +1,15 @@
 import { Result, SharedVaultUserPermission, Timestamps, Uuid } from '@standardnotes/domain-core'
 import { SharedVaultInviteRepositoryInterface } from '../../../SharedVault/User/Invite/SharedVaultInviteRepositoryInterface'
-import { DeclineInviteToSharedVault } from '../DeclineInviteToSharedVault/DeclineInviteToSharedVault'
+import { CancelInviteToSharedVault } from '../CancelInviteToSharedVault/CancelInviteToSharedVault'
 import { DeleteSharedVaultInvitesToUser } from './DeleteSharedVaultInvitesToUser'
 import { SharedVaultInvite } from '../../../SharedVault/User/Invite/SharedVaultInvite'
 
 describe('DeleteSharedVaultInvitesToUser', () => {
   let sharedVaultInviteRepository: SharedVaultInviteRepositoryInterface
-  let declineInviteToSharedVault: DeclineInviteToSharedVault
+  let cancelInviteToSharedVault: CancelInviteToSharedVault
   let sharedVaultInvite: SharedVaultInvite
 
-  const createUseCase = () =>
-    new DeleteSharedVaultInvitesToUser(sharedVaultInviteRepository, declineInviteToSharedVault)
+  const createUseCase = () => new DeleteSharedVaultInvitesToUser(sharedVaultInviteRepository, cancelInviteToSharedVault)
 
   beforeEach(() => {
     sharedVaultInvite = SharedVaultInvite.create({
@@ -25,8 +24,8 @@ describe('DeleteSharedVaultInvitesToUser', () => {
     sharedVaultInviteRepository = {} as jest.Mocked<SharedVaultInviteRepositoryInterface>
     sharedVaultInviteRepository.findByUserUuid = jest.fn().mockReturnValue([sharedVaultInvite])
 
-    declineInviteToSharedVault = {} as jest.Mocked<DeclineInviteToSharedVault>
-    declineInviteToSharedVault.execute = jest.fn().mockReturnValue(Result.ok())
+    cancelInviteToSharedVault = {} as jest.Mocked<CancelInviteToSharedVault>
+    cancelInviteToSharedVault.execute = jest.fn().mockReturnValue(Result.ok())
   })
 
   it('should decline all invites to user', async () => {
@@ -37,7 +36,7 @@ describe('DeleteSharedVaultInvitesToUser', () => {
     })
 
     expect(result.isFailed()).toBeFalsy()
-    expect(declineInviteToSharedVault.execute).toHaveBeenCalled()
+    expect(cancelInviteToSharedVault.execute).toHaveBeenCalled()
   })
 
   it('should return error when user uuid is invalid', async () => {
@@ -50,8 +49,8 @@ describe('DeleteSharedVaultInvitesToUser', () => {
     expect(result.isFailed()).toBeTruthy()
   })
 
-  it('should return error when declineInviteToSharedVault fails', async () => {
-    declineInviteToSharedVault.execute = jest.fn().mockReturnValue(Result.fail('error'))
+  it('should return error when cancelInviteToSharedVault fails', async () => {
+    cancelInviteToSharedVault.execute = jest.fn().mockReturnValue(Result.fail('error'))
 
     const useCase = createUseCase()
 

@@ -1,12 +1,12 @@
 import { Result, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
 import { DeleteSharedVaultInvitesSentByUserDTO } from './DeleteSharedVaultInvitesSentByUserDTO'
-import { DeclineInviteToSharedVault } from '../DeclineInviteToSharedVault/DeclineInviteToSharedVault'
+import { CancelInviteToSharedVault } from '../CancelInviteToSharedVault/CancelInviteToSharedVault'
 import { SharedVaultInviteRepositoryInterface } from '../../../SharedVault/User/Invite/SharedVaultInviteRepositoryInterface'
 
 export class DeleteSharedVaultInvitesSentByUser implements UseCaseInterface<void> {
   constructor(
     private sharedVaultInviteRepository: SharedVaultInviteRepositoryInterface,
-    private declineInviteToSharedVault: DeclineInviteToSharedVault,
+    private cancelInviteToSharedVault: CancelInviteToSharedVault,
   ) {}
 
   async execute(dto: DeleteSharedVaultInvitesSentByUserDTO): Promise<Result<void>> {
@@ -33,7 +33,7 @@ export class DeleteSharedVaultInvitesSentByUser implements UseCaseInterface<void
     }
 
     for (const invite of inboundInvites) {
-      const result = await this.declineInviteToSharedVault.execute({
+      const result = await this.cancelInviteToSharedVault.execute({
         inviteUuid: invite.id.toString(),
         userUuid: userUuid.value,
       })
