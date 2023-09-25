@@ -3,4 +3,5 @@ export interface TransitionStatusUpdatedEventPayload {
   transitionType: 'items' | 'revisions'
   transitionTimestamp: number
   status: string
+  page?: number
 }

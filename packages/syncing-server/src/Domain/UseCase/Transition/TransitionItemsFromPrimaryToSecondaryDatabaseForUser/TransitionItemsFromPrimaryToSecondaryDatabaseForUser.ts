@@ -8,6 +8,8 @@ import { ItemRepositoryInterface } from '../../../Item/ItemRepositoryInterface'
 import { ItemQuery } from '../../../Item/ItemQuery'
 
 export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements UseCaseInterface<void> {
+  private readonly pagingProgress: Map<string, number> = new Map()
+
   constructor(
     private primaryItemRepository: ItemRepositoryInterface,
     private secondaryItemRepository: ItemRepositoryInterface | null,
@@ -77,10 +79,17 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
 
   private async migrateItemsForUser(userUuid: Uuid): Promise<Result<string[]>> {
     try {
+      if (!this.pagingProgress.has(userUuid.value)) {
+        this.pagingProgress.set(userUuid.value, 1)
+      }
+      const initialPage = this.pagingProgress.get(userUuid.value) as number
+
       const totalItemsCountForUser = await this.primaryItemRepository.countAll({ userUuid: userUuid.value })
       const totalPages = Math.ceil(totalItemsCountForUser / this.pageSize)
       const itemsToSkipInIntegrityCheck = []
-      for (let currentPage = 1; currentPage <= totalPages; currentPage++) {
+      for (let currentPage = initialPage; currentPage <= totalPages; currentPage++) {
+        this.pagingProgress.set(userUuid.value, currentPage)
+
         const query: ItemQuery = {
           userUuid: userUuid.value,
           offset: (currentPage - 1) * this.pageSize,

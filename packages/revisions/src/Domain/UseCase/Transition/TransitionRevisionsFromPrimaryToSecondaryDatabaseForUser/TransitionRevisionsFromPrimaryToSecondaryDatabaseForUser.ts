@@ -7,6 +7,8 @@ import { TransitionRevisionsFromPrimaryToSecondaryDatabaseForUserDTO } from './T
 import { RevisionRepositoryInterface } from '../../../Revision/RevisionRepositoryInterface'
 
 export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements UseCaseInterface<void> {
+  private readonly pagingProgress: Map<string, number> = new Map()
+
   constructor(
     private primaryRevisionsRepository: RevisionRepositoryInterface,
     private secondRevisionsRepository: RevisionRepositoryInterface | null,
@@ -71,10 +73,19 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
 
   private async migrateRevisionsForUser(userUuid: Uuid): Promise<Result<string[]>> {
     try {
+      if (!this.pagingProgress.has(userUuid.value)) {
+        this.pagingProgress.set(userUuid.value, 1)
+      }
+      const initialPage = this.pagingProgress.get(userUuid.value) as number
+
+      this.logger.info(`[${userUuid.value}] Migrating from page ${initialPage}`)
+
       const totalRevisionsCountForUser = await this.primaryRevisionsRepository.countByUserUuid(userUuid)
       const totalPages = Math.ceil(totalRevisionsCountForUser / this.pageSize)
       const revisionsToSkipInIntegrityCheck = []
-      for (let currentPage = 1; currentPage <= totalPages; currentPage++) {
+      for (let currentPage = initialPage; currentPage <= totalPages; currentPage++) {
+        this.pagingProgress.set(userUuid.value, currentPage)
+
         const query = {
           userUuid: userUuid,
           offset: (currentPage - 1) * this.pageSize,
