@@ -102,7 +102,7 @@ export interface DomainEventFactoryInterface {
     itemUuid: string
     userUuid: string
   }): ItemRemovedFromSharedVaultEvent
-  createSharedVaultRemovedEvent(dto: { sharedVaultUuid: string }): SharedVaultRemovedEvent
+  createSharedVaultRemovedEvent(dto: { sharedVaultUuid: string; vaultOwnerUuid: string }): SharedVaultRemovedEvent
   createUserDesignatedAsSurvivorInSharedVaultEvent(dto: {
     sharedVaultUuid: string
     userUuid: string

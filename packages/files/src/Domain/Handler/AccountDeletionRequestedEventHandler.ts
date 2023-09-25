@@ -22,15 +22,17 @@ export class AccountDeletionRequestedEventHandler implements DomainEventHandlerI
       return
     }
 
-    const response = await this.markFilesToBeRemoved.execute({
+    const result = await this.markFilesToBeRemoved.execute({
       ownerUuid: event.payload.userUuid,
     })
 
-    if (!response.success) {
+    if (result.isFailed()) {
       return
     }
 
-    for (const fileRemoved of response.filesRemoved) {
+    const filesRemoved = result.getValue()
+
+    for (const fileRemoved of filesRemoved) {
       await this.domainEventPublisher.publish(
         this.domainEventFactory.createFileRemovedEvent({
           regularSubscriptionUuid: event.payload.regularSubscriptionUuid,

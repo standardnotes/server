@@ -42,7 +42,7 @@ export class DomainEventFactory implements DomainEventFactoryInterface {
     }
   }
 
-  createSharedVaultRemovedEvent(dto: { sharedVaultUuid: string }): SharedVaultRemovedEvent {
+  createSharedVaultRemovedEvent(dto: { sharedVaultUuid: string; vaultOwnerUuid: string }): SharedVaultRemovedEvent {
     return {
       type: 'SHARED_VAULT_REMOVED',
       createdAt: this.timer.getUTCDate(),
