@@ -20,4 +20,5 @@ export interface ItemRepositoryInterface {
   markItemsAsDeleted(itemUuids: Array<string>, updatedAtTimestamp: number): Promise<void>
   updateContentSize(itemUuid: string, contentSize: number): Promise<void>
   unassignFromSharedVault(sharedVaultUuid: Uuid): Promise<void>
+  updateSharedVaultOwner(dto: { sharedVaultUuid: Uuid; fromOwnerUuid: Uuid; toOwnerUuid: Uuid }): Promise<void>
 }

@@ -16,6 +16,10 @@ export class SQLLegacyItemRepository implements ItemRepositoryInterface {
     protected logger: Logger,
   ) {}
 
+  async updateSharedVaultOwner(_dto: { sharedVaultUuid: Uuid; fromOwnerUuid: Uuid; toOwnerUuid: Uuid }): Promise<void> {
+    this.logger.error('Method updateSharedVaultOwner not supported.')
+  }
+
   async unassignFromSharedVault(_sharedVaultUuid: Uuid): Promise<void> {
     this.logger.error('Method unassignFromSharedVault not supported.')
   }

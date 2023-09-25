@@ -16,6 +16,24 @@ export class SQLItemRepository extends SQLLegacyItemRepository {
     super(ormRepository, mapper, logger)
   }
 
+  override async updateSharedVaultOwner(dto: {
+    sharedVaultUuid: Uuid
+    fromOwnerUuid: Uuid
+    toOwnerUuid: Uuid
+  }): Promise<void> {
+    await this.ormRepository
+      .createQueryBuilder('item')
+      .update()
+      .set({
+        userUuid: dto.toOwnerUuid.value,
+      })
+      .where('shared_vault_uuid = :sharedVaultUuid AND user_uuid = :fromOwnerUuid', {
+        sharedVaultUuid: dto.sharedVaultUuid.value,
+        fromOwnerUuid: dto.fromOwnerUuid.value,
+      })
+      .execute()
+  }
+
   override async unassignFromSharedVault(sharedVaultUuid: Uuid): Promise<void> {
     await this.ormRepository
       .createQueryBuilder('item')

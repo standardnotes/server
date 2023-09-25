@@ -1,10 +1,11 @@
 import { TimerInterface } from '@standardnotes/time'
-import { SharedVaultUser, SharedVaultUserPermission, Timestamps, Uuid } from '@standardnotes/domain-core'
+import { Result, SharedVaultUser, SharedVaultUserPermission, Timestamps, Uuid } from '@standardnotes/domain-core'
 
 import { SharedVaultRepositoryInterface } from '../../../SharedVault/SharedVaultRepositoryInterface'
 import { SharedVaultUserRepositoryInterface } from '../../../SharedVault/User/SharedVaultUserRepositoryInterface'
 import { TransferSharedVault } from './TransferSharedVault'
 import { SharedVault } from '../../../SharedVault/SharedVault'
+import { TransferSharedVaultItems } from '../TransferSharedVaultItems/TransferSharedVaultItems'
 
 describe('TransferSharedVault', () => {
   let sharedVault: SharedVault
@@ -12,8 +13,10 @@ describe('TransferSharedVault', () => {
   let sharedVaultRepository: SharedVaultRepositoryInterface
   let sharedVaultUserRepository: SharedVaultUserRepositoryInterface
   let timer: TimerInterface
+  let transferSharedVaultItems: TransferSharedVaultItems
 
-  const createUseCase = () => new TransferSharedVault(sharedVaultRepository, sharedVaultUserRepository, timer)
+  const createUseCase = () =>
+    new TransferSharedVault(sharedVaultRepository, sharedVaultUserRepository, transferSharedVaultItems, timer)
 
   beforeEach(() => {
     sharedVault = SharedVault.create({
@@ -40,6 +43,9 @@ describe('TransferSharedVault', () => {
 
     timer = {} as jest.Mocked<TimerInterface>
     timer.getTimestampInMicroseconds = jest.fn().mockReturnValue(123)
+
+    transferSharedVaultItems = {} as jest.Mocked<TransferSharedVaultItems>
+    transferSharedVaultItems.execute = jest.fn().mockResolvedValue(Result.ok())
   })
 
   it('should transfer shared vault to another user', async () => {
@@ -139,6 +145,22 @@ describe('TransferSharedVault', () => {
       sharedVaultUid: '00000000-0000-0000-0000-000000000000',
       fromUserUuid: '00000000-0000-0000-0000-000000000000',
       toUserUuid: 'invalid',
+    })
+
+    expect(result.isFailed()).toBe(true)
+    expect(sharedVaultRepository.save).not.toHaveBeenCalled()
+    expect(sharedVaultUserRepository.save).not.toHaveBeenCalled()
+  })
+
+  it('should fail if transfering items fails', async () => {
+    const useCase = createUseCase()
+
+    transferSharedVaultItems.execute = jest.fn().mockResolvedValue(Result.fail('error'))
+
+    const result = await useCase.execute({
+      sharedVaultUid: '00000000-0000-0000-0000-000000000000',
+      fromUserUuid: '00000000-0000-0000-0000-000000000000',
+      toUserUuid: '00000000-0000-0000-0000-000000000000',
     })
 
     expect(result.isFailed()).toBe(true)
