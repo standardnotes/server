@@ -101,6 +101,7 @@ export class DeleteSharedVault implements UseCaseInterface<void> {
     await this.domainEventPublisher.publish(
       this.domainEventFactory.createSharedVaultRemovedEvent({
         sharedVaultUuid: sharedVaultUuid.value,
+        vaultOwnerUuid: sharedVault.props.userUuid.value,
       }),
     )
 
