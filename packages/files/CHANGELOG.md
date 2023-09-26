@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.24.0](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.23.2...@standardnotes/files-server@1.24.0) (2023-09-26)
+
+### Features
+
+* refactor handling revision creation from dump ([#854](https://github.com/standardnotes/files/issues/854)) ([ca6dbc0](https://github.com/standardnotes/files/commit/ca6dbc00537bb20f508f9310b1a838421f53a643))
+
 ## [1.23.2](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.23.1...@standardnotes/files-server@1.23.2) (2023-09-25)
 
 **Note:** Version bump only for package @standardnotes/files-server

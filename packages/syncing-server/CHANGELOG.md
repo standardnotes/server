@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.109.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.108.2...@standardnotes/syncing-server@1.109.0) (2023-09-26)
+
+### Features
+
+* refactor handling revision creation from dump ([#854](https://github.com/standardnotes/syncing-server-js/issues/854)) ([ca6dbc0](https://github.com/standardnotes/syncing-server-js/commit/ca6dbc00537bb20f508f9310b1a838421f53a643))
+
 ## [1.108.2](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.108.1...@standardnotes/syncing-server@1.108.2) (2023-09-25)
 
 **Note:** Version bump only for package @standardnotes/syncing-server

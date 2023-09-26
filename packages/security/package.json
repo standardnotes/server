@@ -1,6 +1,6 @@
 {
   "name": "@standardnotes/security",
-  "version": "1.13.1",
+  "version": "1.14.0",
   "engines": {
     "node": ">=18.0.0 <21.0.0"
   },

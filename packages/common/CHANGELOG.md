@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.51.0](https://github.com/standardnotes/server/compare/@standardnotes/common@1.50.4...@standardnotes/common@1.51.0) (2023-09-26)
+
+### Features
+
+* refactor handling revision creation from dump ([#854](https://github.com/standardnotes/server/issues/854)) ([ca6dbc0](https://github.com/standardnotes/server/commit/ca6dbc00537bb20f508f9310b1a838421f53a643))
+
 ## [1.50.4](https://github.com/standardnotes/server/compare/@standardnotes/common@1.50.3...@standardnotes/common@1.50.4) (2023-09-04)
 
 **Note:** Version bump only for package @standardnotes/common

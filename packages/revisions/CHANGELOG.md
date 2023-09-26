@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.38.0](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.37.3...@standardnotes/revisions-server@1.38.0) (2023-09-26)
+
+### Features
+
+* refactor handling revision creation from dump ([#854](https://github.com/standardnotes/server/issues/854)) ([ca6dbc0](https://github.com/standardnotes/server/commit/ca6dbc00537bb20f508f9310b1a838421f53a643))
+
 ## [1.37.3](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.37.2...@standardnotes/revisions-server@1.37.3) (2023-09-25)
 
 **Note:** Version bump only for package @standardnotes/revisions-server
