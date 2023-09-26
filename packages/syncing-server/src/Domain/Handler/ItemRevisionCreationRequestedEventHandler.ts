@@ -1,59 +1,22 @@
-import {
-  ItemRevisionCreationRequestedEvent,
-  DomainEventHandlerInterface,
-  DomainEventPublisherInterface,
-} from '@standardnotes/domain-events'
-import { RoleNameCollection, Uuid } from '@standardnotes/domain-core'
+import { ItemRevisionCreationRequestedEvent, DomainEventHandlerInterface } from '@standardnotes/domain-events'
 
-import { DomainEventFactoryInterface } from '../Event/DomainEventFactoryInterface'
-import { ItemBackupServiceInterface } from '../Item/ItemBackupServiceInterface'
-import { ItemRepositoryInterface } from '../Item/ItemRepositoryInterface'
-import { ItemRepositoryResolverInterface } from '../Item/ItemRepositoryResolverInterface'
+import { DumpItem } from '../UseCase/Syncing/DumpItem/DumpItem'
+import { Logger } from 'winston'
 
 export class ItemRevisionCreationRequestedEventHandler implements DomainEventHandlerInterface {
   constructor(
-    private itemRepositoryResolver: ItemRepositoryResolverInterface,
-    private itemBackupService: ItemBackupServiceInterface,
-    private domainEventFactory: DomainEventFactoryInterface,
-    private domainEventPublisher: DomainEventPublisherInterface,
+    private dumpItem: DumpItem,
+    private logger: Logger,
   ) {}
 
   async handle(event: ItemRevisionCreationRequestedEvent): Promise<void> {
-    const roleNamesOrError = RoleNameCollection.create(event.payload.roleNames)
-    if (roleNamesOrError.isFailed()) {
-      return
-    }
-    const roleNames = roleNamesOrError.getValue()
+    const result = await this.dumpItem.execute({
+      itemUuid: event.payload.itemUuid,
+      roleNames: event.payload.roleNames,
+    })
 
-    const itemRepository = this.itemRepositoryResolver.resolve(roleNames)
-
-    await this.createItemDump(event, itemRepository)
-  }
-
-  private async createItemDump(
-    event: ItemRevisionCreationRequestedEvent,
-    itemRepository: ItemRepositoryInterface,
-  ): Promise<void> {
-    const itemUuidOrError = Uuid.create(event.payload.itemUuid)
-    if (itemUuidOrError.isFailed()) {
-      return
-    }
-    const itemUuid = itemUuidOrError.getValue()
-
-    const item = await itemRepository.findByUuid(itemUuid)
-    if (item === null) {
-      return
-    }
-
-    const fileDumpPath = await this.itemBackupService.dump(item)
-    if (fileDumpPath) {
-      await this.domainEventPublisher.publish(
-        this.domainEventFactory.createItemDumpedEvent({
-          fileDumpPath,
-          userUuid: event.meta.correlation.userIdentifier,
-          roleNames: event.payload.roleNames,
-        }),
-      )
+    if (result.isFailed()) {
+      this.logger.error(`Item revision requested handler failed: ${result.getError()}`)
     }
   }
 }

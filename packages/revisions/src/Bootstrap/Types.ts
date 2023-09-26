@@ -49,6 +49,7 @@ const TYPES = {
     'Revisions_TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser',
   ),
   Revisions_RemoveRevisionsFromSharedVault: Symbol.for('Revisions_RemoveRevisionsFromSharedVault'),
+  Revisions_CreateRevisionFromDump: Symbol.for('Revisions_CreateRevisionFromDump'),
   // Controller
   Revisions_ControllerContainer: Symbol.for('Revisions_ControllerContainer'),
   Revisions_RevisionsController: Symbol.for('Revisions_RevisionsController'),

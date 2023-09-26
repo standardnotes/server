@@ -22,7 +22,7 @@
     "start": "tsc -p tsconfig.json --watch",
     "build": "tsc --build",
     "lint": "eslint . --ext .ts",
-    "test": "jest spec --coverage --passWithNoTests"
+    "test": "jest --coverage --no-cache --passWithNoTests"
   },
   "devDependencies": {
     "@types/jest": "^29.5.1",

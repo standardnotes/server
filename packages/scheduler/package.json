@@ -16,7 +16,7 @@
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
     "pretest": "yarn lint && yarn build",
-    "test": "jest --coverage --config=./jest.config.js --maxWorkers=50%",
+    "test": "jest --coverage --no-cache --config=./jest.config.js --maxWorkers=50%",
     "worker": "yarn node dist/bin/worker.js",
     "verify:jobs": "yarn node dist/bin/verify.js",
     "setup:env": "cp .env.sample .env",

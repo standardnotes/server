@@ -71,6 +71,7 @@ import { TransitionRequestedEventHandler } from '../Domain/Handler/TransitionReq
 import { SharedVaultRemovedEventHandler } from '../Domain/Handler/SharedVaultRemovedEventHandler'
 import { TransitionRepositoryInterface } from '../Domain/Transition/TransitionRepositoryInterface'
 import { RedisTransitionRepository } from '../Infra/Redis/RedisTransitionRepository'
+import { CreateRevisionFromDump } from '../Domain/UseCase/CreateRevisionFromDump/CreateRevisionFromDump'
 
 export class ContainerConfigLoader {
   constructor(private mode: 'server' | 'worker' = 'server') {}
@@ -330,6 +331,22 @@ export class ContainerConfigLoader {
       .toDynamicValue((context: interfaces.Context) => {
         return new RevisionMetadataHttpMapper(context.container.get(TYPES.Revisions_GetRequiredRoleToViewRevision))
       })
+    container
+      .bind<MapperInterface<Revision, string>>(TYPES.Revisions_RevisionItemStringMapper)
+      .toDynamicValue(() => new RevisionItemStringMapper())
+
+    container
+      .bind<DumpRepositoryInterface>(TYPES.Revisions_DumpRepository)
+      .toConstantValue(
+        env.get('S3_AWS_REGION', true)
+          ? new S3DumpRepository(
+              container.get(TYPES.Revisions_S3_BACKUP_BUCKET_NAME),
+              container.get(TYPES.Revisions_S3),
+              container.get(TYPES.Revisions_RevisionItemStringMapper),
+              container.get(TYPES.Revisions_Logger),
+            )
+          : new FSDumpRepository(container.get(TYPES.Revisions_RevisionItemStringMapper)),
+      )
 
     // use cases
     container
@@ -385,6 +402,14 @@ export class ContainerConfigLoader {
             : container.get<RevisionRepositoryInterface>(TYPES.Revisions_SQLRevisionRepository),
         ),
       )
+    container
+      .bind<CreateRevisionFromDump>(TYPES.Revisions_CreateRevisionFromDump)
+      .toConstantValue(
+        new CreateRevisionFromDump(
+          container.get<DumpRepositoryInterface>(TYPES.Revisions_DumpRepository),
+          container.get<RevisionRepositoryResolverInterface>(TYPES.Revisions_RevisionRepositoryResolver),
+        ),
+      )
 
     // env vars
     container.bind(TYPES.Revisions_AUTH_JWT_SECRET).toConstantValue(env.get('AUTH_JWT_SECRET'))
@@ -409,31 +434,12 @@ export class ContainerConfigLoader {
         )
       })
 
-    // Map
-    container
-      .bind<MapperInterface<Revision, string>>(TYPES.Revisions_RevisionItemStringMapper)
-      .toDynamicValue(() => new RevisionItemStringMapper())
-
-    container
-      .bind<DumpRepositoryInterface>(TYPES.Revisions_DumpRepository)
-      .toConstantValue(
-        env.get('S3_AWS_REGION', true)
-          ? new S3DumpRepository(
-              container.get(TYPES.Revisions_S3_BACKUP_BUCKET_NAME),
-              container.get(TYPES.Revisions_S3),
-              container.get(TYPES.Revisions_RevisionItemStringMapper),
-              container.get(TYPES.Revisions_Logger),
-            )
-          : new FSDumpRepository(container.get(TYPES.Revisions_RevisionItemStringMapper)),
-      )
-
     // Handlers
     container
       .bind<ItemDumpedEventHandler>(TYPES.Revisions_ItemDumpedEventHandler)
       .toConstantValue(
         new ItemDumpedEventHandler(
-          container.get<DumpRepositoryInterface>(TYPES.Revisions_DumpRepository),
-          container.get<RevisionRepositoryResolverInterface>(TYPES.Revisions_RevisionRepositoryResolver),
+          container.get<CreateRevisionFromDump>(TYPES.Revisions_CreateRevisionFromDump),
           container.get<winston.Logger>(TYPES.Revisions_Logger),
         ),
       )

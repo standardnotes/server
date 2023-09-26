@@ -1,5 +1,5 @@
 import { KeyParamsData } from '@standardnotes/responses'
-import { MapperInterface } from '@standardnotes/domain-core'
+import { MapperInterface, Result } from '@standardnotes/domain-core'
 import { promises } from 'fs'
 import * as uuid from 'uuid'
 import { Logger } from 'winston'
@@ -20,25 +20,29 @@ export class FSItemBackupService implements ItemBackupServiceInterface {
     throw new Error('Method not implemented.')
   }
 
-  async dump(item: Item): Promise<string> {
-    const contents = JSON.stringify({
-      item: this.mapper.toProjection(item),
-    })
+  async dump(item: Item): Promise<Result<string>> {
+    try {
+      const contents = JSON.stringify({
+        item: this.mapper.toProjection(item),
+      })
 
-    const path = `${this.fileUploadPath}/dumps/${uuid.v4()}`
+      const path = `${this.fileUploadPath}/dumps/${uuid.v4()}`
 
-    this.logger.debug(`Dumping item ${item.id.toString()} to ${path}`)
+      this.logger.debug(`Dumping item ${item.id.toString()} to ${path}`)
 
-    await promises.mkdir(dirname(path), { recursive: true })
+      await promises.mkdir(dirname(path), { recursive: true })
 
-    await promises.writeFile(path, contents)
+      await promises.writeFile(path, contents)
 
-    const fileCreated = (await promises.stat(path)).isFile()
+      const fileCreated = (await promises.stat(path)).isFile()
 
-    if (!fileCreated) {
-      throw new Error(`Could not create dump file ${path}`)
+      if (!fileCreated) {
+        return Result.fail(`Could not create dump file ${path}`)
+      }
+
+      return Result.ok(path)
+    } catch (error) {
+      return Result.fail(`Could not dump item: ${(error as Error).message}`)
     }
-
-    return path
   }
 }
