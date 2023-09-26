@@ -15,12 +15,13 @@ export class CreateRevisionFromDump implements UseCaseInterface<void> {
       return Result.fail(`Could not create revision from dump: ${filePathValidationResult.getError()}`)
     }
 
-    const revision = await this.dumpRepository.getRevisionFromDumpPath(dto.filePath)
-    if (revision === null) {
+    const revisionOrError = await this.dumpRepository.getRevisionFromDumpPath(dto.filePath)
+    if (revisionOrError.isFailed()) {
       await this.dumpRepository.removeDump(dto.filePath)
 
-      return Result.fail(`Revision not found in dump path ${dto.filePath}`)
+      return Result.fail(`Could not create revision from dump: ${revisionOrError.getError()}`)
     }
+    const revision = revisionOrError.getValue()
 
     const roleNamesOrError = RoleNameCollection.create(dto.roleNames)
     if (roleNamesOrError.isFailed()) {

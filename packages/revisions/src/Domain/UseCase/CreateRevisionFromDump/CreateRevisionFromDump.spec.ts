@@ -1,4 +1,4 @@
-import { Uuid, ContentType, Dates } from '@standardnotes/domain-core'
+import { Uuid, ContentType, Dates, Result } from '@standardnotes/domain-core'
 
 import { DumpRepositoryInterface } from '../../Dump/DumpRepositoryInterface'
 import { Revision } from '../../Revision/Revision'
@@ -28,7 +28,7 @@ describe('CreateRevisionFromDump', () => {
     }).getValue()
 
     dumpRepository = {} as jest.Mocked<DumpRepositoryInterface>
-    dumpRepository.getRevisionFromDumpPath = jest.fn().mockReturnValue(revision)
+    dumpRepository.getRevisionFromDumpPath = jest.fn().mockReturnValue(Result.ok(revision))
     dumpRepository.removeDump = jest.fn()
 
     revisionRepository = {} as jest.Mocked<RevisionRepositoryInterface>
@@ -72,7 +72,7 @@ describe('CreateRevisionFromDump', () => {
   })
 
   it('should fail if revision cannot be found', async () => {
-    dumpRepository.getRevisionFromDumpPath = jest.fn().mockReturnValue(null)
+    dumpRepository.getRevisionFromDumpPath = jest.fn().mockReturnValue(Result.fail('Oops'))
 
     const result = await createUseCase().execute({
       filePath: 'foobar',

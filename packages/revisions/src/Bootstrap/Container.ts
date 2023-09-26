@@ -343,7 +343,6 @@ export class ContainerConfigLoader {
               container.get(TYPES.Revisions_S3_BACKUP_BUCKET_NAME),
               container.get(TYPES.Revisions_S3),
               container.get(TYPES.Revisions_RevisionItemStringMapper),
-              container.get(TYPES.Revisions_Logger),
             )
           : new FSDumpRepository(container.get(TYPES.Revisions_RevisionItemStringMapper)),
       )
