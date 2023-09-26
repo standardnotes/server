@@ -21,7 +21,7 @@
     "build": "tsc --build",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
-    "test": "jest spec --coverage --passWithNoTests"
+    "test": "jest --coverage --no-cache --passWithNoTests"
   },
   "dependencies": {
     "uuid": "^9.0.0"

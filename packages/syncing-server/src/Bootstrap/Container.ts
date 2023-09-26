@@ -175,6 +175,7 @@ import { TransferSharedVault } from '../Domain/UseCase/SharedVaults/TransferShar
 import { TransitionRepositoryInterface } from '../Domain/Transition/TransitionRepositoryInterface'
 import { RedisTransitionRepository } from '../Infra/Redis/RedisTransitionRepository'
 import { TransferSharedVaultItems } from '../Domain/UseCase/SharedVaults/TransferSharedVaultItems/TransferSharedVaultItems'
+import { DumpItem } from '../Domain/UseCase/Syncing/DumpItem/DumpItem'
 
 export class ContainerConfigLoader {
   private readonly DEFAULT_CONTENT_SIZE_TRANSFER_LIMIT = 10_000_000
@@ -590,6 +591,24 @@ export class ContainerConfigLoader {
         ]),
       )
 
+    container
+      .bind<ItemBackupServiceInterface>(TYPES.Sync_ItemBackupService)
+      .toConstantValue(
+        env.get('S3_AWS_REGION', true)
+          ? new S3ItemBackupService(
+              container.get(TYPES.Sync_S3_BACKUP_BUCKET_NAME),
+              container.get(TYPES.Sync_ItemBackupMapper),
+              container.get(TYPES.Sync_ItemHttpMapper),
+              container.get(TYPES.Sync_Logger),
+              container.get(TYPES.Sync_S3),
+            )
+          : new FSItemBackupService(
+              container.get(TYPES.Sync_FILE_UPLOAD_PATH),
+              container.get(TYPES.Sync_ItemBackupMapper),
+              container.get(TYPES.Sync_Logger),
+            ),
+      )
+
     // use cases
     container
       .bind<GetItems>(TYPES.Sync_GetItems)
@@ -932,6 +951,16 @@ export class ContainerConfigLoader {
           container.get<DeleteSharedVault>(TYPES.Sync_DeleteSharedVault),
         ),
       )
+    container
+      .bind<DumpItem>(TYPES.Sync_DumpItem)
+      .toConstantValue(
+        new DumpItem(
+          container.get<ItemRepositoryResolverInterface>(TYPES.Sync_ItemRepositoryResolver),
+          container.get<ItemBackupServiceInterface>(TYPES.Sync_ItemBackupService),
+          container.get<DomainEventFactoryInterface>(TYPES.Sync_DomainEventFactory),
+          container.get<DomainEventPublisherInterface>(TYPES.Sync_DomainEventPublisher),
+        ),
+      )
 
     // Services
     container
@@ -959,24 +988,6 @@ export class ContainerConfigLoader {
         )
       })
 
-    container
-      .bind<ItemBackupServiceInterface>(TYPES.Sync_ItemBackupService)
-      .toConstantValue(
-        env.get('S3_AWS_REGION', true)
-          ? new S3ItemBackupService(
-              container.get(TYPES.Sync_S3_BACKUP_BUCKET_NAME),
-              container.get(TYPES.Sync_ItemBackupMapper),
-              container.get(TYPES.Sync_ItemHttpMapper),
-              container.get(TYPES.Sync_Logger),
-              container.get(TYPES.Sync_S3),
-            )
-          : new FSItemBackupService(
-              container.get(TYPES.Sync_FILE_UPLOAD_PATH),
-              container.get(TYPES.Sync_ItemBackupMapper),
-              container.get(TYPES.Sync_Logger),
-            ),
-      )
-
     // Handlers
     container
       .bind<DuplicateItemSyncedEventHandler>(TYPES.Sync_DuplicateItemSyncedEventHandler)
@@ -1002,10 +1013,8 @@ export class ContainerConfigLoader {
       .bind<ItemRevisionCreationRequestedEventHandler>(TYPES.Sync_ItemRevisionCreationRequestedEventHandler)
       .toConstantValue(
         new ItemRevisionCreationRequestedEventHandler(
-          container.get<ItemRepositoryResolverInterface>(TYPES.Sync_ItemRepositoryResolver),
-          container.get<ItemBackupServiceInterface>(TYPES.Sync_ItemBackupService),
-          container.get<DomainEventFactoryInterface>(TYPES.Sync_DomainEventFactory),
-          container.get<DomainEventPublisherInterface>(TYPES.Sync_DomainEventPublisher),
+          container.get<DumpItem>(TYPES.Sync_DumpItem),
+          container.get<Logger>(TYPES.Sync_Logger),
         ),
       )
     container

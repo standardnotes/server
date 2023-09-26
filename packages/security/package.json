@@ -22,7 +22,7 @@
     "start": "tsc -p tsconfig.json --watch",
     "build": "tsc --build",
     "lint": "eslint . --ext .ts",
-    "test": "jest spec --coverage"
+    "test": "jest --coverage --no-cache"
   },
   "dependencies": {
     "jsonwebtoken": "^9.0.0",

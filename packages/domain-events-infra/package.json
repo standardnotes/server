@@ -21,7 +21,7 @@
     "build": "tsc --build",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
-    "test": "jest spec --coverage"
+    "test": "jest --coverage --no-cache"
   },
   "dependencies": {
     "@aws-sdk/client-sns": "^3.332.0",

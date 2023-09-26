@@ -5,7 +5,7 @@ import { Logger } from 'winston'
 
 import { Item } from '../../Domain/Item/Item'
 import { ItemBackupServiceInterface } from '../../Domain/Item/ItemBackupServiceInterface'
-import { MapperInterface } from '@standardnotes/domain-core'
+import { MapperInterface, Result } from '@standardnotes/domain-core'
 import { ItemBackupRepresentation } from '../../Mapping/Backup/ItemBackupRepresentation'
 import { ItemHttpRepresentation } from '../../Mapping/Http/ItemHttpRepresentation'
 
@@ -18,25 +18,29 @@ export class S3ItemBackupService implements ItemBackupServiceInterface {
     private s3Client?: S3Client,
   ) {}
 
-  async dump(item: Item): Promise<string> {
-    if (!this.s3BackupBucketName || this.s3Client === undefined) {
-      this.logger.warn('S3 backup not configured')
+  async dump(item: Item): Promise<Result<string>> {
+    try {
+      if (!this.s3BackupBucketName || this.s3Client === undefined) {
+        this.logger.warn('S3 backup not configured')
 
-      return ''
-    }
+        return Result.fail('S3 backup not configured')
+      }
 
-    const s3Key = uuid.v4()
-    await this.s3Client.send(
-      new PutObjectCommand({
-        Bucket: this.s3BackupBucketName,
-        Key: s3Key,
-        Body: JSON.stringify({
-          item: this.backupMapper.toProjection(item),
+      const s3Key = uuid.v4()
+      await this.s3Client.send(
+        new PutObjectCommand({
+          Bucket: this.s3BackupBucketName,
+          Key: s3Key,
+          Body: JSON.stringify({
+            item: this.backupMapper.toProjection(item),
+          }),
         }),
-      }),
-    )
+      )
 
-    return s3Key
+      return Result.ok(s3Key)
+    } catch (error) {
+      return Result.fail(`Could not dump item: ${(error as Error).message}`)
+    }
   }
 
   async backup(items: Item[], authParams: KeyParamsData, contentSizeLimit?: number): Promise<string[]> {
