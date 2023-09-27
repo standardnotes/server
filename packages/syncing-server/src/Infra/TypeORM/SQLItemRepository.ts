@@ -16,6 +16,28 @@ export class SQLItemRepository extends SQLLegacyItemRepository {
     super(ormRepository, mapper, logger)
   }
 
+  override async deleteByUserUuidInSharedVaults(userUuid: Uuid, sharedVaultUuids: Uuid[]): Promise<void> {
+    await this.ormRepository
+      .createQueryBuilder('item')
+      .delete()
+      .from('items')
+      .where('user_uuid = :userUuid', { userUuid: userUuid.value })
+      .andWhere('shared_vault_uuid IN (:...sharedVaultUuids)', {
+        sharedVaultUuids: sharedVaultUuids.map((uuid) => uuid.value),
+      })
+      .execute()
+  }
+
+  override async deleteByUserUuidAndNotInSharedVault(userUuid: Uuid): Promise<void> {
+    await this.ormRepository
+      .createQueryBuilder('item')
+      .delete()
+      .from('items')
+      .where('user_uuid = :userUuid', { userUuid: userUuid.value })
+      .andWhere('shared_vault_uuid IS NULL')
+      .execute()
+  }
+
   override async updateSharedVaultOwner(dto: {
     sharedVaultUuid: Uuid
     fromOwnerUuid: Uuid

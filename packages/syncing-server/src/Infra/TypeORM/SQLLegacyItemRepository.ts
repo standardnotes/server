@@ -16,6 +16,10 @@ export class SQLLegacyItemRepository implements ItemRepositoryInterface {
     protected logger: Logger,
   ) {}
 
+  async deleteByUserUuidInSharedVaults(_userUuid: Uuid, _sharedVaultUuids: Uuid[]): Promise<void> {
+    this.logger.error('Method deleteByUserUuidInSharedVaults not supported.')
+  }
+
   async updateSharedVaultOwner(_dto: { sharedVaultUuid: Uuid; fromOwnerUuid: Uuid; toOwnerUuid: Uuid }): Promise<void> {
     this.logger.error('Method updateSharedVaultOwner not supported.')
   }
@@ -80,12 +84,12 @@ export class SQLLegacyItemRepository implements ItemRepositoryInterface {
     return itemContentSizeDescriptors
   }
 
-  async deleteByUserUuid(userUuid: string): Promise<void> {
+  async deleteByUserUuidAndNotInSharedVault(userUuid: Uuid): Promise<void> {
     await this.ormRepository
       .createQueryBuilder('item')
       .delete()
       .from('items')
-      .where('user_uuid = :userUuid', { userUuid })
+      .where('user_uuid = :userUuid', { userUuid: userUuid.value })
       .execute()
   }
 

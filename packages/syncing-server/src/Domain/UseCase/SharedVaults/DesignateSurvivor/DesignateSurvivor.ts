@@ -1,6 +1,9 @@
 import { TimerInterface } from '@standardnotes/time'
 import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
 import {
+  NotificationPayload,
+  NotificationPayloadIdentifierType,
+  NotificationType,
   Result,
   SharedVaultUser,
   SharedVaultUserPermission,
@@ -13,6 +16,7 @@ import { SharedVaultUserRepositoryInterface } from '../../../SharedVault/User/Sh
 import { DesignateSurvivorDTO } from './DesignateSurvivorDTO'
 import { DomainEventFactoryInterface } from '../../../Event/DomainEventFactoryInterface'
 import { SharedVaultRepositoryInterface } from '../../../SharedVault/SharedVaultRepositoryInterface'
+import { AddNotificationForUser } from '../../Messaging/AddNotificationForUser/AddNotificationForUser'
 
 export class DesignateSurvivor implements UseCaseInterface<void> {
   constructor(
@@ -21,6 +25,7 @@ export class DesignateSurvivor implements UseCaseInterface<void> {
     private timer: TimerInterface,
     private domainEventFactory: DomainEventFactoryInterface,
     private domainEventPublisher: DomainEventPublisherInterface,
+    private addNotificationForUser: AddNotificationForUser,
   ) {}
 
   async execute(dto: DesignateSurvivorDTO): Promise<Result<void>> {
@@ -91,6 +96,13 @@ export class DesignateSurvivor implements UseCaseInterface<void> {
 
     await this.sharedVaultUserRepository.save(toBeDesignatedAsASurvivor)
 
+    sharedVault.props.timestamps = Timestamps.create(
+      sharedVault.props.timestamps.createdAt,
+      this.timer.getTimestampInMicroseconds(),
+    ).getValue()
+
+    await this.sharedVaultRepository.save(sharedVault)
+
     await this.domainEventPublisher.publish(
       this.domainEventFactory.createUserDesignatedAsSurvivorInSharedVaultEvent({
         sharedVaultUuid: sharedVaultUuid.value,
@@ -99,12 +111,32 @@ export class DesignateSurvivor implements UseCaseInterface<void> {
       }),
     )
 
-    sharedVault.props.timestamps = Timestamps.create(
-      sharedVault.props.timestamps.createdAt,
-      this.timer.getTimestampInMicroseconds(),
-    ).getValue()
+    const notificationPayloadOrError = NotificationPayload.create({
+      primaryIdentifier: sharedVault.uuid,
+      primaryIndentifierType: NotificationPayloadIdentifierType.create(
+        NotificationPayloadIdentifierType.TYPES.SharedVaultUuid,
+      ).getValue(),
+      secondaryIdentifier: userUuid,
+      secondaryIdentifierType: NotificationPayloadIdentifierType.create(
+        NotificationPayloadIdentifierType.TYPES.UserUuid,
+      ).getValue(),
+      type: NotificationType.create(NotificationType.TYPES.UserDesignatedAsSurvivor).getValue(),
+      version: '1.0',
+    })
+    if (notificationPayloadOrError.isFailed()) {
+      return Result.fail(notificationPayloadOrError.getError())
+    }
+    const notificationPayload = notificationPayloadOrError.getValue()
 
-    await this.sharedVaultRepository.save(sharedVault)
+    const result = await this.addNotificationForUser.execute({
+      userUuid: sharedVault.props.userUuid.value,
+      type: NotificationType.TYPES.UserDesignatedAsSurvivor,
+      payload: notificationPayload,
+      version: '1.0',
+    })
+    if (result.isFailed()) {
+      return Result.fail(result.getError())
+    }
 
     return Result.ok()
   }

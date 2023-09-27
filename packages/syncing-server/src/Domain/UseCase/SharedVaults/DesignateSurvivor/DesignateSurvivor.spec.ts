@@ -1,4 +1,11 @@
-import { SharedVaultUser, SharedVaultUserPermission, Timestamps, Uuid } from '@standardnotes/domain-core'
+import {
+  NotificationPayload,
+  Result,
+  SharedVaultUser,
+  SharedVaultUserPermission,
+  Timestamps,
+  Uuid,
+} from '@standardnotes/domain-core'
 
 import { SharedVaultUserRepositoryInterface } from '../../../SharedVault/User/SharedVaultUserRepositoryInterface'
 import { DesignateSurvivor } from './DesignateSurvivor'
@@ -7,6 +14,7 @@ import { DomainEventInterface, DomainEventPublisherInterface } from '@standardno
 import { DomainEventFactoryInterface } from '../../../Event/DomainEventFactoryInterface'
 import { SharedVault } from '../../../SharedVault/SharedVault'
 import { SharedVaultRepositoryInterface } from '../../../SharedVault/SharedVaultRepositoryInterface'
+import { AddNotificationForUser } from '../../Messaging/AddNotificationForUser/AddNotificationForUser'
 
 describe('DesignateSurvivor', () => {
   let sharedVault: SharedVault
@@ -17,6 +25,7 @@ describe('DesignateSurvivor', () => {
   let timer: TimerInterface
   let domainEventFactory: DomainEventFactoryInterface
   let domainEventPublisher: DomainEventPublisherInterface
+  let addNotificationForUser: AddNotificationForUser
 
   const createUseCase = () =>
     new DesignateSurvivor(
@@ -25,6 +34,7 @@ describe('DesignateSurvivor', () => {
       timer,
       domainEventFactory,
       domainEventPublisher,
+      addNotificationForUser,
     )
 
   beforeEach(() => {
@@ -68,6 +78,9 @@ describe('DesignateSurvivor', () => {
 
     domainEventPublisher = {} as jest.Mocked<DomainEventPublisherInterface>
     domainEventPublisher.publish = jest.fn()
+
+    addNotificationForUser = {} as jest.Mocked<AddNotificationForUser>
+    addNotificationForUser.execute = jest.fn().mockReturnValue(Result.ok())
   })
 
   it('should fail if shared vault uuid is invalid', async () => {
@@ -188,5 +201,40 @@ describe('DesignateSurvivor', () => {
     expect(result.isFailed()).toBe(false)
     expect(sharedVaultUser.props.isDesignatedSurvivor).toBe(true)
     expect(sharedVaultUserRepository.save).toBeCalledTimes(2)
+  })
+
+  it('should fail if it fails to add notification for user', async () => {
+    sharedVaultUserRepository.findBySharedVaultUuid = jest.fn().mockReturnValue([sharedVaultOwner, sharedVaultUser])
+
+    addNotificationForUser.execute = jest.fn().mockReturnValue(Result.fail('Failed to add notification'))
+
+    const useCase = createUseCase()
+
+    const result = await useCase.execute({
+      sharedVaultUuid: '00000000-0000-0000-0000-000000000000',
+      userUuid: '00000000-0000-0000-0000-000000000000',
+      originatorUuid: '00000000-0000-0000-0000-000000000002',
+    })
+
+    expect(result.isFailed()).toBe(true)
+  })
+
+  it('should fail if it fails to create notification payload', async () => {
+    sharedVaultUserRepository.findBySharedVaultUuid = jest.fn().mockReturnValue([sharedVaultOwner, sharedVaultUser])
+
+    const mock = jest.spyOn(NotificationPayload, 'create')
+    mock.mockReturnValue(Result.fail('Oops'))
+
+    const useCase = createUseCase()
+
+    const result = await useCase.execute({
+      sharedVaultUuid: '00000000-0000-0000-0000-000000000000',
+      userUuid: '00000000-0000-0000-0000-000000000000',
+      originatorUuid: '00000000-0000-0000-0000-000000000002',
+    })
+
+    expect(result.isFailed()).toBe(true)
+
+    mock.mockRestore()
   })
 })
