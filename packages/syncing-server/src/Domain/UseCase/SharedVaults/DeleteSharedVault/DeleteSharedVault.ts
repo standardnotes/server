@@ -10,7 +10,7 @@ import { CancelInviteToSharedVault } from '../CancelInviteToSharedVault/CancelIn
 import { DomainEventFactoryInterface } from '../../../Event/DomainEventFactoryInterface'
 import { TransferSharedVault } from '../TransferSharedVault/TransferSharedVault'
 
-export class DeleteSharedVault implements UseCaseInterface<void> {
+export class DeleteSharedVault implements UseCaseInterface<{ status: 'deleted' | 'transitioned' }> {
   constructor(
     private sharedVaultRepository: SharedVaultRepositoryInterface,
     private sharedVaultUserRepository: SharedVaultUserRepositoryInterface,
@@ -22,7 +22,7 @@ export class DeleteSharedVault implements UseCaseInterface<void> {
     private transferSharedVault: TransferSharedVault,
   ) {}
 
-  async execute(dto: DeleteSharedVaultDTO): Promise<Result<void>> {
+  async execute(dto: DeleteSharedVaultDTO): Promise<Result<{ status: 'deleted' | 'transitioned' }>> {
     const originatorUuidOrError = Uuid.create(dto.originatorUuid)
     if (originatorUuidOrError.isFailed()) {
       return Result.fail(originatorUuidOrError.getError())
@@ -79,7 +79,7 @@ export class DeleteSharedVault implements UseCaseInterface<void> {
         return Result.fail(removingOwnerFromSharedVaultResult.getError())
       }
 
-      return Result.ok()
+      return Result.ok({ status: 'transitioned' })
     }
 
     const sharedVaultUsers = await this.sharedVaultUserRepository.findBySharedVaultUuid(sharedVaultUuid)
@@ -105,6 +105,6 @@ export class DeleteSharedVault implements UseCaseInterface<void> {
       }),
     )
 
-    return Result.ok()
+    return Result.ok({ status: 'deleted' })
   }
 }

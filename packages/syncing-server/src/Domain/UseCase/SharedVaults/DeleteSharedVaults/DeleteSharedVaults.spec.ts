@@ -24,7 +24,7 @@ describe('DeleteSharedVaults', () => {
     sharedVaultRepository.findByUserUuid = jest.fn().mockResolvedValue([sharedVault])
 
     deleteSharedVaultUseCase = {} as jest.Mocked<DeleteSharedVault>
-    deleteSharedVaultUseCase.execute = jest.fn().mockResolvedValue(Result.ok())
+    deleteSharedVaultUseCase.execute = jest.fn().mockResolvedValue(Result.ok({ status: 'deleted' }))
   })
 
   it('should delete all shared vaults for a user', async () => {

@@ -153,7 +153,7 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
     try {
       this.logger.info(`[${userUuid.value}] Cleaning up primary database items`)
 
-      await itemRepository.deleteByUserUuid(userUuid.value)
+      await itemRepository.deleteByUserUuidAndNotInSharedVault(userUuid)
 
       return Result.ok()
     } catch (error) {

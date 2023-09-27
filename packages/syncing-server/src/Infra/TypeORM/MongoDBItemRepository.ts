@@ -17,6 +17,15 @@ export class MongoDBItemRepository implements ItemRepositoryInterface {
     private logger: Logger,
   ) {}
 
+  async deleteByUserUuidInSharedVaults(userUuid: Uuid, sharedVaultUuids: Uuid[]): Promise<void> {
+    await this.mongoRepository.deleteMany({
+      $and: [
+        { userUuid: { $eq: userUuid.value } },
+        { sharedVaultUuid: { $in: sharedVaultUuids.map((uuid) => uuid.value) } },
+      ],
+    })
+  }
+
   async updateSharedVaultOwner(dto: { sharedVaultUuid: Uuid; fromOwnerUuid: Uuid; toOwnerUuid: Uuid }): Promise<void> {
     await this.mongoRepository.updateMany(
       {
@@ -37,8 +46,10 @@ export class MongoDBItemRepository implements ItemRepositoryInterface {
     await this.mongoRepository.deleteOne({ _id: { $eq: BSON.UUID.createFromHexString(uuid.value) } })
   }
 
-  async deleteByUserUuid(userUuid: string): Promise<void> {
-    await this.mongoRepository.deleteMany({ userUuid })
+  async deleteByUserUuidAndNotInSharedVault(userUuid: Uuid): Promise<void> {
+    await this.mongoRepository.deleteMany({
+      $and: [{ userUuid: { $eq: userUuid.value } }, { sharedVaultUuid: { $eq: null } }],
+    })
   }
 
   async findAll(query: ItemQuery): Promise<Item[]> {

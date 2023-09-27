@@ -6,7 +6,8 @@ import { ExtendedIntegrityPayload } from './ExtendedIntegrityPayload'
 import { ItemContentSizeDescriptor } from './ItemContentSizeDescriptor'
 
 export interface ItemRepositoryInterface {
-  deleteByUserUuid(userUuid: string): Promise<void>
+  deleteByUserUuidAndNotInSharedVault(userUuid: Uuid): Promise<void>
+  deleteByUserUuidInSharedVaults(userUuid: Uuid, sharedVaultUuids: Uuid[]): Promise<void>
   findAll(query: ItemQuery): Promise<Item[]>
   countAll(query: ItemQuery): Promise<number>
   findContentSizeForComputingTransferLimit(query: ItemQuery): Promise<Array<ItemContentSizeDescriptor>>

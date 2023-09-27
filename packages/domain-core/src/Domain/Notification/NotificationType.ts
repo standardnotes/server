@@ -7,6 +7,7 @@ export class NotificationType extends ValueObject<NotificationTypeProps> {
     SharedVaultItemRemoved: 'shared_vault_item_removed',
     SelfRemovedFromSharedVault: 'self_removed_from_shared_vault',
     UserRemovedFromSharedVault: 'user_removed_from_shared_vault',
+    UserDesignatedAsSurvivor: 'user_designated_as_survivor',
     UserAddedToSharedVault: 'user_added_to_shared_vault',
     SharedVaultInviteCanceled: 'shared_vault_invite_canceled',
     SharedVaultFileUploaded: 'shared_vault_file_uploaded',

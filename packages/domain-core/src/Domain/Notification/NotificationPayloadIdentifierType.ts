@@ -5,6 +5,7 @@ import { NotificationPayloadIdentifierTypeProps } from './NotificationPayloadIde
 export class NotificationPayloadIdentifierType extends ValueObject<NotificationPayloadIdentifierTypeProps> {
   static readonly TYPES = {
     SharedVaultUuid: 'shared_vault_uuid',
+    UserUuid: 'user_uuid',
     SharedVaultInviteUuid: 'shared_vault_invite_uuid',
     ItemUuid: 'item_uuid',
   }

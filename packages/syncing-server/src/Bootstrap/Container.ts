@@ -899,6 +899,7 @@ export class ContainerConfigLoader {
           container.get<TimerInterface>(TYPES.Sync_Timer),
           container.get<DomainEventFactoryInterface>(TYPES.Sync_DomainEventFactory),
           container.get<DomainEventPublisherInterface>(TYPES.Sync_DomainEventPublisher),
+          container.get<AddNotificationForUser>(TYPES.Sync_AddNotificationForUser),
         ),
       )
     container
