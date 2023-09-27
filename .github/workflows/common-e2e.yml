@@ -23,6 +23,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        suite: ['base', 'vaults']
         secondary_db_enabled: [true, false]
     runs-on: ubuntu-latest
 
@@ -55,7 +56,7 @@ jobs:
       run: docker/is-available.sh http://localhost:3123 $(pwd)/logs
 
     - name: Run E2E Test Suite
-      run: yarn dlx mocha-headless-chrome --timeout 3600000 -f http://localhost:9001/mocha/test.html
+      run: yarn dlx mocha-headless-chrome --timeout 3600000 -f http://localhost:9001/mocha/test.html?suite=${{ matrix.suite }}
 
     - name: Show logs on failure
       if: ${{ failure() }}
@@ -70,6 +71,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        suite: ['base', 'vaults']
         db_type: [mysql, sqlite]
         cache_type: [redis, memory]
         secondary_db_enabled: [true, false]
@@ -159,7 +161,7 @@ jobs:
       run: for i in {1..30}; do curl -s http://localhost:3123/healthcheck && break || sleep 1; done
 
     - name: Run E2E Test Suite
-      run: yarn dlx mocha-headless-chrome --timeout 3600000 -f http://localhost:9001/mocha/test.html
+      run: yarn dlx mocha-headless-chrome --timeout 3600000 -f http://localhost:9001/mocha/test.html?suite=${{ matrix.suite }}
 
     - name: Show logs on failure
       if: ${{ failure() }}
