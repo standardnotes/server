@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.34.1](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.34.0...@standardnotes/domain-core@1.34.1) (2023-09-27)
+
+### Bug Fixes
+
+* removing items in a vault and notifying about designated survivor ([#855](https://github.com/standardnotes/server/issues/855)) ([1d06ffe](https://github.com/standardnotes/server/commit/1d06ffe9d51722ada7baa040e1d5ed351fc28f39))
+
 # [1.34.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.33.2...@standardnotes/domain-core@1.34.0) (2023-09-26)
 
 ### Features
