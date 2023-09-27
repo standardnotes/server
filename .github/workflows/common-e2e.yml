@@ -58,13 +58,15 @@ jobs:
     - name: Run E2E Test Suite
       run: yarn dlx mocha-headless-chrome --timeout 3600000 -f http://localhost:9001/mocha/test.html?suite=${{ matrix.suite }}
 
-    - name: Show logs on failure
+    - name: Archive failed run logs
       if: ${{ failure() }}
-      run: |
-        echo "# Errors:"
-        tail -n 100 logs/*.err
-        echo "# Logs:"
-        tail -n 100 logs/*.log
+      uses: actions/upload-artifact@v3
+      with:
+        name: self-hosted-failure-logs-${{ matrix.suite }}-${{ matrix.secondary_db_enabled }}
+        retention-days: 5
+        path: |
+          logs/*.err
+          logs/*.log
 
   e2e-home-server:
     name: (Home Server) E2E Test Suite
@@ -163,6 +165,11 @@ jobs:
     - name: Run E2E Test Suite
       run: yarn dlx mocha-headless-chrome --timeout 3600000 -f http://localhost:9001/mocha/test.html?suite=${{ matrix.suite }}
 
-    - name: Show logs on failure
+    - name: Archive failed run logs
       if: ${{ failure() }}
-      run: tail -n 500 logs/output.log
+      uses: actions/upload-artifact@v3
+      with:
+        name: home-server-failure-logs-${{ matrix.suite }}-${{ matrix.db_type }}-${{ matrix.cache_type }}-${{ matrix.secondary_db_enabled }}
+        retention-days: 5
+        path: |
+          logs/output.log
