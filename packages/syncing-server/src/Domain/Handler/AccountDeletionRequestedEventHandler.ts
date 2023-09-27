@@ -50,7 +50,9 @@ export class AccountDeletionRequestedEventHandler implements DomainEventHandlerI
       `Deleting items from shared vaults: ${deletedSharedVaultUuids.map((uuid) => uuid.value).join(', ')}`,
     )
 
-    await itemRepository.deleteByUserUuidInSharedVaults(userUuid, deletedSharedVaultUuids)
+    if (deletedSharedVaultUuids.length !== 0) {
+      await itemRepository.deleteByUserUuidInSharedVaults(userUuid, deletedSharedVaultUuids)
+    }
 
     const deletingUserFromOtherVaultsResult = await this.removeUserFromSharedVaults.execute({
       userUuid: event.payload.userUuid,
