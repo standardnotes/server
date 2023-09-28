@@ -55,7 +55,7 @@ const requestTransition = async (
 
     let wasTransitionRequested = false
 
-    if (itemsTransitionStatus?.value !== TransitionStatus.STATUSES.Verified) {
+    if (itemsTransitionStatus === null || itemsTransitionStatus.value === TransitionStatus.STATUSES.Failed) {
       wasTransitionRequested = true
       await transitionStatusRepository.remove(user.uuid, 'items')
 
@@ -68,7 +68,7 @@ const requestTransition = async (
       )
     }
 
-    if (revisionsTransitionStatus?.value !== TransitionStatus.STATUSES.Verified) {
+    if (revisionsTransitionStatus === null || revisionsTransitionStatus.value === TransitionStatus.STATUSES.Failed) {
       wasTransitionRequested = true
       await transitionStatusRepository.remove(user.uuid, 'revisions')
 
