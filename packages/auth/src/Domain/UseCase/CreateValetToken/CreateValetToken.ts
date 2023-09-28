@@ -13,6 +13,8 @@ import { CreateValetTokenDTO } from './CreateValetTokenDTO'
 import { SubscriptionSettingsAssociationServiceInterface } from '../../Setting/SubscriptionSettingsAssociationServiceInterface'
 import { UserSubscriptionServiceInterface } from '../../Subscription/UserSubscriptionServiceInterface'
 import { CreateValetTokenPayload } from '../../ValetToken/CreateValetTokenPayload'
+import { TransitionStatusRepositoryInterface } from '../../Transition/TransitionStatusRepositoryInterface'
+import { TransitionStatus } from '@standardnotes/domain-core'
 
 @injectable()
 export class CreateValetToken implements UseCaseInterface {
@@ -25,6 +27,8 @@ export class CreateValetToken implements UseCaseInterface {
     @inject(TYPES.Auth_UserSubscriptionService) private userSubscriptionService: UserSubscriptionServiceInterface,
     @inject(TYPES.Auth_Timer) private timer: TimerInterface,
     @inject(TYPES.Auth_VALET_TOKEN_TTL) private valetTokenTTL: number,
+    @inject(TYPES.Auth_TransitionStatusRepository)
+    private transitionStatusRepository: TransitionStatusRepositoryInterface,
   ) {}
 
   async execute(dto: CreateValetTokenDTO): Promise<CreateValetTokenResponseData> {
@@ -83,6 +87,8 @@ export class CreateValetToken implements UseCaseInterface {
       sharedSubscriptionUuid = sharedSubscription.uuid
     }
 
+    const transitionStatus = await this.transitionStatusRepository.getStatus(userUuid, 'items')
+
     const tokenData: ValetTokenData = {
       userUuid: dto.userUuid,
       permittedOperation: dto.operation,
@@ -91,6 +97,7 @@ export class CreateValetToken implements UseCaseInterface {
       uploadBytesLimit,
       sharedSubscriptionUuid,
       regularSubscriptionUuid: regularSubscription.uuid,
+      ongoingTransition: transitionStatus?.value === TransitionStatus.STATUSES.InProgress,
     }
 
     const valetToken = this.tokenEncoder.encodeExpirableToken(tokenData, this.valetTokenTTL)

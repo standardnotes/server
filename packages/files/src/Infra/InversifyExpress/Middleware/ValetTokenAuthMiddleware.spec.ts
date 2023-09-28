@@ -13,6 +13,7 @@ describe('ValetTokenAuthMiddleware', () => {
 
   const logger = {
     debug: jest.fn(),
+    error: jest.fn(),
   } as unknown as jest.Mocked<Logger>
 
   const createMiddleware = () => new ValetTokenAuthMiddleware(tokenDecoder, logger)
@@ -221,5 +222,28 @@ describe('ValetTokenAuthMiddleware', () => {
     expect(response.status).not.toHaveBeenCalled()
 
     expect(next).toHaveBeenCalledWith(error)
+  })
+
+  it('should throw an error if the valet token indicates an ongoing transition', async () => {
+    request.headers['x-valet-token'] = 'valet-token'
+
+    tokenDecoder.decodeToken = jest.fn().mockReturnValue({
+      userUuid: '1-2-3',
+      permittedResources: [
+        {
+          remoteIdentifier: '00000000-0000-0000-0000-000000000000',
+          unencryptedFileSize: 30,
+        },
+      ],
+      permittedOperation: 'write',
+      uploadBytesLimit: -1,
+      uploadBytesUsed: 80,
+      ongoingTransition: true,
+    })
+
+    await createMiddleware().handler(request, response, next)
+
+    expect(response.status).toHaveBeenCalledWith(500)
+    expect(next).not.toHaveBeenCalled()
   })
 })
