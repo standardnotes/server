@@ -198,7 +198,9 @@ export class ContainerConfigLoader {
         .toConstantValue(
           new FSFileUploader(container.get(TYPES.Files_FILE_UPLOAD_PATH), container.get(TYPES.Files_Logger)),
         )
-      container.bind<FileRemoverInterface>(TYPES.Files_FileRemover).to(FSFileRemover)
+      container
+        .bind<FileRemoverInterface>(TYPES.Files_FileRemover)
+        .toConstantValue(new FSFileRemover(container.get<string>(TYPES.Files_FILE_UPLOAD_PATH)))
       container.bind<FileMoverInterface>(TYPES.Files_FileMover).to(FSFileMover)
     }
 
@@ -247,12 +249,26 @@ export class ContainerConfigLoader {
     // Handlers
     container
       .bind<AccountDeletionRequestedEventHandler>(TYPES.Files_AccountDeletionRequestedEventHandler)
-      .to(AccountDeletionRequestedEventHandler)
+      .toConstantValue(
+        new AccountDeletionRequestedEventHandler(
+          container.get<MarkFilesToBeRemoved>(TYPES.Files_MarkFilesToBeRemoved),
+          container.get<DomainEventPublisherInterface>(TYPES.Files_DomainEventPublisher),
+          container.get<DomainEventFactoryInterface>(TYPES.Files_DomainEventFactory),
+          container.get<winston.Logger>(TYPES.Files_Logger),
+        ),
+      )
     container
       .bind<SharedSubscriptionInvitationCanceledEventHandler>(
         TYPES.Files_SharedSubscriptionInvitationCanceledEventHandler,
       )
-      .to(SharedSubscriptionInvitationCanceledEventHandler)
+      .toConstantValue(
+        new SharedSubscriptionInvitationCanceledEventHandler(
+          container.get<MarkFilesToBeRemoved>(TYPES.Files_MarkFilesToBeRemoved),
+          container.get<DomainEventPublisherInterface>(TYPES.Files_DomainEventPublisher),
+          container.get<DomainEventFactoryInterface>(TYPES.Files_DomainEventFactory),
+          container.get<winston.Logger>(TYPES.Files_Logger),
+        ),
+      )
 
     const eventHandlers: Map<string, DomainEventHandlerInterface> = new Map([
       ['ACCOUNT_DELETION_REQUESTED', container.get(TYPES.Files_AccountDeletionRequestedEventHandler)],

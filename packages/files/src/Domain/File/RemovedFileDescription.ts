@@ -1,5 +1,5 @@
 export type RemovedFileDescription = {
-  userUuid: string
+  userOrSharedVaultUuid: string
   filePath: string
   fileName: string
   fileByteSize: number

@@ -29,6 +29,10 @@ export class SharedVaultRemovedEventHandler implements DomainEventHandlerInterfa
 
     const filesRemoved = result.getValue()
 
+    this.logger.debug(
+      `Marked ${filesRemoved.length} files for removal for shared vault ${event.payload.sharedVaultUuid}`,
+    )
+
     for (const fileRemoved of filesRemoved) {
       await this.domainEventPublisher.publish(
         this.domainEventFactory.createSharedVaultFileRemovedEvent({
