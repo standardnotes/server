@@ -1,8 +1,11 @@
 import { MapperInterface, SubscriptionPlanName, UniqueEntityId, Username, Uuid } from '@standardnotes/domain-core'
 import { SessionTrace } from '../Domain/Session/SessionTrace'
 import { TypeORMSessionTrace } from '../Infra/TypeORM/TypeORMSessionTrace'
+import { TimerInterface } from '@standardnotes/time'
 
 export class SessionTracePersistenceMapper implements MapperInterface<SessionTrace, TypeORMSessionTrace> {
+  constructor(private timer: TimerInterface) {}
+
   toDomain(projection: TypeORMSessionTrace): SessionTrace {
     const userUuidOrError = Uuid.create(projection.userUuid)
     if (userUuidOrError.isFailed()) {
@@ -50,11 +53,7 @@ export class SessionTracePersistenceMapper implements MapperInterface<SessionTra
     typeOrm.username = domain.props.username.value
     typeOrm.subscriptionPlanName = domain.props.subscriptionPlanName ? domain.props.subscriptionPlanName.value : null
     typeOrm.createdAt = domain.props.createdAt
-    typeOrm.creationDate = new Date(
-      domain.props.createdAt.getFullYear(),
-      domain.props.createdAt.getMonth(),
-      domain.props.createdAt.getDate(),
-    )
+    typeOrm.creationDate = new Date(this.timer.convertDateToFormattedString(domain.props.createdAt, 'YYYY-MM-DD'))
     typeOrm.expiresAt = domain.props.expiresAt
 
     return typeOrm

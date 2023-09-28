@@ -95,6 +95,10 @@ export class Timer implements TimerInterface {
     return dayjs.utc(date).toISOString()
   }
 
+  convertDateToFormattedString(date: Date, format: string): string {
+    return dayjs.utc(date).format(format)
+  }
+
   dateWasNDaysAgo(date: Date): number {
     return dayjs.utc().diff(date, 'days')
   }

@@ -12,6 +12,7 @@ export interface TimerInterface {
   convertDateToMilliseconds(date: Date): number
   convertDateToMicroseconds(date: Date): number
   convertDateToISOString(date: Date): string
+  convertDateToFormattedString(date: Date, format: string): string
   convertStringDateToDate(date: string): Date
   convertStringDateToMicroseconds(date: string): number
   convertStringDateToMilliseconds(date: string): number

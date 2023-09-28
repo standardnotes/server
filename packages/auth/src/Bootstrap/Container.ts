@@ -369,7 +369,7 @@ export class ContainerConfigLoader {
     // Mapping
     container
       .bind<MapperInterface<SessionTrace, TypeORMSessionTrace>>(TYPES.Auth_SessionTracePersistenceMapper)
-      .toConstantValue(new SessionTracePersistenceMapper())
+      .toConstantValue(new SessionTracePersistenceMapper(container.get<TimerInterface>(TYPES.Auth_Timer)))
     container
       .bind<MapperInterface<Authenticator, TypeORMAuthenticator>>(TYPES.Auth_AuthenticatorPersistenceMapper)
       .toConstantValue(new AuthenticatorPersistenceMapper())
@@ -458,8 +458,9 @@ export class ContainerConfigLoader {
       .bind<SessionTraceRepositoryInterface>(TYPES.Auth_SessionTraceRepository)
       .toConstantValue(
         new TypeORMSessionTraceRepository(
-          container.get(TYPES.Auth_ORMSessionTraceRepository),
-          container.get(TYPES.Auth_SessionTracePersistenceMapper),
+          container.get<Repository<TypeORMSessionTrace>>(TYPES.Auth_ORMSessionTraceRepository),
+          container.get<MapperInterface<SessionTrace, TypeORMSessionTrace>>(TYPES.Auth_SessionTracePersistenceMapper),
+          container.get<TimerInterface>(TYPES.Auth_Timer),
         ),
       )
     container
