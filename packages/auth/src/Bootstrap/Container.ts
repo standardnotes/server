@@ -1012,7 +1012,6 @@ export class ContainerConfigLoader {
           container.get<SessionRepositoryInterface>(TYPES.Auth_SessionRepository),
           container.get<EphemeralSessionRepositoryInterface>(TYPES.Auth_EphemeralSessionRepository),
           container.get<RevokedSessionRepositoryInterface>(TYPES.Auth_RevokedSessionRepository),
-          container.get<RemoveSharedVaultUser>(TYPES.Auth_RemoveSharedVaultUser),
           container.get<winston.Logger>(TYPES.Auth_Logger),
         ),
       )

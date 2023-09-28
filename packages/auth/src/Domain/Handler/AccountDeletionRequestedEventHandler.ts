@@ -6,7 +6,6 @@ import { EphemeralSessionRepositoryInterface } from '../Session/EphemeralSession
 import { RevokedSessionRepositoryInterface } from '../Session/RevokedSessionRepositoryInterface'
 import { SessionRepositoryInterface } from '../Session/SessionRepositoryInterface'
 import { UserRepositoryInterface } from '../User/UserRepositoryInterface'
-import { RemoveSharedVaultUser } from '../UseCase/RemoveSharedVaultUser/RemoveSharedVaultUser'
 
 export class AccountDeletionRequestedEventHandler implements DomainEventHandlerInterface {
   constructor(
@@ -14,7 +13,6 @@ export class AccountDeletionRequestedEventHandler implements DomainEventHandlerI
     private sessionRepository: SessionRepositoryInterface,
     private ephemeralSessionRepository: EphemeralSessionRepositoryInterface,
     private revokedSessionRepository: RevokedSessionRepositoryInterface,
-    private removeSharedVaultUser: RemoveSharedVaultUser,
     private logger: Logger,
   ) {}
 
@@ -36,13 +34,6 @@ export class AccountDeletionRequestedEventHandler implements DomainEventHandlerI
     }
 
     await this.removeSessions(userUuid.value)
-
-    const result = await this.removeSharedVaultUser.execute({
-      userUuid: userUuid.value,
-    })
-    if (result.isFailed()) {
-      this.logger.error(`Could not remove shared vault user: ${result.getError()}`)
-    }
 
     await this.userRepository.remove(user)
 
