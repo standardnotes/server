@@ -24,6 +24,7 @@ export class DeleteSharedVaults implements UseCaseInterface<Map<Uuid, 'deleted' 
       const result = await this.deleteSharedVaultUseCase.execute({
         originatorUuid: ownerUuid.value,
         sharedVaultUuid: sharedVault.id.toString(),
+        allowSurviving: dto.allowSurviving,
       })
       if (result.isFailed()) {
         return Result.fail(result.getError())

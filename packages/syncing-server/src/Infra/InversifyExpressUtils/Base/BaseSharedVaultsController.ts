@@ -92,6 +92,7 @@ export class BaseSharedVaultsController extends BaseHttpController {
     const result = await this.deleteSharedVaultUseCase.execute({
       sharedVaultUuid: request.params.sharedVaultUuid,
       originatorUuid: response.locals.user.uuid,
+      allowSurviving: false,
     })
 
     if (result.isFailed()) {

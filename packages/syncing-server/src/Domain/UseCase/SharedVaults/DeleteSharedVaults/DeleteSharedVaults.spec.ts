@@ -32,6 +32,7 @@ describe('DeleteSharedVaults', () => {
 
     const result = await useCase.execute({
       ownerUuid: '00000000-0000-0000-0000-000000000000',
+      allowSurviving: true,
     })
 
     expect(result.isFailed()).toBe(false)
@@ -39,6 +40,7 @@ describe('DeleteSharedVaults', () => {
     expect(deleteSharedVaultUseCase.execute).toHaveBeenCalledWith({
       originatorUuid: '00000000-0000-0000-0000-000000000000',
       sharedVaultUuid: '00000000-0000-0000-0000-000000000000',
+      allowSurviving: true,
     })
   })
 
@@ -48,6 +50,7 @@ describe('DeleteSharedVaults', () => {
 
     const result = await useCase.execute({
       ownerUuid: '00000000-0000-0000-0000-000000000000',
+      allowSurviving: true,
     })
 
     expect(result.isFailed()).toBe(true)
@@ -55,6 +58,7 @@ describe('DeleteSharedVaults', () => {
     expect(deleteSharedVaultUseCase.execute).toHaveBeenCalledWith({
       originatorUuid: '00000000-0000-0000-0000-000000000000',
       sharedVaultUuid: '00000000-0000-0000-0000-000000000000',
+      allowSurviving: true,
     })
   })
 
@@ -63,6 +67,7 @@ describe('DeleteSharedVaults', () => {
 
     const result = await useCase.execute({
       ownerUuid: 'invalid',
+      allowSurviving: true,
     })
 
     expect(result.isFailed()).toBeTruthy()
