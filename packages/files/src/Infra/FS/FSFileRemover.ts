@@ -9,6 +9,18 @@ export class FSFileRemover implements FileRemoverInterface {
   async markFilesToBeRemoved(userOrSharedVaultUuid: string): Promise<Array<RemovedFileDescription>> {
     const removedFileDescriptions: RemovedFileDescription[] = []
 
+    let directoryExists: boolean
+    try {
+      await promises.access(`${this.fileUploadPath}/${userOrSharedVaultUuid}`)
+      directoryExists = true
+    } catch (error) {
+      directoryExists = false
+    }
+
+    if (!directoryExists) {
+      return []
+    }
+
     const files = await promises.readdir(`${this.fileUploadPath}/${userOrSharedVaultUuid}`, { withFileTypes: true })
 
     for (const file of files) {
