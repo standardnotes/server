@@ -11,4 +11,5 @@ export type ValetTokenData = {
   }>
   uploadBytesUsed: number
   uploadBytesLimit: number
+  ongoingTransition?: boolean
 }

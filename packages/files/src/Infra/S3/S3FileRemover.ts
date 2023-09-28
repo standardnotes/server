@@ -59,7 +59,7 @@ export class S3FileRemover implements FileRemoverInterface {
         fileByteSize: file.Size as number,
         fileName: file.Key.replace(`${userUuid}/`, ''),
         filePath: file.Key,
-        userUuid,
+        userOrSharedVaultUuid: userUuid,
       })
     }
 

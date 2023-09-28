@@ -1,5 +1,7 @@
 import { MapperInterface, SubscriptionPlanName, Uuid } from '@standardnotes/domain-core'
+import { TimerInterface } from '@standardnotes/time'
 import { Repository } from 'typeorm'
+
 import { SessionTrace } from '../../Domain/Session/SessionTrace'
 import { SessionTraceRepositoryInterface } from '../../Domain/Session/SessionTraceRepositoryInterface'
 import { TypeORMSessionTrace } from './TypeORMSessionTrace'
@@ -8,13 +10,14 @@ export class TypeORMSessionTraceRepository implements SessionTraceRepositoryInte
   constructor(
     private ormRepository: Repository<TypeORMSessionTrace>,
     private mapper: MapperInterface<SessionTrace, TypeORMSessionTrace>,
+    private timer: TimerInterface,
   ) {}
 
   async countByDateAndSubscriptionPlanName(date: Date, subscriptionPlanName: SubscriptionPlanName): Promise<number> {
     return this.ormRepository
       .createQueryBuilder('trace')
       .where('trace.creation_date = :creationDate', {
-        creationDate: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`,
+        creationDate: this.timer.convertDateToFormattedString(date, 'YYYY-MM-DD'),
       })
       .andWhere('trace.subscription_plan_name = :subscriptionPlanName', {
         subscriptionPlanName: subscriptionPlanName.value,
@@ -26,7 +29,7 @@ export class TypeORMSessionTraceRepository implements SessionTraceRepositoryInte
     return this.ormRepository
       .createQueryBuilder('trace')
       .where('trace.creation_date = :creationDate', {
-        creationDate: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`,
+        creationDate: this.timer.convertDateToFormattedString(date, 'YYYY-MM-DD'),
       })
       .getCount()
   }
@@ -44,7 +47,7 @@ export class TypeORMSessionTraceRepository implements SessionTraceRepositoryInte
       .createQueryBuilder('trace')
       .where('trace.user_uuid = :userUuid AND trace.creation_date = :creationDate', {
         userUuid: userUuid.value,
-        creationDate: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`,
+        creationDate: this.timer.convertDateToFormattedString(date, 'YYYY-MM-DD'),
       })
       .getOne()
 
@@ -55,9 +58,9 @@ export class TypeORMSessionTraceRepository implements SessionTraceRepositoryInte
     return this.mapper.toDomain(typeOrm)
   }
 
-  async save(sessionTrace: SessionTrace): Promise<void> {
+  async insert(sessionTrace: SessionTrace): Promise<void> {
     const persistence = this.mapper.toProjection(sessionTrace)
 
-    await this.ormRepository.save(persistence)
+    await this.ormRepository.insert(persistence)
   }
 }

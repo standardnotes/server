@@ -76,6 +76,11 @@ describe('Timer', () => {
     expect(isoString).toEqual('2021-03-29T08:00:05.000Z')
   })
 
+  it('should convert a date to formatted string', () => {
+    const isoString = createTimer().convertDateToFormattedString(new Date(Date.UTC(2021, 2, 29, 8, 0, 5)), 'YYYY-MM-DD')
+    expect(isoString).toEqual('2021-03-29')
+  })
+
   it('should convert a string date to microseconds', () => {
     const timestamp = createTimer().convertStringDateToMicroseconds('2021-03-29 08:00:05.233Z')
     expect(timestamp).toEqual(1617004805233000)

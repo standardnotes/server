@@ -3,18 +3,17 @@ import {
   DomainEventHandlerInterface,
   DomainEventPublisherInterface,
 } from '@standardnotes/domain-events'
-import { inject, injectable } from 'inversify'
+import { Logger } from 'winston'
 
-import TYPES from '../../Bootstrap/Types'
 import { DomainEventFactoryInterface } from '../Event/DomainEventFactoryInterface'
 import { MarkFilesToBeRemoved } from '../UseCase/MarkFilesToBeRemoved/MarkFilesToBeRemoved'
 
-@injectable()
 export class SharedSubscriptionInvitationCanceledEventHandler implements DomainEventHandlerInterface {
   constructor(
-    @inject(TYPES.Files_MarkFilesToBeRemoved) private markFilesToBeRemoved: MarkFilesToBeRemoved,
-    @inject(TYPES.Files_DomainEventPublisher) private domainEventPublisher: DomainEventPublisherInterface,
-    @inject(TYPES.Files_DomainEventFactory) private domainEventFactory: DomainEventFactoryInterface,
+    private markFilesToBeRemoved: MarkFilesToBeRemoved,
+    private domainEventPublisher: DomainEventPublisherInterface,
+    private domainEventFactory: DomainEventFactoryInterface,
+    private logger: Logger,
   ) {}
 
   async handle(event: SharedSubscriptionInvitationCanceledEvent): Promise<void> {
@@ -27,16 +26,25 @@ export class SharedSubscriptionInvitationCanceledEventHandler implements DomainE
     })
 
     if (result.isFailed()) {
+      this.logger.error(
+        `Could not mark files to be removed for invitee: ${event.payload.inviteeIdentifier}: ${result.getError()}`,
+      )
+
       return
     }
 
     const filesRemoved = result.getValue()
 
+    this.logger.debug(`Marked ${filesRemoved.length} files for removal for invitee ${event.payload.inviteeIdentifier}`)
+
     for (const fileRemoved of filesRemoved) {
       await this.domainEventPublisher.publish(
         this.domainEventFactory.createFileRemovedEvent({
           regularSubscriptionUuid: event.payload.inviterSubscriptionUuid,
-          ...fileRemoved,
+          userUuid: fileRemoved.userOrSharedVaultUuid,
+          filePath: fileRemoved.filePath,
+          fileName: fileRemoved.fileName,
+          fileByteSize: fileRemoved.fileByteSize,
         }),
       )
     }

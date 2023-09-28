@@ -46,6 +46,19 @@ export class ValetTokenAuthMiddleware extends BaseMiddleware {
         return
       }
 
+      if (valetTokenData.ongoingTransition === true) {
+        this.logger.error(`Cannot perform file operations for user ${valetTokenData.userUuid} during transition`)
+
+        response.status(500).send({
+          error: {
+            tag: 'ongoing-transition',
+            message: 'Cannot perform file operations during transition',
+          },
+        })
+
+        return
+      }
+
       for (const resource of valetTokenData.permittedResources) {
         const resourceUuidOrError = Uuid.create(resource.remoteIdentifier)
         if (resourceUuidOrError.isFailed()) {

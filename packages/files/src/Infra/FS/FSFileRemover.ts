@@ -1,18 +1,42 @@
-import { inject, injectable } from 'inversify'
 import { promises } from 'fs'
 
 import { FileRemoverInterface } from '../../Domain/Services/FileRemoverInterface'
 import { RemovedFileDescription } from '../../Domain/File/RemovedFileDescription'
-import TYPES from '../../Bootstrap/Types'
 
-@injectable()
 export class FSFileRemover implements FileRemoverInterface {
-  constructor(@inject(TYPES.Files_FILE_UPLOAD_PATH) private fileUploadPath: string) {}
+  constructor(private fileUploadPath: string) {}
 
-  async markFilesToBeRemoved(userUuid: string): Promise<Array<RemovedFileDescription>> {
-    await promises.rmdir(`${this.fileUploadPath}/${userUuid}`)
+  async markFilesToBeRemoved(userOrSharedVaultUuid: string): Promise<Array<RemovedFileDescription>> {
+    const removedFileDescriptions: RemovedFileDescription[] = []
 
-    return []
+    let directoryExists: boolean
+    try {
+      await promises.access(`${this.fileUploadPath}/${userOrSharedVaultUuid}`)
+      directoryExists = true
+    } catch (error) {
+      directoryExists = false
+    }
+
+    if (!directoryExists) {
+      return []
+    }
+
+    const files = await promises.readdir(`${this.fileUploadPath}/${userOrSharedVaultUuid}`, { withFileTypes: true })
+
+    for (const file of files) {
+      const filePath = `${this.fileUploadPath}/${userOrSharedVaultUuid}/${file.name}`
+
+      const fileByteSize = await this.remove(`${userOrSharedVaultUuid}/${file.name}`)
+
+      removedFileDescriptions.push({
+        filePath,
+        fileByteSize,
+        userOrSharedVaultUuid,
+        fileName: file.name,
+      })
+    }
+
+    return removedFileDescriptions
   }
 
   async remove(filePath: string): Promise<number> {

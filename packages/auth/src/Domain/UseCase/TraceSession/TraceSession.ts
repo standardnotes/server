@@ -53,7 +53,7 @@ export class TraceSession implements UseCaseInterface<SessionTrace> {
     }
     const sessionTrace = sessionTraceOrError.getValue()
 
-    await this.sessionTraceRepository.save(sessionTrace)
+    await this.sessionTraceRepository.insert(sessionTrace)
 
     return Result.ok<SessionTrace>(sessionTrace)
   }

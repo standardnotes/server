@@ -15,7 +15,7 @@ describe('TraceSession', () => {
   beforeEach(() => {
     sessionTraceRepository = {} as jest.Mocked<SessionTraceRepositoryInterface>
     sessionTraceRepository.findOneByUserUuidAndDate = jest.fn().mockReturnValue(null)
-    sessionTraceRepository.save = jest.fn()
+    sessionTraceRepository.insert = jest.fn()
 
     timer = {} as jest.Mocked<TimerInterface>
     timer.getUTCDateNDaysAhead = jest.fn().mockReturnValue(new Date())
@@ -30,7 +30,7 @@ describe('TraceSession', () => {
 
     expect(result.isFailed()).toBe(false)
     expect(result.getValue().props.userUuid.value).toEqual('0702b137-4f5c-438a-915e-8f8b46572ce5')
-    expect(sessionTraceRepository.save).toHaveBeenCalledTimes(1)
+    expect(sessionTraceRepository.insert).toHaveBeenCalledTimes(1)
   })
 
   it('should not save a session trace if one already exists for the same user and date', async () => {
@@ -43,7 +43,7 @@ describe('TraceSession', () => {
     })
 
     expect(result.isFailed()).toBe(false)
-    expect(sessionTraceRepository.save).not.toHaveBeenCalled()
+    expect(sessionTraceRepository.insert).not.toHaveBeenCalled()
   })
 
   it('should return an error if userUuid is invalid', async () => {
@@ -54,7 +54,7 @@ describe('TraceSession', () => {
     })
 
     expect(result.isFailed()).toBe(true)
-    expect(sessionTraceRepository.save).not.toHaveBeenCalled()
+    expect(sessionTraceRepository.insert).not.toHaveBeenCalled()
   })
 
   it('should return an error if username is invalid', async () => {
@@ -65,7 +65,7 @@ describe('TraceSession', () => {
     })
 
     expect(result.isFailed()).toBe(true)
-    expect(sessionTraceRepository.save).not.toHaveBeenCalled()
+    expect(sessionTraceRepository.insert).not.toHaveBeenCalled()
   })
 
   it('should return an error if subscriptionPlanName is invalid', async () => {
@@ -76,7 +76,7 @@ describe('TraceSession', () => {
     })
 
     expect(result.isFailed()).toBe(true)
-    expect(sessionTraceRepository.save).not.toHaveBeenCalled()
+    expect(sessionTraceRepository.insert).not.toHaveBeenCalled()
   })
 
   it('should not save a session trace if creating of the session trace fails', async () => {
@@ -90,7 +90,7 @@ describe('TraceSession', () => {
     })
 
     expect(result.isFailed()).toBe(true)
-    expect(sessionTraceRepository.save).not.toHaveBeenCalled()
+    expect(sessionTraceRepository.insert).not.toHaveBeenCalled()
 
     mock.mockRestore()
   })
