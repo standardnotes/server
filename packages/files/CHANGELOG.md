@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.25.0](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.24.1...@standardnotes/files-server@1.25.0) (2023-09-28)
+
+### Features
+
+* block file operations during transition ([#856](https://github.com/standardnotes/files/issues/856)) ([676cf36](https://github.com/standardnotes/files/commit/676cf36f8d769aa433880b2800f0457d06fbbf14))
+
 ## [1.24.1](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.24.0...@standardnotes/files-server@1.24.1) (2023-09-27)
 
 **Note:** Version bump only for package @standardnotes/files-server

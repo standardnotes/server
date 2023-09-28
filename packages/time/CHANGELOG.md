@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.17.0](https://github.com/standardnotes/server/compare/@standardnotes/time@1.16.0...@standardnotes/time@1.17.0) (2023-09-28)
+
+### Features
+
+* block file operations during transition ([#856](https://github.com/standardnotes/server/issues/856)) ([676cf36](https://github.com/standardnotes/server/commit/676cf36f8d769aa433880b2800f0457d06fbbf14))
+
 # [1.16.0](https://github.com/standardnotes/server/compare/@standardnotes/time@1.15.3...@standardnotes/time@1.16.0) (2023-09-26)
 
 ### Features
