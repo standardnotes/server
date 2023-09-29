@@ -390,6 +390,8 @@ export class ContainerConfigLoader {
           container.get<TimerInterface>(TYPES.Revisions_Timer),
           container.get<winston.Logger>(TYPES.Revisions_Logger),
           env.get('MIGRATION_BATCH_SIZE', true) ? +env.get('MIGRATION_BATCH_SIZE', true) : 100,
+          container.get<DomainEventPublisherInterface>(TYPES.Revisions_DomainEventPublisher),
+          container.get<DomainEventFactoryInterface>(TYPES.Revisions_DomainEventFactory),
         ),
       )
     container
@@ -473,9 +475,6 @@ export class ContainerConfigLoader {
           container.get<TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser>(
             TYPES.Revisions_TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser,
           ),
-          container.get<RevisionRepositoryInterface>(TYPES.Revisions_SQLRevisionRepository),
-          container.get<DomainEventPublisherInterface>(TYPES.Revisions_DomainEventPublisher),
-          container.get<DomainEventFactoryInterface>(TYPES.Revisions_DomainEventFactory),
           container.get<winston.Logger>(TYPES.Revisions_Logger),
         ),
       )

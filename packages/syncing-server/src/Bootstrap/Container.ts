@@ -879,6 +879,8 @@ export class ContainerConfigLoader {
           container.get<TimerInterface>(TYPES.Sync_Timer),
           container.get<Logger>(TYPES.Sync_Logger),
           env.get('MIGRATION_BATCH_SIZE', true) ? +env.get('MIGRATION_BATCH_SIZE', true) : 100,
+          container.get<DomainEventPublisherInterface>(TYPES.Sync_DomainEventPublisher),
+          container.get<DomainEventFactoryInterface>(TYPES.Sync_DomainEventFactory),
         ),
       )
     container
@@ -1049,12 +1051,9 @@ export class ContainerConfigLoader {
       .bind<TransitionRequestedEventHandler>(TYPES.Sync_TransitionRequestedEventHandler)
       .toConstantValue(
         new TransitionRequestedEventHandler(
-          container.get<ItemRepositoryInterface>(TYPES.Sync_SQLItemRepository),
           container.get<TransitionItemsFromPrimaryToSecondaryDatabaseForUser>(
             TYPES.Sync_TransitionItemsFromPrimaryToSecondaryDatabaseForUser,
           ),
-          container.get<DomainEventPublisherInterface>(TYPES.Sync_DomainEventPublisher),
-          container.get<DomainEventFactoryInterface>(TYPES.Sync_DomainEventFactory),
           container.get<Logger>(TYPES.Sync_Logger),
         ),
       )

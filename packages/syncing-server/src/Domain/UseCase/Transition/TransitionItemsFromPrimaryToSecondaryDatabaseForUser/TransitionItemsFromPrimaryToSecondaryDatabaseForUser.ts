@@ -1,12 +1,14 @@
 /* istanbul ignore file */
 import { TimerInterface } from '@standardnotes/time'
-import { Result, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
+import { Result, TransitionStatus, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
 import { Logger } from 'winston'
 
 import { TransitionItemsFromPrimaryToSecondaryDatabaseForUserDTO } from './TransitionItemsFromPrimaryToSecondaryDatabaseForUserDTO'
 import { ItemRepositoryInterface } from '../../../Item/ItemRepositoryInterface'
 import { ItemQuery } from '../../../Item/ItemQuery'
 import { TransitionRepositoryInterface } from '../../../Transition/TransitionRepositoryInterface'
+import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
+import { DomainEventFactoryInterface } from '../../../Event/DomainEventFactoryInterface'
 
 export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements UseCaseInterface<void> {
   constructor(
@@ -16,6 +18,8 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
     private timer: TimerInterface,
     private logger: Logger,
     private pageSize: number,
+    private domainEventPublisher: DomainEventPublisherInterface,
+    private domainEventFactory: DomainEventFactoryInterface,
   ) {}
 
   async execute(dto: TransitionItemsFromPrimaryToSecondaryDatabaseForUserDTO): Promise<Result<void>> {
@@ -35,12 +39,22 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
     }
     const userUuid = userUuidOrError.getValue()
 
+    if (await this.isAlreadyMigrated(userUuid)) {
+      this.logger.info(`[${userUuid.value}] User already migrated.`)
+
+      await this.updateTransitionStatus(userUuid, TransitionStatus.STATUSES.Verified, dto.timestamp)
+
+      return Result.ok()
+    }
+
     const migrationTimeStart = this.timer.getTimestampInMicroseconds()
 
     this.logger.info(`[${dto.userUuid}] Migrating items`)
 
-    const migrationResult = await this.migrateItemsForUser(userUuid)
+    const migrationResult = await this.migrateItemsForUser(userUuid, dto.timestamp)
     if (migrationResult.isFailed()) {
+      await this.updateTransitionStatus(userUuid, TransitionStatus.STATUSES.Failed, dto.timestamp)
+
       return Result.fail(migrationResult.getError())
     }
 
@@ -55,11 +69,15 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
       await (this.transitionStatusRepository as TransitionRepositoryInterface).setPagingProgress(userUuid.value, 1)
       await (this.transitionStatusRepository as TransitionRepositoryInterface).setIntegrityProgress(userUuid.value, 1)
 
+      await this.updateTransitionStatus(userUuid, TransitionStatus.STATUSES.Failed, dto.timestamp)
+
       return Result.fail(integrityCheckResult.getError())
     }
 
     const cleanupResult = await this.deleteItemsForUser(userUuid, this.primaryItemRepository)
     if (cleanupResult.isFailed()) {
+      await this.updateTransitionStatus(userUuid, TransitionStatus.STATUSES.Failed, dto.timestamp)
+
       this.logger.error(`[${dto.userUuid}] Failed to clean up primary database items: ${cleanupResult.getError()}`)
     }
 
@@ -72,6 +90,8 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
       `[${dto.userUuid}] Transitioned items in ${migrationDurationTimeStructure.hours}h ${migrationDurationTimeStructure.minutes}m ${migrationDurationTimeStructure.seconds}s ${migrationDurationTimeStructure.milliseconds}ms`,
     )
 
+    await this.updateTransitionStatus(userUuid, TransitionStatus.STATUSES.Verified, dto.timestamp)
+
     return Result.ok()
   }
 
@@ -80,7 +100,7 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
     await this.timer.sleep(twoSecondsInMilliseconds)
   }
 
-  private async migrateItemsForUser(userUuid: Uuid): Promise<Result<void>> {
+  private async migrateItemsForUser(userUuid: Uuid, timestamp: number): Promise<Result<void>> {
     try {
       const initialPage = await (this.transitionStatusRepository as TransitionRepositoryInterface).getPagingProgress(
         userUuid.value,
@@ -91,6 +111,14 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
       const totalItemsCountForUser = await this.primaryItemRepository.countAll({ userUuid: userUuid.value })
       const totalPages = Math.ceil(totalItemsCountForUser / this.pageSize)
       for (let currentPage = initialPage; currentPage <= totalPages; currentPage++) {
+        const isPageInEvery10Percent = currentPage % Math.ceil(totalPages / 10) === 0
+        if (isPageInEvery10Percent) {
+          this.logger.info(
+            `[${userUuid.value}] Migrating items for user: ${Math.round((currentPage / totalPages) * 100)}% completed`,
+          )
+          await this.updateTransitionStatus(userUuid, TransitionStatus.STATUSES.InProgress, timestamp)
+        }
+
         await (this.transitionStatusRepository as TransitionRepositoryInterface).setPagingProgress(
           userUuid.value,
           currentPage,
@@ -228,5 +256,28 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
     } catch (error) {
       return Result.fail((error as Error).message)
     }
+  }
+
+  private async updateTransitionStatus(userUuid: Uuid, status: string, timestamp: number): Promise<void> {
+    await this.domainEventPublisher.publish(
+      this.domainEventFactory.createTransitionStatusUpdatedEvent({
+        userUuid: userUuid.value,
+        status,
+        transitionType: 'items',
+        transitionTimestamp: timestamp,
+      }),
+    )
+  }
+
+  private async isAlreadyMigrated(userUuid: Uuid): Promise<boolean> {
+    const totalItemsCountForUserInPrimary = await this.primaryItemRepository.countAll({
+      userUuid: userUuid.value,
+    })
+
+    if (totalItemsCountForUserInPrimary > 0) {
+      this.logger.info(`[${userUuid.value}] User has ${totalItemsCountForUserInPrimary} items in primary database.`)
+    }
+
+    return totalItemsCountForUserInPrimary === 0
   }
 }

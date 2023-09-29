@@ -1,11 +1,13 @@
 /* istanbul ignore file */
-import { Result, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
+import { Result, TransitionStatus, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
 import { TimerInterface } from '@standardnotes/time'
 import { Logger } from 'winston'
 
 import { TransitionRevisionsFromPrimaryToSecondaryDatabaseForUserDTO } from './TransitionRevisionsFromPrimaryToSecondaryDatabaseForUserDTO'
 import { RevisionRepositoryInterface } from '../../../Revision/RevisionRepositoryInterface'
 import { TransitionRepositoryInterface } from '../../../Transition/TransitionRepositoryInterface'
+import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
+import { DomainEventFactoryInterface } from '../../../Event/DomainEventFactoryInterface'
 
 export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements UseCaseInterface<void> {
   constructor(
@@ -15,6 +17,8 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
     private timer: TimerInterface,
     private logger: Logger,
     private pageSize: number,
+    private domainEventPublisher: DomainEventPublisherInterface,
+    private domainEventFactory: DomainEventFactoryInterface,
   ) {}
 
   async execute(dto: TransitionRevisionsFromPrimaryToSecondaryDatabaseForUserDTO): Promise<Result<void>> {
@@ -34,12 +38,24 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
     }
     const userUuid = userUuidOrError.getValue()
 
+    if (await this.isAlreadyMigrated(userUuid)) {
+      this.logger.info(`[${userUuid.value}] User already migrated.`)
+
+      await this.updateTransitionStatus(userUuid, TransitionStatus.STATUSES.Verified, dto.timestamp)
+
+      return Result.ok()
+    }
+
+    await this.updateTransitionStatus(userUuid, TransitionStatus.STATUSES.InProgress, dto.timestamp)
+
     const migrationTimeStart = this.timer.getTimestampInMicroseconds()
 
     this.logger.info(`[${dto.userUuid}] Migrating revisions`)
 
-    const migrationResult = await this.migrateRevisionsForUser(userUuid)
+    const migrationResult = await this.migrateRevisionsForUser(userUuid, dto.timestamp)
     if (migrationResult.isFailed()) {
+      await this.updateTransitionStatus(userUuid, TransitionStatus.STATUSES.Failed, dto.timestamp)
+
       return Result.fail(migrationResult.getError())
     }
 
@@ -54,11 +70,15 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
       await (this.transitionStatusRepository as TransitionRepositoryInterface).setPagingProgress(userUuid.value, 1)
       await (this.transitionStatusRepository as TransitionRepositoryInterface).setIntegrityProgress(userUuid.value, 1)
 
+      await this.updateTransitionStatus(userUuid, TransitionStatus.STATUSES.Failed, dto.timestamp)
+
       return Result.fail(integrityCheckResult.getError())
     }
 
     const cleanupResult = await this.deleteRevisionsForUser(userUuid, this.primaryRevisionsRepository)
     if (cleanupResult.isFailed()) {
+      await this.updateTransitionStatus(userUuid, TransitionStatus.STATUSES.Failed, dto.timestamp)
+
       this.logger.error(`[${dto.userUuid}] Failed to clean up primary database revisions: ${cleanupResult.getError()}`)
     }
 
@@ -71,10 +91,12 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
       `[${dto.userUuid}] Transitioned revisions in ${migrationDurationTimeStructure.hours}h ${migrationDurationTimeStructure.minutes}m ${migrationDurationTimeStructure.seconds}s ${migrationDurationTimeStructure.milliseconds}ms`,
     )
 
+    await this.updateTransitionStatus(userUuid, TransitionStatus.STATUSES.Verified, dto.timestamp)
+
     return Result.ok()
   }
 
-  private async migrateRevisionsForUser(userUuid: Uuid): Promise<Result<void>> {
+  private async migrateRevisionsForUser(userUuid: Uuid, timestamp: number): Promise<Result<void>> {
     try {
       const initialPage = await (this.transitionStatusRepository as TransitionRepositoryInterface).getPagingProgress(
         userUuid.value,
@@ -85,6 +107,16 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
       const totalRevisionsCountForUser = await this.primaryRevisionsRepository.countByUserUuid(userUuid)
       const totalPages = Math.ceil(totalRevisionsCountForUser / this.pageSize)
       for (let currentPage = initialPage; currentPage <= totalPages; currentPage++) {
+        const isPageInEvery10Percent = currentPage % Math.ceil(totalPages / 10) === 0
+        if (isPageInEvery10Percent) {
+          this.logger.info(
+            `[${userUuid.value}] Migrating revisions for user: ${Math.round(
+              (currentPage / totalPages) * 100,
+            )}% completed`,
+          )
+          await this.updateTransitionStatus(userUuid, TransitionStatus.STATUSES.InProgress, timestamp)
+        }
+
         await (this.transitionStatusRepository as TransitionRepositoryInterface).setPagingProgress(
           userUuid.value,
           currentPage,
@@ -245,5 +277,28 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
         `Errored when checking integrity between primary and secondary database: ${(error as Error).message}`,
       )
     }
+  }
+
+  private async updateTransitionStatus(userUuid: Uuid, status: string, timestamp: number): Promise<void> {
+    await this.domainEventPublisher.publish(
+      this.domainEventFactory.createTransitionStatusUpdatedEvent({
+        userUuid: userUuid.value,
+        status,
+        transitionType: 'revisions',
+        transitionTimestamp: timestamp,
+      }),
+    )
+  }
+
+  private async isAlreadyMigrated(userUuid: Uuid): Promise<boolean> {
+    const totalRevisionsCountForUserInPrimary = await this.primaryRevisionsRepository.countByUserUuid(userUuid)
+
+    if (totalRevisionsCountForUserInPrimary > 0) {
+      this.logger.info(
+        `[${userUuid.value}] User has ${totalRevisionsCountForUserInPrimary} revisions in primary database.`,
+      )
+    }
+
+    return totalRevisionsCountForUserInPrimary === 0
   }
 }
