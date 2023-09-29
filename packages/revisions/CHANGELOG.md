@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.38.3](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.38.2...@standardnotes/revisions-server@1.38.3) (2023-09-29)
+
+### Bug Fixes
+
+* add paging memory to integrity check ([e4ca310](https://github.com/standardnotes/server/commit/e4ca310707b12b1c08073a391e8857ee52acd92b))
+
 ## [1.38.2](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.38.1...@standardnotes/revisions-server@1.38.2) (2023-09-28)
 
 **Note:** Version bump only for package @standardnotes/revisions-server

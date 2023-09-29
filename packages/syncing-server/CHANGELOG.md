@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.110.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.109.2...@standardnotes/syncing-server@1.110.0) (2023-09-29)
+
+### Bug Fixes
+
+* add paging memory to integrity check ([e4ca310](https://github.com/standardnotes/syncing-server-js/commit/e4ca310707b12b1c08073a391e8857ee52acd92b))
+
+### Features
+
+* **syncing-server:** allow surviving only upon account deletion ([#857](https://github.com/standardnotes/syncing-server-js/issues/857)) ([609e85f](https://github.com/standardnotes/syncing-server-js/commit/609e85f926ebbc2887656c46df18471c68d70185))
+
 ## [1.109.2](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.109.1...@standardnotes/syncing-server@1.109.2) (2023-09-28)
 
 **Note:** Version bump only for package @standardnotes/syncing-server

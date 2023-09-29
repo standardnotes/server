@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.148.2](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.148.1...@standardnotes/auth-server@1.148.2) (2023-09-29)
+
+### Bug Fixes
+
+* **auth:** increase ttl for in progress duration of transitions ([681e037](https://github.com/standardnotes/server/commit/681e0378ae6b97c838b0b34ccc630194b304b81a))
+
 ## [1.148.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.148.0...@standardnotes/auth-server@1.148.1) (2023-09-29)
 
 ### Bug Fixes
