@@ -37,6 +37,7 @@ export class AccountDeletionRequestedEventHandler implements DomainEventHandlerI
 
     const deletingVaultsResult = await this.deleteSharedVaults.execute({
       ownerUuid: event.payload.userUuid,
+      allowSurviving: true,
     })
     if (deletingVaultsResult.isFailed()) {
       this.logger.error(

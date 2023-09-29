@@ -96,6 +96,7 @@ describe('DeleteSharedVault', () => {
     const result = await useCase.execute({
       sharedVaultUuid: '00000000-0000-0000-0000-000000000000',
       originatorUuid: '00000000-0000-0000-0000-000000000000',
+      allowSurviving: false,
     })
 
     expect(result.isFailed()).toBeFalsy()
@@ -111,6 +112,7 @@ describe('DeleteSharedVault', () => {
     const result = await useCase.execute({
       sharedVaultUuid: '00000000-0000-0000-0000-000000000000',
       originatorUuid: '00000000-0000-0000-0000-000000000000',
+      allowSurviving: false,
     })
 
     expect(result.isFailed()).toBeTruthy()
@@ -125,6 +127,7 @@ describe('DeleteSharedVault', () => {
     const result = await useCase.execute({
       sharedVaultUuid: 'invalid',
       originatorUuid: '00000000-0000-0000-0000-000000000000',
+      allowSurviving: false,
     })
 
     expect(result.isFailed()).toBeTruthy()
@@ -139,6 +142,7 @@ describe('DeleteSharedVault', () => {
     const result = await useCase.execute({
       sharedVaultUuid: '00000000-0000-0000-0000-000000000000',
       originatorUuid: 'invalid',
+      allowSurviving: false,
     })
 
     expect(result.isFailed()).toBeTruthy()
@@ -159,6 +163,7 @@ describe('DeleteSharedVault', () => {
     const result = await useCase.execute({
       sharedVaultUuid: '00000000-0000-0000-0000-000000000000',
       originatorUuid: '00000000-0000-0000-0000-000000000000',
+      allowSurviving: false,
     })
 
     expect(result.isFailed()).toBeTruthy()
@@ -174,6 +179,7 @@ describe('DeleteSharedVault', () => {
     const result = await useCase.execute({
       sharedVaultUuid: '00000000-0000-0000-0000-000000000000',
       originatorUuid: '00000000-0000-0000-0000-000000000000',
+      allowSurviving: false,
     })
 
     expect(result.isFailed()).toBeTruthy()
@@ -188,6 +194,7 @@ describe('DeleteSharedVault', () => {
     const result = await useCase.execute({
       sharedVaultUuid: '00000000-0000-0000-0000-000000000000',
       originatorUuid: '00000000-0000-0000-0000-000000000000',
+      allowSurviving: false,
     })
 
     expect(result.isFailed()).toBeTruthy()
@@ -207,6 +214,7 @@ describe('DeleteSharedVault', () => {
       const result = await useCase.execute({
         sharedVaultUuid: '00000000-0000-0000-0000-000000000000',
         originatorUuid: '00000000-0000-0000-0000-000000000000',
+        allowSurviving: true,
       })
 
       expect(result.isFailed()).toBeFalsy()
@@ -223,6 +231,7 @@ describe('DeleteSharedVault', () => {
       const result = await useCase.execute({
         sharedVaultUuid: '00000000-0000-0000-0000-000000000000',
         originatorUuid: '00000000-0000-0000-0000-000000000000',
+        allowSurviving: true,
       })
 
       expect(result.isFailed()).toBeTruthy()
@@ -239,6 +248,7 @@ describe('DeleteSharedVault', () => {
       const result = await useCase.execute({
         sharedVaultUuid: '00000000-0000-0000-0000-000000000000',
         originatorUuid: '00000000-0000-0000-0000-000000000000',
+        allowSurviving: true,
       })
 
       expect(result.isFailed()).toBeTruthy()

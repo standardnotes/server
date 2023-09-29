@@ -56,30 +56,32 @@ export class DeleteSharedVault implements UseCaseInterface<{ status: 'deleted' |
       }
     }
 
-    const sharedVaultDesignatedSurvivor =
-      await this.sharedVaultUserRepository.findDesignatedSurvivorBySharedVaultUuid(sharedVaultUuid)
-    if (sharedVaultDesignatedSurvivor) {
-      const result = await this.transferSharedVault.execute({
-        sharedVaultUid: sharedVaultUuid.value,
-        fromUserUuid: originatorUuid.value,
-        toUserUuid: sharedVaultDesignatedSurvivor.props.userUuid.value,
-      })
+    if (dto.allowSurviving) {
+      const sharedVaultDesignatedSurvivor =
+        await this.sharedVaultUserRepository.findDesignatedSurvivorBySharedVaultUuid(sharedVaultUuid)
+      if (sharedVaultDesignatedSurvivor) {
+        const result = await this.transferSharedVault.execute({
+          sharedVaultUid: sharedVaultUuid.value,
+          fromUserUuid: originatorUuid.value,
+          toUserUuid: sharedVaultDesignatedSurvivor.props.userUuid.value,
+        })
 
-      if (result.isFailed()) {
-        return Result.fail(result.getError())
+        if (result.isFailed()) {
+          return Result.fail(result.getError())
+        }
+
+        const removingOwnerFromSharedVaultResult = await this.removeUserFromSharedVault.execute({
+          originatorUuid: originatorUuid.value,
+          sharedVaultUuid: sharedVaultUuid.value,
+          userUuid: originatorUuid.value,
+          forceRemoveOwner: true,
+        })
+        if (removingOwnerFromSharedVaultResult.isFailed()) {
+          return Result.fail(removingOwnerFromSharedVaultResult.getError())
+        }
+
+        return Result.ok({ status: 'transitioned' })
       }
-
-      const removingOwnerFromSharedVaultResult = await this.removeUserFromSharedVault.execute({
-        originatorUuid: originatorUuid.value,
-        sharedVaultUuid: sharedVaultUuid.value,
-        userUuid: originatorUuid.value,
-        forceRemoveOwner: true,
-      })
-      if (removingOwnerFromSharedVaultResult.isFailed()) {
-        return Result.fail(removingOwnerFromSharedVaultResult.getError())
-      }
-
-      return Result.ok({ status: 'transitioned' })
     }
 
     const sharedVaultUsers = await this.sharedVaultUserRepository.findBySharedVaultUuid(sharedVaultUuid)
