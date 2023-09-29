@@ -19,8 +19,8 @@ export class RedisTransitionStatusRepository implements TransitionStatusReposito
         await this.redisClient.set(`${this.PREFIX}:${transitionType}:${userUuid}`, status.value)
         break
       case TransitionStatus.STATUSES.InProgress: {
-        const ttl2Hourse = 7_200
-        await this.redisClient.setex(`${this.PREFIX}:${transitionType}:${userUuid}`, ttl2Hourse, status.value)
+        const ttl24Hours = 86_400
+        await this.redisClient.setex(`${this.PREFIX}:${transitionType}:${userUuid}`, ttl24Hours, status.value)
         break
       }
     }
