@@ -30,7 +30,7 @@ export class SQLLegacyRevisionRepository implements RevisionRepositoryInterface 
     const queryBuilder = this.ormRepository
       .createQueryBuilder('revision')
       .where('revision.user_uuid = :userUuid', { userUuid: dto.userUuid.value })
-      .orderBy('revision.uuid', 'ASC')
+      .orderBy('revision.created_at', 'ASC')
 
     if (dto.offset !== undefined) {
       queryBuilder.skip(dto.offset)

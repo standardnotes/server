@@ -43,7 +43,6 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
     if (migrationResult.isFailed()) {
       return Result.fail(migrationResult.getError())
     }
-    const itemsToSkipInIntegrityCheck = migrationResult.getValue()
 
     this.logger.info(`[${dto.userUuid}] Items migrated`)
 
@@ -51,11 +50,11 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
 
     this.logger.info(`[${dto.userUuid}] Checking integrity between primary and secondary database`)
 
-    const integrityCheckResult = await this.checkIntegrityBetweenPrimaryAndSecondaryDatabase(
-      userUuid,
-      itemsToSkipInIntegrityCheck,
-    )
+    const integrityCheckResult = await this.checkIntegrityBetweenPrimaryAndSecondaryDatabase(userUuid)
     if (integrityCheckResult.isFailed()) {
+      await (this.transitionStatusRepository as TransitionRepositoryInterface).setPagingProgress(userUuid.value, 1)
+      await (this.transitionStatusRepository as TransitionRepositoryInterface).setIntegrityProgress(userUuid.value, 1)
+
       return Result.fail(integrityCheckResult.getError())
     }
 
@@ -81,7 +80,7 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
     await this.timer.sleep(twoSecondsInMilliseconds)
   }
 
-  private async migrateItemsForUser(userUuid: Uuid): Promise<Result<string[]>> {
+  private async migrateItemsForUser(userUuid: Uuid): Promise<Result<void>> {
     try {
       const initialPage = await (this.transitionStatusRepository as TransitionRepositoryInterface).getPagingProgress(
         userUuid.value,
@@ -91,7 +90,6 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
 
       const totalItemsCountForUser = await this.primaryItemRepository.countAll({ userUuid: userUuid.value })
       const totalPages = Math.ceil(totalItemsCountForUser / this.pageSize)
-      const itemsToSkipInIntegrityCheck = []
       for (let currentPage = initialPage; currentPage <= totalPages; currentPage++) {
         await (this.transitionStatusRepository as TransitionRepositoryInterface).setPagingProgress(
           userUuid.value,
@@ -102,7 +100,7 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
           userUuid: userUuid.value,
           offset: (currentPage - 1) * this.pageSize,
           limit: this.pageSize,
-          sortBy: 'uuid',
+          sortBy: 'created_at_timestamp',
           sortOrder: 'ASC',
         }
 
@@ -120,7 +118,6 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
               }
               if (itemInSecondary.props.timestamps.updatedAt > item.props.timestamps.updatedAt) {
                 this.logger.info(`[${userUuid.value}] Item ${item.uuid.value} is older than item in secondary database`)
-                itemsToSkipInIntegrityCheck.push(item.uuid.value)
 
                 continue
               }
@@ -143,7 +140,7 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
         }
       }
 
-      return Result.ok(itemsToSkipInIntegrityCheck)
+      return Result.ok()
     } catch (error) {
       return Result.fail((error as Error).message)
     }
@@ -161,11 +158,14 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
     }
   }
 
-  private async checkIntegrityBetweenPrimaryAndSecondaryDatabase(
-    userUuid: Uuid,
-    itemsToSkipInIntegrityCheck: string[],
-  ): Promise<Result<boolean>> {
+  private async checkIntegrityBetweenPrimaryAndSecondaryDatabase(userUuid: Uuid): Promise<Result<boolean>> {
     try {
+      const initialPage = await (this.transitionStatusRepository as TransitionRepositoryInterface).getIntegrityProgress(
+        userUuid.value,
+      )
+
+      this.logger.info(`[${userUuid.value}] Checking integrity from page ${initialPage}`)
+
       const totalItemsCountForUserInPrimary = await this.primaryItemRepository.countAll({ userUuid: userUuid.value })
       const totalItemsCountForUserInSecondary = await (
         this.secondaryItemRepository as ItemRepositoryInterface
@@ -180,12 +180,17 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
       }
 
       const totalPages = Math.ceil(totalItemsCountForUserInPrimary / this.pageSize)
-      for (let currentPage = 1; currentPage <= totalPages; currentPage++) {
+      for (let currentPage = initialPage; currentPage <= totalPages; currentPage++) {
+        await (this.transitionStatusRepository as TransitionRepositoryInterface).setIntegrityProgress(
+          userUuid.value,
+          currentPage,
+        )
+
         const query: ItemQuery = {
           userUuid: userUuid.value,
           offset: (currentPage - 1) * this.pageSize,
           limit: this.pageSize,
-          sortBy: 'uuid',
+          sortBy: 'created_at_timestamp',
           sortOrder: 'ASC',
         }
 
@@ -197,19 +202,25 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
             return Result.fail(`Item ${item.uuid.value} not found in secondary database`)
           }
 
-          if (itemsToSkipInIntegrityCheck.includes(item.id.toString())) {
+          if (item.isIdenticalTo(itemInSecondary)) {
             continue
           }
 
-          if (!item.isIdenticalTo(itemInSecondary)) {
-            return Result.fail(
-              `Item ${
-                item.uuid.value
-              } is not identical in primary and secondary database. Item in primary database: ${JSON.stringify(
-                item,
-              )}, item in secondary database: ${JSON.stringify(itemInSecondary)}`,
+          if (itemInSecondary.props.timestamps.updatedAt > item.props.timestamps.updatedAt) {
+            this.logger.info(
+              `[${userUuid.value}] Integrity check of Item ${item.uuid.value} - is older than item in secondary database`,
             )
+
+            continue
           }
+
+          return Result.fail(
+            `Item ${
+              item.uuid.value
+            } is not identical in primary and secondary database. Item in primary database: ${JSON.stringify(
+              item,
+            )}, item in secondary database: ${JSON.stringify(itemInSecondary)}`,
+          )
         }
       }
 

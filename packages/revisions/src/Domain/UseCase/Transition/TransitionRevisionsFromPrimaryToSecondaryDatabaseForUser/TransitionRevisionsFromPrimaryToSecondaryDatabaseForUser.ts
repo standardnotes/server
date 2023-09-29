@@ -42,7 +42,6 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
     if (migrationResult.isFailed()) {
       return Result.fail(migrationResult.getError())
     }
-    const revisionsToSkipInIntegrityCheck = migrationResult.getValue()
 
     this.logger.info(`[${dto.userUuid}] Revisions migrated`)
 
@@ -50,11 +49,11 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
 
     this.logger.info(`[${dto.userUuid}] Checking integrity between primary and secondary database`)
 
-    const integrityCheckResult = await this.checkIntegrityBetweenPrimaryAndSecondaryDatabase(
-      userUuid,
-      revisionsToSkipInIntegrityCheck,
-    )
+    const integrityCheckResult = await this.checkIntegrityBetweenPrimaryAndSecondaryDatabase(userUuid)
     if (integrityCheckResult.isFailed()) {
+      await (this.transitionStatusRepository as TransitionRepositoryInterface).setPagingProgress(userUuid.value, 1)
+      await (this.transitionStatusRepository as TransitionRepositoryInterface).setIntegrityProgress(userUuid.value, 1)
+
       return Result.fail(integrityCheckResult.getError())
     }
 
@@ -75,7 +74,7 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
     return Result.ok()
   }
 
-  private async migrateRevisionsForUser(userUuid: Uuid): Promise<Result<string[]>> {
+  private async migrateRevisionsForUser(userUuid: Uuid): Promise<Result<void>> {
     try {
       const initialPage = await (this.transitionStatusRepository as TransitionRepositoryInterface).getPagingProgress(
         userUuid.value,
@@ -85,7 +84,6 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
 
       const totalRevisionsCountForUser = await this.primaryRevisionsRepository.countByUserUuid(userUuid)
       const totalPages = Math.ceil(totalRevisionsCountForUser / this.pageSize)
-      const revisionsToSkipInIntegrityCheck = []
       for (let currentPage = initialPage; currentPage <= totalPages; currentPage++) {
         await (this.transitionStatusRepository as TransitionRepositoryInterface).setPagingProgress(
           userUuid.value,
@@ -113,7 +111,6 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
                 this.logger.info(
                   `[${userUuid.value}] Revision ${revision.id.toString()} is older than revision in secondary database`,
                 )
-                revisionsToSkipInIntegrityCheck.push(revision.id.toString())
 
                 continue
               }
@@ -145,7 +142,7 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
         }
       }
 
-      return Result.ok(revisionsToSkipInIntegrityCheck)
+      return Result.ok()
     } catch (error) {
       return Result.fail(`Errored when migrating revisions for user ${userUuid.value}: ${(error as Error).message}`)
     }
@@ -171,11 +168,14 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
     await this.timer.sleep(twoSecondsInMilliseconds)
   }
 
-  private async checkIntegrityBetweenPrimaryAndSecondaryDatabase(
-    userUuid: Uuid,
-    revisionsToSkipInIntegrityCheck: string[],
-  ): Promise<Result<boolean>> {
+  private async checkIntegrityBetweenPrimaryAndSecondaryDatabase(userUuid: Uuid): Promise<Result<boolean>> {
     try {
+      const initialPage = await (this.transitionStatusRepository as TransitionRepositoryInterface).getIntegrityProgress(
+        userUuid.value,
+      )
+
+      this.logger.info(`[${userUuid.value}] Checking integrity from page ${initialPage}`)
+
       const totalRevisionsCountForUserInPrimary = await this.primaryRevisionsRepository.countByUserUuid(userUuid)
       const totalRevisionsCountForUserInSecondary = await (
         this.secondRevisionsRepository as RevisionRepositoryInterface
@@ -188,7 +188,12 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
       }
 
       const totalPages = Math.ceil(totalRevisionsCountForUserInPrimary / this.pageSize)
-      for (let currentPage = 1; currentPage <= totalPages; currentPage++) {
+      for (let currentPage = initialPage; currentPage <= totalPages; currentPage++) {
+        await (this.transitionStatusRepository as TransitionRepositoryInterface).setIntegrityProgress(
+          userUuid.value,
+          currentPage,
+        )
+
         const query = {
           userUuid: userUuid,
           offset: (currentPage - 1) * this.pageSize,
@@ -212,17 +217,25 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
             return Result.fail(`Revision ${revision.id.toString()} not found in secondary database`)
           }
 
-          if (revisionsToSkipInIntegrityCheck.includes(revision.id.toString())) {
+          if (revision.isIdenticalTo(revisionInSecondary)) {
             continue
           }
 
-          if (!revision.isIdenticalTo(revisionInSecondary)) {
-            return Result.fail(
-              `Revision ${revision.id.toString()} is not identical in primary and secondary database. Revision in primary database: ${JSON.stringify(
-                revision,
-              )}, revision in secondary database: ${JSON.stringify(revisionInSecondary)}`,
+          if (revisionInSecondary.props.dates.updatedAt > revision.props.dates.updatedAt) {
+            this.logger.info(
+              `[${
+                userUuid.value
+              }] Integrity check of revision ${revision.id.toString()} - is older than revision in secondary database`,
             )
+
+            continue
           }
+
+          return Result.fail(
+            `Revision ${revision.id.toString()} is not identical in primary and secondary database. Revision in primary database: ${JSON.stringify(
+              revision,
+            )}, revision in secondary database: ${JSON.stringify(revisionInSecondary)}`,
+          )
         }
       }
 
