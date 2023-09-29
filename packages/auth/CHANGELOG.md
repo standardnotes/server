@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.148.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.148.0...@standardnotes/auth-server@1.148.1) (2023-09-29)
+
+### Bug Fixes
+
+* **auth:** disable transitions retriggering if they are in progress ([5ef6c5c](https://github.com/standardnotes/server/commit/5ef6c5c14a9f7a558de7ac9ff0ab99a5f831c127))
+
 # [1.148.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.147.1...@standardnotes/auth-server@1.148.0) (2023-09-28)
 
 ### Features
