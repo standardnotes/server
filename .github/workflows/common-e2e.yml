@@ -7,6 +7,10 @@ on:
         type: string
         default: latest
         description: The Docker image tag used for SNJS container
+      suite:
+        type: string
+        default: all
+        description: The test suite to run
     secrets:
       DOCKER_USERNAME:
         required: true
@@ -23,7 +27,6 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        suite: ['base', 'vaults']
         secondary_db_enabled: [true, false]
     runs-on: ubuntu-latest
 
@@ -56,13 +59,13 @@ jobs:
       run: docker/is-available.sh http://localhost:3123 $(pwd)/logs
 
     - name: Run E2E Test Suite
-      run: yarn dlx mocha-headless-chrome --timeout 3600000 -f http://localhost:9001/mocha/test.html?suite=${{ matrix.suite }}
+      run: yarn dlx mocha-headless-chrome --timeout 3600000 -f http://localhost:9001/mocha/test.html?suite=${{ inputs.suite }}
 
     - name: Archive failed run logs
       if: ${{ failure() }}
       uses: actions/upload-artifact@v3
       with:
-        name: self-hosted-failure-logs-${{ matrix.suite }}-${{ matrix.secondary_db_enabled }}
+        name: self-hosted-failure-logs-${{ inputs.suite }}-${{ matrix.secondary_db_enabled }}
         retention-days: 5
         path: |
           logs/*.err
@@ -73,7 +76,6 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        suite: ['base', 'vaults']
         db_type: [mysql, sqlite]
         cache_type: [redis, memory]
         secondary_db_enabled: [true, false]
@@ -163,13 +165,13 @@ jobs:
       run: for i in {1..30}; do curl -s http://localhost:3123/healthcheck && break || sleep 1; done
 
     - name: Run E2E Test Suite
-      run: yarn dlx mocha-headless-chrome --timeout 3600000 -f http://localhost:9001/mocha/test.html?suite=${{ matrix.suite }}
+      run: yarn dlx mocha-headless-chrome --timeout 3600000 -f http://localhost:9001/mocha/test.html?suite=${{ inputs.suite }}
 
     - name: Archive failed run logs
       if: ${{ failure() }}
       uses: actions/upload-artifact@v3
       with:
-        name: home-server-failure-logs-${{ matrix.suite }}-${{ matrix.db_type }}-${{ matrix.cache_type }}-${{ matrix.secondary_db_enabled }}
+        name: home-server-failure-logs-${{ inputs.suite }}-${{ matrix.db_type }}-${{ matrix.cache_type }}-${{ matrix.secondary_db_enabled }}
         retention-days: 5
         path: |
           logs/output.log
