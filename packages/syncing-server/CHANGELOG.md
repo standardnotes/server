@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.110.2](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.110.1...@standardnotes/syncing-server@1.110.2) (2023-10-02)
+
+### Bug Fixes
+
+* temproarily disable transitions to empty overpopulated queues ([cd893b4](https://github.com/standardnotes/syncing-server-js/commit/cd893b41d7371bdc32acc111f7cea797ec33cad5))
+
 ## [1.110.1](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.110.0...@standardnotes/syncing-server@1.110.1) (2023-09-29)
 
 ### Bug Fixes

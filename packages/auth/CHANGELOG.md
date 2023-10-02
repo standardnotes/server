@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.149.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.148.2...@standardnotes/auth-server@1.149.0) (2023-10-02)
+
+### Bug Fixes
+
+* **auth:** add aws xray ecs and ec2 plugins ([3838358](https://github.com/standardnotes/server/commit/383835808165aba58d15e79f03b5ba4e1c899f4c))
+* **auth:** prevent from loop disabling of email settings ([#858](https://github.com/standardnotes/server/issues/858)) ([bd71422](https://github.com/standardnotes/server/commit/bd71422fabc4b5b47cca6dd071e3332943adc81d))
+
+### Features
+
+* **auth:** introduce AWS X-Ray SDK ([#859](https://github.com/standardnotes/server/issues/859)) ([1a388f0](https://github.com/standardnotes/server/commit/1a388f00c3897d1ebb1411793cfb23c3d305ac2e))
+
 ## [1.148.2](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.148.1...@standardnotes/auth-server@1.148.2) (2023-09-29)
 
 ### Bug Fixes

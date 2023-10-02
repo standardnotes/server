@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.38.5](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.38.4...@standardnotes/revisions-server@1.38.5) (2023-10-02)
+
+### Bug Fixes
+
+* temproarily disable transitions to empty overpopulated queues ([cd893b4](https://github.com/standardnotes/server/commit/cd893b41d7371bdc32acc111f7cea797ec33cad5))
+
 ## [1.38.4](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.38.3...@standardnotes/revisions-server@1.38.4) (2023-09-29)
 
 ### Bug Fixes
