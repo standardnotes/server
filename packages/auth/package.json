@@ -54,6 +54,7 @@
     "@standardnotes/sncrypto-common": "^1.13.4",
     "@standardnotes/sncrypto-node": "workspace:*",
     "@standardnotes/time": "workspace:*",
+    "aws-xray-sdk": "^3.5.2",
     "axios": "^1.1.3",
     "bcryptjs": "2.4.3",
     "cors": "2.8.5",

@@ -24,11 +24,13 @@ import { urlencoded, json, Request, Response, NextFunction } from 'express'
 import * as winston from 'winston'
 import * as dayjs from 'dayjs'
 import * as utc from 'dayjs/plugin/utc'
+import { express } from 'aws-xray-sdk'
 
 import { InversifyExpressServer } from 'inversify-express-utils'
 import { ContainerConfigLoader } from '../src/Bootstrap/Container'
 import TYPES from '../src/Bootstrap/Types'
 import { Env } from '../src/Bootstrap/Env'
+import { ServiceIdentifier } from '@standardnotes/domain-core'
 
 const container = new ContainerConfigLoader()
 void container.load().then((container) => {
@@ -37,9 +39,16 @@ void container.load().then((container) => {
   const env: Env = new Env()
   env.load()
 
+  const isConfiguredForAWSProduction =
+    env.get('MODE', true) !== 'home-server' && env.get('MODE', true) !== 'self-hosted'
+
   const server = new InversifyExpressServer(container)
 
   server.setConfig((app) => {
+    if (isConfiguredForAWSProduction) {
+      app.use(express.openSegment(ServiceIdentifier.NAMES.Auth))
+    }
+
     app.use((_request: Request, response: Response, next: NextFunction) => {
       response.setHeader('X-Auth-Version', container.get(TYPES.Auth_VERSION))
       next()
@@ -65,6 +74,10 @@ void container.load().then((container) => {
   })
 
   const serverInstance = server.build()
+
+  if (isConfiguredForAWSProduction) {
+    serverInstance.use(express.closeSegment())
+  }
 
   serverInstance.listen(env.get('PORT'))
 
