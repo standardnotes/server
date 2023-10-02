@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.149.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.149.0...@standardnotes/auth-server@1.149.1) (2023-10-02)
+
+### Bug Fixes
+
+* **auth:** enable xray only for server ([71e2a41](https://github.com/standardnotes/server/commit/71e2a4187e8f79b2a3055f502310ed0b6a6d82ea))
+
 # [1.149.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.148.2...@standardnotes/auth-server@1.149.0) (2023-10-02)
 
 ### Bug Fixes
