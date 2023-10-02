@@ -1,6 +1,6 @@
 name: E2E Test Suite
 
-run-name: E2E Test Suite against ${{ inputs.ref_name }} by ${{ inputs.author }}
+run-name: E2E ${{ inputs.suite }} Test Suite against ${{ inputs.ref_name }} by ${{ inputs.author }}
 
 on:
   schedule:
