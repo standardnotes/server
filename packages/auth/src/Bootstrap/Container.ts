@@ -515,10 +515,22 @@ export class ContainerConfigLoader {
     container.bind<LockMiddleware>(TYPES.Auth_LockMiddleware).to(LockMiddleware)
     container
       .bind<RequiredCrossServiceTokenMiddleware>(TYPES.Auth_RequiredCrossServiceTokenMiddleware)
-      .to(RequiredCrossServiceTokenMiddleware)
+      .toConstantValue(
+        new RequiredCrossServiceTokenMiddleware(
+          container.get<TokenDecoderInterface<CrossServiceTokenData>>(TYPES.Auth_CrossServiceTokenDecoder),
+          isConfiguredForAWSProduction,
+          container.get<winston.Logger>(TYPES.Auth_Logger),
+        ),
+      )
     container
       .bind<OptionalCrossServiceTokenMiddleware>(TYPES.Auth_OptionalCrossServiceTokenMiddleware)
-      .to(OptionalCrossServiceTokenMiddleware)
+      .toConstantValue(
+        new OptionalCrossServiceTokenMiddleware(
+          container.get<TokenDecoderInterface<CrossServiceTokenData>>(TYPES.Auth_CrossServiceTokenDecoder),
+          isConfiguredForAWSProduction,
+          container.get<winston.Logger>(TYPES.Auth_Logger),
+        ),
+      )
     container
       .bind<ApiGatewayOfflineAuthMiddleware>(TYPES.Auth_ApiGatewayOfflineAuthMiddleware)
       .to(ApiGatewayOfflineAuthMiddleware)
