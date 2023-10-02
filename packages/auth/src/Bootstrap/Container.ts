@@ -354,7 +354,7 @@ export class ContainerConfigLoader {
         }
       }
       let snsClient = new SNSClient(snsConfig)
-      if (isConfiguredForAWSProduction) {
+      if (isConfiguredForAWSProduction && this.mode === 'server') {
         snsClient = captureAWSv3Client(snsClient)
       }
       container.bind<SNSClient>(TYPES.Auth_SNS).toConstantValue(snsClient)
@@ -372,7 +372,7 @@ export class ContainerConfigLoader {
         }
       }
       let sqsClient = new SQSClient(sqsConfig)
-      if (isConfiguredForAWSProduction) {
+      if (isConfiguredForAWSProduction && this.mode === 'server') {
         sqsClient = captureAWSv3Client(sqsClient)
       }
       container.bind<SQSClient>(TYPES.Auth_SQS).toConstantValue(sqsClient)
@@ -746,7 +746,7 @@ export class ContainerConfigLoader {
       .toConstantValue(
         new RequiredCrossServiceTokenMiddleware(
           container.get<TokenDecoderInterface<CrossServiceTokenData>>(TYPES.Auth_CrossServiceTokenDecoder),
-          isConfiguredForAWSProduction,
+          isConfiguredForAWSProduction && this.mode === 'server',
           container.get<winston.Logger>(TYPES.Auth_Logger),
         ),
       )
@@ -755,7 +755,7 @@ export class ContainerConfigLoader {
       .toConstantValue(
         new OptionalCrossServiceTokenMiddleware(
           container.get<TokenDecoderInterface<CrossServiceTokenData>>(TYPES.Auth_CrossServiceTokenDecoder),
-          isConfiguredForAWSProduction,
+          isConfiguredForAWSProduction && this.mode === 'server',
           container.get<winston.Logger>(TYPES.Auth_Logger),
         ),
       )
