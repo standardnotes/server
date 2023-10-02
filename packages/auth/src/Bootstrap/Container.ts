@@ -510,32 +510,6 @@ export class ContainerConfigLoader {
         ),
       )
 
-    // Middleware
-    container.bind<SessionMiddleware>(TYPES.Auth_SessionMiddleware).to(SessionMiddleware)
-    container.bind<LockMiddleware>(TYPES.Auth_LockMiddleware).to(LockMiddleware)
-    container
-      .bind<RequiredCrossServiceTokenMiddleware>(TYPES.Auth_RequiredCrossServiceTokenMiddleware)
-      .toConstantValue(
-        new RequiredCrossServiceTokenMiddleware(
-          container.get<TokenDecoderInterface<CrossServiceTokenData>>(TYPES.Auth_CrossServiceTokenDecoder),
-          isConfiguredForAWSProduction,
-          container.get<winston.Logger>(TYPES.Auth_Logger),
-        ),
-      )
-    container
-      .bind<OptionalCrossServiceTokenMiddleware>(TYPES.Auth_OptionalCrossServiceTokenMiddleware)
-      .toConstantValue(
-        new OptionalCrossServiceTokenMiddleware(
-          container.get<TokenDecoderInterface<CrossServiceTokenData>>(TYPES.Auth_CrossServiceTokenDecoder),
-          isConfiguredForAWSProduction,
-          container.get<winston.Logger>(TYPES.Auth_Logger),
-        ),
-      )
-    container
-      .bind<ApiGatewayOfflineAuthMiddleware>(TYPES.Auth_ApiGatewayOfflineAuthMiddleware)
-      .to(ApiGatewayOfflineAuthMiddleware)
-    container.bind<OfflineUserAuthMiddleware>(TYPES.Auth_OfflineUserAuthMiddleware).to(OfflineUserAuthMiddleware)
-
     // Projectors
     container.bind<SessionProjector>(TYPES.Auth_SessionProjector).to(SessionProjector)
     container.bind<UserProjector>(TYPES.Auth_UserProjector).to(UserProjector)
@@ -763,6 +737,32 @@ export class ContainerConfigLoader {
           ? directCallDomainEventPublisher
           : new SNSDomainEventPublisher(container.get(TYPES.Auth_SNS), container.get(TYPES.Auth_SNS_TOPIC_ARN)),
       )
+
+    // Middleware
+    container.bind<SessionMiddleware>(TYPES.Auth_SessionMiddleware).to(SessionMiddleware)
+    container.bind<LockMiddleware>(TYPES.Auth_LockMiddleware).to(LockMiddleware)
+    container
+      .bind<RequiredCrossServiceTokenMiddleware>(TYPES.Auth_RequiredCrossServiceTokenMiddleware)
+      .toConstantValue(
+        new RequiredCrossServiceTokenMiddleware(
+          container.get<TokenDecoderInterface<CrossServiceTokenData>>(TYPES.Auth_CrossServiceTokenDecoder),
+          isConfiguredForAWSProduction,
+          container.get<winston.Logger>(TYPES.Auth_Logger),
+        ),
+      )
+    container
+      .bind<OptionalCrossServiceTokenMiddleware>(TYPES.Auth_OptionalCrossServiceTokenMiddleware)
+      .toConstantValue(
+        new OptionalCrossServiceTokenMiddleware(
+          container.get<TokenDecoderInterface<CrossServiceTokenData>>(TYPES.Auth_CrossServiceTokenDecoder),
+          isConfiguredForAWSProduction,
+          container.get<winston.Logger>(TYPES.Auth_Logger),
+        ),
+      )
+    container
+      .bind<ApiGatewayOfflineAuthMiddleware>(TYPES.Auth_ApiGatewayOfflineAuthMiddleware)
+      .to(ApiGatewayOfflineAuthMiddleware)
+    container.bind<OfflineUserAuthMiddleware>(TYPES.Auth_OfflineUserAuthMiddleware).to(OfflineUserAuthMiddleware)
 
     // use cases
     container
