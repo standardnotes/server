@@ -1,5 +1,6 @@
 import * as winston from 'winston'
 import Redis from 'ioredis'
+import { captureAWSv3Client } from 'aws-xray-sdk'
 import { SNSClient, SNSClientConfig } from '@aws-sdk/client-sns'
 import { SQSClient, SQSClientConfig } from '@aws-sdk/client-sqs'
 import { Container } from 'inversify'
@@ -320,6 +321,8 @@ export class ContainerConfigLoader {
     logger.debug('Database initialized')
 
     const isConfiguredForHomeServer = env.get('MODE', true) === 'home-server'
+    const isConfiguredForSelfHosting = env.get('MODE', true) === 'self-hosted'
+    const isConfiguredForAWSProduction = !isConfiguredForHomeServer && !isConfiguredForSelfHosting
     const isConfiguredForInMemoryCache = env.get('CACHE_TYPE', true) === 'memory'
 
     if (!isConfiguredForInMemoryCache) {
@@ -350,7 +353,11 @@ export class ContainerConfigLoader {
           secretAccessKey: env.get('SNS_SECRET_ACCESS_KEY', true),
         }
       }
-      container.bind<SNSClient>(TYPES.Auth_SNS).toConstantValue(new SNSClient(snsConfig))
+      let snsClient = new SNSClient(snsConfig)
+      if (isConfiguredForAWSProduction) {
+        snsClient = captureAWSv3Client(snsClient)
+      }
+      container.bind<SNSClient>(TYPES.Auth_SNS).toConstantValue(snsClient)
 
       const sqsConfig: SQSClientConfig = {
         region: env.get('SQS_AWS_REGION', true),
@@ -364,7 +371,11 @@ export class ContainerConfigLoader {
           secretAccessKey: env.get('SQS_SECRET_ACCESS_KEY', true),
         }
       }
-      container.bind<SQSClient>(TYPES.Auth_SQS).toConstantValue(new SQSClient(sqsConfig))
+      let sqsClient = new SQSClient(sqsConfig)
+      if (isConfiguredForAWSProduction) {
+        sqsClient = captureAWSv3Client(sqsClient)
+      }
+      container.bind<SQSClient>(TYPES.Auth_SQS).toConstantValue(sqsClient)
     }
 
     // Mapping
