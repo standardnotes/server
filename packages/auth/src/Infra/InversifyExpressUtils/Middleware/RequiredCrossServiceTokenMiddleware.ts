@@ -1,18 +1,16 @@
 import { CrossServiceTokenData, TokenDecoderInterface } from '@standardnotes/security'
 import { NextFunction, Request, Response } from 'express'
-import { inject, injectable } from 'inversify'
 import { Logger } from 'winston'
 
-import TYPES from '../../../Bootstrap/Types'
 import { ApiGatewayAuthMiddleware } from './ApiGatewayAuthMiddleware'
 
-@injectable()
 export class RequiredCrossServiceTokenMiddleware extends ApiGatewayAuthMiddleware {
   constructor(
-    @inject(TYPES.Auth_CrossServiceTokenDecoder) tokenDecoder: TokenDecoderInterface<CrossServiceTokenData>,
-    @inject(TYPES.Auth_Logger) logger: Logger,
+    tokenDecoder: TokenDecoderInterface<CrossServiceTokenData>,
+    isConfiguredForAWSProduction: boolean,
+    logger: Logger,
   ) {
-    super(tokenDecoder, logger)
+    super(tokenDecoder, isConfiguredForAWSProduction, logger)
   }
 
   protected override handleMissingToken(request: Request, response: Response, _next: NextFunction): boolean {

@@ -2,10 +2,12 @@ import { CrossServiceTokenData, TokenDecoderInterface } from '@standardnotes/sec
 import { NextFunction, Request, Response } from 'express'
 import { BaseMiddleware } from 'inversify-express-utils'
 import { Logger } from 'winston'
+import { Segment, getSegment } from 'aws-xray-sdk'
 
 export abstract class ApiGatewayAuthMiddleware extends BaseMiddleware {
   constructor(
     private tokenDecoder: TokenDecoderInterface<CrossServiceTokenData>,
+    private isConfiguredForAWSProduction: boolean,
     private logger: Logger,
   ) {
     super()
@@ -38,6 +40,13 @@ export abstract class ApiGatewayAuthMiddleware extends BaseMiddleware {
       response.locals.roles = token.roles
       response.locals.session = token.session
       response.locals.readOnlyAccess = token.session?.readonly_access ?? false
+
+      if (this.isConfiguredForAWSProduction) {
+        const segment = getSegment()
+        if (segment instanceof Segment) {
+          segment.setUser(token.user.uuid)
+        }
+      }
 
       return next()
     } catch (error) {
