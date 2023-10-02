@@ -1,0 +1,72 @@
+name: E2E Self Hosted Test Suite
+
+on:
+  workflow_call:
+    inputs:
+      snjs_image_tag:
+        type: string
+        default: latest
+        description: The Docker image tag used for SNJS container
+      suite:
+        type: string
+        default: all
+        description: The test suite to run
+    secrets:
+      DOCKER_USERNAME:
+        required: true
+      DOCKER_PASSWORD:
+        required: true
+      AWS_ACCESS_KEY_ID:
+        required: true
+      AWS_SECRET_ACCESS_KEY:
+        required: true
+
+jobs:
+  e2e:
+    name: (Self Hosting) E2E Test Suite
+    strategy:
+      fail-fast: false
+      matrix:
+        secondary_db_enabled: [true, false]
+    runs-on: ubuntu-latest
+
+    services:
+      snjs:
+        image: standardnotes/snjs:${{ inputs.snjs_image_tag }}
+        ports:
+        - 9001:9001
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Node
+      uses: actions/setup-node@v3
+      with:
+        registry-url: 'https://registry.npmjs.org'
+        node-version-file: '.nvmrc'
+
+    - name: Install
+      run: yarn install --immutable
+
+    - name: Run Server
+      run: docker compose -f docker-compose.ci.yml up -d
+      env:
+        DB_TYPE: mysql
+        CACHE_TYPE: redis
+        SECONDARY_DB_ENABLED: ${{ matrix.secondary_db_enabled }}
+
+    - name: Wait for server to start
+      run: docker/is-available.sh http://localhost:3123 $(pwd)/logs
+
+    - name: Run E2E Test Suite
+      run: yarn dlx mocha-headless-chrome --timeout 3600000 -f http://localhost:9001/mocha/test.html?suite=${{ inputs.suite }}
+
+    - name: Archive failed run logs
+      if: ${{ failure() }}
+      uses: actions/upload-artifact@v3
+      with:
+        name: self-hosted-failure-logs-${{ inputs.suite }}-${{ matrix.secondary_db_enabled }}
+        retention-days: 5
+        path: |
+          logs/*.err
+          logs/*.log

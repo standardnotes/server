@@ -22,156 +22,16 @@ on:
         required: true
 
 jobs:
-  e2e:
-    name: (Self Hosting) E2E Test Suite
-    strategy:
-      fail-fast: false
-      matrix:
-        secondary_db_enabled: [true, false]
-    runs-on: ubuntu-latest
-
-    services:
-      snjs:
-        image: standardnotes/snjs:${{ inputs.snjs_image_tag }}
-        ports:
-        - 9001:9001
-
-    steps:
-    - uses: actions/checkout@v3
-
-    - name: Set up Node
-      uses: actions/setup-node@v3
-      with:
-        registry-url: 'https://registry.npmjs.org'
-        node-version-file: '.nvmrc'
-
-    - name: Install
-      run: yarn install --immutable
-
-    - name: Run Server
-      run: docker compose -f docker-compose.ci.yml up -d
-      env:
-        DB_TYPE: mysql
-        CACHE_TYPE: redis
-        SECONDARY_DB_ENABLED: ${{ matrix.secondary_db_enabled }}
-
-    - name: Wait for server to start
-      run: docker/is-available.sh http://localhost:3123 $(pwd)/logs
-
-    - name: Run E2E Test Suite
-      run: yarn dlx mocha-headless-chrome --timeout 3600000 -f http://localhost:9001/mocha/test.html?suite=${{ inputs.suite }}
-
-    - name: Archive failed run logs
-      if: ${{ failure() }}
-      uses: actions/upload-artifact@v3
-      with:
-        name: self-hosted-failure-logs-${{ inputs.suite }}-${{ matrix.secondary_db_enabled }}
-        retention-days: 5
-        path: |
-          logs/*.err
-          logs/*.log
+  e2e-self-hosted:
+    uses: standardnotes/server/.github/workflows/e2e-self-hosted.yml@main
+    with:
+      snjs_image_tag: ${{ inputs.snjs_image_tag }}
+      suite: ${{ inputs.suite }}
+    secrets: inherit
 
   e2e-home-server:
-    name: (Home Server) E2E Test Suite
-    strategy:
-      fail-fast: false
-      matrix:
-        db_type: [mysql, sqlite]
-        cache_type: [redis, memory]
-        secondary_db_enabled: [true, false]
-
-    runs-on: ubuntu-latest
-
-    services:
-      snjs:
-        image: standardnotes/snjs:${{ inputs.snjs_image_tag }}
-        ports:
-        - 9001:9001
-      cache:
-        image: redis
-        ports:
-          - 6379:6379
-      db:
-        image: mysql
-        ports:
-          - 3306:3306
-        env:
-          MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: standardnotes
-          MYSQL_USER: standardnotes
-          MYSQL_PASSWORD: standardnotes
-      secondary_db:
-        image: mongo:5.0
-        ports:
-          - 27017:27017
-        env:
-          MONGO_INITDB_ROOT_USERNAME: standardnotes
-          MONGO_INITDB_ROOT_PASSWORD: standardnotes
-          MONGO_INITDB_DATABASE: standardnotes
-
-    steps:
-    - uses: actions/checkout@v3
-
-    - name: Set up Node
-      uses: actions/setup-node@v3
-      with:
-        registry-url: 'https://registry.npmjs.org'
-        node-version-file: '.nvmrc'
-
-    - name: Install Dependencies
-      run: yarn install --immutable
-
-    - name: Build
-      run: yarn build
-
-    - name: Copy dotenv file
-      run: cp packages/home-server/.env.sample packages/home-server/.env
-
-    - name: Fill in env variables
-      run: |
-        sed -i "s/JWT_SECRET=/JWT_SECRET=$(openssl rand -hex 32)/g" packages/home-server/.env
-        sed -i "s/AUTH_JWT_SECRET=/AUTH_JWT_SECRET=$(openssl rand -hex 32)/g" packages/home-server/.env
-        sed -i "s/ENCRYPTION_SERVER_KEY=/ENCRYPTION_SERVER_KEY=$(openssl rand -hex 32)/g" packages/home-server/.env
-        sed -i "s/PSEUDO_KEY_PARAMS_KEY=/PSEUDO_KEY_PARAMS_KEY=$(openssl rand -hex 32)/g" packages/home-server/.env
-        sed -i "s/VALET_TOKEN_SECRET=/VALET_TOKEN_SECRET=$(openssl rand -hex 32)/g" packages/home-server/.env
-        echo "ACCESS_TOKEN_AGE=4" >> packages/home-server/.env
-        echo "REFRESH_TOKEN_AGE=10" >> packages/home-server/.env
-        echo "REVISIONS_FREQUENCY=2" >> packages/home-server/.env
-        echo "DB_HOST=localhost" >> packages/home-server/.env
-        echo "DB_PORT=3306" >> packages/home-server/.env
-        echo "DB_DATABASE=standardnotes" >> packages/home-server/.env
-        echo "DB_SQLITE_DATABASE_PATH=homeserver.db" >> packages/home-server/.env
-        echo "DB_USERNAME=standardnotes" >> packages/home-server/.env
-        echo "DB_PASSWORD=standardnotes" >> packages/home-server/.env
-        echo "DB_TYPE=${{ matrix.db_type }}" >> packages/home-server/.env
-        echo "DB_DEBUG_LEVEL=all" >> packages/home-server/.env
-        echo "REDIS_URL=redis://localhost:6379" >> packages/home-server/.env
-        echo "CACHE_TYPE=${{ matrix.cache_type }}" >> packages/home-server/.env
-        echo "SECONDARY_DB_ENABLED=${{ matrix.secondary_db_enabled }}" >> packages/home-server/.env
-        echo "MONGO_HOST=localhost" >> packages/home-server/.env
-        echo "MONGO_PORT=27017" >> packages/home-server/.env
-        echo "MONGO_DATABASE=standardnotes" >> packages/home-server/.env
-        echo "MONGO_USERNAME=standardnotes" >> packages/home-server/.env
-        echo "MONGO_PASSWORD=standardnotes" >> packages/home-server/.env
-        echo "FILES_SERVER_URL=http://localhost:3123" >> packages/home-server/.env
-        echo "E2E_TESTING=true" >> packages/home-server/.env
-
-    - name: Run Server
-      run: nohup yarn workspace @standardnotes/home-server start > logs/output.log 2>&1 &
-      env:
-        PORT: 3123
-
-    - name: Wait for server to start
-      run: for i in {1..30}; do curl -s http://localhost:3123/healthcheck && break || sleep 1; done
-
-    - name: Run E2E Test Suite
-      run: yarn dlx mocha-headless-chrome --timeout 3600000 -f http://localhost:9001/mocha/test.html?suite=${{ inputs.suite }}
-
-    - name: Archive failed run logs
-      if: ${{ failure() }}
-      uses: actions/upload-artifact@v3
-      with:
-        name: home-server-failure-logs-${{ inputs.suite }}-${{ matrix.db_type }}-${{ matrix.cache_type }}-${{ matrix.secondary_db_enabled }}
-        retention-days: 5
-        path: |
-          logs/output.log
+    uses: standardnotes/server/.github/workflows/e2e-home-server.yml@main
+    with:
+      snjs_image_tag: ${{ inputs.snjs_image_tag }}
+      suite: ${{ inputs.suite }}
+    secrets: inherit
