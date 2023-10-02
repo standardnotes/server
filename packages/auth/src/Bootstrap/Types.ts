@@ -161,6 +161,7 @@ const TYPES = {
   Auth_AddSharedVaultUser: Symbol.for('Auth_AddSharedVaultUser'),
   Auth_RemoveSharedVaultUser: Symbol.for('Auth_RemoveSharedVaultUser'),
   Auth_DesignateSurvivor: Symbol.for('Auth_DesignateSurvivor'),
+  Auth_DisableEmailSettingBasedOnEmailSubscription: Symbol.for('Auth_DisableEmailSettingBasedOnEmailSubscription'),
   // Handlers
   Auth_UserRegisteredEventHandler: Symbol.for('Auth_UserRegisteredEventHandler'),
   Auth_AccountDeletionRequestedEventHandler: Symbol.for('Auth_AccountDeletionRequestedEventHandler'),

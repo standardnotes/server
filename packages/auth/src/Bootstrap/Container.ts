@@ -273,6 +273,7 @@ import { UserAddedToSharedVaultEventHandler } from '../Domain/Handler/UserAddedT
 import { UserRemovedFromSharedVaultEventHandler } from '../Domain/Handler/UserRemovedFromSharedVaultEventHandler'
 import { DesignateSurvivor } from '../Domain/UseCase/DesignateSurvivor/DesignateSurvivor'
 import { UserDesignatedAsSurvivorInSharedVaultEventHandler } from '../Domain/Handler/UserDesignatedAsSurvivorInSharedVaultEventHandler'
+import { DisableEmailSettingBasedOnEmailSubscription } from '../Domain/UseCase/DisableEmailSettingBasedOnEmailSubscription/DisableEmailSettingBasedOnEmailSubscription'
 
 export class ContainerConfigLoader {
   constructor(private mode: 'server' | 'worker' = 'server') {}
@@ -965,6 +966,15 @@ export class ContainerConfigLoader {
           container.get<TimerInterface>(TYPES.Auth_Timer),
         ),
       )
+    container
+      .bind<DisableEmailSettingBasedOnEmailSubscription>(TYPES.Auth_DisableEmailSettingBasedOnEmailSubscription)
+      .toConstantValue(
+        new DisableEmailSettingBasedOnEmailSubscription(
+          container.get<UserRepositoryInterface>(TYPES.Auth_UserRepository),
+          container.get<SettingRepositoryInterface>(TYPES.Auth_SettingRepository),
+          container.get<SettingFactoryInterface>(TYPES.Auth_SettingFactory),
+        ),
+      )
 
     // Controller
     container
@@ -1102,8 +1112,10 @@ export class ContainerConfigLoader {
       .bind<EmailSubscriptionUnsubscribedEventHandler>(TYPES.Auth_EmailSubscriptionUnsubscribedEventHandler)
       .toConstantValue(
         new EmailSubscriptionUnsubscribedEventHandler(
-          container.get(TYPES.Auth_UserRepository),
-          container.get(TYPES.Auth_SettingService),
+          container.get<DisableEmailSettingBasedOnEmailSubscription>(
+            TYPES.Auth_DisableEmailSettingBasedOnEmailSubscription,
+          ),
+          container.get<winston.Logger>(TYPES.Auth_Logger),
         ),
       )
     container
