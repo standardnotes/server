@@ -1051,6 +1051,7 @@ export class ContainerConfigLoader {
       .bind<TransitionRequestedEventHandler>(TYPES.Sync_TransitionRequestedEventHandler)
       .toConstantValue(
         new TransitionRequestedEventHandler(
+          true,
           container.get<TransitionItemsFromPrimaryToSecondaryDatabaseForUser>(
             TYPES.Sync_TransitionItemsFromPrimaryToSecondaryDatabaseForUser,
           ),

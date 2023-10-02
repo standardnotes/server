@@ -4,11 +4,16 @@ import { TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser } from '../Use
 
 export class TransitionRequestedEventHandler implements DomainEventHandlerInterface {
   constructor(
+    private disabled: boolean,
     private transitionRevisionsFromPrimaryToSecondaryDatabaseForUser: TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser,
     private logger: Logger,
   ) {}
 
   async handle(event: TransitionRequestedEvent): Promise<void> {
+    if (this.disabled) {
+      return
+    }
+
     if (event.payload.type !== 'revisions') {
       return
     }

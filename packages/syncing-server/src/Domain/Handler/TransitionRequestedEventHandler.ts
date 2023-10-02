@@ -5,11 +5,16 @@ import { TransitionItemsFromPrimaryToSecondaryDatabaseForUser } from '../UseCase
 
 export class TransitionRequestedEventHandler implements DomainEventHandlerInterface {
   constructor(
+    private disabled: boolean,
     private transitionItemsFromPrimaryToSecondaryDatabaseForUser: TransitionItemsFromPrimaryToSecondaryDatabaseForUser,
     private logger: Logger,
   ) {}
 
   async handle(event: TransitionRequestedEvent): Promise<void> {
+    if (this.disabled) {
+      return
+    }
+
     if (event.payload.type !== 'items') {
       return
     }

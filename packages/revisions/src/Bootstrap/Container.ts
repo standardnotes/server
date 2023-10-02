@@ -472,6 +472,7 @@ export class ContainerConfigLoader {
       .bind<TransitionRequestedEventHandler>(TYPES.Revisions_TransitionRequestedEventHandler)
       .toConstantValue(
         new TransitionRequestedEventHandler(
+          true,
           container.get<TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser>(
             TYPES.Revisions_TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser,
           ),
