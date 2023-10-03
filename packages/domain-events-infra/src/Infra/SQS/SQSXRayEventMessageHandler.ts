@@ -46,12 +46,10 @@ export class SQSXRayEventMessageHandler implements DomainEventMessageHandlerInte
         if (subsegment) {
           subsegment.close()
         }
+        xRaySegment.close()
       },
       xRaySegment,
     )
-
-    xRaySegment.close()
-    xRaySegment.flush()
   }
 
   async handleError(error: Error): Promise<void> {
