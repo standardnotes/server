@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.150.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.149.1...@standardnotes/auth-server@1.150.0) (2023-10-03)
+
+### Features
+
+* add xray segment tracing on auth-worker ([b1b244a](https://github.com/standardnotes/server/commit/b1b244a2cf1e17ddf67fc9b238b4b25a1bc5a190))
+
 ## [1.149.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.149.0...@standardnotes/auth-server@1.149.1) (2023-10-02)
 
 ### Bug Fixes
