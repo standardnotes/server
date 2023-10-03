@@ -93,7 +93,7 @@ import {
   SNSDomainEventPublisher,
   SQSDomainEventSubscriberFactory,
   SQSEventMessageHandler,
-  SQSNewRelicEventMessageHandler,
+  SQSXRayEventMessageHandler,
 } from '@standardnotes/domain-events-infra'
 import { GetUserSubscription } from '../Domain/UseCase/GetUserSubscription/GetUserSubscription'
 import { ChangeCredentials } from '../Domain/UseCase/ChangeCredentials/ChangeCredentials'
@@ -1236,8 +1236,8 @@ export class ContainerConfigLoader {
       container
         .bind<DomainEventMessageHandlerInterface>(TYPES.Auth_DomainEventMessageHandler)
         .toConstantValue(
-          env.get('NEW_RELIC_ENABLED', true) === 'true'
-            ? new SQSNewRelicEventMessageHandler(eventHandlers, container.get(TYPES.Auth_Logger))
+          isConfiguredForAWSProduction
+            ? new SQSXRayEventMessageHandler(eventHandlers, container.get(TYPES.Auth_Logger))
             : new SQSEventMessageHandler(eventHandlers, container.get(TYPES.Auth_Logger)),
         )
 

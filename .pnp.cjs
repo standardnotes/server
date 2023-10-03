@@ -5963,6 +5963,7 @@ const RAW_RUNTIME_STATE =
           ["@types/newrelic", "npm:9.14.0"],\
           ["@typescript-eslint/eslint-plugin", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:6.5.0"],\
           ["@typescript-eslint/parser", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:6.5.0"],\
+          ["aws-xray-sdk", "npm:3.5.2"],\
           ["eslint", "npm:8.41.0"],\
           ["eslint-plugin-prettier", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:5.0.0"],\
           ["ioredis", "npm:5.3.2"],\

@@ -4834,6 +4834,7 @@ __metadata:
     "@types/newrelic": "npm:^9.14.0"
     "@typescript-eslint/eslint-plugin": "npm:^6.5.0"
     "@typescript-eslint/parser": "npm:^6.5.0"
+    aws-xray-sdk: "npm:^3.5.2"
     eslint: "npm:^8.39.0"
     eslint-plugin-prettier: "npm:^5.0.0"
     ioredis: "npm:^5.2.4"
