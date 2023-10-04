@@ -77,10 +77,6 @@ export class Register implements UseCaseInterface {
     if (defaultRole) {
       roles.push(defaultRole)
     }
-    const transitionRole = await this.roleRepository.findOneByName(RoleName.NAMES.TransitionUser)
-    if (transitionRole) {
-      roles.push(transitionRole)
-    }
     user.roles = Promise.resolve(roles)
 
     Object.assign(user, registrationFields)

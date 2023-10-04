@@ -84,14 +84,11 @@ describe('Register', () => {
     expect(settingService.applyDefaultSettingsUponRegistration).toHaveBeenCalled()
   })
 
-  it('should register a new user with default role and transition role', async () => {
+  it('should register a new user with default set of roles', async () => {
     const role = new Role()
     role.name = RoleName.NAMES.CoreUser
 
-    const transitionRole = new Role()
-    transitionRole.name = RoleName.NAMES.TransitionUser
-
-    roleRepository.findOneByName = jest.fn().mockReturnValueOnce(role).mockReturnValueOnce(transitionRole)
+    roleRepository.findOneByName = jest.fn().mockReturnValueOnce(role)
 
     expect(
       await createUseCase().execute({
@@ -120,7 +117,7 @@ describe('Register', () => {
       version: '004',
       createdAt: new Date(1),
       updatedAt: new Date(1),
-      roles: Promise.resolve([role, transitionRole]),
+      roles: Promise.resolve([role]),
     })
   })
 
