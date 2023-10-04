@@ -354,7 +354,7 @@ export class ContainerConfigLoader {
         }
       }
       let snsClient = new SNSClient(snsConfig)
-      if (isConfiguredForAWSProduction && this.mode === 'server') {
+      if (isConfiguredForAWSProduction) {
         snsClient = captureAWSv3Client(snsClient)
       }
       container.bind<SNSClient>(TYPES.Auth_SNS).toConstantValue(snsClient)
@@ -372,7 +372,7 @@ export class ContainerConfigLoader {
         }
       }
       let sqsClient = new SQSClient(sqsConfig)
-      if (isConfiguredForAWSProduction && this.mode === 'server') {
+      if (isConfiguredForAWSProduction) {
         sqsClient = captureAWSv3Client(sqsClient)
       }
       container.bind<SQSClient>(TYPES.Auth_SQS).toConstantValue(sqsClient)

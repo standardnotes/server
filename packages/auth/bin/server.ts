@@ -43,7 +43,7 @@ void container.load().then((container) => {
     env.get('MODE', true) !== 'home-server' && env.get('MODE', true) !== 'self-hosted'
 
   if (isConfiguredForAWSProduction) {
-    AWSXRay.config([AWSXRay.plugins.EC2Plugin, AWSXRay.plugins.ECSPlugin])
+    AWSXRay.config([AWSXRay.plugins.ECSPlugin])
   }
 
   const server = new InversifyExpressServer(container)
