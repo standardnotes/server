@@ -1,6 +1,6 @@
 import { Logger } from 'winston'
 import * as zlib from 'zlib'
-import { Subsegment, captureAsyncFunc } from 'aws-xray-sdk'
+import { Segment, Subsegment, captureAsyncFunc } from 'aws-xray-sdk'
 
 import {
   DomainEventHandlerInterface,
@@ -32,13 +32,26 @@ export class SQSXRayEventMessageHandler implements DomainEventMessageHandlerInte
 
     this.logger.debug(`Received event: ${domainEvent.type}`)
 
-    await captureAsyncFunc(domainEvent.type, async (subsegment?: Subsegment) => {
-      await handler.handle(domainEvent)
+    const xRaySegment = new Segment(domainEvent.type)
 
-      if (subsegment) {
-        subsegment.close()
-      }
-    })
+    if (domainEvent.meta.correlation.userIdentifierType === 'uuid') {
+      xRaySegment.setUser(domainEvent.meta.correlation.userIdentifier)
+    }
+
+    await captureAsyncFunc(
+      `${handler.constructor.name}.handle}`,
+      async (subsegment?: Subsegment) => {
+        await handler.handle(domainEvent)
+
+        if (subsegment) {
+          subsegment.close()
+        }
+      },
+      xRaySegment,
+    )
+
+    xRaySegment.close()
+    xRaySegment.flush()
   }
 
   async handleError(error: Error): Promise<void> {
