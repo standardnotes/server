@@ -5079,6 +5079,7 @@ __metadata:
     "@types/node": "npm:^20.5.7"
     "@typescript-eslint/eslint-plugin": "npm:^6.5.0"
     "@typescript-eslint/parser": "npm:^6.5.0"
+    aws-xray-sdk: "npm:^3.5.2"
     cors: "npm:2.8.5"
     dotenv: "npm:^16.0.1"
     eslint: "npm:^8.39.0"
