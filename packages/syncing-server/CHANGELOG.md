@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.111.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.110.8...@standardnotes/syncing-server@1.111.0) (2023-10-04)
+
+### Features
+
+* add xray to syncing server and files ([6583ff6](https://github.com/standardnotes/syncing-server-js/commit/6583ff6cd90f7881c1a79c0f904f1b1db96fc5b3))
+
 ## [1.110.8](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.110.7...@standardnotes/syncing-server@1.110.8) (2023-10-04)
 
 **Note:** Version bump only for package @standardnotes/syncing-server

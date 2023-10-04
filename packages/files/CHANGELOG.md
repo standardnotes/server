@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.26.0](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.25.6...@standardnotes/files-server@1.26.0) (2023-10-04)
+
+### Features
+
+* add xray to syncing server and files ([6583ff6](https://github.com/standardnotes/files/commit/6583ff6cd90f7881c1a79c0f904f1b1db96fc5b3))
+
 ## [1.25.6](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.25.5...@standardnotes/files-server@1.25.6) (2023-10-04)
 
 **Note:** Version bump only for package @standardnotes/files-server

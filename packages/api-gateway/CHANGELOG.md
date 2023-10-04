@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.76.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.75.13...@standardnotes/api-gateway@1.76.0) (2023-10-04)
+
+### Features
+
+* **api-gateaway:** configure aws-xray-sdk ([dc76113](https://github.com/standardnotes/api-gateway/commit/dc7611391515dd49a8e9b7ce8ac5e128cd7af0a8))
+
 ## [1.75.13](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.75.12...@standardnotes/api-gateway@1.75.13) (2023-10-04)
 
 **Note:** Version bump only for package @standardnotes/api-gateway
