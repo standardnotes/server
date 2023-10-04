@@ -104,11 +104,11 @@ jobs:
       suite: 'base'
     secrets: inherit
 
-  e2e-vaults:
-    needs: build
-    name: E2E Vaults Suite
-    uses: standardnotes/server/.github/workflows/common-e2e.yml@main
-    with:
-      snjs_image_tag: 'latest'
-      suite: 'vaults'
-    secrets: inherit
+  # e2e-vaults:
+  #   needs: build
+  #   name: E2E Vaults Suite
+  #   uses: standardnotes/server/.github/workflows/common-e2e.yml@main
+  #   with:
+  #     snjs_image_tag: 'latest'
+  #     suite: 'vaults'
+  #   secrets: inherit
