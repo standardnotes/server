@@ -22,7 +22,7 @@ void container.load().then((container) => {
 
   if (isConfiguredForAWSProduction) {
     AWSXRay.enableManualMode()
-    AWSXRay.config([AWSXRay.plugins.EC2Plugin, AWSXRay.plugins.ECSPlugin])
+    AWSXRay.config([AWSXRay.plugins.ECSPlugin])
   }
 
   const logger: Logger = container.get(TYPES.Auth_Logger)
