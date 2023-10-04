@@ -40,7 +40,7 @@ jobs:
 
     - name: Fill in the new package version in the Amazon ECS task definition
       run: |
-        jq '(.containerDefinitions[] | select(.name=="${{ inputs.service_name }}-prod") | .environment[] | select(.name=="NPM_PACKAGE_VERSION")).value = "${{ github.sha }}"' task-definition.json > tmp.json && mv tmp.json task-definition.json
+        jq '(.containerDefinitions[] | select(.name=="${{ inputs.service_name }}-prod") | .environment[] | select(.name=="npm_package_version")).value = "${{ github.sha }}"' task-definition.json > tmp.json && mv tmp.json task-definition.json
 
     - name: Fill in the new image ID in the Amazon ECS task definition
       id: task-def-prod
