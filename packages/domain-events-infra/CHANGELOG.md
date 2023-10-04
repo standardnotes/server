@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.14.2](https://github.com/standardnotes/server/compare/@standardnotes/domain-events-infra@1.14.1...@standardnotes/domain-events-infra@1.14.2) (2023-10-04)
+
+### Bug Fixes
+
+* **domain-events-infra:** handling async functions ([f6bc1c3](https://github.com/standardnotes/server/commit/f6bc1c30846ecfb159f7fb1cdd8bfc3ab15b2dde))
+* **domain-events-infra:** imports ([7668713](https://github.com/standardnotes/server/commit/7668713dd6f65b65e546152828f5f52ea34f8bf5))
+
 ## [1.14.1](https://github.com/standardnotes/server/compare/@standardnotes/domain-events-infra@1.14.0...@standardnotes/domain-events-infra@1.14.1) (2023-10-03)
 
 ### Bug Fixes
