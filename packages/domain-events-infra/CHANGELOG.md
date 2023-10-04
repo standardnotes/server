@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.14.3](https://github.com/standardnotes/server/compare/@standardnotes/domain-events-infra@1.14.2...@standardnotes/domain-events-infra@1.14.3) (2023-10-04)
+
+### Bug Fixes
+
+* **domain-events-infra:** handling segments ([207ef9f](https://github.com/standardnotes/server/commit/207ef9f3e531b730f3f4869fb128354dbd659f46))
+* **domain-events-infra:** remove redundant flush ([64f1fe5](https://github.com/standardnotes/server/commit/64f1fe59c23894bda9ad40c6bdeaf2997a8b48ce))
+
 ## [1.14.2](https://github.com/standardnotes/server/compare/@standardnotes/domain-events-infra@1.14.1...@standardnotes/domain-events-infra@1.14.2) (2023-10-04)
 
 ### Bug Fixes
