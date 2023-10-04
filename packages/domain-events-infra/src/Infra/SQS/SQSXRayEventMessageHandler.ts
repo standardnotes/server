@@ -10,6 +10,7 @@ import {
 
 export class SQSXRayEventMessageHandler implements DomainEventMessageHandlerInterface {
   constructor(
+    private serviceName: string,
     private handlers: Map<string, DomainEventHandlerInterface>,
     private logger: Logger,
   ) {}
@@ -32,14 +33,14 @@ export class SQSXRayEventMessageHandler implements DomainEventMessageHandlerInte
 
     this.logger.debug(`Received event: ${domainEvent.type}`)
 
-    const xRaySegment = new Segment(domainEvent.type)
+    const xRaySegment = new Segment(this.serviceName)
 
     if (domainEvent.meta.correlation.userIdentifierType === 'uuid') {
       xRaySegment.setUser(domainEvent.meta.correlation.userIdentifier)
     }
 
     await captureAsyncFunc(
-      `${handler.constructor.name}.handle`,
+      domainEvent.type,
       async (subsegment?: Subsegment) => {
         await handler.handle(domainEvent)
 

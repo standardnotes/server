@@ -1,4 +1,9 @@
-import { ControllerContainer, ControllerContainerInterface, MapperInterface } from '@standardnotes/domain-core'
+import {
+  ControllerContainer,
+  ControllerContainerInterface,
+  MapperInterface,
+  ServiceIdentifier,
+} from '@standardnotes/domain-core'
 import Redis from 'ioredis'
 import { Container, interfaces } from 'inversify'
 import { MongoRepository, Repository } from 'typeorm'
@@ -525,7 +530,11 @@ export class ContainerConfigLoader {
         .bind<DomainEventMessageHandlerInterface>(TYPES.Revisions_DomainEventMessageHandler)
         .toConstantValue(
           env.get('NEW_RELIC_ENABLED', true) === 'true'
-            ? new SQSXRayEventMessageHandler(eventHandlers, container.get(TYPES.Revisions_Logger))
+            ? new SQSXRayEventMessageHandler(
+                ServiceIdentifier.NAMES.RevisionsWorker,
+                eventHandlers,
+                container.get(TYPES.Revisions_Logger),
+              )
             : new SQSEventMessageHandler(eventHandlers, container.get(TYPES.Revisions_Logger)),
         )
 

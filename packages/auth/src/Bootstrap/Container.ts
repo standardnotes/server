@@ -190,6 +190,7 @@ import {
   ControllerContainer,
   ControllerContainerInterface,
   MapperInterface,
+  ServiceIdentifier,
   SharedVaultUser,
 } from '@standardnotes/domain-core'
 import { SessionTracePersistenceMapper } from '../Mapping/SessionTracePersistenceMapper'
@@ -1237,7 +1238,11 @@ export class ContainerConfigLoader {
         .bind<DomainEventMessageHandlerInterface>(TYPES.Auth_DomainEventMessageHandler)
         .toConstantValue(
           isConfiguredForAWSProduction
-            ? new SQSXRayEventMessageHandler(eventHandlers, container.get(TYPES.Auth_Logger))
+            ? new SQSXRayEventMessageHandler(
+                ServiceIdentifier.NAMES.AuthWorker,
+                eventHandlers,
+                container.get(TYPES.Auth_Logger),
+              )
             : new SQSEventMessageHandler(eventHandlers, container.get(TYPES.Auth_Logger)),
         )
 

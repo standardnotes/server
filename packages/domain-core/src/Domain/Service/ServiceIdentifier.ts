@@ -6,9 +6,13 @@ export class ServiceIdentifier extends ValueObject<ServiceIdentifierProps> {
   static readonly NAMES = {
     ApiGateway: 'ApiGateway',
     Auth: 'Auth',
+    AuthWorker: 'AuthWorker',
     SyncingServer: 'SyncingServer',
+    SyncingServerWorker: 'SyncingServerWorker',
     Revisions: 'Revisions',
+    RevisionsWorker: 'RevisionsWorker',
     Files: 'Files',
+    FilesWorker: 'FilesWorker',
   }
 
   get value(): string {
