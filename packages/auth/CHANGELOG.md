@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.150.3](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.150.2...@standardnotes/auth-server@1.150.3) (2023-10-04)
+
+### Bug Fixes
+
+* **auth:** remove ec2 plugin from worker ([0281724](https://github.com/standardnotes/server/commit/02817241965db06cc02e9cca1d068446db0dee4e))
+
 ## [1.150.2](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.150.1...@standardnotes/auth-server@1.150.2) (2023-10-04)
 
 ### Bug Fixes
