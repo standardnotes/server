@@ -1,6 +1,6 @@
 import { Logger } from 'winston'
 import * as zlib from 'zlib'
-import { Segment, Subsegment, captureAsyncFunc } from 'aws-xray-sdk'
+import { Subsegment, captureAsyncFunc } from 'aws-xray-sdk'
 
 import {
   DomainEventHandlerInterface,
