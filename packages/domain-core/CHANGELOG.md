@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.34.2](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.34.1...@standardnotes/domain-core@1.34.2) (2023-10-04)
+
+### Bug Fixes
+
+* identifying services in workers ([eab78b3](https://github.com/standardnotes/server/commit/eab78b3a95ec82cb779d069d172169bfa92368c9))
+
 ## [1.34.1](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.34.0...@standardnotes/domain-core@1.34.1) (2023-09-27)
 
 ### Bug Fixes

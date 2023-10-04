@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.14.5](https://github.com/standardnotes/server/compare/@standardnotes/domain-events-infra@1.14.4...@standardnotes/domain-events-infra@1.14.5) (2023-10-04)
+
+### Bug Fixes
+
+* identifying services in workers ([eab78b3](https://github.com/standardnotes/server/commit/eab78b3a95ec82cb779d069d172169bfa92368c9))
+
 ## [1.14.4](https://github.com/standardnotes/server/compare/@standardnotes/domain-events-infra@1.14.3...@standardnotes/domain-events-infra@1.14.4) (2023-10-04)
 
 ### Bug Fixes

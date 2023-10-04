@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.39.1](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.39.0...@standardnotes/revisions-server@1.39.1) (2023-10-04)
+
+### Bug Fixes
+
+* identifying services in workers ([eab78b3](https://github.com/standardnotes/server/commit/eab78b3a95ec82cb779d069d172169bfa92368c9))
+
 # [1.39.0](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.38.10...@standardnotes/revisions-server@1.39.0) (2023-10-04)
 
 ### Features

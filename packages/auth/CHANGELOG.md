@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.150.7](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.150.6...@standardnotes/auth-server@1.150.7) (2023-10-04)
+
+### Bug Fixes
+
+* identifying services in workers ([eab78b3](https://github.com/standardnotes/server/commit/eab78b3a95ec82cb779d069d172169bfa92368c9))
+
 ## [1.150.6](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.150.5...@standardnotes/auth-server@1.150.6) (2023-10-04)
 
 ### Bug Fixes
