@@ -37,6 +37,7 @@
     "@standardnotes/sncrypto-common": "^1.13.4",
     "@standardnotes/sncrypto-node": "workspace:*",
     "@standardnotes/time": "workspace:*",
+    "aws-xray-sdk": "^3.5.2",
     "connect-busboy": "^1.0.0",
     "cors": "^2.8.5",
     "dayjs": "^1.11.6",
