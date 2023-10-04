@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.150.6](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.150.5...@standardnotes/auth-server@1.150.6) (2023-10-04)
+
+### Bug Fixes
+
+* **auth:** disable users from registering to MongoDB ([d4579ce](https://github.com/standardnotes/server/commit/d4579ce21ed34ba433deb1fe2ff25c073fbe9622))
+
 ## [1.150.5](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.150.4...@standardnotes/auth-server@1.150.5) (2023-10-04)
 
 **Note:** Version bump only for package @standardnotes/auth-server

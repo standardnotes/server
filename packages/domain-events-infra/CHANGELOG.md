@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.14.4](https://github.com/standardnotes/server/compare/@standardnotes/domain-events-infra@1.14.3...@standardnotes/domain-events-infra@1.14.4) (2023-10-04)
+
+### Bug Fixes
+
+* **domain-events-infra:** subsegment name ([ba7cbb9](https://github.com/standardnotes/server/commit/ba7cbb989ba3592ea0c13fc39f85e314517fbb2d))
+
 ## [1.14.3](https://github.com/standardnotes/server/compare/@standardnotes/domain-events-infra@1.14.2...@standardnotes/domain-events-infra@1.14.3) (2023-10-04)
 
 ### Bug Fixes
