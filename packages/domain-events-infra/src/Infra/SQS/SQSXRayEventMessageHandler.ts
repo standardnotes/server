@@ -39,7 +39,7 @@ export class SQSXRayEventMessageHandler implements DomainEventMessageHandlerInte
     }
 
     await captureAsyncFunc(
-      `${handler.constructor.name}.handle}`,
+      `${handler.constructor.name}.handle`,
       async (subsegment?: Subsegment) => {
         await handler.handle(domainEvent)
 
