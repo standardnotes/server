@@ -8,6 +8,7 @@ import { Logger } from 'winston'
 
 import { CrossServiceTokenCacheInterface } from '../Service/Cache/CrossServiceTokenCacheInterface'
 import { ServiceProxyInterface } from '../Service/Http/ServiceProxyInterface'
+import { Segment, getSegment } from 'aws-xray-sdk'
 
 export abstract class AuthMiddleware extends BaseMiddleware {
   constructor(
@@ -16,6 +17,7 @@ export abstract class AuthMiddleware extends BaseMiddleware {
     private crossServiceTokenCacheTTL: number,
     private crossServiceTokenCache: CrossServiceTokenCacheInterface,
     private timer: TimerInterface,
+    private isConfiguredForAWSProduction: boolean,
     protected logger: Logger,
   ) {
     super()
@@ -73,6 +75,13 @@ export abstract class AuthMiddleware extends BaseMiddleware {
       response.locals.roles = decodedToken.roles
       response.locals.sharedVaultOwnerContext = decodedToken.shared_vault_owner_context
       response.locals.belongsToSharedVaults = decodedToken.belongs_to_shared_vaults ?? []
+
+      if (this.isConfiguredForAWSProduction) {
+        const segment = getSegment()
+        if (segment instanceof Segment) {
+          segment.setUser(decodedToken.user.uuid)
+        }
+      }
     } catch (error) {
       const errorMessage = (error as AxiosError).isAxiosError
         ? JSON.stringify((error as AxiosError).response?.data)

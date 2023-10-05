@@ -747,7 +747,6 @@ export class ContainerConfigLoader {
       .toConstantValue(
         new RequiredCrossServiceTokenMiddleware(
           container.get<TokenDecoderInterface<CrossServiceTokenData>>(TYPES.Auth_CrossServiceTokenDecoder),
-          isConfiguredForAWSProduction && this.mode === 'server',
           container.get<winston.Logger>(TYPES.Auth_Logger),
         ),
       )
@@ -756,7 +755,6 @@ export class ContainerConfigLoader {
       .toConstantValue(
         new OptionalCrossServiceTokenMiddleware(
           container.get<TokenDecoderInterface<CrossServiceTokenData>>(TYPES.Auth_CrossServiceTokenDecoder),
-          isConfiguredForAWSProduction && this.mode === 'server',
           container.get<winston.Logger>(TYPES.Auth_Logger),
         ),
       )

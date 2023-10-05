@@ -35,6 +35,8 @@ export class ContainerConfigLoader {
     const container = new Container()
 
     const isConfiguredForHomeServer = env.get('MODE', true) === 'home-server'
+    const isConfiguredForSelfHosting = env.get('MODE', true) === 'self-hosted'
+    const isConfiguredForAWSProduction = !isConfiguredForHomeServer && !isConfiguredForSelfHosting
     const isConfiguredForInMemoryCache = env.get('CACHE_TYPE', true) === 'memory'
 
     const winstonFormatters = [winston.format.splat(), winston.format.json()]
@@ -90,6 +92,9 @@ export class ContainerConfigLoader {
       .bind(TYPES.ApiGateway_CROSS_SERVICE_TOKEN_CACHE_TTL)
       .toConstantValue(+env.get('CROSS_SERVICE_TOKEN_CACHE_TTL', true))
     container.bind(TYPES.ApiGateway_IS_CONFIGURED_FOR_HOME_SERVER).toConstantValue(isConfiguredForHomeServer)
+    container
+      .bind<boolean>(TYPES.ApiGateway_IS_CONFIGURED_FOR_AWS_PRODUCTION)
+      .toConstantValue(isConfiguredForAWSProduction)
 
     // Middleware
     container

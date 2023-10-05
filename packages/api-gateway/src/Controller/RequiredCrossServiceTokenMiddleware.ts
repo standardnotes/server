@@ -16,9 +16,18 @@ export class RequiredCrossServiceTokenMiddleware extends AuthMiddleware {
     @inject(TYPES.ApiGateway_CROSS_SERVICE_TOKEN_CACHE_TTL) crossServiceTokenCacheTTL: number,
     @inject(TYPES.ApiGateway_CrossServiceTokenCache) crossServiceTokenCache: CrossServiceTokenCacheInterface,
     @inject(TYPES.ApiGateway_Timer) timer: TimerInterface,
+    @inject(TYPES.ApiGateway_IS_CONFIGURED_FOR_AWS_PRODUCTION) isConfiguredForAWSProduction: boolean,
     @inject(TYPES.ApiGateway_Logger) logger: Logger,
   ) {
-    super(serviceProxy, jwtSecret, crossServiceTokenCacheTTL, crossServiceTokenCache, timer, logger)
+    super(
+      serviceProxy,
+      jwtSecret,
+      crossServiceTokenCacheTTL,
+      crossServiceTokenCache,
+      timer,
+      isConfiguredForAWSProduction,
+      logger,
+    )
   }
 
   protected override handleSessionValidationResponse(
