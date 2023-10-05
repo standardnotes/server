@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.39.4](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.39.3...@standardnotes/revisions-server@1.39.4) (2023-10-05)
+
+### Bug Fixes
+
+* **revisions:** capture mysql to xray ([9f76e38](https://github.com/standardnotes/server/commit/9f76e389e21de4cf9629cd40849704ffb0e51fe9))
+
 ## [1.39.3](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.39.2...@standardnotes/revisions-server@1.39.3) (2023-10-05)
 
 **Note:** Version bump only for package @standardnotes/revisions-server
