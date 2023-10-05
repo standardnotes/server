@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.26.1](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.26.0...@standardnotes/files-server@1.26.1) (2023-10-05)
+
+**Note:** Version bump only for package @standardnotes/files-server
+
 # [1.26.0](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.25.6...@standardnotes/files-server@1.26.0) (2023-10-04)
 
 ### Features

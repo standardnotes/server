@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.14.6](https://github.com/standardnotes/server/compare/@standardnotes/domain-events-infra@1.14.5...@standardnotes/domain-events-infra@1.14.6) (2023-10-05)
+
+### Bug Fixes
+
+* **domain-events-infra:** setting user metadata on workers ([c4b6f17](https://github.com/standardnotes/server/commit/c4b6f17ebcfe7bd77b6741f881a0d1f13ba809a4))
+
 ## [1.14.5](https://github.com/standardnotes/server/compare/@standardnotes/domain-events-infra@1.14.4...@standardnotes/domain-events-infra@1.14.5) (2023-10-04)
 
 ### Bug Fixes
