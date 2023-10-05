@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.151.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.150.9...@standardnotes/auth-server@1.151.0) (2023-10-05)
+
+### Features
+
+* setting xray segment user on api-gateway level ([3ee4941](https://github.com/standardnotes/server/commit/3ee49416f8e19207540141d98baa7f68880929bd))
+
 ## [1.150.9](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.150.8...@standardnotes/auth-server@1.150.9) (2023-10-05)
 
 **Note:** Version bump only for package @standardnotes/auth-server

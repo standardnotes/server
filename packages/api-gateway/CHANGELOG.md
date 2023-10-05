@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.77.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.76.2...@standardnotes/api-gateway@1.77.0) (2023-10-05)
+
+### Features
+
+* setting xray segment user on api-gateway level ([3ee4941](https://github.com/standardnotes/api-gateway/commit/3ee49416f8e19207540141d98baa7f68880929bd))
+
 ## [1.76.2](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.76.1...@standardnotes/api-gateway@1.76.2) (2023-10-05)
 
 **Note:** Version bump only for package @standardnotes/api-gateway
