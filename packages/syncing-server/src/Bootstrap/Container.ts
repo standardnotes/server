@@ -64,7 +64,6 @@ import {
   ControllerContainer,
   ControllerContainerInterface,
   MapperInterface,
-  ServiceIdentifier,
   SharedVaultUser,
 } from '@standardnotes/domain-core'
 import { BaseItemsController } from '../Infra/InversifyExpressUtils/Base/BaseItemsController'
@@ -1173,11 +1172,7 @@ export class ContainerConfigLoader {
         .bind<DomainEventMessageHandlerInterface>(TYPES.Sync_DomainEventMessageHandler)
         .toConstantValue(
           env.get('NEW_RELIC_ENABLED', true) === 'true'
-            ? new SQSXRayEventMessageHandler(
-                ServiceIdentifier.NAMES.SyncingServerWorker,
-                eventHandlers,
-                container.get(TYPES.Sync_Logger),
-              )
+            ? new SQSXRayEventMessageHandler(eventHandlers, container.get(TYPES.Sync_Logger))
             : new SQSEventMessageHandler(eventHandlers, container.get(TYPES.Sync_Logger)),
         )
     }
