@@ -36,7 +36,7 @@ export class SQSXRayEventMessageHandler implements DomainEventMessageHandlerInte
     const xRaySegment = new Segment(this.serviceName)
 
     if (domainEvent.meta.correlation.userIdentifierType === 'uuid') {
-      xRaySegment.addMetadata('userUuid', domainEvent.meta.correlation.userIdentifier)
+      xRaySegment.setUser(domainEvent.meta.correlation.userIdentifier)
     }
 
     await captureAsyncFunc(
