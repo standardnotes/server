@@ -5,8 +5,11 @@ import { MongoDBRevision } from '../../../Infra/TypeORM/MongoDB/MongoDBRevision'
 import { Revision } from '../../../Domain/Revision/Revision'
 import { SharedVaultAssociation } from '../../../Domain/SharedVault/SharedVaultAssociation'
 import { KeySystemAssociation } from '../../../Domain/KeySystem/KeySystemAssociation'
+import { TimerInterface } from '@standardnotes/time'
 
 export class MongoDBRevisionPersistenceMapper implements MapperInterface<Revision, MongoDBRevision> {
+  constructor(private timer: TimerInterface) {}
+
   toDomain(projection: MongoDBRevision): Revision {
     const contentTypeOrError = ContentType.create(projection.contentType)
     if (contentTypeOrError.isFailed()) {
@@ -73,7 +76,7 @@ export class MongoDBRevisionPersistenceMapper implements MapperInterface<Revisio
         authHash: projection.authHash,
         content: projection.content,
         contentType,
-        creationDate: projection.creationDate,
+        creationDate: new Date(this.timer.convertDateToFormattedString(projection.creationDate, 'YYYY-MM-DD')),
         encItemKey: projection.encItemKey,
         itemsKeyId: projection.itemsKeyId,
         itemUuid,
@@ -99,7 +102,9 @@ export class MongoDBRevisionPersistenceMapper implements MapperInterface<Revisio
     mongoDBRevision.contentType = domain.props.contentType.value
     mongoDBRevision.createdAt = domain.props.dates.createdAt
     mongoDBRevision.updatedAt = domain.props.dates.updatedAt
-    mongoDBRevision.creationDate = domain.props.creationDate
+    mongoDBRevision.creationDate = new Date(
+      this.timer.convertDateToFormattedString(domain.props.creationDate, 'YYYY-MM-DD'),
+    )
     mongoDBRevision.encItemKey = domain.props.encItemKey
     mongoDBRevision.itemUuid = domain.props.itemUuid.value
     mongoDBRevision.itemsKeyId = domain.props.itemsKeyId

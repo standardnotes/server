@@ -304,7 +304,7 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
 
     if (totalRevisionsCountForUserInSecondary > 0) {
       this.logger.info(
-        `[${userUuid.value}] User has ${totalRevisionsCountForUserInSecondary} revisions in primary database.`,
+        `[${userUuid.value}] User has ${totalRevisionsCountForUserInSecondary} revisions in secondary database.`,
       )
     }
 

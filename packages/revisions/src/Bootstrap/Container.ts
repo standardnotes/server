@@ -268,7 +268,7 @@ export class ContainerConfigLoader {
       .toConstantValue(new MongoDBRevisionMetadataPersistenceMapper())
     container
       .bind<MapperInterface<Revision, MongoDBRevision>>(TYPES.Revisions_MongoDBRevisionPersistenceMapper)
-      .toConstantValue(new MongoDBRevisionPersistenceMapper())
+      .toConstantValue(new MongoDBRevisionPersistenceMapper(container.get<TimerInterface>(TYPES.Revisions_Timer)))
 
     // ORM
     container
