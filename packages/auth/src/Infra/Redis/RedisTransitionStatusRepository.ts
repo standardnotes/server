@@ -4,7 +4,7 @@ import { TransitionStatusRepositoryInterface } from '../../Domain/Transition/Tra
 import { TransitionStatus } from '@standardnotes/domain-core'
 
 export class RedisTransitionStatusRepository implements TransitionStatusRepositoryInterface {
-  private readonly PREFIX = 'transition'
+  private readonly PREFIX = 'transition-back'
 
   constructor(private redisClient: IORedis.Redis) {}
 

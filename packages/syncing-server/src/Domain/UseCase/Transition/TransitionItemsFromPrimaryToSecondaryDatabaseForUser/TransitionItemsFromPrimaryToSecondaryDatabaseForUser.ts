@@ -60,7 +60,7 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
 
     this.logger.info(`[${dto.userUuid}] Items migrated`)
 
-    await this.allowForSecondaryDatabaseToCatchUp()
+    await this.allowForPrimaryDatabaseToCatchUp()
 
     this.logger.info(`[${dto.userUuid}] Checking integrity between primary and secondary database`)
 
@@ -74,11 +74,14 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
       return Result.fail(integrityCheckResult.getError())
     }
 
-    const cleanupResult = await this.deleteItemsForUser(userUuid, this.primaryItemRepository)
+    const cleanupResult = await this.deleteItemsForUser(
+      userUuid,
+      this.secondaryItemRepository as ItemRepositoryInterface,
+    )
     if (cleanupResult.isFailed()) {
       await this.updateTransitionStatus(userUuid, TransitionStatus.STATUSES.Failed, dto.timestamp)
 
-      this.logger.error(`[${dto.userUuid}] Failed to clean up primary database items: ${cleanupResult.getError()}`)
+      this.logger.error(`[${dto.userUuid}] Failed to clean up secondary database items: ${cleanupResult.getError()}`)
     }
 
     const migrationTimeEnd = this.timer.getTimestampInMicroseconds()
@@ -95,7 +98,7 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
     return Result.ok()
   }
 
-  private async allowForSecondaryDatabaseToCatchUp(): Promise<void> {
+  private async allowForPrimaryDatabaseToCatchUp(): Promise<void> {
     const twoSecondsInMilliseconds = 2_000
     await this.timer.sleep(twoSecondsInMilliseconds)
   }
@@ -108,7 +111,9 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
 
       this.logger.info(`[${userUuid.value}] Migrating from page ${initialPage}`)
 
-      const totalItemsCountForUser = await this.primaryItemRepository.countAll({ userUuid: userUuid.value })
+      const totalItemsCountForUser = await (this.secondaryItemRepository as ItemRepositoryInterface).countAll({
+        userUuid: userUuid.value,
+      })
       const totalPages = Math.ceil(totalItemsCountForUser / this.pageSize)
       for (let currentPage = initialPage; currentPage <= totalPages; currentPage++) {
         const isPageInEvery10Percent = currentPage % Math.ceil(totalPages / 10) === 0
@@ -132,37 +137,37 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
           sortOrder: 'ASC',
         }
 
-        const items = await this.primaryItemRepository.findAll(query)
+        const items = await (this.secondaryItemRepository as ItemRepositoryInterface).findAll(query)
 
         for (const item of items) {
           try {
-            const itemInSecondary = await (this.secondaryItemRepository as ItemRepositoryInterface).findByUuid(
-              item.uuid,
-            )
+            const itemInPrimary = await this.primaryItemRepository.findByUuid(item.uuid)
 
-            if (itemInSecondary !== null) {
-              if (itemInSecondary.isIdenticalTo(item)) {
+            if (itemInPrimary !== null) {
+              if (itemInPrimary.props.timestamps.updatedAt > item.props.timestamps.updatedAt) {
+                this.logger.info(
+                  `[${userUuid.value}] Item ${item.uuid.value} is older in secondary than item in primary database`,
+                )
+
                 continue
               }
-              if (itemInSecondary.props.timestamps.updatedAt > item.props.timestamps.updatedAt) {
-                this.logger.info(`[${userUuid.value}] Item ${item.uuid.value} is older than item in secondary database`)
-
+              if (itemInPrimary.isIdenticalTo(item)) {
                 continue
               }
 
               this.logger.info(
-                `[${userUuid.value}] Removing item ${item.uuid.value} in secondary database as it is not identical to item in primary database`,
+                `[${userUuid.value}] Removing item ${item.uuid.value} in primary database as it is not identical to item in primary database`,
               )
 
-              await (this.secondaryItemRepository as ItemRepositoryInterface).removeByUuid(item.uuid)
+              await this.primaryItemRepository.removeByUuid(item.uuid)
 
-              await this.allowForSecondaryDatabaseToCatchUp()
+              await this.allowForPrimaryDatabaseToCatchUp()
             }
 
-            await (this.secondaryItemRepository as ItemRepositoryInterface).save(item)
+            await this.primaryItemRepository.save(item)
           } catch (error) {
             this.logger.error(
-              `Errored when saving item ${item.uuid.value} to secondary database: ${(error as Error).message}`,
+              `Errored when saving item ${item.uuid.value} to primary database: ${(error as Error).message}`,
             )
           }
         }
@@ -194,14 +199,16 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
 
       this.logger.info(`[${userUuid.value}] Checking integrity from page ${initialPage}`)
 
-      const totalItemsCountForUserInPrimary = await this.primaryItemRepository.countAll({ userUuid: userUuid.value })
       const totalItemsCountForUserInSecondary = await (
         this.secondaryItemRepository as ItemRepositoryInterface
       ).countAll({
         userUuid: userUuid.value,
       })
+      const totalItemsCountForUserInPrimary = await this.primaryItemRepository.countAll({
+        userUuid: userUuid.value,
+      })
 
-      if (totalItemsCountForUserInPrimary > totalItemsCountForUserInSecondary) {
+      if (totalItemsCountForUserInPrimary < totalItemsCountForUserInSecondary) {
         return Result.fail(
           `Total items count for user ${userUuid.value} in primary database (${totalItemsCountForUserInPrimary}) does not match total items count in secondary database (${totalItemsCountForUserInSecondary})`,
         )
@@ -222,32 +229,32 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
           sortOrder: 'ASC',
         }
 
-        const items = await this.primaryItemRepository.findAll(query)
+        const items = await (this.secondaryItemRepository as ItemRepositoryInterface).findAll(query)
 
         for (const item of items) {
-          const itemInSecondary = await (this.secondaryItemRepository as ItemRepositoryInterface).findByUuid(item.uuid)
-          if (!itemInSecondary) {
-            return Result.fail(`Item ${item.uuid.value} not found in secondary database`)
+          const itemInPrimary = await this.primaryItemRepository.findByUuid(item.uuid)
+          if (!itemInPrimary) {
+            return Result.fail(`Item ${item.uuid.value} not found in primary database`)
           }
 
-          if (item.isIdenticalTo(itemInSecondary)) {
+          if (itemInPrimary.props.timestamps.updatedAt > item.props.timestamps.updatedAt) {
+            this.logger.info(
+              `[${userUuid.value}] Integrity check of Item ${item.uuid.value} - is older in secondary than item in primary database`,
+            )
+
             continue
           }
 
-          if (itemInSecondary.props.timestamps.updatedAt > item.props.timestamps.updatedAt) {
-            this.logger.info(
-              `[${userUuid.value}] Integrity check of Item ${item.uuid.value} - is older than item in secondary database`,
-            )
-
+          if (item.isIdenticalTo(itemInPrimary)) {
             continue
           }
 
           return Result.fail(
             `Item ${
               item.uuid.value
-            } is not identical in primary and secondary database. Item in primary database: ${JSON.stringify(
+            } is not identical in primary and secondary database. Item in secondary database: ${JSON.stringify(
               item,
-            )}, item in secondary database: ${JSON.stringify(itemInSecondary)}`,
+            )}, item in primary database: ${JSON.stringify(itemInPrimary)}`,
           )
         }
       }
@@ -270,14 +277,14 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
   }
 
   private async isAlreadyMigrated(userUuid: Uuid): Promise<boolean> {
-    const totalItemsCountForUserInPrimary = await this.primaryItemRepository.countAll({
+    const totalItemsCountForUserInSecondary = await (this.secondaryItemRepository as ItemRepositoryInterface).countAll({
       userUuid: userUuid.value,
     })
 
-    if (totalItemsCountForUserInPrimary > 0) {
-      this.logger.info(`[${userUuid.value}] User has ${totalItemsCountForUserInPrimary} items in primary database.`)
+    if (totalItemsCountForUserInSecondary > 0) {
+      this.logger.info(`[${userUuid.value}] User has ${totalItemsCountForUserInSecondary} items in secondary database.`)
     }
 
-    return totalItemsCountForUserInPrimary === 0
+    return totalItemsCountForUserInSecondary === 0
   }
 }
