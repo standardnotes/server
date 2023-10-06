@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.112.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.111.5...@standardnotes/syncing-server@1.112.0) (2023-10-06)
+
+### Bug Fixes
+
+* enable TransitionRequestedEventHandler ([d8f1c66](https://github.com/standardnotes/syncing-server-js/commit/d8f1c66fd5e59285ccaa1be36da2ee9796b81ccb))
+
+### Features
+
+* switch transition direction ([27bea44](https://github.com/standardnotes/syncing-server-js/commit/27bea444cce4964feda04bad64e5f12a07415e0c))
+
 ## [1.111.5](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.111.4...@standardnotes/syncing-server@1.111.5) (2023-10-06)
 
 ### Bug Fixes

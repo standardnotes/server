@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.40.0](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.39.5...@standardnotes/revisions-server@1.40.0) (2023-10-06)
+
+### Bug Fixes
+
+* enable TransitionRequestedEventHandler ([d8f1c66](https://github.com/standardnotes/server/commit/d8f1c66fd5e59285ccaa1be36da2ee9796b81ccb))
+
+### Features
+
+* switch transition direction ([27bea44](https://github.com/standardnotes/server/commit/27bea444cce4964feda04bad64e5f12a07415e0c))
+
 ## [1.39.5](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.39.4...@standardnotes/revisions-server@1.39.5) (2023-10-06)
 
 **Note:** Version bump only for package @standardnotes/revisions-server

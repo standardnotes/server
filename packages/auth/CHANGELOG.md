@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.152.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.151.2...@standardnotes/auth-server@1.152.0) (2023-10-06)
+
+### Bug Fixes
+
+* **auth:** strip user from transition role after migration ([afe9967](https://github.com/standardnotes/server/commit/afe9967d26b5be02d1dc76a740df614d81a6984e))
+
+### Features
+
+* switch transition direction ([27bea44](https://github.com/standardnotes/server/commit/27bea444cce4964feda04bad64e5f12a07415e0c))
+
 ## [1.151.2](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.151.1...@standardnotes/auth-server@1.151.2) (2023-10-06)
 
 ### Bug Fixes
