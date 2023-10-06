@@ -48,7 +48,9 @@ export class EmailBackupRequestedEventHandler implements DomainEventHandlerInter
       })
     } catch (error) {
       this.logger.error(
-        `Could not get user key params from auth service for user ${event.payload.userUuid}: ${JSON.stringify(error)}`,
+        `Could not get user key params from auth service for user ${event.payload.userUuid}: ${
+          (error as Error).message
+        }`,
       )
 
       return
