@@ -50,7 +50,7 @@ const requestTransition = async (
       itemsTransitionStatus?.value === TransitionStatus.STATUSES.Verified &&
       revisionsTransitionStatus?.value === TransitionStatus.STATUSES.Verified
 
-    if (userHasTransitionRole && bothTransitionStatusesAreVerified) {
+    if (!userHasTransitionRole && bothTransitionStatusesAreVerified) {
       continue
     }
 
