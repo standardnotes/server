@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.111.5](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.111.4...@standardnotes/syncing-server@1.111.5) (2023-10-06)
+
+### Bug Fixes
+
+* **syncing-server:** add more logs on successfull email backups requested ([8c57f50](https://github.com/standardnotes/syncing-server-js/commit/8c57f505be86f3a7af0ab446a409bac276b2242b))
+
 ## [1.111.4](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.111.3...@standardnotes/syncing-server@1.111.4) (2023-10-06)
 
 ### Bug Fixes
