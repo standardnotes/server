@@ -5,6 +5,7 @@ import { User } from '../User/User'
 
 export interface RoleServiceInterface {
   addRoleToUser(userUuid: Uuid, roleName: RoleName): Promise<void>
+  removeRoleFromUser(userUuid: Uuid, roleName: RoleName): Promise<void>
   addUserRoleBasedOnSubscription(user: User, subscriptionName: string): Promise<void>
   setOfflineUserRole(offlineUserSubscription: OfflineUserSubscription): Promise<void>
   removeUserRoleBasedOnSubscription(user: User, subscriptionName: string): Promise<void>

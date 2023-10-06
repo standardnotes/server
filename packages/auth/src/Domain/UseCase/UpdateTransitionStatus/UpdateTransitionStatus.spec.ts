@@ -21,7 +21,7 @@ describe('UpdateTransitionStatus', () => {
     transitionStatusRepository.getStatus = jest.fn().mockResolvedValue(null)
 
     roleService = {} as jest.Mocked<RoleServiceInterface>
-    roleService.addRoleToUser = jest.fn()
+    roleService.removeRoleFromUser = jest.fn()
   })
 
   it('should add TRANSITION_USER role', async () => {
@@ -35,7 +35,7 @@ describe('UpdateTransitionStatus', () => {
     })
 
     expect(result.isFailed()).toBeFalsy()
-    expect(roleService.addRoleToUser).toHaveBeenCalledWith(
+    expect(roleService.removeRoleFromUser).toHaveBeenCalledWith(
       Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
       RoleName.create(RoleName.NAMES.TransitionUser).getValue(),
     )

@@ -118,6 +118,40 @@ describe('RoleService', () => {
     })
   })
 
+  describe('removing roles', () => {
+    beforeEach(() => {
+      user = {
+        uuid: '123',
+        email: 'test@test.com',
+        roles: Promise.resolve([basicRole]),
+      } as jest.Mocked<User>
+
+      userRepository.findOneByUuid = jest.fn().mockReturnValue(user)
+      userRepository.save = jest.fn().mockReturnValue(user)
+    })
+
+    it('should remove a role from a user', async () => {
+      await createService().removeRoleFromUser(
+        Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+        RoleName.create(RoleName.NAMES.CoreUser).getValue(),
+      )
+
+      user.roles = Promise.resolve([])
+      expect(userRepository.save).toHaveBeenCalledWith(user)
+    })
+
+    it('should not remove a role from a user if the user could not be found', async () => {
+      userRepository.findOneByUuid = jest.fn().mockReturnValue(null)
+
+      await createService().removeRoleFromUser(
+        Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+        RoleName.create(RoleName.NAMES.CoreUser).getValue(),
+      )
+
+      expect(userRepository.save).not.toHaveBeenCalled()
+    })
+  })
+
   describe('adding roles based on subscription', () => {
     beforeEach(() => {
       user = {

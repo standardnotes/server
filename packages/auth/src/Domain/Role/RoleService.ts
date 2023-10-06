@@ -65,6 +65,17 @@ export class RoleService implements RoleServiceInterface {
     await this.addToExistingRoles(user, roleName.value)
   }
 
+  async removeRoleFromUser(userUuid: Uuid, roleName: RoleName): Promise<void> {
+    const user = await this.userRepository.findOneByUuid(userUuid)
+    if (user === null) {
+      this.logger.error(`Could not find user with uuid ${userUuid.value} to remove role ${roleName.value}`)
+
+      return
+    }
+
+    await this.removeUserRole(user, roleName.value)
+  }
+
   async addUserRoleBasedOnSubscription(user: User, subscriptionName: SubscriptionName): Promise<void> {
     const roleName = this.roleToSubscriptionMap.getRoleNameForSubscriptionName(subscriptionName)
 
@@ -108,9 +119,15 @@ export class RoleService implements RoleServiceInterface {
       return
     }
 
+    await this.removeUserRole(user, roleName)
+  }
+
+  private async removeUserRole(user: User, roleName: string): Promise<void> {
     const currentRoles = await user.roles
     user.roles = Promise.resolve(currentRoles.filter((role) => role.name !== roleName))
+
     await this.userRepository.save(user)
+
     await this.webSocketsClientService.sendUserRolesChangedEvent(user)
   }
 

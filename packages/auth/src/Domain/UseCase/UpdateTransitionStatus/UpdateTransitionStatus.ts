@@ -32,7 +32,7 @@ export class UpdateTransitionStatus implements UseCaseInterface<void> {
     await this.transitionStatusRepository.updateStatus(dto.userUuid, dto.transitionType, transitionStatus)
 
     if (dto.transitionType === 'items' && transitionStatus.value === TransitionStatus.STATUSES.Verified) {
-      await this.roleService.addRoleToUser(userUuid, RoleName.create(RoleName.NAMES.TransitionUser).getValue())
+      await this.roleService.removeRoleFromUser(userUuid, RoleName.create(RoleName.NAMES.TransitionUser).getValue())
     }
 
     return Result.ok()
