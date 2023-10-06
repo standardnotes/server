@@ -17,7 +17,7 @@ import {
   SNSDomainEventPublisher,
   SQSDomainEventSubscriberFactory,
   SQSEventMessageHandler,
-  SQSNewRelicEventMessageHandler,
+  SQSXRayEventMessageHandler,
 } from '@standardnotes/domain-events-infra'
 import { Timer, TimerInterface } from '@standardnotes/time'
 import { PredicateRepositoryInterface } from '../Domain/Predicate/PredicateRepositoryInterface'
@@ -35,6 +35,8 @@ import { VerifyPredicates } from '../Domain/UseCase/VerifyPredicates/VerifyPredi
 import { UserRegisteredEventHandler } from '../Domain/Handler/UserRegisteredEventHandler'
 import { SubscriptionCancelledEventHandler } from '../Domain/Handler/SubscriptionCancelledEventHandler'
 import { ExitDiscountAppliedEventHandler } from '../Domain/Handler/ExitDiscountAppliedEventHandler'
+import { ServiceIdentifier } from '@standardnotes/domain-core'
+import { captureAWSv3Client } from 'aws-xray-sdk'
 
 export class ContainerConfigLoader {
   async load(): Promise<Container> {
@@ -86,7 +88,7 @@ export class ContainerConfigLoader {
           secretAccessKey: env.get('SNS_SECRET_ACCESS_KEY', true),
         }
       }
-      container.bind<SNSClient>(TYPES.SNS).toConstantValue(new SNSClient(snsConfig))
+      container.bind<SNSClient>(TYPES.SNS).toConstantValue(captureAWSv3Client(new SNSClient(snsConfig)))
     }
 
     if (env.get('SQS_QUEUE_URL', true)) {
@@ -102,7 +104,7 @@ export class ContainerConfigLoader {
           secretAccessKey: env.get('SQS_SECRET_ACCESS_KEY', true),
         }
       }
-      container.bind<SQSClient>(TYPES.SQS).toConstantValue(new SQSClient(sqsConfig))
+      container.bind<SQSClient>(TYPES.SQS).toConstantValue(captureAWSv3Client(new SQSClient(sqsConfig)))
     }
 
     // env vars
@@ -156,7 +158,11 @@ export class ContainerConfigLoader {
       .bind<DomainEventMessageHandlerInterface>(TYPES.DomainEventMessageHandler)
       .toConstantValue(
         env.get('NEW_RELIC_ENABLED', true) === 'true'
-          ? new SQSNewRelicEventMessageHandler(eventHandlers, container.get(TYPES.Logger))
+          ? new SQSXRayEventMessageHandler(
+              ServiceIdentifier.NAMES.SchedulerWorker,
+              eventHandlers,
+              container.get(TYPES.Logger),
+            )
           : new SQSEventMessageHandler(eventHandlers, container.get(TYPES.Logger)),
       )
     container

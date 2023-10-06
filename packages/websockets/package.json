@@ -31,6 +31,7 @@
     "@standardnotes/domain-events-infra": "workspace:^",
     "@standardnotes/responses": "^1.13.27",
     "@standardnotes/security": "workspace:^",
+    "aws-xray-sdk": "^3.5.2",
     "axios": "^1.1.3",
     "cors": "2.8.5",
     "dotenv": "^16.0.1",

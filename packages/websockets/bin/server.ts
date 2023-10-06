@@ -4,6 +4,7 @@ import '../src/Infra/InversifyExpressUtils/AnnotatedHealthCheckController'
 import '../src/Infra/InversifyExpressUtils/AnnotatedWebSocketsController'
 
 import * as cors from 'cors'
+import * as AWSXRay from 'aws-xray-sdk'
 import { urlencoded, json, Request, Response, NextFunction } from 'express'
 import * as winston from 'winston'
 
@@ -11,15 +12,20 @@ import { InversifyExpressServer } from 'inversify-express-utils'
 import { ContainerConfigLoader } from '../src/Bootstrap/Container'
 import TYPES from '../src/Bootstrap/Types'
 import { Env } from '../src/Bootstrap/Env'
+import { ServiceIdentifier } from '@standardnotes/domain-core'
 
 const container = new ContainerConfigLoader()
 void container.load().then((container) => {
   const env: Env = new Env()
   env.load()
 
+  AWSXRay.config([AWSXRay.plugins.ECSPlugin])
+
   const server = new InversifyExpressServer(container)
 
   server.setConfig((app) => {
+    app.use(AWSXRay.express.openSegment(ServiceIdentifier.NAMES.Websockets))
+
     app.use((_request: Request, response: Response, next: NextFunction) => {
       response.setHeader('X-Websockets-Version', container.get(TYPES.VERSION))
       next()
@@ -45,6 +51,8 @@ void container.load().then((container) => {
   })
 
   const serverInstance = server.build()
+
+  serverInstance.use(AWSXRay.express.closeSegment())
 
   serverInstance.listen(env.get('PORT'))
 

@@ -4,6 +4,7 @@ import { ServiceIdentifierProps } from './ServiceIdentifierProps'
 
 export class ServiceIdentifier extends ValueObject<ServiceIdentifierProps> {
   static readonly NAMES = {
+    AnalyticsWorker: 'AnalyticsWorker',
     ApiGateway: 'ApiGateway',
     Auth: 'Auth',
     AuthWorker: 'AuthWorker',
@@ -13,6 +14,11 @@ export class ServiceIdentifier extends ValueObject<ServiceIdentifierProps> {
     RevisionsWorker: 'RevisionsWorker',
     Files: 'Files',
     FilesWorker: 'FilesWorker',
+    SchedulerWorker: 'SchedulerWorker',
+    Email: 'Email',
+    EmailWorker: 'EmailWorker',
+    Websockets: 'Websockets',
+    WebsocketsWorker: 'WebsocketsWorker',
   }
 
   get value(): string {

@@ -46,6 +46,7 @@
     "@standardnotes/domain-events": "workspace:*",
     "@standardnotes/domain-events-infra": "workspace:*",
     "@standardnotes/time": "workspace:*",
+    "aws-xray-sdk": "^3.5.2",
     "dayjs": "^1.11.6",
     "dotenv": "^16.0.1",
     "inversify": "^6.0.1",
