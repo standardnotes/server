@@ -54,6 +54,7 @@ import { S3FileMover } from '../Infra/S3/S3FileMover'
 import { FSFileMover } from '../Infra/FS/FSFileMover'
 import { MoveFile } from '../Domain/UseCase/MoveFile/MoveFile'
 import { SharedVaultValetTokenAuthMiddleware } from '../Infra/InversifyExpress/Middleware/SharedVaultValetTokenAuthMiddleware'
+import { ServiceIdentifier } from '@standardnotes/domain-core'
 
 export class ContainerConfigLoader {
   async load(configuration?: {
@@ -306,7 +307,11 @@ export class ContainerConfigLoader {
         .bind<DomainEventMessageHandlerInterface>(TYPES.Files_DomainEventMessageHandler)
         .toConstantValue(
           env.get('NEW_RELIC_ENABLED', true) === 'true'
-            ? new SQSXRayEventMessageHandler(eventHandlers, container.get(TYPES.Files_Logger))
+            ? new SQSXRayEventMessageHandler(
+                ServiceIdentifier.NAMES.FilesWorker,
+                eventHandlers,
+                container.get(TYPES.Files_Logger),
+              )
             : new SQSEventMessageHandler(eventHandlers, container.get(TYPES.Files_Logger)),
         )
       container

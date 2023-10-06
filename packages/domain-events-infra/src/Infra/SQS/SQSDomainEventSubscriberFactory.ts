@@ -5,7 +5,6 @@ import {
   DomainEventSubscriberFactoryInterface,
   DomainEventSubscriberInterface,
 } from '@standardnotes/domain-events'
-import { Segment, captureAWSv3Client } from 'aws-xray-sdk'
 
 export class SQSDomainEventSubscriberFactory implements DomainEventSubscriberFactoryInterface {
   constructor(
@@ -19,7 +18,7 @@ export class SQSDomainEventSubscriberFactory implements DomainEventSubscriberFac
       attributeNames: ['All'],
       messageAttributeNames: ['compression', 'event'],
       queueUrl: this.queueUrl,
-      sqs: captureAWSv3Client(this.sqs, new Segment('test')),
+      sqs: this.sqs,
       handleMessage:
         /* istanbul ignore next */
         async (message: Message) => await this.domainEventMessageHandler.handleMessage(<string>message.Body),
