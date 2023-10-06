@@ -34,8 +34,6 @@ export class EmailBackupRequestedEventHandler implements DomainEventHandlerInter
     if (this.secondaryItemRepository) {
       await this.requestEmailWithBackupFile(event, this.secondaryItemRepository)
     }
-
-    this.logger.info(`Email with backup requested for user ${event.payload.userUuid}`)
   }
 
   private async requestEmailWithBackupFile(
@@ -108,5 +106,7 @@ export class EmailBackupRequestedEventHandler implements DomainEventHandlerInter
         }),
       )
     }
+
+    this.logger.info(`Email with backup requested for user ${event.payload.userUuid}`)
   }
 }
