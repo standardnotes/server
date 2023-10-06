@@ -30,7 +30,7 @@
     "aws-xray-sdk": "^3.5.2",
     "ioredis": "^5.2.4",
     "reflect-metadata": "^0.1.13",
-    "sqs-consumer": "^6.2.1",
+    "sqs-consumer": "^7.3.0",
     "winston": "^3.8.1"
   },
   "devDependencies": {

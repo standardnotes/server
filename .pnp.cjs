@@ -5973,7 +5973,7 @@ const RAW_RUNTIME_STATE =
           ["newrelic", "npm:11.0.0"],\
           ["prettier", "npm:3.0.3"],\
           ["reflect-metadata", "npm:0.1.13"],\
-          ["sqs-consumer", "virtual:685a6222c3349423674bb7f0684ba34e2ab20912010f352e04dcf707a156e13183fc382e2417cb37a60f3e7b52fd0178c53181674890e1773eb83e190dc13378#npm:6.2.1"],\
+          ["sqs-consumer", "virtual:685a6222c3349423674bb7f0684ba34e2ab20912010f352e04dcf707a156e13183fc382e2417cb37a60f3e7b52fd0178c53181674890e1773eb83e190dc13378#npm:7.3.0"],\
           ["ts-jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.1.0"],\
           ["typescript", "patch:typescript@npm%3A5.0.4#optional!builtin<compat/typescript>::version=5.0.4&hash=b5f058"],\
           ["winston", "npm:3.9.0"]\
@@ -16077,17 +16077,17 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["sqs-consumer", [\
-      ["npm:6.2.1", {\
-        "packageLocation": "./.yarn/cache/sqs-consumer-npm-6.2.1-857abd3d30-a903daa836.zip/node_modules/sqs-consumer/",\
+      ["npm:7.3.0", {\
+        "packageLocation": "./.yarn/cache/sqs-consumer-npm-7.3.0-a47c08ef71-367ea2a6f3.zip/node_modules/sqs-consumer/",\
         "packageDependencies": [\
-          ["sqs-consumer", "npm:6.2.1"]\
+          ["sqs-consumer", "npm:7.3.0"]\
         ],\
         "linkType": "SOFT"\
       }],\
-      ["virtual:685a6222c3349423674bb7f0684ba34e2ab20912010f352e04dcf707a156e13183fc382e2417cb37a60f3e7b52fd0178c53181674890e1773eb83e190dc13378#npm:6.2.1", {\
-        "packageLocation": "./.yarn/__virtual__/sqs-consumer-virtual-603a7c5831/0/cache/sqs-consumer-npm-6.2.1-857abd3d30-a903daa836.zip/node_modules/sqs-consumer/",\
+      ["virtual:685a6222c3349423674bb7f0684ba34e2ab20912010f352e04dcf707a156e13183fc382e2417cb37a60f3e7b52fd0178c53181674890e1773eb83e190dc13378#npm:7.3.0", {\
+        "packageLocation": "./.yarn/__virtual__/sqs-consumer-virtual-bf07118bf0/0/cache/sqs-consumer-npm-7.3.0-a47c08ef71-367ea2a6f3.zip/node_modules/sqs-consumer/",\
         "packageDependencies": [\
-          ["sqs-consumer", "virtual:685a6222c3349423674bb7f0684ba34e2ab20912010f352e04dcf707a156e13183fc382e2417cb37a60f3e7b52fd0178c53181674890e1773eb83e190dc13378#npm:6.2.1"],\
+          ["sqs-consumer", "virtual:685a6222c3349423674bb7f0684ba34e2ab20912010f352e04dcf707a156e13183fc382e2417cb37a60f3e7b52fd0178c53181674890e1773eb83e190dc13378#npm:7.3.0"],\
           ["@aws-sdk/client-sqs", "npm:3.342.0"],\
           ["@types/aws-sdk__client-sqs", null],\
           ["debug", "virtual:ac3d8e680759ce54399273724d44e041d6c9b73454d191d411a8c44bb27e22f02aaf6ed9d3ad0ac1c298eac4833cff369c9c7b84c573016112c4f84be2cd8543#npm:4.3.4"]\
