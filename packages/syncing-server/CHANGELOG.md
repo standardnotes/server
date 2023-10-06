@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.112.2](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.112.1...@standardnotes/syncing-server@1.112.2) (2023-10-06)
+
+### Bug Fixes
+
+* **syncing-server:** calling auth server for user key params ([51ca822](https://github.com/standardnotes/syncing-server-js/commit/51ca8229b8d5ebb3b4573a2a9da12dd8f15bf2ec))
+* **syncing-server:** error log on email backup requested ([a6a19a3](https://github.com/standardnotes/syncing-server-js/commit/a6a19a391e0495a0f362b98d0f3a34e4f6539863))
+
 ## [1.112.1](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.112.0...@standardnotes/syncing-server@1.112.1) (2023-10-06)
 
 ### Bug Fixes
