@@ -47,7 +47,7 @@ export class EmailBackupRequestedEventHandler implements DomainEventHandlerInter
         authenticated: false,
       })
     } catch (error) {
-      this.logger.warn(`Could not get user key params from auth service: ${(error as Error).message}`)
+      this.logger.error(`Could not get user key params from auth service: ${JSON.stringify(error)}`)
 
       return
     }
