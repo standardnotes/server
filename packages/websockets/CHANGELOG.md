@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.12.0](https://github.com/standardnotes/server/compare/@standardnotes/websockets-server@1.11.10...@standardnotes/websockets-server@1.12.0) (2023-10-06)
+
+### Features
+
+* add xray to analytics scheduler and websockets ([f0531d6](https://github.com/standardnotes/server/commit/f0531d68cb77036222f2a34602819f11e6a2697d))
+
 ## [1.11.10](https://github.com/standardnotes/server/compare/@standardnotes/websockets-server@1.11.9...@standardnotes/websockets-server@1.11.10) (2023-10-05)
 
 **Note:** Version bump only for package @standardnotes/websockets-server
