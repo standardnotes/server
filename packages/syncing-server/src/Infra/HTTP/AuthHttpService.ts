@@ -12,6 +12,7 @@ export class AuthHttpService implements AuthHttpServiceInterface {
   async getUserKeyParams(dto: { email?: string; uuid?: string; authenticated: boolean }): Promise<KeyParamsData> {
     const keyParamsResponse = await this.httpClient.request({
       method: 'GET',
+      timeout: 10000,
       headers: {
         Accept: 'application/json',
       },
