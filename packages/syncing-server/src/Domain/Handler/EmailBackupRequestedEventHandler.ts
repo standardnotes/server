@@ -34,6 +34,8 @@ export class EmailBackupRequestedEventHandler implements DomainEventHandlerInter
     if (this.secondaryItemRepository) {
       await this.requestEmailWithBackupFile(event, this.secondaryItemRepository)
     }
+
+    this.logger.info(`Email with backup requested for user ${event.payload.userUuid}`)
   }
 
   private async requestEmailWithBackupFile(
@@ -47,7 +49,9 @@ export class EmailBackupRequestedEventHandler implements DomainEventHandlerInter
         authenticated: false,
       })
     } catch (error) {
-      this.logger.error(`Could not get user key params from auth service: ${JSON.stringify(error)}`)
+      this.logger.error(
+        `Could not get user key params from auth service for user ${event.payload.userUuid}: ${JSON.stringify(error)}`,
+      )
 
       return
     }
