@@ -42,10 +42,7 @@ export class EmailBackupRequestedEventHandler implements DomainEventHandlerInter
   ): Promise<void> {
     let authParams: KeyParamsData
     try {
-      authParams = await this.authHttpService.getUserKeyParams({
-        uuid: event.payload.userUuid,
-        authenticated: false,
-      })
+      authParams = await this.authHttpService.getUserKeyParams(event.payload.userUuid)
     } catch (error) {
       this.logger.error(
         `Could not get user key params from auth service for user ${event.payload.userUuid}: ${
