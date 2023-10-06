@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.28.1](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.28.0...@standardnotes/analytics@2.28.1) (2023-10-06)
+
+### Bug Fixes
+
+* add xray-sdk to background processors ([a45b5b6](https://github.com/standardnotes/server/commit/a45b5b69b5d68c2e696c30f0ba5ad22d313321e6))
+
 # [2.28.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.27.10...@standardnotes/analytics@2.28.0) (2023-10-06)
 
 ### Features

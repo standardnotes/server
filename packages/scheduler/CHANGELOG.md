@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.22.1](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.22.0...@standardnotes/scheduler-server@1.22.1) (2023-10-06)
+
+### Bug Fixes
+
+* add xray-sdk to background processors ([a45b5b6](https://github.com/standardnotes/server/commit/a45b5b69b5d68c2e696c30f0ba5ad22d313321e6))
+
 # [1.22.0](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.21.10...@standardnotes/scheduler-server@1.22.0) (2023-10-06)
 
 ### Features

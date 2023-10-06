@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.151.2](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.151.1...@standardnotes/auth-server@1.151.2) (2023-10-06)
+
+### Bug Fixes
+
+* add xray-sdk to background processors ([a45b5b6](https://github.com/standardnotes/server/commit/a45b5b69b5d68c2e696c30f0ba5ad22d313321e6))
+
 ## [1.151.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.151.0...@standardnotes/auth-server@1.151.1) (2023-10-06)
 
 **Note:** Version bump only for package @standardnotes/auth-server
