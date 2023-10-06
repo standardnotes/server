@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.152.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.152.0...@standardnotes/auth-server@1.152.1) (2023-10-06)
+
+### Bug Fixes
+
+* **auth:** checking for transition role when triggering transition ([79a44aa](https://github.com/standardnotes/server/commit/79a44aa51f15311fcaf76c39f93d1934ec1d135d))
+
 # [1.152.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.151.2...@standardnotes/auth-server@1.152.0) (2023-10-06)
 
 ### Bug Fixes

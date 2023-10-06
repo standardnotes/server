@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.40.1](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.40.0...@standardnotes/revisions-server@1.40.1) (2023-10-06)
+
+### Bug Fixes
+
+* **revisions:** casting creation date from MongoDB ([4780629](https://github.com/standardnotes/server/commit/47806295491867ca5fd53e39757f057a0722ae28))
+
 # [1.40.0](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.39.5...@standardnotes/revisions-server@1.40.0) (2023-10-06)
 
 ### Bug Fixes

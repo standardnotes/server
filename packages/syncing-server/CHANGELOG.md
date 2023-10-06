@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.112.1](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.112.0...@standardnotes/syncing-server@1.112.1) (2023-10-06)
+
+### Bug Fixes
+
+* **syncing-server:** increase axios timeout on calling auth ([eafb064](https://github.com/standardnotes/syncing-server-js/commit/eafb064d7992dc8aa31f090e4265498c415c5795))
+* **syncing-server:** logs on request backup handler ([ba05068](https://github.com/standardnotes/syncing-server-js/commit/ba050681f772c2f566462be57f6b0731141d85b0))
+
 # [1.112.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.111.5...@standardnotes/syncing-server@1.112.0) (2023-10-06)
 
 ### Bug Fixes
