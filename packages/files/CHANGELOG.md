@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.28.2](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.28.1...@standardnotes/files-server@1.28.2) (2023-10-09)
+
+### Reverts
+
+* Revert "fix: setting parent span on workers" ([3fc07a5](https://github.com/standardnotes/files/commit/3fc07a5b60c26b583efd88e8a80d4c4321e71efb))
+
 ## [1.28.1](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.28.0...@standardnotes/files-server@1.28.1) (2023-10-09)
 
 ### Bug Fixes
