@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.40.4](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.40.3...@standardnotes/revisions-server@1.40.4) (2023-10-09)
+
+### Bug Fixes
+
+* **revisions:** creation date formatting ([4655308](https://github.com/standardnotes/server/commit/465530841f49df1bda44d9a9552306279575f57b))
+
 ## [1.40.3](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.40.2...@standardnotes/revisions-server@1.40.3) (2023-10-09)
 
 ### Bug Fixes
