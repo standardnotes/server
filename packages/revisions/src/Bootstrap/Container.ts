@@ -176,6 +176,7 @@ export class ContainerConfigLoader {
 
     if (!isConfiguredForHomeServerOrSelfHosting) {
       const sdk = new OpenTelemetrySDK.NodeSDK({
+        sampler: new OpenTelemetrySDK.tracing.TraceIdRatioBasedSampler(0.01),
         textMapPropagator: new AWSXRayPropagator(),
         instrumentations: [
           new HttpInstrumentation(),
