@@ -38,11 +38,14 @@ export class SQSOpenTelemetryEventMessageHandler implements DomainEventMessageHa
     const tracer = OpenTelemetryApi.trace.getTracer('sqs-handler')
 
     this.currentSpan = tracer.startSpan(this.serviceName, { kind: OpenTelemetryApi.SpanKind.CONSUMER })
-    this.internalSpan = tracer.startSpan(domainEvent.type, { kind: OpenTelemetryApi.SpanKind.INTERNAL })
+    const ctx = OpenTelemetryApi.trace.setSpan(OpenTelemetryApi.context.active(), this.currentSpan)
+
+    this.internalSpan = tracer.startSpan(domainEvent.type, { kind: OpenTelemetryApi.SpanKind.INTERNAL }, ctx)
 
     await handler.handle(domainEvent)
 
     this.internalSpan.end()
+
     this.currentSpan.end()
 
     this.internalSpan = undefined
