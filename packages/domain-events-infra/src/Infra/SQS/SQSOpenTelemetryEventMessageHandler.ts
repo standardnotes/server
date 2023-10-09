@@ -9,10 +9,8 @@ import {
 
 export class SQSOpenTelemetryEventMessageHandler implements DomainEventMessageHandlerInterface {
   private currentSpan: OpenTelemetryApi.Span | undefined
-  private internalSpan: OpenTelemetryApi.Span | undefined
 
   constructor(
-    private serviceName: string,
     private handlers: Map<string, DomainEventHandlerInterface>,
     private logger: Logger,
   ) {}
@@ -37,26 +35,18 @@ export class SQSOpenTelemetryEventMessageHandler implements DomainEventMessageHa
 
     const tracer = OpenTelemetryApi.trace.getTracer('sqs-handler')
 
-    this.currentSpan = tracer.startSpan(this.serviceName, { kind: OpenTelemetryApi.SpanKind.CONSUMER })
-    this.internalSpan = tracer.startSpan(domainEvent.type, { kind: OpenTelemetryApi.SpanKind.INTERNAL })
+    this.currentSpan = tracer.startSpan(domainEvent.type)
 
     await handler.handle(domainEvent)
 
-    this.internalSpan.end()
     this.currentSpan.end()
 
-    this.internalSpan = undefined
     this.currentSpan = undefined
   }
 
   async handleError(error: Error): Promise<void> {
-    if (this.internalSpan) {
-      this.internalSpan.recordException(error)
-      this.internalSpan.end()
-      this.internalSpan = undefined
-    }
-
     if (this.currentSpan) {
+      this.currentSpan.recordException(error)
       this.currentSpan.end()
       this.currentSpan = undefined
     }

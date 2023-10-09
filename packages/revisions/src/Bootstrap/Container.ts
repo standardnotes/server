@@ -533,11 +533,7 @@ export class ContainerConfigLoader {
         .toConstantValue(
           isConfiguredForHomeServerOrSelfHosting
             ? new SQSEventMessageHandler(eventHandlers, container.get(TYPES.Revisions_Logger))
-            : new SQSOpenTelemetryEventMessageHandler(
-                ServiceIdentifier.NAMES.RevisionsWorker,
-                eventHandlers,
-                container.get(TYPES.Revisions_Logger),
-              ),
+            : new SQSOpenTelemetryEventMessageHandler(eventHandlers, container.get(TYPES.Revisions_Logger)),
         )
 
       container
