@@ -159,9 +159,9 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
               }
 
               this.logger.info(
-                `[${
-                  userUuid.value
-                }] Removing revision ${revision.id.toString()} in primary database as it is not identical to revision in secondary database`,
+                `[${userUuid.value}] Removing revision ${revision.id.toString()} in primary database: ${JSON.stringify(
+                  revisionInPrimary,
+                )} as it is not identical to revision in secondary database: ${JSON.stringify(revision)}`,
               )
 
               await this.primaryRevisionsRepository.removeOneByUuid(
@@ -205,8 +205,8 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
   }
 
   private async allowForPrimaryDatabaseToCatchUp(): Promise<void> {
-    const twoSecondsInMilliseconds = 2_000
-    await this.timer.sleep(twoSecondsInMilliseconds)
+    const delay = 1_000
+    await this.timer.sleep(delay)
   }
 
   private async checkIntegrityBetweenPrimaryAndSecondaryDatabase(userUuid: Uuid): Promise<Result<boolean>> {

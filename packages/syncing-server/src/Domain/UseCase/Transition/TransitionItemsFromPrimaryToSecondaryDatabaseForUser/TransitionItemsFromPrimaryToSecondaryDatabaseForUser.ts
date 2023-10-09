@@ -99,8 +99,8 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
   }
 
   private async allowForPrimaryDatabaseToCatchUp(): Promise<void> {
-    const twoSecondsInMilliseconds = 2_000
-    await this.timer.sleep(twoSecondsInMilliseconds)
+    const delay = 1_000
+    await this.timer.sleep(delay)
   }
 
   private async migrateItemsForUser(userUuid: Uuid, timestamp: number): Promise<Result<void>> {
