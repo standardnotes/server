@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.152.2](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.152.1...@standardnotes/auth-server@1.152.2) (2023-10-09)
+
+### Bug Fixes
+
+* remove xray sdk in favor of opentelemetry ([b736dab](https://github.com/standardnotes/server/commit/b736dab3c1f76c9e03c4bc7bbf153dcb3309b7cb))
+
 ## [1.152.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.152.0...@standardnotes/auth-server@1.152.1) (2023-10-06)
 
 ### Bug Fixes

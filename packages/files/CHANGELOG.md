@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.26.4](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.26.3...@standardnotes/files-server@1.26.4) (2023-10-09)
+
+### Bug Fixes
+
+* remove xray sdk in favor of opentelemetry ([b736dab](https://github.com/standardnotes/files/commit/b736dab3c1f76c9e03c4bc7bbf153dcb3309b7cb))
+
 ## [1.26.3](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.26.2...@standardnotes/files-server@1.26.3) (2023-10-06)
 
 **Note:** Version bump only for package @standardnotes/files-server
