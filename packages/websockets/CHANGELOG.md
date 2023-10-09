@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.14.1](https://github.com/standardnotes/server/compare/@standardnotes/websockets-server@1.14.0...@standardnotes/websockets-server@1.14.1) (2023-10-09)
+
+### Bug Fixes
+
+* setting parent span on workers ([1c54d18](https://github.com/standardnotes/server/commit/1c54d18c3ca75353701ba921492a5ecfaa2e3572))
+
 # [1.14.0](https://github.com/standardnotes/server/compare/@standardnotes/websockets-server@1.13.0...@standardnotes/websockets-server@1.14.0) (2023-10-09)
 
 ### Features
