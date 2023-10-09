@@ -75,6 +75,7 @@ void container.load().then((container) => {
   const serverInstance = server.build()
 
   if (!container.get<boolean>(TYPES.Sync_IS_CONFIGURED_FOR_HOME_SERVER_OR_SELF_HOSTING)) {
+    logger.info('Starting OpenTelemetry SDK...')
     const openTelemetrySDK = container.get<OpenTelemetrySDKInterface>(TYPES.Sync_OpenTelemetrySDK)
     openTelemetrySDK.start()
   }

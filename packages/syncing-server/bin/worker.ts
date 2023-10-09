@@ -15,9 +15,8 @@ void container.load().then((container) => {
 
   const logger: Logger = container.get(TYPES.Sync_Logger)
 
-  logger.info('Starting worker...')
-
   if (!container.get<boolean>(TYPES.Sync_IS_CONFIGURED_FOR_HOME_SERVER_OR_SELF_HOSTING)) {
+    logger.info('Starting OpenTelemetry SDK...')
     const openTelemetrySDK = container.get<OpenTelemetrySDKInterface>(TYPES.Sync_OpenTelemetrySDK)
     openTelemetrySDK.start()
   }
@@ -25,5 +24,8 @@ void container.load().then((container) => {
   const subscriberFactory: DomainEventSubscriberFactoryInterface = container.get(
     TYPES.Sync_DomainEventSubscriberFactory,
   )
+
+  logger.info('Starting worker...')
+
   subscriberFactory.create().start()
 })
