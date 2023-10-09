@@ -42,6 +42,7 @@ import {
   SNSDomainEventPublisher,
   OpenTelemetrySDKInterface,
   OpenTelemetrySDK,
+  SQSOpenTelemetryEventMessageHandler,
 } from '@standardnotes/domain-events-infra'
 import { DumpRepositoryInterface } from '../Domain/Dump/DumpRepositoryInterface'
 import { AccountDeletionRequestedEventHandler } from '../Domain/Handler/AccountDeletionRequestedEventHandler'
@@ -161,7 +162,11 @@ export class ContainerConfigLoader {
     if (!isConfiguredForHomeServerOrSelfHosting) {
       container
         .bind<OpenTelemetrySDKInterface>(TYPES.Revisions_OpenTelemetrySDK)
-        .toConstantValue(new OpenTelemetrySDK(ServiceIdentifier.NAMES.Revisions))
+        .toConstantValue(
+          new OpenTelemetrySDK(
+            this.mode === 'server' ? ServiceIdentifier.NAMES.Revisions : ServiceIdentifier.NAMES.RevisionsWorker,
+          ),
+        )
     }
 
     if (!isConfiguredForHomeServer) {
@@ -525,7 +530,11 @@ export class ContainerConfigLoader {
     } else {
       container
         .bind<DomainEventMessageHandlerInterface>(TYPES.Revisions_DomainEventMessageHandler)
-        .toConstantValue(new SQSEventMessageHandler(eventHandlers, container.get(TYPES.Revisions_Logger)))
+        .toConstantValue(
+          isConfiguredForHomeServerOrSelfHosting
+            ? new SQSEventMessageHandler(eventHandlers, container.get(TYPES.Revisions_Logger))
+            : new SQSOpenTelemetryEventMessageHandler(eventHandlers, container.get(TYPES.Revisions_Logger)),
+        )
 
       container
         .bind<DomainEventSubscriberFactoryInterface>(TYPES.Revisions_DomainEventSubscriberFactory)

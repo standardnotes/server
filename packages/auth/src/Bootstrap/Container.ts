@@ -94,6 +94,7 @@ import {
   SNSDomainEventPublisher,
   SQSDomainEventSubscriberFactory,
   SQSEventMessageHandler,
+  SQSOpenTelemetryEventMessageHandler,
 } from '@standardnotes/domain-events-infra'
 import { GetUserSubscription } from '../Domain/UseCase/GetUserSubscription/GetUserSubscription'
 import { ChangeCredentials } from '../Domain/UseCase/ChangeCredentials/ChangeCredentials'
@@ -333,7 +334,11 @@ export class ContainerConfigLoader {
     if (!isConfiguredForHomeServerOrSelfHosting) {
       container
         .bind<OpenTelemetrySDKInterface>(TYPES.Auth_OpenTelemetrySDK)
-        .toConstantValue(new OpenTelemetrySDK(ServiceIdentifier.NAMES.Auth))
+        .toConstantValue(
+          new OpenTelemetrySDK(
+            this.mode === 'server' ? ServiceIdentifier.NAMES.Auth : ServiceIdentifier.NAMES.AuthWorker,
+          ),
+        )
     }
 
     if (!isConfiguredForInMemoryCache) {
@@ -1238,7 +1243,11 @@ export class ContainerConfigLoader {
     } else {
       container
         .bind<DomainEventMessageHandlerInterface>(TYPES.Auth_DomainEventMessageHandler)
-        .toConstantValue(new SQSEventMessageHandler(eventHandlers, container.get(TYPES.Auth_Logger)))
+        .toConstantValue(
+          isConfiguredForHomeServerOrSelfHosting
+            ? new SQSEventMessageHandler(eventHandlers, container.get(TYPES.Auth_Logger))
+            : new SQSOpenTelemetryEventMessageHandler(eventHandlers, container.get(TYPES.Auth_Logger)),
+        )
 
       container
         .bind<DomainEventSubscriberFactoryInterface>(TYPES.Auth_DomainEventSubscriberFactory)

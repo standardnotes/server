@@ -22,7 +22,7 @@ import {
   OpenTelemetrySDK,
   OpenTelemetrySDKInterface,
   SQSDomainEventSubscriberFactory,
-  SQSEventMessageHandler,
+  SQSOpenTelemetryEventMessageHandler,
 } from '@standardnotes/domain-events-infra'
 import { ApiGatewayAuthMiddleware } from '../Controller/ApiGatewayAuthMiddleware'
 
@@ -42,6 +42,8 @@ import { WebSocketMessageRequestedEventHandler } from '../Domain/Handler/WebSock
 import { ServiceIdentifier } from '@standardnotes/domain-core'
 
 export class ContainerConfigLoader {
+  constructor(private mode: 'server' | 'worker' = 'server') {}
+
   async load(): Promise<Container> {
     const env: Env = new Env()
     env.load()
@@ -50,7 +52,11 @@ export class ContainerConfigLoader {
 
     container
       .bind<OpenTelemetrySDKInterface>(TYPES.WebSockets_OpenTelemetrySDK)
-      .toConstantValue(new OpenTelemetrySDK(ServiceIdentifier.NAMES.Websockets))
+      .toConstantValue(
+        new OpenTelemetrySDK(
+          this.mode === 'server' ? ServiceIdentifier.NAMES.Websockets : ServiceIdentifier.NAMES.WebsocketsWorker,
+        ),
+      )
 
     const redisUrl = env.get('REDIS_URL')
     const isRedisInClusterMode = redisUrl.indexOf(',') > 0
@@ -158,7 +164,7 @@ export class ContainerConfigLoader {
 
     container
       .bind<DomainEventMessageHandlerInterface>(TYPES.DomainEventMessageHandler)
-      .toConstantValue(new SQSEventMessageHandler(eventHandlers, container.get(TYPES.Logger)))
+      .toConstantValue(new SQSOpenTelemetryEventMessageHandler(eventHandlers, container.get(TYPES.Logger)))
     container
       .bind<DomainEventSubscriberFactoryInterface>(TYPES.DomainEventSubscriberFactory)
       .toConstantValue(

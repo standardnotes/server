@@ -38,10 +38,6 @@ jobs:
       run: |
         jq '(.containerDefinitions[] | select(.name=="${{ inputs.service_name }}-prod") | .environment[] | select(.name=="VERSION")).value = "${{ github.sha }}"' task-definition.json > tmp.json && mv tmp.json task-definition.json
 
-    - name: Fill in the new package version in the Amazon ECS task definition
-      run: |
-        jq '(.containerDefinitions[] | select(.name=="${{ inputs.service_name }}-prod") | .environment[] | select(.name=="npm_package_version")).value = "${{ github.sha }}"' task-definition.json > tmp.json && mv tmp.json task-definition.json
-
     - name: Fill in the new image ID in the Amazon ECS task definition
       id: task-def-prod
       uses: aws-actions/amazon-ecs-render-task-definition@v1

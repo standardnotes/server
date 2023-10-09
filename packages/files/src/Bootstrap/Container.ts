@@ -21,6 +21,7 @@ import {
   SNSDomainEventPublisher,
   SQSDomainEventSubscriberFactory,
   SQSEventMessageHandler,
+  SQSOpenTelemetryEventMessageHandler,
 } from '@standardnotes/domain-events-infra'
 import { StreamDownloadFile } from '../Domain/UseCase/StreamDownloadFile/StreamDownloadFile'
 import { FileDownloaderInterface } from '../Domain/Services/FileDownloaderInterface'
@@ -57,6 +58,8 @@ import { SharedVaultValetTokenAuthMiddleware } from '../Infra/InversifyExpress/M
 import { ServiceIdentifier } from '@standardnotes/domain-core'
 
 export class ContainerConfigLoader {
+  constructor(private mode: 'server' | 'worker' = 'server') {}
+
   async load(configuration?: {
     directCallDomainEventPublisher?: DirectCallDomainEventPublisher
     logger?: Transform
@@ -96,7 +99,11 @@ export class ContainerConfigLoader {
     if (!isConfiguredForHomeServerOrSelfHosting) {
       container
         .bind<OpenTelemetrySDKInterface>(TYPES.Files_OpenTelemetrySDK)
-        .toConstantValue(new OpenTelemetrySDK(ServiceIdentifier.NAMES.Files))
+        .toConstantValue(
+          new OpenTelemetrySDK(
+            this.mode === 'server' ? ServiceIdentifier.NAMES.Files : ServiceIdentifier.NAMES.FilesWorker,
+          ),
+        )
     }
 
     let logger: winston.Logger
@@ -306,7 +313,11 @@ export class ContainerConfigLoader {
     } else {
       container
         .bind<DomainEventMessageHandlerInterface>(TYPES.Files_DomainEventMessageHandler)
-        .toConstantValue(new SQSEventMessageHandler(eventHandlers, container.get(TYPES.Files_Logger)))
+        .toConstantValue(
+          isConfiguredForHomeServerOrSelfHosting
+            ? new SQSEventMessageHandler(eventHandlers, container.get(TYPES.Files_Logger))
+            : new SQSOpenTelemetryEventMessageHandler(eventHandlers, container.get(TYPES.Files_Logger)),
+        )
       container
         .bind<DomainEventSubscriberFactoryInterface>(TYPES.Files_DomainEventSubscriberFactory)
         .toConstantValue(

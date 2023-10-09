@@ -18,6 +18,7 @@ import {
   SNSDomainEventPublisher,
   SQSDomainEventSubscriberFactory,
   SQSEventMessageHandler,
+  SQSOpenTelemetryEventMessageHandler,
 } from '@standardnotes/domain-events-infra'
 import { DomainEventFactoryInterface } from '../Domain/Event/DomainEventFactoryInterface'
 import { DomainEventFactory } from '../Domain/Event/DomainEventFactory'
@@ -244,7 +245,13 @@ export class ContainerConfigLoader {
     if (!isConfiguredForHomeServerOrSelfHosting) {
       container
         .bind<OpenTelemetrySDKInterface>(TYPES.Sync_OpenTelemetrySDK)
-        .toConstantValue(new OpenTelemetrySDK(ServiceIdentifier.NAMES.SyncingServer))
+        .toConstantValue(
+          new OpenTelemetrySDK(
+            this.mode === 'server'
+              ? ServiceIdentifier.NAMES.SyncingServer
+              : ServiceIdentifier.NAMES.SyncingServerWorker,
+          ),
+        )
     }
 
     if (!isConfiguredForInMemoryCache) {
@@ -1168,7 +1175,11 @@ export class ContainerConfigLoader {
     } else {
       container
         .bind<DomainEventMessageHandlerInterface>(TYPES.Sync_DomainEventMessageHandler)
-        .toConstantValue(new SQSEventMessageHandler(eventHandlers, container.get(TYPES.Sync_Logger)))
+        .toConstantValue(
+          isConfiguredForHomeServerOrSelfHosting
+            ? new SQSEventMessageHandler(eventHandlers, container.get(TYPES.Sync_Logger))
+            : new SQSOpenTelemetryEventMessageHandler(eventHandlers, container.get(TYPES.Sync_Logger)),
+        )
     }
 
     container
