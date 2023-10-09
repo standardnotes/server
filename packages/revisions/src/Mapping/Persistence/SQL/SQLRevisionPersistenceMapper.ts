@@ -1,4 +1,5 @@
 import { MapperInterface, Dates, UniqueEntityId, Uuid, ContentType } from '@standardnotes/domain-core'
+import { TimerInterface } from '@standardnotes/time'
 
 import { Revision } from '../../../Domain/Revision/Revision'
 import { SQLRevision } from '../../../Infra/TypeORM/SQL/SQLRevision'
@@ -6,6 +7,8 @@ import { SharedVaultAssociation } from '../../../Domain/SharedVault/SharedVaultA
 import { KeySystemAssociation } from '../../../Domain/KeySystem/KeySystemAssociation'
 
 export class SQLRevisionPersistenceMapper implements MapperInterface<Revision, SQLRevision> {
+  constructor(private timer: TimerInterface) {}
+
   toDomain(projection: SQLRevision): Revision {
     const contentTypeOrError = ContentType.create(projection.contentType)
     if (contentTypeOrError.isFailed()) {
@@ -72,7 +75,7 @@ export class SQLRevisionPersistenceMapper implements MapperInterface<Revision, S
         authHash: projection.authHash,
         content: projection.content,
         contentType,
-        creationDate: projection.creationDate,
+        creationDate: new Date(this.timer.convertDateToFormattedString(projection.creationDate, 'YYYY-MM-DD')),
         encItemKey: projection.encItemKey,
         itemsKeyId: projection.itemsKeyId,
         itemUuid,
@@ -98,7 +101,9 @@ export class SQLRevisionPersistenceMapper implements MapperInterface<Revision, S
     sqlRevision.contentType = domain.props.contentType.value
     sqlRevision.createdAt = domain.props.dates.createdAt
     sqlRevision.updatedAt = domain.props.dates.updatedAt
-    sqlRevision.creationDate = domain.props.creationDate
+    sqlRevision.creationDate = new Date(
+      this.timer.convertDateToFormattedString(domain.props.creationDate, 'YYYY-MM-DD'),
+    )
     sqlRevision.encItemKey = domain.props.encItemKey
     sqlRevision.itemUuid = domain.props.itemUuid.value
     sqlRevision.itemsKeyId = domain.props.itemsKeyId

@@ -237,10 +237,10 @@ export class ContainerConfigLoader {
       .toConstantValue(new SQLRevisionMetadataPersistenceMapper())
     container
       .bind<MapperInterface<Revision, SQLLegacyRevision>>(TYPES.Revisions_SQLLegacyRevisionPersistenceMapper)
-      .toConstantValue(new SQLLegacyRevisionPersistenceMapper())
+      .toConstantValue(new SQLLegacyRevisionPersistenceMapper(container.get<TimerInterface>(TYPES.Revisions_Timer)))
     container
       .bind<MapperInterface<Revision, SQLRevision>>(TYPES.Revisions_SQLRevisionPersistenceMapper)
-      .toConstantValue(new SQLRevisionPersistenceMapper())
+      .toConstantValue(new SQLRevisionPersistenceMapper(container.get<TimerInterface>(TYPES.Revisions_Timer)))
     container
       .bind<MapperInterface<RevisionMetadata, MongoDBRevision>>(
         TYPES.Revisions_MongoDBRevisionMetadataPersistenceMapper,
