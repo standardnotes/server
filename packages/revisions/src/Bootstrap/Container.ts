@@ -1,9 +1,20 @@
-import { ControllerContainer, ControllerContainerInterface, MapperInterface } from '@standardnotes/domain-core'
+import {
+  ControllerContainer,
+  ControllerContainerInterface,
+  MapperInterface,
+  ServiceIdentifier,
+} from '@standardnotes/domain-core'
 import Redis from 'ioredis'
 import { Container, interfaces } from 'inversify'
 import { MongoRepository, Repository } from 'typeorm'
 import * as winston from 'winston'
 import { SNSClient, SNSClientConfig } from '@aws-sdk/client-sns'
+import * as OpenTelemetrySDK from '@opentelemetry/sdk-node'
+import { SemanticResourceAttributes } from '@opentelemetry/semantic-conventions'
+import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-grpc'
+import { AWSXRayIdGenerator } from '@opentelemetry/id-generator-aws-xray'
+import * as AwsResourceDetectors from '@opentelemetry/resource-detector-aws'
+import { TypeormInstrumentation } from 'opentelemetry-instrumentation-typeorm'
 
 import { Revision } from '../Domain/Revision/Revision'
 import { RevisionMetadata } from '../Domain/Revision/RevisionMetadata'
@@ -71,6 +82,10 @@ import { SharedVaultRemovedEventHandler } from '../Domain/Handler/SharedVaultRem
 import { TransitionRepositoryInterface } from '../Domain/Transition/TransitionRepositoryInterface'
 import { RedisTransitionRepository } from '../Infra/Redis/RedisTransitionRepository'
 import { CreateRevisionFromDump } from '../Domain/UseCase/CreateRevisionFromDump/CreateRevisionFromDump'
+import { AWSXRayPropagator } from '@opentelemetry/propagator-aws-xray'
+import { HttpInstrumentation } from '@opentelemetry/instrumentation-http'
+import { AwsInstrumentation } from '@opentelemetry/instrumentation-aws-sdk'
+import { OTLPMetricExporter } from '@opentelemetry/exporter-metrics-otlp-proto'
 
 export class ContainerConfigLoader {
   constructor(private mode: 'server' | 'worker' = 'server') {}
@@ -146,6 +161,40 @@ export class ContainerConfigLoader {
 
     container.bind(TYPES.Revisions_NEW_RELIC_ENABLED).toConstantValue(env.get('NEW_RELIC_ENABLED', true))
     container.bind(TYPES.Revisions_VERSION).toConstantValue(env.get('VERSION', true) ?? 'development')
+
+    const otResource = OpenTelemetrySDK.resources.Resource.default().merge(
+      new OpenTelemetrySDK.resources.Resource({
+        [SemanticResourceAttributes.SERVICE_NAME]: ServiceIdentifier.NAMES.Revisions,
+      }),
+    )
+    const traceExporter = new OTLPTraceExporter()
+    const spanProcessor = new OpenTelemetrySDK.tracing.BatchSpanProcessor(traceExporter)
+    const metricReader = new OpenTelemetrySDK.metrics.PeriodicExportingMetricReader({
+      exportIntervalMillis: 1_000,
+      exporter: new OTLPMetricExporter(),
+    })
+
+    if (!isConfiguredForHomeServerOrSelfHosting) {
+      const sdk = new OpenTelemetrySDK.NodeSDK({
+        textMapPropagator: new AWSXRayPropagator(),
+        instrumentations: [
+          new HttpInstrumentation(),
+          new AwsInstrumentation({
+            suppressInternalInstrumentation: true,
+          }),
+          new TypeormInstrumentation(),
+        ],
+        metricReader: metricReader,
+        resource: otResource,
+        spanProcessor: spanProcessor,
+        traceExporter: traceExporter,
+        idGenerator: new AWSXRayIdGenerator(),
+        autoDetectResources: true,
+        resourceDetectors: [AwsResourceDetectors.awsEcsDetector],
+      })
+
+      container.bind<OpenTelemetrySDK.NodeSDK>(TYPES.Revisions_OpenTelemetrySDK).toConstantValue(sdk)
+    }
 
     if (!isConfiguredForHomeServer) {
       // env vars

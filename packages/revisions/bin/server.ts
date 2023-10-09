@@ -11,6 +11,7 @@ import { ContainerConfigLoader } from '../src/Bootstrap/Container'
 
 import '../src/Infra/InversifyExpress/AnnotatedRevisionsController'
 import '../src/Infra/InversifyExpress/AnnotatedHealthCheckController'
+import { NodeSDK } from '@opentelemetry/sdk-node'
 
 const container = new ContainerConfigLoader()
 void container.load().then((container) => {
@@ -44,6 +45,9 @@ void container.load().then((container) => {
   })
 
   const serverInstance = server.build()
+
+  const openTelemetrySDK = container.get<NodeSDK>(TYPES.Revisions_OpenTelemetrySDK)
+  openTelemetrySDK.start()
 
   serverInstance.listen(env.get('PORT'))
 
