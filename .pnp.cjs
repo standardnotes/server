@@ -5185,6 +5185,29 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["@opentelemetry/instrumentation-winston", [\
+      ["npm:0.32.1", {\
+        "packageLocation": "./.yarn/cache/@opentelemetry-instrumentation-winston-npm-0.32.1-4adcd85525-2292411336.zip/node_modules/@opentelemetry/instrumentation-winston/",\
+        "packageDependencies": [\
+          ["@opentelemetry/instrumentation-winston", "npm:0.32.1"]\
+        ],\
+        "linkType": "SOFT"\
+      }],\
+      ["virtual:685a6222c3349423674bb7f0684ba34e2ab20912010f352e04dcf707a156e13183fc382e2417cb37a60f3e7b52fd0178c53181674890e1773eb83e190dc13378#npm:0.32.1", {\
+        "packageLocation": "./.yarn/__virtual__/@opentelemetry-instrumentation-winston-virtual-6f270e74d1/0/cache/@opentelemetry-instrumentation-winston-npm-0.32.1-4adcd85525-2292411336.zip/node_modules/@opentelemetry/instrumentation-winston/",\
+        "packageDependencies": [\
+          ["@opentelemetry/instrumentation-winston", "virtual:685a6222c3349423674bb7f0684ba34e2ab20912010f352e04dcf707a156e13183fc382e2417cb37a60f3e7b52fd0178c53181674890e1773eb83e190dc13378#npm:0.32.1"],\
+          ["@opentelemetry/api", "npm:1.6.0"],\
+          ["@opentelemetry/instrumentation", "virtual:615937aa81839b05262fb17b9798d2b03176d47c4f8dad05d5bcb050f95f724786e9efd2e9f8e96aeb0f4f2bd3253509727df5e270ef87443598047e1192e3e9#npm:0.41.2"],\
+          ["@types/opentelemetry__api", null]\
+        ],\
+        "packagePeers": [\
+          "@opentelemetry/api",\
+          "@types/opentelemetry__api"\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["@opentelemetry/otlp-exporter-base", [\
       ["npm:0.43.0", {\
         "packageLocation": "./.yarn/cache/@opentelemetry-otlp-exporter-base-npm-0.43.0-f3aa808608-9565c55fed.zip/node_modules/@opentelemetry/otlp-exporter-base/",\
@@ -6733,6 +6756,7 @@ const RAW_RUNTIME_STATE =
           ["@opentelemetry/id-generator-aws-xray", "virtual:685a6222c3349423674bb7f0684ba34e2ab20912010f352e04dcf707a156e13183fc382e2417cb37a60f3e7b52fd0178c53181674890e1773eb83e190dc13378#npm:1.2.1"],\
           ["@opentelemetry/instrumentation-aws-sdk", "virtual:685a6222c3349423674bb7f0684ba34e2ab20912010f352e04dcf707a156e13183fc382e2417cb37a60f3e7b52fd0178c53181674890e1773eb83e190dc13378#npm:0.36.0"],\
           ["@opentelemetry/instrumentation-http", "virtual:685a6222c3349423674bb7f0684ba34e2ab20912010f352e04dcf707a156e13183fc382e2417cb37a60f3e7b52fd0178c53181674890e1773eb83e190dc13378#npm:0.43.0"],\
+          ["@opentelemetry/instrumentation-winston", "virtual:685a6222c3349423674bb7f0684ba34e2ab20912010f352e04dcf707a156e13183fc382e2417cb37a60f3e7b52fd0178c53181674890e1773eb83e190dc13378#npm:0.32.1"],\
           ["@opentelemetry/propagator-aws-xray", "virtual:685a6222c3349423674bb7f0684ba34e2ab20912010f352e04dcf707a156e13183fc382e2417cb37a60f3e7b52fd0178c53181674890e1773eb83e190dc13378#npm:1.3.1"],\
           ["@opentelemetry/resource-detector-aws", "virtual:685a6222c3349423674bb7f0684ba34e2ab20912010f352e04dcf707a156e13183fc382e2417cb37a60f3e7b52fd0178c53181674890e1773eb83e190dc13378#npm:1.3.1"],\
           ["@opentelemetry/sdk-node", "virtual:685a6222c3349423674bb7f0684ba34e2ab20912010f352e04dcf707a156e13183fc382e2417cb37a60f3e7b52fd0178c53181674890e1773eb83e190dc13378#npm:0.43.0"],\

@@ -8,6 +8,7 @@ import { AWSXRayPropagator } from '@opentelemetry/propagator-aws-xray'
 import { HttpInstrumentation } from '@opentelemetry/instrumentation-http'
 import { AwsInstrumentation } from '@opentelemetry/instrumentation-aws-sdk'
 import { OTLPMetricExporter } from '@opentelemetry/exporter-metrics-otlp-proto'
+import { WinstonInstrumentation } from '@opentelemetry/instrumentation-winston'
 
 import { OpenTelemetrySDKInterface } from './OpenTelemetrySDKInterface'
 
@@ -31,6 +32,13 @@ export class OpenTelemetrySDK implements OpenTelemetrySDKInterface {
       exporter: new OTLPMetricExporter(),
     })
 
+    const serviceName = this.serviceName
+    const winstonInstrumentation = new WinstonInstrumentation({
+      logHook: (_span, record) => {
+        record['resource.service.name'] = serviceName
+      },
+    })
+
     this.sdk = new OpenTelemetrySDKNode.NodeSDK({
       sampler: new OpenTelemetrySDKNode.tracing.TraceIdRatioBasedSampler(0.01),
       textMapPropagator: new AWSXRayPropagator(),
@@ -40,6 +48,7 @@ export class OpenTelemetrySDK implements OpenTelemetrySDKInterface {
           suppressInternalInstrumentation: true,
         }),
         new TypeormInstrumentation(),
+        winstonInstrumentation,
       ],
       metricReader: metricReader,
       resource: otResource,
