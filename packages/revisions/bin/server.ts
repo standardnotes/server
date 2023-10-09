@@ -46,8 +46,10 @@ void container.load().then((container) => {
 
   const serverInstance = server.build()
 
-  const openTelemetrySDK = container.get<NodeSDK>(TYPES.Revisions_OpenTelemetrySDK)
-  openTelemetrySDK.start()
+  if (!container.get<boolean>(TYPES.Revisions_IS_CONFIGURED_FOR_HOME_SERVER_OR_SELF_HOSTING)) {
+    const openTelemetrySDK = container.get<NodeSDK>(TYPES.Revisions_OpenTelemetrySDK)
+    openTelemetrySDK.start()
+  }
 
   serverInstance.listen(env.get('PORT'))
 

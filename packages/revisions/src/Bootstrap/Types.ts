@@ -40,6 +40,9 @@ const TYPES = {
   Revisions_SNS_AWS_REGION: Symbol.for('Revisions_SNS_AWS_REGION'),
   Revisions_NEW_RELIC_ENABLED: Symbol.for('Revisions_NEW_RELIC_ENABLED'),
   Revisions_VERSION: Symbol.for('Revisions_VERSION'),
+  Revisions_IS_CONFIGURED_FOR_HOME_SERVER_OR_SELF_HOSTING: Symbol.for(
+    'Revisions_IS_CONFIGURED_FOR_HOME_SERVER_OR_SELF_HOSTING',
+  ),
   // use cases
   Revisions_GetRevisionsMetada: Symbol.for('Revisions_GetRevisionsMetada'),
   Revisions_GetRevision: Symbol.for('Revisions_GetRevision'),

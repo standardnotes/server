@@ -112,6 +112,10 @@ export class ContainerConfigLoader {
       defaultScope: 'Singleton',
     })
 
+    container
+      .bind<boolean>(TYPES.Revisions_IS_CONFIGURED_FOR_HOME_SERVER_OR_SELF_HOSTING)
+      .toConstantValue(isConfiguredForHomeServerOrSelfHosting)
+
     if (!isConfiguredForInMemoryCache) {
       const redisUrl = env.get('REDIS_URL')
       const isRedisInClusterMode = redisUrl.indexOf(',') > 0
