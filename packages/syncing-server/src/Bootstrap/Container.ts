@@ -1178,7 +1178,11 @@ export class ContainerConfigLoader {
         .toConstantValue(
           isConfiguredForHomeServerOrSelfHosting
             ? new SQSEventMessageHandler(eventHandlers, container.get(TYPES.Sync_Logger))
-            : new SQSOpenTelemetryEventMessageHandler(eventHandlers, container.get(TYPES.Sync_Logger)),
+            : new SQSOpenTelemetryEventMessageHandler(
+                ServiceIdentifier.NAMES.SyncingServerWorker,
+                eventHandlers,
+                container.get(TYPES.Sync_Logger),
+              ),
         )
     }
 

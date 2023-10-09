@@ -1246,7 +1246,11 @@ export class ContainerConfigLoader {
         .toConstantValue(
           isConfiguredForHomeServerOrSelfHosting
             ? new SQSEventMessageHandler(eventHandlers, container.get(TYPES.Auth_Logger))
-            : new SQSOpenTelemetryEventMessageHandler(eventHandlers, container.get(TYPES.Auth_Logger)),
+            : new SQSOpenTelemetryEventMessageHandler(
+                ServiceIdentifier.NAMES.AuthWorker,
+                eventHandlers,
+                container.get(TYPES.Auth_Logger),
+              ),
         )
 
       container

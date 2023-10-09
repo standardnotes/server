@@ -164,7 +164,13 @@ export class ContainerConfigLoader {
 
     container
       .bind<DomainEventMessageHandlerInterface>(TYPES.DomainEventMessageHandler)
-      .toConstantValue(new SQSOpenTelemetryEventMessageHandler(eventHandlers, container.get(TYPES.Logger)))
+      .toConstantValue(
+        new SQSOpenTelemetryEventMessageHandler(
+          ServiceIdentifier.NAMES.WebsocketsWorker,
+          eventHandlers,
+          container.get(TYPES.Logger),
+        ),
+      )
     container
       .bind<DomainEventSubscriberFactoryInterface>(TYPES.DomainEventSubscriberFactory)
       .toConstantValue(
