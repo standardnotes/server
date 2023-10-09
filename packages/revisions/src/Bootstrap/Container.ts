@@ -1,14 +1,8 @@
-import {
-  ControllerContainer,
-  ControllerContainerInterface,
-  MapperInterface,
-  ServiceIdentifier,
-} from '@standardnotes/domain-core'
+import { ControllerContainer, ControllerContainerInterface, MapperInterface } from '@standardnotes/domain-core'
 import Redis from 'ioredis'
 import { Container, interfaces } from 'inversify'
 import { MongoRepository, Repository } from 'typeorm'
 import * as winston from 'winston'
-import { captureAWSv3Client } from 'aws-xray-sdk'
 import { SNSClient, SNSClientConfig } from '@aws-sdk/client-sns'
 
 import { Revision } from '../Domain/Revision/Revision'
@@ -41,7 +35,6 @@ import {
   DirectCallEventMessageHandler,
   DirectCallDomainEventPublisher,
   SNSDomainEventPublisher,
-  SQSXRayEventMessageHandler,
 } from '@standardnotes/domain-events-infra'
 import { DumpRepositoryInterface } from '../Domain/Dump/DumpRepositoryInterface'
 import { AccountDeletionRequestedEventHandler } from '../Domain/Handler/AccountDeletionRequestedEventHandler'
@@ -96,7 +89,6 @@ export class ContainerConfigLoader {
 
     const isConfiguredForHomeServer = env.get('MODE', true) === 'home-server'
     const isConfiguredForSelfHosting = env.get('MODE', true) === 'self-hosted'
-    const isConfiguredForAWSProduction = !isConfiguredForHomeServer && !isConfiguredForSelfHosting
     const isConfiguredForHomeServerOrSelfHosting = isConfiguredForHomeServer || isConfiguredForSelfHosting
     const isSecondaryDatabaseEnabled = env.get('SECONDARY_DB_ENABLED', true) === 'true'
     const isConfiguredForInMemoryCache = env.get('CACHE_TYPE', true) === 'memory'
@@ -180,10 +172,6 @@ export class ContainerConfigLoader {
           }
         }
 
-        if (isConfiguredForAWSProduction) {
-          return captureAWSv3Client(new SNSClient(snsConfig))
-        }
-
         return new SNSClient(snsConfig)
       })
 
@@ -212,10 +200,6 @@ export class ContainerConfigLoader {
           }
         }
 
-        if (isConfiguredForAWSProduction) {
-          return captureAWSv3Client(new SQSClient(sqsConfig))
-        }
-
         return new SQSClient(sqsConfig)
       })
 
@@ -228,10 +212,6 @@ export class ContainerConfigLoader {
             apiVersion: 'latest',
             region: env.get('S3_AWS_REGION', true),
           })
-
-          if (isConfiguredForAWSProduction) {
-            return captureAWSv3Client(s3Client)
-          }
         }
 
         return s3Client
@@ -528,15 +508,7 @@ export class ContainerConfigLoader {
     } else {
       container
         .bind<DomainEventMessageHandlerInterface>(TYPES.Revisions_DomainEventMessageHandler)
-        .toConstantValue(
-          env.get('NEW_RELIC_ENABLED', true) === 'true'
-            ? new SQSXRayEventMessageHandler(
-                ServiceIdentifier.NAMES.RevisionsWorker,
-                eventHandlers,
-                container.get(TYPES.Revisions_Logger),
-              )
-            : new SQSEventMessageHandler(eventHandlers, container.get(TYPES.Revisions_Logger)),
-        )
+        .toConstantValue(new SQSEventMessageHandler(eventHandlers, container.get(TYPES.Revisions_Logger)))
 
       container
         .bind<DomainEventSubscriberFactoryInterface>(TYPES.Revisions_DomainEventSubscriberFactory)

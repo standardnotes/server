@@ -6,7 +6,7 @@ import {
   DomainEventMessageHandlerInterface,
   DomainEventSubscriberFactoryInterface,
 } from '@standardnotes/domain-events'
-import { MapperInterface, ServiceIdentifier } from '@standardnotes/domain-core'
+import { MapperInterface } from '@standardnotes/domain-core'
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const Mixpanel = require('mixpanel')
 
@@ -18,7 +18,6 @@ import {
   SNSDomainEventPublisher,
   SQSDomainEventSubscriberFactory,
   SQSEventMessageHandler,
-  SQSXRayEventMessageHandler,
 } from '@standardnotes/domain-events-infra'
 import { Timer, TimerInterface } from '@standardnotes/time'
 import { PeriodKeyGeneratorInterface } from '../Domain/Time/PeriodKeyGeneratorInterface'
@@ -57,7 +56,6 @@ import { SNSClient, SNSClientConfig } from '@aws-sdk/client-sns'
 import { SQSClient, SQSClientConfig } from '@aws-sdk/client-sqs'
 import { SessionCreatedEventHandler } from '../Domain/Handler/SessionCreatedEventHandler'
 import { SessionRefreshedEventHandler } from '../Domain/Handler/SessionRefreshedEventHandler'
-import { captureAWSv3Client } from 'aws-xray-sdk'
 
 export class ContainerConfigLoader {
   async load(): Promise<Container> {
@@ -108,7 +106,7 @@ export class ContainerConfigLoader {
         secretAccessKey: env.get('SNS_SECRET_ACCESS_KEY', true),
       }
     }
-    container.bind<SNSClient>(TYPES.SNS).toConstantValue(captureAWSv3Client(new SNSClient(snsConfig)))
+    container.bind<SNSClient>(TYPES.SNS).toConstantValue(new SNSClient(snsConfig))
 
     if (env.get('SQS_QUEUE_URL', true)) {
       const sqsConfig: SQSClientConfig = {
@@ -123,7 +121,7 @@ export class ContainerConfigLoader {
           secretAccessKey: env.get('SQS_SECRET_ACCESS_KEY', true),
         }
       }
-      container.bind<SQSClient>(TYPES.SQS).toConstantValue(captureAWSv3Client(new SQSClient(sqsConfig)))
+      container.bind<SQSClient>(TYPES.SQS).toConstantValue(new SQSClient(sqsConfig))
     }
 
     // env vars
@@ -245,15 +243,7 @@ export class ContainerConfigLoader {
 
     container
       .bind<DomainEventMessageHandlerInterface>(TYPES.DomainEventMessageHandler)
-      .toConstantValue(
-        env.get('NEW_RELIC_ENABLED', true) === 'true'
-          ? new SQSXRayEventMessageHandler(
-              ServiceIdentifier.NAMES.AnalyticsWorker,
-              eventHandlers,
-              container.get(TYPES.Logger),
-            )
-          : new SQSEventMessageHandler(eventHandlers, container.get(TYPES.Logger)),
-      )
+      .toConstantValue(new SQSEventMessageHandler(eventHandlers, container.get(TYPES.Logger)))
     container
       .bind<DomainEventSubscriberFactoryInterface>(TYPES.DomainEventSubscriberFactory)
       .toConstantValue(

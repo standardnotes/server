@@ -1,6 +1,5 @@
 import * as winston from 'winston'
 import Redis from 'ioredis'
-import { captureAWSv3Client } from 'aws-xray-sdk'
 import { SNSClient, SNSClientConfig } from '@aws-sdk/client-sns'
 import { SQSClient, SQSClientConfig } from '@aws-sdk/client-sqs'
 import { S3Client, S3ClientConfig } from '@aws-sdk/client-s3'
@@ -20,7 +19,6 @@ import {
   SNSDomainEventPublisher,
   SQSDomainEventSubscriberFactory,
   SQSEventMessageHandler,
-  SQSXRayEventMessageHandler,
 } from '@standardnotes/domain-events-infra'
 import { StreamDownloadFile } from '../Domain/UseCase/StreamDownloadFile/StreamDownloadFile'
 import { FileDownloaderInterface } from '../Domain/Services/FileDownloaderInterface'
@@ -54,7 +52,6 @@ import { S3FileMover } from '../Infra/S3/S3FileMover'
 import { FSFileMover } from '../Infra/FS/FSFileMover'
 import { MoveFile } from '../Domain/UseCase/MoveFile/MoveFile'
 import { SharedVaultValetTokenAuthMiddleware } from '../Infra/InversifyExpress/Middleware/SharedVaultValetTokenAuthMiddleware'
-import { ServiceIdentifier } from '@standardnotes/domain-core'
 
 export class ContainerConfigLoader {
   async load(configuration?: {
@@ -85,9 +82,7 @@ export class ContainerConfigLoader {
       .toConstantValue(env.get('FILE_UPLOAD_PATH', true) ?? `${__dirname}/../../uploads`)
 
     const isConfiguredForHomeServer = env.get('MODE', true) === 'home-server'
-    const isConfiguredForSelfHosting = env.get('MODE', true) === 'self-hosted'
     const isConfiguredForInMemoryCache = env.get('CACHE_TYPE', true) === 'memory'
-    const isConfiguredForAWSProduction = !isConfiguredForHomeServer && !isConfiguredForSelfHosting
 
     let logger: winston.Logger
     if (configuration?.logger) {
@@ -153,10 +148,7 @@ export class ContainerConfigLoader {
             secretAccessKey: env.get('SNS_SECRET_ACCESS_KEY', true),
           }
         }
-        let snsClient = new SNSClient(snsConfig)
-        if (isConfiguredForAWSProduction) {
-          snsClient = captureAWSv3Client(snsClient)
-        }
+        const snsClient = new SNSClient(snsConfig)
         container.bind<SNSClient>(TYPES.Files_SNS).toConstantValue(snsClient)
       }
 
@@ -173,10 +165,7 @@ export class ContainerConfigLoader {
             secretAccessKey: env.get('SQS_SECRET_ACCESS_KEY', true),
           }
         }
-        let sqsClient = new SQSClient(sqsConfig)
-        if (isConfiguredForAWSProduction) {
-          sqsClient = captureAWSv3Client(sqsClient)
-        }
+        const sqsClient = new SQSClient(sqsConfig)
         container.bind<SQSClient>(TYPES.Files_SQS).toConstantValue(sqsClient)
       }
 
@@ -197,10 +186,7 @@ export class ContainerConfigLoader {
       if (env.get('S3_ENDPOINT', true)) {
         s3Opts.endpoint = env.get('S3_ENDPOINT', true)
       }
-      let s3Client = new S3Client(s3Opts)
-      if (isConfiguredForAWSProduction) {
-        s3Client = captureAWSv3Client(s3Client)
-      }
+      const s3Client = new S3Client(s3Opts)
       container.bind<S3Client>(TYPES.Files_S3).toConstantValue(s3Client)
       container.bind<FileDownloaderInterface>(TYPES.Files_FileDownloader).to(S3FileDownloader)
       container.bind<FileUploaderInterface>(TYPES.Files_FileUploader).to(S3FileUploader)
@@ -305,15 +291,7 @@ export class ContainerConfigLoader {
     } else {
       container
         .bind<DomainEventMessageHandlerInterface>(TYPES.Files_DomainEventMessageHandler)
-        .toConstantValue(
-          env.get('NEW_RELIC_ENABLED', true) === 'true'
-            ? new SQSXRayEventMessageHandler(
-                ServiceIdentifier.NAMES.FilesWorker,
-                eventHandlers,
-                container.get(TYPES.Files_Logger),
-              )
-            : new SQSEventMessageHandler(eventHandlers, container.get(TYPES.Files_Logger)),
-        )
+        .toConstantValue(new SQSEventMessageHandler(eventHandlers, container.get(TYPES.Files_Logger)))
       container
         .bind<DomainEventSubscriberFactoryInterface>(TYPES.Files_DomainEventSubscriberFactory)
         .toConstantValue(

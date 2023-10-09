@@ -18,11 +18,7 @@ import { RedisWebSocketsConnectionRepository } from '../Infra/Redis/RedisWebSock
 import { AddWebSocketsConnection } from '../Domain/UseCase/AddWebSocketsConnection/AddWebSocketsConnection'
 import { RemoveWebSocketsConnection } from '../Domain/UseCase/RemoveWebSocketsConnection/RemoveWebSocketsConnection'
 import { WebSocketsClientMessenger } from '../Infra/WebSockets/WebSocketsClientMessenger'
-import {
-  SQSDomainEventSubscriberFactory,
-  SQSEventMessageHandler,
-  SQSXRayEventMessageHandler,
-} from '@standardnotes/domain-events-infra'
+import { SQSDomainEventSubscriberFactory, SQSEventMessageHandler } from '@standardnotes/domain-events-infra'
 import { ApiGatewayAuthMiddleware } from '../Controller/ApiGatewayAuthMiddleware'
 
 import {
@@ -38,8 +34,6 @@ import { WebSocketsController } from '../Controller/WebSocketsController'
 import { WebSocketServerInterface } from '@standardnotes/api'
 import { ClientMessengerInterface } from '../Client/ClientMessengerInterface'
 import { WebSocketMessageRequestedEventHandler } from '../Domain/Handler/WebSocketMessageRequestedEventHandler'
-import { ServiceIdentifier } from '@standardnotes/domain-core'
-import { captureAWSv3Client } from 'aws-xray-sdk'
 
 export class ContainerConfigLoader {
   async load(): Promise<Container> {
@@ -88,18 +82,16 @@ export class ContainerConfigLoader {
           secretAccessKey: env.get('SQS_SECRET_ACCESS_KEY', true),
         }
       }
-      container.bind<SQSClient>(TYPES.SQS).toConstantValue(captureAWSv3Client(new SQSClient(sqsConfig)))
+      container.bind<SQSClient>(TYPES.SQS).toConstantValue(new SQSClient(sqsConfig))
     }
 
     container.bind(TYPES.WEBSOCKETS_API_URL).toConstantValue(env.get('WEBSOCKETS_API_URL', true))
 
     container.bind<ApiGatewayManagementApiClient>(TYPES.WebSockets_ApiGatewayManagementApiClient).toConstantValue(
-      captureAWSv3Client(
-        new ApiGatewayManagementApiClient({
-          endpoint: container.get(TYPES.WEBSOCKETS_API_URL),
-          region: env.get('API_GATEWAY_AWS_REGION', true) ?? 'us-east-1',
-        }),
-      ),
+      new ApiGatewayManagementApiClient({
+        endpoint: container.get(TYPES.WEBSOCKETS_API_URL),
+        region: env.get('API_GATEWAY_AWS_REGION', true) ?? 'us-east-1',
+      }),
     )
 
     // Controller
@@ -156,15 +148,7 @@ export class ContainerConfigLoader {
 
     container
       .bind<DomainEventMessageHandlerInterface>(TYPES.DomainEventMessageHandler)
-      .toConstantValue(
-        env.get('NEW_RELIC_ENABLED', true) === 'true'
-          ? new SQSXRayEventMessageHandler(
-              ServiceIdentifier.NAMES.WebsocketsWorker,
-              eventHandlers,
-              container.get(TYPES.Logger),
-            )
-          : new SQSEventMessageHandler(eventHandlers, container.get(TYPES.Logger)),
-      )
+      .toConstantValue(new SQSEventMessageHandler(eventHandlers, container.get(TYPES.Logger)))
     container
       .bind<DomainEventSubscriberFactoryInterface>(TYPES.DomainEventSubscriberFactory)
       .toConstantValue(

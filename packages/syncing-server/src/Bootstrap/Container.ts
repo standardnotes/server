@@ -5,7 +5,6 @@ import { Container, interfaces } from 'inversify'
 import { Env } from './Env'
 import TYPES from './Types'
 import { AppDataSource } from './DataSource'
-import { captureAWSv3Client } from 'aws-xray-sdk'
 import { SNSClient, SNSClientConfig } from '@aws-sdk/client-sns'
 import { ItemRepositoryInterface } from '../Domain/Item/ItemRepositoryInterface'
 import { SQLLegacyItemRepository } from '../Infra/TypeORM/SQLLegacyItemRepository'
@@ -17,7 +16,6 @@ import {
   SNSDomainEventPublisher,
   SQSDomainEventSubscriberFactory,
   SQSEventMessageHandler,
-  SQSXRayEventMessageHandler,
 } from '@standardnotes/domain-events-infra'
 import { DomainEventFactoryInterface } from '../Domain/Event/DomainEventFactoryInterface'
 import { DomainEventFactory } from '../Domain/Event/DomainEventFactory'
@@ -64,7 +62,6 @@ import {
   ControllerContainer,
   ControllerContainerInterface,
   MapperInterface,
-  ServiceIdentifier,
   SharedVaultUser,
 } from '@standardnotes/domain-core'
 import { BaseItemsController } from '../Infra/InversifyExpressUtils/Base/BaseItemsController'
@@ -233,7 +230,6 @@ export class ContainerConfigLoader {
 
     const isConfiguredForHomeServer = env.get('MODE', true) === 'home-server'
     const isConfiguredForSelfHosting = env.get('MODE', true) === 'self-hosted'
-    const isConfiguredForAWSProduction = !isConfiguredForHomeServer && !isConfiguredForSelfHosting
     const isConfiguredForHomeServerOrSelfHosting = isConfiguredForHomeServer || isConfiguredForSelfHosting
     const isSecondaryDatabaseEnabled = env.get('SECONDARY_DB_ENABLED', true) === 'true'
     const isConfiguredForInMemoryCache = env.get('CACHE_TYPE', true) === 'memory'
@@ -285,10 +281,6 @@ export class ContainerConfigLoader {
           }
         }
 
-        if (isConfiguredForAWSProduction) {
-          captureAWSv3Client(new SNSClient(snsConfig))
-        }
-
         return new SNSClient(snsConfig)
       })
 
@@ -317,10 +309,6 @@ export class ContainerConfigLoader {
           }
         }
 
-        if (isConfiguredForAWSProduction) {
-          captureAWSv3Client(new SQSClient(sqsConfig))
-        }
-
         return new SQSClient(sqsConfig)
       })
 
@@ -333,10 +321,6 @@ export class ContainerConfigLoader {
             apiVersion: 'latest',
             region: env.get('S3_AWS_REGION', true),
           })
-
-          if (isConfiguredForAWSProduction) {
-            captureAWSv3Client(s3Client)
-          }
         }
 
         return s3Client
@@ -1171,15 +1155,7 @@ export class ContainerConfigLoader {
     } else {
       container
         .bind<DomainEventMessageHandlerInterface>(TYPES.Sync_DomainEventMessageHandler)
-        .toConstantValue(
-          env.get('NEW_RELIC_ENABLED', true) === 'true'
-            ? new SQSXRayEventMessageHandler(
-                ServiceIdentifier.NAMES.SyncingServerWorker,
-                eventHandlers,
-                container.get(TYPES.Sync_Logger),
-              )
-            : new SQSEventMessageHandler(eventHandlers, container.get(TYPES.Sync_Logger)),
-        )
+        .toConstantValue(new SQSEventMessageHandler(eventHandlers, container.get(TYPES.Sync_Logger)))
     }
 
     container

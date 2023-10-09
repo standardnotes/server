@@ -27,7 +27,6 @@
     "@aws-sdk/client-sns": "^3.332.0",
     "@aws-sdk/client-sqs": "^3.332.0",
     "@standardnotes/domain-events": "workspace:*",
-    "aws-xray-sdk": "^3.5.2",
     "ioredis": "^5.2.4",
     "reflect-metadata": "^0.1.13",
     "sqs-consumer": "^7.3.0",

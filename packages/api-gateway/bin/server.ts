@@ -29,7 +29,6 @@ import helmet from 'helmet'
 import * as cors from 'cors'
 import { text, json, Request, Response, NextFunction } from 'express'
 import * as winston from 'winston'
-import * as AWSXRay from 'aws-xray-sdk'
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const robots = require('express-robots-txt')
 
@@ -37,27 +36,15 @@ import { InversifyExpressServer } from 'inversify-express-utils'
 import { ContainerConfigLoader } from '../src/Bootstrap/Container'
 import { TYPES } from '../src/Bootstrap/Types'
 import { Env } from '../src/Bootstrap/Env'
-import { ServiceIdentifier } from '@standardnotes/domain-core'
 
 const container = new ContainerConfigLoader()
 void container.load().then((container) => {
   const env: Env = new Env()
   env.load()
 
-  const isConfiguredForAWSProduction =
-    env.get('MODE', true) !== 'home-server' && env.get('MODE', true) !== 'self-hosted'
-
-  if (isConfiguredForAWSProduction) {
-    AWSXRay.config([AWSXRay.plugins.ECSPlugin])
-  }
-
   const server = new InversifyExpressServer(container)
 
   server.setConfig((app) => {
-    if (isConfiguredForAWSProduction) {
-      app.use(AWSXRay.express.openSegment(ServiceIdentifier.NAMES.ApiGateway))
-    }
-
     app.use((_request: Request, response: Response, next: NextFunction) => {
       response.setHeader('X-API-Gateway-Version', container.get(TYPES.ApiGateway_VERSION))
       next()
@@ -116,10 +103,6 @@ void container.load().then((container) => {
   })
 
   const serverInstance = server.build()
-
-  if (isConfiguredForAWSProduction) {
-    serverInstance.use(AWSXRay.express.closeSegment())
-  }
 
   serverInstance.listen(env.get('PORT'))
 

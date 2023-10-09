@@ -1,6 +1,5 @@
 import * as winston from 'winston'
 import Redis from 'ioredis'
-import { captureAWSv3Client } from 'aws-xray-sdk'
 import { SNSClient, SNSClientConfig } from '@aws-sdk/client-sns'
 import { SQSClient, SQSClientConfig } from '@aws-sdk/client-sqs'
 import { Container } from 'inversify'
@@ -93,7 +92,6 @@ import {
   SNSDomainEventPublisher,
   SQSDomainEventSubscriberFactory,
   SQSEventMessageHandler,
-  SQSXRayEventMessageHandler,
 } from '@standardnotes/domain-events-infra'
 import { GetUserSubscription } from '../Domain/UseCase/GetUserSubscription/GetUserSubscription'
 import { ChangeCredentials } from '../Domain/UseCase/ChangeCredentials/ChangeCredentials'
@@ -190,7 +188,6 @@ import {
   ControllerContainer,
   ControllerContainerInterface,
   MapperInterface,
-  ServiceIdentifier,
   SharedVaultUser,
 } from '@standardnotes/domain-core'
 import { SessionTracePersistenceMapper } from '../Mapping/SessionTracePersistenceMapper'
@@ -322,8 +319,6 @@ export class ContainerConfigLoader {
     logger.debug('Database initialized')
 
     const isConfiguredForHomeServer = env.get('MODE', true) === 'home-server'
-    const isConfiguredForSelfHosting = env.get('MODE', true) === 'self-hosted'
-    const isConfiguredForAWSProduction = !isConfiguredForHomeServer && !isConfiguredForSelfHosting
     const isConfiguredForInMemoryCache = env.get('CACHE_TYPE', true) === 'memory'
 
     if (!isConfiguredForInMemoryCache) {
@@ -354,10 +349,7 @@ export class ContainerConfigLoader {
           secretAccessKey: env.get('SNS_SECRET_ACCESS_KEY', true),
         }
       }
-      let snsClient = new SNSClient(snsConfig)
-      if (isConfiguredForAWSProduction) {
-        snsClient = captureAWSv3Client(snsClient)
-      }
+      const snsClient = new SNSClient(snsConfig)
       container.bind<SNSClient>(TYPES.Auth_SNS).toConstantValue(snsClient)
 
       const sqsConfig: SQSClientConfig = {
@@ -372,10 +364,7 @@ export class ContainerConfigLoader {
           secretAccessKey: env.get('SQS_SECRET_ACCESS_KEY', true),
         }
       }
-      let sqsClient = new SQSClient(sqsConfig)
-      if (isConfiguredForAWSProduction) {
-        sqsClient = captureAWSv3Client(sqsClient)
-      }
+      const sqsClient = new SQSClient(sqsConfig)
       container.bind<SQSClient>(TYPES.Auth_SQS).toConstantValue(sqsClient)
     }
 
@@ -1234,15 +1223,7 @@ export class ContainerConfigLoader {
     } else {
       container
         .bind<DomainEventMessageHandlerInterface>(TYPES.Auth_DomainEventMessageHandler)
-        .toConstantValue(
-          isConfiguredForAWSProduction
-            ? new SQSXRayEventMessageHandler(
-                ServiceIdentifier.NAMES.AuthWorker,
-                eventHandlers,
-                container.get(TYPES.Auth_Logger),
-              )
-            : new SQSEventMessageHandler(eventHandlers, container.get(TYPES.Auth_Logger)),
-        )
+        .toConstantValue(new SQSEventMessageHandler(eventHandlers, container.get(TYPES.Auth_Logger)))
 
       container
         .bind<DomainEventSubscriberFactoryInterface>(TYPES.Auth_DomainEventSubscriberFactory)

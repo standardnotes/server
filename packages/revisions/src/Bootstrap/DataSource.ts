@@ -1,5 +1,3 @@
-import * as mysqlDriver from 'mysql'
-import { captureMySQL } from 'aws-xray-sdk'
 import { DataSource, EntityTarget, LoggerOptions, MongoRepository, ObjectLiteral, Repository } from 'typeorm'
 import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions'
 
@@ -119,15 +117,9 @@ export class AppDataSource {
         restoreNodeTimeout: 5,
       }
 
-      let driver = undefined
-      if (!isConfiguredForHomeServerOrSelfHosting) {
-        driver = captureMySQL(mysqlDriver)
-      }
-
       const mySQLDataSourceOptions: MysqlConnectionOptions = {
         ...commonDataSourceOptions,
         type: 'mysql',
-        driver,
         charset: 'utf8mb4',
         supportBigNumbers: true,
         bigNumberStrings: false,
