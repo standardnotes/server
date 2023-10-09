@@ -9,6 +9,7 @@ import { HttpInstrumentation } from '@opentelemetry/instrumentation-http'
 import { AwsInstrumentation } from '@opentelemetry/instrumentation-aws-sdk'
 import { OTLPMetricExporter } from '@opentelemetry/exporter-metrics-otlp-proto'
 import { WinstonInstrumentation } from '@opentelemetry/instrumentation-winston'
+import { IORedisInstrumentation } from '@opentelemetry/instrumentation-ioredis'
 
 import { OpenTelemetrySDKInterface } from './OpenTelemetrySDKInterface'
 
@@ -49,6 +50,7 @@ export class OpenTelemetrySDK implements OpenTelemetrySDKInterface {
         }),
         new TypeormInstrumentation(),
         winstonInstrumentation,
+        new IORedisInstrumentation(),
       ],
       metricReader: metricReader,
       resource: otResource,

@@ -4369,6 +4369,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@opentelemetry/instrumentation-ioredis@npm:^0.35.1":
+  version: 0.35.1
+  resolution: "@opentelemetry/instrumentation-ioredis@npm:0.35.1"
+  dependencies:
+    "@opentelemetry/instrumentation": "npm:^0.41.2"
+    "@opentelemetry/redis-common": "npm:^0.36.1"
+    "@opentelemetry/semantic-conventions": "npm:^1.0.0"
+    "@types/ioredis4": "npm:@types/ioredis@^4.28.10"
+  peerDependencies:
+    "@opentelemetry/api": ^1.3.0
+  checksum: 8345ef7567128d674a1262ed64c03e6b7f7442564622ce680a98ebea038822209b1e829134df07eadf0cfdd3a368880e43ea7e3c9117980fc378c31a4bc044fd
+  languageName: node
+  linkType: hard
+
 "@opentelemetry/instrumentation-winston@npm:^0.32.1":
   version: 0.32.1
   resolution: "@opentelemetry/instrumentation-winston@npm:0.32.1"
@@ -4503,6 +4517,13 @@ __metadata:
   peerDependencies:
     "@opentelemetry/api": ">=1.0.0 <1.7.0"
   checksum: 7603eb4415fadad0e3fe29ae11bb1bf2a1cd45ee3c44e5921821425bd647d7fcca8f4e0c2046e62630acacb7a7ef040c6a7bcaa64538cc3afaf3fc5854188329
+  languageName: node
+  linkType: hard
+
+"@opentelemetry/redis-common@npm:^0.36.1":
+  version: 0.36.1
+  resolution: "@opentelemetry/redis-common@npm:0.36.1"
+  checksum: 65962c6a9cbcd77e653eb42dc00deecf4988cec4c20de4fa15b3817214147f92531c46e803aedcd561c016d777d015f750eeebe081741d39bbb9d23fcb886f3f
   languageName: node
   linkType: hard
 
@@ -6003,6 +6024,7 @@ __metadata:
     "@opentelemetry/id-generator-aws-xray": "npm:^1.2.1"
     "@opentelemetry/instrumentation-aws-sdk": "npm:^0.36.0"
     "@opentelemetry/instrumentation-http": "npm:^0.43.0"
+    "@opentelemetry/instrumentation-ioredis": "npm:^0.35.1"
     "@opentelemetry/instrumentation-winston": "npm:^0.32.1"
     "@opentelemetry/propagator-aws-xray": "npm:^1.3.1"
     "@opentelemetry/resource-detector-aws": "npm:^1.3.1"
@@ -6812,6 +6834,15 @@ __metadata:
   dependencies:
     "@types/node": "npm:*"
   checksum: c3070ccdc9ca0f40df747bced1c96c71a61992d6f7c767e8fd24bb6a3c2de26e8b84135ede000b7e79db530a23e7e88dcd9db60eee6395d0f4ce1dae91369dd4
+  languageName: node
+  linkType: hard
+
+"@types/ioredis4@npm:@types/ioredis@^4.28.10":
+  version: 4.28.10
+  resolution: "@types/ioredis@npm:4.28.10"
+  dependencies:
+    "@types/node": "npm:*"
+  checksum: c160dccab11b9bdc49e753a8fb4c18ccd0dd97c9b5aa966514cdc3f3fb6cd007e421f1de6044565446acd59059b18c8d8f6ae878c013d623a24ed196adead6f3
   languageName: node
   linkType: hard
 
