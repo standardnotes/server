@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.27.0](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.26.4...@standardnotes/files-server@1.27.0) (2023-10-09)
+
+### Features
+
+* add opentelemetry to all services ([5e930d0](https://github.com/standardnotes/files/commit/5e930d08eb60a0da800081342315e7edaf130951))
+
 ## [1.26.4](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.26.3...@standardnotes/files-server@1.26.4) (2023-10-09)
 
 ### Bug Fixes

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.41.0](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.40.4...@standardnotes/revisions-server@1.41.0) (2023-10-09)
+
+### Bug Fixes
+
+* **revisions:** add trace id sampler ([bf9072d](https://github.com/standardnotes/server/commit/bf9072dbd473ef68df285d5729ffcb2383f5fa3d))
+* **revisions:** instrumenting opentelemetry on non production ([0c89d8b](https://github.com/standardnotes/server/commit/0c89d8bd2d90fd9875d331baa888706b4f4ca4a6))
+
+### Features
+
+* add opentelemetry to all services ([5e930d0](https://github.com/standardnotes/server/commit/5e930d08eb60a0da800081342315e7edaf130951))
+* **revisions:** switch to open telemetry ([6abdd73](https://github.com/standardnotes/server/commit/6abdd73a3123c35e2df492711f785f9a30571b22))
+
 ## [1.40.4](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.40.3...@standardnotes/revisions-server@1.40.4) (2023-10-09)
 
 ### Bug Fixes
