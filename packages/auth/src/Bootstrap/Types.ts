@@ -3,6 +3,7 @@ const TYPES = {
   Auth_Redis: Symbol.for('Auth_Redis'),
   Auth_SNS: Symbol.for('Auth_SNS'),
   Auth_SQS: Symbol.for('Auth_SQS'),
+  Auth_OpenTelemetrySDK: Symbol.for('Auth_OpenTelemetrySDK'),
   // Mapping
   Auth_SessionTracePersistenceMapper: Symbol.for('Auth_SessionTracePersistenceMapper'),
   Auth_AuthenticatorChallengePersistenceMapper: Symbol.for('Auth_AuthenticatorChallengePersistenceMapper'),
@@ -105,6 +106,7 @@ const TYPES = {
   Auth_U2F_EXPECTED_ORIGIN: Symbol.for('Auth_U2F_EXPECTED_ORIGIN'),
   Auth_U2F_REQUIRE_USER_VERIFICATION: Symbol.for('Auth_U2F_REQUIRE_USER_VERIFICATION'),
   Auth_READONLY_USERS: Symbol.for('Auth_READONLY_USERS'),
+  Auth_IS_CONFIGURED_FOR_HOME_SERVER_OR_SELF_HOSTING: Symbol.for('Auth_IS_CONFIGURED_FOR_HOME_SERVER_OR_SELF_HOSTING'),
   // use cases
   Auth_AuthenticateUser: Symbol.for('Auth_AuthenticateUser'),
   Auth_AuthenticateRequest: Symbol.for('Auth_AuthenticateRequest'),

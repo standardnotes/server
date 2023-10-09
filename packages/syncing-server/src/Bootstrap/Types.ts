@@ -6,6 +6,7 @@ const TYPES = {
   Sync_SQS: Symbol.for('Sync_SQS'),
   Sync_S3: Symbol.for('Sync_S3'),
   Sync_Env: Symbol.for('Sync_Env'),
+  Sync_OpenTelemetrySDK: Symbol.for('Sync_OpenTelemetrySDK'),
   // Repositories
   Sync_ItemRepositoryResolver: Symbol.for('Sync_ItemRepositoryResolver'),
   Sync_SQLItemRepository: Symbol.for('Sync_SQLItemRepository'),
@@ -48,6 +49,7 @@ const TYPES = {
   Sync_FILE_UPLOAD_PATH: Symbol.for('Sync_FILE_UPLOAD_PATH'),
   Sync_VALET_TOKEN_SECRET: Symbol.for('Sync_VALET_TOKEN_SECRET'),
   Sync_VALET_TOKEN_TTL: Symbol.for('Sync_VALET_TOKEN_TTL'),
+  Sync_IS_CONFIGURED_FOR_HOME_SERVER_OR_SELF_HOSTING: Symbol.for('Sync_IS_CONFIGURED_FOR_HOME_SERVER_OR_SELF_HOSTING'),
   // use cases
   Sync_SyncItems: Symbol.for('Sync_SyncItems'),
   Sync_CheckIntegrity: Symbol.for('Sync_CheckIntegrity'),

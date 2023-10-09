@@ -5,6 +5,7 @@ const TYPES = {
   Files_S3: Symbol.for('Files_S3'),
   Files_SNS: Symbol.for('Files_SNS'),
   Files_SQS: Symbol.for('Files_SQS'),
+  Files_OpenTelemetrySDK: Symbol.for('Files_OpenTelemetrySDK'),
 
   // use cases
   Files_UploadFileChunk: Symbol.for('Files_UploadFileChunk'),
@@ -47,6 +48,9 @@ const TYPES = {
   Files_VERSION: Symbol.for('Files_VERSION'),
   Files_NEW_RELIC_ENABLED: Symbol.for('Files_NEW_RELIC_ENABLED'),
   Files_FILE_UPLOAD_PATH: Symbol.for('Files_FILE_UPLOAD_PATH'),
+  Files_IS_CONFIGURED_FOR_HOME_SERVER_OR_SELF_HOSTING: Symbol.for(
+    'Files_IS_CONFIGURED_FOR_HOME_SERVER_OR_SELF_HOSTING',
+  ),
 
   // Handlers
   Files_DomainEventMessageHandler: Symbol.for('Files_DomainEventMessageHandler'),

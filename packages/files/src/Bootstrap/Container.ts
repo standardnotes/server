@@ -16,6 +16,8 @@ import { DomainEventFactory } from '../Domain/Event/DomainEventFactory'
 import {
   DirectCallDomainEventPublisher,
   DirectCallEventMessageHandler,
+  OpenTelemetrySDK,
+  OpenTelemetrySDKInterface,
   SNSDomainEventPublisher,
   SQSDomainEventSubscriberFactory,
   SQSEventMessageHandler,
@@ -52,6 +54,7 @@ import { S3FileMover } from '../Infra/S3/S3FileMover'
 import { FSFileMover } from '../Infra/FS/FSFileMover'
 import { MoveFile } from '../Domain/UseCase/MoveFile/MoveFile'
 import { SharedVaultValetTokenAuthMiddleware } from '../Infra/InversifyExpress/Middleware/SharedVaultValetTokenAuthMiddleware'
+import { ServiceIdentifier } from '@standardnotes/domain-core'
 
 export class ContainerConfigLoader {
   async load(configuration?: {
@@ -81,8 +84,20 @@ export class ContainerConfigLoader {
       .bind(TYPES.Files_FILE_UPLOAD_PATH)
       .toConstantValue(env.get('FILE_UPLOAD_PATH', true) ?? `${__dirname}/../../uploads`)
 
-    const isConfiguredForHomeServer = env.get('MODE', true) === 'home-server'
     const isConfiguredForInMemoryCache = env.get('CACHE_TYPE', true) === 'memory'
+    const isConfiguredForHomeServer = env.get('MODE', true) === 'home-server'
+    const isConfiguredForSelfHosting = env.get('MODE', true) === 'self-hosted'
+    const isConfiguredForHomeServerOrSelfHosting = isConfiguredForHomeServer || isConfiguredForSelfHosting
+
+    container
+      .bind<boolean>(TYPES.Files_IS_CONFIGURED_FOR_HOME_SERVER_OR_SELF_HOSTING)
+      .toConstantValue(isConfiguredForHomeServerOrSelfHosting)
+
+    if (!isConfiguredForHomeServerOrSelfHosting) {
+      container
+        .bind<OpenTelemetrySDKInterface>(TYPES.Files_OpenTelemetrySDK)
+        .toConstantValue(new OpenTelemetrySDK(ServiceIdentifier.NAMES.Files))
+    }
 
     let logger: winston.Logger
     if (configuration?.logger) {

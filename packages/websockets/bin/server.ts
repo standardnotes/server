@@ -11,6 +11,7 @@ import { InversifyExpressServer } from 'inversify-express-utils'
 import { ContainerConfigLoader } from '../src/Bootstrap/Container'
 import TYPES from '../src/Bootstrap/Types'
 import { Env } from '../src/Bootstrap/Env'
+import { OpenTelemetrySDKInterface } from '@standardnotes/domain-events-infra'
 
 const container = new ContainerConfigLoader()
 void container.load().then((container) => {
@@ -45,6 +46,9 @@ void container.load().then((container) => {
   })
 
   const serverInstance = server.build()
+
+  const openTelemetrySDK = container.get<OpenTelemetrySDKInterface>(TYPES.WebSockets_OpenTelemetrySDK)
+  openTelemetrySDK.start()
 
   serverInstance.listen(env.get('PORT'))
 

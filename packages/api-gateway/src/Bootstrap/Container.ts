@@ -16,12 +16,13 @@ import { RedisCrossServiceTokenCache } from '../Infra/Redis/RedisCrossServiceTok
 import { WebSocketAuthMiddleware } from '../Controller/WebSocketAuthMiddleware'
 import { InMemoryCrossServiceTokenCache } from '../Infra/InMemory/InMemoryCrossServiceTokenCache'
 import { DirectCallServiceProxy } from '../Service/Proxy/DirectCallServiceProxy'
-import { ServiceContainerInterface } from '@standardnotes/domain-core'
+import { ServiceContainerInterface, ServiceIdentifier } from '@standardnotes/domain-core'
 import { EndpointResolverInterface } from '../Service/Resolver/EndpointResolverInterface'
 import { EndpointResolver } from '../Service/Resolver/EndpointResolver'
 import { RequiredCrossServiceTokenMiddleware } from '../Controller/RequiredCrossServiceTokenMiddleware'
 import { OptionalCrossServiceTokenMiddleware } from '../Controller/OptionalCrossServiceTokenMiddleware'
 import { Transform } from 'stream'
+import { OpenTelemetrySDK, OpenTelemetrySDKInterface } from '@standardnotes/domain-events-infra'
 
 export class ContainerConfigLoader {
   async load(configuration?: {
@@ -35,7 +36,19 @@ export class ContainerConfigLoader {
     const container = new Container()
 
     const isConfiguredForHomeServer = env.get('MODE', true) === 'home-server'
+    const isConfiguredForSelfHosting = env.get('MODE', true) === 'self-hosted'
+    const isConfiguredForHomeServerOrSelfHosting = isConfiguredForHomeServer || isConfiguredForSelfHosting
     const isConfiguredForInMemoryCache = env.get('CACHE_TYPE', true) === 'memory'
+
+    container
+      .bind<boolean>(TYPES.ApiGateway_IS_CONFIGURED_FOR_HOME_SERVER_OR_SELF_HOSTING)
+      .toConstantValue(isConfiguredForHomeServerOrSelfHosting)
+
+    if (!isConfiguredForHomeServerOrSelfHosting) {
+      container
+        .bind<OpenTelemetrySDKInterface>(TYPES.ApiGateway_OpenTelemetrySDK)
+        .toConstantValue(new OpenTelemetrySDK(ServiceIdentifier.NAMES.ApiGateway))
+    }
 
     const winstonFormatters = [winston.format.splat(), winston.format.json()]
     if (env.get('NEW_RELIC_ENABLED', true) === 'true') {

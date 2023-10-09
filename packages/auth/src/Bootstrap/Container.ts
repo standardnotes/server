@@ -89,6 +89,8 @@ import { ExtensionKeyGrantedEventHandler } from '../Domain/Handler/ExtensionKeyG
 import {
   DirectCallDomainEventPublisher,
   DirectCallEventMessageHandler,
+  OpenTelemetrySDK,
+  OpenTelemetrySDKInterface,
   SNSDomainEventPublisher,
   SQSDomainEventSubscriberFactory,
   SQSEventMessageHandler,
@@ -188,6 +190,7 @@ import {
   ControllerContainer,
   ControllerContainerInterface,
   MapperInterface,
+  ServiceIdentifier,
   SharedVaultUser,
 } from '@standardnotes/domain-core'
 import { SessionTracePersistenceMapper } from '../Mapping/SessionTracePersistenceMapper'
@@ -319,7 +322,19 @@ export class ContainerConfigLoader {
     logger.debug('Database initialized')
 
     const isConfiguredForHomeServer = env.get('MODE', true) === 'home-server'
+    const isConfiguredForSelfHosting = env.get('MODE', true) === 'self-hosted'
+    const isConfiguredForHomeServerOrSelfHosting = isConfiguredForHomeServer || isConfiguredForSelfHosting
     const isConfiguredForInMemoryCache = env.get('CACHE_TYPE', true) === 'memory'
+
+    container
+      .bind<boolean>(TYPES.Auth_IS_CONFIGURED_FOR_HOME_SERVER_OR_SELF_HOSTING)
+      .toConstantValue(isConfiguredForHomeServerOrSelfHosting)
+
+    if (!isConfiguredForHomeServerOrSelfHosting) {
+      container
+        .bind<OpenTelemetrySDKInterface>(TYPES.Auth_OpenTelemetrySDK)
+        .toConstantValue(new OpenTelemetrySDK(ServiceIdentifier.NAMES.Auth))
+    }
 
     if (!isConfiguredForInMemoryCache) {
       const redisUrl = env.get('REDIS_URL')

@@ -11,7 +11,7 @@ import { ContainerConfigLoader } from '../src/Bootstrap/Container'
 
 import '../src/Infra/InversifyExpress/AnnotatedRevisionsController'
 import '../src/Infra/InversifyExpress/AnnotatedHealthCheckController'
-import { NodeSDK } from '@opentelemetry/sdk-node'
+import { OpenTelemetrySDKInterface } from '@standardnotes/domain-events-infra'
 
 const container = new ContainerConfigLoader()
 void container.load().then((container) => {
@@ -47,7 +47,7 @@ void container.load().then((container) => {
   const serverInstance = server.build()
 
   if (!container.get<boolean>(TYPES.Revisions_IS_CONFIGURED_FOR_HOME_SERVER_OR_SELF_HOSTING)) {
-    const openTelemetrySDK = container.get<NodeSDK>(TYPES.Revisions_OpenTelemetrySDK)
+    const openTelemetrySDK = container.get<OpenTelemetrySDKInterface>(TYPES.Revisions_OpenTelemetrySDK)
     openTelemetrySDK.start()
   }
 

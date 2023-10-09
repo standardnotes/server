@@ -15,6 +15,9 @@ export const TYPES = {
   ApiGateway_VERSION: Symbol.for('ApiGateway_VERSION'),
   ApiGateway_CROSS_SERVICE_TOKEN_CACHE_TTL: Symbol.for('ApiGateway_CROSS_SERVICE_TOKEN_CACHE_TTL'),
   ApiGateway_IS_CONFIGURED_FOR_HOME_SERVER: Symbol.for('ApiGateway_IS_CONFIGURED_FOR_HOME_SERVER'),
+  ApiGateway_IS_CONFIGURED_FOR_HOME_SERVER_OR_SELF_HOSTING: Symbol.for(
+    'ApiGateway_IS_CONFIGURED_FOR_HOME_SERVER_OR_SELF_HOSTING',
+  ),
   // Middleware
   ApiGateway_RequiredCrossServiceTokenMiddleware: Symbol.for('ApiGateway_RequiredCrossServiceTokenMiddleware'),
   ApiGateway_OptionalCrossServiceTokenMiddleware: Symbol.for('ApiGateway_OptionalCrossServiceTokenMiddleware'),
@@ -25,4 +28,5 @@ export const TYPES = {
   ApiGateway_CrossServiceTokenCache: Symbol.for('ApiGateway_CrossServiceTokenCache'),
   ApiGateway_Timer: Symbol.for('ApiGateway_Timer'),
   ApiGateway_EndpointResolver: Symbol.for('ApiGateway_EndpointResolver'),
+  ApiGateway_OpenTelemetrySDK: Symbol.for('ApiGateway_OpenTelemetrySDK'),
 }

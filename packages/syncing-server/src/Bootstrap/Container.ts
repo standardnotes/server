@@ -13,6 +13,8 @@ import { Item } from '../Domain/Item/Item'
 import {
   DirectCallDomainEventPublisher,
   DirectCallEventMessageHandler,
+  OpenTelemetrySDK,
+  OpenTelemetrySDKInterface,
   SNSDomainEventPublisher,
   SQSDomainEventSubscriberFactory,
   SQSEventMessageHandler,
@@ -62,6 +64,7 @@ import {
   ControllerContainer,
   ControllerContainerInterface,
   MapperInterface,
+  ServiceIdentifier,
   SharedVaultUser,
 } from '@standardnotes/domain-core'
 import { BaseItemsController } from '../Infra/InversifyExpressUtils/Base/BaseItemsController'
@@ -233,6 +236,16 @@ export class ContainerConfigLoader {
     const isConfiguredForHomeServerOrSelfHosting = isConfiguredForHomeServer || isConfiguredForSelfHosting
     const isSecondaryDatabaseEnabled = env.get('SECONDARY_DB_ENABLED', true) === 'true'
     const isConfiguredForInMemoryCache = env.get('CACHE_TYPE', true) === 'memory'
+
+    container
+      .bind<boolean>(TYPES.Sync_IS_CONFIGURED_FOR_HOME_SERVER_OR_SELF_HOSTING)
+      .toConstantValue(isConfiguredForHomeServerOrSelfHosting)
+
+    if (!isConfiguredForHomeServerOrSelfHosting) {
+      container
+        .bind<OpenTelemetrySDKInterface>(TYPES.Sync_OpenTelemetrySDK)
+        .toConstantValue(new OpenTelemetrySDK(ServiceIdentifier.NAMES.SyncingServer))
+    }
 
     if (!isConfiguredForInMemoryCache) {
       const redisUrl = env.get('REDIS_URL')

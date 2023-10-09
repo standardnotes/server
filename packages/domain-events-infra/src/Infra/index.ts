@@ -1,6 +1,9 @@
 export * from './DirectCall/DirectCallDomainEventPublisher'
 export * from './DirectCall/DirectCallEventMessageHandler'
 
+export * from './OpenTelemetry/OpenTelemetrySDK'
+export * from './OpenTelemetry/OpenTelemetrySDKInterface'
+
 export * from './Redis/RedisDomainEventPublisher'
 export * from './Redis/RedisDomainEventSubscriber'
 export * from './Redis/RedisDomainEventSubscriberFactory'

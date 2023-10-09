@@ -18,7 +18,12 @@ import { RedisWebSocketsConnectionRepository } from '../Infra/Redis/RedisWebSock
 import { AddWebSocketsConnection } from '../Domain/UseCase/AddWebSocketsConnection/AddWebSocketsConnection'
 import { RemoveWebSocketsConnection } from '../Domain/UseCase/RemoveWebSocketsConnection/RemoveWebSocketsConnection'
 import { WebSocketsClientMessenger } from '../Infra/WebSockets/WebSocketsClientMessenger'
-import { SQSDomainEventSubscriberFactory, SQSEventMessageHandler } from '@standardnotes/domain-events-infra'
+import {
+  OpenTelemetrySDK,
+  OpenTelemetrySDKInterface,
+  SQSDomainEventSubscriberFactory,
+  SQSEventMessageHandler,
+} from '@standardnotes/domain-events-infra'
 import { ApiGatewayAuthMiddleware } from '../Controller/ApiGatewayAuthMiddleware'
 
 import {
@@ -34,6 +39,7 @@ import { WebSocketsController } from '../Controller/WebSocketsController'
 import { WebSocketServerInterface } from '@standardnotes/api'
 import { ClientMessengerInterface } from '../Client/ClientMessengerInterface'
 import { WebSocketMessageRequestedEventHandler } from '../Domain/Handler/WebSocketMessageRequestedEventHandler'
+import { ServiceIdentifier } from '@standardnotes/domain-core'
 
 export class ContainerConfigLoader {
   async load(): Promise<Container> {
@@ -41,6 +47,10 @@ export class ContainerConfigLoader {
     env.load()
 
     const container = new Container()
+
+    container
+      .bind<OpenTelemetrySDKInterface>(TYPES.WebSockets_OpenTelemetrySDK)
+      .toConstantValue(new OpenTelemetrySDK(ServiceIdentifier.NAMES.Websockets))
 
     const redisUrl = env.get('REDIS_URL')
     const isRedisInClusterMode = redisUrl.indexOf(',') > 0
