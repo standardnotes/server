@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.114.3](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.114.2...@standardnotes/syncing-server@1.114.3) (2023-10-09)
+
+### Bug Fixes
+
+* **syncing-server:** add opentelemetry starting info in logs ([3ab2956](https://github.com/standardnotes/syncing-server-js/commit/3ab29569dbe23e9d546136c336b39ee1accb513f))
+
+### Reverts
+
+* Revert "Revert "fix: setting parent span on workers"" ([76ae6f5](https://github.com/standardnotes/syncing-server-js/commit/76ae6f5a882a82ab5f635452e3bc7b2b16709531))
+
 ## [1.114.2](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.114.1...@standardnotes/syncing-server@1.114.2) (2023-10-09)
 
 ### Reverts

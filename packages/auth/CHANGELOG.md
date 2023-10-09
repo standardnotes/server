@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.154.3](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.154.2...@standardnotes/auth-server@1.154.3) (2023-10-09)
+
+### Reverts
+
+* Revert "Revert "fix: setting parent span on workers"" ([76ae6f5](https://github.com/standardnotes/server/commit/76ae6f5a882a82ab5f635452e3bc7b2b16709531))
+
 ## [1.154.2](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.154.1...@standardnotes/auth-server@1.154.2) (2023-10-09)
 
 ### Reverts

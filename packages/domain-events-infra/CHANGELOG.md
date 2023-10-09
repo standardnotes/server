@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.16.3](https://github.com/standardnotes/server/compare/@standardnotes/domain-events-infra@1.16.2...@standardnotes/domain-events-infra@1.16.3) (2023-10-09)
+
+### Bug Fixes
+
+* **domain-events-infra:** add parent context on internal span ([099c6e1](https://github.com/standardnotes/server/commit/099c6e10c69b6b81006f59bcdb35325b545ab39c))
+
+### Reverts
+
+* Revert "Revert "fix: setting parent span on workers"" ([76ae6f5](https://github.com/standardnotes/server/commit/76ae6f5a882a82ab5f635452e3bc7b2b16709531))
+
 ## [1.16.2](https://github.com/standardnotes/server/compare/@standardnotes/domain-events-infra@1.16.1...@standardnotes/domain-events-infra@1.16.2) (2023-10-09)
 
 ### Reverts
