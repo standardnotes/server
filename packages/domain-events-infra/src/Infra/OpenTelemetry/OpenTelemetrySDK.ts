@@ -12,6 +12,7 @@ import { WinstonInstrumentation } from '@opentelemetry/instrumentation-winston'
 import { IORedisInstrumentation } from '@opentelemetry/instrumentation-ioredis'
 
 import { OpenTelemetrySDKInterface } from './OpenTelemetrySDKInterface'
+import { ExpressInstrumentation } from '@opentelemetry/instrumentation-express'
 
 export class OpenTelemetrySDK implements OpenTelemetrySDKInterface {
   private declare sdk: OpenTelemetrySDKNode.NodeSDK
@@ -44,7 +45,14 @@ export class OpenTelemetrySDK implements OpenTelemetrySDKInterface {
       sampler: new OpenTelemetrySDKNode.tracing.TraceIdRatioBasedSampler(0.01),
       textMapPropagator: new AWSXRayPropagator(),
       instrumentations: [
-        new HttpInstrumentation(),
+        new HttpInstrumentation({
+          ignoreIncomingRequestHook: (request) => {
+            const isHealthCheckUrl = !!request.url?.match(/\/healthcheck/)
+
+            return isHealthCheckUrl
+          },
+        }),
+        new ExpressInstrumentation(),
         new AwsInstrumentation({
           suppressInternalInstrumentation: true,
         }),
