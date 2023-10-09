@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.16.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events-infra@1.15.0...@standardnotes/domain-events-infra@1.16.0) (2023-10-09)
+
+### Features
+
+* add custom tracing on workers ([65ced2c](https://github.com/standardnotes/server/commit/65ced2cc7b0686dc8af5cdad499412fc8fd29d1d))
+* **domain-events-infra:** add express instrumentation ([b47c80c](https://github.com/standardnotes/server/commit/b47c80cccd23af5d2ad375ef535a38f57362b8d0))
+* **domain-events-infra:** add ioredis instrumentation ([b72e515](https://github.com/standardnotes/server/commit/b72e515931f5ea874494fa88be7dcee7ad693b3f))
+* **domain-events-infra:** add winston instrumentation ([65fcc65](https://github.com/standardnotes/server/commit/65fcc657a77790c7f1b9b4a872ff59152e56bbc7))
+
 # [1.15.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events-infra@1.14.9...@standardnotes/domain-events-infra@1.15.0) (2023-10-09)
 
 ### Features

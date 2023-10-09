@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.14.0](https://github.com/standardnotes/server/compare/@standardnotes/websockets-server@1.13.0...@standardnotes/websockets-server@1.14.0) (2023-10-09)
+
+### Features
+
+* add custom tracing on workers ([65ced2c](https://github.com/standardnotes/server/commit/65ced2cc7b0686dc8af5cdad499412fc8fd29d1d))
+
 # [1.13.0](https://github.com/standardnotes/server/compare/@standardnotes/websockets-server@1.12.1...@standardnotes/websockets-server@1.13.0) (2023-10-09)
 
 ### Features

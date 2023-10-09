@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.28.0](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.27.0...@standardnotes/files-server@1.28.0) (2023-10-09)
+
+### Features
+
+* add custom tracing on workers ([65ced2c](https://github.com/standardnotes/files/commit/65ced2cc7b0686dc8af5cdad499412fc8fd29d1d))
+
 # [1.27.0](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.26.4...@standardnotes/files-server@1.27.0) (2023-10-09)
 
 ### Features
