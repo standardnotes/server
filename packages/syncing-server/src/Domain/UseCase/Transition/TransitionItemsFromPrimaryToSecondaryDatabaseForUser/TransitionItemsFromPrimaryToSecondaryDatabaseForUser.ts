@@ -114,12 +114,19 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
       const totalItemsCountForUser = await (this.secondaryItemRepository as ItemRepositoryInterface).countAll({
         userUuid: userUuid.value,
       })
+      this.logger.info(`[${userUuid.value}] Total items count for user: ${totalItemsCountForUser}`)
       const totalPages = Math.ceil(totalItemsCountForUser / this.pageSize)
+      this.logger.info(`[${userUuid.value}] Total pages: ${totalPages}`)
+      let insertedItemsCount = 0
+      let skippedItemsCount = 0
       for (let currentPage = initialPage; currentPage <= totalPages; currentPage++) {
         const isPageInEvery10Percent = currentPage % Math.ceil(totalPages / 10) === 0
         if (isPageInEvery10Percent) {
           this.logger.info(
             `[${userUuid.value}] Migrating items for user: ${Math.round((currentPage / totalPages) * 100)}% completed`,
+          )
+          this.logger.info(
+            `[${userUuid.value}] Inserted items count: ${insertedItemsCount}. Skipped items count: ${skippedItemsCount}`,
           )
           await this.updateTransitionStatus(userUuid, TransitionStatus.STATUSES.InProgress, timestamp)
         }
@@ -148,10 +155,13 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
                 this.logger.info(
                   `[${userUuid.value}] Item ${item.uuid.value} is older in secondary than item in primary database`,
                 )
+                skippedItemsCount++
 
                 continue
               }
               if (itemInPrimary.isIdenticalTo(item)) {
+                skippedItemsCount++
+
                 continue
               }
 
@@ -165,6 +175,8 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
             }
 
             await this.primaryItemRepository.save(item)
+
+            insertedItemsCount++
           } catch (error) {
             this.logger.error(
               `Errored when saving item ${item.uuid.value} to primary database: ${(error as Error).message}`,
@@ -172,6 +184,10 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
           }
         }
       }
+
+      this.logger.info(
+        `[${userUuid.value}] Inserted items count: ${insertedItemsCount}. Skipped items count: ${skippedItemsCount}`,
+      )
 
       return Result.ok()
     } catch (error) {

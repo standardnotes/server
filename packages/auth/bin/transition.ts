@@ -17,6 +17,7 @@ import { RoleName, TransitionStatus } from '@standardnotes/domain-core'
 const inputArgs = process.argv.slice(2)
 const startDateString = inputArgs[0]
 const endDateString = inputArgs[1]
+const forceRunParam = inputArgs[2]
 
 const requestTransition = async (
   transitionStatusRepository: TransitionStatusRepositoryInterface,
@@ -38,6 +39,7 @@ const requestTransition = async (
   )
 
   let usersTriggered = 0
+  const forceRun = forceRunParam === 'true'
   for (const user of users) {
     const itemsTransitionStatus = await transitionStatusRepository.getStatus(user.uuid, 'items')
     const revisionsTransitionStatus = await transitionStatusRepository.getStatus(user.uuid, 'revisions')
@@ -55,7 +57,11 @@ const requestTransition = async (
 
     let wasTransitionRequested = false
 
-    if (itemsTransitionStatus === null || itemsTransitionStatus.value === TransitionStatus.STATUSES.Failed) {
+    if (
+      itemsTransitionStatus === null ||
+      itemsTransitionStatus.value === TransitionStatus.STATUSES.Failed ||
+      (itemsTransitionStatus.value === TransitionStatus.STATUSES.InProgress && forceRun)
+    ) {
       wasTransitionRequested = true
       await transitionStatusRepository.remove(user.uuid, 'items')
 
@@ -68,7 +74,11 @@ const requestTransition = async (
       )
     }
 
-    if (revisionsTransitionStatus === null || revisionsTransitionStatus.value === TransitionStatus.STATUSES.Failed) {
+    if (
+      revisionsTransitionStatus === null ||
+      revisionsTransitionStatus.value === TransitionStatus.STATUSES.Failed ||
+      (revisionsTransitionStatus.value === TransitionStatus.STATUSES.InProgress && forceRun)
+    ) {
       wasTransitionRequested = true
       await transitionStatusRepository.remove(user.uuid, 'revisions')
 

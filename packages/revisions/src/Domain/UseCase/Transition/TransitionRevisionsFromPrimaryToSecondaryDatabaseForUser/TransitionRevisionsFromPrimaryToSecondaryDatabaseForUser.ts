@@ -112,7 +112,11 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
       const totalRevisionsCountForUser = await (
         this.secondRevisionsRepository as RevisionRepositoryInterface
       ).countByUserUuid(userUuid)
+      this.logger.info(`[${userUuid.value}] Total revisions count for user: ${totalRevisionsCountForUser}`)
       const totalPages = Math.ceil(totalRevisionsCountForUser / this.pageSize)
+      this.logger.info(`[${userUuid.value}] Total pages: ${totalPages}`)
+      let insertedRevisionsCount = 0
+      let skippedRevisionsCount = 0
       for (let currentPage = initialPage; currentPage <= totalPages; currentPage++) {
         const isPageInEvery10Percent = currentPage % Math.ceil(totalPages / 10) === 0
         if (isPageInEvery10Percent) {
@@ -120,6 +124,9 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
             `[${userUuid.value}] Migrating revisions for user: ${Math.round(
               (currentPage / totalPages) * 100,
             )}% completed`,
+          )
+          this.logger.info(
+            `[${userUuid.value}] Inserted ${insertedRevisionsCount} revisions so far. Skipped ${skippedRevisionsCount} revisions so far.`,
           )
           await this.updateTransitionStatus(userUuid, TransitionStatus.STATUSES.InProgress, timestamp)
         }
@@ -151,10 +158,13 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
                     userUuid.value
                   }] Revision ${revision.id.toString()} is older in secondary than revision in primary database`,
                 )
+                skippedRevisionsCount++
 
                 continue
               }
               if (revisionInPrimary.isIdenticalTo(revision)) {
+                skippedRevisionsCount++
+
                 continue
               }
 
@@ -174,6 +184,8 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
             const didSave = await this.primaryRevisionsRepository.insert(revision)
             if (!didSave) {
               this.logger.error(`Failed to save revision ${revision.id.toString()} to primary database`)
+            } else {
+              insertedRevisionsCount++
             }
           } catch (error) {
             this.logger.error(
@@ -182,6 +194,10 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
           }
         }
       }
+
+      this.logger.info(
+        `[${userUuid.value}] Inserted ${insertedRevisionsCount} revisions. Skipped ${skippedRevisionsCount} revisions.`,
+      )
 
       return Result.ok()
     } catch (error) {
