@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.115.2](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.115.1...@standardnotes/syncing-server@1.115.2) (2023-10-10)
+
+### Bug Fixes
+
+* **syncing-server:** elevate otel sdk before the container starts ([3e4a1e9](https://github.com/standardnotes/syncing-server-js/commit/3e4a1e9645d0c8909caca77bd87e6fc3bf3f9b1f))
+* **syncing-server:** elevate otel sdk before the winston import ([250c1f0](https://github.com/standardnotes/syncing-server-js/commit/250c1f069be361b47552c10f1dc7c1f1eb5f07af))
+
 ## [1.115.1](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.115.0...@standardnotes/syncing-server@1.115.1) (2023-10-10)
 
 ### Bug Fixes

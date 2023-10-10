@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.43.2](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.43.1...@standardnotes/revisions-server@1.43.2) (2023-10-10)
+
+### Bug Fixes
+
+* **revisions:** check for duplicates during transition ([4629580](https://github.com/standardnotes/server/commit/4629580650f2b70e736ed4464b311241c563074c))
+
 ## [1.43.1](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.43.0...@standardnotes/revisions-server@1.43.1) (2023-10-10)
 
 ### Bug Fixes
