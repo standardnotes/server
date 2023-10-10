@@ -1,16 +1,17 @@
 import 'reflect-metadata'
 
+import { OpenTelemetrySDK } from '@standardnotes/domain-events-infra'
+import { ServiceIdentifier } from '@standardnotes/domain-core'
+
+const sdk = new OpenTelemetrySDK(ServiceIdentifier.NAMES.SyncingServerWorker)
+sdk.start()
+
 import { Logger } from 'winston'
 
 import TYPES from '../src/Bootstrap/Types'
 import { Env } from '../src/Bootstrap/Env'
 import { DomainEventSubscriberFactoryInterface } from '@standardnotes/domain-events'
 import { ContainerConfigLoader } from '../src/Bootstrap/Container'
-import { OpenTelemetrySDK } from '@standardnotes/domain-events-infra'
-import { ServiceIdentifier } from '@standardnotes/domain-core'
-
-const sdk = new OpenTelemetrySDK(ServiceIdentifier.NAMES.SyncingServerWorker)
-sdk.start()
 
 const container = new ContainerConfigLoader('worker')
 void container.load().then((container) => {

@@ -1,5 +1,11 @@
 import 'reflect-metadata'
 
+import { OpenTelemetrySDK } from '@standardnotes/domain-events-infra'
+import { ServiceIdentifier } from '@standardnotes/domain-core'
+
+const sdk = new OpenTelemetrySDK(ServiceIdentifier.NAMES.SyncingServer)
+sdk.start()
+
 import '../src/Infra/InversifyExpressUtils/AnnotatedHealthCheckController'
 import '../src/Infra/InversifyExpressUtils/AnnotatedItemsController'
 import '../src/Infra/InversifyExpressUtils/AnnotatedMessagesController'
@@ -11,16 +17,11 @@ import helmet from 'helmet'
 import * as cors from 'cors'
 import { urlencoded, json, Request, Response, NextFunction } from 'express'
 import * as winston from 'winston'
-import { OpenTelemetrySDK } from '@standardnotes/domain-events-infra'
-import { ServiceIdentifier } from '@standardnotes/domain-core'
 import { InversifyExpressServer } from 'inversify-express-utils'
 
 import TYPES from '../src/Bootstrap/Types'
 import { Env } from '../src/Bootstrap/Env'
 import { ContainerConfigLoader } from '../src/Bootstrap/Container'
-
-const sdk = new OpenTelemetrySDK(ServiceIdentifier.NAMES.SyncingServer)
-sdk.start()
 
 const container = new ContainerConfigLoader()
 void container.load().then((container) => {
