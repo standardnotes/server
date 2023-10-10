@@ -46,6 +46,7 @@ export class MongoDBRevisionRepository implements RevisionRepositoryInterface {
       where: { userUuid: { $eq: dto.userUuid.value } },
       order: {
         createdAt: 'ASC',
+        _id: 'ASC',
       },
       skip: dto.offset,
       take: dto.limit,
@@ -146,6 +147,7 @@ export class MongoDBRevisionRepository implements RevisionRepositoryInterface {
         },
         order: {
           createdAt: 'DESC',
+          _id: 'DESC',
         },
       })
     } else {
@@ -156,6 +158,7 @@ export class MongoDBRevisionRepository implements RevisionRepositoryInterface {
         },
         order: {
           createdAt: 'DESC',
+          _id: 'DESC',
         },
       })
     }
