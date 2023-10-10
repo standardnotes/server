@@ -44,9 +44,5 @@
     "reflect-metadata": "0.1.13",
     "typeorm": "^0.3.17",
     "winston": "^3.8.1"
-  },
-  "optionalDependencies": {
-    "@types/newrelic": "^9.14.0",
-    "newrelic": "^11.0.0"
   }
 }

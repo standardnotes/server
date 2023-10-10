@@ -44,13 +44,6 @@ export class ContainerConfigLoader {
       .toConstantValue(isConfiguredForHomeServerOrSelfHosting)
 
     const winstonFormatters = [winston.format.splat(), winston.format.json()]
-    if (env.get('NEW_RELIC_ENABLED', true) === 'true') {
-      await import('newrelic')
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
-      const newrelicFormatter = require('@newrelic/winston-enricher')
-      const newrelicWinstonFormatter = newrelicFormatter(winston)
-      winstonFormatters.push(newrelicWinstonFormatter())
-    }
 
     let logger: winston.Logger
     if (configuration?.logger) {

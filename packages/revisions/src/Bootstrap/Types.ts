@@ -37,7 +37,6 @@ const TYPES = {
   Revisions_S3_BACKUP_BUCKET_NAME: Symbol.for('Revisions_S3_BACKUP_BUCKET_NAME'),
   Revisions_SNS_TOPIC_ARN: Symbol.for('Revisions_SNS_TOPIC_ARN'),
   Revisions_SNS_AWS_REGION: Symbol.for('Revisions_SNS_AWS_REGION'),
-  Revisions_NEW_RELIC_ENABLED: Symbol.for('Revisions_NEW_RELIC_ENABLED'),
   Revisions_VERSION: Symbol.for('Revisions_VERSION'),
   Revisions_IS_CONFIGURED_FOR_HOME_SERVER_OR_SELF_HOSTING: Symbol.for(
     'Revisions_IS_CONFIGURED_FOR_HOME_SERVER_OR_SELF_HOSTING',

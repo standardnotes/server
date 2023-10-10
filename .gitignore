@@ -4,7 +4,6 @@
 dist
 coverage
 .env
-newrelic_agent.log
 
 .yarn/*
 !.yarn/cache

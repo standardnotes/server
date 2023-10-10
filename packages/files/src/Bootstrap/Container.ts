@@ -69,10 +69,6 @@ export class ContainerConfigLoader {
 
     const container = new Container()
 
-    if (env.get('NEW_RELIC_ENABLED', true) === 'true') {
-      await import('newrelic')
-    }
-
     // env vars
     container.bind(TYPES.Files_VALET_TOKEN_SECRET).toConstantValue(env.get('VALET_TOKEN_SECRET'))
     container

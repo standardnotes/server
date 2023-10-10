@@ -13,7 +13,6 @@ services:
       SNS_SECRET_ACCESS_KEY: x
       SNS_ACCESS_KEY_ID: x
       SNS_AWS_REGION: us-east-1
-      NEW_RELIC_ENABLED: false
     networks:
       - standardnotes_self_hosted
 

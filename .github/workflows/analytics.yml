@@ -20,19 +20,3 @@ jobs:
       deploy_web: false
       package_path: packages/analytics
     secrets: inherit
-
-  newrelic:
-    needs: call_server_application_workflow
-
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Create New Relic deployment marker for Worker
-        uses: newrelic/deployment-marker-action@v1
-        with:
-          accountId: ${{ secrets.NEW_RELIC_ACCOUNT_ID }}
-          apiKey: ${{ secrets.NEW_RELIC_API_KEY }}
-          applicationId: ${{ secrets.NEW_RELIC_APPLICATION_ID_ANALYTICS_WORKER_PROD }}
-          revision: "${{ github.sha }}"
-          description: "Automated Deployment via Github Actions"
-          user: "${{ github.actor }}"

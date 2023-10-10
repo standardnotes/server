@@ -48,8 +48,6 @@ export class HomeServer implements HomeServerInterface {
         FILE_UPLOAD_PATH: `${configuration.dataDirectoryPath}/uploads`,
         ...configuration.environment,
         MODE: 'home-server',
-        NEW_RELIC_ENABLED: 'false',
-        NEW_RELIC_APP_NAME: 'Home Server',
       }
 
       const env: Env = new Env(environmentOverrides)

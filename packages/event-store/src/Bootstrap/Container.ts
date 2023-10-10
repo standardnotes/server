@@ -9,11 +9,7 @@ import {
   DomainEventMessageHandlerInterface,
   DomainEventSubscriberFactoryInterface,
 } from '@standardnotes/domain-events'
-import {
-  SQSDomainEventSubscriberFactory,
-  SQSEventMessageHandler,
-  SQSNewRelicEventMessageHandler,
-} from '@standardnotes/domain-events-infra'
+import { SQSDomainEventSubscriberFactory, SQSEventMessageHandler } from '@standardnotes/domain-events-infra'
 import { Timer, TimerInterface } from '@standardnotes/time'
 import { EventHandler } from '../Domain/Handler/EventHandler'
 import { AppDataSource } from './DataSource'
@@ -25,10 +21,6 @@ export class ContainerConfigLoader {
     env.load()
 
     const container = new Container()
-
-    if (env.get('NEW_RELIC_ENABLED', true) === 'true') {
-      await import('newrelic')
-    }
 
     await AppDataSource.initialize()
 
@@ -102,11 +94,7 @@ export class ContainerConfigLoader {
 
     container
       .bind<DomainEventMessageHandlerInterface>(TYPES.DomainEventMessageHandler)
-      .toConstantValue(
-        env.get('NEW_RELIC_ENABLED', true) === 'true'
-          ? new SQSNewRelicEventMessageHandler(eventHandlers, container.get(TYPES.Logger))
-          : new SQSEventMessageHandler(eventHandlers, container.get(TYPES.Logger)),
-      )
+      .toConstantValue(new SQSEventMessageHandler(eventHandlers, container.get(TYPES.Logger)))
     container
       .bind<DomainEventSubscriberFactoryInterface>(TYPES.DomainEventSubscriberFactory)
       .toConstantValue(
