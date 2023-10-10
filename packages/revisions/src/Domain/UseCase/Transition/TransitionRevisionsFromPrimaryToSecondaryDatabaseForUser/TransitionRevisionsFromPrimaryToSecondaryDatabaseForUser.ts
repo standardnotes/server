@@ -115,8 +115,10 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
       this.logger.info(`[${userUuid.value}] Total revisions count for user: ${totalRevisionsCountForUser}`)
       const totalPages = Math.ceil(totalRevisionsCountForUser / this.pageSize)
       this.logger.info(`[${userUuid.value}] Total pages: ${totalPages}`)
-      let insertedRevisionsCount = 0
-      let skippedRevisionsCount = 0
+      let insertedCount = 0
+      let newerCount = 0
+      let identicalCount = 0
+      let updatedCount = 0
       for (let currentPage = initialPage; currentPage <= totalPages; currentPage++) {
         const isPageInEvery10Percent = currentPage % Math.ceil(totalPages / 10) === 0
         if (isPageInEvery10Percent) {
@@ -126,7 +128,7 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
             )}% completed`,
           )
           this.logger.info(
-            `[${userUuid.value}] Inserted ${insertedRevisionsCount} revisions so far. Skipped ${skippedRevisionsCount} revisions so far.`,
+            `[${userUuid.value}] Inserted ${insertedCount} revisions so far. Skipped ${newerCount} revisions because they were newer in primary database. Skipped ${identicalCount} revisions because they were identical in primary and secondary database. Updated ${updatedCount} revisions because they were older in primary database.`,
           )
           await this.updateTransitionStatus(userUuid, TransitionStatus.STATUSES.InProgress, timestamp)
         }
@@ -151,41 +153,31 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
               [],
             )
 
-            if (revisionInPrimary !== null) {
+            if (!revisionInPrimary) {
+              await this.primaryRevisionsRepository.insert(revision)
+
+              insertedCount++
+            } else {
               if (revisionInPrimary.props.dates.updatedAt > revision.props.dates.updatedAt) {
                 this.logger.info(
                   `[${
                     userUuid.value
                   }] Revision ${revision.id.toString()} is older in secondary than revision in primary database`,
                 )
-                skippedRevisionsCount++
+                newerCount++
 
                 continue
               }
+
               if (revisionInPrimary.isIdenticalTo(revision)) {
-                skippedRevisionsCount++
+                identicalCount++
 
                 continue
               }
 
-              this.logger.info(
-                `[${userUuid.value}] Removing revision ${revision.id.toString()} in primary database: ${JSON.stringify(
-                  revisionInPrimary,
-                )} as it is not identical to revision in secondary database: ${JSON.stringify(revision)}`,
-              )
+              await this.primaryRevisionsRepository.update(revision)
 
-              await this.primaryRevisionsRepository.removeOneByUuid(
-                Uuid.create(revisionInPrimary.id.toString()).getValue(),
-                revisionInPrimary.props.userUuid as Uuid,
-              )
-              await this.allowForPrimaryDatabaseToCatchUp()
-            }
-
-            const didSave = await this.primaryRevisionsRepository.insert(revision)
-            if (!didSave) {
-              this.logger.error(`Failed to save revision ${revision.id.toString()} to primary database`)
-            } else {
-              insertedRevisionsCount++
+              updatedCount++
             }
           } catch (error) {
             this.logger.error(
@@ -196,7 +188,7 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
       }
 
       this.logger.info(
-        `[${userUuid.value}] Inserted ${insertedRevisionsCount} revisions. Skipped ${skippedRevisionsCount} revisions.`,
+        `[${userUuid.value}] Inserted ${insertedCount} revisions. Skipped ${newerCount} revisions because they were newer in primary database. Skipped ${identicalCount} revisions because they were identical in primary and secondary database. Updated ${updatedCount} revisions because they were older in primary database.`,
       )
 
       return Result.ok()

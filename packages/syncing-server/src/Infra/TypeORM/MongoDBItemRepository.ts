@@ -184,6 +184,25 @@ export class MongoDBItemRepository implements ItemRepositoryInterface {
     )
   }
 
+  async insert(item: Item): Promise<void> {
+    const persistence = this.mapper.toProjection(item)
+
+    await this.mongoRepository.insertOne(persistence)
+  }
+
+  async update(item: Item): Promise<void> {
+    const persistence = this.mapper.toProjection(item)
+
+    const { _id, ...rest } = persistence
+
+    await this.mongoRepository.updateOne(
+      { _id: _id },
+      {
+        $set: rest,
+      },
+    )
+  }
+
   async markItemsAsDeleted(itemUuids: string[], updatedAtTimestamp: number): Promise<void> {
     await this.mongoRepository.updateMany(
       { _id: { $in: itemUuids.map((uuid) => BSON.UUID.createFromHexString(uuid)) } },

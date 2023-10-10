@@ -117,8 +117,10 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
       this.logger.info(`[${userUuid.value}] Total items count for user: ${totalItemsCountForUser}`)
       const totalPages = Math.ceil(totalItemsCountForUser / this.pageSize)
       this.logger.info(`[${userUuid.value}] Total pages: ${totalPages}`)
-      let insertedItemsCount = 0
-      let skippedItemsCount = 0
+      let insertedCount = 0
+      let updatedCount = 0
+      let newerCount = 0
+      let identicalCount = 0
       for (let currentPage = initialPage; currentPage <= totalPages; currentPage++) {
         const isPageInEvery10Percent = currentPage % Math.ceil(totalPages / 10) === 0
         if (isPageInEvery10Percent) {
@@ -126,7 +128,7 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
             `[${userUuid.value}] Migrating items for user: ${Math.round((currentPage / totalPages) * 100)}% completed`,
           )
           this.logger.info(
-            `[${userUuid.value}] Inserted items count: ${insertedItemsCount}. Skipped items count: ${skippedItemsCount}`,
+            `[${userUuid.value}] Inserted items count: ${insertedCount}. Newer items count: ${newerCount}. Identical items count: ${identicalCount}. Updated items count: ${updatedCount}`,
           )
           await this.updateTransitionStatus(userUuid, TransitionStatus.STATUSES.InProgress, timestamp)
         }
@@ -150,33 +152,29 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
           try {
             const itemInPrimary = await this.primaryItemRepository.findByUuid(item.uuid)
 
-            if (itemInPrimary !== null) {
+            if (!itemInPrimary) {
+              await this.primaryItemRepository.insert(item)
+
+              insertedCount++
+            } else {
               if (itemInPrimary.props.timestamps.updatedAt > item.props.timestamps.updatedAt) {
                 this.logger.info(
                   `[${userUuid.value}] Item ${item.uuid.value} is older in secondary than item in primary database`,
                 )
-                skippedItemsCount++
+                newerCount++
 
                 continue
               }
               if (itemInPrimary.isIdenticalTo(item)) {
-                skippedItemsCount++
+                identicalCount++
 
                 continue
               }
 
-              this.logger.info(
-                `[${userUuid.value}] Removing item ${item.uuid.value} in primary database as it is not identical to item in primary database`,
-              )
+              await this.primaryItemRepository.update(item)
 
-              await this.primaryItemRepository.removeByUuid(item.uuid)
-
-              await this.allowForPrimaryDatabaseToCatchUp()
+              updatedCount++
             }
-
-            await this.primaryItemRepository.save(item)
-
-            insertedItemsCount++
           } catch (error) {
             this.logger.error(
               `Errored when saving item ${item.uuid.value} to primary database: ${(error as Error).message}`,
@@ -186,7 +184,7 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
       }
 
       this.logger.info(
-        `[${userUuid.value}] Inserted items count: ${insertedItemsCount}. Skipped items count: ${skippedItemsCount}`,
+        `[${userUuid.value}] Inserted items count: ${insertedCount}. Newer items count: ${newerCount}. Identical items count: ${identicalCount}. Updated items count: ${updatedCount}`,
       )
 
       return Result.ok()

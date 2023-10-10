@@ -43,6 +43,20 @@ export class SQLLegacyItemRepository implements ItemRepositoryInterface {
     await this.ormRepository.save(persistence)
   }
 
+  async insert(item: Item): Promise<void> {
+    const projection = this.mapper.toProjection(item)
+
+    await this.ormRepository.insert(projection)
+  }
+
+  async update(item: Item): Promise<void> {
+    const projection = this.mapper.toProjection(item)
+
+    const { uuid, ...updateValues } = projection
+
+    await this.ormRepository.update({ uuid: uuid }, updateValues)
+  }
+
   async remove(item: Item): Promise<void> {
     await this.ormRepository.remove(this.mapper.toProjection(item))
   }

@@ -111,9 +111,19 @@ export class SQLLegacyRevisionRepository implements RevisionRepositoryInterface 
   }
 
   async insert(revision: Revision): Promise<boolean> {
-    const SQLLegacyRevision = this.revisionMapper.toProjection(revision)
+    const projection = this.revisionMapper.toProjection(revision)
 
-    await this.ormRepository.insert(SQLLegacyRevision)
+    await this.ormRepository.insert(projection)
+
+    return true
+  }
+
+  async update(revision: Revision): Promise<boolean> {
+    const projection = this.revisionMapper.toProjection(revision)
+
+    const { uuid, ...rest } = projection
+
+    await this.ormRepository.update({ uuid: uuid }, rest)
 
     return true
   }
