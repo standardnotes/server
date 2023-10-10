@@ -22,7 +22,7 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
   ) {}
 
   async execute(dto: TransitionRevisionsFromPrimaryToSecondaryDatabaseForUserDTO): Promise<Result<void>> {
-    this.logger.info(`[${dto.userUuid}] Transitioning revisions for user`)
+    this.logger.info(`[TRANSITION][${dto.userUuid}] Transitioning revisions for user`)
 
     if (this.secondRevisionsRepository === null) {
       return Result.fail('Secondary revision repository is not set')
@@ -39,7 +39,7 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
     const userUuid = userUuidOrError.getValue()
 
     if (await this.isAlreadyMigrated(userUuid)) {
-      this.logger.info(`[${userUuid.value}] User already migrated.`)
+      this.logger.info(`[TRANSITION][${userUuid.value}] User already migrated.`)
 
       await this.updateTransitionStatus(userUuid, TransitionStatus.STATUSES.Verified, dto.timestamp)
 
@@ -50,7 +50,7 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
 
     const migrationTimeStart = this.timer.getTimestampInMicroseconds()
 
-    this.logger.info(`[${dto.userUuid}] Migrating revisions`)
+    this.logger.info(`[TRANSITION][${dto.userUuid}] Migrating revisions`)
 
     const migrationResult = await this.migrateRevisionsForUser(userUuid, dto.timestamp)
     if (migrationResult.isFailed()) {
@@ -59,11 +59,11 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
       return Result.fail(migrationResult.getError())
     }
 
-    this.logger.info(`[${dto.userUuid}] Revisions migrated`)
+    this.logger.info(`[TRANSITION][${dto.userUuid}] Revisions migrated`)
 
     await this.allowForPrimaryDatabaseToCatchUp()
 
-    this.logger.info(`[${dto.userUuid}] Checking integrity between primary and secondary database`)
+    this.logger.info(`[TRANSITION][${dto.userUuid}] Checking integrity between primary and secondary database`)
 
     const integrityCheckResult = await this.checkIntegrityBetweenPrimaryAndSecondaryDatabase(userUuid)
     if (integrityCheckResult.isFailed()) {
@@ -83,7 +83,7 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
       await this.updateTransitionStatus(userUuid, TransitionStatus.STATUSES.Failed, dto.timestamp)
 
       this.logger.error(
-        `[${dto.userUuid}] Failed to clean up secondary database revisions: ${cleanupResult.getError()}`,
+        `[TRANSITION][${dto.userUuid}] Failed to clean up secondary database revisions: ${cleanupResult.getError()}`,
       )
     }
 
@@ -93,7 +93,7 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
     const migrationDurationTimeStructure = this.timer.convertMicrosecondsToTimeStructure(migrationDuration)
 
     this.logger.info(
-      `[${dto.userUuid}] Transitioned revisions in ${migrationDurationTimeStructure.hours}h ${migrationDurationTimeStructure.minutes}m ${migrationDurationTimeStructure.seconds}s ${migrationDurationTimeStructure.milliseconds}ms`,
+      `[TRANSITION][${dto.userUuid}] Transitioned revisions in ${migrationDurationTimeStructure.hours}h ${migrationDurationTimeStructure.minutes}m ${migrationDurationTimeStructure.seconds}s ${migrationDurationTimeStructure.milliseconds}ms`,
     )
 
     await this.updateTransitionStatus(userUuid, TransitionStatus.STATUSES.Verified, dto.timestamp)
@@ -107,14 +107,14 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
         userUuid.value,
       )
 
-      this.logger.info(`[${userUuid.value}] Migrating from page ${initialPage}`)
+      this.logger.info(`[TRANSITION][${userUuid.value}] Migrating from page ${initialPage}`)
 
       const totalRevisionsCountForUser = await (
         this.secondRevisionsRepository as RevisionRepositoryInterface
       ).countByUserUuid(userUuid)
-      this.logger.info(`[${userUuid.value}] Total revisions count for user: ${totalRevisionsCountForUser}`)
+      this.logger.info(`[TRANSITION][${userUuid.value}] Total revisions count for user: ${totalRevisionsCountForUser}`)
       const totalPages = Math.ceil(totalRevisionsCountForUser / this.pageSize)
-      this.logger.info(`[${userUuid.value}] Total pages: ${totalPages}`)
+      this.logger.info(`[TRANSITION][${userUuid.value}] Total pages: ${totalPages}`)
       let insertedCount = 0
       let newerCount = 0
       let identicalCount = 0
@@ -125,12 +125,12 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
         const isPageInEvery10Percent = currentPage % Math.ceil(totalPages / 10) === 0
         if (isPageInEvery10Percent) {
           this.logger.info(
-            `[${userUuid.value}] Migrating revisions for user: ${Math.round(
+            `[TRANSITION][${userUuid.value}] Migrating revisions for user: ${Math.round(
               (currentPage / totalPages) * 100,
             )}% completed`,
           )
           this.logger.info(
-            `[${userUuid.value}] Inserted ${insertedCount} revisions so far. Skipped ${newerCount} revisions because they were newer in primary database. Skipped ${identicalCount} revisions because they were identical in primary and secondary database. Updated ${updatedCount} revisions because they were older in primary database.`,
+            `[TRANSITION][${userUuid.value}] Inserted ${insertedCount} revisions so far. Skipped ${newerCount} revisions because they were newer in primary database. Skipped ${identicalCount} revisions because they were identical in primary and secondary database. Updated ${updatedCount} revisions because they were older in primary database.`,
           )
           await this.updateTransitionStatus(userUuid, TransitionStatus.STATUSES.InProgress, timestamp)
         }
@@ -150,7 +150,9 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
         for (const revision of revisions) {
           try {
             if (processedUuids.has(revision.id.toString())) {
-              this.logger.warn(`[${userUuid.value}] Revision ${revision.id.toString()} was already processed`)
+              this.logger.warn(
+                `[TRANSITION][${userUuid.value}] Revision ${revision.id.toString()} was already processed`,
+              )
               duplicatedCount++
             } else {
               processedUuids.add(revision.id.toString())
@@ -169,7 +171,7 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
             } else {
               if (revisionInPrimary.props.dates.updatedAt > revision.props.dates.updatedAt) {
                 this.logger.info(
-                  `[${
+                  `[TRANSITION][${
                     userUuid.value
                   }] Revision ${revision.id.toString()} is older in secondary than revision in primary database`,
                 )
@@ -190,17 +192,21 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
             }
           } catch (error) {
             this.logger.error(
-              `Errored when saving revision ${revision.id.toString()} to primary database: ${(error as Error).message}`,
+              `[TRANSITION][${
+                userUuid.value
+              }] Errored when saving revision ${revision.id.toString()} to primary database: ${
+                (error as Error).message
+              }`,
             )
           }
         }
       }
 
       this.logger.info(
-        `[${userUuid.value}] Inserted ${insertedCount} revisions. Skipped ${newerCount} revisions because they were newer in primary database. Skipped ${identicalCount} revisions because they were identical in primary and secondary database. Updated ${updatedCount} revisions because they were older in primary database.`,
+        `[TRANSITION][${userUuid.value}] Inserted ${insertedCount} revisions. Skipped ${newerCount} revisions because they were newer in primary database. Skipped ${identicalCount} revisions because they were identical in primary and secondary database. Updated ${updatedCount} revisions because they were older in primary database.`,
       )
       if (duplicatedCount > 0) {
-        this.logger.warn(`[${userUuid.value}] Skipped ${duplicatedCount} duplicated revisions`)
+        this.logger.warn(`[TRANSITION][${userUuid.value}] Skipped ${duplicatedCount} duplicated revisions`)
       }
 
       return Result.ok()
@@ -214,7 +220,7 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
     revisionRepository: RevisionRepositoryInterface,
   ): Promise<Result<void>> {
     try {
-      this.logger.info(`[${userUuid.value}] Deleting all revisions from secondary database`)
+      this.logger.info(`[TRANSITION][${userUuid.value}] Deleting all revisions from secondary database`)
 
       await revisionRepository.removeByUserUuid(userUuid)
 
@@ -235,7 +241,7 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
         userUuid.value,
       )
 
-      this.logger.info(`[${userUuid.value}] Checking integrity from page ${initialPage}`)
+      this.logger.info(`[TRANSITION][${userUuid.value}] Checking integrity from page ${initialPage}`)
 
       const totalRevisionsCountForUserInSecondary = await (
         this.secondRevisionsRepository as RevisionRepositoryInterface
@@ -278,7 +284,7 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
 
           if (revisionInPrimary.props.dates.updatedAt > revision.props.dates.updatedAt) {
             this.logger.info(
-              `[${
+              `[TRANSITION][${
                 userUuid.value
               }] Integrity check of revision ${revision.id.toString()} - is older in secondary than revision in primary database`,
             )
@@ -324,7 +330,7 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
 
     if (totalRevisionsCountForUserInSecondary > 0) {
       this.logger.info(
-        `[${userUuid.value}] User has ${totalRevisionsCountForUserInSecondary} revisions in secondary database.`,
+        `[TRANSITION][${userUuid.value}] User has ${totalRevisionsCountForUserInSecondary} revisions in secondary database.`,
       )
     }
 

@@ -23,7 +23,7 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
   ) {}
 
   async execute(dto: TransitionItemsFromPrimaryToSecondaryDatabaseForUserDTO): Promise<Result<void>> {
-    this.logger.info(`[${dto.userUuid}] Transitioning items`)
+    this.logger.info(`[TRANSITION][${dto.userUuid}] Transitioning items`)
 
     if (this.secondaryItemRepository === null) {
       return Result.fail('Secondary item repository is not set')
@@ -40,7 +40,7 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
     const userUuid = userUuidOrError.getValue()
 
     if (await this.isAlreadyMigrated(userUuid)) {
-      this.logger.info(`[${userUuid.value}] User already migrated.`)
+      this.logger.info(`[TRANSITION][${userUuid.value}] User already migrated.`)
 
       await this.updateTransitionStatus(userUuid, TransitionStatus.STATUSES.Verified, dto.timestamp)
 
@@ -49,7 +49,7 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
 
     const migrationTimeStart = this.timer.getTimestampInMicroseconds()
 
-    this.logger.info(`[${dto.userUuid}] Migrating items`)
+    this.logger.info(`[TRANSITION][${dto.userUuid}] Migrating items`)
 
     const migrationResult = await this.migrateItemsForUser(userUuid, dto.timestamp)
     if (migrationResult.isFailed()) {
@@ -58,11 +58,11 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
       return Result.fail(migrationResult.getError())
     }
 
-    this.logger.info(`[${dto.userUuid}] Items migrated`)
+    this.logger.info(`[TRANSITION][${dto.userUuid}] Items migrated`)
 
     await this.allowForPrimaryDatabaseToCatchUp()
 
-    this.logger.info(`[${dto.userUuid}] Checking integrity between primary and secondary database`)
+    this.logger.info(`[TRANSITION][${dto.userUuid}] Checking integrity between primary and secondary database`)
 
     const integrityCheckResult = await this.checkIntegrityBetweenPrimaryAndSecondaryDatabase(userUuid)
     if (integrityCheckResult.isFailed()) {
@@ -81,7 +81,9 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
     if (cleanupResult.isFailed()) {
       await this.updateTransitionStatus(userUuid, TransitionStatus.STATUSES.Failed, dto.timestamp)
 
-      this.logger.error(`[${dto.userUuid}] Failed to clean up secondary database items: ${cleanupResult.getError()}`)
+      this.logger.error(
+        `[TRANSITION][${dto.userUuid}] Failed to clean up secondary database items: ${cleanupResult.getError()}`,
+      )
     }
 
     const migrationTimeEnd = this.timer.getTimestampInMicroseconds()
@@ -90,7 +92,7 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
     const migrationDurationTimeStructure = this.timer.convertMicrosecondsToTimeStructure(migrationDuration)
 
     this.logger.info(
-      `[${dto.userUuid}] Transitioned items in ${migrationDurationTimeStructure.hours}h ${migrationDurationTimeStructure.minutes}m ${migrationDurationTimeStructure.seconds}s ${migrationDurationTimeStructure.milliseconds}ms`,
+      `[TRANSITION][${dto.userUuid}] Transitioned items in ${migrationDurationTimeStructure.hours}h ${migrationDurationTimeStructure.minutes}m ${migrationDurationTimeStructure.seconds}s ${migrationDurationTimeStructure.milliseconds}ms`,
     )
 
     await this.updateTransitionStatus(userUuid, TransitionStatus.STATUSES.Verified, dto.timestamp)
@@ -109,14 +111,14 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
         userUuid.value,
       )
 
-      this.logger.info(`[${userUuid.value}] Migrating from page ${initialPage}`)
+      this.logger.info(`[TRANSITION][${userUuid.value}] Migrating from page ${initialPage}`)
 
       const totalItemsCountForUser = await (this.secondaryItemRepository as ItemRepositoryInterface).countAll({
         userUuid: userUuid.value,
       })
-      this.logger.info(`[${userUuid.value}] Total items count for user: ${totalItemsCountForUser}`)
+      this.logger.info(`[TRANSITION][${userUuid.value}] Total items count for user: ${totalItemsCountForUser}`)
       const totalPages = Math.ceil(totalItemsCountForUser / this.pageSize)
-      this.logger.info(`[${userUuid.value}] Total pages: ${totalPages}`)
+      this.logger.info(`[TRANSITION][${userUuid.value}] Total pages: ${totalPages}`)
       let insertedCount = 0
       let updatedCount = 0
       let newerCount = 0
@@ -125,10 +127,12 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
         const isPageInEvery10Percent = currentPage % Math.ceil(totalPages / 10) === 0
         if (isPageInEvery10Percent) {
           this.logger.info(
-            `[${userUuid.value}] Migrating items for user: ${Math.round((currentPage / totalPages) * 100)}% completed`,
+            `[TRANSITION][${userUuid.value}] Migrating items for user: ${Math.round(
+              (currentPage / totalPages) * 100,
+            )}% completed`,
           )
           this.logger.info(
-            `[${userUuid.value}] Inserted items count: ${insertedCount}. Newer items count: ${newerCount}. Identical items count: ${identicalCount}. Updated items count: ${updatedCount}`,
+            `[TRANSITION][${userUuid.value}] Inserted items count: ${insertedCount}. Newer items count: ${newerCount}. Identical items count: ${identicalCount}. Updated items count: ${updatedCount}`,
           )
           await this.updateTransitionStatus(userUuid, TransitionStatus.STATUSES.InProgress, timestamp)
         }
@@ -159,7 +163,7 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
             } else {
               if (itemInPrimary.props.timestamps.updatedAt > item.props.timestamps.updatedAt) {
                 this.logger.info(
-                  `[${userUuid.value}] Item ${item.uuid.value} is older in secondary than item in primary database`,
+                  `[TRANSITION][${userUuid.value}] Item ${item.uuid.value} is older in secondary than item in primary database`,
                 )
                 newerCount++
 
@@ -177,14 +181,16 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
             }
           } catch (error) {
             this.logger.error(
-              `Errored when saving item ${item.uuid.value} to primary database: ${(error as Error).message}`,
+              `[TRANSITION][${userUuid.value}] Errored when saving item ${item.uuid.value} to primary database: ${
+                (error as Error).message
+              }`,
             )
           }
         }
       }
 
       this.logger.info(
-        `[${userUuid.value}] Inserted items count: ${insertedCount}. Newer items count: ${newerCount}. Identical items count: ${identicalCount}. Updated items count: ${updatedCount}`,
+        `[TRANSITION][${userUuid.value}] Inserted items count: ${insertedCount}. Newer items count: ${newerCount}. Identical items count: ${identicalCount}. Updated items count: ${updatedCount}`,
       )
 
       return Result.ok()
@@ -195,7 +201,7 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
 
   private async deleteItemsForUser(userUuid: Uuid, itemRepository: ItemRepositoryInterface): Promise<Result<void>> {
     try {
-      this.logger.info(`[${userUuid.value}] Cleaning up primary database items`)
+      this.logger.info(`[TRANSITION][${userUuid.value}] Cleaning up primary database items`)
 
       await itemRepository.deleteByUserUuidAndNotInSharedVault(userUuid)
 
@@ -211,7 +217,7 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
         userUuid.value,
       )
 
-      this.logger.info(`[${userUuid.value}] Checking integrity from page ${initialPage}`)
+      this.logger.info(`[TRANSITION][${userUuid.value}] Checking integrity from page ${initialPage}`)
 
       const totalItemsCountForUserInSecondary = await (
         this.secondaryItemRepository as ItemRepositoryInterface
@@ -253,7 +259,7 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
 
           if (itemInPrimary.props.timestamps.updatedAt > item.props.timestamps.updatedAt) {
             this.logger.info(
-              `[${userUuid.value}] Integrity check of Item ${item.uuid.value} - is older in secondary than item in primary database`,
+              `[TRANSITION][${userUuid.value}] Integrity check of Item ${item.uuid.value} - is older in secondary than item in primary database`,
             )
 
             continue
@@ -296,7 +302,9 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
     })
 
     if (totalItemsCountForUserInSecondary > 0) {
-      this.logger.info(`[${userUuid.value}] User has ${totalItemsCountForUserInSecondary} items in secondary database.`)
+      this.logger.info(
+        `[TRANSITION][${userUuid.value}] User has ${totalItemsCountForUserInSecondary} items in secondary database.`,
+      )
     }
 
     return totalItemsCountForUserInSecondary === 0
