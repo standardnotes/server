@@ -237,6 +237,7 @@ export class ContainerConfigLoader {
     const isConfiguredForHomeServerOrSelfHosting = isConfiguredForHomeServer || isConfiguredForSelfHosting
     const isSecondaryDatabaseEnabled = env.get('SECONDARY_DB_ENABLED', true) === 'true'
     const isConfiguredForInMemoryCache = env.get('CACHE_TYPE', true) === 'memory'
+    const openTelemetryRatio = env.get('OTEL_SPAN_RATIO', true) ? +env.get('OTEL_SPAN_RATIO', true) : 0.01
 
     container
       .bind<boolean>(TYPES.Sync_IS_CONFIGURED_FOR_HOME_SERVER_OR_SELF_HOSTING)
@@ -250,6 +251,7 @@ export class ContainerConfigLoader {
             this.mode === 'server'
               ? ServiceIdentifier.NAMES.SyncingServer
               : ServiceIdentifier.NAMES.SyncingServerWorker,
+            openTelemetryRatio,
           ),
         )
     }

@@ -17,7 +17,10 @@ import { ExpressInstrumentation } from '@opentelemetry/instrumentation-express'
 export class OpenTelemetrySDK implements OpenTelemetrySDKInterface {
   private declare sdk: OpenTelemetrySDKNode.NodeSDK
 
-  constructor(private serviceName: string) {
+  constructor(
+    private serviceName: string,
+    private spanRatio?: number,
+  ) {
     this.build()
   }
 
@@ -41,8 +44,10 @@ export class OpenTelemetrySDK implements OpenTelemetrySDKInterface {
       },
     })
 
+    const ratio = this.spanRatio ?? 0.01
+
     this.sdk = new OpenTelemetrySDKNode.NodeSDK({
-      sampler: new OpenTelemetrySDKNode.tracing.TraceIdRatioBasedSampler(0.01),
+      sampler: new OpenTelemetrySDKNode.tracing.TraceIdRatioBasedSampler(ratio),
       textMapPropagator: new AWSXRayPropagator(),
       instrumentations: [
         new HttpInstrumentation({
