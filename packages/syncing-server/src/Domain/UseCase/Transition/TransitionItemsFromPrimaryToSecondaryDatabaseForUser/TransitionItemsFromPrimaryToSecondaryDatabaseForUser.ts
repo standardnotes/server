@@ -201,7 +201,7 @@ export class TransitionItemsFromPrimaryToSecondaryDatabaseForUser implements Use
 
   private async deleteItemsForUser(userUuid: Uuid, itemRepository: ItemRepositoryInterface): Promise<Result<void>> {
     try {
-      this.logger.info(`[TRANSITION][${userUuid.value}] Cleaning up primary database items`)
+      this.logger.info(`[TRANSITION][${userUuid.value}] Cleaning up secondary database items`)
 
       await itemRepository.deleteByUserUuidAndNotInSharedVault(userUuid)
 
