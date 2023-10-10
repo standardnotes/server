@@ -119,6 +119,8 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
       let newerCount = 0
       let identicalCount = 0
       let updatedCount = 0
+      let duplicatedCount = 0
+      const processedUuids = new Set<string>()
       for (let currentPage = initialPage; currentPage <= totalPages; currentPage++) {
         const isPageInEvery10Percent = currentPage % Math.ceil(totalPages / 10) === 0
         if (isPageInEvery10Percent) {
@@ -147,6 +149,13 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
         const revisions = await (this.secondRevisionsRepository as RevisionRepositoryInterface).findByUserUuid(query)
         for (const revision of revisions) {
           try {
+            if (processedUuids.has(revision.id.toString())) {
+              this.logger.warn(`[${userUuid.value}] Revision ${revision.id.toString()} was already processed`)
+              duplicatedCount++
+            } else {
+              processedUuids.add(revision.id.toString())
+            }
+
             const revisionInPrimary = await this.primaryRevisionsRepository.findOneByUuid(
               Uuid.create(revision.id.toString()).getValue(),
               revision.props.userUuid as Uuid,
@@ -190,6 +199,9 @@ export class TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser implements
       this.logger.info(
         `[${userUuid.value}] Inserted ${insertedCount} revisions. Skipped ${newerCount} revisions because they were newer in primary database. Skipped ${identicalCount} revisions because they were identical in primary and secondary database. Updated ${updatedCount} revisions because they were older in primary database.`,
       )
+      if (duplicatedCount > 0) {
+        this.logger.warn(`[${userUuid.value}] Skipped ${duplicatedCount} duplicated revisions`)
+      }
 
       return Result.ok()
     } catch (error) {
