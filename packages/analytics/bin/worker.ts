@@ -1,5 +1,11 @@
 import 'reflect-metadata'
 
+import { OpenTelemetrySDK } from '@standardnotes/domain-events-infra'
+import { ServiceIdentifier } from '@standardnotes/domain-core'
+
+const sdk = new OpenTelemetrySDK(ServiceIdentifier.NAMES.AnalyticsWorker)
+sdk.start()
+
 import { Logger } from 'winston'
 import { DomainEventSubscriberFactoryInterface } from '@standardnotes/domain-events'
 import * as dayjs from 'dayjs'

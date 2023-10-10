@@ -19,8 +19,6 @@ import { AddWebSocketsConnection } from '../Domain/UseCase/AddWebSocketsConnecti
 import { RemoveWebSocketsConnection } from '../Domain/UseCase/RemoveWebSocketsConnection/RemoveWebSocketsConnection'
 import { WebSocketsClientMessenger } from '../Infra/WebSockets/WebSocketsClientMessenger'
 import {
-  OpenTelemetrySDK,
-  OpenTelemetrySDKInterface,
   SQSDomainEventSubscriberFactory,
   SQSOpenTelemetryEventMessageHandler,
 } from '@standardnotes/domain-events-infra'
@@ -42,21 +40,11 @@ import { WebSocketMessageRequestedEventHandler } from '../Domain/Handler/WebSock
 import { ServiceIdentifier } from '@standardnotes/domain-core'
 
 export class ContainerConfigLoader {
-  constructor(private mode: 'server' | 'worker' = 'server') {}
-
   async load(): Promise<Container> {
     const env: Env = new Env()
     env.load()
 
     const container = new Container()
-
-    container
-      .bind<OpenTelemetrySDKInterface>(TYPES.WebSockets_OpenTelemetrySDK)
-      .toConstantValue(
-        new OpenTelemetrySDK(
-          this.mode === 'server' ? ServiceIdentifier.NAMES.Websockets : ServiceIdentifier.NAMES.WebsocketsWorker,
-        ),
-      )
 
     const redisUrl = env.get('REDIS_URL')
     const isRedisInClusterMode = redisUrl.indexOf(',') > 0

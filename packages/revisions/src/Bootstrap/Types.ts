@@ -5,7 +5,6 @@ const TYPES = {
   Revisions_SQS: Symbol.for('Revisions_SQS'),
   Revisions_SNS: Symbol.for('Revisions_SNS'),
   Revisions_S3: Symbol.for('Revisions_S3'),
-  Revisions_OpenTelemetrySDK: Symbol.for('Revisions_OpenTelemetrySDK'),
   Revisions_Env: Symbol.for('Revisions_Env'),
   // Map
   Revisions_SQLLegacyRevisionMetadataPersistenceMapper: Symbol.for(

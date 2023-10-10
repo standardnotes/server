@@ -89,8 +89,6 @@ import { ExtensionKeyGrantedEventHandler } from '../Domain/Handler/ExtensionKeyG
 import {
   DirectCallDomainEventPublisher,
   DirectCallEventMessageHandler,
-  OpenTelemetrySDK,
-  OpenTelemetrySDKInterface,
   SNSDomainEventPublisher,
   SQSDomainEventSubscriberFactory,
   SQSEventMessageHandler,
@@ -330,16 +328,6 @@ export class ContainerConfigLoader {
     container
       .bind<boolean>(TYPES.Auth_IS_CONFIGURED_FOR_HOME_SERVER_OR_SELF_HOSTING)
       .toConstantValue(isConfiguredForHomeServerOrSelfHosting)
-
-    if (!isConfiguredForHomeServerOrSelfHosting) {
-      container
-        .bind<OpenTelemetrySDKInterface>(TYPES.Auth_OpenTelemetrySDK)
-        .toConstantValue(
-          new OpenTelemetrySDK(
-            this.mode === 'server' ? ServiceIdentifier.NAMES.Auth : ServiceIdentifier.NAMES.AuthWorker,
-          ),
-        )
-    }
 
     if (!isConfiguredForInMemoryCache) {
       const redisUrl = env.get('REDIS_URL')

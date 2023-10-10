@@ -16,8 +16,6 @@ import { DomainEventFactory } from '../Domain/Event/DomainEventFactory'
 import {
   DirectCallDomainEventPublisher,
   DirectCallEventMessageHandler,
-  OpenTelemetrySDK,
-  OpenTelemetrySDKInterface,
   SNSDomainEventPublisher,
   SQSDomainEventSubscriberFactory,
   SQSEventMessageHandler,
@@ -58,8 +56,6 @@ import { SharedVaultValetTokenAuthMiddleware } from '../Infra/InversifyExpress/M
 import { ServiceIdentifier } from '@standardnotes/domain-core'
 
 export class ContainerConfigLoader {
-  constructor(private mode: 'server' | 'worker' = 'server') {}
-
   async load(configuration?: {
     directCallDomainEventPublisher?: DirectCallDomainEventPublisher
     logger?: Transform
@@ -95,16 +91,6 @@ export class ContainerConfigLoader {
     container
       .bind<boolean>(TYPES.Files_IS_CONFIGURED_FOR_HOME_SERVER_OR_SELF_HOSTING)
       .toConstantValue(isConfiguredForHomeServerOrSelfHosting)
-
-    if (!isConfiguredForHomeServerOrSelfHosting) {
-      container
-        .bind<OpenTelemetrySDKInterface>(TYPES.Files_OpenTelemetrySDK)
-        .toConstantValue(
-          new OpenTelemetrySDK(
-            this.mode === 'server' ? ServiceIdentifier.NAMES.Files : ServiceIdentifier.NAMES.FilesWorker,
-          ),
-        )
-    }
 
     let logger: winston.Logger
     if (configuration?.logger) {

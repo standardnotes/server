@@ -40,8 +40,6 @@ import {
   DirectCallEventMessageHandler,
   DirectCallDomainEventPublisher,
   SNSDomainEventPublisher,
-  OpenTelemetrySDKInterface,
-  OpenTelemetrySDK,
   SQSOpenTelemetryEventMessageHandler,
 } from '@standardnotes/domain-events-infra'
 import { DumpRepositoryInterface } from '../Domain/Dump/DumpRepositoryInterface'
@@ -158,16 +156,6 @@ export class ContainerConfigLoader {
 
     container.bind(TYPES.Revisions_NEW_RELIC_ENABLED).toConstantValue(env.get('NEW_RELIC_ENABLED', true))
     container.bind(TYPES.Revisions_VERSION).toConstantValue(env.get('VERSION', true) ?? 'development')
-
-    if (!isConfiguredForHomeServerOrSelfHosting) {
-      container
-        .bind<OpenTelemetrySDKInterface>(TYPES.Revisions_OpenTelemetrySDK)
-        .toConstantValue(
-          new OpenTelemetrySDK(
-            this.mode === 'server' ? ServiceIdentifier.NAMES.Revisions : ServiceIdentifier.NAMES.RevisionsWorker,
-          ),
-        )
-    }
 
     if (!isConfiguredForHomeServer) {
       // env vars

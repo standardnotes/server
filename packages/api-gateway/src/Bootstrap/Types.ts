@@ -28,5 +28,4 @@ export const TYPES = {
   ApiGateway_CrossServiceTokenCache: Symbol.for('ApiGateway_CrossServiceTokenCache'),
   ApiGateway_Timer: Symbol.for('ApiGateway_Timer'),
   ApiGateway_EndpointResolver: Symbol.for('ApiGateway_EndpointResolver'),
-  ApiGateway_OpenTelemetrySDK: Symbol.for('ApiGateway_OpenTelemetrySDK'),
 }
