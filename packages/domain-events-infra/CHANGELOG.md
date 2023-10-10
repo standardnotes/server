@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.16.4](https://github.com/standardnotes/server/compare/@standardnotes/domain-events-infra@1.16.3...@standardnotes/domain-events-infra@1.16.4) (2023-10-10)
+
+### Bug Fixes
+
+* **syncing-server:** add option to define otel ratio ([c021bb3](https://github.com/standardnotes/server/commit/c021bb3d7ca90179292e7c75f5a84bf2b941ce86))
+
 ## [1.16.3](https://github.com/standardnotes/server/compare/@standardnotes/domain-events-infra@1.16.2...@standardnotes/domain-events-infra@1.16.3) (2023-10-09)
 
 ### Bug Fixes

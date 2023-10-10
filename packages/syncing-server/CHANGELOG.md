@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.115.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.114.3...@standardnotes/syncing-server@1.115.0) (2023-10-10)
+
+### Bug Fixes
+
+* **syncing-server:** add option to define otel ratio ([c021bb3](https://github.com/standardnotes/syncing-server-js/commit/c021bb3d7ca90179292e7c75f5a84bf2b941ce86))
+
+### Features
+
+* add more logs to transition ([783fd9e](https://github.com/standardnotes/syncing-server-js/commit/783fd9e2c6350a7f0f1e8d009d01a3328564aca0))
+
 ## [1.114.3](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.114.2...@standardnotes/syncing-server@1.114.3) (2023-10-09)
 
 ### Bug Fixes
