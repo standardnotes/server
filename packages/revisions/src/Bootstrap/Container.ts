@@ -128,13 +128,6 @@ export class ContainerConfigLoader {
       logger = configuration.logger as winston.Logger
     } else {
       const winstonFormatters = [winston.format.splat(), winston.format.json()]
-      if (env.get('NEW_RELIC_ENABLED', true) === 'true') {
-        await import('newrelic')
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
-        const newrelicFormatter = require('@newrelic/winston-enricher')
-        const newrelicWinstonFormatter = newrelicFormatter(winston)
-        winstonFormatters.push(newrelicWinstonFormatter())
-      }
 
       logger = winston.createLogger({
         level: env.get('LOG_LEVEL', true) || 'info',
@@ -154,7 +147,6 @@ export class ContainerConfigLoader {
 
     container.bind<Env>(TYPES.Revisions_Env).toConstantValue(env)
 
-    container.bind(TYPES.Revisions_NEW_RELIC_ENABLED).toConstantValue(env.get('NEW_RELIC_ENABLED', true))
     container.bind(TYPES.Revisions_VERSION).toConstantValue(env.get('VERSION', true) ?? 'development')
 
     if (!isConfiguredForHomeServer) {

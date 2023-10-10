@@ -45,7 +45,6 @@ const TYPES = {
   Files_REDIS_URL: Symbol.for('Files_REDIS_URL'),
   Files_MAX_CHUNK_BYTES: Symbol.for('Files_MAX_CHUNK_BYTES'),
   Files_VERSION: Symbol.for('Files_VERSION'),
-  Files_NEW_RELIC_ENABLED: Symbol.for('Files_NEW_RELIC_ENABLED'),
   Files_FILE_UPLOAD_PATH: Symbol.for('Files_FILE_UPLOAD_PATH'),
   Files_IS_CONFIGURED_FOR_HOME_SERVER_OR_SELF_HOSTING: Symbol.for(
     'Files_IS_CONFIGURED_FOR_HOME_SERVER_OR_SELF_HOSTING',

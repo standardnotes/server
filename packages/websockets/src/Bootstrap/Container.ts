@@ -58,13 +58,6 @@ export class ContainerConfigLoader {
     container.bind(TYPES.Redis).toConstantValue(redis)
 
     const winstonFormatters = [winston.format.splat(), winston.format.json()]
-    if (env.get('NEW_RELIC_ENABLED', true) === 'true') {
-      await import('newrelic')
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
-      const newrelicFormatter = require('@newrelic/winston-enricher')
-      const newrelicWinstonFormatter = newrelicFormatter(winston)
-      winstonFormatters.push(newrelicWinstonFormatter())
-    }
 
     const logger = winston.createLogger({
       level: env.get('LOG_LEVEL', true) || 'info',
@@ -119,7 +112,6 @@ export class ContainerConfigLoader {
       .toConstantValue(+env.get('WEB_SOCKET_CONNECTION_TOKEN_TTL', true))
     container.bind(TYPES.REDIS_URL).toConstantValue(env.get('REDIS_URL'))
     container.bind(TYPES.SQS_QUEUE_URL).toConstantValue(env.get('SQS_QUEUE_URL'))
-    container.bind(TYPES.NEW_RELIC_ENABLED).toConstantValue(env.get('NEW_RELIC_ENABLED', true))
     container.bind(TYPES.VERSION).toConstantValue(env.get('VERSION'))
 
     // use cases

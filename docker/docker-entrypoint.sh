@@ -24,14 +24,6 @@ if [ -z "$REVISIONS_SERVER_PORT" ]; then
   export REVISIONS_SERVER_PORT=3105
 fi
 
-#############
-# NEW RELIC #
-#############
-
-if [ -z "$NEW_RELIC_ENABLED" ]; then
-  export NEW_RELIC_ENABLED=false
-fi
-
 ######
 # DB #
 ######
@@ -118,10 +110,6 @@ fi
 
 export AUTH_SERVER_JWT_SECRET=$AUTH_JWT_SECRET
 export AUTH_SERVER_LEGACY_JWT_SECRET=$(openssl rand -hex 32)
-
-export AUTH_SERVER_NEW_RELIC_ENABLED=false
-export AUTH_SERVER_NEW_RELIC_APP_NAME=Auth
-export AUTH_SERVER_NEW_RELIC_NO_CONFIG_FILE=true
 
 if [ -z "$AUTH_SERVER_DISABLE_USER_REGISTRATION" ]; then
   export AUTH_SERVER_DISABLE_USER_REGISTRATION=false
@@ -260,10 +248,6 @@ if [ -z "$SYNCING_SERVER_REVISIONS_FREQUENCY" ]; then
   export SYNCING_SERVER_REVISIONS_FREQUENCY=300
 fi
 
-export SYNCING_SERVER_NEW_RELIC_ENABLED=false
-export SYNCING_SERVER_NEW_RELIC_APP_NAME="Syncing Server JS"
-export SYNCING_SERVER_NEW_RELIC_NO_CONFIG_FILE=true
-
 export SYNCING_SERVER_FILE_UPLOAD_PATH="/opt/shared/uploads"
 
 printenv | grep SYNCING_SERVER_ | sed 's/SYNCING_SERVER_//g' > /opt/server/packages/syncing-server/.env
@@ -282,8 +266,6 @@ export FILES_SERVER_VERSION="local"
 if [ -z "$FILES_SERVER_MAX_CHUNK_BYTES" ]; then
   export FILES_SERVER_MAX_CHUNK_BYTES=100000000
 fi
-
-export FILES_SERVER_NEW_RELIC_ENABLED=false
 
 if [ -z "$FILES_SERVER_SNS_TOPIC_ARN" ]; then
   export FILES_SERVER_SNS_TOPIC_ARN="arn:aws:sns:us-east-1:000000000000:files-local-topic"
@@ -329,8 +311,6 @@ fi
 export REVISIONS_SERVER_NODE_ENV="production"
 export REVISIONS_SERVER_VERSION="local"
 
-export REVISIONS_SERVER_NEW_RELIC_ENABLED=false
-
 if [ -z "$REVISIONS_SERVER_SNS_TOPIC_ARN" ]; then
   export REVISIONS_SERVER_SNS_TOPIC_ARN="arn:aws:sns:us-east-1:000000000000:revisions-server-local-topic"
 fi
@@ -373,10 +353,6 @@ if [ -z "$API_GATEWAY_LOG_LEVEL" ]; then
 fi
 export API_GATEWAY_NODE_ENV=production
 export API_GATEWAY_VERSION=local
-
-export API_GATEWAY_NEW_RELIC_ENABLED=false
-export API_GATEWAY_NEW_RELIC_APP_NAME="API Gateway"
-export API_GATEWAY_NEW_RELIC_NO_CONFIG_FILE=true
 
 export API_GATEWAY_SYNCING_SERVER_JS_URL=http://localhost:$SYNCING_SERVER_PORT
 export API_GATEWAY_AUTH_SERVER_URL=http://localhost:$AUTH_SERVER_PORT

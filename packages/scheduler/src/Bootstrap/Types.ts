@@ -9,7 +9,6 @@ const TYPES = {
   SNS_AWS_REGION: Symbol.for('SNS_AWS_REGION'),
   SQS_QUEUE_URL: Symbol.for('SQS_QUEUE_URL'),
   SQS_AWS_REGION: Symbol.for('SQS_AWS_REGION'),
-  NEW_RELIC_ENABLED: Symbol.for('NEW_RELIC_ENABLED'),
   // Repositories
   PredicateRepository: Symbol.for('PredicateRepository'),
   JobRepository: Symbol.for('JobRepository'),

@@ -7,7 +7,7 @@ import {
   EmailBouncedEvent,
 } from '@standardnotes/domain-events'
 
-export class SQSNewRelicBounceNotificiationHandler implements DomainEventMessageHandlerInterface {
+export class SQSBounceNotificiationHandler implements DomainEventMessageHandlerInterface {
   private readonly ALLOWED_NOTIFICATION_TYPES = ['Bounce']
 
   constructor(
@@ -52,17 +52,7 @@ export class SQSNewRelicBounceNotificiationHandler implements DomainEventMessage
 
       this.logger.debug(`Received event: ${domainEvent.type}`)
 
-      const newrelic = await import('newrelic')
-
-      await newrelic.startBackgroundTransaction(
-        domainEvent.type,
-        /* istanbul ignore next */
-        () => {
-          newrelic.getTransaction()
-
-          return handler.handle(domainEvent)
-        },
-      )
+      await handler.handle(domainEvent)
     }
   }
 

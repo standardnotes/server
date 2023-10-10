@@ -16,7 +16,6 @@ const TYPES = {
   REDIS_URL: Symbol.for('REDIS_URL'),
   SQS_QUEUE_URL: Symbol.for('SQS_QUEUE_URL'),
   SQS_AWS_REGION: Symbol.for('SQS_AWS_REGION'),
-  NEW_RELIC_ENABLED: Symbol.for('NEW_RELIC_ENABLED'),
   WEBSOCKETS_API_URL: Symbol.for('WEBSOCKETS_API_URL'),
   VERSION: Symbol.for('VERSION'),
   // use cases

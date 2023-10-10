@@ -57,13 +57,6 @@ export class ContainerConfigLoader {
     container.bind(TYPES.Redis).toConstantValue(redis)
 
     const winstonFormatters = [winston.format.splat(), winston.format.json()]
-    if (env.get('NEW_RELIC_ENABLED', true) === 'true') {
-      await import('newrelic')
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
-      const newrelicFormatter = require('@newrelic/winston-enricher')
-      const newrelicWinstonFormatter = newrelicFormatter(winston)
-      winstonFormatters.push(newrelicWinstonFormatter())
-    }
 
     const logger = winston.createLogger({
       level: env.get('LOG_LEVEL', true) || 'info',
@@ -110,7 +103,6 @@ export class ContainerConfigLoader {
     container.bind(TYPES.SNS_TOPIC_ARN).toConstantValue(env.get('SNS_TOPIC_ARN'))
     container.bind(TYPES.SNS_AWS_REGION).toConstantValue(env.get('SNS_AWS_REGION', true))
     container.bind(TYPES.SQS_QUEUE_URL).toConstantValue(env.get('SQS_QUEUE_URL'))
-    container.bind(TYPES.NEW_RELIC_ENABLED).toConstantValue(env.get('NEW_RELIC_ENABLED', true))
 
     // Repositories
     container.bind<PredicateRepositoryInterface>(TYPES.PredicateRepository).to(MySQLPredicateRepository)

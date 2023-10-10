@@ -294,13 +294,6 @@ export class ContainerConfigLoader {
     const container = new Container()
 
     const winstonFormatters = [winston.format.splat(), winston.format.json()]
-    if (env.get('NEW_RELIC_ENABLED', true) === 'true') {
-      await import('newrelic')
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
-      const newrelicFormatter = require('@newrelic/winston-enricher')
-      const newrelicWinstonFormatter = newrelicFormatter(winston)
-      winstonFormatters.push(newrelicWinstonFormatter())
-    }
 
     let logger: winston.Logger
     if (configuration?.logger) {
@@ -566,7 +559,6 @@ export class ContainerConfigLoader {
     container
       .bind(TYPES.Auth_USER_SERVER_CHANGE_EMAIL_URL)
       .toConstantValue(env.get('USER_SERVER_CHANGE_EMAIL_URL', true))
-    container.bind(TYPES.Auth_NEW_RELIC_ENABLED).toConstantValue(env.get('NEW_RELIC_ENABLED', true))
     container.bind(TYPES.Auth_SYNCING_SERVER_URL).toConstantValue(env.get('SYNCING_SERVER_URL', true))
     container.bind(TYPES.Auth_VERSION).toConstantValue(env.get('VERSION', true) ?? 'development')
     container.bind(TYPES.Auth_PAYMENTS_SERVER_URL).toConstantValue(env.get('PAYMENTS_SERVER_URL', true))

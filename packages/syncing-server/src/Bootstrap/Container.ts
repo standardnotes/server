@@ -206,13 +206,6 @@ export class ContainerConfigLoader {
       logger = configuration.logger as winston.Logger
     } else {
       const winstonFormatters = [winston.format.splat(), winston.format.json()]
-      if (env.get('NEW_RELIC_ENABLED', true) === 'true') {
-        await import('newrelic')
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
-        const newrelicFormatter = require('@newrelic/winston-enricher')
-        const newrelicWinstonFormatter = newrelicFormatter(winston)
-        winstonFormatters.push(newrelicWinstonFormatter())
-      }
 
       logger = winston.createLogger({
         level: env.get('LOG_LEVEL', true) || 'info',
@@ -338,7 +331,6 @@ export class ContainerConfigLoader {
       .toConstantValue(
         env.get('EMAIL_ATTACHMENT_MAX_BYTE_SIZE', true) ? +env.get('EMAIL_ATTACHMENT_MAX_BYTE_SIZE', true) : 10485760,
       )
-    container.bind(TYPES.Sync_NEW_RELIC_ENABLED).toConstantValue(env.get('NEW_RELIC_ENABLED', true))
     container
       .bind(TYPES.Sync_FILE_UPLOAD_PATH)
       .toConstantValue(
@@ -541,7 +533,6 @@ export class ContainerConfigLoader {
     container
       .bind(TYPES.Sync_REVISIONS_FREQUENCY)
       .toConstantValue(env.get('REVISIONS_FREQUENCY', true) ? +env.get('REVISIONS_FREQUENCY', true) : 300)
-    container.bind(TYPES.Sync_NEW_RELIC_ENABLED).toConstantValue(env.get('NEW_RELIC_ENABLED', true))
     container.bind(TYPES.Sync_VERSION).toConstantValue(env.get('VERSION', true) ?? 'development')
     container
       .bind(TYPES.Sync_CONTENT_SIZE_TRANSFER_LIMIT)
