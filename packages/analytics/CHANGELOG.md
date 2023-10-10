@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.29.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.28.9...@standardnotes/analytics@2.29.0) (2023-10-10)
+
+### Features
+
+* remove newrelic integration ([#862](https://github.com/standardnotes/server/issues/862)) ([efb341e](https://github.com/standardnotes/server/commit/efb341eb991d37efab7c1efce035ee07ad0a101e))
+
 ## [2.28.9](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.28.8...@standardnotes/analytics@2.28.9) (2023-10-10)
 
 ### Bug Fixes

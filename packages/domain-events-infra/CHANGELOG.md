@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.17.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events-infra@1.16.4...@standardnotes/domain-events-infra@1.17.0) (2023-10-10)
+
+### Features
+
+* remove newrelic integration ([#862](https://github.com/standardnotes/server/issues/862)) ([efb341e](https://github.com/standardnotes/server/commit/efb341eb991d37efab7c1efce035ee07ad0a101e))
+
 ## [1.16.4](https://github.com/standardnotes/server/compare/@standardnotes/domain-events-infra@1.16.3...@standardnotes/domain-events-infra@1.16.4) (2023-10-10)
 
 ### Bug Fixes

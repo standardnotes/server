@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.13.0](https://github.com/standardnotes/server/compare/@standardnotes/event-store@1.12.18...@standardnotes/event-store@1.13.0) (2023-10-10)
+
+### Features
+
+* remove newrelic integration ([#862](https://github.com/standardnotes/server/issues/862)) ([efb341e](https://github.com/standardnotes/server/commit/efb341eb991d37efab7c1efce035ee07ad0a101e))
+
 ## [1.12.18](https://github.com/standardnotes/server/compare/@standardnotes/event-store@1.12.17...@standardnotes/event-store@1.12.18) (2023-10-10)
 
 **Note:** Version bump only for package @standardnotes/event-store

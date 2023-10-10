@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.15.0](https://github.com/standardnotes/server/compare/@standardnotes/websockets-server@1.14.5...@standardnotes/websockets-server@1.15.0) (2023-10-10)
+
+### Features
+
+* remove newrelic integration ([#862](https://github.com/standardnotes/server/issues/862)) ([efb341e](https://github.com/standardnotes/server/commit/efb341eb991d37efab7c1efce035ee07ad0a101e))
+
 ## [1.14.5](https://github.com/standardnotes/server/compare/@standardnotes/websockets-server@1.14.4...@standardnotes/websockets-server@1.14.5) (2023-10-10)
 
 ### Bug Fixes

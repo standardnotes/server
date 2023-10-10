@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.116.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.115.4...@standardnotes/syncing-server@1.116.0) (2023-10-10)
+
+### Bug Fixes
+
+* **syncing-server:** logs about cleanup ([e3eede7](https://github.com/standardnotes/syncing-server-js/commit/e3eede72cf3f285422ae17469b4f6e09804cc2e9))
+
+### Features
+
+* remove newrelic integration ([#862](https://github.com/standardnotes/syncing-server-js/issues/862)) ([efb341e](https://github.com/standardnotes/syncing-server-js/commit/efb341eb991d37efab7c1efce035ee07ad0a101e))
+
 ## [1.115.4](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.115.3...@standardnotes/syncing-server@1.115.4) (2023-10-10)
 
 ### Bug Fixes

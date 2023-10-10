@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.79.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.78.6...@standardnotes/api-gateway@1.79.0) (2023-10-10)
+
+### Features
+
+* remove newrelic integration ([#862](https://github.com/standardnotes/api-gateway/issues/862)) ([efb341e](https://github.com/standardnotes/api-gateway/commit/efb341eb991d37efab7c1efce035ee07ad0a101e))
+
 ## [1.78.6](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.78.5...@standardnotes/api-gateway@1.78.6) (2023-10-10)
 
 ### Bug Fixes
