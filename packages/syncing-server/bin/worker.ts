@@ -6,7 +6,11 @@ import TYPES from '../src/Bootstrap/Types'
 import { Env } from '../src/Bootstrap/Env'
 import { DomainEventSubscriberFactoryInterface } from '@standardnotes/domain-events'
 import { ContainerConfigLoader } from '../src/Bootstrap/Container'
-import { OpenTelemetrySDKInterface } from '@standardnotes/domain-events-infra'
+import { OpenTelemetrySDK } from '@standardnotes/domain-events-infra'
+import { ServiceIdentifier } from '@standardnotes/domain-core'
+
+const sdk = new OpenTelemetrySDK(ServiceIdentifier.NAMES.SyncingServerWorker)
+sdk.start()
 
 const container = new ContainerConfigLoader('worker')
 void container.load().then((container) => {
@@ -14,12 +18,6 @@ void container.load().then((container) => {
   env.load()
 
   const logger: Logger = container.get(TYPES.Sync_Logger)
-
-  if (!container.get<boolean>(TYPES.Sync_IS_CONFIGURED_FOR_HOME_SERVER_OR_SELF_HOSTING)) {
-    logger.info('Starting OpenTelemetry SDK...')
-    const openTelemetrySDK = container.get<OpenTelemetrySDKInterface>(TYPES.Sync_OpenTelemetrySDK)
-    openTelemetrySDK.start()
-  }
 
   const subscriberFactory: DomainEventSubscriberFactoryInterface = container.get(
     TYPES.Sync_DomainEventSubscriberFactory,

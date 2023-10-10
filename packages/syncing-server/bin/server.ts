@@ -11,12 +11,16 @@ import helmet from 'helmet'
 import * as cors from 'cors'
 import { urlencoded, json, Request, Response, NextFunction } from 'express'
 import * as winston from 'winston'
-
+import { OpenTelemetrySDK } from '@standardnotes/domain-events-infra'
+import { ServiceIdentifier } from '@standardnotes/domain-core'
 import { InversifyExpressServer } from 'inversify-express-utils'
+
 import TYPES from '../src/Bootstrap/Types'
 import { Env } from '../src/Bootstrap/Env'
 import { ContainerConfigLoader } from '../src/Bootstrap/Container'
-import { OpenTelemetrySDKInterface } from '@standardnotes/domain-events-infra'
+
+const sdk = new OpenTelemetrySDK(ServiceIdentifier.NAMES.SyncingServer)
+sdk.start()
 
 const container = new ContainerConfigLoader()
 void container.load().then((container) => {
@@ -73,12 +77,6 @@ void container.load().then((container) => {
   })
 
   const serverInstance = server.build()
-
-  if (!container.get<boolean>(TYPES.Sync_IS_CONFIGURED_FOR_HOME_SERVER_OR_SELF_HOSTING)) {
-    logger.info('Starting OpenTelemetry SDK...')
-    const openTelemetrySDK = container.get<OpenTelemetrySDKInterface>(TYPES.Sync_OpenTelemetrySDK)
-    openTelemetrySDK.start()
-  }
 
   serverInstance.listen(env.get('PORT'))
 

@@ -13,8 +13,6 @@ import { Item } from '../Domain/Item/Item'
 import {
   DirectCallDomainEventPublisher,
   DirectCallEventMessageHandler,
-  OpenTelemetrySDK,
-  OpenTelemetrySDKInterface,
   SNSDomainEventPublisher,
   SQSDomainEventSubscriberFactory,
   SQSEventMessageHandler,
@@ -237,24 +235,10 @@ export class ContainerConfigLoader {
     const isConfiguredForHomeServerOrSelfHosting = isConfiguredForHomeServer || isConfiguredForSelfHosting
     const isSecondaryDatabaseEnabled = env.get('SECONDARY_DB_ENABLED', true) === 'true'
     const isConfiguredForInMemoryCache = env.get('CACHE_TYPE', true) === 'memory'
-    const openTelemetryRatio = env.get('OTEL_SPAN_RATIO', true) ? +env.get('OTEL_SPAN_RATIO', true) : 0.01
 
     container
       .bind<boolean>(TYPES.Sync_IS_CONFIGURED_FOR_HOME_SERVER_OR_SELF_HOSTING)
       .toConstantValue(isConfiguredForHomeServerOrSelfHosting)
-
-    if (!isConfiguredForHomeServerOrSelfHosting) {
-      container
-        .bind<OpenTelemetrySDKInterface>(TYPES.Sync_OpenTelemetrySDK)
-        .toConstantValue(
-          new OpenTelemetrySDK(
-            this.mode === 'server'
-              ? ServiceIdentifier.NAMES.SyncingServer
-              : ServiceIdentifier.NAMES.SyncingServerWorker,
-            openTelemetryRatio,
-          ),
-        )
-    }
 
     if (!isConfiguredForInMemoryCache) {
       const redisUrl = env.get('REDIS_URL')
