@@ -237,7 +237,7 @@ export class MongoDBItemRepository implements ItemRepositoryInterface {
         .toLowerCase()
         .replace(/([-_][a-z])/g, (group) => group.toUpperCase().replace('-', '').replace('_', ''))
 
-      options.order = { [sortBySnakeToCamelCase]: query.sortOrder }
+      options.order = { [sortBySnakeToCamelCase]: query.sortOrder, _id: 'ASC' }
     }
 
     if (query.uuids && query.uuids.length > 0) {
