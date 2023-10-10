@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.43.4](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.43.3...@standardnotes/revisions-server@1.43.4) (2023-10-10)
+
+### Bug Fixes
+
+* add transition keyword to logs for better searching ([1026ce3](https://github.com/standardnotes/server/commit/1026ce383c178086400bfe5a46e520e18b54e1bc))
+
 ## [1.43.3](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.43.2...@standardnotes/revisions-server@1.43.3) (2023-10-10)
 
 ### Bug Fixes
