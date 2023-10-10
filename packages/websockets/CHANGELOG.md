@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.14.5](https://github.com/standardnotes/server/compare/@standardnotes/websockets-server@1.14.4...@standardnotes/websockets-server@1.14.5) (2023-10-10)
+
+### Bug Fixes
+
+* opentelemetry instantiation ([08f7c54](https://github.com/standardnotes/server/commit/08f7c5447b020fee71a1e49d382db32082bb9044))
+
 ## [1.14.4](https://github.com/standardnotes/server/compare/@standardnotes/websockets-server@1.14.3...@standardnotes/websockets-server@1.14.4) (2023-10-10)
 
 **Note:** Version bump only for package @standardnotes/websockets-server

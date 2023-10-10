@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.43.3](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.43.2...@standardnotes/revisions-server@1.43.3) (2023-10-10)
+
+### Bug Fixes
+
+* opentelemetry instantiation ([08f7c54](https://github.com/standardnotes/server/commit/08f7c5447b020fee71a1e49d382db32082bb9044))
+* **revisions:** order by for identical created at date ([637593c](https://github.com/standardnotes/server/commit/637593c1bcd0fb3ae35586c79bb044cb24b37c6b))
+
 ## [1.43.2](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.43.1...@standardnotes/revisions-server@1.43.2) (2023-10-10)
 
 ### Bug Fixes

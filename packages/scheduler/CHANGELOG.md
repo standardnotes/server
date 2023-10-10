@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.22.9](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.22.8...@standardnotes/scheduler-server@1.22.9) (2023-10-10)
+
+### Bug Fixes
+
+* opentelemetry instantiation ([08f7c54](https://github.com/standardnotes/server/commit/08f7c5447b020fee71a1e49d382db32082bb9044))
+
 ## [1.22.8](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.22.7...@standardnotes/scheduler-server@1.22.8) (2023-10-10)
 
 **Note:** Version bump only for package @standardnotes/scheduler-server

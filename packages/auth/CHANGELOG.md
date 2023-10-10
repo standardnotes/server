@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.155.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.155.0...@standardnotes/auth-server@1.155.1) (2023-10-10)
+
+### Bug Fixes
+
+* opentelemetry instantiation ([08f7c54](https://github.com/standardnotes/server/commit/08f7c5447b020fee71a1e49d382db32082bb9044))
+
 # [1.155.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.154.3...@standardnotes/auth-server@1.155.0) (2023-10-10)
 
 ### Features
