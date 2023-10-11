@@ -21,6 +21,7 @@ export class ServiceIdentifier extends ValueObject<ServiceIdentifierProps> {
     Email: 'Email',
     EmailWorker: 'EmailWorker',
     EmailBounceProcessor: 'EmailBounceProcessor',
+    EmailScheduledTask: 'EmailScheduledTask',
     Websockets: 'Websockets',
     WebsocketsWorker: 'WebsocketsWorker',
   }
