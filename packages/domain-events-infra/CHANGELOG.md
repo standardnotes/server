@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.19.2](https://github.com/standardnotes/server/compare/@standardnotes/domain-events-infra@1.19.1...@standardnotes/domain-events-infra@1.19.2) (2023-10-11)
+
+### Bug Fixes
+
+* **domain-events-infra:** logs severity ([b782ced](https://github.com/standardnotes/server/commit/b782cedc85e0dff1f94163b908d98005b30f119e))
+
 ## [1.19.1](https://github.com/standardnotes/server/compare/@standardnotes/domain-events-infra@1.19.0...@standardnotes/domain-events-infra@1.19.1) (2023-10-11)
 
 ### Bug Fixes
