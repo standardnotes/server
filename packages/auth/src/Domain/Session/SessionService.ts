@@ -57,7 +57,7 @@ export class SessionService implements SessionServiceInterface {
 
     const sessionPayload = await this.createTokens(session)
 
-    await this.sessionRepository.save(session)
+    await this.sessionRepository.insert(session)
 
     try {
       const userSubscription = await this.userSubscriptionRepository.findOneByUserUuid(dto.user.uuid)
@@ -92,7 +92,7 @@ export class SessionService implements SessionServiceInterface {
 
     const sessionPayload = await this.createTokens(ephemeralSession)
 
-    await this.ephemeralSessionRepository.save(ephemeralSession)
+    await this.ephemeralSessionRepository.insert(ephemeralSession)
 
     return {
       sessionHttpRepresentation: sessionPayload,
@@ -104,9 +104,9 @@ export class SessionService implements SessionServiceInterface {
     const sessionPayload = await this.createTokens(dto.session)
 
     if (dto.isEphemeral) {
-      await this.ephemeralSessionRepository.save(dto.session)
+      await this.ephemeralSessionRepository.update(dto.session)
     } else {
-      await this.sessionRepository.save(dto.session)
+      await this.sessionRepository.update(dto.session)
     }
 
     return sessionPayload
@@ -221,7 +221,9 @@ export class SessionService implements SessionServiceInterface {
     revokedSession.received = true
     revokedSession.receivedAt = this.timer.getUTCDate()
 
-    return this.revokedSessionRepository.save(revokedSession)
+    await this.revokedSessionRepository.update(revokedSession)
+
+    return revokedSession
   }
 
   async deleteSessionByToken(token: string): Promise<string | null> {
@@ -248,7 +250,9 @@ export class SessionService implements SessionServiceInterface {
     revokedSession.apiVersion = session.apiVersion
     revokedSession.userAgent = session.userAgent
 
-    return this.revokedSessionRepository.save(revokedSession)
+    await this.revokedSessionRepository.insert(revokedSession)
+
+    return revokedSession
   }
 
   private async createSession(dto: {

@@ -17,10 +17,18 @@ export class TypeORMSessionRepository implements SessionRepositoryInterface {
     @inject(TYPES.Auth_Timer) private timer: TimerInterface,
   ) {}
 
-  async save(session: Session): Promise<Session> {
+  async insert(session: Session): Promise<void> {
     session.updatedAt = this.timer.getUTCDate()
 
-    return this.ormRepository.save(session)
+    await this.ormRepository.insert(session)
+  }
+
+  async update(session: Session): Promise<void> {
+    session.updatedAt = this.timer.getUTCDate()
+
+    const { uuid, ...sessionProps } = session
+
+    await this.ormRepository.update({ uuid }, sessionProps)
   }
 
   async remove(session: Session): Promise<Session> {

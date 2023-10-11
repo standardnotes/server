@@ -12,8 +12,14 @@ export class TypeORMRevokedSessionRepository implements RevokedSessionRepository
     private ormRepository: Repository<RevokedSession>,
   ) {}
 
-  async save(revokedSession: RevokedSession): Promise<RevokedSession> {
-    return this.ormRepository.save(revokedSession)
+  async insert(revokedSession: RevokedSession): Promise<void> {
+    await this.ormRepository.insert(revokedSession)
+  }
+
+  async update(revokedSession: RevokedSession): Promise<void> {
+    const { uuid, ...revokedSessionProps } = revokedSession
+
+    await this.ormRepository.update({ uuid }, revokedSessionProps)
   }
 
   async remove(revokedSession: RevokedSession): Promise<RevokedSession> {

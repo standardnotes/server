@@ -71,7 +71,11 @@ export class TypeORMEphemeralSessionRepository implements EphemeralSessionReposi
     return JSON.parse(stringifiedSession.props.value)
   }
 
-  async save(ephemeralSession: EphemeralSession): Promise<void> {
+  async update(ephemeralSession: EphemeralSession): Promise<void> {
+    return this.insert(ephemeralSession)
+  }
+
+  async insert(ephemeralSession: EphemeralSession): Promise<void> {
     const ttl = this.ephemeralSessionAge
 
     ephemeralSession.updatedAt = this.timer.getUTCDate()

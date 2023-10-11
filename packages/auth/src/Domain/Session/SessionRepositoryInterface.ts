@@ -9,7 +9,8 @@ export interface SessionRepositoryInterface {
   findAllByUserUuid(userUuid: string): Promise<Array<Session>>
   deleteAllByUserUuidExceptOne(dto: { userUuid: Uuid; currentSessionUuid: Uuid }): Promise<void>
   deleteOneByUuid(uuid: string): Promise<void>
-  save(session: Session): Promise<Session>
+  insert(session: Session): Promise<void>
+  update(session: Session): Promise<void>
   remove(session: Session): Promise<Session>
   clearUserAgentByUserUuid(userUuid: string): Promise<void>
   removeExpiredBefore(date: Date): Promise<void>

@@ -42,7 +42,7 @@ export class RedisEphemeralSessionRepository implements EphemeralSessionReposito
     session.accessExpiration = accessExpiration
     session.refreshExpiration = refreshExpiration
 
-    await this.save(session)
+    await this.update(session)
   }
 
   async findAllByUserUuid(userUuid: string): Promise<Array<EphemeralSession>> {
@@ -77,7 +77,7 @@ export class RedisEphemeralSessionRepository implements EphemeralSessionReposito
     return JSON.parse(stringifiedSession)
   }
 
-  async save(ephemeralSession: EphemeralSession): Promise<void> {
+  async insert(ephemeralSession: EphemeralSession): Promise<void> {
     const ttl = this.ephemeralSessionAge
 
     const stringifiedSession = JSON.stringify(ephemeralSession)
@@ -91,5 +91,9 @@ export class RedisEphemeralSessionRepository implements EphemeralSessionReposito
     pipeline.expire(`${this.USER_SESSIONS_PREFIX}:${ephemeralSession.userUuid}`, ttl)
 
     await pipeline.exec()
+  }
+
+  async update(ephemeralSession: EphemeralSession): Promise<void> {
+    return this.insert(ephemeralSession)
   }
 }

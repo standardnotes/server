@@ -69,18 +69,21 @@ describe('SessionService', () => {
     sessionRepository = {} as jest.Mocked<SessionRepositoryInterface>
     sessionRepository.findOneByUuid = jest.fn().mockReturnValue(null)
     sessionRepository.deleteOneByUuid = jest.fn()
-    sessionRepository.save = jest.fn().mockReturnValue(existingSession)
+    sessionRepository.insert = jest.fn()
+    sessionRepository.update = jest.fn()
 
     settingService = {} as jest.Mocked<SettingServiceInterface>
     settingService.findSettingWithDecryptedValue = jest.fn().mockReturnValue(null)
 
     ephemeralSessionRepository = {} as jest.Mocked<EphemeralSessionRepositoryInterface>
-    ephemeralSessionRepository.save = jest.fn()
+    ephemeralSessionRepository.insert = jest.fn()
+    ephemeralSessionRepository.update = jest.fn()
     ephemeralSessionRepository.findOneByUuid = jest.fn()
     ephemeralSessionRepository.deleteOne = jest.fn()
 
     revokedSessionRepository = {} as jest.Mocked<RevokedSessionRepositoryInterface>
-    revokedSessionRepository.save = jest.fn()
+    revokedSessionRepository.insert = jest.fn()
+    revokedSessionRepository.update = jest.fn()
 
     existingEphemeralSession = {} as jest.Mocked<EphemeralSession>
     existingEphemeralSession.uuid = '2-3-4'
@@ -129,7 +132,7 @@ describe('SessionService', () => {
   it('should mark a revoked session as received', async () => {
     await createService().markRevokedSessionAsReceived(revokedSession)
 
-    expect(revokedSessionRepository.save).toHaveBeenCalledWith({
+    expect(revokedSessionRepository.update).toHaveBeenCalledWith({
       uuid: '2e1e43',
       received: true,
       receivedAt: new Date(1),
@@ -145,8 +148,8 @@ describe('SessionService', () => {
       readonly_access: false,
     })
 
-    expect(sessionRepository.save).toHaveBeenCalled()
-    expect(ephemeralSessionRepository.save).not.toHaveBeenCalled()
+    expect(sessionRepository.update).toHaveBeenCalled()
+    expect(ephemeralSessionRepository.update).not.toHaveBeenCalled()
   })
 
   it('should refresh access and refresh tokens for an ephemeral session', async () => {
@@ -158,8 +161,8 @@ describe('SessionService', () => {
       readonly_access: false,
     })
 
-    expect(sessionRepository.save).not.toHaveBeenCalled()
-    expect(ephemeralSessionRepository.save).toHaveBeenCalled()
+    expect(sessionRepository.update).not.toHaveBeenCalled()
+    expect(ephemeralSessionRepository.update).toHaveBeenCalled()
   })
 
   it('should create new session for a user', async () => {
@@ -173,8 +176,8 @@ describe('SessionService', () => {
       readonlyAccess: false,
     })
 
-    expect(sessionRepository.save).toHaveBeenCalledWith(expect.any(Session))
-    expect(sessionRepository.save).toHaveBeenCalledWith({
+    expect(sessionRepository.insert).toHaveBeenCalledWith(expect.any(Session))
+    expect(sessionRepository.insert).toHaveBeenCalledWith({
       accessExpiration: expect.any(Date),
       apiVersion: '003',
       createdAt: expect.any(Date),
@@ -209,8 +212,8 @@ describe('SessionService', () => {
       readonlyAccess: false,
     })
 
-    expect(sessionRepository.save).toHaveBeenCalledWith(expect.any(Session))
-    expect(sessionRepository.save).toHaveBeenCalledWith({
+    expect(sessionRepository.insert).toHaveBeenCalledWith(expect.any(Session))
+    expect(sessionRepository.insert).toHaveBeenCalledWith({
       accessExpiration: expect.any(Date),
       apiVersion: '003',
       createdAt: expect.any(Date),
@@ -248,8 +251,8 @@ describe('SessionService', () => {
       readonlyAccess: false,
     })
 
-    expect(sessionRepository.save).toHaveBeenCalledWith(expect.any(Session))
-    expect(sessionRepository.save).toHaveBeenCalledWith({
+    expect(sessionRepository.insert).toHaveBeenCalledWith(expect.any(Session))
+    expect(sessionRepository.insert).toHaveBeenCalledWith({
       accessExpiration: expect.any(Date),
       apiVersion: '003',
       createdAt: expect.any(Date),
@@ -405,8 +408,8 @@ describe('SessionService', () => {
       readonlyAccess: false,
     })
 
-    expect(ephemeralSessionRepository.save).toHaveBeenCalledWith(expect.any(EphemeralSession))
-    expect(ephemeralSessionRepository.save).toHaveBeenCalledWith({
+    expect(ephemeralSessionRepository.insert).toHaveBeenCalledWith(expect.any(EphemeralSession))
+    expect(ephemeralSessionRepository.insert).toHaveBeenCalledWith({
       accessExpiration: expect.any(Date),
       apiVersion: '003',
       createdAt: expect.any(Date),
@@ -684,7 +687,7 @@ describe('SessionService', () => {
   it('should revoked a session', async () => {
     await createService().createRevokedSession(existingSession)
 
-    expect(revokedSessionRepository.save).toHaveBeenCalledWith({
+    expect(revokedSessionRepository.insert).toHaveBeenCalledWith({
       uuid: '2e1e43',
       userUuid: '1-2-3',
       userAgent: 'Chrome',
