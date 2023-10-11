@@ -41,6 +41,8 @@ export class SQSOpenTelemetryEventMessageHandler implements DomainEventMessageHa
 
     let activeContext = undefined
     if (domainEvent.meta.trace) {
+      this.logger.info(`Event has trace: ${JSON.stringify(domainEvent.meta.trace)}`)
+
       activeContext = this.propagator.extract(domainEvent.meta.trace)
     }
 
