@@ -1,15 +1,15 @@
 import { Logger } from 'winston'
 import * as zlib from 'zlib'
-import * as OpenTelemetryApi from '@opentelemetry/api'
 import {
   DomainEventHandlerInterface,
   DomainEventInterface,
   DomainEventMessageHandlerInterface,
 } from '@standardnotes/domain-events'
+import { OpenTelemetryTracer } from '../OpenTelemetry/OpenTelemetryTracer'
+import { OpenTelemetryTracerInterface } from '../OpenTelemetry/OpenTelemetryTracerInterface'
 
 export class SQSOpenTelemetryEventMessageHandler implements DomainEventMessageHandlerInterface {
-  private currentSpan: OpenTelemetryApi.Span | undefined
-  private internalSpan: OpenTelemetryApi.Span | undefined
+  private tracer: OpenTelemetryTracerInterface | undefined
 
   constructor(
     private serviceName: string,
@@ -35,35 +35,22 @@ export class SQSOpenTelemetryEventMessageHandler implements DomainEventMessageHa
 
     this.logger.debug(`Received event: ${domainEvent.type}`)
 
-    const tracer = OpenTelemetryApi.trace.getTracer('sqs-handler')
+    this.tracer = new OpenTelemetryTracer()
 
-    this.currentSpan = tracer.startSpan(this.serviceName, { kind: OpenTelemetryApi.SpanKind.CONSUMER })
-    const ctx = OpenTelemetryApi.trace.setSpan(OpenTelemetryApi.context.active(), this.currentSpan)
+    this.tracer.startSpan(this.serviceName, domainEvent.type)
 
-    this.internalSpan = tracer.startSpan(domainEvent.type, { kind: OpenTelemetryApi.SpanKind.INTERNAL }, ctx)
+    try {
+      await handler.handle(domainEvent)
+    } catch (error) {
+      this.tracer.stopSpanWithError(error as Error)
 
-    await handler.handle(domainEvent)
+      throw error
+    }
 
-    this.internalSpan.end()
-
-    this.currentSpan.end()
-
-    this.internalSpan = undefined
-    this.currentSpan = undefined
+    this.tracer.stopSpan()
   }
 
   async handleError(error: Error): Promise<void> {
-    if (this.internalSpan) {
-      this.internalSpan.recordException(error)
-      this.internalSpan.end()
-      this.internalSpan = undefined
-    }
-
-    if (this.currentSpan) {
-      this.currentSpan.end()
-      this.currentSpan = undefined
-    }
-
     this.logger.error('Error occured while handling SQS message: %O', error)
   }
 }

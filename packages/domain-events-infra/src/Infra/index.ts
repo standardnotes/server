@@ -3,6 +3,8 @@ export * from './DirectCall/DirectCallEventMessageHandler'
 
 export * from './OpenTelemetry/OpenTelemetrySDK'
 export * from './OpenTelemetry/OpenTelemetrySDKInterface'
+export * from './OpenTelemetry/OpenTelemetryTracer'
+export * from './OpenTelemetry/OpenTelemetryTracerInterface'
 
 export * from './Redis/RedisDomainEventPublisher'
 export * from './Redis/RedisDomainEventSubscriber'

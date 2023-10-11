@@ -5,9 +5,11 @@ import { ServiceIdentifierProps } from './ServiceIdentifierProps'
 export class ServiceIdentifier extends ValueObject<ServiceIdentifierProps> {
   static readonly NAMES = {
     AnalyticsWorker: 'AnalyticsWorker',
+    AnalyticsScheduledTask: 'AnalyticsScheduledTask',
     ApiGateway: 'ApiGateway',
     Auth: 'Auth',
     AuthWorker: 'AuthWorker',
+    AuthScheduledTask: 'AuthScheduledTask',
     SyncingServer: 'SyncingServer',
     SyncingServerWorker: 'SyncingServerWorker',
     Revisions: 'Revisions',
@@ -15,6 +17,7 @@ export class ServiceIdentifier extends ValueObject<ServiceIdentifierProps> {
     Files: 'Files',
     FilesWorker: 'FilesWorker',
     SchedulerWorker: 'SchedulerWorker',
+    SchedulerScheduledTask: 'SchedulerScheduledTask',
     Email: 'Email',
     EmailWorker: 'EmailWorker',
     Websockets: 'Websockets',

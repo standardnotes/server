@@ -1,5 +1,11 @@
 import 'reflect-metadata'
 
+import { OpenTelemetrySDK, OpenTelemetryTracer } from '@standardnotes/domain-events-infra'
+import { ServiceIdentifier } from '@standardnotes/domain-core'
+
+const sdk = new OpenTelemetrySDK(ServiceIdentifier.NAMES.SchedulerScheduledTask)
+sdk.start()
+
 import { Logger } from 'winston'
 import * as dayjs from 'dayjs'
 import * as utc from 'dayjs/plugin/utc'
@@ -29,14 +35,21 @@ void container.load().then((container) => {
 
   const verifyPredicates: VerifyPredicates = container.get(TYPES.VerifyPredicates)
 
+  const tracer = new OpenTelemetryTracer()
+  tracer.startSpan(ServiceIdentifier.NAMES.SchedulerScheduledTask, 'verify')
+
   Promise.resolve(verifyJobs(now, verifyPredicates))
     .then(() => {
       logger.info('Verification of overdue jobs complete.')
+
+      tracer.stopSpan()
 
       process.exit(0)
     })
     .catch((error) => {
       logger.error(`Could not finish verification of overdue jobs: ${error.message}`)
+
+      tracer.stopSpanWithError(error)
 
       process.exit(1)
     })

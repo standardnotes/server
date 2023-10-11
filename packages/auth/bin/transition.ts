@@ -1,5 +1,11 @@
 import 'reflect-metadata'
 
+import { OpenTelemetrySDK, OpenTelemetryTracer } from '@standardnotes/domain-events-infra'
+import { ServiceIdentifier, RoleName, TransitionStatus } from '@standardnotes/domain-core'
+
+const sdk = new OpenTelemetrySDK(ServiceIdentifier.NAMES.AuthScheduledTask)
+sdk.start()
+
 import { Logger } from 'winston'
 import * as dayjs from 'dayjs'
 import * as utc from 'dayjs/plugin/utc'
@@ -12,7 +18,6 @@ import { DomainEventFactoryInterface } from '../src/Domain/Event/DomainEventFact
 import { UserRepositoryInterface } from '../src/Domain/User/UserRepositoryInterface'
 import { TimerInterface } from '@standardnotes/time'
 import { TransitionStatusRepositoryInterface } from '../src/Domain/Transition/TransitionStatusRepositoryInterface'
-import { RoleName, TransitionStatus } from '@standardnotes/domain-core'
 
 const inputArgs = process.argv.slice(2)
 const startDateString = inputArgs[0]
@@ -124,6 +129,9 @@ void container.load().then((container) => {
     TYPES.Auth_TransitionStatusRepository,
   )
 
+  const tracer = new OpenTelemetryTracer()
+  tracer.startSpan(ServiceIdentifier.NAMES.AuthScheduledTask, 'transition')
+
   Promise.resolve(
     requestTransition(
       transitionStatusRepository,
@@ -137,12 +145,16 @@ void container.load().then((container) => {
     .then(() => {
       logger.info(`Finished transition request for users created between ${startDateString} and ${endDateString}`)
 
+      tracer.stopSpan()
+
       process.exit(0)
     })
     .catch((error) => {
       logger.error(
         `Error while requesting transition for users created between ${startDateString} and ${endDateString}: ${error}`,
       )
+
+      tracer.stopSpanWithError(error)
 
       process.exit(1)
     })

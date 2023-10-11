@@ -1,5 +1,11 @@
 import 'reflect-metadata'
 
+import { OpenTelemetrySDK, OpenTelemetryTracer } from '@standardnotes/domain-events-infra'
+import { ServiceIdentifier } from '@standardnotes/domain-core'
+
+const sdk = new OpenTelemetrySDK(ServiceIdentifier.NAMES.AuthScheduledTask)
+sdk.start()
+
 import { Stream } from 'stream'
 
 import { Logger } from 'winston'
@@ -91,14 +97,21 @@ void container.load().then((container) => {
   const domainEventFactory: DomainEventFactoryInterface = container.get(TYPES.Auth_DomainEventFactory)
   const domainEventPublisher: DomainEventPublisherInterface = container.get(TYPES.Auth_DomainEventPublisher)
 
+  const tracer = new OpenTelemetryTracer()
+  tracer.startSpan(ServiceIdentifier.NAMES.AuthScheduledTask, 'backup')
+
   Promise.resolve(requestBackups(settingRepository, roleService, domainEventFactory, domainEventPublisher))
     .then(() => {
       logger.info(`${backupFrequency} ${backupProvider} backup requesting complete`)
+
+      tracer.stopSpan()
 
       process.exit(0)
     })
     .catch((error) => {
       logger.error(`Could not finish ${backupFrequency} ${backupProvider} backup requesting: ${error.message}`)
+
+      tracer.stopSpanWithError(error)
 
       process.exit(1)
     })

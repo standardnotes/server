@@ -1,8 +1,13 @@
 import 'reflect-metadata'
 
+import { OpenTelemetrySDK, OpenTelemetryTracer } from '@standardnotes/domain-events-infra'
+import { EmailLevel, ServiceIdentifier } from '@standardnotes/domain-core'
+
+const sdk = new OpenTelemetrySDK(ServiceIdentifier.NAMES.AnalyticsScheduledTask)
+sdk.start()
+
 import { Logger } from 'winston'
 
-import { EmailLevel } from '@standardnotes/domain-core'
 import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
 import { AnalyticsActivity } from '../src/Domain/Analytics/AnalyticsActivity'
 import { Period } from '../src/Domain/Time/Period'
@@ -270,6 +275,9 @@ void container.load().then((container) => {
 
   logger.info(`Sending report to following admins: ${adminEmails}`)
 
+  const tracer = new OpenTelemetryTracer()
+  tracer.startSpan(ServiceIdentifier.NAMES.AnalyticsScheduledTask, 'report')
+
   Promise.resolve(
     requestReport(
       analyticsStore,
@@ -285,10 +293,14 @@ void container.load().then((container) => {
     .then(() => {
       logger.info('Usage report generation complete')
 
+      tracer.stopSpan()
+
       process.exit(0)
     })
     .catch((error) => {
       logger.error(`Could not finish usage report generation: ${error.message}`)
+
+      tracer.stopSpanWithError(error)
 
       process.exit(1)
     })

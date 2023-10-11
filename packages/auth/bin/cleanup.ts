@@ -1,5 +1,11 @@
 import 'reflect-metadata'
 
+import { OpenTelemetrySDK, OpenTelemetryTracer } from '@standardnotes/domain-events-infra'
+import { ServiceIdentifier } from '@standardnotes/domain-core'
+
+const sdk = new OpenTelemetrySDK(ServiceIdentifier.NAMES.AuthScheduledTask)
+sdk.start()
+
 import { Logger } from 'winston'
 
 import { ContainerConfigLoader } from '../src/Bootstrap/Container'
@@ -30,14 +36,21 @@ void container.load().then((container) => {
   const cleanupSessionTraces: CleanupSessionTraces = container.get(TYPES.Auth_CleanupSessionTraces)
   const cleanupExpiredSessions: CleanupExpiredSessions = container.get(TYPES.Auth_CleanupExpiredSessions)
 
+  const tracer = new OpenTelemetryTracer()
+  tracer.startSpan(ServiceIdentifier.NAMES.AuthScheduledTask, 'cleanup')
+
   Promise.resolve(cleanup(cleanupSessionTraces, cleanupExpiredSessions))
     .then(() => {
       logger.info('Expired sessions and session traces cleaned.')
+
+      tracer.stopSpan()
 
       process.exit(0)
     })
     .catch((error) => {
       logger.error(`Could not clean sessions and session traces: ${error.message}`)
+
+      tracer.stopSpanWithError(error)
 
       process.exit(1)
     })
