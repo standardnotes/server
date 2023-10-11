@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.116.1](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.116.0...@standardnotes/syncing-server@1.116.1) (2023-10-11)
+
+### Bug Fixes
+
+* **syncing-server:** reduce the amount of select queries for items ([1fa476d](https://github.com/standardnotes/syncing-server-js/commit/1fa476d1f9b6b49e5a510ad093ed24808fce7f05))
+
 # [1.116.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.115.4...@standardnotes/syncing-server@1.116.0) (2023-10-10)
 
 ### Bug Fixes
