@@ -20,6 +20,7 @@ export class ServiceIdentifier extends ValueObject<ServiceIdentifierProps> {
     SchedulerScheduledTask: 'SchedulerScheduledTask',
     Email: 'Email',
     EmailWorker: 'EmailWorker',
+    EmailBounceProcessor: 'EmailBounceProcessor',
     Websockets: 'Websockets',
     WebsocketsWorker: 'WebsocketsWorker',
   }
