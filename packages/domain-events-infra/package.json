@@ -27,7 +27,7 @@
     "@aws-sdk/client-sns": "^3.427.0",
     "@aws-sdk/client-sqs": "^3.427.0",
     "@opentelemetry/api": "^1.6.0",
-    "@opentelemetry/exporter-metrics-otlp-proto": "^0.43.0",
+    "@opentelemetry/exporter-metrics-otlp-proto": "^0.44.0",
     "@opentelemetry/exporter-trace-otlp-grpc": "^0.43.0",
     "@opentelemetry/id-generator-aws-xray": "^1.2.1",
     "@opentelemetry/instrumentation-aws-sdk": "^0.36.0",
