@@ -62,7 +62,7 @@ describe('SaveNewItem', () => {
     }).getValue()
 
     itemRepository = {} as jest.Mocked<ItemRepositoryInterface>
-    itemRepository.save = jest.fn()
+    itemRepository.insert = jest.fn()
 
     itemRepositoryResolver = {} as jest.Mocked<ItemRepositoryResolverInterface>
     itemRepositoryResolver.resolve = jest.fn().mockReturnValue(itemRepository)
@@ -97,7 +97,7 @@ describe('SaveNewItem', () => {
     })
 
     expect(result.isFailed()).toBeFalsy()
-    expect(itemRepository.save).toHaveBeenCalled()
+    expect(itemRepository.insert).toHaveBeenCalled()
   })
 
   it('saves a new empty item', async () => {
@@ -120,7 +120,7 @@ describe('SaveNewItem', () => {
     })
 
     expect(result.isFailed()).toBeFalsy()
-    expect(itemRepository.save).toHaveBeenCalled()
+    expect(itemRepository.insert).toHaveBeenCalled()
   })
 
   it('saves a new item with given timestamps', async () => {
@@ -368,7 +368,7 @@ describe('SaveNewItem', () => {
       expect(result.getValue().props.sharedVaultAssociation?.props.lastEditedBy.value).toEqual(
         '00000000-0000-0000-0000-000000000000',
       )
-      expect(itemRepository.save).toHaveBeenCalled()
+      expect(itemRepository.insert).toHaveBeenCalled()
     })
 
     it('should return a failure if it fails to create a shared vault association', async () => {
@@ -416,7 +416,7 @@ describe('SaveNewItem', () => {
       })
 
       expect(result.isFailed()).toBeFalsy()
-      expect(itemRepository.save).toHaveBeenCalled()
+      expect(itemRepository.insert).toHaveBeenCalled()
     })
 
     it('should return a failure if the item hash has an invalid key system identifier', async () => {

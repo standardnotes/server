@@ -37,12 +37,6 @@ export class SQLLegacyItemRepository implements ItemRepositoryInterface {
       .execute()
   }
 
-  async save(item: Item): Promise<void> {
-    const persistence = this.mapper.toProjection(item)
-
-    await this.ormRepository.save(persistence)
-  }
-
   async insert(item: Item): Promise<void> {
     const projection = this.mapper.toProjection(item)
 

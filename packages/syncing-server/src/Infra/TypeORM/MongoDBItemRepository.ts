@@ -170,20 +170,6 @@ export class MongoDBItemRepository implements ItemRepositoryInterface {
     await this.mongoRepository.deleteOne({ _id: { $eq: BSON.UUID.createFromHexString(item.uuid.value) } })
   }
 
-  async save(item: Item): Promise<void> {
-    const persistence = this.mapper.toProjection(item)
-
-    const { _id, ...rest } = persistence
-
-    await this.mongoRepository.updateOne(
-      { _id: { $eq: _id } },
-      {
-        $set: rest,
-      },
-      { upsert: true },
-    )
-  }
-
   async insert(item: Item): Promise<void> {
     const persistence = this.mapper.toProjection(item)
 

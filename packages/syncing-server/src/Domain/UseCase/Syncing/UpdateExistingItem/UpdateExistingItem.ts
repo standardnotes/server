@@ -176,7 +176,7 @@ export class UpdateExistingItem implements UseCaseInterface<Item> {
 
     const itemRepository = this.itemRepositoryResolver.resolve(roleNames)
 
-    await itemRepository.save(dto.existingItem)
+    await itemRepository.update(dto.existingItem)
 
     if (secondsFromLastUpdate >= this.revisionFrequency) {
       if (

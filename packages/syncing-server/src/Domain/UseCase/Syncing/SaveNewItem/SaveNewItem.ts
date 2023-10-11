@@ -142,7 +142,7 @@ export class SaveNewItem implements UseCaseInterface<Item> {
 
     const itemRepository = this.itemRepositoryResolver.resolve(roleNames)
 
-    await itemRepository.save(newItem)
+    await itemRepository.insert(newItem)
 
     if (contentType.value !== null && [ContentType.TYPES.Note, ContentType.TYPES.File].includes(contentType.value)) {
       if (!dto.onGoingRevisionsTransition) {

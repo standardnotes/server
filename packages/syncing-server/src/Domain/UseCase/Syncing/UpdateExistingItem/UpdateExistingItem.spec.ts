@@ -89,7 +89,7 @@ describe('UpdateExistingItem', () => {
     }).getValue()
 
     itemRepository = {} as jest.Mocked<ItemRepositoryInterface>
-    itemRepository.save = jest.fn()
+    itemRepository.update = jest.fn()
 
     itemRepositoryResolver = {} as jest.Mocked<ItemRepositoryResolverInterface>
     itemRepositoryResolver.resolve = jest.fn().mockReturnValue(itemRepository)
@@ -148,7 +148,7 @@ describe('UpdateExistingItem', () => {
     })
 
     expect(result.isFailed()).toBeFalsy()
-    expect(itemRepository.save).toHaveBeenCalled()
+    expect(itemRepository.update).toHaveBeenCalled()
   })
 
   it('should not create a revision if user has an ongoin revisions transition', async () => {
@@ -164,7 +164,7 @@ describe('UpdateExistingItem', () => {
     })
 
     expect(result.isFailed()).toBeFalsy()
-    expect(itemRepository.save).toHaveBeenCalled()
+    expect(itemRepository.update).toHaveBeenCalled()
   })
 
   it('should return error if session uuid is invalid', async () => {
@@ -231,7 +231,7 @@ describe('UpdateExistingItem', () => {
     })
 
     expect(result.isFailed()).toBeFalsy()
-    expect(itemRepository.save).toHaveBeenCalled()
+    expect(itemRepository.update).toHaveBeenCalled()
     expect(item1.props.deleted).toBeTruthy()
     expect(item1.props.content).toBeNull()
     expect(item1.props.encItemKey).toBeNull()
@@ -256,7 +256,7 @@ describe('UpdateExistingItem', () => {
     })
 
     expect(result.isFailed()).toBeFalsy()
-    expect(itemRepository.save).toHaveBeenCalled()
+    expect(itemRepository.update).toHaveBeenCalled()
     expect(item1.props.duplicateOf?.value).toBe('00000000-0000-0000-0000-000000000001')
   })
 
@@ -295,7 +295,7 @@ describe('UpdateExistingItem', () => {
     })
 
     expect(result.isFailed()).toBeFalsy()
-    expect(itemRepository.save).toHaveBeenCalled()
+    expect(itemRepository.update).toHaveBeenCalled()
   })
 
   it('should fallback to updated at timestamp if created at time is not give in any form', async () => {
@@ -316,7 +316,7 @@ describe('UpdateExistingItem', () => {
     })
 
     expect(result.isFailed()).toBeFalsy()
-    expect(itemRepository.save).toHaveBeenCalled()
+    expect(itemRepository.update).toHaveBeenCalled()
   })
 
   it('should fallback to updated at date if created at time is not give in any form', async () => {
@@ -338,7 +338,7 @@ describe('UpdateExistingItem', () => {
     })
 
     expect(result.isFailed()).toBeFalsy()
-    expect(itemRepository.save).toHaveBeenCalled()
+    expect(itemRepository.update).toHaveBeenCalled()
   })
 
   it('should fallback to 0 if created at and update at time is not give in any form', async () => {
@@ -360,7 +360,7 @@ describe('UpdateExistingItem', () => {
     })
 
     expect(result.isFailed()).toBeFalsy()
-    expect(itemRepository.save).toHaveBeenCalled()
+    expect(itemRepository.update).toHaveBeenCalled()
   })
 
   it('should return error if dates could not be created from timestamps', async () => {
