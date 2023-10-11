@@ -35,8 +35,8 @@
     "migrate": "yarn build && yarn typeorm migration:run -d dist/src/Bootstrap/DataSource.js"
   },
   "dependencies": {
-    "@aws-sdk/client-sns": "^3.332.0",
-    "@aws-sdk/client-sqs": "^3.332.0",
+    "@aws-sdk/client-sns": "^3.427.0",
+    "@aws-sdk/client-sqs": "^3.427.0",
     "@cbor-extract/cbor-extract-linux-arm64": "^2.1.1",
     "@cbor-extract/cbor-extract-linux-x64": "^2.1.1",
     "@simplewebauthn/server": "^8.1.1",
