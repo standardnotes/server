@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.18.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events-infra@1.17.0...@standardnotes/domain-events-infra@1.18.0) (2023-10-11)
+
+### Features
+
+* add opentelemetry for scheduled tasks ([443235a](https://github.com/standardnotes/server/commit/443235a861181acf708d98fba25ce6d79f198b56))
+
 # [1.17.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events-infra@1.16.4...@standardnotes/domain-events-infra@1.17.0) (2023-10-10)
 
 ### Features

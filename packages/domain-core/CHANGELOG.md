@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.36.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.35.0...@standardnotes/domain-core@1.36.0) (2023-10-11)
+
+### Features
+
+* add opentelemetry for scheduled tasks ([443235a](https://github.com/standardnotes/server/commit/443235a861181acf708d98fba25ce6d79f198b56))
+* **domain-core:** add email bounce processor service identifier ([6356fca](https://github.com/standardnotes/server/commit/6356fcaeed012e7ea5d174b47aaebb94a4040d29))
+
 # [1.35.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.34.2...@standardnotes/domain-core@1.35.0) (2023-10-06)
 
 ### Features

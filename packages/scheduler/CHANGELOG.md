@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.24.0](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.23.0...@standardnotes/scheduler-server@1.24.0) (2023-10-11)
+
+### Features
+
+* add opentelemetry for scheduled tasks ([443235a](https://github.com/standardnotes/server/commit/443235a861181acf708d98fba25ce6d79f198b56))
+
 # [1.23.0](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.22.9...@standardnotes/scheduler-server@1.23.0) (2023-10-10)
 
 ### Features

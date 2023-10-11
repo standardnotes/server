@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.30.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.29.0...@standardnotes/analytics@2.30.0) (2023-10-11)
+
+### Features
+
+* add opentelemetry for scheduled tasks ([443235a](https://github.com/standardnotes/server/commit/443235a861181acf708d98fba25ce6d79f198b56))
+
 # [2.29.0](https://github.com/standardnotes/server/compare/@standardnotes/analytics@2.28.9...@standardnotes/analytics@2.29.0) (2023-10-10)
 
 ### Features
