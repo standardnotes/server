@@ -4,6 +4,7 @@ import { Container } from 'inversify'
 import {
   DomainEventHandlerInterface,
   DomainEventMessageHandlerInterface,
+  DomainEventPublisherInterface,
   DomainEventSubscriberFactoryInterface,
 } from '@standardnotes/domain-events'
 import { MapperInterface, ServiceIdentifier } from '@standardnotes/domain-core'
@@ -15,7 +16,9 @@ import TYPES from './Types'
 import { AppDataSource } from './DataSource'
 import { DomainEventFactory } from '../Domain/Event/DomainEventFactory'
 import {
-  SNSDomainEventPublisher,
+  OpenTelemetryPropagation,
+  OpenTelemetryPropagationInterface,
+  SNSOpenTelemetryDomainEventPublisher,
   SQSDomainEventSubscriberFactory,
   SQSOpenTelemetryEventMessageHandler,
 } from '@standardnotes/domain-events-infra'
@@ -86,6 +89,10 @@ export class ContainerConfigLoader {
     })
     container.bind<winston.Logger>(TYPES.Logger).toConstantValue(logger)
 
+    container
+      .bind<OpenTelemetryPropagationInterface>(TYPES.OTEL_PROPAGATOR)
+      .toConstantValue(new OpenTelemetryPropagation())
+
     const snsConfig: SNSClientConfig = {
       apiVersion: 'latest',
       region: env.get('SNS_AWS_REGION', true),
@@ -137,8 +144,14 @@ export class ContainerConfigLoader {
     container.bind<TimerInterface>(TYPES.Timer).toConstantValue(new Timer())
 
     container
-      .bind<SNSDomainEventPublisher>(TYPES.DomainEventPublisher)
-      .toConstantValue(new SNSDomainEventPublisher(container.get(TYPES.SNS), container.get(TYPES.SNS_TOPIC_ARN)))
+      .bind<DomainEventPublisherInterface>(TYPES.DomainEventPublisher)
+      .toConstantValue(
+        new SNSOpenTelemetryDomainEventPublisher(
+          container.get<OpenTelemetryPropagationInterface>(TYPES.OTEL_PROPAGATOR),
+          container.get(TYPES.SNS),
+          container.get(TYPES.SNS_TOPIC_ARN),
+        ),
+      )
     if (env.get('MIXPANEL_TOKEN', true)) {
       container.bind<Mixpanel>(TYPES.MixpanelClient).toConstantValue(Mixpanel.init(env.get('MIXPANEL_TOKEN', true)))
     }
@@ -238,6 +251,7 @@ export class ContainerConfigLoader {
       .toConstantValue(
         new SQSOpenTelemetryEventMessageHandler(
           ServiceIdentifier.NAMES.AnalyticsWorker,
+          container.get<OpenTelemetryPropagationInterface>(TYPES.OTEL_PROPAGATOR),
           eventHandlers,
           container.get(TYPES.Logger),
         ),

@@ -6,11 +6,11 @@ export class OpenTelemetryTracer implements OpenTelemetryTracerInterface {
   private parentSpan: OpenTelemetryApi.Span | undefined
   private internalSpan: OpenTelemetryApi.Span | undefined
 
-  startSpan(parentSpanName: string, internalSpanName: string): void {
+  startSpan(parentSpanName: string, internalSpanName: string, activeContext?: OpenTelemetryApi.Context): void {
     const tracer = OpenTelemetryApi.trace.getTracer(`${parentSpanName}-handler`)
 
-    this.parentSpan = tracer.startSpan(parentSpanName, { kind: OpenTelemetryApi.SpanKind.CONSUMER })
-    const ctx = OpenTelemetryApi.trace.setSpan(OpenTelemetryApi.context.active(), this.parentSpan)
+    this.parentSpan = tracer.startSpan(parentSpanName, { kind: OpenTelemetryApi.SpanKind.CONSUMER }, activeContext)
+    const ctx = OpenTelemetryApi.trace.setSpan(activeContext ?? OpenTelemetryApi.context.active(), this.parentSpan)
 
     this.internalSpan = tracer.startSpan(internalSpanName, { kind: OpenTelemetryApi.SpanKind.INTERNAL }, ctx)
   }

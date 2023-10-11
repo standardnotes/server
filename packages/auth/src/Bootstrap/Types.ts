@@ -3,6 +3,7 @@ const TYPES = {
   Auth_Redis: Symbol.for('Auth_Redis'),
   Auth_SNS: Symbol.for('Auth_SNS'),
   Auth_SQS: Symbol.for('Auth_SQS'),
+  Auth_OTEL_PROPAGATOR: Symbol.for('Auth_OTEL_PROPAGATOR'),
   // Mapping
   Auth_SessionTracePersistenceMapper: Symbol.for('Auth_SessionTracePersistenceMapper'),
   Auth_AuthenticatorChallengePersistenceMapper: Symbol.for('Auth_AuthenticatorChallengePersistenceMapper'),

@@ -19,6 +19,7 @@ import { AddWebSocketsConnection } from '../Domain/UseCase/AddWebSocketsConnecti
 import { RemoveWebSocketsConnection } from '../Domain/UseCase/RemoveWebSocketsConnection/RemoveWebSocketsConnection'
 import { WebSocketsClientMessenger } from '../Infra/WebSockets/WebSocketsClientMessenger'
 import {
+  OpenTelemetryPropagation,
   SQSDomainEventSubscriberFactory,
   SQSOpenTelemetryEventMessageHandler,
 } from '@standardnotes/domain-events-infra'
@@ -147,6 +148,7 @@ export class ContainerConfigLoader {
       .toConstantValue(
         new SQSOpenTelemetryEventMessageHandler(
           ServiceIdentifier.NAMES.WebsocketsWorker,
+          new OpenTelemetryPropagation(),
           eventHandlers,
           container.get(TYPES.Logger),
         ),

@@ -3,6 +3,7 @@ const TYPES = {
   Redis: Symbol.for('Redis'),
   SNS: Symbol.for('SNS'),
   SQS: Symbol.for('SQS'),
+  Scheduler_OTEL_PROPAGATOR: Symbol.for('Scheduler_OTEL_PROPAGATOR'),
   // env vars
   REDIS_URL: Symbol.for('REDIS_URL'),
   SNS_TOPIC_ARN: Symbol.for('SNS_TOPIC_ARN'),

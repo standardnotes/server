@@ -16,7 +16,9 @@ import { DomainEventFactory } from '../Domain/Event/DomainEventFactory'
 import {
   DirectCallDomainEventPublisher,
   DirectCallEventMessageHandler,
-  SNSDomainEventPublisher,
+  OpenTelemetryPropagation,
+  OpenTelemetryPropagationInterface,
+  SNSOpenTelemetryDomainEventPublisher,
   SQSDomainEventSubscriberFactory,
   SQSEventMessageHandler,
   SQSOpenTelemetryEventMessageHandler,
@@ -98,6 +100,10 @@ export class ContainerConfigLoader {
 
     container.bind<TimerInterface>(TYPES.Files_Timer).toConstantValue(new Timer())
 
+    container
+      .bind<OpenTelemetryPropagationInterface>(TYPES.Files_OTEL_PROPAGATOR)
+      .toConstantValue(new OpenTelemetryPropagation())
+
     // services
     container
       .bind<TokenDecoderInterface<ValetTokenData>>(TYPES.Files_ValetTokenDecoder)
@@ -176,7 +182,11 @@ export class ContainerConfigLoader {
       container
         .bind<DomainEventPublisherInterface>(TYPES.Files_DomainEventPublisher)
         .toConstantValue(
-          new SNSDomainEventPublisher(container.get(TYPES.Files_SNS), container.get(TYPES.Files_SNS_TOPIC_ARN)),
+          new SNSOpenTelemetryDomainEventPublisher(
+            container.get<OpenTelemetryPropagationInterface>(TYPES.Files_OTEL_PROPAGATOR),
+            container.get(TYPES.Files_SNS),
+            container.get(TYPES.Files_SNS_TOPIC_ARN),
+          ),
         )
     }
 
@@ -300,6 +310,7 @@ export class ContainerConfigLoader {
             ? new SQSEventMessageHandler(eventHandlers, container.get(TYPES.Files_Logger))
             : new SQSOpenTelemetryEventMessageHandler(
                 ServiceIdentifier.NAMES.FilesWorker,
+                container.get<OpenTelemetryPropagationInterface>(TYPES.Files_OTEL_PROPAGATOR),
                 eventHandlers,
                 container.get(TYPES.Files_Logger),
               ),

@@ -7,12 +7,14 @@ import {
 } from '@standardnotes/domain-events'
 import { OpenTelemetryTracer } from '../OpenTelemetry/OpenTelemetryTracer'
 import { OpenTelemetryTracerInterface } from '../OpenTelemetry/OpenTelemetryTracerInterface'
+import { OpenTelemetryPropagationInterface } from '../OpenTelemetry/OpenTelemetryPropagationInterface'
 
 export class SQSOpenTelemetryEventMessageHandler implements DomainEventMessageHandlerInterface {
   private tracer: OpenTelemetryTracerInterface | undefined
 
   constructor(
     private serviceName: string,
+    private propagator: OpenTelemetryPropagationInterface,
     private handlers: Map<string, DomainEventHandlerInterface>,
     private logger: Logger,
   ) {}
@@ -37,7 +39,12 @@ export class SQSOpenTelemetryEventMessageHandler implements DomainEventMessageHa
 
     this.tracer = new OpenTelemetryTracer()
 
-    this.tracer.startSpan(this.serviceName, domainEvent.type)
+    let activeContext = undefined
+    if (domainEvent.meta.trace) {
+      activeContext = this.propagator.extract(domainEvent.meta.trace)
+    }
+
+    this.tracer.startSpan(this.serviceName, domainEvent.type, activeContext)
 
     try {
       await handler.handle(domainEvent)

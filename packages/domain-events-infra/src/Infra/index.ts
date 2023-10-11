@@ -1,6 +1,8 @@
 export * from './DirectCall/DirectCallDomainEventPublisher'
 export * from './DirectCall/DirectCallEventMessageHandler'
 
+export * from './OpenTelemetry/OpenTelemetryPropagation'
+export * from './OpenTelemetry/OpenTelemetryPropagationInterface'
 export * from './OpenTelemetry/OpenTelemetrySDK'
 export * from './OpenTelemetry/OpenTelemetrySDKInterface'
 export * from './OpenTelemetry/OpenTelemetryTracer'
@@ -12,6 +14,7 @@ export * from './Redis/RedisDomainEventSubscriberFactory'
 export * from './Redis/RedisEventMessageHandler'
 
 export * from './SNS/SNSDomainEventPublisher'
+export * from './SNS/SNSOpenTelemetryDomainEventPublisher'
 
 export * from './SQS/SQSBounceNotificiationHandler'
 export * from './SQS/SQSDomainEventSubscriberFactory'

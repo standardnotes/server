@@ -39,8 +39,10 @@ import {
   SQSDomainEventSubscriberFactory,
   DirectCallEventMessageHandler,
   DirectCallDomainEventPublisher,
-  SNSDomainEventPublisher,
   SQSOpenTelemetryEventMessageHandler,
+  OpenTelemetryPropagation,
+  SNSOpenTelemetryDomainEventPublisher,
+  OpenTelemetryPropagationInterface,
 } from '@standardnotes/domain-events-infra'
 import { DumpRepositoryInterface } from '../Domain/Dump/DumpRepositoryInterface'
 import { AccountDeletionRequestedEventHandler } from '../Domain/Handler/AccountDeletionRequestedEventHandler'
@@ -140,6 +142,10 @@ export class ContainerConfigLoader {
 
     container.bind<TimerInterface>(TYPES.Revisions_Timer).toDynamicValue(() => new Timer())
 
+    container
+      .bind<OpenTelemetryPropagationInterface>(TYPES.Revisions_OTEL_PROPAGATOR)
+      .toConstantValue(new OpenTelemetryPropagation())
+
     const appDataSource = new AppDataSource({ env, runMigrations: this.mode === 'server' })
     await appDataSource.initialize()
 
@@ -180,7 +186,8 @@ export class ContainerConfigLoader {
       container
         .bind<DomainEventPublisherInterface>(TYPES.Revisions_DomainEventPublisher)
         .toDynamicValue((context: interfaces.Context) => {
-          return new SNSDomainEventPublisher(
+          return new SNSOpenTelemetryDomainEventPublisher(
+            context.container.get<OpenTelemetryPropagationInterface>(TYPES.Revisions_OTEL_PROPAGATOR),
             context.container.get(TYPES.Revisions_SNS),
             context.container.get(TYPES.Revisions_SNS_TOPIC_ARN),
           )
@@ -515,6 +522,7 @@ export class ContainerConfigLoader {
             ? new SQSEventMessageHandler(eventHandlers, container.get(TYPES.Revisions_Logger))
             : new SQSOpenTelemetryEventMessageHandler(
                 ServiceIdentifier.NAMES.RevisionsWorker,
+                container.get<OpenTelemetryPropagationInterface>(TYPES.Revisions_OTEL_PROPAGATOR),
                 eventHandlers,
                 container.get(TYPES.Revisions_Logger),
               ),

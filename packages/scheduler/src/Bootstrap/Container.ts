@@ -6,6 +6,7 @@ import { Container } from 'inversify'
 import {
   DomainEventHandlerInterface,
   DomainEventMessageHandlerInterface,
+  DomainEventPublisherInterface,
   DomainEventSubscriberFactoryInterface,
 } from '@standardnotes/domain-events'
 
@@ -14,7 +15,9 @@ import TYPES from './Types'
 import { AppDataSource } from './DataSource'
 import { DomainEventFactory } from '../Domain/Event/DomainEventFactory'
 import {
-  SNSDomainEventPublisher,
+  OpenTelemetryPropagation,
+  OpenTelemetryPropagationInterface,
+  SNSOpenTelemetryDomainEventPublisher,
   SQSDomainEventSubscriberFactory,
   SQSOpenTelemetryEventMessageHandler,
 } from '@standardnotes/domain-events-infra'
@@ -64,6 +67,10 @@ export class ContainerConfigLoader {
       transports: [new winston.transports.Console({ level: env.get('LOG_LEVEL', true) || 'info' })],
     })
     container.bind<winston.Logger>(TYPES.Logger).toConstantValue(logger)
+
+    container
+      .bind<OpenTelemetryPropagationInterface>(TYPES.Scheduler_OTEL_PROPAGATOR)
+      .toConstantValue(new OpenTelemetryPropagation())
 
     if (env.get('SNS_TOPIC_ARN', true)) {
       const snsConfig: SNSClientConfig = {
@@ -134,8 +141,14 @@ export class ContainerConfigLoader {
     container.bind<JobDoneInterpreterInterface>(TYPES.JobDoneInterpreter).to(JobDoneInterpreter)
 
     container
-      .bind<SNSDomainEventPublisher>(TYPES.DomainEventPublisher)
-      .toConstantValue(new SNSDomainEventPublisher(container.get(TYPES.SNS), container.get(TYPES.SNS_TOPIC_ARN)))
+      .bind<DomainEventPublisherInterface>(TYPES.DomainEventPublisher)
+      .toConstantValue(
+        new SNSOpenTelemetryDomainEventPublisher(
+          container.get<OpenTelemetryPropagationInterface>(TYPES.Scheduler_OTEL_PROPAGATOR),
+          container.get(TYPES.SNS),
+          container.get(TYPES.SNS_TOPIC_ARN),
+        ),
+      )
 
     const eventHandlers: Map<string, DomainEventHandlerInterface> = new Map([
       ['PREDICATE_VERIFIED', container.get(TYPES.PredicateVerifiedEventHandler)],
@@ -149,6 +162,7 @@ export class ContainerConfigLoader {
       .toConstantValue(
         new SQSOpenTelemetryEventMessageHandler(
           ServiceIdentifier.NAMES.SchedulerWorker,
+          container.get<OpenTelemetryPropagationInterface>(TYPES.Scheduler_OTEL_PROPAGATOR),
           eventHandlers,
           container.get(TYPES.Logger),
         ),

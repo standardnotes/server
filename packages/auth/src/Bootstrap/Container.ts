@@ -89,7 +89,9 @@ import { ExtensionKeyGrantedEventHandler } from '../Domain/Handler/ExtensionKeyG
 import {
   DirectCallDomainEventPublisher,
   DirectCallEventMessageHandler,
-  SNSDomainEventPublisher,
+  OpenTelemetryPropagation,
+  OpenTelemetryPropagationInterface,
+  SNSOpenTelemetryDomainEventPublisher,
   SQSDomainEventSubscriberFactory,
   SQSEventMessageHandler,
   SQSOpenTelemetryEventMessageHandler,
@@ -307,6 +309,10 @@ export class ContainerConfigLoader {
       })
     }
     container.bind<winston.Logger>(TYPES.Auth_Logger).toConstantValue(logger)
+
+    container
+      .bind<OpenTelemetryPropagationInterface>(TYPES.Auth_OTEL_PROPAGATOR)
+      .toConstantValue(new OpenTelemetryPropagation())
 
     const appDataSource = new AppDataSource({ env, runMigrations: this.mode === 'server' })
     await appDataSource.initialize()
@@ -725,7 +731,11 @@ export class ContainerConfigLoader {
       .toConstantValue(
         isConfiguredForHomeServer
           ? directCallDomainEventPublisher
-          : new SNSDomainEventPublisher(container.get(TYPES.Auth_SNS), container.get(TYPES.Auth_SNS_TOPIC_ARN)),
+          : new SNSOpenTelemetryDomainEventPublisher(
+              container.get<OpenTelemetryPropagationInterface>(TYPES.Auth_OTEL_PROPAGATOR),
+              container.get(TYPES.Auth_SNS),
+              container.get(TYPES.Auth_SNS_TOPIC_ARN),
+            ),
       )
 
     // Middleware
@@ -1228,6 +1238,7 @@ export class ContainerConfigLoader {
             ? new SQSEventMessageHandler(eventHandlers, container.get(TYPES.Auth_Logger))
             : new SQSOpenTelemetryEventMessageHandler(
                 ServiceIdentifier.NAMES.AuthWorker,
+                container.get<OpenTelemetryPropagationInterface>(TYPES.Auth_OTEL_PROPAGATOR),
                 eventHandlers,
                 container.get(TYPES.Auth_Logger),
               ),

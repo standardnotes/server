@@ -13,7 +13,9 @@ import { Item } from '../Domain/Item/Item'
 import {
   DirectCallDomainEventPublisher,
   DirectCallEventMessageHandler,
-  SNSDomainEventPublisher,
+  OpenTelemetryPropagation,
+  OpenTelemetryPropagationInterface,
+  SNSOpenTelemetryDomainEventPublisher,
   SQSDomainEventSubscriberFactory,
   SQSEventMessageHandler,
   SQSOpenTelemetryEventMessageHandler,
@@ -216,6 +218,10 @@ export class ContainerConfigLoader {
     }
     container.bind<winston.Logger>(TYPES.Sync_Logger).toConstantValue(logger)
 
+    container
+      .bind<OpenTelemetryPropagationInterface>(TYPES.Sync_OTEL_PROPAGATOR)
+      .toConstantValue(new OpenTelemetryPropagation())
+
     const appDataSource = new AppDataSource({ env, runMigrations: this.mode === 'server' })
     await appDataSource.initialize()
 
@@ -286,7 +292,8 @@ export class ContainerConfigLoader {
       container
         .bind<DomainEventPublisherInterface>(TYPES.Sync_DomainEventPublisher)
         .toDynamicValue((context: interfaces.Context) => {
-          return new SNSDomainEventPublisher(
+          return new SNSOpenTelemetryDomainEventPublisher(
+            context.container.get<OpenTelemetryPropagationInterface>(TYPES.Sync_OTEL_PROPAGATOR),
             context.container.get(TYPES.Sync_SNS),
             context.container.get(TYPES.Sync_SNS_TOPIC_ARN),
           )
@@ -1157,6 +1164,7 @@ export class ContainerConfigLoader {
             ? new SQSEventMessageHandler(eventHandlers, container.get(TYPES.Sync_Logger))
             : new SQSOpenTelemetryEventMessageHandler(
                 ServiceIdentifier.NAMES.SyncingServerWorker,
+                container.get<OpenTelemetryPropagationInterface>(TYPES.Sync_OTEL_PROPAGATOR),
                 eventHandlers,
                 container.get(TYPES.Sync_Logger),
               ),

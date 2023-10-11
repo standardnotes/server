@@ -9,6 +9,10 @@ export interface DomainEventInterface {
       userIdentifier: string
       userIdentifierType: 'uuid' | 'email' | 'shared-vault-uuid'
     }
+    trace?: {
+      traceparent?: string
+      tracestate?: string
+    }
     origin: DomainEventService
     target?: DomainEventService
   }
