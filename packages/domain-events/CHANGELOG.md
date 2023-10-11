@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.132.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.131.1...@standardnotes/domain-events@2.132.0) (2023-10-11)
+
+### Features
+
+* add opentelemetry tracing in distributed system ([72c9b28](https://github.com/standardnotes/server/commit/72c9b28ebe108a2011d1a598fd4682132a533126))
+
 ## [2.131.1](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.131.0...@standardnotes/domain-events@2.131.1) (2023-09-28)
 
 **Note:** Version bump only for package @standardnotes/domain-events

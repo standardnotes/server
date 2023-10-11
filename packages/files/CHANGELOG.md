@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.30.0](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.29.4...@standardnotes/files-server@1.30.0) (2023-10-11)
+
+### Features
+
+* add opentelemetry tracing in distributed system ([72c9b28](https://github.com/standardnotes/files/commit/72c9b28ebe108a2011d1a598fd4682132a533126))
+
 ## [1.29.4](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.29.3...@standardnotes/files-server@1.29.4) (2023-10-11)
 
 **Note:** Version bump only for package @standardnotes/files-server

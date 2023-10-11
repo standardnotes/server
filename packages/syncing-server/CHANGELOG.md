@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.117.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.116.5...@standardnotes/syncing-server@1.117.0) (2023-10-11)
+
+### Features
+
+* add opentelemetry tracing in distributed system ([72c9b28](https://github.com/standardnotes/syncing-server-js/commit/72c9b28ebe108a2011d1a598fd4682132a533126))
+
 ## [1.116.5](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.116.4...@standardnotes/syncing-server@1.116.5) (2023-10-11)
 
 **Note:** Version bump only for package @standardnotes/syncing-server

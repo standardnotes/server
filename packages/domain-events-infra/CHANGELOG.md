@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.19.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events-infra@1.18.2...@standardnotes/domain-events-infra@1.19.0) (2023-10-11)
+
+### Features
+
+* add opentelemetry tracing in distributed system ([72c9b28](https://github.com/standardnotes/server/commit/72c9b28ebe108a2011d1a598fd4682132a533126))
+
 ## [1.18.2](https://github.com/standardnotes/server/compare/@standardnotes/domain-events-infra@1.18.1...@standardnotes/domain-events-infra@1.18.2) (2023-10-11)
 
 ### Bug Fixes
