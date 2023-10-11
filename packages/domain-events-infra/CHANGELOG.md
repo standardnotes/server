@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.19.1](https://github.com/standardnotes/server/compare/@standardnotes/domain-events-infra@1.19.0...@standardnotes/domain-events-infra@1.19.1) (2023-10-11)
+
+### Bug Fixes
+
+* **domain-events-infra:** add info if event has trace ([48c6d97](https://github.com/standardnotes/server/commit/48c6d97d697a740c262495eff87c6db65ebb38d9))
+
 # [1.19.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events-infra@1.18.2...@standardnotes/domain-events-infra@1.19.0) (2023-10-11)
 
 ### Features
