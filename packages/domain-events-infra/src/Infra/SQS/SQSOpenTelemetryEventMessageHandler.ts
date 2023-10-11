@@ -35,13 +35,13 @@ export class SQSOpenTelemetryEventMessageHandler implements DomainEventMessageHa
       return
     }
 
-    this.logger.info(`Received event: ${domainEvent.type}`)
+    this.logger.debug(`Received event: ${domainEvent.type}`)
 
     this.tracer = new OpenTelemetryTracer()
 
     let activeContext = undefined
     if (domainEvent.meta.trace) {
-      this.logger.info(`Event has trace: ${JSON.stringify(domainEvent.meta.trace)}`)
+      this.logger.debug(`Event has trace: ${JSON.stringify(domainEvent.meta.trace)}`)
 
       activeContext = this.propagator.extract(domainEvent.meta.trace)
     }
