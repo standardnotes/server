@@ -33,7 +33,7 @@ export class SQSOpenTelemetryEventMessageHandler implements DomainEventMessageHa
       return
     }
 
-    this.logger.debug(`Received event: ${domainEvent.type}`)
+    this.logger.info(`Received event: ${domainEvent.type}`)
 
     this.tracer = new OpenTelemetryTracer()
 
