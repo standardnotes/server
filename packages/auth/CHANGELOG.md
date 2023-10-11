@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.157.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.157.0...@standardnotes/auth-server@1.157.1) (2023-10-11)
+
+### Bug Fixes
+
+* **auth:** reduce session select queries in favor of insert/update model ([25a875c](https://github.com/standardnotes/server/commit/25a875cbbc0f0f04d3e786da1263e6f3e5bc3b79))
+
 # [1.157.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.156.0...@standardnotes/auth-server@1.157.0) (2023-10-11)
 
 ### Features

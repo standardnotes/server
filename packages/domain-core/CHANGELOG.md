@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.37.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.36.0...@standardnotes/domain-core@1.37.0) (2023-10-11)
+
+### Features
+
+* **domain-core:** add email scheduled task service identifier ([af5ebb2](https://github.com/standardnotes/server/commit/af5ebb25e7fd05390089e0f7c00af50648ad49d9))
+
 # [1.36.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.35.0...@standardnotes/domain-core@1.36.0) (2023-10-11)
 
 ### Features

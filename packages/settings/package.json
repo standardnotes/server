@@ -1,6 +1,6 @@
 {
   "name": "@standardnotes/settings",
-  "version": "1.21.44",
+  "version": "1.21.45",
   "engines": {
     "node": ">=18.0.0 <21.0.0"
   },
