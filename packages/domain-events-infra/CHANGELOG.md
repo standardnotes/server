@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.19.5](https://github.com/standardnotes/server/compare/@standardnotes/domain-events-infra@1.19.4...@standardnotes/domain-events-infra@1.19.5) (2023-10-12)
+
+### Bug Fixes
+
+* **domain-events-infra:** retrieve all message attributes from sqs ([0c29ff1](https://github.com/standardnotes/server/commit/0c29ff1ab4886a73eae8079e80d7ff779c0e3859))
+
 ## [1.19.4](https://github.com/standardnotes/server/compare/@standardnotes/domain-events-infra@1.19.3...@standardnotes/domain-events-infra@1.19.4) (2023-10-12)
 
 ### Bug Fixes
