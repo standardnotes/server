@@ -1,7 +1,6 @@
 import { SettingName } from '@standardnotes/settings'
-import { inject, injectable } from 'inversify'
 import { Logger } from 'winston'
-import TYPES from '../../Bootstrap/Types'
+
 import { User } from '../User/User'
 import { CreateOrReplaceSettingDto } from './CreateOrReplaceSettingDto'
 import { CreateOrReplaceSettingResponse } from './CreateOrReplaceSettingResponse'
@@ -14,16 +13,14 @@ import { SettingInterpreterInterface } from './SettingInterpreterInterface'
 import { SettingDecrypterInterface } from './SettingDecrypterInterface'
 import { SettingFactoryInterface } from './SettingFactoryInterface'
 
-@injectable()
 export class SettingService implements SettingServiceInterface {
   constructor(
-    @inject(TYPES.Auth_SettingFactory) private factory: SettingFactoryInterface,
-    @inject(TYPES.Auth_SettingRepository) private settingRepository: SettingRepositoryInterface,
-    @inject(TYPES.Auth_SettingsAssociationService)
+    private factory: SettingFactoryInterface,
+    private settingRepository: SettingRepositoryInterface,
     private settingsAssociationService: SettingsAssociationServiceInterface,
-    @inject(TYPES.Auth_SettingInterpreter) private settingInterpreter: SettingInterpreterInterface,
-    @inject(TYPES.Auth_SettingDecrypter) private settingDecrypter: SettingDecrypterInterface,
-    @inject(TYPES.Auth_Logger) private logger: Logger,
+    private settingInterpreter: SettingInterpreterInterface,
+    private settingDecrypter: SettingDecrypterInterface,
+    private logger: Logger,
   ) {}
 
   async applyDefaultSettingsUponRegistration(user: User): Promise<void> {

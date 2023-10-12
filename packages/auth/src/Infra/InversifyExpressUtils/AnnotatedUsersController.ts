@@ -11,7 +11,6 @@ import {
 } from 'inversify-express-utils'
 import TYPES from '../../Bootstrap/Types'
 import { DeleteAccount } from '../../Domain/UseCase/DeleteAccount/DeleteAccount'
-import { GetUserKeyParams } from '../../Domain/UseCase/GetUserKeyParams/GetUserKeyParams'
 import { UpdateUser } from '../../Domain/UseCase/UpdateUser'
 import { GetUserSubscription } from '../../Domain/UseCase/GetUserSubscription/GetUserSubscription'
 import { ClearLoginAttempts } from '../../Domain/UseCase/ClearLoginAttempts'
@@ -23,7 +22,6 @@ import { BaseUsersController } from './Base/BaseUsersController'
 export class AnnotatedUsersController extends BaseUsersController {
   constructor(
     @inject(TYPES.Auth_UpdateUser) override updateUser: UpdateUser,
-    @inject(TYPES.Auth_GetUserKeyParams) override getUserKeyParams: GetUserKeyParams,
     @inject(TYPES.Auth_DeleteAccount) override doDeleteAccount: DeleteAccount,
     @inject(TYPES.Auth_GetUserSubscription) override doGetUserSubscription: GetUserSubscription,
     @inject(TYPES.Auth_ClearLoginAttempts) override clearLoginAttempts: ClearLoginAttempts,
@@ -32,7 +30,6 @@ export class AnnotatedUsersController extends BaseUsersController {
   ) {
     super(
       updateUser,
-      getUserKeyParams,
       doDeleteAccount,
       doGetUserSubscription,
       clearLoginAttempts,
@@ -44,11 +41,6 @@ export class AnnotatedUsersController extends BaseUsersController {
   @httpPatch('/:userId', TYPES.Auth_RequiredCrossServiceTokenMiddleware)
   override async update(request: Request, response: Response): Promise<results.JsonResult> {
     return super.update(request, response)
-  }
-
-  @httpGet('/params')
-  override async keyParams(request: Request): Promise<results.JsonResult> {
-    return super.keyParams(request)
   }
 
   @httpDelete('/:userUuid', TYPES.Auth_RequiredCrossServiceTokenMiddleware)

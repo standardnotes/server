@@ -42,7 +42,6 @@ export class EndpointResolver implements EndpointResolverInterface {
     // Users Controller
     ['[PATCH]:users/:userId', 'auth.users.update'],
     ['[PUT]:users/:userUuid/attributes/credentials', 'auth.users.updateCredentials'],
-    ['[GET]:users/params', 'auth.users.getKeyParams'],
     ['[DELETE]:users/:userUuid', 'auth.users.delete'],
     ['[POST]:listed', 'auth.users.createListedAccount'],
     ['[POST]:auth', 'auth.users.register'],

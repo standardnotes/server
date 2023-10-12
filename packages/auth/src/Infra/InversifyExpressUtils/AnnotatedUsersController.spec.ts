@@ -8,7 +8,6 @@ import { Result, Username } from '@standardnotes/domain-core'
 import { DeleteAccount } from '../../Domain/UseCase/DeleteAccount/DeleteAccount'
 import { ChangeCredentials } from '../../Domain/UseCase/ChangeCredentials/ChangeCredentials'
 import { ClearLoginAttempts } from '../../Domain/UseCase/ClearLoginAttempts'
-import { GetUserKeyParams } from '../../Domain/UseCase/GetUserKeyParams/GetUserKeyParams'
 import { GetUserSubscription } from '../../Domain/UseCase/GetUserSubscription/GetUserSubscription'
 import { IncreaseLoginAttempts } from '../../Domain/UseCase/IncreaseLoginAttempts'
 import { InviteToSharedSubscription } from '../../Domain/UseCase/InviteToSharedSubscription/InviteToSharedSubscription'
@@ -18,7 +17,6 @@ import { User } from '../../Domain/User/User'
 describe('AnnotatedUsersController', () => {
   let updateUser: UpdateUser
   let deleteAccount: DeleteAccount
-  let getUserKeyParams: GetUserKeyParams
   let getUserSubscription: GetUserSubscription
   let clearLoginAttempts: ClearLoginAttempts
   let increaseLoginAttempts: IncreaseLoginAttempts
@@ -32,7 +30,6 @@ describe('AnnotatedUsersController', () => {
   const createController = () =>
     new AnnotatedUsersController(
       updateUser,
-      getUserKeyParams,
       deleteAccount,
       getUserSubscription,
       clearLoginAttempts,
@@ -50,9 +47,6 @@ describe('AnnotatedUsersController', () => {
     user = {} as jest.Mocked<User>
     user.uuid = '123'
     user.email = 'test@test.te'
-
-    getUserKeyParams = {} as jest.Mocked<GetUserKeyParams>
-    getUserKeyParams.execute = jest.fn()
 
     getUserSubscription = {} as jest.Mocked<GetUserSubscription>
     getUserSubscription.execute = jest.fn()
@@ -211,60 +205,6 @@ describe('AnnotatedUsersController', () => {
     expect(deleteAccount.execute).not.toHaveBeenCalled()
 
     expect(result.statusCode).toEqual(401)
-  })
-
-  it('should get user key params', async () => {
-    request.query = {
-      email: 'test@test.te',
-      uuid: '1-2-3',
-    }
-
-    getUserKeyParams.execute = jest.fn().mockReturnValue({ foo: 'bar' })
-
-    const httpResponse = <results.JsonResult>await createController().keyParams(request)
-    const result = await httpResponse.executeAsync()
-
-    expect(getUserKeyParams.execute).toHaveBeenCalledWith({
-      email: 'test@test.te',
-      userUuid: '1-2-3',
-      authenticated: false,
-    })
-
-    expect(result.statusCode).toEqual(200)
-  })
-
-  it('should get authenticated user key params', async () => {
-    request.query = {
-      email: 'test@test.te',
-      uuid: '1-2-3',
-      authenticated: 'true',
-    }
-
-    getUserKeyParams.execute = jest.fn().mockReturnValue({ foo: 'bar' })
-
-    const httpResponse = <results.JsonResult>await createController().keyParams(request)
-    const result = await httpResponse.executeAsync()
-
-    expect(getUserKeyParams.execute).toHaveBeenCalledWith({
-      email: 'test@test.te',
-      userUuid: '1-2-3',
-      authenticated: true,
-    })
-
-    expect(result.statusCode).toEqual(200)
-  })
-
-  it('should not get user key params if email and user uuid is missing', async () => {
-    request.query = {}
-
-    getUserKeyParams.execute = jest.fn().mockReturnValue({ foo: 'bar' })
-
-    const httpResponse = <results.JsonResult>await createController().keyParams(request)
-    const result = await httpResponse.executeAsync()
-
-    expect(getUserKeyParams.execute).not.toHaveBeenCalled()
-
-    expect(result.statusCode).toEqual(400)
   })
 
   it('should get user subscription', async () => {

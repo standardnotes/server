@@ -21,6 +21,7 @@ import {
   TransitionRequestedEvent,
 } from '@standardnotes/domain-events'
 import { InviteeIdentifierType } from '../SharedSubscription/InviteeIdentifierType'
+import { KeyParamsData } from '@standardnotes/responses'
 
 export interface DomainEventFactoryInterface {
   createWebSocketMessageRequestedEvent(dto: { userUuid: string; message: JSONString }): WebSocketMessageRequestedEvent
@@ -41,6 +42,7 @@ export interface DomainEventFactoryInterface {
     userUuid: string,
     muteEmailsSettingUuid: string,
     userHasEmailsMuted: boolean,
+    keyParams: KeyParamsData,
   ): EmailBackupRequestedEvent
   createAccountDeletionRequestedEvent(dto: {
     userUuid: string

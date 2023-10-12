@@ -1,4 +1,3 @@
-import { KeyParamsData } from '@standardnotes/responses'
 import {
   DomainEventHandlerInterface,
   DomainEventPublisherInterface,
@@ -6,7 +5,6 @@ import {
 } from '@standardnotes/domain-events'
 import { EmailLevel } from '@standardnotes/domain-core'
 import { Logger } from 'winston'
-import { AuthHttpServiceInterface } from '../Auth/AuthHttpServiceInterface'
 import { DomainEventFactoryInterface } from '../Event/DomainEventFactoryInterface'
 import { ItemBackupServiceInterface } from '../Item/ItemBackupServiceInterface'
 import { ItemRepositoryInterface } from '../Item/ItemRepositoryInterface'
@@ -18,7 +16,6 @@ export class EmailBackupRequestedEventHandler implements DomainEventHandlerInter
   constructor(
     private primaryItemRepository: ItemRepositoryInterface,
     private secondaryItemRepository: ItemRepositoryInterface | null,
-    private authHttpService: AuthHttpServiceInterface,
     private itemBackupService: ItemBackupServiceInterface,
     private domainEventPublisher: DomainEventPublisherInterface,
     private domainEventFactory: DomainEventFactoryInterface,
@@ -40,19 +37,6 @@ export class EmailBackupRequestedEventHandler implements DomainEventHandlerInter
     event: EmailBackupRequestedEvent,
     itemRepository: ItemRepositoryInterface,
   ): Promise<void> {
-    let authParams: KeyParamsData
-    try {
-      authParams = await this.authHttpService.getUserKeyParams(event.payload.userUuid)
-    } catch (error) {
-      this.logger.error(
-        `Could not get user key params from auth service for user ${event.payload.userUuid}: ${
-          (error as Error).message
-        }`,
-      )
-
-      return
-    }
-
     const itemQuery: ItemQuery = {
       userUuid: event.payload.userUuid,
       sortBy: 'updated_at_timestamp',
@@ -75,7 +59,7 @@ export class EmailBackupRequestedEventHandler implements DomainEventHandlerInter
 
       const bundleBackupFileNames = await this.itemBackupService.backup(
         items,
-        authParams,
+        event.payload.keyParams,
         this.emailAttachmentMaxByteSize,
       )
 
@@ -88,11 +72,11 @@ export class EmailBackupRequestedEventHandler implements DomainEventHandlerInter
     for (const backupFileName of backupFileNames) {
       await this.domainEventPublisher.publish(
         this.domainEventFactory.createEmailRequestedEvent({
-          body: getBody(authParams.identifier as string),
+          body: getBody(event.payload.keyParams.identifier as string),
           level: EmailLevel.LEVELS.System,
           messageIdentifier: 'DATA_BACKUP',
           subject: getSubject(bundleIndex++, backupFileNames.length, dateOnly),
-          userEmail: authParams.identifier as string,
+          userEmail: event.payload.keyParams.identifier as string,
           sender: 'backups@standardnotes.org',
           attachments: [
             {

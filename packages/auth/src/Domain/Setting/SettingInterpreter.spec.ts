@@ -19,6 +19,8 @@ import { SettingDecrypterInterface } from './SettingDecrypterInterface'
 
 import { SettingInterpreter } from './SettingInterpreter'
 import { SettingRepositoryInterface } from './SettingRepositoryInterface'
+import { GetUserKeyParams } from '../UseCase/GetUserKeyParams/GetUserKeyParams'
+import { KeyParamsData } from '@standardnotes/responses'
 
 describe('SettingInterpreter', () => {
   let user: User
@@ -27,8 +29,10 @@ describe('SettingInterpreter', () => {
   let settingRepository: SettingRepositoryInterface
   let settingDecrypter: SettingDecrypterInterface
   let logger: Logger
+  let getUserKeyParams: GetUserKeyParams
 
-  const createInterpreter = () => new SettingInterpreter(domainEventPublisher, domainEventFactory, settingRepository)
+  const createInterpreter = () =>
+    new SettingInterpreter(domainEventPublisher, domainEventFactory, settingRepository, getUserKeyParams)
 
   beforeEach(() => {
     user = {
@@ -61,6 +65,9 @@ describe('SettingInterpreter', () => {
     logger.debug = jest.fn()
     logger.warn = jest.fn()
     logger.error = jest.fn()
+
+    getUserKeyParams = {} as jest.Mocked<GetUserKeyParams>
+    getUserKeyParams.execute = jest.fn().mockReturnValue({ keyParams: {} as jest.Mocked<KeyParamsData> })
   })
 
   it('should trigger session cleanup if user is disabling session user agent logging', async () => {
@@ -85,7 +92,7 @@ describe('SettingInterpreter', () => {
     )
 
     expect(domainEventPublisher.publish).toHaveBeenCalled()
-    expect(domainEventFactory.createEmailBackupRequestedEvent).toHaveBeenCalledWith('4-5-6', '', false)
+    expect(domainEventFactory.createEmailBackupRequestedEvent).toHaveBeenCalledWith('4-5-6', '', false, {})
   })
 
   it('should trigger backup if email backup setting is created - emails muted', async () => {
@@ -102,7 +109,7 @@ describe('SettingInterpreter', () => {
     )
 
     expect(domainEventPublisher.publish).toHaveBeenCalled()
-    expect(domainEventFactory.createEmailBackupRequestedEvent).toHaveBeenCalledWith('4-5-6', '6-7-8', true)
+    expect(domainEventFactory.createEmailBackupRequestedEvent).toHaveBeenCalledWith('4-5-6', '6-7-8', true, {})
   })
 
   it('should not trigger backup if email backup setting is disabled', async () => {

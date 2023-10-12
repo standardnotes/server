@@ -5,7 +5,6 @@ import { BaseHttpController, results } from 'inversify-express-utils'
 import { ChangeCredentials } from '../../../Domain/UseCase/ChangeCredentials/ChangeCredentials'
 import { ClearLoginAttempts } from '../../../Domain/UseCase/ClearLoginAttempts'
 import { DeleteAccount } from '../../../Domain/UseCase/DeleteAccount/DeleteAccount'
-import { GetUserKeyParams } from '../../../Domain/UseCase/GetUserKeyParams/GetUserKeyParams'
 import { GetUserSubscription } from '../../../Domain/UseCase/GetUserSubscription/GetUserSubscription'
 import { IncreaseLoginAttempts } from '../../../Domain/UseCase/IncreaseLoginAttempts'
 import { UpdateUser } from '../../../Domain/UseCase/UpdateUser'
@@ -14,7 +13,6 @@ import { ErrorTag } from '@standardnotes/responses'
 export class BaseUsersController extends BaseHttpController {
   constructor(
     protected updateUser: UpdateUser,
-    protected getUserKeyParams: GetUserKeyParams,
     protected doDeleteAccount: DeleteAccount,
     protected doGetUserSubscription: GetUserSubscription,
     protected clearLoginAttempts: ClearLoginAttempts,
@@ -26,7 +24,6 @@ export class BaseUsersController extends BaseHttpController {
 
     if (this.controllerContainer !== undefined) {
       this.controllerContainer.register('auth.users.update', this.update.bind(this))
-      this.controllerContainer.register('auth.users.getKeyParams', this.keyParams.bind(this))
       this.controllerContainer.register('auth.users.getSubscription', this.getSubscription.bind(this))
       this.controllerContainer.register('auth.users.updateCredentials', this.changeCredentials.bind(this))
       this.controllerContainer.register('auth.users.delete', this.deleteAccount.bind(this))
@@ -77,30 +74,6 @@ export class BaseUsersController extends BaseHttpController {
       },
       400,
     )
-  }
-
-  async keyParams(request: Request): Promise<results.JsonResult> {
-    const email = 'email' in request.query ? <string>request.query.email : undefined
-    const userUuid = 'uuid' in request.query ? <string>request.query.uuid : undefined
-
-    if (!email && !userUuid) {
-      return this.json(
-        {
-          error: {
-            message: 'Missing mandatory request query parameters.',
-          },
-        },
-        400,
-      )
-    }
-
-    const result = await this.getUserKeyParams.execute({
-      email,
-      userUuid,
-      authenticated: request.query.authenticated === 'true',
-    })
-
-    return this.json(result.keyParams)
   }
 
   async deleteAccount(request: Request, response: Response): Promise<results.JsonResult> {

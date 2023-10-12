@@ -47,7 +47,6 @@ import {
   DomainEventPublisherInterface,
 } from '@standardnotes/domain-events'
 import axios, { AxiosInstance } from 'axios'
-import { AuthHttpServiceInterface } from '../Domain/Auth/AuthHttpServiceInterface'
 import { ExtensionsHttpService } from '../Domain/Extension/ExtensionsHttpService'
 import { ExtensionsHttpServiceInterface } from '../Domain/Extension/ExtensionsHttpServiceInterface'
 import { AccountDeletionRequestedEventHandler } from '../Domain/Handler/AccountDeletionRequestedEventHandler'
@@ -56,7 +55,6 @@ import { EmailBackupRequestedEventHandler } from '../Domain/Handler/EmailBackupR
 import { ItemRevisionCreationRequestedEventHandler } from '../Domain/Handler/ItemRevisionCreationRequestedEventHandler'
 import { ItemBackupServiceInterface } from '../Domain/Item/ItemBackupServiceInterface'
 import { FSItemBackupService } from '../Infra/FS/FSItemBackupService'
-import { AuthHttpService } from '../Infra/HTTP/AuthHttpService'
 import { S3ItemBackupService } from '../Infra/S3/S3ItemBackupService'
 import {
   ControllerContainer,
@@ -1104,17 +1102,6 @@ export class ContainerConfigLoader {
       ],
     ])
     if (!isConfiguredForHomeServer) {
-      container.bind(TYPES.Sync_AUTH_SERVER_URL).toConstantValue(env.get('AUTH_SERVER_URL'))
-
-      container
-        .bind<AuthHttpServiceInterface>(TYPES.Sync_AuthHttpService)
-        .toDynamicValue((context: interfaces.Context) => {
-          return new AuthHttpService(
-            context.container.get(TYPES.Sync_HTTPClient),
-            context.container.get(TYPES.Sync_AUTH_SERVER_URL),
-          )
-        })
-
       container
         .bind<EmailBackupRequestedEventHandler>(TYPES.Sync_EmailBackupRequestedEventHandler)
         .toConstantValue(
@@ -1123,7 +1110,6 @@ export class ContainerConfigLoader {
             isSecondaryDatabaseEnabled
               ? container.get<ItemRepositoryInterface>(TYPES.Sync_MongoDBItemRepository)
               : null,
-            container.get<AuthHttpServiceInterface>(TYPES.Sync_AuthHttpService),
             container.get<ItemBackupServiceInterface>(TYPES.Sync_ItemBackupService),
             container.get<DomainEventPublisherInterface>(TYPES.Sync_DomainEventPublisher),
             container.get<DomainEventFactoryInterface>(TYPES.Sync_DomainEventFactory),
