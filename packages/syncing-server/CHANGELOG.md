@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.117.4](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.117.3...@standardnotes/syncing-server@1.117.4) (2023-10-12)
+
+### Bug Fixes
+
+* disable opentelemetry tracing on async worker jobs ([e0b19ef](https://github.com/standardnotes/syncing-server-js/commit/e0b19ef011197c854cb6e833dbaa982f661e8d17))
+* disable sqs open telemetry manual tracing in favour of automated instrumentation ([337eae7](https://github.com/standardnotes/syncing-server-js/commit/337eae73c6cb18ae872527b06f6c23e1c48b6dff))
+
 ## [1.117.3](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.117.2...@standardnotes/syncing-server@1.117.3) (2023-10-12)
 
 **Note:** Version bump only for package @standardnotes/syncing-server

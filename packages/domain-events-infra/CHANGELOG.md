@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.19.4](https://github.com/standardnotes/server/compare/@standardnotes/domain-events-infra@1.19.3...@standardnotes/domain-events-infra@1.19.4) (2023-10-12)
+
+### Bug Fixes
+
+* disable opentelemetry tracing on async worker jobs ([e0b19ef](https://github.com/standardnotes/server/commit/e0b19ef011197c854cb6e833dbaa982f661e8d17))
+* **domain-events-infra:** supress typeorm internal instrumentation ([1246af2](https://github.com/standardnotes/server/commit/1246af2551ae3502734583fbc7dcebc91c16eb6b))
+* enable opentelemetry tracing on async workers via sqs/sns automation ([0a90502](https://github.com/standardnotes/server/commit/0a90502658ce6f60f4a3100a518d522d6209a8fd))
+
 ## [1.19.3](https://github.com/standardnotes/server/compare/@standardnotes/domain-events-infra@1.19.2...@standardnotes/domain-events-infra@1.19.3) (2023-10-12)
 
 ### Bug Fixes

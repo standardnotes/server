@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.132.2](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.132.1...@standardnotes/domain-events@2.132.2) (2023-10-12)
+
+### Bug Fixes
+
+* disable opentelemetry tracing on async worker jobs ([e0b19ef](https://github.com/standardnotes/server/commit/e0b19ef011197c854cb6e833dbaa982f661e8d17))
+
 ## [2.132.1](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.132.0...@standardnotes/domain-events@2.132.1) (2023-10-12)
 
 ### Bug Fixes

@@ -1,6 +1,6 @@
 {
   "name": "@standardnotes/event-store",
-  "version": "1.13.8",
+  "version": "1.13.9",
   "description": "Event Store Service",
   "private": true,
   "main": "dist/src/index.js",
