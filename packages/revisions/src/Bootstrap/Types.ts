@@ -6,7 +6,6 @@ const TYPES = {
   Revisions_SNS: Symbol.for('Revisions_SNS'),
   Revisions_S3: Symbol.for('Revisions_S3'),
   Revisions_Env: Symbol.for('Revisions_Env'),
-  Revisions_OTEL_PROPAGATOR: Symbol.for('Revisions_OTEL_PROPAGATOR'),
   // Map
   Revisions_SQLLegacyRevisionMetadataPersistenceMapper: Symbol.for(
     'Revisions_SQLLegacyRevisionMetadataPersistenceMapper',

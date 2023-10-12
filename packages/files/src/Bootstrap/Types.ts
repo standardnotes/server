@@ -5,7 +5,6 @@ const TYPES = {
   Files_S3: Symbol.for('Files_S3'),
   Files_SNS: Symbol.for('Files_SNS'),
   Files_SQS: Symbol.for('Files_SQS'),
-  Files_OTEL_PROPAGATOR: Symbol.for('Files_OTEL_PROPAGATOR'),
 
   // use cases
   Files_UploadFileChunk: Symbol.for('Files_UploadFileChunk'),

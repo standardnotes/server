@@ -6,7 +6,6 @@ const TYPES = {
   Sync_SQS: Symbol.for('Sync_SQS'),
   Sync_S3: Symbol.for('Sync_S3'),
   Sync_Env: Symbol.for('Sync_Env'),
-  Sync_OTEL_PROPAGATOR: Symbol.for('Sync_OTEL_PROPAGATOR'),
   // Repositories
   Sync_ItemRepositoryResolver: Symbol.for('Sync_ItemRepositoryResolver'),
   Sync_SQLItemRepository: Symbol.for('Sync_SQLItemRepository'),

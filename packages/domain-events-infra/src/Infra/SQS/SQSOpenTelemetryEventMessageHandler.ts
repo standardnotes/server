@@ -7,14 +7,12 @@ import {
 } from '@standardnotes/domain-events'
 import { OpenTelemetryTracer } from '../OpenTelemetry/OpenTelemetryTracer'
 import { OpenTelemetryTracerInterface } from '../OpenTelemetry/OpenTelemetryTracerInterface'
-import { OpenTelemetryPropagationInterface } from '../OpenTelemetry/OpenTelemetryPropagationInterface'
 
 export class SQSOpenTelemetryEventMessageHandler implements DomainEventMessageHandlerInterface {
   private tracer: OpenTelemetryTracerInterface | undefined
 
   constructor(
     private serviceName: string,
-    private propagator: OpenTelemetryPropagationInterface,
     private handlers: Map<string, DomainEventHandlerInterface>,
     private logger: Logger,
   ) {}
@@ -39,16 +37,7 @@ export class SQSOpenTelemetryEventMessageHandler implements DomainEventMessageHa
 
     this.tracer = new OpenTelemetryTracer()
 
-    let activeContext = undefined
-    if (domainEvent.meta.trace) {
-      this.logger.debug(`Event has trace: ${JSON.stringify(domainEvent.meta.trace)}`)
-
-      activeContext = this.propagator.extract(domainEvent.meta.trace)
-
-      this.logger.info(`Injecting pre-existing active context into trace: ${JSON.stringify(activeContext)}`)
-    }
-
-    this.tracer.startSpan(this.serviceName, domainEvent.type, activeContext)
+    this.tracer.startSpan(this.serviceName, domainEvent.type)
 
     try {
       await handler.handle(domainEvent)

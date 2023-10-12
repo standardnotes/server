@@ -1,8 +1,6 @@
 export * from './DirectCall/DirectCallDomainEventPublisher'
 export * from './DirectCall/DirectCallEventMessageHandler'
 
-export * from './OpenTelemetry/OpenTelemetryPropagation'
-export * from './OpenTelemetry/OpenTelemetryPropagationInterface'
 export * from './OpenTelemetry/OpenTelemetrySDK'
 export * from './OpenTelemetry/OpenTelemetrySDKInterface'
 export * from './OpenTelemetry/OpenTelemetryTracer'

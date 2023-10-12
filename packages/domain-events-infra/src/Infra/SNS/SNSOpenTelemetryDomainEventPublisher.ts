@@ -2,21 +2,14 @@ import * as zlib from 'zlib'
 import { MessageAttributeValue, PublishCommand, PublishCommandInput, SNSClient } from '@aws-sdk/client-sns'
 
 import { DomainEventInterface, DomainEventPublisherInterface } from '@standardnotes/domain-events'
-import { OpenTelemetryPropagationInterface } from '../OpenTelemetry/OpenTelemetryPropagationInterface'
 
 export class SNSOpenTelemetryDomainEventPublisher implements DomainEventPublisherInterface {
   constructor(
-    private propagator: OpenTelemetryPropagationInterface,
     private snsClient: SNSClient,
     private topicArn: string,
   ) {}
 
   async publish(event: DomainEventInterface): Promise<void> {
-    const trace = this.propagator.inject()
-    if (Object.keys(trace).length > 0) {
-      event.meta.trace = trace
-    }
-
     const message: PublishCommandInput = {
       TopicArn: this.topicArn,
       MessageAttributes: {
