@@ -371,6 +371,8 @@ export class ContainerConfigLoader {
       container.bind<SQSClient>(TYPES.Auth_SQS).toConstantValue(sqsClient)
     }
 
+    container.bind(TYPES.Auth_SNS_TOPIC_ARN).toConstantValue(env.get('SNS_TOPIC_ARN', true))
+
     container
       .bind<DomainEventPublisherInterface>(TYPES.Auth_DomainEventPublisher)
       .toConstantValue(
@@ -562,7 +564,6 @@ export class ContainerConfigLoader {
     container
       .bind(TYPES.Auth_DISABLE_USER_REGISTRATION)
       .toConstantValue(env.get('DISABLE_USER_REGISTRATION', true) === 'true')
-    container.bind(TYPES.Auth_SNS_TOPIC_ARN).toConstantValue(env.get('SNS_TOPIC_ARN', true))
     container.bind(TYPES.Auth_SNS_AWS_REGION).toConstantValue(env.get('SNS_AWS_REGION', true))
     container.bind(TYPES.Auth_SQS_QUEUE_URL).toConstantValue(env.get('SQS_QUEUE_URL', true))
     container
