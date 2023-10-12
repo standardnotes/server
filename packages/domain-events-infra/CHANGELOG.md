@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.19.3](https://github.com/standardnotes/server/compare/@standardnotes/domain-events-infra@1.19.2...@standardnotes/domain-events-infra@1.19.3) (2023-10-12)
+
+### Bug Fixes
+
+* injecting opentelemetry trace into sqs/sns coms ([4a6f90b](https://github.com/standardnotes/server/commit/4a6f90b95b39e7990b10dd4b96d549e1366383fe))
+
 ## [1.19.2](https://github.com/standardnotes/server/compare/@standardnotes/domain-events-infra@1.19.1...@standardnotes/domain-events-infra@1.19.2) (2023-10-11)
 
 ### Bug Fixes
