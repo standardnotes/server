@@ -44,6 +44,8 @@ export class SQSOpenTelemetryEventMessageHandler implements DomainEventMessageHa
       this.logger.debug(`Event has trace: ${JSON.stringify(domainEvent.meta.trace)}`)
 
       activeContext = this.propagator.extract(domainEvent.meta.trace)
+
+      this.logger.info(`Injecting pre-existing active context into trace: ${JSON.stringify(activeContext)}`)
     }
 
     this.tracer.startSpan(this.serviceName, domainEvent.type, activeContext)

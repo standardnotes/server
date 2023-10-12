@@ -1,15 +1,17 @@
 import * as OpenTelemetryApi from '@opentelemetry/api'
 
-export class OpenTelemetryPropagation {
-  inject(): { traceparent?: string; tracestate?: string } {
+import { OpenTelemetryPropagationInterface } from './OpenTelemetryPropagationInterface'
+
+export class OpenTelemetryPropagation implements OpenTelemetryPropagationInterface {
+  inject(): Record<string, string> {
     const output = {}
 
     OpenTelemetryApi.propagation.inject(OpenTelemetryApi.context.active(), output)
 
-    return output as { traceparent?: string; tracestate?: string }
+    return output
   }
 
-  extract(input: { traceparent?: string; tracestate?: string }): OpenTelemetryApi.Context {
+  extract(input: Record<string, string>): OpenTelemetryApi.Context {
     const activeContext = OpenTelemetryApi.propagation.extract(OpenTelemetryApi.context.active(), input)
 
     return activeContext

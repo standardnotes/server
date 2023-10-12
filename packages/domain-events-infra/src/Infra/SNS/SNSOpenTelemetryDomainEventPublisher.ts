@@ -13,7 +13,9 @@ export class SNSOpenTelemetryDomainEventPublisher implements DomainEventPublishe
 
   async publish(event: DomainEventInterface): Promise<void> {
     const trace = this.propagator.inject()
-    event.meta.trace = trace
+    if (Object.keys(trace).length > 0) {
+      event.meta.trace = trace
+    }
 
     const message: PublishCommandInput = {
       TopicArn: this.topicArn,
