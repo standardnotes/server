@@ -28,6 +28,7 @@ import { inject, injectable } from 'inversify'
 import TYPES from '../../Bootstrap/Types'
 import { InviteeIdentifierType } from '../SharedSubscription/InviteeIdentifierType'
 import { DomainEventFactoryInterface } from './DomainEventFactoryInterface'
+import { KeyParamsData } from '@standardnotes/responses'
 
 @injectable()
 export class DomainEventFactory implements DomainEventFactoryInterface {
@@ -277,6 +278,7 @@ export class DomainEventFactory implements DomainEventFactoryInterface {
     userUuid: string,
     muteEmailsSettingUuid: string,
     userHasEmailsMuted: boolean,
+    keyParams: KeyParamsData,
   ): EmailBackupRequestedEvent {
     return {
       type: 'EMAIL_BACKUP_REQUESTED',
@@ -292,6 +294,7 @@ export class DomainEventFactory implements DomainEventFactoryInterface {
         userUuid,
         userHasEmailsMuted,
         muteEmailsSettingUuid,
+        keyParams,
       },
     }
   }

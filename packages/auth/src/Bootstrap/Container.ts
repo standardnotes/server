@@ -1311,7 +1311,6 @@ export class ContainerConfigLoader {
         .toConstantValue(
           new BaseUsersController(
             container.get<UpdateUser>(TYPES.Auth_UpdateUser),
-            container.get<GetUserKeyParams>(TYPES.Auth_GetUserKeyParams),
             container.get<DeleteAccount>(TYPES.Auth_DeleteAccount),
             container.get<GetUserSubscription>(TYPES.Auth_GetUserSubscription),
             container.get<ClearLoginAttempts>(TYPES.Auth_ClearLoginAttempts),

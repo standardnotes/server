@@ -21,6 +21,7 @@ import { SettingRepositoryInterface } from '../src/Domain/Setting/SettingReposit
 import { MuteFailedBackupsEmailsOption, SettingName } from '@standardnotes/settings'
 import { RoleServiceInterface } from '../src/Domain/Role/RoleServiceInterface'
 import { PermissionName } from '@standardnotes/features'
+import { GetUserKeyParams } from '../src/Domain/UseCase/GetUserKeyParams/GetUserKeyParams'
 
 const inputArgs = process.argv.slice(2)
 const backupProvider = inputArgs[0]
@@ -31,6 +32,7 @@ const requestBackups = async (
   roleService: RoleServiceInterface,
   domainEventFactory: DomainEventFactoryInterface,
   domainEventPublisher: DomainEventPublisherInterface,
+  getUserKeyParamsUseCase: GetUserKeyParams,
 ): Promise<void> => {
   const settingName = SettingName.create(SettingName.NAMES.EmailBackupFrequency).getValue()
   const permissionName = PermissionName.DailyEmailBackup
@@ -64,11 +66,17 @@ const requestBackups = async (
               userHasEmailsMuted = emailsMutedSetting.value === muteEmailsSettingValue
             }
 
+            const keyParamsResponse = await getUserKeyParamsUseCase.execute({
+              userUuid: setting.setting_user_uuid,
+              authenticated: false,
+            })
+
             await domainEventPublisher.publish(
               domainEventFactory.createEmailBackupRequestedEvent(
                 setting.setting_user_uuid,
                 emailsMutedSetting?.uuid as string,
                 userHasEmailsMuted,
+                keyParamsResponse.keyParams,
               ),
             )
 
@@ -96,11 +104,14 @@ void container.load().then((container) => {
   const roleService: RoleServiceInterface = container.get(TYPES.Auth_RoleService)
   const domainEventFactory: DomainEventFactoryInterface = container.get(TYPES.Auth_DomainEventFactory)
   const domainEventPublisher: DomainEventPublisherInterface = container.get(TYPES.Auth_DomainEventPublisher)
+  const getUserKeyParamsUseCase: GetUserKeyParams = container.get(TYPES.Auth_GetUserKeyParams)
 
   const tracer = new OpenTelemetryTracer()
   tracer.startSpan(ServiceIdentifier.NAMES.AuthScheduledTask, 'backup')
 
-  Promise.resolve(requestBackups(settingRepository, roleService, domainEventFactory, domainEventPublisher))
+  Promise.resolve(
+    requestBackups(settingRepository, roleService, domainEventFactory, domainEventPublisher, getUserKeyParamsUseCase),
+  )
     .then(() => {
       logger.info(`${backupFrequency} ${backupProvider} backup requesting complete`)
 

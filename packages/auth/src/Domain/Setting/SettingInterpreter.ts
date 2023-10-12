@@ -13,6 +13,7 @@ import { DomainEventFactoryInterface } from '../Event/DomainEventFactoryInterfac
 import { User } from '../User/User'
 import { SettingInterpreterInterface } from './SettingInterpreterInterface'
 import { SettingRepositoryInterface } from './SettingRepositoryInterface'
+import { GetUserKeyParams } from '../UseCase/GetUserKeyParams/GetUserKeyParams'
 
 @injectable()
 export class SettingInterpreter implements SettingInterpreterInterface {
@@ -27,6 +28,7 @@ export class SettingInterpreter implements SettingInterpreterInterface {
     @inject(TYPES.Auth_DomainEventPublisher) private domainEventPublisher: DomainEventPublisherInterface,
     @inject(TYPES.Auth_DomainEventFactory) private domainEventFactory: DomainEventFactoryInterface,
     @inject(TYPES.Auth_SettingRepository) private settingRepository: SettingRepositoryInterface,
+    @inject(TYPES.Auth_GetUserKeyParams) private getUserKeyParams: GetUserKeyParams,
   ) {}
 
   async interpretSettingUpdated(
@@ -59,8 +61,18 @@ export class SettingInterpreter implements SettingInterpreterInterface {
       muteEmailsSettingUuid = muteFailedEmailsBackupSetting.uuid
     }
 
+    const keyParamsResponse = await this.getUserKeyParams.execute({
+      authenticated: false,
+      userUuid,
+    })
+
     await this.domainEventPublisher.publish(
-      this.domainEventFactory.createEmailBackupRequestedEvent(userUuid, muteEmailsSettingUuid, userHasEmailsMuted),
+      this.domainEventFactory.createEmailBackupRequestedEvent(
+        userUuid,
+        muteEmailsSettingUuid,
+        userHasEmailsMuted,
+        keyParamsResponse.keyParams,
+      ),
     )
   }
 

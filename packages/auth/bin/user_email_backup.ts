@@ -20,6 +20,7 @@ import { MuteFailedBackupsEmailsOption, SettingName } from '@standardnotes/setti
 import { RoleServiceInterface } from '../src/Domain/Role/RoleServiceInterface'
 import { PermissionName } from '@standardnotes/features'
 import { UserRepositoryInterface } from '../src/Domain/User/UserRepositoryInterface'
+import { GetUserKeyParams } from '../src/Domain/UseCase/GetUserKeyParams/GetUserKeyParams'
 
 const inputArgs = process.argv.slice(2)
 const backupEmail = inputArgs[0]
@@ -30,6 +31,7 @@ const requestBackups = async (
   roleService: RoleServiceInterface,
   domainEventFactory: DomainEventFactoryInterface,
   domainEventPublisher: DomainEventPublisherInterface,
+  getUserKeyParamsUseCase: GetUserKeyParams,
 ): Promise<void> => {
   const permissionName = PermissionName.DailyEmailBackup
   const muteEmailsSettingName = SettingName.NAMES.MuteFailedBackupsEmails
@@ -57,11 +59,17 @@ const requestBackups = async (
     userHasEmailsMuted = emailsMutedSetting.value === muteEmailsSettingValue
   }
 
+  const keyParamsResponse = await getUserKeyParamsUseCase.execute({
+    userUuid: user.uuid,
+    authenticated: false,
+  })
+
   await domainEventPublisher.publish(
     domainEventFactory.createEmailBackupRequestedEvent(
       user.uuid,
       emailsMutedSetting?.uuid as string,
       userHasEmailsMuted,
+      keyParamsResponse.keyParams,
     ),
   )
 
@@ -84,12 +92,20 @@ void container.load().then((container) => {
   const roleService: RoleServiceInterface = container.get(TYPES.Auth_RoleService)
   const domainEventFactory: DomainEventFactoryInterface = container.get(TYPES.Auth_DomainEventFactory)
   const domainEventPublisher: DomainEventPublisherInterface = container.get(TYPES.Auth_DomainEventPublisher)
+  const getUserKeyParamsUseCase: GetUserKeyParams = container.get(TYPES.Auth_GetUserKeyParams)
 
   const tracer = new OpenTelemetryTracer()
   tracer.startSpan(ServiceIdentifier.NAMES.AuthScheduledTask, 'user_email_backup')
 
   Promise.resolve(
-    requestBackups(userRepository, settingRepository, roleService, domainEventFactory, domainEventPublisher),
+    requestBackups(
+      userRepository,
+      settingRepository,
+      roleService,
+      domainEventFactory,
+      domainEventPublisher,
+      getUserKeyParamsUseCase,
+    ),
   )
     .then(() => {
       logger.info(`Email backup requesting complete for ${backupEmail}`)
