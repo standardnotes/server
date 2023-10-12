@@ -16,7 +16,7 @@ export class SQSDomainEventSubscriberFactory implements DomainEventSubscriberFac
   create(): DomainEventSubscriberInterface {
     const sqsConsumer = Consumer.create({
       attributeNames: ['All'],
-      messageAttributeNames: ['compression', 'event'],
+      messageAttributeNames: ['All'],
       queueUrl: this.queueUrl,
       sqs: this.sqs,
       handleMessage:
