@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.158.6](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.158.5...@standardnotes/auth-server@1.158.6) (2023-10-12)
+
+### Bug Fixes
+
+* passing key params for backup requests ([#867](https://github.com/standardnotes/server/issues/867)) ([0739816](https://github.com/standardnotes/server/commit/07398169c80e7871cd04d889f471c3eef70e1aae))
+
 ## [1.158.5](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.158.4...@standardnotes/auth-server@1.158.5) (2023-10-12)
 
 **Note:** Version bump only for package @standardnotes/auth-server

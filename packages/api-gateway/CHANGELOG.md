@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.79.11](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.79.10...@standardnotes/api-gateway@1.79.11) (2023-10-12)
+
+### Bug Fixes
+
+* passing key params for backup requests ([#867](https://github.com/standardnotes/api-gateway/issues/867)) ([0739816](https://github.com/standardnotes/api-gateway/commit/07398169c80e7871cd04d889f471c3eef70e1aae))
+
 ## [1.79.10](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.79.9...@standardnotes/api-gateway@1.79.10) (2023-10-12)
 
 **Note:** Version bump only for package @standardnotes/api-gateway
