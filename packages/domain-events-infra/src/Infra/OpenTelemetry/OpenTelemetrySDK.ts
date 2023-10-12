@@ -60,6 +60,7 @@ export class OpenTelemetrySDK implements OpenTelemetrySDKInterface {
         new ExpressInstrumentation(),
         new AwsInstrumentation({
           suppressInternalInstrumentation: true,
+          sqsExtractContextPropagationFromPayload: true,
         }),
         new TypeormInstrumentation({
           collectParameters: false,
