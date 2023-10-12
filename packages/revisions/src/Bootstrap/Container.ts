@@ -1,9 +1,4 @@
-import {
-  ControllerContainer,
-  ControllerContainerInterface,
-  MapperInterface,
-  ServiceIdentifier,
-} from '@standardnotes/domain-core'
+import { ControllerContainer, ControllerContainerInterface, MapperInterface } from '@standardnotes/domain-core'
 import Redis from 'ioredis'
 import { Container, interfaces } from 'inversify'
 import { MongoRepository, Repository } from 'typeorm'
@@ -39,7 +34,6 @@ import {
   SQSDomainEventSubscriberFactory,
   DirectCallEventMessageHandler,
   DirectCallDomainEventPublisher,
-  SQSOpenTelemetryEventMessageHandler,
   SNSOpenTelemetryDomainEventPublisher,
 } from '@standardnotes/domain-events-infra'
 import { DumpRepositoryInterface } from '../Domain/Dump/DumpRepositoryInterface'
@@ -510,15 +504,7 @@ export class ContainerConfigLoader {
     } else {
       container
         .bind<DomainEventMessageHandlerInterface>(TYPES.Revisions_DomainEventMessageHandler)
-        .toConstantValue(
-          isConfiguredForHomeServerOrSelfHosting
-            ? new SQSEventMessageHandler(eventHandlers, container.get(TYPES.Revisions_Logger))
-            : new SQSOpenTelemetryEventMessageHandler(
-                ServiceIdentifier.NAMES.RevisionsWorker,
-                eventHandlers,
-                container.get(TYPES.Revisions_Logger),
-              ),
-        )
+        .toConstantValue(new SQSEventMessageHandler(eventHandlers, container.get(TYPES.Revisions_Logger)))
 
       container
         .bind<DomainEventSubscriberFactoryInterface>(TYPES.Revisions_DomainEventSubscriberFactory)

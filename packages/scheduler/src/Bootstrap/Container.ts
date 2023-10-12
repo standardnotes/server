@@ -17,7 +17,7 @@ import { DomainEventFactory } from '../Domain/Event/DomainEventFactory'
 import {
   SNSOpenTelemetryDomainEventPublisher,
   SQSDomainEventSubscriberFactory,
-  SQSOpenTelemetryEventMessageHandler,
+  SQSEventMessageHandler,
 } from '@standardnotes/domain-events-infra'
 import { Timer, TimerInterface } from '@standardnotes/time'
 import { PredicateRepositoryInterface } from '../Domain/Predicate/PredicateRepositoryInterface'
@@ -35,7 +35,6 @@ import { VerifyPredicates } from '../Domain/UseCase/VerifyPredicates/VerifyPredi
 import { UserRegisteredEventHandler } from '../Domain/Handler/UserRegisteredEventHandler'
 import { SubscriptionCancelledEventHandler } from '../Domain/Handler/SubscriptionCancelledEventHandler'
 import { ExitDiscountAppliedEventHandler } from '../Domain/Handler/ExitDiscountAppliedEventHandler'
-import { ServiceIdentifier } from '@standardnotes/domain-core'
 
 export class ContainerConfigLoader {
   async load(): Promise<Container> {
@@ -149,13 +148,7 @@ export class ContainerConfigLoader {
 
     container
       .bind<DomainEventMessageHandlerInterface>(TYPES.DomainEventMessageHandler)
-      .toConstantValue(
-        new SQSOpenTelemetryEventMessageHandler(
-          ServiceIdentifier.NAMES.SchedulerWorker,
-          eventHandlers,
-          container.get(TYPES.Logger),
-        ),
-      )
+      .toConstantValue(new SQSEventMessageHandler(eventHandlers, container.get(TYPES.Logger)))
     container
       .bind<DomainEventSubscriberFactoryInterface>(TYPES.DomainEventSubscriberFactory)
       .toConstantValue(

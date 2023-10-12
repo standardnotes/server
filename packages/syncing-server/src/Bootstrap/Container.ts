@@ -16,7 +16,6 @@ import {
   SNSOpenTelemetryDomainEventPublisher,
   SQSDomainEventSubscriberFactory,
   SQSEventMessageHandler,
-  SQSOpenTelemetryEventMessageHandler,
 } from '@standardnotes/domain-events-infra'
 import { DomainEventFactoryInterface } from '../Domain/Event/DomainEventFactoryInterface'
 import { DomainEventFactory } from '../Domain/Event/DomainEventFactory'
@@ -63,7 +62,6 @@ import {
   ControllerContainer,
   ControllerContainerInterface,
   MapperInterface,
-  ServiceIdentifier,
   SharedVaultUser,
 } from '@standardnotes/domain-core'
 import { BaseItemsController } from '../Infra/InversifyExpressUtils/Base/BaseItemsController'
@@ -1152,15 +1150,7 @@ export class ContainerConfigLoader {
     } else {
       container
         .bind<DomainEventMessageHandlerInterface>(TYPES.Sync_DomainEventMessageHandler)
-        .toConstantValue(
-          isConfiguredForHomeServerOrSelfHosting
-            ? new SQSEventMessageHandler(eventHandlers, container.get(TYPES.Sync_Logger))
-            : new SQSOpenTelemetryEventMessageHandler(
-                ServiceIdentifier.NAMES.SyncingServerWorker,
-                eventHandlers,
-                container.get(TYPES.Sync_Logger),
-              ),
-        )
+        .toConstantValue(new SQSEventMessageHandler(eventHandlers, container.get(TYPES.Sync_Logger)))
     }
 
     container

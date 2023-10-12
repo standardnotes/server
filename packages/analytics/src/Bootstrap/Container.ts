@@ -7,7 +7,7 @@ import {
   DomainEventPublisherInterface,
   DomainEventSubscriberFactoryInterface,
 } from '@standardnotes/domain-events'
-import { MapperInterface, ServiceIdentifier } from '@standardnotes/domain-core'
+import { MapperInterface } from '@standardnotes/domain-core'
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const Mixpanel = require('mixpanel')
 
@@ -18,7 +18,7 @@ import { DomainEventFactory } from '../Domain/Event/DomainEventFactory'
 import {
   SNSOpenTelemetryDomainEventPublisher,
   SQSDomainEventSubscriberFactory,
-  SQSOpenTelemetryEventMessageHandler,
+  SQSEventMessageHandler,
 } from '@standardnotes/domain-events-infra'
 import { Timer, TimerInterface } from '@standardnotes/time'
 import { PeriodKeyGeneratorInterface } from '../Domain/Time/PeriodKeyGeneratorInterface'
@@ -238,13 +238,7 @@ export class ContainerConfigLoader {
 
     container
       .bind<DomainEventMessageHandlerInterface>(TYPES.DomainEventMessageHandler)
-      .toConstantValue(
-        new SQSOpenTelemetryEventMessageHandler(
-          ServiceIdentifier.NAMES.AnalyticsWorker,
-          eventHandlers,
-          container.get(TYPES.Logger),
-        ),
-      )
+      .toConstantValue(new SQSEventMessageHandler(eventHandlers, container.get(TYPES.Logger)))
     container
       .bind<DomainEventSubscriberFactoryInterface>(TYPES.DomainEventSubscriberFactory)
       .toConstantValue(
