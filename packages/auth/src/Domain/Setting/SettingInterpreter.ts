@@ -6,16 +6,13 @@ import {
   MuteFailedBackupsEmailsOption,
   SettingName,
 } from '@standardnotes/settings'
-import { inject, injectable } from 'inversify'
 
-import TYPES from '../../Bootstrap/Types'
 import { DomainEventFactoryInterface } from '../Event/DomainEventFactoryInterface'
 import { User } from '../User/User'
 import { SettingInterpreterInterface } from './SettingInterpreterInterface'
 import { SettingRepositoryInterface } from './SettingRepositoryInterface'
 import { GetUserKeyParams } from '../UseCase/GetUserKeyParams/GetUserKeyParams'
 
-@injectable()
 export class SettingInterpreter implements SettingInterpreterInterface {
   private readonly emailSettingToSubscriptionRejectionLevelMap: Map<string, string> = new Map([
     [SettingName.NAMES.MuteFailedBackupsEmails, EmailLevel.LEVELS.FailedEmailBackup],
@@ -25,10 +22,10 @@ export class SettingInterpreter implements SettingInterpreterInterface {
   ])
 
   constructor(
-    @inject(TYPES.Auth_DomainEventPublisher) private domainEventPublisher: DomainEventPublisherInterface,
-    @inject(TYPES.Auth_DomainEventFactory) private domainEventFactory: DomainEventFactoryInterface,
-    @inject(TYPES.Auth_SettingRepository) private settingRepository: SettingRepositoryInterface,
-    @inject(TYPES.Auth_GetUserKeyParams) private getUserKeyParams: GetUserKeyParams,
+    private domainEventPublisher: DomainEventPublisherInterface,
+    private domainEventFactory: DomainEventFactoryInterface,
+    private settingRepository: SettingRepositoryInterface,
+    private getUserKeyParams: GetUserKeyParams,
   ) {}
 
   async interpretSettingUpdated(

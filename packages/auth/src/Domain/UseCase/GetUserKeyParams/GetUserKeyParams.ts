@@ -1,24 +1,22 @@
-import { inject, injectable } from 'inversify'
-import TYPES from '../../../Bootstrap/Types'
+import { KeyParamsData } from '@standardnotes/responses'
+import { Logger } from 'winston'
+import { Username, Uuid } from '@standardnotes/domain-core'
+
 import { KeyParamsFactoryInterface } from '../../User/KeyParamsFactoryInterface'
 import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'
 import { GetUserKeyParamsDTO } from './GetUserKeyParamsDTO'
 import { GetUserKeyParamsResponse } from './GetUserKeyParamsResponse'
 import { UseCaseInterface } from '../UseCaseInterface'
-import { Logger } from 'winston'
 import { User } from '../../User/User'
 import { PKCERepositoryInterface } from '../../User/PKCERepositoryInterface'
 import { GetUserKeyParamsDTOV2Challenged } from './GetUserKeyParamsDTOV2Challenged'
-import { KeyParamsData } from '@standardnotes/responses'
-import { Username, Uuid } from '@standardnotes/domain-core'
 
-@injectable()
 export class GetUserKeyParams implements UseCaseInterface {
   constructor(
-    @inject(TYPES.Auth_KeyParamsFactory) private keyParamsFactory: KeyParamsFactoryInterface,
-    @inject(TYPES.Auth_UserRepository) private userRepository: UserRepositoryInterface,
-    @inject(TYPES.Auth_PKCERepository) private pkceRepository: PKCERepositoryInterface,
-    @inject(TYPES.Auth_Logger) private logger: Logger,
+    private keyParamsFactory: KeyParamsFactoryInterface,
+    private userRepository: UserRepositoryInterface,
+    private pkceRepository: PKCERepositoryInterface,
+    private logger: Logger,
   ) {}
 
   async execute(dto: GetUserKeyParamsDTO): Promise<GetUserKeyParamsResponse> {

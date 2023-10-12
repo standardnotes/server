@@ -273,6 +273,8 @@ import { UserRemovedFromSharedVaultEventHandler } from '../Domain/Handler/UserRe
 import { DesignateSurvivor } from '../Domain/UseCase/DesignateSurvivor/DesignateSurvivor'
 import { UserDesignatedAsSurvivorInSharedVaultEventHandler } from '../Domain/Handler/UserDesignatedAsSurvivorInSharedVaultEventHandler'
 import { DisableEmailSettingBasedOnEmailSubscription } from '../Domain/UseCase/DisableEmailSettingBasedOnEmailSubscription/DisableEmailSettingBasedOnEmailSubscription'
+import { DomainEventFactoryInterface } from '../Domain/Event/DomainEventFactoryInterface'
+import { KeyParamsFactoryInterface } from '../Domain/User/KeyParamsFactoryInterface'
 
 export class ContainerConfigLoader {
   constructor(private mode: 'server' | 'worker' = 'server') {}
@@ -305,6 +307,8 @@ export class ContainerConfigLoader {
       })
     }
     container.bind<winston.Logger>(TYPES.Auth_Logger).toConstantValue(logger)
+
+    container.bind<CryptoNode>(TYPES.Auth_CryptoNode).toConstantValue(new CryptoNode())
 
     const appDataSource = new AppDataSource({ env, runMigrations: this.mode === 'server' })
     await appDataSource.initialize()
@@ -366,6 +370,17 @@ export class ContainerConfigLoader {
       const sqsClient = new SQSClient(sqsConfig)
       container.bind<SQSClient>(TYPES.Auth_SQS).toConstantValue(sqsClient)
     }
+
+    container
+      .bind<DomainEventPublisherInterface>(TYPES.Auth_DomainEventPublisher)
+      .toConstantValue(
+        isConfiguredForHomeServer
+          ? directCallDomainEventPublisher
+          : new SNSOpenTelemetryDomainEventPublisher(
+              container.get(TYPES.Auth_SNS),
+              container.get(TYPES.Auth_SNS_TOPIC_ARN),
+            ),
+      )
 
     // Mapping
     container
@@ -649,6 +664,9 @@ export class ContainerConfigLoader {
     }
 
     // Services
+    container
+      .bind<SelectorInterface<ProtocolVersion>>(TYPES.Auth_ProtocolVersionSelector)
+      .toConstantValue(new DeterministicSelector<ProtocolVersion>())
     container.bind<UAParser>(TYPES.Auth_DeviceDetector).toConstantValue(new UAParser())
     container.bind<SessionService>(TYPES.Auth_SessionService).to(SessionService)
     container.bind<AuthResponseFactory20161215>(TYPES.Auth_AuthResponseFactory20161215).to(AuthResponseFactory20161215)
@@ -691,43 +709,60 @@ export class ContainerConfigLoader {
     container.bind<DomainEventFactory>(TYPES.Auth_DomainEventFactory).to(DomainEventFactory)
     container.bind<AxiosInstance>(TYPES.Auth_HTTPClient).toConstantValue(axios.create())
     container.bind<CrypterInterface>(TYPES.Auth_Crypter).to(CrypterNode)
-    container.bind<SettingServiceInterface>(TYPES.Auth_SettingService).to(SettingService)
+    container
+      .bind<SettingsAssociationServiceInterface>(TYPES.Auth_SettingsAssociationService)
+      .to(SettingsAssociationService)
+    container.bind<SettingDecrypterInterface>(TYPES.Auth_SettingDecrypter).to(SettingDecrypter)
+
+    container
+      .bind<GetUserKeyParams>(TYPES.Auth_GetUserKeyParams)
+      .toConstantValue(
+        new GetUserKeyParams(
+          container.get<KeyParamsFactoryInterface>(TYPES.Auth_KeyParamsFactory),
+          container.get<UserRepositoryInterface>(TYPES.Auth_UserRepository),
+          container.get<PKCERepositoryInterface>(TYPES.Auth_PKCERepository),
+          container.get<winston.Logger>(TYPES.Auth_Logger),
+        ),
+      )
+    container
+      .bind<SettingInterpreterInterface>(TYPES.Auth_SettingInterpreter)
+      .toConstantValue(
+        new SettingInterpreter(
+          container.get<DomainEventPublisherInterface>(TYPES.Auth_DomainEventPublisher),
+          container.get<DomainEventFactoryInterface>(TYPES.Auth_DomainEventFactory),
+          container.get<SettingRepositoryInterface>(TYPES.Auth_SettingRepository),
+          container.get<GetUserKeyParams>(TYPES.Auth_GetUserKeyParams),
+        ),
+      )
+
+    container
+      .bind<SettingServiceInterface>(TYPES.Auth_SettingService)
+      .toConstantValue(
+        new SettingService(
+          container.get<SettingFactoryInterface>(TYPES.Auth_SettingFactory),
+          container.get<SettingRepositoryInterface>(TYPES.Auth_SettingRepository),
+          container.get<SettingsAssociationServiceInterface>(TYPES.Auth_SettingsAssociationService),
+          container.get<SettingInterpreterInterface>(TYPES.Auth_SettingInterpreter),
+          container.get<SettingDecrypterInterface>(TYPES.Auth_SettingDecrypter),
+          container.get<winston.Logger>(TYPES.Auth_Logger),
+        ),
+      )
     container
       .bind<SubscriptionSettingServiceInterface>(TYPES.Auth_SubscriptionSettingService)
       .to(SubscriptionSettingService)
     container.bind<OfflineSettingServiceInterface>(TYPES.Auth_OfflineSettingService).to(OfflineSettingService)
-    container.bind<CryptoNode>(TYPES.Auth_CryptoNode).toConstantValue(new CryptoNode())
     container.bind<ContentDecoderInterface>(TYPES.Auth_ContenDecoder).toConstantValue(new ContentDecoder())
     container.bind<ClientServiceInterface>(TYPES.Auth_WebSocketsClientService).to(WebSocketsClientService)
     container.bind<RoleServiceInterface>(TYPES.Auth_RoleService).to(RoleService)
     container.bind<RoleToSubscriptionMapInterface>(TYPES.Auth_RoleToSubscriptionMap).to(RoleToSubscriptionMap)
     container
-      .bind<SettingsAssociationServiceInterface>(TYPES.Auth_SettingsAssociationService)
-      .to(SettingsAssociationService)
-    container
       .bind<SubscriptionSettingsAssociationServiceInterface>(TYPES.Auth_SubscriptionSettingsAssociationService)
       .to(SubscriptionSettingsAssociationService)
     container.bind<FeatureServiceInterface>(TYPES.Auth_FeatureService).to(FeatureService)
-    container.bind<SettingInterpreterInterface>(TYPES.Auth_SettingInterpreter).to(SettingInterpreter)
-    container.bind<SettingDecrypterInterface>(TYPES.Auth_SettingDecrypter).to(SettingDecrypter)
-    container
-      .bind<SelectorInterface<ProtocolVersion>>(TYPES.Auth_ProtocolVersionSelector)
-      .toConstantValue(new DeterministicSelector<ProtocolVersion>())
     container
       .bind<SelectorInterface<boolean>>(TYPES.Auth_BooleanSelector)
       .toConstantValue(new DeterministicSelector<boolean>())
     container.bind<UserSubscriptionServiceInterface>(TYPES.Auth_UserSubscriptionService).to(UserSubscriptionService)
-
-    container
-      .bind<DomainEventPublisherInterface>(TYPES.Auth_DomainEventPublisher)
-      .toConstantValue(
-        isConfiguredForHomeServer
-          ? directCallDomainEventPublisher
-          : new SNSOpenTelemetryDomainEventPublisher(
-              container.get(TYPES.Auth_SNS),
-              container.get(TYPES.Auth_SNS_TOPIC_ARN),
-            ),
-      )
 
     // Middleware
     container.bind<SessionMiddleware>(TYPES.Auth_SessionMiddleware).to(SessionMiddleware)
@@ -881,7 +916,6 @@ export class ContainerConfigLoader {
           container.get(TYPES.Auth_SettingService),
         ),
       )
-    container.bind<GetUserKeyParams>(TYPES.Auth_GetUserKeyParams).to(GetUserKeyParams)
     container.bind<UpdateUser>(TYPES.Auth_UpdateUser).to(UpdateUser)
     container.bind<Register>(TYPES.Auth_Register).to(Register)
     container.bind<GetActiveSessionsForUser>(TYPES.Auth_GetActiveSessionsForUser).to(GetActiveSessionsForUser)
