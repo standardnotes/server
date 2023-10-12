@@ -61,7 +61,10 @@ export class OpenTelemetrySDK implements OpenTelemetrySDKInterface {
         new AwsInstrumentation({
           suppressInternalInstrumentation: true,
         }),
-        new TypeormInstrumentation(),
+        new TypeormInstrumentation({
+          collectParameters: false,
+          suppressInternalInstrumentation: true,
+        }),
         winstonInstrumentation,
         new IORedisInstrumentation(),
       ],
