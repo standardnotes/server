@@ -3,7 +3,7 @@ import 'reflect-metadata'
 import { OpenTelemetrySDK } from '@standardnotes/domain-events-infra'
 import { ServiceIdentifier } from '@standardnotes/domain-core'
 
-const sdk = new OpenTelemetrySDK(ServiceIdentifier.NAMES.SchedulerWorker)
+const sdk = new OpenTelemetrySDK({ serviceName: ServiceIdentifier.NAMES.SchedulerWorker })
 sdk.start()
 
 import { Logger } from 'winston'

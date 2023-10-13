@@ -18,8 +18,11 @@ export class OpenTelemetrySDK implements OpenTelemetrySDKInterface {
   private declare sdk: OpenTelemetrySDKNode.NodeSDK
 
   constructor(
-    private serviceName: string,
-    private spanRatio?: number,
+    private options: {
+      serviceName: string
+      spanRatio?: number
+      metricExportIntervalMillis?: number
+    },
   ) {
     this.build()
   }
@@ -27,24 +30,28 @@ export class OpenTelemetrySDK implements OpenTelemetrySDKInterface {
   build(): void {
     const otResource = OpenTelemetrySDKNode.resources.Resource.default().merge(
       new OpenTelemetrySDKNode.resources.Resource({
-        [SemanticResourceAttributes.SERVICE_NAME]: this.serviceName,
+        [SemanticResourceAttributes.SERVICE_NAME]: this.options.serviceName,
       }),
     )
+
     const traceExporter = new OTLPTraceExporter()
+
     const spanProcessor = new OpenTelemetrySDKNode.tracing.BatchSpanProcessor(traceExporter)
+
+    const metricExportIntervalMillis = this.options.metricExportIntervalMillis ?? 300_000
     const metricReader = new OpenTelemetrySDKNode.metrics.PeriodicExportingMetricReader({
-      exportIntervalMillis: 1_000,
+      exportIntervalMillis: metricExportIntervalMillis,
       exporter: new OTLPMetricExporter(),
     })
 
-    const serviceName = this.serviceName
+    const serviceName = this.options.serviceName
     const winstonInstrumentation = new WinstonInstrumentation({
       logHook: (_span, record) => {
         record['resource.service.name'] = serviceName
       },
     })
 
-    const ratio = this.spanRatio ?? 0.01
+    const ratio = this.options.spanRatio ?? 0.01
 
     this.sdk = new OpenTelemetrySDKNode.NodeSDK({
       sampler: new OpenTelemetrySDKNode.tracing.TraceIdRatioBasedSampler(ratio),

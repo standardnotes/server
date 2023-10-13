@@ -3,7 +3,7 @@ import 'reflect-metadata'
 import { OpenTelemetrySDK } from '@standardnotes/domain-events-infra'
 import { ServiceIdentifier } from '@standardnotes/domain-core'
 
-const sdk = new OpenTelemetrySDK(ServiceIdentifier.NAMES.WebsocketsWorker)
+const sdk = new OpenTelemetrySDK({ serviceName: ServiceIdentifier.NAMES.WebsocketsWorker })
 sdk.start()
 
 import { Logger } from 'winston'
