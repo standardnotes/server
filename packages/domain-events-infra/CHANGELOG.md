@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.19.7](https://github.com/standardnotes/server/compare/@standardnotes/domain-events-infra@1.19.6...@standardnotes/domain-events-infra@1.19.7) (2023-10-13)
+
+### Bug Fixes
+
+* reduce the amount of metrics gathered in telemetery ([32fe8d0](https://github.com/standardnotes/server/commit/32fe8d0a8523d6e1875cd0814c0cbdf27d8df7b3))
+
 ## [1.19.6](https://github.com/standardnotes/server/compare/@standardnotes/domain-events-infra@1.19.5...@standardnotes/domain-events-infra@1.19.6) (2023-10-12)
 
 **Note:** Version bump only for package @standardnotes/domain-events-infra

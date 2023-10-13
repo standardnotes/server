@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.79.12](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.79.11...@standardnotes/api-gateway@1.79.12) (2023-10-13)
+
+### Bug Fixes
+
+* reduce the amount of metrics gathered in telemetery ([32fe8d0](https://github.com/standardnotes/api-gateway/commit/32fe8d0a8523d6e1875cd0814c0cbdf27d8df7b3))
+
 ## [1.79.11](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.79.10...@standardnotes/api-gateway@1.79.11) (2023-10-12)
 
 ### Bug Fixes
