@@ -43,7 +43,8 @@ const requestTransition = async (
     `[TRANSITION ${timestamp}] Found ${users.length} users created between ${startDateString} and ${endDateString}`,
   )
 
-  let usersTriggered = 0
+  let itemTransitionsTriggered = 0
+  let revisionTransitionsTriggered = 0
   const forceRun = forceRunParam === 'true'
   for (const user of users) {
     const itemsTransitionStatus = await transitionStatusRepository.getStatus(user.uuid, 'items')
@@ -60,14 +61,15 @@ const requestTransition = async (
       continue
     }
 
-    let wasTransitionRequested = false
+    logger.info(
+      `[TRANSITION ${timestamp}] Transition status for user ${user.uuid} - items status: ${itemsTransitionStatus?.value}, revisions status: ${revisionsTransitionStatus?.value}, has transition role: ${userHasTransitionRole}`,
+    )
 
     if (
       itemsTransitionStatus === null ||
       itemsTransitionStatus.value === TransitionStatus.STATUSES.Failed ||
       (itemsTransitionStatus.value === TransitionStatus.STATUSES.InProgress && forceRun)
     ) {
-      wasTransitionRequested = true
       await transitionStatusRepository.remove(user.uuid, 'items')
 
       await domainEventPublisher.publish(
@@ -77,6 +79,8 @@ const requestTransition = async (
           timestamp,
         }),
       )
+
+      itemTransitionsTriggered++
     }
 
     if (
@@ -84,7 +88,6 @@ const requestTransition = async (
       revisionsTransitionStatus.value === TransitionStatus.STATUSES.Failed ||
       (revisionsTransitionStatus.value === TransitionStatus.STATUSES.InProgress && forceRun)
     ) {
-      wasTransitionRequested = true
       await transitionStatusRepository.remove(user.uuid, 'revisions')
 
       await domainEventPublisher.publish(
@@ -94,19 +97,13 @@ const requestTransition = async (
           timestamp,
         }),
       )
-    }
 
-    usersTriggered += 1
-
-    if (wasTransitionRequested) {
-      logger.info(
-        `[TRANSITION ${timestamp}] Transition requested for user ${user.uuid} - items status: ${itemsTransitionStatus?.value}, revisions status: ${revisionsTransitionStatus?.value}, has transition role: ${userHasTransitionRole}`,
-      )
+      revisionTransitionsTriggered++
     }
   }
 
   logger.info(
-    `[TRANSITION ${timestamp}] Triggered transition for ${usersTriggered} users created between ${startDateString} and ${endDateString}`,
+    `[TRANSITION ${timestamp}] Triggered ${itemTransitionsTriggered} item transitions and ${revisionTransitionsTriggered} revision transitions for users created between ${startDateString} and ${endDateString}`,
   )
 }
 
