@@ -29,7 +29,6 @@ jobs:
       matrix:
         db_type: [mysql, sqlite]
         cache_type: [redis, memory]
-        secondary_db_enabled: [true, false]
 
     runs-on: ubuntu-latest
 
@@ -51,14 +50,6 @@ jobs:
           MYSQL_DATABASE: standardnotes
           MYSQL_USER: standardnotes
           MYSQL_PASSWORD: standardnotes
-      secondary_db:
-        image: mongo:5.0
-        ports:
-          - 27017:27017
-        env:
-          MONGO_INITDB_ROOT_USERNAME: standardnotes
-          MONGO_INITDB_ROOT_PASSWORD: standardnotes
-          MONGO_INITDB_DATABASE: standardnotes
 
     steps:
     - uses: actions/checkout@v3
@@ -98,12 +89,6 @@ jobs:
         echo "DB_DEBUG_LEVEL=all" >> packages/home-server/.env
         echo "REDIS_URL=redis://localhost:6379" >> packages/home-server/.env
         echo "CACHE_TYPE=${{ matrix.cache_type }}" >> packages/home-server/.env
-        echo "SECONDARY_DB_ENABLED=${{ matrix.secondary_db_enabled }}" >> packages/home-server/.env
-        echo "MONGO_HOST=localhost" >> packages/home-server/.env
-        echo "MONGO_PORT=27017" >> packages/home-server/.env
-        echo "MONGO_DATABASE=standardnotes" >> packages/home-server/.env
-        echo "MONGO_USERNAME=standardnotes" >> packages/home-server/.env
-        echo "MONGO_PASSWORD=standardnotes" >> packages/home-server/.env
         echo "FILES_SERVER_URL=http://localhost:3123" >> packages/home-server/.env
         echo "E2E_TESTING=true" >> packages/home-server/.env
 
@@ -122,7 +107,7 @@ jobs:
       if: ${{ failure() }}
       uses: actions/upload-artifact@v3
       with:
-        name: home-server-failure-logs-${{ inputs.suite }}-${{ matrix.db_type }}-${{ matrix.cache_type }}-${{ matrix.secondary_db_enabled }}
+        name: home-server-failure-logs-${{ inputs.suite }}-${{ matrix.db_type }}-${{ matrix.cache_type }}
         retention-days: 5
         path: |
           logs/output.log

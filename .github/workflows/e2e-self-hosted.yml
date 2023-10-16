@@ -26,8 +26,6 @@ jobs:
     name: (Self Hosting) E2E Test Suite
     strategy:
       fail-fast: false
-      matrix:
-        secondary_db_enabled: [true, false]
     runs-on: ubuntu-latest
 
     services:
@@ -53,7 +51,6 @@ jobs:
       env:
         DB_TYPE: mysql
         CACHE_TYPE: redis
-        SECONDARY_DB_ENABLED: ${{ matrix.secondary_db_enabled }}
 
     - name: Wait for server to start
       run: docker/is-available.sh http://localhost:3123 $(pwd)/logs
@@ -65,7 +62,7 @@ jobs:
       if: ${{ failure() }}
       uses: actions/upload-artifact@v3
       with:
-        name: self-hosted-failure-logs-${{ inputs.suite }}-${{ matrix.secondary_db_enabled }}
+        name: self-hosted-failure-logs-${{ inputs.suite }}
         retention-days: 5
         path: |
           logs/*.err
