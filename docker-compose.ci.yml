@@ -22,7 +22,6 @@ services:
     environment:
       DB_TYPE: "${DB_TYPE}"
       CACHE_TYPE: "${CACHE_TYPE}"
-      SECONDARY_DB_ENABLED: "${SECONDARY_DB_ENABLED}"
     container_name: server-ci
     ports:
       - 3123:3000
@@ -58,21 +57,6 @@ services:
     volumes:
       - ./data/mysql:/var/lib/mysql
       - ./data/import:/docker-entrypoint-initdb.d
-    networks:
-      - standardnotes_self_hosted
-
-  secondary_db:
-    image: mongo:5.0
-    container_name: secondary_db-ci
-    ports:
-      - 27017
-    restart: unless-stopped
-    volumes:
-      - ./data/mongo:/data/db
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: standardnotes
-      MONGO_INITDB_ROOT_PASSWORD: standardnotes
-      MONGO_INITDB_DATABASE: standardnotes
     networks:
       - standardnotes_self_hosted
 
