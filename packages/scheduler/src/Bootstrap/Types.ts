@@ -25,7 +25,7 @@ const TYPES = {
   ExitDiscountAppliedEventHandler: Symbol.for('ExitDiscountAppliedEventHandler'),
   // Services
   DomainEventPublisher: Symbol.for('DomainEventPublisher'),
-  DomainEventSubscriberFactory: Symbol.for('DomainEventSubscriberFactory'),
+  DomainEventSubscriber: Symbol.for('DomainEventSubscriber'),
   DomainEventFactory: Symbol.for('DomainEventFactory'),
   DomainEventMessageHandler: Symbol.for('DomainEventMessageHandler'),
   Timer: Symbol.for('Timer'),

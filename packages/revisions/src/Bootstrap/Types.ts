@@ -65,7 +65,7 @@ const TYPES = {
   Revisions_SharedVaultRemovedEventHandler: Symbol.for('Revisions_SharedVaultRemovedEventHandler'),
   // Services
   Revisions_CrossServiceTokenDecoder: Symbol.for('Revisions_CrossServiceTokenDecoder'),
-  Revisions_DomainEventSubscriberFactory: Symbol.for('Revisions_DomainEventSubscriberFactory'),
+  Revisions_DomainEventSubscriber: Symbol.for('Revisions_DomainEventSubscriber'),
   Revisions_DomainEventMessageHandler: Symbol.for('Revisions_DomainEventMessageHandler'),
   Revisions_DomainEventPublisher: Symbol.for('Revisions_DomainEventPublisher'),
   Revisions_DomainEventFactory: Symbol.for('Revisions_DomainEventFactory'),

@@ -7,7 +7,7 @@ import {
   DomainEventHandlerInterface,
   DomainEventMessageHandlerInterface,
   DomainEventPublisherInterface,
-  DomainEventSubscriberFactoryInterface,
+  DomainEventSubscriberInterface,
 } from '@standardnotes/domain-events'
 
 import { Env } from './Env'
@@ -16,8 +16,8 @@ import { AppDataSource } from './DataSource'
 import { DomainEventFactory } from '../Domain/Event/DomainEventFactory'
 import {
   SNSOpenTelemetryDomainEventPublisher,
-  SQSDomainEventSubscriberFactory,
   SQSEventMessageHandler,
+  SQSOpenTelemetryDomainEventSubscriber,
 } from '@standardnotes/domain-events-infra'
 import { Timer, TimerInterface } from '@standardnotes/time'
 import { PredicateRepositoryInterface } from '../Domain/Predicate/PredicateRepositoryInterface'
@@ -35,6 +35,7 @@ import { VerifyPredicates } from '../Domain/UseCase/VerifyPredicates/VerifyPredi
 import { UserRegisteredEventHandler } from '../Domain/Handler/UserRegisteredEventHandler'
 import { SubscriptionCancelledEventHandler } from '../Domain/Handler/SubscriptionCancelledEventHandler'
 import { ExitDiscountAppliedEventHandler } from '../Domain/Handler/ExitDiscountAppliedEventHandler'
+import { ServiceIdentifier } from '@standardnotes/domain-core'
 
 export class ContainerConfigLoader {
   async load(): Promise<Container> {
@@ -150,12 +151,14 @@ export class ContainerConfigLoader {
       .bind<DomainEventMessageHandlerInterface>(TYPES.DomainEventMessageHandler)
       .toConstantValue(new SQSEventMessageHandler(eventHandlers, container.get(TYPES.Logger)))
     container
-      .bind<DomainEventSubscriberFactoryInterface>(TYPES.DomainEventSubscriberFactory)
+      .bind<DomainEventSubscriberInterface>(TYPES.DomainEventSubscriber)
       .toConstantValue(
-        new SQSDomainEventSubscriberFactory(
-          container.get(TYPES.SQS),
-          container.get(TYPES.SQS_QUEUE_URL),
-          container.get(TYPES.DomainEventMessageHandler),
+        new SQSOpenTelemetryDomainEventSubscriber(
+          ServiceIdentifier.NAMES.SchedulerWorker,
+          container.get<SQSClient>(TYPES.SQS),
+          container.get<string>(TYPES.SQS_QUEUE_URL),
+          container.get<DomainEventMessageHandlerInterface>(TYPES.DomainEventMessageHandler),
+          container.get<winston.Logger>(TYPES.Logger),
         ),
       )
 

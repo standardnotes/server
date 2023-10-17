@@ -27,7 +27,7 @@ const TYPES = {
   // Services
   CrossServiceTokenDecoder: Symbol.for('CrossServiceTokenDecoder'),
   WebSocketConnectionTokenEncoder: Symbol.for('WebSocketConnectionTokenEncoder'),
-  DomainEventSubscriberFactory: Symbol.for('DomainEventSubscriberFactory'),
+  DomainEventSubscriber: Symbol.for('DomainEventSubscriber'),
   DomainEventMessageHandler: Symbol.for('DomainEventMessageHandler'),
   HTTPClient: Symbol.for('HTTPClient'),
   WebSocketsClientMessenger: Symbol.for('WebSocketsClientMessenger'),

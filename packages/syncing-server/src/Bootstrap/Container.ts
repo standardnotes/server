@@ -14,8 +14,8 @@ import {
   DirectCallDomainEventPublisher,
   DirectCallEventMessageHandler,
   SNSOpenTelemetryDomainEventPublisher,
-  SQSDomainEventSubscriberFactory,
   SQSEventMessageHandler,
+  SQSOpenTelemetryDomainEventSubscriber,
 } from '@standardnotes/domain-events-infra'
 import { DomainEventFactoryInterface } from '../Domain/Event/DomainEventFactoryInterface'
 import { DomainEventFactory } from '../Domain/Event/DomainEventFactory'
@@ -43,8 +43,8 @@ import { ContentDecoder, ContentDecoderInterface } from '@standardnotes/common'
 import {
   DomainEventMessageHandlerInterface,
   DomainEventHandlerInterface,
-  DomainEventSubscriberFactoryInterface,
   DomainEventPublisherInterface,
+  DomainEventSubscriberInterface,
 } from '@standardnotes/domain-events'
 import axios, { AxiosInstance } from 'axios'
 import { ExtensionsHttpService } from '../Domain/Extension/ExtensionsHttpService'
@@ -60,6 +60,7 @@ import {
   ControllerContainer,
   ControllerContainerInterface,
   MapperInterface,
+  ServiceIdentifier,
   SharedVaultUser,
 } from '@standardnotes/domain-core'
 import { BaseItemsController } from '../Infra/InversifyExpressUtils/Base/BaseItemsController'
@@ -1140,14 +1141,16 @@ export class ContainerConfigLoader {
     }
 
     container
-      .bind<DomainEventSubscriberFactoryInterface>(TYPES.Sync_DomainEventSubscriberFactory)
-      .toDynamicValue((context: interfaces.Context) => {
-        return new SQSDomainEventSubscriberFactory(
-          context.container.get(TYPES.Sync_SQS),
-          context.container.get(TYPES.Sync_SQS_QUEUE_URL),
-          context.container.get(TYPES.Sync_DomainEventMessageHandler),
-        )
-      })
+      .bind<DomainEventSubscriberInterface>(TYPES.Sync_DomainEventSubscriber)
+      .toConstantValue(
+        new SQSOpenTelemetryDomainEventSubscriber(
+          ServiceIdentifier.NAMES.SyncingServerWorker,
+          container.get<SQSClient>(TYPES.Sync_SQS),
+          container.get<string>(TYPES.Sync_SQS_QUEUE_URL),
+          container.get<DomainEventMessageHandlerInterface>(TYPES.Sync_DomainEventMessageHandler),
+          container.get<Logger>(TYPES.Sync_Logger),
+        ),
+      )
 
     container
       .bind<ControllerContainerInterface>(TYPES.Sync_ControllerContainer)

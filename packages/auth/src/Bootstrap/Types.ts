@@ -218,7 +218,7 @@ const TYPES = {
   Auth_WebSocketConnectionTokenDecoder: Symbol.for('Auth_WebSocketConnectionTokenDecoder'),
   Auth_AuthenticationMethodResolver: Symbol.for('Auth_AuthenticationMethodResolver'),
   Auth_DomainEventPublisher: Symbol.for('Auth_DomainEventPublisher'),
-  Auth_DomainEventSubscriberFactory: Symbol.for('Auth_DomainEventSubscriberFactory'),
+  Auth_DomainEventSubscriber: Symbol.for('Auth_DomainEventSubscriber'),
   Auth_DomainEventFactory: Symbol.for('Auth_DomainEventFactory'),
   Auth_DomainEventMessageHandler: Symbol.for('Auth_DomainEventMessageHandler'),
   Auth_HTTPClient: Symbol.for('Auth_HTTPClient'),

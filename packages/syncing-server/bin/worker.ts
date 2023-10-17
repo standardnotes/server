@@ -10,7 +10,7 @@ import { Logger } from 'winston'
 
 import TYPES from '../src/Bootstrap/Types'
 import { Env } from '../src/Bootstrap/Env'
-import { DomainEventSubscriberFactoryInterface } from '@standardnotes/domain-events'
+import { DomainEventSubscriberInterface } from '@standardnotes/domain-events'
 import { ContainerConfigLoader } from '../src/Bootstrap/Container'
 
 const container = new ContainerConfigLoader('worker')
@@ -20,11 +20,9 @@ void container.load().then((container) => {
 
   const logger: Logger = container.get(TYPES.Sync_Logger)
 
-  const subscriberFactory: DomainEventSubscriberFactoryInterface = container.get(
-    TYPES.Sync_DomainEventSubscriberFactory,
-  )
-
   logger.info('Starting worker...')
 
-  subscriberFactory.create().start()
+  const subscriber = container.get<DomainEventSubscriberInterface>(TYPES.Sync_DomainEventSubscriber)
+
+  subscriber.start()
 })

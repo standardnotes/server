@@ -9,7 +9,7 @@ import { Container } from 'inversify'
 import {
   DomainEventHandlerInterface,
   DomainEventMessageHandlerInterface,
-  DomainEventSubscriberFactoryInterface,
+  DomainEventSubscriberInterface,
 } from '@standardnotes/domain-events'
 import { Env } from './Env'
 import TYPES from './Types'
@@ -18,7 +18,7 @@ import { RedisWebSocketsConnectionRepository } from '../Infra/Redis/RedisWebSock
 import { AddWebSocketsConnection } from '../Domain/UseCase/AddWebSocketsConnection/AddWebSocketsConnection'
 import { RemoveWebSocketsConnection } from '../Domain/UseCase/RemoveWebSocketsConnection/RemoveWebSocketsConnection'
 import { WebSocketsClientMessenger } from '../Infra/WebSockets/WebSocketsClientMessenger'
-import { SQSDomainEventSubscriberFactory, SQSEventMessageHandler } from '@standardnotes/domain-events-infra'
+import { SQSEventMessageHandler, SQSOpenTelemetryDomainEventSubscriber } from '@standardnotes/domain-events-infra'
 import { ApiGatewayAuthMiddleware } from '../Controller/ApiGatewayAuthMiddleware'
 
 import {
@@ -34,6 +34,7 @@ import { WebSocketsController } from '../Controller/WebSocketsController'
 import { WebSocketServerInterface } from '@standardnotes/api'
 import { ClientMessengerInterface } from '../Client/ClientMessengerInterface'
 import { WebSocketMessageRequestedEventHandler } from '../Domain/Handler/WebSocketMessageRequestedEventHandler'
+import { ServiceIdentifier } from '@standardnotes/domain-core'
 
 export class ContainerConfigLoader {
   async load(): Promise<Container> {
@@ -142,12 +143,14 @@ export class ContainerConfigLoader {
       .bind<DomainEventMessageHandlerInterface>(TYPES.DomainEventMessageHandler)
       .toConstantValue(new SQSEventMessageHandler(eventHandlers, container.get(TYPES.Logger)))
     container
-      .bind<DomainEventSubscriberFactoryInterface>(TYPES.DomainEventSubscriberFactory)
+      .bind<DomainEventSubscriberInterface>(TYPES.DomainEventSubscriber)
       .toConstantValue(
-        new SQSDomainEventSubscriberFactory(
-          container.get(TYPES.SQS),
-          container.get(TYPES.SQS_QUEUE_URL),
-          container.get(TYPES.DomainEventMessageHandler),
+        new SQSOpenTelemetryDomainEventSubscriber(
+          ServiceIdentifier.NAMES.WebsocketsWorker,
+          container.get<SQSClient>(TYPES.SQS),
+          container.get<string>(TYPES.SQS_QUEUE_URL),
+          container.get<DomainEventMessageHandlerInterface>(TYPES.DomainEventMessageHandler),
+          container.get<winston.Logger>(TYPES.Logger),
         ),
       )
 

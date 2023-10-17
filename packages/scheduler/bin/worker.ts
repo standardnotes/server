@@ -7,7 +7,7 @@ const sdk = new OpenTelemetrySDK({ serviceName: ServiceIdentifier.NAMES.Schedule
 sdk.start()
 
 import { Logger } from 'winston'
-import { DomainEventSubscriberFactoryInterface } from '@standardnotes/domain-events'
+import { DomainEventSubscriberInterface } from '@standardnotes/domain-events'
 import * as dayjs from 'dayjs'
 import * as utc from 'dayjs/plugin/utc'
 
@@ -26,6 +26,7 @@ void container.load().then((container) => {
 
   logger.info('Starting worker...')
 
-  const subscriberFactory: DomainEventSubscriberFactoryInterface = container.get(TYPES.DomainEventSubscriberFactory)
-  subscriberFactory.create().start()
+  const subscriber = container.get<DomainEventSubscriberInterface>(TYPES.DomainEventSubscriber)
+
+  subscriber.start()
 })

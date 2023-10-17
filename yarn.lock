@@ -4438,7 +4438,7 @@ __metadata:
     opentelemetry-instrumentation-typeorm: "npm:^0.39.1"
     prettier: "npm:^3.0.3"
     reflect-metadata: "npm:^0.1.13"
-    sqs-consumer: "npm:^7.3.0"
+    sqs-consumer: "npm:7.4.0-canary.0"
     ts-jest: "npm:^29.1.0"
     typescript: "npm:^5.0.4"
     winston: "npm:^3.8.1"
@@ -12735,15 +12735,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sqs-consumer@npm:^7.3.0":
-  version: 7.3.0
-  resolution: "sqs-consumer@npm:7.3.0"
+"sqs-consumer@npm:7.4.0-canary.0":
+  version: 7.4.0-canary.0
+  resolution: "sqs-consumer@npm:7.4.0-canary.0"
   dependencies:
     "@aws-sdk/client-sqs": "npm:^3.363.0"
     debug: "npm:^4.3.4"
   peerDependencies:
     "@aws-sdk/client-sqs": ^3.363.0
-  checksum: 367ea2a6f3ea5da331efbb7052e643f1657aafa138c8404f336389effbbaba734858bd4daf29c86ab0b4c8a015863ddac6b19482302324f46d45a38fae731f54
+  checksum: 7ecff41c977775f5e61e9f58f79a86b3939bd9ade9cecd7532d8344c454ec059267645c87544d38dbb4c4403e65c908d51c69aee3776c009310c3ba79c1172c7
   languageName: node
   linkType: hard
 

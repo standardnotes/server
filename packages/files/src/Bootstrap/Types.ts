@@ -52,7 +52,7 @@ const TYPES = {
 
   // Handlers
   Files_DomainEventMessageHandler: Symbol.for('Files_DomainEventMessageHandler'),
-  Files_DomainEventSubscriberFactory: Symbol.for('Files_DomainEventSubscriberFactory'),
+  Files_DomainEventSubscriber: Symbol.for('Files_DomainEventSubscriber'),
   Files_AccountDeletionRequestedEventHandler: Symbol.for('Files_AccountDeletionRequestedEventHandler'),
   Files_SharedSubscriptionInvitationCanceledEventHandler: Symbol.for(
     'Files_SharedSubscriptionInvitationCanceledEventHandler',

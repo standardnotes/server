@@ -1,4 +1,9 @@
-import { ControllerContainer, ControllerContainerInterface, MapperInterface } from '@standardnotes/domain-core'
+import {
+  ControllerContainer,
+  ControllerContainerInterface,
+  MapperInterface,
+  ServiceIdentifier,
+} from '@standardnotes/domain-core'
 import Redis from 'ioredis'
 import { Container, interfaces } from 'inversify'
 import { MongoRepository, Repository } from 'typeorm'
@@ -26,15 +31,15 @@ import { SQSClient, SQSClientConfig } from '@aws-sdk/client-sqs'
 import {
   DomainEventMessageHandlerInterface,
   DomainEventHandlerInterface,
-  DomainEventSubscriberFactoryInterface,
   DomainEventPublisherInterface,
+  DomainEventSubscriberInterface,
 } from '@standardnotes/domain-events'
 import {
   SQSEventMessageHandler,
-  SQSDomainEventSubscriberFactory,
   DirectCallEventMessageHandler,
   DirectCallDomainEventPublisher,
   SNSOpenTelemetryDomainEventPublisher,
+  SQSOpenTelemetryDomainEventSubscriber,
 } from '@standardnotes/domain-events-infra'
 import { DumpRepositoryInterface } from '../Domain/Dump/DumpRepositoryInterface'
 import { AccountDeletionRequestedEventHandler } from '../Domain/Handler/AccountDeletionRequestedEventHandler'
@@ -507,14 +512,16 @@ export class ContainerConfigLoader {
         .toConstantValue(new SQSEventMessageHandler(eventHandlers, container.get(TYPES.Revisions_Logger)))
 
       container
-        .bind<DomainEventSubscriberFactoryInterface>(TYPES.Revisions_DomainEventSubscriberFactory)
-        .toDynamicValue((context: interfaces.Context) => {
-          return new SQSDomainEventSubscriberFactory(
-            context.container.get(TYPES.Revisions_SQS),
-            context.container.get(TYPES.Revisions_SQS_QUEUE_URL),
-            context.container.get(TYPES.Revisions_DomainEventMessageHandler),
-          )
-        })
+        .bind<DomainEventSubscriberInterface>(TYPES.Revisions_DomainEventSubscriber)
+        .toConstantValue(
+          new SQSOpenTelemetryDomainEventSubscriber(
+            ServiceIdentifier.NAMES.RevisionsWorker,
+            container.get<SQSClient>(TYPES.Revisions_SQS),
+            container.get<string>(TYPES.Revisions_SQS_QUEUE_URL),
+            container.get<DomainEventMessageHandlerInterface>(TYPES.Revisions_DomainEventMessageHandler),
+            container.get<winston.Logger>(TYPES.Revisions_Logger),
+          ),
+        )
     }
 
     // Inversify Controllers

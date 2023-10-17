@@ -17,8 +17,8 @@ import {
   DirectCallDomainEventPublisher,
   DirectCallEventMessageHandler,
   SNSOpenTelemetryDomainEventPublisher,
-  SQSDomainEventSubscriberFactory,
   SQSEventMessageHandler,
+  SQSOpenTelemetryDomainEventSubscriber,
 } from '@standardnotes/domain-events-infra'
 import { StreamDownloadFile } from '../Domain/UseCase/StreamDownloadFile/StreamDownloadFile'
 import { FileDownloaderInterface } from '../Domain/Services/FileDownloaderInterface'
@@ -40,7 +40,7 @@ import {
   DomainEventHandlerInterface,
   DomainEventMessageHandlerInterface,
   DomainEventPublisherInterface,
-  DomainEventSubscriberFactoryInterface,
+  DomainEventSubscriberInterface,
 } from '@standardnotes/domain-events'
 import { MarkFilesToBeRemoved } from '../Domain/UseCase/MarkFilesToBeRemoved/MarkFilesToBeRemoved'
 import { AccountDeletionRequestedEventHandler } from '../Domain/Handler/AccountDeletionRequestedEventHandler'
@@ -52,6 +52,7 @@ import { S3FileMover } from '../Infra/S3/S3FileMover'
 import { FSFileMover } from '../Infra/FS/FSFileMover'
 import { MoveFile } from '../Domain/UseCase/MoveFile/MoveFile'
 import { SharedVaultValetTokenAuthMiddleware } from '../Infra/InversifyExpress/Middleware/SharedVaultValetTokenAuthMiddleware'
+import { ServiceIdentifier } from '@standardnotes/domain-core'
 
 export class ContainerConfigLoader {
   async load(configuration?: {
@@ -298,12 +299,14 @@ export class ContainerConfigLoader {
         .bind<DomainEventMessageHandlerInterface>(TYPES.Files_DomainEventMessageHandler)
         .toConstantValue(new SQSEventMessageHandler(eventHandlers, container.get(TYPES.Files_Logger)))
       container
-        .bind<DomainEventSubscriberFactoryInterface>(TYPES.Files_DomainEventSubscriberFactory)
+        .bind<DomainEventSubscriberInterface>(TYPES.Files_DomainEventSubscriber)
         .toConstantValue(
-          new SQSDomainEventSubscriberFactory(
-            container.get(TYPES.Files_SQS),
-            container.get(TYPES.Files_SQS_QUEUE_URL),
-            container.get(TYPES.Files_DomainEventMessageHandler),
+          new SQSOpenTelemetryDomainEventSubscriber(
+            ServiceIdentifier.NAMES.FilesWorker,
+            container.get<SQSClient>(TYPES.Files_SQS),
+            container.get<string>(TYPES.Files_SQS_QUEUE_URL),
+            container.get<DomainEventMessageHandlerInterface>(TYPES.Files_DomainEventMessageHandler),
+            container.get<winston.Logger>(TYPES.Files_Logger),
           ),
         )
     }

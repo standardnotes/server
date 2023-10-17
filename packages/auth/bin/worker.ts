@@ -11,7 +11,7 @@ import { Logger } from 'winston'
 import { ContainerConfigLoader } from '../src/Bootstrap/Container'
 import TYPES from '../src/Bootstrap/Types'
 import { Env } from '../src/Bootstrap/Env'
-import { DomainEventSubscriberFactoryInterface } from '@standardnotes/domain-events'
+import { DomainEventSubscriberInterface } from '@standardnotes/domain-events'
 import * as dayjs from 'dayjs'
 import * as utc from 'dayjs/plugin/utc'
 
@@ -26,8 +26,7 @@ void container.load().then((container) => {
 
   logger.info('Starting worker...')
 
-  const subscriberFactory: DomainEventSubscriberFactoryInterface = container.get(
-    TYPES.Auth_DomainEventSubscriberFactory,
-  )
-  subscriberFactory.create().start()
+  const subscriber = container.get<DomainEventSubscriberInterface>(TYPES.Auth_DomainEventSubscriber)
+
+  subscriber.start()
 })

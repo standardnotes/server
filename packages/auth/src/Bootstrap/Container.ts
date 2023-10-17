@@ -7,7 +7,7 @@ import {
   DomainEventHandlerInterface,
   DomainEventMessageHandlerInterface,
   DomainEventPublisherInterface,
-  DomainEventSubscriberFactoryInterface,
+  DomainEventSubscriberInterface,
 } from '@standardnotes/domain-events'
 import { TimerInterface, Timer } from '@standardnotes/time'
 import { UAParser } from 'ua-parser-js'
@@ -90,8 +90,8 @@ import {
   DirectCallDomainEventPublisher,
   DirectCallEventMessageHandler,
   SNSOpenTelemetryDomainEventPublisher,
-  SQSDomainEventSubscriberFactory,
   SQSEventMessageHandler,
+  SQSOpenTelemetryDomainEventSubscriber,
 } from '@standardnotes/domain-events-infra'
 import { GetUserSubscription } from '../Domain/UseCase/GetUserSubscription/GetUserSubscription'
 import { ChangeCredentials } from '../Domain/UseCase/ChangeCredentials/ChangeCredentials'
@@ -188,6 +188,7 @@ import {
   ControllerContainer,
   ControllerContainerInterface,
   MapperInterface,
+  ServiceIdentifier,
   SharedVaultUser,
 } from '@standardnotes/domain-core'
 import { SessionTracePersistenceMapper } from '../Mapping/SessionTracePersistenceMapper'
@@ -1262,12 +1263,14 @@ export class ContainerConfigLoader {
         .toConstantValue(new SQSEventMessageHandler(eventHandlers, container.get(TYPES.Auth_Logger)))
 
       container
-        .bind<DomainEventSubscriberFactoryInterface>(TYPES.Auth_DomainEventSubscriberFactory)
+        .bind<DomainEventSubscriberInterface>(TYPES.Auth_DomainEventSubscriber)
         .toConstantValue(
-          new SQSDomainEventSubscriberFactory(
-            container.get(TYPES.Auth_SQS),
-            container.get(TYPES.Auth_SQS_QUEUE_URL),
-            container.get(TYPES.Auth_DomainEventMessageHandler),
+          new SQSOpenTelemetryDomainEventSubscriber(
+            ServiceIdentifier.NAMES.AuthWorker,
+            container.get<SQSClient>(TYPES.Auth_SQS),
+            container.get<string>(TYPES.Auth_SQS_QUEUE_URL),
+            container.get<DomainEventMessageHandlerInterface>(TYPES.Auth_DomainEventMessageHandler),
+            container.get<winston.Logger>(TYPES.Auth_Logger),
           ),
         )
     }

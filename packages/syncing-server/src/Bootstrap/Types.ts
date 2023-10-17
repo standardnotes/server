@@ -105,7 +105,7 @@ const TYPES = {
   // Services
   Sync_ContentDecoder: Symbol.for('Sync_ContentDecoder'),
   Sync_DomainEventPublisher: Symbol.for('Sync_DomainEventPublisher'),
-  Sync_DomainEventSubscriberFactory: Symbol.for('Sync_DomainEventSubscriberFactory'),
+  Sync_DomainEventSubscriber: Symbol.for('Sync_DomainEventSubscriber'),
   Sync_DomainEventFactory: Symbol.for('Sync_DomainEventFactory'),
   Sync_DomainEventMessageHandler: Symbol.for('Sync_DomainEventMessageHandler'),
   Sync_HTTPClient: Symbol.for('Sync_HTTPClient'),
