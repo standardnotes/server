@@ -289,24 +289,20 @@ export class ContainerConfigLoader {
           )
         })
 
-      container.bind<SQSClient>(TYPES.Sync_SQS).toDynamicValue((context: interfaces.Context) => {
-        const env: Env = context.container.get(TYPES.Sync_Env)
-
-        const sqsConfig: SQSClientConfig = {
-          region: env.get('SQS_AWS_REGION'),
+      const sqsConfig: SQSClientConfig = {
+        region: env.get('SQS_AWS_REGION', true),
+      }
+      if (env.get('SQS_ENDPOINT', true)) {
+        sqsConfig.endpoint = env.get('SQS_ENDPOINT', true)
+      }
+      if (env.get('SQS_ACCESS_KEY_ID', true) && env.get('SQS_SECRET_ACCESS_KEY', true)) {
+        sqsConfig.credentials = {
+          accessKeyId: env.get('SQS_ACCESS_KEY_ID', true),
+          secretAccessKey: env.get('SQS_SECRET_ACCESS_KEY', true),
         }
-        if (env.get('SQS_ENDPOINT', true)) {
-          sqsConfig.endpoint = env.get('SQS_ENDPOINT', true)
-        }
-        if (env.get('SQS_ACCESS_KEY_ID', true) && env.get('SQS_SECRET_ACCESS_KEY', true)) {
-          sqsConfig.credentials = {
-            accessKeyId: env.get('SQS_ACCESS_KEY_ID', true),
-            secretAccessKey: env.get('SQS_SECRET_ACCESS_KEY', true),
-          }
-        }
-
-        return new SQSClient(sqsConfig)
-      })
+      }
+      const sqsClient = new SQSClient(sqsConfig)
+      container.bind<SQSClient>(TYPES.Sync_SQS).toConstantValue(sqsClient)
 
       container.bind<S3Client | undefined>(TYPES.Sync_S3).toDynamicValue((context: interfaces.Context) => {
         const env: Env = context.container.get(TYPES.Sync_Env)
@@ -1138,19 +1134,19 @@ export class ContainerConfigLoader {
       container
         .bind<DomainEventMessageHandlerInterface>(TYPES.Sync_DomainEventMessageHandler)
         .toConstantValue(new SQSEventMessageHandler(eventHandlers, container.get(TYPES.Sync_Logger)))
-    }
 
-    container
-      .bind<DomainEventSubscriberInterface>(TYPES.Sync_DomainEventSubscriber)
-      .toConstantValue(
-        new SQSOpenTelemetryDomainEventSubscriber(
-          ServiceIdentifier.NAMES.SyncingServerWorker,
-          container.get<SQSClient>(TYPES.Sync_SQS),
-          container.get<string>(TYPES.Sync_SQS_QUEUE_URL),
-          container.get<DomainEventMessageHandlerInterface>(TYPES.Sync_DomainEventMessageHandler),
-          container.get<Logger>(TYPES.Sync_Logger),
-        ),
-      )
+      container
+        .bind<DomainEventSubscriberInterface>(TYPES.Sync_DomainEventSubscriber)
+        .toConstantValue(
+          new SQSOpenTelemetryDomainEventSubscriber(
+            ServiceIdentifier.NAMES.SyncingServerWorker,
+            container.get<SQSClient>(TYPES.Sync_SQS),
+            container.get<string>(TYPES.Sync_SQS_QUEUE_URL),
+            container.get<DomainEventMessageHandlerInterface>(TYPES.Sync_DomainEventMessageHandler),
+            container.get<Logger>(TYPES.Sync_Logger),
+          ),
+        )
+    }
 
     container
       .bind<ControllerContainerInterface>(TYPES.Sync_ControllerContainer)
