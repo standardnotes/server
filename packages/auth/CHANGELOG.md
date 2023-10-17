@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.159.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.159.0...@standardnotes/auth-server@1.159.1) (2023-10-17)
+
+### Bug Fixes
+
+* **auth:** traversing through users in transition ([0d37cb2](https://github.com/standardnotes/server/commit/0d37cb293c3f8c1fa798a3c847a1f76c18a8c3aa))
+
 # [1.159.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.158.8...@standardnotes/auth-server@1.159.0) (2023-10-17)
 
 ### Features
