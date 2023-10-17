@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.118.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.117.7...@standardnotes/syncing-server@1.118.0) (2023-10-17)
+
+### Bug Fixes
+
+* **syncing-server:** binding ([5b06ea9](https://github.com/standardnotes/syncing-server-js/commit/5b06ea94f9734c1a82549235058b7f63c7665fb7))
+
+### Features
+
+* add wrapping sqs receive message with open telemetry ([aba4f90](https://github.com/standardnotes/syncing-server-js/commit/aba4f90485e1b40baac34561321a5381945aa27e))
+
 ## [1.117.7](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.117.6...@standardnotes/syncing-server@1.117.7) (2023-10-13)
 
 ### Bug Fixes

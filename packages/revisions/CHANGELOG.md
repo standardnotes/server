@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.46.0](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.45.7...@standardnotes/revisions-server@1.46.0) (2023-10-17)
+
+### Features
+
+* add wrapping sqs receive message with open telemetry ([aba4f90](https://github.com/standardnotes/server/commit/aba4f90485e1b40baac34561321a5381945aa27e))
+
 ## [1.45.7](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.45.6...@standardnotes/revisions-server@1.45.7) (2023-10-13)
 
 ### Bug Fixes

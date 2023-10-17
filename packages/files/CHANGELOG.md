@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.31.0](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.30.7...@standardnotes/files-server@1.31.0) (2023-10-17)
+
+### Features
+
+* add wrapping sqs receive message with open telemetry ([aba4f90](https://github.com/standardnotes/files/commit/aba4f90485e1b40baac34561321a5381945aa27e))
+
 ## [1.30.7](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.30.6...@standardnotes/files-server@1.30.7) (2023-10-13)
 
 ### Bug Fixes
