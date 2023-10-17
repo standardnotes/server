@@ -9,7 +9,7 @@ jobs:
     if: contains(github.event.head_commit.message, 'chore(release)') == false
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Cache build
       id: cache-build
@@ -37,7 +37,7 @@ jobs:
     needs: build
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Cache build
       id: cache-build
@@ -69,7 +69,7 @@ jobs:
     needs: build
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Cache build
       id: cache-build
@@ -124,7 +124,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           token: ${{ secrets.CI_PAT_TOKEN }}
           fetch-depth: 0
