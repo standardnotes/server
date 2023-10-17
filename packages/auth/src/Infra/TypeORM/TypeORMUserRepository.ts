@@ -14,11 +14,21 @@ export class TypeORMUserRepository implements UserRepositoryInterface {
     private ormRepository: Repository<User>,
   ) {}
 
-  async findAllCreatedBetween(start: Date, end: Date): Promise<User[]> {
+  async findAllCreatedBetween(dto: { start: Date; end: Date; offset: number; limit: number }): Promise<User[]> {
+    return this.ormRepository
+      .createQueryBuilder('user')
+      .where('user.created_at BETWEEN :start AND :end', { start: dto.start, end: dto.end })
+      .orderBy('user.created_at', 'ASC')
+      .take(dto.limit)
+      .skip(dto.offset)
+      .getMany()
+  }
+
+  async countAllCreatedBetween(start: Date, end: Date): Promise<number> {
     return this.ormRepository
       .createQueryBuilder('user')
       .where('user.created_at BETWEEN :start AND :end', { start, end })
-      .getMany()
+      .getCount()
   }
 
   async save(user: User): Promise<User> {

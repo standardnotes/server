@@ -35,70 +35,82 @@ const requestTransition = async (
   const startDate = new Date(startDateString)
   const endDate = new Date(endDateString)
 
-  const users = await userRepository.findAllCreatedBetween(startDate, endDate)
+  const usersCount = await userRepository.countAllCreatedBetween(startDate, endDate)
 
   const timestamp = timer.getTimestampInMicroseconds()
 
   logger.info(
-    `[TRANSITION ${timestamp}] Found ${users.length} users created between ${startDateString} and ${endDateString}`,
+    `[TRANSITION ${timestamp}] Found ${usersCount} users created between ${startDateString} and ${endDateString}`,
   )
 
   let itemTransitionsTriggered = 0
   let revisionTransitionsTriggered = 0
   const forceRun = forceRunParam === 'true'
-  for (const user of users) {
-    const itemsTransitionStatus = await transitionStatusRepository.getStatus(user.uuid, 'items')
-    const revisionsTransitionStatus = await transitionStatusRepository.getStatus(user.uuid, 'revisions')
 
-    const userRoles = await user.roles
+  const pageLimit = 100
+  const totalPages = Math.ceil(usersCount / pageLimit)
+  for (let currentPage = 1; currentPage <= totalPages; currentPage++) {
+    const users = await userRepository.findAllCreatedBetween({
+      start: startDate,
+      end: endDate,
+      offset: (currentPage - 1) * pageLimit,
+      limit: pageLimit,
+    })
 
-    const userHasTransitionRole = userRoles.some((role) => role.name === RoleName.NAMES.TransitionUser)
-    const bothTransitionStatusesAreVerified =
-      itemsTransitionStatus?.value === TransitionStatus.STATUSES.Verified &&
-      revisionsTransitionStatus?.value === TransitionStatus.STATUSES.Verified
+    for (const user of users) {
+      const itemsTransitionStatus = await transitionStatusRepository.getStatus(user.uuid, 'items')
+      const revisionsTransitionStatus = await transitionStatusRepository.getStatus(user.uuid, 'revisions')
 
-    if (!userHasTransitionRole && bothTransitionStatusesAreVerified) {
-      continue
-    }
+      const userRoles = await user.roles
 
-    logger.info(
-      `[TRANSITION ${timestamp}] Transition status for user ${user.uuid} - items status: ${itemsTransitionStatus?.value}, revisions status: ${revisionsTransitionStatus?.value}, has transition role: ${userHasTransitionRole}`,
-    )
+      const userHasTransitionRole = userRoles.some((role) => role.name === RoleName.NAMES.TransitionUser)
+      const bothTransitionStatusesAreVerified =
+        itemsTransitionStatus?.value === TransitionStatus.STATUSES.Verified &&
+        revisionsTransitionStatus?.value === TransitionStatus.STATUSES.Verified
 
-    if (
-      itemsTransitionStatus === null ||
-      itemsTransitionStatus.value === TransitionStatus.STATUSES.Failed ||
-      (itemsTransitionStatus.value === TransitionStatus.STATUSES.InProgress && forceRun)
-    ) {
-      await transitionStatusRepository.remove(user.uuid, 'items')
+      if (!userHasTransitionRole && bothTransitionStatusesAreVerified) {
+        continue
+      }
 
-      await domainEventPublisher.publish(
-        domainEventFactory.createTransitionRequestedEvent({
-          userUuid: user.uuid,
-          type: 'items',
-          timestamp,
-        }),
+      logger.info(
+        `[TRANSITION ${timestamp}] Transition status for user ${user.uuid} - items status: ${itemsTransitionStatus?.value}, revisions status: ${revisionsTransitionStatus?.value}, has transition role: ${userHasTransitionRole}`,
       )
 
-      itemTransitionsTriggered++
-    }
+      if (
+        itemsTransitionStatus === null ||
+        itemsTransitionStatus.value === TransitionStatus.STATUSES.Failed ||
+        (itemsTransitionStatus.value === TransitionStatus.STATUSES.InProgress && forceRun)
+      ) {
+        await transitionStatusRepository.remove(user.uuid, 'items')
 
-    if (
-      revisionsTransitionStatus === null ||
-      revisionsTransitionStatus.value === TransitionStatus.STATUSES.Failed ||
-      (revisionsTransitionStatus.value === TransitionStatus.STATUSES.InProgress && forceRun)
-    ) {
-      await transitionStatusRepository.remove(user.uuid, 'revisions')
+        await domainEventPublisher.publish(
+          domainEventFactory.createTransitionRequestedEvent({
+            userUuid: user.uuid,
+            type: 'items',
+            timestamp,
+          }),
+        )
 
-      await domainEventPublisher.publish(
-        domainEventFactory.createTransitionRequestedEvent({
-          userUuid: user.uuid,
-          type: 'revisions',
-          timestamp,
-        }),
-      )
+        itemTransitionsTriggered++
+      }
 
-      revisionTransitionsTriggered++
+      if (
+        revisionsTransitionStatus === null ||
+        revisionsTransitionStatus.value === TransitionStatus.STATUSES.Failed ||
+        (revisionsTransitionStatus.value === TransitionStatus.STATUSES.InProgress && forceRun)
+      ) {
+        await transitionStatusRepository.remove(user.uuid, 'revisions')
+
+        await domainEventPublisher.publish(
+          domainEventFactory.createTransitionRequestedEvent({
+            userUuid: user.uuid,
+            type: 'revisions',
+            timestamp,
+          }),
+        )
+
+        revisionTransitionsTriggered++
+      }
     }
   }
 
