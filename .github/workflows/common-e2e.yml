@@ -11,15 +11,6 @@ on:
         type: string
         default: all
         description: The test suite to run
-    secrets:
-      DOCKER_USERNAME:
-        required: true
-      DOCKER_PASSWORD:
-        required: true
-      AWS_ACCESS_KEY_ID:
-        required: true
-      AWS_SECRET_ACCESS_KEY:
-        required: true
 
 jobs:
   e2e-self-hosted:
@@ -27,11 +18,9 @@ jobs:
     with:
       snjs_image_tag: ${{ inputs.snjs_image_tag }}
       suite: ${{ inputs.suite }}
-    secrets: inherit
 
   e2e-home-server:
     uses: standardnotes/server/.github/workflows/e2e-home-server.yml@main
     with:
       snjs_image_tag: ${{ inputs.snjs_image_tag }}
       suite: ${{ inputs.suite }}
-    secrets: inherit

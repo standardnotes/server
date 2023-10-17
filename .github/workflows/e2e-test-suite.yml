@@ -31,4 +31,3 @@ jobs:
     with:
       snjs_image_tag: ${{ inputs.snjs_image_tag || 'latest' }}
       suite: ${{ inputs.suite || 'all' }}
-    secrets: inherit

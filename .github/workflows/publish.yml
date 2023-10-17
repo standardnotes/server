@@ -102,7 +102,6 @@ jobs:
     with:
       snjs_image_tag: 'latest'
       suite: 'base'
-    secrets: inherit
 
   # e2e-vaults:
   #   needs: build
@@ -111,7 +110,6 @@ jobs:
   #   with:
   #     snjs_image_tag: 'latest'
   #     suite: 'vaults'
-  #   secrets: inherit
 
   publish-self-hosting:
     needs: [ test, lint, e2e-base ]
