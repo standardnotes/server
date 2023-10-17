@@ -26,7 +26,7 @@ jobs:
         node-version-file: '.nvmrc'
 
     - name: Install
-      run: yarn install --immutable
+      run: yarn install
 
     - name: Build
       run: yarn build
@@ -54,7 +54,7 @@ jobs:
         node-version-file: '.nvmrc'
 
     - name: Install
-      run: yarn install --immutable
+      run: yarn install
 
     - name: Build
       if: steps.cache-build.outputs.cache-hit != 'true'
@@ -86,7 +86,7 @@ jobs:
         node-version-file: '.nvmrc'
 
     - name: Install
-      run: yarn install --immutable
+      run: yarn install
 
     - name: Build
       if: steps.cache-build.outputs.cache-hit != 'true'
