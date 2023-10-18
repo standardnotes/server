@@ -9,101 +9,141 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
+    allow:
+      - dependency-type: "direct"
 
   - package-ecosystem: "npm"
     directory: "/packages/analytics"
     schedule:
       interval: "daily"
+    allow:
+      - dependency-type: "direct"
 
   - package-ecosystem: "npm"
     directory: "/packages/api-gateway"
     schedule:
       interval: "daily"
+    allow:
+      - dependency-type: "direct"
 
   - package-ecosystem: "npm"
     directory: "/packages/auth"
     schedule:
       interval: "daily"
+    allow:
+      - dependency-type: "direct"
 
   - package-ecosystem: "npm"
     directory: "/packages/common"
     schedule:
       interval: "daily"
+    allow:
+      - dependency-type: "direct"
 
   - package-ecosystem: "npm"
     directory: "/packages/domain-core"
     schedule:
       interval: "daily"
+    allow:
+      - dependency-type: "direct"
 
   - package-ecosystem: "npm"
     directory: "/packages/domain-events"
     schedule:
       interval: "daily"
+    allow:
+      - dependency-type: "direct"
 
   - package-ecosystem: "npm"
     directory: "/packages/domain-events-infra"
     schedule:
       interval: "daily"
+    allow:
+      - dependency-type: "direct"
 
   - package-ecosystem: "npm"
     directory: "/packages/event-store"
     schedule:
       interval: "daily"
+    allow:
+      - dependency-type: "direct"
 
   - package-ecosystem: "npm"
     directory: "/packages/files"
     schedule:
       interval: "daily"
+    allow:
+      - dependency-type: "direct"
 
   - package-ecosystem: "npm"
     directory: "/packages/home-server"
     schedule:
       interval: "daily"
+    allow:
+      - dependency-type: "direct"
 
   - package-ecosystem: "npm"
     directory: "/packages/predicates"
     schedule:
       interval: "daily"
+    allow:
+      - dependency-type: "direct"
 
   - package-ecosystem: "npm"
     directory: "/packages/revisions"
     schedule:
       interval: "daily"
+    allow:
+      - dependency-type: "direct"
 
   - package-ecosystem: "npm"
     directory: "/packages/scheduler"
     schedule:
       interval: "daily"
+    allow:
+      - dependency-type: "direct"
 
   - package-ecosystem: "npm"
     directory: "/packages/security"
     schedule:
       interval: "daily"
+    allow:
+      - dependency-type: "direct"
 
   - package-ecosystem: "npm"
     directory: "/packages/settings"
     schedule:
       interval: "daily"
+    allow:
+      - dependency-type: "direct"
 
   - package-ecosystem: "npm"
     directory: "/packages/sncrypto-node"
     schedule:
       interval: "daily"
+    allow:
+      - dependency-type: "direct"
 
   - package-ecosystem: "npm"
     directory: "/packages/syncing-server"
     schedule:
       interval: "daily"
+    allow:
+      - dependency-type: "direct"
 
   - package-ecosystem: "npm"
     directory: "/packages/time"
     schedule:
       interval: "daily"
+    allow:
+      - dependency-type: "direct"
 
   - package-ecosystem: "npm"
     directory: "/packages/websockets"
     schedule:
       interval: "daily"
+    allow:
+      - dependency-type: "direct"
 
   - package-ecosystem: "github-actions"
     directory: "/"
