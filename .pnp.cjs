@@ -5647,7 +5647,7 @@ const RAW_RUNTIME_STATE =
           ["@standardnotes/time", "workspace:packages/time"],\
           ["@types/ioredis", "npm:5.0.0"],\
           ["@types/jest", "npm:29.5.2"],\
-          ["@types/nodemailer", "npm:6.4.8"],\
+          ["@types/nodemailer", "npm:6.4.11"],\
           ["@typescript-eslint/eslint-plugin", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:6.5.0"],\
           ["@typescript-eslint/parser", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:6.5.0"],\
           ["dotenv", "npm:16.1.3"],\
@@ -6528,10 +6528,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@types/nodemailer", [\
-      ["npm:6.4.8", {\
-        "packageLocation": "./.yarn/cache/@types-nodemailer-npm-6.4.8-04975b93f9-d5afdd77ef.zip/node_modules/@types/nodemailer/",\
+      ["npm:6.4.11", {\
+        "packageLocation": "./.yarn/cache/@types-nodemailer-npm-6.4.11-3baa8ecb6d-a24b78bca0.zip/node_modules/@types/nodemailer/",\
         "packageDependencies": [\
-          ["@types/nodemailer", "npm:6.4.8"],\
+          ["@types/nodemailer", "npm:6.4.11"],\
           ["@types/node", "npm:20.2.5"]\
         ],\
         "linkType": "HARD"\
