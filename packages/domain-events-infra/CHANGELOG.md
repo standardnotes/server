@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.20.1](https://github.com/standardnotes/server/compare/@standardnotes/domain-events-infra@1.20.0...@standardnotes/domain-events-infra@1.20.1) (2023-10-18)
+
+### Bug Fixes
+
+* remove ip attributes in opentelemetry http instrumentation ([#874](https://github.com/standardnotes/server/issues/874)) ([7ce9aba](https://github.com/standardnotes/server/commit/7ce9aba517435034f491c9f080f671285fb91b91))
+
 # [1.20.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events-infra@1.19.7...@standardnotes/domain-events-infra@1.20.0) (2023-10-17)
 
 ### Features
