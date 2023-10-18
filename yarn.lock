@@ -6319,10 +6319,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bson@npm:^6.0.0":
-  version: 6.0.0
-  resolution: "bson@npm:6.0.0"
-  checksum: e7614bdc53c5de0a17b70e40d4739aba2ea9a0e7df4864020ab98e09db47846099e8dd31352280d10d4e62ee2a7fd1c9730afbf92e043e34724b2a3a0d0ebb6b
+"bson@npm:^6.1.0":
+  version: 6.1.0
+  resolution: "bson@npm:6.1.0"
+  checksum: d0d74e5843c545b9dd4d08a1925dcf88acb463d0473fc60adb61d4594e03575b10544c41122529b47e9556c0071c501d9367d64286a27f3cff51c0132c2401e6
   languageName: node
   linkType: hard
 
@@ -10702,11 +10702,11 @@ __metadata:
   linkType: hard
 
 "mongodb@npm:^6.0.0":
-  version: 6.0.0
-  resolution: "mongodb@npm:6.0.0"
+  version: 6.1.0
+  resolution: "mongodb@npm:6.1.0"
   dependencies:
     "@mongodb-js/saslprep": "npm:^1.1.0"
-    bson: "npm:^6.0.0"
+    bson: "npm:^6.1.0"
     mongodb-connection-string-url: "npm:^2.6.0"
   peerDependencies:
     "@aws-sdk/credential-providers": ^3.188.0
@@ -10731,7 +10731,7 @@ __metadata:
       optional: true
     socks:
       optional: true
-  checksum: 501feaecb7c2605b2d61e4811df710996d706e1c38061a8629c6ff72a7494360edd4dc2d86b003b73c816984e8fba81d956d74134a17eca2e36076ccacb86738
+  checksum: c0b53a2337293fda5618c186832d8e543e4bc325e3dd9600bd688e8a2c138dffdbdf7feb3f3a4bb3de2efe62f8a3ad70639da4812ae2c605b620fd1637641deb
   languageName: node
   linkType: hard
 

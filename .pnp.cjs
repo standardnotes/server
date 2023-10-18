@@ -5847,7 +5847,7 @@ const RAW_RUNTIME_STATE =
           ["inversify-express-utils", "npm:6.4.3"],\
           ["ioredis", "npm:5.3.2"],\
           ["jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.5.0"],\
-          ["mongodb", "virtual:365b8c88cdf194291829ee28b79556e2328175d26a621363e703848100bea0042e9500db2a1206c9bbc3a4a76a1d169639ef774b2ea3a1a98584a9936b58c6be#npm:6.0.0"],\
+          ["mongodb", "virtual:365b8c88cdf194291829ee28b79556e2328175d26a621363e703848100bea0042e9500db2a1206c9bbc3a4a76a1d169639ef774b2ea3a1a98584a9936b58c6be#npm:6.1.0"],\
           ["mysql2", "npm:3.3.3"],\
           ["prettier", "npm:3.0.3"],\
           ["reflect-metadata", "npm:0.1.13"],\
@@ -6033,7 +6033,7 @@ const RAW_RUNTIME_STATE =
           ["ioredis", "npm:5.3.2"],\
           ["jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.5.0"],\
           ["jsonwebtoken", "npm:9.0.0"],\
-          ["mongodb", "virtual:365b8c88cdf194291829ee28b79556e2328175d26a621363e703848100bea0042e9500db2a1206c9bbc3a4a76a1d169639ef774b2ea3a1a98584a9936b58c6be#npm:6.0.0"],\
+          ["mongodb", "virtual:365b8c88cdf194291829ee28b79556e2328175d26a621363e703848100bea0042e9500db2a1206c9bbc3a4a76a1d169639ef774b2ea3a1a98584a9936b58c6be#npm:6.1.0"],\
           ["mysql2", "npm:3.3.3"],\
           ["prettier", "npm:3.0.3"],\
           ["prettyjson", "npm:1.2.5"],\
@@ -7889,10 +7889,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["bson", [\
-      ["npm:6.0.0", {\
-        "packageLocation": "./.yarn/cache/bson-npm-6.0.0-7b3cba060e-e7614bdc53.zip/node_modules/bson/",\
+      ["npm:6.1.0", {\
+        "packageLocation": "./.yarn/cache/bson-npm-6.1.0-9e44c0e303-d0d74e5843.zip/node_modules/bson/",\
         "packageDependencies": [\
-          ["bson", "npm:6.0.0"]\
+          ["bson", "npm:6.1.0"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -12854,17 +12854,17 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["mongodb", [\
-      ["npm:6.0.0", {\
-        "packageLocation": "./.yarn/cache/mongodb-npm-6.0.0-7c1e74de91-501feaecb7.zip/node_modules/mongodb/",\
+      ["npm:6.1.0", {\
+        "packageLocation": "./.yarn/cache/mongodb-npm-6.1.0-74114fa4aa-c0b53a2337.zip/node_modules/mongodb/",\
         "packageDependencies": [\
-          ["mongodb", "npm:6.0.0"]\
+          ["mongodb", "npm:6.1.0"]\
         ],\
         "linkType": "SOFT"\
       }],\
-      ["virtual:365b8c88cdf194291829ee28b79556e2328175d26a621363e703848100bea0042e9500db2a1206c9bbc3a4a76a1d169639ef774b2ea3a1a98584a9936b58c6be#npm:6.0.0", {\
-        "packageLocation": "./.yarn/__virtual__/mongodb-virtual-789f2eaaac/0/cache/mongodb-npm-6.0.0-7c1e74de91-501feaecb7.zip/node_modules/mongodb/",\
+      ["virtual:365b8c88cdf194291829ee28b79556e2328175d26a621363e703848100bea0042e9500db2a1206c9bbc3a4a76a1d169639ef774b2ea3a1a98584a9936b58c6be#npm:6.1.0", {\
+        "packageLocation": "./.yarn/__virtual__/mongodb-virtual-652c85a625/0/cache/mongodb-npm-6.1.0-74114fa4aa-c0b53a2337.zip/node_modules/mongodb/",\
         "packageDependencies": [\
-          ["mongodb", "virtual:365b8c88cdf194291829ee28b79556e2328175d26a621363e703848100bea0042e9500db2a1206c9bbc3a4a76a1d169639ef774b2ea3a1a98584a9936b58c6be#npm:6.0.0"],\
+          ["mongodb", "virtual:365b8c88cdf194291829ee28b79556e2328175d26a621363e703848100bea0042e9500db2a1206c9bbc3a4a76a1d169639ef774b2ea3a1a98584a9936b58c6be#npm:6.1.0"],\
           ["@aws-sdk/credential-providers", null],\
           ["@mongodb-js/saslprep", "npm:1.1.0"],\
           ["@mongodb-js/zstd", null],\
@@ -12875,7 +12875,7 @@ const RAW_RUNTIME_STATE =
           ["@types/mongodb-js__zstd", null],\
           ["@types/snappy", null],\
           ["@types/socks", null],\
-          ["bson", "npm:6.0.0"],\
+          ["bson", "npm:6.1.0"],\
           ["gcp-metadata", null],\
           ["kerberos", null],\
           ["mongodb-client-encryption", null],\
@@ -16150,7 +16150,7 @@ const RAW_RUNTIME_STATE =
           ["hdb-pool", null],\
           ["ioredis", "npm:5.3.2"],\
           ["mkdirp", "npm:2.1.6"],\
-          ["mongodb", "virtual:365b8c88cdf194291829ee28b79556e2328175d26a621363e703848100bea0042e9500db2a1206c9bbc3a4a76a1d169639ef774b2ea3a1a98584a9936b58c6be#npm:6.0.0"],\
+          ["mongodb", "virtual:365b8c88cdf194291829ee28b79556e2328175d26a621363e703848100bea0042e9500db2a1206c9bbc3a4a76a1d169639ef774b2ea3a1a98584a9936b58c6be#npm:6.1.0"],\
           ["mssql", null],\
           ["mysql2", "npm:3.3.3"],\
           ["oracledb", null],\
