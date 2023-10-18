@@ -1,5 +1,5 @@
 import * as OpenTelemetrySDKNode from '@opentelemetry/sdk-node'
-import { SemanticResourceAttributes } from '@opentelemetry/semantic-conventions'
+import { SemanticAttributes, SemanticResourceAttributes } from '@opentelemetry/semantic-conventions'
 import { OTLPTraceExporter } from '@opentelemetry/exporter-trace-otlp-grpc'
 import { AWSXRayIdGenerator } from '@opentelemetry/id-generator-aws-xray'
 import * as AwsResourceDetectors from '@opentelemetry/resource-detector-aws'
@@ -10,9 +10,11 @@ import { AwsInstrumentation } from '@opentelemetry/instrumentation-aws-sdk'
 import { OTLPMetricExporter } from '@opentelemetry/exporter-metrics-otlp-proto'
 import { WinstonInstrumentation } from '@opentelemetry/instrumentation-winston'
 import { IORedisInstrumentation } from '@opentelemetry/instrumentation-ioredis'
+import { ExpressInstrumentation } from '@opentelemetry/instrumentation-express'
+import { IncomingMessage } from 'http'
+import { Attributes } from '@opentelemetry/api'
 
 import { OpenTelemetrySDKInterface } from './OpenTelemetrySDKInterface'
-import { ExpressInstrumentation } from '@opentelemetry/instrumentation-express'
 
 export class OpenTelemetrySDK implements OpenTelemetrySDKInterface {
   private declare sdk: OpenTelemetrySDKNode.NodeSDK
@@ -62,6 +64,11 @@ export class OpenTelemetrySDK implements OpenTelemetrySDKInterface {
             const isHealthCheckUrl = !!request.url?.match(/\/healthcheck/)
 
             return isHealthCheckUrl
+          },
+          startIncomingSpanHook: (_request: IncomingMessage): Attributes => {
+            return {
+              [SemanticAttributes.HTTP_CLIENT_IP]: undefined,
+            }
           },
         }),
         new ExpressInstrumentation(),
