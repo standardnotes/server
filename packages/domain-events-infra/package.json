@@ -41,7 +41,7 @@
     "@opentelemetry/semantic-conventions": "^1.17.1",
     "@standardnotes/domain-events": "workspace:*",
     "ioredis": "^5.2.4",
-    "opentelemetry-instrumentation-typeorm": "^0.39.1",
+    "opentelemetry-instrumentation-typeorm": "^0.40.0",
     "reflect-metadata": "^0.1.13",
     "sqs-consumer": "7.4.0-canary.0",
     "winston": "^3.8.1"
