@@ -5315,11 +5315,11 @@ __metadata:
   linkType: hard
 
 "@types/nodemailer@npm:^6.4.1":
-  version: 6.4.8
-  resolution: "@types/nodemailer@npm:6.4.8"
+  version: 6.4.13
+  resolution: "@types/nodemailer@npm:6.4.13"
   dependencies:
     "@types/node": "npm:*"
-  checksum: d5afdd77ef05d207438d124fa0a221ed6c062c4df6c624d3966252ba7da3ab6dd23f1e3423818cc992dc85e129f4a36db601eac46c932b78096b112f61a03814
+  checksum: 0e196002d350cec9a21df084ecfc50b6904c8e63f23157b3afbea0ba09053512da445557d9958f5a2022fe31efab7f56f716c9e4b69ff28aa6701e293d9fefa8
   languageName: node
   linkType: hard
 
