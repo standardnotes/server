@@ -2,22 +2,19 @@ import { DomainEventInterface, DomainEventPublisherInterface } from '@standardno
 
 import { DomainEventFactoryInterface } from '../../../Event/DomainEventFactoryInterface'
 import { ItemBackupServiceInterface } from '../../../Item/ItemBackupServiceInterface'
-import { ItemRepositoryResolverInterface } from '../../../Item/ItemRepositoryResolverInterface'
 import { DumpItem } from './DumpItem'
 import { ItemRepositoryInterface } from '../../../Item/ItemRepositoryInterface'
 import { Item } from '../../../Item/Item'
 import { Uuid, ContentType, Dates, Timestamps, UniqueEntityId, Result } from '@standardnotes/domain-core'
 
 describe('DumpItem', () => {
-  let itemRepositoryResolver: ItemRepositoryResolverInterface
   let itemRepository: ItemRepositoryInterface
   let item: Item
   let itemBackupService: ItemBackupServiceInterface
   let domainEventFactory: DomainEventFactoryInterface
   let domainEventPublisher: DomainEventPublisherInterface
 
-  const createUseCase = () =>
-    new DumpItem(itemRepositoryResolver, itemBackupService, domainEventFactory, domainEventPublisher)
+  const createUseCase = () => new DumpItem(itemRepository, itemBackupService, domainEventFactory, domainEventPublisher)
 
   beforeEach(() => {
     item = Item.create(
@@ -40,9 +37,6 @@ describe('DumpItem', () => {
     itemRepository = {} as jest.Mocked<ItemRepositoryInterface>
     itemRepository.findByUuid = jest.fn().mockResolvedValue(item)
 
-    itemRepositoryResolver = {} as jest.Mocked<ItemRepositoryResolverInterface>
-    itemRepositoryResolver.resolve = jest.fn().mockReturnValue(itemRepository)
-
     itemBackupService = {} as jest.Mocked<ItemBackupServiceInterface>
     itemBackupService.dump = jest.fn().mockResolvedValue(Result.ok('dump-path'))
 
@@ -58,7 +52,6 @@ describe('DumpItem', () => {
 
     const result = await useCase.execute({
       itemUuid: '00000000-0000-0000-0000-000000000000',
-      roleNames: ['CORE_USER'],
     })
 
     expect(result.isFailed()).toBe(false)
@@ -74,7 +67,6 @@ describe('DumpItem', () => {
 
     const result = await useCase.execute({
       itemUuid: '00000000-0000-0000-0000-000000000000',
-      roleNames: ['CORE_USER'],
     })
 
     expect(result.isFailed()).toBe(true)
@@ -87,7 +79,6 @@ describe('DumpItem', () => {
 
     const result = await useCase.execute({
       itemUuid: '00000000-0000-0000-0000-000000000000',
-      roleNames: ['CORE_USER'],
     })
 
     expect(result.isFailed()).toBe(true)
@@ -98,18 +89,6 @@ describe('DumpItem', () => {
 
     const result = await useCase.execute({
       itemUuid: 'invalid-uuid',
-      roleNames: ['CORE_USER'],
-    })
-
-    expect(result.isFailed()).toBe(true)
-  })
-
-  it('should fail if role names are invalid', async () => {
-    const useCase = createUseCase()
-
-    const result = await useCase.execute({
-      itemUuid: '00000000-0000-0000-0000-000000000000',
-      roleNames: ['invalid-role'],
     })
 
     expect(result.isFailed()).toBe(true)

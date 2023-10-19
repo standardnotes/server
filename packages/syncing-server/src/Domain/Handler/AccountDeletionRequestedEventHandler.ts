@@ -1,14 +1,14 @@
 import { AccountDeletionRequestedEvent, DomainEventHandlerInterface } from '@standardnotes/domain-events'
-import { RoleNameCollection, Uuid } from '@standardnotes/domain-core'
+import { Uuid } from '@standardnotes/domain-core'
 import { Logger } from 'winston'
 
-import { ItemRepositoryResolverInterface } from '../Item/ItemRepositoryResolverInterface'
 import { DeleteSharedVaults } from '../UseCase/SharedVaults/DeleteSharedVaults/DeleteSharedVaults'
 import { RemoveUserFromSharedVaults } from '../UseCase/SharedVaults/RemoveUserFromSharedVaults/RemoveUserFromSharedVaults'
+import { ItemRepositoryInterface } from '../Item/ItemRepositoryInterface'
 
 export class AccountDeletionRequestedEventHandler implements DomainEventHandlerInterface {
   constructor(
-    private itemRepositoryResolver: ItemRepositoryResolverInterface,
+    private itemRepository: ItemRepositoryInterface,
     private deleteSharedVaults: DeleteSharedVaults,
     private removeUserFromSharedVaults: RemoveUserFromSharedVaults,
     private logger: Logger,
@@ -23,17 +23,7 @@ export class AccountDeletionRequestedEventHandler implements DomainEventHandlerI
     }
     const userUuid = userUuidOrError.getValue()
 
-    const roleNamesOrError = RoleNameCollection.create(event.payload.roleNames)
-    if (roleNamesOrError.isFailed()) {
-      this.logger.error(`AccountDeletionRequestedEventHandler failed: ${roleNamesOrError.getError()}`)
-
-      return
-    }
-    const roleNames = roleNamesOrError.getValue()
-
-    const itemRepository = this.itemRepositoryResolver.resolve(roleNames)
-
-    await itemRepository.deleteByUserUuidAndNotInSharedVault(userUuid)
+    await this.itemRepository.deleteByUserUuidAndNotInSharedVault(userUuid)
 
     const deletingVaultsResult = await this.deleteSharedVaults.execute({
       ownerUuid: event.payload.userUuid,
@@ -52,7 +42,7 @@ export class AccountDeletionRequestedEventHandler implements DomainEventHandlerI
     )
 
     if (deletedSharedVaultUuids.length !== 0) {
-      await itemRepository.deleteByUserUuidInSharedVaults(userUuid, deletedSharedVaultUuids)
+      await this.itemRepository.deleteByUserUuidInSharedVaults(userUuid, deletedSharedVaultUuids)
     }
 
     const deletingUserFromOtherVaultsResult = await this.removeUserFromSharedVaults.execute({

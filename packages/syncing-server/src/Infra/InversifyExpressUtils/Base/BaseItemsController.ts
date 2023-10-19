@@ -2,7 +2,6 @@ import { ControllerContainerInterface, MapperInterface, Validator } from '@stand
 import { BaseHttpController, results } from 'inversify-express-utils'
 import { Request, Response } from 'express'
 import { HttpStatusCode } from '@standardnotes/responses'
-import { Role } from '@standardnotes/security'
 
 import { Item } from '../../../Domain/Item/Item'
 import { SyncResponseFactoryResolverInterface } from '../../../Domain/Item/SyncResponse/SyncResponseFactoryResolverInterface'
@@ -32,10 +31,6 @@ export class BaseItemsController extends BaseHttpController {
   }
 
   async sync(request: Request, response: Response): Promise<results.JsonResult> {
-    if (response.locals.ongoingTransition === true) {
-      throw new Error(`Cannot sync user ${response.locals.user.uuid} during transition`)
-    }
-
     const itemHashes: ItemHash[] = []
     if ('items' in request.body) {
       for (const itemHashInput of request.body.items) {
@@ -64,7 +59,6 @@ export class BaseItemsController extends BaseHttpController {
 
     const syncResult = await this.syncItems.execute({
       userUuid: response.locals.user.uuid,
-      roleNames: response.locals.roles.map((role: Role) => role.name),
       itemHashes,
       computeIntegrityHash: request.body.compute_integrity === true,
       syncToken: request.body.sync_token,
@@ -76,7 +70,6 @@ export class BaseItemsController extends BaseHttpController {
       readOnlyAccess: response.locals.readOnlyAccess,
       sessionUuid: response.locals.session ? response.locals.session.uuid : null,
       sharedVaultUuids,
-      onGoingRevisionsTransition: response.locals.onGoingRevisionsTransition,
     })
     if (syncResult.isFailed()) {
       return this.json({ error: { message: syncResult.getError() } }, HttpStatusCode.BadRequest)
@@ -98,7 +91,6 @@ export class BaseItemsController extends BaseHttpController {
     const result = await this.checkIntegrity.execute({
       userUuid: response.locals.user.uuid,
       integrityPayloads,
-      roleNames: response.locals.roles.map((role: Role) => role.name),
     })
 
     if (result.isFailed()) {
@@ -114,7 +106,6 @@ export class BaseItemsController extends BaseHttpController {
     const result = await this.getItem.execute({
       userUuid: response.locals.user.uuid,
       itemUuid: request.params.uuid,
-      roleNames: response.locals.roles.map((role: Role) => role.name),
     })
 
     if (result.isFailed()) {

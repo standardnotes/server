@@ -20,7 +20,6 @@ import {
   StatisticPersistenceRequestedEvent,
   SessionCreatedEvent,
   SessionRefreshedEvent,
-  TransitionRequestedEvent,
 } from '@standardnotes/domain-events'
 import { Predicate, PredicateVerificationResult } from '@standardnotes/predicates'
 import { TimerInterface } from '@standardnotes/time'
@@ -33,25 +32,6 @@ import { KeyParamsData } from '@standardnotes/responses'
 @injectable()
 export class DomainEventFactory implements DomainEventFactoryInterface {
   constructor(@inject(TYPES.Auth_Timer) private timer: TimerInterface) {}
-
-  createTransitionRequestedEvent(dto: {
-    userUuid: string
-    type: 'items' | 'revisions'
-    timestamp: number
-  }): TransitionRequestedEvent {
-    return {
-      type: 'TRANSITION_REQUESTED',
-      createdAt: this.timer.getUTCDate(),
-      meta: {
-        correlation: {
-          userIdentifier: dto.userUuid,
-          userIdentifierType: 'uuid',
-        },
-        origin: DomainEventService.Auth,
-      },
-      payload: dto,
-    }
-  }
 
   createSessionCreatedEvent(dto: { userUuid: string }): SessionCreatedEvent {
     return {

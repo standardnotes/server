@@ -1,5 +1,4 @@
 import { HttpStatusCode } from '@standardnotes/responses'
-import { Role } from '@standardnotes/security'
 import { BaseHttpController, results } from 'inversify-express-utils'
 import { Request, Response } from 'express'
 import { ControllerContainerInterface, MapperInterface } from '@standardnotes/domain-core'
@@ -34,7 +33,6 @@ export class BaseRevisionsController extends BaseHttpController {
     const revisionMetadataOrError = await this.getRevisionsMetadata.execute({
       itemUuid: request.params.itemUuid,
       userUuid: response.locals.user.uuid,
-      roleNames: response.locals.roles.map((role: Role) => role.name),
       sharedVaultUuids: response.locals.belongsToSharedVaults.map(
         (association: { shared_vault_uuid: string; permission: string }) => association.shared_vault_uuid,
       ),
@@ -61,7 +59,6 @@ export class BaseRevisionsController extends BaseHttpController {
     const revisionOrError = await this.doGetRevision.execute({
       revisionUuid: request.params.uuid,
       userUuid: response.locals.user.uuid,
-      roleNames: response.locals.roles.map((role: Role) => role.name),
       sharedVaultUuids: response.locals.belongsToSharedVaults.map(
         (association: { shared_vault_uuid: string; permission: string }) => association.shared_vault_uuid,
       ),
@@ -87,7 +84,6 @@ export class BaseRevisionsController extends BaseHttpController {
     const revisionOrError = await this.doDeleteRevision.execute({
       revisionUuid: request.params.uuid,
       userUuid: response.locals.user.uuid,
-      roleNames: response.locals.roles.map((role: Role) => role.name),
     })
 
     if (revisionOrError.isFailed()) {

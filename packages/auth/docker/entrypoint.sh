@@ -55,13 +55,6 @@ case "$COMMAND" in
     node docker/entrypoint-backup.js one_drive daily
     ;;
 
-  'transition' )
-    START_DATE=$1 && shift 1
-    END_DATE=$1 && shift 1
-    echo "[Docker] Starting Transition..."
-    node docker/entrypoint-transition.js $START_DATE $END_DATE
-    ;;
-
    * )
     echo "[Docker] Unknown command"
     ;;

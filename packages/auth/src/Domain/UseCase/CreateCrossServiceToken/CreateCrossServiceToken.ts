@@ -1,6 +1,6 @@
 import { TokenEncoderInterface, CrossServiceTokenData } from '@standardnotes/security'
 import { inject, injectable } from 'inversify'
-import { Result, TransitionStatus, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
+import { Result, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
 
 import TYPES from '../../../Bootstrap/Types'
 import { ProjectorInterface } from '../../../Projection/ProjectorInterface'
@@ -12,7 +12,6 @@ import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'
 import { CreateCrossServiceTokenDTO } from './CreateCrossServiceTokenDTO'
 import { GetSetting } from '../GetSetting/GetSetting'
 import { SettingName } from '@standardnotes/settings'
-import { TransitionStatusRepositoryInterface } from '../../Transition/TransitionStatusRepositoryInterface'
 import { SharedVaultUserRepositoryInterface } from '../../SharedVault/SharedVaultUserRepositoryInterface'
 
 @injectable()
@@ -26,8 +25,6 @@ export class CreateCrossServiceToken implements UseCaseInterface<string> {
     @inject(TYPES.Auth_AUTH_JWT_TTL) private jwtTTL: number,
     @inject(TYPES.Auth_GetSetting)
     private getSettingUseCase: GetSetting,
-    @inject(TYPES.Auth_TransitionStatusRepository)
-    private transitionStatusRepository: TransitionStatusRepositoryInterface,
     @inject(TYPES.Auth_SharedVaultUserRepository) private sharedVaultUserRepository: SharedVaultUserRepositoryInterface,
   ) {}
 
@@ -47,9 +44,6 @@ export class CreateCrossServiceToken implements UseCaseInterface<string> {
       return Result.fail(`Could not find user with uuid ${dto.userUuid}`)
     }
 
-    const transitionStatus = await this.transitionStatusRepository.getStatus(user.uuid, 'items')
-    const revisionsTransitionStatus = await this.transitionStatusRepository.getStatus(user.uuid, 'revisions')
-
     const roles = await user.roles
 
     const sharedVaultAssociations = await this.sharedVaultUserRepository.findByUserUuid(
@@ -60,8 +54,6 @@ export class CreateCrossServiceToken implements UseCaseInterface<string> {
       user: this.projectUser(user),
       roles: this.projectRoles(roles),
       shared_vault_owner_context: undefined,
-      ongoing_transition: transitionStatus?.value === TransitionStatus.STATUSES.InProgress,
-      ongoing_revisions_transition: revisionsTransitionStatus?.value === TransitionStatus.STATUSES.InProgress,
       belongs_to_shared_vaults: sharedVaultAssociations.map((association) => ({
         shared_vault_uuid: association.props.sharedVaultUuid.value,
         permission: association.props.permission.value,

@@ -2,7 +2,6 @@ import { ItemHash } from '../../../Item/ItemHash'
 
 export type SyncItemsDTO = {
   userUuid: string
-  roleNames: string[]
   itemHashes: Array<ItemHash>
   computeIntegrityHash: boolean
   limit: number
@@ -14,5 +13,4 @@ export type SyncItemsDTO = {
   snjsVersion: string
   readOnlyAccess: boolean
   sessionUuid: string | null
-  onGoingRevisionsTransition: boolean
 }

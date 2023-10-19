@@ -258,11 +258,6 @@ import { UpdateStorageQuotaUsedForUser } from '../Domain/UseCase/UpdateStorageQu
 import { SharedVaultFileUploadedEventHandler } from '../Domain/Handler/SharedVaultFileUploadedEventHandler'
 import { SharedVaultFileRemovedEventHandler } from '../Domain/Handler/SharedVaultFileRemovedEventHandler'
 import { SharedVaultFileMovedEventHandler } from '../Domain/Handler/SharedVaultFileMovedEventHandler'
-import { TransitionStatusRepositoryInterface } from '../Domain/Transition/TransitionStatusRepositoryInterface'
-import { RedisTransitionStatusRepository } from '../Infra/Redis/RedisTransitionStatusRepository'
-import { InMemoryTransitionStatusRepository } from '../Infra/InMemory/InMemoryTransitionStatusRepository'
-import { TransitionStatusUpdatedEventHandler } from '../Domain/Handler/TransitionStatusUpdatedEventHandler'
-import { UpdateTransitionStatus } from '../Domain/UseCase/UpdateTransitionStatus/UpdateTransitionStatus'
 import { TypeORMSharedVaultUser } from '../Infra/TypeORM/TypeORMSharedVaultUser'
 import { SharedVaultUserPersistenceMapper } from '../Mapping/SharedVaultUserPersistenceMapper'
 import { SharedVaultUserRepositoryInterface } from '../Domain/SharedVault/SharedVaultUserRepositoryInterface'
@@ -645,9 +640,6 @@ export class ContainerConfigLoader {
             container.get(TYPES.Auth_Timer),
           ),
         )
-      container
-        .bind<TransitionStatusRepositoryInterface>(TYPES.Auth_TransitionStatusRepository)
-        .toConstantValue(new InMemoryTransitionStatusRepository())
     } else {
       container.bind<PKCERepositoryInterface>(TYPES.Auth_PKCERepository).to(RedisPKCERepository)
       container.bind<LockRepositoryInterface>(TYPES.Auth_LockRepository).to(LockRepository)
@@ -660,9 +652,6 @@ export class ContainerConfigLoader {
       container
         .bind<SubscriptionTokenRepositoryInterface>(TYPES.Auth_SubscriptionTokenRepository)
         .to(RedisSubscriptionTokenRepository)
-      container
-        .bind<TransitionStatusRepositoryInterface>(TYPES.Auth_TransitionStatusRepository)
-        .toConstantValue(new RedisTransitionStatusRepository(container.get<Redis>(TYPES.Auth_Redis)))
     }
 
     // Services
@@ -986,15 +975,6 @@ export class ContainerConfigLoader {
         ),
       )
     container
-      .bind<UpdateTransitionStatus>(TYPES.Auth_UpdateTransitionStatus)
-      .toConstantValue(
-        new UpdateTransitionStatus(
-          container.get<TransitionStatusRepositoryInterface>(TYPES.Auth_TransitionStatusRepository),
-          container.get<RoleServiceInterface>(TYPES.Auth_RoleService),
-          container.get<winston.Logger>(TYPES.Auth_Logger),
-        ),
-      )
-    container
       .bind<AddSharedVaultUser>(TYPES.Auth_AddSharedVaultUser)
       .toConstantValue(
         new AddSharedVaultUser(container.get<SharedVaultUserRepositoryInterface>(TYPES.Auth_SharedVaultUserRepository)),
@@ -1175,14 +1155,6 @@ export class ContainerConfigLoader {
         ),
       )
     container
-      .bind<TransitionStatusUpdatedEventHandler>(TYPES.Auth_TransitionStatusUpdatedEventHandler)
-      .toConstantValue(
-        new TransitionStatusUpdatedEventHandler(
-          container.get<UpdateTransitionStatus>(TYPES.Auth_UpdateTransitionStatus),
-          container.get<winston.Logger>(TYPES.Auth_Logger),
-        ),
-      )
-    container
       .bind<UserAddedToSharedVaultEventHandler>(TYPES.Auth_UserAddedToSharedVaultEventHandler)
       .toConstantValue(
         new UserAddedToSharedVaultEventHandler(
@@ -1239,7 +1211,6 @@ export class ContainerConfigLoader {
       ['PREDICATE_VERIFICATION_REQUESTED', container.get(TYPES.Auth_PredicateVerificationRequestedEventHandler)],
       ['EMAIL_SUBSCRIPTION_UNSUBSCRIBED', container.get(TYPES.Auth_EmailSubscriptionUnsubscribedEventHandler)],
       ['PAYMENTS_ACCOUNT_DELETED', container.get(TYPES.Auth_PaymentsAccountDeletedEventHandler)],
-      ['TRANSITION_STATUS_UPDATED', container.get(TYPES.Auth_TransitionStatusUpdatedEventHandler)],
       ['USER_ADDED_TO_SHARED_VAULT', container.get(TYPES.Auth_UserAddedToSharedVaultEventHandler)],
       ['USER_REMOVED_FROM_SHARED_VAULT', container.get(TYPES.Auth_UserRemovedFromSharedVaultEventHandler)],
       [

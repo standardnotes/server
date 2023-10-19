@@ -8,7 +8,6 @@ import {
   NotificationAddedForUserEvent,
   RevisionsCopyRequestedEvent,
   SharedVaultRemovedEvent,
-  TransitionStatusUpdatedEvent,
   UserAddedToSharedVaultEvent,
   UserDesignatedAsSurvivorInSharedVaultEvent,
   UserInvitedToSharedVaultEvent,
@@ -51,12 +50,6 @@ export interface DomainEventFactoryInterface {
       updated_at_timestamp: number
     }
   }): NotificationAddedForUserEvent
-  createTransitionStatusUpdatedEvent(dto: {
-    userUuid: string
-    transitionType: 'items' | 'revisions'
-    transitionTimestamp: number
-    status: string
-  }): TransitionStatusUpdatedEvent
   createEmailRequestedEvent(dto: {
     userEmail: string
     messageIdentifier: string
@@ -71,20 +64,12 @@ export interface DomainEventFactoryInterface {
       attachmentContentType: string
     }>
   }): EmailRequestedEvent
-  createDuplicateItemSyncedEvent(dto: {
-    itemUuid: string
-    userUuid: string
-    roleNames: string[]
-  }): DuplicateItemSyncedEvent
-  createItemRevisionCreationRequested(dto: {
-    itemUuid: string
-    userUuid: string
-    roleNames: string[]
-  }): ItemRevisionCreationRequestedEvent
-  createItemDumpedEvent(dto: { fileDumpPath: string; userUuid: string; roleNames: string[] }): ItemDumpedEvent
+  createDuplicateItemSyncedEvent(dto: { itemUuid: string; userUuid: string }): DuplicateItemSyncedEvent
+  createItemRevisionCreationRequested(dto: { itemUuid: string; userUuid: string }): ItemRevisionCreationRequestedEvent
+  createItemDumpedEvent(dto: { fileDumpPath: string; userUuid: string }): ItemDumpedEvent
   createRevisionsCopyRequestedEvent(
     userUuid: string,
-    dto: { originalItemUuid: string; newItemUuid: string; roleNames: string[] },
+    dto: { originalItemUuid: string; newItemUuid: string },
   ): RevisionsCopyRequestedEvent
   createUserAddedToSharedVaultEvent(dto: {
     sharedVaultUuid: string

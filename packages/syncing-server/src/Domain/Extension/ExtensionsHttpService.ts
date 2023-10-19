@@ -18,7 +18,6 @@ export class ExtensionsHttpService implements ExtensionsHttpServiceInterface {
   constructor(
     private httpClient: AxiosInstance,
     private primaryItemRepository: ItemRepositoryInterface,
-    private secondaryItemRepository: ItemRepositoryInterface | null,
     private contentDecoder: ContentDecoderInterface,
     private domainEventPublisher: DomainEventPublisherInterface,
     private domainEventFactory: DomainEventFactoryInterface,
@@ -140,14 +139,9 @@ export class ExtensionsHttpService implements ExtensionsHttpServiceInterface {
     userUuid: string,
     email: string,
   ): Promise<DomainEventInterface> {
-    let extension = await this.primaryItemRepository.findByUuidAndUserUuid(extensionId, userUuid)
+    const extension = await this.primaryItemRepository.findByUuidAndUserUuid(extensionId, userUuid)
     if (extension === null || !extension.props.content) {
-      if (this.secondaryItemRepository) {
-        extension = await this.secondaryItemRepository.findByUuidAndUserUuid(extensionId, userUuid)
-      }
-      if (extension === null || !extension.props.content) {
-        throw Error(`Could not find extensions with id ${extensionId}`)
-      }
+      throw Error(`Could not find extensions with id ${extensionId}`)
     }
 
     const content = this.contentDecoder.decode(extension.props.content)

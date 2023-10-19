@@ -6,34 +6,17 @@ import {
 import { Logger } from 'winston'
 import { DomainEventFactoryInterface } from '../Event/DomainEventFactoryInterface'
 import { ItemRepositoryInterface } from '../Item/ItemRepositoryInterface'
-import { ItemRepositoryResolverInterface } from '../Item/ItemRepositoryResolverInterface'
-import { RoleNameCollection } from '@standardnotes/domain-core'
 
 export class DuplicateItemSyncedEventHandler implements DomainEventHandlerInterface {
   constructor(
-    private itemRepositoryResolver: ItemRepositoryResolverInterface,
+    private itemRepository: ItemRepositoryInterface,
     private domainEventFactory: DomainEventFactoryInterface,
     private domainEventPublisher: DomainEventPublisherInterface,
     private logger: Logger,
   ) {}
 
   async handle(event: DuplicateItemSyncedEvent): Promise<void> {
-    const roleNamesOrError = RoleNameCollection.create(event.payload.roleNames)
-    if (roleNamesOrError.isFailed()) {
-      return
-    }
-    const roleNames = roleNamesOrError.getValue()
-
-    const itemRepository = this.itemRepositoryResolver.resolve(roleNames)
-
-    await this.requestRevisionsCopy(event, itemRepository)
-  }
-
-  private async requestRevisionsCopy(
-    event: DuplicateItemSyncedEvent,
-    itemRepository: ItemRepositoryInterface,
-  ): Promise<void> {
-    const item = await itemRepository.findByUuidAndUserUuid(event.payload.itemUuid, event.payload.userUuid)
+    const item = await this.itemRepository.findByUuidAndUserUuid(event.payload.itemUuid, event.payload.userUuid)
 
     if (item === null) {
       this.logger.debug(`Could not find item with uuid ${event.payload.itemUuid}`)
@@ -47,7 +30,7 @@ export class DuplicateItemSyncedEventHandler implements DomainEventHandlerInterf
       return
     }
 
-    const existingOriginalItem = await itemRepository.findByUuidAndUserUuid(
+    const existingOriginalItem = await this.itemRepository.findByUuidAndUserUuid(
       item.props.duplicateOf.value,
       event.payload.userUuid,
     )
@@ -57,7 +40,6 @@ export class DuplicateItemSyncedEventHandler implements DomainEventHandlerInterf
         this.domainEventFactory.createRevisionsCopyRequestedEvent(event.payload.userUuid, {
           originalItemUuid: existingOriginalItem.id.toString(),
           newItemUuid: item.id.toString(),
-          roleNames: event.payload.roleNames,
         }),
       )
     }

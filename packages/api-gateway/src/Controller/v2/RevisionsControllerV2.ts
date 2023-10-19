@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { inject } from 'inversify'
-import { BaseHttpController, controller, httpDelete, httpGet, httpPost } from 'inversify-express-utils'
+import { BaseHttpController, controller, httpDelete, httpGet } from 'inversify-express-utils'
 
 import { TYPES } from '../../Bootstrap/Types'
 import { ServiceProxyInterface } from '../../Service/Http/ServiceProxyInterface'
@@ -53,16 +53,6 @@ export class RevisionsControllerV2 extends BaseHttpController {
         request.params.itemUuid,
         request.params.uuid,
       ),
-    )
-  }
-
-  @httpPost('/revisions/transition')
-  async transition(request: Request, response: Response): Promise<void> {
-    await this.serviceProxy.callRevisionsServer(
-      request,
-      response,
-      this.endpointResolver.resolveEndpointOrMethodIdentifier('POST', 'revisions/transition'),
-      request.body,
     )
   }
 }

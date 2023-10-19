@@ -1,5 +1,4 @@
 import * as winston from 'winston'
-import Redis from 'ioredis'
 import { Container, interfaces } from 'inversify'
 
 import { Env } from './Env'
@@ -8,7 +7,7 @@ import { AppDataSource } from './DataSource'
 import { SNSClient, SNSClientConfig } from '@aws-sdk/client-sns'
 import { ItemRepositoryInterface } from '../Domain/Item/ItemRepositoryInterface'
 import { SQLLegacyItemRepository } from '../Infra/TypeORM/SQLLegacyItemRepository'
-import { MongoRepository, Repository } from 'typeorm'
+import { Repository } from 'typeorm'
 import { Item } from '../Domain/Item/Item'
 import {
   DirectCallDomainEventPublisher,
@@ -151,27 +150,18 @@ import { UpdateStorageQuotaUsedInSharedVault } from '../Domain/UseCase/SharedVau
 import { SharedVaultFileUploadedEventHandler } from '../Domain/Handler/SharedVaultFileUploadedEventHandler'
 import { SharedVaultFileRemovedEventHandler } from '../Domain/Handler/SharedVaultFileRemovedEventHandler'
 import { AddNotificationsForUsers } from '../Domain/UseCase/Messaging/AddNotificationsForUsers/AddNotificationsForUsers'
-import { MongoDBItem } from '../Infra/TypeORM/MongoDBItem'
-import { MongoDBItemRepository } from '../Infra/TypeORM/MongoDBItemRepository'
-import { MongoDBItemPersistenceMapper } from '../Mapping/Persistence/MongoDB/MongoDBItemPersistenceMapper'
 import { Logger } from 'winston'
-import { ItemRepositoryResolverInterface } from '../Domain/Item/ItemRepositoryResolverInterface'
-import { TypeORMItemRepositoryResolver } from '../Infra/TypeORM/TypeORMItemRepositoryResolver'
-import { TransitionItemsFromPrimaryToSecondaryDatabaseForUser } from '../Domain/UseCase/Transition/TransitionItemsFromPrimaryToSecondaryDatabaseForUser/TransitionItemsFromPrimaryToSecondaryDatabaseForUser'
 import { SharedVaultFileMovedEventHandler } from '../Domain/Handler/SharedVaultFileMovedEventHandler'
 import { SQLItem } from '../Infra/TypeORM/SQLItem'
 import { SQLItemPersistenceMapper } from '../Mapping/Persistence/SQLItemPersistenceMapper'
 import { SQLItemRepository } from '../Infra/TypeORM/SQLItemRepository'
 import { SendEventToClient } from '../Domain/UseCase/Syncing/SendEventToClient/SendEventToClient'
-import { TransitionRequestedEventHandler } from '../Domain/Handler/TransitionRequestedEventHandler'
 import { DeleteSharedVaults } from '../Domain/UseCase/SharedVaults/DeleteSharedVaults/DeleteSharedVaults'
 import { RemoveItemsFromSharedVault } from '../Domain/UseCase/SharedVaults/RemoveItemsFromSharedVault/RemoveItemsFromSharedVault'
 import { SharedVaultRemovedEventHandler } from '../Domain/Handler/SharedVaultRemovedEventHandler'
 import { DesignateSurvivor } from '../Domain/UseCase/SharedVaults/DesignateSurvivor/DesignateSurvivor'
 import { RemoveUserFromSharedVaults } from '../Domain/UseCase/SharedVaults/RemoveUserFromSharedVaults/RemoveUserFromSharedVaults'
 import { TransferSharedVault } from '../Domain/UseCase/SharedVaults/TransferSharedVault/TransferSharedVault'
-import { TransitionRepositoryInterface } from '../Domain/Transition/TransitionRepositoryInterface'
-import { RedisTransitionRepository } from '../Infra/Redis/RedisTransitionRepository'
 import { TransferSharedVaultItems } from '../Domain/UseCase/SharedVaults/TransferSharedVaultItems/TransferSharedVaultItems'
 import { DumpItem } from '../Domain/UseCase/Syncing/DumpItem/DumpItem'
 
@@ -223,28 +213,10 @@ export class ContainerConfigLoader {
     const isConfiguredForHomeServer = env.get('MODE', true) === 'home-server'
     const isConfiguredForSelfHosting = env.get('MODE', true) === 'self-hosted'
     const isConfiguredForHomeServerOrSelfHosting = isConfiguredForHomeServer || isConfiguredForSelfHosting
-    const isSecondaryDatabaseEnabled = env.get('SECONDARY_DB_ENABLED', true) === 'true'
-    const isConfiguredForInMemoryCache = env.get('CACHE_TYPE', true) === 'memory'
 
     container
       .bind<boolean>(TYPES.Sync_IS_CONFIGURED_FOR_HOME_SERVER_OR_SELF_HOSTING)
       .toConstantValue(isConfiguredForHomeServerOrSelfHosting)
-
-    if (!isConfiguredForInMemoryCache) {
-      const redisUrl = env.get('REDIS_URL')
-      const isRedisInClusterMode = redisUrl.indexOf(',') > 0
-      let redis
-      if (isRedisInClusterMode) {
-        redis = new Redis.Cluster(redisUrl.split(','))
-      } else {
-        redis = new Redis(redisUrl)
-      }
-
-      container.bind(TYPES.Sync_Redis).toConstantValue(redis)
-      container
-        .bind<TransitionRepositoryInterface>(TYPES.Sync_TransitionStatusRepository)
-        .toConstantValue(new RedisTransitionRepository(container.get<Redis>(TYPES.Sync_Redis)))
-    }
 
     container.bind<Env>(TYPES.Sync_Env).toConstantValue(env)
 
@@ -413,27 +385,6 @@ export class ContainerConfigLoader {
       .bind<Repository<TypeORMMessage>>(TYPES.Sync_ORMMessageRepository)
       .toConstantValue(appDataSource.getRepository(TypeORMMessage))
 
-    // Mongo
-    if (isSecondaryDatabaseEnabled) {
-      container
-        .bind<MapperInterface<Item, MongoDBItem>>(TYPES.Sync_MongoDBItemPersistenceMapper)
-        .toConstantValue(new MongoDBItemPersistenceMapper())
-
-      container
-        .bind<MongoRepository<MongoDBItem>>(TYPES.Sync_ORMMongoItemRepository)
-        .toConstantValue(appDataSource.getMongoRepository(MongoDBItem))
-
-      container
-        .bind<ItemRepositoryInterface>(TYPES.Sync_MongoDBItemRepository)
-        .toConstantValue(
-          new MongoDBItemRepository(
-            container.get<MongoRepository<MongoDBItem>>(TYPES.Sync_ORMMongoItemRepository),
-            container.get<MapperInterface<Item, MongoDBItem>>(TYPES.Sync_MongoDBItemPersistenceMapper),
-            container.get<Logger>(TYPES.Sync_Logger),
-          ),
-        )
-    }
-
     // Repositories
     container
       .bind<ItemRepositoryInterface>(TYPES.Sync_SQLItemRepository)
@@ -449,14 +400,6 @@ export class ContainerConfigLoader {
               container.get<MapperInterface<Item, SQLLegacyItem>>(TYPES.Sync_SQLLegacyItemPersistenceMapper),
               container.get<Logger>(TYPES.Sync_Logger),
             ),
-      )
-    container
-      .bind<ItemRepositoryResolverInterface>(TYPES.Sync_ItemRepositoryResolver)
-      .toConstantValue(
-        new TypeORMItemRepositoryResolver(
-          container.get<ItemRepositoryInterface>(TYPES.Sync_SQLItemRepository),
-          isSecondaryDatabaseEnabled ? container.get<ItemRepositoryInterface>(TYPES.Sync_MongoDBItemRepository) : null,
-        ),
       )
     container
       .bind<SharedVaultRepositoryInterface>(TYPES.Sync_SharedVaultRepository)
@@ -603,7 +546,7 @@ export class ContainerConfigLoader {
       .bind<GetItems>(TYPES.Sync_GetItems)
       .toConstantValue(
         new GetItems(
-          container.get(TYPES.Sync_ItemRepositoryResolver),
+          container.get(TYPES.Sync_SQLItemRepository),
           container.get(TYPES.Sync_SharedVaultUserRepository),
           container.get(TYPES.Sync_CONTENT_SIZE_TRANSFER_LIMIT),
           container.get(TYPES.Sync_ItemTransferCalculator),
@@ -615,7 +558,7 @@ export class ContainerConfigLoader {
       .bind<SaveNewItem>(TYPES.Sync_SaveNewItem)
       .toConstantValue(
         new SaveNewItem(
-          container.get(TYPES.Sync_ItemRepositoryResolver),
+          container.get(TYPES.Sync_SQLItemRepository),
           container.get(TYPES.Sync_Timer),
           container.get(TYPES.Sync_DomainEventPublisher),
           container.get(TYPES.Sync_DomainEventFactory),
@@ -655,7 +598,7 @@ export class ContainerConfigLoader {
       .bind<UpdateExistingItem>(TYPES.Sync_UpdateExistingItem)
       .toConstantValue(
         new UpdateExistingItem(
-          container.get<ItemRepositoryResolverInterface>(TYPES.Sync_ItemRepositoryResolver),
+          container.get<ItemRepositoryInterface>(TYPES.Sync_SQLItemRepository),
           container.get<TimerInterface>(TYPES.Sync_Timer),
           container.get<DomainEventPublisherInterface>(TYPES.Sync_DomainEventPublisher),
           container.get<DomainEventFactoryInterface>(TYPES.Sync_DomainEventFactory),
@@ -670,7 +613,7 @@ export class ContainerConfigLoader {
       .toConstantValue(
         new SaveItems(
           container.get(TYPES.Sync_ItemSaveValidator),
-          container.get(TYPES.Sync_ItemRepositoryResolver),
+          container.get(TYPES.Sync_SQLItemRepository),
           container.get(TYPES.Sync_Timer),
           container.get(TYPES.Sync_SaveNewItem),
           container.get(TYPES.Sync_UpdateExistingItem),
@@ -699,7 +642,7 @@ export class ContainerConfigLoader {
       .bind<SyncItems>(TYPES.Sync_SyncItems)
       .toConstantValue(
         new SyncItems(
-          container.get<ItemRepositoryResolverInterface>(TYPES.Sync_ItemRepositoryResolver),
+          container.get<ItemRepositoryInterface>(TYPES.Sync_SQLItemRepository),
           container.get<GetItems>(TYPES.Sync_GetItems),
           container.get<SaveItems>(TYPES.Sync_SaveItems),
           container.get<GetSharedVaults>(TYPES.Sync_GetSharedVaults),
@@ -710,10 +653,10 @@ export class ContainerConfigLoader {
         ),
       )
     container.bind<CheckIntegrity>(TYPES.Sync_CheckIntegrity).toDynamicValue((context: interfaces.Context) => {
-      return new CheckIntegrity(context.container.get(TYPES.Sync_ItemRepositoryResolver))
+      return new CheckIntegrity(context.container.get(TYPES.Sync_SQLItemRepository))
     })
     container.bind<GetItem>(TYPES.Sync_GetItem).toDynamicValue((context: interfaces.Context) => {
-      return new GetItem(context.container.get(TYPES.Sync_ItemRepositoryResolver))
+      return new GetItem(context.container.get(TYPES.Sync_SQLItemRepository))
     })
     container
       .bind<InviteUserToSharedVault>(TYPES.Sync_InviteUserToSharedVault)
@@ -855,31 +798,9 @@ export class ContainerConfigLoader {
         ),
       )
     container
-      .bind<TransitionItemsFromPrimaryToSecondaryDatabaseForUser>(
-        TYPES.Sync_TransitionItemsFromPrimaryToSecondaryDatabaseForUser,
-      )
-      .toConstantValue(
-        new TransitionItemsFromPrimaryToSecondaryDatabaseForUser(
-          container.get<ItemRepositoryInterface>(TYPES.Sync_SQLItemRepository),
-          isSecondaryDatabaseEnabled ? container.get<ItemRepositoryInterface>(TYPES.Sync_MongoDBItemRepository) : null,
-          isConfiguredForInMemoryCache
-            ? null
-            : container.get<TransitionRepositoryInterface>(TYPES.Sync_TransitionStatusRepository),
-          container.get<TimerInterface>(TYPES.Sync_Timer),
-          container.get<Logger>(TYPES.Sync_Logger),
-          env.get('MIGRATION_BATCH_SIZE', true) ? +env.get('MIGRATION_BATCH_SIZE', true) : 100,
-          container.get<DomainEventPublisherInterface>(TYPES.Sync_DomainEventPublisher),
-          container.get<DomainEventFactoryInterface>(TYPES.Sync_DomainEventFactory),
-        ),
-      )
-    container
       .bind<RemoveItemsFromSharedVault>(TYPES.Sync_RemoveItemsFromSharedVault)
       .toConstantValue(
-        new RemoveItemsFromSharedVault(
-          isSecondaryDatabaseEnabled
-            ? container.get<ItemRepositoryInterface>(TYPES.Sync_MongoDBItemRepository)
-            : container.get<ItemRepositoryInterface>(TYPES.Sync_SQLItemRepository),
-        ),
+        new RemoveItemsFromSharedVault(container.get<ItemRepositoryInterface>(TYPES.Sync_SQLItemRepository)),
       )
     container
       .bind<DesignateSurvivor>(TYPES.Sync_DesignateSurvivor)
@@ -905,11 +826,7 @@ export class ContainerConfigLoader {
     container
       .bind<TransferSharedVaultItems>(TYPES.Sync_TransferSharedVaultItems)
       .toConstantValue(
-        new TransferSharedVaultItems(
-          isSecondaryDatabaseEnabled
-            ? container.get<ItemRepositoryInterface>(TYPES.Sync_MongoDBItemRepository)
-            : container.get<ItemRepositoryInterface>(TYPES.Sync_SQLItemRepository),
-        ),
+        new TransferSharedVaultItems(container.get<ItemRepositoryInterface>(TYPES.Sync_SQLItemRepository)),
       )
     container
       .bind<TransferSharedVault>(TYPES.Sync_TransferSharedVault)
@@ -947,7 +864,7 @@ export class ContainerConfigLoader {
       .bind<DumpItem>(TYPES.Sync_DumpItem)
       .toConstantValue(
         new DumpItem(
-          container.get<ItemRepositoryResolverInterface>(TYPES.Sync_ItemRepositoryResolver),
+          container.get<ItemRepositoryInterface>(TYPES.Sync_SQLItemRepository),
           container.get<ItemBackupServiceInterface>(TYPES.Sync_ItemBackupService),
           container.get<DomainEventFactoryInterface>(TYPES.Sync_DomainEventFactory),
           container.get<DomainEventPublisherInterface>(TYPES.Sync_DomainEventPublisher),
@@ -985,7 +902,7 @@ export class ContainerConfigLoader {
       .bind<DuplicateItemSyncedEventHandler>(TYPES.Sync_DuplicateItemSyncedEventHandler)
       .toConstantValue(
         new DuplicateItemSyncedEventHandler(
-          container.get<ItemRepositoryResolverInterface>(TYPES.Sync_ItemRepositoryResolver),
+          container.get<ItemRepositoryInterface>(TYPES.Sync_SQLItemRepository),
           container.get<DomainEventFactoryInterface>(TYPES.Sync_DomainEventFactory),
           container.get<DomainEventPublisherInterface>(TYPES.Sync_DomainEventPublisher),
           container.get<Logger>(TYPES.Sync_Logger),
@@ -995,7 +912,7 @@ export class ContainerConfigLoader {
       .bind<AccountDeletionRequestedEventHandler>(TYPES.Sync_AccountDeletionRequestedEventHandler)
       .toConstantValue(
         new AccountDeletionRequestedEventHandler(
-          container.get<ItemRepositoryResolverInterface>(TYPES.Sync_ItemRepositoryResolver),
+          container.get<ItemRepositoryInterface>(TYPES.Sync_SQLItemRepository),
           container.get<DeleteSharedVaults>(TYPES.Sync_DeleteSharedVaults),
           container.get<RemoveUserFromSharedVaults>(TYPES.Sync_RemoveUserFromSharedVaults),
           container.get<Logger>(TYPES.Sync_Logger),
@@ -1037,17 +954,6 @@ export class ContainerConfigLoader {
         ),
       )
     container
-      .bind<TransitionRequestedEventHandler>(TYPES.Sync_TransitionRequestedEventHandler)
-      .toConstantValue(
-        new TransitionRequestedEventHandler(
-          false,
-          container.get<TransitionItemsFromPrimaryToSecondaryDatabaseForUser>(
-            TYPES.Sync_TransitionItemsFromPrimaryToSecondaryDatabaseForUser,
-          ),
-          container.get<Logger>(TYPES.Sync_Logger),
-        ),
-      )
-    container
       .bind<SharedVaultRemovedEventHandler>(TYPES.Sync_SharedVaultRemovedEventHandler)
       .toConstantValue(
         new SharedVaultRemovedEventHandler(
@@ -1065,7 +971,6 @@ export class ContainerConfigLoader {
         new ExtensionsHttpService(
           container.get<AxiosInstance>(TYPES.Sync_HTTPClient),
           container.get<ItemRepositoryInterface>(TYPES.Sync_SQLItemRepository),
-          isSecondaryDatabaseEnabled ? container.get<ItemRepositoryInterface>(TYPES.Sync_MongoDBItemRepository) : null,
           container.get<ContentDecoderInterface>(TYPES.Sync_ContentDecoder),
           container.get<DomainEventPublisherInterface>(TYPES.Sync_DomainEventPublisher),
           container.get<DomainEventFactoryInterface>(TYPES.Sync_DomainEventFactory),
@@ -1090,10 +995,6 @@ export class ContainerConfigLoader {
         container.get<SharedVaultFileMovedEventHandler>(TYPES.Sync_SharedVaultFileMovedEventHandler),
       ],
       [
-        'TRANSITION_REQUESTED',
-        container.get<TransitionRequestedEventHandler>(TYPES.Sync_TransitionRequestedEventHandler),
-      ],
-      [
         'SHARED_VAULT_REMOVED',
         container.get<SharedVaultRemovedEventHandler>(TYPES.Sync_SharedVaultRemovedEventHandler),
       ],
@@ -1104,9 +1005,6 @@ export class ContainerConfigLoader {
         .toConstantValue(
           new EmailBackupRequestedEventHandler(
             container.get<ItemRepositoryInterface>(TYPES.Sync_SQLItemRepository),
-            isSecondaryDatabaseEnabled
-              ? container.get<ItemRepositoryInterface>(TYPES.Sync_MongoDBItemRepository)
-              : null,
             container.get<ItemBackupServiceInterface>(TYPES.Sync_ItemBackupService),
             container.get<DomainEventPublisherInterface>(TYPES.Sync_DomainEventPublisher),
             container.get<DomainEventFactoryInterface>(TYPES.Sync_DomainEventFactory),

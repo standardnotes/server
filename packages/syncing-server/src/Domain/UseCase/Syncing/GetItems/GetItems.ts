@@ -1,4 +1,4 @@
-import { Result, RoleNameCollection, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
+import { Result, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
 import { Time, TimerInterface } from '@standardnotes/time'
 
 import { Item } from '../../../Item/Item'
@@ -7,14 +7,14 @@ import { ItemQuery } from '../../../Item/ItemQuery'
 import { ItemTransferCalculatorInterface } from '../../../Item/ItemTransferCalculatorInterface'
 import { GetItemsDTO } from './GetItemsDTO'
 import { SharedVaultUserRepositoryInterface } from '../../../SharedVault/User/SharedVaultUserRepositoryInterface'
-import { ItemRepositoryResolverInterface } from '../../../Item/ItemRepositoryResolverInterface'
+import { ItemRepositoryInterface } from '../../../Item/ItemRepositoryInterface'
 
 export class GetItems implements UseCaseInterface<GetItemsResult> {
   private readonly DEFAULT_ITEMS_LIMIT = 150
   private readonly SYNC_TOKEN_VERSION = 2
 
   constructor(
-    private itemRepositoryResolver: ItemRepositoryResolverInterface,
+    private itemRepository: ItemRepositoryInterface,
     private sharedVaultUserRepository: SharedVaultUserRepositoryInterface,
     private contentSizeTransferLimit: number,
     private itemTransferCalculator: ItemTransferCalculatorInterface,
@@ -34,12 +34,6 @@ export class GetItems implements UseCaseInterface<GetItemsResult> {
       return Result.fail(userUuidOrError.getError())
     }
     const userUuid = userUuidOrError.getValue()
-
-    const roleNamesOrError = RoleNameCollection.create(dto.roleNames)
-    if (roleNamesOrError.isFailed()) {
-      return Result.fail(roleNamesOrError.getError())
-    }
-    const roleNames = roleNamesOrError.getValue()
 
     const syncTimeComparison = dto.cursorToken ? '>=' : '>'
     const limit = dto.limit === undefined || dto.limit < 1 ? this.DEFAULT_ITEMS_LIMIT : dto.limit
@@ -65,22 +59,20 @@ export class GetItems implements UseCaseInterface<GetItemsResult> {
       exclusiveSharedVaultUuids,
     }
 
-    const itemRepository = this.itemRepositoryResolver.resolve(roleNames)
-
-    const itemContentSizeDescriptors = await itemRepository.findContentSizeForComputingTransferLimit(itemQuery)
+    const itemContentSizeDescriptors = await this.itemRepository.findContentSizeForComputingTransferLimit(itemQuery)
     const itemUuidsToFetch = await this.itemTransferCalculator.computeItemUuidsToFetch(
       itemContentSizeDescriptors,
       this.contentSizeTransferLimit,
     )
     let items: Array<Item> = []
     if (itemUuidsToFetch.length > 0) {
-      items = await itemRepository.findAll({
+      items = await this.itemRepository.findAll({
         uuids: itemUuidsToFetch,
         sortBy: 'updated_at_timestamp',
         sortOrder: 'ASC',
       })
     }
-    const totalItemsCount = await itemRepository.countAll(itemQuery)
+    const totalItemsCount = await this.itemRepository.countAll(itemQuery)
 
     let cursorToken = undefined
     if (totalItemsCount > upperBoundLimit) {

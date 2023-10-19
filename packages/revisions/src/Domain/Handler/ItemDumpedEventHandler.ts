@@ -12,7 +12,6 @@ export class ItemDumpedEventHandler implements DomainEventHandlerInterface {
   async handle(event: ItemDumpedEvent): Promise<void> {
     const result = await this.createRevisionFromDump.execute({
       filePath: event.payload.fileDumpPath,
-      roleNames: event.payload.roleNames,
     })
 
     if (result.isFailed()) {

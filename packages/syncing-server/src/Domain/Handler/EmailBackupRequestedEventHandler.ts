@@ -15,7 +15,6 @@ import { getBody, getSubject } from '../Email/EmailBackupAttachmentCreated'
 export class EmailBackupRequestedEventHandler implements DomainEventHandlerInterface {
   constructor(
     private primaryItemRepository: ItemRepositoryInterface,
-    private secondaryItemRepository: ItemRepositoryInterface | null,
     private itemBackupService: ItemBackupServiceInterface,
     private domainEventPublisher: DomainEventPublisherInterface,
     private domainEventFactory: DomainEventFactoryInterface,
@@ -27,10 +26,6 @@ export class EmailBackupRequestedEventHandler implements DomainEventHandlerInter
 
   async handle(event: EmailBackupRequestedEvent): Promise<void> {
     await this.requestEmailWithBackupFile(event, this.primaryItemRepository)
-
-    if (this.secondaryItemRepository) {
-      await this.requestEmailWithBackupFile(event, this.secondaryItemRepository)
-    }
   }
 
   private async requestEmailWithBackupFile(

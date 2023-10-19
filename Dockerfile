@@ -3,6 +3,8 @@ FROM node:20.6.1-alpine
 ENV NODE_ENV production
 
 RUN apk add --update --no-cache \
+  g++ \
+  make \
   openssl \
   curl \
   bash \

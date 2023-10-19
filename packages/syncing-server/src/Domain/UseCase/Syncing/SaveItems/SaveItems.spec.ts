@@ -5,15 +5,13 @@ import { SaveItems } from './SaveItems'
 import { SaveNewItem } from '../SaveNewItem/SaveNewItem'
 import { UpdateExistingItem } from '../UpdateExistingItem/UpdateExistingItem'
 import { Logger } from 'winston'
-import { ContentType, Dates, Result, RoleName, Timestamps, Uuid } from '@standardnotes/domain-core'
+import { ContentType, Dates, Result, Timestamps, Uuid } from '@standardnotes/domain-core'
 import { ItemHash } from '../../../Item/ItemHash'
 import { Item } from '../../../Item/Item'
-import { ItemRepositoryResolverInterface } from '../../../Item/ItemRepositoryResolverInterface'
 
 describe('SaveItems', () => {
   let itemSaveValidator: ItemSaveValidatorInterface
   let itemRepository: ItemRepositoryInterface
-  let itemRepositoryResolver: ItemRepositoryResolverInterface
   let timer: TimerInterface
   let saveNewItem: SaveNewItem
   let updateExistingItem: UpdateExistingItem
@@ -22,7 +20,7 @@ describe('SaveItems', () => {
   let savedItem: Item
 
   const createUseCase = () =>
-    new SaveItems(itemSaveValidator, itemRepositoryResolver, timer, saveNewItem, updateExistingItem, logger)
+    new SaveItems(itemSaveValidator, itemRepository, timer, saveNewItem, updateExistingItem, logger)
 
   beforeEach(() => {
     itemSaveValidator = {} as jest.Mocked<ItemSaveValidatorInterface>
@@ -30,9 +28,6 @@ describe('SaveItems', () => {
 
     itemRepository = {} as jest.Mocked<ItemRepositoryInterface>
     itemRepository.findByUuid = jest.fn().mockResolvedValue(null)
-
-    itemRepositoryResolver = {} as jest.Mocked<ItemRepositoryResolverInterface>
-    itemRepositoryResolver.resolve = jest.fn().mockReturnValue(itemRepository)
 
     timer = {} as jest.Mocked<TimerInterface>
     timer.getTimestampInMicroseconds = jest.fn().mockReturnValue(123)
@@ -84,12 +79,10 @@ describe('SaveItems', () => {
     const result = await useCase.execute({
       itemHashes: [itemHash1],
       userUuid: 'user-uuid',
-      onGoingRevisionsTransition: false,
       apiVersion: '1',
       readOnlyAccess: false,
       sessionUuid: 'session-uuid',
       snjsVersion: '2.200.0',
-      roleNames: [RoleName.NAMES.CoreUser],
     })
 
     expect(result.isFailed()).toBeFalsy()
@@ -97,9 +90,7 @@ describe('SaveItems', () => {
     expect(saveNewItem.execute).toHaveBeenCalledWith({
       itemHash: itemHash1,
       userUuid: 'user-uuid',
-      onGoingRevisionsTransition: false,
       sessionUuid: 'session-uuid',
-      roleNames: ['CORE_USER'],
     })
   })
 
@@ -111,12 +102,10 @@ describe('SaveItems', () => {
     const result = await useCase.execute({
       itemHashes: [itemHash1],
       userUuid: 'user-uuid',
-      onGoingRevisionsTransition: false,
       apiVersion: '1',
       readOnlyAccess: false,
       sessionUuid: 'session-uuid',
       snjsVersion: '2.200.0',
-      roleNames: [RoleName.NAMES.CoreUser],
     })
 
     expect(result.isFailed()).toBeFalsy()
@@ -136,12 +125,10 @@ describe('SaveItems', () => {
     const result = await useCase.execute({
       itemHashes: [itemHash1],
       userUuid: 'user-uuid',
-      onGoingRevisionsTransition: false,
       apiVersion: '1',
       readOnlyAccess: false,
       sessionUuid: 'session-uuid',
       snjsVersion: '2.200.0',
-      roleNames: [RoleName.NAMES.CoreUser],
     })
 
     expect(result.isFailed()).toBeFalsy()
@@ -159,12 +146,10 @@ describe('SaveItems', () => {
     const result = await useCase.execute({
       itemHashes: [itemHash1],
       userUuid: 'user-uuid',
-      onGoingRevisionsTransition: false,
       apiVersion: '1',
       readOnlyAccess: true,
       sessionUuid: 'session-uuid',
       snjsVersion: '2.200.0',
-      roleNames: [RoleName.NAMES.CoreUser],
     })
 
     expect(result.isFailed()).toBeFalsy()
@@ -183,12 +168,10 @@ describe('SaveItems', () => {
     const result = await useCase.execute({
       itemHashes: [itemHash1],
       userUuid: 'user-uuid',
-      onGoingRevisionsTransition: false,
       apiVersion: '1',
       readOnlyAccess: false,
       sessionUuid: 'session-uuid',
       snjsVersion: '2.200.0',
-      roleNames: [RoleName.NAMES.CoreUser],
     })
 
     expect(result.isFailed()).toBeFalsy()
@@ -203,12 +186,10 @@ describe('SaveItems', () => {
     const result = await useCase.execute({
       itemHashes: [itemHash1],
       userUuid: 'user-uuid',
-      onGoingRevisionsTransition: false,
       apiVersion: '1',
       readOnlyAccess: false,
       sessionUuid: 'session-uuid',
       snjsVersion: '2.200.0',
-      roleNames: [RoleName.NAMES.CoreUser],
     })
 
     expect(result.isFailed()).toBeFalsy()
@@ -222,13 +203,11 @@ describe('SaveItems', () => {
 
     const result = await useCase.execute({
       itemHashes: [itemHash1],
-      onGoingRevisionsTransition: false,
       userUuid: '00000000-0000-0000-0000-000000000000',
       apiVersion: '1',
       readOnlyAccess: false,
       sessionUuid: 'session-uuid',
       snjsVersion: '2.200.0',
-      roleNames: [RoleName.NAMES.CoreUser],
     })
 
     expect(result.isFailed()).toBeFalsy()
@@ -237,8 +216,6 @@ describe('SaveItems', () => {
       existingItem: savedItem,
       sessionUuid: 'session-uuid',
       performingUserUuid: '00000000-0000-0000-0000-000000000000',
-      onGoingRevisionsTransition: false,
-      roleNames: ['CORE_USER'],
     })
   })
 
@@ -251,12 +228,10 @@ describe('SaveItems', () => {
     const result = await useCase.execute({
       itemHashes: [itemHash1],
       userUuid: 'user-uuid',
-      onGoingRevisionsTransition: false,
       apiVersion: '1',
       readOnlyAccess: false,
       sessionUuid: 'session-uuid',
       snjsVersion: '2.200.0',
-      roleNames: [RoleName.NAMES.CoreUser],
     })
 
     expect(result.isFailed()).toBeFalsy()
@@ -277,12 +252,10 @@ describe('SaveItems', () => {
     const result = await useCase.execute({
       itemHashes: [ItemHash.create({ ...itemHash1.props, uuid: 'invalid-uuid' }).getValue()],
       userUuid: 'user-uuid',
-      onGoingRevisionsTransition: false,
       apiVersion: '1',
       readOnlyAccess: false,
       sessionUuid: 'session-uuid',
       snjsVersion: '2.200.0',
-      roleNames: [RoleName.NAMES.CoreUser],
     })
 
     expect(result.isFailed()).toBeFalsy()
@@ -324,33 +297,13 @@ describe('SaveItems', () => {
         ItemHash.create({ ...itemHash1.props, uuid: '00000000-0000-0000-0000-000000000003' }).getValue(),
       ],
       userUuid: 'user-uuid',
-      onGoingRevisionsTransition: false,
       apiVersion: '2',
       readOnlyAccess: false,
       sessionUuid: 'session-uuid',
       snjsVersion: '2.200.0',
-      roleNames: [RoleName.NAMES.CoreUser],
     })
 
     expect(result.isFailed()).toBeFalsy()
     expect(result.getValue().syncToken).toEqual('MjowLjAwMDE2')
-  })
-
-  it('should fail if the role names are invalid', async () => {
-    const useCase = createUseCase()
-
-    const result = await useCase.execute({
-      itemHashes: [itemHash1],
-      userUuid: 'user-uuid',
-      onGoingRevisionsTransition: false,
-      apiVersion: '2',
-      readOnlyAccess: false,
-      sessionUuid: 'session-uuid',
-      snjsVersion: '2.200.0',
-      roleNames: ['invalid-role-name'],
-    })
-
-    expect(result.isFailed()).toBeTruthy()
-    expect(result.getError()).toEqual('Invalid role name: invalid-role-name')
   })
 })
