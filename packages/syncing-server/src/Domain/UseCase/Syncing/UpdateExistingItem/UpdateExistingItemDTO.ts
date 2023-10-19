@@ -6,6 +6,4 @@ export interface UpdateExistingItemDTO {
   itemHash: ItemHash
   sessionUuid: string | null
   performingUserUuid: string
-  roleNames: string[]
-  onGoingRevisionsTransition: boolean
 }

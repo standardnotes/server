@@ -7,15 +7,12 @@ const TYPES = {
   Sync_S3: Symbol.for('Sync_S3'),
   Sync_Env: Symbol.for('Sync_Env'),
   // Repositories
-  Sync_ItemRepositoryResolver: Symbol.for('Sync_ItemRepositoryResolver'),
   Sync_SQLItemRepository: Symbol.for('Sync_SQLItemRepository'),
-  Sync_MongoDBItemRepository: Symbol.for('Sync_MongoDBItemRepository'),
   Sync_SharedVaultRepository: Symbol.for('Sync_SharedVaultRepository'),
   Sync_SharedVaultInviteRepository: Symbol.for('Sync_SharedVaultInviteRepository'),
   Sync_SharedVaultUserRepository: Symbol.for('Sync_SharedVaultUserRepository'),
   Sync_NotificationRepository: Symbol.for('Sync_NotificationRepository'),
   Sync_MessageRepository: Symbol.for('Sync_MessageRepository'),
-  Sync_TransitionStatusRepository: Symbol.for('Sync_TransitionStatusRepository'),
   // ORM
   Sync_ORMItemRepository: Symbol.for('Sync_ORMItemRepository'),
   Sync_ORMLegacyItemRepository: Symbol.for('Sync_ORMLegacyItemRepository'),
@@ -24,8 +21,6 @@ const TYPES = {
   Sync_ORMSharedVaultUserRepository: Symbol.for('Sync_ORMSharedVaultUserRepository'),
   Sync_ORMNotificationRepository: Symbol.for('Sync_ORMNotificationRepository'),
   Sync_ORMMessageRepository: Symbol.for('Sync_ORMMessageRepository'),
-  // Mongo
-  Sync_ORMMongoItemRepository: Symbol.for('Sync_ORMMongoItemRepository'),
   // Middleware
   Sync_AuthMiddleware: Symbol.for('Sync_AuthMiddleware'),
   // env vars
@@ -82,9 +77,6 @@ const TYPES = {
   Sync_DetermineSharedVaultOperationOnItem: Symbol.for('Sync_DetermineSharedVaultOperationOnItem'),
   Sync_UpdateStorageQuotaUsedInSharedVault: Symbol.for('Sync_UpdateStorageQuotaUsedInSharedVault'),
   Sync_AddNotificationsForUsers: Symbol.for('Sync_AddNotificationsForUsers'),
-  Sync_TransitionItemsFromPrimaryToSecondaryDatabaseForUser: Symbol.for(
-    'Sync_TransitionItemsFromPrimaryToSecondaryDatabaseForUser',
-  ),
   Sync_SendEventToClient: Symbol.for('Sync_SendEventToClient'),
   Sync_RemoveItemsFromSharedVault: Symbol.for('Sync_RemoveItemsFromSharedVault'),
   Sync_DesignateSurvivor: Symbol.for('Sync_DesignateSurvivor'),
@@ -100,7 +92,6 @@ const TYPES = {
   Sync_SharedVaultFileRemovedEventHandler: Symbol.for('Sync_SharedVaultFileRemovedEventHandler'),
   Sync_SharedVaultFileUploadedEventHandler: Symbol.for('Sync_SharedVaultFileUploadedEventHandler'),
   Sync_SharedVaultFileMovedEventHandler: Symbol.for('Sync_SharedVaultFileMovedEventHandler'),
-  Sync_TransitionRequestedEventHandler: Symbol.for('Sync_TransitionRequestedEventHandler'),
   Sync_SharedVaultRemovedEventHandler: Symbol.for('Sync_SharedVaultRemovedEventHandler'),
   // Services
   Sync_ContentDecoder: Symbol.for('Sync_ContentDecoder'),
@@ -139,7 +130,6 @@ const TYPES = {
   Sync_NotificationHttpMapper: Symbol.for('Sync_NotificationHttpMapper'),
   Sync_SQLLegacyItemPersistenceMapper: Symbol.for('Sync_SQLLegacyItemPersistenceMapper'),
   Sync_SQLItemPersistenceMapper: Symbol.for('Sync_SQLItemPersistenceMapper'),
-  Sync_MongoDBItemPersistenceMapper: Symbol.for('Sync_MongoDBItemPersistenceMapper'),
   Sync_ItemHttpMapper: Symbol.for('Sync_ItemHttpMapper'),
   Sync_ItemHashHttpMapper: Symbol.for('Sync_ItemHashHttpMapper'),
   Sync_SavedItemHttpMapper: Symbol.for('Sync_SavedItemHttpMapper'),

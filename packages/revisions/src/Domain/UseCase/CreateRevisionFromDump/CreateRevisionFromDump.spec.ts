@@ -3,16 +3,14 @@ import { Uuid, ContentType, Dates, Result } from '@standardnotes/domain-core'
 import { DumpRepositoryInterface } from '../../Dump/DumpRepositoryInterface'
 import { Revision } from '../../Revision/Revision'
 import { RevisionRepositoryInterface } from '../../Revision/RevisionRepositoryInterface'
-import { RevisionRepositoryResolverInterface } from '../../Revision/RevisionRepositoryResolverInterface'
 import { CreateRevisionFromDump } from './CreateRevisionFromDump'
 
 describe('CreateRevisionFromDump', () => {
   let revisionRepository: RevisionRepositoryInterface
   let revision: Revision
   let dumpRepository: DumpRepositoryInterface
-  let revisionRepositoryResolver: RevisionRepositoryResolverInterface
 
-  const createUseCase = () => new CreateRevisionFromDump(dumpRepository, revisionRepositoryResolver)
+  const createUseCase = () => new CreateRevisionFromDump(dumpRepository, revisionRepository)
 
   beforeEach(() => {
     revision = Revision.create({
@@ -33,15 +31,11 @@ describe('CreateRevisionFromDump', () => {
 
     revisionRepository = {} as jest.Mocked<RevisionRepositoryInterface>
     revisionRepository.insert = jest.fn().mockReturnValue(true)
-
-    revisionRepositoryResolver = {} as jest.Mocked<RevisionRepositoryResolverInterface>
-    revisionRepositoryResolver.resolve = jest.fn().mockReturnValue(revisionRepository)
   })
 
   it('should create a revision from file dump', async () => {
     const result = await createUseCase().execute({
       filePath: 'foobar',
-      roleNames: ['CORE_USER'],
     })
 
     expect(result.isFailed()).toBeFalsy()
@@ -52,7 +46,6 @@ describe('CreateRevisionFromDump', () => {
   it('should fail if file path is empty', async () => {
     const result = await createUseCase().execute({
       filePath: '',
-      roleNames: ['CORE_USER'],
     })
 
     expect(result.isFailed()).toBeTruthy()
@@ -60,23 +53,11 @@ describe('CreateRevisionFromDump', () => {
     expect(dumpRepository.removeDump).not.toHaveBeenCalled()
   })
 
-  it('should fail if role name is invalid', async () => {
-    const result = await createUseCase().execute({
-      filePath: 'foobar',
-      roleNames: ['INVALID_ROLE_NAME'],
-    })
-
-    expect(result.isFailed()).toBeTruthy()
-    expect(revisionRepository.insert).not.toHaveBeenCalled()
-    expect(dumpRepository.removeDump).toHaveBeenCalled()
-  })
-
   it('should fail if revision cannot be found', async () => {
     dumpRepository.getRevisionFromDumpPath = jest.fn().mockReturnValue(Result.fail('Oops'))
 
     const result = await createUseCase().execute({
       filePath: 'foobar',
-      roleNames: ['CORE_USER'],
     })
 
     expect(result.isFailed()).toBeTruthy()
@@ -89,7 +70,6 @@ describe('CreateRevisionFromDump', () => {
 
     const result = await createUseCase().execute({
       filePath: 'foobar',
-      roleNames: ['CORE_USER'],
     })
 
     expect(result.isFailed()).toBeTruthy()

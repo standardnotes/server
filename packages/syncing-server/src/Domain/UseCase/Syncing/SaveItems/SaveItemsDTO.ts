@@ -7,6 +7,4 @@ export interface SaveItemsDTO {
   readOnlyAccess: boolean
   sessionUuid: string | null
   snjsVersion: string
-  roleNames: string[]
-  onGoingRevisionsTransition: boolean
 }

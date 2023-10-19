@@ -1,11 +1,11 @@
-import { Result, RoleNameCollection, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
+import { Result, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
 
 import { Revision } from '../../Revision/Revision'
 import { GetRevisionDTO } from './GetRevisionDTO'
-import { RevisionRepositoryResolverInterface } from '../../Revision/RevisionRepositoryResolverInterface'
+import { RevisionRepositoryInterface } from '../../Revision/RevisionRepositoryInterface'
 
 export class GetRevision implements UseCaseInterface<Revision> {
-  constructor(private revisionRepositoryResolver: RevisionRepositoryResolverInterface) {}
+  constructor(private revisionRepository: RevisionRepositoryInterface) {}
 
   async execute(dto: GetRevisionDTO): Promise<Result<Revision>> {
     const revisionUuidOrError = Uuid.create(dto.revisionUuid)
@@ -20,12 +20,6 @@ export class GetRevision implements UseCaseInterface<Revision> {
     }
     const userUuid = userUuidOrError.getValue()
 
-    const roleNamesOrError = RoleNameCollection.create(dto.roleNames)
-    if (roleNamesOrError.isFailed()) {
-      return Result.fail(roleNamesOrError.getError())
-    }
-    const roleNames = roleNamesOrError.getValue()
-
     const sharedVaultUuids = []
     for (const sharedVaultUuid of dto.sharedVaultUuids) {
       const sharedVaultUuidOrError = Uuid.create(sharedVaultUuid)
@@ -35,9 +29,7 @@ export class GetRevision implements UseCaseInterface<Revision> {
       sharedVaultUuids.push(sharedVaultUuidOrError.getValue())
     }
 
-    const revisionRepository = this.revisionRepositoryResolver.resolve(roleNames)
-
-    const revision = await revisionRepository.findOneByUuid(revisionUuid, userUuid, sharedVaultUuids)
+    const revision = await this.revisionRepository.findOneByUuid(revisionUuid, userUuid, sharedVaultUuids)
 
     if (revision === null) {
       return Result.fail<Revision>(`Could not find revision with uuid: ${revisionUuid.value}`)

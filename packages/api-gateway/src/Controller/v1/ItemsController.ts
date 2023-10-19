@@ -34,16 +34,6 @@ export class ItemsController extends BaseHttpController {
     )
   }
 
-  @httpPost('/transition')
-  async transition(request: Request, response: Response): Promise<void> {
-    await this.serviceProxy.callSyncingServer(
-      request,
-      response,
-      this.endpointResolver.resolveEndpointOrMethodIdentifier('POST', 'items/transition'),
-      request.body,
-    )
-  }
-
   @httpGet('/:uuid')
   async getItem(request: Request, response: Response): Promise<void> {
     await this.serviceProxy.callSyncingServer(

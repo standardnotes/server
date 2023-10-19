@@ -13,19 +13,16 @@ import {
   UniqueEntityId,
   Result,
   NotificationPayload,
-  RoleName,
 } from '@standardnotes/domain-core'
 import { SharedVaultAssociation } from '../../../SharedVault/SharedVaultAssociation'
 import { KeySystemAssociation } from '../../../KeySystem/KeySystemAssociation'
 import { DetermineSharedVaultOperationOnItem } from '../../SharedVaults/DetermineSharedVaultOperationOnItem/DetermineSharedVaultOperationOnItem'
 import { RemoveNotificationsForUser } from '../../Messaging/RemoveNotificationsForUser/RemoveNotificationsForUser'
 import { SharedVaultOperationOnItem } from '../../../SharedVault/SharedVaultOperationOnItem'
-import { ItemRepositoryResolverInterface } from '../../../Item/ItemRepositoryResolverInterface'
 import { AddNotificationsForUsers } from '../../Messaging/AddNotificationsForUsers/AddNotificationsForUsers'
 
 describe('UpdateExistingItem', () => {
   let itemRepository: ItemRepositoryInterface
-  let itemRepositoryResolver: ItemRepositoryResolverInterface
   let timer: TimerInterface
   let domainEventPublisher: DomainEventPublisherInterface
   let domainEventFactory: DomainEventFactoryInterface
@@ -37,7 +34,7 @@ describe('UpdateExistingItem', () => {
 
   const createUseCase = () =>
     new UpdateExistingItem(
-      itemRepositoryResolver,
+      itemRepository,
       timer,
       domainEventPublisher,
       domainEventFactory,
@@ -91,9 +88,6 @@ describe('UpdateExistingItem', () => {
     itemRepository = {} as jest.Mocked<ItemRepositoryInterface>
     itemRepository.update = jest.fn()
 
-    itemRepositoryResolver = {} as jest.Mocked<ItemRepositoryResolverInterface>
-    itemRepositoryResolver.resolve = jest.fn().mockReturnValue(itemRepository)
-
     timer = {} as jest.Mocked<TimerInterface>
     timer.getTimestampInMicroseconds = jest.fn().mockReturnValue(123456789)
     timer.convertMicrosecondsToDate = jest.fn().mockReturnValue(new Date(123456789))
@@ -140,27 +134,9 @@ describe('UpdateExistingItem', () => {
 
     const result = await useCase.execute({
       existingItem: item1,
-      onGoingRevisionsTransition: false,
       itemHash: itemHash1,
       sessionUuid: '00000000-0000-0000-0000-000000000000',
       performingUserUuid: '00000000-0000-0000-0000-000000000000',
-      roleNames: [RoleName.NAMES.CoreUser],
-    })
-
-    expect(result.isFailed()).toBeFalsy()
-    expect(itemRepository.update).toHaveBeenCalled()
-  })
-
-  it('should not create a revision if user has an ongoin revisions transition', async () => {
-    const useCase = createUseCase()
-
-    const result = await useCase.execute({
-      existingItem: item1,
-      onGoingRevisionsTransition: true,
-      itemHash: itemHash1,
-      sessionUuid: '00000000-0000-0000-0000-000000000000',
-      performingUserUuid: '00000000-0000-0000-0000-000000000000',
-      roleNames: [RoleName.NAMES.CoreUser],
     })
 
     expect(result.isFailed()).toBeFalsy()
@@ -172,26 +148,9 @@ describe('UpdateExistingItem', () => {
 
     const result = await useCase.execute({
       existingItem: item1,
-      onGoingRevisionsTransition: false,
       itemHash: itemHash1,
       sessionUuid: 'invalid-uuid',
       performingUserUuid: '00000000-0000-0000-0000-000000000000',
-      roleNames: [RoleName.NAMES.CoreUser],
-    })
-
-    expect(result.isFailed()).toBeTruthy()
-  })
-
-  it('should return error if role names are invalid', async () => {
-    const useCase = createUseCase()
-
-    const result = await useCase.execute({
-      existingItem: item1,
-      onGoingRevisionsTransition: false,
-      itemHash: itemHash1,
-      sessionUuid: '00000000-0000-0000-0000-000000000000',
-      performingUserUuid: '00000000-0000-0000-0000-000000000000',
-      roleNames: ['invalid-role'],
     })
 
     expect(result.isFailed()).toBeTruthy()
@@ -202,14 +161,12 @@ describe('UpdateExistingItem', () => {
 
     const result = await useCase.execute({
       existingItem: item1,
-      onGoingRevisionsTransition: false,
       itemHash: ItemHash.create({
         ...itemHash1.props,
         content_type: 'invalid',
       }).getValue(),
       sessionUuid: '00000000-0000-0000-0000-000000000000',
       performingUserUuid: '00000000-0000-0000-0000-000000000000',
-      roleNames: [RoleName.NAMES.CoreUser],
     })
 
     expect(result.isFailed()).toBeTruthy()
@@ -220,14 +177,12 @@ describe('UpdateExistingItem', () => {
 
     const result = await useCase.execute({
       existingItem: item1,
-      onGoingRevisionsTransition: false,
       itemHash: ItemHash.create({
         ...itemHash1.props,
         deleted: true,
       }).getValue(),
       sessionUuid: '00000000-0000-0000-0000-000000000000',
       performingUserUuid: '00000000-0000-0000-0000-000000000000',
-      roleNames: [RoleName.NAMES.CoreUser],
     })
 
     expect(result.isFailed()).toBeFalsy()
@@ -245,14 +200,12 @@ describe('UpdateExistingItem', () => {
 
     const result = await useCase.execute({
       existingItem: item1,
-      onGoingRevisionsTransition: false,
       itemHash: ItemHash.create({
         ...itemHash1.props,
         duplicate_of: '00000000-0000-0000-0000-000000000001',
       }).getValue(),
       sessionUuid: '00000000-0000-0000-0000-000000000000',
       performingUserUuid: '00000000-0000-0000-0000-000000000000',
-      roleNames: [RoleName.NAMES.CoreUser],
     })
 
     expect(result.isFailed()).toBeFalsy()
@@ -265,14 +218,12 @@ describe('UpdateExistingItem', () => {
 
     const result = await useCase.execute({
       existingItem: item1,
-      onGoingRevisionsTransition: false,
       itemHash: ItemHash.create({
         ...itemHash1.props,
         duplicate_of: 'invalid-uuid',
       }).getValue(),
       sessionUuid: '00000000-0000-0000-0000-000000000000',
       performingUserUuid: '00000000-0000-0000-0000-000000000000',
-      roleNames: [RoleName.NAMES.CoreUser],
     })
 
     expect(result.isFailed()).toBeTruthy()
@@ -283,7 +234,6 @@ describe('UpdateExistingItem', () => {
 
     const result = await useCase.execute({
       existingItem: item1,
-      onGoingRevisionsTransition: false,
       itemHash: ItemHash.create({
         ...itemHash1.props,
         updated_at_timestamp: 123,
@@ -291,7 +241,6 @@ describe('UpdateExistingItem', () => {
       }).getValue(),
       sessionUuid: '00000000-0000-0000-0000-000000000000',
       performingUserUuid: '00000000-0000-0000-0000-000000000000',
-      roleNames: [RoleName.NAMES.CoreUser],
     })
 
     expect(result.isFailed()).toBeFalsy()
@@ -303,7 +252,6 @@ describe('UpdateExistingItem', () => {
 
     const result = await useCase.execute({
       existingItem: item1,
-      onGoingRevisionsTransition: false,
       itemHash: ItemHash.create({
         ...itemHash1.props,
         created_at: undefined,
@@ -312,7 +260,6 @@ describe('UpdateExistingItem', () => {
       }).getValue(),
       sessionUuid: '00000000-0000-0000-0000-000000000000',
       performingUserUuid: '00000000-0000-0000-0000-000000000000',
-      roleNames: [RoleName.NAMES.CoreUser],
     })
 
     expect(result.isFailed()).toBeFalsy()
@@ -324,7 +271,6 @@ describe('UpdateExistingItem', () => {
 
     const result = await useCase.execute({
       existingItem: item1,
-      onGoingRevisionsTransition: false,
       itemHash: ItemHash.create({
         ...itemHash1.props,
         created_at: undefined,
@@ -334,7 +280,6 @@ describe('UpdateExistingItem', () => {
       }).getValue(),
       sessionUuid: '00000000-0000-0000-0000-000000000000',
       performingUserUuid: '00000000-0000-0000-0000-000000000000',
-      roleNames: [RoleName.NAMES.CoreUser],
     })
 
     expect(result.isFailed()).toBeFalsy()
@@ -346,7 +291,6 @@ describe('UpdateExistingItem', () => {
 
     const result = await useCase.execute({
       existingItem: item1,
-      onGoingRevisionsTransition: false,
       itemHash: ItemHash.create({
         ...itemHash1.props,
         created_at: undefined,
@@ -356,7 +300,6 @@ describe('UpdateExistingItem', () => {
       }).getValue(),
       sessionUuid: '00000000-0000-0000-0000-000000000000',
       performingUserUuid: '00000000-0000-0000-0000-000000000000',
-      roleNames: [RoleName.NAMES.CoreUser],
     })
 
     expect(result.isFailed()).toBeFalsy()
@@ -373,7 +316,6 @@ describe('UpdateExistingItem', () => {
 
     const result = await useCase.execute({
       existingItem: item1,
-      onGoingRevisionsTransition: false,
       itemHash: ItemHash.create({
         ...itemHash1.props,
         created_at_timestamp: 123,
@@ -381,7 +323,6 @@ describe('UpdateExistingItem', () => {
       }).getValue(),
       sessionUuid: '00000000-0000-0000-0000-000000000000',
       performingUserUuid: '00000000-0000-0000-0000-000000000000',
-      roleNames: [RoleName.NAMES.CoreUser],
     })
 
     expect(result.isFailed()).toBeTruthy()
@@ -399,7 +340,6 @@ describe('UpdateExistingItem', () => {
 
     const result = await useCase.execute({
       existingItem: item1,
-      onGoingRevisionsTransition: false,
       itemHash: ItemHash.create({
         ...itemHash1.props,
         created_at_timestamp: 123,
@@ -407,7 +347,6 @@ describe('UpdateExistingItem', () => {
       }).getValue(),
       sessionUuid: '00000000-0000-0000-0000-000000000000',
       performingUserUuid: '00000000-0000-0000-0000-000000000000',
-      roleNames: [RoleName.NAMES.CoreUser],
     })
 
     expect(result.isFailed()).toBeTruthy()
@@ -419,11 +358,9 @@ describe('UpdateExistingItem', () => {
 
     const result = await useCase.execute({
       existingItem: item1,
-      onGoingRevisionsTransition: false,
       itemHash: itemHash1,
       sessionUuid: '00000000-0000-0000-0000-000000000000',
       performingUserUuid: 'invalid-uuid',
-      roleNames: [RoleName.NAMES.CoreUser],
     })
     expect(result.isFailed()).toBeTruthy()
   })
@@ -439,11 +376,9 @@ describe('UpdateExistingItem', () => {
 
       const result = await useCase.execute({
         existingItem: item1,
-        onGoingRevisionsTransition: false,
         itemHash,
         sessionUuid: '00000000-0000-0000-0000-000000000000',
         performingUserUuid: '00000000-0000-0000-0000-000000000000',
-        roleNames: [RoleName.NAMES.CoreUser],
       })
       expect(result.isFailed()).toBeFalsy()
       expect(item1.props.sharedVaultAssociation).not.toBeUndefined()
@@ -467,11 +402,9 @@ describe('UpdateExistingItem', () => {
 
       const result = await useCase.execute({
         existingItem: item1,
-        onGoingRevisionsTransition: false,
         itemHash,
         sessionUuid: '00000000-0000-0000-0000-000000000000',
         performingUserUuid: '00000000-0000-0000-0000-000000000000',
-        roleNames: [RoleName.NAMES.CoreUser],
       })
 
       expect(result.isFailed()).toBeFalsy()
@@ -506,11 +439,9 @@ describe('UpdateExistingItem', () => {
 
       const result = await useCase.execute({
         existingItem: item1,
-        onGoingRevisionsTransition: false,
         itemHash,
         sessionUuid: '00000000-0000-0000-0000-000000000000',
         performingUserUuid: '00000000-0000-0000-0000-000000000000',
-        roleNames: [RoleName.NAMES.CoreUser],
       })
 
       expect(result.isFailed()).toBeFalsy()
@@ -536,11 +467,9 @@ describe('UpdateExistingItem', () => {
 
       const result = await useCase.execute({
         existingItem: item1,
-        onGoingRevisionsTransition: false,
         itemHash,
         sessionUuid: '00000000-0000-0000-0000-000000000000',
         performingUserUuid: '00000000-0000-0000-0000-000000000000',
-        roleNames: [RoleName.NAMES.CoreUser],
       })
       expect(result.isFailed()).toBeTruthy()
       mock.mockRestore()
@@ -558,11 +487,9 @@ describe('UpdateExistingItem', () => {
 
       const result = await useCase.execute({
         existingItem: item1,
-        onGoingRevisionsTransition: false,
         itemHash,
         sessionUuid: '00000000-0000-0000-0000-000000000000',
         performingUserUuid: '00000000-0000-0000-0000-000000000000',
-        roleNames: [RoleName.NAMES.CoreUser],
       })
       expect(result.isFailed()).toBeTruthy()
     })
@@ -591,11 +518,9 @@ describe('UpdateExistingItem', () => {
 
       const result = await useCase.execute({
         existingItem: item1,
-        onGoingRevisionsTransition: false,
         itemHash,
         sessionUuid: '00000000-0000-0000-0000-000000000000',
         performingUserUuid: '00000000-0000-0000-0000-000000000000',
-        roleNames: [RoleName.NAMES.CoreUser],
       })
       expect(result.isFailed()).toBeTruthy()
     })
@@ -627,11 +552,9 @@ describe('UpdateExistingItem', () => {
 
       const result = await useCase.execute({
         existingItem: item1,
-        onGoingRevisionsTransition: false,
         itemHash,
         sessionUuid: '00000000-0000-0000-0000-000000000000',
         performingUserUuid: '00000000-0000-0000-0000-000000000000',
-        roleNames: [RoleName.NAMES.CoreUser],
       })
       expect(result.isFailed()).toBeTruthy()
 
@@ -650,11 +573,9 @@ describe('UpdateExistingItem', () => {
 
       const result = await useCase.execute({
         existingItem: item1,
-        onGoingRevisionsTransition: false,
         itemHash,
         sessionUuid: '00000000-0000-0000-0000-000000000000',
         performingUserUuid: '00000000-0000-0000-0000-000000000000',
-        roleNames: [RoleName.NAMES.CoreUser],
       })
       expect(result.isFailed()).toBeTruthy()
     })
@@ -671,11 +592,9 @@ describe('UpdateExistingItem', () => {
 
       const result = await useCase.execute({
         existingItem: item1,
-        onGoingRevisionsTransition: false,
         itemHash,
         sessionUuid: '00000000-0000-0000-0000-000000000000',
         performingUserUuid: '00000000-0000-0000-0000-000000000000',
-        roleNames: [RoleName.NAMES.CoreUser],
       })
       expect(result.isFailed()).toBeFalsy()
       expect(item1.props.keySystemAssociation).not.toBeUndefined()
@@ -694,11 +613,9 @@ describe('UpdateExistingItem', () => {
 
       const result = await useCase.execute({
         existingItem: item1,
-        onGoingRevisionsTransition: false,
         itemHash,
         sessionUuid: '00000000-0000-0000-0000-000000000000',
         performingUserUuid: '00000000-0000-0000-0000-000000000000',
-        roleNames: [RoleName.NAMES.CoreUser],
       })
 
       expect(result.isFailed()).toBeFalsy()
@@ -716,11 +633,9 @@ describe('UpdateExistingItem', () => {
 
       const result = await useCase.execute({
         existingItem: item1,
-        onGoingRevisionsTransition: false,
         itemHash,
         sessionUuid: '00000000-0000-0000-0000-000000000000',
         performingUserUuid: '00000000-0000-0000-0000-000000000000',
-        roleNames: [RoleName.NAMES.CoreUser],
       })
       expect(result.isFailed()).toBeTruthy()
     })
@@ -740,11 +655,9 @@ describe('UpdateExistingItem', () => {
 
       const result = await useCase.execute({
         existingItem: item1,
-        onGoingRevisionsTransition: false,
         itemHash,
         sessionUuid: '00000000-0000-0000-0000-000000000000',
         performingUserUuid: '00000000-0000-0000-0000-000000000000',
-        roleNames: [RoleName.NAMES.CoreUser],
       })
       expect(result.isFailed()).toBeTruthy()
       mock.mockRestore()

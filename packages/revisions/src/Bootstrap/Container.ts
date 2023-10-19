@@ -4,11 +4,9 @@ import {
   MapperInterface,
   ServiceIdentifier,
 } from '@standardnotes/domain-core'
-import Redis from 'ioredis'
 import { Container, interfaces } from 'inversify'
-import { MongoRepository, Repository } from 'typeorm'
+import { Repository } from 'typeorm'
 import * as winston from 'winston'
-import { SNSClient, SNSClientConfig } from '@aws-sdk/client-sns'
 
 import { Revision } from '../Domain/Revision/Revision'
 import { RevisionMetadata } from '../Domain/Revision/RevisionMetadata'
@@ -38,7 +36,6 @@ import {
   SQSEventMessageHandler,
   DirectCallEventMessageHandler,
   DirectCallDomainEventPublisher,
-  SNSOpenTelemetryDomainEventPublisher,
   SQSOpenTelemetryDomainEventSubscriber,
 } from '@standardnotes/domain-events-infra'
 import { DumpRepositoryInterface } from '../Domain/Dump/DumpRepositoryInterface'
@@ -51,30 +48,18 @@ import { S3DumpRepository } from '../Infra/S3/S3ItemDumpRepository'
 import { RevisionItemStringMapper } from '../Mapping/Backup/RevisionItemStringMapper'
 import { BaseRevisionsController } from '../Infra/InversifyExpress/Base/BaseRevisionsController'
 import { Transform } from 'stream'
-import { MongoDBRevision } from '../Infra/TypeORM/MongoDB/MongoDBRevision'
-import { MongoDBRevisionRepository } from '../Infra/TypeORM/MongoDB/MongoDBRevisionRepository'
 import { SQLLegacyRevisionMetadataPersistenceMapper } from '../Mapping/Persistence/SQL/SQLLegacyRevisionMetadataPersistenceMapper'
 import { SQLLegacyRevisionPersistenceMapper } from '../Mapping/Persistence/SQL/SQLLegacyRevisionPersistenceMapper'
-import { MongoDBRevisionMetadataPersistenceMapper } from '../Mapping/Persistence/MongoDB/MongoDBRevisionMetadataPersistenceMapper'
-import { MongoDBRevisionPersistenceMapper } from '../Mapping/Persistence/MongoDB/MongoDBRevisionPersistenceMapper'
 import { RevisionHttpMapper } from '../Mapping/Http/RevisionHttpMapper'
-import { RevisionRepositoryResolverInterface } from '../Domain/Revision/RevisionRepositoryResolverInterface'
-import { TypeORMRevisionRepositoryResolver } from '../Infra/TypeORM/TypeORMRevisionRepositoryResolver'
 import { RevisionMetadataHttpRepresentation } from '../Mapping/Http/RevisionMetadataHttpRepresentation'
 import { RevisionHttpRepresentation } from '../Mapping/Http/RevisionHttpRepresentation'
-import { TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser } from '../Domain/UseCase/Transition/TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser/TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser'
-import { DomainEventFactoryInterface } from '../Domain/Event/DomainEventFactoryInterface'
-import { DomainEventFactory } from '../Domain/Event/DomainEventFactory'
 import { SQLRevision } from '../Infra/TypeORM/SQL/SQLRevision'
 import { SQLRevisionRepository } from '../Infra/TypeORM/SQL/SQLRevisionRepository'
 import { SQLRevisionMetadataPersistenceMapper } from '../Mapping/Persistence/SQL/SQLRevisionMetadataPersistenceMapper'
 import { SQLRevisionPersistenceMapper } from '../Mapping/Persistence/SQL/SQLRevisionPersistenceMapper'
 import { RemoveRevisionsFromSharedVault } from '../Domain/UseCase/RemoveRevisionsFromSharedVault/RemoveRevisionsFromSharedVault'
 import { ItemRemovedFromSharedVaultEventHandler } from '../Domain/Handler/ItemRemovedFromSharedVaultEventHandler'
-import { TransitionRequestedEventHandler } from '../Domain/Handler/TransitionRequestedEventHandler'
 import { SharedVaultRemovedEventHandler } from '../Domain/Handler/SharedVaultRemovedEventHandler'
-import { TransitionRepositoryInterface } from '../Domain/Transition/TransitionRepositoryInterface'
-import { RedisTransitionRepository } from '../Infra/Redis/RedisTransitionRepository'
 import { CreateRevisionFromDump } from '../Domain/UseCase/CreateRevisionFromDump/CreateRevisionFromDump'
 
 export class ContainerConfigLoader {
@@ -95,8 +80,6 @@ export class ContainerConfigLoader {
     const isConfiguredForHomeServer = env.get('MODE', true) === 'home-server'
     const isConfiguredForSelfHosting = env.get('MODE', true) === 'self-hosted'
     const isConfiguredForHomeServerOrSelfHosting = isConfiguredForHomeServer || isConfiguredForSelfHosting
-    const isSecondaryDatabaseEnabled = env.get('SECONDARY_DB_ENABLED', true) === 'true'
-    const isConfiguredForInMemoryCache = env.get('CACHE_TYPE', true) === 'memory'
 
     const container = new Container({
       defaultScope: 'Singleton',
@@ -105,22 +88,6 @@ export class ContainerConfigLoader {
     container
       .bind<boolean>(TYPES.Revisions_IS_CONFIGURED_FOR_HOME_SERVER_OR_SELF_HOSTING)
       .toConstantValue(isConfiguredForHomeServerOrSelfHosting)
-
-    if (!isConfiguredForInMemoryCache) {
-      const redisUrl = env.get('REDIS_URL')
-      const isRedisInClusterMode = redisUrl.indexOf(',') > 0
-      let redis
-      if (isRedisInClusterMode) {
-        redis = new Redis.Cluster(redisUrl.split(','))
-      } else {
-        redis = new Redis(redisUrl)
-      }
-
-      container.bind(TYPES.Revisions_Redis).toConstantValue(redis)
-      container
-        .bind<TransitionRepositoryInterface>(TYPES.Revisions_TransitionStatusRepository)
-        .toConstantValue(new RedisTransitionRepository(container.get<Redis>(TYPES.Revisions_Redis)))
-    }
 
     let logger: winston.Logger
     if (configuration?.logger) {
@@ -150,40 +117,9 @@ export class ContainerConfigLoader {
 
     if (!isConfiguredForHomeServer) {
       // env vars
-      container.bind(TYPES.Revisions_SNS_TOPIC_ARN).toConstantValue(env.get('SNS_TOPIC_ARN'))
-      container.bind(TYPES.Revisions_SNS_AWS_REGION).toConstantValue(env.get('SNS_AWS_REGION', true))
       container.bind(TYPES.Revisions_SQS_QUEUE_URL).toConstantValue(env.get('SQS_QUEUE_URL'))
       container.bind(TYPES.Revisions_S3_AWS_REGION).toConstantValue(env.get('S3_AWS_REGION', true))
       container.bind(TYPES.Revisions_S3_BACKUP_BUCKET_NAME).toConstantValue(env.get('S3_BACKUP_BUCKET_NAME', true))
-
-      container.bind<SNSClient>(TYPES.Revisions_SNS).toDynamicValue((context: interfaces.Context) => {
-        const env: Env = context.container.get(TYPES.Revisions_Env)
-
-        const snsConfig: SNSClientConfig = {
-          apiVersion: 'latest',
-          region: env.get('SNS_AWS_REGION', true),
-        }
-        if (env.get('SNS_ENDPOINT', true)) {
-          snsConfig.endpoint = env.get('SNS_ENDPOINT', true)
-        }
-        if (env.get('SNS_ACCESS_KEY_ID', true) && env.get('SNS_SECRET_ACCESS_KEY', true)) {
-          snsConfig.credentials = {
-            accessKeyId: env.get('SNS_ACCESS_KEY_ID', true),
-            secretAccessKey: env.get('SNS_SECRET_ACCESS_KEY', true),
-          }
-        }
-
-        return new SNSClient(snsConfig)
-      })
-
-      container
-        .bind<DomainEventPublisherInterface>(TYPES.Revisions_DomainEventPublisher)
-        .toDynamicValue((context: interfaces.Context) => {
-          return new SNSOpenTelemetryDomainEventPublisher(
-            context.container.get(TYPES.Revisions_SNS),
-            context.container.get(TYPES.Revisions_SNS_TOPIC_ARN),
-          )
-        })
 
       container.bind<SQSClient>(TYPES.Revisions_SQS).toDynamicValue((context: interfaces.Context) => {
         const env: Env = context.container.get(TYPES.Revisions_Env)
@@ -223,10 +159,6 @@ export class ContainerConfigLoader {
         .toConstantValue(directCallDomainEventPublisher)
     }
 
-    container
-      .bind<DomainEventFactoryInterface>(TYPES.Revisions_DomainEventFactory)
-      .toConstantValue(new DomainEventFactory(container.get(TYPES.Revisions_Timer)))
-
     // Map
     container
       .bind<MapperInterface<RevisionMetadata, SQLLegacyRevision>>(
@@ -242,14 +174,6 @@ export class ContainerConfigLoader {
     container
       .bind<MapperInterface<Revision, SQLRevision>>(TYPES.Revisions_SQLRevisionPersistenceMapper)
       .toConstantValue(new SQLRevisionPersistenceMapper(container.get<TimerInterface>(TYPES.Revisions_Timer)))
-    container
-      .bind<MapperInterface<RevisionMetadata, MongoDBRevision>>(
-        TYPES.Revisions_MongoDBRevisionMetadataPersistenceMapper,
-      )
-      .toConstantValue(new MongoDBRevisionMetadataPersistenceMapper())
-    container
-      .bind<MapperInterface<Revision, MongoDBRevision>>(TYPES.Revisions_MongoDBRevisionPersistenceMapper)
-      .toConstantValue(new MongoDBRevisionPersistenceMapper(container.get<TimerInterface>(TYPES.Revisions_Timer)))
 
     // ORM
     container
@@ -282,36 +206,6 @@ export class ContainerConfigLoader {
               ),
               container.get<winston.Logger>(TYPES.Revisions_Logger),
             ),
-      )
-
-    if (isSecondaryDatabaseEnabled) {
-      container
-        .bind<MongoRepository<MongoDBRevision>>(TYPES.Revisions_ORMMongoRevisionRepository)
-        .toConstantValue(appDataSource.getMongoRepository(MongoDBRevision))
-
-      container
-        .bind<RevisionRepositoryInterface>(TYPES.Revisions_MongoDBRevisionRepository)
-        .toConstantValue(
-          new MongoDBRevisionRepository(
-            container.get<MongoRepository<MongoDBRevision>>(TYPES.Revisions_ORMMongoRevisionRepository),
-            container.get<MapperInterface<RevisionMetadata, MongoDBRevision>>(
-              TYPES.Revisions_MongoDBRevisionMetadataPersistenceMapper,
-            ),
-            container.get<MapperInterface<Revision, MongoDBRevision>>(TYPES.Revisions_MongoDBRevisionPersistenceMapper),
-            container.get<winston.Logger>(TYPES.Revisions_Logger),
-          ),
-        )
-    }
-
-    container
-      .bind<RevisionRepositoryResolverInterface>(TYPES.Revisions_RevisionRepositoryResolver)
-      .toConstantValue(
-        new TypeORMRevisionRepositoryResolver(
-          container.get<RevisionRepositoryInterface>(TYPES.Revisions_SQLRevisionRepository),
-          isSecondaryDatabaseEnabled
-            ? container.get<RevisionRepositoryInterface>(TYPES.Revisions_MongoDBRevisionRepository)
-            : null,
-        ),
       )
 
     container
@@ -351,56 +245,28 @@ export class ContainerConfigLoader {
     container
       .bind<GetRevisionsMetada>(TYPES.Revisions_GetRevisionsMetada)
       .toConstantValue(
-        new GetRevisionsMetada(
-          container.get<RevisionRepositoryResolverInterface>(TYPES.Revisions_RevisionRepositoryResolver),
-        ),
+        new GetRevisionsMetada(container.get<RevisionRepositoryInterface>(TYPES.Revisions_SQLRevisionRepository)),
       )
     container
       .bind<GetRevision>(TYPES.Revisions_GetRevision)
       .toConstantValue(
-        new GetRevision(container.get<RevisionRepositoryResolverInterface>(TYPES.Revisions_RevisionRepositoryResolver)),
+        new GetRevision(container.get<RevisionRepositoryInterface>(TYPES.Revisions_SQLRevisionRepository)),
       )
     container
       .bind<DeleteRevision>(TYPES.Revisions_DeleteRevision)
       .toConstantValue(
-        new DeleteRevision(
-          container.get<RevisionRepositoryResolverInterface>(TYPES.Revisions_RevisionRepositoryResolver),
-        ),
+        new DeleteRevision(container.get<RevisionRepositoryInterface>(TYPES.Revisions_SQLRevisionRepository)),
       )
     container
       .bind<CopyRevisions>(TYPES.Revisions_CopyRevisions)
       .toConstantValue(
-        new CopyRevisions(
-          container.get<RevisionRepositoryResolverInterface>(TYPES.Revisions_RevisionRepositoryResolver),
-        ),
-      )
-    container
-      .bind<TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser>(
-        TYPES.Revisions_TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser,
-      )
-      .toConstantValue(
-        new TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser(
-          container.get<RevisionRepositoryInterface>(TYPES.Revisions_SQLRevisionRepository),
-          isSecondaryDatabaseEnabled
-            ? container.get<RevisionRepositoryInterface>(TYPES.Revisions_MongoDBRevisionRepository)
-            : null,
-          isConfiguredForInMemoryCache
-            ? null
-            : container.get<TransitionRepositoryInterface>(TYPES.Revisions_TransitionStatusRepository),
-          container.get<TimerInterface>(TYPES.Revisions_Timer),
-          container.get<winston.Logger>(TYPES.Revisions_Logger),
-          env.get('MIGRATION_BATCH_SIZE', true) ? +env.get('MIGRATION_BATCH_SIZE', true) : 100,
-          container.get<DomainEventPublisherInterface>(TYPES.Revisions_DomainEventPublisher),
-          container.get<DomainEventFactoryInterface>(TYPES.Revisions_DomainEventFactory),
-        ),
+        new CopyRevisions(container.get<RevisionRepositoryInterface>(TYPES.Revisions_SQLRevisionRepository)),
       )
     container
       .bind<RemoveRevisionsFromSharedVault>(TYPES.Revisions_RemoveRevisionsFromSharedVault)
       .toConstantValue(
         new RemoveRevisionsFromSharedVault(
-          isSecondaryDatabaseEnabled
-            ? container.get<RevisionRepositoryInterface>(TYPES.Revisions_MongoDBRevisionRepository)
-            : container.get<RevisionRepositoryInterface>(TYPES.Revisions_SQLRevisionRepository),
+          container.get<RevisionRepositoryInterface>(TYPES.Revisions_SQLRevisionRepository),
         ),
       )
     container
@@ -408,7 +274,7 @@ export class ContainerConfigLoader {
       .toConstantValue(
         new CreateRevisionFromDump(
           container.get<DumpRepositoryInterface>(TYPES.Revisions_DumpRepository),
-          container.get<RevisionRepositoryResolverInterface>(TYPES.Revisions_RevisionRepositoryResolver),
+          container.get<RevisionRepositoryInterface>(TYPES.Revisions_SQLRevisionRepository),
         ),
       )
 
@@ -448,7 +314,7 @@ export class ContainerConfigLoader {
       .bind<AccountDeletionRequestedEventHandler>(TYPES.Revisions_AccountDeletionRequestedEventHandler)
       .toConstantValue(
         new AccountDeletionRequestedEventHandler(
-          container.get<RevisionRepositoryResolverInterface>(TYPES.Revisions_RevisionRepositoryResolver),
+          container.get<RevisionRepositoryInterface>(TYPES.Revisions_SQLRevisionRepository),
           container.get<winston.Logger>(TYPES.Revisions_Logger),
         ),
       )
@@ -469,17 +335,6 @@ export class ContainerConfigLoader {
         ),
       )
     container
-      .bind<TransitionRequestedEventHandler>(TYPES.Revisions_TransitionRequestedEventHandler)
-      .toConstantValue(
-        new TransitionRequestedEventHandler(
-          false,
-          container.get<TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser>(
-            TYPES.Revisions_TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser,
-          ),
-          container.get<winston.Logger>(TYPES.Revisions_Logger),
-        ),
-      )
-    container
       .bind<SharedVaultRemovedEventHandler>(TYPES.Revisions_SharedVaultRemovedEventHandler)
       .toConstantValue(
         new SharedVaultRemovedEventHandler(
@@ -493,7 +348,6 @@ export class ContainerConfigLoader {
       ['ACCOUNT_DELETION_REQUESTED', container.get(TYPES.Revisions_AccountDeletionRequestedEventHandler)],
       ['REVISIONS_COPY_REQUESTED', container.get(TYPES.Revisions_RevisionsCopyRequestedEventHandler)],
       ['ITEM_REMOVED_FROM_SHARED_VAULT', container.get(TYPES.Revisions_ItemRemovedFromSharedVaultEventHandler)],
-      ['TRANSITION_REQUESTED', container.get(TYPES.Revisions_TransitionRequestedEventHandler)],
       ['SHARED_VAULT_REMOVED', container.get(TYPES.Revisions_SharedVaultRemovedEventHandler)],
     ])
 

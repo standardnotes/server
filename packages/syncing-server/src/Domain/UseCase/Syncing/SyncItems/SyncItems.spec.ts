@@ -5,7 +5,7 @@ import { Item } from '../../../Item/Item'
 import { ItemHash } from '../../../Item/ItemHash'
 
 import { SyncItems } from './SyncItems'
-import { ContentType, Dates, Result, RoleName, Timestamps, UniqueEntityId, Uuid } from '@standardnotes/domain-core'
+import { ContentType, Dates, Result, Timestamps, UniqueEntityId, Uuid } from '@standardnotes/domain-core'
 import { GetItems } from '../GetItems/GetItems'
 import { SaveItems } from '../SaveItems/SaveItems'
 import { ItemRepositoryInterface } from '../../../Item/ItemRepositoryInterface'
@@ -13,14 +13,12 @@ import { GetSharedVaults } from '../../SharedVaults/GetSharedVaults/GetSharedVau
 import { GetMessagesSentToUser } from '../../Messaging/GetMessagesSentToUser/GetMessagesSentToUser'
 import { GetUserNotifications } from '../../Messaging/GetUserNotifications/GetUserNotifications'
 import { GetSharedVaultInvitesSentToUser } from '../../SharedVaults/GetSharedVaultInvitesSentToUser/GetSharedVaultInvitesSentToUser'
-import { ItemRepositoryResolverInterface } from '../../../Item/ItemRepositoryResolverInterface'
 import { Logger } from 'winston'
 
 describe('SyncItems', () => {
   let getItemsUseCase: GetItems
   let saveItemsUseCase: SaveItems
   let itemRepository: ItemRepositoryInterface
-  let itemRepositoryResolver: ItemRepositoryResolverInterface
   let item1: Item
   let item2: Item
   let item3: Item
@@ -33,7 +31,7 @@ describe('SyncItems', () => {
 
   const createUseCase = () =>
     new SyncItems(
-      itemRepositoryResolver,
+      itemRepository,
       getItemsUseCase,
       saveItemsUseCase,
       getSharedVaultsUseCase,
@@ -132,9 +130,6 @@ describe('SyncItems', () => {
     itemRepository = {} as jest.Mocked<ItemRepositoryInterface>
     itemRepository.findAll = jest.fn().mockReturnValue([item3, item1])
 
-    itemRepositoryResolver = {} as jest.Mocked<ItemRepositoryResolverInterface>
-    itemRepositoryResolver.resolve = jest.fn().mockReturnValue(itemRepository)
-
     getSharedVaultsUseCase = {} as jest.Mocked<GetSharedVaults>
     getSharedVaultsUseCase.execute = jest.fn().mockReturnValue(Result.ok({ sharedVaults: [], designatedSurivors: [] }))
 
@@ -151,7 +146,6 @@ describe('SyncItems', () => {
   it('should sync items', async () => {
     const result = await createUseCase().execute({
       userUuid: '1-2-3',
-      onGoingRevisionsTransition: false,
       itemHashes: [itemHash],
       computeIntegrityHash: false,
       syncToken: 'foo',
@@ -162,7 +156,6 @@ describe('SyncItems', () => {
       apiVersion: ApiVersion.v20200115,
       sessionUuid: null,
       snjsVersion: '1.2.3',
-      roleNames: [RoleName.NAMES.CoreUser],
     })
     expect(result.getValue()).toEqual({
       conflicts: [],
@@ -182,15 +175,12 @@ describe('SyncItems', () => {
       limit: 10,
       syncToken: 'foo',
       userUuid: '1-2-3',
-      roleNames: ['CORE_USER'],
     })
     expect(saveItemsUseCase.execute).toHaveBeenCalledWith({
       itemHashes: [itemHash],
       userUuid: '1-2-3',
-      onGoingRevisionsTransition: false,
       apiVersion: '20200115',
       snjsVersion: '1.2.3',
-      roleNames: [RoleName.NAMES.CoreUser],
       readOnlyAccess: false,
       sessionUuid: null,
     })
@@ -205,7 +195,6 @@ describe('SyncItems', () => {
     try {
       await createUseCase().execute({
         userUuid: '1-2-3',
-        onGoingRevisionsTransition: false,
         itemHashes: [itemHash],
         computeIntegrityHash: false,
         syncToken: 'foo',
@@ -216,7 +205,6 @@ describe('SyncItems', () => {
         apiVersion: ApiVersion.v20200115,
         sessionUuid: null,
         snjsVersion: '1.2.3',
-        roleNames: [RoleName.NAMES.CoreUser],
       })
     } catch (error) {
       caughtError = error
@@ -228,7 +216,6 @@ describe('SyncItems', () => {
   it('should sync items and return items keys on top for first sync that is not a shared vault exclusive sync', async () => {
     const result = await createUseCase().execute({
       userUuid: '1-2-3',
-      onGoingRevisionsTransition: false,
       itemHashes: [itemHash],
       computeIntegrityHash: false,
       limit: 10,
@@ -237,7 +224,6 @@ describe('SyncItems', () => {
       contentType: 'Note',
       apiVersion: ApiVersion.v20200115,
       snjsVersion: '1.2.3',
-      roleNames: [RoleName.NAMES.CoreUser],
     })
     expect(result.getValue()).toEqual({
       conflicts: [],
@@ -255,7 +241,6 @@ describe('SyncItems', () => {
   it('should sync items and not return items keys on top for first sync that is a shared vault exclusive sync', async () => {
     const result = await createUseCase().execute({
       userUuid: '1-2-3',
-      onGoingRevisionsTransition: false,
       itemHashes: [itemHash],
       computeIntegrityHash: false,
       limit: 10,
@@ -264,7 +249,6 @@ describe('SyncItems', () => {
       contentType: 'Note',
       apiVersion: ApiVersion.v20200115,
       snjsVersion: '1.2.3',
-      roleNames: [RoleName.NAMES.CoreUser],
       sharedVaultUuids: ['00000000-0000-0000-0000-000000000000'],
     })
     expect(result.getValue()).toEqual({
@@ -307,7 +291,6 @@ describe('SyncItems', () => {
 
     const result = await createUseCase().execute({
       userUuid: '1-2-3',
-      onGoingRevisionsTransition: false,
       itemHashes: [itemHash],
       computeIntegrityHash: false,
       syncToken: 'foo',
@@ -318,7 +301,6 @@ describe('SyncItems', () => {
       contentType: 'Note',
       apiVersion: ApiVersion.v20200115,
       snjsVersion: '1.2.3',
-      roleNames: [RoleName.NAMES.CoreUser],
     })
 
     expect(result.getValue()).toEqual({
@@ -348,7 +330,6 @@ describe('SyncItems', () => {
 
     const result = await createUseCase().execute({
       userUuid: '1-2-3',
-      onGoingRevisionsTransition: false,
       itemHashes: [itemHash],
       computeIntegrityHash: false,
       syncToken: 'foo',
@@ -359,7 +340,6 @@ describe('SyncItems', () => {
       contentType: 'Note',
       apiVersion: ApiVersion.v20200115,
       snjsVersion: '1.2.3',
-      roleNames: [RoleName.NAMES.CoreUser],
     })
 
     expect(result.isFailed()).toBeTruthy()
@@ -370,7 +350,6 @@ describe('SyncItems', () => {
 
     const result = await createUseCase().execute({
       userUuid: '1-2-3',
-      onGoingRevisionsTransition: false,
       itemHashes: [itemHash],
       computeIntegrityHash: false,
       syncToken: 'foo',
@@ -381,25 +360,6 @@ describe('SyncItems', () => {
       contentType: 'Note',
       apiVersion: ApiVersion.v20200115,
       snjsVersion: '1.2.3',
-      roleNames: [RoleName.NAMES.CoreUser],
-    })
-
-    expect(result.isFailed()).toBeTruthy()
-  })
-
-  it('should return error if role names are invalid', async () => {
-    const result = await createUseCase().execute({
-      userUuid: '1-2-3',
-      onGoingRevisionsTransition: false,
-      itemHashes: [itemHash],
-      computeIntegrityHash: false,
-      limit: 10,
-      readOnlyAccess: false,
-      sessionUuid: '2-3-4',
-      contentType: 'Note',
-      apiVersion: ApiVersion.v20200115,
-      snjsVersion: '1.2.3',
-      roleNames: ['invalid'],
     })
 
     expect(result.isFailed()).toBeTruthy()
@@ -410,7 +370,6 @@ describe('SyncItems', () => {
 
     const result = await createUseCase().execute({
       userUuid: '1-2-3',
-      onGoingRevisionsTransition: false,
       itemHashes: [itemHash],
       computeIntegrityHash: false,
       syncToken: 'foo',
@@ -421,7 +380,6 @@ describe('SyncItems', () => {
       contentType: 'Note',
       apiVersion: ApiVersion.v20200115,
       snjsVersion: '1.2.3',
-      roleNames: [RoleName.NAMES.CoreUser],
     })
 
     expect(result.isFailed()).toBeTruthy()
@@ -432,7 +390,6 @@ describe('SyncItems', () => {
 
     const result = await createUseCase().execute({
       userUuid: '1-2-3',
-      onGoingRevisionsTransition: false,
       itemHashes: [itemHash],
       computeIntegrityHash: false,
       syncToken: 'foo',
@@ -443,7 +400,6 @@ describe('SyncItems', () => {
       contentType: 'Note',
       apiVersion: ApiVersion.v20200115,
       snjsVersion: '1.2.3',
-      roleNames: [RoleName.NAMES.CoreUser],
     })
 
     expect(result.isFailed()).toBeTruthy()
@@ -454,7 +410,6 @@ describe('SyncItems', () => {
 
     const result = await createUseCase().execute({
       userUuid: '1-2-3',
-      onGoingRevisionsTransition: false,
       itemHashes: [itemHash],
       computeIntegrityHash: false,
       syncToken: 'foo',
@@ -465,7 +420,6 @@ describe('SyncItems', () => {
       contentType: 'Note',
       apiVersion: ApiVersion.v20200115,
       snjsVersion: '1.2.3',
-      roleNames: [RoleName.NAMES.CoreUser],
     })
 
     expect(result.isFailed()).toBeTruthy()
@@ -476,7 +430,6 @@ describe('SyncItems', () => {
 
     const result = await createUseCase().execute({
       userUuid: '1-2-3',
-      onGoingRevisionsTransition: false,
       itemHashes: [itemHash],
       computeIntegrityHash: false,
       syncToken: 'foo',
@@ -487,7 +440,6 @@ describe('SyncItems', () => {
       contentType: 'Note',
       apiVersion: ApiVersion.v20200115,
       snjsVersion: '1.2.3',
-      roleNames: [RoleName.NAMES.CoreUser],
     })
 
     expect(result.isFailed()).toBeTruthy()

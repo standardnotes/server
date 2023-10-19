@@ -1,12 +1,12 @@
-import { Result, RoleNameCollection, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
+import { Result, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
 
 import { RevisionMetadata } from '../../Revision/RevisionMetadata'
 
 import { GetRevisionsMetadaDTO } from './GetRevisionsMetadaDTO'
-import { RevisionRepositoryResolverInterface } from '../../Revision/RevisionRepositoryResolverInterface'
+import { RevisionRepositoryInterface } from '../../Revision/RevisionRepositoryInterface'
 
 export class GetRevisionsMetada implements UseCaseInterface<RevisionMetadata[]> {
-  constructor(private revisionRepositoryResolver: RevisionRepositoryResolverInterface) {}
+  constructor(private revisionRepository: RevisionRepositoryInterface) {}
 
   async execute(dto: GetRevisionsMetadaDTO): Promise<Result<RevisionMetadata[]>> {
     const itemUuidOrError = Uuid.create(dto.itemUuid)
@@ -28,15 +28,7 @@ export class GetRevisionsMetada implements UseCaseInterface<RevisionMetadata[]> 
       sharedVaultUuids.push(sharedVaultUuidOrError.getValue())
     }
 
-    const roleNamesOrError = RoleNameCollection.create(dto.roleNames)
-    if (roleNamesOrError.isFailed()) {
-      return Result.fail(roleNamesOrError.getError())
-    }
-    const roleNames = roleNamesOrError.getValue()
-
-    const revisionRepository = this.revisionRepositoryResolver.resolve(roleNames)
-
-    const revisionsMetdata = await revisionRepository.findMetadataByItemId(
+    const revisionsMetdata = await this.revisionRepository.findMetadataByItemId(
       itemUuidOrError.getValue(),
       userUuidOrError.getValue(),
       sharedVaultUuids,

@@ -69,8 +69,5 @@ export * from './SharedVault/SharedVaultUserProps'
 export * from './Subscription/SubscriptionPlanName'
 export * from './Subscription/SubscriptionPlanNameProps'
 
-export * from './Transition/TransitionStatus'
-export * from './Transition/TransitionStatusProps'
-
 export * from './UseCase/SyncUseCaseInterface'
 export * from './UseCase/UseCaseInterface'

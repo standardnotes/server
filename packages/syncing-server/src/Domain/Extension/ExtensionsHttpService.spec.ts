@@ -14,7 +14,6 @@ import { Uuid, ContentType, Dates, Timestamps, UniqueEntityId } from '@standardn
 describe('ExtensionsHttpService', () => {
   let httpClient: AxiosInstance
   let primaryItemRepository: ItemRepositoryInterface
-  let secondaryItemRepository: ItemRepositoryInterface | null
   let contentDecoder: ContentDecoderInterface
   let domainEventPublisher: DomainEventPublisherInterface
   let domainEventFactory: DomainEventFactoryInterface
@@ -26,7 +25,6 @@ describe('ExtensionsHttpService', () => {
     new ExtensionsHttpService(
       httpClient,
       primaryItemRepository,
-      secondaryItemRepository,
       contentDecoder,
       domainEventPublisher,
       domainEventFactory,
@@ -191,31 +189,6 @@ describe('ExtensionsHttpService', () => {
 
     expect(domainEventPublisher.publish).toHaveBeenCalled()
     expect(domainEventFactory.createEmailRequestedEvent).toHaveBeenCalled()
-  })
-
-  it('should publish a failed backup event if the extension is in the secondary repository', async () => {
-    primaryItemRepository.findByUuidAndUserUuid = jest.fn().mockReturnValue(null)
-    secondaryItemRepository = {} as jest.Mocked<ItemRepositoryInterface>
-    secondaryItemRepository.findByUuidAndUserUuid = jest.fn().mockReturnValue(item)
-
-    httpClient.request = jest.fn().mockImplementation(() => {
-      throw new Error('Could not reach the extensions server')
-    })
-
-    await createService().sendItemsToExtensionsServer({
-      userUuid: '1-2-3',
-      extensionId: '2-3-4',
-      extensionsServerUrl: '',
-      forceMute: false,
-      items: [item],
-      backupFilename: 'backup-file',
-      authParams,
-    })
-
-    expect(domainEventPublisher.publish).toHaveBeenCalled()
-    expect(domainEventFactory.createEmailRequestedEvent).toHaveBeenCalled()
-
-    secondaryItemRepository = null
   })
 
   it('should publish a failed Dropbox backup event if request was sent and extensions server responded not ok', async () => {

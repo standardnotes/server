@@ -10,7 +10,6 @@ import {
   NotificationAddedForUserEvent,
   RevisionsCopyRequestedEvent,
   SharedVaultRemovedEvent,
-  TransitionStatusUpdatedEvent,
   UserAddedToSharedVaultEvent,
   UserDesignatedAsSurvivorInSharedVaultEvent,
   UserInvitedToSharedVaultEvent,
@@ -204,32 +203,11 @@ export class DomainEventFactory implements DomainEventFactoryInterface {
     }
   }
 
-  createTransitionStatusUpdatedEvent(dto: {
-    userUuid: string
-    transitionType: 'items' | 'revisions'
-    transitionTimestamp: number
-    status: string
-  }): TransitionStatusUpdatedEvent {
-    return {
-      type: 'TRANSITION_STATUS_UPDATED',
-      createdAt: this.timer.getUTCDate(),
-      meta: {
-        correlation: {
-          userIdentifier: dto.userUuid,
-          userIdentifierType: 'uuid',
-        },
-        origin: DomainEventService.SyncingServer,
-      },
-      payload: dto,
-    }
-  }
-
   createRevisionsCopyRequestedEvent(
     userUuid: string,
     dto: {
       originalItemUuid: string
       newItemUuid: string
-      roleNames: string[]
     },
   ): RevisionsCopyRequestedEvent {
     return {
@@ -246,7 +224,7 @@ export class DomainEventFactory implements DomainEventFactoryInterface {
     }
   }
 
-  createItemDumpedEvent(dto: { fileDumpPath: string; userUuid: string; roleNames: string[] }): ItemDumpedEvent {
+  createItemDumpedEvent(dto: { fileDumpPath: string; userUuid: string }): ItemDumpedEvent {
     return {
       type: 'ITEM_DUMPED',
       createdAt: this.timer.getUTCDate(),
@@ -259,16 +237,11 @@ export class DomainEventFactory implements DomainEventFactoryInterface {
       },
       payload: {
         fileDumpPath: dto.fileDumpPath,
-        roleNames: dto.roleNames,
       },
     }
   }
 
-  createItemRevisionCreationRequested(dto: {
-    itemUuid: string
-    userUuid: string
-    roleNames: string[]
-  }): ItemRevisionCreationRequestedEvent {
+  createItemRevisionCreationRequested(dto: { itemUuid: string; userUuid: string }): ItemRevisionCreationRequestedEvent {
     return {
       type: 'ITEM_REVISION_CREATION_REQUESTED',
       createdAt: this.timer.getUTCDate(),
@@ -281,16 +254,11 @@ export class DomainEventFactory implements DomainEventFactoryInterface {
       },
       payload: {
         itemUuid: dto.itemUuid,
-        roleNames: dto.roleNames,
       },
     }
   }
 
-  createDuplicateItemSyncedEvent(dto: {
-    itemUuid: string
-    userUuid: string
-    roleNames: string[]
-  }): DuplicateItemSyncedEvent {
+  createDuplicateItemSyncedEvent(dto: { itemUuid: string; userUuid: string }): DuplicateItemSyncedEvent {
     return {
       type: 'DUPLICATE_ITEM_SYNCED',
       createdAt: this.timer.getUTCDate(),

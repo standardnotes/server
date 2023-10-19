@@ -13,22 +13,15 @@ const TYPES = {
   Revisions_SQLRevisionMetadataPersistenceMapper: Symbol.for('Revisions_SQLRevisionMetadataPersistenceMapper'),
   Revisions_SQLLegacyRevisionPersistenceMapper: Symbol.for('Revisions_SQLLegacyRevisionPersistenceMapper'),
   Revisions_SQLRevisionPersistenceMapper: Symbol.for('Revisions_SQLRevisionPersistenceMapper'),
-  Revisions_MongoDBRevisionMetadataPersistenceMapper: Symbol.for('Revisions_MongoDBRevisionMetadataPersistenceMapper'),
-  Revisions_MongoDBRevisionPersistenceMapper: Symbol.for('Revisions_MongoDBRevisionPersistenceMapper'),
   Revisions_RevisionItemStringMapper: Symbol.for('Revisions_RevisionItemStringMapper'),
   Revisions_RevisionHttpMapper: Symbol.for('Revisions_RevisionHttpMapper'),
   Revisions_RevisionMetadataHttpMapper: Symbol.for('Revisions_RevisionMetadataHttpMapper'),
   // ORM
   Revisions_ORMRevisionRepository: Symbol.for('Revisions_ORMRevisionRepository'),
   Revisions_ORMLegacyRevisionRepository: Symbol.for('Revisions_ORMLegacyRevisionRepository'),
-  // Mongo
-  Revisions_ORMMongoRevisionRepository: Symbol.for('Revisions_ORMMongoRevisionRepository'),
   // Repositories
   Revisions_SQLRevisionRepository: Symbol.for('Revisions_SQLRevisionRepository'),
-  Revisions_MongoDBRevisionRepository: Symbol.for('Revisions_MongoDBRevisionRepository'),
   Revisions_DumpRepository: Symbol.for('Revisions_DumpRepository'),
-  Revisions_RevisionRepositoryResolver: Symbol.for('Revisions_RevisionRepositoryResolver'),
-  Revisions_TransitionStatusRepository: Symbol.for('Revisions_TransitionStatusRepository'),
   // env vars
   Revisions_AUTH_JWT_SECRET: Symbol.for('Revisions_AUTH_JWT_SECRET'),
   Revisions_SQS_QUEUE_URL: Symbol.for('Revisions_SQS_QUEUE_URL'),
@@ -47,9 +40,6 @@ const TYPES = {
   Revisions_DeleteRevision: Symbol.for('Revisions_DeleteRevision'),
   Revisions_CopyRevisions: Symbol.for('Revisions_CopyRevisions'),
   Revisions_GetRequiredRoleToViewRevision: Symbol.for('Revisions_GetRequiredRoleToViewRevision'),
-  Revisions_TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser: Symbol.for(
-    'Revisions_TransitionRevisionsFromPrimaryToSecondaryDatabaseForUser',
-  ),
   Revisions_RemoveRevisionsFromSharedVault: Symbol.for('Revisions_RemoveRevisionsFromSharedVault'),
   Revisions_CreateRevisionFromDump: Symbol.for('Revisions_CreateRevisionFromDump'),
   // Controller
@@ -61,7 +51,6 @@ const TYPES = {
   Revisions_AccountDeletionRequestedEventHandler: Symbol.for('Revisions_AccountDeletionRequestedEventHandler'),
   Revisions_RevisionsCopyRequestedEventHandler: Symbol.for('Revisions_RevisionsCopyRequestedEventHandler'),
   Revisions_ItemRemovedFromSharedVaultEventHandler: Symbol.for('Revisions_ItemRemovedFromSharedVaultEventHandler'),
-  Revisions_TransitionRequestedEventHandler: Symbol.for('Revisions_TransitionRequestedEventHandler'),
   Revisions_SharedVaultRemovedEventHandler: Symbol.for('Revisions_SharedVaultRemovedEventHandler'),
   // Services
   Revisions_CrossServiceTokenDecoder: Symbol.for('Revisions_CrossServiceTokenDecoder'),

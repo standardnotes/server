@@ -1,4 +1,4 @@
-import { Result, RoleNameCollection, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
+import { Result, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
 
 import { SaveItemsResult } from './SaveItemsResult'
 import { SaveItemsDTO } from './SaveItemsDTO'
@@ -10,14 +10,14 @@ import { Logger } from 'winston'
 import { ItemSaveValidatorInterface } from '../../../Item/SaveValidator/ItemSaveValidatorInterface'
 import { SaveNewItem } from '../SaveNewItem/SaveNewItem'
 import { UpdateExistingItem } from '../UpdateExistingItem/UpdateExistingItem'
-import { ItemRepositoryResolverInterface } from '../../../Item/ItemRepositoryResolverInterface'
+import { ItemRepositoryInterface } from '../../../Item/ItemRepositoryInterface'
 
 export class SaveItems implements UseCaseInterface<SaveItemsResult> {
   private readonly SYNC_TOKEN_VERSION = 2
 
   constructor(
     private itemSaveValidator: ItemSaveValidatorInterface,
-    private itemRepositoryResolver: ItemRepositoryResolverInterface,
+    private itemRepository: ItemRepositoryInterface,
     private timer: TimerInterface,
     private saveNewItem: SaveNewItem,
     private updateExistingItem: UpdateExistingItem,
@@ -27,12 +27,6 @@ export class SaveItems implements UseCaseInterface<SaveItemsResult> {
   async execute(dto: SaveItemsDTO): Promise<Result<SaveItemsResult>> {
     const savedItems: Array<Item> = []
     const conflicts: Array<ItemConflict> = []
-
-    const roleNamesOrError = RoleNameCollection.create(dto.roleNames)
-    if (roleNamesOrError.isFailed()) {
-      return Result.fail(roleNamesOrError.getError())
-    }
-    const roleNames = roleNamesOrError.getValue()
 
     const lastUpdatedTimestamp = this.timer.getTimestampInMicroseconds()
 
@@ -48,8 +42,7 @@ export class SaveItems implements UseCaseInterface<SaveItemsResult> {
       }
       const itemUuid = itemUuidOrError.getValue()
 
-      const itemRepository = this.itemRepositoryResolver.resolve(roleNames)
-      const existingItem = await itemRepository.findByUuid(itemUuid)
+      const existingItem = await this.itemRepository.findByUuid(itemUuid)
 
       if (dto.readOnlyAccess) {
         conflicts.push({
@@ -85,8 +78,6 @@ export class SaveItems implements UseCaseInterface<SaveItemsResult> {
           itemHash,
           sessionUuid: dto.sessionUuid,
           performingUserUuid: dto.userUuid,
-          roleNames: dto.roleNames,
-          onGoingRevisionsTransition: dto.onGoingRevisionsTransition,
         })
         if (udpatedItemOrError.isFailed()) {
           this.logger.error(
@@ -109,8 +100,6 @@ export class SaveItems implements UseCaseInterface<SaveItemsResult> {
             userUuid: dto.userUuid,
             itemHash,
             sessionUuid: dto.sessionUuid,
-            roleNames: dto.roleNames,
-            onGoingRevisionsTransition: dto.onGoingRevisionsTransition,
           })
           if (newItemOrError.isFailed()) {
             this.logger.error(

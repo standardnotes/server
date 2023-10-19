@@ -9,15 +9,7 @@ import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'
 
 import { CreateCrossServiceToken } from './CreateCrossServiceToken'
 import { GetSetting } from '../GetSetting/GetSetting'
-import {
-  Result,
-  SharedVaultUser,
-  SharedVaultUserPermission,
-  Timestamps,
-  TransitionStatus,
-  Uuid,
-} from '@standardnotes/domain-core'
-import { TransitionStatusRepositoryInterface } from '../../Transition/TransitionStatusRepositoryInterface'
+import { Result, SharedVaultUser, SharedVaultUserPermission, Timestamps, Uuid } from '@standardnotes/domain-core'
 import { SharedVaultUserRepositoryInterface } from '../../SharedVault/SharedVaultUserRepositoryInterface'
 
 describe('CreateCrossServiceToken', () => {
@@ -27,7 +19,6 @@ describe('CreateCrossServiceToken', () => {
   let tokenEncoder: TokenEncoderInterface<CrossServiceTokenData>
   let userRepository: UserRepositoryInterface
   let getSettingUseCase: GetSetting
-  let transitionStatusRepository: TransitionStatusRepositoryInterface
   let sharedVaultUserRepository: SharedVaultUserRepositoryInterface
   const jwtTTL = 60
 
@@ -44,7 +35,6 @@ describe('CreateCrossServiceToken', () => {
       userRepository,
       jwtTTL,
       getSettingUseCase,
-      transitionStatusRepository,
       sharedVaultUserRepository,
     )
 
@@ -77,11 +67,6 @@ describe('CreateCrossServiceToken', () => {
 
     getSettingUseCase = {} as jest.Mocked<GetSetting>
     getSettingUseCase.execute = jest.fn().mockReturnValue(Result.ok({ setting: { value: '100' } }))
-
-    transitionStatusRepository = {} as jest.Mocked<TransitionStatusRepositoryInterface>
-    transitionStatusRepository.getStatus = jest
-      .fn()
-      .mockReturnValue(TransitionStatus.create(TransitionStatus.STATUSES.Verified).getValue())
 
     sharedVaultUserRepository = {} as jest.Mocked<SharedVaultUserRepositoryInterface>
     sharedVaultUserRepository.findByUserUuid = jest.fn().mockReturnValue([
@@ -122,46 +107,6 @@ describe('CreateCrossServiceToken', () => {
           email: 'test@test.te',
           uuid: '00000000-0000-0000-0000-000000000000',
         },
-        ongoing_transition: false,
-        ongoing_revisions_transition: false,
-      },
-      60,
-    )
-  })
-
-  it('should create a cross service token for user that has an ongoing transaction', async () => {
-    transitionStatusRepository.getStatus = jest
-      .fn()
-      .mockReturnValue(TransitionStatus.create(TransitionStatus.STATUSES.InProgress).getValue())
-
-    await createUseCase().execute({
-      user,
-      session,
-    })
-
-    expect(tokenEncoder.encodeExpirableToken).toHaveBeenCalledWith(
-      {
-        roles: [
-          {
-            name: 'role1',
-            uuid: '1-3-4',
-          },
-        ],
-        belongs_to_shared_vaults: [
-          {
-            shared_vault_uuid: '00000000-0000-0000-0000-000000000000',
-            permission: 'read',
-          },
-        ],
-        session: {
-          test: 'test',
-        },
-        user: {
-          email: 'test@test.te',
-          uuid: '00000000-0000-0000-0000-000000000000',
-        },
-        ongoing_transition: true,
-        ongoing_revisions_transition: true,
       },
       60,
     )
@@ -190,8 +135,6 @@ describe('CreateCrossServiceToken', () => {
           email: 'test@test.te',
           uuid: '00000000-0000-0000-0000-000000000000',
         },
-        ongoing_transition: false,
-        ongoing_revisions_transition: false,
       },
       60,
     )
@@ -220,8 +163,6 @@ describe('CreateCrossServiceToken', () => {
           email: 'test@test.te',
           uuid: '00000000-0000-0000-0000-000000000000',
         },
-        ongoing_transition: false,
-        ongoing_revisions_transition: false,
       },
       60,
     )
@@ -277,8 +218,6 @@ describe('CreateCrossServiceToken', () => {
             email: 'test@test.te',
             uuid: '00000000-0000-0000-0000-000000000000',
           },
-          ongoing_revisions_transition: false,
-          ongoing_transition: false,
         },
         60,
       )

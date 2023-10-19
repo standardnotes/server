@@ -1,12 +1,12 @@
-import { Result, RoleNameCollection, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
+import { Result, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
 
 import { Revision } from '../../Revision/Revision'
 
 import { CopyRevisionsDTO } from './CopyRevisionsDTO'
-import { RevisionRepositoryResolverInterface } from '../../Revision/RevisionRepositoryResolverInterface'
+import { RevisionRepositoryInterface } from '../../Revision/RevisionRepositoryInterface'
 
 export class CopyRevisions implements UseCaseInterface<string> {
-  constructor(private revisionRepositoryResolver: RevisionRepositoryResolverInterface) {}
+  constructor(private revisionRepository: RevisionRepositoryInterface) {}
 
   async execute(dto: CopyRevisionsDTO): Promise<Result<string>> {
     const orignalItemUuidOrError = Uuid.create(dto.originalItemUuid)
@@ -21,15 +21,7 @@ export class CopyRevisions implements UseCaseInterface<string> {
     }
     const newItemUuid = newItemUuidOrError.getValue()
 
-    const roleNamesOrError = RoleNameCollection.create(dto.roleNames)
-    if (roleNamesOrError.isFailed()) {
-      return Result.fail(roleNamesOrError.getError())
-    }
-    const roleNames = roleNamesOrError.getValue()
-
-    const revisionRepository = this.revisionRepositoryResolver.resolve(roleNames)
-
-    const revisions = await revisionRepository.findByItemUuid(originalItemUuid)
+    const revisions = await this.revisionRepository.findByItemUuid(originalItemUuid)
 
     for (const existingRevision of revisions) {
       const revisionCopyOrError = Revision.create({
@@ -43,7 +35,7 @@ export class CopyRevisions implements UseCaseInterface<string> {
 
       const revisionCopy = revisionCopyOrError.getValue()
 
-      await revisionRepository.insert(revisionCopy)
+      await this.revisionRepository.insert(revisionCopy)
     }
 
     return Result.ok<string>('Revisions copied')

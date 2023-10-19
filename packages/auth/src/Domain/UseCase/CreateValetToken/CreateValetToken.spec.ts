@@ -1,6 +1,5 @@
 import 'reflect-metadata'
 
-import { TransitionStatus } from '@standardnotes/domain-core'
 import { TimerInterface } from '@standardnotes/time'
 import { TokenEncoderInterface, ValetTokenData, ValetTokenOperation } from '@standardnotes/security'
 
@@ -11,7 +10,6 @@ import { User } from '../../User/User'
 import { UserSubscriptionType } from '../../Subscription/UserSubscriptionType'
 import { SubscriptionSettingsAssociationServiceInterface } from '../../Setting/SubscriptionSettingsAssociationServiceInterface'
 import { UserSubscriptionServiceInterface } from '../../Subscription/UserSubscriptionServiceInterface'
-import { TransitionStatusRepositoryInterface } from '../../Transition/TransitionStatusRepositoryInterface'
 
 describe('CreateValetToken', () => {
   let tokenEncoder: TokenEncoderInterface<ValetTokenData>
@@ -23,7 +21,6 @@ describe('CreateValetToken', () => {
   let regularSubscription: UserSubscription
   let sharedSubscription: UserSubscription
   let user: User
-  let transitionStatusRepository: TransitionStatusRepositoryInterface
 
   const createUseCase = () =>
     new CreateValetToken(
@@ -33,7 +30,6 @@ describe('CreateValetToken', () => {
       userSubscriptionService,
       timer,
       valetTokenTTL,
-      transitionStatusRepository,
     )
 
   beforeEach(() => {
@@ -71,11 +67,6 @@ describe('CreateValetToken', () => {
 
     timer = {} as jest.Mocked<TimerInterface>
     timer.getTimestampInMicroseconds = jest.fn().mockReturnValue(100)
-
-    transitionStatusRepository = {} as jest.Mocked<TransitionStatusRepositoryInterface>
-    transitionStatusRepository.getStatus = jest
-      .fn()
-      .mockReturnValue(TransitionStatus.create(TransitionStatus.STATUSES.Verified).getValue())
   })
 
   it('should create a read valet token', async () => {
@@ -176,7 +167,6 @@ describe('CreateValetToken', () => {
       {
         sharedSubscriptionUuid: undefined,
         regularSubscriptionUuid: '1-2-3',
-        ongoingTransition: false,
         permittedOperation: 'write',
         permittedResources: [
           {
@@ -217,7 +207,6 @@ describe('CreateValetToken', () => {
       {
         sharedSubscriptionUuid: '2-3-4',
         regularSubscriptionUuid: '1-2-3',
-        ongoingTransition: false,
         permittedOperation: 'write',
         permittedResources: [
           {
@@ -278,7 +267,6 @@ describe('CreateValetToken', () => {
       {
         sharedSubscriptionUuid: undefined,
         regularSubscriptionUuid: '1-2-3',
-        ongoingTransition: false,
         permittedOperation: 'write',
         permittedResources: [
           {

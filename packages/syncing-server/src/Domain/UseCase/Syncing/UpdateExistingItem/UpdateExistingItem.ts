@@ -5,7 +5,6 @@ import {
   NotificationPayloadIdentifierType,
   NotificationType,
   Result,
-  RoleNameCollection,
   Timestamps,
   UseCaseInterface,
   Uuid,
@@ -22,13 +21,13 @@ import { KeySystemAssociation } from '../../../KeySystem/KeySystemAssociation'
 import { DetermineSharedVaultOperationOnItem } from '../../SharedVaults/DetermineSharedVaultOperationOnItem/DetermineSharedVaultOperationOnItem'
 import { SharedVaultOperationOnItem } from '../../../SharedVault/SharedVaultOperationOnItem'
 import { RemoveNotificationsForUser } from '../../Messaging/RemoveNotificationsForUser/RemoveNotificationsForUser'
-import { ItemRepositoryResolverInterface } from '../../../Item/ItemRepositoryResolverInterface'
 import { ItemHash } from '../../../Item/ItemHash'
 import { AddNotificationsForUsers } from '../../Messaging/AddNotificationsForUsers/AddNotificationsForUsers'
+import { ItemRepositoryInterface } from '../../../Item/ItemRepositoryInterface'
 
 export class UpdateExistingItem implements UseCaseInterface<Item> {
   constructor(
-    private itemRepositoryResolver: ItemRepositoryResolverInterface,
+    private itemRepository: ItemRepositoryInterface,
     private timer: TimerInterface,
     private domainEventPublisher: DomainEventPublisherInterface,
     private domainEventFactory: DomainEventFactoryInterface,
@@ -44,12 +43,6 @@ export class UpdateExistingItem implements UseCaseInterface<Item> {
       return Result.fail(userUuidOrError.getError())
     }
     const userUuid = userUuidOrError.getValue()
-
-    const roleNamesOrError = RoleNameCollection.create(dto.roleNames)
-    if (roleNamesOrError.isFailed()) {
-      return Result.fail(roleNamesOrError.getError())
-    }
-    const roleNames = roleNamesOrError.getValue()
 
     let sharedVaultOperation: SharedVaultOperationOnItem | null = null
     if (dto.itemHash.representsASharedVaultItem() || dto.existingItem.isAssociatedWithASharedVault()) {
@@ -174,24 +167,19 @@ export class UpdateExistingItem implements UseCaseInterface<Item> {
       dto.existingItem.props.itemsKeyId = null
     }
 
-    const itemRepository = this.itemRepositoryResolver.resolve(roleNames)
-
-    await itemRepository.update(dto.existingItem)
+    await this.itemRepository.update(dto.existingItem)
 
     if (secondsFromLastUpdate >= this.revisionFrequency) {
       if (
         dto.existingItem.props.contentType.value !== null &&
         [ContentType.TYPES.Note, ContentType.TYPES.File].includes(dto.existingItem.props.contentType.value)
       ) {
-        if (!dto.onGoingRevisionsTransition) {
-          await this.domainEventPublisher.publish(
-            this.domainEventFactory.createItemRevisionCreationRequested({
-              itemUuid: dto.existingItem.id.toString(),
-              userUuid: dto.existingItem.props.userUuid.value,
-              roleNames: dto.roleNames,
-            }),
-          )
-        }
+        await this.domainEventPublisher.publish(
+          this.domainEventFactory.createItemRevisionCreationRequested({
+            itemUuid: dto.existingItem.id.toString(),
+            userUuid: dto.existingItem.props.userUuid.value,
+          }),
+        )
       }
     }
 
@@ -200,7 +188,6 @@ export class UpdateExistingItem implements UseCaseInterface<Item> {
         this.domainEventFactory.createDuplicateItemSyncedEvent({
           itemUuid: dto.existingItem.id.toString(),
           userUuid: dto.existingItem.props.userUuid.value,
-          roleNames: dto.roleNames,
         }),
       )
     }

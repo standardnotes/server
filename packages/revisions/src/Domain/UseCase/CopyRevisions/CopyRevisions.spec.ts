@@ -2,21 +2,16 @@ import { Result } from '@standardnotes/domain-core'
 import { Revision } from '../../Revision/Revision'
 import { RevisionRepositoryInterface } from '../../Revision/RevisionRepositoryInterface'
 import { CopyRevisions } from './CopyRevisions'
-import { RevisionRepositoryResolverInterface } from '../../Revision/RevisionRepositoryResolverInterface'
 
 describe('CopyRevisions', () => {
   let revisionRepository: RevisionRepositoryInterface
-  let revisionRepositoryResolver: RevisionRepositoryResolverInterface
 
-  const createUseCase = () => new CopyRevisions(revisionRepositoryResolver)
+  const createUseCase = () => new CopyRevisions(revisionRepository)
 
   beforeEach(() => {
     revisionRepository = {} as jest.Mocked<RevisionRepositoryInterface>
     revisionRepository.findByItemUuid = jest.fn().mockReturnValue([{} as jest.Mocked<Revision>])
     revisionRepository.insert = jest.fn()
-
-    revisionRepositoryResolver = {} as jest.Mocked<RevisionRepositoryResolverInterface>
-    revisionRepositoryResolver.resolve = jest.fn().mockReturnValue(revisionRepository)
   })
 
   it('should not copy revisions to new item if revision creation fails', async () => {
@@ -26,7 +21,6 @@ describe('CopyRevisions', () => {
     const result = await createUseCase().execute({
       originalItemUuid: '84c0f8e8-544a-4c7e-9adf-26209303bc1d',
       newItemUuid: '84c0f8e8-544a-4c7e-9adf-26209303bc1d',
-      roleNames: ['CORE_USER'],
     })
 
     expect(result.isFailed()).toBeTruthy()
@@ -34,21 +28,10 @@ describe('CopyRevisions', () => {
     revisionMock.mockRestore()
   })
 
-  it('should do nothing if the role names are not valid', async () => {
-    const result = await createUseCase().execute({
-      originalItemUuid: '84c0f8e8-544a-4c7e-9adf-26209303bc1d',
-      newItemUuid: '84c0f8e8-544a-4c7e-9adf-26209303bc1d',
-      roleNames: ['INVALID_ROLE_NAME'],
-    })
-
-    expect(result.isFailed()).toBeTruthy()
-  })
-
   it('should copy revisions to new item', async () => {
     const result = await createUseCase().execute({
       originalItemUuid: '84c0f8e8-544a-4c7e-9adf-26209303bc1d',
       newItemUuid: '84c0f8e8-544a-4c7e-9adf-26209303bc1d',
-      roleNames: ['CORE_USER'],
     })
 
     expect(result.isFailed()).toBeFalsy()
@@ -60,7 +43,6 @@ describe('CopyRevisions', () => {
     const result = await createUseCase().execute({
       originalItemUuid: '1-2-3',
       newItemUuid: '84c0f8e8-544a-4c7e-9adf-26209303bc1d',
-      roleNames: ['CORE_USER'],
     })
 
     expect(result.isFailed()).toBeTruthy()
@@ -70,7 +52,6 @@ describe('CopyRevisions', () => {
     const result = await createUseCase().execute({
       newItemUuid: '1-2-3',
       originalItemUuid: '84c0f8e8-544a-4c7e-9adf-26209303bc1d',
-      roleNames: ['CORE_USER'],
     })
 
     expect(result.isFailed()).toBeTruthy()

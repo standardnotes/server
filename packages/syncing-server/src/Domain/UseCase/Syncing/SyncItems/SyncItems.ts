@@ -1,4 +1,4 @@
-import { ContentType, Result, RoleNameCollection, UseCaseInterface } from '@standardnotes/domain-core'
+import { ContentType, Result, UseCaseInterface } from '@standardnotes/domain-core'
 
 import { Item } from '../../../Item/Item'
 import { ItemConflict } from '../../../Item/ItemConflict'
@@ -10,12 +10,12 @@ import { GetSharedVaults } from '../../SharedVaults/GetSharedVaults/GetSharedVau
 import { GetSharedVaultInvitesSentToUser } from '../../SharedVaults/GetSharedVaultInvitesSentToUser/GetSharedVaultInvitesSentToUser'
 import { GetMessagesSentToUser } from '../../Messaging/GetMessagesSentToUser/GetMessagesSentToUser'
 import { GetUserNotifications } from '../../Messaging/GetUserNotifications/GetUserNotifications'
-import { ItemRepositoryResolverInterface } from '../../../Item/ItemRepositoryResolverInterface'
 import { Logger } from 'winston'
+import { ItemRepositoryInterface } from '../../../Item/ItemRepositoryInterface'
 
 export class SyncItems implements UseCaseInterface<SyncItemsResponse> {
   constructor(
-    private itemRepositoryResolver: ItemRepositoryResolverInterface,
+    private itemRepository: ItemRepositoryInterface,
     private getItemsUseCase: GetItems,
     private saveItemsUseCase: SaveItems,
     private getSharedVaultsUseCase: GetSharedVaults,
@@ -27,12 +27,6 @@ export class SyncItems implements UseCaseInterface<SyncItemsResponse> {
 
   async execute(dto: SyncItemsDTO): Promise<Result<SyncItemsResponse>> {
     try {
-      const roleNamesOrError = RoleNameCollection.create(dto.roleNames)
-      if (roleNamesOrError.isFailed()) {
-        return Result.fail(roleNamesOrError.getError())
-      }
-      const roleNames = roleNamesOrError.getValue()
-
       const getItemsResultOrError = await this.getItemsUseCase.execute({
         userUuid: dto.userUuid,
         syncToken: dto.syncToken,
@@ -40,7 +34,6 @@ export class SyncItems implements UseCaseInterface<SyncItemsResponse> {
         limit: dto.limit,
         contentType: dto.contentType,
         sharedVaultUuids: dto.sharedVaultUuids,
-        roleNames: dto.roleNames,
       })
       if (getItemsResultOrError.isFailed()) {
         return Result.fail(getItemsResultOrError.getError())
@@ -54,8 +47,6 @@ export class SyncItems implements UseCaseInterface<SyncItemsResponse> {
         readOnlyAccess: dto.readOnlyAccess,
         sessionUuid: dto.sessionUuid,
         snjsVersion: dto.snjsVersion,
-        roleNames: dto.roleNames,
-        onGoingRevisionsTransition: dto.onGoingRevisionsTransition,
       })
       if (saveItemsResultOrError.isFailed()) {
         return Result.fail(saveItemsResultOrError.getError())
@@ -68,7 +59,7 @@ export class SyncItems implements UseCaseInterface<SyncItemsResponse> {
       )
       const isSharedVaultExclusiveSync = dto.sharedVaultUuids && dto.sharedVaultUuids.length > 0
       if (this.isFirstSync(dto) && !isSharedVaultExclusiveSync) {
-        retrievedItems = await this.frontLoadKeysItemsToTop(dto.userUuid, roleNames, retrievedItems)
+        retrievedItems = await this.frontLoadKeysItemsToTop(dto.userUuid, retrievedItems)
       }
 
       const sharedVaultsOrError = await this.getSharedVaultsUseCase.execute({
@@ -148,13 +139,8 @@ export class SyncItems implements UseCaseInterface<SyncItemsResponse> {
     return retrievedItems.filter((item: Item) => syncConflictIds.indexOf(item.id.toString()) === -1)
   }
 
-  private async frontLoadKeysItemsToTop(
-    userUuid: string,
-    roleNames: RoleNameCollection,
-    retrievedItems: Array<Item>,
-  ): Promise<Array<Item>> {
-    const itemRepository = this.itemRepositoryResolver.resolve(roleNames)
-    const itemsKeys = await itemRepository.findAll({
+  private async frontLoadKeysItemsToTop(userUuid: string, retrievedItems: Array<Item>): Promise<Array<Item>> {
+    const itemsKeys = await this.itemRepository.findAll({
       userUuid,
       contentType: ContentType.TYPES.ItemsKey,
       sortBy: 'updated_at_timestamp',

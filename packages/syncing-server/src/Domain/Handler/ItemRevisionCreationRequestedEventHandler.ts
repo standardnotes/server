@@ -12,7 +12,6 @@ export class ItemRevisionCreationRequestedEventHandler implements DomainEventHan
   async handle(event: ItemRevisionCreationRequestedEvent): Promise<void> {
     const result = await this.dumpItem.execute({
       itemUuid: event.payload.itemUuid,
-      roleNames: event.payload.roleNames,
     })
 
     if (result.isFailed()) {

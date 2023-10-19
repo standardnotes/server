@@ -1,16 +1,14 @@
-import { DataSource, EntityTarget, LoggerOptions, MongoRepository, ObjectLiteral, Repository } from 'typeorm'
+import { DataSource, EntityTarget, LoggerOptions, ObjectLiteral, Repository } from 'typeorm'
 import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions'
 
 import { SQLLegacyRevision } from '../Infra/TypeORM/SQL/SQLLegacyRevision'
 
 import { Env } from './Env'
 import { SqliteConnectionOptions } from 'typeorm/driver/sqlite/SqliteConnectionOptions'
-import { MongoDBRevision } from '../Infra/TypeORM/MongoDB/MongoDBRevision'
 import { SQLRevision } from '../Infra/TypeORM/SQL/SQLRevision'
 
 export class AppDataSource {
   private _dataSource: DataSource | undefined
-  private _secondaryDataSource: DataSource | undefined
 
   constructor(
     private configuration: {
@@ -27,43 +25,8 @@ export class AppDataSource {
     return this._dataSource.getRepository(target)
   }
 
-  getMongoRepository<Entity extends ObjectLiteral>(target: EntityTarget<Entity>): MongoRepository<Entity> {
-    if (!this._secondaryDataSource) {
-      throw new Error('Secondary DataSource not initialized')
-    }
-
-    return this._secondaryDataSource.getMongoRepository(target)
-  }
-
   async initialize(): Promise<void> {
     await this.dataSource.initialize()
-    const secondaryDataSource = this.secondaryDataSource
-    if (secondaryDataSource) {
-      await secondaryDataSource.initialize()
-    }
-  }
-
-  get secondaryDataSource(): DataSource | undefined {
-    this.configuration.env.load()
-
-    if (this.configuration.env.get('SECONDARY_DB_ENABLED', true) !== 'true') {
-      return undefined
-    }
-
-    this._secondaryDataSource = new DataSource({
-      type: 'mongodb',
-      host: this.configuration.env.get('MONGO_HOST'),
-      authSource: 'admin',
-      port: parseInt(this.configuration.env.get('MONGO_PORT')),
-      username: this.configuration.env.get('MONGO_USERNAME'),
-      password: this.configuration.env.get('MONGO_PASSWORD', true),
-      database: this.configuration.env.get('MONGO_DATABASE'),
-      entities: [MongoDBRevision],
-      retryWrites: false,
-      synchronize: true,
-    })
-
-    return this._secondaryDataSource
   }
 
   get dataSource(): DataSource {
