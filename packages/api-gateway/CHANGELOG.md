@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.80.1](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.80.0...@standardnotes/api-gateway@1.80.1) (2023-10-19)
+
+### Bug Fixes
+
+* **api-gateway:** stringify error in service proxy ([e385926](https://github.com/standardnotes/api-gateway/commit/e38592604644e0f52df0865ffae5b7e79d1d3d07))
+
 # [1.80.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.79.14...@standardnotes/api-gateway@1.80.0) (2023-10-19)
 
 ### Features
