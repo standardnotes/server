@@ -218,7 +218,9 @@ export class HttpServiceProxy implements ServiceProxyInterface {
         : (error as Error).message
 
       this.logger.error(
-        `Could not pass the request to ${serverUrl}/${endpointOrMethodIdentifier} on underlying service: ${errorMessage}`,
+        `Could not pass the request to ${serverUrl}/${endpointOrMethodIdentifier} on underlying service: ${JSON.stringify(
+          error,
+        )}`,
       )
 
       this.logger.debug('Response error: %O', (error as AxiosError).response ?? error)
