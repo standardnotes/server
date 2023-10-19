@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.47.0](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.46.1...@standardnotes/revisions-server@1.47.0) (2023-10-19)
+
+### Features
+
+* remove transition state ([#882](https://github.com/standardnotes/server/issues/882)) ([a2c1ebe](https://github.com/standardnotes/server/commit/a2c1ebe675cd5678c923715056a6966f465a15d6))
+
 ## [1.46.1](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.46.0...@standardnotes/revisions-server@1.46.1) (2023-10-18)
 
 **Note:** Version bump only for package @standardnotes/revisions-server

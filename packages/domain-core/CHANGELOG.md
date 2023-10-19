@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.38.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.37.0...@standardnotes/domain-core@1.38.0) (2023-10-19)
+
+### Features
+
+* remove transition state ([#882](https://github.com/standardnotes/server/issues/882)) ([a2c1ebe](https://github.com/standardnotes/server/commit/a2c1ebe675cd5678c923715056a6966f465a15d6))
+
 # [1.37.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.36.0...@standardnotes/domain-core@1.37.0) (2023-10-11)
 
 ### Features

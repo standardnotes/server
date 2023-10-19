@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.16.0](https://github.com/standardnotes/server/compare/@standardnotes/security@1.15.0...@standardnotes/security@1.16.0) (2023-10-19)
+
+### Features
+
+* remove transition state ([#882](https://github.com/standardnotes/server/issues/882)) ([a2c1ebe](https://github.com/standardnotes/server/commit/a2c1ebe675cd5678c923715056a6966f465a15d6))
+
 # [1.15.0](https://github.com/standardnotes/server/compare/@standardnotes/security@1.14.0...@standardnotes/security@1.15.0) (2023-09-28)
 
 ### Features
