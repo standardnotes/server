@@ -9,7 +9,7 @@ export class RenameRevisionsTable1694425333972 implements MigrationInterface {
     )
     const revisionsTableExists = revisionsTableExistsQueryResult[0].count === 1
     if (revisionsTableExists) {
-      await queryRunner.query('RENAME TABLE `revisions` TO `revisions_revisions`')
+      await queryRunner.query('ALTER TABLE `revisions` RENAME TO `revisions_revisions`, ALGORITHM=INSTANT')
     }
   }
 

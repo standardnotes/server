@@ -2,7 +2,6 @@ import { DataSource, EntityTarget, LoggerOptions, ObjectLiteral, Repository } fr
 import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions'
 import { Env } from './Env'
 import { SqliteConnectionOptions } from 'typeorm/driver/sqlite/SqliteConnectionOptions'
-import { SQLLegacyItem } from '../Infra/TypeORM/SQLLegacyItem'
 import { TypeORMNotification } from '../Infra/TypeORM/TypeORMNotification'
 import { TypeORMSharedVault } from '../Infra/TypeORM/TypeORMSharedVault'
 import { TypeORMSharedVaultUser } from '../Infra/TypeORM/TypeORMSharedVaultUser'
@@ -36,24 +35,17 @@ export class AppDataSource {
     this.configuration.env.load()
 
     const isConfiguredForMySQL = this.configuration.env.get('DB_TYPE') === 'mysql'
-    const isConfiguredForHomeServerOrSelfHosting =
-      this.configuration.env.get('MODE', true) === 'home-server' ||
-      this.configuration.env.get('MODE', true) === 'self-hosted'
 
     const maxQueryExecutionTime = this.configuration.env.get('DB_MAX_QUERY_EXECUTION_TIME', true)
       ? +this.configuration.env.get('DB_MAX_QUERY_EXECUTION_TIME', true)
       : 45_000
 
-    const migrationsSourceDirectoryName = isConfiguredForMySQL
-      ? isConfiguredForHomeServerOrSelfHosting
-        ? 'mysql'
-        : 'mysql-legacy'
-      : 'sqlite'
+    const migrationsSourceDirectoryName = isConfiguredForMySQL ? 'mysql' : 'sqlite'
 
     const commonDataSourceOptions = {
       maxQueryExecutionTime,
       entities: [
-        isConfiguredForHomeServerOrSelfHosting ? SQLItem : SQLLegacyItem,
+        SQLItem,
         TypeORMNotification,
         TypeORMSharedVault,
         TypeORMSharedVaultUser,

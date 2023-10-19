@@ -6,7 +6,6 @@ import TYPES from './Types'
 import { AppDataSource } from './DataSource'
 import { SNSClient, SNSClientConfig } from '@aws-sdk/client-sns'
 import { ItemRepositoryInterface } from '../Domain/Item/ItemRepositoryInterface'
-import { SQLLegacyItemRepository } from '../Infra/TypeORM/SQLLegacyItemRepository'
 import { Repository } from 'typeorm'
 import { Item } from '../Domain/Item/Item'
 import {
@@ -64,8 +63,6 @@ import {
 } from '@standardnotes/domain-core'
 import { BaseItemsController } from '../Infra/InversifyExpressUtils/Base/BaseItemsController'
 import { Transform } from 'stream'
-import { SQLLegacyItem } from '../Infra/TypeORM/SQLLegacyItem'
-import { SQLLegacyItemPersistenceMapper } from '../Mapping/Persistence/SQLLegacyItemPersistenceMapper'
 import { ItemHttpRepresentation } from '../Mapping/Http/ItemHttpRepresentation'
 import { ItemHttpMapper } from '../Mapping/Http/ItemHttpMapper'
 import { SavedItemHttpRepresentation } from '../Mapping/Http/SavedItemHttpRepresentation'
@@ -304,9 +301,6 @@ export class ContainerConfigLoader {
 
     // Mapping
     container
-      .bind<MapperInterface<Item, SQLLegacyItem>>(TYPES.Sync_SQLLegacyItemPersistenceMapper)
-      .toConstantValue(new SQLLegacyItemPersistenceMapper())
-    container
       .bind<MapperInterface<Item, SQLItem>>(TYPES.Sync_SQLItemPersistenceMapper)
       .toConstantValue(new SQLItemPersistenceMapper())
     container
@@ -364,9 +358,6 @@ export class ContainerConfigLoader {
 
     // ORM
     container
-      .bind<Repository<SQLLegacyItem>>(TYPES.Sync_ORMLegacyItemRepository)
-      .toDynamicValue(() => appDataSource.getRepository(SQLLegacyItem))
-    container
       .bind<Repository<SQLItem>>(TYPES.Sync_ORMItemRepository)
       .toConstantValue(appDataSource.getRepository(SQLItem))
     container
@@ -389,17 +380,11 @@ export class ContainerConfigLoader {
     container
       .bind<ItemRepositoryInterface>(TYPES.Sync_SQLItemRepository)
       .toConstantValue(
-        isConfiguredForHomeServerOrSelfHosting
-          ? new SQLItemRepository(
-              container.get<Repository<SQLItem>>(TYPES.Sync_ORMItemRepository),
-              container.get<MapperInterface<Item, SQLItem>>(TYPES.Sync_SQLItemPersistenceMapper),
-              container.get<Logger>(TYPES.Sync_Logger),
-            )
-          : new SQLLegacyItemRepository(
-              container.get<Repository<SQLLegacyItem>>(TYPES.Sync_ORMLegacyItemRepository),
-              container.get<MapperInterface<Item, SQLLegacyItem>>(TYPES.Sync_SQLLegacyItemPersistenceMapper),
-              container.get<Logger>(TYPES.Sync_Logger),
-            ),
+        new SQLItemRepository(
+          container.get<Repository<SQLItem>>(TYPES.Sync_ORMItemRepository),
+          container.get<MapperInterface<Item, SQLItem>>(TYPES.Sync_SQLItemPersistenceMapper),
+          container.get<Logger>(TYPES.Sync_Logger),
+        ),
       )
     container
       .bind<SharedVaultRepositoryInterface>(TYPES.Sync_SharedVaultRepository)
