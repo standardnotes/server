@@ -103,6 +103,8 @@ export class ContainerConfigLoader {
       .to(SubscriptionTokenAuthMiddleware)
 
     // Services
+    container.bind<TimerInterface>(TYPES.ApiGateway_Timer).toConstantValue(new Timer())
+
     if (isConfiguredForHomeServer) {
       if (!configuration?.serviceContainer) {
         throw new Error('Service container is required when configured for home server')
@@ -115,7 +117,6 @@ export class ContainerConfigLoader {
     } else {
       container.bind<ServiceProxyInterface>(TYPES.ApiGateway_ServiceProxy).to(HttpServiceProxy)
     }
-    container.bind<TimerInterface>(TYPES.ApiGateway_Timer).toConstantValue(new Timer())
 
     if (isConfiguredForHomeServer) {
       container
