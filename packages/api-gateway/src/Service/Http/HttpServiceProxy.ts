@@ -215,13 +215,35 @@ export class HttpServiceProxy implements ServiceProxyInterface {
       }
 
       if (retryAttempt) {
-        this.logger.info(
+        this.logger.debug(
           `Request to ${serverUrl}/${endpointOrMethodIdentifier} succeeded after ${retryAttempt} retries`,
         )
       }
 
       return serviceResponse
     } catch (error) {
+      const requestTimedOut =
+        'code' in (error as Record<string, unknown>) && (error as Record<string, unknown>).code === 'ETIMEDOUT'
+      const tooManyRetryAttempts = retryAttempt && retryAttempt > 2
+      if (!tooManyRetryAttempts && requestTimedOut) {
+        await this.timer.sleep(50)
+
+        const nextRetryAttempt = retryAttempt ? retryAttempt + 1 : 1
+
+        this.logger.debug(
+          `Retrying request to ${serverUrl}/${endpointOrMethodIdentifier} for the ${nextRetryAttempt} time`,
+        )
+
+        return this.getServerResponse(
+          serverUrl,
+          request,
+          response,
+          endpointOrMethodIdentifier,
+          payload,
+          nextRetryAttempt,
+        )
+      }
+
       const errorMessage = (error as AxiosError).isAxiosError
         ? JSON.stringify((error as AxiosError).response?.data)
         : (error as Error).message
@@ -231,24 +253,6 @@ export class HttpServiceProxy implements ServiceProxyInterface {
           error,
         )}`,
       )
-
-      const requestTimedOut =
-        'code' in (error as Record<string, unknown>) && (error as Record<string, unknown>).code === 'ETIMEDOUT'
-      const tooManyRetryAttempts = retryAttempt && retryAttempt > 2
-      if (!tooManyRetryAttempts && requestTimedOut) {
-        await this.timer.sleep(50)
-
-        this.logger.info(`Retrying request to ${serverUrl}/${endpointOrMethodIdentifier} for the ${retryAttempt} time`)
-
-        return this.getServerResponse(
-          serverUrl,
-          request,
-          response,
-          endpointOrMethodIdentifier,
-          payload,
-          retryAttempt ? retryAttempt + 1 : 1,
-        )
-      }
 
       this.logger.debug('Response error: %O', (error as AxiosError).response ?? error)
 
