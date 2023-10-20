@@ -11,8 +11,6 @@ import * as winston from 'winston'
 import { Revision } from '../Domain/Revision/Revision'
 import { RevisionMetadata } from '../Domain/Revision/RevisionMetadata'
 import { RevisionRepositoryInterface } from '../Domain/Revision/RevisionRepositoryInterface'
-import { SQLLegacyRevisionRepository } from '../Infra/TypeORM/SQL/SQLLegacyRevisionRepository'
-import { SQLLegacyRevision } from '../Infra/TypeORM/SQL/SQLLegacyRevision'
 import { AppDataSource } from './DataSource'
 import { Env } from './Env'
 import TYPES from './Types'
@@ -48,8 +46,6 @@ import { S3DumpRepository } from '../Infra/S3/S3ItemDumpRepository'
 import { RevisionItemStringMapper } from '../Mapping/Backup/RevisionItemStringMapper'
 import { BaseRevisionsController } from '../Infra/InversifyExpress/Base/BaseRevisionsController'
 import { Transform } from 'stream'
-import { SQLLegacyRevisionMetadataPersistenceMapper } from '../Mapping/Persistence/SQL/SQLLegacyRevisionMetadataPersistenceMapper'
-import { SQLLegacyRevisionPersistenceMapper } from '../Mapping/Persistence/SQL/SQLLegacyRevisionPersistenceMapper'
 import { RevisionHttpMapper } from '../Mapping/Http/RevisionHttpMapper'
 import { RevisionMetadataHttpRepresentation } from '../Mapping/Http/RevisionMetadataHttpRepresentation'
 import { RevisionHttpRepresentation } from '../Mapping/Http/RevisionHttpRepresentation'
@@ -161,24 +157,13 @@ export class ContainerConfigLoader {
 
     // Map
     container
-      .bind<MapperInterface<RevisionMetadata, SQLLegacyRevision>>(
-        TYPES.Revisions_SQLLegacyRevisionMetadataPersistenceMapper,
-      )
-      .toConstantValue(new SQLLegacyRevisionMetadataPersistenceMapper())
-    container
       .bind<MapperInterface<RevisionMetadata, SQLRevision>>(TYPES.Revisions_SQLRevisionMetadataPersistenceMapper)
       .toConstantValue(new SQLRevisionMetadataPersistenceMapper())
-    container
-      .bind<MapperInterface<Revision, SQLLegacyRevision>>(TYPES.Revisions_SQLLegacyRevisionPersistenceMapper)
-      .toConstantValue(new SQLLegacyRevisionPersistenceMapper(container.get<TimerInterface>(TYPES.Revisions_Timer)))
     container
       .bind<MapperInterface<Revision, SQLRevision>>(TYPES.Revisions_SQLRevisionPersistenceMapper)
       .toConstantValue(new SQLRevisionPersistenceMapper(container.get<TimerInterface>(TYPES.Revisions_Timer)))
 
     // ORM
-    container
-      .bind<Repository<SQLLegacyRevision>>(TYPES.Revisions_ORMLegacyRevisionRepository)
-      .toDynamicValue(() => appDataSource.getRepository(SQLLegacyRevision))
     container
       .bind<Repository<SQLRevision>>(TYPES.Revisions_ORMRevisionRepository)
       .toConstantValue(appDataSource.getRepository(SQLRevision))
@@ -187,25 +172,14 @@ export class ContainerConfigLoader {
     container
       .bind<RevisionRepositoryInterface>(TYPES.Revisions_SQLRevisionRepository)
       .toConstantValue(
-        isConfiguredForHomeServerOrSelfHosting
-          ? new SQLRevisionRepository(
-              container.get<Repository<SQLRevision>>(TYPES.Revisions_ORMRevisionRepository),
-              container.get<MapperInterface<RevisionMetadata, SQLRevision>>(
-                TYPES.Revisions_SQLRevisionMetadataPersistenceMapper,
-              ),
-              container.get<MapperInterface<Revision, SQLRevision>>(TYPES.Revisions_SQLRevisionPersistenceMapper),
-              container.get<winston.Logger>(TYPES.Revisions_Logger),
-            )
-          : new SQLLegacyRevisionRepository(
-              container.get<Repository<SQLLegacyRevision>>(TYPES.Revisions_ORMLegacyRevisionRepository),
-              container.get<MapperInterface<RevisionMetadata, SQLLegacyRevision>>(
-                TYPES.Revisions_SQLLegacyRevisionMetadataPersistenceMapper,
-              ),
-              container.get<MapperInterface<Revision, SQLLegacyRevision>>(
-                TYPES.Revisions_SQLLegacyRevisionPersistenceMapper,
-              ),
-              container.get<winston.Logger>(TYPES.Revisions_Logger),
-            ),
+        new SQLRevisionRepository(
+          container.get<Repository<SQLRevision>>(TYPES.Revisions_ORMRevisionRepository),
+          container.get<MapperInterface<RevisionMetadata, SQLRevision>>(
+            TYPES.Revisions_SQLRevisionMetadataPersistenceMapper,
+          ),
+          container.get<MapperInterface<Revision, SQLRevision>>(TYPES.Revisions_SQLRevisionPersistenceMapper),
+          container.get<winston.Logger>(TYPES.Revisions_Logger),
+        ),
       )
 
     container

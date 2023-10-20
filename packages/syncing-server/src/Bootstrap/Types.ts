@@ -15,7 +15,6 @@ const TYPES = {
   Sync_MessageRepository: Symbol.for('Sync_MessageRepository'),
   // ORM
   Sync_ORMItemRepository: Symbol.for('Sync_ORMItemRepository'),
-  Sync_ORMLegacyItemRepository: Symbol.for('Sync_ORMLegacyItemRepository'),
   Sync_ORMSharedVaultRepository: Symbol.for('Sync_ORMSharedVaultRepository'),
   Sync_ORMSharedVaultInviteRepository: Symbol.for('Sync_ORMSharedVaultInviteRepository'),
   Sync_ORMSharedVaultUserRepository: Symbol.for('Sync_ORMSharedVaultUserRepository'),
@@ -128,7 +127,6 @@ const TYPES = {
   Sync_MessagePersistenceMapper: Symbol.for('Sync_MessagePersistenceMapper'),
   Sync_MessageHttpMapper: Symbol.for('Sync_MessageHttpMapper'),
   Sync_NotificationHttpMapper: Symbol.for('Sync_NotificationHttpMapper'),
-  Sync_SQLLegacyItemPersistenceMapper: Symbol.for('Sync_SQLLegacyItemPersistenceMapper'),
   Sync_SQLItemPersistenceMapper: Symbol.for('Sync_SQLItemPersistenceMapper'),
   Sync_ItemHttpMapper: Symbol.for('Sync_ItemHttpMapper'),
   Sync_ItemHashHttpMapper: Symbol.for('Sync_ItemHashHttpMapper'),

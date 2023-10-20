@@ -4,9 +4,13 @@ export class AddSharedVaultInformation1693915383950 implements MigrationInterfac
   public async up(queryRunner: QueryRunner): Promise<void> {
     await this.renameRevisionsTable(queryRunner)
 
-    await queryRunner.query('ALTER TABLE `revisions_revisions` ADD `edited_by` varchar(36) NULL')
-    await queryRunner.query('ALTER TABLE `revisions_revisions` ADD `shared_vault_uuid` varchar(36) NULL')
-    await queryRunner.query('ALTER TABLE `revisions_revisions` ADD `key_system_identifier` varchar(36) NULL')
+    await queryRunner.query('ALTER TABLE `revisions_revisions` ADD `edited_by` varchar(36) NULL, ALGORITHM = INSTANT')
+    await queryRunner.query(
+      'ALTER TABLE `revisions_revisions` ADD `shared_vault_uuid` varchar(36) NULL, ALGORITHM = INSTANT',
+    )
+    await queryRunner.query(
+      'ALTER TABLE `revisions_revisions` ADD `key_system_identifier` varchar(36) NULL, ALGORITHM = INSTANT',
+    )
     await queryRunner.query(
       'CREATE INDEX `index_revisions_on_shared_vault_uuid` ON `revisions_revisions` (`shared_vault_uuid`)',
     )
@@ -25,7 +29,7 @@ export class AddSharedVaultInformation1693915383950 implements MigrationInterfac
     )
     const revisionsTableExists = revisionsTableExistsQueryResult[0].count === 1
     if (revisionsTableExists) {
-      await queryRunner.query('RENAME TABLE `revisions` TO `revisions_revisions`')
+      await queryRunner.query('ALTER TABLE `revisions` RENAME TO `revisions_revisions`, ALGORITHM=INSTANT')
     }
   }
 }

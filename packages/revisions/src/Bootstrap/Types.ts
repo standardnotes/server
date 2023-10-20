@@ -7,18 +7,13 @@ const TYPES = {
   Revisions_S3: Symbol.for('Revisions_S3'),
   Revisions_Env: Symbol.for('Revisions_Env'),
   // Map
-  Revisions_SQLLegacyRevisionMetadataPersistenceMapper: Symbol.for(
-    'Revisions_SQLLegacyRevisionMetadataPersistenceMapper',
-  ),
   Revisions_SQLRevisionMetadataPersistenceMapper: Symbol.for('Revisions_SQLRevisionMetadataPersistenceMapper'),
-  Revisions_SQLLegacyRevisionPersistenceMapper: Symbol.for('Revisions_SQLLegacyRevisionPersistenceMapper'),
   Revisions_SQLRevisionPersistenceMapper: Symbol.for('Revisions_SQLRevisionPersistenceMapper'),
   Revisions_RevisionItemStringMapper: Symbol.for('Revisions_RevisionItemStringMapper'),
   Revisions_RevisionHttpMapper: Symbol.for('Revisions_RevisionHttpMapper'),
   Revisions_RevisionMetadataHttpMapper: Symbol.for('Revisions_RevisionMetadataHttpMapper'),
   // ORM
   Revisions_ORMRevisionRepository: Symbol.for('Revisions_ORMRevisionRepository'),
-  Revisions_ORMLegacyRevisionRepository: Symbol.for('Revisions_ORMLegacyRevisionRepository'),
   // Repositories
   Revisions_SQLRevisionRepository: Symbol.for('Revisions_SQLRevisionRepository'),
   Revisions_DumpRepository: Symbol.for('Revisions_DumpRepository'),
