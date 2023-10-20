@@ -26,29 +26,47 @@ export class HttpServiceProxy implements ServiceProxyInterface {
     @inject(TYPES.ApiGateway_Timer) private timer: TimerInterface,
   ) {}
 
-  async validateSession(headers: {
-    authorization: string
-    sharedVaultOwnerContext?: string
-  }): Promise<{ status: number; data: unknown; headers: { contentType: string } }> {
-    const authResponse = await this.httpClient.request({
-      method: 'POST',
-      headers: {
-        Authorization: headers.authorization,
-        Accept: 'application/json',
-        'x-shared-vault-owner-context': headers.sharedVaultOwnerContext,
-      },
-      validateStatus: (status: number) => {
-        return status >= 200 && status < 500
-      },
-      url: `${this.authServerUrl}/sessions/validate`,
-    })
+  async validateSession(
+    headers: {
+      authorization: string
+      sharedVaultOwnerContext?: string
+    },
+    retryAttempt?: number,
+  ): Promise<{ status: number; data: unknown; headers: { contentType: string } }> {
+    try {
+      const authResponse = await this.httpClient.request({
+        method: 'POST',
+        headers: {
+          Authorization: headers.authorization,
+          Accept: 'application/json',
+          'x-shared-vault-owner-context': headers.sharedVaultOwnerContext,
+        },
+        validateStatus: (status: number) => {
+          return status >= 200 && status < 500
+        },
+        url: `${this.authServerUrl}/sessions/validate`,
+      })
 
-    return {
-      status: authResponse.status,
-      data: authResponse.data,
-      headers: {
-        contentType: authResponse.headers['content-type'] as string,
-      },
+      return {
+        status: authResponse.status,
+        data: authResponse.data,
+        headers: {
+          contentType: authResponse.headers['content-type'] as string,
+        },
+      }
+    } catch (error) {
+      const requestTimedOut =
+        'code' in (error as Record<string, unknown>) && (error as Record<string, unknown>).code === 'ETIMEDOUT'
+      const tooManyRetryAttempts = retryAttempt && retryAttempt > 2
+      if (!tooManyRetryAttempts && requestTimedOut) {
+        await this.timer.sleep(50)
+
+        const nextRetryAttempt = retryAttempt ? retryAttempt + 1 : 1
+
+        return this.validateSession(headers, nextRetryAttempt)
+      }
+
+      throw error
     }
   }
 
