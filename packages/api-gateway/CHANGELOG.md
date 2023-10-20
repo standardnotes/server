@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.81.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.80.1...@standardnotes/api-gateway@1.81.0) (2023-10-20)
+
+### Features
+
+* **api-gateway:** add retry attempts on timedout requests ([#885](https://github.com/standardnotes/api-gateway/issues/885)) ([ce35767](https://github.com/standardnotes/api-gateway/commit/ce357679e9bc704ab562e9d6ca192f49a794a664))
+
 ## [1.80.1](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.80.0...@standardnotes/api-gateway@1.80.1) (2023-10-19)
 
 ### Bug Fixes
