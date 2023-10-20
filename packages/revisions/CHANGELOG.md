@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.47.1](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.47.0...@standardnotes/revisions-server@1.47.1) (2023-10-20)
+
+### Bug Fixes
+
+* merge mysql and mysql-legacy together ([#883](https://github.com/standardnotes/server/issues/883)) ([e19f7a7](https://github.com/standardnotes/server/commit/e19f7a7b7fd27f37ceda49bc202770a28bb3b644))
+
 # [1.47.0](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.46.1...@standardnotes/revisions-server@1.47.0) (2023-10-19)
 
 ### Features

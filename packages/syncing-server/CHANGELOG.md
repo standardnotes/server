@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.119.1](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.119.0...@standardnotes/syncing-server@1.119.1) (2023-10-20)
+
+### Bug Fixes
+
+* merge mysql and mysql-legacy together ([#883](https://github.com/standardnotes/syncing-server-js/issues/883)) ([e19f7a7](https://github.com/standardnotes/syncing-server-js/commit/e19f7a7b7fd27f37ceda49bc202770a28bb3b644))
+
 # [1.119.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.118.1...@standardnotes/syncing-server@1.119.0) (2023-10-19)
 
 ### Features
