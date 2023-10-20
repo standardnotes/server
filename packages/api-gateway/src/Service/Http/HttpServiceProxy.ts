@@ -7,6 +7,7 @@ import { Logger } from 'winston'
 import { TYPES } from '../../Bootstrap/Types'
 import { CrossServiceTokenCacheInterface } from '../Cache/CrossServiceTokenCacheInterface'
 import { ServiceProxyInterface } from './ServiceProxyInterface'
+import { TimerInterface } from '@standardnotes/time'
 
 @injectable()
 export class HttpServiceProxy implements ServiceProxyInterface {
@@ -22,6 +23,7 @@ export class HttpServiceProxy implements ServiceProxyInterface {
     @inject(TYPES.ApiGateway_HTTP_CALL_TIMEOUT) private httpCallTimeout: number,
     @inject(TYPES.ApiGateway_CrossServiceTokenCache) private crossServiceTokenCache: CrossServiceTokenCacheInterface,
     @inject(TYPES.ApiGateway_Logger) private logger: Logger,
+    @inject(TYPES.ApiGateway_Timer) private timer: TimerInterface,
   ) {}
 
   async validateSession(headers: {
@@ -169,6 +171,7 @@ export class HttpServiceProxy implements ServiceProxyInterface {
     response: Response,
     endpointOrMethodIdentifier: string,
     payload?: Record<string, unknown> | string,
+    retryAttempt?: number,
   ): Promise<AxiosResponse | undefined> {
     try {
       const headers: Record<string, string> = {}
@@ -211,6 +214,12 @@ export class HttpServiceProxy implements ServiceProxyInterface {
         await this.crossServiceTokenCache.invalidate(userUuid)
       }
 
+      if (retryAttempt) {
+        this.logger.info(
+          `Request to ${serverUrl}/${endpointOrMethodIdentifier} succeeded after ${retryAttempt} retries`,
+        )
+      }
+
       return serviceResponse
     } catch (error) {
       const errorMessage = (error as AxiosError).isAxiosError
@@ -222,6 +231,24 @@ export class HttpServiceProxy implements ServiceProxyInterface {
           error,
         )}`,
       )
+
+      const requestTimedOut =
+        'code' in (error as Record<string, unknown>) && (error as Record<string, unknown>).code === 'ETIMEDOUT'
+      const tooManyRetryAttempts = retryAttempt && retryAttempt > 2
+      if (!tooManyRetryAttempts && requestTimedOut) {
+        await this.timer.sleep(50)
+
+        this.logger.info(`Retrying request to ${serverUrl}/${endpointOrMethodIdentifier} for the ${retryAttempt} time`)
+
+        return this.getServerResponse(
+          serverUrl,
+          request,
+          response,
+          endpointOrMethodIdentifier,
+          payload,
+          retryAttempt ? retryAttempt + 1 : 1,
+        )
+      }
 
       this.logger.debug('Response error: %O', (error as AxiosError).response ?? error)
 
