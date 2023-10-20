@@ -112,13 +112,13 @@ jobs:
       suite: 'vaults'
 
   publish-self-hosting:
-    needs: [ test, lint, e2e-base ]
+    needs: [ test, lint, e2e-base, e2e-vaults ]
     name: Publish Self Hosting Docker Image
     uses: standardnotes/server/.github/workflows/common-self-hosting.yml@main
     secrets: inherit
 
   publish-services:
-    needs: [ test, lint, e2e-base ]
+    needs: [ test, lint, e2e-base, e2e-vaults ]
 
     runs-on: ubuntu-latest
 
