@@ -141,9 +141,11 @@ export class HomeServer implements HomeServerInterface {
           app.post('/e2e/activate-premium', (request: Request, response: Response) => {
             void this.activatePremiumFeatures({
               username: request.body.username,
+              subscriptionId: request.body.subscriptionId,
               subscriptionPlanName: request.body.subscriptionPlanName,
               uploadBytesLimit: request.body.uploadBytesLimit,
               endsAt: request.body.endsAt ? new Date(request.body.endsAt) : undefined,
+              cancelPreviousSubscription: request.body.cancelPreviousSubscription,
             }).then((result) => {
               if (result.isFailed()) {
                 response.status(400).send({ error: { message: result.getError() } })
@@ -219,9 +221,11 @@ export class HomeServer implements HomeServerInterface {
 
   async activatePremiumFeatures(dto: {
     username: string
+    subscriptionId: number
     subscriptionPlanName?: string
     uploadBytesLimit?: number
     endsAt?: Date
+    cancelPreviousSubscription?: boolean
   }): Promise<Result<string>> {
     if (!this.isRunning() || !this.authService) {
       return Result.fail('Home server is not running.')

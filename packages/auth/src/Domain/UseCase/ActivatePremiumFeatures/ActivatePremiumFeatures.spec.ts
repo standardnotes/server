@@ -6,6 +6,7 @@ import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'
 import { ActivatePremiumFeatures } from './ActivatePremiumFeatures'
 import { User } from '../../User/User'
 import { SubscriptionSettingServiceInterface } from '../../Setting/SubscriptionSettingServiceInterface'
+import { UserSubscription } from '../../Subscription/UserSubscription'
 
 describe('ActivatePremiumFeatures', () => {
   let userRepository: UserRepositoryInterface
@@ -31,6 +32,7 @@ describe('ActivatePremiumFeatures', () => {
     userRepository.findOneByUsernameOrEmail = jest.fn().mockResolvedValue(user)
 
     userSubscriptionRepository = {} as jest.Mocked<UserSubscriptionRepositoryInterface>
+    userSubscriptionRepository.findOneByUserUuid = jest.fn().mockResolvedValue(null)
     userSubscriptionRepository.save = jest.fn()
 
     roleService = {} as jest.Mocked<RoleServiceInterface>
@@ -48,7 +50,7 @@ describe('ActivatePremiumFeatures', () => {
   it('should return error when username is invalid', async () => {
     const useCase = createUseCase()
 
-    const result = await useCase.execute({ username: '' })
+    const result = await useCase.execute({ username: '', subscriptionId: 1 })
 
     expect(result.isFailed()).toBe(true)
     expect(result.getError()).toBe('Username cannot be empty')
@@ -59,7 +61,7 @@ describe('ActivatePremiumFeatures', () => {
 
     const useCase = createUseCase()
 
-    const result = await useCase.execute({ username: 'test@test.te' })
+    const result = await useCase.execute({ username: 'test@test.te', subscriptionId: 1 })
 
     expect(result.isFailed()).toBe(true)
     expect(result.getError()).toBe('User not found with username: test@test.te')
@@ -68,7 +70,24 @@ describe('ActivatePremiumFeatures', () => {
   it('should save a subscription and add role to user', async () => {
     const useCase = createUseCase()
 
-    const result = await useCase.execute({ username: 'test@test.te' })
+    const result = await useCase.execute({ username: 'test@test.te', subscriptionId: 1 })
+
+    expect(result.isFailed()).toBe(false)
+
+    expect(userSubscriptionRepository.save).toHaveBeenCalled()
+    expect(roleService.addUserRoleBasedOnSubscription).toHaveBeenCalled()
+  })
+
+  it('should cancel previous subscription if cancelPreviousSubscription is true', async () => {
+    userSubscriptionRepository.findOneByUserUuid = jest.fn().mockResolvedValue({} as jest.Mocked<UserSubscription>)
+
+    const useCase = createUseCase()
+
+    const result = await useCase.execute({
+      username: 'test@test.te',
+      subscriptionId: 1,
+      cancelPreviousSubscription: true,
+    })
 
     expect(result.isFailed()).toBe(false)
 
@@ -81,6 +100,7 @@ describe('ActivatePremiumFeatures', () => {
 
     const result = await useCase.execute({
       username: 'test@test.te',
+      subscriptionId: 1,
       subscriptionPlanName: 'PRO_PLAN',
       endsAt: new Date('2024-01-01T00:00:00.000Z'),
     })
@@ -93,6 +113,7 @@ describe('ActivatePremiumFeatures', () => {
 
     const result = await useCase.execute({
       username: 'test@test.te',
+      subscriptionId: 1,
       subscriptionPlanName: 'some invalid plan name',
       endsAt: new Date('2024-01-01T00:00:00.000Z'),
     })

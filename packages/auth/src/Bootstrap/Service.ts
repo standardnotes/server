@@ -26,9 +26,11 @@ export class Service implements AuthServiceInterface {
 
   async activatePremiumFeatures(dto: {
     username: string
+    subscriptionId: number
     subscriptionPlanName?: string
     uploadBytesLimit?: number
     endsAt?: Date
+    cancelPreviousSubscription?: boolean
   }): Promise<Result<string>> {
     if (!this.container) {
       return Result.fail('Container not initialized')

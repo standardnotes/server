@@ -38,20 +38,13 @@ export class TypeORMSubscriptionSettingRepository implements SubscriptionSetting
     name: string,
     userSubscriptionUuid: string,
   ): Promise<SubscriptionSetting | null> {
-    const settings = await this.ormRepository
+    return this.ormRepository
       .createQueryBuilder('setting')
       .where('setting.name = :name AND setting.user_subscription_uuid = :userSubscriptionUuid', {
         name,
         userSubscriptionUuid,
       })
       .orderBy('updated_at', 'DESC')
-      .limit(1)
-      .getMany()
-
-    if (settings.length === 0) {
-      return null
-    }
-
-    return settings.pop() as SubscriptionSetting
+      .getOne()
   }
 }

@@ -30,6 +30,17 @@ export class ActivatePremiumFeatures implements UseCaseInterface<string> {
     if (user === null) {
       return Result.fail(`User not found with username: ${username.value}`)
     }
+
+    if (dto.cancelPreviousSubscription) {
+      const previousSubscription = await this.userSubscriptionRepository.findOneByUserUuid(user.uuid)
+      if (previousSubscription) {
+        previousSubscription.cancelled = true
+        previousSubscription.updatedAt = this.timer.getTimestampInMicroseconds()
+
+        await this.userSubscriptionRepository.save(previousSubscription)
+      }
+    }
+
     const subscriptionPlanNameString = dto.subscriptionPlanName ?? SubscriptionPlanName.NAMES.ProPlan
     const subscriptionPlanNameOrError = SubscriptionPlanName.create(subscriptionPlanNameString)
     if (subscriptionPlanNameOrError.isFailed()) {
@@ -48,7 +59,7 @@ export class ActivatePremiumFeatures implements UseCaseInterface<string> {
     subscription.updatedAt = timestamp
     subscription.endsAt = this.timer.convertDateToMicroseconds(endsAt)
     subscription.cancelled = false
-    subscription.subscriptionId = 1
+    subscription.subscriptionId = dto.subscriptionId
     subscription.subscriptionType = UserSubscriptionType.Regular
 
     await this.userSubscriptionRepository.save(subscription)
