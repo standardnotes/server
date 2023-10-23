@@ -557,7 +557,6 @@ export class ContainerConfigLoader {
       .toConstantValue(env.get('DISABLE_USER_REGISTRATION', true) === 'true')
     container.bind(TYPES.Auth_SNS_AWS_REGION).toConstantValue(env.get('SNS_AWS_REGION', true))
     container.bind(TYPES.Auth_SQS_QUEUE_URL).toConstantValue(env.get('SQS_QUEUE_URL', true))
-    container.bind(TYPES.Auth_SYNCING_SERVER_URL).toConstantValue(env.get('SYNCING_SERVER_URL', true))
     container.bind(TYPES.Auth_VERSION).toConstantValue(env.get('VERSION', true) ?? 'development')
     container
       .bind(TYPES.Auth_SESSION_TRACE_DAYS_TTL)

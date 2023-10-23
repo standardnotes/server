@@ -91,7 +91,6 @@ const TYPES = {
   Auth_SNS_AWS_REGION: Symbol.for('Auth_SNS_AWS_REGION'),
   Auth_SQS_QUEUE_URL: Symbol.for('Auth_SQS_QUEUE_URL'),
   Auth_SQS_AWS_REGION: Symbol.for('Auth_SQS_AWS_REGION'),
-  Auth_SYNCING_SERVER_URL: Symbol.for('Auth_SYNCING_SERVER_URL'),
   Auth_VERSION: Symbol.for('Auth_VERSION'),
   Auth_SESSION_TRACE_DAYS_TTL: Symbol.for('Auth_SESSION_TRACE_DAYS_TTL'),
   Auth_U2F_RELYING_PARTY_ID: Symbol.for('Auth_U2F_RELYING_PARTY_ID'),
