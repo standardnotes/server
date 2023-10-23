@@ -45,7 +45,6 @@ import { LockRepository } from '../Infra/Redis/LockRepository'
 import { TypeORMRevokedSessionRepository } from '../Infra/TypeORM/TypeORMRevokedSessionRepository'
 import { AuthenticationMethodResolver } from '../Domain/Auth/AuthenticationMethodResolver'
 import { RevokedSession } from '../Domain/Session/RevokedSession'
-import { UserRegisteredEventHandler } from '../Domain/Handler/UserRegisteredEventHandler'
 import { DomainEventFactory } from '../Domain/Event/DomainEventFactory'
 import { AuthenticateRequest } from '../Domain/UseCase/AuthenticateRequest'
 import { Role } from '../Domain/Role/Role'
@@ -70,9 +69,6 @@ import { DeleteAccount } from '../Domain/UseCase/DeleteAccount/DeleteAccount'
 import { DeleteSetting } from '../Domain/UseCase/DeleteSetting/DeleteSetting'
 import { SettingFactory } from '../Domain/Setting/SettingFactory'
 import { SettingService } from '../Domain/Setting/SettingService'
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const axios = require('axios')
-import { AxiosInstance } from 'axios'
 import { UserSubscription } from '../Domain/Subscription/UserSubscription'
 import { TypeORMUserSubscriptionRepository } from '../Infra/TypeORM/TypeORMUserSubscriptionRepository'
 import { WebSocketsClientService } from '../Infra/WebSockets/WebSocketsClientService'
@@ -117,7 +113,6 @@ import { AuthenticateOfflineSubscriptionToken } from '../Domain/UseCase/Authenti
 import { SubscriptionCancelledEventHandler } from '../Domain/Handler/SubscriptionCancelledEventHandler'
 import { ContentDecoder, ContentDecoderInterface, ProtocolVersion } from '@standardnotes/common'
 import { GetUserOfflineSubscription } from '../Domain/UseCase/GetUserOfflineSubscription/GetUserOfflineSubscription'
-import { UserEmailChangedEventHandler } from '../Domain/Handler/UserEmailChangedEventHandler'
 import { SettingsAssociationServiceInterface } from '../Domain/Setting/SettingsAssociationServiceInterface'
 import { SettingsAssociationService } from '../Domain/Setting/SettingsAssociationService'
 import { SubscriptionSyncRequestedEventHandler } from '../Domain/Handler/SubscriptionSyncRequestedEventHandler'
@@ -562,16 +557,7 @@ export class ContainerConfigLoader {
       .toConstantValue(env.get('DISABLE_USER_REGISTRATION', true) === 'true')
     container.bind(TYPES.Auth_SNS_AWS_REGION).toConstantValue(env.get('SNS_AWS_REGION', true))
     container.bind(TYPES.Auth_SQS_QUEUE_URL).toConstantValue(env.get('SQS_QUEUE_URL', true))
-    container
-      .bind(TYPES.Auth_USER_SERVER_REGISTRATION_URL)
-      .toConstantValue(env.get('USER_SERVER_REGISTRATION_URL', true))
-    container.bind(TYPES.Auth_USER_SERVER_AUTH_KEY).toConstantValue(env.get('USER_SERVER_AUTH_KEY', true))
-    container
-      .bind(TYPES.Auth_USER_SERVER_CHANGE_EMAIL_URL)
-      .toConstantValue(env.get('USER_SERVER_CHANGE_EMAIL_URL', true))
-    container.bind(TYPES.Auth_SYNCING_SERVER_URL).toConstantValue(env.get('SYNCING_SERVER_URL', true))
     container.bind(TYPES.Auth_VERSION).toConstantValue(env.get('VERSION', true) ?? 'development')
-    container.bind(TYPES.Auth_PAYMENTS_SERVER_URL).toConstantValue(env.get('PAYMENTS_SERVER_URL', true))
     container
       .bind(TYPES.Auth_SESSION_TRACE_DAYS_TTL)
       .toConstantValue(env.get('SESSION_TRACE_DAYS_TTL', true) ? +env.get('SESSION_TRACE_DAYS_TTL', true) : 90)
@@ -698,7 +684,6 @@ export class ContainerConfigLoader {
       .bind<AuthenticationMethodResolver>(TYPES.Auth_AuthenticationMethodResolver)
       .to(AuthenticationMethodResolver)
     container.bind<DomainEventFactory>(TYPES.Auth_DomainEventFactory).to(DomainEventFactory)
-    container.bind<AxiosInstance>(TYPES.Auth_HTTPClient).toConstantValue(axios.create())
     container.bind<CrypterInterface>(TYPES.Auth_Crypter).to(CrypterNode)
     container
       .bind<SettingsAssociationServiceInterface>(TYPES.Auth_SettingsAssociationService)
@@ -1041,7 +1026,6 @@ export class ContainerConfigLoader {
     container.bind<UserRequestsController>(TYPES.Auth_UserRequestsController).to(UserRequestsController)
 
     // Handlers
-    container.bind<UserRegisteredEventHandler>(TYPES.Auth_UserRegisteredEventHandler).to(UserRegisteredEventHandler)
     container
       .bind<AccountDeletionRequestedEventHandler>(TYPES.Auth_AccountDeletionRequestedEventHandler)
       .toConstantValue(
@@ -1077,9 +1061,6 @@ export class ContainerConfigLoader {
     container
       .bind<SubscriptionReassignedEventHandler>(TYPES.Auth_SubscriptionReassignedEventHandler)
       .to(SubscriptionReassignedEventHandler)
-    container
-      .bind<UserEmailChangedEventHandler>(TYPES.Auth_UserEmailChangedEventHandler)
-      .to(UserEmailChangedEventHandler)
     container
       .bind<FileUploadedEventHandler>(TYPES.Auth_FileUploadedEventHandler)
       .toConstantValue(
@@ -1182,7 +1163,6 @@ export class ContainerConfigLoader {
       )
 
     const eventHandlers: Map<string, DomainEventHandlerInterface> = new Map([
-      ['USER_REGISTERED', container.get(TYPES.Auth_UserRegisteredEventHandler)],
       ['ACCOUNT_DELETION_REQUESTED', container.get(TYPES.Auth_AccountDeletionRequestedEventHandler)],
       ['SUBSCRIPTION_PURCHASED', container.get(TYPES.Auth_SubscriptionPurchasedEventHandler)],
       ['SUBSCRIPTION_CANCELLED', container.get(TYPES.Auth_SubscriptionCancelledEventHandler)],
@@ -1192,7 +1172,6 @@ export class ContainerConfigLoader {
       ['SUBSCRIPTION_SYNC_REQUESTED', container.get(TYPES.Auth_SubscriptionSyncRequestedEventHandler)],
       ['EXTENSION_KEY_GRANTED', container.get(TYPES.Auth_ExtensionKeyGrantedEventHandler)],
       ['SUBSCRIPTION_REASSIGNED', container.get(TYPES.Auth_SubscriptionReassignedEventHandler)],
-      ['USER_EMAIL_CHANGED', container.get(TYPES.Auth_UserEmailChangedEventHandler)],
       ['FILE_UPLOADED', container.get(TYPES.Auth_FileUploadedEventHandler)],
       ['SHARED_VAULT_FILE_UPLOADED', container.get(TYPES.Auth_SharedVaultFileUploadedEventHandler)],
       ['SHARED_VAULT_FILE_MOVED', container.get(TYPES.Auth_SharedVaultFileMovedEventHandler)],
