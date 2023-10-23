@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.161.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.160.0...@standardnotes/auth-server@1.161.0) (2023-10-23)
+
+### Bug Fixes
+
+* allow to cancel previous subscription when activating premium features in e2e tests ([15af563](https://github.com/standardnotes/server/commit/15af5635f05a8363336aa33830e0157f519eee83))
+
+### Features
+
+* **auth:** remove axios http calls to payments server ([#889](https://github.com/standardnotes/server/issues/889)) ([a812f34](https://github.com/standardnotes/server/commit/a812f3400af3712fd5481b0c38c8805bb9c79e2c))
+
 # [1.160.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.159.2...@standardnotes/auth-server@1.160.0) (2023-10-19)
 
 ### Features

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.18.6](https://github.com/standardnotes/server/compare/@standardnotes/home-server@1.18.5...@standardnotes/home-server@1.18.6) (2023-10-23)
+
+### Bug Fixes
+
+* allow to cancel previous subscription when activating premium features in e2e tests ([15af563](https://github.com/standardnotes/server/commit/15af5635f05a8363336aa33830e0157f519eee83))
+
 ## [1.18.5](https://github.com/standardnotes/server/compare/@standardnotes/home-server@1.18.4...@standardnotes/home-server@1.18.5) (2023-10-20)
 
 **Note:** Version bump only for package @standardnotes/home-server
