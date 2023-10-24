@@ -11,19 +11,34 @@ import {
 import TYPES from '../../Bootstrap/Types'
 import { DeleteSetting } from '../../Domain/UseCase/DeleteSetting/DeleteSetting'
 import { GetSetting } from '../../Domain/UseCase/GetSetting/GetSetting'
-import { GetSettings } from '../../Domain/UseCase/GetSettings/GetSettings'
-import { UpdateSetting } from '../../Domain/UseCase/UpdateSetting/UpdateSetting'
 import { BaseSettingsController } from './Base/BaseSettingsController'
+import { SetSettingValue } from '../../Domain/UseCase/SetSettingValue/SetSettingValue'
+import { MapperInterface } from '@standardnotes/domain-core'
+import { Setting } from '../../Domain/Setting/Setting'
+import { SubscriptionSetting } from '../../Domain/Setting/SubscriptionSetting'
+import { SettingHttpRepresentation } from '../../Mapping/Http/SettingHttpRepresentation'
+import { SubscriptionSettingHttpRepresentation } from '../../Mapping/Http/SubscriptionSettingHttpRepresentation'
+import { GetAllSettingsForUser } from '../../Domain/UseCase/GetAllSettingsForUser/GetAllSettingsForUser'
 
 @controller('/users/:userUuid')
 export class AnnotatedSettingsController extends BaseSettingsController {
   constructor(
-    @inject(TYPES.Auth_GetSettings) override doGetSettings: GetSettings,
+    @inject(TYPES.Auth_GetAllSettingsForUser) override doGetSettings: GetAllSettingsForUser,
     @inject(TYPES.Auth_GetSetting) override doGetSetting: GetSetting,
-    @inject(TYPES.Auth_UpdateSetting) override doUpdateSetting: UpdateSetting,
+    @inject(TYPES.Auth_SetSettingValue) override setSettingValue: SetSettingValue,
     @inject(TYPES.Auth_DeleteSetting) override doDeleteSetting: DeleteSetting,
+    @inject(TYPES.Auth_SettingHttpMapper) settingHttMapper: MapperInterface<Setting, SettingHttpRepresentation>,
+    @inject(TYPES.Auth_SubscriptionSettingHttpMapper)
+    subscriptionSettingHttpMapper: MapperInterface<SubscriptionSetting, SubscriptionSettingHttpRepresentation>,
   ) {
-    super(doGetSettings, doGetSetting, doUpdateSetting, doDeleteSetting)
+    super(
+      doGetSettings,
+      doGetSetting,
+      setSettingValue,
+      doDeleteSetting,
+      settingHttMapper,
+      subscriptionSettingHttpMapper,
+    )
   }
 
   @httpGet('/settings', TYPES.Auth_RequiredCrossServiceTokenMiddleware)

@@ -2,16 +2,17 @@ import { Result, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
 import { SettingName } from '@standardnotes/settings'
 import { CryptoNode } from '@standardnotes/sncrypto-node'
 import { EncryptionVersion } from '../../Encryption/EncryptionVersion'
-import { SettingServiceInterface } from '../../Setting/SettingServiceInterface'
 import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'
 import { GenerateRecoveryCodesDTO } from './GenerateRecoveryCodesDTO'
+import { SetSettingValue } from '../SetSettingValue/SetSettingValue'
 
 export class GenerateRecoveryCodes implements UseCaseInterface<string> {
   constructor(
     private userRepository: UserRepositoryInterface,
-    private settingService: SettingServiceInterface,
+    private setSettingValue: SetSettingValue,
     private cryptoNode: CryptoNode,
   ) {}
+
   async execute(dto: GenerateRecoveryCodesDTO): Promise<Result<string>> {
     const userUuidOrError = Uuid.create(dto.userUuid)
     if (userUuidOrError.isFailed()) {
@@ -32,15 +33,16 @@ export class GenerateRecoveryCodes implements UseCaseInterface<string> {
 
     const recoveryCodes = recoveryCodesSplit.join(' ')
 
-    await this.settingService.createOrReplace({
-      user,
-      props: {
-        name: SettingName.NAMES.RecoveryCodes,
-        unencryptedValue: recoveryCodes,
-        serverEncryptionVersion: EncryptionVersion.Default,
-        sensitive: false,
-      },
+    const result = await this.setSettingValue.execute({
+      settingName: SettingName.NAMES.RecoveryCodes,
+      value: recoveryCodes,
+      serverEncryptionVersion: EncryptionVersion.Default,
+      sensitive: false,
+      userUuid: user.uuid,
     })
+    if (result.isFailed()) {
+      return Result.fail(`Could not generate recovery codes: ${result.getError()}`)
+    }
 
     return Result.ok(recoveryCodes)
   }

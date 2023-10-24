@@ -1,7 +1,7 @@
 import 'reflect-metadata'
 
 import { SubscriptionName } from '@standardnotes/common'
-import { RoleName } from '@standardnotes/domain-core'
+import { Result, RoleName } from '@standardnotes/domain-core'
 import { TimerInterface } from '@standardnotes/time'
 
 import { RoleServiceInterface } from '../../Role/RoleServiceInterface'
@@ -13,19 +13,21 @@ import { User } from '../../User/User'
 import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'
 
 import { AcceptSharedSubscriptionInvitation } from './AcceptSharedSubscriptionInvitation'
-import { SubscriptionSettingServiceInterface } from '../../Setting/SubscriptionSettingServiceInterface'
+import { ApplyDefaultSubscriptionSettings } from '../ApplyDefaultSubscriptionSettings/ApplyDefaultSubscriptionSettings'
+import { Logger } from 'winston'
 
 describe('AcceptSharedSubscriptionInvitation', () => {
   let sharedSubscriptionInvitationRepository: SharedSubscriptionInvitationRepositoryInterface
   let userRepository: UserRepositoryInterface
   let userSubscriptionRepository: UserSubscriptionRepositoryInterface
   let roleService: RoleServiceInterface
-  let subscriptionSettingService: SubscriptionSettingServiceInterface
+  let applyDefaultSubscriptionSettings: ApplyDefaultSubscriptionSettings
   let timer: TimerInterface
   let invitee: User
   let inviterSubscription: UserSubscription
   let inviteeSubscription: UserSubscription
   let invitation: SharedSubscriptionInvitation
+  let logger: Logger
 
   const createUseCase = () =>
     new AcceptSharedSubscriptionInvitation(
@@ -33,8 +35,9 @@ describe('AcceptSharedSubscriptionInvitation', () => {
       userRepository,
       userSubscriptionRepository,
       roleService,
-      subscriptionSettingService,
+      applyDefaultSubscriptionSettings,
       timer,
+      logger,
     )
 
   beforeEach(() => {
@@ -71,11 +74,14 @@ describe('AcceptSharedSubscriptionInvitation', () => {
     roleService = {} as jest.Mocked<RoleServiceInterface>
     roleService.addUserRoleBasedOnSubscription = jest.fn()
 
-    subscriptionSettingService = {} as jest.Mocked<SubscriptionSettingServiceInterface>
-    subscriptionSettingService.applyDefaultSubscriptionSettingsForSubscription = jest.fn()
+    applyDefaultSubscriptionSettings = {} as jest.Mocked<ApplyDefaultSubscriptionSettings>
+    applyDefaultSubscriptionSettings.execute = jest.fn().mockReturnValue(Result.ok())
 
     timer = {} as jest.Mocked<TimerInterface>
     timer.getTimestampInMicroseconds = jest.fn().mockReturnValue(1)
+
+    logger = {} as jest.Mocked<Logger>
+    logger.error = jest.fn()
   })
 
   it('should create a shared subscription upon accepting the invitation', async () => {
@@ -104,9 +110,7 @@ describe('AcceptSharedSubscriptionInvitation', () => {
       user: Promise.resolve(invitee),
     })
     expect(roleService.addUserRoleBasedOnSubscription).toHaveBeenCalledWith(invitee, 'PLUS_PLAN')
-    expect(subscriptionSettingService.applyDefaultSubscriptionSettingsForSubscription).toHaveBeenCalledWith(
-      inviteeSubscription,
-    )
+    expect(applyDefaultSubscriptionSettings.execute).toHaveBeenCalled()
   })
 
   it('should create a shared subscription upon accepting the invitation if inviter has a second subscription', async () => {
@@ -144,9 +148,7 @@ describe('AcceptSharedSubscriptionInvitation', () => {
       user: Promise.resolve(invitee),
     })
     expect(roleService.addUserRoleBasedOnSubscription).toHaveBeenCalledWith(invitee, 'PLUS_PLAN')
-    expect(subscriptionSettingService.applyDefaultSubscriptionSettingsForSubscription).toHaveBeenCalledWith(
-      inviteeSubscription,
-    )
+    expect(applyDefaultSubscriptionSettings.execute).toHaveBeenCalled()
   })
 
   it('should not create a shared subscription if invitiation is not found', async () => {
@@ -163,7 +165,7 @@ describe('AcceptSharedSubscriptionInvitation', () => {
     expect(sharedSubscriptionInvitationRepository.save).not.toHaveBeenCalled()
     expect(userSubscriptionRepository.save).not.toHaveBeenCalled()
     expect(roleService.addUserRoleBasedOnSubscription).not.toHaveBeenCalled()
-    expect(subscriptionSettingService.applyDefaultSubscriptionSettingsForSubscription).not.toHaveBeenCalled()
+    expect(applyDefaultSubscriptionSettings.execute).not.toHaveBeenCalled()
   })
 
   it('should not create a shared subscription if invitee is not found', async () => {
@@ -181,7 +183,7 @@ describe('AcceptSharedSubscriptionInvitation', () => {
     expect(sharedSubscriptionInvitationRepository.save).not.toHaveBeenCalled()
     expect(userSubscriptionRepository.save).not.toHaveBeenCalled()
     expect(roleService.addUserRoleBasedOnSubscription).not.toHaveBeenCalled()
-    expect(subscriptionSettingService.applyDefaultSubscriptionSettingsForSubscription).not.toHaveBeenCalled()
+    expect(applyDefaultSubscriptionSettings.execute).not.toHaveBeenCalled()
   })
 
   it('should not create a shared subscription if invitee email is invalid', async () => {
@@ -203,7 +205,7 @@ describe('AcceptSharedSubscriptionInvitation', () => {
     expect(sharedSubscriptionInvitationRepository.save).not.toHaveBeenCalled()
     expect(userSubscriptionRepository.save).not.toHaveBeenCalled()
     expect(roleService.addUserRoleBasedOnSubscription).not.toHaveBeenCalled()
-    expect(subscriptionSettingService.applyDefaultSubscriptionSettingsForSubscription).not.toHaveBeenCalled()
+    expect(applyDefaultSubscriptionSettings.execute).not.toHaveBeenCalled()
   })
 
   it('should not create a shared subscription if inviter subscription is not found', async () => {
@@ -220,7 +222,7 @@ describe('AcceptSharedSubscriptionInvitation', () => {
     expect(sharedSubscriptionInvitationRepository.save).not.toHaveBeenCalled()
     expect(userSubscriptionRepository.save).not.toHaveBeenCalled()
     expect(roleService.addUserRoleBasedOnSubscription).not.toHaveBeenCalled()
-    expect(subscriptionSettingService.applyDefaultSubscriptionSettingsForSubscription).not.toHaveBeenCalled()
+    expect(applyDefaultSubscriptionSettings.execute).not.toHaveBeenCalled()
   })
 
   it('should not create a shared subscription if inviter subscriptions are not active', async () => {
@@ -245,6 +247,6 @@ describe('AcceptSharedSubscriptionInvitation', () => {
     expect(sharedSubscriptionInvitationRepository.save).not.toHaveBeenCalled()
     expect(userSubscriptionRepository.save).not.toHaveBeenCalled()
     expect(roleService.addUserRoleBasedOnSubscription).not.toHaveBeenCalled()
-    expect(subscriptionSettingService.applyDefaultSubscriptionSettingsForSubscription).not.toHaveBeenCalled()
+    expect(applyDefaultSubscriptionSettings.execute).not.toHaveBeenCalled()
   })
 })

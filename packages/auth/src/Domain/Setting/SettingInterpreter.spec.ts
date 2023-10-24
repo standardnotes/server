@@ -21,6 +21,7 @@ import { SettingInterpreter } from './SettingInterpreter'
 import { SettingRepositoryInterface } from './SettingRepositoryInterface'
 import { GetUserKeyParams } from '../UseCase/GetUserKeyParams/GetUserKeyParams'
 import { KeyParamsData } from '@standardnotes/responses'
+import { Uuid, Timestamps, UniqueEntityId } from '@standardnotes/domain-core'
 
 describe('SettingInterpreter', () => {
   let user: User
@@ -96,11 +97,19 @@ describe('SettingInterpreter', () => {
   })
 
   it('should trigger backup if email backup setting is created - emails muted', async () => {
-    settingRepository.findOneByNameAndUserUuid = jest.fn().mockReturnValue({
-      name: SettingName.NAMES.MuteFailedBackupsEmails,
-      uuid: '6-7-8',
-      value: 'muted',
-    } as jest.Mocked<Setting>)
+    const setting = Setting.create(
+      {
+        name: SettingName.NAMES.MuteFailedBackupsEmails,
+        value: 'muted',
+        serverEncryptionVersion: 0,
+        userUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+        sensitive: false,
+        timestamps: Timestamps.create(123, 123).getValue(),
+      },
+      new UniqueEntityId('7fb54003-1dd2-40bd-8900-2bacd6cf629c'),
+    ).getValue()
+
+    settingRepository.findOneByNameAndUserUuid = jest.fn().mockReturnValue(setting)
 
     await createInterpreter().interpretSettingUpdated(
       SettingName.NAMES.EmailBackupFrequency,
@@ -109,7 +118,12 @@ describe('SettingInterpreter', () => {
     )
 
     expect(domainEventPublisher.publish).toHaveBeenCalled()
-    expect(domainEventFactory.createEmailBackupRequestedEvent).toHaveBeenCalledWith('4-5-6', '6-7-8', true, {})
+    expect(domainEventFactory.createEmailBackupRequestedEvent).toHaveBeenCalledWith(
+      '4-5-6',
+      '7fb54003-1dd2-40bd-8900-2bacd6cf629c',
+      true,
+      {},
+    )
   })
 
   it('should not trigger backup if email backup setting is disabled', async () => {

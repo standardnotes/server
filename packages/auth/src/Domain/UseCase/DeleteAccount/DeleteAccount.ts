@@ -1,24 +1,21 @@
 import { Result, UseCaseInterface, Username, Uuid } from '@standardnotes/domain-core'
 import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
 import { TimerInterface } from '@standardnotes/time'
-import { inject, injectable } from 'inversify'
 
-import TYPES from '../../../Bootstrap/Types'
 import { DomainEventFactoryInterface } from '../../Event/DomainEventFactoryInterface'
-import { UserSubscriptionServiceInterface } from '../../Subscription/UserSubscriptionServiceInterface'
 import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'
 
 import { DeleteAccountDTO } from './DeleteAccountDTO'
 import { User } from '../../User/User'
+import { GetRegularSubscriptionForUser } from '../GetRegularSubscriptionForUser/GetRegularSubscriptionForUser'
 
-@injectable()
 export class DeleteAccount implements UseCaseInterface<string> {
   constructor(
-    @inject(TYPES.Auth_UserRepository) private userRepository: UserRepositoryInterface,
-    @inject(TYPES.Auth_UserSubscriptionService) private userSubscriptionService: UserSubscriptionServiceInterface,
-    @inject(TYPES.Auth_DomainEventPublisher) private domainEventPublisher: DomainEventPublisherInterface,
-    @inject(TYPES.Auth_DomainEventFactory) private domainEventFactory: DomainEventFactoryInterface,
-    @inject(TYPES.Auth_Timer) private timer: TimerInterface,
+    private userRepository: UserRepositoryInterface,
+    private getRegularSubscription: GetRegularSubscriptionForUser,
+    private domainEventPublisher: DomainEventPublisherInterface,
+    private domainEventFactory: DomainEventFactoryInterface,
+    private timer: TimerInterface,
   ) {}
 
   async execute(dto: DeleteAccountDTO): Promise<Result<string>> {
@@ -49,9 +46,12 @@ export class DeleteAccount implements UseCaseInterface<string> {
 
     const roles = await user.roles
 
-    let regularSubscriptionUuid = undefined
-    const { regularSubscription } = await this.userSubscriptionService.findRegularSubscriptionForUserUuid(user.uuid)
-    if (regularSubscription !== null) {
+    let regularSubscriptionUuid: string | undefined
+    const result = await this.getRegularSubscription.execute({
+      userUuid: user.uuid,
+    })
+    if (!result.isFailed()) {
+      const regularSubscription = result.getValue()
       regularSubscriptionUuid = regularSubscription.uuid
     }
 

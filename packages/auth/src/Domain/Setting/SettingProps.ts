@@ -1,12 +1,10 @@
-import { Setting } from './Setting'
+import { Timestamps, Uuid } from '@standardnotes/domain-core'
 
-export type SettingProps = Omit<
-  Setting,
-  'uuid' | 'user' | 'createdAt' | 'updatedAt' | 'serverEncryptionVersion' | 'value'
-> & {
-  uuid?: string
-  createdAt?: number
-  updatedAt?: number
-  unencryptedValue: string | null
-  serverEncryptionVersion?: number
+export interface SettingProps {
+  name: string
+  value: string | null
+  serverEncryptionVersion: number
+  timestamps: Timestamps
+  sensitive: boolean
+  userUuid: Uuid
 }

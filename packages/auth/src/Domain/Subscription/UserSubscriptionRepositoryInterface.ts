@@ -5,6 +5,7 @@ export interface UserSubscriptionRepositoryInterface {
   findOneByUuid(uuid: string): Promise<UserSubscription | null>
   countByUserUuid(userUuid: string): Promise<number>
   findOneByUserUuid(userUuid: string): Promise<UserSubscription | null>
+  findOneByUserUuidAndType(userUuid: string, type: UserSubscriptionType): Promise<UserSubscription | null>
   findByUserUuid(userUuid: string): Promise<UserSubscription[]>
   findOneByUserUuidAndSubscriptionId(userUuid: string, subscriptionId: number): Promise<UserSubscription | null>
   findBySubscriptionIdAndType(subscriptionId: number, type: UserSubscriptionType): Promise<UserSubscription[]>

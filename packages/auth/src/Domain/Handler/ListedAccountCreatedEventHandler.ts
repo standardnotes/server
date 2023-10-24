@@ -1,19 +1,19 @@
 import { Username } from '@standardnotes/domain-core'
 import { DomainEventHandlerInterface, ListedAccountCreatedEvent } from '@standardnotes/domain-events'
 import { ListedAuthorSecretsData, SettingName } from '@standardnotes/settings'
-import { inject, injectable } from 'inversify'
 import { Logger } from 'winston'
 
-import TYPES from '../../Bootstrap/Types'
-import { SettingServiceInterface } from '../Setting/SettingServiceInterface'
 import { UserRepositoryInterface } from '../User/UserRepositoryInterface'
+import { GetSetting } from '../UseCase/GetSetting/GetSetting'
+import { SetSettingValue } from '../UseCase/SetSettingValue/SetSettingValue'
+import { EncryptionVersion } from '../Encryption/EncryptionVersion'
 
-@injectable()
 export class ListedAccountCreatedEventHandler implements DomainEventHandlerInterface {
   constructor(
-    @inject(TYPES.Auth_UserRepository) private userRepository: UserRepositoryInterface,
-    @inject(TYPES.Auth_SettingService) private settingService: SettingServiceInterface,
-    @inject(TYPES.Auth_Logger) private logger: Logger,
+    private userRepository: UserRepositoryInterface,
+    private getSetting: GetSetting,
+    private setSettingValue: SetSettingValue,
+    private logger: Logger,
   ) {}
 
   async handle(event: ListedAccountCreatedEvent): Promise<void> {
@@ -34,23 +34,29 @@ export class ListedAccountCreatedEventHandler implements DomainEventHandlerInter
 
     let authSecrets: ListedAuthorSecretsData = [newSecret]
 
-    const listedAuthorSecretsSetting = await this.settingService.findSettingWithDecryptedValue({
-      settingName: SettingName.create(SettingName.NAMES.ListedAuthorSecrets).getValue(),
+    const listedAuthorSecretsSettingOrError = await this.getSetting.execute({
+      settingName: SettingName.NAMES.ListedAuthorSecrets,
       userUuid: user.uuid,
+      decrypted: true,
+      allowSensitiveRetrieval: false,
     })
-    if (listedAuthorSecretsSetting !== null) {
-      const existingSecrets: ListedAuthorSecretsData = JSON.parse(listedAuthorSecretsSetting.value as string)
+    if (!listedAuthorSecretsSettingOrError.isFailed()) {
+      const listedAuthorSecretsSetting = listedAuthorSecretsSettingOrError.getValue()
+      const existingSecrets: ListedAuthorSecretsData = JSON.parse(listedAuthorSecretsSetting.decryptedValue as string)
       existingSecrets.push(newSecret)
       authSecrets = existingSecrets
     }
 
-    await this.settingService.createOrReplace({
-      user,
-      props: {
-        name: SettingName.NAMES.ListedAuthorSecrets,
-        unencryptedValue: JSON.stringify(authSecrets),
-        sensitive: false,
-      },
+    const result = await this.setSettingValue.execute({
+      userUuid: user.uuid,
+      settingName: SettingName.NAMES.ListedAuthorSecrets,
+      value: JSON.stringify(authSecrets),
+      sensitive: false,
+      serverEncryptionVersion: EncryptionVersion.Default,
     })
+
+    if (result.isFailed()) {
+      this.logger.error(`Could not update listed author secrets for user with uuid ${user.uuid}`)
+    }
   }
 }

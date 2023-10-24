@@ -2,24 +2,25 @@ import 'reflect-metadata'
 import { authenticator } from 'otplib'
 import { SettingName } from '@standardnotes/settings'
 import { SelectorInterface } from '@standardnotes/security'
-import { Result, UseCaseInterface } from '@standardnotes/domain-core'
+import { Result, Timestamps, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
 
 import { User } from '../User/User'
 import { UserRepositoryInterface } from '../User/UserRepositoryInterface'
 import { Setting } from '../Setting/Setting'
-import { SettingServiceInterface } from '../Setting/SettingServiceInterface'
 import { LockRepositoryInterface } from '../User/LockRepositoryInterface'
 import { AuthenticatorRepositoryInterface } from '../Authenticator/AuthenticatorRepositoryInterface'
 
 import { VerifyMFA } from './VerifyMFA'
 import { Logger } from 'winston'
 import { Authenticator } from '../Authenticator/Authenticator'
+import { GetSetting } from './GetSetting/GetSetting'
+import { EncryptionVersion } from '../Encryption/EncryptionVersion'
 
 describe('VerifyMFA', () => {
   let user: User
   let setting: Setting
   let userRepository: UserRepositoryInterface
-  let settingService: SettingServiceInterface
+  let getSetting: GetSetting
   let booleanSelector: SelectorInterface<boolean>
   let lockRepository: LockRepositoryInterface
   let authenticatorRepository: AuthenticatorRepositoryInterface
@@ -30,12 +31,12 @@ describe('VerifyMFA', () => {
   const createVerifyMFA = () =>
     new VerifyMFA(
       userRepository,
-      settingService,
       booleanSelector,
       lockRepository,
       pseudoKeyParamsKey,
       authenticatorRepository,
       verifyAuthenticatorAuthenticationResponse,
+      getSetting,
       logger,
     )
 
@@ -54,13 +55,17 @@ describe('VerifyMFA', () => {
     lockRepository.isOTPLocked = jest.fn().mockReturnValue(false)
     lockRepository.lockSuccessfullOTP = jest.fn()
 
-    setting = {
+    setting = Setting.create({
       name: SettingName.NAMES.MfaSecret,
-      value: 'shhhh',
-    } as jest.Mocked<Setting>
+      value: '1243359u42395834',
+      serverEncryptionVersion: EncryptionVersion.Default,
+      userUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+      sensitive: true,
+      timestamps: Timestamps.create(123, 123).getValue(),
+    }).getValue()
 
-    settingService = {} as jest.Mocked<SettingServiceInterface>
-    settingService.findSettingWithDecryptedValue = jest.fn().mockReturnValue(setting)
+    getSetting = {} as jest.Mocked<GetSetting>
+    getSetting.execute = jest.fn().mockReturnValue(Result.ok({ setting, decryptedValue: 'shhhh' }))
 
     authenticatorRepository = {} as jest.Mocked<AuthenticatorRepositoryInterface>
     authenticatorRepository.findByUserUuid = jest.fn().mockReturnValue([])
@@ -74,7 +79,7 @@ describe('VerifyMFA', () => {
 
   describe('2FA', () => {
     it('should pass MFA verification if user has no MFA enabled', async () => {
-      settingService.findSettingWithDecryptedValue = jest.fn().mockReturnValue(null)
+      getSetting.execute = jest.fn().mockReturnValue(Result.fail('not found'))
 
       expect(
         await createVerifyMFA().execute({ email: 'test@test.te', requestParams: {}, preventOTPFromFurtherUsage: true }),
@@ -86,12 +91,16 @@ describe('VerifyMFA', () => {
     })
 
     it('should pass MFA verification if user has MFA deleted', async () => {
-      setting = {
+      setting = Setting.create({
         name: SettingName.NAMES.MfaSecret,
         value: null,
-      } as jest.Mocked<Setting>
+        serverEncryptionVersion: EncryptionVersion.Default,
+        userUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+        sensitive: true,
+        timestamps: Timestamps.create(123, 123).getValue(),
+      }).getValue()
 
-      settingService.findSettingWithDecryptedValue = jest.fn().mockReturnValue(setting)
+      getSetting.execute = jest.fn().mockReturnValue(Result.ok({ setting, decryptedValue: null }))
 
       expect(
         await createVerifyMFA().execute({ email: 'test@test.te', requestParams: {}, preventOTPFromFurtherUsage: true }),
@@ -192,13 +201,16 @@ describe('VerifyMFA', () => {
     })
 
     it('should not pass MFA verification if mfa is not correct', async () => {
-      setting = {
+      setting = Setting.create({
         name: SettingName.NAMES.MfaSecret,
-        value: 'shhhh2',
-      } as jest.Mocked<Setting>
+        value: 'aaa324523534werfe',
+        serverEncryptionVersion: EncryptionVersion.Default,
+        userUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+        sensitive: true,
+        timestamps: Timestamps.create(123, 123).getValue(),
+      }).getValue()
 
-      settingService = {} as jest.Mocked<SettingServiceInterface>
-      settingService.findSettingWithDecryptedValue = jest.fn().mockReturnValue(setting)
+      getSetting.execute = jest.fn().mockReturnValue(Result.ok({ setting, decryptedValue: 'shhhh2' }))
 
       expect(
         await createVerifyMFA().execute({
@@ -230,7 +242,7 @@ describe('VerifyMFA', () => {
     })
 
     it('should throw an error if the error is not handled mfa validation error', async () => {
-      settingService.findSettingWithDecryptedValue = jest.fn().mockImplementation(() => {
+      getSetting.execute = jest.fn().mockImplementation(() => {
         throw new Error('oops!')
       })
 
@@ -251,7 +263,7 @@ describe('VerifyMFA', () => {
 
   describe('U2F', () => {
     beforeEach(() => {
-      settingService.findSettingWithDecryptedValue = jest.fn().mockReturnValue(null)
+      getSetting.execute = jest.fn().mockReturnValue(Result.fail('not found'))
 
       authenticatorRepository.findByUserUuid = jest.fn().mockReturnValue([{} as jest.Mocked<Authenticator>])
     })

@@ -10,7 +10,7 @@ import {
   DomainEventSubscriberInterface,
 } from '@standardnotes/domain-events'
 import { TimerInterface, Timer } from '@standardnotes/time'
-import { UAParser } from 'ua-parser-js'
+import { UAParser, UAParserInstance } from 'ua-parser-js'
 
 import { Env } from './Env'
 import TYPES from './Types'
@@ -56,10 +56,7 @@ import { TypeORMSettingRepository } from '../Infra/TypeORM/TypeORMSettingReposit
 import { CrypterInterface } from '../Domain/Encryption/CrypterInterface'
 import { CrypterNode } from '../Domain/Encryption/CrypterNode'
 import { CryptoNode } from '@standardnotes/sncrypto-node'
-import { GetSettings } from '../Domain/UseCase/GetSettings/GetSettings'
-import { SettingProjector } from '../Projection/SettingProjector'
 import { GetSetting } from '../Domain/UseCase/GetSetting/GetSetting'
-import { UpdateSetting } from '../Domain/UseCase/UpdateSetting/UpdateSetting'
 import { AccountDeletionRequestedEventHandler } from '../Domain/Handler/AccountDeletionRequestedEventHandler'
 import { SubscriptionPurchasedEventHandler } from '../Domain/Handler/SubscriptionPurchasedEventHandler'
 import { SubscriptionRenewedEventHandler } from '../Domain/Handler/SubscriptionRenewedEventHandler'
@@ -67,8 +64,6 @@ import { SubscriptionRefundedEventHandler } from '../Domain/Handler/Subscription
 import { SubscriptionExpiredEventHandler } from '../Domain/Handler/SubscriptionExpiredEventHandler'
 import { DeleteAccount } from '../Domain/UseCase/DeleteAccount/DeleteAccount'
 import { DeleteSetting } from '../Domain/UseCase/DeleteSetting/DeleteSetting'
-import { SettingFactory } from '../Domain/Setting/SettingFactory'
-import { SettingService } from '../Domain/Setting/SettingService'
 import { UserSubscription } from '../Domain/Subscription/UserSubscription'
 import { TypeORMUserSubscriptionRepository } from '../Infra/TypeORM/TypeORMUserSubscriptionRepository'
 import { WebSocketsClientService } from '../Infra/WebSockets/WebSocketsClientService'
@@ -80,7 +75,6 @@ import { RoleToSubscriptionMapInterface } from '../Domain/Role/RoleToSubscriptio
 import { RoleToSubscriptionMap } from '../Domain/Role/RoleToSubscriptionMap'
 import { FeatureServiceInterface } from '../Domain/Feature/FeatureServiceInterface'
 import { FeatureService } from '../Domain/Feature/FeatureService'
-import { SettingServiceInterface } from '../Domain/Setting/SettingServiceInterface'
 import { ExtensionKeyGrantedEventHandler } from '../Domain/Handler/ExtensionKeyGrantedEventHandler'
 import {
   DirectCallDomainEventPublisher,
@@ -148,16 +142,9 @@ import { AcceptSharedSubscriptionInvitation } from '../Domain/UseCase/AcceptShar
 import { DeclineSharedSubscriptionInvitation } from '../Domain/UseCase/DeclineSharedSubscriptionInvitation/DeclineSharedSubscriptionInvitation'
 import { CancelSharedSubscriptionInvitation } from '../Domain/UseCase/CancelSharedSubscriptionInvitation/CancelSharedSubscriptionInvitation'
 import { SharedSubscriptionInvitationCreatedEventHandler } from '../Domain/Handler/SharedSubscriptionInvitationCreatedEventHandler'
-import { SubscriptionSetting } from '../Domain/Setting/SubscriptionSetting'
-import { SubscriptionSettingServiceInterface } from '../Domain/Setting/SubscriptionSettingServiceInterface'
-import { SubscriptionSettingService } from '../Domain/Setting/SubscriptionSettingService'
 import { SubscriptionSettingRepositoryInterface } from '../Domain/Setting/SubscriptionSettingRepositoryInterface'
 import { TypeORMSubscriptionSettingRepository } from '../Infra/TypeORM/TypeORMSubscriptionSettingRepository'
-import { SettingFactoryInterface } from '../Domain/Setting/SettingFactoryInterface'
 import { ListSharedSubscriptionInvitations } from '../Domain/UseCase/ListSharedSubscriptionInvitations/ListSharedSubscriptionInvitations'
-import { UserSubscriptionServiceInterface } from '../Domain/Subscription/UserSubscriptionServiceInterface'
-import { UserSubscriptionService } from '../Domain/Subscription/UserSubscriptionService'
-import { SubscriptionSettingProjector } from '../Projection/SubscriptionSettingProjector'
 import { SubscriptionSettingsAssociationService } from '../Domain/Setting/SubscriptionSettingsAssociationService'
 import { SubscriptionSettingsAssociationServiceInterface } from '../Domain/Setting/SubscriptionSettingsAssociationServiceInterface'
 import { PKCERepositoryInterface } from '../Domain/User/PKCERepositoryInterface'
@@ -266,6 +253,27 @@ import { UserDesignatedAsSurvivorInSharedVaultEventHandler } from '../Domain/Han
 import { DisableEmailSettingBasedOnEmailSubscription } from '../Domain/UseCase/DisableEmailSettingBasedOnEmailSubscription/DisableEmailSettingBasedOnEmailSubscription'
 import { DomainEventFactoryInterface } from '../Domain/Event/DomainEventFactoryInterface'
 import { KeyParamsFactoryInterface } from '../Domain/User/KeyParamsFactoryInterface'
+import { TypeORMSubscriptionSetting } from '../Infra/TypeORM/TypeORMSubscriptionSetting'
+import { SetSettingValue } from '../Domain/UseCase/SetSettingValue/SetSettingValue'
+import { ApplyDefaultSubscriptionSettings } from '../Domain/UseCase/ApplyDefaultSubscriptionSettings/ApplyDefaultSubscriptionSettings'
+import { GetSubscriptionSetting } from '../Domain/UseCase/GetSubscriptionSetting/GetSubscriptionSetting'
+import { SetSubscriptionSettingValue } from '../Domain/UseCase/SetSubscriptionSettingValue/SetSubscriptionSettingValue'
+import { GetSettings } from '../Domain/UseCase/GetSettings/GetSettings'
+import { GetSubscriptionSettings } from '../Domain/UseCase/GetSubscriptionSettings/GetSubscriptionSettings'
+import { GetAllSettingsForUser } from '../Domain/UseCase/GetAllSettingsForUser/GetAllSettingsForUser'
+import { GetRegularSubscriptionForUser } from '../Domain/UseCase/GetRegularSubscriptionForUser/GetRegularSubscriptionForUser'
+import { GetSharedSubscriptionForUser } from '../Domain/UseCase/GetSharedSubscriptionForUser/GetSharedSubscriptionForUser'
+import { GetSharedOrRegularSubscriptionForUser } from '../Domain/UseCase/GetSharedOrRegularSubscriptionForUser/GetSharedOrRegularSubscriptionForUser'
+import { ProjectorInterface } from '../Projection/ProjectorInterface'
+import { SettingHttpRepresentation } from '../Mapping/Http/SettingHttpRepresentation'
+import { SubscriptionSetting } from '../Domain/Setting/SubscriptionSetting'
+import { SubscriptionSettingHttpRepresentation } from '../Mapping/Http/SubscriptionSettingHttpRepresentation'
+import { SettingHttpMapper } from '../Mapping/Http/SettingHttpMapper'
+import { SubscriptionSettingHttpMapper } from '../Mapping/Http/SubscriptionSettingHttpMapper'
+import { TypeORMSetting } from '../Infra/TypeORM/TypeORMSetting'
+import { SettingPersistenceMapper } from '../Mapping/Persistence/SettingPersistenceMapper'
+import { SubscriptionSettingPersistenceMapper } from '../Mapping/Persistence/SubscriptionSettingPersistenceMapper'
+import { ApplyDefaultSettings } from '../Domain/UseCase/ApplyDefaultSettings/ApplyDefaultSettings'
 
 export class ContainerConfigLoader {
   constructor(private mode: 'server' | 'worker' = 'server') {}
@@ -396,6 +404,22 @@ export class ContainerConfigLoader {
     container
       .bind<MapperInterface<SharedVaultUser, TypeORMSharedVaultUser>>(TYPES.Auth_SharedVaultUserPersistenceMapper)
       .toConstantValue(new SharedVaultUserPersistenceMapper())
+    container
+      .bind<MapperInterface<Setting, SettingHttpRepresentation>>(TYPES.Auth_SettingHttpMapper)
+      .toConstantValue(new SettingHttpMapper())
+    container
+      .bind<MapperInterface<SubscriptionSetting, SubscriptionSettingHttpRepresentation>>(
+        TYPES.Auth_SubscriptionSettingHttpMapper,
+      )
+      .toConstantValue(new SubscriptionSettingHttpMapper())
+    container
+      .bind<MapperInterface<Setting, TypeORMSetting>>(TYPES.Auth_SettingPersistenceMapper)
+      .toConstantValue(new SettingPersistenceMapper())
+    container
+      .bind<MapperInterface<SubscriptionSetting, TypeORMSubscriptionSetting>>(
+        TYPES.Auth_SubscriptionSettingPersistenceMapper,
+      )
+      .toConstantValue(new SubscriptionSettingPersistenceMapper())
 
     // ORM
     container
@@ -418,8 +442,8 @@ export class ContainerConfigLoader {
       .bind<Repository<SharedSubscriptionInvitation>>(TYPES.Auth_ORMSharedSubscriptionInvitationRepository)
       .toConstantValue(appDataSource.getRepository(SharedSubscriptionInvitation))
     container
-      .bind<Repository<SubscriptionSetting>>(TYPES.Auth_ORMSubscriptionSettingRepository)
-      .toConstantValue(appDataSource.getRepository(SubscriptionSetting))
+      .bind<Repository<TypeORMSubscriptionSetting>>(TYPES.Auth_ORMSubscriptionSettingRepository)
+      .toConstantValue(appDataSource.getRepository(TypeORMSubscriptionSetting))
     container.bind<Repository<User>>(TYPES.Auth_ORMUserRepository).toConstantValue(appDataSource.getRepository(User))
     container
       .bind<Repository<UserSubscription>>(TYPES.Auth_ORMUserSubscriptionRepository)
@@ -446,10 +470,24 @@ export class ContainerConfigLoader {
       .bind<RevokedSessionRepositoryInterface>(TYPES.Auth_RevokedSessionRepository)
       .to(TypeORMRevokedSessionRepository)
     container.bind<UserRepositoryInterface>(TYPES.Auth_UserRepository).to(TypeORMUserRepository)
-    container.bind<SettingRepositoryInterface>(TYPES.Auth_SettingRepository).to(TypeORMSettingRepository)
+    container
+      .bind<SettingRepositoryInterface>(TYPES.Auth_SettingRepository)
+      .toConstantValue(
+        new TypeORMSettingRepository(
+          container.get<Repository<TypeORMSetting>>(TYPES.Auth_ORMSettingRepository),
+          container.get<MapperInterface<Setting, TypeORMSetting>>(TYPES.Auth_SettingPersistenceMapper),
+        ),
+      )
     container
       .bind<SubscriptionSettingRepositoryInterface>(TYPES.Auth_SubscriptionSettingRepository)
-      .to(TypeORMSubscriptionSettingRepository)
+      .toConstantValue(
+        new TypeORMSubscriptionSettingRepository(
+          container.get<Repository<TypeORMSubscriptionSetting>>(TYPES.Auth_ORMSubscriptionSettingRepository),
+          container.get<MapperInterface<SubscriptionSetting, TypeORMSubscriptionSetting>>(
+            TYPES.Auth_SubscriptionSettingPersistenceMapper,
+          ),
+        ),
+      )
     container
       .bind<OfflineSettingRepositoryInterface>(TYPES.Auth_OfflineSettingRepository)
       .to(TypeORMOfflineSettingRepository)
@@ -512,13 +550,6 @@ export class ContainerConfigLoader {
     container.bind<UserProjector>(TYPES.Auth_UserProjector).to(UserProjector)
     container.bind<RoleProjector>(TYPES.Auth_RoleProjector).to(RoleProjector)
     container.bind<PermissionProjector>(TYPES.Auth_PermissionProjector).to(PermissionProjector)
-    container.bind<SettingProjector>(TYPES.Auth_SettingProjector).to(SettingProjector)
-    container
-      .bind<SubscriptionSettingProjector>(TYPES.Auth_SubscriptionSettingProjector)
-      .to(SubscriptionSettingProjector)
-
-    // Factories
-    container.bind<SettingFactoryInterface>(TYPES.Auth_SettingFactory).to(SettingFactory)
 
     // env vars
     container.bind(TYPES.Auth_JWT_SECRET).toConstantValue(env.get('JWT_SECRET'))
@@ -640,12 +671,55 @@ export class ContainerConfigLoader {
         .to(RedisSubscriptionTokenRepository)
     }
 
-    // Services
+    container
+      .bind<TraceSession>(TYPES.Auth_TraceSession)
+      .toConstantValue(
+        new TraceSession(
+          container.get(TYPES.Auth_SessionTraceRepository),
+          container.get(TYPES.Auth_Timer),
+          container.get(TYPES.Auth_SESSION_TRACE_DAYS_TTL),
+        ),
+      )
     container
       .bind<SelectorInterface<ProtocolVersion>>(TYPES.Auth_ProtocolVersionSelector)
       .toConstantValue(new DeterministicSelector<ProtocolVersion>())
-    container.bind<UAParser>(TYPES.Auth_DeviceDetector).toConstantValue(new UAParser())
-    container.bind<SessionService>(TYPES.Auth_SessionService).to(SessionService)
+    container.bind<UAParserInstance>(TYPES.Auth_DeviceDetector).toConstantValue(new UAParser())
+    container.bind<CrypterInterface>(TYPES.Auth_Crypter).to(CrypterNode)
+    container
+      .bind<SettingDecrypterInterface>(TYPES.Auth_SettingDecrypter)
+      .toConstantValue(
+        new SettingDecrypter(
+          container.get<UserRepositoryInterface>(TYPES.Auth_UserRepository),
+          container.get<CrypterInterface>(TYPES.Auth_Crypter),
+        ),
+      )
+    container
+      .bind<GetSetting>(TYPES.Auth_GetSetting)
+      .toConstantValue(
+        new GetSetting(
+          container.get<SettingRepositoryInterface>(TYPES.Auth_SettingRepository),
+          container.get<SettingDecrypterInterface>(TYPES.Auth_SettingDecrypter),
+        ),
+      )
+    container
+      .bind<SessionService>(TYPES.Auth_SessionService)
+      .toConstantValue(
+        new SessionService(
+          container.get<SessionRepositoryInterface>(TYPES.Auth_SessionRepository),
+          container.get<EphemeralSessionRepositoryInterface>(TYPES.Auth_EphemeralSessionRepository),
+          container.get<RevokedSessionRepositoryInterface>(TYPES.Auth_RevokedSessionRepository),
+          container.get<UAParserInstance>(TYPES.Auth_DeviceDetector),
+          container.get<TimerInterface>(TYPES.Auth_Timer),
+          container.get<winston.Logger>(TYPES.Auth_Logger),
+          container.get<number>(TYPES.Auth_ACCESS_TOKEN_AGE),
+          container.get<number>(TYPES.Auth_REFRESH_TOKEN_AGE),
+          container.get<CryptoNode>(TYPES.Auth_CryptoNode),
+          container.get<TraceSession>(TYPES.Auth_TraceSession),
+          container.get<UserSubscriptionRepositoryInterface>(TYPES.Auth_UserSubscriptionRepository),
+          container.get<string[]>(TYPES.Auth_READONLY_USERS),
+          container.get<GetSetting>(TYPES.Auth_GetSetting),
+        ),
+      )
     container.bind<AuthResponseFactory20161215>(TYPES.Auth_AuthResponseFactory20161215).to(AuthResponseFactory20161215)
     container.bind<AuthResponseFactory20190520>(TYPES.Auth_AuthResponseFactory20190520).to(AuthResponseFactory20190520)
     container.bind<AuthResponseFactory20200115>(TYPES.Auth_AuthResponseFactory20200115).to(AuthResponseFactory20200115)
@@ -684,11 +758,9 @@ export class ContainerConfigLoader {
       .bind<AuthenticationMethodResolver>(TYPES.Auth_AuthenticationMethodResolver)
       .to(AuthenticationMethodResolver)
     container.bind<DomainEventFactory>(TYPES.Auth_DomainEventFactory).to(DomainEventFactory)
-    container.bind<CrypterInterface>(TYPES.Auth_Crypter).to(CrypterNode)
     container
       .bind<SettingsAssociationServiceInterface>(TYPES.Auth_SettingsAssociationService)
       .to(SettingsAssociationService)
-    container.bind<SettingDecrypterInterface>(TYPES.Auth_SettingDecrypter).to(SettingDecrypter)
 
     container
       .bind<GetUserKeyParams>(TYPES.Auth_GetUserKeyParams)
@@ -711,21 +783,6 @@ export class ContainerConfigLoader {
         ),
       )
 
-    container
-      .bind<SettingServiceInterface>(TYPES.Auth_SettingService)
-      .toConstantValue(
-        new SettingService(
-          container.get<SettingFactoryInterface>(TYPES.Auth_SettingFactory),
-          container.get<SettingRepositoryInterface>(TYPES.Auth_SettingRepository),
-          container.get<SettingsAssociationServiceInterface>(TYPES.Auth_SettingsAssociationService),
-          container.get<SettingInterpreterInterface>(TYPES.Auth_SettingInterpreter),
-          container.get<SettingDecrypterInterface>(TYPES.Auth_SettingDecrypter),
-          container.get<winston.Logger>(TYPES.Auth_Logger),
-        ),
-      )
-    container
-      .bind<SubscriptionSettingServiceInterface>(TYPES.Auth_SubscriptionSettingService)
-      .to(SubscriptionSettingService)
     container.bind<OfflineSettingServiceInterface>(TYPES.Auth_OfflineSettingService).to(OfflineSettingService)
     container.bind<ContentDecoderInterface>(TYPES.Auth_ContenDecoder).toConstantValue(new ContentDecoder())
     container.bind<ClientServiceInterface>(TYPES.Auth_WebSocketsClientService).to(WebSocketsClientService)
@@ -738,7 +795,6 @@ export class ContainerConfigLoader {
     container
       .bind<SelectorInterface<boolean>>(TYPES.Auth_BooleanSelector)
       .toConstantValue(new DeterministicSelector<boolean>())
-    container.bind<UserSubscriptionServiceInterface>(TYPES.Auth_UserSubscriptionService).to(UserSubscriptionService)
 
     // Middleware
     container.bind<SessionMiddleware>(TYPES.Auth_SessionMiddleware).to(SessionMiddleware)
@@ -765,15 +821,6 @@ export class ContainerConfigLoader {
     container.bind<OfflineUserAuthMiddleware>(TYPES.Auth_OfflineUserAuthMiddleware).to(OfflineUserAuthMiddleware)
 
     // use cases
-    container
-      .bind<TraceSession>(TYPES.Auth_TraceSession)
-      .toConstantValue(
-        new TraceSession(
-          container.get(TYPES.Auth_SessionTraceRepository),
-          container.get(TYPES.Auth_Timer),
-          container.get(TYPES.Auth_SESSION_TRACE_DAYS_TTL),
-        ),
-      )
     container
       .bind<PersistStatistics>(TYPES.Auth_PersistStatistics)
       .toConstantValue(
@@ -849,23 +896,63 @@ export class ContainerConfigLoader {
         ),
       )
     container
+      .bind<SetSettingValue>(TYPES.Auth_SetSettingValue)
+      .toConstantValue(
+        new SetSettingValue(
+          container.get<GetSetting>(TYPES.Auth_GetSetting),
+          container.get<SettingRepositoryInterface>(TYPES.Auth_SettingRepository),
+          container.get<TimerInterface>(TYPES.Auth_Timer),
+          container.get<SettingsAssociationServiceInterface>(TYPES.Auth_SettingsAssociationService),
+          container.get<RoleServiceInterface>(TYPES.Auth_RoleService),
+        ),
+      )
+    container
       .bind<GenerateRecoveryCodes>(TYPES.Auth_GenerateRecoveryCodes)
       .toConstantValue(
         new GenerateRecoveryCodes(
           container.get(TYPES.Auth_UserRepository),
-          container.get(TYPES.Auth_SettingService),
+          container.get(TYPES.Auth_SetSettingValue),
           container.get(TYPES.Auth_CryptoNode),
+        ),
+      )
+    container
+      .bind<GetSubscriptionSetting>(TYPES.Auth_GetSubscriptionSetting)
+      .toConstantValue(
+        new GetSubscriptionSetting(
+          container.get<SubscriptionSettingRepositoryInterface>(TYPES.Auth_SubscriptionSettingRepository),
+          container.get<SettingDecrypterInterface>(TYPES.Auth_SettingDecrypter),
+        ),
+      )
+    container
+      .bind<SetSubscriptionSettingValue>(TYPES.Auth_SetSubscriptionSettingValue)
+      .toConstantValue(
+        new SetSubscriptionSettingValue(
+          container.get<SubscriptionSettingRepositoryInterface>(TYPES.Auth_SubscriptionSettingRepository),
+          container.get<GetSubscriptionSetting>(TYPES.Auth_GetSubscriptionSetting),
+          container.get<TimerInterface>(TYPES.Auth_Timer),
+        ),
+      )
+    container
+      .bind<ApplyDefaultSubscriptionSettings>(TYPES.Auth_ApplyDefaultSubscriptionSettings)
+      .toConstantValue(
+        new ApplyDefaultSubscriptionSettings(
+          container.get<SubscriptionSettingsAssociationServiceInterface>(
+            TYPES.Auth_SubscriptionSettingsAssociationService,
+          ),
+          container.get<UserSubscriptionRepositoryInterface>(TYPES.Auth_UserSubscriptionRepository),
+          container.get<GetSubscriptionSetting>(TYPES.Auth_GetSubscriptionSetting),
+          container.get<SetSubscriptionSettingValue>(TYPES.Auth_SetSubscriptionSettingValue),
         ),
       )
     container
       .bind<ActivatePremiumFeatures>(TYPES.Auth_ActivatePremiumFeatures)
       .toConstantValue(
         new ActivatePremiumFeatures(
-          container.get(TYPES.Auth_UserRepository),
-          container.get(TYPES.Auth_UserSubscriptionRepository),
-          container.get(TYPES.Auth_SubscriptionSettingService),
-          container.get(TYPES.Auth_RoleService),
-          container.get(TYPES.Auth_Timer),
+          container.get<UserRepositoryInterface>(TYPES.Auth_UserRepository),
+          container.get<UserSubscriptionRepositoryInterface>(TYPES.Auth_UserSubscriptionRepository),
+          container.get<ApplyDefaultSubscriptionSettings>(TYPES.Auth_ApplyDefaultSubscriptionSettings),
+          container.get<RoleServiceInterface>(TYPES.Auth_RoleService),
+          container.get<TimerInterface>(TYPES.Auth_Timer),
         ),
       )
 
@@ -879,47 +966,136 @@ export class ContainerConfigLoader {
     container.bind<AuthenticateRequest>(TYPES.Auth_AuthenticateRequest).to(AuthenticateRequest)
     container.bind<RefreshSessionToken>(TYPES.Auth_RefreshSessionToken).to(RefreshSessionToken)
     container.bind<SignIn>(TYPES.Auth_SignIn).to(SignIn)
-    container.bind<VerifyMFA>(TYPES.Auth_VerifyMFA).to(VerifyMFA)
+    container
+      .bind<VerifyMFA>(TYPES.Auth_VerifyMFA)
+      .toConstantValue(
+        new VerifyMFA(
+          container.get<UserRepositoryInterface>(TYPES.Auth_UserRepository),
+          container.get<SelectorInterface<boolean>>(TYPES.Auth_BooleanSelector),
+          container.get<LockRepositoryInterface>(TYPES.Auth_LockRepository),
+          container.get<string>(TYPES.Auth_PSEUDO_KEY_PARAMS_KEY),
+          container.get<AuthenticatorRepositoryInterface>(TYPES.Auth_AuthenticatorRepository),
+          container.get<VerifyAuthenticatorAuthenticationResponse>(
+            TYPES.Auth_VerifyAuthenticatorAuthenticationResponse,
+          ),
+          container.get<GetSetting>(TYPES.Auth_GetSetting),
+          container.get<winston.Logger>(TYPES.Auth_Logger),
+        ),
+      )
     container.bind<ClearLoginAttempts>(TYPES.Auth_ClearLoginAttempts).to(ClearLoginAttempts)
     container.bind<IncreaseLoginAttempts>(TYPES.Auth_IncreaseLoginAttempts).to(IncreaseLoginAttempts)
     container
       .bind<GetUserKeyParamsRecovery>(TYPES.Auth_GetUserKeyParamsRecovery)
       .toConstantValue(
         new GetUserKeyParamsRecovery(
-          container.get(TYPES.Auth_KeyParamsFactory),
-          container.get(TYPES.Auth_UserRepository),
-          container.get(TYPES.Auth_PKCERepository),
-          container.get(TYPES.Auth_SettingService),
+          container.get<KeyParamsFactoryInterface>(TYPES.Auth_KeyParamsFactory),
+          container.get<UserRepositoryInterface>(TYPES.Auth_UserRepository),
+          container.get<PKCERepositoryInterface>(TYPES.Auth_PKCERepository),
+          container.get<GetSetting>(TYPES.Auth_GetSetting),
         ),
       )
     container.bind<UpdateUser>(TYPES.Auth_UpdateUser).to(UpdateUser)
-    container.bind<Register>(TYPES.Auth_Register).to(Register)
+    container
+      .bind<ApplyDefaultSettings>(TYPES.Auth_ApplyDefaultSettings)
+      .toConstantValue(
+        new ApplyDefaultSettings(
+          container.get<SettingsAssociationServiceInterface>(TYPES.Auth_SettingsAssociationService),
+          container.get<SetSettingValue>(TYPES.Auth_SetSettingValue),
+        ),
+      )
+    container
+      .bind<Register>(TYPES.Auth_Register)
+      .toConstantValue(
+        new Register(
+          container.get<UserRepositoryInterface>(TYPES.Auth_UserRepository),
+          container.get<RoleRepositoryInterface>(TYPES.Auth_RoleRepository),
+          container.get<AuthResponseFactory20200115>(TYPES.Auth_AuthResponseFactory20200115),
+          container.get<CrypterInterface>(TYPES.Auth_Crypter),
+          container.get<boolean>(TYPES.Auth_DISABLE_USER_REGISTRATION),
+          container.get<TimerInterface>(TYPES.Auth_Timer),
+          container.get<ApplyDefaultSettings>(TYPES.Auth_ApplyDefaultSettings),
+        ),
+      )
     container.bind<GetActiveSessionsForUser>(TYPES.Auth_GetActiveSessionsForUser).to(GetActiveSessionsForUser)
     container.bind<DeleteOtherSessionsForUser>(TYPES.Auth_DeleteOtherSessionsForUser).to(DeleteOtherSessionsForUser)
     container.bind<DeleteSessionForUser>(TYPES.Auth_DeleteSessionForUser).to(DeleteSessionForUser)
     container.bind<ChangeCredentials>(TYPES.Auth_ChangeCredentials).to(ChangeCredentials)
-    container.bind<GetSettings>(TYPES.Auth_GetSettings).to(GetSettings)
-    container.bind<GetSetting>(TYPES.Auth_GetSetting).to(GetSetting)
+    container
+      .bind<GetSettings>(TYPES.Auth_GetSettings)
+      .toConstantValue(
+        new GetSettings(
+          container.get<SettingRepositoryInterface>(TYPES.Auth_SettingRepository),
+          container.get<SettingDecrypterInterface>(TYPES.Auth_SettingDecrypter),
+        ),
+      )
+    container
+      .bind<GetSubscriptionSettings>(TYPES.Auth_GetSubscriptionSettings)
+      .toConstantValue(
+        new GetSubscriptionSettings(
+          container.get<SubscriptionSettingRepositoryInterface>(TYPES.Auth_SubscriptionSettingRepository),
+          container.get<SettingDecrypterInterface>(TYPES.Auth_SettingDecrypter),
+        ),
+      )
+    container
+      .bind<GetRegularSubscriptionForUser>(TYPES.Auth_GetRegularSubscriptionForUser)
+      .toConstantValue(
+        new GetRegularSubscriptionForUser(
+          container.get<UserSubscriptionRepositoryInterface>(TYPES.Auth_UserSubscriptionRepository),
+        ),
+      )
+    container
+      .bind<GetSharedSubscriptionForUser>(TYPES.Auth_GetSharedSubscriptionForUser)
+      .toConstantValue(
+        new GetSharedSubscriptionForUser(
+          container.get<UserSubscriptionRepositoryInterface>(TYPES.Auth_UserSubscriptionRepository),
+        ),
+      )
+    container
+      .bind<GetSharedOrRegularSubscriptionForUser>(TYPES.Auth_GetSharedOrRegularSubscriptionForUser)
+      .toConstantValue(
+        new GetSharedOrRegularSubscriptionForUser(
+          container.get<GetRegularSubscriptionForUser>(TYPES.Auth_GetRegularSubscriptionForUser),
+          container.get<GetSharedSubscriptionForUser>(TYPES.Auth_GetSharedSubscriptionForUser),
+        ),
+      )
+    container
+      .bind<GetAllSettingsForUser>(TYPES.Auth_GetAllSettingsForUser)
+      .toConstantValue(
+        new GetAllSettingsForUser(
+          container.get<GetSettings>(TYPES.Auth_GetSettings),
+          container.get<GetSharedOrRegularSubscriptionForUser>(TYPES.Auth_GetSharedOrRegularSubscriptionForUser),
+          container.get<GetSubscriptionSettings>(TYPES.Auth_GetSubscriptionSettings),
+        ),
+      )
     container.bind<GetUserFeatures>(TYPES.Auth_GetUserFeatures).to(GetUserFeatures)
-    container.bind<UpdateSetting>(TYPES.Auth_UpdateSetting).to(UpdateSetting)
     container.bind<DeleteSetting>(TYPES.Auth_DeleteSetting).to(DeleteSetting)
     container
       .bind<SignInWithRecoveryCodes>(TYPES.Auth_SignInWithRecoveryCodes)
       .toConstantValue(
         new SignInWithRecoveryCodes(
-          container.get(TYPES.Auth_UserRepository),
-          container.get(TYPES.Auth_AuthResponseFactory20200115),
-          container.get(TYPES.Auth_PKCERepository),
-          container.get(TYPES.Auth_Crypter),
-          container.get(TYPES.Auth_SettingService),
-          container.get(TYPES.Auth_GenerateRecoveryCodes),
-          container.get(TYPES.Auth_IncreaseLoginAttempts),
-          container.get(TYPES.Auth_ClearLoginAttempts),
-          container.get(TYPES.Auth_DeleteSetting),
-          container.get(TYPES.Auth_AuthenticatorRepository),
+          container.get<UserRepositoryInterface>(TYPES.Auth_UserRepository),
+          container.get<AuthResponseFactory20200115>(TYPES.Auth_AuthResponseFactory20200115),
+          container.get<PKCERepositoryInterface>(TYPES.Auth_PKCERepository),
+          container.get<CrypterInterface>(TYPES.Auth_Crypter),
+          container.get<GetSetting>(TYPES.Auth_GetSetting),
+          container.get<GenerateRecoveryCodes>(TYPES.Auth_GenerateRecoveryCodes),
+          container.get<IncreaseLoginAttempts>(TYPES.Auth_IncreaseLoginAttempts),
+          container.get<ClearLoginAttempts>(TYPES.Auth_ClearLoginAttempts),
+          container.get<DeleteSetting>(TYPES.Auth_DeleteSetting),
+          container.get<AuthenticatorRepositoryInterface>(TYPES.Auth_AuthenticatorRepository),
         ),
       )
-    container.bind<DeleteAccount>(TYPES.Auth_DeleteAccount).to(DeleteAccount)
+    container
+      .bind<DeleteAccount>(TYPES.Auth_DeleteAccount)
+      .toConstantValue(
+        new DeleteAccount(
+          container.get<UserRepositoryInterface>(TYPES.Auth_UserRepository),
+          container.get<GetRegularSubscriptionForUser>(TYPES.Auth_GetRegularSubscriptionForUser),
+          container.get<DomainEventPublisherInterface>(TYPES.Auth_DomainEventPublisher),
+          container.get<DomainEventFactoryInterface>(TYPES.Auth_DomainEventFactory),
+          container.get<TimerInterface>(TYPES.Auth_Timer),
+        ),
+      )
     container.bind<GetUserSubscription>(TYPES.Auth_GetUserSubscription).to(GetUserSubscription)
     container.bind<GetUserOfflineSubscription>(TYPES.Auth_GetUserOfflineSubscription).to(GetUserOfflineSubscription)
     container.bind<CreateSubscriptionToken>(TYPES.Auth_CreateSubscriptionToken).to(CreateSubscriptionToken)
@@ -932,12 +1108,38 @@ export class ContainerConfigLoader {
     container
       .bind<CreateOfflineSubscriptionToken>(TYPES.Auth_CreateOfflineSubscriptionToken)
       .to(CreateOfflineSubscriptionToken)
-    container.bind<CreateValetToken>(TYPES.Auth_CreateValetToken).to(CreateValetToken)
+    container
+      .bind<CreateValetToken>(TYPES.Auth_CreateValetToken)
+      .toConstantValue(
+        new CreateValetToken(
+          container.get<TokenEncoderInterface<ValetTokenData>>(TYPES.Auth_ValetTokenEncoder),
+          container.get<SubscriptionSettingsAssociationServiceInterface>(
+            TYPES.Auth_SubscriptionSettingsAssociationService,
+          ),
+          container.get<GetRegularSubscriptionForUser>(TYPES.Auth_GetRegularSubscriptionForUser),
+          container.get<GetSharedSubscriptionForUser>(TYPES.Auth_GetSharedSubscriptionForUser),
+          container.get<GetSubscriptionSetting>(TYPES.Auth_GetSubscriptionSetting),
+          container.get<TimerInterface>(TYPES.Auth_Timer),
+          container.get<number>(TYPES.Auth_VALET_TOKEN_TTL),
+        ),
+      )
     container.bind<CreateListedAccount>(TYPES.Auth_CreateListedAccount).to(CreateListedAccount)
     container.bind<InviteToSharedSubscription>(TYPES.Auth_InviteToSharedSubscription).to(InviteToSharedSubscription)
     container
       .bind<AcceptSharedSubscriptionInvitation>(TYPES.Auth_AcceptSharedSubscriptionInvitation)
-      .to(AcceptSharedSubscriptionInvitation)
+      .toConstantValue(
+        new AcceptSharedSubscriptionInvitation(
+          container.get<SharedSubscriptionInvitationRepositoryInterface>(
+            TYPES.Auth_SharedSubscriptionInvitationRepository,
+          ),
+          container.get<UserRepositoryInterface>(TYPES.Auth_UserRepository),
+          container.get<UserSubscriptionRepositoryInterface>(TYPES.Auth_UserSubscriptionRepository),
+          container.get<RoleServiceInterface>(TYPES.Auth_RoleService),
+          container.get<ApplyDefaultSubscriptionSettings>(TYPES.Auth_ApplyDefaultSubscriptionSettings),
+          container.get<TimerInterface>(TYPES.Auth_Timer),
+          container.get<winston.Logger>(TYPES.Auth_Logger),
+        ),
+      )
     container
       .bind<DeclineSharedSubscriptionInvitation>(TYPES.Auth_DeclineSharedSubscriptionInvitation)
       .to(DeclineSharedSubscriptionInvitation)
@@ -948,15 +1150,32 @@ export class ContainerConfigLoader {
       .bind<ListSharedSubscriptionInvitations>(TYPES.Auth_ListSharedSubscriptionInvitations)
       .to(ListSharedSubscriptionInvitations)
     container.bind<VerifyPredicate>(TYPES.Auth_VerifyPredicate).to(VerifyPredicate)
-    container.bind<CreateCrossServiceToken>(TYPES.Auth_CreateCrossServiceToken).to(CreateCrossServiceToken)
+    container
+      .bind<CreateCrossServiceToken>(TYPES.Auth_CreateCrossServiceToken)
+      .toConstantValue(
+        new CreateCrossServiceToken(
+          container.get<ProjectorInterface<User>>(TYPES.Auth_UserProjector),
+          container.get<ProjectorInterface<Session>>(TYPES.Auth_SessionProjector),
+          container.get<ProjectorInterface<Role>>(TYPES.Auth_RoleProjector),
+          container.get<TokenEncoderInterface<CrossServiceTokenData>>(TYPES.Auth_CrossServiceTokenEncoder),
+          container.get<UserRepositoryInterface>(TYPES.Auth_UserRepository),
+          container.get<number>(TYPES.Auth_AUTH_JWT_TTL),
+          container.get<GetRegularSubscriptionForUser>(TYPES.Auth_GetRegularSubscriptionForUser),
+          container.get<GetSubscriptionSetting>(TYPES.Auth_GetSubscriptionSetting),
+          container.get<SharedVaultUserRepositoryInterface>(TYPES.Auth_SharedVaultUserRepository),
+        ),
+      )
     container.bind<ProcessUserRequest>(TYPES.Auth_ProcessUserRequest).to(ProcessUserRequest)
     container
       .bind<UpdateStorageQuotaUsedForUser>(TYPES.Auth_UpdateStorageQuotaUsedForUser)
       .toConstantValue(
         new UpdateStorageQuotaUsedForUser(
-          container.get(TYPES.Auth_UserRepository),
-          container.get(TYPES.Auth_UserSubscriptionService),
-          container.get(TYPES.Auth_SubscriptionSettingService),
+          container.get<UserRepositoryInterface>(TYPES.Auth_UserRepository),
+          container.get<GetRegularSubscriptionForUser>(TYPES.Auth_GetRegularSubscriptionForUser),
+          container.get<GetSharedSubscriptionForUser>(TYPES.Auth_GetSharedSubscriptionForUser),
+          container.get<GetSubscriptionSetting>(TYPES.Auth_GetSubscriptionSetting),
+          container.get<SetSubscriptionSettingValue>(TYPES.Auth_SetSubscriptionSettingValue),
+          container.get<winston.Logger>(TYPES.Auth_Logger),
         ),
       )
     container
@@ -984,8 +1203,9 @@ export class ContainerConfigLoader {
       .toConstantValue(
         new DisableEmailSettingBasedOnEmailSubscription(
           container.get<UserRepositoryInterface>(TYPES.Auth_UserRepository),
-          container.get<SettingRepositoryInterface>(TYPES.Auth_SettingRepository),
-          container.get<SettingFactoryInterface>(TYPES.Auth_SettingFactory),
+          container.get<SetSettingValue>(TYPES.Auth_SetSettingValue),
+          container.get<SetSubscriptionSettingValue>(TYPES.Auth_SetSubscriptionSettingValue),
+          container.get<GetSharedOrRegularSubscriptionForUser>(TYPES.Auth_GetSharedOrRegularSubscriptionForUser),
         ),
       )
 
@@ -1039,7 +1259,16 @@ export class ContainerConfigLoader {
       )
     container
       .bind<SubscriptionPurchasedEventHandler>(TYPES.Auth_SubscriptionPurchasedEventHandler)
-      .to(SubscriptionPurchasedEventHandler)
+      .toConstantValue(
+        new SubscriptionPurchasedEventHandler(
+          container.get<UserRepositoryInterface>(TYPES.Auth_UserRepository),
+          container.get<UserSubscriptionRepositoryInterface>(TYPES.Auth_UserSubscriptionRepository),
+          container.get<ApplyDefaultSubscriptionSettings>(TYPES.Auth_ApplyDefaultSubscriptionSettings),
+          container.get<OfflineUserSubscriptionRepositoryInterface>(TYPES.Auth_OfflineUserSubscriptionRepository),
+          container.get<RoleServiceInterface>(TYPES.Auth_RoleService),
+          container.get<winston.Logger>(TYPES.Auth_Logger),
+        ),
+      )
     container
       .bind<SubscriptionCancelledEventHandler>(TYPES.Auth_SubscriptionCancelledEventHandler)
       .to(SubscriptionCancelledEventHandler)
@@ -1054,13 +1283,42 @@ export class ContainerConfigLoader {
       .to(SubscriptionExpiredEventHandler)
     container
       .bind<SubscriptionSyncRequestedEventHandler>(TYPES.Auth_SubscriptionSyncRequestedEventHandler)
-      .to(SubscriptionSyncRequestedEventHandler)
+      .toConstantValue(
+        new SubscriptionSyncRequestedEventHandler(
+          container.get<UserRepositoryInterface>(TYPES.Auth_UserRepository),
+          container.get<UserSubscriptionRepositoryInterface>(TYPES.Auth_UserSubscriptionRepository),
+          container.get<OfflineUserSubscriptionRepositoryInterface>(TYPES.Auth_OfflineUserSubscriptionRepository),
+          container.get<RoleServiceInterface>(TYPES.Auth_RoleService),
+          container.get<ApplyDefaultSubscriptionSettings>(TYPES.Auth_ApplyDefaultSubscriptionSettings),
+          container.get<SetSettingValue>(TYPES.Auth_SetSettingValue),
+          container.get<OfflineSettingServiceInterface>(TYPES.Auth_OfflineSettingService),
+          container.get<ContentDecoderInterface>(TYPES.Auth_ContenDecoder),
+          container.get<winston.Logger>(TYPES.Auth_Logger),
+        ),
+      )
     container
       .bind<ExtensionKeyGrantedEventHandler>(TYPES.Auth_ExtensionKeyGrantedEventHandler)
-      .to(ExtensionKeyGrantedEventHandler)
+      .toConstantValue(
+        new ExtensionKeyGrantedEventHandler(
+          container.get<UserRepositoryInterface>(TYPES.Auth_UserRepository),
+          container.get<SetSettingValue>(TYPES.Auth_SetSettingValue),
+          container.get<OfflineSettingServiceInterface>(TYPES.Auth_OfflineSettingService),
+          container.get<ContentDecoderInterface>(TYPES.Auth_ContenDecoder),
+          container.get<winston.Logger>(TYPES.Auth_Logger),
+        ),
+      )
     container
       .bind<SubscriptionReassignedEventHandler>(TYPES.Auth_SubscriptionReassignedEventHandler)
-      .to(SubscriptionReassignedEventHandler)
+      .toConstantValue(
+        new SubscriptionReassignedEventHandler(
+          container.get<UserRepositoryInterface>(TYPES.Auth_UserRepository),
+          container.get<UserSubscriptionRepositoryInterface>(TYPES.Auth_UserSubscriptionRepository),
+          container.get<RoleServiceInterface>(TYPES.Auth_RoleService),
+          container.get<winston.Logger>(TYPES.Auth_Logger),
+          container.get<ApplyDefaultSubscriptionSettings>(TYPES.Auth_ApplyDefaultSubscriptionSettings),
+          container.get<SetSettingValue>(TYPES.Auth_SetSettingValue),
+        ),
+      )
     container
       .bind<FileUploadedEventHandler>(TYPES.Auth_FileUploadedEventHandler)
       .toConstantValue(
@@ -1103,10 +1361,24 @@ export class ContainerConfigLoader {
       )
     container
       .bind<ListedAccountCreatedEventHandler>(TYPES.Auth_ListedAccountCreatedEventHandler)
-      .to(ListedAccountCreatedEventHandler)
+      .toConstantValue(
+        new ListedAccountCreatedEventHandler(
+          container.get<UserRepositoryInterface>(TYPES.Auth_UserRepository),
+          container.get<GetSetting>(TYPES.Auth_GetSetting),
+          container.get<SetSettingValue>(TYPES.Auth_SetSettingValue),
+          container.get<winston.Logger>(TYPES.Auth_Logger),
+        ),
+      )
     container
       .bind<ListedAccountDeletedEventHandler>(TYPES.Auth_ListedAccountDeletedEventHandler)
-      .to(ListedAccountDeletedEventHandler)
+      .toConstantValue(
+        new ListedAccountDeletedEventHandler(
+          container.get<UserRepositoryInterface>(TYPES.Auth_UserRepository),
+          container.get<GetSetting>(TYPES.Auth_GetSetting),
+          container.get<SetSettingValue>(TYPES.Auth_SetSettingValue),
+          container.get<winston.Logger>(TYPES.Auth_Logger),
+        ),
+      )
     container
       .bind<UserDisabledSessionUserAgentLoggingEventHandler>(TYPES.Auth_UserDisabledSessionUserAgentLoggingEventHandler)
       .to(UserDisabledSessionUserAgentLoggingEventHandler)
@@ -1322,33 +1594,41 @@ export class ContainerConfigLoader {
         .bind<BaseSubscriptionTokensController>(TYPES.Auth_BaseSubscriptionTokensController)
         .toConstantValue(
           new BaseSubscriptionTokensController(
-            container.get(TYPES.Auth_CreateSubscriptionToken),
-            container.get(TYPES.Auth_AuthenticateSubscriptionToken),
-            container.get(TYPES.Auth_SettingService),
-            container.get(TYPES.Auth_UserProjector),
-            container.get(TYPES.Auth_RoleProjector),
-            container.get(TYPES.Auth_CrossServiceTokenEncoder),
-            container.get(TYPES.Auth_AUTH_JWT_TTL),
-            container.get(TYPES.Auth_ControllerContainer),
+            container.get<CreateSubscriptionToken>(TYPES.Auth_CreateSubscriptionToken),
+            container.get<AuthenticateSubscriptionToken>(TYPES.Auth_AuthenticateSubscriptionToken),
+            container.get<GetSetting>(TYPES.Auth_GetSetting),
+            container.get<ProjectorInterface<User>>(TYPES.Auth_UserProjector),
+            container.get<ProjectorInterface<Role>>(TYPES.Auth_RoleProjector),
+            container.get<TokenEncoderInterface<CrossServiceTokenData>>(TYPES.Auth_CrossServiceTokenEncoder),
+            container.get<number>(TYPES.Auth_AUTH_JWT_TTL),
+            container.get<ControllerContainerInterface>(TYPES.Auth_ControllerContainer),
           ),
         )
       container
         .bind<BaseSubscriptionSettingsController>(TYPES.Auth_BaseSubscriptionSettingsController)
         .toConstantValue(
           new BaseSubscriptionSettingsController(
-            container.get(TYPES.Auth_GetSetting),
-            container.get(TYPES.Auth_ControllerContainer),
+            container.get<GetSubscriptionSetting>(TYPES.Auth_GetSetting),
+            container.get<GetSharedOrRegularSubscriptionForUser>(TYPES.Auth_ControllerContainer),
+            container.get<MapperInterface<SubscriptionSetting, SubscriptionSettingHttpRepresentation>>(
+              TYPES.Auth_SubscriptionSettingHttpMapper,
+            ),
+            container.get<ControllerContainerInterface>(TYPES.Auth_ControllerContainer),
           ),
         )
       container
         .bind<BaseSettingsController>(TYPES.Auth_BaseSettingsController)
         .toConstantValue(
           new BaseSettingsController(
-            container.get(TYPES.Auth_GetSettings),
-            container.get(TYPES.Auth_GetSetting),
-            container.get(TYPES.Auth_UpdateSetting),
-            container.get(TYPES.Auth_DeleteSetting),
-            container.get(TYPES.Auth_ControllerContainer),
+            container.get<GetAllSettingsForUser>(TYPES.Auth_GetSettings),
+            container.get<GetSetting>(TYPES.Auth_GetSetting),
+            container.get<SetSettingValue>(TYPES.Auth_SetSettingValue),
+            container.get<DeleteSetting>(TYPES.Auth_DeleteSetting),
+            container.get<MapperInterface<Setting, SettingHttpRepresentation>>(TYPES.Auth_SettingHttpMapper),
+            container.get<MapperInterface<SubscriptionSetting, SubscriptionSettingHttpRepresentation>>(
+              TYPES.Auth_SubscriptionSettingHttpMapper,
+            ),
+            container.get<ControllerContainerInterface>(TYPES.Auth_ControllerContainer),
           ),
         )
       container

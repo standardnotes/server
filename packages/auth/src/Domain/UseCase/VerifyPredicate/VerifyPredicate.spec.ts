@@ -8,7 +8,8 @@ import { UserSubscription } from '../../Subscription/UserSubscription'
 import { UserSubscriptionRepositoryInterface } from '../../Subscription/UserSubscriptionRepositoryInterface'
 
 import { VerifyPredicate } from './VerifyPredicate'
-import { EmailBackupFrequency } from '@standardnotes/settings'
+import { EmailBackupFrequency, SettingName } from '@standardnotes/settings'
+import { Uuid, Timestamps } from '@standardnotes/domain-core'
 
 describe('VerifyPredicate', () => {
   let settingRepository: SettingRepositoryInterface
@@ -30,7 +31,14 @@ describe('VerifyPredicate', () => {
   })
 
   it('should tell that a user has enabled email backups', async () => {
-    setting = { value: EmailBackupFrequency.Weekly } as jest.Mocked<Setting>
+    const setting = Setting.create({
+      name: SettingName.NAMES.EmailBackupFrequency,
+      value: EmailBackupFrequency.Weekly,
+      serverEncryptionVersion: 0,
+      userUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+      sensitive: false,
+      timestamps: Timestamps.create(123, 123).getValue(),
+    }).getValue()
     settingRepository.findOneByNameAndUserUuid = jest.fn().mockReturnValue(setting)
 
     expect(
@@ -44,7 +52,14 @@ describe('VerifyPredicate', () => {
   })
 
   it('should tell that a user has disabled email backups', async () => {
-    setting = { value: EmailBackupFrequency.Disabled } as jest.Mocked<Setting>
+    const setting = Setting.create({
+      name: SettingName.NAMES.EmailBackupFrequency,
+      value: EmailBackupFrequency.Disabled,
+      serverEncryptionVersion: 0,
+      userUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+      sensitive: false,
+      timestamps: Timestamps.create(123, 123).getValue(),
+    }).getValue()
     settingRepository.findOneByNameAndUserUuid = jest.fn().mockReturnValue(setting)
 
     expect(

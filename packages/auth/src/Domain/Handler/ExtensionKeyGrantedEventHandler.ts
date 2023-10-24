@@ -1,26 +1,23 @@
 import { DomainEventHandlerInterface, ExtensionKeyGrantedEvent } from '@standardnotes/domain-events'
+import { Username } from '@standardnotes/domain-core'
 import { SettingName } from '@standardnotes/settings'
 import { OfflineFeaturesTokenData } from '@standardnotes/security'
 import { ContentDecoderInterface } from '@standardnotes/common'
-import { inject, injectable } from 'inversify'
 import { Logger } from 'winston'
 
-import TYPES from '../../Bootstrap/Types'
 import { EncryptionVersion } from '../Encryption/EncryptionVersion'
 import { OfflineSettingServiceInterface } from '../Setting/OfflineSettingServiceInterface'
 import { OfflineSettingName } from '../Setting/OfflineSettingName'
-import { SettingServiceInterface } from '../Setting/SettingServiceInterface'
 import { UserRepositoryInterface } from '../User/UserRepositoryInterface'
-import { Username } from '@standardnotes/domain-core'
+import { SetSettingValue } from '../UseCase/SetSettingValue/SetSettingValue'
 
-@injectable()
 export class ExtensionKeyGrantedEventHandler implements DomainEventHandlerInterface {
   constructor(
-    @inject(TYPES.Auth_UserRepository) private userRepository: UserRepositoryInterface,
-    @inject(TYPES.Auth_SettingService) private settingService: SettingServiceInterface,
-    @inject(TYPES.Auth_OfflineSettingService) private offlineSettingService: OfflineSettingServiceInterface,
-    @inject(TYPES.Auth_ContenDecoder) private contentDecoder: ContentDecoderInterface,
-    @inject(TYPES.Auth_Logger) private logger: Logger,
+    private userRepository: UserRepositoryInterface,
+    private setSettingValue: SetSettingValue,
+    private offlineSettingService: OfflineSettingServiceInterface,
+    private contentDecoder: ContentDecoderInterface,
+    private logger: Logger,
   ) {}
 
   async handle(event: ExtensionKeyGrantedEvent): Promise<void> {
@@ -58,14 +55,16 @@ export class ExtensionKeyGrantedEventHandler implements DomainEventHandlerInterf
       return
     }
 
-    await this.settingService.createOrReplace({
-      user,
-      props: {
-        name: SettingName.NAMES.ExtensionKey,
-        unencryptedValue: event.payload.extensionKey,
-        serverEncryptionVersion: EncryptionVersion.Default,
-        sensitive: true,
-      },
+    const result = await this.setSettingValue.execute({
+      userUuid: user.uuid,
+      settingName: SettingName.NAMES.ExtensionKey,
+      value: event.payload.extensionKey,
+      sensitive: true,
+      serverEncryptionVersion: EncryptionVersion.Default,
     })
+
+    if (result.isFailed()) {
+      this.logger.error(`Could not set extension key for user ${user.uuid}`)
+    }
   }
 }

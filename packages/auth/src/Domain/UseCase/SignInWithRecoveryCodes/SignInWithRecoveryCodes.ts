@@ -3,7 +3,6 @@ import { Result, UseCaseInterface, Username, Uuid, Validator } from '@standardno
 import { SettingName } from '@standardnotes/settings'
 
 import { AuthResponse20200115 } from '../../Auth/AuthResponse20200115'
-import { SettingServiceInterface } from '../../Setting/SettingServiceInterface'
 import { CrypterInterface } from '../../Encryption/CrypterInterface'
 import { PKCERepositoryInterface } from '../../User/PKCERepositoryInterface'
 import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'
@@ -16,6 +15,7 @@ import { ClearLoginAttempts } from '../ClearLoginAttempts'
 import { DeleteSetting } from '../DeleteSetting/DeleteSetting'
 import { AuthenticatorRepositoryInterface } from '../../Authenticator/AuthenticatorRepositoryInterface'
 import { ApiVersion } from '../../Api/ApiVersion'
+import { GetSetting } from '../GetSetting/GetSetting'
 
 export class SignInWithRecoveryCodes implements UseCaseInterface<AuthResponse20200115> {
   constructor(
@@ -23,7 +23,7 @@ export class SignInWithRecoveryCodes implements UseCaseInterface<AuthResponse202
     private authResponseFactory: AuthResponseFactory20200115,
     private pkceRepository: PKCERepositoryInterface,
     private crypter: CrypterInterface,
-    private settingService: SettingServiceInterface,
+    private getSetting: GetSetting,
     private generateRecoveryCodes: GenerateRecoveryCodes,
     private increaseLoginAttempts: IncreaseLoginAttempts,
     private clearLoginAttempts: ClearLoginAttempts,
@@ -82,17 +82,20 @@ export class SignInWithRecoveryCodes implements UseCaseInterface<AuthResponse202
       return Result.fail('Invalid password')
     }
 
-    const recoveryCodesSetting = await this.settingService.findSettingWithDecryptedValue({
-      settingName: SettingName.create(SettingName.NAMES.RecoveryCodes).getValue(),
+    const recoveryCodesSettingOrError = await this.getSetting.execute({
+      settingName: SettingName.NAMES.RecoveryCodes,
       userUuid: user.uuid,
+      decrypted: true,
+      allowSensitiveRetrieval: true,
     })
-    if (!recoveryCodesSetting) {
+    if (recoveryCodesSettingOrError.isFailed()) {
       await this.increaseLoginAttempts.execute({ email: username.value })
 
       return Result.fail('User does not have recovery codes generated')
     }
+    const recoveryCodesSetting = recoveryCodesSettingOrError.getValue()
 
-    if (recoveryCodesSetting.value !== dto.recoveryCodes) {
+    if (recoveryCodesSetting.decryptedValue !== dto.recoveryCodes) {
       await this.increaseLoginAttempts.execute({ email: username.value })
 
       return Result.fail('Invalid recovery codes')

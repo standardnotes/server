@@ -11,7 +11,6 @@ import { EphemeralSessionRepositoryInterface } from './EphemeralSessionRepositor
 import { EphemeralSession } from './EphemeralSession'
 import { RevokedSessionRepositoryInterface } from './RevokedSessionRepositoryInterface'
 import { RevokedSession } from './RevokedSession'
-import { SettingServiceInterface } from '../Setting/SettingServiceInterface'
 import { LogSessionUserAgentOption } from '@standardnotes/settings'
 import { Setting } from '../Setting/Setting'
 import { CryptoNode } from '@standardnotes/sncrypto-node'
@@ -19,6 +18,7 @@ import { UserSubscriptionRepositoryInterface } from '../Subscription/UserSubscri
 import { TraceSession } from '../UseCase/TraceSession/TraceSession'
 import { UserSubscription } from '../Subscription/UserSubscription'
 import { Result } from '@standardnotes/domain-core'
+import { GetSetting } from '../UseCase/GetSetting/GetSetting'
 
 describe('SessionService', () => {
   let sessionRepository: SessionRepositoryInterface
@@ -27,7 +27,7 @@ describe('SessionService', () => {
   let existingSession: Session
   let existingEphemeralSession: EphemeralSession
   let revokedSession: RevokedSession
-  let settingService: SettingServiceInterface
+  let getSetting: GetSetting
   let deviceDetector: UAParser
   let timer: TimerInterface
   let logger: winston.Logger
@@ -46,11 +46,11 @@ describe('SessionService', () => {
       logger,
       123,
       234,
-      settingService,
       cryptoNode,
       traceSession,
       userSubscriptionRepository,
       readonlyUsers,
+      getSetting,
     )
 
   beforeEach(() => {
@@ -72,8 +72,8 @@ describe('SessionService', () => {
     sessionRepository.insert = jest.fn()
     sessionRepository.update = jest.fn()
 
-    settingService = {} as jest.Mocked<SettingServiceInterface>
-    settingService.findSettingWithDecryptedValue = jest.fn().mockReturnValue(null)
+    getSetting = {} as jest.Mocked<GetSetting>
+    getSetting.execute = jest.fn().mockReturnValue(Result.fail('not found'))
 
     ephemeralSessionRepository = {} as jest.Mocked<EphemeralSessionRepositoryInterface>
     ephemeralSessionRepository.insert = jest.fn()
@@ -240,9 +240,12 @@ describe('SessionService', () => {
     const user = {} as jest.Mocked<User>
     user.uuid = '123'
 
-    settingService.findSettingWithDecryptedValue = jest.fn().mockReturnValue({
-      value: LogSessionUserAgentOption.Disabled,
-    } as jest.Mocked<Setting>)
+    getSetting.execute = jest.fn().mockReturnValue(
+      Result.ok({
+        setting: {} as jest.Mocked<Setting>,
+        decryptedValue: LogSessionUserAgentOption.Disabled,
+      }),
+    )
 
     const result = await createService().createNewSessionForUser({
       user,

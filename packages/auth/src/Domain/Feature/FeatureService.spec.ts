@@ -111,7 +111,6 @@ describe('FeatureService', () => {
       cancelled: false,
       subscriptionId: 1,
       subscriptionType: UserSubscriptionType.Regular,
-      subscriptionSettings: Promise.resolve([]),
     }
 
     subscription2 = {
@@ -125,7 +124,6 @@ describe('FeatureService', () => {
       cancelled: false,
       subscriptionId: 2,
       subscriptionType: UserSubscriptionType.Regular,
-      subscriptionSettings: Promise.resolve([]),
     }
 
     subscription3 = {
@@ -139,7 +137,6 @@ describe('FeatureService', () => {
       cancelled: true,
       subscriptionId: 3,
       subscriptionType: UserSubscriptionType.Regular,
-      subscriptionSettings: Promise.resolve([]),
     }
 
     subscription4 = {
@@ -153,7 +150,6 @@ describe('FeatureService', () => {
       cancelled: true,
       subscriptionId: 4,
       subscriptionType: UserSubscriptionType.Regular,
-      subscriptionSettings: Promise.resolve([]),
     }
 
     user = {
@@ -329,7 +325,6 @@ describe('FeatureService', () => {
         cancelled: false,
         subscriptionId: 1,
         subscriptionType: UserSubscriptionType.Regular,
-        subscriptionSettings: Promise.resolve([]),
       }
 
       user = {

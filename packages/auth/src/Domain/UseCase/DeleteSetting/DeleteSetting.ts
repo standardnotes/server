@@ -6,6 +6,7 @@ import TYPES from '../../../Bootstrap/Types'
 import { SettingRepositoryInterface } from '../../Setting/SettingRepositoryInterface'
 import { TimerInterface } from '@standardnotes/time'
 import { Setting } from '../../Setting/Setting'
+import { Timestamps } from '@standardnotes/domain-core'
 
 @injectable()
 export class DeleteSetting implements UseCaseInterface {
@@ -29,10 +30,13 @@ export class DeleteSetting implements UseCaseInterface {
     }
 
     if (dto.softDelete) {
-      setting.value = null
-      setting.updatedAt = dto.timestamp ?? this.timer.getTimestampInMicroseconds()
+      setting.props.value = null
+      setting.props.timestamps = Timestamps.create(
+        setting.props.timestamps.createdAt,
+        dto.timestamp ?? this.timer.getTimestampInMicroseconds(),
+      ).getValue()
 
-      await this.settingRepository.save(setting)
+      await this.settingRepository.update(setting)
     } else {
       await this.settingRepository.deleteByUserUuid({
         userUuid,

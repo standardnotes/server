@@ -1,22 +1,23 @@
 import { CryptoNode } from '@standardnotes/sncrypto-node'
-import { SettingServiceInterface } from '../../Setting/SettingServiceInterface'
 import { User } from '../../User/User'
 import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'
 import { GenerateRecoveryCodes } from './GenerateRecoveryCodes'
+import { SetSettingValue } from '../SetSettingValue/SetSettingValue'
+import { Result } from '@standardnotes/domain-core'
 
 describe('GenerateRecoveryCodes', () => {
   let userRepository: UserRepositoryInterface
-  let settingService: SettingServiceInterface
+  let setSettingValue: SetSettingValue
   let cryptoNode: CryptoNode
 
-  const createUseCase = () => new GenerateRecoveryCodes(userRepository, settingService, cryptoNode)
+  const createUseCase = () => new GenerateRecoveryCodes(userRepository, setSettingValue, cryptoNode)
 
   beforeEach(() => {
     userRepository = {} as jest.Mocked<UserRepositoryInterface>
     userRepository.findOneByUuid = jest.fn().mockReturnValue({} as jest.Mocked<User>)
 
-    settingService = {} as jest.Mocked<SettingServiceInterface>
-    settingService.createOrReplace = jest.fn()
+    setSettingValue = {} as jest.Mocked<SetSettingValue>
+    setSettingValue.execute = jest.fn().mockReturnValue(Result.ok())
 
     cryptoNode = {} as jest.Mocked<CryptoNode>
     cryptoNode.generateRandomKey = jest.fn().mockReturnValue('randomKey123')
@@ -27,9 +28,20 @@ describe('GenerateRecoveryCodes', () => {
 
     const result = await useCase.execute({ userUuid: '2221101c-1da9-4d2b-9b32-b8be2a8d1c82' })
 
-    expect(settingService.createOrReplace).toHaveBeenCalled()
+    expect(setSettingValue.execute).toHaveBeenCalled()
     expect(result.isFailed()).toBeFalsy()
     expect(result.getValue()).toEqual('RAND OMKE Y123')
+  })
+
+  it('should return error if could not persist recovery codes setting', async () => {
+    setSettingValue.execute = jest.fn().mockReturnValue(Result.fail('error'))
+
+    const useCase = createUseCase()
+
+    const result = await useCase.execute({ userUuid: '2221101c-1da9-4d2b-9b32-b8be2a8d1c82' })
+
+    expect(result.isFailed()).toBeTruthy()
+    expect(result.getError()).toEqual('Could not generate recovery codes: error')
   })
 
   it('should return error if empty random string', async () => {

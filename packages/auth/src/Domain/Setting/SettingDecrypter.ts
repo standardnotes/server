@@ -1,22 +1,31 @@
-import { inject, injectable } from 'inversify'
-import TYPES from '../../Bootstrap/Types'
 import { CrypterInterface } from '../Encryption/CrypterInterface'
 import { EncryptionVersion } from '../Encryption/EncryptionVersion'
 import { UserRepositoryInterface } from '../User/UserRepositoryInterface'
 import { Setting } from './Setting'
 import { SettingDecrypterInterface } from './SettingDecrypterInterface'
-import { SubscriptionSetting } from './SubscriptionSetting'
 import { Uuid } from '@standardnotes/domain-core'
+import { SubscriptionSetting } from './SubscriptionSetting'
 
-@injectable()
 export class SettingDecrypter implements SettingDecrypterInterface {
   constructor(
-    @inject(TYPES.Auth_UserRepository) private userRepository: UserRepositoryInterface,
-    @inject(TYPES.Auth_Crypter) private crypter: CrypterInterface,
+    private userRepository: UserRepositoryInterface,
+    private crypter: CrypterInterface,
   ) {}
 
-  async decryptSettingValue(setting: Setting | SubscriptionSetting, userUuidString: string): Promise<string | null> {
-    if (setting.value !== null && setting.serverEncryptionVersion === EncryptionVersion.Default) {
+  async decryptSettingValue(setting: Setting, userUuidString: string): Promise<string | null> {
+    return this.decrypt(setting.props.value, setting.props.serverEncryptionVersion, userUuidString)
+  }
+
+  async decryptSubscriptionSettingValue(setting: SubscriptionSetting, userUuidString: string): Promise<string | null> {
+    return this.decrypt(setting.props.value, setting.props.serverEncryptionVersion, userUuidString)
+  }
+
+  private async decrypt(
+    value: string | null,
+    serverEncryptionVersion: number,
+    userUuidString: string,
+  ): Promise<string | null> {
+    if (value !== null && serverEncryptionVersion === EncryptionVersion.Default) {
       const userUuidOrError = Uuid.create(userUuidString)
       if (userUuidOrError.isFailed()) {
         throw new Error(userUuidOrError.getError())
@@ -29,9 +38,9 @@ export class SettingDecrypter implements SettingDecrypterInterface {
         throw new Error(`Could not find user with uuid: ${userUuid.value}`)
       }
 
-      return this.crypter.decryptForUser(setting.value, user)
+      return this.crypter.decryptForUser(value, user)
     }
 
-    return setting.value
+    return value
   }
 }

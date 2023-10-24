@@ -7,14 +7,14 @@ import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'
 import { GetUserKeyParamsRecoveryDTO } from './GetUserKeyParamsRecoveryDTO'
 import { User } from '../../User/User'
 import { PKCERepositoryInterface } from '../../User/PKCERepositoryInterface'
-import { SettingServiceInterface } from '../../Setting/SettingServiceInterface'
+import { GetSetting } from '../GetSetting/GetSetting'
 
 export class GetUserKeyParamsRecovery implements UseCaseInterface<KeyParamsData> {
   constructor(
     private keyParamsFactory: KeyParamsFactoryInterface,
     private userRepository: UserRepositoryInterface,
     private pkceRepository: PKCERepositoryInterface,
-    private settingService: SettingServiceInterface,
+    private getSetting: GetSetting,
   ) {}
 
   async execute(dto: GetUserKeyParamsRecoveryDTO): Promise<Result<KeyParamsData>> {
@@ -39,15 +39,18 @@ export class GetUserKeyParamsRecovery implements UseCaseInterface<KeyParamsData>
       return Result.ok(this.keyParamsFactory.createPseudoParams(username.value))
     }
 
-    const recoveryCodesSetting = await this.settingService.findSettingWithDecryptedValue({
-      settingName: SettingName.create(SettingName.NAMES.RecoveryCodes).getValue(),
+    const recoveryCodesSettingOrError = await this.getSetting.execute({
+      settingName: SettingName.NAMES.RecoveryCodes,
       userUuid: user.uuid,
+      allowSensitiveRetrieval: true,
+      decrypted: true,
     })
-    if (!recoveryCodesSetting) {
+    if (recoveryCodesSettingOrError.isFailed()) {
       return Result.fail('User does not have recovery codes generated')
     }
 
-    if (recoveryCodesSetting.value !== dto.recoveryCodes) {
+    const recoveryCodesSetting = recoveryCodesSettingOrError.getValue()
+    if (recoveryCodesSetting.decryptedValue !== dto.recoveryCodes) {
       return Result.fail('Invalid recovery codes')
     }
 

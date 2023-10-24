@@ -5,6 +5,7 @@ import { MigrationInterface, QueryRunner } from 'typeorm'
 import { Setting } from '../../src/Domain/Setting/Setting'
 import { User } from '../../src/Domain/User/User'
 import { EncryptionVersion } from '../../src/Domain/Encryption/EncryptionVersion'
+import { Timestamps, UniqueEntityId, Uuid } from '@standardnotes/domain-core'
 
 export class moveMfaItemsToUserSettings1627638504691 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -32,19 +33,21 @@ export class moveMfaItemsToUserSettings1627638504691 implements MigrationInterfa
       usersMFAStatus.set(item['user_uuid'], 1)
       usersMFAUpdatedAt.set(item['user_uuid'], item['updated_at_timestamp'])
 
-      const setting = new Setting()
-      setting.uuid = item['uuid']
-      setting.name = SettingName.NAMES.MfaSecret
-      setting.value = item['content']
+      const settingOrError = Setting.create(
+        {
+          name: SettingName.NAMES.MfaSecret,
+          value: item['deleted'] ? null : item['content'],
+          serverEncryptionVersion: EncryptionVersion.Unencrypted,
+          timestamps: Timestamps.create(item['created_at_timestamp'], item['updated_at_timestamp']).getValue(),
+          userUuid: Uuid.create(user.uuid).getValue(),
+          sensitive: true,
+        },
+        new UniqueEntityId(item['uuid']),
+      )
       if (item['deleted']) {
-        setting.value = null
         usersMFAStatus.set(item['user_uuid'], 0)
       }
-      setting.serverEncryptionVersion = EncryptionVersion.Unencrypted
-      setting.createdAt = item['created_at_timestamp']
-      setting.updatedAt = item['updated_at_timestamp']
-      setting.user = Promise.resolve(user)
-      await queryRunner.manager.save(setting)
+      await queryRunner.manager.save(settingOrError.getValue())
     }
 
     const redisClient = this.getRedisClient()

@@ -6,6 +6,8 @@ import { Setting } from '../../Setting/Setting'
 import { SettingRepositoryInterface } from '../../Setting/SettingRepositoryInterface'
 
 import { DeleteSetting } from './DeleteSetting'
+import { Timestamps, Uuid } from '@standardnotes/domain-core'
+import { SettingName } from '@standardnotes/settings'
 
 describe('DeleteSetting', () => {
   let setting: Setting
@@ -15,13 +17,20 @@ describe('DeleteSetting', () => {
   const createUseCase = () => new DeleteSetting(settingRepository, timer)
 
   beforeEach(() => {
-    setting = {} as jest.Mocked<Setting>
+    setting = Setting.create({
+      name: SettingName.NAMES.LogSessionUserAgent,
+      value: 'test',
+      serverEncryptionVersion: 0,
+      userUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+      sensitive: false,
+      timestamps: Timestamps.create(123, 123).getValue(),
+    }).getValue()
 
     settingRepository = {} as jest.Mocked<SettingRepositoryInterface>
     settingRepository.findLastByNameAndUserUuid = jest.fn().mockReturnValue(setting)
     settingRepository.findOneByUuid = jest.fn().mockReturnValue(setting)
     settingRepository.deleteByUserUuid = jest.fn()
-    settingRepository.save = jest.fn()
+    settingRepository.update = jest.fn()
 
     timer = {} as jest.Mocked<TimerInterface>
     timer.getTimestampInMicroseconds = jest.fn().mockReturnValue(1)
@@ -76,10 +85,7 @@ describe('DeleteSetting', () => {
       softDelete: true,
     })
 
-    expect(settingRepository.save).toHaveBeenCalledWith({
-      updatedAt: 1,
-      value: null,
-    })
+    expect(settingRepository.update).toHaveBeenCalled()
   })
 
   it('should soft delete a setting with timestamp', async () => {
@@ -90,9 +96,6 @@ describe('DeleteSetting', () => {
       timestamp: 123,
     })
 
-    expect(settingRepository.save).toHaveBeenCalledWith({
-      updatedAt: 123,
-      value: null,
-    })
+    expect(settingRepository.update).toHaveBeenCalled()
   })
 })

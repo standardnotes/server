@@ -2,17 +2,23 @@ import { Result, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
 import { SettingName } from '@standardnotes/settings'
 
 import { EncryptionVersion } from '../../Encryption/EncryptionVersion'
-import { SubscriptionSettingServiceInterface } from '../../Setting/SubscriptionSettingServiceInterface'
 import { UserSubscription } from '../../Subscription/UserSubscription'
-import { UserSubscriptionServiceInterface } from '../../Subscription/UserSubscriptionServiceInterface'
 import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'
 import { UpdateStorageQuotaUsedForUserDTO } from './UpdateStorageQuotaUsedForUserDTO'
+import { GetRegularSubscriptionForUser } from '../GetRegularSubscriptionForUser/GetRegularSubscriptionForUser'
+import { GetSubscriptionSetting } from '../GetSubscriptionSetting/GetSubscriptionSetting'
+import { SetSubscriptionSettingValue } from '../SetSubscriptionSettingValue/SetSubscriptionSettingValue'
+import { Logger } from 'winston'
+import { GetSharedSubscriptionForUser } from '../GetSharedSubscriptionForUser/GetSharedSubscriptionForUser'
 
 export class UpdateStorageQuotaUsedForUser implements UseCaseInterface<void> {
   constructor(
     private userRepository: UserRepositoryInterface,
-    private userSubscriptionService: UserSubscriptionServiceInterface,
-    private subscriptionSettingService: SubscriptionSettingServiceInterface,
+    private getRegularSubscription: GetRegularSubscriptionForUser,
+    private getSharedSubscription: GetSharedSubscriptionForUser,
+    private getSubscriptionSetting: GetSubscriptionSetting,
+    private setSubscriptonSettingValue: SetSubscriptionSettingValue,
+    private logger: Logger,
   ) {}
 
   async execute(dto: UpdateStorageQuotaUsedForUserDTO): Promise<Result<void>> {
@@ -27,15 +33,21 @@ export class UpdateStorageQuotaUsedForUser implements UseCaseInterface<void> {
       return Result.fail(`Could not find user with uuid: ${userUuid.value}`)
     }
 
-    const { regularSubscription, sharedSubscription } =
-      await this.userSubscriptionService.findRegularSubscriptionForUserUuid(userUuid.value)
-    if (regularSubscription === null) {
+    const regularSubscriptionOrError = await this.getRegularSubscription.execute({
+      userUuid: user.uuid,
+    })
+    if (regularSubscriptionOrError.isFailed()) {
       return Result.fail(`Could not find regular user subscription for user with uuid: ${userUuid.value}`)
     }
+    const regularSubscription = regularSubscriptionOrError.getValue()
 
     await this.updateUploadBytesUsedSetting(regularSubscription, dto.bytesUsed)
 
-    if (sharedSubscription !== null) {
+    const sharedSubscriptionOrError = await this.getSharedSubscription.execute({
+      userUuid: user.uuid,
+    })
+    if (!sharedSubscriptionOrError.isFailed()) {
+      const sharedSubscription = sharedSubscriptionOrError.getValue()
       await this.updateUploadBytesUsedSetting(sharedSubscription, dto.bytesUsed)
     }
 
@@ -45,24 +57,29 @@ export class UpdateStorageQuotaUsedForUser implements UseCaseInterface<void> {
   private async updateUploadBytesUsedSetting(subscription: UserSubscription, bytesUsed: number): Promise<void> {
     let bytesAlreadyUsed = '0'
     const subscriptionUser = await subscription.user
-    const bytesUsedSetting = await this.subscriptionSettingService.findSubscriptionSettingWithDecryptedValue({
-      userUuid: subscriptionUser.uuid,
+
+    const bytesUsedSettingExists = await this.getSubscriptionSetting.execute({
       userSubscriptionUuid: subscription.uuid,
-      subscriptionSettingName: SettingName.create(SettingName.NAMES.FileUploadBytesUsed).getValue(),
+      settingName: SettingName.NAMES.FileUploadBytesUsed,
+      allowSensitiveRetrieval: false,
     })
-    if (bytesUsedSetting !== null) {
-      bytesAlreadyUsed = bytesUsedSetting.value as string
+
+    if (!bytesUsedSettingExists.isFailed()) {
+      const bytesUsedSetting = bytesUsedSettingExists.getValue()
+      bytesAlreadyUsed = bytesUsedSetting.setting.props.value as string
     }
 
-    await this.subscriptionSettingService.createOrReplace({
-      userSubscription: subscription,
-      user: subscriptionUser,
-      props: {
-        name: SettingName.NAMES.FileUploadBytesUsed,
-        unencryptedValue: (+bytesAlreadyUsed + bytesUsed).toString(),
-        sensitive: false,
-        serverEncryptionVersion: EncryptionVersion.Unencrypted,
-      },
+    const result = await this.setSubscriptonSettingValue.execute({
+      userSubscriptionUuid: subscription.uuid,
+      settingName: SettingName.NAMES.FileUploadBytesUsed,
+      value: (+bytesAlreadyUsed + bytesUsed).toString(),
+      serverEncryptionVersion: EncryptionVersion.Unencrypted,
+      sensitive: false,
     })
+
+    /* istanbul ignore next */
+    if (result.isFailed()) {
+      this.logger.error(`Could not set file upload bytes used for user ${subscriptionUser.uuid}`)
+    }
   }
 }
