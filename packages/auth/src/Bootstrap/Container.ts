@@ -436,8 +436,8 @@ export class ContainerConfigLoader {
       .bind<Repository<Session>>(TYPES.Auth_ORMSessionRepository)
       .toConstantValue(appDataSource.getRepository(Session))
     container
-      .bind<Repository<Setting>>(TYPES.Auth_ORMSettingRepository)
-      .toConstantValue(appDataSource.getRepository(Setting))
+      .bind<Repository<TypeORMSetting>>(TYPES.Auth_ORMSettingRepository)
+      .toConstantValue(appDataSource.getRepository(TypeORMSetting))
     container
       .bind<Repository<SharedSubscriptionInvitation>>(TYPES.Auth_ORMSharedSubscriptionInvitationRepository)
       .toConstantValue(appDataSource.getRepository(SharedSubscriptionInvitation))
