@@ -1,7 +1,7 @@
 import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm'
 
 @Entity({ name: 'settings' })
-@Index('index_settings_on_name_and_user_uuid', ['name', 'user'])
+@Index('index_settings_on_name_and_user_uuid', ['name', 'userUuid'])
 export class TypeORMSetting {
   @PrimaryGeneratedColumn('uuid')
   declare uuid: string
