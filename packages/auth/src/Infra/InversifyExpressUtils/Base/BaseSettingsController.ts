@@ -76,7 +76,10 @@ export class BaseSettingsController extends BaseHttpController {
 
     const httpRepresentation = settingsHttpRepresentation.concat(subscriptionSettingsHttpRepresentation)
 
-    return this.json(httpRepresentation)
+    return this.json({
+      success: true,
+      settings: httpRepresentation,
+    })
   }
 
   async getSetting(request: Request, response: Response): Promise<results.JsonResult> {
@@ -96,7 +99,7 @@ export class BaseSettingsController extends BaseHttpController {
       allowSensitiveRetrieval: false,
       userUuid,
       decrypted: true,
-      settingName,
+      settingName: settingName.toUpperCase(),
     })
     if (resultOrError.isFailed()) {
       return this.json(
@@ -116,7 +119,10 @@ export class BaseSettingsController extends BaseHttpController {
       value: settingAndValue.decryptedValue,
     }
 
-    return this.json(settingHttpReprepesentation)
+    return this.json({
+      success: true,
+      setting: settingHttpReprepesentation,
+    })
   }
 
   async updateSetting(request: Request, response: Response): Promise<results.JsonResult | results.StatusCodeResult> {

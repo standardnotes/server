@@ -11,7 +11,7 @@ export class GetRegularSubscriptionForUser implements UseCaseInterface<UserSubsc
   async execute(dto: GetRegularSubscriptionForUserDTO): Promise<Result<UserSubscription>> {
     const userUuidOrError = Uuid.create(dto.userUuid)
     if (userUuidOrError.isFailed()) {
-      return Result.fail(userUuidOrError.getError())
+      return Result.fail(`Could not get regular subscription for user: ${userUuidOrError.getError()}`)
     }
     const userUuid = userUuidOrError.getValue()
 

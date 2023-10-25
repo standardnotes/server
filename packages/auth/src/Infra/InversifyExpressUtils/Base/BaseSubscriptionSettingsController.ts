@@ -56,11 +56,9 @@ export class BaseSubscriptionSettingsController extends BaseHttpController {
 
     const settingAndValue = resultOrError.getValue()
 
-    const settingHttpRepresentation = {
-      ...this.subscriptionSettingMapper.toProjection(settingAndValue.setting),
-      value: settingAndValue.decryptedValue,
-    }
-
-    return this.json(settingHttpRepresentation)
+    return this.json({
+      success: true,
+      setting: this.subscriptionSettingMapper.toProjection(settingAndValue.setting),
+    })
   }
 }

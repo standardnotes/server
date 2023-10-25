@@ -2,12 +2,12 @@ import { Result, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
 import { Setting } from '../../Setting/Setting'
 import { GetSettingsDTO } from './GetSettingsDTO'
 import { SettingRepositoryInterface } from '../../Setting/SettingRepositoryInterface'
-import { SettingDecrypterInterface } from '../../Setting/SettingDecrypterInterface'
+import { SettingCrypterInterface } from '../../Setting/SettingCrypterInterface'
 
 export class GetSettings implements UseCaseInterface<Array<{ setting: Setting; decryptedValue?: string | null }>> {
   constructor(
     private settingRepository: SettingRepositoryInterface,
-    private settingDecrypter: SettingDecrypterInterface,
+    private settingCrypter: SettingCrypterInterface,
   ) {}
 
   async execute(dto: GetSettingsDTO): Promise<Result<Array<{ setting: Setting; decryptedValue?: string | null }>>> {
@@ -22,7 +22,7 @@ export class GetSettings implements UseCaseInterface<Array<{ setting: Setting; d
     if (dto.decrypted) {
       const result = []
       for (const setting of settings) {
-        const decryptedValue = await this.settingDecrypter.decryptSettingValue(setting, userUuid.value)
+        const decryptedValue = await this.settingCrypter.decryptSettingValue(setting, userUuid.value)
 
         result.push({
           setting,

@@ -132,8 +132,8 @@ import { FileRemovedEventHandler } from '../Domain/Handler/FileRemovedEventHandl
 import { UserDisabledSessionUserAgentLoggingEventHandler } from '../Domain/Handler/UserDisabledSessionUserAgentLoggingEventHandler'
 import { SettingInterpreterInterface } from '../Domain/Setting/SettingInterpreterInterface'
 import { SettingInterpreter } from '../Domain/Setting/SettingInterpreter'
-import { SettingDecrypterInterface } from '../Domain/Setting/SettingDecrypterInterface'
-import { SettingDecrypter } from '../Domain/Setting/SettingDecrypter'
+import { SettingCrypterInterface } from '../Domain/Setting/SettingCrypterInterface'
+import { SettingCrypter } from '../Domain/Setting/SettingCrypter'
 import { SharedSubscriptionInvitationRepositoryInterface } from '../Domain/SharedSubscription/SharedSubscriptionInvitationRepositoryInterface'
 import { TypeORMSharedSubscriptionInvitationRepository } from '../Infra/TypeORM/TypeORMSharedSubscriptionInvitationRepository'
 import { InviteToSharedSubscription } from '../Domain/UseCase/InviteToSharedSubscription/InviteToSharedSubscription'
@@ -686,9 +686,9 @@ export class ContainerConfigLoader {
     container.bind<UAParserInstance>(TYPES.Auth_DeviceDetector).toConstantValue(new UAParser())
     container.bind<CrypterInterface>(TYPES.Auth_Crypter).to(CrypterNode)
     container
-      .bind<SettingDecrypterInterface>(TYPES.Auth_SettingDecrypter)
+      .bind<SettingCrypterInterface>(TYPES.Auth_SettingCrypter)
       .toConstantValue(
-        new SettingDecrypter(
+        new SettingCrypter(
           container.get<UserRepositoryInterface>(TYPES.Auth_UserRepository),
           container.get<CrypterInterface>(TYPES.Auth_Crypter),
         ),
@@ -698,7 +698,7 @@ export class ContainerConfigLoader {
       .toConstantValue(
         new GetSetting(
           container.get<SettingRepositoryInterface>(TYPES.Auth_SettingRepository),
-          container.get<SettingDecrypterInterface>(TYPES.Auth_SettingDecrypter),
+          container.get<SettingCrypterInterface>(TYPES.Auth_SettingCrypter),
         ),
       )
     container
@@ -904,6 +904,7 @@ export class ContainerConfigLoader {
           container.get<TimerInterface>(TYPES.Auth_Timer),
           container.get<SettingsAssociationServiceInterface>(TYPES.Auth_SettingsAssociationService),
           container.get<RoleServiceInterface>(TYPES.Auth_RoleService),
+          container.get<SettingCrypterInterface>(TYPES.Auth_SettingCrypter),
         ),
       )
     container
@@ -920,7 +921,7 @@ export class ContainerConfigLoader {
       .toConstantValue(
         new GetSubscriptionSetting(
           container.get<SubscriptionSettingRepositoryInterface>(TYPES.Auth_SubscriptionSettingRepository),
-          container.get<SettingDecrypterInterface>(TYPES.Auth_SettingDecrypter),
+          container.get<SettingCrypterInterface>(TYPES.Auth_SettingCrypter),
         ),
       )
     container
@@ -1025,7 +1026,7 @@ export class ContainerConfigLoader {
       .toConstantValue(
         new GetSettings(
           container.get<SettingRepositoryInterface>(TYPES.Auth_SettingRepository),
-          container.get<SettingDecrypterInterface>(TYPES.Auth_SettingDecrypter),
+          container.get<SettingCrypterInterface>(TYPES.Auth_SettingCrypter),
         ),
       )
     container
@@ -1033,7 +1034,7 @@ export class ContainerConfigLoader {
       .toConstantValue(
         new GetSubscriptionSettings(
           container.get<SubscriptionSettingRepositoryInterface>(TYPES.Auth_SubscriptionSettingRepository),
-          container.get<SettingDecrypterInterface>(TYPES.Auth_SettingDecrypter),
+          container.get<SettingCrypterInterface>(TYPES.Auth_SettingCrypter),
         ),
       )
     container
@@ -1608,8 +1609,8 @@ export class ContainerConfigLoader {
         .bind<BaseSubscriptionSettingsController>(TYPES.Auth_BaseSubscriptionSettingsController)
         .toConstantValue(
           new BaseSubscriptionSettingsController(
-            container.get<GetSubscriptionSetting>(TYPES.Auth_GetSetting),
-            container.get<GetSharedOrRegularSubscriptionForUser>(TYPES.Auth_ControllerContainer),
+            container.get<GetSubscriptionSetting>(TYPES.Auth_GetSubscriptionSetting),
+            container.get<GetSharedOrRegularSubscriptionForUser>(TYPES.Auth_GetSharedOrRegularSubscriptionForUser),
             container.get<MapperInterface<SubscriptionSetting, SubscriptionSettingHttpRepresentation>>(
               TYPES.Auth_SubscriptionSettingHttpMapper,
             ),
@@ -1620,7 +1621,7 @@ export class ContainerConfigLoader {
         .bind<BaseSettingsController>(TYPES.Auth_BaseSettingsController)
         .toConstantValue(
           new BaseSettingsController(
-            container.get<GetAllSettingsForUser>(TYPES.Auth_GetSettings),
+            container.get<GetAllSettingsForUser>(TYPES.Auth_GetAllSettingsForUser),
             container.get<GetSetting>(TYPES.Auth_GetSetting),
             container.get<SetSettingValue>(TYPES.Auth_SetSettingValue),
             container.get<DeleteSetting>(TYPES.Auth_DeleteSetting),

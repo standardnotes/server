@@ -228,7 +228,7 @@ const TYPES = {
   Auth_SettingsAssociationService: Symbol.for('Auth_SettingsAssociationService'),
   Auth_SubscriptionSettingsAssociationService: Symbol.for('Auth_SubscriptionSettingsAssociationService'),
   Auth_FeatureService: Symbol.for('Auth_FeatureService'),
-  Auth_SettingDecrypter: Symbol.for('Auth_SettingDecrypter'),
+  Auth_SettingCrypter: Symbol.for('Auth_SettingCrypter'),
   Auth_SettingInterpreter: Symbol.for('Auth_SettingInterpreter'),
   Auth_ProtocolVersionSelector: Symbol.for('Auth_ProtocolVersionSelector'),
   Auth_BooleanSelector: Symbol.for('Auth_BooleanSelector'),

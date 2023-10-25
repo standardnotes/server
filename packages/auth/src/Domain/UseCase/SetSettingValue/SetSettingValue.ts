@@ -8,6 +8,8 @@ import { GetSetting } from '../GetSetting/GetSetting'
 import { SetSettingValueDTO } from './SetSettingValueDTO'
 import { SettingsAssociationServiceInterface } from '../../Setting/SettingsAssociationServiceInterface'
 import { RoleServiceInterface } from '../../Role/RoleServiceInterface'
+import { EncryptionVersion } from '../../Encryption/EncryptionVersion'
+import { SettingCrypterInterface } from '../../Setting/SettingCrypterInterface'
 
 export class SetSettingValue implements UseCaseInterface<Setting> {
   constructor(
@@ -16,6 +18,7 @@ export class SetSettingValue implements UseCaseInterface<Setting> {
     private timer: TimerInterface,
     private settingsAssociationService: SettingsAssociationServiceInterface,
     private roleService: RoleServiceInterface,
+    private settingCrypter: SettingCrypterInterface,
   ) {}
 
   async execute(dto: SetSettingValueDTO): Promise<Result<Setting>> {
@@ -45,12 +48,19 @@ export class SetSettingValue implements UseCaseInterface<Setting> {
       allowSensitiveRetrieval: true,
       decrypted: false,
     })
+
+    const encryptionVersion = this.settingsAssociationService.getEncryptionVersionForSetting(settingName)
+    let settingValue = dto.value
+    if (encryptionVersion === EncryptionVersion.Default) {
+      settingValue = await this.settingCrypter.encryptValue(settingValue, userUuid)
+    }
+
     if (settingExists.isFailed()) {
       const settingOrError = Setting.create({
         name: settingName.value,
-        value: dto.value,
+        value: settingValue,
         userUuid,
-        serverEncryptionVersion: dto.serverEncryptionVersion,
+        serverEncryptionVersion: encryptionVersion,
         sensitive: dto.sensitive,
         timestamps: Timestamps.create(
           this.timer.getTimestampInMicroseconds(),

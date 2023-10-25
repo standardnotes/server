@@ -17,13 +17,13 @@ import { SubscriptionSettingHttpRepresentation } from '../../Mapping/Http/Subscr
 @controller('/users/:userUuid')
 export class AnnotatedSubscriptionSettingsController extends BaseSubscriptionSettingsController {
   constructor(
-    @inject(TYPES.Auth_GetSetting) override doGetSetting: GetSubscriptionSetting,
+    @inject(TYPES.Auth_GetSubscriptionSetting) override doGetSetting: GetSubscriptionSetting,
     @inject(TYPES.Auth_GetSharedOrRegularSubscriptionForUser)
-    doGetSharedOrRegularSubscriptionForUser: GetSharedOrRegularSubscriptionForUser,
+    override getSharedOrRegularSubscription: GetSharedOrRegularSubscriptionForUser,
     @inject(TYPES.Auth_SubscriptionSettingHttpMapper)
     override subscriptionSettingMapper: MapperInterface<SubscriptionSetting, SubscriptionSettingHttpRepresentation>,
   ) {
-    super(doGetSetting, doGetSharedOrRegularSubscriptionForUser, subscriptionSettingMapper)
+    super(doGetSetting, getSharedOrRegularSubscription, subscriptionSettingMapper)
   }
 
   @httpGet('/subscription-settings/:subscriptionSettingName', TYPES.Auth_RequiredCrossServiceTokenMiddleware)

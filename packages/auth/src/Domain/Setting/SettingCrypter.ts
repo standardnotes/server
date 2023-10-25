@@ -2,15 +2,29 @@ import { CrypterInterface } from '../Encryption/CrypterInterface'
 import { EncryptionVersion } from '../Encryption/EncryptionVersion'
 import { UserRepositoryInterface } from '../User/UserRepositoryInterface'
 import { Setting } from './Setting'
-import { SettingDecrypterInterface } from './SettingDecrypterInterface'
+import { SettingCrypterInterface } from './SettingCrypterInterface'
 import { Uuid } from '@standardnotes/domain-core'
 import { SubscriptionSetting } from './SubscriptionSetting'
 
-export class SettingDecrypter implements SettingDecrypterInterface {
+export class SettingCrypter implements SettingCrypterInterface {
   constructor(
     private userRepository: UserRepositoryInterface,
     private crypter: CrypterInterface,
   ) {}
+
+  async encryptValue(value: string | null, userUuid: Uuid): Promise<string | null> {
+    if (value === null) {
+      return null
+    }
+
+    const user = await this.userRepository.findOneByUuid(userUuid)
+
+    if (user === null) {
+      throw new Error(`Could not find user with uuid: ${userUuid.value}`)
+    }
+
+    return this.crypter.encryptForUser(value, user)
+  }
 
   async decryptSettingValue(setting: Setting, userUuidString: string): Promise<string | null> {
     return this.decrypt(setting.props.value, setting.props.serverEncryptionVersion, userUuidString)

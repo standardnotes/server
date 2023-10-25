@@ -2,14 +2,14 @@ import { Result, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
 import { SubscriptionSetting } from '../../Setting/SubscriptionSetting'
 import { SubscriptionSettingRepositoryInterface } from '../../Setting/SubscriptionSettingRepositoryInterface'
 import { GetSubscriptionSettingsDTO } from './GetSubscriptionSettingsDTO'
-import { SettingDecrypterInterface } from '../../Setting/SettingDecrypterInterface'
+import { SettingCrypterInterface } from '../../Setting/SettingCrypterInterface';
 
 export class GetSubscriptionSettings
   implements UseCaseInterface<Array<{ setting: SubscriptionSetting; decryptedValue?: string | null }>>
 {
   constructor(
     private subscriptionSettingRepository: SubscriptionSettingRepositoryInterface,
-    private settingDecrypter: SettingDecrypterInterface,
+    private settingCrypter: SettingCrypterInterface,
   ) {}
 
   async execute(
@@ -33,7 +33,7 @@ export class GetSubscriptionSettings
 
       const result = []
       for (const subscriptionSetting of subscriptionSettings) {
-        const decryptedValue = await this.settingDecrypter.decryptSubscriptionSettingValue(
+        const decryptedValue = await this.settingCrypter.decryptSubscriptionSettingValue(
           subscriptionSetting,
           userUuid.value,
         )

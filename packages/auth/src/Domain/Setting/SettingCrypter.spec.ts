@@ -5,17 +5,17 @@ import { User } from '../User/User'
 import { UserRepositoryInterface } from '../User/UserRepositoryInterface'
 import { Setting } from './Setting'
 
-import { SettingDecrypter } from './SettingDecrypter'
+import { SettingCrypter } from './SettingCrypter'
 import { SubscriptionSetting } from './SubscriptionSetting'
 import { SettingName } from '@standardnotes/settings'
 import { Timestamps, Uuid } from '@standardnotes/domain-core'
 
-describe('SettingDecrypter', () => {
+describe('SettingCrypter', () => {
   let userRepository: UserRepositoryInterface
   let crypter: CrypterInterface
   let user: User
 
-  const createDecrypter = () => new SettingDecrypter(userRepository, crypter)
+  const createDecrypter = () => new SettingCrypter(userRepository, crypter)
 
   beforeEach(() => {
     crypter = {} as jest.Mocked<CrypterInterface>

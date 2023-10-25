@@ -3,15 +3,15 @@ import { Result, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
 import { SubscriptionSetting } from '../../Setting/SubscriptionSetting'
 import { SubscriptionSettingRepositoryInterface } from '../../Setting/SubscriptionSettingRepositoryInterface'
 import { GetSubscriptionSettingDTO } from './GetSubscriptionSettingDTO'
-import { SettingDecrypterInterface } from '../../Setting/SettingDecrypterInterface'
 import { SettingName } from '@standardnotes/settings'
+import { SettingCrypterInterface } from '../../Setting/SettingCrypterInterface'
 
 export class GetSubscriptionSetting
   implements UseCaseInterface<{ setting: SubscriptionSetting; decryptedValue?: string | null }>
 {
   constructor(
     private subscriptionSettingRepository: SubscriptionSettingRepositoryInterface,
-    private settingDecrypter: SettingDecrypterInterface,
+    private settingCrypter: SettingCrypterInterface,
   ) {}
 
   async execute(
@@ -19,13 +19,13 @@ export class GetSubscriptionSetting
   ): Promise<Result<{ setting: SubscriptionSetting; decryptedValue?: string | null }>> {
     const userSubscriptionUuidOrError = Uuid.create(dto.userSubscriptionUuid)
     if (userSubscriptionUuidOrError.isFailed()) {
-      return Result.fail(userSubscriptionUuidOrError.getError())
+      return Result.fail(`Could not get subscription setting: ${userSubscriptionUuidOrError.getError()}`)
     }
     const userSubscriptionUuid = userSubscriptionUuidOrError.getValue()
 
     const settingNameOrError = SettingName.create(dto.settingName)
     if (settingNameOrError.isFailed()) {
-      return Result.fail(settingNameOrError.getError())
+      return Result.fail(`Could not get subscription setting: ${settingNameOrError.getError()}`)
     }
     const settingName = settingNameOrError.getValue()
 
@@ -48,11 +48,11 @@ export class GetSubscriptionSetting
     if (dto.decryptWith) {
       const userUuidOrError = Uuid.create(dto.decryptWith.userUuid)
       if (userUuidOrError.isFailed()) {
-        return Result.fail(userUuidOrError.getError())
+        return Result.fail(`Could not get subscription setting: ${userUuidOrError.getError()}`)
       }
       const userUuid = userUuidOrError.getValue()
 
-      const decryptedValue = await this.settingDecrypter.decryptSubscriptionSettingValue(
+      const decryptedValue = await this.settingCrypter.decryptSubscriptionSettingValue(
         subscriptionSetting,
         userUuid.value,
       )

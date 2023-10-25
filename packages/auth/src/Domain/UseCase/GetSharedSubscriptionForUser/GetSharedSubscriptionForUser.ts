@@ -10,7 +10,7 @@ export class GetSharedSubscriptionForUser implements UseCaseInterface<UserSubscr
   async execute(dto: GetSharedSubscriptionForUserDTO): Promise<Result<UserSubscription>> {
     const userUuidOrError = Uuid.create(dto.userUuid)
     if (userUuidOrError.isFailed()) {
-      return Result.fail(userUuidOrError.getError())
+      return Result.fail(`Could not get shared subscription for user: ${userUuidOrError.getError()}`)
     }
     const userUuid = userUuidOrError.getValue()
 
