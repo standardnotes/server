@@ -2,7 +2,7 @@ import 'reflect-metadata'
 import { authenticator } from 'otplib'
 import { SettingName } from '@standardnotes/settings'
 import { SelectorInterface } from '@standardnotes/security'
-import { Result, Timestamps, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
+import { Result, Timestamps, Uuid } from '@standardnotes/domain-core'
 
 import { User } from '../User/User'
 import { UserRepositoryInterface } from '../User/UserRepositoryInterface'
@@ -15,6 +15,7 @@ import { Logger } from 'winston'
 import { Authenticator } from '../Authenticator/Authenticator'
 import { GetSetting } from './GetSetting/GetSetting'
 import { EncryptionVersion } from '../Encryption/EncryptionVersion'
+import { VerifyAuthenticatorAuthenticationResponse } from './VerifyAuthenticatorAuthenticationResponse/VerifyAuthenticatorAuthenticationResponse'
 
 describe('VerifyMFA', () => {
   let user: User
@@ -24,7 +25,7 @@ describe('VerifyMFA', () => {
   let booleanSelector: SelectorInterface<boolean>
   let lockRepository: LockRepositoryInterface
   let authenticatorRepository: AuthenticatorRepositoryInterface
-  let verifyAuthenticatorAuthenticationResponse: UseCaseInterface<boolean>
+  let verifyAuthenticatorAuthenticationResponse: VerifyAuthenticatorAuthenticationResponse
   let logger: Logger
   const pseudoKeyParamsKey = 'foobar'
 
@@ -70,7 +71,7 @@ describe('VerifyMFA', () => {
     authenticatorRepository = {} as jest.Mocked<AuthenticatorRepositoryInterface>
     authenticatorRepository.findByUserUuid = jest.fn().mockReturnValue([])
 
-    verifyAuthenticatorAuthenticationResponse = {} as jest.Mocked<UseCaseInterface<boolean>>
+    verifyAuthenticatorAuthenticationResponse = {} as jest.Mocked<VerifyAuthenticatorAuthenticationResponse>
     verifyAuthenticatorAuthenticationResponse.execute = jest.fn().mockReturnValue(Result.ok())
 
     logger = {} as jest.Mocked<Logger>
