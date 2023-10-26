@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.40.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.39.0...@standardnotes/domain-core@1.40.0) (2023-10-26)
+
+### Features
+
+* extract setting name to domain-core package ([0e43bc0](https://github.com/standardnotes/server/commit/0e43bc00427113f421b0c4b67c067f0de96caf52))
+
 # [1.39.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.38.0...@standardnotes/domain-core@1.39.0) (2023-10-26)
 
 ### Features

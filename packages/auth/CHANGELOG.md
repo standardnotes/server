@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.163.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.162.0...@standardnotes/auth-server@1.163.0) (2023-10-26)
+
+### Features
+
+* extract setting name to domain-core package ([0e43bc0](https://github.com/standardnotes/server/commit/0e43bc00427113f421b0c4b67c067f0de96caf52))
+
 # [1.162.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.161.0...@standardnotes/auth-server@1.162.0) (2023-10-26)
 
 ### Features
