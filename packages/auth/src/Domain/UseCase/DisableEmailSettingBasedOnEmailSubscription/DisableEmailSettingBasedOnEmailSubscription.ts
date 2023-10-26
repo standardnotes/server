@@ -1,5 +1,4 @@
-import { EmailLevel, Result, UseCaseInterface, Username } from '@standardnotes/domain-core'
-import { SettingName } from '@standardnotes/settings'
+import { EmailLevel, Result, SettingName, UseCaseInterface, Username } from '@standardnotes/domain-core'
 
 import { DisableEmailSettingBasedOnEmailSubscriptionDTO } from './DisableEmailSettingBasedOnEmailSubscriptionDTO'
 import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'

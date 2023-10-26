@@ -1,6 +1,5 @@
 import { OfflineFeaturesTokenData } from '@standardnotes/security'
-import { SettingName } from '@standardnotes/settings'
-import { Username } from '@standardnotes/domain-core'
+import { SettingName, Username } from '@standardnotes/domain-core'
 import { ContentDecoderInterface } from '@standardnotes/common'
 import { DomainEventHandlerInterface, SubscriptionSyncRequestedEvent } from '@standardnotes/domain-events'
 import { Logger } from 'winston'

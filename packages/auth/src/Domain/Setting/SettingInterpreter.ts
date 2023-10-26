@@ -1,11 +1,6 @@
 import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
-import { EmailLevel } from '@standardnotes/domain-core'
-import {
-  EmailBackupFrequency,
-  LogSessionUserAgentOption,
-  MuteFailedBackupsEmailsOption,
-  SettingName,
-} from '@standardnotes/settings'
+import { EmailLevel, SettingName } from '@standardnotes/domain-core'
+import { EmailBackupFrequency, LogSessionUserAgentOption, MuteFailedBackupsEmailsOption } from '@standardnotes/settings'
 
 import { DomainEventFactoryInterface } from '../Event/DomainEventFactoryInterface'
 import { User } from '../User/User'

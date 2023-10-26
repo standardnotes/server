@@ -11,8 +11,7 @@ import { SubscriptionSettingsAssociationServiceInterface } from '../../Setting/S
 import { GetRegularSubscriptionForUser } from '../GetRegularSubscriptionForUser/GetRegularSubscriptionForUser'
 import { GetSubscriptionSetting } from '../GetSubscriptionSetting/GetSubscriptionSetting'
 import { GetSharedSubscriptionForUser } from '../GetSharedSubscriptionForUser/GetSharedSubscriptionForUser'
-import { Result, Timestamps, Uuid } from '@standardnotes/domain-core'
-import { SettingName } from '@standardnotes/settings'
+import { Result, SettingName, Timestamps, Uuid } from '@standardnotes/domain-core'
 import { EncryptionVersion } from '../../Encryption/EncryptionVersion'
 import { SubscriptionSetting } from '../../Setting/SubscriptionSetting'
 

@@ -8,8 +8,8 @@ import { UserSubscription } from '../../Subscription/UserSubscription'
 import { UserSubscriptionRepositoryInterface } from '../../Subscription/UserSubscriptionRepositoryInterface'
 
 import { VerifyPredicate } from './VerifyPredicate'
-import { EmailBackupFrequency, SettingName } from '@standardnotes/settings'
-import { Uuid, Timestamps } from '@standardnotes/domain-core'
+import { EmailBackupFrequency } from '@standardnotes/settings'
+import { Uuid, Timestamps, SettingName } from '@standardnotes/domain-core'
 
 describe('VerifyPredicate', () => {
   let settingRepository: SettingRepositoryInterface

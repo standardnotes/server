@@ -61,6 +61,9 @@ export * from './Service/ServiceIdentifier'
 export * from './Service/ServiceIdentifierProps'
 export * from './Service/ServiceInterface'
 
+export * from './Setting/SettingName'
+export * from './Setting/SettingNameProps'
+
 export * from './SharedVault/SharedVaultUser'
 export * from './SharedVault/SharedVaultUserPermission'
 export * from './SharedVault/SharedVaultUserPermissionProps'

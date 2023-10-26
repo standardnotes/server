@@ -1,11 +1,10 @@
 import Redis, { Cluster } from 'ioredis'
-import { SettingName } from '@standardnotes/settings'
 import { MigrationInterface, QueryRunner } from 'typeorm'
 
 import { Setting } from '../../src/Domain/Setting/Setting'
 import { User } from '../../src/Domain/User/User'
 import { EncryptionVersion } from '../../src/Domain/Encryption/EncryptionVersion'
-import { Timestamps, UniqueEntityId, Uuid } from '@standardnotes/domain-core'
+import { SettingName, Timestamps, UniqueEntityId, Uuid } from '@standardnotes/domain-core'
 
 export class moveMfaItemsToUserSettings1627638504691 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {

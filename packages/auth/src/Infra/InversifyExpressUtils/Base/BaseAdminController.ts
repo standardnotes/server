@@ -1,6 +1,5 @@
-import { ControllerContainerInterface, Username } from '@standardnotes/domain-core'
+import { ControllerContainerInterface, SettingName, Username } from '@standardnotes/domain-core'
 import { BaseHttpController, results } from 'inversify-express-utils'
-import { SettingName } from '@standardnotes/settings'
 import { Request } from 'express'
 
 import { CreateOfflineSubscriptionToken } from '../../../Domain/UseCase/CreateOfflineSubscriptionToken/CreateOfflineSubscriptionToken'

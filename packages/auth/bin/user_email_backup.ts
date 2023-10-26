@@ -1,7 +1,7 @@
 import 'reflect-metadata'
 
 import { OpenTelemetrySDK, OpenTelemetryTracer } from '@standardnotes/domain-events-infra'
-import { Email, ServiceIdentifier } from '@standardnotes/domain-core'
+import { Email, ServiceIdentifier, SettingName } from '@standardnotes/domain-core'
 
 const sdk = new OpenTelemetrySDK({ serviceName: ServiceIdentifier.NAMES.AuthScheduledTask })
 sdk.start()
@@ -16,7 +16,7 @@ import { Env } from '../src/Bootstrap/Env'
 import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
 import { DomainEventFactoryInterface } from '../src/Domain/Event/DomainEventFactoryInterface'
 import { SettingRepositoryInterface } from '../src/Domain/Setting/SettingRepositoryInterface'
-import { MuteFailedBackupsEmailsOption, SettingName } from '@standardnotes/settings'
+import { MuteFailedBackupsEmailsOption } from '@standardnotes/settings'
 import { RoleServiceInterface } from '../src/Domain/Role/RoleServiceInterface'
 import { PermissionName } from '@standardnotes/features'
 import { UserRepositoryInterface } from '../src/Domain/User/UserRepositoryInterface'

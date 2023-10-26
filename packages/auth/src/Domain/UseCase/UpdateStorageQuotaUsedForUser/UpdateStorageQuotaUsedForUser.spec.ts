@@ -9,9 +9,8 @@ import { GetRegularSubscriptionForUser } from '../GetRegularSubscriptionForUser/
 import { GetSubscriptionSetting } from '../GetSubscriptionSetting/GetSubscriptionSetting'
 import { SetSubscriptionSettingValue } from '../SetSubscriptionSettingValue/SetSubscriptionSettingValue'
 import { Logger } from 'winston'
-import { Result, Timestamps, Uuid } from '@standardnotes/domain-core'
+import { Result, SettingName, Timestamps, Uuid } from '@standardnotes/domain-core'
 import { SubscriptionSetting } from '../../Setting/SubscriptionSetting'
-import { SettingName } from '@standardnotes/settings'
 import { EncryptionVersion } from '../../Encryption/EncryptionVersion'
 
 describe('UpdateStorageQuotaUsedForUser', () => {

@@ -1,4 +1,3 @@
-import { SettingName } from '@standardnotes/settings'
 import { ReadStream } from 'fs'
 import { Repository } from 'typeorm'
 
@@ -6,7 +5,7 @@ import { Setting } from '../../Domain/Setting/Setting'
 import { SettingRepositoryInterface } from '../../Domain/Setting/SettingRepositoryInterface'
 import { DeleteSettingDto } from '../../Domain/UseCase/DeleteSetting/DeleteSettingDto'
 import { TypeORMSetting } from './TypeORMSetting'
-import { MapperInterface } from '@standardnotes/domain-core'
+import { MapperInterface, SettingName } from '@standardnotes/domain-core'
 
 export class TypeORMSettingRepository implements SettingRepositoryInterface {
   constructor(

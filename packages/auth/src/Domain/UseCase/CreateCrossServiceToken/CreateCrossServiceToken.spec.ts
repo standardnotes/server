@@ -8,13 +8,19 @@ import { Role } from '../../Role/Role'
 import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'
 
 import { CreateCrossServiceToken } from './CreateCrossServiceToken'
-import { Result, SharedVaultUser, SharedVaultUserPermission, Timestamps, Uuid } from '@standardnotes/domain-core'
+import {
+  Result,
+  SettingName,
+  SharedVaultUser,
+  SharedVaultUserPermission,
+  Timestamps,
+  Uuid,
+} from '@standardnotes/domain-core'
 import { SharedVaultUserRepositoryInterface } from '../../SharedVault/SharedVaultUserRepositoryInterface'
 import { GetSubscriptionSetting } from '../GetSubscriptionSetting/GetSubscriptionSetting'
 import { GetRegularSubscriptionForUser } from '../GetRegularSubscriptionForUser/GetRegularSubscriptionForUser'
 import { UserSubscription } from '../../Subscription/UserSubscription'
 import { SubscriptionSetting } from '../../Setting/SubscriptionSetting'
-import { SettingName } from '@standardnotes/settings'
 import { EncryptionVersion } from '../../Encryption/EncryptionVersion'
 
 describe('CreateCrossServiceToken', () => {

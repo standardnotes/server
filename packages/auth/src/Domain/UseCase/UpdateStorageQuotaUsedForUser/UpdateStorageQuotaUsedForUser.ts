@@ -1,5 +1,4 @@
-import { Result, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
-import { SettingName } from '@standardnotes/settings'
+import { Result, SettingName, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
 
 import { UserSubscription } from '../../Subscription/UserSubscription'
 import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'

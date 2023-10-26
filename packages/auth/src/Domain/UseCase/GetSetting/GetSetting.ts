@@ -1,5 +1,4 @@
-import { SettingName } from '@standardnotes/settings'
-import { Result, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
+import { Result, SettingName, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
 
 import { GetSettingDto } from './GetSettingDto'
 import { SettingRepositoryInterface } from '../../Setting/SettingRepositoryInterface'

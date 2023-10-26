@@ -1,8 +1,7 @@
 import 'reflect-metadata'
 import { authenticator } from 'otplib'
-import { SettingName } from '@standardnotes/settings'
 import { SelectorInterface } from '@standardnotes/security'
-import { Result, Timestamps, Uuid } from '@standardnotes/domain-core'
+import { Result, SettingName, Timestamps, Uuid } from '@standardnotes/domain-core'
 
 import { User } from '../User/User'
 import { UserRepositoryInterface } from '../User/UserRepositoryInterface'

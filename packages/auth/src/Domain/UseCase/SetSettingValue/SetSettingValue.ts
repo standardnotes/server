@@ -1,5 +1,4 @@
-import { Result, Timestamps, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
-import { SettingName } from '@standardnotes/settings'
+import { Result, SettingName, Timestamps, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
 import { TimerInterface } from '@standardnotes/time'
 
 import { Setting } from '../../Setting/Setting'

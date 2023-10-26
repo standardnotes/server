@@ -1,6 +1,5 @@
 import { TokenEncoderInterface, CrossServiceTokenData } from '@standardnotes/security'
-import { Result, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
-import { SettingName } from '@standardnotes/settings'
+import { Result, SettingName, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
 
 import { ProjectorInterface } from '../../../Projection/ProjectorInterface'
 import { Role } from '../../Role/Role'

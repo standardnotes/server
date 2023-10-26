@@ -1,6 +1,5 @@
 import { KeyParamsData } from '@standardnotes/responses'
-import { Result, UseCaseInterface, Username, Validator } from '@standardnotes/domain-core'
-import { SettingName } from '@standardnotes/settings'
+import { Result, SettingName, UseCaseInterface, Username, Validator } from '@standardnotes/domain-core'
 
 import { KeyParamsFactoryInterface } from '../../User/KeyParamsFactoryInterface'
 import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'

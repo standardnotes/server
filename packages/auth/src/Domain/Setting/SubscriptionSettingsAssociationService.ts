@@ -1,6 +1,6 @@
 import { SubscriptionName } from '@standardnotes/common'
+import { SettingName } from '@standardnotes/domain-core'
 import { PermissionName } from '@standardnotes/features'
-import { SettingName } from '@standardnotes/settings'
 import { inject, injectable } from 'inversify'
 
 import TYPES from '../../Bootstrap/Types'

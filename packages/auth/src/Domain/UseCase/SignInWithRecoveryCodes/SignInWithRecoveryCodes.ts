@@ -1,6 +1,5 @@
 import * as bcrypt from 'bcryptjs'
-import { Result, UseCaseInterface, Username, Uuid, Validator } from '@standardnotes/domain-core'
-import { SettingName } from '@standardnotes/settings'
+import { Result, SettingName, UseCaseInterface, Username, Uuid, Validator } from '@standardnotes/domain-core'
 
 import { AuthResponse20200115 } from '../../Auth/AuthResponse20200115'
 import { CrypterInterface } from '../../Encryption/CrypterInterface'

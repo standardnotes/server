@@ -1,4 +1,4 @@
-import { ControllerContainerInterface } from '@standardnotes/domain-core'
+import { ControllerContainerInterface, SettingName } from '@standardnotes/domain-core'
 import { ErrorTag } from '@standardnotes/responses'
 import { Role, TokenEncoderInterface, CrossServiceTokenData } from '@standardnotes/security'
 import { BaseHttpController, results } from 'inversify-express-utils'
@@ -7,7 +7,6 @@ import { Request, Response } from 'express'
 import { AuthenticateSubscriptionToken } from '../../../Domain/UseCase/AuthenticateSubscriptionToken/AuthenticateSubscriptionToken'
 import { CreateSubscriptionToken } from '../../../Domain/UseCase/CreateSubscriptionToken/CreateSubscriptionToken'
 import { ProjectorInterface } from '../../../Projection/ProjectorInterface'
-import { SettingName } from '@standardnotes/settings'
 import { User } from '../../../Domain/User/User'
 import { GetSetting } from '../../../Domain/UseCase/GetSetting/GetSetting'
 

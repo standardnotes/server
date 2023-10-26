@@ -1,9 +1,8 @@
-import { Result, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
+import { Result, SettingName, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
 
 import { SubscriptionSetting } from '../../Setting/SubscriptionSetting'
 import { SubscriptionSettingRepositoryInterface } from '../../Setting/SubscriptionSettingRepositoryInterface'
 import { GetSubscriptionSettingDTO } from './GetSubscriptionSettingDTO'
-import { SettingName } from '@standardnotes/settings'
 import { SettingCrypterInterface } from '../../Setting/SettingCrypterInterface'
 
 export class GetSubscriptionSetting

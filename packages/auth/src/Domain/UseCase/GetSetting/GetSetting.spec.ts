@@ -1,9 +1,8 @@
-import { SettingName } from '@standardnotes/settings'
 import { SettingCrypterInterface } from '../../Setting/SettingCrypterInterface'
 import { SettingRepositoryInterface } from '../../Setting/SettingRepositoryInterface'
 import { GetSetting } from './GetSetting'
 import { Setting } from '../../Setting/Setting'
-import { Uuid, Timestamps } from '@standardnotes/domain-core'
+import { Uuid, Timestamps, SettingName } from '@standardnotes/domain-core'
 
 describe('GetSetting', () => {
   let settingRepository: SettingRepositoryInterface

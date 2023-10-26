@@ -7,8 +7,7 @@ import { Setting } from './Setting'
 
 import { SettingCrypter } from './SettingCrypter'
 import { SubscriptionSetting } from './SubscriptionSetting'
-import { SettingName } from '@standardnotes/settings'
-import { Timestamps, Uuid } from '@standardnotes/domain-core'
+import { SettingName, Timestamps, Uuid } from '@standardnotes/domain-core'
 
 describe('SettingCrypter', () => {
   let userRepository: UserRepositoryInterface

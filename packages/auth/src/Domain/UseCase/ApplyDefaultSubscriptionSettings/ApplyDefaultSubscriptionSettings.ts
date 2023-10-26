@@ -1,5 +1,4 @@
-import { Result, SubscriptionPlanName, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
-import { SettingName } from '@standardnotes/settings'
+import { Result, SettingName, SubscriptionPlanName, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
 
 import { ApplyDefaultSubscriptionSettingsDTO } from './ApplyDefaultSubscriptionSettingsDTO'
 import { SubscriptionSettingsAssociationServiceInterface } from '../../Setting/SubscriptionSettingsAssociationServiceInterface'

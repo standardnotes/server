@@ -1,11 +1,10 @@
 import * as crypto from 'crypto'
 import { AuthenticationResponseJSON } from '@simplewebauthn/typescript-types'
 import { ErrorTag } from '@standardnotes/responses'
-import { SettingName } from '@standardnotes/settings'
 import { v4 as uuidv4 } from 'uuid'
 import { authenticator } from 'otplib'
 import { SelectorInterface } from '@standardnotes/security'
-import { Username, Uuid } from '@standardnotes/domain-core'
+import { SettingName, Username, Uuid } from '@standardnotes/domain-core'
 
 import { MFAValidationError } from '../Error/MFAValidationError'
 import { UserRepositoryInterface } from '../User/UserRepositoryInterface'

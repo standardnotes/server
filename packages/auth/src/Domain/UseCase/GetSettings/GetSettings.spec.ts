@@ -1,5 +1,4 @@
-import { Uuid, Timestamps } from '@standardnotes/domain-core'
-import { SettingName } from '@standardnotes/settings'
+import { Uuid, Timestamps, SettingName } from '@standardnotes/domain-core'
 import { Setting } from '../../Setting/Setting'
 import { SettingCrypterInterface } from '../../Setting/SettingCrypterInterface'
 import { SettingRepositoryInterface } from '../../Setting/SettingRepositoryInterface'

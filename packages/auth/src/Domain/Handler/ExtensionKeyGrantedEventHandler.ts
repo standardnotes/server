@@ -1,6 +1,5 @@
 import { DomainEventHandlerInterface, ExtensionKeyGrantedEvent } from '@standardnotes/domain-events'
-import { Username } from '@standardnotes/domain-core'
-import { SettingName } from '@standardnotes/settings'
+import { SettingName, Username } from '@standardnotes/domain-core'
 import { OfflineFeaturesTokenData } from '@standardnotes/security'
 import { ContentDecoderInterface } from '@standardnotes/common'
 import { Logger } from 'winston'

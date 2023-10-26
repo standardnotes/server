@@ -4,12 +4,7 @@ import {
   MuteEmailsSettingChangedEvent,
   UserDisabledSessionUserAgentLoggingEvent,
 } from '@standardnotes/domain-events'
-import {
-  EmailBackupFrequency,
-  LogSessionUserAgentOption,
-  MuteMarketingEmailsOption,
-  SettingName,
-} from '@standardnotes/settings'
+import { EmailBackupFrequency, LogSessionUserAgentOption, MuteMarketingEmailsOption } from '@standardnotes/settings'
 import 'reflect-metadata'
 import { Logger } from 'winston'
 import { DomainEventFactoryInterface } from '../Event/DomainEventFactoryInterface'
@@ -21,7 +16,7 @@ import { SettingInterpreter } from './SettingInterpreter'
 import { SettingRepositoryInterface } from './SettingRepositoryInterface'
 import { GetUserKeyParams } from '../UseCase/GetUserKeyParams/GetUserKeyParams'
 import { KeyParamsData } from '@standardnotes/responses'
-import { Uuid, Timestamps, UniqueEntityId } from '@standardnotes/domain-core'
+import { Uuid, Timestamps, UniqueEntityId, SettingName } from '@standardnotes/domain-core'
 
 describe('SettingInterpreter', () => {
   let user: User

@@ -6,8 +6,7 @@ import { Setting } from '../../Setting/Setting'
 import { SettingRepositoryInterface } from '../../Setting/SettingRepositoryInterface'
 
 import { DeleteSetting } from './DeleteSetting'
-import { Timestamps, Uuid } from '@standardnotes/domain-core'
-import { SettingName } from '@standardnotes/settings'
+import { SettingName, Timestamps, Uuid } from '@standardnotes/domain-core'
 
 describe('DeleteSetting', () => {
   let setting: Setting

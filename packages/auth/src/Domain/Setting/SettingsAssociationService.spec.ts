@@ -1,11 +1,11 @@
 import 'reflect-metadata'
 
-import { SettingName } from '@standardnotes/settings'
 import { PermissionName } from '@standardnotes/features'
 
 import { SettingsAssociationService } from './SettingsAssociationService'
 import { EncryptionVersion } from '../Encryption/EncryptionVersion'
 import { SettingDescription } from './SettingDescription'
+import { SettingName } from '@standardnotes/domain-core'
 
 describe('SettingsAssociationService', () => {
   const createService = () => new SettingsAssociationService()

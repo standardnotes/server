@@ -1,5 +1,6 @@
 import { PermissionName } from '@standardnotes/features'
-import { LogSessionUserAgentOption, MuteMarketingEmailsOption, SettingName } from '@standardnotes/settings'
+import { SettingName } from '@standardnotes/domain-core'
+import { LogSessionUserAgentOption, MuteMarketingEmailsOption } from '@standardnotes/settings'
 import { injectable } from 'inversify'
 
 import { EncryptionVersion } from '../Encryption/EncryptionVersion'

@@ -2,7 +2,6 @@ import { SubscriptionName } from '@standardnotes/common'
 import { TimerInterface } from '@standardnotes/time'
 import { TokenEncoderInterface, ValetTokenData } from '@standardnotes/security'
 import { CreateValetTokenResponseData } from '@standardnotes/responses'
-import { SettingName } from '@standardnotes/settings'
 
 import { UseCaseInterface } from '../UseCaseInterface'
 
@@ -12,6 +11,7 @@ import { CreateValetTokenPayload } from '../../ValetToken/CreateValetTokenPayloa
 import { GetRegularSubscriptionForUser } from '../GetRegularSubscriptionForUser/GetRegularSubscriptionForUser'
 import { GetSharedSubscriptionForUser } from '../GetSharedSubscriptionForUser/GetSharedSubscriptionForUser'
 import { GetSubscriptionSetting } from '../GetSubscriptionSetting/GetSubscriptionSetting'
+import { SettingName } from '@standardnotes/domain-core'
 
 export class CreateValetToken implements UseCaseInterface {
   constructor(

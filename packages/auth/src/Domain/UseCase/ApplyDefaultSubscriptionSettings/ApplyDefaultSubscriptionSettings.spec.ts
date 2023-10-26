@@ -1,4 +1,4 @@
-import { Result, SubscriptionPlanName, Timestamps, Uuid } from '@standardnotes/domain-core'
+import { Result, SettingName, SubscriptionPlanName, Timestamps, Uuid } from '@standardnotes/domain-core'
 import { SubscriptionSetting } from '../../Setting/SubscriptionSetting'
 import { SubscriptionSettingsAssociationServiceInterface } from '../../Setting/SubscriptionSettingsAssociationServiceInterface'
 import { UserSubscription } from '../../Subscription/UserSubscription'
@@ -6,7 +6,6 @@ import { UserSubscriptionRepositoryInterface } from '../../Subscription/UserSubs
 import { GetSubscriptionSetting } from '../GetSubscriptionSetting/GetSubscriptionSetting'
 import { SetSubscriptionSettingValue } from '../SetSubscriptionSettingValue/SetSubscriptionSettingValue'
 import { ApplyDefaultSubscriptionSettings } from './ApplyDefaultSubscriptionSettings'
-import { SettingName } from '@standardnotes/settings'
 import { EncryptionVersion } from '../../Encryption/EncryptionVersion'
 
 describe('ApplyDefaultSubscriptionSettings', () => {

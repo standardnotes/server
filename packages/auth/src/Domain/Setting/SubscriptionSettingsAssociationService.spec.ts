@@ -1,8 +1,7 @@
 import 'reflect-metadata'
 
 import { SubscriptionName } from '@standardnotes/common'
-import { RoleName } from '@standardnotes/domain-core'
-import { SettingName } from '@standardnotes/settings'
+import { RoleName, SettingName } from '@standardnotes/domain-core'
 import { PermissionName } from '@standardnotes/features'
 
 import { RoleRepositoryInterface } from '../Role/RoleRepositoryInterface'

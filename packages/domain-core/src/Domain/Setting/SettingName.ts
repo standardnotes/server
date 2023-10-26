@@ -1,4 +1,5 @@
-import { Result, ValueObject } from '@standardnotes/domain-core'
+import { Result } from '../Core/Result'
+import { ValueObject } from '../Core/ValueObject'
 
 import { SettingNameProps } from './SettingNameProps'
 

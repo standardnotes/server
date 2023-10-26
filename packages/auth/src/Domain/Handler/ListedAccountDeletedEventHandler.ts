@@ -1,6 +1,6 @@
-import { Username } from '@standardnotes/domain-core'
+import { SettingName, Username } from '@standardnotes/domain-core'
 import { DomainEventHandlerInterface, ListedAccountDeletedEvent } from '@standardnotes/domain-events'
-import { ListedAuthorSecretsData, SettingName } from '@standardnotes/settings'
+import { ListedAuthorSecretsData } from '@standardnotes/settings'
 import { Logger } from 'winston'
 
 import { UserRepositoryInterface } from '../User/UserRepositoryInterface'

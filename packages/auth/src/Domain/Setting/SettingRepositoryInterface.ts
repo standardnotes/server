@@ -1,6 +1,6 @@
 import { ReadStream } from 'fs'
+import { SettingName } from '@standardnotes/domain-core'
 
-import { SettingName } from '@standardnotes/settings'
 import { DeleteSettingDto } from '../UseCase/DeleteSetting/DeleteSettingDto'
 import { Setting } from './Setting'
 

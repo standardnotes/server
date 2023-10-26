@@ -1,4 +1,4 @@
-import { Result, SubscriptionPlanName, UseCaseInterface, Username } from '@standardnotes/domain-core'
+import { Result, SettingName, SubscriptionPlanName, UseCaseInterface, Username } from '@standardnotes/domain-core'
 import { TimerInterface } from '@standardnotes/time'
 
 import { RoleServiceInterface } from '../../Role/RoleServiceInterface'
@@ -7,7 +7,6 @@ import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'
 import { UserSubscription } from '../../Subscription/UserSubscription'
 import { UserSubscriptionType } from '../../Subscription/UserSubscriptionType'
 import { ActivatePremiumFeaturesDTO } from './ActivatePremiumFeaturesDTO'
-import { SettingName } from '@standardnotes/settings'
 import { ApplyDefaultSubscriptionSettings } from '../ApplyDefaultSubscriptionSettings/ApplyDefaultSubscriptionSettings'
 
 export class ActivatePremiumFeatures implements UseCaseInterface<string> {

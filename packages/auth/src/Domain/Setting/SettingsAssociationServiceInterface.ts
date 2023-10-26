@@ -1,5 +1,5 @@
 import { PermissionName } from '@standardnotes/features'
-import { SettingName } from '@standardnotes/settings'
+import { SettingName } from '@standardnotes/domain-core'
 
 import { EncryptionVersion } from '../Encryption/EncryptionVersion'
 import { SettingDescription } from './SettingDescription'

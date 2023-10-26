@@ -1,5 +1,5 @@
 import { PredicateName, PredicateVerificationResult } from '@standardnotes/predicates'
-import { EmailBackupFrequency, SettingName } from '@standardnotes/settings'
+import { EmailBackupFrequency } from '@standardnotes/settings'
 import { inject, injectable } from 'inversify'
 
 import TYPES from '../../../Bootstrap/Types'
@@ -9,6 +9,7 @@ import { UseCaseInterface } from '../UseCaseInterface'
 
 import { VerifyPredicateDTO } from './VerifyPredicateDTO'
 import { VerifyPredicateResponse } from './VerifyPredicateResponse'
+import { SettingName } from '@standardnotes/domain-core'
 
 @injectable()
 export class VerifyPredicate implements UseCaseInterface {
