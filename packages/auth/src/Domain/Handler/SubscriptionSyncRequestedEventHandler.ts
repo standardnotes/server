@@ -105,7 +105,6 @@ export class SubscriptionSyncRequestedEventHandler implements DomainEventHandler
       settingName: SettingName.NAMES.ExtensionKey,
       value: event.payload.subscriptionName,
       serverEncryptionVersion: EncryptionVersion.Default,
-      sensitive: true,
     })
 
     if (result.isFailed()) {

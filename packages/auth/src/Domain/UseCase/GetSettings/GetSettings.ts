@@ -19,9 +19,11 @@ export class GetSettings implements UseCaseInterface<Array<{ setting: Setting; d
 
     const settings = await this.settingRepository.findAllByUserUuid(userUuid.value)
 
+    const unsensitiveSettings = settings.filter((setting) => !setting.props.sensitive)
+
     if (dto.decrypted) {
       const result = []
-      for (const setting of settings) {
+      for (const setting of unsensitiveSettings) {
         const decryptedValue = await this.settingCrypter.decryptSettingValue(setting, userUuid.value)
 
         result.push({
@@ -34,7 +36,7 @@ export class GetSettings implements UseCaseInterface<Array<{ setting: Setting; d
     }
 
     return Result.ok(
-      settings.map((setting) => ({
+      unsensitiveSettings.map((setting) => ({
         setting,
       })),
     )

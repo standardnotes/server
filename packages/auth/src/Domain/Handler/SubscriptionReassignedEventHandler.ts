@@ -53,7 +53,6 @@ export class SubscriptionReassignedEventHandler implements DomainEventHandlerInt
       settingName: SettingName.NAMES.ExtensionKey,
       value: event.payload.extensionKey,
       serverEncryptionVersion: EncryptionVersion.Default,
-      sensitive: true,
     })
     if (result.isFailed()) {
       this.logger.error(`Could not set extension key for user ${user.uuid}`)

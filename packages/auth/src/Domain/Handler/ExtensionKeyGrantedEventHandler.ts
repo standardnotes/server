@@ -59,7 +59,6 @@ export class ExtensionKeyGrantedEventHandler implements DomainEventHandlerInterf
       userUuid: user.uuid,
       settingName: SettingName.NAMES.ExtensionKey,
       value: event.payload.extensionKey,
-      sensitive: true,
       serverEncryptionVersion: EncryptionVersion.Default,
     })
 

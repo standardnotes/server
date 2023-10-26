@@ -46,7 +46,6 @@ export class DisableEmailSettingBasedOnEmailSubscription implements UseCaseInter
       return this.setSubscriptionSetting.execute({
         settingName: settingName.value,
         serverEncryptionVersion: EncryptionVersion.Unencrypted,
-        sensitive: false,
         userSubscriptionUuid: subscription.uuid,
         value: 'muted',
       })
@@ -54,7 +53,6 @@ export class DisableEmailSettingBasedOnEmailSubscription implements UseCaseInter
       return this.setSettingValue.execute({
         settingName: settingName.value,
         serverEncryptionVersion: EncryptionVersion.Unencrypted,
-        sensitive: false,
         userUuid: user.uuid,
         value: 'muted',
       })

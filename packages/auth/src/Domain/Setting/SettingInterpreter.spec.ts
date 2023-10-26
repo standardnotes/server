@@ -15,7 +15,7 @@ import { Logger } from 'winston'
 import { DomainEventFactoryInterface } from '../Event/DomainEventFactoryInterface'
 import { User } from '../User/User'
 import { Setting } from './Setting'
-import { SettingDecrypterInterface } from './SettingDecrypterInterface'
+import { SettingCrypterInterface } from './SettingCrypterInterface'
 
 import { SettingInterpreter } from './SettingInterpreter'
 import { SettingRepositoryInterface } from './SettingRepositoryInterface'
@@ -28,7 +28,7 @@ describe('SettingInterpreter', () => {
   let domainEventPublisher: DomainEventPublisherInterface
   let domainEventFactory: DomainEventFactoryInterface
   let settingRepository: SettingRepositoryInterface
-  let settingDecrypter: SettingDecrypterInterface
+  let settingCrypter: SettingCrypterInterface
   let logger: Logger
   let getUserKeyParams: GetUserKeyParams
 
@@ -45,8 +45,8 @@ describe('SettingInterpreter', () => {
     settingRepository.findLastByNameAndUserUuid = jest.fn().mockReturnValue(null)
     settingRepository.findOneByNameAndUserUuid = jest.fn().mockReturnValue(null)
 
-    settingDecrypter = {} as jest.Mocked<SettingDecrypterInterface>
-    settingDecrypter.decryptSettingValue = jest.fn().mockReturnValue('decrypted')
+    settingCrypter = {} as jest.Mocked<SettingCrypterInterface>
+    settingCrypter.decryptSettingValue = jest.fn().mockReturnValue('decrypted')
 
     domainEventPublisher = {} as jest.Mocked<DomainEventPublisherInterface>
     domainEventPublisher.publish = jest.fn()

@@ -49,6 +49,8 @@ export class SetSettingValue implements UseCaseInterface<Setting> {
       decrypted: false,
     })
 
+    const sensitive = this.settingsAssociationService.getSensitivityForSetting(settingName)
+
     const encryptionVersion = this.settingsAssociationService.getEncryptionVersionForSetting(settingName)
     let settingValue = dto.value
     if (encryptionVersion === EncryptionVersion.Default) {
@@ -61,7 +63,7 @@ export class SetSettingValue implements UseCaseInterface<Setting> {
         value: settingValue,
         userUuid,
         serverEncryptionVersion: encryptionVersion,
-        sensitive: dto.sensitive,
+        sensitive,
         timestamps: Timestamps.create(
           this.timer.getTimestampInMicroseconds(),
           this.timer.getTimestampInMicroseconds(),

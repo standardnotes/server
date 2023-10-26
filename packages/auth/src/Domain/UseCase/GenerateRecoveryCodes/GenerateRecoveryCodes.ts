@@ -37,7 +37,6 @@ export class GenerateRecoveryCodes implements UseCaseInterface<string> {
       settingName: SettingName.NAMES.RecoveryCodes,
       value: recoveryCodes,
       serverEncryptionVersion: EncryptionVersion.Default,
-      sensitive: false,
       userUuid: user.uuid,
     })
     if (result.isFailed()) {

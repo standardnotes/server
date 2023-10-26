@@ -74,7 +74,6 @@ export class UpdateStorageQuotaUsedForUser implements UseCaseInterface<void> {
       settingName: SettingName.NAMES.FileUploadBytesUsed,
       value: (+bytesAlreadyUsed + bytesUsed).toString(),
       serverEncryptionVersion: EncryptionVersion.Unencrypted,
-      sensitive: false,
     })
 
     /* istanbul ignore next */

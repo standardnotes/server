@@ -51,7 +51,6 @@ export class ListedAccountCreatedEventHandler implements DomainEventHandlerInter
       userUuid: user.uuid,
       settingName: SettingName.NAMES.ListedAuthorSecrets,
       value: JSON.stringify(authSecrets),
-      sensitive: false,
       serverEncryptionVersion: EncryptionVersion.Default,
     })
 

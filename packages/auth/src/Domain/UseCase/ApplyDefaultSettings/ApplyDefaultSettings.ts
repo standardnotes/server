@@ -37,7 +37,6 @@ export class ApplyDefaultSettings implements UseCaseInterface<void> {
       }
 
       await this.setSettingValue.execute({
-        sensitive: setting.sensitive,
         settingName: settingName,
         userUuid: userUuid.value,
         value: setting.value,

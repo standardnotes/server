@@ -67,7 +67,6 @@ export class ApplyDefaultSubscriptionSettings implements UseCaseInterface<void> 
             userSubscriptionUuid: existingSetting.setting.props.userSubscriptionUuid.value,
             settingName: existingSetting.setting.props.name,
             value: existingSetting.setting.props.value,
-            sensitive: existingSetting.setting.props.sensitive,
             serverEncryptionVersion: existingSetting.setting.props.serverEncryptionVersion,
             newUserSubscriptionUuid: userSubscriptionUuid.value,
           })
@@ -88,7 +87,6 @@ export class ApplyDefaultSubscriptionSettings implements UseCaseInterface<void> 
         userSubscriptionUuid: userSubscriptionUuid.value,
         settingName: settingName.value,
         value: unencryptedValue,
-        sensitive: setting.sensitive,
         serverEncryptionVersion: setting.serverEncryptionVersion,
       })
     }

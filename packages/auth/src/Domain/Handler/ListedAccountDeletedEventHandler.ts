@@ -55,7 +55,6 @@ export class ListedAccountDeletedEventHandler implements DomainEventHandlerInter
     const result = await this.setSettingValue.execute({
       settingName: SettingName.NAMES.ListedAuthorSecrets,
       value: JSON.stringify(filteredSecrets),
-      sensitive: false,
       serverEncryptionVersion: EncryptionVersion.Default,
       userUuid: user.uuid,
     })

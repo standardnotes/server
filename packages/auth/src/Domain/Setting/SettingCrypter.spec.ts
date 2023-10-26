@@ -30,6 +30,41 @@ describe('SettingCrypter', () => {
   })
 
   describe('setting', () => {
+    it('should encrypt a string value', async () => {
+      const string = 'decrypted'
+
+      crypter.encryptForUser = jest.fn().mockReturnValue('encrypted')
+
+      const encrypted = await createDecrypter().encryptValue(
+        string,
+        Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+      )
+
+      expect(encrypted).toEqual('encrypted')
+    })
+
+    it('should return null when trying to encrypt a null value', async () => {
+      const encrypted = await createDecrypter().encryptValue(
+        null,
+        Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+      )
+
+      expect(encrypted).toBeNull()
+    })
+
+    it('should throw error when encrypting and user is not found', async () => {
+      userRepository.findOneByUuid = jest.fn().mockReturnValue(null)
+
+      let caughtError = null
+      try {
+        await createDecrypter().encryptValue('test', Uuid.create('00000000-0000-0000-0000-000000000000').getValue())
+      } catch (error) {
+        caughtError = error
+      }
+
+      expect(caughtError).not.toBeNull()
+    })
+
     it('should decrypt an encrypted value of a setting', async () => {
       const setting = Setting.create({
         name: SettingName.NAMES.ListedAuthorSecrets,

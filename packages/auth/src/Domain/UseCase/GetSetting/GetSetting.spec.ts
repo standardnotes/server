@@ -1,5 +1,5 @@
 import { SettingName } from '@standardnotes/settings'
-import { SettingDecrypterInterface } from '../../Setting/SettingDecrypterInterface'
+import { SettingCrypterInterface } from '../../Setting/SettingCrypterInterface'
 import { SettingRepositoryInterface } from '../../Setting/SettingRepositoryInterface'
 import { GetSetting } from './GetSetting'
 import { Setting } from '../../Setting/Setting'
@@ -7,9 +7,9 @@ import { Uuid, Timestamps } from '@standardnotes/domain-core'
 
 describe('GetSetting', () => {
   let settingRepository: SettingRepositoryInterface
-  let settingDecrypter: SettingDecrypterInterface
+  let settingCrypter: SettingCrypterInterface
 
-  const createUseCase = () => new GetSetting(settingRepository, settingDecrypter)
+  const createUseCase = () => new GetSetting(settingRepository, settingCrypter)
 
   beforeEach(() => {
     const setting = Setting.create({
@@ -23,8 +23,8 @@ describe('GetSetting', () => {
     settingRepository = {} as jest.Mocked<SettingRepositoryInterface>
     settingRepository.findLastByNameAndUserUuid = jest.fn().mockReturnValue(setting)
 
-    settingDecrypter = {} as jest.Mocked<SettingDecrypterInterface>
-    settingDecrypter.decryptSettingValue = jest.fn().mockReturnValue('decrypted')
+    settingCrypter = {} as jest.Mocked<SettingCrypterInterface>
+    settingCrypter.decryptSettingValue = jest.fn().mockReturnValue('decrypted')
   })
 
   it('should return a setting', async () => {

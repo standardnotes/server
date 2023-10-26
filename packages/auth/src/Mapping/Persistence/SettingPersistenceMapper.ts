@@ -21,7 +21,7 @@ export class SettingPersistenceMapper implements MapperInterface<Setting, TypeOR
         name: projection.name,
         value: projection.value,
         serverEncryptionVersion: projection.serverEncryptionVersion,
-        sensitive: projection.sensitive,
+        sensitive: !!projection.sensitive,
         userUuid,
         timestamps,
       },
@@ -45,6 +45,7 @@ export class SettingPersistenceMapper implements MapperInterface<Setting, TypeOR
     projection.createdAt = domain.props.timestamps.createdAt
     projection.updatedAt = domain.props.timestamps.updatedAt
     projection.userUuid = domain.props.userUuid.value
+    projection.sensitive = !!domain.props.sensitive
 
     return projection
   }

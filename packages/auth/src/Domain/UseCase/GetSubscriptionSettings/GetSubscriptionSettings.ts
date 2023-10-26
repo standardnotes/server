@@ -2,7 +2,7 @@ import { Result, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
 import { SubscriptionSetting } from '../../Setting/SubscriptionSetting'
 import { SubscriptionSettingRepositoryInterface } from '../../Setting/SubscriptionSettingRepositoryInterface'
 import { GetSubscriptionSettingsDTO } from './GetSubscriptionSettingsDTO'
-import { SettingCrypterInterface } from '../../Setting/SettingCrypterInterface';
+import { SettingCrypterInterface } from '../../Setting/SettingCrypterInterface'
 
 export class GetSubscriptionSettings
   implements UseCaseInterface<Array<{ setting: SubscriptionSetting; decryptedValue?: string | null }>>

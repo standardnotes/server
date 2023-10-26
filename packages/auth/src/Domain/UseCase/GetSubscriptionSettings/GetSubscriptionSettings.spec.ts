@@ -1,4 +1,4 @@
-import { SettingDecrypterInterface } from '../../Setting/SettingDecrypterInterface'
+import { SettingCrypterInterface } from '../../Setting/SettingCrypterInterface'
 import { SubscriptionSetting } from '../../Setting/SubscriptionSetting'
 import { SubscriptionSettingRepositoryInterface } from '../../Setting/SubscriptionSettingRepositoryInterface'
 import { GetSubscriptionSettings } from './GetSubscriptionSettings'
@@ -6,9 +6,9 @@ import { GetSubscriptionSettings } from './GetSubscriptionSettings'
 describe('GetSubscriptionSettings', () => {
   let subscriptionSettingRepository: SubscriptionSettingRepositoryInterface
   let subscriptionSetting: SubscriptionSetting
-  let settingDecrypter: SettingDecrypterInterface
+  let settingCrypter: SettingCrypterInterface
 
-  const createUseCase = () => new GetSubscriptionSettings(subscriptionSettingRepository, settingDecrypter)
+  const createUseCase = () => new GetSubscriptionSettings(subscriptionSettingRepository, settingCrypter)
 
   beforeEach(() => {
     subscriptionSetting = {} as jest.Mocked<SubscriptionSetting>
@@ -16,8 +16,8 @@ describe('GetSubscriptionSettings', () => {
     subscriptionSettingRepository = {} as jest.Mocked<SubscriptionSettingRepositoryInterface>
     subscriptionSettingRepository.findAllBySubscriptionUuid = jest.fn().mockResolvedValue([subscriptionSetting])
 
-    settingDecrypter = {} as jest.Mocked<SettingDecrypterInterface>
-    settingDecrypter.decryptSubscriptionSettingValue = jest.fn().mockResolvedValue('decrypted')
+    settingCrypter = {} as jest.Mocked<SettingCrypterInterface>
+    settingCrypter.decryptSubscriptionSettingValue = jest.fn().mockResolvedValue('decrypted')
   })
 
   it('should return subscription settings', async () => {

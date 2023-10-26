@@ -96,7 +96,7 @@ export class BaseSettingsController extends BaseHttpController {
 
     const { userUuid, settingName } = request.params
     const resultOrError = await this.doGetSetting.execute({
-      allowSensitiveRetrieval: false,
+      allowSensitiveRetrieval: true,
       userUuid,
       decrypted: true,
       settingName: settingName.toUpperCase(),
@@ -113,6 +113,12 @@ export class BaseSettingsController extends BaseHttpController {
     }
 
     const settingAndValue = resultOrError.getValue()
+
+    if (settingAndValue.setting.props.sensitive) {
+      return this.json({
+        success: true,
+      })
+    }
 
     const settingHttpReprepesentation = {
       ...this.settingHttMapper.toProjection(settingAndValue.setting),
@@ -149,10 +155,9 @@ export class BaseSettingsController extends BaseHttpController {
       )
     }
 
-    const { name, value, serverEncryptionVersion = EncryptionVersion.Default, sensitive = false } = request.body
+    const { name, value, serverEncryptionVersion = EncryptionVersion.Default } = request.body
 
     const result = await this.setSettingValue.execute({
-      sensitive,
       serverEncryptionVersion,
       settingName: name,
       value,
@@ -171,7 +176,10 @@ export class BaseSettingsController extends BaseHttpController {
     }
     const setting = result.getValue()
 
-    return this.json({ setting: this.settingHttMapper.toProjection(setting) })
+    return this.json({
+      success: true,
+      setting: setting.props.sensitive ? undefined : this.settingHttMapper.toProjection(setting),
+    })
   }
 
   async deleteSetting(request: Request, response: Response): Promise<results.JsonResult> {

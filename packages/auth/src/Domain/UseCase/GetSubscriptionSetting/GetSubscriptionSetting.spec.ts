@@ -1,16 +1,16 @@
 import { Timestamps, Uuid } from '@standardnotes/domain-core'
 import { SettingName } from '@standardnotes/settings'
 import { EncryptionVersion } from '../../Encryption/EncryptionVersion'
-import { SettingDecrypterInterface } from '../../Setting/SettingDecrypterInterface'
+import { SettingCrypterInterface } from '../../Setting/SettingCrypterInterface'
 import { SubscriptionSetting } from '../../Setting/SubscriptionSetting'
 import { SubscriptionSettingRepositoryInterface } from '../../Setting/SubscriptionSettingRepositoryInterface'
 import { GetSubscriptionSetting } from './GetSubscriptionSetting'
 
 describe('GetSubscriptionSetting', () => {
   let subscriptionSettingRepository: SubscriptionSettingRepositoryInterface
-  let settingDecrypter: SettingDecrypterInterface
+  let settingCrypter: SettingCrypterInterface
 
-  const createUseCase = () => new GetSubscriptionSetting(subscriptionSettingRepository, settingDecrypter)
+  const createUseCase = () => new GetSubscriptionSetting(subscriptionSettingRepository, settingCrypter)
 
   beforeEach(() => {
     const subscriptionSetting = SubscriptionSetting.create({
@@ -27,8 +27,8 @@ describe('GetSubscriptionSetting', () => {
       .fn()
       .mockResolvedValue(subscriptionSetting)
 
-    settingDecrypter = {} as jest.Mocked<SettingDecrypterInterface>
-    settingDecrypter.decryptSubscriptionSettingValue = jest.fn().mockResolvedValue('decrypted')
+    settingCrypter = {} as jest.Mocked<SettingCrypterInterface>
+    settingCrypter.decryptSubscriptionSettingValue = jest.fn().mockResolvedValue('decrypted')
   })
 
   it('returns error when setting name is invalid', async () => {
