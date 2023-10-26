@@ -3,6 +3,7 @@ import { Result, UseCaseInterface, Username, Uuid } from '@standardnotes/domain-
 import { SettingsAssociationServiceInterface } from '../../Setting/SettingsAssociationServiceInterface'
 import { ApplyDefaultSettingsDTO } from './ApplyDefaultSettingsDTO'
 import { SetSettingValue } from '../SetSettingValue/SetSettingValue'
+import { SettingDescription } from '../../Setting/SettingDescription'
 
 export class ApplyDefaultSettings implements UseCaseInterface<void> {
   constructor(
@@ -30,17 +31,12 @@ export class ApplyDefaultSettings implements UseCaseInterface<void> {
     }
 
     for (const settingName of defaultSettingsWithValues.keys()) {
-      const setting = defaultSettingsWithValues.get(settingName) as {
-        value: string
-        sensitive: boolean
-        serverEncryptionVersion: number
-      }
+      const setting = defaultSettingsWithValues.get(settingName) as SettingDescription
 
       await this.setSettingValue.execute({
         settingName: settingName,
         userUuid: userUuid.value,
         value: setting.value,
-        serverEncryptionVersion: setting.serverEncryptionVersion,
       })
     }
 

@@ -14,7 +14,6 @@ import { OfflineUserSubscription } from '../Subscription/OfflineUserSubscription
 import { OfflineUserSubscriptionRepositoryInterface } from '../Subscription/OfflineUserSubscriptionRepositoryInterface'
 import { OfflineSettingServiceInterface } from '../Setting/OfflineSettingServiceInterface'
 import { OfflineSettingName } from '../Setting/OfflineSettingName'
-import { EncryptionVersion } from '../Encryption/EncryptionVersion'
 import { UserSubscriptionType } from '../Subscription/UserSubscriptionType'
 import { ApplyDefaultSubscriptionSettings } from '../UseCase/ApplyDefaultSubscriptionSettings/ApplyDefaultSubscriptionSettings'
 import { SetSettingValue } from '../UseCase/SetSettingValue/SetSettingValue'
@@ -104,7 +103,6 @@ export class SubscriptionSyncRequestedEventHandler implements DomainEventHandler
       userUuid: user.uuid,
       settingName: SettingName.NAMES.ExtensionKey,
       value: event.payload.subscriptionName,
-      serverEncryptionVersion: EncryptionVersion.Default,
     })
 
     if (result.isFailed()) {

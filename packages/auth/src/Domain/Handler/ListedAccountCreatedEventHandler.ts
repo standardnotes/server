@@ -6,7 +6,6 @@ import { Logger } from 'winston'
 import { UserRepositoryInterface } from '../User/UserRepositoryInterface'
 import { GetSetting } from '../UseCase/GetSetting/GetSetting'
 import { SetSettingValue } from '../UseCase/SetSettingValue/SetSettingValue'
-import { EncryptionVersion } from '../Encryption/EncryptionVersion'
 
 export class ListedAccountCreatedEventHandler implements DomainEventHandlerInterface {
   constructor(
@@ -51,7 +50,6 @@ export class ListedAccountCreatedEventHandler implements DomainEventHandlerInter
       userUuid: user.uuid,
       settingName: SettingName.NAMES.ListedAuthorSecrets,
       value: JSON.stringify(authSecrets),
-      serverEncryptionVersion: EncryptionVersion.Default,
     })
 
     if (result.isFailed()) {

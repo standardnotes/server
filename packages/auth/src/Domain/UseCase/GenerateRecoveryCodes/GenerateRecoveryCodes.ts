@@ -1,7 +1,6 @@
 import { Result, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
 import { SettingName } from '@standardnotes/settings'
 import { CryptoNode } from '@standardnotes/sncrypto-node'
-import { EncryptionVersion } from '../../Encryption/EncryptionVersion'
 import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'
 import { GenerateRecoveryCodesDTO } from './GenerateRecoveryCodesDTO'
 import { SetSettingValue } from '../SetSettingValue/SetSettingValue'
@@ -36,7 +35,6 @@ export class GenerateRecoveryCodes implements UseCaseInterface<string> {
     const result = await this.setSettingValue.execute({
       settingName: SettingName.NAMES.RecoveryCodes,
       value: recoveryCodes,
-      serverEncryptionVersion: EncryptionVersion.Default,
       userUuid: user.uuid,
     })
     if (result.isFailed()) {

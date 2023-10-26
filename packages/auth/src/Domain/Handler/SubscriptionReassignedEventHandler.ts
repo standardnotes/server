@@ -7,7 +7,6 @@ import { UserRepositoryInterface } from '../User/UserRepositoryInterface'
 import { UserSubscription } from '../Subscription/UserSubscription'
 import { UserSubscriptionRepositoryInterface } from '../Subscription/UserSubscriptionRepositoryInterface'
 import { SettingName } from '@standardnotes/settings'
-import { EncryptionVersion } from '../Encryption/EncryptionVersion'
 import { UserSubscriptionType } from '../Subscription/UserSubscriptionType'
 import { Username } from '@standardnotes/domain-core'
 import { ApplyDefaultSubscriptionSettings } from '../UseCase/ApplyDefaultSubscriptionSettings/ApplyDefaultSubscriptionSettings'
@@ -52,7 +51,6 @@ export class SubscriptionReassignedEventHandler implements DomainEventHandlerInt
       userUuid: user.uuid,
       settingName: SettingName.NAMES.ExtensionKey,
       value: event.payload.extensionKey,
-      serverEncryptionVersion: EncryptionVersion.Default,
     })
     if (result.isFailed()) {
       this.logger.error(`Could not set extension key for user ${user.uuid}`)

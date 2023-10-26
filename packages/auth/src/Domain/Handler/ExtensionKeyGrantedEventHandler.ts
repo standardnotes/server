@@ -5,7 +5,6 @@ import { OfflineFeaturesTokenData } from '@standardnotes/security'
 import { ContentDecoderInterface } from '@standardnotes/common'
 import { Logger } from 'winston'
 
-import { EncryptionVersion } from '../Encryption/EncryptionVersion'
 import { OfflineSettingServiceInterface } from '../Setting/OfflineSettingServiceInterface'
 import { OfflineSettingName } from '../Setting/OfflineSettingName'
 import { UserRepositoryInterface } from '../User/UserRepositoryInterface'
@@ -59,7 +58,6 @@ export class ExtensionKeyGrantedEventHandler implements DomainEventHandlerInterf
       userUuid: user.uuid,
       settingName: SettingName.NAMES.ExtensionKey,
       value: event.payload.extensionKey,
-      serverEncryptionVersion: EncryptionVersion.Default,
     })
 
     if (result.isFailed()) {

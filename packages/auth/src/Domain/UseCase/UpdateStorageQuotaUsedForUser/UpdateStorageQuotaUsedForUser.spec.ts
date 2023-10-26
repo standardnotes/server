@@ -81,7 +81,6 @@ describe('UpdateStorageQuotaUsedForUser', () => {
     expect(setSubscriptonSettingValue.execute).toHaveBeenCalledWith({
       settingName: 'FILE_UPLOAD_BYTES_USED',
       value: '123',
-      serverEncryptionVersion: 0,
       userSubscriptionUuid: '00000000-0000-0000-0000-000000000000',
     })
   })
@@ -147,7 +146,6 @@ describe('UpdateStorageQuotaUsedForUser', () => {
       expect(setSubscriptonSettingValue.execute).toHaveBeenCalledWith({
         settingName: 'FILE_UPLOAD_BYTES_USED',
         value: '468',
-        serverEncryptionVersion: 0,
         userSubscriptionUuid: '00000000-0000-0000-0000-000000000000',
       })
     })
@@ -162,7 +160,6 @@ describe('UpdateStorageQuotaUsedForUser', () => {
       expect(setSubscriptonSettingValue.execute).toHaveBeenCalledWith({
         settingName: 'FILE_UPLOAD_BYTES_USED',
         value: '222',
-        serverEncryptionVersion: 0,
         userSubscriptionUuid: '00000000-0000-0000-0000-000000000000',
       })
     })
@@ -177,14 +174,12 @@ describe('UpdateStorageQuotaUsedForUser', () => {
       expect(setSubscriptonSettingValue.execute).toHaveBeenCalledWith({
         settingName: 'FILE_UPLOAD_BYTES_USED',
         value: '468',
-        serverEncryptionVersion: 0,
         userSubscriptionUuid: '00000000-0000-0000-0000-000000000000',
       })
 
       expect(setSubscriptonSettingValue.execute).toHaveBeenCalledWith({
         settingName: 'FILE_UPLOAD_BYTES_USED',
         value: '468',
-        serverEncryptionVersion: 0,
         userSubscriptionUuid: '2-3-4',
       })
     })

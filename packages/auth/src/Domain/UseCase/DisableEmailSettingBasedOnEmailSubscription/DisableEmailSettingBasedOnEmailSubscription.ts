@@ -4,7 +4,6 @@ import { SettingName } from '@standardnotes/settings'
 import { DisableEmailSettingBasedOnEmailSubscriptionDTO } from './DisableEmailSettingBasedOnEmailSubscriptionDTO'
 import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'
 import { SetSettingValue } from '../SetSettingValue/SetSettingValue'
-import { EncryptionVersion } from '../../Encryption/EncryptionVersion'
 import { SetSubscriptionSettingValue } from '../SetSubscriptionSettingValue/SetSubscriptionSettingValue'
 import { GetSharedOrRegularSubscriptionForUser } from '../GetSharedOrRegularSubscriptionForUser/GetSharedOrRegularSubscriptionForUser'
 
@@ -45,14 +44,12 @@ export class DisableEmailSettingBasedOnEmailSubscription implements UseCaseInter
 
       return this.setSubscriptionSetting.execute({
         settingName: settingName.value,
-        serverEncryptionVersion: EncryptionVersion.Unencrypted,
         userSubscriptionUuid: subscription.uuid,
         value: 'muted',
       })
     } else {
       return this.setSettingValue.execute({
         settingName: settingName.value,
-        serverEncryptionVersion: EncryptionVersion.Unencrypted,
         userUuid: user.uuid,
         value: 'muted',
       })

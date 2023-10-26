@@ -1,7 +1,6 @@
 import { Result, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
 import { SettingName } from '@standardnotes/settings'
 
-import { EncryptionVersion } from '../../Encryption/EncryptionVersion'
 import { UserSubscription } from '../../Subscription/UserSubscription'
 import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'
 import { UpdateStorageQuotaUsedForUserDTO } from './UpdateStorageQuotaUsedForUserDTO'
@@ -73,7 +72,6 @@ export class UpdateStorageQuotaUsedForUser implements UseCaseInterface<void> {
       userSubscriptionUuid: subscription.uuid,
       settingName: SettingName.NAMES.FileUploadBytesUsed,
       value: (+bytesAlreadyUsed + bytesUsed).toString(),
-      serverEncryptionVersion: EncryptionVersion.Unencrypted,
     })
 
     /* istanbul ignore next */

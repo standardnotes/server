@@ -6,7 +6,6 @@ import { Logger } from 'winston'
 import { UserRepositoryInterface } from '../User/UserRepositoryInterface'
 import { GetSetting } from '../UseCase/GetSetting/GetSetting'
 import { SetSettingValue } from '../UseCase/SetSettingValue/SetSettingValue'
-import { EncryptionVersion } from '../Encryption/EncryptionVersion'
 
 export class ListedAccountDeletedEventHandler implements DomainEventHandlerInterface {
   constructor(
@@ -55,7 +54,6 @@ export class ListedAccountDeletedEventHandler implements DomainEventHandlerInter
     const result = await this.setSettingValue.execute({
       settingName: SettingName.NAMES.ListedAuthorSecrets,
       value: JSON.stringify(filteredSecrets),
-      serverEncryptionVersion: EncryptionVersion.Default,
       userUuid: user.uuid,
     })
 

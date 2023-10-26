@@ -6,6 +6,7 @@ import { SetSubscriptionSettingValueDTO } from './SetSubscriptionSettingValueDTO
 import { SubscriptionSettingRepositoryInterface } from '../../Setting/SubscriptionSettingRepositoryInterface'
 import { GetSubscriptionSetting } from '../GetSubscriptionSetting/GetSubscriptionSetting'
 import { SubscriptionSetting } from '../../Setting/SubscriptionSetting'
+import { EncryptionVersion } from '../../Encryption/EncryptionVersion'
 
 export class SetSubscriptionSettingValue implements UseCaseInterface<void> {
   constructor(
@@ -55,7 +56,7 @@ export class SetSubscriptionSettingValue implements UseCaseInterface<void> {
         name: settingName.value,
         value: dto.value,
         userSubscriptionUuid: newUserSubscriptionUuid ?? userSubscriptionUuid,
-        serverEncryptionVersion: dto.serverEncryptionVersion,
+        serverEncryptionVersion: EncryptionVersion.Unencrypted,
         timestamps,
         sensitive: false,
       })

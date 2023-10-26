@@ -1,11 +1,10 @@
 import { ControllerContainerInterface, MapperInterface } from '@standardnotes/domain-core'
+import { BaseHttpController, results } from 'inversify-express-utils'
 import { ErrorTag } from '@standardnotes/responses'
 import { Request, Response } from 'express'
 
 import { DeleteSetting } from '../../../Domain/UseCase/DeleteSetting/DeleteSetting'
 import { GetSetting } from '../../../Domain/UseCase/GetSetting/GetSetting'
-import { BaseHttpController, results } from 'inversify-express-utils'
-import { EncryptionVersion } from '../../../Domain/Encryption/EncryptionVersion'
 import { GetAllSettingsForUser } from '../../../Domain/UseCase/GetAllSettingsForUser/GetAllSettingsForUser'
 import { SetSettingValue } from '../../../Domain/UseCase/SetSettingValue/SetSettingValue'
 import { Setting } from '../../../Domain/Setting/Setting'
@@ -155,10 +154,9 @@ export class BaseSettingsController extends BaseHttpController {
       )
     }
 
-    const { name, value, serverEncryptionVersion = EncryptionVersion.Default } = request.body
+    const { name, value } = request.body
 
     const result = await this.setSettingValue.execute({
-      serverEncryptionVersion,
       settingName: name,
       value,
       userUuid: response.locals.user.uuid,

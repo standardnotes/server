@@ -5,12 +5,12 @@ import { RoleName } from '@standardnotes/domain-core'
 import { SettingName } from '@standardnotes/settings'
 import { PermissionName } from '@standardnotes/features'
 
-import { EncryptionVersion } from '../Encryption/EncryptionVersion'
 import { RoleRepositoryInterface } from '../Role/RoleRepositoryInterface'
 import { RoleToSubscriptionMapInterface } from '../Role/RoleToSubscriptionMapInterface'
 import { Role } from '../Role/Role'
 import { Permission } from '../Permission/Permission'
 import { SubscriptionSettingsAssociationService } from './SubscriptionSettingsAssociationService'
+import { SettingDescription } from './SettingDescription'
 
 describe('SubscriptionSettingsAssociationService', () => {
   let roleToSubscriptionMap: RoleToSubscriptionMapInterface
@@ -49,15 +49,9 @@ describe('SubscriptionSettingsAssociationService', () => {
 
     expect(settings).not.toBeUndefined()
 
-    const flatSettings = [
-      ...(
-        settings as Map<string, { value: string; sensitive: boolean; serverEncryptionVersion: EncryptionVersion }>
-      ).keys(),
-    ]
+    const flatSettings = [...(settings as Map<string, SettingDescription>).keys()]
     expect(flatSettings).toEqual(['FILE_UPLOAD_BYTES_USED', 'MUTE_SIGN_IN_EMAILS', 'FILE_UPLOAD_BYTES_LIMIT'])
     expect(settings?.get(SettingName.NAMES.FileUploadBytesLimit)).toEqual({
-      sensitive: false,
-      serverEncryptionVersion: 0,
       value: '107374182400',
       replaceable: true,
     })
@@ -74,15 +68,9 @@ describe('SubscriptionSettingsAssociationService', () => {
 
     expect(settings).not.toBeUndefined()
 
-    const flatSettings = [
-      ...(
-        settings as Map<string, { value: string; sensitive: boolean; serverEncryptionVersion: EncryptionVersion }>
-      ).keys(),
-    ]
+    const flatSettings = [...(settings as Map<string, SettingDescription>).keys()]
     expect(flatSettings).toEqual(['FILE_UPLOAD_BYTES_USED', 'MUTE_SIGN_IN_EMAILS', 'FILE_UPLOAD_BYTES_LIMIT'])
     expect(settings?.get(SettingName.NAMES.FileUploadBytesLimit)).toEqual({
-      sensitive: false,
-      serverEncryptionVersion: 0,
       value: '104857600',
       replaceable: true,
     })

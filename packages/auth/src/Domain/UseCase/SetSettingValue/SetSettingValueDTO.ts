@@ -2,5 +2,4 @@ export interface SetSettingValueDTO {
   settingName: string
   userUuid: string
   value: string | null
-  serverEncryptionVersion: number
 }
