@@ -80,7 +80,7 @@ export class SetSettingValue implements UseCaseInterface<Setting> {
     }
 
     const { setting } = settingExists.getValue()
-    setting.props.value = dto.value
+    setting.props.value = settingValue
     setting.props.timestamps = Timestamps.create(
       setting.props.timestamps.createdAt,
       this.timer.getTimestampInMicroseconds(),

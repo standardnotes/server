@@ -32,6 +32,7 @@ export class SettingsAssociationService implements SettingsAssociationServiceInt
     SettingName.NAMES.MuteMarketingEmails,
     SettingName.NAMES.ListedAuthorSecrets,
     SettingName.NAMES.LogSessionUserAgent,
+    SettingName.NAMES.RecoveryCodes,
   ]
 
   private readonly CLIENT_IMMUTABLE_SETTINGS = [
