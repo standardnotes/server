@@ -240,10 +240,9 @@ export class HttpServiceProxy implements ServiceProxyInterface {
 
       return serviceResponse
     } catch (error) {
-      const requestTimedOut =
-        'code' in (error as Record<string, unknown>) && (error as Record<string, unknown>).code === 'ETIMEDOUT'
+      const requestDidNotMakeIt = this.requestTimedOutOrDidNotReachDestination(error as Record<string, unknown>)
       const tooManyRetryAttempts = retryAttempt && retryAttempt > 2
-      if (!tooManyRetryAttempts && requestTimedOut) {
+      if (!tooManyRetryAttempts && requestDidNotMakeIt) {
         await this.timer.sleep(50)
 
         const nextRetryAttempt = retryAttempt ? retryAttempt + 1 : 1
@@ -267,12 +266,12 @@ export class HttpServiceProxy implements ServiceProxyInterface {
         : (error as Error).message
 
       this.logger.error(
-        `Could not pass the request to ${serverUrl}/${endpointOrMethodIdentifier} on underlying service: ${JSON.stringify(
-          error,
-        )}`,
+        tooManyRetryAttempts
+          ? `Request to ${serverUrl}/${endpointOrMethodIdentifier} timed out after ${retryAttempt} retries`
+          : `Could not pass the request to ${serverUrl}/${endpointOrMethodIdentifier} on underlying service: ${errorMessage}`,
       )
 
-      this.logger.debug('Response error: %O', (error as AxiosError).response ?? error)
+      this.logger.debug(`Response error: ${JSON.stringify(error)}`)
 
       if ((error as AxiosError).response?.headers['content-type']) {
         response.setHeader('content-type', (error as AxiosError).response?.headers['content-type'] as string)
@@ -413,5 +412,14 @@ export class HttpServiceProxy implements ServiceProxyInterface {
         response.setHeader(headerName, headerValue)
       }
     })
+  }
+
+  private requestTimedOutOrDidNotReachDestination(error: Record<string, unknown>): boolean {
+    return (
+      ('code' in error && error.code === 'ETIMEDOUT') ||
+      ('response' in error &&
+        'status' in (error.response as Record<string, unknown>) &&
+        [503, 504].includes((error.response as Record<string, unknown>).status as number))
+    )
   }
 }
