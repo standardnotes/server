@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.39.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.38.0...@standardnotes/domain-core@1.39.0) (2023-10-26)
+
+### Features
+
+* refactor settings ([#890](https://github.com/standardnotes/server/issues/890)) ([1b5078e](https://github.com/standardnotes/server/commit/1b5078eb9629397822f5403643c60fbf4182df92))
+
 # [1.38.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-core@1.37.0...@standardnotes/domain-core@1.38.0) (2023-10-19)
 
 ### Features
