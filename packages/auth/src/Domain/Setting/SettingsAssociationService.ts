@@ -32,6 +32,7 @@ export class SettingsAssociationService implements SettingsAssociationServiceInt
     SettingName.NAMES.MuteMarketingEmails,
     SettingName.NAMES.ListedAuthorSecrets,
     SettingName.NAMES.LogSessionUserAgent,
+    SettingName.NAMES.RecoveryCodes,
   ]
 
   private readonly CLIENT_IMMUTABLE_SETTINGS = [
@@ -49,8 +50,6 @@ export class SettingsAssociationService implements SettingsAssociationServiceInt
     [
       SettingName.NAMES.MuteMarketingEmails,
       {
-        sensitive: false,
-        serverEncryptionVersion: EncryptionVersion.Unencrypted,
         value: MuteMarketingEmailsOption.NotMuted,
         replaceable: false,
       },
@@ -58,8 +57,6 @@ export class SettingsAssociationService implements SettingsAssociationServiceInt
     [
       SettingName.NAMES.LogSessionUserAgent,
       {
-        sensitive: false,
-        serverEncryptionVersion: EncryptionVersion.Unencrypted,
         value: LogSessionUserAgentOption.Enabled,
         replaceable: false,
       },
@@ -70,8 +67,6 @@ export class SettingsAssociationService implements SettingsAssociationServiceInt
     [
       SettingName.NAMES.LogSessionUserAgent,
       {
-        sensitive: false,
-        serverEncryptionVersion: EncryptionVersion.Unencrypted,
         value: LogSessionUserAgentOption.Disabled,
         replaceable: false,
       },

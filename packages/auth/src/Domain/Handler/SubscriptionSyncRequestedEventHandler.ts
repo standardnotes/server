@@ -1,9 +1,10 @@
 import { OfflineFeaturesTokenData } from '@standardnotes/security'
+import { SettingName } from '@standardnotes/settings'
+import { Username } from '@standardnotes/domain-core'
+import { ContentDecoderInterface } from '@standardnotes/common'
 import { DomainEventHandlerInterface, SubscriptionSyncRequestedEvent } from '@standardnotes/domain-events'
-import { inject, injectable } from 'inversify'
 import { Logger } from 'winston'
 
-import TYPES from '../../Bootstrap/Types'
 import { RoleServiceInterface } from '../Role/RoleServiceInterface'
 import { User } from '../User/User'
 import { UserRepositoryInterface } from '../User/UserRepositoryInterface'
@@ -11,31 +12,23 @@ import { UserSubscription } from '../Subscription/UserSubscription'
 import { UserSubscriptionRepositoryInterface } from '../Subscription/UserSubscriptionRepositoryInterface'
 import { OfflineUserSubscription } from '../Subscription/OfflineUserSubscription'
 import { OfflineUserSubscriptionRepositoryInterface } from '../Subscription/OfflineUserSubscriptionRepositoryInterface'
-import { SettingServiceInterface } from '../Setting/SettingServiceInterface'
 import { OfflineSettingServiceInterface } from '../Setting/OfflineSettingServiceInterface'
-import { ContentDecoderInterface } from '@standardnotes/common'
 import { OfflineSettingName } from '../Setting/OfflineSettingName'
-import { SettingName } from '@standardnotes/settings'
-import { EncryptionVersion } from '../Encryption/EncryptionVersion'
 import { UserSubscriptionType } from '../Subscription/UserSubscriptionType'
-import { SubscriptionSettingServiceInterface } from '../Setting/SubscriptionSettingServiceInterface'
-import { Username } from '@standardnotes/domain-core'
+import { ApplyDefaultSubscriptionSettings } from '../UseCase/ApplyDefaultSubscriptionSettings/ApplyDefaultSubscriptionSettings'
+import { SetSettingValue } from '../UseCase/SetSettingValue/SetSettingValue'
 
-@injectable()
 export class SubscriptionSyncRequestedEventHandler implements DomainEventHandlerInterface {
   constructor(
-    @inject(TYPES.Auth_UserRepository) private userRepository: UserRepositoryInterface,
-    @inject(TYPES.Auth_UserSubscriptionRepository)
+    private userRepository: UserRepositoryInterface,
     private userSubscriptionRepository: UserSubscriptionRepositoryInterface,
-    @inject(TYPES.Auth_OfflineUserSubscriptionRepository)
     private offlineUserSubscriptionRepository: OfflineUserSubscriptionRepositoryInterface,
-    @inject(TYPES.Auth_RoleService) private roleService: RoleServiceInterface,
-    @inject(TYPES.Auth_SettingService) private settingService: SettingServiceInterface,
-    @inject(TYPES.Auth_SubscriptionSettingService)
-    private subscriptionSettingService: SubscriptionSettingServiceInterface,
-    @inject(TYPES.Auth_OfflineSettingService) private offlineSettingService: OfflineSettingServiceInterface,
-    @inject(TYPES.Auth_ContenDecoder) private contentDecoder: ContentDecoderInterface,
-    @inject(TYPES.Auth_Logger) private logger: Logger,
+    private roleService: RoleServiceInterface,
+    private applyDefaultSubscriptionSettings: ApplyDefaultSubscriptionSettings,
+    private setSettingValue: SetSettingValue,
+    private offlineSettingService: OfflineSettingServiceInterface,
+    private contentDecoder: ContentDecoderInterface,
+    private logger: Logger,
   ) {}
 
   async handle(event: SubscriptionSyncRequestedEvent): Promise<void> {
@@ -95,17 +88,26 @@ export class SubscriptionSyncRequestedEventHandler implements DomainEventHandler
 
     await this.roleService.addUserRoleBasedOnSubscription(user, event.payload.subscriptionName)
 
-    await this.subscriptionSettingService.applyDefaultSubscriptionSettingsForSubscription(userSubscription)
-
-    await this.settingService.createOrReplace({
-      user,
-      props: {
-        name: SettingName.NAMES.ExtensionKey,
-        unencryptedValue: event.payload.extensionKey,
-        serverEncryptionVersion: EncryptionVersion.Default,
-        sensitive: true,
-      },
+    const applyingSettingsResult = await this.applyDefaultSubscriptionSettings.execute({
+      userSubscriptionUuid: userSubscription.uuid,
+      userUuid: user.uuid,
+      subscriptionPlanName: event.payload.subscriptionName,
     })
+    if (applyingSettingsResult.isFailed()) {
+      this.logger.error(
+        `Could not apply default subscription settings for user ${user.uuid}: ${applyingSettingsResult.getError()}`,
+      )
+    }
+
+    const result = await this.setSettingValue.execute({
+      userUuid: user.uuid,
+      settingName: SettingName.NAMES.ExtensionKey,
+      value: event.payload.subscriptionName,
+    })
+
+    if (result.isFailed()) {
+      this.logger.error(`Could not set extension key for user ${user.uuid}`)
+    }
   }
 
   private async createOrUpdateSubscription(

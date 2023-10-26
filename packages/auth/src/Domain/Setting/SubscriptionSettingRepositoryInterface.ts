@@ -1,8 +1,11 @@
+import { Uuid } from '@standardnotes/domain-core'
+
 import { SubscriptionSetting } from './SubscriptionSetting'
 
 export interface SubscriptionSettingRepositoryInterface {
-  findOneByUuid(uuid: string): Promise<SubscriptionSetting | null>
-  findLastByNameAndUserSubscriptionUuid(name: string, userSubscriptionUuid: string): Promise<SubscriptionSetting | null>
-  findAllBySubscriptionUuid(userSubscriptionUuid: string): Promise<SubscriptionSetting[]>
-  save(subscriptionSetting: SubscriptionSetting): Promise<SubscriptionSetting>
+  findOneByUuid(uuid: Uuid): Promise<SubscriptionSetting | null>
+  findLastByNameAndUserSubscriptionUuid(name: string, userSubscriptionUuid: Uuid): Promise<SubscriptionSetting | null>
+  findAllBySubscriptionUuid(userSubscriptionUuid: Uuid): Promise<SubscriptionSetting[]>
+  insert(subscriptionSetting: SubscriptionSetting): Promise<void>
+  update(subscriptionSetting: SubscriptionSetting): Promise<void>
 }

@@ -10,12 +10,17 @@ import {
 import TYPES from '../../Bootstrap/Types'
 import { GetSetting } from '../../Domain/UseCase/GetSetting/GetSetting'
 import { GetUserFeatures } from '../../Domain/UseCase/GetUserFeatures/GetUserFeatures'
+import { MapperInterface } from '@standardnotes/domain-core'
+import { Setting } from '../../Domain/Setting/Setting'
+import { SettingHttpRepresentation } from '../../Mapping/Http/SettingHttpRepresentation'
 
 @controller('/internal')
 export class AnnotatedInternalController extends BaseHttpController {
   constructor(
     @inject(TYPES.Auth_GetUserFeatures) private doGetUserFeatures: GetUserFeatures,
     @inject(TYPES.Auth_GetSetting) private doGetSetting: GetSetting,
+    @inject(TYPES.Auth_SettingHttpMapper)
+    private settingHttpMapper: MapperInterface<Setting, SettingHttpRepresentation>,
   ) {
     super()
   }
@@ -40,6 +45,7 @@ export class AnnotatedInternalController extends BaseHttpController {
       userUuid: request.params.userUuid,
       settingName: request.params.settingName,
       allowSensitiveRetrieval: true,
+      decrypted: true,
     })
 
     if (resultOrError.isFailed()) {
@@ -53,9 +59,13 @@ export class AnnotatedInternalController extends BaseHttpController {
       )
     }
 
-    return this.json({
-      success: true,
-      ...resultOrError.getValue(),
-    })
+    const settingAndValue = resultOrError.getValue()
+
+    const settingHttpRepresentation = {
+      ...this.settingHttpMapper.toProjection(settingAndValue.setting),
+      value: settingAndValue.decryptedValue,
+    }
+
+    return this.json(settingHttpRepresentation)
   }
 }

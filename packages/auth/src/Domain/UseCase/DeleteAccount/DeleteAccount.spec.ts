@@ -7,22 +7,22 @@ import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'
 import { DeleteAccount } from './DeleteAccount'
 import { UserSubscription } from '../../Subscription/UserSubscription'
 import { UserSubscriptionType } from '../../Subscription/UserSubscriptionType'
-import { UserSubscriptionServiceInterface } from '../../Subscription/UserSubscriptionServiceInterface'
 import { TimerInterface } from '@standardnotes/time'
-import { RoleName } from '@standardnotes/domain-core'
+import { Result, RoleName } from '@standardnotes/domain-core'
 import { Role } from '../../Role/Role'
+import { GetRegularSubscriptionForUser } from '../GetRegularSubscriptionForUser/GetRegularSubscriptionForUser'
 
 describe('DeleteAccount', () => {
   let userRepository: UserRepositoryInterface
   let domainEventPublisher: DomainEventPublisherInterface
   let domainEventFactory: DomainEventFactoryInterface
-  let userSubscriptionService: UserSubscriptionServiceInterface
+  let getRegularSubscription: GetRegularSubscriptionForUser
   let user: User
   let regularSubscription: UserSubscription
   let timer: TimerInterface
 
   const createUseCase = () =>
-    new DeleteAccount(userRepository, userSubscriptionService, domainEventPublisher, domainEventFactory, timer)
+    new DeleteAccount(userRepository, getRegularSubscription, domainEventPublisher, domainEventFactory, timer)
 
   beforeEach(() => {
     user = {
@@ -40,10 +40,8 @@ describe('DeleteAccount', () => {
     userRepository.findOneByUuid = jest.fn().mockReturnValue(user)
     userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue(user)
 
-    userSubscriptionService = {} as jest.Mocked<UserSubscriptionServiceInterface>
-    userSubscriptionService.findRegularSubscriptionForUserUuid = jest
-      .fn()
-      .mockReturnValue({ regularSubscription, sharedSubscription: null })
+    getRegularSubscription = {} as jest.Mocked<GetRegularSubscriptionForUser>
+    getRegularSubscription.execute = jest.fn().mockReturnValue(Result.ok(regularSubscription))
 
     domainEventPublisher = {} as jest.Mocked<DomainEventPublisherInterface>
     domainEventPublisher.publish = jest.fn()
@@ -59,9 +57,7 @@ describe('DeleteAccount', () => {
 
   describe('when user uuid is provided', () => {
     it('should trigger account deletion - no subscription', async () => {
-      userSubscriptionService.findRegularSubscriptionForUserUuid = jest
-        .fn()
-        .mockReturnValue({ regularSubscription: null, sharedSubscription: null })
+      getRegularSubscription.execute = jest.fn().mockReturnValue(Result.fail('not found'))
 
       const result = await createUseCase().execute({ userUuid: '00000000-0000-0000-0000-000000000000' })
 
@@ -76,10 +72,6 @@ describe('DeleteAccount', () => {
     })
 
     it('should trigger account deletion - subscription present', async () => {
-      userSubscriptionService.findRegularSubscriptionForUserUuid = jest
-        .fn()
-        .mockReturnValue({ regularSubscription, sharedSubscription: null })
-
       const result = await createUseCase().execute({ userUuid: '00000000-0000-0000-0000-000000000000' })
 
       expect(result.isFailed()).toBeFalsy()
@@ -116,9 +108,7 @@ describe('DeleteAccount', () => {
 
   describe('when username is provided', () => {
     it('should trigger account deletion - no subscription', async () => {
-      userSubscriptionService.findRegularSubscriptionForUserUuid = jest
-        .fn()
-        .mockReturnValue({ regularSubscription: null, sharedSubscription: null })
+      getRegularSubscription.execute = jest.fn().mockReturnValue(Result.fail('not found'))
 
       const result = await createUseCase().execute({ username: 'test@test.te' })
 
@@ -133,10 +123,6 @@ describe('DeleteAccount', () => {
     })
 
     it('should trigger account deletion - subscription present', async () => {
-      userSubscriptionService.findRegularSubscriptionForUserUuid = jest
-        .fn()
-        .mockReturnValue({ regularSubscription, sharedSubscription: null })
-
       const result = await createUseCase().execute({ username: 'test@test.te' })
 
       expect(result.isFailed()).toBeFalsy()

@@ -1,15 +1,13 @@
 import * as crypto from 'crypto'
 import * as dayjs from 'dayjs'
-import { UAParser } from 'ua-parser-js'
-import { inject, injectable } from 'inversify'
 import { v4 as uuidv4 } from 'uuid'
+import { UAParserInstance } from 'ua-parser-js'
 import { TimerInterface } from '@standardnotes/time'
 import { Logger } from 'winston'
 import { LogSessionUserAgentOption, SettingName } from '@standardnotes/settings'
 import { SessionBody } from '@standardnotes/responses'
 import { CryptoNode } from '@standardnotes/sncrypto-node'
 
-import TYPES from '../../Bootstrap/Types'
 import { Session } from './Session'
 import { SessionRepositoryInterface } from './SessionRepositoryInterface'
 import { SessionServiceInterface } from './SessionServiceInterface'
@@ -18,30 +16,27 @@ import { EphemeralSessionRepositoryInterface } from './EphemeralSessionRepositor
 import { EphemeralSession } from './EphemeralSession'
 import { RevokedSession } from './RevokedSession'
 import { RevokedSessionRepositoryInterface } from './RevokedSessionRepositoryInterface'
-import { SettingServiceInterface } from '../Setting/SettingServiceInterface'
 import { TraceSession } from '../UseCase/TraceSession/TraceSession'
 import { UserSubscriptionRepositoryInterface } from '../Subscription/UserSubscriptionRepositoryInterface'
+import { GetSetting } from '../UseCase/GetSetting/GetSetting'
 
-@injectable()
 export class SessionService implements SessionServiceInterface {
   static readonly SESSION_TOKEN_VERSION = 1
 
   constructor(
-    @inject(TYPES.Auth_SessionRepository) private sessionRepository: SessionRepositoryInterface,
-    @inject(TYPES.Auth_EphemeralSessionRepository)
+    private sessionRepository: SessionRepositoryInterface,
     private ephemeralSessionRepository: EphemeralSessionRepositoryInterface,
-    @inject(TYPES.Auth_RevokedSessionRepository) private revokedSessionRepository: RevokedSessionRepositoryInterface,
-    @inject(TYPES.Auth_DeviceDetector) private deviceDetector: UAParser,
-    @inject(TYPES.Auth_Timer) private timer: TimerInterface,
-    @inject(TYPES.Auth_Logger) private logger: Logger,
-    @inject(TYPES.Auth_ACCESS_TOKEN_AGE) private accessTokenAge: number,
-    @inject(TYPES.Auth_REFRESH_TOKEN_AGE) private refreshTokenAge: number,
-    @inject(TYPES.Auth_SettingService) private settingService: SettingServiceInterface,
-    @inject(TYPES.Auth_CryptoNode) private cryptoNode: CryptoNode,
-    @inject(TYPES.Auth_TraceSession) private traceSession: TraceSession,
-    @inject(TYPES.Auth_UserSubscriptionRepository)
+    private revokedSessionRepository: RevokedSessionRepositoryInterface,
+    private deviceDetector: UAParserInstance,
+    private timer: TimerInterface,
+    private logger: Logger,
+    private accessTokenAge: number,
+    private refreshTokenAge: number,
+    private cryptoNode: CryptoNode,
+    private traceSession: TraceSession,
     private userSubscriptionRepository: UserSubscriptionRepositoryInterface,
-    @inject(TYPES.Auth_READONLY_USERS) private readonlyUsers: string[],
+    private readonlyUsers: string[],
+    private getSetting: GetSetting,
   ) {}
 
   async createNewSessionForUser(dto: {
@@ -320,15 +315,17 @@ export class SessionService implements SessionServiceInterface {
   }
 
   private async isLoggingUserAgentEnabledOnSessions(user: User): Promise<boolean> {
-    const loggingSetting = await this.settingService.findSettingWithDecryptedValue({
-      settingName: SettingName.create(SettingName.NAMES.LogSessionUserAgent).getValue(),
+    const loggingSettingOrError = await this.getSetting.execute({
+      settingName: SettingName.NAMES.LogSessionUserAgent,
+      decrypted: true,
       userUuid: user.uuid,
+      allowSensitiveRetrieval: true,
     })
-
-    if (loggingSetting === null) {
+    if (loggingSettingOrError.isFailed()) {
       return true
     }
+    const loggingSetting = loggingSettingOrError.getValue()
 
-    return loggingSetting.value === LogSessionUserAgentOption.Enabled
+    return loggingSetting.decryptedValue === LogSessionUserAgentOption.Enabled
   }
 }

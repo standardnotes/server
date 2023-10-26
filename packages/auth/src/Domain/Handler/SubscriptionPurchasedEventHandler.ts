@@ -1,8 +1,7 @@
 import { DomainEventHandlerInterface, SubscriptionPurchasedEvent } from '@standardnotes/domain-events'
-import { inject, injectable } from 'inversify'
+import { Username } from '@standardnotes/domain-core'
 import { Logger } from 'winston'
 
-import TYPES from '../../Bootstrap/Types'
 import { RoleServiceInterface } from '../Role/RoleServiceInterface'
 import { User } from '../User/User'
 import { UserRepositoryInterface } from '../User/UserRepositoryInterface'
@@ -11,21 +10,16 @@ import { UserSubscriptionRepositoryInterface } from '../Subscription/UserSubscri
 import { OfflineUserSubscription } from '../Subscription/OfflineUserSubscription'
 import { OfflineUserSubscriptionRepositoryInterface } from '../Subscription/OfflineUserSubscriptionRepositoryInterface'
 import { UserSubscriptionType } from '../Subscription/UserSubscriptionType'
-import { SubscriptionSettingServiceInterface } from '../Setting/SubscriptionSettingServiceInterface'
-import { Username } from '@standardnotes/domain-core'
+import { ApplyDefaultSubscriptionSettings } from '../UseCase/ApplyDefaultSubscriptionSettings/ApplyDefaultSubscriptionSettings'
 
-@injectable()
 export class SubscriptionPurchasedEventHandler implements DomainEventHandlerInterface {
   constructor(
-    @inject(TYPES.Auth_UserRepository) private userRepository: UserRepositoryInterface,
-    @inject(TYPES.Auth_UserSubscriptionRepository)
+    private userRepository: UserRepositoryInterface,
     private userSubscriptionRepository: UserSubscriptionRepositoryInterface,
-    @inject(TYPES.Auth_OfflineUserSubscriptionRepository)
+    private applyDefaultSubscriptionSettings: ApplyDefaultSubscriptionSettings,
     private offlineUserSubscriptionRepository: OfflineUserSubscriptionRepositoryInterface,
-    @inject(TYPES.Auth_RoleService) private roleService: RoleServiceInterface,
-    @inject(TYPES.Auth_SubscriptionSettingService)
-    private subscriptionSettingService: SubscriptionSettingServiceInterface,
-    @inject(TYPES.Auth_Logger) private logger: Logger,
+    private roleService: RoleServiceInterface,
+    private logger: Logger,
   ) {}
 
   async handle(event: SubscriptionPurchasedEvent): Promise<void> {
@@ -66,7 +60,15 @@ export class SubscriptionPurchasedEventHandler implements DomainEventHandlerInte
 
     await this.addUserRole(user, event.payload.subscriptionName)
 
-    await this.subscriptionSettingService.applyDefaultSubscriptionSettingsForSubscription(userSubscription)
+    const result = await this.applyDefaultSubscriptionSettings.execute({
+      userSubscriptionUuid: userSubscription.uuid,
+      userUuid: user.uuid,
+      subscriptionPlanName: event.payload.subscriptionName,
+    })
+
+    if (result.isFailed()) {
+      this.logger.error(`Could not apply default subscription settings for user ${user.uuid}: ${result.getError()}`)
+    }
   }
 
   private async addUserRole(user: User, subscriptionName: string): Promise<void> {

@@ -19,4 +19,16 @@ describe('Username', () => {
 
     expect(valueOrError.isFailed()).toBeTruthy()
   })
+
+  it('should indicate if the username is potentially a vault account', () => {
+    const value = Username.create('a75a31ce95365904ef0e0a8e6cefc1f5e99adfef81bbdb6d4499eeb10ae0ff67').getValue()
+
+    expect(value.isPotentiallyAPrivateUsernameAccount()).toBeTruthy()
+  })
+
+  it('should indicate if the user is not a vault account', () => {
+    const value = Username.create('test@test.te').getValue()
+
+    expect(value.isPotentiallyAPrivateUsernameAccount()).toBeFalsy()
+  })
 })

@@ -62,8 +62,8 @@ const requestBackups = async (
               muteEmailsSettingName,
               setting.setting_user_uuid,
             )
-            if (emailsMutedSetting !== null && emailsMutedSetting.value !== null) {
-              userHasEmailsMuted = emailsMutedSetting.value === muteEmailsSettingValue
+            if (emailsMutedSetting !== null && emailsMutedSetting.props.value !== null) {
+              userHasEmailsMuted = emailsMutedSetting.props.value === muteEmailsSettingValue
             }
 
             const keyParamsResponse = await getUserKeyParamsUseCase.execute({
@@ -74,7 +74,7 @@ const requestBackups = async (
             await domainEventPublisher.publish(
               domainEventFactory.createEmailBackupRequestedEvent(
                 setting.setting_user_uuid,
-                emailsMutedSetting?.uuid as string,
+                emailsMutedSetting?.id.toString() as string,
                 userHasEmailsMuted,
                 keyParamsResponse.keyParams,
               ),

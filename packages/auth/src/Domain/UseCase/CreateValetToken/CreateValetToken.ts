@@ -1,42 +1,42 @@
-import { inject, injectable } from 'inversify'
 import { SubscriptionName } from '@standardnotes/common'
 import { TimerInterface } from '@standardnotes/time'
 import { TokenEncoderInterface, ValetTokenData } from '@standardnotes/security'
 import { CreateValetTokenResponseData } from '@standardnotes/responses'
 import { SettingName } from '@standardnotes/settings'
 
-import TYPES from '../../../Bootstrap/Types'
 import { UseCaseInterface } from '../UseCaseInterface'
-import { SubscriptionSettingServiceInterface } from '../../Setting/SubscriptionSettingServiceInterface'
 
 import { CreateValetTokenDTO } from './CreateValetTokenDTO'
 import { SubscriptionSettingsAssociationServiceInterface } from '../../Setting/SubscriptionSettingsAssociationServiceInterface'
-import { UserSubscriptionServiceInterface } from '../../Subscription/UserSubscriptionServiceInterface'
 import { CreateValetTokenPayload } from '../../ValetToken/CreateValetTokenPayload'
+import { GetRegularSubscriptionForUser } from '../GetRegularSubscriptionForUser/GetRegularSubscriptionForUser'
+import { GetSharedSubscriptionForUser } from '../GetSharedSubscriptionForUser/GetSharedSubscriptionForUser'
+import { GetSubscriptionSetting } from '../GetSubscriptionSetting/GetSubscriptionSetting'
 
-@injectable()
 export class CreateValetToken implements UseCaseInterface {
   constructor(
-    @inject(TYPES.Auth_ValetTokenEncoder) private tokenEncoder: TokenEncoderInterface<ValetTokenData>,
-    @inject(TYPES.Auth_SubscriptionSettingService)
-    private subscriptionSettingService: SubscriptionSettingServiceInterface,
-    @inject(TYPES.Auth_SubscriptionSettingsAssociationService)
+    private tokenEncoder: TokenEncoderInterface<ValetTokenData>,
     private subscriptionSettingsAssociationService: SubscriptionSettingsAssociationServiceInterface,
-    @inject(TYPES.Auth_UserSubscriptionService) private userSubscriptionService: UserSubscriptionServiceInterface,
-    @inject(TYPES.Auth_Timer) private timer: TimerInterface,
-    @inject(TYPES.Auth_VALET_TOKEN_TTL) private valetTokenTTL: number,
+    private getRegularSubscription: GetRegularSubscriptionForUser,
+    private getSharedSubscription: GetSharedSubscriptionForUser,
+    private getSubscriptionSetting: GetSubscriptionSetting,
+    private timer: TimerInterface,
+    private valetTokenTTL: number,
   ) {}
 
   async execute(dto: CreateValetTokenDTO): Promise<CreateValetTokenResponseData> {
     const { userUuid, ...payload } = dto
-    const { regularSubscription, sharedSubscription } =
-      await this.userSubscriptionService.findRegularSubscriptionForUserUuid(userUuid)
-    if (regularSubscription === null) {
+
+    const regularSubscriptionOrError = await this.getRegularSubscription.execute({
+      userUuid: dto.userUuid,
+    })
+    if (regularSubscriptionOrError.isFailed()) {
       return {
         success: false,
         reason: 'no-subscription',
       }
     }
+    const regularSubscription = regularSubscriptionOrError.getValue()
 
     if (regularSubscription.endsAt < this.timer.getTimestampInMicroseconds()) {
       return {
@@ -52,34 +52,37 @@ export class CreateValetToken implements UseCaseInterface {
       }
     }
 
-    const regularSubscriptionUserUuid = (await regularSubscription.user).uuid
-
     let uploadBytesUsed = 0
-    const uploadBytesUsedSetting = await this.subscriptionSettingService.findSubscriptionSettingWithDecryptedValue({
-      userUuid: regularSubscriptionUserUuid,
+    const uploadBytesUsedSettingOrError = await this.getSubscriptionSetting.execute({
       userSubscriptionUuid: regularSubscription.uuid,
-      subscriptionSettingName: SettingName.create(SettingName.NAMES.FileUploadBytesUsed).getValue(),
+      settingName: SettingName.NAMES.FileUploadBytesUsed,
+      allowSensitiveRetrieval: false,
     })
-    if (uploadBytesUsedSetting !== null) {
-      uploadBytesUsed = +(uploadBytesUsedSetting.value as string)
+    if (!uploadBytesUsedSettingOrError.isFailed()) {
+      const uploadBytesUsedSetting = uploadBytesUsedSettingOrError.getValue()
+      uploadBytesUsed = +(uploadBytesUsedSetting.setting.props.value as string)
     }
 
     const defaultUploadBytesLimitForSubscription = await this.subscriptionSettingsAssociationService.getFileUploadLimit(
       regularSubscription.planName as SubscriptionName,
     )
     let uploadBytesLimit = defaultUploadBytesLimitForSubscription
-    const overwriteWithUserUploadBytesLimitSetting =
-      await this.subscriptionSettingService.findSubscriptionSettingWithDecryptedValue({
-        userUuid: regularSubscriptionUserUuid,
-        userSubscriptionUuid: regularSubscription.uuid,
-        subscriptionSettingName: SettingName.create(SettingName.NAMES.FileUploadBytesLimit).getValue(),
-      })
-    if (overwriteWithUserUploadBytesLimitSetting !== null) {
-      uploadBytesLimit = +(overwriteWithUserUploadBytesLimitSetting.value as string)
+    const overwriteWithUserUploadBytesLimitSettingOrError = await this.getSubscriptionSetting.execute({
+      userSubscriptionUuid: regularSubscription.uuid,
+      settingName: SettingName.NAMES.FileUploadBytesLimit,
+      allowSensitiveRetrieval: false,
+    })
+    if (!overwriteWithUserUploadBytesLimitSettingOrError.isFailed()) {
+      const overwriteWithUserUploadBytesLimitSetting = overwriteWithUserUploadBytesLimitSettingOrError.getValue()
+      uploadBytesLimit = +(overwriteWithUserUploadBytesLimitSetting.setting.props.value as string)
     }
 
     let sharedSubscriptionUuid = undefined
-    if (sharedSubscription !== null) {
+    const sharedSubscriptionOrError = await this.getSharedSubscription.execute({
+      userUuid,
+    })
+    if (!sharedSubscriptionOrError.isFailed()) {
+      const sharedSubscription = sharedSubscriptionOrError.getValue()
       sharedSubscriptionUuid = sharedSubscription.uuid
     }
 

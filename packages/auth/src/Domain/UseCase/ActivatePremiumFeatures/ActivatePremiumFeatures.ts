@@ -7,14 +7,14 @@ import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'
 import { UserSubscription } from '../../Subscription/UserSubscription'
 import { UserSubscriptionType } from '../../Subscription/UserSubscriptionType'
 import { ActivatePremiumFeaturesDTO } from './ActivatePremiumFeaturesDTO'
-import { SubscriptionSettingServiceInterface } from '../../Setting/SubscriptionSettingServiceInterface'
 import { SettingName } from '@standardnotes/settings'
+import { ApplyDefaultSubscriptionSettings } from '../ApplyDefaultSubscriptionSettings/ApplyDefaultSubscriptionSettings'
 
 export class ActivatePremiumFeatures implements UseCaseInterface<string> {
   constructor(
     private userRepository: UserRepositoryInterface,
     private userSubscriptionRepository: UserSubscriptionRepositoryInterface,
-    private subscriptionSettingService: SubscriptionSettingServiceInterface,
+    private applyDefaultSubscriptionSettings: ApplyDefaultSubscriptionSettings,
     private roleService: RoleServiceInterface,
     private timer: TimerInterface,
   ) {}
@@ -66,10 +66,12 @@ export class ActivatePremiumFeatures implements UseCaseInterface<string> {
 
     await this.roleService.addUserRoleBasedOnSubscription(user, subscriptionPlanName.value)
 
-    await this.subscriptionSettingService.applyDefaultSubscriptionSettingsForSubscription(
-      subscription,
-      new Map([[SettingName.NAMES.FileUploadBytesLimit, `${dto.uploadBytesLimit ?? -1}`]]),
-    )
+    await this.applyDefaultSubscriptionSettings.execute({
+      userSubscriptionUuid: subscription.uuid,
+      userUuid: user.uuid,
+      subscriptionPlanName: subscriptionPlanName.value,
+      overrides: new Map([[SettingName.NAMES.FileUploadBytesLimit, `${dto.uploadBytesLimit ?? -1}`]]),
+    })
 
     return Result.ok('Premium features activated.')
   }

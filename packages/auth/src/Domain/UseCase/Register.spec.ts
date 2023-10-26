@@ -8,26 +8,32 @@ import { User } from '../User/User'
 
 import { UserRepositoryInterface } from '../User/UserRepositoryInterface'
 import { Register } from './Register'
-import { SettingServiceInterface } from '../Setting/SettingServiceInterface'
 import { AuthResponseFactory20200115 } from '../Auth/AuthResponseFactory20200115'
 import { Session } from '../Session/Session'
-import { RoleName } from '@standardnotes/domain-core'
+import { Result, RoleName } from '@standardnotes/domain-core'
+import { ApplyDefaultSettings } from './ApplyDefaultSettings/ApplyDefaultSettings'
 
 describe('Register', () => {
   let userRepository: UserRepositoryInterface
   let roleRepository: RoleRepositoryInterface
   let authResponseFactory: AuthResponseFactory20200115
-  let settingService: SettingServiceInterface
+  let applyDefaultSettings: ApplyDefaultSettings
   let user: User
   let crypter: CrypterInterface
   let timer: TimerInterface
 
   const createUseCase = () =>
-    new Register(userRepository, roleRepository, authResponseFactory, crypter, false, settingService, timer)
+    new Register(userRepository, roleRepository, authResponseFactory, crypter, false, timer, applyDefaultSettings)
 
   beforeEach(() => {
     userRepository = {} as jest.Mocked<UserRepositoryInterface>
-    userRepository.save = jest.fn()
+    userRepository.save = jest.fn().mockImplementation((user: User) => {
+      user.uuid = 'test'
+      user.createdAt = new Date(1)
+      user.updatedAt = new Date(1)
+
+      return user
+    })
     userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue(null)
 
     roleRepository = {} as jest.Mocked<RoleRepositoryInterface>
@@ -43,8 +49,8 @@ describe('Register', () => {
 
     user = {} as jest.Mocked<User>
 
-    settingService = {} as jest.Mocked<SettingServiceInterface>
-    settingService.applyDefaultSettingsUponRegistration = jest.fn()
+    applyDefaultSettings = {} as jest.Mocked<ApplyDefaultSettings>
+    applyDefaultSettings.execute = jest.fn().mockReturnValue(Result.ok())
 
     timer = {} as jest.Mocked<TimerInterface>
     timer.getUTCDate = jest.fn().mockReturnValue(new Date(1))
@@ -81,7 +87,7 @@ describe('Register', () => {
       updatedAt: new Date(1),
     })
 
-    expect(settingService.applyDefaultSettingsUponRegistration).toHaveBeenCalled()
+    expect(applyDefaultSettings.execute).toHaveBeenCalled()
   })
 
   it('should register a new user with default set of roles', async () => {
@@ -118,6 +124,27 @@ describe('Register', () => {
       createdAt: new Date(1),
       updatedAt: new Date(1),
       roles: Promise.resolve([role]),
+    })
+  })
+
+  it('should fail to register if applying default settings fails', async () => {
+    applyDefaultSettings.execute = jest.fn().mockReturnValue(Result.fail('error'))
+
+    expect(
+      await createUseCase().execute({
+        email: 'test@test.te',
+        password: 'asdzxc',
+        updatedWithUserAgent: 'Mozilla',
+        apiVersion: '20200115',
+        ephemeralSession: false,
+        version: '004',
+        pwCost: 11,
+        pwSalt: 'qweqwe',
+        pwNonce: undefined,
+      }),
+    ).toEqual({
+      success: false,
+      errorMessage: 'error',
     })
   })
 
@@ -196,8 +223,8 @@ describe('Register', () => {
         authResponseFactory,
         crypter,
         true,
-        settingService,
         timer,
+        applyDefaultSettings,
       ).execute({
         email: 'test@test.te',
         password: 'asdzxc',

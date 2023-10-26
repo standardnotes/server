@@ -1,20 +1,20 @@
+import { Result } from '@standardnotes/domain-core'
 import { Setting } from '../../Setting/Setting'
-import { SettingServiceInterface } from '../../Setting/SettingServiceInterface'
 import { KeyParamsFactoryInterface } from '../../User/KeyParamsFactoryInterface'
 import { PKCERepositoryInterface } from '../../User/PKCERepositoryInterface'
 import { User } from '../../User/User'
 import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'
+import { GetSetting } from '../GetSetting/GetSetting'
 import { GetUserKeyParamsRecovery } from './GetUserKeyParamsRecovery'
 
 describe('GetUserKeyParamsRecovery', () => {
   let keyParamsFactory: KeyParamsFactoryInterface
   let userRepository: UserRepositoryInterface
-  let settingService: SettingServiceInterface
+  let getSetting: GetSetting
   let user: User
   let pkceRepository: PKCERepositoryInterface
 
-  const createUseCase = () =>
-    new GetUserKeyParamsRecovery(keyParamsFactory, userRepository, pkceRepository, settingService)
+  const createUseCase = () => new GetUserKeyParamsRecovery(keyParamsFactory, userRepository, pkceRepository, getSetting)
 
   beforeEach(() => {
     keyParamsFactory = {} as jest.Mocked<KeyParamsFactoryInterface>
@@ -26,8 +26,10 @@ describe('GetUserKeyParamsRecovery', () => {
     userRepository = {} as jest.Mocked<UserRepositoryInterface>
     userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue(user)
 
-    settingService = {} as jest.Mocked<SettingServiceInterface>
-    settingService.findSettingWithDecryptedValue = jest.fn().mockReturnValue({ value: 'foo' } as Setting)
+    getSetting = {} as jest.Mocked<GetSetting>
+    getSetting.execute = jest
+      .fn()
+      .mockReturnValue(Result.ok({ setting: {} as jest.Mocked<Setting>, decryptedValue: 'foo' }))
 
     pkceRepository = {} as jest.Mocked<PKCERepositoryInterface>
     pkceRepository.storeCodeChallenge = jest.fn()
@@ -80,7 +82,7 @@ describe('GetUserKeyParamsRecovery', () => {
   })
 
   it('should return error if user has no recovery codes generated', async () => {
-    settingService.findSettingWithDecryptedValue = jest.fn().mockReturnValue(null)
+    getSetting.execute = jest.fn().mockReturnValue(Result.fail('not found'))
 
     const result = await createUseCase().execute({
       username: 'username',

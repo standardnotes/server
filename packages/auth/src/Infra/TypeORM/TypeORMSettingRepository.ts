@@ -1,32 +1,46 @@
 import { SettingName } from '@standardnotes/settings'
 import { ReadStream } from 'fs'
-import { inject, injectable } from 'inversify'
 import { Repository } from 'typeorm'
-import TYPES from '../../Bootstrap/Types'
+
 import { Setting } from '../../Domain/Setting/Setting'
 import { SettingRepositoryInterface } from '../../Domain/Setting/SettingRepositoryInterface'
 import { DeleteSettingDto } from '../../Domain/UseCase/DeleteSetting/DeleteSettingDto'
+import { TypeORMSetting } from './TypeORMSetting'
+import { MapperInterface } from '@standardnotes/domain-core'
 
-@injectable()
 export class TypeORMSettingRepository implements SettingRepositoryInterface {
   constructor(
-    @inject(TYPES.Auth_ORMSettingRepository)
-    private ormRepository: Repository<Setting>,
+    private ormRepository: Repository<TypeORMSetting>,
+    private mapper: MapperInterface<Setting, TypeORMSetting>,
   ) {}
 
-  async save(setting: Setting): Promise<Setting> {
-    return this.ormRepository.save(setting)
+  async insert(setting: Setting): Promise<void> {
+    const persistence = this.mapper.toProjection(setting)
+
+    await this.ormRepository.insert(persistence)
+  }
+
+  async update(setting: Setting): Promise<void> {
+    const persistence = this.mapper.toProjection(setting)
+
+    await this.ormRepository.update(persistence.uuid, persistence)
   }
 
   async findOneByUuidAndNames(uuid: string, names: SettingName[]): Promise<Setting | null> {
     const nameValues = names.map((name) => name.value)
-    return this.ormRepository
+    const persistence = await this.ormRepository
       .createQueryBuilder('setting')
       .where('setting.uuid = :uuid AND setting.name IN (:...names)', {
         names: nameValues,
         uuid,
       })
       .getOne()
+
+    if (persistence === null) {
+      return null
+    }
+
+    return this.mapper.toDomain(persistence)
   }
 
   async streamAllByName(name: SettingName): Promise<ReadStream> {
@@ -51,22 +65,34 @@ export class TypeORMSettingRepository implements SettingRepositoryInterface {
   }
 
   async findOneByUuid(uuid: string): Promise<Setting | null> {
-    return this.ormRepository
+    const persistence = await this.ormRepository
       .createQueryBuilder('setting')
       .where('setting.uuid = :uuid', {
         uuid,
       })
       .getOne()
+
+    if (persistence === null) {
+      return null
+    }
+
+    return this.mapper.toDomain(persistence)
   }
 
   async findOneByNameAndUserUuid(name: string, userUuid: string): Promise<Setting | null> {
-    return this.ormRepository
+    const persistence = await this.ormRepository
       .createQueryBuilder('setting')
       .where('setting.name = :name AND setting.user_uuid = :user_uuid', {
         name,
         user_uuid: userUuid,
       })
       .getOne()
+
+    if (persistence === null) {
+      return null
+    }
+
+    return this.mapper.toDomain(persistence)
   }
 
   async findLastByNameAndUserUuid(name: string, userUuid: string): Promise<Setting | null> {
@@ -84,16 +110,18 @@ export class TypeORMSettingRepository implements SettingRepositoryInterface {
       return null
     }
 
-    return settings.pop() as Setting
+    return this.mapper.toDomain(settings.pop() as TypeORMSetting)
   }
 
   async findAllByUserUuid(userUuid: string): Promise<Setting[]> {
-    return this.ormRepository
+    const persistence = await this.ormRepository
       .createQueryBuilder('setting')
       .where('setting.user_uuid = :user_uuid', {
         user_uuid: userUuid,
       })
       .getMany()
+
+    return persistence.map((p) => this.mapper.toDomain(p))
   }
 
   async deleteByUserUuid({ settingName, userUuid }: DeleteSettingDto): Promise<void> {

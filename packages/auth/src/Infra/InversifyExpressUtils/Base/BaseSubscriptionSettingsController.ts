@@ -1,12 +1,17 @@
-import { ControllerContainerInterface } from '@standardnotes/domain-core'
+import { ControllerContainerInterface, MapperInterface } from '@standardnotes/domain-core'
 import { BaseHttpController, results } from 'inversify-express-utils'
 import { Request, Response } from 'express'
 
-import { GetSetting } from '../../../Domain/UseCase/GetSetting/GetSetting'
+import { GetSubscriptionSetting } from '../../../Domain/UseCase/GetSubscriptionSetting/GetSubscriptionSetting'
+import { GetSharedOrRegularSubscriptionForUser } from '../../../Domain/UseCase/GetSharedOrRegularSubscriptionForUser/GetSharedOrRegularSubscriptionForUser'
+import { SubscriptionSetting } from '../../../Domain/Setting/SubscriptionSetting'
+import { SubscriptionSettingHttpRepresentation } from '../../../Mapping/Http/SubscriptionSettingHttpRepresentation'
 
 export class BaseSubscriptionSettingsController extends BaseHttpController {
   constructor(
-    protected doGetSetting: GetSetting,
+    protected doGetSetting: GetSubscriptionSetting,
+    protected getSharedOrRegularSubscription: GetSharedOrRegularSubscriptionForUser,
+    protected subscriptionSettingMapper: MapperInterface<SubscriptionSetting, SubscriptionSettingHttpRepresentation>,
     private controllerContainer?: ControllerContainerInterface,
   ) {
     super()
@@ -17,8 +22,24 @@ export class BaseSubscriptionSettingsController extends BaseHttpController {
   }
 
   async getSubscriptionSetting(request: Request, response: Response): Promise<results.JsonResult> {
-    const resultOrError = await this.doGetSetting.execute({
+    const subscriptionOrError = await this.getSharedOrRegularSubscription.execute({
       userUuid: response.locals.user.uuid,
+    })
+    if (subscriptionOrError.isFailed()) {
+      return this.json(
+        {
+          error: {
+            message: subscriptionOrError.getError(),
+          },
+        },
+        400,
+      )
+    }
+    const subscription = subscriptionOrError.getValue()
+
+    const resultOrError = await this.doGetSetting.execute({
+      userSubscriptionUuid: subscription.uuid,
+      allowSensitiveRetrieval: false,
       settingName: request.params.subscriptionSettingName.toUpperCase(),
     })
 
@@ -33,9 +54,11 @@ export class BaseSubscriptionSettingsController extends BaseHttpController {
       )
     }
 
+    const settingAndValue = resultOrError.getValue()
+
     return this.json({
       success: true,
-      ...resultOrError.getValue(),
+      setting: this.subscriptionSettingMapper.toProjection(settingAndValue.setting),
     })
   }
 }

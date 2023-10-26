@@ -95,16 +95,22 @@ export class TypeORMUserSubscriptionRepository implements UserSubscriptionReposi
       .orderBy('ends_at', 'DESC')
       .getMany()
 
-    const uncanceled = subscriptions.find((subscription) => !subscription.cancelled)
-    if (uncanceled !== undefined) {
-      return uncanceled
-    }
+    return this.firstUncancelled(subscriptions)
+  }
 
-    if (subscriptions.length !== 0) {
-      return subscriptions[0]
-    }
+  async findOneByUserUuidAndType(userUuid: string, type: UserSubscriptionType): Promise<UserSubscription | null> {
+    const subscriptions = await this.ormRepository
+      .createQueryBuilder()
+      .where('user_uuid = :user_uuid', {
+        user_uuid: userUuid,
+      })
+      .andWhere('subscription_type = :type', {
+        type,
+      })
+      .orderBy('ends_at', 'DESC')
+      .getMany()
 
-    return null
+    return this.firstUncancelled(subscriptions)
   }
 
   async updateEndsAt(subscriptionId: number, endsAt: number, timestamp: number): Promise<void> {
@@ -134,5 +140,18 @@ export class TypeORMUserSubscriptionRepository implements UserSubscriptionReposi
         subscriptionId,
       })
       .execute()
+  }
+
+  private firstUncancelled(subscriptions: UserSubscription[]): UserSubscription | null {
+    const uncanceled = subscriptions.find((subscription) => !subscription.cancelled)
+    if (uncanceled !== undefined) {
+      return uncanceled
+    }
+
+    if (subscriptions.length !== 0) {
+      return subscriptions[0]
+    }
+
+    return null
   }
 }

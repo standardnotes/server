@@ -1,19 +1,18 @@
 import { Username } from '@standardnotes/domain-core'
 import { DomainEventHandlerInterface, ListedAccountDeletedEvent } from '@standardnotes/domain-events'
 import { ListedAuthorSecretsData, SettingName } from '@standardnotes/settings'
-import { inject, injectable } from 'inversify'
 import { Logger } from 'winston'
 
-import TYPES from '../../Bootstrap/Types'
-import { SettingServiceInterface } from '../Setting/SettingServiceInterface'
 import { UserRepositoryInterface } from '../User/UserRepositoryInterface'
+import { GetSetting } from '../UseCase/GetSetting/GetSetting'
+import { SetSettingValue } from '../UseCase/SetSettingValue/SetSettingValue'
 
-@injectable()
 export class ListedAccountDeletedEventHandler implements DomainEventHandlerInterface {
   constructor(
-    @inject(TYPES.Auth_UserRepository) private userRepository: UserRepositoryInterface,
-    @inject(TYPES.Auth_SettingService) private settingService: SettingServiceInterface,
-    @inject(TYPES.Auth_Logger) private logger: Logger,
+    private userRepository: UserRepositoryInterface,
+    private getSetting: GetSetting,
+    private setSettingValue: SetSettingValue,
+    private logger: Logger,
   ) {}
 
   async handle(event: ListedAccountDeletedEvent): Promise<void> {
@@ -31,30 +30,35 @@ export class ListedAccountDeletedEventHandler implements DomainEventHandlerInter
       return
     }
 
-    const listedAuthorSecretsSetting = await this.settingService.findSettingWithDecryptedValue({
-      settingName: SettingName.create(SettingName.NAMES.ListedAuthorSecrets).getValue(),
+    const listedAuthorSecretsSettingOrError = await this.getSetting.execute({
+      settingName: SettingName.NAMES.ListedAuthorSecrets,
+      decrypted: true,
       userUuid: user.uuid,
+      allowSensitiveRetrieval: false,
     })
-    if (listedAuthorSecretsSetting === null) {
-      this.logger.warn(`Could not find listed secrets setting for user ${user.uuid}`)
+    if (listedAuthorSecretsSettingOrError.isFailed()) {
+      this.logger.error(`Could not find listed secrets setting for user ${user.uuid}`)
 
       return
     }
 
-    const existingSecrets: ListedAuthorSecretsData = JSON.parse(listedAuthorSecretsSetting.value as string)
+    const listedAuthorSecretsSetting = listedAuthorSecretsSettingOrError.getValue()
+
+    const existingSecrets: ListedAuthorSecretsData = JSON.parse(listedAuthorSecretsSetting.decryptedValue as string)
     const filteredSecrets = existingSecrets.filter(
       (secret) =>
         secret.authorId !== event.payload.userId ||
         (secret.authorId === event.payload.userId && secret.hostUrl !== event.payload.hostUrl),
     )
 
-    await this.settingService.createOrReplace({
-      user,
-      props: {
-        name: SettingName.NAMES.ListedAuthorSecrets,
-        unencryptedValue: JSON.stringify(filteredSecrets),
-        sensitive: false,
-      },
+    const result = await this.setSettingValue.execute({
+      settingName: SettingName.NAMES.ListedAuthorSecrets,
+      value: JSON.stringify(filteredSecrets),
+      userUuid: user.uuid,
     })
+
+    if (result.isFailed()) {
+      this.logger.error(`Could not update listed author secrets for user with uuid ${user.uuid}`)
+    }
   }
 }

@@ -54,8 +54,8 @@ export class SettingInterpreter implements SettingInterpreterInterface {
       userUuid,
     )
     if (muteFailedEmailsBackupSetting !== null) {
-      userHasEmailsMuted = muteFailedEmailsBackupSetting.value === MuteFailedBackupsEmailsOption.Muted
-      muteEmailsSettingUuid = muteFailedEmailsBackupSetting.uuid
+      userHasEmailsMuted = muteFailedEmailsBackupSetting.props.value === MuteFailedBackupsEmailsOption.Muted
+      muteEmailsSettingUuid = muteFailedEmailsBackupSetting.id.toString()
     }
 
     const keyParamsResponse = await this.getUserKeyParams.execute({

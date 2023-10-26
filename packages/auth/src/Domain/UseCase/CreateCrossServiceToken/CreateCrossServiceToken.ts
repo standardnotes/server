@@ -1,8 +1,7 @@
 import { TokenEncoderInterface, CrossServiceTokenData } from '@standardnotes/security'
-import { inject, injectable } from 'inversify'
 import { Result, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
+import { SettingName } from '@standardnotes/settings'
 
-import TYPES from '../../../Bootstrap/Types'
 import { ProjectorInterface } from '../../../Projection/ProjectorInterface'
 import { Role } from '../../Role/Role'
 import { Session } from '../../Session/Session'
@@ -10,22 +9,21 @@ import { User } from '../../User/User'
 import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'
 
 import { CreateCrossServiceTokenDTO } from './CreateCrossServiceTokenDTO'
-import { GetSetting } from '../GetSetting/GetSetting'
-import { SettingName } from '@standardnotes/settings'
 import { SharedVaultUserRepositoryInterface } from '../../SharedVault/SharedVaultUserRepositoryInterface'
+import { GetSubscriptionSetting } from '../GetSubscriptionSetting/GetSubscriptionSetting'
+import { GetRegularSubscriptionForUser } from '../GetRegularSubscriptionForUser/GetRegularSubscriptionForUser'
 
-@injectable()
 export class CreateCrossServiceToken implements UseCaseInterface<string> {
   constructor(
-    @inject(TYPES.Auth_UserProjector) private userProjector: ProjectorInterface<User>,
-    @inject(TYPES.Auth_SessionProjector) private sessionProjector: ProjectorInterface<Session>,
-    @inject(TYPES.Auth_RoleProjector) private roleProjector: ProjectorInterface<Role>,
-    @inject(TYPES.Auth_CrossServiceTokenEncoder) private tokenEncoder: TokenEncoderInterface<CrossServiceTokenData>,
-    @inject(TYPES.Auth_UserRepository) private userRepository: UserRepositoryInterface,
-    @inject(TYPES.Auth_AUTH_JWT_TTL) private jwtTTL: number,
-    @inject(TYPES.Auth_GetSetting)
-    private getSettingUseCase: GetSetting,
-    @inject(TYPES.Auth_SharedVaultUserRepository) private sharedVaultUserRepository: SharedVaultUserRepositoryInterface,
+    private userProjector: ProjectorInterface<User>,
+    private sessionProjector: ProjectorInterface<Session>,
+    private roleProjector: ProjectorInterface<Role>,
+    private tokenEncoder: TokenEncoderInterface<CrossServiceTokenData>,
+    private userRepository: UserRepositoryInterface,
+    private jwtTTL: number,
+    private getRegularSubscription: GetRegularSubscriptionForUser,
+    private getSubscriptionSettingUseCase: GetSubscriptionSetting,
+    private sharedVaultUserRepository: SharedVaultUserRepositoryInterface,
   ) {}
 
   async execute(dto: CreateCrossServiceTokenDTO): Promise<Result<string>> {
@@ -61,18 +59,24 @@ export class CreateCrossServiceToken implements UseCaseInterface<string> {
     }
 
     if (dto.sharedVaultOwnerContext !== undefined) {
-      const uploadBytesLimitSettingOrError = await this.getSettingUseCase.execute({
-        settingName: SettingName.NAMES.FileUploadBytesLimit,
+      const regularSubscriptionOrError = await this.getRegularSubscription.execute({
         userUuid: dto.sharedVaultOwnerContext,
+      })
+      if (regularSubscriptionOrError.isFailed()) {
+        return Result.fail(regularSubscriptionOrError.getError())
+      }
+      const regularSubscription = regularSubscriptionOrError.getValue()
+
+      const uploadBytesLimitSettingOrError = await this.getSubscriptionSettingUseCase.execute({
+        settingName: SettingName.NAMES.FileUploadBytesLimit,
+        userSubscriptionUuid: regularSubscription.uuid,
+        allowSensitiveRetrieval: false,
       })
       if (uploadBytesLimitSettingOrError.isFailed()) {
         return Result.fail(uploadBytesLimitSettingOrError.getError())
       }
       const uploadBytesLimitSetting = uploadBytesLimitSettingOrError.getValue()
-      if (uploadBytesLimitSetting.sensitive) {
-        return Result.fail('Shared vault owner upload bytes limit setting is sensitive!')
-      }
-      const uploadBytesLimit = parseInt(uploadBytesLimitSetting.setting.value as string)
+      const uploadBytesLimit = parseInt(uploadBytesLimitSetting.setting.props.value as string)
 
       authTokenData.shared_vault_owner_context = {
         upload_bytes_limit: uploadBytesLimit,

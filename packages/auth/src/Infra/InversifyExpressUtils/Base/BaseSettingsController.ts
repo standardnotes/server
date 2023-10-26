@@ -1,20 +1,28 @@
-import { ControllerContainerInterface } from '@standardnotes/domain-core'
+import { ControllerContainerInterface, MapperInterface } from '@standardnotes/domain-core'
+import { BaseHttpController, results } from 'inversify-express-utils'
 import { ErrorTag } from '@standardnotes/responses'
 import { Request, Response } from 'express'
 
 import { DeleteSetting } from '../../../Domain/UseCase/DeleteSetting/DeleteSetting'
 import { GetSetting } from '../../../Domain/UseCase/GetSetting/GetSetting'
-import { GetSettings } from '../../../Domain/UseCase/GetSettings/GetSettings'
-import { UpdateSetting } from '../../../Domain/UseCase/UpdateSetting/UpdateSetting'
-import { BaseHttpController, results } from 'inversify-express-utils'
-import { EncryptionVersion } from '../../../Domain/Encryption/EncryptionVersion'
+import { GetAllSettingsForUser } from '../../../Domain/UseCase/GetAllSettingsForUser/GetAllSettingsForUser'
+import { SetSettingValue } from '../../../Domain/UseCase/SetSettingValue/SetSettingValue'
+import { Setting } from '../../../Domain/Setting/Setting'
+import { SubscriptionSetting } from '../../../Domain/Setting/SubscriptionSetting'
+import { SubscriptionSettingHttpRepresentation } from '../../../Mapping/Http/SubscriptionSettingHttpRepresentation'
+import { SettingHttpRepresentation } from '../../../Mapping/Http/SettingHttpRepresentation'
 
 export class BaseSettingsController extends BaseHttpController {
   constructor(
-    protected doGetSettings: GetSettings,
+    protected doGetSettings: GetAllSettingsForUser,
     protected doGetSetting: GetSetting,
-    protected doUpdateSetting: UpdateSetting,
+    protected setSettingValue: SetSettingValue,
     protected doDeleteSetting: DeleteSetting,
+    protected settingHttMapper: MapperInterface<Setting, SettingHttpRepresentation>,
+    protected subscriptionSettingHttpMapper: MapperInterface<
+      SubscriptionSetting,
+      SubscriptionSettingHttpRepresentation
+    >,
     private controllerContainer?: ControllerContainerInterface,
   ) {
     super()
@@ -41,8 +49,36 @@ export class BaseSettingsController extends BaseHttpController {
 
     const { userUuid } = request.params
     const result = await this.doGetSettings.execute({ userUuid })
+    if (result.isFailed()) {
+      return this.json(
+        {
+          error: {
+            message: result.getError(),
+          },
+        },
+        400,
+      )
+    }
+    const settingsAndSubscriptionSettings = result.getValue()
 
-    return this.json(result)
+    const settingsHttpRepresentation = settingsAndSubscriptionSettings.settings.map((settingAndValue) => ({
+      ...this.settingHttMapper.toProjection(settingAndValue.setting),
+      value: settingAndValue.decryptedValue,
+    }))
+
+    const subscriptionSettingsHttpRepresentation = settingsAndSubscriptionSettings.subscriptionSettings.map(
+      (settingAndValue) => ({
+        ...this.subscriptionSettingHttpMapper.toProjection(settingAndValue.setting),
+        value: settingAndValue.decryptedValue,
+      }),
+    )
+
+    const httpRepresentation = settingsHttpRepresentation.concat(subscriptionSettingsHttpRepresentation)
+
+    return this.json({
+      success: true,
+      settings: httpRepresentation,
+    })
   }
 
   async getSetting(request: Request, response: Response): Promise<results.JsonResult> {
@@ -58,7 +94,12 @@ export class BaseSettingsController extends BaseHttpController {
     }
 
     const { userUuid, settingName } = request.params
-    const resultOrError = await this.doGetSetting.execute({ userUuid, settingName: settingName.toUpperCase() })
+    const resultOrError = await this.doGetSetting.execute({
+      allowSensitiveRetrieval: true,
+      userUuid,
+      decrypted: true,
+      settingName: settingName.toUpperCase(),
+    })
     if (resultOrError.isFailed()) {
       return this.json(
         {
@@ -70,9 +111,22 @@ export class BaseSettingsController extends BaseHttpController {
       )
     }
 
+    const settingAndValue = resultOrError.getValue()
+
+    if (settingAndValue.setting.props.sensitive) {
+      return this.json({
+        success: true,
+      })
+    }
+
+    const settingHttpReprepesentation = {
+      ...this.settingHttMapper.toProjection(settingAndValue.setting),
+      value: settingAndValue.decryptedValue,
+    }
+
     return this.json({
       success: true,
-      ...resultOrError.getValue(),
+      setting: settingHttpReprepesentation,
     })
   }
 
@@ -100,26 +154,30 @@ export class BaseSettingsController extends BaseHttpController {
       )
     }
 
-    const { name, value, serverEncryptionVersion = EncryptionVersion.Default, sensitive = false } = request.body
+    const { name, value } = request.body
 
-    const props = {
-      name,
-      unencryptedValue: value,
-      serverEncryptionVersion,
-      sensitive,
-    }
-
-    const { userUuid } = request.params
-    const result = await this.doUpdateSetting.execute({
-      userUuid,
-      props,
+    const result = await this.setSettingValue.execute({
+      settingName: name,
+      value,
+      userUuid: response.locals.user.uuid,
     })
 
-    if (result.success) {
-      return this.json({ setting: result.setting }, result.statusCode)
+    if (result.isFailed()) {
+      return this.json(
+        {
+          error: {
+            message: result.getError(),
+          },
+        },
+        400,
+      )
     }
+    const setting = result.getValue()
 
-    return this.json(result, result.statusCode)
+    return this.json({
+      success: true,
+      setting: setting.props.sensitive ? undefined : this.settingHttMapper.toProjection(setting),
+    })
   }
 
   async deleteSetting(request: Request, response: Response): Promise<results.JsonResult> {

@@ -1,22 +1,39 @@
 import { UpdateStorageQuotaUsedForUser } from './UpdateStorageQuotaUsedForUser'
 
-import { SubscriptionSettingServiceInterface } from '../../Setting/SubscriptionSettingServiceInterface'
 import { UserSubscription } from '../../Subscription/UserSubscription'
-import { UserSubscriptionServiceInterface } from '../../Subscription/UserSubscriptionServiceInterface'
 import { UserSubscriptionType } from '../../Subscription/UserSubscriptionType'
 import { User } from '../../User/User'
 import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'
+import { GetSharedSubscriptionForUser } from '../GetSharedSubscriptionForUser/GetSharedSubscriptionForUser'
+import { GetRegularSubscriptionForUser } from '../GetRegularSubscriptionForUser/GetRegularSubscriptionForUser'
+import { GetSubscriptionSetting } from '../GetSubscriptionSetting/GetSubscriptionSetting'
+import { SetSubscriptionSettingValue } from '../SetSubscriptionSettingValue/SetSubscriptionSettingValue'
+import { Logger } from 'winston'
+import { Result, Timestamps, Uuid } from '@standardnotes/domain-core'
+import { SubscriptionSetting } from '../../Setting/SubscriptionSetting'
+import { SettingName } from '@standardnotes/settings'
+import { EncryptionVersion } from '../../Encryption/EncryptionVersion'
 
 describe('UpdateStorageQuotaUsedForUser', () => {
   let userRepository: UserRepositoryInterface
-  let userSubscriptionService: UserSubscriptionServiceInterface
   let user: User
-  let subscriptionSettingService: SubscriptionSettingServiceInterface
   let regularSubscription: UserSubscription
   let sharedSubscription: UserSubscription
+  let getSharedSubscription: GetSharedSubscriptionForUser
+  let getRegularSubscription: GetRegularSubscriptionForUser
+  let getSubscriptionSetting: GetSubscriptionSetting
+  let setSubscriptonSettingValue: SetSubscriptionSettingValue
+  let logger: Logger
 
   const createUseCase = () =>
-    new UpdateStorageQuotaUsedForUser(userRepository, userSubscriptionService, subscriptionSettingService)
+    new UpdateStorageQuotaUsedForUser(
+      userRepository,
+      getRegularSubscription,
+      getSharedSubscription,
+      getSubscriptionSetting,
+      setSubscriptonSettingValue,
+      logger,
+    )
 
   beforeEach(() => {
     user = {
@@ -38,14 +55,20 @@ describe('UpdateStorageQuotaUsedForUser', () => {
       user: Promise.resolve(user),
     } as jest.Mocked<UserSubscription>
 
-    userSubscriptionService = {} as jest.Mocked<UserSubscriptionServiceInterface>
-    userSubscriptionService.findRegularSubscriptionForUserUuid = jest
-      .fn()
-      .mockReturnValue({ regularSubscription, sharedSubscription: null })
+    getSharedSubscription = {} as jest.Mocked<GetSharedSubscriptionForUser>
+    getSharedSubscription.execute = jest.fn().mockReturnValue(Result.ok(sharedSubscription))
 
-    subscriptionSettingService = {} as jest.Mocked<SubscriptionSettingServiceInterface>
-    subscriptionSettingService.findSubscriptionSettingWithDecryptedValue = jest.fn().mockReturnValue(null)
-    subscriptionSettingService.createOrReplace = jest.fn()
+    getRegularSubscription = {} as jest.Mocked<GetRegularSubscriptionForUser>
+    getRegularSubscription.execute = jest.fn().mockReturnValue(Result.ok(regularSubscription))
+
+    getSubscriptionSetting = {} as jest.Mocked<GetSubscriptionSetting>
+    getSubscriptionSetting.execute = jest.fn().mockReturnValue(Result.fail('not found'))
+
+    setSubscriptonSettingValue = {} as jest.Mocked<SetSubscriptionSettingValue>
+    setSubscriptonSettingValue.execute = jest.fn().mockReturnValue(Result.ok())
+
+    logger = {} as jest.Mocked<Logger>
+    logger.error = jest.fn()
   })
 
   it('should create a bytes used setting if one does not exist', async () => {
@@ -55,19 +78,10 @@ describe('UpdateStorageQuotaUsedForUser', () => {
     })
 
     expect(result.isFailed()).toBeFalsy()
-    expect(subscriptionSettingService.createOrReplace).toHaveBeenCalledWith({
-      props: {
-        name: 'FILE_UPLOAD_BYTES_USED',
-        sensitive: false,
-        unencryptedValue: '123',
-        serverEncryptionVersion: 0,
-      },
-      user,
-      userSubscription: {
-        uuid: '00000000-0000-0000-0000-000000000000',
-        subscriptionType: 'regular',
-        user: Promise.resolve(user),
-      },
+    expect(setSubscriptonSettingValue.execute).toHaveBeenCalledWith({
+      settingName: 'FILE_UPLOAD_BYTES_USED',
+      value: '123',
+      userSubscriptionUuid: '00000000-0000-0000-0000-000000000000',
     })
   })
 
@@ -78,7 +92,7 @@ describe('UpdateStorageQuotaUsedForUser', () => {
     })
     expect(result.isFailed()).toBeTruthy()
 
-    expect(subscriptionSettingService.createOrReplace).not.toHaveBeenCalled()
+    expect(setSubscriptonSettingValue.execute).not.toHaveBeenCalled()
   })
 
   it('should not do anything if a user is not found', async () => {
@@ -90,120 +104,84 @@ describe('UpdateStorageQuotaUsedForUser', () => {
     })
     expect(result.isFailed()).toBeTruthy()
 
-    expect(subscriptionSettingService.createOrReplace).not.toHaveBeenCalled()
+    expect(setSubscriptonSettingValue.execute).not.toHaveBeenCalled()
   })
 
-  it('should not do anything if a user subscription is not found', async () => {
-    subscriptionSettingService.findSubscriptionSettingWithDecryptedValue = jest.fn().mockReturnValue({
-      value: 345,
-    })
-    userSubscriptionService.findRegularSubscriptionForUserUuid = jest
-      .fn()
-      .mockReturnValue({ regularSubscription: null, sharedSubscription: null })
-
-    const result = await createUseCase().execute({
-      userUuid: '00000000-0000-0000-0000-000000000000',
-      bytesUsed: 123,
-    })
-    expect(result.isFailed()).toBeTruthy()
-
-    expect(subscriptionSettingService.createOrReplace).not.toHaveBeenCalled()
-  })
-
-  it('should add bytes used setting if one does exist', async () => {
-    subscriptionSettingService.findSubscriptionSettingWithDecryptedValue = jest.fn().mockReturnValue({
-      value: 345,
-    })
-    const result = await createUseCase().execute({
-      userUuid: '00000000-0000-0000-0000-000000000000',
-      bytesUsed: 123,
-    })
-    expect(result.isFailed()).toBeFalsy()
-
-    expect(subscriptionSettingService.createOrReplace).toHaveBeenCalledWith({
-      props: {
-        name: 'FILE_UPLOAD_BYTES_USED',
-        sensitive: false,
-        unencryptedValue: '468',
-        serverEncryptionVersion: 0,
-      },
-      user,
-      userSubscription: {
-        uuid: '00000000-0000-0000-0000-000000000000',
-        subscriptionType: 'regular',
-        user: Promise.resolve(user),
-      },
-    })
-  })
-
-  it('should subtract bytes used setting if one does exist', async () => {
-    subscriptionSettingService.findSubscriptionSettingWithDecryptedValue = jest.fn().mockReturnValue({
-      value: 345,
-    })
-    const result = await createUseCase().execute({
-      userUuid: '00000000-0000-0000-0000-000000000000',
-      bytesUsed: -123,
-    })
-    expect(result.isFailed()).toBeFalsy()
-
-    expect(subscriptionSettingService.createOrReplace).toHaveBeenCalledWith({
-      props: {
-        name: 'FILE_UPLOAD_BYTES_USED',
-        sensitive: false,
-        unencryptedValue: '222',
-        serverEncryptionVersion: 0,
-      },
-      user,
-      userSubscription: {
-        uuid: '00000000-0000-0000-0000-000000000000',
-        subscriptionType: 'regular',
-        user: Promise.resolve(user),
-      },
-    })
-  })
-
-  it('should update a bytes used setting on both regular and shared subscription', async () => {
-    userSubscriptionService.findRegularSubscriptionForUserUuid = jest
-      .fn()
-      .mockReturnValue({ regularSubscription, sharedSubscription })
-
-    subscriptionSettingService.findSubscriptionSettingWithDecryptedValue = jest.fn().mockReturnValue({
-      value: 345,
-    })
-    const result = await createUseCase().execute({
-      userUuid: '00000000-0000-0000-0000-000000000000',
-      bytesUsed: 123,
-    })
-    expect(result.isFailed()).toBeFalsy()
-
-    expect(subscriptionSettingService.createOrReplace).toHaveBeenCalledWith({
-      props: {
-        name: 'FILE_UPLOAD_BYTES_USED',
-        sensitive: false,
-        unencryptedValue: '468',
-        serverEncryptionVersion: 0,
-      },
-      user,
-      userSubscription: {
-        uuid: '00000000-0000-0000-0000-000000000000',
-        subscriptionType: 'regular',
-        user: Promise.resolve(user),
-      },
+  describe('updating existing quota', () => {
+    beforeEach(() => {
+      getSubscriptionSetting.execute = jest.fn().mockReturnValue(
+        Result.ok({
+          setting: SubscriptionSetting.create({
+            name: SettingName.NAMES.FileUploadBytesUsed,
+            sensitive: false,
+            serverEncryptionVersion: EncryptionVersion.Unencrypted,
+            timestamps: Timestamps.create(123, 123).getValue(),
+            userSubscriptionUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+            value: '345',
+          }).getValue(),
+        }),
+      )
     })
 
-    expect(subscriptionSettingService.createOrReplace).toHaveBeenCalledWith({
-      props: {
-        name: 'FILE_UPLOAD_BYTES_USED',
-        sensitive: false,
-        unencryptedValue: '468',
-        serverEncryptionVersion: 0,
-      },
-      user,
-      userSubscription: {
-        uuid: '2-3-4',
-        subscriptionType: 'shared',
-        user: Promise.resolve(user),
-      },
+    it('should not do anything if a user subscription is not found', async () => {
+      getRegularSubscription.execute = jest.fn().mockReturnValue(Result.fail('error'))
+      getSharedSubscription.execute = jest.fn().mockReturnValue(Result.fail('error'))
+
+      const result = await createUseCase().execute({
+        userUuid: '00000000-0000-0000-0000-000000000000',
+        bytesUsed: 123,
+      })
+      expect(result.isFailed()).toBeTruthy()
+
+      expect(setSubscriptonSettingValue.execute).not.toHaveBeenCalled()
+    })
+
+    it('should add bytes used setting if one does exist', async () => {
+      const result = await createUseCase().execute({
+        userUuid: '00000000-0000-0000-0000-000000000000',
+        bytesUsed: 123,
+      })
+      expect(result.isFailed()).toBeFalsy()
+
+      expect(setSubscriptonSettingValue.execute).toHaveBeenCalledWith({
+        settingName: 'FILE_UPLOAD_BYTES_USED',
+        value: '468',
+        userSubscriptionUuid: '00000000-0000-0000-0000-000000000000',
+      })
+    })
+
+    it('should subtract bytes used setting if one does exist', async () => {
+      const result = await createUseCase().execute({
+        userUuid: '00000000-0000-0000-0000-000000000000',
+        bytesUsed: -123,
+      })
+      expect(result.isFailed()).toBeFalsy()
+
+      expect(setSubscriptonSettingValue.execute).toHaveBeenCalledWith({
+        settingName: 'FILE_UPLOAD_BYTES_USED',
+        value: '222',
+        userSubscriptionUuid: '00000000-0000-0000-0000-000000000000',
+      })
+    })
+
+    it('should update a bytes used setting on both regular and shared subscription', async () => {
+      const result = await createUseCase().execute({
+        userUuid: '00000000-0000-0000-0000-000000000000',
+        bytesUsed: 123,
+      })
+      expect(result.isFailed()).toBeFalsy()
+
+      expect(setSubscriptonSettingValue.execute).toHaveBeenCalledWith({
+        settingName: 'FILE_UPLOAD_BYTES_USED',
+        value: '468',
+        userSubscriptionUuid: '00000000-0000-0000-0000-000000000000',
+      })
+
+      expect(setSubscriptonSettingValue.execute).toHaveBeenCalledWith({
+        settingName: 'FILE_UPLOAD_BYTES_USED',
+        value: '468',
+        userSubscriptionUuid: '2-3-4',
+      })
     })
   })
 })

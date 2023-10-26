@@ -5,7 +5,6 @@ import { AuthResponseFactory20200115 } from '../../Auth/AuthResponseFactory20200
 import { AuthenticatorRepositoryInterface } from '../../Authenticator/AuthenticatorRepositoryInterface'
 import { CrypterInterface } from '../../Encryption/CrypterInterface'
 import { Setting } from '../../Setting/Setting'
-import { SettingServiceInterface } from '../../Setting/SettingServiceInterface'
 import { PKCERepositoryInterface } from '../../User/PKCERepositoryInterface'
 import { User } from '../../User/User'
 import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'
@@ -14,18 +13,19 @@ import { DeleteSetting } from '../DeleteSetting/DeleteSetting'
 import { GenerateRecoveryCodes } from '../GenerateRecoveryCodes/GenerateRecoveryCodes'
 import { IncreaseLoginAttempts } from '../IncreaseLoginAttempts'
 import { SignInWithRecoveryCodes } from './SignInWithRecoveryCodes'
+import { GetSetting } from '../GetSetting/GetSetting'
 
 describe('SignInWithRecoveryCodes', () => {
   let userRepository: UserRepositoryInterface
   let authResponseFactory: AuthResponseFactory20200115
   let pkceRepository: PKCERepositoryInterface
   let crypter: CrypterInterface
-  let settingService: SettingServiceInterface
   let generateRecoveryCodes: GenerateRecoveryCodes
   let increaseLoginAttempts: IncreaseLoginAttempts
   let clearLoginAttempts: ClearLoginAttempts
   let deleteSetting: DeleteSetting
   let authenticatorRepository: AuthenticatorRepositoryInterface
+  let getSetting: GetSetting
 
   const createUseCase = () =>
     new SignInWithRecoveryCodes(
@@ -33,7 +33,7 @@ describe('SignInWithRecoveryCodes', () => {
       authResponseFactory,
       pkceRepository,
       crypter,
-      settingService,
+      getSetting,
       generateRecoveryCodes,
       increaseLoginAttempts,
       clearLoginAttempts,
@@ -58,8 +58,10 @@ describe('SignInWithRecoveryCodes', () => {
     crypter.base64URLEncode = jest.fn().mockReturnValue('base64-url-encoded')
     crypter.sha256Hash = jest.fn().mockReturnValue('sha256-hashed')
 
-    settingService = {} as jest.Mocked<SettingServiceInterface>
-    settingService.findSettingWithDecryptedValue = jest.fn().mockReturnValue({ value: 'foo' } as Setting)
+    getSetting = {} as jest.Mocked<GetSetting>
+    getSetting.execute = jest
+      .fn()
+      .mockReturnValue(Result.ok({ setting: {} as jest.Mocked<Setting>, decryptedValue: 'foo' }))
 
     generateRecoveryCodes = {} as jest.Mocked<GenerateRecoveryCodes>
     generateRecoveryCodes.execute = jest.fn().mockReturnValue(Result.ok('1234 5678'))
@@ -186,7 +188,7 @@ describe('SignInWithRecoveryCodes', () => {
   })
 
   it('should return error if recovery codes are not generated for user', async () => {
-    settingService.findSettingWithDecryptedValue = jest.fn().mockReturnValue(null)
+    getSetting.execute = jest.fn().mockReturnValue(Result.fail('not found'))
 
     const result = await createUseCase().execute({
       userAgent: 'user-agent',

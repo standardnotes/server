@@ -1,16 +1,14 @@
 import * as crypto from 'crypto'
+import { AuthenticationResponseJSON } from '@simplewebauthn/typescript-types'
 import { ErrorTag } from '@standardnotes/responses'
 import { SettingName } from '@standardnotes/settings'
 import { v4 as uuidv4 } from 'uuid'
-import { inject, injectable } from 'inversify'
 import { authenticator } from 'otplib'
 import { SelectorInterface } from '@standardnotes/security'
-import { UseCaseInterface as DomainUseCaseInterface, Username, Uuid } from '@standardnotes/domain-core'
+import { Username, Uuid } from '@standardnotes/domain-core'
 
-import TYPES from '../../Bootstrap/Types'
 import { MFAValidationError } from '../Error/MFAValidationError'
 import { UserRepositoryInterface } from '../User/UserRepositoryInterface'
-import { SettingServiceInterface } from '../Setting/SettingServiceInterface'
 import { LockRepositoryInterface } from '../User/LockRepositoryInterface'
 import { AuthenticatorRepositoryInterface } from '../Authenticator/AuthenticatorRepositoryInterface'
 
@@ -18,20 +16,19 @@ import { UseCaseInterface } from './UseCaseInterface'
 import { VerifyMFADTO } from './VerifyMFADTO'
 import { VerifyMFAResponse } from './VerifyMFAResponse'
 import { Logger } from 'winston'
-import { Setting } from '../Setting/Setting'
+import { GetSetting } from './GetSetting/GetSetting'
+import { VerifyAuthenticatorAuthenticationResponse } from './VerifyAuthenticatorAuthenticationResponse/VerifyAuthenticatorAuthenticationResponse'
 
-@injectable()
 export class VerifyMFA implements UseCaseInterface {
   constructor(
-    @inject(TYPES.Auth_UserRepository) private userRepository: UserRepositoryInterface,
-    @inject(TYPES.Auth_SettingService) private settingService: SettingServiceInterface,
-    @inject(TYPES.Auth_BooleanSelector) private booleanSelector: SelectorInterface<boolean>,
-    @inject(TYPES.Auth_LockRepository) private lockRepository: LockRepositoryInterface,
-    @inject(TYPES.Auth_PSEUDO_KEY_PARAMS_KEY) private pseudoKeyParamsKey: string,
-    @inject(TYPES.Auth_AuthenticatorRepository) private authenticatorRepository: AuthenticatorRepositoryInterface,
-    @inject(TYPES.Auth_VerifyAuthenticatorAuthenticationResponse)
-    private verifyAuthenticatorAuthenticationResponse: DomainUseCaseInterface<boolean>,
-    @inject(TYPES.Auth_Logger) private logger: Logger,
+    private userRepository: UserRepositoryInterface,
+    private booleanSelector: SelectorInterface<boolean>,
+    private lockRepository: LockRepositoryInterface,
+    private pseudoKeyParamsKey: string,
+    private authenticatorRepository: AuthenticatorRepositoryInterface,
+    private verifyAuthenticatorAuthenticationResponse: VerifyAuthenticatorAuthenticationResponse,
+    private getSetting: GetSetting,
+    private logger: Logger,
   ) {}
 
   async execute(dto: VerifyMFADTO): Promise<VerifyMFAResponse> {
@@ -98,11 +95,13 @@ export class VerifyMFA implements UseCaseInterface {
         u2fEnabled = true
       }
 
-      const mfaSecret = await this.settingService.findSettingWithDecryptedValue({
-        userUuid: user.uuid,
-        settingName: SettingName.create(SettingName.NAMES.MfaSecret).getValue(),
+      const mfaSecretOrError = await this.getSetting.execute({
+        userUuid: userUuid.value,
+        settingName: SettingName.NAMES.MfaSecret,
+        allowSensitiveRetrieval: true,
+        decrypted: true,
       })
-      const twoFactorEnabled = mfaSecret !== null && mfaSecret.value !== null
+      const twoFactorEnabled = !mfaSecretOrError.isFailed() && mfaSecretOrError.getValue().decryptedValue !== null
 
       if (u2fEnabled === false && twoFactorEnabled === false) {
         return {
@@ -121,7 +120,7 @@ export class VerifyMFA implements UseCaseInterface {
 
         const verificationResultOrError = await this.verifyAuthenticatorAuthenticationResponse.execute({
           userUuid: userUuid.value,
-          authenticatorResponse: dto.requestParams.authenticator_response,
+          authenticatorResponse: dto.requestParams.authenticator_response as AuthenticationResponseJSON,
         })
         if (verificationResultOrError.isFailed()) {
           this.logger.debug(`Could not verify U2F authentication: ${verificationResultOrError.getError()}`)
@@ -148,7 +147,7 @@ export class VerifyMFA implements UseCaseInterface {
       } else {
         const verificationResult = await this.verifyMFASecret(
           dto.email,
-          (mfaSecret as Setting).value as string,
+          mfaSecretOrError.getValue().decryptedValue as string,
           dto.requestParams,
           dto.preventOTPFromFurtherUsage,
         )

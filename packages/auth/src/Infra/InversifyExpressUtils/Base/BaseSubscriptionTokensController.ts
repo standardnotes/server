@@ -4,18 +4,18 @@ import { Role, TokenEncoderInterface, CrossServiceTokenData } from '@standardnot
 import { BaseHttpController, results } from 'inversify-express-utils'
 import { Request, Response } from 'express'
 
-import { SettingServiceInterface } from '../../../Domain/Setting/SettingServiceInterface'
 import { AuthenticateSubscriptionToken } from '../../../Domain/UseCase/AuthenticateSubscriptionToken/AuthenticateSubscriptionToken'
 import { CreateSubscriptionToken } from '../../../Domain/UseCase/CreateSubscriptionToken/CreateSubscriptionToken'
 import { ProjectorInterface } from '../../../Projection/ProjectorInterface'
 import { SettingName } from '@standardnotes/settings'
 import { User } from '../../../Domain/User/User'
+import { GetSetting } from '../../../Domain/UseCase/GetSetting/GetSetting'
 
 export class BaseSubscriptionTokensController extends BaseHttpController {
   constructor(
     protected createSubscriptionToken: CreateSubscriptionToken,
     protected authenticateToken: AuthenticateSubscriptionToken,
-    protected settingService: SettingServiceInterface,
+    protected getSetting: GetSetting,
     protected userProjector: ProjectorInterface<User>,
     protected roleProjector: ProjectorInterface<Role>,
     protected tokenEncoder: TokenEncoderInterface<CrossServiceTokenData>,
@@ -70,12 +70,15 @@ export class BaseSubscriptionTokensController extends BaseHttpController {
 
     const user = authenticateTokenResponse.user as User
     let extensionKey = undefined
-    const extensionKeySetting = await this.settingService.findSettingWithDecryptedValue({
-      settingName: SettingName.create(SettingName.NAMES.ExtensionKey).getValue(),
+    const extensionKeySettingOrError = await this.getSetting.execute({
+      settingName: SettingName.NAMES.ExtensionKey,
       userUuid: user.uuid,
+      allowSensitiveRetrieval: true,
+      decrypted: true,
     })
-    if (extensionKeySetting !== null) {
-      extensionKey = extensionKeySetting.value as string
+    if (!extensionKeySettingOrError.isFailed()) {
+      const extensionKeySetting = extensionKeySettingOrError.getValue()
+      extensionKey = extensionKeySetting.decryptedValue as string
     }
 
     const roles = await user.roles

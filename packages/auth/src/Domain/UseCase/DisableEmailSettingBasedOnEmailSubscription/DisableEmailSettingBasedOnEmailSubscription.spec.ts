@@ -1,19 +1,28 @@
-import { EmailLevel } from '@standardnotes/domain-core'
-import { Setting } from '../../Setting/Setting'
-import { SettingFactoryInterface } from '../../Setting/SettingFactoryInterface'
-import { SettingRepositoryInterface } from '../../Setting/SettingRepositoryInterface'
+import { EmailLevel, Result } from '@standardnotes/domain-core'
 import { User } from '../../User/User'
 import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'
 import { DisableEmailSettingBasedOnEmailSubscription } from './DisableEmailSettingBasedOnEmailSubscription'
+import { SetSettingValue } from '../SetSettingValue/SetSettingValue'
+import { SetSubscriptionSettingValue } from '../SetSubscriptionSettingValue/SetSubscriptionSettingValue'
+import { GetSharedOrRegularSubscriptionForUser } from '../GetSharedOrRegularSubscriptionForUser/GetSharedOrRegularSubscriptionForUser'
+import { UserSubscription } from '../../Subscription/UserSubscription'
 
 describe('DisableEmailSettingBasedOnEmailSubscription', () => {
   let userRepository: UserRepositoryInterface
-  let settingRepository: SettingRepositoryInterface
-  let factory: SettingFactoryInterface
+  let setSettingValue: SetSettingValue
+  let setSubscriptionSetting: SetSubscriptionSettingValue
+  let getSharedOrRegularSubscriptionForUser: GetSharedOrRegularSubscriptionForUser
+  let regularSubscription: UserSubscription
+
   let user: User
 
   const createUseCase = () =>
-    new DisableEmailSettingBasedOnEmailSubscription(userRepository, settingRepository, factory)
+    new DisableEmailSettingBasedOnEmailSubscription(
+      userRepository,
+      setSettingValue,
+      setSubscriptionSetting,
+      getSharedOrRegularSubscriptionForUser,
+    )
 
   beforeEach(() => {
     user = {} as jest.Mocked<User>
@@ -22,13 +31,51 @@ describe('DisableEmailSettingBasedOnEmailSubscription', () => {
     userRepository = {} as jest.Mocked<UserRepositoryInterface>
     userRepository.findOneByUsernameOrEmail = jest.fn().mockResolvedValue(user)
 
-    settingRepository = {} as jest.Mocked<SettingRepositoryInterface>
-    settingRepository.findLastByNameAndUserUuid = jest.fn().mockResolvedValue({} as jest.Mocked<Setting>)
-    settingRepository.save = jest.fn()
+    setSettingValue = {} as jest.Mocked<SetSettingValue>
+    setSettingValue.execute = jest.fn().mockReturnValue(Result.ok())
 
-    factory = {} as jest.Mocked<SettingFactoryInterface>
-    factory.create = jest.fn().mockResolvedValue({} as jest.Mocked<Setting>)
-    factory.createReplacement = jest.fn().mockResolvedValue({} as jest.Mocked<Setting>)
+    setSubscriptionSetting = {} as jest.Mocked<SetSubscriptionSettingValue>
+    setSubscriptionSetting.execute = jest.fn().mockResolvedValue(Result.ok())
+
+    regularSubscription = {} as jest.Mocked<UserSubscription>
+
+    getSharedOrRegularSubscriptionForUser = {} as jest.Mocked<GetSharedOrRegularSubscriptionForUser>
+    getSharedOrRegularSubscriptionForUser.execute = jest.fn().mockResolvedValue(Result.ok(regularSubscription))
+  })
+
+  it('should set the setting value when muting non subscription setting value', async () => {
+    const useCase = createUseCase()
+
+    const result = await useCase.execute({
+      userEmail: 'test@test.te',
+      level: EmailLevel.LEVELS.Marketing,
+    })
+
+    expect(result.isFailed()).toBeFalsy()
+  })
+
+  it('should set the subscription setting value when muting a subscription setting value', async () => {
+    const useCase = createUseCase()
+
+    const result = await useCase.execute({
+      userEmail: 'test@test.te',
+      level: EmailLevel.LEVELS.SignIn,
+    })
+
+    expect(result.isFailed()).toBeFalsy()
+  })
+
+  it('should return error if subscription could not be found', async () => {
+    getSharedOrRegularSubscriptionForUser.execute = jest.fn().mockResolvedValue(Result.fail('error'))
+
+    const useCase = createUseCase()
+
+    const result = await useCase.execute({
+      userEmail: 'test@test.te',
+      level: EmailLevel.LEVELS.SignIn,
+    })
+
+    expect(result.isFailed()).toBeTruthy()
   })
 
   it('should fail if the username is empty', async () => {
@@ -64,33 +111,5 @@ describe('DisableEmailSettingBasedOnEmailSubscription', () => {
     })
 
     expect(result.isFailed()).toBeTruthy()
-  })
-
-  it('should create a new setting if it does not exist', async () => {
-    settingRepository.findLastByNameAndUserUuid = jest.fn().mockResolvedValue(null)
-
-    const useCase = createUseCase()
-
-    const result = await useCase.execute({
-      userEmail: 'test@test.te',
-      level: EmailLevel.LEVELS.Marketing,
-    })
-
-    expect(result.isFailed()).toBeFalsy()
-    expect(factory.create).toHaveBeenCalled()
-    expect(factory.createReplacement).not.toHaveBeenCalled()
-  })
-
-  it('should replace the setting if it exists', async () => {
-    const useCase = createUseCase()
-
-    const result = await useCase.execute({
-      userEmail: 'test@test.te',
-      level: EmailLevel.LEVELS.Marketing,
-    })
-
-    expect(result.isFailed()).toBeFalsy()
-    expect(factory.create).not.toHaveBeenCalled()
-    expect(factory.createReplacement).toHaveBeenCalled()
   })
 })

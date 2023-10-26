@@ -1,11 +1,9 @@
 import { SubscriptionName } from '@standardnotes/common'
+import { Logger } from 'winston'
 import { Email } from '@standardnotes/domain-core'
 import { TimerInterface } from '@standardnotes/time'
-import { inject, injectable } from 'inversify'
 
-import TYPES from '../../../Bootstrap/Types'
 import { RoleServiceInterface } from '../../Role/RoleServiceInterface'
-import { SubscriptionSettingServiceInterface } from '../../Setting/SubscriptionSettingServiceInterface'
 import { InvitationStatus } from '../../SharedSubscription/InvitationStatus'
 import { SharedSubscriptionInvitationRepositoryInterface } from '../../SharedSubscription/SharedSubscriptionInvitationRepositoryInterface'
 import { UserSubscription } from '../../Subscription/UserSubscription'
@@ -17,19 +15,17 @@ import { UseCaseInterface } from '../UseCaseInterface'
 
 import { AcceptSharedSubscriptionInvitationDTO } from './AcceptSharedSubscriptionInvitationDTO'
 import { AcceptSharedSubscriptionInvitationResponse } from './AcceptSharedSubscriptionInvitationResponse'
+import { ApplyDefaultSubscriptionSettings } from '../ApplyDefaultSubscriptionSettings/ApplyDefaultSubscriptionSettings'
 
-@injectable()
 export class AcceptSharedSubscriptionInvitation implements UseCaseInterface {
   constructor(
-    @inject(TYPES.Auth_SharedSubscriptionInvitationRepository)
     private sharedSubscriptionInvitationRepository: SharedSubscriptionInvitationRepositoryInterface,
-    @inject(TYPES.Auth_UserRepository) private userRepository: UserRepositoryInterface,
-    @inject(TYPES.Auth_UserSubscriptionRepository)
+    private userRepository: UserRepositoryInterface,
     private userSubscriptionRepository: UserSubscriptionRepositoryInterface,
-    @inject(TYPES.Auth_RoleService) private roleService: RoleServiceInterface,
-    @inject(TYPES.Auth_SubscriptionSettingService)
-    private subscriptionSettingService: SubscriptionSettingServiceInterface,
-    @inject(TYPES.Auth_Timer) private timer: TimerInterface,
+    private roleService: RoleServiceInterface,
+    private applyDefaultSubscriptionSettings: ApplyDefaultSubscriptionSettings,
+    private timer: TimerInterface,
+    private logger: Logger,
   ) {}
 
   async execute(dto: AcceptSharedSubscriptionInvitationDTO): Promise<AcceptSharedSubscriptionInvitationResponse> {
@@ -92,7 +88,15 @@ export class AcceptSharedSubscriptionInvitation implements UseCaseInterface {
 
     await this.addUserRole(invitee, inviterUserSubscription.planName as SubscriptionName)
 
-    await this.subscriptionSettingService.applyDefaultSubscriptionSettingsForSubscription(inviteeSubscription)
+    const result = await this.applyDefaultSubscriptionSettings.execute({
+      subscriptionPlanName: inviterUserSubscription.planName,
+      userSubscriptionUuid: inviteeSubscription.uuid,
+      userUuid: invitee.uuid,
+    })
+    /* istanbul ignore next */
+    if (result.isFailed()) {
+      this.logger.error(`Could not apply default subscription settings for user with uuid ${invitee.uuid}`)
+    }
 
     return {
       success: true,

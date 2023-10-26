@@ -25,4 +25,8 @@ export class Username extends ValueObject<UsernameProps> {
 
     return Result.ok<Username>(new Username({ value: trimmedAndLowerCasedUsername }))
   }
+
+  isPotentiallyAPrivateUsernameAccount(): boolean {
+    return this.value.length === 64 && !this.value.includes('@')
+  }
 }

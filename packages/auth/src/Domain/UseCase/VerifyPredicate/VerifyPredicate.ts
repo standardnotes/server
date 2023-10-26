@@ -45,7 +45,7 @@ export class VerifyPredicate implements UseCaseInterface {
       userUuid,
     )
 
-    if (setting === null || setting.value === EmailBackupFrequency.Disabled) {
+    if (setting === null || setting.props.value === EmailBackupFrequency.Disabled) {
       return false
     }
 

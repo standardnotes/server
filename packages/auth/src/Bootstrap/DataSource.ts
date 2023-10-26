@@ -5,8 +5,6 @@ import { Role } from '../Domain/Role/Role'
 import { RevokedSession } from '../Domain/Session/RevokedSession'
 import { Session } from '../Domain/Session/Session'
 import { OfflineSetting } from '../Domain/Setting/OfflineSetting'
-import { Setting } from '../Domain/Setting/Setting'
-import { SubscriptionSetting } from '../Domain/Setting/SubscriptionSetting'
 import { SharedSubscriptionInvitation } from '../Domain/SharedSubscription/SharedSubscriptionInvitation'
 import { OfflineUserSubscription } from '../Domain/Subscription/OfflineUserSubscription'
 import { UserSubscription } from '../Domain/Subscription/UserSubscription'
@@ -19,6 +17,8 @@ import { TypeORMSessionTrace } from '../Infra/TypeORM/TypeORMSessionTrace'
 import { Env } from './Env'
 import { SqliteConnectionOptions } from 'typeorm/driver/sqlite/SqliteConnectionOptions'
 import { TypeORMSharedVaultUser } from '../Infra/TypeORM/TypeORMSharedVaultUser'
+import { TypeORMSubscriptionSetting } from '../Infra/TypeORM/TypeORMSubscriptionSetting'
+import { TypeORMSetting } from '../Infra/TypeORM/TypeORMSetting'
 
 export class AppDataSource {
   private _dataSource: DataSource | undefined
@@ -61,10 +61,10 @@ export class AppDataSource {
         RevokedSession,
         Role,
         Permission,
-        Setting,
+        TypeORMSetting,
         OfflineSetting,
         SharedSubscriptionInvitation,
-        SubscriptionSetting,
+        TypeORMSubscriptionSetting,
         TypeORMSessionTrace,
         TypeORMAuthenticator,
         TypeORMAuthenticatorChallenge,

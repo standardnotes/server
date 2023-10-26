@@ -3,14 +3,16 @@ import { SettingName } from '@standardnotes/settings'
 
 import { DisableEmailSettingBasedOnEmailSubscriptionDTO } from './DisableEmailSettingBasedOnEmailSubscriptionDTO'
 import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'
-import { SettingRepositoryInterface } from '../../Setting/SettingRepositoryInterface'
-import { SettingFactoryInterface } from '../../Setting/SettingFactoryInterface'
+import { SetSettingValue } from '../SetSettingValue/SetSettingValue'
+import { SetSubscriptionSettingValue } from '../SetSubscriptionSettingValue/SetSubscriptionSettingValue'
+import { GetSharedOrRegularSubscriptionForUser } from '../GetSharedOrRegularSubscriptionForUser/GetSharedOrRegularSubscriptionForUser'
 
 export class DisableEmailSettingBasedOnEmailSubscription implements UseCaseInterface<void> {
   constructor(
     private userRepository: UserRepositoryInterface,
-    private settingRepository: SettingRepositoryInterface,
-    private factory: SettingFactoryInterface,
+    private setSettingValue: SetSettingValue,
+    private setSubscriptionSetting: SetSubscriptionSettingValue,
+    private getSharedOrRegularSubscriptionForUser: GetSharedOrRegularSubscriptionForUser,
   ) {}
 
   async execute(dto: DisableEmailSettingBasedOnEmailSubscriptionDTO): Promise<Result<void>> {
@@ -31,40 +33,40 @@ export class DisableEmailSettingBasedOnEmailSubscription implements UseCaseInter
     }
     const settingName = settingNameOrError.getValue()
 
-    let setting = await this.settingRepository.findLastByNameAndUserUuid(settingName, user.uuid)
-    if (!setting) {
-      setting = await this.factory.create(
-        {
-          name: settingName,
-          unencryptedValue: 'muted',
-          sensitive: false,
-        },
-        user,
-      )
+    if (settingName.isASubscriptionSetting()) {
+      const subscriptionOrError = await this.getSharedOrRegularSubscriptionForUser.execute({
+        userUuid: user.uuid,
+      })
+      if (subscriptionOrError.isFailed()) {
+        return Result.fail(subscriptionOrError.getError())
+      }
+      const subscription = subscriptionOrError.getValue()
+
+      return this.setSubscriptionSetting.execute({
+        settingName: settingName.value,
+        userSubscriptionUuid: subscription.uuid,
+        value: 'muted',
+      })
     } else {
-      setting = await this.factory.createReplacement(setting, {
-        name: settingName,
-        unencryptedValue: 'muted',
-        sensitive: false,
+      return this.setSettingValue.execute({
+        settingName: settingName.value,
+        userUuid: user.uuid,
+        value: 'muted',
       })
     }
-
-    await this.settingRepository.save(setting)
-
-    return Result.ok()
   }
 
-  private getSettingNameFromLevel(level: string): Result<string> {
+  private getSettingNameFromLevel(level: string): Result<SettingName> {
     /* istanbul ignore next */
     switch (level) {
       case EmailLevel.LEVELS.FailedCloudBackup:
-        return Result.ok(SettingName.NAMES.MuteFailedCloudBackupsEmails)
+        return Result.ok(SettingName.create(SettingName.NAMES.MuteFailedCloudBackupsEmails).getValue())
       case EmailLevel.LEVELS.FailedEmailBackup:
-        return Result.ok(SettingName.NAMES.MuteFailedBackupsEmails)
+        return Result.ok(SettingName.create(SettingName.NAMES.MuteFailedBackupsEmails).getValue())
       case EmailLevel.LEVELS.Marketing:
-        return Result.ok(SettingName.NAMES.MuteMarketingEmails)
+        return Result.ok(SettingName.create(SettingName.NAMES.MuteMarketingEmails).getValue())
       case EmailLevel.LEVELS.SignIn:
-        return Result.ok(SettingName.NAMES.MuteSignInEmails)
+        return Result.ok(SettingName.create(SettingName.NAMES.MuteSignInEmails).getValue())
       default:
         return Result.fail(`Unknown level: ${level}`)
     }

@@ -1,10 +1,8 @@
 import * as bcrypt from 'bcryptjs'
 import { RoleName, Username } from '@standardnotes/domain-core'
 import { v4 as uuidv4 } from 'uuid'
-import { inject, injectable } from 'inversify'
 import { TimerInterface } from '@standardnotes/time'
 
-import TYPES from '../../Bootstrap/Types'
 import { User } from '../User/User'
 import { UserRepositoryInterface } from '../User/UserRepositoryInterface'
 import { RegisterDTO } from './RegisterDTO'
@@ -12,21 +10,20 @@ import { RegisterResponse } from './RegisterResponse'
 import { UseCaseInterface } from './UseCaseInterface'
 import { RoleRepositoryInterface } from '../Role/RoleRepositoryInterface'
 import { CrypterInterface } from '../Encryption/CrypterInterface'
-import { SettingServiceInterface } from '../Setting/SettingServiceInterface'
 import { AuthResponseFactory20200115 } from '../Auth/AuthResponseFactory20200115'
 import { AuthResponse20200115 } from '../Auth/AuthResponse20200115'
 import { ApiVersion } from '../Api/ApiVersion'
+import { ApplyDefaultSettings } from './ApplyDefaultSettings/ApplyDefaultSettings'
 
-@injectable()
 export class Register implements UseCaseInterface {
   constructor(
-    @inject(TYPES.Auth_UserRepository) private userRepository: UserRepositoryInterface,
-    @inject(TYPES.Auth_RoleRepository) private roleRepository: RoleRepositoryInterface,
-    @inject(TYPES.Auth_AuthResponseFactory20200115) private authResponseFactory20200115: AuthResponseFactory20200115,
-    @inject(TYPES.Auth_Crypter) private crypter: CrypterInterface,
-    @inject(TYPES.Auth_DISABLE_USER_REGISTRATION) private disableUserRegistration: boolean,
-    @inject(TYPES.Auth_SettingService) private settingService: SettingServiceInterface,
-    @inject(TYPES.Auth_Timer) private timer: TimerInterface,
+    private userRepository: UserRepositoryInterface,
+    private roleRepository: RoleRepositoryInterface,
+    private authResponseFactory20200115: AuthResponseFactory20200115,
+    private crypter: CrypterInterface,
+    private disableUserRegistration: boolean,
+    private timer: TimerInterface,
+    private applyDefaultSettings: ApplyDefaultSettings,
   ) {}
 
   async execute(dto: RegisterDTO): Promise<RegisterResponse> {
@@ -83,7 +80,16 @@ export class Register implements UseCaseInterface {
 
     user = await this.userRepository.save(user)
 
-    await this.settingService.applyDefaultSettingsUponRegistration(user)
+    const settingsApplicationResult = await this.applyDefaultSettings.execute({
+      userName: user.email,
+      userUuid: user.uuid,
+    })
+    if (settingsApplicationResult.isFailed()) {
+      return {
+        success: false,
+        errorMessage: settingsApplicationResult.getError(),
+      }
+    }
 
     const result = await this.authResponseFactory20200115.createResponse({
       user,

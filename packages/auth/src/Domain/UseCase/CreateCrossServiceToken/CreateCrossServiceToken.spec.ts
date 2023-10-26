@@ -8,9 +8,14 @@ import { Role } from '../../Role/Role'
 import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'
 
 import { CreateCrossServiceToken } from './CreateCrossServiceToken'
-import { GetSetting } from '../GetSetting/GetSetting'
 import { Result, SharedVaultUser, SharedVaultUserPermission, Timestamps, Uuid } from '@standardnotes/domain-core'
 import { SharedVaultUserRepositoryInterface } from '../../SharedVault/SharedVaultUserRepositoryInterface'
+import { GetSubscriptionSetting } from '../GetSubscriptionSetting/GetSubscriptionSetting'
+import { GetRegularSubscriptionForUser } from '../GetRegularSubscriptionForUser/GetRegularSubscriptionForUser'
+import { UserSubscription } from '../../Subscription/UserSubscription'
+import { SubscriptionSetting } from '../../Setting/SubscriptionSetting'
+import { SettingName } from '@standardnotes/settings'
+import { EncryptionVersion } from '../../Encryption/EncryptionVersion'
 
 describe('CreateCrossServiceToken', () => {
   let userProjector: ProjectorInterface<User>
@@ -18,7 +23,8 @@ describe('CreateCrossServiceToken', () => {
   let roleProjector: ProjectorInterface<Role>
   let tokenEncoder: TokenEncoderInterface<CrossServiceTokenData>
   let userRepository: UserRepositoryInterface
-  let getSettingUseCase: GetSetting
+  let getRegularSubscription: GetRegularSubscriptionForUser
+  let getSubscriptionSetting: GetSubscriptionSetting
   let sharedVaultUserRepository: SharedVaultUserRepositoryInterface
   const jwtTTL = 60
 
@@ -34,7 +40,8 @@ describe('CreateCrossServiceToken', () => {
       tokenEncoder,
       userRepository,
       jwtTTL,
-      getSettingUseCase,
+      getRegularSubscription,
+      getSubscriptionSetting,
       sharedVaultUserRepository,
     )
 
@@ -65,8 +72,22 @@ describe('CreateCrossServiceToken', () => {
     userRepository = {} as jest.Mocked<UserRepositoryInterface>
     userRepository.findOneByUuid = jest.fn().mockReturnValue(user)
 
-    getSettingUseCase = {} as jest.Mocked<GetSetting>
-    getSettingUseCase.execute = jest.fn().mockReturnValue(Result.ok({ setting: { value: '100' } }))
+    getSubscriptionSetting = {} as jest.Mocked<GetSubscriptionSetting>
+    getSubscriptionSetting.execute = jest.fn().mockReturnValue(
+      Result.ok({
+        setting: SubscriptionSetting.create({
+          sensitive: false,
+          name: SettingName.NAMES.FileUploadBytesLimit,
+          value: '100',
+          timestamps: Timestamps.create(123456789, 123456789).getValue(),
+          serverEncryptionVersion: EncryptionVersion.Unencrypted,
+          userSubscriptionUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+        }).getValue(),
+      }),
+    )
+
+    getRegularSubscription = {} as jest.Mocked<GetRegularSubscriptionForUser>
+    getRegularSubscription.execute = jest.fn().mockReturnValue(Result.fail('not found'))
 
     sharedVaultUserRepository = {} as jest.Mocked<SharedVaultUserRepositoryInterface>
     sharedVaultUserRepository.findByUserUuid = jest.fn().mockReturnValue([
@@ -188,6 +209,9 @@ describe('CreateCrossServiceToken', () => {
 
   describe('shared vault context', () => {
     it('should add shared vault context if shared vault owner uuid is provided', async () => {
+      const regularSubscription = {} as jest.Mocked<UserSubscription>
+      getRegularSubscription.execute = jest.fn().mockReturnValue(Result.ok(regularSubscription))
+
       await createUseCase().execute({
         user,
         session,
@@ -223,9 +247,7 @@ describe('CreateCrossServiceToken', () => {
       )
     })
 
-    it('should throw an error if shared vault owner context is sensitive', async () => {
-      getSettingUseCase.execute = jest.fn().mockReturnValue(Result.ok({ sensitive: true }))
-
+    it('should return an error if it fails to retrieve shared vault owner subscription', async () => {
       const result = await createUseCase().execute({
         user,
         session,
@@ -235,8 +257,11 @@ describe('CreateCrossServiceToken', () => {
       expect(result.isFailed()).toBeTruthy()
     })
 
-    it('should throw an error if it fails to retrieve shared vault owner setting', async () => {
-      getSettingUseCase.execute = jest.fn().mockReturnValue(Result.fail('Oops'))
+    it('should return an error if it fails to retrieve shared vault owner setting', async () => {
+      const regularSubscription = {} as jest.Mocked<UserSubscription>
+      getRegularSubscription.execute = jest.fn().mockReturnValue(Result.ok(regularSubscription))
+
+      getSubscriptionSetting.execute = jest.fn().mockReturnValue(Result.fail('error'))
 
       const result = await createUseCase().execute({
         user,

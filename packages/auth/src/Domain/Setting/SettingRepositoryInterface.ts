@@ -13,5 +13,6 @@ export interface SettingRepositoryInterface {
   streamAllByNameAndValue(name: SettingName, value: string): Promise<ReadStream>
   streamAllByName(name: SettingName): Promise<ReadStream>
   deleteByUserUuid(dto: DeleteSettingDto): Promise<void>
-  save(setting: Setting): Promise<Setting>
+  insert(setting: Setting): Promise<void>
+  update(setting: Setting): Promise<void>
 }

@@ -4,7 +4,6 @@ import { SettingName } from '@standardnotes/settings'
 import { inject, injectable } from 'inversify'
 
 import TYPES from '../../Bootstrap/Types'
-import { EncryptionVersion } from '../Encryption/EncryptionVersion'
 import { Permission } from '../Permission/Permission'
 import { RoleRepositoryInterface } from '../Role/RoleRepositoryInterface'
 import { RoleToSubscriptionMapInterface } from '../Role/RoleToSubscriptionMapInterface'
@@ -23,15 +22,10 @@ export class SubscriptionSettingsAssociationService implements SubscriptionSetti
     [
       SubscriptionName.PlusPlan,
       new Map([
-        [
-          SettingName.NAMES.FileUploadBytesUsed,
-          { sensitive: false, serverEncryptionVersion: EncryptionVersion.Unencrypted, value: '0', replaceable: false },
-        ],
+        [SettingName.NAMES.FileUploadBytesUsed, { value: '0', replaceable: false }],
         [
           SettingName.NAMES.MuteSignInEmails,
           {
-            sensitive: false,
-            serverEncryptionVersion: EncryptionVersion.Unencrypted,
             value: 'not_muted',
             replaceable: false,
           },
@@ -41,15 +35,10 @@ export class SubscriptionSettingsAssociationService implements SubscriptionSetti
     [
       SubscriptionName.ProPlan,
       new Map([
-        [
-          SettingName.NAMES.FileUploadBytesUsed,
-          { sensitive: false, serverEncryptionVersion: EncryptionVersion.Unencrypted, value: '0', replaceable: false },
-        ],
+        [SettingName.NAMES.FileUploadBytesUsed, { value: '0', replaceable: false }],
         [
           SettingName.NAMES.MuteSignInEmails,
           {
-            sensitive: false,
-            serverEncryptionVersion: EncryptionVersion.Unencrypted,
             value: 'not_muted',
             replaceable: false,
           },
@@ -68,8 +57,6 @@ export class SubscriptionSettingsAssociationService implements SubscriptionSetti
     }
 
     defaultSettings.set(SettingName.NAMES.FileUploadBytesLimit, {
-      sensitive: false,
-      serverEncryptionVersion: EncryptionVersion.Unencrypted,
       value: (await this.getFileUploadLimit(subscriptionName)).toString(),
       replaceable: true,
     })

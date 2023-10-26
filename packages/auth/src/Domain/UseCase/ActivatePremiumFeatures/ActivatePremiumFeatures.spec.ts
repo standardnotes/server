@@ -5,13 +5,14 @@ import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'
 
 import { ActivatePremiumFeatures } from './ActivatePremiumFeatures'
 import { User } from '../../User/User'
-import { SubscriptionSettingServiceInterface } from '../../Setting/SubscriptionSettingServiceInterface'
 import { UserSubscription } from '../../Subscription/UserSubscription'
+import { ApplyDefaultSubscriptionSettings } from '../ApplyDefaultSubscriptionSettings/ApplyDefaultSubscriptionSettings'
+import { Result } from '@standardnotes/domain-core'
 
 describe('ActivatePremiumFeatures', () => {
   let userRepository: UserRepositoryInterface
   let userSubscriptionRepository: UserSubscriptionRepositoryInterface
-  let subscriptionSettingsService: SubscriptionSettingServiceInterface
+  let applyDefaultSubscriptionSettings: ApplyDefaultSubscriptionSettings
   let roleService: RoleServiceInterface
   let timer: TimerInterface
   let user: User
@@ -20,7 +21,7 @@ describe('ActivatePremiumFeatures', () => {
     new ActivatePremiumFeatures(
       userRepository,
       userSubscriptionRepository,
-      subscriptionSettingsService,
+      applyDefaultSubscriptionSettings,
       roleService,
       timer,
     )
@@ -43,8 +44,8 @@ describe('ActivatePremiumFeatures', () => {
     timer.convertDateToMicroseconds = jest.fn().mockReturnValue(123456789)
     timer.getUTCDateNDaysAhead = jest.fn().mockReturnValue(new Date('2024-01-01T00:00:00.000Z'))
 
-    subscriptionSettingsService = {} as jest.Mocked<SubscriptionSettingServiceInterface>
-    subscriptionSettingsService.applyDefaultSubscriptionSettingsForSubscription = jest.fn()
+    applyDefaultSubscriptionSettings = {} as jest.Mocked<ApplyDefaultSubscriptionSettings>
+    applyDefaultSubscriptionSettings.execute = jest.fn().mockReturnValue(Result.ok())
   })
 
   it('should return error when username is invalid', async () => {

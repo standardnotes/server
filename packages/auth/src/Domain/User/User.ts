@@ -1,7 +1,6 @@
 import { Column, Entity, Index, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
 import { RevokedSession } from '../Session/RevokedSession'
 import { Role } from '../Role/Role'
-import { Setting } from '../Setting/Setting'
 import { UserSubscription } from '../Subscription/UserSubscription'
 import { ProtocolVersion } from '@standardnotes/common'
 import { TypeORMEmergencyAccessInvitation } from '../../Infra/TypeORM/TypeORMEmergencyAccessInvitation'
@@ -142,16 +141,6 @@ export class User {
     { lazy: true, eager: false },
   )
   declare revokedSessions: Promise<RevokedSession[]>
-
-  @OneToMany(
-    /* istanbul ignore next */
-    () => Setting,
-    /* istanbul ignore next */
-    (setting) => setting.user,
-    /* istanbul ignore next */
-    { lazy: true, eager: false },
-  )
-  declare settings: Promise<Setting[]>
 
   @ManyToMany(
     /* istanbul ignore next */

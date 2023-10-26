@@ -1,31 +1,25 @@
 import { DomainEventHandlerInterface, SubscriptionReassignedEvent } from '@standardnotes/domain-events'
-import { inject, injectable } from 'inversify'
 import { Logger } from 'winston'
 
-import TYPES from '../../Bootstrap/Types'
 import { RoleServiceInterface } from '../Role/RoleServiceInterface'
 import { User } from '../User/User'
 import { UserRepositoryInterface } from '../User/UserRepositoryInterface'
 import { UserSubscription } from '../Subscription/UserSubscription'
 import { UserSubscriptionRepositoryInterface } from '../Subscription/UserSubscriptionRepositoryInterface'
-import { SettingServiceInterface } from '../Setting/SettingServiceInterface'
 import { SettingName } from '@standardnotes/settings'
-import { EncryptionVersion } from '../Encryption/EncryptionVersion'
 import { UserSubscriptionType } from '../Subscription/UserSubscriptionType'
-import { SubscriptionSettingServiceInterface } from '../Setting/SubscriptionSettingServiceInterface'
 import { Username } from '@standardnotes/domain-core'
+import { ApplyDefaultSubscriptionSettings } from '../UseCase/ApplyDefaultSubscriptionSettings/ApplyDefaultSubscriptionSettings'
+import { SetSettingValue } from '../UseCase/SetSettingValue/SetSettingValue'
 
-@injectable()
 export class SubscriptionReassignedEventHandler implements DomainEventHandlerInterface {
   constructor(
-    @inject(TYPES.Auth_UserRepository) private userRepository: UserRepositoryInterface,
-    @inject(TYPES.Auth_UserSubscriptionRepository)
+    private userRepository: UserRepositoryInterface,
     private userSubscriptionRepository: UserSubscriptionRepositoryInterface,
-    @inject(TYPES.Auth_RoleService) private roleService: RoleServiceInterface,
-    @inject(TYPES.Auth_SettingService) private settingService: SettingServiceInterface,
-    @inject(TYPES.Auth_SubscriptionSettingService)
-    private subscriptionSettingService: SubscriptionSettingServiceInterface,
-    @inject(TYPES.Auth_Logger) private logger: Logger,
+    private roleService: RoleServiceInterface,
+    private logger: Logger,
+    private applyDefaultSubscriptionSettings: ApplyDefaultSubscriptionSettings,
+    private setSettingValue: SetSettingValue,
   ) {}
 
   async handle(event: SubscriptionReassignedEvent): Promise<void> {
@@ -53,17 +47,25 @@ export class SubscriptionReassignedEventHandler implements DomainEventHandlerInt
 
     await this.addUserRole(user, event.payload.subscriptionName)
 
-    await this.settingService.createOrReplace({
-      user,
-      props: {
-        name: SettingName.NAMES.ExtensionKey,
-        unencryptedValue: event.payload.extensionKey,
-        serverEncryptionVersion: EncryptionVersion.Default,
-        sensitive: true,
-      },
+    const result = await this.setSettingValue.execute({
+      userUuid: user.uuid,
+      settingName: SettingName.NAMES.ExtensionKey,
+      value: event.payload.extensionKey,
     })
+    if (result.isFailed()) {
+      this.logger.error(`Could not set extension key for user ${user.uuid}`)
+    }
 
-    await this.subscriptionSettingService.applyDefaultSubscriptionSettingsForSubscription(userSubscription)
+    const applyingSettingsResult = await this.applyDefaultSubscriptionSettings.execute({
+      subscriptionPlanName: event.payload.subscriptionName,
+      userUuid: user.uuid,
+      userSubscriptionUuid: userSubscription.uuid,
+    })
+    if (applyingSettingsResult.isFailed()) {
+      this.logger.error(
+        `Could not apply default subscription settings for user ${user.uuid}: ${applyingSettingsResult.getError()}`,
+      )
+    }
   }
 
   private async addUserRole(user: User, subscriptionName: string): Promise<void> {
