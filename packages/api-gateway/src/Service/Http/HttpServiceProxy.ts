@@ -261,14 +261,15 @@ export class HttpServiceProxy implements ServiceProxyInterface {
         )
       }
 
-      const errorMessage = (error as AxiosError).isAxiosError
-        ? JSON.stringify((error as AxiosError).response?.data)
-        : (error as Error).message
+      let detailedErrorMessage = (error as Error).message
+      if (error instanceof AxiosError) {
+        detailedErrorMessage = `Status: ${error.status}, code: ${error.code}, message: ${error.message}`
+      }
 
       this.logger.error(
         tooManyRetryAttempts
           ? `Request to ${serverUrl}/${endpointOrMethodIdentifier} timed out after ${retryAttempt} retries`
-          : `Could not pass the request to ${serverUrl}/${endpointOrMethodIdentifier} on underlying service: ${errorMessage}`,
+          : `Could not pass the request to ${serverUrl}/${endpointOrMethodIdentifier} on underlying service: ${detailedErrorMessage}`,
       )
 
       this.logger.debug(`Response error: ${JSON.stringify(error)}`)
@@ -282,7 +283,14 @@ export class HttpServiceProxy implements ServiceProxyInterface {
           ? +((error as AxiosError).code as string)
           : 500
 
-      response.status(errorCode).send(errorMessage)
+      const responseErrorMessage = (error as AxiosError).response?.data
+
+      response
+        .status(errorCode)
+        .send(
+          responseErrorMessage ??
+            "Unfortunately, we couldn't handle your request. Please try again or contact our support if the error persists.",
+        )
     }
 
     return
