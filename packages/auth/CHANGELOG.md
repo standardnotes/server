@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.163.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.163.0...@standardnotes/auth-server@1.163.1) (2023-10-30)
+
+### Bug Fixes
+
+* **auth:** add more information on the listed creation error ([78ff748](https://github.com/standardnotes/server/commit/78ff748d911a5a4063903847ef761822bbb8f4e2))
+
 # [1.163.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.162.0...@standardnotes/auth-server@1.163.0) (2023-10-26)
 
 ### Features
