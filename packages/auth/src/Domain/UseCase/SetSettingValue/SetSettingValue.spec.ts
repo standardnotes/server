@@ -92,6 +92,7 @@ describe('SetSettingValue', () => {
       userUuid: '00000000-0000-0000-0000-000000000000',
       settingName: SettingName.NAMES.ListedAuthorSecrets,
       value: 'value',
+      checkUserPermissions: true,
     })
 
     expect(result.isFailed()).toBe(true)
@@ -108,6 +109,7 @@ describe('SetSettingValue', () => {
       userUuid: '00000000-0000-0000-0000-000000000000',
       settingName: SettingName.NAMES.MfaSecret,
       value: 'value',
+      checkUserPermissions: true,
     })
 
     expect(result.isFailed()).toBe(true)
@@ -138,6 +140,20 @@ describe('SetSettingValue', () => {
 
     expect(result.isFailed()).toBe(false)
     expect(settingRepository.update).toHaveBeenCalled()
+  })
+
+  it('should create a setting with checking user permissions', async () => {
+    const useCase = createUseCase()
+
+    const result = await useCase.execute({
+      userUuid: '00000000-0000-0000-0000-000000000000',
+      settingName: SettingName.NAMES.MfaSecret,
+      value: 'value',
+      checkUserPermissions: true,
+    })
+
+    expect(result.isFailed()).toBe(false)
+    expect(settingRepository.insert).toHaveBeenCalled()
   })
 
   it('should insert a new setting if one does not exist', async () => {

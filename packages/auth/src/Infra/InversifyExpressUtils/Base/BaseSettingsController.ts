@@ -160,6 +160,7 @@ export class BaseSettingsController extends BaseHttpController {
       settingName: name,
       value,
       userUuid: response.locals.user.uuid,
+      checkUserPermissions: true,
     })
 
     if (result.isFailed()) {
