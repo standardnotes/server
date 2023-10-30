@@ -37,7 +37,7 @@ export class SetSettingValue implements UseCaseInterface<Setting> {
       return Result.fail(`Setting ${settingName.value} is a subscription setting!`)
     }
 
-    if (!(await this.userHasPermissionToUpdateSetting(userUuid, settingName))) {
+    if (dto.checkUserPermissions && !(await this.userHasPermissionToUpdateSetting(userUuid, settingName))) {
       return Result.fail(`User ${userUuid.value} does not have permission to update setting ${settingName.value}.`)
     }
 
