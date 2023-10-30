@@ -53,7 +53,7 @@ export class ListedAccountCreatedEventHandler implements DomainEventHandlerInter
     })
 
     if (result.isFailed()) {
-      this.logger.error(`Could not update listed author secrets for user with uuid ${user.uuid}`)
+      this.logger.error(`Could not update listed author secrets for user with uuid ${user.uuid}: ${result.getError()}`)
     }
   }
 }
