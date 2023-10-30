@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.163.2](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.163.1...@standardnotes/auth-server@1.163.2) (2023-10-30)
+
+### Bug Fixes
+
+* **auth:** checking permissions to update setting only when directly performed by user ([#892](https://github.com/standardnotes/server/issues/892)) ([9bd4fb2](https://github.com/standardnotes/server/commit/9bd4fb2d794dae032286c68f23d3896b68735bdd))
+
 ## [1.163.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.163.0...@standardnotes/auth-server@1.163.1) (2023-10-30)
 
 ### Bug Fixes
