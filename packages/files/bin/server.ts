@@ -8,6 +8,7 @@ sdk.start()
 
 import * as busboy from 'connect-busboy'
 
+import '../src/Infra/InversifyExpress/AnnotatedFallbackController'
 import '../src/Infra/InversifyExpress/AnnotatedHealthCheckController'
 import '../src/Infra/InversifyExpress/AnnotatedFilesController'
 import '../src/Infra/InversifyExpress/AnnotatedSharedVaultFilesController'

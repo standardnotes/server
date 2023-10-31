@@ -6,6 +6,7 @@ import { ServiceIdentifier } from '@standardnotes/domain-core'
 const sdk = new OpenTelemetrySDK({ serviceName: ServiceIdentifier.NAMES.SyncingServer })
 sdk.start()
 
+import '../src/Infra/InversifyExpressUtils/AnnotatedFallbackController'
 import '../src/Infra/InversifyExpressUtils/AnnotatedHealthCheckController'
 import '../src/Infra/InversifyExpressUtils/AnnotatedItemsController'
 import '../src/Infra/InversifyExpressUtils/AnnotatedMessagesController'
