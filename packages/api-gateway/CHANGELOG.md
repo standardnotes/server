@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.81.7](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.81.6...@standardnotes/api-gateway@1.81.7) (2023-10-31)
+
+### Bug Fixes
+
+* add fallback methods for 404 requests ([#893](https://github.com/standardnotes/api-gateway/issues/893)) ([16a6815](https://github.com/standardnotes/api-gateway/commit/16a6815b69e344573ae07682f3bac1d44d715d79))
+
 ## [1.81.6](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.81.5...@standardnotes/api-gateway@1.81.6) (2023-10-27)
 
 ### Bug Fixes

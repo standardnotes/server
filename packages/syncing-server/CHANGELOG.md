@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.119.4](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.119.3...@standardnotes/syncing-server@1.119.4) (2023-10-31)
+
+### Bug Fixes
+
+* add fallback methods for 404 requests ([#893](https://github.com/standardnotes/syncing-server-js/issues/893)) ([16a6815](https://github.com/standardnotes/syncing-server-js/commit/16a6815b69e344573ae07682f3bac1d44d715d79))
+
 ## [1.119.3](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.119.2...@standardnotes/syncing-server@1.119.3) (2023-10-26)
 
 **Note:** Version bump only for package @standardnotes/syncing-server

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.32.3](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.32.2...@standardnotes/files-server@1.32.3) (2023-10-31)
+
+### Bug Fixes
+
+* add fallback methods for 404 requests ([#893](https://github.com/standardnotes/files/issues/893)) ([16a6815](https://github.com/standardnotes/files/commit/16a6815b69e344573ae07682f3bac1d44d715d79))
+
 ## [1.32.2](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.32.1...@standardnotes/files-server@1.32.2) (2023-10-26)
 
 **Note:** Version bump only for package @standardnotes/files-server
