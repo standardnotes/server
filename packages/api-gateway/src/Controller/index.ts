@@ -1,5 +1,4 @@
 export * from './AuthMiddleware'
-export * from './FallbackController'
 export * from './HealthCheckController'
 export * from './SubscriptionTokenAuthMiddleware'
 export * from './TokenAuthenticationMethod'
