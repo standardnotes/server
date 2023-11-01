@@ -35,12 +35,39 @@ describe('GetRegularSubscriptionForUser', () => {
     expect(result.isFailed()).toBe(true)
   })
 
-  it('returns regular subscription when user subscription is regular', async () => {
+  it('returns regular subscription for user uuid', async () => {
     const useCase = createUseCase()
 
     const result = await useCase.execute({ userUuid: '00000000-0000-0000-0000-000000000000' })
 
     expect(result.isFailed()).toBe(false)
     expect(result.getValue()).toBe(regularSubscription)
+  })
+
+  it('returns regular subscription for shared subscription id', async () => {
+    const useCase = createUseCase()
+    userSubscriptionRepository.findBySubscriptionIdAndType = jest.fn().mockResolvedValue([regularSubscription])
+
+    const result = await useCase.execute({ subscriptionId: 1 })
+
+    expect(result.isFailed()).toBe(false)
+    expect(result.getValue()).toBe(regularSubscription)
+  })
+
+  it('returns error if subscription for shared subscription id is not found', async () => {
+    const useCase = createUseCase()
+    userSubscriptionRepository.findBySubscriptionIdAndType = jest.fn().mockResolvedValue([])
+
+    const result = await useCase.execute({ subscriptionId: 1 })
+
+    expect(result.isFailed()).toBe(true)
+  })
+
+  it('returns error if no parameters are specified', async () => {
+    const useCase = createUseCase()
+
+    const result = await useCase.execute({})
+
+    expect(result.isFailed()).toBe(true)
   })
 })

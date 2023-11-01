@@ -9,7 +9,18 @@ export class GetRegularSubscriptionForUser implements UseCaseInterface<UserSubsc
   constructor(private userSubscriptionRepository: UserSubscriptionRepositoryInterface) {}
 
   async execute(dto: GetRegularSubscriptionForUserDTO): Promise<Result<UserSubscription>> {
-    const userUuidOrError = Uuid.create(dto.userUuid)
+    if (dto.userUuid !== undefined) {
+      return this.getRegularSubscriptionForUser(dto.userUuid)
+    }
+    if (dto.subscriptionId !== undefined) {
+      return this.getRegularSubscriptionForSharedSubscription(dto.subscriptionId)
+    }
+
+    return Result.fail('Invalid parameters.')
+  }
+
+  private async getRegularSubscriptionForUser(userUuidString: string): Promise<Result<UserSubscription>> {
+    const userUuidOrError = Uuid.create(userUuidString)
     if (userUuidOrError.isFailed()) {
       return Result.fail(`Could not get regular subscription for user: ${userUuidOrError.getError()}`)
     }
@@ -24,5 +35,17 @@ export class GetRegularSubscriptionForUser implements UseCaseInterface<UserSubsc
     }
 
     return Result.ok(userSubscription)
+  }
+
+  private async getRegularSubscriptionForSharedSubscription(subscriptionId: number): Promise<Result<UserSubscription>> {
+    const userSubscription = await this.userSubscriptionRepository.findBySubscriptionIdAndType(
+      subscriptionId,
+      UserSubscriptionType.Regular,
+    )
+    if (userSubscription.length === 0) {
+      return Result.fail(`User subscription for shared subscription ${subscriptionId} not found.`)
+    }
+
+    return Result.ok(userSubscription[0])
   }
 }
