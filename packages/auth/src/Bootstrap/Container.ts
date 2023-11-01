@@ -274,6 +274,7 @@ import { TypeORMSetting } from '../Infra/TypeORM/TypeORMSetting'
 import { SettingPersistenceMapper } from '../Mapping/Persistence/SettingPersistenceMapper'
 import { SubscriptionSettingPersistenceMapper } from '../Mapping/Persistence/SubscriptionSettingPersistenceMapper'
 import { ApplyDefaultSettings } from '../Domain/UseCase/ApplyDefaultSettings/ApplyDefaultSettings'
+import { AuthResponseFactoryResolverInterface } from '../Domain/Auth/AuthResponseFactoryResolverInterface'
 
 export class ContainerConfigLoader {
   constructor(private mode: 'server' | 'worker' = 'server') {}
@@ -723,7 +724,9 @@ export class ContainerConfigLoader {
     container.bind<AuthResponseFactory20161215>(TYPES.Auth_AuthResponseFactory20161215).to(AuthResponseFactory20161215)
     container.bind<AuthResponseFactory20190520>(TYPES.Auth_AuthResponseFactory20190520).to(AuthResponseFactory20190520)
     container.bind<AuthResponseFactory20200115>(TYPES.Auth_AuthResponseFactory20200115).to(AuthResponseFactory20200115)
-    container.bind<AuthResponseFactoryResolver>(TYPES.Auth_AuthResponseFactoryResolver).to(AuthResponseFactoryResolver)
+    container
+      .bind<AuthResponseFactoryResolverInterface>(TYPES.Auth_AuthResponseFactoryResolver)
+      .to(AuthResponseFactoryResolver)
     container.bind<KeyParamsFactory>(TYPES.Auth_KeyParamsFactory).to(KeyParamsFactory)
     container
       .bind<TokenDecoderInterface<SessionTokenData>>(TYPES.Auth_SessionTokenDecoder)
@@ -1020,7 +1023,19 @@ export class ContainerConfigLoader {
     container.bind<GetActiveSessionsForUser>(TYPES.Auth_GetActiveSessionsForUser).to(GetActiveSessionsForUser)
     container.bind<DeleteOtherSessionsForUser>(TYPES.Auth_DeleteOtherSessionsForUser).to(DeleteOtherSessionsForUser)
     container.bind<DeleteSessionForUser>(TYPES.Auth_DeleteSessionForUser).to(DeleteSessionForUser)
-    container.bind<ChangeCredentials>(TYPES.Auth_ChangeCredentials).to(ChangeCredentials)
+    container
+      .bind<ChangeCredentials>(TYPES.Auth_ChangeCredentials)
+      .toConstantValue(
+        new ChangeCredentials(
+          container.get<UserRepositoryInterface>(TYPES.Auth_UserRepository),
+          container.get<AuthResponseFactoryResolverInterface>(TYPES.Auth_AuthResponseFactoryResolver),
+          container.get<DomainEventPublisherInterface>(TYPES.Auth_DomainEventPublisher),
+          container.get<DomainEventFactoryInterface>(TYPES.Auth_DomainEventFactory),
+          container.get<TimerInterface>(TYPES.Auth_Timer),
+          container.get<DeleteOtherSessionsForUser>(TYPES.Auth_DeleteOtherSessionsForUser),
+          container.get<winston.Logger>(TYPES.Auth_Logger),
+        ),
+      )
     container
       .bind<GetSettings>(TYPES.Auth_GetSettings)
       .toConstantValue(

@@ -15,6 +15,7 @@ import { Result, Username } from '@standardnotes/domain-core'
 import { DeleteOtherSessionsForUser } from '../DeleteOtherSessionsForUser'
 import { ApiVersion } from '../../Api/ApiVersion'
 import { Session } from '../../Session/Session'
+import { Logger } from 'winston'
 
 describe('ChangeCredentials', () => {
   let userRepository: UserRepositoryInterface
@@ -25,6 +26,7 @@ describe('ChangeCredentials', () => {
   let timer: TimerInterface
   let user: User
   let deleteOtherSessionsForUser: DeleteOtherSessionsForUser
+  let logger: Logger
 
   const createUseCase = () =>
     new ChangeCredentials(
@@ -34,9 +36,13 @@ describe('ChangeCredentials', () => {
       domainEventFactory,
       timer,
       deleteOtherSessionsForUser,
+      logger,
     )
 
   beforeEach(() => {
+    logger = {} as jest.Mocked<Logger>
+    logger.error = jest.fn()
+
     authResponseFactory = {} as jest.Mocked<AuthResponseFactoryInterface>
     authResponseFactory.createResponse = jest
       .fn()
@@ -51,7 +57,7 @@ describe('ChangeCredentials', () => {
     user.email = 'test@test.te'
 
     userRepository = {} as jest.Mocked<UserRepositoryInterface>
-    userRepository.save = jest.fn()
+    userRepository.save = jest.fn().mockImplementation((user: User) => Promise.resolve(user))
     userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue(user)
 
     domainEventPublisher = {} as jest.Mocked<DomainEventPublisherInterface>
