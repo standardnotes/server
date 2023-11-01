@@ -1,6 +1,6 @@
 {
   "name": "@standardnotes/auth-server",
-  "version": "1.164.1",
+  "version": "1.164.2",
   "engines": {
     "node": ">=18.0.0 <21.0.0"
   },
