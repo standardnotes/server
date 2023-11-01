@@ -1,3 +1,4 @@
 export interface GetRegularSubscriptionForUserDTO {
-  userUuid: string
+  userUuid?: string
+  subscriptionId?: number
 }

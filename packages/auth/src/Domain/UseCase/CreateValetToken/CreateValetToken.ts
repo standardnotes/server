@@ -12,6 +12,7 @@ import { GetRegularSubscriptionForUser } from '../GetRegularSubscriptionForUser/
 import { GetSharedSubscriptionForUser } from '../GetSharedSubscriptionForUser/GetSharedSubscriptionForUser'
 import { GetSubscriptionSetting } from '../GetSubscriptionSetting/GetSubscriptionSetting'
 import { SettingName } from '@standardnotes/domain-core'
+import { UserSubscription } from '../../Subscription/UserSubscription'
 
 export class CreateValetToken implements UseCaseInterface {
   constructor(
@@ -27,8 +28,17 @@ export class CreateValetToken implements UseCaseInterface {
   async execute(dto: CreateValetTokenDTO): Promise<CreateValetTokenResponseData> {
     const { userUuid, ...payload } = dto
 
+    let sharedSubscription: UserSubscription | undefined
+    const sharedSubscriptionOrError = await this.getSharedSubscription.execute({
+      userUuid,
+    })
+    if (!sharedSubscriptionOrError.isFailed()) {
+      sharedSubscription = sharedSubscriptionOrError.getValue()
+    }
+
     const regularSubscriptionOrError = await this.getRegularSubscription.execute({
-      userUuid: dto.userUuid,
+      userUuid: sharedSubscription ? undefined : dto.userUuid,
+      subscriptionId: sharedSubscription ? (sharedSubscription.subscriptionId as number) : undefined,
     })
     if (regularSubscriptionOrError.isFailed()) {
       return {
@@ -77,22 +87,13 @@ export class CreateValetToken implements UseCaseInterface {
       uploadBytesLimit = +(overwriteWithUserUploadBytesLimitSetting.setting.props.value as string)
     }
 
-    let sharedSubscriptionUuid = undefined
-    const sharedSubscriptionOrError = await this.getSharedSubscription.execute({
-      userUuid,
-    })
-    if (!sharedSubscriptionOrError.isFailed()) {
-      const sharedSubscription = sharedSubscriptionOrError.getValue()
-      sharedSubscriptionUuid = sharedSubscription.uuid
-    }
-
     const tokenData: ValetTokenData = {
       userUuid: dto.userUuid,
       permittedOperation: dto.operation,
       permittedResources: dto.resources,
       uploadBytesUsed,
       uploadBytesLimit,
-      sharedSubscriptionUuid,
+      sharedSubscriptionUuid: sharedSubscription ? sharedSubscription.uuid : undefined,
       regularSubscriptionUuid: regularSubscription.uuid,
     }
 
