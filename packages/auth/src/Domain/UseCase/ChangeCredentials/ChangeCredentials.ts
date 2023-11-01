@@ -1,10 +1,8 @@
 import * as bcrypt from 'bcryptjs'
-import { inject, injectable } from 'inversify'
 import { DomainEventPublisherInterface, UserEmailChangedEvent } from '@standardnotes/domain-events'
 import { TimerInterface } from '@standardnotes/time'
-import { Result, UseCaseInterface, Username } from '@standardnotes/domain-core'
+import { EmailLevel, Result, UseCaseInterface, Username } from '@standardnotes/domain-core'
 
-import TYPES from '../../../Bootstrap/Types'
 import { AuthResponseFactoryResolverInterface } from '../../Auth/AuthResponseFactoryResolverInterface'
 import { User } from '../../User/User'
 import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'
@@ -14,18 +12,18 @@ import { DeleteOtherSessionsForUser } from '../DeleteOtherSessionsForUser'
 import { AuthResponse20161215 } from '../../Auth/AuthResponse20161215'
 import { AuthResponse20200115 } from '../../Auth/AuthResponse20200115'
 import { Session } from '../../Session/Session'
+import { getBody, getSubject } from '../../Email/UserEmailChanged'
+import { Logger } from 'winston'
 
-@injectable()
 export class ChangeCredentials implements UseCaseInterface<AuthResponse20161215 | AuthResponse20200115> {
   constructor(
-    @inject(TYPES.Auth_UserRepository) private userRepository: UserRepositoryInterface,
-    @inject(TYPES.Auth_AuthResponseFactoryResolver)
+    private userRepository: UserRepositoryInterface,
     private authResponseFactoryResolver: AuthResponseFactoryResolverInterface,
-    @inject(TYPES.Auth_DomainEventPublisher) private domainEventPublisher: DomainEventPublisherInterface,
-    @inject(TYPES.Auth_DomainEventFactory) private domainEventFactory: DomainEventFactoryInterface,
-    @inject(TYPES.Auth_Timer) private timer: TimerInterface,
-    @inject(TYPES.Auth_DeleteOtherSessionsForUser)
+    private domainEventPublisher: DomainEventPublisherInterface,
+    private domainEventFactory: DomainEventFactoryInterface,
+    private timer: TimerInterface,
     private deleteOtherSessionsForUserUseCase: DeleteOtherSessionsForUser,
+    private logger: Logger,
   ) {}
 
   async execute(dto: ChangeCredentialsDTO): Promise<Result<AuthResponse20161215 | AuthResponse20200115>> {
@@ -41,6 +39,7 @@ export class ChangeCredentials implements UseCaseInterface<AuthResponse20161215 
     user.encryptedPassword = await bcrypt.hash(dto.newPassword, User.PASSWORD_HASH_COST)
 
     let userEmailChangedEvent: UserEmailChangedEvent | undefined = undefined
+    const existingEmailAddress = user.email
     if (dto.newEmail !== undefined) {
       const newUsernameOrError = Username.create(dto.newEmail)
       if (newUsernameOrError.isFailed()) {
@@ -78,6 +77,8 @@ export class ChangeCredentials implements UseCaseInterface<AuthResponse20161215 
 
     if (userEmailChangedEvent !== undefined) {
       await this.domainEventPublisher.publish(userEmailChangedEvent)
+
+      await this.sendEmailChangedNotification(existingEmailAddress, updatedUser.email)
     }
 
     const authResponseFactory = this.authResponseFactoryResolver.resolveAuthResponseFactoryVersion(dto.apiVersion)
@@ -111,6 +112,23 @@ export class ChangeCredentials implements UseCaseInterface<AuthResponse20161215 
         currentSessionUuid: session.uuid,
         markAsRevoked: false,
       })
+    }
+  }
+
+  private async sendEmailChangedNotification(oldEmail: string, newEmail: string): Promise<void> {
+    try {
+      await this.domainEventPublisher.publish(
+        this.domainEventFactory.createEmailRequestedEvent({
+          userEmail: oldEmail,
+          level: EmailLevel.LEVELS.System,
+          body: getBody(newEmail),
+          messageIdentifier: 'EMAIL_CHANGED',
+          subject: getSubject(),
+        }),
+      )
+    } catch (error) {
+      /* istanbul ignore next */
+      this.logger.error(`Could not publish email changed request for email: ${(error as Error).message}`)
     }
   }
 }
