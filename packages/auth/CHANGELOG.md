@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.164.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.164.0...@standardnotes/auth-server@1.164.1) (2023-11-01)
+
+### Bug Fixes
+
+* **auth:** creating valet tokens for shared subscription users ([#895](https://github.com/standardnotes/server/issues/895)) ([b48eeb1](https://github.com/standardnotes/server/commit/b48eeb16c32031e73e9757e34c4b50ca0a3a773d))
+
 # [1.164.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.163.2...@standardnotes/auth-server@1.164.0) (2023-11-01)
 
 ### Features
