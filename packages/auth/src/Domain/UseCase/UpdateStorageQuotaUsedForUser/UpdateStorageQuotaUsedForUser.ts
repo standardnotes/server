@@ -31,8 +31,18 @@ export class UpdateStorageQuotaUsedForUser implements UseCaseInterface<void> {
       return Result.fail(`Could not find user with uuid: ${userUuid.value}`)
     }
 
-    const regularSubscriptionOrError = await this.getRegularSubscription.execute({
+    const sharedSubscriptionOrError = await this.getSharedSubscription.execute({
       userUuid: user.uuid,
+    })
+    let sharedSubscription: UserSubscription | undefined
+    if (!sharedSubscriptionOrError.isFailed()) {
+      sharedSubscription = sharedSubscriptionOrError.getValue()
+      await this.updateUploadBytesUsedSetting(sharedSubscription, dto.bytesUsed)
+    }
+
+    const regularSubscriptionOrError = await this.getRegularSubscription.execute({
+      userUuid: sharedSubscription ? undefined : user.uuid,
+      subscriptionId: sharedSubscription ? (sharedSubscription.subscriptionId as number) : undefined,
     })
     if (regularSubscriptionOrError.isFailed()) {
       return Result.fail(`Could not find regular user subscription for user with uuid: ${userUuid.value}`)
@@ -40,14 +50,6 @@ export class UpdateStorageQuotaUsedForUser implements UseCaseInterface<void> {
     const regularSubscription = regularSubscriptionOrError.getValue()
 
     await this.updateUploadBytesUsedSetting(regularSubscription, dto.bytesUsed)
-
-    const sharedSubscriptionOrError = await this.getSharedSubscription.execute({
-      userUuid: user.uuid,
-    })
-    if (!sharedSubscriptionOrError.isFailed()) {
-      const sharedSubscription = sharedSubscriptionOrError.getValue()
-      await this.updateUploadBytesUsedSetting(sharedSubscription, dto.bytesUsed)
-    }
 
     return Result.ok()
   }
