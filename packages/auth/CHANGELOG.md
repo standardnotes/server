@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.164.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.163.2...@standardnotes/auth-server@1.164.0) (2023-11-01)
+
+### Features
+
+* **auth:** add sending email to old email address when the address is changed ([#894](https://github.com/standardnotes/server/issues/894)) ([eb8c704](https://github.com/standardnotes/server/commit/eb8c704d84277130dc0dc51c1fe475a7220612cd))
+
 ## [1.163.2](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.163.1...@standardnotes/auth-server@1.163.2) (2023-10-30)
 
 ### Bug Fixes
