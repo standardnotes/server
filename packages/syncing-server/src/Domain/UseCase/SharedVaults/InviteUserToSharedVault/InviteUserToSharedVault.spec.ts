@@ -1,6 +1,6 @@
 import { TimerInterface } from '@standardnotes/time'
 import { Uuid, Timestamps, Result, SharedVaultUserPermission, SharedVaultUser } from '@standardnotes/domain-core'
-import { UserInvitedToSharedVaultEvent } from '@standardnotes/domain-events'
+import { DomainEventPublisherInterface, UserInvitedToSharedVaultEvent } from '@standardnotes/domain-events'
 import { Logger } from 'winston'
 
 import { SharedVaultRepositoryInterface } from '../../../SharedVault/SharedVaultRepositoryInterface'
@@ -20,6 +20,7 @@ describe('InviteUserToSharedVault', () => {
   let sharedVault: SharedVault
   let sharedVaultUser: SharedVaultUser
   let domainEventFactory: DomainEventFactoryInterface
+  let domainEventPublisher: DomainEventPublisherInterface
   let sendEventToClientUseCase: SendEventToClient
   let logger: Logger
 
@@ -30,6 +31,7 @@ describe('InviteUserToSharedVault', () => {
       sharedVaultUserRepository,
       timer,
       domainEventFactory,
+      domainEventPublisher,
       sendEventToClientUseCase,
       logger,
     )
@@ -66,6 +68,9 @@ describe('InviteUserToSharedVault', () => {
     domainEventFactory.createUserInvitedToSharedVaultEvent = jest.fn().mockReturnValue({
       type: 'USER_INVITED_TO_SHARED_VAULT',
     } as jest.Mocked<UserInvitedToSharedVaultEvent>)
+
+    domainEventPublisher = {} as jest.Mocked<DomainEventPublisherInterface>
+    domainEventPublisher.publish = jest.fn()
 
     sendEventToClientUseCase = {} as jest.Mocked<SendEventToClient>
     sendEventToClientUseCase.execute = jest.fn().mockReturnValue(Result.ok())

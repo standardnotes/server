@@ -275,6 +275,7 @@ import { SettingPersistenceMapper } from '../Mapping/Persistence/SettingPersiste
 import { SubscriptionSettingPersistenceMapper } from '../Mapping/Persistence/SubscriptionSettingPersistenceMapper'
 import { ApplyDefaultSettings } from '../Domain/UseCase/ApplyDefaultSettings/ApplyDefaultSettings'
 import { AuthResponseFactoryResolverInterface } from '../Domain/Auth/AuthResponseFactoryResolverInterface'
+import { UserInvitedToSharedVaultEventHandler } from '../Domain/Handler/UserInvitedToSharedVaultEventHandler'
 
 export class ContainerConfigLoader {
   constructor(private mode: 'server' | 'worker' = 'server') {}
@@ -1449,6 +1450,15 @@ export class ContainerConfigLoader {
           container.get<winston.Logger>(TYPES.Auth_Logger),
         ),
       )
+    container
+      .bind<UserInvitedToSharedVaultEventHandler>(TYPES.Auth_UserInvitedToSharedVaultEventHandler)
+      .toConstantValue(
+        new UserInvitedToSharedVaultEventHandler(
+          container.get<UserRepositoryInterface>(TYPES.Auth_UserRepository),
+          container.get<DomainEventFactoryInterface>(TYPES.Auth_DomainEventFactory),
+          container.get<DomainEventPublisherInterface>(TYPES.Auth_DomainEventPublisher),
+        ),
+      )
 
     const eventHandlers: Map<string, DomainEventHandlerInterface> = new Map([
       ['ACCOUNT_DELETION_REQUESTED', container.get(TYPES.Auth_AccountDeletionRequestedEventHandler)],
@@ -1484,6 +1494,7 @@ export class ContainerConfigLoader {
         'USER_DESIGNATED_AS_SURVIVOR_IN_SHARED_VAULT',
         container.get(TYPES.Auth_UserDesignatedAsSurvivorInSharedVaultEventHandler),
       ],
+      ['USER_INVITED_TO_SHARED_VAULT', container.get(TYPES.Auth_UserInvitedToSharedVaultEventHandler)],
     ])
 
     if (isConfiguredForHomeServer) {
