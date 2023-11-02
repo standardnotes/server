@@ -67,7 +67,7 @@
     "@types/jest": "^29.5.1",
     "@types/jsonwebtoken": "^9.0.1",
     "@types/node": "^20.5.7",
-    "@types/prettyjson": "^0.0.30",
+    "@types/prettyjson": "^0.0.32",
     "@types/semver": "^7.5.1",
     "@types/ua-parser-js": "^0.7.36",
     "@types/uuid": "^9.0.3",
