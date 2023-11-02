@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.165.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.164.2...@standardnotes/auth-server@1.165.0) (2023-11-02)
+
+### Features
+
+* add shared vault invitation email notifications ([#897](https://github.com/standardnotes/server/issues/897)) ([7253a0a](https://github.com/standardnotes/server/commit/7253a0a1d92099df844c9baf6541b440bbcb0a68))
+
 ## [1.164.2](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.164.1...@standardnotes/auth-server@1.164.2) (2023-11-01)
 
 **Note:** Version bump only for package @standardnotes/auth-server
