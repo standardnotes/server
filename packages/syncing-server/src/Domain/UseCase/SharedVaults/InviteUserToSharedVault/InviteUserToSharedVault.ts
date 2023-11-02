@@ -9,6 +9,7 @@ import { SharedVaultUserRepositoryInterface } from '../../../SharedVault/User/Sh
 import { Logger } from 'winston'
 import { DomainEventFactoryInterface } from '../../../Event/DomainEventFactoryInterface'
 import { SendEventToClient } from '../../Syncing/SendEventToClient/SendEventToClient'
+import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
 
 export class InviteUserToSharedVault implements UseCaseInterface<SharedVaultInvite> {
   constructor(
@@ -17,6 +18,7 @@ export class InviteUserToSharedVault implements UseCaseInterface<SharedVaultInvi
     private sharedVaultUserRepository: SharedVaultUserRepositoryInterface,
     private timer: TimerInterface,
     private domainEventFactory: DomainEventFactoryInterface,
+    private domainEventPublisher: DomainEventPublisherInterface,
     private sendEventToClientUseCase: SendEventToClient,
     private logger: Logger,
   ) {}
@@ -100,6 +102,8 @@ export class InviteUserToSharedVault implements UseCaseInterface<SharedVaultInvi
         updated_at_timestamp: sharedVaultInvite.props.timestamps.updatedAt,
       },
     })
+
+    await this.domainEventPublisher.publish(event)
 
     const result = await this.sendEventToClientUseCase.execute({
       userUuid: sharedVaultInvite.props.userUuid.value,

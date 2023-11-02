@@ -195,6 +195,7 @@ const TYPES = {
   Auth_UserDesignatedAsSurvivorInSharedVaultEventHandler: Symbol.for(
     'Auth_UserDesignatedAsSurvivorInSharedVaultEventHandler',
   ),
+  Auth_UserInvitedToSharedVaultEventHandler: Symbol.for('Auth_UserInvitedToSharedVaultEventHandler'),
   // Services
   Auth_DeviceDetector: Symbol.for('Auth_DeviceDetector'),
   Auth_SessionService: Symbol.for('Auth_SessionService'),
