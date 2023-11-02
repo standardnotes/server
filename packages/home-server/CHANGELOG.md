@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.18.17](https://github.com/standardnotes/server/compare/@standardnotes/home-server@1.18.16...@standardnotes/home-server@1.18.17) (2023-11-02)
+
+### Bug Fixes
+
+* **home-server:** remove unused dep ([2e5b910](https://github.com/standardnotes/server/commit/2e5b9105b8462385f060ed5a4ff8301c675e81b2))
+
 ## [1.18.16](https://github.com/standardnotes/server/compare/@standardnotes/home-server@1.18.15...@standardnotes/home-server@1.18.16) (2023-11-01)
 
 **Note:** Version bump only for package @standardnotes/home-server
