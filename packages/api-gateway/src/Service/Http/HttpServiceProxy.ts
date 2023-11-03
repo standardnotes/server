@@ -55,10 +55,9 @@ export class HttpServiceProxy implements ServiceProxyInterface {
         },
       }
     } catch (error) {
-      const requestTimedOut =
-        'code' in (error as Record<string, unknown>) && (error as Record<string, unknown>).code === 'ETIMEDOUT'
+      const requestDidNotMakeIt = this.requestTimedOutOrDidNotReachDestination(error as Record<string, unknown>)
       const tooManyRetryAttempts = retryAttempt && retryAttempt > 2
-      if (!tooManyRetryAttempts && requestTimedOut) {
+      if (!tooManyRetryAttempts && requestDidNotMakeIt) {
         await this.timer.sleep(50)
 
         const nextRetryAttempt = retryAttempt ? retryAttempt + 1 : 1

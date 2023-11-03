@@ -16,7 +16,7 @@ export class AuthenticateRequest implements UseCaseInterface {
 
   async execute(dto: AuthenticateRequestDTO): Promise<AuthenticateRequestResponse> {
     if (!dto.authorizationHeader) {
-      this.logger.debug('Authorization header not provided.')
+      this.logger.debug('[authenticate-request] Authorization header not provided.')
 
       return {
         success: false,
@@ -32,7 +32,9 @@ export class AuthenticateRequest implements UseCaseInterface {
         token: dto.authorizationHeader.replace('Bearer ', ''),
       })
     } catch (error) {
-      this.logger.error('Error occurred during authentication of a user %o', error)
+      this.logger.error(
+        `[authenticate-request] Error occurred during authentication of a user ${(error as Error).message}`,
+      )
 
       return {
         success: false,
