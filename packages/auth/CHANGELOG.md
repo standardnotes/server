@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.165.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.165.0...@standardnotes/auth-server@1.165.1) (2023-11-03)
+
+### Bug Fixes
+
+* retry attempts on session validation and more verbose logs ([#898](https://github.com/standardnotes/server/issues/898)) ([3e376c4](https://github.com/standardnotes/server/commit/3e376c44e3a6c336dcff3d8ef5eb3ab040d9a561))
+
 # [1.165.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.164.2...@standardnotes/auth-server@1.165.0) (2023-11-02)
 
 ### Features
