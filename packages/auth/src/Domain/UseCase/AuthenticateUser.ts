@@ -24,7 +24,7 @@ export class AuthenticateUser implements UseCaseInterface {
   async execute(dto: AuthenticateUserDTO): Promise<AuthenticateUserResponse> {
     const authenticationMethod = await this.authenticationMethodResolver.resolve(dto.token)
     if (!authenticationMethod) {
-      this.logger.error(`[authenticate-user] No authentication method found for token: ${dto.token}`)
+      this.logger.debug(`[authenticate-user] No authentication method found for token: ${dto.token}`)
 
       return {
         success: false,
@@ -33,7 +33,7 @@ export class AuthenticateUser implements UseCaseInterface {
     }
 
     if (authenticationMethod.type === 'revoked') {
-      this.logger.warn(`[authenticate-user] Session has been revoked: ${dto.token}`)
+      this.logger.debug(`[authenticate-user] Session has been revoked: ${dto.token}`)
 
       return {
         success: false,
@@ -43,7 +43,7 @@ export class AuthenticateUser implements UseCaseInterface {
 
     const user = authenticationMethod.user
     if (!user) {
-      this.logger.error(`[authenticate-user] No user found for authentication method. Token: ${dto.token}`)
+      this.logger.debug(`[authenticate-user] No user found for authentication method. Token: ${dto.token}`)
 
       return {
         success: false,
@@ -52,7 +52,7 @@ export class AuthenticateUser implements UseCaseInterface {
     }
 
     if (authenticationMethod.type == 'jwt' && user.supportsSessions()) {
-      this.logger.error(
+      this.logger.debug(
         `[authenticate-user][${user.uuid}] User supports sessions but is trying to authenticate with a JWT.`,
       )
 
@@ -68,7 +68,7 @@ export class AuthenticateUser implements UseCaseInterface {
         const encryptedPasswordDigest = crypto.createHash('sha256').update(user.encryptedPassword).digest('hex')
 
         if (!pwHash || !crypto.timingSafeEqual(Buffer.from(pwHash), Buffer.from(encryptedPasswordDigest))) {
-          this.logger.error(`[authenticate-user][${user.uuid}] Password hash does not match.`)
+          this.logger.debug(`[authenticate-user][${user.uuid}] Password hash does not match.`)
 
           return {
             success: false,
@@ -80,7 +80,7 @@ export class AuthenticateUser implements UseCaseInterface {
       case 'session_token': {
         const session = authenticationMethod.session
         if (!session) {
-          this.logger.error(`[authenticate-user][${user.uuid}] No session found for authentication method.`)
+          this.logger.debug(`[authenticate-user][${user.uuid}] No session found for authentication method.`)
 
           return {
             success: false,
@@ -89,7 +89,7 @@ export class AuthenticateUser implements UseCaseInterface {
         }
 
         if (session.refreshExpiration < this.timer.getUTCDate()) {
-          this.logger.warn(`[authenticate-user][${user.uuid}] Session refresh token has expired.`)
+          this.logger.debug(`[authenticate-user][${user.uuid}] Session refresh token has expired.`)
 
           return {
             success: false,
@@ -98,7 +98,7 @@ export class AuthenticateUser implements UseCaseInterface {
         }
 
         if (this.sessionIsExpired(session)) {
-          this.logger.warn(`[authenticate-user][${user.uuid}] Session access token has expired.`)
+          this.logger.debug(`[authenticate-user][${user.uuid}] Session access token has expired.`)
 
           return {
             success: false,
