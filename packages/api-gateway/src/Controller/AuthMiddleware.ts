@@ -74,13 +74,16 @@ export abstract class AuthMiddleware extends BaseMiddleware {
       response.locals.sharedVaultOwnerContext = decodedToken.shared_vault_owner_context
       response.locals.belongsToSharedVaults = decodedToken.belongs_to_shared_vaults ?? []
     } catch (error) {
-      const errorMessage = (error as AxiosError).isAxiosError
-        ? JSON.stringify((error as AxiosError).response?.data)
-        : (error as Error).message
+      let detailedErrorMessage = (error as Error).message
+      if (error instanceof AxiosError) {
+        detailedErrorMessage = `Status: ${error.status}, code: ${error.code}, message: ${error.message}`
+      }
 
-      this.logger.error(`Could not pass the request to sessions/validate on underlying service: ${errorMessage}`)
+      this.logger.error(
+        `Could not pass the request to sessions/validate on underlying service: ${detailedErrorMessage}`,
+      )
 
-      this.logger.debug('Response error: %O', (error as AxiosError).response ?? error)
+      this.logger.debug(`Response error: ${JSON.stringify(error)}`)
 
       if ((error as AxiosError).response?.headers['content-type']) {
         response.setHeader('content-type', (error as AxiosError).response?.headers['content-type'] as string)
@@ -91,7 +94,14 @@ export abstract class AuthMiddleware extends BaseMiddleware {
           ? +((error as AxiosError).code as string)
           : 500
 
-      response.status(errorCode).send(errorMessage)
+      const responseErrorMessage = (error as AxiosError).response?.data
+
+      response
+        .status(errorCode)
+        .send(
+          responseErrorMessage ??
+            "Unfortunately, we couldn't handle your request. Please try again or contact our support if the error persists.",
+        )
 
       return
     }

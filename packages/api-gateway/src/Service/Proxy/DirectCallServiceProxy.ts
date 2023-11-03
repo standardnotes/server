@@ -9,10 +9,13 @@ export class DirectCallServiceProxy implements ServiceProxyInterface {
     private filesServerUrl: string,
   ) {}
 
-  async validateSession(headers: {
-    authorization: string
-    sharedVaultOwnerContext?: string
-  }): Promise<{ status: number; data: unknown; headers: { contentType: string } }> {
+  async validateSession(
+    headers: {
+      authorization: string
+      sharedVaultOwnerContext?: string
+    },
+    _retryAttempt?: number,
+  ): Promise<{ status: number; data: unknown; headers: { contentType: string } }> {
     const authService = this.serviceContainer.get(ServiceIdentifier.create(ServiceIdentifier.NAMES.Auth).getValue())
     if (!authService) {
       throw new Error('Auth service not found')

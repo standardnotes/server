@@ -23,6 +23,8 @@ describe('AuthenticateUser', () => {
   beforeEach(() => {
     logger = {} as jest.Mocked<Logger>
     logger.debug = jest.fn()
+    logger.error = jest.fn()
+    logger.warn = jest.fn()
 
     user = {} as jest.Mocked<User>
     user.supportsSessions = jest.fn().mockReturnValue(false)
