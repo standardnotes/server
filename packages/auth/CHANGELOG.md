@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.165.2](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.165.1...@standardnotes/auth-server@1.165.2) (2023-11-03)
+
+### Bug Fixes
+
+* **auth:** change log severity on user authentication ([7f16232](https://github.com/standardnotes/server/commit/7f16232f8b13e3736801b6dc0af799e0559a3cfa))
+
 ## [1.165.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.165.0...@standardnotes/auth-server@1.165.1) (2023-11-03)
 
 ### Bug Fixes
