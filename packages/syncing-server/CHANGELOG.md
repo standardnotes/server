@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.120.1](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.120.0...@standardnotes/syncing-server@1.120.1) (2023-11-06)
+
+### Bug Fixes
+
+* **syncing-server:** return cursor token upon transfer limit breached ([#902](https://github.com/standardnotes/syncing-server-js/issues/902)) ([71689c1](https://github.com/standardnotes/syncing-server-js/commit/71689c1497728569fc6a07e21fa7bdba68c1bac0))
+
 # [1.120.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.119.4...@standardnotes/syncing-server@1.120.0) (2023-11-02)
 
 ### Features
