@@ -9,16 +9,17 @@ export class ItemTransferCalculator implements ItemTransferCalculatorInterface {
   async computeItemUuidsToFetch(
     itemContentSizeDescriptors: ItemContentSizeDescriptor[],
     bytesTransferLimit: number,
-  ): Promise<Array<string>> {
+  ): Promise<{ uuids: Array<string>; transferLimitBreachedBeforeEndOfItems: boolean }> {
     const itemUuidsToFetch = []
     let totalContentSizeInBytes = 0
+    let transferLimitBreached = false
     for (const itemContentSize of itemContentSizeDescriptors) {
       const contentSize = itemContentSize.props.contentSize ?? 0
 
       itemUuidsToFetch.push(itemContentSize.props.uuid.value)
       totalContentSizeInBytes += contentSize
 
-      const transferLimitBreached = this.isTransferLimitBreached({
+      transferLimitBreached = this.isTransferLimitBreached({
         totalContentSizeInBytes,
         bytesTransferLimit,
         itemUuidsToFetch,
@@ -30,7 +31,11 @@ export class ItemTransferCalculator implements ItemTransferCalculatorInterface {
       }
     }
 
-    return itemUuidsToFetch
+    return {
+      uuids: itemUuidsToFetch,
+      transferLimitBreachedBeforeEndOfItems:
+        transferLimitBreached && itemUuidsToFetch.length < itemContentSizeDescriptors.length,
+    }
   }
 
   async computeItemUuidBundlesToFetch(

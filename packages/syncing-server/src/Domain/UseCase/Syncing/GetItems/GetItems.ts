@@ -60,22 +60,22 @@ export class GetItems implements UseCaseInterface<GetItemsResult> {
     }
 
     const itemContentSizeDescriptors = await this.itemRepository.findContentSizeForComputingTransferLimit(itemQuery)
-    const itemUuidsToFetch = await this.itemTransferCalculator.computeItemUuidsToFetch(
+    const { uuids, transferLimitBreachedBeforeEndOfItems } = await this.itemTransferCalculator.computeItemUuidsToFetch(
       itemContentSizeDescriptors,
       this.contentSizeTransferLimit,
     )
     let items: Array<Item> = []
-    if (itemUuidsToFetch.length > 0) {
+    if (uuids.length > 0) {
       items = await this.itemRepository.findAll({
-        uuids: itemUuidsToFetch,
+        uuids,
         sortBy: 'updated_at_timestamp',
         sortOrder: 'ASC',
       })
     }
-    const totalItemsCount = await this.itemRepository.countAll(itemQuery)
 
     let cursorToken = undefined
-    if (totalItemsCount > upperBoundLimit) {
+    const thereAreStillMoreItemsToFetch = await this.stillMoreItemsToFetch(itemQuery, upperBoundLimit)
+    if (transferLimitBreachedBeforeEndOfItems || thereAreStillMoreItemsToFetch) {
       const lastSyncTime = items[items.length - 1].props.timestamps.updatedAt / Time.MicrosecondsInASecond
       cursorToken = Buffer.from(`${this.SYNC_TOKEN_VERSION}:${lastSyncTime}`, 'utf-8').toString('base64')
     }
@@ -85,6 +85,12 @@ export class GetItems implements UseCaseInterface<GetItemsResult> {
       cursorToken,
       lastSyncTime,
     })
+  }
+
+  private async stillMoreItemsToFetch(itemQuery: ItemQuery, upperBoundLimit: number): Promise<boolean> {
+    const totalItemsCount = await this.itemRepository.countAll(itemQuery)
+
+    return totalItemsCount > upperBoundLimit
   }
 
   private getLastSyncTime(dto: GetItemsDTO): Result<number | null> {
