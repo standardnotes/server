@@ -25,11 +25,14 @@ describe('ItemTransferCalculator', () => {
 
       const result = await createCalculator().computeItemUuidsToFetch(itemContentSizeDescriptors, 50)
 
-      expect(result).toEqual([
-        '00000000-0000-0000-0000-000000000000',
-        '00000000-0000-0000-0000-000000000001',
-        '00000000-0000-0000-0000-000000000002',
-      ])
+      expect(result).toEqual({
+        uuids: [
+          '00000000-0000-0000-0000-000000000000',
+          '00000000-0000-0000-0000-000000000001',
+          '00000000-0000-0000-0000-000000000002',
+        ],
+        transferLimitBreachedBeforeEndOfItems: false,
+      })
     })
 
     it('should compute uuids to fetch based on transfer limit - exact limit fit', async () => {
@@ -41,7 +44,10 @@ describe('ItemTransferCalculator', () => {
 
       const result = await createCalculator().computeItemUuidsToFetch(itemContentSizeDescriptors, 40)
 
-      expect(result).toEqual(['00000000-0000-0000-0000-000000000000', '00000000-0000-0000-0000-000000000001'])
+      expect(result).toEqual({
+        uuids: ['00000000-0000-0000-0000-000000000000', '00000000-0000-0000-0000-000000000001'],
+        transferLimitBreachedBeforeEndOfItems: true,
+      })
     })
 
     it('should compute uuids to fetch based on transfer limit - content size not defined on an item', async () => {
@@ -53,11 +59,14 @@ describe('ItemTransferCalculator', () => {
 
       const result = await createCalculator().computeItemUuidsToFetch(itemContentSizeDescriptors, 50)
 
-      expect(result).toEqual([
-        '00000000-0000-0000-0000-000000000000',
-        '00000000-0000-0000-0000-000000000001',
-        '00000000-0000-0000-0000-000000000002',
-      ])
+      expect(result).toEqual({
+        uuids: [
+          '00000000-0000-0000-0000-000000000000',
+          '00000000-0000-0000-0000-000000000001',
+          '00000000-0000-0000-0000-000000000002',
+        ],
+        transferLimitBreachedBeforeEndOfItems: false,
+      })
     })
 
     it('should compute uuids to fetch based on transfer limit - first item over the limit', async () => {
@@ -69,7 +78,10 @@ describe('ItemTransferCalculator', () => {
 
       const result = await createCalculator().computeItemUuidsToFetch(itemContentSizeDescriptors, 40)
 
-      expect(result).toEqual(['00000000-0000-0000-0000-000000000000', '00000000-0000-0000-0000-000000000001'])
+      expect(result).toEqual({
+        uuids: ['00000000-0000-0000-0000-000000000000', '00000000-0000-0000-0000-000000000001'],
+        transferLimitBreachedBeforeEndOfItems: true,
+      })
     })
   })
 

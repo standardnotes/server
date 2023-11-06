@@ -49,7 +49,9 @@ describe('GetItems', () => {
       .mockResolvedValue([ItemContentSizeDescriptor.create('00000000-0000-0000-0000-000000000000', 20).getValue()])
 
     itemTransferCalculator = {} as jest.Mocked<ItemTransferCalculatorInterface>
-    itemTransferCalculator.computeItemUuidsToFetch = jest.fn().mockResolvedValue(['item-uuid'])
+    itemTransferCalculator.computeItemUuidsToFetch = jest
+      .fn()
+      .mockResolvedValue({ uuids: ['item-uuid'], transferLimitBreachedBeforeEndOfItems: false })
 
     timer = {} as jest.Mocked<TimerInterface>
     timer.getTimestampInMicroseconds = jest.fn().mockReturnValue(123)
