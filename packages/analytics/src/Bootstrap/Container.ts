@@ -7,7 +7,7 @@ import {
   DomainEventPublisherInterface,
   DomainEventSubscriberInterface,
 } from '@standardnotes/domain-events'
-import { MapperInterface, ServiceIdentifier } from '@standardnotes/domain-core'
+import { MapperInterface } from '@standardnotes/domain-core'
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const Mixpanel = require('mixpanel')
 
@@ -16,9 +16,9 @@ import TYPES from './Types'
 import { AppDataSource } from './DataSource'
 import { DomainEventFactory } from '../Domain/Event/DomainEventFactory'
 import {
-  SNSOpenTelemetryDomainEventPublisher,
+  SNSDomainEventPublisher,
+  SQSDomainEventSubscriber,
   SQSEventMessageHandler,
-  SQSOpenTelemetryDomainEventSubscriber,
 } from '@standardnotes/domain-events-infra'
 import { Timer, TimerInterface } from '@standardnotes/time'
 import { PeriodKeyGeneratorInterface } from '../Domain/Time/PeriodKeyGeneratorInterface'
@@ -139,9 +139,7 @@ export class ContainerConfigLoader {
 
     container
       .bind<DomainEventPublisherInterface>(TYPES.DomainEventPublisher)
-      .toConstantValue(
-        new SNSOpenTelemetryDomainEventPublisher(container.get(TYPES.SNS), container.get(TYPES.SNS_TOPIC_ARN)),
-      )
+      .toConstantValue(new SNSDomainEventPublisher(container.get(TYPES.SNS), container.get(TYPES.SNS_TOPIC_ARN)))
     if (env.get('MIXPANEL_TOKEN', true)) {
       container.bind<Mixpanel>(TYPES.MixpanelClient).toConstantValue(Mixpanel.init(env.get('MIXPANEL_TOKEN', true)))
     }
@@ -242,8 +240,7 @@ export class ContainerConfigLoader {
     container
       .bind<DomainEventSubscriberInterface>(TYPES.DomainEventSubscriber)
       .toConstantValue(
-        new SQSOpenTelemetryDomainEventSubscriber(
-          ServiceIdentifier.NAMES.AnalyticsWorker,
+        new SQSDomainEventSubscriber(
           container.get<SQSClient>(TYPES.SQS),
           container.get<string>(TYPES.SQS_QUEUE_URL),
           container.get<DomainEventMessageHandlerInterface>(TYPES.DomainEventMessageHandler),

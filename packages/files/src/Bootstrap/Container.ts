@@ -16,9 +16,9 @@ import { DomainEventFactory } from '../Domain/Event/DomainEventFactory'
 import {
   DirectCallDomainEventPublisher,
   DirectCallEventMessageHandler,
-  SNSOpenTelemetryDomainEventPublisher,
+  SNSDomainEventPublisher,
+  SQSDomainEventSubscriber,
   SQSEventMessageHandler,
-  SQSOpenTelemetryDomainEventSubscriber,
 } from '@standardnotes/domain-events-infra'
 import { StreamDownloadFile } from '../Domain/UseCase/StreamDownloadFile/StreamDownloadFile'
 import { FileDownloaderInterface } from '../Domain/Services/FileDownloaderInterface'
@@ -52,7 +52,6 @@ import { S3FileMover } from '../Infra/S3/S3FileMover'
 import { FSFileMover } from '../Infra/FS/FSFileMover'
 import { MoveFile } from '../Domain/UseCase/MoveFile/MoveFile'
 import { SharedVaultValetTokenAuthMiddleware } from '../Infra/InversifyExpress/Middleware/SharedVaultValetTokenAuthMiddleware'
-import { ServiceIdentifier } from '@standardnotes/domain-core'
 
 export class ContainerConfigLoader {
   async load(configuration?: {
@@ -175,10 +174,7 @@ export class ContainerConfigLoader {
       container
         .bind<DomainEventPublisherInterface>(TYPES.Files_DomainEventPublisher)
         .toConstantValue(
-          new SNSOpenTelemetryDomainEventPublisher(
-            container.get(TYPES.Files_SNS),
-            container.get(TYPES.Files_SNS_TOPIC_ARN),
-          ),
+          new SNSDomainEventPublisher(container.get(TYPES.Files_SNS), container.get(TYPES.Files_SNS_TOPIC_ARN)),
         )
     }
 
@@ -301,8 +297,7 @@ export class ContainerConfigLoader {
       container
         .bind<DomainEventSubscriberInterface>(TYPES.Files_DomainEventSubscriber)
         .toConstantValue(
-          new SQSOpenTelemetryDomainEventSubscriber(
-            ServiceIdentifier.NAMES.FilesWorker,
+          new SQSDomainEventSubscriber(
             container.get<SQSClient>(TYPES.Files_SQS),
             container.get<string>(TYPES.Files_SQS_QUEUE_URL),
             container.get<DomainEventMessageHandlerInterface>(TYPES.Files_DomainEventMessageHandler),

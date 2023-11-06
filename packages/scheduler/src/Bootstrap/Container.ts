@@ -15,9 +15,9 @@ import TYPES from './Types'
 import { AppDataSource } from './DataSource'
 import { DomainEventFactory } from '../Domain/Event/DomainEventFactory'
 import {
-  SNSOpenTelemetryDomainEventPublisher,
+  SNSDomainEventPublisher,
+  SQSDomainEventSubscriber,
   SQSEventMessageHandler,
-  SQSOpenTelemetryDomainEventSubscriber,
 } from '@standardnotes/domain-events-infra'
 import { Timer, TimerInterface } from '@standardnotes/time'
 import { PredicateRepositoryInterface } from '../Domain/Predicate/PredicateRepositoryInterface'
@@ -35,7 +35,6 @@ import { VerifyPredicates } from '../Domain/UseCase/VerifyPredicates/VerifyPredi
 import { UserRegisteredEventHandler } from '../Domain/Handler/UserRegisteredEventHandler'
 import { SubscriptionCancelledEventHandler } from '../Domain/Handler/SubscriptionCancelledEventHandler'
 import { ExitDiscountAppliedEventHandler } from '../Domain/Handler/ExitDiscountAppliedEventHandler'
-import { ServiceIdentifier } from '@standardnotes/domain-core'
 
 export class ContainerConfigLoader {
   async load(): Promise<Container> {
@@ -136,9 +135,7 @@ export class ContainerConfigLoader {
 
     container
       .bind<DomainEventPublisherInterface>(TYPES.DomainEventPublisher)
-      .toConstantValue(
-        new SNSOpenTelemetryDomainEventPublisher(container.get(TYPES.SNS), container.get(TYPES.SNS_TOPIC_ARN)),
-      )
+      .toConstantValue(new SNSDomainEventPublisher(container.get(TYPES.SNS), container.get(TYPES.SNS_TOPIC_ARN)))
 
     const eventHandlers: Map<string, DomainEventHandlerInterface> = new Map([
       ['PREDICATE_VERIFIED', container.get(TYPES.PredicateVerifiedEventHandler)],
@@ -153,8 +150,7 @@ export class ContainerConfigLoader {
     container
       .bind<DomainEventSubscriberInterface>(TYPES.DomainEventSubscriber)
       .toConstantValue(
-        new SQSOpenTelemetryDomainEventSubscriber(
-          ServiceIdentifier.NAMES.SchedulerWorker,
+        new SQSDomainEventSubscriber(
           container.get<SQSClient>(TYPES.SQS),
           container.get<string>(TYPES.SQS_QUEUE_URL),
           container.get<DomainEventMessageHandlerInterface>(TYPES.DomainEventMessageHandler),

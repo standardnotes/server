@@ -1,11 +1,5 @@
 import 'reflect-metadata'
 
-import { OpenTelemetrySDK, OpenTelemetryTracer } from '@standardnotes/domain-events-infra'
-import { ServiceIdentifier } from '@standardnotes/domain-core'
-
-const sdk = new OpenTelemetrySDK({ serviceName: ServiceIdentifier.NAMES.AuthScheduledTask })
-sdk.start()
-
 import { Logger } from 'winston'
 import { TimerInterface } from '@standardnotes/time'
 
@@ -26,9 +20,6 @@ void container.load().then((container) => {
   const persistStats: PersistStatistics = container.get(TYPES.Auth_PersistStatistics)
   const timer: TimerInterface = container.get(TYPES.Auth_Timer)
 
-  const tracer = new OpenTelemetryTracer()
-  tracer.startSpan(ServiceIdentifier.NAMES.AuthScheduledTask, 'stats')
-
   Promise.resolve(
     persistStats.execute({
       sessionsInADay: timer.getUTCDateNDaysAgo(1),
@@ -37,14 +28,10 @@ void container.load().then((container) => {
     .then(() => {
       logger.info('Stats persisted.')
 
-      tracer.stopSpan()
-
       process.exit(0)
     })
     .catch((error) => {
       logger.error(`Could not persist stats: ${error.message}`)
-
-      tracer.stopSpanWithError(error)
 
       process.exit(1)
     })
