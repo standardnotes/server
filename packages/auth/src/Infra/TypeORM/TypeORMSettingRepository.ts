@@ -1,4 +1,3 @@
-import { ReadStream } from 'fs'
 import { Repository } from 'typeorm'
 
 import { Setting } from '../../Domain/Setting/Setting'
@@ -12,6 +11,36 @@ export class TypeORMSettingRepository implements SettingRepositoryInterface {
     private ormRepository: Repository<TypeORMSetting>,
     private mapper: MapperInterface<Setting, TypeORMSetting>,
   ) {}
+
+  async countAllByNameAndValue(dto: { name: SettingName; value: string }): Promise<number> {
+    return this.ormRepository
+      .createQueryBuilder()
+      .where('name = :name AND value = :value', {
+        name: dto.name.value,
+        value: dto.value,
+      })
+      .getCount()
+  }
+
+  async findAllByNameAndValue(dto: {
+    name: SettingName
+    value: string
+    offset: number
+    limit: number
+  }): Promise<Setting[]> {
+    const persistence = await this.ormRepository
+      .createQueryBuilder()
+      .where('name = :name AND value = :value', {
+        name: dto.name.value,
+        value: dto.value,
+      })
+      .orderBy('created_at', 'ASC')
+      .take(dto.limit)
+      .skip(dto.offset)
+      .getMany()
+
+    return persistence.map((p) => this.mapper.toDomain(p))
+  }
 
   async insert(setting: Setting): Promise<void> {
     const persistence = this.mapper.toProjection(setting)
@@ -40,27 +69,6 @@ export class TypeORMSettingRepository implements SettingRepositoryInterface {
     }
 
     return this.mapper.toDomain(persistence)
-  }
-
-  async streamAllByName(name: SettingName): Promise<ReadStream> {
-    return this.ormRepository
-      .createQueryBuilder('setting')
-      .where('setting.name = :name', {
-        name: name.value,
-      })
-      .orderBy('updated_at', 'ASC')
-      .stream()
-  }
-
-  async streamAllByNameAndValue(name: SettingName, value: string): Promise<ReadStream> {
-    return this.ormRepository
-      .createQueryBuilder('setting')
-      .where('setting.name = :name AND setting.value = :value', {
-        name: name.value,
-        value,
-      })
-      .orderBy('updated_at', 'ASC')
-      .stream()
   }
 
   async findOneByUuid(uuid: string): Promise<Setting | null> {

@@ -2,6 +2,7 @@ import { ControllerContainerInterface, MapperInterface } from '@standardnotes/do
 import { BaseHttpController, results } from 'inversify-express-utils'
 import { ErrorTag } from '@standardnotes/responses'
 import { Request, Response } from 'express'
+import { Logger } from 'winston'
 
 import { DeleteSetting } from '../../../Domain/UseCase/DeleteSetting/DeleteSetting'
 import { GetSetting } from '../../../Domain/UseCase/GetSetting/GetSetting'
@@ -11,18 +12,21 @@ import { Setting } from '../../../Domain/Setting/Setting'
 import { SubscriptionSetting } from '../../../Domain/Setting/SubscriptionSetting'
 import { SubscriptionSettingHttpRepresentation } from '../../../Mapping/Http/SubscriptionSettingHttpRepresentation'
 import { SettingHttpRepresentation } from '../../../Mapping/Http/SettingHttpRepresentation'
+import { TriggerPostSettingUpdateActions } from '../../../Domain/UseCase/TriggerPostSettingUpdateActions/TriggerPostSettingUpdateActions'
 
 export class BaseSettingsController extends BaseHttpController {
   constructor(
     protected doGetSettings: GetAllSettingsForUser,
     protected doGetSetting: GetSetting,
     protected setSettingValue: SetSettingValue,
+    protected triggerPostSettingUpdateActions: TriggerPostSettingUpdateActions,
     protected doDeleteSetting: DeleteSetting,
     protected settingHttMapper: MapperInterface<Setting, SettingHttpRepresentation>,
     protected subscriptionSettingHttpMapper: MapperInterface<
       SubscriptionSetting,
       SubscriptionSettingHttpRepresentation
     >,
+    protected logger: Logger,
     private controllerContainer?: ControllerContainerInterface,
   ) {
     super()
@@ -174,6 +178,16 @@ export class BaseSettingsController extends BaseHttpController {
       )
     }
     const setting = result.getValue()
+
+    const triggerResult = await this.triggerPostSettingUpdateActions.execute({
+      updatedSettingName: setting.props.name,
+      userUuid: response.locals.user.uuid,
+      userEmail: response.locals.user.email,
+      unencryptedValue: value,
+    })
+    if (triggerResult.isFailed()) {
+      this.logger.error(`Failed to trigger post setting update actions: ${triggerResult.getError()}`)
+    }
 
     return this.json({
       success: true,

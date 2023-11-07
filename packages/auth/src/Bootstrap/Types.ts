@@ -164,6 +164,9 @@ const TYPES = {
   Auth_DesignateSurvivor: Symbol.for('Auth_DesignateSurvivor'),
   Auth_GetSharedOrRegularSubscriptionForUser: Symbol.for('Auth_GetSharedOrRegularSubscriptionForUser'),
   Auth_DisableEmailSettingBasedOnEmailSubscription: Symbol.for('Auth_DisableEmailSettingBasedOnEmailSubscription'),
+  Auth_TriggerPostSettingUpdateActions: Symbol.for('Auth_TriggerPostSettingUpdateActions'),
+  Auth_TriggerEmailBackupForUser: Symbol.for('Auth_TriggerEmailBackupForUser'),
+  Auth_TriggerEmailBackupForAllUsers: Symbol.for('Auth_TriggerEmailBackupForAllUsers'),
   // Handlers
   Auth_AccountDeletionRequestedEventHandler: Symbol.for('Auth_AccountDeletionRequestedEventHandler'),
   Auth_SubscriptionPurchasedEventHandler: Symbol.for('Auth_SubscriptionPurchasedEventHandler'),
@@ -230,7 +233,6 @@ const TYPES = {
   Auth_SubscriptionSettingsAssociationService: Symbol.for('Auth_SubscriptionSettingsAssociationService'),
   Auth_FeatureService: Symbol.for('Auth_FeatureService'),
   Auth_SettingCrypter: Symbol.for('Auth_SettingCrypter'),
-  Auth_SettingInterpreter: Symbol.for('Auth_SettingInterpreter'),
   Auth_ProtocolVersionSelector: Symbol.for('Auth_ProtocolVersionSelector'),
   Auth_BooleanSelector: Symbol.for('Auth_BooleanSelector'),
   Auth_BaseAuthController: Symbol.for('Auth_BaseAuthController'),

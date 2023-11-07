@@ -19,6 +19,8 @@ import { SubscriptionSetting } from '../../Domain/Setting/SubscriptionSetting'
 import { SettingHttpRepresentation } from '../../Mapping/Http/SettingHttpRepresentation'
 import { SubscriptionSettingHttpRepresentation } from '../../Mapping/Http/SubscriptionSettingHttpRepresentation'
 import { GetAllSettingsForUser } from '../../Domain/UseCase/GetAllSettingsForUser/GetAllSettingsForUser'
+import { TriggerPostSettingUpdateActions } from '../../Domain/UseCase/TriggerPostSettingUpdateActions/TriggerPostSettingUpdateActions'
+import { Logger } from 'winston'
 
 @controller('/users/:userUuid')
 export class AnnotatedSettingsController extends BaseSettingsController {
@@ -26,18 +28,23 @@ export class AnnotatedSettingsController extends BaseSettingsController {
     @inject(TYPES.Auth_GetAllSettingsForUser) override doGetSettings: GetAllSettingsForUser,
     @inject(TYPES.Auth_GetSetting) override doGetSetting: GetSetting,
     @inject(TYPES.Auth_SetSettingValue) override setSettingValue: SetSettingValue,
+    @inject(TYPES.Auth_TriggerPostSettingUpdateActions)
+    override triggerPostSettingUpdateActions: TriggerPostSettingUpdateActions,
     @inject(TYPES.Auth_DeleteSetting) override doDeleteSetting: DeleteSetting,
     @inject(TYPES.Auth_SettingHttpMapper) settingHttMapper: MapperInterface<Setting, SettingHttpRepresentation>,
     @inject(TYPES.Auth_SubscriptionSettingHttpMapper)
     subscriptionSettingHttpMapper: MapperInterface<SubscriptionSetting, SubscriptionSettingHttpRepresentation>,
+    @inject(TYPES.Auth_Logger) logger: Logger,
   ) {
     super(
       doGetSettings,
       doGetSetting,
       setSettingValue,
+      triggerPostSettingUpdateActions,
       doDeleteSetting,
       settingHttMapper,
       subscriptionSettingHttpMapper,
+      logger,
     )
   }
 

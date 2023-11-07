@@ -26,33 +26,18 @@ case "$COMMAND" in
 
   'email-daily-backup' )
     echo "[Docker] Starting Email Daily Backup..."
-    node docker/entrypoint-backup.js email daily
+    node docker/entrypoint-backup.js daily
     ;;
 
   'email-weekly-backup' )
     echo "[Docker] Starting Email Weekly Backup..."
-    node docker/entrypoint-backup.js email weekly
+    node docker/entrypoint-backup.js weekly
     ;;
 
   'email-backup' )
     echo "[Docker] Starting Email Backup For Single User..."
     EMAIL=$1 && shift 1
     node docker/entrypoint-user-email-backup.js $EMAIL
-    ;;
-
-  'dropbox-daily-backup' )
-    echo "[Docker] Starting Dropbox Daily Backup..."
-    node docker/entrypoint-backup.js dropbox daily
-    ;;
-
-  'google-drive-daily-backup' )
-    echo "[Docker] Starting Google Drive Daily Backup..."
-    node docker/entrypoint-backup.js google_drive daily
-    ;;
-
-  'one-drive-daily-backup' )
-    echo "[Docker] Starting One Drive Daily Backup..."
-    node docker/entrypoint-backup.js one_drive daily
     ;;
 
    * )
