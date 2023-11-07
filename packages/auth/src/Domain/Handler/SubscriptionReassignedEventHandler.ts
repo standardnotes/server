@@ -80,7 +80,7 @@ export class SubscriptionReassignedEventHandler implements DomainEventHandlerInt
   ): Promise<UserSubscription> {
     const subscription = new UserSubscription()
     subscription.planName = subscriptionName
-    subscription.user = Promise.resolve(user)
+    subscription.userUuid = user.uuid
     subscription.createdAt = timestamp
     subscription.updatedAt = timestamp
     subscription.endsAt = subscriptionExpiresAt

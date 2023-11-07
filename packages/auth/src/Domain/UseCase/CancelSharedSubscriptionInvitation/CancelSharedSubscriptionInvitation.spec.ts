@@ -80,7 +80,7 @@ describe('CancelSharedSubscriptionInvitation', () => {
     userSubscriptionRepository.findBySubscriptionIdAndType = jest.fn().mockReturnValue([inviterSubscription])
     userSubscriptionRepository.findOneByUserUuidAndSubscriptionId = jest
       .fn()
-      .mockReturnValue({ user: Promise.resolve(invitee) } as jest.Mocked<UserSubscription>)
+      .mockReturnValue({ userUuid: '123' } as jest.Mocked<UserSubscription>)
     userSubscriptionRepository.save = jest.fn()
 
     roleService = {} as jest.Mocked<RoleServiceInterface>
@@ -120,7 +120,7 @@ describe('CancelSharedSubscriptionInvitation', () => {
     })
     expect(userSubscriptionRepository.save).toHaveBeenCalledWith({
       endsAt: 1,
-      user: Promise.resolve(invitee),
+      userUuid: '123',
     })
     expect(roleService.removeUserRoleBasedOnSubscription).toHaveBeenCalledWith(invitee, 'PLUS_PLAN')
     expect(domainEventPublisher.publish).toHaveBeenCalled()

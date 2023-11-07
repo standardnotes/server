@@ -5,7 +5,6 @@ import { TokenEncoderInterface, ValetTokenData, ValetTokenOperation } from '@sta
 
 import { CreateValetToken } from './CreateValetToken'
 import { UserSubscription } from '../../Subscription/UserSubscription'
-import { User } from '../../User/User'
 import { UserSubscriptionType } from '../../Subscription/UserSubscriptionType'
 import { SubscriptionSettingsAssociationServiceInterface } from '../../Setting/SubscriptionSettingsAssociationServiceInterface'
 import { GetRegularSubscriptionForUser } from '../GetRegularSubscriptionForUser/GetRegularSubscriptionForUser'
@@ -25,7 +24,6 @@ describe('CreateValetToken', () => {
   const valetTokenTTL = 123
   let regularSubscription: UserSubscription
   let sharedSubscription: UserSubscription
-  let user: User
 
   const createUseCase = () =>
     new CreateValetToken(
@@ -59,20 +57,16 @@ describe('CreateValetToken', () => {
     subscriptionSettingsAssociationService = {} as jest.Mocked<SubscriptionSettingsAssociationServiceInterface>
     subscriptionSettingsAssociationService.getFileUploadLimit = jest.fn().mockReturnValue(5_368_709_120)
 
-    user = {
-      uuid: '123',
-    } as jest.Mocked<User>
-
     regularSubscription = {
       uuid: '1-2-3',
       subscriptionType: UserSubscriptionType.Regular,
-      user: Promise.resolve(user),
+      userUuid: '123',
     } as jest.Mocked<UserSubscription>
 
     sharedSubscription = {
       uuid: '2-3-4',
       subscriptionType: UserSubscriptionType.Shared,
-      user: Promise.resolve(user),
+      userUuid: '123',
     } as jest.Mocked<UserSubscription>
 
     getRegularSubscription = {} as jest.Mocked<GetRegularSubscriptionForUser>

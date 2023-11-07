@@ -45,13 +45,13 @@ describe('UpdateStorageQuotaUsedForUser', () => {
     regularSubscription = {
       uuid: '00000000-0000-0000-0000-000000000000',
       subscriptionType: UserSubscriptionType.Regular,
-      user: Promise.resolve(user),
+      userUuid: '123',
     } as jest.Mocked<UserSubscription>
 
     sharedSubscription = {
       uuid: '2-3-4',
       subscriptionType: UserSubscriptionType.Shared,
-      user: Promise.resolve(user),
+      userUuid: '123',
     } as jest.Mocked<UserSubscription>
 
     getSharedSubscription = {} as jest.Mocked<GetSharedSubscriptionForUser>

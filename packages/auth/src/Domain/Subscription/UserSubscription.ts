@@ -1,5 +1,4 @@
-import { Column, Entity, Index, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
-import { User } from '../User/User'
+import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm'
 import { UserSubscriptionType } from './UserSubscriptionType'
 
 @Entity({ name: 'user_subscriptions' })
@@ -63,14 +62,9 @@ export class UserSubscription {
   })
   declare subscriptionType: UserSubscriptionType
 
-  @ManyToOne(
-    /* istanbul ignore next */
-    () => User,
-    /* istanbul ignore next */
-    (user) => user.subscriptions,
-    /* istanbul ignore next */
-    { onDelete: 'CASCADE', nullable: false, lazy: true, eager: false },
-  )
-  @JoinColumn({ name: 'user_uuid', referencedColumnName: 'uuid' })
-  declare user: Promise<User>
+  @Column({
+    name: 'user_uuid',
+    length: 36,
+  })
+  declare userUuid: string
 }

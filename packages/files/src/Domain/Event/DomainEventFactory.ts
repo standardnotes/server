@@ -18,7 +18,6 @@ export class DomainEventFactory implements DomainEventFactoryInterface {
     filePath: string
     fileName: string
     fileByteSize: number
-    regularSubscriptionUuid: string
   }): FileRemovedEvent {
     return {
       type: 'FILE_REMOVED',

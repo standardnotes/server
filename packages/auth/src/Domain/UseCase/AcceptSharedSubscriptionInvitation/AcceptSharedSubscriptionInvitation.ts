@@ -115,7 +115,7 @@ export class AcceptSharedSubscriptionInvitation implements UseCaseInterface {
   ): Promise<UserSubscription> {
     const subscription = new UserSubscription()
     subscription.planName = subscriptionName
-    subscription.user = Promise.resolve(user)
+    subscription.userUuid = user.uuid
     const timestamp = this.timer.getTimestampInMicroseconds()
     subscription.createdAt = timestamp
     subscription.updatedAt = timestamp

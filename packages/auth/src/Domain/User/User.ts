@@ -1,7 +1,6 @@
 import { Column, Entity, Index, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
 import { RevokedSession } from '../Session/RevokedSession'
 import { Role } from '../Role/Role'
-import { UserSubscription } from '../Subscription/UserSubscription'
 import { ProtocolVersion } from '@standardnotes/common'
 import { TypeORMEmergencyAccessInvitation } from '../../Infra/TypeORM/TypeORMEmergencyAccessInvitation'
 
@@ -160,16 +159,6 @@ export class User {
     },
   })
   declare roles: Promise<Array<Role>>
-
-  @OneToMany(
-    /* istanbul ignore next */
-    () => UserSubscription,
-    /* istanbul ignore next */
-    (subscription) => subscription.user,
-    /* istanbul ignore next */
-    { lazy: true, eager: false },
-  )
-  declare subscriptions: Promise<UserSubscription[]>
 
   @OneToMany(
     /* istanbul ignore next */

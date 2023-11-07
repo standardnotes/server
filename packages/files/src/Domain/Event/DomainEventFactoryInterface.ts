@@ -18,7 +18,6 @@ export interface DomainEventFactoryInterface {
     filePath: string
     fileName: string
     fileByteSize: number
-    regularSubscriptionUuid: string
   }): FileRemovedEvent
   createSharedVaultFileMovedEvent(payload: {
     fileByteSize: number
