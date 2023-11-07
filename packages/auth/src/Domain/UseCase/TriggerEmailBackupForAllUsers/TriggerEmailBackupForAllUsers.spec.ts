@@ -34,6 +34,7 @@ describe('TriggerEmailBackupForAllUsers', () => {
 
     logger = {} as jest.Mocked<Logger>
     logger.error = jest.fn()
+    logger.info = jest.fn()
   })
 
   it('triggers email backup for all users', async () => {
