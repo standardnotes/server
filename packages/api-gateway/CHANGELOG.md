@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.81.11](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.81.10...@standardnotes/api-gateway@1.81.11) (2023-11-07)
+
+### Bug Fixes
+
+* **api-gateway:** remove calling both auth and payments on account deletion request ([6b554c2](https://github.com/standardnotes/api-gateway/commit/6b554c28b731a9080d7ad2942d3fa05c01dcabf2))
+
 ## [1.81.10](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.81.9...@standardnotes/api-gateway@1.81.10) (2023-11-07)
 
 **Note:** Version bump only for package @standardnotes/api-gateway
