@@ -130,8 +130,6 @@ import { ListedAccountCreatedEventHandler } from '../Domain/Handler/ListedAccoun
 import { ListedAccountDeletedEventHandler } from '../Domain/Handler/ListedAccountDeletedEventHandler'
 import { FileRemovedEventHandler } from '../Domain/Handler/FileRemovedEventHandler'
 import { UserDisabledSessionUserAgentLoggingEventHandler } from '../Domain/Handler/UserDisabledSessionUserAgentLoggingEventHandler'
-import { SettingInterpreterInterface } from '../Domain/Setting/SettingInterpreterInterface'
-import { SettingInterpreter } from '../Domain/Setting/SettingInterpreter'
 import { SettingCrypterInterface } from '../Domain/Setting/SettingCrypterInterface'
 import { SettingCrypter } from '../Domain/Setting/SettingCrypter'
 import { SharedSubscriptionInvitationRepositoryInterface } from '../Domain/SharedSubscription/SharedSubscriptionInvitationRepositoryInterface'
@@ -275,6 +273,7 @@ import { SubscriptionSettingPersistenceMapper } from '../Mapping/Persistence/Sub
 import { ApplyDefaultSettings } from '../Domain/UseCase/ApplyDefaultSettings/ApplyDefaultSettings'
 import { AuthResponseFactoryResolverInterface } from '../Domain/Auth/AuthResponseFactoryResolverInterface'
 import { UserInvitedToSharedVaultEventHandler } from '../Domain/Handler/UserInvitedToSharedVaultEventHandler'
+import { TriggerPostSettingUpdateActions } from '../Domain/UseCase/TriggerPostSettingUpdateActions/TriggerPostSettingUpdateActions'
 
 export class ContainerConfigLoader {
   constructor(private mode: 'server' | 'worker' = 'server') {}
@@ -772,16 +771,6 @@ export class ContainerConfigLoader {
           container.get<winston.Logger>(TYPES.Auth_Logger),
         ),
       )
-    container
-      .bind<SettingInterpreterInterface>(TYPES.Auth_SettingInterpreter)
-      .toConstantValue(
-        new SettingInterpreter(
-          container.get<DomainEventPublisherInterface>(TYPES.Auth_DomainEventPublisher),
-          container.get<DomainEventFactoryInterface>(TYPES.Auth_DomainEventFactory),
-          container.get<SettingRepositoryInterface>(TYPES.Auth_SettingRepository),
-          container.get<GetUserKeyParams>(TYPES.Auth_GetUserKeyParams),
-        ),
-      )
 
     container.bind<OfflineSettingServiceInterface>(TYPES.Auth_OfflineSettingService).to(OfflineSettingService)
     container.bind<ContentDecoderInterface>(TYPES.Auth_ContenDecoder).toConstantValue(new ContentDecoder())
@@ -1231,6 +1220,16 @@ export class ContainerConfigLoader {
           container.get<GetSharedOrRegularSubscriptionForUser>(TYPES.Auth_GetSharedOrRegularSubscriptionForUser),
         ),
       )
+    container
+      .bind<TriggerPostSettingUpdateActions>(TYPES.Auth_TriggerPostSettingUpdateActions)
+      .toConstantValue(
+        new TriggerPostSettingUpdateActions(
+          container.get<DomainEventPublisherInterface>(TYPES.Auth_DomainEventPublisher),
+          container.get<DomainEventFactoryInterface>(TYPES.Auth_DomainEventFactory),
+          container.get<SettingRepositoryInterface>(TYPES.Auth_SettingRepository),
+          container.get<GetUserKeyParams>(TYPES.Auth_GetUserKeyParams),
+        ),
+      )
 
     // Controller
     container
@@ -1655,11 +1654,13 @@ export class ContainerConfigLoader {
             container.get<GetAllSettingsForUser>(TYPES.Auth_GetAllSettingsForUser),
             container.get<GetSetting>(TYPES.Auth_GetSetting),
             container.get<SetSettingValue>(TYPES.Auth_SetSettingValue),
+            container.get<TriggerPostSettingUpdateActions>(TYPES.Auth_TriggerPostSettingUpdateActions),
             container.get<DeleteSetting>(TYPES.Auth_DeleteSetting),
             container.get<MapperInterface<Setting, SettingHttpRepresentation>>(TYPES.Auth_SettingHttpMapper),
             container.get<MapperInterface<SubscriptionSetting, SubscriptionSettingHttpRepresentation>>(
               TYPES.Auth_SubscriptionSettingHttpMapper,
             ),
+            container.get<winston.Logger>(TYPES.Auth_Logger),
             container.get<ControllerContainerInterface>(TYPES.Auth_ControllerContainer),
           ),
         )

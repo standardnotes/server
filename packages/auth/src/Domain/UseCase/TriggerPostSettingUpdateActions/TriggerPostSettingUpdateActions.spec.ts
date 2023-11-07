@@ -7,19 +7,17 @@ import {
 import { EmailBackupFrequency, LogSessionUserAgentOption, MuteMarketingEmailsOption } from '@standardnotes/settings'
 import 'reflect-metadata'
 import { Logger } from 'winston'
-import { DomainEventFactoryInterface } from '../Event/DomainEventFactoryInterface'
-import { User } from '../User/User'
-import { Setting } from './Setting'
-import { SettingCrypterInterface } from './SettingCrypterInterface'
-
-import { SettingInterpreter } from './SettingInterpreter'
-import { SettingRepositoryInterface } from './SettingRepositoryInterface'
-import { GetUserKeyParams } from '../UseCase/GetUserKeyParams/GetUserKeyParams'
 import { KeyParamsData } from '@standardnotes/responses'
 import { Uuid, Timestamps, UniqueEntityId, SettingName } from '@standardnotes/domain-core'
 
-describe('SettingInterpreter', () => {
-  let user: User
+import { TriggerPostSettingUpdateActions } from './TriggerPostSettingUpdateActions'
+import { DomainEventFactoryInterface } from '../../Event/DomainEventFactoryInterface'
+import { Setting } from '../../Setting/Setting'
+import { SettingRepositoryInterface } from '../../Setting/SettingRepositoryInterface'
+import { GetUserKeyParams } from '../GetUserKeyParams/GetUserKeyParams'
+import { SettingCrypterInterface } from '../../Setting/SettingCrypterInterface'
+
+describe('TriggerPostSettingUpdateActions', () => {
   let domainEventPublisher: DomainEventPublisherInterface
   let domainEventFactory: DomainEventFactoryInterface
   let settingRepository: SettingRepositoryInterface
@@ -27,15 +25,10 @@ describe('SettingInterpreter', () => {
   let logger: Logger
   let getUserKeyParams: GetUserKeyParams
 
-  const createInterpreter = () =>
-    new SettingInterpreter(domainEventPublisher, domainEventFactory, settingRepository, getUserKeyParams)
+  const createUseCase = () =>
+    new TriggerPostSettingUpdateActions(domainEventPublisher, domainEventFactory, settingRepository, getUserKeyParams)
 
   beforeEach(() => {
-    user = {
-      uuid: '4-5-6',
-      email: 'test@test.te',
-    } as jest.Mocked<User>
-
     settingRepository = {} as jest.Mocked<SettingRepositoryInterface>
     settingRepository.findLastByNameAndUserUuid = jest.fn().mockReturnValue(null)
     settingRepository.findOneByNameAndUserUuid = jest.fn().mockReturnValue(null)
@@ -67,11 +60,12 @@ describe('SettingInterpreter', () => {
   })
 
   it('should trigger session cleanup if user is disabling session user agent logging', async () => {
-    await createInterpreter().interpretSettingUpdated(
-      SettingName.NAMES.LogSessionUserAgent,
-      user,
-      LogSessionUserAgentOption.Disabled,
-    )
+    await createUseCase().execute({
+      updatedSettingName: SettingName.NAMES.LogSessionUserAgent,
+      userUuid: '4-5-6',
+      userEmail: 'test@test.te',
+      unencryptedValue: LogSessionUserAgentOption.Disabled,
+    })
 
     expect(domainEventPublisher.publish).toHaveBeenCalled()
     expect(domainEventFactory.createUserDisabledSessionUserAgentLoggingEvent).toHaveBeenCalledWith({
@@ -81,11 +75,12 @@ describe('SettingInterpreter', () => {
   })
 
   it('should trigger backup if email backup setting is created - emails not muted', async () => {
-    await createInterpreter().interpretSettingUpdated(
-      SettingName.NAMES.EmailBackupFrequency,
-      user,
-      EmailBackupFrequency.Daily,
-    )
+    await createUseCase().execute({
+      updatedSettingName: SettingName.NAMES.EmailBackupFrequency,
+      userUuid: '4-5-6',
+      userEmail: 'test@test.te',
+      unencryptedValue: EmailBackupFrequency.Daily,
+    })
 
     expect(domainEventPublisher.publish).toHaveBeenCalled()
     expect(domainEventFactory.createEmailBackupRequestedEvent).toHaveBeenCalledWith('4-5-6', '', false, {})
@@ -106,11 +101,12 @@ describe('SettingInterpreter', () => {
 
     settingRepository.findOneByNameAndUserUuid = jest.fn().mockReturnValue(setting)
 
-    await createInterpreter().interpretSettingUpdated(
-      SettingName.NAMES.EmailBackupFrequency,
-      user,
-      EmailBackupFrequency.Daily,
-    )
+    await createUseCase().execute({
+      updatedSettingName: SettingName.NAMES.EmailBackupFrequency,
+      userUuid: '4-5-6',
+      userEmail: 'test@test.te',
+      unencryptedValue: EmailBackupFrequency.Daily,
+    })
 
     expect(domainEventPublisher.publish).toHaveBeenCalled()
     expect(domainEventFactory.createEmailBackupRequestedEvent).toHaveBeenCalledWith(
@@ -124,11 +120,12 @@ describe('SettingInterpreter', () => {
   it('should not trigger backup if email backup setting is disabled', async () => {
     settingRepository.findOneByNameAndUserUuid = jest.fn().mockReturnValue(null)
 
-    await createInterpreter().interpretSettingUpdated(
-      SettingName.NAMES.EmailBackupFrequency,
-      user,
-      EmailBackupFrequency.Disabled,
-    )
+    await createUseCase().execute({
+      updatedSettingName: SettingName.NAMES.EmailBackupFrequency,
+      userUuid: '4-5-6',
+      userEmail: 'test@test.te',
+      unencryptedValue: EmailBackupFrequency.Disabled,
+    })
 
     expect(domainEventPublisher.publish).not.toHaveBeenCalled()
     expect(domainEventFactory.createEmailBackupRequestedEvent).not.toHaveBeenCalled()
@@ -137,11 +134,12 @@ describe('SettingInterpreter', () => {
   it('should trigger mute subscription emails rejection if mute setting changed', async () => {
     settingRepository.findOneByNameAndUserUuid = jest.fn().mockReturnValue(null)
 
-    await createInterpreter().interpretSettingUpdated(
-      SettingName.NAMES.MuteMarketingEmails,
-      user,
-      MuteMarketingEmailsOption.Muted,
-    )
+    await createUseCase().execute({
+      updatedSettingName: SettingName.NAMES.MuteMarketingEmails,
+      userUuid: '4-5-6',
+      userEmail: 'test@test.te',
+      unencryptedValue: MuteMarketingEmailsOption.Muted,
+    })
 
     expect(domainEventPublisher.publish).toHaveBeenCalled()
     expect(domainEventFactory.createMuteEmailsSettingChangedEvent).toHaveBeenCalledWith({
