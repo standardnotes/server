@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.165.4](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.165.3...@standardnotes/auth-server@1.165.4) (2023-11-07)
+
+### Bug Fixes
+
+* account deletion event ([#904](https://github.com/standardnotes/server/issues/904)) ([d66ae62](https://github.com/standardnotes/server/commit/d66ae62cf4f413cac5f6f4eac45dc0f1ddbc9e32))
+
 ## [1.165.3](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.165.2...@standardnotes/auth-server@1.165.3) (2023-11-07)
 
 ### Bug Fixes

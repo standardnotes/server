@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.133.1](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.133.0...@standardnotes/domain-events@2.133.1) (2023-11-07)
+
+### Bug Fixes
+
+* account deletion event ([#904](https://github.com/standardnotes/server/issues/904)) ([d66ae62](https://github.com/standardnotes/server/commit/d66ae62cf4f413cac5f6f4eac45dc0f1ddbc9e32))
+
 # [2.133.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.132.3...@standardnotes/domain-events@2.133.0) (2023-10-19)
 
 ### Features
