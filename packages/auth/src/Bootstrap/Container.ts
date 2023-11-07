@@ -791,7 +791,16 @@ export class ContainerConfigLoader {
     container
       .bind<SubscriptionSettingsAssociationServiceInterface>(TYPES.Auth_SubscriptionSettingsAssociationService)
       .to(SubscriptionSettingsAssociationService)
-    container.bind<FeatureServiceInterface>(TYPES.Auth_FeatureService).to(FeatureService)
+    container
+      .bind<FeatureServiceInterface>(TYPES.Auth_FeatureService)
+      .toConstantValue(
+        new FeatureService(
+          container.get<RoleToSubscriptionMapInterface>(TYPES.Auth_RoleToSubscriptionMap),
+          container.get<OfflineUserSubscriptionRepositoryInterface>(TYPES.Auth_OfflineUserSubscriptionRepository),
+          container.get<TimerInterface>(TYPES.Auth_Timer),
+          container.get<UserSubscriptionRepositoryInterface>(TYPES.Auth_UserSubscriptionRepository),
+        ),
+      )
     container
       .bind<SelectorInterface<boolean>>(TYPES.Auth_BooleanSelector)
       .toConstantValue(new DeterministicSelector<boolean>())
