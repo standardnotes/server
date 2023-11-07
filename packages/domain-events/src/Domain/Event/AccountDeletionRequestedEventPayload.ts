@@ -1,5 +1,13 @@
 export interface AccountDeletionRequestedEventPayload {
   userUuid: string
+  email: string
   userCreatedAtTimestamp: number
-  regularSubscriptionUuid: string | undefined
+  regularSubscription?: {
+    uuid: string
+    ownerUuid: string
+  }
+  sharedSubscription?: {
+    uuid: string
+    ownerUuid: string
+  }
 }

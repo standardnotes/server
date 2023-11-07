@@ -281,9 +281,16 @@ export class DomainEventFactory implements DomainEventFactoryInterface {
 
   createAccountDeletionRequestedEvent(dto: {
     userUuid: string
+    email: string
     userCreatedAtTimestamp: number
-    regularSubscriptionUuid: string | undefined
-    roleNames: string[]
+    regularSubscription?: {
+      uuid: string
+      ownerUuid: string
+    }
+    sharedSubscription?: {
+      uuid: string
+      ownerUuid: string
+    }
   }): AccountDeletionRequestedEvent {
     return {
       type: 'ACCOUNT_DELETION_REQUESTED',

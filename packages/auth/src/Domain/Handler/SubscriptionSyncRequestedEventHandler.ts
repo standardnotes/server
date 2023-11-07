@@ -128,7 +128,7 @@ export class SubscriptionSyncRequestedEventHandler implements DomainEventHandler
     }
 
     subscription.planName = subscriptionName
-    subscription.user = Promise.resolve(user)
+    subscription.userUuid = user.uuid
     subscription.createdAt = timestamp
     subscription.updatedAt = timestamp
     subscription.endsAt = subscriptionExpiresAt

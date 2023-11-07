@@ -1,24 +1,22 @@
 import { SubscriptionName } from '@standardnotes/common'
 import { FeatureDescription, GetFeatures } from '@standardnotes/features'
-import { inject, injectable } from 'inversify'
-import TYPES from '../../Bootstrap/Types'
-import { RoleToSubscriptionMapInterface } from '../Role/RoleToSubscriptionMapInterface'
+import { TimerInterface } from '@standardnotes/time'
 
+import { RoleToSubscriptionMapInterface } from '../Role/RoleToSubscriptionMapInterface'
 import { User } from '../User/User'
 import { UserSubscription } from '../Subscription/UserSubscription'
 import { FeatureServiceInterface } from './FeatureServiceInterface'
 import { OfflineUserSubscriptionRepositoryInterface } from '../Subscription/OfflineUserSubscriptionRepositoryInterface'
 import { Role } from '../Role/Role'
 import { OfflineUserSubscription } from '../Subscription/OfflineUserSubscription'
-import { TimerInterface } from '@standardnotes/time'
+import { UserSubscriptionRepositoryInterface } from '../Subscription/UserSubscriptionRepositoryInterface'
 
-@injectable()
 export class FeatureService implements FeatureServiceInterface {
   constructor(
-    @inject(TYPES.Auth_RoleToSubscriptionMap) private roleToSubscriptionMap: RoleToSubscriptionMapInterface,
-    @inject(TYPES.Auth_OfflineUserSubscriptionRepository)
+    private roleToSubscriptionMap: RoleToSubscriptionMapInterface,
     private offlineUserSubscriptionRepository: OfflineUserSubscriptionRepositoryInterface,
-    @inject(TYPES.Auth_Timer) private timer: TimerInterface,
+    private timer: TimerInterface,
+    private userSubscriptionRepository: UserSubscriptionRepositoryInterface,
   ) {}
 
   async userIsEntitledToFeature(user: User, featureIdentifier: string): Promise<boolean> {
@@ -61,7 +59,7 @@ export class FeatureService implements FeatureServiceInterface {
   }
 
   async getFeaturesForUser(user: User): Promise<Array<FeatureDescription>> {
-    const userSubscriptions = await user.subscriptions
+    const userSubscriptions = await this.userSubscriptionRepository.findByUserUuid(user.uuid)
 
     return this.getFeaturesForSubscriptions(userSubscriptions, await user.roles)
   }

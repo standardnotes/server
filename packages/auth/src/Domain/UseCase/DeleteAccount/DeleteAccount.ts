@@ -8,11 +8,14 @@ import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'
 import { DeleteAccountDTO } from './DeleteAccountDTO'
 import { User } from '../../User/User'
 import { GetRegularSubscriptionForUser } from '../GetRegularSubscriptionForUser/GetRegularSubscriptionForUser'
+import { UserSubscription } from '../../Subscription/UserSubscription'
+import { GetSharedSubscriptionForUser } from '../GetSharedSubscriptionForUser/GetSharedSubscriptionForUser'
 
 export class DeleteAccount implements UseCaseInterface<string> {
   constructor(
     private userRepository: UserRepositoryInterface,
     private getRegularSubscription: GetRegularSubscriptionForUser,
+    private getSharedSubscription: GetSharedSubscriptionForUser,
     private domainEventPublisher: DomainEventPublisherInterface,
     private domainEventFactory: DomainEventFactoryInterface,
     private timer: TimerInterface,
@@ -44,23 +47,39 @@ export class DeleteAccount implements UseCaseInterface<string> {
       return Result.ok('User already deleted.')
     }
 
-    const roles = await user.roles
-
-    let regularSubscriptionUuid: string | undefined
-    const result = await this.getRegularSubscription.execute({
+    let sharedSubscription: UserSubscription | undefined
+    const sharedSubscriptionOrError = await this.getSharedSubscription.execute({
       userUuid: user.uuid,
     })
-    if (!result.isFailed()) {
-      const regularSubscription = result.getValue()
-      regularSubscriptionUuid = regularSubscription.uuid
+    if (!sharedSubscriptionOrError.isFailed()) {
+      sharedSubscription = sharedSubscriptionOrError.getValue()
+    }
+
+    let regularSubscription: UserSubscription | undefined
+    const regularSubscriptionOrError = await this.getRegularSubscription.execute({
+      userUuid: user.uuid,
+    })
+    if (!regularSubscriptionOrError.isFailed()) {
+      regularSubscription = regularSubscriptionOrError.getValue()
     }
 
     await this.domainEventPublisher.publish(
       this.domainEventFactory.createAccountDeletionRequestedEvent({
         userUuid: user.uuid,
+        email: user.email,
         userCreatedAtTimestamp: this.timer.convertDateToMicroseconds(user.createdAt),
-        regularSubscriptionUuid,
-        roleNames: roles.map((role) => role.name),
+        regularSubscription: regularSubscription
+          ? {
+              ownerUuid: regularSubscription.userUuid,
+              uuid: regularSubscription.uuid,
+            }
+          : undefined,
+        sharedSubscription: sharedSubscription
+          ? {
+              ownerUuid: sharedSubscription.userUuid,
+              uuid: sharedSubscription.uuid,
+            }
+          : undefined,
       }),
     )
 

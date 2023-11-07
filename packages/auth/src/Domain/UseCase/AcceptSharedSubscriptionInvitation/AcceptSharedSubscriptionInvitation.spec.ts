@@ -107,7 +107,7 @@ describe('AcceptSharedSubscriptionInvitation', () => {
       subscriptionId: 3,
       subscriptionType: 'shared',
       updatedAt: 1,
-      user: Promise.resolve(invitee),
+      userUuid: '123',
     })
     expect(roleService.addUserRoleBasedOnSubscription).toHaveBeenCalledWith(invitee, 'PLUS_PLAN')
     expect(applyDefaultSubscriptionSettings.execute).toHaveBeenCalled()
@@ -145,7 +145,7 @@ describe('AcceptSharedSubscriptionInvitation', () => {
       subscriptionId: 3,
       subscriptionType: 'shared',
       updatedAt: 3,
-      user: Promise.resolve(invitee),
+      userUuid: '123',
     })
     expect(roleService.addUserRoleBasedOnSubscription).toHaveBeenCalledWith(invitee, 'PLUS_PLAN')
     expect(applyDefaultSubscriptionSettings.execute).toHaveBeenCalled()

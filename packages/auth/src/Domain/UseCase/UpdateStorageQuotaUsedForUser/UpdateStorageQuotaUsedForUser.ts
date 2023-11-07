@@ -56,7 +56,6 @@ export class UpdateStorageQuotaUsedForUser implements UseCaseInterface<void> {
 
   private async updateUploadBytesUsedSetting(subscription: UserSubscription, bytesUsed: number): Promise<void> {
     let bytesAlreadyUsed = '0'
-    const subscriptionUser = await subscription.user
 
     const bytesUsedSettingExists = await this.getSubscriptionSetting.execute({
       userSubscriptionUuid: subscription.uuid,
@@ -77,7 +76,7 @@ export class UpdateStorageQuotaUsedForUser implements UseCaseInterface<void> {
 
     /* istanbul ignore next */
     if (result.isFailed()) {
-      this.logger.error(`Could not set file upload bytes used for user ${subscriptionUser.uuid}`)
+      this.logger.error(`Could not set file upload bytes used for subscription ${subscription.uuid}`)
     }
   }
 }

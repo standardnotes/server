@@ -53,7 +53,7 @@ export class ActivatePremiumFeatures implements UseCaseInterface<string> {
 
     const subscription = new UserSubscription()
     subscription.planName = subscriptionPlanName.value
-    subscription.user = Promise.resolve(user)
+    subscription.userUuid = user.uuid
     subscription.createdAt = timestamp
     subscription.updatedAt = timestamp
     subscription.endsAt = this.timer.convertDateToMicroseconds(endsAt)

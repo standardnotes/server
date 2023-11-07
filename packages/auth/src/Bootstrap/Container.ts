@@ -1104,6 +1104,7 @@ export class ContainerConfigLoader {
         new DeleteAccount(
           container.get<UserRepositoryInterface>(TYPES.Auth_UserRepository),
           container.get<GetRegularSubscriptionForUser>(TYPES.Auth_GetRegularSubscriptionForUser),
+          container.get<GetSharedSubscriptionForUser>(TYPES.Auth_GetSharedSubscriptionForUser),
           container.get<DomainEventPublisherInterface>(TYPES.Auth_DomainEventPublisher),
           container.get<DomainEventFactoryInterface>(TYPES.Auth_DomainEventFactory),
           container.get<TimerInterface>(TYPES.Auth_Timer),

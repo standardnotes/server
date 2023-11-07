@@ -7,7 +7,7 @@ import { RoleServiceInterface } from '../Role/RoleServiceInterface'
 import { UserRepositoryInterface } from '../User/UserRepositoryInterface'
 import { UserSubscriptionRepositoryInterface } from '../Subscription/UserSubscriptionRepositoryInterface'
 import { OfflineUserSubscriptionRepositoryInterface } from '../Subscription/OfflineUserSubscriptionRepositoryInterface'
-import { Username } from '@standardnotes/domain-core'
+import { Username, Uuid } from '@standardnotes/domain-core'
 
 @injectable()
 export class SubscriptionExpiredEventHandler implements DomainEventHandlerInterface {
@@ -48,7 +48,22 @@ export class SubscriptionExpiredEventHandler implements DomainEventHandlerInterf
   private async removeRoleFromSubscriptionUsers(subscriptionId: number, subscriptionName: string): Promise<void> {
     const userSubscriptions = await this.userSubscriptionRepository.findBySubscriptionId(subscriptionId)
     for (const userSubscription of userSubscriptions) {
-      await this.roleService.removeUserRoleBasedOnSubscription(await userSubscription.user, subscriptionName)
+      const userUuidOrError = Uuid.create(userSubscription.userUuid)
+      if (userUuidOrError.isFailed()) {
+        this.logger.warn(`Could not remove role from user with uuid: ${userUuidOrError.getError()}`)
+
+        continue
+      }
+      const userUuid = userUuidOrError.getValue()
+
+      const user = await this.userRepository.findOneByUuid(userUuid)
+      if (user === null) {
+        this.logger.warn(`Could not find user with uuid: ${userUuid.value}`)
+
+        continue
+      }
+
+      await this.roleService.removeUserRoleBasedOnSubscription(user, subscriptionName)
     }
   }
 
