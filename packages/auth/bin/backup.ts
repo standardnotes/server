@@ -1,10 +1,6 @@
 import 'reflect-metadata'
 
-import { OpenTelemetrySDK, OpenTelemetryTracer } from '@standardnotes/domain-events-infra'
-import { ServiceIdentifier, SettingName } from '@standardnotes/domain-core'
-
-const sdk = new OpenTelemetrySDK({ serviceName: ServiceIdentifier.NAMES.AuthScheduledTask })
-sdk.start()
+import { SettingName } from '@standardnotes/domain-core'
 
 import { Stream } from 'stream'
 
@@ -106,23 +102,16 @@ void container.load().then((container) => {
   const domainEventPublisher: DomainEventPublisherInterface = container.get(TYPES.Auth_DomainEventPublisher)
   const getUserKeyParamsUseCase: GetUserKeyParams = container.get(TYPES.Auth_GetUserKeyParams)
 
-  const tracer = new OpenTelemetryTracer()
-  tracer.startSpan(ServiceIdentifier.NAMES.AuthScheduledTask, 'backup')
-
   Promise.resolve(
     requestBackups(settingRepository, roleService, domainEventFactory, domainEventPublisher, getUserKeyParamsUseCase),
   )
     .then(() => {
       logger.info(`${backupFrequency} ${backupProvider} backup requesting complete`)
 
-      tracer.stopSpan()
-
       process.exit(0)
     })
     .catch((error) => {
       logger.error(`Could not finish ${backupFrequency} ${backupProvider} backup requesting: ${error.message}`)
-
-      tracer.stopSpanWithError(error)
 
       process.exit(1)
     })

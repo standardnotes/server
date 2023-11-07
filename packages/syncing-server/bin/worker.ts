@@ -1,11 +1,5 @@
 import 'reflect-metadata'
 
-import { OpenTelemetrySDK } from '@standardnotes/domain-events-infra'
-import { ServiceIdentifier } from '@standardnotes/domain-core'
-
-const sdk = new OpenTelemetrySDK({ serviceName: ServiceIdentifier.NAMES.SyncingServerWorker })
-sdk.start()
-
 import { Logger } from 'winston'
 
 import TYPES from '../src/Bootstrap/Types'

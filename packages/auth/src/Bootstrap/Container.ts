@@ -79,9 +79,9 @@ import { ExtensionKeyGrantedEventHandler } from '../Domain/Handler/ExtensionKeyG
 import {
   DirectCallDomainEventPublisher,
   DirectCallEventMessageHandler,
-  SNSOpenTelemetryDomainEventPublisher,
+  SNSDomainEventPublisher,
+  SQSDomainEventSubscriber,
   SQSEventMessageHandler,
-  SQSOpenTelemetryDomainEventSubscriber,
 } from '@standardnotes/domain-events-infra'
 import { GetUserSubscription } from '../Domain/UseCase/GetUserSubscription/GetUserSubscription'
 import { ChangeCredentials } from '../Domain/UseCase/ChangeCredentials/ChangeCredentials'
@@ -170,7 +170,6 @@ import {
   ControllerContainer,
   ControllerContainerInterface,
   MapperInterface,
-  ServiceIdentifier,
   SharedVaultUser,
 } from '@standardnotes/domain-core'
 import { SessionTracePersistenceMapper } from '../Mapping/SessionTracePersistenceMapper'
@@ -379,10 +378,7 @@ export class ContainerConfigLoader {
       .toConstantValue(
         isConfiguredForHomeServer
           ? directCallDomainEventPublisher
-          : new SNSOpenTelemetryDomainEventPublisher(
-              container.get(TYPES.Auth_SNS),
-              container.get(TYPES.Auth_SNS_TOPIC_ARN),
-            ),
+          : new SNSDomainEventPublisher(container.get(TYPES.Auth_SNS), container.get(TYPES.Auth_SNS_TOPIC_ARN)),
       )
 
     // Mapping
@@ -1514,8 +1510,7 @@ export class ContainerConfigLoader {
       container
         .bind<DomainEventSubscriberInterface>(TYPES.Auth_DomainEventSubscriber)
         .toConstantValue(
-          new SQSOpenTelemetryDomainEventSubscriber(
-            ServiceIdentifier.NAMES.AuthWorker,
+          new SQSDomainEventSubscriber(
             container.get<SQSClient>(TYPES.Auth_SQS),
             container.get<string>(TYPES.Auth_SQS_QUEUE_URL),
             container.get<DomainEventMessageHandlerInterface>(TYPES.Auth_DomainEventMessageHandler),

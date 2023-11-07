@@ -1,11 +1,5 @@
 import 'reflect-metadata'
 
-import { OpenTelemetrySDK, OpenTelemetryTracer } from '@standardnotes/domain-events-infra'
-import { EmailLevel, ServiceIdentifier } from '@standardnotes/domain-core'
-
-const sdk = new OpenTelemetrySDK({ serviceName: ServiceIdentifier.NAMES.AnalyticsScheduledTask })
-sdk.start()
-
 import { Logger } from 'winston'
 
 import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
@@ -22,6 +16,7 @@ import { CalculateMonthlyRecurringRevenue } from '../src/Domain/UseCase/Calculat
 import { getBody, getSubject } from '../src/Domain/Email/DailyAnalyticsReport'
 import { TimerInterface } from '@standardnotes/time'
 import { StatisticMeasureName } from '../src/Domain/Statistics/StatisticMeasureName'
+import { EmailLevel } from '@standardnotes/domain-core'
 
 const requestReport = async (
   analyticsStore: AnalyticsStoreInterface,
@@ -275,9 +270,6 @@ void container.load().then((container) => {
 
   logger.info(`Sending report to following admins: ${adminEmails}`)
 
-  const tracer = new OpenTelemetryTracer()
-  tracer.startSpan(ServiceIdentifier.NAMES.AnalyticsScheduledTask, 'report')
-
   Promise.resolve(
     requestReport(
       analyticsStore,
@@ -293,14 +285,10 @@ void container.load().then((container) => {
     .then(() => {
       logger.info('Usage report generation complete')
 
-      tracer.stopSpan()
-
       process.exit(0)
     })
     .catch((error) => {
       logger.error(`Could not finish usage report generation: ${error.message}`)
-
-      tracer.stopSpanWithError(error)
 
       process.exit(1)
     })

@@ -18,7 +18,7 @@ import { RedisWebSocketsConnectionRepository } from '../Infra/Redis/RedisWebSock
 import { AddWebSocketsConnection } from '../Domain/UseCase/AddWebSocketsConnection/AddWebSocketsConnection'
 import { RemoveWebSocketsConnection } from '../Domain/UseCase/RemoveWebSocketsConnection/RemoveWebSocketsConnection'
 import { WebSocketsClientMessenger } from '../Infra/WebSockets/WebSocketsClientMessenger'
-import { SQSEventMessageHandler, SQSOpenTelemetryDomainEventSubscriber } from '@standardnotes/domain-events-infra'
+import { SQSDomainEventSubscriber, SQSEventMessageHandler } from '@standardnotes/domain-events-infra'
 import { ApiGatewayAuthMiddleware } from '../Controller/ApiGatewayAuthMiddleware'
 
 import {
@@ -34,7 +34,6 @@ import { WebSocketsController } from '../Controller/WebSocketsController'
 import { WebSocketServerInterface } from '@standardnotes/api'
 import { ClientMessengerInterface } from '../Client/ClientMessengerInterface'
 import { WebSocketMessageRequestedEventHandler } from '../Domain/Handler/WebSocketMessageRequestedEventHandler'
-import { ServiceIdentifier } from '@standardnotes/domain-core'
 
 export class ContainerConfigLoader {
   async load(): Promise<Container> {
@@ -145,8 +144,7 @@ export class ContainerConfigLoader {
     container
       .bind<DomainEventSubscriberInterface>(TYPES.DomainEventSubscriber)
       .toConstantValue(
-        new SQSOpenTelemetryDomainEventSubscriber(
-          ServiceIdentifier.NAMES.WebsocketsWorker,
+        new SQSDomainEventSubscriber(
           container.get<SQSClient>(TYPES.SQS),
           container.get<string>(TYPES.SQS_QUEUE_URL),
           container.get<DomainEventMessageHandlerInterface>(TYPES.DomainEventMessageHandler),

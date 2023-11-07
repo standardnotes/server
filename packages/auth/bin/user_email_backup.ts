@@ -1,11 +1,5 @@
 import 'reflect-metadata'
 
-import { OpenTelemetrySDK, OpenTelemetryTracer } from '@standardnotes/domain-events-infra'
-import { Email, ServiceIdentifier, SettingName } from '@standardnotes/domain-core'
-
-const sdk = new OpenTelemetrySDK({ serviceName: ServiceIdentifier.NAMES.AuthScheduledTask })
-sdk.start()
-
 import { Logger } from 'winston'
 import * as dayjs from 'dayjs'
 import * as utc from 'dayjs/plugin/utc'
@@ -21,6 +15,7 @@ import { RoleServiceInterface } from '../src/Domain/Role/RoleServiceInterface'
 import { PermissionName } from '@standardnotes/features'
 import { UserRepositoryInterface } from '../src/Domain/User/UserRepositoryInterface'
 import { GetUserKeyParams } from '../src/Domain/UseCase/GetUserKeyParams/GetUserKeyParams'
+import { Email, SettingName } from '@standardnotes/domain-core'
 
 const inputArgs = process.argv.slice(2)
 const backupEmail = inputArgs[0]
@@ -94,9 +89,6 @@ void container.load().then((container) => {
   const domainEventPublisher: DomainEventPublisherInterface = container.get(TYPES.Auth_DomainEventPublisher)
   const getUserKeyParamsUseCase: GetUserKeyParams = container.get(TYPES.Auth_GetUserKeyParams)
 
-  const tracer = new OpenTelemetryTracer()
-  tracer.startSpan(ServiceIdentifier.NAMES.AuthScheduledTask, 'user_email_backup')
-
   Promise.resolve(
     requestBackups(
       userRepository,
@@ -110,14 +102,10 @@ void container.load().then((container) => {
     .then(() => {
       logger.info(`Email backup requesting complete for ${backupEmail}`)
 
-      tracer.stopSpan()
-
       process.exit(0)
     })
     .catch((error) => {
       logger.error(`Could not finish email backup requesting for ${backupEmail}: ${error.message}`)
-
-      tracer.stopSpanWithError(error)
 
       process.exit(1)
     })

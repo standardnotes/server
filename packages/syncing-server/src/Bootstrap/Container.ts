@@ -11,9 +11,9 @@ import { Item } from '../Domain/Item/Item'
 import {
   DirectCallDomainEventPublisher,
   DirectCallEventMessageHandler,
-  SNSOpenTelemetryDomainEventPublisher,
+  SNSDomainEventPublisher,
+  SQSDomainEventSubscriber,
   SQSEventMessageHandler,
-  SQSOpenTelemetryDomainEventSubscriber,
 } from '@standardnotes/domain-events-infra'
 import { DomainEventFactoryInterface } from '../Domain/Event/DomainEventFactoryInterface'
 import { DomainEventFactory } from '../Domain/Event/DomainEventFactory'
@@ -58,7 +58,6 @@ import {
   ControllerContainer,
   ControllerContainerInterface,
   MapperInterface,
-  ServiceIdentifier,
   SharedVaultUser,
 } from '@standardnotes/domain-core'
 import { BaseItemsController } from '../Infra/InversifyExpressUtils/Base/BaseItemsController'
@@ -252,7 +251,7 @@ export class ContainerConfigLoader {
       container
         .bind<DomainEventPublisherInterface>(TYPES.Sync_DomainEventPublisher)
         .toDynamicValue((context: interfaces.Context) => {
-          return new SNSOpenTelemetryDomainEventPublisher(
+          return new SNSDomainEventPublisher(
             context.container.get(TYPES.Sync_SNS),
             context.container.get(TYPES.Sync_SNS_TOPIC_ARN),
           )
@@ -1022,8 +1021,7 @@ export class ContainerConfigLoader {
       container
         .bind<DomainEventSubscriberInterface>(TYPES.Sync_DomainEventSubscriber)
         .toConstantValue(
-          new SQSOpenTelemetryDomainEventSubscriber(
-            ServiceIdentifier.NAMES.SyncingServerWorker,
+          new SQSDomainEventSubscriber(
             container.get<SQSClient>(TYPES.Sync_SQS),
             container.get<string>(TYPES.Sync_SQS_QUEUE_URL),
             container.get<DomainEventMessageHandlerInterface>(TYPES.Sync_DomainEventMessageHandler),

@@ -1,9 +1,4 @@
-import {
-  ControllerContainer,
-  ControllerContainerInterface,
-  MapperInterface,
-  ServiceIdentifier,
-} from '@standardnotes/domain-core'
+import { ControllerContainer, ControllerContainerInterface, MapperInterface } from '@standardnotes/domain-core'
 import { Container, interfaces } from 'inversify'
 import { Repository } from 'typeorm'
 import * as winston from 'winston'
@@ -34,7 +29,7 @@ import {
   SQSEventMessageHandler,
   DirectCallEventMessageHandler,
   DirectCallDomainEventPublisher,
-  SQSOpenTelemetryDomainEventSubscriber,
+  SQSDomainEventSubscriber,
 } from '@standardnotes/domain-events-infra'
 import { DumpRepositoryInterface } from '../Domain/Dump/DumpRepositoryInterface'
 import { AccountDeletionRequestedEventHandler } from '../Domain/Handler/AccountDeletionRequestedEventHandler'
@@ -342,8 +337,7 @@ export class ContainerConfigLoader {
       container
         .bind<DomainEventSubscriberInterface>(TYPES.Revisions_DomainEventSubscriber)
         .toConstantValue(
-          new SQSOpenTelemetryDomainEventSubscriber(
-            ServiceIdentifier.NAMES.RevisionsWorker,
+          new SQSDomainEventSubscriber(
             container.get<SQSClient>(TYPES.Revisions_SQS),
             container.get<string>(TYPES.Revisions_SQS_QUEUE_URL),
             container.get<DomainEventMessageHandlerInterface>(TYPES.Revisions_DomainEventMessageHandler),
