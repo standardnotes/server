@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.166.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.165.4...@standardnotes/auth-server@1.166.0) (2023-11-07)
+
+### Features
+
+* **auth:** add triggering post setting update actions ([#905](https://github.com/standardnotes/server/issues/905)) ([d228a86](https://github.com/standardnotes/server/commit/d228a86f48c9ff62b7810244c347abf7770e2b9f))
+
 ## [1.165.4](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.165.3...@standardnotes/auth-server@1.165.4) (2023-11-07)
 
 ### Bug Fixes
