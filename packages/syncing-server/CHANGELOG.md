@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.120.2](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.120.1...@standardnotes/syncing-server@1.120.2) (2023-11-07)
+
+### Bug Fixes
+
+* remove open telemetry from code ([#903](https://github.com/standardnotes/syncing-server-js/issues/903)) ([751f3b2](https://github.com/standardnotes/syncing-server-js/commit/751f3b25476c5be3d663ad8540c43266acd39493))
+
 ## [1.120.1](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.120.0...@standardnotes/syncing-server@1.120.1) (2023-11-06)
 
 ### Bug Fixes

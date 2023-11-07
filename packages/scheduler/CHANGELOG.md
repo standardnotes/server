@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.26.5](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.26.4...@standardnotes/scheduler-server@1.26.5) (2023-11-07)
+
+### Bug Fixes
+
+* remove open telemetry from code ([#903](https://github.com/standardnotes/server/issues/903)) ([751f3b2](https://github.com/standardnotes/server/commit/751f3b25476c5be3d663ad8540c43266acd39493))
+
 ## [1.26.4](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.26.3...@standardnotes/scheduler-server@1.26.4) (2023-10-26)
 
 **Note:** Version bump only for package @standardnotes/scheduler-server

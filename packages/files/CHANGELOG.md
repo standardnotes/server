@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.32.4](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.32.3...@standardnotes/files-server@1.32.4) (2023-11-07)
+
+### Bug Fixes
+
+* remove open telemetry from code ([#903](https://github.com/standardnotes/files/issues/903)) ([751f3b2](https://github.com/standardnotes/files/commit/751f3b25476c5be3d663ad8540c43266acd39493))
+
 ## [1.32.3](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.32.2...@standardnotes/files-server@1.32.3) (2023-10-31)
 
 ### Bug Fixes

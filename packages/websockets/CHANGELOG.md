@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.17.5](https://github.com/standardnotes/server/compare/@standardnotes/websockets-server@1.17.4...@standardnotes/websockets-server@1.17.5) (2023-11-07)
+
+### Bug Fixes
+
+* remove open telemetry from code ([#903](https://github.com/standardnotes/server/issues/903)) ([751f3b2](https://github.com/standardnotes/server/commit/751f3b25476c5be3d663ad8540c43266acd39493))
+
 ## [1.17.4](https://github.com/standardnotes/server/compare/@standardnotes/websockets-server@1.17.3...@standardnotes/websockets-server@1.17.4) (2023-10-26)
 
 **Note:** Version bump only for package @standardnotes/websockets-server
