@@ -21,6 +21,9 @@ export class TriggerEmailBackupForAllUsers implements UseCaseInterface<void> {
       value: dto.backupFrequency,
     })
 
+    this.logger.info(`Found ${allSettingsCount} users with email backup frequency set to ${dto.backupFrequency}`)
+
+    let failedUsers = 0
     const numberOfPages = Math.ceil(allSettingsCount / this.PAGING_LIMIT)
     for (let i = 0; i < numberOfPages; i++) {
       const settings = await this.settingRepository.findAllByNameAndValue({
@@ -37,8 +40,14 @@ export class TriggerEmailBackupForAllUsers implements UseCaseInterface<void> {
         /* istanbul ignore next */
         if (result.isFailed()) {
           this.logger.error(`Failed to trigger email backup for user ${setting.props.userUuid.value}`)
+          failedUsers++
         }
       }
+    }
+
+    /* istanbul ignore next */
+    if (failedUsers > 0) {
+      this.logger.error(`Failed to trigger email backup for ${failedUsers} users`)
     }
 
     return Result.ok()
