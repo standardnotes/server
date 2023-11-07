@@ -151,7 +151,6 @@ export class HttpServiceProxy implements ServiceProxyInterface {
     response: Response,
     endpointOrMethodIdentifier: string,
     payload?: Record<string, unknown> | string,
-    returnRawResponse?: boolean,
   ): Promise<void | Response<unknown, Record<string, unknown>>> {
     if (!this.paymentsServerUrl) {
       this.logger.debug('Payments Server URL not defined. Skipped request to Payments API.')
@@ -159,18 +158,13 @@ export class HttpServiceProxy implements ServiceProxyInterface {
       return
     }
 
-    const rawResponse = await this.callServerWithLegacyFormat(
+    await this.callServerWithLegacyFormat(
       this.paymentsServerUrl,
       request,
       response,
       endpointOrMethodIdentifier,
       payload,
-      returnRawResponse,
     )
-
-    if (returnRawResponse) {
-      return rawResponse
-    }
   }
 
   async callAuthServerWithLegacyFormat(
@@ -345,7 +339,6 @@ export class HttpServiceProxy implements ServiceProxyInterface {
     response: Response,
     endpointOrMethodIdentifier: string,
     payload?: Record<string, unknown> | string,
-    returnRawResponse?: boolean,
   ): Promise<void | Response<unknown, Record<string, unknown>>> {
     const serviceResponse = await this.getServerResponse(
       serverUrl,
@@ -364,17 +357,9 @@ export class HttpServiceProxy implements ServiceProxyInterface {
     if (serviceResponse.request._redirectable._redirectCount > 0) {
       response.status(302)
 
-      if (returnRawResponse) {
-        return response
-      }
-
       response.redirect(serviceResponse.request.res.responseUrl)
     } else {
       response.status(serviceResponse.status)
-
-      if (returnRawResponse) {
-        return response
-      }
 
       response.send(serviceResponse.data)
     }
