@@ -1,11 +1,10 @@
 import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
 import { EmailLevel, Result, SettingName, UseCaseInterface } from '@standardnotes/domain-core'
-import { EmailBackupFrequency, LogSessionUserAgentOption, MuteFailedBackupsEmailsOption } from '@standardnotes/settings'
+import { EmailBackupFrequency, LogSessionUserAgentOption } from '@standardnotes/settings'
 
 import { TriggerPostSettingUpdateActionsDTO } from './TriggerPostSettingUpdateActionsDTO'
 import { DomainEventFactoryInterface } from '../../Event/DomainEventFactoryInterface'
-import { SettingRepositoryInterface } from '../../Setting/SettingRepositoryInterface'
-import { GetUserKeyParams } from '../GetUserKeyParams/GetUserKeyParams'
+import { TriggerEmailBackupForUser } from '../TriggerEmailBackupForUser/TriggerEmailBackupForUser'
 
 export class TriggerPostSettingUpdateActions implements UseCaseInterface<void> {
   private readonly emailSettingToSubscriptionRejectionLevelMap: Map<string, string> = new Map([
@@ -18,8 +17,7 @@ export class TriggerPostSettingUpdateActions implements UseCaseInterface<void> {
   constructor(
     private domainEventPublisher: DomainEventPublisherInterface,
     private domainEventFactory: DomainEventFactoryInterface,
-    private settingRepository: SettingRepositoryInterface,
-    private getUserKeyParams: GetUserKeyParams,
+    private triggerEmailBackupForUser: TriggerEmailBackupForUser,
   ) {}
 
   async execute(dto: TriggerPostSettingUpdateActionsDTO): Promise<Result<void>> {
@@ -28,7 +26,9 @@ export class TriggerPostSettingUpdateActions implements UseCaseInterface<void> {
     }
 
     if (this.isEnablingEmailBackupSetting(dto.updatedSettingName, dto.unencryptedValue)) {
-      await this.triggerEmailBackup(dto.userUuid)
+      await this.triggerEmailBackupForUser.execute({
+        userUuid: dto.userUuid,
+      })
     }
 
     if (this.isDisablingSessionUserAgentLogging(dto.updatedSettingName, dto.unencryptedValue)) {
@@ -36,33 +36,6 @@ export class TriggerPostSettingUpdateActions implements UseCaseInterface<void> {
     }
 
     return Result.ok()
-  }
-
-  private async triggerEmailBackup(userUuid: string): Promise<void> {
-    let userHasEmailsMuted = false
-    let muteEmailsSettingUuid = ''
-    const muteFailedEmailsBackupSetting = await this.settingRepository.findOneByNameAndUserUuid(
-      SettingName.NAMES.MuteFailedBackupsEmails,
-      userUuid,
-    )
-    if (muteFailedEmailsBackupSetting !== null) {
-      userHasEmailsMuted = muteFailedEmailsBackupSetting.props.value === MuteFailedBackupsEmailsOption.Muted
-      muteEmailsSettingUuid = muteFailedEmailsBackupSetting.id.toString()
-    }
-
-    const keyParamsResponse = await this.getUserKeyParams.execute({
-      authenticated: false,
-      userUuid,
-    })
-
-    await this.domainEventPublisher.publish(
-      this.domainEventFactory.createEmailBackupRequestedEvent(
-        userUuid,
-        muteEmailsSettingUuid,
-        userHasEmailsMuted,
-        keyParamsResponse.keyParams,
-      ),
-    )
   }
 
   private isChangingMuteEmailsSetting(settingName: string): boolean {

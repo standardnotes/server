@@ -274,6 +274,8 @@ import { ApplyDefaultSettings } from '../Domain/UseCase/ApplyDefaultSettings/App
 import { AuthResponseFactoryResolverInterface } from '../Domain/Auth/AuthResponseFactoryResolverInterface'
 import { UserInvitedToSharedVaultEventHandler } from '../Domain/Handler/UserInvitedToSharedVaultEventHandler'
 import { TriggerPostSettingUpdateActions } from '../Domain/UseCase/TriggerPostSettingUpdateActions/TriggerPostSettingUpdateActions'
+import { TriggerEmailBackupForUser } from '../Domain/UseCase/TriggerEmailBackupForUser/TriggerEmailBackupForUser'
+import { TriggerEmailBackupForAllUsers } from '../Domain/UseCase/TriggerEmailBackupForAllUsers/TriggerEmailBackupForAllUsers'
 
 export class ContainerConfigLoader {
   constructor(private mode: 'server' | 'worker' = 'server') {}
@@ -1221,13 +1223,32 @@ export class ContainerConfigLoader {
         ),
       )
     container
+      .bind<TriggerEmailBackupForUser>(TYPES.Auth_TriggerEmailBackupForUser)
+      .toConstantValue(
+        new TriggerEmailBackupForUser(
+          container.get<RoleServiceInterface>(TYPES.Auth_RoleService),
+          container.get<GetSetting>(TYPES.Auth_GetSetting),
+          container.get<GetUserKeyParams>(TYPES.Auth_GetUserKeyParams),
+          container.get<DomainEventPublisherInterface>(TYPES.Auth_DomainEventPublisher),
+          container.get<DomainEventFactoryInterface>(TYPES.Auth_DomainEventFactory),
+        ),
+      )
+    container
+      .bind<TriggerEmailBackupForAllUsers>(TYPES.Auth_TriggerEmailBackupForAllUsers)
+      .toConstantValue(
+        new TriggerEmailBackupForAllUsers(
+          container.get<SettingRepositoryInterface>(TYPES.Auth_SettingRepository),
+          container.get<TriggerEmailBackupForUser>(TYPES.Auth_TriggerEmailBackupForUser),
+          container.get<winston.Logger>(TYPES.Auth_Logger),
+        ),
+      )
+    container
       .bind<TriggerPostSettingUpdateActions>(TYPES.Auth_TriggerPostSettingUpdateActions)
       .toConstantValue(
         new TriggerPostSettingUpdateActions(
           container.get<DomainEventPublisherInterface>(TYPES.Auth_DomainEventPublisher),
           container.get<DomainEventFactoryInterface>(TYPES.Auth_DomainEventFactory),
-          container.get<SettingRepositoryInterface>(TYPES.Auth_SettingRepository),
-          container.get<GetUserKeyParams>(TYPES.Auth_GetUserKeyParams),
+          container.get<TriggerEmailBackupForUser>(TYPES.Auth_TriggerEmailBackupForUser),
         ),
       )
 

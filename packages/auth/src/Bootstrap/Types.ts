@@ -165,6 +165,8 @@ const TYPES = {
   Auth_GetSharedOrRegularSubscriptionForUser: Symbol.for('Auth_GetSharedOrRegularSubscriptionForUser'),
   Auth_DisableEmailSettingBasedOnEmailSubscription: Symbol.for('Auth_DisableEmailSettingBasedOnEmailSubscription'),
   Auth_TriggerPostSettingUpdateActions: Symbol.for('Auth_TriggerPostSettingUpdateActions'),
+  Auth_TriggerEmailBackupForUser: Symbol.for('Auth_TriggerEmailBackupForUser'),
+  Auth_TriggerEmailBackupForAllUsers: Symbol.for('Auth_TriggerEmailBackupForAllUsers'),
   // Handlers
   Auth_AccountDeletionRequestedEventHandler: Symbol.for('Auth_AccountDeletionRequestedEventHandler'),
   Auth_SubscriptionPurchasedEventHandler: Symbol.for('Auth_SubscriptionPurchasedEventHandler'),

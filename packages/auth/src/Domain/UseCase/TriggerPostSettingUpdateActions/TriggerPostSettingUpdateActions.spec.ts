@@ -5,36 +5,23 @@ import {
   UserDisabledSessionUserAgentLoggingEvent,
 } from '@standardnotes/domain-events'
 import { EmailBackupFrequency, LogSessionUserAgentOption, MuteMarketingEmailsOption } from '@standardnotes/settings'
-import 'reflect-metadata'
-import { Logger } from 'winston'
-import { KeyParamsData } from '@standardnotes/responses'
-import { Uuid, Timestamps, UniqueEntityId, SettingName } from '@standardnotes/domain-core'
+import { SettingName, Result } from '@standardnotes/domain-core'
 
 import { TriggerPostSettingUpdateActions } from './TriggerPostSettingUpdateActions'
 import { DomainEventFactoryInterface } from '../../Event/DomainEventFactoryInterface'
-import { Setting } from '../../Setting/Setting'
-import { SettingRepositoryInterface } from '../../Setting/SettingRepositoryInterface'
-import { GetUserKeyParams } from '../GetUserKeyParams/GetUserKeyParams'
-import { SettingCrypterInterface } from '../../Setting/SettingCrypterInterface'
+import { TriggerEmailBackupForUser } from '../TriggerEmailBackupForUser/TriggerEmailBackupForUser'
 
 describe('TriggerPostSettingUpdateActions', () => {
   let domainEventPublisher: DomainEventPublisherInterface
   let domainEventFactory: DomainEventFactoryInterface
-  let settingRepository: SettingRepositoryInterface
-  let settingCrypter: SettingCrypterInterface
-  let logger: Logger
-  let getUserKeyParams: GetUserKeyParams
+  let triggerEmailBackupForUser: TriggerEmailBackupForUser
 
   const createUseCase = () =>
-    new TriggerPostSettingUpdateActions(domainEventPublisher, domainEventFactory, settingRepository, getUserKeyParams)
+    new TriggerPostSettingUpdateActions(domainEventPublisher, domainEventFactory, triggerEmailBackupForUser)
 
   beforeEach(() => {
-    settingRepository = {} as jest.Mocked<SettingRepositoryInterface>
-    settingRepository.findLastByNameAndUserUuid = jest.fn().mockReturnValue(null)
-    settingRepository.findOneByNameAndUserUuid = jest.fn().mockReturnValue(null)
-
-    settingCrypter = {} as jest.Mocked<SettingCrypterInterface>
-    settingCrypter.decryptSettingValue = jest.fn().mockReturnValue('decrypted')
+    triggerEmailBackupForUser = {} as jest.Mocked<TriggerEmailBackupForUser>
+    triggerEmailBackupForUser.execute = jest.fn().mockReturnValue(Result.ok())
 
     domainEventPublisher = {} as jest.Mocked<DomainEventPublisherInterface>
     domainEventPublisher.publish = jest.fn()
@@ -49,14 +36,6 @@ describe('TriggerPostSettingUpdateActions', () => {
     domainEventFactory.createMuteEmailsSettingChangedEvent = jest
       .fn()
       .mockReturnValue({} as jest.Mocked<MuteEmailsSettingChangedEvent>)
-
-    logger = {} as jest.Mocked<Logger>
-    logger.debug = jest.fn()
-    logger.warn = jest.fn()
-    logger.error = jest.fn()
-
-    getUserKeyParams = {} as jest.Mocked<GetUserKeyParams>
-    getUserKeyParams.execute = jest.fn().mockReturnValue({ keyParams: {} as jest.Mocked<KeyParamsData> })
   })
 
   it('should trigger session cleanup if user is disabling session user agent logging', async () => {
@@ -82,25 +61,10 @@ describe('TriggerPostSettingUpdateActions', () => {
       unencryptedValue: EmailBackupFrequency.Daily,
     })
 
-    expect(domainEventPublisher.publish).toHaveBeenCalled()
-    expect(domainEventFactory.createEmailBackupRequestedEvent).toHaveBeenCalledWith('4-5-6', '', false, {})
+    expect(triggerEmailBackupForUser.execute).toHaveBeenCalled()
   })
 
   it('should trigger backup if email backup setting is created - emails muted', async () => {
-    const setting = Setting.create(
-      {
-        name: SettingName.NAMES.MuteFailedBackupsEmails,
-        value: 'muted',
-        serverEncryptionVersion: 0,
-        userUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
-        sensitive: false,
-        timestamps: Timestamps.create(123, 123).getValue(),
-      },
-      new UniqueEntityId('7fb54003-1dd2-40bd-8900-2bacd6cf629c'),
-    ).getValue()
-
-    settingRepository.findOneByNameAndUserUuid = jest.fn().mockReturnValue(setting)
-
     await createUseCase().execute({
       updatedSettingName: SettingName.NAMES.EmailBackupFrequency,
       userUuid: '4-5-6',
@@ -108,18 +72,10 @@ describe('TriggerPostSettingUpdateActions', () => {
       unencryptedValue: EmailBackupFrequency.Daily,
     })
 
-    expect(domainEventPublisher.publish).toHaveBeenCalled()
-    expect(domainEventFactory.createEmailBackupRequestedEvent).toHaveBeenCalledWith(
-      '4-5-6',
-      '7fb54003-1dd2-40bd-8900-2bacd6cf629c',
-      true,
-      {},
-    )
+    expect(triggerEmailBackupForUser.execute).toHaveBeenCalled()
   })
 
   it('should not trigger backup if email backup setting is disabled', async () => {
-    settingRepository.findOneByNameAndUserUuid = jest.fn().mockReturnValue(null)
-
     await createUseCase().execute({
       updatedSettingName: SettingName.NAMES.EmailBackupFrequency,
       userUuid: '4-5-6',
@@ -127,13 +83,10 @@ describe('TriggerPostSettingUpdateActions', () => {
       unencryptedValue: EmailBackupFrequency.Disabled,
     })
 
-    expect(domainEventPublisher.publish).not.toHaveBeenCalled()
-    expect(domainEventFactory.createEmailBackupRequestedEvent).not.toHaveBeenCalled()
+    expect(triggerEmailBackupForUser.execute).not.toHaveBeenCalled()
   })
 
   it('should trigger mute subscription emails rejection if mute setting changed', async () => {
-    settingRepository.findOneByNameAndUserUuid = jest.fn().mockReturnValue(null)
-
     await createUseCase().execute({
       updatedSettingName: SettingName.NAMES.MuteMarketingEmails,
       userUuid: '4-5-6',
