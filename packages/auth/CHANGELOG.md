@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.167.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.166.0...@standardnotes/auth-server@1.167.0) (2023-11-08)
+
+### Features
+
+* script to mass delete accounts from CSV source ([#913](https://github.com/standardnotes/server/issues/913)) ([a6dea50](https://github.com/standardnotes/server/commit/a6dea50d745ff6f051fd9ede168aef27036159c3))
+
 # [1.166.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.165.4...@standardnotes/auth-server@1.166.0) (2023-11-07)
 
 ### Features
