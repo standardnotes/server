@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.167.2](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.167.1...@standardnotes/auth-server@1.167.2) (2023-11-08)
+
+### Bug Fixes
+
+* add logs about sending websocket events to clients ([9465f2e](https://github.com/standardnotes/server/commit/9465f2ecd8e8f0bf3ebeeb3976227b1b105aded0))
+
 ## [1.167.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.167.0...@standardnotes/auth-server@1.167.1) (2023-11-08)
 
 ### Bug Fixes

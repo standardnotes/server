@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.120.4](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.120.3...@standardnotes/syncing-server@1.120.4) (2023-11-08)
+
+### Bug Fixes
+
+* add logs about sending websocket events to clients ([9465f2e](https://github.com/standardnotes/syncing-server-js/commit/9465f2ecd8e8f0bf3ebeeb3976227b1b105aded0))
+
 ## [1.120.3](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.120.2...@standardnotes/syncing-server@1.120.3) (2023-11-07)
 
 **Note:** Version bump only for package @standardnotes/syncing-server
