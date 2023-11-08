@@ -3,6 +3,7 @@ const TYPES = {
   Auth_Redis: Symbol.for('Auth_Redis'),
   Auth_SNS: Symbol.for('Auth_SNS'),
   Auth_SQS: Symbol.for('Auth_SQS'),
+  Auth_S3: Symbol.for('Auth_S3'),
   // Mapping
   Auth_SessionTracePersistenceMapper: Symbol.for('Auth_SessionTracePersistenceMapper'),
   Auth_AuthenticatorChallengePersistenceMapper: Symbol.for('Auth_AuthenticatorChallengePersistenceMapper'),
@@ -167,6 +168,7 @@ const TYPES = {
   Auth_TriggerPostSettingUpdateActions: Symbol.for('Auth_TriggerPostSettingUpdateActions'),
   Auth_TriggerEmailBackupForUser: Symbol.for('Auth_TriggerEmailBackupForUser'),
   Auth_TriggerEmailBackupForAllUsers: Symbol.for('Auth_TriggerEmailBackupForAllUsers'),
+  Auth_DeleteAccountsFromCSVFile: Symbol.for('Auth_DeleteAccountsFromCSVFile'),
   // Handlers
   Auth_AccountDeletionRequestedEventHandler: Symbol.for('Auth_AccountDeletionRequestedEventHandler'),
   Auth_SubscriptionPurchasedEventHandler: Symbol.for('Auth_SubscriptionPurchasedEventHandler'),
@@ -251,6 +253,7 @@ const TYPES = {
   Auth_BaseOfflineController: Symbol.for('Auth_BaseOfflineController'),
   Auth_BaseListedController: Symbol.for('Auth_BaseListedController'),
   Auth_BaseFeaturesController: Symbol.for('Auth_BaseFeaturesController'),
+  Auth_CSVFileReader: Symbol.for('Auth_CSVFileReader'),
 }
 
 export default TYPES

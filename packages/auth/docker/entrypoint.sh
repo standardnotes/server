@@ -40,6 +40,13 @@ case "$COMMAND" in
     node docker/entrypoint-user-email-backup.js $EMAIL
     ;;
 
+  'delete-accounts' )
+    echo "[Docker] Starting Accounts Deleting from CSV..."
+    FILE_NAME=$1 && shift 1
+    MODE=$1 && shift 1
+    node docker/entrypoint-delete-accounts.js $FILE_NAME $MODE
+    ;;
+
    * )
     echo "[Docker] Unknown command"
     ;;
