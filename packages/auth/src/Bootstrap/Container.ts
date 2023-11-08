@@ -2,6 +2,7 @@ import * as winston from 'winston'
 import Redis from 'ioredis'
 import { SNSClient, SNSClientConfig } from '@aws-sdk/client-sns'
 import { SQSClient, SQSClientConfig } from '@aws-sdk/client-sqs'
+import { S3Client } from '@aws-sdk/client-s3'
 import { Container } from 'inversify'
 import {
   DomainEventHandlerInterface,
@@ -276,6 +277,9 @@ import { UserInvitedToSharedVaultEventHandler } from '../Domain/Handler/UserInvi
 import { TriggerPostSettingUpdateActions } from '../Domain/UseCase/TriggerPostSettingUpdateActions/TriggerPostSettingUpdateActions'
 import { TriggerEmailBackupForUser } from '../Domain/UseCase/TriggerEmailBackupForUser/TriggerEmailBackupForUser'
 import { TriggerEmailBackupForAllUsers } from '../Domain/UseCase/TriggerEmailBackupForAllUsers/TriggerEmailBackupForAllUsers'
+import { CSVFileReaderInterface } from '../Domain/CSV/CSVFileReaderInterface'
+import { S3CsvFileReader } from '../Infra/S3/S3CsvFileReader'
+import { DeleteAccountsFromCSVFile } from '../Domain/UseCase/DeleteAccountsFromCSVFile/DeleteAccountsFromCSVFile'
 
 export class ContainerConfigLoader {
   constructor(private mode: 'server' | 'worker' = 'server') {}
@@ -370,6 +374,19 @@ export class ContainerConfigLoader {
       }
       const sqsClient = new SQSClient(sqsConfig)
       container.bind<SQSClient>(TYPES.Auth_SQS).toConstantValue(sqsClient)
+
+      container.bind<S3Client>(TYPES.Auth_S3).toConstantValue(
+        new S3Client({
+          apiVersion: 'latest',
+          region: env.get('S3_AWS_REGION', true),
+        }),
+      )
+
+      container
+        .bind<CSVFileReaderInterface>(TYPES.Auth_CSVFileReader)
+        .toConstantValue(
+          new S3CsvFileReader(env.get('S3_AUTH_SCRIPTS_DATA_BUCKET', true), container.get<S3Client>(TYPES.Auth_S3)),
+        )
     }
 
     container.bind(TYPES.Auth_SNS_TOPIC_ARN).toConstantValue(env.get('SNS_TOPIC_ARN', true))
@@ -1251,6 +1268,17 @@ export class ContainerConfigLoader {
           container.get<TriggerEmailBackupForUser>(TYPES.Auth_TriggerEmailBackupForUser),
         ),
       )
+    if (!isConfiguredForHomeServer) {
+      container
+        .bind<DeleteAccountsFromCSVFile>(TYPES.Auth_DeleteAccountsFromCSVFile)
+        .toConstantValue(
+          new DeleteAccountsFromCSVFile(
+            container.get<CSVFileReaderInterface>(TYPES.Auth_CSVFileReader),
+            container.get<DeleteAccount>(TYPES.Auth_DeleteAccount),
+            container.get<winston.Logger>(TYPES.Auth_Logger),
+          ),
+        )
+    }
 
     // Controller
     container
