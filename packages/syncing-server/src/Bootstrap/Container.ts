@@ -554,6 +554,7 @@ export class ContainerConfigLoader {
         new SendEventToClient(
           container.get<DomainEventFactoryInterface>(TYPES.Sync_DomainEventFactory),
           container.get<DomainEventPublisherInterface>(TYPES.Sync_DomainEventPublisher),
+          container.get<Logger>(TYPES.Sync_Logger),
         ),
       )
     container

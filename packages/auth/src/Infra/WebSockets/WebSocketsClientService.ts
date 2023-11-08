@@ -5,12 +5,14 @@ import { DomainEventFactoryInterface } from '../../Domain/Event/DomainEventFacto
 import { User } from '../../Domain/User/User'
 import { ClientServiceInterface } from '../../Domain/Client/ClientServiceInterface'
 import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
+import { Logger } from 'winston'
 
 @injectable()
 export class WebSocketsClientService implements ClientServiceInterface {
   constructor(
     @inject(TYPES.Auth_DomainEventFactory) private domainEventFactory: DomainEventFactoryInterface,
     @inject(TYPES.Auth_DomainEventPublisher) private domainEventPublisher: DomainEventPublisherInterface,
+    @inject(TYPES.Auth_Logger) private logger: Logger,
   ) {}
 
   async sendUserRolesChangedEvent(user: User): Promise<void> {
@@ -19,6 +21,8 @@ export class WebSocketsClientService implements ClientServiceInterface {
       user.email,
       (await user.roles).map((role) => role.name),
     )
+
+    this.logger.info(`[WebSockets] Requesting message ${event.type} to user ${user.uuid}`)
 
     await this.domainEventPublisher.publish(
       this.domainEventFactory.createWebSocketMessageRequestedEvent({
