@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.167.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.167.0...@standardnotes/auth-server@1.167.1) (2023-11-08)
+
+### Bug Fixes
+
+* **auth:** path to delete accounts script ([ca8a3fc](https://github.com/standardnotes/server/commit/ca8a3fc77d91410f0dee8c3ddef29c09947c9cf5))
+
 # [1.167.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.166.0...@standardnotes/auth-server@1.167.0) (2023-11-08)
 
 ### Features
