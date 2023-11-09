@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.120.5](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.120.4...@standardnotes/syncing-server@1.120.5) (2023-11-09)
+
+### Bug Fixes
+
+* remove unused axios dep in subservices ([45d4920](https://github.com/standardnotes/syncing-server-js/commit/45d4920e0fc2848a28ce888d139201e68c4b416f))
+
 ## [1.120.4](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.120.3...@standardnotes/syncing-server@1.120.4) (2023-11-08)
 
 ### Bug Fixes

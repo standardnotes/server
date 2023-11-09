@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.17.8](https://github.com/standardnotes/server/compare/@standardnotes/websockets-server@1.17.7...@standardnotes/websockets-server@1.17.8) (2023-11-09)
+
+### Bug Fixes
+
+* remove unused axios dep in subservices ([45d4920](https://github.com/standardnotes/server/commit/45d4920e0fc2848a28ce888d139201e68c4b416f))
+
 ## [1.17.7](https://github.com/standardnotes/server/compare/@standardnotes/websockets-server@1.17.6...@standardnotes/websockets-server@1.17.7) (2023-11-09)
 
 ### Bug Fixes
