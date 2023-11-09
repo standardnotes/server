@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.81.12](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.81.11...@standardnotes/api-gateway@1.81.12) (2023-11-09)
+
+### Bug Fixes
+
+* reduce websockets api communication data ([#919](https://github.com/standardnotes/api-gateway/issues/919)) ([c4ae12d](https://github.com/standardnotes/api-gateway/commit/c4ae12d53fc166879f90a4c5dbad1ab1cb4797e2))
+
 ## [1.81.11](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.81.10...@standardnotes/api-gateway@1.81.11) (2023-11-07)
 
 ### Bug Fixes

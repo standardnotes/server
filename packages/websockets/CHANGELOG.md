@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.17.7](https://github.com/standardnotes/server/compare/@standardnotes/websockets-server@1.17.6...@standardnotes/websockets-server@1.17.7) (2023-11-09)
+
+### Bug Fixes
+
+* reduce websockets api communication data ([#919](https://github.com/standardnotes/server/issues/919)) ([c4ae12d](https://github.com/standardnotes/server/commit/c4ae12d53fc166879f90a4c5dbad1ab1cb4797e2))
+
 ## [1.17.6](https://github.com/standardnotes/server/compare/@standardnotes/websockets-server@1.17.5...@standardnotes/websockets-server@1.17.6) (2023-11-07)
 
 **Note:** Version bump only for package @standardnotes/websockets-server
