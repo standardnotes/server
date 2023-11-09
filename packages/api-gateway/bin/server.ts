@@ -102,9 +102,11 @@ void container.load().then((container) => {
     })
   })
 
-  const serverInstance = server.build()
+  const serverInstance = server.build().listen(env.get('PORT'))
 
-  serverInstance.listen(env.get('PORT'))
+  const keepAliveTimeout = env.get('KEEP_ALIVE_TIMEOUT', true) ? +env.get('KEEP_ALIVE_TIMEOUT', true) : 5000
+
+  serverInstance.keepAliveTimeout = keepAliveTimeout
 
   logger.info(`Server started on port ${process.env.PORT}`)
 })
