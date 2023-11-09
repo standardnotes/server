@@ -16,11 +16,23 @@ describe('AddWebSocketsConnection', () => {
 
     logger = {} as jest.Mocked<Logger>
     logger.debug = jest.fn()
+    logger.error = jest.fn()
   })
 
   it('should save a web sockets connection for a user for further communication', async () => {
-    await createUseCase().execute({ userUuid: '1-2-3', connectionId: '2-3-4' })
+    const result = await createUseCase().execute({ userUuid: '1-2-3', connectionId: '2-3-4' })
 
     expect(webSocketsConnectionRepository.saveConnection).toHaveBeenCalledWith('1-2-3', '2-3-4')
+    expect(result.isFailed()).toBe(false)
+  })
+
+  it('should return a failure if the web sockets connection could not be saved', async () => {
+    webSocketsConnectionRepository.saveConnection = jest
+      .fn()
+      .mockRejectedValueOnce(new Error('Could not save connection'))
+
+    const result = await createUseCase().execute({ userUuid: '1-2-3', connectionId: '2-3-4' })
+
+    expect(result.isFailed()).toBe(true)
   })
 })

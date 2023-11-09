@@ -1,26 +1,30 @@
 import { inject, injectable } from 'inversify'
 import { Logger } from 'winston'
+import { Result, UseCaseInterface } from '@standardnotes/domain-core'
+
 import TYPES from '../../../Bootstrap/Types'
 import { WebSocketsConnectionRepositoryInterface } from '../../WebSockets/WebSocketsConnectionRepositoryInterface'
-import { UseCaseInterface } from '../UseCaseInterface'
 import { RemoveWebSocketsConnectionDTO } from './RemoveWebSocketsConnectionDTO'
-import { RemoveWebSocketsConnectionResponse } from './RemoveWebSocketsConnectionResponse'
 
 @injectable()
-export class RemoveWebSocketsConnection implements UseCaseInterface {
+export class RemoveWebSocketsConnection implements UseCaseInterface<void> {
   constructor(
     @inject(TYPES.WebSocketsConnectionRepository)
     private webSocketsConnectionRepository: WebSocketsConnectionRepositoryInterface,
     @inject(TYPES.Logger) private logger: Logger,
   ) {}
 
-  async execute(dto: RemoveWebSocketsConnectionDTO): Promise<RemoveWebSocketsConnectionResponse> {
-    this.logger.debug(`Removing connection ${dto.connectionId}`)
+  async execute(dto: RemoveWebSocketsConnectionDTO): Promise<Result<void>> {
+    try {
+      this.logger.debug(`Removing connection ${dto.connectionId}`)
 
-    await this.webSocketsConnectionRepository.removeConnection(dto.connectionId)
+      await this.webSocketsConnectionRepository.removeConnection(dto.connectionId)
 
-    return {
-      success: true,
+      return Result.ok()
+    } catch (error) {
+      this.logger.error(`Error removing connection ${dto.connectionId}: ${(error as Error).message}`)
+
+      return Result.fail((error as Error).message)
     }
   }
 }

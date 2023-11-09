@@ -143,7 +143,18 @@ export class HttpServiceProxy implements ServiceProxyInterface {
       return
     }
 
-    await this.callServer(this.webSocketServerUrl, request, response, endpointOrMethodIdentifier, payload)
+    const isARequestComingFromApiGatewayAndShouldBeKeptInMinimalFormat = request.headers.connectionid !== undefined
+    if (isARequestComingFromApiGatewayAndShouldBeKeptInMinimalFormat) {
+      await this.callServerWithLegacyFormat(
+        this.webSocketServerUrl,
+        request,
+        response,
+        endpointOrMethodIdentifier,
+        payload,
+      )
+    } else {
+      await this.callServer(this.webSocketServerUrl, request, response, endpointOrMethodIdentifier, payload)
+    }
   }
 
   async callPaymentsServer(
