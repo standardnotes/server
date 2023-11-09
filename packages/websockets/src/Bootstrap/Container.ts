@@ -1,7 +1,4 @@
 import * as winston from 'winston'
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const axios = require('axios')
-import { AxiosInstance } from 'axios'
 import Redis from 'ioredis'
 import { SQSClient, SQSClientConfig } from '@aws-sdk/client-sqs'
 import { ApiGatewayManagementApiClient } from '@aws-sdk/client-apigatewaymanagementapi'
@@ -123,7 +120,6 @@ export class ContainerConfigLoader {
       .to(WebSocketMessageRequestedEventHandler)
 
     // Services
-    container.bind<AxiosInstance>(TYPES.HTTPClient).toConstantValue(axios.create())
     container
       .bind<TokenDecoderInterface<CrossServiceTokenData>>(TYPES.CrossServiceTokenDecoder)
       .toConstantValue(new TokenDecoder<CrossServiceTokenData>(container.get(TYPES.AUTH_JWT_SECRET)))

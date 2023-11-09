@@ -29,7 +29,6 @@ const TYPES = {
   WebSocketConnectionTokenEncoder: Symbol.for('WebSocketConnectionTokenEncoder'),
   DomainEventSubscriber: Symbol.for('DomainEventSubscriber'),
   DomainEventMessageHandler: Symbol.for('DomainEventMessageHandler'),
-  HTTPClient: Symbol.for('HTTPClient'),
   WebSocketsClientMessenger: Symbol.for('WebSocketsClientMessenger'),
 }
 

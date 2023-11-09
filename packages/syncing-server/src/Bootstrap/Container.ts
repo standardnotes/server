@@ -44,9 +44,6 @@ import {
   DomainEventPublisherInterface,
   DomainEventSubscriberInterface,
 } from '@standardnotes/domain-events'
-import axios, { AxiosInstance } from 'axios'
-import { ExtensionsHttpService } from '../Domain/Extension/ExtensionsHttpService'
-import { ExtensionsHttpServiceInterface } from '../Domain/Extension/ExtensionsHttpServiceInterface'
 import { AccountDeletionRequestedEventHandler } from '../Domain/Handler/AccountDeletionRequestedEventHandler'
 import { DuplicateItemSyncedEventHandler } from '../Domain/Handler/DuplicateItemSyncedEventHandler'
 import { EmailBackupRequestedEventHandler } from '../Domain/Handler/EmailBackupRequestedEventHandler'
@@ -949,20 +946,7 @@ export class ContainerConfigLoader {
       )
 
     // Services
-    container.bind<ContentDecoder>(TYPES.Sync_ContentDecoder).toDynamicValue(() => new ContentDecoder())
-    container.bind<AxiosInstance>(TYPES.Sync_HTTPClient).toDynamicValue(() => axios.create())
-    container
-      .bind<ExtensionsHttpServiceInterface>(TYPES.Sync_ExtensionsHttpService)
-      .toConstantValue(
-        new ExtensionsHttpService(
-          container.get<AxiosInstance>(TYPES.Sync_HTTPClient),
-          container.get<ItemRepositoryInterface>(TYPES.Sync_SQLItemRepository),
-          container.get<ContentDecoderInterface>(TYPES.Sync_ContentDecoder),
-          container.get<DomainEventPublisherInterface>(TYPES.Sync_DomainEventPublisher),
-          container.get<DomainEventFactoryInterface>(TYPES.Sync_DomainEventFactory),
-          container.get<Logger>(TYPES.Sync_Logger),
-        ),
-      )
+    container.bind<ContentDecoderInterface>(TYPES.Sync_ContentDecoder).toDynamicValue(() => new ContentDecoder())
 
     const eventHandlers: Map<string, DomainEventHandlerInterface> = new Map([
       ['DUPLICATE_ITEM_SYNCED', container.get(TYPES.Sync_DuplicateItemSyncedEventHandler)],

@@ -104,7 +104,6 @@ const TYPES = {
   Sync_SyncResponseFactory20161215: Symbol.for('Sync_SyncResponseFactory20161215'),
   Sync_SyncResponseFactory20200115: Symbol.for('Sync_SyncResponseFactory20200115'),
   Sync_SyncResponseFactoryResolver: Symbol.for('Sync_SyncResponseFactoryResolver'),
-  Sync_ExtensionsHttpService: Symbol.for('Sync_ExtensionsHttpService'),
   Sync_ItemBackupService: Symbol.for('Sync_ItemBackupService'),
   Sync_ItemSaveValidator: Symbol.for('Sync_ItemSaveValidator'),
   Sync_OwnershipFilter: Symbol.for('Sync_OwnershipFilter'),

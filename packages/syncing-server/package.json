@@ -40,7 +40,6 @@
     "@standardnotes/settings": "workspace:*",
     "@standardnotes/sncrypto-node": "workspace:*",
     "@standardnotes/time": "workspace:*",
-    "axios": "^1.1.3",
     "cors": "2.8.5",
     "dotenv": "^16.0.1",
     "express": "^4.18.2",
