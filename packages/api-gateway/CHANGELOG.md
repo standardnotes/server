@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.81.13](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.81.12...@standardnotes/api-gateway@1.81.13) (2023-11-09)
+
+### Bug Fixes
+
+* **api-gateway:** add possibility to configure keep-alive timeout ([#920](https://github.com/standardnotes/api-gateway/issues/920)) ([16f92bd](https://github.com/standardnotes/api-gateway/commit/16f92bdc990ded5c3f1fe5af1e6e4a113a9954de))
+
 ## [1.81.12](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.81.11...@standardnotes/api-gateway@1.81.12) (2023-11-09)
 
 ### Bug Fixes
