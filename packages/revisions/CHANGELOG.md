@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.49.0](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.48.0...@standardnotes/revisions-server@1.49.0) (2023-11-10)
+
+### Features
+
+* add keep-alive connections to subservices ([#924](https://github.com/standardnotes/server/issues/924)) ([daad76d](https://github.com/standardnotes/server/commit/daad76d0ddae34c59dce45eedc4a055c4a11456d))
+
 # [1.48.0](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.47.5...@standardnotes/revisions-server@1.48.0) (2023-11-10)
 
 ### Features

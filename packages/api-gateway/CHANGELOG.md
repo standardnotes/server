@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.83.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.82.1...@standardnotes/api-gateway@1.83.0) (2023-11-10)
+
+### Bug Fixes
+
+* **api-gateway:** add more info on error logs ([f997501](https://github.com/standardnotes/api-gateway/commit/f99750169f4d24cdc7530184af2230c687f3e166))
+
+### Features
+
+* add keep-alive connections to subservices ([#924](https://github.com/standardnotes/api-gateway/issues/924)) ([daad76d](https://github.com/standardnotes/api-gateway/commit/daad76d0ddae34c59dce45eedc4a055c4a11456d))
+
 ## [1.82.1](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.82.0...@standardnotes/api-gateway@1.82.1) (2023-11-10)
 
 ### Bug Fixes

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.34.0](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.33.0...@standardnotes/files-server@1.34.0) (2023-11-10)
+
+### Features
+
+* add keep-alive connections to subservices ([#924](https://github.com/standardnotes/files/issues/924)) ([daad76d](https://github.com/standardnotes/files/commit/daad76d0ddae34c59dce45eedc4a055c4a11456d))
+
 # [1.33.0](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.32.5...@standardnotes/files-server@1.33.0) (2023-11-10)
 
 ### Features

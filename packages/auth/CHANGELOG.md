@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.169.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.168.0...@standardnotes/auth-server@1.169.0) (2023-11-10)
+
+### Features
+
+* add keep-alive connections to subservices ([#924](https://github.com/standardnotes/server/issues/924)) ([daad76d](https://github.com/standardnotes/server/commit/daad76d0ddae34c59dce45eedc4a055c4a11456d))
+
 # [1.168.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.167.2...@standardnotes/auth-server@1.168.0) (2023-11-10)
 
 ### Features
