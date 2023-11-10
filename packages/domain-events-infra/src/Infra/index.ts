@@ -7,8 +7,6 @@ export * from './OpenTelemetry/OpenTelemetryTracer'
 export * from './OpenTelemetry/OpenTelemetryTracerInterface'
 
 export * from './Redis/RedisDomainEventPublisher'
-export * from './Redis/RedisDomainEventSubscriber'
-export * from './Redis/RedisDomainEventSubscriberFactory'
 export * from './Redis/RedisEventMessageHandler'
 
 export * from './SNS/SNSDomainEventPublisher'

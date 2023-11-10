@@ -6,7 +6,7 @@ COMMAND=$1 && shift 1
 case "$COMMAND" in
   'start-web' )
     echo "Starting Web..."
-    node docker/entrypoint-server.js
+    exec node docker/entrypoint-server.js
     ;;
 
    * )

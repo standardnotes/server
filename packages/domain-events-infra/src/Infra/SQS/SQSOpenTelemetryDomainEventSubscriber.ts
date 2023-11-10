@@ -5,6 +5,7 @@ import { DomainEventSubscriberInterface, DomainEventMessageHandlerInterface } fr
 import { Logger } from 'winston'
 
 export class SQSOpenTelemetryDomainEventSubscriber implements DomainEventSubscriberInterface {
+  private consumer: Consumer | undefined
   private currentSpan: OpenTelemetryApi.Span | undefined
 
   constructor(
@@ -28,7 +29,16 @@ export class SQSOpenTelemetryDomainEventSubscriber implements DomainEventSubscri
     sqsConsumer.on('error', this.handleError.bind(this))
     sqsConsumer.on('processing_error', this.handleError.bind(this))
 
+    this.consumer = sqsConsumer
+
     sqsConsumer.start()
+  }
+
+  stop(): void {
+    if (this.consumer && this.consumer.isRunning) {
+      this.logger.info('Stopping SQS consumer...')
+      this.consumer.stop()
+    }
   }
 
   async startParentSpan(): Promise<void> {
