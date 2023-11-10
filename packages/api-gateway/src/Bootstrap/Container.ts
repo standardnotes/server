@@ -73,10 +73,10 @@ export class ContainerConfigLoader {
       axios.create({
         httpAgent: new AgentKeepAlive({
           keepAlive: true,
-          timeout: env.get('AGENT_KEEP_ALIVE_TIMEOUT', true) ? +env.get('AGENT_KEEP_ALIVE_TIMEOUT', true) : 60_000,
+          timeout: env.get('AGENT_KEEP_ALIVE_TIMEOUT', true) ? +env.get('AGENT_KEEP_ALIVE_TIMEOUT', true) : 8_000,
           freeSocketTimeout: env.get('AGENT_KEEP_ALIVE_FREE_SOCKET_TIMEOUT', true)
             ? +env.get('AGENT_KEEP_ALIVE_FREE_SOCKET_TIMEOUT', true)
-            : 29_000,
+            : 4_000,
         }),
       }),
     )
