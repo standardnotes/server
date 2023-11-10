@@ -1,7 +1,6 @@
 import * as winston from 'winston'
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const axios = require('axios')
-import { AxiosInstance } from 'axios'
+import * as AgentKeepAlive from 'agentkeepalive'
+import axios, { AxiosInstance } from 'axios'
 import Redis from 'ioredis'
 import { Container } from 'inversify'
 import { Timer, TimerInterface } from '@standardnotes/time'
@@ -70,7 +69,17 @@ export class ContainerConfigLoader {
       container.bind(TYPES.ApiGateway_Redis).toConstantValue(redis)
     }
 
-    container.bind<AxiosInstance>(TYPES.ApiGateway_HTTPClient).toConstantValue(axios.create())
+    container.bind<AxiosInstance>(TYPES.ApiGateway_HTTPClient).toConstantValue(
+      axios.create({
+        httpAgent: new AgentKeepAlive({
+          keepAlive: true,
+          timeout: env.get('AGENT_KEEP_ALIVE_TIMEOUT', true) ? +env.get('AGENT_KEEP_ALIVE_TIMEOUT', true) : 8_000,
+          freeSocketTimeout: env.get('AGENT_KEEP_ALIVE_FREE_SOCKET_TIMEOUT', true)
+            ? +env.get('AGENT_KEEP_ALIVE_FREE_SOCKET_TIMEOUT', true)
+            : 4_000,
+        }),
+      }),
+    )
 
     // env vars
     container.bind(TYPES.ApiGateway_SYNCING_SERVER_JS_URL).toConstantValue(env.get('SYNCING_SERVER_JS_URL', true))
