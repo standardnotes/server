@@ -91,6 +91,10 @@ void container.load().then((container) => {
 
   const serverInstance = server.build().listen(env.get('PORT'))
 
+  const keepAliveTimeout = env.get('KEEP_ALIVE_TIMEOUT', true) ? +env.get('KEEP_ALIVE_TIMEOUT', true) : 5000
+
+  serverInstance.keepAliveTimeout = keepAliveTimeout
+
   process.on('SIGTERM', () => {
     logger.info('SIGTERM signal received: closing HTTP server')
     serverInstance.close(() => {
