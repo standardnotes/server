@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.33.0](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.32.5...@standardnotes/files-server@1.33.0) (2023-11-10)
+
+### Features
+
+* add graceful shutdown procedures upon SIGTERM ([#923](https://github.com/standardnotes/files/issues/923)) ([c24353c](https://github.com/standardnotes/files/commit/c24353cc24ebf4b40ff9a2cec8e37cfdef109e37))
+
 ## [1.32.5](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.32.4...@standardnotes/files-server@1.32.5) (2023-11-07)
 
 ### Bug Fixes

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.27.0](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.26.6...@standardnotes/scheduler-server@1.27.0) (2023-11-10)
+
+### Features
+
+* add graceful shutdown procedures upon SIGTERM ([#923](https://github.com/standardnotes/server/issues/923)) ([c24353c](https://github.com/standardnotes/server/commit/c24353cc24ebf4b40ff9a2cec8e37cfdef109e37))
+
 ## [1.26.6](https://github.com/standardnotes/server/compare/@standardnotes/scheduler-server@1.26.5...@standardnotes/scheduler-server@1.26.6) (2023-11-07)
 
 **Note:** Version bump only for package @standardnotes/scheduler-server

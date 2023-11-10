@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.82.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.81.14...@standardnotes/api-gateway@1.82.0) (2023-11-10)
+
+### Features
+
+* add graceful shutdown procedures upon SIGTERM ([#923](https://github.com/standardnotes/api-gateway/issues/923)) ([c24353c](https://github.com/standardnotes/api-gateway/commit/c24353cc24ebf4b40ff9a2cec8e37cfdef109e37))
+
 ## [1.81.14](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.81.13...@standardnotes/api-gateway@1.81.14) (2023-11-10)
 
 ### Bug Fixes

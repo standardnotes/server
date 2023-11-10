@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.121.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.120.5...@standardnotes/syncing-server@1.121.0) (2023-11-10)
+
+### Features
+
+* add graceful shutdown procedures upon SIGTERM ([#923](https://github.com/standardnotes/syncing-server-js/issues/923)) ([c24353c](https://github.com/standardnotes/syncing-server-js/commit/c24353cc24ebf4b40ff9a2cec8e37cfdef109e37))
+
 ## [1.120.5](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.120.4...@standardnotes/syncing-server@1.120.5) (2023-11-09)
 
 ### Bug Fixes

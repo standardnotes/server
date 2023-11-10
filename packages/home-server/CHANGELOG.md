@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.19.0](https://github.com/standardnotes/server/compare/@standardnotes/home-server@1.18.32...@standardnotes/home-server@1.19.0) (2023-11-10)
+
+### Features
+
+* add graceful shutdown procedures upon SIGTERM ([#923](https://github.com/standardnotes/server/issues/923)) ([c24353c](https://github.com/standardnotes/server/commit/c24353cc24ebf4b40ff9a2cec8e37cfdef109e37))
+
 ## [1.18.32](https://github.com/standardnotes/server/compare/@standardnotes/home-server@1.18.31...@standardnotes/home-server@1.18.32) (2023-11-10)
 
 **Note:** Version bump only for package @standardnotes/home-server

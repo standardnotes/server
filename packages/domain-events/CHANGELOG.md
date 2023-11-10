@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.134.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.133.1...@standardnotes/domain-events@2.134.0) (2023-11-10)
+
+### Features
+
+* add graceful shutdown procedures upon SIGTERM ([#923](https://github.com/standardnotes/server/issues/923)) ([c24353c](https://github.com/standardnotes/server/commit/c24353cc24ebf4b40ff9a2cec8e37cfdef109e37))
+
 ## [2.133.1](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.133.0...@standardnotes/domain-events@2.133.1) (2023-11-07)
 
 ### Bug Fixes
