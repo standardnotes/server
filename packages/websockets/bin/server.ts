@@ -44,9 +44,14 @@ void container.load().then((container) => {
     })
   })
 
-  const serverInstance = server.build()
+  const serverInstance = server.build().listen(env.get('PORT'))
 
-  serverInstance.listen(env.get('PORT'))
+  process.on('SIGTERM', () => {
+    logger.info('SIGTERM signal received: closing HTTP server')
+    serverInstance.close(() => {
+      logger.info('HTTP server closed')
+    })
+  })
 
   logger.info(`Server started on port ${process.env.PORT}`)
 })

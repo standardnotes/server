@@ -174,7 +174,16 @@ export class HomeServer implements HomeServerInterface {
 
       const port = env.get('PORT', true) ? +env.get('PORT', true) : 3000
 
-      this.serverInstance = server.build().listen(port)
+      const serverInstance = server.build().listen(port)
+
+      this.serverInstance = serverInstance
+
+      process.on('SIGTERM', () => {
+        logger.info('SIGTERM signal received: closing HTTP server')
+        serverInstance.close(() => {
+          logger.info('HTTP server closed')
+        })
+      })
 
       logger.info(`Server started on port ${port}. Log level: ${env.get('LOG_LEVEL', true)}.`)
 

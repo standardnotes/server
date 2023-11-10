@@ -108,5 +108,12 @@ void container.load().then((container) => {
 
   serverInstance.keepAliveTimeout = keepAliveTimeout
 
+  process.on('SIGTERM', () => {
+    logger.info('SIGTERM signal received: closing HTTP server')
+    serverInstance.close(() => {
+      logger.info('HTTP server closed')
+    })
+  })
+
   logger.info(`Server started on port ${process.env.PORT}`)
 })

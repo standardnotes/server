@@ -18,5 +18,11 @@ void container.load().then((container) => {
 
   const subscriber = container.get<DomainEventSubscriberInterface>(TYPES.DomainEventSubscriber)
 
+  process.on('SIGTERM', () => {
+    logger.info('SIGTERM received. Stopping worker...')
+    subscriber.stop()
+    logger.info('Worker stopped.')
+  })
+
   subscriber.start()
 })
