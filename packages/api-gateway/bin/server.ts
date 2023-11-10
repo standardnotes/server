@@ -90,8 +90,8 @@ void container.load().then((container) => {
   const logger: winston.Logger = container.get(TYPES.ApiGateway_Logger)
 
   server.setErrorConfig((app) => {
-    app.use((error: Record<string, unknown>, _request: Request, response: Response, _next: NextFunction) => {
-      logger.error(error.stack)
+    app.use((error: Record<string, unknown>, request: Request, response: Response, _next: NextFunction) => {
+      logger.error(`[URL: ${request.url}][SNJS: ${request.headers['x-snjs-version']}] Error thrown: ${error.stack}`)
 
       response.status(500).send({
         error: {
