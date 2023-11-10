@@ -144,6 +144,9 @@ export class HttpServiceProxy implements ServiceProxyInterface {
     }
 
     const isARequestComingFromApiGatewayAndShouldBeKeptInMinimalFormat = request.headers.connectionid !== undefined
+    this.logger.info(
+      `Calling websockets service: ${endpointOrMethodIdentifier}. Format is minimal: ${isARequestComingFromApiGatewayAndShouldBeKeptInMinimalFormat}`,
+    )
     if (isARequestComingFromApiGatewayAndShouldBeKeptInMinimalFormat) {
       await this.callServerWithLegacyFormat(
         this.webSocketServerUrl,
