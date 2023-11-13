@@ -45,9 +45,6 @@
       "path": "./packages/domain-events-infra"
     },
     {
-      "path": "./packages/event-store"
-    },
-    {
       "path": "./packages/files"
     },
     {

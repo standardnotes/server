@@ -62,13 +62,6 @@ updates:
       - dependency-type: "direct"
 
   - package-ecosystem: "npm"
-    directory: "/packages/event-store"
-    schedule:
-      interval: "daily"
-    allow:
-      - dependency-type: "direct"
-
-  - package-ecosystem: "npm"
     directory: "/packages/files"
     schedule:
       interval: "daily"
