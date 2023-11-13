@@ -92,6 +92,7 @@ void container.load().then((container) => {
   server.setErrorConfig((app) => {
     app.use((error: Record<string, unknown>, request: Request, response: Response, _next: NextFunction) => {
       logger.error(`[URL: ${request.url}][SNJS: ${request.headers['x-snjs-version']}] Error thrown: ${error.stack}`)
+      logger.debug(`[URL: ${request.url}][SNJS: ${request.headers['x-snjs-version']}] Request body: ${request.body}`)
 
       response.status(500).send({
         error: {
