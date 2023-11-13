@@ -1,0 +1,33 @@
+{
+  "name": "@standardnotes/grpc",
+  "version": "1.0.0",
+  "engines": {
+    "node": ">=18.0.0 <21.0.0"
+  },
+  "description": "gRPC definitions for Standard Notes",
+  "author": "Standard Notes",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "files": [
+    "lib/**/*.js",
+    "lib/**/*.d.ts"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "AGPL-3.0-or-later",
+  "scripts": {
+    "clean": "rm -fr dist",
+    "build": "tsc --build"
+  },
+  "dependencies": {
+    "@grpc/grpc-js": "^1.9.9",
+    "google-protobuf": "^3.21.2"
+  },
+  "devDependencies": {
+    "@types/google-protobuf": "^3",
+    "grpc-tools": "^1.12.4",
+    "grpc_tools_node_protoc_ts": "^5.3.3",
+    "typescript": "^5.0.4"
+  }
+}

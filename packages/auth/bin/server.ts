@@ -20,6 +20,7 @@ import '../src/Infra/InversifyExpressUtils/AnnotatedHealthCheckController'
 import '../src/Infra/InversifyExpressUtils/AnnotatedFeaturesController'
 
 import * as cors from 'cors'
+import * as grpc from '@grpc/grpc-js'
 import { urlencoded, json, Request, Response, NextFunction } from 'express'
 import * as winston from 'winston'
 import * as dayjs from 'dayjs'
@@ -29,6 +30,8 @@ import { InversifyExpressServer } from 'inversify-express-utils'
 import { ContainerConfigLoader } from '../src/Bootstrap/Container'
 import TYPES from '../src/Bootstrap/Types'
 import { Env } from '../src/Bootstrap/Env'
+import { SessionsServer } from '../src/Infra/Proto/SessionsServer'
+import { SessionsService } from '@standardnotes/grpc'
 
 const container = new ContainerConfigLoader()
 void container.load().then((container) => {
@@ -69,6 +72,21 @@ void container.load().then((container) => {
   const keepAliveTimeout = env.get('KEEP_ALIVE_TIMEOUT', true) ? +env.get('KEEP_ALIVE_TIMEOUT', true) : 5000
 
   serverInstance.keepAliveTimeout = keepAliveTimeout
+
+  const grpcServer = new grpc.Server()
+
+  const gRPCPort = env.get('GRPC_PORT', true) ? +env.get('GRPC_PORT', true) : 50051
+
+  grpcServer.addService(SessionsService, new SessionsServer())
+  grpcServer.bindAsync(`0.0.0.0:${gRPCPort}`, grpc.ServerCredentials.createInsecure(), (error, port) => {
+    if (error) {
+      logger.error(`Failed to bind gRPC server: ${error.message}`)
+    }
+
+    logger.info(`gRPC server bound on port ${port}`)
+
+    grpcServer.start()
+  })
 
   process.on('SIGTERM', () => {
     logger.info('SIGTERM signal received: closing HTTP server')

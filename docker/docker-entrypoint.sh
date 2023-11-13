@@ -18,6 +18,10 @@ if [ -z "$AUTH_SERVER_PORT" ]; then
   export AUTH_SERVER_PORT=3103
 fi
 
+if [ -z "$AUTH_SERVER_GRPC_PORT" ]; then
+  export AUTH_SERVER_GRPC_PORT=50051
+fi
+
 export FILES_SERVER_PORT=3104
 
 if [ -z "$REVISIONS_SERVER_PORT" ]; then

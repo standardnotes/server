@@ -39,5 +39,13 @@
     "ts-node": "^10.9.1",
     "typescript": "^5.0.4"
   },
-  "packageManager": "yarn@4.0.0-rc.51"
+  "packageManager": "yarn@4.0.0-rc.51",
+  "dependenciesMeta": {
+    "grpc-tools@1.12.4": {
+      "unplugged": true
+    },
+    "grpc_tools_node_protoc_ts@5.3.3": {
+      "unplugged": true
+    }
+  }
 }

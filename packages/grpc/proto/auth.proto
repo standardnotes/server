@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package auth;
+
+message AuthorizationHeader {
+  string bearer_token = 1;
+}
+
+message SessionValidationResponse {
+  string cross_service_token = 1;
+}
+
+service Sessions {
+  rpc validate(AuthorizationHeader) returns (SessionValidationResponse) {}
+}
