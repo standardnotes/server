@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.21.1](https://github.com/standardnotes/server/compare/@standardnotes/domain-events-infra@1.21.0...@standardnotes/domain-events-infra@1.21.1) (2023-11-13)
+
+### Bug Fixes
+
+* remove unused even-store from code base ([#925](https://github.com/standardnotes/server/issues/925)) ([8e4e365](https://github.com/standardnotes/server/commit/8e4e36513aa6e3c4f98197adfa75e014920b3572))
+
 # [1.21.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events-infra@1.20.4...@standardnotes/domain-events-infra@1.21.0) (2023-11-10)
 
 ### Features

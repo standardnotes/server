@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.134.1](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.134.0...@standardnotes/domain-events@2.134.1) (2023-11-13)
+
+### Bug Fixes
+
+* remove unused even-store from code base ([#925](https://github.com/standardnotes/server/issues/925)) ([8e4e365](https://github.com/standardnotes/server/commit/8e4e36513aa6e3c4f98197adfa75e014920b3572))
+
 # [2.134.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.133.1...@standardnotes/domain-events@2.134.0) (2023-11-10)
 
 ### Features
