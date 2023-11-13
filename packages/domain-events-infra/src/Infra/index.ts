@@ -14,6 +14,5 @@ export * from './SNS/SNSOpenTelemetryDomainEventPublisher'
 
 export * from './SQS/SQSBounceNotificiationHandler'
 export * from './SQS/SQSDomainEventSubscriber'
-export * from './SQS/SQSDomainEventSubscriberFactory'
 export * from './SQS/SQSEventMessageHandler'
 export * from './SQS/SQSOpenTelemetryDomainEventSubscriber'

@@ -122,5 +122,4 @@ export * from './Handler/DomainEventMessageHandlerInterface'
 
 export * from './Publisher/DomainEventPublisherInterface'
 
-export * from './Subscriber/DomainEventSubscriberFactoryInterface'
 export * from './Subscriber/DomainEventSubscriberInterface'
