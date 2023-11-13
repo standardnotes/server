@@ -5442,36 +5442,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@standardnotes/event-store@workspace:packages/event-store":
-  version: 0.0.0-use.local
-  resolution: "@standardnotes/event-store@workspace:packages/event-store"
-  dependencies:
-    "@aws-sdk/client-sqs": "npm:^3.427.0"
-    "@standardnotes/domain-core": "workspace:^"
-    "@standardnotes/domain-events": "workspace:*"
-    "@standardnotes/domain-events-infra": "workspace:*"
-    "@standardnotes/time": "workspace:*"
-    "@types/ioredis": "npm:^5.0.0"
-    "@types/jest": "npm:^29.5.1"
-    "@types/nodemailer": "npm:^6.4.1"
-    "@typescript-eslint/eslint-plugin": "npm:^6.5.0"
-    "@typescript-eslint/parser": "npm:^6.5.0"
-    dotenv: "npm:^16.0.1"
-    eslint: "npm:^8.39.0"
-    eslint-plugin-prettier: "npm:^5.0.0"
-    inversify: "npm:^6.0.1"
-    ioredis: "npm:^5.2.4"
-    jest: "npm:^29.5.0"
-    mysql2: "npm:^3.0.1"
-    prettier: "npm:^3.0.3"
-    reflect-metadata: "npm:0.1.13"
-    ts-jest: "npm:^29.1.0"
-    typeorm: "npm:^0.3.17"
-    typescript: "npm:^5.0.4"
-    winston: "npm:^3.8.1"
-  languageName: unknown
-  linkType: soft
-
 "@standardnotes/features@npm:1.59.7, @standardnotes/features@npm:^1.59.7":
   version: 1.59.7
   resolution: "@standardnotes/features@npm:1.59.7"
@@ -6254,15 +6224,6 @@ __metadata:
   version: 20.5.7
   resolution: "@types/node@npm:20.5.7"
   checksum: 4571c455d1528ae3aa0d738de4631bf12781107b18e29e364000fdb8fea6c5d4fe7bf83edeeb93406aeac56cc4af43b30dffa3df475a57a89f32a9b025bf2112
-  languageName: node
-  linkType: hard
-
-"@types/nodemailer@npm:^6.4.1":
-  version: 6.4.8
-  resolution: "@types/nodemailer@npm:6.4.8"
-  dependencies:
-    "@types/node": "npm:*"
-  checksum: d5afdd77ef05d207438d124fa0a221ed6c062c4df6c624d3966252ba7da3ab6dd23f1e3423818cc992dc85e129f4a36db601eac46c932b78096b112f61a03814
   languageName: node
   linkType: hard
 

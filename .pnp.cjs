@@ -42,10 +42,6 @@ const RAW_RUNTIME_STATE =
       "reference": "workspace:packages/domain-events-infra"\
     },\
     {\
-      "name": "@standardnotes/event-store",\
-      "reference": "workspace:packages/event-store"\
-    },\
-    {\
       "name": "@standardnotes/files-server",\
       "reference": "workspace:packages/files"\
     },\
@@ -100,7 +96,6 @@ const RAW_RUNTIME_STATE =
     ["@standardnotes/domain-core", ["workspace:packages/domain-core"]],\
     ["@standardnotes/domain-events", ["workspace:packages/domain-events"]],\
     ["@standardnotes/domain-events-infra", ["workspace:packages/domain-events-infra"]],\
-    ["@standardnotes/event-store", ["workspace:packages/event-store"]],\
     ["@standardnotes/files-server", ["workspace:packages/files"]],\
     ["@standardnotes/home-server", ["workspace:packages/home-server"]],\
     ["@standardnotes/predicates", ["workspace:packages/predicates"]],\
@@ -6579,38 +6574,6 @@ const RAW_RUNTIME_STATE =
         "linkType": "SOFT"\
       }]\
     ]],\
-    ["@standardnotes/event-store", [\
-      ["workspace:packages/event-store", {\
-        "packageLocation": "./packages/event-store/",\
-        "packageDependencies": [\
-          ["@standardnotes/event-store", "workspace:packages/event-store"],\
-          ["@aws-sdk/client-sqs", "npm:3.427.0"],\
-          ["@standardnotes/domain-core", "workspace:packages/domain-core"],\
-          ["@standardnotes/domain-events", "workspace:packages/domain-events"],\
-          ["@standardnotes/domain-events-infra", "workspace:packages/domain-events-infra"],\
-          ["@standardnotes/time", "workspace:packages/time"],\
-          ["@types/ioredis", "npm:5.0.0"],\
-          ["@types/jest", "npm:29.5.2"],\
-          ["@types/nodemailer", "npm:6.4.8"],\
-          ["@typescript-eslint/eslint-plugin", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:6.5.0"],\
-          ["@typescript-eslint/parser", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:6.5.0"],\
-          ["dotenv", "npm:16.1.3"],\
-          ["eslint", "npm:8.41.0"],\
-          ["eslint-plugin-prettier", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:5.0.0"],\
-          ["inversify", "npm:6.0.1"],\
-          ["ioredis", "npm:5.3.2"],\
-          ["jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.5.0"],\
-          ["mysql2", "npm:3.3.3"],\
-          ["prettier", "npm:3.0.3"],\
-          ["reflect-metadata", "npm:0.1.13"],\
-          ["ts-jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.1.0"],\
-          ["typeorm", "virtual:c66bf20e88479ada0172094776519a9f51acc4731d22079b60a295bcec7ea42d5545cbce58a77a50d932bf953298799135e99707486e343da6d99ba1d167bdbd#npm:0.3.17"],\
-          ["typescript", "patch:typescript@npm%3A5.0.4#optional!builtin<compat/typescript>::version=5.0.4&hash=b5f058"],\
-          ["winston", "npm:3.9.0"]\
-        ],\
-        "linkType": "SOFT"\
-      }]\
-    ]],\
     ["@standardnotes/features", [\
       ["npm:1.59.7", {\
         "packageLocation": "./.yarn/cache/@standardnotes-features-npm-1.59.7-27c3e5296e-421af62d1e.zip/node_modules/@standardnotes/features/",\
@@ -7472,16 +7435,6 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/@types-node-npm-20.5.7-b5e80f1922-4571c455d1.zip/node_modules/@types/node/",\
         "packageDependencies": [\
           ["@types/node", "npm:20.5.7"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
-    ["@types/nodemailer", [\
-      ["npm:6.4.8", {\
-        "packageLocation": "./.yarn/cache/@types-nodemailer-npm-6.4.8-04975b93f9-d5afdd77ef.zip/node_modules/@types/nodemailer/",\
-        "packageDependencies": [\
-          ["@types/nodemailer", "npm:6.4.8"],\
-          ["@types/node", "npm:20.2.5"]\
         ],\
         "linkType": "HARD"\
       }]\
