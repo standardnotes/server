@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.83.1](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.83.0...@standardnotes/api-gateway@1.83.1) (2023-11-13)
+
+### Bug Fixes
+
+* **api-gateway:** add debug logs for errors on parsing ([60686dc](https://github.com/standardnotes/api-gateway/commit/60686dcdbd59c0d99cd1857a82ad62baed088b25))
+
 # [1.83.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.82.1...@standardnotes/api-gateway@1.83.0) (2023-11-10)
 
 ### Bug Fixes
