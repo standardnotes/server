@@ -78,7 +78,9 @@ void container.load().then((container) => {
         limit: '50mb',
         verify: (_req: IncomingMessage, _res: ServerResponse, buf: Buffer, encoding: string): void => {
           try {
-            JSON.parse(buf.toString(encoding as BufferEncoding))
+            if (buf && buf.length > 0) {
+              JSON.parse(buf.toString(encoding as BufferEncoding | 'utf8'))
+            }
           } catch (error) {
             logger.error(`Invalid JSON: ${(error as Error).message}. Request body: ${buf.toString()}`)
           }
