@@ -73,20 +73,7 @@ void container.load().then((container) => {
       }),
     )
 
-    app.use(
-      json({
-        limit: '50mb',
-        verify: (_req: IncomingMessage, _res: ServerResponse, buf: Buffer, encoding: string): void => {
-          try {
-            if (buf && buf.length > 0) {
-              JSON.parse(buf.toString(encoding as BufferEncoding | 'utf8'))
-            }
-          } catch (error) {
-            logger.error(`Invalid JSON: ${(error as Error).message}. Request body: ${buf.toString()}`)
-          }
-        },
-      }),
-    )
+    app.use(json({ limit: '50mb' }))
     app.use(
       text({
         type: ['text/plain', 'application/x-www-form-urlencoded', 'application/x-www-form-urlencoded; charset=utf-8'],
