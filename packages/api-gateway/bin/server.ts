@@ -36,6 +36,7 @@ import { InversifyExpressServer } from 'inversify-express-utils'
 import { ContainerConfigLoader } from '../src/Bootstrap/Container'
 import { TYPES } from '../src/Bootstrap/Types'
 import { Env } from '../src/Bootstrap/Env'
+import { IncomingMessage, ServerResponse } from 'http'
 
 const container = new ContainerConfigLoader()
 void container.load().then((container) => {
@@ -72,7 +73,18 @@ void container.load().then((container) => {
       }),
     )
 
-    app.use(json({ limit: '50mb' }))
+    app.use(
+      json({
+        limit: '50mb',
+        verify: (_req: IncomingMessage, _res: ServerResponse, buf: Buffer, _encoding: string): void => {
+          try {
+            JSON.parse(buf.toString())
+          } catch (error) {
+            logger.error(`Invalid JSON: ${(error as Error).message}. Request body: ${buf.toString()}`)
+          }
+        },
+      }),
+    )
     app.use(
       text({
         type: ['text/plain', 'application/x-www-form-urlencoded', 'application/x-www-form-urlencoded; charset=utf-8'],
