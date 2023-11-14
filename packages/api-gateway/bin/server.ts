@@ -36,7 +36,6 @@ import { InversifyExpressServer } from 'inversify-express-utils'
 import { ContainerConfigLoader } from '../src/Bootstrap/Container'
 import { TYPES } from '../src/Bootstrap/Types'
 import { Env } from '../src/Bootstrap/Env'
-import { IncomingMessage, ServerResponse } from 'http'
 
 const container = new ContainerConfigLoader()
 void container.load().then((container) => {
