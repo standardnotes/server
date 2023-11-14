@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.83.5](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.83.4...@standardnotes/api-gateway@1.83.5) (2023-11-14)
+
+### Bug Fixes
+
+* **api-gateway:** remove the verify body function ([3ddd671](https://github.com/standardnotes/api-gateway/commit/3ddd671c4797482a396844e804b4b45b82dbff2d))
+* **api-gateway:** remove unused imports ([fd997f4](https://github.com/standardnotes/api-gateway/commit/fd997f4849ed01ef3ae4baf52b5895012fa711d4))
+
 ## [1.83.4](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.83.3...@standardnotes/api-gateway@1.83.4) (2023-11-14)
 
 ### Bug Fixes
