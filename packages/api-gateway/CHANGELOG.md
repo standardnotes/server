@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.83.4](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.83.3...@standardnotes/api-gateway@1.83.4) (2023-11-14)
+
+### Bug Fixes
+
+* **api-gateway:** add verification if json is valid on request ([420bf9e](https://github.com/standardnotes/api-gateway/commit/420bf9ec5460a9693cc382e9164b4bdbb9b769a1))
+* **api-gateway:** buffer encoding ([2823ed8](https://github.com/standardnotes/api-gateway/commit/2823ed8612cb9797d43e847edac5e2bdc0fe7426))
+* **api-gateway:** checking for buffer length ([f65809e](https://github.com/standardnotes/api-gateway/commit/f65809ef3052d05df2e3f012a9b6340d18a6deae))
+
 ## [1.83.3](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.83.2...@standardnotes/api-gateway@1.83.3) (2023-11-13)
 
 ### Bug Fixes
