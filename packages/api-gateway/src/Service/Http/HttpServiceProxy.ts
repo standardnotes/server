@@ -51,8 +51,10 @@ export class HttpServiceProxy implements ServiceProxyInterface {
                 return resolve({
                   status: +responseCode,
                   data: {
-                    message: error.metadata.get('x-auth-error-message').pop(),
-                    tag: error.metadata.get('x-auth-error-tag').pop(),
+                    error: {
+                      message: error.metadata.get('x-auth-error-message').pop(),
+                      tag: error.metadata.get('x-auth-error-tag').pop(),
+                    },
                   },
                   headers: {
                     contentType: 'application/json',

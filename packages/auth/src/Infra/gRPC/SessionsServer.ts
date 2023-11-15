@@ -13,8 +13,6 @@ export class SessionsServer implements ISessionsServer {
     private createCrossServiceToken: CreateCrossServiceToken,
   ) {}
 
-  // [methodName: string]: grpc.UntypedHandleCall
-
   async validate(
     call: grpc.ServerUnaryCall<AuthorizationHeader, SessionValidationResponse>,
     callback: grpc.sendUnaryData<SessionValidationResponse>,
