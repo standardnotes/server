@@ -5,6 +5,7 @@ export const TYPES = {
   // env vars
   ApiGateway_SYNCING_SERVER_JS_URL: Symbol.for('ApiGateway_SYNCING_SERVER_JS_URL'),
   ApiGateway_AUTH_SERVER_URL: Symbol.for('ApiGateway_AUTH_SERVER_URL'),
+  ApiGateway_AUTH_SERVER_GRPC_URL: Symbol.for('ApiGateway_AUTH_SERVER_GRPC_URL'),
   ApiGateway_PAYMENTS_SERVER_URL: Symbol.for('ApiGateway_PAYMENTS_SERVER_URL'),
   ApiGateway_FILES_SERVER_URL: Symbol.for('ApiGateway_FILES_SERVER_URL'),
   ApiGateway_REVISIONS_SERVER_URL: Symbol.for('ApiGateway_REVISIONS_SERVER_URL'),
@@ -28,4 +29,5 @@ export const TYPES = {
   ApiGateway_CrossServiceTokenCache: Symbol.for('ApiGateway_CrossServiceTokenCache'),
   ApiGateway_Timer: Symbol.for('ApiGateway_Timer'),
   ApiGateway_EndpointResolver: Symbol.for('ApiGateway_EndpointResolver'),
+  ApiGateway_GRPCSessionsClient: Symbol.for('ApiGateway_GRPCSessionsClient'),
 }

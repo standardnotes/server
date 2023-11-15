@@ -3,11 +3,14 @@ import { AxiosInstance, AxiosError, AxiosResponse, Method } from 'axios'
 import { Request, Response } from 'express'
 import { inject, injectable } from 'inversify'
 import { Logger } from 'winston'
+import { TimerInterface } from '@standardnotes/time'
+import { ISessionsClient, AuthorizationHeader } from '@standardnotes/grpc'
+import * as grpc from '@grpc/grpc-js'
 
 import { TYPES } from '../../Bootstrap/Types'
 import { CrossServiceTokenCacheInterface } from '../Cache/CrossServiceTokenCacheInterface'
 import { ServiceProxyInterface } from './ServiceProxyInterface'
-import { TimerInterface } from '@standardnotes/time'
+import { PromisifiedClient } from '../../Infra/gRPC/PromisifiedClient'
 
 @injectable()
 export class HttpServiceProxy implements ServiceProxyInterface {
@@ -24,6 +27,7 @@ export class HttpServiceProxy implements ServiceProxyInterface {
     @inject(TYPES.ApiGateway_CrossServiceTokenCache) private crossServiceTokenCache: CrossServiceTokenCacheInterface,
     @inject(TYPES.ApiGateway_Logger) private logger: Logger,
     @inject(TYPES.ApiGateway_Timer) private timer: TimerInterface,
+    @inject(TYPES.ApiGateway_GRPCSessionsClient) private sessionsClient: PromisifiedClient<ISessionsClient>,
   ) {}
 
   async validateSession(
@@ -34,27 +38,25 @@ export class HttpServiceProxy implements ServiceProxyInterface {
     retryAttempt?: number,
   ): Promise<{ status: number; data: unknown; headers: { contentType: string } }> {
     try {
-      const authResponse = await this.httpClient.request({
-        method: 'POST',
-        headers: {
-          Authorization: headers.authorization,
-          Accept: 'application/json',
-          'x-shared-vault-owner-context': headers.sharedVaultOwnerContext,
-        },
-        validateStatus: (status: number) => {
-          return status >= 200 && status < 500
-        },
-        url: `${this.authServerUrl}/sessions/validate`,
-      })
+      const request = new AuthorizationHeader()
+      request.setBearerToken(headers.authorization)
+
+      const metadata = new grpc.Metadata()
+      metadata.set('x-shared-vault-owner-context', headers.sharedVaultOwnerContext ?? '')
+
+      const result = await this.sessionsClient.validate(request, metadata)
 
       return {
-        status: authResponse.status,
-        data: authResponse.data,
+        status: 200,
+        data: {
+          authToken: result.getCrossServiceToken(),
+        },
         headers: {
-          contentType: authResponse.headers['content-type'] as string,
+          contentType: 'application/json',
         },
       }
     } catch (error) {
+      console.error((error as Error).stack)
       const requestDidNotMakeIt = this.requestTimedOutOrDidNotReachDestination(error as Record<string, unknown>)
       const tooManyRetryAttempts = retryAttempt && retryAttempt > 2
       if (!tooManyRetryAttempts && requestDidNotMakeIt) {

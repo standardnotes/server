@@ -26,9 +26,11 @@
     "start": "yarn node dist/bin/server.js"
   },
   "dependencies": {
+    "@grpc/grpc-js": "^1.9.10",
     "@standardnotes/domain-core": "workspace:^",
     "@standardnotes/domain-events": "workspace:*",
     "@standardnotes/domain-events-infra": "workspace:*",
+    "@standardnotes/grpc": "workspace:^",
     "@standardnotes/security": "workspace:*",
     "@standardnotes/time": "workspace:*",
     "agentkeepalive": "^4.5.0",

@@ -21,7 +21,7 @@
     "build": "tsc --build"
   },
   "dependencies": {
-    "@grpc/grpc-js": "^1.9.9",
+    "@grpc/grpc-js": "^1.9.10",
     "google-protobuf": "^3.21.2"
   },
   "devDependencies": {

@@ -30,8 +30,10 @@ import { InversifyExpressServer } from 'inversify-express-utils'
 import { ContainerConfigLoader } from '../src/Bootstrap/Container'
 import TYPES from '../src/Bootstrap/Types'
 import { Env } from '../src/Bootstrap/Env'
-import { SessionsServer } from '../src/Infra/Proto/SessionsServer'
+import { SessionsServer } from '../src/Infra/gRPC/SessionsServer'
 import { SessionsService } from '@standardnotes/grpc'
+import { AuthenticateRequest } from '../src/Domain/UseCase/AuthenticateRequest'
+import { CreateCrossServiceToken } from '../src/Domain/UseCase/CreateCrossServiceToken/CreateCrossServiceToken'
 
 const container = new ContainerConfigLoader()
 void container.load().then((container) => {
@@ -77,7 +79,14 @@ void container.load().then((container) => {
 
   const gRPCPort = env.get('GRPC_PORT', true) ? +env.get('GRPC_PORT', true) : 50051
 
-  grpcServer.addService(SessionsService, new SessionsServer())
+  const sessionsServer = new SessionsServer(
+    container.get<AuthenticateRequest>(TYPES.Auth_AuthenticateRequest),
+    container.get<CreateCrossServiceToken>(TYPES.Auth_CreateCrossServiceToken),
+  )
+
+  grpcServer.addService(SessionsService, {
+    validate: sessionsServer.validate.bind(sessionsServer),
+  })
   grpcServer.bindAsync(`0.0.0.0:${gRPCPort}`, grpc.ServerCredentials.createInsecure(), (error, port) => {
     if (error) {
       logger.error(`Failed to bind gRPC server: ${error.message}`)
@@ -86,6 +95,8 @@ void container.load().then((container) => {
     logger.info(`gRPC server bound on port ${port}`)
 
     grpcServer.start()
+
+    logger.info('gRPC server started')
   })
 
   process.on('SIGTERM', () => {

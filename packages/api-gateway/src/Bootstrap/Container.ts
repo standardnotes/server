@@ -1,5 +1,6 @@
 import * as winston from 'winston'
 import * as AgentKeepAlive from 'agentkeepalive'
+import * as grpc from '@grpc/grpc-js'
 import axios, { AxiosInstance } from 'axios'
 import Redis from 'ioredis'
 import { Container } from 'inversify'
@@ -21,6 +22,9 @@ import { EndpointResolver } from '../Service/Resolver/EndpointResolver'
 import { RequiredCrossServiceTokenMiddleware } from '../Controller/RequiredCrossServiceTokenMiddleware'
 import { OptionalCrossServiceTokenMiddleware } from '../Controller/OptionalCrossServiceTokenMiddleware'
 import { Transform } from 'stream'
+import { PromisifiedClient } from '../Infra/gRPC/PromisifiedClient'
+import { ISessionsClient, SessionsClient } from '@standardnotes/grpc'
+import { promisifyClient } from '../Infra/gRPC/promisifyClient'
 
 export class ContainerConfigLoader {
   async load(configuration?: {
@@ -124,6 +128,20 @@ export class ContainerConfigLoader {
           new DirectCallServiceProxy(configuration.serviceContainer, container.get(TYPES.ApiGateway_FILES_SERVER_URL)),
         )
     } else {
+      container.bind(TYPES.ApiGateway_AUTH_SERVER_GRPC_URL).toConstantValue(env.get('AUTH_SERVER_GRPC_URL', true))
+      container.bind<PromisifiedClient<ISessionsClient>>(TYPES.ApiGateway_GRPCSessionsClient).toConstantValue(
+        promisifyClient(
+          new SessionsClient(
+            container.get<string>(TYPES.ApiGateway_AUTH_SERVER_GRPC_URL),
+            grpc.credentials.createInsecure(),
+            {
+              'grpc.keepalive_time_ms': 30_000,
+              'grpc.keepalive_timeout_ms': 10_000,
+            },
+          ),
+        ),
+      )
+
       container.bind<ServiceProxyInterface>(TYPES.ApiGateway_ServiceProxy).to(HttpServiceProxy)
     }
 
