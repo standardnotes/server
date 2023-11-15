@@ -24,11 +24,16 @@ export class SessionsServer implements ISessionsServer {
     })
 
     if (!authenticateRequestResponse.success) {
+      const metadata = new grpc.Metadata()
+      metadata.set('x-auth-error-message', authenticateRequestResponse.errorMessage as string)
+      metadata.set('x-auth-error-tag', authenticateRequestResponse.errorTag as string)
+      metadata.set('x-auth-error-response-code', authenticateRequestResponse.responseCode.toString())
       return callback(
         {
           code: Status.PERMISSION_DENIED,
           message: authenticateRequestResponse.errorMessage,
           name: authenticateRequestResponse.errorTag,
+          metadata,
         },
         null,
       )
@@ -48,11 +53,16 @@ export class SessionsServer implements ISessionsServer {
       sharedVaultOwnerContext,
     })
     if (resultOrError.isFailed()) {
+      const metadata = new grpc.Metadata()
+      metadata.set('x-auth-error-message', resultOrError.getError())
+      metadata.set('x-auth-error-response-code', '400')
+
       return callback(
         {
           code: Status.INVALID_ARGUMENT,
           message: resultOrError.getError(),
           name: 'INVALID_ARGUMENT',
+          metadata,
         },
         null,
       )

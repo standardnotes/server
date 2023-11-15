@@ -4,13 +4,12 @@ import { Request, Response } from 'express'
 import { inject, injectable } from 'inversify'
 import { Logger } from 'winston'
 import { TimerInterface } from '@standardnotes/time'
-import { ISessionsClient, AuthorizationHeader } from '@standardnotes/grpc'
+import { ISessionsClient, AuthorizationHeader, SessionValidationResponse } from '@standardnotes/grpc'
 import * as grpc from '@grpc/grpc-js'
 
 import { TYPES } from '../../Bootstrap/Types'
 import { CrossServiceTokenCacheInterface } from '../Cache/CrossServiceTokenCacheInterface'
 import { ServiceProxyInterface } from './ServiceProxyInterface'
-import { PromisifiedClient } from '../../Infra/gRPC/PromisifiedClient'
 
 @injectable()
 export class HttpServiceProxy implements ServiceProxyInterface {
@@ -27,48 +26,58 @@ export class HttpServiceProxy implements ServiceProxyInterface {
     @inject(TYPES.ApiGateway_CrossServiceTokenCache) private crossServiceTokenCache: CrossServiceTokenCacheInterface,
     @inject(TYPES.ApiGateway_Logger) private logger: Logger,
     @inject(TYPES.ApiGateway_Timer) private timer: TimerInterface,
-    @inject(TYPES.ApiGateway_GRPCSessionsClient) private sessionsClient: PromisifiedClient<ISessionsClient>,
+    @inject(TYPES.ApiGateway_GRPCSessionsClient) private sessionsClient: ISessionsClient,
   ) {}
 
-  async validateSession(
-    headers: {
-      authorization: string
-      sharedVaultOwnerContext?: string
-    },
-    retryAttempt?: number,
-  ): Promise<{ status: number; data: unknown; headers: { contentType: string } }> {
-    try {
-      const request = new AuthorizationHeader()
-      request.setBearerToken(headers.authorization)
+  async validateSession(headers: {
+    authorization: string
+    sharedVaultOwnerContext?: string
+  }): Promise<{ status: number; data: unknown; headers: { contentType: string } }> {
+    return new Promise((resolve, reject) => {
+      try {
+        const request = new AuthorizationHeader()
+        request.setBearerToken(headers.authorization)
 
-      const metadata = new grpc.Metadata()
-      metadata.set('x-shared-vault-owner-context', headers.sharedVaultOwnerContext ?? '')
+        const metadata = new grpc.Metadata()
+        metadata.set('x-shared-vault-owner-context', headers.sharedVaultOwnerContext ?? '')
 
-      const result = await this.sessionsClient.validate(request, metadata)
+        this.sessionsClient.validate(
+          request,
+          metadata,
+          (error: grpc.ServiceError | null, response: SessionValidationResponse) => {
+            if (error) {
+              const responseCode = error.metadata.get('x-auth-error-response-code').pop()
+              if (responseCode) {
+                return resolve({
+                  status: +responseCode,
+                  data: {
+                    message: error.metadata.get('x-auth-error-message').pop(),
+                    tag: error.metadata.get('x-auth-error-tag').pop(),
+                  },
+                  headers: {
+                    contentType: 'application/json',
+                  },
+                })
+              }
 
-      return {
-        status: 200,
-        data: {
-          authToken: result.getCrossServiceToken(),
-        },
-        headers: {
-          contentType: 'application/json',
-        },
+              return reject(error)
+            }
+
+            return resolve({
+              status: 200,
+              data: {
+                authToken: response.getCrossServiceToken(),
+              },
+              headers: {
+                contentType: 'application/json',
+              },
+            })
+          },
+        )
+      } catch (error) {
+        return reject(error)
       }
-    } catch (error) {
-      console.error((error as Error).stack)
-      const requestDidNotMakeIt = this.requestTimedOutOrDidNotReachDestination(error as Record<string, unknown>)
-      const tooManyRetryAttempts = retryAttempt && retryAttempt > 2
-      if (!tooManyRetryAttempts && requestDidNotMakeIt) {
-        await this.timer.sleep(50)
-
-        const nextRetryAttempt = retryAttempt ? retryAttempt + 1 : 1
-
-        return this.validateSession(headers, nextRetryAttempt)
-      }
-
-      throw error
-    }
+    })
   }
 
   async callSyncingServer(
