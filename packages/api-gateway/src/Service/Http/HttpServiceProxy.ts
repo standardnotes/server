@@ -144,9 +144,6 @@ export class HttpServiceProxy implements ServiceProxyInterface {
     }
 
     const isARequestComingFromApiGatewayAndShouldBeKeptInMinimalFormat = request.headers.connectionid !== undefined
-    this.logger.debug(
-      `Calling websockets service: ${endpointOrMethodIdentifier}. Format is minimal: ${isARequestComingFromApiGatewayAndShouldBeKeptInMinimalFormat}`,
-    )
     if (isARequestComingFromApiGatewayAndShouldBeKeptInMinimalFormat) {
       await this.callServerWithLegacyFormat(
         this.webSocketServerUrl,
@@ -214,11 +211,6 @@ export class HttpServiceProxy implements ServiceProxyInterface {
       if (response.locals.offlineAuthToken) {
         headers['X-Auth-Offline-Token'] = response.locals.offlineAuthToken
       }
-
-      this.logger.debug(`Calling [${request.method}] ${serverUrl}/${endpointOrMethodIdentifier},
-        headers: ${JSON.stringify(headers)},
-        query: ${JSON.stringify(request.query)},
-        payload: ${JSON.stringify(payload)}`)
 
       const serviceResponse = await this.httpClient.request({
         method: request.method as Method,
@@ -317,9 +309,6 @@ export class HttpServiceProxy implements ServiceProxyInterface {
       endpointOrMethodIdentifier,
       payload,
     )
-
-    this.logger.debug(`Response from underlying server: ${JSON.stringify(serviceResponse?.data)},
-      headers: ${JSON.stringify(serviceResponse?.headers)}`)
 
     if (!serviceResponse) {
       return
