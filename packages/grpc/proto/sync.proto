@@ -143,7 +143,7 @@ message SyncRequest {
   optional string snjs_version = 9;
   optional bool readonly_access = 10;
   optional string session_uuid = 11;
-  optional string user_uuid = 12;
+  string user_uuid = 12;
 }
 
 service Syncing {

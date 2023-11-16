@@ -5449,8 +5449,8 @@ proto.sync.SyncRequest.serializeBinaryToWriter = function(message, writer) {
       f
     );
   }
-  f = /** @type {string} */ (jspb.Message.getField(message, 12));
-  if (f != null) {
+  f = message.getUserUuid();
+  if (f.length > 0) {
     writer.writeString(
       12,
       f
@@ -5872,25 +5872,7 @@ proto.sync.SyncRequest.prototype.getUserUuid = function() {
  * @return {!proto.sync.SyncRequest} returns this
  */
 proto.sync.SyncRequest.prototype.setUserUuid = function(value) {
-  return jspb.Message.setField(this, 12, value);
-};
-
-
-/**
- * Clears the field making it undefined.
- * @return {!proto.sync.SyncRequest} returns this
- */
-proto.sync.SyncRequest.prototype.clearUserUuid = function() {
-  return jspb.Message.setField(this, 12, undefined);
-};
-
-
-/**
- * Returns whether this field is set.
- * @return {boolean}
- */
-proto.sync.SyncRequest.prototype.hasUserUuid = function() {
-  return jspb.Message.getField(this, 12) != null;
+  return jspb.Message.setProto3StringField(this, 12, value);
 };
 
 

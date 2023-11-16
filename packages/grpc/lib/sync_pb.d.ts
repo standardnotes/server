@@ -676,10 +676,7 @@ export class SyncRequest extends jspb.Message {
     clearSessionUuid(): void;
     getSessionUuid(): string | undefined;
     setSessionUuid(value: string): SyncRequest;
-
-    hasUserUuid(): boolean;
-    clearUserUuid(): void;
-    getUserUuid(): string | undefined;
+    getUserUuid(): string;
     setUserUuid(value: string): SyncRequest;
 
     serializeBinary(): Uint8Array;
@@ -705,6 +702,6 @@ export namespace SyncRequest {
         snjsVersion?: string,
         readonlyAccess?: boolean,
         sessionUuid?: string,
-        userUuid?: string,
+        userUuid: string,
     }
 }

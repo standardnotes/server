@@ -10,6 +10,7 @@ import '../src/Infra/InversifyExpressUtils/AnnotatedSharedVaultsController'
 
 import helmet from 'helmet'
 import * as cors from 'cors'
+import * as grpc from '@grpc/grpc-js'
 import { urlencoded, json, Request, Response, NextFunction } from 'express'
 import * as winston from 'winston'
 import { InversifyExpressServer } from 'inversify-express-utils'
@@ -17,6 +18,7 @@ import { InversifyExpressServer } from 'inversify-express-utils'
 import TYPES from '../src/Bootstrap/Types'
 import { Env } from '../src/Bootstrap/Env'
 import { ContainerConfigLoader } from '../src/Bootstrap/Container'
+import { SyncingService } from '@standardnotes/grpc'
 
 const container = new ContainerConfigLoader()
 void container.load().then((container) => {
@@ -78,10 +80,43 @@ void container.load().then((container) => {
 
   serverInstance.keepAliveTimeout = keepAliveTimeout
 
+  const grpcKeepAliveTimeout = env.get('GRPC_KEEP_ALIVE_TIMEOUT', true)
+    ? +env.get('GRPC_KEEP_ALIVE_TIMEOUT', true)
+    : 10_000
+
+  const grpcServer = new grpc.Server({
+    'grpc.keepalive_time_ms': grpcKeepAliveTimeout * 2,
+    'grpc.keepalive_timeout_ms': grpcKeepAliveTimeout,
+  })
+
+  const gRPCPort = env.get('GRPC_PORT', true) ? +env.get('GRPC_PORT', true) : 50051
+
+  grpcServer.addService(SyncingService, {
+    sync: () => {},
+  })
+  grpcServer.bindAsync(`0.0.0.0:${gRPCPort}`, grpc.ServerCredentials.createInsecure(), (error, port) => {
+    if (error) {
+      logger.error(`Failed to bind gRPC server: ${error.message}`)
+    }
+
+    logger.info(`gRPC server bound on port ${port}`)
+
+    grpcServer.start()
+
+    logger.info('gRPC server started')
+  })
+
   process.on('SIGTERM', () => {
     logger.info('SIGTERM signal received: closing HTTP server')
     serverInstance.close(() => {
       logger.info('HTTP server closed')
+    })
+    grpcServer.tryShutdown((error?: Error) => {
+      if (error) {
+        logger.error(`Failed to shutdown gRPC server: ${error.message}`)
+      } else {
+        logger.info('gRPC server closed')
+      }
     })
   })
 

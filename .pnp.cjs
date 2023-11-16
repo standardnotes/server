@@ -6951,11 +6951,13 @@ const RAW_RUNTIME_STATE =
           ["@aws-sdk/client-s3", "npm:3.427.0"],\
           ["@aws-sdk/client-sns", "npm:3.427.0"],\
           ["@aws-sdk/client-sqs", "npm:3.427.0"],\
+          ["@grpc/grpc-js", "npm:1.9.10"],\
           ["@standardnotes/api", "npm:1.26.26"],\
           ["@standardnotes/common", "workspace:packages/common"],\
           ["@standardnotes/domain-core", "workspace:packages/domain-core"],\
           ["@standardnotes/domain-events", "workspace:packages/domain-events"],\
           ["@standardnotes/domain-events-infra", "workspace:packages/domain-events-infra"],\
+          ["@standardnotes/grpc", "workspace:packages/grpc"],\
           ["@standardnotes/responses", "npm:1.13.27"],\
           ["@standardnotes/security", "workspace:packages/security"],\
           ["@standardnotes/settings", "workspace:packages/settings"],\

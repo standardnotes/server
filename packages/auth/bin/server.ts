@@ -114,6 +114,13 @@ void container.load().then((container) => {
     serverInstance.close(() => {
       logger.info('HTTP server closed')
     })
+    grpcServer.tryShutdown((error?: Error) => {
+      if (error) {
+        logger.error(`Failed to shutdown gRPC server: ${error.message}`)
+      } else {
+        logger.info('gRPC server closed')
+      }
+    })
   })
 
   logger.info(`Server started on port ${process.env.PORT}`)
