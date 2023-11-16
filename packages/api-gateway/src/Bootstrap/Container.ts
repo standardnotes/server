@@ -72,14 +72,16 @@ export class ContainerConfigLoader {
       container.bind(TYPES.ApiGateway_Redis).toConstantValue(redis)
     }
 
+    const httpAgentKeepAliveTimeout = env.get('HTTP_AGENT_KEEP_ALIVE_TIMEOUT', true)
+      ? +env.get('HTTP_AGENT_KEEP_ALIVE_TIMEOUT', true)
+      : 4_000
+
     container.bind<AxiosInstance>(TYPES.ApiGateway_HTTPClient).toConstantValue(
       axios.create({
         httpAgent: new AgentKeepAlive({
           keepAlive: true,
-          timeout: env.get('AGENT_KEEP_ALIVE_TIMEOUT', true) ? +env.get('AGENT_KEEP_ALIVE_TIMEOUT', true) : 8_000,
-          freeSocketTimeout: env.get('AGENT_KEEP_ALIVE_FREE_SOCKET_TIMEOUT', true)
-            ? +env.get('AGENT_KEEP_ALIVE_FREE_SOCKET_TIMEOUT', true)
-            : 4_000,
+          timeout: 2 * httpAgentKeepAliveTimeout,
+          freeSocketTimeout: httpAgentKeepAliveTimeout,
         }),
       }),
     )
@@ -130,17 +132,16 @@ export class ContainerConfigLoader {
       const isConfiguredForGRPCProxy = env.get('SERVICE_PROXY_TYPE', true) === 'grpc'
       if (isConfiguredForGRPCProxy) {
         container.bind(TYPES.ApiGateway_AUTH_SERVER_GRPC_URL).toConstantValue(env.get('AUTH_SERVER_GRPC_URL'))
+        const grpcAgentKeepAliveTimeout = env.get('GRPC_AGENT_KEEP_ALIVE_TIMEOUT', true)
+          ? +env.get('GRPC_AGENT_KEEP_ALIVE_TIMEOUT', true)
+          : 8_000
         container.bind<ISessionsClient>(TYPES.ApiGateway_GRPCSessionsClient).toConstantValue(
           new SessionsClient(
             container.get<string>(TYPES.ApiGateway_AUTH_SERVER_GRPC_URL),
             grpc.credentials.createInsecure(),
             {
-              'grpc.keepalive_time_ms': env.get('AGENT_KEEP_ALIVE_TIMEOUT', true)
-                ? +env.get('AGENT_KEEP_ALIVE_TIMEOUT', true)
-                : 8_000,
-              'grpc.keepalive_timeout_ms': env.get('AGENT_KEEP_ALIVE_FREE_SOCKET_TIMEOUT', true)
-                ? +env.get('AGENT_KEEP_ALIVE_FREE_SOCKET_TIMEOUT', true)
-                : 4_000,
+              'grpc.keepalive_time_ms': grpcAgentKeepAliveTimeout * 2,
+              'grpc.keepalive_timeout_ms': grpcAgentKeepAliveTimeout,
             },
           ),
         )

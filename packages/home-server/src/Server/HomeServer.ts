@@ -176,7 +176,7 @@ export class HomeServer implements HomeServerInterface {
 
       const serverInstance = server.build().listen(port)
 
-      const keepAliveTimeout = env.get('KEEP_ALIVE_TIMEOUT', true) ? +env.get('KEEP_ALIVE_TIMEOUT', true) : 5000
+      const keepAliveTimeout = env.get('HTTP_KEEP_ALIVE_TIMEOUT', true) ? +env.get('HTTP_KEEP_ALIVE_TIMEOUT', true) : 5000
 
       serverInstance.keepAliveTimeout = keepAliveTimeout
 

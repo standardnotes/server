@@ -71,13 +71,19 @@ void container.load().then((container) => {
 
   const serverInstance = server.build().listen(env.get('PORT'))
 
-  const keepAliveTimeout = env.get('KEEP_ALIVE_TIMEOUT', true) ? +env.get('KEEP_ALIVE_TIMEOUT', true) : 5000
+  const httpKeepAliveTimeout = env.get('HTTP_KEEP_ALIVE_TIMEOUT', true)
+    ? +env.get('HTTP_KEEP_ALIVE_TIMEOUT', true)
+    : 10_000
 
-  serverInstance.keepAliveTimeout = keepAliveTimeout
+  serverInstance.keepAliveTimeout = httpKeepAliveTimeout
+
+  const grpcKeepAliveTimeout = env.get('GRPC_KEEP_ALIVE_TIMEOUT', true)
+    ? +env.get('GRPC_KEEP_ALIVE_TIMEOUT', true)
+    : 10_000
 
   const grpcServer = new grpc.Server({
-    'grpc.keepalive_time_ms': keepAliveTimeout * 2,
-    'grpc.keepalive_timeout_ms': keepAliveTimeout,
+    'grpc.keepalive_time_ms': grpcKeepAliveTimeout * 2,
+    'grpc.keepalive_timeout_ms': grpcKeepAliveTimeout,
   })
 
   const gRPCPort = env.get('GRPC_PORT', true) ? +env.get('GRPC_PORT', true) : 50051

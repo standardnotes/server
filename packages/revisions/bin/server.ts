@@ -45,7 +45,7 @@ void container.load().then((container) => {
 
   const serverInstance = server.build().listen(env.get('PORT'))
 
-  const keepAliveTimeout = env.get('KEEP_ALIVE_TIMEOUT', true) ? +env.get('KEEP_ALIVE_TIMEOUT', true) : 5000
+  const keepAliveTimeout = env.get('HTTP_KEEP_ALIVE_TIMEOUT', true) ? +env.get('HTTP_KEEP_ALIVE_TIMEOUT', true) : 5000
 
   serverInstance.keepAliveTimeout = keepAliveTimeout
 
