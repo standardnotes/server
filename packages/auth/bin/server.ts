@@ -91,6 +91,7 @@ void container.load().then((container) => {
   const sessionsServer = new SessionsServer(
     container.get<AuthenticateRequest>(TYPES.Auth_AuthenticateRequest),
     container.get<CreateCrossServiceToken>(TYPES.Auth_CreateCrossServiceToken),
+    container.get<winston.Logger>(TYPES.Auth_Logger),
   )
 
   grpcServer.addService(SessionsService, {

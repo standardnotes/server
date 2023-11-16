@@ -6,17 +6,21 @@ import { AuthorizationHeader, ISessionsServer, SessionValidationResponse } from 
 import { AuthenticateRequest } from '../../Domain/UseCase/AuthenticateRequest'
 import { User } from '../../Domain/User/User'
 import { CreateCrossServiceToken } from '../../Domain/UseCase/CreateCrossServiceToken/CreateCrossServiceToken'
+import { Logger } from 'winston'
 
 export class SessionsServer implements ISessionsServer {
   constructor(
     private authenticateRequest: AuthenticateRequest,
     private createCrossServiceToken: CreateCrossServiceToken,
+    private logger: Logger,
   ) {}
 
   async validate(
     call: grpc.ServerUnaryCall<AuthorizationHeader, SessionValidationResponse>,
     callback: grpc.sendUnaryData<SessionValidationResponse>,
   ): Promise<void> {
+    this.logger.debug('[SessionsServer] Validating session via gRPC')
+
     const authenticateRequestResponse = await this.authenticateRequest.execute({
       authorizationHeader: call.request.getBearerToken(),
     })
@@ -68,6 +72,8 @@ export class SessionsServer implements ISessionsServer {
 
     const response = new SessionValidationResponse()
     response.setCrossServiceToken(resultOrError.getValue())
+
+    this.logger.debug('[SessionsServer] Session validated via gRPC')
 
     callback(null, response)
   }

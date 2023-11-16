@@ -37,6 +37,8 @@ export class GRPCServiceProxy implements ServiceProxyInterface {
         const metadata = new grpc.Metadata()
         metadata.set('x-shared-vault-owner-context', headers.sharedVaultOwnerContext ?? '')
 
+        this.logger.debug('[GRPCServiceProxy] Validating session via gRPC')
+
         this.sessionsClient.validate(
           request,
           metadata,

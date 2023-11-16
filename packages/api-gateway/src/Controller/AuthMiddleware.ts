@@ -49,6 +49,8 @@ export abstract class AuthMiddleware extends BaseMiddleware {
           return
         }
 
+        this.logger.debug('[AuthMiddleware] Fetched cross-service token from underlying service')
+
         crossServiceToken = (authResponse.data as { authToken: string }).authToken
         crossServiceTokenFetchedFromCache = false
       }
