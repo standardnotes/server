@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.85.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.84.1...@standardnotes/api-gateway@1.85.0) (2023-11-16)
+
+### Features
+
+* add debug logs for grpc communication ([6391a01](https://github.com/standardnotes/api-gateway/commit/6391a01b5703db23b566710d0520c1197c46144b))
+
 ## [1.84.1](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.84.0...@standardnotes/api-gateway@1.84.1) (2023-11-16)
 
 ### Bug Fixes

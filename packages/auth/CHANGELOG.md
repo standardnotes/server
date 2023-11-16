@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.171.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.170.0...@standardnotes/auth-server@1.171.0) (2023-11-16)
+
+### Features
+
+* add debug logs for grpc communication ([6391a01](https://github.com/standardnotes/server/commit/6391a01b5703db23b566710d0520c1197c46144b))
+
 # [1.170.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.169.2...@standardnotes/auth-server@1.170.0) (2023-11-16)
 
 ### Features
