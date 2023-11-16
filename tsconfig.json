@@ -48,6 +48,9 @@
       "path": "./packages/files"
     },
     {
+      "path": "./packages/grpc"
+    },
+    {
       "path": "./packages/predicates"
     },
     {

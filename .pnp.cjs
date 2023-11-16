@@ -46,6 +46,10 @@ const RAW_RUNTIME_STATE =
       "reference": "workspace:packages/files"\
     },\
     {\
+      "name": "@standardnotes/grpc",\
+      "reference": "workspace:packages/grpc"\
+    },\
+    {\
       "name": "@standardnotes/home-server",\
       "reference": "workspace:packages/home-server"\
     },\
@@ -97,6 +101,7 @@ const RAW_RUNTIME_STATE =
     ["@standardnotes/domain-events", ["workspace:packages/domain-events"]],\
     ["@standardnotes/domain-events-infra", ["workspace:packages/domain-events-infra"]],\
     ["@standardnotes/files-server", ["workspace:packages/files"]],\
+    ["@standardnotes/grpc", ["workspace:packages/grpc"]],\
     ["@standardnotes/home-server", ["workspace:packages/home-server"]],\
     ["@standardnotes/predicates", ["workspace:packages/predicates"]],\
     ["@standardnotes/revisions-server", ["workspace:packages/revisions"]],\
@@ -2669,6 +2674,15 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@grpc/grpc-js", [\
+      ["npm:1.9.10", {\
+        "packageLocation": "./.yarn/cache/@grpc-grpc-js-npm-1.9.10-28317a9d2d-243cf994e6.zip/node_modules/@grpc/grpc-js/",\
+        "packageDependencies": [\
+          ["@grpc/grpc-js", "npm:1.9.10"],\
+          ["@grpc/proto-loader", "npm:0.7.10"],\
+          ["@types/node", "npm:20.2.5"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
       ["npm:1.9.5", {\
         "packageLocation": "./.yarn/cache/@grpc-grpc-js-npm-1.9.5-9b0cd6b5ed-5499d964d2.zip/node_modules/@grpc/grpc-js/",\
         "packageDependencies": [\
@@ -3559,6 +3573,22 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/@mapbox-node-pre-gyp-npm-1.0.10-1811160047-ebdde8d64b.zip/node_modules/@mapbox/node-pre-gyp/",\
         "packageDependencies": [\
           ["@mapbox/node-pre-gyp", "npm:1.0.10"],\
+          ["detect-libc", "npm:2.0.1"],\
+          ["https-proxy-agent", "npm:5.0.1"],\
+          ["make-dir", "npm:3.1.0"],\
+          ["node-fetch", "virtual:0f92dfe7f9dc4fd492639d4a5b7805c2b27442bf599fd4f370b22a7966ba078f5d4525e2a8e8af29369f20e1833ed084bd52be59679efaa6c1c6c10cdbcd8baa#npm:2.6.11"],\
+          ["nopt", "npm:5.0.0"],\
+          ["npmlog", "npm:5.0.1"],\
+          ["rimraf", "npm:3.0.2"],\
+          ["semver", "npm:7.5.1"],\
+          ["tar", "npm:6.1.15"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["npm:1.0.11", {\
+        "packageLocation": "./.yarn/cache/@mapbox-node-pre-gyp-npm-1.0.11-5547f15a2b-59529a2444.zip/node_modules/@mapbox/node-pre-gyp/",\
+        "packageDependencies": [\
+          ["@mapbox/node-pre-gyp", "npm:1.0.11"],\
           ["detect-libc", "npm:2.0.1"],\
           ["https-proxy-agent", "npm:5.0.1"],\
           ["make-dir", "npm:3.1.0"],\
@@ -6371,9 +6401,11 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./packages/api-gateway/",\
         "packageDependencies": [\
           ["@standardnotes/api-gateway", "workspace:packages/api-gateway"],\
+          ["@grpc/grpc-js", "npm:1.9.10"],\
           ["@standardnotes/domain-core", "workspace:packages/domain-core"],\
           ["@standardnotes/domain-events", "workspace:packages/domain-events"],\
           ["@standardnotes/domain-events-infra", "workspace:packages/domain-events-infra"],\
+          ["@standardnotes/grpc", "workspace:packages/grpc"],\
           ["@standardnotes/security", "workspace:packages/security"],\
           ["@standardnotes/time", "workspace:packages/time"],\
           ["@types/cors", "npm:2.8.13"],\
@@ -6419,6 +6451,7 @@ const RAW_RUNTIME_STATE =
           ["@aws-sdk/client-sqs", "npm:3.427.0"],\
           ["@cbor-extract/cbor-extract-linux-arm64", "npm:2.1.1"],\
           ["@cbor-extract/cbor-extract-linux-x64", "npm:2.1.1"],\
+          ["@grpc/grpc-js", "npm:1.9.10"],\
           ["@simplewebauthn/server", "npm:8.1.1"],\
           ["@simplewebauthn/typescript-types", "npm:8.0.0"],\
           ["@standardnotes/api", "npm:1.26.26"],\
@@ -6427,6 +6460,7 @@ const RAW_RUNTIME_STATE =
           ["@standardnotes/domain-events", "workspace:packages/domain-events"],\
           ["@standardnotes/domain-events-infra", "workspace:packages/domain-events-infra"],\
           ["@standardnotes/features", "npm:1.59.7"],\
+          ["@standardnotes/grpc", "workspace:packages/grpc"],\
           ["@standardnotes/predicates", "workspace:packages/predicates"],\
           ["@standardnotes/responses", "npm:1.13.27"],\
           ["@standardnotes/security", "workspace:packages/security"],\
@@ -6635,6 +6669,21 @@ const RAW_RUNTIME_STATE =
           ["typescript", "patch:typescript@npm%3A5.0.4#optional!builtin<compat/typescript>::version=5.0.4&hash=b5f058"],\
           ["uuid", "npm:9.0.0"],\
           ["winston", "npm:3.9.0"]\
+        ],\
+        "linkType": "SOFT"\
+      }]\
+    ]],\
+    ["@standardnotes/grpc", [\
+      ["workspace:packages/grpc", {\
+        "packageLocation": "./packages/grpc/",\
+        "packageDependencies": [\
+          ["@standardnotes/grpc", "workspace:packages/grpc"],\
+          ["@grpc/grpc-js", "npm:1.9.10"],\
+          ["@types/google-protobuf", "npm:3.15.10"],\
+          ["google-protobuf", "npm:3.21.2"],\
+          ["grpc-tools", "npm:1.12.4"],\
+          ["grpc_tools_node_protoc_ts", "npm:5.3.3"],\
+          ["typescript", "patch:typescript@npm%3A5.0.4#optional!builtin<compat/typescript>::version=5.0.4&hash=b5f058"]\
         ],\
         "linkType": "SOFT"\
       }]\
@@ -7280,6 +7329,15 @@ const RAW_RUNTIME_STATE =
           ["@types/qs", "npm:6.9.7"],\
           ["@types/range-parser", "npm:1.2.4"],\
           ["@types/send", "npm:0.17.1"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["@types/google-protobuf", [\
+      ["npm:3.15.10", {\
+        "packageLocation": "./.yarn/cache/@types-google-protobuf-npm-3.15.10-cbaa6c3e6c-29efde966f.zip/node_modules/@types/google-protobuf/",\
+        "packageDependencies": [\
+          ["@types/google-protobuf", "npm:3.15.10"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -11296,6 +11354,22 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["google-protobuf", [\
+      ["npm:3.15.8", {\
+        "packageLocation": "./.yarn/cache/google-protobuf-npm-3.15.8-75df975b6c-0b1ea24a55.zip/node_modules/google-protobuf/",\
+        "packageDependencies": [\
+          ["google-protobuf", "npm:3.15.8"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
+      ["npm:3.21.2", {\
+        "packageLocation": "./.yarn/cache/google-protobuf-npm-3.21.2-7c82de39ab-b376c2e47f.zip/node_modules/google-protobuf/",\
+        "packageDependencies": [\
+          ["google-protobuf", "npm:3.21.2"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["graceful-fs", [\
       ["npm:4.2.11", {\
         "packageLocation": "./.yarn/cache/graceful-fs-npm-4.2.11-24bb648a68-bf152d0ed1.zip/node_modules/graceful-fs/",\
@@ -11310,6 +11384,27 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/graphemer-npm-1.4.0-0627732d35-6dd60dba97.zip/node_modules/graphemer/",\
         "packageDependencies": [\
           ["graphemer", "npm:1.4.0"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["grpc-tools", [\
+      ["npm:1.12.4", {\
+        "packageLocation": "./.yarn/unplugged/grpc-tools-npm-1.12.4-956df6794d/node_modules/grpc-tools/",\
+        "packageDependencies": [\
+          ["grpc-tools", "npm:1.12.4"],\
+          ["@mapbox/node-pre-gyp", "npm:1.0.11"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["grpc_tools_node_protoc_ts", [\
+      ["npm:5.3.3", {\
+        "packageLocation": "./.yarn/unplugged/grpc_tools_node_protoc_ts-npm-5.3.3-297a345c26/node_modules/grpc_tools_node_protoc_ts/",\
+        "packageDependencies": [\
+          ["grpc_tools_node_protoc_ts", "npm:5.3.3"],\
+          ["google-protobuf", "npm:3.15.8"],\
+          ["handlebars", "npm:4.7.7"]\
         ],\
         "linkType": "HARD"\
       }]\

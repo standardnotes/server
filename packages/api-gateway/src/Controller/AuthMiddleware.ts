@@ -7,7 +7,7 @@ import { AxiosError } from 'axios'
 import { Logger } from 'winston'
 
 import { CrossServiceTokenCacheInterface } from '../Service/Cache/CrossServiceTokenCacheInterface'
-import { ServiceProxyInterface } from '../Service/Http/ServiceProxyInterface'
+import { ServiceProxyInterface } from '../Service/Proxy/ServiceProxyInterface'
 
 export abstract class AuthMiddleware extends BaseMiddleware {
   constructor(

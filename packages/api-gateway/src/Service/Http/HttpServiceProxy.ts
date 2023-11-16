@@ -6,7 +6,7 @@ import { Logger } from 'winston'
 
 import { TYPES } from '../../Bootstrap/Types'
 import { CrossServiceTokenCacheInterface } from '../Cache/CrossServiceTokenCacheInterface'
-import { ServiceProxyInterface } from './ServiceProxyInterface'
+import { ServiceProxyInterface } from '../Proxy/ServiceProxyInterface'
 import { TimerInterface } from '@standardnotes/time'
 
 @injectable()

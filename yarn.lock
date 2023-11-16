@@ -2341,6 +2341,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@grpc/grpc-js@npm:^1.9.10":
+  version: 1.9.10
+  resolution: "@grpc/grpc-js@npm:1.9.10"
+  dependencies:
+    "@grpc/proto-loader": "npm:^0.7.8"
+    "@types/node": "npm:>=12.12.47"
+  checksum: 243cf994e6487ec9b6b24b155468c598e7f100491b3a274a963abd897b751d831149362b3c47c2d7c905df3d0fd0fa294ce8cba33efdde61f48e326b6e657e06
+  languageName: node
+  linkType: hard
+
 "@grpc/proto-loader@npm:^0.7.8":
   version: 0.7.10
   resolution: "@grpc/proto-loader@npm:0.7.10"
@@ -2977,6 +2987,25 @@ __metadata:
   bin:
     node-pre-gyp: bin/node-pre-gyp
   checksum: ebdde8d64be15755cec0deed373b99d518aff48ff48a7e001db8d52da76df05dd9b76ccf532bb8f9fdc575b2c2517117885cd8cb5bacc31853ef32b6cc492533
+  languageName: node
+  linkType: hard
+
+"@mapbox/node-pre-gyp@npm:^1.0.5":
+  version: 1.0.11
+  resolution: "@mapbox/node-pre-gyp@npm:1.0.11"
+  dependencies:
+    detect-libc: "npm:^2.0.0"
+    https-proxy-agent: "npm:^5.0.0"
+    make-dir: "npm:^3.1.0"
+    node-fetch: "npm:^2.6.7"
+    nopt: "npm:^5.0.0"
+    npmlog: "npm:^5.0.1"
+    rimraf: "npm:^3.0.2"
+    semver: "npm:^7.3.5"
+    tar: "npm:^6.1.11"
+  bin:
+    node-pre-gyp: bin/node-pre-gyp
+  checksum: 59529a2444e44fddb63057152452b00705aa58059079191126c79ac1388ae4565625afa84ed4dd1bf017d1111ab6e47907f7c5192e06d83c9496f2f3e708680a
   languageName: node
   linkType: hard
 
@@ -5235,9 +5264,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@standardnotes/api-gateway@workspace:packages/api-gateway"
   dependencies:
+    "@grpc/grpc-js": "npm:^1.9.10"
     "@standardnotes/domain-core": "workspace:^"
     "@standardnotes/domain-events": "workspace:*"
     "@standardnotes/domain-events-infra": "workspace:*"
+    "@standardnotes/grpc": "workspace:^"
     "@standardnotes/security": "workspace:*"
     "@standardnotes/time": "workspace:*"
     "@types/cors": "npm:^2.8.9"
@@ -5296,6 +5327,7 @@ __metadata:
     "@aws-sdk/client-sqs": "npm:^3.427.0"
     "@cbor-extract/cbor-extract-linux-arm64": "npm:^2.1.1"
     "@cbor-extract/cbor-extract-linux-x64": "npm:^2.1.1"
+    "@grpc/grpc-js": "npm:^1.9.10"
     "@simplewebauthn/server": "npm:^8.1.1"
     "@simplewebauthn/typescript-types": "npm:^8.0.0"
     "@standardnotes/api": "npm:^1.26.26"
@@ -5304,6 +5336,7 @@ __metadata:
     "@standardnotes/domain-events": "workspace:*"
     "@standardnotes/domain-events-infra": "workspace:*"
     "@standardnotes/features": "npm:^1.59.7"
+    "@standardnotes/grpc": "workspace:^"
     "@standardnotes/predicates": "workspace:*"
     "@standardnotes/responses": "npm:^1.13.27"
     "@standardnotes/security": "workspace:*"
@@ -5504,6 +5537,19 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@standardnotes/grpc@workspace:^, @standardnotes/grpc@workspace:packages/grpc":
+  version: 0.0.0-use.local
+  resolution: "@standardnotes/grpc@workspace:packages/grpc"
+  dependencies:
+    "@grpc/grpc-js": "npm:^1.9.10"
+    "@types/google-protobuf": "npm:^3"
+    google-protobuf: "npm:^3.21.2"
+    grpc-tools: "npm:^1.12.4"
+    grpc_tools_node_protoc_ts: "npm:^5.3.3"
+    typescript: "npm:^5.0.4"
+  languageName: unknown
+  linkType: soft
+
 "@standardnotes/home-server@workspace:packages/home-server":
   version: 0.0.0-use.local
   resolution: "@standardnotes/home-server@workspace:packages/home-server"
@@ -5691,6 +5737,11 @@ __metadata:
     ini: "npm:^4.1.1"
     ts-node: "npm:^10.9.1"
     typescript: "npm:^5.0.4"
+  dependenciesMeta:
+    grpc-tools@1.12.4:
+      unplugged: true
+    grpc_tools_node_protoc_ts@5.3.3:
+      unplugged: true
   languageName: unknown
   linkType: soft
 
@@ -6090,6 +6141,13 @@ __metadata:
     "@types/qs": "npm:*"
     "@types/serve-static": "npm:*"
   checksum: b344988a35d3cae7b29e984f010ac9124de5e61fe2104c0fc541db6ba8fc4433c69d505537429d157400572c258b47afca4bd668b58de101ae879c868b81bcb1
+  languageName: node
+  linkType: hard
+
+"@types/google-protobuf@npm:^3":
+  version: 3.15.10
+  resolution: "@types/google-protobuf@npm:3.15.10"
+  checksum: 29efde966ff47ae824ffe2bccfc999a3adf355745a606a24177ada0e6b7892ea49b2fdd0355400c2140dbd9175bf1d1109f20ce6fdb40ec833724ade439d03d6
   languageName: node
   linkType: hard
 
@@ -9460,6 +9518,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"google-protobuf@npm:3.15.8":
+  version: 3.15.8
+  resolution: "google-protobuf@npm:3.15.8"
+  checksum: 0b1ea24a552e0870b658b975ce5090c13f35793dc4ff8a733ad9c27990126eb9bd375fa9d3204af4f634930ae358d8b5e78f9f4cdb1f700e35b4d857f0aac742
+  languageName: node
+  linkType: hard
+
+"google-protobuf@npm:^3.21.2":
+  version: 3.21.2
+  resolution: "google-protobuf@npm:3.21.2"
+  checksum: b376c2e47fb0419b41b901e4da8f3827fe9594ffb7887708b9c241f36005d0b9f2edc7b3f05795f6793924a241e767f67831732eae0f23bdbb337b56a6ab4e26
+  languageName: node
+  linkType: hard
+
 "graceful-fs@npm:^4.1.2, graceful-fs@npm:^4.1.6, graceful-fs@npm:^4.2.0, graceful-fs@npm:^4.2.11, graceful-fs@npm:^4.2.4, graceful-fs@npm:^4.2.6, graceful-fs@npm:^4.2.9":
   version: 4.2.11
   resolution: "graceful-fs@npm:4.2.11"
@@ -9474,7 +9546,31 @@ __metadata:
   languageName: node
   linkType: hard
 
-"handlebars@npm:^4.7.7":
+"grpc-tools@npm:^1.12.4":
+  version: 1.12.4
+  resolution: "grpc-tools@npm:1.12.4"
+  dependencies:
+    "@mapbox/node-pre-gyp": "npm:^1.0.5"
+  bin:
+    grpc_tools_node_protoc: bin/protoc.js
+    grpc_tools_node_protoc_plugin: bin/protoc_plugin.js
+  checksum: 56852c756fe34be5f3b2cf75b1d432886b17ad32d438cacbcf8d30e980c7361a8e8325b1e626ce99826b8dbf1364145bedbedeb6d7feb916c4801481810a05d1
+  languageName: node
+  linkType: hard
+
+"grpc_tools_node_protoc_ts@npm:^5.3.3":
+  version: 5.3.3
+  resolution: "grpc_tools_node_protoc_ts@npm:5.3.3"
+  dependencies:
+    google-protobuf: "npm:3.15.8"
+    handlebars: "npm:4.7.7"
+  bin:
+    protoc-gen-ts: bin/protoc-gen-ts
+  checksum: 96fe57b04a7d9e7e656678fab14dd4fc8027849abbb487a7eae4d2841651aa9a481402d5b9df34b4ac3bac6f190551db2e647127d6f6736d5f89ea2fa791ff33
+  languageName: node
+  linkType: hard
+
+"handlebars@npm:4.7.7, handlebars@npm:^4.7.7":
   version: 4.7.7
   resolution: "handlebars@npm:4.7.7"
   dependencies:

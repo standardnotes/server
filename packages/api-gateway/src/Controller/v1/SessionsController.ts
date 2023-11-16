@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 import { inject } from 'inversify'
 import { BaseHttpController, controller, httpDelete, httpGet, httpPost } from 'inversify-express-utils'
 import { TYPES } from '../../Bootstrap/Types'
-import { ServiceProxyInterface } from '../../Service/Http/ServiceProxyInterface'
+import { ServiceProxyInterface } from '../../Service/Proxy/ServiceProxyInterface'
 import { EndpointResolverInterface } from '../../Service/Resolver/EndpointResolverInterface'
 
 @controller('/v1/sessions')

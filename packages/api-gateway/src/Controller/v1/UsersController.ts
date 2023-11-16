@@ -13,7 +13,7 @@ import {
 } from 'inversify-express-utils'
 import { Logger } from 'winston'
 import { TYPES } from '../../Bootstrap/Types'
-import { ServiceProxyInterface } from '../../Service/Http/ServiceProxyInterface'
+import { ServiceProxyInterface } from '../../Service/Proxy/ServiceProxyInterface'
 import { TokenAuthenticationMethod } from '../TokenAuthenticationMethod'
 import { EndpointResolverInterface } from '../../Service/Resolver/EndpointResolverInterface'
 

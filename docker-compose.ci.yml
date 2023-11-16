@@ -26,6 +26,7 @@ services:
     ports:
       - 3123:3000
       - 3125:3104
+      - 50051:50051
     volumes:
       - ./logs:/var/lib/server/logs
     networks:
