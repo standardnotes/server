@@ -75,7 +75,10 @@ void container.load().then((container) => {
 
   serverInstance.keepAliveTimeout = keepAliveTimeout
 
-  const grpcServer = new grpc.Server()
+  const grpcServer = new grpc.Server({
+    'grpc.keepalive_time_ms': keepAliveTimeout * 2,
+    'grpc.keepalive_timeout_ms': keepAliveTimeout,
+  })
 
   const gRPCPort = env.get('GRPC_PORT', true) ? +env.get('GRPC_PORT', true) : 50051
 

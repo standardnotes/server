@@ -17,6 +17,8 @@ jobs:
     name: (Self Hosting) E2E Test Suite
     strategy:
       fail-fast: false
+      matrix:
+        service_proxy_type: [http, grpc]
     runs-on: ubuntu-latest
 
     services:
@@ -42,6 +44,7 @@ jobs:
       env:
         DB_TYPE: mysql
         CACHE_TYPE: redis
+        SERVICE_PROXY_TYPE: ${{ matrix.service_proxy_type }}
 
     - name: Wait for server to start
       run: docker/is-available.sh http://localhost:3123 $(pwd)/logs

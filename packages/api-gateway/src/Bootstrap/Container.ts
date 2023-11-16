@@ -8,14 +8,14 @@ import { Timer, TimerInterface } from '@standardnotes/time'
 
 import { Env } from './Env'
 import { TYPES } from './Types'
-import { ServiceProxyInterface } from '../Service/Http/ServiceProxyInterface'
+import { ServiceProxyInterface } from '../Service/Proxy/ServiceProxyInterface'
 import { HttpServiceProxy } from '../Service/Http/HttpServiceProxy'
 import { SubscriptionTokenAuthMiddleware } from '../Controller/SubscriptionTokenAuthMiddleware'
 import { CrossServiceTokenCacheInterface } from '../Service/Cache/CrossServiceTokenCacheInterface'
 import { RedisCrossServiceTokenCache } from '../Infra/Redis/RedisCrossServiceTokenCache'
 import { WebSocketAuthMiddleware } from '../Controller/WebSocketAuthMiddleware'
 import { InMemoryCrossServiceTokenCache } from '../Infra/InMemory/InMemoryCrossServiceTokenCache'
-import { DirectCallServiceProxy } from '../Service/Proxy/DirectCallServiceProxy'
+import { DirectCallServiceProxy } from '../Service/DirectCall/DirectCallServiceProxy'
 import { ServiceContainerInterface } from '@standardnotes/domain-core'
 import { EndpointResolverInterface } from '../Service/Resolver/EndpointResolverInterface'
 import { EndpointResolver } from '../Service/Resolver/EndpointResolver'
@@ -23,6 +23,7 @@ import { RequiredCrossServiceTokenMiddleware } from '../Controller/RequiredCross
 import { OptionalCrossServiceTokenMiddleware } from '../Controller/OptionalCrossServiceTokenMiddleware'
 import { Transform } from 'stream'
 import { ISessionsClient, SessionsClient } from '@standardnotes/grpc'
+import { GRPCServiceProxy } from '../Service/gRPC/GRPCServiceProxy'
 
 export class ContainerConfigLoader {
   async load(configuration?: {
@@ -126,19 +127,45 @@ export class ContainerConfigLoader {
           new DirectCallServiceProxy(configuration.serviceContainer, container.get(TYPES.ApiGateway_FILES_SERVER_URL)),
         )
     } else {
-      container.bind(TYPES.ApiGateway_AUTH_SERVER_GRPC_URL).toConstantValue(env.get('AUTH_SERVER_GRPC_URL', true))
-      container.bind<ISessionsClient>(TYPES.ApiGateway_GRPCSessionsClient).toConstantValue(
-        new SessionsClient(
-          container.get<string>(TYPES.ApiGateway_AUTH_SERVER_GRPC_URL),
-          grpc.credentials.createInsecure(),
-          {
-            'grpc.keepalive_time_ms': 30_000,
-            'grpc.keepalive_timeout_ms': 10_000,
-          },
-        ),
-      )
-
-      container.bind<ServiceProxyInterface>(TYPES.ApiGateway_ServiceProxy).to(HttpServiceProxy)
+      const isConfiguredForGRPCProxy = env.get('SERVICE_PROXY_TYPE', true) === 'grpc'
+      if (isConfiguredForGRPCProxy) {
+        container.bind(TYPES.ApiGateway_AUTH_SERVER_GRPC_URL).toConstantValue(env.get('AUTH_SERVER_GRPC_URL'))
+        container.bind<ISessionsClient>(TYPES.ApiGateway_GRPCSessionsClient).toConstantValue(
+          new SessionsClient(
+            container.get<string>(TYPES.ApiGateway_AUTH_SERVER_GRPC_URL),
+            grpc.credentials.createInsecure(),
+            {
+              'grpc.keepalive_time_ms': env.get('AGENT_KEEP_ALIVE_TIMEOUT', true)
+                ? +env.get('AGENT_KEEP_ALIVE_TIMEOUT', true)
+                : 8_000,
+              'grpc.keepalive_timeout_ms': env.get('AGENT_KEEP_ALIVE_FREE_SOCKET_TIMEOUT', true)
+                ? +env.get('AGENT_KEEP_ALIVE_FREE_SOCKET_TIMEOUT', true)
+                : 4_000,
+            },
+          ),
+        )
+        container
+          .bind<ServiceProxyInterface>(TYPES.ApiGateway_ServiceProxy)
+          .toConstantValue(
+            new GRPCServiceProxy(
+              container.get<AxiosInstance>(TYPES.ApiGateway_HTTPClient),
+              container.get<string>(TYPES.ApiGateway_AUTH_SERVER_URL),
+              container.get<string>(TYPES.ApiGateway_SYNCING_SERVER_JS_URL),
+              container.get<string>(TYPES.ApiGateway_PAYMENTS_SERVER_URL),
+              container.get<string>(TYPES.ApiGateway_FILES_SERVER_URL),
+              container.get<string>(TYPES.ApiGateway_WEB_SOCKET_SERVER_URL),
+              container.get<string>(TYPES.ApiGateway_REVISIONS_SERVER_URL),
+              container.get<string>(TYPES.ApiGateway_EMAIL_SERVER_URL),
+              container.get<number>(TYPES.ApiGateway_HTTP_CALL_TIMEOUT),
+              container.get<CrossServiceTokenCacheInterface>(TYPES.ApiGateway_CrossServiceTokenCache),
+              container.get<winston.Logger>(TYPES.ApiGateway_Logger),
+              container.get<TimerInterface>(TYPES.ApiGateway_Timer),
+              container.get<ISessionsClient>(TYPES.ApiGateway_GRPCSessionsClient),
+            ),
+          )
+      } else {
+        container.bind<ServiceProxyInterface>(TYPES.ApiGateway_ServiceProxy).to(HttpServiceProxy)
+      }
     }
 
     if (isConfiguredForHomeServer) {

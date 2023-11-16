@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import { ServiceContainerInterface, ServiceIdentifier } from '@standardnotes/domain-core'
 
-import { ServiceProxyInterface } from '../Http/ServiceProxyInterface'
+import { ServiceProxyInterface } from '../Proxy/ServiceProxyInterface'
 
 export class DirectCallServiceProxy implements ServiceProxyInterface {
   constructor(

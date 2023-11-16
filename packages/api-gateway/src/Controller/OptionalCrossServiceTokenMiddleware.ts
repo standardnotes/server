@@ -5,7 +5,7 @@ import { Logger } from 'winston'
 
 import { TYPES } from '../Bootstrap/Types'
 import { CrossServiceTokenCacheInterface } from '../Service/Cache/CrossServiceTokenCacheInterface'
-import { ServiceProxyInterface } from '../Service/Http/ServiceProxyInterface'
+import { ServiceProxyInterface } from '../Service/Proxy/ServiceProxyInterface'
 import { AuthMiddleware } from './AuthMiddleware'
 
 @injectable()

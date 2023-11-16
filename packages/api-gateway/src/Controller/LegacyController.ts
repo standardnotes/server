@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 import { inject } from 'inversify'
 import { controller, all, BaseHttpController, httpPost, httpGet, results, httpDelete } from 'inversify-express-utils'
 import { TYPES } from '../Bootstrap/Types'
-import { ServiceProxyInterface } from '../Service/Http/ServiceProxyInterface'
+import { ServiceProxyInterface } from '../Service/Proxy/ServiceProxyInterface'
 
 @controller('')
 export class LegacyController extends BaseHttpController {

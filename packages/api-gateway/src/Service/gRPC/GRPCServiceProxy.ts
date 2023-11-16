@@ -1,72 +1,81 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { AxiosInstance, AxiosError, AxiosResponse, Method } from 'axios'
 import { Request, Response } from 'express'
-import { inject, injectable } from 'inversify'
 import { Logger } from 'winston'
+import { TimerInterface } from '@standardnotes/time'
+import { ISessionsClient, AuthorizationHeader, SessionValidationResponse } from '@standardnotes/grpc'
+import * as grpc from '@grpc/grpc-js'
 
-import { TYPES } from '../../Bootstrap/Types'
 import { CrossServiceTokenCacheInterface } from '../Cache/CrossServiceTokenCacheInterface'
 import { ServiceProxyInterface } from '../Proxy/ServiceProxyInterface'
-import { TimerInterface } from '@standardnotes/time'
 
-@injectable()
-export class HttpServiceProxy implements ServiceProxyInterface {
+export class GRPCServiceProxy implements ServiceProxyInterface {
   constructor(
-    @inject(TYPES.ApiGateway_HTTPClient) private httpClient: AxiosInstance,
-    @inject(TYPES.ApiGateway_AUTH_SERVER_URL) private authServerUrl: string,
-    @inject(TYPES.ApiGateway_SYNCING_SERVER_JS_URL) private syncingServerJsUrl: string,
-    @inject(TYPES.ApiGateway_PAYMENTS_SERVER_URL) private paymentsServerUrl: string,
-    @inject(TYPES.ApiGateway_FILES_SERVER_URL) private filesServerUrl: string,
-    @inject(TYPES.ApiGateway_WEB_SOCKET_SERVER_URL) private webSocketServerUrl: string,
-    @inject(TYPES.ApiGateway_REVISIONS_SERVER_URL) private revisionsServerUrl: string,
-    @inject(TYPES.ApiGateway_EMAIL_SERVER_URL) private emailServerUrl: string,
-    @inject(TYPES.ApiGateway_HTTP_CALL_TIMEOUT) private httpCallTimeout: number,
-    @inject(TYPES.ApiGateway_CrossServiceTokenCache) private crossServiceTokenCache: CrossServiceTokenCacheInterface,
-    @inject(TYPES.ApiGateway_Logger) private logger: Logger,
-    @inject(TYPES.ApiGateway_Timer) private timer: TimerInterface,
+    private httpClient: AxiosInstance,
+    private authServerUrl: string,
+    private syncingServerJsUrl: string,
+    private paymentsServerUrl: string,
+    private filesServerUrl: string,
+    private webSocketServerUrl: string,
+    private revisionsServerUrl: string,
+    private emailServerUrl: string,
+    private httpCallTimeout: number,
+    private crossServiceTokenCache: CrossServiceTokenCacheInterface,
+    private logger: Logger,
+    private timer: TimerInterface,
+    private sessionsClient: ISessionsClient,
   ) {}
 
-  async validateSession(
-    headers: {
-      authorization: string
-      sharedVaultOwnerContext?: string
-    },
-    retryAttempt?: number,
-  ): Promise<{ status: number; data: unknown; headers: { contentType: string } }> {
-    try {
-      const authResponse = await this.httpClient.request({
-        method: 'POST',
-        headers: {
-          Authorization: headers.authorization,
-          Accept: 'application/json',
-          'x-shared-vault-owner-context': headers.sharedVaultOwnerContext,
-        },
-        validateStatus: (status: number) => {
-          return status >= 200 && status < 500
-        },
-        url: `${this.authServerUrl}/sessions/validate`,
-      })
+  async validateSession(headers: {
+    authorization: string
+    sharedVaultOwnerContext?: string
+  }): Promise<{ status: number; data: unknown; headers: { contentType: string } }> {
+    return new Promise((resolve, reject) => {
+      try {
+        const request = new AuthorizationHeader()
+        request.setBearerToken(headers.authorization)
 
-      return {
-        status: authResponse.status,
-        data: authResponse.data,
-        headers: {
-          contentType: authResponse.headers['content-type'] as string,
-        },
+        const metadata = new grpc.Metadata()
+        metadata.set('x-shared-vault-owner-context', headers.sharedVaultOwnerContext ?? '')
+
+        this.sessionsClient.validate(
+          request,
+          metadata,
+          (error: grpc.ServiceError | null, response: SessionValidationResponse) => {
+            if (error) {
+              const responseCode = error.metadata.get('x-auth-error-response-code').pop()
+              if (responseCode) {
+                return resolve({
+                  status: +responseCode,
+                  data: {
+                    error: {
+                      message: error.metadata.get('x-auth-error-message').pop(),
+                      tag: error.metadata.get('x-auth-error-tag').pop(),
+                    },
+                  },
+                  headers: {
+                    contentType: 'application/json',
+                  },
+                })
+              }
+
+              return reject(error)
+            }
+
+            return resolve({
+              status: 200,
+              data: {
+                authToken: response.getCrossServiceToken(),
+              },
+              headers: {
+                contentType: 'application/json',
+              },
+            })
+          },
+        )
+      } catch (error) {
+        return reject(error)
       }
-    } catch (error) {
-      const requestDidNotMakeIt = this.requestTimedOutOrDidNotReachDestination(error as Record<string, unknown>)
-      const tooManyRetryAttempts = retryAttempt && retryAttempt > 2
-      if (!tooManyRetryAttempts && requestDidNotMakeIt) {
-        await this.timer.sleep(50)
-
-        const nextRetryAttempt = retryAttempt ? retryAttempt + 1 : 1
-
-        return this.validateSession(headers, nextRetryAttempt)
-      }
-
-      throw error
-    }
+    })
   }
 
   async callSyncingServer(
