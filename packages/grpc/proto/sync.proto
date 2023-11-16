@@ -1,0 +1,151 @@
+syntax = "proto3";
+
+package sync;
+
+message ItemHashRepresentation {
+  string uuid = 1;
+  string user_uuid = 2;
+  optional string content = 3;
+  optional string content_type = 4;
+  optional bool deleted = 5;
+  optional string duplicate_of = 6;
+  optional string auth_hash = 7;
+  optional string enc_item_key = 8;
+  optional string items_key_id = 9;
+  optional string key_system_identifier = 10;
+  optional string shared_vault_uuid = 11;
+  optional string created_at = 12;
+  optional uint64 created_at_timestamp = 13;
+  optional string updated_at = 14;
+  optional uint64 updated_at_timestamp = 15;
+}
+
+
+message ItemConflictRepresentation {
+  optional ItemRepresentation server_item = 1;
+  optional ItemHashRepresentation unsaved_item = 2;
+  string type = 3;
+}
+
+message ItemRepresentation {
+  string uuid = 1;
+  optional string items_key_id = 2;
+  optional string duplicate_of = 3;
+  optional string enc_item_key = 4;
+  optional string content = 5;
+  string content_type = 6;
+  optional string auth_hash = 7;
+  bool deleted = 8;
+  string created_at = 9;
+  uint64 created_at_timestamp = 10;
+  string updated_at = 11;
+  uint64 updated_at_timestamp = 12;
+  optional string updated_with_session = 13;
+  optional string key_system_identifier = 14;
+  optional string shared_vault_uuid = 15;
+  optional string user_uuid = 16;
+  optional string last_edited_by_uuid = 17;
+}
+
+message SavedItemRepresentation {
+  string uuid = 1;
+  optional string duplicate_of = 2;
+  string content_type = 3;
+  optional string auth_hash = 4;
+  bool deleted = 5;
+  string created_at = 6;
+  uint64 created_at_timestamp = 7;
+  string updated_at = 8;
+  uint64 updated_at_timestamp = 9;
+  optional string key_system_identifier = 10;
+  optional string shared_vault_uuid = 11;
+  optional string user_uuid = 12;
+  optional string last_edited_by_uuid = 13;
+}
+
+message MessageRepresentation {
+  string uuid = 1;
+  string recipient_uuid = 2;
+  string sender_uuid = 3;
+  string encrypted_message = 4;
+  optional string replaceability_identifier = 5;
+  uint64 created_at_timestamp = 6;
+  uint64 updated_at_timestamp = 7;
+}
+
+message SharedVaultRepresentation {
+  string uuid = 1;
+  string user_uuid = 2;
+  uint32 file_upload_bytes_used = 3;
+  uint64 created_at_timestamp = 4;
+  uint64 updated_at_timestamp = 5;
+}
+
+message SharedVaultInviteRepresentation {
+  string uuid = 1;
+  string shared_vault_uuid = 2;
+  string user_uuid = 3;
+  string sender_uuid = 4;
+  string encrypted_message = 5;
+  string permission = 6;
+  uint64 created_at_timestamp = 7;
+  uint64 updated_at_timestamp = 8;
+}
+
+message NotificationRepresentation {
+  string uuid = 1;
+  string user_uuid = 2;
+  string type = 3;
+  string payload = 4;
+  uint64 created_at_timestamp = 5;
+  uint64 updated_at_timestamp = 6;
+}
+
+message ItemHash {
+  string uuid = 1;
+  string user_uuid = 2;
+  optional string content = 3;
+  optional string content_type = 4;
+  optional bool deleted = 5;
+  optional string duplicate_of = 6;
+  optional string auth_hash = 7;
+  optional string enc_item_key = 8;
+  optional string items_key_id = 9;
+  optional string key_system_identifier = 10;
+  optional string shared_vault_uuid = 11;
+  optional string created_at = 12;
+  optional uint64 created_at_timestamp = 13;
+  optional string updated_at = 14;
+  optional uint64 updated_at_timestamp = 15;
+}
+
+message SyncResponse {
+  repeated ItemRepresentation retrieved_items = 1;
+  repeated SavedItemRepresentation saved_items = 2;
+  repeated ItemConflictRepresentation conflicts = 3;
+  string sync_token = 4;
+  optional string cursor_token = 5;
+  repeated MessageRepresentation messages = 6;
+  repeated SharedVaultRepresentation shared_vaults = 7;
+  repeated SharedVaultInviteRepresentation shared_vault_invites = 8;
+  repeated NotificationRepresentation notifications = 9;
+}
+
+message SyncRequest {
+  repeated ItemHash items = 1;
+  repeated string shared_vault_uuids = 2;
+  optional bool compute_integrity = 3;
+  optional string sync_token = 4;
+  optional string cursor_token = 5;
+  optional uint32 limit = 6;
+  optional string content_type = 7;
+  optional string api_version = 8;
+  optional string snjs_version = 9;
+  optional bool readonly_access = 10;
+  optional string session_uuid = 11;
+  optional string user_uuid = 12;
+}
+
+service Syncing {
+  rpc sync(SyncRequest) returns (SyncResponse) {}
+}

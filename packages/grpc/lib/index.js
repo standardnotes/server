@@ -16,3 +16,5 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
 Object.defineProperty(exports, "__esModule", { value: true });
 __exportStar(require("./auth_grpc_pb"), exports);
 __exportStar(require("./auth_pb"), exports);
+__exportStar(require("./sync_grpc_pb"), exports);
+__exportStar(require("./sync_pb"), exports);
