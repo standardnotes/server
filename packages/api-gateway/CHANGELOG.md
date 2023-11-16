@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.84.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.83.5...@standardnotes/api-gateway@1.84.0) (2023-11-16)
+
+### Features
+
+* add grpc sessions validation server ([#928](https://github.com/standardnotes/api-gateway/issues/928)) ([4f62cac](https://github.com/standardnotes/api-gateway/commit/4f62cac213a6b5f503040ef6319e5198967974ce))
+
 ## [1.83.5](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.83.4...@standardnotes/api-gateway@1.83.5) (2023-11-14)
 
 ### Bug Fixes

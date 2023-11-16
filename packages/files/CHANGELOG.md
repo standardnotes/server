@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.35.0](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.34.2...@standardnotes/files-server@1.35.0) (2023-11-16)
+
+### Features
+
+* add grpc sessions validation server ([#928](https://github.com/standardnotes/files/issues/928)) ([4f62cac](https://github.com/standardnotes/files/commit/4f62cac213a6b5f503040ef6319e5198967974ce))
+
 ## [1.34.2](https://github.com/standardnotes/files/compare/@standardnotes/files-server@1.34.1...@standardnotes/files-server@1.34.2) (2023-11-13)
 
 **Note:** Version bump only for package @standardnotes/files-server
