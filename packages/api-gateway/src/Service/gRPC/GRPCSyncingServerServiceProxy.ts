@@ -16,25 +16,33 @@ export class GRPCSyncingServerServiceProxy {
     request: Request,
     response: Response,
     payload?: Record<string, unknown> | string,
-  ): Promise<SyncResponseHttpRepresentation> {
+  ): Promise<{ status: number; data: unknown }> {
     return new Promise((resolve, reject) => {
       try {
         const syncRequest = this.syncRequestGRPCMapper.toProjection(payload as Record<string, unknown>)
 
         const metadata = new Metadata()
+        metadata.set('x-user-uuid', response.locals.user.uuid)
         metadata.set('x-snjs-version', request.headers['x-snjs-version'] as string)
-        metadata.set('userUuid', response.locals.user.uuid)
-        metadata.set('readonlyAccess', response.locals.readonlyAccess ? 'true' : 'false')
+        metadata.set('x-read-only-access', response.locals.readonlyAccess ? 'true' : 'false')
         if (response.locals.session) {
-          metadata.set('sessionUuid', response.locals.session.uuid)
+          metadata.set('x-session-uuid', response.locals.session.uuid)
         }
 
         this.syncingClient.syncItems(syncRequest, metadata, (error, syncResponse) => {
           if (error) {
+            const responseCode = error.metadata.get('x-sync-error-response-code').pop()
+            if (responseCode) {
+              return resolve({
+                status: +responseCode,
+                data: { error: { message: error.metadata.get('x-sync-error-message').pop() } },
+              })
+            }
+
             return reject(error)
           }
 
-          return resolve(this.syncResponseGRPCMapper.toProjection(syncResponse))
+          return resolve({ status: 200, data: this.syncResponseGRPCMapper.toProjection(syncResponse) })
         })
       } catch (error) {
         reject(error)

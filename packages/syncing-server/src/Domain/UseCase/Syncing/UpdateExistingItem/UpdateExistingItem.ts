@@ -40,7 +40,7 @@ export class UpdateExistingItem implements UseCaseInterface<Item> {
   async execute(dto: UpdateExistingItemDTO): Promise<Result<Item>> {
     const userUuidOrError = Uuid.create(dto.performingUserUuid)
     if (userUuidOrError.isFailed()) {
-      return Result.fail(userUuidOrError.getError())
+      return Result.fail(`User uuid is invalid: ${userUuidOrError.getError()}`)
     }
     const userUuid = userUuidOrError.getValue()
 
@@ -61,7 +61,7 @@ export class UpdateExistingItem implements UseCaseInterface<Item> {
     if (dto.sessionUuid) {
       const sessionUuidOrError = Uuid.create(dto.sessionUuid)
       if (sessionUuidOrError.isFailed()) {
-        return Result.fail(sessionUuidOrError.getError())
+        return Result.fail(`Session uuid is invalid: ${sessionUuidOrError.getError()}`)
       }
       sessionUuid = sessionUuidOrError.getValue()
     }
@@ -88,7 +88,7 @@ export class UpdateExistingItem implements UseCaseInterface<Item> {
     if (dto.itemHash.props.duplicate_of) {
       const duplicateOfOrError = Uuid.create(dto.itemHash.props.duplicate_of)
       if (duplicateOfOrError.isFailed()) {
-        return Result.fail(duplicateOfOrError.getError())
+        return Result.fail(`Duplicate of uuid is invalid: ${duplicateOfOrError.getError()}`)
       }
       wasMarkedAsDuplicate = dto.existingItem.props.duplicateOf === null
       dto.existingItem.props.duplicateOf = duplicateOfOrError.getValue()

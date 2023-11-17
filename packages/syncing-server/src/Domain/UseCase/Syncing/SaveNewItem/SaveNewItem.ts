@@ -29,7 +29,7 @@ export class SaveNewItem implements UseCaseInterface<Item> {
   async execute(dto: SaveNewItemDTO): Promise<Result<Item>> {
     const uuidOrError = Uuid.create(dto.itemHash.props.uuid)
     if (uuidOrError.isFailed()) {
-      return Result.fail(uuidOrError.getError())
+      return Result.fail(`Item uuid is invalid: ${uuidOrError.getError()}`)
     }
     const uuid = uuidOrError.getValue()
 
@@ -37,13 +37,13 @@ export class SaveNewItem implements UseCaseInterface<Item> {
     if (dto.sessionUuid) {
       const sessionUuidOrError = Uuid.create(dto.sessionUuid)
       if (sessionUuidOrError.isFailed()) {
-        return Result.fail(sessionUuidOrError.getError())
+        return Result.fail(`Session uuid is invalid: ${sessionUuidOrError.getError()}`)
       }
       updatedWithSession = sessionUuidOrError.getValue()
     }
     const userUuidOrError = Uuid.create(dto.userUuid)
     if (userUuidOrError.isFailed()) {
-      return Result.fail(userUuidOrError.getError())
+      return Result.fail(`User uuid is invalid: ${userUuidOrError.getError()}`)
     }
     const userUuid = userUuidOrError.getValue()
 
@@ -57,7 +57,7 @@ export class SaveNewItem implements UseCaseInterface<Item> {
     if (dto.itemHash.props.duplicate_of) {
       const duplicateOfOrError = Uuid.create(dto.itemHash.props.duplicate_of)
       if (duplicateOfOrError.isFailed()) {
-        return Result.fail(duplicateOfOrError.getError())
+        return Result.fail(`Duplicate of uuid is invalid: ${duplicateOfOrError.getError()}`)
       }
       duplicateOf = duplicateOfOrError.getValue()
     }

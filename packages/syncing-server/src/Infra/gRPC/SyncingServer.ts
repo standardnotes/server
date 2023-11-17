@@ -71,7 +71,7 @@ export class SyncingServer implements ISyncingServer {
     }
 
     const syncResult = await this.syncItemsUseCase.execute({
-      userUuid: call.metadata.get('userUuid').pop() as string,
+      userUuid: call.metadata.get('x-user-uuid').pop() as string,
       itemHashes,
       computeIntegrityHash: call.request.getComputeIntegrity() === true,
       syncToken: call.request.getSyncToken(),
@@ -80,8 +80,8 @@ export class SyncingServer implements ISyncingServer {
       contentType: call.request.getContentType(),
       apiVersion: call.request.getApiVersion() ?? ApiVersion.v20161215,
       snjsVersion: call.metadata.get('x-snjs-version').pop() as string,
-      readOnlyAccess: call.metadata.get('readonlyAccess').pop() === 'true',
-      sessionUuid: call.metadata.get('sessionUuid').pop() as string,
+      readOnlyAccess: call.metadata.get('x-read-only-access').pop() === 'true',
+      sessionUuid: call.metadata.get('x-session-uuid').pop() as string,
       sharedVaultUuids,
     })
     if (syncResult.isFailed()) {

@@ -91,7 +91,7 @@ export class GRPCServiceProxy implements ServiceProxyInterface {
     if (endpoint === 'items/sync') {
       const result = await this.gRPCSyncingServerServiceProxy.sync(request, response, payload)
 
-      response.status(200).send(result)
+      response.status(result.status).send(result.data)
 
       return
     }
