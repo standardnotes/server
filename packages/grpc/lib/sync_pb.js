@@ -3898,20 +3898,19 @@ proto.sync.ItemHash.prototype.toObject = function(opt_includeInstance) {
 proto.sync.ItemHash.toObject = function(includeInstance, msg) {
   var f, obj = {
     uuid: jspb.Message.getFieldWithDefault(msg, 1, ""),
-    userUuid: jspb.Message.getFieldWithDefault(msg, 2, ""),
-    content: jspb.Message.getFieldWithDefault(msg, 3, ""),
-    contentType: jspb.Message.getFieldWithDefault(msg, 4, ""),
-    deleted: jspb.Message.getBooleanFieldWithDefault(msg, 5, false),
-    duplicateOf: jspb.Message.getFieldWithDefault(msg, 6, ""),
-    authHash: jspb.Message.getFieldWithDefault(msg, 7, ""),
-    encItemKey: jspb.Message.getFieldWithDefault(msg, 8, ""),
-    itemsKeyId: jspb.Message.getFieldWithDefault(msg, 9, ""),
-    keySystemIdentifier: jspb.Message.getFieldWithDefault(msg, 10, ""),
-    sharedVaultUuid: jspb.Message.getFieldWithDefault(msg, 11, ""),
-    createdAt: jspb.Message.getFieldWithDefault(msg, 12, ""),
-    createdAtTimestamp: jspb.Message.getFieldWithDefault(msg, 13, 0),
-    updatedAt: jspb.Message.getFieldWithDefault(msg, 14, ""),
-    updatedAtTimestamp: jspb.Message.getFieldWithDefault(msg, 15, 0)
+    content: jspb.Message.getFieldWithDefault(msg, 2, ""),
+    contentType: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    deleted: jspb.Message.getBooleanFieldWithDefault(msg, 4, false),
+    duplicateOf: jspb.Message.getFieldWithDefault(msg, 5, ""),
+    authHash: jspb.Message.getFieldWithDefault(msg, 6, ""),
+    encItemKey: jspb.Message.getFieldWithDefault(msg, 7, ""),
+    itemsKeyId: jspb.Message.getFieldWithDefault(msg, 8, ""),
+    keySystemIdentifier: jspb.Message.getFieldWithDefault(msg, 9, ""),
+    sharedVaultUuid: jspb.Message.getFieldWithDefault(msg, 10, ""),
+    createdAt: jspb.Message.getFieldWithDefault(msg, 11, ""),
+    createdAtTimestamp: jspb.Message.getFieldWithDefault(msg, 12, 0),
+    updatedAt: jspb.Message.getFieldWithDefault(msg, 13, ""),
+    updatedAtTimestamp: jspb.Message.getFieldWithDefault(msg, 14, 0)
   };
 
   if (includeInstance) {
@@ -3954,57 +3953,53 @@ proto.sync.ItemHash.deserializeBinaryFromReader = function(msg, reader) {
       break;
     case 2:
       var value = /** @type {string} */ (reader.readString());
-      msg.setUserUuid(value);
+      msg.setContent(value);
       break;
     case 3:
       var value = /** @type {string} */ (reader.readString());
-      msg.setContent(value);
-      break;
-    case 4:
-      var value = /** @type {string} */ (reader.readString());
       msg.setContentType(value);
       break;
-    case 5:
+    case 4:
       var value = /** @type {boolean} */ (reader.readBool());
       msg.setDeleted(value);
       break;
-    case 6:
+    case 5:
       var value = /** @type {string} */ (reader.readString());
       msg.setDuplicateOf(value);
       break;
-    case 7:
+    case 6:
       var value = /** @type {string} */ (reader.readString());
       msg.setAuthHash(value);
       break;
-    case 8:
+    case 7:
       var value = /** @type {string} */ (reader.readString());
       msg.setEncItemKey(value);
       break;
-    case 9:
+    case 8:
       var value = /** @type {string} */ (reader.readString());
       msg.setItemsKeyId(value);
       break;
-    case 10:
+    case 9:
       var value = /** @type {string} */ (reader.readString());
       msg.setKeySystemIdentifier(value);
       break;
-    case 11:
+    case 10:
       var value = /** @type {string} */ (reader.readString());
       msg.setSharedVaultUuid(value);
       break;
-    case 12:
+    case 11:
       var value = /** @type {string} */ (reader.readString());
       msg.setCreatedAt(value);
       break;
-    case 13:
+    case 12:
       var value = /** @type {number} */ (reader.readUint64());
       msg.setCreatedAtTimestamp(value);
       break;
-    case 14:
+    case 13:
       var value = /** @type {string} */ (reader.readString());
       msg.setUpdatedAt(value);
       break;
-    case 15:
+    case 14:
       var value = /** @type {number} */ (reader.readUint64());
       msg.setUpdatedAtTimestamp(value);
       break;
@@ -4044,8 +4039,8 @@ proto.sync.ItemHash.serializeBinaryToWriter = function(message, writer) {
       f
     );
   }
-  f = message.getUserUuid();
-  if (f.length > 0) {
+  f = /** @type {string} */ (jspb.Message.getField(message, 2));
+  if (f != null) {
     writer.writeString(
       2,
       f
@@ -4058,16 +4053,16 @@ proto.sync.ItemHash.serializeBinaryToWriter = function(message, writer) {
       f
     );
   }
-  f = /** @type {string} */ (jspb.Message.getField(message, 4));
+  f = /** @type {boolean} */ (jspb.Message.getField(message, 4));
   if (f != null) {
-    writer.writeString(
+    writer.writeBool(
       4,
       f
     );
   }
-  f = /** @type {boolean} */ (jspb.Message.getField(message, 5));
+  f = /** @type {string} */ (jspb.Message.getField(message, 5));
   if (f != null) {
-    writer.writeBool(
+    writer.writeString(
       5,
       f
     );
@@ -4114,31 +4109,24 @@ proto.sync.ItemHash.serializeBinaryToWriter = function(message, writer) {
       f
     );
   }
-  f = /** @type {string} */ (jspb.Message.getField(message, 12));
+  f = /** @type {number} */ (jspb.Message.getField(message, 12));
   if (f != null) {
-    writer.writeString(
+    writer.writeUint64(
       12,
       f
     );
   }
-  f = /** @type {number} */ (jspb.Message.getField(message, 13));
+  f = /** @type {string} */ (jspb.Message.getField(message, 13));
   if (f != null) {
-    writer.writeUint64(
+    writer.writeString(
       13,
       f
     );
   }
-  f = /** @type {string} */ (jspb.Message.getField(message, 14));
-  if (f != null) {
-    writer.writeString(
-      14,
-      f
-    );
-  }
-  f = /** @type {number} */ (jspb.Message.getField(message, 15));
+  f = /** @type {number} */ (jspb.Message.getField(message, 14));
   if (f != null) {
     writer.writeUint64(
-      15,
+      14,
       f
     );
   }
@@ -4164,10 +4152,10 @@ proto.sync.ItemHash.prototype.setUuid = function(value) {
 
 
 /**
- * optional string user_uuid = 2;
+ * optional string content = 2;
  * @return {string}
  */
-proto.sync.ItemHash.prototype.getUserUuid = function() {
+proto.sync.ItemHash.prototype.getContent = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
 };
 
@@ -4176,26 +4164,8 @@ proto.sync.ItemHash.prototype.getUserUuid = function() {
  * @param {string} value
  * @return {!proto.sync.ItemHash} returns this
  */
-proto.sync.ItemHash.prototype.setUserUuid = function(value) {
-  return jspb.Message.setProto3StringField(this, 2, value);
-};
-
-
-/**
- * optional string content = 3;
- * @return {string}
- */
-proto.sync.ItemHash.prototype.getContent = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
-};
-
-
-/**
- * @param {string} value
- * @return {!proto.sync.ItemHash} returns this
- */
 proto.sync.ItemHash.prototype.setContent = function(value) {
-  return jspb.Message.setField(this, 3, value);
+  return jspb.Message.setField(this, 2, value);
 };
 
 
@@ -4204,7 +4174,7 @@ proto.sync.ItemHash.prototype.setContent = function(value) {
  * @return {!proto.sync.ItemHash} returns this
  */
 proto.sync.ItemHash.prototype.clearContent = function() {
-  return jspb.Message.setField(this, 3, undefined);
+  return jspb.Message.setField(this, 2, undefined);
 };
 
 
@@ -4213,16 +4183,16 @@ proto.sync.ItemHash.prototype.clearContent = function() {
  * @return {boolean}
  */
 proto.sync.ItemHash.prototype.hasContent = function() {
-  return jspb.Message.getField(this, 3) != null;
+  return jspb.Message.getField(this, 2) != null;
 };
 
 
 /**
- * optional string content_type = 4;
+ * optional string content_type = 3;
  * @return {string}
  */
 proto.sync.ItemHash.prototype.getContentType = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
 };
 
 
@@ -4231,7 +4201,7 @@ proto.sync.ItemHash.prototype.getContentType = function() {
  * @return {!proto.sync.ItemHash} returns this
  */
 proto.sync.ItemHash.prototype.setContentType = function(value) {
-  return jspb.Message.setField(this, 4, value);
+  return jspb.Message.setField(this, 3, value);
 };
 
 
@@ -4240,7 +4210,7 @@ proto.sync.ItemHash.prototype.setContentType = function(value) {
  * @return {!proto.sync.ItemHash} returns this
  */
 proto.sync.ItemHash.prototype.clearContentType = function() {
-  return jspb.Message.setField(this, 4, undefined);
+  return jspb.Message.setField(this, 3, undefined);
 };
 
 
@@ -4249,16 +4219,16 @@ proto.sync.ItemHash.prototype.clearContentType = function() {
  * @return {boolean}
  */
 proto.sync.ItemHash.prototype.hasContentType = function() {
-  return jspb.Message.getField(this, 4) != null;
+  return jspb.Message.getField(this, 3) != null;
 };
 
 
 /**
- * optional bool deleted = 5;
+ * optional bool deleted = 4;
  * @return {boolean}
  */
 proto.sync.ItemHash.prototype.getDeleted = function() {
-  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 5, false));
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 4, false));
 };
 
 
@@ -4267,7 +4237,7 @@ proto.sync.ItemHash.prototype.getDeleted = function() {
  * @return {!proto.sync.ItemHash} returns this
  */
 proto.sync.ItemHash.prototype.setDeleted = function(value) {
-  return jspb.Message.setField(this, 5, value);
+  return jspb.Message.setField(this, 4, value);
 };
 
 
@@ -4276,7 +4246,7 @@ proto.sync.ItemHash.prototype.setDeleted = function(value) {
  * @return {!proto.sync.ItemHash} returns this
  */
 proto.sync.ItemHash.prototype.clearDeleted = function() {
-  return jspb.Message.setField(this, 5, undefined);
+  return jspb.Message.setField(this, 4, undefined);
 };
 
 
@@ -4285,16 +4255,16 @@ proto.sync.ItemHash.prototype.clearDeleted = function() {
  * @return {boolean}
  */
 proto.sync.ItemHash.prototype.hasDeleted = function() {
-  return jspb.Message.getField(this, 5) != null;
+  return jspb.Message.getField(this, 4) != null;
 };
 
 
 /**
- * optional string duplicate_of = 6;
+ * optional string duplicate_of = 5;
  * @return {string}
  */
 proto.sync.ItemHash.prototype.getDuplicateOf = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 6, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
 };
 
 
@@ -4303,7 +4273,7 @@ proto.sync.ItemHash.prototype.getDuplicateOf = function() {
  * @return {!proto.sync.ItemHash} returns this
  */
 proto.sync.ItemHash.prototype.setDuplicateOf = function(value) {
-  return jspb.Message.setField(this, 6, value);
+  return jspb.Message.setField(this, 5, value);
 };
 
 
@@ -4312,7 +4282,7 @@ proto.sync.ItemHash.prototype.setDuplicateOf = function(value) {
  * @return {!proto.sync.ItemHash} returns this
  */
 proto.sync.ItemHash.prototype.clearDuplicateOf = function() {
-  return jspb.Message.setField(this, 6, undefined);
+  return jspb.Message.setField(this, 5, undefined);
 };
 
 
@@ -4321,16 +4291,16 @@ proto.sync.ItemHash.prototype.clearDuplicateOf = function() {
  * @return {boolean}
  */
 proto.sync.ItemHash.prototype.hasDuplicateOf = function() {
-  return jspb.Message.getField(this, 6) != null;
+  return jspb.Message.getField(this, 5) != null;
 };
 
 
 /**
- * optional string auth_hash = 7;
+ * optional string auth_hash = 6;
  * @return {string}
  */
 proto.sync.ItemHash.prototype.getAuthHash = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 7, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 6, ""));
 };
 
 
@@ -4339,7 +4309,7 @@ proto.sync.ItemHash.prototype.getAuthHash = function() {
  * @return {!proto.sync.ItemHash} returns this
  */
 proto.sync.ItemHash.prototype.setAuthHash = function(value) {
-  return jspb.Message.setField(this, 7, value);
+  return jspb.Message.setField(this, 6, value);
 };
 
 
@@ -4348,7 +4318,7 @@ proto.sync.ItemHash.prototype.setAuthHash = function(value) {
  * @return {!proto.sync.ItemHash} returns this
  */
 proto.sync.ItemHash.prototype.clearAuthHash = function() {
-  return jspb.Message.setField(this, 7, undefined);
+  return jspb.Message.setField(this, 6, undefined);
 };
 
 
@@ -4357,16 +4327,16 @@ proto.sync.ItemHash.prototype.clearAuthHash = function() {
  * @return {boolean}
  */
 proto.sync.ItemHash.prototype.hasAuthHash = function() {
-  return jspb.Message.getField(this, 7) != null;
+  return jspb.Message.getField(this, 6) != null;
 };
 
 
 /**
- * optional string enc_item_key = 8;
+ * optional string enc_item_key = 7;
  * @return {string}
  */
 proto.sync.ItemHash.prototype.getEncItemKey = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 8, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 7, ""));
 };
 
 
@@ -4375,7 +4345,7 @@ proto.sync.ItemHash.prototype.getEncItemKey = function() {
  * @return {!proto.sync.ItemHash} returns this
  */
 proto.sync.ItemHash.prototype.setEncItemKey = function(value) {
-  return jspb.Message.setField(this, 8, value);
+  return jspb.Message.setField(this, 7, value);
 };
 
 
@@ -4384,7 +4354,7 @@ proto.sync.ItemHash.prototype.setEncItemKey = function(value) {
  * @return {!proto.sync.ItemHash} returns this
  */
 proto.sync.ItemHash.prototype.clearEncItemKey = function() {
-  return jspb.Message.setField(this, 8, undefined);
+  return jspb.Message.setField(this, 7, undefined);
 };
 
 
@@ -4393,16 +4363,16 @@ proto.sync.ItemHash.prototype.clearEncItemKey = function() {
  * @return {boolean}
  */
 proto.sync.ItemHash.prototype.hasEncItemKey = function() {
-  return jspb.Message.getField(this, 8) != null;
+  return jspb.Message.getField(this, 7) != null;
 };
 
 
 /**
- * optional string items_key_id = 9;
+ * optional string items_key_id = 8;
  * @return {string}
  */
 proto.sync.ItemHash.prototype.getItemsKeyId = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 9, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 8, ""));
 };
 
 
@@ -4411,7 +4381,7 @@ proto.sync.ItemHash.prototype.getItemsKeyId = function() {
  * @return {!proto.sync.ItemHash} returns this
  */
 proto.sync.ItemHash.prototype.setItemsKeyId = function(value) {
-  return jspb.Message.setField(this, 9, value);
+  return jspb.Message.setField(this, 8, value);
 };
 
 
@@ -4420,7 +4390,7 @@ proto.sync.ItemHash.prototype.setItemsKeyId = function(value) {
  * @return {!proto.sync.ItemHash} returns this
  */
 proto.sync.ItemHash.prototype.clearItemsKeyId = function() {
-  return jspb.Message.setField(this, 9, undefined);
+  return jspb.Message.setField(this, 8, undefined);
 };
 
 
@@ -4429,16 +4399,16 @@ proto.sync.ItemHash.prototype.clearItemsKeyId = function() {
  * @return {boolean}
  */
 proto.sync.ItemHash.prototype.hasItemsKeyId = function() {
-  return jspb.Message.getField(this, 9) != null;
+  return jspb.Message.getField(this, 8) != null;
 };
 
 
 /**
- * optional string key_system_identifier = 10;
+ * optional string key_system_identifier = 9;
  * @return {string}
  */
 proto.sync.ItemHash.prototype.getKeySystemIdentifier = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 10, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 9, ""));
 };
 
 
@@ -4447,7 +4417,7 @@ proto.sync.ItemHash.prototype.getKeySystemIdentifier = function() {
  * @return {!proto.sync.ItemHash} returns this
  */
 proto.sync.ItemHash.prototype.setKeySystemIdentifier = function(value) {
-  return jspb.Message.setField(this, 10, value);
+  return jspb.Message.setField(this, 9, value);
 };
 
 
@@ -4456,7 +4426,7 @@ proto.sync.ItemHash.prototype.setKeySystemIdentifier = function(value) {
  * @return {!proto.sync.ItemHash} returns this
  */
 proto.sync.ItemHash.prototype.clearKeySystemIdentifier = function() {
-  return jspb.Message.setField(this, 10, undefined);
+  return jspb.Message.setField(this, 9, undefined);
 };
 
 
@@ -4465,16 +4435,16 @@ proto.sync.ItemHash.prototype.clearKeySystemIdentifier = function() {
  * @return {boolean}
  */
 proto.sync.ItemHash.prototype.hasKeySystemIdentifier = function() {
-  return jspb.Message.getField(this, 10) != null;
+  return jspb.Message.getField(this, 9) != null;
 };
 
 
 /**
- * optional string shared_vault_uuid = 11;
+ * optional string shared_vault_uuid = 10;
  * @return {string}
  */
 proto.sync.ItemHash.prototype.getSharedVaultUuid = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 11, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 10, ""));
 };
 
 
@@ -4483,7 +4453,7 @@ proto.sync.ItemHash.prototype.getSharedVaultUuid = function() {
  * @return {!proto.sync.ItemHash} returns this
  */
 proto.sync.ItemHash.prototype.setSharedVaultUuid = function(value) {
-  return jspb.Message.setField(this, 11, value);
+  return jspb.Message.setField(this, 10, value);
 };
 
 
@@ -4492,7 +4462,7 @@ proto.sync.ItemHash.prototype.setSharedVaultUuid = function(value) {
  * @return {!proto.sync.ItemHash} returns this
  */
 proto.sync.ItemHash.prototype.clearSharedVaultUuid = function() {
-  return jspb.Message.setField(this, 11, undefined);
+  return jspb.Message.setField(this, 10, undefined);
 };
 
 
@@ -4501,16 +4471,16 @@ proto.sync.ItemHash.prototype.clearSharedVaultUuid = function() {
  * @return {boolean}
  */
 proto.sync.ItemHash.prototype.hasSharedVaultUuid = function() {
-  return jspb.Message.getField(this, 11) != null;
+  return jspb.Message.getField(this, 10) != null;
 };
 
 
 /**
- * optional string created_at = 12;
+ * optional string created_at = 11;
  * @return {string}
  */
 proto.sync.ItemHash.prototype.getCreatedAt = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 12, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 11, ""));
 };
 
 
@@ -4519,7 +4489,7 @@ proto.sync.ItemHash.prototype.getCreatedAt = function() {
  * @return {!proto.sync.ItemHash} returns this
  */
 proto.sync.ItemHash.prototype.setCreatedAt = function(value) {
-  return jspb.Message.setField(this, 12, value);
+  return jspb.Message.setField(this, 11, value);
 };
 
 
@@ -4528,7 +4498,7 @@ proto.sync.ItemHash.prototype.setCreatedAt = function(value) {
  * @return {!proto.sync.ItemHash} returns this
  */
 proto.sync.ItemHash.prototype.clearCreatedAt = function() {
-  return jspb.Message.setField(this, 12, undefined);
+  return jspb.Message.setField(this, 11, undefined);
 };
 
 
@@ -4537,16 +4507,16 @@ proto.sync.ItemHash.prototype.clearCreatedAt = function() {
  * @return {boolean}
  */
 proto.sync.ItemHash.prototype.hasCreatedAt = function() {
-  return jspb.Message.getField(this, 12) != null;
+  return jspb.Message.getField(this, 11) != null;
 };
 
 
 /**
- * optional uint64 created_at_timestamp = 13;
+ * optional uint64 created_at_timestamp = 12;
  * @return {number}
  */
 proto.sync.ItemHash.prototype.getCreatedAtTimestamp = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 13, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 12, 0));
 };
 
 
@@ -4555,7 +4525,7 @@ proto.sync.ItemHash.prototype.getCreatedAtTimestamp = function() {
  * @return {!proto.sync.ItemHash} returns this
  */
 proto.sync.ItemHash.prototype.setCreatedAtTimestamp = function(value) {
-  return jspb.Message.setField(this, 13, value);
+  return jspb.Message.setField(this, 12, value);
 };
 
 
@@ -4564,7 +4534,7 @@ proto.sync.ItemHash.prototype.setCreatedAtTimestamp = function(value) {
  * @return {!proto.sync.ItemHash} returns this
  */
 proto.sync.ItemHash.prototype.clearCreatedAtTimestamp = function() {
-  return jspb.Message.setField(this, 13, undefined);
+  return jspb.Message.setField(this, 12, undefined);
 };
 
 
@@ -4573,16 +4543,16 @@ proto.sync.ItemHash.prototype.clearCreatedAtTimestamp = function() {
  * @return {boolean}
  */
 proto.sync.ItemHash.prototype.hasCreatedAtTimestamp = function() {
-  return jspb.Message.getField(this, 13) != null;
+  return jspb.Message.getField(this, 12) != null;
 };
 
 
 /**
- * optional string updated_at = 14;
+ * optional string updated_at = 13;
  * @return {string}
  */
 proto.sync.ItemHash.prototype.getUpdatedAt = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 14, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 13, ""));
 };
 
 
@@ -4591,7 +4561,7 @@ proto.sync.ItemHash.prototype.getUpdatedAt = function() {
  * @return {!proto.sync.ItemHash} returns this
  */
 proto.sync.ItemHash.prototype.setUpdatedAt = function(value) {
-  return jspb.Message.setField(this, 14, value);
+  return jspb.Message.setField(this, 13, value);
 };
 
 
@@ -4600,7 +4570,7 @@ proto.sync.ItemHash.prototype.setUpdatedAt = function(value) {
  * @return {!proto.sync.ItemHash} returns this
  */
 proto.sync.ItemHash.prototype.clearUpdatedAt = function() {
-  return jspb.Message.setField(this, 14, undefined);
+  return jspb.Message.setField(this, 13, undefined);
 };
 
 
@@ -4609,16 +4579,16 @@ proto.sync.ItemHash.prototype.clearUpdatedAt = function() {
  * @return {boolean}
  */
 proto.sync.ItemHash.prototype.hasUpdatedAt = function() {
-  return jspb.Message.getField(this, 14) != null;
+  return jspb.Message.getField(this, 13) != null;
 };
 
 
 /**
- * optional uint64 updated_at_timestamp = 15;
+ * optional uint64 updated_at_timestamp = 14;
  * @return {number}
  */
 proto.sync.ItemHash.prototype.getUpdatedAtTimestamp = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 15, 0));
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 14, 0));
 };
 
 
@@ -4627,7 +4597,7 @@ proto.sync.ItemHash.prototype.getUpdatedAtTimestamp = function() {
  * @return {!proto.sync.ItemHash} returns this
  */
 proto.sync.ItemHash.prototype.setUpdatedAtTimestamp = function(value) {
-  return jspb.Message.setField(this, 15, value);
+  return jspb.Message.setField(this, 14, value);
 };
 
 
@@ -4636,7 +4606,7 @@ proto.sync.ItemHash.prototype.setUpdatedAtTimestamp = function(value) {
  * @return {!proto.sync.ItemHash} returns this
  */
 proto.sync.ItemHash.prototype.clearUpdatedAtTimestamp = function() {
-  return jspb.Message.setField(this, 15, undefined);
+  return jspb.Message.setField(this, 14, undefined);
 };
 
 
@@ -4645,7 +4615,7 @@ proto.sync.ItemHash.prototype.clearUpdatedAtTimestamp = function() {
  * @return {boolean}
  */
 proto.sync.ItemHash.prototype.hasUpdatedAtTimestamp = function() {
-  return jspb.Message.getField(this, 15) != null;
+  return jspb.Message.getField(this, 14) != null;
 };
 
 
@@ -5252,11 +5222,7 @@ proto.sync.SyncRequest.toObject = function(includeInstance, msg) {
     cursorToken: jspb.Message.getFieldWithDefault(msg, 5, ""),
     limit: jspb.Message.getFieldWithDefault(msg, 6, 0),
     contentType: jspb.Message.getFieldWithDefault(msg, 7, ""),
-    apiVersion: jspb.Message.getFieldWithDefault(msg, 8, ""),
-    snjsVersion: jspb.Message.getFieldWithDefault(msg, 9, ""),
-    readonlyAccess: jspb.Message.getBooleanFieldWithDefault(msg, 10, false),
-    sessionUuid: jspb.Message.getFieldWithDefault(msg, 11, ""),
-    userUuid: jspb.Message.getFieldWithDefault(msg, 12, "")
+    apiVersion: jspb.Message.getFieldWithDefault(msg, 8, "")
   };
 
   if (includeInstance) {
@@ -5325,22 +5291,6 @@ proto.sync.SyncRequest.deserializeBinaryFromReader = function(msg, reader) {
     case 8:
       var value = /** @type {string} */ (reader.readString());
       msg.setApiVersion(value);
-      break;
-    case 9:
-      var value = /** @type {string} */ (reader.readString());
-      msg.setSnjsVersion(value);
-      break;
-    case 10:
-      var value = /** @type {boolean} */ (reader.readBool());
-      msg.setReadonlyAccess(value);
-      break;
-    case 11:
-      var value = /** @type {string} */ (reader.readString());
-      msg.setSessionUuid(value);
-      break;
-    case 12:
-      var value = /** @type {string} */ (reader.readString());
-      msg.setUserUuid(value);
       break;
     default:
       reader.skipField();
@@ -5425,34 +5375,6 @@ proto.sync.SyncRequest.serializeBinaryToWriter = function(message, writer) {
   if (f != null) {
     writer.writeString(
       8,
-      f
-    );
-  }
-  f = /** @type {string} */ (jspb.Message.getField(message, 9));
-  if (f != null) {
-    writer.writeString(
-      9,
-      f
-    );
-  }
-  f = /** @type {boolean} */ (jspb.Message.getField(message, 10));
-  if (f != null) {
-    writer.writeBool(
-      10,
-      f
-    );
-  }
-  f = /** @type {string} */ (jspb.Message.getField(message, 11));
-  if (f != null) {
-    writer.writeString(
-      11,
-      f
-    );
-  }
-  f = message.getUserUuid();
-  if (f.length > 0) {
-    writer.writeString(
-      12,
       f
     );
   }
@@ -5747,132 +5669,6 @@ proto.sync.SyncRequest.prototype.clearApiVersion = function() {
  */
 proto.sync.SyncRequest.prototype.hasApiVersion = function() {
   return jspb.Message.getField(this, 8) != null;
-};
-
-
-/**
- * optional string snjs_version = 9;
- * @return {string}
- */
-proto.sync.SyncRequest.prototype.getSnjsVersion = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 9, ""));
-};
-
-
-/**
- * @param {string} value
- * @return {!proto.sync.SyncRequest} returns this
- */
-proto.sync.SyncRequest.prototype.setSnjsVersion = function(value) {
-  return jspb.Message.setField(this, 9, value);
-};
-
-
-/**
- * Clears the field making it undefined.
- * @return {!proto.sync.SyncRequest} returns this
- */
-proto.sync.SyncRequest.prototype.clearSnjsVersion = function() {
-  return jspb.Message.setField(this, 9, undefined);
-};
-
-
-/**
- * Returns whether this field is set.
- * @return {boolean}
- */
-proto.sync.SyncRequest.prototype.hasSnjsVersion = function() {
-  return jspb.Message.getField(this, 9) != null;
-};
-
-
-/**
- * optional bool readonly_access = 10;
- * @return {boolean}
- */
-proto.sync.SyncRequest.prototype.getReadonlyAccess = function() {
-  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 10, false));
-};
-
-
-/**
- * @param {boolean} value
- * @return {!proto.sync.SyncRequest} returns this
- */
-proto.sync.SyncRequest.prototype.setReadonlyAccess = function(value) {
-  return jspb.Message.setField(this, 10, value);
-};
-
-
-/**
- * Clears the field making it undefined.
- * @return {!proto.sync.SyncRequest} returns this
- */
-proto.sync.SyncRequest.prototype.clearReadonlyAccess = function() {
-  return jspb.Message.setField(this, 10, undefined);
-};
-
-
-/**
- * Returns whether this field is set.
- * @return {boolean}
- */
-proto.sync.SyncRequest.prototype.hasReadonlyAccess = function() {
-  return jspb.Message.getField(this, 10) != null;
-};
-
-
-/**
- * optional string session_uuid = 11;
- * @return {string}
- */
-proto.sync.SyncRequest.prototype.getSessionUuid = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 11, ""));
-};
-
-
-/**
- * @param {string} value
- * @return {!proto.sync.SyncRequest} returns this
- */
-proto.sync.SyncRequest.prototype.setSessionUuid = function(value) {
-  return jspb.Message.setField(this, 11, value);
-};
-
-
-/**
- * Clears the field making it undefined.
- * @return {!proto.sync.SyncRequest} returns this
- */
-proto.sync.SyncRequest.prototype.clearSessionUuid = function() {
-  return jspb.Message.setField(this, 11, undefined);
-};
-
-
-/**
- * Returns whether this field is set.
- * @return {boolean}
- */
-proto.sync.SyncRequest.prototype.hasSessionUuid = function() {
-  return jspb.Message.getField(this, 11) != null;
-};
-
-
-/**
- * optional string user_uuid = 12;
- * @return {string}
- */
-proto.sync.SyncRequest.prototype.getUserUuid = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 12, ""));
-};
-
-
-/**
- * @param {string} value
- * @return {!proto.sync.SyncRequest} returns this
- */
-proto.sync.SyncRequest.prototype.setUserUuid = function(value) {
-  return jspb.Message.setProto3StringField(this, 12, value);
 };
 
 

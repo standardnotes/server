@@ -2,22 +2,23 @@ import * as grpc from '@grpc/grpc-js'
 import { Status } from '@grpc/grpc-js/build/src/constants'
 import { ISyncingServer, SyncRequest, SyncResponse } from '@standardnotes/grpc'
 import { Logger } from 'winston'
+import { MapperInterface } from '@standardnotes/domain-core'
 
 import { ItemHash } from '../../Domain/Item/ItemHash'
 import { SyncItems } from '../../Domain/UseCase/Syncing/SyncItems/SyncItems'
 import { ApiVersion } from '../../Domain/Api/ApiVersion'
 import { SyncResponseFactoryResolverInterface } from '../../Domain/Item/SyncResponse/SyncResponseFactoryResolverInterface'
+import { SyncResponse20200115 } from '../../Domain/Item/SyncResponse/SyncResponse20200115'
 
 export class SyncingServer implements ISyncingServer {
-  private readonly DEFAULT_ITEMS_LIMIT = 150
-
   constructor(
-    private syncItems: SyncItems,
-    protected syncResponseFactoryResolver: SyncResponseFactoryResolverInterface,
+    private syncItemsUseCase: SyncItems,
+    private syncResponseFactoryResolver: SyncResponseFactoryResolverInterface,
+    private mapper: MapperInterface<SyncResponse20200115, SyncResponse>,
     private logger: Logger,
   ) {}
 
-  async sync(
+  async syncItems(
     call: grpc.ServerUnaryCall<SyncRequest, SyncResponse>,
     callback: grpc.sendUnaryData<SyncResponse>,
   ): Promise<void> {
@@ -39,7 +40,7 @@ export class SyncingServer implements ISyncingServer {
         created_at_timestamp: itemHash.getCreatedAtTimestamp(),
         updated_at: itemHash.getUpdatedAt(),
         updated_at_timestamp: itemHash.getUpdatedAtTimestamp(),
-        user_uuid: itemHash.getUserUuid(),
+        user_uuid: call.metadata.get('userUuid').pop() as string,
         key_system_identifier: itemHash.getKeySystemIdentifier() ?? null,
         shared_vault_uuid: itemHash.getSharedVaultUuid() ?? null,
       })
@@ -69,18 +70,18 @@ export class SyncingServer implements ISyncingServer {
       sharedVaultUuids = sharedVaultUuidsList
     }
 
-    const syncResult = await this.syncItems.execute({
-      userUuid: call.request.getUserUuid(),
+    const syncResult = await this.syncItemsUseCase.execute({
+      userUuid: call.metadata.get('userUuid').pop() as string,
       itemHashes,
       computeIntegrityHash: call.request.getComputeIntegrity() === true,
       syncToken: call.request.getSyncToken(),
       cursorToken: call.request.getCursorToken(),
-      limit: call.request.getLimit() ?? this.DEFAULT_ITEMS_LIMIT,
+      limit: call.request.getLimit(),
       contentType: call.request.getContentType(),
       apiVersion: call.request.getApiVersion() ?? ApiVersion.v20161215,
-      snjsVersion: call.request.getSnjsVersion() ?? 'unknown',
-      readOnlyAccess: call.request.getReadonlyAccess() === true,
-      sessionUuid: call.request.getSessionUuid() ?? null,
+      snjsVersion: call.metadata.get('x-snjs-version').pop() as string,
+      readOnlyAccess: call.metadata.get('readonlyAccess').pop() === 'true',
+      sessionUuid: call.metadata.get('sessionUuid').pop() as string,
       sharedVaultUuids,
     })
     if (syncResult.isFailed()) {
@@ -103,6 +104,8 @@ export class SyncingServer implements ISyncingServer {
       .resolveSyncResponseFactoryVersion(call.request.getApiVersion())
       .createResponse(syncResult.getValue())
 
-    return this.json(syncResponse)
+    const projection = this.mapper.toProjection(syncResponse as SyncResponse20200115)
+
+    callback(null, projection)
   }
 }

@@ -103,20 +103,19 @@ message NotificationRepresentation {
 
 message ItemHash {
   string uuid = 1;
-  string user_uuid = 2;
-  optional string content = 3;
-  optional string content_type = 4;
-  optional bool deleted = 5;
-  optional string duplicate_of = 6;
-  optional string auth_hash = 7;
-  optional string enc_item_key = 8;
-  optional string items_key_id = 9;
-  optional string key_system_identifier = 10;
-  optional string shared_vault_uuid = 11;
-  optional string created_at = 12;
-  optional uint64 created_at_timestamp = 13;
-  optional string updated_at = 14;
-  optional uint64 updated_at_timestamp = 15;
+  optional string content = 2;
+  optional string content_type = 3;
+  optional bool deleted = 4;
+  optional string duplicate_of = 5;
+  optional string auth_hash = 6;
+  optional string enc_item_key = 7;
+  optional string items_key_id = 8;
+  optional string key_system_identifier = 9;
+  optional string shared_vault_uuid = 10;
+  optional string created_at = 11;
+  optional uint64 created_at_timestamp = 12;
+  optional string updated_at = 13;
+  optional uint64 updated_at_timestamp = 14;
 }
 
 message SyncResponse {
@@ -140,12 +139,8 @@ message SyncRequest {
   optional uint32 limit = 6;
   optional string content_type = 7;
   optional string api_version = 8;
-  optional string snjs_version = 9;
-  optional bool readonly_access = 10;
-  optional string session_uuid = 11;
-  string user_uuid = 12;
 }
 
 service Syncing {
-  rpc sync(SyncRequest) returns (SyncResponse) {}
+  rpc syncItems(SyncRequest) returns (SyncResponse) {}
 }

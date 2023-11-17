@@ -100,6 +100,8 @@ void container.load().then((container) => {
   grpcServer.bindAsync(`0.0.0.0:${gRPCPort}`, grpc.ServerCredentials.createInsecure(), (error, port) => {
     if (error) {
       logger.error(`Failed to bind gRPC server: ${error.message}`)
+
+      return
     }
 
     logger.info(`gRPC server bound on port ${port}`)

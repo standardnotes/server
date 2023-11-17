@@ -157,6 +157,9 @@ import { RemoveUserFromSharedVaults } from '../Domain/UseCase/SharedVaults/Remov
 import { TransferSharedVault } from '../Domain/UseCase/SharedVaults/TransferSharedVault/TransferSharedVault'
 import { TransferSharedVaultItems } from '../Domain/UseCase/SharedVaults/TransferSharedVaultItems/TransferSharedVaultItems'
 import { DumpItem } from '../Domain/UseCase/Syncing/DumpItem/DumpItem'
+import { SyncResponse20200115 } from '../Domain/Item/SyncResponse/SyncResponse20200115'
+import { SyncResponse } from '@standardnotes/grpc'
+import { SyncResponseGRPCMapper } from '../Mapping/gRPC/SyncResponseGRPCMapper'
 
 export class ContainerConfigLoader {
   private readonly DEFAULT_CONTENT_SIZE_TRANSFER_LIMIT = 10_000_000
@@ -351,6 +354,9 @@ export class ContainerConfigLoader {
     container
       .bind<MapperInterface<Notification, NotificationHttpRepresentation>>(TYPES.Sync_NotificationHttpMapper)
       .toConstantValue(new NotificationHttpMapper())
+    container
+      .bind<MapperInterface<SyncResponse20200115, SyncResponse>>(TYPES.Sync_SyncResponseGRPCMapper)
+      .toConstantValue(new SyncResponseGRPCMapper())
 
     // ORM
     container

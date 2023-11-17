@@ -72,16 +72,16 @@ export class HttpServiceProxy implements ServiceProxyInterface {
   async callSyncingServer(
     request: Request,
     response: Response,
-    endpointOrMethodIdentifier: string,
+    endpoint: string,
     payload?: Record<string, unknown> | string,
   ): Promise<void> {
-    await this.callServer(this.syncingServerJsUrl, request, response, endpointOrMethodIdentifier, payload)
+    await this.callServer(this.syncingServerJsUrl, request, response, endpoint, payload)
   }
 
   async callRevisionsServer(
     request: Request,
     response: Response,
-    endpointOrMethodIdentifier: string,
+    endpoint: string,
     payload?: Record<string, unknown> | string,
   ): Promise<void> {
     if (!this.revisionsServerUrl) {
@@ -89,37 +89,31 @@ export class HttpServiceProxy implements ServiceProxyInterface {
 
       return
     }
-    await this.callServer(this.revisionsServerUrl, request, response, endpointOrMethodIdentifier, payload)
+    await this.callServer(this.revisionsServerUrl, request, response, endpoint, payload)
   }
 
   async callLegacySyncingServer(
     request: Request,
     response: Response,
-    endpointOrMethodIdentifier: string,
+    endpoint: string,
     payload?: Record<string, unknown> | string,
   ): Promise<void> {
-    await this.callServerWithLegacyFormat(
-      this.syncingServerJsUrl,
-      request,
-      response,
-      endpointOrMethodIdentifier,
-      payload,
-    )
+    await this.callServerWithLegacyFormat(this.syncingServerJsUrl, request, response, endpoint, payload)
   }
 
   async callAuthServer(
     request: Request,
     response: Response,
-    endpointOrMethodIdentifier: string,
+    endpoint: string,
     payload?: Record<string, unknown> | string,
   ): Promise<void> {
-    await this.callServer(this.authServerUrl, request, response, endpointOrMethodIdentifier, payload)
+    await this.callServer(this.authServerUrl, request, response, endpoint, payload)
   }
 
   async callEmailServer(
     request: Request,
     response: Response,
-    endpointOrMethodIdentifier: string,
+    endpoint: string,
     payload?: Record<string, unknown> | string,
   ): Promise<void> {
     if (!this.emailServerUrl) {
@@ -128,13 +122,13 @@ export class HttpServiceProxy implements ServiceProxyInterface {
       return
     }
 
-    await this.callServer(this.emailServerUrl, request, response, endpointOrMethodIdentifier, payload)
+    await this.callServer(this.emailServerUrl, request, response, endpoint, payload)
   }
 
   async callWebSocketServer(
     request: Request,
     response: Response,
-    endpointOrMethodIdentifier: string,
+    endpoint: string,
     payload?: Record<string, unknown> | string,
   ): Promise<void> {
     if (!this.webSocketServerUrl) {
@@ -145,22 +139,16 @@ export class HttpServiceProxy implements ServiceProxyInterface {
 
     const isARequestComingFromApiGatewayAndShouldBeKeptInMinimalFormat = request.headers.connectionid !== undefined
     if (isARequestComingFromApiGatewayAndShouldBeKeptInMinimalFormat) {
-      await this.callServerWithLegacyFormat(
-        this.webSocketServerUrl,
-        request,
-        response,
-        endpointOrMethodIdentifier,
-        payload,
-      )
+      await this.callServerWithLegacyFormat(this.webSocketServerUrl, request, response, endpoint, payload)
     } else {
-      await this.callServer(this.webSocketServerUrl, request, response, endpointOrMethodIdentifier, payload)
+      await this.callServer(this.webSocketServerUrl, request, response, endpoint, payload)
     }
   }
 
   async callPaymentsServer(
     request: Request,
     response: Response,
-    endpointOrMethodIdentifier: string,
+    endpoint: string,
     payload?: Record<string, unknown> | string,
   ): Promise<void | Response<unknown, Record<string, unknown>>> {
     if (!this.paymentsServerUrl) {
@@ -169,29 +157,23 @@ export class HttpServiceProxy implements ServiceProxyInterface {
       return
     }
 
-    await this.callServerWithLegacyFormat(
-      this.paymentsServerUrl,
-      request,
-      response,
-      endpointOrMethodIdentifier,
-      payload,
-    )
+    await this.callServerWithLegacyFormat(this.paymentsServerUrl, request, response, endpoint, payload)
   }
 
   async callAuthServerWithLegacyFormat(
     request: Request,
     response: Response,
-    endpointOrMethodIdentifier: string,
+    endpoint: string,
     payload?: Record<string, unknown> | string,
   ): Promise<void> {
-    await this.callServerWithLegacyFormat(this.authServerUrl, request, response, endpointOrMethodIdentifier, payload)
+    await this.callServerWithLegacyFormat(this.authServerUrl, request, response, endpoint, payload)
   }
 
   private async getServerResponse(
     serverUrl: string,
     request: Request,
     response: Response,
-    endpointOrMethodIdentifier: string,
+    endpoint: string,
     payload?: Record<string, unknown> | string,
     retryAttempt?: number,
   ): Promise<AxiosResponse | undefined> {
@@ -215,7 +197,7 @@ export class HttpServiceProxy implements ServiceProxyInterface {
       const serviceResponse = await this.httpClient.request({
         method: request.method as Method,
         headers,
-        url: `${serverUrl}/${endpointOrMethodIdentifier}`,
+        url: `${serverUrl}/${endpoint}`,
         data: this.getRequestData(payload),
         maxContentLength: Infinity,
         maxBodyLength: Infinity,
@@ -232,9 +214,7 @@ export class HttpServiceProxy implements ServiceProxyInterface {
       }
 
       if (retryAttempt) {
-        this.logger.debug(
-          `Request to ${serverUrl}/${endpointOrMethodIdentifier} succeeded after ${retryAttempt} retries`,
-        )
+        this.logger.debug(`Request to ${serverUrl}/${endpoint} succeeded after ${retryAttempt} retries`)
       }
 
       return serviceResponse
@@ -246,18 +226,9 @@ export class HttpServiceProxy implements ServiceProxyInterface {
 
         const nextRetryAttempt = retryAttempt ? retryAttempt + 1 : 1
 
-        this.logger.debug(
-          `Retrying request to ${serverUrl}/${endpointOrMethodIdentifier} for the ${nextRetryAttempt} time`,
-        )
+        this.logger.debug(`Retrying request to ${serverUrl}/${endpoint} for the ${nextRetryAttempt} time`)
 
-        return this.getServerResponse(
-          serverUrl,
-          request,
-          response,
-          endpointOrMethodIdentifier,
-          payload,
-          nextRetryAttempt,
-        )
+        return this.getServerResponse(serverUrl, request, response, endpoint, payload, nextRetryAttempt)
       }
 
       let detailedErrorMessage = (error as Error).message
@@ -267,8 +238,8 @@ export class HttpServiceProxy implements ServiceProxyInterface {
 
       this.logger.error(
         tooManyRetryAttempts
-          ? `Request to ${serverUrl}/${endpointOrMethodIdentifier} timed out after ${retryAttempt} retries`
-          : `Could not pass the request to ${serverUrl}/${endpointOrMethodIdentifier} on underlying service: ${detailedErrorMessage}`,
+          ? `Request to ${serverUrl}/${endpoint} timed out after ${retryAttempt} retries`
+          : `Could not pass the request to ${serverUrl}/${endpoint} on underlying service: ${detailedErrorMessage}`,
       )
 
       this.logger.debug(`Response error: ${JSON.stringify(error)}`)
@@ -299,16 +270,10 @@ export class HttpServiceProxy implements ServiceProxyInterface {
     serverUrl: string,
     request: Request,
     response: Response,
-    endpointOrMethodIdentifier: string,
+    endpoint: string,
     payload?: Record<string, unknown> | string,
   ): Promise<void> {
-    const serviceResponse = await this.getServerResponse(
-      serverUrl,
-      request,
-      response,
-      endpointOrMethodIdentifier,
-      payload,
-    )
+    const serviceResponse = await this.getServerResponse(serverUrl, request, response, endpoint, payload)
 
     if (!serviceResponse) {
       return
@@ -340,16 +305,10 @@ export class HttpServiceProxy implements ServiceProxyInterface {
     serverUrl: string,
     request: Request,
     response: Response,
-    endpointOrMethodIdentifier: string,
+    endpoint: string,
     payload?: Record<string, unknown> | string,
   ): Promise<void | Response<unknown, Record<string, unknown>>> {
-    const serviceResponse = await this.getServerResponse(
-      serverUrl,
-      request,
-      response,
-      endpointOrMethodIdentifier,
-      payload,
-    )
+    const serviceResponse = await this.getServerResponse(serverUrl, request, response, endpoint, payload)
 
     if (!serviceResponse) {
       return

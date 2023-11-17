@@ -6,6 +6,7 @@ export const TYPES = {
   ApiGateway_SYNCING_SERVER_JS_URL: Symbol.for('ApiGateway_SYNCING_SERVER_JS_URL'),
   ApiGateway_AUTH_SERVER_URL: Symbol.for('ApiGateway_AUTH_SERVER_URL'),
   ApiGateway_AUTH_SERVER_GRPC_URL: Symbol.for('ApiGateway_AUTH_SERVER_GRPC_URL'),
+  ApiGateway_SYNCING_SERVER_GRPC_URL: Symbol.for('ApiGateway_SYNCING_SERVER_GRPC_URL'),
   ApiGateway_PAYMENTS_SERVER_URL: Symbol.for('ApiGateway_PAYMENTS_SERVER_URL'),
   ApiGateway_FILES_SERVER_URL: Symbol.for('ApiGateway_FILES_SERVER_URL'),
   ApiGateway_REVISIONS_SERVER_URL: Symbol.for('ApiGateway_REVISIONS_SERVER_URL'),
@@ -24,10 +25,15 @@ export const TYPES = {
   ApiGateway_OptionalCrossServiceTokenMiddleware: Symbol.for('ApiGateway_OptionalCrossServiceTokenMiddleware'),
   ApiGateway_WebSocketAuthMiddleware: Symbol.for('ApiGateway_WebSocketAuthMiddleware'),
   ApiGateway_SubscriptionTokenAuthMiddleware: Symbol.for('ApiGateway_SubscriptionTokenAuthMiddleware'),
+  // Mapping
+  Mapper_SyncRequestGRPCMapper: Symbol.for('Mapper_SyncRequestGRPCMapper'),
+  Mapper_SyncResponseGRPCMapper: Symbol.for('Mapper_SyncResponseGRPCMapper'),
   // Services
+  ApiGateway_GRPCSyncingServerServiceProxy: Symbol.for('ApiGateway_GRPCSyncingServerServiceProxy'),
   ApiGateway_ServiceProxy: Symbol.for('ApiGateway_ServiceProxy'),
   ApiGateway_CrossServiceTokenCache: Symbol.for('ApiGateway_CrossServiceTokenCache'),
   ApiGateway_Timer: Symbol.for('ApiGateway_Timer'),
   ApiGateway_EndpointResolver: Symbol.for('ApiGateway_EndpointResolver'),
   ApiGateway_GRPCSessionsClient: Symbol.for('ApiGateway_GRPCSessionsClient'),
+  ApiGateway_GRPCSyncingClient: Symbol.for('ApiGateway_GRPCSyncingClient'),
 }

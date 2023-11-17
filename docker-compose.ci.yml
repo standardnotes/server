@@ -22,11 +22,11 @@ services:
     environment:
       DB_TYPE: "${DB_TYPE}"
       CACHE_TYPE: "${CACHE_TYPE}"
+      SERVICE_PROXY_TYPE: "${SERVICE_PROXY_TYPE}"
     container_name: server-ci
     ports:
       - 3123:3000
       - 3125:3104
-      - 50051:50051
     volumes:
       - ./logs:/var/lib/server/logs
     networks:

@@ -126,6 +126,7 @@ const TYPES = {
   Sync_MessagePersistenceMapper: Symbol.for('Sync_MessagePersistenceMapper'),
   Sync_MessageHttpMapper: Symbol.for('Sync_MessageHttpMapper'),
   Sync_NotificationHttpMapper: Symbol.for('Sync_NotificationHttpMapper'),
+  Sync_SyncResponseGRPCMapper: Symbol.for('Sync_SyncResponseGRPCMapper'),
   Sync_SQLItemPersistenceMapper: Symbol.for('Sync_SQLItemPersistenceMapper'),
   Sync_ItemHttpMapper: Symbol.for('Sync_ItemHttpMapper'),
   Sync_ItemHashHttpMapper: Symbol.for('Sync_ItemHashHttpMapper'),

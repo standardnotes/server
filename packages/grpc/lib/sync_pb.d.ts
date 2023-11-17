@@ -463,8 +463,6 @@ export namespace NotificationRepresentation {
 export class ItemHash extends jspb.Message { 
     getUuid(): string;
     setUuid(value: string): ItemHash;
-    getUserUuid(): string;
-    setUserUuid(value: string): ItemHash;
 
     hasContent(): boolean;
     clearContent(): void;
@@ -544,7 +542,6 @@ export class ItemHash extends jspb.Message {
 export namespace ItemHash {
     export type AsObject = {
         uuid: string,
-        userUuid: string,
         content?: string,
         contentType?: string,
         deleted?: boolean,
@@ -662,23 +659,6 @@ export class SyncRequest extends jspb.Message {
     getApiVersion(): string | undefined;
     setApiVersion(value: string): SyncRequest;
 
-    hasSnjsVersion(): boolean;
-    clearSnjsVersion(): void;
-    getSnjsVersion(): string | undefined;
-    setSnjsVersion(value: string): SyncRequest;
-
-    hasReadonlyAccess(): boolean;
-    clearReadonlyAccess(): void;
-    getReadonlyAccess(): boolean | undefined;
-    setReadonlyAccess(value: boolean): SyncRequest;
-
-    hasSessionUuid(): boolean;
-    clearSessionUuid(): void;
-    getSessionUuid(): string | undefined;
-    setSessionUuid(value: string): SyncRequest;
-    getUserUuid(): string;
-    setUserUuid(value: string): SyncRequest;
-
     serializeBinary(): Uint8Array;
     toObject(includeInstance?: boolean): SyncRequest.AsObject;
     static toObject(includeInstance: boolean, msg: SyncRequest): SyncRequest.AsObject;
@@ -699,9 +679,5 @@ export namespace SyncRequest {
         limit?: number,
         contentType?: string,
         apiVersion?: string,
-        snjsVersion?: string,
-        readonlyAccess?: boolean,
-        sessionUuid?: string,
-        userUuid: string,
     }
 }

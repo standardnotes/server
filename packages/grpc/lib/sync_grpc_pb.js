@@ -28,8 +28,8 @@ function deserialize_sync_SyncResponse(buffer_arg) {
 
 
 var SyncingService = exports.SyncingService = {
-  sync: {
-    path: '/sync.Syncing/sync',
+  syncItems: {
+    path: '/sync.Syncing/syncItems',
     requestStream: false,
     responseStream: false,
     requestType: sync_pb.SyncRequest,
