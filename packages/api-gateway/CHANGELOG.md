@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.86.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.85.1...@standardnotes/api-gateway@1.86.0) (2023-11-20)
+
+### Features
+
+* **grpc:** add syncing protocol buffers ([#930](https://github.com/standardnotes/api-gateway/issues/930)) ([5b84f07](https://github.com/standardnotes/api-gateway/commit/5b84f078c6ae6330706895f7c57b67ff8c8d18ae))
+
 ## [1.85.1](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.85.0...@standardnotes/api-gateway@1.85.1) (2023-11-16)
 
 ### Bug Fixes

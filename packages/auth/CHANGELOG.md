@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.172.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.171.0...@standardnotes/auth-server@1.172.0) (2023-11-20)
+
+### Features
+
+* **grpc:** add syncing protocol buffers ([#930](https://github.com/standardnotes/server/issues/930)) ([5b84f07](https://github.com/standardnotes/server/commit/5b84f078c6ae6330706895f7c57b67ff8c8d18ae))
+
 # [1.171.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.170.0...@standardnotes/auth-server@1.171.0) (2023-11-16)
 
 ### Features
