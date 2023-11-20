@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.172.2](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.172.1...@standardnotes/auth-server@1.172.2) (2023-11-20)
+
+### Bug Fixes
+
+* define grpc max message size ([bfef16c](https://github.com/standardnotes/server/commit/bfef16ce3757b57ea1cb0cb7417d6bc935a52321))
+
 ## [1.172.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.172.0...@standardnotes/auth-server@1.172.1) (2023-11-20)
 
 ### Bug Fixes
