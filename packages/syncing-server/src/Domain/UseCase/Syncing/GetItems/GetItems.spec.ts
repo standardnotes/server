@@ -184,7 +184,7 @@ describe('GetItems', () => {
     })
 
     expect(result.isFailed()).toBeTruthy()
-    expect(result.getError()).toEqual('Given value is not a valid uuid: invalid')
+    expect(result.getError()).toEqual('User uuid is invalid: Given value is not a valid uuid: invalid')
   })
 
   it('should filter shared vault uuids user wants to sync with the ones it has access to', async () => {

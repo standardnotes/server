@@ -31,7 +31,7 @@ export class GetItems implements UseCaseInterface<GetItemsResult> {
 
     const userUuidOrError = Uuid.create(dto.userUuid)
     if (userUuidOrError.isFailed()) {
-      return Result.fail(userUuidOrError.getError())
+      return Result.fail(`User uuid is invalid: ${userUuidOrError.getError()}`)
     }
     const userUuid = userUuidOrError.getValue()
 

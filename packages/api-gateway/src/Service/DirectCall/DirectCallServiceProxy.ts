@@ -42,7 +42,7 @@ export class DirectCallServiceProxy implements ServiceProxyInterface {
     }
   }
 
-  async callEmailServer(_request: Request, response: Response, _endpointOrMethodIdentifier: string): Promise<void> {
+  async callEmailServer(_request: Request, response: Response, _methodIdentifier: string): Promise<void> {
     response.status(400).send({
       error: {
         message: 'Email server is not available.',
@@ -50,13 +50,13 @@ export class DirectCallServiceProxy implements ServiceProxyInterface {
     })
   }
 
-  async callAuthServer(request: never, response: never, endpointOrMethodIdentifier: string): Promise<void> {
+  async callAuthServer(request: never, response: never, methodIdentifier: string): Promise<void> {
     const authService = this.serviceContainer.get(ServiceIdentifier.create(ServiceIdentifier.NAMES.Auth).getValue())
     if (!authService) {
       throw new Error('Auth service not found')
     }
 
-    const serviceResponse = (await authService.handleRequest(request, response, endpointOrMethodIdentifier)) as {
+    const serviceResponse = (await authService.handleRequest(request, response, methodIdentifier)) as {
       statusCode: number
       json: Record<string, unknown>
     }
@@ -67,7 +67,7 @@ export class DirectCallServiceProxy implements ServiceProxyInterface {
   async callAuthServerWithLegacyFormat(
     _request: Request,
     response: Response,
-    _endpointOrMethodIdentifier: string,
+    _methodIdentifier: string,
   ): Promise<void> {
     response.status(400).send({
       error: {
@@ -76,13 +76,13 @@ export class DirectCallServiceProxy implements ServiceProxyInterface {
     })
   }
 
-  async callRevisionsServer(request: never, response: never, endpointOrMethodIdentifier: string): Promise<void> {
+  async callRevisionsServer(request: never, response: never, methodIdentifier: string): Promise<void> {
     const service = this.serviceContainer.get(ServiceIdentifier.create(ServiceIdentifier.NAMES.Revisions).getValue())
     if (!service) {
       throw new Error('Revisions service not found')
     }
 
-    const serviceResponse = (await service.handleRequest(request, response, endpointOrMethodIdentifier)) as {
+    const serviceResponse = (await service.handleRequest(request, response, methodIdentifier)) as {
       statusCode: number
       json: Record<string, unknown>
     }
@@ -90,7 +90,7 @@ export class DirectCallServiceProxy implements ServiceProxyInterface {
     this.sendDecoratedResponse(response, serviceResponse)
   }
 
-  async callSyncingServer(request: never, response: never, endpointOrMethodIdentifier: string): Promise<void> {
+  async callSyncingServer(request: never, response: never, methodIdentifier: string): Promise<void> {
     const service = this.serviceContainer.get(
       ServiceIdentifier.create(ServiceIdentifier.NAMES.SyncingServer).getValue(),
     )
@@ -98,7 +98,7 @@ export class DirectCallServiceProxy implements ServiceProxyInterface {
       throw new Error('Syncing service not found')
     }
 
-    const serviceResponse = (await service.handleRequest(request, response, endpointOrMethodIdentifier)) as {
+    const serviceResponse = (await service.handleRequest(request, response, methodIdentifier)) as {
       statusCode: number
       json: Record<string, unknown>
     }
@@ -106,11 +106,7 @@ export class DirectCallServiceProxy implements ServiceProxyInterface {
     this.sendDecoratedResponse(response, serviceResponse)
   }
 
-  async callLegacySyncingServer(
-    _request: Request,
-    response: Response,
-    _endpointOrMethodIdentifier: string,
-  ): Promise<void> {
+  async callLegacySyncingServer(_request: Request, response: Response, _methodIdentifier: string): Promise<void> {
     response.status(400).send({
       error: {
         message: 'Legacy syncing server endpoints are no longer available.',
@@ -118,7 +114,7 @@ export class DirectCallServiceProxy implements ServiceProxyInterface {
     })
   }
 
-  async callPaymentsServer(_request: Request, response: Response, _endpointOrMethodIdentifier: string): Promise<void> {
+  async callPaymentsServer(_request: Request, response: Response, _methodIdentifier: string): Promise<void> {
     response.status(400).send({
       error: {
         message: 'Payments server is not available.',
@@ -126,7 +122,7 @@ export class DirectCallServiceProxy implements ServiceProxyInterface {
     })
   }
 
-  async callWebSocketServer(_request: Request, response: Response, _endpointOrMethodIdentifier: string): Promise<void> {
+  async callWebSocketServer(_request: Request, response: Response, _methodIdentifier: string): Promise<void> {
     response.status(400).send({
       error: {
         message: 'Websockets server is not available.',

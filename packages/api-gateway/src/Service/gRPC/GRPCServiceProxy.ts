@@ -7,6 +7,7 @@ import * as grpc from '@grpc/grpc-js'
 
 import { CrossServiceTokenCacheInterface } from '../Cache/CrossServiceTokenCacheInterface'
 import { ServiceProxyInterface } from '../Proxy/ServiceProxyInterface'
+import { GRPCSyncingServerServiceProxy } from './GRPCSyncingServerServiceProxy'
 
 export class GRPCServiceProxy implements ServiceProxyInterface {
   constructor(
@@ -23,6 +24,7 @@ export class GRPCServiceProxy implements ServiceProxyInterface {
     private logger: Logger,
     private timer: TimerInterface,
     private sessionsClient: ISessionsClient,
+    private gRPCSyncingServerServiceProxy: GRPCSyncingServerServiceProxy,
   ) {}
 
   async validateSession(headers: {
@@ -83,16 +85,24 @@ export class GRPCServiceProxy implements ServiceProxyInterface {
   async callSyncingServer(
     request: Request,
     response: Response,
-    endpointOrMethodIdentifier: string,
+    endpoint: string,
     payload?: Record<string, unknown> | string,
   ): Promise<void> {
-    await this.callServer(this.syncingServerJsUrl, request, response, endpointOrMethodIdentifier, payload)
+    if (endpoint === 'items/sync') {
+      const result = await this.gRPCSyncingServerServiceProxy.sync(request, response, payload)
+
+      response.status(result.status).send(result.data)
+
+      return
+    }
+
+    await this.callServer(this.syncingServerJsUrl, request, response, endpoint, payload)
   }
 
   async callRevisionsServer(
     request: Request,
     response: Response,
-    endpointOrMethodIdentifier: string,
+    endpoint: string,
     payload?: Record<string, unknown> | string,
   ): Promise<void> {
     if (!this.revisionsServerUrl) {
@@ -100,37 +110,31 @@ export class GRPCServiceProxy implements ServiceProxyInterface {
 
       return
     }
-    await this.callServer(this.revisionsServerUrl, request, response, endpointOrMethodIdentifier, payload)
+    await this.callServer(this.revisionsServerUrl, request, response, endpoint, payload)
   }
 
   async callLegacySyncingServer(
     request: Request,
     response: Response,
-    endpointOrMethodIdentifier: string,
+    endpoint: string,
     payload?: Record<string, unknown> | string,
   ): Promise<void> {
-    await this.callServerWithLegacyFormat(
-      this.syncingServerJsUrl,
-      request,
-      response,
-      endpointOrMethodIdentifier,
-      payload,
-    )
+    await this.callServerWithLegacyFormat(this.syncingServerJsUrl, request, response, endpoint, payload)
   }
 
   async callAuthServer(
     request: Request,
     response: Response,
-    endpointOrMethodIdentifier: string,
+    endpoint: string,
     payload?: Record<string, unknown> | string,
   ): Promise<void> {
-    await this.callServer(this.authServerUrl, request, response, endpointOrMethodIdentifier, payload)
+    await this.callServer(this.authServerUrl, request, response, endpoint, payload)
   }
 
   async callEmailServer(
     request: Request,
     response: Response,
-    endpointOrMethodIdentifier: string,
+    endpoint: string,
     payload?: Record<string, unknown> | string,
   ): Promise<void> {
     if (!this.emailServerUrl) {
@@ -139,13 +143,13 @@ export class GRPCServiceProxy implements ServiceProxyInterface {
       return
     }
 
-    await this.callServer(this.emailServerUrl, request, response, endpointOrMethodIdentifier, payload)
+    await this.callServer(this.emailServerUrl, request, response, endpoint, payload)
   }
 
   async callWebSocketServer(
     request: Request,
     response: Response,
-    endpointOrMethodIdentifier: string,
+    endpoint: string,
     payload?: Record<string, unknown> | string,
   ): Promise<void> {
     if (!this.webSocketServerUrl) {
@@ -156,22 +160,16 @@ export class GRPCServiceProxy implements ServiceProxyInterface {
 
     const isARequestComingFromApiGatewayAndShouldBeKeptInMinimalFormat = request.headers.connectionid !== undefined
     if (isARequestComingFromApiGatewayAndShouldBeKeptInMinimalFormat) {
-      await this.callServerWithLegacyFormat(
-        this.webSocketServerUrl,
-        request,
-        response,
-        endpointOrMethodIdentifier,
-        payload,
-      )
+      await this.callServerWithLegacyFormat(this.webSocketServerUrl, request, response, endpoint, payload)
     } else {
-      await this.callServer(this.webSocketServerUrl, request, response, endpointOrMethodIdentifier, payload)
+      await this.callServer(this.webSocketServerUrl, request, response, endpoint, payload)
     }
   }
 
   async callPaymentsServer(
     request: Request,
     response: Response,
-    endpointOrMethodIdentifier: string,
+    endpoint: string,
     payload?: Record<string, unknown> | string,
   ): Promise<void | Response<unknown, Record<string, unknown>>> {
     if (!this.paymentsServerUrl) {
@@ -180,29 +178,23 @@ export class GRPCServiceProxy implements ServiceProxyInterface {
       return
     }
 
-    await this.callServerWithLegacyFormat(
-      this.paymentsServerUrl,
-      request,
-      response,
-      endpointOrMethodIdentifier,
-      payload,
-    )
+    await this.callServerWithLegacyFormat(this.paymentsServerUrl, request, response, endpoint, payload)
   }
 
   async callAuthServerWithLegacyFormat(
     request: Request,
     response: Response,
-    endpointOrMethodIdentifier: string,
+    endpoint: string,
     payload?: Record<string, unknown> | string,
   ): Promise<void> {
-    await this.callServerWithLegacyFormat(this.authServerUrl, request, response, endpointOrMethodIdentifier, payload)
+    await this.callServerWithLegacyFormat(this.authServerUrl, request, response, endpoint, payload)
   }
 
   private async getServerResponse(
     serverUrl: string,
     request: Request,
     response: Response,
-    endpointOrMethodIdentifier: string,
+    endpoint: string,
     payload?: Record<string, unknown> | string,
     retryAttempt?: number,
   ): Promise<AxiosResponse | undefined> {
@@ -226,7 +218,7 @@ export class GRPCServiceProxy implements ServiceProxyInterface {
       const serviceResponse = await this.httpClient.request({
         method: request.method as Method,
         headers,
-        url: `${serverUrl}/${endpointOrMethodIdentifier}`,
+        url: `${serverUrl}/${endpoint}`,
         data: this.getRequestData(payload),
         maxContentLength: Infinity,
         maxBodyLength: Infinity,
@@ -243,9 +235,7 @@ export class GRPCServiceProxy implements ServiceProxyInterface {
       }
 
       if (retryAttempt) {
-        this.logger.debug(
-          `Request to ${serverUrl}/${endpointOrMethodIdentifier} succeeded after ${retryAttempt} retries`,
-        )
+        this.logger.debug(`Request to ${serverUrl}/${endpoint} succeeded after ${retryAttempt} retries`)
       }
 
       return serviceResponse
@@ -257,18 +247,9 @@ export class GRPCServiceProxy implements ServiceProxyInterface {
 
         const nextRetryAttempt = retryAttempt ? retryAttempt + 1 : 1
 
-        this.logger.debug(
-          `Retrying request to ${serverUrl}/${endpointOrMethodIdentifier} for the ${nextRetryAttempt} time`,
-        )
+        this.logger.debug(`Retrying request to ${serverUrl}/${endpoint} for the ${nextRetryAttempt} time`)
 
-        return this.getServerResponse(
-          serverUrl,
-          request,
-          response,
-          endpointOrMethodIdentifier,
-          payload,
-          nextRetryAttempt,
-        )
+        return this.getServerResponse(serverUrl, request, response, endpoint, payload, nextRetryAttempt)
       }
 
       let detailedErrorMessage = (error as Error).message
@@ -278,8 +259,8 @@ export class GRPCServiceProxy implements ServiceProxyInterface {
 
       this.logger.error(
         tooManyRetryAttempts
-          ? `Request to ${serverUrl}/${endpointOrMethodIdentifier} timed out after ${retryAttempt} retries`
-          : `Could not pass the request to ${serverUrl}/${endpointOrMethodIdentifier} on underlying service: ${detailedErrorMessage}`,
+          ? `Request to ${serverUrl}/${endpoint} timed out after ${retryAttempt} retries`
+          : `Could not pass the request to ${serverUrl}/${endpoint} on underlying service: ${detailedErrorMessage}`,
       )
 
       this.logger.debug(`Response error: ${JSON.stringify(error)}`)
@@ -310,16 +291,10 @@ export class GRPCServiceProxy implements ServiceProxyInterface {
     serverUrl: string,
     request: Request,
     response: Response,
-    endpointOrMethodIdentifier: string,
+    endpoint: string,
     payload?: Record<string, unknown> | string,
   ): Promise<void> {
-    const serviceResponse = await this.getServerResponse(
-      serverUrl,
-      request,
-      response,
-      endpointOrMethodIdentifier,
-      payload,
-    )
+    const serviceResponse = await this.getServerResponse(serverUrl, request, response, endpoint, payload)
 
     if (!serviceResponse) {
       return
@@ -351,16 +326,10 @@ export class GRPCServiceProxy implements ServiceProxyInterface {
     serverUrl: string,
     request: Request,
     response: Response,
-    endpointOrMethodIdentifier: string,
+    endpoint: string,
     payload?: Record<string, unknown> | string,
   ): Promise<void | Response<unknown, Record<string, unknown>>> {
-    const serviceResponse = await this.getServerResponse(
-      serverUrl,
-      request,
-      response,
-      endpointOrMethodIdentifier,
-      payload,
-    )
+    const serviceResponse = await this.getServerResponse(serverUrl, request, response, endpoint, payload)
 
     if (!serviceResponse) {
       return

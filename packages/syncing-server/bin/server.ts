@@ -10,13 +10,20 @@ import '../src/Infra/InversifyExpressUtils/AnnotatedSharedVaultsController'
 
 import helmet from 'helmet'
 import * as cors from 'cors'
+import * as grpc from '@grpc/grpc-js'
 import { urlencoded, json, Request, Response, NextFunction } from 'express'
 import * as winston from 'winston'
 import { InversifyExpressServer } from 'inversify-express-utils'
+import { MapperInterface } from '@standardnotes/domain-core'
+import { SyncResponse, SyncingService } from '@standardnotes/grpc'
 
 import TYPES from '../src/Bootstrap/Types'
 import { Env } from '../src/Bootstrap/Env'
 import { ContainerConfigLoader } from '../src/Bootstrap/Container'
+import { SyncingServer } from '../src/Infra/gRPC/SyncingServer'
+import { SyncItems } from '../src/Domain/UseCase/Syncing/SyncItems/SyncItems'
+import { SyncResponseFactoryResolverInterface } from '../src/Domain/Item/SyncResponse/SyncResponseFactoryResolverInterface'
+import { SyncResponse20200115 } from '../src/Domain/Item/SyncResponse/SyncResponse20200115'
 
 const container = new ContainerConfigLoader()
 void container.load().then((container) => {
@@ -78,10 +85,52 @@ void container.load().then((container) => {
 
   serverInstance.keepAliveTimeout = keepAliveTimeout
 
+  const grpcKeepAliveTimeout = env.get('GRPC_KEEP_ALIVE_TIMEOUT', true)
+    ? +env.get('GRPC_KEEP_ALIVE_TIMEOUT', true)
+    : 10_000
+
+  const grpcServer = new grpc.Server({
+    'grpc.keepalive_time_ms': grpcKeepAliveTimeout * 2,
+    'grpc.keepalive_timeout_ms': grpcKeepAliveTimeout,
+  })
+
+  const gRPCPort = env.get('GRPC_PORT', true) ? +env.get('GRPC_PORT', true) : 50051
+
+  const syncingServer = new SyncingServer(
+    container.get<SyncItems>(TYPES.Sync_SyncItems),
+    container.get<SyncResponseFactoryResolverInterface>(TYPES.Sync_SyncResponseFactoryResolver),
+    container.get<MapperInterface<SyncResponse20200115, SyncResponse>>(TYPES.Sync_SyncResponseGRPCMapper),
+    container.get<winston.Logger>(TYPES.Sync_Logger),
+  )
+
+  grpcServer.addService(SyncingService, {
+    syncItems: syncingServer.syncItems.bind(syncingServer),
+  })
+  grpcServer.bindAsync(`0.0.0.0:${gRPCPort}`, grpc.ServerCredentials.createInsecure(), (error, port) => {
+    if (error) {
+      logger.error(`Failed to bind gRPC server: ${error.message}`)
+
+      return
+    }
+
+    logger.info(`gRPC server bound on port ${port}`)
+
+    grpcServer.start()
+
+    logger.info('gRPC server started')
+  })
+
   process.on('SIGTERM', () => {
     logger.info('SIGTERM signal received: closing HTTP server')
     serverInstance.close(() => {
       logger.info('HTTP server closed')
+    })
+    grpcServer.tryShutdown((error?: Error) => {
+      if (error) {
+        logger.error(`Failed to shutdown gRPC server: ${error.message}`)
+      } else {
+        logger.info('gRPC server closed')
+      }
     })
   })
 

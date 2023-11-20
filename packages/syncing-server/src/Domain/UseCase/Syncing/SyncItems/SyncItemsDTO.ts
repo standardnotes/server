@@ -4,7 +4,7 @@ export type SyncItemsDTO = {
   userUuid: string
   itemHashes: Array<ItemHash>
   computeIntegrityHash: boolean
-  limit: number
+  limit?: number
   sharedVaultUuids?: string[]
   syncToken?: string | null
   cursorToken?: string | null

@@ -16,14 +16,25 @@ import { RedisCrossServiceTokenCache } from '../Infra/Redis/RedisCrossServiceTok
 import { WebSocketAuthMiddleware } from '../Controller/WebSocketAuthMiddleware'
 import { InMemoryCrossServiceTokenCache } from '../Infra/InMemory/InMemoryCrossServiceTokenCache'
 import { DirectCallServiceProxy } from '../Service/DirectCall/DirectCallServiceProxy'
-import { ServiceContainerInterface } from '@standardnotes/domain-core'
+import { MapperInterface, ServiceContainerInterface } from '@standardnotes/domain-core'
 import { EndpointResolverInterface } from '../Service/Resolver/EndpointResolverInterface'
 import { EndpointResolver } from '../Service/Resolver/EndpointResolver'
 import { RequiredCrossServiceTokenMiddleware } from '../Controller/RequiredCrossServiceTokenMiddleware'
 import { OptionalCrossServiceTokenMiddleware } from '../Controller/OptionalCrossServiceTokenMiddleware'
 import { Transform } from 'stream'
-import { ISessionsClient, SessionsClient } from '@standardnotes/grpc'
+import {
+  ISessionsClient,
+  ISyncingClient,
+  SessionsClient,
+  SyncRequest,
+  SyncResponse,
+  SyncingClient,
+} from '@standardnotes/grpc'
 import { GRPCServiceProxy } from '../Service/gRPC/GRPCServiceProxy'
+import { GRPCSyncingServerServiceProxy } from '../Service/gRPC/GRPCSyncingServerServiceProxy'
+import { SyncResponseHttpRepresentation } from '../Mapping/Sync/Http/SyncResponseHttpRepresentation'
+import { SyncRequestGRPCMapper } from '../Mapping/Sync/GRPC/SyncRequestGRPCMapper'
+import { SyncResponseGRPCMapper } from '../Mapping/Sync/GRPC/SyncResponseGRPCMapper'
 
 export class ContainerConfigLoader {
   async load(configuration?: {
@@ -145,6 +156,7 @@ export class ContainerConfigLoader {
       const isConfiguredForGRPCProxy = env.get('SERVICE_PROXY_TYPE', true) === 'grpc'
       if (isConfiguredForGRPCProxy) {
         container.bind(TYPES.ApiGateway_AUTH_SERVER_GRPC_URL).toConstantValue(env.get('AUTH_SERVER_GRPC_URL'))
+        container.bind(TYPES.ApiGateway_SYNCING_SERVER_GRPC_URL).toConstantValue(env.get('SYNCING_SERVER_GRPC_URL'))
         const grpcAgentKeepAliveTimeout = env.get('GRPC_AGENT_KEEP_ALIVE_TIMEOUT', true)
           ? +env.get('GRPC_AGENT_KEEP_ALIVE_TIMEOUT', true)
           : 8_000
@@ -158,6 +170,35 @@ export class ContainerConfigLoader {
             },
           ),
         )
+        container.bind<ISyncingClient>(TYPES.ApiGateway_GRPCSyncingClient).toConstantValue(
+          new SyncingClient(
+            container.get<string>(TYPES.ApiGateway_SYNCING_SERVER_GRPC_URL),
+            grpc.credentials.createInsecure(),
+            {
+              'grpc.keepalive_time_ms': grpcAgentKeepAliveTimeout * 2,
+              'grpc.keepalive_timeout_ms': grpcAgentKeepAliveTimeout,
+            },
+          ),
+        )
+
+        container
+          .bind<MapperInterface<Record<string, unknown>, SyncRequest>>(TYPES.Mapper_SyncRequestGRPCMapper)
+          .toConstantValue(new SyncRequestGRPCMapper())
+        container
+          .bind<MapperInterface<SyncResponse, SyncResponseHttpRepresentation>>(TYPES.Mapper_SyncResponseGRPCMapper)
+          .toConstantValue(new SyncResponseGRPCMapper())
+
+        container
+          .bind<GRPCSyncingServerServiceProxy>(TYPES.ApiGateway_GRPCSyncingServerServiceProxy)
+          .toConstantValue(
+            new GRPCSyncingServerServiceProxy(
+              container.get<ISyncingClient>(TYPES.ApiGateway_GRPCSyncingClient),
+              container.get<MapperInterface<Record<string, unknown>, SyncRequest>>(TYPES.Mapper_SyncRequestGRPCMapper),
+              container.get<MapperInterface<SyncResponse, SyncResponseHttpRepresentation>>(
+                TYPES.Mapper_SyncResponseGRPCMapper,
+              ),
+            ),
+          )
         container
           .bind<ServiceProxyInterface>(TYPES.ApiGateway_ServiceProxy)
           .toConstantValue(
@@ -175,6 +216,7 @@ export class ContainerConfigLoader {
               container.get<winston.Logger>(TYPES.ApiGateway_Logger),
               container.get<TimerInterface>(TYPES.ApiGateway_Timer),
               container.get<ISessionsClient>(TYPES.ApiGateway_GRPCSessionsClient),
+              container.get<GRPCSyncingServerServiceProxy>(TYPES.ApiGateway_GRPCSyncingServerServiceProxy),
             ),
           )
       } else {
