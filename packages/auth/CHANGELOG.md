@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.172.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.172.0...@standardnotes/auth-server@1.172.1) (2023-11-20)
+
+### Bug Fixes
+
+* setting gzip as default compression on grpc calls ([#933](https://github.com/standardnotes/server/issues/933)) ([2dff6a2](https://github.com/standardnotes/server/commit/2dff6a2ed3d105ca65996d47321a811e22e25099))
+
 # [1.172.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.171.0...@standardnotes/auth-server@1.172.0) (2023-11-20)
 
 ### Features

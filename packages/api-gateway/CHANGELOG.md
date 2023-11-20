@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.86.1](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.86.0...@standardnotes/api-gateway@1.86.1) (2023-11-20)
+
+### Bug Fixes
+
+* setting gzip as default compression on grpc calls ([#933](https://github.com/standardnotes/api-gateway/issues/933)) ([2dff6a2](https://github.com/standardnotes/api-gateway/commit/2dff6a2ed3d105ca65996d47321a811e22e25099))
+
 # [1.86.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.85.1...@standardnotes/api-gateway@1.86.0) (2023-11-20)
 
 ### Features

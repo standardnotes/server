@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.124.1](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.124.0...@standardnotes/syncing-server@1.124.1) (2023-11-20)
+
+### Bug Fixes
+
+* setting gzip as default compression on grpc calls ([#933](https://github.com/standardnotes/syncing-server-js/issues/933)) ([2dff6a2](https://github.com/standardnotes/syncing-server-js/commit/2dff6a2ed3d105ca65996d47321a811e22e25099))
+
 # [1.124.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.123.0...@standardnotes/syncing-server@1.124.0) (2023-11-20)
 
 ### Features
