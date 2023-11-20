@@ -167,6 +167,8 @@ export class ContainerConfigLoader {
             {
               'grpc.keepalive_time_ms': grpcAgentKeepAliveTimeout * 2,
               'grpc.keepalive_timeout_ms': grpcAgentKeepAliveTimeout,
+              'grpc.default_compression_algorithm': grpc.compressionAlgorithms.gzip,
+              'grpc.default_compression_level': 2,
             },
           ),
         )
@@ -177,6 +179,8 @@ export class ContainerConfigLoader {
             {
               'grpc.keepalive_time_ms': grpcAgentKeepAliveTimeout * 2,
               'grpc.keepalive_timeout_ms': grpcAgentKeepAliveTimeout,
+              'grpc.default_compression_algorithm': grpc.compressionAlgorithms.gzip,
+              'grpc.default_compression_level': 2,
             },
           ),
         )
