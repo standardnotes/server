@@ -84,6 +84,7 @@ void container.load().then((container) => {
   const grpcServer = new grpc.Server({
     'grpc.keepalive_time_ms': grpcKeepAliveTimeout * 2,
     'grpc.keepalive_timeout_ms': grpcKeepAliveTimeout,
+    'grpc.default_compression_algorithm': grpc.compressionAlgorithms.gzip,
   })
 
   const gRPCPort = env.get('GRPC_PORT', true) ? +env.get('GRPC_PORT', true) : 50051
