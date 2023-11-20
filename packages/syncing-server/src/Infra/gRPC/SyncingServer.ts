@@ -29,20 +29,20 @@ export class SyncingServer implements ISyncingServer {
     for (const itemHash of itemHashesRPC) {
       const itemHashOrError = ItemHash.create({
         uuid: itemHash.getUuid(),
-        content: itemHash.getContent(),
-        content_type: itemHash.getContentType() ?? null,
-        deleted: itemHash.getDeleted(),
-        duplicate_of: itemHash.getDuplicateOf(),
-        auth_hash: itemHash.getAuthHash(),
-        enc_item_key: itemHash.getEncItemKey(),
-        items_key_id: itemHash.getItemsKeyId(),
-        created_at: itemHash.getCreatedAt(),
-        created_at_timestamp: itemHash.getCreatedAtTimestamp(),
-        updated_at: itemHash.getUpdatedAt(),
-        updated_at_timestamp: itemHash.getUpdatedAtTimestamp(),
+        content: itemHash.hasContent() ? itemHash.getContent() : undefined,
+        content_type: itemHash.hasContentType() ? (itemHash.getContentType() as string) : null,
+        deleted: itemHash.hasDeleted() ? itemHash.getDeleted() : undefined,
+        duplicate_of: itemHash.hasDuplicateOf() ? itemHash.getDuplicateOf() : undefined,
+        auth_hash: itemHash.hasAuthHash() ? itemHash.getAuthHash() : undefined,
+        enc_item_key: itemHash.hasEncItemKey() ? itemHash.getEncItemKey() : undefined,
+        items_key_id: itemHash.hasItemsKeyId() ? itemHash.getItemsKeyId() : undefined,
+        created_at: itemHash.hasCreatedAt() ? itemHash.getCreatedAt() : undefined,
+        created_at_timestamp: itemHash.hasCreatedAtTimestamp() ? itemHash.getCreatedAtTimestamp() : undefined,
+        updated_at: itemHash.hasUpdatedAt() ? itemHash.getUpdatedAt() : undefined,
+        updated_at_timestamp: itemHash.hasUpdatedAtTimestamp() ? itemHash.getUpdatedAtTimestamp() : undefined,
         user_uuid: call.metadata.get('userUuid').pop() as string,
-        key_system_identifier: itemHash.getKeySystemIdentifier() ?? null,
-        shared_vault_uuid: itemHash.getSharedVaultUuid() ?? null,
+        key_system_identifier: itemHash.hasKeySystemIdentifier() ? (itemHash.getKeySystemIdentifier() as string) : null,
+        shared_vault_uuid: itemHash.hasSharedVaultUuid() ? (itemHash.getSharedVaultUuid() as string) : null,
       })
 
       if (itemHashOrError.isFailed()) {
@@ -70,15 +70,17 @@ export class SyncingServer implements ISyncingServer {
       sharedVaultUuids = sharedVaultUuidsList
     }
 
+    const apiVersion = call.request.hasApiVersion() ? (call.request.getApiVersion() as string) : ApiVersion.v20161215
+
     const syncResult = await this.syncItemsUseCase.execute({
       userUuid: call.metadata.get('x-user-uuid').pop() as string,
       itemHashes,
-      computeIntegrityHash: call.request.getComputeIntegrity() === true,
-      syncToken: call.request.getSyncToken(),
-      cursorToken: call.request.getCursorToken(),
-      limit: call.request.getLimit(),
-      contentType: call.request.getContentType(),
-      apiVersion: call.request.getApiVersion() ?? ApiVersion.v20161215,
+      computeIntegrityHash: call.request.hasComputeIntegrity() ? call.request.getComputeIntegrity() === true : false,
+      syncToken: call.request.hasSyncToken() ? call.request.getSyncToken() : undefined,
+      cursorToken: call.request.getCursorToken() ? call.request.getCursorToken() : undefined,
+      limit: call.request.hasLimit() ? call.request.getLimit() : undefined,
+      contentType: call.request.hasContentType() ? call.request.getContentType() : undefined,
+      apiVersion,
       snjsVersion: call.metadata.get('x-snjs-version').pop() as string,
       readOnlyAccess: call.metadata.get('x-read-only-access').pop() === 'true',
       sessionUuid: call.metadata.get('x-session-uuid').pop() as string,
@@ -101,7 +103,7 @@ export class SyncingServer implements ISyncingServer {
     }
 
     const syncResponse = await this.syncResponseFactoryResolver
-      .resolveSyncResponseFactoryVersion(call.request.getApiVersion())
+      .resolveSyncResponseFactoryVersion(apiVersion)
       .createResponse(syncResult.getValue())
 
     const projection = this.mapper.toProjection(syncResponse as SyncResponse20200115)
