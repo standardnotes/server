@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.124.3](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.124.2...@standardnotes/syncing-server@1.124.3) (2023-11-21)
+
+### Bug Fixes
+
+* **syncing-server:** front load themes and user prefs as high priority load items ([#935](https://github.com/standardnotes/syncing-server-js/issues/935)) ([2200dca](https://github.com/standardnotes/syncing-server-js/commit/2200dca69dc809f45463e3338ad7a6fdc66f07d9))
+
 ## [1.124.2](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.124.1...@standardnotes/syncing-server@1.124.2) (2023-11-20)
 
 ### Bug Fixes
