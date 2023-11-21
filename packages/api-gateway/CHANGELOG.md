@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.86.3](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.86.2...@standardnotes/api-gateway@1.86.3) (2023-11-21)
+
+### Bug Fixes
+
+* **api-gateway:** add meta field to grpc sync calls ([#934](https://github.com/standardnotes/api-gateway/issues/934)) ([c5c24b3](https://github.com/standardnotes/api-gateway/commit/c5c24b3ac9dbd559d96adc56270d724a3156ebd4))
+
 ## [1.86.2](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.86.1...@standardnotes/api-gateway@1.86.2) (2023-11-20)
 
 ### Bug Fixes
