@@ -59,7 +59,7 @@ export class SyncItems implements UseCaseInterface<SyncItemsResponse> {
       )
       const isSharedVaultExclusiveSync = dto.sharedVaultUuids && dto.sharedVaultUuids.length > 0
       if (this.isFirstSync(dto) && !isSharedVaultExclusiveSync) {
-        retrievedItems = await this.frontLoadKeysItemsToTop(dto.userUuid, retrievedItems)
+        retrievedItems = await this.frontLoadHighLoadingPriorityItemsToTop(dto.userUuid, retrievedItems)
       }
 
       const sharedVaultsOrError = await this.getSharedVaultsUseCase.execute({
@@ -139,19 +139,22 @@ export class SyncItems implements UseCaseInterface<SyncItemsResponse> {
     return retrievedItems.filter((item: Item) => syncConflictIds.indexOf(item.id.toString()) === -1)
   }
 
-  private async frontLoadKeysItemsToTop(userUuid: string, retrievedItems: Array<Item>): Promise<Array<Item>> {
-    const itemsKeys = await this.itemRepository.findAll({
+  private async frontLoadHighLoadingPriorityItemsToTop(
+    userUuid: string,
+    retrievedItems: Array<Item>,
+  ): Promise<Array<Item>> {
+    const highPriorityItems = await this.itemRepository.findAll({
       userUuid,
-      contentType: ContentType.TYPES.ItemsKey,
+      contentType: [ContentType.TYPES.ItemsKey, ContentType.TYPES.UserPrefs, ContentType.TYPES.Theme],
       sortBy: 'updated_at_timestamp',
       sortOrder: 'ASC',
     })
 
     const retrievedItemsIds: Array<string> = retrievedItems.map((item: Item) => item.id.toString())
 
-    itemsKeys.forEach((itemKey: Item) => {
-      if (retrievedItemsIds.indexOf(itemKey.id.toString()) === -1) {
-        retrievedItems.unshift(itemKey)
+    highPriorityItems.forEach((highPriorityItem: Item) => {
+      if (retrievedItemsIds.indexOf(highPriorityItem.id.toString()) === -1) {
+        retrievedItems.unshift(highPriorityItem)
       }
     })
 
