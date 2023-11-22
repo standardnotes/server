@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.173.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.173.0...@standardnotes/auth-server@1.173.1) (2023-11-22)
+
+### Bug Fixes
+
+* error handling on gRPC ([#937](https://github.com/standardnotes/server/issues/937)) ([8f23c8a](https://github.com/standardnotes/server/commit/8f23c8ab3f03e9c23adfb31a33c5805492bc2f5b))
+
 # [1.173.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.172.2...@standardnotes/auth-server@1.173.0) (2023-11-22)
 
 ### Features

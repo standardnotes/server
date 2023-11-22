@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.86.5](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.86.4...@standardnotes/api-gateway@1.86.5) (2023-11-22)
+
+### Bug Fixes
+
+* error handling on gRPC ([#937](https://github.com/standardnotes/api-gateway/issues/937)) ([8f23c8a](https://github.com/standardnotes/api-gateway/commit/8f23c8ab3f03e9c23adfb31a33c5805492bc2f5b))
+
 ## [1.86.4](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.86.3...@standardnotes/api-gateway@1.86.4) (2023-11-22)
 
 **Note:** Version bump only for package @standardnotes/api-gateway

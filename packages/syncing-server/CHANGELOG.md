@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.125.1](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.125.0...@standardnotes/syncing-server@1.125.1) (2023-11-22)
+
+### Bug Fixes
+
+* error handling on gRPC ([#937](https://github.com/standardnotes/syncing-server-js/issues/937)) ([8f23c8a](https://github.com/standardnotes/syncing-server-js/commit/8f23c8ab3f03e9c23adfb31a33c5805492bc2f5b))
+
 # [1.125.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.124.3...@standardnotes/syncing-server@1.125.0) (2023-11-22)
 
 ### Features
