@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.125.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.124.3...@standardnotes/syncing-server@1.125.0) (2023-11-22)
+
+### Features
+
+* add verifiying if user has no items before mass deleting spam accounts ([#936](https://github.com/standardnotes/syncing-server-js/issues/936)) ([c11abe1](https://github.com/standardnotes/syncing-server-js/commit/c11abe1bd36de7c0fb9850c20a8157c066fa9379))
+
 ## [1.124.3](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.124.2...@standardnotes/syncing-server@1.124.3) (2023-11-21)
 
 ### Bug Fixes
