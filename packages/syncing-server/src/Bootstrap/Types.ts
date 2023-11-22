@@ -85,6 +85,9 @@ const TYPES = {
   Sync_DumpItem: Symbol.for('Sync_DumpItem'),
   // Handlers
   Sync_AccountDeletionRequestedEventHandler: Symbol.for('Sync_AccountDeletionRequestedEventHandler'),
+  Sync_AccountDeletionVerificationRequestedEventHandler: Symbol.for(
+    'Sync_AccountDeletionVerificationRequestedEventHandler',
+  ),
   Sync_DuplicateItemSyncedEventHandler: Symbol.for('Sync_DuplicateItemSyncedEventHandler'),
   Sync_EmailBackupRequestedEventHandler: Symbol.for('Sync_EmailBackupRequestedEventHandler'),
   Sync_ItemRevisionCreationRequestedEventHandler: Symbol.for('Sync_ItemRevisionCreationRequestedEventHandler'),

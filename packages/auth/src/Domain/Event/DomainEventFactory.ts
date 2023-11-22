@@ -20,6 +20,7 @@ import {
   StatisticPersistenceRequestedEvent,
   SessionCreatedEvent,
   SessionRefreshedEvent,
+  AccountDeletionVerificationRequestedEvent,
 } from '@standardnotes/domain-events'
 import { Predicate, PredicateVerificationResult } from '@standardnotes/predicates'
 import { TimerInterface } from '@standardnotes/time'
@@ -32,6 +33,24 @@ import { KeyParamsData } from '@standardnotes/responses'
 @injectable()
 export class DomainEventFactory implements DomainEventFactoryInterface {
   constructor(@inject(TYPES.Auth_Timer) private timer: TimerInterface) {}
+
+  createAccountDeletionVerificationRequestedEvent(dto: {
+    userUuid: string
+    email: string
+  }): AccountDeletionVerificationRequestedEvent {
+    return {
+      type: 'ACCOUNT_DELETION_VERIFICATION_REQUESTED',
+      createdAt: this.timer.getUTCDate(),
+      meta: {
+        correlation: {
+          userIdentifier: dto.userUuid,
+          userIdentifierType: 'uuid',
+        },
+        origin: DomainEventService.Auth,
+      },
+      payload: dto,
+    }
+  }
 
   createSessionCreatedEvent(dto: { userUuid: string }): SessionCreatedEvent {
     return {

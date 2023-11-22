@@ -160,6 +160,7 @@ import { DumpItem } from '../Domain/UseCase/Syncing/DumpItem/DumpItem'
 import { SyncResponse20200115 } from '../Domain/Item/SyncResponse/SyncResponse20200115'
 import { SyncResponse } from '@standardnotes/grpc'
 import { SyncResponseGRPCMapper } from '../Mapping/gRPC/SyncResponseGRPCMapper'
+import { AccountDeletionVerificationRequestedEventHandler } from '../Domain/Handler/AccountDeletionVerificationRequestedEventHandler'
 
 export class ContainerConfigLoader {
   private readonly DEFAULT_CONTENT_SIZE_TRANSFER_LIMIT = 10_000_000
@@ -908,6 +909,18 @@ export class ContainerConfigLoader {
         ),
       )
     container
+      .bind<AccountDeletionVerificationRequestedEventHandler>(
+        TYPES.Sync_AccountDeletionVerificationRequestedEventHandler,
+      )
+      .toConstantValue(
+        new AccountDeletionVerificationRequestedEventHandler(
+          container.get<ItemRepositoryInterface>(TYPES.Sync_SQLItemRepository),
+          container.get<DomainEventPublisherInterface>(TYPES.Sync_DomainEventPublisher),
+          container.get<DomainEventFactoryInterface>(TYPES.Sync_DomainEventFactory),
+          container.get<Logger>(TYPES.Sync_Logger),
+        ),
+      )
+    container
       .bind<ItemRevisionCreationRequestedEventHandler>(TYPES.Sync_ItemRevisionCreationRequestedEventHandler)
       .toConstantValue(
         new ItemRevisionCreationRequestedEventHandler(
@@ -957,6 +970,10 @@ export class ContainerConfigLoader {
     const eventHandlers: Map<string, DomainEventHandlerInterface> = new Map([
       ['DUPLICATE_ITEM_SYNCED', container.get(TYPES.Sync_DuplicateItemSyncedEventHandler)],
       ['ACCOUNT_DELETION_REQUESTED', container.get(TYPES.Sync_AccountDeletionRequestedEventHandler)],
+      [
+        'ACCOUNT_DELETION_VERIFICATION_REQUESTED',
+        container.get(TYPES.Sync_AccountDeletionVerificationRequestedEventHandler),
+      ],
       ['ITEM_REVISION_CREATION_REQUESTED', container.get(TYPES.Sync_ItemRevisionCreationRequestedEventHandler)],
       [
         'SHARED_VAULT_FILE_UPLOADED',

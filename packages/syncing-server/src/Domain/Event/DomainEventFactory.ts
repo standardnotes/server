@@ -1,5 +1,6 @@
 /* istanbul ignore file */
 import {
+  AccountDeletionVerificationPassedEvent,
   DomainEventService,
   DuplicateItemSyncedEvent,
   EmailRequestedEvent,
@@ -21,6 +22,24 @@ import { DomainEventFactoryInterface } from './DomainEventFactoryInterface'
 
 export class DomainEventFactory implements DomainEventFactoryInterface {
   constructor(private timer: TimerInterface) {}
+
+  createAccountDeletionVerificationPassedEvent(dto: {
+    userUuid: string
+    email: string
+  }): AccountDeletionVerificationPassedEvent {
+    return {
+      type: 'ACCOUNT_DELETION_VERIFICATION_PASSED',
+      createdAt: this.timer.getUTCDate(),
+      meta: {
+        correlation: {
+          userIdentifier: dto.userUuid,
+          userIdentifierType: 'uuid',
+        },
+        origin: DomainEventService.SyncingServer,
+      },
+      payload: dto,
+    }
+  }
 
   createUserDesignatedAsSurvivorInSharedVaultEvent(dto: {
     sharedVaultUuid: string

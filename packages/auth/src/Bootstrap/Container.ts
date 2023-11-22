@@ -280,6 +280,7 @@ import { TriggerEmailBackupForAllUsers } from '../Domain/UseCase/TriggerEmailBac
 import { CSVFileReaderInterface } from '../Domain/CSV/CSVFileReaderInterface'
 import { S3CsvFileReader } from '../Infra/S3/S3CsvFileReader'
 import { DeleteAccountsFromCSVFile } from '../Domain/UseCase/DeleteAccountsFromCSVFile/DeleteAccountsFromCSVFile'
+import { AccountDeletionVerificationPassedEventHandler } from '../Domain/Handler/AccountDeletionVerificationPassedEventHandler'
 
 export class ContainerConfigLoader {
   constructor(private mode: 'server' | 'worker' = 'server') {}
@@ -1274,7 +1275,9 @@ export class ContainerConfigLoader {
         .toConstantValue(
           new DeleteAccountsFromCSVFile(
             container.get<CSVFileReaderInterface>(TYPES.Auth_CSVFileReader),
-            container.get<DeleteAccount>(TYPES.Auth_DeleteAccount),
+            container.get<DomainEventPublisherInterface>(TYPES.Auth_DomainEventPublisher),
+            container.get<DomainEventFactoryInterface>(TYPES.Auth_DomainEventFactory),
+            container.get<UserRepositoryInterface>(TYPES.Auth_UserRepository),
             container.get<winston.Logger>(TYPES.Auth_Logger),
           ),
         )
@@ -1325,6 +1328,14 @@ export class ContainerConfigLoader {
           container.get<SessionRepositoryInterface>(TYPES.Auth_SessionRepository),
           container.get<EphemeralSessionRepositoryInterface>(TYPES.Auth_EphemeralSessionRepository),
           container.get<RevokedSessionRepositoryInterface>(TYPES.Auth_RevokedSessionRepository),
+          container.get<winston.Logger>(TYPES.Auth_Logger),
+        ),
+      )
+    container
+      .bind<AccountDeletionVerificationPassedEventHandler>(TYPES.Auth_AccountDeletionVerificationPassedEventHandler)
+      .toConstantValue(
+        new AccountDeletionVerificationPassedEventHandler(
+          container.get<DeleteAccount>(TYPES.Auth_DeleteAccount),
           container.get<winston.Logger>(TYPES.Auth_Logger),
         ),
       )
@@ -1516,6 +1527,7 @@ export class ContainerConfigLoader {
 
     const eventHandlers: Map<string, DomainEventHandlerInterface> = new Map([
       ['ACCOUNT_DELETION_REQUESTED', container.get(TYPES.Auth_AccountDeletionRequestedEventHandler)],
+      ['ACCOUNT_DELETION_VERIFICATION_PASSED', container.get(TYPES.Auth_AccountDeletionVerificationPassedEventHandler)],
       ['SUBSCRIPTION_PURCHASED', container.get(TYPES.Auth_SubscriptionPurchasedEventHandler)],
       ['SUBSCRIPTION_CANCELLED', container.get(TYPES.Auth_SubscriptionCancelledEventHandler)],
       ['SUBSCRIPTION_RENEWED', container.get(TYPES.Auth_SubscriptionRenewedEventHandler)],

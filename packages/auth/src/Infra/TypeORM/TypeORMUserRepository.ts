@@ -69,7 +69,13 @@ export class TypeORMUserRepository implements UserRepositoryInterface {
     return this.ormRepository
       .createQueryBuilder('user')
       .where('user.email = :email', { email: usernameOrEmail.value })
-      .cache(`user_email_${usernameOrEmail.value}`, 60000)
       .getOne()
+  }
+
+  async findAllByUsernameOrEmail(usernameOrEmail: Email | Username): Promise<User[]> {
+    return this.ormRepository
+      .createQueryBuilder('user')
+      .where('user.email = :email', { email: usernameOrEmail.value })
+      .getMany()
   }
 }

@@ -171,6 +171,7 @@ const TYPES = {
   Auth_DeleteAccountsFromCSVFile: Symbol.for('Auth_DeleteAccountsFromCSVFile'),
   // Handlers
   Auth_AccountDeletionRequestedEventHandler: Symbol.for('Auth_AccountDeletionRequestedEventHandler'),
+  Auth_AccountDeletionVerificationPassedEventHandler: Symbol.for('Auth_AccountDeletionVerificationPassedEventHandler'),
   Auth_SubscriptionPurchasedEventHandler: Symbol.for('Auth_SubscriptionPurchasedEventHandler'),
   Auth_SubscriptionCancelledEventHandler: Symbol.for('Auth_SubscriptionCancelledEventHandler'),
   Auth_SubscriptionReassignedEventHandler: Symbol.for('Auth_SubscriptionReassignedEventHandler'),
