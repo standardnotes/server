@@ -22,38 +22,82 @@ export class SyncingServer implements ISyncingServer {
     call: grpc.ServerUnaryCall<SyncRequest, SyncResponse>,
     callback: grpc.sendUnaryData<SyncResponse>,
   ): Promise<void> {
-    this.logger.debug('[SyncingServer] Syncing items via gRPC')
+    try {
+      this.logger.debug('[SyncingServer] Syncing items via gRPC')
 
-    const itemHashesRPC = call.request.getItemsList()
-    const itemHashes: ItemHash[] = []
-    for (const itemHash of itemHashesRPC) {
-      const itemHashOrError = ItemHash.create({
-        uuid: itemHash.getUuid(),
-        content: itemHash.hasContent() ? itemHash.getContent() : undefined,
-        content_type: itemHash.hasContentType() ? (itemHash.getContentType() as string) : null,
-        deleted: itemHash.hasDeleted() ? itemHash.getDeleted() : undefined,
-        duplicate_of: itemHash.hasDuplicateOf() ? itemHash.getDuplicateOf() : undefined,
-        auth_hash: itemHash.hasAuthHash() ? itemHash.getAuthHash() : undefined,
-        enc_item_key: itemHash.hasEncItemKey() ? itemHash.getEncItemKey() : undefined,
-        items_key_id: itemHash.hasItemsKeyId() ? itemHash.getItemsKeyId() : undefined,
-        created_at: itemHash.hasCreatedAt() ? itemHash.getCreatedAt() : undefined,
-        created_at_timestamp: itemHash.hasCreatedAtTimestamp() ? itemHash.getCreatedAtTimestamp() : undefined,
-        updated_at: itemHash.hasUpdatedAt() ? itemHash.getUpdatedAt() : undefined,
-        updated_at_timestamp: itemHash.hasUpdatedAtTimestamp() ? itemHash.getUpdatedAtTimestamp() : undefined,
-        user_uuid: call.metadata.get('userUuid').pop() as string,
-        key_system_identifier: itemHash.hasKeySystemIdentifier() ? (itemHash.getKeySystemIdentifier() as string) : null,
-        shared_vault_uuid: itemHash.hasSharedVaultUuid() ? (itemHash.getSharedVaultUuid() as string) : null,
+      const itemHashesRPC = call.request.getItemsList()
+      const itemHashes: ItemHash[] = []
+      for (const itemHash of itemHashesRPC) {
+        const itemHashOrError = ItemHash.create({
+          uuid: itemHash.getUuid(),
+          content: itemHash.hasContent() ? itemHash.getContent() : undefined,
+          content_type: itemHash.hasContentType() ? (itemHash.getContentType() as string) : null,
+          deleted: itemHash.hasDeleted() ? itemHash.getDeleted() : undefined,
+          duplicate_of: itemHash.hasDuplicateOf() ? itemHash.getDuplicateOf() : undefined,
+          auth_hash: itemHash.hasAuthHash() ? itemHash.getAuthHash() : undefined,
+          enc_item_key: itemHash.hasEncItemKey() ? itemHash.getEncItemKey() : undefined,
+          items_key_id: itemHash.hasItemsKeyId() ? itemHash.getItemsKeyId() : undefined,
+          created_at: itemHash.hasCreatedAt() ? itemHash.getCreatedAt() : undefined,
+          created_at_timestamp: itemHash.hasCreatedAtTimestamp() ? itemHash.getCreatedAtTimestamp() : undefined,
+          updated_at: itemHash.hasUpdatedAt() ? itemHash.getUpdatedAt() : undefined,
+          updated_at_timestamp: itemHash.hasUpdatedAtTimestamp() ? itemHash.getUpdatedAtTimestamp() : undefined,
+          user_uuid: call.metadata.get('userUuid').pop() as string,
+          key_system_identifier: itemHash.hasKeySystemIdentifier()
+            ? (itemHash.getKeySystemIdentifier() as string)
+            : null,
+          shared_vault_uuid: itemHash.hasSharedVaultUuid() ? (itemHash.getSharedVaultUuid() as string) : null,
+        })
+
+        if (itemHashOrError.isFailed()) {
+          const metadata = new grpc.Metadata()
+          metadata.set('x-sync-error-message', itemHashOrError.getError())
+          metadata.set('x-sync-error-response-code', '400')
+
+          return callback(
+            {
+              code: Status.INVALID_ARGUMENT,
+              message: itemHashOrError.getError(),
+              name: 'INVALID_ARGUMENT',
+              metadata,
+            },
+            null,
+          )
+        }
+
+        itemHashes.push(itemHashOrError.getValue())
+      }
+
+      let sharedVaultUuids: string[] | undefined = undefined
+      const sharedVaultUuidsList = call.request.getSharedVaultUuidsList()
+      if (sharedVaultUuidsList.length > 0) {
+        sharedVaultUuids = sharedVaultUuidsList
+      }
+
+      const apiVersion = call.request.hasApiVersion() ? (call.request.getApiVersion() as string) : ApiVersion.v20161215
+
+      const syncResult = await this.syncItemsUseCase.execute({
+        userUuid: call.metadata.get('x-user-uuid').pop() as string,
+        itemHashes,
+        computeIntegrityHash: call.request.hasComputeIntegrity() ? call.request.getComputeIntegrity() === true : false,
+        syncToken: call.request.hasSyncToken() ? call.request.getSyncToken() : undefined,
+        cursorToken: call.request.getCursorToken() ? call.request.getCursorToken() : undefined,
+        limit: call.request.hasLimit() ? call.request.getLimit() : undefined,
+        contentType: call.request.hasContentType() ? call.request.getContentType() : undefined,
+        apiVersion,
+        snjsVersion: call.metadata.get('x-snjs-version').pop() as string,
+        readOnlyAccess: call.metadata.get('x-read-only-access').pop() === 'true',
+        sessionUuid: call.metadata.get('x-session-uuid').pop() as string,
+        sharedVaultUuids,
       })
-
-      if (itemHashOrError.isFailed()) {
+      if (syncResult.isFailed()) {
         const metadata = new grpc.Metadata()
-        metadata.set('x-sync-error-message', itemHashOrError.getError())
+        metadata.set('x-sync-error-message', syncResult.getError())
         metadata.set('x-sync-error-response-code', '400')
 
         return callback(
           {
             code: Status.INVALID_ARGUMENT,
-            message: itemHashOrError.getError(),
+            message: syncResult.getError(),
             name: 'INVALID_ARGUMENT',
             metadata,
           },
@@ -61,53 +105,24 @@ export class SyncingServer implements ISyncingServer {
         )
       }
 
-      itemHashes.push(itemHashOrError.getValue())
-    }
+      const syncResponse = await this.syncResponseFactoryResolver
+        .resolveSyncResponseFactoryVersion(apiVersion)
+        .createResponse(syncResult.getValue())
 
-    let sharedVaultUuids: string[] | undefined = undefined
-    const sharedVaultUuidsList = call.request.getSharedVaultUuidsList()
-    if (sharedVaultUuidsList.length > 0) {
-      sharedVaultUuids = sharedVaultUuidsList
-    }
+      const projection = this.mapper.toProjection(syncResponse as SyncResponse20200115)
 
-    const apiVersion = call.request.hasApiVersion() ? (call.request.getApiVersion() as string) : ApiVersion.v20161215
-
-    const syncResult = await this.syncItemsUseCase.execute({
-      userUuid: call.metadata.get('x-user-uuid').pop() as string,
-      itemHashes,
-      computeIntegrityHash: call.request.hasComputeIntegrity() ? call.request.getComputeIntegrity() === true : false,
-      syncToken: call.request.hasSyncToken() ? call.request.getSyncToken() : undefined,
-      cursorToken: call.request.getCursorToken() ? call.request.getCursorToken() : undefined,
-      limit: call.request.hasLimit() ? call.request.getLimit() : undefined,
-      contentType: call.request.hasContentType() ? call.request.getContentType() : undefined,
-      apiVersion,
-      snjsVersion: call.metadata.get('x-snjs-version').pop() as string,
-      readOnlyAccess: call.metadata.get('x-read-only-access').pop() === 'true',
-      sessionUuid: call.metadata.get('x-session-uuid').pop() as string,
-      sharedVaultUuids,
-    })
-    if (syncResult.isFailed()) {
-      const metadata = new grpc.Metadata()
-      metadata.set('x-sync-error-message', syncResult.getError())
-      metadata.set('x-sync-error-response-code', '400')
+      callback(null, projection)
+    } catch (error) {
+      this.logger.error(`[SyncingServer] Error syncing items via gRPC: ${(error as Error).message}`)
 
       return callback(
         {
-          code: Status.INVALID_ARGUMENT,
-          message: syncResult.getError(),
-          name: 'INVALID_ARGUMENT',
-          metadata,
+          code: Status.UNKNOWN,
+          message: 'An error occurred while syncing items',
+          name: 'UNKNOWN',
         },
         null,
       )
     }
-
-    const syncResponse = await this.syncResponseFactoryResolver
-      .resolveSyncResponseFactoryVersion(apiVersion)
-      .createResponse(syncResult.getValue())
-
-    const projection = this.mapper.toProjection(syncResponse as SyncResponse20200115)
-
-    callback(null, projection)
   }
 }
