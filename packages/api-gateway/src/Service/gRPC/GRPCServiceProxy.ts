@@ -88,7 +88,10 @@ export class GRPCServiceProxy implements ServiceProxyInterface {
     endpoint: string,
     payload?: Record<string, unknown> | string,
   ): Promise<void> {
-    if (endpoint === 'items/sync') {
+    const requestIsUsingLatestApiVersions =
+      payload !== undefined && typeof payload !== 'string' && 'api' in payload && payload.api === '20200115'
+
+    if (requestIsUsingLatestApiVersions && endpoint === 'items/sync') {
       const result = await this.gRPCSyncingServerServiceProxy.sync(request, response, payload)
 
       response.status(result.status).send({
