@@ -1,4 +1,5 @@
 import {
+  AccountDeletionVerificationPassedEvent,
   DuplicateItemSyncedEvent,
   EmailRequestedEvent,
   ItemDumpedEvent,
@@ -93,4 +94,8 @@ export interface DomainEventFactoryInterface {
     userUuid: string
     timestamp: number
   }): UserDesignatedAsSurvivorInSharedVaultEvent
+  createAccountDeletionVerificationPassedEvent(dto: {
+    userUuid: string
+    email: string
+  }): AccountDeletionVerificationPassedEvent
 }

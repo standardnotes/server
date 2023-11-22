@@ -1,14 +1,18 @@
-import { Result, UseCaseInterface } from '@standardnotes/domain-core'
+import { Result, UseCaseInterface, Username } from '@standardnotes/domain-core'
+import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
 import { Logger } from 'winston'
 
-import { DeleteAccount } from '../DeleteAccount/DeleteAccount'
 import { CSVFileReaderInterface } from '../../CSV/CSVFileReaderInterface'
 import { DeleteAccountsFromCSVFileDTO } from './DeleteAccountsFromCSVFileDTO'
+import { DomainEventFactoryInterface } from '../../Event/DomainEventFactoryInterface'
+import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'
 
 export class DeleteAccountsFromCSVFile implements UseCaseInterface<void> {
   constructor(
     private csvFileReader: CSVFileReaderInterface,
-    private deleteAccount: DeleteAccount,
+    private domainEventPublisher: DomainEventPublisherInterface,
+    private domainEventFactory: DomainEventFactoryInterface,
+    private userRepository: UserRepositoryInterface,
     private logger: Logger,
   ) {}
 
@@ -33,12 +37,20 @@ export class DeleteAccountsFromCSVFile implements UseCaseInterface<void> {
     }
 
     for (const email of emails) {
-      const deleteAccountOrError = await this.deleteAccount.execute({
-        username: email,
-      })
+      const usernameOrError = Username.create(email)
+      if (usernameOrError.isFailed()) {
+        return Result.fail(usernameOrError.getError())
+      }
+      const username = usernameOrError.getValue()
 
-      if (deleteAccountOrError.isFailed()) {
-        return Result.fail(deleteAccountOrError.getError())
+      const users = await this.userRepository.findAllByUsernameOrEmail(username)
+      for (const user of users) {
+        await this.domainEventPublisher.publish(
+          this.domainEventFactory.createAccountDeletionVerificationRequestedEvent({
+            userUuid: user.uuid,
+            email: user.email,
+          }),
+        )
       }
     }
 

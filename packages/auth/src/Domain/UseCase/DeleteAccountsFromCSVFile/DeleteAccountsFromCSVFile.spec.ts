@@ -1,32 +1,50 @@
 import { Logger } from 'winston'
 import { Result } from '@standardnotes/domain-core'
+import { AccountDeletionVerificationRequestedEvent, DomainEventPublisherInterface } from '@standardnotes/domain-events'
 
 import { CSVFileReaderInterface } from '../../CSV/CSVFileReaderInterface'
-import { DeleteAccount } from '../DeleteAccount/DeleteAccount'
 import { DeleteAccountsFromCSVFile } from './DeleteAccountsFromCSVFile'
+import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'
+import { DomainEventFactoryInterface } from '../../Event/DomainEventFactoryInterface'
+import { User } from '../../User/User'
 
 describe('DeleteAccountsFromCSVFile', () => {
   let csvFileReader: CSVFileReaderInterface
-  let deleteAccount: DeleteAccount
+  let userRepository: UserRepositoryInterface
+  let domainEventPublisher: DomainEventPublisherInterface
+  let domainEventFactory: DomainEventFactoryInterface
   let logger: Logger
 
-  const createUseCase = () => new DeleteAccountsFromCSVFile(csvFileReader, deleteAccount, logger)
+  const createUseCase = () =>
+    new DeleteAccountsFromCSVFile(csvFileReader, domainEventPublisher, domainEventFactory, userRepository, logger)
 
   beforeEach(() => {
+    const user = {} as jest.Mocked<User>
+
     csvFileReader = {} as jest.Mocked<CSVFileReaderInterface>
     csvFileReader.getValues = jest.fn().mockResolvedValue(Result.ok(['email1']))
 
-    deleteAccount = {} as jest.Mocked<DeleteAccount>
-    deleteAccount.execute = jest.fn().mockResolvedValue(Result.ok(''))
+    userRepository = {} as jest.Mocked<UserRepositoryInterface>
+    userRepository.findAllByUsernameOrEmail = jest.fn().mockResolvedValue([user])
+
+    domainEventPublisher = {} as jest.Mocked<DomainEventPublisherInterface>
+    domainEventPublisher.publish = jest.fn()
+
+    domainEventFactory = {} as jest.Mocked<DomainEventFactoryInterface>
+    domainEventFactory.createAccountDeletionVerificationRequestedEvent = jest
+      .fn()
+      .mockReturnValue({} as jest.Mocked<AccountDeletionVerificationRequestedEvent>)
 
     logger = {} as jest.Mocked<Logger>
     logger.info = jest.fn()
   })
 
-  it('should delete accounts', async () => {
+  it('should request account deletion verification', async () => {
     const useCase = createUseCase()
 
     const result = await useCase.execute({ fileName: 'test.csv', dryRun: false })
+
+    expect(domainEventPublisher.publish).toHaveBeenCalled()
 
     expect(result.isFailed()).toBeFalsy()
   })
@@ -56,17 +74,28 @@ describe('DeleteAccountsFromCSVFile', () => {
 
     const result = await useCase.execute({ fileName: 'test.csv', dryRun: true })
 
-    expect(deleteAccount.execute).not.toHaveBeenCalled()
+    expect(domainEventPublisher.publish).not.toHaveBeenCalled()
     expect(result.isFailed()).toBeFalsy()
   })
 
-  it('should return error if delete account fails', async () => {
-    deleteAccount.execute = jest.fn().mockResolvedValue(Result.fail('Oops'))
+  it('should return error username is invalid', async () => {
+    csvFileReader.getValues = jest.fn().mockResolvedValue(Result.ok(['']))
 
     const useCase = createUseCase()
 
     const result = await useCase.execute({ fileName: 'test.csv', dryRun: false })
 
     expect(result.isFailed()).toBeTruthy()
+  })
+
+  it('should do nothing if users could not be found', async () => {
+    userRepository.findAllByUsernameOrEmail = jest.fn().mockResolvedValue([])
+
+    const useCase = createUseCase()
+
+    const result = await useCase.execute({ fileName: 'test.csv', dryRun: false })
+
+    expect(domainEventPublisher.publish).not.toHaveBeenCalled()
+    expect(result.isFailed()).toBeFalsy()
   })
 })
