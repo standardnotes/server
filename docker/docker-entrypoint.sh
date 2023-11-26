@@ -1,5 +1,14 @@
 #!/bin/bash
 
+# Load environment variables from file if available
+if [ ! -z "$ENVIRONMENT_FILE" ]; then
+  if [ ! -f "$ENVIRONMENT_FILE" ]; then
+    echo "No environment file found at '$ENVIRONMENT_FILE'."
+    exit 1
+  fi
+  export $(cat "$ENVIRONMENT_FILE" | xargs)
+fi
+
 # Setup environment variables
 
 export MODE="self-hosted"
