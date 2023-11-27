@@ -1,5 +1,5 @@
 export interface ItemsChangedOnServerEventPayload {
   userUuid: string
-  sessionUuid: string | null
+  sessionUuid: string
   timestamp: number
 }

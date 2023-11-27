@@ -25,7 +25,7 @@ export interface DomainEventFactoryInterface {
   }): WebSocketMessageRequestedEvent
   createItemsChangedOnServerEvent(dto: {
     userUuid: string
-    sessionUuid: string | null
+    sessionUuid: string
     timestamp: number
   }): ItemsChangedOnServerEvent
   createUserInvitedToSharedVaultEvent(dto: {

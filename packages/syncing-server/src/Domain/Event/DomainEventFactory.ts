@@ -26,7 +26,7 @@ export class DomainEventFactory implements DomainEventFactoryInterface {
 
   createItemsChangedOnServerEvent(dto: {
     userUuid: string
-    sessionUuid: string | null
+    sessionUuid: string
     timestamp: number
   }): ItemsChangedOnServerEvent {
     return {
