@@ -5,6 +5,11 @@
     "node": ">=18.0.0 <21.0.0"
   },
   "private": true,
+  "repository": {
+    "type" : "git",
+    "url" : "git@github.com:standardnotes/server.git",
+    "directory": "packages/websockets"
+  },
   "description": "Websockets Server",
   "main": "dist/src/index.js",
   "typings": "dist/src/index.d.ts",

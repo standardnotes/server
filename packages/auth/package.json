@@ -13,6 +13,11 @@
     "access": "public",
     "provenance": true
   },
+  "repository": {
+    "type" : "git",
+    "url" : "git@github.com:standardnotes/server.git",
+    "directory": "packages/auth"
+  },
   "scripts": {
     "clean": "rm -fr dist",
     "setup:env": "cp .env.sample .env",

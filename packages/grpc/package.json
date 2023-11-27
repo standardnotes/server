@@ -16,6 +16,11 @@
     "access": "public",
     "provenance": true
   },
+  "repository": {
+    "type" : "git",
+    "url" : "git@github.com:standardnotes/server.git",
+    "directory": "packages/grpc"
+  },
   "license": "AGPL-3.0-or-later",
   "scripts": {
     "clean": "rm -fr dist",

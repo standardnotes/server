@@ -7,7 +7,11 @@
   "description": "Syncing Server",
   "main": "dist/src/index.js",
   "typings": "dist/src/index.d.ts",
-  "repository": "git@github.com:standardnotes/syncing-server-js.git",
+  "repository": {
+    "type" : "git",
+    "url" : "git@github.com:standardnotes/server.git",
+    "directory": "packages/syncing-server"
+  },
   "author": "Karol Sójko <karol@standardnotes.com>",
   "license": "AGPL-3.0-or-later",
   "publishConfig": {

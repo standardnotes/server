@@ -17,6 +17,11 @@
     "access": "public",
     "provenance": true
   },
+  "repository": {
+    "type" : "git",
+    "url" : "git@github.com:standardnotes/server.git",
+    "directory": "packages/sncrypto-node"
+  },
   "scripts": {
     "clean": "rm -fr dist",
     "build": "tsc --build",
