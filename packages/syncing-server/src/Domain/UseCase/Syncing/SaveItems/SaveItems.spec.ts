@@ -8,6 +8,9 @@ import { Logger } from 'winston'
 import { ContentType, Dates, Result, Timestamps, Uuid } from '@standardnotes/domain-core'
 import { ItemHash } from '../../../Item/ItemHash'
 import { Item } from '../../../Item/Item'
+import { SendEventToClient } from '../SendEventToClient/SendEventToClient'
+import { DomainEventFactoryInterface } from '../../../Event/DomainEventFactoryInterface'
+import { ItemsChangedOnServerEvent } from '@standardnotes/domain-events'
 
 describe('SaveItems', () => {
   let itemSaveValidator: ItemSaveValidatorInterface
@@ -18,11 +21,30 @@ describe('SaveItems', () => {
   let logger: Logger
   let itemHash1: ItemHash
   let savedItem: Item
+  let sendEventToClient: SendEventToClient
+  let domainEventFactory: DomainEventFactoryInterface
 
   const createUseCase = () =>
-    new SaveItems(itemSaveValidator, itemRepository, timer, saveNewItem, updateExistingItem, logger)
+    new SaveItems(
+      itemSaveValidator,
+      itemRepository,
+      timer,
+      saveNewItem,
+      updateExistingItem,
+      sendEventToClient,
+      domainEventFactory,
+      logger,
+    )
 
   beforeEach(() => {
+    sendEventToClient = {} as jest.Mocked<SendEventToClient>
+    sendEventToClient.execute = jest.fn()
+
+    domainEventFactory = {} as jest.Mocked<DomainEventFactoryInterface>
+    domainEventFactory.createItemsChangedOnServerEvent = jest
+      .fn()
+      .mockReturnValue({} as jest.Mocked<ItemsChangedOnServerEvent>)
+
     itemSaveValidator = {} as jest.Mocked<ItemSaveValidatorInterface>
     itemSaveValidator.validate = jest.fn().mockResolvedValue({ passed: true })
 
@@ -92,6 +114,7 @@ describe('SaveItems', () => {
       userUuid: 'user-uuid',
       sessionUuid: 'session-uuid',
     })
+    expect(sendEventToClient.execute).toHaveBeenCalled()
   })
 
   it('should mark items as conflicts if saving new item fails', async () => {
@@ -115,6 +138,7 @@ describe('SaveItems', () => {
         type: 'uuid_conflict',
       },
     ])
+    expect(sendEventToClient.execute).not.toHaveBeenCalled()
   })
 
   it('should mark items as conflicts if saving new item throws an error', async () => {

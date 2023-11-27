@@ -5,6 +5,7 @@ import {
   ItemDumpedEvent,
   ItemRemovedFromSharedVaultEvent,
   ItemRevisionCreationRequestedEvent,
+  ItemsChangedOnServerEvent,
   MessageSentToUserEvent,
   NotificationAddedForUserEvent,
   RevisionsCopyRequestedEvent,
@@ -17,7 +18,16 @@ import {
 } from '@standardnotes/domain-events'
 
 export interface DomainEventFactoryInterface {
-  createWebSocketMessageRequestedEvent(dto: { userUuid: string; message: string }): WebSocketMessageRequestedEvent
+  createWebSocketMessageRequestedEvent(dto: {
+    userUuid: string
+    message: string
+    originatingSessionUuid?: string
+  }): WebSocketMessageRequestedEvent
+  createItemsChangedOnServerEvent(dto: {
+    userUuid: string
+    sessionUuid: string | null
+    timestamp: number
+  }): ItemsChangedOnServerEvent
   createUserInvitedToSharedVaultEvent(dto: {
     invite: {
       uuid: string

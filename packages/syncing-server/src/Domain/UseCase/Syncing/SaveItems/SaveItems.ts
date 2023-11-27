@@ -11,6 +11,8 @@ import { ItemSaveValidatorInterface } from '../../../Item/SaveValidator/ItemSave
 import { SaveNewItem } from '../SaveNewItem/SaveNewItem'
 import { UpdateExistingItem } from '../UpdateExistingItem/UpdateExistingItem'
 import { ItemRepositoryInterface } from '../../../Item/ItemRepositoryInterface'
+import { SendEventToClient } from '../SendEventToClient/SendEventToClient'
+import { DomainEventFactoryInterface } from '../../../Event/DomainEventFactoryInterface'
 
 export class SaveItems implements UseCaseInterface<SaveItemsResult> {
   private readonly SYNC_TOKEN_VERSION = 2
@@ -21,6 +23,8 @@ export class SaveItems implements UseCaseInterface<SaveItemsResult> {
     private timer: TimerInterface,
     private saveNewItem: SaveNewItem,
     private updateExistingItem: UpdateExistingItem,
+    private sendEventToClient: SendEventToClient,
+    private domainEventFactory: DomainEventFactoryInterface,
     private logger: Logger,
   ) {}
 
@@ -129,6 +133,19 @@ export class SaveItems implements UseCaseInterface<SaveItemsResult> {
           continue
         }
       }
+    }
+
+    if (savedItems.length > 0 && dto.sessionUuid) {
+      const itemsChangedEvent = this.domainEventFactory.createItemsChangedOnServerEvent({
+        userUuid: dto.userUuid,
+        sessionUuid: dto.sessionUuid,
+        timestamp: lastUpdatedTimestamp,
+      })
+      await this.sendEventToClient.execute({
+        userUuid: dto.userUuid,
+        originatingSessionUuid: dto.sessionUuid,
+        event: itemsChangedEvent,
+      })
     }
 
     const syncToken = this.calculateSyncToken(lastUpdatedTimestamp, savedItems)

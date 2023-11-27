@@ -7,6 +7,7 @@ import {
   ItemDumpedEvent,
   ItemRemovedFromSharedVaultEvent,
   ItemRevisionCreationRequestedEvent,
+  ItemsChangedOnServerEvent,
   MessageSentToUserEvent,
   NotificationAddedForUserEvent,
   RevisionsCopyRequestedEvent,
@@ -22,6 +23,25 @@ import { DomainEventFactoryInterface } from './DomainEventFactoryInterface'
 
 export class DomainEventFactory implements DomainEventFactoryInterface {
   constructor(private timer: TimerInterface) {}
+
+  createItemsChangedOnServerEvent(dto: {
+    userUuid: string
+    sessionUuid: string | null
+    timestamp: number
+  }): ItemsChangedOnServerEvent {
+    return {
+      type: 'ITEMS_CHANGED_ON_SERVER',
+      createdAt: this.timer.getUTCDate(),
+      meta: {
+        correlation: {
+          userIdentifier: dto.userUuid,
+          userIdentifierType: 'uuid',
+        },
+        origin: DomainEventService.SyncingServer,
+      },
+      payload: dto,
+    }
+  }
 
   createAccountDeletionVerificationPassedEvent(dto: {
     userUuid: string
@@ -207,7 +227,11 @@ export class DomainEventFactory implements DomainEventFactoryInterface {
     }
   }
 
-  createWebSocketMessageRequestedEvent(dto: { userUuid: string; message: string }): WebSocketMessageRequestedEvent {
+  createWebSocketMessageRequestedEvent(dto: {
+    userUuid: string
+    message: string
+    originatingSessionUuid?: string
+  }): WebSocketMessageRequestedEvent {
     return {
       type: 'WEB_SOCKET_MESSAGE_REQUESTED',
       createdAt: this.timer.getUTCDate(),

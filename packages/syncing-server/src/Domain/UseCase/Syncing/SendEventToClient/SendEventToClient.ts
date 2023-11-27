@@ -24,6 +24,7 @@ export class SendEventToClient implements UseCaseInterface<void> {
     const event = this.domainEventFactory.createWebSocketMessageRequestedEvent({
       userUuid: userUuid.value,
       message: JSON.stringify(dto.event),
+      originatingSessionUuid: dto.originatingSessionUuid,
     })
 
     await this.domainEventPublisher.publish(event)

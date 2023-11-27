@@ -601,12 +601,14 @@ export class ContainerConfigLoader {
       .bind<SaveItems>(TYPES.Sync_SaveItems)
       .toConstantValue(
         new SaveItems(
-          container.get(TYPES.Sync_ItemSaveValidator),
-          container.get(TYPES.Sync_SQLItemRepository),
-          container.get(TYPES.Sync_Timer),
-          container.get(TYPES.Sync_SaveNewItem),
-          container.get(TYPES.Sync_UpdateExistingItem),
-          container.get(TYPES.Sync_Logger),
+          container.get<ItemSaveValidatorInterface>(TYPES.Sync_ItemSaveValidator),
+          container.get<ItemRepositoryInterface>(TYPES.Sync_SQLItemRepository),
+          container.get<TimerInterface>(TYPES.Sync_Timer),
+          container.get<SaveNewItem>(TYPES.Sync_SaveNewItem),
+          container.get<UpdateExistingItem>(TYPES.Sync_UpdateExistingItem),
+          container.get<SendEventToClient>(TYPES.Sync_SendEventToClient),
+          container.get<DomainEventFactoryInterface>(TYPES.Sync_DomainEventFactory),
+          container.get<Logger>(TYPES.Sync_Logger),
         ),
       )
     container
