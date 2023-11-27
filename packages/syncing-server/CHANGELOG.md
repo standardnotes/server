@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.126.0](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.125.2...@standardnotes/syncing-server@1.126.0) (2023-11-27)
+
+### Features
+
+* add npm provenance to published packages ([e836abd](https://github.com/standardnotes/syncing-server-js/commit/e836abdef73d246940d8fffd9e65e17c64cd35c8))
+
 ## [1.125.2](https://github.com/standardnotes/syncing-server-js/compare/@standardnotes/syncing-server@1.125.1...@standardnotes/syncing-server@1.125.2) (2023-11-23)
 
 **Note:** Version bump only for package @standardnotes/syncing-server

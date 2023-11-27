@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.87.0](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.86.6...@standardnotes/api-gateway@1.87.0) (2023-11-27)
+
+### Features
+
+* add npm provenance to published packages ([e836abd](https://github.com/standardnotes/api-gateway/commit/e836abdef73d246940d8fffd9e65e17c64cd35c8))
+
 ## [1.86.6](https://github.com/standardnotes/api-gateway/compare/@standardnotes/api-gateway@1.86.5...@standardnotes/api-gateway@1.86.6) (2023-11-23)
 
 **Note:** Version bump only for package @standardnotes/api-gateway

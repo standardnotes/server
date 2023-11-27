@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.23.0](https://github.com/standardnotes/server/compare/@standardnotes/settings@1.22.0...@standardnotes/settings@1.23.0) (2023-11-27)
+
+### Features
+
+* add npm provenance to published packages ([e836abd](https://github.com/standardnotes/server/commit/e836abdef73d246940d8fffd9e65e17c64cd35c8))
+
 # [1.22.0](https://github.com/standardnotes/server/compare/@standardnotes/settings@1.21.47...@standardnotes/settings@1.22.0) (2023-10-26)
 
 ### Features
