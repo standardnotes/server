@@ -1,10 +1,12 @@
 const TYPES = {
   Logger: Symbol.for('Logger'),
-  Redis: Symbol.for('Redis'),
+  Timer: Symbol.for('Timer'),
   SQS: Symbol.for('SQS'),
   WebSockets_ApiGatewayManagementApiClient: Symbol.for('WebSockets_ApiGatewayManagementApiClient'),
-  // Controller
-  WebSocketsController: Symbol.for('WebSocketsController'),
+  // Mappers
+  ConnectionPersistenceMapper: Symbol.for('ConnectionPersistenceMapper'),
+  // ORM
+  ORMConnectionRepository: Symbol.for('ORMConnectionRepository'),
   // Repositories
   WebSocketsConnectionRepository: Symbol.for('WebSocketsConnectionRepository'),
   // Middleware
@@ -22,6 +24,7 @@ const TYPES = {
   AddWebSocketsConnection: Symbol.for('AddWebSocketsConnection'),
   RemoveWebSocketsConnection: Symbol.for('RemoveWebSocketsConnection'),
   CreateWebSocketConnectionToken: Symbol.for('CreateWebSocketConnectionToken'),
+  SendMessageToClient: Symbol.for('SendMessageToClient'),
   // Handlers
   WebSocketMessageRequestedEventHandler: Symbol.for('WebSocketMessageRequestedEventHandler'),
   // Services

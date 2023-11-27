@@ -7,7 +7,7 @@ import TYPES from '../src/Bootstrap/Types'
 import { Env } from '../src/Bootstrap/Env'
 import { DomainEventSubscriberInterface } from '@standardnotes/domain-events'
 
-const container = new ContainerConfigLoader()
+const container = new ContainerConfigLoader('worker')
 void container.load().then((container) => {
   const env: Env = new Env()
   env.load()

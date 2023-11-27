@@ -1,3 +1,5 @@
+import { Uuid } from '@standardnotes/domain-core'
+
 export interface ClientMessengerInterface {
-  send(userUuid: string, message: string): Promise<void>
+  send(userUuid: Uuid, message: string): Promise<void>
 }

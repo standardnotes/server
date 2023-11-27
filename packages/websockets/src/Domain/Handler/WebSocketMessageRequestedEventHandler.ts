@@ -1,20 +1,22 @@
 import { DomainEventHandlerInterface, WebSocketMessageRequestedEvent } from '@standardnotes/domain-events'
-import { inject, injectable } from 'inversify'
 import { Logger } from 'winston'
+import { SendMessageToClient } from '../UseCase/SendMessageToClient/SendMessageToClient'
 
-import TYPES from '../../Bootstrap/Types'
-import { ClientMessengerInterface } from '../../Client/ClientMessengerInterface'
-
-@injectable()
 export class WebSocketMessageRequestedEventHandler implements DomainEventHandlerInterface {
   constructor(
-    @inject(TYPES.WebSocketsClientMessenger) private webSocketsClientMessenger: ClientMessengerInterface,
-    @inject(TYPES.Logger) private logger: Logger,
+    private sendMessageToClient: SendMessageToClient,
+    private logger: Logger,
   ) {}
 
   async handle(event: WebSocketMessageRequestedEvent): Promise<void> {
-    this.logger.debug(`Sending message to user ${event.payload.userUuid}`)
+    const result = await this.sendMessageToClient.execute({
+      userUuid: event.payload.userUuid,
+      message: event.payload.message,
+      originatingSessionUuid: event.payload.originatingSessionUuid,
+    })
 
-    await this.webSocketsClientMessenger.send(event.payload.userUuid, event.payload.message)
+    if (result.isFailed()) {
+      this.logger.error(`Could not send message to user ${event.payload.userUuid}. Error: ${result.getError()}`)
+    }
   }
 }
