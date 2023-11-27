@@ -4,6 +4,9 @@ on:
   push:
     branches: [ main ]
 
+permissions:
+  id-token: write
+
 jobs:
   build:
     if: contains(github.event.head_commit.message, 'chore(release)') == false
