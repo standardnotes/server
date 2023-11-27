@@ -12,7 +12,8 @@
     "dist/src/**/*.d.ts"
   ],
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "provenance": true
   },
   "author": "Standard Notes",
   "license": "AGPL-3.0-or-later",

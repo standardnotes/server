@@ -10,7 +10,8 @@
   "repository": "git@github.com:standardnotes/server.git",
   "author": "Karol Sójko <karol@standardnotes.com>",
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "provenance": true
   },
   "license": "AGPL-3.0-or-later",
   "scripts": {
