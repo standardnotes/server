@@ -17,6 +17,8 @@ describe('SendEventToClient', () => {
   beforeEach(() => {
     logger = {} as jest.Mocked<Logger>
     logger.info = jest.fn()
+    logger.debug = jest.fn()
+    logger.error = jest.fn()
 
     domainEventFactory = {} as jest.Mocked<DomainEventFactoryInterface>
     domainEventFactory.createWebSocketMessageRequestedEvent = jest
@@ -51,6 +53,23 @@ describe('SendEventToClient', () => {
 
     const result = await useCase.execute({
       userUuid: 'invalid',
+      event: {
+        type: 'test',
+      } as jest.Mocked<DomainEventInterface>,
+    })
+
+    expect(result.isFailed()).toBe(true)
+  })
+
+  it('should return a failed result if error is thrown', async () => {
+    const useCase = createUseCase()
+
+    domainEventFactory.createWebSocketMessageRequestedEvent = jest.fn().mockImplementation(() => {
+      throw new Error('test')
+    })
+
+    const result = await useCase.execute({
+      userUuid: '00000000-0000-0000-0000-000000000000',
       event: {
         type: 'test',
       } as jest.Mocked<DomainEventInterface>,

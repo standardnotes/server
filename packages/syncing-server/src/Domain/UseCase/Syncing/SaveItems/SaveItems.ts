@@ -141,11 +141,15 @@ export class SaveItems implements UseCaseInterface<SaveItemsResult> {
         sessionUuid: dto.sessionUuid,
         timestamp: lastUpdatedTimestamp,
       })
-      await this.sendEventToClient.execute({
+      const result = await this.sendEventToClient.execute({
         userUuid: dto.userUuid,
         originatingSessionUuid: dto.sessionUuid,
         event: itemsChangedEvent,
       })
+      /* istanbul ignore next */
+      if (result.isFailed()) {
+        this.logger.error(`[${dto.userUuid}] Sending items changed event to client failed. Error: ${result.getError()}`)
+      }
     }
 
     const syncToken = this.calculateSyncToken(lastUpdatedTimestamp, savedItems)

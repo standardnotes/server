@@ -38,7 +38,7 @@ describe('SaveItems', () => {
 
   beforeEach(() => {
     sendEventToClient = {} as jest.Mocked<SendEventToClient>
-    sendEventToClient.execute = jest.fn()
+    sendEventToClient.execute = jest.fn().mockReturnValue(Result.ok())
 
     domainEventFactory = {} as jest.Mocked<DomainEventFactoryInterface>
     domainEventFactory.createItemsChangedOnServerEvent = jest
