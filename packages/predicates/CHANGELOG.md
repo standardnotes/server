@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.8.1](https://github.com/standardnotes/server/compare/@standardnotes/predicates@1.8.0...@standardnotes/predicates@1.8.1) (2023-11-27)
+
+### Bug Fixes
+
+* repository config in package.json files ([ed1bf37](https://github.com/standardnotes/server/commit/ed1bf37287af23a25b8388ada95f0acdec8f71ea))
+
 # [1.8.0](https://github.com/standardnotes/server/compare/@standardnotes/predicates@1.7.0...@standardnotes/predicates@1.8.0) (2023-11-27)
 
 ### Features

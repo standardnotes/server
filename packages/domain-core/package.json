@@ -1,6 +1,6 @@
 {
   "name": "@standardnotes/domain-core",
-  "version": "1.41.0",
+  "version": "1.41.1",
   "engines": {
     "node": ">=18.0.0 <21.0.0"
   },
@@ -16,8 +16,8 @@
     "provenance": true
   },
   "repository": {
-    "type" : "git",
-    "url" : "git@github.com:standardnotes/server.git",
+    "type": "git",
+    "url": "git@github.com:standardnotes/server.git",
     "directory": "packages/domain-core"
   },
   "author": "Standard Notes",

@@ -1,6 +1,6 @@
 {
   "name": "@standardnotes/api-gateway",
-  "version": "1.87.0",
+  "version": "1.87.1",
   "engines": {
     "node": ">=18.0.0 <21.0.0"
   },
@@ -12,8 +12,8 @@
     "dist/src/**/*.d.ts"
   ],
   "repository": {
-    "type" : "git",
-    "url" : "git@github.com:standardnotes/server.git",
+    "type": "git",
+    "url": "git@github.com:standardnotes/server.git",
     "directory": "packages/api-gateway"
   },
   "author": "Karol Sójko <karol@standardnotes.com>",

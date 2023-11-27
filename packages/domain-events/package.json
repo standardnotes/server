@@ -1,6 +1,6 @@
 {
   "name": "@standardnotes/domain-events",
-  "version": "2.137.0",
+  "version": "2.137.1",
   "engines": {
     "node": ">=18.0.0 <21.0.0"
   },
@@ -16,8 +16,8 @@
     "provenance": true
   },
   "repository": {
-    "type" : "git",
-    "url" : "git@github.com:standardnotes/server.git",
+    "type": "git",
+    "url": "git@github.com:standardnotes/server.git",
     "directory": "packages/domain-events"
   },
   "author": "Standard Notes",

@@ -1,6 +1,6 @@
 {
   "name": "@standardnotes/files-server",
-  "version": "1.36.0",
+  "version": "1.36.1",
   "engines": {
     "node": ">=18.0.0 <21.0.0"
   },
@@ -8,8 +8,8 @@
   "main": "dist/src/index.js",
   "typings": "dist/src/index.d.ts",
   "repository": {
-    "type" : "git",
-    "url" : "git@github.com:standardnotes/server.git",
+    "type": "git",
+    "url": "git@github.com:standardnotes/server.git",
     "directory": "packages/files"
   },
   "authors": [
