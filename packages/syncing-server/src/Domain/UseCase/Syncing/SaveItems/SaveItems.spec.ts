@@ -81,6 +81,7 @@ describe('SaveItems', () => {
     updateExistingItem.execute = jest.fn().mockResolvedValue(Result.ok(savedItem))
 
     logger = {} as jest.Mocked<Logger>
+    logger.debug = jest.fn()
     logger.error = jest.fn()
 
     itemHash1 = ItemHash.create({
