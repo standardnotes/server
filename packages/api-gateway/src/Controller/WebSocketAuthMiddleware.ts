@@ -60,6 +60,7 @@ export class WebSocketAuthMiddleware extends BaseMiddleware {
       const decodedToken = <CrossServiceTokenData>verify(crossServiceToken, this.jwtSecret, { algorithms: ['HS256'] })
 
       response.locals.user = decodedToken.user
+      response.locals.session = decodedToken.session
       response.locals.roles = decodedToken.roles
     } catch (error) {
       const errorMessage = (error as AxiosError).isAxiosError
