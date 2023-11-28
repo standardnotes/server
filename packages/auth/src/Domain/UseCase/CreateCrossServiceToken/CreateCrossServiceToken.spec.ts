@@ -22,6 +22,7 @@ import { GetRegularSubscriptionForUser } from '../GetRegularSubscriptionForUser/
 import { UserSubscription } from '../../Subscription/UserSubscription'
 import { SubscriptionSetting } from '../../Setting/SubscriptionSetting'
 import { EncryptionVersion } from '../../Encryption/EncryptionVersion'
+import { GetActiveSessionsForUser } from '../GetActiveSessionsForUser'
 
 describe('CreateCrossServiceToken', () => {
   let userProjector: ProjectorInterface<User>
@@ -32,6 +33,7 @@ describe('CreateCrossServiceToken', () => {
   let getRegularSubscription: GetRegularSubscriptionForUser
   let getSubscriptionSetting: GetSubscriptionSetting
   let sharedVaultUserRepository: SharedVaultUserRepositoryInterface
+  let getActiveSessionsForUser: GetActiveSessionsForUser
   const jwtTTL = 60
 
   let session: Session
@@ -49,10 +51,14 @@ describe('CreateCrossServiceToken', () => {
       getRegularSubscription,
       getSubscriptionSetting,
       sharedVaultUserRepository,
+      getActiveSessionsForUser,
     )
 
   beforeEach(() => {
     session = {} as jest.Mocked<Session>
+
+    getActiveSessionsForUser = {} as jest.Mocked<GetActiveSessionsForUser>
+    getActiveSessionsForUser.execute = jest.fn().mockReturnValue({ sessions: [session] })
 
     user = {
       uuid: '00000000-0000-0000-0000-000000000000',
@@ -170,6 +176,69 @@ describe('CreateCrossServiceToken', () => {
   it('should create a cross service token for user by user uuid', async () => {
     await createUseCase().execute({
       userUuid: '00000000-0000-0000-0000-000000000000',
+    })
+
+    expect(tokenEncoder.encodeExpirableToken).toHaveBeenCalledWith(
+      {
+        roles: [
+          {
+            name: 'role1',
+            uuid: '1-3-4',
+          },
+        ],
+        belongs_to_shared_vaults: [
+          {
+            shared_vault_uuid: '00000000-0000-0000-0000-000000000000',
+            permission: 'read',
+          },
+        ],
+        user: {
+          email: 'test@test.te',
+          uuid: '00000000-0000-0000-0000-000000000000',
+        },
+      },
+      60,
+    )
+  })
+
+  it('should create a cross service token for a user and a specific session', async () => {
+    await createUseCase().execute({
+      userUuid: '00000000-0000-0000-0000-000000000000',
+      sessionUuid: '00000000-0000-0000-0000-000000000000',
+    })
+
+    expect(tokenEncoder.encodeExpirableToken).toHaveBeenCalledWith(
+      {
+        roles: [
+          {
+            name: 'role1',
+            uuid: '1-3-4',
+          },
+        ],
+        belongs_to_shared_vaults: [
+          {
+            shared_vault_uuid: '00000000-0000-0000-0000-000000000000',
+            permission: 'read',
+          },
+        ],
+        session: {
+          test: 'test',
+        },
+        user: {
+          email: 'test@test.te',
+          uuid: '00000000-0000-0000-0000-000000000000',
+        },
+      },
+      60,
+    )
+  })
+
+  it('should create a cross service token for a user and specific session if the session is missing', async () => {
+    getActiveSessionsForUser.execute = jest.fn().mockReturnValue({ sessions: [] })
+
+    await createUseCase().execute({
+      userUuid: '00000000-0000-0000-0000-000000000000',
+      sessionUuid: '00000000-0000-0000-0000-000000000000',
     })
 
     expect(tokenEncoder.encodeExpirableToken).toHaveBeenCalledWith(

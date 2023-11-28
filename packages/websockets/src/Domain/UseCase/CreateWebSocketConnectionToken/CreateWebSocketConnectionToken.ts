@@ -17,6 +17,7 @@ export class CreateWebSocketConnectionToken implements UseCaseInterface {
   async execute(dto: CreateWebSocketConnectionDTO): Promise<CreateWebSocketConnectionResponse> {
     const data: WebSocketConnectionTokenData = {
       userUuid: dto.userUuid,
+      sessionUuid: dto.sessionUuid,
     }
 
     return {

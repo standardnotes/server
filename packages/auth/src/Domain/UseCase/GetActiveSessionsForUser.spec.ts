@@ -65,4 +65,10 @@ describe('GetActiveSessionsForUser', () => {
 
     expect(sessionRepository.findAllByRefreshExpirationAndUserUuid).toHaveBeenCalledWith('1-2-3')
   })
+
+  it('should get a single session for a user', async () => {
+    expect(await createUseCase().execute({ userUuid: '1-2-3', sessionUuid: '2-3-4' })).toEqual({
+      sessions: [session2],
+    })
+  })
 })

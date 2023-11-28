@@ -28,6 +28,7 @@ export class AnnotatedWebSocketsController extends BaseHttpController {
   async createConnectionToken(_request: Request, response: Response): Promise<results.JsonResult> {
     const result = await this.createWebSocketConnectionToken.execute({
       userUuid: response.locals.user.uuid,
+      sessionUuid: response.locals.session.uuid,
     })
 
     return this.json(result)

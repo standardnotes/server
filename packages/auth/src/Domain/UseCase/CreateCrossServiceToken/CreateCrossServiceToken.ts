@@ -11,6 +11,7 @@ import { CreateCrossServiceTokenDTO } from './CreateCrossServiceTokenDTO'
 import { SharedVaultUserRepositoryInterface } from '../../SharedVault/SharedVaultUserRepositoryInterface'
 import { GetSubscriptionSetting } from '../GetSubscriptionSetting/GetSubscriptionSetting'
 import { GetRegularSubscriptionForUser } from '../GetRegularSubscriptionForUser/GetRegularSubscriptionForUser'
+import { GetActiveSessionsForUser } from '../GetActiveSessionsForUser'
 
 export class CreateCrossServiceToken implements UseCaseInterface<string> {
   constructor(
@@ -23,6 +24,7 @@ export class CreateCrossServiceToken implements UseCaseInterface<string> {
     private getRegularSubscription: GetRegularSubscriptionForUser,
     private getSubscriptionSettingUseCase: GetSubscriptionSetting,
     private sharedVaultUserRepository: SharedVaultUserRepositoryInterface,
+    private getActiveSessions: GetActiveSessionsForUser,
   ) {}
 
   async execute(dto: CreateCrossServiceTokenDTO): Promise<Result<string>> {
@@ -84,6 +86,14 @@ export class CreateCrossServiceToken implements UseCaseInterface<string> {
 
     if (dto.session !== undefined) {
       authTokenData.session = this.projectSession(dto.session)
+    } else if (dto.sessionUuid !== undefined) {
+      const activeSessionsResponse = await this.getActiveSessions.execute({
+        userUuid: user.uuid,
+        sessionUuid: dto.sessionUuid,
+      })
+      if (activeSessionsResponse.sessions.length) {
+        authTokenData.session = this.projectSession(activeSessionsResponse.sessions[0])
+      }
     }
 
     return Result.ok(this.tokenEncoder.encodeExpirableToken(authTokenData, this.jwtTTL))

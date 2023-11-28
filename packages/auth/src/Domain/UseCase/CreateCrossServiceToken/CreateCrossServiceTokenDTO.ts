@@ -10,5 +10,6 @@ export type CreateCrossServiceTokenDTO = Either<
   },
   {
     userUuid: string
+    sessionUuid?: string
   }
 >

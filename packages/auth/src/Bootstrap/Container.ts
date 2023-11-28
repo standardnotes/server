@@ -1195,6 +1195,7 @@ export class ContainerConfigLoader {
           container.get<GetRegularSubscriptionForUser>(TYPES.Auth_GetRegularSubscriptionForUser),
           container.get<GetSubscriptionSetting>(TYPES.Auth_GetSubscriptionSetting),
           container.get<SharedVaultUserRepositoryInterface>(TYPES.Auth_SharedVaultUserRepository),
+          container.get<GetActiveSessionsForUser>(TYPES.Auth_GetActiveSessionsForUser),
         ),
       )
     container.bind<ProcessUserRequest>(TYPES.Auth_ProcessUserRequest).to(ProcessUserRequest)

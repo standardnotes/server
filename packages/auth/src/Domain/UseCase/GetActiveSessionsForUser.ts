@@ -5,6 +5,7 @@ import { SessionRepositoryInterface } from '../Session/SessionRepositoryInterfac
 import { GetActiveSessionsForUserDTO } from './GetActiveSessionsForUserDTO'
 import { GetActiveSessionsForUserResponse } from './GetActiveSessionsForUserResponse'
 import { UseCaseInterface } from './UseCaseInterface'
+import { Session } from '../Session/Session'
 
 @injectable()
 export class GetActiveSessionsForUser implements UseCaseInterface {
@@ -18,13 +19,26 @@ export class GetActiveSessionsForUser implements UseCaseInterface {
     const ephemeralSessions = await this.ephemeralSessionRepository.findAllByUserUuid(dto.userUuid)
     const sessions = await this.sessionRepository.findAllByRefreshExpirationAndUserUuid(dto.userUuid)
 
-    return {
-      sessions: sessions.concat(ephemeralSessions).sort((a, b) => {
-        const dateA = a.refreshExpiration instanceof Date ? a.refreshExpiration : new Date(a.refreshExpiration)
-        const dateB = b.refreshExpiration instanceof Date ? b.refreshExpiration : new Date(b.refreshExpiration)
+    const activeSessions = sessions.concat(ephemeralSessions).sort((a, b) => {
+      const dateA = a.refreshExpiration instanceof Date ? a.refreshExpiration : new Date(a.refreshExpiration)
+      const dateB = b.refreshExpiration instanceof Date ? b.refreshExpiration : new Date(b.refreshExpiration)
 
-        return dateB.getTime() - dateA.getTime()
-      }),
+      return dateB.getTime() - dateA.getTime()
+    })
+
+    if (dto.sessionUuid) {
+      let sessions: Session[] = []
+      const session = activeSessions.find((session) => session.uuid === dto.sessionUuid)
+      if (session) {
+        sessions = [session]
+      }
+      return {
+        sessions,
+      }
+    }
+
+    return {
+      sessions: activeSessions,
     }
   }
 }
