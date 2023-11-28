@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.21.0](https://github.com/standardnotes/server/compare/@standardnotes/websockets-server@1.20.4...@standardnotes/websockets-server@1.21.0) (2023-11-28)
+
+### Features
+
+* send event to client upon items change on server ([#941](https://github.com/standardnotes/server/issues/941)) ([69b404f](https://github.com/standardnotes/server/commit/69b404f5d45f32530ebadbdbbec01d4e335dbbe9))
+
 ## [1.20.4](https://github.com/standardnotes/server/compare/@standardnotes/websockets-server@1.20.3...@standardnotes/websockets-server@1.20.4) (2023-11-27)
 
 ### Bug Fixes
