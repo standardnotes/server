@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.174.3](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.174.2...@standardnotes/auth-server@1.174.3) (2023-11-28)
+
+### Bug Fixes
+
+* **auth:** pass session uuid to web sockets controller ([edb0a76](https://github.com/standardnotes/server/commit/edb0a768d0b8c31298b31372e6cec16d003fd28d))
+* pass session uuid to websockets token ([bcd1d83](https://github.com/standardnotes/server/commit/bcd1d830e6125fc5f8cc1312e581284221aaac8f))
+
 ## [1.174.2](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.174.1...@standardnotes/auth-server@1.174.2) (2023-11-28)
 
 **Note:** Version bump only for package @standardnotes/auth-server

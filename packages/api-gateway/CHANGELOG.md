@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.87.3](https://github.com/standardnotes/server/compare/@standardnotes/api-gateway@1.87.2...@standardnotes/api-gateway@1.87.3) (2023-11-28)
+
+### Bug Fixes
+
+* **api-gateway:** add session to response locals from web socket middleware ([4cc647a](https://github.com/standardnotes/server/commit/4cc647ac07b2471d6616a913bcdca431c506fd0e))
+
 ## [1.87.2](https://github.com/standardnotes/server/compare/@standardnotes/api-gateway@1.87.1...@standardnotes/api-gateway@1.87.2) (2023-11-28)
 
 **Note:** Version bump only for package @standardnotes/api-gateway

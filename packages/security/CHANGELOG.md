@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.17.2](https://github.com/standardnotes/server/compare/@standardnotes/security@1.17.1...@standardnotes/security@1.17.2) (2023-11-28)
+
+### Bug Fixes
+
+* pass session uuid to websockets token ([bcd1d83](https://github.com/standardnotes/server/commit/bcd1d830e6125fc5f8cc1312e581284221aaac8f))
+
 ## [1.17.1](https://github.com/standardnotes/server/compare/@standardnotes/security@1.17.0...@standardnotes/security@1.17.1) (2023-11-27)
 
 ### Bug Fixes

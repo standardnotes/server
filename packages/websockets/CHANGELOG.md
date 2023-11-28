@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.21.1](https://github.com/standardnotes/server/compare/@standardnotes/websockets-server@1.21.0...@standardnotes/websockets-server@1.21.1) (2023-11-28)
+
+### Bug Fixes
+
+* pass session uuid to websockets token ([bcd1d83](https://github.com/standardnotes/server/commit/bcd1d830e6125fc5f8cc1312e581284221aaac8f))
+
 # [1.21.0](https://github.com/standardnotes/server/compare/@standardnotes/websockets-server@1.20.4...@standardnotes/websockets-server@1.21.0) (2023-11-28)
 
 ### Features
