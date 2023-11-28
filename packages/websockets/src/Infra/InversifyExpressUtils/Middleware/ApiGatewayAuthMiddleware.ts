@@ -3,7 +3,7 @@ import { NextFunction, Request, Response } from 'express'
 import { inject, injectable } from 'inversify'
 import { BaseMiddleware } from 'inversify-express-utils'
 import { Logger } from 'winston'
-import TYPES from '../Bootstrap/Types'
+import TYPES from '../../../Bootstrap/Types'
 
 @injectable()
 export class ApiGatewayAuthMiddleware extends BaseMiddleware {
@@ -33,7 +33,7 @@ export class ApiGatewayAuthMiddleware extends BaseMiddleware {
         request.headers['x-auth-token'] as string,
       )
 
-      if (token === undefined) {
+      if (token === undefined || token.session === undefined) {
         this.logger.debug('ApiGatewayAuthMiddleware authentication failure.')
 
         response.status(401).send({

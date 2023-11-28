@@ -8,6 +8,10 @@ import { Logger } from 'winston'
 import { ContentType, Dates, Result, Timestamps, Uuid } from '@standardnotes/domain-core'
 import { ItemHash } from '../../../Item/ItemHash'
 import { Item } from '../../../Item/Item'
+import { SendEventToClient } from '../SendEventToClient/SendEventToClient'
+import { DomainEventFactoryInterface } from '../../../Event/DomainEventFactoryInterface'
+import { ItemsChangedOnServerEvent } from '@standardnotes/domain-events'
+import { SelectorInterface } from '@standardnotes/security'
 
 describe('SaveItems', () => {
   let itemSaveValidator: ItemSaveValidatorInterface
@@ -18,11 +22,35 @@ describe('SaveItems', () => {
   let logger: Logger
   let itemHash1: ItemHash
   let savedItem: Item
+  let sendEventToClient: SendEventToClient
+  let domainEventFactory: DomainEventFactoryInterface
+  let deterministicSelector: SelectorInterface<number>
 
   const createUseCase = () =>
-    new SaveItems(itemSaveValidator, itemRepository, timer, saveNewItem, updateExistingItem, logger)
+    new SaveItems(
+      itemSaveValidator,
+      itemRepository,
+      timer,
+      saveNewItem,
+      updateExistingItem,
+      sendEventToClient,
+      domainEventFactory,
+      deterministicSelector,
+      logger,
+    )
 
   beforeEach(() => {
+    deterministicSelector = {} as jest.Mocked<SelectorInterface<number>>
+    deterministicSelector.select = jest.fn().mockReturnValue(1)
+
+    sendEventToClient = {} as jest.Mocked<SendEventToClient>
+    sendEventToClient.execute = jest.fn().mockReturnValue(Result.ok())
+
+    domainEventFactory = {} as jest.Mocked<DomainEventFactoryInterface>
+    domainEventFactory.createItemsChangedOnServerEvent = jest
+      .fn()
+      .mockReturnValue({} as jest.Mocked<ItemsChangedOnServerEvent>)
+
     itemSaveValidator = {} as jest.Mocked<ItemSaveValidatorInterface>
     itemSaveValidator.validate = jest.fn().mockResolvedValue({ passed: true })
 
@@ -92,6 +120,7 @@ describe('SaveItems', () => {
       userUuid: 'user-uuid',
       sessionUuid: 'session-uuid',
     })
+    expect(sendEventToClient.execute).toHaveBeenCalled()
   })
 
   it('should mark items as conflicts if saving new item fails', async () => {
@@ -115,6 +144,7 @@ describe('SaveItems', () => {
         type: 'uuid_conflict',
       },
     ])
+    expect(sendEventToClient.execute).not.toHaveBeenCalled()
   })
 
   it('should mark items as conflicts if saving new item throws an error', async () => {
@@ -197,6 +227,8 @@ describe('SaveItems', () => {
   })
 
   it('should update existing items', async () => {
+    deterministicSelector.select = jest.fn().mockReturnValue(0)
+
     const useCase = createUseCase()
 
     itemRepository.findByUuid = jest.fn().mockResolvedValue(savedItem)
@@ -217,6 +249,7 @@ describe('SaveItems', () => {
       sessionUuid: 'session-uuid',
       performingUserUuid: '00000000-0000-0000-0000-000000000000',
     })
+    expect(sendEventToClient.execute).not.toHaveBeenCalled()
   })
 
   it('should mark items as conflicts if updating existing item fails', async () => {

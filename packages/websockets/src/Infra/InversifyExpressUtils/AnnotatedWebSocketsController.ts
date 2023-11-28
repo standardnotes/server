@@ -1,4 +1,3 @@
-import { WebSocketServerInterface } from '@standardnotes/api'
 import { Request, Response } from 'express'
 import { inject } from 'inversify'
 import {
@@ -12,24 +11,26 @@ import {
 import TYPES from '../../Bootstrap/Types'
 import { AddWebSocketsConnection } from '../../Domain/UseCase/AddWebSocketsConnection/AddWebSocketsConnection'
 import { RemoveWebSocketsConnection } from '../../Domain/UseCase/RemoveWebSocketsConnection/RemoveWebSocketsConnection'
+import { CreateWebSocketConnectionToken } from '../../Domain/UseCase/CreateWebSocketConnectionToken/CreateWebSocketConnectionToken'
 
 @controller('/sockets')
 export class AnnotatedWebSocketsController extends BaseHttpController {
   constructor(
     @inject(TYPES.AddWebSocketsConnection) private addWebSocketsConnection: AddWebSocketsConnection,
     @inject(TYPES.RemoveWebSocketsConnection) private removeWebSocketsConnection: RemoveWebSocketsConnection,
-    @inject(TYPES.WebSocketsController) private webSocketsController: WebSocketServerInterface,
+    @inject(TYPES.CreateWebSocketConnectionToken)
+    private createWebSocketConnectionToken: CreateWebSocketConnectionToken,
   ) {
     super()
   }
 
   @httpPost('/tokens', TYPES.ApiGatewayAuthMiddleware)
   async createConnectionToken(_request: Request, response: Response): Promise<results.JsonResult> {
-    const result = await this.webSocketsController.createConnectionToken({
+    const result = await this.createWebSocketConnectionToken.execute({
       userUuid: response.locals.user.uuid,
     })
 
-    return this.json(result.data, result.status)
+    return this.json(result)
   }
 
   @httpPost('/connections/:connectionId', TYPES.ApiGatewayAuthMiddleware)
@@ -39,6 +40,7 @@ export class AnnotatedWebSocketsController extends BaseHttpController {
   ): Promise<results.OkResult | results.BadRequestResult> {
     const result = await this.addWebSocketsConnection.execute({
       userUuid: response.locals.user.uuid,
+      sessionUuid: response.locals.session.uuid,
       connectionId: request.params.connectionId,
     })
 

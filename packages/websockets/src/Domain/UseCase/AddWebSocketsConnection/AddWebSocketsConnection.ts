@@ -1,24 +1,50 @@
-import { inject, injectable } from 'inversify'
 import { Logger } from 'winston'
-import { Result, UseCaseInterface } from '@standardnotes/domain-core'
+import { Result, Timestamps, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
+import { TimerInterface } from '@standardnotes/time'
 
-import TYPES from '../../../Bootstrap/Types'
 import { WebSocketsConnectionRepositoryInterface } from '../../WebSockets/WebSocketsConnectionRepositoryInterface'
 import { AddWebSocketsConnectionDTO } from './AddWebSocketsConnectionDTO'
+import { Connection } from '../../Connection/Connection'
 
-@injectable()
 export class AddWebSocketsConnection implements UseCaseInterface<void> {
   constructor(
-    @inject(TYPES.WebSocketsConnectionRepository)
     private webSocketsConnectionRepository: WebSocketsConnectionRepositoryInterface,
-    @inject(TYPES.Logger) private logger: Logger,
+    private timer: TimerInterface,
+    private logger: Logger,
   ) {}
 
   async execute(dto: AddWebSocketsConnectionDTO): Promise<Result<void>> {
     try {
       this.logger.debug(`Persisting connection ${dto.connectionId} for user ${dto.userUuid}`)
 
-      await this.webSocketsConnectionRepository.saveConnection(dto.userUuid, dto.connectionId)
+      const userUuidOrError = Uuid.create(dto.userUuid)
+      if (userUuidOrError.isFailed()) {
+        return Result.fail(userUuidOrError.getError())
+      }
+      const userUuid = userUuidOrError.getValue()
+
+      const sessionUuidOrError = Uuid.create(dto.sessionUuid)
+      if (sessionUuidOrError.isFailed()) {
+        return Result.fail(sessionUuidOrError.getError())
+      }
+      const sessionUuid = sessionUuidOrError.getValue()
+
+      const connectionOrError = Connection.create({
+        userUuid,
+        sessionUuid,
+        connectionId: dto.connectionId,
+        timestamps: Timestamps.create(
+          this.timer.getTimestampInMicroseconds(),
+          this.timer.getTimestampInMicroseconds(),
+        ).getValue(),
+      })
+      /* istanbul ignore next */
+      if (connectionOrError.isFailed()) {
+        return Result.fail(connectionOrError.getError())
+      }
+      const connection = connectionOrError.getValue()
+
+      await this.webSocketsConnectionRepository.saveConnection(connection)
 
       return Result.ok()
     } catch (error) {

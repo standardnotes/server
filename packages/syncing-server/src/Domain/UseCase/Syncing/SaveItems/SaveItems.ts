@@ -11,6 +11,9 @@ import { ItemSaveValidatorInterface } from '../../../Item/SaveValidator/ItemSave
 import { SaveNewItem } from '../SaveNewItem/SaveNewItem'
 import { UpdateExistingItem } from '../UpdateExistingItem/UpdateExistingItem'
 import { ItemRepositoryInterface } from '../../../Item/ItemRepositoryInterface'
+import { SendEventToClient } from '../SendEventToClient/SendEventToClient'
+import { DomainEventFactoryInterface } from '../../../Event/DomainEventFactoryInterface'
+import { SelectorInterface } from '@standardnotes/security'
 
 export class SaveItems implements UseCaseInterface<SaveItemsResult> {
   private readonly SYNC_TOKEN_VERSION = 2
@@ -21,6 +24,9 @@ export class SaveItems implements UseCaseInterface<SaveItemsResult> {
     private timer: TimerInterface,
     private saveNewItem: SaveNewItem,
     private updateExistingItem: UpdateExistingItem,
+    private sendEventToClient: SendEventToClient,
+    private domainEventFactory: DomainEventFactoryInterface,
+    private deterministicSelector: SelectorInterface<number>,
     private logger: Logger,
   ) {}
 
@@ -133,11 +139,44 @@ export class SaveItems implements UseCaseInterface<SaveItemsResult> {
 
     const syncToken = this.calculateSyncToken(lastUpdatedTimestamp, savedItems)
 
+    await this.notifyOtherClientsOfTheUserThatItemsChanged(dto, savedItems, lastUpdatedTimestamp)
+
     return Result.ok({
       savedItems,
       conflicts,
       syncToken,
     })
+  }
+
+  private async notifyOtherClientsOfTheUserThatItemsChanged(
+    dto: SaveItemsDTO,
+    savedItems: Item[],
+    lastUpdatedTimestamp: number,
+  ): Promise<void> {
+    if (savedItems.length === 0 || !dto.sessionUuid) {
+      return
+    }
+
+    const tenPercentSpreadArray = Array.from(Array(10).keys())
+    const diceRoll = this.deterministicSelector.select(dto.userUuid, tenPercentSpreadArray)
+    if (diceRoll !== 1) {
+      return
+    }
+
+    const itemsChangedEvent = this.domainEventFactory.createItemsChangedOnServerEvent({
+      userUuid: dto.userUuid,
+      sessionUuid: dto.sessionUuid,
+      timestamp: lastUpdatedTimestamp,
+    })
+    const result = await this.sendEventToClient.execute({
+      userUuid: dto.userUuid,
+      originatingSessionUuid: dto.sessionUuid,
+      event: itemsChangedEvent,
+    })
+    /* istanbul ignore next */
+    if (result.isFailed()) {
+      this.logger.error(`[${dto.userUuid}] Sending items changed event to client failed. Error: ${result.getError()}`)
+    }
   }
 
   private calculateSyncToken(lastUpdatedTimestamp: number, savedItems: Array<Item>): string {

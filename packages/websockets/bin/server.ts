@@ -12,7 +12,7 @@ import { ContainerConfigLoader } from '../src/Bootstrap/Container'
 import TYPES from '../src/Bootstrap/Types'
 import { Env } from '../src/Bootstrap/Env'
 
-const container = new ContainerConfigLoader()
+const container = new ContainerConfigLoader('server')
 void container.load().then((container) => {
   const env: Env = new Env()
   env.load()

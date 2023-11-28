@@ -114,7 +114,13 @@ import { GetSharedVaults } from '../Domain/UseCase/SharedVaults/GetSharedVaults/
 import { CreateSharedVault } from '../Domain/UseCase/SharedVaults/CreateSharedVault/CreateSharedVault'
 import { DeleteSharedVault } from '../Domain/UseCase/SharedVaults/DeleteSharedVault/DeleteSharedVault'
 import { CreateSharedVaultFileValetToken } from '../Domain/UseCase/SharedVaults/CreateSharedVaultFileValetToken/CreateSharedVaultFileValetToken'
-import { SharedVaultValetTokenData, TokenEncoder, TokenEncoderInterface } from '@standardnotes/security'
+import {
+  DeterministicSelector,
+  SelectorInterface,
+  SharedVaultValetTokenData,
+  TokenEncoder,
+  TokenEncoderInterface,
+} from '@standardnotes/security'
 import { SharedVaultHttpRepresentation } from '../Mapping/Http/SharedVaultHttpRepresentation'
 import { SharedVaultHttpMapper } from '../Mapping/Http/SharedVaultHttpMapper'
 import { SharedVaultInviteHttpRepresentation } from '../Mapping/Http/SharedVaultInviteHttpRepresentation'
@@ -199,6 +205,10 @@ export class ContainerConfigLoader {
       })
     }
     container.bind<winston.Logger>(TYPES.Sync_Logger).toConstantValue(logger)
+
+    container
+      .bind<SelectorInterface<number>>(TYPES.Sync_NumberSelector)
+      .toConstantValue(new DeterministicSelector<number>())
 
     const appDataSource = new AppDataSource({ env, runMigrations: this.mode === 'server' })
     await appDataSource.initialize()
@@ -601,12 +611,15 @@ export class ContainerConfigLoader {
       .bind<SaveItems>(TYPES.Sync_SaveItems)
       .toConstantValue(
         new SaveItems(
-          container.get(TYPES.Sync_ItemSaveValidator),
-          container.get(TYPES.Sync_SQLItemRepository),
-          container.get(TYPES.Sync_Timer),
-          container.get(TYPES.Sync_SaveNewItem),
-          container.get(TYPES.Sync_UpdateExistingItem),
-          container.get(TYPES.Sync_Logger),
+          container.get<ItemSaveValidatorInterface>(TYPES.Sync_ItemSaveValidator),
+          container.get<ItemRepositoryInterface>(TYPES.Sync_SQLItemRepository),
+          container.get<TimerInterface>(TYPES.Sync_Timer),
+          container.get<SaveNewItem>(TYPES.Sync_SaveNewItem),
+          container.get<UpdateExistingItem>(TYPES.Sync_UpdateExistingItem),
+          container.get<SendEventToClient>(TYPES.Sync_SendEventToClient),
+          container.get<DomainEventFactoryInterface>(TYPES.Sync_DomainEventFactory),
+          container.get<SelectorInterface<number>>(TYPES.Sync_NumberSelector),
+          container.get<Logger>(TYPES.Sync_Logger),
         ),
       )
     container

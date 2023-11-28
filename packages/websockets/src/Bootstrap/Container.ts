@@ -1,5 +1,4 @@
 import * as winston from 'winston'
-import Redis from 'ioredis'
 import { SQSClient, SQSClientConfig } from '@aws-sdk/client-sqs'
 import { ApiGatewayManagementApiClient } from '@aws-sdk/client-apigatewaymanagementapi'
 import { Container } from 'inversify'
@@ -8,16 +7,14 @@ import {
   DomainEventMessageHandlerInterface,
   DomainEventSubscriberInterface,
 } from '@standardnotes/domain-events'
+import { TimerInterface, Timer } from '@standardnotes/time'
 import { Env } from './Env'
 import TYPES from './Types'
 import { WebSocketsConnectionRepositoryInterface } from '../Domain/WebSockets/WebSocketsConnectionRepositoryInterface'
-import { RedisWebSocketsConnectionRepository } from '../Infra/Redis/RedisWebSocketsConnectionRepository'
 import { AddWebSocketsConnection } from '../Domain/UseCase/AddWebSocketsConnection/AddWebSocketsConnection'
 import { RemoveWebSocketsConnection } from '../Domain/UseCase/RemoveWebSocketsConnection/RemoveWebSocketsConnection'
-import { WebSocketsClientMessenger } from '../Infra/WebSockets/WebSocketsClientMessenger'
 import { SQSDomainEventSubscriber, SQSEventMessageHandler } from '@standardnotes/domain-events-infra'
-import { ApiGatewayAuthMiddleware } from '../Controller/ApiGatewayAuthMiddleware'
-
+import { ApiGatewayAuthMiddleware } from '../Infra/InversifyExpressUtils/Middleware/ApiGatewayAuthMiddleware'
 import {
   CrossServiceTokenData,
   TokenDecoder,
@@ -27,28 +24,24 @@ import {
   WebSocketConnectionTokenData,
 } from '@standardnotes/security'
 import { CreateWebSocketConnectionToken } from '../Domain/UseCase/CreateWebSocketConnectionToken/CreateWebSocketConnectionToken'
-import { WebSocketsController } from '../Controller/WebSocketsController'
-import { WebSocketServerInterface } from '@standardnotes/api'
-import { ClientMessengerInterface } from '../Client/ClientMessengerInterface'
 import { WebSocketMessageRequestedEventHandler } from '../Domain/Handler/WebSocketMessageRequestedEventHandler'
+import { SQLConnectionRepository } from '../Infra/TypeORM/SQLConnectionRepository'
+import { Connection } from '../Domain/Connection/Connection'
+import { SQLConnection } from '../Infra/TypeORM/SQLConnection'
+import { MapperInterface } from '@standardnotes/domain-core'
+import { Repository } from 'typeorm'
+import { ConnectionPersistenceMapper } from '../Mapping/SQL/ConnectionPersistenceMapper'
+import { AppDataSource } from './DataSource'
+import { SendMessageToClient } from '../Domain/UseCase/SendMessageToClient/SendMessageToClient'
 
 export class ContainerConfigLoader {
+  constructor(private mode: 'server' | 'worker' = 'server') {}
+
   async load(): Promise<Container> {
     const env: Env = new Env()
     env.load()
 
     const container = new Container()
-
-    const redisUrl = env.get('REDIS_URL')
-    const isRedisInClusterMode = redisUrl.indexOf(',') > 0
-    let redis
-    if (isRedisInClusterMode) {
-      redis = new Redis.Cluster(redisUrl.split(','))
-    } else {
-      redis = new Redis(redisUrl)
-    }
-
-    container.bind(TYPES.Redis).toConstantValue(redis)
 
     const winstonFormatters = [winston.format.splat(), winston.format.json()]
 
@@ -58,6 +51,13 @@ export class ContainerConfigLoader {
       transports: [new winston.transports.Console({ level: env.get('LOG_LEVEL', true) || 'info' })],
     })
     container.bind<winston.Logger>(TYPES.Logger).toConstantValue(logger)
+
+    const appDataSource = new AppDataSource({ env, runMigrations: this.mode === 'server' })
+    await appDataSource.initialize()
+
+    logger.debug('Database initialized')
+
+    container.bind<TimerInterface>(TYPES.Timer).toConstantValue(new Timer())
 
     if (env.get('SQS_QUEUE_URL', true)) {
       const sqsConfig: SQSClientConfig = {
@@ -83,14 +83,26 @@ export class ContainerConfigLoader {
         region: env.get('API_GATEWAY_AWS_REGION', true) ?? 'us-east-1',
       }),
     )
+    // Mappers
+    container
+      .bind<MapperInterface<Connection, SQLConnection>>(TYPES.ConnectionPersistenceMapper)
+      .toConstantValue(new ConnectionPersistenceMapper())
 
-    // Controller
-    container.bind<WebSocketServerInterface>(TYPES.WebSocketsController).to(WebSocketsController)
+    // ORM
+    container
+      .bind<Repository<SQLConnection>>(TYPES.ORMConnectionRepository)
+      .toConstantValue(appDataSource.getRepository(SQLConnection))
 
     // Repositories
     container
       .bind<WebSocketsConnectionRepositoryInterface>(TYPES.WebSocketsConnectionRepository)
-      .to(RedisWebSocketsConnectionRepository)
+      .toConstantValue(
+        new SQLConnectionRepository(
+          container.get<Repository<SQLConnection>>(TYPES.ORMConnectionRepository),
+          container.get<MapperInterface<Connection, SQLConnection>>(TYPES.ConnectionPersistenceMapper),
+          container.get<winston.Logger>(TYPES.Logger),
+        ),
+      )
 
     // Middleware
     container.bind<ApiGatewayAuthMiddleware>(TYPES.ApiGatewayAuthMiddleware).to(ApiGatewayAuthMiddleware)
@@ -103,21 +115,42 @@ export class ContainerConfigLoader {
     container
       .bind(TYPES.WEB_SOCKET_CONNECTION_TOKEN_TTL)
       .toConstantValue(+env.get('WEB_SOCKET_CONNECTION_TOKEN_TTL', true))
-    container.bind(TYPES.REDIS_URL).toConstantValue(env.get('REDIS_URL'))
     container.bind(TYPES.SQS_QUEUE_URL).toConstantValue(env.get('SQS_QUEUE_URL'))
     container.bind(TYPES.VERSION).toConstantValue(env.get('VERSION'))
 
     // use cases
-    container.bind<AddWebSocketsConnection>(TYPES.AddWebSocketsConnection).to(AddWebSocketsConnection)
+    container
+      .bind<AddWebSocketsConnection>(TYPES.AddWebSocketsConnection)
+      .toConstantValue(
+        new AddWebSocketsConnection(
+          container.get<WebSocketsConnectionRepositoryInterface>(TYPES.WebSocketsConnectionRepository),
+          container.get<TimerInterface>(TYPES.Timer),
+          container.get<winston.Logger>(TYPES.Logger),
+        ),
+      )
     container.bind<RemoveWebSocketsConnection>(TYPES.RemoveWebSocketsConnection).to(RemoveWebSocketsConnection)
     container
       .bind<CreateWebSocketConnectionToken>(TYPES.CreateWebSocketConnectionToken)
       .to(CreateWebSocketConnectionToken)
+    container
+      .bind<SendMessageToClient>(TYPES.SendMessageToClient)
+      .toConstantValue(
+        new SendMessageToClient(
+          container.get<WebSocketsConnectionRepositoryInterface>(TYPES.WebSocketsConnectionRepository),
+          container.get<ApiGatewayManagementApiClient>(TYPES.WebSockets_ApiGatewayManagementApiClient),
+          container.get<winston.Logger>(TYPES.Logger),
+        ),
+      )
 
     // Handlers
     container
       .bind<WebSocketMessageRequestedEventHandler>(TYPES.WebSocketMessageRequestedEventHandler)
-      .to(WebSocketMessageRequestedEventHandler)
+      .toConstantValue(
+        new WebSocketMessageRequestedEventHandler(
+          container.get<SendMessageToClient>(TYPES.SendMessageToClient),
+          container.get<winston.Logger>(TYPES.Logger),
+        ),
+      )
 
     // Services
     container
@@ -128,7 +161,6 @@ export class ContainerConfigLoader {
       .toConstantValue(
         new TokenEncoder<WebSocketConnectionTokenData>(container.get(TYPES.WEB_SOCKET_CONNECTION_TOKEN_SECRET)),
       )
-    container.bind<ClientMessengerInterface>(TYPES.WebSocketsClientMessenger).to(WebSocketsClientMessenger)
 
     const eventHandlers: Map<string, DomainEventHandlerInterface> = new Map([
       ['WEB_SOCKET_MESSAGE_REQUESTED', container.get(TYPES.WebSocketMessageRequestedEventHandler)],

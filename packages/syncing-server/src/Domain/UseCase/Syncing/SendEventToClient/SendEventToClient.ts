@@ -13,21 +13,26 @@ export class SendEventToClient implements UseCaseInterface<void> {
   ) {}
 
   async execute(dto: SendEventToClientDTO): Promise<Result<void>> {
-    const userUuidOrError = Uuid.create(dto.userUuid)
-    if (userUuidOrError.isFailed()) {
-      return Result.fail(userUuidOrError.getError())
+    try {
+      const userUuidOrError = Uuid.create(dto.userUuid)
+      if (userUuidOrError.isFailed()) {
+        return Result.fail(userUuidOrError.getError())
+      }
+      const userUuid = userUuidOrError.getValue()
+
+      this.logger.debug(`[WebSockets] Requesting message ${dto.event.type} to user ${dto.userUuid}`)
+
+      const event = this.domainEventFactory.createWebSocketMessageRequestedEvent({
+        userUuid: userUuid.value,
+        message: JSON.stringify(dto.event),
+        originatingSessionUuid: dto.originatingSessionUuid,
+      })
+
+      await this.domainEventPublisher.publish(event)
+
+      return Result.ok()
+    } catch (error) {
+      return Result.fail(`Failed to send event to client: ${(error as Error).message}`)
     }
-    const userUuid = userUuidOrError.getValue()
-
-    this.logger.info(`[WebSockets] Requesting message ${dto.event.type} to user ${dto.userUuid}`)
-
-    const event = this.domainEventFactory.createWebSocketMessageRequestedEvent({
-      userUuid: userUuid.value,
-      message: JSON.stringify(dto.event),
-    })
-
-    await this.domainEventPublisher.publish(event)
-
-    return Result.ok()
   }
 }
