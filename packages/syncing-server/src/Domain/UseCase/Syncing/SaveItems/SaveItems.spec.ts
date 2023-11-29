@@ -228,7 +228,7 @@ describe('SaveItems', () => {
   })
 
   it('should update existing items', async () => {
-    deterministicSelector.select = jest.fn().mockReturnValue(0)
+    deterministicSelector.select = jest.fn().mockReturnValue(9)
 
     const useCase = createUseCase()
 
