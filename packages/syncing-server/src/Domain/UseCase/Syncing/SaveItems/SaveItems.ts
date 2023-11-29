@@ -159,7 +159,7 @@ export class SaveItems implements UseCaseInterface<SaveItemsResult> {
 
     const tenPercentSpreadArray = Array.from(Array(10).keys())
     const diceRoll = this.deterministicSelector.select(dto.userUuid, tenPercentSpreadArray)
-    if (diceRoll !== 1) {
+    if (diceRoll > 2) {
       this.logger.debug(`[${dto.userUuid}] Not sending items changed event to client.`)
 
       return
