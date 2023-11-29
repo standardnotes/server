@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.127.3](https://github.com/standardnotes/server/compare/@standardnotes/syncing-server@1.127.2...@standardnotes/syncing-server@1.127.3) (2023-11-29)
+
+### Bug Fixes
+
+* **syncing-server:** dice roll specs ([9dcd583](https://github.com/standardnotes/server/commit/9dcd583b58c09b96635296996f22581018156485))
+* **syncing-server:** increase chances for notifying of items change ([097e320](https://github.com/standardnotes/server/commit/097e320490622849cdbc5ca58b03fe635b7dce0b))
+
 ## [1.127.2](https://github.com/standardnotes/server/compare/@standardnotes/syncing-server@1.127.1...@standardnotes/syncing-server@1.127.2) (2023-11-28)
 
 ### Bug Fixes
