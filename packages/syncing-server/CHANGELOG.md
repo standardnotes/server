@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.127.4](https://github.com/standardnotes/server/compare/@standardnotes/syncing-server@1.127.3...@standardnotes/syncing-server@1.127.4) (2023-11-30)
+
+### Bug Fixes
+
+* **syncing-server:** increase chances for notifying of items change to 70% ([199ebeb](https://github.com/standardnotes/server/commit/199ebeb4ea644c1e5e72383e5c627b4dcc3268ca))
+
+### Reverts
+
+* Revert "chore: upgrade deps" ([341f69e](https://github.com/standardnotes/server/commit/341f69e301036aa48588957fc930405d0344e6ce))
+
 ## [1.127.3](https://github.com/standardnotes/server/compare/@standardnotes/syncing-server@1.127.2...@standardnotes/syncing-server@1.127.3) (2023-11-29)
 
 ### Bug Fixes
