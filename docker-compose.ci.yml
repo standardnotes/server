@@ -33,7 +33,7 @@ services:
       - standardnotes_self_hosted
 
   localstack:
-    image: localstack/localstack:1.4
+    image: localstack/localstack:3.0
     container_name: localstack-ci
     expose:
       - 4566
