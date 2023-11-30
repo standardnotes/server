@@ -32,9 +32,9 @@
     "migrate": "yarn clean && yarn build && yarn typeorm migration:run -d dist/src/Bootstrap/DataSource.js"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.427.0",
-    "@aws-sdk/client-sns": "^3.427.0",
-    "@aws-sdk/client-sqs": "^3.427.0",
+    "@aws-sdk/client-s3": "^3.462.0",
+    "@aws-sdk/client-sns": "^3.462.0",
+    "@aws-sdk/client-sqs": "^3.462.0",
     "@grpc/grpc-js": "^1.9.11",
     "@standardnotes/api": "^1.26.26",
     "@standardnotes/common": "workspace:*",
