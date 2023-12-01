@@ -39,7 +39,7 @@
     "ts-node": "^10.9.1",
     "typescript": "^5.0.4"
   },
-  "packageManager": "yarn@4.0.0-rc.51",
+  "packageManager": "yarn@4.0.2",
   "dependenciesMeta": {
     "grpc-tools@1.12.4": {
       "unplugged": true
