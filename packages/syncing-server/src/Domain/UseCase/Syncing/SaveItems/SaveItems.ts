@@ -13,7 +13,6 @@ import { UpdateExistingItem } from '../UpdateExistingItem/UpdateExistingItem'
 import { ItemRepositoryInterface } from '../../../Item/ItemRepositoryInterface'
 import { SendEventToClient } from '../SendEventToClient/SendEventToClient'
 import { DomainEventFactoryInterface } from '../../../Event/DomainEventFactoryInterface'
-import { SelectorInterface } from '@standardnotes/security'
 
 export class SaveItems implements UseCaseInterface<SaveItemsResult> {
   private readonly SYNC_TOKEN_VERSION = 2
@@ -26,7 +25,6 @@ export class SaveItems implements UseCaseInterface<SaveItemsResult> {
     private updateExistingItem: UpdateExistingItem,
     private sendEventToClient: SendEventToClient,
     private domainEventFactory: DomainEventFactoryInterface,
-    private deterministicSelector: SelectorInterface<number>,
     private logger: Logger,
   ) {}
 
@@ -156,15 +154,6 @@ export class SaveItems implements UseCaseInterface<SaveItemsResult> {
     if (savedItems.length === 0 || !dto.sessionUuid) {
       return
     }
-
-    const tenPercentSpreadArray = Array.from(Array(10).keys())
-    const diceRoll = this.deterministicSelector.select(dto.userUuid, tenPercentSpreadArray)
-    if (diceRoll > 6) {
-      this.logger.debug(`[${dto.userUuid}] Not sending items changed event to client.`)
-
-      return
-    }
-    this.logger.debug(`[${dto.userUuid}] Sending items changed event to client.`)
 
     const itemsChangedEvent = this.domainEventFactory.createItemsChangedOnServerEvent({
       userUuid: dto.userUuid,

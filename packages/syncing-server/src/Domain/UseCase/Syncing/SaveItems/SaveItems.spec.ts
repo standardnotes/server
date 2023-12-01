@@ -11,7 +11,6 @@ import { Item } from '../../../Item/Item'
 import { SendEventToClient } from '../SendEventToClient/SendEventToClient'
 import { DomainEventFactoryInterface } from '../../../Event/DomainEventFactoryInterface'
 import { ItemsChangedOnServerEvent } from '@standardnotes/domain-events'
-import { SelectorInterface } from '@standardnotes/security'
 
 describe('SaveItems', () => {
   let itemSaveValidator: ItemSaveValidatorInterface
@@ -24,7 +23,6 @@ describe('SaveItems', () => {
   let savedItem: Item
   let sendEventToClient: SendEventToClient
   let domainEventFactory: DomainEventFactoryInterface
-  let deterministicSelector: SelectorInterface<number>
 
   const createUseCase = () =>
     new SaveItems(
@@ -35,14 +33,10 @@ describe('SaveItems', () => {
       updateExistingItem,
       sendEventToClient,
       domainEventFactory,
-      deterministicSelector,
       logger,
     )
 
   beforeEach(() => {
-    deterministicSelector = {} as jest.Mocked<SelectorInterface<number>>
-    deterministicSelector.select = jest.fn().mockReturnValue(1)
-
     sendEventToClient = {} as jest.Mocked<SendEventToClient>
     sendEventToClient.execute = jest.fn().mockReturnValue(Result.ok())
 
@@ -228,8 +222,6 @@ describe('SaveItems', () => {
   })
 
   it('should update existing items', async () => {
-    deterministicSelector.select = jest.fn().mockReturnValue(9)
-
     const useCase = createUseCase()
 
     itemRepository.findByUuid = jest.fn().mockResolvedValue(savedItem)
@@ -250,7 +242,7 @@ describe('SaveItems', () => {
       sessionUuid: 'session-uuid',
       performingUserUuid: '00000000-0000-0000-0000-000000000000',
     })
-    expect(sendEventToClient.execute).not.toHaveBeenCalled()
+    expect(sendEventToClient.execute).toHaveBeenCalled()
   })
 
   it('should mark items as conflicts if updating existing item fails', async () => {
