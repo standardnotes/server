@@ -6409,7 +6409,7 @@ const RAW_RUNTIME_STATE =
           ["@standardnotes/security", "workspace:packages/security"],\
           ["@standardnotes/time", "workspace:packages/time"],\
           ["@types/cors", "npm:2.8.13"],\
-          ["@types/express", "npm:4.17.17"],\
+          ["@types/express", "npm:4.17.21"],\
           ["@types/ioredis", "npm:5.0.0"],\
           ["@types/jest", "npm:29.5.2"],\
           ["@types/jsonwebtoken", "npm:9.0.2"],\
@@ -6470,7 +6470,7 @@ const RAW_RUNTIME_STATE =
           ["@standardnotes/time", "workspace:packages/time"],\
           ["@types/bcryptjs", "npm:2.4.2"],\
           ["@types/cors", "npm:2.8.13"],\
-          ["@types/express", "npm:4.17.17"],\
+          ["@types/express", "npm:4.17.21"],\
           ["@types/ioredis", "npm:5.0.0"],\
           ["@types/jest", "npm:29.5.2"],\
           ["@types/node", "npm:20.5.7"],\
@@ -6638,7 +6638,7 @@ const RAW_RUNTIME_STATE =
           ["@standardnotes/time", "workspace:packages/time"],\
           ["@types/connect-busboy", "npm:1.0.0"],\
           ["@types/cors", "npm:2.8.13"],\
-          ["@types/express", "npm:4.17.17"],\
+          ["@types/express", "npm:4.17.21"],\
           ["@types/ioredis", "npm:5.0.0"],\
           ["@types/jest", "npm:29.5.2"],\
           ["@types/jsonwebtoken", "npm:9.0.2"],\
@@ -6701,7 +6701,7 @@ const RAW_RUNTIME_STATE =
           ["@standardnotes/revisions-server", "workspace:packages/revisions"],\
           ["@standardnotes/syncing-server", "workspace:packages/syncing-server"],\
           ["@types/cors", "npm:2.8.13"],\
-          ["@types/express", "npm:4.17.17"],\
+          ["@types/express", "npm:4.17.21"],\
           ["@typescript-eslint/eslint-plugin", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:6.5.0"],\
           ["@typescript-eslint/parser", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:6.5.0"],\
           ["cors", "npm:2.8.5"],\
@@ -6786,7 +6786,7 @@ const RAW_RUNTIME_STATE =
           ["@standardnotes/time", "workspace:packages/time"],\
           ["@types/cors", "npm:2.8.13"],\
           ["@types/dotenv", "npm:8.2.0"],\
-          ["@types/express", "npm:4.17.17"],\
+          ["@types/express", "npm:4.17.21"],\
           ["@types/ioredis", "npm:5.0.0"],\
           ["@types/jest", "npm:29.5.2"],\
           ["@types/node", "npm:20.5.7"],\
@@ -6965,7 +6965,7 @@ const RAW_RUNTIME_STATE =
           ["@standardnotes/time", "workspace:packages/time"],\
           ["@types/cors", "npm:2.8.13"],\
           ["@types/dotenv", "npm:8.2.0"],\
-          ["@types/express", "npm:4.17.17"],\
+          ["@types/express", "npm:4.17.21"],\
           ["@types/ioredis", "npm:5.0.0"],\
           ["@types/jest", "npm:29.5.2"],\
           ["@types/jsonwebtoken", "npm:9.0.2"],\
@@ -7053,7 +7053,7 @@ const RAW_RUNTIME_STATE =
           ["@standardnotes/security", "workspace:packages/security"],\
           ["@standardnotes/time", "workspace:packages/time"],\
           ["@types/cors", "npm:2.8.13"],\
-          ["@types/express", "npm:4.17.17"],\
+          ["@types/express", "npm:4.17.21"],\
           ["@types/ioredis", "npm:5.0.0"],\
           ["@types/jest", "npm:29.5.2"],\
           ["@typescript-eslint/eslint-plugin", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:6.5.0"],\
@@ -7241,7 +7241,7 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["@types/connect-busboy", "npm:1.0.0"],\
           ["@types/busboy", "npm:1.5.0"],\
-          ["@types/express", "npm:4.17.17"],\
+          ["@types/express", "npm:4.17.21"],\
           ["@types/node", "npm:20.2.5"]\
         ],\
         "linkType": "HARD"\
@@ -7299,10 +7299,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["@types/express", [\
-      ["npm:4.17.17", {\
-        "packageLocation": "./.yarn/cache/@types-express-npm-4.17.17-46fe8173db-e2959a5fec.zip/node_modules/@types/express/",\
+      ["npm:4.17.18", {\
+        "packageLocation": "./.yarn/cache/@types-express-npm-4.17.18-c095318854-b344988a35.zip/node_modules/@types/express/",\
         "packageDependencies": [\
-          ["@types/express", "npm:4.17.17"],\
+          ["@types/express", "npm:4.17.18"],\
           ["@types/body-parser", "npm:1.19.2"],\
           ["@types/express-serve-static-core", "npm:4.17.35"],\
           ["@types/qs", "npm:6.9.7"],\
@@ -7310,10 +7310,10 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "HARD"\
       }],\
-      ["npm:4.17.18", {\
-        "packageLocation": "./.yarn/cache/@types-express-npm-4.17.18-c095318854-b344988a35.zip/node_modules/@types/express/",\
+      ["npm:4.17.21", {\
+        "packageLocation": "./.yarn/cache/@types-express-npm-4.17.21-be92a0245e-7a6d26cf6f.zip/node_modules/@types/express/",\
         "packageDependencies": [\
-          ["@types/express", "npm:4.17.18"],\
+          ["@types/express", "npm:4.17.21"],\
           ["@types/body-parser", "npm:1.19.2"],\
           ["@types/express-serve-static-core", "npm:4.17.35"],\
           ["@types/qs", "npm:6.9.7"],\
@@ -10656,7 +10656,7 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/__virtual__/express-robots-txt-virtual-0a3eb9f2f5/0/cache/express-robots-txt-npm-1.0.0-dcc8bd8f0a-d34b316a74.zip/node_modules/express-robots-txt/",\
         "packageDependencies": [\
           ["express-robots-txt", "virtual:04783e12400851b8a3d76e71495851cc94959db6e62f04cb0a31190080629440b182d8c8eb4d7f2b04e281912f2783a5fd4d2c3c6ab68d38b7097246c93f4c19#npm:1.0.0"],\
-          ["@types/express", "npm:4.17.17"],\
+          ["@types/express", "npm:4.17.21"],\
           ["express", "npm:4.18.2"]\
         ],\
         "packagePeers": [\
