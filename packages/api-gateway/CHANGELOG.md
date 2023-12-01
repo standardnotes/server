@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.87.4](https://github.com/standardnotes/server/compare/@standardnotes/api-gateway@1.87.3...@standardnotes/api-gateway@1.87.4) (2023-12-01)
+
+### Bug Fixes
+
+* **api-gateway:** home server home page ([#949](https://github.com/standardnotes/server/issues/949)) ([a82192d](https://github.com/standardnotes/server/commit/a82192db42dfbb3eea4ac6af40ef2b3d6126e5a3))
+
 ## [1.87.3](https://github.com/standardnotes/server/compare/@standardnotes/api-gateway@1.87.2...@standardnotes/api-gateway@1.87.3) (2023-11-28)
 
 ### Bug Fixes

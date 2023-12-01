@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.127.5](https://github.com/standardnotes/server/compare/@standardnotes/syncing-server@1.127.4...@standardnotes/syncing-server@1.127.5) (2023-12-01)
+
+### Bug Fixes
+
+* **syncing-server:** remove the dice roll on whether to inform the client on items changed ([#950](https://github.com/standardnotes/server/issues/950)) ([589b740](https://github.com/standardnotes/server/commit/589b740f4995d6f68d7fe9a366ce160d80344eac))
+
 ## [1.127.4](https://github.com/standardnotes/server/compare/@standardnotes/syncing-server@1.127.3...@standardnotes/syncing-server@1.127.4) (2023-11-30)
 
 ### Bug Fixes
