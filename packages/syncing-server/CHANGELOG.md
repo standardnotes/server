@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.127.6](https://github.com/standardnotes/server/compare/@standardnotes/syncing-server@1.127.5...@standardnotes/syncing-server@1.127.6) (2023-12-01)
+
+### Bug Fixes
+
+* upgrade aws deps ([#946](https://github.com/standardnotes/server/issues/946)) ([49cd5be](https://github.com/standardnotes/server/commit/49cd5be3521cf9500509adc2b542703efa052203))
+
 ## [1.127.5](https://github.com/standardnotes/server/compare/@standardnotes/syncing-server@1.127.4...@standardnotes/syncing-server@1.127.5) (2023-12-01)
 
 ### Bug Fixes

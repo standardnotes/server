@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.174.4](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.174.3...@standardnotes/auth-server@1.174.4) (2023-12-01)
+
+### Bug Fixes
+
+* upgrade aws deps ([#946](https://github.com/standardnotes/server/issues/946)) ([49cd5be](https://github.com/standardnotes/server/commit/49cd5be3521cf9500509adc2b542703efa052203))
+
+### Reverts
+
+* Revert "chore: upgrade deps" ([341f69e](https://github.com/standardnotes/server/commit/341f69e301036aa48588957fc930405d0344e6ce))
+
 ## [1.174.3](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.174.2...@standardnotes/auth-server@1.174.3) (2023-11-28)
 
 ### Bug Fixes
