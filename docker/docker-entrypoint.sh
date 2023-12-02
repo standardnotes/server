@@ -1,13 +1,26 @@
 #!/bin/bash
 
-# Load environment variables from file if available
-if [ ! -z "$ENVIRONMENT_FILE" ]; then
-  if [ ! -f "$ENVIRONMENT_FILE" ]; then
-    echo "No environment file found at '$ENVIRONMENT_FILE'."
-    exit 1
-  fi
-  export $(cat "$ENVIRONMENT_FILE" | xargs)
-fi
+# usage: file_env VAR [DEFAULT]
+#    ie: file_env 'XYZ_DB_PASSWORD' 'example'
+# (will allow for "$XYZ_DB_PASSWORD_FILE" to fill in the value of
+#  "$XYZ_DB_PASSWORD" from a file, especially for Docker's secrets feature)
+file_env() {
+	local var="$1"
+	local fileVar="${var}_FILE"
+	local def="${2:-}"
+	if [ "${!var:-}" ] && [ "${!fileVar:-}" ]; then
+		echo >&2 "error: both $var and $fileVar are set (but are exclusive)"
+		exit 1
+	fi
+	local val="$def"
+	if [ "${!var:-}" ]; then
+		val="${!var}"
+	elif [ "${!fileVar:-}" ]; then
+		val="$(< "${!fileVar}")"
+	fi
+	export "$var"="$val"
+	unset "$fileVar"
+}
 
 # Setup environment variables
 
@@ -53,10 +66,12 @@ if [ -z "$DB_PORT" ]; then
   echo "DB_PORT is not set. Please set it in your .env file."
   exit 1
 fi
+file_env 'DB_USERNAME'
 if [ -z "$DB_USERNAME" ]; then
   echo "DB_USERNAME is not set. Please set it in your .env file."
   exit 1
 fi
+file_env 'DB_PASSWORD'
 if [ -z "$DB_PASSWORD" ]; then
   echo "DB_PASSWORD is not set. Please set it in your .env file."
   exit 1
@@ -98,11 +113,13 @@ fi
 # SHARED #
 ##########
 
+file_env 'AUTH_JWT_SECRET'
 if [ -z "$AUTH_JWT_SECRET" ]; then
   echo "AUTH_JWT_SECRET is not set. Please set it in your .env file. You can run 'openssl rand -hex 32' to generate a random string."
   exit 1
 fi
 
+file_env 'VALET_TOKEN_SECRET'
 if [ -z "$VALET_TOKEN_SECRET" ]; then
   echo "VALET_TOKEN_SECRET is not set. Please set it in your .env file. You can run 'openssl rand -hex 32' to generate a random string."
   exit 1
@@ -129,6 +146,7 @@ if [ -z "$AUTH_SERVER_DISABLE_USER_REGISTRATION" ]; then
   export AUTH_SERVER_DISABLE_USER_REGISTRATION=false
 fi
 
+file_env 'AUTH_SERVER_PSEUDO_KEY_PARAMS_KEY'
 if [ -z "$AUTH_SERVER_PSEUDO_KEY_PARAMS_KEY" ]; then
   export AUTH_SERVER_PSEUDO_KEY_PARAMS_KEY=$(openssl rand -hex 32)
 fi
@@ -151,6 +169,7 @@ if [ -z "$AUTH_SERVER_EPHEMERAL_SESSION_AGE" ]; then
   export AUTH_SERVER_EPHEMERAL_SESSION_AGE=259200
 fi
 
+file_env 'AUTH_SERVER_ENCRYPTION_SERVER_KEY'
 if [ -z "$AUTH_SERVER_ENCRYPTION_SERVER_KEY" ]; then
   echo "AUTH_SERVER_ENCRYPTION_SERVER_KEY is not set. Please set it in your .env file. You can run 'openssl rand -hex 32' to generate a random string."
   exit 1
@@ -170,9 +189,11 @@ fi
 if [ -z "$AUTH_SERVER_SNS_ENDPOINT" ]; then
   export AUTH_SERVER_SNS_ENDPOINT="http://localstack:4566"
 fi
+file_env 'AUTH_SERVER_SNS_SECRET_ACCESS_KEY'
 if [ -z "$AUTH_SERVER_SNS_SECRET_ACCESS_KEY" ]; then
   export AUTH_SERVER_SNS_SECRET_ACCESS_KEY="x"
 fi
+file_env 'AUTH_SERVER_SNS_ACCESS_KEY_ID'
 if [ -z "$AUTH_SERVER_SNS_ACCESS_KEY_ID" ]; then
   export AUTH_SERVER_SNS_ACCESS_KEY_ID="x"
 fi
@@ -185,9 +206,11 @@ fi
 if [ -z "$AUTH_SERVER_SQS_AWS_REGION" ]; then
   export AUTH_SERVER_SQS_AWS_REGION="us-east-1"
 fi
+file_env 'AUTH_SERVER_SQS_ACCESS_KEY_ID'
 if [ -z "$AUTH_SERVER_SQS_ACCESS_KEY_ID" ]; then
   export AUTH_SERVER_SQS_ACCESS_KEY_ID="x"
 fi
+file_env 'AUTH_SERVER_SQS_SECRET_ACCESS_KEY'
 if [ -z "$AUTH_SERVER_SQS_SECRET_ACCESS_KEY" ]; then
   export AUTH_SERVER_SQS_SECRET_ACCESS_KEY="x"
 fi
@@ -227,9 +250,11 @@ fi
 if [ -z "$SYNCING_SERVER_SNS_ENDPOINT" ]; then
   export SYNCING_SERVER_SNS_ENDPOINT="http://localstack:4566"
 fi
+file_env 'SYNCING_SERVER_SNS_SECRET_ACCESS_KEY'
 if [ -z "$SYNCING_SERVER_SNS_SECRET_ACCESS_KEY" ]; then
   export SYNCING_SERVER_SNS_SECRET_ACCESS_KEY="x"
 fi
+file_env 'SYNCING_SERVER_SNS_ACCESS_KEY_ID'
 if [ -z "$SYNCING_SERVER_SNS_ACCESS_KEY_ID" ]; then
   export SYNCING_SERVER_SNS_ACCESS_KEY_ID="x"
 fi
@@ -242,9 +267,11 @@ fi
 if [ -z "$SYNCING_SERVER_SQS_AWS_REGION" ]; then
   export SYNCING_SERVER_SQS_AWS_REGION="us-east-1"
 fi
+file_env 'SYNCING_SERVER_SQS_ACCESS_KEY_ID'
 if [ -z "$SYNCING_SERVER_SQS_ACCESS_KEY_ID" ]; then
   export SYNCING_SERVER_SQS_ACCESS_KEY_ID="x"
 fi
+file_env 'SYNCING_SERVER_SQS_SECRET_ACCESS_KEY'
 if [ -z "$SYNCING_SERVER_SQS_SECRET_ACCESS_KEY" ]; then
   export SYNCING_SERVER_SQS_SECRET_ACCESS_KEY="x"
 fi
@@ -287,9 +314,11 @@ fi
 if [ -z "$FILES_SERVER_SNS_ENDPOINT" ]; then
   export FILES_SERVER_SNS_ENDPOINT="http://localstack:4566"
 fi
+file_env 'FILES_SERVER_SNS_SECRET_ACCESS_KEY'
 if [ -z "$FILES_SERVER_SNS_SECRET_ACCESS_KEY" ]; then
   export FILES_SERVER_SNS_SECRET_ACCESS_KEY="x"
 fi
+file_env 'FILES_SERVER_SNS_ACCESS_KEY_ID'
 if [ -z "$FILES_SERVER_SNS_ACCESS_KEY_ID" ]; then
   export FILES_SERVER_SNS_ACCESS_KEY_ID="x"
 fi
@@ -302,9 +331,11 @@ fi
 if [ -z "$FILES_SERVER_SQS_AWS_REGION" ]; then
   export FILES_SERVER_SQS_AWS_REGION="us-east-1"
 fi
+file_env 'FILES_SERVER_SQS_ACCESS_KEY_ID'
 if [ -z "$FILES_SERVER_SQS_ACCESS_KEY_ID" ]; then
   export FILES_SERVER_SQS_ACCESS_KEY_ID="x"
 fi
+file_env 'FILES_SERVER_SQS_SECRET_ACCESS_KEY'
 if [ -z "$FILES_SERVER_SQS_SECRET_ACCESS_KEY" ]; then
   export FILES_SERVER_SQS_SECRET_ACCESS_KEY="x"
 fi
@@ -331,9 +362,11 @@ fi
 if [ -z "$REVISIONS_SERVER_SNS_ENDPOINT" ]; then
   export REVISIONS_SERVER_SNS_ENDPOINT="http://localstack:4566"
 fi
+file_env 'REVISIONS_SERVER_SNS_SECRET_ACCESS_KEY'
 if [ -z "$REVISIONS_SERVER_SNS_SECRET_ACCESS_KEY" ]; then
   export REVISIONS_SERVER_SNS_SECRET_ACCESS_KEY="x"
 fi
+file_env 'REVISIONS_SERVER_SNS_ACCESS_KEY_ID'
 if [ -z "$REVISIONS_SERVER_SNS_ACCESS_KEY_ID" ]; then
   export REVISIONS_SERVER_SNS_ACCESS_KEY_ID="x"
 fi
@@ -346,9 +379,11 @@ fi
 if [ -z "$REVISIONS_SERVER_SQS_AWS_REGION" ]; then
   export REVISIONS_SERVER_SQS_AWS_REGION="us-east-1"
 fi
+file_env 'REVISIONS_SERVER_SQS_ACCESS_KEY_ID'
 if [ -z "$REVISIONS_SERVER_SQS_ACCESS_KEY_ID" ]; then
   export REVISIONS_SERVER_SQS_ACCESS_KEY_ID="x"
 fi
+file_env 'REVISIONS_SERVER_SQS_SECRET_ACCESS_KEY'
 if [ -z "$REVISIONS_SERVER_SQS_SECRET_ACCESS_KEY" ]; then
   export REVISIONS_SERVER_SQS_SECRET_ACCESS_KEY="x"
 fi
