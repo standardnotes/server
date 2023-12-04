@@ -13,7 +13,7 @@ import { InviteeIdentifierType } from '../../SharedSubscription/InviteeIdentifie
 
 export class RenewSharedSubscriptions implements UseCaseInterface<void> {
   constructor(
-    private listSharedSubscriptionIn: ListSharedSubscriptionInvitations,
+    private listSharedSubscriptionInvitations: ListSharedSubscriptionInvitations,
     private sharedSubscriptionInvitationRepository: SharedSubscriptionInvitationRepositoryInterface,
     private userSubscriptionRepository: UserSubscriptionRepositoryInterface,
     private userRepository: UserRepositoryInterface,
@@ -21,7 +21,7 @@ export class RenewSharedSubscriptions implements UseCaseInterface<void> {
   ) {}
 
   async execute(dto: RenewSharedSubscriptionsDTO): Promise<Result<void>> {
-    const result = await this.listSharedSubscriptionIn.execute({
+    const result = await this.listSharedSubscriptionInvitations.execute({
       inviterEmail: dto.inviterEmail,
     })
 
