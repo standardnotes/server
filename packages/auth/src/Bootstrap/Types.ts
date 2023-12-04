@@ -169,6 +169,7 @@ const TYPES = {
   Auth_TriggerEmailBackupForUser: Symbol.for('Auth_TriggerEmailBackupForUser'),
   Auth_TriggerEmailBackupForAllUsers: Symbol.for('Auth_TriggerEmailBackupForAllUsers'),
   Auth_DeleteAccountsFromCSVFile: Symbol.for('Auth_DeleteAccountsFromCSVFile'),
+  Auth_RenewSharedSubscriptions: Symbol.for('Auth_RenewSharedSubscriptions'),
   // Handlers
   Auth_AccountDeletionRequestedEventHandler: Symbol.for('Auth_AccountDeletionRequestedEventHandler'),
   Auth_AccountDeletionVerificationPassedEventHandler: Symbol.for('Auth_AccountDeletionVerificationPassedEventHandler'),

@@ -281,6 +281,7 @@ import { CSVFileReaderInterface } from '../Domain/CSV/CSVFileReaderInterface'
 import { S3CsvFileReader } from '../Infra/S3/S3CsvFileReader'
 import { DeleteAccountsFromCSVFile } from '../Domain/UseCase/DeleteAccountsFromCSVFile/DeleteAccountsFromCSVFile'
 import { AccountDeletionVerificationPassedEventHandler } from '../Domain/Handler/AccountDeletionVerificationPassedEventHandler'
+import { RenewSharedSubscriptions } from '../Domain/UseCase/RenewSharedSubscriptions/RenewSharedSubscriptions'
 
 export class ContainerConfigLoader {
   constructor(private mode: 'server' | 'worker' = 'server') {}
@@ -1270,6 +1271,19 @@ export class ContainerConfigLoader {
           container.get<TriggerEmailBackupForUser>(TYPES.Auth_TriggerEmailBackupForUser),
         ),
       )
+    container
+      .bind<RenewSharedSubscriptions>(TYPES.Auth_RenewSharedSubscriptions)
+      .toConstantValue(
+        new RenewSharedSubscriptions(
+          container.get<ListSharedSubscriptionInvitations>(TYPES.Auth_ListSharedSubscriptionInvitations),
+          container.get<SharedSubscriptionInvitationRepositoryInterface>(
+            TYPES.Auth_SharedSubscriptionInvitationRepository,
+          ),
+          container.get<UserSubscriptionRepositoryInterface>(TYPES.Auth_UserSubscriptionRepository),
+          container.get<UserRepositoryInterface>(TYPES.Auth_UserRepository),
+          container.get<winston.Logger>(TYPES.Auth_Logger),
+        ),
+      )
     if (!isConfiguredForHomeServer) {
       container
         .bind<DeleteAccountsFromCSVFile>(TYPES.Auth_DeleteAccountsFromCSVFile)
@@ -1349,6 +1363,7 @@ export class ContainerConfigLoader {
           container.get<ApplyDefaultSubscriptionSettings>(TYPES.Auth_ApplyDefaultSubscriptionSettings),
           container.get<OfflineUserSubscriptionRepositoryInterface>(TYPES.Auth_OfflineUserSubscriptionRepository),
           container.get<RoleServiceInterface>(TYPES.Auth_RoleService),
+          container.get<RenewSharedSubscriptions>(TYPES.Auth_RenewSharedSubscriptions),
           container.get<winston.Logger>(TYPES.Auth_Logger),
         ),
       )
