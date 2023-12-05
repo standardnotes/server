@@ -45,9 +45,9 @@ export class SendMessageToClient implements UseCaseInterface<void> {
         }
       } catch (error) {
         return Result.fail(
-          `Could not send message to connection ${connection.props.connectionId} for user ${userUuid.value}. Error: ${
-            (error as Error).message
-          }`,
+          `Could not send message to connection ${connection.props.connectionId} for user ${
+            userUuid.value
+          }. Error: ${JSON.stringify(error)}`,
         )
       }
     }
