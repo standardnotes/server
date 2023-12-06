@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.21.3](https://github.com/standardnotes/server/compare/@standardnotes/websockets-server@1.21.2...@standardnotes/websockets-server@1.21.3) (2023-12-06)
+
+### Bug Fixes
+
+* **api-gateway:** add grpc logs for internal errors ([529795d](https://github.com/standardnotes/server/commit/529795d393442727833f318234d308543c1ea731))
+* **websockets:** change error message on unknown errors ([79ae076](https://github.com/standardnotes/server/commit/79ae07623fa392f1f60160ecdc34a0fcfa4d9a48))
+
 ## [1.21.2](https://github.com/standardnotes/server/compare/@standardnotes/websockets-server@1.21.1...@standardnotes/websockets-server@1.21.2) (2023-12-01)
 
 ### Bug Fixes
