@@ -4,12 +4,15 @@ import { MapperInterface } from '@standardnotes/domain-core'
 import { Metadata } from '@grpc/grpc-js'
 
 import { SyncResponseHttpRepresentation } from '../../Mapping/Sync/Http/SyncResponseHttpRepresentation'
+import { Status } from '@grpc/grpc-js/build/src/constants'
+import { Logger } from 'winston'
 
 export class GRPCSyncingServerServiceProxy {
   constructor(
     private syncingClient: ISyncingClient,
     private syncRequestGRPCMapper: MapperInterface<Record<string, unknown>, SyncRequest>,
     private syncResponseGRPCMapper: MapperInterface<SyncResponse, SyncResponseHttpRepresentation>,
+    private logger: Logger,
   ) {}
 
   async sync(
@@ -39,12 +42,31 @@ export class GRPCSyncingServerServiceProxy {
               })
             }
 
+            if (error.code === Status.INTERNAL) {
+              this.logger.error(
+                `[GRPCSyncingServerServiceProxy] Internal gRPC error: ${error.message}. Payload: ${JSON.stringify(
+                  payload,
+                )}`,
+              )
+            }
+
             return reject(error)
           }
 
           return resolve({ status: 200, data: this.syncResponseGRPCMapper.toProjection(syncResponse) })
         })
       } catch (error) {
+        if (
+          'code' in (error as Record<string, unknown>) &&
+          (error as Record<string, unknown>).code === Status.INTERNAL
+        ) {
+          this.logger.error(
+            `[GRPCSyncingServerServiceProxy] Internal gRPC error: ${JSON.stringify(error)}. Payload: ${JSON.stringify(
+              payload,
+            )}`,
+          )
+        }
+
         reject(error)
       }
     })

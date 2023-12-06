@@ -210,6 +210,7 @@ export class ContainerConfigLoader {
               container.get<MapperInterface<SyncResponse, SyncResponseHttpRepresentation>>(
                 TYPES.Mapper_SyncResponseGRPCMapper,
               ),
+              container.get<winston.Logger>(TYPES.ApiGateway_Logger),
             ),
           )
         container

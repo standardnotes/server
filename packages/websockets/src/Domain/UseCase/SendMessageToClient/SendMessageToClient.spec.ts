@@ -69,7 +69,7 @@ describe('SendMessageToClient', () => {
 
     expect(result.isFailed()).toBe(true)
     expect(result.getError()).toBe(
-      'Could not send message to connection connection-id for user 00000000-0000-0000-0000-000000000000. Error: error',
+      'Could not send message to connection connection-id for user 00000000-0000-0000-0000-000000000000. Error: {}',
     )
   })
 
