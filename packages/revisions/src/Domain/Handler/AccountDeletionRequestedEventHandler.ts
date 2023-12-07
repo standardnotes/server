@@ -12,7 +12,7 @@ export class AccountDeletionRequestedEventHandler implements DomainEventHandlerI
   async handle(event: AccountDeletionRequestedEvent): Promise<void> {
     const userUuidOrError = Uuid.create(event.payload.userUuid)
     if (userUuidOrError.isFailed()) {
-      this.logger.warn(`Failed account cleanup: ${userUuidOrError.getError()}`)
+      this.logger.warn(`Failed account cleanup: ${userUuidOrError.getError()}`, { userId: event.payload.userUuid })
 
       return
     }
@@ -20,6 +20,6 @@ export class AccountDeletionRequestedEventHandler implements DomainEventHandlerI
 
     await this.revisionRepository.removeByUserUuid(userUuid)
 
-    this.logger.info(`Finished account cleanup for user: ${event.payload.userUuid}`)
+    this.logger.info('Finished account cleanup.', { userId: event.payload.userUuid })
   }
 }

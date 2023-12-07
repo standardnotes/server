@@ -17,7 +17,10 @@ export class AccountDeletionRequestedEventHandler implements DomainEventHandlerI
   async handle(event: AccountDeletionRequestedEvent): Promise<void> {
     const userUuidOrError = Uuid.create(event.payload.userUuid)
     if (userUuidOrError.isFailed()) {
-      this.logger.error(`AccountDeletionRequestedEventHandler failed: ${userUuidOrError.getError()}`)
+      this.logger.error(userUuidOrError.getError(), {
+        userId: event.payload.userUuid,
+        codeTag: 'AccountDeletionRequestedEventHandler',
+      })
 
       return
     }
@@ -30,9 +33,9 @@ export class AccountDeletionRequestedEventHandler implements DomainEventHandlerI
       allowSurviving: true,
     })
     if (deletingVaultsResult.isFailed()) {
-      this.logger.error(
-        `Failed to delete shared vaults for user: ${event.payload.userUuid}: ${deletingVaultsResult.getError()}`,
-      )
+      this.logger.error(`Failed to delete shared vaults: ${deletingVaultsResult.getError()}`, {
+        userId: event.payload.userUuid,
+      })
     }
 
     const deletedSharedVaultUuids = Array.from(deletingVaultsResult.getValue().keys())
@@ -49,13 +52,13 @@ export class AccountDeletionRequestedEventHandler implements DomainEventHandlerI
       userUuid: event.payload.userUuid,
     })
     if (deletingUserFromOtherVaultsResult.isFailed()) {
-      this.logger.error(
-        `Failed to remove user: ${
-          event.payload.userUuid
-        } from shared vaults: ${deletingUserFromOtherVaultsResult.getError()}`,
-      )
+      this.logger.error(`Failed to remove user from shared vaults: ${deletingUserFromOtherVaultsResult.getError()}`, {
+        userId: event.payload.userUuid,
+      })
     }
 
-    this.logger.info(`Finished account cleanup for user: ${event.payload.userUuid}`)
+    this.logger.info('Finished account cleanup', {
+      userId: event.payload.userUuid,
+    })
   }
 }

@@ -22,7 +22,7 @@ export class WebSocketsClientService implements ClientServiceInterface {
       (await user.roles).map((role) => role.name),
     )
 
-    this.logger.info(`[WebSockets] Requesting message ${event.type} to user ${user.uuid}`)
+    this.logger.debug(`[WebSockets] Requesting message ${event.type} to user ${user.uuid}`)
 
     await this.domainEventPublisher.publish(
       this.domainEventFactory.createWebSocketMessageRequestedEvent({

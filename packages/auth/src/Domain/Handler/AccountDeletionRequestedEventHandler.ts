@@ -19,7 +19,7 @@ export class AccountDeletionRequestedEventHandler implements DomainEventHandlerI
   async handle(event: AccountDeletionRequestedEvent): Promise<void> {
     const userUuidOrError = Uuid.create(event.payload.userUuid)
     if (userUuidOrError.isFailed()) {
-      this.logger.warn(`Could not find user with uuid: ${event.payload.userUuid}`)
+      this.logger.warn('Could not find user.', { userId: event.payload.userUuid })
 
       return
     }
@@ -28,7 +28,7 @@ export class AccountDeletionRequestedEventHandler implements DomainEventHandlerI
     const user = await this.userRepository.findOneByUuid(userUuid)
 
     if (user === null) {
-      this.logger.warn(`Could not find user with uuid: ${userUuid.value}`)
+      this.logger.warn('Could not find user.', { userId: userUuid.value })
 
       return
     }
@@ -37,7 +37,9 @@ export class AccountDeletionRequestedEventHandler implements DomainEventHandlerI
 
     await this.userRepository.remove(user)
 
-    this.logger.info(`Finished account cleanup for user: ${userUuid.value}`)
+    this.logger.info('Finished account cleanup.', {
+      userId: userUuid.value,
+    })
   }
 
   private async removeSessions(userUuid: string): Promise<void> {
