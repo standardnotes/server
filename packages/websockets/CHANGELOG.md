@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.22.1](https://github.com/standardnotes/server/compare/@standardnotes/websockets-server@1.22.0...@standardnotes/websockets-server@1.22.1) (2023-12-07)
+
+### Bug Fixes
+
+* logger meta information ([a2b1323](https://github.com/standardnotes/server/commit/a2b1323568f5ced74b41aa4634340a6ca0668683))
+
 # [1.22.0](https://github.com/standardnotes/server/compare/@standardnotes/websockets-server@1.21.4...@standardnotes/websockets-server@1.22.0) (2023-12-07)
 
 ### Features

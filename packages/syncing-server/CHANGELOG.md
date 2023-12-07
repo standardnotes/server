@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.127.9](https://github.com/standardnotes/server/compare/@standardnotes/syncing-server@1.127.8...@standardnotes/syncing-server@1.127.9) (2023-12-07)
+
+### Bug Fixes
+
+* logger meta information ([a2b1323](https://github.com/standardnotes/server/commit/a2b1323568f5ced74b41aa4634340a6ca0668683))
+* logs meta ([8ac84c5](https://github.com/standardnotes/server/commit/8ac84c59af886bb9c42de012fb1e7864e116ab55))
+
 ## [1.127.8](https://github.com/standardnotes/server/compare/@standardnotes/syncing-server@1.127.7...@standardnotes/syncing-server@1.127.8) (2023-12-07)
 
 **Note:** Version bump only for package @standardnotes/syncing-server

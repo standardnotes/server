@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.176.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.176.0...@standardnotes/auth-server@1.176.1) (2023-12-07)
+
+### Bug Fixes
+
+* **auth:** logger meta on disabling settings ([3f2d8c9](https://github.com/standardnotes/server/commit/3f2d8c902c5331e07959f0b7b42684ef47346220))
+* logger meta information ([a2b1323](https://github.com/standardnotes/server/commit/a2b1323568f5ced74b41aa4634340a6ca0668683))
+* logs meta ([8ac84c5](https://github.com/standardnotes/server/commit/8ac84c59af886bb9c42de012fb1e7864e116ab55))
+
 # [1.176.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.175.1...@standardnotes/auth-server@1.176.0) (2023-12-07)
 
 ### Features

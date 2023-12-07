@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.36.5](https://github.com/standardnotes/server/compare/@standardnotes/files-server@1.36.4...@standardnotes/files-server@1.36.5) (2023-12-07)
+
+### Bug Fixes
+
+* logger meta information ([a2b1323](https://github.com/standardnotes/server/commit/a2b1323568f5ced74b41aa4634340a6ca0668683))
+
 ## [1.36.4](https://github.com/standardnotes/server/compare/@standardnotes/files-server@1.36.3...@standardnotes/files-server@1.36.4) (2023-12-01)
 
 ### Bug Fixes

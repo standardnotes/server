@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.88.1](https://github.com/standardnotes/server/compare/@standardnotes/api-gateway@1.88.0...@standardnotes/api-gateway@1.88.1) (2023-12-07)
+
+### Bug Fixes
+
+* **api-gateway:** response header on grpc websocket connection validation ([3637db2](https://github.com/standardnotes/server/commit/3637db2563255aaddd44700c039495c6b9a9e4aa))
+* logger meta information ([a2b1323](https://github.com/standardnotes/server/commit/a2b1323568f5ced74b41aa4634340a6ca0668683))
+
 # [1.88.0](https://github.com/standardnotes/server/compare/@standardnotes/api-gateway@1.87.7...@standardnotes/api-gateway@1.88.0) (2023-12-07)
 
 ### Features
