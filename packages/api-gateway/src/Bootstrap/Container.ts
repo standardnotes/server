@@ -22,19 +22,13 @@ import { EndpointResolver } from '../Service/Resolver/EndpointResolver'
 import { RequiredCrossServiceTokenMiddleware } from '../Controller/RequiredCrossServiceTokenMiddleware'
 import { OptionalCrossServiceTokenMiddleware } from '../Controller/OptionalCrossServiceTokenMiddleware'
 import { Transform } from 'stream'
-import {
-  ISessionsClient,
-  ISyncingClient,
-  SessionsClient,
-  SyncRequest,
-  SyncResponse,
-  SyncingClient,
-} from '@standardnotes/grpc'
+import { AuthClient, IAuthClient, ISyncingClient, SyncRequest, SyncResponse, SyncingClient } from '@standardnotes/grpc'
 import { GRPCServiceProxy } from '../Service/gRPC/GRPCServiceProxy'
 import { GRPCSyncingServerServiceProxy } from '../Service/gRPC/GRPCSyncingServerServiceProxy'
 import { SyncResponseHttpRepresentation } from '../Mapping/Sync/Http/SyncResponseHttpRepresentation'
 import { SyncRequestGRPCMapper } from '../Mapping/Sync/GRPC/SyncRequestGRPCMapper'
 import { SyncResponseGRPCMapper } from '../Mapping/Sync/GRPC/SyncResponseGRPCMapper'
+import { GRPCWebSocketAuthMiddleware } from '../Controller/GRPCWebSocketAuthMiddleware'
 
 export class ContainerConfigLoader {
   async load(configuration?: {
@@ -51,6 +45,7 @@ export class ContainerConfigLoader {
     const isConfiguredForSelfHosting = env.get('MODE', true) === 'self-hosted'
     const isConfiguredForHomeServerOrSelfHosting = isConfiguredForHomeServer || isConfiguredForSelfHosting
     const isConfiguredForInMemoryCache = env.get('CACHE_TYPE', true) === 'memory'
+    const isConfiguredForGRPCProxy = env.get('SERVICE_PROXY_TYPE', true) === 'grpc'
 
     container
       .bind<boolean>(TYPES.ApiGateway_IS_CONFIGURED_FOR_HOME_SERVER_OR_SELF_HOSTING)
@@ -122,7 +117,6 @@ export class ContainerConfigLoader {
     container
       .bind<OptionalCrossServiceTokenMiddleware>(TYPES.ApiGateway_OptionalCrossServiceTokenMiddleware)
       .to(OptionalCrossServiceTokenMiddleware)
-    container.bind<WebSocketAuthMiddleware>(TYPES.ApiGateway_WebSocketAuthMiddleware).to(WebSocketAuthMiddleware)
     container
       .bind<SubscriptionTokenAuthMiddleware>(TYPES.ApiGateway_SubscriptionTokenAuthMiddleware)
       .to(SubscriptionTokenAuthMiddleware)
@@ -153,7 +147,6 @@ export class ContainerConfigLoader {
           new DirectCallServiceProxy(configuration.serviceContainer, container.get(TYPES.ApiGateway_FILES_SERVER_URL)),
         )
     } else {
-      const isConfiguredForGRPCProxy = env.get('SERVICE_PROXY_TYPE', true) === 'grpc'
       if (isConfiguredForGRPCProxy) {
         container.bind(TYPES.ApiGateway_AUTH_SERVER_GRPC_URL).toConstantValue(env.get('AUTH_SERVER_GRPC_URL'))
         container.bind(TYPES.ApiGateway_SYNCING_SERVER_GRPC_URL).toConstantValue(env.get('SYNCING_SERVER_GRPC_URL'))
@@ -165,8 +158,8 @@ export class ContainerConfigLoader {
           ? +env.get('GRPC_MAX_MESSAGE_SIZE', true)
           : 1024 * 1024 * 50
 
-        container.bind<ISessionsClient>(TYPES.ApiGateway_GRPCSessionsClient).toConstantValue(
-          new SessionsClient(
+        container.bind<IAuthClient>(TYPES.ApiGateway_GRPCAuthClient).toConstantValue(
+          new AuthClient(
             container.get<string>(TYPES.ApiGateway_AUTH_SERVER_GRPC_URL),
             grpc.credentials.createInsecure(),
             {
@@ -229,13 +222,27 @@ export class ContainerConfigLoader {
               container.get<CrossServiceTokenCacheInterface>(TYPES.ApiGateway_CrossServiceTokenCache),
               container.get<winston.Logger>(TYPES.ApiGateway_Logger),
               container.get<TimerInterface>(TYPES.ApiGateway_Timer),
-              container.get<ISessionsClient>(TYPES.ApiGateway_GRPCSessionsClient),
+              container.get<IAuthClient>(TYPES.ApiGateway_GRPCAuthClient),
               container.get<GRPCSyncingServerServiceProxy>(TYPES.ApiGateway_GRPCSyncingServerServiceProxy),
             ),
           )
       } else {
         container.bind<ServiceProxyInterface>(TYPES.ApiGateway_ServiceProxy).to(HttpServiceProxy)
       }
+    }
+
+    if (isConfiguredForGRPCProxy) {
+      container
+        .bind<GRPCWebSocketAuthMiddleware>(TYPES.ApiGateway_WebSocketAuthMiddleware)
+        .toConstantValue(
+          new GRPCWebSocketAuthMiddleware(
+            container.get<IAuthClient>(TYPES.ApiGateway_GRPCAuthClient),
+            container.get<string>(TYPES.ApiGateway_AUTH_JWT_SECRET),
+            container.get<winston.Logger>(TYPES.ApiGateway_Logger),
+          ),
+        )
+    } else {
+      container.bind<WebSocketAuthMiddleware>(TYPES.ApiGateway_WebSocketAuthMiddleware).to(WebSocketAuthMiddleware)
     }
 
     logger.debug('Configuration complete')

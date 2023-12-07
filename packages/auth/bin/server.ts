@@ -30,10 +30,11 @@ import { InversifyExpressServer } from 'inversify-express-utils'
 import { ContainerConfigLoader } from '../src/Bootstrap/Container'
 import TYPES from '../src/Bootstrap/Types'
 import { Env } from '../src/Bootstrap/Env'
-import { SessionsServer } from '../src/Infra/gRPC/SessionsServer'
-import { SessionsService } from '@standardnotes/grpc'
+import { AuthServer } from '../src/Infra/gRPC/AuthServer'
+import { AuthService } from '@standardnotes/grpc'
 import { AuthenticateRequest } from '../src/Domain/UseCase/AuthenticateRequest'
 import { CreateCrossServiceToken } from '../src/Domain/UseCase/CreateCrossServiceToken/CreateCrossServiceToken'
+import { TokenDecoderInterface, WebSocketConnectionTokenData } from '@standardnotes/security'
 
 const container = new ContainerConfigLoader()
 void container.load().then((container) => {
@@ -95,14 +96,16 @@ void container.load().then((container) => {
 
   const gRPCPort = env.get('GRPC_PORT', true) ? +env.get('GRPC_PORT', true) : 50051
 
-  const sessionsServer = new SessionsServer(
+  const authServer = new AuthServer(
     container.get<AuthenticateRequest>(TYPES.Auth_AuthenticateRequest),
     container.get<CreateCrossServiceToken>(TYPES.Auth_CreateCrossServiceToken),
+    container.get<TokenDecoderInterface<WebSocketConnectionTokenData>>(TYPES.Auth_WebSocketConnectionTokenDecoder),
     container.get<winston.Logger>(TYPES.Auth_Logger),
   )
 
-  grpcServer.addService(SessionsService, {
-    validate: sessionsServer.validate.bind(sessionsServer),
+  grpcServer.addService(AuthService, {
+    validate: authServer.validate.bind(authServer),
+    validateWebsocket: authServer.validateWebsocket.bind(authServer),
   })
   grpcServer.bindAsync(`0.0.0.0:${gRPCPort}`, grpc.ServerCredentials.createInsecure(), (error, port) => {
     if (error) {

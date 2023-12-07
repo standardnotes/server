@@ -91,9 +91,12 @@ void container.load().then((container) => {
 
   server.setErrorConfig((app) => {
     app.use((error: Record<string, unknown>, request: Request, response: Response, _next: NextFunction) => {
-      logger.error(
-        `[URL: |${request.method}| ${request.url}][SNJS: ${request.headers['x-snjs-version']}][Application: ${request.headers['x-application-version']}] Error thrown: ${error.stack}`,
-      )
+      logger.error(`${error.stack}`, {
+        method: request.method,
+        url: request.url,
+        snjs: request.headers['x-snjs-version'],
+        application: request.headers['x-application-version'],
+      })
       logger.debug(
         `[URL: |${request.method}| ${request.url}][SNJS: ${request.headers['x-snjs-version']}][Application: ${
           request.headers['x-application-version']

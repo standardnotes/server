@@ -49,9 +49,11 @@ export class SendMessageToClient implements UseCaseInterface<void> {
         }
       } catch (error) {
         if (error instanceof GoneException) {
-          this.logger.info(`Connection ${connection.props.connectionId} for user ${userUuid.value} is gone. Removing.`)
+          this.logger.debug(`Connection ${connection.props.connectionId} for user ${userUuid.value} is gone. Removing.`)
 
           await this.removeGoneConnection(connection.props.connectionId)
+
+          return Result.ok()
         }
 
         return Result.fail(

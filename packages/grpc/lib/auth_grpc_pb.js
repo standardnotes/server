@@ -15,6 +15,17 @@ function deserialize_auth_AuthorizationHeader(buffer_arg) {
   return auth_pb.AuthorizationHeader.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
+function serialize_auth_ConnectionValidationResponse(arg) {
+  if (!(arg instanceof auth_pb.ConnectionValidationResponse)) {
+    throw new Error('Expected argument of type auth.ConnectionValidationResponse');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_auth_ConnectionValidationResponse(buffer_arg) {
+  return auth_pb.ConnectionValidationResponse.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
 function serialize_auth_SessionValidationResponse(arg) {
   if (!(arg instanceof auth_pb.SessionValidationResponse)) {
     throw new Error('Expected argument of type auth.SessionValidationResponse');
@@ -26,10 +37,21 @@ function deserialize_auth_SessionValidationResponse(buffer_arg) {
   return auth_pb.SessionValidationResponse.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
+function serialize_auth_WebsocketConnectionAuthorizationHeader(arg) {
+  if (!(arg instanceof auth_pb.WebsocketConnectionAuthorizationHeader)) {
+    throw new Error('Expected argument of type auth.WebsocketConnectionAuthorizationHeader');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
 
-var SessionsService = exports.SessionsService = {
+function deserialize_auth_WebsocketConnectionAuthorizationHeader(buffer_arg) {
+  return auth_pb.WebsocketConnectionAuthorizationHeader.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+
+var AuthService = exports.AuthService = {
   validate: {
-    path: '/auth.Sessions/validate',
+    path: '/auth.Auth/validate',
     requestStream: false,
     responseStream: false,
     requestType: auth_pb.AuthorizationHeader,
@@ -39,6 +61,17 @@ var SessionsService = exports.SessionsService = {
     responseSerialize: serialize_auth_SessionValidationResponse,
     responseDeserialize: deserialize_auth_SessionValidationResponse,
   },
+  validateWebsocket: {
+    path: '/auth.Auth/validateWebsocket',
+    requestStream: false,
+    responseStream: false,
+    requestType: auth_pb.WebsocketConnectionAuthorizationHeader,
+    responseType: auth_pb.ConnectionValidationResponse,
+    requestSerialize: serialize_auth_WebsocketConnectionAuthorizationHeader,
+    requestDeserialize: deserialize_auth_WebsocketConnectionAuthorizationHeader,
+    responseSerialize: serialize_auth_ConnectionValidationResponse,
+    responseDeserialize: deserialize_auth_ConnectionValidationResponse,
+  },
 };
 
-exports.SessionsClient = grpc.makeGenericClientConstructor(SessionsService);
+exports.AuthClient = grpc.makeGenericClientConstructor(AuthService);
