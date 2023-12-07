@@ -2,7 +2,7 @@ import { AxiosInstance, AxiosError, AxiosResponse, Method } from 'axios'
 import { Request, Response } from 'express'
 import { Logger } from 'winston'
 import { TimerInterface } from '@standardnotes/time'
-import { ISessionsClient, AuthorizationHeader, SessionValidationResponse } from '@standardnotes/grpc'
+import { IAuthClient, AuthorizationHeader, SessionValidationResponse } from '@standardnotes/grpc'
 import * as grpc from '@grpc/grpc-js'
 
 import { CrossServiceTokenCacheInterface } from '../Cache/CrossServiceTokenCacheInterface'
@@ -23,7 +23,7 @@ export class GRPCServiceProxy implements ServiceProxyInterface {
     private crossServiceTokenCache: CrossServiceTokenCacheInterface,
     private logger: Logger,
     private timer: TimerInterface,
-    private sessionsClient: ISessionsClient,
+    private authClient: IAuthClient,
     private gRPCSyncingServerServiceProxy: GRPCSyncingServerServiceProxy,
   ) {}
 
@@ -41,7 +41,7 @@ export class GRPCServiceProxy implements ServiceProxyInterface {
 
         this.logger.debug('[GRPCServiceProxy] Validating session via gRPC')
 
-        this.sessionsClient.validate(
+        this.authClient.validate(
           request,
           metadata,
           (error: grpc.ServiceError | null, response: SessionValidationResponse) => {

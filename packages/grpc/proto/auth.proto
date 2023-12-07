@@ -10,6 +10,15 @@ message SessionValidationResponse {
   string cross_service_token = 1;
 }
 
-service Sessions {
+message WebsocketConnectionAuthorizationHeader {
+  string token = 1;
+}
+
+message ConnectionValidationResponse {
+  string cross_service_token = 1;
+}
+
+service Auth {
   rpc validate(AuthorizationHeader) returns (SessionValidationResponse) {}
+  rpc validateWebsocket(WebsocketConnectionAuthorizationHeader) returns (ConnectionValidationResponse) {}
 }

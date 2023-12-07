@@ -34,6 +34,6 @@ export const TYPES = {
   ApiGateway_CrossServiceTokenCache: Symbol.for('ApiGateway_CrossServiceTokenCache'),
   ApiGateway_Timer: Symbol.for('ApiGateway_Timer'),
   ApiGateway_EndpointResolver: Symbol.for('ApiGateway_EndpointResolver'),
-  ApiGateway_GRPCSessionsClient: Symbol.for('ApiGateway_GRPCSessionsClient'),
+  ApiGateway_GRPCAuthClient: Symbol.for('ApiGateway_GRPCAuthClient'),
   ApiGateway_GRPCSyncingClient: Symbol.for('ApiGateway_GRPCSyncingClient'),
 }
