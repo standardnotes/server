@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.21.4](https://github.com/standardnotes/server/compare/@standardnotes/websockets-server@1.21.3...@standardnotes/websockets-server@1.21.4) (2023-12-07)
+
+### Bug Fixes
+
+* **websockets:** remove connection trace when it is gone ([#953](https://github.com/standardnotes/server/issues/953)) ([96a2a67](https://github.com/standardnotes/server/commit/96a2a67aa6baa70ddb2d69a9ccbf62df044605e5))
+
 ## [1.21.3](https://github.com/standardnotes/server/compare/@standardnotes/websockets-server@1.21.2...@standardnotes/websockets-server@1.21.3) (2023-12-06)
 
 ### Bug Fixes
