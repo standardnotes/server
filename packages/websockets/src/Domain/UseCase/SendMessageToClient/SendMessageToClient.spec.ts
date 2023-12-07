@@ -121,7 +121,7 @@ describe('SendMessageToClient', () => {
       message: 'message',
     })
 
-    expect(result.isFailed()).toBe(true)
+    expect(result.isFailed()).toBe(false)
     expect(webSocketsConnectionRepository.removeConnection).toHaveBeenCalledTimes(1)
   })
 })
