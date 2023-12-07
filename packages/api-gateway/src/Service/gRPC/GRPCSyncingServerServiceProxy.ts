@@ -44,9 +44,9 @@ export class GRPCSyncingServerServiceProxy {
 
             if (error.code === Status.INTERNAL) {
               this.logger.error(
-                `[GRPCSyncingServerServiceProxy] Internal gRPC error: ${error.message}. Payload: ${JSON.stringify(
-                  payload,
-                )}`,
+                `[GRPCSyncingServerServiceProxy][${response.locals.user.uuid}] Internal gRPC error: ${
+                  error.message
+                }. Payload: ${JSON.stringify(payload)}`,
               )
             }
 
@@ -61,9 +61,9 @@ export class GRPCSyncingServerServiceProxy {
           (error as Record<string, unknown>).code === Status.INTERNAL
         ) {
           this.logger.error(
-            `[GRPCSyncingServerServiceProxy] Internal gRPC error: ${JSON.stringify(error)}. Payload: ${JSON.stringify(
-              payload,
-            )}`,
+            `[GRPCSyncingServerServiceProxy][${response.locals.user.uuid}] Internal gRPC error: ${JSON.stringify(
+              error,
+            )}. Payload: ${JSON.stringify(payload)}`,
           )
         }
 
