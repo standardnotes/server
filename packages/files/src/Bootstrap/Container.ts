@@ -54,6 +54,8 @@ import { MoveFile } from '../Domain/UseCase/MoveFile/MoveFile'
 import { SharedVaultValetTokenAuthMiddleware } from '../Infra/InversifyExpress/Middleware/SharedVaultValetTokenAuthMiddleware'
 
 export class ContainerConfigLoader {
+  constructor(private mode: 'server' | 'worker' = 'server') {}
+
   async load(configuration?: {
     directCallDomainEventPublisher?: DirectCallDomainEventPublisher
     logger?: Transform
@@ -316,7 +318,7 @@ export class ContainerConfigLoader {
       level: env.get('LOG_LEVEL', true) || 'info',
       format: winston.format.combine(winston.format.splat(), winston.format.json()),
       transports: [new winston.transports.Console({ level: env.get('LOG_LEVEL', true) || 'info' })],
-      defaultMeta: { service: 'files' },
+      defaultMeta: { service: `files:${this.mode}` },
     })
   }
 }

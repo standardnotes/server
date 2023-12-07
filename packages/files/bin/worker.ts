@@ -9,7 +9,7 @@ import { DomainEventSubscriberInterface } from '@standardnotes/domain-events'
 import * as dayjs from 'dayjs'
 import * as utc from 'dayjs/plugin/utc'
 
-const container = new ContainerConfigLoader()
+const container = new ContainerConfigLoader('worker')
 void container.load().then((container) => {
   dayjs.extend(utc)
 

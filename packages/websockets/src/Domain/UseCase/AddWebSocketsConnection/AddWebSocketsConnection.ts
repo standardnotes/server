@@ -48,9 +48,10 @@ export class AddWebSocketsConnection implements UseCaseInterface<void> {
 
       return Result.ok()
     } catch (error) {
-      this.logger.error(
-        `Error persisting connection ${dto.connectionId} for user ${dto.userUuid}: ${(error as Error).message}`,
-      )
+      this.logger.error(`Error persisting connection for user: ${(error as Error).message}`, {
+        userId: dto.userUuid,
+        connectionId: dto.connectionId,
+      })
 
       return Result.fail((error as Error).message)
     }

@@ -195,7 +195,7 @@ export class ContainerConfigLoader {
         level: env.get('LOG_LEVEL', true) || 'info',
         format: winston.format.combine(...winstonFormatters),
         transports: [new winston.transports.Console({ level: env.get('LOG_LEVEL', true) || 'info' })],
-        defaultMeta: { service: 'syncing-server' },
+        defaultMeta: { service: `syncing-server:${this.mode}` },
       })
     }
     container.bind<winston.Logger>(TYPES.Sync_Logger).toConstantValue(logger)

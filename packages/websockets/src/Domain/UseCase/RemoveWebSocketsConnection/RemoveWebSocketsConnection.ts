@@ -22,7 +22,9 @@ export class RemoveWebSocketsConnection implements UseCaseInterface<void> {
 
       return Result.ok()
     } catch (error) {
-      this.logger.error(`Error removing connection ${dto.connectionId}: ${(error as Error).message}`)
+      this.logger.error(`Error removing connection: ${(error as Error).message}`, {
+        connectionId: dto.connectionId,
+      })
 
       return Result.fail((error as Error).message)
     }

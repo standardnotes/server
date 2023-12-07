@@ -16,7 +16,9 @@ export class WebSocketMessageRequestedEventHandler implements DomainEventHandler
     })
 
     if (result.isFailed()) {
-      this.logger.error(`Could not send message to user ${event.payload.userUuid}. Error: ${result.getError()}`)
+      this.logger.error(`Could not send message to user. Error: ${result.getError()}`, {
+        userId: event.payload.userUuid,
+      })
     }
   }
 }
