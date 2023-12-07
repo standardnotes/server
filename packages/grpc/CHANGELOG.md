@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/standardnotes/server/compare/@standardnotes/grpc@1.3.2...@standardnotes/grpc@1.4.0) (2023-12-07)
+
+### Features
+
+* replace websocket connection validation with grpc ([#954](https://github.com/standardnotes/server/issues/954)) ([d5c1b76](https://github.com/standardnotes/server/commit/d5c1b76de068a64b334c4347cbefa973447a0f60))
+
 ## [1.3.2](https://github.com/standardnotes/server/compare/@standardnotes/grpc@1.3.1...@standardnotes/grpc@1.3.2) (2023-12-07)
 
 **Note:** Version bump only for package @standardnotes/grpc

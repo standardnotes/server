@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.22.0](https://github.com/standardnotes/server/compare/@standardnotes/websockets-server@1.21.4...@standardnotes/websockets-server@1.22.0) (2023-12-07)
+
+### Features
+
+* replace websocket connection validation with grpc ([#954](https://github.com/standardnotes/server/issues/954)) ([d5c1b76](https://github.com/standardnotes/server/commit/d5c1b76de068a64b334c4347cbefa973447a0f60))
+
 ## [1.21.4](https://github.com/standardnotes/server/compare/@standardnotes/websockets-server@1.21.3...@standardnotes/websockets-server@1.21.4) (2023-12-07)
 
 ### Bug Fixes
