@@ -1,5 +1,9 @@
 import { Result, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
-import { ApiGatewayManagementApiClient, PostToConnectionCommand } from '@aws-sdk/client-apigatewaymanagementapi'
+import {
+  ApiGatewayManagementApiClient,
+  GoneException,
+  PostToConnectionCommand,
+} from '@aws-sdk/client-apigatewaymanagementapi'
 import { Logger } from 'winston'
 
 import { SendMessageToClientDTO } from './SendMessageToClientDTO'
@@ -44,6 +48,12 @@ export class SendMessageToClient implements UseCaseInterface<void> {
           )
         }
       } catch (error) {
+        if (error instanceof GoneException) {
+          this.logger.info(`Connection ${connection.props.connectionId} for user ${userUuid.value} is gone. Removing.`)
+
+          await this.removeGoneConnection(connection.props.connectionId)
+        }
+
         return Result.fail(
           `Could not send message to connection ${connection.props.connectionId} for user ${
             userUuid.value
@@ -53,5 +63,9 @@ export class SendMessageToClient implements UseCaseInterface<void> {
     }
 
     return Result.ok()
+  }
+
+  private async removeGoneConnection(connectionId: string): Promise<void> {
+    await this.webSocketsConnectionRepository.removeConnection(connectionId)
   }
 }

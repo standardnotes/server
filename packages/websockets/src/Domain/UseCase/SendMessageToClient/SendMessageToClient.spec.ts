@@ -1,4 +1,8 @@
-import { ApiGatewayManagementApiClient } from '@aws-sdk/client-apigatewaymanagementapi'
+import {
+  ApiGatewayManagementApiClient,
+  ApiGatewayManagementApiServiceException,
+  GoneException,
+} from '@aws-sdk/client-apigatewaymanagementapi'
 import { WebSocketsConnectionRepositoryInterface } from '../../WebSockets/WebSocketsConnectionRepositoryInterface'
 import { SendMessageToClient } from './SendMessageToClient'
 import { Logger } from 'winston'
@@ -23,6 +27,7 @@ describe('SendMessageToClient', () => {
 
     webSocketsConnectionRepository = {} as jest.Mocked<WebSocketsConnectionRepositoryInterface>
     webSocketsConnectionRepository.findAllByUserUuid = jest.fn().mockResolvedValue([connection])
+    webSocketsConnectionRepository.removeConnection = jest.fn()
 
     apiGatewayManagementClient = {} as jest.Mocked<ApiGatewayManagementApiClient>
     apiGatewayManagementClient.send = jest.fn().mockResolvedValue({ $metadata: { httpStatusCode: 200 } })
@@ -30,6 +35,7 @@ describe('SendMessageToClient', () => {
     logger = {} as jest.Mocked<Logger>
     logger.debug = jest.fn()
     logger.error = jest.fn()
+    logger.info = jest.fn()
   })
 
   it('sends message to all connections for a user', async () => {
@@ -95,5 +101,27 @@ describe('SendMessageToClient', () => {
     })
 
     expect(result.isFailed()).toBe(true)
+  })
+
+  it('removes connection if it is gone', async () => {
+    apiGatewayManagementClient.send = jest.fn().mockRejectedValue(
+      new GoneException(
+        new ApiGatewayManagementApiServiceException({
+          name: 'test',
+          $fault: 'server',
+          $metadata: {},
+        }),
+      ),
+    )
+
+    const useCase = createUseCase()
+
+    const result = await useCase.execute({
+      userUuid: '00000000-0000-0000-0000-000000000000',
+      message: 'message',
+    })
+
+    expect(result.isFailed()).toBe(true)
+    expect(webSocketsConnectionRepository.removeConnection).toHaveBeenCalledTimes(1)
   })
 })
