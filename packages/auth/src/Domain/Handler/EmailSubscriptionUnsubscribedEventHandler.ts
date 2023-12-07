@@ -15,7 +15,9 @@ export class EmailSubscriptionUnsubscribedEventHandler implements DomainEventHan
     })
 
     if (result.isFailed()) {
-      this.logger.error(`Failed to disable email setting for user ${event.payload.userEmail}: ${result.getError()}`)
+      this.logger.error(`Failed to disable email setting for user: ${result.getError()}`, {
+        userId: event.payload.userEmail,
+      })
     }
   }
 }
