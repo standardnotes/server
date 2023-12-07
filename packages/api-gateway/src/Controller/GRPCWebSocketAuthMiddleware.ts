@@ -81,7 +81,7 @@ export class GRPCWebSocketAuthMiddleware extends BaseMiddleware {
       }
 
       if (authResponse.status > 200) {
-        response.setHeader('content-type', authResponse.headers['content-type'] as string)
+        response.setHeader('content-type', 'application/json')
         response.status(authResponse.status).send(authResponse.data)
 
         return
