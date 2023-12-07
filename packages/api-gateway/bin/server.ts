@@ -96,6 +96,7 @@ void container.load().then((container) => {
         url: request.url,
         snjs: request.headers['x-snjs-version'],
         application: request.headers['x-application-version'],
+        userId: response.locals.user ? response.locals.user.uuid : undefined,
       })
       logger.debug(
         `[URL: |${request.method}| ${request.url}][SNJS: ${request.headers['x-snjs-version']}][Application: ${
