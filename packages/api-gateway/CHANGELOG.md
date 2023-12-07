@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.88.2](https://github.com/standardnotes/server/compare/@standardnotes/api-gateway@1.88.1...@standardnotes/api-gateway@1.88.2) (2023-12-07)
+
+### Bug Fixes
+
+* **api-gateway:** add userId to logs in error handler if possible ([0058368](https://github.com/standardnotes/server/commit/005836868126ae5fa4c4468644704938aea0f4ec))
+
 ## [1.88.1](https://github.com/standardnotes/server/compare/@standardnotes/api-gateway@1.88.0...@standardnotes/api-gateway@1.88.1) (2023-12-07)
 
 ### Bug Fixes
