@@ -45,6 +45,7 @@ export class ContainerConfigLoader {
     const isConfiguredForSelfHosting = env.get('MODE', true) === 'self-hosted'
     const isConfiguredForHomeServerOrSelfHosting = isConfiguredForHomeServer || isConfiguredForSelfHosting
     const isConfiguredForInMemoryCache = env.get('CACHE_TYPE', true) === 'memory'
+    const isConfiguredForGRPCProxy = env.get('SERVICE_PROXY_TYPE', true) === 'grpc'
 
     container
       .bind<boolean>(TYPES.ApiGateway_IS_CONFIGURED_FOR_HOME_SERVER_OR_SELF_HOSTING)
@@ -146,7 +147,6 @@ export class ContainerConfigLoader {
           new DirectCallServiceProxy(configuration.serviceContainer, container.get(TYPES.ApiGateway_FILES_SERVER_URL)),
         )
     } else {
-      const isConfiguredForGRPCProxy = env.get('SERVICE_PROXY_TYPE', true) === 'grpc'
       if (isConfiguredForGRPCProxy) {
         container.bind(TYPES.ApiGateway_AUTH_SERVER_GRPC_URL).toConstantValue(env.get('AUTH_SERVER_GRPC_URL'))
         container.bind(TYPES.ApiGateway_SYNCING_SERVER_GRPC_URL).toConstantValue(env.get('SYNCING_SERVER_GRPC_URL'))
@@ -226,20 +226,23 @@ export class ContainerConfigLoader {
               container.get<GRPCSyncingServerServiceProxy>(TYPES.ApiGateway_GRPCSyncingServerServiceProxy),
             ),
           )
-
-        container
-          .bind<GRPCWebSocketAuthMiddleware>(TYPES.ApiGateway_WebSocketAuthMiddleware)
-          .toConstantValue(
-            new GRPCWebSocketAuthMiddleware(
-              container.get<IAuthClient>(TYPES.ApiGateway_GRPCAuthClient),
-              container.get<string>(TYPES.ApiGateway_AUTH_JWT_SECRET),
-              container.get<winston.Logger>(TYPES.ApiGateway_Logger),
-            ),
-          )
       } else {
         container.bind<ServiceProxyInterface>(TYPES.ApiGateway_ServiceProxy).to(HttpServiceProxy)
-        container.bind<WebSocketAuthMiddleware>(TYPES.ApiGateway_WebSocketAuthMiddleware).to(WebSocketAuthMiddleware)
       }
+    }
+
+    if (isConfiguredForGRPCProxy) {
+      container
+        .bind<GRPCWebSocketAuthMiddleware>(TYPES.ApiGateway_WebSocketAuthMiddleware)
+        .toConstantValue(
+          new GRPCWebSocketAuthMiddleware(
+            container.get<IAuthClient>(TYPES.ApiGateway_GRPCAuthClient),
+            container.get<string>(TYPES.ApiGateway_AUTH_JWT_SECRET),
+            container.get<winston.Logger>(TYPES.ApiGateway_Logger),
+          ),
+        )
+    } else {
+      container.bind<WebSocketAuthMiddleware>(TYPES.ApiGateway_WebSocketAuthMiddleware).to(WebSocketAuthMiddleware)
     }
 
     logger.debug('Configuration complete')
