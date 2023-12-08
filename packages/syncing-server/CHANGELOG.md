@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.128.0](https://github.com/standardnotes/server/compare/@standardnotes/syncing-server@1.127.9...@standardnotes/syncing-server@1.128.0) (2023-12-08)
+
+### Features
+
+* **syncing-server:** send websocket event to shared vault members upon items change in shared vault ([#961](https://github.com/standardnotes/server/issues/961)) ([6dbb877](https://github.com/standardnotes/server/commit/6dbb87708faf6c6f4ec28b45570390b6c816a7a2))
+
 ## [1.127.9](https://github.com/standardnotes/server/compare/@standardnotes/syncing-server@1.127.8...@standardnotes/syncing-server@1.127.9) (2023-12-07)
 
 ### Bug Fixes
