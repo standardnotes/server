@@ -77,6 +77,7 @@ const TYPES = {
   Sync_UpdateStorageQuotaUsedInSharedVault: Symbol.for('Sync_UpdateStorageQuotaUsedInSharedVault'),
   Sync_AddNotificationsForUsers: Symbol.for('Sync_AddNotificationsForUsers'),
   Sync_SendEventToClient: Symbol.for('Sync_SendEventToClient'),
+  Sync_SendEventToClients: Symbol.for('Sync_SendEventToClients'),
   Sync_RemoveItemsFromSharedVault: Symbol.for('Sync_RemoveItemsFromSharedVault'),
   Sync_DesignateSurvivor: Symbol.for('Sync_DesignateSurvivor'),
   Sync_RemoveUserFromSharedVaults: Symbol.for('Sync_RemoveUserFromSharedVaults'),

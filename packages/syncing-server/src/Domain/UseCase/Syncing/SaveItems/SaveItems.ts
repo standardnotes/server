@@ -13,6 +13,7 @@ import { UpdateExistingItem } from '../UpdateExistingItem/UpdateExistingItem'
 import { ItemRepositoryInterface } from '../../../Item/ItemRepositoryInterface'
 import { SendEventToClient } from '../SendEventToClient/SendEventToClient'
 import { DomainEventFactoryInterface } from '../../../Event/DomainEventFactoryInterface'
+import { SendEventToClients } from '../SendEventToClients/SendEventToClients'
 
 export class SaveItems implements UseCaseInterface<SaveItemsResult> {
   private readonly SYNC_TOKEN_VERSION = 2
@@ -24,6 +25,7 @@ export class SaveItems implements UseCaseInterface<SaveItemsResult> {
     private saveNewItem: SaveNewItem,
     private updateExistingItem: UpdateExistingItem,
     private sendEventToClient: SendEventToClient,
+    private sendEventToClients: SendEventToClients,
     private domainEventFactory: DomainEventFactoryInterface,
     private logger: Logger,
   ) {}
@@ -167,7 +169,31 @@ export class SaveItems implements UseCaseInterface<SaveItemsResult> {
     })
     /* istanbul ignore next */
     if (result.isFailed()) {
-      this.logger.error(`[${dto.userUuid}] Sending items changed event to client failed. Error: ${result.getError()}`)
+      this.logger.error(`Sending items changed event to client failed. Error: ${result.getError()}`, {
+        userId: dto.userUuid,
+      })
+    }
+
+    const sharedVaultUuidsMap = new Map<string, boolean>()
+    for (const item of savedItems) {
+      if (item.isAssociatedWithASharedVault()) {
+        sharedVaultUuidsMap.set((item.sharedVaultUuid as Uuid).value, true)
+      }
+    }
+    const sharedVaultUuids = Array.from(sharedVaultUuidsMap.keys())
+    for (const sharedVaultUuid of sharedVaultUuids) {
+      const result = await this.sendEventToClients.execute({
+        sharedVaultUuid,
+        event: itemsChangedEvent,
+        originatingUserUuid: dto.userUuid,
+      })
+      /* istanbul ignore next */
+      if (result.isFailed()) {
+        this.logger.error(`Sending items changed event to clients failed. Error: ${result.getError()}`, {
+          userId: dto.userUuid,
+          sharedVaultUuid,
+        })
+      }
     }
   }
 

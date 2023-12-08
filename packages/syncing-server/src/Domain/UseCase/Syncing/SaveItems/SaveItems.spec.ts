@@ -11,6 +11,8 @@ import { Item } from '../../../Item/Item'
 import { SendEventToClient } from '../SendEventToClient/SendEventToClient'
 import { DomainEventFactoryInterface } from '../../../Event/DomainEventFactoryInterface'
 import { ItemsChangedOnServerEvent } from '@standardnotes/domain-events'
+import { SendEventToClients } from '../SendEventToClients/SendEventToClients'
+import { SharedVaultAssociation } from '../../../SharedVault/SharedVaultAssociation'
 
 describe('SaveItems', () => {
   let itemSaveValidator: ItemSaveValidatorInterface
@@ -22,6 +24,7 @@ describe('SaveItems', () => {
   let itemHash1: ItemHash
   let savedItem: Item
   let sendEventToClient: SendEventToClient
+  let sendEventToClients: SendEventToClients
   let domainEventFactory: DomainEventFactoryInterface
 
   const createUseCase = () =>
@@ -32,6 +35,7 @@ describe('SaveItems', () => {
       saveNewItem,
       updateExistingItem,
       sendEventToClient,
+      sendEventToClients,
       domainEventFactory,
       logger,
     )
@@ -39,6 +43,9 @@ describe('SaveItems', () => {
   beforeEach(() => {
     sendEventToClient = {} as jest.Mocked<SendEventToClient>
     sendEventToClient.execute = jest.fn().mockReturnValue(Result.ok())
+
+    sendEventToClients = {} as jest.Mocked<SendEventToClients>
+    sendEventToClients.execute = jest.fn().mockReturnValue(Result.ok())
 
     domainEventFactory = {} as jest.Mocked<DomainEventFactoryInterface>
     domainEventFactory.createItemsChangedOnServerEvent = jest
@@ -243,6 +250,51 @@ describe('SaveItems', () => {
       performingUserUuid: '00000000-0000-0000-0000-000000000000',
     })
     expect(sendEventToClient.execute).toHaveBeenCalled()
+    expect(sendEventToClients.execute).not.toHaveBeenCalled()
+  })
+
+  it('should update existing shared vault items', async () => {
+    savedItem = Item.create({
+      duplicateOf: null,
+      itemsKeyId: 'items-key-id',
+      content: 'content',
+      contentType: ContentType.create(ContentType.TYPES.Note).getValue(),
+      encItemKey: 'enc-item-key',
+      authHash: 'auth-hash',
+      userUuid: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+      deleted: false,
+      updatedWithSession: null,
+      sharedVaultAssociation: SharedVaultAssociation.create({
+        sharedVaultUuid: Uuid.create('00000000-0000-0000-0000-000000000001').getValue(),
+        lastEditedBy: Uuid.create('00000000-0000-0000-0000-000000000000').getValue(),
+      }).getValue(),
+      dates: Dates.create(new Date(123), new Date(123)).getValue(),
+      timestamps: Timestamps.create(123, 123).getValue(),
+    }).getValue()
+
+    const useCase = createUseCase()
+
+    itemRepository.findByUuid = jest.fn().mockResolvedValue(savedItem)
+    updateExistingItem.execute = jest.fn().mockResolvedValue(Result.ok(savedItem))
+
+    const result = await useCase.execute({
+      itemHashes: [itemHash1],
+      userUuid: '00000000-0000-0000-0000-000000000000',
+      apiVersion: '1',
+      readOnlyAccess: false,
+      sessionUuid: 'session-uuid',
+      snjsVersion: '2.200.0',
+    })
+
+    expect(result.isFailed()).toBeFalsy()
+    expect(updateExistingItem.execute).toHaveBeenCalledWith({
+      itemHash: itemHash1,
+      existingItem: savedItem,
+      sessionUuid: 'session-uuid',
+      performingUserUuid: '00000000-0000-0000-0000-000000000000',
+    })
+    expect(sendEventToClient.execute).toHaveBeenCalled()
+    expect(sendEventToClients.execute).toHaveBeenCalled()
   })
 
   it('should mark items as conflicts if updating existing item fails', async () => {
