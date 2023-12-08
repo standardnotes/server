@@ -161,6 +161,7 @@ import { SyncResponse20200115 } from '../Domain/Item/SyncResponse/SyncResponse20
 import { SyncResponse } from '@standardnotes/grpc'
 import { SyncResponseGRPCMapper } from '../Mapping/gRPC/SyncResponseGRPCMapper'
 import { AccountDeletionVerificationRequestedEventHandler } from '../Domain/Handler/AccountDeletionVerificationRequestedEventHandler'
+import { SendEventToClients } from '../Domain/UseCase/Syncing/SendEventToClients/SendEventToClients'
 
 export class ContainerConfigLoader {
   private readonly DEFAULT_CONTENT_SIZE_TRANSFER_LIMIT = 10_000_000
@@ -562,6 +563,15 @@ export class ContainerConfigLoader {
         ),
       )
     container
+      .bind<SendEventToClients>(TYPES.Sync_SendEventToClients)
+      .toConstantValue(
+        new SendEventToClients(
+          container.get<SharedVaultUserRepositoryInterface>(TYPES.Sync_SharedVaultUserRepository),
+          container.get<SendEventToClient>(TYPES.Sync_SendEventToClient),
+          container.get<Logger>(TYPES.Sync_Logger),
+        ),
+      )
+    container
       .bind<AddNotificationForUser>(TYPES.Sync_AddNotificationForUser)
       .toConstantValue(
         new AddNotificationForUser(
@@ -607,6 +617,7 @@ export class ContainerConfigLoader {
           container.get<SaveNewItem>(TYPES.Sync_SaveNewItem),
           container.get<UpdateExistingItem>(TYPES.Sync_UpdateExistingItem),
           container.get<SendEventToClient>(TYPES.Sync_SendEventToClient),
+          container.get<SendEventToClients>(TYPES.Sync_SendEventToClients),
           container.get<DomainEventFactoryInterface>(TYPES.Sync_DomainEventFactory),
           container.get<Logger>(TYPES.Sync_Logger),
         ),
