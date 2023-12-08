@@ -48,7 +48,7 @@
     "inversify-express-utils": "^6.4.3",
     "ioredis": "^5.3.2",
     "mysql2": "^3.0.1",
-    "reflect-metadata": "0.1.13",
+    "reflect-metadata": "0.1.14",
     "sqlite3": "^5.1.6",
     "typeorm": "^0.3.17",
     "winston": "^3.8.1"
