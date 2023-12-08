@@ -240,6 +240,9 @@ export class HttpServiceProxy implements ServiceProxyInterface {
         tooManyRetryAttempts
           ? `Request to ${serverUrl}/${endpoint} timed out after ${retryAttempt} retries`
           : `Could not pass the request to ${serverUrl}/${endpoint} on underlying service: ${detailedErrorMessage}`,
+        {
+          userId: response.locals.user ? response.locals.user.uuid : undefined,
+        },
       )
 
       this.logger.debug(`Response error: ${JSON.stringify(error)}`)
