@@ -1269,6 +1269,7 @@ export class ContainerConfigLoader {
           container.get<DomainEventPublisherInterface>(TYPES.Auth_DomainEventPublisher),
           container.get<DomainEventFactoryInterface>(TYPES.Auth_DomainEventFactory),
           container.get<TriggerEmailBackupForUser>(TYPES.Auth_TriggerEmailBackupForUser),
+          container.get<GenerateRecoveryCodes>(TYPES.Auth_GenerateRecoveryCodes),
         ),
       )
     container

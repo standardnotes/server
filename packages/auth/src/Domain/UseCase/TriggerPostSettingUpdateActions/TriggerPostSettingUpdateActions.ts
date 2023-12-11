@@ -5,6 +5,7 @@ import { EmailBackupFrequency, LogSessionUserAgentOption } from '@standardnotes/
 import { TriggerPostSettingUpdateActionsDTO } from './TriggerPostSettingUpdateActionsDTO'
 import { DomainEventFactoryInterface } from '../../Event/DomainEventFactoryInterface'
 import { TriggerEmailBackupForUser } from '../TriggerEmailBackupForUser/TriggerEmailBackupForUser'
+import { GenerateRecoveryCodes } from '../GenerateRecoveryCodes/GenerateRecoveryCodes'
 
 export class TriggerPostSettingUpdateActions implements UseCaseInterface<void> {
   private readonly emailSettingToSubscriptionRejectionLevelMap: Map<string, string> = new Map([
@@ -18,6 +19,7 @@ export class TriggerPostSettingUpdateActions implements UseCaseInterface<void> {
     private domainEventPublisher: DomainEventPublisherInterface,
     private domainEventFactory: DomainEventFactoryInterface,
     private triggerEmailBackupForUser: TriggerEmailBackupForUser,
+    private generateRecoveryCodes: GenerateRecoveryCodes,
   ) {}
 
   async execute(dto: TriggerPostSettingUpdateActionsDTO): Promise<Result<void>> {
@@ -33,6 +35,12 @@ export class TriggerPostSettingUpdateActions implements UseCaseInterface<void> {
 
     if (this.isDisablingSessionUserAgentLogging(dto.updatedSettingName, dto.unencryptedValue)) {
       await this.triggerSessionUserAgentCleanup(dto.userEmail, dto.userUuid)
+    }
+
+    if (this.isEnablingMFASetting(dto.updatedSettingName, dto.unencryptedValue)) {
+      await this.generateRecoveryCodes.execute({
+        userUuid: dto.userUuid,
+      })
     }
 
     return Result.ok()
@@ -52,6 +60,10 @@ export class TriggerPostSettingUpdateActions implements UseCaseInterface<void> {
       settingName === SettingName.NAMES.EmailBackupFrequency &&
       [EmailBackupFrequency.Daily, EmailBackupFrequency.Weekly].includes(newValue as EmailBackupFrequency)
     )
+  }
+
+  private isEnablingMFASetting(settingName: string, newValue: string | null): boolean {
+    return settingName === SettingName.NAMES.MfaSecret && newValue !== null
   }
 
   private isDisablingSessionUserAgentLogging(settingName: string, newValue: string | null): boolean {
