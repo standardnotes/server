@@ -7,6 +7,7 @@ import {
 import { EmailBackupFrequency, LogSessionUserAgentOption, MuteMarketingEmailsOption } from '@standardnotes/settings'
 import { SettingName, Result } from '@standardnotes/domain-core'
 
+import { GenerateRecoveryCodes } from '../GenerateRecoveryCodes/GenerateRecoveryCodes'
 import { TriggerPostSettingUpdateActions } from './TriggerPostSettingUpdateActions'
 import { DomainEventFactoryInterface } from '../../Event/DomainEventFactoryInterface'
 import { TriggerEmailBackupForUser } from '../TriggerEmailBackupForUser/TriggerEmailBackupForUser'
@@ -15,11 +16,20 @@ describe('TriggerPostSettingUpdateActions', () => {
   let domainEventPublisher: DomainEventPublisherInterface
   let domainEventFactory: DomainEventFactoryInterface
   let triggerEmailBackupForUser: TriggerEmailBackupForUser
+  let generateRecoveryCodes: GenerateRecoveryCodes
 
   const createUseCase = () =>
-    new TriggerPostSettingUpdateActions(domainEventPublisher, domainEventFactory, triggerEmailBackupForUser)
+    new TriggerPostSettingUpdateActions(
+      domainEventPublisher,
+      domainEventFactory,
+      triggerEmailBackupForUser,
+      generateRecoveryCodes,
+    )
 
   beforeEach(() => {
+    generateRecoveryCodes = {} as jest.Mocked<GenerateRecoveryCodes>
+    generateRecoveryCodes.execute = jest.fn().mockReturnValue(Result.ok())
+
     triggerEmailBackupForUser = {} as jest.Mocked<TriggerEmailBackupForUser>
     triggerEmailBackupForUser.execute = jest.fn().mockReturnValue(Result.ok())
 
@@ -100,5 +110,16 @@ describe('TriggerPostSettingUpdateActions', () => {
       mute: true,
       username: 'test@test.te',
     })
+  })
+
+  it('should generate new recovery codes upon enabling mfa setting', async () => {
+    await createUseCase().execute({
+      updatedSettingName: SettingName.NAMES.MfaSecret,
+      userUuid: '4-5-6',
+      userEmail: 'test@test.te',
+      unencryptedValue: '123',
+    })
+
+    expect(generateRecoveryCodes.execute).toHaveBeenCalled()
   })
 })
