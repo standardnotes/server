@@ -39,7 +39,9 @@ export class TriggerEmailBackupForAllUsers implements UseCaseInterface<void> {
         })
         /* istanbul ignore next */
         if (result.isFailed()) {
-          this.logger.error(`Failed to trigger email backup for user ${setting.props.userUuid.value}`)
+          this.logger.error(`Failed to trigger email backup for user: ${result.getError()}`, {
+            userId: setting.props.userUuid.value,
+          })
           failedUsers++
         }
       }
