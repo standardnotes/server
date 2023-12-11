@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.176.4](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.176.3...@standardnotes/auth-server@1.176.4) (2023-12-11)
+
+### Bug Fixes
+
+* **auth:** generate new recovery codes when enabling mfa ([#964](https://github.com/standardnotes/server/issues/964)) ([031fa71](https://github.com/standardnotes/server/commit/031fa71e7d86221ec7fb0f4b21c62454646564e2))
+
 ## [1.176.3](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.176.2...@standardnotes/auth-server@1.176.3) (2023-12-11)
 
 **Note:** Version bump only for package @standardnotes/auth-server
