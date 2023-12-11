@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.128.1](https://github.com/standardnotes/server/compare/@standardnotes/syncing-server@1.128.0...@standardnotes/syncing-server@1.128.1) (2023-12-11)
+
+### Bug Fixes
+
+* **syncing-server:** logs meta for email with backup requested ([597ff13](https://github.com/standardnotes/server/commit/597ff13393965a6d6f3a35e12d41d648543d35b7))
+
 # [1.128.0](https://github.com/standardnotes/server/compare/@standardnotes/syncing-server@1.127.9...@standardnotes/syncing-server@1.128.0) (2023-12-08)
 
 ### Features

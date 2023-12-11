@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.176.2](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.176.1...@standardnotes/auth-server@1.176.2) (2023-12-11)
+
+### Bug Fixes
+
+* **auth:** error log meta on triggering email backups ([4ab61b9](https://github.com/standardnotes/server/commit/4ab61b94a4aee361399a76c9f2b6b977c4832b06))
+
 ## [1.176.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.176.0...@standardnotes/auth-server@1.176.1) (2023-12-07)
 
 ### Bug Fixes
