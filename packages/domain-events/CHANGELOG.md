@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.138.2](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.138.1...@standardnotes/domain-events@2.138.2) (2023-12-11)
+
+### Bug Fixes
+
+* **syncing-server:** add user uuid for the emails requesting backup ([7b0ea0a](https://github.com/standardnotes/server/commit/7b0ea0a06975902e01951b13c84e941827dedd84))
+
 ## [2.138.1](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.138.0...@standardnotes/domain-events@2.138.1) (2023-11-28)
 
 **Note:** Version bump only for package @standardnotes/domain-events

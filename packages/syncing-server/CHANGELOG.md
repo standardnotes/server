@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.128.2](https://github.com/standardnotes/server/compare/@standardnotes/syncing-server@1.128.1...@standardnotes/syncing-server@1.128.2) (2023-12-11)
+
+### Bug Fixes
+
+* **syncing-server:** add user uuid for the emails requesting backup ([7b0ea0a](https://github.com/standardnotes/server/commit/7b0ea0a06975902e01951b13c84e941827dedd84))
+
 ## [1.128.1](https://github.com/standardnotes/server/compare/@standardnotes/syncing-server@1.128.0...@standardnotes/syncing-server@1.128.1) (2023-12-11)
 
 ### Bug Fixes
