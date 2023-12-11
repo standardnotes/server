@@ -85,6 +85,8 @@ export class EmailBackupRequestedEventHandler implements DomainEventHandlerInter
       )
     }
 
-    this.logger.info(`Email with backup requested for user ${event.payload.userUuid}`)
+    this.logger.info('Email with backup requested for user', {
+      userId: event.payload.userUuid,
+    })
   }
 }
