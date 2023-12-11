@@ -329,6 +329,7 @@ export class DomainEventFactory implements DomainEventFactoryInterface {
       attachmentFileName: string
       attachmentContentType: string
     }>
+    userUuid?: string
   }): EmailRequestedEvent {
     return {
       type: 'EMAIL_REQUESTED',

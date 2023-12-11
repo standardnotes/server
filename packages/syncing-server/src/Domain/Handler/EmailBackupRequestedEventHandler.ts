@@ -81,6 +81,7 @@ export class EmailBackupRequestedEventHandler implements DomainEventHandlerInter
               attachmentContentType: 'application/json',
             },
           ],
+          userUuid: event.payload.userUuid,
         }),
       )
     }

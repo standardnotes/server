@@ -12,4 +12,5 @@ export interface EmailRequestedEventPayload {
     attachmentFileName: string
     attachmentContentType: string
   }>
+  userUuid?: string
 }

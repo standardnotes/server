@@ -74,6 +74,7 @@ export interface DomainEventFactoryInterface {
       attachmentFileName: string
       attachmentContentType: string
     }>
+    userUuid?: string
   }): EmailRequestedEvent
   createDuplicateItemSyncedEvent(dto: { itemUuid: string; userUuid: string }): DuplicateItemSyncedEvent
   createItemRevisionCreationRequested(dto: { itemUuid: string; userUuid: string }): ItemRevisionCreationRequestedEvent
