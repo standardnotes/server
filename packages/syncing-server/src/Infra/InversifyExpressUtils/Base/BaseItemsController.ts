@@ -70,6 +70,7 @@ export class BaseItemsController extends BaseHttpController {
       readOnlyAccess: response.locals.readOnlyAccess,
       sessionUuid: response.locals.session ? response.locals.session.uuid : null,
       sharedVaultUuids,
+      isFreeUser: response.locals.isFreeUser,
     })
     if (syncResult.isFailed()) {
       return this.json({ error: { message: syncResult.getError() } }, HttpStatusCode.BadRequest)

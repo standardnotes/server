@@ -31,7 +31,8 @@ export class UpdateExistingItem implements UseCaseInterface<Item> {
     private timer: TimerInterface,
     private domainEventPublisher: DomainEventPublisherInterface,
     private domainEventFactory: DomainEventFactoryInterface,
-    private revisionFrequency: number,
+    private freeRevisionFrequency: number,
+    private premiumRevisionFrequency: number,
     private determineSharedVaultOperationOnItem: DetermineSharedVaultOperationOnItem,
     private addNotificationForUsers: AddNotificationsForUsers,
     private removeNotificationsForUser: RemoveNotificationsForUser,
@@ -169,7 +170,10 @@ export class UpdateExistingItem implements UseCaseInterface<Item> {
 
     await this.itemRepository.update(dto.existingItem)
 
-    if (secondsFromLastUpdate >= this.revisionFrequency) {
+    /* istanbul ignore next */
+    const revisionsFrequency = dto.isFreeUser ? this.freeRevisionFrequency : this.premiumRevisionFrequency
+
+    if (secondsFromLastUpdate >= revisionsFrequency) {
       if (
         dto.existingItem.props.contentType.value !== null &&
         [ContentType.TYPES.Note, ContentType.TYPES.File].includes(dto.existingItem.props.contentType.value)

@@ -7,4 +7,5 @@ export interface SaveItemsDTO {
   readOnlyAccess: boolean
   sessionUuid: string | null
   snjsVersion: string
+  isFreeUser: boolean
 }
