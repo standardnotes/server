@@ -35,6 +35,7 @@ export class UserInvitedToSharedVaultEventHandler implements DomainEventHandlerI
         subject: getSubject(),
         messageIdentifier: 'USER_INVITED_TO_SHARED_VAULT',
         userEmail: user.email,
+        userUuid: user.uuid,
       }),
     )
   }

@@ -31,6 +31,7 @@ export interface DomainEventFactoryInterface {
     level: string
     body: string
     subject: string
+    userUuid?: string
   }): EmailRequestedEvent
   createListedAccountRequestedEvent(userUuid: string, userEmail: string): ListedAccountRequestedEvent
   createUserRegisteredEvent(dto: {

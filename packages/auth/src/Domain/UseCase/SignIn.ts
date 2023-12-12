@@ -131,6 +131,7 @@ export class SignIn implements UseCaseInterface {
           ),
           messageIdentifier: 'SIGN_IN',
           subject: getSubject(user.email),
+          userUuid: user.uuid,
         }),
       )
     } catch (error) {

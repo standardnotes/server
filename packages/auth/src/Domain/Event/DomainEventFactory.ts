@@ -159,6 +159,7 @@ export class DomainEventFactory implements DomainEventFactoryInterface {
     level: string
     body: string
     subject: string
+    userUuid?: string
   }): EmailRequestedEvent {
     return {
       type: 'EMAIL_REQUESTED',
