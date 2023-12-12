@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.89.0](https://github.com/standardnotes/server/compare/@standardnotes/api-gateway@1.88.4...@standardnotes/api-gateway@1.89.0) (2023-12-12)
+
+### Features
+
+* **syncing-server:** add extended revisions frequency for free users ([#965](https://github.com/standardnotes/server/issues/965)) ([398c10c](https://github.com/standardnotes/server/commit/398c10ce4b8e357728a8b4f354b3bf6ccc8e438d))
+
 ## [1.88.4](https://github.com/standardnotes/server/compare/@standardnotes/api-gateway@1.88.3...@standardnotes/api-gateway@1.88.4) (2023-12-11)
 
 **Note:** Version bump only for package @standardnotes/api-gateway

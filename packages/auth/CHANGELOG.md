@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.176.5](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.176.4...@standardnotes/auth-server@1.176.5) (2023-12-12)
+
+### Bug Fixes
+
+* **auth:** add user uuid context to sign in emails log context ([cfbe2bb](https://github.com/standardnotes/server/commit/cfbe2bbac60e9014d7ba0967e4b996fba7dc8629))
+
 ## [1.176.4](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.176.3...@standardnotes/auth-server@1.176.4) (2023-12-11)
 
 ### Bug Fixes
