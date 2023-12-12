@@ -156,6 +156,7 @@ describe('SyncItems', () => {
       apiVersion: ApiVersion.v20200115,
       sessionUuid: null,
       snjsVersion: '1.2.3',
+      isFreeUser: false,
     })
     expect(result.getValue()).toEqual({
       conflicts: [],
@@ -181,6 +182,7 @@ describe('SyncItems', () => {
       userUuid: '1-2-3',
       apiVersion: '20200115',
       snjsVersion: '1.2.3',
+      isFreeUser: false,
       readOnlyAccess: false,
       sessionUuid: null,
     })
@@ -205,6 +207,7 @@ describe('SyncItems', () => {
         apiVersion: ApiVersion.v20200115,
         sessionUuid: null,
         snjsVersion: '1.2.3',
+        isFreeUser: false,
       })
     } catch (error) {
       caughtError = error
@@ -224,6 +227,7 @@ describe('SyncItems', () => {
       contentType: 'Note',
       apiVersion: ApiVersion.v20200115,
       snjsVersion: '1.2.3',
+      isFreeUser: false,
     })
     expect(result.getValue()).toEqual({
       conflicts: [],
@@ -249,6 +253,7 @@ describe('SyncItems', () => {
       contentType: 'Note',
       apiVersion: ApiVersion.v20200115,
       snjsVersion: '1.2.3',
+      isFreeUser: false,
       sharedVaultUuids: ['00000000-0000-0000-0000-000000000000'],
     })
     expect(result.getValue()).toEqual({
@@ -301,6 +306,7 @@ describe('SyncItems', () => {
       contentType: 'Note',
       apiVersion: ApiVersion.v20200115,
       snjsVersion: '1.2.3',
+      isFreeUser: false,
     })
 
     expect(result.getValue()).toEqual({
@@ -340,6 +346,7 @@ describe('SyncItems', () => {
       contentType: 'Note',
       apiVersion: ApiVersion.v20200115,
       snjsVersion: '1.2.3',
+      isFreeUser: false,
     })
 
     expect(result.isFailed()).toBeTruthy()
@@ -360,6 +367,7 @@ describe('SyncItems', () => {
       contentType: 'Note',
       apiVersion: ApiVersion.v20200115,
       snjsVersion: '1.2.3',
+      isFreeUser: false,
     })
 
     expect(result.isFailed()).toBeTruthy()
@@ -380,6 +388,7 @@ describe('SyncItems', () => {
       contentType: 'Note',
       apiVersion: ApiVersion.v20200115,
       snjsVersion: '1.2.3',
+      isFreeUser: false,
     })
 
     expect(result.isFailed()).toBeTruthy()
@@ -400,6 +409,7 @@ describe('SyncItems', () => {
       contentType: 'Note',
       apiVersion: ApiVersion.v20200115,
       snjsVersion: '1.2.3',
+      isFreeUser: false,
     })
 
     expect(result.isFailed()).toBeTruthy()
@@ -420,6 +430,7 @@ describe('SyncItems', () => {
       contentType: 'Note',
       apiVersion: ApiVersion.v20200115,
       snjsVersion: '1.2.3',
+      isFreeUser: false,
     })
 
     expect(result.isFailed()).toBeTruthy()
@@ -440,6 +451,7 @@ describe('SyncItems', () => {
       contentType: 'Note',
       apiVersion: ApiVersion.v20200115,
       snjsVersion: '1.2.3',
+      isFreeUser: false,
     })
 
     expect(result.isFailed()).toBeTruthy()

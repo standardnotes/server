@@ -38,6 +38,7 @@ describe('UpdateExistingItem', () => {
       timer,
       domainEventPublisher,
       domainEventFactory,
+      86_400,
       5,
       determineSharedVaultOperationOnItem,
       addNotificationsForUsers,
@@ -137,6 +138,7 @@ describe('UpdateExistingItem', () => {
       itemHash: itemHash1,
       sessionUuid: '00000000-0000-0000-0000-000000000000',
       performingUserUuid: '00000000-0000-0000-0000-000000000000',
+      isFreeUser: false,
     })
 
     expect(result.isFailed()).toBeFalsy()
@@ -151,6 +153,7 @@ describe('UpdateExistingItem', () => {
       itemHash: itemHash1,
       sessionUuid: 'invalid-uuid',
       performingUserUuid: '00000000-0000-0000-0000-000000000000',
+      isFreeUser: false,
     })
 
     expect(result.isFailed()).toBeTruthy()
@@ -167,6 +170,7 @@ describe('UpdateExistingItem', () => {
       }).getValue(),
       sessionUuid: '00000000-0000-0000-0000-000000000000',
       performingUserUuid: '00000000-0000-0000-0000-000000000000',
+      isFreeUser: false,
     })
 
     expect(result.isFailed()).toBeTruthy()
@@ -183,6 +187,7 @@ describe('UpdateExistingItem', () => {
       }).getValue(),
       sessionUuid: '00000000-0000-0000-0000-000000000000',
       performingUserUuid: '00000000-0000-0000-0000-000000000000',
+      isFreeUser: false,
     })
 
     expect(result.isFailed()).toBeFalsy()
@@ -206,6 +211,7 @@ describe('UpdateExistingItem', () => {
       }).getValue(),
       sessionUuid: '00000000-0000-0000-0000-000000000000',
       performingUserUuid: '00000000-0000-0000-0000-000000000000',
+      isFreeUser: false,
     })
 
     expect(result.isFailed()).toBeFalsy()
@@ -224,6 +230,7 @@ describe('UpdateExistingItem', () => {
       }).getValue(),
       sessionUuid: '00000000-0000-0000-0000-000000000000',
       performingUserUuid: '00000000-0000-0000-0000-000000000000',
+      isFreeUser: false,
     })
 
     expect(result.isFailed()).toBeTruthy()
@@ -241,6 +248,7 @@ describe('UpdateExistingItem', () => {
       }).getValue(),
       sessionUuid: '00000000-0000-0000-0000-000000000000',
       performingUserUuid: '00000000-0000-0000-0000-000000000000',
+      isFreeUser: false,
     })
 
     expect(result.isFailed()).toBeFalsy()
@@ -260,6 +268,7 @@ describe('UpdateExistingItem', () => {
       }).getValue(),
       sessionUuid: '00000000-0000-0000-0000-000000000000',
       performingUserUuid: '00000000-0000-0000-0000-000000000000',
+      isFreeUser: false,
     })
 
     expect(result.isFailed()).toBeFalsy()
@@ -280,6 +289,7 @@ describe('UpdateExistingItem', () => {
       }).getValue(),
       sessionUuid: '00000000-0000-0000-0000-000000000000',
       performingUserUuid: '00000000-0000-0000-0000-000000000000',
+      isFreeUser: false,
     })
 
     expect(result.isFailed()).toBeFalsy()
@@ -300,6 +310,7 @@ describe('UpdateExistingItem', () => {
       }).getValue(),
       sessionUuid: '00000000-0000-0000-0000-000000000000',
       performingUserUuid: '00000000-0000-0000-0000-000000000000',
+      isFreeUser: false,
     })
 
     expect(result.isFailed()).toBeFalsy()
@@ -323,6 +334,7 @@ describe('UpdateExistingItem', () => {
       }).getValue(),
       sessionUuid: '00000000-0000-0000-0000-000000000000',
       performingUserUuid: '00000000-0000-0000-0000-000000000000',
+      isFreeUser: false,
     })
 
     expect(result.isFailed()).toBeTruthy()
@@ -347,6 +359,7 @@ describe('UpdateExistingItem', () => {
       }).getValue(),
       sessionUuid: '00000000-0000-0000-0000-000000000000',
       performingUserUuid: '00000000-0000-0000-0000-000000000000',
+      isFreeUser: false,
     })
 
     expect(result.isFailed()).toBeTruthy()
@@ -361,6 +374,7 @@ describe('UpdateExistingItem', () => {
       itemHash: itemHash1,
       sessionUuid: '00000000-0000-0000-0000-000000000000',
       performingUserUuid: 'invalid-uuid',
+      isFreeUser: false,
     })
     expect(result.isFailed()).toBeTruthy()
   })
@@ -379,6 +393,7 @@ describe('UpdateExistingItem', () => {
         itemHash,
         sessionUuid: '00000000-0000-0000-0000-000000000000',
         performingUserUuid: '00000000-0000-0000-0000-000000000000',
+        isFreeUser: false,
       })
       expect(result.isFailed()).toBeFalsy()
       expect(item1.props.sharedVaultAssociation).not.toBeUndefined()
@@ -405,6 +420,7 @@ describe('UpdateExistingItem', () => {
         itemHash,
         sessionUuid: '00000000-0000-0000-0000-000000000000',
         performingUserUuid: '00000000-0000-0000-0000-000000000000',
+        isFreeUser: false,
       })
 
       expect(result.isFailed()).toBeFalsy()
@@ -442,6 +458,7 @@ describe('UpdateExistingItem', () => {
         itemHash,
         sessionUuid: '00000000-0000-0000-0000-000000000000',
         performingUserUuid: '00000000-0000-0000-0000-000000000000',
+        isFreeUser: false,
       })
 
       expect(result.isFailed()).toBeFalsy()
@@ -470,6 +487,7 @@ describe('UpdateExistingItem', () => {
         itemHash,
         sessionUuid: '00000000-0000-0000-0000-000000000000',
         performingUserUuid: '00000000-0000-0000-0000-000000000000',
+        isFreeUser: false,
       })
       expect(result.isFailed()).toBeTruthy()
       mock.mockRestore()
@@ -490,6 +508,7 @@ describe('UpdateExistingItem', () => {
         itemHash,
         sessionUuid: '00000000-0000-0000-0000-000000000000',
         performingUserUuid: '00000000-0000-0000-0000-000000000000',
+        isFreeUser: false,
       })
       expect(result.isFailed()).toBeTruthy()
     })
@@ -521,6 +540,7 @@ describe('UpdateExistingItem', () => {
         itemHash,
         sessionUuid: '00000000-0000-0000-0000-000000000000',
         performingUserUuid: '00000000-0000-0000-0000-000000000000',
+        isFreeUser: false,
       })
       expect(result.isFailed()).toBeTruthy()
     })
@@ -555,6 +575,7 @@ describe('UpdateExistingItem', () => {
         itemHash,
         sessionUuid: '00000000-0000-0000-0000-000000000000',
         performingUserUuid: '00000000-0000-0000-0000-000000000000',
+        isFreeUser: false,
       })
       expect(result.isFailed()).toBeTruthy()
 
@@ -576,6 +597,7 @@ describe('UpdateExistingItem', () => {
         itemHash,
         sessionUuid: '00000000-0000-0000-0000-000000000000',
         performingUserUuid: '00000000-0000-0000-0000-000000000000',
+        isFreeUser: false,
       })
       expect(result.isFailed()).toBeTruthy()
     })
@@ -595,6 +617,7 @@ describe('UpdateExistingItem', () => {
         itemHash,
         sessionUuid: '00000000-0000-0000-0000-000000000000',
         performingUserUuid: '00000000-0000-0000-0000-000000000000',
+        isFreeUser: false,
       })
       expect(result.isFailed()).toBeFalsy()
       expect(item1.props.keySystemAssociation).not.toBeUndefined()
@@ -616,6 +639,7 @@ describe('UpdateExistingItem', () => {
         itemHash,
         sessionUuid: '00000000-0000-0000-0000-000000000000',
         performingUserUuid: '00000000-0000-0000-0000-000000000000',
+        isFreeUser: false,
       })
 
       expect(result.isFailed()).toBeFalsy()
@@ -636,6 +660,7 @@ describe('UpdateExistingItem', () => {
         itemHash,
         sessionUuid: '00000000-0000-0000-0000-000000000000',
         performingUserUuid: '00000000-0000-0000-0000-000000000000',
+        isFreeUser: false,
       })
       expect(result.isFailed()).toBeTruthy()
     })
@@ -658,6 +683,7 @@ describe('UpdateExistingItem', () => {
         itemHash,
         sessionUuid: '00000000-0000-0000-0000-000000000000',
         performingUserUuid: '00000000-0000-0000-0000-000000000000',
+        isFreeUser: false,
       })
       expect(result.isFailed()).toBeTruthy()
       mock.mockRestore()

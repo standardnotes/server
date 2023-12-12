@@ -88,6 +88,7 @@ export class SyncingServer implements ISyncingServer {
         readOnlyAccess: call.metadata.get('x-read-only-access').pop() === 'true',
         sessionUuid: call.metadata.get('x-session-uuid').pop() as string,
         sharedVaultUuids,
+        isFreeUser: call.metadata.get('x-is-free-user').pop() === 'true',
       })
       if (syncResult.isFailed()) {
         const metadata = new grpc.Metadata()

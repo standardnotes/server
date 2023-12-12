@@ -458,6 +458,9 @@ export class ContainerConfigLoader {
     container
       .bind(TYPES.Sync_REVISIONS_FREQUENCY)
       .toConstantValue(env.get('REVISIONS_FREQUENCY', true) ? +env.get('REVISIONS_FREQUENCY', true) : 300)
+    container
+      .bind(TYPES.Sync_FREE_REVISIONS_FREQUENCY)
+      .toConstantValue(env.get('FREE_REVISIONS_FREQUENCY', true) ? +env.get('FREE_REVISIONS_FREQUENCY', true) : 86_400)
     container.bind(TYPES.Sync_VERSION).toConstantValue(env.get('VERSION', true) ?? 'development')
     container
       .bind(TYPES.Sync_CONTENT_SIZE_TRANSFER_LIMIT)
@@ -601,6 +604,7 @@ export class ContainerConfigLoader {
           container.get<TimerInterface>(TYPES.Sync_Timer),
           container.get<DomainEventPublisherInterface>(TYPES.Sync_DomainEventPublisher),
           container.get<DomainEventFactoryInterface>(TYPES.Sync_DomainEventFactory),
+          container.get<number>(TYPES.Sync_FREE_REVISIONS_FREQUENCY),
           container.get<number>(TYPES.Sync_REVISIONS_FREQUENCY),
           container.get<DetermineSharedVaultOperationOnItem>(TYPES.Sync_DetermineSharedVaultOperationOnItem),
           container.get<AddNotificationsForUsers>(TYPES.Sync_AddNotificationsForUsers),

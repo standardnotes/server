@@ -113,6 +113,7 @@ describe('SaveItems', () => {
       readOnlyAccess: false,
       sessionUuid: 'session-uuid',
       snjsVersion: '2.200.0',
+      isFreeUser: false,
     })
 
     expect(result.isFailed()).toBeFalsy()
@@ -137,6 +138,7 @@ describe('SaveItems', () => {
       readOnlyAccess: false,
       sessionUuid: 'session-uuid',
       snjsVersion: '2.200.0',
+      isFreeUser: false,
     })
 
     expect(result.isFailed()).toBeFalsy()
@@ -161,6 +163,7 @@ describe('SaveItems', () => {
       readOnlyAccess: false,
       sessionUuid: 'session-uuid',
       snjsVersion: '2.200.0',
+      isFreeUser: false,
     })
 
     expect(result.isFailed()).toBeFalsy()
@@ -182,6 +185,7 @@ describe('SaveItems', () => {
       readOnlyAccess: true,
       sessionUuid: 'session-uuid',
       snjsVersion: '2.200.0',
+      isFreeUser: false,
     })
 
     expect(result.isFailed()).toBeFalsy()
@@ -204,6 +208,7 @@ describe('SaveItems', () => {
       readOnlyAccess: false,
       sessionUuid: 'session-uuid',
       snjsVersion: '2.200.0',
+      isFreeUser: false,
     })
 
     expect(result.isFailed()).toBeFalsy()
@@ -222,6 +227,7 @@ describe('SaveItems', () => {
       readOnlyAccess: false,
       sessionUuid: 'session-uuid',
       snjsVersion: '2.200.0',
+      isFreeUser: false,
     })
 
     expect(result.isFailed()).toBeFalsy()
@@ -240,10 +246,12 @@ describe('SaveItems', () => {
       readOnlyAccess: false,
       sessionUuid: 'session-uuid',
       snjsVersion: '2.200.0',
+      isFreeUser: false,
     })
 
     expect(result.isFailed()).toBeFalsy()
     expect(updateExistingItem.execute).toHaveBeenCalledWith({
+      isFreeUser: false,
       itemHash: itemHash1,
       existingItem: savedItem,
       sessionUuid: 'session-uuid',
@@ -284,10 +292,12 @@ describe('SaveItems', () => {
       readOnlyAccess: false,
       sessionUuid: 'session-uuid',
       snjsVersion: '2.200.0',
+      isFreeUser: false,
     })
 
     expect(result.isFailed()).toBeFalsy()
     expect(updateExistingItem.execute).toHaveBeenCalledWith({
+      isFreeUser: false,
       itemHash: itemHash1,
       existingItem: savedItem,
       sessionUuid: 'session-uuid',
@@ -310,6 +320,7 @@ describe('SaveItems', () => {
       readOnlyAccess: false,
       sessionUuid: 'session-uuid',
       snjsVersion: '2.200.0',
+      isFreeUser: false,
     })
 
     expect(result.isFailed()).toBeFalsy()
@@ -334,6 +345,7 @@ describe('SaveItems', () => {
       readOnlyAccess: false,
       sessionUuid: 'session-uuid',
       snjsVersion: '2.200.0',
+      isFreeUser: false,
     })
 
     expect(result.isFailed()).toBeFalsy()
@@ -379,6 +391,7 @@ describe('SaveItems', () => {
       readOnlyAccess: false,
       sessionUuid: 'session-uuid',
       snjsVersion: '2.200.0',
+      isFreeUser: false,
     })
 
     expect(result.isFailed()).toBeFalsy()

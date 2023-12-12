@@ -5,6 +5,7 @@ import { BaseMiddleware } from 'inversify-express-utils'
 import { verify } from 'jsonwebtoken'
 import { Logger } from 'winston'
 import { ConnectionValidationResponse, IAuthClient, WebsocketConnectionAuthorizationHeader } from '@standardnotes/grpc'
+import { RoleName } from '@standardnotes/domain-core'
 
 export class GRPCWebSocketAuthMiddleware extends BaseMiddleware {
   constructor(
@@ -96,6 +97,8 @@ export class GRPCWebSocketAuthMiddleware extends BaseMiddleware {
       response.locals.user = decodedToken.user
       response.locals.session = decodedToken.session
       response.locals.roles = decodedToken.roles
+      response.locals.isFreeUser =
+        decodedToken.roles.length === 1 && decodedToken.roles[0].name === RoleName.NAMES.CoreUser
     } catch (error) {
       this.logger.error(
         `Could not pass the request to websocket connection validation on underlying service: ${

@@ -84,6 +84,7 @@ export class SaveItems implements UseCaseInterface<SaveItemsResult> {
           itemHash,
           sessionUuid: dto.sessionUuid,
           performingUserUuid: dto.userUuid,
+          isFreeUser: dto.isFreeUser,
         })
         if (udpatedItemOrError.isFailed()) {
           this.logger.error(

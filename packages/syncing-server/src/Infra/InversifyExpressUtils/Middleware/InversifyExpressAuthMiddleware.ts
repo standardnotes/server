@@ -3,6 +3,7 @@ import { BaseMiddleware } from 'inversify-express-utils'
 import { verify } from 'jsonwebtoken'
 import { CrossServiceTokenData } from '@standardnotes/security'
 import * as winston from 'winston'
+import { RoleName } from '@standardnotes/domain-core'
 
 export class InversifyExpressAuthMiddleware extends BaseMiddleware {
   constructor(
@@ -26,6 +27,8 @@ export class InversifyExpressAuthMiddleware extends BaseMiddleware {
 
       response.locals.user = decodedToken.user
       response.locals.roles = decodedToken.roles
+      response.locals.isFreeUser =
+        decodedToken.roles.length === 1 && decodedToken.roles[0].name === RoleName.NAMES.CoreUser
       response.locals.session = decodedToken.session
       response.locals.readOnlyAccess = decodedToken.session?.readonly_access ?? false
       response.locals.sharedVaultOwnerContext = decodedToken.shared_vault_owner_context
