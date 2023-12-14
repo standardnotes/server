@@ -163,6 +163,20 @@ describe('UpdateStorageQuotaUsedForUser', () => {
       })
     })
 
+    it('should not subtract below 0', async () => {
+      const result = await createUseCase().execute({
+        userUuid: '00000000-0000-0000-0000-000000000000',
+        bytesUsed: -1234,
+      })
+      expect(result.isFailed()).toBeFalsy()
+
+      expect(setSubscriptonSettingValue.execute).toHaveBeenCalledWith({
+        settingName: 'FILE_UPLOAD_BYTES_USED',
+        value: '0',
+        userSubscriptionUuid: '00000000-0000-0000-0000-000000000000',
+      })
+    })
+
     it('should update a bytes used setting on both regular and shared subscription', async () => {
       const result = await createUseCase().execute({
         userUuid: '00000000-0000-0000-0000-000000000000',
