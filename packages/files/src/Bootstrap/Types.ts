@@ -15,6 +15,7 @@ const TYPES = {
   Files_RemoveFile: Symbol.for('Files_RemoveFile'),
   Files_MoveFile: Symbol.for('Files_MoveFile'),
   Files_MarkFilesToBeRemoved: Symbol.for('Files_MarkFilesToBeRemoved'),
+  Files_RecalculateQuota: Symbol.for('Files_RecalculateQuota'),
 
   // services
   Files_ValetTokenDecoder: Symbol.for('Files_ValetTokenDecoder'),
@@ -57,6 +58,7 @@ const TYPES = {
   Files_SharedSubscriptionInvitationCanceledEventHandler: Symbol.for(
     'Files_SharedSubscriptionInvitationCanceledEventHandler',
   ),
+  Files_FileQuotaRecalculationRequestedEventHandler: Symbol.for('Files_FileQuotaRecalculationRequestedEventHandler'),
 }
 
 export default TYPES

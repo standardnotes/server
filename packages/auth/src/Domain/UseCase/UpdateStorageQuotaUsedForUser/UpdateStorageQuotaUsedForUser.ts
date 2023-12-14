@@ -68,10 +68,13 @@ export class UpdateStorageQuotaUsedForUser implements UseCaseInterface<void> {
       bytesAlreadyUsed = bytesUsedSetting.setting.props.value as string
     }
 
+    const bytesUsedNewTotal = +bytesAlreadyUsed + bytesUsed
+    const bytesUsedValue = bytesUsedNewTotal < 0 ? 0 : bytesUsedNewTotal
+
     const result = await this.setSubscriptonSettingValue.execute({
       userSubscriptionUuid: subscription.uuid,
       settingName: SettingName.NAMES.FileUploadBytesUsed,
-      value: (+bytesAlreadyUsed + bytesUsed).toString(),
+      value: bytesUsedValue.toString(),
     })
 
     /* istanbul ignore next */

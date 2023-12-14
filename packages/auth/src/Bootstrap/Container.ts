@@ -282,6 +282,8 @@ import { S3CsvFileReader } from '../Infra/S3/S3CsvFileReader'
 import { DeleteAccountsFromCSVFile } from '../Domain/UseCase/DeleteAccountsFromCSVFile/DeleteAccountsFromCSVFile'
 import { AccountDeletionVerificationPassedEventHandler } from '../Domain/Handler/AccountDeletionVerificationPassedEventHandler'
 import { RenewSharedSubscriptions } from '../Domain/UseCase/RenewSharedSubscriptions/RenewSharedSubscriptions'
+import { FixStorageQuotaForUser } from '../Domain/UseCase/FixStorageQuotaForUser/FixStorageQuotaForUser'
+import { FileQuotaRecalculatedEventHandler } from '../Domain/Handler/FileQuotaRecalculatedEventHandler'
 
 export class ContainerConfigLoader {
   constructor(private mode: 'server' | 'worker' = 'server') {}
@@ -1285,6 +1287,20 @@ export class ContainerConfigLoader {
           container.get<winston.Logger>(TYPES.Auth_Logger),
         ),
       )
+    container
+      .bind<FixStorageQuotaForUser>(TYPES.Auth_FixStorageQuotaForUser)
+      .toConstantValue(
+        new FixStorageQuotaForUser(
+          container.get<UserRepositoryInterface>(TYPES.Auth_UserRepository),
+          container.get<GetRegularSubscriptionForUser>(TYPES.Auth_GetRegularSubscriptionForUser),
+          container.get<GetSharedSubscriptionForUser>(TYPES.Auth_GetSharedSubscriptionForUser),
+          container.get<SetSubscriptionSettingValue>(TYPES.Auth_SetSubscriptionSettingValue),
+          container.get<ListSharedSubscriptionInvitations>(TYPES.Auth_ListSharedSubscriptionInvitations),
+          container.get<DomainEventFactoryInterface>(TYPES.Auth_DomainEventFactory),
+          container.get<DomainEventPublisherInterface>(TYPES.Auth_DomainEventPublisher),
+          container.get<winston.Logger>(TYPES.Auth_Logger),
+        ),
+      )
     if (!isConfiguredForHomeServer) {
       container
         .bind<DeleteAccountsFromCSVFile>(TYPES.Auth_DeleteAccountsFromCSVFile)
@@ -1541,6 +1557,14 @@ export class ContainerConfigLoader {
           container.get<DomainEventPublisherInterface>(TYPES.Auth_DomainEventPublisher),
         ),
       )
+    container
+      .bind<FileQuotaRecalculatedEventHandler>(TYPES.Auth_FileQuotaRecalculatedEventHandler)
+      .toConstantValue(
+        new FileQuotaRecalculatedEventHandler(
+          container.get<UpdateStorageQuotaUsedForUser>(TYPES.Auth_UpdateStorageQuotaUsedForUser),
+          container.get<winston.Logger>(TYPES.Auth_Logger),
+        ),
+      )
 
     const eventHandlers: Map<string, DomainEventHandlerInterface> = new Map([
       ['ACCOUNT_DELETION_REQUESTED', container.get(TYPES.Auth_AccountDeletionRequestedEventHandler)],
@@ -1578,6 +1602,10 @@ export class ContainerConfigLoader {
         container.get(TYPES.Auth_UserDesignatedAsSurvivorInSharedVaultEventHandler),
       ],
       ['USER_INVITED_TO_SHARED_VAULT', container.get(TYPES.Auth_UserInvitedToSharedVaultEventHandler)],
+      [
+        'FILE_QUOTA_RECALCULATED',
+        container.get<FileQuotaRecalculatedEventHandler>(TYPES.Auth_FileQuotaRecalculatedEventHandler),
+      ],
     ])
 
     if (isConfiguredForHomeServer) {

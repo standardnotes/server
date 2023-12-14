@@ -170,6 +170,7 @@ const TYPES = {
   Auth_TriggerEmailBackupForAllUsers: Symbol.for('Auth_TriggerEmailBackupForAllUsers'),
   Auth_DeleteAccountsFromCSVFile: Symbol.for('Auth_DeleteAccountsFromCSVFile'),
   Auth_RenewSharedSubscriptions: Symbol.for('Auth_RenewSharedSubscriptions'),
+  Auth_FixStorageQuotaForUser: Symbol.for('Auth_FixStorageQuotaForUser'),
   // Handlers
   Auth_AccountDeletionRequestedEventHandler: Symbol.for('Auth_AccountDeletionRequestedEventHandler'),
   Auth_AccountDeletionVerificationPassedEventHandler: Symbol.for('Auth_AccountDeletionVerificationPassedEventHandler'),
@@ -203,6 +204,7 @@ const TYPES = {
     'Auth_UserDesignatedAsSurvivorInSharedVaultEventHandler',
   ),
   Auth_UserInvitedToSharedVaultEventHandler: Symbol.for('Auth_UserInvitedToSharedVaultEventHandler'),
+  Auth_FileQuotaRecalculatedEventHandler: Symbol.for('Auth_FileQuotaRecalculatedEventHandler'),
   // Services
   Auth_DeviceDetector: Symbol.for('Auth_DeviceDetector'),
   Auth_SessionService: Symbol.for('Auth_SessionService'),
