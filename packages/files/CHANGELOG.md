@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.37.0](https://github.com/standardnotes/server/compare/@standardnotes/files-server@1.36.6...@standardnotes/files-server@1.37.0) (2023-12-14)
+
+### Features
+
+* add procedure for recalculating file quota for user ([#980](https://github.com/standardnotes/server/issues/980)) ([de4fcf9](https://github.com/standardnotes/server/commit/de4fcf9a4c308ad7d71c42fe5c27af18b8614e1a))
+
 ## [1.36.6](https://github.com/standardnotes/server/compare/@standardnotes/files-server@1.36.5...@standardnotes/files-server@1.36.6) (2023-12-11)
 
 **Note:** Version bump only for package @standardnotes/files-server

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.139.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.138.2...@standardnotes/domain-events@2.139.0) (2023-12-14)
+
+### Features
+
+* add procedure for recalculating file quota for user ([#980](https://github.com/standardnotes/server/issues/980)) ([de4fcf9](https://github.com/standardnotes/server/commit/de4fcf9a4c308ad7d71c42fe5c27af18b8614e1a))
+
 ## [2.138.2](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.138.1...@standardnotes/domain-events@2.138.2) (2023-12-11)
 
 ### Bug Fixes
