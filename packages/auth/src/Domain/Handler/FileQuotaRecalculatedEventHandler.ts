@@ -11,6 +11,7 @@ export class FileQuotaRecalculatedEventHandler implements DomainEventHandlerInte
   async handle(event: FileQuotaRecalculatedEvent): Promise<void> {
     this.logger.info('Updating storage quota for user...', {
       userId: event.payload.userUuid,
+      totalFileByteSize: event.payload.totalFileByteSize,
       codeTag: 'FileQuotaRecalculatedEventHandler',
     })
 
@@ -30,6 +31,7 @@ export class FileQuotaRecalculatedEventHandler implements DomainEventHandlerInte
 
     this.logger.info('Storage quota updated', {
       userId: event.payload.userUuid,
+      totalFileByteSize: event.payload.totalFileByteSize,
       codeTag: 'FileQuotaRecalculatedEventHandler',
     })
   }
