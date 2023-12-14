@@ -38,7 +38,8 @@ export class S3FileDownloader implements FileDownloaderInterface {
   async listFiles(userUuid: string): Promise<{ name: string; size: number }[]> {
     const objectsList = await this.s3Client.send(
       new ListObjectsV2Command({
-        Bucket: `${this.s3BuckeName}/${userUuid}/`,
+        Bucket: this.s3BuckeName,
+        Prefix: userUuid,
       }),
     )
 
