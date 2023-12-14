@@ -4,9 +4,11 @@ import {
   SharedVaultFileRemovedEvent,
   SharedVaultFileUploadedEvent,
   SharedVaultFileMovedEvent,
+  FileQuotaRecalculatedEvent,
 } from '@standardnotes/domain-events'
 
 export interface DomainEventFactoryInterface {
+  createFileQuotaRecalculatedEvent(payload: { userUuid: string; totalFileByteSize: number }): FileQuotaRecalculatedEvent
   createFileUploadedEvent(payload: {
     userUuid: string
     filePath: string

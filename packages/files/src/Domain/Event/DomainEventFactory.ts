@@ -5,6 +5,7 @@ import {
   SharedVaultFileUploadedEvent,
   SharedVaultFileRemovedEvent,
   SharedVaultFileMovedEvent,
+  FileQuotaRecalculatedEvent,
 } from '@standardnotes/domain-events'
 import { TimerInterface } from '@standardnotes/time'
 
@@ -12,6 +13,24 @@ import { DomainEventFactoryInterface } from './DomainEventFactoryInterface'
 
 export class DomainEventFactory implements DomainEventFactoryInterface {
   constructor(private timer: TimerInterface) {}
+
+  createFileQuotaRecalculatedEvent(payload: {
+    userUuid: string
+    totalFileByteSize: number
+  }): FileQuotaRecalculatedEvent {
+    return {
+      type: 'FILE_QUOTA_RECALCULATED',
+      createdAt: this.timer.getUTCDate(),
+      meta: {
+        correlation: {
+          userIdentifier: payload.userUuid,
+          userIdentifierType: 'uuid',
+        },
+        origin: DomainEventService.Files,
+      },
+      payload,
+    }
+  }
 
   createFileRemovedEvent(payload: {
     userUuid: string

@@ -52,6 +52,8 @@ import { S3FileMover } from '../Infra/S3/S3FileMover'
 import { FSFileMover } from '../Infra/FS/FSFileMover'
 import { MoveFile } from '../Domain/UseCase/MoveFile/MoveFile'
 import { SharedVaultValetTokenAuthMiddleware } from '../Infra/InversifyExpress/Middleware/SharedVaultValetTokenAuthMiddleware'
+import { RecalculateQuota } from '../Domain/UseCase/RecalculateQuota/RecalculateQuota'
+import { FileQuotaRecalculationRequestedEventHandler } from '../Domain/Handler/FileQuotaRecalculationRequestedEventHandler'
 
 export class ContainerConfigLoader {
   constructor(private mode: 'server' | 'worker' = 'server') {}
@@ -244,6 +246,15 @@ export class ContainerConfigLoader {
         ),
       )
     container.bind<MarkFilesToBeRemoved>(TYPES.Files_MarkFilesToBeRemoved).to(MarkFilesToBeRemoved)
+    container
+      .bind<RecalculateQuota>(TYPES.Files_RecalculateQuota)
+      .toConstantValue(
+        new RecalculateQuota(
+          container.get<FileDownloaderInterface>(TYPES.Files_FileDownloader),
+          container.get<DomainEventPublisherInterface>(TYPES.Files_DomainEventPublisher),
+          container.get<DomainEventFactoryInterface>(TYPES.Files_DomainEventFactory),
+        ),
+      )
 
     // middleware
     container.bind<ValetTokenAuthMiddleware>(TYPES.Files_ValetTokenAuthMiddleware).to(ValetTokenAuthMiddleware)
@@ -274,12 +285,26 @@ export class ContainerConfigLoader {
           container.get<winston.Logger>(TYPES.Files_Logger),
         ),
       )
+    container
+      .bind<FileQuotaRecalculationRequestedEventHandler>(TYPES.Files_FileQuotaRecalculationRequestedEventHandler)
+      .toConstantValue(
+        new FileQuotaRecalculationRequestedEventHandler(
+          container.get<RecalculateQuota>(TYPES.Files_RecalculateQuota),
+          container.get<winston.Logger>(TYPES.Files_Logger),
+        ),
+      )
 
     const eventHandlers: Map<string, DomainEventHandlerInterface> = new Map([
       ['ACCOUNT_DELETION_REQUESTED', container.get(TYPES.Files_AccountDeletionRequestedEventHandler)],
       [
         'SHARED_SUBSCRIPTION_INVITATION_CANCELED',
         container.get(TYPES.Files_SharedSubscriptionInvitationCanceledEventHandler),
+      ],
+      [
+        'FILE_QUOTA_RECALCULATION_REQUESTED',
+        container.get<FileQuotaRecalculationRequestedEventHandler>(
+          TYPES.Files_FileQuotaRecalculationRequestedEventHandler,
+        ),
       ],
     ])
 
