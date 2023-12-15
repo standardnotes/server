@@ -57,7 +57,7 @@
     "jsonwebtoken": "^9.0.0",
     "mysql2": "^3.0.1",
     "prettyjson": "^1.2.5",
-    "reflect-metadata": "0.1.13",
+    "reflect-metadata": "0.2.1",
     "semver": "^7.5.4",
     "sqlite3": "^5.1.6",
     "typeorm": "^0.3.17",
