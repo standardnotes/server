@@ -38,7 +38,7 @@
     "@opentelemetry/id-generator-aws-xray": "^1.2.1",
     "@opentelemetry/instrumentation-aws-sdk": "^0.36.1",
     "@opentelemetry/instrumentation-express": "^0.33.2",
-    "@opentelemetry/instrumentation-http": "^0.44.0",
+    "@opentelemetry/instrumentation-http": "^0.46.0",
     "@opentelemetry/instrumentation-ioredis": "^0.35.2",
     "@opentelemetry/instrumentation-winston": "^0.32.2",
     "@opentelemetry/propagator-aws-xray": "^1.3.1",
