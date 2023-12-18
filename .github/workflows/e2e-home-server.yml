@@ -97,7 +97,7 @@ jobs:
 
     - name: Archive failed run logs
       if: ${{ failure() }}
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: home-server-failure-logs-${{ inputs.suite }}-${{ matrix.db_type }}-${{ matrix.cache_type }}
         retention-days: 5
