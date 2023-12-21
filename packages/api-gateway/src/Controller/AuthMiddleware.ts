@@ -74,6 +74,7 @@ export abstract class AuthMiddleware extends BaseMiddleware {
       response.locals.session = decodedToken.session
       response.locals.roles = decodedToken.roles
       response.locals.sharedVaultOwnerContext = decodedToken.shared_vault_owner_context
+      response.locals.readOnlyAccess = decodedToken.session?.readonly_access ?? false
       response.locals.belongsToSharedVaults = decodedToken.belongs_to_shared_vaults ?? []
     } catch (error) {
       let detailedErrorMessage = (error as Error).message
