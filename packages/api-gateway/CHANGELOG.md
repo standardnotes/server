@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.89.2](https://github.com/standardnotes/server/compare/@standardnotes/api-gateway@1.89.1...@standardnotes/api-gateway@1.89.2) (2023-12-21)
+
+### Bug Fixes
+
+* **api-gateway:** missing readonly access for demo when utilizing grpc workflow ([#1005](https://github.com/standardnotes/server/issues/1005)) ([e551a36](https://github.com/standardnotes/server/commit/e551a364f63e28c9329dbce492488b9f112e3473))
+
 ## [1.89.1](https://github.com/standardnotes/server/compare/@standardnotes/api-gateway@1.89.0...@standardnotes/api-gateway@1.89.1) (2023-12-14)
 
 **Note:** Version bump only for package @standardnotes/api-gateway
