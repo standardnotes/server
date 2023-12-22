@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.89.4](https://github.com/standardnotes/server/compare/@standardnotes/api-gateway@1.89.3...@standardnotes/api-gateway@1.89.4) (2023-12-22)
+
+### Bug Fixes
+
+* case sensitive typo ([b1cb6a1](https://github.com/standardnotes/server/commit/b1cb6a1d21479b67d9826b55e1221a803e2f41a7))
+
 ## [1.89.3](https://github.com/standardnotes/server/compare/@standardnotes/api-gateway@1.89.2...@standardnotes/api-gateway@1.89.3) (2023-12-22)
 
 ### Bug Fixes

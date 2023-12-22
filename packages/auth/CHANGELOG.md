@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.177.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.177.0...@standardnotes/auth-server@1.177.1) (2023-12-22)
+
+### Bug Fixes
+
+* **auth:** specs issue ([0342cdc](https://github.com/standardnotes/server/commit/0342cdcfc06bd3bb0192a428c30c5af15e5eb0d7))
+* case sensitive typo ([b1cb6a1](https://github.com/standardnotes/server/commit/b1cb6a1d21479b67d9826b55e1221a803e2f41a7))
+
 # [1.177.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.176.5...@standardnotes/auth-server@1.177.0) (2023-12-14)
 
 ### Features
