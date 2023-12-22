@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.89.3](https://github.com/standardnotes/server/compare/@standardnotes/api-gateway@1.89.2...@standardnotes/api-gateway@1.89.3) (2023-12-22)
+
+### Bug Fixes
+
+* add more readonly access debug logs ([54091f2](https://github.com/standardnotes/server/commit/54091f23da33a5d1df2ecffdfa559e3fa4c562f6))
+* **api-gateway:** add debug log for operating on readonly access ([e4a8324](https://github.com/standardnotes/server/commit/e4a8324db26454a7587f37096653ad9565541295))
+
 ## [1.89.2](https://github.com/standardnotes/server/compare/@standardnotes/api-gateway@1.89.1...@standardnotes/api-gateway@1.89.2) (2023-12-21)
 
 ### Bug Fixes
