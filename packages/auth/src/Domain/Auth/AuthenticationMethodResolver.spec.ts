@@ -27,6 +27,7 @@ describe('AuthenticationMethodResolver', () => {
   beforeEach(() => {
     logger = {} as jest.Mocked<Logger>
     logger.debug = jest.fn()
+    logger.info = jest.fn()
 
     user = {} as jest.Mocked<User>
 
