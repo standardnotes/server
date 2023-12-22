@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.177.2](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.177.1...@standardnotes/auth-server@1.177.2) (2023-12-22)
+
+### Bug Fixes
+
+* logs severity ([0762ed1](https://github.com/standardnotes/server/commit/0762ed1127a5de295bd50c14afad31c7fb88a853))
+
 ## [1.177.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.177.0...@standardnotes/auth-server@1.177.1) (2023-12-22)
 
 ### Bug Fixes
