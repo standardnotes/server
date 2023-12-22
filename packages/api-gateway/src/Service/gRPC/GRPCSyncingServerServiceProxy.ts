@@ -29,7 +29,7 @@ export class GRPCSyncingServerServiceProxy {
         metadata.set('x-snjs-version', request.headers['x-snjs-version'] as string)
         metadata.set('x-read-only-access', response.locals.readOnlyAccess ? 'true' : 'false')
         if (response.locals.readOnlyAccess) {
-          this.logger.info('Syncing with read-only access', {
+          this.logger.debug('Syncing with read-only access', {
             codeTag: 'GRPCSyncingServerServiceProxy',
             userId: response.locals.user.uuid,
           })

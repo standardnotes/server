@@ -76,7 +76,7 @@ export abstract class AuthMiddleware extends BaseMiddleware {
       response.locals.sharedVaultOwnerContext = decodedToken.shared_vault_owner_context
       response.locals.readOnlyAccess = decodedToken.session?.readonly_access ?? false
       if (response.locals.readOnlyAccess) {
-        this.logger.info('User operates on read-only access', {
+        this.logger.debug('User operates on read-only access', {
           codeTag: 'AuthMiddleware',
           userId: response.locals.user.uuid,
         })

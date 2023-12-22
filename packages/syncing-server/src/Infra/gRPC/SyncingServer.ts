@@ -77,7 +77,7 @@ export class SyncingServer implements ISyncingServer {
       const userUuid = call.metadata.get('x-user-uuid').pop() as string
       const readOnlyAccess = call.metadata.get('x-read-only-access').pop() === 'true'
       if (readOnlyAccess) {
-        this.logger.info('Syncing with read-only access', {
+        this.logger.debug('Syncing with read-only access', {
           codeTag: 'SyncingServer',
           userId: userUuid,
         })
