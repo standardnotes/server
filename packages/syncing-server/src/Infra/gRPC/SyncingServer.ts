@@ -74,9 +74,17 @@ export class SyncingServer implements ISyncingServer {
       }
 
       const apiVersion = call.request.hasApiVersion() ? (call.request.getApiVersion() as string) : ApiVersion.v20161215
+      const userUuid = call.metadata.get('x-user-uuid').pop() as string
+      const readOnlyAccess = call.metadata.get('x-read-only-access').pop() === 'true'
+      if (readOnlyAccess) {
+        this.logger.info('Syncing with read-only access', {
+          codeTag: 'SyncingServer',
+          userId: userUuid,
+        })
+      }
 
       const syncResult = await this.syncItemsUseCase.execute({
-        userUuid: call.metadata.get('x-user-uuid').pop() as string,
+        userUuid,
         itemHashes,
         computeIntegrityHash: call.request.hasComputeIntegrity() ? call.request.getComputeIntegrity() === true : false,
         syncToken: call.request.hasSyncToken() ? call.request.getSyncToken() : undefined,
@@ -85,7 +93,7 @@ export class SyncingServer implements ISyncingServer {
         contentType: call.request.hasContentType() ? call.request.getContentType() : undefined,
         apiVersion,
         snjsVersion: call.metadata.get('x-snjs-version').pop() as string,
-        readOnlyAccess: call.metadata.get('x-read-only-access').pop() === 'true',
+        readOnlyAccess,
         sessionUuid: call.metadata.get('x-session-uuid').pop() as string,
         sharedVaultUuids,
         isFreeUser: call.metadata.get('x-is-free-user').pop() === 'true',

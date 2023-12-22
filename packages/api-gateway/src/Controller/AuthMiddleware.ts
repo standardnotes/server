@@ -77,6 +77,7 @@ export abstract class AuthMiddleware extends BaseMiddleware {
       response.locals.readOnlyAccess = decodedToken.session?.readonly_access ?? false
       if (response.locals.readonlyAccess) {
         this.logger.info('User operates on read-only access', {
+          codeTag: 'AuthMiddleware',
           userId: response.locals.user.uuid,
         })
       }
