@@ -36,6 +36,10 @@ export class AuthenticationMethodResolver implements AuthenticationMethodResolve
       }
       const userUuid = userUuidOrError.getValue()
 
+      this.logger.info('User utilizing JWT authentication method.', {
+        userId: userUuid.value,
+      })
+
       return {
         type: 'jwt',
         user: await this.userRepository.findOneByUuid(userUuid),
