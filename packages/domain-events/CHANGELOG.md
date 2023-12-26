@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.139.1](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.139.0...@standardnotes/domain-events@2.139.1) (2023-12-26)
+
+### Bug Fixes
+
+* stop revisions propagation ([#1008](https://github.com/standardnotes/server/issues/1008)) ([7962b24](https://github.com/standardnotes/server/commit/7962b245b51703ff7d33728dee117b2074f2692a))
+
 # [2.139.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.138.2...@standardnotes/domain-events@2.139.0) (2023-12-14)
 
 ### Features
