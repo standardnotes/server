@@ -109,6 +109,7 @@ describe('UpdateExistingItem', () => {
     domainEventFactory.createItemRemovedFromSharedVaultEvent = jest
       .fn()
       .mockReturnValue({} as jest.Mocked<DomainEventInterface>)
+    domainEventFactory.createItemDeletedEvent = jest.fn().mockReturnValue({} as jest.Mocked<DomainEventInterface>)
 
     determineSharedVaultOperationOnItem = {} as jest.Mocked<DetermineSharedVaultOperationOnItem>
     determineSharedVaultOperationOnItem.execute = jest.fn().mockResolvedValue(

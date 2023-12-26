@@ -4,6 +4,7 @@ import {
   DomainEventService,
   DuplicateItemSyncedEvent,
   EmailRequestedEvent,
+  ItemDeletedEvent,
   ItemDumpedEvent,
   ItemRemovedFromSharedVaultEvent,
   ItemRevisionCreationRequestedEvent,
@@ -304,6 +305,21 @@ export class DomainEventFactory implements DomainEventFactoryInterface {
   createDuplicateItemSyncedEvent(dto: { itemUuid: string; userUuid: string }): DuplicateItemSyncedEvent {
     return {
       type: 'DUPLICATE_ITEM_SYNCED',
+      createdAt: this.timer.getUTCDate(),
+      meta: {
+        correlation: {
+          userIdentifier: dto.userUuid,
+          userIdentifierType: 'uuid',
+        },
+        origin: DomainEventService.SyncingServer,
+      },
+      payload: dto,
+    }
+  }
+
+  createItemDeletedEvent(dto: { itemUuid: string; userUuid: string }): ItemDeletedEvent {
+    return {
+      type: 'ITEM_DELETED',
       createdAt: this.timer.getUTCDate(),
       meta: {
         correlation: {

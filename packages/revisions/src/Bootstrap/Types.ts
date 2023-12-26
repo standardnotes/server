@@ -33,6 +33,7 @@ const TYPES = {
   Revisions_GetRevisionsMetada: Symbol.for('Revisions_GetRevisionsMetada'),
   Revisions_GetRevision: Symbol.for('Revisions_GetRevision'),
   Revisions_DeleteRevision: Symbol.for('Revisions_DeleteRevision'),
+  Revisions_DeleteRevisions: Symbol.for('Revisions_DeleteRevisions'),
   Revisions_CopyRevisions: Symbol.for('Revisions_CopyRevisions'),
   Revisions_GetRequiredRoleToViewRevision: Symbol.for('Revisions_GetRequiredRoleToViewRevision'),
   Revisions_RemoveRevisionsFromSharedVault: Symbol.for('Revisions_RemoveRevisionsFromSharedVault'),
@@ -47,6 +48,7 @@ const TYPES = {
   Revisions_RevisionsCopyRequestedEventHandler: Symbol.for('Revisions_RevisionsCopyRequestedEventHandler'),
   Revisions_ItemRemovedFromSharedVaultEventHandler: Symbol.for('Revisions_ItemRemovedFromSharedVaultEventHandler'),
   Revisions_SharedVaultRemovedEventHandler: Symbol.for('Revisions_SharedVaultRemovedEventHandler'),
+  Revisions_ItemDeletedEventHandler: Symbol.for('Revisions_ItemDeletedEventHandler'),
   // Services
   Revisions_CrossServiceTokenDecoder: Symbol.for('Revisions_CrossServiceTokenDecoder'),
   Revisions_DomainEventSubscriber: Symbol.for('Revisions_DomainEventSubscriber'),

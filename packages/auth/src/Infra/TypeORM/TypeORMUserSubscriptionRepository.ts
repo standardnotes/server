@@ -6,6 +6,7 @@ import TYPES from '../../Bootstrap/Types'
 import { UserSubscription } from '../../Domain/Subscription/UserSubscription'
 import { UserSubscriptionRepositoryInterface } from '../../Domain/Subscription/UserSubscriptionRepositoryInterface'
 import { UserSubscriptionType } from '../../Domain/Subscription/UserSubscriptionType'
+import { SubscriptionPlanName } from '@standardnotes/domain-core'
 
 @injectable()
 export class TypeORMUserSubscriptionRepository implements UserSubscriptionRepositoryInterface {
@@ -14,6 +15,27 @@ export class TypeORMUserSubscriptionRepository implements UserSubscriptionReposi
     private ormRepository: Repository<UserSubscription>,
     @inject(TYPES.Auth_Timer) private timer: TimerInterface,
   ) {}
+
+  async countByPlanName(planNames: SubscriptionPlanName[]): Promise<number> {
+    return await this.ormRepository
+      .createQueryBuilder()
+      .where('plan_name IN (:...planNames)', {
+        planNames: planNames.map((planName) => planName.value),
+      })
+      .getCount()
+  }
+
+  async findByPlanName(planNames: SubscriptionPlanName[], offset: number, limit: number): Promise<UserSubscription[]> {
+    return await this.ormRepository
+      .createQueryBuilder()
+      .where('plan_name IN (:...planNames)', {
+        planNames: planNames.map((planName) => planName.value),
+      })
+      .orderBy('created_at', 'ASC')
+      .skip(offset)
+      .take(limit)
+      .getMany()
+  }
 
   async countActiveSubscriptions(): Promise<number> {
     return await this.ormRepository

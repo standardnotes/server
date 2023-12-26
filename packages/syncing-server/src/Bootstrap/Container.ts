@@ -162,6 +162,7 @@ import { SyncResponse } from '@standardnotes/grpc'
 import { SyncResponseGRPCMapper } from '../Mapping/gRPC/SyncResponseGRPCMapper'
 import { AccountDeletionVerificationRequestedEventHandler } from '../Domain/Handler/AccountDeletionVerificationRequestedEventHandler'
 import { SendEventToClients } from '../Domain/UseCase/Syncing/SendEventToClients/SendEventToClients'
+import { RevisionsCleanupRequestedEventHandler } from '../Domain/Handler/RevisionsCleanupRequestedEventHandler'
 
 export class ContainerConfigLoader {
   private readonly DEFAULT_CONTENT_SIZE_TRANSFER_LIMIT = 10_000_000
@@ -980,6 +981,16 @@ export class ContainerConfigLoader {
           container.get<Logger>(TYPES.Sync_Logger),
         ),
       )
+    container
+      .bind<RevisionsCleanupRequestedEventHandler>(TYPES.Sync_RevisionsCleanupRequestedEventHandler)
+      .toConstantValue(
+        new RevisionsCleanupRequestedEventHandler(
+          container.get<ItemRepositoryInterface>(TYPES.Sync_SQLItemRepository),
+          container.get<DomainEventFactoryInterface>(TYPES.Sync_DomainEventFactory),
+          container.get<DomainEventPublisherInterface>(TYPES.Sync_DomainEventPublisher),
+          container.get<Logger>(TYPES.Sync_Logger),
+        ),
+      )
 
     // Services
     container.bind<ContentDecoderInterface>(TYPES.Sync_ContentDecoder).toDynamicValue(() => new ContentDecoder())
@@ -1008,6 +1019,7 @@ export class ContainerConfigLoader {
         'SHARED_VAULT_REMOVED',
         container.get<SharedVaultRemovedEventHandler>(TYPES.Sync_SharedVaultRemovedEventHandler),
       ],
+      ['REVISIONS_CLEANUP_REQUESTED', container.get(TYPES.Sync_RevisionsCleanupRequestedEventHandler)],
     ])
     if (!isConfiguredForHomeServer) {
       container
