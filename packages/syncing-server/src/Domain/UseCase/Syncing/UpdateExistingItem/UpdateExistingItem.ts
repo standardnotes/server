@@ -159,6 +159,7 @@ export class UpdateExistingItem implements UseCaseInterface<Item> {
       dto.existingItem.props.keySystemAssociation = undefined
     }
 
+    let wasMarkedAsDeleted = false
     if (dto.itemHash.props.deleted === true) {
       dto.existingItem.props.deleted = true
       dto.existingItem.props.content = null
@@ -166,6 +167,8 @@ export class UpdateExistingItem implements UseCaseInterface<Item> {
       dto.existingItem.props.encItemKey = null
       dto.existingItem.props.authHash = null
       dto.existingItem.props.itemsKeyId = null
+
+      wasMarkedAsDeleted = true
     }
 
     await this.itemRepository.update(dto.existingItem)
@@ -190,6 +193,15 @@ export class UpdateExistingItem implements UseCaseInterface<Item> {
     if (wasMarkedAsDuplicate) {
       await this.domainEventPublisher.publish(
         this.domainEventFactory.createDuplicateItemSyncedEvent({
+          itemUuid: dto.existingItem.id.toString(),
+          userUuid: dto.existingItem.props.userUuid.value,
+        }),
+      )
+    }
+
+    if (wasMarkedAsDeleted) {
+      await this.domainEventPublisher.publish(
+        this.domainEventFactory.createItemDeletedEvent({
           itemUuid: dto.existingItem.id.toString(),
           userUuid: dto.existingItem.props.userUuid.value,
         }),

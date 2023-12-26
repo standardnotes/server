@@ -15,6 +15,15 @@ export class SQLRevisionRepository implements RevisionRepositoryInterface {
     protected logger: Logger,
   ) {}
 
+  async removeByItemUuid(itemUuid: Uuid): Promise<void> {
+    await this.ormRepository
+      .createQueryBuilder()
+      .delete()
+      .from('revisions_revisions')
+      .where('item_uuid = :itemUuid', { itemUuid: itemUuid.value })
+      .execute()
+  }
+
   async removeByUserUuid(userUuid: Uuid): Promise<void> {
     await this.ormRepository
       .createQueryBuilder()

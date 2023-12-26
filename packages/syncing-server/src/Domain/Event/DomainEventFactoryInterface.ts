@@ -2,6 +2,7 @@ import {
   AccountDeletionVerificationPassedEvent,
   DuplicateItemSyncedEvent,
   EmailRequestedEvent,
+  ItemDeletedEvent,
   ItemDumpedEvent,
   ItemRemovedFromSharedVaultEvent,
   ItemRevisionCreationRequestedEvent,
@@ -77,6 +78,7 @@ export interface DomainEventFactoryInterface {
     userUuid?: string
   }): EmailRequestedEvent
   createDuplicateItemSyncedEvent(dto: { itemUuid: string; userUuid: string }): DuplicateItemSyncedEvent
+  createItemDeletedEvent(dto: { itemUuid: string; userUuid: string }): ItemDeletedEvent
   createItemRevisionCreationRequested(dto: { itemUuid: string; userUuid: string }): ItemRevisionCreationRequestedEvent
   createItemDumpedEvent(dto: { fileDumpPath: string; userUuid: string }): ItemDumpedEvent
   createRevisionsCopyRequestedEvent(

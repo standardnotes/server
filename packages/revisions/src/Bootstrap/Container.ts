@@ -52,6 +52,8 @@ import { RemoveRevisionsFromSharedVault } from '../Domain/UseCase/RemoveRevision
 import { ItemRemovedFromSharedVaultEventHandler } from '../Domain/Handler/ItemRemovedFromSharedVaultEventHandler'
 import { SharedVaultRemovedEventHandler } from '../Domain/Handler/SharedVaultRemovedEventHandler'
 import { CreateRevisionFromDump } from '../Domain/UseCase/CreateRevisionFromDump/CreateRevisionFromDump'
+import { DeleteRevisions } from '../Domain/UseCase/DeleteRevisions/DeleteRevisions'
+import { ItemDeletedEventHandler } from '../Domain/Handler/ItemDeletedEventHandler'
 
 export class ContainerConfigLoader {
   constructor(private mode: 'server' | 'worker' = 'server') {}
@@ -227,6 +229,11 @@ export class ContainerConfigLoader {
         new DeleteRevision(container.get<RevisionRepositoryInterface>(TYPES.Revisions_SQLRevisionRepository)),
       )
     container
+      .bind<DeleteRevisions>(TYPES.Revisions_DeleteRevisions)
+      .toConstantValue(
+        new DeleteRevisions(container.get<RevisionRepositoryInterface>(TYPES.Revisions_SQLRevisionRepository)),
+      )
+    container
       .bind<CopyRevisions>(TYPES.Revisions_CopyRevisions)
       .toConstantValue(
         new CopyRevisions(container.get<RevisionRepositoryInterface>(TYPES.Revisions_SQLRevisionRepository)),
@@ -311,6 +318,14 @@ export class ContainerConfigLoader {
           container.get<winston.Logger>(TYPES.Revisions_Logger),
         ),
       )
+    container
+      .bind<ItemDeletedEventHandler>(TYPES.Revisions_ItemDeletedEventHandler)
+      .toConstantValue(
+        new ItemDeletedEventHandler(
+          container.get<DeleteRevisions>(TYPES.Revisions_DeleteRevisions),
+          container.get<winston.Logger>(TYPES.Revisions_Logger),
+        ),
+      )
 
     const eventHandlers: Map<string, DomainEventHandlerInterface> = new Map([
       ['ITEM_DUMPED', container.get(TYPES.Revisions_ItemDumpedEventHandler)],
@@ -318,6 +333,7 @@ export class ContainerConfigLoader {
       ['REVISIONS_COPY_REQUESTED', container.get(TYPES.Revisions_RevisionsCopyRequestedEventHandler)],
       ['ITEM_REMOVED_FROM_SHARED_VAULT', container.get(TYPES.Revisions_ItemRemovedFromSharedVaultEventHandler)],
       ['SHARED_VAULT_REMOVED', container.get(TYPES.Revisions_SharedVaultRemovedEventHandler)],
+      ['ITEM_DELETED', container.get(TYPES.Revisions_ItemDeletedEventHandler)],
     ])
 
     if (isConfiguredForHomeServer) {
