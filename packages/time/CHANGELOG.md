@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.18.2](https://github.com/standardnotes/server/compare/@standardnotes/time@1.18.1...@standardnotes/time@1.18.2) (2023-12-28)
+
+**Note:** Version bump only for package @standardnotes/time
+
 ## [1.18.1](https://github.com/standardnotes/server/compare/@standardnotes/time@1.18.0...@standardnotes/time@1.18.1) (2023-11-27)
 
 ### Bug Fixes
