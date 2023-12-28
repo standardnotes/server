@@ -31,7 +31,7 @@
     "start": "yarn node dist/bin/server.js"
   },
   "dependencies": {
-    "@grpc/grpc-js": "^1.9.12",
+    "@grpc/grpc-js": "^1.9.13",
     "@standardnotes/domain-core": "workspace:^",
     "@standardnotes/domain-events": "workspace:*",
     "@standardnotes/domain-events-infra": "workspace:*",

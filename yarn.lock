@@ -1583,13 +1583,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@grpc/grpc-js@npm:^1.9.12":
-  version: 1.9.12
-  resolution: "@grpc/grpc-js@npm:1.9.12"
+"@grpc/grpc-js@npm:^1.9.13":
+  version: 1.9.13
+  resolution: "@grpc/grpc-js@npm:1.9.13"
   dependencies:
     "@grpc/proto-loader": "npm:^0.7.8"
     "@types/node": "npm:>=12.12.47"
-  checksum: fe13b04844b525ad860521589e2d640bb8cfeea46e3cb8e4eab537e0a4fcb04a033083c25d5c3cd4e061a6471c933f6f12e81dcc626acdcf68435e6e4a833a06
+  checksum: c52150053ca3911bf9ec5012265aa754627aba9c60577ef07c594c5c22896e939ec0f656cc130a54a8651ea0ae23f385a4a48868fc71ff56dff54eeaec8b6912
   languageName: node
   linkType: hard
 
@@ -4084,7 +4084,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@standardnotes/api-gateway@workspace:packages/api-gateway"
   dependencies:
-    "@grpc/grpc-js": "npm:^1.9.12"
+    "@grpc/grpc-js": "npm:^1.9.13"
     "@standardnotes/domain-core": "workspace:^"
     "@standardnotes/domain-events": "workspace:*"
     "@standardnotes/domain-events-infra": "workspace:*"
@@ -4147,7 +4147,7 @@ __metadata:
     "@aws-sdk/client-sqs": "npm:^3.462.0"
     "@cbor-extract/cbor-extract-linux-arm64": "npm:^2.1.1"
     "@cbor-extract/cbor-extract-linux-x64": "npm:^2.1.1"
-    "@grpc/grpc-js": "npm:^1.9.12"
+    "@grpc/grpc-js": "npm:^1.9.13"
     "@simplewebauthn/server": "npm:^8.1.1"
     "@simplewebauthn/typescript-types": "npm:^8.0.0"
     "@standardnotes/api": "npm:^1.26.26"
@@ -4361,7 +4361,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@standardnotes/grpc@workspace:packages/grpc"
   dependencies:
-    "@grpc/grpc-js": "npm:^1.9.12"
+    "@grpc/grpc-js": "npm:^1.9.13"
     "@types/google-protobuf": "npm:^3"
     google-protobuf: "npm:^3.21.2"
     grpc-tools: "npm:^1.12.4"
@@ -4618,7 +4618,7 @@ __metadata:
     "@aws-sdk/client-s3": "npm:^3.462.0"
     "@aws-sdk/client-sns": "npm:^3.462.0"
     "@aws-sdk/client-sqs": "npm:^3.462.0"
-    "@grpc/grpc-js": "npm:^1.9.12"
+    "@grpc/grpc-js": "npm:^1.9.13"
     "@standardnotes/api": "npm:^1.26.26"
     "@standardnotes/common": "workspace:*"
     "@standardnotes/domain-core": "workspace:^"

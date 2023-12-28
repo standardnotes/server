@@ -8,6 +8,7 @@ import * as grpc from '@grpc/grpc-js'
 import { CrossServiceTokenCacheInterface } from '../Cache/CrossServiceTokenCacheInterface'
 import { ServiceProxyInterface } from '../Proxy/ServiceProxyInterface'
 import { GRPCSyncingServerServiceProxy } from './GRPCSyncingServerServiceProxy'
+import { Status } from '@grpc/grpc-js/build/src/constants'
 
 export class GRPCServiceProxy implements ServiceProxyInterface {
   constructor(
@@ -27,11 +28,14 @@ export class GRPCServiceProxy implements ServiceProxyInterface {
     private gRPCSyncingServerServiceProxy: GRPCSyncingServerServiceProxy,
   ) {}
 
-  async validateSession(headers: {
-    authorization: string
-    sharedVaultOwnerContext?: string
-  }): Promise<{ status: number; data: unknown; headers: { contentType: string } }> {
-    return new Promise((resolve, reject) => {
+  async validateSession(
+    headers: {
+      authorization: string
+      sharedVaultOwnerContext?: string
+    },
+    retryAttempt?: number,
+  ): Promise<{ status: number; data: unknown; headers: { contentType: string } }> {
+    const promise = new Promise((resolve, reject) => {
       try {
         const request = new AuthorizationHeader()
         request.setBearerToken(headers.authorization)
@@ -80,6 +84,32 @@ export class GRPCServiceProxy implements ServiceProxyInterface {
         return reject(error)
       }
     })
+
+    try {
+      const result = await promise
+
+      if (retryAttempt) {
+        this.logger.info(`Request to Auth Server succeeded after ${retryAttempt} retries`)
+      }
+
+      return result as { status: number; data: unknown; headers: { contentType: string } }
+    } catch (error) {
+      const requestDidNotMakeIt =
+        'code' in (error as Record<string, unknown>) && (error as Record<string, unknown>).code === Status.UNAVAILABLE
+
+      const tooManyRetryAttempts = retryAttempt && retryAttempt > 2
+      if (!tooManyRetryAttempts && requestDidNotMakeIt) {
+        await this.timer.sleep(50)
+
+        const nextRetryAttempt = retryAttempt ? retryAttempt + 1 : 1
+
+        this.logger.info(`Retrying request to Auth Server for the ${nextRetryAttempt} time`)
+
+        return this.validateSession(headers, nextRetryAttempt)
+      }
+
+      throw error
+    }
   }
 
   async callSyncingServer(
@@ -92,6 +122,21 @@ export class GRPCServiceProxy implements ServiceProxyInterface {
       payload !== undefined && typeof payload !== 'string' && 'api' in payload && payload.api === '20200115'
 
     if (requestIsUsingLatestApiVersions && endpoint === 'items/sync') {
+      await this.callSyncingServerGRPC(request, response, payload)
+
+      return
+    }
+
+    await this.callServer(this.syncingServerJsUrl, request, response, endpoint, payload)
+  }
+
+  private async callSyncingServerGRPC(
+    request: Request,
+    response: Response,
+    payload?: Record<string, unknown> | string,
+    retryAttempt?: number,
+  ): Promise<void> {
+    try {
       const result = await this.gRPCSyncingServerServiceProxy.sync(request, response, payload)
 
       response.status(result.status).send({
@@ -107,10 +152,30 @@ export class GRPCServiceProxy implements ServiceProxyInterface {
         data: result.data,
       })
 
-      return
-    }
+      if (retryAttempt) {
+        this.logger.info(`Request to Syncing Server succeeded after ${retryAttempt} retries`, {
+          userId: response.locals.user ? response.locals.user.uuid : undefined,
+        })
+      }
+    } catch (error) {
+      const requestDidNotMakeIt =
+        'code' in (error as Record<string, unknown>) && (error as Record<string, unknown>).code === Status.UNAVAILABLE
 
-    await this.callServer(this.syncingServerJsUrl, request, response, endpoint, payload)
+      const tooManyRetryAttempts = retryAttempt && retryAttempt > 2
+      if (!tooManyRetryAttempts && requestDidNotMakeIt) {
+        await this.timer.sleep(50)
+
+        const nextRetryAttempt = retryAttempt ? retryAttempt + 1 : 1
+
+        this.logger.info(`Retrying request to Syncing Server for the ${nextRetryAttempt} time`, {
+          userId: response.locals.user ? response.locals.user.uuid : undefined,
+        })
+
+        return this.callSyncingServerGRPC(request, response, payload, nextRetryAttempt)
+      }
+
+      throw error
+    }
   }
 
   async callRevisionsServer(
