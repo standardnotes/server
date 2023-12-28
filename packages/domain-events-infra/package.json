@@ -48,7 +48,7 @@
     "@standardnotes/domain-events": "workspace:*",
     "ioredis": "^5.2.4",
     "opentelemetry-instrumentation-typeorm": "^0.39.1",
-    "reflect-metadata": "^0.1.13",
+    "reflect-metadata": "^0.2.1",
     "sqs-consumer": "^8.1.0",
     "winston": "^3.8.1"
   },
