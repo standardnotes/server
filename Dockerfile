@@ -10,7 +10,7 @@ RUN apk add --update --no-cache \
   bash \
   py3-pip
 
-RUN pip install --no-cache-dir --upgrade supervisor
+RUN pip install --no-cache-dir --upgrade --break-system-packages supervisor
 
 RUN mkdir -p /var/lib/server/logs
 
