@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "@standardnotes/sncrypto-common": "^1.13.4",
-    "reflect-metadata": "^0.1.13"
+    "reflect-metadata": "^0.2.1"
   },
   "devDependencies": {
     "@types/jest": "^29.5.1",

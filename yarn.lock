@@ -4072,7 +4072,7 @@ __metadata:
     mixpanel: "npm:^0.17.0"
     mysql2: "npm:^3.0.1"
     prettier: "npm:^3.0.3"
-    reflect-metadata: "npm:^0.1.13"
+    reflect-metadata: "npm:^0.2.1"
     ts-jest: "npm:^29.1.0"
     typeorm: "npm:^0.3.17"
     typescript: "npm:^5.0.4"
@@ -4116,7 +4116,7 @@ __metadata:
     jsonwebtoken: "npm:^9.0.0"
     prettier: "npm:^3.0.3"
     prettyjson: "npm:^1.2.5"
-    reflect-metadata: "npm:0.1.13"
+    reflect-metadata: "npm:^0.2.1"
     ts-jest: "npm:^29.1.0"
     typescript: "npm:^5.0.4"
     winston: "npm:^3.8.1"
@@ -4191,7 +4191,7 @@ __metadata:
     otplib: "npm:12.0.1"
     prettier: "npm:^3.0.3"
     prettyjson: "npm:^1.2.5"
-    reflect-metadata: "npm:0.1.13"
+    reflect-metadata: "npm:^0.2.1"
     sqlite3: "npm:^5.1.6"
     ts-jest: "npm:^29.1.0"
     typeorm: "npm:^0.3.17"
@@ -4214,7 +4214,7 @@ __metadata:
     eslint-plugin-prettier: "npm:^5.0.0"
     jest: "npm:^29.5.0"
     prettier: "npm:^3.0.3"
-    reflect-metadata: "npm:^0.1.13"
+    reflect-metadata: "npm:^0.2.1"
     ts-jest: "npm:^29.1.0"
     typescript: "npm:^5.0.4"
   languageName: unknown
@@ -4269,7 +4269,7 @@ __metadata:
     jest: "npm:^29.5.0"
     opentelemetry-instrumentation-typeorm: "npm:^0.39.1"
     prettier: "npm:^3.0.3"
-    reflect-metadata: "npm:^0.1.13"
+    reflect-metadata: "npm:^0.2.1"
     sqs-consumer: "npm:^8.1.0"
     ts-jest: "npm:^29.1.0"
     typescript: "npm:^5.0.4"
@@ -4349,7 +4349,7 @@ __metadata:
     jsonwebtoken: "npm:^9.0.0"
     prettier: "npm:^3.0.3"
     prettyjson: "npm:^1.2.5"
-    reflect-metadata: "npm:^0.1.13"
+    reflect-metadata: "npm:^0.2.1"
     ts-jest: "npm:^29.1.0"
     typescript: "npm:^5.0.4"
     uuid: "npm:^9.0.0"
@@ -4395,7 +4395,7 @@ __metadata:
     inversify: "npm:^6.0.1"
     inversify-express-utils: "npm:^6.4.3"
     prettier: "npm:^3.0.3"
-    reflect-metadata: "npm:0.1.13"
+    reflect-metadata: "npm:^0.2.1"
     typescript: "npm:^5.0.4"
     winston: "npm:^3.8.1"
   languageName: unknown
@@ -4478,7 +4478,7 @@ __metadata:
     jest: "npm:^29.5.0"
     mysql2: "npm:^3.0.1"
     prettier: "npm:^3.0.3"
-    reflect-metadata: "npm:0.1.13"
+    reflect-metadata: "npm:^0.2.1"
     sqlite3: "npm:^5.1.6"
     ts-jest: "npm:^29.1.0"
     typeorm: "npm:^0.3.17"
@@ -4512,7 +4512,7 @@ __metadata:
     jest: "npm:^29.5.0"
     mysql2: "npm:^3.0.1"
     prettier: "npm:^3.0.3"
-    reflect-metadata: "npm:^0.1.13"
+    reflect-metadata: "npm:^0.2.1"
     ts-jest: "npm:^29.1.0"
     typeorm: "npm:^0.3.17"
     typescript: "npm:^5.0.4"
@@ -4533,7 +4533,7 @@ __metadata:
     jest: "npm:^29.5.0"
     jsonwebtoken: "npm:^9.0.0"
     prettier: "npm:^3.0.3"
-    reflect-metadata: "npm:^0.1.13"
+    reflect-metadata: "npm:^0.2.1"
     ts-jest: "npm:^29.1.0"
     typescript: "npm:^5.0.4"
   languageName: unknown
@@ -4575,7 +4575,7 @@ __metadata:
     eslint: "npm:^8.39.0"
     eslint-plugin-prettier: "npm:^5.0.0"
     prettier: "npm:^3.0.3"
-    reflect-metadata: "npm:^0.1.13"
+    reflect-metadata: "npm:^0.2.1"
     typescript: "npm:^5.0.4"
   languageName: unknown
   linkType: soft
@@ -4602,7 +4602,7 @@ __metadata:
     eslint-plugin-prettier: "npm:^5.0.0"
     jest: "npm:^29.5.0"
     prettier: "npm:^3.0.3"
-    reflect-metadata: "npm:^0.1.13"
+    reflect-metadata: "npm:^0.2.1"
     regenerator-runtime: "npm:^0.13.9"
     ts-jest: "npm:^29.1.0"
     ts-loader: "npm:^9.2.6"
@@ -4657,7 +4657,7 @@ __metadata:
     mysql2: "npm:^3.0.1"
     prettier: "npm:^3.0.3"
     prettyjson: "npm:^1.2.5"
-    reflect-metadata: "npm:0.1.13"
+    reflect-metadata: "npm:^0.2.1"
     semver: "npm:^7.5.4"
     sqlite3: "npm:^5.1.6"
     ts-jest: "npm:^29.1.0"
@@ -4683,7 +4683,7 @@ __metadata:
     jest: "npm:^29.5.0"
     microtime: "npm:^3.1.0"
     prettier: "npm:^3.0.3"
-    reflect-metadata: "npm:^0.1.13"
+    reflect-metadata: "npm:^0.2.1"
     ts-jest: "npm:^29.1.0"
     typescript: "npm:^5.0.4"
   languageName: unknown
@@ -4731,7 +4731,7 @@ __metadata:
     jest: "npm:^29.5.0"
     mysql2: "npm:^3.0.1"
     prettier: "npm:^3.0.3"
-    reflect-metadata: "npm:0.1.13"
+    reflect-metadata: "npm:^0.2.1"
     ts-jest: "npm:^29.1.0"
     typeorm: "npm:^0.3.17"
     typescript: "npm:^5.0.4"
@@ -11892,10 +11892,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"reflect-metadata@npm:0.1.13, reflect-metadata@npm:^0.1.13":
+"reflect-metadata@npm:^0.1.13":
   version: 0.1.13
   resolution: "reflect-metadata@npm:0.1.13"
   checksum: 732570da35d2d96f8fdd5aac60fb263aa92f6512eaded5962b052bd9e90f22a9dec5aaf0d7ff4bfe97646c9530e8444e8435c2d80b24d0bdf938b5d47f6f5b83
+  languageName: node
+  linkType: hard
+
+"reflect-metadata@npm:^0.2.1":
+  version: 0.2.1
+  resolution: "reflect-metadata@npm:0.2.1"
+  checksum: 394b293bd4a538b644ed0e8730c5aeb1e08e78972c915b3d2cf3b302241952cfee8f8bd8a0fdf7d8c7fa78d31d0585489061624692e2577d767abd120cad968c
   languageName: node
   linkType: hard
 
