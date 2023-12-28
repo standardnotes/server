@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.129.6](https://github.com/standardnotes/server/compare/@standardnotes/syncing-server@1.129.5...@standardnotes/syncing-server@1.129.6) (2023-12-28)
+
+**Note:** Version bump only for package @standardnotes/syncing-server
+
 ## [1.129.5](https://github.com/standardnotes/server/compare/@standardnotes/syncing-server@1.129.4...@standardnotes/syncing-server@1.129.5) (2023-12-28)
 
 **Note:** Version bump only for package @standardnotes/syncing-server
