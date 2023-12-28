@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.177.7](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.177.6...@standardnotes/auth-server@1.177.7) (2023-12-28)
+
+### Bug Fixes
+
+* **auth:** missing return statement in lock middleware ([eff1d64](https://github.com/standardnotes/server/commit/eff1d642cfd3502f479761a3bb76a543ae0166af))
+
 ## [1.177.6](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.177.5...@standardnotes/auth-server@1.177.6) (2023-12-28)
 
 ### Bug Fixes
