@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.177.6](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.177.5...@standardnotes/auth-server@1.177.6) (2023-12-28)
+
+### Bug Fixes
+
+* retry grpc calls upon service unavailable response ([#1011](https://github.com/standardnotes/server/issues/1011)) ([7c67a5a](https://github.com/standardnotes/server/commit/7c67a5a0f93f9d506ee4010e2837288457fc2c1d))
+
 ## [1.177.5](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.177.4...@standardnotes/auth-server@1.177.5) (2023-12-28)
 
 **Note:** Version bump only for package @standardnotes/auth-server
