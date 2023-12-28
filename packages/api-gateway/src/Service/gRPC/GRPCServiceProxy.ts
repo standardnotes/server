@@ -89,7 +89,7 @@ export class GRPCServiceProxy implements ServiceProxyInterface {
       const result = await promise
 
       if (retryAttempt) {
-        this.logger.info(`Request to Auth Server succeeded after ${retryAttempt} retries`)
+        this.logger.debug(`Request to Auth Server succeeded after ${retryAttempt} retries`)
       }
 
       return result as { status: number; data: unknown; headers: { contentType: string } }
@@ -103,7 +103,7 @@ export class GRPCServiceProxy implements ServiceProxyInterface {
 
         const nextRetryAttempt = retryAttempt ? retryAttempt + 1 : 1
 
-        this.logger.info(`Retrying request to Auth Server for the ${nextRetryAttempt} time`)
+        this.logger.debug(`Retrying request to Auth Server for the ${nextRetryAttempt} time`)
 
         return this.validateSession(headers, nextRetryAttempt)
       }
@@ -153,7 +153,7 @@ export class GRPCServiceProxy implements ServiceProxyInterface {
       })
 
       if (retryAttempt) {
-        this.logger.info(`Request to Syncing Server succeeded after ${retryAttempt} retries`, {
+        this.logger.debug(`Request to Syncing Server succeeded after ${retryAttempt} retries`, {
           userId: response.locals.user ? response.locals.user.uuid : undefined,
         })
       }
@@ -167,7 +167,7 @@ export class GRPCServiceProxy implements ServiceProxyInterface {
 
         const nextRetryAttempt = retryAttempt ? retryAttempt + 1 : 1
 
-        this.logger.info(`Retrying request to Syncing Server for the ${nextRetryAttempt} time`, {
+        this.logger.debug(`Retrying request to Syncing Server for the ${nextRetryAttempt} time`, {
           userId: response.locals.user ? response.locals.user.uuid : undefined,
         })
 
