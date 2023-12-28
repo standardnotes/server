@@ -26,6 +26,8 @@ export class LockMiddleware extends BaseMiddleware {
             message: usernameOrError.getError(),
           },
         })
+
+        return
       }
       const username = usernameOrError.getValue()
 

@@ -58,8 +58,14 @@ void container.load().then((container) => {
   const logger: winston.Logger = container.get(TYPES.Auth_Logger)
 
   server.setErrorConfig((app) => {
-    app.use((error: Record<string, unknown>, _request: Request, response: Response, _next: NextFunction) => {
-      logger.error(error.stack)
+    app.use((error: Record<string, unknown>, request: Request, response: Response, _next: NextFunction) => {
+      logger.error(`${error.stack}`, {
+        method: request.method,
+        url: request.url,
+        snjs: request.headers['x-snjs-version'],
+        application: request.headers['x-application-version'],
+        userId: response.locals.user ? response.locals.user.uuid : undefined,
+      })
 
       response.status(500).send({
         error: {
