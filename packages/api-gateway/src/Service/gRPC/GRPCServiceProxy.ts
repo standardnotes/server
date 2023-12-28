@@ -28,11 +28,14 @@ export class GRPCServiceProxy implements ServiceProxyInterface {
     private gRPCSyncingServerServiceProxy: GRPCSyncingServerServiceProxy,
   ) {}
 
-  async validateSession(headers: {
-    authorization: string
-    sharedVaultOwnerContext?: string
-  }): Promise<{ status: number; data: unknown; headers: { contentType: string } }> {
-    return new Promise((resolve, reject) => {
+  async validateSession(
+    headers: {
+      authorization: string
+      sharedVaultOwnerContext?: string
+    },
+    retryAttempt?: number,
+  ): Promise<{ status: number; data: unknown; headers: { contentType: string } }> {
+    const promise = new Promise((resolve, reject) => {
       try {
         const request = new AuthorizationHeader()
         request.setBearerToken(headers.authorization)
@@ -81,6 +84,32 @@ export class GRPCServiceProxy implements ServiceProxyInterface {
         return reject(error)
       }
     })
+
+    try {
+      const result = await promise
+
+      if (retryAttempt) {
+        this.logger.info(`Request to Auth Server succeeded after ${retryAttempt} retries`)
+      }
+
+      return result as { status: number; data: unknown; headers: { contentType: string } }
+    } catch (error) {
+      const requestDidNotMakeIt =
+        'code' in (error as Record<string, unknown>) && (error as Record<string, unknown>).code === Status.UNAVAILABLE
+
+      const tooManyRetryAttempts = retryAttempt && retryAttempt > 2
+      if (!tooManyRetryAttempts && requestDidNotMakeIt) {
+        await this.timer.sleep(50)
+
+        const nextRetryAttempt = retryAttempt ? retryAttempt + 1 : 1
+
+        this.logger.info(`Retrying request to Auth Server for the ${nextRetryAttempt} time`)
+
+        return this.validateSession(headers, nextRetryAttempt)
+      }
+
+      throw error
+    }
   }
 
   async callSyncingServer(
