@@ -26,7 +26,7 @@ describe('RedisDomainEventPublisher', () => {
 
     expect(redisClient.publish).toHaveBeenCalledWith(
       'events',
-      'eJyrViqpLEhVslIKcQ0OUdJRKkiszMlPTFGyqlZKy88HiiclFinV1gIA9tQMhA==',
+      'eJyrViqpLEhVslIKcQ0OUdJRKkiszMlPTFGyqlZKy89XslJKSixSqq0FAPbUDIQ=',
     )
   })
 })

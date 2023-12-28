@@ -1,4 +1,4 @@
-FROM node:20.6.1-alpine
+FROM node:20.10.0-alpine
 
 ENV NODE_ENV production
 
@@ -10,7 +10,7 @@ RUN apk add --update --no-cache \
   bash \
   py3-pip
 
-RUN pip install --no-cache-dir --upgrade supervisor
+RUN pip install --no-cache-dir --upgrade --break-system-packages supervisor
 
 RUN mkdir -p /var/lib/server/logs
 
