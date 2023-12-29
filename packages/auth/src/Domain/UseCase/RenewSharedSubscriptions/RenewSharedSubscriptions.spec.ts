@@ -8,6 +8,7 @@ import { SharedSubscriptionInvitation } from '../../SharedSubscription/SharedSub
 import { InviteeIdentifierType } from '../../SharedSubscription/InviteeIdentifierType'
 import { User } from '../../User/User'
 import { InvitationStatus } from '../../SharedSubscription/InvitationStatus'
+import { RoleServiceInterface } from '../../Role/RoleServiceInterface'
 
 describe('RenewSharedSubscriptions', () => {
   let listSharedSubscriptionInvitations: ListSharedSubscriptionInvitations
@@ -17,6 +18,7 @@ describe('RenewSharedSubscriptions', () => {
   let logger: Logger
   let sharedSubscriptionInvitation: SharedSubscriptionInvitation
   let user: User
+  let roleService: RoleServiceInterface
 
   const createUseCase = () =>
     new RenewSharedSubscriptions(
@@ -24,6 +26,7 @@ describe('RenewSharedSubscriptions', () => {
       sharedSubscriptionInvitationRepository,
       userSubscriptionRepository,
       userRepository,
+      roleService,
       logger,
     )
 
@@ -48,8 +51,12 @@ describe('RenewSharedSubscriptions', () => {
     userSubscriptionRepository = {} as jest.Mocked<UserSubscriptionRepositoryInterface>
     userSubscriptionRepository.save = jest.fn()
 
+    roleService = {} as jest.Mocked<RoleServiceInterface>
+    roleService.addUserRoleBasedOnSubscription = jest.fn()
+
     userRepository = {} as jest.Mocked<UserRepositoryInterface>
     userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue(user)
+    userRepository.findOneByUuid = jest.fn().mockReturnValue(user)
 
     logger = {} as jest.Mocked<Logger>
     logger.error = jest.fn()
@@ -71,8 +78,44 @@ describe('RenewSharedSubscriptions', () => {
     expect(userSubscriptionRepository.save).toBeCalledTimes(1)
   })
 
-  it('should log error if user not found', async () => {
+  it('should log error if user not found by email', async () => {
     userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue(null)
+
+    const useCase = createUseCase()
+
+    const result = await useCase.execute({
+      inviterEmail: 'inviter@test.te',
+      newSubscriptionId: 123,
+      newSubscriptionName: 'test',
+      newSubscriptionExpiresAt: 123,
+      timestamp: 123,
+    })
+
+    expect(result.isFailed()).toBeFalsy()
+    expect(logger.error).toBeCalledTimes(1)
+  })
+
+  it('should log error if user not found by uuid', async () => {
+    sharedSubscriptionInvitation.inviteeIdentifierType = InviteeIdentifierType.Uuid
+    sharedSubscriptionInvitation.inviteeIdentifier = '00000000-0000-0000-0000-000000000000'
+    userRepository.findOneByUuid = jest.fn().mockReturnValue(null)
+
+    const useCase = createUseCase()
+
+    const result = await useCase.execute({
+      inviterEmail: 'inviter@test.te',
+      newSubscriptionId: 123,
+      newSubscriptionName: 'test',
+      newSubscriptionExpiresAt: 123,
+      timestamp: 123,
+    })
+
+    expect(result.isFailed()).toBeFalsy()
+    expect(logger.error).toBeCalledTimes(1)
+  })
+
+  it('should log error if user not found by unknown identifier type', async () => {
+    sharedSubscriptionInvitation.inviteeIdentifierType = 'unknown' as InviteeIdentifierType
 
     const useCase = createUseCase()
 
@@ -110,6 +153,24 @@ describe('RenewSharedSubscriptions', () => {
   it('should log error if username is invalid', async () => {
     sharedSubscriptionInvitation.inviteeIdentifierType = InviteeIdentifierType.Email
     sharedSubscriptionInvitation.inviteeIdentifier = ''
+
+    const useCase = createUseCase()
+
+    const result = await useCase.execute({
+      inviterEmail: 'inviter@test.te',
+      newSubscriptionId: 123,
+      newSubscriptionName: 'test',
+      newSubscriptionExpiresAt: 123,
+      timestamp: 123,
+    })
+
+    expect(result.isFailed()).toBeFalsy()
+    expect(logger.error).toBeCalledTimes(1)
+  })
+
+  it('should log error if uuid is invalid', async () => {
+    sharedSubscriptionInvitation.inviteeIdentifierType = InviteeIdentifierType.Uuid
+    sharedSubscriptionInvitation.inviteeIdentifier = 'invalid'
 
     const useCase = createUseCase()
 
