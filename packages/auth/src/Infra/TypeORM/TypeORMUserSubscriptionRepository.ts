@@ -1,3 +1,4 @@
+import { SubscriptionPlanName } from '@standardnotes/domain-core'
 import { TimerInterface } from '@standardnotes/time'
 import { inject, injectable } from 'inversify'
 import { Repository } from 'typeorm'
@@ -6,7 +7,6 @@ import TYPES from '../../Bootstrap/Types'
 import { UserSubscription } from '../../Domain/Subscription/UserSubscription'
 import { UserSubscriptionRepositoryInterface } from '../../Domain/Subscription/UserSubscriptionRepositoryInterface'
 import { UserSubscriptionType } from '../../Domain/Subscription/UserSubscriptionType'
-import { SubscriptionPlanName } from '@standardnotes/domain-core'
 
 @injectable()
 export class TypeORMUserSubscriptionRepository implements UserSubscriptionRepositoryInterface {
@@ -15,6 +15,15 @@ export class TypeORMUserSubscriptionRepository implements UserSubscriptionReposi
     private ormRepository: Repository<UserSubscription>,
     @inject(TYPES.Auth_Timer) private timer: TimerInterface,
   ) {}
+
+  async findActiveByType(type: UserSubscriptionType): Promise<UserSubscription[]> {
+    return await this.ormRepository
+      .createQueryBuilder()
+      .where('ends_at > :timestamp', { timestamp: this.timer.getTimestampInMicroseconds() })
+      .andWhere('subscription_type = :type', { type })
+      .orderBy('created_at', 'ASC')
+      .getMany()
+  }
 
   async countByPlanName(planNames: SubscriptionPlanName[]): Promise<number> {
     return await this.ormRepository

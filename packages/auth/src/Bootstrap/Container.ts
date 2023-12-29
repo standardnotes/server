@@ -1284,6 +1284,7 @@ export class ContainerConfigLoader {
           ),
           container.get<UserSubscriptionRepositoryInterface>(TYPES.Auth_UserSubscriptionRepository),
           container.get<UserRepositoryInterface>(TYPES.Auth_UserRepository),
+          container.get<RoleServiceInterface>(TYPES.Auth_RoleService),
           container.get<winston.Logger>(TYPES.Auth_Logger),
         ),
       )
