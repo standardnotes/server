@@ -1,4 +1,4 @@
-import { Result, UseCaseInterface, Username } from '@standardnotes/domain-core'
+import { Result, UseCaseInterface, Username, Uuid } from '@standardnotes/domain-core'
 import { Logger } from 'winston'
 
 import { RenewSharedSubscriptionsDTO } from './RenewSharedSubscriptionsDTO'
@@ -10,6 +10,8 @@ import { UserSubscriptionType } from '../../Subscription/UserSubscriptionType'
 import { UserSubscriptionRepositoryInterface } from '../../Subscription/UserSubscriptionRepositoryInterface'
 import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'
 import { InviteeIdentifierType } from '../../SharedSubscription/InviteeIdentifierType'
+import { RoleServiceInterface } from '../../Role/RoleServiceInterface'
+import { User } from '../../User/User'
 
 export class RenewSharedSubscriptions implements UseCaseInterface<void> {
   constructor(
@@ -17,6 +19,7 @@ export class RenewSharedSubscriptions implements UseCaseInterface<void> {
     private sharedSubscriptionInvitationRepository: SharedSubscriptionInvitationRepositoryInterface,
     private userSubscriptionRepository: UserSubscriptionRepositoryInterface,
     private userRepository: UserRepositoryInterface,
+    private roleService: RoleServiceInterface,
     private logger: Logger,
   ) {}
 
@@ -31,8 +34,8 @@ export class RenewSharedSubscriptions implements UseCaseInterface<void> {
 
     for (const invitation of acceptedInvitations) {
       try {
-        const userUuid = await this.getInviteeUserUuid(invitation.inviteeIdentifier, invitation.inviteeIdentifierType)
-        if (userUuid === null) {
+        const user = await this.getInviteeUserUuid(invitation.inviteeIdentifier, invitation.inviteeIdentifierType)
+        if (user === null) {
           this.logger.error(
             `[SUBSCRIPTION: ${dto.newSubscriptionId}] Could not renew shared subscription for invitation: ${invitation.uuid}: Could not find user with identifier: ${invitation.inviteeIdentifier}`,
           )
@@ -42,10 +45,12 @@ export class RenewSharedSubscriptions implements UseCaseInterface<void> {
         await this.createSharedSubscription({
           subscriptionId: dto.newSubscriptionId,
           subscriptionName: dto.newSubscriptionName,
-          userUuid,
+          userUuid: user.uuid,
           timestamp: dto.timestamp,
           subscriptionExpiresAt: dto.newSubscriptionExpiresAt,
         })
+
+        await this.roleService.addUserRoleBasedOnSubscription(user, dto.newSubscriptionName)
 
         invitation.subscriptionId = dto.newSubscriptionId
         invitation.updatedAt = dto.timestamp
@@ -83,7 +88,7 @@ export class RenewSharedSubscriptions implements UseCaseInterface<void> {
     return this.userSubscriptionRepository.save(subscription)
   }
 
-  private async getInviteeUserUuid(inviteeIdentifier: string, inviteeIdentifierType: string): Promise<string | null> {
+  private async getInviteeUserUuid(inviteeIdentifier: string, inviteeIdentifierType: string): Promise<User | null> {
     if (inviteeIdentifierType === InviteeIdentifierType.Email) {
       const usernameOrError = Username.create(inviteeIdentifier)
       if (usernameOrError.isFailed()) {
@@ -91,14 +96,16 @@ export class RenewSharedSubscriptions implements UseCaseInterface<void> {
       }
       const username = usernameOrError.getValue()
 
-      const user = await this.userRepository.findOneByUsernameOrEmail(username)
-      if (user === null) {
+      return this.userRepository.findOneByUsernameOrEmail(username)
+    } else if (inviteeIdentifierType === InviteeIdentifierType.Uuid) {
+      const uuidOrError = Uuid.create(inviteeIdentifier)
+      if (uuidOrError.isFailed()) {
         return null
       }
-
-      return user.uuid
+      const uuid = uuidOrError.getValue()
+      return this.userRepository.findOneByUuid(uuid)
     }
 
-    return inviteeIdentifier
+    return null
   }
 }

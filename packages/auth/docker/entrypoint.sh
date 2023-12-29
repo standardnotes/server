@@ -38,6 +38,10 @@ case "$COMMAND" in
     exec node docker/entrypoint-fix-quota.js $EMAIL
     ;;
 
+  'fix-roles' )
+    exec node docker/entrypoint-fix-roles.js
+    ;;
+
   'delete-accounts' )
     FILE_NAME=$1 && shift 1
     MODE=$1 && shift 1
