@@ -22,7 +22,6 @@ import {
   SessionRefreshedEvent,
   AccountDeletionVerificationRequestedEvent,
   FileQuotaRecalculationRequestedEvent,
-  RevisionsCleanupRequestedEvent,
 } from '@standardnotes/domain-events'
 import { Predicate, PredicateVerificationResult } from '@standardnotes/predicates'
 import { TimerInterface } from '@standardnotes/time'
@@ -35,22 +34,6 @@ import { KeyParamsData } from '@standardnotes/responses'
 @injectable()
 export class DomainEventFactory implements DomainEventFactoryInterface {
   constructor(@inject(TYPES.Auth_Timer) private timer: TimerInterface) {}
-
-  createRevisionsCleanupRequestedEvent(dto: { userUuid: string }): RevisionsCleanupRequestedEvent {
-    return {
-      type: 'REVISIONS_CLEANUP_REQUESTED',
-      createdAt: this.timer.getUTCDate(),
-      meta: {
-        correlation: {
-          userIdentifier: dto.userUuid,
-          userIdentifierType: 'uuid',
-        },
-        origin: DomainEventService.Auth,
-      },
-      payload: dto,
-    }
-  }
-
   createFileQuotaRecalculationRequestedEvent(dto: { userUuid: string }): FileQuotaRecalculationRequestedEvent {
     return {
       type: 'FILE_QUOTA_RECALCULATION_REQUESTED',

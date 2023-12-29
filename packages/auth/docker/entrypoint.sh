@@ -44,10 +44,6 @@ case "$COMMAND" in
     exec node docker/entrypoint-delete-accounts.js $FILE_NAME $MODE
     ;;
 
-  'revisions-cleanup' )
-    exec node docker/entrypoint-revisions-cleanup.js
-    ;;
-
    * )
     echo "[Docker] Unknown command"
     ;;
