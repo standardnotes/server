@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.177.9](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.177.8...@standardnotes/auth-server@1.177.9) (2023-12-29)
+
+### Bug Fixes
+
+* **auth:** adding user roles upon renewal of shared subscription ([#1012](https://github.com/standardnotes/server/issues/1012)) ([26b13ed](https://github.com/standardnotes/server/commit/26b13ed6d488fb5038a3928482b3079ab2b5f8d8))
+
 ## [1.177.8](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.177.7...@standardnotes/auth-server@1.177.8) (2023-12-29)
 
 ### Bug Fixes
