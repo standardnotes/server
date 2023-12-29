@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.129.8](https://github.com/standardnotes/server/compare/@standardnotes/syncing-server@1.129.7...@standardnotes/syncing-server@1.129.8) (2023-12-29)
+
+### Bug Fixes
+
+* cleanup revision requests ([7e8d7f6](https://github.com/standardnotes/server/commit/7e8d7f6874bb1db55ee6feb9e128c684a6900189))
+
 ## [1.129.7](https://github.com/standardnotes/server/compare/@standardnotes/syncing-server@1.129.6...@standardnotes/syncing-server@1.129.7) (2023-12-28)
 
 ### Bug Fixes
