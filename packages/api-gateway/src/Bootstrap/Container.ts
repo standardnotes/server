@@ -152,7 +152,7 @@ export class ContainerConfigLoader {
         container.bind(TYPES.ApiGateway_SYNCING_SERVER_GRPC_URL).toConstantValue(env.get('SYNCING_SERVER_GRPC_URL'))
         const grpcAgentKeepAliveTimeout = env.get('GRPC_AGENT_KEEP_ALIVE_TIMEOUT', true)
           ? +env.get('GRPC_AGENT_KEEP_ALIVE_TIMEOUT', true)
-          : 8_000
+          : 20_000
 
         const grpcMaxMessageSize = env.get('GRPC_MAX_MESSAGE_SIZE', true)
           ? +env.get('GRPC_MAX_MESSAGE_SIZE', true)
@@ -163,7 +163,6 @@ export class ContainerConfigLoader {
             container.get<string>(TYPES.ApiGateway_AUTH_SERVER_GRPC_URL),
             grpc.credentials.createInsecure(),
             {
-              'grpc.keepalive_time_ms': grpcAgentKeepAliveTimeout * 2,
               'grpc.keepalive_timeout_ms': grpcAgentKeepAliveTimeout,
               'grpc.default_compression_algorithm': grpc.compressionAlgorithms.gzip,
               'grpc.default_compression_level': 2,
@@ -177,7 +176,6 @@ export class ContainerConfigLoader {
             container.get<string>(TYPES.ApiGateway_SYNCING_SERVER_GRPC_URL),
             grpc.credentials.createInsecure(),
             {
-              'grpc.keepalive_time_ms': grpcAgentKeepAliveTimeout * 2,
               'grpc.keepalive_timeout_ms': grpcAgentKeepAliveTimeout,
               'grpc.default_compression_algorithm': grpc.compressionAlgorithms.gzip,
               'grpc.default_compression_level': 2,

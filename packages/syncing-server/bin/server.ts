@@ -85,16 +85,18 @@ void container.load().then((container) => {
 
   serverInstance.keepAliveTimeout = keepAliveTimeout
 
+  const grpcKeepAliveTime = env.get('GRPC_KEEP_ALIVE_TIME', true) ? +env.get('GRPC_KEEP_ALIVE_TIME', true) : 7_200_000
+
   const grpcKeepAliveTimeout = env.get('GRPC_KEEP_ALIVE_TIMEOUT', true)
     ? +env.get('GRPC_KEEP_ALIVE_TIMEOUT', true)
-    : 10_000
+    : 20_000
 
   const grpcMaxMessageSize = env.get('GRPC_MAX_MESSAGE_SIZE', true)
     ? +env.get('GRPC_MAX_MESSAGE_SIZE', true)
     : 1024 * 1024 * 50
 
   const grpcServer = new grpc.Server({
-    'grpc.keepalive_time_ms': grpcKeepAliveTimeout * 2,
+    'grpc.keepalive_time_ms': grpcKeepAliveTime,
     'grpc.keepalive_timeout_ms': grpcKeepAliveTimeout,
     'grpc.default_compression_algorithm': grpc.compressionAlgorithms.gzip,
     'grpc.max_receive_message_length': grpcMaxMessageSize,
