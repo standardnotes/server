@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.177.10](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.177.9...@standardnotes/auth-server@1.177.10) (2024-01-02)
+
+### Bug Fixes
+
+* adjust grpc keepalive parameters ([5987b08](https://github.com/standardnotes/server/commit/5987b0899c21d40cc2c90c29fcf3c25b27660d0c))
+
 ## [1.177.9](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.177.8...@standardnotes/auth-server@1.177.9) (2023-12-29)
 
 ### Bug Fixes

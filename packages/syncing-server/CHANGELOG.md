@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.129.9](https://github.com/standardnotes/server/compare/@standardnotes/syncing-server@1.129.8...@standardnotes/syncing-server@1.129.9) (2024-01-02)
+
+### Bug Fixes
+
+* adjust grpc keepalive parameters ([5987b08](https://github.com/standardnotes/server/commit/5987b0899c21d40cc2c90c29fcf3c25b27660d0c))
+
 ## [1.129.8](https://github.com/standardnotes/server/compare/@standardnotes/syncing-server@1.129.7...@standardnotes/syncing-server@1.129.8) (2023-12-29)
 
 ### Bug Fixes
