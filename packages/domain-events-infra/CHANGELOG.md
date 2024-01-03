@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.23.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events-infra@1.22.10...@standardnotes/domain-events-infra@1.23.0) (2024-01-03)
+
+### Features
+
+* **domain-events-infra:** add grpc opentelemetry instrumentation ([99b8273](https://github.com/standardnotes/server/commit/99b8273e2df8994abfbcd95d04d5da523bd8a6de))
+
 ## [1.22.10](https://github.com/standardnotes/server/compare/@standardnotes/domain-events-infra@1.22.9...@standardnotes/domain-events-infra@1.22.10) (2023-12-29)
 
 **Note:** Version bump only for package @standardnotes/domain-events-infra

@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.22.36](https://github.com/standardnotes/server/compare/@standardnotes/home-server@1.22.35...@standardnotes/home-server@1.22.36) (2024-01-03)
+
+**Note:** Version bump only for package @standardnotes/home-server
+
 ## [1.22.35](https://github.com/standardnotes/server/compare/@standardnotes/home-server@1.22.34...@standardnotes/home-server@1.22.35) (2024-01-02)
 
 **Note:** Version bump only for package @standardnotes/home-server

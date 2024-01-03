@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.129.10](https://github.com/standardnotes/server/compare/@standardnotes/syncing-server@1.129.9...@standardnotes/syncing-server@1.129.10) (2024-01-03)
+
+### Bug Fixes
+
+* **syncing-server:** enable opentelemetry ([f1b6fa5](https://github.com/standardnotes/server/commit/f1b6fa55dfe9e71b02521dcb456bc6e0339ddd61))
+
 ## [1.129.9](https://github.com/standardnotes/server/compare/@standardnotes/syncing-server@1.129.8...@standardnotes/syncing-server@1.129.9) (2024-01-02)
 
 ### Bug Fixes
