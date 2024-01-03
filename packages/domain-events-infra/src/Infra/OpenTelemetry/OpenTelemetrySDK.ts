@@ -54,7 +54,7 @@ export class OpenTelemetrySDK implements OpenTelemetrySDKInterface {
       },
     })
 
-    const ratio = this.options.spanRatio ?? 0.01
+    const ratio = this.options.spanRatio ?? 0.1
 
     this.sdk = new OpenTelemetrySDKNode.NodeSDK({
       sampler: new OpenTelemetrySDKNode.tracing.TraceIdRatioBasedSampler(ratio),
