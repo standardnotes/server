@@ -1,5 +1,11 @@
 import 'reflect-metadata'
 
+import { OpenTelemetrySDK } from '@standardnotes/domain-events-infra'
+import { MapperInterface, ServiceIdentifier } from '@standardnotes/domain-core'
+
+const sdk = new OpenTelemetrySDK({ serviceName: ServiceIdentifier.NAMES.SyncingServer })
+sdk.start()
+
 import '../src/Infra/InversifyExpressUtils/AnnotatedFallbackController'
 import '../src/Infra/InversifyExpressUtils/AnnotatedHealthCheckController'
 import '../src/Infra/InversifyExpressUtils/AnnotatedItemsController'
@@ -14,7 +20,6 @@ import * as grpc from '@grpc/grpc-js'
 import { urlencoded, json, Request, Response, NextFunction } from 'express'
 import * as winston from 'winston'
 import { InversifyExpressServer } from 'inversify-express-utils'
-import { MapperInterface } from '@standardnotes/domain-core'
 import { SyncResponse, SyncingService } from '@standardnotes/grpc'
 
 import TYPES from '../src/Bootstrap/Types'
