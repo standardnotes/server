@@ -3244,6 +3244,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@opentelemetry/instrumentation-grpc@npm:^0.46.0":
+  version: 0.46.0
+  resolution: "@opentelemetry/instrumentation-grpc@npm:0.46.0"
+  dependencies:
+    "@opentelemetry/instrumentation": "npm:0.46.0"
+    "@opentelemetry/semantic-conventions": "npm:1.19.0"
+  peerDependencies:
+    "@opentelemetry/api": ^1.3.0
+  checksum: 3b702d8b957d0250af277c1a0408c5b21362a9f9c5293a0a829d2c39454e710c6aef4ea975ff1e318a48fd26d9832590f4ddcb97bffde1ecf17b5051b3ad9864
+  languageName: node
+  linkType: hard
+
 "@opentelemetry/instrumentation-http@npm:^0.46.0":
   version: 0.46.0
   resolution: "@opentelemetry/instrumentation-http@npm:0.46.0"
@@ -5065,6 +5077,7 @@ __metadata:
     "@opentelemetry/id-generator-aws-xray": "npm:^1.2.1"
     "@opentelemetry/instrumentation-aws-sdk": "npm:^0.37.1"
     "@opentelemetry/instrumentation-express": "npm:^0.34.0"
+    "@opentelemetry/instrumentation-grpc": "npm:^0.46.0"
     "@opentelemetry/instrumentation-http": "npm:^0.46.0"
     "@opentelemetry/instrumentation-ioredis": "npm:^0.36.0"
     "@opentelemetry/instrumentation-winston": "npm:^0.33.0"

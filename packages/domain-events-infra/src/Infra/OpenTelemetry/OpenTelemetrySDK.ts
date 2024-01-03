@@ -11,6 +11,7 @@ import { OTLPMetricExporter } from '@opentelemetry/exporter-metrics-otlp-proto'
 import { WinstonInstrumentation } from '@opentelemetry/instrumentation-winston'
 import { IORedisInstrumentation } from '@opentelemetry/instrumentation-ioredis'
 import { ExpressInstrumentation } from '@opentelemetry/instrumentation-express'
+import { GrpcInstrumentation } from '@opentelemetry/instrumentation-grpc'
 import { IncomingMessage } from 'http'
 import { Attributes } from '@opentelemetry/api'
 
@@ -82,6 +83,7 @@ export class OpenTelemetrySDK implements OpenTelemetrySDKInterface {
         }),
         winstonInstrumentation,
         new IORedisInstrumentation(),
+        new GrpcInstrumentation(),
       ],
       metricReader: metricReader,
       resource: otResource,
