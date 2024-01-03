@@ -98,4 +98,8 @@ export class OpenTelemetrySDK implements OpenTelemetrySDKInterface {
   start(): void {
     this.sdk.start()
   }
+
+  async shutdown(): Promise<void> {
+    await this.sdk.shutdown()
+  }
 }

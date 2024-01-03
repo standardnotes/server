@@ -146,6 +146,14 @@ void container.load().then((container) => {
         logger.info('gRPC server closed')
       }
     })
+    sdk
+      .shutdown()
+      .then(() => {
+        logger.info('OpenTelemetry SDK shut down')
+      })
+      .catch((error) => {
+        logger.error(`Failed to shut down OpenTelemetry SDK: ${error.message}`)
+      })
   })
 
   logger.info(`Server started on port ${process.env.PORT}`)
