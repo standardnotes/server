@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.23.1](https://github.com/standardnotes/server/compare/@standardnotes/domain-events-infra@1.23.0...@standardnotes/domain-events-infra@1.23.1) (2024-01-03)
+
+### Bug Fixes
+
+* **domain-events-infra:** increase default span ratio ([88a5de7](https://github.com/standardnotes/server/commit/88a5de766ced10a1383c73bd04f6b2faa9f9b2a6))
+* **syncing-server:** add opentelemetry sdk shutdown ([a0e523e](https://github.com/standardnotes/server/commit/a0e523e64c14641c0ac9774d3bc775217eff64be))
+
 # [1.23.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events-infra@1.22.10...@standardnotes/domain-events-infra@1.23.0) (2024-01-03)
 
 ### Features

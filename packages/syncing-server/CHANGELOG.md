@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.129.11](https://github.com/standardnotes/server/compare/@standardnotes/syncing-server@1.129.10...@standardnotes/syncing-server@1.129.11) (2024-01-03)
+
+### Bug Fixes
+
+* **syncing-server:** add opentelemetry sdk shutdown ([a0e523e](https://github.com/standardnotes/server/commit/a0e523e64c14641c0ac9774d3bc775217eff64be))
+
 ## [1.129.10](https://github.com/standardnotes/server/compare/@standardnotes/syncing-server@1.129.9...@standardnotes/syncing-server@1.129.10) (2024-01-03)
 
 ### Bug Fixes
