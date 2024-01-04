@@ -551,6 +551,16 @@ export class ContainerConfigLoader {
             ),
       )
 
+    if (isConfiguredForInMemoryCache) {
+      container.bind<MetricsStoreInterface>(TYPES.Sync_MetricsStore).toConstantValue(new DummyMetricStore())
+    } else {
+      container
+        .bind<MetricsStoreInterface>(TYPES.Sync_MetricsStore)
+        .toConstantValue(
+          new RedisMetricStore(container.get<Redis>(TYPES.Sync_Redis), container.get<TimerInterface>(TYPES.Sync_Timer)),
+        )
+    }
+
     // use cases
     container
       .bind<GetItems>(TYPES.Sync_GetItems)
@@ -899,15 +909,6 @@ export class ContainerConfigLoader {
       )
 
     // Services
-    if (isConfiguredForInMemoryCache) {
-      container.bind<MetricsStoreInterface>(TYPES.Sync_MetricsStore).toConstantValue(new DummyMetricStore())
-    } else {
-      container
-        .bind<MetricsStoreInterface>(TYPES.Sync_MetricsStore)
-        .toConstantValue(
-          new RedisMetricStore(container.get<Redis>(TYPES.Sync_Redis), container.get<TimerInterface>(TYPES.Sync_Timer)),
-        )
-    }
     container
       .bind<SyncResponseFactory20161215>(TYPES.Sync_SyncResponseFactory20161215)
       .toConstantValue(new SyncResponseFactory20161215(container.get(TYPES.Sync_ItemHttpMapper)))
