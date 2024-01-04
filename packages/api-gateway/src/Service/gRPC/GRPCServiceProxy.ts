@@ -134,48 +134,21 @@ export class GRPCServiceProxy implements ServiceProxyInterface {
     request: Request,
     response: Response,
     payload?: Record<string, unknown> | string,
-    retryAttempt?: number,
   ): Promise<void> {
-    try {
-      const result = await this.gRPCSyncingServerServiceProxy.sync(request, response, payload)
+    const result = await this.gRPCSyncingServerServiceProxy.sync(request, response, payload)
 
-      response.status(result.status).send({
-        meta: {
-          auth: {
-            userUuid: response.locals.user?.uuid,
-            roles: response.locals.roles,
-          },
-          server: {
-            filesServerUrl: this.filesServerUrl,
-          },
+    response.status(result.status).send({
+      meta: {
+        auth: {
+          userUuid: response.locals.user?.uuid,
+          roles: response.locals.roles,
         },
-        data: result.data,
-      })
-
-      if (retryAttempt) {
-        this.logger.debug(`Request to Syncing Server succeeded after ${retryAttempt} retries`, {
-          userId: response.locals.user ? response.locals.user.uuid : undefined,
-        })
-      }
-    } catch (error) {
-      const requestDidNotMakeIt =
-        'code' in (error as Record<string, unknown>) && (error as Record<string, unknown>).code === Status.UNAVAILABLE
-
-      const tooManyRetryAttempts = retryAttempt && retryAttempt > 2
-      if (!tooManyRetryAttempts && requestDidNotMakeIt) {
-        await this.timer.sleep(50)
-
-        const nextRetryAttempt = retryAttempt ? retryAttempt + 1 : 1
-
-        this.logger.debug(`Retrying request to Syncing Server for the ${nextRetryAttempt} time`, {
-          userId: response.locals.user ? response.locals.user.uuid : undefined,
-        })
-
-        return this.callSyncingServerGRPC(request, response, payload, nextRetryAttempt)
-      }
-
-      throw error
-    }
+        server: {
+          filesServerUrl: this.filesServerUrl,
+        },
+      },
+      data: result.data,
+    })
   }
 
   async callRevisionsServer(
