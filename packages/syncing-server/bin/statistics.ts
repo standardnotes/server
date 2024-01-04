@@ -10,8 +10,14 @@ import { MetricsStoreInterface } from '../src/Domain/Metrics/MetricsStoreInterfa
 import { Metric } from '../src/Domain/Metrics/Metric'
 import { Time, TimerInterface } from '@standardnotes/time'
 
-const sendStatistics = async (metricsStore: MetricsStoreInterface, timer: TimerInterface): Promise<void> => {
-  const cloudwatchClient = new CloudWatchClient()
+const sendStatistics = async (
+  metricsStore: MetricsStoreInterface,
+  timer: TimerInterface,
+  awsRegion: string,
+): Promise<void> => {
+  const cloudwatchClient = new CloudWatchClient({
+    region: awsRegion,
+  })
 
   const minutesToProcess = 60
 
@@ -60,8 +66,9 @@ void container.load().then((container) => {
 
   const metricsStore = container.get<MetricsStoreInterface>(TYPES.Sync_MetricsStore)
   const timer = container.get<TimerInterface>(TYPES.Sync_Timer)
+  const awsRegion = env.get('SNS_AWS_REGION', true)
 
-  Promise.resolve(sendStatistics(metricsStore, timer))
+  Promise.resolve(sendStatistics(metricsStore, timer, awsRegion))
     .then(() => {
       logger.info('Finished statistics sending')
 
