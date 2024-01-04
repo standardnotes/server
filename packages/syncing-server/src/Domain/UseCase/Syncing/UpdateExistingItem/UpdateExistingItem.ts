@@ -24,6 +24,8 @@ import { RemoveNotificationsForUser } from '../../Messaging/RemoveNotificationsF
 import { ItemHash } from '../../../Item/ItemHash'
 import { AddNotificationsForUsers } from '../../Messaging/AddNotificationsForUsers/AddNotificationsForUsers'
 import { ItemRepositoryInterface } from '../../../Item/ItemRepositoryInterface'
+import { MetricsStoreInterface } from '../../../Metrics/MetricsStoreInterface'
+import { Metric } from '../../../Metrics/Metric'
 
 export class UpdateExistingItem implements UseCaseInterface<Item> {
   constructor(
@@ -36,6 +38,7 @@ export class UpdateExistingItem implements UseCaseInterface<Item> {
     private determineSharedVaultOperationOnItem: DetermineSharedVaultOperationOnItem,
     private addNotificationForUsers: AddNotificationsForUsers,
     private removeNotificationsForUser: RemoveNotificationsForUser,
+    private metricsStore: MetricsStoreInterface,
   ) {}
 
   async execute(dto: UpdateExistingItemDTO): Promise<Result<Item>> {
@@ -172,6 +175,10 @@ export class UpdateExistingItem implements UseCaseInterface<Item> {
     }
 
     await this.itemRepository.update(dto.existingItem)
+
+    await this.metricsStore.storeMetric(
+      Metric.create({ name: Metric.NAMES.ItemUpdated, timestamp: this.timer.getTimestampInMicroseconds() }).getValue(),
+    )
 
     /* istanbul ignore next */
     const revisionsFrequency = dto.isFreeUser ? this.freeRevisionFrequency : this.premiumRevisionFrequency

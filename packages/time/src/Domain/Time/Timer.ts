@@ -19,6 +19,10 @@ export class Timer implements TimerInterface {
     return dayjs.utc().add(n, 'second').toDate()
   }
 
+  getUTCDateNMinutesAgo(n: number): Date {
+    return dayjs.utc().subtract(n, 'minute').toDate()
+  }
+
   convertMicrosecondsToTimeStructure(microseconds: number): TimeStructure {
     const days = Math.floor(microseconds / Time.MicrosecondsInADay)
 

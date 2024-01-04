@@ -47,6 +47,13 @@ describe('Timer', () => {
     expect(+date - +dateNHoursAgo >= 4 * 3600).toBeTruthy()
   })
 
+  it('should return a utc date n minutes ago', () => {
+    const date = createTimer().getUTCDate()
+    const dateNMinutesAgo = createTimer().getUTCDateNMinutesAgo(4)
+
+    expect(+date - +dateNMinutesAgo >= 4 * 60).toBeTruthy()
+  })
+
   it('should return a utc date n hours ahead', () => {
     const date = createTimer().getUTCDate()
     const dateNHoursAhead = createTimer().getUTCDateNHoursAhead(4)
