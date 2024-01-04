@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.131.0](https://github.com/standardnotes/server/compare/@standardnotes/syncing-server@1.130.3...@standardnotes/syncing-server@1.131.0) (2024-01-04)
+
+### Features
+
+* **syncing-server:** store per user content size utilization and item operations metrics ([4dd2eb9](https://github.com/standardnotes/server/commit/4dd2eb9349eb16006d1ebba99c848b8f6c51baf9))
+
 ## [1.130.3](https://github.com/standardnotes/server/compare/@standardnotes/syncing-server@1.130.2...@standardnotes/syncing-server@1.130.3) (2024-01-04)
 
 ### Bug Fixes
