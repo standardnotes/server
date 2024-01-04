@@ -34,6 +34,10 @@ const sendStatistics = async (
         timestamp + Time.MicrosecondsInAMinute,
       )
 
+      if (statistics.sampleCount === 0) {
+        continue
+      }
+
       await cloudwatchClient.send(
         new PutMetricDataCommand({
           Namespace: 'SyncingServer',
