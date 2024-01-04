@@ -17,6 +17,8 @@ import { DomainEventFactoryInterface } from '../../../Event/DomainEventFactoryIn
 import { SharedVaultAssociation } from '../../../SharedVault/SharedVaultAssociation'
 import { KeySystemAssociation } from '../../../KeySystem/KeySystemAssociation'
 import { ItemRepositoryInterface } from '../../../Item/ItemRepositoryInterface'
+import { MetricsStoreInterface } from '../../../Metrics/MetricsStoreInterface'
+import { Metric } from '../../../Metrics/Metric'
 
 export class SaveNewItem implements UseCaseInterface<Item> {
   constructor(
@@ -24,6 +26,7 @@ export class SaveNewItem implements UseCaseInterface<Item> {
     private timer: TimerInterface,
     private domainEventPublisher: DomainEventPublisherInterface,
     private domainEventFactory: DomainEventFactoryInterface,
+    private metricsStore: MetricsStoreInterface,
   ) {}
 
   async execute(dto: SaveNewItemDTO): Promise<Result<Item>> {
@@ -134,6 +137,10 @@ export class SaveNewItem implements UseCaseInterface<Item> {
     }
 
     await this.itemRepository.insert(newItem)
+
+    await this.metricsStore.storeMetric(
+      Metric.create({ name: Metric.NAMES.ItemCreated, timestamp: this.timer.getTimestampInMicroseconds() }).getValue(),
+    )
 
     if (contentType.value !== null && [ContentType.TYPES.Note, ContentType.TYPES.File].includes(contentType.value)) {
       await this.domainEventPublisher.publish(

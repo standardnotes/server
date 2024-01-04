@@ -1,4 +1,5 @@
 import * as winston from 'winston'
+import Redis from 'ioredis'
 import { Container, interfaces } from 'inversify'
 
 import { Env } from './Env'
@@ -162,6 +163,9 @@ import { SyncResponse } from '@standardnotes/grpc'
 import { SyncResponseGRPCMapper } from '../Mapping/gRPC/SyncResponseGRPCMapper'
 import { AccountDeletionVerificationRequestedEventHandler } from '../Domain/Handler/AccountDeletionVerificationRequestedEventHandler'
 import { SendEventToClients } from '../Domain/UseCase/Syncing/SendEventToClients/SendEventToClients'
+import { MetricsStoreInterface } from '../Domain/Metrics/MetricsStoreInterface'
+import { RedisMetricStore } from '../Infra/Redis/RedisMetricStore'
+import { DummyMetricStore } from '../Infra/Dummy/DummyMetricStore'
 
 export class ContainerConfigLoader {
   private readonly DEFAULT_CONTENT_SIZE_TRANSFER_LIMIT = 10_000_000
@@ -211,6 +215,20 @@ export class ContainerConfigLoader {
     const isConfiguredForHomeServer = env.get('MODE', true) === 'home-server'
     const isConfiguredForSelfHosting = env.get('MODE', true) === 'self-hosted'
     const isConfiguredForHomeServerOrSelfHosting = isConfiguredForHomeServer || isConfiguredForSelfHosting
+    const isConfiguredForInMemoryCache = env.get('CACHE_TYPE', true) === 'memory'
+
+    if (!isConfiguredForInMemoryCache) {
+      const redisUrl = env.get('REDIS_URL')
+      const isRedisInClusterMode = redisUrl.indexOf(',') > 0
+      let redis
+      if (isRedisInClusterMode) {
+        redis = new Redis.Cluster(redisUrl.split(','))
+      } else {
+        redis = new Redis(redisUrl)
+      }
+
+      container.bind(TYPES.Sync_Redis).toConstantValue(redis)
+    }
 
     container
       .bind<boolean>(TYPES.Sync_IS_CONFIGURED_FOR_HOME_SERVER_OR_SELF_HOSTING)
@@ -554,6 +572,7 @@ export class ContainerConfigLoader {
           container.get(TYPES.Sync_Timer),
           container.get(TYPES.Sync_DomainEventPublisher),
           container.get(TYPES.Sync_DomainEventFactory),
+          container.get<MetricsStoreInterface>(TYPES.Sync_MetricsStore),
         ),
       )
     container
@@ -609,6 +628,7 @@ export class ContainerConfigLoader {
           container.get<DetermineSharedVaultOperationOnItem>(TYPES.Sync_DetermineSharedVaultOperationOnItem),
           container.get<AddNotificationsForUsers>(TYPES.Sync_AddNotificationsForUsers),
           container.get<RemoveNotificationsForUser>(TYPES.Sync_RemoveNotificationsForUser),
+          container.get<MetricsStoreInterface>(TYPES.Sync_MetricsStore),
         ),
       )
     container
@@ -879,6 +899,15 @@ export class ContainerConfigLoader {
       )
 
     // Services
+    if (isConfiguredForInMemoryCache) {
+      container.bind<MetricsStoreInterface>(TYPES.Sync_MetricsStore).toConstantValue(new DummyMetricStore())
+    } else {
+      container
+        .bind<MetricsStoreInterface>(TYPES.Sync_MetricsStore)
+        .toConstantValue(
+          new RedisMetricStore(container.get<Redis>(TYPES.Sync_Redis), container.get<TimerInterface>(TYPES.Sync_Timer)),
+        )
+    }
     container
       .bind<SyncResponseFactory20161215>(TYPES.Sync_SyncResponseFactory20161215)
       .toConstantValue(new SyncResponseFactory20161215(container.get(TYPES.Sync_ItemHttpMapper)))

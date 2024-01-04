@@ -20,6 +20,7 @@ import { DetermineSharedVaultOperationOnItem } from '../../SharedVaults/Determin
 import { RemoveNotificationsForUser } from '../../Messaging/RemoveNotificationsForUser/RemoveNotificationsForUser'
 import { SharedVaultOperationOnItem } from '../../../SharedVault/SharedVaultOperationOnItem'
 import { AddNotificationsForUsers } from '../../Messaging/AddNotificationsForUsers/AddNotificationsForUsers'
+import { MetricsStoreInterface } from '../../../Metrics/MetricsStoreInterface'
 
 describe('UpdateExistingItem', () => {
   let itemRepository: ItemRepositoryInterface
@@ -31,6 +32,7 @@ describe('UpdateExistingItem', () => {
   let determineSharedVaultOperationOnItem: DetermineSharedVaultOperationOnItem
   let addNotificationsForUsers: AddNotificationsForUsers
   let removeNotificationsForUser: RemoveNotificationsForUser
+  let metricsStore: MetricsStoreInterface
 
   const createUseCase = () =>
     new UpdateExistingItem(
@@ -43,10 +45,14 @@ describe('UpdateExistingItem', () => {
       determineSharedVaultOperationOnItem,
       addNotificationsForUsers,
       removeNotificationsForUser,
+      metricsStore,
     )
 
   beforeEach(() => {
     const timeHelper = new Timer()
+
+    metricsStore = {} as jest.Mocked<MetricsStoreInterface>
+    metricsStore.storeMetric = jest.fn()
 
     item1 = Item.create(
       {

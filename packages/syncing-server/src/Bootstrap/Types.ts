@@ -98,6 +98,7 @@ const TYPES = {
   Sync_SharedVaultFileMovedEventHandler: Symbol.for('Sync_SharedVaultFileMovedEventHandler'),
   Sync_SharedVaultRemovedEventHandler: Symbol.for('Sync_SharedVaultRemovedEventHandler'),
   // Services
+  Sync_MetricsStore: Symbol.for('Sync_MetricsStore'),
   Sync_ContentDecoder: Symbol.for('Sync_ContentDecoder'),
   Sync_DomainEventPublisher: Symbol.for('Sync_DomainEventPublisher'),
   Sync_DomainEventSubscriber: Symbol.for('Sync_DomainEventSubscriber'),

@@ -8,6 +8,7 @@ import { ContentType, Dates, Result, Timestamps, UniqueEntityId, Uuid } from '@s
 import { Item } from '../../../Item/Item'
 import { SharedVaultAssociation } from '../../../SharedVault/SharedVaultAssociation'
 import { KeySystemAssociation } from '../../../KeySystem/KeySystemAssociation'
+import { MetricsStoreInterface } from '../../../Metrics/MetricsStoreInterface'
 
 describe('SaveNewItem', () => {
   let itemRepository: ItemRepositoryInterface
@@ -16,11 +17,16 @@ describe('SaveNewItem', () => {
   let domainEventFactory: DomainEventFactoryInterface
   let itemHash1: ItemHash
   let item1: Item
+  let metricsStore: MetricsStoreInterface
 
-  const createUseCase = () => new SaveNewItem(itemRepository, timer, domainEventPublisher, domainEventFactory)
+  const createUseCase = () =>
+    new SaveNewItem(itemRepository, timer, domainEventPublisher, domainEventFactory, metricsStore)
 
   beforeEach(() => {
     const timeHelper = new Timer()
+
+    metricsStore = {} as jest.Mocked<MetricsStoreInterface>
+    metricsStore.storeMetric = jest.fn()
 
     item1 = Item.create(
       {
