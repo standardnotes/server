@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.130.3](https://github.com/standardnotes/server/compare/@standardnotes/syncing-server@1.130.2...@standardnotes/syncing-server@1.130.3) (2024-01-04)
+
+### Bug Fixes
+
+* **syncing-server:** decrease metric expiration time ([f1aa431](https://github.com/standardnotes/server/commit/f1aa431c223714e56942a32ab75e380baf4f84aa))
+
 ## [1.130.2](https://github.com/standardnotes/server/compare/@standardnotes/syncing-server@1.130.1...@standardnotes/syncing-server@1.130.2) (2024-01-04)
 
 ### Bug Fixes
