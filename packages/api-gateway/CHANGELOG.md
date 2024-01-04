@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.89.17](https://github.com/standardnotes/server/compare/@standardnotes/api-gateway@1.89.16...@standardnotes/api-gateway@1.89.17) (2024-01-04)
+
+### Bug Fixes
+
+* **api-gateway:** disable http call retries ([7abd80c](https://github.com/standardnotes/server/commit/7abd80cdbaba53840f632d418bd557b35b722699))
+
 ## [1.89.16](https://github.com/standardnotes/server/compare/@standardnotes/api-gateway@1.89.15...@standardnotes/api-gateway@1.89.16) (2024-01-04)
 
 ### Bug Fixes
