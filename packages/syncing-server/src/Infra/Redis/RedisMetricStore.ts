@@ -29,6 +29,51 @@ export class RedisMetricStore implements MetricsStoreInterface {
     await pipeline.exec()
   }
 
+  async getUserBasedStatistics(
+    name: string,
+    timestamp: number,
+  ): Promise<{ sum: number; max: number; min: number; sampleCount: number }> {
+    const date = this.timer.convertMicrosecondsToDate(timestamp)
+    const dateToTheMinuteString = this.timer.convertDateToFormattedString(date, 'YYYY-MM-DD HH:mm')
+
+    const userMetricsKeys = await this.redisClient.keys(
+      `${this.METRIC_PER_USER_PREFIX}:*:${name}:${dateToTheMinuteString}`,
+    )
+
+    let sum = 0
+    let max = 0
+    let min = 0
+    let sampleCount = 0
+
+    const values = await this.redisClient.mget(userMetricsKeys)
+
+    for (const value of values) {
+      if (!value) {
+        continue
+      }
+
+      const valueAsNumber = Number(value)
+
+      sum += valueAsNumber
+      sampleCount++
+
+      if (valueAsNumber > max) {
+        max = valueAsNumber
+      }
+
+      if (valueAsNumber < min) {
+        min = valueAsNumber
+      }
+    }
+
+    return {
+      sum,
+      max,
+      min,
+      sampleCount,
+    }
+  }
+
   async getStatistics(
     name: string,
     from: number,

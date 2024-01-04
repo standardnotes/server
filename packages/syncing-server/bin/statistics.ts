@@ -57,6 +57,38 @@ const sendStatistics = async (
       )
     }
   }
+
+  const userMetricsToProcess = [Metric.NAMES.ItemOperation, Metric.NAMES.ContentSizeUtilized]
+  for (const metricToProcess of userMetricsToProcess) {
+    for (let i = 0; i <= minutesToProcess; i++) {
+      const dateNMinutesAgo = timer.getUTCDateNMinutesAgo(minutesToProcess - i)
+      const timestamp = timer.convertDateToMicroseconds(dateNMinutesAgo)
+
+      const statistics = await metricsStore.getUserBasedStatistics(metricToProcess, timestamp)
+
+      if (statistics.sampleCount === 0) {
+        continue
+      }
+
+      await cloudwatchClient.send(
+        new PutMetricDataCommand({
+          Namespace: 'SyncingServer',
+          MetricData: [
+            {
+              MetricName: metricToProcess,
+              Timestamp: dateNMinutesAgo,
+              StatisticValues: {
+                Maximum: statistics.max,
+                Minimum: statistics.min,
+                SampleCount: statistics.sampleCount,
+                Sum: statistics.sum,
+              },
+            },
+          ],
+        }),
+      )
+    }
+  }
 }
 
 const container = new ContainerConfigLoader('worker')
