@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.132.0](https://github.com/standardnotes/server/compare/@standardnotes/syncing-server@1.131.0...@standardnotes/syncing-server@1.132.0) (2024-01-04)
+
+### Features
+
+* **syncing-server:** send user based metrics to cloudwatch ([0c3bc0c](https://github.com/standardnotes/server/commit/0c3bc0cae654a6783f85e86995f978cc458d8b5c))
+
 # [1.131.0](https://github.com/standardnotes/server/compare/@standardnotes/syncing-server@1.130.3...@standardnotes/syncing-server@1.131.0) (2024-01-04)
 
 ### Features
