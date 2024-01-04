@@ -110,6 +110,7 @@ export class SaveNewItem implements UseCaseInterface<Item> {
       return Result.fail(itemOrError.getError())
     }
     const newItem = itemOrError.getValue()
+    newItem.props.contentSize = Buffer.byteLength(JSON.stringify(newItem))
 
     if (dto.itemHash.representsASharedVaultItem()) {
       const sharedVaultAssociationOrError = SharedVaultAssociation.create({
@@ -137,6 +138,15 @@ export class SaveNewItem implements UseCaseInterface<Item> {
     }
 
     await this.itemRepository.insert(newItem)
+
+    await this.metricsStore.storeUserBasedMetric(
+      Metric.create({
+        name: Metric.NAMES.ContentSizeUtilized,
+        timestamp: this.timer.getTimestampInMicroseconds(),
+      }).getValue(),
+      newItem.props.contentSize,
+      userUuid.value,
+    )
 
     await this.metricsStore.storeMetric(
       Metric.create({ name: Metric.NAMES.ItemCreated, timestamp: this.timer.getTimestampInMicroseconds() }).getValue(),

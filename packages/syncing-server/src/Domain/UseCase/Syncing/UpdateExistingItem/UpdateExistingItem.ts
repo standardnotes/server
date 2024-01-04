@@ -180,6 +180,15 @@ export class UpdateExistingItem implements UseCaseInterface<Item> {
       Metric.create({ name: Metric.NAMES.ItemUpdated, timestamp: this.timer.getTimestampInMicroseconds() }).getValue(),
     )
 
+    await this.metricsStore.storeUserBasedMetric(
+      Metric.create({
+        name: Metric.NAMES.ContentSizeUtilized,
+        timestamp: this.timer.getTimestampInMicroseconds(),
+      }).getValue(),
+      dto.existingItem.props.contentSize,
+      userUuid.value,
+    )
+
     /* istanbul ignore next */
     const revisionsFrequency = dto.isFreeUser ? this.freeRevisionFrequency : this.premiumRevisionFrequency
 

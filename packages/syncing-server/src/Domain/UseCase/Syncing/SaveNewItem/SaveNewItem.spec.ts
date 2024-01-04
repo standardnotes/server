@@ -27,6 +27,7 @@ describe('SaveNewItem', () => {
 
     metricsStore = {} as jest.Mocked<MetricsStoreInterface>
     metricsStore.storeMetric = jest.fn()
+    metricsStore.storeUserBasedMetric = jest.fn()
 
     item1 = Item.create(
       {

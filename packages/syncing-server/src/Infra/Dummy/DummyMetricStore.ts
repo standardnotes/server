@@ -2,6 +2,10 @@ import { MetricsStoreInterface } from '../../Domain/Metrics/MetricsStoreInterfac
 import { Metric } from '../../Domain/Metrics/Metric'
 
 export class DummyMetricStore implements MetricsStoreInterface {
+  async storeUserBasedMetric(_metric: Metric, _value: number, _userUuid: string): Promise<void> {
+    // do nothing
+  }
+
   async storeMetric(_metric: Metric): Promise<void> {
     // do nothing
   }

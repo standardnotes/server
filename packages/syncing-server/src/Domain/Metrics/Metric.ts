@@ -6,6 +6,8 @@ export class Metric extends ValueObject<MetricProps> {
   static readonly NAMES = {
     ItemCreated: 'ItemCreated',
     ItemUpdated: 'ItemUpdated',
+    ContentSizeUtilized: 'ContentSizeUtilized',
+    ItemOperation: 'ItemOperation',
   }
 
   static create(props: MetricProps): Result<Metric> {

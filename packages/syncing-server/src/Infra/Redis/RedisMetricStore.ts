@@ -6,11 +6,28 @@ import { Metric } from '../../Domain/Metrics/Metric'
 
 export class RedisMetricStore implements MetricsStoreInterface {
   private readonly METRIC_PREFIX = 'metric'
+  private readonly METRIC_PER_USER_PREFIX = 'metric-user'
 
   constructor(
     private redisClient: IORedis.Redis,
     private timer: TimerInterface,
   ) {}
+
+  async storeUserBasedMetric(metric: Metric, value: number, userUuid: string): Promise<void> {
+    const date = this.timer.convertMicrosecondsToDate(metric.props.timestamp)
+    const dateToTheMinuteString = this.timer.convertDateToFormattedString(date, 'YYYY-MM-DD HH:mm')
+    const key = `${this.METRIC_PER_USER_PREFIX}:${userUuid}:${metric.props.name}:${dateToTheMinuteString}`
+
+    const pipeline = this.redisClient.pipeline()
+
+    pipeline.incrbyfloat(key, value)
+    pipeline.incr(`${this.METRIC_PER_USER_PREFIX}:${userUuid}:${Metric.NAMES.ItemOperation}:${dateToTheMinuteString}`)
+
+    const expirationTime = 60 * 60 * 24
+    pipeline.expire(key, expirationTime)
+
+    await pipeline.exec()
+  }
 
   async getStatistics(
     name: string,
