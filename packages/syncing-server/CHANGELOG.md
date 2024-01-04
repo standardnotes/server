@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.130.1](https://github.com/standardnotes/server/compare/@standardnotes/syncing-server@1.130.0...@standardnotes/syncing-server@1.130.1) (2024-01-04)
+
+### Bug Fixes
+
+* **syncing-server:** skip sending empty metrics ([2c732ff](https://github.com/standardnotes/server/commit/2c732ff713736b845691e5e195f6a99086b6f2d7))
+
 # [1.130.0](https://github.com/standardnotes/server/compare/@standardnotes/syncing-server@1.129.11...@standardnotes/syncing-server@1.130.0) (2024-01-04)
 
 ### Features
