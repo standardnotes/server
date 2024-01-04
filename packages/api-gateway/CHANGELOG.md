@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.89.16](https://github.com/standardnotes/server/compare/@standardnotes/api-gateway@1.89.15...@standardnotes/api-gateway@1.89.16) (2024-01-04)
+
+### Bug Fixes
+
+* **api-gateway:** disable sync request retries ([d2a371b](https://github.com/standardnotes/server/commit/d2a371b92c8b2b7f8921fe57f162e74d4944715d))
+
 ## [1.89.15](https://github.com/standardnotes/server/compare/@standardnotes/api-gateway@1.89.14...@standardnotes/api-gateway@1.89.15) (2024-01-04)
 
 **Note:** Version bump only for package @standardnotes/api-gateway
