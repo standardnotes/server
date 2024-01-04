@@ -1,6 +1,6 @@
 {
   "name": "@standardnotes/home-server",
-  "version": "1.22.37",
+  "version": "1.22.38",
   "engines": {
     "node": ">=18.0.0 <21.0.0"
   },

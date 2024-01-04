@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.19.0](https://github.com/standardnotes/server/compare/@standardnotes/time@1.18.2...@standardnotes/time@1.19.0) (2024-01-04)
+
+### Features
+
+* add storing item saving and modifying metrics ([#1013](https://github.com/standardnotes/server/issues/1013)) ([efd816a](https://github.com/standardnotes/server/commit/efd816a627d59f4baaa69aa081c2ad9c88af971c))
+
 ## [1.18.2](https://github.com/standardnotes/server/compare/@standardnotes/time@1.18.1...@standardnotes/time@1.18.2) (2023-12-28)
 
 **Note:** Version bump only for package @standardnotes/time

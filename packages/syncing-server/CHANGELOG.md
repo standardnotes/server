@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.130.0](https://github.com/standardnotes/server/compare/@standardnotes/syncing-server@1.129.11...@standardnotes/syncing-server@1.130.0) (2024-01-04)
+
+### Features
+
+* add storing item saving and modifying metrics ([#1013](https://github.com/standardnotes/server/issues/1013)) ([efd816a](https://github.com/standardnotes/server/commit/efd816a627d59f4baaa69aa081c2ad9c88af971c))
+
 ## [1.129.11](https://github.com/standardnotes/server/compare/@standardnotes/syncing-server@1.129.10...@standardnotes/syncing-server@1.129.11) (2024-01-03)
 
 ### Bug Fixes
