@@ -175,7 +175,6 @@ export class HttpServiceProxy implements ServiceProxyInterface {
     response: Response,
     endpoint: string,
     payload?: Record<string, unknown> | string,
-    retryAttempt?: number,
   ): Promise<AxiosResponse | undefined> {
     try {
       const headers: Record<string, string> = {}
@@ -213,33 +212,15 @@ export class HttpServiceProxy implements ServiceProxyInterface {
         await this.crossServiceTokenCache.invalidate(userUuid)
       }
 
-      if (retryAttempt) {
-        this.logger.debug(`Request to ${serverUrl}/${endpoint} succeeded after ${retryAttempt} retries`)
-      }
-
       return serviceResponse
     } catch (error) {
-      const requestDidNotMakeIt = this.requestTimedOutOrDidNotReachDestination(error as Record<string, unknown>)
-      const tooManyRetryAttempts = retryAttempt && retryAttempt > 2
-      if (!tooManyRetryAttempts && requestDidNotMakeIt) {
-        await this.timer.sleep(50)
-
-        const nextRetryAttempt = retryAttempt ? retryAttempt + 1 : 1
-
-        this.logger.debug(`Retrying request to ${serverUrl}/${endpoint} for the ${nextRetryAttempt} time`)
-
-        return this.getServerResponse(serverUrl, request, response, endpoint, payload, nextRetryAttempt)
-      }
-
       let detailedErrorMessage = (error as Error).message
       if (error instanceof AxiosError) {
         detailedErrorMessage = `Status: ${error.status}, code: ${error.code}, message: ${error.message}`
       }
 
       this.logger.error(
-        tooManyRetryAttempts
-          ? `Request to ${serverUrl}/${endpoint} timed out after ${retryAttempt} retries`
-          : `Could not pass the request to ${serverUrl}/${endpoint} on underlying service: ${detailedErrorMessage}`,
+        `Could not pass the request to ${serverUrl}/${endpoint} on underlying service: ${detailedErrorMessage}`,
         {
           userId: response.locals.user ? response.locals.user.uuid : undefined,
         },
