@@ -19,7 +19,7 @@ const sendStatistics = async (
     region: awsRegion,
   })
 
-  const minutesToProcess = 60
+  const minutesToProcess = 30
 
   const metricsToProcess = [Metric.NAMES.ItemCreated, Metric.NAMES.ItemUpdated]
 
