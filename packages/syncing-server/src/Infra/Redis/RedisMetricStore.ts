@@ -64,8 +64,8 @@ export class RedisMetricStore implements MetricsStoreInterface {
 
     pipeline.incr(key)
 
-    const expirationTimeIn24Hours = 60 * 60 * 24
-    pipeline.expire(key, expirationTimeIn24Hours)
+    const expirationTime = 60 * 60 * 6
+    pipeline.expire(key, expirationTime)
 
     await pipeline.exec()
   }
