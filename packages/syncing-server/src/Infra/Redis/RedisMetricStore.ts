@@ -5,6 +5,7 @@ import { MetricsStoreInterface } from '../../Domain/Metrics/MetricsStoreInterfac
 import { Metric } from '../../Domain/Metrics/Metric'
 import { Uuid } from '@standardnotes/domain-core'
 import { MetricsSummary } from '../../Domain/Metrics/MetricsSummary'
+import { Logger } from 'winston'
 
 export class RedisMetricStore implements MetricsStoreInterface {
   private readonly METRIC_PREFIX = 'metric'
@@ -13,6 +14,7 @@ export class RedisMetricStore implements MetricsStoreInterface {
   constructor(
     private redisClient: IORedis.Redis,
     private timer: TimerInterface,
+    private logger: Logger,
   ) {}
 
   async getUserBasedMetricsSummaryWithinTimeRange(dto: {
@@ -21,7 +23,19 @@ export class RedisMetricStore implements MetricsStoreInterface {
     from: Date
     to: Date
   }): Promise<MetricsSummary> {
+    this.logger.debug(`Fetching user based metrics summary for ${dto.metricName}.`, {
+      codeTag: 'RedisMetricStore',
+      userId: dto.userUuid.value,
+      from: dto.from.toISOString(),
+      to: dto.to.toISOString(),
+    })
+
     const keys = this.getKeysRepresentingMinutesBetweenFromAndTo(dto.from, dto.to)
+
+    this.logger.debug(`Fetching user based metrics summary for ${dto.metricName} - keys: ${keys.join(', ')}.`, {
+      codeTag: 'RedisMetricStore',
+      userId: dto.userUuid.value,
+    })
 
     let sum = 0
     let max = 0
@@ -31,6 +45,11 @@ export class RedisMetricStore implements MetricsStoreInterface {
     const values = await this.redisClient.mget(
       keys.map((key) => `${this.METRIC_PER_USER_PREFIX}:${dto.userUuid.value}:${dto.metricName}:${key}`),
     )
+
+    this.logger.debug(`Fetching user based metrics summary for ${dto.metricName} - values: ${values.join(', ')}.`, {
+      codeTag: 'RedisMetricStore',
+      userId: dto.userUuid.value,
+    })
 
     for (const value of values) {
       if (!value) {

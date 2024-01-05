@@ -585,7 +585,11 @@ export class ContainerConfigLoader {
       container
         .bind<MetricsStoreInterface>(TYPES.Sync_MetricsStore)
         .toConstantValue(
-          new RedisMetricStore(container.get<Redis>(TYPES.Sync_Redis), container.get<TimerInterface>(TYPES.Sync_Timer)),
+          new RedisMetricStore(
+            container.get<Redis>(TYPES.Sync_Redis),
+            container.get<TimerInterface>(TYPES.Sync_Timer),
+            container.get<Logger>(TYPES.Sync_Logger),
+          ),
         )
     }
 
