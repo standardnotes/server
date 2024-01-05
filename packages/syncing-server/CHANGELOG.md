@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.133.3](https://github.com/standardnotes/server/compare/@standardnotes/syncing-server@1.133.2...@standardnotes/syncing-server@1.133.3) (2024-01-05)
+
+### Bug Fixes
+
+* **syncing-server:** add traffic abuse check in gRPC coms ([e3cb1fa](https://github.com/standardnotes/server/commit/e3cb1faba46bbfd8741f6c827daa9438934dd710))
+* **syncing-server:** remove excessive debug logs ([5c5f988](https://github.com/standardnotes/server/commit/5c5f9880556f14f5cbe4599ac0d639c970495056))
+
 ## [1.133.2](https://github.com/standardnotes/server/compare/@standardnotes/syncing-server@1.133.1...@standardnotes/syncing-server@1.133.2) (2024-01-05)
 
 ### Bug Fixes
