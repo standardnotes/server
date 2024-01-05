@@ -9,12 +9,20 @@ import { SyncItems } from '../../Domain/UseCase/Syncing/SyncItems/SyncItems'
 import { ApiVersion } from '../../Domain/Api/ApiVersion'
 import { SyncResponseFactoryResolverInterface } from '../../Domain/Item/SyncResponse/SyncResponseFactoryResolverInterface'
 import { SyncResponse20200115 } from '../../Domain/Item/SyncResponse/SyncResponse20200115'
+import { CheckForTrafficAbuse } from '../../Domain/UseCase/Syncing/CheckForTrafficAbuse/CheckForTrafficAbuse'
+import { Metric } from '../../Domain/Metrics/Metric'
 
 export class SyncingServer implements ISyncingServer {
   constructor(
     private syncItemsUseCase: SyncItems,
     private syncResponseFactoryResolver: SyncResponseFactoryResolverInterface,
     private mapper: MapperInterface<SyncResponse20200115, SyncResponse>,
+    protected checkForTrafficAbuse: CheckForTrafficAbuse,
+    private strictAbuseProtection: boolean,
+    private itemOperationsAbuseTimeframeLengthInMinutes: number,
+    private itemOperationsAbuseThreshold: number,
+    private payloadSizeAbuseThreshold: number,
+    private payloadSizeAbuseTimeframeLengthInMinutes: number,
     private logger: Logger,
   ) {}
 
@@ -23,6 +31,63 @@ export class SyncingServer implements ISyncingServer {
     callback: grpc.sendUnaryData<SyncResponse>,
   ): Promise<void> {
     try {
+      const userUuid = call.metadata.get('x-user-uuid').pop() as string
+
+      const checkForItemOperationsAbuseResult = await this.checkForTrafficAbuse.execute({
+        metricToCheck: Metric.NAMES.ItemOperation,
+        userUuid,
+        threshold: this.itemOperationsAbuseThreshold,
+        timeframeLengthInMinutes: this.itemOperationsAbuseTimeframeLengthInMinutes,
+      })
+      if (checkForItemOperationsAbuseResult.isFailed()) {
+        this.logger.warn(checkForItemOperationsAbuseResult.getError(), {
+          userId: userUuid,
+        })
+        if (this.strictAbuseProtection) {
+          const metadata = new grpc.Metadata()
+          metadata.set('x-sync-error-message', checkForItemOperationsAbuseResult.getError())
+          metadata.set('x-sync-error-response-code', '429')
+
+          return callback(
+            {
+              code: Status.INVALID_ARGUMENT,
+              message: checkForItemOperationsAbuseResult.getError(),
+              name: 'INVALID_ARGUMENT',
+              metadata,
+            },
+            null,
+          )
+        }
+      }
+
+      const checkForPayloadSizeAbuseResult = await this.checkForTrafficAbuse.execute({
+        metricToCheck: Metric.NAMES.ContentSizeUtilized,
+        userUuid,
+        threshold: this.payloadSizeAbuseThreshold,
+        timeframeLengthInMinutes: this.payloadSizeAbuseTimeframeLengthInMinutes,
+      })
+      if (checkForPayloadSizeAbuseResult.isFailed()) {
+        this.logger.warn(checkForPayloadSizeAbuseResult.getError(), {
+          userId: userUuid,
+        })
+
+        if (this.strictAbuseProtection) {
+          const metadata = new grpc.Metadata()
+          metadata.set('x-sync-error-message', checkForPayloadSizeAbuseResult.getError())
+          metadata.set('x-sync-error-response-code', '429')
+
+          return callback(
+            {
+              code: Status.INVALID_ARGUMENT,
+              message: checkForPayloadSizeAbuseResult.getError(),
+              name: 'INVALID_ARGUMENT',
+              metadata,
+            },
+            null,
+          )
+        }
+      }
+
       const itemHashesRPC = call.request.getItemsList()
       const itemHashes: ItemHash[] = []
       for (const itemHash of itemHashesRPC) {
@@ -39,7 +104,7 @@ export class SyncingServer implements ISyncingServer {
           created_at_timestamp: itemHash.hasCreatedAtTimestamp() ? itemHash.getCreatedAtTimestamp() : undefined,
           updated_at: itemHash.hasUpdatedAt() ? itemHash.getUpdatedAt() : undefined,
           updated_at_timestamp: itemHash.hasUpdatedAtTimestamp() ? itemHash.getUpdatedAtTimestamp() : undefined,
-          user_uuid: call.metadata.get('userUuid').pop() as string,
+          user_uuid: userUuid,
           key_system_identifier: itemHash.hasKeySystemIdentifier()
             ? (itemHash.getKeySystemIdentifier() as string)
             : null,
@@ -72,7 +137,6 @@ export class SyncingServer implements ISyncingServer {
       }
 
       const apiVersion = call.request.hasApiVersion() ? (call.request.getApiVersion() as string) : ApiVersion.v20161215
-      const userUuid = call.metadata.get('x-user-uuid').pop() as string
       const readOnlyAccess = call.metadata.get('x-read-only-access').pop() === 'true'
       if (readOnlyAccess) {
         this.logger.debug('Syncing with read-only access', {

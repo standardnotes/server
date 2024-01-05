@@ -29,6 +29,7 @@ import { SyncingServer } from '../src/Infra/gRPC/SyncingServer'
 import { SyncItems } from '../src/Domain/UseCase/Syncing/SyncItems/SyncItems'
 import { SyncResponseFactoryResolverInterface } from '../src/Domain/Item/SyncResponse/SyncResponseFactoryResolverInterface'
 import { SyncResponse20200115 } from '../src/Domain/Item/SyncResponse/SyncResponse20200115'
+import { CheckForTrafficAbuse } from '../src/Domain/UseCase/Syncing/CheckForTrafficAbuse/CheckForTrafficAbuse'
 
 const container = new ContainerConfigLoader()
 void container.load().then((container) => {
@@ -114,6 +115,12 @@ void container.load().then((container) => {
     container.get<SyncItems>(TYPES.Sync_SyncItems),
     container.get<SyncResponseFactoryResolverInterface>(TYPES.Sync_SyncResponseFactoryResolver),
     container.get<MapperInterface<SyncResponse20200115, SyncResponse>>(TYPES.Sync_SyncResponseGRPCMapper),
+    container.get<CheckForTrafficAbuse>(TYPES.Sync_CheckForTrafficAbuse),
+    container.get<boolean>(TYPES.Sync_STRICT_ABUSE_PROTECTION),
+    container.get<number>(TYPES.Sync_ITEM_OPERATIONS_ABUSE_TIMEFRAME_LENGTH_IN_MINUTES),
+    container.get<number>(TYPES.Sync_ITEM_OPERATIONS_ABUSE_THRESHOLD),
+    container.get<number>(TYPES.Sync_PAYLOAD_SIZE_ABUSE_THRESHOLD),
+    container.get<number>(TYPES.Sync_PAYLOAD_SIZE_ABUSE_TIMEFRAME_LENGTH_IN_MINUTES),
     container.get<winston.Logger>(TYPES.Sync_Logger),
   )
 
