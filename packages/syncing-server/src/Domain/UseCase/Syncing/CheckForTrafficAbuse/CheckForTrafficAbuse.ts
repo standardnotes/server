@@ -17,7 +17,7 @@ export class CheckForTrafficAbuse implements UseCaseInterface<MetricsSummary> {
   async execute(dto: CheckForTrafficAbuseDTO): Promise<Result<MetricsSummary>> {
     this.logger.debug(`Checking for traffic abuse for metric: ${dto.metricToCheck}.`, {
       codeTag: 'CheckForTrafficAbuse',
-      userUuid: dto.userUuid,
+      userId: dto.userUuid,
     })
 
     const userUuidOrError = Uuid.create(dto.userUuid)
@@ -46,7 +46,7 @@ export class CheckForTrafficAbuse implements UseCaseInterface<MetricsSummary> {
       `Current traffic abuse metric ${dto.metricToCheck} value in timeframe of ${dto.timeframeLengthInMinutes} minutes is ${metricsSummary.sum}. The threshold is ${dto.threshold}`,
       {
         codeTag: 'CheckForTrafficAbuse',
-        userUuid: dto.userUuid,
+        userId: dto.userUuid,
       },
     )
 
