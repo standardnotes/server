@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.133.2](https://github.com/standardnotes/server/compare/@standardnotes/syncing-server@1.133.1...@standardnotes/syncing-server@1.133.2) (2024-01-05)
+
+### Bug Fixes
+
+* **syncing-server:** add debug logs to redis metrics store ([a4ad37f](https://github.com/standardnotes/server/commit/a4ad37f30948ba4292f367240c3dbfca916282ac))
+* **syncing-server:** add metadata to transfer breach logs ([73c2cc1](https://github.com/standardnotes/server/commit/73c2cc1222b647e82de3755c7e28d283cd9f872f))
+
 ## [1.133.1](https://github.com/standardnotes/server/compare/@standardnotes/syncing-server@1.133.0...@standardnotes/syncing-server@1.133.1) (2024-01-05)
 
 ### Bug Fixes
