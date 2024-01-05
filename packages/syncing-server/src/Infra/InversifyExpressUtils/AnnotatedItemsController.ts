@@ -11,18 +11,42 @@ import { SyncItems } from '../../Domain/UseCase/Syncing/SyncItems/SyncItems'
 import { BaseItemsController } from './Base/BaseItemsController'
 import { MapperInterface } from '@standardnotes/domain-core'
 import { ItemHttpRepresentation } from '../../Mapping/Http/ItemHttpRepresentation'
+import { CheckForTrafficAbuse } from '../../Domain/UseCase/Syncing/CheckForTrafficAbuse/CheckForTrafficAbuse'
+import { Logger } from 'winston'
 
 @controller('/items', TYPES.Sync_AuthMiddleware)
 export class AnnotatedItemsController extends BaseItemsController {
   constructor(
+    @inject(TYPES.Sync_CheckForTrafficAbuse) override checkForTrafficAbuse: CheckForTrafficAbuse,
     @inject(TYPES.Sync_SyncItems) override syncItems: SyncItems,
     @inject(TYPES.Sync_CheckIntegrity) override checkIntegrity: CheckIntegrity,
     @inject(TYPES.Sync_GetItem) override getItem: GetItem,
     @inject(TYPES.Sync_ItemHttpMapper) override itemHttpMapper: MapperInterface<Item, ItemHttpRepresentation>,
     @inject(TYPES.Sync_SyncResponseFactoryResolver)
     override syncResponseFactoryResolver: SyncResponseFactoryResolverInterface,
+    @inject(TYPES.Sync_Logger) override logger: Logger,
+    @inject(TYPES.Sync_STRICT_ABUSE_PROTECTION) override strictAbuseProtection: boolean,
+    @inject(TYPES.Sync_ITEM_OPERATIONS_ABUSE_TIMEFRAME_LENGTH_IN_MINUTES)
+    override itemOperationsAbuseTimeframeLengthInMinutes: number,
+    @inject(TYPES.Sync_ITEM_OPERATIONS_ABUSE_THRESHOLD) override itemOperationsAbuseThreshold: number,
+    @inject(TYPES.Sync_PAYLOAD_SIZE_ABUSE_THRESHOLD) override payloadSizeAbuseThreshold: number,
+    @inject(TYPES.Sync_PAYLOAD_SIZE_ABUSE_TIMEFRAME_LENGTH_IN_MINUTES)
+    override payloadSizeAbuseTimeframeLengthInMinutes: number,
   ) {
-    super(syncItems, checkIntegrity, getItem, itemHttpMapper, syncResponseFactoryResolver)
+    super(
+      checkForTrafficAbuse,
+      syncItems,
+      checkIntegrity,
+      getItem,
+      itemHttpMapper,
+      syncResponseFactoryResolver,
+      logger,
+      strictAbuseProtection,
+      itemOperationsAbuseTimeframeLengthInMinutes,
+      itemOperationsAbuseThreshold,
+      payloadSizeAbuseThreshold,
+      payloadSizeAbuseTimeframeLengthInMinutes,
+    )
   }
 
   @httpPost('/sync')

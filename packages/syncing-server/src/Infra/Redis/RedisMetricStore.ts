@@ -3,6 +3,8 @@ import { TimerInterface } from '@standardnotes/time'
 
 import { MetricsStoreInterface } from '../../Domain/Metrics/MetricsStoreInterface'
 import { Metric } from '../../Domain/Metrics/Metric'
+import { Uuid } from '@standardnotes/domain-core'
+import { MetricsSummary } from '../../Domain/Metrics/MetricsSummary'
 
 export class RedisMetricStore implements MetricsStoreInterface {
   private readonly METRIC_PREFIX = 'metric'
@@ -13,15 +15,61 @@ export class RedisMetricStore implements MetricsStoreInterface {
     private timer: TimerInterface,
   ) {}
 
-  async storeUserBasedMetric(metric: Metric, value: number, userUuid: string): Promise<void> {
+  async getUserBasedMetricsSummaryWithinTimeRange(dto: {
+    metricName: string
+    userUuid: Uuid
+    from: Date
+    to: Date
+  }): Promise<MetricsSummary> {
+    const keys = this.getKeysRepresentingMinutesBetweenFromAndTo(dto.from, dto.to)
+
+    let sum = 0
+    let max = 0
+    let min = 0
+    let sampleCount = 0
+
+    const values = await this.redisClient.mget(
+      keys.map((key) => `${this.METRIC_PER_USER_PREFIX}:${dto.userUuid.value}:${dto.metricName}:${key}`),
+    )
+
+    for (const value of values) {
+      if (!value) {
+        continue
+      }
+
+      const valueAsNumber = Number(value)
+
+      sum += valueAsNumber
+      sampleCount++
+
+      if (valueAsNumber > max) {
+        max = valueAsNumber
+      }
+
+      if (valueAsNumber < min) {
+        min = valueAsNumber
+      }
+    }
+
+    return {
+      sum,
+      max,
+      min,
+      sampleCount,
+    }
+  }
+
+  async storeUserBasedMetric(metric: Metric, value: number, userUuid: Uuid): Promise<void> {
     const date = this.timer.convertMicrosecondsToDate(metric.props.timestamp)
     const dateToTheMinuteString = this.timer.convertDateToFormattedString(date, 'YYYY-MM-DD HH:mm')
-    const key = `${this.METRIC_PER_USER_PREFIX}:${userUuid}:${metric.props.name}:${dateToTheMinuteString}`
+    const key = `${this.METRIC_PER_USER_PREFIX}:${userUuid.value}:${metric.props.name}:${dateToTheMinuteString}`
 
     const pipeline = this.redisClient.pipeline()
 
     pipeline.incrbyfloat(key, value)
-    pipeline.incr(`${this.METRIC_PER_USER_PREFIX}:${userUuid}:${Metric.NAMES.ItemOperation}:${dateToTheMinuteString}`)
+    pipeline.incr(
+      `${this.METRIC_PER_USER_PREFIX}:${userUuid.value}:${Metric.NAMES.ItemOperation}:${dateToTheMinuteString}`,
+    )
 
     const expirationTime = 60 * 60 * 24
     pipeline.expire(key, expirationTime)
@@ -29,10 +77,7 @@ export class RedisMetricStore implements MetricsStoreInterface {
     await pipeline.exec()
   }
 
-  async getUserBasedStatistics(
-    name: string,
-    timestamp: number,
-  ): Promise<{ sum: number; max: number; min: number; sampleCount: number }> {
+  async getUserBasedMetricsSummary(name: string, timestamp: number): Promise<MetricsSummary> {
     const date = this.timer.convertMicrosecondsToDate(timestamp)
     const dateToTheMinuteString = this.timer.convertDateToFormattedString(date, 'YYYY-MM-DD HH:mm')
 
@@ -74,11 +119,7 @@ export class RedisMetricStore implements MetricsStoreInterface {
     }
   }
 
-  async getStatistics(
-    name: string,
-    from: number,
-    to: number,
-  ): Promise<{ sum: number; max: number; min: number; sampleCount: number }> {
+  async getMetricsSummary(name: string, from: number, to: number): Promise<MetricsSummary> {
     const keysRepresentingSecondsBetweenFromAndTo = this.getKeysRepresentingSecondsBetweenFromAndTo(from, to)
 
     let sum = 0
@@ -130,6 +171,22 @@ export class RedisMetricStore implements MetricsStoreInterface {
     pipeline.expire(key, expirationTime)
 
     await pipeline.exec()
+  }
+
+  private getKeysRepresentingMinutesBetweenFromAndTo(from: Date, to: Date): string[] {
+    const keys: string[] = []
+
+    let currentMinute = from
+
+    while (currentMinute <= to) {
+      const dateToTheMinuteString = this.timer.convertDateToFormattedString(currentMinute, 'YYYY-MM-DD HH:mm')
+
+      keys.push(dateToTheMinuteString)
+
+      currentMinute = new Date(currentMinute.getTime() + 60 * 1000)
+    }
+
+    return keys
   }
 
   private getKeysRepresentingSecondsBetweenFromAndTo(from: number, to: number): string[] {

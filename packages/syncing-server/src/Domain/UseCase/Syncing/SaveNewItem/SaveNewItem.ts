@@ -145,7 +145,7 @@ export class SaveNewItem implements UseCaseInterface<Item> {
         timestamp: this.timer.getTimestampInMicroseconds(),
       }).getValue(),
       newItem.props.contentSize,
-      userUuid.value,
+      userUuid,
     )
 
     await this.metricsStore.storeMetric(
