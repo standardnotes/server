@@ -36,7 +36,9 @@ export class CheckForTrafficAbuse implements UseCaseInterface<MetricsSummary> {
     })
 
     if (metricsSummary.sum > dto.threshold) {
-      return Result.fail(`Traffic abuse detected for metric: ${metricToCheck.props.name}`)
+      return Result.fail(
+        `Traffic abuse detected for metric: ${metricToCheck.props.name}. Usage ${metricsSummary.sum} is greater than threshold ${dto.threshold}`,
+      )
     }
 
     return Result.ok(metricsSummary)
