@@ -28,7 +28,7 @@ const sendStatistics = async (
       const dateNMinutesAgo = timer.getUTCDateNMinutesAgo(minutesToProcess - i)
       const timestamp = timer.convertDateToMicroseconds(dateNMinutesAgo)
 
-      const statistics = await metricsStore.getStatistics(
+      const statistics = await metricsStore.getMetricsSummary(
         metricToProcess,
         timestamp,
         timestamp + Time.MicrosecondsInAMinute,
@@ -64,7 +64,7 @@ const sendStatistics = async (
       const dateNMinutesAgo = timer.getUTCDateNMinutesAgo(minutesToProcess - i)
       const timestamp = timer.convertDateToMicroseconds(dateNMinutesAgo)
 
-      const statistics = await metricsStore.getUserBasedStatistics(metricToProcess, timestamp)
+      const statistics = await metricsStore.getUserBasedMetricsSummary(metricToProcess, timestamp)
 
       if (statistics.sampleCount === 0) {
         continue

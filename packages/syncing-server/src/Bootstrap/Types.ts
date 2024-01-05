@@ -42,6 +42,15 @@ const TYPES = {
   Sync_VALET_TOKEN_SECRET: Symbol.for('Sync_VALET_TOKEN_SECRET'),
   Sync_VALET_TOKEN_TTL: Symbol.for('Sync_VALET_TOKEN_TTL'),
   Sync_IS_CONFIGURED_FOR_HOME_SERVER_OR_SELF_HOSTING: Symbol.for('Sync_IS_CONFIGURED_FOR_HOME_SERVER_OR_SELF_HOSTING'),
+  Sync_STRICT_ABUSE_PROTECTION: Symbol.for('Sync_STRICT_ABUSE_PROTECTION'),
+  Sync_ITEM_OPERATIONS_ABUSE_TIMEFRAME_LENGTH_IN_MINUTES: Symbol.for(
+    'Sync_ITEM_OPERATIONS_ABUSE_TIMEFRAME_LENGTH_IN_MINUTES',
+  ),
+  Sync_ITEM_OPERATIONS_ABUSE_THRESHOLD: Symbol.for('Sync_ITEM_OPERATIONS_ABUSE_THRESHOLD'),
+  Sync_PAYLOAD_SIZE_ABUSE_THRESHOLD: Symbol.for('Sync_PAYLOAD_SIZE_ABUSE_THRESHOLD'),
+  Sync_PAYLOAD_SIZE_ABUSE_TIMEFRAME_LENGTH_IN_MINUTES: Symbol.for(
+    'Sync_PAYLOAD_SIZE_ABUSE_TIMEFRAME_LENGTH_IN_MINUTES',
+  ),
   // use cases
   Sync_SyncItems: Symbol.for('Sync_SyncItems'),
   Sync_CheckIntegrity: Symbol.for('Sync_CheckIntegrity'),
@@ -85,6 +94,7 @@ const TYPES = {
   Sync_TransferSharedVault: Symbol.for('Sync_TransferSharedVault'),
   Sync_TransferSharedVaultItems: Symbol.for('Sync_TransferSharedVaultItems'),
   Sync_DumpItem: Symbol.for('Sync_DumpItem'),
+  Sync_CheckForTrafficAbuse: Symbol.for('Sync_CheckForTrafficAbuse'),
   // Handlers
   Sync_AccountDeletionRequestedEventHandler: Symbol.for('Sync_AccountDeletionRequestedEventHandler'),
   Sync_AccountDeletionVerificationRequestedEventHandler: Symbol.for(

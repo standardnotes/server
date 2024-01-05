@@ -11,14 +11,24 @@ import { ApiVersion } from '../../../Domain/Api/ApiVersion'
 import { SyncItems } from '../../../Domain/UseCase/Syncing/SyncItems/SyncItems'
 import { ItemHttpRepresentation } from '../../../Mapping/Http/ItemHttpRepresentation'
 import { ItemHash } from '../../../Domain/Item/ItemHash'
+import { CheckForTrafficAbuse } from '../../../Domain/UseCase/Syncing/CheckForTrafficAbuse/CheckForTrafficAbuse'
+import { Metric } from '../../../Domain/Metrics/Metric'
+import { Logger } from 'winston'
 
 export class BaseItemsController extends BaseHttpController {
   constructor(
+    protected checkForTrafficAbuse: CheckForTrafficAbuse,
     protected syncItems: SyncItems,
     protected checkIntegrity: CheckIntegrity,
     protected getItem: GetItem,
     protected itemHttpMapper: MapperInterface<Item, ItemHttpRepresentation>,
     protected syncResponseFactoryResolver: SyncResponseFactoryResolverInterface,
+    protected logger: Logger,
+    protected strictAbuseProtection: boolean,
+    protected itemOperationsAbuseTimeframeLengthInMinutes: number,
+    protected itemOperationsAbuseThreshold: number,
+    protected payloadSizeAbuseThreshold: number,
+    protected payloadSizeAbuseTimeframeLengthInMinutes: number,
     private controllerContainer?: ControllerContainerInterface,
   ) {
     super()
@@ -31,6 +41,37 @@ export class BaseItemsController extends BaseHttpController {
   }
 
   async sync(request: Request, response: Response): Promise<results.JsonResult> {
+    const checkForItemOperationsAbuseResult = await this.checkForTrafficAbuse.execute({
+      metricToCheck: Metric.NAMES.ItemOperation,
+      userUuid: response.locals.user.uuid,
+      threshold: this.itemOperationsAbuseThreshold,
+      timeframeLengthInMinutes: this.itemOperationsAbuseTimeframeLengthInMinutes,
+    })
+    if (checkForItemOperationsAbuseResult.isFailed()) {
+      this.logger.warn(checkForItemOperationsAbuseResult.getError(), {
+        userId: response.locals.user.uuid,
+      })
+      if (this.strictAbuseProtection) {
+        return this.json({ error: { message: checkForItemOperationsAbuseResult.getError() } }, 429)
+      }
+    }
+
+    const checkForPayloadSizeAbuseResult = await this.checkForTrafficAbuse.execute({
+      metricToCheck: Metric.NAMES.ContentSizeUtilized,
+      userUuid: response.locals.user.uuid,
+      threshold: this.payloadSizeAbuseThreshold,
+      timeframeLengthInMinutes: this.payloadSizeAbuseTimeframeLengthInMinutes,
+    })
+    if (checkForPayloadSizeAbuseResult.isFailed()) {
+      this.logger.warn(checkForPayloadSizeAbuseResult.getError(), {
+        userId: response.locals.user.uuid,
+      })
+
+      if (this.strictAbuseProtection) {
+        return this.json({ error: { message: checkForPayloadSizeAbuseResult.getError() } }, 429)
+      }
+    }
+
     const itemHashes: ItemHash[] = []
     if ('items' in request.body) {
       for (const itemHashInput of request.body.items) {

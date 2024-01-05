@@ -186,7 +186,7 @@ export class UpdateExistingItem implements UseCaseInterface<Item> {
         timestamp: this.timer.getTimestampInMicroseconds(),
       }).getValue(),
       dto.existingItem.props.contentSize,
-      userUuid.value,
+      userUuid,
     )
 
     /* istanbul ignore next */

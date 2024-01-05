@@ -166,6 +166,7 @@ import { SendEventToClients } from '../Domain/UseCase/Syncing/SendEventToClients
 import { MetricsStoreInterface } from '../Domain/Metrics/MetricsStoreInterface'
 import { RedisMetricStore } from '../Infra/Redis/RedisMetricStore'
 import { DummyMetricStore } from '../Infra/Dummy/DummyMetricStore'
+import { CheckForTrafficAbuse } from '../Domain/UseCase/Syncing/CheckForTrafficAbuse/CheckForTrafficAbuse'
 
 export class ContainerConfigLoader {
   private readonly DEFAULT_CONTENT_SIZE_TRANSFER_LIMIT = 10_000_000
@@ -472,6 +473,33 @@ export class ContainerConfigLoader {
       })
 
     // env vars
+    container
+      .bind(TYPES.Sync_STRICT_ABUSE_PROTECTION)
+      .toConstantValue(env.get('STRICT_ABUSE_PROTECTION', true) === 'true')
+    container
+      .bind(TYPES.Sync_ITEM_OPERATIONS_ABUSE_THRESHOLD)
+      .toConstantValue(
+        env.get('ITEM_OPERATIONS_ABUSE_THRESHOLD', true) ? +env.get('ITEM_OPERATIONS_ABUSE_THRESHOLD', true) : 500,
+      )
+    container
+      .bind(TYPES.Sync_ITEM_OPERATIONS_ABUSE_TIMEFRAME_LENGTH_IN_MINUTES)
+      .toConstantValue(
+        env.get('ITEM_OPERATIONS_ABUSE_TIMEFRAME_LENGTH_IN_MINUTES', true)
+          ? +env.get('ITEM_OPERATIONS_ABUSE_TIMEFRAME_LENGTH_IN_MINUTES', true)
+          : 5,
+      )
+    container
+      .bind(TYPES.Sync_PAYLOAD_SIZE_ABUSE_THRESHOLD)
+      .toConstantValue(
+        env.get('PAYLOAD_SIZE_ABUSE_THRESHOLD', true) ? +env.get('PAYLOAD_SIZE_ABUSE_THRESHOLD', true) : 20_000_000,
+      )
+    container
+      .bind(TYPES.Sync_PAYLOAD_SIZE_ABUSE_TIMEFRAME_LENGTH_IN_MINUTES)
+      .toConstantValue(
+        env.get('PAYLOAD_SIZE_ABUSE_TIMEFRAME_LENGTH_IN_MINUTES', true)
+          ? +env.get('PAYLOAD_SIZE_ABUSE_TIMEFRAME_LENGTH_IN_MINUTES', true)
+          : 5,
+      )
     container.bind(TYPES.Sync_AUTH_JWT_SECRET).toConstantValue(env.get('AUTH_JWT_SECRET'))
     container
       .bind(TYPES.Sync_REVISIONS_FREQUENCY)
@@ -933,6 +961,14 @@ export class ContainerConfigLoader {
           context.container.get(TYPES.Sync_SyncResponseFactory20200115),
         )
       })
+    container
+      .bind<CheckForTrafficAbuse>(TYPES.Sync_CheckForTrafficAbuse)
+      .toConstantValue(
+        new CheckForTrafficAbuse(
+          container.get<MetricsStoreInterface>(TYPES.Sync_MetricsStore),
+          container.get<TimerInterface>(TYPES.Sync_Timer),
+        ),
+      )
 
     // Handlers
     container
@@ -1094,11 +1130,18 @@ export class ContainerConfigLoader {
         .bind<BaseItemsController>(TYPES.Sync_BaseItemsController)
         .toConstantValue(
           new BaseItemsController(
+            container.get<CheckForTrafficAbuse>(TYPES.Sync_CheckForTrafficAbuse),
             container.get<SyncItems>(TYPES.Sync_SyncItems),
             container.get<CheckIntegrity>(TYPES.Sync_CheckIntegrity),
             container.get<GetItem>(TYPES.Sync_GetItem),
             container.get<MapperInterface<Item, ItemHttpRepresentation>>(TYPES.Sync_ItemHttpMapper),
             container.get<SyncResponseFactoryResolverInterface>(TYPES.Sync_SyncResponseFactoryResolver),
+            container.get<Logger>(TYPES.Sync_Logger),
+            container.get<boolean>(TYPES.Sync_STRICT_ABUSE_PROTECTION),
+            container.get<number>(TYPES.Sync_ITEM_OPERATIONS_ABUSE_TIMEFRAME_LENGTH_IN_MINUTES),
+            container.get<number>(TYPES.Sync_ITEM_OPERATIONS_ABUSE_THRESHOLD),
+            container.get<number>(TYPES.Sync_PAYLOAD_SIZE_ABUSE_THRESHOLD),
+            container.get<number>(TYPES.Sync_PAYLOAD_SIZE_ABUSE_TIMEFRAME_LENGTH_IN_MINUTES),
             container.get<ControllerContainerInterface>(TYPES.Sync_ControllerContainer),
           ),
         )
