@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.133.0](https://github.com/standardnotes/server/compare/@standardnotes/syncing-server@1.132.0...@standardnotes/syncing-server@1.133.0) (2024-01-05)
+
+### Features
+
+* **syncing-server:** add traffic abuse checks ([#1014](https://github.com/standardnotes/server/issues/1014)) ([b717334](https://github.com/standardnotes/server/commit/b7173346d2949269b762b023da9ea67b7f327c35))
+
 # [1.132.0](https://github.com/standardnotes/server/compare/@standardnotes/syncing-server@1.131.0...@standardnotes/syncing-server@1.132.0) (2024-01-04)
 
 ### Features
