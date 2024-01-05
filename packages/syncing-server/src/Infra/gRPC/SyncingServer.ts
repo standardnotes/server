@@ -23,8 +23,6 @@ export class SyncingServer implements ISyncingServer {
     callback: grpc.sendUnaryData<SyncResponse>,
   ): Promise<void> {
     try {
-      this.logger.debug('[SyncingServer] Syncing items via gRPC')
-
       const itemHashesRPC = call.request.getItemsList()
       const itemHashes: ItemHash[] = []
       for (const itemHash of itemHashesRPC) {
