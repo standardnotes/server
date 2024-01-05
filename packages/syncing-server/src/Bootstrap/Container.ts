@@ -967,6 +967,7 @@ export class ContainerConfigLoader {
         new CheckForTrafficAbuse(
           container.get<MetricsStoreInterface>(TYPES.Sync_MetricsStore),
           container.get<TimerInterface>(TYPES.Sync_Timer),
+          container.get<Logger>(TYPES.Sync_Logger),
         ),
       )
 

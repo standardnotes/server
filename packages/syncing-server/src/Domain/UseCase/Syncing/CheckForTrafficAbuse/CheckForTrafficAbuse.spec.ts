@@ -3,16 +3,21 @@ import { MetricsStoreInterface } from '../../../Metrics/MetricsStoreInterface'
 import { CheckForTrafficAbuse } from './CheckForTrafficAbuse'
 import { MetricsSummary } from '../../../Metrics/MetricsSummary'
 import { Metric } from '../../../Metrics/Metric'
+import { Logger } from 'winston'
 
 describe('CheckForTrafficAbuse', () => {
   let metricsStore: MetricsStoreInterface
   let timer: TimerInterface
   let timeframeLengthInMinutes: number
   let threshold: number
+  let logger: Logger
 
-  const createUseCase = () => new CheckForTrafficAbuse(metricsStore, timer)
+  const createUseCase = () => new CheckForTrafficAbuse(metricsStore, timer, logger)
 
   beforeEach(() => {
+    logger = {} as jest.Mocked<Logger>
+    logger.debug = jest.fn()
+
     const metricsSummary: MetricsSummary = {
       sum: 101,
       max: 0,

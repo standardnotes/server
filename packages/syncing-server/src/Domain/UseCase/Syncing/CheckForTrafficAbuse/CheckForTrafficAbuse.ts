@@ -5,14 +5,21 @@ import { CheckForTrafficAbuseDTO } from './CheckForTrafficAbuseDTO'
 import { MetricsStoreInterface } from '../../../Metrics/MetricsStoreInterface'
 import { Metric } from '../../../Metrics/Metric'
 import { MetricsSummary } from '../../../Metrics/MetricsSummary'
+import { Logger } from 'winston'
 
 export class CheckForTrafficAbuse implements UseCaseInterface<MetricsSummary> {
   constructor(
     private metricsStore: MetricsStoreInterface,
     private timer: TimerInterface,
+    private logger: Logger,
   ) {}
 
   async execute(dto: CheckForTrafficAbuseDTO): Promise<Result<MetricsSummary>> {
+    this.logger.debug(`Checking for traffic abuse for metric: ${dto.metricToCheck}.`, {
+      codeTag: 'CheckForTrafficAbuse',
+      userUuid: dto.userUuid,
+    })
+
     const userUuidOrError = Uuid.create(dto.userUuid)
     if (userUuidOrError.isFailed()) {
       return Result.fail(userUuidOrError.getError())
@@ -34,6 +41,14 @@ export class CheckForTrafficAbuse implements UseCaseInterface<MetricsSummary> {
       from: this.timer.getUTCDateNMinutesAgo(dto.timeframeLengthInMinutes),
       to: this.timer.getUTCDate(),
     })
+
+    this.logger.debug(
+      `Current traffic abuse metric ${dto.metricToCheck} value in timeframe of ${dto.timeframeLengthInMinutes} minutes is ${metricsSummary.sum}. The threshold is ${dto.threshold}`,
+      {
+        codeTag: 'CheckForTrafficAbuse',
+        userUuid: dto.userUuid,
+      },
+    )
 
     if (metricsSummary.sum > dto.threshold) {
       return Result.fail(
