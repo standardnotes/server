@@ -2,6 +2,7 @@ import { Logger } from 'winston'
 
 import { ItemTransferCalculatorInterface } from './ItemTransferCalculatorInterface'
 import { ItemContentSizeDescriptor } from './ItemContentSizeDescriptor'
+import { Uuid } from '@standardnotes/domain-core'
 
 export class ItemTransferCalculator implements ItemTransferCalculatorInterface {
   constructor(private logger: Logger) {}
@@ -9,6 +10,7 @@ export class ItemTransferCalculator implements ItemTransferCalculatorInterface {
   async computeItemUuidsToFetch(
     itemContentSizeDescriptors: ItemContentSizeDescriptor[],
     bytesTransferLimit: number,
+    userUuid: Uuid,
   ): Promise<{ uuids: Array<string>; transferLimitBreachedBeforeEndOfItems: boolean }> {
     const itemUuidsToFetch = []
     let totalContentSizeInBytes = 0
@@ -24,6 +26,7 @@ export class ItemTransferCalculator implements ItemTransferCalculatorInterface {
         bytesTransferLimit,
         itemUuidsToFetch,
         itemContentSizeDescriptors,
+        userUuid,
       })
 
       if (transferLimitBreached) {
@@ -41,6 +44,7 @@ export class ItemTransferCalculator implements ItemTransferCalculatorInterface {
   async computeItemUuidBundlesToFetch(
     itemContentSizeDescriptors: ItemContentSizeDescriptor[],
     bytesTransferLimit: number,
+    userUuid: Uuid,
   ): Promise<Array<Array<string>>> {
     let itemUuidsToFetch = []
     let totalContentSizeInBytes = 0
@@ -56,6 +60,7 @@ export class ItemTransferCalculator implements ItemTransferCalculatorInterface {
         bytesTransferLimit,
         itemUuidsToFetch,
         itemContentSizeDescriptors,
+        userUuid,
       })
 
       if (transferLimitBreached) {
@@ -77,15 +82,20 @@ export class ItemTransferCalculator implements ItemTransferCalculatorInterface {
     bytesTransferLimit: number
     itemUuidsToFetch: Array<string>
     itemContentSizeDescriptors: ItemContentSizeDescriptor[]
+    userUuid: Uuid
   }): boolean {
     const transferLimitBreached = dto.totalContentSizeInBytes >= dto.bytesTransferLimit
     const transferLimitBreachedAtFirstItem =
       transferLimitBreached && dto.itemUuidsToFetch.length === 1 && dto.itemContentSizeDescriptors.length > 1
 
     if (transferLimitBreachedAtFirstItem) {
-      this.logger.warn(
-        `Item ${dto.itemUuidsToFetch[0]} is breaching the content size transfer limit: ${dto.bytesTransferLimit}`,
-      )
+      this.logger.warn('Item is breaching the content size transfer limit at first item in the bundle to fetch.', {
+        codeTag: 'ItemTransferCalculator',
+        itemUuid: dto.itemUuidsToFetch[0],
+        totalContentSizeInBytes: dto.totalContentSizeInBytes,
+        bytesTransferLimit: dto.bytesTransferLimit,
+        userId: dto.userUuid.value,
+      })
     }
 
     return transferLimitBreached && !transferLimitBreachedAtFirstItem

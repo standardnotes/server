@@ -4,13 +4,18 @@ import { Logger } from 'winston'
 
 import { ItemTransferCalculator } from './ItemTransferCalculator'
 import { ItemContentSizeDescriptor } from './ItemContentSizeDescriptor'
+import { Uuid } from '@standardnotes/domain-core'
 
 describe('ItemTransferCalculator', () => {
   let logger: Logger
 
   const createCalculator = () => new ItemTransferCalculator(logger)
 
+  let userUuid: Uuid
+
   beforeEach(() => {
+    userUuid = Uuid.create('00000000-0000-0000-0000-000000000000').getValue()
+
     logger = {} as jest.Mocked<Logger>
     logger.warn = jest.fn()
   })
@@ -23,7 +28,7 @@ describe('ItemTransferCalculator', () => {
         ItemContentSizeDescriptor.create('00000000-0000-0000-0000-000000000002', 20).getValue(),
       ]
 
-      const result = await createCalculator().computeItemUuidsToFetch(itemContentSizeDescriptors, 50)
+      const result = await createCalculator().computeItemUuidsToFetch(itemContentSizeDescriptors, 50, userUuid)
 
       expect(result).toEqual({
         uuids: [
@@ -42,7 +47,7 @@ describe('ItemTransferCalculator', () => {
         ItemContentSizeDescriptor.create('00000000-0000-0000-0000-000000000002', 20).getValue(),
       ]
 
-      const result = await createCalculator().computeItemUuidsToFetch(itemContentSizeDescriptors, 40)
+      const result = await createCalculator().computeItemUuidsToFetch(itemContentSizeDescriptors, 40, userUuid)
 
       expect(result).toEqual({
         uuids: ['00000000-0000-0000-0000-000000000000', '00000000-0000-0000-0000-000000000001'],
@@ -57,7 +62,7 @@ describe('ItemTransferCalculator', () => {
         ItemContentSizeDescriptor.create('00000000-0000-0000-0000-000000000002', null).getValue(),
       ]
 
-      const result = await createCalculator().computeItemUuidsToFetch(itemContentSizeDescriptors, 50)
+      const result = await createCalculator().computeItemUuidsToFetch(itemContentSizeDescriptors, 50, userUuid)
 
       expect(result).toEqual({
         uuids: [
@@ -76,7 +81,7 @@ describe('ItemTransferCalculator', () => {
         ItemContentSizeDescriptor.create('00000000-0000-0000-0000-000000000002', 20).getValue(),
       ]
 
-      const result = await createCalculator().computeItemUuidsToFetch(itemContentSizeDescriptors, 40)
+      const result = await createCalculator().computeItemUuidsToFetch(itemContentSizeDescriptors, 40, userUuid)
 
       expect(result).toEqual({
         uuids: ['00000000-0000-0000-0000-000000000000', '00000000-0000-0000-0000-000000000001'],
@@ -93,7 +98,7 @@ describe('ItemTransferCalculator', () => {
         ItemContentSizeDescriptor.create('00000000-0000-0000-0000-000000000002', 20).getValue(),
       ]
 
-      const result = await createCalculator().computeItemUuidBundlesToFetch(itemContentSizeDescriptors, 50)
+      const result = await createCalculator().computeItemUuidBundlesToFetch(itemContentSizeDescriptors, 50, userUuid)
 
       expect(result).toEqual([
         [
@@ -111,7 +116,7 @@ describe('ItemTransferCalculator', () => {
         ItemContentSizeDescriptor.create('00000000-0000-0000-0000-000000000002', 20).getValue(),
       ]
 
-      const result = await createCalculator().computeItemUuidBundlesToFetch(itemContentSizeDescriptors, 40)
+      const result = await createCalculator().computeItemUuidBundlesToFetch(itemContentSizeDescriptors, 40, userUuid)
 
       expect(result).toEqual([
         ['00000000-0000-0000-0000-000000000000', '00000000-0000-0000-0000-000000000001'],
@@ -126,7 +131,7 @@ describe('ItemTransferCalculator', () => {
         ItemContentSizeDescriptor.create('00000000-0000-0000-0000-000000000002', null).getValue(),
       ]
 
-      const result = await createCalculator().computeItemUuidBundlesToFetch(itemContentSizeDescriptors, 50)
+      const result = await createCalculator().computeItemUuidBundlesToFetch(itemContentSizeDescriptors, 50, userUuid)
 
       expect(result).toEqual([
         [
@@ -144,7 +149,7 @@ describe('ItemTransferCalculator', () => {
         ItemContentSizeDescriptor.create('00000000-0000-0000-0000-000000000002', 20).getValue(),
       ]
 
-      const result = await createCalculator().computeItemUuidBundlesToFetch(itemContentSizeDescriptors, 40)
+      const result = await createCalculator().computeItemUuidBundlesToFetch(itemContentSizeDescriptors, 40, userUuid)
 
       expect(result).toEqual([
         ['00000000-0000-0000-0000-000000000000', '00000000-0000-0000-0000-000000000001'],

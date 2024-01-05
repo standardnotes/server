@@ -63,6 +63,7 @@ export class GetItems implements UseCaseInterface<GetItemsResult> {
     const { uuids, transferLimitBreachedBeforeEndOfItems } = await this.itemTransferCalculator.computeItemUuidsToFetch(
       itemContentSizeDescriptors,
       this.contentSizeTransferLimit,
+      userUuid,
     )
     let items: Array<Item> = []
     if (uuids.length > 0) {

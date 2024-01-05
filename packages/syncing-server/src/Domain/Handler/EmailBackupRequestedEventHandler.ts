@@ -3,7 +3,7 @@ import {
   DomainEventPublisherInterface,
   EmailBackupRequestedEvent,
 } from '@standardnotes/domain-events'
-import { EmailLevel } from '@standardnotes/domain-core'
+import { EmailLevel, Uuid } from '@standardnotes/domain-core'
 import { Logger } from 'winston'
 import { DomainEventFactoryInterface } from '../Event/DomainEventFactoryInterface'
 import { ItemBackupServiceInterface } from '../Item/ItemBackupServiceInterface'
@@ -32,6 +32,17 @@ export class EmailBackupRequestedEventHandler implements DomainEventHandlerInter
     event: EmailBackupRequestedEvent,
     itemRepository: ItemRepositoryInterface,
   ): Promise<void> {
+    const userUuidOrError = Uuid.create(event.payload.userUuid)
+    if (userUuidOrError.isFailed()) {
+      this.logger.error('User uuid is invalid', {
+        userId: event.payload.userUuid,
+        codeTag: 'EmailBackupRequestedEventHandler',
+      })
+
+      return
+    }
+    const userUuid = userUuidOrError.getValue()
+
     const itemQuery: ItemQuery = {
       userUuid: event.payload.userUuid,
       sortBy: 'updated_at_timestamp',
@@ -42,6 +53,7 @@ export class EmailBackupRequestedEventHandler implements DomainEventHandlerInter
     const itemUuidBundles = await this.itemTransferCalculator.computeItemUuidBundlesToFetch(
       itemContentSizeDescriptors,
       this.emailAttachmentMaxByteSize,
+      userUuid,
     )
 
     const backupFileNames: string[] = []
