@@ -1,10 +1,6 @@
 import 'reflect-metadata'
 
-import { OpenTelemetrySDK } from '@standardnotes/domain-events-infra'
-import { MapperInterface, ServiceIdentifier } from '@standardnotes/domain-core'
-
-const sdk = new OpenTelemetrySDK({ serviceName: ServiceIdentifier.NAMES.SyncingServer })
-sdk.start()
+import { MapperInterface } from '@standardnotes/domain-core'
 
 import '../src/Infra/InversifyExpressUtils/AnnotatedFallbackController'
 import '../src/Infra/InversifyExpressUtils/AnnotatedHealthCheckController'
@@ -153,14 +149,6 @@ void container.load().then((container) => {
         logger.info('gRPC server closed')
       }
     })
-    sdk
-      .shutdown()
-      .then(() => {
-        logger.info('OpenTelemetry SDK shut down')
-      })
-      .catch((error) => {
-        logger.error(`Failed to shut down OpenTelemetry SDK: ${error.message}`)
-      })
   })
 
   logger.info(`Server started on port ${process.env.PORT}`)
