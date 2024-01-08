@@ -6,6 +6,7 @@ import { Metadata } from '@grpc/grpc-js'
 import { SyncResponseHttpRepresentation } from '../../Mapping/Sync/Http/SyncResponseHttpRepresentation'
 import { Status } from '@grpc/grpc-js/build/src/constants'
 import { Logger } from 'winston'
+import { ResponseLocals } from '../../Controller/ResponseLocals'
 
 export class GRPCSyncingServerServiceProxy {
   constructor(
@@ -20,24 +21,26 @@ export class GRPCSyncingServerServiceProxy {
     response: Response,
     payload?: Record<string, unknown> | string,
   ): Promise<{ status: number; data: unknown }> {
+    const locals = response.locals as ResponseLocals
+
     return new Promise((resolve, reject) => {
       try {
         const syncRequest = this.syncRequestGRPCMapper.toProjection(payload as Record<string, unknown>)
 
         const metadata = new Metadata()
-        metadata.set('x-user-uuid', response.locals.user.uuid)
+        metadata.set('x-user-uuid', locals.user.uuid)
         metadata.set('x-snjs-version', request.headers['x-snjs-version'] as string)
-        metadata.set('x-read-only-access', response.locals.readOnlyAccess ? 'true' : 'false')
-        if (response.locals.readOnlyAccess) {
+        metadata.set('x-read-only-access', locals.readOnlyAccess ? 'true' : 'false')
+        if (locals.readOnlyAccess) {
           this.logger.debug('Syncing with read-only access', {
             codeTag: 'GRPCSyncingServerServiceProxy',
-            userId: response.locals.user.uuid,
+            userId: locals.user.uuid,
           })
         }
-        if (response.locals.session) {
-          metadata.set('x-session-uuid', response.locals.session.uuid)
+        if (locals.session) {
+          metadata.set('x-session-uuid', locals.session.uuid)
         }
-        metadata.set('x-is-free-user', response.locals.isFreeUser ? 'true' : 'false')
+        metadata.set('x-is-free-user', locals.isFreeUser ? 'true' : 'false')
 
         this.syncingClient.syncItems(syncRequest, metadata, (error, syncResponse) => {
           if (error) {
@@ -52,7 +55,7 @@ export class GRPCSyncingServerServiceProxy {
             if (error.code === Status.INTERNAL) {
               this.logger.error(`Internal gRPC error: ${error.message}. Payload: ${JSON.stringify(payload)}`, {
                 codeTag: 'GRPCSyncingServerServiceProxy',
-                userId: response.locals.user.uuid,
+                userId: locals.user.uuid,
               })
             }
 
@@ -68,7 +71,7 @@ export class GRPCSyncingServerServiceProxy {
         ) {
           this.logger.error(`Internal gRPC error: ${JSON.stringify(error)}. Payload: ${JSON.stringify(payload)}`, {
             codeTag: 'GRPCSyncingServerServiceProxy.catch',
-            userId: response.locals.user.uuid,
+            userId: locals.user.uuid,
           })
         }
 

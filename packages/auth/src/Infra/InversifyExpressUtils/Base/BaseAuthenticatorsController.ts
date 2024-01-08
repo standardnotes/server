@@ -3,6 +3,7 @@ import { Request, Response } from 'express'
 
 import { AuthenticatorsController } from '../../../Controller/AuthenticatorsController'
 import { BaseHttpController, results } from 'inversify-express-utils'
+import { ResponseLocals } from '../ResponseLocals'
 
 export class BaseAuthenticatorsController extends BaseHttpController {
   constructor(
@@ -30,16 +31,20 @@ export class BaseAuthenticatorsController extends BaseHttpController {
   }
 
   async list(_request: Request, response: Response): Promise<results.JsonResult> {
+    const locals = response.locals as ResponseLocals
+
     const result = await this.authenticatorsController.list({
-      userUuid: response.locals.user.uuid,
+      userUuid: locals.user.uuid,
     })
 
     return this.json(result.data, result.status)
   }
 
   async delete(request: Request, response: Response): Promise<results.JsonResult> {
+    const locals = response.locals as ResponseLocals
+
     const result = await this.authenticatorsController.delete({
-      userUuid: response.locals.user.uuid,
+      userUuid: locals.user.uuid,
       authenticatorId: request.params.authenticatorId,
     })
 
@@ -47,17 +52,21 @@ export class BaseAuthenticatorsController extends BaseHttpController {
   }
 
   async generateRegistrationOptions(_request: Request, response: Response): Promise<results.JsonResult> {
+    const locals = response.locals as ResponseLocals
+
     const result = await this.authenticatorsController.generateRegistrationOptions({
-      username: response.locals.user.email,
-      userUuid: response.locals.user.uuid,
+      username: locals.user.email,
+      userUuid: locals.user.uuid,
     })
 
     return this.json(result.data, result.status)
   }
 
   async verifyRegistration(request: Request, response: Response): Promise<results.JsonResult> {
+    const locals = response.locals as ResponseLocals
+
     const result = await this.authenticatorsController.verifyRegistrationResponse({
-      userUuid: response.locals.user.uuid,
+      userUuid: locals.user.uuid,
       attestationResponse: request.body.attestationResponse,
     })
 

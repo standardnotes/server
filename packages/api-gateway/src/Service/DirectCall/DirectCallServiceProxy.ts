@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import { ServiceContainerInterface, ServiceIdentifier } from '@standardnotes/domain-core'
 
 import { ServiceProxyInterface } from '../Proxy/ServiceProxyInterface'
+import { ResponseLocals } from '../../Controller/ResponseLocals'
 
 export class DirectCallServiceProxy implements ServiceProxyInterface {
   constructor(
@@ -134,11 +135,13 @@ export class DirectCallServiceProxy implements ServiceProxyInterface {
     response: Response,
     serviceResponse: { statusCode: number; json: Record<string, unknown> },
   ): void {
+    const locals = response.locals as ResponseLocals
+
     void response.status(serviceResponse.statusCode).send({
       meta: {
         auth: {
-          userUuid: response.locals.user?.uuid,
-          roles: response.locals.roles,
+          userUuid: locals.user?.uuid,
+          roles: locals.roles,
         },
         server: {
           filesServerUrl: this.filesServerUrl,

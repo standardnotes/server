@@ -7,12 +7,11 @@ import { ClearLoginAttempts } from '../../../Domain/UseCase/ClearLoginAttempts'
 import { DeleteAccount } from '../../../Domain/UseCase/DeleteAccount/DeleteAccount'
 import { GetUserSubscription } from '../../../Domain/UseCase/GetUserSubscription/GetUserSubscription'
 import { IncreaseLoginAttempts } from '../../../Domain/UseCase/IncreaseLoginAttempts'
-import { UpdateUser } from '../../../Domain/UseCase/UpdateUser'
 import { ErrorTag } from '@standardnotes/responses'
+import { ResponseLocals } from '../ResponseLocals'
 
 export class BaseUsersController extends BaseHttpController {
   constructor(
-    protected updateUser: UpdateUser,
     protected doDeleteAccount: DeleteAccount,
     protected doGetUserSubscription: GetUserSubscription,
     protected clearLoginAttempts: ClearLoginAttempts,
@@ -23,61 +22,16 @@ export class BaseUsersController extends BaseHttpController {
     super()
 
     if (this.controllerContainer !== undefined) {
-      this.controllerContainer.register('auth.users.update', this.update.bind(this))
       this.controllerContainer.register('auth.users.getSubscription', this.getSubscription.bind(this))
       this.controllerContainer.register('auth.users.updateCredentials', this.changeCredentials.bind(this))
       this.controllerContainer.register('auth.users.delete', this.deleteAccount.bind(this))
     }
   }
 
-  async update(request: Request, response: Response): Promise<results.JsonResult> {
-    if (response.locals.readOnlyAccess) {
-      return this.json(
-        {
-          error: {
-            tag: ErrorTag.ReadOnlyAccess,
-            message: 'Session has read-only access.',
-          },
-        },
-        401,
-      )
-    }
-
-    if (request.params.userId !== response.locals.user.uuid) {
-      return this.json(
-        {
-          error: {
-            message: 'Operation not allowed.',
-          },
-        },
-        401,
-      )
-    }
-
-    const updateResult = await this.updateUser.execute({
-      user: response.locals.user,
-      updatedWithUserAgent: <string>request.headers['user-agent'],
-      apiVersion: request.body.api,
-    })
-
-    if (updateResult.success) {
-      response.setHeader('x-invalidate-cache', response.locals.user.uuid)
-
-      return this.json(updateResult.authResponse)
-    }
-
-    return this.json(
-      {
-        error: {
-          message: 'Could not update user.',
-        },
-      },
-      400,
-    )
-  }
-
   async deleteAccount(request: Request, response: Response): Promise<results.JsonResult> {
-    if (request.params.userUuid !== response.locals.user.uuid) {
+    const locals = response.locals as ResponseLocals
+
+    if (request.params.userUuid !== locals.user.uuid) {
       return this.json(
         {
           error: {
@@ -107,7 +61,9 @@ export class BaseUsersController extends BaseHttpController {
   }
 
   async getSubscription(request: Request, response: Response): Promise<results.JsonResult> {
-    if (request.params.userUuid !== response.locals.user.uuid) {
+    const locals = response.locals as ResponseLocals
+
+    if (request.params.userUuid !== locals.user.uuid) {
       return this.json(
         {
           error: {
@@ -130,7 +86,9 @@ export class BaseUsersController extends BaseHttpController {
   }
 
   async changeCredentials(request: Request, response: Response): Promise<results.JsonResult> {
-    if (response.locals.readOnlyAccess) {
+    const locals = response.locals as ResponseLocals
+
+    if (locals.readOnlyAccess) {
       return this.json(
         {
           error: {
@@ -175,7 +133,7 @@ export class BaseUsersController extends BaseHttpController {
         400,
       )
     }
-    const usernameOrError = Username.create(response.locals.user.email)
+    const usernameOrError = Username.create(locals.user.email)
     if (usernameOrError.isFailed()) {
       return this.json(
         {
@@ -202,7 +160,7 @@ export class BaseUsersController extends BaseHttpController {
     })
 
     if (changeCredentialsResult.isFailed()) {
-      await this.increaseLoginAttempts.execute({ email: response.locals.user.email })
+      await this.increaseLoginAttempts.execute({ email: locals.user.email })
 
       return this.json(
         {
@@ -214,9 +172,9 @@ export class BaseUsersController extends BaseHttpController {
       )
     }
 
-    await this.clearLoginAttempts.execute({ email: response.locals.user.email })
+    await this.clearLoginAttempts.execute({ email: locals.user.email })
 
-    response.setHeader('x-invalidate-cache', response.locals.user.uuid)
+    response.setHeader('x-invalidate-cache', locals.user.uuid)
 
     return this.json(changeCredentialsResult.getValue())
   }

@@ -35,6 +35,7 @@ import { AuthService } from '@standardnotes/grpc'
 import { AuthenticateRequest } from '../src/Domain/UseCase/AuthenticateRequest'
 import { CreateCrossServiceToken } from '../src/Domain/UseCase/CreateCrossServiceToken/CreateCrossServiceToken'
 import { TokenDecoderInterface, WebSocketConnectionTokenData } from '@standardnotes/security'
+import { ResponseLocals } from '../src/Infra/InversifyExpressUtils/ResponseLocals'
 
 const container = new ContainerConfigLoader()
 void container.load().then((container) => {
@@ -59,12 +60,13 @@ void container.load().then((container) => {
 
   server.setErrorConfig((app) => {
     app.use((error: Record<string, unknown>, request: Request, response: Response, _next: NextFunction) => {
+      const locals = response.locals as ResponseLocals
       logger.error(`${error.stack}`, {
         method: request.method,
         url: request.url,
         snjs: request.headers['x-snjs-version'],
         application: request.headers['x-application-version'],
-        userId: response.locals.user ? response.locals.user.uuid : undefined,
+        userId: locals.user ? locals.user.uuid : undefined,
       })
 
       response.status(500).send({

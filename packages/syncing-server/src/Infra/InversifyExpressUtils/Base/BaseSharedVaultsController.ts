@@ -11,6 +11,7 @@ import { CreateSharedVault } from '../../../Domain/UseCase/SharedVaults/CreateSh
 import { SharedVaultUserHttpRepresentation } from '../../../Mapping/Http/SharedVaultUserHttpRepresentation'
 import { DeleteSharedVault } from '../../../Domain/UseCase/SharedVaults/DeleteSharedVault/DeleteSharedVault'
 import { CreateSharedVaultFileValetToken } from '../../../Domain/UseCase/SharedVaults/CreateSharedVaultFileValetToken/CreateSharedVaultFileValetToken'
+import { ResponseLocals } from '../ResponseLocals'
 
 export class BaseSharedVaultsController extends BaseHttpController {
   constructor(
@@ -36,8 +37,10 @@ export class BaseSharedVaultsController extends BaseHttpController {
   }
 
   async getSharedVaults(_request: Request, response: Response): Promise<results.JsonResult> {
+    const locals = response.locals as ResponseLocals
+
     const resultOrError = await this.getSharedVaultsUseCase.execute({
-      userUuid: response.locals.user.uuid,
+      userUuid: locals.user.uuid,
       includeDesignatedSurvivors: true,
     })
 
@@ -64,9 +67,11 @@ export class BaseSharedVaultsController extends BaseHttpController {
   }
 
   async createSharedVault(_request: Request, response: Response): Promise<results.JsonResult> {
+    const locals = response.locals as ResponseLocals
+
     const result = await this.createSharedVaultUseCase.execute({
-      userUuid: response.locals.user.uuid,
-      userRoleNames: response.locals.roles.map((role: Role) => role.name),
+      userUuid: locals.user.uuid,
+      userRoleNames: locals.roles.map((role: Role) => role.name),
     })
 
     if (result.isFailed()) {
@@ -80,7 +85,7 @@ export class BaseSharedVaultsController extends BaseHttpController {
       )
     }
 
-    response.setHeader('x-invalidate-cache', response.locals.user.uuid)
+    response.setHeader('x-invalidate-cache', locals.user.uuid)
 
     return this.json({
       sharedVault: this.sharedVaultHttpMapper.toProjection(result.getValue().sharedVault),
@@ -89,9 +94,11 @@ export class BaseSharedVaultsController extends BaseHttpController {
   }
 
   async deleteSharedVault(request: Request, response: Response): Promise<results.JsonResult> {
+    const locals = response.locals as ResponseLocals
+
     const result = await this.deleteSharedVaultUseCase.execute({
       sharedVaultUuid: request.params.sharedVaultUuid,
-      originatorUuid: response.locals.user.uuid,
+      originatorUuid: locals.user.uuid,
       allowSurviving: false,
     })
 
@@ -106,16 +113,18 @@ export class BaseSharedVaultsController extends BaseHttpController {
       )
     }
 
-    response.setHeader('x-invalidate-cache', response.locals.user.uuid)
+    response.setHeader('x-invalidate-cache', locals.user.uuid)
 
     return this.json({ success: true })
   }
 
   async createValetTokenForSharedVaultFile(request: Request, response: Response): Promise<results.JsonResult> {
+    const locals = response.locals as ResponseLocals
+
     const result = await this.createSharedVaultFileValetTokenUseCase.execute({
-      userUuid: response.locals.user.uuid,
+      userUuid: locals.user.uuid,
       sharedVaultUuid: request.params.sharedVaultUuid,
-      sharedVaultOwnerUploadBytesLimit: response.locals.sharedVaultOwnerContext?.upload_bytes_limit,
+      sharedVaultOwnerUploadBytesLimit: locals.sharedVaultOwnerContext?.upload_bytes_limit,
       fileUuid: request.body.file_uuid,
       remoteIdentifier: request.body.remote_identifier,
       operation: request.body.operation,

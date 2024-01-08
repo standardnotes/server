@@ -6,6 +6,7 @@ import { ErrorTag } from '@standardnotes/responses'
 import { DeleteOtherSessionsForUser } from '../../../Domain/UseCase/DeleteOtherSessionsForUser'
 import { DeleteSessionForUser } from '../../../Domain/UseCase/DeleteSessionForUser'
 import { RefreshSessionToken } from '../../../Domain/UseCase/RefreshSessionToken'
+import { ResponseLocals } from '../ResponseLocals'
 
 export class BaseSessionController extends BaseHttpController {
   constructor(
@@ -24,7 +25,9 @@ export class BaseSessionController extends BaseHttpController {
   }
 
   async deleteSession(request: Request, response: Response): Promise<results.JsonResult | results.StatusCodeResult> {
-    if (response.locals.readOnlyAccess) {
+    const locals = response.locals as ResponseLocals
+
+    if (locals.readOnlyAccess) {
       return this.json(
         {
           error: {
@@ -36,7 +39,7 @@ export class BaseSessionController extends BaseHttpController {
       )
     }
 
-    if (!request.body.uuid) {
+    if (!request.body.uuid || !locals.session) {
       return this.json(
         {
           error: {
@@ -47,7 +50,7 @@ export class BaseSessionController extends BaseHttpController {
       )
     }
 
-    if (request.body.uuid === response.locals.session.uuid) {
+    if (request.body.uuid === locals.session.uuid) {
       return this.json(
         {
           error: {
@@ -59,7 +62,7 @@ export class BaseSessionController extends BaseHttpController {
     }
 
     const useCaseResponse = await this.deleteSessionForUser.execute({
-      userUuid: response.locals.user.uuid,
+      userUuid: locals.user.uuid,
       sessionUuid: request.body.uuid,
     })
 
@@ -74,7 +77,7 @@ export class BaseSessionController extends BaseHttpController {
       )
     }
 
-    response.setHeader('x-invalidate-cache', response.locals.user.uuid)
+    response.setHeader('x-invalidate-cache', locals.user.uuid)
 
     return this.statusCode(204)
   }
@@ -83,7 +86,9 @@ export class BaseSessionController extends BaseHttpController {
     _request: Request,
     response: Response,
   ): Promise<results.JsonResult | results.StatusCodeResult> {
-    if (response.locals.readOnlyAccess) {
+    const locals = response.locals as ResponseLocals
+
+    if (locals.readOnlyAccess) {
       return this.json(
         {
           error: {
@@ -95,7 +100,7 @@ export class BaseSessionController extends BaseHttpController {
       )
     }
 
-    if (!response.locals.user) {
+    if (!locals.user || !locals.session) {
       return this.json(
         {
           error: {
@@ -107,12 +112,12 @@ export class BaseSessionController extends BaseHttpController {
     }
 
     await this.deleteOtherSessionsForUser.execute({
-      userUuid: response.locals.user.uuid,
-      currentSessionUuid: response.locals.session.uuid,
+      userUuid: locals.user.uuid,
+      currentSessionUuid: locals.session.uuid,
       markAsRevoked: true,
     })
 
-    response.setHeader('x-invalidate-cache', response.locals.user.uuid)
+    response.setHeader('x-invalidate-cache', locals.user.uuid)
 
     return this.statusCode(204)
   }

@@ -1708,7 +1708,6 @@ export class ContainerConfigLoader {
         .bind<BaseUsersController>(TYPES.Auth_BaseUsersController)
         .toConstantValue(
           new BaseUsersController(
-            container.get<UpdateUser>(TYPES.Auth_UpdateUser),
             container.get<DeleteAccount>(TYPES.Auth_DeleteAccount),
             container.get<GetUserSubscription>(TYPES.Auth_GetUserSubscription),
             container.get<ClearLoginAttempts>(TYPES.Auth_ClearLoginAttempts),

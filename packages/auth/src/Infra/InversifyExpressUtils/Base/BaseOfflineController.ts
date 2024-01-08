@@ -8,6 +8,7 @@ import { AuthenticateOfflineSubscriptionToken } from '../../../Domain/UseCase/Au
 import { CreateOfflineSubscriptionToken } from '../../../Domain/UseCase/CreateOfflineSubscriptionToken/CreateOfflineSubscriptionToken'
 import { GetUserFeatures } from '../../../Domain/UseCase/GetUserFeatures/GetUserFeatures'
 import { GetUserOfflineSubscription } from '../../../Domain/UseCase/GetUserOfflineSubscription/GetUserOfflineSubscription'
+import { OfflineResponseLocals } from '../OfflineResponseLocals'
 
 export class BaseOfflineController extends BaseHttpController {
   constructor(
@@ -30,8 +31,10 @@ export class BaseOfflineController extends BaseHttpController {
   }
 
   async getOfflineFeatures(_request: Request, response: Response): Promise<results.JsonResult> {
+    const locals = response.locals as OfflineResponseLocals
+
     const result = await this.doGetUserFeatures.execute({
-      email: response.locals.offlineUserEmail,
+      email: locals.userEmail,
       offline: true,
     })
 
@@ -115,8 +118,10 @@ export class BaseOfflineController extends BaseHttpController {
   }
 
   async getSubscription(_request: Request, response: Response): Promise<results.JsonResult> {
+    const locals = response.locals as OfflineResponseLocals
+
     const result = await this.getUserOfflineSubscription.execute({
-      userEmail: response.locals.userEmail,
+      userEmail: locals.userEmail,
     })
 
     if (result.success) {

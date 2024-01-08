@@ -3,6 +3,7 @@ import { BaseHttpController, results } from 'inversify-express-utils'
 import { Request, Response } from 'express'
 
 import { UserRequestsController } from '../../../Controller/UserRequestsController'
+import { ResponseLocals } from '../ResponseLocals'
 
 export class BaseUserRequestsController extends BaseHttpController {
   constructor(
@@ -17,10 +18,12 @@ export class BaseUserRequestsController extends BaseHttpController {
   }
 
   async submitRequest(request: Request, response: Response): Promise<results.JsonResult> {
+    const locals = response.locals as ResponseLocals
+
     const result = await this.userRequestsController.submitUserRequest({
       requestType: request.body.requestType,
-      userUuid: response.locals.user.uuid,
-      userEmail: response.locals.user.email,
+      userUuid: locals.user.uuid,
+      userEmail: locals.user.email,
     })
 
     return this.json(result.data, result.status)

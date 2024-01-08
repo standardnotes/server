@@ -7,6 +7,7 @@ import { AxiosError, AxiosInstance } from 'axios'
 import { Logger } from 'winston'
 
 import { TYPES } from '../Bootstrap/Types'
+import { ResponseLocals } from './ResponseLocals'
 
 @injectable()
 export class WebSocketAuthMiddleware extends BaseMiddleware {
@@ -55,13 +56,14 @@ export class WebSocketAuthMiddleware extends BaseMiddleware {
 
       const crossServiceToken = authResponse.data.authToken
 
-      response.locals.authToken = crossServiceToken
-
       const decodedToken = <CrossServiceTokenData>verify(crossServiceToken, this.jwtSecret, { algorithms: ['HS256'] })
 
-      response.locals.user = decodedToken.user
-      response.locals.session = decodedToken.session
-      response.locals.roles = decodedToken.roles
+      Object.assign(response.locals, {
+        authToken: crossServiceToken,
+        user: decodedToken.user,
+        session: decodedToken.session,
+        roles: decodedToken.roles,
+      } as ResponseLocals)
     } catch (error) {
       const errorMessage = (error as AxiosError).isAxiosError
         ? JSON.stringify((error as AxiosError).response?.data)

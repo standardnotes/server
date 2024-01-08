@@ -5,6 +5,7 @@ import { Logger } from 'winston'
 import TYPES from '../../../Bootstrap/Types'
 import { OfflineSettingName } from '../../../Domain/Setting/OfflineSettingName'
 import { OfflineSettingRepositoryInterface } from '../../../Domain/Setting/OfflineSettingRepositoryInterface'
+import { OfflineResponseLocals } from '../OfflineResponseLocals'
 
 @injectable()
 export class OfflineUserAuthMiddleware extends BaseMiddleware {
@@ -47,8 +48,10 @@ export class OfflineUserAuthMiddleware extends BaseMiddleware {
         return
       }
 
-      response.locals.offlineUserEmail = offlineFeaturesTokenSetting.email
-      response.locals.offlineFeaturesToken = offlineFeaturesTokenSetting.value
+      Object.assign(response.locals, {
+        featuresToken: offlineFeaturesTokenSetting.value,
+        userEmail: offlineFeaturesTokenSetting.email,
+      } as OfflineResponseLocals)
 
       return next()
     } catch (error) {

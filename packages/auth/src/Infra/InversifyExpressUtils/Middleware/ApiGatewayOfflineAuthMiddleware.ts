@@ -4,6 +4,7 @@ import { inject, injectable } from 'inversify'
 import { BaseMiddleware } from 'inversify-express-utils'
 import { Logger } from 'winston'
 import TYPES from '../../../Bootstrap/Types'
+import { OfflineResponseLocals } from '../OfflineResponseLocals'
 
 @injectable()
 export class ApiGatewayOfflineAuthMiddleware extends BaseMiddleware {
@@ -48,8 +49,10 @@ export class ApiGatewayOfflineAuthMiddleware extends BaseMiddleware {
         return
       }
 
-      response.locals.featuresToken = token.featuresToken
-      response.locals.userEmail = token.userEmail
+      Object.assign(response.locals, {
+        featuresToken: token.featuresToken,
+        userEmail: token.userEmail,
+      } as OfflineResponseLocals)
 
       return next()
     } catch (error) {

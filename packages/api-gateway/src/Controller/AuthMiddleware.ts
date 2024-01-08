@@ -8,6 +8,8 @@ import { Logger } from 'winston'
 
 import { CrossServiceTokenCacheInterface } from '../Service/Cache/CrossServiceTokenCacheInterface'
 import { ServiceProxyInterface } from '../Service/Proxy/ServiceProxyInterface'
+import { ResponseLocals } from './ResponseLocals'
+import { RoleName } from '@standardnotes/domain-core'
 
 export abstract class AuthMiddleware extends BaseMiddleware {
   constructor(
@@ -55,33 +57,27 @@ export abstract class AuthMiddleware extends BaseMiddleware {
         crossServiceTokenFetchedFromCache = false
       }
 
-      response.locals.authToken = crossServiceToken
-
-      const decodedToken = <CrossServiceTokenData>(
-        verify(response.locals.authToken, this.jwtSecret, { algorithms: ['HS256'] })
-      )
+      const decodedToken = <CrossServiceTokenData>verify(crossServiceToken, this.jwtSecret, { algorithms: ['HS256'] })
 
       if (this.crossServiceTokenCacheTTL && !crossServiceTokenFetchedFromCache) {
         await this.crossServiceTokenCache.set({
           key: cacheKey,
-          encodedCrossServiceToken: response.locals.authToken,
+          encodedCrossServiceToken: crossServiceToken,
           expiresAtInSeconds: this.getCrossServiceTokenCacheExpireTimestamp(decodedToken),
           userUuid: decodedToken.user.uuid,
         })
       }
 
-      response.locals.user = decodedToken.user
-      response.locals.session = decodedToken.session
-      response.locals.roles = decodedToken.roles
-      response.locals.sharedVaultOwnerContext = decodedToken.shared_vault_owner_context
-      response.locals.readOnlyAccess = decodedToken.session?.readonly_access ?? false
-      if (response.locals.readOnlyAccess) {
-        this.logger.debug('User operates on read-only access', {
-          codeTag: 'AuthMiddleware',
-          userId: response.locals.user.uuid,
-        })
-      }
-      response.locals.belongsToSharedVaults = decodedToken.belongs_to_shared_vaults ?? []
+      Object.assign(response.locals, {
+        authToken: crossServiceToken,
+        user: decodedToken.user,
+        session: decodedToken.session,
+        roles: decodedToken.roles,
+        sharedVaultOwnerContext: decodedToken.shared_vault_owner_context,
+        readOnlyAccess: decodedToken.session?.readonly_access ?? false,
+        isFreeUser: decodedToken.roles.length === 1 && decodedToken.roles[0].name === RoleName.NAMES.CoreUser,
+        belongsToSharedVaults: decodedToken.belongs_to_shared_vaults ?? [],
+      } as ResponseLocals)
     } catch (error) {
       let detailedErrorMessage = (error as Error).message
       if (error instanceof AxiosError) {

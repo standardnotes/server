@@ -4,6 +4,7 @@ import { Request, Response } from 'express'
 
 import { CreateListedAccount } from '../../../Domain/UseCase/CreateListedAccount/CreateListedAccount'
 import { BaseHttpController, results } from 'inversify-express-utils'
+import { ResponseLocals } from '../ResponseLocals'
 
 export class BaseListedController extends BaseHttpController {
   constructor(
@@ -18,7 +19,9 @@ export class BaseListedController extends BaseHttpController {
   }
 
   async createListedAccount(_request: Request, response: Response): Promise<results.JsonResult> {
-    if (response.locals.readOnlyAccess) {
+    const locals = response.locals as ResponseLocals
+
+    if (locals.readOnlyAccess) {
       return this.json(
         {
           error: {
@@ -31,8 +34,8 @@ export class BaseListedController extends BaseHttpController {
     }
 
     await this.doCreateListedAccount.execute({
-      userUuid: response.locals.user.uuid,
-      userEmail: response.locals.user.email,
+      userUuid: locals.user.uuid,
+      userEmail: locals.user.email,
     })
 
     return this.json({

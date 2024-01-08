@@ -8,6 +8,7 @@ import { IncreaseLoginAttempts } from '../../../Domain/UseCase/IncreaseLoginAtte
 import { SignIn } from '../../../Domain/UseCase/SignIn'
 import { VerifyMFA } from '../../../Domain/UseCase/VerifyMFA'
 import { AuthController } from '../../../Controller/AuthController'
+import { ResponseLocals } from '../ResponseLocals'
 import { BaseHttpController, results } from 'inversify-express-utils'
 
 export class BaseAuthController extends BaseHttpController {
@@ -37,9 +38,11 @@ export class BaseAuthController extends BaseHttpController {
   }
 
   async params(request: Request, response: Response): Promise<results.JsonResult> {
-    if (response.locals.session) {
+    const locals = response.locals as ResponseLocals
+
+    if (locals.session) {
       const result = await this.getUserKeyParams.execute({
-        email: response.locals.user.email,
+        email: locals.user.email,
         authenticated: true,
       })
 
@@ -145,6 +148,8 @@ export class BaseAuthController extends BaseHttpController {
   }
 
   async pkceParams(request: Request, response: Response): Promise<results.JsonResult> {
+    const locals = response.locals as ResponseLocals
+
     if (!request.body.code_challenge) {
       return this.json(
         {
@@ -156,9 +161,9 @@ export class BaseAuthController extends BaseHttpController {
       )
     }
 
-    if (response.locals.session) {
+    if (locals.session) {
       const result = await this.getUserKeyParams.execute({
-        email: response.locals.user.email,
+        email: locals.user.email,
         authenticated: true,
         codeChallenge: request.body.code_challenge as string,
       })
@@ -248,8 +253,10 @@ export class BaseAuthController extends BaseHttpController {
   }
 
   async generateRecoveryCodes(_request: Request, response: Response): Promise<results.JsonResult> {
+    const locals = response.locals as ResponseLocals
+
     const result = await this.authController.generateRecoveryCodes({
-      userUuid: response.locals.user.uuid,
+      userUuid: locals.user.uuid,
     })
 
     return this.json(result.data, result.status)
@@ -280,8 +287,10 @@ export class BaseAuthController extends BaseHttpController {
   }
 
   async signOut(request: Request, response: Response): Promise<results.JsonResult | void> {
+    const locals = response.locals as ResponseLocals
+
     const result = await this.authController.signOut({
-      readOnlyAccess: response.locals.readOnlyAccess,
+      readOnlyAccess: locals.readOnlyAccess,
       authorizationHeader: <string>request.headers.authorization,
     })
 
