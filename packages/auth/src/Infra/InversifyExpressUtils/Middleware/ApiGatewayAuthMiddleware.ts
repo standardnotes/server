@@ -2,6 +2,7 @@ import { CrossServiceTokenData, TokenDecoderInterface } from '@standardnotes/sec
 import { NextFunction, Request, Response } from 'express'
 import { BaseMiddleware } from 'inversify-express-utils'
 import { Logger } from 'winston'
+import { ResponseLocals } from '../ResponseLocals'
 
 export abstract class ApiGatewayAuthMiddleware extends BaseMiddleware {
   constructor(
@@ -34,10 +35,12 @@ export abstract class ApiGatewayAuthMiddleware extends BaseMiddleware {
         return
       }
 
-      response.locals.user = token.user
-      response.locals.roles = token.roles
-      response.locals.session = token.session
-      response.locals.readOnlyAccess = token.session?.readonly_access ?? false
+      Object.assign(response.locals, {
+        user: token.user,
+        roles: token.roles,
+        session: token.session,
+        readOnlyAccess: token.session?.readonly_access ?? false,
+      } as ResponseLocals)
 
       return next()
     } catch (error) {

@@ -8,6 +8,8 @@ import { TYPES } from '../../Bootstrap/Types'
 import { CrossServiceTokenCacheInterface } from '../Cache/CrossServiceTokenCacheInterface'
 import { ServiceProxyInterface } from '../Proxy/ServiceProxyInterface'
 import { TimerInterface } from '@standardnotes/time'
+import { ResponseLocals } from '../../Controller/ResponseLocals'
+import { OfflineResponseLocals } from '../../Controller/OfflineResponseLocals'
 
 @injectable()
 export class HttpServiceProxy implements ServiceProxyInterface {
@@ -176,6 +178,8 @@ export class HttpServiceProxy implements ServiceProxyInterface {
     endpoint: string,
     payload?: Record<string, unknown> | string,
   ): Promise<AxiosResponse | undefined> {
+    const locals = response.locals as ResponseLocals | OfflineResponseLocals
+
     try {
       const headers: Record<string, string> = {}
       for (const headerName of Object.keys(request.headers)) {
@@ -185,12 +189,12 @@ export class HttpServiceProxy implements ServiceProxyInterface {
       delete headers.host
       delete headers['content-length']
 
-      if (response.locals.authToken) {
-        headers['X-Auth-Token'] = response.locals.authToken
+      if ('authToken' in locals && locals.authToken) {
+        headers['X-Auth-Token'] = locals.authToken
       }
 
-      if (response.locals.offlineAuthToken) {
-        headers['X-Auth-Offline-Token'] = response.locals.offlineAuthToken
+      if ('offlineAuthToken' in locals && locals.offlineAuthToken) {
+        headers['X-Auth-Offline-Token'] = locals.offlineAuthToken
       }
 
       const serviceResponse = await this.httpClient.request({
@@ -222,7 +226,7 @@ export class HttpServiceProxy implements ServiceProxyInterface {
       this.logger.error(
         `Could not pass the request to ${serverUrl}/${endpoint} on underlying service: ${detailedErrorMessage}`,
         {
-          userId: response.locals.user ? response.locals.user.uuid : undefined,
+          userId: (locals as ResponseLocals).user ? (locals as ResponseLocals).user.uuid : undefined,
         },
       )
 
@@ -257,6 +261,7 @@ export class HttpServiceProxy implements ServiceProxyInterface {
     endpoint: string,
     payload?: Record<string, unknown> | string,
   ): Promise<void> {
+    const locals = response.locals as ResponseLocals
     const serviceResponse = await this.getServerResponse(serverUrl, request, response, endpoint, payload)
 
     if (!serviceResponse) {
@@ -274,8 +279,8 @@ export class HttpServiceProxy implements ServiceProxyInterface {
     response.status(serviceResponse.status).send({
       meta: {
         auth: {
-          userUuid: response.locals.user?.uuid,
-          roles: response.locals.roles,
+          userUuid: locals.user?.uuid,
+          roles: locals.roles,
         },
         server: {
           filesServerUrl: this.filesServerUrl,

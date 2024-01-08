@@ -36,6 +36,7 @@ import { InversifyExpressServer } from 'inversify-express-utils'
 import { ContainerConfigLoader } from '../src/Bootstrap/Container'
 import { TYPES } from '../src/Bootstrap/Types'
 import { Env } from '../src/Bootstrap/Env'
+import { ResponseLocals } from '../src/Controller/ResponseLocals'
 
 const container = new ContainerConfigLoader()
 void container.load().then((container) => {
@@ -91,12 +92,14 @@ void container.load().then((container) => {
 
   server.setErrorConfig((app) => {
     app.use((error: Record<string, unknown>, request: Request, response: Response, _next: NextFunction) => {
+      const locals = response.locals as ResponseLocals
+
       logger.error(`${error.stack}`, {
         method: request.method,
         url: request.url,
         snjs: request.headers['x-snjs-version'],
         application: request.headers['x-application-version'],
-        userId: response.locals.user ? response.locals.user.uuid : undefined,
+        userId: locals.user ? locals.user.uuid : undefined,
       })
       logger.debug(
         `[URL: |${request.method}| ${request.url}][SNJS: ${request.headers['x-snjs-version']}][Application: ${

@@ -9,6 +9,8 @@ import { CrossServiceTokenCacheInterface } from '../Cache/CrossServiceTokenCache
 import { ServiceProxyInterface } from '../Proxy/ServiceProxyInterface'
 import { GRPCSyncingServerServiceProxy } from './GRPCSyncingServerServiceProxy'
 import { Status } from '@grpc/grpc-js/build/src/constants'
+import { ResponseLocals } from '../../Controller/ResponseLocals'
+import { OfflineResponseLocals } from '../../Controller/OfflineResponseLocals'
 
 export class GRPCServiceProxy implements ServiceProxyInterface {
   constructor(
@@ -135,13 +137,15 @@ export class GRPCServiceProxy implements ServiceProxyInterface {
     response: Response,
     payload?: Record<string, unknown> | string,
   ): Promise<void> {
+    const locals = response.locals as ResponseLocals
+
     const result = await this.gRPCSyncingServerServiceProxy.sync(request, response, payload)
 
     response.status(result.status).send({
       meta: {
         auth: {
-          userUuid: response.locals.user?.uuid,
-          roles: response.locals.roles,
+          userUuid: locals.user?.uuid,
+          roles: locals.roles,
         },
         server: {
           filesServerUrl: this.filesServerUrl,
@@ -250,6 +254,8 @@ export class GRPCServiceProxy implements ServiceProxyInterface {
     payload?: Record<string, unknown> | string,
     retryAttempt?: number,
   ): Promise<AxiosResponse | undefined> {
+    const locals = response.locals as ResponseLocals | OfflineResponseLocals
+
     try {
       const headers: Record<string, string> = {}
       for (const headerName of Object.keys(request.headers)) {
@@ -259,12 +265,12 @@ export class GRPCServiceProxy implements ServiceProxyInterface {
       delete headers.host
       delete headers['content-length']
 
-      if (response.locals.authToken) {
-        headers['X-Auth-Token'] = response.locals.authToken
+      if ('authToken' in locals && locals.authToken) {
+        headers['X-Auth-Token'] = locals.authToken
       }
 
-      if (response.locals.offlineAuthToken) {
-        headers['X-Auth-Offline-Token'] = response.locals.offlineAuthToken
+      if ('offlineAuthToken' in locals && locals.offlineAuthToken) {
+        headers['X-Auth-Offline-Token'] = locals.offlineAuthToken
       }
 
       const serviceResponse = await this.httpClient.request({
@@ -314,7 +320,7 @@ export class GRPCServiceProxy implements ServiceProxyInterface {
           ? `Request to ${serverUrl}/${endpoint} timed out after ${retryAttempt} retries`
           : `Could not pass the request to ${serverUrl}/${endpoint} on underlying service: ${detailedErrorMessage}`,
         {
-          userId: response.locals.user ? response.locals.user.uuid : undefined,
+          userId: (locals as ResponseLocals).user ? (locals as ResponseLocals).user.uuid : undefined,
         },
       )
 
@@ -349,6 +355,8 @@ export class GRPCServiceProxy implements ServiceProxyInterface {
     endpoint: string,
     payload?: Record<string, unknown> | string,
   ): Promise<void> {
+    const locals = response.locals as ResponseLocals
+
     const serviceResponse = await this.getServerResponse(serverUrl, request, response, endpoint, payload)
 
     if (!serviceResponse) {
@@ -366,8 +374,8 @@ export class GRPCServiceProxy implements ServiceProxyInterface {
     response.status(serviceResponse.status).send({
       meta: {
         auth: {
-          userUuid: response.locals.user?.uuid,
-          roles: response.locals.roles,
+          userUuid: locals.user?.uuid,
+          roles: locals.roles,
         },
         server: {
           filesServerUrl: this.filesServerUrl,

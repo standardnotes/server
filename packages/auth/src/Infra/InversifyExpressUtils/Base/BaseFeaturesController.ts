@@ -3,6 +3,7 @@ import { Request, Response } from 'express'
 
 import { GetUserFeatures } from '../../../Domain/UseCase/GetUserFeatures/GetUserFeatures'
 import { BaseHttpController, results } from 'inversify-express-utils'
+import { ResponseLocals } from '../ResponseLocals'
 
 export class BaseFeaturesController extends BaseHttpController {
   constructor(
@@ -17,7 +18,9 @@ export class BaseFeaturesController extends BaseHttpController {
   }
 
   async getFeatures(request: Request, response: Response): Promise<results.JsonResult> {
-    if (request.params.userUuid !== response.locals.user.uuid) {
+    const locals = response.locals as ResponseLocals
+
+    if (request.params.userUuid !== locals.user.uuid) {
       return this.json(
         {
           error: {

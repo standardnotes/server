@@ -7,6 +7,9 @@ import { AxiosError, AxiosInstance, AxiosResponse } from 'axios'
 import { Logger } from 'winston'
 import { TYPES } from '../Bootstrap/Types'
 import { TokenAuthenticationMethod } from './TokenAuthenticationMethod'
+import { ResponseLocals } from './ResponseLocals'
+import { OfflineResponseLocals } from './OfflineResponseLocals'
+import { SubscriptionResponseLocals } from './SubscriptionResponseLocals'
 
 @injectable()
 export class SubscriptionTokenAuthMiddleware extends BaseMiddleware {
@@ -34,13 +37,16 @@ export class SubscriptionTokenAuthMiddleware extends BaseMiddleware {
       return
     }
 
-    response.locals.tokenAuthenticationMethod = email
-      ? TokenAuthenticationMethod.OfflineSubscriptionToken
-      : TokenAuthenticationMethod.SubscriptionToken
+    const locals = {
+      tokenAuthenticationMethod: email
+        ? TokenAuthenticationMethod.OfflineSubscriptionToken
+        : TokenAuthenticationMethod.SubscriptionToken,
+    } as SubscriptionResponseLocals
+    Object.assign(response.locals, locals)
 
     try {
       const url =
-        response.locals.tokenAuthenticationMethod == TokenAuthenticationMethod.OfflineSubscriptionToken
+        locals.tokenAuthenticationMethod == TokenAuthenticationMethod.OfflineSubscriptionToken
           ? `${this.authServerUrl}/offline/subscription-tokens/${subscriptionToken}/validate`
           : `${this.authServerUrl}/subscription-tokens/${subscriptionToken}/validate`
 
@@ -65,7 +71,7 @@ export class SubscriptionTokenAuthMiddleware extends BaseMiddleware {
         return
       }
 
-      if (response.locals.tokenAuthenticationMethod == TokenAuthenticationMethod.OfflineSubscriptionToken) {
+      if (locals.tokenAuthenticationMethod == TokenAuthenticationMethod.OfflineSubscriptionToken) {
         this.handleOfflineAuthTokenValidationResponse(response, authResponse)
 
         return next()
@@ -101,24 +107,26 @@ export class SubscriptionTokenAuthMiddleware extends BaseMiddleware {
   }
 
   private handleOfflineAuthTokenValidationResponse(response: Response, authResponse: AxiosResponse) {
-    response.locals.offlineAuthToken = authResponse.data.authToken
-
     const decodedToken = <OfflineUserTokenData>(
       verify(authResponse.data.authToken, this.jwtSecret, { algorithms: ['HS256'] })
     )
 
-    response.locals.offlineUserEmail = decodedToken.userEmail
-    response.locals.offlineFeaturesToken = decodedToken.featuresToken
+    Object.assign(response.locals, {
+      offlineAuthToken: authResponse.data.authToken,
+      userEmail: decodedToken.userEmail,
+      featuresToken: decodedToken.featuresToken,
+    } as OfflineResponseLocals)
   }
 
   private handleAuthTokenValidationResponse(response: Response, authResponse: AxiosResponse) {
-    response.locals.authToken = authResponse.data.authToken
-
     const decodedToken = <CrossServiceTokenData>(
       verify(authResponse.data.authToken, this.jwtSecret, { algorithms: ['HS256'] })
     )
 
-    response.locals.user = decodedToken.user
-    response.locals.roles = decodedToken.roles
+    Object.assign(response.locals, {
+      authToken: authResponse.data.authToken,
+      user: decodedToken.user,
+      roles: decodedToken.roles,
+    } as ResponseLocals)
   }
 }

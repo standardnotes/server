@@ -6,6 +6,7 @@ import { verify } from 'jsonwebtoken'
 import { Logger } from 'winston'
 import { ConnectionValidationResponse, IAuthClient, WebsocketConnectionAuthorizationHeader } from '@standardnotes/grpc'
 import { RoleName } from '@standardnotes/domain-core'
+import { ResponseLocals } from './ResponseLocals'
 
 export class GRPCWebSocketAuthMiddleware extends BaseMiddleware {
   constructor(
@@ -90,15 +91,16 @@ export class GRPCWebSocketAuthMiddleware extends BaseMiddleware {
 
       const crossServiceToken = authResponse.data.authToken as string
 
-      response.locals.authToken = crossServiceToken
-
       const decodedToken = <CrossServiceTokenData>verify(crossServiceToken, this.jwtSecret, { algorithms: ['HS256'] })
 
-      response.locals.user = decodedToken.user
-      response.locals.session = decodedToken.session
-      response.locals.roles = decodedToken.roles
-      response.locals.isFreeUser =
-        decodedToken.roles.length === 1 && decodedToken.roles[0].name === RoleName.NAMES.CoreUser
+      Object.assign(response.locals, {
+        authToken: crossServiceToken,
+        user: decodedToken.user,
+        session: decodedToken.session,
+        roles: decodedToken.roles,
+        isFreeUser: decodedToken.roles.length === 1 && decodedToken.roles[0].name === RoleName.NAMES.CoreUser,
+        readOnlyAccess: decodedToken.session?.readonly_access ?? false,
+      } as ResponseLocals)
     } catch (error) {
       this.logger.error(
         `Could not pass the request to websocket connection validation on underlying service: ${

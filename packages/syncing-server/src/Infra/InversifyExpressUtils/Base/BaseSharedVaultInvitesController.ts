@@ -13,6 +13,7 @@ import { DeleteSharedVaultInvitesToUser } from '../../../Domain/UseCase/SharedVa
 import { GetSharedVaultInvitesSentByUser } from '../../../Domain/UseCase/SharedVaults/GetSharedVaultInvitesSentByUser/GetSharedVaultInvitesSentByUser'
 import { DeleteSharedVaultInvitesSentByUser } from '../../../Domain/UseCase/SharedVaults/DeleteSharedVaultInvitesSentByUser/DeleteSharedVaultInvitesSentByUser'
 import { GetSharedVaultInvitesSentToUser } from '../../../Domain/UseCase/SharedVaults/GetSharedVaultInvitesSentToUser/GetSharedVaultInvitesSentToUser'
+import { ResponseLocals } from '../ResponseLocals'
 
 export class BaseSharedVaultInvitesController extends BaseHttpController {
   constructor(
@@ -63,9 +64,11 @@ export class BaseSharedVaultInvitesController extends BaseHttpController {
   }
 
   async createSharedVaultInvite(request: Request, response: Response): Promise<results.JsonResult> {
+    const locals = response.locals as ResponseLocals
+
     const result = await this.inviteUserToSharedVaultUseCase.execute({
       sharedVaultUuid: request.params.sharedVaultUuid,
-      senderUuid: response.locals.user.uuid,
+      senderUuid: locals.user.uuid,
       recipientUuid: request.body.recipient_uuid,
       encryptedMessage: request.body.encrypted_message,
       permission: request.body.permission,
@@ -88,10 +91,12 @@ export class BaseSharedVaultInvitesController extends BaseHttpController {
   }
 
   async updateSharedVaultInvite(request: Request, response: Response): Promise<results.JsonResult> {
+    const locals = response.locals as ResponseLocals
+
     const result = await this.updateSharedVaultInviteUseCase.execute({
       encryptedMessage: request.body.encrypted_message,
       inviteUuid: request.params.inviteUuid,
-      senderUuid: response.locals.user.uuid,
+      senderUuid: locals.user.uuid,
       permission: request.body.permission,
     })
 
@@ -112,9 +117,11 @@ export class BaseSharedVaultInvitesController extends BaseHttpController {
   }
 
   async acceptSharedVaultInvite(request: Request, response: Response): Promise<results.JsonResult> {
+    const locals = response.locals as ResponseLocals
+
     const result = await this.acceptSharedVaultInviteUseCase.execute({
       inviteUuid: request.params.inviteUuid,
-      originatorUuid: response.locals.user.uuid,
+      originatorUuid: locals.user.uuid,
     })
 
     if (result.isFailed()) {
@@ -128,7 +135,7 @@ export class BaseSharedVaultInvitesController extends BaseHttpController {
       )
     }
 
-    response.setHeader('x-invalidate-cache', response.locals.user.uuid)
+    response.setHeader('x-invalidate-cache', locals.user.uuid)
 
     return this.json({
       success: true,
@@ -136,9 +143,11 @@ export class BaseSharedVaultInvitesController extends BaseHttpController {
   }
 
   async declineSharedVaultInvite(request: Request, response: Response): Promise<results.JsonResult> {
+    const locals = response.locals as ResponseLocals
+
     const result = await this.declineSharedVaultInviteUseCase.execute({
       inviteUuid: request.params.inviteUuid,
-      userUuid: response.locals.user.uuid,
+      userUuid: locals.user.uuid,
     })
 
     if (result.isFailed()) {
@@ -158,8 +167,10 @@ export class BaseSharedVaultInvitesController extends BaseHttpController {
   }
 
   async deleteInboundUserInvites(_request: Request, response: Response): Promise<results.JsonResult> {
+    const locals = response.locals as ResponseLocals
+
     const result = await this.deleteSharedVaultInvitesToUserUseCase.execute({
-      userUuid: response.locals.user.uuid,
+      userUuid: locals.user.uuid,
     })
 
     if (result.isFailed()) {
@@ -179,8 +190,10 @@ export class BaseSharedVaultInvitesController extends BaseHttpController {
   }
 
   async deleteOutboundUserInvites(_request: Request, response: Response): Promise<results.JsonResult> {
+    const locals = response.locals as ResponseLocals
+
     const result = await this.deleteSharedVaultInvitesSentByUserUseCase.execute({
-      userUuid: response.locals.user.uuid,
+      userUuid: locals.user.uuid,
     })
 
     if (result.isFailed()) {
@@ -200,8 +213,10 @@ export class BaseSharedVaultInvitesController extends BaseHttpController {
   }
 
   async getOutboundUserInvites(_request: Request, response: Response): Promise<results.JsonResult> {
+    const locals = response.locals as ResponseLocals
+
     const result = await this.getSharedVaultInvitesSentByUserUseCase.execute({
-      senderUuid: response.locals.user.uuid,
+      senderUuid: locals.user.uuid,
     })
 
     if (result.isFailed()) {
@@ -221,8 +236,10 @@ export class BaseSharedVaultInvitesController extends BaseHttpController {
   }
 
   async getSharedVaultInvites(request: Request, response: Response): Promise<results.JsonResult> {
+    const locals = response.locals as ResponseLocals
+
     const result = await this.getSharedVaultInvitesSentByUserUseCase.execute({
-      senderUuid: response.locals.user.uuid,
+      senderUuid: locals.user.uuid,
       sharedVaultUuid: request.params.sharedVaultUuid,
     })
 
@@ -243,8 +260,10 @@ export class BaseSharedVaultInvitesController extends BaseHttpController {
   }
 
   async getUserInvites(_request: Request, response: Response): Promise<results.JsonResult> {
+    const locals = response.locals as ResponseLocals
+
     const result = await this.getSharedVaultInvitesSentToUserUseCase.execute({
-      userUuid: response.locals.user.uuid,
+      userUuid: locals.user.uuid,
     })
 
     if (result.isFailed()) {
@@ -264,9 +283,11 @@ export class BaseSharedVaultInvitesController extends BaseHttpController {
   }
 
   async deleteSharedVaultInvite(request: Request, response: Response): Promise<results.JsonResult> {
+    const locals = response.locals as ResponseLocals
+
     const result = await this.declineSharedVaultInviteUseCase.execute({
       inviteUuid: request.params.inviteUuid,
-      userUuid: response.locals.user.uuid,
+      userUuid: locals.user.uuid,
     })
 
     if (result.isFailed()) {
@@ -286,8 +307,10 @@ export class BaseSharedVaultInvitesController extends BaseHttpController {
   }
 
   async deleteAllSharedVaultInvites(request: Request, response: Response): Promise<results.JsonResult> {
+    const locals = response.locals as ResponseLocals
+
     const result = await this.deleteSharedVaultInvitesSentByUserUseCase.execute({
-      userUuid: response.locals.user.uuid,
+      userUuid: locals.user.uuid,
       sharedVaultUuid: request.params.sharedVaultUuid,
     })
 

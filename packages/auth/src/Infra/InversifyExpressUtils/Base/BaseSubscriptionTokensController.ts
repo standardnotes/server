@@ -9,6 +9,7 @@ import { CreateSubscriptionToken } from '../../../Domain/UseCase/CreateSubscript
 import { ProjectorInterface } from '../../../Projection/ProjectorInterface'
 import { User } from '../../../Domain/User/User'
 import { GetSetting } from '../../../Domain/UseCase/GetSetting/GetSetting'
+import { ResponseLocals } from '../ResponseLocals'
 
 export class BaseSubscriptionTokensController extends BaseHttpController {
   constructor(
@@ -29,7 +30,9 @@ export class BaseSubscriptionTokensController extends BaseHttpController {
   }
 
   async createToken(_request: Request, response: Response): Promise<results.JsonResult> {
-    if (response.locals.readOnlyAccess) {
+    const locals = response.locals as ResponseLocals
+
+    if (locals.readOnlyAccess) {
       return this.json(
         {
           error: {
@@ -42,7 +45,7 @@ export class BaseSubscriptionTokensController extends BaseHttpController {
     }
 
     const result = await this.createSubscriptionToken.execute({
-      userUuid: response.locals.user.uuid,
+      userUuid: locals.user.uuid,
     })
 
     return this.json({

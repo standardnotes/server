@@ -14,6 +14,7 @@ import { ItemHash } from '../../../Domain/Item/ItemHash'
 import { CheckForTrafficAbuse } from '../../../Domain/UseCase/Syncing/CheckForTrafficAbuse/CheckForTrafficAbuse'
 import { Metric } from '../../../Domain/Metrics/Metric'
 import { Logger } from 'winston'
+import { ResponseLocals } from '../ResponseLocals'
 
 export class BaseItemsController extends BaseHttpController {
   constructor(
@@ -41,15 +42,16 @@ export class BaseItemsController extends BaseHttpController {
   }
 
   async sync(request: Request, response: Response): Promise<results.JsonResult> {
+    const locals = response.locals as ResponseLocals
     const checkForItemOperationsAbuseResult = await this.checkForTrafficAbuse.execute({
       metricToCheck: Metric.NAMES.ItemOperation,
-      userUuid: response.locals.user.uuid,
+      userUuid: locals.user.uuid,
       threshold: this.itemOperationsAbuseThreshold,
       timeframeLengthInMinutes: this.itemOperationsAbuseTimeframeLengthInMinutes,
     })
     if (checkForItemOperationsAbuseResult.isFailed()) {
       this.logger.warn(checkForItemOperationsAbuseResult.getError(), {
-        userId: response.locals.user.uuid,
+        userId: locals.user.uuid,
       })
       if (this.strictAbuseProtection) {
         return this.json({ error: { message: checkForItemOperationsAbuseResult.getError() } }, 429)
@@ -58,13 +60,13 @@ export class BaseItemsController extends BaseHttpController {
 
     const checkForPayloadSizeAbuseResult = await this.checkForTrafficAbuse.execute({
       metricToCheck: Metric.NAMES.ContentSizeUtilized,
-      userUuid: response.locals.user.uuid,
+      userUuid: locals.user.uuid,
       threshold: this.payloadSizeAbuseThreshold,
       timeframeLengthInMinutes: this.payloadSizeAbuseTimeframeLengthInMinutes,
     })
     if (checkForPayloadSizeAbuseResult.isFailed()) {
       this.logger.warn(checkForPayloadSizeAbuseResult.getError(), {
-        userId: response.locals.user.uuid,
+        userId: locals.user.uuid,
       })
 
       if (this.strictAbuseProtection) {
@@ -77,7 +79,7 @@ export class BaseItemsController extends BaseHttpController {
       for (const itemHashInput of request.body.items) {
         const itemHashOrError = ItemHash.create({
           ...itemHashInput,
-          user_uuid: response.locals.user.uuid,
+          user_uuid: locals.user.uuid,
           key_system_identifier: itemHashInput.key_system_identifier ?? null,
           shared_vault_uuid: itemHashInput.shared_vault_uuid ?? null,
         })
@@ -99,7 +101,7 @@ export class BaseItemsController extends BaseHttpController {
     }
 
     const syncResult = await this.syncItems.execute({
-      userUuid: response.locals.user.uuid,
+      userUuid: locals.user.uuid,
       itemHashes,
       computeIntegrityHash: request.body.compute_integrity === true,
       syncToken: request.body.sync_token,
@@ -108,10 +110,10 @@ export class BaseItemsController extends BaseHttpController {
       contentType: request.body.content_type,
       apiVersion: request.body.api ?? ApiVersion.v20161215,
       snjsVersion: <string>request.headers['x-snjs-version'],
-      readOnlyAccess: response.locals.readOnlyAccess,
-      sessionUuid: response.locals.session ? response.locals.session.uuid : null,
+      readOnlyAccess: locals.readOnlyAccess,
+      sessionUuid: locals.session ? locals.session.uuid : null,
       sharedVaultUuids,
-      isFreeUser: response.locals.isFreeUser,
+      isFreeUser: locals.isFreeUser,
     })
     if (syncResult.isFailed()) {
       return this.json({ error: { message: syncResult.getError() } }, HttpStatusCode.BadRequest)
@@ -125,13 +127,15 @@ export class BaseItemsController extends BaseHttpController {
   }
 
   async checkItemsIntegrity(request: Request, response: Response): Promise<results.JsonResult> {
+    const locals = response.locals as ResponseLocals
+
     let integrityPayloads = []
     if ('integrityPayloads' in request.body) {
       integrityPayloads = request.body.integrityPayloads
     }
 
     const result = await this.checkIntegrity.execute({
-      userUuid: response.locals.user.uuid,
+      userUuid: locals.user.uuid,
       integrityPayloads,
     })
 
@@ -145,8 +149,10 @@ export class BaseItemsController extends BaseHttpController {
   }
 
   async getSingleItem(request: Request, response: Response): Promise<results.JsonResult> {
+    const locals = response.locals as ResponseLocals
+
     const result = await this.getItem.execute({
-      userUuid: response.locals.user.uuid,
+      userUuid: locals.user.uuid,
       itemUuid: request.params.uuid,
     })
 

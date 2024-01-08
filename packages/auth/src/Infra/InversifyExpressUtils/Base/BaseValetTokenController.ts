@@ -6,6 +6,7 @@ import { ValetTokenOperation } from '@standardnotes/security'
 
 import { CreateValetToken } from '../../../Domain/UseCase/CreateValetToken/CreateValetToken'
 import { CreateValetTokenPayload } from '../../../Domain/ValetToken/CreateValetTokenPayload'
+import { ResponseLocals } from '../ResponseLocals'
 
 export class BaseValetTokenController extends BaseHttpController {
   constructor(
@@ -20,9 +21,11 @@ export class BaseValetTokenController extends BaseHttpController {
   }
 
   public async create(request: Request, response: Response): Promise<results.JsonResult> {
+    const locals = response.locals as ResponseLocals
+
     const payload: CreateValetTokenPayload = request.body
 
-    if (response.locals.readOnlyAccess && payload.operation !== 'read') {
+    if (locals.readOnlyAccess && payload.operation !== 'read') {
       return this.json(
         {
           error: {
@@ -50,7 +53,7 @@ export class BaseValetTokenController extends BaseHttpController {
     }
 
     const createValetKeyResponse = await this.createValetKey.execute({
-      userUuid: response.locals.user.uuid,
+      userUuid: locals.user.uuid,
       operation: payload.operation as ValetTokenOperation,
       resources: payload.resources,
     })

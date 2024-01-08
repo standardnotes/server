@@ -6,6 +6,7 @@ import { GetSubscriptionSetting } from '../../../Domain/UseCase/GetSubscriptionS
 import { GetSharedOrRegularSubscriptionForUser } from '../../../Domain/UseCase/GetSharedOrRegularSubscriptionForUser/GetSharedOrRegularSubscriptionForUser'
 import { SubscriptionSetting } from '../../../Domain/Setting/SubscriptionSetting'
 import { SubscriptionSettingHttpRepresentation } from '../../../Mapping/Http/SubscriptionSettingHttpRepresentation'
+import { ResponseLocals } from '../ResponseLocals'
 
 export class BaseSubscriptionSettingsController extends BaseHttpController {
   constructor(
@@ -22,8 +23,10 @@ export class BaseSubscriptionSettingsController extends BaseHttpController {
   }
 
   async getSubscriptionSetting(request: Request, response: Response): Promise<results.JsonResult> {
+    const locals = response.locals as ResponseLocals
+
     const subscriptionOrError = await this.getSharedOrRegularSubscription.execute({
-      userUuid: response.locals.user.uuid,
+      userUuid: locals.user.uuid,
     })
     if (subscriptionOrError.isFailed()) {
       return this.json(

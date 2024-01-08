@@ -9,6 +9,7 @@ import { Session } from '../../../Domain/Session/Session'
 import { BaseHttpController, results } from 'inversify-express-utils'
 import { User } from '../../../Domain/User/User'
 import { SessionProjector } from '../../../Projection/SessionProjector'
+import { ResponseLocals } from '../ResponseLocals'
 
 export class BaseSessionsController extends BaseHttpController {
   constructor(
@@ -67,12 +68,14 @@ export class BaseSessionsController extends BaseHttpController {
   }
 
   async getSessions(_request: Request, response: Response): Promise<results.JsonResult> {
-    if (response.locals.readOnlyAccess) {
+    const locals = response.locals as ResponseLocals
+
+    if (locals.readOnlyAccess) {
       return this.json([])
     }
 
     const useCaseResponse = await this.getActiveSessionsForUser.execute({
-      userUuid: response.locals.user.uuid,
+      userUuid: locals.user.uuid,
     })
 
     return this.json(
@@ -80,7 +83,7 @@ export class BaseSessionsController extends BaseHttpController {
         this.sessionProjector.projectCustom(
           SessionProjector.CURRENT_SESSION_PROJECTION.toString(),
           session,
-          response.locals.session,
+          locals.session,
         ),
       ),
     )

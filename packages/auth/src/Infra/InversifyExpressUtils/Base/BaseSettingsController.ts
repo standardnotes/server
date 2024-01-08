@@ -13,6 +13,7 @@ import { SubscriptionSetting } from '../../../Domain/Setting/SubscriptionSetting
 import { SubscriptionSettingHttpRepresentation } from '../../../Mapping/Http/SubscriptionSettingHttpRepresentation'
 import { SettingHttpRepresentation } from '../../../Mapping/Http/SettingHttpRepresentation'
 import { TriggerPostSettingUpdateActions } from '../../../Domain/UseCase/TriggerPostSettingUpdateActions/TriggerPostSettingUpdateActions'
+import { ResponseLocals } from '../ResponseLocals'
 
 export class BaseSettingsController extends BaseHttpController {
   constructor(
@@ -40,7 +41,9 @@ export class BaseSettingsController extends BaseHttpController {
   }
 
   async getSettings(request: Request, response: Response): Promise<results.JsonResult> {
-    if (request.params.userUuid !== response.locals.user.uuid) {
+    const locals = response.locals as ResponseLocals
+
+    if (request.params.userUuid !== locals.user.uuid) {
       return this.json(
         {
           error: {
@@ -86,7 +89,9 @@ export class BaseSettingsController extends BaseHttpController {
   }
 
   async getSetting(request: Request, response: Response): Promise<results.JsonResult> {
-    if (request.params.userUuid !== response.locals.user.uuid) {
+    const locals = response.locals as ResponseLocals
+
+    if (request.params.userUuid !== locals.user.uuid) {
       return this.json(
         {
           error: {
@@ -135,7 +140,9 @@ export class BaseSettingsController extends BaseHttpController {
   }
 
   async updateSetting(request: Request, response: Response): Promise<results.JsonResult | results.StatusCodeResult> {
-    if (response.locals.readOnlyAccess) {
+    const locals = response.locals as ResponseLocals
+
+    if (locals.readOnlyAccess) {
       return this.json(
         {
           error: {
@@ -147,7 +154,7 @@ export class BaseSettingsController extends BaseHttpController {
       )
     }
 
-    if (request.params.userUuid !== response.locals.user.uuid) {
+    if (request.params.userUuid !== locals.user.uuid) {
       return this.json(
         {
           error: {
@@ -163,7 +170,7 @@ export class BaseSettingsController extends BaseHttpController {
     const result = await this.setSettingValue.execute({
       settingName: name,
       value,
-      userUuid: response.locals.user.uuid,
+      userUuid: locals.user.uuid,
       checkUserPermissions: true,
     })
 
@@ -181,8 +188,8 @@ export class BaseSettingsController extends BaseHttpController {
 
     const triggerResult = await this.triggerPostSettingUpdateActions.execute({
       updatedSettingName: setting.props.name,
-      userUuid: response.locals.user.uuid,
-      userEmail: response.locals.user.email,
+      userUuid: locals.user.uuid,
+      userEmail: locals.user.email,
       unencryptedValue: value,
     })
     if (triggerResult.isFailed()) {
@@ -196,7 +203,9 @@ export class BaseSettingsController extends BaseHttpController {
   }
 
   async deleteSetting(request: Request, response: Response): Promise<results.JsonResult> {
-    if (response.locals.readOnlyAccess) {
+    const locals = response.locals as ResponseLocals
+
+    if (locals.readOnlyAccess) {
       return this.json(
         {
           error: {
@@ -208,7 +217,7 @@ export class BaseSettingsController extends BaseHttpController {
       )
     }
 
-    if (request.params.userUuid !== response.locals.user.uuid) {
+    if (request.params.userUuid !== locals.user.uuid) {
       return this.json(
         {
           error: {

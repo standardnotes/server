@@ -7,6 +7,7 @@ import { SharedVaultUserHttpRepresentation } from '../../../Mapping/Http/SharedV
 import { GetSharedVaultUsers } from '../../../Domain/UseCase/SharedVaults/GetSharedVaultUsers/GetSharedVaultUsers'
 import { RemoveUserFromSharedVault } from '../../../Domain/UseCase/SharedVaults/RemoveUserFromSharedVault/RemoveUserFromSharedVault'
 import { DesignateSurvivor } from '../../../Domain/UseCase/SharedVaults/DesignateSurvivor/DesignateSurvivor'
+import { ResponseLocals } from '../ResponseLocals'
 
 export class BaseSharedVaultUsersController extends BaseHttpController {
   constructor(
@@ -29,8 +30,10 @@ export class BaseSharedVaultUsersController extends BaseHttpController {
   }
 
   async getSharedVaultUsers(request: Request, response: Response): Promise<results.JsonResult> {
+    const locals = response.locals as ResponseLocals
+
     const result = await this.getSharedVaultUsersUseCase.execute({
-      originatorUuid: response.locals.user.uuid,
+      originatorUuid: locals.user.uuid,
       sharedVaultUuid: request.params.sharedVaultUuid,
     })
 
@@ -51,10 +54,12 @@ export class BaseSharedVaultUsersController extends BaseHttpController {
   }
 
   async removeUserFromSharedVault(request: Request, response: Response): Promise<results.JsonResult> {
+    const locals = response.locals as ResponseLocals
+
     const result = await this.removeUserFromSharedVaultUseCase.execute({
       sharedVaultUuid: request.params.sharedVaultUuid,
       userUuid: request.params.userUuid,
-      originatorUuid: response.locals.user.uuid,
+      originatorUuid: locals.user.uuid,
     })
 
     if (result.isFailed()) {
@@ -76,10 +81,12 @@ export class BaseSharedVaultUsersController extends BaseHttpController {
   }
 
   async designateSurvivor(request: Request, response: Response): Promise<results.JsonResult> {
+    const locals = response.locals as ResponseLocals
+
     const result = await this.designateSurvivorUseCase.execute({
       sharedVaultUuid: request.params.sharedVaultUuid,
       userUuid: request.params.userUuid,
-      originatorUuid: response.locals.user.uuid,
+      originatorUuid: locals.user.uuid,
     })
 
     if (result.isFailed()) {

@@ -9,6 +9,7 @@ import { SendMessageToUser } from '../../../Domain/UseCase/Messaging/SendMessage
 import { DeleteAllMessagesSentToUser } from '../../../Domain/UseCase/Messaging/DeleteAllMessagesSentToUser/DeleteAllMessagesSentToUser'
 import { DeleteMessage } from '../../../Domain/UseCase/Messaging/DeleteMessage/DeleteMessage'
 import { GetMessagesSentByUser } from '../../../Domain/UseCase/Messaging/GetMessagesSentByUser/GetMessagesSentByUser'
+import { ResponseLocals } from '../ResponseLocals'
 
 export class BaseMessagesController extends BaseHttpController {
   constructor(
@@ -32,8 +33,10 @@ export class BaseMessagesController extends BaseHttpController {
   }
 
   async getMessages(_request: Request, response: Response): Promise<results.JsonResult> {
+    const locals = response.locals as ResponseLocals
+
     const result = await this.getMessageSentToUserUseCase.execute({
-      recipientUuid: response.locals.user.uuid,
+      recipientUuid: locals.user.uuid,
     })
 
     if (result.isFailed()) {
@@ -53,8 +56,10 @@ export class BaseMessagesController extends BaseHttpController {
   }
 
   async getMessagesSent(_request: Request, response: Response): Promise<results.JsonResult> {
+    const locals = response.locals as ResponseLocals
+
     const result = await this.getMessagesSentByUserUseCase.execute({
-      senderUuid: response.locals.user.uuid,
+      senderUuid: locals.user.uuid,
     })
 
     if (result.isFailed()) {
@@ -74,8 +79,10 @@ export class BaseMessagesController extends BaseHttpController {
   }
 
   async sendMessage(request: Request, response: Response): Promise<results.JsonResult> {
+    const locals = response.locals as ResponseLocals
+
     const result = await this.sendMessageToUserUseCase.execute({
-      senderUuid: response.locals.user.uuid,
+      senderUuid: locals.user.uuid,
       recipientUuid: request.body.recipient_uuid,
       encryptedMessage: request.body.encrypted_message,
       replaceabilityIdentifier: request.body.replaceability_identifier,
@@ -98,8 +105,10 @@ export class BaseMessagesController extends BaseHttpController {
   }
 
   async deleteMessagesSentToUser(_request: Request, response: Response): Promise<results.JsonResult> {
+    const locals = response.locals as ResponseLocals
+
     const result = await this.deleteMessagesSentToUserUseCase.execute({
-      recipientUuid: response.locals.user.uuid,
+      recipientUuid: locals.user.uuid,
     })
 
     if (result.isFailed()) {
@@ -117,9 +126,11 @@ export class BaseMessagesController extends BaseHttpController {
   }
 
   async deleteMessage(request: Request, response: Response): Promise<results.JsonResult> {
+    const locals = response.locals as ResponseLocals
+
     const result = await this.deleteMessageUseCase.execute({
       messageUuid: request.params.messageUuid,
-      originatorUuid: response.locals.user.uuid,
+      originatorUuid: locals.user.uuid,
     })
 
     if (result.isFailed()) {

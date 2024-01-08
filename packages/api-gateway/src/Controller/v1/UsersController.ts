@@ -16,6 +16,8 @@ import { TYPES } from '../../Bootstrap/Types'
 import { ServiceProxyInterface } from '../../Service/Proxy/ServiceProxyInterface'
 import { TokenAuthenticationMethod } from '../TokenAuthenticationMethod'
 import { EndpointResolverInterface } from '../../Service/Resolver/EndpointResolverInterface'
+import { ResponseLocals } from '../ResponseLocals'
+import { SubscriptionResponseLocals } from '../SubscriptionResponseLocals'
 
 @controller('/v1/users')
 export class UsersController extends BaseHttpController {
@@ -214,7 +216,9 @@ export class UsersController extends BaseHttpController {
 
   @httpGet('/subscription', TYPES.ApiGateway_SubscriptionTokenAuthMiddleware)
   async getSubscriptionBySubscriptionToken(request: Request, response: Response): Promise<void> {
-    if (response.locals.tokenAuthenticationMethod === TokenAuthenticationMethod.OfflineSubscriptionToken) {
+    const locals = response.locals as SubscriptionResponseLocals & ResponseLocals
+
+    if (locals.tokenAuthenticationMethod === TokenAuthenticationMethod.OfflineSubscriptionToken) {
       await this.httpService.callAuthServer(
         request,
         response,
@@ -227,11 +231,7 @@ export class UsersController extends BaseHttpController {
     await this.httpService.callAuthServer(
       request,
       response,
-      this.endpointResolver.resolveEndpointOrMethodIdentifier(
-        'GET',
-        'users/:userUuid/subscription',
-        response.locals.user.uuid,
-      ),
+      this.endpointResolver.resolveEndpointOrMethodIdentifier('GET', 'users/:userUuid/subscription', locals.user.uuid),
     )
   }
 

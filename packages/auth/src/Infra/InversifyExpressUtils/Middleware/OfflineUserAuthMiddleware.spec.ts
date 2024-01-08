@@ -44,8 +44,8 @@ describe('OfflineUserAuthMiddleware', () => {
 
     await createMiddleware().handler(request, response, next)
 
-    expect(response.locals.offlineUserEmail).toEqual('test@test.com')
-    expect(response.locals.offlineFeaturesToken).toEqual('offline-features-token')
+    expect(response.locals.userEmail).toEqual('test@test.com')
+    expect(response.locals.featuresToken).toEqual('offline-features-token')
 
     expect(next).toHaveBeenCalled()
   })
