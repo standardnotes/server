@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.133.4](https://github.com/standardnotes/server/compare/@standardnotes/syncing-server@1.133.3...@standardnotes/syncing-server@1.133.4) (2024-01-08)
+
+### Bug Fixes
+
+* **syncing-server:** disable ot tracing ([a881dd2](https://github.com/standardnotes/server/commit/a881dd2d79d0e394b0b4f5d07e63821c93d45219))
+
 ## [1.133.3](https://github.com/standardnotes/server/compare/@standardnotes/syncing-server@1.133.2...@standardnotes/syncing-server@1.133.3) (2024-01-05)
 
 ### Bug Fixes
