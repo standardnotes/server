@@ -284,6 +284,7 @@ import { AccountDeletionVerificationPassedEventHandler } from '../Domain/Handler
 import { RenewSharedSubscriptions } from '../Domain/UseCase/RenewSharedSubscriptions/RenewSharedSubscriptions'
 import { FixStorageQuotaForUser } from '../Domain/UseCase/FixStorageQuotaForUser/FixStorageQuotaForUser'
 import { FileQuotaRecalculatedEventHandler } from '../Domain/Handler/FileQuotaRecalculatedEventHandler'
+import { SessionServiceInterface } from '../Domain/Session/SessionServiceInterface'
 
 export class ContainerConfigLoader {
   constructor(private mode: 'server' | 'worker' = 'server') {}
@@ -986,7 +987,18 @@ export class ContainerConfigLoader {
       .toConstantValue(new CleanupExpiredSessions(container.get(TYPES.Auth_SessionRepository)))
     container.bind<AuthenticateUser>(TYPES.Auth_AuthenticateUser).to(AuthenticateUser)
     container.bind<AuthenticateRequest>(TYPES.Auth_AuthenticateRequest).to(AuthenticateRequest)
-    container.bind<RefreshSessionToken>(TYPES.Auth_RefreshSessionToken).to(RefreshSessionToken)
+    container
+      .bind<RefreshSessionToken>(TYPES.Auth_RefreshSessionToken)
+      .toConstantValue(
+        new RefreshSessionToken(
+          container.get<SessionServiceInterface>(TYPES.Auth_SessionService),
+          container.get<DomainEventFactoryInterface>(TYPES.Auth_DomainEventFactory),
+          container.get<DomainEventPublisherInterface>(TYPES.Auth_DomainEventPublisher),
+          container.get<TimerInterface>(TYPES.Auth_Timer),
+          container.get<GetSetting>(TYPES.Auth_GetSetting),
+          container.get<winston.Logger>(TYPES.Auth_Logger),
+        ),
+      )
     container.bind<SignIn>(TYPES.Auth_SignIn).to(SignIn)
     container
       .bind<VerifyMFA>(TYPES.Auth_VerifyMFA)

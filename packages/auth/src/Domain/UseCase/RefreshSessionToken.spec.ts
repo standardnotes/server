@@ -7,6 +7,10 @@ import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
 import { TimerInterface } from '@standardnotes/time'
 import { Logger } from 'winston'
 import { DomainEventFactoryInterface } from '../Event/DomainEventFactoryInterface'
+import { GetSetting } from './GetSetting/GetSetting'
+import { Result } from '@standardnotes/domain-core'
+import { LogSessionUserAgentOption } from '@standardnotes/settings'
+import { Setting } from '../Setting/Setting'
 
 describe('RefreshSessionToken', () => {
   let sessionService: SessionServiceInterface
@@ -14,15 +18,19 @@ describe('RefreshSessionToken', () => {
   let domainEventFactory: DomainEventFactoryInterface
   let domainEventPublisher: DomainEventPublisherInterface
   let timer: TimerInterface
+  let getSetting: GetSetting
   let logger: Logger
 
   const createUseCase = () =>
-    new RefreshSessionToken(sessionService, domainEventFactory, domainEventPublisher, timer, logger)
+    new RefreshSessionToken(sessionService, domainEventFactory, domainEventPublisher, timer, getSetting, logger)
 
   beforeEach(() => {
     session = {} as jest.Mocked<Session>
     session.uuid = '1-2-3'
     session.refreshExpiration = new Date(123)
+
+    getSetting = {} as jest.Mocked<GetSetting>
+    getSetting.execute = jest.fn().mockReturnValue(Result.fail('not found'))
 
     sessionService = {} as jest.Mocked<SessionServiceInterface>
     sessionService.isRefreshTokenMatchingHashedSessionToken = jest.fn().mockReturnValue(true)
@@ -48,6 +56,35 @@ describe('RefreshSessionToken', () => {
   })
 
   it('should refresh session token', async () => {
+    const result = await createUseCase().execute({
+      accessToken: '123',
+      refreshToken: '234',
+      userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)',
+    })
+
+    expect(sessionService.refreshTokens).toHaveBeenCalledWith({ session, isEphemeral: false })
+
+    expect(result).toEqual({
+      success: true,
+      sessionPayload: {
+        access_token: 'token1',
+        refresh_token: 'token2',
+        access_expiration: 123,
+        refresh_expiration: 234,
+      },
+    })
+
+    expect(domainEventPublisher.publish).toHaveBeenCalled()
+  })
+
+  it('should refresh session token and update user agent if enabled', async () => {
+    getSetting.execute = jest.fn().mockReturnValue(
+      Result.ok({
+        setting: {} as jest.Mocked<Setting>,
+        decryptedValue: LogSessionUserAgentOption.Enabled,
+      }),
+    )
+
     const result = await createUseCase().execute({
       accessToken: '123',
       refreshToken: '234',
