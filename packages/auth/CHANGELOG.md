@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.177.15](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.177.14...@standardnotes/auth-server@1.177.15) (2024-01-09)
+
+### Bug Fixes
+
+* **auth:** check for user agent persisting on session during a session refresh ([#1016](https://github.com/standardnotes/server/issues/1016)) ([0b46eff](https://github.com/standardnotes/server/commit/0b46eff16ea0c32cac91ead04474303500359f4f))
+
 ## [1.177.14](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.177.13...@standardnotes/auth-server@1.177.14) (2024-01-08)
 
 **Note:** Version bump only for package @standardnotes/auth-server
