@@ -1,23 +1,24 @@
-import { inject, injectable } from 'inversify'
 import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
 import { TimerInterface } from '@standardnotes/time'
+import { SettingName } from '@standardnotes/domain-core'
+import { LogSessionUserAgentOption } from '@standardnotes/settings'
 import { Logger } from 'winston'
 
-import TYPES from '../../Bootstrap/Types'
 import { SessionServiceInterface } from '../Session/SessionServiceInterface'
 import { DomainEventFactoryInterface } from '../Event/DomainEventFactoryInterface'
 
 import { RefreshSessionTokenResponse } from './RefreshSessionTokenResponse'
 import { RefreshSessionTokenDTO } from './RefreshSessionTokenDTO'
+import { GetSetting } from './GetSetting/GetSetting'
 
-@injectable()
 export class RefreshSessionToken {
   constructor(
-    @inject(TYPES.Auth_SessionService) private sessionService: SessionServiceInterface,
-    @inject(TYPES.Auth_DomainEventFactory) private domainEventFactory: DomainEventFactoryInterface,
-    @inject(TYPES.Auth_DomainEventPublisher) private domainEventPublisher: DomainEventPublisherInterface,
-    @inject(TYPES.Auth_Timer) private timer: TimerInterface,
-    @inject(TYPES.Auth_Logger) private logger: Logger,
+    private sessionService: SessionServiceInterface,
+    private domainEventFactory: DomainEventFactoryInterface,
+    private domainEventPublisher: DomainEventPublisherInterface,
+    private timer: TimerInterface,
+    private getSetting: GetSetting,
+    private logger: Logger,
   ) {}
 
   async execute(dto: RefreshSessionTokenDTO): Promise<RefreshSessionTokenResponse> {
@@ -46,7 +47,9 @@ export class RefreshSessionToken {
       }
     }
 
-    session.userAgent = dto.userAgent
+    if (await this.isLoggingUserAgentEnabledOnSessions(session.userUuid)) {
+      session.userAgent = dto.userAgent
+    }
 
     const sessionPayload = await this.sessionService.refreshTokens({ session, isEphemeral })
 
@@ -63,5 +66,20 @@ export class RefreshSessionToken {
       sessionPayload,
       userUuid: session.userUuid,
     }
+  }
+
+  private async isLoggingUserAgentEnabledOnSessions(userUuid: string): Promise<boolean> {
+    const loggingSettingOrError = await this.getSetting.execute({
+      settingName: SettingName.NAMES.LogSessionUserAgent,
+      decrypted: true,
+      userUuid: userUuid,
+      allowSensitiveRetrieval: true,
+    })
+    if (loggingSettingOrError.isFailed()) {
+      return true
+    }
+    const loggingSetting = loggingSettingOrError.getValue()
+
+    return loggingSetting.decryptedValue === LogSessionUserAgentOption.Enabled
   }
 }
