@@ -1,6 +1,6 @@
 {
   "name": "@standardnotes/api-gateway",
-  "version": "1.89.18",
+  "version": "1.89.19",
   "engines": {
     "node": ">=18.0.0 <21.0.0"
   },

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.22.53](https://github.com/standardnotes/server/compare/@standardnotes/home-server@1.22.52...@standardnotes/home-server@1.22.53) (2024-01-10)
+
+### Bug Fixes
+
+* add dedicated http code response upon a request with too large payload ([#1019](https://github.com/standardnotes/server/issues/1019)) ([6062f85](https://github.com/standardnotes/server/commit/6062f850000477983315d2d9b7c913956f755ebb))
+
 ## [1.22.52](https://github.com/standardnotes/server/compare/@standardnotes/home-server@1.22.51...@standardnotes/home-server@1.22.52) (2024-01-09)
 
 **Note:** Version bump only for package @standardnotes/home-server

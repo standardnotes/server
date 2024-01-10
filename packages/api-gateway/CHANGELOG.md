@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.89.19](https://github.com/standardnotes/server/compare/@standardnotes/api-gateway@1.89.18...@standardnotes/api-gateway@1.89.19) (2024-01-10)
+
+### Bug Fixes
+
+* add dedicated http code response upon a request with too large payload ([#1019](https://github.com/standardnotes/server/issues/1019)) ([6062f85](https://github.com/standardnotes/server/commit/6062f850000477983315d2d9b7c913956f755ebb))
+
 ## [1.89.18](https://github.com/standardnotes/server/compare/@standardnotes/api-gateway@1.89.17...@standardnotes/api-gateway@1.89.18) (2024-01-08)
 
 **Note:** Version bump only for package @standardnotes/api-gateway
