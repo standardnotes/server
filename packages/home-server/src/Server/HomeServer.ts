@@ -53,6 +53,10 @@ export class HomeServer implements HomeServerInterface {
       const env: Env = new Env(environmentOverrides)
       env.load()
 
+      const requestPayloadLimit = env.get('HTTP_REQUEST_PAYLOAD_LIMIT_MEGABYTES', true)
+        ? `${+env.get('HTTP_REQUEST_PAYLOAD_LIMIT_MEGABYTES', true)}mb`
+        : '50mb'
+
       this.configureLoggers(env, configuration)
 
       const apiGatewayService = new ApiGatewayService(serviceContainer)
@@ -114,8 +118,8 @@ export class HomeServer implements HomeServerInterface {
           }
         }))
         /* eslint-enable */
-        app.use(json({ limit: '50mb' }))
-        app.use(raw({ limit: '50mb', type: 'application/octet-stream' }))
+        app.use(json({ limit: requestPayloadLimit }))
+        app.use(raw({ limit: requestPayloadLimit, type: 'application/octet-stream' }))
         app.use(
           text({
             type: [
@@ -161,7 +165,15 @@ export class HomeServer implements HomeServerInterface {
 
       server.setErrorConfig((app) => {
         app.use((error: Record<string, unknown>, _request: Request, response: Response, _next: NextFunction) => {
-          logger.error(error.stack)
+          if ('type' in error && error.type === 'entity.too.large') {
+            response.status(413).send({
+              error: {
+                message: 'The request payload is too large.',
+              },
+            })
+
+            return
+          }
 
           response.status(500).send({
             error: {

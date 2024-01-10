@@ -43,6 +43,10 @@ void container.load().then((container) => {
   const env: Env = new Env()
   env.load()
 
+  const requestPayloadLimit = env.get('HTTP_REQUEST_PAYLOAD_LIMIT_MEGABYTES', true)
+    ? `${+env.get('HTTP_REQUEST_PAYLOAD_LIMIT_MEGABYTES', true)}mb`
+    : '50mb'
+
   const server = new InversifyExpressServer(container)
 
   server.setConfig((app) => {
@@ -73,7 +77,7 @@ void container.load().then((container) => {
       }),
     )
 
-    app.use(json({ limit: '50mb' }))
+    app.use(json({ limit: requestPayloadLimit }))
     app.use(
       text({
         type: ['text/plain', 'application/x-www-form-urlencoded', 'application/x-www-form-urlencoded; charset=utf-8'],
@@ -106,6 +110,16 @@ void container.load().then((container) => {
           request.headers['x-application-version']
         }] Request body: ${JSON.stringify(request.body)}`,
       )
+
+      if ('type' in error && error.type === 'entity.too.large') {
+        response.status(413).send({
+          error: {
+            message: 'The request payload is too large.',
+          },
+        })
+
+        return
+      }
 
       response.status(500).send({
         error: {

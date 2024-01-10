@@ -24,6 +24,10 @@ void container.load().then((container) => {
   const env: Env = new Env()
   env.load()
 
+  const requestPayloadLimit = env.get('HTTP_REQUEST_PAYLOAD_LIMIT_MEGABYTES', true)
+    ? `${+env.get('HTTP_REQUEST_PAYLOAD_LIMIT_MEGABYTES', true)}mb`
+    : '50mb'
+
   const server = new InversifyExpressServer(container)
 
   server.setConfig((app) => {
@@ -58,9 +62,9 @@ void container.load().then((container) => {
       }
     }))
     /* eslint-enable */
-    app.use(json({ limit: '50mb' }))
-    app.use(raw({ limit: '50mb', type: 'application/octet-stream' }))
-    app.use(urlencoded({ extended: true, limit: '50mb' }))
+    app.use(json({ limit: requestPayloadLimit }))
+    app.use(raw({ limit: requestPayloadLimit, type: 'application/octet-stream' }))
+    app.use(urlencoded({ extended: true, limit: requestPayloadLimit }))
     app.use(
       cors({
         exposedHeaders: ['Content-Range', 'Accept-Ranges'],
