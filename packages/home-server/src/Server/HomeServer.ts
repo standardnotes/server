@@ -164,7 +164,15 @@ export class HomeServer implements HomeServerInterface {
       const logger: winston.Logger = winston.loggers.get('home-server')
 
       server.setErrorConfig((app) => {
-        app.use((error: Record<string, unknown>, _request: Request, response: Response, _next: NextFunction) => {
+        app.use((error: Record<string, unknown>, request: Request, response: Response, _next: NextFunction) => {
+          logger.error(`${error.stack}`, {
+            method: request.method,
+            url: request.url,
+            snjs: request.headers['x-snjs-version'],
+            application: request.headers['x-application-version'],
+            userId: response.locals.user ? response.locals.user.uuid : undefined,
+          })
+
           if ('type' in error && error.type === 'entity.too.large') {
             response.status(413).send({
               error: {
