@@ -70,7 +70,7 @@ jobs:
         echo "ACCESS_TOKEN_AGE=4" >> packages/home-server/.env
         echo "REFRESH_TOKEN_AGE=10" >> packages/home-server/.env
         echo "REVISIONS_FREQUENCY=2" >> packages/home-server/.env
-        echo "CONTENT_SIZE_TRANSFER_LIMIT=1000000" >> packages/home-server/.env
+        echo "CONTENT_SIZE_TRANSFER_LIMIT=100000" >> packages/home-server/.env
         echo "DB_HOST=localhost" >> packages/home-server/.env
         echo "DB_PORT=3306" >> packages/home-server/.env
         echo "DB_DATABASE=standardnotes" >> packages/home-server/.env
