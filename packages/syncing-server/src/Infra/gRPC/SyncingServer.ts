@@ -21,7 +21,9 @@ export class SyncingServer implements ISyncingServer {
     private strictAbuseProtection: boolean,
     private itemOperationsAbuseTimeframeLengthInMinutes: number,
     private itemOperationsAbuseThreshold: number,
+    private freeUsersItemOperationsAbuseThreshold: number,
     private payloadSizeAbuseThreshold: number,
+    private freeUsersPayloadSizeAbuseThreshold: number,
     private payloadSizeAbuseTimeframeLengthInMinutes: number,
     private logger: Logger,
   ) {}
@@ -32,11 +34,12 @@ export class SyncingServer implements ISyncingServer {
   ): Promise<void> {
     try {
       const userUuid = call.metadata.get('x-user-uuid').pop() as string
+      const isFreeUser = call.metadata.get('x-is-free-user').pop() === 'true'
 
       const checkForItemOperationsAbuseResult = await this.checkForTrafficAbuse.execute({
         metricToCheck: Metric.NAMES.ItemOperation,
         userUuid,
-        threshold: this.itemOperationsAbuseThreshold,
+        threshold: isFreeUser ? this.freeUsersItemOperationsAbuseThreshold : this.itemOperationsAbuseThreshold,
         timeframeLengthInMinutes: this.itemOperationsAbuseTimeframeLengthInMinutes,
       })
       if (checkForItemOperationsAbuseResult.isFailed()) {
@@ -45,7 +48,10 @@ export class SyncingServer implements ISyncingServer {
         })
         if (this.strictAbuseProtection) {
           const metadata = new grpc.Metadata()
-          metadata.set('x-sync-error-message', checkForItemOperationsAbuseResult.getError())
+          metadata.set(
+            'x-sync-error-message',
+            'You have exceeded the maximum bandwidth allotted to your account in a 5-minute period. Please wait to try again, or upgrade your account for increased limits.',
+          )
           metadata.set('x-sync-error-response-code', '429')
 
           return callback(
@@ -63,7 +69,7 @@ export class SyncingServer implements ISyncingServer {
       const checkForPayloadSizeAbuseResult = await this.checkForTrafficAbuse.execute({
         metricToCheck: Metric.NAMES.ContentSizeUtilized,
         userUuid,
-        threshold: this.payloadSizeAbuseThreshold,
+        threshold: isFreeUser ? this.freeUsersPayloadSizeAbuseThreshold : this.payloadSizeAbuseThreshold,
         timeframeLengthInMinutes: this.payloadSizeAbuseTimeframeLengthInMinutes,
       })
       if (checkForPayloadSizeAbuseResult.isFailed()) {
@@ -73,7 +79,10 @@ export class SyncingServer implements ISyncingServer {
 
         if (this.strictAbuseProtection) {
           const metadata = new grpc.Metadata()
-          metadata.set('x-sync-error-message', checkForPayloadSizeAbuseResult.getError())
+          metadata.set(
+            'x-sync-error-message',
+            'You have exceeded the maximum bandwidth allotted to your account in a 5-minute period. Please wait to try again, or upgrade your account for increased limits.',
+          )
           metadata.set('x-sync-error-response-code', '429')
 
           return callback(
@@ -158,7 +167,7 @@ export class SyncingServer implements ISyncingServer {
         readOnlyAccess,
         sessionUuid: call.metadata.get('x-session-uuid').pop() as string,
         sharedVaultUuids,
-        isFreeUser: call.metadata.get('x-is-free-user').pop() === 'true',
+        isFreeUser,
       })
       if (syncResult.isFailed()) {
         const metadata = new grpc.Metadata()

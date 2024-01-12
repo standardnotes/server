@@ -479,7 +479,14 @@ export class ContainerConfigLoader {
     container
       .bind(TYPES.Sync_ITEM_OPERATIONS_ABUSE_THRESHOLD)
       .toConstantValue(
-        env.get('ITEM_OPERATIONS_ABUSE_THRESHOLD', true) ? +env.get('ITEM_OPERATIONS_ABUSE_THRESHOLD', true) : 500,
+        env.get('ITEM_OPERATIONS_ABUSE_THRESHOLD', true) ? +env.get('ITEM_OPERATIONS_ABUSE_THRESHOLD', true) : 1000,
+      )
+    container
+      .bind(TYPES.Sync_FREE_USERS_ITEM_OPERATIONS_ABUSE_THRESHOLD)
+      .toConstantValue(
+        env.get('FREE_USERS_ITEM_OPERATIONS_ABUSE_THRESHOLD', true)
+          ? +env.get('FREE_USERS_ITEM_OPERATIONS_ABUSE_THRESHOLD', true)
+          : 500,
       )
     container
       .bind(TYPES.Sync_ITEM_OPERATIONS_ABUSE_TIMEFRAME_LENGTH_IN_MINUTES)
@@ -489,15 +496,24 @@ export class ContainerConfigLoader {
           : 5,
       )
     container
-      .bind(TYPES.Sync_PAYLOAD_SIZE_ABUSE_THRESHOLD)
+      .bind(TYPES.Sync_UPLOAD_BANDWIDTH_ABUSE_THRESHOLD)
       .toConstantValue(
-        env.get('PAYLOAD_SIZE_ABUSE_THRESHOLD', true) ? +env.get('PAYLOAD_SIZE_ABUSE_THRESHOLD', true) : 20_000_000,
+        env.get('UPLOAD_BANDWIDTH_ABUSE_THRESHOLD', true)
+          ? +env.get('UPLOAD_BANDWIDTH_ABUSE_THRESHOLD', true)
+          : 100_000_000,
       )
     container
-      .bind(TYPES.Sync_PAYLOAD_SIZE_ABUSE_TIMEFRAME_LENGTH_IN_MINUTES)
+      .bind(TYPES.Sync_FREE_USERS_UPLOAD_BANDWIDTH_ABUSE_THRESHOLD)
       .toConstantValue(
-        env.get('PAYLOAD_SIZE_ABUSE_TIMEFRAME_LENGTH_IN_MINUTES', true)
-          ? +env.get('PAYLOAD_SIZE_ABUSE_TIMEFRAME_LENGTH_IN_MINUTES', true)
+        env.get('FREE_USERS_UPLOAD_BANDWIDTH_ABUSE_THRESHOLD', true)
+          ? +env.get('FREE_USERS_UPLOAD_BANDWIDTH_ABUSE_THRESHOLD', true)
+          : 50_000_000,
+      )
+    container
+      .bind(TYPES.Sync_UPLOAD_BANDWIDTH_ABUSE_TIMEFRAME_LENGTH_IN_MINUTES)
+      .toConstantValue(
+        env.get('UPLOAD_BANDWIDTH_ABUSE_TIMEFRAME_LENGTH_IN_MINUTES', true)
+          ? +env.get('UPLOAD_BANDWIDTH_ABUSE_TIMEFRAME_LENGTH_IN_MINUTES', true)
           : 5,
       )
     container.bind(TYPES.Sync_AUTH_JWT_SECRET).toConstantValue(env.get('AUTH_JWT_SECRET'))
@@ -1145,8 +1161,10 @@ export class ContainerConfigLoader {
             container.get<boolean>(TYPES.Sync_STRICT_ABUSE_PROTECTION),
             container.get<number>(TYPES.Sync_ITEM_OPERATIONS_ABUSE_TIMEFRAME_LENGTH_IN_MINUTES),
             container.get<number>(TYPES.Sync_ITEM_OPERATIONS_ABUSE_THRESHOLD),
-            container.get<number>(TYPES.Sync_PAYLOAD_SIZE_ABUSE_THRESHOLD),
-            container.get<number>(TYPES.Sync_PAYLOAD_SIZE_ABUSE_TIMEFRAME_LENGTH_IN_MINUTES),
+            container.get<number>(TYPES.Sync_FREE_USERS_ITEM_OPERATIONS_ABUSE_THRESHOLD),
+            container.get<number>(TYPES.Sync_UPLOAD_BANDWIDTH_ABUSE_THRESHOLD),
+            container.get<number>(TYPES.Sync_FREE_USERS_UPLOAD_BANDWIDTH_ABUSE_THRESHOLD),
+            container.get<number>(TYPES.Sync_UPLOAD_BANDWIDTH_ABUSE_TIMEFRAME_LENGTH_IN_MINUTES),
             container.get<ControllerContainerInterface>(TYPES.Sync_ControllerContainer),
           ),
         )
