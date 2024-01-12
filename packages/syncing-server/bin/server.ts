@@ -119,8 +119,10 @@ void container.load().then((container) => {
     container.get<boolean>(TYPES.Sync_STRICT_ABUSE_PROTECTION),
     container.get<number>(TYPES.Sync_ITEM_OPERATIONS_ABUSE_TIMEFRAME_LENGTH_IN_MINUTES),
     container.get<number>(TYPES.Sync_ITEM_OPERATIONS_ABUSE_THRESHOLD),
-    container.get<number>(TYPES.Sync_PAYLOAD_SIZE_ABUSE_THRESHOLD),
-    container.get<number>(TYPES.Sync_PAYLOAD_SIZE_ABUSE_TIMEFRAME_LENGTH_IN_MINUTES),
+    container.get<number>(TYPES.Sync_FREE_USERS_ITEM_OPERATIONS_ABUSE_THRESHOLD),
+    container.get<number>(TYPES.Sync_UPLOAD_BANDWIDTH_ABUSE_THRESHOLD),
+    container.get<number>(TYPES.Sync_FREE_USERS_UPLOAD_BANDWIDTH_ABUSE_THRESHOLD),
+    container.get<number>(TYPES.Sync_UPLOAD_BANDWIDTH_ABUSE_TIMEFRAME_LENGTH_IN_MINUTES),
     container.get<winston.Logger>(TYPES.Sync_Logger),
   )
 

@@ -29,8 +29,11 @@ export class AnnotatedItemsController extends BaseItemsController {
     @inject(TYPES.Sync_ITEM_OPERATIONS_ABUSE_TIMEFRAME_LENGTH_IN_MINUTES)
     override itemOperationsAbuseTimeframeLengthInMinutes: number,
     @inject(TYPES.Sync_ITEM_OPERATIONS_ABUSE_THRESHOLD) override itemOperationsAbuseThreshold: number,
-    @inject(TYPES.Sync_PAYLOAD_SIZE_ABUSE_THRESHOLD) override payloadSizeAbuseThreshold: number,
-    @inject(TYPES.Sync_PAYLOAD_SIZE_ABUSE_TIMEFRAME_LENGTH_IN_MINUTES)
+    @inject(TYPES.Sync_FREE_USERS_ITEM_OPERATIONS_ABUSE_THRESHOLD)
+    override freeUsersItemOperationsAbuseThreshold: number,
+    @inject(TYPES.Sync_UPLOAD_BANDWIDTH_ABUSE_THRESHOLD) override payloadSizeAbuseThreshold: number,
+    @inject(TYPES.Sync_FREE_USERS_UPLOAD_BANDWIDTH_ABUSE_THRESHOLD) override freeUsersPayloadSizeAbuseThreshold: number,
+    @inject(TYPES.Sync_UPLOAD_BANDWIDTH_ABUSE_TIMEFRAME_LENGTH_IN_MINUTES)
     override payloadSizeAbuseTimeframeLengthInMinutes: number,
   ) {
     super(
@@ -44,7 +47,9 @@ export class AnnotatedItemsController extends BaseItemsController {
       strictAbuseProtection,
       itemOperationsAbuseTimeframeLengthInMinutes,
       itemOperationsAbuseThreshold,
+      freeUsersItemOperationsAbuseThreshold,
       payloadSizeAbuseThreshold,
+      freeUsersPayloadSizeAbuseThreshold,
       payloadSizeAbuseTimeframeLengthInMinutes,
     )
   }

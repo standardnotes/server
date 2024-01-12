@@ -28,7 +28,9 @@ export class BaseItemsController extends BaseHttpController {
     protected strictAbuseProtection: boolean,
     protected itemOperationsAbuseTimeframeLengthInMinutes: number,
     protected itemOperationsAbuseThreshold: number,
+    protected freeUsersItemOperationsAbuseThreshold: number,
     protected payloadSizeAbuseThreshold: number,
+    protected freeUsersPayloadSizeAbuseThreshold: number,
     protected payloadSizeAbuseTimeframeLengthInMinutes: number,
     private controllerContainer?: ControllerContainerInterface,
   ) {
@@ -46,7 +48,7 @@ export class BaseItemsController extends BaseHttpController {
     const checkForItemOperationsAbuseResult = await this.checkForTrafficAbuse.execute({
       metricToCheck: Metric.NAMES.ItemOperation,
       userUuid: locals.user.uuid,
-      threshold: this.itemOperationsAbuseThreshold,
+      threshold: locals.isFreeUser ? this.freeUsersItemOperationsAbuseThreshold : this.itemOperationsAbuseThreshold,
       timeframeLengthInMinutes: this.itemOperationsAbuseTimeframeLengthInMinutes,
     })
     if (checkForItemOperationsAbuseResult.isFailed()) {
@@ -61,7 +63,7 @@ export class BaseItemsController extends BaseHttpController {
     const checkForPayloadSizeAbuseResult = await this.checkForTrafficAbuse.execute({
       metricToCheck: Metric.NAMES.ContentSizeUtilized,
       userUuid: locals.user.uuid,
-      threshold: this.payloadSizeAbuseThreshold,
+      threshold: locals.isFreeUser ? this.freeUsersPayloadSizeAbuseThreshold : this.payloadSizeAbuseThreshold,
       timeframeLengthInMinutes: this.payloadSizeAbuseTimeframeLengthInMinutes,
     })
     if (checkForPayloadSizeAbuseResult.isFailed()) {
