@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.134.0](https://github.com/standardnotes/server/compare/@standardnotes/syncing-server@1.133.6...@standardnotes/syncing-server@1.134.0) (2024-01-12)
+
+### Features
+
+* **syncing-server:** reduced abuse thresholds for free users ([#1021](https://github.com/standardnotes/server/issues/1021)) ([0443de8](https://github.com/standardnotes/server/commit/0443de88ceae3cb7c0793a3457753806b51db6e2))
+
 ## [1.133.6](https://github.com/standardnotes/server/compare/@standardnotes/syncing-server@1.133.5...@standardnotes/syncing-server@1.133.6) (2024-01-10)
 
 ### Bug Fixes
