@@ -48,7 +48,10 @@ export class SyncingServer implements ISyncingServer {
         })
         if (this.strictAbuseProtection) {
           const metadata = new grpc.Metadata()
-          metadata.set('x-sync-error-message', checkForItemOperationsAbuseResult.getError())
+          metadata.set(
+            'x-sync-error-message',
+            'You have exceeded the maximum bandwidth allotted to your account in a 5-minute period. Please wait to try again, or upgrade your account for increased limits.',
+          )
           metadata.set('x-sync-error-response-code', '429')
 
           return callback(
@@ -76,7 +79,10 @@ export class SyncingServer implements ISyncingServer {
 
         if (this.strictAbuseProtection) {
           const metadata = new grpc.Metadata()
-          metadata.set('x-sync-error-message', checkForPayloadSizeAbuseResult.getError())
+          metadata.set(
+            'x-sync-error-message',
+            'You have exceeded the maximum bandwidth allotted to your account in a 5-minute period. Please wait to try again, or upgrade your account for increased limits.',
+          )
           metadata.set('x-sync-error-response-code', '429')
 
           return callback(

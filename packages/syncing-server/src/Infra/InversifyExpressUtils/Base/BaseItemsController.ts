@@ -56,7 +56,15 @@ export class BaseItemsController extends BaseHttpController {
         userId: locals.user.uuid,
       })
       if (this.strictAbuseProtection) {
-        return this.json({ error: { message: checkForItemOperationsAbuseResult.getError() } }, 429)
+        return this.json(
+          {
+            error: {
+              message:
+                'You have exceeded the maximum bandwidth allotted to your account in a 5-minute period. Please wait to try again, or upgrade your account for increased limits.',
+            },
+          },
+          429,
+        )
       }
     }
 
@@ -72,7 +80,15 @@ export class BaseItemsController extends BaseHttpController {
       })
 
       if (this.strictAbuseProtection) {
-        return this.json({ error: { message: checkForPayloadSizeAbuseResult.getError() } }, 429)
+        return this.json(
+          {
+            error: {
+              message:
+                'You have exceeded the maximum bandwidth allotted to your account in a 5-minute period. Please wait to try again, or upgrade your account for increased limits.',
+            },
+          },
+          429,
+        )
       }
     }
 
