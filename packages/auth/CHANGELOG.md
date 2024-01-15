@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.177.16](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.177.15...@standardnotes/auth-server@1.177.16) (2024-01-15)
+
+### Bug Fixes
+
+* **auth:** update shared subscriptions upon subscription sync ([#1022](https://github.com/standardnotes/server/issues/1022)) ([d7a1c66](https://github.com/standardnotes/server/commit/d7a1c667dd62dacc1ef15f2a4f408dc07045fcad))
+
 ## [1.177.15](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.177.14...@standardnotes/auth-server@1.177.15) (2024-01-09)
 
 ### Bug Fixes
