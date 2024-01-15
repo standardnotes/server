@@ -34,6 +34,19 @@ export class SubscriptionPurchasedEventHandler implements DomainEventHandlerInte
         event.payload.timestamp,
       )
 
+      const renewalResult = await this.renewSharedSubscriptions.execute({
+        inviterEmail: event.payload.userEmail,
+        newSubscriptionId: event.payload.subscriptionId,
+        newSubscriptionName: event.payload.subscriptionName,
+        newSubscriptionExpiresAt: event.payload.subscriptionExpiresAt,
+        timestamp: event.payload.timestamp,
+      })
+      if (renewalResult.isFailed()) {
+        this.logger.error(`Could not renew shared offline subscriptions: ${renewalResult.getError()}`, {
+          subscriptionId: event.payload.subscriptionId,
+        })
+      }
+
       await this.roleService.setOfflineUserRole(offlineUserSubscription)
 
       return
