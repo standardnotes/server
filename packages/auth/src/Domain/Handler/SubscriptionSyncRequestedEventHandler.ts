@@ -33,6 +33,10 @@ export class SubscriptionSyncRequestedEventHandler implements DomainEventHandler
   ) {}
 
   async handle(event: SubscriptionSyncRequestedEvent): Promise<void> {
+    this.logger.info('Subscription sync requested', {
+      subscriptionId: event.payload.subscriptionId,
+    })
+
     if (event.payload.offline) {
       const offlineUserSubscription = await this.createOrUpdateOfflineSubscription(
         event.payload.subscriptionId,
@@ -78,6 +82,11 @@ export class SubscriptionSyncRequestedEventHandler implements DomainEventHandler
       return
     }
 
+    this.logger.info('Syncing subscription', {
+      userId: user.uuid,
+      subscriptionId: event.payload.subscriptionId,
+    })
+
     const userSubscription = await this.createOrUpdateSubscription(
       event.payload.subscriptionId,
       event.payload.subscriptionName,
@@ -122,6 +131,11 @@ export class SubscriptionSyncRequestedEventHandler implements DomainEventHandler
     if (result.isFailed()) {
       this.logger.error(`Could not set extension key for user ${user.uuid}`)
     }
+
+    this.logger.info('Subscription synced', {
+      userId: user.uuid,
+      subscriptionId: event.payload.subscriptionId,
+    })
   }
 
   private async createOrUpdateSubscription(
