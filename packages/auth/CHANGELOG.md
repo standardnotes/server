@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.177.18](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.177.17...@standardnotes/auth-server@1.177.18) (2024-01-15)
+
+### Bug Fixes
+
+* **auth:** add more logs to syncing subscription ([c7217a9](https://github.com/standardnotes/server/commit/c7217a92ba89d8b5f4963a832aa7561dd146ca0d))
+* **auth:** add renewal for shared offline subscriptions ([045358d](https://github.com/standardnotes/server/commit/045358ddbf300996a23bba8d6945b1d7b5f6e862))
+
 ## [1.177.17](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.177.16...@standardnotes/auth-server@1.177.17) (2024-01-15)
 
 ### Bug Fixes
