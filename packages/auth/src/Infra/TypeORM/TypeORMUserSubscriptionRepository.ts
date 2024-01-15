@@ -84,6 +84,7 @@ export class TypeORMUserSubscriptionRepository implements UserSubscriptionReposi
         userUuid,
         subscriptionId,
       })
+      .orderBy('ends_at', 'DESC')
       .getOne()
   }
 

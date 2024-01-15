@@ -1421,6 +1421,7 @@ export class ContainerConfigLoader {
           container.get<SetSettingValue>(TYPES.Auth_SetSettingValue),
           container.get<OfflineSettingServiceInterface>(TYPES.Auth_OfflineSettingService),
           container.get<ContentDecoderInterface>(TYPES.Auth_ContenDecoder),
+          container.get<RenewSharedSubscriptions>(TYPES.Auth_RenewSharedSubscriptions),
           container.get<winston.Logger>(TYPES.Auth_Logger),
         ),
       )
