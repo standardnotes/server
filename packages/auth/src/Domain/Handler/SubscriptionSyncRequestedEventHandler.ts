@@ -38,6 +38,10 @@ export class SubscriptionSyncRequestedEventHandler implements DomainEventHandler
     })
 
     if (event.payload.offline) {
+      this.logger.info('Syncing offline subscription', {
+        subscriptionId: event.payload.subscriptionId,
+      })
+
       const offlineUserSubscription = await this.createOrUpdateOfflineSubscription(
         event.payload.subscriptionId,
         event.payload.subscriptionName,
@@ -66,11 +70,19 @@ export class SubscriptionSyncRequestedEventHandler implements DomainEventHandler
         value: offlineFeaturesTokenDecoded.extensionKey,
       })
 
+      this.logger.info('Offline subscription synced', {
+        subscriptionId: event.payload.subscriptionId,
+      })
+
       return
     }
 
     const usernameOrError = Username.create(event.payload.userEmail)
     if (usernameOrError.isFailed()) {
+      this.logger.warn(`Could not sync subscription: ${usernameOrError.getError()}`, {
+        subscriptionId: event.payload.subscriptionId,
+      })
+
       return
     }
     const username = usernameOrError.getValue()
@@ -78,7 +90,10 @@ export class SubscriptionSyncRequestedEventHandler implements DomainEventHandler
     const user = await this.userRepository.findOneByUsernameOrEmail(username)
 
     if (user === null) {
-      this.logger.warn(`Could not find user with email: ${username.value}`)
+      this.logger.warn(`Could not find user with email: ${username.value}`, {
+        subscriptionId: event.payload.subscriptionId,
+      })
+
       return
     }
 
