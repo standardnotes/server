@@ -16,6 +16,7 @@ import { OfflineSettingName } from '../Setting/OfflineSettingName'
 import { UserSubscriptionType } from '../Subscription/UserSubscriptionType'
 import { ApplyDefaultSubscriptionSettings } from '../UseCase/ApplyDefaultSubscriptionSettings/ApplyDefaultSubscriptionSettings'
 import { SetSettingValue } from '../UseCase/SetSettingValue/SetSettingValue'
+import { RenewSharedSubscriptions } from '../UseCase/RenewSharedSubscriptions/RenewSharedSubscriptions'
 
 export class SubscriptionSyncRequestedEventHandler implements DomainEventHandlerInterface {
   constructor(
@@ -27,6 +28,7 @@ export class SubscriptionSyncRequestedEventHandler implements DomainEventHandler
     private setSettingValue: SetSettingValue,
     private offlineSettingService: OfflineSettingServiceInterface,
     private contentDecoder: ContentDecoderInterface,
+    private renewSharedSubscriptions: RenewSharedSubscriptions,
     private logger: Logger,
   ) {}
 
@@ -84,6 +86,19 @@ export class SubscriptionSyncRequestedEventHandler implements DomainEventHandler
       event.payload.subscriptionExpiresAt,
       event.payload.timestamp,
     )
+
+    const renewalResult = await this.renewSharedSubscriptions.execute({
+      inviterEmail: user.email,
+      newSubscriptionId: event.payload.subscriptionId,
+      newSubscriptionName: event.payload.subscriptionName,
+      newSubscriptionExpiresAt: event.payload.subscriptionExpiresAt,
+      timestamp: event.payload.timestamp,
+    })
+    if (renewalResult.isFailed()) {
+      this.logger.error(`Could not renew shared subscriptions for user: ${renewalResult.getError()}`, {
+        userId: user.uuid,
+      })
+    }
 
     await this.roleService.addUserRoleBasedOnSubscription(user, event.payload.subscriptionName)
 
