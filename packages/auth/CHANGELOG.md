@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.177.17](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.177.16...@standardnotes/auth-server@1.177.17) (2024-01-15)
+
+### Bug Fixes
+
+* **auth:** add debug logs for subscription sync requested event ([351e18f](https://github.com/standardnotes/server/commit/351e18f6389c2dbaa2107e6549be9928c2e8834f))
+
 ## [1.177.16](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.177.15...@standardnotes/auth-server@1.177.16) (2024-01-15)
 
 ### Bug Fixes
