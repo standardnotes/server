@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.134.1](https://github.com/standardnotes/server/compare/@standardnotes/syncing-server@1.134.0...@standardnotes/syncing-server@1.134.1) (2024-01-16)
+
+### Bug Fixes
+
+* **syncing-server:** missing item operations metric store expiry ([89dc6c1](https://github.com/standardnotes/server/commit/89dc6c19bf0e4a8c715f085ace5a717151d8fe9f))
+
 # [1.134.0](https://github.com/standardnotes/server/compare/@standardnotes/syncing-server@1.133.6...@standardnotes/syncing-server@1.134.0) (2024-01-12)
 
 ### Features
