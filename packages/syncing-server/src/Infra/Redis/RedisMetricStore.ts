@@ -82,16 +82,16 @@ export class RedisMetricStore implements MetricsStoreInterface {
     const date = this.timer.convertMicrosecondsToDate(metric.props.timestamp)
     const dateToTheMinuteString = this.timer.convertDateToFormattedString(date, 'YYYY-MM-DD HH:mm')
     const key = `${this.METRIC_PER_USER_PREFIX}:${userUuid.value}:${metric.props.name}:${dateToTheMinuteString}`
+    const itemOperationKey = `${this.METRIC_PER_USER_PREFIX}:${userUuid.value}:${Metric.NAMES.ItemOperation}:${dateToTheMinuteString}`
 
     const pipeline = this.redisClient.pipeline()
 
     pipeline.incrbyfloat(key, value)
-    pipeline.incr(
-      `${this.METRIC_PER_USER_PREFIX}:${userUuid.value}:${Metric.NAMES.ItemOperation}:${dateToTheMinuteString}`,
-    )
+    pipeline.incr(itemOperationKey)
 
     const expirationTime = 60 * 60 * 24
     pipeline.expire(key, expirationTime)
+    pipeline.expire(itemOperationKey, expirationTime)
 
     await pipeline.exec()
   }
