@@ -97,6 +97,7 @@ const TYPES = {
   Sync_TransferSharedVaultItems: Symbol.for('Sync_TransferSharedVaultItems'),
   Sync_DumpItem: Symbol.for('Sync_DumpItem'),
   Sync_CheckForTrafficAbuse: Symbol.for('Sync_CheckForTrafficAbuse'),
+  Sync_FixContentSizes: Symbol.for('Sync_FixContentSizes'),
   // Handlers
   Sync_AccountDeletionRequestedEventHandler: Symbol.for('Sync_AccountDeletionRequestedEventHandler'),
   Sync_AccountDeletionVerificationRequestedEventHandler: Symbol.for(

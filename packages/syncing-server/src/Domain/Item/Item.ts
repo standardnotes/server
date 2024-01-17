@@ -16,6 +16,10 @@ export class Item extends Aggregate<ItemProps> {
     return Result.ok<Item>(new Item(props, id))
   }
 
+  calculateContentSize(): number {
+    return Buffer.byteLength(JSON.stringify(this))
+  }
+
   get uuid(): Uuid {
     const uuidOrError = Uuid.create(this._id.toString())
     if (uuidOrError.isFailed()) {

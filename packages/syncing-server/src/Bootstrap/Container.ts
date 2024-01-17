@@ -167,6 +167,7 @@ import { MetricsStoreInterface } from '../Domain/Metrics/MetricsStoreInterface'
 import { RedisMetricStore } from '../Infra/Redis/RedisMetricStore'
 import { DummyMetricStore } from '../Infra/Dummy/DummyMetricStore'
 import { CheckForTrafficAbuse } from '../Domain/UseCase/Syncing/CheckForTrafficAbuse/CheckForTrafficAbuse'
+import { FixContentSizes } from '../Domain/UseCase/Syncing/FixContentSizes/FixContentSizes'
 
 export class ContainerConfigLoader {
   private readonly DEFAULT_CONTENT_SIZE_TRANSFER_LIMIT = 10_000_000
@@ -953,6 +954,14 @@ export class ContainerConfigLoader {
           container.get<ItemBackupServiceInterface>(TYPES.Sync_ItemBackupService),
           container.get<DomainEventFactoryInterface>(TYPES.Sync_DomainEventFactory),
           container.get<DomainEventPublisherInterface>(TYPES.Sync_DomainEventPublisher),
+        ),
+      )
+    container
+      .bind<FixContentSizes>(TYPES.Sync_FixContentSizes)
+      .toConstantValue(
+        new FixContentSizes(
+          container.get<ItemRepositoryInterface>(TYPES.Sync_SQLItemRepository),
+          container.get<Logger>(TYPES.Sync_Logger),
         ),
       )
 
