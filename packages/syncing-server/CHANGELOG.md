@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.135.0](https://github.com/standardnotes/server/compare/@standardnotes/syncing-server@1.134.1...@standardnotes/syncing-server@1.135.0) (2024-01-17)
+
+### Features
+
+* **syncing-server:** add procedure to recalculate content sizes ([#1027](https://github.com/standardnotes/server/issues/1027)) ([70bbf11](https://github.com/standardnotes/server/commit/70bbf11db504ed6305b9e9922bc38bd4b632b273))
+
 ## [1.134.1](https://github.com/standardnotes/server/compare/@standardnotes/syncing-server@1.134.0...@standardnotes/syncing-server@1.134.1) (2024-01-16)
 
 ### Bug Fixes
