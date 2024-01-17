@@ -16,6 +16,11 @@ case "$COMMAND" in
     exec node docker/entrypoint-statistics.js
     ;;
 
+  'content-size' )
+    EMAIL=$1 && shift 1
+    exec node docker/entrypoint-content-size.js $EMAIL
+    ;;
+
    * )
     echo "[Docker] Unknown command"
     ;;
