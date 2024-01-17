@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.177.19](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.177.18...@standardnotes/auth-server@1.177.19) (2024-01-17)
+
+### Bug Fixes
+
+* **auth:** add server daily email backup permission for all versions of core user role ([#1028](https://github.com/standardnotes/server/issues/1028)) ([460fdf9](https://github.com/standardnotes/server/commit/460fdf9eafe2db629637ba481f2b135ed21560b9))
+
 ## [1.177.18](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.177.17...@standardnotes/auth-server@1.177.18) (2024-01-15)
 
 ### Bug Fixes
