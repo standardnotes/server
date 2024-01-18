@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.89.20](https://github.com/standardnotes/server/compare/@standardnotes/api-gateway@1.89.19...@standardnotes/api-gateway@1.89.20) (2024-01-18)
+
+### Bug Fixes
+
+* **api-gateway:** add codetag metadata to error logs ([136cf25](https://github.com/standardnotes/server/commit/136cf252a134efe7d99f79d8622c43dbebbb5ac8))
+
 ## [1.89.19](https://github.com/standardnotes/server/compare/@standardnotes/api-gateway@1.89.18...@standardnotes/api-gateway@1.89.19) (2024-01-10)
 
 ### Bug Fixes
