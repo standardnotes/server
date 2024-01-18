@@ -1,12 +1,14 @@
 import { Request, Response } from 'express'
 import { ISyncingClient, SyncRequest, SyncResponse } from '@standardnotes/grpc'
+import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
 import { MapperInterface } from '@standardnotes/domain-core'
 import { Metadata } from '@grpc/grpc-js'
-
-import { SyncResponseHttpRepresentation } from '../../Mapping/Sync/Http/SyncResponseHttpRepresentation'
 import { Status } from '@grpc/grpc-js/build/src/constants'
 import { Logger } from 'winston'
+
+import { SyncResponseHttpRepresentation } from '../../Mapping/Sync/Http/SyncResponseHttpRepresentation'
 import { ResponseLocals } from '../../Controller/ResponseLocals'
+import { DomainEventFactoryInterface } from '../../Event/DomainEventFactoryInterface'
 
 export class GRPCSyncingServerServiceProxy {
   constructor(
@@ -14,6 +16,8 @@ export class GRPCSyncingServerServiceProxy {
     private syncRequestGRPCMapper: MapperInterface<Record<string, unknown>, SyncRequest>,
     private syncResponseGRPCMapper: MapperInterface<SyncResponse, SyncResponseHttpRepresentation>,
     private logger: Logger,
+    private domainEventFactory: DomainEventFactoryInterface,
+    private domainEventPublisher?: DomainEventPublisherInterface,
   ) {}
 
   async sync(
@@ -57,6 +61,12 @@ export class GRPCSyncingServerServiceProxy {
                 codeTag: 'GRPCSyncingServerServiceProxy',
                 userId: locals.user.uuid,
               })
+            }
+
+            if (error.code === Status.RESOURCE_EXHAUSTED && this.domainEventPublisher !== undefined) {
+              void this.domainEventPublisher.publish(
+                this.domainEventFactory.createContentSizesFixRequestedEvent({ userUuid: locals.user.uuid }),
+              )
             }
 
             return reject(error)
