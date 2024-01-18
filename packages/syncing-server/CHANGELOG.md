@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.136.0](https://github.com/standardnotes/server/compare/@standardnotes/syncing-server@1.135.0...@standardnotes/syncing-server@1.136.0) (2024-01-18)
+
+### Features
+
+* add content sizes fixing upon grpc resource exhausted error ([#1029](https://github.com/standardnotes/server/issues/1029)) ([634e8bd](https://github.com/standardnotes/server/commit/634e8bd2d0f055abbda1150587ab9a444281e600))
+
 # [1.135.0](https://github.com/standardnotes/server/compare/@standardnotes/syncing-server@1.134.1...@standardnotes/syncing-server@1.135.0) (2024-01-17)
 
 ### Features

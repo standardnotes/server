@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.90.0](https://github.com/standardnotes/server/compare/@standardnotes/api-gateway@1.89.20...@standardnotes/api-gateway@1.90.0) (2024-01-18)
+
+### Features
+
+* add content sizes fixing upon grpc resource exhausted error ([#1029](https://github.com/standardnotes/server/issues/1029)) ([634e8bd](https://github.com/standardnotes/server/commit/634e8bd2d0f055abbda1150587ab9a444281e600))
+
 ## [1.89.20](https://github.com/standardnotes/server/compare/@standardnotes/api-gateway@1.89.19...@standardnotes/api-gateway@1.89.20) (2024-01-18)
 
 ### Bug Fixes

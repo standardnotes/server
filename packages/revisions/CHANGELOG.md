@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.51.15](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.51.14...@standardnotes/revisions-server@1.51.15) (2024-01-18)
+
+**Note:** Version bump only for package @standardnotes/revisions-server
+
 ## [1.51.14](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.51.13...@standardnotes/revisions-server@1.51.14) (2024-01-04)
 
 **Note:** Version bump only for package @standardnotes/revisions-server

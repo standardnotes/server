@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.140.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.139.3...@standardnotes/domain-events@2.140.0) (2024-01-18)
+
+### Features
+
+* add content sizes fixing upon grpc resource exhausted error ([#1029](https://github.com/standardnotes/server/issues/1029)) ([634e8bd](https://github.com/standardnotes/server/commit/634e8bd2d0f055abbda1150587ab9a444281e600))
+
 ## [2.139.3](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.139.2...@standardnotes/domain-events@2.139.3) (2023-12-29)
 
 ### Bug Fixes
