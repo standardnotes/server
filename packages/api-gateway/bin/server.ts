@@ -99,6 +99,7 @@ void container.load().then((container) => {
       const locals = response.locals as ResponseLocals
 
       logger.error(`${error.stack}`, {
+        codeTag: 'server.ts',
         method: request.method,
         url: request.url,
         snjs: request.headers['x-snjs-version'],
