@@ -1,6 +1,7 @@
 import * as winston from 'winston'
 import * as AgentKeepAlive from 'agentkeepalive'
 import * as grpc from '@grpc/grpc-js'
+import { SNSClient, SNSClientConfig } from '@aws-sdk/client-sns'
 import axios, { AxiosInstance } from 'axios'
 import Redis from 'ioredis'
 import { Container } from 'inversify'
@@ -29,6 +30,10 @@ import { SyncResponseHttpRepresentation } from '../Mapping/Sync/Http/SyncRespons
 import { SyncRequestGRPCMapper } from '../Mapping/Sync/GRPC/SyncRequestGRPCMapper'
 import { SyncResponseGRPCMapper } from '../Mapping/Sync/GRPC/SyncResponseGRPCMapper'
 import { GRPCWebSocketAuthMiddleware } from '../Controller/GRPCWebSocketAuthMiddleware'
+import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
+import { SNSDomainEventPublisher } from '@standardnotes/domain-events-infra'
+import { DomainEventFactoryInterface } from '../Event/DomainEventFactoryInterface'
+import { DomainEventFactory } from '../Event/DomainEventFactory'
 
 export class ContainerConfigLoader {
   async load(configuration?: {
@@ -50,6 +55,34 @@ export class ContainerConfigLoader {
     container
       .bind<boolean>(TYPES.ApiGateway_IS_CONFIGURED_FOR_HOME_SERVER_OR_SELF_HOSTING)
       .toConstantValue(isConfiguredForHomeServerOrSelfHosting)
+
+    if (!isConfiguredForHomeServerOrSelfHosting) {
+      const snsConfig: SNSClientConfig = {
+        region: env.get('SNS_AWS_REGION', true),
+      }
+      if (env.get('SNS_ENDPOINT', true)) {
+        snsConfig.endpoint = env.get('SNS_ENDPOINT', true)
+      }
+      if (env.get('SNS_ACCESS_KEY_ID', true) && env.get('SNS_SECRET_ACCESS_KEY', true)) {
+        snsConfig.credentials = {
+          accessKeyId: env.get('SNS_ACCESS_KEY_ID', true),
+          secretAccessKey: env.get('SNS_SECRET_ACCESS_KEY', true),
+        }
+      }
+      const snsClient = new SNSClient(snsConfig)
+      container.bind<SNSClient>(TYPES.ApiGateway_SNS).toConstantValue(snsClient)
+
+      container.bind(TYPES.ApiGateway_SNS_TOPIC_ARN).toConstantValue(env.get('SNS_TOPIC_ARN', true))
+
+      container
+        .bind<DomainEventPublisherInterface>(TYPES.ApiGateway_DomainEventPublisher)
+        .toConstantValue(
+          new SNSDomainEventPublisher(
+            container.get(TYPES.ApiGateway_SNS),
+            container.get(TYPES.ApiGateway_SNS_TOPIC_ARN),
+          ),
+        )
+    }
 
     const winstonFormatters = [winston.format.splat(), winston.format.json()]
 
@@ -193,6 +226,10 @@ export class ContainerConfigLoader {
           .toConstantValue(new SyncResponseGRPCMapper())
 
         container
+          .bind<DomainEventFactoryInterface>(TYPES.ApiGateway_DomainEventFactory)
+          .toConstantValue(new DomainEventFactory(container.get<TimerInterface>(TYPES.ApiGateway_Timer)))
+
+        container
           .bind<GRPCSyncingServerServiceProxy>(TYPES.ApiGateway_GRPCSyncingServerServiceProxy)
           .toConstantValue(
             new GRPCSyncingServerServiceProxy(
@@ -202,6 +239,10 @@ export class ContainerConfigLoader {
                 TYPES.Mapper_SyncResponseGRPCMapper,
               ),
               container.get<winston.Logger>(TYPES.ApiGateway_Logger),
+              container.get<DomainEventFactoryInterface>(TYPES.ApiGateway_DomainEventFactory),
+              isConfiguredForHomeServerOrSelfHosting
+                ? undefined
+                : container.get<DomainEventPublisherInterface>(TYPES.ApiGateway_DomainEventPublisher),
             ),
           )
         container

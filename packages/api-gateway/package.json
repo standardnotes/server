@@ -31,6 +31,7 @@
     "start": "yarn node dist/bin/server.js"
   },
   "dependencies": {
+    "@aws-sdk/client-sns": "^3.490.0",
     "@grpc/grpc-js": "^1.9.13",
     "@standardnotes/domain-core": "workspace:^",
     "@standardnotes/domain-events": "workspace:*",

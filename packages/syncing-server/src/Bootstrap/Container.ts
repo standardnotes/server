@@ -168,6 +168,7 @@ import { RedisMetricStore } from '../Infra/Redis/RedisMetricStore'
 import { DummyMetricStore } from '../Infra/Dummy/DummyMetricStore'
 import { CheckForTrafficAbuse } from '../Domain/UseCase/Syncing/CheckForTrafficAbuse/CheckForTrafficAbuse'
 import { FixContentSizes } from '../Domain/UseCase/Syncing/FixContentSizes/FixContentSizes'
+import { ContentSizesFixRequestedEventHandler } from '../Domain/Handler/ContentSizesFixRequestedEventHandler'
 
 export class ContainerConfigLoader {
   private readonly DEFAULT_CONTENT_SIZE_TRANSFER_LIMIT = 10_000_000
@@ -1076,6 +1077,14 @@ export class ContainerConfigLoader {
           container.get<Logger>(TYPES.Sync_Logger),
         ),
       )
+    container
+      .bind<ContentSizesFixRequestedEventHandler>(TYPES.Sync_ContentSizesFixRequestedEventHandler)
+      .toConstantValue(
+        new ContentSizesFixRequestedEventHandler(
+          container.get<FixContentSizes>(TYPES.Sync_FixContentSizes),
+          container.get<Logger>(TYPES.Sync_Logger),
+        ),
+      )
 
     // Services
     container.bind<ContentDecoderInterface>(TYPES.Sync_ContentDecoder).toDynamicValue(() => new ContentDecoder())
@@ -1103,6 +1112,10 @@ export class ContainerConfigLoader {
       [
         'SHARED_VAULT_REMOVED',
         container.get<SharedVaultRemovedEventHandler>(TYPES.Sync_SharedVaultRemovedEventHandler),
+      ],
+      [
+        'CONTENT_SIZES_FIX_REQUESTED',
+        container.get<ContentSizesFixRequestedEventHandler>(TYPES.Sync_ContentSizesFixRequestedEventHandler),
       ],
     ])
     if (!isConfiguredForHomeServer) {

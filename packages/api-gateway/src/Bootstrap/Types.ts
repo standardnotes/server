@@ -2,7 +2,11 @@ export const TYPES = {
   ApiGateway_Logger: Symbol.for('ApiGateway_Logger'),
   ApiGateway_Redis: Symbol.for('ApiGateway_Redis'),
   ApiGateway_HTTPClient: Symbol.for('ApiGateway_HTTPClient'),
+  ApiGateway_SNS: Symbol.for('ApiGateway_SNS'),
+  ApiGateway_DomainEventPublisher: Symbol.for('ApiGateway_DomainEventPublisher'),
   // env vars
+  ApiGateway_SNS_TOPIC_ARN: Symbol.for('ApiGateway_SNS_TOPIC_ARN'),
+  ApiGateway_SNS_AWS_REGION: Symbol.for('ApiGateway_SNS_AWS_REGION'),
   ApiGateway_SYNCING_SERVER_JS_URL: Symbol.for('ApiGateway_SYNCING_SERVER_JS_URL'),
   ApiGateway_AUTH_SERVER_URL: Symbol.for('ApiGateway_AUTH_SERVER_URL'),
   ApiGateway_AUTH_SERVER_GRPC_URL: Symbol.for('ApiGateway_AUTH_SERVER_GRPC_URL'),
@@ -29,6 +33,7 @@ export const TYPES = {
   Mapper_SyncRequestGRPCMapper: Symbol.for('Mapper_SyncRequestGRPCMapper'),
   Mapper_SyncResponseGRPCMapper: Symbol.for('Mapper_SyncResponseGRPCMapper'),
   // Services
+  ApiGateway_DomainEventFactory: Symbol.for('ApiGateway_DomainEventFactory'),
   ApiGateway_GRPCSyncingServerServiceProxy: Symbol.for('ApiGateway_GRPCSyncingServerServiceProxy'),
   ApiGateway_ServiceProxy: Symbol.for('ApiGateway_ServiceProxy'),
   ApiGateway_CrossServiceTokenCache: Symbol.for('ApiGateway_CrossServiceTokenCache'),
