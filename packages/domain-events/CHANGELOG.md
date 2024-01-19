@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.141.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.140.0...@standardnotes/domain-events@2.141.0) (2024-01-19)
+
+### Features
+
+* **auth:** add script for fixing subscriptions with missing id state ([#1030](https://github.com/standardnotes/server/issues/1030)) ([86b0508](https://github.com/standardnotes/server/commit/86b050865f8090ed33d5ce05528ff0e1e23657ef))
+
 # [2.140.0](https://github.com/standardnotes/server/compare/@standardnotes/domain-events@2.139.3...@standardnotes/domain-events@2.140.0) (2024-01-18)
 
 ### Features

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.178.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.177.20...@standardnotes/auth-server@1.178.0) (2024-01-19)
+
+### Features
+
+* **auth:** add script for fixing subscriptions with missing id state ([#1030](https://github.com/standardnotes/server/issues/1030)) ([86b0508](https://github.com/standardnotes/server/commit/86b050865f8090ed33d5ce05528ff0e1e23657ef))
+
 ## [1.177.20](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.177.19...@standardnotes/auth-server@1.177.20) (2024-01-18)
 
 **Note:** Version bump only for package @standardnotes/auth-server
