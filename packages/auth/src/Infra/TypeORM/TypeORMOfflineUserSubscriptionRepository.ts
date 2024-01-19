@@ -12,6 +12,19 @@ export class TypeORMOfflineUserSubscriptionRepository implements OfflineUserSubs
     private ormRepository: Repository<OfflineUserSubscription>,
   ) {}
 
+  async findOneByEmailAndSubscriptionId(
+    email: string,
+    subscriptionId: number,
+  ): Promise<OfflineUserSubscription | null> {
+    return await this.ormRepository
+      .createQueryBuilder()
+      .where('email = :email AND subscription_id = :subscriptionId', {
+        email,
+        subscriptionId,
+      })
+      .getOne()
+  }
+
   async save(offlineUserSubscription: OfflineUserSubscription): Promise<OfflineUserSubscription> {
     return this.ormRepository.save(offlineUserSubscription)
   }

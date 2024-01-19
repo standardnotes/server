@@ -4,6 +4,7 @@ import { inject, injectable } from 'inversify'
 import TYPES from '../../Bootstrap/Types'
 import { UserSubscriptionRepositoryInterface } from '../Subscription/UserSubscriptionRepositoryInterface'
 import { OfflineUserSubscriptionRepositoryInterface } from '../Subscription/OfflineUserSubscriptionRepositoryInterface'
+import { Logger } from 'winston'
 
 @injectable()
 export class SubscriptionCancelledEventHandler implements DomainEventHandlerInterface {
@@ -12,9 +13,20 @@ export class SubscriptionCancelledEventHandler implements DomainEventHandlerInte
     private userSubscriptionRepository: UserSubscriptionRepositoryInterface,
     @inject(TYPES.Auth_OfflineUserSubscriptionRepository)
     private offlineUserSubscriptionRepository: OfflineUserSubscriptionRepositoryInterface,
+    @inject(TYPES.Auth_Logger) private logger: Logger,
   ) {}
 
   async handle(event: SubscriptionCancelledEvent): Promise<void> {
+    if (!event.payload.subscriptionId) {
+      this.logger.error('Subscription ID is missing', {
+        codeTag: 'SubscriptionCancelledEventHandler.handle',
+        subscriptionId: event.payload.subscriptionId,
+        userId: event.payload.userEmail,
+      })
+
+      return
+    }
+
     if (event.payload.offline) {
       await this.updateOfflineSubscriptionCancelled(event.payload.subscriptionId, event.payload.timestamp)
 

@@ -22,6 +22,16 @@ export class SubscriptionReassignedEventHandler implements DomainEventHandlerInt
   ) {}
 
   async handle(event: SubscriptionReassignedEvent): Promise<void> {
+    if (!event.payload.subscriptionId) {
+      this.logger.error('Subscription ID is missing', {
+        codeTag: 'SubscriptionReassignedEventHandler.handle',
+        subscriptionId: event.payload.subscriptionId,
+        userId: event.payload.userEmail,
+      })
+
+      return
+    }
+
     const usernameOrError = Username.create(event.payload.userEmail)
     if (usernameOrError.isFailed()) {
       return

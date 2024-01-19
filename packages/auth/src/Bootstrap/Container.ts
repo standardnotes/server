@@ -285,6 +285,7 @@ import { RenewSharedSubscriptions } from '../Domain/UseCase/RenewSharedSubscript
 import { FixStorageQuotaForUser } from '../Domain/UseCase/FixStorageQuotaForUser/FixStorageQuotaForUser'
 import { FileQuotaRecalculatedEventHandler } from '../Domain/Handler/FileQuotaRecalculatedEventHandler'
 import { SessionServiceInterface } from '../Domain/Session/SessionServiceInterface'
+import { SubscriptionStateFetchedEventHandler } from '../Domain/Handler/SubscriptionStateFetchedEventHandler'
 
 export class ContainerConfigLoader {
   constructor(private mode: 'server' | 'worker' = 'server') {}
@@ -1579,6 +1580,16 @@ export class ContainerConfigLoader {
           container.get<winston.Logger>(TYPES.Auth_Logger),
         ),
       )
+    container
+      .bind<SubscriptionStateFetchedEventHandler>(TYPES.Auth_SubscriptionStateFetchedEventHandler)
+      .toConstantValue(
+        new SubscriptionStateFetchedEventHandler(
+          container.get<UserRepositoryInterface>(TYPES.Auth_UserRepository),
+          container.get<UserSubscriptionRepositoryInterface>(TYPES.Auth_UserSubscriptionRepository),
+          container.get<OfflineUserSubscriptionRepositoryInterface>(TYPES.Auth_OfflineUserSubscriptionRepository),
+          container.get<winston.Logger>(TYPES.Auth_Logger),
+        ),
+      )
 
     const eventHandlers: Map<string, DomainEventHandlerInterface> = new Map([
       ['ACCOUNT_DELETION_REQUESTED', container.get(TYPES.Auth_AccountDeletionRequestedEventHandler)],
@@ -1620,6 +1631,7 @@ export class ContainerConfigLoader {
         'FILE_QUOTA_RECALCULATED',
         container.get<FileQuotaRecalculatedEventHandler>(TYPES.Auth_FileQuotaRecalculatedEventHandler),
       ],
+      ['SUBSCRIPTION_STATE_FETCHED', container.get(TYPES.Auth_SubscriptionStateFetchedEventHandler)],
     ])
 
     if (isConfiguredForHomeServer) {

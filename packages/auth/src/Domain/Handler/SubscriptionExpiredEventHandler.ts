@@ -22,6 +22,16 @@ export class SubscriptionExpiredEventHandler implements DomainEventHandlerInterf
   ) {}
 
   async handle(event: SubscriptionExpiredEvent): Promise<void> {
+    if (!event.payload.subscriptionId) {
+      this.logger.error('Subscription ID is missing', {
+        codeTag: 'SubscriptionExpiredEventHandler.handle',
+        subscriptionId: event.payload.subscriptionId,
+        userId: event.payload.userEmail,
+      })
+
+      return
+    }
+
     if (event.payload.offline) {
       await this.updateOfflineSubscriptionEndsAt(event.payload.subscriptionId, event.payload.timestamp)
 
