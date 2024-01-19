@@ -22,6 +22,7 @@ import {
   SessionRefreshedEvent,
   AccountDeletionVerificationRequestedEvent,
   FileQuotaRecalculationRequestedEvent,
+  SubscriptionStateRequestedEvent,
 } from '@standardnotes/domain-events'
 import { Predicate, PredicateVerificationResult } from '@standardnotes/predicates'
 import { TimerInterface } from '@standardnotes/time'
@@ -34,6 +35,21 @@ import { KeyParamsData } from '@standardnotes/responses'
 @injectable()
 export class DomainEventFactory implements DomainEventFactoryInterface {
   constructor(@inject(TYPES.Auth_Timer) private timer: TimerInterface) {}
+  createSubscriptionStateRequestedEvent(dto: { userEmail: string }): SubscriptionStateRequestedEvent {
+    return {
+      type: 'SUBSCRIPTION_STATE_REQUESTED',
+      createdAt: this.timer.getUTCDate(),
+      meta: {
+        correlation: {
+          userIdentifier: dto.userEmail,
+          userIdentifierType: 'email',
+        },
+        origin: DomainEventService.Auth,
+      },
+      payload: dto,
+    }
+  }
+
   createFileQuotaRecalculationRequestedEvent(dto: { userUuid: string }): FileQuotaRecalculationRequestedEvent {
     return {
       type: 'FILE_QUOTA_RECALCULATION_REQUESTED',

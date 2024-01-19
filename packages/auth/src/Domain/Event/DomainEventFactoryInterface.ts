@@ -20,11 +20,13 @@ import {
   SessionRefreshedEvent,
   AccountDeletionVerificationRequestedEvent,
   FileQuotaRecalculationRequestedEvent,
+  SubscriptionStateRequestedEvent,
 } from '@standardnotes/domain-events'
 import { InviteeIdentifierType } from '../SharedSubscription/InviteeIdentifierType'
 import { KeyParamsData } from '@standardnotes/responses'
 
 export interface DomainEventFactoryInterface {
+  createSubscriptionStateRequestedEvent(dto: { userEmail: string }): SubscriptionStateRequestedEvent
   createFileQuotaRecalculationRequestedEvent(dto: { userUuid: string }): FileQuotaRecalculationRequestedEvent
   createWebSocketMessageRequestedEvent(dto: { userUuid: string; message: JSONString }): WebSocketMessageRequestedEvent
   createEmailRequestedEvent(dto: {
