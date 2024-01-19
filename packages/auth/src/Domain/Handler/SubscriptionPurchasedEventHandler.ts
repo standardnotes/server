@@ -25,6 +25,16 @@ export class SubscriptionPurchasedEventHandler implements DomainEventHandlerInte
   ) {}
 
   async handle(event: SubscriptionPurchasedEvent): Promise<void> {
+    if (!event.payload.subscriptionId) {
+      this.logger.error('Subscription ID is missing', {
+        codeTag: 'SubscriptionPurchasedEventHandler.handle',
+        subscriptionId: event.payload.subscriptionId,
+        userId: event.payload.userEmail,
+      })
+
+      return
+    }
+
     if (event.payload.offline) {
       const offlineUserSubscription = await this.createOfflineSubscription(
         event.payload.subscriptionId,

@@ -33,6 +33,16 @@ export class SubscriptionSyncRequestedEventHandler implements DomainEventHandler
   ) {}
 
   async handle(event: SubscriptionSyncRequestedEvent): Promise<void> {
+    if (!event.payload.subscriptionId) {
+      this.logger.error('Subscription ID is missing', {
+        codeTag: 'SubscriptionSyncRequestedEventHandler.handle',
+        subscriptionId: event.payload.subscriptionId,
+        userId: event.payload.userEmail,
+      })
+
+      return
+    }
+
     this.logger.info('Subscription sync requested', {
       subscriptionId: event.payload.subscriptionId,
     })

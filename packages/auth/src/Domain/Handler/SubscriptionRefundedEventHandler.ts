@@ -22,6 +22,16 @@ export class SubscriptionRefundedEventHandler implements DomainEventHandlerInter
   ) {}
 
   async handle(event: SubscriptionRefundedEvent): Promise<void> {
+    if (!event.payload.subscriptionId) {
+      this.logger.error('Subscription ID is missing', {
+        codeTag: 'SubscriptionRefundedEventHandler.handle',
+        subscriptionId: event.payload.subscriptionId,
+        userId: event.payload.userEmail,
+      })
+
+      return
+    }
+
     if (event.payload.offline) {
       await this.updateOfflineSubscriptionEndsAt(event.payload.subscriptionId, event.payload.timestamp)
 
