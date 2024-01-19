@@ -205,6 +205,7 @@ const TYPES = {
   ),
   Auth_UserInvitedToSharedVaultEventHandler: Symbol.for('Auth_UserInvitedToSharedVaultEventHandler'),
   Auth_FileQuotaRecalculatedEventHandler: Symbol.for('Auth_FileQuotaRecalculatedEventHandler'),
+  Auth_SubscriptionStateFetchedEventHandler: Symbol.for('Auth_SubscriptionStateFetchedEventHandler'),
   // Services
   Auth_DeviceDetector: Symbol.for('Auth_DeviceDetector'),
   Auth_SessionService: Symbol.for('Auth_SessionService'),
