@@ -61,7 +61,7 @@ jobs:
 
     - name: Archive failed run logs
       if: ${{ failure() }}
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: self-hosted-failure-logs-${{ inputs.suite }}
         retention-days: 5
