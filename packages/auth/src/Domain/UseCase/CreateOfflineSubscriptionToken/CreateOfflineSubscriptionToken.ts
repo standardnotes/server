@@ -37,20 +37,6 @@ export class CreateOfflineSubscriptionToken implements UseCaseInterface {
       }
     }
 
-    if (existingSubscription.cancelled) {
-      return {
-        success: false,
-        error: 'subscription-canceled',
-      }
-    }
-
-    if (existingSubscription.endsAt < this.timer.getTimestampInMicroseconds()) {
-      return {
-        success: false,
-        error: 'subscription-expired',
-      }
-    }
-
     const token = await this.cryptoNode.generateRandomKey(128)
 
     const offlineSubscriptionToken = {
