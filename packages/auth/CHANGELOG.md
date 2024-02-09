@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.178.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.178.0...@standardnotes/auth-server@1.178.1) (2024-02-09)
+
+### Bug Fixes
+
+* allow expired offline subscriptions to receive dashboard emails ([#1041](https://github.com/standardnotes/server/issues/1041)) ([4fe8e9a](https://github.com/standardnotes/server/commit/4fe8e9a79f652f3e39608d6683cb17cc08bb8717))
+
 # [1.178.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.177.20...@standardnotes/auth-server@1.178.0) (2024-01-19)
 
 ### Features
