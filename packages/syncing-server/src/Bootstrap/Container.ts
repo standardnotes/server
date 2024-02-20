@@ -169,8 +169,10 @@ import { DummyMetricStore } from '../Infra/Dummy/DummyMetricStore'
 import { CheckForTrafficAbuse } from '../Domain/UseCase/Syncing/CheckForTrafficAbuse/CheckForTrafficAbuse'
 import { FixContentSizes } from '../Domain/UseCase/Syncing/FixContentSizes/FixContentSizes'
 import { ContentSizesFixRequestedEventHandler } from '../Domain/Handler/ContentSizesFixRequestedEventHandler'
+import { CheckForContentLimit } from '../Domain/UseCase/Syncing/CheckForContentLimit/CheckForContentLimit'
 
 export class ContainerConfigLoader {
+  private readonly DEFAULT_FREE_USER_CONTENT_LIMIT_BYTES = 100_000_000
   private readonly DEFAULT_CONTENT_SIZE_TRANSFER_LIMIT = 10_000_000
   private readonly DEFAULT_MAX_ITEMS_LIMIT = 300
   private readonly DEFAULT_FILE_UPLOAD_PATH = `${__dirname}/../../uploads`
@@ -538,6 +540,13 @@ export class ContainerConfigLoader {
       .toConstantValue(
         env.get('MAX_ITEMS_LIMIT', true) ? +env.get('MAX_ITEMS_LIMIT', true) : this.DEFAULT_MAX_ITEMS_LIMIT,
       )
+    container
+      .bind<number>(TYPES.Sync_FREE_USER_CONTENT_LIMIT_BYTES)
+      .toConstantValue(
+        env.get('FREE_USER_CONTENT_LIMIT_BYTES', true)
+          ? +env.get('FREE_USER_CONTENT_LIMIT_BYTES', true)
+          : this.DEFAULT_FREE_USER_CONTENT_LIMIT_BYTES,
+      )
     container.bind(TYPES.Sync_VALET_TOKEN_SECRET).toConstantValue(env.get('VALET_TOKEN_SECRET', true))
     container
       .bind(TYPES.Sync_VALET_TOKEN_TTL)
@@ -692,6 +701,14 @@ export class ContainerConfigLoader {
         ),
       )
     container
+      .bind<CheckForContentLimit>(TYPES.Sync_CheckForContentLimit)
+      .toConstantValue(
+        new CheckForContentLimit(
+          container.get<ItemRepositoryInterface>(TYPES.Sync_SQLItemRepository),
+          container.get<number>(TYPES.Sync_FREE_USER_CONTENT_LIMIT_BYTES),
+        ),
+      )
+    container
       .bind<SaveItems>(TYPES.Sync_SaveItems)
       .toConstantValue(
         new SaveItems(
@@ -703,6 +720,7 @@ export class ContainerConfigLoader {
           container.get<SendEventToClient>(TYPES.Sync_SendEventToClient),
           container.get<SendEventToClients>(TYPES.Sync_SendEventToClients),
           container.get<DomainEventFactoryInterface>(TYPES.Sync_DomainEventFactory),
+          container.get<CheckForContentLimit>(TYPES.Sync_CheckForContentLimit),
           container.get<Logger>(TYPES.Sync_Logger),
         ),
       )
