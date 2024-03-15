@@ -24,6 +24,7 @@ export class AuthResponseFactoryResolver implements AuthResponseFactoryResolverI
       case ApiVersion.v20190520:
         return this.authResponseFactory20190520
       case ApiVersion.v20200115:
+      case ApiVersion.v20240226:
         return this.authResponseFactory20200115
       default:
         return this.authResponseFactory20161215

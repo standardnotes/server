@@ -14,6 +14,7 @@ export class SyncResponseFactoryResolver implements SyncResponseFactoryResolverI
     switch (apiVersion) {
       case ApiVersion.v20190520:
       case ApiVersion.v20200115:
+      case ApiVersion.v20240226:
         return this.syncResponseFactory20200115
       default:
         return this.syncResponseFactory20161215
