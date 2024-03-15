@@ -42,26 +42,26 @@ jobs:
       workspace_name: ${{ inputs.workspace_name }}
     secrets: inherit
 
-  deploy-web:
-    if: ${{ inputs.deploy_web }}
+  # deploy-web:
+  #   if: ${{ inputs.deploy_web }}
 
-    needs: publish
+  #   needs: publish
 
-    name: Deploy Web
-    uses: standardnotes/server/.github/workflows/common-deploy.yml@main
-    with:
-      service_name: ${{ inputs.service_name }}
-      docker_image: ${{ inputs.service_name }}:${{ github.sha }}
-    secrets: inherit
+  #   name: Deploy Web
+  #   uses: standardnotes/server/.github/workflows/common-deploy.yml@main
+  #   with:
+  #     service_name: ${{ inputs.service_name }}
+  #     docker_image: ${{ inputs.service_name }}:${{ github.sha }}
+  #   secrets: inherit
 
-  deploy-worker:
-    if: ${{ inputs.deploy_worker }}
+  # deploy-worker:
+  #   if: ${{ inputs.deploy_worker }}
 
-    needs: publish
+  #   needs: publish
 
-    name: Deploy Worker
-    uses: standardnotes/server/.github/workflows/common-deploy.yml@main
-    with:
-      service_name: ${{ inputs.service_name }}-worker
-      docker_image: ${{ inputs.service_name }}:${{ github.sha }}
-    secrets: inherit
+  #   name: Deploy Worker
+  #   uses: standardnotes/server/.github/workflows/common-deploy.yml@main
+  #   with:
+  #     service_name: ${{ inputs.service_name }}-worker
+  #     docker_image: ${{ inputs.service_name }}:${{ github.sha }}
+  #   secrets: inherit
