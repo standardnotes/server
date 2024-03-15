@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.178.2](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.178.1...@standardnotes/auth-server@1.178.2) (2024-03-15)
+
+### Bug Fixes
+
+* allow handling of new api version ([9d49764](https://github.com/standardnotes/server/commit/9d49764b841e73655e19523eddf10498addc9fb4))
+
 ## [1.178.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.178.0...@standardnotes/auth-server@1.178.1) (2024-02-09)
 
 ### Bug Fixes
