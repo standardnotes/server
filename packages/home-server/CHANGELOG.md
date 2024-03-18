@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.22.67](https://github.com/standardnotes/server/compare/@standardnotes/home-server@1.22.66...@standardnotes/home-server@1.22.67) (2024-03-18)
+
+### Bug Fixes
+
+* cors issues on clients - fixes [#1046](https://github.com/standardnotes/server/issues/1046) ([#1049](https://github.com/standardnotes/server/issues/1049)) ([6d7ca1b](https://github.com/standardnotes/server/commit/6d7ca1b926fd45d744275bd3c1f4c05b010f76c8))
+
 ## [1.22.66](https://github.com/standardnotes/server/compare/@standardnotes/home-server@1.22.65...@standardnotes/home-server@1.22.66) (2024-03-18)
 
 **Note:** Version bump only for package @standardnotes/home-server
