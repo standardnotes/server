@@ -435,13 +435,11 @@ export class GRPCServiceProxy implements ServiceProxyInterface {
 
   private applyResponseHeaders(serviceResponse: AxiosResponse, response: Response): void {
     const returnedHeadersFromUnderlyingService = [
-      'access-control-allow-methods',
-      'access-control-allow-origin',
-      'access-control-expose-headers',
-      'authorization',
       'content-type',
-      'x-ssjs-version',
-      'x-auth-version',
+      'authorization',
+      'set-cookie',
+      'access-control-expose-headers',
+      'x-captcha-required',
     ]
 
     returnedHeadersFromUnderlyingService.map((headerName) => {
