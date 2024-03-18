@@ -129,9 +129,40 @@ export class HomeServer implements HomeServerInterface {
             ],
           }),
         )
+        const corsAllowedOrigins = env.get('CORS_ALLOWED_ORIGINS', true)
+          ? env.get('CORS_ALLOWED_ORIGINS', true).split(',')
+          : []
         app.use(
           cors({
-            exposedHeaders: ['Content-Range', 'Accept-Ranges'],
+            credentials: true,
+            exposedHeaders: ['Content-Range', 'Accept-Ranges', 'x-captcha-required'],
+            origin: (requestOrigin: string | undefined, callback: (err: Error | null, origin?: string[]) => void) => {
+              const requstOriginIsNotFilled = !requestOrigin || requestOrigin === 'null'
+              const requestOriginatesFromTheDesktopApp = requestOrigin?.startsWith('file://')
+              const requestOriginatesFromClipperForFirefox = requestOrigin?.startsWith('moz-extension://')
+              const requestOriginatesFromSelfHostedAppOnHttpPort = requestOrigin === 'http://localhost'
+              const requestOriginatesFromSelfHostedAppOnCustomPort =
+                requestOrigin?.match(/http:\/\/localhost:\d+/) !== null
+              const requestOriginatesFromSelfHostedApp =
+                requestOriginatesFromSelfHostedAppOnHttpPort || requestOriginatesFromSelfHostedAppOnCustomPort
+
+              const requestIsWhitelisted =
+                corsAllowedOrigins.length === 0 ||
+                requstOriginIsNotFilled ||
+                requestOriginatesFromTheDesktopApp ||
+                requestOriginatesFromClipperForFirefox ||
+                requestOriginatesFromSelfHostedApp
+
+              if (requestIsWhitelisted) {
+                callback(null, [requestOrigin as string])
+              } else {
+                if (corsAllowedOrigins.includes(requestOrigin)) {
+                  callback(null, [requestOrigin])
+                } else {
+                  callback(new Error('Not allowed by CORS', { cause: 'origin not allowed' }))
+                }
+              }
+            },
           }),
         )
         app.use(
