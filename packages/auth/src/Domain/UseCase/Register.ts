@@ -36,7 +36,7 @@ export class Register implements UseCaseInterface {
 
     const { email, password, apiVersion, ephemeralSession, ...registrationFields } = dto
 
-    if (apiVersion !== ApiVersion.v20200115) {
+    if (![ApiVersion.v20200115, ApiVersion.v20240226].includes(apiVersion as ApiVersion)) {
       return {
         success: false,
         errorMessage: `Unsupported api version: ${apiVersion}`,

@@ -127,6 +127,43 @@ describe('Register', () => {
     })
   })
 
+  it('should register a new user with default set of roles on new api version', async () => {
+    const role = new Role()
+    role.name = RoleName.NAMES.CoreUser
+
+    roleRepository.findOneByName = jest.fn().mockReturnValueOnce(role)
+
+    expect(
+      await createUseCase().execute({
+        email: 'test@test.te',
+        password: 'asdzxc',
+        updatedWithUserAgent: 'Mozilla',
+        apiVersion: '20240226',
+        ephemeralSession: false,
+        version: '004',
+        pwCost: 11,
+        pwSalt: 'qweqwe',
+        pwNonce: undefined,
+      }),
+    ).toEqual({ success: true, authResponse: { foo: 'bar' } })
+
+    expect(userRepository.save).toHaveBeenCalledWith({
+      email: 'test@test.te',
+      encryptedPassword: expect.any(String),
+      encryptedServerKey: 'test',
+      serverEncryptionVersion: 1,
+      pwCost: 11,
+      pwNonce: undefined,
+      pwSalt: 'qweqwe',
+      updatedWithUserAgent: 'Mozilla',
+      uuid: expect.any(String),
+      version: '004',
+      createdAt: new Date(1),
+      updatedAt: new Date(1),
+      roles: Promise.resolve([role]),
+    })
+  })
+
   it('should fail to register if applying default settings fails', async () => {
     applyDefaultSettings.execute = jest.fn().mockReturnValue(Result.fail('error'))
 
