@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.90.3](https://github.com/standardnotes/server/compare/@standardnotes/api-gateway@1.90.2...@standardnotes/api-gateway@1.90.3) (2024-03-18)
+
+### Bug Fixes
+
+* **api-gateway:** response headers cors issue - fixes [#1046](https://github.com/standardnotes/server/issues/1046) ([be668d7](https://github.com/standardnotes/server/commit/be668d7d7a1d9128f625a2bfa807e6a91183b488))
+
 ## [1.90.2](https://github.com/standardnotes/server/compare/@standardnotes/api-gateway@1.90.1...@standardnotes/api-gateway@1.90.2) (2024-03-18)
 
 ### Bug Fixes
