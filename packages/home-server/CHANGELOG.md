@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.23.0](https://github.com/standardnotes/server/compare/@standardnotes/home-server@1.22.68...@standardnotes/home-server@1.23.0) (2024-03-20)
+
+### Features
+
+* add CORS_ORIGIN_STRICT_MODE_ENABLED env var to determine if CORS origin should be restricted ([5c02435](https://github.com/standardnotes/server/commit/5c02435ee478b893747d3f9e41062aae12d7ff10))
+
 ## [1.22.68](https://github.com/standardnotes/server/compare/@standardnotes/home-server@1.22.67...@standardnotes/home-server@1.22.68) (2024-03-18)
 
 **Note:** Version bump only for package @standardnotes/home-server

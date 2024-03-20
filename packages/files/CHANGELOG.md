@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.38.0](https://github.com/standardnotes/server/compare/@standardnotes/files-server@1.37.12...@standardnotes/files-server@1.38.0) (2024-03-20)
+
+### Features
+
+* add CORS_ORIGIN_STRICT_MODE_ENABLED env var to determine if CORS origin should be restricted ([5c02435](https://github.com/standardnotes/server/commit/5c02435ee478b893747d3f9e41062aae12d7ff10))
+
 ## [1.37.12](https://github.com/standardnotes/server/compare/@standardnotes/files-server@1.37.11...@standardnotes/files-server@1.37.12) (2024-03-18)
 
 ### Bug Fixes
