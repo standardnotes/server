@@ -137,6 +137,16 @@ export class HomeServer implements HomeServerInterface {
             credentials: true,
             exposedHeaders: ['Content-Range', 'Accept-Ranges', 'x-captcha-required'],
             origin: (requestOrigin: string | undefined, callback: (err: Error | null, origin?: string[]) => void) => {
+              const originStrictModeEnabled = env.get('CORS_ORIGIN_STRICT_MODE_ENABLED', true)
+                ? env.get('CORS_ORIGIN_STRICT_MODE_ENABLED', true) === 'true'
+                : false
+
+              if (!originStrictModeEnabled) {
+                callback(null, [requestOrigin as string])
+
+                return
+              }
+
               const requstOriginIsNotFilled = !requestOrigin || requestOrigin === 'null'
               const requestOriginatesFromTheDesktopApp = requestOrigin?.startsWith('file://')
               const requestOriginatesFromClipperForFirefox = requestOrigin?.startsWith('moz-extension://')
