@@ -13,6 +13,7 @@ import { DomainEventFactoryInterface } from '../../../Event/DomainEventFactoryIn
 import { ItemsChangedOnServerEvent } from '@standardnotes/domain-events'
 import { SendEventToClients } from '../SendEventToClients/SendEventToClients'
 import { SharedVaultAssociation } from '../../../SharedVault/SharedVaultAssociation'
+import { CheckForContentLimit } from '../CheckForContentLimit/CheckForContentLimit'
 
 describe('SaveItems', () => {
   let itemSaveValidator: ItemSaveValidatorInterface
@@ -26,6 +27,7 @@ describe('SaveItems', () => {
   let sendEventToClient: SendEventToClient
   let sendEventToClients: SendEventToClients
   let domainEventFactory: DomainEventFactoryInterface
+  let checkForContentLimit: CheckForContentLimit
 
   const createUseCase = () =>
     new SaveItems(
@@ -37,10 +39,14 @@ describe('SaveItems', () => {
       sendEventToClient,
       sendEventToClients,
       domainEventFactory,
+      checkForContentLimit,
       logger,
     )
 
   beforeEach(() => {
+    checkForContentLimit = {} as jest.Mocked<CheckForContentLimit>
+    checkForContentLimit.execute = jest.fn().mockResolvedValue(Result.ok())
+
     sendEventToClient = {} as jest.Mocked<SendEventToClient>
     sendEventToClient.execute = jest.fn().mockReturnValue(Result.ok())
 
@@ -84,6 +90,7 @@ describe('SaveItems', () => {
     logger = {} as jest.Mocked<Logger>
     logger.debug = jest.fn()
     logger.error = jest.fn()
+    logger.warn = jest.fn()
 
     itemHash1 = ItemHash.create({
       uuid: '00000000-0000-0000-0000-000000000000',
@@ -396,5 +403,39 @@ describe('SaveItems', () => {
 
     expect(result.isFailed()).toBeFalsy()
     expect(result.getValue().syncToken).toEqual('MjowLjAwMDE2')
+  })
+
+  it('should return a failure result if a free user has exceeded their content limit', async () => {
+    checkForContentLimit.execute = jest.fn().mockResolvedValue(Result.fail('exceeded'))
+
+    const useCase = createUseCase()
+    const result = await useCase.execute({
+      itemHashes: [itemHash1],
+      userUuid: '00000000-0000-0000-0000-000000000000',
+      apiVersion: '1',
+      readOnlyAccess: false,
+      sessionUuid: 'session-uuid',
+      snjsVersion: '2.200.0',
+      isFreeUser: true,
+    })
+
+    expect(result.isFailed()).toBeTruthy()
+  })
+
+  it('should succeed if a free user has not exceeded their content limit', async () => {
+    checkForContentLimit.execute = jest.fn().mockResolvedValue(Result.ok())
+
+    const useCase = createUseCase()
+    const result = await useCase.execute({
+      itemHashes: [itemHash1],
+      userUuid: '00000000-0000-0000-0000-000000000000',
+      apiVersion: '1',
+      readOnlyAccess: false,
+      sessionUuid: 'session-uuid',
+      snjsVersion: '2.200.0',
+      isFreeUser: true,
+    })
+
+    expect(result.isFailed()).toBeFalsy()
   })
 })

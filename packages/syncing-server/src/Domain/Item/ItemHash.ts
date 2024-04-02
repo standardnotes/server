@@ -22,6 +22,10 @@ export class ItemHash extends ValueObject<ItemHashProps> {
     return this.props.shared_vault_uuid !== null
   }
 
+  calculateContentSize(): number {
+    return Buffer.byteLength(JSON.stringify(this))
+  }
+
   get sharedVaultUuid(): Uuid | null {
     if (!this.representsASharedVaultItem()) {
       return null
