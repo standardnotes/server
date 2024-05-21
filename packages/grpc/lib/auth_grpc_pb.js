@@ -4,17 +4,6 @@
 var grpc = require('@grpc/grpc-js');
 var auth_pb = require('./auth_pb.js');
 
-function serialize_auth_AuthorizationHeader(arg) {
-  if (!(arg instanceof auth_pb.AuthorizationHeader)) {
-    throw new Error('Expected argument of type auth.AuthorizationHeader');
-  }
-  return Buffer.from(arg.serializeBinary());
-}
-
-function deserialize_auth_AuthorizationHeader(buffer_arg) {
-  return auth_pb.AuthorizationHeader.deserializeBinary(new Uint8Array(buffer_arg));
-}
-
 function serialize_auth_ConnectionValidationResponse(arg) {
   if (!(arg instanceof auth_pb.ConnectionValidationResponse)) {
     throw new Error('Expected argument of type auth.ConnectionValidationResponse');
@@ -24,6 +13,17 @@ function serialize_auth_ConnectionValidationResponse(arg) {
 
 function deserialize_auth_ConnectionValidationResponse(buffer_arg) {
   return auth_pb.ConnectionValidationResponse.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_auth_RequestValidationOptions(arg) {
+  if (!(arg instanceof auth_pb.RequestValidationOptions)) {
+    throw new Error('Expected argument of type auth.RequestValidationOptions');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_auth_RequestValidationOptions(buffer_arg) {
+  return auth_pb.RequestValidationOptions.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
 function serialize_auth_SessionValidationResponse(arg) {
@@ -54,10 +54,10 @@ var AuthService = exports.AuthService = {
     path: '/auth.Auth/validate',
     requestStream: false,
     responseStream: false,
-    requestType: auth_pb.AuthorizationHeader,
+    requestType: auth_pb.RequestValidationOptions,
     responseType: auth_pb.SessionValidationResponse,
-    requestSerialize: serialize_auth_AuthorizationHeader,
-    requestDeserialize: deserialize_auth_AuthorizationHeader,
+    requestSerialize: serialize_auth_RequestValidationOptions,
+    requestDeserialize: deserialize_auth_RequestValidationOptions,
     responseSerialize: serialize_auth_SessionValidationResponse,
     responseDeserialize: deserialize_auth_SessionValidationResponse,
   },

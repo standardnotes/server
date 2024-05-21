@@ -28,8 +28,31 @@ export class BaseSessionsController extends BaseHttpController {
   }
 
   async validate(request: Request): Promise<results.JsonResult> {
+    const authCookies = new Map<string, string[]>()
+    request.headers.cookie?.split(';').forEach((cookie) => {
+      const parts = cookie.split('=')
+      if (parts.length === 2 && parts[0].trim().startsWith('access_token_')) {
+        const existingCookies = authCookies.get(parts[0].trim())
+        if (existingCookies) {
+          existingCookies.push(parts[1].trim())
+          authCookies.set(parts[0].trim(), existingCookies)
+        } else {
+          authCookies.set(parts[0].trim(), [parts[1].trim()])
+        }
+      }
+    })
+
     const authenticateRequestResponse = await this.authenticateRequest.execute({
-      authorizationHeader: request.headers.authorization,
+      authTokenFromHeaders: request.body.authTokenFromHeaders,
+      authCookies,
+      requestMetadata: {
+        snjs: request.headers['x-snjs-version'] as string,
+        application: request.headers['x-application-version'] as string,
+        url: request.headers['x-origin-url'] as string,
+        method: request.headers['x-origin-method'] as string,
+        userAgent: request.headers['x-origin-user-agent'] as string,
+        secChUa: request.headers['x-origin-sec-ch-ua'] as string,
+      },
     })
 
     if (!authenticateRequestResponse.success) {
@@ -46,7 +69,7 @@ export class BaseSessionsController extends BaseHttpController {
 
     const user = authenticateRequestResponse.user as User
 
-    const sharedVaultOwnerContext = request.headers['x-shared-vault-owner-context'] as string | undefined
+    const sharedVaultOwnerContext = request.body.sharedVaultOwnerContext as string | undefined
 
     const resultOrError = await this.createCrossServiceToken.execute({
       user,

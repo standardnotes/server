@@ -2,7 +2,7 @@ import * as grpc from '@grpc/grpc-js'
 import { Status } from '@grpc/grpc-js/build/src/constants'
 
 import {
-  AuthorizationHeader,
+  RequestValidationOptions,
   ConnectionValidationResponse,
   IAuthServer,
   SessionValidationResponse,
@@ -88,14 +88,34 @@ export class AuthServer implements IAuthServer {
   }
 
   async validate(
-    call: grpc.ServerUnaryCall<AuthorizationHeader, SessionValidationResponse>,
+    call: grpc.ServerUnaryCall<RequestValidationOptions, SessionValidationResponse>,
     callback: grpc.sendUnaryData<SessionValidationResponse>,
   ): Promise<void> {
     try {
       this.logger.debug('[SessionsServer] Validating session via gRPC')
 
+      const cookies = new Map<string, string[]>()
+      for (const cookie of call.request.getCookieList()) {
+        const existingCookies = cookies.get(cookie.getName())
+        if (existingCookies) {
+          existingCookies.push(cookie.getValue())
+          cookies.set(cookie.getName(), existingCookies)
+        } else {
+          cookies.set(cookie.getName(), [cookie.getValue()])
+        }
+      }
+
       const authenticateRequestResponse = await this.authenticateRequest.execute({
-        authorizationHeader: call.request.getBearerToken(),
+        authTokenFromHeaders: call.request.getBearerToken(),
+        authCookies: cookies,
+        requestMetadata: {
+          snjs: call.metadata.get('x-snjs-version').pop() as string,
+          application: call.metadata.get('x-application-version').pop() as string,
+          url: call.metadata.get('x-origin-url').pop() as string,
+          method: call.metadata.get('x-origin-method').pop() as string,
+          userAgent: call.metadata.get('x-origin-user-agent').pop() as string,
+          secChUa: call.metadata.get('x-origin-sec-ch-ua').pop() as string,
+        },
       })
 
       if (!authenticateRequestResponse.success) {
@@ -116,10 +136,9 @@ export class AuthServer implements IAuthServer {
 
       const user = authenticateRequestResponse.user as User
 
-      const sharedVaultOwnerMetadata = call.metadata.get('x-shared-vault-owner-context')
       let sharedVaultOwnerContext = undefined
-      if (sharedVaultOwnerMetadata.length > 0 && sharedVaultOwnerMetadata[0].length > 0) {
-        sharedVaultOwnerContext = sharedVaultOwnerMetadata[0].toString()
+      if (call.request.hasSharedVaultOwnerContext()) {
+        sharedVaultOwnerContext = call.request.getSharedVaultOwnerContext()
       }
 
       const resultOrError = await this.createCrossServiceToken.execute({

@@ -14,6 +14,9 @@ import { PKCERepositoryInterface } from '../User/PKCERepositoryInterface'
 import { CrypterInterface } from '../Encryption/CrypterInterface'
 import { ProtocolVersion } from '@standardnotes/common'
 import { Session } from '../Session/Session'
+import { LockRepositoryInterface } from '../User/LockRepositoryInterface'
+import { VerifyHumanInteraction } from './VerifyHumanInteraction/VerifyHumanInteraction'
+import { Result } from '@standardnotes/domain-core'
 
 describe('SignIn', () => {
   let user: User
@@ -26,6 +29,10 @@ describe('SignIn', () => {
   let logger: Logger
   let pkceRepository: PKCERepositoryInterface
   let crypter: CrypterInterface
+  let session: Session
+  let maxNonCaptchaAttempts: number
+  let lockRepository: LockRepositoryInterface
+  let verifyHumanInteractionUseCase: VerifyHumanInteraction
 
   const createUseCase = () =>
     new SignIn(
@@ -37,6 +44,9 @@ describe('SignIn', () => {
       pkceRepository,
       crypter,
       logger,
+      maxNonCaptchaAttempts,
+      lockRepository,
+      verifyHumanInteractionUseCase,
     )
 
   beforeEach(() => {
@@ -50,10 +60,9 @@ describe('SignIn', () => {
     userRepository = {} as jest.Mocked<UserRepositoryInterface>
     userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue(user)
 
+    session = {} as jest.Mocked<Session>
     authResponseFactory = {} as jest.Mocked<AuthResponseFactoryInterface>
-    authResponseFactory.createResponse = jest
-      .fn()
-      .mockReturnValue({ response: { foo: 'bar' }, session: {} as jest.Mocked<Session> })
+    authResponseFactory.createResponse = jest.fn().mockReturnValue({ response: { foo: 'bar' }, session })
 
     authResponseFactoryResolver = {} as jest.Mocked<AuthResponseFactoryResolverInterface>
     authResponseFactoryResolver.resolveAuthResponseFactoryVersion = jest.fn().mockReturnValue(authResponseFactory)
@@ -78,9 +87,16 @@ describe('SignIn', () => {
     logger = {} as jest.Mocked<Logger>
     logger.debug = jest.fn()
     logger.error = jest.fn()
+
+    lockRepository = {} as jest.Mocked<LockRepositoryInterface>
+    lockRepository.getLockCounter = jest.fn().mockReturnValue(0)
+
+    maxNonCaptchaAttempts = 6
   })
 
-  it('should sign in a legacy user without code verifier', async () => {
+  it('should fail sign in a legacy user without code verifier', async () => {
+    pkceRepository.removeCodeChallenge = jest.fn().mockReturnValue(false)
+
     user.version = ProtocolVersion.V003
     userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue(user)
 
@@ -91,17 +107,18 @@ describe('SignIn', () => {
         userAgent: 'Google Chrome',
         apiVersion: '20190520',
         ephemeralSession: false,
+        codeVerifier: '',
       }),
     ).toEqual({
-      success: true,
-      authResponse: { foo: 'bar' },
+      success: false,
+      errorCode: 410,
+      errorMessage: 'Please update your client application.',
     })
-
-    expect(domainEventFactory.createEmailRequestedEvent).toHaveBeenCalled()
-    expect(domainEventPublisher.publish).toHaveBeenCalled()
   })
 
   it('should not sign in 004 user without code verifier', async () => {
+    pkceRepository.removeCodeChallenge = jest.fn().mockReturnValue(false)
+
     expect(
       await createUseCase().execute({
         email: 'test@test.te',
@@ -109,6 +126,7 @@ describe('SignIn', () => {
         userAgent: 'Google Chrome',
         apiVersion: '20190520',
         ephemeralSession: false,
+        codeVerifier: '',
       }),
     ).toEqual({
       success: false,
@@ -118,6 +136,8 @@ describe('SignIn', () => {
   })
 
   it('should not sign in 005 user without code verifier', async () => {
+    pkceRepository.removeCodeChallenge = jest.fn().mockReturnValue(false)
+
     user = {
       uuid: '1-2-3',
       email: 'test@test.com',
@@ -131,6 +151,7 @@ describe('SignIn', () => {
         userAgent: 'Google Chrome',
         apiVersion: '20190520',
         ephemeralSession: false,
+        codeVerifier: '',
       }),
     ).toEqual({
       success: false,
@@ -158,6 +179,25 @@ describe('SignIn', () => {
     expect(domainEventPublisher.publish).not.toHaveBeenCalled()
   })
 
+  it('should not sign in a user with invalid api version', async () => {
+    expect(
+      await createUseCase().execute({
+        email: 'test@test.te',
+        password: 'qweqwe123123',
+        userAgent: 'Google Chrome',
+        apiVersion: 'invalid',
+        ephemeralSession: false,
+        codeVerifier: 'test',
+      }),
+    ).toEqual({
+      success: false,
+      errorMessage: 'Invalid api version: invalid',
+    })
+
+    expect(domainEventFactory.createEmailRequestedEvent).not.toHaveBeenCalled()
+    expect(domainEventPublisher.publish).not.toHaveBeenCalled()
+  })
+
   it('should sign in a user with valid code verifier', async () => {
     expect(
       await createUseCase().execute({
@@ -170,7 +210,10 @@ describe('SignIn', () => {
       }),
     ).toEqual({
       success: true,
-      authResponse: { foo: 'bar' },
+      result: {
+        response: { foo: 'bar' },
+        session,
+      },
     })
 
     expect(domainEventFactory.createEmailRequestedEvent).toHaveBeenCalled()
@@ -193,7 +236,10 @@ describe('SignIn', () => {
       }),
     ).toEqual({
       success: true,
-      authResponse: { foo: 'bar' },
+      result: {
+        response: { foo: 'bar' },
+        session,
+      },
     })
   })
 
@@ -246,6 +292,77 @@ describe('SignIn', () => {
     ).toEqual({
       success: false,
       errorMessage: 'Invalid email or password',
+    })
+  })
+
+  it('should sign in a user with valid code verifier and invalid hvm token but not requiring human verification', async () => {
+    verifyHumanInteractionUseCase = {} as jest.Mocked<VerifyHumanInteraction>
+    verifyHumanInteractionUseCase.execute = jest
+      .fn()
+      .mockReturnValueOnce(Result.fail('Human verification step failed.'))
+
+    expect(
+      await createUseCase().execute({
+        email: 'test@test.te',
+        password: 'qweqwe123123',
+        userAgent: 'Google Chrome',
+        apiVersion: '20190520',
+        ephemeralSession: false,
+        codeVerifier: 'test',
+      }),
+    ).toEqual({
+      success: true,
+      result: {
+        response: { foo: 'bar' },
+        session,
+      },
+    })
+  })
+
+  it('should sign in a user with valid code verifier and valid hvm token requiring human verification', async () => {
+    lockRepository.getLockCounter = jest.fn().mockReturnValueOnce(maxNonCaptchaAttempts)
+    verifyHumanInteractionUseCase = {} as jest.Mocked<VerifyHumanInteraction>
+    verifyHumanInteractionUseCase.execute = jest.fn().mockReturnValueOnce(Result.ok())
+
+    expect(
+      await createUseCase().execute({
+        email: 'test@test.te',
+        password: 'qweqwe123123',
+        userAgent: 'Google Chrome',
+        apiVersion: '20190520',
+        ephemeralSession: false,
+        codeVerifier: 'test',
+        hvmToken: 'foobar',
+      }),
+    ).toEqual({
+      success: true,
+      result: {
+        response: { foo: 'bar' },
+        session,
+      },
+    })
+  })
+
+  it('should not sign in a user with valid code verifier and invalid hvm token requiring human verification', async () => {
+    lockRepository.getLockCounter = jest.fn().mockReturnValueOnce(maxNonCaptchaAttempts)
+    verifyHumanInteractionUseCase = {} as jest.Mocked<VerifyHumanInteraction>
+    verifyHumanInteractionUseCase.execute = jest
+      .fn()
+      .mockReturnValueOnce(Result.fail('Human verification step failed.'))
+
+    expect(
+      await createUseCase().execute({
+        email: 'test@test.te',
+        password: 'qweqwe123123',
+        userAgent: 'Google Chrome',
+        apiVersion: '20190520',
+        ephemeralSession: false,
+        codeVerifier: 'test',
+        hvmToken: 'foobar',
+      }),
+    ).toEqual({
+      success: false,
+      errorMessage: 'Human verification step failed.',
     })
   })
 })

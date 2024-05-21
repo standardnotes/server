@@ -2,7 +2,7 @@ import { BaseHttpController, controller, httpDelete, httpGet, httpPost, results 
 import { Request, Response } from 'express'
 import { inject } from 'inversify'
 import { Writable } from 'stream'
-import { SharedVaultValetTokenData, ValetTokenOperation } from '@standardnotes/security'
+import { ValetTokenOperation } from '@standardnotes/security'
 import { Logger } from 'winston'
 
 import TYPES from '../../Bootstrap/Types'
@@ -13,6 +13,7 @@ import { MoveFile } from '../../Domain/UseCase/MoveFile/MoveFile'
 import { RemoveFile } from '../../Domain/UseCase/RemoveFile/RemoveFile'
 import { StreamDownloadFile } from '../../Domain/UseCase/StreamDownloadFile/StreamDownloadFile'
 import { UploadFileChunk } from '../../Domain/UseCase/UploadFileChunk/UploadFileChunk'
+import { SharedVaultValetTokenResponseLocals } from './Middleware/SharedVaultValetTokenResponseLocals'
 
 @controller('/v1/shared-vault/files', TYPES.Files_SharedVaultValetTokenAuthMiddleware)
 export class AnnotatedSharedVaultFilesController extends BaseHttpController {
@@ -35,12 +36,12 @@ export class AnnotatedSharedVaultFilesController extends BaseHttpController {
     _request: Request,
     response: Response,
   ): Promise<results.BadRequestErrorMessageResult | results.JsonResult> {
-    const locals = response.locals as SharedVaultValetTokenData
-    if (locals.permittedOperation !== ValetTokenOperation.Move) {
+    const locals = response.locals as SharedVaultValetTokenResponseLocals
+    if (locals.valetTokenData.permittedOperation !== ValetTokenOperation.Move) {
       return this.badRequest('Not permitted for this operation')
     }
 
-    const moveOperation = locals.moveOperation
+    const moveOperation = locals.valetTokenData.moveOperation
     if (!moveOperation) {
       return this.badRequest('Missing move operation data')
     }
@@ -49,7 +50,7 @@ export class AnnotatedSharedVaultFilesController extends BaseHttpController {
       moveType: moveOperation.type,
       from: moveOperation.from,
       to: moveOperation.to,
-      resourceRemoteIdentifier: locals.remoteIdentifier,
+      resourceRemoteIdentifier: locals.valetTokenData.remoteIdentifier,
     })
 
     if (result.isFailed()) {
@@ -64,14 +65,14 @@ export class AnnotatedSharedVaultFilesController extends BaseHttpController {
     _request: Request,
     response: Response,
   ): Promise<results.BadRequestErrorMessageResult | results.JsonResult> {
-    const locals = response.locals as SharedVaultValetTokenData
-    if (locals.permittedOperation !== ValetTokenOperation.Write) {
+    const locals = response.locals as SharedVaultValetTokenResponseLocals
+    if (locals.valetTokenData.permittedOperation !== ValetTokenOperation.Write) {
       return this.badRequest('Not permitted for this operation')
     }
 
     const result = await this.createUploadSession.execute({
-      ownerUuid: locals.sharedVaultUuid,
-      resourceRemoteIdentifier: locals.remoteIdentifier,
+      ownerUuid: locals.valetTokenData.sharedVaultUuid,
+      resourceRemoteIdentifier: locals.valetTokenData.remoteIdentifier,
     })
 
     if (!result.success) {
@@ -86,8 +87,8 @@ export class AnnotatedSharedVaultFilesController extends BaseHttpController {
     request: Request,
     response: Response,
   ): Promise<results.BadRequestErrorMessageResult | results.JsonResult> {
-    const locals = response.locals as SharedVaultValetTokenData
-    if (locals.permittedOperation !== ValetTokenOperation.Write) {
+    const locals = response.locals as SharedVaultValetTokenResponseLocals
+    if (locals.valetTokenData.permittedOperation !== ValetTokenOperation.Write) {
       return this.badRequest('Not permitted for this operation')
     }
 
@@ -97,9 +98,9 @@ export class AnnotatedSharedVaultFilesController extends BaseHttpController {
     }
 
     const result = await this.uploadFileChunk.execute({
-      ownerUuid: locals.sharedVaultUuid,
-      resourceRemoteIdentifier: locals.remoteIdentifier,
-      resourceUnencryptedFileSize: locals.unencryptedFileSize as number,
+      ownerUuid: locals.valetTokenData.sharedVaultUuid,
+      resourceRemoteIdentifier: locals.valetTokenData.remoteIdentifier,
+      resourceUnencryptedFileSize: locals.valetTokenData.unencryptedFileSize as number,
       chunkId,
       data: request.body,
     })
@@ -116,21 +117,22 @@ export class AnnotatedSharedVaultFilesController extends BaseHttpController {
     _request: Request,
     response: Response,
   ): Promise<results.BadRequestErrorMessageResult | results.JsonResult> {
-    const locals = response.locals as SharedVaultValetTokenData
-    if (locals.permittedOperation !== ValetTokenOperation.Write) {
+    const locals = response.locals as SharedVaultValetTokenResponseLocals
+    if (locals.valetTokenData.permittedOperation !== ValetTokenOperation.Write) {
       return this.badRequest('Not permitted for this operation')
     }
 
-    if (locals.uploadBytesLimit === undefined) {
+    if (locals.valetTokenData.uploadBytesLimit === undefined) {
       return this.badRequest('Missing upload bytes limit')
     }
 
     const result = await this.finishUploadSession.execute({
-      userUuid: locals.vaultOwnerUuid,
-      sharedVaultUuid: locals.sharedVaultUuid,
-      resourceRemoteIdentifier: locals.remoteIdentifier,
-      uploadBytesLimit: locals.uploadBytesLimit,
-      uploadBytesUsed: locals.uploadBytesUsed,
+      userUuid: locals.valetTokenData.vaultOwnerUuid,
+      sharedVaultUuid: locals.valetTokenData.sharedVaultUuid,
+      resourceRemoteIdentifier: locals.valetTokenData.remoteIdentifier,
+      uploadBytesLimit: locals.valetTokenData.uploadBytesLimit,
+      uploadBytesUsed: locals.valetTokenData.uploadBytesUsed,
+      valetToken: locals.valetToken,
     })
 
     if (result.isFailed()) {
@@ -147,17 +149,18 @@ export class AnnotatedSharedVaultFilesController extends BaseHttpController {
     _request: Request,
     response: Response,
   ): Promise<results.BadRequestErrorMessageResult | results.JsonResult> {
-    const locals = response.locals as SharedVaultValetTokenData
-    if (locals.permittedOperation !== ValetTokenOperation.Delete) {
+    const locals = response.locals as SharedVaultValetTokenResponseLocals
+    if (locals.valetTokenData.permittedOperation !== ValetTokenOperation.Delete) {
       return this.badRequest('Not permitted for this operation')
     }
 
     const result = await this.removeFile.execute({
       vaultInput: {
-        sharedVaultUuid: locals.sharedVaultUuid,
-        vaultOwnerUuid: locals.vaultOwnerUuid,
-        resourceRemoteIdentifier: locals.remoteIdentifier,
+        sharedVaultUuid: locals.valetTokenData.sharedVaultUuid,
+        vaultOwnerUuid: locals.valetTokenData.vaultOwnerUuid,
+        resourceRemoteIdentifier: locals.valetTokenData.remoteIdentifier,
       },
+      valetToken: locals.valetToken,
     })
 
     if (result.isFailed()) {
@@ -172,8 +175,8 @@ export class AnnotatedSharedVaultFilesController extends BaseHttpController {
     request: Request,
     response: Response,
   ): Promise<results.BadRequestErrorMessageResult | (() => Writable)> {
-    const locals = response.locals as SharedVaultValetTokenData
-    if (locals.permittedOperation !== ValetTokenOperation.Read) {
+    const locals = response.locals as SharedVaultValetTokenResponseLocals
+    if (locals.valetTokenData.permittedOperation !== ValetTokenOperation.Read) {
       return this.badRequest('Not permitted for this operation')
     }
 
@@ -188,20 +191,21 @@ export class AnnotatedSharedVaultFilesController extends BaseHttpController {
     }
 
     const fileMetadataOrError = await this.getFileMetadata.execute({
-      ownerUuid: locals.sharedVaultUuid,
-      resourceRemoteIdentifier: locals.remoteIdentifier,
+      ownerUuid: locals.valetTokenData.sharedVaultUuid,
+      resourceRemoteIdentifier: locals.valetTokenData.remoteIdentifier,
     })
 
     if (fileMetadataOrError.isFailed()) {
       return this.badRequest(fileMetadataOrError.getError())
     }
     const fileSize = fileMetadataOrError.getValue()
+    const endRangeOfFile = fileSize - 1
 
     const startRange = Number(range.replace(/\D/g, ''))
-    const endRange = Math.min(startRange + chunkSize - 1, fileSize - 1)
+    const endRange = Math.min(startRange + chunkSize - 1, endRangeOfFile)
 
     const headers = {
-      'Content-Range': `bytes ${startRange}-${endRange}/${fileSize}`,
+      'Content-Range': `bytes ${startRange}-${endRange}/${endRangeOfFile}`,
       'Accept-Ranges': 'bytes',
       'Content-Length': endRange - startRange + 1,
       'Content-Type': 'application/octet-stream',
@@ -210,10 +214,12 @@ export class AnnotatedSharedVaultFilesController extends BaseHttpController {
     response.writeHead(206, headers)
 
     const result = await this.streamDownloadFile.execute({
-      ownerUuid: locals.sharedVaultUuid,
-      resourceRemoteIdentifier: locals.remoteIdentifier,
+      ownerUuid: locals.valetTokenData.sharedVaultUuid,
+      resourceRemoteIdentifier: locals.valetTokenData.remoteIdentifier,
       startRange,
       endRange,
+      valetToken: locals.valetToken,
+      endRangeOfFile,
     })
 
     if (!result.success) {

@@ -10,16 +10,22 @@ import { DomainEventFactoryInterface } from '../../Event/DomainEventFactoryInter
 
 import { RemoveFile } from './RemoveFile'
 import { FileRemoverInterface } from '../../Services/FileRemoverInterface'
+import { ValetTokenRepositoryInterface } from '../../ValetToken/ValetTokenRepositoryInterface'
 
 describe('RemoveFile', () => {
   let fileRemover: FileRemoverInterface
   let domainEventPublisher: DomainEventPublisherInterface
   let domainEventFactory: DomainEventFactoryInterface
+  let valetTokenRepository: ValetTokenRepositoryInterface
   let logger: Logger
 
-  const createUseCase = () => new RemoveFile(fileRemover, domainEventPublisher, domainEventFactory, logger)
+  const createUseCase = () =>
+    new RemoveFile(fileRemover, domainEventPublisher, domainEventFactory, valetTokenRepository, logger)
 
   beforeEach(() => {
+    valetTokenRepository = {} as jest.Mocked<ValetTokenRepositoryInterface>
+    valetTokenRepository.markAsUsed = jest.fn()
+
     fileRemover = {} as jest.Mocked<FileRemoverInterface>
     fileRemover.remove = jest.fn().mockReturnValue(413)
 
@@ -49,6 +55,7 @@ describe('RemoveFile', () => {
         userUuid: '1-2-3',
         regularSubscriptionUuid: '3-4-5',
       },
+      valetToken: 'valet-token',
     })
     expect(result.isFailed()).toEqual(true)
 
@@ -56,7 +63,7 @@ describe('RemoveFile', () => {
   })
 
   it('should indicate of an error of no proper input', async () => {
-    const result = await createUseCase().execute({})
+    const result = await createUseCase().execute({ valetToken: 'valet-token' })
     expect(result.isFailed()).toEqual(true)
 
     expect(domainEventPublisher.publish).not.toHaveBeenCalled()
@@ -69,6 +76,7 @@ describe('RemoveFile', () => {
         userUuid: '1-2-3',
         regularSubscriptionUuid: '3-4-5',
       },
+      valetToken: 'valet-token',
     })
 
     expect(fileRemover.remove).toHaveBeenCalledWith('1-2-3/2-3-4')
@@ -82,6 +90,7 @@ describe('RemoveFile', () => {
         sharedVaultUuid: '1-2-3',
         vaultOwnerUuid: '3-4-5',
       },
+      valetToken: 'valet-token',
     })
 
     expect(fileRemover.remove).toHaveBeenCalledWith('1-2-3/2-3-4')

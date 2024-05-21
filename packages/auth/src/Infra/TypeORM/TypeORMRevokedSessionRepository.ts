@@ -12,6 +12,13 @@ export class TypeORMRevokedSessionRepository implements RevokedSessionRepository
     private ormRepository: Repository<RevokedSession>,
   ) {}
 
+  async findOneByPrivateIdentifier(privateIdentifier: string): Promise<RevokedSession | null> {
+    return this.ormRepository
+      .createQueryBuilder('revoked_session')
+      .where('revoked_session.private_identifier = :privateIdentifier', { privateIdentifier })
+      .getOne()
+  }
+
   async insert(revokedSession: RevokedSession): Promise<void> {
     await this.ormRepository.insert(revokedSession)
   }

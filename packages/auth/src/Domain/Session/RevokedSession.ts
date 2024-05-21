@@ -7,6 +7,16 @@ export class RevokedSession {
   declare uuid: string
 
   @Column({
+    name: 'private_identifier',
+    length: 36,
+    nullable: true,
+    type: 'varchar',
+    comment: 'Used to identify a session without exposing the UUID in client-side cookies.',
+  })
+  @Index('index_revoked_sessions_on_private_identifier')
+  declare privateIdentifier: string | null
+
+  @Column({
     name: 'user_uuid',
     length: 36,
   })

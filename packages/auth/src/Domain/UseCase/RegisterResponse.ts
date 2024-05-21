@@ -1,9 +1,9 @@
-import { AuthResponse20200115 } from '../Auth/AuthResponse20200115'
+import { AuthResponseCreationResult } from '../Auth/AuthResponseCreationResult'
 
 export type RegisterResponse =
   | {
       success: true
-      authResponse: AuthResponse20200115
+      result: AuthResponseCreationResult
     }
   | {
       success: false

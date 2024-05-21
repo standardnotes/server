@@ -1,7 +1,6 @@
 import { Request, Response } from 'express'
 import {
   controller,
-  httpGet,
   httpPost,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   results,
@@ -17,6 +16,14 @@ import { GetUserKeyParams } from '../../Domain/UseCase/GetUserKeyParams/GetUserK
 import { AuthController } from '../../Controller/AuthController'
 import { inject } from 'inversify'
 import { BaseAuthController } from './Base/BaseAuthController'
+import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
+import { DomainEventFactoryInterface } from '../../Domain/Event/DomainEventFactoryInterface'
+import { Register } from '../../Domain/UseCase/Register'
+import { SessionServiceInterface } from '../../Domain/Session/SessionServiceInterface'
+import { VerifyHumanInteraction } from '../../Domain/UseCase/VerifyHumanInteraction/VerifyHumanInteraction'
+import { CookieFactoryInterface } from '../../Domain/Auth/Cookies/CookieFactoryInterface'
+import { SignInWithRecoveryCodes } from '../../Domain/UseCase/SignInWithRecoveryCodes/SignInWithRecoveryCodes'
+import { DeleteSessionByToken } from '../../Domain/UseCase/DeleteSessionByToken/DeleteSessionByToken'
 
 @controller('/auth')
 export class AnnotatedAuthController extends BaseAuthController {
@@ -28,18 +35,34 @@ export class AnnotatedAuthController extends BaseAuthController {
     @inject(TYPES.Auth_IncreaseLoginAttempts) override increaseLoginAttempts: IncreaseLoginAttempts,
     @inject(TYPES.Auth_Logger) override logger: Logger,
     @inject(TYPES.Auth_AuthController) override authController: AuthController,
+    @inject(TYPES.Auth_Register) override registerUser: Register,
+    @inject(TYPES.Auth_DomainEventPublisher) override domainEventPublisher: DomainEventPublisherInterface,
+    @inject(TYPES.Auth_DomainEventFactory) override domainEventFactory: DomainEventFactoryInterface,
+    @inject(TYPES.Auth_SessionService) override sessionService: SessionServiceInterface,
+    @inject(TYPES.Auth_VerifyHumanInteraction) override humanVerificationUseCase: VerifyHumanInteraction,
+    @inject(TYPES.Auth_CookieFactory) override cookieFactory: CookieFactoryInterface,
+    @inject(TYPES.Auth_SignInWithRecoveryCodes) override signInWithRecoveryCodes: SignInWithRecoveryCodes,
+    @inject(TYPES.Auth_DeleteSessionByToken) override deleteSessionByToken: DeleteSessionByToken,
+    @inject(TYPES.Auth_CAPTCHA_UI_URL) override captchaUIUrl: string,
   ) {
-    super(verifyMFA, signInUseCase, getUserKeyParams, clearLoginAttempts, increaseLoginAttempts, logger, authController)
-  }
-
-  @httpGet('/params', TYPES.Auth_OptionalCrossServiceTokenMiddleware)
-  override async params(request: Request, response: Response): Promise<results.JsonResult> {
-    return super.params(request, response)
-  }
-
-  @httpPost('/sign_in', TYPES.Auth_LockMiddleware)
-  override async signIn(request: Request): Promise<results.JsonResult> {
-    return super.signIn(request)
+    super(
+      verifyMFA,
+      signInUseCase,
+      getUserKeyParams,
+      clearLoginAttempts,
+      increaseLoginAttempts,
+      logger,
+      authController,
+      registerUser,
+      domainEventPublisher,
+      domainEventFactory,
+      sessionService,
+      humanVerificationUseCase,
+      cookieFactory,
+      signInWithRecoveryCodes,
+      deleteSessionByToken,
+      captchaUIUrl,
+    )
   }
 
   @httpPost('/pkce_params', TYPES.Auth_OptionalCrossServiceTokenMiddleware)
@@ -48,8 +71,8 @@ export class AnnotatedAuthController extends BaseAuthController {
   }
 
   @httpPost('/pkce_sign_in', TYPES.Auth_LockMiddleware)
-  override async pkceSignIn(request: Request): Promise<results.JsonResult> {
-    return super.pkceSignIn(request)
+  override async pkceSignIn(request: Request, response: Response): Promise<results.JsonResult> {
+    return super.pkceSignIn(request, response)
   }
 
   @httpPost('/recovery/codes', TYPES.Auth_RequiredCrossServiceTokenMiddleware)
@@ -58,8 +81,8 @@ export class AnnotatedAuthController extends BaseAuthController {
   }
 
   @httpPost('/recovery/login', TYPES.Auth_LockMiddleware)
-  override async recoveryLogin(request: Request): Promise<results.JsonResult> {
-    return super.recoveryLogin(request)
+  override async recoveryLogin(request: Request, response: Response): Promise<results.JsonResult> {
+    return super.recoveryLogin(request, response)
   }
 
   @httpPost('/recovery/params')
@@ -73,7 +96,7 @@ export class AnnotatedAuthController extends BaseAuthController {
   }
 
   @httpPost('/')
-  override async register(request: Request): Promise<results.JsonResult> {
-    return super.register(request)
+  override async register(request: Request, response: Response): Promise<results.JsonResult> {
+    return super.register(request, response)
   }
 }

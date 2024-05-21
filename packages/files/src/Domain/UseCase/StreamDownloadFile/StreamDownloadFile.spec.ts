@@ -5,14 +5,20 @@ import { Logger } from 'winston'
 import { FileDownloaderInterface } from '../../Services/FileDownloaderInterface'
 
 import { StreamDownloadFile } from './StreamDownloadFile'
+import { ValetTokenRepositoryInterface } from '../../ValetToken/ValetTokenRepositoryInterface'
 
 describe('StreamDownloadFile', () => {
   let fileDownloader: FileDownloaderInterface
   let logger: Logger
+  const valetToken = 'valet-token'
+  let valetTokenRepository: ValetTokenRepositoryInterface
 
-  const createUseCase = () => new StreamDownloadFile(fileDownloader, logger)
+  const createUseCase = () => new StreamDownloadFile(fileDownloader, valetTokenRepository, logger)
 
   beforeEach(() => {
+    valetTokenRepository = {} as jest.Mocked<ValetTokenRepositoryInterface>
+    valetTokenRepository.markAsUsed = jest.fn()
+
     fileDownloader = {} as jest.Mocked<FileDownloaderInterface>
     fileDownloader.createDownloadStream = jest.fn().mockReturnValue(new Readable())
 
@@ -26,9 +32,26 @@ describe('StreamDownloadFile', () => {
       resourceRemoteIdentifier: '1-2-3',
       startRange: 0,
       endRange: 200,
+      endRangeOfFile: 300,
+      valetToken,
     })
 
     expect(result.success).toBeTruthy()
+  })
+
+  it('should mark valet token as used if the last chunk is being streamed', async () => {
+    const result = await createUseCase().execute({
+      ownerUuid: '2-3-4',
+      resourceRemoteIdentifier: '1-2-3',
+      startRange: 0,
+      endRange: 200,
+      endRangeOfFile: 200,
+      valetToken,
+    })
+
+    expect(result.success).toBeTruthy()
+
+    expect(valetTokenRepository.markAsUsed).toHaveBeenCalledWith(valetToken)
   })
 
   it('should not stream download file contents from S3 if it fails', async () => {
@@ -41,6 +64,8 @@ describe('StreamDownloadFile', () => {
       resourceRemoteIdentifier: '1-2-3',
       startRange: 0,
       endRange: 200,
+      endRangeOfFile: 200,
+      valetToken,
     })
 
     expect(result.success).toBeFalsy()

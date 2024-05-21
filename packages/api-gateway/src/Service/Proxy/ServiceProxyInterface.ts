@@ -49,13 +49,22 @@ export interface ServiceProxyInterface {
     endpointOrMethodIdentifier: string,
     payload?: Record<string, unknown> | string,
   ): Promise<void>
-  validateSession(
+  validateSession(dto: {
     headers: {
       authorization: string
       sharedVaultOwnerContext?: string
-    },
-    retryAttempt?: number,
-  ): Promise<{
+    }
+    requestMetadata: {
+      url: string
+      method: string
+      snjs?: string
+      application?: string
+      userAgent?: string
+      secChUa?: string
+    }
+    cookies?: Map<string, string[]>
+    retryAttempt?: number
+  }): Promise<{
     status: number
     data: unknown
     headers: {

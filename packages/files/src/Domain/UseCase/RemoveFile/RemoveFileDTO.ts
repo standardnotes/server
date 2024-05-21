@@ -9,4 +9,5 @@ export interface RemoveFileDTO {
     vaultOwnerUuid: string
     resourceRemoteIdentifier: string
   }
+  valetToken: string
 }

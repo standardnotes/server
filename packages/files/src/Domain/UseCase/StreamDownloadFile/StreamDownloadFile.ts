@@ -5,11 +5,13 @@ import { FileDownloaderInterface } from '../../Services/FileDownloaderInterface'
 import { UseCaseInterface } from '../UseCaseInterface'
 import { StreamDownloadFileDTO } from './StreamDownloadFileDTO'
 import { StreamDownloadFileResponse } from './StreamDownloadFileResponse'
+import { ValetTokenRepositoryInterface } from '../../ValetToken/ValetTokenRepositoryInterface'
 
 @injectable()
 export class StreamDownloadFile implements UseCaseInterface {
   constructor(
     @inject(TYPES.Files_FileDownloader) private fileDownloader: FileDownloaderInterface,
+    @inject(TYPES.Files_ValetTokenRepository) private valetTokenRepository: ValetTokenRepositoryInterface,
     @inject(TYPES.Files_Logger) private logger: Logger,
   ) {}
 
@@ -20,6 +22,10 @@ export class StreamDownloadFile implements UseCaseInterface {
         dto.startRange,
         dto.endRange,
       )
+
+      if (dto.endRange === dto.endRangeOfFile) {
+        await this.valetTokenRepository.markAsUsed(dto.valetToken)
+      }
 
       return {
         success: true,

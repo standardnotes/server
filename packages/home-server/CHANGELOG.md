@@ -3,34 +3,6 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [1.23.0](https://github.com/standardnotes/server/compare/@standardnotes/home-server@1.22.68...@standardnotes/home-server@1.23.0) (2024-03-20)
-
-### Features
-
-* add CORS_ORIGIN_STRICT_MODE_ENABLED env var to determine if CORS origin should be restricted ([5c02435](https://github.com/standardnotes/server/commit/5c02435ee478b893747d3f9e41062aae12d7ff10))
-
-## [1.22.68](https://github.com/standardnotes/server/compare/@standardnotes/home-server@1.22.67...@standardnotes/home-server@1.22.68) (2024-03-18)
-
-**Note:** Version bump only for package @standardnotes/home-server
-
-## [1.22.67](https://github.com/standardnotes/server/compare/@standardnotes/home-server@1.22.66...@standardnotes/home-server@1.22.67) (2024-03-18)
-
-### Bug Fixes
-
-* cors issues on clients - fixes [#1046](https://github.com/standardnotes/server/issues/1046) ([#1049](https://github.com/standardnotes/server/issues/1049)) ([6d7ca1b](https://github.com/standardnotes/server/commit/6d7ca1b926fd45d744275bd3c1f4c05b010f76c8))
-
-## [1.22.66](https://github.com/standardnotes/server/compare/@standardnotes/home-server@1.22.65...@standardnotes/home-server@1.22.66) (2024-03-18)
-
-**Note:** Version bump only for package @standardnotes/home-server
-
-## [1.22.65](https://github.com/standardnotes/server/compare/@standardnotes/home-server@1.22.64...@standardnotes/home-server@1.22.65) (2024-03-15)
-
-**Note:** Version bump only for package @standardnotes/home-server
-
-## [1.22.64](https://github.com/standardnotes/server/compare/@standardnotes/home-server@1.22.63...@standardnotes/home-server@1.22.64) (2024-02-09)
-
-**Note:** Version bump only for package @standardnotes/home-server
-
 ## [1.22.63](https://github.com/standardnotes/server/compare/@standardnotes/home-server@1.22.62...@standardnotes/home-server@1.22.63) (2024-01-19)
 
 **Note:** Version bump only for package @standardnotes/home-server

@@ -14,6 +14,16 @@ export class Session {
   declare userUuid: string
 
   @Column({
+    name: 'private_identifier',
+    length: 36,
+    nullable: true,
+    type: 'varchar',
+    comment: 'Used to identify a session without exposing the UUID in client-side cookies.',
+  })
+  @Index('index_sessions_on_private_identifier')
+  declare privateIdentifier: string | null
+
+  @Column({
     name: 'hashed_access_token',
     length: 255,
   })
@@ -75,4 +85,28 @@ export class Session {
     default: 0,
   })
   declare readonlyAccess: boolean
+
+  @Column({
+    name: 'version',
+    type: 'smallint',
+    nullable: true,
+    default: 1,
+  })
+  declare version: number | null
+
+  @Column({
+    name: 'application',
+    type: 'varchar',
+    length: 255,
+    nullable: true,
+  })
+  declare application: string | null
+
+  @Column({
+    name: 'snjs',
+    type: 'varchar',
+    length: 255,
+    nullable: true,
+  })
+  declare snjs: string | null
 }

@@ -4,12 +4,15 @@ import { Request } from 'express'
 
 import { CreateOfflineSubscriptionToken } from '../../../Domain/UseCase/CreateOfflineSubscriptionToken/CreateOfflineSubscriptionToken'
 import { CreateSubscriptionToken } from '../../../Domain/UseCase/CreateSubscriptionToken/CreateSubscriptionToken'
+import { GetSetting } from './../../../Domain/UseCase/GetSetting/GetSetting'
 import { DeleteSetting } from '../../../Domain/UseCase/DeleteSetting/DeleteSetting'
 import { UserRepositoryInterface } from '../../../Domain/User/UserRepositoryInterface'
+import { ListedAuthorSecretsData } from '@standardnotes/settings'
 
 export class BaseAdminController extends BaseHttpController {
   constructor(
     protected doDeleteSetting: DeleteSetting,
+    protected doGetSetting: GetSetting,
     protected userRepository: UserRepositoryInterface,
     protected createSubscriptionToken: CreateSubscriptionToken,
     protected createOfflineSubscriptionToken: CreateOfflineSubscriptionToken,
@@ -75,6 +78,31 @@ export class BaseAdminController extends BaseHttpController {
     }
 
     return this.json(result, 400)
+  }
+
+  async getListedCode(request: Request): Promise<results.JsonResult> {
+    const { userUuid } = request.params
+
+    const result = await this.doGetSetting.execute({
+      userUuid,
+      settingName: SettingName.NAMES.ListedAuthorSecrets,
+      allowSensitiveRetrieval: false,
+      decrypted: true,
+    })
+
+    if (result.isFailed()) {
+      return this.json('No listed code found', 404)
+    }
+
+    const decryptedValue = result.getValue().decryptedValue
+
+    if (!decryptedValue) {
+      return this.json({ error: 'No listed code found' }, 404)
+    }
+
+    const data: ListedAuthorSecretsData = JSON.parse(decryptedValue as string)
+
+    return this.json(data)
   }
 
   async createToken(request: Request): Promise<results.JsonResult> {

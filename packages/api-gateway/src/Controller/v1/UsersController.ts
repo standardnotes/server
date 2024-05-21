@@ -6,7 +6,6 @@ import {
   controller,
   httpDelete,
   httpGet,
-  httpPatch,
   httpPost,
   httpPut,
   results,
@@ -37,16 +36,6 @@ export class UsersController extends BaseHttpController {
   @httpPost('/send-activation-code', TYPES.ApiGateway_SubscriptionTokenAuthMiddleware)
   async sendActivationCode(request: Request, response: Response): Promise<void> {
     await this.httpService.callPaymentsServer(request, response, 'api/pro_users/send-activation-code', request.body)
-  }
-
-  @httpPatch('/:userId', TYPES.ApiGateway_RequiredCrossServiceTokenMiddleware)
-  async updateUser(request: Request, response: Response): Promise<void> {
-    await this.httpService.callAuthServer(
-      request,
-      response,
-      this.endpointResolver.resolveEndpointOrMethodIdentifier('PATCH', 'users/:userId', request.params.userId),
-      request.body,
-    )
   }
 
   @httpPut('/:userUuid/password', TYPES.ApiGateway_RequiredCrossServiceTokenMiddleware)
@@ -86,7 +75,7 @@ export class UsersController extends BaseHttpController {
     await this.httpService.callAuthServer(
       request,
       response,
-      this.endpointResolver.resolveEndpointOrMethodIdentifier('GET', 'auth/params'),
+      this.endpointResolver.resolveEndpointOrMethodIdentifier('POST', 'auth/pkce_params'),
     )
   }
 
@@ -136,6 +125,20 @@ export class UsersController extends BaseHttpController {
       this.endpointResolver.resolveEndpointOrMethodIdentifier(
         'PUT',
         'users/:userUuid/settings',
+        request.params.userUuid,
+      ),
+      request.body,
+    )
+  }
+
+  @httpPut('/:userUuid/subscription-settings', TYPES.ApiGateway_RequiredCrossServiceTokenMiddleware)
+  async putSubscriptionSetting(request: Request, response: Response): Promise<void> {
+    await this.httpService.callAuthServer(
+      request,
+      response,
+      this.endpointResolver.resolveEndpointOrMethodIdentifier(
+        'PUT',
+        'users/:userUuid/subscription-settings',
         request.params.userUuid,
       ),
       request.body,

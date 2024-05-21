@@ -4,9 +4,11 @@ import { ValetTokenAuthMiddleware } from './ValetTokenAuthMiddleware'
 import { NextFunction, Request, Response } from 'express'
 import { Logger } from 'winston'
 import { TokenDecoderInterface, ValetTokenData } from '@standardnotes/security'
+import { ValetTokenRepositoryInterface } from '../../../Domain/ValetToken/ValetTokenRepositoryInterface'
 
 describe('ValetTokenAuthMiddleware', () => {
   let tokenDecoder: TokenDecoderInterface<ValetTokenData>
+  let valetTokenRepository: ValetTokenRepositoryInterface
   let request: Request
   let response: Response
   let next: NextFunction
@@ -16,9 +18,12 @@ describe('ValetTokenAuthMiddleware', () => {
     error: jest.fn(),
   } as unknown as jest.Mocked<Logger>
 
-  const createMiddleware = () => new ValetTokenAuthMiddleware(tokenDecoder, logger)
+  const createMiddleware = () => new ValetTokenAuthMiddleware(tokenDecoder, valetTokenRepository, logger)
 
   beforeEach(() => {
+    valetTokenRepository = {} as jest.Mocked<ValetTokenRepositoryInterface>
+    valetTokenRepository.isUsed = jest.fn().mockResolvedValue(false)
+
     tokenDecoder = {} as jest.Mocked<TokenDecoderInterface<ValetTokenData>>
     tokenDecoder.decodeToken = jest.fn().mockReturnValue({
       userUuid: '1-2-3',
@@ -75,6 +80,7 @@ describe('ValetTokenAuthMiddleware', () => {
       ],
       uploadBytesLimit: -1,
       uploadBytesUsed: 80,
+      valetToken: 'valet-token',
     })
 
     expect(next).toHaveBeenCalled()
@@ -108,6 +114,7 @@ describe('ValetTokenAuthMiddleware', () => {
       ],
       uploadBytesLimit: -1,
       uploadBytesUsed: 80,
+      valetToken: 'valet-token',
     })
 
     expect(next).toHaveBeenCalled()
@@ -131,6 +138,16 @@ describe('ValetTokenAuthMiddleware', () => {
     await createMiddleware().handler(request, response, next)
 
     expect(response.status).toHaveBeenCalledWith(403)
+    expect(next).not.toHaveBeenCalled()
+  })
+
+  it('should not authorize user with valet token already used', async () => {
+    request.headers['x-valet-token'] = 'valet-token'
+    valetTokenRepository.isUsed = jest.fn().mockResolvedValue(true)
+
+    await createMiddleware().handler(request, response, next)
+
+    expect(response.status).toHaveBeenCalledWith(401)
     expect(next).not.toHaveBeenCalled()
   })
 
@@ -163,6 +180,7 @@ describe('ValetTokenAuthMiddleware', () => {
       ],
       uploadBytesLimit: 100,
       uploadBytesUsed: 80,
+      valetToken: 'valet-token',
     })
 
     expect(next).toHaveBeenCalled()

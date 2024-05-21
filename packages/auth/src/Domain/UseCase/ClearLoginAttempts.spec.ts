@@ -29,13 +29,16 @@ describe('ClearLoginAttempts', () => {
   })
 
   it('should do nothing if a user identifier is invalid', async () => {
-    expect(await createUseCase().execute({ email: '   ' })).toEqual({ success: false })
+    const result = await createUseCase().execute({ email: '   ' })
+
+    expect(result.isFailed()).toEqual(true)
 
     expect(lockRepository.resetLockCounter).toHaveBeenCalledTimes(0)
   })
 
   it('should unlock an user by email and uuid', async () => {
-    expect(await createUseCase().execute({ email: 'test@test.te' })).toEqual({ success: true })
+    const result = await createUseCase().execute({ email: 'test@test.te' })
+    expect(result.isFailed()).toEqual(false)
 
     expect(lockRepository.resetLockCounter).toHaveBeenCalledTimes(2)
     expect(lockRepository.resetLockCounter).toHaveBeenNthCalledWith(1, 'test@test.te')
@@ -45,7 +48,8 @@ describe('ClearLoginAttempts', () => {
   it('should unlock an user by email and uuid if user does not exist', async () => {
     userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue(null)
 
-    expect(await createUseCase().execute({ email: 'test@test.te' })).toEqual({ success: true })
+    const result = await createUseCase().execute({ email: 'test@test.te' })
+    expect(result.isFailed()).toEqual(false)
 
     expect(lockRepository.resetLockCounter).toHaveBeenCalledTimes(1)
     expect(lockRepository.resetLockCounter).toHaveBeenCalledWith('test@test.te')

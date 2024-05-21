@@ -1,25 +1,21 @@
-import { Username } from '@standardnotes/domain-core'
-import { inject, injectable } from 'inversify'
+import { Result, UseCaseInterface, Username } from '@standardnotes/domain-core'
 import { Logger } from 'winston'
-import TYPES from '../../Bootstrap/Types'
+
 import { LockRepositoryInterface } from '../User/LockRepositoryInterface'
 import { UserRepositoryInterface } from '../User/UserRepositoryInterface'
 import { ClearLoginAttemptsDTO } from './ClearLoginAttemptsDTO'
-import { ClearLoginAttemptsResponse } from './ClearLoginAttemptsResponse'
-import { UseCaseInterface } from './UseCaseInterface'
 
-@injectable()
-export class ClearLoginAttempts implements UseCaseInterface {
+export class ClearLoginAttempts implements UseCaseInterface<void> {
   constructor(
-    @inject(TYPES.Auth_UserRepository) private userRepository: UserRepositoryInterface,
-    @inject(TYPES.Auth_LockRepository) private lockRepository: LockRepositoryInterface,
-    @inject(TYPES.Auth_Logger) private logger: Logger,
+    private userRepository: UserRepositoryInterface,
+    private lockRepository: LockRepositoryInterface,
+    private logger: Logger,
   ) {}
 
-  async execute(dto: ClearLoginAttemptsDTO): Promise<ClearLoginAttemptsResponse> {
+  async execute(dto: ClearLoginAttemptsDTO): Promise<Result<void>> {
     const usernameOrError = Username.create(dto.email)
     if (usernameOrError.isFailed()) {
-      return { success: false }
+      return Result.fail(usernameOrError.getError())
     }
     const username = usernameOrError.getValue()
 
@@ -28,13 +24,15 @@ export class ClearLoginAttempts implements UseCaseInterface {
     const user = await this.userRepository.findOneByUsernameOrEmail(username)
 
     if (!user) {
-      return { success: true }
+      return Result.ok()
     }
 
-    this.logger.debug(`Resetting lock counter for user ${user.uuid}`)
+    this.logger.debug('Resetting lock counter for user', {
+      userId: user.uuid,
+    })
 
     await this.lockRepository.resetLockCounter(user.uuid)
 
-    return { success: true }
+    return Result.ok()
   }
 }

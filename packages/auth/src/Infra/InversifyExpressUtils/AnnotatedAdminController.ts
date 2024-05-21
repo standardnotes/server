@@ -13,23 +13,30 @@ import { BaseAdminController } from './Base/BaseAdminController'
 import { CreateOfflineSubscriptionToken } from '../../Domain/UseCase/CreateOfflineSubscriptionToken/CreateOfflineSubscriptionToken'
 import { CreateSubscriptionToken } from '../../Domain/UseCase/CreateSubscriptionToken/CreateSubscriptionToken'
 import { DeleteSetting } from '../../Domain/UseCase/DeleteSetting/DeleteSetting'
+import { GetSetting } from './../../Domain/UseCase/GetSetting/GetSetting'
 import { UserRepositoryInterface } from '../../Domain/User/UserRepositoryInterface'
 
 @controller('/admin')
 export class AnnotatedAdminController extends BaseAdminController {
   constructor(
     @inject(TYPES.Auth_DeleteSetting) override doDeleteSetting: DeleteSetting,
+    @inject(TYPES.Auth_GetSetting) override doGetSetting: GetSetting,
     @inject(TYPES.Auth_UserRepository) override userRepository: UserRepositoryInterface,
     @inject(TYPES.Auth_CreateSubscriptionToken) override createSubscriptionToken: CreateSubscriptionToken,
     @inject(TYPES.Auth_CreateOfflineSubscriptionToken)
     override createOfflineSubscriptionToken: CreateOfflineSubscriptionToken,
   ) {
-    super(doDeleteSetting, userRepository, createSubscriptionToken, createOfflineSubscriptionToken)
+    super(doDeleteSetting, doGetSetting, userRepository, createSubscriptionToken, createOfflineSubscriptionToken)
   }
 
   @httpGet('/user/:email')
   override async getUser(request: Request): Promise<results.JsonResult> {
     return super.getUser(request)
+  }
+
+  @httpGet('/users/:userUuid/listed-code')
+  override async getListedCode(request: Request): Promise<results.JsonResult> {
+    return super.getListedCode(request)
   }
 
   @httpDelete('/users/:userUuid/mfa')

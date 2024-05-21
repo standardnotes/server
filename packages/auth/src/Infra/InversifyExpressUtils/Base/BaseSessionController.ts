@@ -7,12 +7,16 @@ import { DeleteOtherSessionsForUser } from '../../../Domain/UseCase/DeleteOtherS
 import { DeleteSessionForUser } from '../../../Domain/UseCase/DeleteSessionForUser'
 import { RefreshSessionToken } from '../../../Domain/UseCase/RefreshSessionToken'
 import { ResponseLocals } from '../ResponseLocals'
+import { Session } from '../../../Domain/Session/Session'
+import { ApiVersion } from '../../../Domain/Api/ApiVersion'
+import { CookieFactoryInterface } from '../../../Domain/Auth/Cookies/CookieFactoryInterface'
 
 export class BaseSessionController extends BaseHttpController {
   constructor(
     protected deleteSessionForUser: DeleteSessionForUser,
     protected deleteOtherSessionsForUser: DeleteOtherSessionsForUser,
     protected refreshSessionToken: RefreshSessionToken,
+    protected cookieFactory: CookieFactoryInterface,
     private controllerContainer?: ControllerContainerInterface,
   ) {
     super()
@@ -134,27 +138,65 @@ export class BaseSessionController extends BaseHttpController {
       )
     }
 
-    const result = await this.refreshSessionToken.execute({
-      accessToken: request.body.access_token,
-      refreshToken: request.body.refresh_token,
-      userAgent: <string>request.headers['user-agent'],
+    const authCookies = new Map<string, string[]>()
+    request.headers.cookie?.split(';').forEach((cookie) => {
+      const parts = cookie.split('=')
+      if (
+        parts.length === 2 &&
+        (parts[0].trim().startsWith('access_token_') || parts[0].trim().startsWith('refresh_token_'))
+      ) {
+        const existingCookies = authCookies.get(parts[0].trim())
+        if (existingCookies) {
+          existingCookies.push(parts[1].trim())
+          authCookies.set(parts[0].trim(), existingCookies)
+        } else {
+          authCookies.set(parts[0].trim(), [parts[1].trim()])
+        }
+      }
     })
 
-    if (!result.success) {
+    const refreshResult = await this.refreshSessionToken.execute({
+      apiVersion: request.body.api ?? ApiVersion.VERSIONS.v20200115,
+      authTokenFromHeaders: request.body.access_token,
+      refreshTokenFromHeaders: request.body.refresh_token,
+      requestMetadata: {
+        snjs: request.headers['x-snjs-version'] as string,
+        application: request.headers['x-application-version'] as string,
+        url: request.headers['x-origin-url'] as string,
+        method: request.headers['x-origin-method'] as string,
+        userAgent: request.headers['x-origin-user-agent'] as string,
+        secChUa: request.headers['x-origin-sec-ch-ua'] as string,
+      },
+      authCookies,
+    })
+
+    if (!refreshResult.success) {
       return this.json(
         {
           error: {
-            tag: result.errorTag,
-            message: result.errorMessage,
+            tag: refreshResult.errorTag,
+            message: refreshResult.errorMessage,
           },
         },
         400,
       )
     }
 
-    response.setHeader('x-invalidate-cache', result.userUuid as string)
+    const session = refreshResult.result.session as Session
+
+    response.setHeader('x-invalidate-cache', refreshResult.userUuid as string)
+    response.setHeader(
+      'Set-Cookie',
+      this.cookieFactory.createCookieHeaderValue({
+        sessionUuid: session.uuid,
+        accessToken: refreshResult.result.sessionCookieRepresentation.accessToken,
+        refreshToken: refreshResult.result.sessionCookieRepresentation.refreshToken,
+        refreshTokenExpiration: session.refreshExpiration,
+      }),
+    )
+
     return this.json({
-      session: result.sessionPayload,
+      session: refreshResult.result.sessionHttpRepresentation,
     })
   }
 }

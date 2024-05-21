@@ -15,8 +15,8 @@ export class AuthenticateRequest implements UseCaseInterface {
   ) {}
 
   async execute(dto: AuthenticateRequestDTO): Promise<AuthenticateRequestResponse> {
-    if (!dto.authorizationHeader) {
-      this.logger.debug('[authenticate-request] Authorization header not provided.')
+    if (!dto.authTokenFromHeaders) {
+      this.logger.debug('[authenticate-request] Authorization not provided.')
 
       return {
         success: false,
@@ -29,7 +29,9 @@ export class AuthenticateRequest implements UseCaseInterface {
     let authenticateResponse: AuthenticateUserResponse
     try {
       authenticateResponse = await this.authenticateUser.execute({
-        token: dto.authorizationHeader.replace('Bearer ', ''),
+        authTokenFromHeaders: dto.authTokenFromHeaders,
+        authCookies: dto.authCookies,
+        requestMetadata: dto.requestMetadata,
       })
     } catch (error) {
       this.logger.error(
@@ -47,6 +49,7 @@ export class AuthenticateRequest implements UseCaseInterface {
     if (!authenticateResponse.success) {
       switch (authenticateResponse.failureType) {
         case 'EXPIRED_TOKEN':
+        case 'COOLEDDOWN_TOKEN':
           return {
             success: false,
             responseCode: 498,

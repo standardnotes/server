@@ -136,10 +136,7 @@ describe('ApplyDefaultSubscriptionSettings', () => {
       .fn()
       .mockReturnValue(
         new Map([
-          [
-            SettingName.NAMES.MuteFailedCloudBackupsEmails,
-            { value: 'value1', sensitive: false, serverEncryptionVersion: 0 },
-          ],
+          [SettingName.NAMES.LogSessionUserAgent, { value: 'value1', sensitive: false, serverEncryptionVersion: 0 }],
         ]),
       )
 

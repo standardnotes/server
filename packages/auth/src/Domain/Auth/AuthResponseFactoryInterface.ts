@@ -1,14 +1,15 @@
-import { Session } from '../Session/Session'
+import { ApiVersion } from '../Api/ApiVersion'
 import { User } from '../User/User'
-import { AuthResponse20161215 } from './AuthResponse20161215'
-import { AuthResponse20200115 } from './AuthResponse20200115'
+import { AuthResponseCreationResult } from './AuthResponseCreationResult'
 
 export interface AuthResponseFactoryInterface {
   createResponse(dto: {
     user: User
-    apiVersion: string
+    apiVersion: ApiVersion
     userAgent: string
     ephemeralSession: boolean
     readonlyAccess: boolean
-  }): Promise<{ response: AuthResponse20161215 | AuthResponse20200115; session?: Session }>
+    snjs?: string
+    application?: string
+  }): Promise<AuthResponseCreationResult>
 }

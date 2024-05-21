@@ -132,6 +132,7 @@ export class BaseItemsController extends BaseHttpController {
       sessionUuid: locals.session ? locals.session.uuid : null,
       sharedVaultUuids,
       isFreeUser: locals.isFreeUser,
+      hasContentLimit: !!locals.hasContentLimit,
     })
     if (syncResult.isFailed()) {
       return this.json({ error: { message: syncResult.getError() } }, HttpStatusCode.BadRequest)

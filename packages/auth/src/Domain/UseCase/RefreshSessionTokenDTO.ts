@@ -1,5 +1,14 @@
 export type RefreshSessionTokenDTO = {
-  accessToken: string
-  refreshToken: string
-  userAgent: string
+  authTokenFromHeaders: string
+  refreshTokenFromHeaders: string
+  apiVersion: string
+  requestMetadata: {
+    url: string
+    method: string
+    snjs?: string
+    application?: string
+    userAgent?: string
+    secChUa?: string
+  }
+  authCookies?: Map<string, string[]>
 }

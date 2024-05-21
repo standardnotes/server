@@ -5,6 +5,7 @@ import { AuthResponseFactory20161215 } from './AuthResponseFactory20161215'
 import { AuthResponseFactory20190520 } from './AuthResponseFactory20190520'
 import { AuthResponseFactory20200115 } from './AuthResponseFactory20200115'
 import { AuthResponseFactoryResolver } from './AuthResponseFactoryResolver'
+import { ApiVersion } from '../Api/ApiVersion'
 
 describe('AuthResponseFactoryResolver', () => {
   let authResponseFactory20161215: AuthResponseFactory20161215
@@ -30,18 +31,26 @@ describe('AuthResponseFactoryResolver', () => {
   })
 
   it('should resolve 2016 response factory', () => {
-    expect(createResolver().resolveAuthResponseFactoryVersion('20161215')).toEqual(authResponseFactory20161215)
+    expect(
+      createResolver().resolveAuthResponseFactoryVersion(ApiVersion.create(ApiVersion.VERSIONS.v20161215).getValue()),
+    ).toEqual(authResponseFactory20161215)
   })
 
   it('should resolve 2019 response factory', () => {
-    expect(createResolver().resolveAuthResponseFactoryVersion('20190520')).toEqual(authResponseFactory20190520)
+    expect(
+      createResolver().resolveAuthResponseFactoryVersion(ApiVersion.create(ApiVersion.VERSIONS.v20190520).getValue()),
+    ).toEqual(authResponseFactory20190520)
   })
 
   it('should resolve 2020 response factory', () => {
-    expect(createResolver().resolveAuthResponseFactoryVersion('20200115')).toEqual(authResponseFactory20200115)
+    expect(
+      createResolver().resolveAuthResponseFactoryVersion(ApiVersion.create(ApiVersion.VERSIONS.v20200115).getValue()),
+    ).toEqual(authResponseFactory20200115)
   })
 
-  it('should resolve 2016 response factory as default', () => {
-    expect(createResolver().resolveAuthResponseFactoryVersion('')).toEqual(authResponseFactory20161215)
+  it('should resolve 2024 response factory', () => {
+    expect(
+      createResolver().resolveAuthResponseFactoryVersion(ApiVersion.create(ApiVersion.VERSIONS.v20240226).getValue()),
+    ).toEqual(authResponseFactory20200115)
   })
 })

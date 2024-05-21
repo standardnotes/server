@@ -34,7 +34,10 @@ describe('AuthenticateRequest', () => {
       session,
     })
 
-    const response = await createUseCase().execute({ authorizationHeader: 'test' })
+    const response = await createUseCase().execute({
+      authTokenFromHeaders: 'test',
+      requestMetadata: { url: '/foobar', method: 'GET' },
+    })
 
     expect(response.success).toBeTruthy()
     expect(response.responseCode).toEqual(200)
@@ -43,7 +46,9 @@ describe('AuthenticateRequest', () => {
   })
 
   it('should not authorize if authorization header is missing', async () => {
-    const response = await createUseCase().execute({})
+    const response = await createUseCase().execute({
+      requestMetadata: { url: '/foobar', method: 'GET' },
+    })
 
     expect(response.success).toBeFalsy()
     expect(response.responseCode).toEqual(401)
@@ -55,7 +60,10 @@ describe('AuthenticateRequest', () => {
       throw new Error('something bad happened')
     })
 
-    const response = await createUseCase().execute({ authorizationHeader: 'test' })
+    const response = await createUseCase().execute({
+      authTokenFromHeaders: 'test',
+      requestMetadata: { url: '/foobar', method: 'GET' },
+    })
 
     expect(response.success).toBeFalsy()
     expect(response.responseCode).toEqual(401)
@@ -68,7 +76,10 @@ describe('AuthenticateRequest', () => {
       failureType: 'INVALID_AUTH',
     })
 
-    const response = await createUseCase().execute({ authorizationHeader: 'test' })
+    const response = await createUseCase().execute({
+      authTokenFromHeaders: 'test',
+      requestMetadata: { url: '/foobar', method: 'GET' },
+    })
 
     expect(response.success).toBeFalsy()
     expect(response.responseCode).toEqual(401)
@@ -81,7 +92,26 @@ describe('AuthenticateRequest', () => {
       failureType: 'EXPIRED_TOKEN',
     })
 
-    const response = await createUseCase().execute({ authorizationHeader: 'test' })
+    const response = await createUseCase().execute({
+      authTokenFromHeaders: 'test',
+      requestMetadata: { url: '/foobar', method: 'GET' },
+    })
+
+    expect(response.success).toBeFalsy()
+    expect(response.responseCode).toEqual(498)
+    expect(response.errorTag).toEqual('expired-access-token')
+  })
+
+  it('should not authorize user if the token is cooled down', async () => {
+    authenticateUser.execute = jest.fn().mockReturnValue({
+      success: false,
+      failureType: 'COOLEDDOWN_TOKEN',
+    })
+
+    const response = await createUseCase().execute({
+      authTokenFromHeaders: 'test',
+      requestMetadata: { url: '/foobar', method: 'GET' },
+    })
 
     expect(response.success).toBeFalsy()
     expect(response.responseCode).toEqual(498)
@@ -94,7 +124,10 @@ describe('AuthenticateRequest', () => {
       failureType: 'REVOKED_SESSION',
     })
 
-    const response = await createUseCase().execute({ authorizationHeader: 'test' })
+    const response = await createUseCase().execute({
+      authTokenFromHeaders: 'test',
+      requestMetadata: { url: '/foobar', method: 'GET' },
+    })
 
     expect(response.success).toBeFalsy()
     expect(response.responseCode).toEqual(401)

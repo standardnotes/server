@@ -6,6 +6,7 @@ import { User } from '../../User/User'
 import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'
 import { GetSetting } from '../GetSetting/GetSetting'
 import { GetUserKeyParamsRecovery } from './GetUserKeyParamsRecovery'
+import { ApiVersion } from '../../Api/ApiVersion'
 
 describe('GetUserKeyParamsRecovery', () => {
   let keyParamsFactory: KeyParamsFactoryInterface
@@ -40,6 +41,7 @@ describe('GetUserKeyParamsRecovery', () => {
       username: 'username',
       codeChallenge: '',
       recoveryCodes: '1234 5678',
+      apiVersion: ApiVersion.VERSIONS.v20200115,
     })
 
     expect(result.isFailed()).toBe(true)
@@ -51,6 +53,7 @@ describe('GetUserKeyParamsRecovery', () => {
       username: '',
       codeChallenge: 'code-challenge',
       recoveryCodes: '1234 5678',
+      apiVersion: ApiVersion.VERSIONS.v20200115,
     })
 
     expect(result.isFailed()).toBe(true)
@@ -62,6 +65,7 @@ describe('GetUserKeyParamsRecovery', () => {
       username: 'username',
       codeChallenge: 'codeChallenge',
       recoveryCodes: '',
+      apiVersion: ApiVersion.VERSIONS.v20200115,
     })
 
     expect(result.isFailed()).toBe(true)
@@ -75,6 +79,7 @@ describe('GetUserKeyParamsRecovery', () => {
       username: 'username',
       codeChallenge: 'codeChallenge',
       recoveryCodes: '1234 5678',
+      apiVersion: ApiVersion.VERSIONS.v20200115,
     })
 
     expect(keyParamsFactory.createPseudoParams).toHaveBeenCalled()
@@ -88,6 +93,7 @@ describe('GetUserKeyParamsRecovery', () => {
       username: 'username',
       codeChallenge: 'codeChallenge',
       recoveryCodes: '1234 5678',
+      apiVersion: ApiVersion.VERSIONS.v20200115,
     })
 
     expect(result.isFailed()).toBe(true)
@@ -99,6 +105,7 @@ describe('GetUserKeyParamsRecovery', () => {
       username: 'username',
       codeChallenge: 'codeChallenge',
       recoveryCodes: '1234 5678',
+      apiVersion: ApiVersion.VERSIONS.v20200115,
     })
 
     expect(result.isFailed()).toBe(true)
@@ -110,9 +117,34 @@ describe('GetUserKeyParamsRecovery', () => {
       username: 'username',
       codeChallenge: 'codeChallenge',
       recoveryCodes: 'foo',
+      apiVersion: ApiVersion.VERSIONS.v20200115,
     })
 
     expect(keyParamsFactory.create).toHaveBeenCalled()
     expect(result.isFailed()).toBe(false)
+  })
+
+  it('should return error if api version is invalid', async () => {
+    const result = await createUseCase().execute({
+      username: 'username',
+      codeChallenge: 'codeChallenge',
+      recoveryCodes: 'foo',
+      apiVersion: 'invalid',
+    })
+
+    expect(result.isFailed()).toBe(true)
+    expect(result.getError()).toBe('Invalid api version: invalid')
+  })
+
+  it('should return error if api version does not support recovery sign in', async () => {
+    const result = await createUseCase().execute({
+      username: 'username',
+      codeChallenge: 'codeChallenge',
+      recoveryCodes: 'foo',
+      apiVersion: ApiVersion.VERSIONS.v20190520,
+    })
+
+    expect(result.isFailed()).toBe(true)
+    expect(result.getError()).toBe('Unsupported api version')
   })
 })

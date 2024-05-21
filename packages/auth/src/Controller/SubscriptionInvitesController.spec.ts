@@ -53,7 +53,10 @@ describe('SubscriptionInvitesController', () => {
       invitations: [],
     })
 
-    const result = await createController().listInvites({ api: ApiVersion.v20200115, inviterEmail: 'test@test.te' })
+    const result = await createController().listInvites({
+      api: ApiVersion.VERSIONS.v20200115,
+      inviterEmail: 'test@test.te',
+    })
 
     expect(listSharedSubscriptionInvitations.execute).toHaveBeenCalledWith({
       inviterEmail: 'test@test.te',
@@ -68,7 +71,7 @@ describe('SubscriptionInvitesController', () => {
     })
 
     const result = await createController().cancelInvite({
-      api: ApiVersion.v20200115,
+      api: ApiVersion.VERSIONS.v20200115,
       inviteUuid: '1-2-3',
       inviterEmail: 'test@test.te',
     })
@@ -87,7 +90,7 @@ describe('SubscriptionInvitesController', () => {
     })
 
     const result = await createController().cancelInvite({
-      api: ApiVersion.v20200115,
+      api: ApiVersion.VERSIONS.v20200115,
       inviteUuid: '1-2-3',
     })
 
@@ -100,7 +103,7 @@ describe('SubscriptionInvitesController', () => {
     })
 
     const result = await createController().declineInvite({
-      api: ApiVersion.v20200115,
+      api: ApiVersion.VERSIONS.v20200115,
       inviteUuid: '1-2-3',
     })
 
@@ -117,7 +120,7 @@ describe('SubscriptionInvitesController', () => {
     })
 
     const result = await createController().declineInvite({
-      api: ApiVersion.v20200115,
+      api: ApiVersion.VERSIONS.v20200115,
       inviteUuid: '1-2-3',
     })
 
@@ -134,7 +137,7 @@ describe('SubscriptionInvitesController', () => {
     })
 
     const result = await createController().acceptInvite({
-      api: ApiVersion.v20200115,
+      api: ApiVersion.VERSIONS.v20200115,
       inviteUuid: '1-2-3',
     })
 
@@ -151,7 +154,7 @@ describe('SubscriptionInvitesController', () => {
     })
 
     const result = await createController().acceptInvite({
-      api: ApiVersion.v20200115,
+      api: ApiVersion.VERSIONS.v20200115,
       inviteUuid: '1-2-3',
     })
 
@@ -168,7 +171,7 @@ describe('SubscriptionInvitesController', () => {
     })
 
     const result = await createController().invite({
-      api: ApiVersion.v20200115,
+      api: ApiVersion.VERSIONS.v20200115,
       identifier: 'invitee@test.te',
       inviterUuid: '1-2-3',
       inviterEmail: 'test@test.te',
@@ -187,7 +190,7 @@ describe('SubscriptionInvitesController', () => {
 
   it('should not invite to user subscription if the identifier is missing in request', async () => {
     const result = await createController().invite({
-      api: ApiVersion.v20200115,
+      api: ApiVersion.VERSIONS.v20200115,
       identifier: '',
       inviterUuid: '1-2-3',
       inviterEmail: 'test@test.te',
@@ -205,7 +208,7 @@ describe('SubscriptionInvitesController', () => {
     })
 
     const result = await createController().invite({
-      api: ApiVersion.v20200115,
+      api: ApiVersion.VERSIONS.v20200115,
       identifier: 'invitee@test.te',
       inviterUuid: '1-2-3',
       inviterEmail: 'test@test.te',

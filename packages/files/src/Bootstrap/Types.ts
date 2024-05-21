@@ -29,6 +29,7 @@ const TYPES = {
 
   // repositories
   Files_UploadRepository: Symbol.for('Files_UploadRepository'),
+  Files_ValetTokenRepository: Symbol.for('Files_ValetTokenRepository'),
 
   // middleware
   Files_ValetTokenAuthMiddleware: Symbol.for('Files_ValetTokenAuthMiddleware'),
@@ -50,6 +51,7 @@ const TYPES = {
   Files_IS_CONFIGURED_FOR_HOME_SERVER_OR_SELF_HOSTING: Symbol.for(
     'Files_IS_CONFIGURED_FOR_HOME_SERVER_OR_SELF_HOSTING',
   ),
+  Files_CORS_ALLOWED_ORIGINS: Symbol.for('Files_CORS_ALLOWED_ORIGINS'),
 
   // Handlers
   Files_DomainEventMessageHandler: Symbol.for('Files_DomainEventMessageHandler'),

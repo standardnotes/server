@@ -1,5 +1,16 @@
 import { AuthenticationMethod } from './AuthenticationMethod'
 
 export interface AuthenticationMethodResolverInterface {
-  resolve(token: string): Promise<AuthenticationMethod | undefined>
+  resolve(dto: {
+    authTokenFromHeaders: string
+    authCookies?: Map<string, string[]>
+    requestMetadata: {
+      url: string
+      method: string
+      snjs?: string
+      application?: string
+      userAgent?: string
+      secChUa?: string
+    }
+  }): Promise<AuthenticationMethod | undefined>
 }

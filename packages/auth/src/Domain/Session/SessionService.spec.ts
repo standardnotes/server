@@ -36,7 +36,7 @@ describe('SessionService', () => {
   let userSubscriptionRepository: UserSubscriptionRepositoryInterface
   const readonlyUsers = ['demo@standardnotes.com']
 
-  const createService = () =>
+  const createService = (forceLegacySessions = false) =>
     new SessionService(
       sessionRepository,
       ephemeralSessionRepository,
@@ -51,6 +51,7 @@ describe('SessionService', () => {
       userSubscriptionRepository,
       readonlyUsers,
       getSetting,
+      forceLegacySessions,
     )
 
   beforeEach(() => {
@@ -58,16 +59,18 @@ describe('SessionService', () => {
     existingSession.uuid = '2e1e43'
     existingSession.userUuid = '1-2-3'
     existingSession.userAgent = 'Chrome'
-    existingSession.apiVersion = ApiVersion.v20200115
+    existingSession.apiVersion = ApiVersion.VERSIONS.v20200115
     existingSession.hashedAccessToken = '4e07408562bedb8b60ce05c1decfe3ad16b72230967de01f640b7e4729b49fce'
     existingSession.hashedRefreshToken = '4e07408562bedb8b60ce05c1decfe3ad16b72230967de01f640b7e4729b49fce'
     existingSession.readonlyAccess = false
+    existingSession.version = SessionService.HEADER_BASED_SESSION_VERSION
 
     revokedSession = {} as jest.Mocked<RevokedSession>
     revokedSession.uuid = '2e1e43'
 
     sessionRepository = {} as jest.Mocked<SessionRepositoryInterface>
     sessionRepository.findOneByUuid = jest.fn().mockReturnValue(null)
+    sessionRepository.findOneByPrivateIdentifier = jest.fn().mockReturnValue(null)
     sessionRepository.deleteOneByUuid = jest.fn()
     sessionRepository.insert = jest.fn()
     sessionRepository.update = jest.fn()
@@ -79,6 +82,7 @@ describe('SessionService', () => {
     ephemeralSessionRepository.insert = jest.fn()
     ephemeralSessionRepository.update = jest.fn()
     ephemeralSessionRepository.findOneByUuid = jest.fn()
+    ephemeralSessionRepository.findOneByPrivateIdentifier = jest.fn()
     ephemeralSessionRepository.deleteOne = jest.fn()
 
     revokedSessionRepository = {} as jest.Mocked<RevokedSessionRepositoryInterface>
@@ -140,25 +144,91 @@ describe('SessionService', () => {
   })
 
   it('should refresh access and refresh tokens for a session', async () => {
-    expect(await createService().refreshTokens({ session: existingSession, isEphemeral: false })).toEqual({
-      access_expiration: 123,
-      access_token: expect.any(String),
-      refresh_token: expect.any(String),
-      refresh_expiration: 123,
-      readonly_access: false,
+    expect(
+      await createService().refreshTokens({
+        session: existingSession,
+        isEphemeral: false,
+        apiVersion: ApiVersion.create(ApiVersion.VERSIONS.v20200115).getValue(),
+      }),
+    ).toEqual({
+      sessionHttpRepresentation: {
+        access_expiration: 123,
+        access_token: expect.any(String),
+        refresh_token: expect.any(String),
+        refresh_expiration: 123,
+        readonly_access: false,
+      },
+      sessionCookieRepresentation: {
+        accessToken: 'foobar',
+        refreshToken: 'foobar',
+      },
+      session: existingSession,
     })
 
     expect(sessionRepository.update).toHaveBeenCalled()
     expect(ephemeralSessionRepository.update).not.toHaveBeenCalled()
   })
 
+  it('should refresh access and refresh tokens for a session and turn it into a cookie based session', async () => {
+    expect(
+      await createService().refreshTokens({
+        session: existingSession,
+        isEphemeral: false,
+        apiVersion: ApiVersion.create(ApiVersion.VERSIONS.v20240226).getValue(),
+      }),
+    ).toEqual({
+      sessionHttpRepresentation: {
+        access_expiration: 123,
+        access_token: expect.any(String),
+        refresh_token: expect.any(String),
+        refresh_expiration: 123,
+        readonly_access: false,
+      },
+      sessionCookieRepresentation: {
+        accessToken: 'foobar',
+        refreshToken: 'foobar',
+      },
+      session: existingSession,
+    })
+
+    expect(sessionRepository.update).toHaveBeenCalledWith({
+      apiVersion: ApiVersion.VERSIONS.v20240226,
+      hashedAccessToken: expect.any(String),
+      hashedRefreshToken: expect.any(String),
+      refreshExpiration: expect.any(Date),
+      privateIdentifier: expect.any(String),
+      readonlyAccess: false,
+      userAgent: 'Chrome',
+      userUuid: '1-2-3',
+      uuid: expect.any(String),
+      version: 2,
+      accessExpiration: expect.any(Date),
+      snjs: null,
+      application: null,
+    })
+    expect(ephemeralSessionRepository.update).not.toHaveBeenCalled()
+  })
+
   it('should refresh access and refresh tokens for an ephemeral session', async () => {
-    expect(await createService().refreshTokens({ session: existingEphemeralSession, isEphemeral: true })).toEqual({
-      access_expiration: 123,
-      access_token: expect.any(String),
-      refresh_token: expect.any(String),
-      refresh_expiration: 123,
-      readonly_access: false,
+    expect(
+      await createService().refreshTokens({
+        session: existingEphemeralSession,
+        isEphemeral: true,
+        apiVersion: ApiVersion.create(ApiVersion.VERSIONS.v20200115).getValue(),
+      }),
+    ).toEqual({
+      sessionHttpRepresentation: {
+        access_expiration: 123,
+        access_token: expect.any(String),
+        refresh_token: expect.any(String),
+        refresh_expiration: 123,
+        readonly_access: false,
+      },
+      sessionCookieRepresentation: {
+        accessToken: 'foobar',
+        refreshToken: 'foobar',
+      },
+      session: existingEphemeralSession,
     })
 
     expect(sessionRepository.update).not.toHaveBeenCalled()
@@ -171,7 +241,7 @@ describe('SessionService', () => {
 
     const result = await createService().createNewSessionForUser({
       user,
-      apiVersion: '003',
+      apiVersion: ApiVersion.create(ApiVersion.VERSIONS.v20200115).getValue(),
       userAgent: 'Google Chrome',
       readonlyAccess: false,
     })
@@ -179,16 +249,137 @@ describe('SessionService', () => {
     expect(sessionRepository.insert).toHaveBeenCalledWith(expect.any(Session))
     expect(sessionRepository.insert).toHaveBeenCalledWith({
       accessExpiration: expect.any(Date),
-      apiVersion: '003',
+      apiVersion: ApiVersion.VERSIONS.v20200115,
       createdAt: expect.any(Date),
       hashedAccessToken: expect.any(String),
       hashedRefreshToken: expect.any(String),
+      refreshExpiration: expect.any(Date),
+      privateIdentifier: expect.any(String),
+      updatedAt: expect.any(Date),
+      userAgent: 'Google Chrome',
+      userUuid: '123',
+      uuid: expect.any(String),
+      readonlyAccess: false,
+      version: 1,
+      snjs: null,
+      application: null,
+    })
+
+    expect(result.sessionHttpRepresentation).toEqual({
+      access_expiration: 123,
+      access_token: expect.any(String),
+      refresh_expiration: 123,
+      refresh_token: expect.any(String),
+      readonly_access: false,
+    })
+  })
+
+  it('should create new cookie based session for a user', async () => {
+    const user = {} as jest.Mocked<User>
+    user.uuid = '123'
+
+    const result = await createService().createNewSessionForUser({
+      user,
+      apiVersion: ApiVersion.create(ApiVersion.VERSIONS.v20240226).getValue(),
+      userAgent: 'Google Chrome',
+      readonlyAccess: false,
+    })
+
+    expect(sessionRepository.insert).toHaveBeenCalledWith(expect.any(Session))
+    expect(sessionRepository.insert).toHaveBeenCalledWith({
+      accessExpiration: expect.any(Date),
+      apiVersion: ApiVersion.VERSIONS.v20240226,
+      createdAt: expect.any(Date),
+      hashedAccessToken: expect.any(String),
+      hashedRefreshToken: expect.any(String),
+      refreshExpiration: expect.any(Date),
+      privateIdentifier: expect.any(String),
+      updatedAt: expect.any(Date),
+      userAgent: 'Google Chrome',
+      userUuid: '123',
+      uuid: expect.any(String),
+      readonlyAccess: false,
+      version: 2,
+      snjs: null,
+      application: null,
+    })
+
+    expect(result.sessionHttpRepresentation).toEqual({
+      access_expiration: 123,
+      access_token: expect.any(String),
+      refresh_expiration: 123,
+      refresh_token: expect.any(String),
+      readonly_access: false,
+    })
+  })
+
+  it('should create new legacy session for a user if cookie mode is disabled', async () => {
+    const user = {} as jest.Mocked<User>
+    user.uuid = '123'
+
+    const result = await createService(true).createNewSessionForUser({
+      user,
+      apiVersion: ApiVersion.create(ApiVersion.VERSIONS.v20240226).getValue(),
+      userAgent: 'Google Chrome',
+      readonlyAccess: false,
+    })
+
+    expect(sessionRepository.insert).toHaveBeenCalledWith(expect.any(Session))
+    expect(sessionRepository.insert).toHaveBeenCalledWith({
+      accessExpiration: expect.any(Date),
+      apiVersion: ApiVersion.VERSIONS.v20240226,
+      createdAt: expect.any(Date),
+      hashedAccessToken: expect.any(String),
+      hashedRefreshToken: expect.any(String),
+      refreshExpiration: expect.any(Date),
+      privateIdentifier: expect.any(String),
+      updatedAt: expect.any(Date),
+      userAgent: 'Google Chrome',
+      userUuid: '123',
+      uuid: expect.any(String),
+      readonlyAccess: false,
+      version: 1,
+      snjs: null,
+      application: null,
+    })
+
+    expect(result.sessionHttpRepresentation).toEqual({
+      access_expiration: 123,
+      access_token: expect.any(String),
+      refresh_expiration: 123,
+      refresh_token: expect.any(String),
+      readonly_access: false,
+    })
+  })
+
+  it('should create new session for a user', async () => {
+    const user = {} as jest.Mocked<User>
+    user.uuid = '123'
+
+    const result = await createService().createNewSessionForUser({
+      user,
+      apiVersion: ApiVersion.create(ApiVersion.VERSIONS.v20200115).getValue(),
+      userAgent: 'Google Chrome',
+      readonlyAccess: false,
+    })
+
+    expect(sessionRepository.insert).toHaveBeenCalledWith(expect.any(Session))
+    expect(sessionRepository.insert).toHaveBeenCalledWith({
+      accessExpiration: expect.any(Date),
+      apiVersion: ApiVersion.VERSIONS.v20200115,
+      createdAt: expect.any(Date),
+      hashedAccessToken: expect.any(String),
+      hashedRefreshToken: expect.any(String),
+      privateIdentifier: expect.any(String),
       refreshExpiration: expect.any(Date),
       updatedAt: expect.any(Date),
       userAgent: 'Google Chrome',
       userUuid: '123',
       uuid: expect.any(String),
       readonlyAccess: false,
+      version: 1,
+      snjs: null,
+      application: null,
     })
 
     expect(result.sessionHttpRepresentation).toEqual({
@@ -207,7 +398,7 @@ describe('SessionService', () => {
 
     const result = await createService().createNewSessionForUser({
       user,
-      apiVersion: '003',
+      apiVersion: ApiVersion.create(ApiVersion.VERSIONS.v20200115).getValue(),
       userAgent: 'Google Chrome',
       readonlyAccess: false,
     })
@@ -215,16 +406,20 @@ describe('SessionService', () => {
     expect(sessionRepository.insert).toHaveBeenCalledWith(expect.any(Session))
     expect(sessionRepository.insert).toHaveBeenCalledWith({
       accessExpiration: expect.any(Date),
-      apiVersion: '003',
+      apiVersion: ApiVersion.VERSIONS.v20200115,
       createdAt: expect.any(Date),
       hashedAccessToken: expect.any(String),
       hashedRefreshToken: expect.any(String),
       refreshExpiration: expect.any(Date),
+      privateIdentifier: expect.any(String),
       updatedAt: expect.any(Date),
       userAgent: 'Google Chrome',
       userUuid: '123',
       uuid: expect.any(String),
       readonlyAccess: true,
+      version: 1,
+      snjs: null,
+      application: null,
     })
 
     expect(result.sessionHttpRepresentation).toEqual({
@@ -249,7 +444,7 @@ describe('SessionService', () => {
 
     const result = await createService().createNewSessionForUser({
       user,
-      apiVersion: '003',
+      apiVersion: ApiVersion.create(ApiVersion.VERSIONS.v20200115).getValue(),
       userAgent: 'Google Chrome',
       readonlyAccess: false,
     })
@@ -257,15 +452,19 @@ describe('SessionService', () => {
     expect(sessionRepository.insert).toHaveBeenCalledWith(expect.any(Session))
     expect(sessionRepository.insert).toHaveBeenCalledWith({
       accessExpiration: expect.any(Date),
-      apiVersion: '003',
+      apiVersion: ApiVersion.VERSIONS.v20200115,
       createdAt: expect.any(Date),
       hashedAccessToken: expect.any(String),
       hashedRefreshToken: expect.any(String),
       refreshExpiration: expect.any(Date),
+      privateIdentifier: expect.any(String),
       updatedAt: expect.any(Date),
       userUuid: '123',
       uuid: expect.any(String),
       readonlyAccess: false,
+      version: 1,
+      snjs: null,
+      application: null,
     })
 
     expect(result.sessionHttpRepresentation).toEqual({
@@ -284,7 +483,7 @@ describe('SessionService', () => {
 
     await createService().createNewSessionForUser({
       user,
-      apiVersion: '003',
+      apiVersion: ApiVersion.create(ApiVersion.VERSIONS.v20200115).getValue(),
       userAgent: 'Google Chrome',
       readonlyAccess: false,
     })
@@ -304,7 +503,7 @@ describe('SessionService', () => {
 
     await createService().createNewSessionForUser({
       user,
-      apiVersion: '003',
+      apiVersion: ApiVersion.create(ApiVersion.VERSIONS.v20200115).getValue(),
       userAgent: 'Google Chrome',
       readonlyAccess: false,
     })
@@ -325,7 +524,7 @@ describe('SessionService', () => {
 
     const result = await createService().createNewSessionForUser({
       user,
-      apiVersion: '003',
+      apiVersion: ApiVersion.create(ApiVersion.VERSIONS.v20200115).getValue(),
       userAgent: 'Google Chrome',
       readonlyAccess: false,
     })
@@ -353,7 +552,7 @@ describe('SessionService', () => {
 
     const result = await createService().createNewSessionForUser({
       user,
-      apiVersion: '003',
+      apiVersion: ApiVersion.create(ApiVersion.VERSIONS.v20200115).getValue(),
       userAgent: 'Google Chrome',
       readonlyAccess: false,
     })
@@ -381,7 +580,7 @@ describe('SessionService', () => {
 
     const result = await createService().createNewSessionForUser({
       user,
-      apiVersion: '003',
+      apiVersion: ApiVersion.create(ApiVersion.VERSIONS.v20200115).getValue(),
       userAgent: 'Google Chrome',
       readonlyAccess: false,
     })
@@ -406,7 +605,7 @@ describe('SessionService', () => {
 
     const result = await createService().createNewEphemeralSessionForUser({
       user,
-      apiVersion: '003',
+      apiVersion: ApiVersion.create(ApiVersion.VERSIONS.v20200115).getValue(),
       userAgent: 'Google Chrome',
       readonlyAccess: false,
     })
@@ -414,16 +613,20 @@ describe('SessionService', () => {
     expect(ephemeralSessionRepository.insert).toHaveBeenCalledWith(expect.any(EphemeralSession))
     expect(ephemeralSessionRepository.insert).toHaveBeenCalledWith({
       accessExpiration: expect.any(Date),
-      apiVersion: '003',
+      apiVersion: ApiVersion.VERSIONS.v20200115,
       createdAt: expect.any(Date),
       hashedAccessToken: expect.any(String),
       hashedRefreshToken: expect.any(String),
       refreshExpiration: expect.any(Date),
+      privateIdentifier: expect.any(String),
       updatedAt: expect.any(Date),
       userAgent: 'Google Chrome',
       userUuid: '123',
       uuid: expect.any(String),
       readonlyAccess: false,
+      version: 1,
+      snjs: null,
+      application: null,
     })
 
     expect(result.sessionHttpRepresentation).toEqual({
@@ -433,57 +636,6 @@ describe('SessionService', () => {
       refresh_token: expect.any(String),
       readonly_access: false,
     })
-  })
-
-  it('should delete a session by token', async () => {
-    sessionRepository.findOneByUuid = jest.fn().mockImplementation((uuid) => {
-      if (uuid === '2') {
-        return existingSession
-      }
-
-      return null
-    })
-
-    await createService().deleteSessionByToken('1:2:3')
-
-    expect(sessionRepository.deleteOneByUuid).toHaveBeenCalledWith('2e1e43')
-    expect(ephemeralSessionRepository.deleteOne).not.toHaveBeenCalled()
-  })
-
-  it('should delete an ephemeral session by token', async () => {
-    ephemeralSessionRepository.findOneByUuid = jest.fn().mockImplementation((uuid) => {
-      if (uuid === '2') {
-        return existingEphemeralSession
-      }
-
-      return null
-    })
-
-    await createService().deleteSessionByToken('1:2:3')
-
-    expect(sessionRepository.deleteOneByUuid).not.toHaveBeenCalled()
-    expect(ephemeralSessionRepository.deleteOne).toHaveBeenCalledWith('2-3-4', '1-2-3')
-  })
-
-  it('should not delete a session by token if session is not found', async () => {
-    sessionRepository.findOneByUuid = jest.fn().mockImplementation((uuid) => {
-      if (uuid === '2') {
-        return existingSession
-      }
-
-      return null
-    })
-
-    await createService().deleteSessionByToken('1:4:3')
-
-    expect(sessionRepository.deleteOneByUuid).not.toHaveBeenCalled()
-    expect(ephemeralSessionRepository.deleteOne).not.toHaveBeenCalled()
-  })
-
-  it('should determine if a refresh token is valid', async () => {
-    expect(createService().isRefreshTokenMatchingHashedSessionToken(existingSession, '1:2:3')).toBeTruthy()
-    expect(createService().isRefreshTokenMatchingHashedSessionToken(existingSession, '1:2:4')).toBeFalsy()
-    expect(createService().isRefreshTokenMatchingHashedSessionToken(existingSession, '1:2')).toBeFalsy()
   })
 
   it('should return device info based on user agent', () => {
@@ -626,67 +778,6 @@ describe('SessionService', () => {
     expect(createService().getDeviceInfo(existingSession)).toEqual('Unknown Client on Unknown OS')
   })
 
-  it('should retrieve a session from a session token', async () => {
-    sessionRepository.findOneByUuid = jest.fn().mockImplementation((uuid) => {
-      if (uuid === '2') {
-        return existingSession
-      }
-
-      return null
-    })
-
-    const { session, isEphemeral } = await createService().getSessionFromToken('1:2:3')
-
-    expect(session).toEqual(session)
-    expect(isEphemeral).toBeFalsy()
-  })
-
-  it('should retrieve an ephemeral session from a session token', async () => {
-    ephemeralSessionRepository.findOneByUuid = jest.fn().mockReturnValue(existingEphemeralSession)
-    sessionRepository.findOneByUuid = jest.fn().mockReturnValue(null)
-
-    const { session, isEphemeral } = await createService().getSessionFromToken('1:2:3')
-
-    expect(session).toEqual(existingEphemeralSession)
-    expect(isEphemeral).toBeTruthy()
-  })
-
-  it('should not retrieve a session from a session token that has access token missing', async () => {
-    sessionRepository.findOneByUuid = jest.fn().mockImplementation((uuid) => {
-      if (uuid === '2') {
-        return existingSession
-      }
-
-      return null
-    })
-
-    const { session } = await createService().getSessionFromToken('1:2')
-
-    expect(session).toBeUndefined()
-  })
-
-  it('should not retrieve a session that is missing', async () => {
-    sessionRepository.findOneByUuid = jest.fn().mockReturnValue(null)
-
-    const { session } = await createService().getSessionFromToken('1:2:3')
-
-    expect(session).toBeUndefined()
-  })
-
-  it('should not retrieve a session from a session token that has invalid access token', async () => {
-    sessionRepository.findOneByUuid = jest.fn().mockImplementation((uuid) => {
-      if (uuid === '2') {
-        return existingSession
-      }
-
-      return null
-    })
-
-    const { session } = await createService().getSessionFromToken('1:2:4')
-
-    expect(session).toBeUndefined()
-  })
-
   it('should revoked a session', async () => {
     await createService().createRevokedSession(existingSession)
 
@@ -711,6 +802,28 @@ describe('SessionService', () => {
     revokedSessionRepository.findOneByUuid = jest.fn().mockReturnValue(null)
 
     const result = await createService().getRevokedSessionFromToken('1::3')
+
+    expect(result).toBeNull()
+  })
+
+  it('should retrieve a revoked cookie session from a session token', async () => {
+    revokedSessionRepository.findOneByPrivateIdentifier = jest.fn().mockReturnValue(revokedSession)
+
+    const result = await createService().getRevokedSessionFromToken('2:3')
+
+    expect(result).toEqual(revokedSession)
+  })
+
+  it('should not retrieve a revoked session if session id is missing from token', async () => {
+    revokedSessionRepository.findOneByPrivateIdentifier = jest.fn().mockReturnValue(null)
+
+    const result = await createService().getRevokedSessionFromToken('2')
+
+    expect(result).toBeNull()
+  })
+
+  it('should not retrieve a revoked session if session token has unrecognizable version', async () => {
+    const result = await createService().getRevokedSessionFromToken('3:2')
 
     expect(result).toBeNull()
   })

@@ -33,6 +33,7 @@ export class InversifyExpressAuthMiddleware extends BaseMiddleware {
         session: decodedToken.session,
         readOnlyAccess: decodedToken.session?.readonly_access ?? false,
         sharedVaultOwnerContext: decodedToken.shared_vault_owner_context,
+        hasContentLimit: decodedToken.hasContentLimit,
       } as ResponseLocals)
 
       return next()

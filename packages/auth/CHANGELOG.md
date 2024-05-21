@@ -3,24 +3,6 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-## [1.178.3](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.178.2...@standardnotes/auth-server@1.178.3) (2024-03-18)
-
-### Bug Fixes
-
-* **auth:** allow registration on new api versions - fixes [#1046](https://github.com/standardnotes/server/issues/1046) ([#1048](https://github.com/standardnotes/server/issues/1048)) ([f939caf](https://github.com/standardnotes/server/commit/f939caf2d9a781d42989ad6e92a5c7150ff48e19))
-
-## [1.178.2](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.178.1...@standardnotes/auth-server@1.178.2) (2024-03-15)
-
-### Bug Fixes
-
-* allow handling of new api version ([9d49764](https://github.com/standardnotes/server/commit/9d49764b841e73655e19523eddf10498addc9fb4))
-
-## [1.178.1](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.178.0...@standardnotes/auth-server@1.178.1) (2024-02-09)
-
-### Bug Fixes
-
-* allow expired offline subscriptions to receive dashboard emails ([#1041](https://github.com/standardnotes/server/issues/1041)) ([4fe8e9a](https://github.com/standardnotes/server/commit/4fe8e9a79f652f3e39608d6683cb17cc08bb8717))
-
 # [1.178.0](https://github.com/standardnotes/server/compare/@standardnotes/auth-server@1.177.20...@standardnotes/auth-server@1.178.0) (2024-01-19)
 
 ### Features

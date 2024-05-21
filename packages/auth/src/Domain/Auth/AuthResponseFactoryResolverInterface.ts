@@ -1,5 +1,6 @@
+import { ApiVersion } from '../Api/ApiVersion'
 import { AuthResponseFactoryInterface } from './AuthResponseFactoryInterface'
 
 export interface AuthResponseFactoryResolverInterface {
-  resolveAuthResponseFactoryVersion(apiVersion: string): AuthResponseFactoryInterface
+  resolveAuthResponseFactoryVersion(apiVersion: ApiVersion): AuthResponseFactoryInterface
 }

@@ -10,23 +10,44 @@ export class DirectCallServiceProxy implements ServiceProxyInterface {
     private filesServerUrl: string,
   ) {}
 
-  async validateSession(
+  async validateSession(dto: {
     headers: {
       authorization: string
       sharedVaultOwnerContext?: string
-    },
-    _retryAttempt?: number,
-  ): Promise<{ status: number; data: unknown; headers: { contentType: string } }> {
+    }
+    cookies?: Map<string, string[]>
+    snjs?: string
+    application?: string
+    retryAttempt?: number
+  }): Promise<{
+    status: number
+    data: unknown
+    headers: {
+      contentType: string
+    }
+  }> {
     const authService = this.serviceContainer.get(ServiceIdentifier.create(ServiceIdentifier.NAMES.Auth).getValue())
     if (!authService) {
       throw new Error('Auth service not found')
     }
 
+    let stringOfCookies = ''
+    for (const cookieName of dto.cookies?.keys() ?? []) {
+      for (const cookieValue of dto.cookies?.get(cookieName) as string[]) {
+        stringOfCookies += `${cookieName}=${cookieValue}; `
+      }
+    }
+
     const serviceResponse = (await authService.handleRequest(
       {
+        body: {
+          authTokenFromHeaders: dto.headers.authorization,
+          sharedVaultOwnerContext: dto.headers.sharedVaultOwnerContext,
+        },
         headers: {
-          authorization: headers.authorization,
-          'x-shared-vault-owner-context': headers.sharedVaultOwnerContext,
+          'x-snjs-version': dto.snjs,
+          'x-application-version': dto.application,
+          cookie: stringOfCookies.trim(),
         },
       } as never,
       {} as never,

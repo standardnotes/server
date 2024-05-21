@@ -11,7 +11,6 @@ import { UseCaseInterface } from './UseCaseInterface'
 import { RoleRepositoryInterface } from '../Role/RoleRepositoryInterface'
 import { CrypterInterface } from '../Encryption/CrypterInterface'
 import { AuthResponseFactory20200115 } from '../Auth/AuthResponseFactory20200115'
-import { AuthResponse20200115 } from '../Auth/AuthResponse20200115'
 import { ApiVersion } from '../Api/ApiVersion'
 import { ApplyDefaultSettings } from './ApplyDefaultSettings/ApplyDefaultSettings'
 
@@ -36,7 +35,16 @@ export class Register implements UseCaseInterface {
 
     const { email, password, apiVersion, ephemeralSession, ...registrationFields } = dto
 
-    if (![ApiVersion.v20200115, ApiVersion.v20240226].includes(apiVersion as ApiVersion)) {
+    const apiVersionOrError = ApiVersion.create(apiVersion)
+    if (apiVersionOrError.isFailed()) {
+      return {
+        success: false,
+        errorMessage: apiVersionOrError.getError(),
+      }
+    }
+    const apiVersionVO = apiVersionOrError.getValue()
+
+    if (!apiVersionVO.isSupportedForRegistration()) {
       return {
         success: false,
         errorMessage: `Unsupported api version: ${apiVersion}`,
@@ -93,15 +101,17 @@ export class Register implements UseCaseInterface {
 
     const result = await this.authResponseFactory20200115.createResponse({
       user,
-      apiVersion,
+      apiVersion: apiVersionVO,
       userAgent: dto.updatedWithUserAgent,
       ephemeralSession,
       readonlyAccess: false,
+      snjs: dto.snjs,
+      application: dto.application,
     })
 
     return {
       success: true,
-      authResponse: result.response as AuthResponse20200115,
+      result,
     }
   }
 }

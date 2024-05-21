@@ -1,3 +1,3 @@
-export type IncreaseLoginAttemptsResponse = {
-  success: boolean
+export interface IncreaseLoginAttemptsResponse {
+  isNonCaptchaLimitReached: boolean
 }

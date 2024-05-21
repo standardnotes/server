@@ -27,6 +27,7 @@ import '../src/Controller/v2/RevisionsControllerV2'
 
 import helmet from 'helmet'
 import * as cors from 'cors'
+import * as cookieParser from 'cookie-parser'
 import { text, json, Request, Response, NextFunction } from 'express'
 import * as winston from 'winston'
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -47,9 +48,24 @@ void container.load().then((container) => {
     ? `${+env.get('HTTP_REQUEST_PAYLOAD_LIMIT_MEGABYTES', true)}mb`
     : '50mb'
 
+  const logger: winston.Logger = container.get(TYPES.ApiGateway_Logger)
+
   const server = new InversifyExpressServer(container)
 
   server.setConfig((app) => {
+    app.use((request: Request, _response: Response, next: NextFunction) => {
+      if (request.hostname.includes('standardnotes.org')) {
+        logger.warn('Request is using deprecated domain', {
+          origin: request.headers.origin,
+          method: request.method,
+          url: request.url,
+          snjs: request.headers['x-snjs-version'],
+          application: request.headers['x-application-version'],
+        })
+      }
+
+      next()
+    })
     app.use((_request: Request, response: Response, next: NextFunction) => {
       response.setHeader('X-API-Gateway-Version', container.get(TYPES.ApiGateway_VERSION))
       next()
@@ -77,15 +93,15 @@ void container.load().then((container) => {
       }),
     )
 
+    app.use(cookieParser())
+
     app.use(json({ limit: requestPayloadLimit }))
     app.use(
       text({
         type: ['text/plain', 'application/x-www-form-urlencoded', 'application/x-www-form-urlencoded; charset=utf-8'],
       }),
     )
-    const corsAllowedOrigins = env.get('CORS_ALLOWED_ORIGINS', true)
-      ? env.get('CORS_ALLOWED_ORIGINS', true).split(',')
-      : []
+    const corsAllowedOrigins = container.get<string[]>(TYPES.ApiGateway_CORS_ALLOWED_ORIGINS)
     app.use(
       cors({
         credentials: true,
@@ -136,13 +152,12 @@ void container.load().then((container) => {
     )
   })
 
-  const logger: winston.Logger = container.get(TYPES.ApiGateway_Logger)
-
   server.setErrorConfig((app) => {
     app.use((error: Record<string, unknown>, request: Request, response: Response, _next: NextFunction) => {
       const locals = response.locals as ResponseLocals
 
       logger.error(`${error.stack}`, {
+        origin: request.headers.origin,
         codeTag: 'server.ts',
         method: request.method,
         url: request.url,

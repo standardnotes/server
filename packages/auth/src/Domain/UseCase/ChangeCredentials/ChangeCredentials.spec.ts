@@ -76,7 +76,56 @@ describe('ChangeCredentials', () => {
   it('should change password', async () => {
     const result = await createUseCase().execute({
       username: Username.create('test@test.te').getValue(),
-      apiVersion: ApiVersion.v20200115,
+      apiVersion: ApiVersion.VERSIONS.v20200115,
+      currentPassword: 'qweqwe123123',
+      newPassword: 'test234',
+      pwNonce: 'asdzxc',
+      updatedWithUserAgent: 'Google Chrome',
+      kpCreated: '123',
+      kpOrigination: 'password-change',
+    })
+
+    expect(result.isFailed()).toBeFalsy()
+
+    expect(userRepository.save).toHaveBeenCalledWith({
+      encryptedPassword: expect.any(String),
+      pwNonce: 'asdzxc',
+      kpCreated: '123',
+      email: 'test@test.te',
+      uuid: '1-2-3',
+      kpOrigination: 'password-change',
+      updatedAt: new Date(1),
+    })
+    expect(domainEventPublisher.publish).not.toHaveBeenCalled()
+    expect(domainEventFactory.createUserEmailChangedEvent).not.toHaveBeenCalled()
+    expect(deleteOtherSessionsForUser.execute).toHaveBeenCalled()
+  })
+
+  it('should not change password if api version is invalid', async () => {
+    const result = await createUseCase().execute({
+      username: Username.create('test@test.te').getValue(),
+      apiVersion: 'invalid',
+      currentPassword: 'qweqwe123123',
+      newPassword: 'test234',
+      pwNonce: 'asdzxc',
+      updatedWithUserAgent: 'Google Chrome',
+      kpCreated: '123',
+      kpOrigination: 'password-change',
+    })
+
+    expect(result.isFailed()).toBeTruthy()
+  })
+
+  it('should change password on legacy users', async () => {
+    authResponseFactory.createResponse = jest
+      .fn()
+      .mockReturnValue({ legacyResponse: { foo: 'bar' }, session: { uuid: '1-2-3' } as jest.Mocked<Session> })
+
+    authResponseFactoryResolver.resolveAuthResponseFactoryVersion = jest.fn().mockReturnValue(authResponseFactory)
+
+    const result = await createUseCase().execute({
+      username: Username.create('test@test.te').getValue(),
+      apiVersion: ApiVersion.VERSIONS.v20161215,
       currentPassword: 'qweqwe123123',
       newPassword: 'test234',
       pwNonce: 'asdzxc',
@@ -106,7 +155,7 @@ describe('ChangeCredentials', () => {
 
     const result = await createUseCase().execute({
       username: Username.create('test@test.te').getValue(),
-      apiVersion: ApiVersion.v20200115,
+      apiVersion: ApiVersion.VERSIONS.v20200115,
       currentPassword: 'qweqwe123123',
       newPassword: 'test234',
       newEmail: 'new@test.te',
@@ -139,7 +188,7 @@ describe('ChangeCredentials', () => {
 
     const result = await createUseCase().execute({
       username: Username.create('test@test.te').getValue(),
-      apiVersion: ApiVersion.v20200115,
+      apiVersion: ApiVersion.VERSIONS.v20200115,
       currentPassword: 'qweqwe123123',
       newPassword: 'test234',
       newEmail: 'new@test.te',
@@ -159,7 +208,7 @@ describe('ChangeCredentials', () => {
   it('should not change email if the new email is invalid', async () => {
     const result = await createUseCase().execute({
       username: Username.create('test@test.te').getValue(),
-      apiVersion: ApiVersion.v20200115,
+      apiVersion: ApiVersion.VERSIONS.v20200115,
       currentPassword: 'qweqwe123123',
       newPassword: 'test234',
       newEmail: '',
@@ -181,7 +230,7 @@ describe('ChangeCredentials', () => {
 
     const result = await createUseCase().execute({
       username: Username.create('test@test.te').getValue(),
-      apiVersion: ApiVersion.v20200115,
+      apiVersion: ApiVersion.VERSIONS.v20200115,
       currentPassword: 'qweqwe123123',
       newPassword: 'test234',
       newEmail: '',
@@ -202,7 +251,7 @@ describe('ChangeCredentials', () => {
   it('should not change password if current password is incorrect', async () => {
     const result = await createUseCase().execute({
       username: Username.create('test@test.te').getValue(),
-      apiVersion: ApiVersion.v20200115,
+      apiVersion: ApiVersion.VERSIONS.v20200115,
       currentPassword: 'test123',
       newPassword: 'test234',
       pwNonce: 'asdzxc',
@@ -217,7 +266,7 @@ describe('ChangeCredentials', () => {
   it('should update protocol version while changing password', async () => {
     const result = await createUseCase().execute({
       username: Username.create('test@test.te').getValue(),
-      apiVersion: ApiVersion.v20200115,
+      apiVersion: ApiVersion.VERSIONS.v20200115,
       currentPassword: 'qweqwe123123',
       newPassword: 'test234',
       pwNonce: 'asdzxc',
@@ -241,7 +290,7 @@ describe('ChangeCredentials', () => {
 
     const result = await createUseCase().execute({
       username: Username.create('test@test.te').getValue(),
-      apiVersion: ApiVersion.v20200115,
+      apiVersion: ApiVersion.VERSIONS.v20200115,
       currentPassword: 'qweqwe123123',
       newPassword: 'qweqwe123123',
       newEmail: undefined,
@@ -271,7 +320,7 @@ describe('ChangeCredentials', () => {
 
     const result = await createUseCase().execute({
       username: Username.create('test@test.te').getValue(),
-      apiVersion: ApiVersion.v20200115,
+      apiVersion: ApiVersion.VERSIONS.v20200115,
       currentPassword: 'qweqwe123123',
       newPassword: 'test234',
       pwNonce: 'asdzxc',

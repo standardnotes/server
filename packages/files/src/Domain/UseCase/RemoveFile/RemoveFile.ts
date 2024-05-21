@@ -7,6 +7,7 @@ import { DomainEventFactoryInterface } from '../../Event/DomainEventFactoryInter
 import { FileRemoverInterface } from '../../Services/FileRemoverInterface'
 import { RemoveFileDTO } from './RemoveFileDTO'
 import { Result, UseCaseInterface } from '@standardnotes/domain-core'
+import { ValetTokenRepositoryInterface } from '../../ValetToken/ValetTokenRepositoryInterface'
 
 @injectable()
 export class RemoveFile implements UseCaseInterface<boolean> {
@@ -14,6 +15,7 @@ export class RemoveFile implements UseCaseInterface<boolean> {
     @inject(TYPES.Files_FileRemover) private fileRemover: FileRemoverInterface,
     @inject(TYPES.Files_DomainEventPublisher) private domainEventPublisher: DomainEventPublisherInterface,
     @inject(TYPES.Files_DomainEventFactory) private domainEventFactory: DomainEventFactoryInterface,
+    @inject(TYPES.Files_ValetTokenRepository) private valetTokenRepository: ValetTokenRepositoryInterface,
     @inject(TYPES.Files_Logger) private logger: Logger,
   ) {}
 
@@ -51,6 +53,8 @@ export class RemoveFile implements UseCaseInterface<boolean> {
       } else {
         return Result.fail('Could not remove file')
       }
+
+      await this.valetTokenRepository.markAsUsed(dto.valetToken)
 
       return Result.ok()
     } catch (error) {

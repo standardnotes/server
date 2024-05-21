@@ -2,7 +2,7 @@ import { AxiosInstance, AxiosError, AxiosResponse, Method } from 'axios'
 import { Request, Response } from 'express'
 import { Logger } from 'winston'
 import { TimerInterface } from '@standardnotes/time'
-import { IAuthClient, AuthorizationHeader, SessionValidationResponse } from '@standardnotes/grpc'
+import { Cookie, IAuthClient, RequestValidationOptions, SessionValidationResponse } from '@standardnotes/grpc'
 import * as grpc from '@grpc/grpc-js'
 
 import { CrossServiceTokenCacheInterface } from '../Cache/CrossServiceTokenCacheInterface'
@@ -30,22 +30,55 @@ export class GRPCServiceProxy implements ServiceProxyInterface {
     private gRPCSyncingServerServiceProxy: GRPCSyncingServerServiceProxy,
   ) {}
 
-  async validateSession(
+  async validateSession(dto: {
     headers: {
       authorization: string
       sharedVaultOwnerContext?: string
-    },
-    retryAttempt?: number,
-  ): Promise<{ status: number; data: unknown; headers: { contentType: string } }> {
+    }
+    requestMetadata: {
+      url: string
+      method: string
+      snjs?: string
+      application?: string
+      userAgent?: string
+      secChUa?: string
+    }
+    cookies?: Map<string, string[]>
+    retryAttempt?: number
+  }): Promise<{
+    status: number
+    data: unknown
+    headers: {
+      contentType: string
+    }
+  }> {
     const promise = new Promise((resolve, reject) => {
       try {
-        const request = new AuthorizationHeader()
-        request.setBearerToken(headers.authorization)
+        const request = new RequestValidationOptions()
+        request.setBearerToken(dto.headers.authorization)
 
-        const metadata = new grpc.Metadata()
-        metadata.set('x-shared-vault-owner-context', headers.sharedVaultOwnerContext ?? '')
+        for (const cookieName of dto.cookies?.keys() ?? []) {
+          for (const cookieValue of dto.cookies?.get(cookieName) as string[]) {
+            const cookie = new Cookie()
+            cookie.setName(cookieName)
+            cookie.setValue(cookieValue)
+
+            request.addCookie(cookie)
+          }
+        }
+        if (dto.headers.sharedVaultOwnerContext) {
+          request.setSharedVaultOwnerContext(dto.headers.sharedVaultOwnerContext)
+        }
 
         this.logger.debug('[GRPCServiceProxy] Validating session via gRPC')
+
+        const metadata = new grpc.Metadata()
+        metadata.set('x-snjs-version', dto.requestMetadata.snjs as string)
+        metadata.set('x-application-version', dto.requestMetadata.application as string)
+        metadata.set('x-origin-user-agent', dto.requestMetadata.userAgent as string)
+        metadata.set('x-origin-sec-ch-ua', dto.requestMetadata.secChUa as string)
+        metadata.set('x-origin-url', dto.requestMetadata.url)
+        metadata.set('x-origin-method', dto.requestMetadata.method)
 
         this.authClient.validate(
           request,
@@ -90,8 +123,8 @@ export class GRPCServiceProxy implements ServiceProxyInterface {
     try {
       const result = await promise
 
-      if (retryAttempt) {
-        this.logger.debug(`Request to Auth Server succeeded after ${retryAttempt} retries`)
+      if (dto.retryAttempt) {
+        this.logger.info(`Request to Auth Server succeeded after ${dto.retryAttempt} retries`)
       }
 
       return result as { status: number; data: unknown; headers: { contentType: string } }
@@ -99,15 +132,20 @@ export class GRPCServiceProxy implements ServiceProxyInterface {
       const requestDidNotMakeIt =
         'code' in (error as Record<string, unknown>) && (error as Record<string, unknown>).code === Status.UNAVAILABLE
 
-      const tooManyRetryAttempts = retryAttempt && retryAttempt > 2
+      const tooManyRetryAttempts = dto.retryAttempt && dto.retryAttempt > 2
       if (!tooManyRetryAttempts && requestDidNotMakeIt) {
         await this.timer.sleep(50)
 
-        const nextRetryAttempt = retryAttempt ? retryAttempt + 1 : 1
+        const nextRetryAttempt = dto.retryAttempt ? dto.retryAttempt + 1 : 1
 
-        this.logger.debug(`Retrying request to Auth Server for the ${nextRetryAttempt} time`)
+        this.logger.warn(`Retrying request to Auth Server for the ${nextRetryAttempt} time`)
 
-        return this.validateSession(headers, nextRetryAttempt)
+        return this.validateSession({
+          headers: dto.headers,
+          cookies: dto.cookies,
+          requestMetadata: dto.requestMetadata,
+          retryAttempt: nextRetryAttempt,
+        })
       }
 
       throw error
@@ -264,6 +302,8 @@ export class GRPCServiceProxy implements ServiceProxyInterface {
 
       delete headers.host
       delete headers['content-length']
+
+      headers.cookie = request.headers.cookie as string
 
       if ('authToken' in locals && locals.authToken) {
         headers['X-Auth-Token'] = locals.authToken

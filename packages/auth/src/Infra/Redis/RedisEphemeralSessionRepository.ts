@@ -8,12 +8,22 @@ import { EphemeralSessionRepositoryInterface } from '../../Domain/Session/Epheme
 @injectable()
 export class RedisEphemeralSessionRepository implements EphemeralSessionRepositoryInterface {
   private readonly PREFIX = 'session'
+  private readonly PREFIX_PRIVATE_ID = 'session-private-id'
   private readonly USER_SESSIONS_PREFIX = 'user-sessions'
 
   constructor(
     @inject(TYPES.Auth_Redis) private redisClient: IORedis.Redis,
     @inject(TYPES.Auth_EPHEMERAL_SESSION_AGE) private ephemeralSessionAge: number,
   ) {}
+
+  async findOneByPrivateIdentifier(privateIdentifier: string): Promise<EphemeralSession | null> {
+    const stringifiedSession = await this.redisClient.get(`${this.PREFIX_PRIVATE_ID}:${privateIdentifier}`)
+    if (!stringifiedSession) {
+      return null
+    }
+
+    return JSON.parse(stringifiedSession)
+  }
 
   async deleteOne(uuid: string, userUuid: string): Promise<void> {
     const pipeline = this.redisClient.pipeline()
@@ -86,6 +96,7 @@ export class RedisEphemeralSessionRepository implements EphemeralSessionReposito
 
     pipeline.setex(`${this.PREFIX}:${ephemeralSession.uuid}:${ephemeralSession.userUuid}`, ttl, stringifiedSession)
     pipeline.setex(`${this.PREFIX}:${ephemeralSession.uuid}`, ttl, stringifiedSession)
+    pipeline.setex(`${this.PREFIX_PRIVATE_ID}:${ephemeralSession.privateIdentifier}`, ttl, stringifiedSession)
 
     pipeline.sadd(`${this.USER_SESSIONS_PREFIX}:${ephemeralSession.userUuid}`, ephemeralSession.uuid)
     pipeline.expire(`${this.USER_SESSIONS_PREFIX}:${ephemeralSession.userUuid}`, ttl)

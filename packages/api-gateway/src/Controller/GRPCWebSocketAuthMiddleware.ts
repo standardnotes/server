@@ -100,6 +100,7 @@ export class GRPCWebSocketAuthMiddleware extends BaseMiddleware {
         roles: decodedToken.roles,
         isFreeUser: decodedToken.roles.length === 1 && decodedToken.roles[0].name === RoleName.NAMES.CoreUser,
         readOnlyAccess: decodedToken.session?.readonly_access ?? false,
+        hasContentLimit: decodedToken.hasContentLimit,
       } as ResponseLocals)
     } catch (error) {
       this.logger.error(

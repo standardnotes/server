@@ -1,6 +1,5 @@
 import 'reflect-metadata'
 
-import { Logger } from 'winston'
 import { LockRepositoryInterface } from '../User/LockRepositoryInterface'
 
 import { User } from '../User/User'
@@ -12,14 +11,10 @@ describe('IncreaseLoginAttempts', () => {
   let lockRepository: LockRepositoryInterface
   const maxLoginAttempts = 6
   let user: User
-  let logger: Logger
 
-  const createUseCase = () => new IncreaseLoginAttempts(userRepository, lockRepository, maxLoginAttempts, logger)
+  const createUseCase = () => new IncreaseLoginAttempts(userRepository, lockRepository, maxLoginAttempts)
 
   beforeEach(() => {
-    logger = {} as jest.Mocked<Logger>
-    logger.debug = jest.fn()
-
     user = {} as jest.Mocked<User>
     user.uuid = '123'
 
@@ -28,42 +23,41 @@ describe('IncreaseLoginAttempts', () => {
 
     lockRepository = {} as jest.Mocked<LockRepositoryInterface>
     lockRepository.getLockCounter = jest.fn()
-    lockRepository.lockUser = jest.fn()
     lockRepository.updateLockCounter = jest.fn()
   })
 
   it('should do nothing if a user identifier is invalid', async () => {
-    expect(await createUseCase().execute({ email: '  ' })).toEqual({ success: false })
+    const result = await createUseCase().execute({ email: '  ' })
+    expect(result.isFailed()).toEqual(true)
 
     expect(lockRepository.updateLockCounter).not.toHaveBeenCalled()
-    expect(lockRepository.lockUser).not.toHaveBeenCalled()
-  })
-
-  it('should lock a user if the number of failed login attempts is breached', async () => {
-    lockRepository.getLockCounter = jest.fn().mockReturnValue(5)
-
-    expect(await createUseCase().execute({ email: 'test@test.te' })).toEqual({ success: true })
-
-    expect(lockRepository.updateLockCounter).toHaveBeenCalledWith('123', 6)
-    expect(lockRepository.lockUser).toHaveBeenCalledWith('123')
   })
 
   it('should update the lock counter if a user is not exceeding the max failed login attempts', async () => {
-    lockRepository.getLockCounter = jest.fn().mockReturnValue(4)
+    lockRepository.getLockCounter = jest.fn().mockReturnValueOnce(4).mockReturnValueOnce(0)
 
-    expect(await createUseCase().execute({ email: 'test@test.te' })).toEqual({ success: true })
+    const result = await createUseCase().execute({ email: 'test@test.te' })
+    expect(result.isFailed()).toEqual(false)
 
-    expect(lockRepository.lockUser).not.toHaveBeenCalled()
-    expect(lockRepository.updateLockCounter).toHaveBeenCalledWith('123', 5)
+    expect(lockRepository.updateLockCounter).toHaveBeenCalledWith('123', 5, 'non-captcha')
+  })
+
+  it('should update the captcha lock counter if a user is exceeding the max failed login attempts', async () => {
+    lockRepository.getLockCounter = jest.fn().mockReturnValueOnce(6).mockReturnValueOnce(0)
+
+    const result = await createUseCase().execute({ email: 'test@test.te' })
+    expect(result.isFailed()).toEqual(false)
+
+    expect(lockRepository.updateLockCounter).toHaveBeenCalledWith('123', 1, 'captcha')
   })
 
   it('should should update the lock counter based on email if user is not found', async () => {
-    lockRepository.getLockCounter = jest.fn().mockReturnValue(4)
+    lockRepository.getLockCounter = jest.fn().mockReturnValueOnce(4).mockReturnValueOnce(0)
     userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue(null)
 
-    expect(await createUseCase().execute({ email: 'test@test.te' })).toEqual({ success: true })
+    const result = await createUseCase().execute({ email: 'test@test.te' })
+    expect(result.isFailed()).toEqual(false)
 
-    expect(lockRepository.lockUser).not.toHaveBeenCalled()
-    expect(lockRepository.updateLockCounter).toHaveBeenCalledWith('test@test.te', 5)
+    expect(lockRepository.updateLockCounter).toHaveBeenCalledWith('test@test.te', 5, 'non-captcha')
   })
 })

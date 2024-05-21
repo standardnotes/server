@@ -12,6 +12,7 @@ import { AuthResponseFactory20200115 } from './AuthResponseFactory20200115'
 import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
 import { DomainEventFactoryInterface } from '../Event/DomainEventFactoryInterface'
 import { Session } from '../Session/Session'
+import { ApiVersion } from '../Api/ApiVersion'
 
 describe('AuthResponseFactory20200115', () => {
   let sessionService: SessionServiceInterface
@@ -51,10 +52,10 @@ describe('AuthResponseFactory20200115', () => {
     sessionService = {} as jest.Mocked<SessionServiceInterface>
     sessionService.createNewSessionForUser = jest
       .fn()
-      .mockReturnValue({ sessionHttpRepresentation: sessionPayload, session: {} as jest.Mocked<Session> })
+      .mockReturnValue({ sessionHttpRepresentation: sessionPayload, sessionBody: {} as jest.Mocked<Session> })
     sessionService.createNewEphemeralSessionForUser = jest
       .fn()
-      .mockReturnValue({ sessionHttpRepresentation: sessionPayload, session: {} as jest.Mocked<Session> })
+      .mockReturnValue({ sessionHttpRepresentation: sessionPayload, sessionBody: {} as jest.Mocked<Session> })
 
     keyParamsFactory = {} as jest.Mocked<KeyParamsFactoryInterface>
     keyParamsFactory.create = jest.fn().mockReturnValue({
@@ -83,13 +84,13 @@ describe('AuthResponseFactory20200115', () => {
 
     const result = await createFactory().createResponse({
       user,
-      apiVersion: '20161215',
+      apiVersion: ApiVersion.create(ApiVersion.VERSIONS.v20161215).getValue(),
       userAgent: 'Google Chrome',
       ephemeralSession: false,
       readonlyAccess: false,
     })
 
-    expect(result.response).toEqual({
+    expect(result.legacyResponse).toEqual({
       user: { foo: 'bar' },
       token: expect.any(String),
     })
@@ -100,18 +101,18 @@ describe('AuthResponseFactory20200115', () => {
 
     const result = await createFactory().createResponse({
       user,
-      apiVersion: '20200115',
+      apiVersion: ApiVersion.create(ApiVersion.VERSIONS.v20200115).getValue(),
       userAgent: 'Google Chrome',
       ephemeralSession: false,
       readonlyAccess: false,
     })
 
     expect(result.response).toEqual({
-      key_params: {
+      keyParams: {
         key1: 'value1',
         key2: 'value2',
       },
-      session: {
+      sessionBody: {
         access_token: 'access_token',
         refresh_token: 'refresh_token',
         access_expiration: 123,
@@ -131,18 +132,18 @@ describe('AuthResponseFactory20200115', () => {
 
     const result = await createFactory().createResponse({
       user,
-      apiVersion: '20200115',
+      apiVersion: ApiVersion.create(ApiVersion.VERSIONS.v20200115).getValue(),
       userAgent: 'Google Chrome',
       ephemeralSession: false,
       readonlyAccess: false,
     })
 
     expect(result.response).toEqual({
-      key_params: {
+      keyParams: {
         key1: 'value1',
         key2: 'value2',
       },
-      session: {
+      sessionBody: {
         access_token: 'access_token',
         refresh_token: 'refresh_token',
         access_expiration: 123,
@@ -160,18 +161,18 @@ describe('AuthResponseFactory20200115', () => {
 
     const result = await createFactory().createResponse({
       user,
-      apiVersion: '20200115',
+      apiVersion: ApiVersion.create(ApiVersion.VERSIONS.v20200115).getValue(),
       userAgent: 'Google Chrome',
       ephemeralSession: true,
       readonlyAccess: false,
     })
 
     expect(result.response).toEqual({
-      key_params: {
+      keyParams: {
         key1: 'value1',
         key2: 'value2',
       },
-      session: {
+      sessionBody: {
         access_token: 'access_token',
         refresh_token: 'refresh_token',
         access_expiration: 123,
@@ -192,23 +193,23 @@ describe('AuthResponseFactory20200115', () => {
         ...sessionPayload,
         readonly_access: true,
       },
-      session: {} as jest.Mocked<Session>,
+      sessionBody: {} as jest.Mocked<Session>,
     })
 
     const result = await createFactory().createResponse({
       user,
-      apiVersion: '20200115',
+      apiVersion: ApiVersion.create(ApiVersion.VERSIONS.v20200115).getValue(),
       userAgent: 'Google Chrome',
       ephemeralSession: false,
       readonlyAccess: true,
     })
 
     expect(result.response).toEqual({
-      key_params: {
+      keyParams: {
         key1: 'value1',
         key2: 'value2',
       },
-      session: {
+      sessionBody: {
         access_token: 'access_token',
         refresh_token: 'refresh_token',
         access_expiration: 123,

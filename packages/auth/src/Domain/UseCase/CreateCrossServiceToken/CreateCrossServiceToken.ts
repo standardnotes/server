@@ -1,5 +1,5 @@
-import { TokenEncoderInterface, CrossServiceTokenData } from '@standardnotes/security'
-import { Result, SettingName, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
+import { CrossServiceTokenData, TokenEncoderInterface } from '@standardnotes/security'
+import { Result, RoleName, SettingName, UseCaseInterface, Uuid } from '@standardnotes/domain-core'
 
 import { ProjectorInterface } from '../../../Projection/ProjectorInterface'
 import { Role } from '../../Role/Role'
@@ -44,6 +44,13 @@ export class CreateCrossServiceToken implements UseCaseInterface<string> {
     }
 
     const roles = await user.roles
+    const coreUserRole = roles.find((role) => role.name === RoleName.NAMES.CoreUser)
+    let hasContentLimit = false
+
+    if (coreUserRole) {
+      const permissions = await coreUserRole.permissions
+      hasContentLimit = permissions.find((permission) => permission.name === 'server:content-limit') !== undefined
+    }
 
     const sharedVaultAssociations = await this.sharedVaultUserRepository.findByUserUuid(
       Uuid.create(user.uuid).getValue(),
@@ -57,6 +64,7 @@ export class CreateCrossServiceToken implements UseCaseInterface<string> {
         shared_vault_uuid: association.props.sharedVaultUuid.value,
         permission: association.props.permission.value,
       })),
+      hasContentLimit: hasContentLimit,
     }
 
     if (dto.sharedVaultOwnerContext !== undefined) {

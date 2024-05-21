@@ -17,14 +17,14 @@ export class AuthResponseFactoryResolver implements AuthResponseFactoryResolverI
     @inject(TYPES.Auth_Logger) private logger: Logger,
   ) {}
 
-  resolveAuthResponseFactoryVersion(apiVersion: string): AuthResponseFactoryInterface {
-    this.logger.debug(`Resolving auth response factory for api version: ${apiVersion}`)
+  resolveAuthResponseFactoryVersion(apiVersion: ApiVersion): AuthResponseFactoryInterface {
+    this.logger.debug(`Resolving auth response factory for api version: ${apiVersion.value}`)
 
-    switch (apiVersion) {
-      case ApiVersion.v20190520:
+    switch (apiVersion.value) {
+      case ApiVersion.VERSIONS.v20190520:
         return this.authResponseFactory20190520
-      case ApiVersion.v20200115:
-      case ApiVersion.v20240226:
+      case ApiVersion.VERSIONS.v20200115:
+      case ApiVersion.VERSIONS.v20240226:
         return this.authResponseFactory20200115
       default:
         return this.authResponseFactory20161215

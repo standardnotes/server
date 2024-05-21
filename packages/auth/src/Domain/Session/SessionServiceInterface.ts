@@ -1,27 +1,35 @@
-import { SessionBody } from '@standardnotes/responses'
 import { User } from '../User/User'
 import { RevokedSession } from './RevokedSession'
 import { Session } from './Session'
+import { SessionCreationResult } from './SessionCreationResult'
+import { ApiVersion } from '../Api/ApiVersion'
 
 export interface SessionServiceInterface {
   createNewSessionForUser(dto: {
     user: User
-    apiVersion: string
+    apiVersion: ApiVersion
     userAgent: string
     readonlyAccess: boolean
-  }): Promise<{ sessionHttpRepresentation: SessionBody; session: Session }>
+    snjs?: string
+    application?: string
+  }): Promise<SessionCreationResult>
   createNewEphemeralSessionForUser(dto: {
     user: User
-    apiVersion: string
+    apiVersion: ApiVersion
     userAgent: string
     readonlyAccess: boolean
-  }): Promise<{ sessionHttpRepresentation: SessionBody; session: Session }>
-  refreshTokens(dto: { session: Session; isEphemeral: boolean }): Promise<SessionBody>
-  getSessionFromToken(token: string): Promise<{ session: Session | undefined; isEphemeral: boolean }>
+    snjs?: string
+    application?: string
+  }): Promise<SessionCreationResult>
+  refreshTokens(dto: {
+    session: Session
+    isEphemeral: boolean
+    apiVersion: ApiVersion
+    snjs?: string
+    application?: string
+  }): Promise<SessionCreationResult>
   getRevokedSessionFromToken(token: string): Promise<RevokedSession | null>
   markRevokedSessionAsReceived(revokedSession: RevokedSession): Promise<RevokedSession>
-  deleteSessionByToken(token: string): Promise<string | null>
-  isRefreshTokenMatchingHashedSessionToken(session: Session, token: string): boolean
   getDeviceInfo(session: Session): string
   getOperatingSystemInfoFromUserAgent(userAgent: string): string
   getBrowserInfoFromUserAgent(userAgent: string): string

@@ -26,7 +26,7 @@
     "clean": "rm -fr dist",
     "build": "tsc --build",
     "lint": "eslint . --ext .ts",
-    "test": "jest --coverage --no-cache --passWithNoTests"
+    "test": "jest --coverage --no-cache --passWithNoTests --maxWorkers=2"
   },
   "dependencies": {
     "@standardnotes/predicates": "workspace:*",

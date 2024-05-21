@@ -28,20 +28,51 @@ export class HttpServiceProxy implements ServiceProxyInterface {
     @inject(TYPES.ApiGateway_Timer) private timer: TimerInterface,
   ) {}
 
-  async validateSession(
+  async validateSession(dto: {
     headers: {
       authorization: string
       sharedVaultOwnerContext?: string
-    },
-    retryAttempt?: number,
-  ): Promise<{ status: number; data: unknown; headers: { contentType: string } }> {
+    }
+    requestMetadata: {
+      url: string
+      method: string
+      snjs?: string
+      application?: string
+      userAgent?: string
+      secChUa?: string
+    }
+    cookies?: Map<string, string[]>
+    retryAttempt?: number
+  }): Promise<{
+    status: number
+    data: unknown
+    headers: {
+      contentType: string
+    }
+  }> {
     try {
+      let stringOfCookies = ''
+      for (const cookieName of dto.cookies?.keys() ?? []) {
+        for (const cookieValue of dto.cookies?.get(cookieName) as string[]) {
+          stringOfCookies += `${cookieName}=${cookieValue}; `
+        }
+      }
+
       const authResponse = await this.httpClient.request({
         method: 'POST',
         headers: {
-          Authorization: headers.authorization,
           Accept: 'application/json',
-          'x-shared-vault-owner-context': headers.sharedVaultOwnerContext,
+          Cookie: stringOfCookies.trim(),
+          'x-snjs-version': dto.requestMetadata.snjs,
+          'x-application-version': dto.requestMetadata.application,
+          'x-origin-user-agent': dto.requestMetadata.userAgent,
+          'x-origin-sec-ch-ua': dto.requestMetadata.secChUa,
+          'x-origin-url': dto.requestMetadata.url,
+          'x-origin-method': dto.requestMetadata.method,
+        },
+        data: {
+          authTokenFromHeaders: dto.headers.authorization,
+          sharedVaultOwnerContext: dto.headers.sharedVaultOwnerContext,
         },
         validateStatus: (status: number) => {
           return status >= 200 && status < 500
@@ -58,13 +89,18 @@ export class HttpServiceProxy implements ServiceProxyInterface {
       }
     } catch (error) {
       const requestDidNotMakeIt = this.requestTimedOutOrDidNotReachDestination(error as Record<string, unknown>)
-      const tooManyRetryAttempts = retryAttempt && retryAttempt > 2
+      const tooManyRetryAttempts = dto.retryAttempt && dto.retryAttempt > 2
       if (!tooManyRetryAttempts && requestDidNotMakeIt) {
         await this.timer.sleep(50)
 
-        const nextRetryAttempt = retryAttempt ? retryAttempt + 1 : 1
+        const nextRetryAttempt = dto.retryAttempt ? dto.retryAttempt + 1 : 1
 
-        return this.validateSession(headers, nextRetryAttempt)
+        return this.validateSession({
+          headers: dto.headers,
+          cookies: dto.cookies,
+          requestMetadata: dto.requestMetadata,
+          retryAttempt: nextRetryAttempt,
+        })
       }
 
       throw error
@@ -186,8 +222,17 @@ export class HttpServiceProxy implements ServiceProxyInterface {
         headers[headerName] = request.headers[headerName] as string
       }
 
+      headers['x-origin-url'] = request.url
+      headers['x-origin-method'] = request.method
+      headers['x-snjs-version'] = request.headers['x-snjs-version'] as string
+      headers['x-application-version'] = request.headers['x-application-version'] as string
+      headers['x-origin-user-agent'] = request.headers['user-agent'] as string
+      headers['x-origin-sec-ch-ua'] = request.headers['sec-ch-ua'] as string
+
       delete headers.host
       delete headers['content-length']
+
+      headers.cookie = request.headers.cookie as string
 
       if ('authToken' in locals && locals.authToken) {
         headers['X-Auth-Token'] = locals.authToken

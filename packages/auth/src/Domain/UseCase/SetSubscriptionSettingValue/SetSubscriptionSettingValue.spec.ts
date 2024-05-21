@@ -5,16 +5,26 @@ import { SetSubscriptionSettingValue } from './SetSubscriptionSettingValue'
 import { Result, SettingName, Timestamps, Uuid } from '@standardnotes/domain-core'
 import { EncryptionVersion } from '../../Encryption/EncryptionVersion'
 import { SubscriptionSetting } from '../../Setting/SubscriptionSetting'
+import { SettingsAssociationServiceInterface } from '../../Setting/SettingsAssociationServiceInterface'
 
 describe('SetSubscriptionSettingValue', () => {
   let subscriptionSettingRepository: SubscriptionSettingRepositoryInterface
   let getSubscriptionSetting: GetSubscriptionSetting
+  let settingsAssociationService: SettingsAssociationServiceInterface
   let timer: TimerInterface
 
   const createUseCase = () =>
-    new SetSubscriptionSettingValue(subscriptionSettingRepository, getSubscriptionSetting, timer)
+    new SetSubscriptionSettingValue(
+      subscriptionSettingRepository,
+      getSubscriptionSetting,
+      settingsAssociationService,
+      timer,
+    )
 
   beforeEach(() => {
+    settingsAssociationService = {} as jest.Mocked<SettingsAssociationServiceInterface>
+    settingsAssociationService.isSettingMutableByClient = jest.fn().mockReturnValue(true)
+
     subscriptionSettingRepository = {} as jest.Mocked<SubscriptionSettingRepositoryInterface>
     subscriptionSettingRepository.insert = jest.fn()
     subscriptionSettingRepository.update = jest.fn()
@@ -110,6 +120,21 @@ describe('SetSubscriptionSettingValue', () => {
 
     expect(result.isFailed()).toBe(false)
     expect(subscriptionSettingRepository.insert).toHaveBeenCalled()
+  })
+
+  it('should return error if subscription setting is not mutable by client and a permission check is in order', async () => {
+    settingsAssociationService.isSettingMutableByClient = jest.fn().mockReturnValue(false)
+
+    const useCase = createUseCase()
+
+    const result = await useCase.execute({
+      userSubscriptionUuid: '00000000-0000-0000-0000-000000000000',
+      settingName: SettingName.NAMES.MuteSignInEmails,
+      value: 'encrypted',
+      checkUserPermissions: true,
+    })
+
+    expect(result.isFailed()).toBe(true)
   })
 
   it('should return error if subscription setting could not be created', async () => {

@@ -6,15 +6,17 @@ import { SubscriptionSettingRepositoryInterface } from '../../Setting/Subscripti
 import { GetSubscriptionSetting } from '../GetSubscriptionSetting/GetSubscriptionSetting'
 import { SubscriptionSetting } from '../../Setting/SubscriptionSetting'
 import { EncryptionVersion } from '../../Encryption/EncryptionVersion'
+import { SettingsAssociationServiceInterface } from '../../Setting/SettingsAssociationServiceInterface'
 
-export class SetSubscriptionSettingValue implements UseCaseInterface<void> {
+export class SetSubscriptionSettingValue implements UseCaseInterface<SubscriptionSetting> {
   constructor(
     private subscriptionSettingRepository: SubscriptionSettingRepositoryInterface,
     private getSubscriptionSetting: GetSubscriptionSetting,
+    private settingsAssociationService: SettingsAssociationServiceInterface,
     private timer: TimerInterface,
   ) {}
 
-  async execute(dto: SetSubscriptionSettingValueDTO): Promise<Result<void>> {
+  async execute(dto: SetSubscriptionSettingValueDTO): Promise<Result<SubscriptionSetting>> {
     const userSubscriptionUuidOrError = Uuid.create(dto.userSubscriptionUuid)
     if (userSubscriptionUuidOrError.isFailed()) {
       return Result.fail(userSubscriptionUuidOrError.getError())
@@ -38,6 +40,10 @@ export class SetSubscriptionSettingValue implements UseCaseInterface<void> {
 
     if (!settingName.isASubscriptionSetting()) {
       return Result.fail(`Setting ${settingName.value} is not a subscription setting!`)
+    }
+
+    if (dto.checkUserPermissions && !(await this.userHasPermissionToUpdateSetting(settingName))) {
+      return Result.fail(`User does not have permission to update setting ${settingName.value}.`)
     }
 
     const settingExists = await this.getSubscriptionSetting.execute({
@@ -81,6 +87,12 @@ export class SetSubscriptionSettingValue implements UseCaseInterface<void> {
 
     await this.subscriptionSettingRepository.update(setting)
 
-    return Result.ok()
+    return Result.ok(setting)
+  }
+
+  private async userHasPermissionToUpdateSetting(settingName: SettingName): Promise<boolean> {
+    const settingIsMutableByClient = this.settingsAssociationService.isSettingMutableByClient(settingName)
+
+    return settingIsMutableByClient
   }
 }

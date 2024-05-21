@@ -3,4 +3,5 @@ export interface SetSubscriptionSettingValueDTO {
   userSubscriptionUuid: string
   value: string | null
   newUserSubscriptionUuid?: string
+  checkUserPermissions?: boolean
 }

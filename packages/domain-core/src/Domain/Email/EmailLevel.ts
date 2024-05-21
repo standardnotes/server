@@ -9,7 +9,6 @@ export class EmailLevel extends ValueObject<EmailLevelProps> {
     SignIn: 'SIGN_IN',
     Marketing: 'MARKETING',
     FailedCloudBackup: 'FAILED_CLOUD_BACKUP',
-    FailedEmailBackup: 'FAILED_EMAIL_BACKUP',
   }
 
   get value(): string {

@@ -7,6 +7,7 @@ import { GetUserKeyParamsRecoveryDTO } from './GetUserKeyParamsRecoveryDTO'
 import { User } from '../../User/User'
 import { PKCERepositoryInterface } from '../../User/PKCERepositoryInterface'
 import { GetSetting } from '../GetSetting/GetSetting'
+import { ApiVersion } from '../../Api/ApiVersion'
 
 export class GetUserKeyParamsRecovery implements UseCaseInterface<KeyParamsData> {
   constructor(
@@ -17,6 +18,16 @@ export class GetUserKeyParamsRecovery implements UseCaseInterface<KeyParamsData>
   ) {}
 
   async execute(dto: GetUserKeyParamsRecoveryDTO): Promise<Result<KeyParamsData>> {
+    const apiVersionOrError = ApiVersion.create(dto.apiVersion)
+    if (apiVersionOrError.isFailed()) {
+      return Result.fail(apiVersionOrError.getError())
+    }
+    const apiVersion = apiVersionOrError.getValue()
+
+    if (!apiVersion.isSupportedForRecoverySignIn()) {
+      return Result.fail('Unsupported api version')
+    }
+
     const usernameOrError = Username.create(dto.username)
     if (usernameOrError.isFailed()) {
       return Result.fail(`Could not sign in with recovery codes: ${usernameOrError.getError()}`)

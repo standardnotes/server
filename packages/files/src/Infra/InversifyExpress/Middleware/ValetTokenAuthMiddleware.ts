@@ -5,11 +5,14 @@ import { inject, injectable } from 'inversify'
 import { BaseMiddleware } from 'inversify-express-utils'
 import { Logger } from 'winston'
 import TYPES from '../../../Bootstrap/Types'
+import { ValetTokenResponseLocals } from './ValetTokenResponseLocals'
+import { ValetTokenRepositoryInterface } from '../../../Domain/ValetToken/ValetTokenRepositoryInterface'
 
 @injectable()
 export class ValetTokenAuthMiddleware extends BaseMiddleware {
   constructor(
     @inject(TYPES.Files_ValetTokenDecoder) private tokenDecoder: TokenDecoderInterface<ValetTokenData>,
+    @inject(TYPES.Files_ValetTokenRepository) private valetTokenRepository: ValetTokenRepositoryInterface,
     @inject(TYPES.Files_Logger) private logger: Logger,
   ) {
     super()
@@ -20,6 +23,22 @@ export class ValetTokenAuthMiddleware extends BaseMiddleware {
       const valetToken = request.headers['x-valet-token'] || request.body.valetToken || request.query.valetToken
       if (!valetToken) {
         this.logger.debug('ValetTokenAuthMiddleware missing valet token.')
+
+        response.status(401).send({
+          error: {
+            tag: 'invalid-auth',
+            message: 'Invalid valet token.',
+          },
+        })
+
+        return
+      }
+
+      if (await this.valetTokenRepository.isUsed(valetToken)) {
+        this.logger.debug('Already used valet token.', {
+          valetToken,
+          codeTag: 'ValetTokenAuthMiddleware',
+        })
 
         response.status(401).send({
           error: {
@@ -73,12 +92,15 @@ export class ValetTokenAuthMiddleware extends BaseMiddleware {
         return
       }
 
-      response.locals.userUuid = valetTokenData.userUuid
-      response.locals.permittedResources = valetTokenData.permittedResources
-      response.locals.permittedOperation = valetTokenData.permittedOperation
-      response.locals.uploadBytesUsed = valetTokenData.uploadBytesUsed
-      response.locals.uploadBytesLimit = valetTokenData.uploadBytesLimit
-      response.locals.regularSubscriptionUuid = valetTokenData.regularSubscriptionUuid
+      Object.assign(response.locals, {
+        userUuid: valetTokenData.userUuid,
+        permittedResources: valetTokenData.permittedResources,
+        permittedOperation: valetTokenData.permittedOperation,
+        uploadBytesUsed: valetTokenData.uploadBytesUsed,
+        uploadBytesLimit: valetTokenData.uploadBytesLimit,
+        regularSubscriptionUuid: valetTokenData.regularSubscriptionUuid,
+        valetToken,
+      } as ValetTokenResponseLocals)
 
       return next()
     } catch (error) {

@@ -42,9 +42,33 @@ export abstract class AuthMiddleware extends BaseMiddleware {
       }
 
       if (crossServiceToken === null) {
+        const cookiesFromHeaders = new Map<string, string[]>()
+        request.headers.cookie?.split(';').forEach((cookie) => {
+          const parts = cookie.split('=')
+          if (parts.length === 2) {
+            const existingCookies = cookiesFromHeaders.get(parts[0].trim())
+            if (existingCookies) {
+              existingCookies.push(parts[1].trim())
+              cookiesFromHeaders.set(parts[0].trim(), existingCookies)
+            } else {
+              cookiesFromHeaders.set(parts[0].trim(), [parts[1].trim()])
+            }
+          }
+        })
         const authResponse = await this.serviceProxy.validateSession({
-          authorization: authHeaderValue,
-          sharedVaultOwnerContext: sharedVaultOwnerContextHeaderValue,
+          headers: {
+            authorization: authHeaderValue.replace('Bearer ', ''),
+            sharedVaultOwnerContext: sharedVaultOwnerContextHeaderValue,
+          },
+          requestMetadata: {
+            snjs: request.headers['x-snjs-version'] as string,
+            application: request.headers['x-application-version'] as string,
+            url: request.url,
+            method: request.method,
+            userAgent: request.headers['user-agent'],
+            secChUa: request.headers['sec-ch-ua'] as string,
+          },
+          cookies: cookiesFromHeaders,
         })
 
         if (!this.handleSessionValidationResponse(authResponse, response, next)) {

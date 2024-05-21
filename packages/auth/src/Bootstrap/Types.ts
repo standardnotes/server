@@ -34,6 +34,7 @@ const TYPES = {
   Auth_UserSubscriptionRepository: Symbol.for('Auth_UserSubscriptionRepository'),
   Auth_OfflineUserSubscriptionRepository: Symbol.for('Auth_OfflineUserSubscriptionRepository'),
   Auth_SubscriptionTokenRepository: Symbol.for('Auth_SubscriptionTokenRepository'),
+  Auth_SessionTokensCooldownRepository: Symbol.for('Auth_SessionTokensCooldownRepository'),
   Auth_OfflineSubscriptionTokenRepository: Symbol.for('Auth_OfflineSubscriptionTokenRepository'),
   Auth_SharedSubscriptionInvitationRepository: Symbol.for('Auth_SharedSubscriptionInvitationRepository'),
   Auth_PKCERepository: Symbol.for('Auth_PKCERepository'),
@@ -84,7 +85,9 @@ const TYPES = {
   Auth_REFRESH_TOKEN_AGE: Symbol.for('Auth_REFRESH_TOKEN_AGE'),
   Auth_EPHEMERAL_SESSION_AGE: Symbol.for('Auth_EPHEMERAL_SESSION_AGE'),
   Auth_MAX_LOGIN_ATTEMPTS: Symbol.for('Auth_MAX_LOGIN_ATTEMPTS'),
+  Auth_MAX_CAPTCHA_LOGIN_ATTEMPTS: Symbol.for('Auth_MAX_CAPTCHA_LOGIN_ATTEMPTS'),
   Auth_FAILED_LOGIN_LOCKOUT: Symbol.for('Auth_FAILED_LOGIN_LOCKOUT'),
+  Auth_FAILED_LOGIN_CAPTCHA_LOCKOUT: Symbol.for('Auth_FAILED_LOGIN_CAPTCHA_LOCKOUT'),
   Auth_PSEUDO_KEY_PARAMS_KEY: Symbol.for('Auth_PSEUDO_KEY_PARAMS_KEY'),
   Auth_REDIS_URL: Symbol.for('Auth_REDIS_URL'),
   Auth_DISABLE_USER_REGISTRATION: Symbol.for('Auth_DISABLE_USER_REGISTRATION'),
@@ -100,6 +103,10 @@ const TYPES = {
   Auth_U2F_REQUIRE_USER_VERIFICATION: Symbol.for('Auth_U2F_REQUIRE_USER_VERIFICATION'),
   Auth_READONLY_USERS: Symbol.for('Auth_READONLY_USERS'),
   Auth_IS_CONFIGURED_FOR_HOME_SERVER_OR_SELF_HOSTING: Symbol.for('Auth_IS_CONFIGURED_FOR_HOME_SERVER_OR_SELF_HOSTING'),
+  Auth_CAPTCHA_SERVER_URL: Symbol.for('Auth_CAPTCHA_SERVER_URL'),
+  Auth_CAPTCHA_UI_URL: Symbol.for('Auth_CAPTCHA_UI_URL'),
+  Auth_HUMAN_VERIFICATION_ENABLED: Symbol.for('Auth_HUMAN_VERIFICATION_ENABLED'),
+  Auth_FORCE_LEGACY_SESSIONS: Symbol.for('Auth_FORCE_LEGACY_SESSIONS'),
   // use cases
   Auth_AuthenticateUser: Symbol.for('Auth_AuthenticateUser'),
   Auth_AuthenticateRequest: Symbol.for('Auth_AuthenticateRequest'),
@@ -109,7 +116,6 @@ const TYPES = {
   Auth_ClearLoginAttempts: Symbol.for('Auth_ClearLoginAttempts'),
   Auth_IncreaseLoginAttempts: Symbol.for('Auth_IncreaseLoginAttempts'),
   Auth_GetUserKeyParams: Symbol.for('Auth_GetUserKeyParams'),
-  Auth_UpdateUser: Symbol.for('Auth_UpdateUser'),
   Auth_Register: Symbol.for('Auth_Register'),
   Auth_GetActiveSessionsForUser: Symbol.for('Auth_GetActiveSessionsForUser'),
   Auth_DeleteOtherSessionsForUser: Symbol.for('Auth_DeleteOtherSessionsForUser'),
@@ -158,6 +164,10 @@ const TYPES = {
   Auth_ApplyDefaultSettings: Symbol.for('Auth_ApplyDefaultSettings'),
   Auth_ActivatePremiumFeatures: Symbol.for('Auth_ActivatePremiumFeatures'),
   Auth_SignInWithRecoveryCodes: Symbol.for('Auth_SignInWithRecoveryCodes'),
+  Auth_GetSessionFromToken: Symbol.for('Auth_GetSessionFromToken'),
+  Auth_DeleteSessionByToken: Symbol.for('Auth_DeleteSessionByToken'),
+  Auth_CooldownSessionTokens: Symbol.for('Auth_CooldownSessionTokens'),
+  Auth_GetCooldownSessionTokens: Symbol.for('Auth_GetCooldownSessionTokens'),
   Auth_GetUserKeyParamsRecovery: Symbol.for('Auth_GetUserKeyParamsRecovery'),
   Auth_UpdateStorageQuotaUsedForUser: Symbol.for('Auth_UpdateStorageQuotaUsedForUser'),
   Auth_AddSharedVaultUser: Symbol.for('Auth_AddSharedVaultUser'),
@@ -171,6 +181,7 @@ const TYPES = {
   Auth_DeleteAccountsFromCSVFile: Symbol.for('Auth_DeleteAccountsFromCSVFile'),
   Auth_RenewSharedSubscriptions: Symbol.for('Auth_RenewSharedSubscriptions'),
   Auth_FixStorageQuotaForUser: Symbol.for('Auth_FixStorageQuotaForUser'),
+  Auth_VerifyHumanInteraction: Symbol.for('Auth_VerifyHumanInteraction'),
   // Handlers
   Auth_AccountDeletionRequestedEventHandler: Symbol.for('Auth_AccountDeletionRequestedEventHandler'),
   Auth_AccountDeletionVerificationPassedEventHandler: Symbol.for('Auth_AccountDeletionVerificationPassedEventHandler'),
@@ -207,6 +218,7 @@ const TYPES = {
   Auth_FileQuotaRecalculatedEventHandler: Symbol.for('Auth_FileQuotaRecalculatedEventHandler'),
   Auth_SubscriptionStateFetchedEventHandler: Symbol.for('Auth_SubscriptionStateFetchedEventHandler'),
   // Services
+  Auth_CookieFactory: Symbol.for('Auth_CookieFactory'),
   Auth_DeviceDetector: Symbol.for('Auth_DeviceDetector'),
   Auth_SessionService: Symbol.for('Auth_SessionService'),
   Auth_OfflineSettingService: Symbol.for('Auth_OfflineSettingService'),
@@ -259,6 +271,8 @@ const TYPES = {
   Auth_BaseListedController: Symbol.for('Auth_BaseListedController'),
   Auth_BaseFeaturesController: Symbol.for('Auth_BaseFeaturesController'),
   Auth_CSVFileReader: Symbol.for('Auth_CSVFileReader'),
+  Auth_CaptchaServer: Symbol.for('Auth_CaptchaServer'),
+  Auth_HTTPClient: Symbol.for('Auth_HTTPClient'),
 }
 
 export default TYPES

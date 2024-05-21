@@ -1,30 +1,39 @@
 import { SessionTokenData, TokenDecoderInterface } from '@standardnotes/security'
-import { inject, injectable } from 'inversify'
-import TYPES from '../../Bootstrap/Types'
 import { SessionServiceInterface } from '../Session/SessionServiceInterface'
 import { UserRepositoryInterface } from '../User/UserRepositoryInterface'
 import { AuthenticationMethod } from './AuthenticationMethod'
 import { AuthenticationMethodResolverInterface } from './AuthenticationMethodResolverInterface'
 import { Logger } from 'winston'
 import { Uuid } from '@standardnotes/domain-core'
+import { GetSessionFromToken } from '../UseCase/GetSessionFromToken/GetSessionFromToken'
 
-@injectable()
 export class AuthenticationMethodResolver implements AuthenticationMethodResolverInterface {
   constructor(
-    @inject(TYPES.Auth_UserRepository) private userRepository: UserRepositoryInterface,
-    @inject(TYPES.Auth_SessionService) private sessionService: SessionServiceInterface,
-    @inject(TYPES.Auth_SessionTokenDecoder) private sessionTokenDecoder: TokenDecoderInterface<SessionTokenData>,
-    @inject(TYPES.Auth_FallbackSessionTokenDecoder)
+    private userRepository: UserRepositoryInterface,
+    private sessionService: SessionServiceInterface,
+    private sessionTokenDecoder: TokenDecoderInterface<SessionTokenData>,
     private fallbackSessionTokenDecoder: TokenDecoderInterface<SessionTokenData>,
-    @inject(TYPES.Auth_Logger) private logger: Logger,
+    private getSessionFromToken: GetSessionFromToken,
+    private logger: Logger,
   ) {}
 
-  async resolve(token: string): Promise<AuthenticationMethod | undefined> {
-    let decodedToken: SessionTokenData | undefined = this.sessionTokenDecoder.decodeToken(token)
+  async resolve(dto: {
+    authTokenFromHeaders: string
+    authCookies?: Map<string, string[]>
+    requestMetadata: {
+      url: string
+      method: string
+      snjs?: string
+      application?: string
+      userAgent?: string
+      secChUa?: string
+    }
+  }): Promise<AuthenticationMethod | undefined> {
+    let decodedToken: SessionTokenData | undefined = this.sessionTokenDecoder.decodeToken(dto.authTokenFromHeaders)
     if (decodedToken === undefined) {
       this.logger.debug('Could not decode token with primary decoder, trying fallback decoder.')
 
-      decodedToken = this.fallbackSessionTokenDecoder.decodeToken(token)
+      decodedToken = this.fallbackSessionTokenDecoder.decodeToken(dto.authTokenFromHeaders)
     }
 
     if (decodedToken) {
@@ -47,8 +56,10 @@ export class AuthenticationMethodResolver implements AuthenticationMethodResolve
       }
     }
 
-    const { session } = await this.sessionService.getSessionFromToken(token)
-    if (session) {
+    const resultOrError = await this.getSessionFromToken.execute(dto)
+    if (!resultOrError.isFailed()) {
+      const { session, givenTokensWereInCooldown } = resultOrError.getValue()
+
       this.logger.debug('Token decoded successfully. Session found.')
 
       const userUuidOrError = Uuid.create(session.userUuid)
@@ -61,10 +72,11 @@ export class AuthenticationMethodResolver implements AuthenticationMethodResolve
         type: 'session_token',
         user: await this.userRepository.findOneByUuid(userUuid),
         session: session,
+        givenTokensWereInCooldown: givenTokensWereInCooldown,
       }
     }
 
-    const revokedSession = await this.sessionService.getRevokedSessionFromToken(token)
+    const revokedSession = await this.sessionService.getRevokedSessionFromToken(dto.authTokenFromHeaders)
     if (revokedSession) {
       this.logger.debug('Token decoded successfully. Revoked session found.')
 

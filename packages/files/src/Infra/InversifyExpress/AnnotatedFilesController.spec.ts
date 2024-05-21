@@ -93,7 +93,7 @@ describe('AnnotatedFilesController', () => {
     expect(response.writeHead).toHaveBeenCalledWith(206, {
       'Accept-Ranges': 'bytes',
       'Content-Length': 100000,
-      'Content-Range': 'bytes 0-99999/555555',
+      'Content-Range': 'bytes 0-99999/555554',
       'Content-Type': 'application/octet-stream',
     })
 
@@ -122,14 +122,14 @@ describe('AnnotatedFilesController', () => {
     expect(response.writeHead).toHaveBeenNthCalledWith(1, 206, {
       'Accept-Ranges': 'bytes',
       'Content-Length': 100000,
-      'Content-Range': 'bytes 0-99999/555555',
+      'Content-Range': 'bytes 0-99999/555554',
       'Content-Type': 'application/octet-stream',
     })
 
     expect(response.writeHead).toHaveBeenNthCalledWith(2, 206, {
       'Accept-Ranges': 'bytes',
       'Content-Length': 100000,
-      'Content-Range': 'bytes 100000-199999/555555',
+      'Content-Range': 'bytes 100000-199999/555554',
       'Content-Type': 'application/octet-stream',
     })
   })
@@ -145,7 +145,7 @@ describe('AnnotatedFilesController', () => {
     expect(response.writeHead).toHaveBeenCalledWith(206, {
       'Accept-Ranges': 'bytes',
       'Content-Length': 50000,
-      'Content-Range': 'bytes 0-49999/555555',
+      'Content-Range': 'bytes 0-49999/555554',
       'Content-Type': 'application/octet-stream',
     })
 
@@ -163,7 +163,7 @@ describe('AnnotatedFilesController', () => {
     expect(response.writeHead).toHaveBeenCalledWith(206, {
       'Accept-Ranges': 'bytes',
       'Content-Length': 100000,
-      'Content-Range': 'bytes 0-99999/555555',
+      'Content-Range': 'bytes 0-99999/555554',
       'Content-Type': 'application/octet-stream',
     })
 

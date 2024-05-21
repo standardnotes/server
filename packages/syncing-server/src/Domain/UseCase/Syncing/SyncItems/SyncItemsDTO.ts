@@ -14,4 +14,5 @@ export type SyncItemsDTO = {
   readOnlyAccess: boolean
   sessionUuid: string | null
   isFreeUser: boolean
+  hasContentLimit: boolean
 }

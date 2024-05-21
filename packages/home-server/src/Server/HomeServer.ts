@@ -11,6 +11,7 @@ import { Container } from 'inversify'
 import { InversifyExpressServer } from 'inversify-express-utils'
 import helmet from 'helmet'
 import * as cors from 'cors'
+import * as cookieParser from 'cookie-parser'
 import * as http from 'http'
 import { text, json, Request, Response, NextFunction, raw } from 'express'
 import * as winston from 'winston'
@@ -129,6 +130,9 @@ export class HomeServer implements HomeServerInterface {
             ],
           }),
         )
+
+        app.use(cookieParser())
+
         const corsAllowedOrigins = env.get('CORS_ALLOWED_ORIGINS', true)
           ? env.get('CORS_ALLOWED_ORIGINS', true).split(',')
           : []

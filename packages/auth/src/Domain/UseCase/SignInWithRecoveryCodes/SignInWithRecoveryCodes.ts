@@ -15,6 +15,8 @@ import { DeleteSetting } from '../DeleteSetting/DeleteSetting'
 import { AuthenticatorRepositoryInterface } from '../../Authenticator/AuthenticatorRepositoryInterface'
 import { ApiVersion } from '../../Api/ApiVersion'
 import { GetSetting } from '../GetSetting/GetSetting'
+import { LockRepositoryInterface } from '../../User/LockRepositoryInterface'
+import { VerifyHumanInteraction } from '../VerifyHumanInteraction/VerifyHumanInteraction'
 
 export class SignInWithRecoveryCodes implements UseCaseInterface<AuthResponse20200115> {
   constructor(
@@ -28,14 +30,38 @@ export class SignInWithRecoveryCodes implements UseCaseInterface<AuthResponse202
     private clearLoginAttempts: ClearLoginAttempts,
     private deleteSetting: DeleteSetting,
     private authenticatorRepository: AuthenticatorRepositoryInterface,
+    private maxNonCaptchaAttempts: number,
+    private lockRepository: LockRepositoryInterface,
+    private verifyHumanInteractionUseCase: VerifyHumanInteraction,
   ) {}
 
   async execute(dto: SignInWithRecoveryCodesDTO): Promise<Result<AuthResponse20200115>> {
+    const apiVersionOrError = ApiVersion.create(dto.apiVersion)
+    if (apiVersionOrError.isFailed()) {
+      return Result.fail(apiVersionOrError.getError())
+    }
+    const apiVersion = apiVersionOrError.getValue()
+
+    if (!apiVersion.isSupportedForRecoverySignIn()) {
+      return Result.fail('Unsupported api version')
+    }
+
     const usernameOrError = Username.create(dto.username)
     if (usernameOrError.isFailed()) {
       return Result.fail(`Could not sign in with recovery codes: ${usernameOrError.getError()}`)
     }
     const username = usernameOrError.getValue()
+
+    const user = await this.userRepository.findOneByUsernameOrEmail(username)
+    const userIdentifier = user?.uuid
+
+    const humanVerificationBeforeCheckingUsernameAndPasswordResult = await this.checkHumanVerificationIfNeeded(
+      userIdentifier,
+      dto.hvmToken,
+    )
+    if (humanVerificationBeforeCheckingUsernameAndPasswordResult.isFailed()) {
+      return Result.fail(humanVerificationBeforeCheckingUsernameAndPasswordResult.getError())
+    }
 
     const validCodeVerifier = await this.validateCodeVerifier(dto.codeVerifier)
     if (!validCodeVerifier) {
@@ -57,8 +83,6 @@ export class SignInWithRecoveryCodes implements UseCaseInterface<AuthResponse202
 
       return Result.fail('Empty recovery codes')
     }
-
-    const user = await this.userRepository.findOneByUsernameOrEmail(username)
 
     if (!user) {
       await this.increaseLoginAttempts.execute({ email: username.value })
@@ -102,10 +126,12 @@ export class SignInWithRecoveryCodes implements UseCaseInterface<AuthResponse202
 
     const authResponse = await this.authResponseFactory.createResponse({
       user,
-      apiVersion: ApiVersion.v20200115,
+      apiVersion,
       userAgent: dto.userAgent,
       ephemeralSession: false,
       readonlyAccess: false,
+      snjs: dto.snjs,
+      application: dto.application,
     })
 
     const generateNewRecoveryCodesResult = await this.generateRecoveryCodes.execute({
@@ -140,5 +166,23 @@ export class SignInWithRecoveryCodes implements UseCaseInterface<AuthResponse202
     const matchingCodeChallengeWasPresentAndRemoved = await this.pkceRepository.removeCodeChallenge(codeChallenge)
 
     return matchingCodeChallengeWasPresentAndRemoved
+  }
+
+  private async checkHumanVerificationIfNeeded(userIdentifier?: string, hvmToken?: string): Promise<Result<void>> {
+    if (!userIdentifier) {
+      return Result.ok()
+    }
+
+    const numberOfFailedAttempts = await this.lockRepository.getLockCounter(userIdentifier, 'non-captcha')
+    const numberOfFailedAttemptsInCaptchaMode = await this.lockRepository.getLockCounter(userIdentifier, 'captcha')
+
+    const isEligibleForNonCaptchaMode =
+      numberOfFailedAttemptsInCaptchaMode === 0 && numberOfFailedAttempts < this.maxNonCaptchaAttempts
+
+    if (isEligibleForNonCaptchaMode) {
+      return Result.ok()
+    }
+
+    return this.verifyHumanInteractionUseCase.execute(hvmToken)
   }
 }

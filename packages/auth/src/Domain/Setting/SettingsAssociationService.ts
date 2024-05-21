@@ -12,8 +12,6 @@ import { SettingsAssociationServiceInterface } from './SettingsAssociationServic
 export class SettingsAssociationService implements SettingsAssociationServiceInterface {
   private readonly UNENCRYPTED_SETTINGS = [
     SettingName.NAMES.EmailBackupFrequency,
-    SettingName.NAMES.MuteFailedBackupsEmails,
-    SettingName.NAMES.MuteFailedCloudBackupsEmails,
     SettingName.NAMES.MuteSignInEmails,
     SettingName.NAMES.MuteMarketingEmails,
     SettingName.NAMES.DropboxBackupFrequency,
@@ -27,8 +25,6 @@ export class SettingsAssociationService implements SettingsAssociationServiceInt
     SettingName.NAMES.GoogleDriveBackupFrequency,
     SettingName.NAMES.OneDriveBackupFrequency,
     SettingName.NAMES.EmailBackupFrequency,
-    SettingName.NAMES.MuteFailedBackupsEmails,
-    SettingName.NAMES.MuteFailedCloudBackupsEmails,
     SettingName.NAMES.MuteSignInEmails,
     SettingName.NAMES.MuteMarketingEmails,
     SettingName.NAMES.ListedAuthorSecrets,

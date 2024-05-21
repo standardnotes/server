@@ -20,9 +20,14 @@ import { RevokedSessionRepositoryInterface } from './RevokedSessionRepositoryInt
 import { TraceSession } from '../UseCase/TraceSession/TraceSession'
 import { UserSubscriptionRepositoryInterface } from '../Subscription/UserSubscriptionRepositoryInterface'
 import { GetSetting } from '../UseCase/GetSetting/GetSetting'
+import { SessionCreationResult } from './SessionCreationResult'
+import { ApiVersion } from '../Api/ApiVersion'
 
 export class SessionService implements SessionServiceInterface {
   static readonly SESSION_TOKEN_VERSION = 1
+  static readonly COOKIE_SESSION_TOKEN_VERSION = 2
+  static readonly HEADER_BASED_SESSION_VERSION = 1
+  static readonly COOKIE_BASED_SESSION_VERSION = 2
 
   constructor(
     private sessionRepository: SessionRepositoryInterface,
@@ -38,20 +43,23 @@ export class SessionService implements SessionServiceInterface {
     private userSubscriptionRepository: UserSubscriptionRepositoryInterface,
     private readonlyUsers: string[],
     private getSetting: GetSetting,
+    private forceLegacySessions: boolean,
   ) {}
 
   async createNewSessionForUser(dto: {
     user: User
-    apiVersion: string
+    apiVersion: ApiVersion
     userAgent: string
     readonlyAccess: boolean
-  }): Promise<{ sessionHttpRepresentation: SessionBody; session: Session }> {
+    snjs?: string
+    application?: string
+  }): Promise<SessionCreationResult> {
     const session = await this.createSession({
       ephemeral: false,
       ...dto,
     })
 
-    const sessionPayload = await this.createTokens(session)
+    const sessionPayload = await this.createTokens(session, dto.apiVersion)
 
     await this.sessionRepository.insert(session)
 
@@ -70,34 +78,49 @@ export class SessionService implements SessionServiceInterface {
     }
 
     return {
-      sessionHttpRepresentation: sessionPayload,
+      ...sessionPayload,
       session,
     }
   }
 
   async createNewEphemeralSessionForUser(dto: {
     user: User
-    apiVersion: string
+    apiVersion: ApiVersion
     userAgent: string
     readonlyAccess: boolean
-  }): Promise<{ sessionHttpRepresentation: SessionBody; session: Session }> {
+    snjs?: string
+    application?: string
+  }): Promise<SessionCreationResult> {
     const ephemeralSession = await this.createSession({
       ephemeral: true,
       ...dto,
     })
 
-    const sessionPayload = await this.createTokens(ephemeralSession)
+    const sessionPayload = await this.createTokens(ephemeralSession, dto.apiVersion)
 
     await this.ephemeralSessionRepository.insert(ephemeralSession)
 
     return {
-      sessionHttpRepresentation: sessionPayload,
+      ...sessionPayload,
       session: ephemeralSession,
     }
   }
 
-  async refreshTokens(dto: { session: Session; isEphemeral: boolean }): Promise<SessionBody> {
-    const sessionPayload = await this.createTokens(dto.session)
+  async refreshTokens(dto: {
+    session: Session
+    isEphemeral: boolean
+    apiVersion: ApiVersion
+    snjs?: string
+    application?: string
+  }): Promise<SessionCreationResult> {
+    const sessionPayload = await this.createTokens(dto.session, dto.apiVersion)
+
+    dto.session.apiVersion = dto.apiVersion.value
+    dto.session.version = this.shouldOperateOnCookieBasedSessions(dto.apiVersion)
+      ? SessionService.COOKIE_BASED_SESSION_VERSION
+      : SessionService.HEADER_BASED_SESSION_VERSION
+    dto.session.snjs = dto.snjs ?? null
+    dto.session.application = dto.application ?? null
 
     if (dto.isEphemeral) {
       await this.ephemeralSessionRepository.update(dto.session)
@@ -105,19 +128,10 @@ export class SessionService implements SessionServiceInterface {
       await this.sessionRepository.update(dto.session)
     }
 
-    return sessionPayload
-  }
-
-  isRefreshTokenMatchingHashedSessionToken(session: Session, token: string): boolean {
-    const tokenParts = token.split(':')
-    const refreshToken = tokenParts[2]
-    if (!refreshToken) {
-      return false
+    return {
+      ...sessionPayload,
+      session: dto.session,
     }
-
-    const hashedRefreshToken = crypto.createHash('sha256').update(refreshToken).digest('hex')
-
-    return crypto.timingSafeEqual(Buffer.from(hashedRefreshToken), Buffer.from(session.hashedRefreshToken))
   }
 
   getOperatingSystemInfoFromUserAgent(userAgent: string): string {
@@ -182,35 +196,30 @@ export class SessionService implements SessionServiceInterface {
     return `${browserInfo} on ${osInfo}`
   }
 
-  async getSessionFromToken(token: string): Promise<{ session: Session | undefined; isEphemeral: boolean }> {
-    const tokenParts = token.split(':')
-    const sessionUuid = tokenParts[1]
-    const accessToken = tokenParts[2]
-    if (!accessToken) {
-      return { session: undefined, isEphemeral: false }
-    }
-
-    const { session, isEphemeral } = await this.getSession(sessionUuid)
-    if (!session) {
-      return { session: undefined, isEphemeral: false }
-    }
-
-    const hashedAccessToken = crypto.createHash('sha256').update(accessToken).digest('hex')
-    if (crypto.timingSafeEqual(Buffer.from(session.hashedAccessToken), Buffer.from(hashedAccessToken))) {
-      return { session, isEphemeral }
-    }
-
-    return { session: undefined, isEphemeral: false }
-  }
-
   async getRevokedSessionFromToken(token: string): Promise<RevokedSession | null> {
     const tokenParts = token.split(':')
-    const sessionUuid = tokenParts[1]
-    if (!sessionUuid) {
-      return null
+    const tokenVersion = parseInt(tokenParts[0])
+
+    switch (tokenVersion) {
+      case SessionService.SESSION_TOKEN_VERSION: {
+        const sessionUuid = tokenParts[1]
+        if (!sessionUuid) {
+          return null
+        }
+
+        return this.revokedSessionRepository.findOneByUuid(sessionUuid)
+      }
+      case SessionService.COOKIE_SESSION_TOKEN_VERSION: {
+        const privateIdentifier = tokenParts[1]
+        if (!privateIdentifier) {
+          return null
+        }
+
+        return this.revokedSessionRepository.findOneByPrivateIdentifier(privateIdentifier)
+      }
     }
 
-    return this.revokedSessionRepository.findOneByUuid(sessionUuid)
+    return null
   }
 
   async markRevokedSessionAsReceived(revokedSession: RevokedSession): Promise<RevokedSession> {
@@ -222,22 +231,6 @@ export class SessionService implements SessionServiceInterface {
     return revokedSession
   }
 
-  async deleteSessionByToken(token: string): Promise<string | null> {
-    const { session, isEphemeral } = await this.getSessionFromToken(token)
-
-    if (session) {
-      if (isEphemeral) {
-        await this.ephemeralSessionRepository.deleteOne(session.uuid, session.userUuid)
-      } else {
-        await this.sessionRepository.deleteOneByUuid(session.uuid)
-      }
-
-      return session.userUuid
-    }
-
-    return null
-  }
-
   async createRevokedSession(session: Session): Promise<RevokedSession> {
     const revokedSession = new RevokedSession()
     revokedSession.uuid = session.uuid
@@ -245,6 +238,7 @@ export class SessionService implements SessionServiceInterface {
     revokedSession.createdAt = this.timer.getUTCDate()
     revokedSession.apiVersion = session.apiVersion
     revokedSession.userAgent = session.userAgent
+    revokedSession.privateIdentifier = session.privateIdentifier
 
     await this.revokedSessionRepository.insert(revokedSession)
 
@@ -253,23 +247,31 @@ export class SessionService implements SessionServiceInterface {
 
   private async createSession(dto: {
     user: User
-    apiVersion: string
+    apiVersion: ApiVersion
     userAgent: string
     ephemeral: boolean
     readonlyAccess: boolean
+    snjs?: string
+    application?: string
   }): Promise<Session> {
     let session = new Session()
     if (dto.ephemeral) {
       session = new EphemeralSession()
     }
     session.uuid = uuidv4()
+    session.privateIdentifier = await this.cryptoNode.generateRandomKey(128)
     if (await this.isLoggingUserAgentEnabledOnSessions(dto.user)) {
       session.userAgent = dto.userAgent
     }
+    session.snjs = dto.snjs ?? null
+    session.application = dto.application ?? null
     session.userUuid = dto.user.uuid
-    session.apiVersion = dto.apiVersion
+    session.apiVersion = dto.apiVersion.value
     session.createdAt = this.timer.getUTCDate()
     session.updatedAt = this.timer.getUTCDate()
+    session.version = this.shouldOperateOnCookieBasedSessions(dto.apiVersion)
+      ? SessionService.COOKIE_BASED_SESSION_VERSION
+      : SessionService.HEADER_BASED_SESSION_VERSION
 
     const userIsReadonly = this.readonlyUsers.includes(dto.user.email)
     session.readonlyAccess = userIsReadonly || dto.readonlyAccess
@@ -277,22 +279,16 @@ export class SessionService implements SessionServiceInterface {
     return session
   }
 
-  private async getSession(uuid: string): Promise<{
-    session: Session | null
-    isEphemeral: boolean
-  }> {
-    let session = await this.ephemeralSessionRepository.findOneByUuid(uuid)
-    let isEphemeral = true
-
-    if (!session) {
-      session = await this.sessionRepository.findOneByUuid(uuid)
-      isEphemeral = false
+  private async createTokens(
+    session: Session,
+    apiVersion: ApiVersion,
+  ): Promise<{
+    sessionHttpRepresentation: SessionBody
+    sessionCookieRepresentation: {
+      accessToken: string
+      refreshToken: string
     }
-
-    return { session, isEphemeral }
-  }
-
-  private async createTokens(session: Session): Promise<SessionBody> {
+  }> {
     const accessToken = this.cryptoNode.base64URLEncode(await this.cryptoNode.generateRandomKey(48))
     const refreshToken = this.cryptoNode.base64URLEncode(await this.cryptoNode.generateRandomKey(48))
 
@@ -305,13 +301,29 @@ export class SessionService implements SessionServiceInterface {
     const refreshTokenExpiration = dayjs.utc().add(this.refreshTokenAge, 'second').toDate()
     session.accessExpiration = accessTokenExpiration
     session.refreshExpiration = refreshTokenExpiration
+    if (!session.privateIdentifier) {
+      session.privateIdentifier = await this.cryptoNode.generateRandomKey(128)
+    }
+
+    const accessTokenForHeaderPurposes = this.shouldOperateOnCookieBasedSessions(apiVersion)
+      ? `${SessionService.COOKIE_SESSION_TOKEN_VERSION}:${session.privateIdentifier}`
+      : `${SessionService.SESSION_TOKEN_VERSION}:${session.uuid}:${accessToken}`
+    const refreshTokenForHeaderPurposes = this.shouldOperateOnCookieBasedSessions(apiVersion)
+      ? `${SessionService.COOKIE_SESSION_TOKEN_VERSION}:${session.privateIdentifier}`
+      : `${SessionService.SESSION_TOKEN_VERSION}:${session.uuid}:${refreshToken}`
 
     return {
-      access_token: `${SessionService.SESSION_TOKEN_VERSION}:${session.uuid}:${accessToken}`,
-      refresh_token: `${SessionService.SESSION_TOKEN_VERSION}:${session.uuid}:${refreshToken}`,
-      access_expiration: this.timer.convertStringDateToMilliseconds(accessTokenExpiration.toString()),
-      refresh_expiration: this.timer.convertStringDateToMilliseconds(refreshTokenExpiration.toString()),
-      readonly_access: session.readonlyAccess,
+      sessionHttpRepresentation: {
+        access_token: accessTokenForHeaderPurposes,
+        refresh_token: refreshTokenForHeaderPurposes,
+        access_expiration: this.timer.convertStringDateToMilliseconds(accessTokenExpiration.toString()),
+        refresh_expiration: this.timer.convertStringDateToMilliseconds(refreshTokenExpiration.toString()),
+        readonly_access: session.readonlyAccess,
+      },
+      sessionCookieRepresentation: {
+        accessToken,
+        refreshToken,
+      },
     }
   }
 
@@ -328,5 +340,13 @@ export class SessionService implements SessionServiceInterface {
     const loggingSetting = loggingSettingOrError.getValue()
 
     return loggingSetting.decryptedValue === LogSessionUserAgentOption.Enabled
+  }
+
+  private shouldOperateOnCookieBasedSessions(apiVersion: ApiVersion): boolean {
+    if (this.forceLegacySessions) {
+      return false
+    }
+
+    return ApiVersion.VERSIONS.v20240226 === apiVersion.value
   }
 }

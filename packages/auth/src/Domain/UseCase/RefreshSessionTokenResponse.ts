@@ -1,9 +1,13 @@
-import { SessionBody } from '@standardnotes/responses'
+import { SessionCreationResult } from '../Session/SessionCreationResult'
 
-export type RefreshSessionTokenResponse = {
-  success: boolean
-  userUuid?: string
-  errorTag?: string
-  errorMessage?: string
-  sessionPayload?: SessionBody
-}
+export type RefreshSessionTokenResponse =
+  | {
+      success: true
+      result: SessionCreationResult
+      userUuid: string
+    }
+  | {
+      success: false
+      errorTag: string
+      errorMessage: string
+    }

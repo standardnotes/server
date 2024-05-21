@@ -12,6 +12,7 @@ import { CreateUploadSession } from '../../Domain/UseCase/CreateUploadSession/Cr
 import { FinishUploadSession } from '../../Domain/UseCase/FinishUploadSession/FinishUploadSession'
 import { GetFileMetadata } from '../../Domain/UseCase/GetFileMetadata/GetFileMetadata'
 import { RemoveFile } from '../../Domain/UseCase/RemoveFile/RemoveFile'
+import { ValetTokenResponseLocals } from './Middleware/ValetTokenResponseLocals'
 
 @controller('/v1/files', TYPES.Files_ValetTokenAuthMiddleware)
 export class AnnotatedFilesController extends BaseHttpController {
@@ -83,15 +84,17 @@ export class AnnotatedFilesController extends BaseHttpController {
     _request: Request,
     response: Response,
   ): Promise<results.BadRequestErrorMessageResult | results.JsonResult> {
-    if (response.locals.permittedOperation !== ValetTokenOperation.Write) {
+    const locals = response.locals as ValetTokenResponseLocals
+    if (locals.permittedOperation !== ValetTokenOperation.Write) {
       return this.badRequest('Not permitted for this operation')
     }
 
     const result = await this.finishUploadSession.execute({
-      userUuid: response.locals.userUuid,
-      resourceRemoteIdentifier: response.locals.permittedResources[0].remoteIdentifier,
-      uploadBytesLimit: response.locals.uploadBytesLimit,
-      uploadBytesUsed: response.locals.uploadBytesUsed,
+      userUuid: locals.userUuid,
+      resourceRemoteIdentifier: locals.permittedResources[0].remoteIdentifier,
+      uploadBytesLimit: locals.uploadBytesLimit,
+      uploadBytesUsed: locals.uploadBytesUsed,
+      valetToken: locals.valetToken,
     })
 
     if (result.isFailed()) {
@@ -108,16 +111,18 @@ export class AnnotatedFilesController extends BaseHttpController {
     _request: Request,
     response: Response,
   ): Promise<results.BadRequestErrorMessageResult | results.JsonResult> {
-    if (response.locals.permittedOperation !== ValetTokenOperation.Delete) {
+    const locals = response.locals as ValetTokenResponseLocals
+    if (locals.permittedOperation !== ValetTokenOperation.Delete) {
       return this.badRequest('Not permitted for this operation')
     }
 
     const result = await this.removeFile.execute({
       userInput: {
-        userUuid: response.locals.userUuid,
-        resourceRemoteIdentifier: response.locals.permittedResources[0].remoteIdentifier,
-        regularSubscriptionUuid: response.locals.regularSubscriptionUuid,
+        userUuid: locals.userUuid,
+        resourceRemoteIdentifier: locals.permittedResources[0].remoteIdentifier,
+        regularSubscriptionUuid: locals.regularSubscriptionUuid,
       },
+      valetToken: locals.valetToken,
     })
 
     if (result.isFailed()) {
@@ -132,7 +137,8 @@ export class AnnotatedFilesController extends BaseHttpController {
     request: Request,
     response: Response,
   ): Promise<results.BadRequestErrorMessageResult | (() => Writable)> {
-    if (response.locals.permittedOperation !== ValetTokenOperation.Read) {
+    const locals = response.locals as ValetTokenResponseLocals
+    if (locals.permittedOperation !== ValetTokenOperation.Read) {
       return this.badRequest('Not permitted for this operation')
     }
 
@@ -147,20 +153,21 @@ export class AnnotatedFilesController extends BaseHttpController {
     }
 
     const fileMetadataOrError = await this.getFileMetadata.execute({
-      ownerUuid: response.locals.userUuid,
-      resourceRemoteIdentifier: response.locals.permittedResources[0].remoteIdentifier,
+      ownerUuid: locals.userUuid,
+      resourceRemoteIdentifier: locals.permittedResources[0].remoteIdentifier,
     })
 
     if (fileMetadataOrError.isFailed()) {
       return this.badRequest(fileMetadataOrError.getError())
     }
     const fileSize = fileMetadataOrError.getValue()
+    const endRangeOfFile = fileSize - 1
 
     const startRange = Number(range.replace(/\D/g, ''))
-    const endRange = Math.min(startRange + chunkSize - 1, fileSize - 1)
+    const endRange = Math.min(startRange + chunkSize - 1, endRangeOfFile)
 
     const headers = {
-      'Content-Range': `bytes ${startRange}-${endRange}/${fileSize}`,
+      'Content-Range': `bytes ${startRange}-${endRange}/${endRangeOfFile}`,
       'Accept-Ranges': 'bytes',
       'Content-Length': endRange - startRange + 1,
       'Content-Type': 'application/octet-stream',
@@ -169,10 +176,12 @@ export class AnnotatedFilesController extends BaseHttpController {
     response.writeHead(206, headers)
 
     const result = await this.streamDownloadFile.execute({
-      ownerUuid: response.locals.userUuid,
-      resourceRemoteIdentifier: response.locals.permittedResources[0].remoteIdentifier,
+      ownerUuid: locals.userUuid,
+      resourceRemoteIdentifier: locals.permittedResources[0].remoteIdentifier,
       startRange,
       endRange,
+      endRangeOfFile,
+      valetToken: locals.valetToken,
     })
 
     if (!result.success) {

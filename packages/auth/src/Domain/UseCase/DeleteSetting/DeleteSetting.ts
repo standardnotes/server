@@ -1,12 +1,13 @@
 import { inject, injectable } from 'inversify'
+import { SettingName, Timestamps } from '@standardnotes/domain-core'
+import { TimerInterface } from '@standardnotes/time'
+
 import { DeleteSettingDto } from './DeleteSettingDto'
 import { DeleteSettingResponse } from './DeleteSettingResponse'
 import { UseCaseInterface } from '../UseCaseInterface'
 import TYPES from '../../../Bootstrap/Types'
 import { SettingRepositoryInterface } from '../../Setting/SettingRepositoryInterface'
-import { TimerInterface } from '@standardnotes/time'
 import { Setting } from '../../Setting/Setting'
-import { Timestamps } from '@standardnotes/domain-core'
 
 @injectable()
 export class DeleteSetting implements UseCaseInterface {
@@ -41,6 +42,13 @@ export class DeleteSetting implements UseCaseInterface {
       await this.settingRepository.deleteByUserUuid({
         userUuid,
         settingName,
+      })
+    }
+
+    if (settingName === SettingName.NAMES.MfaSecret) {
+      await this.settingRepository.deleteByUserUuid({
+        userUuid: dto.userUuid,
+        settingName: SettingName.NAMES.RecoveryCodes,
       })
     }
 

@@ -12,6 +12,7 @@ import { DeleteOtherSessionsForUser } from '../../Domain/UseCase/DeleteOtherSess
 import { DeleteSessionForUser } from '../../Domain/UseCase/DeleteSessionForUser'
 import { RefreshSessionToken } from '../../Domain/UseCase/RefreshSessionToken'
 import { BaseSessionController } from './Base/BaseSessionController'
+import { CookieFactoryInterface } from '../../Domain/Auth/Cookies/CookieFactoryInterface'
 
 @controller('/session')
 export class AnnotatedSessionController extends BaseSessionController {
@@ -20,8 +21,9 @@ export class AnnotatedSessionController extends BaseSessionController {
     @inject(TYPES.Auth_DeleteOtherSessionsForUser)
     override deleteOtherSessionsForUser: DeleteOtherSessionsForUser,
     @inject(TYPES.Auth_RefreshSessionToken) override refreshSessionToken: RefreshSessionToken,
+    @inject(TYPES.Auth_CookieFactory) override cookieFactory: CookieFactoryInterface,
   ) {
-    super(deleteSessionForUser, deleteOtherSessionsForUser, refreshSessionToken)
+    super(deleteSessionForUser, deleteOtherSessionsForUser, refreshSessionToken, cookieFactory)
   }
 
   @httpDelete('/', TYPES.Auth_RequiredCrossServiceTokenMiddleware, TYPES.Auth_SessionMiddleware)

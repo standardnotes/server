@@ -24,8 +24,7 @@
     "build": "tsc --build",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
-    "pretest": "yarn lint && yarn build",
-    "test": "jest --coverage --no-cache --config=./jest.config.js --maxWorkers=50%",
+    "test": "jest --coverage --no-cache --config=./jest.config.js --maxWorkers=2",
     "start": "yarn node dist/bin/server.js",
     "worker": "yarn node dist/bin/worker.js"
   },
@@ -47,7 +46,7 @@
     "inversify": "^6.0.1",
     "inversify-express-utils": "^6.4.3",
     "ioredis": "^5.3.2",
-    "mysql2": "^3.0.1",
+    "mysql2": "^3.9.7",
     "reflect-metadata": "^0.2.1",
     "sqlite3": "^5.1.6",
     "typeorm": "^0.3.17",

@@ -1,28 +1,23 @@
-import { Username } from '@standardnotes/domain-core'
-import { inject, injectable } from 'inversify'
-import { Logger } from 'winston'
-import TYPES from '../../Bootstrap/Types'
+import { Result, UseCaseInterface, Username } from '@standardnotes/domain-core'
+
 import { LockRepositoryInterface } from '../User/LockRepositoryInterface'
 import { UserRepositoryInterface } from '../User/UserRepositoryInterface'
 import { IncreaseLoginAttemptsDTO } from './IncreaseLoginAttemptsDTO'
 import { IncreaseLoginAttemptsResponse } from './IncreaseLoginAttemptsResponse'
-import { UseCaseInterface } from './UseCaseInterface'
 
-@injectable()
-export class IncreaseLoginAttempts implements UseCaseInterface {
+export class IncreaseLoginAttempts implements UseCaseInterface<IncreaseLoginAttemptsResponse> {
   constructor(
-    @inject(TYPES.Auth_UserRepository) private userRepository: UserRepositoryInterface,
-    @inject(TYPES.Auth_LockRepository) private lockRepository: LockRepositoryInterface,
-    @inject(TYPES.Auth_MAX_LOGIN_ATTEMPTS) private maxLoginAttempts: number,
-    @inject(TYPES.Auth_Logger) private logger: Logger,
+    private userRepository: UserRepositoryInterface,
+    private lockRepository: LockRepositoryInterface,
+    private maxNonCaptchaAttempts: number,
   ) {}
 
-  async execute(dto: IncreaseLoginAttemptsDTO): Promise<IncreaseLoginAttemptsResponse> {
+  async execute(dto: IncreaseLoginAttemptsDTO): Promise<Result<IncreaseLoginAttemptsResponse>> {
     let identifier = dto.email
 
     const usernameOrError = Username.create(dto.email)
     if (usernameOrError.isFailed()) {
-      return { success: false }
+      return Result.fail(usernameOrError.getError())
     }
     const username = usernameOrError.getValue()
 
@@ -31,18 +26,29 @@ export class IncreaseLoginAttempts implements UseCaseInterface {
       identifier = user.uuid
     }
 
-    let numberOfFailedAttempts = await this.lockRepository.getLockCounter(identifier)
+    const numberOfFailedAttempts = await this.lockRepository.getLockCounter(identifier, 'non-captcha')
+    const numberOfFailedAttemptsInCaptchaMode = await this.lockRepository.getLockCounter(identifier, 'captcha')
 
-    numberOfFailedAttempts += 1
+    const isEligibleForNonCaptchaMode =
+      numberOfFailedAttemptsInCaptchaMode === 0 && numberOfFailedAttempts < this.maxNonCaptchaAttempts
+    const isNonCaptchaLimitReached =
+      numberOfFailedAttempts + 1 >= this.maxNonCaptchaAttempts || numberOfFailedAttemptsInCaptchaMode > 0
 
-    await this.lockRepository.updateLockCounter(identifier, numberOfFailedAttempts)
-
-    if (numberOfFailedAttempts >= this.maxLoginAttempts) {
-      this.logger.debug(`User ${identifier} breached number of allowed login attempts. Locking user.`)
-
-      await this.lockRepository.lockUser(identifier)
+    let newCounter: number
+    if (isEligibleForNonCaptchaMode) {
+      newCounter = numberOfFailedAttempts + 1
+    } else {
+      newCounter = numberOfFailedAttemptsInCaptchaMode + 1
     }
 
-    return { success: true }
+    await this.lockRepository.updateLockCounter(
+      identifier,
+      newCounter,
+      isEligibleForNonCaptchaMode ? 'non-captcha' : 'captcha',
+    )
+
+    return Result.ok({
+      isNonCaptchaLimitReached,
+    })
   }
 }
