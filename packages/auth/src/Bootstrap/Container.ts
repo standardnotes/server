@@ -709,7 +709,7 @@ export class ContainerConfigLoader {
         )
       container
         .bind<SessionTokensCooldownRepositoryInterface>(TYPES.Auth_SessionTokensCooldownRepository)
-        .toConstantValue(new InMemorySessionTokensCooldownRepository(container.get<winston.Logger>(TYPES.Auth_Logger)))
+        .toConstantValue(new InMemorySessionTokensCooldownRepository())
     } else {
       container.bind<PKCERepositoryInterface>(TYPES.Auth_PKCERepository).to(RedisPKCERepository)
       container

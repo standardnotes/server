@@ -1,22 +1,41 @@
 import { Uuid } from '@standardnotes/domain-core'
-import { Logger } from 'winston'
 import { SessionTokensCooldownRepositoryInterface } from '../../Domain/Session/SessionTokensCooldownRepositoryInterface'
 
 export class InMemorySessionTokensCooldownRepository implements SessionTokensCooldownRepositoryInterface {
-  constructor(private logger: Logger) {}
+  private inMemoryStore: Map<string, string>
+  private readonly COOLDOWN_FORMAT_VERSION = 1
 
-  async getHashedTokens(_sessionUuid: Uuid): Promise<{ hashedAccessToken: string; hashedRefreshToken: string } | null> {
-    this.logger.debug('This is a stub. Session tokens cooldown is suppored only in Redis.')
-
-    return null
+  constructor() {
+    this.inMemoryStore = new Map()
   }
 
-  async setCooldown(_dto: {
+  async getHashedTokens(sessionUuid: Uuid): Promise<{ hashedAccessToken: string; hashedRefreshToken: string } | null> {
+    const result = this.inMemoryStore.get(sessionUuid.value)
+    if (!result) {
+      return null
+    }
+
+    const [version, hashedAccessToken, hashedRefreshToken] = result.split(':')
+
+    if (parseInt(version) !== this.COOLDOWN_FORMAT_VERSION) {
+      return null
+    }
+
+    return {
+      hashedAccessToken,
+      hashedRefreshToken,
+    }
+  }
+
+  async setCooldown(dto: {
     sessionUuid: Uuid
     hashedAccessToken: string
     hashedRefreshToken: string
     cooldownPeriodInSeconds: number
   }): Promise<void> {
-    this.logger.debug('This is a stub. Session tokens cooldown is suppored only in Redis.')
+    this.inMemoryStore.set(
+      dto.sessionUuid.value,
+      `${this.COOLDOWN_FORMAT_VERSION}:${dto.hashedAccessToken}:${dto.hashedRefreshToken}`,
+    )
   }
 }
