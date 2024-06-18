@@ -15,6 +15,7 @@ import { ClearLoginAttempts } from '../../Domain/UseCase/ClearLoginAttempts'
 import { IncreaseLoginAttempts } from '../../Domain/UseCase/IncreaseLoginAttempts'
 import { ChangeCredentials } from '../../Domain/UseCase/ChangeCredentials/ChangeCredentials'
 import { BaseUsersController } from './Base/BaseUsersController'
+import { CookieFactoryInterface } from '../../Domain/Auth/Cookies/CookieFactoryInterface'
 
 @controller('/users')
 export class AnnotatedUsersController extends BaseUsersController {
@@ -24,8 +25,16 @@ export class AnnotatedUsersController extends BaseUsersController {
     @inject(TYPES.Auth_ClearLoginAttempts) override clearLoginAttempts: ClearLoginAttempts,
     @inject(TYPES.Auth_IncreaseLoginAttempts) override increaseLoginAttempts: IncreaseLoginAttempts,
     @inject(TYPES.Auth_ChangeCredentials) override changeCredentialsUseCase: ChangeCredentials,
+    @inject(TYPES.Auth_CookieFactory) override cookieFactory: CookieFactoryInterface,
   ) {
-    super(doDeleteAccount, doGetUserSubscription, clearLoginAttempts, increaseLoginAttempts, changeCredentialsUseCase)
+    super(
+      doDeleteAccount,
+      doGetUserSubscription,
+      clearLoginAttempts,
+      increaseLoginAttempts,
+      changeCredentialsUseCase,
+      cookieFactory,
+    )
   }
 
   @httpDelete('/:userUuid', TYPES.Auth_RequiredCrossServiceTokenMiddleware)

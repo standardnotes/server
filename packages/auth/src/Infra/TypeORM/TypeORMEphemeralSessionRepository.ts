@@ -6,6 +6,7 @@ import { EphemeralSessionRepositoryInterface } from '../../Domain/Session/Epheme
 
 export class TypeORMEphemeralSessionRepository implements EphemeralSessionRepositoryInterface {
   private readonly PREFIX = 'session'
+  private readonly PREFIX_PRIVATE_ID = 'session-private-id'
   private readonly USER_SESSIONS_PREFIX = 'user-sessions'
 
   constructor(
@@ -13,6 +14,17 @@ export class TypeORMEphemeralSessionRepository implements EphemeralSessionReposi
     private ephemeralSessionAge: number,
     private timer: TimerInterface,
   ) {}
+
+  async findOneByPrivateIdentifier(privateIdentifier: string): Promise<EphemeralSession | null> {
+    const stringifiedSession = await this.cacheEntryRepository.findUnexpiredOneByKey(
+      `${this.PREFIX_PRIVATE_ID}:${privateIdentifier}`,
+    )
+    if (!stringifiedSession) {
+      return null
+    }
+
+    return JSON.parse(stringifiedSession.props.value)
+  }
 
   async deleteOne(uuid: string, userUuid: string): Promise<void> {
     await this.cacheEntryRepository.removeByKey(`${this.PREFIX}:${uuid}`)
@@ -93,6 +105,14 @@ export class TypeORMEphemeralSessionRepository implements EphemeralSessionReposi
     await this.cacheEntryRepository.save(
       CacheEntry.create({
         key: `${this.PREFIX}:${ephemeralSession.uuid}`,
+        value: stringifiedSession,
+        expiresAt: this.timer.getUTCDateNSecondsAhead(ttl),
+      }).getValue(),
+    )
+
+    await this.cacheEntryRepository.save(
+      CacheEntry.create({
+        key: `${this.PREFIX_PRIVATE_ID}:${ephemeralSession.privateIdentifier}`,
         value: stringifiedSession,
         expiresAt: this.timer.getUTCDateNSecondsAhead(ttl),
       }).getValue(),

@@ -10,6 +10,12 @@ RUN corepack enable
 
 COPY ./ /workspace
 
+WORKDIR /workspace
+
+RUN yarn install --immutable
+
+RUN yarn build
+
 WORKDIR /workspace/packages/syncing-server
 
 ENTRYPOINT [ "/workspace/packages/syncing-server/docker/entrypoint.sh" ]

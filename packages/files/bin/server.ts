@@ -66,9 +66,8 @@ void container.load().then((container) => {
     app.use(raw({ limit: requestPayloadLimit, type: 'application/octet-stream' }))
     app.use(urlencoded({ extended: true, limit: requestPayloadLimit }))
 
-    const corsAllowedOrigins = env.get('CORS_ALLOWED_ORIGINS', true)
-      ? env.get('CORS_ALLOWED_ORIGINS', true).split(',')
-      : []
+    const corsAllowedOrigins = container.get<string[]>(TYPES.Files_CORS_ALLOWED_ORIGINS)
+
     app.use(
       cors({
         credentials: true,

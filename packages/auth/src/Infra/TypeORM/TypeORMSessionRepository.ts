@@ -17,6 +17,13 @@ export class TypeORMSessionRepository implements SessionRepositoryInterface {
     @inject(TYPES.Auth_Timer) private timer: TimerInterface,
   ) {}
 
+  async findOneByPrivateIdentifier(privateIdentifier: string): Promise<Session | null> {
+    return this.ormRepository
+      .createQueryBuilder('session')
+      .where('session.private_identifier = :privateIdentifier', { privateIdentifier })
+      .getOne()
+  }
+
   async insert(session: Session): Promise<void> {
     session.updatedAt = this.timer.getUTCDate()
 

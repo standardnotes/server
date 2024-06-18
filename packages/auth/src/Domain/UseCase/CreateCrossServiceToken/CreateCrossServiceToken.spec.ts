@@ -10,6 +10,7 @@ import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'
 import { CreateCrossServiceToken } from './CreateCrossServiceToken'
 import {
   Result,
+  RoleName,
   SettingName,
   SharedVaultUser,
   SharedVaultUserPermission,
@@ -23,6 +24,7 @@ import { UserSubscription } from '../../Subscription/UserSubscription'
 import { SubscriptionSetting } from '../../Setting/SubscriptionSetting'
 import { EncryptionVersion } from '../../Encryption/EncryptionVersion'
 import { GetActiveSessionsForUser } from '../GetActiveSessionsForUser'
+import { Permission } from '../../Permission/Permission'
 
 describe('CreateCrossServiceToken', () => {
   let userProjector: ProjectorInterface<User>
@@ -39,6 +41,7 @@ describe('CreateCrossServiceToken', () => {
   let session: Session
   let user: User
   let role: Role
+  let permission: Permission
 
   const createUseCase = () =>
     new CreateCrossServiceToken(
@@ -55,10 +58,19 @@ describe('CreateCrossServiceToken', () => {
     )
 
   beforeEach(() => {
+    permission = {
+      name: 'server:content-limit',
+    } as jest.Mocked<Permission>
+
     session = {} as jest.Mocked<Session>
 
     getActiveSessionsForUser = {} as jest.Mocked<GetActiveSessionsForUser>
     getActiveSessionsForUser.execute = jest.fn().mockReturnValue({ sessions: [session] })
+
+    role = {
+      name: 'test',
+    } as jest.Mocked<Role>
+    role.permissions = Promise.resolve([])
 
     user = {
       uuid: '00000000-0000-0000-0000-000000000000',
@@ -140,6 +152,47 @@ describe('CreateCrossServiceToken', () => {
           email: 'test@test.te',
           uuid: '00000000-0000-0000-0000-000000000000',
         },
+        hasContentLimit: false,
+      },
+      60,
+    )
+  })
+
+  it('should create a cross service token for user with content limitation', async () => {
+    role.name = RoleName.NAMES.CoreUser
+    role.permissions = Promise.resolve([permission])
+
+    user.roles = Promise.resolve([role])
+
+    userRepository.findOneByUuid = jest.fn().mockReturnValue(user)
+
+    await createUseCase().execute({
+      user,
+      session,
+    })
+
+    expect(tokenEncoder.encodeExpirableToken).toHaveBeenCalledWith(
+      {
+        roles: [
+          {
+            name: 'role1',
+            uuid: '1-3-4',
+          },
+        ],
+        belongs_to_shared_vaults: [
+          {
+            shared_vault_uuid: '00000000-0000-0000-0000-000000000000',
+            permission: 'read',
+          },
+        ],
+        session: {
+          test: 'test',
+        },
+        user: {
+          email: 'test@test.te',
+          uuid: '00000000-0000-0000-0000-000000000000',
+        },
+        hasContentLimit: true,
       },
       60,
     )
@@ -168,6 +221,7 @@ describe('CreateCrossServiceToken', () => {
           email: 'test@test.te',
           uuid: '00000000-0000-0000-0000-000000000000',
         },
+        hasContentLimit: false,
       },
       60,
     )
@@ -196,6 +250,7 @@ describe('CreateCrossServiceToken', () => {
           email: 'test@test.te',
           uuid: '00000000-0000-0000-0000-000000000000',
         },
+        hasContentLimit: false,
       },
       60,
     )
@@ -228,6 +283,7 @@ describe('CreateCrossServiceToken', () => {
           email: 'test@test.te',
           uuid: '00000000-0000-0000-0000-000000000000',
         },
+        hasContentLimit: false,
       },
       60,
     )
@@ -259,6 +315,7 @@ describe('CreateCrossServiceToken', () => {
           email: 'test@test.te',
           uuid: '00000000-0000-0000-0000-000000000000',
         },
+        hasContentLimit: false,
       },
       60,
     )
@@ -317,6 +374,7 @@ describe('CreateCrossServiceToken', () => {
             email: 'test@test.te',
             uuid: '00000000-0000-0000-0000-000000000000',
           },
+          hasContentLimit: false,
         },
         60,
       )

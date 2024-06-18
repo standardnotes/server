@@ -6356,7 +6356,7 @@ const RAW_RUNTIME_STATE =
           ["ioredis", "npm:5.3.2"],\
           ["jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.5.0"],\
           ["mixpanel", "npm:0.17.0"],\
-          ["mysql2", "npm:3.3.3"],\
+          ["mysql2", "npm:3.9.7"],\
           ["prettier", "npm:3.0.3"],\
           ["reflect-metadata", "npm:0.2.1"],\
           ["ts-jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.1.0"],\
@@ -6396,6 +6396,7 @@ const RAW_RUNTIME_STATE =
           ["@standardnotes/grpc", "workspace:packages/grpc"],\
           ["@standardnotes/security", "workspace:packages/security"],\
           ["@standardnotes/time", "workspace:packages/time"],\
+          ["@types/cookie-parser", "npm:1.4.6"],\
           ["@types/cors", "npm:2.8.13"],\
           ["@types/express", "npm:4.17.17"],\
           ["@types/ioredis", "npm:5.0.0"],\
@@ -6407,6 +6408,7 @@ const RAW_RUNTIME_STATE =
           ["@typescript-eslint/parser", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:6.5.0"],\
           ["agentkeepalive", "npm:4.5.0"],\
           ["axios", "npm:1.6.1"],\
+          ["cookie-parser", "npm:1.4.6"],\
           ["cors", "npm:2.8.5"],\
           ["dotenv", "npm:16.1.3"],\
           ["eslint", "npm:8.41.0"],\
@@ -6457,6 +6459,7 @@ const RAW_RUNTIME_STATE =
           ["@standardnotes/sncrypto-node", "workspace:packages/sncrypto-node"],\
           ["@standardnotes/time", "workspace:packages/time"],\
           ["@types/bcryptjs", "npm:2.4.2"],\
+          ["@types/cookie-parser", "npm:1.4.6"],\
           ["@types/cors", "npm:2.8.13"],\
           ["@types/express", "npm:4.17.17"],\
           ["@types/ioredis", "npm:5.0.0"],\
@@ -6468,7 +6471,10 @@ const RAW_RUNTIME_STATE =
           ["@types/uuid", "npm:9.0.3"],\
           ["@typescript-eslint/eslint-plugin", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:6.5.0"],\
           ["@typescript-eslint/parser", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:6.5.0"],\
+          ["agentkeepalive", "npm:4.5.0"],\
+          ["axios", "npm:1.6.7"],\
           ["bcryptjs", "npm:2.4.3"],\
+          ["cookie-parser", "npm:1.4.6"],\
           ["cors", "npm:2.8.5"],\
           ["dayjs", "npm:1.11.7"],\
           ["dotenv", "npm:16.1.3"],\
@@ -6479,7 +6485,7 @@ const RAW_RUNTIME_STATE =
           ["inversify-express-utils", "npm:6.4.3"],\
           ["ioredis", "npm:5.3.2"],\
           ["jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.5.0"],\
-          ["mysql2", "npm:3.3.3"],\
+          ["mysql2", "npm:3.9.7"],\
           ["otplib", "npm:12.0.1"],\
           ["prettier", "npm:3.0.3"],\
           ["prettyjson", "npm:1.2.5"],\
@@ -6689,10 +6695,12 @@ const RAW_RUNTIME_STATE =
           ["@standardnotes/files-server", "workspace:packages/files"],\
           ["@standardnotes/revisions-server", "workspace:packages/revisions"],\
           ["@standardnotes/syncing-server", "workspace:packages/syncing-server"],\
+          ["@types/cookie-parser", "npm:1.4.6"],\
           ["@types/cors", "npm:2.8.13"],\
           ["@types/express", "npm:4.17.17"],\
           ["@typescript-eslint/eslint-plugin", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:6.5.0"],\
           ["@typescript-eslint/parser", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:6.5.0"],\
+          ["cookie-parser", "npm:1.4.6"],\
           ["cors", "npm:2.8.5"],\
           ["dotenv", "npm:16.1.3"],\
           ["eslint", "npm:8.41.0"],\
@@ -6790,7 +6798,7 @@ const RAW_RUNTIME_STATE =
           ["inversify-express-utils", "npm:6.4.3"],\
           ["ioredis", "npm:5.3.2"],\
           ["jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.5.0"],\
-          ["mysql2", "npm:3.3.3"],\
+          ["mysql2", "npm:3.9.7"],\
           ["prettier", "npm:3.0.3"],\
           ["reflect-metadata", "npm:0.2.1"],\
           ["sqlite3", "virtual:31b5a94a105c89c9294c3d524a7f8929fe63ee5a2efadf21951ca4c0cfd2ecf02e8f4ef5a066bbda091f1e3a56e57c6749069a080618c96b22e51131a330fc4a#npm:5.1.6"],\
@@ -6826,7 +6834,7 @@ const RAW_RUNTIME_STATE =
           ["inversify", "npm:6.0.1"],\
           ["ioredis", "npm:5.3.2"],\
           ["jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.5.0"],\
-          ["mysql2", "npm:3.3.3"],\
+          ["mysql2", "npm:3.9.7"],\
           ["prettier", "npm:3.0.3"],\
           ["reflect-metadata", "npm:0.2.1"],\
           ["ts-jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.1.0"],\
@@ -6977,7 +6985,7 @@ const RAW_RUNTIME_STATE =
           ["ioredis", "npm:5.3.2"],\
           ["jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.5.0"],\
           ["jsonwebtoken", "npm:9.0.0"],\
-          ["mysql2", "npm:3.3.3"],\
+          ["mysql2", "npm:3.9.7"],\
           ["prettier", "npm:3.0.3"],\
           ["prettyjson", "npm:1.2.5"],\
           ["reflect-metadata", "npm:0.2.1"],\
@@ -7057,7 +7065,7 @@ const RAW_RUNTIME_STATE =
           ["inversify-express-utils", "npm:6.4.3"],\
           ["ioredis", "npm:5.3.2"],\
           ["jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.5.0"],\
-          ["mysql2", "npm:3.3.3"],\
+          ["mysql2", "npm:3.9.7"],\
           ["prettier", "npm:3.0.3"],\
           ["reflect-metadata", "npm:0.2.1"],\
           ["ts-jest", "virtual:fd909b174d079e30b336c4ce72c38a88c1e447767b1a8dd7655e07719a1e31b97807f0931368724fc78897ff15e6a6d00b83316c0f76d11f85111f342e08bb79#npm:29.1.0"],\
@@ -7233,6 +7241,16 @@ const RAW_RUNTIME_STATE =
           ["@types/busboy", "npm:1.5.0"],\
           ["@types/express", "npm:4.17.17"],\
           ["@types/node", "npm:20.2.5"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["@types/cookie-parser", [\
+      ["npm:1.4.6", {\
+        "packageLocation": "./.yarn/cache/@types-cookie-parser-npm-1.4.6-27287e1e43-b1bbb17bc4.zip/node_modules/@types/cookie-parser/",\
+        "packageDependencies": [\
+          ["@types/cookie-parser", "npm:1.4.6"],\
+          ["@types/express", "npm:4.17.17"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -8497,6 +8515,16 @@ const RAW_RUNTIME_STATE =
           ["proxy-from-env", "npm:1.1.0"]\
         ],\
         "linkType": "HARD"\
+      }],\
+      ["npm:1.6.7", {\
+        "packageLocation": "./.yarn/cache/axios-npm-1.6.7-d7b9974d1b-a1932b089e.zip/node_modules/axios/",\
+        "packageDependencies": [\
+          ["axios", "npm:1.6.7"],\
+          ["follow-redirects", "virtual:d7b9974d1bba76881cc57a280a16dd4914416a6fc4923c2efbb6328057412974da1e719cef1530b7a62b97d85d828f7e1d49b5f6de3b5b0854d49902ec87827c#npm:1.15.5"],\
+          ["form-data", "npm:4.0.0"],\
+          ["proxy-from-env", "npm:1.1.0"]\
+        ],\
+        "linkType": "HARD"\
       }]\
     ]],\
     ["babel-jest", [\
@@ -9608,10 +9636,28 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["cookie", [\
+      ["npm:0.4.1", {\
+        "packageLocation": "./.yarn/cache/cookie-npm-0.4.1-cc5e2ebb42-0f2defd60a.zip/node_modules/cookie/",\
+        "packageDependencies": [\
+          ["cookie", "npm:0.4.1"]\
+        ],\
+        "linkType": "HARD"\
+      }],\
       ["npm:0.5.0", {\
         "packageLocation": "./.yarn/cache/cookie-npm-0.5.0-e2d58a161a-aae7911ddc.zip/node_modules/cookie/",\
         "packageDependencies": [\
           ["cookie", "npm:0.5.0"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["cookie-parser", [\
+      ["npm:1.4.6", {\
+        "packageLocation": "./.yarn/cache/cookie-parser-npm-1.4.6-a68f84d02a-1e5a63aa82.zip/node_modules/cookie-parser/",\
+        "packageDependencies": [\
+          ["cookie-parser", "npm:1.4.6"],\
+          ["cookie", "npm:0.4.1"],\
+          ["cookie-signature", "npm:1.0.6"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -10863,6 +10909,26 @@ const RAW_RUNTIME_STATE =
           ["follow-redirects", "npm:1.15.2"]\
         ],\
         "linkType": "SOFT"\
+      }],\
+      ["npm:1.15.5", {\
+        "packageLocation": "./.yarn/cache/follow-redirects-npm-1.15.5-9d14db76ca-d467f13c1c.zip/node_modules/follow-redirects/",\
+        "packageDependencies": [\
+          ["follow-redirects", "npm:1.15.5"]\
+        ],\
+        "linkType": "SOFT"\
+      }],\
+      ["virtual:d7b9974d1bba76881cc57a280a16dd4914416a6fc4923c2efbb6328057412974da1e719cef1530b7a62b97d85d828f7e1d49b5f6de3b5b0854d49902ec87827c#npm:1.15.5", {\
+        "packageLocation": "./.yarn/__virtual__/follow-redirects-virtual-393395f3f6/0/cache/follow-redirects-npm-1.15.5-9d14db76ca-d467f13c1c.zip/node_modules/follow-redirects/",\
+        "packageDependencies": [\
+          ["follow-redirects", "virtual:d7b9974d1bba76881cc57a280a16dd4914416a6fc4923c2efbb6328057412974da1e719cef1530b7a62b97d85d828f7e1d49b5f6de3b5b0854d49902ec87827c#npm:1.15.5"],\
+          ["@types/debug", null],\
+          ["debug", null]\
+        ],\
+        "packagePeers": [\
+          "@types/debug",\
+          "debug"\
+        ],\
+        "linkType": "HARD"\
       }],\
       ["virtual:ffaff76449f02e83712a7d24e03c564489516739c78ebeffb0fbcdb3893ad9a0e48504f9acfa70fe6f16debe9c8dabde3679d63bf648278ea98a5ff38cf77a9e#npm:1.15.2", {\
         "packageLocation": "./.yarn/__virtual__/follow-redirects-virtual-c2d5794c26/0/cache/follow-redirects-npm-1.15.2-1ec1dd82be-8be0d39919.zip/node_modules/follow-redirects/",\
@@ -13783,10 +13849,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["mysql2", [\
-      ["npm:3.3.3", {\
-        "packageLocation": "./.yarn/cache/mysql2-npm-3.3.3-d2fe8cf512-4bf7ace8f1.zip/node_modules/mysql2/",\
+      ["npm:3.9.7", {\
+        "packageLocation": "./.yarn/cache/mysql2-npm-3.9.7-8fe89e50ac-7f43b17cc0.zip/node_modules/mysql2/",\
         "packageDependencies": [\
-          ["mysql2", "npm:3.3.3"],\
+          ["mysql2", "npm:3.9.7"],\
           ["denque", "npm:2.1.0"],\
           ["generate-function", "npm:2.3.1"],\
           ["iconv-lite", "npm:0.6.3"],\
@@ -16836,7 +16902,7 @@ const RAW_RUNTIME_STATE =
           ["mkdirp", "npm:2.1.6"],\
           ["mongodb", null],\
           ["mssql", null],\
-          ["mysql2", "npm:3.3.3"],\
+          ["mysql2", "npm:3.9.7"],\
           ["oracledb", null],\
           ["pg", null],\
           ["pg-native", null],\
@@ -16928,7 +16994,7 @@ const RAW_RUNTIME_STATE =
           ["mkdirp", "npm:2.1.6"],\
           ["mongodb", null],\
           ["mssql", null],\
-          ["mysql2", "npm:3.3.3"],\
+          ["mysql2", "npm:3.9.7"],\
           ["oracledb", null],\
           ["pg", null],\
           ["pg-native", null],\

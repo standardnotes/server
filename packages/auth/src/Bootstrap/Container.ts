@@ -1,6 +1,8 @@
 import * as winston from 'winston'
+import * as AgentKeepAlive from 'agentkeepalive'
 import Redis from 'ioredis'
 import { SNSClient, SNSClientConfig } from '@aws-sdk/client-sns'
+import axios, { AxiosInstance } from 'axios'
 import { SQSClient, SQSClientConfig } from '@aws-sdk/client-sqs'
 import { S3Client } from '@aws-sdk/client-s3'
 import { Container } from 'inversify'
@@ -36,13 +38,11 @@ import { AuthResponseFactoryResolver } from '../Domain/Auth/AuthResponseFactoryR
 import { ClearLoginAttempts } from '../Domain/UseCase/ClearLoginAttempts'
 import { IncreaseLoginAttempts } from '../Domain/UseCase/IncreaseLoginAttempts'
 import { GetUserKeyParams } from '../Domain/UseCase/GetUserKeyParams/GetUserKeyParams'
-import { UpdateUser } from '../Domain/UseCase/UpdateUser'
 import { RedisEphemeralSessionRepository } from '../Infra/Redis/RedisEphemeralSessionRepository'
 import { GetActiveSessionsForUser } from '../Domain/UseCase/GetActiveSessionsForUser'
 import { DeleteOtherSessionsForUser } from '../Domain/UseCase/DeleteOtherSessionsForUser'
 import { DeleteSessionForUser } from '../Domain/UseCase/DeleteSessionForUser'
 import { Register } from '../Domain/UseCase/Register'
-import { LockRepository } from '../Infra/Redis/LockRepository'
 import { TypeORMRevokedSessionRepository } from '../Infra/TypeORM/TypeORMRevokedSessionRepository'
 import { AuthenticationMethodResolver } from '../Domain/Auth/AuthenticationMethodResolver'
 import { RevokedSession } from '../Domain/Session/RevokedSession'
@@ -286,6 +286,19 @@ import { FixStorageQuotaForUser } from '../Domain/UseCase/FixStorageQuotaForUser
 import { FileQuotaRecalculatedEventHandler } from '../Domain/Handler/FileQuotaRecalculatedEventHandler'
 import { SessionServiceInterface } from '../Domain/Session/SessionServiceInterface'
 import { SubscriptionStateFetchedEventHandler } from '../Domain/Handler/SubscriptionStateFetchedEventHandler'
+import { CaptchaServerInterface } from '../Domain/HumanVerification/CaptchaServerInterface'
+import { VerifyHumanInteraction } from '../Domain/UseCase/VerifyHumanInteraction/VerifyHumanInteraction'
+import { HttpCaptchaServer } from '../Infra/Http/HumanVerification/HttpCaptchaServer'
+import { CookieFactoryInterface } from '../Domain/Auth/Cookies/CookieFactoryInterface'
+import { CookieFactory } from '../Domain/Auth/Cookies/CookieFactory'
+import { RedisLockRepository } from '../Infra/Redis/RedisLockRepository'
+import { DeleteSessionByToken } from '../Domain/UseCase/DeleteSessionByToken/DeleteSessionByToken'
+import { GetSessionFromToken } from '../Domain/UseCase/GetSessionFromToken/GetSessionFromToken'
+import { CooldownSessionTokens } from '../Domain/UseCase/CooldownSessionTokens/CooldownSessionTokens'
+import { SessionTokensCooldownRepositoryInterface } from '../Domain/Session/SessionTokensCooldownRepositoryInterface'
+import { RedisSessionTokensCooldownRepository } from '../Infra/Redis/RedisSessionTokensCooldownRepository'
+import { InMemorySessionTokensCooldownRepository } from '../Infra/InMemory/InMemorySessionTokensCooldownRepository'
+import { GetCooldownSessionTokens } from '../Domain/UseCase/GetCooldownSessionTokens/GetCooldownSessionTokens'
 
 export class ContainerConfigLoader {
   constructor(private mode: 'server' | 'worker' = 'server') {}
@@ -330,6 +343,8 @@ export class ContainerConfigLoader {
     const isConfiguredForSelfHosting = env.get('MODE', true) === 'self-hosted'
     const isConfiguredForHomeServerOrSelfHosting = isConfiguredForHomeServer || isConfiguredForSelfHosting
     const isConfiguredForInMemoryCache = env.get('CACHE_TYPE', true) === 'memory'
+    const captchaServerUrl = env.get('CAPTCHA_SERVER_URL', true)
+    const captchaUIUrl = env.get('CAPTCHA_UI_URL', true)
 
     container
       .bind<boolean>(TYPES.Auth_IS_CONFIGURED_FOR_HOME_SERVER_OR_SELF_HOSTING)
@@ -598,8 +613,16 @@ export class ContainerConfigLoader {
       .bind(TYPES.Auth_MAX_LOGIN_ATTEMPTS)
       .toConstantValue(env.get('MAX_LOGIN_ATTEMPTS', true) ? +env.get('MAX_LOGIN_ATTEMPTS', true) : 6)
     container
+      .bind(TYPES.Auth_MAX_CAPTCHA_LOGIN_ATTEMPTS)
+      .toConstantValue(env.get('MAX_CAPTCHA_LOGIN_ATTEMPTS', true) ? +env.get('MAX_CAPTCHA_LOGIN_ATTEMPTS', true) : 6)
+    container
       .bind(TYPES.Auth_FAILED_LOGIN_LOCKOUT)
       .toConstantValue(env.get('FAILED_LOGIN_LOCKOUT', true) ? +env.get('FAILED_LOGIN_LOCKOUT', true) : 3600)
+    container
+      .bind(TYPES.Auth_FAILED_LOGIN_CAPTCHA_LOCKOUT)
+      .toConstantValue(
+        env.get('FAILED_LOGIN_CAPTCHA_LOCKOUT', true) ? +env.get('FAILED_LOGIN_CAPTCHA_LOCKOUT', true) : 86400,
+      )
     container.bind(TYPES.Auth_PSEUDO_KEY_PARAMS_KEY).toConstantValue(env.get('PSEUDO_KEY_PARAMS_KEY'))
     container
       .bind(TYPES.Auth_EPHEMERAL_SESSION_AGE)
@@ -633,6 +656,10 @@ export class ContainerConfigLoader {
     container
       .bind(TYPES.Auth_READONLY_USERS)
       .toConstantValue(env.get('READONLY_USERS', true) ? env.get('READONLY_USERS', true).split(',') : [])
+    container.bind(TYPES.Auth_CAPTCHA_SERVER_URL).toConstantValue(captchaServerUrl)
+    container.bind(TYPES.Auth_CAPTCHA_UI_URL).toConstantValue(captchaUIUrl)
+    container.bind<boolean>(TYPES.Auth_HUMAN_VERIFICATION_ENABLED).toConstantValue(!!captchaServerUrl && !!captchaUIUrl)
+    container.bind<boolean>(TYPES.Auth_FORCE_LEGACY_SESSIONS).toConstantValue(env.get('E2E_TESTING', true) === 'true')
 
     if (isConfiguredForInMemoryCache) {
       container
@@ -652,6 +679,7 @@ export class ContainerConfigLoader {
             container.get(TYPES.Auth_Timer),
             container.get(TYPES.Auth_MAX_LOGIN_ATTEMPTS),
             container.get(TYPES.Auth_FAILED_LOGIN_LOCKOUT),
+            container.get(TYPES.Auth_FAILED_LOGIN_CAPTCHA_LOCKOUT),
           ),
         )
       container
@@ -679,9 +707,21 @@ export class ContainerConfigLoader {
             container.get(TYPES.Auth_Timer),
           ),
         )
+      container
+        .bind<SessionTokensCooldownRepositoryInterface>(TYPES.Auth_SessionTokensCooldownRepository)
+        .toConstantValue(new InMemorySessionTokensCooldownRepository())
     } else {
       container.bind<PKCERepositoryInterface>(TYPES.Auth_PKCERepository).to(RedisPKCERepository)
-      container.bind<LockRepositoryInterface>(TYPES.Auth_LockRepository).to(LockRepository)
+      container
+        .bind<LockRepositoryInterface>(TYPES.Auth_LockRepository)
+        .toConstantValue(
+          new RedisLockRepository(
+            container.get<Redis>(TYPES.Auth_Redis),
+            container.get<number>(TYPES.Auth_MAX_LOGIN_ATTEMPTS),
+            container.get<number>(TYPES.Auth_FAILED_LOGIN_LOCKOUT),
+            container.get<number>(TYPES.Auth_FAILED_LOGIN_CAPTCHA_LOCKOUT),
+          ),
+        )
       container
         .bind<EphemeralSessionRepositoryInterface>(TYPES.Auth_EphemeralSessionRepository)
         .to(RedisEphemeralSessionRepository)
@@ -691,6 +731,9 @@ export class ContainerConfigLoader {
       container
         .bind<SubscriptionTokenRepositoryInterface>(TYPES.Auth_SubscriptionTokenRepository)
         .to(RedisSubscriptionTokenRepository)
+      container
+        .bind<SessionTokensCooldownRepositoryInterface>(TYPES.Auth_SessionTokensCooldownRepository)
+        .toConstantValue(new RedisSessionTokensCooldownRepository(container.get<Redis>(TYPES.Auth_Redis)))
     }
 
     container
@@ -740,6 +783,41 @@ export class ContainerConfigLoader {
           container.get<UserSubscriptionRepositoryInterface>(TYPES.Auth_UserSubscriptionRepository),
           container.get<string[]>(TYPES.Auth_READONLY_USERS),
           container.get<GetSetting>(TYPES.Auth_GetSetting),
+          container.get<boolean>(TYPES.Auth_FORCE_LEGACY_SESSIONS),
+        ),
+      )
+    container
+      .bind<GetCooldownSessionTokens>(TYPES.Auth_GetCooldownSessionTokens)
+      .toConstantValue(
+        new GetCooldownSessionTokens(
+          container.get<SessionTokensCooldownRepositoryInterface>(TYPES.Auth_SessionTokensCooldownRepository),
+        ),
+      )
+    container
+      .bind<GetSessionFromToken>(TYPES.Auth_GetSessionFromToken)
+      .toConstantValue(
+        new GetSessionFromToken(
+          container.get<SessionRepositoryInterface>(TYPES.Auth_SessionRepository),
+          container.get<EphemeralSessionRepositoryInterface>(TYPES.Auth_EphemeralSessionRepository),
+          container.get<GetCooldownSessionTokens>(TYPES.Auth_GetCooldownSessionTokens),
+          container.get<winston.Logger>(TYPES.Auth_Logger),
+        ),
+      )
+    container
+      .bind<DeleteSessionByToken>(TYPES.Auth_DeleteSessionByToken)
+      .toConstantValue(
+        new DeleteSessionByToken(
+          container.get<GetSessionFromToken>(TYPES.Auth_GetSessionFromToken),
+          container.get<SessionRepositoryInterface>(TYPES.Auth_SessionRepository),
+          container.get<EphemeralSessionRepositoryInterface>(TYPES.Auth_EphemeralSessionRepository),
+        ),
+      )
+    container
+      .bind<CooldownSessionTokens>(TYPES.Auth_CooldownSessionTokens)
+      .toConstantValue(
+        new CooldownSessionTokens(
+          env.get('COOLDOWN_SESSION_TOKENS_TTL', true) ? +env.get('COOLDOWN_SESSION_TOKENS_TTL', true) : 120,
+          container.get<SessionTokensCooldownRepositoryInterface>(TYPES.Auth_SessionTokensCooldownRepository),
         ),
       )
     container.bind<AuthResponseFactory20161215>(TYPES.Auth_AuthResponseFactory20161215).to(AuthResponseFactory20161215)
@@ -780,7 +858,16 @@ export class ContainerConfigLoader {
       .toConstantValue(new TokenEncoder<ValetTokenData>(container.get(TYPES.Auth_VALET_TOKEN_SECRET)))
     container
       .bind<AuthenticationMethodResolver>(TYPES.Auth_AuthenticationMethodResolver)
-      .to(AuthenticationMethodResolver)
+      .toConstantValue(
+        new AuthenticationMethodResolver(
+          container.get<UserRepositoryInterface>(TYPES.Auth_UserRepository),
+          container.get<SessionServiceInterface>(TYPES.Auth_SessionService),
+          container.get<TokenDecoderInterface<SessionTokenData>>(TYPES.Auth_SessionTokenDecoder),
+          container.get<TokenDecoderInterface<SessionTokenData>>(TYPES.Auth_FallbackSessionTokenDecoder),
+          container.get<GetSessionFromToken>(TYPES.Auth_GetSessionFromToken),
+          container.get<winston.Logger>(TYPES.Auth_Logger),
+        ),
+      )
     container.bind<DomainEventFactory>(TYPES.Auth_DomainEventFactory).to(DomainEventFactory)
     container
       .bind<SettingsAssociationServiceInterface>(TYPES.Auth_SettingsAssociationService)
@@ -818,6 +905,43 @@ export class ContainerConfigLoader {
     container
       .bind<SelectorInterface<boolean>>(TYPES.Auth_BooleanSelector)
       .toConstantValue(new DeterministicSelector<boolean>())
+
+    const httpAgentKeepAliveTimeout = env.get('HTTP_AGENT_KEEP_ALIVE_TIMEOUT', true)
+      ? +env.get('HTTP_AGENT_KEEP_ALIVE_TIMEOUT', true)
+      : 4_000
+
+    container.bind<AxiosInstance>(TYPES.Auth_HTTPClient).toConstantValue(
+      axios.create({
+        httpAgent: new AgentKeepAlive({
+          keepAlive: true,
+          timeout: 2 * httpAgentKeepAliveTimeout,
+          freeSocketTimeout: httpAgentKeepAliveTimeout,
+        }),
+      }),
+    )
+
+    container
+      .bind<CaptchaServerInterface>(TYPES.Auth_CaptchaServer)
+      .toConstantValue(
+        new HttpCaptchaServer(
+          container.get(TYPES.Auth_Logger),
+          container.get(TYPES.Auth_HTTPClient),
+          container.get(TYPES.Auth_CAPTCHA_SERVER_URL),
+        ),
+      )
+
+    container
+      .bind<CookieFactoryInterface>(TYPES.Auth_CookieFactory)
+      .toConstantValue(
+        new CookieFactory(
+          ['None', 'Lax', 'Strict'].includes(env.get('COOKIE_SAME_SITE', true))
+            ? (env.get('COOKIE_SAME_SITE', true) as 'None' | 'Lax' | 'Strict')
+            : 'None',
+          env.get('COOKIE_DOMAIN', true) ?? 'standardnotes.com',
+          env.get('COOKIE_SECURE', true) ? env.get('COOKIE_SECURE', true) === 'true' : true,
+          env.get('COOKIE_PARTITIONED', true) ? env.get('COOKIE_PARTITIONED', true) === 'true' : true,
+        ),
+      )
 
     // Middleware
     container.bind<SessionMiddleware>(TYPES.Auth_SessionMiddleware).to(SessionMiddleware)
@@ -953,6 +1077,7 @@ export class ContainerConfigLoader {
         new SetSubscriptionSettingValue(
           container.get<SubscriptionSettingRepositoryInterface>(TYPES.Auth_SubscriptionSettingRepository),
           container.get<GetSubscriptionSetting>(TYPES.Auth_GetSubscriptionSetting),
+          container.get<SettingsAssociationServiceInterface>(TYPES.Auth_SettingsAssociationService),
           container.get<TimerInterface>(TYPES.Auth_Timer),
         ),
       )
@@ -997,10 +1122,36 @@ export class ContainerConfigLoader {
           container.get<DomainEventPublisherInterface>(TYPES.Auth_DomainEventPublisher),
           container.get<TimerInterface>(TYPES.Auth_Timer),
           container.get<GetSetting>(TYPES.Auth_GetSetting),
+          container.get<CooldownSessionTokens>(TYPES.Auth_CooldownSessionTokens),
+          container.get<GetSessionFromToken>(TYPES.Auth_GetSessionFromToken),
           container.get<winston.Logger>(TYPES.Auth_Logger),
         ),
       )
-    container.bind<SignIn>(TYPES.Auth_SignIn).to(SignIn)
+    container
+      .bind<VerifyHumanInteraction>(TYPES.Auth_VerifyHumanInteraction)
+      .toConstantValue(
+        new VerifyHumanInteraction(
+          container.get(TYPES.Auth_HUMAN_VERIFICATION_ENABLED),
+          container.get<CaptchaServerInterface>(TYPES.Auth_CaptchaServer),
+        ),
+      )
+    container
+      .bind<SignIn>(TYPES.Auth_SignIn)
+      .toConstantValue(
+        new SignIn(
+          container.get<UserRepositoryInterface>(TYPES.Auth_UserRepository),
+          container.get<AuthResponseFactoryResolverInterface>(TYPES.Auth_AuthResponseFactoryResolver),
+          container.get<DomainEventPublisherInterface>(TYPES.Auth_DomainEventPublisher),
+          container.get<DomainEventFactoryInterface>(TYPES.Auth_DomainEventFactory),
+          container.get<SessionServiceInterface>(TYPES.Auth_SessionService),
+          container.get<PKCERepositoryInterface>(TYPES.Auth_PKCERepository),
+          container.get<CrypterInterface>(TYPES.Auth_Crypter),
+          container.get<winston.Logger>(TYPES.Auth_Logger),
+          container.get<number>(TYPES.Auth_MAX_LOGIN_ATTEMPTS),
+          container.get<LockRepositoryInterface>(TYPES.Auth_LockRepository),
+          container.get<VerifyHumanInteraction>(TYPES.Auth_VerifyHumanInteraction),
+        ),
+      )
     container
       .bind<VerifyMFA>(TYPES.Auth_VerifyMFA)
       .toConstantValue(
@@ -1017,8 +1168,24 @@ export class ContainerConfigLoader {
           container.get<winston.Logger>(TYPES.Auth_Logger),
         ),
       )
-    container.bind<ClearLoginAttempts>(TYPES.Auth_ClearLoginAttempts).to(ClearLoginAttempts)
-    container.bind<IncreaseLoginAttempts>(TYPES.Auth_IncreaseLoginAttempts).to(IncreaseLoginAttempts)
+    container
+      .bind<ClearLoginAttempts>(TYPES.Auth_ClearLoginAttempts)
+      .toConstantValue(
+        new ClearLoginAttempts(
+          container.get<UserRepositoryInterface>(TYPES.Auth_UserRepository),
+          container.get<LockRepositoryInterface>(TYPES.Auth_LockRepository),
+          container.get<winston.Logger>(TYPES.Auth_Logger),
+        ),
+      )
+    container
+      .bind<IncreaseLoginAttempts>(TYPES.Auth_IncreaseLoginAttempts)
+      .toConstantValue(
+        new IncreaseLoginAttempts(
+          container.get<UserRepositoryInterface>(TYPES.Auth_UserRepository),
+          container.get<LockRepositoryInterface>(TYPES.Auth_LockRepository),
+          container.get<number>(TYPES.Auth_MAX_LOGIN_ATTEMPTS),
+        ),
+      )
     container
       .bind<GetUserKeyParamsRecovery>(TYPES.Auth_GetUserKeyParamsRecovery)
       .toConstantValue(
@@ -1029,7 +1196,6 @@ export class ContainerConfigLoader {
           container.get<GetSetting>(TYPES.Auth_GetSetting),
         ),
       )
-    container.bind<UpdateUser>(TYPES.Auth_UpdateUser).to(UpdateUser)
     container
       .bind<ApplyDefaultSettings>(TYPES.Auth_ApplyDefaultSettings)
       .toConstantValue(
@@ -1130,6 +1296,9 @@ export class ContainerConfigLoader {
           container.get<ClearLoginAttempts>(TYPES.Auth_ClearLoginAttempts),
           container.get<DeleteSetting>(TYPES.Auth_DeleteSetting),
           container.get<AuthenticatorRepositoryInterface>(TYPES.Auth_AuthenticatorRepository),
+          container.get<number>(TYPES.Auth_MAX_LOGIN_ATTEMPTS),
+          container.get<LockRepositoryInterface>(TYPES.Auth_LockRepository),
+          container.get<VerifyHumanInteraction>(TYPES.Auth_VerifyHumanInteraction),
         ),
       )
     container
@@ -1262,7 +1431,6 @@ export class ContainerConfigLoader {
       .toConstantValue(
         new TriggerEmailBackupForUser(
           container.get<RoleServiceInterface>(TYPES.Auth_RoleService),
-          container.get<GetSetting>(TYPES.Auth_GetSetting),
           container.get<GetUserKeyParams>(TYPES.Auth_GetUserKeyParams),
           container.get<DomainEventPublisherInterface>(TYPES.Auth_DomainEventPublisher),
           container.get<DomainEventFactoryInterface>(TYPES.Auth_DomainEventFactory),
@@ -1337,15 +1505,9 @@ export class ContainerConfigLoader {
       .bind<AuthController>(TYPES.Auth_AuthController)
       .toConstantValue(
         new AuthController(
-          container.get(TYPES.Auth_ClearLoginAttempts),
-          container.get(TYPES.Auth_Register),
-          container.get(TYPES.Auth_DomainEventPublisher),
-          container.get(TYPES.Auth_DomainEventFactory),
-          container.get(TYPES.Auth_SignInWithRecoveryCodes),
-          container.get(TYPES.Auth_GetUserKeyParamsRecovery),
-          container.get(TYPES.Auth_GenerateRecoveryCodes),
-          container.get(TYPES.Auth_Logger),
-          container.get(TYPES.Auth_SessionService),
+          container.get<GetUserKeyParamsRecovery>(TYPES.Auth_GetUserKeyParamsRecovery),
+          container.get<GenerateRecoveryCodes>(TYPES.Auth_GenerateRecoveryCodes),
+          container.get<winston.Logger>(TYPES.Auth_Logger),
         ),
       )
     container
@@ -1664,14 +1826,23 @@ export class ContainerConfigLoader {
       .bind<BaseAuthController>(TYPES.Auth_BaseAuthController)
       .toConstantValue(
         new BaseAuthController(
-          container.get(TYPES.Auth_VerifyMFA),
-          container.get(TYPES.Auth_SignIn),
-          container.get(TYPES.Auth_GetUserKeyParams),
-          container.get(TYPES.Auth_ClearLoginAttempts),
-          container.get(TYPES.Auth_IncreaseLoginAttempts),
-          container.get(TYPES.Auth_Logger),
-          container.get(TYPES.Auth_AuthController),
-          container.get(TYPES.Auth_ControllerContainer),
+          container.get<VerifyMFA>(TYPES.Auth_VerifyMFA),
+          container.get<SignIn>(TYPES.Auth_SignIn),
+          container.get<GetUserKeyParams>(TYPES.Auth_GetUserKeyParams),
+          container.get<ClearLoginAttempts>(TYPES.Auth_ClearLoginAttempts),
+          container.get<IncreaseLoginAttempts>(TYPES.Auth_IncreaseLoginAttempts),
+          container.get<winston.Logger>(TYPES.Auth_Logger),
+          container.get<AuthController>(TYPES.Auth_AuthController),
+          container.get<Register>(TYPES.Auth_Register),
+          container.get<DomainEventPublisherInterface>(TYPES.Auth_DomainEventPublisher),
+          container.get<DomainEventFactoryInterface>(TYPES.Auth_DomainEventFactory),
+          container.get<SessionServiceInterface>(TYPES.Auth_SessionService),
+          container.get<VerifyHumanInteraction>(TYPES.Auth_VerifyHumanInteraction),
+          container.get<CookieFactoryInterface>(TYPES.Auth_CookieFactory),
+          container.get<SignInWithRecoveryCodes>(TYPES.Auth_SignInWithRecoveryCodes),
+          container.get<DeleteSessionByToken>(TYPES.Auth_DeleteSessionByToken),
+          container.get<string>(TYPES.Auth_CAPTCHA_UI_URL),
+          container.get<ControllerContainerInterface>(TYPES.Auth_ControllerContainer),
         ),
       )
 
@@ -1738,6 +1909,7 @@ export class ContainerConfigLoader {
             container.get<ClearLoginAttempts>(TYPES.Auth_ClearLoginAttempts),
             container.get<IncreaseLoginAttempts>(TYPES.Auth_IncreaseLoginAttempts),
             container.get<ChangeCredentials>(TYPES.Auth_ChangeCredentials),
+            container.get<CookieFactoryInterface>(TYPES.Auth_CookieFactory),
             container.get<ControllerContainerInterface>(TYPES.Auth_ControllerContainer),
           ),
         )
@@ -1745,11 +1917,12 @@ export class ContainerConfigLoader {
         .bind<BaseAdminController>(TYPES.Auth_BaseAdminController)
         .toConstantValue(
           new BaseAdminController(
-            container.get(TYPES.Auth_DeleteSetting),
-            container.get(TYPES.Auth_UserRepository),
-            container.get(TYPES.Auth_CreateSubscriptionToken),
-            container.get(TYPES.Auth_CreateOfflineSubscriptionToken),
-            container.get(TYPES.Auth_ControllerContainer),
+            container.get<DeleteSetting>(TYPES.Auth_DeleteSetting),
+            container.get<GetSetting>(TYPES.Auth_GetSetting),
+            container.get<UserRepositoryInterface>(TYPES.Auth_UserRepository),
+            container.get<CreateSubscriptionToken>(TYPES.Auth_CreateSubscriptionToken),
+            container.get<CreateOfflineSubscriptionToken>(TYPES.Auth_CreateOfflineSubscriptionToken),
+            container.get<ControllerContainerInterface>(TYPES.Auth_ControllerContainer),
           ),
         )
       container
@@ -1772,9 +1945,12 @@ export class ContainerConfigLoader {
           new BaseSubscriptionSettingsController(
             container.get<GetSubscriptionSetting>(TYPES.Auth_GetSubscriptionSetting),
             container.get<GetSharedOrRegularSubscriptionForUser>(TYPES.Auth_GetSharedOrRegularSubscriptionForUser),
+            container.get<SetSubscriptionSettingValue>(TYPES.Auth_SetSubscriptionSettingValue),
+            container.get<TriggerPostSettingUpdateActions>(TYPES.Auth_TriggerPostSettingUpdateActions),
             container.get<MapperInterface<SubscriptionSetting, SubscriptionSettingHttpRepresentation>>(
               TYPES.Auth_SubscriptionSettingHttpMapper,
             ),
+            container.get<winston.Logger>(TYPES.Auth_Logger),
             container.get<ControllerContainerInterface>(TYPES.Auth_ControllerContainer),
           ),
         )
@@ -1799,10 +1975,11 @@ export class ContainerConfigLoader {
         .bind<BaseSessionController>(TYPES.Auth_BaseSessionController)
         .toConstantValue(
           new BaseSessionController(
-            container.get(TYPES.Auth_DeleteSessionForUser),
-            container.get(TYPES.Auth_DeleteOtherSessionsForUser),
-            container.get(TYPES.Auth_RefreshSessionToken),
-            container.get(TYPES.Auth_ControllerContainer),
+            container.get<DeleteSessionForUser>(TYPES.Auth_DeleteSessionForUser),
+            container.get<DeleteOtherSessionsForUser>(TYPES.Auth_DeleteOtherSessionsForUser),
+            container.get<RefreshSessionToken>(TYPES.Auth_RefreshSessionToken),
+            container.get<CookieFactoryInterface>(TYPES.Auth_CookieFactory),
+            container.get<ControllerContainerInterface>(TYPES.Auth_ControllerContainer),
           ),
         )
       container

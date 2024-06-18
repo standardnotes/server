@@ -14,6 +14,7 @@ import { ItemRepositoryInterface } from '../../../Item/ItemRepositoryInterface'
 import { SendEventToClient } from '../SendEventToClient/SendEventToClient'
 import { DomainEventFactoryInterface } from '../../../Event/DomainEventFactoryInterface'
 import { SendEventToClients } from '../SendEventToClients/SendEventToClients'
+import { CheckForContentLimit } from '../CheckForContentLimit/CheckForContentLimit'
 
 export class SaveItems implements UseCaseInterface<SaveItemsResult> {
   private readonly SYNC_TOKEN_VERSION = 2
@@ -27,12 +28,27 @@ export class SaveItems implements UseCaseInterface<SaveItemsResult> {
     private sendEventToClient: SendEventToClient,
     private sendEventToClients: SendEventToClients,
     private domainEventFactory: DomainEventFactoryInterface,
+    private checkForContentLimit: CheckForContentLimit,
     private logger: Logger,
   ) {}
 
   async execute(dto: SaveItemsDTO): Promise<Result<SaveItemsResult>> {
     const savedItems: Array<Item> = []
     const conflicts: Array<ItemConflict> = []
+
+    if (dto.hasContentLimit) {
+      const checkForContentLimitResult = await this.checkForContentLimit.execute({
+        userUuid: dto.userUuid,
+        itemsBeingModified: dto.itemHashes,
+      })
+      if (checkForContentLimitResult.isFailed()) {
+        this.logger.warn(`Checking for content limit failed. Error: ${checkForContentLimitResult.getError()}`, {
+          userId: dto.userUuid,
+        })
+
+        return Result.fail(checkForContentLimitResult.getError())
+      }
+    }
 
     const lastUpdatedTimestamp = this.timer.getTimestampInMicroseconds()
 

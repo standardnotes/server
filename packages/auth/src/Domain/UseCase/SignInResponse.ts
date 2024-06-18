@@ -1,11 +1,14 @@
 import { HttpStatusCode } from '@standardnotes/responses'
 
-import { AuthResponse20161215 } from '../Auth/AuthResponse20161215'
-import { AuthResponse20200115 } from '../Auth/AuthResponse20200115'
+import { AuthResponseCreationResult } from '../Auth/AuthResponseCreationResult'
 
-export type SignInResponse = {
-  success: boolean
-  authResponse?: AuthResponse20161215 | AuthResponse20200115
-  errorMessage?: string
-  errorCode?: HttpStatusCode
-}
+export type SignInResponse =
+  | {
+      success: false
+      errorMessage: string
+      errorCode?: HttpStatusCode
+    }
+  | {
+      success: true
+      result: AuthResponseCreationResult
+    }

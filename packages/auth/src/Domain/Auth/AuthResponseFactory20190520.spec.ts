@@ -5,6 +5,7 @@ import { Logger } from 'winston'
 import { ProjectorInterface } from '../../Projection/ProjectorInterface'
 import { User } from '../User/User'
 import { AuthResponseFactory20190520 } from './AuthResponseFactory20190520'
+import { ApiVersion } from '../Api/ApiVersion'
 
 describe('AuthResponseFactory20190520', () => {
   let userProjector: ProjectorInterface<User>
@@ -31,13 +32,13 @@ describe('AuthResponseFactory20190520', () => {
   it('should create a 20161215 auth response', async () => {
     const result = await createFactory().createResponse({
       user,
-      apiVersion: '20161215',
+      apiVersion: ApiVersion.create(ApiVersion.VERSIONS.v20161215).getValue(),
       userAgent: 'Google Chrome',
       ephemeralSession: false,
       readonlyAccess: false,
     })
 
-    expect(result.response).toEqual({
+    expect(result.legacyResponse).toEqual({
       user: { foo: 'bar' },
       token: 'foobar',
     })

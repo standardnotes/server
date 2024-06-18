@@ -5,13 +5,15 @@ import { LockRepositoryInterface } from '../../Domain/User/LockRepositoryInterfa
 
 export class TypeORMLockRepository implements LockRepositoryInterface {
   private readonly PREFIX = 'lock'
+  private readonly CAPTCHA_PREFIX = 'captcha-lock'
   private readonly OTP_PREFIX = 'otp-lock'
 
   constructor(
     private cacheEntryRepository: CacheEntryRepositoryInterface,
     private timer: TimerInterface,
     private maxLoginAttempts: number,
-    private failedLoginLockout: number,
+    private nonCaptchaLockTTL: number,
+    private captchaLockTTL: number,
   ) {}
 
   async lockSuccessfullOTP(userIdentifier: string, otp: string): Promise<void> {
@@ -38,26 +40,32 @@ export class TypeORMLockRepository implements LockRepositoryInterface {
 
   async resetLockCounter(userIdentifier: string): Promise<void> {
     await this.cacheEntryRepository.removeByKey(`${this.PREFIX}:${userIdentifier}`)
+    await this.cacheEntryRepository.removeByKey(`${this.CAPTCHA_PREFIX}:${userIdentifier}`)
   }
 
-  async updateLockCounter(userIdentifier: string, counter: number): Promise<void> {
-    let cacheEntry = await this.cacheEntryRepository.findUnexpiredOneByKey(`${this.PREFIX}:${userIdentifier}`)
+  async updateLockCounter(userIdentifier: string, counter: number, mode: 'captcha' | 'non-captcha'): Promise<void> {
+    const prefix = mode === 'captcha' ? this.CAPTCHA_PREFIX : this.PREFIX
+    const lockTTL = mode === 'captcha' ? this.captchaLockTTL : this.nonCaptchaLockTTL
+
+    let cacheEntry = await this.cacheEntryRepository.findUnexpiredOneByKey(`${prefix}:${userIdentifier}`)
     if (!cacheEntry) {
       cacheEntry = CacheEntry.create({
-        key: `${this.PREFIX}:${userIdentifier}`,
+        key: `${prefix}:${userIdentifier}`,
         value: counter.toString(),
-        expiresAt: this.timer.getUTCDateNSecondsAhead(this.failedLoginLockout),
+        expiresAt: this.timer.getUTCDateNSecondsAhead(lockTTL),
       }).getValue()
     } else {
       cacheEntry.props.value = counter.toString()
-      cacheEntry.props.expiresAt = this.timer.getUTCDateNSecondsAhead(this.failedLoginLockout)
+      cacheEntry.props.expiresAt = this.timer.getUTCDateNSecondsAhead(lockTTL)
     }
 
     await this.cacheEntryRepository.save(cacheEntry)
   }
 
-  async getLockCounter(userIdentifier: string): Promise<number> {
-    const counter = await this.cacheEntryRepository.findUnexpiredOneByKey(`${this.PREFIX}:${userIdentifier}`)
+  async getLockCounter(userIdentifier: string, mode: 'captcha' | 'non-captcha'): Promise<number> {
+    const prefix = mode === 'captcha' ? this.CAPTCHA_PREFIX : this.PREFIX
+
+    const counter = await this.cacheEntryRepository.findUnexpiredOneByKey(`${prefix}:${userIdentifier}`)
 
     if (!counter) {
       return 0
@@ -66,17 +74,8 @@ export class TypeORMLockRepository implements LockRepositoryInterface {
     return +counter.props.value
   }
 
-  async lockUser(userIdentifier: string): Promise<void> {
-    const cacheEntry = await this.cacheEntryRepository.findUnexpiredOneByKey(`${this.PREFIX}:${userIdentifier}`)
-    if (cacheEntry !== null) {
-      cacheEntry.props.expiresAt = this.timer.getUTCDateNSecondsAhead(this.failedLoginLockout)
-
-      await this.cacheEntryRepository.save(cacheEntry)
-    }
-  }
-
   async isUserLocked(userIdentifier: string): Promise<boolean> {
-    const counter = await this.getLockCounter(userIdentifier)
+    const counter = await this.getLockCounter(userIdentifier, 'captcha')
 
     return counter >= this.maxLoginAttempts
   }

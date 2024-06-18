@@ -4,4 +4,5 @@ export type FinishUploadSessionDTO = {
   resourceRemoteIdentifier: string
   uploadBytesUsed: number
   uploadBytesLimit: number
+  valetToken: string
 }

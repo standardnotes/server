@@ -35,6 +35,7 @@ export class SyncingServer implements ISyncingServer {
     try {
       const userUuid = call.metadata.get('x-user-uuid').pop() as string
       const isFreeUser = call.metadata.get('x-is-free-user').pop() === 'true'
+      const hasContentLimit = call.metadata.get('x-has-content-limit').pop() === 'true'
 
       const checkForItemOperationsAbuseResult = await this.checkForTrafficAbuse.execute({
         metricToCheck: Metric.NAMES.ItemOperation,
@@ -168,6 +169,7 @@ export class SyncingServer implements ISyncingServer {
         sessionUuid: call.metadata.get('x-session-uuid').pop() as string,
         sharedVaultUuids,
         isFreeUser,
+        hasContentLimit,
       })
       if (syncResult.isFailed()) {
         const metadata = new grpc.Metadata()

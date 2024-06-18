@@ -43,12 +43,7 @@ export interface DomainEventFactoryInterface {
     email: string
     protocolVersion: ProtocolVersion
   }): UserRegisteredEvent
-  createEmailBackupRequestedEvent(
-    userUuid: string,
-    muteEmailsSettingUuid: string,
-    userHasEmailsMuted: boolean,
-    keyParams: KeyParamsData,
-  ): EmailBackupRequestedEvent
+  createEmailBackupRequestedEvent(userUuid: string, keyParams: KeyParamsData): EmailBackupRequestedEvent
   createAccountDeletionRequestedEvent(dto: {
     userUuid: string
     email: string

@@ -55,7 +55,10 @@ describe('AuthenticateUser', () => {
       user,
     })
 
-    const response = await createUseCase().execute({ token: 'test' })
+    const response = await createUseCase().execute({
+      authTokenFromHeaders: 'test',
+      requestMetadata: { url: '/foobar', method: 'GET' },
+    })
 
     expect(response.success).toBeTruthy()
   })
@@ -71,7 +74,10 @@ describe('AuthenticateUser', () => {
       user,
     })
 
-    const response = await createUseCase().execute({ token: 'test' })
+    const response = await createUseCase().execute({
+      authTokenFromHeaders: 'test',
+      requestMetadata: { url: '/foobar', method: 'GET' },
+    })
 
     expect(response.success).toBeFalsy()
   })
@@ -84,7 +90,10 @@ describe('AuthenticateUser', () => {
       },
     })
 
-    const response = await createUseCase().execute({ token: 'test' })
+    const response = await createUseCase().execute({
+      authTokenFromHeaders: 'test',
+      requestMetadata: { url: '/foobar', method: 'GET' },
+    })
 
     expect(response.success).toBeFalsy()
   })
@@ -100,7 +109,10 @@ describe('AuthenticateUser', () => {
       user,
     })
 
-    const response = await createUseCase().execute({ token: 'test' })
+    const response = await createUseCase().execute({
+      authTokenFromHeaders: 'test',
+      requestMetadata: { url: '/foobar', method: 'GET' },
+    })
 
     expect(response.success).toBeFalsy()
   })
@@ -114,9 +126,31 @@ describe('AuthenticateUser', () => {
       user,
     })
 
-    const response = await createUseCase().execute({ token: 'test' })
+    const response = await createUseCase().execute({
+      authTokenFromHeaders: 'test',
+      requestMetadata: { url: '/foobar', method: 'GET' },
+    })
 
     expect(response.success).toBeTruthy()
+  })
+
+  it('should not authenticate a user from a session token that is in cooldown', async () => {
+    user.supportsSessions = jest.fn().mockReturnValue(true)
+
+    authenticationMethodResolver.resolve = jest.fn().mockReturnValue({
+      type: 'session_token',
+      session,
+      user,
+      givenTokensWereInCooldown: true,
+    })
+
+    const response = await createUseCase().execute({
+      authTokenFromHeaders: 'test',
+      requestMetadata: { url: '/foobar', method: 'GET' },
+    })
+
+    expect(response.success).toBeFalsy()
+    expect(response.failureType).toEqual('COOLEDDOWN_TOKEN')
   })
 
   it('should not authenticate a user from a session token if session is expired', async () => {
@@ -129,7 +163,10 @@ describe('AuthenticateUser', () => {
       user,
     })
 
-    const response = await createUseCase().execute({ token: 'test' })
+    const response = await createUseCase().execute({
+      authTokenFromHeaders: 'test',
+      requestMetadata: { url: '/foobar', method: 'GET' },
+    })
 
     expect(response.success).toBeFalsy()
   })
@@ -144,7 +181,10 @@ describe('AuthenticateUser', () => {
       user,
     })
 
-    const response = await createUseCase().execute({ token: 'test' })
+    const response = await createUseCase().execute({
+      authTokenFromHeaders: 'test',
+      requestMetadata: { url: '/foobar', method: 'GET' },
+    })
 
     expect(response.success).toBeFalsy()
   })
@@ -159,7 +199,10 @@ describe('AuthenticateUser', () => {
       user,
     })
 
-    const response = await createUseCase().execute({ token: 'test' })
+    const response = await createUseCase().execute({
+      authTokenFromHeaders: 'test',
+      requestMetadata: { url: '/foobar', method: 'GET' },
+    })
 
     expect(response.success).toBeFalsy()
   })
@@ -172,7 +215,10 @@ describe('AuthenticateUser', () => {
       user,
     })
 
-    const response = await createUseCase().execute({ token: 'test' })
+    const response = await createUseCase().execute({
+      authTokenFromHeaders: 'test',
+      requestMetadata: { url: '/foobar', method: 'GET' },
+    })
 
     expect(response.success).toBeFalsy()
   })
@@ -183,7 +229,10 @@ describe('AuthenticateUser', () => {
       revokedSession,
     })
 
-    const response = await createUseCase().execute({ token: 'test' })
+    const response = await createUseCase().execute({
+      authTokenFromHeaders: 'test',
+      requestMetadata: { url: '/foobar', method: 'GET' },
+    })
 
     expect(response.success).toBeFalsy()
   })
@@ -191,7 +240,10 @@ describe('AuthenticateUser', () => {
   it('should not authenticate a user if authentication method could not be determined', async () => {
     authenticationMethodResolver.resolve = jest.fn().mockReturnValue(undefined)
 
-    const response = await createUseCase().execute({ token: 'test' })
+    const response = await createUseCase().execute({
+      authTokenFromHeaders: 'test',
+      requestMetadata: { url: '/foobar', method: 'GET' },
+    })
 
     expect(response.success).toBeFalsy()
   })

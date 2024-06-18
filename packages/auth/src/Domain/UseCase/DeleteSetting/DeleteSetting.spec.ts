@@ -44,6 +44,22 @@ describe('DeleteSetting', () => {
     expect(settingRepository.deleteByUserUuid).toHaveBeenCalledWith({ settingName: 'test', userUuid: '1-2-3' })
   })
 
+  it('should delete recovery codes setting if MFA secret is deleted', async () => {
+    await createUseCase().execute({
+      settingName: SettingName.NAMES.MfaSecret,
+      userUuid: '1-2-3',
+    })
+
+    expect(settingRepository.deleteByUserUuid).toHaveBeenNthCalledWith(1, {
+      settingName: SettingName.NAMES.MfaSecret,
+      userUuid: '1-2-3',
+    })
+    expect(settingRepository.deleteByUserUuid).toHaveBeenNthCalledWith(2, {
+      settingName: SettingName.NAMES.RecoveryCodes,
+      userUuid: '1-2-3',
+    })
+  })
+
   it('should delete a setting by uuid', async () => {
     await createUseCase().execute({
       settingName: 'test',

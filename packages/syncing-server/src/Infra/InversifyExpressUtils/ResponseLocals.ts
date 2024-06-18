@@ -21,4 +21,5 @@ export interface ResponseLocals {
   sharedVaultOwnerContext?: {
     upload_bytes_limit: number
   }
+  hasContentLimit?: boolean
 }

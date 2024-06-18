@@ -24,7 +24,7 @@
     "build": "tsc --build",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
-    "test": "jest --coverage --no-cache --config=./jest.config.js --maxWorkers=50%",
+    "test": "jest --coverage --no-cache --config=./jest.config.js --maxWorkers=2",
     "worker": "yarn node dist/bin/worker.js",
     "report": "yarn node dist/bin/report.js",
     "setup:env": "cp .env.sample .env",
@@ -57,7 +57,7 @@
     "inversify": "^6.0.1",
     "ioredis": "^5.2.4",
     "mixpanel": "^0.17.0",
-    "mysql2": "^3.0.1",
+    "mysql2": "^3.9.7",
     "reflect-metadata": "^0.2.1",
     "typeorm": "^0.3.17",
     "winston": "^3.8.1"

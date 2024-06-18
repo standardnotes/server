@@ -2,8 +2,15 @@ syntax = "proto3";
 
 package auth;
 
-message AuthorizationHeader {
+message Cookie {
+  string name = 1;
+  string value = 2;
+}
+
+message RequestValidationOptions {
   string bearer_token = 1;
+  repeated Cookie cookie = 2;
+  optional string shared_vault_owner_context = 3;
 }
 
 message SessionValidationResponse {
@@ -19,6 +26,6 @@ message ConnectionValidationResponse {
 }
 
 service Auth {
-  rpc validate(AuthorizationHeader) returns (SessionValidationResponse) {}
+  rpc validate(RequestValidationOptions) returns (SessionValidationResponse) {}
   rpc validateWebsocket(WebsocketConnectionAuthorizationHeader) returns (ConnectionValidationResponse) {}
 }

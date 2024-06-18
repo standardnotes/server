@@ -9,28 +9,23 @@ import TYPES from '../src/Bootstrap/Types'
 import { Env } from '../src/Bootstrap/Env'
 import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
 import { DomainEventFactoryInterface } from '../src/Domain/Event/DomainEventFactoryInterface'
-import { SettingRepositoryInterface } from '../src/Domain/Setting/SettingRepositoryInterface'
-import { MuteFailedBackupsEmailsOption } from '@standardnotes/settings'
 import { RoleServiceInterface } from '../src/Domain/Role/RoleServiceInterface'
 import { PermissionName } from '@standardnotes/features'
 import { UserRepositoryInterface } from '../src/Domain/User/UserRepositoryInterface'
 import { GetUserKeyParams } from '../src/Domain/UseCase/GetUserKeyParams/GetUserKeyParams'
-import { Email, SettingName } from '@standardnotes/domain-core'
+import { Email } from '@standardnotes/domain-core'
 
 const inputArgs = process.argv.slice(2)
 const backupEmail = inputArgs[0]
 
 const requestBackups = async (
   userRepository: UserRepositoryInterface,
-  settingRepository: SettingRepositoryInterface,
   roleService: RoleServiceInterface,
   domainEventFactory: DomainEventFactoryInterface,
   domainEventPublisher: DomainEventPublisherInterface,
   getUserKeyParamsUseCase: GetUserKeyParams,
 ): Promise<void> => {
   const permissionName = PermissionName.DailyEmailBackup
-  const muteEmailsSettingName = SettingName.NAMES.MuteFailedBackupsEmails
-  const muteEmailsSettingValue = MuteFailedBackupsEmailsOption.Muted
 
   const emailOrError = Email.create(backupEmail)
   if (emailOrError.isFailed()) {
@@ -48,24 +43,13 @@ const requestBackups = async (
     throw new Error(`User ${backupEmail} is not permitted for email backups`)
   }
 
-  let userHasEmailsMuted = false
-  const emailsMutedSetting = await settingRepository.findOneByNameAndUserUuid(muteEmailsSettingName, user.uuid)
-  if (emailsMutedSetting !== null && emailsMutedSetting.props.value !== null) {
-    userHasEmailsMuted = emailsMutedSetting.props.value === muteEmailsSettingValue
-  }
-
   const keyParamsResponse = await getUserKeyParamsUseCase.execute({
     userUuid: user.uuid,
     authenticated: false,
   })
 
   await domainEventPublisher.publish(
-    domainEventFactory.createEmailBackupRequestedEvent(
-      user.uuid,
-      emailsMutedSetting?.id.toString() as string,
-      userHasEmailsMuted,
-      keyParamsResponse.keyParams,
-    ),
+    domainEventFactory.createEmailBackupRequestedEvent(user.uuid, keyParamsResponse.keyParams),
   )
 
   return
@@ -82,7 +66,6 @@ void container.load().then((container) => {
 
   logger.info(`Starting email backup requesting for ${backupEmail} ...`)
 
-  const settingRepository: SettingRepositoryInterface = container.get(TYPES.Auth_SettingRepository)
   const userRepository: UserRepositoryInterface = container.get(TYPES.Auth_UserRepository)
   const roleService: RoleServiceInterface = container.get(TYPES.Auth_RoleService)
   const domainEventFactory: DomainEventFactoryInterface = container.get(TYPES.Auth_DomainEventFactory)
@@ -90,14 +73,7 @@ void container.load().then((container) => {
   const getUserKeyParamsUseCase: GetUserKeyParams = container.get(TYPES.Auth_GetUserKeyParams)
 
   Promise.resolve(
-    requestBackups(
-      userRepository,
-      settingRepository,
-      roleService,
-      domainEventFactory,
-      domainEventPublisher,
-      getUserKeyParamsUseCase,
-    ),
+    requestBackups(userRepository, roleService, domainEventFactory, domainEventPublisher, getUserKeyParamsUseCase),
   )
     .then(() => {
       logger.info(`Email backup requesting complete for ${backupEmail}`)

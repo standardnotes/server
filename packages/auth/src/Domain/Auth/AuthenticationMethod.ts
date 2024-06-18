@@ -7,5 +7,6 @@ export type AuthenticationMethod = {
   user: User | null
   claims?: Record<string, unknown>
   session?: Session
+  givenTokensWereInCooldown?: boolean
   revokedSession?: RevokedSession
 }

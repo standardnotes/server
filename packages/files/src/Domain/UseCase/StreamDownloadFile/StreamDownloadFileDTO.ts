@@ -3,4 +3,6 @@ export type StreamDownloadFileDTO = {
   resourceRemoteIdentifier: string
   startRange: number
   endRange: number
+  endRangeOfFile: number
+  valetToken: string
 }

@@ -7,8 +7,6 @@ export class EndpointResolver implements EndpointResolverInterface {
     // Auth Middleware
     ['[POST]:sessions/validate', 'auth.sessions.validate'],
     // Actions Controller
-    ['[POST]:auth/sign_in', 'auth.signIn'],
-    ['[GET]:auth/params', 'auth.params'],
     ['[POST]:auth/sign_out', 'auth.signOut'],
     ['[POST]:auth/recovery/codes', 'auth.generateRecoveryCodes'],
     ['[POST]:auth/recovery/login', 'auth.signInWithRecoveryCodes'],
@@ -48,6 +46,7 @@ export class EndpointResolver implements EndpointResolverInterface {
     ['[PUT]:users/:userUuid/settings', 'auth.users.updateSetting'],
     ['[GET]:users/:userUuid/settings/:settingName', 'auth.users.getSetting'],
     ['[DELETE]:users/:userUuid/settings/:settingName', 'auth.users.deleteSetting'],
+    ['[PUT]:users/:userUuid/subscription-settings', 'auth.users.updateSubscriptionSetting'],
     ['[GET]:users/:userUuid/subscription-settings/:subscriptionSettingName', 'auth.users.getSubscriptionSetting'],
     ['[GET]:users/:userUuid/features', 'auth.users.getFeatures'],
     ['[GET]:users/:userUuid/subscription', 'auth.users.getSubscription'],

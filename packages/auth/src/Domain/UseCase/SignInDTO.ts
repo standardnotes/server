@@ -1,4 +1,11 @@
-import { SignInDTOV1Unchallenged } from './SignInDTOV1Unchallenged'
-import { SignInDTOV2Challenged } from './SignInDTOV2Challenged'
-
-export type SignInDTO = SignInDTOV1Unchallenged | SignInDTOV2Challenged
+export type SignInDTO = {
+  apiVersion: string
+  userAgent: string
+  email: string
+  password: string
+  ephemeralSession: boolean
+  codeVerifier: string
+  hvmToken?: string
+  snjs?: string
+  application?: string
+}

@@ -4,7 +4,6 @@ import {
   TokenEncoderInterface,
 } from '@standardnotes/security'
 import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
-import { SessionBody } from '@standardnotes/responses'
 import { inject, injectable } from 'inversify'
 import { Logger } from 'winston'
 
@@ -17,9 +16,9 @@ import { User } from '../User/User'
 import { AuthResponseFactory20190520 } from './AuthResponseFactory20190520'
 import { DomainEventFactoryInterface } from '../Event/DomainEventFactoryInterface'
 
-import { AuthResponse20161215 } from './AuthResponse20161215'
-import { AuthResponse20200115 } from './AuthResponse20200115'
-import { Session } from '../Session/Session'
+import { SessionCreationResult } from '../Session/SessionCreationResult'
+import { AuthResponseCreationResult } from './AuthResponseCreationResult'
+import { ApiVersion } from '../Api/ApiVersion'
 
 @injectable()
 export class AuthResponseFactory20200115 extends AuthResponseFactory20190520 {
@@ -37,11 +36,13 @@ export class AuthResponseFactory20200115 extends AuthResponseFactory20190520 {
 
   override async createResponse(dto: {
     user: User
-    apiVersion: string
+    apiVersion: ApiVersion
     userAgent: string
     ephemeralSession: boolean
     readonlyAccess: boolean
-  }): Promise<{ response: AuthResponse20161215 | AuthResponse20200115; session?: Session }> {
+    snjs?: string
+    application?: string
+  }): Promise<AuthResponseCreationResult> {
     if (!dto.user.supportsSessions()) {
       this.logger.debug(`User ${dto.user.uuid} does not support sessions. Falling back to JWT auth response`)
 
@@ -50,29 +51,31 @@ export class AuthResponseFactory20200115 extends AuthResponseFactory20190520 {
 
     const sessionCreationResult = await this.createSession(dto)
 
-    this.logger.debug(
-      'Created session payload for user %s: %O',
-      dto.user.uuid,
-      sessionCreationResult.sessionHttpRepresentation,
-    )
+    this.logger.debug('Created session payload for user', {
+      userId: dto.user.uuid,
+      session: sessionCreationResult,
+    })
 
     return {
       response: {
-        session: sessionCreationResult.sessionHttpRepresentation,
-        key_params: this.keyParamsFactory.create(dto.user, true),
+        sessionBody: sessionCreationResult.sessionHttpRepresentation,
+        keyParams: this.keyParamsFactory.create(dto.user, true),
         user: this.userProjector.projectSimple(dto.user) as SimpleUserProjection,
       },
       session: sessionCreationResult.session,
+      cookies: sessionCreationResult.sessionCookieRepresentation,
     }
   }
 
   private async createSession(dto: {
     user: User
-    apiVersion: string
+    apiVersion: ApiVersion
     userAgent: string
     ephemeralSession: boolean
     readonlyAccess: boolean
-  }): Promise<{ sessionHttpRepresentation: SessionBody; session: Session }> {
+    snjs?: string
+    application?: string
+  }): Promise<SessionCreationResult> {
     if (dto.ephemeralSession) {
       return this.sessionService.createNewEphemeralSessionForUser(dto)
     }

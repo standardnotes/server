@@ -1,9 +1,7 @@
 import * as bcrypt from 'bcryptjs'
 import { DomainEventPublisherInterface } from '@standardnotes/domain-events'
 
-import { inject, injectable } from 'inversify'
 import { Logger } from 'winston'
-import TYPES from '../../Bootstrap/Types'
 import { AuthResponseFactoryResolverInterface } from '../Auth/AuthResponseFactoryResolverInterface'
 import { DomainEventFactoryInterface } from '../Event/DomainEventFactoryInterface'
 import { SessionServiceInterface } from '../Session/SessionServiceInterface'
@@ -14,39 +12,55 @@ import { SignInResponse } from './SignInResponse'
 import { UseCaseInterface } from './UseCaseInterface'
 import { PKCERepositoryInterface } from '../User/PKCERepositoryInterface'
 import { CrypterInterface } from '../Encryption/CrypterInterface'
-import { SignInDTOV2Challenged } from './SignInDTOV2Challenged'
-import { leftVersionGreaterThanOrEqualToRight, ProtocolVersion } from '@standardnotes/common'
-import { HttpStatusCode } from '@standardnotes/responses'
-import { EmailLevel, Username } from '@standardnotes/domain-core'
+import { EmailLevel, Result, Username } from '@standardnotes/domain-core'
 import { getBody, getSubject } from '../Email/UserSignedIn'
+import { ApiVersion } from '../Api/ApiVersion'
+import { HttpStatusCode } from '@standardnotes/responses'
+import { VerifyHumanInteraction } from './VerifyHumanInteraction/VerifyHumanInteraction'
+import { LockRepositoryInterface } from '../User/LockRepositoryInterface'
 
-@injectable()
 export class SignIn implements UseCaseInterface {
   constructor(
-    @inject(TYPES.Auth_UserRepository) private userRepository: UserRepositoryInterface,
-    @inject(TYPES.Auth_AuthResponseFactoryResolver)
+    private userRepository: UserRepositoryInterface,
     private authResponseFactoryResolver: AuthResponseFactoryResolverInterface,
-    @inject(TYPES.Auth_DomainEventPublisher) private domainEventPublisher: DomainEventPublisherInterface,
-    @inject(TYPES.Auth_DomainEventFactory) private domainEventFactory: DomainEventFactoryInterface,
-    @inject(TYPES.Auth_SessionService) private sessionService: SessionServiceInterface,
-    @inject(TYPES.Auth_PKCERepository) private pkceRepository: PKCERepositoryInterface,
-    @inject(TYPES.Auth_Crypter) private crypter: CrypterInterface,
-    @inject(TYPES.Auth_Logger) private logger: Logger,
+    private domainEventPublisher: DomainEventPublisherInterface,
+    private domainEventFactory: DomainEventFactoryInterface,
+    private sessionService: SessionServiceInterface,
+    private pkceRepository: PKCERepositoryInterface,
+    private crypter: CrypterInterface,
+    private logger: Logger,
+    private maxNonCaptchaAttempts: number,
+    private lockRepository: LockRepositoryInterface,
+    private verifyHumanInteractionUseCase: VerifyHumanInteraction,
   ) {}
 
   async execute(dto: SignInDTO): Promise<SignInResponse> {
-    const performingCodeChallengedSignIn = this.isCodeChallengedVersion(dto)
-    if (performingCodeChallengedSignIn) {
-      const validCodeVerifier = await this.validateCodeVerifier(dto.codeVerifier)
-      if (!validCodeVerifier) {
-        this.logger.debug('Code verifier does not match')
-
-        return {
-          success: false,
-          errorMessage: 'Invalid email or password',
-        }
+    if (!dto.codeVerifier) {
+      return {
+        success: false,
+        errorMessage: 'Please update your client application.',
+        errorCode: HttpStatusCode.Gone,
       }
     }
+
+    const validCodeVerifier = await this.validateCodeVerifier(dto.codeVerifier)
+    if (!validCodeVerifier) {
+      this.logger.debug('Code verifier does not match')
+
+      return {
+        success: false,
+        errorMessage: 'Invalid email or password',
+      }
+    }
+
+    const apiVersionOrError = ApiVersion.create(dto.apiVersion)
+    if (apiVersionOrError.isFailed()) {
+      return {
+        success: false,
+        errorMessage: apiVersionOrError.getError(),
+      }
+    }
+    const apiVersion = apiVersionOrError.getValue()
 
     const usernameOrError = Username.create(dto.email)
     if (usernameOrError.isFailed()) {
@@ -58,6 +72,18 @@ export class SignIn implements UseCaseInterface {
     const username = usernameOrError.getValue()
 
     const user = await this.userRepository.findOneByUsernameOrEmail(username)
+    const userIdentifier = user?.uuid ?? dto.email
+
+    const humanVerificationBeforeCheckingUsernameAndPasswordResult = await this.checkHumanVerificationIfNeeded(
+      userIdentifier,
+      dto.hvmToken,
+    )
+    if (humanVerificationBeforeCheckingUsernameAndPasswordResult.isFailed()) {
+      return {
+        success: false,
+        errorMessage: humanVerificationBeforeCheckingUsernameAndPasswordResult.getError(),
+      }
+    }
 
     if (!user) {
       this.logger.debug(`User with email ${dto.email} was not found`)
@@ -65,19 +91,6 @@ export class SignIn implements UseCaseInterface {
       return {
         success: false,
         errorMessage: 'Invalid email or password',
-      }
-    }
-
-    const userVersionIs004OrGreater = leftVersionGreaterThanOrEqualToRight(
-      user.version as ProtocolVersion,
-      ProtocolVersion.V004,
-    )
-
-    if (userVersionIs004OrGreater && !performingCodeChallengedSignIn) {
-      return {
-        success: false,
-        errorMessage: 'Please update your client application.',
-        errorCode: HttpStatusCode.Gone,
       }
     }
 
@@ -91,21 +104,23 @@ export class SignIn implements UseCaseInterface {
       }
     }
 
-    const authResponseFactory = this.authResponseFactoryResolver.resolveAuthResponseFactoryVersion(dto.apiVersion)
+    const authResponseFactory = this.authResponseFactoryResolver.resolveAuthResponseFactoryVersion(apiVersion)
 
     await this.sendSignInEmailNotification(user, dto.userAgent)
 
     const result = await authResponseFactory.createResponse({
       user,
-      apiVersion: dto.apiVersion,
+      apiVersion,
       userAgent: dto.userAgent,
       ephemeralSession: dto.ephemeralSession,
       readonlyAccess: false,
+      snjs: dto.snjs,
+      application: dto.application,
     })
 
     return {
       success: true,
-      authResponse: result.response,
+      result,
     }
   }
 
@@ -139,7 +154,17 @@ export class SignIn implements UseCaseInterface {
     }
   }
 
-  private isCodeChallengedVersion(dto: SignInDTO): dto is SignInDTOV2Challenged {
-    return (dto as SignInDTOV2Challenged).codeVerifier !== undefined
+  private async checkHumanVerificationIfNeeded(userIdentifier: string, hvmToken?: string): Promise<Result<void>> {
+    const numberOfFailedAttempts = await this.lockRepository.getLockCounter(userIdentifier, 'non-captcha')
+    const numberOfFailedAttemptsInCaptchaMode = await this.lockRepository.getLockCounter(userIdentifier, 'captcha')
+
+    const isEligibleForNonCaptchaMode =
+      numberOfFailedAttemptsInCaptchaMode === 0 && numberOfFailedAttempts < this.maxNonCaptchaAttempts
+
+    if (isEligibleForNonCaptchaMode) {
+      return Result.ok()
+    }
+
+    return this.verifyHumanInteractionUseCase.execute(hvmToken)
   }
 }

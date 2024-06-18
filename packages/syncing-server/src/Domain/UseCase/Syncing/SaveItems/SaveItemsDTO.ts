@@ -8,4 +8,5 @@ export interface SaveItemsDTO {
   sessionUuid: string | null
   snjsVersion: string
   isFreeUser: boolean
+  hasContentLimit: boolean
 }

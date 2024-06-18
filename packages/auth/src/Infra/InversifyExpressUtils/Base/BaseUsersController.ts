@@ -9,6 +9,7 @@ import { GetUserSubscription } from '../../../Domain/UseCase/GetUserSubscription
 import { IncreaseLoginAttempts } from '../../../Domain/UseCase/IncreaseLoginAttempts'
 import { ErrorTag } from '@standardnotes/responses'
 import { ResponseLocals } from '../ResponseLocals'
+import { CookieFactoryInterface } from '../../../Domain/Auth/Cookies/CookieFactoryInterface'
 
 export class BaseUsersController extends BaseHttpController {
   constructor(
@@ -17,6 +18,7 @@ export class BaseUsersController extends BaseHttpController {
     protected clearLoginAttempts: ClearLoginAttempts,
     protected increaseLoginAttempts: IncreaseLoginAttempts,
     protected changeCredentialsUseCase: ChangeCredentials,
+    protected cookieFactory: CookieFactoryInterface,
     private controllerContainer?: ControllerContainerInterface,
   ) {
     super()
@@ -157,6 +159,8 @@ export class BaseUsersController extends BaseHttpController {
       kpOrigination: request.body.origination,
       updatedWithUserAgent: <string>request.headers['user-agent'],
       protocolVersion: request.body.version,
+      snjs: request.headers['x-snjs-version'] as string,
+      application: request.headers['x-application-version'] as string,
     })
 
     if (changeCredentialsResult.isFailed()) {
@@ -174,8 +178,27 @@ export class BaseUsersController extends BaseHttpController {
 
     await this.clearLoginAttempts.execute({ email: locals.user.email })
 
-    response.setHeader('x-invalidate-cache', locals.user.uuid)
+    const changeCredentialsResultValue = changeCredentialsResult.getValue()
+    const session = changeCredentialsResultValue.session
 
-    return this.json(changeCredentialsResult.getValue())
+    response.setHeader('x-invalidate-cache', locals.user.uuid)
+    if (session) {
+      response.setHeader(
+        'Set-Cookie',
+        this.cookieFactory.createCookieHeaderValue({
+          sessionUuid: session.uuid,
+          accessToken: changeCredentialsResultValue.cookies?.accessToken as string,
+          refreshToken: changeCredentialsResultValue.cookies?.refreshToken as string,
+          refreshTokenExpiration: session.refreshExpiration,
+        }),
+      )
+      return this.json({
+        session: changeCredentialsResultValue.response?.sessionBody,
+        key_params: changeCredentialsResultValue.response?.keyParams,
+        user: changeCredentialsResultValue.response?.user,
+      })
+    }
+
+    return this.json(changeCredentialsResultValue.legacyResponse)
   }
 }

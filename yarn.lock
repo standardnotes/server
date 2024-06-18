@@ -5731,7 +5731,7 @@ __metadata:
     ioredis: "npm:^5.2.4"
     jest: "npm:^29.5.0"
     mixpanel: "npm:^0.17.0"
-    mysql2: "npm:^3.0.1"
+    mysql2: "npm:^3.9.7"
     prettier: "npm:^3.0.3"
     reflect-metadata: "npm:^0.2.1"
     ts-jest: "npm:^29.1.0"
@@ -5753,6 +5753,7 @@ __metadata:
     "@standardnotes/grpc": "workspace:^"
     "@standardnotes/security": "workspace:*"
     "@standardnotes/time": "workspace:*"
+    "@types/cookie-parser": "npm:^1"
     "@types/cors": "npm:^2.8.9"
     "@types/express": "npm:^4.17.14"
     "@types/ioredis": "npm:^5.0.0"
@@ -5764,6 +5765,7 @@ __metadata:
     "@typescript-eslint/parser": "npm:^6.5.0"
     agentkeepalive: "npm:^4.5.0"
     axios: "npm:^1.6.1"
+    cookie-parser: "npm:^1.4.6"
     cors: "npm:2.8.5"
     dotenv: "npm:^16.0.1"
     eslint: "npm:^8.39.0"
@@ -5827,6 +5829,7 @@ __metadata:
     "@standardnotes/sncrypto-node": "workspace:*"
     "@standardnotes/time": "workspace:*"
     "@types/bcryptjs": "npm:^2.4.2"
+    "@types/cookie-parser": "npm:^1"
     "@types/cors": "npm:^2.8.9"
     "@types/express": "npm:^4.17.14"
     "@types/ioredis": "npm:^5.0.0"
@@ -5838,7 +5841,10 @@ __metadata:
     "@types/uuid": "npm:^9.0.3"
     "@typescript-eslint/eslint-plugin": "npm:^6.5.0"
     "@typescript-eslint/parser": "npm:^6.5.0"
+    agentkeepalive: "npm:^4.5.0"
+    axios: "npm:^1.6.7"
     bcryptjs: "npm:2.4.3"
+    cookie-parser: "npm:^1.4.6"
     cors: "npm:2.8.5"
     dayjs: "npm:^1.11.6"
     dotenv: "npm:^16.0.1"
@@ -5849,7 +5855,7 @@ __metadata:
     inversify-express-utils: "npm:^6.4.3"
     ioredis: "npm:^5.2.4"
     jest: "npm:^29.5.0"
-    mysql2: "npm:^3.0.1"
+    mysql2: "npm:^3.9.7"
     otplib: "npm:12.0.1"
     prettier: "npm:^3.0.3"
     prettyjson: "npm:^1.2.5"
@@ -6044,10 +6050,12 @@ __metadata:
     "@standardnotes/files-server": "workspace:^"
     "@standardnotes/revisions-server": "workspace:^"
     "@standardnotes/syncing-server": "workspace:^"
+    "@types/cookie-parser": "npm:^1"
     "@types/cors": "npm:^2.8.9"
     "@types/express": "npm:^4.17.14"
     "@typescript-eslint/eslint-plugin": "npm:^6.5.0"
     "@typescript-eslint/parser": "npm:^6.5.0"
+    cookie-parser: "npm:^1.4.6"
     cors: "npm:2.8.5"
     dotenv: "npm:^16.0.1"
     eslint: "npm:^8.39.0"
@@ -6139,7 +6147,7 @@ __metadata:
     inversify-express-utils: "npm:^6.4.3"
     ioredis: "npm:^5.3.2"
     jest: "npm:^29.5.0"
-    mysql2: "npm:^3.0.1"
+    mysql2: "npm:^3.9.7"
     prettier: "npm:^3.0.3"
     reflect-metadata: "npm:^0.2.1"
     sqlite3: "npm:^5.1.6"
@@ -6173,7 +6181,7 @@ __metadata:
     inversify: "npm:^6.0.1"
     ioredis: "npm:^5.2.4"
     jest: "npm:^29.5.0"
-    mysql2: "npm:^3.0.1"
+    mysql2: "npm:^3.9.7"
     prettier: "npm:^3.0.3"
     reflect-metadata: "npm:^0.2.1"
     ts-jest: "npm:^29.1.0"
@@ -6318,7 +6326,7 @@ __metadata:
     ioredis: "npm:^5.3.2"
     jest: "npm:^29.5.0"
     jsonwebtoken: "npm:^9.0.0"
-    mysql2: "npm:^3.0.1"
+    mysql2: "npm:^3.9.7"
     prettier: "npm:^3.0.3"
     prettyjson: "npm:^1.2.5"
     reflect-metadata: "npm:^0.2.1"
@@ -6393,7 +6401,7 @@ __metadata:
     inversify-express-utils: "npm:^6.4.3"
     ioredis: "npm:^5.2.4"
     jest: "npm:^29.5.0"
-    mysql2: "npm:^3.0.1"
+    mysql2: "npm:^3.9.7"
     prettier: "npm:^3.0.3"
     reflect-metadata: "npm:^0.2.1"
     ts-jest: "npm:^29.1.0"
@@ -6546,6 +6554,15 @@ __metadata:
   dependencies:
     "@types/node": "npm:*"
   checksum: fe81351470f2d3165e8b12ce33542eef89ea893e36dd62e8f7d72566dfb7e448376ae962f9f3ea888547ce8b55a40020ca0e01d637fab5d99567673084542641
+  languageName: node
+  linkType: hard
+
+"@types/cookie-parser@npm:^1":
+  version: 1.4.6
+  resolution: "@types/cookie-parser@npm:1.4.6"
+  dependencies:
+    "@types/express": "npm:*"
+  checksum: b1bbb17bc4189c0e953d4996b3b58bfa20161c27db21f98353e237032e7559aec733735d8902c283300e0a4cded20e62b1a5086af608608ef30a45387e080360
   languageName: node
   linkType: hard
 
@@ -7552,6 +7569,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"axios@npm:^1.6.7":
+  version: 1.6.7
+  resolution: "axios@npm:1.6.7"
+  dependencies:
+    follow-redirects: "npm:^1.15.4"
+    form-data: "npm:^4.0.0"
+    proxy-from-env: "npm:^1.1.0"
+  checksum: a1932b089ece759cd261f175d9ebf4d41c8994cf0c0767cda86055c7a19bcfdade8ae3464bf4cec4c8b142f4a657dc664fb77a41855e8376cf38b86d7a86518f
+  languageName: node
+  linkType: hard
+
 "babel-jest@npm:^29.5.0":
   version: 29.5.0
   resolution: "babel-jest@npm:29.5.0"
@@ -8521,10 +8549,27 @@ __metadata:
   languageName: node
   linkType: hard
 
+"cookie-parser@npm:^1.4.6":
+  version: 1.4.6
+  resolution: "cookie-parser@npm:1.4.6"
+  dependencies:
+    cookie: "npm:0.4.1"
+    cookie-signature: "npm:1.0.6"
+  checksum: 1e5a63aa82e8eb4e02d2977c6902983dee87b02e87ec5ec43ac3cb1e72da354003716570cd5190c0ad9e8a454c9d3237f4ad6e2f16d0902205a96a1c72b77ba5
+  languageName: node
+  linkType: hard
+
 "cookie-signature@npm:1.0.6":
   version: 1.0.6
   resolution: "cookie-signature@npm:1.0.6"
   checksum: f4e1b0a98a27a0e6e66fd7ea4e4e9d8e038f624058371bf4499cfcd8f3980be9a121486995202ba3fca74fbed93a407d6d54d43a43f96fd28d0bd7a06761591a
+  languageName: node
+  linkType: hard
+
+"cookie@npm:0.4.1":
+  version: 0.4.1
+  resolution: "cookie@npm:0.4.1"
+  checksum: 0f2defd60ac93645ee31e82d11da695080435eb4fe5bed9b14d2fc4e0621a66f4c5c60f3eb05761df08a9d6279366e8646edfd1654f359d0b5afc25304fc4ddc
   languageName: node
   linkType: hard
 
@@ -9549,6 +9594,16 @@ __metadata:
     debug:
       optional: true
   checksum: 8be0d39919770054812537d376850ccde0b4762b0501c440bd08724971a078123b55f57704f2984e0664fecc0c86adea85add63295804d9dce401cd9604c91d3
+  languageName: node
+  linkType: hard
+
+"follow-redirects@npm:^1.15.4":
+  version: 1.15.5
+  resolution: "follow-redirects@npm:1.15.5"
+  peerDependenciesMeta:
+    debug:
+      optional: true
+  checksum: d467f13c1c6aa734599b8b369cd7a625b20081af358f6204ff515f6f4116eb440de9c4e0c49f10798eeb0df26c95dd05d5e0d9ddc5786ab1a8a8abefe92929b4
   languageName: node
   linkType: hard
 
@@ -12165,9 +12220,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mysql2@npm:^3.0.1":
-  version: 3.3.3
-  resolution: "mysql2@npm:3.3.3"
+"mysql2@npm:^3.9.7":
+  version: 3.9.7
+  resolution: "mysql2@npm:3.9.7"
   dependencies:
     denque: "npm:^2.1.0"
     generate-function: "npm:^2.3.1"
@@ -12177,7 +12232,7 @@ __metadata:
     named-placeholders: "npm:^1.1.3"
     seq-queue: "npm:^0.0.5"
     sqlstring: "npm:^2.3.2"
-  checksum: 4bf7ace8f13a54e3117d9259222c629ec32337562cc5c5baf0404410d2c65f4d86038101ed07aa16857f25246ff29d5f5ec9cbea22eaa4703250d834d7d9c8ad
+  checksum: 7f43b17cc0acdec30791c9b29a97c75f7e4512bbf41c2baa383ce76b50d0a92300083a8dba3cc019423ee3b7710ed7c756baf805449f0c9650e08e5d48454b07
   languageName: node
   linkType: hard
 

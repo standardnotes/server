@@ -305,12 +305,7 @@ export class DomainEventFactory implements DomainEventFactoryInterface {
     }
   }
 
-  createEmailBackupRequestedEvent(
-    userUuid: string,
-    muteEmailsSettingUuid: string,
-    userHasEmailsMuted: boolean,
-    keyParams: KeyParamsData,
-  ): EmailBackupRequestedEvent {
+  createEmailBackupRequestedEvent(userUuid: string, keyParams: KeyParamsData): EmailBackupRequestedEvent {
     return {
       type: 'EMAIL_BACKUP_REQUESTED',
       createdAt: this.timer.getUTCDate(),
@@ -323,8 +318,6 @@ export class DomainEventFactory implements DomainEventFactoryInterface {
       },
       payload: {
         userUuid,
-        userHasEmailsMuted,
-        muteEmailsSettingUuid,
         keyParams,
       },
     }

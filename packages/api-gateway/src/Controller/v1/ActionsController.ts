@@ -4,12 +4,14 @@ import { BaseHttpController, controller, httpGet, httpPost } from 'inversify-exp
 import { TYPES } from '../../Bootstrap/Types'
 import { ServiceProxyInterface } from '../../Service/Proxy/ServiceProxyInterface'
 import { EndpointResolverInterface } from '../../Service/Resolver/EndpointResolverInterface'
+import { JsonResult } from 'inversify-express-utils/lib/results'
 
 @controller('/v1')
 export class ActionsController extends BaseHttpController {
   constructor(
     @inject(TYPES.ApiGateway_ServiceProxy) private serviceProxy: ServiceProxyInterface,
     @inject(TYPES.ApiGateway_EndpointResolver) private endpointResolver: EndpointResolverInterface,
+    @inject(TYPES.ApiGateway_CAPTCHA_UI_URL) private captchaUIUrl: string,
   ) {
     super()
   }
@@ -19,7 +21,7 @@ export class ActionsController extends BaseHttpController {
     await this.serviceProxy.callAuthServer(
       request,
       response,
-      this.endpointResolver.resolveEndpointOrMethodIdentifier('POST', 'auth/sign_in'),
+      this.endpointResolver.resolveEndpointOrMethodIdentifier('POST', 'auth/pkce_sign_in'),
       request.body,
     )
   }
@@ -29,7 +31,7 @@ export class ActionsController extends BaseHttpController {
     await this.serviceProxy.callAuthServer(
       request,
       response,
-      this.endpointResolver.resolveEndpointOrMethodIdentifier('GET', 'auth/params'),
+      this.endpointResolver.resolveEndpointOrMethodIdentifier('POST', 'auth/pkce_params'),
       request.body,
     )
   }
@@ -82,5 +84,12 @@ export class ActionsController extends BaseHttpController {
       this.endpointResolver.resolveEndpointOrMethodIdentifier('POST', 'auth/recovery/params'),
       request.body,
     )
+  }
+
+  @httpGet('/meta')
+  async serverMetadata(): Promise<JsonResult> {
+    return this.json({
+      captchaUIUrl: this.captchaUIUrl,
+    })
   }
 }

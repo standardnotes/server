@@ -1,6 +1,5 @@
 export * from './EmailBackupFrequency/EmailBackupFrequency'
 export * from './ListedAuthorSecretsData/ListedAuthorSecretsData'
 export * from './LogSessionUserAgent/LogSessionUserAgentOption'
-export * from './MuteFailedBackupsEmails/MuteFailedBackupsEmailsOption'
 export * from './MuteMarketingEmails/MuteMarketingEmailsOption'
 export * from './MuteSignInEmails/MuteSignInEmailsOption'

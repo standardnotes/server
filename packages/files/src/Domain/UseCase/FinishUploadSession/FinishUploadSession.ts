@@ -5,6 +5,7 @@ import { FinishUploadSessionDTO } from './FinishUploadSessionDTO'
 import { FileUploaderInterface } from '../../Services/FileUploaderInterface'
 import { UploadRepositoryInterface } from '../../Upload/UploadRepositoryInterface'
 import { DomainEventFactoryInterface } from '../../Event/DomainEventFactoryInterface'
+import { ValetTokenRepositoryInterface } from '../../ValetToken/ValetTokenRepositoryInterface'
 
 export class FinishUploadSession implements UseCaseInterface<void> {
   constructor(
@@ -12,6 +13,7 @@ export class FinishUploadSession implements UseCaseInterface<void> {
     private uploadRepository: UploadRepositoryInterface,
     private domainEventPublisher: DomainEventPublisherInterface,
     private domainEventFactory: DomainEventFactoryInterface,
+    private valetTokenRepository: ValetTokenRepositoryInterface,
   ) {}
 
   async execute(dto: FinishUploadSessionDTO): Promise<Result<void>> {
@@ -73,6 +75,8 @@ export class FinishUploadSession implements UseCaseInterface<void> {
           }),
         )
       }
+
+      await this.valetTokenRepository.markAsUsed(dto.valetToken)
 
       return Result.ok()
     } catch (error) {

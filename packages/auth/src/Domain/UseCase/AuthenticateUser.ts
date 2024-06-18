@@ -22,9 +22,9 @@ export class AuthenticateUser implements UseCaseInterface {
   ) {}
 
   async execute(dto: AuthenticateUserDTO): Promise<AuthenticateUserResponse> {
-    const authenticationMethod = await this.authenticationMethodResolver.resolve(dto.token)
+    const authenticationMethod = await this.authenticationMethodResolver.resolve(dto)
     if (!authenticationMethod) {
-      this.logger.debug(`[authenticate-user] No authentication method found for token: ${dto.token}`)
+      this.logger.debug(`[authenticate-user] No authentication method found for tokens: ${JSON.stringify(dto)}`)
 
       return {
         success: false,
@@ -33,7 +33,7 @@ export class AuthenticateUser implements UseCaseInterface {
     }
 
     if (authenticationMethod.type === 'revoked') {
-      this.logger.debug(`[authenticate-user] Session has been revoked: ${dto.token}`)
+      this.logger.debug(`[authenticate-user] Session has been revoked: ${dto.authTokenFromHeaders}`)
 
       return {
         success: false,
@@ -43,7 +43,7 @@ export class AuthenticateUser implements UseCaseInterface {
 
     const user = authenticationMethod.user
     if (!user) {
-      this.logger.debug(`[authenticate-user] No user found for authentication method. Token: ${dto.token}`)
+      this.logger.debug(`[authenticate-user] No user found for authentication method. Token: ${JSON.stringify(dto)}`)
 
       return {
         success: false,
@@ -103,6 +103,25 @@ export class AuthenticateUser implements UseCaseInterface {
           return {
             success: false,
             failureType: 'EXPIRED_TOKEN',
+          }
+        }
+
+        if (authenticationMethod.givenTokensWereInCooldown) {
+          /* istanbul ignore next */
+          this.logger.warn('Request was authenticated with tokens that were in cooldown.', {
+            userId: user.uuid,
+            sessionUuid: session.uuid,
+            snjs: dto.requestMetadata.snjs,
+            application: dto.requestMetadata.application,
+            url: dto.requestMetadata.url,
+            method: dto.requestMetadata.method,
+            userAgent: session.userAgent,
+            secChUa: session.userAgent ? dto.requestMetadata.secChUa : undefined,
+          })
+
+          return {
+            success: false,
+            failureType: 'COOLEDDOWN_TOKEN',
           }
         }
 

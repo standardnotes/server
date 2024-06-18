@@ -5,6 +5,7 @@ export const TYPES = {
   ApiGateway_SNS: Symbol.for('ApiGateway_SNS'),
   ApiGateway_DomainEventPublisher: Symbol.for('ApiGateway_DomainEventPublisher'),
   // env vars
+  ApiGateway_CORS_ALLOWED_ORIGINS: Symbol.for('ApiGateway_CORS_ALLOWED_ORIGINS'),
   ApiGateway_SNS_TOPIC_ARN: Symbol.for('ApiGateway_SNS_TOPIC_ARN'),
   ApiGateway_SNS_AWS_REGION: Symbol.for('ApiGateway_SNS_AWS_REGION'),
   ApiGateway_SYNCING_SERVER_JS_URL: Symbol.for('ApiGateway_SYNCING_SERVER_JS_URL'),
@@ -24,6 +25,7 @@ export const TYPES = {
   ApiGateway_IS_CONFIGURED_FOR_HOME_SERVER_OR_SELF_HOSTING: Symbol.for(
     'ApiGateway_IS_CONFIGURED_FOR_HOME_SERVER_OR_SELF_HOSTING',
   ),
+  ApiGateway_CAPTCHA_UI_URL: Symbol.for('ApiGateway_CAPTCHA_UI_URL'),
   // Middleware
   ApiGateway_RequiredCrossServiceTokenMiddleware: Symbol.for('ApiGateway_RequiredCrossServiceTokenMiddleware'),
   ApiGateway_OptionalCrossServiceTokenMiddleware: Symbol.for('ApiGateway_OptionalCrossServiceTokenMiddleware'),

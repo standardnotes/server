@@ -14,6 +14,9 @@ import { GenerateRecoveryCodes } from '../GenerateRecoveryCodes/GenerateRecovery
 import { IncreaseLoginAttempts } from '../IncreaseLoginAttempts'
 import { SignInWithRecoveryCodes } from './SignInWithRecoveryCodes'
 import { GetSetting } from '../GetSetting/GetSetting'
+import { ApiVersion } from '../../Api/ApiVersion'
+import { LockRepositoryInterface } from '../../User/LockRepositoryInterface'
+import { VerifyHumanInteraction } from '../VerifyHumanInteraction/VerifyHumanInteraction'
 
 describe('SignInWithRecoveryCodes', () => {
   let userRepository: UserRepositoryInterface
@@ -26,6 +29,9 @@ describe('SignInWithRecoveryCodes', () => {
   let deleteSetting: DeleteSetting
   let authenticatorRepository: AuthenticatorRepositoryInterface
   let getSetting: GetSetting
+  let maxNonCaptchaAttempts: number
+  let lockRepository: LockRepositoryInterface
+  let verifyHumanInteractionUseCase: VerifyHumanInteraction
 
   const createUseCase = () =>
     new SignInWithRecoveryCodes(
@@ -39,6 +45,9 @@ describe('SignInWithRecoveryCodes', () => {
       clearLoginAttempts,
       deleteSetting,
       authenticatorRepository,
+      maxNonCaptchaAttempts,
+      lockRepository,
+      verifyHumanInteractionUseCase,
     )
 
   beforeEach(() => {
@@ -77,10 +86,16 @@ describe('SignInWithRecoveryCodes', () => {
 
     authenticatorRepository = {} as jest.Mocked<AuthenticatorRepositoryInterface>
     authenticatorRepository.removeByUserUuid = jest.fn()
+
+    lockRepository = {} as jest.Mocked<LockRepositoryInterface>
+    lockRepository.getLockCounter = jest.fn().mockReturnValue(0)
+
+    maxNonCaptchaAttempts = 6
   })
 
   it('should return error if password is not provided', async () => {
     const result = await createUseCase().execute({
+      apiVersion: ApiVersion.VERSIONS.v20200115,
       userAgent: 'user-agent',
       username: 'test@test.te',
       password: '',
@@ -94,6 +109,7 @@ describe('SignInWithRecoveryCodes', () => {
 
   it('should return error if username is not provided', async () => {
     const result = await createUseCase().execute({
+      apiVersion: ApiVersion.VERSIONS.v20200115,
       userAgent: 'user-agent',
       username: '',
       password: 'qweqwe123123',
@@ -107,6 +123,7 @@ describe('SignInWithRecoveryCodes', () => {
 
   it('should return error if code verifier is not provided', async () => {
     const result = await createUseCase().execute({
+      apiVersion: ApiVersion.VERSIONS.v20200115,
       userAgent: 'user-agent',
       username: 'username',
       password: 'qweqwe123123',
@@ -120,6 +137,7 @@ describe('SignInWithRecoveryCodes', () => {
 
   it('should return error if recovery codes are not provided', async () => {
     const result = await createUseCase().execute({
+      apiVersion: ApiVersion.VERSIONS.v20200115,
       userAgent: 'user-agent',
       username: 'username',
       password: 'qweqwe123123',
@@ -135,6 +153,7 @@ describe('SignInWithRecoveryCodes', () => {
     pkceRepository.removeCodeChallenge = jest.fn().mockReturnValue(false)
 
     const result = await createUseCase().execute({
+      apiVersion: ApiVersion.VERSIONS.v20200115,
       userAgent: 'user-agent',
       username: 'test@test.te',
       password: 'qweqwe123123',
@@ -150,6 +169,7 @@ describe('SignInWithRecoveryCodes', () => {
     userRepository.findOneByUsernameOrEmail = jest.fn().mockReturnValue(undefined)
 
     const result = await createUseCase().execute({
+      apiVersion: ApiVersion.VERSIONS.v20200115,
       userAgent: 'user-agent',
       username: 'test@test.te',
       password: 'qweqwe123123',
@@ -163,6 +183,7 @@ describe('SignInWithRecoveryCodes', () => {
 
   it('should return error if recovery codes are invalid', async () => {
     const result = await createUseCase().execute({
+      apiVersion: ApiVersion.VERSIONS.v20200115,
       userAgent: 'user-agent',
       username: 'test@test.te',
       password: 'qweqwe123123',
@@ -174,8 +195,35 @@ describe('SignInWithRecoveryCodes', () => {
     expect(result.getError()).toBe('Invalid recovery codes')
   })
 
+  it('should return error if api version is invalid', async () => {
+    const result = await createUseCase().execute({
+      apiVersion: 'invalid',
+      userAgent: 'user-agent',
+      username: 'test@test.te',
+      password: 'qweqwe123123',
+      codeVerifier: 'code-verifier',
+      recoveryCodes: '1234 5678',
+    })
+
+    expect(result.isFailed()).toBe(true)
+  })
+
+  it('should return error if api version does not support recovery sign in', async () => {
+    const result = await createUseCase().execute({
+      apiVersion: ApiVersion.VERSIONS.v20161215,
+      userAgent: 'user-agent',
+      username: 'test@test.te',
+      password: 'qweqwe123123',
+      codeVerifier: 'code-verifier',
+      recoveryCodes: '1234 5678',
+    })
+
+    expect(result.isFailed()).toBe(true)
+  })
+
   it('should return error if password does not match', async () => {
     const result = await createUseCase().execute({
+      apiVersion: ApiVersion.VERSIONS.v20200115,
       userAgent: 'user-agent',
       username: 'test@test.te',
       password: 'asdasd123123',
@@ -191,6 +239,7 @@ describe('SignInWithRecoveryCodes', () => {
     getSetting.execute = jest.fn().mockReturnValue(Result.fail('not found'))
 
     const result = await createUseCase().execute({
+      apiVersion: ApiVersion.VERSIONS.v20200115,
       userAgent: 'user-agent',
       username: 'test@test.te',
       password: 'qweqwe123123',
@@ -206,6 +255,7 @@ describe('SignInWithRecoveryCodes', () => {
     generateRecoveryCodes.execute = jest.fn().mockReturnValue(Result.fail('Oops'))
 
     const result = await createUseCase().execute({
+      apiVersion: ApiVersion.VERSIONS.v20200115,
       userAgent: 'user-agent',
       username: 'test@test.te',
       password: 'qweqwe123123',
@@ -224,6 +274,7 @@ describe('SignInWithRecoveryCodes', () => {
     } as jest.Mocked<User>)
 
     const result = await createUseCase().execute({
+      apiVersion: ApiVersion.VERSIONS.v20200115,
       userAgent: 'user-agent',
       username: 'test@test.te',
       password: 'qweqwe123123',
@@ -235,8 +286,49 @@ describe('SignInWithRecoveryCodes', () => {
     expect(result.getError()).toBe('Invalid user uuid')
   })
 
+  it('should return error if user requires human verification but no hvmtoken provided', async () => {
+    lockRepository.getLockCounter = jest.fn().mockReturnValueOnce(maxNonCaptchaAttempts)
+    verifyHumanInteractionUseCase = {} as jest.Mocked<VerifyHumanInteraction>
+    verifyHumanInteractionUseCase.execute = jest
+      .fn()
+      .mockReturnValueOnce(Result.fail('Human verification step failed.'))
+
+    const result = await createUseCase().execute({
+      apiVersion: ApiVersion.VERSIONS.v20200115,
+      userAgent: 'user-agent',
+      username: 'test@test.te',
+      password: 'qweqwe123123',
+      codeVerifier: 'code-verifier',
+      recoveryCodes: 'foo',
+    })
+
+    expect(result.isFailed()).toBe(true)
+    expect(result.getError()).toBe('Human verification step failed.')
+  })
+
+  it('should return auth response with human verification required and passing', async () => {
+    lockRepository.getLockCounter = jest.fn().mockReturnValueOnce(maxNonCaptchaAttempts)
+    verifyHumanInteractionUseCase = {} as jest.Mocked<VerifyHumanInteraction>
+    verifyHumanInteractionUseCase.execute = jest.fn().mockReturnValueOnce(Result.ok())
+
+    const result = await createUseCase().execute({
+      apiVersion: ApiVersion.VERSIONS.v20200115,
+      userAgent: 'user-agent',
+      username: 'test@test.te',
+      password: 'qweqwe123123',
+      codeVerifier: 'code-verifier',
+      recoveryCodes: 'foo',
+    })
+
+    expect(clearLoginAttempts.execute).toHaveBeenCalled()
+    expect(deleteSetting.execute).toHaveBeenCalled()
+    expect(authenticatorRepository.removeByUserUuid).toHaveBeenCalled()
+    expect(result.isFailed()).toBe(false)
+  })
+
   it('should return auth response', async () => {
     const result = await createUseCase().execute({
+      apiVersion: ApiVersion.VERSIONS.v20200115,
       userAgent: 'user-agent',
       username: 'test@test.te',
       password: 'qweqwe123123',

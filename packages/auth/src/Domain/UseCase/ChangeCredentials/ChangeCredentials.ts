@@ -9,13 +9,13 @@ import { UserRepositoryInterface } from '../../User/UserRepositoryInterface'
 import { ChangeCredentialsDTO } from './ChangeCredentialsDTO'
 import { DomainEventFactoryInterface } from '../../Event/DomainEventFactoryInterface'
 import { DeleteOtherSessionsForUser } from '../DeleteOtherSessionsForUser'
-import { AuthResponse20161215 } from '../../Auth/AuthResponse20161215'
-import { AuthResponse20200115 } from '../../Auth/AuthResponse20200115'
 import { Session } from '../../Session/Session'
 import { getBody, getSubject } from '../../Email/UserEmailChanged'
 import { Logger } from 'winston'
+import { AuthResponseCreationResult } from '../../Auth/AuthResponseCreationResult'
+import { ApiVersion } from '../../Api/ApiVersion'
 
-export class ChangeCredentials implements UseCaseInterface<AuthResponse20161215 | AuthResponse20200115> {
+export class ChangeCredentials implements UseCaseInterface<AuthResponseCreationResult> {
   constructor(
     private userRepository: UserRepositoryInterface,
     private authResponseFactoryResolver: AuthResponseFactoryResolverInterface,
@@ -26,7 +26,13 @@ export class ChangeCredentials implements UseCaseInterface<AuthResponse20161215 
     private logger: Logger,
   ) {}
 
-  async execute(dto: ChangeCredentialsDTO): Promise<Result<AuthResponse20161215 | AuthResponse20200115>> {
+  async execute(dto: ChangeCredentialsDTO): Promise<Result<AuthResponseCreationResult>> {
+    const apiVersionOrError = ApiVersion.create(dto.apiVersion)
+    if (apiVersionOrError.isFailed()) {
+      return Result.fail(apiVersionOrError.getError())
+    }
+    const apiVersion = apiVersionOrError.getValue()
+
     const user = await this.userRepository.findOneByUsernameOrEmail(dto.username)
     if (!user) {
       return Result.fail('User not found.')
@@ -81,21 +87,23 @@ export class ChangeCredentials implements UseCaseInterface<AuthResponse20161215 
       await this.sendEmailChangedNotification(existingEmailAddress, updatedUser.email)
     }
 
-    const authResponseFactory = this.authResponseFactoryResolver.resolveAuthResponseFactoryVersion(dto.apiVersion)
+    const authResponseFactory = this.authResponseFactoryResolver.resolveAuthResponseFactoryVersion(apiVersion)
 
     const authResponse = await authResponseFactory.createResponse({
       user: updatedUser,
-      apiVersion: dto.apiVersion,
+      apiVersion,
       userAgent: dto.updatedWithUserAgent,
       ephemeralSession: false,
       readonlyAccess: false,
+      snjs: dto.snjs,
+      application: dto.application,
     })
 
     if (authResponse.session) {
       await this.deleteOtherSessionsForUserIfNeeded(user.uuid, authResponse.session, dto)
     }
 
-    return Result.ok(authResponse.response)
+    return Result.ok(authResponse)
   }
 
   private async deleteOtherSessionsForUserIfNeeded(

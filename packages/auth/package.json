@@ -1,6 +1,6 @@
 {
   "name": "@standardnotes/auth-server",
-  "version": "1.178.3",
+  "version": "1.178.0",
   "engines": {
     "node": ">=18.0.0 <21.0.0"
   },
@@ -24,8 +24,7 @@
     "build": "tsc --build",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --fix --ext .ts",
-    "pretest": "yarn lint && yarn build",
-    "test": "jest --coverage --no-cache --config=./jest.config.js --maxWorkers=50%",
+    "test": "jest --coverage --no-cache --config=./jest.config.js --maxWorkers=2",
     "start": "yarn node dist/bin/server.js",
     "worker": "yarn node dist/bin/worker.js",
     "cleanup": "yarn node dist/bin/cleanup.js",
@@ -60,7 +59,10 @@
     "@standardnotes/sncrypto-common": "^1.13.4",
     "@standardnotes/sncrypto-node": "workspace:*",
     "@standardnotes/time": "workspace:*",
+    "agentkeepalive": "^4.5.0",
+    "axios": "^1.6.7",
     "bcryptjs": "2.4.3",
+    "cookie-parser": "^1.4.6",
     "cors": "2.8.5",
     "dayjs": "^1.11.6",
     "dotenv": "^16.0.1",
@@ -68,7 +70,7 @@
     "inversify": "^6.0.1",
     "inversify-express-utils": "^6.4.3",
     "ioredis": "^5.2.4",
-    "mysql2": "^3.0.1",
+    "mysql2": "^3.9.7",
     "otplib": "12.0.1",
     "prettyjson": "^1.2.5",
     "reflect-metadata": "^0.2.1",
@@ -80,6 +82,7 @@
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
+    "@types/cookie-parser": "^1",
     "@types/cors": "^2.8.9",
     "@types/express": "^4.17.14",
     "@types/ioredis": "^5.0.0",

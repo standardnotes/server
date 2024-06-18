@@ -9,17 +9,28 @@ import { FileUploaderInterface } from '../../Services/FileUploaderInterface'
 import { UploadRepositoryInterface } from '../../Upload/UploadRepositoryInterface'
 
 import { FinishUploadSession } from './FinishUploadSession'
+import { ValetTokenRepositoryInterface } from '../../ValetToken/ValetTokenRepositoryInterface'
 
 describe('FinishUploadSession', () => {
   let fileUploader: FileUploaderInterface
   let uploadRepository: UploadRepositoryInterface
   let domainEventPublisher: DomainEventPublisherInterface
   let domainEventFactory: DomainEventFactoryInterface
+  let valetTokenRepository: ValetTokenRepositoryInterface
 
   const createUseCase = () =>
-    new FinishUploadSession(fileUploader, uploadRepository, domainEventPublisher, domainEventFactory)
+    new FinishUploadSession(
+      fileUploader,
+      uploadRepository,
+      domainEventPublisher,
+      domainEventFactory,
+      valetTokenRepository,
+    )
 
   beforeEach(() => {
+    valetTokenRepository = {} as jest.Mocked<ValetTokenRepositoryInterface>
+    valetTokenRepository.markAsUsed = jest.fn()
+
     fileUploader = {} as jest.Mocked<FileUploaderInterface>
     fileUploader.finishUploadSession = jest.fn().mockReturnValue('ETag123')
 
@@ -45,6 +56,7 @@ describe('FinishUploadSession', () => {
       userUuid: '00000000-0000-0000-0000-000000000000',
       uploadBytesLimit: 100,
       uploadBytesUsed: 0,
+      valetToken: 'valet-token',
     })
 
     expect(fileUploader.finishUploadSession).not.toHaveBeenCalled()
@@ -57,6 +69,7 @@ describe('FinishUploadSession', () => {
       userUuid: 'invalid',
       uploadBytesLimit: 100,
       uploadBytesUsed: 0,
+      valetToken: 'valet-token',
     })
 
     expect(result.isFailed()).toBeTruthy()
@@ -74,6 +87,7 @@ describe('FinishUploadSession', () => {
       userUuid: '00000000-0000-0000-0000-000000000000',
       uploadBytesLimit: 100,
       uploadBytesUsed: 0,
+      valetToken: 'valet-token',
     })
 
     expect(result.getError()).toEqual('Could not finish upload session')
@@ -88,6 +102,7 @@ describe('FinishUploadSession', () => {
       userUuid: '00000000-0000-0000-0000-000000000000',
       uploadBytesLimit: 100,
       uploadBytesUsed: 0,
+      valetToken: 'valet-token',
     })
 
     expect(fileUploader.finishUploadSession).toHaveBeenCalledWith('123', '00000000-0000-0000-0000-000000000000/2-3-4', [
@@ -103,6 +118,7 @@ describe('FinishUploadSession', () => {
       sharedVaultUuid: '00000000-0000-0000-0000-000000000000',
       uploadBytesLimit: 100,
       uploadBytesUsed: 0,
+      valetToken: 'valet-token',
     })
 
     expect(fileUploader.finishUploadSession).toHaveBeenCalledWith('123', '00000000-0000-0000-0000-000000000000/2-3-4', [
@@ -118,6 +134,7 @@ describe('FinishUploadSession', () => {
       sharedVaultUuid: 'invalid',
       uploadBytesLimit: 100,
       uploadBytesUsed: 0,
+      valetToken: 'valet-token',
     })
 
     expect(result.isFailed()).toBeTruthy()
@@ -137,6 +154,7 @@ describe('FinishUploadSession', () => {
       userUuid: '00000000-0000-0000-0000-000000000000',
       uploadBytesLimit: 100,
       uploadBytesUsed: 20,
+      valetToken: 'valet-token',
     })
     expect(result.getError()).toEqual('Could not finish upload session. You are out of space.')
 
@@ -156,6 +174,7 @@ describe('FinishUploadSession', () => {
       userUuid: '00000000-0000-0000-0000-000000000000',
       uploadBytesLimit: -1,
       uploadBytesUsed: 20,
+      valetToken: 'valet-token',
     })
     expect(result.isFailed()).toBeFalsy()
 

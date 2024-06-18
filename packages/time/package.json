@@ -26,7 +26,7 @@
     "clean": "rm -fr dist",
     "build": "tsc --build",
     "lint": "eslint . --ext .ts",
-    "test": "jest --coverage --no-cache"
+    "test": "jest --coverage --no-cache --maxWorkers=2"
   },
   "dependencies": {
     "dayjs": "^1.11.6",

@@ -10,6 +10,12 @@ RUN corepack enable
 
 COPY ./ /workspace
 
+WORKDIR /workspace
+
+RUN yarn install --immutable
+
+RUN yarn build
+
 WORKDIR /workspace/packages/websockets
 
 ENTRYPOINT [ "/workspace/packages/websockets/docker/entrypoint.sh" ]

@@ -98,32 +98,30 @@ jobs:
     - name: Test
       run: yarn test
 
-  # e2e-base:
-  #   needs: build
-  #   name: E2E Base Suite
-  #   uses: standardnotes/server/.github/workflows/common-e2e.yml@main
-  #   with:
-  #     snjs_image_tag: 'latest'
-  #     suite: 'base'
+  e2e-base:
+    needs: build
+    name: E2E Base Suite
+    uses: standardnotes/server/.github/workflows/common-e2e.yml@main
+    with:
+      snjs_image_tag: 'latest'
+      suite: 'base'
 
-  # e2e-vaults:
-  #   needs: build
-  #   name: E2E Vaults Suite
-  #   uses: standardnotes/server/.github/workflows/common-e2e.yml@main
-  #   with:
-  #     snjs_image_tag: 'latest'
-  #     suite: 'vaults'
+  e2e-vaults:
+    needs: build
+    name: E2E Vaults Suite
+    uses: standardnotes/server/.github/workflows/common-e2e.yml@main
+    with:
+      snjs_image_tag: 'latest'
+      suite: 'vaults'
 
   publish-self-hosting:
-    # needs: [ test, lint, e2e-base, e2e-vaults ]
-    needs: [ test, lint ]
+    needs: [ test, lint, e2e-base, e2e-vaults ]
     name: Publish Self Hosting Docker Image
     uses: standardnotes/server/.github/workflows/common-self-hosting.yml@main
     secrets: inherit
 
   publish-services:
-    # needs: [ test, lint, e2e-base, e2e-vaults ]
-    needs: [ test, lint ]
+    needs: [ test, lint, e2e-base, e2e-vaults ]
 
     runs-on: ubuntu-latest
 

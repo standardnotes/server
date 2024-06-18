@@ -9,8 +9,6 @@ import { GenerateRecoveryCodes } from '../GenerateRecoveryCodes/GenerateRecovery
 
 export class TriggerPostSettingUpdateActions implements UseCaseInterface<void> {
   private readonly emailSettingToSubscriptionRejectionLevelMap: Map<string, string> = new Map([
-    [SettingName.NAMES.MuteFailedBackupsEmails, EmailLevel.LEVELS.FailedEmailBackup],
-    [SettingName.NAMES.MuteFailedCloudBackupsEmails, EmailLevel.LEVELS.FailedCloudBackup],
     [SettingName.NAMES.MuteMarketingEmails, EmailLevel.LEVELS.Marketing],
     [SettingName.NAMES.MuteSignInEmails, EmailLevel.LEVELS.SignIn],
   ])
@@ -47,12 +45,7 @@ export class TriggerPostSettingUpdateActions implements UseCaseInterface<void> {
   }
 
   private isChangingMuteEmailsSetting(settingName: string): boolean {
-    return [
-      SettingName.NAMES.MuteFailedBackupsEmails,
-      SettingName.NAMES.MuteFailedCloudBackupsEmails,
-      SettingName.NAMES.MuteMarketingEmails,
-      SettingName.NAMES.MuteSignInEmails,
-    ].includes(settingName)
+    return [SettingName.NAMES.MuteMarketingEmails, SettingName.NAMES.MuteSignInEmails].includes(settingName)
   }
 
   private isEnablingEmailBackupSetting(settingName: string, newValue: string | null): boolean {

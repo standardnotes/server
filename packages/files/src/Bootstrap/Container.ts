@@ -54,6 +54,8 @@ import { MoveFile } from '../Domain/UseCase/MoveFile/MoveFile'
 import { SharedVaultValetTokenAuthMiddleware } from '../Infra/InversifyExpress/Middleware/SharedVaultValetTokenAuthMiddleware'
 import { RecalculateQuota } from '../Domain/UseCase/RecalculateQuota/RecalculateQuota'
 import { FileQuotaRecalculationRequestedEventHandler } from '../Domain/Handler/FileQuotaRecalculationRequestedEventHandler'
+import { ValetTokenRepositoryInterface } from '../Domain/ValetToken/ValetTokenRepositoryInterface'
+import { RedisValetTokenRepository } from '../Infra/Redis/RedisValetTokenRepository'
 
 export class ContainerConfigLoader {
   constructor(private mode: 'server' | 'worker' = 'server') {}
@@ -72,6 +74,9 @@ export class ContainerConfigLoader {
     const container = new Container()
 
     // env vars
+    container
+      .bind<string[]>(TYPES.Files_CORS_ALLOWED_ORIGINS)
+      .toConstantValue(env.get('CORS_ALLOWED_ORIGINS', true) ? env.get('CORS_ALLOWED_ORIGINS', true).split(',') : [])
     container.bind(TYPES.Files_VALET_TOKEN_SECRET).toConstantValue(env.get('VALET_TOKEN_SECRET'))
     container
       .bind(TYPES.Files_MAX_CHUNK_BYTES)
@@ -100,6 +105,19 @@ export class ContainerConfigLoader {
 
     container.bind<TimerInterface>(TYPES.Files_Timer).toConstantValue(new Timer())
 
+    container.bind(TYPES.Files_REDIS_URL).toConstantValue(env.get('REDIS_URL'))
+
+    const redisUrl = container.get(TYPES.Files_REDIS_URL) as string
+    const isRedisInClusterMode = redisUrl.indexOf(',') > 0
+    let redis
+    if (isRedisInClusterMode) {
+      redis = new Redis.Cluster(redisUrl.split(','))
+    } else {
+      redis = new Redis(redisUrl)
+    }
+
+    container.bind(TYPES.Files_Redis).toConstantValue(redis)
+
     // services
     container
       .bind<TokenDecoderInterface<ValetTokenData>>(TYPES.Files_ValetTokenDecoder)
@@ -108,24 +126,15 @@ export class ContainerConfigLoader {
       .bind<DomainEventFactoryInterface>(TYPES.Files_DomainEventFactory)
       .toConstantValue(new DomainEventFactory(container.get<TimerInterface>(TYPES.Files_Timer)))
 
+    container
+      .bind<ValetTokenRepositoryInterface>(TYPES.Files_ValetTokenRepository)
+      .toConstantValue(new RedisValetTokenRepository(container.get<Redis>(TYPES.Files_Redis)))
+
     if (isConfiguredForInMemoryCache) {
       container
         .bind<UploadRepositoryInterface>(TYPES.Files_UploadRepository)
         .toConstantValue(new InMemoryUploadRepository(container.get(TYPES.Files_Timer)))
     } else {
-      container.bind(TYPES.Files_REDIS_URL).toConstantValue(env.get('REDIS_URL'))
-
-      const redisUrl = container.get(TYPES.Files_REDIS_URL) as string
-      const isRedisInClusterMode = redisUrl.indexOf(',') > 0
-      let redis
-      if (isRedisInClusterMode) {
-        redis = new Redis.Cluster(redisUrl.split(','))
-      } else {
-        redis = new Redis(redisUrl)
-      }
-
-      container.bind(TYPES.Files_Redis).toConstantValue(redis)
-
       container.bind<UploadRepositoryInterface>(TYPES.Files_UploadRepository).to(RedisUploadRepository)
     }
 
@@ -223,6 +232,7 @@ export class ContainerConfigLoader {
           container.get(TYPES.Files_UploadRepository),
           container.get(TYPES.Files_DomainEventPublisher),
           container.get(TYPES.Files_DomainEventFactory),
+          container.get<ValetTokenRepositoryInterface>(TYPES.Files_ValetTokenRepository),
         ),
       )
     container

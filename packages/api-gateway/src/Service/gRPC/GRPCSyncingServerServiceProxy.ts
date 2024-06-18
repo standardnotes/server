@@ -45,6 +45,7 @@ export class GRPCSyncingServerServiceProxy {
           metadata.set('x-session-uuid', locals.session.uuid)
         }
         metadata.set('x-is-free-user', locals.isFreeUser ? 'true' : 'false')
+        metadata.set('x-has-content-limit', locals.hasContentLimit ? 'true' : 'false')
 
         this.syncingClient.syncItems(syncRequest, metadata, (error, syncResponse) => {
           if (error) {

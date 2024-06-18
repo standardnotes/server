@@ -21,6 +21,7 @@ describe('Register', () => {
   let user: User
   let crypter: CrypterInterface
   let timer: TimerInterface
+  let session: Session
 
   const createUseCase = () =>
     new Register(userRepository, roleRepository, authResponseFactory, crypter, false, timer, applyDefaultSettings)
@@ -39,10 +40,9 @@ describe('Register', () => {
     roleRepository = {} as jest.Mocked<RoleRepositoryInterface>
     roleRepository.findOneByName = jest.fn().mockReturnValue(null)
 
+    session = {} as jest.Mocked<Session>
     authResponseFactory = {} as jest.Mocked<AuthResponseFactory20200115>
-    authResponseFactory.createResponse = jest
-      .fn()
-      .mockReturnValue({ response: { foo: 'bar' }, session: {} as jest.Mocked<Session> })
+    authResponseFactory.createResponse = jest.fn().mockReturnValue({ response: { foo: 'bar' }, session })
 
     crypter = {} as jest.Mocked<CrypterInterface>
     crypter.generateEncryptedUserServerKey = jest.fn().mockReturnValue('test')
@@ -69,7 +69,7 @@ describe('Register', () => {
         pwSalt: 'qweqwe',
         pwNonce: undefined,
       }),
-    ).toEqual({ success: true, authResponse: { foo: 'bar' } })
+    ).toEqual({ success: true, result: { response: { foo: 'bar' }, session } })
 
     expect(userRepository.save).toHaveBeenCalledWith({
       email: 'test@test.te',
@@ -108,44 +108,7 @@ describe('Register', () => {
         pwSalt: 'qweqwe',
         pwNonce: undefined,
       }),
-    ).toEqual({ success: true, authResponse: { foo: 'bar' } })
-
-    expect(userRepository.save).toHaveBeenCalledWith({
-      email: 'test@test.te',
-      encryptedPassword: expect.any(String),
-      encryptedServerKey: 'test',
-      serverEncryptionVersion: 1,
-      pwCost: 11,
-      pwNonce: undefined,
-      pwSalt: 'qweqwe',
-      updatedWithUserAgent: 'Mozilla',
-      uuid: expect.any(String),
-      version: '004',
-      createdAt: new Date(1),
-      updatedAt: new Date(1),
-      roles: Promise.resolve([role]),
-    })
-  })
-
-  it('should register a new user with default set of roles on new api version', async () => {
-    const role = new Role()
-    role.name = RoleName.NAMES.CoreUser
-
-    roleRepository.findOneByName = jest.fn().mockReturnValueOnce(role)
-
-    expect(
-      await createUseCase().execute({
-        email: 'test@test.te',
-        password: 'asdzxc',
-        updatedWithUserAgent: 'Mozilla',
-        apiVersion: '20240226',
-        ephemeralSession: false,
-        version: '004',
-        pwCost: 11,
-        pwSalt: 'qweqwe',
-        pwNonce: undefined,
-      }),
-    ).toEqual({ success: true, authResponse: { foo: 'bar' } })
+    ).toEqual({ success: true, result: { response: { foo: 'bar' }, session } })
 
     expect(userRepository.save).toHaveBeenCalledWith({
       email: 'test@test.te',
@@ -276,6 +239,27 @@ describe('Register', () => {
     ).toEqual({
       success: false,
       errorMessage: 'User registration is currently not allowed.',
+    })
+
+    expect(userRepository.save).not.toHaveBeenCalled()
+  })
+
+  it('should fail to register if api version is invalid', async () => {
+    expect(
+      await createUseCase().execute({
+        email: 'test@test.te',
+        password: 'asdzxc',
+        updatedWithUserAgent: 'Mozilla',
+        apiVersion: '',
+        ephemeralSession: false,
+        version: '004',
+        pwCost: 11,
+        pwSalt: 'qweqwe',
+        pwNonce: undefined,
+      }),
+    ).toEqual({
+      success: false,
+      errorMessage: 'Invalid api version: ',
     })
 
     expect(userRepository.save).not.toHaveBeenCalled()
