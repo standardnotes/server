@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.51.18](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.51.16...@standardnotes/revisions-server@1.51.18) (2024-06-18)
+
+### Bug Fixes
+
+* bump versions on packages ([8575d20](https://github.com/standardnotes/server/commit/8575d20f7b79f5220da7cced0041ae12b72e1e49))
+
 ## [1.51.16](https://github.com/standardnotes/server/compare/@standardnotes/revisions-server@1.51.15...@standardnotes/revisions-server@1.51.16) (2024-01-19)
 
 **Note:** Version bump only for package @standardnotes/revisions-server
