@@ -4,6 +4,7 @@ import { TimerInterface } from '@standardnotes/time'
 import { AnalyticsActivity } from '../Analytics/AnalyticsActivity'
 import { StatisticMeasureName } from '../Statistics/StatisticMeasureName'
 import { Period } from '../Time/Period'
+import { safeHtml } from '@standardnotes/common'
 
 const countActiveUsers = (measureName: string, data: any): { yesterday: number; last30Days: number } => {
   const totalActiveUsersLast30DaysIncludingToday = data.statisticsOverTime.find(
@@ -567,7 +568,7 @@ export const html = (data: any, timer: TimerInterface) => {
   const totalActivePlusUsers = countActiveUsers(StatisticMeasureName.NAMES.ActivePlusUsers, data)
   const totalActiveProUsers = countActiveUsers(StatisticMeasureName.NAMES.ActiveProUsers, data)
 
-  return `      <div>
+  return safeHtml`      <div>
 <p>Hello,</p>
 <p>
   <strong>Here are some statistics from yesterday:</strong>

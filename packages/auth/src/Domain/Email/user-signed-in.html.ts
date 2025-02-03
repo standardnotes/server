@@ -1,4 +1,6 @@
-export const html = (email: string, device: string, browser: string, timeAndDate: string) => `
+import { safeHtml } from '@standardnotes/common'
+
+export const html = (email: string, device: string, browser: string, timeAndDate: string) => safeHtml`
 <div>
 <p>Hello,</p>
 <p>We've detected a new sign-in to your account ${email}</p>
