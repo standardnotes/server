@@ -30,7 +30,9 @@ export MODE="self-hosted"
 # PORTS #
 #########
 
-export API_GATEWAY_PORT=3000
+if [ -z "$API_GATEWAY_PORT" ]; then
+  export API_GATEWAY_PORT=3000
+fi
 
 if [ -z "$SYNCING_SERVER_PORT" ]; then
   export SYNCING_SERVER_PORT=3101
